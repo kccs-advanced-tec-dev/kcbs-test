@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<f:view transient="true"
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:outputScript library="primefaces" name="jquery/jquery.js"/>
+    <f:metadata>
+        <f:viewParam id="autoLogin" name="autoLogin" value='#{sessionManager.autoLogin}'/>
+        <f:viewAction action="#{sessionManager.setUser2session()}"/>
+    </f:metadata>
+    <script type="text/javascript">
+        //<![CDATA[
+        //navigate to menu
+        function navigate2menu() {
+            if ('#{sessionManager.autoLogin}' === 'true') {
+                //alert('autoLogin=true');
+                window.location = "gxhco012a.xhtml?macAddr=" + g_macAddr;
+            } else {
+                //alert('autoLogin=false');
+                window.location = "faces/pxhco012/gxhco012a.xhtml?macAddr=" + g_macAddr;
+            }
+        }
+        $(document).ready(function() {
+            //Mac Address 複数ある時はセミコロン区切り
+            if ('#{adjustModels.model}' === 'linux_chrome' ||
+                    '#{adjustModels.model}' === 'linux_firefox' ||
+                    '#{adjustModels.model}' === 'chrome' ||
+                    '#{adjustModels.model}' === 'ipad' ||
+                    '#{adjustModels.model}' === 'firefox' ||
+                    '#{adjustModels.model}' === 'ie11') {
+                g_macAddr = '#{myMsg.NotAvailable}';
+            } else {
+                g_macAddr = window.#{adjustModels.external}.getMacAddr();
+                window.#{adjustModels.external}.setCookie();
+            }
+            
+            //localStorageからMACアドレスを取得(優先)
+            var maddr = localStorage.getItem('MACADDR');
+            if (maddr !== null) {
+                g_macAddr = maddr;
+            }
+            
+            //menu
+            navigate2menu();
+        });
+        //]]>
+    </script>
+</f:view>

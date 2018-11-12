@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Pragma" content="no-cache"/>
+        <meta http-equiv="Cache-Control" content="no-cache"/>
+        <meta http-equiv="Expires" content="0"/>
+        <title>#{myParam.application_id} #{myMsg.mainMenu}</title>
+        <h:outputScript library="primefaces" name="jquery/jquery.js" />
+        <script src="#{request.contextPath}/resources/js/locUpload.js"></script>
+        <script type="text/javascript">
+            //<![CDATA[
+            function logOut() {
+                window.#{adjustModels.external}.logOut();
+            }
+            $(document).ready(function() {
+                //upload to
+                g_locationUrl = '#{myParam.locationUrl}';
+                //MAC Address
+                g_macAddr = '#{sessionInfo.macAddr}';
+                //location
+                g_location = '#{myMsg.NotAvailable}';
+                g_prgname = 'gxhco012a.xhtml';
+                var interval_id = setInterval(getLocation, #{myParam.sendLocInterval});
+            });
+            //]]>
+        </script>
+    </h:head>
+    <h:body>
+        <f:metadata>
+            <f:viewParam id="macAddr" name="macAddr" value="#{sessionManager.macAddr}"/>
+            <f:viewAction action="#{sessionManager.validateUser()}"/>
+        </f:metadata>
+        <div style="margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;">
+        <br/>
+        <h:form id="form" onkeypress="if (event.keyCode === 13) { return false; }">
+            <p:dataTable id="menuTable" var="item" value="#{gXHCO012A.menuList}"
+                         style="margin-top: 20px;margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;font-size:#{adjustModels.menuFontSize}px;"
+                         scrollable="true"
+                         emptyMessage="">
+                <p:column id="mItem" width="40%" headerText="#{myMsg.menuItem}" style="">
+                    <h:commandLink value="#{item.menuName}" style="color:Indigo;" 
+                                   action="#{gXHCO012A.openQcdbForm(item)}" >
+                    </h:commandLink>
+                    
+                </p:column>
+                <p:column id="mComment" width="60%" headerText="#{myMsg.menuComment}">
+                    <p:outputLabel value="#{item.menuComment}"/>
+                </p:column>
+            </p:dataTable>
+            <p:commandButton id="logOut" style="margin-top:50px;font-size:#{adjustModels.menuFontSize}px;"
+                  value="#{myMsg.logout}"
+                  action="#{gXHCO012A.logOut()}"
+                  icon="ui-icon-circle-close" oncomplete="logOut()">
+            </p:commandButton>
+        </h:form>
+        </div>
+    </h:body>
+</html>

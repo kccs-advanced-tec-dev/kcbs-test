@@ -1,0 +1,49 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<faces-config version="2.2"
+              xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-facesconfig_2_2.xsd">
+    
+    <!-- protection for CSRF -->
+    <protected-views>
+        <!-- <url-pattern>/menu.xhtml</url-pattern> -->
+    </protected-views>
+
+    <application>
+        <resource-bundle>
+            <base-name>
+                resources.message
+            </base-name>
+            <var>myMsg</var>
+        </resource-bundle>        
+        <resource-bundle>
+            <base-name>
+                resources.parameter
+            </base-name>
+            <var>myParam</var>
+        </resource-bundle>
+        <locale-config>
+            <default-locale>ja</default-locale>
+            <supported-locale>en</supported-locale>
+        </locale-config>
+        
+        <action-listener>org.primefaces.application.DialogActionListener</action-listener>
+        <navigation-handler>org.primefaces.application.DialogNavigationHandler</navigation-handler>
+        <view-handler>org.primefaces.application.DialogViewHandler</view-handler>
+    </application>
+    
+    <factory>
+        <exception-handler-factory>
+            org.omnifaces.exceptionhandler.FullAjaxExceptionHandlerFactory
+        </exception-handler-factory>
+    </factory>
+
+    <navigation-rule>
+        <from-view-id>/secure/menu.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>logout</from-outcome>
+            <to-view-id>/login.xhtml</to-view-id>
+            <redirect/>
+        </navigation-case>
+    </navigation-rule>
+</faces-config>

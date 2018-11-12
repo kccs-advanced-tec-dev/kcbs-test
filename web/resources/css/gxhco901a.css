@@ -1,0 +1,9 @@
+.selectRadio table {
+    table-layout: fixed;
+    width: 100%;
+}
+.selectRadio td {
+    float: left;
+    word-wrap: break-word;
+    white-space: nowrap;
+}
