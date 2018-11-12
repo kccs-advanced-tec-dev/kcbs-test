@@ -17,12 +17,12 @@ package jp.co.kccs.xhd.db.model;
  */
 
 /**
- * FXHCM02(表示設定マスタ)のモデルクラスです。
+ * FXHDM02(表示設定マスタ)のモデルクラスです。
  * 
  * @author KCCS D.Yanagida
  * @since 2018/04/24
  */
-public class FXHCM02 {
+public class FXHDM02 {
     /**
      * 設定ID
      */

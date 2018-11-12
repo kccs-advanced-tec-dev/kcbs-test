@@ -1,11 +1,11 @@
 /*
  * Copyright 2018 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
-package jp.co.kccs.xhd.pxhco901;
+package jp.co.kccs.xhd.pxhdo901;
 
 import java.util.List;
 import javax.sql.DataSource;
-import jp.co.kccs.xhd.db.model.FXHCD01;
+import jp.co.kccs.xhd.db.model.FXHDD01;
 
 /**
  * ===============================================================================<br>
@@ -46,7 +46,7 @@ public class ProcessData {
     /**
      * 項目データ
      */
-    private List<FXHCD01> itemList;
+    private List<FXHDD01> itemList;
     /**
      * 活性ボタンIDリスト
      */
@@ -156,7 +156,7 @@ public class ProcessData {
      * 項目データ
      * @return the itemList
      */
-    public List<FXHCD01> getItemList() {
+    public List<FXHDD01> getItemList() {
         return itemList;
     }
 
@@ -164,7 +164,7 @@ public class ProcessData {
      * 項目データ
      * @param itemList the itemList to set
      */
-    public void setItemList(List<FXHCD01> itemList) {
+    public void setItemList(List<FXHDD01> itemList) {
         this.itemList = itemList;
     }
 

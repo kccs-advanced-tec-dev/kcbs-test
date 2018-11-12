@@ -24,7 +24,7 @@
                 g_macAddr = '#{sessionInfo.macAddr}';
                 //location
                 g_location = '#{myMsg.NotAvailable}';
-                g_prgname = 'gxhco012a.xhtml';
+                g_prgname = 'gxhdo012a.xhtml';
                 var interval_id = setInterval(getLocation, #{myParam.sendLocInterval});
             });
             //]]>
@@ -38,13 +38,13 @@
         <div style="margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;">
         <br/>
         <h:form id="form" onkeypress="if (event.keyCode === 13) { return false; }">
-            <p:dataTable id="menuTable" var="item" value="#{gXHCO012A.menuList}"
+            <p:dataTable id="menuTable" var="item" value="#{gXHDO012A.menuList}"
                          style="margin-top: 20px;margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;font-size:#{adjustModels.menuFontSize}px;"
                          scrollable="true"
                          emptyMessage="">
                 <p:column id="mItem" width="40%" headerText="#{myMsg.menuItem}" style="">
                     <h:commandLink value="#{item.menuName}" style="color:Indigo;" 
-                                   action="#{gXHCO012A.openQcdbForm(item)}" >
+                                   action="#{gXHDO012A.openQcdbForm(item)}" >
                     </h:commandLink>
                     
                 </p:column>
@@ -54,7 +54,7 @@
             </p:dataTable>
             <p:commandButton id="logOut" style="margin-top:50px;font-size:#{adjustModels.menuFontSize}px;"
                   value="#{myMsg.logout}"
-                  action="#{gXHCO012A.logOut()}"
+                  action="#{gXHDO012A.logOut()}"
                   icon="ui-icon-circle-close" oncomplete="logOut()">
             </p:commandButton>
         </h:form>

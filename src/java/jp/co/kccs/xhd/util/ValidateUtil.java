@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import jp.co.kccs.xhd.db.model.FXHCD01;
+import jp.co.kccs.xhd.db.model.FXHDD01;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -99,7 +99,7 @@ public class ValidateUtil {
      * @param itemList 項目データリスト
      * @return エラー時はエラーメッセージを返却
      */
-    public String executeValidation(List<ValidateInfo> validateInfoList, List<FXHCD01> itemList) {
+    public String executeValidation(List<ValidateInfo> validateInfoList, List<FXHDD01> itemList) {
         for (ValidateInfo validateInfo : validateInfoList) {
             String errorMessage = "";
             switch (validateInfo.checkNo) {
@@ -143,9 +143,9 @@ public class ValidateUtil {
      * @param itemId 項目ID
      * @return エラー時はエラーメッセージを返却
      */
-    public String checkS001(List<FXHCD01> itemList, String itemId) {
+    public String checkS001(List<FXHDD01> itemList, String itemId) {
         // 項目データを取得
-        FXHCD01 fXHCD01 = getItemRow(itemList, itemId);
+        FXHDD01 fXHCD01 = getItemRow(itemList, itemId);
         if (null != fXHCD01) {
             int ketasu = -1;
             if (NumberUtil.isIntegerNumeric(fXHCD01.getInputLength())) {
@@ -168,9 +168,9 @@ public class ValidateUtil {
      * @param itemId 項目ID
      * @return エラー時はエラーメッセージを返却
      */
-    public String checkS002(List<FXHCD01> itemList, String itemId) {
+    public String checkS002(List<FXHDD01> itemList, String itemId) {
         // 項目データを取得
-        FXHCD01 fXHCD01 = getItemRow(itemList, itemId);
+        FXHDD01 fXHCD01 = getItemRow(itemList, itemId);
         if (null != fXHCD01) {
             String value = fXHCD01.getValue();
             if (StringUtil.isEmpty(value)) {
@@ -188,9 +188,9 @@ public class ValidateUtil {
      * @param minValue 下限値
      * @return エラー時はエラーメッセージを返却
      */
-    public String checkS003(List<FXHCD01> itemList, String itemId, BigDecimal maxValue, BigDecimal minValue) {
+    public String checkS003(List<FXHDD01> itemList, String itemId, BigDecimal maxValue, BigDecimal minValue) {
         // 項目データを取得
-        FXHCD01 fXHCD01 = getItemRow(itemList, itemId);
+        FXHDD01 fXHCD01 = getItemRow(itemList, itemId);
         if (null != fXHCD01) {
             String value = fXHCD01.getValue();
             if (!NumberUtil.isNumeric(value) ||
@@ -209,9 +209,9 @@ public class ValidateUtil {
      * @param minValue 下限値(メッセージ出力用)
      * @return エラー時はエラーメッセージを返却
      */
-    public String checkS004(List<FXHCD01> itemList, String itemId, BigDecimal maxValue, BigDecimal minValue) {
+    public String checkS004(List<FXHDD01> itemList, String itemId, BigDecimal maxValue, BigDecimal minValue) {
         // 項目データを取得
-        FXHCD01 fXHCD01 = getItemRow(itemList, itemId);
+        FXHDD01 fXHCD01 = getItemRow(itemList, itemId);
         if (null != fXHCD01) {
             String value = fXHCD01.getValue();
             
@@ -238,9 +238,9 @@ public class ValidateUtil {
      * @param itemId 項目ID
      * @return エラー時はエラーメッセージを返却
      */
-    public String checkS005(List<FXHCD01> itemList, String itemId) {
+    public String checkS005(List<FXHDD01> itemList, String itemId) {
         // 項目データを取得
-        FXHCD01 fXHCD01 = getItemRow(itemList, itemId);
+        FXHDD01 fXHCD01 = getItemRow(itemList, itemId);
         if (null != fXHCD01) {
             String value = fXHCD01.getValue();
             if (!DateUtil.isValidYYMMDD(value)) {
@@ -256,9 +256,9 @@ public class ValidateUtil {
      * @param itemId 項目ID
      * @return エラー時はエラーメッセージを返却
      */
-    public String checkS006(List<FXHCD01> itemList, String itemId) {
+    public String checkS006(List<FXHDD01> itemList, String itemId) {
         // 項目データを取得
-        FXHCD01 fXHCD01 = getItemRow(itemList, itemId);
+        FXHDD01 fXHCD01 = getItemRow(itemList, itemId);
         if (null != fXHCD01) {
             String value = fXHCD01.getValue();
             if (!DateUtil.isValidHHMM(value)) {
@@ -275,9 +275,9 @@ public class ValidateUtil {
      * @param itemId 項目ID
      * @return エラー時はエラーメッセージを返却
      */
-    public String checkS007(List<FXHCD01> itemList, String itemId) {
+    public String checkS007(List<FXHDD01> itemList, String itemId) {
         // 項目データを取得
-        FXHCD01 fXHCD01 = getItemRow(itemList, itemId);
+        FXHDD01 fXHCD01 = getItemRow(itemList, itemId);
         if (null != fXHCD01) {
             String value = fXHCD01.getValue();
             if (StringUtil.isEmpty(value) || "0".equals(value)) {
@@ -296,12 +296,12 @@ public class ValidateUtil {
      * @param timeItemId2 時刻項目ID
      * @return エラー時はエラーメッセージを返却
      */
-    public String checkR001(List<FXHCD01> itemList, String dateItemId1, String timeItemId1, String dateItemId2, String timeItemId2) {
+    public String checkR001(List<FXHDD01> itemList, String dateItemId1, String timeItemId1, String dateItemId2, String timeItemId2) {
         // 項目データを取得
-        FXHCD01 fXHCD01_date1 = getItemRow(itemList, dateItemId1);
-        FXHCD01 fXHCD01_time1 = getItemRow(itemList, timeItemId1);
-        FXHCD01 fXHCD01_date2 = getItemRow(itemList, dateItemId2);
-        FXHCD01 fXHCD01_time2 = getItemRow(itemList, timeItemId2);
+        FXHDD01 fXHCD01_date1 = getItemRow(itemList, dateItemId1);
+        FXHDD01 fXHCD01_time1 = getItemRow(itemList, timeItemId1);
+        FXHDD01 fXHCD01_date2 = getItemRow(itemList, dateItemId2);
+        FXHDD01 fXHCD01_time2 = getItemRow(itemList, timeItemId2);
         if (null != fXHCD01_date1 && null != fXHCD01_time1 && null != fXHCD01_date2 && null != fXHCD01_time2) {
             String date1 = fXHCD01_date1.getValue();
             String time1 = fXHCD01_time1.getValue();
@@ -326,9 +326,9 @@ public class ValidateUtil {
      * @param itemId 項目ID
      * @return エラー時はエラーメッセージを返却
      */
-    public String checkE001(List<FXHCD01> itemList, String itemId) {
+    public String checkE001(List<FXHDD01> itemList, String itemId) {
         // 項目データを取得
-        FXHCD01 fXHCD01 = getItemRow(itemList, itemId);
+        FXHDD01 fXHCD01 = getItemRow(itemList, itemId);
         if (null != fXHCD01) {
             String value = fXHCD01.getValue();
             if (!checkLotNoDigit(value)) {
@@ -399,8 +399,8 @@ public class ValidateUtil {
      * @param itemId 項目ID
      * @return 項目データ
      */
-    private FXHCD01 getItemRow(List<FXHCD01> itemList, String itemId) {
-        List<FXHCD01> selectData = 
+    private FXHDD01 getItemRow(List<FXHDD01> itemList, String itemId) {
+        List<FXHDD01> selectData = 
                 itemList.stream().filter(n -> itemId.equals(n.getItemId())).collect(Collectors.toList());
         if (null != selectData && 0 < selectData.size()) {
             return selectData.get(0);

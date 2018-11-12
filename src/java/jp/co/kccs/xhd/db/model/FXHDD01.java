@@ -25,12 +25,12 @@ import org.apache.commons.lang3.StringUtils;
  */
 
 /**
- * FXHCD01(フォームパラメータマスタ)のモデルクラスです。
+ * FXHDD01(フォームパラメータマスタ)のモデルクラスです。
  * 
  * @author KCCS D.Yanagida
  * @since 2018/05/06
  */
-public class FXHCD01 {
+public class FXHDD01 {
     /**
      * 画面ID
      */
@@ -144,7 +144,7 @@ public class FXHCD01 {
      */
     private String value;
     
-    public FXHCD01() {
+    public FXHDD01() {
         
     }
     

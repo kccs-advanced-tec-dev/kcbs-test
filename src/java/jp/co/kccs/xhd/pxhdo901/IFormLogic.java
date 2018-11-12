@@ -1,7 +1,7 @@
 /*
  * Copyright 2018 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
-package jp.co.kccs.xhd.pxhco901;
+package jp.co.kccs.xhd.pxhdo901;
 
 /**
  * ===============================================================================<br>

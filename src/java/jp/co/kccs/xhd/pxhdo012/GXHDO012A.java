@@ -1,7 +1,7 @@
 /*
  * Copyright 2018 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
-package jp.co.kccs.xhd.pxhco012;
+package jp.co.kccs.xhd.pxhdo012;
 
 import java.io.Serializable;
 import java.sql.SQLException;
@@ -16,9 +16,11 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
-import jp.co.kccs.xhd.db.model.FXHCM01;
+import jp.co.kccs.xhd.GetModel;
+import jp.co.kccs.xhd.db.model.FXHDM01;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
 import org.apache.commons.dbutils.BasicRowProcessor;
@@ -42,15 +44,15 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
  */
 
 /**
- * GXHCO012A(メニュー画面)
+ * GXHDO012A(メニュー画面)
  * 
  * @author KCCS D.Yanagida
  * @since 2018/05/06
  */
 @Named
 @ViewScoped
-public class GXHCO012A implements Serializable {
-    private static final Logger LOGGER = Logger.getLogger(GXHCO012A.class.getName());
+public class GXHDO012A implements Serializable {
+    private static final Logger LOGGER = Logger.getLogger(GXHDO012A.class.getName());
     
     /**
      * DataSource
@@ -60,23 +62,37 @@ public class GXHCO012A implements Serializable {
     /**
      * メニュー項目
      */
-    private List<FXHCM01> menuList;
+    private List<FXHDM01> menuList;
     /**
      * コンストラクタ
      */
-    public GXHCO012A() {
+    public GXHDO012A() {
     }
     
     /**
      * メニュー一覧取得処理
      * @return メニュー一覧データ
      */
-    public List<FXHCM01> getMenuList() {
+    public List<FXHDM01> getMenuList() {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
         List<String> userGrpList = (List<String>)session.getAttribute("login_user_group");
         
         menuList = new ArrayList<>();
+        
+        // user-agent
+        HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        String uAgent = request.getHeader("user-agent");
+        // model
+        GetModel getModel = new GetModel(uAgent);
+        String model = getModel.getModel();
+        String submodel = getModel.getSubmodel();
+        
+        // userAgentでPC or タブレットを判定
+        boolean isPC = false;
+        if (model.equals("ie11")) {
+            isPC = true;
+        }
         
         if (0 == userGrpList.size()) {
             // ユーザーグループ未登録の場合、ブランクメニューを表示する
@@ -85,8 +101,14 @@ public class GXHCO012A implements Serializable {
             // ユーザーグループでメニューマスタを検索
             try {
                 QueryRunner queryRunner = new QueryRunner(dataSource);
-                String sql = "SELECT gamen_id, gamen_title, title_setting, link_char, menu_name, menu_comment, menu_parameter, gamen_classname FROM fxhcm01 "
-                           + "WHERE " + DBUtil.getInConditionPreparedStatement("user_role", userGrpList.size()) + " ORDER BY menu_no ";
+                String sql = "SELECT gamen_id, gamen_title, title_setting, link_char, menu_name, menu_comment, menu_parameter, gamen_classname, hyouji_kensu FROM fxhdm01 "
+                           + "WHERE " + DBUtil.getInConditionPreparedStatement("user_role", userGrpList.size());
+                
+                if (!isPC) {
+                    sql += " AND pc_flg = '0'";
+                }
+                
+                sql += " ORDER BY menu_no ";
 
                 Map<String, String> mapping = new HashMap<>();
                 mapping.put("gamen_id", "formId");
@@ -97,10 +119,11 @@ public class GXHCO012A implements Serializable {
                 mapping.put("menu_parameter", "menuParam");
                 mapping.put("menu_comment", "menuComment");
                 mapping.put("gamen_classname", "formClassName");
+                mapping.put("hyouji_kensu", "hyojiKensu");
 
                 BeanProcessor beanProcessor = new BeanProcessor(mapping);
                 RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
-                ResultSetHandler<List<FXHCM01>> beanHandler = new BeanListHandler<>(FXHCM01.class, rowProcessor);
+                ResultSetHandler<List<FXHDM01>> beanHandler = new BeanListHandler<>(FXHDM01.class, rowProcessor);
                 
                 DBUtil.outputSQLLog(sql, userGrpList.toArray(), LOGGER);
                 menuList = queryRunner.query(sql, beanHandler, userGrpList.toArray());       
@@ -118,7 +141,7 @@ public class GXHCO012A implements Serializable {
      * @param rowData 選択行のデータ
      * @return 遷移先画面
      */
-    public String openQcdbForm(FXHCM01 rowData) {
+    public String openQcdbForm(FXHDM01 rowData) {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
         
@@ -127,6 +150,7 @@ public class GXHCO012A implements Serializable {
         session.setAttribute("formTitle", rowData.getFormTitle());
         session.setAttribute("titleSetting", rowData.getTitleSetting());
         session.setAttribute("formClassName", rowData.getFormClassName());
+        session.setAttribute("hyojiKensu", rowData.getHyojiKensu());
         
         return rowData.getLinkChar() + "?faces-redirect=true";
     }

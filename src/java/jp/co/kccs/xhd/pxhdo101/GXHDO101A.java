@@ -1,7 +1,7 @@
 /*
  * Copyright 2018 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
-package jp.co.kccs.xhd.pxhco101;
+package jp.co.kccs.xhd.pxhdo101;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
@@ -13,11 +13,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import jp.co.kccs.xhd.db.model.FXHCD01;
+import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.db.model.SrSyosei;
-import jp.co.kccs.xhd.pxhco901.GXHCO901A;
-import jp.co.kccs.xhd.pxhco901.IFormLogic;
-import jp.co.kccs.xhd.pxhco901.ProcessData;
+import jp.co.kccs.xhd.pxhdo901.GXHDO901A;
+import jp.co.kccs.xhd.pxhdo901.IFormLogic;
+import jp.co.kccs.xhd.pxhdo901.ProcessData;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.DateUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
@@ -46,14 +46,14 @@ import org.apache.commons.dbutils.handlers.MapHandler;
  * ===============================================================================<br>
  */
 /**
- * GXHCO101A(焼成画面)ロジック
+ * GXHDO101A(焼成画面)ロジック
  *
  * @author KCCS D.Yanagida
  * @since 2018/04/24
  */
-public class GXHCO101A implements IFormLogic {
+public class GXHDO101A implements IFormLogic {
 
-    private static final Logger LOGGER = Logger.getLogger(GXHCO901A.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GXHDO901A.class.getName());
 
     private static final String CHARSET = "MS932";
     private static final int LOTNO_BYTE = 14;
@@ -183,7 +183,7 @@ public class GXHCO101A implements IFormLogic {
         processData.setMethod("");
 
         // データを設定する
-        for (FXHCD01 fxhcd001 : processData.getItemList()) {
+        for (FXHDD01 fxhcd001 : processData.getItemList()) {
             this.setItemData(processData, fxhcd001.getItemId(), fxhcd001.getInputDefault());
         }
 
@@ -207,7 +207,7 @@ public class GXHCO101A implements IFormLogic {
 
             // 入力チェック
             // 回数未入力チェック
-            FXHCD01 itemRowKaisu = this.getItemRow(processData.getItemList(), "syosei_kaisuu");
+            FXHDD01 itemRowKaisu = this.getItemRow(processData.getItemList(), "syosei_kaisuu");
             String kaisu = itemRowKaisu.getValue();
             if (StringUtil.isEmpty(kaisu)) {
                 processData.setErrorMessage(MessageUtil.getMessage("XHC-000002", itemRowKaisu.getLabel1()));
@@ -215,7 +215,7 @@ public class GXHCO101A implements IFormLogic {
             }
 
             // ロットNo桁数チェック
-            FXHCD01 itemRowLot = this.getItemRow(processData.getItemList(), "syosei_LotNo");
+            FXHDD01 itemRowLot = this.getItemRow(processData.getItemList(), "syosei_LotNo");
             String lotNo = itemRowLot.getValue();
             if (LOTNO_BYTE != StringUtil.getByte(lotNo, CHARSET, LOGGER)) {
                 processData.setErrorMessage(MessageUtil.getMessage("XHC-000003", itemRowLot.getLabel1(), LOTNO_BYTE));
@@ -286,7 +286,7 @@ public class GXHCO101A implements IFormLogic {
             processData.setProcessName("wipImport");
 
             // 入力チェック
-            FXHCD01 itemRow = this.getItemRow(processData.getItemList(), "syosei_LotNo");
+            FXHDD01 itemRow = this.getItemRow(processData.getItemList(), "syosei_LotNo");
             String lotNo = itemRow.getValue();
 
             // ロットNo桁数チェック
@@ -437,7 +437,7 @@ public class GXHCO101A implements IFormLogic {
         try {
             QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
             QueryRunner queryRunnerWip = new QueryRunner(processData.getDataSourceWip());
-            List<FXHCD01> itemList = processData.getItemList();
+            List<FXHDD01> itemList = processData.getItemList();
             ValidateUtil validateUtil = new ValidateUtil();
 
             if ("saveData".equals(processData.getProcessName())
@@ -794,7 +794,7 @@ public class GXHCO101A implements IFormLogic {
      */
     private List<Object> getInsertUpdateParams(QueryRunner queryRunnerQcdb, ProcessData processData, boolean isUpdate) throws SQLException {
         List<Object> params = new ArrayList<>();
-        List<FXHCD01> listData = processData.getItemList();
+        List<FXHDD01> listData = processData.getItemList();
 
         Date now = new Date();
         String lotNo = this.getItemData(listData, "syosei_LotNo");
@@ -1094,7 +1094,7 @@ public class GXHCO101A implements IFormLogic {
      * @return 処理制御データ
      */
     private ProcessData setItemData(ProcessData processData, String itemId, String value) {
-        FXHCD01 fxhcd01
+        FXHDD01 fxhcd01
                 = processData.getItemList().stream().filter(n -> itemId.equals(n.getItemId())).collect(Collectors.toList()).get(0);
         fxhcd01.setValue(value);
         return processData;
@@ -1107,8 +1107,8 @@ public class GXHCO101A implements IFormLogic {
      * @param itemId 項目ID
      * @return 項目データ
      */
-    private FXHCD01 getItemRow(List<FXHCD01> listData, String itemId) {
-        List<FXHCD01> selectData
+    private FXHDD01 getItemRow(List<FXHDD01> listData, String itemId) {
+        List<FXHDD01> selectData
                 = listData.stream().filter(n -> itemId.equals(n.getItemId())).collect(Collectors.toList());
         if (null != selectData && 0 < selectData.size()) {
             return selectData.get(0);
@@ -1124,8 +1124,8 @@ public class GXHCO101A implements IFormLogic {
      * @param itemId 項目ID
      * @return 入力値
      */
-    private String getItemData(List<FXHCD01> listData, String itemId) {
-        List<FXHCD01> selectData
+    private String getItemData(List<FXHDD01> listData, String itemId) {
+        List<FXHDD01> selectData
                 = listData.stream().filter(n -> itemId.equals(n.getItemId())).collect(Collectors.toList());
         if (null != selectData && 0 < selectData.size()) {
             return selectData.get(0).getValue();
@@ -1141,8 +1141,8 @@ public class GXHCO101A implements IFormLogic {
      * @param itemId 項目ID
      * @return 入力値
      */
-    private String getItemName(List<FXHCD01> listData, String itemId) {
-        List<FXHCD01> selectData
+    private String getItemName(List<FXHDD01> listData, String itemId) {
+        List<FXHDD01> selectData
                 = listData.stream().filter(n -> itemId.equals(n.getItemId())).collect(Collectors.toList());
         if (null != selectData && 0 < selectData.size()) {
             return selectData.get(0).getLabel1();

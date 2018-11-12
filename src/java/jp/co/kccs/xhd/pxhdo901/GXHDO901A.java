@@ -1,7 +1,7 @@
 /*
  * Copyright 2018 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
-package jp.co.kccs.xhd.pxhco901;
+package jp.co.kccs.xhd.pxhdo901;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
@@ -26,9 +26,9 @@ import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import jp.co.kccs.xhd.db.Parameter;
 import jp.co.kccs.xhd.db.ParameterEJB;
-import jp.co.kccs.xhd.db.model.FXHCD01;
-import jp.co.kccs.xhd.db.model.FXHCD02;
-import jp.co.kccs.xhd.db.model.FXHCM02;
+import jp.co.kccs.xhd.db.model.FXHDD01;
+import jp.co.kccs.xhd.db.model.FXHDD02;
+import jp.co.kccs.xhd.db.model.FXHDM02;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.StringUtil;
@@ -57,15 +57,15 @@ import org.primefaces.context.RequestContext;
  */
 
 /**
- * GXHCO901A(品質DB画面共通)
+ * GXHDO901A(品質DB画面共通)
  * 
  * @author KCCS D.Yanagida
  * @since 2018/05/06
  */
 @Named
 @ViewScoped
-public class GXHCO901A implements Serializable {
-    private static final Logger LOGGER = Logger.getLogger(GXHCO901A.class.getName());
+public class GXHDO901A implements Serializable {
+    private static final Logger LOGGER = Logger.getLogger(GXHDO901A.class.getName());
     
     /**
      * DataSource(DocumentServer)
@@ -97,19 +97,19 @@ public class GXHCO901A implements Serializable {
     /**
      * タイトル情報
      */
-    private FXHCM02 titleInfo;
+    private FXHDM02 titleInfo;
     /**
      * 画面上部ボタン
      */
-    private List<FXHCD02> buttonListTop;
+    private List<FXHDD02> buttonListTop;
     /**
      * 画面下部ボタン
      */
-    private List<FXHCD02> buttonListBottom;
+    private List<FXHDD02> buttonListBottom;
     /**
      * 項目データ
      */
-    private List<FXHCD01> itemList;
+    private List<FXHDD01> itemList;
     /**
      * 処理データ
      */
@@ -130,7 +130,7 @@ public class GXHCO901A implements Serializable {
     /**
      * コンストラクタ
      */
-    public GXHCO901A() {
+    public GXHDO901A() {
     }
 
     /**
@@ -153,7 +153,7 @@ public class GXHCO901A implements Serializable {
      * タイトル情報
      * @return タイトル情報
      */
-    public FXHCM02 getTitleInfo() {
+    public FXHDM02 getTitleInfo() {
         return titleInfo;
     }
     
@@ -161,7 +161,7 @@ public class GXHCO901A implements Serializable {
      * 画面上部ボタン
      * @return the buttonListTop
      */
-    public List<FXHCD02> getButtonListTop() {
+    public List<FXHDD02> getButtonListTop() {
         return buttonListTop;
     }
 
@@ -169,7 +169,7 @@ public class GXHCO901A implements Serializable {
      * 画面下部ボタン
      * @return the buttonListBottom
      */
-    public List<FXHCD02> getButtonListBottom() {
+    public List<FXHDD02> getButtonListBottom() {
         return buttonListBottom;
     }
 
@@ -177,7 +177,7 @@ public class GXHCO901A implements Serializable {
      * 項目データ
      * @return the itemList
      */
-    public List<FXHCD01> getItemList() {
+    public List<FXHDD01> getItemList() {
         return itemList;
     }
 
@@ -621,12 +621,12 @@ public class GXHCO901A implements Serializable {
     private void setButtonEnabled(List<String> activeId, List<String> inactiveId) {
         if (null != activeId) {
             for (String buttonId : activeId) {
-                for (FXHCD02 button : this.buttonListTop) {
+                for (FXHDD02 button : this.buttonListTop) {
                     if (buttonId.equals(button.getButtonId())) {
                         button.setEnabled(true);
                     }
                 }
-                for (FXHCD02 button : this.buttonListBottom) {
+                for (FXHDD02 button : this.buttonListBottom) {
                     if (buttonId.equals(button.getButtonId())) {
                         button.setEnabled(true);
                     }
@@ -636,12 +636,12 @@ public class GXHCO901A implements Serializable {
 
         if (null != inactiveId) {
             for (String buttonId : inactiveId) {
-                for (FXHCD02 button : this.buttonListTop) {
+                for (FXHDD02 button : this.buttonListTop) {
                     if (buttonId.equals(button.getButtonId())) {
                         button.setEnabled(false);
                     }
                 }
-                for (FXHCD02 button : this.buttonListBottom) {
+                for (FXHDD02 button : this.buttonListBottom) {
                     if (buttonId.equals(button.getButtonId())) {
                         button.setEnabled(false);
                     }
@@ -672,13 +672,13 @@ public class GXHCO901A implements Serializable {
             
             BeanProcessor beanProcessor = new BeanProcessor(mapping);
             RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
-            ResultSetHandler<List<FXHCM02>> beanHandler = new BeanListHandler(FXHCM02.class, rowProcessor);
+            ResultSetHandler<List<FXHDM02>> beanHandler = new BeanListHandler(FXHDM02.class, rowProcessor);
             
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-            List<FXHCM02> fXHCM02List = queryRunner.query(sql, beanHandler, params.toArray());
+            List<FXHDM02> fXHCM02List = queryRunner.query(sql, beanHandler, params.toArray());
             
             if (fXHCM02List.isEmpty()) {
-                this.titleInfo = new FXHCM02();
+                this.titleInfo = new FXHDM02();
                 this.titleInfo.setFormName(formTitle);
             } else {
                 this.titleInfo = fXHCM02List.get(0);
@@ -758,7 +758,7 @@ public class GXHCO901A implements Serializable {
 
             BeanProcessor beanProcessor = new BeanProcessor(mapping);
             RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
-            ResultSetHandler<List<FXHCD01>> beanHandler = new BeanListHandler<>(FXHCD01.class, rowProcessor);
+            ResultSetHandler<List<FXHDD01>> beanHandler = new BeanListHandler<>(FXHDD01.class, rowProcessor);
             
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
             this.itemList = queryRunner.query(sql, beanHandler, params.toArray());
@@ -801,10 +801,10 @@ public class GXHCO901A implements Serializable {
             
             BeanProcessor beanProcessor = new BeanProcessor(mapping);
             RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
-            ResultSetHandler<List<FXHCD02>> beanHandler = new BeanListHandler<>(FXHCD02.class, rowProcessor);
+            ResultSetHandler<List<FXHDD02>> beanHandler = new BeanListHandler<>(FXHDD02.class, rowProcessor);
             
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-            List<FXHCD02> buttonList = queryRunner.query(sql, beanHandler, params.toArray());
+            List<FXHDD02> buttonList = queryRunner.query(sql, beanHandler, params.toArray());
             
             // 上部ボタン
             this.buttonListTop = 

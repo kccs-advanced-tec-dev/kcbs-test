@@ -19,12 +19,12 @@ import java.io.Serializable;
  */
 
 /**
- * FXHCM01(メニューマスタ)のモデルクラスです。
+ * FXHDM01(メニューマスタ)のモデルクラスです。
  * 
  * @author KCCS D.Yanagida
  * @since 2018/04/24
  */
-public class FXHCM01 implements Serializable {
+public class FXHDM01 implements Serializable {
     /**
      * 画面ID
      */
@@ -57,6 +57,10 @@ public class FXHCM01 implements Serializable {
      * 画面クラス名
      */
     private String formClassName;
+    /**
+     * 表示件数
+     */
+    private int hyojiKensu;
 
     /**
      * 画面ID
@@ -184,5 +188,21 @@ public class FXHCM01 implements Serializable {
      */
     public void setFormClassName(String formClassName) {
         this.formClassName = formClassName;
+    }
+
+    /**
+     * 表示件数
+     * @return the hyojiKensu
+     */
+    public int getHyojiKensu() {
+        return hyojiKensu;
+    }
+
+    /**
+     * 表示件数
+     * @param hyojiKensu the hyojiKensu to set
+     */
+    public void setHyojiKensu(int hyojiKensu) {
+        this.hyojiKensu = hyojiKensu;
     }
 }

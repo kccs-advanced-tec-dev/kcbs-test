@@ -17,12 +17,12 @@ package jp.co.kccs.xhd.db.model;
  */
 
 /**
- * FXHCD02(ボタンパラメータマスタ)のモデルクラスです。
+ * FXHDD02(ボタンパラメータマスタ)のモデルクラスです。
  * 
  * @author KCCS D.Yanagida
  * @since 2018/04/24
  */
-public class FXHCD02 {
+public class FXHDD02 {
     /**
      * ボタンID
      */
