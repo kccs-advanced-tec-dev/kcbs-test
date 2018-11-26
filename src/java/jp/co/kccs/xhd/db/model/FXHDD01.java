@@ -140,6 +140,26 @@ public class FXHDD01 {
      */
     private boolean renderInputTime;
     /**
+     * ラベル表示render有無
+     */
+    private boolean renderOutputLabel;
+    /**
+     * 表示ﾗﾍﾞﾙ3文字ｻｲｽﾞ
+     */
+    private int fontSize3;
+    /**
+     * 表示ﾗﾍﾞﾙ3文字色
+     */
+    private String fontColor3;
+    /**
+     * 表示ﾗﾍﾞﾙ3背景色
+     */
+    private String backColor3;    
+    /**
+     * 設計ﾃｰﾌﾞﾙｶﾗﾑ名
+     */
+    private String sekkeiColumn;
+    /**
      * 入力値
      */
     private String value;
@@ -584,6 +604,85 @@ public class FXHDD01 {
         this.renderInputTime = renderInputTime;
     }
 
+    /**
+     * ラベル表示render有無
+     * @return the isRenderOutputLabel
+     */
+    public boolean isRenderOutputLabel() {
+        return renderOutputLabel;
+    }
+
+    /**
+     * ラベル表示render有無
+     * @param renderOutputLabel the renderOutputLabel to set
+     */
+    public void setRenderOutputLabel(boolean renderOutputLabel) {
+        this.renderOutputLabel = renderOutputLabel;
+    }
+
+    /**
+     * 表示ﾗﾍﾞﾙ3文字ｻｲｽﾞ
+     * @return the fontSize3
+     */
+    public int getFontSize3() {
+        return fontSize3;
+    }
+
+    /**
+     * 表示ﾗﾍﾞﾙ3文字ｻｲｽﾞ
+     * @param fontSize3 the fontSize3 to set
+     */
+    public void setFontSize3(int fontSize3) {
+        this.fontSize3 = fontSize3;
+    }
+
+    /**
+     * 表示ﾗﾍﾞﾙ3文字色
+     * @return the fontColor3
+     */
+    public String getFontColor3() {
+        return fontColor3;
+    }
+
+    /**
+     * 表示ﾗﾍﾞﾙ3文字色
+     * @param fontColor3 the fontColor3 to set
+     */
+    public void setFontColor3(String fontColor3) {
+        this.fontColor3 = fontColor3;
+    }
+
+    /**
+     * 表示ﾗﾍﾞﾙ3背景色
+     * @return the backColor3
+     */
+    public String getBackColor3() {
+        return backColor3;
+    }
+
+    /**
+     * 表示ﾗﾍﾞﾙ3背景色
+     * @param backColor3 the backColor3 to set
+     */
+    public void setBackColor3(String backColor3) {
+        this.backColor3 = backColor3;
+    }
+    /**
+     * 設計ﾃｰﾌﾞﾙｶﾗﾑ名
+     * @return the sekkeiColumn
+     */
+    public String getSekkeiColumn() {
+        return sekkeiColumn;
+    }
+
+    /**
+     * 設計ﾃｰﾌﾞﾙｶﾗﾑ名
+     * @param sekkeiColumn the sekkeiColumn to set
+     */
+    public void setSekkeiColumn(String sekkeiColumn) {
+        this.sekkeiColumn = sekkeiColumn;
+    }
+    
     /**
      * 入力値
      * @return the value

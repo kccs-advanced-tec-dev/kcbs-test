@@ -29,9 +29,11 @@ import jp.co.kccs.xhd.db.ParameterEJB;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.db.model.FXHDD02;
 import jp.co.kccs.xhd.db.model.FXHDM02;
+import jp.co.kccs.xhd.db.model.FXHDM06;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.StringUtil;
+import jp.co.kccs.xhd.util.ValidateUtil;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.dbutils.QueryRunner;
@@ -66,6 +68,7 @@ import org.primefaces.context.RequestContext;
 @ViewScoped
 public class GXHDO901A implements Serializable {
     private static final Logger LOGGER = Logger.getLogger(GXHDO901A.class.getName());
+    private static final int LOTNO_ITEMNO = 100;
     
     /**
      * DataSource(DocumentServer)
@@ -106,6 +109,11 @@ public class GXHDO901A implements Serializable {
      * 画面下部ボタン
      */
     private List<FXHDD02> buttonListBottom;
+    /**
+     * チェックリスト
+     */
+    private List<FXHDM06> checkListHDM06;
+    /**
     /**
      * 項目データ
      */
@@ -271,6 +279,9 @@ public class GXHDO901A implements Serializable {
         // 項目定義情報取得
         this.loadItemSettings(formId);
         
+        // チェック処理情報取得
+        this.loadCheckList(formId);
+        
         // 初期表示処理を実行する
         // 画面クラス名を取得
         String formClassName = StringUtil.nullToBlank(session.getAttribute("formClassName"));
@@ -284,8 +295,16 @@ public class GXHDO901A implements Serializable {
             ErrUtil.outputErrorLog("画面クラスのロードに失敗", ex, LOGGER);
             return;
         }
+        //ロットNo初期表示設定
+        String lotNo = StringUtil.nullToBlank(session.getAttribute("lotNo"));
+        for(int i=0;i<=this.itemList.size()-1;i++){
+            if(this.itemList.get(i).getItemNo() == LOTNO_ITEMNO){
+                this.itemList.get(i).setInputDefault(lotNo);
+                break;
+            }
+        }
         
-        // 処理データ生成(
+        // 処理データ生成
         ProcessData data = new ProcessData();
         data.setFormClassName(formClassName);
         data.setFormLogic(formLogic);
@@ -324,7 +343,7 @@ public class GXHDO901A implements Serializable {
      * @return  メニュー遷移用URL文字列
      */
     public String returnMenu() {
-        return "/pxhco012/gxhco012a.xhtml?faces-redirect=true";
+        return "/pxhdo012/gxhdo012a.xhtml?faces-redirect=true";
     }
     
     /**
@@ -512,6 +531,55 @@ public class GXHDO901A implements Serializable {
             facesContext.addMessage(null, message);
         }
         
+        //共通ﾁｪｯｸ
+        List<FXHDM06> itemRowCheckList = this.getCheckItemRow(checkListHDM06, method);        
+        List<ValidateUtil.ValidateInfo> requireCheckList = new ArrayList<>();
+        ValidateUtil validateUtil = new ValidateUtil();
+
+        // データを設定する
+        for (FXHDM06 fxhddM06 : itemRowCheckList) {
+            if(fxhddM06.getCheckPattern().equals("S001")){
+                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S001, fxhddM06.getItemId(), null, null));
+                continue;
+            }
+            if(fxhddM06.getCheckPattern().equals("S002")){
+                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S002, fxhddM06.getItemId(), null, null));
+                continue;
+            }
+            if(fxhddM06.getCheckPattern().equals("S003")){
+                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S003, fxhddM06.getItemId(), null, null));
+                continue;
+            }
+            if(fxhddM06.getCheckPattern().equals("S004")){
+                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S004, fxhddM06.getItemId(), null, null));
+                continue;
+            }
+            if(fxhddM06.getCheckPattern().equals("S005")){
+                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S005, fxhddM06.getItemId(), null, null));
+                continue;
+            }
+            if(fxhddM06.getCheckPattern().equals("S006")){
+                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S006, fxhddM06.getItemId(), null, null));
+                continue;
+            }
+            if(fxhddM06.getCheckPattern().equals("S007")){
+                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S007, fxhddM06.getItemId(), null, null));
+                continue;
+            }
+            if(fxhddM06.getCheckPattern().equals("E001")){
+                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.E001, fxhddM06.getItemId(), null, null));
+            }
+        }
+
+        String requireCheckErrorMessage = validateUtil.executeValidation(requireCheckList, this.itemList);
+        // エラーメッセージが設定されている場合、エラー出力のみ
+        if (!StringUtil.isEmpty(requireCheckErrorMessage)) {
+            FacesMessage message = 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, requireCheckErrorMessage, null);
+            facesContext.addMessage(null, message);
+            return;
+        }
+
         // 処理データ生成
         ProcessData data = new ProcessData();
         data.setFormClassName(formClassName);
@@ -659,7 +727,7 @@ public class GXHDO901A implements Serializable {
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceDocServer);
             String sql = "SELECT setting_id, font_size, font_color, bg_color "
-                       + "FROM fxhcm02 WHERE setting_id = ? ";
+                       + "FROM fxhdm02 WHERE setting_id = ? ";
             
             List<Object> params = new ArrayList<>();
             params.add(settingId);
@@ -675,13 +743,13 @@ public class GXHDO901A implements Serializable {
             ResultSetHandler<List<FXHDM02>> beanHandler = new BeanListHandler(FXHDM02.class, rowProcessor);
             
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-            List<FXHDM02> fXHCM02List = queryRunner.query(sql, beanHandler, params.toArray());
+            List<FXHDM02> fXHDM02List = queryRunner.query(sql, beanHandler, params.toArray());
             
-            if (fXHCM02List.isEmpty()) {
+            if (fXHDM02List.isEmpty()) {
                 this.titleInfo = new FXHDM02();
                 this.titleInfo.setFormName(formTitle);
             } else {
-                this.titleInfo = fXHCM02List.get(0);
+                this.titleInfo = fXHDM02List.get(0);
                 this.titleInfo.setFormName(formTitle);
             }
             
@@ -702,28 +770,33 @@ public class GXHDO901A implements Serializable {
         
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceDocServer);
-            String sql = "SELECT hcd01.gamen_id, hcd01.item_id, hcd01.item_no, hcd01.input_item_mold, hcd01.label1, hcd01.label2, "
-                       + "hcd01.input_list, hcd01.input_default, hcd01.input_length, hcd01.input_length_dec, "
-                       + "hcm02_1.font_size AS font_size_1, hcm02_1.font_color AS font_color_1, hcm02_1.bg_color AS bg_color_1, "
-                       + "CASE WHEN hcd01.label1_setting IS NULL THEN 'false' ELSE 'true' END AS render_1, "
-                       + "hcm02_2.font_size AS font_size_2, hcm02_2.font_color AS font_color_2, hcm02_2.bg_color AS bg_color_2, "
-                       + "CASE WHEN hcd01.label2_setting IS NULL THEN 'false' ELSE 'true' END AS render_2, "
-                       + "hcm02_3.font_size AS font_size_input, hcm02_3.font_color AS font_color_input, hcm02_3.bg_color AS bg_color_input, "
-                       + "CASE WHEN hcd01.input_setting IS NULL OR hcd01.input_item_mold != '1' THEN 'false' ELSE 'true' END AS render_iput_text, "
-                       + "CASE WHEN hcd01.input_setting IS NULL OR hcd01.input_item_mold != '2' THEN 'false' ELSE 'true' END AS render_iput_number, "
-                       + "CASE WHEN hcd01.input_setting IS NULL OR hcd01.input_item_mold != '3' THEN 'false' ELSE 'true' END AS render_iput_date, "
-                       + "CASE WHEN hcd01.input_setting IS NULL OR hcd01.input_item_mold != '4' THEN 'false' ELSE 'true' END AS render_iput_select, "
-                       + "CASE WHEN hcd01.input_setting IS NULL OR hcd01.input_item_mold != '5' THEN 'false' ELSE 'true' END AS render_iput_radio, "
-                       + "CASE WHEN hcd01.input_setting IS NULL OR hcd01.input_item_mold != '6' THEN 'false' ELSE 'true' END AS render_iput_time "
-                       + "FROM fxhcd01 hcd01 "
-                       + "LEFT JOIN fxhcm02 hcm02_1 ON (hcd01.label1_setting = hcm02_1.setting_id) "
-                       + "LEFT JOIN fxhcm02 hcm02_2 ON (hcd01.label2_setting = hcm02_2.setting_id) "
-                       + "LEFT JOIN fxhcm02 hcm02_3 ON (hcd01.input_setting = hcm02_3.setting_id) "
-                       + "WHERE hcd01.gamen_id = ? AND (hcd01.item_authority IS NULL OR "
-                       + DBUtil.getInConditionPreparedStatement("hcd01.item_authority",  userGrpList.size()) + ") "
-                       + "ORDER BY hcd01.item_no ";
+            String sql = "SELECT hdd01.gamen_id, hdd01.item_id, hdd01.item_no, hdd01.input_item_mold, hdd01.label1, hdd01.label2, "
+                       + "hdd01.input_list, hdd01.input_default, hdd01.input_length, hdd01.input_length_dec, "
+                       + "hdm02_1.font_size AS font_size_1, hdm02_1.font_color AS font_color_1, hdm02_1.bg_color AS bg_color_1, "
+                       + "hdm04.sekkei_column sekkei_column, hcm02_4.font_size AS font_size_3, hcm02_4.font_color AS font_color_3, hcm02_4.bg_color AS bg_color_3, "
+                       + "CASE WHEN hdd01.label1_setting IS NULL THEN 'false' ELSE 'true' END AS render_1, "
+                       + "hdm02_2.font_size AS font_size_2, hdm02_2.font_color AS font_color_2, hdm02_2.bg_color AS bg_color_2, "
+                       + "CASE WHEN hdd01.label2_setting IS NULL THEN 'false' ELSE 'true' END AS render_2, "
+                       + "hdm02_3.font_size AS font_size_input, hdm02_3.font_color AS font_color_input, hdm02_3.bg_color AS bg_color_input, "
+                       + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '1' THEN 'false' ELSE 'true' END AS render_iput_text, "
+                       + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '2' THEN 'false' ELSE 'true' END AS render_iput_number, "
+                       + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '3' THEN 'false' ELSE 'true' END AS render_iput_date, "
+                       + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '4' THEN 'false' ELSE 'true' END AS render_iput_select, "
+                       + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '5' THEN 'false' ELSE 'true' END AS render_iput_radio, "
+                       + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '6' THEN 'false' ELSE 'true' END AS render_iput_time, "
+                       + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '7' THEN 'false' ELSE 'true' END AS render_output_label "
+                       + "FROM fxhdd01 hdd01 "
+                       + "LEFT JOIN fxhdm02 hdm02_1 ON (hdd01.label1_setting = hdm02_1.setting_id) "
+                       + "LEFT JOIN fxhdm02 hdm02_2 ON (hdd01.label2_setting = hdm02_2.setting_id) "
+                       + "LEFT JOIN fxhdm02 hdm02_3 ON (hdd01.input_setting = hdm02_3.setting_id) "
+                       + "LEFT JOIN fxhdm02 hcm02_4 ON (hdd01.standard_setting = hcm02_4.setting_id) "
+                       + "LEFT JOIN fxhdm04 hdm04 ON (hdm04.gamen_id = ? AND hdm04.item_id =hdd01.item_id) "
+                       + "WHERE hdd01.gamen_id = ? AND (hdd01.item_authority IS NULL OR "
+                       + DBUtil.getInConditionPreparedStatement("hdd01.item_authority",  userGrpList.size()) + ") "
+                       + "ORDER BY hdd01.item_no ";
             
             List<Object> params = new ArrayList<>();
+            params.add(formId);
             params.add(formId);
             params.addAll(userGrpList);
 
@@ -755,6 +828,11 @@ public class GXHDO901A implements Serializable {
             mapping.put("render_iput_select", "renderInputSelect");
             mapping.put("render_iput_radio", "renderInputRadio");
             mapping.put("render_iput_time", "renderInputTime");
+            mapping.put("render_output_label", "renderOutputLabel");
+            mapping.put("sekkei_column", "sekkeiColumn");
+            mapping.put("font_size_3", "fontSize3");
+            mapping.put("font_color_3", "fontColor3");
+            mapping.put("bg_color_3", "backColor3");
 
             BeanProcessor beanProcessor = new BeanProcessor(mapping);
             RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
@@ -780,11 +858,11 @@ public class GXHDO901A implements Serializable {
         
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceDocServer);
-            String sql = "SELECT hcd02.button_id, hcd02.button_no, hcd02.button_location, hcd02.button_name, hcm02.font_size, hcm02.font_color, hcm02.bg_color "
-                       + "FROM fxhcd02 hcd02 INNER JOIN fxhcm02 hcm02 ON (hcd02.button_setting = hcm02.setting_id) "
-                       + "WHERE hcd02.gamen_id = ? AND  (hcd02.button_authority IS NULL OR"
-                       + DBUtil.getInConditionPreparedStatement("hcd02.button_authority", userGrpList.size()) + ") "
-                       + "ORDER BY hcd02.button_location, hcd02.button_no";
+            String sql = "SELECT hdd02.button_id, hdd02.button_no, hdd02.button_location, hdd02.button_name, hdm02.font_size, hdm02.font_color, hdm02.bg_color "
+                       + "FROM fxhdd02 hdd02 INNER JOIN fxhdm02 hdm02 ON (hdd02.button_setting = hdm02.setting_id) "
+                       + "WHERE hdd02.gamen_id = ? AND  (hdd02.button_authority IS NULL OR"
+                       + DBUtil.getInConditionPreparedStatement("hdd02.button_authority", userGrpList.size()) + ") "
+                       + "ORDER BY hdd02.button_location, hdd02.button_no";
             
             List<Object> params = new ArrayList<>();
             params.add(formId);
@@ -815,6 +893,58 @@ public class GXHDO901A implements Serializable {
 
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("ボタン項目取得失敗", ex, LOGGER);
+        }
+    }
+    
+    /**
+     * チェック処理情報取得
+     * @param formId 画面ID
+     */
+    private void loadCheckList(String formId) {
+        
+        try {
+            QueryRunner queryRunner = new QueryRunner(dataSourceDocServer);
+            String sql = "SELECT gamen_id,button_id,item_id,check_pattern,check_no,hissu_flag "
+                       + "  FROM FXHDM06 "
+                       + " WHERE gamen_id = ? ";
+            
+            List<Object> params = new ArrayList<>();
+            params.add(formId);
+
+            Map<String, String> mapping = new HashMap<>();
+            mapping.put("gamen_id", "gamenId");
+            mapping.put("button_id", "buttonId");
+            mapping.put("item_id", "itemId");
+            mapping.put("check_pattern", "checkPattern");
+            mapping.put("check_no", "checkNo");
+            mapping.put("hissu_flag", "hissuFlag");
+            
+            BeanProcessor beanProcessor = new BeanProcessor(mapping);
+            RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+            ResultSetHandler<List<FXHDM06>> beanHandler = new BeanListHandler<>(FXHDM06.class, rowProcessor);
+            
+            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+            this.checkListHDM06 = queryRunner.query(sql, beanHandler, params.toArray());
+            
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("チェック処理項目取得失敗", ex, LOGGER);
+        }
+    }
+
+    /**
+     * 項目データ取得
+     *
+     * @param listData フォームデータ
+     * @param itemId 項目ID
+     * @return 項目データ
+     */
+    private List<FXHDM06> getCheckItemRow(List<FXHDM06> listData, String buttonId) {
+        List<FXHDM06> selectData
+                = listData.stream().filter(n -> buttonId.equals(n.getButtonId())).collect(Collectors.toList());
+        if (null != selectData && 0 < selectData.size()) {
+            return selectData;
+        } else {
+            return null;
         }
     }
 }

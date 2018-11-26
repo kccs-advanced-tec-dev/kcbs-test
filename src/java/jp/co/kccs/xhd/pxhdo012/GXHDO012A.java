@@ -59,6 +59,7 @@ public class GXHDO012A implements Serializable {
      */
     @Resource(mappedName = "jdbc/DocumentServer")
     private transient DataSource dataSource;
+        
     /**
      * メニュー項目
      */
@@ -126,7 +127,7 @@ public class GXHDO012A implements Serializable {
                 ResultSetHandler<List<FXHDM01>> beanHandler = new BeanListHandler<>(FXHDM01.class, rowProcessor);
                 
                 DBUtil.outputSQLLog(sql, userGrpList.toArray(), LOGGER);
-                menuList = queryRunner.query(sql, beanHandler, userGrpList.toArray());       
+                menuList = queryRunner.query(sql, beanHandler, userGrpList.toArray());    
             } catch (SQLException ex) {
                 ErrUtil.outputErrorLog("メニュー項目未登録", ex, LOGGER);
                 menuList = new ArrayList<>();
@@ -141,7 +142,7 @@ public class GXHDO012A implements Serializable {
      * @param rowData 選択行のデータ
      * @return 遷移先画面
      */
-    public String openQcdbForm(FXHDM01 rowData) {
+    public String openXhdForm(FXHDM01 rowData) {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
         
