@@ -446,31 +446,31 @@ public class GXHDO101B implements IFormLogic {
                 // 【登録】、【修正】共通必須ﾁｪｯｸ
                 List<ValidateUtil.ValidateInfo> requireCheckList = new ArrayList<>();
                 // ロットNo
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S001, "syosei_LotNo", null, null));
+                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C101, "syosei_LotNo", null, null));
                 // KCPNo
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S001, "syosei_KCPNO", null, null));
+                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C101, "syosei_KCPNO", null, null));
                 // 個数
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S002, "syosei_kosuu", null, null));
+                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_kosuu", null, null));
                 // 原料品種名
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S001, "syosei_genryo", null, null));
+                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C101, "syosei_genryo", null, null));
                 // 焼成開始日
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S002, "syosei_kaisibi", null, null));
+                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_kaisibi", null, null));
                 // 焼成開始時刻
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S002, "syosei_kaisijikoku", null, null));
+                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_kaisijikoku", null, null));
                 // 焼成終了日
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S002, "syosei_shuryoubi", null, null));
+                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_shuryoubi", null, null));
                 // 焼成終了時刻
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S002, "syosei_shuryoujikoku", null, null));
+                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_shuryoujikoku", null, null));
                 // 焼成温度
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S007, "syosei_ondo", null, null));
+                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C601, "syosei_ondo", null, null));
                 // トンネル炉・バッチ炉号機
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S002, "syosei_tunnel_batchFurnaceGouki", null, null));
+                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_tunnel_batchFurnaceGouki", null, null));
                 // 焼成セッター枚数
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S002, "syosei_setterMaisuu", null, null));
+                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_setterMaisuu", null, null));
                 // 焼成開始担当者
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S002, "syosei_startTantousha", null, null));
+                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_startTantousha", null, null));
                 // 焼成終了担当者
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S002, "syosei_EndTantousha", null, null));
+                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_EndTantousha", null, null));
 
                 String requireCheckErrorMessage = validateUtil.executeValidation(requireCheckList, itemList);
                 if (!StringUtil.isEmpty(requireCheckErrorMessage)) {
@@ -487,13 +487,13 @@ public class GXHDO101B implements IFormLogic {
                 inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S003, "syosei_kosuu", BigDecimal.valueOf(9999999), BigDecimal.ZERO));
                 inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S004, "syosei_kosuu", BigDecimal.valueOf(9999999), BigDecimal.ZERO));
                 // 焼成開始日
-                inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S005, "syosei_kaisibi", null, null));
+                inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C501, "syosei_kaisibi", null, null));
                 // 焼成開始時刻
-                inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S006, "syosei_kaisijikoku", null, null));
+                inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C502, "syosei_kaisijikoku", null, null));
                 // 焼成終了日
-                inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S005, "syosei_shuryoubi", null, null));
+                inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C501, "syosei_shuryoubi", null, null));
                 // 焼成終了時刻
-                inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S006, "syosei_shuryoujikoku", null, null));
+                inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C502, "syosei_shuryoujikoku", null, null));
                 // 焼成温度
                 inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S003, "syosei_ondo", BigDecimal.valueOf(9999), BigDecimal.ZERO));
                 inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S004, "syosei_ondo", BigDecimal.valueOf(9999), BigDecimal.ZERO));
@@ -589,13 +589,13 @@ public class GXHDO101B implements IFormLogic {
                 }
                 // 再酸化終了日
                 if (!StringUtil.isEmpty(this.getItemData(itemList, "syosei_saisankaShuryoubi"))) {
-                    inputCheckList4.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S005, "syosei_saisankaShuryoubi", null, null));
-                    inputCheckList4.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S002, "syosei_saisankaShuryoujikoku", null, null));
+                    inputCheckList4.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C501, "syosei_saisankaShuryoubi", null, null));
+                    inputCheckList4.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_saisankaShuryoujikoku", null, null));
                 }
                 // 再酸化終了時刻
                 if (!StringUtil.isEmpty(this.getItemData(itemList, "syosei_saisankaShuryoujikoku"))) {
-                    inputCheckList4.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S006, "syosei_saisankaShuryoujikoku", null, null));
-                    inputCheckList4.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S002, "syosei_saisankaShuryoubi", null, null));
+                    inputCheckList4.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C502, "syosei_saisankaShuryoujikoku", null, null));
+                    inputCheckList4.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_saisankaShuryoubi", null, null));
                 }
 
                 String inputCheck4ErrorMessage = validateUtil.executeValidation(inputCheckList4, itemList);
@@ -647,9 +647,9 @@ public class GXHDO101B implements IFormLogic {
                 // 【削除】
                 List<ValidateUtil.ValidateInfo> deleteCheckList = new ArrayList<>();
                 // ロットNo
-                deleteCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S001, "syosei_LotNo", null, null));
+                deleteCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C101, "syosei_LotNo", null, null));
                 // 回数
-                deleteCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S002, "syosei_kaisuu", null, null));
+                deleteCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_kaisuu", null, null));
                 // ロットNo(チェックデジットチェック)
                 deleteCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.E001, "syosei_LotNo", null, null));
 

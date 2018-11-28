@@ -58,13 +58,20 @@ public class ValidateUtil {
     
     // チェック処理No列挙体
     public enum EnumCheckNo {
-        S001,
-        S002,
+        C101,
+        C102,
+        C103,
+        C104,
+        C001,
+        C002,
+        C201,
+        C301,
+        C302,
+        C501,
+        C502,
+        C601,
         S003,
         S004,
-        S005,
-        S006,
-        S007,
         E001,
     }
     
@@ -103,26 +110,47 @@ public class ValidateUtil {
         for (ValidateInfo validateInfo : validateInfoList) {
             String errorMessage = "";
             switch (validateInfo.checkNo) {
-                case S001:
-                    errorMessage = checkS001(itemList, validateInfo.itemId);
+                case C101:
+                    errorMessage = checkC101(itemList, validateInfo.itemId);
                     break;
-                case S002:
-                    errorMessage = checkS002(itemList, validateInfo.itemId);
+                case C102:
+                    errorMessage = checkC102(itemList, validateInfo.itemId);
+                    break;
+                case C103:
+                    errorMessage = checkC103(itemList, validateInfo.itemId);
+                    break;
+                case C104:
+                    errorMessage = checkC104(itemList, validateInfo.itemId);
+                    break;
+                case C001:
+                    errorMessage = checkC001(itemList, validateInfo.itemId);
+                    break;
+                case C002:
+                    errorMessage = checkC002(itemList, validateInfo.itemId);
+                    break;
+                case C201:
+                    errorMessage = checkC201(itemList, validateInfo.itemId);
+                    break;
+                case C301:
+                    errorMessage = checkC301(itemList, validateInfo.itemId);
+                    break;
+                case C302:
+                    errorMessage = checkC302(itemList, validateInfo.itemId);
+                    break;
+                case C501:
+                    errorMessage = checkC501(itemList, validateInfo.itemId);
+                    break;
+                case C502:
+                    errorMessage = checkC502(itemList, validateInfo.itemId);
+                    break;
+                case C601:
+                    errorMessage = checkC601(itemList, validateInfo.itemId);
                     break;
                 case S003:
                     errorMessage = checkS003(itemList, validateInfo.itemId, validateInfo.maxValue, validateInfo.minValue);
                     break;
                 case S004:
                     errorMessage = checkS004(itemList, validateInfo.itemId, validateInfo.maxValue, validateInfo.minValue);
-                    break;
-                case S005:
-                    errorMessage = checkS005(itemList, validateInfo.itemId);
-                    break;
-                case S006:
-                    errorMessage = checkS006(itemList, validateInfo.itemId);
-                    break;
-                case S007:
-                    errorMessage = checkS007(itemList, validateInfo.itemId);
                     break;
                 case E001:
                     errorMessage = checkE001(itemList, validateInfo.itemId);
@@ -143,21 +171,102 @@ public class ValidateUtil {
      * @param itemId 項目ID
      * @return エラー時はエラーメッセージを返却
      */
-    public String checkS001(List<FXHDD01> itemList, String itemId) {
+    public String checkC101(List<FXHDD01> itemList, String itemId) {
         // 項目データを取得
-        FXHDD01 fXHCD01 = getItemRow(itemList, itemId);
-        if (null != fXHCD01) {
+        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
+        if (null != fXHDD01) {
             int ketasu = -1;
-            if (NumberUtil.isIntegerNumeric(fXHCD01.getInputLength())) {
-                ketasu = Integer.parseInt(fXHCD01.getInputLength());
+            if (NumberUtil.isIntegerNumeric(fXHDD01.getInputLength())) {
+                ketasu = Integer.parseInt(fXHDD01.getInputLength());
             }
-            String value = fXHCD01.getValue();
+            String value = fXHDD01.getValue();
             if (ketasu != StringUtil.getByte(value, CHARSET, LOGGER)) {
-                return MessageUtil.getMessage("XHC-000003", fXHCD01.getLabel1(), ketasu);
+                return MessageUtil.getMessage("XHD-000004", fXHDD01.getLabel1(), ketasu);
             }
-			if (ketasu != StringUtil.getLength(value)) {
-                return MessageUtil.getMessage("XHC-000003", fXHCD01.getLabel1(), ketasu);
-			}
+            if (ketasu != StringUtil.getLength(value)) {
+               return MessageUtil.getMessage("XHD-000004", fXHDD01.getLabel1(), ketasu);
+            }
+        }
+        return "";
+    }
+
+    /**
+     * 指定桁数ﾁｪｯｸ(数値(小数あり))
+     * @param itemList 項目データリスト
+     * @param itemId 項目ID
+     * @return エラー時はエラーメッセージを返却
+     */
+    public String checkC102(List<FXHDD01> itemList, String itemId) {
+        // 項目データを取得
+        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
+        if (null != fXHDD01) {
+            int ketasuSeisu = -1;
+            int ketasuShosu = -1;
+            if (NumberUtil.isIntegerNumeric(fXHDD01.getInputLength())) {
+                ketasuSeisu = Integer.parseInt(fXHDD01.getInputLength());
+            }
+            if (NumberUtil.isIntegerNumeric(fXHDD01.getInputLengthDec())) {
+                ketasuShosu = Integer.parseInt(fXHDD01.getInputLengthDec());
+            }
+            String value = fXHDD01.getValue();
+            
+            if(!NumberUtil.isNumeric(value) || !NumberUtil.isSameValidDigits(new BigDecimal(value), ketasuSeisu, ketasuShosu)){
+                return MessageUtil.getMessage("XHD-000005", fXHDD01.getLabel1(), ketasuSeisu, ketasuShosu);
+            }
+            
+        }
+        return "";
+    }
+    
+    /**
+     * 桁数ﾁｪｯｸ(小数なし)
+     * @param itemList 項目データリスト
+     * @param itemId 項目ID
+     * @return エラー時はエラーメッセージを返却
+     */
+    public String checkC103(List<FXHDD01> itemList, String itemId) {
+        // 項目データを取得
+        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
+        if (null != fXHDD01) {
+            int ketasu = -1;
+            if (NumberUtil.isIntegerNumeric(fXHDD01.getInputLength())) {
+                ketasu = Integer.parseInt(fXHDD01.getInputLength());
+            }
+            String value = fXHDD01.getValue();
+            
+            if(!NumberUtil.isNumeric(value) || !NumberUtil.isIntegerNumeric(value) 
+                    || !NumberUtil.isValidDigits(new BigDecimal(value), ketasu, 0)){
+                return MessageUtil.getMessage("XHD-000006", fXHDD01.getLabel1(), ketasu);
+            }
+            
+        }
+        return "";
+    }
+    
+    /**
+     * 桁数ﾁｪｯｸ(小数あり)
+     * @param itemList 項目データリスト
+     * @param itemId 項目ID
+     * @return エラー時はエラーメッセージを返却
+     */
+    public String checkC104(List<FXHDD01> itemList, String itemId) {
+        // 項目データを取得
+        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
+        if (null != fXHDD01) {
+            int ketasuSeisu = -1;
+            int ketasuShosu = -1;
+            if (NumberUtil.isIntegerNumeric(fXHDD01.getInputLength())) {
+                ketasuSeisu = Integer.parseInt(fXHDD01.getInputLength());
+            }
+            if (NumberUtil.isIntegerNumeric(fXHDD01.getInputLengthDec())) {
+                ketasuShosu = Integer.parseInt(fXHDD01.getInputLengthDec());
+            }
+            String value = fXHDD01.getValue();
+            
+            if(!NumberUtil.isNumeric(value) || !NumberUtil.isValidDigits(new BigDecimal(value), ketasuSeisu, ketasuShosu)){
+                return MessageUtil.getMessage("XHD-000007", fXHDD01.getLabel1(), ketasuSeisu, ketasuShosu);
+            }
+            
         }
         return "";
     }
@@ -168,15 +277,95 @@ public class ValidateUtil {
      * @param itemId 項目ID
      * @return エラー時はエラーメッセージを返却
      */
-    public String checkS002(List<FXHDD01> itemList, String itemId) {
+    public String checkC001(List<FXHDD01> itemList, String itemId) {
         // 項目データを取得
-        FXHDD01 fXHCD01 = getItemRow(itemList, itemId);
-        if (null != fXHCD01) {
-            String value = fXHCD01.getValue();
-            if (StringUtil.isEmpty(value)) {
-                return MessageUtil.getMessage("XHC-000002", fXHCD01.getLabel1());
+        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
+        if (null != fXHDD01) {
+            String value = fXHDD01.getValue();
+            if (StringUtil.isEmpty(value.trim())) {
+                return MessageUtil.getMessage("XHD-000003", fXHDD01.getLabel1());
             }
         }
+        return "";
+    }
+
+    /**
+     * 必須チェック
+     * @param itemList 項目データリスト
+     * @param itemId 項目ID
+     * @return エラー時はエラーメッセージを返却
+     */
+    public String checkC002(List<FXHDD01> itemList, String itemId) {
+        // 項目データを取得
+        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
+        if (null != fXHDD01) {
+            String value = fXHDD01.getValue();
+            if (StringUtil.isEmpty(value)) {
+                return MessageUtil.getMessage("XHD-000003", fXHDD01.getLabel1());
+            }
+        }
+        return "";
+    }
+
+    /**
+     * 型ﾁｪｯｸ
+     * @param itemList 入力項目名
+     * @param itemId 入力項目ﾃﾞｰﾀ
+     * @return エラー時はエラーメッセージを返却
+     */
+    public String checkC201(List<FXHDD01> itemList, String itemId) {
+        // 項目データを取得
+        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
+            if (null != fXHDD01) {
+                String value = fXHDD01.getValue();
+                if(!NumberUtil.isNumeric(value)){
+                    return MessageUtil.getMessage("XHD-000008", fXHDD01.getLabel1());
+                }
+            }
+        return "";
+    }
+
+    /**
+     * 正負ﾁｪｯｸ
+     * @param itemList 入力項目名
+     * @param itemId 入力項目ﾃﾞｰﾀ
+     * @return エラー時はエラーメッセージを返却
+     */
+    public String checkC301(List<FXHDD01> itemList, String itemId) {
+        // 項目データを取得
+        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
+            if (null != fXHDD01) {
+                String value = fXHDD01.getValue();
+                if(!NumberUtil.isNumeric(value)){
+                    return MessageUtil.getMessage("XHD-000008", fXHDD01.getLabel1());
+                }
+                if (Double.parseDouble(value) < 0) {
+                    return MessageUtil.getMessage("XHD-000009", fXHDD01.getLabel1());
+                }
+            }
+
+        return "";
+    }
+
+    /**
+     * 正負ﾁｪｯｸ
+     * @param itemList 入力項目名
+     * @param itemId 入力項目ﾃﾞｰﾀ
+     * @return エラー時はエラーメッセージを返却
+     */
+    public String checkC302(List<FXHDD01> itemList, String itemId) {
+        // 項目データを取得
+        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
+            if (null != fXHDD01) {
+                String value = fXHDD01.getValue();
+                if(!NumberUtil.isNumeric(value)){
+                    return MessageUtil.getMessage("XHD-000008", fXHDD01.getLabel1());
+                }
+                if (Double.parseDouble(value) > 0) {
+                    return MessageUtil.getMessage("XHD-000010", fXHDD01.getLabel1());
+                }
+            }
+
         return "";
     }
     
@@ -190,12 +379,12 @@ public class ValidateUtil {
      */
     public String checkS003(List<FXHDD01> itemList, String itemId, BigDecimal maxValue, BigDecimal minValue) {
         // 項目データを取得
-        FXHDD01 fXHCD01 = getItemRow(itemList, itemId);
-        if (null != fXHCD01) {
-            String value = fXHCD01.getValue();
+        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
+        if (null != fXHDD01) {
+            String value = fXHDD01.getValue();
             if (!NumberUtil.isNumeric(value) ||
                 !NumberUtil.isValidRange(new BigDecimal(value), maxValue, minValue)) {
-                return MessageUtil.getMessage("XHC-000004", fXHCD01.getLabel1(), minValue.toPlainString(), maxValue.toPlainString());
+                return MessageUtil.getMessage("XHC-000004", fXHDD01.getLabel1(), minValue.toPlainString(), maxValue.toPlainString());
             }
         }
         return "";
@@ -211,22 +400,22 @@ public class ValidateUtil {
      */
     public String checkS004(List<FXHDD01> itemList, String itemId, BigDecimal maxValue, BigDecimal minValue) {
         // 項目データを取得
-        FXHDD01 fXHCD01 = getItemRow(itemList, itemId);
-        if (null != fXHCD01) {
-            String value = fXHCD01.getValue();
+        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
+        if (null != fXHDD01) {
+            String value = fXHDD01.getValue();
             
             int maxSeisu = 0;
             int maxSyosu = 0;
-            if (NumberUtil.isIntegerNumeric(fXHCD01.getInputLength())) {
-                maxSeisu = Integer.parseInt(fXHCD01.getInputLength());
+            if (NumberUtil.isIntegerNumeric(fXHDD01.getInputLength())) {
+                maxSeisu = Integer.parseInt(fXHDD01.getInputLength());
             }
-            if (NumberUtil.isIntegerNumeric(fXHCD01.getInputLengthDec())) {
-                maxSyosu = Integer.parseInt(fXHCD01.getInputLengthDec());
+            if (NumberUtil.isIntegerNumeric(fXHDD01.getInputLengthDec())) {
+                maxSyosu = Integer.parseInt(fXHDD01.getInputLengthDec());
             }
             
             if (!NumberUtil.isNumeric(value) ||
                 !NumberUtil.isValidDigits(new BigDecimal(value), maxSeisu, maxSyosu)) {
-                return MessageUtil.getMessage("XHC-000004", fXHCD01.getLabel1(), minValue.toPlainString(), maxValue.toPlainString());
+                return MessageUtil.getMessage("XHC-000004", fXHDD01.getLabel1(), minValue.toPlainString(), maxValue.toPlainString());
             }
         }
         return "";
@@ -238,13 +427,13 @@ public class ValidateUtil {
      * @param itemId 項目ID
      * @return エラー時はエラーメッセージを返却
      */
-    public String checkS005(List<FXHDD01> itemList, String itemId) {
+    public String checkC501(List<FXHDD01> itemList, String itemId) {
         // 項目データを取得
-        FXHDD01 fXHCD01 = getItemRow(itemList, itemId);
-        if (null != fXHCD01) {
-            String value = fXHCD01.getValue();
+        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
+        if (null != fXHDD01) {
+            String value = fXHDD01.getValue();
             if (!DateUtil.isValidYYMMDD(value)) {
-                return MessageUtil.getMessage("XHC-000005", fXHCD01.getLabel1());
+                return MessageUtil.getMessage("XHD-000012", fXHDD01.getLabel1());
             }
         }
         return "";
@@ -256,13 +445,13 @@ public class ValidateUtil {
      * @param itemId 項目ID
      * @return エラー時はエラーメッセージを返却
      */
-    public String checkS006(List<FXHDD01> itemList, String itemId) {
+    public String checkC502(List<FXHDD01> itemList, String itemId) {
         // 項目データを取得
-        FXHDD01 fXHCD01 = getItemRow(itemList, itemId);
-        if (null != fXHCD01) {
-            String value = fXHCD01.getValue();
+        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
+        if (null != fXHDD01) {
+            String value = fXHDD01.getValue();
             if (!DateUtil.isValidHHMM(value)) {
-                return MessageUtil.getMessage("XHC-000006", fXHCD01.getLabel1());
+                return MessageUtil.getMessage("XHD-000013", fXHDD01.getLabel1());
             }
         }
         return "";
@@ -275,13 +464,13 @@ public class ValidateUtil {
      * @param itemId 項目ID
      * @return エラー時はエラーメッセージを返却
      */
-    public String checkS007(List<FXHDD01> itemList, String itemId) {
+    public String checkC601(List<FXHDD01> itemList, String itemId) {
         // 項目データを取得
-        FXHDD01 fXHCD01 = getItemRow(itemList, itemId);
-        if (null != fXHCD01) {
-            String value = fXHCD01.getValue();
+        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
+        if (null != fXHDD01) {
+            String value = fXHDD01.getValue();
             if (StringUtil.isEmpty(value) || "0".equals(value)) {
-                return MessageUtil.getMessage("XHC-000002", fXHCD01.getLabel1());
+                return MessageUtil.getMessage("XHD-000003", fXHDD01.getLabel1());
             }
         }
         return "";
@@ -298,22 +487,22 @@ public class ValidateUtil {
      */
     public String checkR001(List<FXHDD01> itemList, String dateItemId1, String timeItemId1, String dateItemId2, String timeItemId2) {
         // 項目データを取得
-        FXHDD01 fXHCD01_date1 = getItemRow(itemList, dateItemId1);
-        FXHDD01 fXHCD01_time1 = getItemRow(itemList, timeItemId1);
-        FXHDD01 fXHCD01_date2 = getItemRow(itemList, dateItemId2);
-        FXHDD01 fXHCD01_time2 = getItemRow(itemList, timeItemId2);
-        if (null != fXHCD01_date1 && null != fXHCD01_time1 && null != fXHCD01_date2 && null != fXHCD01_time2) {
-            String date1 = fXHCD01_date1.getValue();
-            String time1 = fXHCD01_time1.getValue();
-            String date2 = fXHCD01_date2.getValue();
-            String time2 = fXHCD01_time2.getValue();
+        FXHDD01 fXHDD01_date1 = getItemRow(itemList, dateItemId1);
+        FXHDD01 fXHDD01_time1 = getItemRow(itemList, timeItemId1);
+        FXHDD01 fXHDD01_date2 = getItemRow(itemList, dateItemId2);
+        FXHDD01 fXHDD01_time2 = getItemRow(itemList, timeItemId2);
+        if (null != fXHDD01_date1 && null != fXHDD01_time1 && null != fXHDD01_date2 && null != fXHDD01_time2) {
+            String date1 = fXHDD01_date1.getValue();
+            String time1 = fXHDD01_time1.getValue();
+            String date2 = fXHDD01_date2.getValue();
+            String time2 = fXHDD01_time2.getValue();
             
             if (!StringUtil.isEmpty(date1) && !StringUtil.isEmpty(time1) &&
                 !StringUtil.isEmpty(date2) && !StringUtil.isEmpty(time2)) {
                 Date d1 = DateUtil.convertStringToDate(date1, time1);
                 Date d2 = DateUtil.convertStringToDate(date2, time2);
                 if (null != d1 && null != d2 && d1.compareTo(d2) > 0) {
-                    return MessageUtil.getMessage("XHC-000007", fXHCD01_date1.getLabel1(), fXHCD01_date2.getLabel1());
+                    return MessageUtil.getMessage("XHC-000007", fXHDD01_date1.getLabel1(), fXHDD01_date2.getLabel1());
                 }
             }
         }
@@ -328,9 +517,9 @@ public class ValidateUtil {
      */
     public String checkE001(List<FXHDD01> itemList, String itemId) {
         // 項目データを取得
-        FXHDD01 fXHCD01 = getItemRow(itemList, itemId);
-        if (null != fXHCD01) {
-            String value = fXHCD01.getValue();
+        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
+        if (null != fXHDD01) {
+            String value = fXHDD01.getValue();
             if (!checkLotNoDigit(value)) {
                 return MessageUtil.getMessage("XHC-000010");
             }
@@ -347,6 +536,61 @@ public class ValidateUtil {
      * @return レコードが存在する場合true
      */
     public boolean checkT002T003(QueryRunner queryRunner, String table, List<String> items, List<Object> params) {
+        try {
+            String sql = "SELECT COUNT(*) AS cnt FROM " + table + " ";
+            if (null != items && !items.isEmpty()) {
+                sql += "WHERE ";
+
+                StringBuilder sb = new StringBuilder();
+                for (String item : items) {
+                    if (0 < sb.length()) {
+                        sb.append("AND ");
+                    }
+                    sb.append(item);
+                    sb.append(" = ? ");
+                }
+
+                sql += sb.toString();
+            }
+
+            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+            Map result = null;
+            if (null == items || items.isEmpty()) {
+                result = queryRunner.query(sql, new MapHandler());
+            } else {
+                result = queryRunner.query(sql, new MapHandler(), params.toArray());
+            }
+            
+            if (null != result && !result.isEmpty()) {
+                Object value = result.get("CNT");
+                if (value instanceof Integer && (Integer)value == 0) {
+                    return false;
+                } else if (value instanceof Long && (Long)value == 0) {
+                    return false;
+                } else if (value instanceof BigDecimal && ((BigDecimal)value).equals(BigDecimal.ZERO)) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } else {
+                return true;
+            }
+            
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+            return false;
+        }
+    }
+    
+    /**
+     * レコード存在チェック
+     * @param queryRunner QueryRunnerオブジェクト
+     * @param table テーブル名
+     * @param items 検索条件項目
+     * @param params パラメータ
+     * @return レコードが存在する場合true
+     */
+    public boolean checkC401(QueryRunner queryRunner, String table, List<String> items, List<Object> params) {
         try {
             String sql = "SELECT COUNT(*) AS cnt FROM " + table + " ";
             if (null != items && !items.isEmpty()) {

@@ -90,6 +90,19 @@ public class NumberUtil {
     }
 
     /**
+     * 数値の桁数チェック
+     *
+     * @param value 判定対象数値
+     * @param maxSeisu 整数部の最大桁数
+     * @param maxSyosu 小数部の最大桁数
+     * @return 桁数が一致しない場合 false
+     */
+    public static boolean isSameValidDigits(BigDecimal value, int maxSeisu, int maxSyosu) {
+        BigDecimal bigSeisu = value.setScale(0, RoundingMode.DOWN);
+        return maxSeisu == bigSeisu.precision() && maxSyosu == value.stripTrailingZeros().scale();
+    }
+    
+    /**
      * 数値の範囲チェック
      *
      * @param value 判定対象数値

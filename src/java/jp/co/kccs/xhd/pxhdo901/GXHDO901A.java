@@ -503,7 +503,6 @@ public class GXHDO901A implements Serializable {
         // 画面ID、画面クラス名を取得
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
-        String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
         String formClassName = StringUtil.nullToBlank(session.getAttribute("formClassName"));
         String login_user_name = (String) session.getAttribute("login_user_name");
 
@@ -532,46 +531,8 @@ public class GXHDO901A implements Serializable {
         }
         
         //共通ﾁｪｯｸ
-        List<FXHDM06> itemRowCheckList = this.getCheckItemRow(checkListHDM06, method);        
-        List<ValidateUtil.ValidateInfo> requireCheckList = new ArrayList<>();
-        ValidateUtil validateUtil = new ValidateUtil();
+        String requireCheckErrorMessage = getCheckResult(method);
 
-        // データを設定する
-        for (FXHDM06 fxhddM06 : itemRowCheckList) {
-            if(fxhddM06.getCheckPattern().equals("S001")){
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S001, fxhddM06.getItemId(), null, null));
-                continue;
-            }
-            if(fxhddM06.getCheckPattern().equals("S002")){
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S002, fxhddM06.getItemId(), null, null));
-                continue;
-            }
-            if(fxhddM06.getCheckPattern().equals("S003")){
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S003, fxhddM06.getItemId(), null, null));
-                continue;
-            }
-            if(fxhddM06.getCheckPattern().equals("S004")){
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S004, fxhddM06.getItemId(), null, null));
-                continue;
-            }
-            if(fxhddM06.getCheckPattern().equals("S005")){
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S005, fxhddM06.getItemId(), null, null));
-                continue;
-            }
-            if(fxhddM06.getCheckPattern().equals("S006")){
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S006, fxhddM06.getItemId(), null, null));
-                continue;
-            }
-            if(fxhddM06.getCheckPattern().equals("S007")){
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S007, fxhddM06.getItemId(), null, null));
-                continue;
-            }
-            if(fxhddM06.getCheckPattern().equals("E001")){
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.E001, fxhddM06.getItemId(), null, null));
-            }
-        }
-
-        String requireCheckErrorMessage = validateUtil.executeValidation(requireCheckList, this.itemList);
         // エラーメッセージが設定されている場合、エラー出力のみ
         if (!StringUtil.isEmpty(requireCheckErrorMessage)) {
             FacesMessage message = 
@@ -579,7 +540,7 @@ public class GXHDO901A implements Serializable {
             facesContext.addMessage(null, message);
             return;
         }
-
+        
         // 処理データ生成
         ProcessData data = new ProcessData();
         data.setFormClassName(formClassName);
@@ -932,19 +893,29 @@ public class GXHDO901A implements Serializable {
     }
 
     /**
-     * 項目データ取得
+     * 共通チェック
      *
-     * @param listData フォームデータ
-     * @param itemId 項目ID
-     * @return 項目データ
+     * @param method 処理メソッド名
+     * @return エラーメッセージ
      */
-    private List<FXHDM06> getCheckItemRow(List<FXHDM06> listData, String buttonId) {
-        List<FXHDM06> selectData
-                = listData.stream().filter(n -> buttonId.equals(n.getButtonId())).collect(Collectors.toList());
-        if (null != selectData && 0 < selectData.size()) {
-            return selectData;
-        } else {
-            return null;
+    private String getCheckResult(String method) {    
+        //共通ﾁｪｯｸ
+        List<FXHDM06> itemRowCheckList
+                = checkListHDM06.stream().filter(n -> method.equals(n.getButtonId())).collect(Collectors.toList());
+        List<ValidateUtil.ValidateInfo> requireCheckList = new ArrayList<>();
+        ValidateUtil validateUtil = new ValidateUtil();
+
+        // データを設定する
+        for (FXHDM06 fxhddM06 : itemRowCheckList) {            
+           for (ValidateUtil.EnumCheckNo checkNo : ValidateUtil.EnumCheckNo.values()) {
+             if (checkNo.name().equalsIgnoreCase(fxhddM06.getCheckPattern())) {
+                 requireCheckList.add(validateUtil.new ValidateInfo(checkNo, fxhddM06.getItemId(), null, null));
+                 break;
+             }
+           }
         }
+
+        String requireCheckErrorMessage = validateUtil.executeValidation(requireCheckList, this.itemList);        
+        return requireCheckErrorMessage;
     }
 }
