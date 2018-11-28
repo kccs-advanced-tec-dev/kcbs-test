@@ -26,6 +26,11 @@ import org.apache.commons.lang3.math.NumberUtils;
  * 変更者	KCCS D.Yanagida<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2018/11/26<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	共通チェック変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 
@@ -339,7 +344,7 @@ public class ValidateUtil {
                 if(!NumberUtil.isNumeric(value)){
                     return MessageUtil.getMessage("XHD-000008", fXHDD01.getLabel1());
                 }
-                if (Double.parseDouble(value) < 0) {
+                if (new BigDecimal(value).compareTo(BigDecimal.ZERO) == -1) {
                     return MessageUtil.getMessage("XHD-000009", fXHDD01.getLabel1());
                 }
             }
@@ -361,7 +366,7 @@ public class ValidateUtil {
                 if(!NumberUtil.isNumeric(value)){
                     return MessageUtil.getMessage("XHD-000008", fXHDD01.getLabel1());
                 }
-                if (Double.parseDouble(value) > 0) {
+                if (new BigDecimal(value).compareTo(BigDecimal.ZERO) == 1) {
                     return MessageUtil.getMessage("XHD-000010", fXHDD01.getLabel1());
                 }
             }
@@ -535,7 +540,7 @@ public class ValidateUtil {
      * @param params パラメータ
      * @return レコードが存在する場合true
      */
-    public boolean checkT002T003(QueryRunner queryRunner, String table, List<String> items, List<Object> params) {
+    public boolean checkC401402(QueryRunner queryRunner, String table, List<String> items, List<Object> params) {
         try {
             String sql = "SELECT COUNT(*) AS cnt FROM " + table + " ";
             if (null != items && !items.isEmpty()) {
@@ -581,62 +586,7 @@ public class ValidateUtil {
             return false;
         }
     }
-    
-    /**
-     * レコード存在チェック
-     * @param queryRunner QueryRunnerオブジェクト
-     * @param table テーブル名
-     * @param items 検索条件項目
-     * @param params パラメータ
-     * @return レコードが存在する場合true
-     */
-    public boolean checkC401(QueryRunner queryRunner, String table, List<String> items, List<Object> params) {
-        try {
-            String sql = "SELECT COUNT(*) AS cnt FROM " + table + " ";
-            if (null != items && !items.isEmpty()) {
-                sql += "WHERE ";
-
-                StringBuilder sb = new StringBuilder();
-                for (String item : items) {
-                    if (0 < sb.length()) {
-                        sb.append("AND ");
-                    }
-                    sb.append(item);
-                    sb.append(" = ? ");
-                }
-
-                sql += sb.toString();
-            }
-
-            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-            Map result = null;
-            if (null == items || items.isEmpty()) {
-                result = queryRunner.query(sql, new MapHandler());
-            } else {
-                result = queryRunner.query(sql, new MapHandler(), params.toArray());
-            }
-            
-            if (null != result && !result.isEmpty()) {
-                Object value = result.get("CNT");
-                if (value instanceof Integer && (Integer)value == 0) {
-                    return false;
-                } else if (value instanceof Long && (Long)value == 0) {
-                    return false;
-                } else if (value instanceof BigDecimal && ((BigDecimal)value).equals(BigDecimal.ZERO)) {
-                    return false;
-                } else {
-                    return true;
-                }
-            } else {
-                return true;
-            }
-            
-        } catch (SQLException ex) {
-            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-            return false;
-        }
-    }
-    
+        
     /**
      * 項目データ取得
      * @param itemList フォームデータ

@@ -38,9 +38,9 @@ import org.apache.commons.dbutils.handlers.MapHandler;
  * <br>
  * システム名	品質DB(コンデンサ)<br>
  * <br>
- * 変更日	2018/04/24<br>
- * 計画書No	K1803-DS001<br>
- * 変更者	KCCS D.Yanagida<br>
+ * 変更日	2018/11/20<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
  * ===============================================================================<br>
@@ -508,7 +508,7 @@ public class GXHDO101B implements IFormLogic {
                 // トンネル炉・バッチ炉号機(レコード存在チェック)
                 String goukiInput = this.getItemData(itemList, "syosei_tunnel_batchFurnaceGouki");
                 String goukiItemName = this.getItemName(itemList, "syosei_tunnel_batchFurnaceGouki");
-                boolean goukimasExist = validateUtil.checkT002T003(queryRunnerWip, "goukimas",
+                boolean goukimasExist = validateUtil.checkC401402(queryRunnerWip, "goukimas",
                         new ArrayList<>(Arrays.asList("goukicode")), new ArrayList<>(Arrays.asList(goukiInput)));
                 if (!goukimasExist) {
                     processData.setErrorMessage(MessageUtil.getMessage("XHC-000008", goukiItemName));
@@ -531,7 +531,7 @@ public class GXHDO101B implements IFormLogic {
                 // 焼成開始担当者
                 String startTantouInput = this.getItemData(itemList, "syosei_startTantousha");
                 String startTantouItemName = this.getItemName(itemList, "syosei_startTantousha");
-                boolean startTantouExist = validateUtil.checkT002T003(queryRunnerWip, "tantomas",
+                boolean startTantouExist = validateUtil.checkC401402(queryRunnerWip, "tantomas",
                         new ArrayList<>(Arrays.asList("tantousyacode", "zaiseki")),
                         new ArrayList<>(Arrays.asList(startTantouInput, "1")));
                 if (!startTantouExist) {
@@ -541,7 +541,7 @@ public class GXHDO101B implements IFormLogic {
                 // 焼成終了担当者
                 String endTantouInput = this.getItemData(itemList, "syosei_EndTantousha");
                 String endTantouItemName = this.getItemName(itemList, "syosei_EndTantousha");
-                boolean endTantouExist = validateUtil.checkT002T003(queryRunnerWip, "tantomas",
+                boolean endTantouExist = validateUtil.checkC401402(queryRunnerWip, "tantomas",
                         new ArrayList<>(Arrays.asList("tantousyacode", "zaiseki")),
                         new ArrayList<>(Arrays.asList(endTantouInput, "1")));
                 if (!endTantouExist) {
@@ -573,7 +573,7 @@ public class GXHDO101B implements IFormLogic {
                 if (!StringUtil.isEmpty(this.getItemData(itemList, "syosei_saisankaGouki"))) {
                     String sankaGoukiInput = this.getItemData(itemList, "syosei_saisankaGouki");
                     String sankaGoukiItemName = this.getItemName(itemList, "syosei_saisankaGouki");
-                    boolean sankaGoukimasExist = validateUtil.checkT002T003(queryRunnerWip, "goukimas",
+                    boolean sankaGoukimasExist = validateUtil.checkC401402(queryRunnerWip, "goukimas",
                             new ArrayList<>(Arrays.asList("goukicode")), new ArrayList<>(Arrays.asList(sankaGoukiInput)));
                     if (!sankaGoukimasExist) {
                         processData.setErrorMessage(MessageUtil.getMessage("XHC-000008", sankaGoukiItemName));
