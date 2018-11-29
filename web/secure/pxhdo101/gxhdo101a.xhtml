@@ -74,13 +74,13 @@
                          style="margin-top: 20px;margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;font-size: 17px;"
                          scrollable="true"
                          emptyMessage="">
-                    <div style="text-align:center">
+                <div style="text-align:center">
                 <p:column id="mItem" width="30%" headerText="#{myMsg.hinshitsuDB_Name}" style="font-size: 17px;">
                     <h:commandLink value="#{item.menuName}" style="color:Indigo;font-size: 17px;"
                                    action="#{gXHDO101A.openXhdForm(item)}"  >
                     </h:commandLink>
                 </p:column>
-                    </div>
+                </div>
                 <p:column id="mComment" width="70%" headerText="#{myMsg.menuComment}" style="font-size: 17px;">
                     <p:outputLabel value="#{item.menuComment}" style="font-size: 17px;"/>
                 </p:column>

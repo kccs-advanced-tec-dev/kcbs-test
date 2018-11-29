@@ -531,7 +531,7 @@ public class GXHDO901A implements Serializable {
         }
         
         //共通ﾁｪｯｸ
-        String requireCheckErrorMessage = getCheckResult(method);
+        String requireCheckErrorMessage = getCheckResult(buttonId);
 
         // エラーメッセージが設定されている場合、エラー出力のみ
         if (!StringUtil.isEmpty(requireCheckErrorMessage)) {
@@ -898,10 +898,10 @@ public class GXHDO901A implements Serializable {
      * @param method 処理メソッド名
      * @return エラーメッセージ
      */
-    private String getCheckResult(String method) {    
+    private String getCheckResult(String buttonId) {    
         //共通ﾁｪｯｸ
         List<FXHDM06> itemRowCheckList
-                = checkListHDM06.stream().filter(n -> method.equals(n.getButtonId())).collect(Collectors.toList());
+                = checkListHDM06.stream().filter(n -> buttonId.equals(n.getButtonId())).collect(Collectors.toList());
         List<ValidateUtil.ValidateInfo> requireCheckList = new ArrayList<>();
         ValidateUtil validateUtil = new ValidateUtil();
 

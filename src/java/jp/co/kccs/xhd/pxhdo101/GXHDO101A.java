@@ -99,6 +99,101 @@ public class GXHDO101A implements Serializable {
      */
     public GXHDO101A() {
     }
+        
+    /**
+     * 画面ID
+     * @return the GamenID
+     */
+    public String getGamenID() {
+        return gamenID;
+    }
+
+    /**
+     * 画面ID
+     * @param gamenID
+     */
+    public void setGamenID(String gamenID) {
+        this.gamenID = gamenID;
+    }
+    
+    /**
+     * ロットNo
+     * @return the lotNo
+     */  
+    public String getLotNo() {
+        return lotNo;
+    }
+
+    /**
+     * ロットNo
+     * @param lotNo
+     */
+    public void setLotNo(String lotNo) {
+        this.lotNo = lotNo;
+    }
+    
+    /**
+     * 表示render有無
+     * @param menuTableRender
+     */
+    public void setMenuTableRender(boolean menuTableRender) {
+        this.menuTableRender = menuTableRender;
+    }
+
+    /**
+     * 表示render有無
+     */
+    public boolean getMenuTableRender() {
+        return menuTableRender;
+    }
+
+    /**
+     * エラーメッセージ
+     * @return the errorMessage
+     */
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    /**
+     * エラーメッセージ
+     * @param errorMessage the errorMessage to set
+     */
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+
+    /**
+     * 情報メッセージ
+     * @return the infoMessage
+     */
+    public String getInfoMessage() {
+        return infoMessage;
+    }
+
+    /**
+     * 情報メッセージ
+     * @param infoMessage the infoMessage to set
+     */
+    public void setInfoMessage(String infoMessage) {
+        this.infoMessage = infoMessage;
+    }
+
+    /**
+     * 警告メッセージ
+     * @return the warnMessage
+     */
+    public String getWarnMessage() {
+        return warnMessage;
+    }
+
+    /**
+     * 警告メッセージ
+     * @param warnMessage the warnMessage to set
+     */
+    public void setWarnMessage(String warnMessage) {
+        this.warnMessage = warnMessage;
+    }
 
     /**
      * 一覧取得処理
@@ -240,110 +335,6 @@ public class GXHDO101A implements Serializable {
     public void searchHinshitsuData() {
         menuListGXHDO101 = getMenuListGXHDO101();
 
-    }
-    
-    /**
-     * 前画面に戻ります。
-     * 
-     * @return ログイン用URL文字列
-     */
-    public String btnReturn() {
-        return "/pxhdo012/gxhdo012a.xhtml?faces-redirect=true";
-    }
-    
-    /**
-     * 画面ID
-     * @return the GamenID
-     */
-    public String getGamenID() {
-        return gamenID;
-    }
-
-    /**
-     * 画面ID
-     * @param gamenID
-     */
-    public void setGamenID(String gamenID) {
-        this.gamenID = gamenID;
-    }
-    
-    /**
-     * ロットNo
-     * @return the lotNo
-     */  
-    public String getLotNo() {
-        return lotNo;
-    }
-
-    /**
-     * ロットNo
-     * @param lotNo
-     */
-    public void setLotNo(String lotNo) {
-        this.lotNo = lotNo;
-    }
-    
-    /**
-     * 表示render有無
-     * @param menuTableRender
-     */
-    public void setMenuTableRender(boolean menuTableRender) {
-        this.menuTableRender = menuTableRender;
-    }
-
-    /**
-     * 表示render有無
-     */
-    public boolean getMenuTableRender() {
-        return menuTableRender;
-    }
-
-    /**
-     * エラーメッセージ
-     * @return the errorMessage
-     */
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    /**
-     * エラーメッセージ
-     * @param errorMessage the errorMessage to set
-     */
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
-
-    /**
-     * 情報メッセージ
-     * @return the infoMessage
-     */
-    public String getInfoMessage() {
-        return infoMessage;
-    }
-
-    /**
-     * 情報メッセージ
-     * @param infoMessage the infoMessage to set
-     */
-    public void setInfoMessage(String infoMessage) {
-        this.infoMessage = infoMessage;
-    }
-
-    /**
-     * 警告メッセージ
-     * @return the warnMessage
-     */
-    public String getWarnMessage() {
-        return warnMessage;
-    }
-
-    /**
-     * 警告メッセージ
-     * @param warnMessage the warnMessage to set
-     */
-    public void setWarnMessage(String warnMessage) {
-        this.warnMessage = warnMessage;
     }
 
 }
