@@ -32,6 +32,23 @@
                 g_prgname = 'gxhdo901a.xhtml';
                 var interval_id = setInterval(getLocation, #{myParam.sendLocInterval});
             });
+            function cmdButtonOncomplete(args) {
+                if('warning'===args.firstParam){
+                    PF('cd').show();
+                } else if('auth'===args.firstParam){
+                    PF('W_dlg_userAuth').show();
+                } else if('gxhdo101c001'===args.firstParam){
+                    PF('W_dlg_gxhdo101c001').show();
+                } else if('gxhdo101c002'===args.firstParam){
+                    PF('W_dlg_gxhdo101c002').show();
+                } else if('gxhdo101c003'===args.firstParam){
+                    PF('W_dlg_gxhdo101c003').show();
+                } else if('gxhdo101c004'===args.firstParam){
+                    PF('W_dlg_gxhdo101c004').show();
+                } else if('gxhdo101c005'===args.firstParam){
+                    PF('W_dlg_gxhdo101c005').show();
+                }
+            }
             //]]>
         </script>
         <style>
@@ -80,7 +97,7 @@
                     <p:commandButton id="buttonId" value="#{item.buttonName}" rendered="#{item.render}" disabled="#{!item.enabled}"
                                  style="margin-left:4px;font-size:#{item.fontSize}px;color:#{item.fontColor};background:#{item.backColor};"
                                  actionListener="#{gXHDO901A.btnClick(item.buttonId)}" process="@form" update="@form" async="false"
-                                 oncomplete="if('warning'==args.firstParam){PF('cd').show();} else if('auth'==args.firstParam){PF('W_dlg_userAuth').show();}" />                    
+                                 oncomplete="cmdButtonOncomplete(args);" />                    
                 </ui:repeat>
             </p:panel>
             <p:panel id="entryPanel" style="margin-bottom:4px;">
@@ -127,14 +144,21 @@
                     <p:commandButton id="buttonId" value="#{item.buttonName}" rendered="#{item.render}" disabled="#{!item.enabled}"
                                  style="margin-left:4px;font-size:#{item.fontSize}px;color:#{item.fontColor};background:#{item.backColor};"
                                  actionListener="#{gXHDO901A.btnClick(item.buttonId)}" process="@form" update="@form" async="false"
-                                 oncomplete="if('warning'==args.firstParam){PF('cd').show();} else if('auth'==args.firstParam){PF('W_dlg_userAuth').show();}" />
+                                 oncomplete="cmdButtonOncomplete(args);" />
                 </ui:repeat>
             </p:panel>
             
             <p:commandButton id="returnBtn" style="margin-left:26px;font-size:#{item.fontSize}px;color:#{item.fontColor};background:#{item.backColor};"
                  value="#{myMsg.return}" action="/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true"
                  process="@this" update="@this"/>
-            <ui:include src="gxhdo901b.xhtml"/>
+             <div>
+                <ui:include src="gxhdo901b.xhtml"/>
+                <ui:include src="/secure/pxhdo101/gxhdo101c001.xhtml"/>
+                <ui:include src="/secure/pxhdo101/gxhdo101c002.xhtml"/>
+                <ui:include src="/secure/pxhdo101/gxhdo101c003.xhtml"/>
+                <ui:include src="/secure/pxhdo101/gxhdo101c004.xhtml"/>
+                <ui:include src="/secure/pxhdo101/gxhdo101c005.xhtml"/>
+            </div>
         </h:form>
         </div>
         

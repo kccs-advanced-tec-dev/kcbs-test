@@ -6,6 +6,10 @@ package jp.co.kccs.xhd.pxhdo901;
 import java.util.List;
 import javax.sql.DataSource;
 import jp.co.kccs.xhd.db.model.FXHDD01;
+import jp.co.kccs.xhd.db.model.GXHDO101C001Model;
+import jp.co.kccs.xhd.db.model.GXHDO101C002Model;
+import jp.co.kccs.xhd.db.model.GXHDO101C003Model;
+import jp.co.kccs.xhd.db.model.GXHDO101C004Model;
 
 /**
  * ===============================================================================<br>
@@ -24,14 +28,14 @@ import jp.co.kccs.xhd.db.model.FXHDD01;
  * <br>
  * ===============================================================================<br>
  */
-
 /**
  * 処理制御データ
- * 
+ *
  * @author KCCS D.Yanagida
  * @since 2018/04/24
  */
 public class ProcessData {
+
     /**
      * 処理名
      */
@@ -55,7 +59,7 @@ public class ProcessData {
     /**
      * 活性ボタンIDリスト
      */
-    private List<String> activeButtonId;    
+    private List<String> activeButtonId;
     /**
      * 非活性ボタンIDリスト
      */
@@ -93,8 +97,36 @@ public class ProcessData {
      */
     private String userAuthParam;
 
+    //******************************************************************
+    /**
+     * コールバックパラメータ
+     */
+    private String collBackParam;
+
+    /**
+     * 膜厚(SPS)サブ画面用データ
+     */
+    private GXHDO101C001Model gxhdo101c001Model;
+
+    /**
+     * PTN距離Xサブ画面用データ
+     */
+    private GXHDO101C002Model gxhdo101c002Model;
+
+    /**
+     * PTN距離Yサブ画面用データ
+     */
+    private GXHDO101C003Model gxhdo101c003Model;
+
+    /**
+     * 膜厚(RSUS)サブ画面用データ
+     */
+    private GXHDO101C004Model gxhdo101c004Model;
+
+    //***********************************************************************************************************
     /**
      * 処理名
+     *
      * @return the processName
      */
     public String getProcessName() {
@@ -103,6 +135,7 @@ public class ProcessData {
 
     /**
      * 処理名
+     *
      * @param processName the processName to set
      */
     public void setProcessName(String processName) {
@@ -111,6 +144,7 @@ public class ProcessData {
 
     /**
      * 画面クラス名
+     *
      * @return the formClassName
      */
     public String getFormClassName() {
@@ -119,14 +153,16 @@ public class ProcessData {
 
     /**
      * 画面クラス名
+     *
      * @param formClassName the formClassName to set
      */
     public void setFormClassName(String formClassName) {
         this.formClassName = formClassName;
     }
-    
+
     /**
      * 画面クラス
+     *
      * @return the formLogic
      */
     public IFormLogic getFormLogic() {
@@ -135,6 +171,7 @@ public class ProcessData {
 
     /**
      * 画面クラス
+     *
      * @param formLogic the formLogic to set
      */
     public void setFormLogic(IFormLogic formLogic) {
@@ -143,6 +180,7 @@ public class ProcessData {
 
     /**
      * 処理メソッド
+     *
      * @return the method
      */
     public String getMethod() {
@@ -151,6 +189,7 @@ public class ProcessData {
 
     /**
      * 処理メソッド
+     *
      * @param method the method to set
      */
     public void setMethod(String method) {
@@ -159,6 +198,7 @@ public class ProcessData {
 
     /**
      * 項目データ
+     *
      * @return the itemList
      */
     public List<FXHDD01> getItemList() {
@@ -167,6 +207,7 @@ public class ProcessData {
 
     /**
      * 項目データ
+     *
      * @param itemList the itemList to set
      */
     public void setItemList(List<FXHDD01> itemList) {
@@ -175,6 +216,7 @@ public class ProcessData {
 
     /**
      * 活性ボタンIDリスト
+     *
      * @return the activeButtonId
      */
     public List<String> getActiveButtonId() {
@@ -183,6 +225,7 @@ public class ProcessData {
 
     /**
      * 活性ボタンIDリスト
+     *
      * @param activeButtonId the activeButtonId to set
      */
     public void setActiveButtonId(List<String> activeButtonId) {
@@ -191,6 +234,7 @@ public class ProcessData {
 
     /**
      * 非活性ボタンIDリスト
+     *
      * @return the inactiveButtonId
      */
     public List<String> getInactiveButtonId() {
@@ -199,6 +243,7 @@ public class ProcessData {
 
     /**
      * 非活性ボタンIDリスト
+     *
      * @param inactiveButtonId the inactiveButtonId to set
      */
     public void setInactiveButtonId(List<String> inactiveButtonId) {
@@ -207,6 +252,7 @@ public class ProcessData {
 
     /**
      * 情報メッセージ
+     *
      * @return the infoMessage
      */
     public String getInfoMessage() {
@@ -215,6 +261,7 @@ public class ProcessData {
 
     /**
      * 情報メッセージ
+     *
      * @param infoMessage the infoMessage to set
      */
     public void setInfoMessage(String infoMessage) {
@@ -223,6 +270,7 @@ public class ProcessData {
 
     /**
      * 警告メッセージ
+     *
      * @return the warnMessage
      */
     public String getWarnMessage() {
@@ -231,6 +279,7 @@ public class ProcessData {
 
     /**
      * 警告メッセージ
+     *
      * @param warnMessage the warnMessage to set
      */
     public void setWarnMessage(String warnMessage) {
@@ -239,6 +288,7 @@ public class ProcessData {
 
     /**
      * エラーメッセージ
+     *
      * @return the errorMessage
      */
     public String getErrorMessage() {
@@ -247,6 +297,7 @@ public class ProcessData {
 
     /**
      * エラーメッセージ
+     *
      * @param errorMessage the errorMessage to set
      */
     public void setErrorMessage(String errorMessage) {
@@ -255,6 +306,7 @@ public class ProcessData {
 
     /**
      * DataSource(DocumentServer)
+     *
      * @return the dataSourceDocServer
      */
     public DataSource getDataSourceDocServer() {
@@ -263,6 +315,7 @@ public class ProcessData {
 
     /**
      * DataSource(DocumentServer)
+     *
      * @param dataSourceDocServer the dataSourceDocServer to set
      */
     public void setDataSourceDocServer(DataSource dataSourceDocServer) {
@@ -271,6 +324,7 @@ public class ProcessData {
 
     /**
      * DataSource(QCDB)
+     *
      * @return the dataSourceQcdb
      */
     public DataSource getDataSourceQcdb() {
@@ -279,6 +333,7 @@ public class ProcessData {
 
     /**
      * DataSource(QCDB)
+     *
      * @param dataSourceQcdb the dataSourceQcdb to set
      */
     public void setDataSourceQcdb(DataSource dataSourceQcdb) {
@@ -287,6 +342,7 @@ public class ProcessData {
 
     /**
      * DataSource(WIP)
+     *
      * @return the dataSourceWip
      */
     public DataSource getDataSourceWip() {
@@ -295,6 +351,7 @@ public class ProcessData {
 
     /**
      * DataSource(WIP)
+     *
      * @param dataSourceWip the dataSourceWip to set
      */
     public void setDataSourceWip(DataSource dataSourceWip) {
@@ -303,6 +360,7 @@ public class ProcessData {
 
     /**
      * ユーザー認証有無
+     *
      * @return the rquireAuth
      */
     public boolean isRquireAuth() {
@@ -311,6 +369,7 @@ public class ProcessData {
 
     /**
      * ユーザー認証有無
+     *
      * @param rquireAuth the rquireAuth to set
      */
     public void setRquireAuth(boolean rquireAuth) {
@@ -319,6 +378,7 @@ public class ProcessData {
 
     /**
      * ユーザー認証パラメータ
+     *
      * @return the userAuthParam
      */
     public String getUserAuthParam() {
@@ -327,9 +387,103 @@ public class ProcessData {
 
     /**
      * ユーザー認証パラメータ
+     *
      * @param userAuthParam the userAuthParam to set
      */
     public void setUserAuthParam(String userAuthParam) {
         this.userAuthParam = userAuthParam;
     }
+
+    //******************************************************************
+    /**
+     * コールバックパラメータ
+     *
+     * @return the collBackParam
+     */
+    public String getCollBackParam() {
+        return collBackParam;
+    }
+
+    /**
+     * コールバックパラメータ
+     *
+     * @param collBackParam the collBackParam to set
+     */
+    public void setCollBackParam(String collBackParam) {
+        this.collBackParam = collBackParam;
+    }
+
+    /**
+     * 膜厚(SPS)サブ画面用データ
+     *
+     * @return the gxhdo101c001Model
+     */
+    public GXHDO101C001Model getGxhdo101c001Model() {
+        return gxhdo101c001Model;
+    }
+
+    /**
+     * 膜厚(SPS)サブ画面用データ
+     *
+     * @param gxhdo101c001Model the gxhdo101c001Model to set
+     */
+    public void setGxhdo101c001Model(GXHDO101C001Model gxhdo101c001Model) {
+        this.gxhdo101c001Model = gxhdo101c001Model;
+    }
+
+    /**
+     * PTN距離Xサブ画面用データ
+     *
+     * @return the gxhdo101c002Model
+     */
+    public GXHDO101C002Model getGxhdo101c002Model() {
+        return gxhdo101c002Model;
+    }
+
+    /**
+     * PTN距離Xサブ画面用データ
+     *
+     * @param gxhdo101c002Model the gxhdo101c002Model to set
+     */
+    public void setGxhdo101c002Model(GXHDO101C002Model gxhdo101c002Model) {
+        this.gxhdo101c002Model = gxhdo101c002Model;
+    }
+
+    /**
+     * PTN距離Yサブ画面用データ
+     *
+     * @return the gxhdo101c003Model
+     */
+    public GXHDO101C003Model getGxhdo101c003Model() {
+        return gxhdo101c003Model;
+    }
+
+    /**
+     * PTN距離Yサブ画面用データ
+     *
+     * @param gxhdo101c003Model the gxhdo101c003Model to set
+     */
+    public void setGxhdo101c003Model(GXHDO101C003Model gxhdo101c003Model) {
+        this.gxhdo101c003Model = gxhdo101c003Model;
+    }
+
+    /**
+     * 膜厚(RSUS)サブ画面用データ
+     *
+     * @return the gxhdo101c004Model
+     */
+    public GXHDO101C004Model getGxhdo101c004Model() {
+        return gxhdo101c004Model;
+    }
+
+    /**
+     * 膜厚(RSUS)サブ画面用データ
+     *
+     * @param gxhdo101c004Model the gxhdo101c004Model to set
+     */
+    public void setGxhdo101c004Model(GXHDO101C004Model gxhdo101c004Model) {
+        this.gxhdo101c004Model = gxhdo101c004Model;
+    }
+
+    //******************************************************************
 }

@@ -8,6 +8,7 @@ import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +31,11 @@ import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.db.model.FXHDD02;
 import jp.co.kccs.xhd.db.model.FXHDM02;
 import jp.co.kccs.xhd.db.model.FXHDM06;
+import jp.co.kccs.xhd.db.model.GXHDO101C001Model;
+import jp.co.kccs.xhd.db.model.GXHDO101C002Model;
+import jp.co.kccs.xhd.db.model.GXHDO101C003Model;
+import jp.co.kccs.xhd.db.model.GXHDO101C004Model;
+import jp.co.kccs.xhd.db.model.GXHDO101C005Model;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.StringUtil;
@@ -67,6 +73,7 @@ import org.primefaces.context.RequestContext;
 @Named
 @ViewScoped
 public class GXHDO901A implements Serializable {
+
     private static final Logger LOGGER = Logger.getLogger(GXHDO901A.class.getName());
     private static final int LOTNO_ITEMNO = 100;
     
@@ -134,6 +141,40 @@ public class GXHDO901A implements Serializable {
      * ユーザー認証：パスワード
      */
     private String authPassword;
+    
+    
+    //***********************************************************************************************************
+    /**
+     * 膜厚(SPS)サブ画面用データ
+     */
+    private GXHDO101C001Model gxhdO101c001Model;
+    
+    /**
+     * PTN距離Xサブ画面用データ
+     */
+    private GXHDO101C002Model gxhdO101c002Model;
+    
+    /**
+     * PTN距離Yサブ画面用データ
+     */
+    private GXHDO101C003Model gxhdO101c003Model;
+    
+    /**
+     * 膜厚(RSUS)サブ画面用データ
+     */
+    private GXHDO101C004Model gxhdO101c004Model;
+    
+    /**
+     * 印刷幅サブ画面用データ
+     */
+    private GXHDO101C005Model gxhdO101c005Model;
+    //***********************************************************************************************************
+    
+    
+    
+    
+    
+    
     
     /**
      * コンストラクタ
@@ -249,6 +290,87 @@ public class GXHDO901A implements Serializable {
         this.authPassword = authPassword;
     }
 
+    //***********************************************************************************************************
+    /**
+     * 膜厚(SPS)サブ画面用データ
+     * @return the gxhdO101c001Model
+     */
+    public GXHDO101C001Model getGxhdO101c001Model() {
+        return gxhdO101c001Model;
+    }
+
+    /**
+     * 膜厚(SPS)サブ画面用データ
+     * @param gxhdO101c001Model the gxhdO101c001Model to set
+     */
+    public void setGxhdO101c001Model(GXHDO101C001Model gxhdO101c001Model) {
+        this.gxhdO101c001Model = gxhdO101c001Model;
+    }
+
+    /**
+     * PTN距離Xサブ画面用データ
+     * @return the gxhdO101c002Model
+     */
+    public GXHDO101C002Model getGxhdO101c002Model() {
+        return gxhdO101c002Model;
+    }
+
+    /**
+     * PTN距離Xサブ画面用データ
+     * @param gxhdO101c002Model the gxhdO101c002Model to set
+     */
+    public void setGxhdO101c002Model(GXHDO101C002Model gxhdO101c002Model) {
+        this.gxhdO101c002Model = gxhdO101c002Model;
+    }
+
+    /**
+     * PTN距離Yサブ画面用データ
+     * @return the gxhdO101c003Model
+     */
+    public GXHDO101C003Model getGxhdO101c003Model() {
+        return gxhdO101c003Model;
+    }
+
+    /**
+     * PTN距離Yサブ画面用データ
+     * @param gxhdO101c003Model the gxhdO101c003Model to set
+     */
+    public void setGxhdO101c003Model(GXHDO101C003Model gxhdO101c003Model) {
+        this.gxhdO101c003Model = gxhdO101c003Model;
+    }
+
+    /**
+     * 膜厚(RSUS)サブ画面用データ
+     * @return the gxhdO101c004Model
+     */
+    public GXHDO101C004Model getGxhdO101c004Model() {
+        return gxhdO101c004Model;
+    }
+
+    /**
+     * 膜厚(RSUS)サブ画面用データ
+     * @param gxhdO101c004Model the gxhdO101c004Model to set
+     */
+    public void setGxhdO101c004Model(GXHDO101C004Model gxhdO101c004Model) {
+        this.gxhdO101c004Model = gxhdO101c004Model;
+    }
+
+    /**
+     * @return the gxhdO101c005Model
+     */
+    public GXHDO101C005Model getGxhdO101c005Model() {
+        return gxhdO101c005Model;
+    }
+
+    /**
+     * @param gxhdO101c005Model the gxhdO101c005Model to set
+     */
+    public void setGxhdO101c005Model(GXHDO101C005Model gxhdO101c005Model) {
+        this.gxhdO101c005Model = gxhdO101c005Model;
+    }
+    //***********************************************************************************************************
+
+    
     /**
      * 起動時処理
      */
@@ -631,6 +753,34 @@ public class GXHDO901A implements Serializable {
                         new FacesMessage(FacesMessage.SEVERITY_INFO, this.processData.getInfoMessage(), null);
                     facesContext.addMessage(null, message);
                 }
+                
+                //***************************************************************************************************
+                // 膜厚(SPS)サブ画面用データ
+                if (resultData.getGxhdo101c001Model()!= null) {
+                    this.gxhdO101c001Model = resultData.getGxhdo101c001Model();
+                }
+                // PTN距離Xサブ画面用データ
+                if (resultData.getGxhdo101c002Model()!= null) {
+                    this.gxhdO101c002Model = resultData.getGxhdo101c002Model();
+                }
+                // PTN距離Yサブ画面用データ
+                if (resultData.getGxhdo101c003Model() != null) {
+                    this.gxhdO101c003Model = resultData.getGxhdo101c003Model();
+                }
+                
+                // 膜厚(RSUS)サブ画面用データ
+                if (resultData.getGxhdo101c004Model() != null) {
+                    this.gxhdO101c004Model = resultData.getGxhdo101c004Model();
+                }
+                
+                
+                // コールバックパラメータが設定されている場合はセットする。
+                if (!StringUtil.isEmpty(resultData.getCollBackParam())) {
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.addCallbackParam("firstParam", resultData.getCollBackParam());
+                }
+                //***************************************************************************************************
+                
                 // ボタンの活性・非活性制御
                 this.setButtonEnabled(this.processData.getActiveButtonId(), this.processData.getInactiveButtonId());
                 // 処理制御データクリア
