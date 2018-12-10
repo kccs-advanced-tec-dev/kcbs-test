@@ -34,6 +34,8 @@ import javax.faces.context.FacesContext;
  * @since 2018/05/06
  */
 public class ErrUtil {
+    
+    public static final String ERR_BACK_COLOR = "lightpink";
 
     /**
      * コンストラクタ

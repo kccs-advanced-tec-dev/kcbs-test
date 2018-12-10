@@ -7,3 +7,12 @@
     word-wrap: break-word;
     white-space: nowrap;
 }
+.selectRadio td {
+    float: left;
+    word-wrap: break-word;
+    white-space: nowrap;
+}
+.error-text {
+    background: red!important;
+}
+            

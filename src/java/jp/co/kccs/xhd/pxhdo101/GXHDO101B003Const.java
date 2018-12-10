@@ -347,6 +347,12 @@ public class GXHDO101B003Const {
     public static final String BTN_DOWN_WIP_TORIKOMI = "insatsu_rsus_down_wip_torikomi";
 
     /**
+     * 印刷幅(画面下)
+     */
+    public static final String BTN_DOWN_PRINT_WIDTH = "insatsu_rsus_down_print_width_subgamen";
+
+    
+    /**
      * 仮登録(画面上)
      */
     public static final String BTN_UP_KARI_TOUROKU = "insatsu_rsus_up_kari_touroku";
@@ -381,4 +387,10 @@ public class GXHDO101B003Const {
      * WIP取込(画面上)
      */
     public static final String BTN_UP_WIP_TORIKOMI = "insatsu_rsus_up_wip_torikomi";
+    
+    /**
+     * 印刷幅(画面上)
+     */
+    public static final String BTN_UP_PRINT_WIDTH = "insatsu_rsus_up_print_width_subgamen";
+
 }

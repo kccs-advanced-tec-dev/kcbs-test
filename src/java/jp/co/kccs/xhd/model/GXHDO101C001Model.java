@@ -1,7 +1,7 @@
 /*
  * Copyright 2018 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
-package jp.co.kccs.xhd.db.model;
+package jp.co.kccs.xhd.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,20 +19,51 @@ import java.util.List;
  * ===============================================================================<br>
  */
 /**
- * GXHDO101C005Model(印刷幅サブ画面用)のモデルクラスです。
+ * GXHDO101C001Model(膜厚(SPS)サブ画面用)のモデルクラスです。
  *
  * @author SYSNAVI K.Hisanaga
  * @since 2018/12/04
  */
-public class GXHDO101C005Model {
+public class GXHDO101C001Model implements Cloneable {
 
-    public GXHDO101C005Model() {
+    /**
+     * クローン実装
+     *
+     * @return クローン
+     * @throws java.lang.CloneNotSupportedException
+     */
+    @Override
+    public GXHDO101C001Model clone() throws CloneNotSupportedException {
+        GXHDO101C001Model cloneModel = (GXHDO101C001Model) super.clone();
+        List<makuatsuData> newList = new ArrayList();
+        for (makuatsuData data : this.makuatsuDataList) {
+            makuatsuData newData = new makuatsuData();
+            newData.setMakuatsu(data.getMakuatsu());
+            newData.setStartVal(data.getStartVal());
+            newData.setStartTextRendered(data.isStartTextRendered());
+            newData.setStartTextMaxLength(data.getStartTextMaxLength());
+            newData.setStartTextBackColor(data.getStartTextBackColor());
+            newData.setStartLabelRendered(data.isStartLabelRendered());
+            newData.setEndVal(data.getEndVal());
+            newData.setEndTextRendered(data.isEndTextRendered());
+            newData.setEndTextMaxLength(data.getEndTextMaxLength());
+            newData.setEndTextBackColor(data.getEndTextBackColor());
+            newData.setEndLabelRendered(data.isEndLabelRendered());
+            newList.add(newData);
+        }
 
+        cloneModel.setMakuatsuDataList(newList);
+        return cloneModel;
     }
 
+    /**
+     * 膜厚データリスト
+     */
     private List<makuatsuData> makuatsuDataList = new ArrayList<>();
 
     /**
+     * 膜厚データリスト
+     *
      * @return the makuatsuDataList
      */
     public List<makuatsuData> getMakuatsuDataList() {
@@ -40,12 +71,17 @@ public class GXHDO101C005Model {
     }
 
     /**
+     * 膜厚データリスト
+     *
      * @param makuatsuDataList the makuatsuDataList to set
      */
     public void setMakuatsuDataList(List<makuatsuData> makuatsuDataList) {
         this.makuatsuDataList = makuatsuDataList;
     }
 
+    /**
+     * 膜厚データ
+     */
     public class makuatsuData {
 
         /**
@@ -69,6 +105,11 @@ public class GXHDO101C005Model {
         private String startTextMaxLength;
 
         /**
+         * スタート項目_テキスト(BackGround)
+         */
+        private String startTextBackColor;
+
+        /**
          * スタート項目_ラベル(Rendered)
          */
         private boolean startLabelRendered;
@@ -87,6 +128,11 @@ public class GXHDO101C005Model {
          * エンド項目_テキスト(MaxLength)
          */
         private String endTextMaxLength;
+
+        /**
+         * エンド項目_テキスト(BackGround)
+         */
+        private String endTextBackColor;
 
         /**
          * エンド項目_ラベル(Rendered)
@@ -166,6 +212,24 @@ public class GXHDO101C005Model {
         }
 
         /**
+         * スタート項目_テキスト(BackGround)
+         *
+         * @return the startTextBackColor
+         */
+        public String getStartTextBackColor() {
+            return startTextBackColor;
+        }
+
+        /**
+         * スタート項目_テキスト(BackGround)
+         *
+         * @param startTextBackColor the startTextBackColor to set
+         */
+        public void setStartTextBackColor(String startTextBackColor) {
+            this.startTextBackColor = startTextBackColor;
+        }
+
+        /**
          * スタート項目_ラベル(Rendered)
          *
          * @return the startLabelRendered
@@ -235,6 +299,24 @@ public class GXHDO101C005Model {
          */
         public void setEndTextMaxLength(String endTextMaxLength) {
             this.endTextMaxLength = endTextMaxLength;
+        }
+
+        /**
+         * エンド項目_テキスト(BackGround)
+         *
+         * @return the endTextBackColor
+         */
+        public String getEndTextBackColor() {
+            return endTextBackColor;
+        }
+
+        /**
+         * エンド項目_テキスト(BackGround)
+         *
+         * @param endTextBackColor the endTextBackColor to set
+         */
+        public void setEndTextBackColor(String endTextBackColor) {
+            this.endTextBackColor = endTextBackColor;
         }
 
         /**

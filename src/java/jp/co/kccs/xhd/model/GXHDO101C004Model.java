@@ -1,7 +1,7 @@
 /*
  * Copyright 2018 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
-package jp.co.kccs.xhd.db.model;
+package jp.co.kccs.xhd.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,18 +19,36 @@ import java.util.List;
  * ===============================================================================<br>
  */
 /**
- * GXHDO101C001Model(膜厚(SPS)サブ画面用)のモデルクラスです。
+ * GXHDO101C004Model(膜厚(RSUS)サブ画面用)のモデルクラスです。
  *
  * @author SYSNAVI K.Hisanaga
  * @since 2018/12/04
  */
-public class GXHDO101C001Model {
+    public class GXHDO101C004Model implements Cloneable{
 
     /**
-     * コンストラクター
+     * クローン実装
+     *
+     * @return クローン
+     * @throws java.lang.CloneNotSupportedException
      */
-    public GXHDO101C001Model() {
+    @Override
+    public GXHDO101C004Model clone() throws CloneNotSupportedException {
+        GXHDO101C004Model cloneModel = (GXHDO101C004Model) super.clone();
+        List<GXHDO101C004Model.makuatsuData> newList = new ArrayList();
+        for (GXHDO101C004Model.makuatsuData data : this.makuatsuDataList) {
+            GXHDO101C004Model.makuatsuData newData = new GXHDO101C004Model.makuatsuData();
+            newData.setMakuatsu(data.getMakuatsu());
+            newData.setStartVal(data.getStartVal());
+            newData.setStartTextRendered(data.isStartTextRendered());
+            newData.setStartTextMaxLength(data.getStartTextMaxLength());
+            newData.setStartTextBackColor(data.getStartTextBackColor());
+            newData.setStartLabelRendered(data.isStartLabelRendered());
+            newList.add(newData);
+        }
 
+        cloneModel.setMakuatsuDataList(newList);
+        return cloneModel;
     }
 
     /**
@@ -39,8 +57,7 @@ public class GXHDO101C001Model {
     private List<makuatsuData> makuatsuDataList = new ArrayList<>();
 
     /**
-     * 膜厚データリスト
-     *
+     * 帳票データリスト
      * @return the makuatsuDataList
      */
     public List<makuatsuData> getMakuatsuDataList() {
@@ -49,7 +66,6 @@ public class GXHDO101C001Model {
 
     /**
      * 膜厚データリスト
-     *
      * @param makuatsuDataList the makuatsuDataList to set
      */
     public void setMakuatsuDataList(List<makuatsuData> makuatsuDataList) {
@@ -82,29 +98,14 @@ public class GXHDO101C001Model {
         private String startTextMaxLength;
 
         /**
+         * スタート項目_テキスト(BackGround)
+         */
+        private String startTextBackColor;
+
+        /**
          * スタート項目_ラベル(Rendered)
          */
         private boolean startLabelRendered;
-
-        /**
-         * エンド項目(値)
-         */
-        private String endVal;
-
-        /**
-         * エンド項目_テキスト(Rendered)
-         */
-        private boolean endTextRendered;
-
-        /**
-         * エンド項目_テキスト(MaxLength)
-         */
-        private String endTextMaxLength;
-
-        /**
-         * エンド項目_ラベル(Rendered)
-         */
-        private boolean endLabelRendered;
 
         /**
          * 膜厚
@@ -177,6 +178,23 @@ public class GXHDO101C001Model {
         public void setStartTextMaxLength(String startTextMaxLength) {
             this.startTextMaxLength = startTextMaxLength;
         }
+        /**
+         * スタート項目_テキスト(BackGround)
+         *
+         * @return the startTextBackColor
+         */
+        public String getStartTextBackColor() {
+            return startTextBackColor;
+        }
+
+        /**
+         * スタート項目_テキスト(BackGround)
+         *
+         * @param startTextBackColor the startTextBackColor to set
+         */
+        public void setStartTextBackColor(String startTextBackColor) {
+            this.startTextBackColor = startTextBackColor;
+        }
 
         /**
          * スタート項目_ラベル(Rendered)
@@ -196,77 +214,6 @@ public class GXHDO101C001Model {
             this.startLabelRendered = startLabelRendered;
         }
 
-        /**
-         * エンド項目(値)
-         *
-         * @return the endVal
-         */
-        public String getEndVal() {
-            return endVal;
-        }
-
-        /**
-         * エンド項目(値)
-         *
-         * @param endVal the endVal to set
-         */
-        public void setEndVal(String endVal) {
-            this.endVal = endVal;
-        }
-
-        /**
-         * エンド項目_テキスト(Rendered)
-         *
-         * @return the endTextRendered
-         */
-        public boolean isEndTextRendered() {
-            return endTextRendered;
-        }
-
-        /**
-         * エンド項目_テキスト(Rendered)
-         *
-         * @param endTextRendered the endTextRendered to set
-         */
-        public void setEndTextRendered(boolean endTextRendered) {
-            this.endTextRendered = endTextRendered;
-        }
-
-        /**
-         * エンド項目_テキスト(MaxLength)
-         *
-         * @return the endTextMaxLength
-         */
-        public String getEndTextMaxLength() {
-            return endTextMaxLength;
-        }
-
-        /**
-         * エンド項目_テキスト(MaxLength)
-         *
-         * @param endTextMaxLength the endTextMaxLength to set
-         */
-        public void setEndTextMaxLength(String endTextMaxLength) {
-            this.endTextMaxLength = endTextMaxLength;
-        }
-
-        /**
-         * エンド項目_ラベル(Rendered)
-         *
-         * @return the endLabelRendered
-         */
-        public boolean isEndLabelRendered() {
-            return endLabelRendered;
-        }
-
-        /**
-         * エンド項目_ラベル(Rendered)
-         *
-         * @param endLabelRendered the endLabelRendered to set
-         */
-        public void setEndLabelRendered(boolean endLabelRendered) {
-            this.endLabelRendered = endLabelRendered;
-        }
     }
 
 }

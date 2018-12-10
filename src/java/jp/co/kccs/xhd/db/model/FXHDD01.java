@@ -168,6 +168,11 @@ public class FXHDD01 {
      * 入力値
      */
     private String value;
+    /**
+     * 入力項目背景色(通常)
+     */
+    private String backColorInputDefault;
+    
     
     public FXHDD01() {
         
@@ -703,6 +708,22 @@ public class FXHDD01 {
     public void setValue(String value) {
         this.value = value;
 		this.checkByte();
+    }
+
+    /**
+     * 入力項目背景色(通常)
+     * @return the backColorInputDefault
+     */
+    public String getBackColorInputDefault() {
+        return backColorInputDefault;
+    }
+
+    /**
+     * 入力項目背景色(通常)
+     * @param backColorInputDefault the backColorInputDefault to set
+     */
+    public void setBackColorInputDefault(String backColorInputDefault) {
+        this.backColorInputDefault = backColorInputDefault;
     }
     
     /**

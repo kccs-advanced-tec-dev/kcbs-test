@@ -6,10 +6,11 @@ package jp.co.kccs.xhd.pxhdo901;
 import java.util.List;
 import javax.sql.DataSource;
 import jp.co.kccs.xhd.db.model.FXHDD01;
-import jp.co.kccs.xhd.db.model.GXHDO101C001Model;
-import jp.co.kccs.xhd.db.model.GXHDO101C002Model;
-import jp.co.kccs.xhd.db.model.GXHDO101C003Model;
-import jp.co.kccs.xhd.db.model.GXHDO101C004Model;
+import jp.co.kccs.xhd.model.GXHDO101C001Model;
+import jp.co.kccs.xhd.model.GXHDO101C002Model;
+import jp.co.kccs.xhd.model.GXHDO101C003Model;
+import jp.co.kccs.xhd.model.GXHDO101C004Model;
+import jp.co.kccs.xhd.model.GXHDO101C005Model;
 
 /**
  * ===============================================================================<br>
@@ -96,34 +97,15 @@ public class ProcessData {
      * ユーザー認証パラメータ
      */
     private String userAuthParam;
-
-    //******************************************************************
     /**
      * コールバックパラメータ
      */
     private String collBackParam;
-
     /**
-     * 膜厚(SPS)サブ画面用データ
+     * チェック無しボタンIDリスト(設定しているIDについてはエラー処理の背景色をクリアしない)
      */
-    private GXHDO101C001Model gxhdo101c001Model;
-
-    /**
-     * PTN距離Xサブ画面用データ
-     */
-    private GXHDO101C002Model gxhdo101c002Model;
-
-    /**
-     * PTN距離Yサブ画面用データ
-     */
-    private GXHDO101C003Model gxhdo101c003Model;
-
-    /**
-     * 膜厚(RSUS)サブ画面用データ
-     */
-    private GXHDO101C004Model gxhdo101c004Model;
-
-    //***********************************************************************************************************
+    private List<String> noCheckButtonId;
+    
     /**
      * 処理名
      *
@@ -414,76 +396,20 @@ public class ProcessData {
     }
 
     /**
-     * 膜厚(SPS)サブ画面用データ
-     *
-     * @return the gxhdo101c001Model
+     * チェック無しボタンIDリスト
+     * @return the noCheckButtonId
      */
-    public GXHDO101C001Model getGxhdo101c001Model() {
-        return gxhdo101c001Model;
+    public List<String> getNoCheckButtonId() {
+        return noCheckButtonId;
     }
 
     /**
-     * 膜厚(SPS)サブ画面用データ
-     *
-     * @param gxhdo101c001Model the gxhdo101c001Model to set
+     * チェック無しボタンIDリスト
+     * @param noCheckButtonId the noCheckButtonId to set
      */
-    public void setGxhdo101c001Model(GXHDO101C001Model gxhdo101c001Model) {
-        this.gxhdo101c001Model = gxhdo101c001Model;
+    public void setNoCheckButtonId(List<String> noCheckButtonId) {
+        this.noCheckButtonId = noCheckButtonId;
     }
-
-    /**
-     * PTN距離Xサブ画面用データ
-     *
-     * @return the gxhdo101c002Model
-     */
-    public GXHDO101C002Model getGxhdo101c002Model() {
-        return gxhdo101c002Model;
-    }
-
-    /**
-     * PTN距離Xサブ画面用データ
-     *
-     * @param gxhdo101c002Model the gxhdo101c002Model to set
-     */
-    public void setGxhdo101c002Model(GXHDO101C002Model gxhdo101c002Model) {
-        this.gxhdo101c002Model = gxhdo101c002Model;
-    }
-
-    /**
-     * PTN距離Yサブ画面用データ
-     *
-     * @return the gxhdo101c003Model
-     */
-    public GXHDO101C003Model getGxhdo101c003Model() {
-        return gxhdo101c003Model;
-    }
-
-    /**
-     * PTN距離Yサブ画面用データ
-     *
-     * @param gxhdo101c003Model the gxhdo101c003Model to set
-     */
-    public void setGxhdo101c003Model(GXHDO101C003Model gxhdo101c003Model) {
-        this.gxhdo101c003Model = gxhdo101c003Model;
-    }
-
-    /**
-     * 膜厚(RSUS)サブ画面用データ
-     *
-     * @return the gxhdo101c004Model
-     */
-    public GXHDO101C004Model getGxhdo101c004Model() {
-        return gxhdo101c004Model;
-    }
-
-    /**
-     * 膜厚(RSUS)サブ画面用データ
-     *
-     * @param gxhdo101c004Model the gxhdo101c004Model to set
-     */
-    public void setGxhdo101c004Model(GXHDO101C004Model gxhdo101c004Model) {
-        this.gxhdo101c004Model = gxhdo101c004Model;
-    }
-
     //******************************************************************
-}
+    
+ }

@@ -80,12 +80,21 @@ public class GXHDO101B003 implements IFormLogic {
             processData = setInitDate(processData);
 
             //******************************************************************************************
-            // 膜厚(SPS)サブ画面初期表示データ設定
-            //processData.setItemListGXHDO101C001(GXHDO101C001Logic.createItemListGXHDO101C001Model("")); 
-            processData.setGxhdo101c004Model(GXHDO101C004Logic.createGXHDO101C004Model(""));
+            // 膜厚(RSUS)サブ画面初期表示データ設定
+            GXHDO101C004 beanGXHDO101C004 = (GXHDO101C004) getSubFormBean("GXHDO101C004");
+            beanGXHDO101C004.setGxhdO101c004Model(GXHDO101C004Logic.createGXHDO101C004Model(""));
 
+            // 印刷幅画面初期表示データ設定
+            GXHDO101C005 beanGXHDO101C005 = (GXHDO101C005) getSubFormBean("GXHDO101C005");
+            beanGXHDO101C005.setGxhdO101c005Model(GXHDO101C005Logic.createGXHDO101C005Model(""));
+
+            //サブ画面呼出しをチェック処理なし(処理時にエラーの背景色を戻さない機能として登録)
+            processData.setNoCheckButtonId(Arrays.asList(
+                    GXHDO101B003Const.BTN_UP_MAKUATSU_SUBGAMEN,
+                    GXHDO101B003Const.BTN_UP_PRINT_WIDTH,
+                    GXHDO101B003Const.BTN_DOWN_MAKUATSU_SUBGAMEN,
+                    GXHDO101B003Const.BTN_DOWN_PRINT_WIDTH));
             //******************************************************************************************
-
             // ボタンの活性・非活性を設定
             processData = this.setButtonEnable(processData, "initial");
 
@@ -125,13 +134,15 @@ public class GXHDO101B003 implements IFormLogic {
                         GXHDO101B003Const.BTN_DOWN_SHUSEI,
                         GXHDO101B003Const.BTN_DOWN_TOUROKU,
                         GXHDO101B003Const.BTN_DOWN_WIP_TORIKOMI,
+                        GXHDO101B003Const.BTN_DOWN_PRINT_WIDTH,
                         GXHDO101B003Const.BTN_UP_KARI_TOUROKU,
                         GXHDO101B003Const.BTN_UP_KENSAKU,
                         GXHDO101B003Const.BTN_UP_MAKUATSU_SUBGAMEN,
                         GXHDO101B003Const.BTN_UP_SAKUJO,
                         GXHDO101B003Const.BTN_UP_SHUSEI,
                         GXHDO101B003Const.BTN_UP_TOUROKU,
-                        GXHDO101B003Const.BTN_UP_WIP_TORIKOMI
+                        GXHDO101B003Const.BTN_UP_WIP_TORIKOMI,
+                        GXHDO101B003Const.BTN_UP_PRINT_WIDTH
                 ));
 //                inactiveIdList.addAll(Arrays.asList("syosei_shuusei_Top", "syosei_shuusei_Bottom",
 //                        "syosei_sakujo_Top", "syosei_sakujo_Bottom"));
@@ -171,7 +182,12 @@ public class GXHDO101B003 implements IFormLogic {
             // 膜圧
             case GXHDO101B003Const.BTN_UP_MAKUATSU_SUBGAMEN:
             case GXHDO101B003Const.BTN_DOWN_MAKUATSU_SUBGAMEN:
-                method = "makuatsuOpen";
+                method = "openMakuatsu";
+                break;
+            // 印刷幅
+            case GXHDO101B003Const.BTN_UP_PRINT_WIDTH:
+            case GXHDO101B003Const.BTN_DOWN_PRINT_WIDTH:
+                method = "openPrintWidth";
                 break;
             // 仮登録
             case GXHDO101B003Const.BTN_UP_KARI_TOUROKU:
@@ -379,40 +395,54 @@ public class GXHDO101B003 implements IFormLogic {
     /**
      * 膜厚(サブ画面Open)
      *
-     * @param processData
-     * @return
+     * @param processData 処理制御データ
+     * @return 処理制御データ
      */
-    public ProcessData makuatsuOpen(ProcessData processData) {
-        processData.setProcessName("makuatsuOpen");
-        processData.setCollBackParam("gxhdo101c004");
-        processData.setMethod("");
-        return processData;
+    public ProcessData openMakuatsu(ProcessData processData) {
+        try {
+            processData.setProcessName("openMakuatsu");
+            // コールバックパラメータにてサブ画面起動用の値を設定
+            processData.setCollBackParam("gxhdo101c004");
+            processData.setMethod("");
+
+            // 膜厚(RSUS)の現在の値をサブ画面に設定
+            GXHDO101C004 beanGXHDO101C004 = (GXHDO101C004) getSubFormBean("GXHDO101C004");
+            beanGXHDO101C004.setGxhdO101c004ModelView(beanGXHDO101C004.getGxhdO101c004Model().clone());
+
+            return processData;
+        } catch (CloneNotSupportedException ex) {
+
+            ErrUtil.outputErrorLog("CloneNotSupportedException発生", ex, LOGGER);
+            processData = createRegistDataErrorMessage(processData);
+            return processData;
+
+        }
     }
 
     /**
-     * PTN距離X(サブ画面Open)
+     * 印刷幅(サブ画面Open)
      *
-     * @param processData
-     * @return
+     * @param processData 処理制御データ
+     * @return 処理制御データ
      */
-    public ProcessData ptnKyoriXOpen(ProcessData processData) {
-        processData.setProcessName("ptnKyoriXOpen");
-        processData.setCollBackParam("gxhdo101c002");
-        processData.setMethod("");
-        return processData;
-    }
+    public ProcessData openPrintWidth(ProcessData processData) {
+        try {
+            processData.setProcessName("openPrintWidth");
+            // コールバックパラメータにてサブ画面起動用の値を設定
+            processData.setCollBackParam("gxhdo101c005");
+            processData.setMethod("");
 
-    /**
-     * PTN距離Y(サブ画面Open)
-     *
-     * @param processData
-     * @return
-     */
-    public ProcessData ptnKyoriYOpen(ProcessData processData) {
-        processData.setProcessName("ptnKyoriYOpen");
-        processData.setCollBackParam("gxhdo101c003");
-        processData.setMethod("");
-        return processData;
+            // 印刷幅の現在の値をサブ画面に設定
+            GXHDO101C005 beanGXHDO101C005 = (GXHDO101C005) getSubFormBean("GXHDO101C005");
+            beanGXHDO101C005.setGxhdO101c005ModelView(beanGXHDO101C005.getGxhdO101c005Model().clone());
+            return processData;
+        } catch (CloneNotSupportedException ex) {
+
+            ErrUtil.outputErrorLog("CloneNotSupportedException発生", ex, LOGGER);
+            processData = createRegistDataErrorMessage(processData);
+            return processData;
+
+        }
     }
 
     /**
@@ -1305,5 +1335,36 @@ public class GXHDO101B003 implements IFormLogic {
             }
         }
         return processData;
+    }
+
+    /**
+     * サブ画面のBean情報を取得
+     *
+     * @param formId フォームID
+     * @return サブ画面情報
+     */
+    public Object getSubFormBean(String formId) {
+
+        Object returnBean = null;
+
+        switch (formId) {
+            // 膜厚(RSUS)
+            case "GXHDO101C004":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO101C004");
+                break;
+
+            // 印刷幅
+            case "GXHDO101C005":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO101C005");
+                break;
+
+            default:
+                break;
+        }
+        return returnBean;
     }
 }

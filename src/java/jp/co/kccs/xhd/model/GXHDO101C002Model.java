@@ -1,7 +1,7 @@
 /*
  * Copyright 2018 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
-package jp.co.kccs.xhd.db.model;
+package jp.co.kccs.xhd.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,13 +24,36 @@ import java.util.List;
  * @author SYSNAVI K.Hisanaga
  * @since 2018/12/04
  */
-public class GXHDO101C002Model {
+public class GXHDO101C002Model implements Cloneable {
 
     /**
-     * コンストラクター
+     * クローン実装
+     *
+     * @return クローン
+     * @throws java.lang.CloneNotSupportedException
      */
-    public GXHDO101C002Model() {
+    @Override
+    public GXHDO101C002Model clone() throws CloneNotSupportedException {
+        GXHDO101C002Model cloneModel = (GXHDO101C002Model) super.clone();
+        List<GXHDO101C002Model.ptnKyoriXData> newList = new ArrayList();
+        for (GXHDO101C002Model.ptnKyoriXData data : this.ptnKyoriXDataList) {
+            GXHDO101C002Model.ptnKyoriXData newData = new GXHDO101C002Model.ptnKyoriXData();
+            newData.setPtnKyoriX(data.ptnKyoriX);
+            newData.setStartVal(data.getStartVal());
+            newData.setStartTextRendered(data.isStartTextRendered());
+            newData.setStartTextMaxLength(data.getStartTextMaxLength());
+            newData.setStartTextBackColor(data.getStartTextBackColor());
+            newData.setStartLabelRendered(data.isStartLabelRendered());
+            newData.setEndVal(data.getEndVal());
+            newData.setEndTextRendered(data.isEndTextRendered());
+            newData.setEndTextMaxLength(data.getEndTextMaxLength());
+            newData.setEndTextBackColor(data.getEndTextBackColor());
+            newData.setEndLabelRendered(data.isEndLabelRendered());
+            newList.add(newData);
+        }
 
+        cloneModel.setPtnKyoriXDataList(newList);
+        return cloneModel;
     }
 
     /**
@@ -40,6 +63,7 @@ public class GXHDO101C002Model {
 
     /**
      * PTN距離Xデータリスト
+     *
      * @return the ptnKyoriXDataList
      */
     public List<ptnKyoriXData> getPtnKyoriXDataList() {
@@ -48,6 +72,7 @@ public class GXHDO101C002Model {
 
     /**
      * PTN距離Xデータリスト
+     *
      * @param ptnKyoriXDataList the ptnKyoriXDataList to set
      */
     public void setPtnKyoriXDataList(List<ptnKyoriXData> ptnKyoriXDataList) {
@@ -80,6 +105,11 @@ public class GXHDO101C002Model {
         private String startTextMaxLength;
 
         /**
+         * スタート項目_テキスト(BackGround)
+         */
+        private String startTextBackColor;
+
+        /**
          * スタート項目_ラベル(Rendered)
          */
         private boolean startLabelRendered;
@@ -98,6 +128,11 @@ public class GXHDO101C002Model {
          * エンド項目_テキスト(MaxLength)
          */
         private String endTextMaxLength;
+
+        /**
+         * エンド項目_テキスト(BackGround)
+         */
+        private String endTextBackColor;
 
         /**
          * エンド項目_ラベル(Rendered)
@@ -177,6 +212,24 @@ public class GXHDO101C002Model {
         }
 
         /**
+         * スタート項目_テキスト(BackGround)
+         *
+         * @return the startTextBackColor
+         */
+        public String getStartTextBackColor() {
+            return startTextBackColor;
+        }
+
+        /**
+         * スタート項目_テキスト(BackGround)
+         *
+         * @param startTextBackColor the startTextBackColor to set
+         */
+        public void setStartTextBackColor(String startTextBackColor) {
+            this.startTextBackColor = startTextBackColor;
+        }
+
+        /**
          * スタート項目_ラベル(Rendered)
          *
          * @return the startLabelRendered
@@ -246,6 +299,24 @@ public class GXHDO101C002Model {
          */
         public void setEndTextMaxLength(String endTextMaxLength) {
             this.endTextMaxLength = endTextMaxLength;
+        }
+
+        /**
+         * エンド項目_テキスト(BackGround)
+         *
+         * @return the endTextBackColor
+         */
+        public String getEndTextBackColor() {
+            return endTextBackColor;
+        }
+
+        /**
+         * エンド項目_テキスト(BackGround)
+         *
+         * @param endTextBackColor the endTextBackColor to set
+         */
+        public void setEndTextBackColor(String endTextBackColor) {
+            this.endTextBackColor = endTextBackColor;
         }
 
         /**

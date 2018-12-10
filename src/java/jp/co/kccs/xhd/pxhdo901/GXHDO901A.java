@@ -8,7 +8,6 @@ import java.lang.reflect.Method;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
-import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -31,11 +30,6 @@ import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.db.model.FXHDD02;
 import jp.co.kccs.xhd.db.model.FXHDM02;
 import jp.co.kccs.xhd.db.model.FXHDM06;
-import jp.co.kccs.xhd.db.model.GXHDO101C001Model;
-import jp.co.kccs.xhd.db.model.GXHDO101C002Model;
-import jp.co.kccs.xhd.db.model.GXHDO101C003Model;
-import jp.co.kccs.xhd.db.model.GXHDO101C004Model;
-import jp.co.kccs.xhd.db.model.GXHDO101C005Model;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.StringUtil;
@@ -63,12 +57,11 @@ import org.primefaces.context.RequestContext;
  * <br>
  * ===============================================================================<br>
  */
-
 /**
  * GXHDO901A(品質DB画面共通)
- * 
+ *
  * @author KCSS K.Jo
- * @since  2018/11/13
+ * @since 2018/11/13
  */
 @Named
 @ViewScoped
@@ -76,7 +69,7 @@ public class GXHDO901A implements Serializable {
 
     private static final Logger LOGGER = Logger.getLogger(GXHDO901A.class.getName());
     private static final int LOTNO_ITEMNO = 100;
-    
+
     /**
      * DataSource(DocumentServer)
      */
@@ -92,18 +85,18 @@ public class GXHDO901A implements Serializable {
      */
     @Resource(mappedName = "jdbc/wip")
     private transient DataSource dataSourceWip;
-    
+
     /**
      * パラメータ操作(DB)
      */
     @Inject
     private ParameterEJB parameterEJB;
-    
+
     /**
      * 起動時処理
      */
     private String onLoadProcess = "";
-    
+
     /**
      * タイトル情報
      */
@@ -121,7 +114,7 @@ public class GXHDO901A implements Serializable {
      */
     private List<FXHDM06> checkListHDM06;
     /**
-    /**
+     * /**
      * 項目データ
      */
     private List<FXHDD01> itemList;
@@ -141,41 +134,12 @@ public class GXHDO901A implements Serializable {
      * ユーザー認証：パスワード
      */
     private String authPassword;
-    
-    
-    //***********************************************************************************************************
+
     /**
-     * 膜厚(SPS)サブ画面用データ
+     * チェック無しボタンIDリスト(設定しているIDについてはエラー処理の背景色をクリアしない)
      */
-    private GXHDO101C001Model gxhdO101c001Model;
-    
-    /**
-     * PTN距離Xサブ画面用データ
-     */
-    private GXHDO101C002Model gxhdO101c002Model;
-    
-    /**
-     * PTN距離Yサブ画面用データ
-     */
-    private GXHDO101C003Model gxhdO101c003Model;
-    
-    /**
-     * 膜厚(RSUS)サブ画面用データ
-     */
-    private GXHDO101C004Model gxhdO101c004Model;
-    
-    /**
-     * 印刷幅サブ画面用データ
-     */
-    private GXHDO101C005Model gxhdO101c005Model;
-    //***********************************************************************************************************
-    
-    
-    
-    
-    
-    
-    
+    private List<String> noCheckButtonId;
+
     /**
      * コンストラクタ
      */
@@ -184,6 +148,7 @@ public class GXHDO901A implements Serializable {
 
     /**
      * 起動時処理
+     *
      * @return the onLoadProcess
      */
     public String getOnLoadProcess() {
@@ -192,22 +157,25 @@ public class GXHDO901A implements Serializable {
 
     /**
      * 起動時処理
+     *
      * @param onLoadProcess the onLoadProcess to set
      */
     public void setOnLoadProcess(String onLoadProcess) {
         this.onLoadProcess = onLoadProcess;
     }
-    
+
     /**
      * タイトル情報
+     *
      * @return タイトル情報
      */
     public FXHDM02 getTitleInfo() {
         return titleInfo;
     }
-    
+
     /**
      * 画面上部ボタン
+     *
      * @return the buttonListTop
      */
     public List<FXHDD02> getButtonListTop() {
@@ -216,6 +184,7 @@ public class GXHDO901A implements Serializable {
 
     /**
      * 画面下部ボタン
+     *
      * @return the buttonListBottom
      */
     public List<FXHDD02> getButtonListBottom() {
@@ -224,6 +193,7 @@ public class GXHDO901A implements Serializable {
 
     /**
      * 項目データ
+     *
      * @return the itemList
      */
     public List<FXHDD01> getItemList() {
@@ -232,6 +202,7 @@ public class GXHDO901A implements Serializable {
 
     /**
      * 処理データ
+     *
      * @return the processData
      */
     public ProcessData getProcessData() {
@@ -240,6 +211,7 @@ public class GXHDO901A implements Serializable {
 
     /**
      * 警告ダイアログ
+     *
      * @return the warnDialogRendered
      */
     public boolean getWarnDialogRendered() {
@@ -248,6 +220,7 @@ public class GXHDO901A implements Serializable {
 
     /**
      * 入力項目表示有無
+     *
      * @return true or false
      */
     public boolean getItemRendered() {
@@ -260,6 +233,7 @@ public class GXHDO901A implements Serializable {
 
     /**
      * ユーザー認証：ユーザー
+     *
      * @return the authUser
      */
     public String getAuthUser() {
@@ -268,6 +242,7 @@ public class GXHDO901A implements Serializable {
 
     /**
      * ユーザー認証：ユーザー
+     *
      * @param authUser the authUser to set
      */
     public void setAuthUser(String authUser) {
@@ -276,6 +251,7 @@ public class GXHDO901A implements Serializable {
 
     /**
      * ユーザー認証：パスワード
+     *
      * @return the authPassword
      */
     public String getAuthPassword() {
@@ -284,93 +260,31 @@ public class GXHDO901A implements Serializable {
 
     /**
      * ユーザー認証：パスワード
+     *
      * @param authPassword the authPassword to set
      */
     public void setAuthPassword(String authPassword) {
         this.authPassword = authPassword;
     }
 
-    //***********************************************************************************************************
     /**
-     * 膜厚(SPS)サブ画面用データ
-     * @return the gxhdO101c001Model
+     * チェック無しボタンIDリスト
+     *
+     * @return the noCheckButtonId
      */
-    public GXHDO101C001Model getGxhdO101c001Model() {
-        return gxhdO101c001Model;
+    public List<String> getNoCheckButtonId() {
+        return noCheckButtonId;
     }
 
     /**
-     * 膜厚(SPS)サブ画面用データ
-     * @param gxhdO101c001Model the gxhdO101c001Model to set
+     * チェック無しボタンIDリスト
+     *
+     * @param noCheckButtonId the noCheckButtonId to set
      */
-    public void setGxhdO101c001Model(GXHDO101C001Model gxhdO101c001Model) {
-        this.gxhdO101c001Model = gxhdO101c001Model;
+    public void setNoCheckButtonId(List<String> noCheckButtonId) {
+        this.noCheckButtonId = noCheckButtonId;
     }
 
-    /**
-     * PTN距離Xサブ画面用データ
-     * @return the gxhdO101c002Model
-     */
-    public GXHDO101C002Model getGxhdO101c002Model() {
-        return gxhdO101c002Model;
-    }
-
-    /**
-     * PTN距離Xサブ画面用データ
-     * @param gxhdO101c002Model the gxhdO101c002Model to set
-     */
-    public void setGxhdO101c002Model(GXHDO101C002Model gxhdO101c002Model) {
-        this.gxhdO101c002Model = gxhdO101c002Model;
-    }
-
-    /**
-     * PTN距離Yサブ画面用データ
-     * @return the gxhdO101c003Model
-     */
-    public GXHDO101C003Model getGxhdO101c003Model() {
-        return gxhdO101c003Model;
-    }
-
-    /**
-     * PTN距離Yサブ画面用データ
-     * @param gxhdO101c003Model the gxhdO101c003Model to set
-     */
-    public void setGxhdO101c003Model(GXHDO101C003Model gxhdO101c003Model) {
-        this.gxhdO101c003Model = gxhdO101c003Model;
-    }
-
-    /**
-     * 膜厚(RSUS)サブ画面用データ
-     * @return the gxhdO101c004Model
-     */
-    public GXHDO101C004Model getGxhdO101c004Model() {
-        return gxhdO101c004Model;
-    }
-
-    /**
-     * 膜厚(RSUS)サブ画面用データ
-     * @param gxhdO101c004Model the gxhdO101c004Model to set
-     */
-    public void setGxhdO101c004Model(GXHDO101C004Model gxhdO101c004Model) {
-        this.gxhdO101c004Model = gxhdO101c004Model;
-    }
-
-    /**
-     * @return the gxhdO101c005Model
-     */
-    public GXHDO101C005Model getGxhdO101c005Model() {
-        return gxhdO101c005Model;
-    }
-
-    /**
-     * @param gxhdO101c005Model the gxhdO101c005Model to set
-     */
-    public void setGxhdO101c005Model(GXHDO101C005Model gxhdO101c005Model) {
-        this.gxhdO101c005Model = gxhdO101c005Model;
-    }
-    //***********************************************************************************************************
-
-    
     /**
      * 起動時処理
      */
@@ -378,54 +292,54 @@ public class GXHDO901A implements Serializable {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
         String login_user_name = (String) session.getAttribute("login_user_name");
-        
+
         if (null == login_user_name || "".equals(login_user_name)) {
             // セッションタイムアウト時はログイン画面に遷移
-            this.setOnLoadProcess("window.location.href = '" + externalContext.getRequestContextPath()  + "/faces/login.xhtml?faces-redirect=true';");
+            this.setOnLoadProcess("window.location.href = '" + externalContext.getRequestContextPath() + "/faces/login.xhtml?faces-redirect=true';");
             return;
         } else {
             this.setOnLoadProcess("");
         }
-        
+
         // 画面遷移パラメータ取得
         String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
         String formTitle = StringUtil.nullToBlank(session.getAttribute("formTitle"));
         String titleSetting = StringUtil.nullToBlank(session.getAttribute("titleSetting"));
-        
+
         // タイトル設定情報取得
         this.loadTitleSettings(titleSetting, formTitle);
-        
+
         // ボタン定義情報取得
         this.loadButtonSettings(formId);
-        
+
         // 項目定義情報取得
         this.loadItemSettings(formId);
-        
+
         // チェック処理情報取得
         this.loadCheckList(formId);
-        
+
         // 初期表示処理を実行する
         // 画面クラス名を取得
         String formClassName = StringUtil.nullToBlank(session.getAttribute("formClassName"));
-        
+
         // 画面クラスをロード
         IFormLogic formLogic = null;
         try {
             Class<?> formClass = Class.forName(formClassName);
-            formLogic = (IFormLogic)formClass.newInstance();
+            formLogic = (IFormLogic) formClass.newInstance();
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException ex) {
             ErrUtil.outputErrorLog("画面クラスのロードに失敗", ex, LOGGER);
             return;
         }
         //ロットNo初期表示設定
         String lotNo = StringUtil.nullToBlank(session.getAttribute("lotNo"));
-        for(int i=0;i<=this.itemList.size()-1;i++){
-            if(this.itemList.get(i).getItemNo() == LOTNO_ITEMNO){
+        for (int i = 0; i <= this.itemList.size() - 1; i++) {
+            if (this.itemList.get(i).getItemNo() == LOTNO_ITEMNO) {
                 this.itemList.get(i).setInputDefault(lotNo);
                 break;
             }
         }
-        
+
         // 処理データ生成
         ProcessData data = new ProcessData();
         data.setFormClassName(formClassName);
@@ -435,15 +349,16 @@ public class GXHDO901A implements Serializable {
         data.setDataSourceDocServer(this.dataSourceDocServer);
         data.setDataSourceQcdb(this.dataSourceQcdb);
         data.setDataSourceWip(this.dataSourceWip);
-        
+
         this.processData = data;
-        
+
         // 処理開始
         this.processMain();
     }
-    
+
     /**
      * ログアウトします。
+     *
      * @return ログイン用URL文字列
      */
     public String logOut() {
@@ -452,24 +367,26 @@ public class GXHDO901A implements Serializable {
         if (session != null) {
             try {
                 session.invalidate();
-            } catch(IllegalStateException e) {
+            } catch (IllegalStateException e) {
                 LOGGER.log(Level.SEVERE, null, e);
             }
         }
         // goto login
         return "/login.xhtml?faces-redirect=true";
     }
-    
+
     /**
      * メニュー画面遷移
-     * @return  メニュー遷移用URL文字列
+     *
+     * @return メニュー遷移用URL文字列
      */
     public String returnMenu() {
         return "/pxhdo012/gxhdo012a.xhtml?faces-redirect=true";
     }
-    
+
     /**
      * ユーザーマスタ検索
+     *
      * @param user 担当者コード
      * @return パスワード
      */
@@ -477,26 +394,27 @@ public class GXHDO901A implements Serializable {
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceDocServer);
             String sql = "SELECT password "
-                       + "FROM fxhbm01 WHERE user_name = ? ";
-            
+                    + "FROM fxhbm01 WHERE user_name = ? ";
+
             List<Object> params = new ArrayList<>();
             params.add(user);
-                      
+
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
             Map fxhbm01 = queryRunner.query(sql, new MapHandler(), params.toArray());
             if (null == fxhbm01 || fxhbm01.isEmpty()) {
                 return "";
             }
             return StringUtil.nullToBlank(fxhbm01.get("password"));
-            
+
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
             return "";
         }
     }
-    
+
     /**
      * ユーザーグループマスタ検索
+     *
      * @param user 担当者コード
      * @return ユーザーグループ
      */
@@ -504,29 +422,30 @@ public class GXHDO901A implements Serializable {
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceDocServer);
             String sql = "SELECT usergroup "
-                       + "FROM fxhbm02 WHERE user_name = ? ";
-            
+                    + "FROM fxhbm02 WHERE user_name = ? ";
+
             List<Object> params = new ArrayList<>();
             params.add(user);
-                      
+
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
             List fxhbm02 = queryRunner.query(sql, new MapListHandler(), params.toArray());
             if (null == fxhbm02 || fxhbm02.isEmpty()) {
                 return new ArrayList<>();
             }
-            return ((List<Map>)fxhbm02).stream()
+            return ((List<Map>) fxhbm02).stream()
                     .map(n -> n.get("usergroup").toString())
                     .filter(n -> !StringUtil.isEmpty(n))
                     .collect(Collectors.toList());
-            
+
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
             return new ArrayList<>();
         }
     }
-    
+
     /**
      * ログインユーザー権限チェック
+     *
      * @return 権限がある場合true
      */
     private boolean userAuthLogin() {
@@ -535,10 +454,10 @@ public class GXHDO901A implements Serializable {
         FacesContext facesContext = FacesContext.getCurrentInstance();
 
         String authParam = this.processData.getUserAuthParam();
-        
+
         String user = facesContext.getExternalContext().getUserPrincipal().getName();
         List<String> loginUserGroup = this.selectFxhbm02(user);
-        
+
         List<Parameter> paramListLoginUser = parameterEJB.findParameter(user, authParam);
         List<Parameter> paramListLoginUserGroup = new ArrayList<>();
         for (String group : loginUserGroup) {
@@ -549,7 +468,7 @@ public class GXHDO901A implements Serializable {
         }
         return true;
     }
-    
+
     /**
      * ユーザー認証チェック
      */
@@ -560,37 +479,38 @@ public class GXHDO901A implements Serializable {
 
         String authParam = this.processData.getUserAuthParam();
         String passWord = this.selectFxhbm01(this.authUser);
-        
-        if (StringUtil.isEmpty(passWord) || 
-            !passWord.toUpperCase().equals(this.getSha256(this.authPassword).toUpperCase())) {
+
+        if (StringUtil.isEmpty(passWord)
+                || !passWord.toUpperCase().equals(this.getSha256(this.authPassword).toUpperCase())) {
             // ユーザーが存在しない場合またはパスワード不一致の場合エラー終了
-            FacesMessage message = 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "権限が有りません。", null);
+            FacesMessage message
+                    = new FacesMessage(FacesMessage.SEVERITY_ERROR, "権限が有りません。", null);
             facesContext.addMessage(null, message);
             return;
         }
-        
+
         List<String> loginUserGroup = this.selectFxhbm02(this.authUser);
         List<Parameter> paramListUser = parameterEJB.findParameter(this.authUser, authParam);
         List<Parameter> paramListUserGroup = new ArrayList<>();
         for (String group : loginUserGroup) {
             paramListUserGroup.addAll(parameterEJB.findParameter(group, authParam));
         }
-        
+
         if (paramListUser.isEmpty() && paramListUserGroup.isEmpty()) {
             // 権限がない場合エラー終了
-            FacesMessage message = 
-                        new FacesMessage(FacesMessage.SEVERITY_ERROR, "権限が有りません。", null);
+            FacesMessage message
+                    = new FacesMessage(FacesMessage.SEVERITY_ERROR, "権限が有りません。", null);
             facesContext.addMessage(null, message);
             return;
         }
-        
+
         // 後続処理を実行
         this.processMain();
     }
-    
+
     /**
      * SHA-256変換
+     *
      * @param text 文字列
      * @return SHA-256変換後の文字列
      */
@@ -599,13 +519,13 @@ public class GXHDO901A implements Serializable {
             if (StringUtil.isEmpty(text)) {
                 return "";
             }
-            
+
             MessageDigest md = MessageDigest.getInstance("SHA-256");
             md.update(text.getBytes());
             byte[] cipher_byte = md.digest();
             StringBuilder sb = new StringBuilder(2 * cipher_byte.length);
-            for(byte b: cipher_byte) {
-                sb.append(String.format("%02x", b&0xff) );
+            for (byte b : cipher_byte) {
+                sb.append(String.format("%02x", b & 0xff));
             }
             return sb.toString();
         } catch (NoSuchAlgorithmException ex) {
@@ -613,15 +533,16 @@ public class GXHDO901A implements Serializable {
             return "";
         }
     }
-    
+
     /**
      * ボタン押下時処理
+     *
      * @param buttonId ボタンID
      */
     public void btnClick(String buttonId) {
         FacesContext facesContext = FacesContext.getCurrentInstance();
         this.warnDialogRendered = false;
-        
+
         // 画面ID、画面クラス名を取得
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
@@ -630,39 +551,42 @@ public class GXHDO901A implements Serializable {
 
         if (null == login_user_name || "".equals(login_user_name)) {
             // セッションタイムアウト時はログイン画面に遷移
-            this.setOnLoadProcess("window.location.href = '" + externalContext.getRequestContextPath()  + "/faces/login.xhtml?faces-redirect=true';");
+            this.setOnLoadProcess("window.location.href = '" + externalContext.getRequestContextPath() + "/faces/login.xhtml?faces-redirect=true';");
             return;
         }
-        
+
         // 画面クラスをロード
         IFormLogic formLogic = null;
         try {
             Class<?> formClass = Class.forName(formClassName);
-            formLogic = (IFormLogic)formClass.newInstance();
+            formLogic = (IFormLogic) formClass.newInstance();
         } catch (ClassNotFoundException | IllegalAccessException | InstantiationException ex) {
             ErrUtil.outputErrorLog("画面クラスのロードに失敗", ex, LOGGER);
             return;
         }
-        
+
         // ボタンに対応した処理メソッド名を取得
         String method = formLogic.convertButtonIdToMethod(buttonId);
         if ("error".equals(method)) {
-            FacesMessage message = 
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, "処理が登録されていません", null);
+            FacesMessage message
+                    = new FacesMessage(FacesMessage.SEVERITY_ERROR, "処理が登録されていません", null);
             facesContext.addMessage(null, message);
         }
+
+        // 背景色を元に戻す
+        this.clearBackColor(buttonId);
         
         //共通ﾁｪｯｸ
         String requireCheckErrorMessage = getCheckResult(buttonId);
 
         // エラーメッセージが設定されている場合、エラー出力のみ
         if (!StringUtil.isEmpty(requireCheckErrorMessage)) {
-            FacesMessage message = 
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, requireCheckErrorMessage, null);
+            FacesMessage message
+                    = new FacesMessage(FacesMessage.SEVERITY_ERROR, requireCheckErrorMessage, null);
             facesContext.addMessage(null, message);
             return;
         }
-        
+
         // 処理データ生成
         ProcessData data = new ProcessData();
         data.setFormClassName(formClassName);
@@ -672,44 +596,44 @@ public class GXHDO901A implements Serializable {
         data.setDataSourceDocServer(this.dataSourceDocServer);
         data.setDataSourceQcdb(this.dataSourceQcdb);
         data.setDataSourceWip(this.dataSourceWip);
-        
+
         this.processData = data;
-        
+
         // 処理開始
         this.processMain();
     }
-        
+
     /**
      * 警告ダイアログで「はい」が選択された場合の処理
      */
     public void processWarnOk() {
         IFormLogic formLogic = this.getProcessData().getFormLogic();
         String method = this.getProcessData().getMethod();
-        
+
         // 警告メッセージを削除して処理再開
         this.processData.setWarnMessage("");
         this.warnDialogRendered = false;
         this.processMain();
     }
-    
+
     /**
      * メイン処理
      */
     private void processMain() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
-        
+
         // エラーメッセージが設定されている場合、エラー出力のみ
         if (!StringUtil.isEmpty(this.processData.getErrorMessage())) {
-            FacesMessage message = 
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, this.processData.getErrorMessage(), null);
+            FacesMessage message
+                    = new FacesMessage(FacesMessage.SEVERITY_ERROR, this.processData.getErrorMessage(), null);
             facesContext.addMessage(null, message);
             return;
         }
-        
+
         // ユーザー認証が必要な場合
         if (this.processData.isRquireAuth()) {
             this.processData.setRquireAuth(false);
-            
+
             // ログインユーザーの権限チェックを実施する
             if (!this.userAuthLogin()) {
                 // 権限がない場合はユーザー認証画面を表示
@@ -718,28 +642,28 @@ public class GXHDO901A implements Serializable {
                 return;
             }
         }
-        
+
         // 警告メッセージが設定されている場合、ダイアログを表示する
         if (!StringUtil.isEmpty(this.processData.getWarnMessage())) {
             this.warnDialogRendered = true;
-            
+
             RequestContext context = RequestContext.getCurrentInstance();
             context.addCallbackParam("firstParam", "warning");
-            
+
             return;
         }
-        
+
         // 警告もエラーも存在しない場合、後続処理を実行して結果を反映する
         try {
             IFormLogic formLogic = this.processData.getFormLogic();
             String methodName = this.processData.getMethod();
-        
+
             Class<?> formClass = Class.forName(this.processData.getFormClassName());
             Method method = formClass.getMethod(methodName, ProcessData.class);
-            
+
             // 処理実行
-            ProcessData resultData = (ProcessData)method.invoke(formLogic, this.processData);
-                
+            ProcessData resultData = (ProcessData) method.invoke(formLogic, this.processData);
+
             if (!StringUtil.isEmpty(resultData.getMethod())) {
                 // 後続処理が定義されている場合は再起的に実行する
                 this.processData = resultData;
@@ -749,51 +673,32 @@ public class GXHDO901A implements Serializable {
                 this.itemList = resultData.getItemList();
                 // 情報メッセージが設定されていれば出力する
                 if (!StringUtils.isEmpty(this.processData.getInfoMessage())) {
-                    FacesMessage message = 
-                        new FacesMessage(FacesMessage.SEVERITY_INFO, this.processData.getInfoMessage(), null);
+                    FacesMessage message
+                            = new FacesMessage(FacesMessage.SEVERITY_INFO, this.processData.getInfoMessage(), null);
                     facesContext.addMessage(null, message);
                 }
-                
-                //***************************************************************************************************
-                // 膜厚(SPS)サブ画面用データ
-                if (resultData.getGxhdo101c001Model()!= null) {
-                    this.gxhdO101c001Model = resultData.getGxhdo101c001Model();
-                }
-                // PTN距離Xサブ画面用データ
-                if (resultData.getGxhdo101c002Model()!= null) {
-                    this.gxhdO101c002Model = resultData.getGxhdo101c002Model();
-                }
-                // PTN距離Yサブ画面用データ
-                if (resultData.getGxhdo101c003Model() != null) {
-                    this.gxhdO101c003Model = resultData.getGxhdo101c003Model();
-                }
-                
-                // 膜厚(RSUS)サブ画面用データ
-                if (resultData.getGxhdo101c004Model() != null) {
-                    this.gxhdO101c004Model = resultData.getGxhdo101c004Model();
-                }
-                
-                
+
                 // コールバックパラメータが設定されている場合はセットする。
                 if (!StringUtil.isEmpty(resultData.getCollBackParam())) {
                     RequestContext context = RequestContext.getCurrentInstance();
                     context.addCallbackParam("firstParam", resultData.getCollBackParam());
-                }
+ }
                 //***************************************************************************************************
-                
+
                 // ボタンの活性・非活性制御
                 this.setButtonEnabled(this.processData.getActiveButtonId(), this.processData.getInactiveButtonId());
                 // 処理制御データクリア
                 this.processData = new ProcessData();
             }
-            
+
         } catch (ReflectiveOperationException ex) {
             ErrUtil.outputErrorLog("画面クラスのロードに失敗", ex, LOGGER);
         }
     }
-    
+
     /**
      * ボタンの活性・非活性制御
+     *
      * @param activeId 活性にするボタンのID
      * @param inactiveId 非活性にするボタンのID
      */
@@ -828,18 +733,19 @@ public class GXHDO901A implements Serializable {
             }
         }
     }
-    
+
     /**
      * タイトル設定情報取得
-     * @param settingId 設定ID 
+     *
+     * @param settingId 設定ID
      * @param formTitle 画面タイトル
      */
     private void loadTitleSettings(String settingId, String formTitle) {
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceDocServer);
             String sql = "SELECT setting_id, font_size, font_color, bg_color "
-                       + "FROM fxhdm02 WHERE setting_id = ? ";
-            
+                    + "FROM fxhdm02 WHERE setting_id = ? ";
+
             List<Object> params = new ArrayList<>();
             params.add(settingId);
 
@@ -848,14 +754,14 @@ public class GXHDO901A implements Serializable {
             mapping.put("font_size", "fontSize");
             mapping.put("font_color", "fontColor");
             mapping.put("bg_color", "bgColor");
-            
+
             BeanProcessor beanProcessor = new BeanProcessor(mapping);
             RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
             ResultSetHandler<List<FXHDM02>> beanHandler = new BeanListHandler(FXHDM02.class, rowProcessor);
-            
+
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
             List<FXHDM02> fXHDM02List = queryRunner.query(sql, beanHandler, params.toArray());
-            
+
             if (fXHDM02List.isEmpty()) {
                 this.titleInfo = new FXHDM02();
                 this.titleInfo.setFormName(formTitle);
@@ -863,49 +769,50 @@ public class GXHDO901A implements Serializable {
                 this.titleInfo = fXHDM02List.get(0);
                 this.titleInfo.setFormName(formTitle);
             }
-            
+
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("ボタン項目取得失敗", ex, LOGGER);
         }
     }
-    
+
     /**
      * 項目定義情報取得
+     *
      * @param formId 項目定義情報
      */
     private void loadItemSettings(String formId) {
         // ユーザーグループ取得
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
-        List<String> userGrpList = (List<String>)session.getAttribute("login_user_group");
-        
+        List<String> userGrpList = (List<String>) session.getAttribute("login_user_group");
+
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceDocServer);
             String sql = "SELECT hdd01.gamen_id, hdd01.item_id, hdd01.item_no, hdd01.input_item_mold, hdd01.label1, hdd01.label2, "
-                       + "hdd01.input_list, hdd01.input_default, hdd01.input_length, hdd01.input_length_dec, "
-                       + "hdm02_1.font_size AS font_size_1, hdm02_1.font_color AS font_color_1, hdm02_1.bg_color AS bg_color_1, "
-                       + "hdm04.sekkei_column sekkei_column, hcm02_4.font_size AS font_size_3, hcm02_4.font_color AS font_color_3, hcm02_4.bg_color AS bg_color_3, "
-                       + "CASE WHEN hdd01.label1_setting IS NULL THEN 'false' ELSE 'true' END AS render_1, "
-                       + "hdm02_2.font_size AS font_size_2, hdm02_2.font_color AS font_color_2, hdm02_2.bg_color AS bg_color_2, "
-                       + "CASE WHEN hdd01.label2_setting IS NULL THEN 'false' ELSE 'true' END AS render_2, "
-                       + "hdm02_3.font_size AS font_size_input, hdm02_3.font_color AS font_color_input, hdm02_3.bg_color AS bg_color_input, "
-                       + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '1' THEN 'false' ELSE 'true' END AS render_iput_text, "
-                       + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '2' THEN 'false' ELSE 'true' END AS render_iput_number, "
-                       + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '3' THEN 'false' ELSE 'true' END AS render_iput_date, "
-                       + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '4' THEN 'false' ELSE 'true' END AS render_iput_select, "
-                       + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '5' THEN 'false' ELSE 'true' END AS render_iput_radio, "
-                       + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '6' THEN 'false' ELSE 'true' END AS render_iput_time, "
-                       + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '7' THEN 'false' ELSE 'true' END AS render_output_label "
-                       + "FROM fxhdd01 hdd01 "
-                       + "LEFT JOIN fxhdm02 hdm02_1 ON (hdd01.label1_setting = hdm02_1.setting_id) "
-                       + "LEFT JOIN fxhdm02 hdm02_2 ON (hdd01.label2_setting = hdm02_2.setting_id) "
-                       + "LEFT JOIN fxhdm02 hdm02_3 ON (hdd01.input_setting = hdm02_3.setting_id) "
-                       + "LEFT JOIN fxhdm02 hcm02_4 ON (hdd01.standard_setting = hcm02_4.setting_id) "
-                       + "LEFT JOIN fxhdm04 hdm04 ON (hdm04.gamen_id = ? AND hdm04.item_id =hdd01.item_id) "
-                       + "WHERE hdd01.gamen_id = ? AND (hdd01.item_authority IS NULL OR "
-                       + DBUtil.getInConditionPreparedStatement("hdd01.item_authority",  userGrpList.size()) + ") "
-                       + "ORDER BY hdd01.item_no ";
-            
+                    + "hdd01.input_list, hdd01.input_default, hdd01.input_length, hdd01.input_length_dec, "
+                    + "hdm02_1.font_size AS font_size_1, hdm02_1.font_color AS font_color_1, hdm02_1.bg_color AS bg_color_1, "
+                    + "hdm04.sekkei_column sekkei_column, hcm02_4.font_size AS font_size_3, hcm02_4.font_color AS font_color_3, hcm02_4.bg_color AS bg_color_3, "
+                    + "CASE WHEN hdd01.label1_setting IS NULL THEN 'false' ELSE 'true' END AS render_1, "
+                    + "hdm02_2.font_size AS font_size_2, hdm02_2.font_color AS font_color_2, hdm02_2.bg_color AS bg_color_2, "
+                    + "CASE WHEN hdd01.label2_setting IS NULL THEN 'false' ELSE 'true' END AS render_2, "
+                    + "hdm02_3.font_size AS font_size_input, hdm02_3.font_color AS font_color_input, hdm02_3.bg_color AS bg_color_input, "
+                    + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '1' THEN 'false' ELSE 'true' END AS render_iput_text, "
+                    + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '2' THEN 'false' ELSE 'true' END AS render_iput_number, "
+                    + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '3' THEN 'false' ELSE 'true' END AS render_iput_date, "
+                    + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '4' THEN 'false' ELSE 'true' END AS render_iput_select, "
+                    + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '5' THEN 'false' ELSE 'true' END AS render_iput_radio, "
+                    + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '6' THEN 'false' ELSE 'true' END AS render_iput_time, "
+                    + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '7' THEN 'false' ELSE 'true' END AS render_output_label "
+                    + "FROM fxhdd01 hdd01 "
+                    + "LEFT JOIN fxhdm02 hdm02_1 ON (hdd01.label1_setting = hdm02_1.setting_id) "
+                    + "LEFT JOIN fxhdm02 hdm02_2 ON (hdd01.label2_setting = hdm02_2.setting_id) "
+                    + "LEFT JOIN fxhdm02 hdm02_3 ON (hdd01.input_setting = hdm02_3.setting_id) "
+                    + "LEFT JOIN fxhdm02 hcm02_4 ON (hdd01.standard_setting = hcm02_4.setting_id) "
+                    + "LEFT JOIN fxhdm04 hdm04 ON (hdm04.gamen_id = ? AND hdm04.item_id =hdd01.item_id) "
+                    + "WHERE hdd01.gamen_id = ? AND (hdd01.item_authority IS NULL OR "
+                    + DBUtil.getInConditionPreparedStatement("hdd01.item_authority", userGrpList.size()) + ") "
+                    + "ORDER BY hdd01.item_no ";
+
             List<Object> params = new ArrayList<>();
             params.add(formId);
             params.add(formId);
@@ -944,37 +851,39 @@ public class GXHDO901A implements Serializable {
             mapping.put("font_size_3", "fontSize3");
             mapping.put("font_color_3", "fontColor3");
             mapping.put("bg_color_3", "backColor3");
+            mapping.put("bg_color_input", "backColorInputDefault");
 
             BeanProcessor beanProcessor = new BeanProcessor(mapping);
             RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
             ResultSetHandler<List<FXHDD01>> beanHandler = new BeanListHandler<>(FXHDD01.class, rowProcessor);
-            
+
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
             this.itemList = queryRunner.query(sql, beanHandler, params.toArray());
-            
+
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("項目情報取得失敗", ex, LOGGER);
         }
     }
-    
+
     /**
      * ボタンパラメータ情報取得
+     *
      * @param formId 画面ID
      */
     private void loadButtonSettings(String formId) {
         // ユーザーグループ取得
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
-        List<String> userGrpList = (List<String>)session.getAttribute("login_user_group");
-        
+        List<String> userGrpList = (List<String>) session.getAttribute("login_user_group");
+
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceDocServer);
             String sql = "SELECT hdd02.button_id, hdd02.button_no, hdd02.button_location, hdd02.button_name, hdm02.font_size, hdm02.font_color, hdm02.bg_color "
-                       + "FROM fxhdd02 hdd02 INNER JOIN fxhdm02 hdm02 ON (hdd02.button_setting = hdm02.setting_id) "
-                       + "WHERE hdd02.gamen_id = ? AND  (hdd02.button_authority IS NULL OR"
-                       + DBUtil.getInConditionPreparedStatement("hdd02.button_authority", userGrpList.size()) + ") "
-                       + "ORDER BY hdd02.button_location, hdd02.button_no";
-            
+                    + "FROM fxhdd02 hdd02 INNER JOIN fxhdm02 hdm02 ON (hdd02.button_setting = hdm02.setting_id) "
+                    + "WHERE hdd02.gamen_id = ? AND  (hdd02.button_authority IS NULL OR"
+                    + DBUtil.getInConditionPreparedStatement("hdd02.button_authority", userGrpList.size()) + ") "
+                    + "ORDER BY hdd02.button_location, hdd02.button_no";
+
             List<Object> params = new ArrayList<>();
             params.add(formId);
             params.addAll(userGrpList);
@@ -987,38 +896,39 @@ public class GXHDO901A implements Serializable {
             mapping.put("font_size", "fontSize");
             mapping.put("font_color", "fontColor");
             mapping.put("bg_color", "backColor");
-            
+
             BeanProcessor beanProcessor = new BeanProcessor(mapping);
             RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
             ResultSetHandler<List<FXHDD02>> beanHandler = new BeanListHandler<>(FXHDD02.class, rowProcessor);
-            
+
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
             List<FXHDD02> buttonList = queryRunner.query(sql, beanHandler, params.toArray());
-            
+
             // 上部ボタン
-            this.buttonListTop = 
-                    buttonList.stream().filter(n -> "1".equals(n.getButtonLocation())).collect(Collectors.toList());
+            this.buttonListTop
+                    = buttonList.stream().filter(n -> "1".equals(n.getButtonLocation())).collect(Collectors.toList());
             // 下部ボタン
-            this.buttonListBottom = 
-                    buttonList.stream().filter(n -> "2".equals(n.getButtonLocation())).collect(Collectors.toList());
+            this.buttonListBottom
+                    = buttonList.stream().filter(n -> "2".equals(n.getButtonLocation())).collect(Collectors.toList());
 
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("ボタン項目取得失敗", ex, LOGGER);
         }
     }
-    
+
     /**
      * チェック処理情報取得
+     *
      * @param formId 画面ID
      */
     private void loadCheckList(String formId) {
-        
+
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceDocServer);
             String sql = "SELECT gamen_id,button_id,item_id,check_pattern,check_no,hissu_flag "
-                       + "  FROM FXHDM06 "
-                       + " WHERE gamen_id = ? ";
-            
+                    + "  FROM FXHDM06 "
+                    + " WHERE gamen_id = ? ";
+
             List<Object> params = new ArrayList<>();
             params.add(formId);
 
@@ -1029,14 +939,14 @@ public class GXHDO901A implements Serializable {
             mapping.put("check_pattern", "checkPattern");
             mapping.put("check_no", "checkNo");
             mapping.put("hissu_flag", "hissuFlag");
-            
+
             BeanProcessor beanProcessor = new BeanProcessor(mapping);
             RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
             ResultSetHandler<List<FXHDM06>> beanHandler = new BeanListHandler<>(FXHDM06.class, rowProcessor);
-            
+
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
             this.checkListHDM06 = queryRunner.query(sql, beanHandler, params.toArray());
-            
+
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("チェック処理項目取得失敗", ex, LOGGER);
         }
@@ -1048,7 +958,7 @@ public class GXHDO901A implements Serializable {
      * @param method 処理メソッド名
      * @return エラーメッセージ
      */
-    private String getCheckResult(String buttonId) {    
+    private String getCheckResult(String buttonId) {
         //共通ﾁｪｯｸ
         List<FXHDM06> itemRowCheckList
                 = checkListHDM06.stream().filter(n -> buttonId.equals(n.getButtonId())).collect(Collectors.toList());
@@ -1056,16 +966,30 @@ public class GXHDO901A implements Serializable {
         ValidateUtil validateUtil = new ValidateUtil();
 
         // データを設定する
-        for (FXHDM06 fxhddM06 : itemRowCheckList) {            
-           for (ValidateUtil.EnumCheckNo checkNo : ValidateUtil.EnumCheckNo.values()) {
-             if (checkNo.name().equalsIgnoreCase(fxhddM06.getCheckPattern())) {
-                 requireCheckList.add(validateUtil.new ValidateInfo(checkNo, fxhddM06.getItemId(), null, null));
-                 break;
-             }
-           }
+        for (FXHDM06 fxhddM06 : itemRowCheckList) {
+            for (ValidateUtil.EnumCheckNo checkNo : ValidateUtil.EnumCheckNo.values()) {
+                if (checkNo.name().equalsIgnoreCase(fxhddM06.getCheckPattern())) {
+                    requireCheckList.add(validateUtil.new ValidateInfo(checkNo, fxhddM06.getItemId(), null, null));
+                    break;
+                }
+            }
         }
 
-        String requireCheckErrorMessage = validateUtil.executeValidation(requireCheckList, this.itemList);        
+        String requireCheckErrorMessage = validateUtil.executeValidation(requireCheckList, this.itemList);
         return requireCheckErrorMessage;
     }
+    
+    /**
+     * 背景色をデフォルトの背景色に戻す
+     * @param buttonId ボタンID
+     */
+    private void clearBackColor(String buttonId){
+        // 背景色を戻さない特定の処理を除き背景色をデフォルトの背景色に戻す。
+        if(this.noCheckButtonId == null || !this.noCheckButtonId.contains(buttonId)){
+            for(FXHDD01 fxhdd01: this.itemList){
+                fxhdd01.setBackColorInput(fxhdd01.getBackColorInputDefault());
+            }
+        }
+    }
+
 }

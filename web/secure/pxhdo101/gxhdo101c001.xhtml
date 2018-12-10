@@ -5,10 +5,11 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <p:dialog header="#{myMsg.makuatsu}" id="dlg_gxhdo101c001" widgetVar="W_dlg_gxhdo101c001"
               width="600" modal="true" height="400"
-              dynamic="false" closable="true" closeOnEscape="false">
-        <h:form id="gxhdo101c001Form">
+              dynamic="false" closable="true" closeOnEscape="false" onShow="" >
+
+        <h:form id="gxhdo101c001Form" >
             <p:panel>
-                <p:dataTable id="makuatsuSpsTable" var="item" value="#{gXHDO901A.gxhdO101c001Model.makuatsuDataList}"
+                <p:dataTable id="makuatsuSpsTable" var="item" value="#{beanGXHDO101C001.gxhdO101c001ModelView.makuatsuDataList}"
                              style="font-size: 12px;" emptyMessage="">
                     <p:column id="mMakuatsu" width="30%" headerText="#{myMsg.makuatsu}" >
                         <div style="text-align:right;">
@@ -17,23 +18,28 @@
                     </p:column>
                     <p:column id="mStart" width="35%" headerText="#{myMsg.katakana_start}" >
                         <div style="text-align:right;">
-                            <p:inputText value="#{item.startVal}" rendered="#{item.startTextRendered}" maxlength="#{item.startTextMaxLength}"  size="20"  style="text-align:right;"/>
+                            <p:inputText value="#{item.startVal}" rendered="#{item.startTextRendered}" maxlength="#{item.startTextMaxLength}"  size="20"  style="text-align:right; background: #{item.startTextBackColor}"/>
                             <p:outputLabel value="#{item.startVal}" rendered="#{item.startLabelRendered}" />
                         </div>
                     </p:column>
-                    <p:column id="mEnd" width="35%" headerText="#{myMsg.katakana_end}"  >
+                    <p:column id="mEnd" width="35%" headerText="#{myMsg.katakana_end}" >
                         <div style="text-align:right;">
-                            <p:inputText value="#{item.endVal}" rendered="#{item.endTextRendered}" maxlength="#{item.endTextMaxLength}"  size="20"  style="text-align:right;"/>
+                            <p:inputText value="#{item.endVal}" rendered="#{item.endTextRendered}" maxlength="#{item.endTextMaxLength}"  size="20"  style="text-align:right; background: #{item.endTextBackColor}"/>
                             <p:outputLabel value="#{item.endVal}"  rendered="#{item.endLabelRendered}" />
                         </div>
                     </p:column>
                 </p:dataTable>
             </p:panel>
-            <div style="text-align: right;">
+            <div style="text-align: center;">
                 <p:commandButton value="OK" id="makuatsuSpsOKBtn"
-                                 style="position:relative;right:5px;top:5px;width:110px;height:38px;"
-                                 update="gxhdo101c001Form"
-                                 process="gxhdo101c001Form"
+                                 style="position:relative;right:5px;top:5px;width:90px;height:35px;"
+                                 actionListener="#{beanGXHDO101C001.doOk()}"
+                                 async="false"
+                                 process="gxhdo101c001Form" 
+                                 update="gxhdo101c001Form form:growlMessage"
+                                 oncomplete="if('error'!=args.firstParam){PF('W_dlg_gxhdo101c001').hide();}"/>
+                <p:commandButton value="Cancel" id="makuatsuSpsCancelBtn"
+                                 style="position:relative;right:5px;top:5px;width:90px;height:35px;"
                                  oncomplete="PF('W_dlg_gxhdo101c001').hide();"/>   
             </div>
         </h:form>

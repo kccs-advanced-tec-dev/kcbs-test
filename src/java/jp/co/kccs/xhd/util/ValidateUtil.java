@@ -5,6 +5,8 @@ package jp.co.kccs.xhd.util;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -185,11 +187,12 @@ public class ValidateUtil {
                 ketasu = Integer.parseInt(fXHDD01.getInputLength());
             }
             String value = fXHDD01.getValue();
+            List<FXHDD01> fxhdd01List = Arrays.asList(fXHDD01);
             if (ketasu != StringUtil.getByte(value, CHARSET, LOGGER)) {
-                return MessageUtil.getMessage("XHD-000004", fXHDD01.getLabel1(), ketasu);
+                return MessageUtil.getMessageWithSetBackColor("XHD-000004",fxhdd01List, fXHDD01.getLabel1(), ketasu);
             }
             if (ketasu != StringUtil.getLength(value)) {
-               return MessageUtil.getMessage("XHD-000004", fXHDD01.getLabel1(), ketasu);
+               return MessageUtil.getMessageWithSetBackColor("XHD-000004",fxhdd01List, fXHDD01.getLabel1(), ketasu);
             }
         }
         return "";
@@ -216,7 +219,8 @@ public class ValidateUtil {
             String value = fXHDD01.getValue();
             
             if(!NumberUtil.isNumeric(value) || !NumberUtil.isSameValidDigits(new BigDecimal(value), ketasuSeisu, ketasuShosu)){
-                return MessageUtil.getMessage("XHD-000005", fXHDD01.getLabel1(), ketasuSeisu, ketasuShosu);
+                List<FXHDD01> fxhdd01List = Arrays.asList(fXHDD01);
+                return MessageUtil.getMessageWithSetBackColor("XHD-000005",fxhdd01List, fXHDD01.getLabel1(), ketasuSeisu, ketasuShosu);
             }
             
         }
@@ -241,7 +245,8 @@ public class ValidateUtil {
             
             if(!NumberUtil.isNumeric(value) || !NumberUtil.isIntegerNumeric(value) 
                     || !NumberUtil.isValidDigits(new BigDecimal(value), ketasu, 0)){
-                return MessageUtil.getMessage("XHD-000006", fXHDD01.getLabel1(), ketasu);
+                List<FXHDD01> fxhdd01List = Arrays.asList(fXHDD01);
+                return MessageUtil.getMessageWithSetBackColor("XHD-000006",fxhdd01List, fXHDD01.getLabel1(), ketasu);
             }
             
         }
@@ -269,7 +274,8 @@ public class ValidateUtil {
             String value = fXHDD01.getValue();
             
             if(!NumberUtil.isNumeric(value) || !NumberUtil.isValidDigits(new BigDecimal(value), ketasuSeisu, ketasuShosu)){
-                return MessageUtil.getMessage("XHD-000007", fXHDD01.getLabel1(), ketasuSeisu, ketasuShosu);
+                List<FXHDD01> fxhdd01List = Arrays.asList(fXHDD01);
+                return MessageUtil.getMessageWithSetBackColor("XHD-000007", fxhdd01List, fXHDD01.getLabel1(), ketasuSeisu, ketasuShosu);
             }
             
         }
@@ -288,7 +294,8 @@ public class ValidateUtil {
         if (null != fXHDD01) {
             String value = fXHDD01.getValue();
             if (StringUtil.isEmpty(value.trim())) {
-                return MessageUtil.getMessage("XHD-000003", fXHDD01.getLabel1());
+                List<FXHDD01> fxhdd01List = Arrays.asList(fXHDD01);
+                return MessageUtil.getMessageWithSetBackColor("XHD-000003", fxhdd01List, fXHDD01.getLabel1());
             }
         }
         return "";
@@ -306,7 +313,8 @@ public class ValidateUtil {
         if (null != fXHDD01) {
             String value = fXHDD01.getValue();
             if (StringUtil.isEmpty(value)) {
-                return MessageUtil.getMessage("XHD-000003", fXHDD01.getLabel1());
+                List<FXHDD01> fxhdd01List = Arrays.asList(fXHDD01);
+                return MessageUtil.getMessageWithSetBackColor("XHD-000003", fxhdd01List,  fXHDD01.getLabel1());
             }
         }
         return "";
@@ -324,7 +332,8 @@ public class ValidateUtil {
             if (null != fXHDD01) {
                 String value = fXHDD01.getValue();
                 if(!NumberUtil.isNumeric(value)){
-                    return MessageUtil.getMessage("XHD-000008", fXHDD01.getLabel1());
+                    List<FXHDD01> fxhdd01List = Arrays.asList(fXHDD01);
+                    return MessageUtil.getMessageWithSetBackColor("XHD-000008",fxhdd01List,  fXHDD01.getLabel1());
                 }
             }
         return "";
@@ -340,12 +349,13 @@ public class ValidateUtil {
         // 項目データを取得
         FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
             if (null != fXHDD01) {
+                List<FXHDD01> fxhdd01List = Arrays.asList(fXHDD01);
                 String value = fXHDD01.getValue();
-                if(!NumberUtil.isNumeric(value)){
-                    return MessageUtil.getMessage("XHD-000008", fXHDD01.getLabel1());
+                if (!NumberUtil.isNumeric(value)) {
+                    return MessageUtil.getMessageWithSetBackColor("XHD-000008", fxhdd01List, fXHDD01.getLabel1());
                 }
                 if (new BigDecimal(value).compareTo(BigDecimal.ZERO) == -1) {
-                    return MessageUtil.getMessage("XHD-000009", fXHDD01.getLabel1());
+                    return MessageUtil.getMessageWithSetBackColor("XHD-000009", fxhdd01List, fXHDD01.getLabel1());
                 }
             }
 
@@ -362,12 +372,13 @@ public class ValidateUtil {
         // 項目データを取得
         FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
             if (null != fXHDD01) {
+                List<FXHDD01> fxhdd01List = Arrays.asList(fXHDD01);
                 String value = fXHDD01.getValue();
                 if(!NumberUtil.isNumeric(value)){
-                    return MessageUtil.getMessage("XHD-000008", fXHDD01.getLabel1());
+                    return MessageUtil.getMessageWithSetBackColor("XHD-000008",fxhdd01List, fXHDD01.getLabel1());
                 }
                 if (new BigDecimal(value).compareTo(BigDecimal.ZERO) == 1) {
-                    return MessageUtil.getMessage("XHD-000010", fXHDD01.getLabel1());
+                    return MessageUtil.getMessageWithSetBackColor("XHD-000010",fxhdd01List, fXHDD01.getLabel1());
                 }
             }
 
@@ -389,7 +400,8 @@ public class ValidateUtil {
             String value = fXHDD01.getValue();
             if (!NumberUtil.isNumeric(value) ||
                 !NumberUtil.isValidRange(new BigDecimal(value), maxValue, minValue)) {
-                return MessageUtil.getMessage("XHC-000004", fXHDD01.getLabel1(), minValue.toPlainString(), maxValue.toPlainString());
+                List<FXHDD01> fxhdd01List = Arrays.asList(fXHDD01);
+                return MessageUtil.getMessageWithSetBackColor("XHC-000004", fxhdd01List, fXHDD01.getLabel1(), minValue.toPlainString(), maxValue.toPlainString());
             }
         }
         return "";
@@ -420,7 +432,8 @@ public class ValidateUtil {
             
             if (!NumberUtil.isNumeric(value) ||
                 !NumberUtil.isValidDigits(new BigDecimal(value), maxSeisu, maxSyosu)) {
-                return MessageUtil.getMessage("XHC-000004", fXHDD01.getLabel1(), minValue.toPlainString(), maxValue.toPlainString());
+                List<FXHDD01> fxhdd01List = Arrays.asList(fXHDD01);
+                return MessageUtil.getMessageWithSetBackColor("XHC-000004", fxhdd01List, fXHDD01.getLabel1(), minValue.toPlainString(), maxValue.toPlainString());
             }
         }
         return "";
@@ -438,7 +451,8 @@ public class ValidateUtil {
         if (null != fXHDD01) {
             String value = fXHDD01.getValue();
             if (!DateUtil.isValidYYMMDD(value)) {
-                return MessageUtil.getMessage("XHD-000012", fXHDD01.getLabel1());
+                List<FXHDD01> fxhdd01List = Arrays.asList(fXHDD01);
+                return MessageUtil.getMessageWithSetBackColor("XHD-000012", fxhdd01List, fXHDD01.getLabel1());
             }
         }
         return "";
@@ -456,7 +470,8 @@ public class ValidateUtil {
         if (null != fXHDD01) {
             String value = fXHDD01.getValue();
             if (!DateUtil.isValidHHMM(value)) {
-                return MessageUtil.getMessage("XHD-000013", fXHDD01.getLabel1());
+                List<FXHDD01> fxhdd01List = Arrays.asList(fXHDD01);
+                return MessageUtil.getMessageWithSetBackColor("XHD-000013", fxhdd01List, fXHDD01.getLabel1());
             }
         }
         return "";
@@ -475,7 +490,8 @@ public class ValidateUtil {
         if (null != fXHDD01) {
             String value = fXHDD01.getValue();
             if (StringUtil.isEmpty(value) || "0".equals(value)) {
-                return MessageUtil.getMessage("XHD-000003", fXHDD01.getLabel1());
+                List<FXHDD01> fxhdd01List = Arrays.asList(fXHDD01);
+                return MessageUtil.getMessageWithSetBackColor("XHD-000003", fxhdd01List, fXHDD01.getLabel1());
             }
         }
         return "";
@@ -507,7 +523,8 @@ public class ValidateUtil {
                 Date d1 = DateUtil.convertStringToDate(date1, time1);
                 Date d2 = DateUtil.convertStringToDate(date2, time2);
                 if (null != d1 && null != d2 && d1.compareTo(d2) > 0) {
-                    return MessageUtil.getMessage("XHC-000007", fXHDD01_date1.getLabel1(), fXHDD01_date2.getLabel1());
+                    List<FXHDD01> fxhdd01List = Arrays.asList(fXHDD01_date1, fXHDD01_time1, fXHDD01_date2, fXHDD01_time2);
+                    return MessageUtil.getMessageWithSetBackColor("XHC-000007", fxhdd01List, fXHDD01_date1.getLabel1(), fXHDD01_date2.getLabel1());
                 }
             }
         }
@@ -526,7 +543,8 @@ public class ValidateUtil {
         if (null != fXHDD01) {
             String value = fXHDD01.getValue();
             if (!checkLotNoDigit(value)) {
-                return MessageUtil.getMessage("XHC-000010");
+                List<FXHDD01> fxhdd01List = Arrays.asList(fXHDD01);
+                return MessageUtil.getMessageWithSetBackColor("XHC-000010", fxhdd01List);
             }
         }
         return "";

@@ -1,7 +1,7 @@
 /*
  * Copyright 2018 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
-package jp.co.kccs.xhd.db.model;
+package jp.co.kccs.xhd.model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,15 +24,37 @@ import java.util.List;
  * @author SYSNAVI K.Hisanaga
  * @since 2018/12/04
  */
-public class GXHDO101C003Model {
+public class GXHDO101C003Model implements Cloneable{
 
     /**
-     * コンストラクタ
+     * クローン実装
+     *
+     * @return クローン
+     * @throws java.lang.CloneNotSupportedException
      */
-    public GXHDO101C003Model() {
+    @Override
+    public GXHDO101C003Model clone() throws CloneNotSupportedException {
+        GXHDO101C003Model cloneModel = (GXHDO101C003Model) super.clone();
+        List<GXHDO101C003Model.ptnKyoriYData> newList = new ArrayList();
+        for (GXHDO101C003Model.ptnKyoriYData data : this.ptnKyoriYDataList) {
+            GXHDO101C003Model.ptnKyoriYData newData = new GXHDO101C003Model.ptnKyoriYData();
+            newData.setPtnKyoriY(data.ptnKyoriY);
+            newData.setStartVal(data.getStartVal());
+            newData.setStartTextRendered(data.isStartTextRendered());
+            newData.setStartTextMaxLength(data.getStartTextMaxLength());
+            newData.setStartTextBackColor(data.getStartTextBackColor());
+            newData.setStartLabelRendered(data.isStartLabelRendered());
+            newData.setEndVal(data.getEndVal());
+            newData.setEndTextRendered(data.isEndTextRendered());
+            newData.setEndTextMaxLength(data.getEndTextMaxLength());
+            newData.setEndTextBackColor(data.getEndTextBackColor());
+            newData.setEndLabelRendered(data.isEndLabelRendered());
+            newList.add(newData);
+        }
 
+        cloneModel.setPtnKyoriYDataList(newList);
+        return cloneModel;
     }
-
     /**
      * PTN距離Yデータリスト
      */
@@ -81,6 +103,11 @@ public class GXHDO101C003Model {
         private String startTextMaxLength;
 
         /**
+         * スタート項目_テキスト(BackGround)
+         */
+        private String startTextBackColor;
+
+        /**
          * スタート項目_ラベル(Rendered)
          */
         private boolean startLabelRendered;
@@ -99,6 +126,11 @@ public class GXHDO101C003Model {
          * エンド項目_テキスト(MaxLength)
          */
         private String endTextMaxLength;
+
+        /**
+         * エンド項目_テキスト(BackGround)
+         */
+        private String endTextBackColor;
 
         /**
          * エンド項目_ラベル(Rendered)
@@ -176,7 +208,26 @@ public class GXHDO101C003Model {
         public void setStartTextMaxLength(String startTextMaxLength) {
             this.startTextMaxLength = startTextMaxLength;
         }
+        
+        /**
+         * スタート項目_テキスト(BackGround)
+         *
+         * @return the startTextBackColor
+         */
+        public String getStartTextBackColor() {
+            return startTextBackColor;
+        }
 
+        /**
+         * スタート項目_テキスト(BackGround)
+         *
+         * @param startTextBackColor the startTextBackColor to set
+         */
+        public void setStartTextBackColor(String startTextBackColor) {
+            this.startTextBackColor = startTextBackColor;
+        }
+
+        
         /**
          * スタート項目_ラベル(Rendered)
          *
@@ -249,6 +300,24 @@ public class GXHDO101C003Model {
             this.endTextMaxLength = endTextMaxLength;
         }
 
+        /**
+         * エンド項目_テキスト(BackGround)
+         *
+         * @return the endTextBackColor
+         */
+        public String getEndTextBackColor() {
+            return endTextBackColor;
+        }
+
+        /**
+         * エンド項目_テキスト(BackGround)
+         *
+         * @param endTextBackColor the endTextBackColor to set
+         */
+        public void setEndTextBackColor(String endTextBackColor) {
+            this.endTextBackColor = endTextBackColor;
+        }
+        
         /**
          * エンド項目_ラベル(Rendered)
          *

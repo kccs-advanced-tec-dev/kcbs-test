@@ -81,13 +81,25 @@ public class GXHDO101B002 implements IFormLogic {
 
             //******************************************************************************************
             // 膜厚(SPS)サブ画面初期表示データ設定
-            processData.setGxhdo101c001Model(GXHDO101C001Logic.createGXHDO101C001Model(""));
+            GXHDO101C001 beanGXHDO101C001 = (GXHDO101C001) getSubFormBean("GXHDO101C001");
+            beanGXHDO101C001.setGxhdO101c001Model(GXHDO101C001Logic.createGXHDO101C001Model(""));
 
             // PTN距離Xサブ画面初期表示データ設定
-            processData.setGxhdo101c002Model(GXHDO101C002Logic.createGXHDO101C002Model(""));
+            GXHDO101C002 beanGXHDO101C002 = (GXHDO101C002) getSubFormBean("GXHDO101C002");
+            beanGXHDO101C002.setGxhdO101c002Model(GXHDO101C002Logic.createGXHDO101C002Model(""));
 
             // PTN距離Yサブ画面初期表示データ設定
-            processData.setGxhdo101c003Model(GXHDO101C003Logic.createGXHDO101C003Model(""));
+            GXHDO101C003 beanGXHDO101C003 = (GXHDO101C003) getSubFormBean("GXHDO101C003");
+            beanGXHDO101C003.setGxhdO101c003Model(GXHDO101C003Logic.createGXHDO101C003Model(""));
+            
+            //サブ画面呼出しをチェック処理なし(処理時にエラーの背景色を戻さない機能として登録)
+            processData.setNoCheckButtonId(Arrays.asList(
+                    GXHDO101B002Const.BTN_UP_MAKUATSU_SUBGAMEN,
+                    GXHDO101B002Const.BTN_UP_PTN_KYORI_X_SUBGAMEN,
+                    GXHDO101B002Const.BTN_UP_PTN_KYORI_Y_SUBGAMEN,
+                    GXHDO101B002Const.BTN_DOWN_MAKUATSU_SUBGAMEN,
+                    GXHDO101B002Const.BTN_DOWN_PTN_KYORI_X_SUBGAMEN,
+                    GXHDO101B002Const.BTN_DOWN_PTN_KYORI_Y_SUBGAMEN));
             //******************************************************************************************
 
             // ボタンの活性・非活性を設定
@@ -224,10 +236,26 @@ public class GXHDO101B002 implements IFormLogic {
      * @return 処理制御データ
      */
     public ProcessData openMakuatsu(ProcessData processData) {
-        processData.setProcessName("openMakuatsu");
-        // コールバックパラメータにてサブ画面起動用の値を設定
-        processData.setCollBackParam("gxhdo101c001");
-        processData.setMethod("");
+
+        try {
+
+            processData.setProcessName("openMakuatsu");
+            // コールバックパラメータにてサブ画面起動用の値を設定
+            processData.setCollBackParam("gxhdo101c001");
+            processData.setMethod("");
+
+            // 膜厚(SPS)の現在の値をサブ画面の表示用の値に渡す
+            GXHDO101C001 beanGXHDO101C001 = (GXHDO101C001) getSubFormBean("GXHDO101C001");
+            beanGXHDO101C001.setGxhdO101c001ModelView(beanGXHDO101C001.getGxhdO101c001Model().clone());
+
+        } catch (CloneNotSupportedException ex) {
+
+            ErrUtil.outputErrorLog("CloneNotSupportedException発生", ex, LOGGER);
+            processData = createRegistDataErrorMessage(processData);
+            return processData;
+
+        }
+
         return processData;
     }
 
@@ -238,11 +266,25 @@ public class GXHDO101B002 implements IFormLogic {
      * @return 処理制御データ
      */
     public ProcessData openPtnKyoriX(ProcessData processData) {
-        processData.setProcessName("openPtnKyoriX");
-        // コールバックパラメータにてサブ画面起動用の値を設定
-        processData.setCollBackParam("gxhdo101c002");
-        processData.setMethod("");
-        return processData;
+        try {
+            processData.setProcessName("openPtnKyoriX");
+            // コールバックパラメータにてサブ画面起動用の値を設定
+            processData.setCollBackParam("gxhdo101c002");
+            processData.setMethod("");
+
+            // PTN距離Xの現在の値をサブ画面の表示用の値に設定
+            GXHDO101C002 beanGXHDO101C002 = (GXHDO101C002) getSubFormBean("GXHDO101C002");
+            beanGXHDO101C002.setGxhdO101c002ModelView(beanGXHDO101C002.getGxhdO101c002Model().clone());
+
+            return processData;
+        } catch (CloneNotSupportedException ex) {
+
+            ErrUtil.outputErrorLog("CloneNotSupportedException発生", ex, LOGGER);
+            processData = createRegistDataErrorMessage(processData);
+            return processData;
+
+        }
+
     }
 
     /**
@@ -252,11 +294,24 @@ public class GXHDO101B002 implements IFormLogic {
      * @return 処理制御データ
      */
     public ProcessData openPtnKyoriY(ProcessData processData) {
-        processData.setProcessName("openPtnKyoriY");
-        // コールバックパラメータにてサブ画面起動用の値を設定
-        processData.setCollBackParam("gxhdo101c003");
-        processData.setMethod("");
-        return processData;
+        try {
+
+            processData.setProcessName("openPtnKyoriY");
+            // コールバックパラメータにてサブ画面起動用の値を設定
+            processData.setCollBackParam("gxhdo101c003");
+            processData.setMethod("");
+
+            // PTN距離Yの現在の値をサブ画面表示用に設定
+            GXHDO101C003 beanGXHDO101C003 = (GXHDO101C003) getSubFormBean("GXHDO101C003");
+            beanGXHDO101C003.setGxhdO101c003ModelView(beanGXHDO101C003.getGxhdO101c003Model().clone());
+            return processData;
+        } catch (CloneNotSupportedException ex) {
+
+            ErrUtil.outputErrorLog("CloneNotSupportedException発生", ex, LOGGER);
+            processData = createRegistDataErrorMessage(processData);
+            return processData;
+
+        }
     }
 
     /**
@@ -690,7 +745,7 @@ public class GXHDO101B002 implements IFormLogic {
             case "search":
                 activeIdList.addAll(Arrays.asList("syosei_shuusei_Top", "syosei_shuusei_Bottom", "syosei_sakujo_Top", "syosei_sakujo_Bottom"));
                 break;
-     
+
         }
         processData.setActiveButtonId(activeIdList);
         processData.setInactiveButtonId(inactiveIdList);
@@ -1711,5 +1766,42 @@ public class GXHDO101B002 implements IFormLogic {
             }
         }
         return processData;
+    }
+
+    /**
+     * サブ画面のBean情報を取得
+     *
+     * @param formId フォームID
+     * @return サブ画面情報
+     */
+    public Object getSubFormBean(String formId) {
+
+        Object returnBean = null;
+
+        switch (formId) {
+            // 膜厚(SPS)
+            case "GXHDO101C001":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO101C001");
+                break;
+
+            // PTN距離X
+            case "GXHDO101C002":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO101C002");
+                break;
+
+            // PTN距離Y
+            case "GXHDO101C003":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO101C003");
+                break;
+            default:
+                break;
+        }
+        return returnBean;
     }
 }

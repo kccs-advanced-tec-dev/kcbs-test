@@ -8,7 +8,7 @@
               dynamic="false" closable="true" closeOnEscape="false">
         <h:form id="gxhdo101c002Form">
             <p:panel>
-                <p:dataTable id="ptnKyoriXTable" var="item" value="#{gXHDO901A.gxhdO101c002Model.ptnKyoriXDataList}"
+                <p:dataTable id="ptnKyoriXTable" var="item" value="#{beanGXHDO101C002.gxhdO101c002ModelView.ptnKyoriXDataList}"
                              style="font-size: 12px;" emptyMessage="">
                     <p:column id="mPtnKyoriX" width="30%" headerText="#{myMsg.ptn_kyori_x}" >
                         <div style="text-align:right;">
@@ -17,23 +17,28 @@
                     </p:column>
                     <p:column id="mStart" width="35%" headerText="#{myMsg.katakana_start}" >
                         <div style="text-align:right;">
-                            <p:inputText value="#{item.startVal}" rendered="#{item.startTextRendered}" maxlength="#{item.startTextMaxLength}" size="20" style="text-align:right;"/>
+                            <p:inputText value="#{item.startVal}" rendered="#{item.startTextRendered}" maxlength="#{item.startTextMaxLength}" size="20" style="text-align:right; background: #{item.startTextBackColor}"/>
                             <p:outputLabel value="#{item.startVal}" rendered="#{item.startLabelRendered}" />
                         </div>
                     </p:column>
                     <p:column id="mEnd" width="35%" headerText="#{myMsg.katakana_end}"  >
                         <div style="text-align:right;">
-                            <p:inputText value="#{item.endVal}" rendered="#{item.endTextRendered}" maxlength="#{item.endTextMaxLength}" size="20" style="text-align:right;"/>
+                            <p:inputText value="#{item.endVal}" rendered="#{item.endTextRendered}" maxlength="#{item.endTextMaxLength}" size="20" style="text-align:right; background: #{item.endTextBackColor}"/>
                             <p:outputLabel value="#{item.endVal}" rendered="#{item.endLabelRendered}" />
                         </div>
                     </p:column>
                 </p:dataTable>
             </p:panel>
-            <div style="text-align: right;">
+            <div style="text-align: center;">
                 <p:commandButton value="OK" id="ptnKyoriXOKBtn"
-                                 style="position:relative;right:5px;top:5px;width:110px;height:38px;"
-                                 update="gxhdo101c002Form"
-                                 process="gxhdo101c002Form"
+                             style="position:relative;right:5px;top:5px;width:90px;height:35px;"
+                                 actionListener="#{beanGXHDO101C002.doOk()}"
+                                 async="false"
+                                 process="gxhdo101c002Form" 
+                                 update="gxhdo101c002Form form:growlMessage"
+                                 oncomplete="if('error'!=args.firstParam){PF('W_dlg_gxhdo101c002').hide();}"/>
+                <p:commandButton value="Cancel" id="ptnKyoriXCancelBtn"
+                                 style="position:relative;right:5px;top:5px;width:90px;height:35px;"
                                  oncomplete="PF('W_dlg_gxhdo101c002').hide();"/>   
             </div>
         </h:form>

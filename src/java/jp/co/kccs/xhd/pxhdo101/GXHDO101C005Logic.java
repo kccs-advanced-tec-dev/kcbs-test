@@ -1,74 +1,77 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2018 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.pxhdo101;
 
 import java.util.ArrayList;
 import java.util.List;
-import jp.co.kccs.xhd.db.model.GXHDO101C001Model;
+import jp.co.kccs.xhd.model.GXHDO101C005Model;
 
 /**
- *
- * @author koksk-desk2
+ * ===============================================================================<br>
+ * <br>
+ * システム名	品質DB(コンデンサ)<br>
+ * <br>
+ * 変更日	2018/12/08<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaaga<br>
+ * 変更理由	新規作成<br>
+ * <br>
+ * ===============================================================================<br>
+ */
+/**
+ * GXHDO101C005(印刷幅)ロジッククラス
  */
 public class GXHDO101C005Logic {
 
-    public static GXHDO101C001Model createGXHDO101C001Model(String lotNo) {
-        GXHDO101C001Model gxhdo101C001Model = new GXHDO101C001Model();
-        List<GXHDO101C001Model.makuatsuData> makuatsuDataList = new ArrayList<>();
+    public static GXHDO101C005Model createGXHDO101C005Model(String lotNo) {
+        GXHDO101C005Model GXHDO101C005Model = new GXHDO101C005Model();
+        List<GXHDO101C005Model.printWidthData> printWidthDataList = new ArrayList<>();
 
         // 膜厚(1行目)
-        makuatsuDataList.add(getInitMakuatsuData(gxhdo101C001Model, "1", "", "TEXT", "14", "", "TEXT", "2"));
+        printWidthDataList.add(getInitPrintWidhData(GXHDO101C005Model, "1", "", "TEXT", "5", ""));
         // 膜厚(2行目)
-        makuatsuDataList.add(getInitMakuatsuData(gxhdo101C001Model, "2", "", "LABLE", "0", "", "TEXT", "2"));
+        printWidthDataList.add(getInitPrintWidhData(GXHDO101C005Model, "2", "", "TEXT", "5", ""));
         // 膜厚(3行目)
-        makuatsuDataList.add(getInitMakuatsuData(gxhdo101C001Model, "3", "", "LABLE", "0", "", "TEXT", "2"));
+        printWidthDataList.add(getInitPrintWidhData(GXHDO101C005Model, "3", "", "TEXT", "5", ""));
         // 膜厚(4行目)
-        makuatsuDataList.add(getInitMakuatsuData(gxhdo101C001Model, "4", "", "LABLE", "0", "", "TEXT", "2"));
+        printWidthDataList.add(getInitPrintWidhData(GXHDO101C005Model, "4", "", "TEXT", "5", ""));
         // 膜厚(5行目)
-        makuatsuDataList.add(getInitMakuatsuData(gxhdo101C001Model, "5", "", "LABLE", "0", "", "LABEL", "0"));
-        // 膜厚(6行目)
-        makuatsuDataList.add(getInitMakuatsuData(gxhdo101C001Model, "6", "", "LABLE", "0", "", "LABEL", "0"));
-        // 膜厚(7行目)
-        makuatsuDataList.add(getInitMakuatsuData(gxhdo101C001Model, "7", "", "LABLE", "0", "", "TEXT", "20"));
-        // 膜厚(8行目)
-        makuatsuDataList.add(getInitMakuatsuData(gxhdo101C001Model, "8", "", "LABLE", "0", "", "LABEL", "0"));
-        // 膜厚(9行目)
-        makuatsuDataList.add(getInitMakuatsuData(gxhdo101C001Model, "9", "", "TEXT", "4", "", "LABEL", "0"));
+        printWidthDataList.add(getInitPrintWidhData(GXHDO101C005Model, "5", "", "TEXT", "5", ""));
 
-        gxhdo101C001Model.setMakuatsuDataList(makuatsuDataList);
-        return gxhdo101C001Model;
+        GXHDO101C005Model.setPrintWidthDataList(printWidthDataList);
+        return GXHDO101C005Model;
     }
 
-    private static GXHDO101C001Model.makuatsuData getInitMakuatsuData(
-            GXHDO101C001Model gxhdo101C001Model, String makuatsu,
-            String startVal, String startInputType, String startTextMaxLength,
-            String endVal, String endInputType, String endTextMaxLength) {
-        GXHDO101C001Model.makuatsuData makuatsuListData = gxhdo101C001Model.new makuatsuData();
-        makuatsuListData.setMakuatsu(makuatsu); //
-        makuatsuListData.setStartVal(startVal);
+    /**
+     * 印刷幅データ初期化データ取得
+     *
+     * @param gxhdo101C005Model 印刷幅画面モデル
+     * @param printWidth 印刷幅
+     * @param startVal スタート項目(値)
+     * @param startInputType　スタート項目(入力タイプ)
+     * @param startTextMaxLength　スタート項目(テキストMaxLength)
+     * @param startTextBackColor　スタート項目(BackGround)
+     * @return 印刷幅データ
+     */
+    private static GXHDO101C005Model.printWidthData getInitPrintWidhData(
+            GXHDO101C005Model gxhdo101C005Model, String printWidth, String startVal, 
+            String startInputType, String startTextMaxLength, String startTextBackColor) {
+        GXHDO101C005Model.printWidthData printWidthListData = gxhdo101C005Model.new printWidthData();
+        // 印刷幅
+        printWidthListData.setPrintWidth(printWidth);
+        // スタート
+        printWidthListData.setStartVal(startVal);
         if ("TEXT".equals(startInputType)) {
-            makuatsuListData.setStartTextRendered(true);
-            makuatsuListData.setStartLabelRendered(false);
-
+            printWidthListData.setStartTextRendered(true);
+            printWidthListData.setStartLabelRendered(false);
         } else {
-            makuatsuListData.setStartTextRendered(false);
-            makuatsuListData.setStartLabelRendered(true);
+            printWidthListData.setStartTextRendered(false);
+            printWidthListData.setStartLabelRendered(true);
         }
-        makuatsuListData.setStartTextMaxLength(startTextMaxLength);
-        makuatsuListData.setEndVal(endVal);
-        if ("TEXT".equals(endInputType)) {
-            makuatsuListData.setEndTextRendered(true);
-            makuatsuListData.setEndLabelRendered(false);
+        printWidthListData.setStartTextMaxLength(startTextMaxLength);
+        printWidthListData.setStartTextBackColor(startTextBackColor);
 
-        } else {
-            makuatsuListData.setEndTextRendered(false);
-            makuatsuListData.setEndLabelRendered(true);
-        }
-        makuatsuListData.setEndTextMaxLength(endTextMaxLength);
-        return makuatsuListData;
+        return printWidthListData;
     }
-
 }
