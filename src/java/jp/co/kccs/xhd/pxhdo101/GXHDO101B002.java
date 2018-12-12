@@ -247,7 +247,9 @@ public class GXHDO101B002 implements IFormLogic {
             // 膜厚(SPS)の現在の値をサブ画面の表示用の値に渡す
             GXHDO101C001 beanGXHDO101C001 = (GXHDO101C001) getSubFormBean("GXHDO101C001");
             beanGXHDO101C001.setGxhdO101c001ModelView(beanGXHDO101C001.getGxhdO101c001Model().clone());
-
+            // 画面初期表示時用のメッセージを設定
+            beanGXHDO101C001.setInitDispMsgList(processData.getSubInitDispMsgList());
+            
         } catch (CloneNotSupportedException ex) {
 
             ErrUtil.outputErrorLog("CloneNotSupportedException発生", ex, LOGGER);
@@ -275,6 +277,8 @@ public class GXHDO101B002 implements IFormLogic {
             // PTN距離Xの現在の値をサブ画面の表示用の値に設定
             GXHDO101C002 beanGXHDO101C002 = (GXHDO101C002) getSubFormBean("GXHDO101C002");
             beanGXHDO101C002.setGxhdO101c002ModelView(beanGXHDO101C002.getGxhdO101c002Model().clone());
+            // 画面初期表示時用のメッセージを設定
+            beanGXHDO101C002.setInitDispMsgList(processData.getSubInitDispMsgList());
 
             return processData;
         } catch (CloneNotSupportedException ex) {
@@ -304,6 +308,9 @@ public class GXHDO101B002 implements IFormLogic {
             // PTN距離Yの現在の値をサブ画面表示用に設定
             GXHDO101C003 beanGXHDO101C003 = (GXHDO101C003) getSubFormBean("GXHDO101C003");
             beanGXHDO101C003.setGxhdO101c003ModelView(beanGXHDO101C003.getGxhdO101c003Model().clone());
+            // 画面初期表示時用のメッセージを設定
+            beanGXHDO101C003.setInitDispMsgList(processData.getSubInitDispMsgList());
+
             return processData;
         } catch (CloneNotSupportedException ex) {
 

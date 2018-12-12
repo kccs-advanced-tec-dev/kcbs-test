@@ -5,7 +5,8 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <p:dialog header="#{myMsg.print_width}" id="dlg_gxhdo101c005" widgetVar="W_dlg_gxhdo101c005"
               width="500" modal="true" height="270"
-              dynamic="false" closable="true" closeOnEscape="false">
+              dynamic="false" closable="true" closeOnEscape="false" 
+              onShow="document.getElementById('form:gxhdo101c005Form:initDispMsgBtn').click();" >
         <h:form id="gxhdo101c005Form">
             <p:panel>
                 <p:dataTable id="printWidthTable" var="item" value="#{beanGXHDO101C005.gxhdO101c005ModelView.printWidthDataList}"
@@ -24,6 +25,12 @@
                 </p:dataTable>
             </p:panel>
             <div style="text-align: center;">
+                <p:commandButton value="メッセージ表示" id="initDispMsgBtn"
+                                 style="display:none;"
+                                 actionListener="#{beanGXHDO101C005.showInitDispMessage()}"
+                                 async="false"
+                                 process="gxhdo101c005Form" 
+                                 update="form:growlMessage"/>
                 <p:commandButton value="OK" id="printWidthOKBtn"
                                  style="position:relative;right:5px;top:5px;width:90px;height:35px;"
                                  actionListener="#{beanGXHDO101C005.doOk()}"

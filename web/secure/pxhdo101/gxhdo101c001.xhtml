@@ -5,9 +5,9 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <p:dialog header="#{myMsg.makuatsu}" id="dlg_gxhdo101c001" widgetVar="W_dlg_gxhdo101c001"
               width="600" modal="true" height="400"
-              dynamic="false" closable="true" closeOnEscape="false" onShow="" >
+              dynamic="false" closable="true" closeOnEscape="false" onShow="document.getElementById('form:gxhdo101c001Form:initDispMsgBtn').click();" >
 
-        <h:form id="gxhdo101c001Form" >
+        <h:form id="gxhdo101c001Form">
             <p:panel>
                 <p:dataTable id="makuatsuSpsTable" var="item" value="#{beanGXHDO101C001.gxhdO101c001ModelView.makuatsuDataList}"
                              style="font-size: 12px;" emptyMessage="">
@@ -31,6 +31,12 @@
                 </p:dataTable>
             </p:panel>
             <div style="text-align: center;">
+                <p:commandButton value="メッセージ表示" id="initDispMsgBtn"
+                                 style="display:none;"
+                                 actionListener="#{beanGXHDO101C001.showInitDispMessage()}"
+                                 async="false"
+                                 process="gxhdo101c001Form" 
+                                 update="form:growlMessage"/>
                 <p:commandButton value="OK" id="makuatsuSpsOKBtn"
                                  style="position:relative;right:5px;top:5px;width:90px;height:35px;"
                                  actionListener="#{beanGXHDO101C001.doOk()}"

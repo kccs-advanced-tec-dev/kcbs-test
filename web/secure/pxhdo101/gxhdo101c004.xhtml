@@ -5,7 +5,8 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <p:dialog header="#{myMsg.makuatsu}" id="dlg_gxhdo101c004" widgetVar="W_dlg_gxhdo101c004"
               width="500" modal="true" height="270"
-              dynamic="false" closable="true" closeOnEscape="false">
+              dynamic="false" closable="true" closeOnEscape="false" 
+              onShow="document.getElementById('form:gxhdo101c004Form:initDispMsgBtn').click();" >
         <h:form id="gxhdo101c004Form">
             <p:panel>
                 <p:dataTable id="makuatsuRsusTable" var="item" value="#{beanGXHDO101C004.gxhdO101c004ModelView.makuatsuDataList}"
@@ -25,6 +26,12 @@
 
             </p:panel>
             <div style="text-align: center;">
+                <p:commandButton value="メッセージ表示" id="initDispMsgBtn"
+                                 style="display:none;"
+                                 actionListener="#{beanGXHDO101C004.showInitDispMessage()}"
+                                 async="false"
+                                 process="gxhdo101c004Form" 
+                                 update="form:growlMessage"/>
                 <p:commandButton value="OK" id="makuatsuRsusOKBtn"
                                  style="position:relative;right:5px;top:5px;width:90px;height:35px;"
                                  actionListener="#{beanGXHDO101C004.doOk()}"
@@ -32,7 +39,6 @@
                                  process="gxhdo101c004Form" 
                                  update="gxhdo101c004Form form:growlMessage"
                                  oncomplete="if('error'!=args.firstParam){PF('W_dlg_gxhdo101c004').hide();}"/>
-
                 <p:commandButton value="Cancel" id="makuatsuRsusCancelBtn"
                                  style="position:relative;right:5px;top:5px;width:90px;height:35px;"
                                  oncomplete="PF('W_dlg_gxhdo101c004').hide();"/>   

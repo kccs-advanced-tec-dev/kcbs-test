@@ -5,7 +5,8 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <p:dialog header="#{myMsg.ptn_kyori_y}" id="dlg_gxhdo101c003" widgetVar="W_dlg_gxhdo101c003"
               width="600" modal="true" height="270"
-              dynamic="false" closable="true" closeOnEscape="false">
+              dynamic="false" closable="true" closeOnEscape="false" 
+              onShow="document.getElementById('form:gxhdo101c003Form:initDispMsgBtn').click();" >
         <h:form id="gxhdo101c003Form" >
             <p:panel>
                  <p:dataTable id="ptnKyoriXTable" var="item" value="#{beanGXHDO101C003.gxhdO101c003ModelView.ptnKyoriYDataList}"
@@ -30,6 +31,12 @@
                 </p:dataTable>
             </p:panel>
             <div style="text-align: center;">
+                <p:commandButton value="メッセージ表示" id="initDispMsgBtn"
+                                 style="display:none;"
+                                 actionListener="#{beanGXHDO101C003.showInitDispMessage()}"
+                                 async="false"
+                                 process="gxhdo101c003Form" 
+                                 update="form:growlMessage"/>
                 <p:commandButton value="OK" id="ptnKyoriYOKBtn"
                              style="position:relative;right:5px;top:5px;width:90px;height:35px;"
                                  actionListener="#{beanGXHDO101C003.doOk()}"

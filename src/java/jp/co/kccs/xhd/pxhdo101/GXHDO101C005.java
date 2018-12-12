@@ -4,6 +4,7 @@
 package jp.co.kccs.xhd.pxhdo101;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -47,6 +48,11 @@ public class GXHDO101C005 implements Serializable {
     private GXHDO101C005Model gxhdO101c005ModelView;
 
     /**
+     * 初期表示時メッセージリスト
+     */
+    private List<String> initDispMsgList;
+
+    /**
      * コンストラクタ
      */
     public GXHDO101C005() {
@@ -71,6 +77,8 @@ public class GXHDO101C005 implements Serializable {
     }
 
     /**
+     * 印刷幅サブ画面用データ(表示制御用)
+     *
      * @return the gxhdO101c005ModelView
      */
     public GXHDO101C005Model getGxhdO101c005ModelView() {
@@ -78,10 +86,30 @@ public class GXHDO101C005 implements Serializable {
     }
 
     /**
+     * 印刷幅サブ画面用データ(表示制御用)
+     *
      * @param gxhdO101c005ModelView the gxhdO101c005ModelView to set
      */
     public void setGxhdO101c005ModelView(GXHDO101C005Model gxhdO101c005ModelView) {
         this.gxhdO101c005ModelView = gxhdO101c005ModelView;
+    }
+
+    /**
+     * 初期表示時メッセージリスト
+     *
+     * @return the initDispMsgList
+     */
+    public List<String> getInitDispMsgList() {
+        return initDispMsgList;
+    }
+
+    /**
+     * 初期表示時メッセージリスト
+     *
+     * @param initDispMsgList the initDispMsgList to set
+     */
+    public void setInitDispMsgList(List<String> initDispMsgList) {
+        this.initDispMsgList = initDispMsgList;
     }
 
     /**
@@ -110,7 +138,7 @@ public class GXHDO101C005 implements Serializable {
 
         for (GXHDO101C005Model.printWidthData printWidthData : this.gxhdO101c005ModelView.getPrintWidthDataList()) {
             if (StringUtil.isEmpty(printWidthData.getStartVal())) {
-                setError(printWidthData,  "XHD-000003", "スタート");
+                setError(printWidthData, "XHD-000003", "スタート");
                 return false;
             }
         }
@@ -136,8 +164,8 @@ public class GXHDO101C005 implements Serializable {
         facesContext.addMessage(null, message);
 
         //エラー項目に背景色をセット
-            makuatsuData.setStartTextBackColor(ErrUtil.ERR_BACK_COLOR);
-        
+        makuatsuData.setStartTextBackColor(ErrUtil.ERR_BACK_COLOR);
+
     }
 
     /**
@@ -146,6 +174,21 @@ public class GXHDO101C005 implements Serializable {
     private void clearBackColor() {
         for (GXHDO101C005Model.printWidthData printWidthData : this.gxhdO101c005ModelView.getPrintWidthDataList()) {
             printWidthData.setStartTextBackColor("");
+        }
+    }
+
+    /**
+     * 初期表示メッセージ表示
+     */
+    public void showInitDispMessage() {
+        if (this.initDispMsgList == null || this.initDispMsgList.isEmpty()) {
+            return;
+        }
+
+        // 初期表示メッセージの設定        
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        for (String dispMsg : this.initDispMsgList) {
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, dispMsg, null));
         }
     }
 

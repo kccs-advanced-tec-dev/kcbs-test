@@ -4,11 +4,11 @@
 package jp.co.kccs.xhd.pxhdo101;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
-import jp.co.kccs.xhd.model.GXHDO101C003Model;
 import jp.co.kccs.xhd.model.GXHDO101C004Model;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
@@ -46,6 +46,11 @@ public class GXHDO101C004 implements Serializable {
      * 膜厚(RSUS)サブ画面用データ(表示制御用)
      */
     private GXHDO101C004Model gxhdO101c004ModelView;
+
+    /**
+     * 初期表示時メッセージリスト
+     */
+    private List<String> initDispMsgList;
 
     /**
      * コンストラクタ
@@ -87,6 +92,24 @@ public class GXHDO101C004 implements Serializable {
      */
     public void setGxhdO101c004ModelView(GXHDO101C004Model gxhdO101c004ModelView) {
         this.gxhdO101c004ModelView = gxhdO101c004ModelView;
+    }
+
+    /**
+     * 初期表示時メッセージリスト
+     *
+     * @return the initDispMsgList
+     */
+    public List<String> getInitDispMsgList() {
+        return initDispMsgList;
+    }
+
+    /**
+     * 初期表示時メッセージリスト
+     *
+     * @param initDispMsgList the initDispMsgList to set
+     */
+    public void setInitDispMsgList(List<String> initDispMsgList) {
+        this.initDispMsgList = initDispMsgList;
     }
 
     /**
@@ -153,4 +176,18 @@ public class GXHDO101C004 implements Serializable {
         }
     }
 
+    /**
+     * 初期表示メッセージ表示
+     */
+    public void showInitDispMessage() {
+        if (this.initDispMsgList == null || this.initDispMsgList.isEmpty()) {
+            return;
+        }
+
+        // 初期表示メッセージの設定        
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        for (String dispMsg : this.initDispMsgList) {
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, dispMsg, null));
+        }
+    }
 }

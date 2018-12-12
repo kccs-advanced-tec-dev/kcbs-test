@@ -408,7 +408,9 @@ public class GXHDO101B003 implements IFormLogic {
             // 膜厚(RSUS)の現在の値をサブ画面に設定
             GXHDO101C004 beanGXHDO101C004 = (GXHDO101C004) getSubFormBean("GXHDO101C004");
             beanGXHDO101C004.setGxhdO101c004ModelView(beanGXHDO101C004.getGxhdO101c004Model().clone());
-
+            // 画面初期表示時用のメッセージを設定
+            beanGXHDO101C004.setInitDispMsgList(processData.getSubInitDispMsgList());
+            
             return processData;
         } catch (CloneNotSupportedException ex) {
 
@@ -435,6 +437,10 @@ public class GXHDO101B003 implements IFormLogic {
             // 印刷幅の現在の値をサブ画面に設定
             GXHDO101C005 beanGXHDO101C005 = (GXHDO101C005) getSubFormBean("GXHDO101C005");
             beanGXHDO101C005.setGxhdO101c005ModelView(beanGXHDO101C005.getGxhdO101c005Model().clone());
+            
+            // 画面初期表示時用のメッセージを設定
+            beanGXHDO101C005.setInitDispMsgList(processData.getSubInitDispMsgList());
+            
             return processData;
         } catch (CloneNotSupportedException ex) {
 

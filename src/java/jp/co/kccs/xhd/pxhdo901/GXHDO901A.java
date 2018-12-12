@@ -29,7 +29,7 @@ import jp.co.kccs.xhd.db.ParameterEJB;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.db.model.FXHDD02;
 import jp.co.kccs.xhd.db.model.FXHDM02;
-import jp.co.kccs.xhd.db.model.FXHDM06;
+import jp.co.kccs.xhd.db.model.FXHDM05;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.StringUtil;
@@ -43,6 +43,8 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.apache.commons.lang3.StringUtils;
+import static org.omnifaces.util.Components.findComponent;
+import org.primefaces.component.datalist.DataList;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -112,7 +114,7 @@ public class GXHDO901A implements Serializable {
     /**
      * チェックリスト
      */
-    private List<FXHDM06> checkListHDM06;
+    private List<FXHDM05> checkListHDM05;
     /**
      * /**
      * 項目データ
@@ -575,7 +577,7 @@ public class GXHDO901A implements Serializable {
 
         // 背景色を元に戻す
         this.clearBackColor(buttonId);
-        
+
         //共通ﾁｪｯｸ
         String requireCheckErrorMessage = getCheckResult(buttonId);
 
@@ -584,6 +586,7 @@ public class GXHDO901A implements Serializable {
             FacesMessage message
                     = new FacesMessage(FacesMessage.SEVERITY_ERROR, requireCheckErrorMessage, null);
             facesContext.addMessage(null, message);
+
             return;
         }
 
@@ -622,11 +625,21 @@ public class GXHDO901A implements Serializable {
     private void processMain() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
 
+        //TODO
+//        DataList dtHoge = 
+//            (DataList)facesContext.getViewRoot().findComponent(":form:itemDataList");
+//        
+//        if(dtHoge != null){
+//            dtHoge.setFirst(10);
+//            return;
+//        }
+//        
         // エラーメッセージが設定されている場合、エラー出力のみ
         if (!StringUtil.isEmpty(this.processData.getErrorMessage())) {
             FacesMessage message
                     = new FacesMessage(FacesMessage.SEVERITY_ERROR, this.processData.getErrorMessage(), null);
             facesContext.addMessage(null, message);
+
             return;
         }
 
@@ -682,7 +695,7 @@ public class GXHDO901A implements Serializable {
                 if (!StringUtil.isEmpty(resultData.getCollBackParam())) {
                     RequestContext context = RequestContext.getCurrentInstance();
                     context.addCallbackParam("firstParam", resultData.getCollBackParam());
- }
+                }
                 //***************************************************************************************************
 
                 // ボタンの活性・非活性制御
@@ -802,7 +815,8 @@ public class GXHDO901A implements Serializable {
                     + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '4' THEN 'false' ELSE 'true' END AS render_iput_select, "
                     + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '5' THEN 'false' ELSE 'true' END AS render_iput_radio, "
                     + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '6' THEN 'false' ELSE 'true' END AS render_iput_time, "
-                    + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '7' THEN 'false' ELSE 'true' END AS render_output_label "
+                    + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '7' THEN 'false' ELSE 'true' END AS render_output_label, "
+                    + "hdm02_3.bg_color AS bg_color_input_default "
                     + "FROM fxhdd01 hdd01 "
                     + "LEFT JOIN fxhdm02 hdm02_1 ON (hdd01.label1_setting = hdm02_1.setting_id) "
                     + "LEFT JOIN fxhdm02 hdm02_2 ON (hdd01.label2_setting = hdm02_2.setting_id) "
@@ -851,7 +865,7 @@ public class GXHDO901A implements Serializable {
             mapping.put("font_size_3", "fontSize3");
             mapping.put("font_color_3", "fontColor3");
             mapping.put("bg_color_3", "backColor3");
-            mapping.put("bg_color_input", "backColorInputDefault");
+            mapping.put("bg_color_input_default", "backColorInputDefault");
 
             BeanProcessor beanProcessor = new BeanProcessor(mapping);
             RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
@@ -925,8 +939,8 @@ public class GXHDO901A implements Serializable {
 
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceDocServer);
-            String sql = "SELECT gamen_id,button_id,item_id,check_pattern,check_no,hissu_flag "
-                    + "  FROM FXHDM06 "
+            String sql = "SELECT gamen_id,button_id,item_id,check_pattern,check_no "
+                    + "  FROM FXHDM05 "
                     + " WHERE gamen_id = ? ";
 
             List<Object> params = new ArrayList<>();
@@ -938,14 +952,13 @@ public class GXHDO901A implements Serializable {
             mapping.put("item_id", "itemId");
             mapping.put("check_pattern", "checkPattern");
             mapping.put("check_no", "checkNo");
-            mapping.put("hissu_flag", "hissuFlag");
 
             BeanProcessor beanProcessor = new BeanProcessor(mapping);
             RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
-            ResultSetHandler<List<FXHDM06>> beanHandler = new BeanListHandler<>(FXHDM06.class, rowProcessor);
+            ResultSetHandler<List<FXHDM05>> beanHandler = new BeanListHandler<>(FXHDM05.class, rowProcessor);
 
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-            this.checkListHDM06 = queryRunner.query(sql, beanHandler, params.toArray());
+            this.checkListHDM05 = queryRunner.query(sql, beanHandler, params.toArray());
 
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("チェック処理項目取得失敗", ex, LOGGER);
@@ -960,16 +973,16 @@ public class GXHDO901A implements Serializable {
      */
     private String getCheckResult(String buttonId) {
         //共通ﾁｪｯｸ
-        List<FXHDM06> itemRowCheckList
-                = checkListHDM06.stream().filter(n -> buttonId.equals(n.getButtonId())).collect(Collectors.toList());
+        List<FXHDM05> itemRowCheckList
+                = checkListHDM05.stream().filter(n -> buttonId.equals(n.getButtonId())).collect(Collectors.toList());
         List<ValidateUtil.ValidateInfo> requireCheckList = new ArrayList<>();
         ValidateUtil validateUtil = new ValidateUtil();
 
         // データを設定する
-        for (FXHDM06 fxhddM06 : itemRowCheckList) {
+        for (FXHDM05 fxhddM05 : itemRowCheckList) {
             for (ValidateUtil.EnumCheckNo checkNo : ValidateUtil.EnumCheckNo.values()) {
-                if (checkNo.name().equalsIgnoreCase(fxhddM06.getCheckPattern())) {
-                    requireCheckList.add(validateUtil.new ValidateInfo(checkNo, fxhddM06.getItemId(), null, null));
+                if (checkNo.name().equalsIgnoreCase(fxhddM05.getCheckPattern())) {
+                    requireCheckList.add(validateUtil.new ValidateInfo(checkNo, fxhddM05.getItemId(), null, null));
                     break;
                 }
             }
@@ -978,15 +991,16 @@ public class GXHDO901A implements Serializable {
         String requireCheckErrorMessage = validateUtil.executeValidation(requireCheckList, this.itemList);
         return requireCheckErrorMessage;
     }
-    
+
     /**
      * 背景色をデフォルトの背景色に戻す
+     *
      * @param buttonId ボタンID
      */
-    private void clearBackColor(String buttonId){
+    private void clearBackColor(String buttonId) {
         // 背景色を戻さない特定の処理を除き背景色をデフォルトの背景色に戻す。
-        if(this.noCheckButtonId == null || !this.noCheckButtonId.contains(buttonId)){
-            for(FXHDD01 fxhdd01: this.itemList){
+        if (this.noCheckButtonId == null || !this.noCheckButtonId.contains(buttonId)) {
+            for (FXHDD01 fxhdd01 : this.itemList) {
                 fxhdd01.setBackColorInput(fxhdd01.getBackColorInputDefault());
             }
         }

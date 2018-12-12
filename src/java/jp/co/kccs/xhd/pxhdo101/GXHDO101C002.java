@@ -4,6 +4,7 @@
 package jp.co.kccs.xhd.pxhdo101;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -47,6 +48,11 @@ public class GXHDO101C002 implements Serializable {
     private GXHDO101C002Model gxhdO101c002ModelView;
 
     /**
+     * 初期表示時メッセージリスト
+     */
+    private List<String> initDispMsgList;
+
+    /**
      * コンストラクタ
      */
     public GXHDO101C002() {
@@ -86,6 +92,24 @@ public class GXHDO101C002 implements Serializable {
      */
     public void setGxhdO101c002ModelView(GXHDO101C002Model gxhdO101c002ModelView) {
         this.gxhdO101c002ModelView = gxhdO101c002ModelView;
+    }
+
+    /**
+     * 初期表示時メッセージリスト
+     *
+     * @return the initDispMsgList
+     */
+    public List<String> getInitDispMsgList() {
+        return initDispMsgList;
+    }
+
+    /**
+     * 初期表示時メッセージリスト
+     *
+     * @param initDispMsgList the initDispMsgList to set
+     */
+    public void setInitDispMsgList(List<String> initDispMsgList) {
+        this.initDispMsgList = initDispMsgList;
     }
 
     /**
@@ -166,4 +190,18 @@ public class GXHDO101C002 implements Serializable {
         }
     }
 
+    /**
+     * 初期表示メッセージ表示
+     */
+    public void showInitDispMessage() {
+        if (this.initDispMsgList == null || this.initDispMsgList.isEmpty()) {
+            return;
+        }
+
+        // 初期表示メッセージの設定        
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+        for (String dispMsg : this.initDispMsgList) {
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, dispMsg, null));
+        }
+    }
 }

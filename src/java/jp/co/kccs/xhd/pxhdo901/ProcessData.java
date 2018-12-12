@@ -6,11 +6,6 @@ package jp.co.kccs.xhd.pxhdo901;
 import java.util.List;
 import javax.sql.DataSource;
 import jp.co.kccs.xhd.db.model.FXHDD01;
-import jp.co.kccs.xhd.model.GXHDO101C001Model;
-import jp.co.kccs.xhd.model.GXHDO101C002Model;
-import jp.co.kccs.xhd.model.GXHDO101C003Model;
-import jp.co.kccs.xhd.model.GXHDO101C004Model;
-import jp.co.kccs.xhd.model.GXHDO101C005Model;
 
 /**
  * ===============================================================================<br>
@@ -105,6 +100,12 @@ public class ProcessData {
      * チェック無しボタンIDリスト(設定しているIDについてはエラー処理の背景色をクリアしない)
      */
     private List<String> noCheckButtonId;
+    
+    /**
+     * サブ画面初期表示メッセージ
+     */
+    private List<String> subInitDispMsgList;
+    
     
     /**
      * 処理名
@@ -409,6 +410,22 @@ public class ProcessData {
      */
     public void setNoCheckButtonId(List<String> noCheckButtonId) {
         this.noCheckButtonId = noCheckButtonId;
+    }
+
+    /**
+     * サブ画面初期表示メッセージ
+     * @return the subInitDispMsgList
+     */
+    public List<String> getSubInitDispMsgList() {
+        return subInitDispMsgList;
+    }
+
+    /**
+     * サブ画面初期表示メッセージ
+     * @param subInitDispMsgList the subInitDispMsgList to set
+     */
+    public void setSubInitDispMsgList(List<String> subInitDispMsgList) {
+        this.subInitDispMsgList = subInitDispMsgList;
     }
     //******************************************************************
     
