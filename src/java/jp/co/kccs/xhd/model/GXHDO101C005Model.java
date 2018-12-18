@@ -35,9 +35,9 @@ public class GXHDO101C005Model implements Cloneable {
     @Override
     public GXHDO101C005Model clone() throws CloneNotSupportedException {
         GXHDO101C005Model cloneModel = (GXHDO101C005Model) super.clone();
-        List<GXHDO101C005Model.printWidthData> newList = new ArrayList();
-        for (GXHDO101C005Model.printWidthData data : this.printWidthDataList) {
-            GXHDO101C005Model.printWidthData newData = new GXHDO101C005Model.printWidthData();
+        List<GXHDO101C005Model.PrintWidthData> newList = new ArrayList();
+        for (GXHDO101C005Model.PrintWidthData data : this.printWidthDataList) {
+            GXHDO101C005Model.PrintWidthData newData = new GXHDO101C005Model.PrintWidthData();
             newData.setPrintWidth(data.getPrintWidth());
             newData.setStartVal(data.getStartVal());
             newData.setStartTextRendered(data.isStartTextRendered());
@@ -54,14 +54,21 @@ public class GXHDO101C005Model implements Cloneable {
     /**
      * 印刷幅データリスト
      */
-    private List<printWidthData> printWidthDataList = new ArrayList<>();
+    private List<PrintWidthData> printWidthDataList = new ArrayList<>();
+    
+    /**
+     * コンストラクタ
+     */
+    public GXHDO101C005Model() {
+        this.printWidthDataList = new ArrayList<>();
+    }
 
     /**
      * 印刷幅データリスト
      *
      * @return the printWidthDataList
      */
-    public List<printWidthData> getPrintWidthDataList() {
+    public List<PrintWidthData> getPrintWidthDataList() {
         return printWidthDataList;
     }
 
@@ -70,14 +77,14 @@ public class GXHDO101C005Model implements Cloneable {
      *
      * @param printWidthDataList the printWidthDataList to set
      */
-    public void setPrintWidthDataList(List<printWidthData> printWidthDataList) {
+    public void setPrintWidthDataList(List<PrintWidthData> printWidthDataList) {
         this.printWidthDataList = printWidthDataList;
     }
 
     /**
      * 印刷幅データ
      */
-    public class printWidthData {
+    public class PrintWidthData {
 
         /**
          * 印刷幅

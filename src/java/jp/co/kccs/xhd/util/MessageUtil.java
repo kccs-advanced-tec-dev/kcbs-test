@@ -4,10 +4,12 @@
 package jp.co.kccs.xhd.util;
 
 import java.text.MessageFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.faces.context.FacesContext;
 import jp.co.kccs.xhd.db.model.FXHDD01;
+import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 
 /**
  * ===============================================================================<br>
@@ -26,11 +28,11 @@ import jp.co.kccs.xhd.db.model.FXHDD01;
  * <br>
  * ===============================================================================<br>
  */
-
 /**
  * ﾒｯｾｰｼﾞ処理関連ﾕｰﾃｨﾘﾃｨｸﾗｽ
  */
 public class MessageUtil {
+
     /**
      * ｺﾝｽﾄﾗｸﾀ
      */
@@ -53,32 +55,43 @@ public class MessageUtil {
 
         return mf.format(params);
     }
-    
+
     /**
-     * ﾒｯｾｰｼﾞ取得処理
-     *
-     * @param id ﾒｯｾｰｼﾞID
-     * @param params ﾊﾟﾗﾒｰﾀ
-     * @param itemList ｱｲﾃﾑﾘｽﾄ
-     * @return ﾒｯｾｰｼﾞ
+     * メッセージ情報取得処理
+     * @param messageId メッセージID
+     * @param changeBackColor 背景色変更判定
+     * @param changePage 項目リストのページ変更判定
+     * @param errItemList エラー項目リスト
+     * @param errorMessageParams エラーメッセージパラメータ
+     * @return エラーメッセージ情報
      */
-    public static String getMessageWithSetBackColor(String id, List<FXHDD01> itemList, Object... params) {
-        if (itemList != null && !itemList.isEmpty()) {
-            for (FXHDD01 fxhdd01 : itemList) {
-                if (fxhdd01 == null) {
-                    continue;
-                }
-                // 受け取ったItemにエラー時のカラーをセットする。
-                fxhdd01.setBackColorInput(ErrUtil.ERR_BACK_COLOR);
+    public static ErrorMessageInfo getErrorMessageInfo(String messageId, boolean changeBackColor, boolean changePage, List<FXHDD01> errItemList, Object... errorMessageParams) {
+
+        // エラーメッセージ情報
+        ErrorMessageInfo errorMessageInfo = new ErrorMessageInfo();
+
+        errorMessageInfo.setErrorMessageId(messageId); // エラーメッセージID
+        errorMessageInfo.setErrorMessage(getMessage(messageId, errorMessageParams)); // エラーメッセージ
+        errorMessageInfo.setIsChangeBackColor(changeBackColor); // 背景色を変更するかどうか
+
+        // エラー対象の項目の情報を戻り値にセットする。
+        List<ErrorMessageInfo.ErrorItemInfo> errorItemInfoList = new ArrayList<>();
+        if (errItemList != null && !errItemList.isEmpty()) {
+            // 項目一覧のページの変更をする場合
+            if (changePage) {
+                // エラー項目の先頭のインデックスを設定する。
+                errorMessageInfo.setPageChangeItemIndex(errItemList.get(0).getItemIndex()); //項目Index
             }
+
+            for (FXHDD01 fxhdd01 : errItemList) {
+                ErrorMessageInfo.ErrorItemInfo errorItemInfo = errorMessageInfo.new ErrorItemInfo();
+                errorItemInfo.setItemId(fxhdd01.getItemId()); //項目ID
+                errorItemInfoList.add(errorItemInfo);
+            }
+
+            errorMessageInfo.setErrorItemInfoList(errorItemInfoList);
         }
 
-        FacesContext context = FacesContext.getCurrentInstance();
-        ResourceBundle messages = context.getApplication().getResourceBundle(context, "myMsg");
-
-        String message = messages.getString(id);
-        MessageFormat mf = new MessageFormat(message);
-
-        return mf.format(params);
+        return errorMessageInfo;
     }
 }

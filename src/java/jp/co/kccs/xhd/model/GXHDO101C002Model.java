@@ -35,9 +35,9 @@ public class GXHDO101C002Model implements Cloneable {
     @Override
     public GXHDO101C002Model clone() throws CloneNotSupportedException {
         GXHDO101C002Model cloneModel = (GXHDO101C002Model) super.clone();
-        List<GXHDO101C002Model.ptnKyoriXData> newList = new ArrayList();
-        for (GXHDO101C002Model.ptnKyoriXData data : this.ptnKyoriXDataList) {
-            GXHDO101C002Model.ptnKyoriXData newData = new GXHDO101C002Model.ptnKyoriXData();
+        List<GXHDO101C002Model.PtnKyoriXData> newList = new ArrayList();
+        for (GXHDO101C002Model.PtnKyoriXData data : this.ptnKyoriXDataList) {
+            GXHDO101C002Model.PtnKyoriXData newData = new GXHDO101C002Model.PtnKyoriXData();
             newData.setPtnKyoriX(data.ptnKyoriX);
             newData.setStartVal(data.getStartVal());
             newData.setStartTextRendered(data.isStartTextRendered());
@@ -59,14 +59,21 @@ public class GXHDO101C002Model implements Cloneable {
     /**
      * PTN距離Xデータリスト
      */
-    private List<ptnKyoriXData> ptnKyoriXDataList = new ArrayList<>();
+    private List<PtnKyoriXData> ptnKyoriXDataList;
+
+    /**
+     * コンストラクタ
+     */
+    public GXHDO101C002Model() {
+        this.ptnKyoriXDataList = new ArrayList<>();
+    }
 
     /**
      * PTN距離Xデータリスト
      *
      * @return the ptnKyoriXDataList
      */
-    public List<ptnKyoriXData> getPtnKyoriXDataList() {
+    public List<PtnKyoriXData> getPtnKyoriXDataList() {
         return ptnKyoriXDataList;
     }
 
@@ -75,14 +82,14 @@ public class GXHDO101C002Model implements Cloneable {
      *
      * @param ptnKyoriXDataList the ptnKyoriXDataList to set
      */
-    public void setPtnKyoriXDataList(List<ptnKyoriXData> ptnKyoriXDataList) {
+    public void setPtnKyoriXDataList(List<PtnKyoriXData> ptnKyoriXDataList) {
         this.ptnKyoriXDataList = ptnKyoriXDataList;
     }
 
     /**
      * PTN距離Xデータ
      */
-    public class ptnKyoriXData {
+    public class PtnKyoriXData {
 
         /**
          * PTN距離X

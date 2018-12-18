@@ -26,7 +26,7 @@ public class GXHDO101C003Logic {
 
     public static GXHDO101C003Model createGXHDO101C003Model(String lotNo) {
         GXHDO101C003Model gxhdo101c003Model = new GXHDO101C003Model();
-        List<GXHDO101C003Model.ptnKyoriYData> ptnKyoriYDataList = new ArrayList<>();
+        List<GXHDO101C003Model.PtnKyoriYData> ptnKyoriYDataList = new ArrayList<>();
 
         // PTN距離X(1行目)
         ptnKyoriYDataList.add(getInitPtnKyoriYData(gxhdo101c003Model, "1", "", "TEXT", "14", "", "", "TEXT", "2", ""));
@@ -59,11 +59,11 @@ public class GXHDO101C003Logic {
      * @param endTextBackColor　エンド項目(BackGround)
      * @return PTN距離データ
      */
-    private static GXHDO101C003Model.ptnKyoriYData getInitPtnKyoriYData(
+    private static GXHDO101C003Model.PtnKyoriYData getInitPtnKyoriYData(
             GXHDO101C003Model gxhdo101c003Model, String ptnKyoriY,
             String startVal, String startInputType, String startTextMaxLength, String startTextBackColor,
             String endVal, String endInputType, String endTextMaxLength, String endTextBackColor) {
-        GXHDO101C003Model.ptnKyoriYData ptnKyoriYData = gxhdo101c003Model.new ptnKyoriYData();
+        GXHDO101C003Model.PtnKyoriYData ptnKyoriYData = gxhdo101c003Model.new PtnKyoriYData();
         // PTN距離Y
         ptnKyoriYData.setPtnKyoriY(ptnKyoriY);
         // スタート

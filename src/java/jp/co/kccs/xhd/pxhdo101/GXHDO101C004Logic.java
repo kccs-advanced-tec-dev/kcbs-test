@@ -25,7 +25,7 @@ import jp.co.kccs.xhd.model.GXHDO101C004Model;
 public class GXHDO101C004Logic {
 
     public static GXHDO101C004Model createGXHDO101C004Model(String lotNo) {
-        List<GXHDO101C004Model.makuatsuData> makuatsuDataList = new ArrayList<>();
+        List<GXHDO101C004Model.MakuatsuData> makuatsuDataList = new ArrayList<>();
         GXHDO101C004Model model = new GXHDO101C004Model();
 
         // 膜厚(1行目)
@@ -54,9 +54,9 @@ public class GXHDO101C004Logic {
      * @param startTextBackColor　スタート項目(BackGround)
      * @return 膜厚データ
      */
-    private static GXHDO101C004Model.makuatsuData getInitMakuatsuData(GXHDO101C004Model model, String makuatsu,
+    private static GXHDO101C004Model.MakuatsuData getInitMakuatsuData(GXHDO101C004Model model, String makuatsu,
             String startVal, String startInputType, String startTextMaxLength, String startTextBackColor) {
-        GXHDO101C004Model.makuatsuData makuatsuData = model.new makuatsuData();
+        GXHDO101C004Model.MakuatsuData makuatsuData = model.new MakuatsuData();
         // 膜厚
         makuatsuData.setMakuatsu(makuatsu);
 

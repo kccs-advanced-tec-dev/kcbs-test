@@ -3,6 +3,7 @@
  */
 package jp.co.kccs.xhd.pxhdo901;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.sql.DataSource;
 import jp.co.kccs.xhd.db.model.FXHDD01;
@@ -68,10 +69,10 @@ public class ProcessData {
      * 警告メッセージ
      */
     private String warnMessage;
-    /**
-     * エラーメッセージ
-     */
-    private String errorMessage;
+//    /**
+//     * エラーメッセージ
+//     */
+//    private List<String> errorMessage;
     /**
      * DataSource(DocumentServer)
      */
@@ -100,13 +101,43 @@ public class ProcessData {
      * チェック無しボタンIDリスト(設定しているIDについてはエラー処理の背景色をクリアしない)
      */
     private List<String> noCheckButtonId;
-    
+
     /**
      * サブ画面初期表示メッセージ
      */
     private List<String> subInitDispMsgList;
     
+    /**
+     * エラーメッセージ情報リスト
+     */
+    private List<ErrorMessageInfo> errorMessageInfoList;
+
+    /**
+     * 初期表示時エラーメッセージリスト
+     */
+    private List<String> initMessageList;
     
+    
+    /**
+     * 実行スクリプト
+     */
+    private String executeScript;
+    
+
+    /**
+     * コンストラクタ
+     */
+    public ProcessData() {
+        //this.errorMessage = new ArrayList<>();
+        this.itemList = new ArrayList<>();
+        this.activeButtonId = new ArrayList<>();
+        this.inactiveButtonId = new ArrayList<>();
+        this.noCheckButtonId = new ArrayList<>();
+        this.subInitDispMsgList = new ArrayList<>();
+        this.errorMessageInfoList = new ArrayList<>();
+        this.initMessageList = new ArrayList<>();
+    }
+
     /**
      * 処理名
      *
@@ -269,23 +300,23 @@ public class ProcessData {
         this.warnMessage = warnMessage;
     }
 
-    /**
-     * エラーメッセージ
-     *
-     * @return the errorMessage
-     */
-    public String getErrorMessage() {
-        return errorMessage;
-    }
-
-    /**
-     * エラーメッセージ
-     *
-     * @param errorMessage the errorMessage to set
-     */
-    public void setErrorMessage(String errorMessage) {
-        this.errorMessage = errorMessage;
-    }
+//    /**
+//     * エラーメッセージ
+//     *
+//     * @return the errorMessage
+//     */
+//    public List<String> getErrorMessage() {
+//        return errorMessage;
+//    }
+//
+//    /**
+//     * エラーメッセージ
+//     *
+//     * @param errorMessage the errorMessage to set
+//     */
+//    public void setErrorMessage(List<String> errorMessage) {
+//        this.errorMessage = errorMessage;
+//    }
 
     /**
      * DataSource(DocumentServer)
@@ -398,6 +429,7 @@ public class ProcessData {
 
     /**
      * チェック無しボタンIDリスト
+     *
      * @return the noCheckButtonId
      */
     public List<String> getNoCheckButtonId() {
@@ -406,6 +438,7 @@ public class ProcessData {
 
     /**
      * チェック無しボタンIDリスト
+     *
      * @param noCheckButtonId the noCheckButtonId to set
      */
     public void setNoCheckButtonId(List<String> noCheckButtonId) {
@@ -414,6 +447,7 @@ public class ProcessData {
 
     /**
      * サブ画面初期表示メッセージ
+     *
      * @return the subInitDispMsgList
      */
     public List<String> getSubInitDispMsgList() {
@@ -422,11 +456,60 @@ public class ProcessData {
 
     /**
      * サブ画面初期表示メッセージ
+     *
      * @param subInitDispMsgList the subInitDispMsgList to set
      */
     public void setSubInitDispMsgList(List<String> subInitDispMsgList) {
         this.subInitDispMsgList = subInitDispMsgList;
     }
+
+    /**
+     * エラーメッセージ情報リスト
+     * @return the errorMessageInfoList
+     */
+    public List<ErrorMessageInfo> getErrorMessageInfoList() {
+        return errorMessageInfoList;
+    }
+
+    /**
+     * エラーメッセージ情報リスト
+     * @param errorMessageInfoList the errorMessageInfoList to set
+     */
+    public void setErrorMessageInfoList(List<ErrorMessageInfo> errorMessageInfoList) {
+        this.errorMessageInfoList = errorMessageInfoList;
+    }
     //******************************************************************
-    
- }
+
+    /**
+     * @return the initMessageList
+     */
+    public List<String> getInitMessageList() {
+        return initMessageList;
+    }
+
+    /**
+     * @param initMessageList the initMessageList to set
+     */
+    public void setInitMessageList(List<String> initMessageList) {
+        this.initMessageList = initMessageList;
+    }
+
+    /**
+     * 実行スクリプト
+     *
+     * @return the executeScript
+     */
+    public String getExecuteScript() {
+        return executeScript;
+    }
+
+    /**
+     * 実行スクリプト
+     *
+     * @param executeScript the executeScript to set
+     */
+    public void setExecuteScript(String executeScript) {
+        this.executeScript = executeScript;
+    }
+
+}

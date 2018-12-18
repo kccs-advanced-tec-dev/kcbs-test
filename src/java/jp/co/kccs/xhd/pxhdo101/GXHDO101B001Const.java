@@ -342,7 +342,7 @@ public class GXHDO101B001Const {
     public static final String PTN_INSATSU_START_Y_MIN = "insatsu_sps_gra_ptn_insatsu_start_y_min";
 
     /**
-     * ｽﾀｰﾄ時ﾆｼﾞﾐ・ｶｽﾚ確認
+     * ｽﾀｰﾄ時ﾆｼﾞﾐ・ｶｽﾚ確認 //TODO
      */
     public static final String STARTJI_NIJIMI_KASURE_CHECK = "insatsu_sps_gra_startji_nijimi_kasure_check";
 

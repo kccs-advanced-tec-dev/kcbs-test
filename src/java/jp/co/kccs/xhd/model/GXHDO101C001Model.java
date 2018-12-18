@@ -26,6 +26,7 @@ import java.util.List;
  */
 public class GXHDO101C001Model implements Cloneable {
 
+
     /**
      * クローン実装
      *
@@ -35,9 +36,9 @@ public class GXHDO101C001Model implements Cloneable {
     @Override
     public GXHDO101C001Model clone() throws CloneNotSupportedException {
         GXHDO101C001Model cloneModel = (GXHDO101C001Model) super.clone();
-        List<makuatsuData> newList = new ArrayList();
-        for (makuatsuData data : this.makuatsuDataList) {
-            makuatsuData newData = new makuatsuData();
+        List<MakuatsuData> newList = new ArrayList();
+        for (MakuatsuData data : this.makuatsuDataList) {
+            MakuatsuData newData = new MakuatsuData();
             newData.setMakuatsu(data.getMakuatsu());
             newData.setStartVal(data.getStartVal());
             newData.setStartTextRendered(data.isStartTextRendered());
@@ -55,18 +56,24 @@ public class GXHDO101C001Model implements Cloneable {
         cloneModel.setMakuatsuDataList(newList);
         return cloneModel;
     }
-
     /**
      * 膜厚データリスト
      */
-    private List<makuatsuData> makuatsuDataList = new ArrayList<>();
+    private List<MakuatsuData> makuatsuDataList;
+
+    /**
+     * コンストラクタ
+     */
+    public GXHDO101C001Model() {
+        this.makuatsuDataList = new ArrayList<>();
+    }
 
     /**
      * 膜厚データリスト
      *
      * @return the makuatsuDataList
      */
-    public List<makuatsuData> getMakuatsuDataList() {
+    public List<MakuatsuData> getMakuatsuDataList() {
         return makuatsuDataList;
     }
 
@@ -75,14 +82,14 @@ public class GXHDO101C001Model implements Cloneable {
      *
      * @param makuatsuDataList the makuatsuDataList to set
      */
-    public void setMakuatsuDataList(List<makuatsuData> makuatsuDataList) {
+    public void setMakuatsuDataList(List<MakuatsuData> makuatsuDataList) {
         this.makuatsuDataList = makuatsuDataList;
     }
 
     /**
      * 膜厚データ
      */
-    public class makuatsuData {
+    public class MakuatsuData {
 
         /**
          * 膜厚

@@ -6,11 +6,11 @@
     <p:dialog header="#{myMsg.ptn_kyori_y}" id="dlg_gxhdo101c003" widgetVar="W_dlg_gxhdo101c003"
               width="600" modal="true" height="270"
               dynamic="false" closable="true" closeOnEscape="false" 
-              onShow="document.getElementById('form:gxhdo101c003Form:initDispMsgBtn').click();" >
+              onHide="document.getElementById('form:gxhdo101c003Form:cancelBtn').click();" >
         <h:form id="gxhdo101c003Form" >
-            <p:panel>
+            <p:panel style="width:555px">
                  <p:dataTable id="ptnKyoriXTable" var="item" value="#{beanGXHDO101C003.gxhdO101c003ModelView.ptnKyoriYDataList}"
-                         style="font-size: 12px;" emptyMessage="">
+                            scrollable="true" style="font-size: 12px; width:520px" emptyMessage="" >
                     <p:column id="mPtnKyoriX" width="30%" headerText="#{myMsg.ptn_kyori_y}" >
                         <div style="text-align:right;">
                         <p:outputLabel value="#{item.ptnKyoriY}" />
@@ -31,21 +31,17 @@
                 </p:dataTable>
             </p:panel>
             <div style="text-align: center;">
-                <p:commandButton value="メッセージ表示" id="initDispMsgBtn"
-                                 style="display:none;"
-                                 actionListener="#{beanGXHDO101C003.showInitDispMessage()}"
-                                 async="false"
-                                 process="gxhdo101c003Form" 
-                                 update="form:growlMessage"/>
-                <p:commandButton value="OK" id="ptnKyoriYOKBtn"
+                <p:commandButton value="OK" id="okBtn"
                              style="position:relative;right:5px;top:5px;width:90px;height:35px;"
                                  actionListener="#{beanGXHDO101C003.doOk()}"
                                  async="false"
                                  process="gxhdo101c003Form" 
                                  update="gxhdo101c003Form form:growlMessage"
                                  oncomplete="if('error'!=args.firstParam){PF('W_dlg_gxhdo101c003').hide();}"/>
-                <p:commandButton value="Cancel" id="ptnKyoriYCancelBtn"
+                <p:commandButton value="Cancel" id="cancelBtn"
                                  style="position:relative;right:5px;top:5px;width:90px;height:35px;"
+                                 process="@this" 
+                                 update="form:growlMessage"
                                  oncomplete="PF('W_dlg_gxhdo101c003').hide();"/>   
             </div>
         </h:form>

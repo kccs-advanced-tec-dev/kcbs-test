@@ -403,4 +403,18 @@ public class DateUtil {
             return null;
         }
     }
+    
+    /**
+     * タイムスタンプを指定のフォーマットで返す
+     * @param timestamp タイムスタンプ
+     * @param timeFormat フォーマット
+     * @return フォーマット結果
+     */
+    public static String formattedTimestamp(Timestamp timestamp, String timeFormat) {
+        if(timestamp == null){
+            return "";
+        }
+        return new SimpleDateFormat(timeFormat).format(timestamp);
+    }
+    
 }

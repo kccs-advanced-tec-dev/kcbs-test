@@ -26,7 +26,7 @@ public class GXHDO101C005Logic {
 
     public static GXHDO101C005Model createGXHDO101C005Model(String lotNo) {
         GXHDO101C005Model GXHDO101C005Model = new GXHDO101C005Model();
-        List<GXHDO101C005Model.printWidthData> printWidthDataList = new ArrayList<>();
+        List<GXHDO101C005Model.PrintWidthData> printWidthDataList = new ArrayList<>();
 
         // 膜厚(1行目)
         printWidthDataList.add(getInitPrintWidhData(GXHDO101C005Model, "1", "", "TEXT", "5", ""));
@@ -54,10 +54,10 @@ public class GXHDO101C005Logic {
      * @param startTextBackColor　スタート項目(BackGround)
      * @return 印刷幅データ
      */
-    private static GXHDO101C005Model.printWidthData getInitPrintWidhData(
+    private static GXHDO101C005Model.PrintWidthData getInitPrintWidhData(
             GXHDO101C005Model gxhdo101C005Model, String printWidth, String startVal, 
             String startInputType, String startTextMaxLength, String startTextBackColor) {
-        GXHDO101C005Model.printWidthData printWidthListData = gxhdo101C005Model.new printWidthData();
+        GXHDO101C005Model.PrintWidthData printWidthListData = gxhdo101C005Model.new PrintWidthData();
         // 印刷幅
         printWidthListData.setPrintWidth(printWidth);
         // スタート

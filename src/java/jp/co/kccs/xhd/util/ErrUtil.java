@@ -4,10 +4,14 @@
 package jp.co.kccs.xhd.util;
 
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
+import jp.co.kccs.xhd.db.model.FXHDD01;
+import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 
 /**
  * ===============================================================================<br>
@@ -26,7 +30,6 @@ import javax.faces.context.FacesContext;
  * <br>
  * ===============================================================================<br>
  */
-
 /**
  * エラー関連のUtilクラスです。
  *
@@ -34,11 +37,14 @@ import javax.faces.context.FacesContext;
  * @since 2018/05/06
  */
 public class ErrUtil {
-    
-    public static final String ERR_BACK_COLOR = "lightpink";
 
     /**
-     * コンストラクタ
+     * エラー発生時背景色
+     */
+    public static final String ERR_BACK_COLOR = "#FFB6C1";
+    
+    /**
+     * コンストラクタ--
      */
     private ErrUtil() {
 
@@ -62,9 +68,9 @@ public class ErrUtil {
         // エラースタイルをセット
         String nowStyle = StringUtil.nullToBlank(input.getStyle());
         input.setStyle(addErrStyle(nowStyle));
-           
+
     }
-    
+
     /**
      * エラー時カラーの設定・解除
      *
@@ -152,7 +158,7 @@ public class ErrUtil {
         }
         return returnStyle;
     }
-    
+
     /**
      * SQL実行時サーバログ出力処理
      *
@@ -162,12 +168,32 @@ public class ErrUtil {
      */
     public static void outputErrorLog(String errMessage, Exception ex, Logger loggerClass) {
         loggerClass.log(Level.SEVERE, errMessage, ex);
-        
+
         //SQLExceptionの場合のみ、エラーコードとSQLStateをﾛｸﾞ出力する
         if (ex instanceof SQLException) {
-            SQLException sqlEx = (SQLException)ex;
+            SQLException sqlEx = (SQLException) ex;
             loggerClass.log(Level.SEVERE, "ErrorCode: {0}", sqlEx.getErrorCode());
             loggerClass.log(Level.SEVERE, "SQLState: {0}", sqlEx.getSQLState());
+        }
+    }
+
+    /**
+     * 項目の背景色を設定します。
+     *
+     * @param itemList 項目データ
+     * @param errorMessageInfo エラーメッセージ情報
+     */
+    public static void setErrorItemBackColor(List<FXHDD01> itemList, ErrorMessageInfo errorMessageInfo) {
+        
+        List<FXHDD01> errorItemList;
+        for (ErrorMessageInfo.ErrorItemInfo errorItemInfo : errorMessageInfo.getErrorItemInfoList()) {
+
+            errorItemList
+                    = itemList.stream().filter(n -> errorItemInfo.getItemId().equals(n.getItemId())).collect(Collectors.toList());
+
+            for (FXHDD01 fxhdd01 : errorItemList) {
+                fxhdd01.setBackColorInput(ERR_BACK_COLOR);
+            }
         }
     }
 }

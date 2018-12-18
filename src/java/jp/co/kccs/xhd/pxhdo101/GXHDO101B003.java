@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -15,8 +16,10 @@ import java.util.stream.Collectors;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.db.model.SrSyosei;
+import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.GXHDO901A;
 import jp.co.kccs.xhd.pxhdo901.IFormLogic;
 import jp.co.kccs.xhd.pxhdo901.ProcessData;
@@ -26,6 +29,7 @@ import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
 import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.StringUtil;
+import jp.co.kccs.xhd.util.ValidateUtil;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.dbutils.QueryRunner;
@@ -98,15 +102,22 @@ public class GXHDO101B003 implements IFormLogic {
             // ボタンの活性・非活性を設定
             processData = this.setButtonEnable(processData, "initial");
 
+            // エラーが発生していない場合
+            if (processData.getErrorMessageInfoList().isEmpty()) {
+                if (!processData.getInitMessageList().isEmpty()) {
+                    // 初期表示メッセージが設定されている場合、メッセージ表示のイベントを呼ぶ
+                    processData.setMethod("openInitMessage");
+                } else {
+                    // 後続処理なし
+                    processData.setMethod("");
+                }
+            }
+
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-            processData.setErrorMessage("実行時エラー");
-            return processData;
-        }
+            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
 
-        // エラーが発生していない場合は後続処理なし
-        if (StringUtil.isEmpty(processData.getErrorMessage())) {
-            processData.setMethod("");
+            return processData;
         }
 
         return processData;
@@ -226,12 +237,11 @@ public class GXHDO101B003 implements IFormLogic {
      * 初期表示データ設定
      *
      * @param processData
-     * @return
+     * @return 処理制御データ
      * @throws SQLException
      */
     private ProcessData setInitDate(ProcessData processData) throws SQLException {
 
-        //TODO
         QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
         QueryRunner queryRunnerWip = new QueryRunner(processData.getDataSourceWip());
 
@@ -239,27 +249,38 @@ public class GXHDO101B003 implements IFormLogic {
         HttpSession session = (HttpSession) externalContext.getSession(false);
         String lotNo = (String) session.getAttribute("lotNo");
 
+        // エラーメッセージリスト
+        List<String> errorMessageList = new ArrayList<>();
+
         // 設計情報の取得
         Map sekkeiData = this.loadSekkeiData(queryRunnerQcdb, lotNo);
         if (sekkeiData == null || sekkeiData.isEmpty()) {
-            processData.setErrorMessage(MessageUtil.getMessage("XHD-000014", ""));
+            errorMessageList.add(MessageUtil.getMessage("XHD-000014", ""));
+            processData.setInitMessageList(errorMessageList);
             return processData;
         }
+
+        // 設計情報チェック(対象のデータが取得出来ていない場合エラー)
+        ValidateUtil.checkSekkeiUnsetItems(errorMessageList, sekkeiData, getMapSekkeiAssociation());
 
         // ロット区分マスタ情報の取得
         String lotKubunCode = StringUtil.nullToBlank(sekkeiData.get("KUBUN1")); // ﾛｯﾄ区分ｺｰﾄﾞ
         Map lotKbnMasData = loadLotKbnMas(queryRunnerWip, lotKubunCode);
+        String lotKubun = "";
         if (lotKbnMasData == null || lotKbnMasData.isEmpty()) {
-            processData.setErrorMessage(MessageUtil.getMessage("XHD-000015", ""));
-            return processData;
+            errorMessageList.add(MessageUtil.getMessage("XHD-000015", ""));
+        } else {
+            lotKubun = StringUtil.nullToBlank(lotKbnMasData.get("lotkubun"));
         }
 
         // オーナーマスタ情報の取得
         String ownerCode = StringUtil.nullToBlank(sekkeiData.get("OWNER")); // ｵｰﾅｰｺｰﾄﾞ
         Map ownerMasData = loadOwnerMas(queryRunnerWip, ownerCode);
+        String owner = "";
         if (ownerMasData == null || ownerMasData.isEmpty()) {
-            processData.setErrorMessage(MessageUtil.getMessage("XHD-000016", ""));
-            return processData;
+            errorMessageList.add(MessageUtil.getMessage("XHD-000016", ""));
+        } else {
+            owner = StringUtil.nullToBlank(ownerMasData.get("owner"));
         }
 
         // ロットNo
@@ -271,41 +292,41 @@ public class GXHDO101B003 implements IFormLogic {
         // 客先
         this.setItemData(processData, GXHDO101B003Const.KYAKUSAKI, StringUtil.nullToBlank(sekkeiData.get("TOKUISAKI")));
         // ロット区分
-        this.setItemData(processData, GXHDO101B003Const.LOT_KUBUN, lotKubunCode + ":" + StringUtil.nullToBlank(lotKbnMasData.get("lotkubun")));
+        this.setItemData(processData, GXHDO101B003Const.LOT_KUBUN, lotKubunCode + ":" + lotKubun);
         // オーナー
-        this.setItemData(processData, GXHDO101B003Const.OWNER, ownerCode + ":" + StringUtil.nullToBlank(ownerMasData.get("owner")));
+        this.setItemData(processData, GXHDO101B003Const.OWNER, ownerCode + ":" + owner);
         // 電極テープ
-        this.setItemData(processData, GXHDO101B003Const.DENKYOKU_TAPE, StringUtil.nullToBlank(ownerMasData.get("GENRYOU"))
-                + "  " + StringUtil.nullToBlank(ownerMasData.get("ETAPE")));
+        this.setItemData(processData, GXHDO101B003Const.DENKYOKU_TAPE, StringUtil.nullToBlank(sekkeiData.get("GENRYOU"))
+                + "  " + StringUtil.nullToBlank(sekkeiData.get("ETAPE")));
         // 積層数
-        this.setItemData(processData, GXHDO101B003Const.SEKISOU_SU, StringUtil.nullToBlank(ownerMasData.get("EATUMI"))
+        this.setItemData(processData, GXHDO101B003Const.SEKISOU_SU, StringUtil.nullToBlank(sekkeiData.get("EATUMI"))
                 + "μm×"
-                + StringUtil.nullToBlank(ownerMasData.get("SOUSUU"))
+                + StringUtil.nullToBlank(sekkeiData.get("SOUSUU"))
                 + "層  "
-                + StringUtil.nullToBlank(ownerMasData.get("EMAISUU"))
+                + StringUtil.nullToBlank(sekkeiData.get("EMAISUU"))
                 + "枚");
 
         //TODO
         // 上カバーテープ１
-        this.setItemData(processData, GXHDO101B003Const.UE_COVER_TAPE1, StringUtil.nullToBlank(ownerMasData.get("TBUNRUI2"))
+        this.setItemData(processData, GXHDO101B003Const.UE_COVER_TAPE1, StringUtil.nullToBlank(sekkeiData.get("TBUNRUI2"))
                 + "-"
-                + StringUtil.nullToBlank(ownerMasData.get("SYURUI2"))
+                + StringUtil.nullToBlank(sekkeiData.get("SYURUI2"))
                 + "  "
-                + StringUtil.nullToBlank(ownerMasData.get("ATUMI2"))
+                + StringUtil.nullToBlank(sekkeiData.get("ATUMI2"))
                 + "μm×"
-                + StringUtil.nullToBlank(ownerMasData.get("MAISUU2"))
+                + StringUtil.nullToBlank(sekkeiData.get("MAISUU2"))
                 + "枚"
         );
 
         //TODO
         // 下カバーテープ１
-        this.setItemData(processData, GXHDO101B003Const.SHITA_COVER_TAPE1, StringUtil.nullToBlank(ownerMasData.get("TBUNRUI4"))
+        this.setItemData(processData, GXHDO101B003Const.SHITA_COVER_TAPE1, StringUtil.nullToBlank(sekkeiData.get("TBUNRUI4"))
                 + "-"
-                + StringUtil.nullToBlank(ownerMasData.get("SYURUI4"))
+                + StringUtil.nullToBlank(sekkeiData.get("SYURUI4"))
                 + "  "
-                + StringUtil.nullToBlank(ownerMasData.get("ATUMI4"))
+                + StringUtil.nullToBlank(sekkeiData.get("ATUMI4"))
                 + "μm×"
-                + StringUtil.nullToBlank(ownerMasData.get("MAISUU4"))
+                + StringUtil.nullToBlank(sekkeiData.get("MAISUU4"))
                 + "枚");
 
         //TODO
@@ -318,8 +339,47 @@ public class GXHDO101B003 implements IFormLogic {
         // ピッチ
         this.setItemData(processData, GXHDO101B003Const.PITCH, "");
 
+        // 電極製版名
+        this.setItemData(processData, GXHDO101B003Const.DENKYOKU_SEIHAN_MEI, "");
+
+        //TODO
+        //processData.setErrorMessageInfoList(errorMessageInfoList);
+        processData.setInitMessageList(errorMessageList);
         return processData;
 
+    }
+
+    /**
+     * 設計データ関連付けマップ取得
+     *
+     * @return 設計データ関連付けマップ
+     */
+    private Map getMapSekkeiAssociation() {
+        Map<String, String> map = new LinkedHashMap<String, String>() {
+            {
+                put("HINMEI", "KCPNO");
+                put("SETSUU", "セット数");
+                put("TOKUISAKI", "客先");
+                put("GENRYOU", "電極テープ");
+                put("ETAPE", "電極テープ");
+                put("EATUMI", "積層数");
+                put("SOUSUU", "積層数");
+                put("EMAISUU", "積層数");
+                put("KUBUN1", "ロット区分");
+                put("OWNER", "オーナー");
+                put("TBUNRUI2", "上カバーテープ１");
+                put("SYURUI2", "上カバーテープ１");
+                put("ATUMI2", "上カバーテープ１");
+                put("MAISUU2", "上カバーテープ１");
+                put("TBUNRUI4", "下カバーテープ１");
+                put("SYURUI4", "下カバーテープ１");
+                put("ATUMI4", "下カバーテープ１");
+                put("MAISUU4", "下カバーテープ１");
+                put("PATTERN", "電極製版名");
+            }
+        };
+
+        return map;
     }
 
     /**
@@ -334,9 +394,9 @@ public class GXHDO101B003 implements IFormLogic {
         String lotNo1 = lotNo.substring(0, 3);
         String lotNo2 = lotNo.substring(3, 11);
         // 設計データの取得
-        String sql = "SELECT SEKKEINO,PROCESS,SETSUU,TOKUISAKI,KUBUN1,OWNER,"
+        String sql = "SELECT HINMEI,SEKKEINO,PROCESS,SETSUU,TOKUISAKI,KUBUN1,OWNER,"
                 + "GENRYOU,ETAPE,EATUMI,SOUSUU,EMAISUU,TBUNRUI2,SYURUI2,ATUMI2,"
-                + "MAISUU2,TBUNRUI4,SYURUI4,ATUMI4,MAISUU4 "
+                + "MAISUU2,TBUNRUI4,SYURUI4,ATUMI4,MAISUU4,PATTERN "
                 + "FROM da_sekkei "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = '001'";
 
@@ -408,9 +468,7 @@ public class GXHDO101B003 implements IFormLogic {
             // 膜厚(RSUS)の現在の値をサブ画面に設定
             GXHDO101C004 beanGXHDO101C004 = (GXHDO101C004) getSubFormBean("GXHDO101C004");
             beanGXHDO101C004.setGxhdO101c004ModelView(beanGXHDO101C004.getGxhdO101c004Model().clone());
-            // 画面初期表示時用のメッセージを設定
-            beanGXHDO101C004.setInitDispMsgList(processData.getSubInitDispMsgList());
-            
+
             return processData;
         } catch (CloneNotSupportedException ex) {
 
@@ -437,10 +495,7 @@ public class GXHDO101B003 implements IFormLogic {
             // 印刷幅の現在の値をサブ画面に設定
             GXHDO101C005 beanGXHDO101C005 = (GXHDO101C005) getSubFormBean("GXHDO101C005");
             beanGXHDO101C005.setGxhdO101c005ModelView(beanGXHDO101C005.getGxhdO101c005Model().clone());
-            
-            // 画面初期表示時用のメッセージを設定
-            beanGXHDO101C005.setInitDispMsgList(processData.getSubInitDispMsgList());
-            
+
             return processData;
         } catch (CloneNotSupportedException ex) {
 
@@ -469,107 +524,108 @@ public class GXHDO101B003 implements IFormLogic {
      * @return 処理制御データ
      */
     public ProcessData wipImport(ProcessData processData) {
-        try {
-            QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
-            QueryRunner queryRunnerWip = new QueryRunner(processData.getDataSourceWip());
-
-            processData.setProcessName("wipImport");
-
-            // 入力チェック
-            FXHDD01 itemRow = this.getItemRow(processData.getItemList(), "syosei_LotNo");
-            String lotNo = itemRow.getValue();
-
-            // ロットNo桁数チェック
-            if (LOTNO_BYTE != StringUtil.getByte(lotNo, CHARSET, LOGGER)) {
-                processData.setErrorMessage(MessageUtil.getMessage("XHC-000003", itemRow.getLabel1(), LOTNO_BYTE));
-                return processData;
-            }
-
-            // 仕掛情報データの取得
-            Map sikakariData = this.loadShikakariData(queryRunnerWip, lotNo);
-            if (null == sikakariData || sikakariData.isEmpty()) {
-                // 仕掛情報データが取得出来なかった場合エラー終了
-                processData.setErrorMessage(MessageUtil.getMessage("XHC-000009"));
-                return processData;
-            }
-
-            // 実績情報の取得
-            Map jissekiData3 = this.loadJissekiData(queryRunnerWip, lotNo, "'DCK500', 'DCK600'");
-            if (null == jissekiData3 || jissekiData3.isEmpty()) {
-                // 実績情報データが取得出来なかった場合エラー終了
-                processData.setErrorMessage(MessageUtil.getMessage("XHC-000009"));
-                return processData;
-            }
-
-            // 生産情報の取得
-            Map seisanData4 = this.loadSeisanData(queryRunnerWip, jissekiData3.get("jissekino").toString());
-            if (null == seisanData4 || seisanData4.isEmpty()) {
-                // 生産情報データが取得出来なかった場合エラー終了
-                processData.setErrorMessage(MessageUtil.getMessage("XHC-000009"));
-                return processData;
-            }
-
-            // 設計情報の取得
-            Map sekkeiData = this.loadSekkeiData(queryRunnerQcdb, lotNo);
-
-            // 実績情報の取得
-            Map jissekiData6 = this.loadJissekiData(queryRunnerWip, lotNo, "'DDK100'");
-            if (null == jissekiData6 || jissekiData6.isEmpty()) {
-                // 実績情報データが取得出来なかった場合エラー終了
-                processData.setErrorMessage(MessageUtil.getMessage("XHC-000009"));
-                return processData;
-            }
-
-            // 実績情報の取得
-            Map jissekiData7 = this.loadJissekiData(queryRunnerWip, lotNo, "'DEK100', 'DEK200', 'DEK300'");
-
-            // 生産情報の取得
-            Map seisanData8 = null;
-            if (null != jissekiData7 && !jissekiData7.isEmpty()) {
-                seisanData8 = this.loadSeisanData(queryRunnerWip, jissekiData7.get("jissekino").toString());
-            }
-
-            // 取得データを画面に反映する
-            processData.setProcessName("wipImport");
-            processData.setMethod("");
-            // ボタンの活性・非活性を設定
-            processData = this.setButtonEnable(processData, "wipImport");
-
-            this.setItemData(processData, "syosei_KCPNO", StringUtil.nullToBlank(sikakariData.get("kcpno")));
-            this.setItemData(processData, "syosei_kosuu", StringUtil.nullToBlank(jissekiData3.get("syorisuu")));
-            this.setItemData(processData, "syosei_genryo", StringUtil.nullToBlank(sikakariData.get("genryo")));
-            this.setItemData(processData, "syosei_kaisibi", DateUtil.getDisplayDate(jissekiData3.get("syoribi"), DateUtil.YYMMDD));
-            this.setItemData(processData, "syosei_kaisijikoku", DateUtil.getDisplayTime(jissekiData3.get("syorijikoku"), DateUtil.HHMM));
-            this.setItemData(processData, "syosei_shuryoubi", DateUtil.getDisplayDate(jissekiData6.get("syoribi"), DateUtil.YYMMDD));
-            this.setItemData(processData, "syosei_shuryoujikoku", DateUtil.getDisplayTime(jissekiData6.get("syorijikoku"), DateUtil.HHMM));
-            if (null != sekkeiData && !sekkeiData.isEmpty()) {
-                this.setItemData(processData, "syosei_ondo", StringUtil.nullToBlank(NumberUtil.convertIntData(sekkeiData.get("SYOONDO"))));
-            } else {
-                this.setItemData(processData, "syosei_ondo", "");
-            }
-            this.setItemData(processData, "syosei_tunnel_batchFurnaceGouki", StringUtil.nullToBlank(seisanData4.get("goukicode")));
-            this.setItemData(processData, "syosei_startTantousha", StringUtil.nullToBlank(jissekiData3.get("tantousyacode")));
-            this.setItemData(processData, "syosei_EndTantousha", StringUtil.nullToBlank(jissekiData6.get("tantousyacode")));
-            if (null != seisanData8 && !seisanData8.isEmpty()) {
-                this.setItemData(processData, "syosei_saisankaGouki", StringUtil.nullToBlank(seisanData8.get("goukicode")));
-            } else {
-                this.setItemData(processData, "syosei_saisankaGouki", "");
-            }
-            if (null != jissekiData7 && !jissekiData7.isEmpty()) {
-                this.setItemData(processData, "syosei_saisankaShuryoubi", DateUtil.getDisplayDate(jissekiData7.get("syoribi"), DateUtil.YYMMDD));
-                this.setItemData(processData, "syosei_saisankaShuryoujikoku", DateUtil.getDisplayTime(jissekiData7.get("syorijikoku"), DateUtil.HHMM));
-            } else {
-                this.setItemData(processData, "syosei_saisankaShuryoubi", "");
-                this.setItemData(processData, "syosei_saisankaShuryoujikoku", "");
-            }
-
-            return processData;
-
-        } catch (SQLException ex) {
-            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-            processData.setErrorMessage("実行時エラー");
-            return processData;
-        }
+//        try {
+//            QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
+//            QueryRunner queryRunnerWip = new QueryRunner(processData.getDataSourceWip());
+//
+//            processData.setProcessName("wipImport");
+//
+//            // 入力チェック
+//            FXHDD01 itemRow = this.getItemRow(processData.getItemList(), "syosei_LotNo");
+//            String lotNo = itemRow.getValue();
+//
+//            // ロットNo桁数チェック
+//            if (LOTNO_BYTE != StringUtil.getByte(lotNo, CHARSET, LOGGER)) {
+//                processData.setErrorMessage(MessageUtil.getMessage("XHC-000003", itemRow.getLabel1(), LOTNO_BYTE));
+//                return processData;
+//            }
+//
+//            // 仕掛情報データの取得
+//            Map sikakariData = this.loadShikakariData(queryRunnerWip, lotNo);
+//            if (null == sikakariData || sikakariData.isEmpty()) {
+//                // 仕掛情報データが取得出来なかった場合エラー終了
+//                processData.setErrorMessage(MessageUtil.getMessage("XHC-000009"));
+//                return processData;
+//            }
+//
+//            // 実績情報の取得
+//            Map jissekiData3 = this.loadJissekiData(queryRunnerWip, lotNo, "'DCK500', 'DCK600'");
+//            if (null == jissekiData3 || jissekiData3.isEmpty()) {
+//                // 実績情報データが取得出来なかった場合エラー終了
+//                processData.setErrorMessage(MessageUtil.getMessage("XHC-000009"));
+//                return processData;
+//            }
+//
+//            // 生産情報の取得
+//            Map seisanData4 = this.loadSeisanData(queryRunnerWip, jissekiData3.get("jissekino").toString());
+//            if (null == seisanData4 || seisanData4.isEmpty()) {
+//                // 生産情報データが取得出来なかった場合エラー終了
+//                processData.setErrorMessage(MessageUtil.getMessage("XHC-000009"));
+//                return processData;
+//            }
+//
+//            // 設計情報の取得
+//            Map sekkeiData = this.loadSekkeiData(queryRunnerQcdb, lotNo);
+//
+//            // 実績情報の取得
+//            Map jissekiData6 = this.loadJissekiData(queryRunnerWip, lotNo, "'DDK100'");
+//            if (null == jissekiData6 || jissekiData6.isEmpty()) {
+//                // 実績情報データが取得出来なかった場合エラー終了
+//                processData.setErrorMessage(MessageUtil.getMessage("XHC-000009"));
+//                return processData;
+//            }
+//
+//            // 実績情報の取得
+//            Map jissekiData7 = this.loadJissekiData(queryRunnerWip, lotNo, "'DEK100', 'DEK200', 'DEK300'");
+//
+//            // 生産情報の取得
+//            Map seisanData8 = null;
+//            if (null != jissekiData7 && !jissekiData7.isEmpty()) {
+//                seisanData8 = this.loadSeisanData(queryRunnerWip, jissekiData7.get("jissekino").toString());
+//            }
+//
+//            // 取得データを画面に反映する
+//            processData.setProcessName("wipImport");
+//            processData.setMethod("");
+//            // ボタンの活性・非活性を設定
+//            processData = this.setButtonEnable(processData, "wipImport");
+//
+//            this.setItemData(processData, "syosei_KCPNO", StringUtil.nullToBlank(sikakariData.get("kcpno")));
+//            this.setItemData(processData, "syosei_kosuu", StringUtil.nullToBlank(jissekiData3.get("syorisuu")));
+//            this.setItemData(processData, "syosei_genryo", StringUtil.nullToBlank(sikakariData.get("genryo")));
+//            this.setItemData(processData, "syosei_kaisibi", DateUtil.getDisplayDate(jissekiData3.get("syoribi"), DateUtil.YYMMDD));
+//            this.setItemData(processData, "syosei_kaisijikoku", DateUtil.getDisplayTime(jissekiData3.get("syorijikoku"), DateUtil.HHMM));
+//            this.setItemData(processData, "syosei_shuryoubi", DateUtil.getDisplayDate(jissekiData6.get("syoribi"), DateUtil.YYMMDD));
+//            this.setItemData(processData, "syosei_shuryoujikoku", DateUtil.getDisplayTime(jissekiData6.get("syorijikoku"), DateUtil.HHMM));
+//            if (null != sekkeiData && !sekkeiData.isEmpty()) {
+//                this.setItemData(processData, "syosei_ondo", StringUtil.nullToBlank(NumberUtil.convertIntData(sekkeiData.get("SYOONDO"))));
+//            } else {
+//                this.setItemData(processData, "syosei_ondo", "");
+//            }
+//            this.setItemData(processData, "syosei_tunnel_batchFurnaceGouki", StringUtil.nullToBlank(seisanData4.get("goukicode")));
+//            this.setItemData(processData, "syosei_startTantousha", StringUtil.nullToBlank(jissekiData3.get("tantousyacode")));
+//            this.setItemData(processData, "syosei_EndTantousha", StringUtil.nullToBlank(jissekiData6.get("tantousyacode")));
+//            if (null != seisanData8 && !seisanData8.isEmpty()) {
+//                this.setItemData(processData, "syosei_saisankaGouki", StringUtil.nullToBlank(seisanData8.get("goukicode")));
+//            } else {
+//                this.setItemData(processData, "syosei_saisankaGouki", "");
+//            }
+//            if (null != jissekiData7 && !jissekiData7.isEmpty()) {
+//                this.setItemData(processData, "syosei_saisankaShuryoubi", DateUtil.getDisplayDate(jissekiData7.get("syoribi"), DateUtil.YYMMDD));
+//                this.setItemData(processData, "syosei_saisankaShuryoujikoku", DateUtil.getDisplayTime(jissekiData7.get("syorijikoku"), DateUtil.HHMM));
+//            } else {
+//                this.setItemData(processData, "syosei_saisankaShuryoubi", "");
+//                this.setItemData(processData, "syosei_saisankaShuryoujikoku", "");
+//            }
+//
+//            return processData;
+//
+//        } catch (SQLException ex) {
+//            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+//            processData.setErrorMessage("実行時エラー");
+//            return processData;
+//        }
+        return processData;
     }
 
     /**
@@ -1327,15 +1383,16 @@ public class GXHDO101B003 implements IFormLogic {
     private ProcessData createRegistDataErrorMessage(ProcessData processData) {
         if (null != processData.getProcessName()) {
             switch (processData.getProcessName()) {
-                case "saveData":
-                    processData.setErrorMessage("登録に失敗しました。");
+                case "tempResist":
+                    processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("登録に失敗しました。")));
+
                     break;
-                case "modifyData":
-                    processData.setErrorMessage("修正に失敗しました。");
+                case "correct":
+                    processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("修正に失敗しました。")));
+
                     break;
-                case "deleteData":
-                    processData.setErrorMessage("削除に失敗しました。");
-                    break;
+                case "delete":
+                    processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("削除に失敗しました。")));
                 default:
                     break;
             }
@@ -1367,10 +1424,37 @@ public class GXHDO101B003 implements IFormLogic {
                         getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
                                 getELContext(), null, "beanGXHDO101C005");
                 break;
+            // 初期表示メッセージ
+            case "InitMessage":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanInitMessage");
+                break;
 
             default:
                 break;
         }
         return returnBean;
     }
+
+    /**
+     * 初期表示メッセージ表示
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData openInitMessage(ProcessData processData) {
+
+        processData.setProcessName("openInitMessage");
+        processData.setMethod("");
+
+        // メッセージを画面に渡す
+        InitMessage beanInitMessage = (InitMessage) getSubFormBean("InitMessage");
+        beanInitMessage.setInitMessageList(processData.getInitMessageList());
+
+        // 実行スクリプトを設定
+        processData.setExecuteScript("PF('W_dlg_initMessage').show();");
+        return processData;
+    }
+
 }

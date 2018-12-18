@@ -5,6 +5,8 @@ package jp.co.kccs.xhd.pxhdo901;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
@@ -141,6 +143,11 @@ public class GXHDO901A implements Serializable {
      * チェック無しボタンIDリスト(設定しているIDについてはエラー処理の背景色をクリアしない)
      */
     private List<String> noCheckButtonId;
+    
+    /**
+     * 一覧の表示件数
+     */
+    private String hyojiKensu;
 
     /**
      * コンストラクタ
@@ -288,6 +295,22 @@ public class GXHDO901A implements Serializable {
     }
 
     /**
+     * 一覧の表示件数
+     * @return the hyojiKensu
+     */
+    public String getHyojiKensu() {
+        return hyojiKensu;
+    }
+
+    /**
+     * 一覧の表示件数
+     * @param hyojiKensu the hyojiKensu to set
+     */
+    public void setHyojiKensu(String hyojiKensu) {
+        this.hyojiKensu = hyojiKensu;
+    }
+
+    /**
      * 起動時処理
      */
     public void init() {
@@ -307,6 +330,9 @@ public class GXHDO901A implements Serializable {
         String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
         String formTitle = StringUtil.nullToBlank(session.getAttribute("formTitle"));
         String titleSetting = StringUtil.nullToBlank(session.getAttribute("titleSetting"));
+        // 一覧の表示件数を設定
+        this.hyojiKensu = StringUtil.nullToBlank(session.getAttribute("hyojiKensu"));
+        
 
         // タイトル設定情報取得
         this.loadTitleSettings(titleSetting, formTitle);
@@ -576,17 +602,27 @@ public class GXHDO901A implements Serializable {
         }
 
         // 背景色を元に戻す
-        this.clearBackColor(buttonId);
-
+        this.clearItemListBackColor(buttonId);
+        
         //共通ﾁｪｯｸ
-        String requireCheckErrorMessage = getCheckResult(buttonId);
+        ErrorMessageInfo errorMessageInfo = getCheckResult(buttonId);
 
         // エラーメッセージが設定されている場合、エラー出力のみ
-        if (!StringUtil.isEmpty(requireCheckErrorMessage)) {
+        if (errorMessageInfo != null && !StringUtil.isEmpty(errorMessageInfo.getErrorMessage())) {
             FacesMessage message
-                    = new FacesMessage(FacesMessage.SEVERITY_ERROR, requireCheckErrorMessage, null);
+                    = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessageInfo.getErrorMessage(), null);
             facesContext.addMessage(null, message);
-
+            
+            // 項目の背景色を変更する場合
+            if(errorMessageInfo.getIsChangeBackColor()){
+                // エラー項目の背景色を設定
+                ErrUtil.setErrorItemBackColor(this.itemList, errorMessageInfo);
+            }
+            
+            // エラー項目を表示するためページを遷移する。
+            // 表示したい項目のIndexを指定(0以下のIndexは内部的に無視)
+            setPageItemDataList(errorMessageInfo.getPageChangeItemIndex());
+            
             return;
         }
 
@@ -625,21 +661,24 @@ public class GXHDO901A implements Serializable {
     private void processMain() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
 
-        //TODO
-//        DataList dtHoge = 
-//            (DataList)facesContext.getViewRoot().findComponent(":form:itemDataList");
-//        
-//        if(dtHoge != null){
-//            dtHoge.setFirst(10);
-//            return;
-//        }
-//        
-        // エラーメッセージが設定されている場合、エラー出力のみ
-        if (!StringUtil.isEmpty(this.processData.getErrorMessage())) {
-            FacesMessage message
-                    = new FacesMessage(FacesMessage.SEVERITY_ERROR, this.processData.getErrorMessage(), null);
-            facesContext.addMessage(null, message);
 
+        // エラーメッセージが設定されている場合、エラー出力のみ
+        if (!this.processData.getErrorMessageInfoList().isEmpty()) {
+            
+            for(ErrorMessageInfo errorMessageInfo : this.processData.getErrorMessageInfoList()){
+                facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessageInfo.getErrorMessage(), null));
+                
+                // 項目の背景色を変更する場合
+                if(errorMessageInfo.getIsChangeBackColor()){
+                    // エラー項目の背景色を設定
+                    ErrUtil.setErrorItemBackColor(this.itemList, errorMessageInfo);
+                }
+            }
+            
+            // エラー項目を表示するためページを遷移する。
+            // 表示したい項目のIndexを指定(0以下のIndexは内部的に無視)
+            setPageItemDataList(this.processData.getErrorMessageInfoList().get(0).getPageChangeItemIndex());
+            
             return;
         }
 
@@ -691,11 +730,23 @@ public class GXHDO901A implements Serializable {
                     facesContext.addMessage(null, message);
                 }
 
+                //***************************************************************************************************
+                // サブ画面初期表示用のメッセージが存在する場合はメッセージを設定
+                for(String message : this.processData.getSubInitDispMsgList()){
+                    facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null));
+                }
+
                 // コールバックパラメータが設定されている場合はセットする。
                 if (!StringUtil.isEmpty(resultData.getCollBackParam())) {
                     RequestContext context = RequestContext.getCurrentInstance();
                     context.addCallbackParam("firstParam", resultData.getCollBackParam());
                 }
+                
+                // オンロード処理設定
+                if (!StringUtil.isEmpty(resultData.getExecuteScript())) {
+                    RequestContext.getCurrentInstance().execute(resultData.getExecuteScript());
+                }
+                
                 //***************************************************************************************************
 
                 // ボタンの活性・非活性制御
@@ -816,7 +867,7 @@ public class GXHDO901A implements Serializable {
                     + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '5' THEN 'false' ELSE 'true' END AS render_iput_radio, "
                     + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '6' THEN 'false' ELSE 'true' END AS render_iput_time, "
                     + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '7' THEN 'false' ELSE 'true' END AS render_output_label, "
-                    + "hdm02_3.bg_color AS bg_color_input_default "
+                    + "hdm02_3.bg_color AS bg_color_input_default, row_number() over() AS item_index "
                     + "FROM fxhdd01 hdd01 "
                     + "LEFT JOIN fxhdm02 hdm02_1 ON (hdd01.label1_setting = hdm02_1.setting_id) "
                     + "LEFT JOIN fxhdm02 hdm02_2 ON (hdd01.label2_setting = hdm02_2.setting_id) "
@@ -866,6 +917,7 @@ public class GXHDO901A implements Serializable {
             mapping.put("font_color_3", "fontColor3");
             mapping.put("bg_color_3", "backColor3");
             mapping.put("bg_color_input_default", "backColorInputDefault");
+            mapping.put("item_index", "itemIndex");
 
             BeanProcessor beanProcessor = new BeanProcessor(mapping);
             RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
@@ -971,7 +1023,7 @@ public class GXHDO901A implements Serializable {
      * @param method 処理メソッド名
      * @return エラーメッセージ
      */
-    private String getCheckResult(String buttonId) {
+    private ErrorMessageInfo getCheckResult(String buttonId) {
         //共通ﾁｪｯｸ
         List<FXHDM05> itemRowCheckList
                 = checkListHDM05.stream().filter(n -> buttonId.equals(n.getButtonId())).collect(Collectors.toList());
@@ -988,7 +1040,7 @@ public class GXHDO901A implements Serializable {
             }
         }
 
-        String requireCheckErrorMessage = validateUtil.executeValidation(requireCheckList, this.itemList);
+        ErrorMessageInfo requireCheckErrorMessage = validateUtil.executeValidation(requireCheckList, this.itemList);
         return requireCheckErrorMessage;
     }
 
@@ -997,13 +1049,42 @@ public class GXHDO901A implements Serializable {
      *
      * @param buttonId ボタンID
      */
-    private void clearBackColor(String buttonId) {
+    private void clearItemListBackColor(String buttonId) {
         // 背景色を戻さない特定の処理を除き背景色をデフォルトの背景色に戻す。
         if (this.noCheckButtonId == null || !this.noCheckButtonId.contains(buttonId)) {
             for (FXHDD01 fxhdd01 : this.itemList) {
                 fxhdd01.setBackColorInput(fxhdd01.getBackColorInputDefault());
             }
         }
+    }
+    
+    /**
+     * ページ選択処理
+     *
+     * @param itemIndex 表示項目のインデックス
+     */
+    private void setPageItemDataList(int itemIndex) {
+
+        // Indexが0未満の場合はリターン
+        if (itemIndex <= 0) {
+            return;
+        }
+
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+
+        DataList itemDataList
+                = (DataList) facesContext.getViewRoot().findComponent(":form:itemDataList");
+
+        // 項目インデックス
+        BigDecimal decItemIndex = BigDecimal.valueOf(itemIndex);
+        // 一覧の表示件数
+        BigDecimal decHyojiKensu = new BigDecimal(this.hyojiKensu);
+        // ページ数(インデックス / 表示件数)の切り上げ
+        BigDecimal decPage = decItemIndex.divide(decHyojiKensu, RoundingMode.UP);
+        // 開始インデックス = 表示件数 * (ページ数 - 1)
+        BigDecimal startIdx = decHyojiKensu.multiply(decPage.subtract(BigDecimal.ONE));
+        itemDataList.setFirst(startIdx.intValue());
+
     }
 
 }

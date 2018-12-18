@@ -6,6 +6,6 @@ background-image: none!important;
 .ui-growl {
     top:40%;
     left:35%;
-    z-index:9999;
+    z-index:9999!important;
 }
 

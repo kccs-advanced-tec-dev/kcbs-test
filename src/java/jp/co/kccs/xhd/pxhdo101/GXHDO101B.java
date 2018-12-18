@@ -210,7 +210,7 @@ public class GXHDO101B implements IFormLogic {
             FXHDD01 itemRowKaisu = this.getItemRow(processData.getItemList(), "syosei_kaisuu");
             String kaisu = itemRowKaisu.getValue();
             if (StringUtil.isEmpty(kaisu)) {
-                processData.setErrorMessage(MessageUtil.getMessage("XHC-000002", itemRowKaisu.getLabel1()));
+                //processData.setErrorMessage(MessageUtil.getMessage("XHC-000002", itemRowKaisu.getLabel1()));
                 return processData;
             }
 
@@ -218,7 +218,7 @@ public class GXHDO101B implements IFormLogic {
             FXHDD01 itemRowLot = this.getItemRow(processData.getItemList(), "syosei_LotNo");
             String lotNo = itemRowLot.getValue();
             if (LOTNO_BYTE != StringUtil.getByte(lotNo, CHARSET, LOGGER)) {
-                processData.setErrorMessage(MessageUtil.getMessage("XHC-000003", itemRowLot.getLabel1(), LOTNO_BYTE));
+                //processData.setErrorMessage(MessageUtil.getMessage("XHC-000003", itemRowLot.getLabel1(), LOTNO_BYTE));
                 return processData;
             }
 
@@ -267,7 +267,7 @@ public class GXHDO101B implements IFormLogic {
 
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-            processData.setErrorMessage("実行時エラー");
+            //processData.setErrorMessage("実行時エラー");
             return processData;
         }
     }
@@ -291,7 +291,7 @@ public class GXHDO101B implements IFormLogic {
 
             // ロットNo桁数チェック
             if (LOTNO_BYTE != StringUtil.getByte(lotNo, CHARSET, LOGGER)) {
-                processData.setErrorMessage(MessageUtil.getMessage("XHC-000003", itemRow.getLabel1(), LOTNO_BYTE));
+                //processData.setErrorMessage(MessageUtil.getMessage("XHC-000003", itemRow.getLabel1(), LOTNO_BYTE));
                 return processData;
             }
 
@@ -299,7 +299,7 @@ public class GXHDO101B implements IFormLogic {
             Map sikakariData = this.loadShikakariData(queryRunnerWip, lotNo);
             if (null == sikakariData || sikakariData.isEmpty()) {
                 // 仕掛情報データが取得出来なかった場合エラー終了
-                processData.setErrorMessage(MessageUtil.getMessage("XHC-000009"));
+                //processData.setErrorMessage(MessageUtil.getMessage("XHC-000009"));
                 return processData;
             }
 
@@ -307,7 +307,7 @@ public class GXHDO101B implements IFormLogic {
             Map jissekiData3 = this.loadJissekiData(queryRunnerWip, lotNo, "'DCK500', 'DCK600'");
             if (null == jissekiData3 || jissekiData3.isEmpty()) {
                 // 実績情報データが取得出来なかった場合エラー終了
-                processData.setErrorMessage(MessageUtil.getMessage("XHC-000009"));
+                //processData.setErrorMessage(MessageUtil.getMessage("XHC-000009"));
                 return processData;
             }
 
@@ -315,7 +315,7 @@ public class GXHDO101B implements IFormLogic {
             Map seisanData4 = this.loadSeisanData(queryRunnerWip, jissekiData3.get("jissekino").toString());
             if (null == seisanData4 || seisanData4.isEmpty()) {
                 // 生産情報データが取得出来なかった場合エラー終了
-                processData.setErrorMessage(MessageUtil.getMessage("XHC-000009"));
+                //processData.setErrorMessage(MessageUtil.getMessage("XHC-000009"));
                 return processData;
             }
 
@@ -326,7 +326,7 @@ public class GXHDO101B implements IFormLogic {
             Map jissekiData6 = this.loadJissekiData(queryRunnerWip, lotNo, "'DDK100'");
             if (null == jissekiData6 || jissekiData6.isEmpty()) {
                 // 実績情報データが取得出来なかった場合エラー終了
-                processData.setErrorMessage(MessageUtil.getMessage("XHC-000009"));
+                //processData.setErrorMessage(MessageUtil.getMessage("XHC-000009"));
                 return processData;
             }
 
@@ -377,7 +377,7 @@ public class GXHDO101B implements IFormLogic {
 
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-            processData.setErrorMessage("実行時エラー");
+            //processData.setErrorMessage("実行時エラー");
             return processData;
         }
     }
@@ -434,259 +434,260 @@ public class GXHDO101B implements IFormLogic {
      * @return 処理データ
      */
     public ProcessData checkData(ProcessData processData) {
-        try {
-            QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
-            QueryRunner queryRunnerWip = new QueryRunner(processData.getDataSourceWip());
-            List<FXHDD01> itemList = processData.getItemList();
-            ValidateUtil validateUtil = new ValidateUtil();
-
-            if ("saveData".equals(processData.getProcessName())
-                    || "modifyData".equals(processData.getProcessName())) {
-
-                // 【登録】、【修正】共通必須ﾁｪｯｸ
-                List<ValidateUtil.ValidateInfo> requireCheckList = new ArrayList<>();
-                // ロットNo
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C101, "syosei_LotNo", null, null));
-                // KCPNo
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C101, "syosei_KCPNO", null, null));
-                // 個数
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_kosuu", null, null));
-                // 原料品種名
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C101, "syosei_genryo", null, null));
-                // 焼成開始日
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_kaisibi", null, null));
-                // 焼成開始時刻
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_kaisijikoku", null, null));
-                // 焼成終了日
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_shuryoubi", null, null));
-                // 焼成終了時刻
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_shuryoujikoku", null, null));
-                // 焼成温度
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C601, "syosei_ondo", null, null));
-                // トンネル炉・バッチ炉号機
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_tunnel_batchFurnaceGouki", null, null));
-                // 焼成セッター枚数
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_setterMaisuu", null, null));
-                // 焼成開始担当者
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_startTantousha", null, null));
-                // 焼成終了担当者
-                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_EndTantousha", null, null));
-
-                String requireCheckErrorMessage = validateUtil.executeValidation(requireCheckList, itemList);
-                if (!StringUtil.isEmpty(requireCheckErrorMessage)) {
-                    // チェックエラーが存在する場合処理終了
-                    processData.setErrorMessage(requireCheckErrorMessage);
-                    return processData;
-                }
-
-                // 【登録】、【修正】共通入力値ﾁｪｯｸ
-                List<ValidateUtil.ValidateInfo> inputCheckList1 = new ArrayList<>();
-                // ロットNo
-                inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.E001, "syosei_LotNo", null, null));
-                // 個数
-                inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S003, "syosei_kosuu", BigDecimal.valueOf(9999999), BigDecimal.ZERO));
-                inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S004, "syosei_kosuu", BigDecimal.valueOf(9999999), BigDecimal.ZERO));
-                // 焼成開始日
-                inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C501, "syosei_kaisibi", null, null));
-                // 焼成開始時刻
-                inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C502, "syosei_kaisijikoku", null, null));
-                // 焼成終了日
-                inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C501, "syosei_shuryoubi", null, null));
-                // 焼成終了時刻
-                inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C502, "syosei_shuryoujikoku", null, null));
-                // 焼成温度
-                inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S003, "syosei_ondo", BigDecimal.valueOf(9999), BigDecimal.ZERO));
-                inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S004, "syosei_ondo", BigDecimal.valueOf(9999), BigDecimal.ZERO));
-
-                String inputCheck1ErrorMessage = validateUtil.executeValidation(inputCheckList1, itemList);
-                if (!StringUtil.isEmpty(inputCheck1ErrorMessage)) {
-                    // チェックエラーが存在する場合処理終了
-                    processData.setErrorMessage(inputCheck1ErrorMessage);
-                    return processData;
-                }
-
-                // トンネル炉・バッチ炉号機(レコード存在チェック)
-                String goukiInput = this.getItemData(itemList, "syosei_tunnel_batchFurnaceGouki");
-                String goukiItemName = this.getItemName(itemList, "syosei_tunnel_batchFurnaceGouki");
-                boolean goukimasExist = validateUtil.checkC401402(queryRunnerWip, "goukimas",
-                        new ArrayList<>(Arrays.asList("goukicode")), new ArrayList<>(Arrays.asList(goukiInput)));
-                if (!goukimasExist) {
-                    processData.setErrorMessage(MessageUtil.getMessage("XHC-000008", goukiItemName));
-                    return processData;
-                }
-
-                List<ValidateUtil.ValidateInfo> inputCheckList2 = new ArrayList<>();
-
-                // 焼成セッター枚数
-                inputCheckList2.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S003, "syosei_setterMaisuu", BigDecimal.valueOf(999), BigDecimal.ZERO));
-                inputCheckList2.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S004, "syosei_setterMaisuu", BigDecimal.valueOf(999), BigDecimal.ZERO));
-
-                String inputCheck2ErrorMessage = validateUtil.executeValidation(inputCheckList2, itemList);
-                if (!StringUtil.isEmpty(inputCheck2ErrorMessage)) {
-                    // チェックエラーが存在する場合処理終了
-                    processData.setErrorMessage(inputCheck2ErrorMessage);
-                    return processData;
-                }
-
-                // 焼成開始担当者
-                String startTantouInput = this.getItemData(itemList, "syosei_startTantousha");
-                String startTantouItemName = this.getItemName(itemList, "syosei_startTantousha");
-                boolean startTantouExist = validateUtil.checkC401402(queryRunnerWip, "tantomas",
-                        new ArrayList<>(Arrays.asList("tantousyacode", "zaiseki")),
-                        new ArrayList<>(Arrays.asList(startTantouInput, "1")));
-                if (!startTantouExist) {
-                    processData.setErrorMessage(MessageUtil.getMessage("XHC-000008", startTantouItemName));
-                    return processData;
-                }
-                // 焼成終了担当者
-                String endTantouInput = this.getItemData(itemList, "syosei_EndTantousha");
-                String endTantouItemName = this.getItemName(itemList, "syosei_EndTantousha");
-                boolean endTantouExist = validateUtil.checkC401402(queryRunnerWip, "tantomas",
-                        new ArrayList<>(Arrays.asList("tantousyacode", "zaiseki")),
-                        new ArrayList<>(Arrays.asList(endTantouInput, "1")));
-                if (!endTantouExist) {
-                    processData.setErrorMessage(MessageUtil.getMessage("XHC-000008", endTantouItemName));
-                    return processData;
-                }
-
-                // 【その他】入力項目チェック
-                List<ValidateUtil.ValidateInfo> inputCheckList3 = new ArrayList<>();
-                // バッチ炉プログラムNo
-                if (!StringUtil.isEmpty(this.getItemData(itemList, "syosei_BProgramNo"))) {
-                    inputCheckList3.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S003, "syosei_BProgramNo", BigDecimal.valueOf(99), BigDecimal.ZERO));
-                    inputCheckList3.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S004, "syosei_BProgramNo", BigDecimal.valueOf(99), BigDecimal.ZERO));
-                }
-                // 入炉台板枚数
-                if (!StringUtil.isEmpty(this.getItemData(itemList, "syosei_nyuroDaibanMaiSuu_seisuu"))) {
-                    inputCheckList3.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S003, "syosei_nyuroDaibanMaiSuu_seisuu", BigDecimal.valueOf(99.99), BigDecimal.ZERO));
-                    inputCheckList3.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S004, "syosei_nyuroDaibanMaiSuu_seisuu", BigDecimal.valueOf(99.99), BigDecimal.ZERO));
-                }
-
-                String inputCheck3ErrorMessage = validateUtil.executeValidation(inputCheckList3, itemList);
-                if (!StringUtil.isEmpty(inputCheck3ErrorMessage)) {
-                    // チェックエラーが存在する場合処理終了
-                    processData.setErrorMessage(inputCheck3ErrorMessage);
-                    return processData;
-                }
-
-                // 再酸化号機(レコード存在チェック)
-                if (!StringUtil.isEmpty(this.getItemData(itemList, "syosei_saisankaGouki"))) {
-                    String sankaGoukiInput = this.getItemData(itemList, "syosei_saisankaGouki");
-                    String sankaGoukiItemName = this.getItemName(itemList, "syosei_saisankaGouki");
-                    boolean sankaGoukimasExist = validateUtil.checkC401402(queryRunnerWip, "goukimas",
-                            new ArrayList<>(Arrays.asList("goukicode")), new ArrayList<>(Arrays.asList(sankaGoukiInput)));
-                    if (!sankaGoukimasExist) {
-                        processData.setErrorMessage(MessageUtil.getMessage("XHC-000008", sankaGoukiItemName));
-                        return processData;
-                    }
-                }
-
-                List<ValidateUtil.ValidateInfo> inputCheckList4 = new ArrayList<>();
-                // 再酸化温度
-                if (!StringUtil.isEmpty(this.getItemData(itemList, "syosei_saisankaOndo"))) {
-                    inputCheckList4.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S003, "syosei_saisankaOndo", BigDecimal.valueOf(9999), BigDecimal.ZERO));
-                    inputCheckList4.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S004, "syosei_saisankaOndo", BigDecimal.valueOf(9999), BigDecimal.ZERO));
-                }
-                // 再酸化終了日
-                if (!StringUtil.isEmpty(this.getItemData(itemList, "syosei_saisankaShuryoubi"))) {
-                    inputCheckList4.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C501, "syosei_saisankaShuryoubi", null, null));
-                    inputCheckList4.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_saisankaShuryoujikoku", null, null));
-                }
-                // 再酸化終了時刻
-                if (!StringUtil.isEmpty(this.getItemData(itemList, "syosei_saisankaShuryoujikoku"))) {
-                    inputCheckList4.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C502, "syosei_saisankaShuryoujikoku", null, null));
-                    inputCheckList4.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_saisankaShuryoubi", null, null));
-                }
-
-                String inputCheck4ErrorMessage = validateUtil.executeValidation(inputCheckList4, itemList);
-                if (!StringUtil.isEmpty(inputCheck4ErrorMessage)) {
-                    // チェックエラーが存在する場合処理終了
-                    processData.setErrorMessage(inputCheck4ErrorMessage);
-                    return processData;
-                }
-
-                // 時刻前後チェック(再酸化終了日/再酸化終了時刻)
-                if (!StringUtil.isEmpty(this.getItemData(itemList, "syosei_saisankaShuryoubi"))) {
-                    String errorMessageDate1
-                            = validateUtil.checkR001(itemList, "syosei_shuryoubi", "syosei_shuryoujikoku", "syosei_saisankaShuryoubi", "syosei_saisankaShuryoujikoku");
-                    if (!StringUtil.isEmpty(errorMessageDate1)) {
-                        processData.setErrorMessage(errorMessageDate1);
-                        return processData;
-                    }
-                }
-
-                List<ValidateUtil.ValidateInfo> inputCheckList5 = new ArrayList<>();
-                // 回数
-                if ("saveData".equals(processData.getProcessName())) {
-                    String lotNo = this.getItemData(itemList, "syosei_LotNo");
-                    int registJissekiNo = this.getSyoseiNextKaisu(queryRunnerQcdb, lotNo);
-                    this.setItemData(processData, "syosei_kaisuu", String.valueOf(registJissekiNo));
-                }
-                if (!StringUtil.isEmpty(this.getItemData(itemList, "syosei_kaisuu"))) {
-                    inputCheckList5.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S003, "syosei_kaisuu", BigDecimal.valueOf(9999), BigDecimal.ZERO));
-                    inputCheckList5.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S004, "syosei_kaisuu", BigDecimal.valueOf(9999), BigDecimal.ZERO));
-                }
-
-                String inputCheck5ErrorMessage = validateUtil.executeValidation(inputCheckList5, itemList);
-                if (!StringUtil.isEmpty(inputCheck5ErrorMessage)) {
-                    // チェックエラーが存在する場合処理終了
-                    processData.setErrorMessage(inputCheck5ErrorMessage);
-                    return processData;
-                }
-
-                // 時間前後チェック
-                String errorMessageDate2
-                        = validateUtil.checkR001(itemList, "syosei_kaisibi", "syosei_kaisijikoku", "syosei_shuryoubi", "syosei_shuryoujikoku");
-                if (!StringUtil.isEmpty(errorMessageDate2)) {
-                    processData.setErrorMessage(errorMessageDate2);
-                    return processData;
-                }
-            }
-
-            if ("deleteData".equals(processData.getProcessName())) {
-                // 【削除】
-                List<ValidateUtil.ValidateInfo> deleteCheckList = new ArrayList<>();
-                // ロットNo
-                deleteCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C101, "syosei_LotNo", null, null));
-                // 回数
-                deleteCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_kaisuu", null, null));
-                // ロットNo(チェックデジットチェック)
-                deleteCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.E001, "syosei_LotNo", null, null));
-
-                String checkErrorMessage = validateUtil.executeValidation(deleteCheckList, itemList);
-                if (!StringUtil.isEmpty(checkErrorMessage)) {
-                    // チェックエラーが存在する場合処理終了
-                    processData.setErrorMessage(checkErrorMessage);
-                    return processData;
-                }
-            }
-
-            // チェック処理でエラーが存在しない場合、確認メッセージ及び後続処理を登録して処理続行
-            if ("saveData".equals(processData.getProcessName())) {
-                if (1 < this.getSyoseiNextKaisu(queryRunnerQcdb, this.getItemData(itemList, "syosei_LotNo"))) {
-                    // 取得した実績Noが1以上の場合、警告メッセージを表示する
-                    processData.setWarnMessage("登録済みのデータがあります。<br/>登録してもよろしいですか？");
-                } else {
-                    processData.setWarnMessage("データベースに登録します。よろしいですか？");
-                }
-            } else if ("modifyData".equals(processData.getProcessName())) {
-                processData.setUserAuthParam("syosei_update_button");
-                processData.setRquireAuth(true);
-                processData.setWarnMessage("修正します。よろしいですか？");
-            } else if ("deleteData".equals(processData.getProcessName())) {
-                // 削除完了メッセージ表示
-                processData.setUserAuthParam("syosei_delete_button");
-                processData.setRquireAuth(true);
-                processData.setWarnMessage("データを削除します。よろしいですか？");
-            }
-            processData.setMethod("registData");
-            return processData;
-
-        } catch (SQLException ex) {
-            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-            processData.setErrorMessage("実行時エラー");
-            return processData;
-        }
+//        try {
+//            QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
+//            QueryRunner queryRunnerWip = new QueryRunner(processData.getDataSourceWip());
+//            List<FXHDD01> itemList = processData.getItemList();
+//            ValidateUtil validateUtil = new ValidateUtil();
+//
+//            if ("saveData".equals(processData.getProcessName())
+//                    || "modifyData".equals(processData.getProcessName())) {
+//
+//                // 【登録】、【修正】共通必須ﾁｪｯｸ
+//                List<ValidateUtil.ValidateInfo> requireCheckList = new ArrayList<>();
+//                // ロットNo
+//                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C101, "syosei_LotNo", null, null));
+//                // KCPNo
+//                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C101, "syosei_KCPNO", null, null));
+//                // 個数
+//                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_kosuu", null, null));
+//                // 原料品種名
+//                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C101, "syosei_genryo", null, null));
+//                // 焼成開始日
+//                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_kaisibi", null, null));
+//                // 焼成開始時刻
+//                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_kaisijikoku", null, null));
+//                // 焼成終了日
+//                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_shuryoubi", null, null));
+//                // 焼成終了時刻
+//                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_shuryoujikoku", null, null));
+//                // 焼成温度
+//                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C601, "syosei_ondo", null, null));
+//                // トンネル炉・バッチ炉号機
+//                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_tunnel_batchFurnaceGouki", null, null));
+//                // 焼成セッター枚数
+//                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_setterMaisuu", null, null));
+//                // 焼成開始担当者
+//                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_startTantousha", null, null));
+//                // 焼成終了担当者
+//                requireCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_EndTantousha", null, null));
+//
+//                String requireCheckErrorMessage = validateUtil.executeValidation(requireCheckList, itemList);
+//                if (!StringUtil.isEmpty(requireCheckErrorMessage)) {
+//                    // チェックエラーが存在する場合処理終了
+//                    //processData.setErrorMessage(requireCheckErrorMessage);
+//                    return processData;
+//                }
+//
+//                // 【登録】、【修正】共通入力値ﾁｪｯｸ
+//                List<ValidateUtil.ValidateInfo> inputCheckList1 = new ArrayList<>();
+//                // ロットNo
+//                inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.E001, "syosei_LotNo", null, null));
+//                // 個数
+//                inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S003, "syosei_kosuu", BigDecimal.valueOf(9999999), BigDecimal.ZERO));
+//                inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S004, "syosei_kosuu", BigDecimal.valueOf(9999999), BigDecimal.ZERO));
+//                // 焼成開始日
+//                inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C501, "syosei_kaisibi", null, null));
+//                // 焼成開始時刻
+//                inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C502, "syosei_kaisijikoku", null, null));
+//                // 焼成終了日
+//                inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C501, "syosei_shuryoubi", null, null));
+//                // 焼成終了時刻
+//                inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C502, "syosei_shuryoujikoku", null, null));
+//                // 焼成温度
+//                inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S003, "syosei_ondo", BigDecimal.valueOf(9999), BigDecimal.ZERO));
+//                inputCheckList1.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S004, "syosei_ondo", BigDecimal.valueOf(9999), BigDecimal.ZERO));
+//
+//                String inputCheck1ErrorMessage = validateUtil.executeValidation(inputCheckList1, itemList);
+//                if (!StringUtil.isEmpty(inputCheck1ErrorMessage)) {
+//                    // チェックエラーが存在する場合処理終了
+//                    //processData.setErrorMessage(inputCheck1ErrorMessage);
+//                    return processData;
+//                }
+//
+//                // トンネル炉・バッチ炉号機(レコード存在チェック)
+//                String goukiInput = this.getItemData(itemList, "syosei_tunnel_batchFurnaceGouki");
+//                String goukiItemName = this.getItemName(itemList, "syosei_tunnel_batchFurnaceGouki");
+//                boolean goukimasExist = validateUtil.checkC401402(queryRunnerWip, "goukimas",
+//                        new ArrayList<>(Arrays.asList("goukicode")), new ArrayList<>(Arrays.asList(goukiInput)));
+//                if (!goukimasExist) {
+//                    //processData.setErrorMessage(MessageUtil.getMessage("XHC-000008", goukiItemName));
+//                    return processData;
+//                }
+//
+//                List<ValidateUtil.ValidateInfo> inputCheckList2 = new ArrayList<>();
+//
+//                // 焼成セッター枚数
+//                inputCheckList2.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S003, "syosei_setterMaisuu", BigDecimal.valueOf(999), BigDecimal.ZERO));
+//                inputCheckList2.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S004, "syosei_setterMaisuu", BigDecimal.valueOf(999), BigDecimal.ZERO));
+//
+//                String inputCheck2ErrorMessage = validateUtil.executeValidation(inputCheckList2, itemList);
+//                if (!StringUtil.isEmpty(inputCheck2ErrorMessage)) {
+//                    // チェックエラーが存在する場合処理終了
+//                    //processData.setErrorMessage(inputCheck2ErrorMessage);
+//                    return processData;
+//                }
+//
+//                // 焼成開始担当者
+//                String startTantouInput = this.getItemData(itemList, "syosei_startTantousha");
+//                String startTantouItemName = this.getItemName(itemList, "syosei_startTantousha");
+//                boolean startTantouExist = validateUtil.checkC401402(queryRunnerWip, "tantomas",
+//                        new ArrayList<>(Arrays.asList("tantousyacode", "zaiseki")),
+//                        new ArrayList<>(Arrays.asList(startTantouInput, "1")));
+//                if (!startTantouExist) {
+//                    //processData.setErrorMessage(MessageUtil.getMessage("XHC-000008", startTantouItemName));
+//                    return processData;
+//                }
+//                // 焼成終了担当者
+//                String endTantouInput = this.getItemData(itemList, "syosei_EndTantousha");
+//                String endTantouItemName = this.getItemName(itemList, "syosei_EndTantousha");
+//                boolean endTantouExist = validateUtil.checkC401402(queryRunnerWip, "tantomas",
+//                        new ArrayList<>(Arrays.asList("tantousyacode", "zaiseki")),
+//                        new ArrayList<>(Arrays.asList(endTantouInput, "1")));
+//                if (!endTantouExist) {
+//                    //processData.setErrorMessage(MessageUtil.getMessage("XHC-000008", endTantouItemName));
+//                    return processData;
+//                }
+//
+//                // 【その他】入力項目チェック
+//                List<ValidateUtil.ValidateInfo> inputCheckList3 = new ArrayList<>();
+//                // バッチ炉プログラムNo
+//                if (!StringUtil.isEmpty(this.getItemData(itemList, "syosei_BProgramNo"))) {
+//                    inputCheckList3.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S003, "syosei_BProgramNo", BigDecimal.valueOf(99), BigDecimal.ZERO));
+//                    inputCheckList3.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S004, "syosei_BProgramNo", BigDecimal.valueOf(99), BigDecimal.ZERO));
+//                }
+//                // 入炉台板枚数
+//                if (!StringUtil.isEmpty(this.getItemData(itemList, "syosei_nyuroDaibanMaiSuu_seisuu"))) {
+//                    inputCheckList3.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S003, "syosei_nyuroDaibanMaiSuu_seisuu", BigDecimal.valueOf(99.99), BigDecimal.ZERO));
+//                    inputCheckList3.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S004, "syosei_nyuroDaibanMaiSuu_seisuu", BigDecimal.valueOf(99.99), BigDecimal.ZERO));
+//                }
+//
+//                String inputCheck3ErrorMessage = validateUtil.executeValidation(inputCheckList3, itemList);
+//                if (!StringUtil.isEmpty(inputCheck3ErrorMessage)) {
+//                    // チェックエラーが存在する場合処理終了
+//                    //processData.setErrorMessage(inputCheck3ErrorMessage);
+//                    return processData;
+//                }
+//
+//                // 再酸化号機(レコード存在チェック)
+//                if (!StringUtil.isEmpty(this.getItemData(itemList, "syosei_saisankaGouki"))) {
+//                    String sankaGoukiInput = this.getItemData(itemList, "syosei_saisankaGouki");
+//                    String sankaGoukiItemName = this.getItemName(itemList, "syosei_saisankaGouki");
+//                    boolean sankaGoukimasExist = validateUtil.checkC401402(queryRunnerWip, "goukimas",
+//                            new ArrayList<>(Arrays.asList("goukicode")), new ArrayList<>(Arrays.asList(sankaGoukiInput)));
+//                    if (!sankaGoukimasExist) {
+//                        //processData.setErrorMessage(MessageUtil.getMessage("XHC-000008", sankaGoukiItemName));
+//                        return processData;
+//                    }
+//                }
+//
+//                List<ValidateUtil.ValidateInfo> inputCheckList4 = new ArrayList<>();
+//                // 再酸化温度
+//                if (!StringUtil.isEmpty(this.getItemData(itemList, "syosei_saisankaOndo"))) {
+//                    inputCheckList4.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S003, "syosei_saisankaOndo", BigDecimal.valueOf(9999), BigDecimal.ZERO));
+//                    inputCheckList4.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S004, "syosei_saisankaOndo", BigDecimal.valueOf(9999), BigDecimal.ZERO));
+//                }
+//                // 再酸化終了日
+//                if (!StringUtil.isEmpty(this.getItemData(itemList, "syosei_saisankaShuryoubi"))) {
+//                    inputCheckList4.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C501, "syosei_saisankaShuryoubi", null, null));
+//                    inputCheckList4.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_saisankaShuryoujikoku", null, null));
+//                }
+//                // 再酸化終了時刻
+//                if (!StringUtil.isEmpty(this.getItemData(itemList, "syosei_saisankaShuryoujikoku"))) {
+//                    inputCheckList4.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C502, "syosei_saisankaShuryoujikoku", null, null));
+//                    inputCheckList4.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_saisankaShuryoubi", null, null));
+//                }
+//
+//                String inputCheck4ErrorMessage = validateUtil.executeValidation(inputCheckList4, itemList);
+//                if (!StringUtil.isEmpty(inputCheck4ErrorMessage)) {
+//                    // チェックエラーが存在する場合処理終了
+//                    //processData.setErrorMessage(inputCheck4ErrorMessage);
+//                    return processData;
+//                }
+//
+//                // 時刻前後チェック(再酸化終了日/再酸化終了時刻)
+//                if (!StringUtil.isEmpty(this.getItemData(itemList, "syosei_saisankaShuryoubi"))) {
+//                    String errorMessageDate1
+//                            = validateUtil.checkR001(itemList, "syosei_shuryoubi", "syosei_shuryoujikoku", "syosei_saisankaShuryoubi", "syosei_saisankaShuryoujikoku");
+//                    if (!StringUtil.isEmpty(errorMessageDate1)) {
+//                        //processData.setErrorMessage(errorMessageDate1);
+//                        return processData;
+//                    }
+//                }
+//
+//                List<ValidateUtil.ValidateInfo> inputCheckList5 = new ArrayList<>();
+//                // 回数
+//                if ("saveData".equals(processData.getProcessName())) {
+//                    String lotNo = this.getItemData(itemList, "syosei_LotNo");
+//                    int registJissekiNo = this.getSyoseiNextKaisu(queryRunnerQcdb, lotNo);
+//                    this.setItemData(processData, "syosei_kaisuu", String.valueOf(registJissekiNo));
+//                }
+//                if (!StringUtil.isEmpty(this.getItemData(itemList, "syosei_kaisuu"))) {
+//                    inputCheckList5.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S003, "syosei_kaisuu", BigDecimal.valueOf(9999), BigDecimal.ZERO));
+//                    inputCheckList5.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.S004, "syosei_kaisuu", BigDecimal.valueOf(9999), BigDecimal.ZERO));
+//                }
+//
+//                String inputCheck5ErrorMessage = validateUtil.executeValidation(inputCheckList5, itemList);
+//                if (!StringUtil.isEmpty(inputCheck5ErrorMessage)) {
+//                    // チェックエラーが存在する場合処理終了
+//                    //processData.setErrorMessage(inputCheck5ErrorMessage);
+//                    return processData;
+//                }
+//
+//                // 時間前後チェック
+//                String errorMessageDate2
+//                        = validateUtil.checkR001(itemList, "syosei_kaisibi", "syosei_kaisijikoku", "syosei_shuryoubi", "syosei_shuryoujikoku");
+//                if (!StringUtil.isEmpty(errorMessageDate2)) {
+//                    //processData.setErrorMessage(errorMessageDate2);
+//                    return processData;
+//                }
+//            }
+//
+//            if ("deleteData".equals(processData.getProcessName())) {
+//                // 【削除】
+//                List<ValidateUtil.ValidateInfo> deleteCheckList = new ArrayList<>();
+//                // ロットNo
+//                deleteCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C101, "syosei_LotNo", null, null));
+//                // 回数
+//                deleteCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.C001, "syosei_kaisuu", null, null));
+//                // ロットNo(チェックデジットチェック)
+//                deleteCheckList.add(validateUtil.new ValidateInfo(ValidateUtil.EnumCheckNo.E001, "syosei_LotNo", null, null));
+//
+//                String checkErrorMessage = validateUtil.executeValidation(deleteCheckList, itemList);
+//                if (!StringUtil.isEmpty(checkErrorMessage)) {
+//                    // チェックエラーが存在する場合処理終了
+//                    //processData.setErrorMessage(checkErrorMessage);
+//                    return processData;
+//                }
+//            }
+//
+//            // チェック処理でエラーが存在しない場合、確認メッセージ及び後続処理を登録して処理続行
+//            if ("saveData".equals(processData.getProcessName())) {
+//                if (1 < this.getSyoseiNextKaisu(queryRunnerQcdb, this.getItemData(itemList, "syosei_LotNo"))) {
+//                    // 取得した実績Noが1以上の場合、警告メッセージを表示する
+//                    processData.setWarnMessage("登録済みのデータがあります。<br/>登録してもよろしいですか？");
+//                } else {
+//                    processData.setWarnMessage("データベースに登録します。よろしいですか？");
+//                }
+//            } else if ("modifyData".equals(processData.getProcessName())) {
+//                processData.setUserAuthParam("syosei_update_button");
+//                processData.setRquireAuth(true);
+//                processData.setWarnMessage("修正します。よろしいですか？");
+//            } else if ("deleteData".equals(processData.getProcessName())) {
+//                // 削除完了メッセージ表示
+//                processData.setUserAuthParam("syosei_delete_button");
+//                processData.setRquireAuth(true);
+//                processData.setWarnMessage("データを削除します。よろしいですか？");
+//            }
+//            processData.setMethod("registData");
+//            return processData;
+//
+//        } catch (SQLException ex) {
+//            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+//            //processData.setErrorMessage("実行時エラー");
+//            return processData;
+//        }
+        return processData;
     }
 
     /**
@@ -1161,13 +1162,13 @@ public class GXHDO101B implements IFormLogic {
         if (null != processData.getProcessName()) {
             switch (processData.getProcessName()) {
                 case "saveData":
-                    processData.setErrorMessage("登録に失敗しました。");
+                    //processData.setErrorMessage("登録に失敗しました。");
                     break;
                 case "modifyData":
-                    processData.setErrorMessage("修正に失敗しました。");
+                    //processData.setErrorMessage("修正に失敗しました。");
                     break;
                 case "deleteData":
-                    processData.setErrorMessage("削除に失敗しました。");
+                    //processData.setErrorMessage("削除に失敗しました。");
                     break;
                 default:
                     break;

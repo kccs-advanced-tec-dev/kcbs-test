@@ -27,7 +27,7 @@ public class GXHDO101C001Logic implements Serializable {
 
     public static GXHDO101C001Model createGXHDO101C001Model(String lotNo) {
         GXHDO101C001Model gxhdo101C001Model = new GXHDO101C001Model();
-        List<GXHDO101C001Model.makuatsuData> makuatsuDataList = new ArrayList<>();
+        List<GXHDO101C001Model.MakuatsuData> makuatsuDataList = new ArrayList<>();
 
         // 膜厚(1行目)
         makuatsuDataList.add(getInitMakuatsuData(gxhdo101C001Model, "1", "", "TEXT", "2", "", "", "TEXT", "2", ""));
@@ -69,11 +69,11 @@ public class GXHDO101C001Logic implements Serializable {
      * @param endTextBackColor　スタート項目(BackGround)
      * @return 膜厚データ
      */
-    private static GXHDO101C001Model.makuatsuData getInitMakuatsuData(
+    private static GXHDO101C001Model.MakuatsuData getInitMakuatsuData(
             GXHDO101C001Model gxhdo101C001Model, String makuatsu,
             String startVal, String startInputType, String startTextMaxLength, String startTextBackColor,
             String endVal, String endInputType, String endTextMaxLength, String endTextBackColor) {
-        GXHDO101C001Model.makuatsuData makuatsuListData = gxhdo101C001Model.new makuatsuData();
+        GXHDO101C001Model.MakuatsuData makuatsuListData = gxhdo101C001Model.new MakuatsuData();
         // 膜厚
         makuatsuListData.setMakuatsu(makuatsu);
 

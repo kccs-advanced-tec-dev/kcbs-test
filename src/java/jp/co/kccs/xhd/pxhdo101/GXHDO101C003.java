@@ -4,7 +4,6 @@
 package jp.co.kccs.xhd.pxhdo101;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -46,11 +45,6 @@ public class GXHDO101C003 implements Serializable {
      * PTN距離Yサブ画面用データ(表示制御用)
      */
     private GXHDO101C003Model gxhdO101c003ModelView;
-
-    /**
-     * 初期表示時メッセージリスト
-     */
-    private List<String> initDispMsgList;
 
     /**
      * コンストラクタ
@@ -95,24 +89,6 @@ public class GXHDO101C003 implements Serializable {
     }
 
     /**
-     * 初期表示時メッセージリスト
-     *
-     * @return the initDispMsgList
-     */
-    public List<String> getInitDispMsgList() {
-        return initDispMsgList;
-    }
-
-    /**
-     * 初期表示時メッセージリスト
-     *
-     * @param initDispMsgList the initDispMsgList to set
-     */
-    public void setInitDispMsgList(List<String> initDispMsgList) {
-        this.initDispMsgList = initDispMsgList;
-    }
-
-    /**
      * OKボタン押下時のチェック処理を行う。
      */
     public void doOk() {
@@ -136,7 +112,7 @@ public class GXHDO101C003 implements Serializable {
         // 背景色をクリア
         clearBackColor();
 
-        for (GXHDO101C003Model.ptnKyoriYData ptnKyoriYData : this.gxhdO101c003ModelView.getPtnKyoriYDataList()) {
+        for (GXHDO101C003Model.PtnKyoriYData ptnKyoriYData : this.gxhdO101c003ModelView.getPtnKyoriYDataList()) {
             if (StringUtil.isEmpty(ptnKyoriYData.getStartVal())) {
                 setError(ptnKyoriYData, true, false, "XHD-000003", "スタート");
                 return false;
@@ -160,7 +136,7 @@ public class GXHDO101C003 implements Serializable {
      * @param errorId エラーID
      * @param errParams エラーパラメータ
      */
-    private void setError(GXHDO101C003Model.ptnKyoriYData ptnKyoriYData, boolean isStartErr, boolean isEndErr, String errorId, Object... errParams) {
+    private void setError(GXHDO101C003Model.PtnKyoriYData ptnKyoriYData, boolean isStartErr, boolean isEndErr, String errorId, Object... errParams) {
 
         // メッセージをセット
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -184,24 +160,9 @@ public class GXHDO101C003 implements Serializable {
      * 背景色のクリア処理
      */
     private void clearBackColor() {
-        for (GXHDO101C003Model.ptnKyoriYData ptnKyoriYData : this.gxhdO101c003ModelView.getPtnKyoriYDataList()) {
+        for (GXHDO101C003Model.PtnKyoriYData ptnKyoriYData : this.gxhdO101c003ModelView.getPtnKyoriYDataList()) {
             ptnKyoriYData.setStartTextBackColor("");
             ptnKyoriYData.setEndTextBackColor("");
-        }
-    }
-
-    /**
-     * 初期表示メッセージ表示
-     */
-    public void showInitDispMessage() {
-        if (this.initDispMsgList == null || this.initDispMsgList.isEmpty()) {
-            return;
-        }
-
-        // 初期表示メッセージの設定        
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-        for (String dispMsg : this.initDispMsgList) {
-            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, dispMsg, null));
         }
     }
 }

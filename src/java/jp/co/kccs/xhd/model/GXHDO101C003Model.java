@@ -35,9 +35,9 @@ public class GXHDO101C003Model implements Cloneable{
     @Override
     public GXHDO101C003Model clone() throws CloneNotSupportedException {
         GXHDO101C003Model cloneModel = (GXHDO101C003Model) super.clone();
-        List<GXHDO101C003Model.ptnKyoriYData> newList = new ArrayList();
-        for (GXHDO101C003Model.ptnKyoriYData data : this.ptnKyoriYDataList) {
-            GXHDO101C003Model.ptnKyoriYData newData = new GXHDO101C003Model.ptnKyoriYData();
+        List<GXHDO101C003Model.PtnKyoriYData> newList = new ArrayList();
+        for (GXHDO101C003Model.PtnKyoriYData data : this.ptnKyoriYDataList) {
+            GXHDO101C003Model.PtnKyoriYData newData = new GXHDO101C003Model.PtnKyoriYData();
             newData.setPtnKyoriY(data.ptnKyoriY);
             newData.setStartVal(data.getStartVal());
             newData.setStartTextRendered(data.isStartTextRendered());
@@ -58,14 +58,22 @@ public class GXHDO101C003Model implements Cloneable{
     /**
      * PTN距離Yデータリスト
      */
-    private List<GXHDO101C003Model.ptnKyoriYData> ptnKyoriYDataList = new ArrayList<>();
+    private List<GXHDO101C003Model.PtnKyoriYData> ptnKyoriYDataList;
 
+        /**
+     * コンストラクタ
+     */
+    public GXHDO101C003Model() {
+        this.ptnKyoriYDataList = new ArrayList<>();
+    }
+
+    
     /**
      * PTN距離Yデータリスト
      *
      * @return the ptnKyoriYDataList
      */
-    public List<GXHDO101C003Model.ptnKyoriYData> getPtnKyoriYDataList() {
+    public List<GXHDO101C003Model.PtnKyoriYData> getPtnKyoriYDataList() {
         return ptnKyoriYDataList;
     }
 
@@ -74,14 +82,14 @@ public class GXHDO101C003Model implements Cloneable{
      *
      * @param ptnKyoriYDataList the ptnKyoriYDataList to set
      */
-    public void setPtnKyoriYDataList(List<GXHDO101C003Model.ptnKyoriYData> ptnKyoriYDataList) {
+    public void setPtnKyoriYDataList(List<GXHDO101C003Model.PtnKyoriYData> ptnKyoriYDataList) {
         this.ptnKyoriYDataList = ptnKyoriYDataList;
     }
 
     /**
      * PTN距離Yデータ
      */
-    public class ptnKyoriYData {
+    public class PtnKyoriYData {
 
         /**
          * PTN距離Y

@@ -35,9 +35,9 @@ import java.util.List;
     @Override
     public GXHDO101C004Model clone() throws CloneNotSupportedException {
         GXHDO101C004Model cloneModel = (GXHDO101C004Model) super.clone();
-        List<GXHDO101C004Model.makuatsuData> newList = new ArrayList();
-        for (GXHDO101C004Model.makuatsuData data : this.makuatsuDataList) {
-            GXHDO101C004Model.makuatsuData newData = new GXHDO101C004Model.makuatsuData();
+        List<GXHDO101C004Model.MakuatsuData> newList = new ArrayList();
+        for (GXHDO101C004Model.MakuatsuData data : this.makuatsuDataList) {
+            GXHDO101C004Model.MakuatsuData newData = new GXHDO101C004Model.MakuatsuData();
             newData.setMakuatsu(data.getMakuatsu());
             newData.setStartVal(data.getStartVal());
             newData.setStartTextRendered(data.isStartTextRendered());
@@ -54,13 +54,20 @@ import java.util.List;
     /**
      * 膜厚データリスト
      */
-    private List<makuatsuData> makuatsuDataList = new ArrayList<>();
+    private List<MakuatsuData> makuatsuDataList;
 
     /**
-     * 帳票データリスト
+     * コンストラクタ
+     */
+    public GXHDO101C004Model() {
+        this.makuatsuDataList = new ArrayList<>();
+    }
+    
+    /**
+     * 膜厚データリスト
      * @return the makuatsuDataList
      */
-    public List<makuatsuData> getMakuatsuDataList() {
+    public List<MakuatsuData> getMakuatsuDataList() {
         return makuatsuDataList;
     }
 
@@ -68,14 +75,14 @@ import java.util.List;
      * 膜厚データリスト
      * @param makuatsuDataList the makuatsuDataList to set
      */
-    public void setMakuatsuDataList(List<makuatsuData> makuatsuDataList) {
+    public void setMakuatsuDataList(List<MakuatsuData> makuatsuDataList) {
         this.makuatsuDataList = makuatsuDataList;
     }
 
     /**
      * 膜厚データ
      */
-    public class makuatsuData {
+    public class MakuatsuData {
 
         /**
          * 膜厚

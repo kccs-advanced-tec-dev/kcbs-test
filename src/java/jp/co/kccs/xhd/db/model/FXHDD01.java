@@ -28,14 +28,14 @@ import org.apache.commons.lang3.StringUtils;
  * <br>
  * ===============================================================================<br>
  */
-
 /**
  * FXHDD01(フォームパラメータマスタ)のモデルクラスです。
- * 
+ *
  * @author KCCS D.Yanagida
  * @since 2018/05/06
  */
 public class FXHDD01 {
+
     /**
      * 画面ID
      */
@@ -159,7 +159,7 @@ public class FXHDD01 {
     /**
      * 表示ﾗﾍﾞﾙ3背景色
      */
-    private String backColor3;    
+    private String backColor3;
     /**
      * 設計ﾃｰﾌﾞﾙｶﾗﾑ名
      */
@@ -172,15 +172,18 @@ public class FXHDD01 {
      * 入力項目背景色(通常)
      */
     private String backColorInputDefault;
-    
-    
+    /**
+     * 項目インデックス
+     */
+    private int itemIndex;
+
     public FXHDD01() {
-        
+
     }
-    
 
     /**
      * 画面ID
+     *
      * @return the gamenId
      */
     public String getGamenId() {
@@ -189,6 +192,7 @@ public class FXHDD01 {
 
     /**
      * 画面ID
+     *
      * @param gamenId the gamenId to set
      */
     public void setGamenId(String gamenId) {
@@ -197,6 +201,7 @@ public class FXHDD01 {
 
     /**
      * 項目ID
+     *
      * @return the itemId
      */
     public String getItemId() {
@@ -205,6 +210,7 @@ public class FXHDD01 {
 
     /**
      * 項目ID
+     *
      * @param itemId the itemId to set
      */
     public void setItemId(String itemId) {
@@ -213,6 +219,7 @@ public class FXHDD01 {
 
     /**
      * 項目No
+     *
      * @return the itemNo
      */
     public int getItemNo() {
@@ -221,6 +228,7 @@ public class FXHDD01 {
 
     /**
      * 項目No
+     *
      * @param itemNo the itemNo to set
      */
     public void setItemNo(int itemNo) {
@@ -229,6 +237,7 @@ public class FXHDD01 {
 
     /**
      * 入力項目型
+     *
      * @return the inputItemType
      */
     public String getInputItemType() {
@@ -237,6 +246,7 @@ public class FXHDD01 {
 
     /**
      * 入力項目型
+     *
      * @param inputItemType the inputItemType to set
      */
     public void setInputItemType(String inputItemType) {
@@ -245,6 +255,7 @@ public class FXHDD01 {
 
     /**
      * 表示ﾗﾍﾞﾙ1
+     *
      * @return the label1
      */
     public String getLabel1() {
@@ -253,6 +264,7 @@ public class FXHDD01 {
 
     /**
      * 表示ﾗﾍﾞﾙ1
+     *
      * @param label1 the label1 to set
      */
     public void setLabel1(String label1) {
@@ -261,6 +273,7 @@ public class FXHDD01 {
 
     /**
      * 表示ﾗﾍﾞﾙ2
+     *
      * @return the label2
      */
     public String getLabel2() {
@@ -269,6 +282,7 @@ public class FXHDD01 {
 
     /**
      * 表示ﾗﾍﾞﾙ2
+     *
      * @param label2 the label2 to set
      */
     public void setLabel2(String label2) {
@@ -277,6 +291,7 @@ public class FXHDD01 {
 
     /**
      * 入力項目設定値
+     *
      * @return the inputList
      */
     public String getInputList() {
@@ -285,6 +300,7 @@ public class FXHDD01 {
 
     /**
      * 入力項目設定値
+     *
      * @param inputList the inputList to set
      */
     public void setInputList(String inputList) {
@@ -293,6 +309,7 @@ public class FXHDD01 {
 
     /**
      * 入力項目初期値
+     *
      * @return the inputDefault
      */
     public String getInputDefault() {
@@ -301,6 +318,7 @@ public class FXHDD01 {
 
     /**
      * 入力項目初期値
+     *
      * @param inputDefault the inputDefault to set
      */
     public void setInputDefault(String inputDefault) {
@@ -309,6 +327,7 @@ public class FXHDD01 {
 
     /**
      * 入力項目桁数(整数部)
+     *
      * @return the inputLength
      */
     public String getInputLength() {
@@ -317,6 +336,7 @@ public class FXHDD01 {
 
     /**
      * 入力項目桁数(整数部)
+     *
      * @param inputLength the inputLength to set
      */
     public void setInputLength(String inputLength) {
@@ -325,6 +345,7 @@ public class FXHDD01 {
 
     /**
      * 入力項目桁数(小数部)
+     *
      * @return the inputLengthDec
      */
     public String getInputLengthDec() {
@@ -333,6 +354,7 @@ public class FXHDD01 {
 
     /**
      * 入力項目桁数(小数部)
+     *
      * @param inputLengthDec the inputLengthDec to set
      */
     public void setInputLengthDec(String inputLengthDec) {
@@ -341,6 +363,7 @@ public class FXHDD01 {
 
     /**
      * 表示ﾗﾍﾞﾙ1文字ｻｲｽﾞ
+     *
      * @return the fontSize1
      */
     public int getFontSize1() {
@@ -349,6 +372,7 @@ public class FXHDD01 {
 
     /**
      * 表示ﾗﾍﾞﾙ1文字ｻｲｽﾞ
+     *
      * @param fontSize1 the fontSize1 to set
      */
     public void setFontSize1(int fontSize1) {
@@ -357,6 +381,7 @@ public class FXHDD01 {
 
     /**
      * 表示ﾗﾍﾞﾙ1文字色
+     *
      * @return the fontColor1
      */
     public String getFontColor1() {
@@ -365,6 +390,7 @@ public class FXHDD01 {
 
     /**
      * 表示ﾗﾍﾞﾙ1文字色
+     *
      * @param fontColor1 the fontColor1 to set
      */
     public void setFontColor1(String fontColor1) {
@@ -373,6 +399,7 @@ public class FXHDD01 {
 
     /**
      * 表示ﾗﾍﾞﾙ1背景色
+     *
      * @return the backColor1
      */
     public String getBackColor1() {
@@ -384,6 +411,7 @@ public class FXHDD01 {
 
     /**
      * 表示ﾗﾍﾞﾙ1背景色
+     *
      * @param backColor1 the backColor1 to set
      */
     public void setBackColor1(String backColor1) {
@@ -392,6 +420,7 @@ public class FXHDD01 {
 
     /**
      * 表示ﾗﾍﾞﾙ1render有無
+     *
      * @return the render1
      */
     public boolean isRender1() {
@@ -400,6 +429,7 @@ public class FXHDD01 {
 
     /**
      * 表示ﾗﾍﾞﾙ1render有無
+     *
      * @param render1 the render1 to set
      */
     public void setRender1(boolean render1) {
@@ -408,6 +438,7 @@ public class FXHDD01 {
 
     /**
      * 表示ﾗﾍﾞﾙ2文字ｻｲｽﾞ
+     *
      * @return the fontSize2
      */
     public int getFontSize2() {
@@ -416,6 +447,7 @@ public class FXHDD01 {
 
     /**
      * 表示ﾗﾍﾞﾙ2文字ｻｲｽﾞ
+     *
      * @param fontSize2 the fontSize2 to set
      */
     public void setFontSize2(int fontSize2) {
@@ -424,6 +456,7 @@ public class FXHDD01 {
 
     /**
      * 表示ﾗﾍﾞﾙ2文字色
+     *
      * @return the fontColor2
      */
     public String getFontColor2() {
@@ -432,6 +465,7 @@ public class FXHDD01 {
 
     /**
      * 表示ﾗﾍﾞﾙ2文字色
+     *
      * @param fontColor2 the fontColor2 to set
      */
     public void setFontColor2(String fontColor2) {
@@ -440,6 +474,7 @@ public class FXHDD01 {
 
     /**
      * 表示ﾗﾍﾞﾙ2背景色
+     *
      * @return the backColor2
      */
     public String getBackColor2() {
@@ -448,6 +483,7 @@ public class FXHDD01 {
 
     /**
      * 表示ﾗﾍﾞﾙ2背景色
+     *
      * @param backColor2 the backColor2 to set
      */
     public void setBackColor2(String backColor2) {
@@ -456,6 +492,7 @@ public class FXHDD01 {
 
     /**
      * 表示ﾗﾍﾞﾙ2render有無
+     *
      * @return the render2
      */
     public boolean isRender2() {
@@ -464,6 +501,7 @@ public class FXHDD01 {
 
     /**
      * 表示ﾗﾍﾞﾙ2render有無
+     *
      * @param render2 the render2 to set
      */
     public void setRender2(boolean render2) {
@@ -472,6 +510,7 @@ public class FXHDD01 {
 
     /**
      * 入力項目文字ｻｲｽﾞ
+     *
      * @return the fontSizeInput
      */
     public int getFontSizeInput() {
@@ -480,6 +519,7 @@ public class FXHDD01 {
 
     /**
      * 入力項目文字ｻｲｽﾞ
+     *
      * @param fontSizeInput the fontSizeInput to set
      */
     public void setFontSizeInput(int fontSizeInput) {
@@ -488,6 +528,7 @@ public class FXHDD01 {
 
     /**
      * 入力項目文字色
+     *
      * @return the fontColorInput
      */
     public String getFontColorInput() {
@@ -496,6 +537,7 @@ public class FXHDD01 {
 
     /**
      * 入力項目文字色
+     *
      * @param fontColorInput the fontColorInput to set
      */
     public void setFontColorInput(String fontColorInput) {
@@ -504,6 +546,7 @@ public class FXHDD01 {
 
     /**
      * 入力項目背景色
+     *
      * @return the backColorInput
      */
     public String getBackColorInput() {
@@ -512,6 +555,7 @@ public class FXHDD01 {
 
     /**
      * 入力項目背景色
+     *
      * @param backColorInput the backColorInput to set
      */
     public void setBackColorInput(String backColorInput) {
@@ -520,6 +564,7 @@ public class FXHDD01 {
 
     /**
      * 入力項目(文字列)render有無
+     *
      * @return the renderInputText
      */
     public boolean isRenderInputText() {
@@ -528,6 +573,7 @@ public class FXHDD01 {
 
     /**
      * 入力項目(文字列)render有無
+     *
      * @param renderInputText the renderInputText to set
      */
     public void setRenderInputText(boolean renderInputText) {
@@ -536,6 +582,7 @@ public class FXHDD01 {
 
     /**
      * 入力項目(数値)render有無
+     *
      * @return the renderInputNumber
      */
     public boolean isRenderInputNumber() {
@@ -544,6 +591,7 @@ public class FXHDD01 {
 
     /**
      * 入力項目(数値)render有無
+     *
      * @param renderInputNumber the renderInputNumber to set
      */
     public void setRenderInputNumber(boolean renderInputNumber) {
@@ -552,6 +600,7 @@ public class FXHDD01 {
 
     /**
      * 入力項目(日付)render有無
+     *
      * @return the renderInputDate
      */
     public boolean isRenderInputDate() {
@@ -560,6 +609,7 @@ public class FXHDD01 {
 
     /**
      * 入力項目(日付)render有無
+     *
      * @param renderInputDate the renderInputDate to set
      */
     public void setRenderInputDate(boolean renderInputDate) {
@@ -568,6 +618,7 @@ public class FXHDD01 {
 
     /**
      * 入力項目(ドロップダウンリスト)render有無
+     *
      * @return the renderInputSelect
      */
     public boolean isRenderInputSelect() {
@@ -576,6 +627,7 @@ public class FXHDD01 {
 
     /**
      * 入力項目(ドロップダウンリスト)render有無
+     *
      * @param renderInputSelect the renderInputSelect to set
      */
     public void setRenderInputSelect(boolean renderInputSelect) {
@@ -584,6 +636,7 @@ public class FXHDD01 {
 
     /**
      * 入力項目(ラジオボタン)render有無
+     *
      * @return the renderInputRadio
      */
     public boolean isRenderInputRadio() {
@@ -592,6 +645,7 @@ public class FXHDD01 {
 
     /**
      * 入力項目(ラジオボタン)render有無
+     *
      * @param renderInputRadio the renderInputRadio to set
      */
     public void setRenderInputRadio(boolean renderInputRadio) {
@@ -600,6 +654,7 @@ public class FXHDD01 {
 
     /**
      * 入力項目(時刻)render有無
+     *
      * @return the renderInputTime
      */
     public boolean isRenderInputTime() {
@@ -608,6 +663,7 @@ public class FXHDD01 {
 
     /**
      * 入力項目(時刻)render有無
+     *
      * @param renderInputTime the renderInputTime to set
      */
     public void setRenderInputTime(boolean renderInputTime) {
@@ -616,6 +672,7 @@ public class FXHDD01 {
 
     /**
      * ラベル表示render有無
+     *
      * @return the isRenderOutputLabel
      */
     public boolean isRenderOutputLabel() {
@@ -624,6 +681,7 @@ public class FXHDD01 {
 
     /**
      * ラベル表示render有無
+     *
      * @param renderOutputLabel the renderOutputLabel to set
      */
     public void setRenderOutputLabel(boolean renderOutputLabel) {
@@ -632,6 +690,7 @@ public class FXHDD01 {
 
     /**
      * 表示ﾗﾍﾞﾙ3文字ｻｲｽﾞ
+     *
      * @return the fontSize3
      */
     public int getFontSize3() {
@@ -640,6 +699,7 @@ public class FXHDD01 {
 
     /**
      * 表示ﾗﾍﾞﾙ3文字ｻｲｽﾞ
+     *
      * @param fontSize3 the fontSize3 to set
      */
     public void setFontSize3(int fontSize3) {
@@ -648,6 +708,7 @@ public class FXHDD01 {
 
     /**
      * 表示ﾗﾍﾞﾙ3文字色
+     *
      * @return the fontColor3
      */
     public String getFontColor3() {
@@ -656,6 +717,7 @@ public class FXHDD01 {
 
     /**
      * 表示ﾗﾍﾞﾙ3文字色
+     *
      * @param fontColor3 the fontColor3 to set
      */
     public void setFontColor3(String fontColor3) {
@@ -664,6 +726,7 @@ public class FXHDD01 {
 
     /**
      * 表示ﾗﾍﾞﾙ3背景色
+     *
      * @return the backColor3
      */
     public String getBackColor3() {
@@ -672,13 +735,16 @@ public class FXHDD01 {
 
     /**
      * 表示ﾗﾍﾞﾙ3背景色
+     *
      * @param backColor3 the backColor3 to set
      */
     public void setBackColor3(String backColor3) {
         this.backColor3 = backColor3;
     }
+
     /**
      * 設計ﾃｰﾌﾞﾙｶﾗﾑ名
+     *
      * @return the sekkeiColumn
      */
     public String getSekkeiColumn() {
@@ -687,14 +753,16 @@ public class FXHDD01 {
 
     /**
      * 設計ﾃｰﾌﾞﾙｶﾗﾑ名
+     *
      * @param sekkeiColumn the sekkeiColumn to set
      */
     public void setSekkeiColumn(String sekkeiColumn) {
         this.sekkeiColumn = sekkeiColumn;
     }
-    
+
     /**
      * 入力値
+     *
      * @return the value
      */
     public String getValue() {
@@ -703,15 +771,17 @@ public class FXHDD01 {
 
     /**
      * 入力値
+     *
      * @param value the value to set
      */
     public void setValue(String value) {
         this.value = value;
-		this.checkByte();
+        this.checkByte();
     }
 
     /**
      * 入力項目背景色(通常)
+     *
      * @return the backColorInputDefault
      */
     public String getBackColorInputDefault() {
@@ -720,14 +790,34 @@ public class FXHDD01 {
 
     /**
      * 入力項目背景色(通常)
+     *
      * @param backColorInputDefault the backColorInputDefault to set
      */
     public void setBackColorInputDefault(String backColorInputDefault) {
         this.backColorInputDefault = backColorInputDefault;
     }
-    
+
+    /**
+     * 項目インデックス
+     *
+     * @return the itemIndex
+     */
+    public int getItemIndex() {
+        return itemIndex;
+    }
+
+    /**
+     * 項目インデックス
+     *
+     * @param itemIndex the itemIndex to set
+     */
+    public void setItemIndex(int itemIndex) {
+        this.itemIndex = itemIndex;
+    }
+
     /**
      * (数値入力制御用)小数部桁数
+     *
      * @return 小数部桁数
      */
     public String getNumberDecimalPlaces() {
@@ -737,34 +827,37 @@ public class FXHDD01 {
             return this.inputLengthDec;
         }
     }
-    
+
     /**
      * (数値入力制御用)最大値
+     *
      * @return 最大値
      */
     public String getNumberMaxValue() {
         int intPlaces = new BigDecimal(this.inputLength).intValue();
         int decPlaces = new BigDecimal(this.getNumberDecimalPlaces()).intValue();
-        
+
         String result = StringUtils.repeat("9", intPlaces);
         if (0 < decPlaces) {
             result = result + "." + StringUtils.repeat("9", decPlaces);
         }
-        
+
         return result;
     }
-    
+
     /**
      * (数値入力制御用)最小値
+     *
      * @return 最小値
      */
     public String getNumberMinValue() {
         return "-" + this.getNumberMaxValue();
     }
-    
+
     /**
      * プルダウン/ラジオボタン候補値取得
-     * @return プルダウン/ラジオボタン候補値 
+     *
+     * @return プルダウン/ラジオボタン候補値
      */
     public List<String> getSelectMenuItem() {
         if (StringUtil.isEmpty(this.inputList)) {
@@ -773,9 +866,10 @@ public class FXHDD01 {
             return Arrays.asList(this.inputList.split(","));
         }
     }
-    
+
     /**
      * 数値チェック
+     *
      * @param value 判定値
      * @return 数値変換可能な場合true
      */
@@ -787,28 +881,29 @@ public class FXHDD01 {
         }
         return true;
     }
-	
-	/**
-	 * 画面表示用桁数を返します。
-	 * @return 画面表示用桁数
-	 */
-	public String getDisplayMaxLength() {
-		int maxSeisu = 0;
-		int maxSyosu = 0;
-		if (NumberUtil.isIntegerNumeric(this.getInputLength())) {
-			maxSeisu = Integer.parseInt(this.getInputLength());
-		}
-		if (NumberUtil.isIntegerNumeric(this.getInputLengthDec())) {
-			maxSyosu = Integer.parseInt(this.getInputLengthDec());
-		}
-		return String.valueOf(maxSyosu == 0 ? maxSeisu : maxSeisu + maxSyosu + 1);
-	}
-	
-	/**
-	 * 文字列をバイトでカットします。
-	 */
-	public void checkByte() {
-		// 切り捨て処理
+
+    /**
+     * 画面表示用桁数を返します。
+     *
+     * @return 画面表示用桁数
+     */
+    public String getDisplayMaxLength() {
+        int maxSeisu = 0;
+        int maxSyosu = 0;
+        if (NumberUtil.isIntegerNumeric(this.getInputLength())) {
+            maxSeisu = Integer.parseInt(this.getInputLength());
+        }
+        if (NumberUtil.isIntegerNumeric(this.getInputLengthDec())) {
+            maxSyosu = Integer.parseInt(this.getInputLengthDec());
+        }
+        return String.valueOf(maxSyosu == 0 ? maxSeisu : maxSeisu + maxSyosu + 1);
+    }
+
+    /**
+     * 文字列をバイトでカットします。
+     */
+    public void checkByte() {
+        // 切り捨て処理
         this.value = StringUtil.left(this.value, Integer.parseInt(this.getDisplayMaxLength()));
-	}
+    }
 }
