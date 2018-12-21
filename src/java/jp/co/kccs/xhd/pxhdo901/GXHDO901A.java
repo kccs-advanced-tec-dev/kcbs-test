@@ -26,15 +26,19 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
+import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.db.Parameter;
 import jp.co.kccs.xhd.db.ParameterEJB;
+import jp.co.kccs.xhd.db.model.DaJoken;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.db.model.FXHDD02;
 import jp.co.kccs.xhd.db.model.FXHDM02;
 import jp.co.kccs.xhd.db.model.FXHDM05;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
+import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.StringUtil;
+import jp.co.kccs.xhd.util.SubFormUtil;
 import jp.co.kccs.xhd.util.ValidateUtil;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.BeanProcessor;
@@ -73,6 +77,7 @@ public class GXHDO901A implements Serializable {
 
     private static final Logger LOGGER = Logger.getLogger(GXHDO901A.class.getName());
     private static final int LOTNO_ITEMNO = 100;
+    private static final String FORM_ID_LOT_CORD_SHOKAI = "GXHDO301A";
 
     /**
      * DataSource(DocumentServer)
@@ -118,7 +123,11 @@ public class GXHDO901A implements Serializable {
      */
     private List<FXHDM05> checkListHDM05;
     /**
-     * /**
+     * DaJokenリスト
+     */
+    private List<DaJoken> listDaJoken;
+    /**
+     * 
      * 項目データ
      */
     private List<FXHDD01> itemList;
@@ -328,8 +337,10 @@ public class GXHDO901A implements Serializable {
 
         // 画面遷移パラメータ取得
         String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
+        String callerFormId = StringUtil.nullToBlank(session.getAttribute("callerFormId"));
         String formTitle = StringUtil.nullToBlank(session.getAttribute("formTitle"));
         String titleSetting = StringUtil.nullToBlank(session.getAttribute("titleSetting"));
+        String lotNo = StringUtil.nullToBlank(session.getAttribute("lotNo"));
         // 一覧の表示件数を設定
         this.hyojiKensu = StringUtil.nullToBlank(session.getAttribute("hyojiKensu"));
         
@@ -341,10 +352,31 @@ public class GXHDO901A implements Serializable {
         this.loadButtonSettings(formId);
 
         // 項目定義情報取得
-        this.loadItemSettings(formId);
+        this.loadItemSettings(formId, callerFormId);
 
         // チェック処理情報取得
         this.loadCheckList(formId);
+        
+        // SEKKEINO取得
+        String strSekkeiNo = "";
+        Map mapSekkeiNo = this.getSekkeiNo(lotNo);
+        if (null != mapSekkeiNo && !mapSekkeiNo.isEmpty()) {
+            strSekkeiNo = StringUtil.nullToBlank(NumberUtil.convertIntData(mapSekkeiNo.get("SEKKEINO")));
+        }
+        
+        // DaJoken情報取得
+        getJokenInfo(strSekkeiNo);
+
+        for ( int i =0 ;i<= itemList.size() -1;i++) {
+            for ( int j =0 ;j<= listDaJoken.size() -1;j++) {
+                if (StringUtil.nullToBlank(itemList.get(i).getJokenKoteiMei()).equals(StringUtil.nullToBlank(listDaJoken.get(j).getKouteiMei())) && 
+                    StringUtil.nullToBlank(itemList.get(i).getJokenKomokuMei()).equals(StringUtil.nullToBlank(listDaJoken.get(j).getKoumokuMei())) &&
+                    StringUtil.nullToBlank(itemList.get(i).getJokenKanriKomoku()).equals(StringUtil.nullToBlank(listDaJoken.get(j).getKanriKoumoku()))) {
+                        this.itemList.get(i).setKikakuChi("【" + listDaJoken.get(j).getKikakuChi() + "】");
+                        break;
+                }
+            }
+        }
 
         // 初期表示処理を実行する
         // 画面クラス名を取得
@@ -360,7 +392,6 @@ public class GXHDO901A implements Serializable {
             return;
         }
         //ロットNo初期表示設定
-        String lotNo = StringUtil.nullToBlank(session.getAttribute("lotNo"));
         for (int i = 0; i <= this.itemList.size() - 1; i++) {
             if (this.itemList.get(i).getItemNo() == LOTNO_ITEMNO) {
                 this.itemList.get(i).setInputDefault(lotNo);
@@ -553,7 +584,7 @@ public class GXHDO901A implements Serializable {
             byte[] cipher_byte = md.digest();
             StringBuilder sb = new StringBuilder(2 * cipher_byte.length);
             for (byte b : cipher_byte) {
-                sb.append(String.format("%02x", b & 0xff));
+                sb.append(String.format("%02x", b&0xff));
             }
             return sb.toString();
         } catch (NoSuchAlgorithmException ex) {
@@ -704,6 +735,29 @@ public class GXHDO901A implements Serializable {
 
             return;
         }
+        
+        // 規格エラーメッセージが設定されている場合、ダイアログを表示する
+        if (!this.processData.getKikakuchiInputErrorInfoList().isEmpty()) {
+            // メッセージを画面に渡す
+            KikakuError kikakuError = (KikakuError)  SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
+            kikakuError.setKikakuchiInputErrorInfoList(this.processData.getKikakuchiInputErrorInfoList());
+
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.addCallbackParam("firstParam", "kikakuError");
+
+            // エラー項目の背景色を設定
+            ErrUtil.setErrorItemBackColor(this.itemList, this.processData.getKikakuchiInputErrorInfoList());
+                    
+                    // エラー項目を表示するためページを遷移する。
+            // 表示したい項目のIndexを指定(0以下のIndexは内部的に無視)
+            setPageItemDataList(this.processData.getKikakuchiInputErrorInfoList().get(0).getItemIndex());
+            
+            
+            return;
+        }
+        
+        
+        
 
         // 警告もエラーも存在しない場合、後続処理を実行して結果を反映する
         try {
@@ -843,8 +897,9 @@ public class GXHDO901A implements Serializable {
      * 項目定義情報取得
      *
      * @param formId 項目定義情報
+     * @param callerFormId 画面ID(呼出し元)
      */
-    private void loadItemSettings(String formId) {
+    private void loadItemSettings(String formId, String callerFormId) {
         // ユーザーグループ取得
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
@@ -852,34 +907,52 @@ public class GXHDO901A implements Serializable {
 
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceDocServer);
-            String sql = "SELECT hdd01.gamen_id, hdd01.item_id, hdd01.item_no, hdd01.input_item_mold, hdd01.label1, hdd01.label2, "
-                    + "hdd01.input_list, hdd01.input_default, hdd01.input_length, hdd01.input_length_dec, "
-                    + "hdm02_1.font_size AS font_size_1, hdm02_1.font_color AS font_color_1, hdm02_1.bg_color AS bg_color_1, "
-                    + "hdm04.sekkei_column sekkei_column, hcm02_4.font_size AS font_size_3, hcm02_4.font_color AS font_color_3, hcm02_4.bg_color AS bg_color_3, "
-                    + "CASE WHEN hdd01.label1_setting IS NULL THEN 'false' ELSE 'true' END AS render_1, "
-                    + "hdm02_2.font_size AS font_size_2, hdm02_2.font_color AS font_color_2, hdm02_2.bg_color AS bg_color_2, "
-                    + "CASE WHEN hdd01.label2_setting IS NULL THEN 'false' ELSE 'true' END AS render_2, "
-                    + "hdm02_3.font_size AS font_size_input, hdm02_3.font_color AS font_color_input, hdm02_3.bg_color AS bg_color_input, "
+            
+            String inputItemInfo;
+            if(FORM_ID_LOT_CORD_SHOKAI.equals(callerFormId)){
+                inputItemInfo =  "'black' AS font_color_input, null AS bg_color_input, "
+                    + "'false' AS render_iput_text, "
+                    + "'false' AS render_iput_number, "
+                    + "'false' AS render_iput_date, "
+                    + "'false' AS render_iput_select, "
+                    + "'false' AS render_iput_radio, "
+                    + "'false' AS render_iput_time, "
+                    + "'true' AS render_output_label, ";
+                
+            }else{
+                inputItemInfo =  "hdm02_3.font_color AS font_color_input, hdm02_3.bg_color AS bg_color_input, "
                     + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '1' THEN 'false' ELSE 'true' END AS render_iput_text, "
                     + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '2' THEN 'false' ELSE 'true' END AS render_iput_number, "
                     + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '3' THEN 'false' ELSE 'true' END AS render_iput_date, "
                     + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '4' THEN 'false' ELSE 'true' END AS render_iput_select, "
                     + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '5' THEN 'false' ELSE 'true' END AS render_iput_radio, "
                     + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '6' THEN 'false' ELSE 'true' END AS render_iput_time, "
-                    + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '7' THEN 'false' ELSE 'true' END AS render_output_label, "
-                    + "hdm02_3.bg_color AS bg_color_input_default, row_number() over() AS item_index "
+                    + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '7' THEN 'false' ELSE 'true' END AS render_output_label, ";
+            }
+            
+            String sql = "SELECT A.*, row_number() over() AS item_index FROM ("
+                    +  "SELECT hdd01.gamen_id, hdd01.item_id, hdd01.item_no, hdd01.input_item_mold, hdd01.label1, hdd01.label2, "
+                    + "hdd01.input_list, hdd01.input_default, hdd01.input_length, hdd01.input_length_dec, "
+                    + "hdm02_1.font_size AS font_size_1, hdm02_1.font_color AS font_color_1, hdm02_1.bg_color AS bg_color_1, "
+                    + "hcm02_4.font_size AS font_size_3, hcm02_4.font_color AS font_color_3, hcm02_4.bg_color AS bg_color_3, "
+                    + "CASE WHEN hdd01.label1_setting IS NULL THEN 'false' ELSE 'true' END AS render_1, "
+                    + "hdm02_2.font_size AS font_size_2, hdm02_2.font_color AS font_color_2, hdm02_2.bg_color AS bg_color_2, "
+                    + "CASE WHEN hdd01.label2_setting IS NULL THEN 'false' ELSE 'true' END AS render_2, "
+                    + "hdm02_3.font_size AS font_size_input, "
+                    + inputItemInfo
+                    + "hdd01.joken_kotei_mei,hdd01.joken_komoku_mei,hdd01.joken_kanri_komoku,hdd01.standard_pattern, "
+                    + "hdm02_3.bg_color AS bg_color_input_default "
                     + "FROM fxhdd01 hdd01 "
                     + "LEFT JOIN fxhdm02 hdm02_1 ON (hdd01.label1_setting = hdm02_1.setting_id) "
                     + "LEFT JOIN fxhdm02 hdm02_2 ON (hdd01.label2_setting = hdm02_2.setting_id) "
                     + "LEFT JOIN fxhdm02 hdm02_3 ON (hdd01.input_setting = hdm02_3.setting_id) "
                     + "LEFT JOIN fxhdm02 hcm02_4 ON (hdd01.standard_setting = hcm02_4.setting_id) "
-                    + "LEFT JOIN fxhdm04 hdm04 ON (hdm04.gamen_id = ? AND hdm04.item_id =hdd01.item_id) "
                     + "WHERE hdd01.gamen_id = ? AND (hdd01.item_authority IS NULL OR "
                     + DBUtil.getInConditionPreparedStatement("hdd01.item_authority", userGrpList.size()) + ") "
-                    + "ORDER BY hdd01.item_no ";
+                    + "ORDER BY hdd01.item_no "
+                    + ") A ";
 
             List<Object> params = new ArrayList<>();
-            params.add(formId);
             params.add(formId);
             params.addAll(userGrpList);
 
@@ -912,10 +985,13 @@ public class GXHDO901A implements Serializable {
             mapping.put("render_iput_radio", "renderInputRadio");
             mapping.put("render_iput_time", "renderInputTime");
             mapping.put("render_output_label", "renderOutputLabel");
-            mapping.put("sekkei_column", "sekkeiColumn");
             mapping.put("font_size_3", "fontSize3");
             mapping.put("font_color_3", "fontColor3");
             mapping.put("bg_color_3", "backColor3");
+            mapping.put("joken_kotei_mei", "jokenKoteiMei");
+            mapping.put("joken_komoku_mei", "jokenKomokuMei");
+            mapping.put("joken_kanri_komoku", "jokenKanriKomoku");
+            mapping.put("standard_pattern", "standardPattern");
             mapping.put("bg_color_input_default", "backColorInputDefault");
             mapping.put("item_index", "itemIndex");
 
@@ -1018,6 +1094,67 @@ public class GXHDO901A implements Serializable {
     }
 
     /**
+     * SekkeiNo取得
+     * @param lotNo 画面ロットNo
+     */
+    private Map getSekkeiNo(String lotNo){
+        String strKojyo = lotNo.substring(0,3);
+        String strLotNo = lotNo.substring(3,11);
+        String strEdaban = lotNo.substring(11,14);
+        Map mapSekkeiNo = null;
+        try {
+            QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
+            String sql = "SELECT SEKKEINO "
+                       + "  FROM da_sekkei "
+                       + " WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
+
+            List<Object> params = new ArrayList<>();
+            params.add(strKojyo);
+            params.add(strLotNo);
+            params.add(strEdaban);
+
+            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+            mapSekkeiNo = queryRunner.query(sql, new MapHandler(), params.toArray());  
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SekkeiNo取得失敗", ex, LOGGER);
+        }
+        return mapSekkeiNo;
+    }
+    
+    /**
+     * da_joken情報取得
+     * @param sekkeiNo 設計No
+     */
+    private void getJokenInfo(String sekkeiNo) {
+        
+        try {
+            QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
+            String sql = "SELECT KOUTEIMEI,KOUMOKUMEI,KANRIKOUMOKU,KIKAKUCHI "
+                       + "  FROM da_joken "
+                       + " WHERE SEKKEINO = ? ";
+            
+            List<Object> params = new ArrayList<>();
+            params.add(sekkeiNo);
+
+            Map<String, String> mapping = new HashMap<>();
+            mapping.put("KOUTEIMEI", "kouteiMei");
+            mapping.put("KOUMOKUMEI", "koumokuMei");
+            mapping.put("KANRIKOUMOKU", "kanriKoumoku");
+            mapping.put("KIKAKUCHI", "kikakuChi");
+            
+            BeanProcessor beanProcessor = new BeanProcessor(mapping);
+            RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+            ResultSetHandler<List<DaJoken>> beanHandler = new BeanListHandler<>(DaJoken.class, rowProcessor);
+            
+            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+            this.listDaJoken = queryRunner.query(sql, beanHandler, params.toArray());
+            
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("チェック処理項目取得失敗", ex, LOGGER);
+        }
+    }
+
+    /**
      * 共通チェック
      *
      * @param method 処理メソッド名
@@ -1085,6 +1222,16 @@ public class GXHDO901A implements Serializable {
         BigDecimal startIdx = decHyojiKensu.multiply(decPage.subtract(BigDecimal.ONE));
         itemDataList.setFirst(startIdx.intValue());
 
+    }
+    
+    /**
+     * 警告ダイアログで「はい」が選択された場合の処理
+     */
+    public void processKikakuWarnOk() {
+        
+        // 警告メッセージを削除して処理再開
+        this.processData.getKikakuchiInputErrorInfoList().clear();
+        this.processMain();
     }
 
 }

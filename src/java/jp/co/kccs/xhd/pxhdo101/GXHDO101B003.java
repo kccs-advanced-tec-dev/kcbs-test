@@ -29,6 +29,7 @@ import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
 import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.StringUtil;
+import jp.co.kccs.xhd.util.SubFormUtil;
 import jp.co.kccs.xhd.util.ValidateUtil;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.BeanProcessor;
@@ -85,11 +86,11 @@ public class GXHDO101B003 implements IFormLogic {
 
             //******************************************************************************************
             // 膜厚(RSUS)サブ画面初期表示データ設定
-            GXHDO101C004 beanGXHDO101C004 = (GXHDO101C004) getSubFormBean("GXHDO101C004");
+            GXHDO101C004 beanGXHDO101C004 = (GXHDO101C004) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C004);
             beanGXHDO101C004.setGxhdO101c004Model(GXHDO101C004Logic.createGXHDO101C004Model(""));
 
             // 印刷幅画面初期表示データ設定
-            GXHDO101C005 beanGXHDO101C005 = (GXHDO101C005) getSubFormBean("GXHDO101C005");
+            GXHDO101C005 beanGXHDO101C005 = (GXHDO101C005) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C005);
             beanGXHDO101C005.setGxhdO101c005Model(GXHDO101C005Logic.createGXHDO101C005Model(""));
 
             //サブ画面呼出しをチェック処理なし(処理時にエラーの背景色を戻さない機能として登録)
@@ -261,7 +262,7 @@ public class GXHDO101B003 implements IFormLogic {
         }
 
         // 設計情報チェック(対象のデータが取得出来ていない場合エラー)
-        ValidateUtil.checkSekkeiUnsetItems(errorMessageList, sekkeiData, getMapSekkeiAssociation());
+        errorMessageList.addAll(ValidateUtil.checkSekkeiUnsetItems(sekkeiData, getMapSekkeiAssociation()));
 
         // ロット区分マスタ情報の取得
         String lotKubunCode = StringUtil.nullToBlank(sekkeiData.get("KUBUN1")); // ﾛｯﾄ区分ｺｰﾄﾞ
@@ -466,7 +467,7 @@ public class GXHDO101B003 implements IFormLogic {
             processData.setMethod("");
 
             // 膜厚(RSUS)の現在の値をサブ画面に設定
-            GXHDO101C004 beanGXHDO101C004 = (GXHDO101C004) getSubFormBean("GXHDO101C004");
+            GXHDO101C004 beanGXHDO101C004 = (GXHDO101C004) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C004);
             beanGXHDO101C004.setGxhdO101c004ModelView(beanGXHDO101C004.getGxhdO101c004Model().clone());
 
             return processData;
@@ -493,7 +494,7 @@ public class GXHDO101B003 implements IFormLogic {
             processData.setMethod("");
 
             // 印刷幅の現在の値をサブ画面に設定
-            GXHDO101C005 beanGXHDO101C005 = (GXHDO101C005) getSubFormBean("GXHDO101C005");
+            GXHDO101C005 beanGXHDO101C005 = (GXHDO101C005) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C005);
             beanGXHDO101C005.setGxhdO101c005ModelView(beanGXHDO101C005.getGxhdO101c005Model().clone());
 
             return processData;
@@ -1400,43 +1401,7 @@ public class GXHDO101B003 implements IFormLogic {
         return processData;
     }
 
-    /**
-     * サブ画面のBean情報を取得
-     *
-     * @param formId フォームID
-     * @return サブ画面情報
-     */
-    public Object getSubFormBean(String formId) {
-
-        Object returnBean = null;
-
-        switch (formId) {
-            // 膜厚(RSUS)
-            case "GXHDO101C004":
-                returnBean = FacesContext.getCurrentInstance().
-                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
-                                getELContext(), null, "beanGXHDO101C004");
-                break;
-
-            // 印刷幅
-            case "GXHDO101C005":
-                returnBean = FacesContext.getCurrentInstance().
-                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
-                                getELContext(), null, "beanGXHDO101C005");
-                break;
-            // 初期表示メッセージ
-            case "InitMessage":
-                returnBean = FacesContext.getCurrentInstance().
-                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
-                                getELContext(), null, "beanInitMessage");
-                break;
-
-            default:
-                break;
-        }
-        return returnBean;
-    }
-
+   
     /**
      * 初期表示メッセージ表示
      *
@@ -1445,16 +1410,16 @@ public class GXHDO101B003 implements IFormLogic {
      */
     public ProcessData openInitMessage(ProcessData processData) {
 
-        processData.setProcessName("openInitMessage");
         processData.setMethod("");
 
         // メッセージを画面に渡す
-        InitMessage beanInitMessage = (InitMessage) getSubFormBean("InitMessage");
+        InitMessage beanInitMessage = (InitMessage) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_INIT_MESSAGE);
         beanInitMessage.setInitMessageList(processData.getInitMessageList());
 
         // 実行スクリプトを設定
         processData.setExecuteScript("PF('W_dlg_initMessage').show();");
         return processData;
     }
+
 
 }

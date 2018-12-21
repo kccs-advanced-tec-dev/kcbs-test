@@ -108,7 +108,8 @@ public class GXHDO012A implements Serializable {
             try {
                 QueryRunner queryRunner = new QueryRunner(dataSource);
                 String sql = "SELECT gamen_id, gamen_title, title_setting, link_char, menu_name, menu_comment, menu_parameter, gamen_classname, hyouji_kensu FROM fxhdm01 "
-                           + "WHERE " + DBUtil.getInConditionPreparedStatement("user_role", userGrpList.size());
+                           + "WHERE menu_group_id = 'qcdb_mainMenu' AND " 
+                        + DBUtil.getInConditionPreparedStatement("user_role", userGrpList.size());
                 
                 if (!isPC) {
                     sql += " AND pc_flg = '0'";
@@ -154,8 +155,8 @@ public class GXHDO012A implements Serializable {
         // 画面遷移パラメータをセッション変数に保持
         session.setAttribute("formId", rowData.getFormId());
         session.setAttribute("formTitle", rowData.getFormTitle());
-        session.setAttribute("titleSetting", rowData.getTitleSetting());
-        session.setAttribute("formClassName", rowData.getFormClassName());
+        session.setAttribute("menuName", rowData.getMenuName());
+        session.setAttribute("menuComment", rowData.getMenuComment());
         session.setAttribute("hyojiKensu", rowData.getHyojiKensu());
         
         return rowData.getLinkChar() + "?faces-redirect=true";

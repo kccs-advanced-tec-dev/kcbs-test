@@ -40,10 +40,8 @@ import org.apache.commons.dbutils.RowProcessor;
 import org.apache.commons.dbutils.handlers.BeanHandler;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
-import org.primefaces.context.RequestContext;
-import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
+import jp.co.kccs.xhd.util.SubFormUtil;
 
 /**
  * ===============================================================================<br>
@@ -93,15 +91,15 @@ public class GXHDO101B001 implements IFormLogic {
 
             //******************************************************************************************
             // 膜厚(SPS)サブ画面初期表示データ設定
-            GXHDO101C001 beanGXHDO101C001 = (GXHDO101C001) getSubFormBean("GXHDO101C001");
+            GXHDO101C001 beanGXHDO101C001 = (GXHDO101C001) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C001);
             beanGXHDO101C001.setGxhdO101c001Model(GXHDO101C001Logic.createGXHDO101C001Model(""));
 
             // PTN距離Xサブ画面初期表示データ設定
-            GXHDO101C002 beanGXHDO101C002 = (GXHDO101C002) getSubFormBean("GXHDO101C002");
+            GXHDO101C002 beanGXHDO101C002 = (GXHDO101C002) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C002);
             beanGXHDO101C002.setGxhdO101c002Model(GXHDO101C002Logic.createGXHDO101C002Model(""));
 
             // PTN距離Yサブ画面初期表示データ設定
-            GXHDO101C003 beanGXHDO101C003 = (GXHDO101C003) getSubFormBean("GXHDO101C003");
+            GXHDO101C003 beanGXHDO101C003 = (GXHDO101C003) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C003);
             beanGXHDO101C003.setGxhdO101c003Model(GXHDO101C003Logic.createGXHDO101C003Model(""));
 
             //サブ画面呼出しをチェック処理なし(処理時にエラーの背景色を戻さない機能として登録)
@@ -265,9 +263,9 @@ public class GXHDO101B001 implements IFormLogic {
             processData.setCollBackParam("gxhdo101c001");
 
             // 膜厚(SPS)の現在の値をサブ画面の表示用の値に渡す
-            GXHDO101C001 beanGXHDO101C001 = (GXHDO101C001) getSubFormBean("GXHDO101C001");
+            GXHDO101C001 beanGXHDO101C001 = (GXHDO101C001) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C001);
             beanGXHDO101C001.setGxhdO101c001ModelView(beanGXHDO101C001.getGxhdO101c001Model().clone());
-
+            
         } catch (CloneNotSupportedException ex) {
 
             ErrUtil.outputErrorLog("CloneNotSupportedException発生", ex, LOGGER);
@@ -293,7 +291,7 @@ public class GXHDO101B001 implements IFormLogic {
             processData.setMethod("");
 
             // PTN距離Xの現在の値をサブ画面の表示用の値に設定
-            GXHDO101C002 beanGXHDO101C002 = (GXHDO101C002) getSubFormBean("GXHDO101C002");
+            GXHDO101C002 beanGXHDO101C002 = (GXHDO101C002) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C002);
             beanGXHDO101C002.setGxhdO101c002ModelView(beanGXHDO101C002.getGxhdO101c002Model().clone());
 
             return processData;
@@ -322,7 +320,7 @@ public class GXHDO101B001 implements IFormLogic {
             processData.setMethod("");
 
             // PTN距離Yの現在の値をサブ画面表示用に設定
-            GXHDO101C003 beanGXHDO101C003 = (GXHDO101C003) getSubFormBean("GXHDO101C003");
+            GXHDO101C003 beanGXHDO101C003 = (GXHDO101C003) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C003);
             beanGXHDO101C003.setGxhdO101c003ModelView(beanGXHDO101C003.getGxhdO101c003Model().clone());
 
             return processData;
@@ -342,9 +340,11 @@ public class GXHDO101B001 implements IFormLogic {
      * @return 処理データ
      */
     public ProcessData checkDataTempResist(ProcessData processData) {
-        try {
+//        try {
             // 処理名を登録
             processData.setProcessName("tempResist");
+            // 後続処理メソッド設定
+            processData.setMethod("doTempResist");
 
             QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
 
@@ -352,8 +352,24 @@ public class GXHDO101B001 implements IFormLogic {
             HttpSession session = (HttpSession) externalContext.getSession(false);
             String lotNo = (String) session.getAttribute("lotNo");
 
-            List<SrSpsprint> srSpsPrintData = this.loadSrSpsprintData(queryRunnerQcdb, lotNo, true);
+            // 規格チェック
+            List<KikakuchiInputErrorInfo> kikakuchiInputErrorInfoList = new ArrayList<>();
+            ErrorMessageInfo errorMessageInfo = ValidateUtil.checkInputKikakuchi(processData.getItemList(), kikakuchiInputErrorInfoList);
 
+            // 規格チェック内で想定外のエラーが発生した場合、エラーを出して中断
+            if (errorMessageInfo != null) {
+                processData.setErrorMessageInfoList(Arrays.asList(errorMessageInfo));
+                return processData;
+            }
+            
+           // processData.setWarnMessage("TEST");
+
+            // 規格値エラーがある場合は規格値エラーをセット
+            if (!kikakuchiInputErrorInfoList.isEmpty()) {
+                processData.setKikakuchiInputErrorInfoList(kikakuchiInputErrorInfoList);
+            }
+
+//            List<SrSpsprint> srSpsPrintData = this.loadSrSpsprintData(queryRunnerQcdb, lotNo, true);
             // 仮登録ﾁｪｯｸ処理
 //        List<ValidateUtil.ValidateInfo> requireCheckList = new ArrayList<>();
 //        ValidateUtil validateUtil = new ValidateUtil();
@@ -373,28 +389,25 @@ public class GXHDO101B001 implements IFormLogic {
 //            return processData;
 //        }
             //processData.getDataSourceQcdb().getConnection().commit();
-            // 後続処理メソッド設定
-            processData.setMethod("doTempResist");
-
-        } catch (SQLException ex) {
-            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-            processData = createRegistDataErrorMessage(processData);
-        }
-
-        if (!processData.getErrorMessageInfoList().isEmpty()) {
-            try {
-                processData.getDataSourceQcdb().getConnection().rollback();
-            } catch (SQLException ex) {
-                ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-                processData = createRegistDataErrorMessage(processData);
-            }
-            try {
-                processData.getDataSourceQcdb().getConnection().setAutoCommit(true);
-            } catch (SQLException ex) {
-                ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-                processData = createRegistDataErrorMessage(processData);
-            }
-        }
+//        } catch (SQLException ex) {
+//            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+//            processData = createRegistDataErrorMessage(processData);
+//        }
+//
+//        if (!processData.getErrorMessageInfoList().isEmpty()) {
+//            try {
+//                processData.getDataSourceQcdb().getConnection().rollback();
+//            } catch (SQLException ex) {
+//                ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+//                processData = createRegistDataErrorMessage(processData);
+//            }
+//            try {
+//                processData.getDataSourceQcdb().getConnection().setAutoCommit(true);
+//            } catch (SQLException ex) {
+//                ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+//                processData = createRegistDataErrorMessage(processData);
+//            }
+//        }
 
 //        finally {
 //            try {
@@ -906,7 +919,7 @@ public class GXHDO101B001 implements IFormLogic {
         }
 
         // 設計情報チェック(対象のデータが取得出来ていない場合エラー)
-        ValidateUtil.checkSekkeiUnsetItems(errorMessageList, sekkeiData, getMapSekkeiAssociation());
+        errorMessageList.addAll(ValidateUtil.checkSekkeiUnsetItems(sekkeiData, getMapSekkeiAssociation()));
 
         // ロット区分マスタ情報の取得
         String lotKubunCode = StringUtil.nullToBlank(sekkeiData.get("KUBUN1")); // ﾛｯﾄ区分ｺｰﾄﾞ
@@ -1118,9 +1131,39 @@ public class GXHDO101B001 implements IFormLogic {
 
         //TODO
         //processData.setErrorMessageInfoList(errorMessageInfoList);
+//        Map map03RevInfo = loadFxhdd03RevInfo(queryRunnerWip, lotNo);
+//        
+//        if (map03RevInfo != null && !map03RevInfo.isEmpty()) {
+//            
+//        }
+        
         processData.setInitMessageList(errorMessageList);
         return processData;
 
+    }
+    
+    /**
+     * 初期表示データ設定
+     *
+     * @param processData
+     * @return 処理制御データ
+     * @throws SQLException
+     */
+    private ProcessData setInitInputDate(ProcessData processData) throws SQLException {
+        //TODO
+        QueryRunner queryRunnerWip = new QueryRunner(processData.getDataSourceWip());
+        
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+        String lotNo = (String) session.getAttribute("lotNo");
+        
+//        Map map03RevInfo = loadFxhdd03RevInfo(queryRunnerWip, lotNo);
+//        if (map03RevInfo != null && !map03RevInfo.isEmpty()) {
+//            
+//        }
+        
+        
+        return processData;
     }
 
     /**
@@ -1369,6 +1412,35 @@ public class GXHDO101B001 implements IFormLogic {
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, beanHandler, params.toArray());
+    }
+    
+    
+    /**
+     * (10)[品質DB登録実績]から、リビジョン,状態フラグを取得
+     *
+     * @param queryRunnerWip QueryRunnerオブジェクト
+     * @param lotNo ロットNo(検索キー)
+     * @return 取得データ
+     * @throws SQLException
+     */
+    private Map loadFxhdd03RevInfo(QueryRunner queryRunnerWip, String lotNo, String formId) throws SQLException {
+        String lotNo1 = lotNo.substring(0, 3);
+        String lotNo2 = lotNo.substring(3, 11);
+        String lotNo3 = lotNo.substring(11, 14);
+        // 設計データの取得
+        String sql = "SELECT rev, jotai_flg "
+                + "FROM fxhdd03 "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND gamen_id = ?";
+
+        List<Object> params = new ArrayList<>();
+        params.add(lotNo1);
+        params.add(lotNo2);
+        params.add(lotNo3);
+        params.add(formId);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerWip.query(sql, new MapHandler(), params.toArray());
     }
 
     /**
@@ -2235,48 +2307,55 @@ public class GXHDO101B001 implements IFormLogic {
         return processData;
     }
 
-    /**
-     * サブ画面のBean情報を取得
-     *
-     * @param formId フォームID
-     * @return サブ画面情報
-     */
-    public Object getSubFormBean(String formId) {
-
-        Object returnBean = null;
-
-        switch (formId) {
-            // 膜厚(SPS)
-            case "GXHDO101C001":
-                returnBean = FacesContext.getCurrentInstance().
-                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
-                                getELContext(), null, "beanGXHDO101C001");
-                break;
-
-            // PTN距離X
-            case "GXHDO101C002":
-                returnBean = FacesContext.getCurrentInstance().
-                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
-                                getELContext(), null, "beanGXHDO101C002");
-                break;
-
-            // PTN距離Y
-            case "GXHDO101C003":
-                returnBean = FacesContext.getCurrentInstance().
-                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
-                                getELContext(), null, "beanGXHDO101C003");
-                break;
-            // 初期表示メッセージ
-            case "InitMessage":
-                returnBean = FacesContext.getCurrentInstance().
-                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
-                                getELContext(), null, "beanInitMessage");
-                break;
-            default:
-                break;
-        }
-        return returnBean;
-    }
+//    /**
+//     * サブ画面のBean情報を取得
+//     *
+//     * @param formId フォームID
+//     * @return サブ画面情報
+//     */
+//    public Object getSubFormBean(String formId) {
+//
+//        Object returnBean = null;
+//
+//        switch (formId) {
+//            // 膜厚(SPS)
+//            case "GXHDO101C001":
+//                returnBean = FacesContext.getCurrentInstance().
+//                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+//                                getELContext(), null, "beanGXHDO101C001");
+//                break;
+//
+//            // PTN距離X
+//            case "GXHDO101C002":
+//                returnBean = FacesContext.getCurrentInstance().
+//                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+//                                getELContext(), null, "beanGXHDO101C002");
+//                break;
+//
+//            // PTN距離Y
+//            case "GXHDO101C003":
+//                returnBean = FacesContext.getCurrentInstance().
+//                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+//                                getELContext(), null, "beanGXHDO101C003");
+//                break;
+//            // 初期表示メッセージ
+//            case "InitMessage":
+//                returnBean = FacesContext.getCurrentInstance().
+//                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+//                                getELContext(), null, "beanInitMessage");
+//                break;
+//            // 規格エラーダイアログ
+//            case "KikakuError":
+//                returnBean = FacesContext.getCurrentInstance().
+//                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+//                                getELContext(), null, "beanKikakuError");
+//                break;
+//
+//            default:
+//                break;
+//        }
+//        return returnBean;
+//    }
 
     /**
      * 初期表示メッセージ表示
@@ -2286,17 +2365,30 @@ public class GXHDO101B001 implements IFormLogic {
      */
     public ProcessData openInitMessage(ProcessData processData) {
 
-        processData.setProcessName("openInitMessage");
         processData.setMethod("");
 
         // メッセージを画面に渡す
-        InitMessage beanInitMessage = (InitMessage) getSubFormBean("InitMessage");
+        InitMessage beanInitMessage = (InitMessage) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_INIT_MESSAGE);
         beanInitMessage.setInitMessageList(processData.getInitMessageList());
 
         // 実行スクリプトを設定
         processData.setExecuteScript("PF('W_dlg_initMessage').show();");
         return processData;
     }
+    
+    
+    
+    
+    private String getMethodFromProcess(String processName){
+        switch(processName){
+            case "tempResist":
+                return "doTempResist";
+                default:
+               break;
+        }
+        return "";
+    }
+
 
     private Object getSrSpsprintItemData(SrSpsprint srSpsPritData, String itemId) {
         switch (itemId) {
@@ -2501,11 +2593,11 @@ public class GXHDO101B001 implements IFormLogic {
                 return ((String) checkDbData).equals(itemValue);
             } else if (checkDbData instanceof BigDecimal) {
                 return ((BigDecimal) checkDbData).compareTo(new BigDecimal(itemValue)) == 0;
-            } 
+            }
 
         } catch (NumberFormatException e) {
             return false;
-        } 
+        }
         return false;
     }
 

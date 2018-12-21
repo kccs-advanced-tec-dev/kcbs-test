@@ -14,6 +14,7 @@
         <title>#{myParam.application_id} #{gXHDO901A.titleInfo.formName}</title>
         <link href="#{request.contextPath}/resources/css/growl.css" rel="stylesheet" type="text/css"/>
         <link href="#{request.contextPath}/resources/css/gxhco901a.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/errordialog.css" rel="stylesheet" type="text/css"/>
         <h:outputScript library="primefaces" name="jquery/jquery.js" />
         <script src="#{request.contextPath}/resources/js/locUpload.js"></script>
         <script src="#{request.contextPath}/resources/js/growl.js"></script>
@@ -47,6 +48,8 @@
                     PF('W_dlg_gxhdo101c004').show();
                 } else if('gxhdo101c005'===args.firstParam){
                     PF('W_dlg_gxhdo101c005').show();
+                } else if('kikakuError'===args.firstParam){
+                    PF('W_dlg_kikakuError').show();
                 }
             }
             //]]>
@@ -89,7 +92,7 @@
                                  actionListener="#{gXHDO901A.processWarnOk()}"
                                  process="@form"
                                  update="@form"
-                                 oncomplete="if('warning'!=args.firstParam){PF('cd').hide();} else {PF('cd').show();}"/>
+                                 oncomplete="if('warning'!=args.firstParam){PF('cd').hide(); cmdButtonOncomplete(args);} else {PF('cd').show();}"/>
                 <p:commandButton id="warnCancel" value="いいえ" class="ui-conf-commandbtn-cancel" onclick="PF('cd').hide();" type="button" />
             </p:confirmDialog>
             <p:panel id="headerPanel" style="margin-bottom:4px;">
@@ -106,7 +109,7 @@
                         <p:panel id="itemPanel" style="background:#{item.backColor1};height:48px;">
                             <h:outputText id="label1" rendered="#{item.render1}" value="#{item.label1}"
                                           style="margin-left:8px;font-size:#{item.fontSize1}px;color:#{item.fontColor1};vertical-align: middle;"/>
-                            <h:outputText id="sekkeiColumn" rendered="#{item.render1}" value="#{item.sekkeiColumn}"
+                            <h:outputText id="kikakuChi" rendered="#{item.render1}" value="#{item.kikakuChi}"
                                           style="margin-left:8px;font-size:#{item.fontSize3}px;color:#{item.fontColor3};vertical-align: middle;"/>
 
                             <h:outputText id="lblValue" rendered="#{item.renderOutputLabel}" value="#{item.value}"
@@ -159,6 +162,7 @@
                 <ui:include src="/secure/pxhdo101/gxhdo101c004.xhtml"/>
                 <ui:include src="/secure/pxhdo101/gxhdo101c005.xhtml"/>
                 <ui:include src="/secure/common/initMessage.xhtml"/>
+                <ui:include src="/secure/common/kikakuError.xhtml"/>
             </div>
         </h:form>
         </div>

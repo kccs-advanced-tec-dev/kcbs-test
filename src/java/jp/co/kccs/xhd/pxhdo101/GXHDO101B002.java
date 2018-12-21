@@ -29,6 +29,7 @@ import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
 import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.StringUtil;
+import jp.co.kccs.xhd.util.SubFormUtil;
 import jp.co.kccs.xhd.util.ValidateUtil;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.BeanProcessor;
@@ -85,15 +86,15 @@ public class GXHDO101B002 implements IFormLogic {
 
             //******************************************************************************************
             // 膜厚(SPS)サブ画面初期表示データ設定
-            GXHDO101C001 beanGXHDO101C001 = (GXHDO101C001) getSubFormBean("GXHDO101C001");
+            GXHDO101C001 beanGXHDO101C001 = (GXHDO101C001) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C001);
             beanGXHDO101C001.setGxhdO101c001Model(GXHDO101C001Logic.createGXHDO101C001Model(""));
 
             // PTN距離Xサブ画面初期表示データ設定
-            GXHDO101C002 beanGXHDO101C002 = (GXHDO101C002) getSubFormBean("GXHDO101C002");
+            GXHDO101C002 beanGXHDO101C002 = (GXHDO101C002) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C002);
             beanGXHDO101C002.setGxhdO101c002Model(GXHDO101C002Logic.createGXHDO101C002Model(""));
 
             // PTN距離Yサブ画面初期表示データ設定
-            GXHDO101C003 beanGXHDO101C003 = (GXHDO101C003) getSubFormBean("GXHDO101C003");
+            GXHDO101C003 beanGXHDO101C003 = (GXHDO101C003) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C003);
             beanGXHDO101C003.setGxhdO101c003Model(GXHDO101C003Logic.createGXHDO101C003Model(""));
 
             //サブ画面呼出しをチェック処理なし(処理時にエラーの背景色を戻さない機能として登録)
@@ -256,7 +257,7 @@ public class GXHDO101B002 implements IFormLogic {
             processData.setMethod("");
 
             // 膜厚(SPS)の現在の値をサブ画面の表示用の値に渡す
-            GXHDO101C001 beanGXHDO101C001 = (GXHDO101C001) getSubFormBean("GXHDO101C001");
+            GXHDO101C001 beanGXHDO101C001 = (GXHDO101C001) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C001);
             beanGXHDO101C001.setGxhdO101c001ModelView(beanGXHDO101C001.getGxhdO101c001Model().clone());
 
         } catch (CloneNotSupportedException ex) {
@@ -284,7 +285,7 @@ public class GXHDO101B002 implements IFormLogic {
             processData.setMethod("");
 
             // PTN距離Xの現在の値をサブ画面の表示用の値に設定
-            GXHDO101C002 beanGXHDO101C002 = (GXHDO101C002) getSubFormBean("GXHDO101C002");
+            GXHDO101C002 beanGXHDO101C002 = (GXHDO101C002) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C002);
             beanGXHDO101C002.setGxhdO101c002ModelView(beanGXHDO101C002.getGxhdO101c002Model().clone());
 
             return processData;
@@ -313,7 +314,7 @@ public class GXHDO101B002 implements IFormLogic {
             processData.setMethod("");
 
             // PTN距離Yの現在の値をサブ画面表示用に設定
-            GXHDO101C003 beanGXHDO101C003 = (GXHDO101C003) getSubFormBean("GXHDO101C003");
+            GXHDO101C003 beanGXHDO101C003 = (GXHDO101C003) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C003);
             beanGXHDO101C003.setGxhdO101c003ModelView(beanGXHDO101C003.getGxhdO101c003Model().clone());
 
             return processData;
@@ -856,7 +857,7 @@ public class GXHDO101B002 implements IFormLogic {
         }
 
         // 設計情報チェック(対象のデータが取得出来ていない場合エラー)
-        ValidateUtil.checkSekkeiUnsetItems(errorMessageList, sekkeiData, getMapSekkeiAssociation());
+        errorMessageList.addAll(ValidateUtil.checkSekkeiUnsetItems(sekkeiData, getMapSekkeiAssociation()));
 
         // ロット区分マスタ情報の取得
         String lotKubunCode = StringUtil.nullToBlank(sekkeiData.get("KUBUN1")); // ﾛｯﾄ区分ｺｰﾄﾞ
@@ -1829,51 +1830,8 @@ public class GXHDO101B002 implements IFormLogic {
         return processData;
     }
 
-    /**
-     * サブ画面のBean情報を取得
-     *
-     * @param formId フォームID
-     * @return サブ画面情報
-     */
-    public Object getSubFormBean(String formId) {
-
-        Object returnBean = null;
-
-        switch (formId) {
-            // 膜厚(SPS)
-            case "GXHDO101C001":
-                returnBean = FacesContext.getCurrentInstance().
-                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
-                                getELContext(), null, "beanGXHDO101C001");
-                break;
-
-            // PTN距離X
-            case "GXHDO101C002":
-                returnBean = FacesContext.getCurrentInstance().
-                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
-                                getELContext(), null, "beanGXHDO101C002");
-                break;
-
-            // PTN距離Y
-            case "GXHDO101C003":
-                returnBean = FacesContext.getCurrentInstance().
-                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
-                                getELContext(), null, "beanGXHDO101C003");
-                break;
-            // 初期表示メッセージ
-            case "InitMessage":
-                returnBean = FacesContext.getCurrentInstance().
-                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
-                                getELContext(), null, "beanInitMessage");
-
-                break;
-            default:
-                break;
-        }
-        return returnBean;
-    }
-
-    /**
+   
+        /**
      * 初期表示メッセージ表示
      *
      * @param processData 処理制御データ
@@ -1881,16 +1839,16 @@ public class GXHDO101B002 implements IFormLogic {
      */
     public ProcessData openInitMessage(ProcessData processData) {
 
-        processData.setProcessName("openInitMessage");
         processData.setMethod("");
 
         // メッセージを画面に渡す
-        InitMessage beanInitMessage = (InitMessage) getSubFormBean("InitMessage");
+        InitMessage beanInitMessage = (InitMessage) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_INIT_MESSAGE);
         beanInitMessage.setInitMessageList(processData.getInitMessageList());
 
         // 実行スクリプトを設定
         processData.setExecuteScript("PF('W_dlg_initMessage').show();");
         return processData;
     }
+
 
 }

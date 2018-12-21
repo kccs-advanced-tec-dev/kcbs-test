@@ -159,11 +159,27 @@ public class FXHDD01 {
     /**
      * 表示ﾗﾍﾞﾙ3背景色
      */
-    private String backColor3;
+    private String backColor3;    
     /**
-     * 設計ﾃｰﾌﾞﾙｶﾗﾑ名
+     * 条件ﾃｰﾌﾞﾙ工程名
      */
-    private String sekkeiColumn;
+    private String jokenKoteiMei;
+    /**
+     * 条件ﾃｰﾌﾞﾙ項目名
+     */
+    private String jokenKomokuMei;
+    /**
+     * 条件ﾃｰﾌﾞﾙ管理項目
+     */
+    private String jokenKanriKomoku;
+    /**
+     * 規格情報ﾊﾟﾀｰﾝ
+     */
+    private String standardPattern;
+    /**
+     * 規格値
+     */
+    private String kikakuChi;
     /**
      * 入力値
      */
@@ -741,25 +757,87 @@ public class FXHDD01 {
     public void setBackColor3(String backColor3) {
         this.backColor3 = backColor3;
     }
-
+    
     /**
-     * 設計ﾃｰﾌﾞﾙｶﾗﾑ名
-     *
-     * @return the sekkeiColumn
+     * 条件ﾃｰﾌﾞﾙ工程名
+     * @return the jokenKoteiMei
      */
-    public String getSekkeiColumn() {
-        return sekkeiColumn;
+    public String getJokenKoteiMei() {
+        return jokenKoteiMei;
     }
 
     /**
-     * 設計ﾃｰﾌﾞﾙｶﾗﾑ名
-     *
-     * @param sekkeiColumn the sekkeiColumn to set
+     * 条件ﾃｰﾌﾞﾙ工程名
+     * @param jokenKoteiMei the jokenKoteiMei to set
      */
-    public void setSekkeiColumn(String sekkeiColumn) {
-        this.sekkeiColumn = sekkeiColumn;
+    public void setJokenKoteiMei(String jokenKoteiMei) {
+        this.jokenKoteiMei = jokenKoteiMei;
+    }
+    
+    /**
+     * 条件ﾃｰﾌﾞﾙ項目名
+     * @return the jokenKomokuMei
+     */
+    public String getJokenKomokuMei() {
+        return jokenKomokuMei;
     }
 
+    /**
+     * 条件ﾃｰﾌﾞﾙ項目名
+     * @param jokenKomokuMei the jokenKomokuMei to set
+     */
+    public void setJokenKomokuMei(String jokenKomokuMei) {
+        this.jokenKomokuMei = jokenKomokuMei;
+    }
+    
+    /**
+     * 条件ﾃｰﾌﾞﾙ管理項目
+     * @return the jokenKanriKomoku
+     */
+    public String getJokenKanriKomoku() {
+        return jokenKanriKomoku;
+    }
+
+    /**
+     * 条件ﾃｰﾌﾞﾙ管理項目
+     * @param jokenKanriKomoku the jokenKanriKomoku to set
+     */
+    public void setJokenKanriKomoku(String jokenKanriKomoku) {
+        this.jokenKanriKomoku = jokenKanriKomoku;
+    }
+    
+    /**
+     * 規格情報ﾊﾟﾀｰﾝ
+     * @return the standardPattern
+     */
+    public String getStandardPattern() {
+        return standardPattern;
+    }
+
+    /**
+     * 規格情報ﾊﾟﾀｰﾝ
+     * @param standardPattern the standardPattern to set
+     */
+    public void setStandardPattern(String standardPattern) {
+        this.standardPattern = standardPattern;
+    }
+    
+    /**
+     * 規格値
+     * @return the kikakuChi
+     */
+    public String getKikakuChi() {
+        return kikakuChi;
+    }
+
+    /**
+     * 規格値
+     * @param kikakuChi the kikakuChi to set
+     */
+    public void setKikakuChi(String kikakuChi) {
+        this.kikakuChi = kikakuChi;
+    }
+    
     /**
      * 入力値
      *

@@ -4,14 +4,14 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <p:dialog header="設定エラー" id="dlg_initMessage" widgetVar="W_dlg_initMessage"
               width="600" modal="true" height="400" style="color: #ff0000;"
-              dynamic="false" closable="true" closeOnEscape="false" class="test" >
+              dynamic="false" closable="true" closeOnEscape="false" class="error-dialog-title" >
 
         <h:form id="initMessageForm">
                 <p:dataTable id="table" var="msg" value="#{beanInitMessage.initMessageList}"
                             style="font-size: 12px; width:560px; height: 350px; border-style: none;" 
                             scrollable="true" scrollHeight="330"
                              emptyMessage=""   >
-                    <p:column id="mMakuatsu"  >
+                    <p:column id="mMsg"  >
                             <p:outputLabel value="#{msg}" style="color: #ff0000;" />
                     </p:column>
                 </p:dataTable>

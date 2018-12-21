@@ -12,6 +12,7 @@ import javax.faces.component.html.HtmlInputText;
 import javax.faces.context.FacesContext;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
+import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
 
 /**
  * ===============================================================================<br>
@@ -196,4 +197,29 @@ public class ErrUtil {
             }
         }
     }
+    
+    /**
+     * 項目の背景色を設定します。
+     *
+     * @param itemList 項目データ
+     * @param kikakuchiInputErrorInfoList 規格エラー情報
+     */
+    public static void setErrorItemBackColor(List<FXHDD01> itemList, List<KikakuchiInputErrorInfo> kikakuchiInputErrorInfoList) {
+        
+        List<FXHDD01> errorItemList;
+        for (KikakuchiInputErrorInfo errorItemInfo : kikakuchiInputErrorInfoList) {
+
+            errorItemList
+                    = itemList.stream().filter(n -> errorItemInfo.getItemId().equals(n.getItemId())).collect(Collectors.toList());
+
+            for (FXHDD01 fxhdd01 : errorItemList) {
+                fxhdd01.setBackColorInput(ERR_BACK_COLOR);
+            }
+        }
+    }
+    
+    
+    
+    
+    
 }

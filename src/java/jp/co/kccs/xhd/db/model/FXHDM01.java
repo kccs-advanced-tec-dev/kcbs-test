@@ -43,6 +43,10 @@ public class FXHDM01 implements Serializable {
      */
     private String titleSetting;
     /**
+     * ﾒﾆｭｰNo
+     */
+    private int menuNo;
+    /**
      * メニュー名
      */
     private String menuName;
@@ -113,6 +117,22 @@ public class FXHDM01 implements Serializable {
      */
     public void setTitleSetting(String titleSetting) {
         this.titleSetting = titleSetting;
+    }
+    
+    /**
+     * メニューNo
+     * @return the menuNo
+     */
+    public int getMenuNo() {
+        return menuNo;
+    }
+
+    /**
+     * メニューNo
+     * @param menuNo the menuNo to set
+     */
+    public void setMenuNo(int menuNo) {
+        this.menuNo = menuNo;
     }
     
     /**

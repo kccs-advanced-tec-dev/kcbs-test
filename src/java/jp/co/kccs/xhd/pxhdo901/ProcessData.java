@@ -117,12 +117,15 @@ public class ProcessData {
      */
     private List<String> initMessageList;
     
-    
     /**
      * 実行スクリプト
      */
     private String executeScript;
     
+    /**
+     * 規格値入力エラー情報リスト
+     */
+    private List<KikakuchiInputErrorInfo> kikakuchiInputErrorInfoList;
 
     /**
      * コンストラクタ
@@ -136,6 +139,7 @@ public class ProcessData {
         this.subInitDispMsgList = new ArrayList<>();
         this.errorMessageInfoList = new ArrayList<>();
         this.initMessageList = new ArrayList<>();
+        this.kikakuchiInputErrorInfoList = new ArrayList<>();
     }
 
     /**
@@ -510,6 +514,22 @@ public class ProcessData {
      */
     public void setExecuteScript(String executeScript) {
         this.executeScript = executeScript;
+    }
+
+    /**
+     * 規格値入力エラー情報リスト
+     * @return the kikakuchiInputErrorInfoList
+     */
+    public List<KikakuchiInputErrorInfo> getKikakuchiInputErrorInfoList() {
+        return kikakuchiInputErrorInfoList;
+    }
+
+    /**
+     * 規格値入力エラー情報リスト
+     * @param kikakuchiInputErrorInfoList the kikakuchiInputErrorInfoList to set
+     */
+    public void setKikakuchiInputErrorInfoList(List<KikakuchiInputErrorInfo> kikakuchiInputErrorInfoList) {
+        this.kikakuchiInputErrorInfoList = kikakuchiInputErrorInfoList;
     }
 
 }

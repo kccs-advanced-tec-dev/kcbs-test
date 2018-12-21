@@ -1,0 +1,48 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <p:dialog header="規格外エラー" id="dlg_kikakuError" widgetVar="W_dlg_kikakuError"
+              width="550" modal="true" height="390" style="color: #ff0000;"
+              dynamic="false" closable="true" closeOnEscape="false"  class="error-dialog-title"  >
+
+        <h:form id="kikakuErrorForm">
+            <p:outputLabel value="規格値外の値が存在します。" style="font-size: 18px; color: red;"  />
+            <br />
+            <p:outputLabel value="このまま登録してよろしいですか？" style="font-size: 18px; color: red;"  />
+                
+            <p:panel style="width:510px;">
+            <p:dataTable id="table" var="info" value="#{beanKikakuError.kikakuchiInputErrorInfoList}"
+                         style="font-size: 12px; width:480px; height: 245px; border-style: none;" 
+                         scrollable="true" scrollHeight="220" 
+                         emptyMessage=""   >
+                <p:column id="mLabel" headerText="項目名" width="40%" >
+                    <p:outputLabel value="#{info.itemLabel}"  />
+                </p:column>
+                <p:column id="mKikakuchi" headerText="規格値" width="30%"  >
+                    <div style="text-align: center;">
+                        <p:outputLabel value="#{info.itemKikakuchi}" />
+                    </div>
+                </p:column>
+                <p:column id="mValue" headerText="入力値" class="error-dialog-gridcell-bc-red"  width="30%"  >
+                    <div style="text-align: center;">
+                        <p:outputLabel value="#{info.itemInputValue}" style="text-align: center;"   />
+                    </div>
+                </p:column>
+            </p:dataTable>
+            </p:panel>
+            <p:commandButton value="OK" id="okBtn"
+                             style="position:relative;top:5px;left:280px;width:110px;height:35px;"
+                             actionListener="#{gXHDO901A.processKikakuWarnOk()}"
+                             process="@this"
+                             update="@form"
+                             oncomplete="PF('W_dlg_kikakuError').hide();"/>   
+            <p:commandButton value="Cancel" id="cancelBtn"
+                             style="position:relative;top:5px; left:300px;width:110px;height:35px;"
+                             process="@this" 
+                             update="@this"
+                             oncomplete="PF('W_dlg_kikakuError').hide();"/>   
+
+        </h:form>
+    </p:dialog>
+</ui:composition>
