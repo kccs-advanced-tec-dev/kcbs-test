@@ -152,13 +152,6 @@ public class GXHDO012A implements Serializable {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
         
-        // 画面遷移パラメータをセッション変数に保持
-        session.setAttribute("formId", rowData.getFormId());
-        session.setAttribute("formTitle", rowData.getFormTitle());
-        session.setAttribute("menuName", rowData.getMenuName());
-        session.setAttribute("menuComment", rowData.getMenuComment());
-        session.setAttribute("hyojiKensu", rowData.getHyojiKensu());
-        
         return rowData.getLinkChar() + "?faces-redirect=true";
     }
     
