@@ -34,6 +34,7 @@
         <f:metadata>
             <f:viewParam id="macAddr" name="macAddr" value="#{sessionManager.macAddr}"/>
             <f:viewAction action="#{sessionManager.validateUser()}"/>
+            <f:viewAction action="#{adjustModels.setClientDevice(sessionInfo.macAddr)}"/>
         </f:metadata>
         <div style="margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;">
         <br/>
