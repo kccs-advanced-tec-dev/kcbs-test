@@ -269,7 +269,7 @@ public class GXHDO101A implements Serializable {
         
         // 画面遷移パラメータをセッション変数に保持
         session.setAttribute("formId", rowData.getFormId());
-        session.setAttribute("callerFormId", "GXHDO301A");
+        session.setAttribute("callerFormId", "GXHDO101A");
         session.setAttribute("formTitle", rowData.getFormTitle());
         session.setAttribute("menuName", rowData.getMenuName());
         session.setAttribute("menuComment", rowData.getMenuComment());
