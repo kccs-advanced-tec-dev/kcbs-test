@@ -5,6 +5,7 @@ package jp.co.kccs.xhd.util;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -16,8 +17,6 @@ import java.util.stream.Collectors;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
-import jp.co.kccs.xhd.pxhdo901.ProcessData;
-import static jp.co.kccs.xhd.util.DBUtil.stringToBigDecimalObject;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import org.apache.commons.lang3.math.NumberUtils;
@@ -183,7 +182,7 @@ public class ValidateUtil {
                 case E001:
                     errorMessageInfo = checkE001(itemList, validateInfo.itemId);
                     break;
-                
+
                 default:
                     break;
             }
@@ -515,7 +514,7 @@ public class ValidateUtil {
     /**
      * 必須チェック2<BR>
      * ブランクでない、且つ入力値が"0"でないことを検証<BR>
-     *
+     *  
      * @param itemList 項目データリスト
      * @param itemId 項目ID
      * @return エラー時はエラーメッセージを返却
@@ -561,7 +560,7 @@ public class ValidateUtil {
                 Date d2 = DateUtil.convertStringToDate(date2, time2);
                 if (null != d1 && null != d2 && d1.compareTo(d2) > 0) {
                     List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01_date1, fXHDD01_time1, fXHDD01_date2, fXHDD01_time2);
-                    return MessageUtil.getErrorMessageInfo("XHC-000007", true, true, errFxhdd01List, fXHDD01_date1.getLabel1(), fXHDD01_date2.getLabel1());
+                    return MessageUtil.getErrorMessageInfo("XHD-000023", true, true, errFxhdd01List, fXHDD01_date1.getLabel1(), fXHDD01_date2.getLabel1());
                 }
             }
         }
@@ -582,21 +581,22 @@ public class ValidateUtil {
             String value = fXHDD01.getValue();
             if (!checkLotNoDigit(value)) {
                 List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
-                return MessageUtil.getErrorMessageInfo("XHC-000010", true, true, errFxhdd01List);
+                return MessageUtil.getErrorMessageInfo("XHD-000024", true, true, errFxhdd01List);
             }
         }
         return null;
     }
-    
+
     /**
      * ロットNoチェックデジットチェック
+     *
      * @param itemValue 項目データ
      * @return エラー時はエラーメッセージを返却
      */
     public String checkValueE001(String itemValue) {
         String value = itemValue;
         if (!checkLotNoDigit(value)) {
-            return MessageUtil.getMessage("XHC-000010");
+            return MessageUtil.getMessage("XHD-000024");
         }
         return "";
     }
@@ -785,11 +785,12 @@ public class ValidateUtil {
 
     /**
      * 入力項目判定(入力項目かどうかを判定する)
+     *
      * @param fxhdd01 項目データ
      * @return true:入力項目、false:入力項目以外
      */
     private static boolean isInputColumn(FXHDD01 fxhdd01) {
-        if (fxhdd01.isRenderInputDate() || fxhdd01.isRenderInputNumber() || fxhdd01.isRenderInputRadio() 
+        if (fxhdd01.isRenderInputDate() || fxhdd01.isRenderInputNumber() || fxhdd01.isRenderInputRadio()
                 || fxhdd01.isRenderInputSelect() || fxhdd01.isRenderInputText() || fxhdd01.isRenderInputTime()) {
             return true;
         }
@@ -899,7 +900,7 @@ public class ValidateUtil {
      * @param fxhdd01 項目データ
      * @return エラーコード(0:正常、1:規格エラー、-1:規格値不正)
      */
-    private static  String checkKikakuST003(FXHDD01 fxhdd01) {
+    private static String checkKikakuST003(FXHDD01 fxhdd01) {
 
         String strKikakuchi = StringUtil.nullToBlank(fxhdd01.getKikakuChi()).replace("【", "");
         strKikakuchi = strKikakuchi.replace("】", "");
@@ -915,8 +916,7 @@ public class ValidateUtil {
             // 規格値不正
             return KIKAKU_CHECK_CD_SETTING_ERR;
         }
-        
-        
+
         // 入力値取得
         BigDecimal inputValue;
         try {
@@ -940,7 +940,7 @@ public class ValidateUtil {
      * @param fxhdd01 項目データ
      * @return エラーコード(0:正常、1:規格エラー、-1:規格値不正)
      */
-    private static  String checkKikakuST004(FXHDD01 fxhdd01) {
+    private static String checkKikakuST004(FXHDD01 fxhdd01) {
 
         String strKikakuchi = StringUtil.nullToBlank(fxhdd01.getKikakuChi()).replace("【", "");
         strKikakuchi = strKikakuchi.replace("】", "");
@@ -980,7 +980,7 @@ public class ValidateUtil {
      * @param fxhdd01 項目データ
      * @return エラーコード(0:正常、1:規格エラー、-1:規格値不正)
      */
-    private static  String checkKikakuST005(FXHDD01 fxhdd01) {
+    private static String checkKikakuST005(FXHDD01 fxhdd01) {
 
         String strKikakuchi = StringUtil.nullToBlank(fxhdd01.getKikakuChi()).replace("【", "");
         strKikakuchi = strKikakuchi.replace("】", "");
@@ -997,7 +997,7 @@ public class ValidateUtil {
             // 規格値不正
             return KIKAKU_CHECK_CD_SETTING_ERR;
         }
-       
+
         // 入力値取得
         BigDecimal inputValue;
         try {
@@ -1021,7 +1021,7 @@ public class ValidateUtil {
      * @param fxhdd01 項目データ
      * @return エラーコード(0:正常、1:規格エラー、-1:規格値不正)
      */
-    private static  String checkKikakuST006(FXHDD01 fxhdd01) {
+    private static String checkKikakuST006(FXHDD01 fxhdd01) {
 
         String strKikakuchi = StringUtil.nullToBlank(fxhdd01.getKikakuChi()).replace("【", "");
         strKikakuchi = strKikakuchi.replace("】", "");
@@ -1038,7 +1038,6 @@ public class ValidateUtil {
             // 規格値不正
             return KIKAKU_CHECK_CD_SETTING_ERR;
         }
-
 
         // 入力値取得
         BigDecimal inputValue;
@@ -1059,11 +1058,11 @@ public class ValidateUtil {
 
     /**
      * 規格チェック(7:<〇)
-     * 
+     *
      * @param fxhdd01 項目データ
      * @return エラーコード(0:正常、1:規格エラー、-1:規格値不正)
      */
-    private static  String checkKikakuST007(FXHDD01 fxhdd01) {
+    private static String checkKikakuST007(FXHDD01 fxhdd01) {
 
         String strKikakuchi = StringUtil.nullToBlank(fxhdd01.getKikakuChi()).replace("【", "");
         strKikakuchi = strKikakuchi.replace("】", "");
@@ -1104,7 +1103,7 @@ public class ValidateUtil {
      * @param fxhdd01 項目データ
      * @return エラーコード(0:正常、1:規格エラー、-1:規格値不正)
      */
-    private static  String checkKikakuST008(FXHDD01 fxhdd01) {
+    private static String checkKikakuST008(FXHDD01 fxhdd01) {
 
         String strKikakuchi = StringUtil.nullToBlank(fxhdd01.getKikakuChi()).replace("【", "");
         strKikakuchi = strKikakuchi.replace("】", "");
@@ -1138,14 +1137,14 @@ public class ValidateUtil {
         }
         return KIKAKU_CHECK_CD_NORMAL;
     }
-    
-     /**
+
+    /**
      * 規格チェック(9:MAX〇)
      *
      * @param fxhdd01 項目データ
      * @return エラーコード(0:正常、1:規格エラー、-1:規格値不正)
      */
-    private static  String checkKikakuST009(FXHDD01 fxhdd01) {
+    private static String checkKikakuST009(FXHDD01 fxhdd01) {
 
         String strKikakuchi = StringUtil.nullToBlank(fxhdd01.getKikakuChi()).replace("【", "");
         strKikakuchi = strKikakuchi.replace("】", "");
@@ -1179,14 +1178,14 @@ public class ValidateUtil {
         }
         return KIKAKU_CHECK_CD_NORMAL;
     }
-    
-        /**
+
+    /**
      * 規格チェック(10:MIN〇)
      *
      * @param fxhdd01 項目データ
      * @return エラーコード(0:正常、1:規格エラー、-1:規格値不正)
      */
-    private static  String checkKikakuST010(FXHDD01 fxhdd01) {
+    private static String checkKikakuST010(FXHDD01 fxhdd01) {
 
         String strKikakuchi = StringUtil.nullToBlank(fxhdd01.getKikakuChi()).replace("【", "");
         strKikakuchi = strKikakuchi.replace("】", "");
@@ -1221,14 +1220,13 @@ public class ValidateUtil {
         return KIKAKU_CHECK_CD_NORMAL;
     }
 
-
     /**
      * 数値抽出処理先頭から数値のデータのみ取得
      *
      * @param value 文字列
      * @return 抽出した文字列
      */
-    private static  BigDecimal numberExtraction(String value) {
+    private static BigDecimal numberExtraction(String value) {
         BigDecimal result = null;
         try {
             // 一文字ずつ分割
@@ -1277,32 +1275,58 @@ public class ValidateUtil {
 
         return errorMessageList;
     }
-    
-    
-//    /**
-//     * 焼成データ登録実行
-//     *
-//     * @param queryRunnerQcdb QueryRunnerオブジェクト(QCDB)
-//     * @param processData 処理制御データ
-//     * @throws SQLException
-//     */
-//    private int insert(QueryRunner queryRunnerQcdb, ProcessData processData) throws SQLException {
-//        // 焼成データの登録
-//        String sql = "INSERT INTO fxhdd04 ("
-//                + "torokusha, toroku_date, koshinsha, koshin_date, gamen_id, gamen_title, kojyo, lotno, edaban,"
-//                + " jissekino, item_id, item_name, kikaku, input_value, delete_flag"
-//                + ") VALUES ("
-//                + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
-//
-//        List<Object> params = this.getInsertUpdateParams(queryRunnerQcdb, processData, false);
-//
-//        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-//        return queryRunnerQcdb.update(sql, params.toArray());
-//    }
-//
-//    private List<Object> getFxhdd04UpdateParams(QueryRunner queryRunnerQcdb, String lotNo, String formId, String gamenTitle, String jissekino, KikakuchiInputErrorInfo kikakuError) throws SQLException {
-//    
-//    
-//    }
-    
+
+    /**
+     * 規格外登録履歴
+     *
+     * @param queryRunnerWip QueryRunnerオブジェクト
+     * @param tantoshaCd 担当者コード
+     * @param lotNo ロットNo
+     * @param formId 画面ID
+     * @param gamenTitle 画面タイトル
+     * @param jissekino 実績No
+     * @param deleteFlag 削除フラグ
+     * @param kikakuchiErrorInfoList 規格値エラー情報リスト
+     * @throws SQLException
+     */
+    public static void fxhdd04Insert(QueryRunner queryRunnerWip, String tantoshaCd, String lotNo, String formId, String gamenTitle, int jissekino, String deleteFlag, List<KikakuchiInputErrorInfo> kikakuchiErrorInfoList) throws SQLException {
+        // 焼成データの登録
+        String sql = "INSERT INTO fxhdd04 ("
+                + "torokusha, toroku_date, koshinsha, koshin_date,  gamen_id, gamen_title, kojyo, lotno, edaban,"
+                + " jissekino, item_id, item_name, kikaku, input_value, delete_flag"
+                + ") VALUES ("
+                + "?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+
+        List<Object> params;
+        for (KikakuchiInputErrorInfo kikakuchiInputErrorInfo : kikakuchiErrorInfoList) {
+            params = getFxhdd04UpdateParams(tantoshaCd, lotNo, formId, gamenTitle, jissekino, deleteFlag, kikakuchiInputErrorInfo);
+            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+            queryRunnerWip.update(sql, params.toArray());
+        }
+    }
+
+    private static List<Object> getFxhdd04UpdateParams(String tantoshaCd, String lotNo, String formId, String gamenTitle, int jissekino, String deleteFlag, KikakuchiInputErrorInfo kikakuchiErrorInfo) throws SQLException {
+        List<Object> params = new ArrayList<>();
+
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        params.add(tantoshaCd);
+        params.add(timestamp);
+        params.add(null);
+        params.add(null);
+        params.add(formId);
+        params.add(gamenTitle);
+        params.add(lotNo.substring(0, 3));
+        params.add(lotNo.substring(3, 11));
+        params.add(lotNo.substring(11, 14));
+        params.add(jissekino);
+        params.add(kikakuchiErrorInfo.getItemId());
+        params.add(kikakuchiErrorInfo.getItemLabel());
+        params.add(kikakuchiErrorInfo.getItemKikakuchi());
+        params.add(kikakuchiErrorInfo.getItemInputValue());
+        params.add(deleteFlag);
+
+        return params;
+
+    }
+
 }

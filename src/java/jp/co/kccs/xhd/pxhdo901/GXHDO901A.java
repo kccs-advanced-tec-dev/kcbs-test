@@ -11,6 +11,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -26,6 +27,7 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
+import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.db.Parameter;
 import jp.co.kccs.xhd.db.ParameterEJB;
@@ -36,6 +38,7 @@ import jp.co.kccs.xhd.db.model.FXHDM02;
 import jp.co.kccs.xhd.db.model.FXHDM05;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
+import jp.co.kccs.xhd.util.MessageUtil;
 import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.StringUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
@@ -127,7 +130,7 @@ public class GXHDO901A implements Serializable {
      */
     private List<DaJoken> listDaJoken;
     /**
-     * 
+     *
      * 項目データ
      */
     private List<FXHDD01> itemList;
@@ -152,7 +155,7 @@ public class GXHDO901A implements Serializable {
      * チェック無しボタンIDリスト(設定しているIDについてはエラー処理の背景色をクリアしない)
      */
     private List<String> noCheckButtonId;
-    
+
     /**
      * 一覧の表示件数
      */
@@ -305,6 +308,7 @@ public class GXHDO901A implements Serializable {
 
     /**
      * 一覧の表示件数
+     *
      * @return the hyojiKensu
      */
     public String getHyojiKensu() {
@@ -313,6 +317,7 @@ public class GXHDO901A implements Serializable {
 
     /**
      * 一覧の表示件数
+     *
      * @param hyojiKensu the hyojiKensu to set
      */
     public void setHyojiKensu(String hyojiKensu) {
@@ -343,38 +348,63 @@ public class GXHDO901A implements Serializable {
         String lotNo = StringUtil.nullToBlank(session.getAttribute("lotNo"));
         // 一覧の表示件数を設定
         this.hyojiKensu = StringUtil.nullToBlank(session.getAttribute("hyojiKensu"));
-        
 
+        
         // タイトル設定情報取得
-        this.loadTitleSettings(titleSetting, formTitle);
+        if(!this.loadTitleSettings(titleSetting, formTitle)){
+            settingError();
+            return;
+        }
 
         // ボタン定義情報取得
-        this.loadButtonSettings(formId);
+        if(!this.loadButtonSettings(formId)){
+            settingError();
+            return;
+        }
 
         // 項目定義情報取得
-        this.loadItemSettings(formId, callerFormId);
+        if(!this.loadItemSettings(formId, callerFormId)){
+            settingError();
+            return;
+        }
 
         // チェック処理情報取得
         this.loadCheckList(formId);
-        
+
         // SEKKEINO取得
         String strSekkeiNo = "";
         Map mapSekkeiNo = this.getSekkeiNo(lotNo);
         if (null != mapSekkeiNo && !mapSekkeiNo.isEmpty()) {
             strSekkeiNo = StringUtil.nullToBlank(NumberUtil.convertIntData(mapSekkeiNo.get("SEKKEINO")));
         }
-        
+
         // DaJoken情報取得
         getJokenInfo(strSekkeiNo);
 
-        for ( int i =0 ;i<= itemList.size() -1;i++) {
-            for ( int j =0 ;j<= listDaJoken.size() -1;j++) {
-                if (StringUtil.nullToBlank(itemList.get(i).getJokenKoteiMei()).equals(StringUtil.nullToBlank(listDaJoken.get(j).getKouteiMei())) && 
-                    StringUtil.nullToBlank(itemList.get(i).getJokenKomokuMei()).equals(StringUtil.nullToBlank(listDaJoken.get(j).getKoumokuMei())) &&
-                    StringUtil.nullToBlank(itemList.get(i).getJokenKanriKomoku()).equals(StringUtil.nullToBlank(listDaJoken.get(j).getKanriKoumoku()))) {
-                        this.itemList.get(i).setKikakuChi("【" + listDaJoken.get(j).getKikakuChi() + "】");
+        boolean isExist = false;
+        List<String> initMessageList = new ArrayList<>();
+        for (int i = 0; i <= itemList.size() - 1; i++) {
+            isExist =false;
+            for (int j = 0; j <= listDaJoken.size() - 1; j++) {
+                
+                if (StringUtil.nullToBlank(itemList.get(i).getJokenKoteiMei()).equals(StringUtil.nullToBlank(listDaJoken.get(j).getKouteiMei()))
+                        && StringUtil.nullToBlank(itemList.get(i).getJokenKomokuMei()).equals(StringUtil.nullToBlank(listDaJoken.get(j).getKoumokuMei()))
+                        && StringUtil.nullToBlank(itemList.get(i).getJokenKanriKomoku()).equals(StringUtil.nullToBlank(listDaJoken.get(j).getKanriKoumoku()))) {
+                    
+                    // 規格値が空またはNULLだった場合
+                    if(StringUtil.isEmpty(listDaJoken.get(j).getKikakuChi())){
                         break;
+                    }
+                
+                    
+                    this.itemList.get(i).setKikakuChi("【" + listDaJoken.get(j).getKikakuChi() + "】");
+                    isExist = true;
+                    break;
                 }
+            }
+            
+            if(!isExist){
+                initMessageList.add(MessageUtil.getMessage("XHD-000019", this.itemList.get(i).getLabel1()));
             }
         }
 
@@ -408,6 +438,9 @@ public class GXHDO901A implements Serializable {
         data.setDataSourceDocServer(this.dataSourceDocServer);
         data.setDataSourceQcdb(this.dataSourceQcdb);
         data.setDataSourceWip(this.dataSourceWip);
+        data.setInitMessageList(initMessageList);
+        
+        
 
         this.processData = data;
 
@@ -584,7 +617,7 @@ public class GXHDO901A implements Serializable {
             byte[] cipher_byte = md.digest();
             StringBuilder sb = new StringBuilder(2 * cipher_byte.length);
             for (byte b : cipher_byte) {
-                sb.append(String.format("%02x", b&0xff));
+                sb.append(String.format("%02x", b & 0xff));
             }
             return sb.toString();
         } catch (NoSuchAlgorithmException ex) {
@@ -634,7 +667,7 @@ public class GXHDO901A implements Serializable {
 
         // 背景色を元に戻す
         this.clearItemListBackColor(buttonId);
-        
+
         //共通ﾁｪｯｸ
         ErrorMessageInfo errorMessageInfo = getCheckResult(buttonId);
 
@@ -643,17 +676,17 @@ public class GXHDO901A implements Serializable {
             FacesMessage message
                     = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessageInfo.getErrorMessage(), null);
             facesContext.addMessage(null, message);
-            
+
             // 項目の背景色を変更する場合
-            if(errorMessageInfo.getIsChangeBackColor()){
+            if (errorMessageInfo.getIsChangeBackColor()) {
                 // エラー項目の背景色を設定
                 ErrUtil.setErrorItemBackColor(this.itemList, errorMessageInfo);
             }
-            
+
             // エラー項目を表示するためページを遷移する。
             // 表示したい項目のIndexを指定(0以下のIndexは内部的に無視)
             setPageItemDataList(errorMessageInfo.getPageChangeItemIndex());
-            
+
             return;
         }
 
@@ -692,24 +725,23 @@ public class GXHDO901A implements Serializable {
     private void processMain() {
         FacesContext facesContext = FacesContext.getCurrentInstance();
 
-
         // エラーメッセージが設定されている場合、エラー出力のみ
         if (!this.processData.getErrorMessageInfoList().isEmpty()) {
-            
-            for(ErrorMessageInfo errorMessageInfo : this.processData.getErrorMessageInfoList()){
+
+            for (ErrorMessageInfo errorMessageInfo : this.processData.getErrorMessageInfoList()) {
                 facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessageInfo.getErrorMessage(), null));
-                
+
                 // 項目の背景色を変更する場合
-                if(errorMessageInfo.getIsChangeBackColor()){
+                if (errorMessageInfo.getIsChangeBackColor()) {
                     // エラー項目の背景色を設定
                     ErrUtil.setErrorItemBackColor(this.itemList, errorMessageInfo);
                 }
             }
-            
+
             // エラー項目を表示するためページを遷移する。
             // 表示したい項目のIndexを指定(0以下のIndexは内部的に無視)
             setPageItemDataList(this.processData.getErrorMessageInfoList().get(0).getPageChangeItemIndex());
-            
+
             return;
         }
 
@@ -735,32 +767,34 @@ public class GXHDO901A implements Serializable {
 
             return;
         }
-        
-        // 規格エラーメッセージが設定されている場合、ダイアログを表示する
-        if (!this.processData.getKikakuchiInputErrorInfoList().isEmpty()) {
-            // メッセージを画面に渡す
-            KikakuError kikakuError = (KikakuError)  SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
-            kikakuError.setKikakuchiInputErrorInfoList(this.processData.getKikakuchiInputErrorInfoList());
 
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.addCallbackParam("firstParam", "kikakuError");
-
-            // エラー項目の背景色を設定
-            ErrUtil.setErrorItemBackColor(this.itemList, this.processData.getKikakuchiInputErrorInfoList());
-                    
-                    // エラー項目を表示するためページを遷移する。
-            // 表示したい項目のIndexを指定(0以下のIndexは内部的に無視)
-            setPageItemDataList(this.processData.getKikakuchiInputErrorInfoList().get(0).getItemIndex());
-            
-            
-            return;
-        }
-        
-        
-        
-
-        // 警告もエラーも存在しない場合、後続処理を実行して結果を反映する
         try {
+
+            // 規格エラーメッセージが設定されている場合、ダイアログを表示する
+            if (!this.processData.getKikakuchiInputErrorInfoList().isEmpty()) {
+
+                // メッセージを画面に渡す
+                KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
+                List<KikakuchiInputErrorInfo> kikakuchiInputErrorInfoList = new ArrayList<>();
+                for (KikakuchiInputErrorInfo kikakuchiInputErrorInfo : this.processData.getKikakuchiInputErrorInfoList()) {
+                    kikakuchiInputErrorInfoList.add(kikakuchiInputErrorInfo.clone());
+                }
+
+                kikakuError.setKikakuchiInputErrorInfoList(kikakuchiInputErrorInfoList);
+
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.addCallbackParam("firstParam", "kikakuError");
+
+                // エラー項目の背景色を設定
+                ErrUtil.setErrorItemBackColor(this.itemList, this.processData.getKikakuchiInputErrorInfoList());
+
+                // エラー項目を表示するためページを遷移する。
+                // 表示したい項目のIndexを指定(0以下のIndexは内部的に無視)
+                setPageItemDataList(this.processData.getKikakuchiInputErrorInfoList().get(0).getItemIndex());
+                return;
+            }
+
+            // 警告もエラーも存在しない場合、後続処理を実行して結果を反映する
             IFormLogic formLogic = this.processData.getFormLogic();
             String methodName = this.processData.getMethod();
 
@@ -786,7 +820,7 @@ public class GXHDO901A implements Serializable {
 
                 //***************************************************************************************************
                 // サブ画面初期表示用のメッセージが存在する場合はメッセージを設定
-                for(String message : this.processData.getSubInitDispMsgList()){
+                for (String message : this.processData.getSubInitDispMsgList()) {
                     facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, message, null));
                 }
 
@@ -795,14 +829,13 @@ public class GXHDO901A implements Serializable {
                     RequestContext context = RequestContext.getCurrentInstance();
                     context.addCallbackParam("firstParam", resultData.getCollBackParam());
                 }
-                
+
                 // オンロード処理設定
                 if (!StringUtil.isEmpty(resultData.getExecuteScript())) {
                     RequestContext.getCurrentInstance().execute(resultData.getExecuteScript());
                 }
-                
-                //***************************************************************************************************
 
+                //***************************************************************************************************
                 // ボタンの活性・非活性制御
                 this.setButtonEnabled(this.processData.getActiveButtonId(), this.processData.getInactiveButtonId());
                 // 処理制御データクリア
@@ -811,6 +844,8 @@ public class GXHDO901A implements Serializable {
 
         } catch (ReflectiveOperationException ex) {
             ErrUtil.outputErrorLog("画面クラスのロードに失敗", ex, LOGGER);
+        } catch (CloneNotSupportedException ex) {
+            ErrUtil.outputErrorLog("クローン処理エラー", ex, LOGGER);
         }
     }
 
@@ -857,8 +892,10 @@ public class GXHDO901A implements Serializable {
      *
      * @param settingId 設定ID
      * @param formTitle 画面タイトル
+     * @return データ取得判定(true:データ取得有り、false：データ取得無し)
      */
-    private void loadTitleSettings(String settingId, String formTitle) {
+    private boolean loadTitleSettings(String settingId, String formTitle) {
+        boolean result = false;
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceDocServer);
             String sql = "SELECT setting_id, font_size, font_color, bg_color "
@@ -886,11 +923,13 @@ public class GXHDO901A implements Serializable {
             } else {
                 this.titleInfo = fXHDM02List.get(0);
                 this.titleInfo.setFormName(formTitle);
+                result = true;
             }
 
         } catch (SQLException ex) {
-            ErrUtil.outputErrorLog("ボタン項目取得失敗", ex, LOGGER);
+            ErrUtil.outputErrorLog("タイトル設定情報取得失敗", ex, LOGGER);
         }
+        return result;
     }
 
     /**
@@ -898,8 +937,10 @@ public class GXHDO901A implements Serializable {
      *
      * @param formId 項目定義情報
      * @param callerFormId 画面ID(呼出し元)
+     * @return データ取得判定(true:データ取得有り、false：データ取得無し)
      */
-    private void loadItemSettings(String formId, String callerFormId) {
+    private boolean  loadItemSettings(String formId, String callerFormId) {
+        boolean result = false;
         // ユーザーグループ取得
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
@@ -907,31 +948,32 @@ public class GXHDO901A implements Serializable {
 
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceDocServer);
-            
+
             String inputItemInfo;
-            if(FORM_ID_LOT_CORD_SHOKAI.equals(callerFormId)){
-                inputItemInfo =  "'black' AS font_color_input, null AS bg_color_input, "
-                    + "'false' AS render_iput_text, "
-                    + "'false' AS render_iput_number, "
-                    + "'false' AS render_iput_date, "
-                    + "'false' AS render_iput_select, "
-                    + "'false' AS render_iput_radio, "
-                    + "'false' AS render_iput_time, "
-                    + "'true' AS render_output_label, ";
-                
-            }else{
-                inputItemInfo =  "hdm02_3.font_color AS font_color_input, hdm02_3.bg_color AS bg_color_input, "
-                    + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '1' THEN 'false' ELSE 'true' END AS render_iput_text, "
-                    + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '2' THEN 'false' ELSE 'true' END AS render_iput_number, "
-                    + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '3' THEN 'false' ELSE 'true' END AS render_iput_date, "
-                    + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '4' THEN 'false' ELSE 'true' END AS render_iput_select, "
-                    + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '5' THEN 'false' ELSE 'true' END AS render_iput_radio, "
-                    + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '6' THEN 'false' ELSE 'true' END AS render_iput_time, "
-                    + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '7' THEN 'false' ELSE 'true' END AS render_output_label, ";
+            if (FORM_ID_LOT_CORD_SHOKAI.equals(callerFormId)) {
+                // ロットカード照会から遷移した場合、各項目はラベル表示とする。
+                inputItemInfo = "'black' AS font_color_input, null AS bg_color_input, "
+                        + "'false' AS render_iput_text, "
+                        + "'false' AS render_iput_number, "
+                        + "'false' AS render_iput_date, "
+                        + "'false' AS render_iput_select, "
+                        + "'false' AS render_iput_radio, "
+                        + "'false' AS render_iput_time, "
+                        + "'true' AS render_output_label, ";
+
+            } else {
+                inputItemInfo = "hdm02_3.font_color AS font_color_input, hdm02_3.bg_color AS bg_color_input, "
+                        + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '1' THEN 'false' ELSE 'true' END AS render_iput_text, "
+                        + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '2' THEN 'false' ELSE 'true' END AS render_iput_number, "
+                        + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '3' THEN 'false' ELSE 'true' END AS render_iput_date, "
+                        + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '4' THEN 'false' ELSE 'true' END AS render_iput_select, "
+                        + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '5' THEN 'false' ELSE 'true' END AS render_iput_radio, "
+                        + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '6' THEN 'false' ELSE 'true' END AS render_iput_time, "
+                        + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '7' THEN 'false' ELSE 'true' END AS render_output_label, ";
             }
-            
+
             String sql = "SELECT A.*, row_number() over() AS item_index FROM ("
-                    +  "SELECT hdd01.gamen_id, hdd01.item_id, hdd01.item_no, hdd01.input_item_mold, hdd01.label1, hdd01.label2, "
+                    + "SELECT hdd01.gamen_id, hdd01.item_id, hdd01.item_no, hdd01.input_item_mold, hdd01.label1, hdd01.label2, "
                     + "hdd01.input_list, hdd01.input_default, hdd01.input_length, hdd01.input_length_dec, "
                     + "hdm02_1.font_size AS font_size_1, hdm02_1.font_color AS font_color_1, hdm02_1.bg_color AS bg_color_1, "
                     + "hcm02_4.font_size AS font_size_3, hcm02_4.font_color AS font_color_3, hcm02_4.bg_color AS bg_color_3, "
@@ -1001,18 +1043,25 @@ public class GXHDO901A implements Serializable {
 
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
             this.itemList = queryRunner.query(sql, beanHandler, params.toArray());
+            if(this.itemList != null && !this.itemList.isEmpty()){
+                result = true;
+            }
 
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("項目情報取得失敗", ex, LOGGER);
         }
+        return result;
     }
 
     /**
      * ボタンパラメータ情報取得
      *
      * @param formId 画面ID
+     * @return データ取得判定(true:データ取得有り、false：データ取得無し)
      */
-    private void loadButtonSettings(String formId) {
+    private boolean loadButtonSettings(String formId) {
+        boolean result = false;
+        
         // ユーザーグループ取得
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
@@ -1046,17 +1095,38 @@ public class GXHDO901A implements Serializable {
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
             List<FXHDD02> buttonList = queryRunner.query(sql, beanHandler, params.toArray());
 
-            // 上部ボタン
-            this.buttonListTop
-                    = buttonList.stream().filter(n -> "1".equals(n.getButtonLocation())).collect(Collectors.toList());
-            // 下部ボタン
-            this.buttonListBottom
-                    = buttonList.stream().filter(n -> "2".equals(n.getButtonLocation())).collect(Collectors.toList());
-
+            if (buttonList != null && !buttonList.isEmpty()) {
+                // 上部ボタン
+                this.buttonListTop
+                        = buttonList.stream().filter(n -> "1".equals(n.getButtonLocation())).collect(Collectors.toList());
+                // 下部ボタン
+                this.buttonListBottom
+                        = buttonList.stream().filter(n -> "2".equals(n.getButtonLocation())).collect(Collectors.toList());
+                result = true;
+            }
+ 
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("ボタン項目取得失敗", ex, LOGGER);
         }
+        return result;
     }
+    
+    /**
+     * 設定エラー
+     */
+    private void settingError(){
+        this.itemList = new ArrayList<>();
+        this.buttonListTop = new ArrayList<>();
+        this.buttonListBottom = new ArrayList<>();
+        
+        // メッセージを画面に渡す
+        InitMessage beanInitMessage = (InitMessage) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_INIT_MESSAGE);
+        beanInitMessage.setInitMessageList(Arrays.asList(MessageUtil.getMessage("XHD-000018", "")));
+
+        // 実行スクリプトを設定
+        RequestContext.getCurrentInstance().execute("PF('W_dlg_initMessage').show();");
+    }
+    
 
     /**
      * チェック処理情報取得
@@ -1095,18 +1165,19 @@ public class GXHDO901A implements Serializable {
 
     /**
      * SekkeiNo取得
+     *
      * @param lotNo 画面ロットNo
      */
-    private Map getSekkeiNo(String lotNo){
-        String strKojyo = lotNo.substring(0,3);
-        String strLotNo = lotNo.substring(3,11);
-        String strEdaban = lotNo.substring(11,14);
+    private Map getSekkeiNo(String lotNo) {
+        String strKojyo = lotNo.substring(0, 3);
+        String strLotNo = lotNo.substring(3, 11);
+        String strEdaban = lotNo.substring(11, 14);
         Map mapSekkeiNo = null;
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
             String sql = "SELECT SEKKEINO "
-                       + "  FROM da_sekkei "
-                       + " WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
+                    + "  FROM da_sekkei "
+                    + " WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
 
             List<Object> params = new ArrayList<>();
             params.add(strKojyo);
@@ -1114,25 +1185,26 @@ public class GXHDO901A implements Serializable {
             params.add(strEdaban);
 
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-            mapSekkeiNo = queryRunner.query(sql, new MapHandler(), params.toArray());  
+            mapSekkeiNo = queryRunner.query(sql, new MapHandler(), params.toArray());
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("SekkeiNo取得失敗", ex, LOGGER);
         }
         return mapSekkeiNo;
     }
-    
+
     /**
      * da_joken情報取得
+     *
      * @param sekkeiNo 設計No
      */
     private void getJokenInfo(String sekkeiNo) {
-        
+
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
             String sql = "SELECT KOUTEIMEI,KOUMOKUMEI,KANRIKOUMOKU,KIKAKUCHI "
-                       + "  FROM da_joken "
-                       + " WHERE SEKKEINO = ? ";
-            
+                    + "  FROM da_joken "
+                    + " WHERE SEKKEINO = ? ";
+
             List<Object> params = new ArrayList<>();
             params.add(sekkeiNo);
 
@@ -1141,14 +1213,14 @@ public class GXHDO901A implements Serializable {
             mapping.put("KOUMOKUMEI", "koumokuMei");
             mapping.put("KANRIKOUMOKU", "kanriKoumoku");
             mapping.put("KIKAKUCHI", "kikakuChi");
-            
+
             BeanProcessor beanProcessor = new BeanProcessor(mapping);
             RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
             ResultSetHandler<List<DaJoken>> beanHandler = new BeanListHandler<>(DaJoken.class, rowProcessor);
-            
+
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
             this.listDaJoken = queryRunner.query(sql, beanHandler, params.toArray());
-            
+
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("チェック処理項目取得失敗", ex, LOGGER);
         }
@@ -1194,7 +1266,7 @@ public class GXHDO901A implements Serializable {
             }
         }
     }
-    
+
     /**
      * ページ選択処理
      *
@@ -1223,12 +1295,12 @@ public class GXHDO901A implements Serializable {
         itemDataList.setFirst(startIdx.intValue());
 
     }
-    
+
     /**
      * 警告ダイアログで「はい」が選択された場合の処理
      */
     public void processKikakuWarnOk() {
-        
+
         // 警告メッセージを削除して処理再開
         this.processData.getKikakuchiInputErrorInfoList().clear();
         this.processMain();
