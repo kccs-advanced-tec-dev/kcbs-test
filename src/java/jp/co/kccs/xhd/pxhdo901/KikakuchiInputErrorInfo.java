@@ -12,8 +12,20 @@ import java.util.List;
  *
  * @author koksk-desk2
  */
-public class KikakuchiInputErrorInfo {
+public class KikakuchiInputErrorInfo implements Cloneable  {
 
+    /**
+     * クローン実装
+     *
+     * @return クローン
+     * @throws java.lang.CloneNotSupportedException
+     */
+    @Override
+    public KikakuchiInputErrorInfo clone() throws CloneNotSupportedException {
+        KikakuchiInputErrorInfo cloneModel = (KikakuchiInputErrorInfo) super.clone();
+        return cloneModel;
+    }
+    
     /**
      * コンストラクタ
      */
