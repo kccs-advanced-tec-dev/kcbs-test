@@ -4,7 +4,6 @@
 package jp.co.kccs.xhd.pxhdo101;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -18,13 +17,16 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
+import jp.co.kccs.xhd.GetModel;
 import jp.co.kccs.xhd.db.model.FXHDM01;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
 import jp.co.kccs.xhd.util.StringUtil;
+import jp.co.kccs.xhd.util.ValidateUtil;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.dbutils.QueryRunner;
@@ -32,7 +34,6 @@ import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.RowProcessor;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
-import org.apache.commons.lang3.math.NumberUtils;
 
 /**
  * ===============================================================================<br>
@@ -46,27 +47,19 @@ import org.apache.commons.lang3.math.NumberUtils;
  * <br>
  * ===============================================================================<br>
  */
+
+/**
+ * GXHD101A(品質DB入力機能) 入力画面選択
+ * 
+ * @author KCSS K.Jo
+ * @since  2018/11/14
+ */
 @Named
 @ViewScoped
 public class GXHDO101A implements Serializable {
     private static final Logger LOGGER = Logger.getLogger(GXHDO101A.class.getName());
     private static final String CHARSET = "MS932";
     private static final int LOTNO_BYTE = 14;
-    
-    // ロットチェック用ウェイト(1桁目)
-    private static final BigDecimal LOT_CHECK_WEIGHT_1 = BigDecimal.valueOf(9);
-    // ロットチェック用ウェイト(2桁目)
-    private static final BigDecimal LOT_CHECK_WEIGHT_2 = BigDecimal.valueOf(5);
-    // ロットチェック用ウェイト(3桁目)
-    private static final BigDecimal LOT_CHECK_WEIGHT_3 = BigDecimal.valueOf(8);
-    // ロットチェック用ウェイト(4桁目)
-    private static final BigDecimal LOT_CHECK_WEIGHT_4 = BigDecimal.valueOf(7);
-    // ロットチェック用ウェイト(5桁目)
-    private static final BigDecimal LOT_CHECK_WEIGHT_5 = BigDecimal.valueOf(4);
-    // ロットチェック用ウェイト(6桁目)
-    private static final BigDecimal LOT_CHECK_WEIGHT_6 = BigDecimal.valueOf(3);
-    // ロットチェック用ウェイト(7桁目)
-    private static final BigDecimal LOT_CHECK_WEIGHT_7 = BigDecimal.valueOf(2);
     
     /**
      * DataSource
@@ -78,11 +71,6 @@ public class GXHDO101A implements Serializable {
      */
     @Resource(mappedName = "jdbc/qcdb")
     private transient DataSource dataSourceXHD;
-    /**
-     * DataSource(WIP)
-     */
-    @Resource(mappedName = "jdbc/wip")
-    private transient DataSource dataSourceWip;
     /**
      * メニュー項目
      */
@@ -129,6 +117,20 @@ public class GXHDO101A implements Serializable {
         menuListGXHDO101 = new ArrayList<>();
         FacesContext facesContext = FacesContext.getCurrentInstance();
       
+        // user-agent
+        HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        String uAgent = request.getHeader("user-agent");
+        // model
+        GetModel getModel = new GetModel(uAgent);
+        String model = getModel.getModel();
+        String submodel = getModel.getSubmodel();
+        
+        // userAgentでPC or タブレットを判定
+        boolean isPC = false;
+        if (model.equals("ie11")) {
+            isPC = true;
+        }
+        
         // ユーザーグループを取得する
         String strGamenLotNo = getLotNo();
         
@@ -136,7 +138,7 @@ public class GXHDO101A implements Serializable {
 
         // ロットNo桁数チェック
         if (LOTNO_BYTE != StringUtil.getByte(strGamenLotNo, CHARSET, LOGGER)) {
-            setErrorMessage(MessageUtil.getMessage("XHC-000003", "ロットNo", LOTNO_BYTE));
+            setErrorMessage(MessageUtil.getMessage("XHD-000004", "ロットNo", LOTNO_BYTE));
             setMenuTableRender(false);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, getErrorMessage(), null);
             facesContext.addMessage(null, message);
@@ -144,116 +146,120 @@ public class GXHDO101A implements Serializable {
         }
         
         // ﾛｯﾄNoのﾁｪｯｸﾃﾞｼﾞｯﾄﾁｪｯｸ
-        if (!checkLotNoDigit(strGamenLotNo)) {            
+        ValidateUtil validateUtil = new ValidateUtil();
+        String retMsg = validateUtil.checkValueE001(strGamenLotNo);
+        
+        if (!StringUtil.isEmpty(retMsg)) {            
             setMenuTableRender(false);
-            setErrorMessage(MessageUtil.getMessage("XHC-000010"));
+            setErrorMessage(retMsg);
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, getErrorMessage(), null);
             facesContext.addMessage(null, message);
             return null;                    
         }
-
-        List<Object> listGamenID = new ArrayList<>();
-        String strKojyo = strGamenLotNo.substring(0,3);
-        String strLotNo = strGamenLotNo.substring(3,11);
-        String strEdaban = strGamenLotNo.substring(11,14);
         
-            // ユーザーグループでメニューマスタを検索
-            try {
+        // ユーザーグループでメニューマスタを検索
+        try {
+            String strKojyo = strGamenLotNo.substring(0,3);
+            String strLotNo = strGamenLotNo.substring(3,11);
+            String strEdaban = strGamenLotNo.substring(11,14);
 
-                QueryRunner queryRunner = new QueryRunner(dataSourceXHD);
-                String sqlsearchProcess = "SELECT PrintFmt FROM da_sekkei WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
-                List<Object> params = new ArrayList<>();
-                params.add(strKojyo);
-                params.add(strLotNo);
-                params.add(strEdaban);
-
-                ResultSetHandler rsh = new MapListHandler();
-                List processResult =  (List)queryRunner.query(sqlsearchProcess, rsh, params.toArray());
-                for (Iterator i = processResult.iterator(); i.hasNext();) {
-                    HashMap m = (HashMap)i.next();
-                    strProcess = m.get("PrintFmt").toString();
-                }
-                
-                if (processResult.isEmpty()){
-                    setMenuTableRender(false);
-                    setInfoMessage("データは存在しません。");
-                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, getInfoMessage(), null);
-                    facesContext.addMessage(null, message);
-                    return null;
-                }
-                
-                String sqlsearchGamenID = "SELECT gamen_id, kotei_jun FROM fxhdm03 WHERE koteijun_hantei_jouhou = ? order by kotei_jun ";
-                List<Object> params2 = new ArrayList<>();
-                params2.add(strProcess);
-
-                rsh = new MapListHandler();
-                queryRunner = new QueryRunner(dataSource);
-                List sqlsearchResult =  (List)queryRunner.query(sqlsearchGamenID, rsh, params2.toArray());
-                for (Iterator i = sqlsearchResult.iterator(); i.hasNext();) {
-                    HashMap m = (HashMap)i.next();                    
-                    listGamenID.add(m.get("gamen_id").toString());
-                }
-
-                if (sqlsearchResult.isEmpty()){
-                    setMenuTableRender(false);
-                    setInfoMessage("データは存在しません。");
-                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, getInfoMessage(), null);
-                    facesContext.addMessage(null, message);
-                    return null;
-                }
-                
-                String sql = "SELECT gamen_id,gamen_title,title_setting,menu_no,menu_name,link_char,menu_parameter,menu_comment,gamen_classname,hyouji_kensu FROM fxhdm01 "
-                           + "WHERE menu_group_id = 'QCDB' " ;
-                        if(!listGamenID.isEmpty()) {
-                            sql += " AND ";
-                            sql += DBUtil.getInConditionPreparedStatement("gamen_id", listGamenID.size());
-                        }
-                        sql += " AND " + DBUtil.getInConditionPreparedStatement("user_role", userGrpList.size());
-
-                        sql += " AND pc_flg = '0' OR pc_flg = '1' ";
-                        sql += " ORDER BY menu_no ASC ";
-
-                Map<String, String> mapping = new HashMap<>();
-                mapping.put("gamen_id", "formId");
-                mapping.put("gamen_title", "formTitle");
-                mapping.put("title_setting", "titleSetting");
-                mapping.put("menu_no", "menuNo");
-                mapping.put("menu_name", "menuName");
-                mapping.put("link_char", "linkChar");
-                mapping.put("menu_parameter", "menuParam");
-                mapping.put("menu_comment", "menuComment");
-                mapping.put("gamen_classname", "formClassName");
-                mapping.put("hyouji_kensu", "hyojiKensu");
-
-                BeanProcessor beanProcessor = new BeanProcessor(mapping);
-                RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
-                ResultSetHandler<List<FXHDM01>> beanHandler = new BeanListHandler<>(FXHDM01.class, rowProcessor);
-
-                List<Object> params3 = new ArrayList<>();
-                    params3.addAll(listGamenID);
-                    params3.addAll(userGrpList);
-                
-                DBUtil.outputSQLLog(sql, userGrpList.toArray(), LOGGER);
-                if(listGamenID.isEmpty()) {
-                    menuListGXHDO101 = queryRunner.query(sql, beanHandler, userGrpList.toArray()); 
-                }else{
-                    menuListGXHDO101 = queryRunner.query(sql, beanHandler,params3.toArray()); 
-                }
-
-                if (menuListGXHDO101.isEmpty()){
-                    setMenuTableRender(false);
-                    setInfoMessage("データは存在しません。");
-                }else{
-                    setMenuTableRender(true);
-                    setInfoMessage("データを表示しました。");
-                }
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, getInfoMessage(), null);
-            facesContext.addMessage(null, message);
-
-            } catch (SQLException ex) {
-                ErrUtil.outputErrorLog("メニュー項目未登録", ex, LOGGER);
-                menuListGXHDO101 = new ArrayList<>();
+            QueryRunner queryRunnerXHD = new QueryRunner(dataSourceXHD);
+            String sqlsearchProcess = "SELECT PrintFmt FROM da_sekkei WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
+            List<Object> params = new ArrayList<>();
+            params.add(strKojyo);
+            params.add(strLotNo);
+            params.add(strEdaban);
+            List processResult =  (List)queryRunnerXHD.query(sqlsearchProcess, new MapListHandler(), params.toArray());
+            for (Iterator i = processResult.iterator(); i.hasNext();) {
+                HashMap m = (HashMap)i.next();
+                strProcess = m.get("PrintFmt").toString();
             }
+
+            if (processResult.isEmpty()){
+                setMenuTableRender(false);
+                setInfoMessage(MessageUtil.getMessage("XHD-000031"));
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, getInfoMessage(), null);
+                facesContext.addMessage(null, message);
+                return null;
+            }
+
+            String sqlsearchGamenID = "SELECT gamen_id, kotei_jun FROM fxhdm03 WHERE koteijun_hantei_jouhou = ? order by kotei_jun ";
+            List<Object> params2 = new ArrayList<>();
+            params2.add(strProcess);
+            
+            QueryRunner queryRunner = new QueryRunner(dataSource);
+            List sqlsearchResult =  (List)queryRunner.query(sqlsearchGamenID, new MapListHandler(), params2.toArray());
+            
+            List<Object> listGamenID = new ArrayList<>();
+            for (Iterator i = sqlsearchResult.iterator(); i.hasNext();) {
+                HashMap m = (HashMap)i.next();                    
+                listGamenID.add(m.get("gamen_id").toString());
+            }
+
+            if (sqlsearchResult.isEmpty()){
+                setMenuTableRender(false);
+                setInfoMessage(MessageUtil.getMessage("XHD-000031"));
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, getInfoMessage(), null);
+                facesContext.addMessage(null, message);
+                return null;
+            }
+
+            String sql = "SELECT gamen_id,gamen_title,title_setting,menu_no,menu_name,link_char,menu_parameter,menu_comment,gamen_classname,hyouji_kensu "
+                       + "FROM fxhdm01 WHERE menu_group_id = 'QCDB' " ;
+            
+            if(!listGamenID.isEmpty()) {
+                sql += " AND ";
+                sql += DBUtil.getInConditionPreparedStatement("gamen_id", listGamenID.size());
+            }
+            sql += " AND " + DBUtil.getInConditionPreparedStatement("user_role", userGrpList.size());
+
+            if (!isPC) {
+                sql += " AND pc_flg = '0'";
+            }
+
+            sql += " ORDER BY menu_no ASC ";
+
+            Map<String, String> mapping = new HashMap<>();
+            mapping.put("gamen_id", "formId");
+            mapping.put("gamen_title", "formTitle");
+            mapping.put("title_setting", "titleSetting");
+            mapping.put("menu_no", "menuNo");
+            mapping.put("menu_name", "menuName");
+            mapping.put("link_char", "linkChar");
+            mapping.put("menu_parameter", "menuParam");
+            mapping.put("menu_comment", "menuComment");
+            mapping.put("gamen_classname", "formClassName");
+            mapping.put("hyouji_kensu", "hyojiKensu");
+
+            BeanProcessor beanProcessor = new BeanProcessor(mapping);
+            RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+            ResultSetHandler<List<FXHDM01>> beanHandler = new BeanListHandler<>(FXHDM01.class, rowProcessor);
+
+            List<Object> params3 = new ArrayList<>();
+            params3.addAll(listGamenID);
+            params3.addAll(userGrpList);
+            
+            if(listGamenID.isEmpty()) {
+                DBUtil.outputSQLLog(sql, userGrpList.toArray(), LOGGER);
+                menuListGXHDO101 = queryRunner.query(sql, beanHandler, userGrpList.toArray()); 
+            }else{
+                DBUtil.outputSQLLog(sql, params3.toArray(), LOGGER);
+                menuListGXHDO101 = queryRunner.query(sql, beanHandler, params3.toArray()); 
+            }
+
+            if (menuListGXHDO101.isEmpty()){
+                setMenuTableRender(false);
+                setInfoMessage(MessageUtil.getMessage("XHD-000031"));
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, getInfoMessage(), null);
+                facesContext.addMessage(null, message);
+            }else{
+                setMenuTableRender(true);
+            }
+
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("メニュー項目未登録", ex, LOGGER);
+            menuListGXHDO101 = new ArrayList<>();
+        }
 
         return menuListGXHDO101;
     }
@@ -286,7 +292,14 @@ public class GXHDO101A implements Serializable {
      */
     public void searchHinshitsuData() {
         menuListGXHDO101 = getMenuListGXHDO101();
-
+    }
+    
+    /**
+     * 一覧表示データを返却します。
+     * @return 一覧データ
+     */
+    public List<FXHDM01> getListData() {
+        return this.menuListGXHDO101;
     }
     
     /**
@@ -392,41 +405,6 @@ public class GXHDO101A implements Serializable {
      */
     public void setWarnMessage(String warnMessage) {
         this.warnMessage = warnMessage;
-    }
-
-    /**
-     * LotNo DigitCheck
-     * @param lotNo ロットNo(13桁)
-     * @return チェック結果(true:エラーなし、false:エラー有り)
-     */
-    private boolean checkLotNoDigit(String lotNo) {
-        Map<String, BigDecimal> lotMap = new HashMap<>();
-        // ロットNo4桁目から11桁を数値化してMapに設定、数値化できない場合はエラーとしてリターン
-        String spLotNo;
-        for (int i = 0; i < 8; i++) {
-            spLotNo = StringUtil.mid(lotNo, i + 4, i + 4);
-            if (StringUtil.isEmpty(spLotNo) || !NumberUtils.isDigits(spLotNo)) {
-                return false;
-            }
-
-            lotMap.put("LOT" + (i + 4), new BigDecimal(spLotNo));
-        }
-
-        //ロットNoの各桁にWEIGHT(9587432)をかけての合計を取得
-        BigDecimal sum1 = BigDecimal.ZERO;
-        sum1 = sum1.add(lotMap.get("LOT4").multiply(LOT_CHECK_WEIGHT_1));
-        sum1 = sum1.add(lotMap.get("LOT5").multiply(LOT_CHECK_WEIGHT_2));
-        sum1 = sum1.add(lotMap.get("LOT6").multiply(LOT_CHECK_WEIGHT_3));
-        sum1 = sum1.add(lotMap.get("LOT7").multiply(LOT_CHECK_WEIGHT_4));
-        sum1 = sum1.add(lotMap.get("LOT8").multiply(LOT_CHECK_WEIGHT_5));
-        sum1 = sum1.add(lotMap.get("LOT9").multiply(LOT_CHECK_WEIGHT_6));
-        sum1 = sum1.add(lotMap.get("LOT10").multiply(LOT_CHECK_WEIGHT_7));
-
-        // 10で割った余りを取得
-        BigDecimal checkValue = sum1.remainder(BigDecimal.TEN);
-        
-        // ロットNoの11桁目の値がチェック値と一致しない場合、エラー
-        return checkValue.compareTo(lotMap.get("LOT11")) == 0;
     }
 
 }

@@ -63,14 +63,14 @@
                 <h:inputText id="lotNo" value="#{gXHDO101A.lotNo}" class="txt" maxlength="14" style="border-style: groove; font-size: 22px; width: 300px; margin-left: 40px;"/>
                 <p:commandButton id="searchBtn" class="button"  styleClass="ui-conf-commandbtn-def1" style="float:right;margin-left: 40px;width: 94px; height: 32px; font-size: 13px;"
                       value="ロット検索"
-                      action="#{gXHDO101A.searchHinshitsuData()}"
+                      actionListener="#{gXHDO101A.searchHinshitsuData()}"
                       process="@this lotNo"
                       update="@form"/>
                 </div>
                 </div>
             </tr>
             <tr>
-            <p:dataTable id="menuTable" var="item" rendered="#{gXHDO101A.menuTableRender}" value="#{gXHDO101A.menuListGXHDO101}"
+            <p:dataTable id="menuTable" var="item" rendered="#{gXHDO101A.menuTableRender}" value="#{gXHDO101A.listData}"
                          style="margin-top: 20px;margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;font-size: 17px;"
                          scrollable="true"
                          emptyMessage="">
