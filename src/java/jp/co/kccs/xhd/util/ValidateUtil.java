@@ -12,6 +12,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import jp.co.kccs.xhd.db.model.FXHDD01;
@@ -39,7 +40,7 @@ import org.apache.commons.lang3.math.NumberUtils;
  * 変更日	2018/12/13<br>
  * 計画書No	K1811-DS001<br>
  * 変更者	SYSNAVI K.Hisanaga<br>
- * 変更理由	共通チェックの戻り値を変更<br>
+ * 変更理由	共通チェックの戻り値を変更・規格チェックの追加<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -91,6 +92,8 @@ public class ValidateUtil {
         C201,
         C301,
         C302,
+        C401,
+        C402,
         C501,
         C502,
         C601,
@@ -133,62 +136,64 @@ public class ValidateUtil {
      * @param itemList 項目データリスト
      * @return エラー時はエラーメッセージを返却
      */
-    public ErrorMessageInfo executeValidation(List<ValidateInfo> validateInfoList, List<FXHDD01> itemList) {
-        for (ValidateInfo validateInfo : validateInfoList) {
-            ErrorMessageInfo errorMessageInfo = null;
-            switch (validateInfo.checkNo) {
-                case C101:
-                    errorMessageInfo = checkC101(itemList, validateInfo.itemId);
-                    break;
-                case C102:
-                    errorMessageInfo = checkC102(itemList, validateInfo.itemId);
-                    break;
-                case C103:
-                    errorMessageInfo = checkC103(itemList, validateInfo.itemId);
-                    break;
-                case C104:
-                    errorMessageInfo = checkC104(itemList, validateInfo.itemId);
-                    break;
-                case C001:
-                    errorMessageInfo = checkC001(itemList, validateInfo.itemId);
-                    break;
-                case C002:
-                    errorMessageInfo = checkC002(itemList, validateInfo.itemId);
-                    break;
-                case C201:
-                    errorMessageInfo = checkC201(itemList, validateInfo.itemId);
-                    break;
-                case C301:
-                    errorMessageInfo = checkC301(itemList, validateInfo.itemId);
-                    break;
-                case C302:
-                    errorMessageInfo = checkC302(itemList, validateInfo.itemId);
-                    break;
-                case C501:
-                    errorMessageInfo = checkC501(itemList, validateInfo.itemId);
-                    break;
-                case C502:
-                    errorMessageInfo = checkC502(itemList, validateInfo.itemId);
-                    break;
-                case C601:
-                    errorMessageInfo = checkC601(itemList, validateInfo.itemId);
-                    break;
-                case S003:
-                    errorMessageInfo = checkS003(itemList, validateInfo.itemId, validateInfo.maxValue, validateInfo.minValue);
-                    break;
-                case S004:
-                    errorMessageInfo = checkS004(itemList, validateInfo.itemId, validateInfo.maxValue, validateInfo.minValue);
-                    break;
-                case E001:
-                    errorMessageInfo = checkE001(itemList, validateInfo.itemId);
-                    break;
+    public ErrorMessageInfo executeValidation(List<ValidateInfo> validateInfoList, List<FXHDD01> itemList, QueryRunner queryRunnerDoc) {
+        try {
+            for (ValidateInfo validateInfo : validateInfoList) {
+                ErrorMessageInfo errorMessageInfo = null;
+                switch (validateInfo.checkNo) {
+                    case C101:
+                        errorMessageInfo = checkC101(itemList, validateInfo.itemId);
+                        break;
+                    case C102:
+                        errorMessageInfo = checkC102(itemList, validateInfo.itemId);
+                        break;
+                    case C103:
+                        errorMessageInfo = checkC103(itemList, validateInfo.itemId);
+                        break;
+                    case C104:
+                        errorMessageInfo = checkC104(itemList, validateInfo.itemId);
+                        break;
+                    case C001:
+                        errorMessageInfo = checkC001(itemList, validateInfo.itemId);
+                        break;
+                    case C002:
+                        errorMessageInfo = checkC002(itemList, validateInfo.itemId);
+                        break;
+                    case C201:
+                        errorMessageInfo = checkC201(itemList, validateInfo.itemId);
+                        break;
+                    case C301:
+                        errorMessageInfo = checkC301(itemList, validateInfo.itemId);
+                        break;
+                    case C302:
+                        errorMessageInfo = checkC302(itemList, validateInfo.itemId);
+                        break;
+                    case C401:
+                        errorMessageInfo = checkC401(itemList, validateInfo.itemId, queryRunnerDoc);
+                        break;
+                    case C402:
+                        errorMessageInfo = checkC402(itemList, validateInfo.itemId, queryRunnerDoc);
+                        break;
+                    case C501:
+                        errorMessageInfo = checkC501(itemList, validateInfo.itemId);
+                        break;
+                    case C502:
+                        errorMessageInfo = checkC502(itemList, validateInfo.itemId);
+                        break;
+                    case C601:
+                        errorMessageInfo = checkC601(itemList, validateInfo.itemId);
+                        break;
 
-                default:
-                    break;
+                    default:
+                        break;
+                }
+                if (errorMessageInfo != null) {
+                    return errorMessageInfo;
+                }
             }
-            if (errorMessageInfo != null) {
-                return errorMessageInfo;
-            }
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+            return new ErrorMessageInfo("SQLException発生");
         }
         return null;
     }
@@ -200,7 +205,7 @@ public class ValidateUtil {
      * @param itemId 項目ID
      * @return エラー時はエラーメッセージを返却
      */
-    public ErrorMessageInfo checkC101(List<FXHDD01> itemList, String itemId) {
+    private ErrorMessageInfo checkC101(List<FXHDD01> itemList, String itemId) {
         // 項目データを取得
         FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
         if (null != fXHDD01) {
@@ -228,7 +233,7 @@ public class ValidateUtil {
      * @param itemId 項目ID
      * @return エラー時はエラーメッセージを返却
      */
-    public ErrorMessageInfo checkC102(List<FXHDD01> itemList, String itemId) {
+    private ErrorMessageInfo checkC102(List<FXHDD01> itemList, String itemId) {
         // 項目データを取得
         FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
         if (null != fXHDD01) {
@@ -258,7 +263,7 @@ public class ValidateUtil {
      * @param itemId 項目ID
      * @return エラー時はエラーメッセージを返却
      */
-    public ErrorMessageInfo checkC103(List<FXHDD01> itemList, String itemId) {
+    private ErrorMessageInfo checkC103(List<FXHDD01> itemList, String itemId) {
         // 項目データを取得
         FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
         if (null != fXHDD01) {
@@ -284,7 +289,7 @@ public class ValidateUtil {
      * @param itemId 項目ID
      * @return エラー時はエラーメッセージを返却
      */
-    public ErrorMessageInfo checkC104(List<FXHDD01> itemList, String itemId) {
+    private ErrorMessageInfo checkC104(List<FXHDD01> itemList, String itemId) {
         // 項目データを取得
         FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
         if (null != fXHDD01) {
@@ -314,7 +319,7 @@ public class ValidateUtil {
      * @param itemId 項目ID
      * @return エラー時はエラーメッセージを返却
      */
-    public ErrorMessageInfo checkC001(List<FXHDD01> itemList, String itemId) {
+    private ErrorMessageInfo checkC001(List<FXHDD01> itemList, String itemId) {
         // 項目データを取得
         FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
         if (null != fXHDD01) {
@@ -334,7 +339,7 @@ public class ValidateUtil {
      * @param itemId 項目ID
      * @return エラー時はエラーメッセージを返却
      */
-    public ErrorMessageInfo checkC002(List<FXHDD01> itemList, String itemId) {
+    private ErrorMessageInfo checkC002(List<FXHDD01> itemList, String itemId) {
         // 項目データを取得
         FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
         if (null != fXHDD01) {
@@ -354,7 +359,7 @@ public class ValidateUtil {
      * @param itemId 入力項目ﾃﾞｰﾀ
      * @return エラー時はエラーメッセージを返却
      */
-    public ErrorMessageInfo checkC201(List<FXHDD01> itemList, String itemId) {
+    private ErrorMessageInfo checkC201(List<FXHDD01> itemList, String itemId) {
         // 項目データを取得
         FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
         if (null != fXHDD01) {
@@ -374,7 +379,7 @@ public class ValidateUtil {
      * @param itemId 入力項目ﾃﾞｰﾀ
      * @return エラー時はエラーメッセージを返却
      */
-    public ErrorMessageInfo checkC301(List<FXHDD01> itemList, String itemId) {
+    private ErrorMessageInfo checkC301(List<FXHDD01> itemList, String itemId) {
         // 項目データを取得
         FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
         if (null != fXHDD01) {
@@ -398,7 +403,7 @@ public class ValidateUtil {
      * @param itemId 入力項目ﾃﾞｰﾀ
      * @return エラー時はエラーメッセージを返却
      */
-    public ErrorMessageInfo checkC302(List<FXHDD01> itemList, String itemId) {
+    private ErrorMessageInfo checkC302(List<FXHDD01> itemList, String itemId) {
         // 項目データを取得
         FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
         if (null != fXHDD01) {
@@ -416,58 +421,46 @@ public class ValidateUtil {
     }
 
     /**
-     * 数値チェック(範囲内)
+     * 号機ﾏｽﾀﾁｪｯｸ
      *
-     * @param itemList 項目データリスト
-     * @param itemId 項目ID
-     * @param maxValue 上限値
-     * @param minValue 下限値
+     * @param itemList 入力項目名
+     * @param itemId 入力項目ID
+     * @param queryRunnerDoc QueryRunnerオブジェクト(DocServer)
      * @return エラー時はエラーメッセージを返却
      */
-    public ErrorMessageInfo checkS003(List<FXHDD01> itemList, String itemId, BigDecimal maxValue, BigDecimal minValue) {
+    private ErrorMessageInfo checkC401(List<FXHDD01> itemList, String itemId, QueryRunner queryRunnerDoc) throws SQLException {
         // 項目データを取得
         FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
         if (null != fXHDD01) {
-            String value = fXHDD01.getValue();
-            if (!NumberUtil.isNumeric(value)
-                    || !NumberUtil.isValidRange(new BigDecimal(value), maxValue, minValue)) {
-                List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
-                return MessageUtil.getErrorMessageInfo("XHC-000004", true, true, errFxhdd01List, fXHDD01.getLabel1(), minValue.toPlainString(), maxValue.toPlainString());
+            List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
+
+            if (!existGokukimas(fXHDD01.getValue(), queryRunnerDoc)) {
+                return MessageUtil.getErrorMessageInfo("XHD-000011", true, true, errFxhdd01List, fXHDD01.getLabel1());
             }
         }
+
         return null;
     }
 
     /**
-     * 数値チェック(桁数)
+     * 担当者ﾏｽﾀﾁｪｯｸ
      *
-     * @param itemList 項目データリスト
-     * @param itemId 項目ID
-     * @param maxValue 上限値(メッセージ出力用)
-     * @param minValue 下限値(メッセージ出力用)
+     * @param itemList 入力項目名
+     * @param itemId 入力項目ID
+     * @param queryRunnerDoc QueryRunnerオブジェクト(DocServer)
      * @return エラー時はエラーメッセージを返却
      */
-    public ErrorMessageInfo checkS004(List<FXHDD01> itemList, String itemId, BigDecimal maxValue, BigDecimal minValue) {
+    private ErrorMessageInfo checkC402(List<FXHDD01> itemList, String itemId, QueryRunner queryRunnerDoc) throws SQLException {
         // 項目データを取得
         FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
         if (null != fXHDD01) {
-            String value = fXHDD01.getValue();
+            List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
 
-            int maxSeisu = 0;
-            int maxSyosu = 0;
-            if (NumberUtil.isIntegerNumeric(fXHDD01.getInputLength())) {
-                maxSeisu = Integer.parseInt(fXHDD01.getInputLength());
-            }
-            if (NumberUtil.isIntegerNumeric(fXHDD01.getInputLengthDec())) {
-                maxSyosu = Integer.parseInt(fXHDD01.getInputLengthDec());
-            }
-
-            if (!NumberUtil.isNumeric(value)
-                    || !NumberUtil.isValidDigits(new BigDecimal(value), maxSeisu, maxSyosu)) {
-                List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
-                return MessageUtil.getErrorMessageInfo("XHC-000004", true, true, errFxhdd01List, fXHDD01.getLabel1(), minValue.toPlainString(), maxValue.toPlainString());
+            if (!existTantomas(fXHDD01.getValue(), queryRunnerDoc)) {
+                return MessageUtil.getErrorMessageInfo("XHD-000011", true, true, errFxhdd01List, fXHDD01.getLabel1());
             }
         }
+
         return null;
     }
 
@@ -478,7 +471,7 @@ public class ValidateUtil {
      * @param itemId 項目ID
      * @return エラー時はエラーメッセージを返却
      */
-    public ErrorMessageInfo checkC501(List<FXHDD01> itemList, String itemId) {
+    private ErrorMessageInfo checkC501(List<FXHDD01> itemList, String itemId) {
         // 項目データを取得
         FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
         if (null != fXHDD01) {
@@ -498,7 +491,7 @@ public class ValidateUtil {
      * @param itemId 項目ID
      * @return エラー時はエラーメッセージを返却
      */
-    public ErrorMessageInfo checkC502(List<FXHDD01> itemList, String itemId) {
+    private ErrorMessageInfo checkC502(List<FXHDD01> itemList, String itemId) {
         // 項目データを取得
         FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
         if (null != fXHDD01) {
@@ -514,12 +507,12 @@ public class ValidateUtil {
     /**
      * 必須チェック2<BR>
      * ブランクでない、且つ入力値が"0"でないことを検証<BR>
-     *  
+     *
      * @param itemList 項目データリスト
      * @param itemId 項目ID
      * @return エラー時はエラーメッセージを返却
      */
-    public ErrorMessageInfo checkC601(List<FXHDD01> itemList, String itemId) {
+    private ErrorMessageInfo checkC601(List<FXHDD01> itemList, String itemId) {
         // 項目データを取得
         FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
         if (null != fXHDD01) {
@@ -535,36 +528,25 @@ public class ValidateUtil {
     /**
      * 日時前後チェック
      *
-     * @param itemList 項目データリスト
-     * @param dateItemId1 日付項目ID
-     * @param timeItemId1 時刻項目ID
-     * @param dateItemId2 日付項目ID
-     * @param timeItemId2 時刻項目ID
-     * @return エラー時はエラーメッセージを返却
+     * @param itemLabel1 項目ラベル
+     * @param date1 入力項目データ
+     * @param itemLabel2 項目ラベル
+     * @param date2 入力項目データ
+     * @return エラー時はエラーメッセージを返却(比較不可時は""を返す。)
      */
-    public ErrorMessageInfo checkR001(List<FXHDD01> itemList, String dateItemId1, String timeItemId1, String dateItemId2, String timeItemId2) {
-        // 項目データを取得
-        FXHDD01 fXHDD01_date1 = getItemRow(itemList, dateItemId1);
-        FXHDD01 fXHDD01_time1 = getItemRow(itemList, timeItemId1);
-        FXHDD01 fXHDD01_date2 = getItemRow(itemList, dateItemId2);
-        FXHDD01 fXHDD01_time2 = getItemRow(itemList, timeItemId2);
-        if (null != fXHDD01_date1 && null != fXHDD01_time1 && null != fXHDD01_date2 && null != fXHDD01_time2) {
-            String date1 = fXHDD01_date1.getValue();
-            String time1 = fXHDD01_time1.getValue();
-            String date2 = fXHDD01_date2.getValue();
-            String time2 = fXHDD01_time2.getValue();
+    public String checkR001(String itemLabel1, Date date1, String itemLabel2, Date date2) {
 
-            if (!StringUtil.isEmpty(date1) && !StringUtil.isEmpty(time1)
-                    && !StringUtil.isEmpty(date2) && !StringUtil.isEmpty(time2)) {
-                Date d1 = DateUtil.convertStringToDate(date1, time1);
-                Date d2 = DateUtil.convertStringToDate(date2, time2);
-                if (null != d1 && null != d2 && d1.compareTo(d2) > 0) {
-                    List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01_date1, fXHDD01_time1, fXHDD01_date2, fXHDD01_time2);
-                    return MessageUtil.getErrorMessageInfo("XHD-000023", true, true, errFxhdd01List, fXHDD01_date1.getLabel1(), fXHDD01_date2.getLabel1());
-                }
-            }
+        // 比較データがNULLの場合、チェック不可として""を返す。
+        if (date1 == null || date2 == null) {
+            return "";
         }
-        return null;
+
+        // 項目データを取得
+        if (0 < date1.compareTo(date2)) {
+            return MessageUtil.getMessage("XHD-000023", itemLabel1, itemLabel2);
+        }
+
+        return "";
     }
 
     /**
@@ -602,65 +584,88 @@ public class ValidateUtil {
     }
 
     /**
-     * レコード存在チェック
+     * 数値チェック(範囲内)
      *
-     * @param queryRunner QueryRunnerオブジェクト
-     * @param table テーブル名
-     * @param items 検索条件項目
-     * @param params パラメータ
-     * @return レコードが存在する場合true
+     * @param itemLabel 入力項目名
+     * @param maxValue 上限値(メッセージ出力用)
+     * @param minValue 下限値(メッセージ出力用)
+     * @param value 項目値
+     * @return エラー時はエラーメッセージを返却
      */
-    public boolean checkC401402(QueryRunner queryRunner, String table, List<String> items, List<Object> params) {
-        try {
-            String sql = "SELECT COUNT(*) AS cnt FROM " + table + " ";
-            if (null != items && !items.isEmpty()) {
-                sql += "WHERE ";
-
-                StringBuilder sb = new StringBuilder();
-                for (String item : items) {
-                    if (0 < sb.length()) {
-                        sb.append("AND ");
-                    }
-                    sb.append(item);
-                    sb.append(" = ? ");
-                }
-
-                sql += sb.toString();
-            }
-
-            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-            Map result = null;
-            if (null == items || items.isEmpty()) {
-                result = queryRunner.query(sql, new MapHandler());
-            } else {
-                result = queryRunner.query(sql, new MapHandler(), params.toArray());
-            }
-
-            if (null != result && !result.isEmpty()) {
-                Object value = result.get("CNT");
-                if (value instanceof Integer && (Integer) value == 0) {
-                    return false;
-                } else if (value instanceof Long && (Long) value == 0) {
-                    return false;
-                } else if (value instanceof BigDecimal && ((BigDecimal) value).equals(BigDecimal.ZERO)) {
-                    return false;
-                } else {
-                    return true;
-                }
-            } else {
-                return true;
-            }
-
-        } catch (SQLException ex) {
-            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-            return false;
+    public String checkS001(String itemLabel, BigDecimal maxValue, BigDecimal minValue, BigDecimal value) {
+        if (!NumberUtil.isValidRange(value, maxValue, minValue)) {
+            return MessageUtil.getMessage("XHD-000022", itemLabel, minValue.toPlainString(), maxValue.toPlainString());
         }
+        return "";
+    }
+
+    /**
+     * ﾚｺｰﾄﾞ存在ﾁｪｯｸ
+     *
+     * @param table テーブル名
+     * @param items カラム名
+     * @param itemLabel 入力項目名
+     * @param params 入力項目データ
+     * @param queryRunner QueryRunnerオブジェクト
+     * @return エラー時はエラーメッセージを返却
+     * @throws java.sql.SQLException 例外エラー
+     */
+    public String checkT001(String table, List<String> items, String itemLabel, List<Object> params, QueryRunner queryRunner) throws SQLException {
+        String sql = "SELECT COUNT(*) AS cnt FROM " + table + " ";
+        if (null != items && !items.isEmpty()) {
+            sql += "WHERE ";
+
+            StringBuilder sb = new StringBuilder();
+            for (String item : items) {
+                if (0 < sb.length()) {
+                    sb.append("AND ");
+                }
+                sb.append(item);
+                sb.append(" = ? ");
+            }
+
+            sql += sb.toString();
+        }
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        Map result;
+        if (null == items || items.isEmpty()) {
+            result = queryRunner.query(sql, new MapHandler());
+        } else {
+            result = queryRunner.query(sql, new MapHandler(), params.toArray());
+        }
+
+        if (null != result && !result.isEmpty()) {
+            BigDecimal cnt = new BigDecimal(String.valueOf(result.get("CNT")));
+            if (BigDecimal.ZERO.compareTo(cnt) == -1) {
+                return "";
+            }
+        }
+
+        return MessageUtil.getMessage("XHD-000011", itemLabel);
+
+    }
+
+    /**
+     * 担当者ﾏｽﾀﾁｪｯｸ
+     *
+     * @param tantoshacode 担当者ｺｰﾄﾞ
+     * @param itemLabel ラベル(入力項目名)
+     * @param queryRunnerDoc QueryRunnerオブジェクト(DocServer)
+     * @return エラー時はエラーメッセージを返却
+     */
+    public String checkT002(String itemLabel, String tantoshacode, QueryRunner queryRunnerDoc) throws SQLException {
+        // 項目データを取得
+        if (!existTantomas(tantoshacode, queryRunnerDoc)) {
+            return MessageUtil.getMessage("XHD-000011", itemLabel);
+        }
+        return "";
     }
 
     /**
      * 項目データ取得
      *
-     * @param itemList フォームデータ
+     * @param itemList 項目リスト
      * @param itemId 項目ID
      * @return 項目データ
      */
@@ -721,7 +726,6 @@ public class ValidateUtil {
     public static ErrorMessageInfo checkInputKikakuchi(List<FXHDD01> itemList, List<KikakuchiInputErrorInfo> kikakuchiInputErrorInfoList) {
 
         for (FXHDD01 fxhdd01 : itemList) {
-            // TODO入力項目かどうかの判定が必要
             // 規格チェックの対象項目かどうか
             if (StringUtil.isEmpty(fxhdd01.getStandardPattern()) || "【-】".equals(fxhdd01.getKikakuChi())) {
                 continue;
@@ -1279,7 +1283,7 @@ public class ValidateUtil {
     /**
      * 規格外登録履歴
      *
-     * @param queryRunnerWip QueryRunnerオブジェクト
+     * @param queryRunnerDoc QueryRunnerオブジェクト
      * @param tantoshaCd 担当者コード
      * @param lotNo ロットNo
      * @param formId 画面ID
@@ -1289,7 +1293,7 @@ public class ValidateUtil {
      * @param kikakuchiErrorInfoList 規格値エラー情報リスト
      * @throws SQLException
      */
-    public static void fxhdd04Insert(QueryRunner queryRunnerWip, String tantoshaCd, String lotNo, String formId, String gamenTitle, int jissekino, String deleteFlag, List<KikakuchiInputErrorInfo> kikakuchiErrorInfoList) throws SQLException {
+    public static void fxhdd04Insert(QueryRunner queryRunnerDoc, String tantoshaCd, String lotNo, String formId, String gamenTitle, int jissekino, String deleteFlag, List<KikakuchiInputErrorInfo> kikakuchiErrorInfoList) throws SQLException {
         // 焼成データの登録
         String sql = "INSERT INTO fxhdd04 ("
                 + "torokusha, toroku_date, koshinsha, koshin_date,  gamen_id, gamen_title, kojyo, lotno, edaban,"
@@ -1301,7 +1305,7 @@ public class ValidateUtil {
         for (KikakuchiInputErrorInfo kikakuchiInputErrorInfo : kikakuchiErrorInfoList) {
             params = getFxhdd04UpdateParams(tantoshaCd, lotNo, formId, gamenTitle, jissekino, deleteFlag, kikakuchiInputErrorInfo);
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-            queryRunnerWip.update(sql, params.toArray());
+            queryRunnerDoc.update(sql, params.toArray());
         }
     }
 
@@ -1326,6 +1330,52 @@ public class ValidateUtil {
         params.add(deleteFlag);
 
         return params;
+
+    }
+
+    /**
+     * 号機ﾏｽﾀ存在判定
+     *
+     * @param goukicode 号機ｺｰﾄﾞ
+     * @param queryRunnerDoc QueryRunnerオブジェクト(DocServer)
+     * @return true:存在する、false:存在しない
+     */
+    private boolean existGokukimas(String goukicode, QueryRunner queryRunnerDoc) throws SQLException {
+        String sql = "SELECT goukicode "
+                + "FROM gokukimas WHERE goukicode = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(goukicode);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        Map gokukimas = queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
+        if (null == gokukimas || gokukimas.isEmpty()) {
+            return true;
+        }
+        return true;
+
+    }
+
+    /**
+     * 担当者ﾏｽﾀ存在判定
+     *
+     * @param tantousyacode 担当者ｺｰﾄﾞ
+     * @param queryRunnerDoc QueryRunnerオブジェクト(DocServer)
+     * @return true:存在する、false:存在しない
+     */
+    private boolean existTantomas(String tantousyacode, QueryRunner queryRunnerDoc) throws SQLException {
+        String sql = "SELECT tantousyacode "
+                + "FROM tantomas WHERE tantousyacode = ? and zaiseki = '1' ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(tantousyacode);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        Map tantomas = queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
+        if (null == tantomas || tantomas.isEmpty()) {
+            return true;
+        }
+        return true;
 
     }
 

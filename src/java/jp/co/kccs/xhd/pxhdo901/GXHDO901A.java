@@ -52,7 +52,6 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.apache.commons.lang3.StringUtils;
-import static org.omnifaces.util.Components.findComponent;
 import org.primefaces.component.datalist.DataList;
 import org.primefaces.context.RequestContext;
 
@@ -65,6 +64,11 @@ import org.primefaces.context.RequestContext;
  * 計画書No	K1811-DS001<br>
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
+ * <br>
+ * 変更日	2018/12/12<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	共通機能実装<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -349,21 +353,20 @@ public class GXHDO901A implements Serializable {
         // 一覧の表示件数を設定
         this.hyojiKensu = StringUtil.nullToBlank(session.getAttribute("hyojiKensu"));
 
-        
         // タイトル設定情報取得
-        if(!this.loadTitleSettings(titleSetting, formTitle)){
+        if (!this.loadTitleSettings(titleSetting, formTitle)) {
             settingError();
             return;
         }
 
         // ボタン定義情報取得
-        if(!this.loadButtonSettings(formId)){
+        if (!this.loadButtonSettings(formId)) {
             settingError();
             return;
         }
 
         // 項目定義情報取得
-        if(!this.loadItemSettings(formId, callerFormId)){
+        if (!this.loadItemSettings(formId, callerFormId)) {
             settingError();
             return;
         }
@@ -381,30 +384,29 @@ public class GXHDO901A implements Serializable {
         // DaJoken情報取得
         getJokenInfo(strSekkeiNo);
 
-        boolean isExist = false;
+        boolean isExist;
         List<String> initMessageList = new ArrayList<>();
         for (int i = 0; i <= itemList.size() - 1; i++) {
-            isExist =false;
+            isExist = false;
             for (int j = 0; j <= listDaJoken.size() - 1; j++) {
-                
+
                 if (StringUtil.nullToBlank(itemList.get(i).getJokenKoteiMei()).equals(StringUtil.nullToBlank(listDaJoken.get(j).getKouteiMei()))
                         && StringUtil.nullToBlank(itemList.get(i).getJokenKomokuMei()).equals(StringUtil.nullToBlank(listDaJoken.get(j).getKoumokuMei()))
                         && StringUtil.nullToBlank(itemList.get(i).getJokenKanriKomoku()).equals(StringUtil.nullToBlank(listDaJoken.get(j).getKanriKoumoku()))) {
-                    
+
                     // 規格値が空またはNULLだった場合
-                    if(StringUtil.isEmpty(listDaJoken.get(j).getKikakuChi())){
+                    if (StringUtil.isEmpty(listDaJoken.get(j).getKikakuChi())) {
                         break;
                     }
-                
-                    
+
                     this.itemList.get(i).setKikakuChi("【" + listDaJoken.get(j).getKikakuChi() + "】");
                     isExist = true;
                     break;
                 }
             }
-            
-            if(!isExist){
-                initMessageList.add(MessageUtil.getMessage("XHD-000019", this.itemList.get(i).getLabel1()));
+
+            if (!isExist) {
+                initMessageList.add(MessageUtil.getMessage("XHD-000019", "【" + this.itemList.get(i).getLabel1()) + "】");
             }
         }
 
@@ -439,8 +441,6 @@ public class GXHDO901A implements Serializable {
         data.setDataSourceQcdb(this.dataSourceQcdb);
         data.setDataSourceWip(this.dataSourceWip);
         data.setInitMessageList(initMessageList);
-        
-        
 
         this.processData = data;
 
@@ -939,7 +939,7 @@ public class GXHDO901A implements Serializable {
      * @param callerFormId 画面ID(呼出し元)
      * @return データ取得判定(true:データ取得有り、false：データ取得無し)
      */
-    private boolean  loadItemSettings(String formId, String callerFormId) {
+    private boolean loadItemSettings(String formId, String callerFormId) {
         boolean result = false;
         // ユーザーグループ取得
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
@@ -960,7 +960,6 @@ public class GXHDO901A implements Serializable {
                         + "'false' AS render_iput_radio, "
                         + "'false' AS render_iput_time, "
                         + "'true' AS render_output_label, ";
-
             } else {
                 inputItemInfo = "hdm02_3.font_color AS font_color_input, hdm02_3.bg_color AS bg_color_input, "
                         + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '1' THEN 'false' ELSE 'true' END AS render_iput_text, "
@@ -1043,7 +1042,7 @@ public class GXHDO901A implements Serializable {
 
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
             this.itemList = queryRunner.query(sql, beanHandler, params.toArray());
-            if(this.itemList != null && !this.itemList.isEmpty()){
+            if (this.itemList != null && !this.itemList.isEmpty()) {
                 result = true;
             }
 
@@ -1061,7 +1060,7 @@ public class GXHDO901A implements Serializable {
      */
     private boolean loadButtonSettings(String formId) {
         boolean result = false;
-        
+
         // ユーザーグループ取得
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
@@ -1104,21 +1103,21 @@ public class GXHDO901A implements Serializable {
                         = buttonList.stream().filter(n -> "2".equals(n.getButtonLocation())).collect(Collectors.toList());
                 result = true;
             }
- 
+
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("ボタン項目取得失敗", ex, LOGGER);
         }
         return result;
     }
-    
+
     /**
      * 設定エラー
      */
-    private void settingError(){
+    private void settingError() {
         this.itemList = new ArrayList<>();
         this.buttonListTop = new ArrayList<>();
         this.buttonListBottom = new ArrayList<>();
-        
+
         // メッセージを画面に渡す
         InitMessage beanInitMessage = (InitMessage) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_INIT_MESSAGE);
         beanInitMessage.setInitMessageList(Arrays.asList(MessageUtil.getMessage("XHD-000018", "")));
@@ -1126,7 +1125,6 @@ public class GXHDO901A implements Serializable {
         // 実行スクリプトを設定
         RequestContext.getCurrentInstance().execute("PF('W_dlg_initMessage').show();");
     }
-    
 
     /**
      * チェック処理情報取得
@@ -1248,8 +1246,8 @@ public class GXHDO901A implements Serializable {
                 }
             }
         }
-
-        ErrorMessageInfo requireCheckErrorMessage = validateUtil.executeValidation(requireCheckList, this.itemList);
+        QueryRunner queryRunnerDoc = new QueryRunner(dataSourceDocServer);
+        ErrorMessageInfo requireCheckErrorMessage = validateUtil.executeValidation(requireCheckList, this.itemList, queryRunnerDoc);
         return requireCheckErrorMessage;
     }
 

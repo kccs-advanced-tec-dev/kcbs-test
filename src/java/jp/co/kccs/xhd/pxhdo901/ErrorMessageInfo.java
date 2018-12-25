@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2018 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.pxhdo901;
 
@@ -9,8 +7,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * ===============================================================================<br>
+ * <br>
+ * システム名	品質DB(コンデンサ)<br>
+ * <br>
+ * 変更日	2018/12/12<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	新規作成<br>
+ * <br>
+ * ===============================================================================<br>
+ */
+/**
+ * エラーメッセージ情報
  *
- * @author koksk-desk2
+ * @author SYSNAVI K.Hisanaga
+ * @since 2018/12/12
  */
 public class ErrorMessageInfo {
 
@@ -32,7 +44,7 @@ public class ErrorMessageInfo {
      * ページ変更先の項目インデックス
      */
     private int pageChangeItemIndex;
-    
+
     /**
      * エラーアイテム情報リスト
      */
@@ -46,9 +58,11 @@ public class ErrorMessageInfo {
         this.pageChangeItemIndex = -1;
         this.errorItemInfoList = new ArrayList<>();
     }
-    
+
     /**
      * コンストラクタ
+     *
+     * @param errorMessage エラーメッセージ
      */
     public ErrorMessageInfo(String errorMessage) {
         this.errorMessage = errorMessage;
@@ -95,6 +109,7 @@ public class ErrorMessageInfo {
 
     /**
      * 背景色を変更するかどうかの判定
+     *
      * @return the isChangeBackColor
      */
     public Boolean getIsChangeBackColor() {
@@ -103,15 +118,16 @@ public class ErrorMessageInfo {
 
     /**
      * 背景色を変更するかどうかの判定
+     *
      * @param isChangeBackColor the isChangeBackColor to set
      */
     public void setIsChangeBackColor(Boolean isChangeBackColor) {
         this.isChangeBackColor = isChangeBackColor;
     }
 
-    
     /**
      * 背景色を変更するかどうかの判定
+     *
      * @return the pageChangeItemIndex
      */
     public int getPageChangeItemIndex() {
