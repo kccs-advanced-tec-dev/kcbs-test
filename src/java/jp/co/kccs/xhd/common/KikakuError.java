@@ -31,12 +31,10 @@ import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
 @SessionScoped
 public class KikakuError implements Serializable {
 
-
     /**
      * 規格値エラー情報リスト
      */
     private List<KikakuchiInputErrorInfo> kikakuchiInputErrorInfoList;
-
 
     /**
      * コンストラクタ
@@ -44,10 +42,9 @@ public class KikakuError implements Serializable {
     public KikakuError() {
     }
 
-   
-    
     /**
      * 規格値エラー情報リスト
+     *
      * @return the kikakuchiInputErrorInfoList
      */
     public List<KikakuchiInputErrorInfo> getKikakuchiInputErrorInfoList() {
@@ -56,6 +53,7 @@ public class KikakuError implements Serializable {
 
     /**
      * 規格値エラー情報リスト
+     *
      * @param kikakuchiInputErrorInfoList the kikakuchiInputErrorInfoList to set
      */
     public void setKikakuchiInputErrorInfoList(List<KikakuchiInputErrorInfo> kikakuchiInputErrorInfoList) {

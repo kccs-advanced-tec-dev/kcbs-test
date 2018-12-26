@@ -26,6 +26,11 @@ import org.apache.commons.lang3.StringUtils;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	ﾛｯﾄｶｰﾄﾞ電子化対応<br>
  * <br>
+ * 変更日	2018/12/08<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	項目追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -159,7 +164,7 @@ public class FXHDD01 {
     /**
      * 表示ﾗﾍﾞﾙ3背景色
      */
-    private String backColor3;    
+    private String backColor3;
     /**
      * 条件ﾃｰﾌﾞﾙ工程名
      */
@@ -189,7 +194,7 @@ public class FXHDD01 {
      */
     private String backColorInputDefault;
     /**
-     * 項目インデックス
+     * 項目ｲﾝﾃﾞｯｸｽ
      */
     private int itemIndex;
 
@@ -757,9 +762,10 @@ public class FXHDD01 {
     public void setBackColor3(String backColor3) {
         this.backColor3 = backColor3;
     }
-    
+
     /**
      * 条件ﾃｰﾌﾞﾙ工程名
+     *
      * @return the jokenKoteiMei
      */
     public String getJokenKoteiMei() {
@@ -768,14 +774,16 @@ public class FXHDD01 {
 
     /**
      * 条件ﾃｰﾌﾞﾙ工程名
+     *
      * @param jokenKoteiMei the jokenKoteiMei to set
      */
     public void setJokenKoteiMei(String jokenKoteiMei) {
         this.jokenKoteiMei = jokenKoteiMei;
     }
-    
+
     /**
      * 条件ﾃｰﾌﾞﾙ項目名
+     *
      * @return the jokenKomokuMei
      */
     public String getJokenKomokuMei() {
@@ -784,14 +792,16 @@ public class FXHDD01 {
 
     /**
      * 条件ﾃｰﾌﾞﾙ項目名
+     *
      * @param jokenKomokuMei the jokenKomokuMei to set
      */
     public void setJokenKomokuMei(String jokenKomokuMei) {
         this.jokenKomokuMei = jokenKomokuMei;
     }
-    
+
     /**
      * 条件ﾃｰﾌﾞﾙ管理項目
+     *
      * @return the jokenKanriKomoku
      */
     public String getJokenKanriKomoku() {
@@ -800,14 +810,16 @@ public class FXHDD01 {
 
     /**
      * 条件ﾃｰﾌﾞﾙ管理項目
+     *
      * @param jokenKanriKomoku the jokenKanriKomoku to set
      */
     public void setJokenKanriKomoku(String jokenKanriKomoku) {
         this.jokenKanriKomoku = jokenKanriKomoku;
     }
-    
+
     /**
      * 規格情報ﾊﾟﾀｰﾝ
+     *
      * @return the standardPattern
      */
     public String getStandardPattern() {
@@ -816,14 +828,16 @@ public class FXHDD01 {
 
     /**
      * 規格情報ﾊﾟﾀｰﾝ
+     *
      * @param standardPattern the standardPattern to set
      */
     public void setStandardPattern(String standardPattern) {
         this.standardPattern = standardPattern;
     }
-    
+
     /**
      * 規格値
+     *
      * @return the kikakuChi
      */
     public String getKikakuChi() {
@@ -832,12 +846,13 @@ public class FXHDD01 {
 
     /**
      * 規格値
+     *
      * @param kikakuChi the kikakuChi to set
      */
     public void setKikakuChi(String kikakuChi) {
         this.kikakuChi = kikakuChi;
     }
-    
+
     /**
      * 入力値
      *
@@ -876,7 +891,7 @@ public class FXHDD01 {
     }
 
     /**
-     * 項目インデックス
+     * 項目ｲﾝﾃﾞｯｸｽ
      *
      * @return the itemIndex
      */
@@ -885,7 +900,7 @@ public class FXHDD01 {
     }
 
     /**
-     * 項目インデックス
+     * 項目ｲﾝﾃﾞｯｸｽ
      *
      * @param itemIndex the itemIndex to set
      */

@@ -9,7 +9,7 @@ package jp.co.kccs.xhd.db.model;
  * システム名	品質DB(コンデンサ)<br>
  * <br>
  * 変更日	2018/12/11<br>
- * 計画書No	K1803-DS001<br>
+ * 計画書No	K1811-DS001<br>
  * 変更者	SYSYNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>

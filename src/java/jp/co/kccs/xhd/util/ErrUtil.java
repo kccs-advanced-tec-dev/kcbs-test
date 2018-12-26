@@ -29,6 +29,11 @@ import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	ﾛｯﾄｶｰﾄﾞ電子化対応<br>
  * <br>
+ * 変更日	2018/12/08<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	エラー項目に背景色を付ける処理を追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**

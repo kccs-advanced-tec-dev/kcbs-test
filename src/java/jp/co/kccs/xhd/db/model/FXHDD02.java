@@ -20,20 +20,20 @@ package jp.co.kccs.xhd.db.model;
  * <br>
  * ===============================================================================<br>
  */
-
 /**
  * FXHDD02(ボタンパラメータマスタ)のモデルクラスです。
- * 
+ *
  * @author KCCS D.Yanagida
  * @since 2018/04/24
  */
 public class FXHDD02 {
+
     /**
      * ボタンID
      */
     private String buttonId;
     /**
-     * ボタンNo 
+     * ボタンNo
      */
     private int buttonNo;
     /**
@@ -67,6 +67,7 @@ public class FXHDD02 {
 
     /**
      * ボタンID
+     *
      * @return the buttonId
      */
     public String getButtonId() {
@@ -75,6 +76,7 @@ public class FXHDD02 {
 
     /**
      * ボタンID
+     *
      * @param buttonId the buttonId to set
      */
     public void setButtonId(String buttonId) {
@@ -83,6 +85,7 @@ public class FXHDD02 {
 
     /**
      * ボタンNo
+     *
      * @return the buttonNo
      */
     public int getButtonNo() {
@@ -91,6 +94,7 @@ public class FXHDD02 {
 
     /**
      * ボタンNo
+     *
      * @param buttonNo the buttonNo to set
      */
     public void setButtonNo(int buttonNo) {
@@ -99,6 +103,7 @@ public class FXHDD02 {
 
     /**
      * ボタン表示場所
+     *
      * @return the buttonLocation
      */
     public String getButtonLocation() {
@@ -107,6 +112,7 @@ public class FXHDD02 {
 
     /**
      * ボタン表示場所
+     *
      * @param buttonLocation the buttonLocation to set
      */
     public void setButtonLocation(String buttonLocation) {
@@ -115,6 +121,7 @@ public class FXHDD02 {
 
     /**
      * ボタン名
+     *
      * @return the buttonName
      */
     public String getButtonName() {
@@ -123,6 +130,7 @@ public class FXHDD02 {
 
     /**
      * ボタン名
+     *
      * @param buttonName the buttonName to set
      */
     public void setButtonName(String buttonName) {
@@ -131,6 +139,7 @@ public class FXHDD02 {
 
     /**
      * 文字サイズ
+     *
      * @return the fontSize
      */
     public int getFontSize() {
@@ -139,6 +148,7 @@ public class FXHDD02 {
 
     /**
      * 文字サイズ
+     *
      * @param fontSize the fontSize to set
      */
     public void setFontSize(int fontSize) {
@@ -147,6 +157,7 @@ public class FXHDD02 {
 
     /**
      * 文字色
+     *
      * @return the fontColor
      */
     public String getFontColor() {
@@ -155,6 +166,7 @@ public class FXHDD02 {
 
     /**
      * 文字色
+     *
      * @param fontColor the fontColor to set
      */
     public void setFontColor(String fontColor) {
@@ -163,6 +175,7 @@ public class FXHDD02 {
 
     /**
      * 背景色
+     *
      * @return the backColor
      */
     public String getBackColor() {
@@ -171,6 +184,7 @@ public class FXHDD02 {
 
     /**
      * 背景色
+     *
      * @param backColor the backColor to set
      */
     public void setBackColor(String backColor) {
@@ -179,6 +193,7 @@ public class FXHDD02 {
 
     /**
      * render有無
+     *
      * @return the render
      */
     public boolean getRender() {
@@ -187,6 +202,7 @@ public class FXHDD02 {
 
     /**
      * render有無
+     *
      * @param render the render to set
      */
     public void setRender(boolean render) {
@@ -195,6 +211,7 @@ public class FXHDD02 {
 
     /**
      * 有効・無効
+     *
      * @return the enabled
      */
     public boolean isEnabled() {
@@ -203,6 +220,7 @@ public class FXHDD02 {
 
     /**
      * 有効・無効
+     *
      * @param enabled the enabled to set
      */
     public void setEnabled(boolean enabled) {

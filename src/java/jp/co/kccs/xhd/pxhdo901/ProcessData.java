@@ -23,6 +23,11 @@ import jp.co.kccs.xhd.db.model.FXHDD01;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	ﾛｯﾄｶｰﾄﾞ電子化対応<br>
  * <br>
+ * 変更日	2018/12/08<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	項目追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -69,10 +74,6 @@ public class ProcessData {
      * 警告メッセージ
      */
     private String warnMessage;
-//    /**
-//     * エラーメッセージ
-//     */
-//    private List<String> errorMessage;
     /**
      * DataSource(DocumentServer)
      */
@@ -101,27 +102,22 @@ public class ProcessData {
      * チェック無しボタンIDリスト(設定しているIDについてはエラー処理の背景色をクリアしない)
      */
     private List<String> noCheckButtonId;
-
     /**
      * サブ画面初期表示メッセージ
      */
     private List<String> subInitDispMsgList;
-    
     /**
      * エラーメッセージ情報リスト
      */
     private List<ErrorMessageInfo> errorMessageInfoList;
-
     /**
      * 初期表示時エラーメッセージリスト
      */
     private List<String> initMessageList;
-    
     /**
      * 実行スクリプト
      */
     private String executeScript;
-    
     /**
      * 規格値入力エラー情報リスト
      */
@@ -131,7 +127,6 @@ public class ProcessData {
      * コンストラクタ
      */
     public ProcessData() {
-        //this.errorMessage = new ArrayList<>();
         this.itemList = new ArrayList<>();
         this.activeButtonId = new ArrayList<>();
         this.inactiveButtonId = new ArrayList<>();
@@ -304,24 +299,6 @@ public class ProcessData {
         this.warnMessage = warnMessage;
     }
 
-//    /**
-//     * エラーメッセージ
-//     *
-//     * @return the errorMessage
-//     */
-//    public List<String> getErrorMessage() {
-//        return errorMessage;
-//    }
-//
-//    /**
-//     * エラーメッセージ
-//     *
-//     * @param errorMessage the errorMessage to set
-//     */
-//    public void setErrorMessage(List<String> errorMessage) {
-//        this.errorMessage = errorMessage;
-//    }
-
     /**
      * DataSource(DocumentServer)
      *
@@ -412,7 +389,6 @@ public class ProcessData {
         this.userAuthParam = userAuthParam;
     }
 
-    //******************************************************************
     /**
      * コールバックパラメータ
      *
@@ -469,6 +445,7 @@ public class ProcessData {
 
     /**
      * エラーメッセージ情報リスト
+     *
      * @return the errorMessageInfoList
      */
     public List<ErrorMessageInfo> getErrorMessageInfoList() {
@@ -477,12 +454,12 @@ public class ProcessData {
 
     /**
      * エラーメッセージ情報リスト
+     *
      * @param errorMessageInfoList the errorMessageInfoList to set
      */
     public void setErrorMessageInfoList(List<ErrorMessageInfo> errorMessageInfoList) {
         this.errorMessageInfoList = errorMessageInfoList;
     }
-    //******************************************************************
 
     /**
      * @return the initMessageList
@@ -518,6 +495,7 @@ public class ProcessData {
 
     /**
      * 規格値入力エラー情報リスト
+     *
      * @return the kikakuchiInputErrorInfoList
      */
     public List<KikakuchiInputErrorInfo> getKikakuchiInputErrorInfoList() {
@@ -526,6 +504,7 @@ public class ProcessData {
 
     /**
      * 規格値入力エラー情報リスト
+     *
      * @param kikakuchiInputErrorInfoList the kikakuchiInputErrorInfoList to set
      */
     public void setKikakuchiInputErrorInfoList(List<KikakuchiInputErrorInfo> kikakuchiInputErrorInfoList) {

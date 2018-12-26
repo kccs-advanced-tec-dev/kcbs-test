@@ -12,7 +12,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import jp.co.kccs.xhd.db.model.FXHDD01;
@@ -1281,7 +1280,7 @@ public class ValidateUtil {
     }
 
     /**
-     * 規格外登録履歴
+     * 規格外登録履歴登録処理
      *
      * @param queryRunnerDoc QueryRunnerオブジェクト
      * @param tantoshaCd 担当者コード
@@ -1291,7 +1290,7 @@ public class ValidateUtil {
      * @param jissekino 実績No
      * @param deleteFlag 削除フラグ
      * @param kikakuchiErrorInfoList 規格値エラー情報リスト
-     * @throws SQLException
+     * @throws SQLException 例外エラー
      */
     public static void fxhdd04Insert(QueryRunner queryRunnerDoc, String tantoshaCd, String lotNo, String formId, String gamenTitle, int jissekino, String deleteFlag, List<KikakuchiInputErrorInfo> kikakuchiErrorInfoList) throws SQLException {
         // 焼成データの登録
@@ -1309,7 +1308,19 @@ public class ValidateUtil {
         }
     }
 
-    private static List<Object> getFxhdd04UpdateParams(String tantoshaCd, String lotNo, String formId, String gamenTitle, int jissekino, String deleteFlag, KikakuchiInputErrorInfo kikakuchiErrorInfo) throws SQLException {
+    /**
+     * 規格外登録履歴更新パラメータ取得処理
+     *
+     * @param tantoshaCd 担当者コード
+     * @param lotNo ロットNo
+     * @param formId 画面ID
+     * @param gamenTitle 画面タイトル
+     * @param jissekino 実績No
+     * @param deleteFlag 削除フラグ
+     * @param kikakuchiErrorInfo
+     * @return 規格外登録履歴更新パラメータ
+     */
+    private static List<Object> getFxhdd04UpdateParams(String tantoshaCd, String lotNo, String formId, String gamenTitle, int jissekino, String deleteFlag, KikakuchiInputErrorInfo kikakuchiErrorInfo) {
         List<Object> params = new ArrayList<>();
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());

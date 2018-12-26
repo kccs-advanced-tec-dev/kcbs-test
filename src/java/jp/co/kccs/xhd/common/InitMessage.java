@@ -35,7 +35,6 @@ public class InitMessage implements Serializable {
      */
     private List<String> initMessageList;
 
-
     /**
      * コンストラクタ
      */
@@ -44,6 +43,7 @@ public class InitMessage implements Serializable {
 
     /**
      * 初期表示メッセージリスト
+     *
      * @return the initMessageList
      */
     public List<String> getInitMessageList() {
@@ -52,6 +52,7 @@ public class InitMessage implements Serializable {
 
     /**
      * 初期表示メッセージリスト
+     *
      * @param initMessageList the initMessageList to set
      */
     public void setInitMessageList(List<String> initMessageList) {

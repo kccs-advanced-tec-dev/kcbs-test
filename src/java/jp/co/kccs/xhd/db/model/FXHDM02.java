@@ -20,14 +20,14 @@ package jp.co.kccs.xhd.db.model;
  * <br>
  * ===============================================================================<br>
  */
-
 /**
  * FXHDM02(表示設定マスタ)のモデルクラスです。
- * 
+ *
  * @author KCCS D.Yanagida
  * @since 2018/04/24
  */
 public class FXHDM02 {
+
     /**
      * 設定ID
      */
@@ -48,9 +48,10 @@ public class FXHDM02 {
      * 画面名
      */
     private String formName;
-    
+
     /**
      * 設定ID
+     *
      * @return the settingId
      */
     public String getSettingId() {
@@ -59,6 +60,7 @@ public class FXHDM02 {
 
     /**
      * 設定ID
+     *
      * @param settingId the settingId to set
      */
     public void setSettingId(String settingId) {
@@ -67,6 +69,7 @@ public class FXHDM02 {
 
     /**
      * 文字サイズ
+     *
      * @return the fontSize
      */
     public int getFontSize() {
@@ -75,6 +78,7 @@ public class FXHDM02 {
 
     /**
      * 文字サイズ
+     *
      * @param fontSize the fontSize to set
      */
     public void setFontSize(int fontSize) {
@@ -83,6 +87,7 @@ public class FXHDM02 {
 
     /**
      * 文字色
+     *
      * @return the fontColor
      */
     public String getFontColor() {
@@ -91,6 +96,7 @@ public class FXHDM02 {
 
     /**
      * 文字色
+     *
      * @param fontColor the fontColor to set
      */
     public void setFontColor(String fontColor) {
@@ -99,6 +105,7 @@ public class FXHDM02 {
 
     /**
      * 背景色
+     *
      * @return the bgColor
      */
     public String getBgColor() {
@@ -107,6 +114,7 @@ public class FXHDM02 {
 
     /**
      * 背景色
+     *
      * @param bgColor the bgColor to set
      */
     public void setBgColor(String bgColor) {
@@ -115,6 +123,7 @@ public class FXHDM02 {
 
     /**
      * 画面名
+     *
      * @return the formName
      */
     public String getFormName() {
@@ -123,6 +132,7 @@ public class FXHDM02 {
 
     /**
      * 画面名
+     *
      * @param formName the formName to set
      */
     public void setFormName(String formName) {

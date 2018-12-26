@@ -22,14 +22,14 @@ import java.io.Serializable;
  * <br>
  * ===============================================================================<br>
  */
-
 /**
  * FXHDM01(メニューマスタ)のモデルクラスです。
- * 
+ *
  * @author KCCS D.Yanagida
  * @since 2018/04/24
  */
 public class FXHDM01 implements Serializable {
+
     /**
      * 画面ID
      */
@@ -73,6 +73,7 @@ public class FXHDM01 implements Serializable {
 
     /**
      * 画面ID
+     *
      * @return the formId
      */
     public String getFormId() {
@@ -81,6 +82,7 @@ public class FXHDM01 implements Serializable {
 
     /**
      * 画面ID
+     *
      * @param formId the formId to set
      */
     public void setFormId(String formId) {
@@ -89,6 +91,7 @@ public class FXHDM01 implements Serializable {
 
     /**
      * 画面タイトル
+     *
      * @return the formTitle
      */
     public String getFormTitle() {
@@ -97,6 +100,7 @@ public class FXHDM01 implements Serializable {
 
     /**
      * 画面タイトル
+     *
      * @param formTitle the formTitle to set
      */
     public void setFormTitle(String formTitle) {
@@ -105,6 +109,7 @@ public class FXHDM01 implements Serializable {
 
     /**
      * タイトル表示設定
+     *
      * @return the titleSetting
      */
     public String getTitleSetting() {
@@ -113,14 +118,16 @@ public class FXHDM01 implements Serializable {
 
     /**
      * タイトル表示設定
+     *
      * @param titleSetting the titleSetting to set
      */
     public void setTitleSetting(String titleSetting) {
         this.titleSetting = titleSetting;
     }
-    
+
     /**
      * メニューNo
+     *
      * @return the menuNo
      */
     public int getMenuNo() {
@@ -129,14 +136,16 @@ public class FXHDM01 implements Serializable {
 
     /**
      * メニューNo
+     *
      * @param menuNo the menuNo to set
      */
     public void setMenuNo(int menuNo) {
         this.menuNo = menuNo;
     }
-    
+
     /**
      * メニュー名
+     *
      * @return the menuName
      */
     public String getMenuName() {
@@ -145,6 +154,7 @@ public class FXHDM01 implements Serializable {
 
     /**
      * メニュー名
+     *
      * @param menuName the menuName to set
      */
     public void setMenuName(String menuName) {
@@ -153,6 +163,7 @@ public class FXHDM01 implements Serializable {
 
     /**
      * URLパターン
+     *
      * @return the linkChar
      */
     public String getLinkChar() {
@@ -161,6 +172,7 @@ public class FXHDM01 implements Serializable {
 
     /**
      * URLパターン
+     *
      * @param linkChar the linkChar to set
      */
     public void setLinkChar(String linkChar) {
@@ -169,6 +181,7 @@ public class FXHDM01 implements Serializable {
 
     /**
      * メニューパラメータ
+     *
      * @return the menuParam
      */
     public String getMenuParam() {
@@ -177,6 +190,7 @@ public class FXHDM01 implements Serializable {
 
     /**
      * メニューパラメータ
+     *
      * @param menuParam the menuParam to set
      */
     public void setMenuParam(String menuParam) {
@@ -185,6 +199,7 @@ public class FXHDM01 implements Serializable {
 
     /**
      * メニューコメント
+     *
      * @return the menuComment
      */
     public String getMenuComment() {
@@ -193,6 +208,7 @@ public class FXHDM01 implements Serializable {
 
     /**
      * メニューコメント
+     *
      * @param menuComment the menuComment to set
      */
     public void setMenuComment(String menuComment) {
@@ -201,6 +217,7 @@ public class FXHDM01 implements Serializable {
 
     /**
      * 画面クラス名
+     *
      * @return the formClassName
      */
     public String getFormClassName() {
@@ -209,6 +226,7 @@ public class FXHDM01 implements Serializable {
 
     /**
      * 画面クラス名
+     *
      * @param formClassName the formClassName to set
      */
     public void setFormClassName(String formClassName) {
@@ -217,6 +235,7 @@ public class FXHDM01 implements Serializable {
 
     /**
      * 表示件数
+     *
      * @return the hyojiKensu
      */
     public int getHyojiKensu() {
@@ -225,6 +244,7 @@ public class FXHDM01 implements Serializable {
 
     /**
      * 表示件数
+     *
      * @param hyojiKensu the hyojiKensu to set
      */
     public void setHyojiKensu(int hyojiKensu) {

@@ -415,7 +415,7 @@ public class GXHDO901A implements Serializable {
         String formClassName = StringUtil.nullToBlank(session.getAttribute("formClassName"));
 
         // 画面クラスをロード
-        IFormLogic formLogic = null;
+        IFormLogic formLogic;
         try {
             Class<?> formClass = Class.forName(formClassName);
             formLogic = (IFormLogic) formClass.newInstance();
@@ -541,8 +541,6 @@ public class GXHDO901A implements Serializable {
      * @return 権限がある場合true
      */
     private boolean userAuthLogin() {
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        HttpSession session = (HttpSession) externalContext.getSession(false);
         FacesContext facesContext = FacesContext.getCurrentInstance();
 
         String authParam = this.processData.getUserAuthParam();
@@ -565,8 +563,6 @@ public class GXHDO901A implements Serializable {
      * ユーザー認証チェック
      */
     public void userAuth() {
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        HttpSession session = (HttpSession) externalContext.getSession(false);
         FacesContext facesContext = FacesContext.getCurrentInstance();
 
         String authParam = this.processData.getUserAuthParam();
@@ -648,7 +644,7 @@ public class GXHDO901A implements Serializable {
         }
 
         // 画面クラスをロード
-        IFormLogic formLogic = null;
+        IFormLogic formLogic;
         try {
             Class<?> formClass = Class.forName(formClassName);
             formLogic = (IFormLogic) formClass.newInstance();
@@ -710,9 +706,6 @@ public class GXHDO901A implements Serializable {
      * 警告ダイアログで「はい」が選択された場合の処理
      */
     public void processWarnOk() {
-        IFormLogic formLogic = this.getProcessData().getFormLogic();
-        String method = this.getProcessData().getMethod();
-
         // 警告メッセージを削除して処理再開
         this.processData.setWarnMessage("");
         this.warnDialogRendered = false;
@@ -1295,11 +1288,11 @@ public class GXHDO901A implements Serializable {
     }
 
     /**
-     * 警告ダイアログで「はい」が選択された場合の処理
+     * 規格外エラーダイアログOK押下時
      */
     public void processKikakuWarnOk() {
 
-        // 警告メッセージを削除して処理再開
+        // 規格外エラーをを削除して処理再開
         this.processData.getKikakuchiInputErrorInfoList().clear();
         this.processMain();
     }

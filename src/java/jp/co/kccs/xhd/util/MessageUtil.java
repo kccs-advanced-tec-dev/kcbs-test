@@ -26,6 +26,11 @@ import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	ﾛｯﾄｶｰﾄﾞ電子化対応<br>
  * <br>
+ * 変更日	2018/12/08<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	メッセージ情報の取得処理を追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -57,29 +62,30 @@ public class MessageUtil {
     }
 
     /**
-     * メッセージ情報取得処理
-     * @param messageId メッセージID
+     * ﾒｯｾｰｼﾞ情報取得処理
+     *
+     * @param messageId ﾒｯｾｰｼﾞID
      * @param changeBackColor 背景色変更判定
-     * @param changePage 項目リストのページ変更判定
-     * @param errItemList エラー項目リスト
-     * @param errorMessageParams エラーメッセージパラメータ
-     * @return エラーメッセージ情報
+     * @param changePage 項目ﾘｽﾄのﾍﾟｰｼﾞ変更判定
+     * @param errItemList ｴﾗｰ項目ﾘｽﾄ
+     * @param errorMessageParams ｴﾗｰﾒｯｾｰｼﾞﾊﾟﾗﾒｰﾀ
+     * @return ｴﾗｰﾒｯｾｰｼﾞ情報
      */
     public static ErrorMessageInfo getErrorMessageInfo(String messageId, boolean changeBackColor, boolean changePage, List<FXHDD01> errItemList, Object... errorMessageParams) {
 
-        // エラーメッセージ情報
+        // ｴﾗｰﾒｯｾｰｼﾞ情報
         ErrorMessageInfo errorMessageInfo = new ErrorMessageInfo();
 
-        errorMessageInfo.setErrorMessageId(messageId); // エラーメッセージID
-        errorMessageInfo.setErrorMessage(getMessage(messageId, errorMessageParams)); // エラーメッセージ
+        errorMessageInfo.setErrorMessageId(messageId); // ｴﾗｰﾒｯｾｰｼﾞID
+        errorMessageInfo.setErrorMessage(getMessage(messageId, errorMessageParams)); // ｴﾗｰﾒｯｾｰｼﾞ
         errorMessageInfo.setIsChangeBackColor(changeBackColor); // 背景色を変更するかどうか
 
-        // エラー対象の項目の情報を戻り値にセットする。
+        // ｴﾗｰ対象の項目の情報を戻り値にｾｯﾄする。
         List<ErrorMessageInfo.ErrorItemInfo> errorItemInfoList = new ArrayList<>();
         if (errItemList != null && !errItemList.isEmpty()) {
-            // 項目一覧のページの変更をする場合
+            // 項目一覧のﾍﾟｰｼﾞの変更をする場合
             if (changePage) {
-                // エラー項目の先頭のインデックスを設定する。
+                // ｴﾗｰ項目の先頭のｲﾝﾃﾞｯｸｽを設定する。
                 errorMessageInfo.setPageChangeItemIndex(errItemList.get(0).getItemIndex()); //項目Index
             }
 

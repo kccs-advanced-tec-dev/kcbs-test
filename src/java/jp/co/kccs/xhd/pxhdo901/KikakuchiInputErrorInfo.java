@@ -1,18 +1,13 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2018 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.pxhdo901;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  *
  * @author koksk-desk2
  */
-public class KikakuchiInputErrorInfo implements Cloneable  {
+public class KikakuchiInputErrorInfo implements Cloneable {
 
     /**
      * クローン実装
@@ -25,31 +20,31 @@ public class KikakuchiInputErrorInfo implements Cloneable  {
         KikakuchiInputErrorInfo cloneModel = (KikakuchiInputErrorInfo) super.clone();
         return cloneModel;
     }
-    
+
     /**
      * コンストラクタ
      */
-    public KikakuchiInputErrorInfo(){
-        
+    public KikakuchiInputErrorInfo() {
+
     }
-    
+
     /**
      * コンストラクタ
+     *
      * @param itemId 項目ID
      * @param itemLabel 項目ラベル
      * @param itemKikakuchi 項目規格値
      * @param itemIndex 項目インデックス
      * @param itemInputValue 項目値
      */
-    public KikakuchiInputErrorInfo(String itemId, String itemLabel, String itemKikakuchi, int itemIndex, String itemInputValue){
+    public KikakuchiInputErrorInfo(String itemId, String itemLabel, String itemKikakuchi, int itemIndex, String itemInputValue) {
         this.itemId = itemId;
         this.itemLabel = itemLabel;
         this.itemKikakuchi = itemKikakuchi;
         this.itemIndex = itemIndex;
         this.itemInputValue = itemInputValue;
     }
-    
-    
+
     /**
      * 項目ID
      */

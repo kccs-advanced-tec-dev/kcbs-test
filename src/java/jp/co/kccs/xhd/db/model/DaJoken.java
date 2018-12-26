@@ -14,14 +14,14 @@ package jp.co.kccs.xhd.db.model;
  * <br>
  * ===============================================================================<br>
  */
-
 /**
  * DA_JOKENのモデルクラスです。
- * 
+ *
  * @author KCSS K.Jo
  * @since 2018/12/11
  */
 public class DaJoken {
+
     /**
      * 設計No
      */
@@ -49,6 +49,7 @@ public class DaJoken {
 
     /**
      * 設計No
+     *
      * @return the sekkeiNo
      */
     public int getSekkeiNo() {
@@ -57,6 +58,7 @@ public class DaJoken {
 
     /**
      * 設計No
+     *
      * @param sekkeiNo the sekkeiNo to set
      */
     public void setSekkeiNo(int sekkeiNo) {
@@ -65,6 +67,7 @@ public class DaJoken {
 
     /**
      * process
+     *
      * @return the process
      */
     public String getProcess() {
@@ -73,6 +76,7 @@ public class DaJoken {
 
     /**
      * process
+     *
      * @param process the process to set
      */
     public void setProcess(String process) {
@@ -81,6 +85,7 @@ public class DaJoken {
 
     /**
      * 条件ﾃｰﾌﾞﾙ工程名
+     *
      * @return the kouteiMei
      */
     public String getKouteiMei() {
@@ -89,6 +94,7 @@ public class DaJoken {
 
     /**
      * 条件ﾃｰﾌﾞﾙ工程名
+     *
      * @param kouteiMei the kouteiMei to set
      */
     public void setKouteiMei(String kouteiMei) {
@@ -97,6 +103,7 @@ public class DaJoken {
 
     /**
      * 条件ﾃｰﾌﾞﾙ項目名
+     *
      * @return the koumokuMei
      */
     public String getKoumokuMei() {
@@ -105,6 +112,7 @@ public class DaJoken {
 
     /**
      * 条件ﾃｰﾌﾞﾙ項目名
+     *
      * @param koumokuMei the koumokuMei to set
      */
     public void setKoumokuMei(String koumokuMei) {
@@ -113,6 +121,7 @@ public class DaJoken {
 
     /**
      * 条件ﾃｰﾌﾞﾙ管理項目
+     *
      * @return the kanriKoumoku
      */
     public String getKanriKoumoku() {
@@ -121,6 +130,7 @@ public class DaJoken {
 
     /**
      * 条件ﾃｰﾌﾞﾙ管理項目
+     *
      * @param kanriKoumoku the kanriKoumoku to set
      */
     public void setKanriKoumoku(String kanriKoumoku) {
@@ -129,6 +139,7 @@ public class DaJoken {
 
     /**
      * 規格値
+     *
      * @return the kikakuChi
      */
     public String getKikakuChi() {
@@ -137,6 +148,7 @@ public class DaJoken {
 
     /**
      * 規格値
+     *
      * @param kikakuChi the kikakuChi to set
      */
     public void setKikakuChi(String kikakuChi) {

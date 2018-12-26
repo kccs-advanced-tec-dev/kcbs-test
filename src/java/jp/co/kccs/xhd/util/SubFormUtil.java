@@ -17,7 +17,6 @@ import javax.faces.context.FacesContext;
  * <br>
  * ===============================================================================<br>
  */
-
 /**
  * 子画面操作用に使用する関数群です。
  *
@@ -55,7 +54,6 @@ public class SubFormUtil {
      */
     public static final String FORM_ID_KIKAKU_ERROR = "KikakuError";
 
-    
     /**
      * コンストラクタ
      *
@@ -127,6 +125,5 @@ public class SubFormUtil {
         }
         return returnBean;
     }
-    
-    
+
 }

@@ -13,21 +13,16 @@ package jp.co.kccs.xhd.db.model;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
- * 変更日	2018/11/13<br>
- * 計画書No	K1811-DS001<br>
- * 変更者	KCSS K.Jo<br>
- * 変更理由	ﾛｯﾄｶｰﾄﾞ電子化対応<br>
- * <br>
  * ===============================================================================<br>
  */
-
 /**
  * FXHDM06(ボタンパラメータマスタ)のモデルクラスです。
- * 
+ *
  * @author KCSS K.Jo
  * @since 2018/11/26
  */
 public class FXHDM06 {
+
     /**
      * 画面ID
      */
@@ -43,7 +38,7 @@ public class FXHDM06 {
     /**
      * ﾁｪｯｸﾊﾟﾀｰﾝ
      */
-    private String checkPattern;   
+    private String checkPattern;
     /**
      * ﾁｪｯｸ処理順
      */
@@ -55,6 +50,7 @@ public class FXHDM06 {
 
     /**
      * 画面ID
+     *
      * @return the gamenId
      */
     public String getGamenId() {
@@ -63,6 +59,7 @@ public class FXHDM06 {
 
     /**
      * 画面ID
+     *
      * @param gamenId the gamenId to set
      */
     public void setGamenId(String gamenId) {
@@ -71,6 +68,7 @@ public class FXHDM06 {
 
     /**
      * ﾎﾞﾀﾝID
+     *
      * @return the buttonId
      */
     public String getButtonId() {
@@ -79,14 +77,16 @@ public class FXHDM06 {
 
     /**
      * ﾎﾞﾀﾝID
+     *
      * @param buttonId the buttonId to set
      */
     public void setButtonId(String buttonId) {
         this.buttonId = buttonId;
     }
-    
+
     /**
      * 項目ID
+     *
      * @return the itemId
      */
     public String getItemId() {
@@ -95,14 +95,16 @@ public class FXHDM06 {
 
     /**
      * 項目ID
+     *
      * @param itemId the itemId to set
      */
     public void setItemId(String itemId) {
         this.itemId = itemId;
     }
-    
+
     /**
      * ﾁｪｯｸﾊﾟﾀｰﾝ
+     *
      * @return the checkPattern
      */
     public String getCheckPattern() {
@@ -111,14 +113,16 @@ public class FXHDM06 {
 
     /**
      * ﾁｪｯｸﾊﾟﾀｰﾝ
+     *
      * @param checkPattern the checkPattern to set
      */
     public void setCheckPattern(String checkPattern) {
         this.checkPattern = checkPattern;
     }
-       
+
     /**
      * ﾁｪｯｸ処理順
+     *
      * @return the checkNo
      */
     public int getButtonNo() {
@@ -127,6 +131,7 @@ public class FXHDM06 {
 
     /**
      * ﾁｪｯｸ処理順
+     *
      * @param checkNo the checkNo to set
      */
     public void setCheckNo(int checkNo) {
@@ -135,6 +140,7 @@ public class FXHDM06 {
 
     /**
      * ボタン表示場所
+     *
      * @return the buttonLocation
      */
     public String getHissuFlag() {
@@ -143,6 +149,7 @@ public class FXHDM06 {
 
     /**
      * ボタン表示場所
+     *
      * @param hissuFlag the buttonLocation to set
      */
     public void setHissuFlag(String hissuFlag) {
