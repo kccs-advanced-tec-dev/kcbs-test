@@ -15,4 +15,9 @@
 .error-text {
     background: red!important;
 }
-            
+.calendarDate input {
+    width: 6em;
+}
+.calendarTime input {
+    width: 4em;
+}

@@ -166,6 +166,12 @@ public class GXHDO901A implements Serializable {
      * 一覧の表示件数
      */
     private String hyojiKensu;
+    
+    /**
+     * displayNoneを設定する(致命的な画面表示エラー時)
+     */
+    private String styleDisplayNone = "";
+
 
     /**
      * コンストラクタ
@@ -328,6 +334,22 @@ public class GXHDO901A implements Serializable {
      */
     public void setHyojiKensu(String hyojiKensu) {
         this.hyojiKensu = hyojiKensu;
+    }
+
+    /**
+     * displayNone設定
+     * @return the styleDisplayNone
+     */
+    public String getStyleDisplayNone() {
+        return styleDisplayNone;
+    }
+
+    /**
+     * displayNone設定
+     * @param styleDisplayNone the styleDisplayNone to set
+     */
+    public void setStyleDisplayNone(String styleDisplayNone) {
+        this.styleDisplayNone = styleDisplayNone;
     }
 
     /**
@@ -1108,6 +1130,8 @@ public class GXHDO901A implements Serializable {
         this.itemList = new ArrayList<>();
         this.buttonListTop = new ArrayList<>();
         this.buttonListBottom = new ArrayList<>();
+        this.styleDisplayNone = "display: none;";
+        
 
         // メッセージを画面に渡す
         InitMessage beanInitMessage = (InitMessage) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_INIT_MESSAGE);

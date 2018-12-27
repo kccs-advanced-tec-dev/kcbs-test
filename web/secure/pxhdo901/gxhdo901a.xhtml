@@ -78,7 +78,7 @@
         <h:outputText style="background:#{gXHDO901A.titleInfo.bgColor};color: #{gXHDO901A.titleInfo.fontColor}; 
                 font-size:#{gXHDO901A.titleInfo.fontSize}px;" value="#{gXHDO901A.titleInfo.formName}"/>
         <div style="text-align:right">
-        <h:outputText style="font-size:#{gXHDO901A.titleInfo.fontSize}px;" value="次工程は積層です"/>        
+        <h:outputText style="font-size:#{gXHDO901A.titleInfo.fontSize}px;  #{gXHDO901A.styleDisplayNone}" value="次工程は積層です"/>        
         </div>
         <br/>
 
@@ -95,7 +95,7 @@
                                  oncomplete="if('warning'!=args.firstParam){PF('cd').hide(); cmdButtonOncomplete(args);} else {PF('cd').show();}"/>
                 <p:commandButton id="warnCancel" value="いいえ" class="ui-conf-commandbtn-cancel" onclick="PF('cd').hide();" type="button" />
             </p:confirmDialog>
-            <p:panel id="headerPanel" style="margin-bottom:4px;">
+            <p:panel id="headerPanel" style="margin-bottom:4px; #{gXHDO901A.styleDisplayNone}">
                 <ui:repeat value="#{gXHDO901A.buttonListTop}" var="item" varStatus="stat">
                     <p:commandButton id="buttonId" value="#{item.buttonName}" rendered="#{item.render}" disabled="#{!item.enabled}"
                                  style="margin-left:4px;margin-bottom:2px;font-size:#{item.fontSize}px;color:#{item.fontColor};background:#{item.backColor};"
@@ -103,7 +103,7 @@
                                  oncomplete="cmdButtonOncomplete(args);" />                    
                 </ui:repeat>
             </p:panel>
-            <p:panel id="entryPanel" style="margin-bottom:4px;">
+            <p:panel id="entryPanel" style="margin-bottom:4px; #{gXHDO901A.styleDisplayNone}">
                 <p:dataList id="itemDataList" value="#{gXHDO901A.itemList}" var="item" type="none" itemType="none" paginator="true" rows="#{gXHDO901A.hyojiKensu}" styleClass="repeated-form;ui-paginator">
                     <ui:fragment rendered="#{gXHDO901A.itemRendered}">
                         <p:panel id="itemPanel" style="background:#{item.backColor1};height:48px;">
@@ -115,10 +115,17 @@
                             <h:outputText id="lblValue" rendered="#{item.renderOutputLabel}" value="#{item.value}"
                                           style="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;"/>
 
-                            <p:inputText id="textValue" rendered="#{(item.renderInputText or item.renderInputDate) and (!item.renderOutputLabel)}" value="#{item.value}" maxlength="#{item.displayMaxLength}"
+                            <p:inputText id="textValue" rendered="#{(item.renderInputText) and (!item.renderOutputLabel)}" value="#{item.value}" maxlength="#{item.displayMaxLength}"
                                           style="margin-left:8px;width:#{item.displayMaxLength}em;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;">
 								<p:ajax event="blur" process="@this" update="@this" listener="#{item.checkByte()}"  async="false"/>
                             </p:inputText>
+                            
+                            <p:calendar id="calendarDate" rendered="#{item.renderInputDate}" pattern="yyMMdd" value="#{item.value}" maxlength="#{item.displayMaxLength}" class="calendarDate"
+                                        style="margin-left:8px; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;" />
+                            <p:calendar id="calendarTime" rendered="#{item.renderInputTime}" value="#{item.value}" pattern="HHmm" timeOnly="true" class="calendarTime"
+                                        style="margin-left:8px; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;" />
+                            
+                            
                             
                             <p:inputNumber id="numberValue" rendered="#{item.renderInputNumber}" value="#{item.value}" thousandSeparator="" 
                                            decimalPlaces="#{item.numberDecimalPlaces}" maxValue="#{item.numberMaxValue}" minValue="#{item.numberMinValue}" size="#{item.displayMaxLength}"
@@ -142,7 +149,7 @@
                     </ui:fragment>
                 </p:dataList>
             </p:panel>
-            <p:panel id="footerPanel" style="margin-bottom:4px;">
+            <p:panel id="footerPanel" style="margin-bottom:4px; #{gXHDO901A.styleDisplayNone}">
                 <ui:repeat value="#{gXHDO901A.buttonListBottom}" var="item" varStatus="stat">
                     <p:commandButton id="buttonId" value="#{item.buttonName}" rendered="#{item.render}" disabled="#{!item.enabled}"
                                  style="margin-left:4px;margin-bottom:2px;font-size:#{item.fontSize}px;color:#{item.fontColor};background:#{item.backColor};"

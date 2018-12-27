@@ -444,7 +444,6 @@ public class GXHDO101B001 implements IFormLogic {
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             HttpSession session = (HttpSession) externalContext.getSession(false);
 
-            //TODO 
             long rev = 0;
             String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
             String formId = StringUtil.nullToBlank(session.getAttribute("formId"));

@@ -15,7 +15,20 @@
         <h:outputScript library="primefaces" name="jquery/jquery.js" />
         <script src="#{request.contextPath}/resources/js/locUpload.js"></script>
         <script src="#{request.contextPath}/resources/js/growl.js"></script>
-        <script type="text/javascript"></script>
+        <script type="text/javascript">
+            //<![CDATA[
+            $(document).ready(function() {
+                //upload to
+                g_locationUrl = '#{myParam.locationUrl}';
+                //MAC Address
+                g_macAddr = '#{sessionInfo.macAddr}';
+                //location
+                g_location = '#{myMsg.NotAvailable}';
+                g_prgname = 'gxhdo101a.xhtml';
+                var interval_id = setInterval(getLocation, #{myParam.sendLocInterval});
+            });
+            //]]>
+        </script>
         <style type='text/css'>
         .button
         {
