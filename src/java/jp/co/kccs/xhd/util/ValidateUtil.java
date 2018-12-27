@@ -1355,7 +1355,7 @@ public class ValidateUtil {
                 + "torokusha, toroku_date, koshinsha, koshin_date, rev, gamen_id, gamen_title, kojyo, lotno, edaban,"
                 + " jissekino, item_id, item_name, kikaku, input_value, delete_flag"
                 + ") VALUES ("
-                + "?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+                + "?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
 
         List<Object> params;
         for (KikakuchiInputErrorInfo kikakuchiInputErrorInfo : kikakuchiErrorInfoList) {
@@ -1386,6 +1386,7 @@ public class ValidateUtil {
         params.add(timestamp);
         params.add(null);
         params.add(null);
+        params.add(rev);
         params.add(formId);
         params.add(gamenTitle);
         params.add(lotNo.substring(0, 3));

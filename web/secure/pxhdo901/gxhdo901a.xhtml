@@ -98,7 +98,7 @@
             <p:panel id="headerPanel" style="margin-bottom:4px;">
                 <ui:repeat value="#{gXHDO901A.buttonListTop}" var="item" varStatus="stat">
                     <p:commandButton id="buttonId" value="#{item.buttonName}" rendered="#{item.render}" disabled="#{!item.enabled}"
-                                 style="margin-left:4px;font-size:#{item.fontSize}px;color:#{item.fontColor};background:#{item.backColor};"
+                                 style="margin-left:4px;margin-bottom:2px;font-size:#{item.fontSize}px;color:#{item.fontColor};background:#{item.backColor};"
                                  actionListener="#{gXHDO901A.btnClick(item.buttonId)}" process="@form" update="@form" async="false"
                                  oncomplete="cmdButtonOncomplete(args);" />                    
                 </ui:repeat>
@@ -145,7 +145,7 @@
             <p:panel id="footerPanel" style="margin-bottom:4px;">
                 <ui:repeat value="#{gXHDO901A.buttonListBottom}" var="item" varStatus="stat">
                     <p:commandButton id="buttonId" value="#{item.buttonName}" rendered="#{item.render}" disabled="#{!item.enabled}"
-                                 style="margin-left:4px;font-size:#{item.fontSize}px;color:#{item.fontColor};background:#{item.backColor};"
+                                 style="margin-left:4px;margin-bottom:2px;font-size:#{item.fontSize}px;color:#{item.fontColor};background:#{item.backColor};"
                                  actionListener="#{gXHDO901A.btnClick(item.buttonId)}" process="@form" update="@form" async="false"
                                  oncomplete="cmdButtonOncomplete(args);" />
                 </ui:repeat>
