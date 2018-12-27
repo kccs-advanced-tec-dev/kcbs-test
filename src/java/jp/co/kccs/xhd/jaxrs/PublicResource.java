@@ -6,6 +6,8 @@ package jp.co.kccs.xhd.jaxrs;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -39,7 +41,6 @@ import javax.ws.rs.core.Response;
  * <br>
  * ===============================================================================<br>
  */
-
 /**
  * ロケーション情報を操作するクラスです。
  *
@@ -48,17 +49,17 @@ import javax.ws.rs.core.Response;
  */
 @Path("public")
 public class PublicResource {
-    
+
     private static final Logger LOGGER = Logger.getLogger(PublicResource.class.getName());
 
     @Context
     private UriInfo context;
-    @Resource(mappedName="jdbc/DocumentServer")
+    @Resource(mappedName = "jdbc/DocumentServer")
     DataSource dataSource;
 
     /**
      * コンストラクタ
-     * 
+     *
      * @author KCCS fujimura
      * @since 2017/02/18
      */
@@ -67,7 +68,7 @@ public class PublicResource {
 
     /**
      * ロケーション情報をロケーションログへ登録します。
-     * 
+     *
      * @param termNo MACアドレス
      * @param page 起動画面のXHTML
      * @param location ロケーション情報
@@ -85,27 +86,73 @@ public class PublicResource {
         Date date = new Date();
         String msg = String.format("%s %s %s %s", date.toString(), termNo, page, location);
         System.out.println(msg);
-        
+
         Connection conn = null;
         PreparedStatement ps = null;
-        
+        DateFormat dfDate = new SimpleDateFormat("yyMMdd");
+
         try {
             conn = dataSource.getConnection();
-            String executeSQL = "INSERT INTO fxhbd91 (torokusha, toroku_date, koshinsha, "
-                    + "koshin_date, mac_address, gamen, ichi_info) VALUES(?, ?, ?, ?, ?, ?, ?)";
-            
+
+            String executeSQL = "INSERT INTO fxhdd91 (torokusha,toroku_date,koshinsha,koshin_date,mac_address,torokubi,koushin_kaisuu, "
+                    + " location,gamen_mei,last_kousin_date,last_location,last_gamen_mei) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) "
+                    + "  ON CONFLICT(mac_address,torokubi) DO UPDATE  SET "
+                    + "    koshinsha = ? "
+                    + "  , koshin_date = ? "
+                    + "  , koushin_kaisuu = fxhdd91.koushin_kaisuu + 1 "
+                    + "  , location = ? "
+                    + "  , gamen_mei = ? ";
+
+            // ﾛｹｰｼｮﾝが取得出来た場合のみ更新する。
+            if (!"NA".equals(location) && !"TIMEOUT".equals(location)) {
+                executeSQL += "  , last_kousin_date = ? "
+                        + "  , last_location = ? "
+                        + "  , last_gamen_mei = ? ";
+            }
+
             ps = conn.prepareStatement(executeSQL);
-            ps.setString(1, null);
+
+            //INSERT
+            ps.setString(1, "system");
             ps.setTimestamp(2, new java.sql.Timestamp(new Date().getTime()));
             ps.setString(3, null);
             ps.setTimestamp(4, null);
             ps.setString(5, escapeSQL(blankToNull(stringLeft(termNo, 255))));
-            ps.setString(6, escapeSQL(blankToNull(stringLeft(page, 255))));
-            ps.setString(7, escapeSQL(blankToNull(stringLeft(location, 255))));
+            ps.setString(6, dfDate.format(date));
+            ps.setInt(7, 1);
+            ps.setString(9, escapeSQL(blankToNull(stringLeft(page, 255))));
+
+            //UPDATE
+            ps.setString(13, "system");
+            ps.setTimestamp(14, new java.sql.Timestamp(new Date().getTime()));
+            ps.setString(16, escapeSQL(blankToNull(stringLeft(page, 255))));
+
+            if ("NA".equals(location) || "TIMEOUT".equals(location)) {
+                // INSERT
+                ps.setString(8, null);
+                ps.setTimestamp(10, null);
+                ps.setString(11, null);
+                ps.setString(12, null);
+                // UPDATE
+                ps.setString(15, null);
+
+            } else {
+                // INSERT
+                ps.setString(8, escapeSQL(blankToNull(stringLeft(location, 255))));
+                ps.setTimestamp(10, new java.sql.Timestamp(new Date().getTime()));
+                ps.setString(11, escapeSQL(blankToNull(stringLeft(location, 255))));
+                ps.setString(12, escapeSQL(blankToNull(stringLeft(page, 255))));
+
+                // UPDATE
+                ps.setString(15, escapeSQL(blankToNull(stringLeft(location, 255))));
+                ps.setTimestamp(17, new java.sql.Timestamp(new Date().getTime()));
+                ps.setString(18, escapeSQL(blankToNull(stringLeft(location, 255))));
+                ps.setString(19, escapeSQL(blankToNull(stringLeft(page, 255))));
+            }
 
             //SQLを実行する
             ps.executeUpdate();
-            
+
         } catch (SQLException e) {
             LOGGER.log(Level.SEVERE, null, e);
         } finally {
@@ -120,13 +167,13 @@ public class PublicResource {
                 LOGGER.log(Level.SEVERE, null, e);
             }
         }
-        
+
         return termNo + " ok";
     }
 
     /**
      * Macアドレス登録用のログを出力します。
-     * 
+     *
      * @param msg ログメッセージ
      * @return レスポンス
      * @author KCCS fujimura
@@ -151,7 +198,7 @@ public class PublicResource {
         }
         return Response.ok().build();
     }
-    
+
     /**
      * 文字列の左側から指定文字数取得します。
      *
@@ -167,13 +214,13 @@ public class PublicResource {
             length = src.length();
         } else {
             length = 0;
-	}
+        }
         if (length <= len) {
             return src;
-	}
-	return src.substring(0, len);
+        }
+        return src.substring(0, len);
     }
-    
+
     /**
      * 文字列が空文字の場合、nullを返します。
      *
@@ -189,29 +236,29 @@ public class PublicResource {
         }
         return src;
     }
-    
+
     /**
      * SQL文出力用に、次の置換を行います。<BR>
      * [置換される文字]<BR>
      * <CODE> ' -> '' \ -> \\ " -> "" </CODE>
-     * 
+     *
      * @param input 置換対象の文字列
      * @return 置換処理後の文字列
      * @author KCCS fujimura
      * @since 2017/02/15
      */
     private String escapeSQL(String input) {
-	if (input == null) {
+        if (input == null) {
             return "";
         }
-	input = substitute(input, "'", "''");
-	return input;
+        input = substitute(input, "'", "''");
+        return input;
     }
-    
+
     /**
      * 文字列の全置換を行います。<BR>
-     * 
-     * @return String 置換処理後の文字列	
+     *
+     * @return String 置換処理後の文字列
      * @param input 処理の対象の文字列
      * @param pattern 置換前の文字列
      * @param replacement 置換後の文字列
@@ -220,35 +267,35 @@ public class PublicResource {
      */
     private String substitute(final String input, final String pattern, final String replacement) {
         // このAPIを使用する前提条件を定義
-	if (input == null) {
+        if (input == null) {
             throw new IllegalArgumentException("input is 'null'!");
         }
-	if (pattern == null) {
+        if (pattern == null) {
             throw new IllegalArgumentException("pattern is 'null'!");
         }
-	if (replacement == null) {
+        if (replacement == null) {
             throw new IllegalArgumentException("replacement is 'null'!");
         }
 
-	// 置換対象文字列が存在する場所を取得
-	int index = input.indexOf(pattern);
+        // 置換対象文字列が存在する場所を取得
+        int index = input.indexOf(pattern);
 
-	// 置換対象文字列が存在しなければ終了
-	if (index == -1) {
+        // 置換対象文字列が存在しなければ終了
+        if (index == -1) {
             return input;
-	}
+        }
 
-	// 処理を行うための StringBuffer
-	StringBuilder buffer = new StringBuilder();
+        // 処理を行うための StringBuffer
+        StringBuilder buffer = new StringBuilder();
 
-	buffer.append(input.substring(0, index)).append(replacement);
+        buffer.append(input.substring(0, index)).append(replacement);
 
-	if (index + pattern.length() < input.length()) {
+        if (index + pattern.length() < input.length()) {
             // 残りの文字列を再帰的に置換
             String rest = input.substring(index + pattern.length(), input.length());
             buffer.append(substitute(rest, pattern, replacement));
         }
 
-	return buffer.toString();
+        return buffer.toString();
     }
 }

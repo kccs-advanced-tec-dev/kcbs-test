@@ -208,11 +208,17 @@ public class ValidateUtil {
         // 項目データを取得
         FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
         if (null != fXHDD01) {
+            // 値が入っていない場合、チェック無し
+            if (StringUtil.isEmpty(fXHDD01.getValue())) {
+                return null;
+            }
+
             int ketasu = -1;
             if (NumberUtil.isIntegerNumeric(fXHDD01.getInputLength())) {
                 ketasu = Integer.parseInt(fXHDD01.getInputLength());
             }
             String value = fXHDD01.getValue();
+
             // エラー対象をリストに追加
             List<FXHDD01> errorItemList = Arrays.asList(fXHDD01);
             if (ketasu != StringUtil.getByte(value, CHARSET, LOGGER)) {
@@ -236,6 +242,11 @@ public class ValidateUtil {
         // 項目データを取得
         FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
         if (null != fXHDD01) {
+            // 値が入っていない場合、チェック無し
+            if (StringUtil.isEmpty(fXHDD01.getValue())) {
+                return null;
+            }
+
             int ketasuSeisu = -1;
             int ketasuShosu = -1;
             if (NumberUtil.isIntegerNumeric(fXHDD01.getInputLength())) {
@@ -266,6 +277,11 @@ public class ValidateUtil {
         // 項目データを取得
         FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
         if (null != fXHDD01) {
+            // 値が入っていない場合、チェック無し
+            if (StringUtil.isEmpty(fXHDD01.getValue())) {
+                return null;
+            }
+
             int ketasu = -1;
             if (NumberUtil.isIntegerNumeric(fXHDD01.getInputLength())) {
                 ketasu = Integer.parseInt(fXHDD01.getInputLength());
@@ -292,6 +308,11 @@ public class ValidateUtil {
         // 項目データを取得
         FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
         if (null != fXHDD01) {
+            // 値が入っていない場合、チェック無し
+            if (StringUtil.isEmpty(fXHDD01.getValue())) {
+                return null;
+            }
+
             int ketasuSeisu = -1;
             int ketasuShosu = -1;
             if (NumberUtil.isIntegerNumeric(fXHDD01.getInputLength())) {
@@ -363,6 +384,12 @@ public class ValidateUtil {
         FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
         if (null != fXHDD01) {
             String value = fXHDD01.getValue();
+
+            // 値が入っていない場合、チェック無し
+            if (StringUtil.isEmpty(value)) {
+                return null;
+            }
+
             if (!NumberUtil.isNumeric(value)) {
                 List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
                 return MessageUtil.getErrorMessageInfo("XHD-000008", true, true, errFxhdd01List, fXHDD01.getLabel1());
@@ -382,10 +409,15 @@ public class ValidateUtil {
         // 項目データを取得
         FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
         if (null != fXHDD01) {
-            List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
             String value = fXHDD01.getValue();
+            // 値が入っていない場合、チェック無し
+            if (StringUtil.isEmpty(value)) {
+                return null;
+            }
+
+            List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
             if (!NumberUtil.isNumeric(value)) {
-                return MessageUtil.getErrorMessageInfo("XHD-000008", true, true, errFxhdd01List, fXHDD01.getLabel1());
+                return MessageUtil.getErrorMessageInfo("XHD-000009", true, true, errFxhdd01List, fXHDD01.getLabel1());
             }
             if (new BigDecimal(value).compareTo(BigDecimal.ZERO) == -1) {
                 return MessageUtil.getErrorMessageInfo("XHD-000009", true, true, errFxhdd01List, fXHDD01.getLabel1());
@@ -406,10 +438,16 @@ public class ValidateUtil {
         // 項目データを取得
         FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
         if (null != fXHDD01) {
-            List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
+
             String value = fXHDD01.getValue();
+            // 値が入っていない場合、チェック無し
+            if (StringUtil.isEmpty(value)) {
+                return null;
+            }
+
+            List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
             if (!NumberUtil.isNumeric(value)) {
-                return MessageUtil.getErrorMessageInfo("XHD-000008", true, true, errFxhdd01List, fXHDD01.getLabel1());
+                return MessageUtil.getErrorMessageInfo("XHD-000010", true, true, errFxhdd01List, fXHDD01.getLabel1());
             }
             if (new BigDecimal(value).compareTo(BigDecimal.ZERO) == 1) {
                 return MessageUtil.getErrorMessageInfo("XHD-000010", true, true, errFxhdd01List, fXHDD01.getLabel1());
@@ -431,6 +469,11 @@ public class ValidateUtil {
         // 項目データを取得
         FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
         if (null != fXHDD01) {
+            // 値が入っていない場合、チェック無し
+            if (StringUtil.isEmpty(fXHDD01.getValue())) {
+                return null;
+            }
+
             List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
 
             if (!existGokukimas(fXHDD01.getValue(), queryRunnerDoc)) {
@@ -453,6 +496,11 @@ public class ValidateUtil {
         // 項目データを取得
         FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
         if (null != fXHDD01) {
+            // 値が入っていない場合、チェック無し
+            if (StringUtil.isEmpty(fXHDD01.getValue())) {
+                return null;
+            }
+
             List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
 
             if (!existTantomas(fXHDD01.getValue(), queryRunnerDoc)) {
@@ -475,6 +523,10 @@ public class ValidateUtil {
         FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
         if (null != fXHDD01) {
             String value = fXHDD01.getValue();
+            if (StringUtil.isEmpty(value)) {
+                return null;
+            }
+
             if (!DateUtil.isValidYYMMDD(value)) {
                 List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
                 return MessageUtil.getErrorMessageInfo("XHD-000012", true, true, errFxhdd01List, fXHDD01.getLabel1());
@@ -495,6 +547,10 @@ public class ValidateUtil {
         FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
         if (null != fXHDD01) {
             String value = fXHDD01.getValue();
+            if (StringUtil.isEmpty(value)) {
+                return null;
+            }
+
             if (!DateUtil.isValidHHMM(value)) {
                 List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
                 return MessageUtil.getErrorMessageInfo("XHD-000013", true, true, errFxhdd01List, fXHDD01.getLabel1());
@@ -586,12 +642,12 @@ public class ValidateUtil {
      * 数値チェック(範囲内)
      *
      * @param itemLabel 入力項目名
-     * @param maxValue 上限値(メッセージ出力用)
-     * @param minValue 下限値(メッセージ出力用)
+     * @param minValue 下限値
+     * @param maxValue 上限値
      * @param value 項目値
      * @return エラー時はエラーメッセージを返却
      */
-    public String checkS001(String itemLabel, BigDecimal maxValue, BigDecimal minValue, BigDecimal value) {
+    public String checkS001(String itemLabel, BigDecimal minValue, BigDecimal maxValue, BigDecimal value) {
         if (!NumberUtil.isValidRange(value, maxValue, minValue)) {
             return MessageUtil.getMessage("XHD-000022", itemLabel, minValue.toPlainString(), maxValue.toPlainString());
         }
@@ -1284,6 +1340,7 @@ public class ValidateUtil {
      *
      * @param queryRunnerDoc QueryRunnerオブジェクト
      * @param tantoshaCd 担当者コード
+     * @param rev 履歴No
      * @param lotNo ロットNo
      * @param formId 画面ID
      * @param gamenTitle 画面タイトル
@@ -1292,17 +1349,17 @@ public class ValidateUtil {
      * @param kikakuchiErrorInfoList 規格値エラー情報リスト
      * @throws SQLException 例外エラー
      */
-    public static void fxhdd04Insert(QueryRunner queryRunnerDoc, String tantoshaCd, String lotNo, String formId, String gamenTitle, int jissekino, String deleteFlag, List<KikakuchiInputErrorInfo> kikakuchiErrorInfoList) throws SQLException {
+    public static void fxhdd04Insert(QueryRunner queryRunnerDoc, String tantoshaCd, long rev, String lotNo, String formId, String gamenTitle, int jissekino, String deleteFlag, List<KikakuchiInputErrorInfo> kikakuchiErrorInfoList) throws SQLException {
         // 焼成データの登録
         String sql = "INSERT INTO fxhdd04 ("
-                + "torokusha, toroku_date, koshinsha, koshin_date,  gamen_id, gamen_title, kojyo, lotno, edaban,"
+                + "torokusha, toroku_date, koshinsha, koshin_date, rev, gamen_id, gamen_title, kojyo, lotno, edaban,"
                 + " jissekino, item_id, item_name, kikaku, input_value, delete_flag"
                 + ") VALUES ("
                 + "?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
 
         List<Object> params;
         for (KikakuchiInputErrorInfo kikakuchiInputErrorInfo : kikakuchiErrorInfoList) {
-            params = getFxhdd04UpdateParams(tantoshaCd, lotNo, formId, gamenTitle, jissekino, deleteFlag, kikakuchiInputErrorInfo);
+            params = getFxhdd04UpdateParams(tantoshaCd, rev, lotNo, formId, gamenTitle, jissekino, deleteFlag, kikakuchiInputErrorInfo);
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
             queryRunnerDoc.update(sql, params.toArray());
         }
@@ -1312,6 +1369,7 @@ public class ValidateUtil {
      * 規格外登録履歴更新パラメータ取得処理
      *
      * @param tantoshaCd 担当者コード
+     * @param rev 履歴No
      * @param lotNo ロットNo
      * @param formId 画面ID
      * @param gamenTitle 画面タイトル
@@ -1320,7 +1378,7 @@ public class ValidateUtil {
      * @param kikakuchiErrorInfo
      * @return 規格外登録履歴更新パラメータ
      */
-    private static List<Object> getFxhdd04UpdateParams(String tantoshaCd, String lotNo, String formId, String gamenTitle, int jissekino, String deleteFlag, KikakuchiInputErrorInfo kikakuchiErrorInfo) {
+    private static List<Object> getFxhdd04UpdateParams(String tantoshaCd, long rev, String lotNo, String formId, String gamenTitle, int jissekino, String deleteFlag, KikakuchiInputErrorInfo kikakuchiErrorInfo) {
         List<Object> params = new ArrayList<>();
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -1353,7 +1411,7 @@ public class ValidateUtil {
      */
     private boolean existGokukimas(String goukicode, QueryRunner queryRunnerDoc) throws SQLException {
         String sql = "SELECT goukicode "
-                + "FROM gokukimas WHERE goukicode = ? ";
+                + "FROM goukimas WHERE goukicode = ? ";
 
         List<Object> params = new ArrayList<>();
         params.add(goukicode);
@@ -1361,7 +1419,7 @@ public class ValidateUtil {
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         Map gokukimas = queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
         if (null == gokukimas || gokukimas.isEmpty()) {
-            return true;
+            return false;
         }
         return true;
 
@@ -1384,7 +1442,7 @@ public class ValidateUtil {
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         Map tantomas = queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
         if (null == tantomas || tantomas.isEmpty()) {
-            return true;
+            return false;
         }
         return true;
 

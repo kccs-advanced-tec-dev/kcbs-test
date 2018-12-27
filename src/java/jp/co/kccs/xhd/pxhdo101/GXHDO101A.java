@@ -123,7 +123,6 @@ public class GXHDO101A implements Serializable {
         // model
         GetModel getModel = new GetModel(uAgent);
         String model = getModel.getModel();
-        String submodel = getModel.getSubmodel();
         
         // userAgentでPC or タブレットを判定
         boolean isPC = false;

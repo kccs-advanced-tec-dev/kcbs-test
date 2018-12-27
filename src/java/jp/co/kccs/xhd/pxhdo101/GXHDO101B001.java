@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.faces.context.ExternalContext;
@@ -445,6 +444,8 @@ public class GXHDO101B001 implements IFormLogic {
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             HttpSession session = (HttpSession) externalContext.getSession(false);
 
+            //TODO 
+            long rev = 0;
             String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
             String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
             String formTitle = StringUtil.nullToBlank(session.getAttribute("formTitle"));
@@ -452,18 +453,15 @@ public class GXHDO101B001 implements IFormLogic {
 
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
             if (!kikakuError.getKikakuchiInputErrorInfoList().isEmpty()) {
-                ValidateUtil.fxhdd04Insert(queryRunnerWip, tantoshaCd, lotNo, formId, formTitle, 1, "0", kikakuError.getKikakuchiInputErrorInfoList());
+                ValidateUtil.fxhdd04Insert(queryRunnerWip, tantoshaCd, rev, lotNo, formId, formTitle, 1, "0", kikakuError.getKikakuchiInputErrorInfoList());
             }
 
             DbUtils.commitAndCloseQuietly(conDoc);
-            
-            
-                    
+
             return processData;
         } catch (SQLException e) {
             ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
 
-            
             try {
 
                 DbUtils.rollback(conDoc);
@@ -472,13 +470,12 @@ public class GXHDO101B001 implements IFormLogic {
                 ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
             }
             DbUtils.closeQuietly(conDoc);
-            
+
 //            try {
 //                processData.getDataSourceWip().getConnection().rollback();
 //            } catch (SQLException ex) {
 //                ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
 //            }
-
             processData = createRegistDataErrorMessage(processData);
         }
 //        finally {

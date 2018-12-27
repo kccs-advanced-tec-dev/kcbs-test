@@ -12,6 +12,8 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -375,11 +377,7 @@ public class GXHDO901A implements Serializable {
         this.loadCheckList(formId);
 
         // SEKKEINO取得
-        String strSekkeiNo = "";
-        Map mapSekkeiNo = this.getSekkeiNo(lotNo);
-        if (null != mapSekkeiNo && !mapSekkeiNo.isEmpty()) {
-            strSekkeiNo = StringUtil.nullToBlank(NumberUtil.convertIntData(mapSekkeiNo.get("SEKKEINO")));
-        }
+        String strSekkeiNo = this.getSekkeiNo(lotNo);
 
         // DaJoken情報取得
         getJokenInfo(strSekkeiNo);
@@ -1159,11 +1157,10 @@ public class GXHDO901A implements Serializable {
      *
      * @param lotNo 画面ロットNo
      */
-    private Map getSekkeiNo(String lotNo) {
+    private String getSekkeiNo(String lotNo) {
         String strKojyo = lotNo.substring(0, 3);
         String strLotNo = lotNo.substring(3, 11);
         String strEdaban = lotNo.substring(11, 14);
-        Map mapSekkeiNo = null;
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
             String sql = "SELECT SEKKEINO "
@@ -1176,11 +1173,15 @@ public class GXHDO901A implements Serializable {
             params.add(strEdaban);
 
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-            mapSekkeiNo = queryRunner.query(sql, new MapHandler(), params.toArray());
+            Map mapSekkeiNo = queryRunner.query(sql, new MapHandler(), params.toArray());
+            if (null != mapSekkeiNo && !mapSekkeiNo.isEmpty()) {
+                return StringUtil.nullToBlank(NumberUtil.convertIntData(mapSekkeiNo.get("SEKKEINO")));
+            }
+
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("SekkeiNo取得失敗", ex, LOGGER);
         }
-        return mapSekkeiNo;
+        return "";
     }
 
     /**

@@ -92,7 +92,6 @@ public class GXHDO012A implements Serializable {
         // model
         GetModel getModel = new GetModel(uAgent);
         String model = getModel.getModel();
-        String submodel = getModel.getSubmodel();
         
         // userAgentでPC or タブレットを判定
         boolean isPC = false;
@@ -149,9 +148,6 @@ public class GXHDO012A implements Serializable {
      * @return 遷移先画面
      */
     public String openXhdForm(FXHDM01 rowData) {
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        HttpSession session = (HttpSession) externalContext.getSession(false);
-        
         return rowData.getLinkChar() + "?faces-redirect=true";
     }
     
