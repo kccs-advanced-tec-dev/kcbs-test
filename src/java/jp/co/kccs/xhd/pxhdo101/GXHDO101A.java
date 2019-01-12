@@ -182,7 +182,7 @@ public class GXHDO101A implements Serializable {
                 return null;
             }
 
-            String sqlsearchGamenID = "SELECT gamen_id, kotei_jun FROM fxhdm03 WHERE koteijun_hantei_jouhou = ? order by kotei_jun ";
+            String sqlsearchGamenID = "SELECT gamen_id, kotei_jun FROM fxhdm03 WHERE kotei_process_kubun = ? order by kotei_jun ";
             List<Object> params2 = new ArrayList<>();
             params2.add(strProcess);
             

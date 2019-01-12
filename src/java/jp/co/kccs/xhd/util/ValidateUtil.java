@@ -1349,7 +1349,7 @@ public class ValidateUtil {
      * @param kikakuchiErrorInfoList 規格値エラー情報リスト
      * @throws SQLException 例外エラー
      */
-    public static void fxhdd04Insert(QueryRunner queryRunnerDoc, String tantoshaCd, long rev, String lotNo, String formId, String gamenTitle, int jissekino, String deleteFlag, List<KikakuchiInputErrorInfo> kikakuchiErrorInfoList) throws SQLException {
+    public static void fxhdd04Insert(QueryRunner queryRunnerDoc, String tantoshaCd, BigDecimal rev, String lotNo, String formId, String gamenTitle, int jissekino, String deleteFlag, List<KikakuchiInputErrorInfo> kikakuchiErrorInfoList) throws SQLException {
         // 焼成データの登録
         String sql = "INSERT INTO fxhdd04 ("
                 + "torokusha, toroku_date, koshinsha, koshin_date, rev, gamen_id, gamen_title, kojyo, lotno, edaban,"
@@ -1378,7 +1378,7 @@ public class ValidateUtil {
      * @param kikakuchiErrorInfo
      * @return 規格外登録履歴更新パラメータ
      */
-    private static List<Object> getFxhdd04UpdateParams(String tantoshaCd, long rev, String lotNo, String formId, String gamenTitle, int jissekino, String deleteFlag, KikakuchiInputErrorInfo kikakuchiErrorInfo) {
+    private static List<Object> getFxhdd04UpdateParams(String tantoshaCd, BigDecimal rev, String lotNo, String formId, String gamenTitle, int jissekino, String deleteFlag, KikakuchiInputErrorInfo kikakuchiErrorInfo) {
         List<Object> params = new ArrayList<>();
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());

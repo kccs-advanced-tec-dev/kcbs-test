@@ -5,7 +5,10 @@ package jp.co.kccs.xhd.pxhdo101;
 
 import java.util.ArrayList;
 import java.util.List;
+import jp.co.kccs.xhd.model.GXHDO101C001Model;
 import jp.co.kccs.xhd.model.GXHDO101C002Model;
+import jp.co.kccs.xhd.util.ErrUtil;
+import jp.co.kccs.xhd.util.StringUtil;
 
 /**
  * ===============================================================================<br>
@@ -24,20 +27,15 @@ import jp.co.kccs.xhd.model.GXHDO101C002Model;
  */
 public class GXHDO101C002Logic {
 
-    public static GXHDO101C002Model createGXHDO101C002Model(String lotNo) {
+    public static GXHDO101C002Model createGXHDO101C002Model(String[] ptnKyoriXStart, String[] ptnKyoriXEnd) {
         GXHDO101C002Model gxhdo101c002Model = new GXHDO101C002Model();
         List<GXHDO101C002Model.PtnKyoriXData> ptnKyoriXDataList = new ArrayList<>();
 
-        // PTN距離X(1行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c002Model, "1", "", "TEXT", "14", "", "", "TEXT", "2", ""));
-        // PTN距離X(2行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c002Model, "2", "", "TEXT", "11", "", "", "TEXT", "2", ""));
-        // PTN距離X(3行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c002Model, "3", "", "TEXT", "11", "", "", "TEXT", "2", ""));
-        // PTN距離X(4行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c002Model, "4", "", "TEXT", "11", "", "", "TEXT", "2", ""));
-        // PTN距離X(5行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c002Model, "5", "", "TEXT", "11", "", "", "TEXT", "2", ""));
+        //PTN距離Xのデータをセットする
+        for (int i = 0; i < ptnKyoriXStart.length; i++) {
+            ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c002Model, String.valueOf(i + 1), ptnKyoriXStart[i], "TEXT", "3", "", ptnKyoriXEnd[i], "TEXT", "3", ""));
+
+        }
 
         gxhdo101c002Model.setPtnKyoriXDataList(ptnKyoriXDataList);
 
@@ -92,5 +90,32 @@ public class GXHDO101C002Logic {
         ptnKyoriXData.setEndTextBackColor(endTextBackColor);
 
         return ptnKyoriXData;
+    }
+    
+    
+    /**
+     * 入力ﾁｪｯｸ
+     * @param gXHDO101C002Model PTN距離Xサブ画面用ﾓﾃﾞﾙ
+     * @return ｴﾗｰﾘｽﾄ
+     */
+    public static List<String> checkInput(GXHDO101C002Model gXHDO101C002Model) {
+        
+        List<String> errorList = new ArrayList<>();
+        List<GXHDO101C002Model.PtnKyoriXData> ptnKyoriXDataList = gXHDO101C002Model.getPtnKyoriXDataList();
+        for (GXHDO101C002Model.PtnKyoriXData ptnKyoriX : ptnKyoriXDataList) {
+            if (StringUtil.isEmpty(ptnKyoriX.getStartVal())) {
+                ptnKyoriX.setStartTextBackColor(ErrUtil.ERR_BACK_COLOR);
+                errorList.add("スタートが入力されていません。");
+                return errorList;
+            }
+            
+            if (StringUtil.isEmpty(ptnKyoriX.getEndVal())) {
+                ptnKyoriX.setEndTextBackColor(ErrUtil.ERR_BACK_COLOR);
+                errorList.add("エンドが入力されていません。");
+                return errorList;
+            }
+        }
+        
+        return errorList;
     }
 }

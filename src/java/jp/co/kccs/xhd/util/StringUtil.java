@@ -4,6 +4,7 @@
 package jp.co.kccs.xhd.util;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.security.InvalidParameterException;
 import java.util.HashMap;
 import java.util.logging.Level;
@@ -426,6 +427,20 @@ public class StringUtil {
         return src.toString();
     }
 
+    /**
+     * 引数がNULL値の場合、空の値を返します。NULL以外の場合、文字列変換した値(toPlainString())を返します。
+     *
+     * @param src 文字列
+     * @return 変換値
+     */
+    public static String nullToBlank(BigDecimal src) {
+        if (null == src) {
+            return "";
+        }
+        return src.toPlainString();
+    }
+
+    
     /**
      * 文字数を取得
      *

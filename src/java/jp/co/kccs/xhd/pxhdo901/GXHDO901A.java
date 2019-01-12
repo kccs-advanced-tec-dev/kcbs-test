@@ -171,6 +171,21 @@ public class GXHDO901A implements Serializable {
      * displayNoneを設定する(致命的な画面表示エラー時)
      */
     private String styleDisplayNone = "";
+    
+    /**
+     * リビジョン(起動時)
+     */
+    private String initRev = "";
+            
+    /**
+     * 状態フラグ(起動時)
+     */
+    private String initJotaiFlg = "";
+            
+    /**
+     * 状態表示
+     */
+    private String jotaiDisplay = "";
 
 
     /**
@@ -353,6 +368,22 @@ public class GXHDO901A implements Serializable {
     }
 
     /**
+     * 状態表示
+     * @return the jotaiDisplay
+     */
+    public String getJotaiDisplay() {
+        return jotaiDisplay;
+    }
+
+    /**
+     * 状態表示
+     * @param jotaiDisplay the jotaiDisplay to set
+     */
+    public void setJotaiDisplay(String jotaiDisplay) {
+        this.jotaiDisplay = jotaiDisplay;
+    }
+
+    /**
      * 起動時処理
      */
     public void init() {
@@ -426,7 +457,7 @@ public class GXHDO901A implements Serializable {
             }
 
             if (!isExist) {
-                initMessageList.add(MessageUtil.getMessage("XHD-000019", "【" + this.itemList.get(i).getLabel1()) + "】");
+                initMessageList.add(MessageUtil.getMessage("XHD-000019", "【" + this.itemList.get(i).getLabel1() + "】"));
             }
         }
 
@@ -461,7 +492,9 @@ public class GXHDO901A implements Serializable {
         data.setDataSourceQcdb(this.dataSourceQcdb);
         data.setDataSourceWip(this.dataSourceWip);
         data.setInitMessageList(initMessageList);
-
+        data.setInitRev(this.initRev);
+        data.setInitJotaiFlg(this.initJotaiFlg);
+        
         this.processData = data;
 
         // 処理開始
@@ -715,6 +748,8 @@ public class GXHDO901A implements Serializable {
         data.setDataSourceDocServer(this.dataSourceDocServer);
         data.setDataSourceQcdb(this.dataSourceQcdb);
         data.setDataSourceWip(this.dataSourceWip);
+        data.setInitRev(this.initRev);
+        data.setInitJotaiFlg(this.initJotaiFlg);
 
         this.processData = data;
 
@@ -816,6 +851,17 @@ public class GXHDO901A implements Serializable {
 
             // 処理実行
             ProcessData resultData = (ProcessData) method.invoke(formLogic, this.processData);
+            
+            
+             // 致命的ｴﾗｰの場合
+            if(this.processData.isFatalError()){
+                // 画面の戻るボタン以外を非表示とする。
+                this.itemList = new ArrayList<>();
+                this.buttonListTop = new ArrayList<>();
+                this.buttonListBottom = new ArrayList<>();
+                this.styleDisplayNone = "display: none;";
+                return;
+            }
 
             if (!StringUtil.isEmpty(resultData.getMethod())) {
                 // 後続処理が定義されている場合は再起的に実行する
@@ -848,6 +894,16 @@ public class GXHDO901A implements Serializable {
                     RequestContext.getCurrentInstance().execute(resultData.getExecuteScript());
                 }
 
+                // リビジョンを保持
+                this.initRev = resultData.getInitRev();
+                
+                // 状態フラグを保持
+                this.initJotaiFlg = resultData.getInitJotaiFlg();
+                
+                // 状態ﾌﾗｸﾞ表示を設定
+                this.jotaiDisplay = getJotaiDisplayValue(this.initJotaiFlg);
+                
+                
                 //***************************************************************************************************
                 // ボタンの活性・非活性制御
                 this.setButtonEnabled(this.processData.getActiveButtonId(), this.processData.getInactiveButtonId());
@@ -859,6 +915,22 @@ public class GXHDO901A implements Serializable {
             ErrUtil.outputErrorLog("画面クラスのロードに失敗", ex, LOGGER);
         } catch (CloneNotSupportedException ex) {
             ErrUtil.outputErrorLog("クローン処理エラー", ex, LOGGER);
+        }
+    }
+    
+    /**
+     * 状態表示の表示内容を取得
+     * @param jotaiFlg 状態ﾌﾗｸﾞ
+     * @return 状態表示表示内容 
+     */
+    private String getJotaiDisplayValue(String jotaiFlg){
+        switch(jotaiFlg){
+            case "0":
+                return "現在「仮登録」です";
+            case "1":
+                return "現在「登録済」です";
+            default:
+                return "現在「未登録」です";
         }
     }
 

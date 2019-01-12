@@ -122,6 +122,20 @@ public class ProcessData {
      * 規格値入力エラー情報リスト
      */
     private List<KikakuchiInputErrorInfo> kikakuchiInputErrorInfoList;
+    /**
+     * リビジョン(起動時)
+     */
+    private String initRev;
+    /**
+     * 状態フラグ(起動時)
+     */
+    private String initJotaiFlg;
+    
+    /**
+     * 致命的エラー
+     */
+    private boolean fatalError;
+
 
     /**
      * コンストラクタ
@@ -509,6 +523,54 @@ public class ProcessData {
      */
     public void setKikakuchiInputErrorInfoList(List<KikakuchiInputErrorInfo> kikakuchiInputErrorInfoList) {
         this.kikakuchiInputErrorInfoList = kikakuchiInputErrorInfoList;
+    }
+
+    /**
+     * リビジョン(起動時)
+     * @return the initRev
+     */
+    public String getInitRev() {
+        return initRev;
+    }
+
+    /**
+     * リビジョン(起動時)
+     * @param initRev the initRev to set
+     */
+    public void setInitRev(String initRev) {
+        this.initRev = initRev;
+    }
+
+    /**
+     * 状態フラグ(起動時)
+     * @return the initJotaiFlg
+     */
+    public String getInitJotaiFlg() {
+        return initJotaiFlg;
+    }
+
+    /**
+     * 状態フラグ
+     * @param initJotaiFlg the initJotaiFlg to set
+     */
+    public void setInitJotaiFlg(String initJotaiFlg) {
+        this.initJotaiFlg = initJotaiFlg;
+    }
+
+    /**
+     * 致命的ｴﾗｰ
+     * @return the fatalError
+     */
+    public boolean isFatalError() {
+        return fatalError;
+    }
+
+    /**
+     * 致命的ｴﾗｰ
+     * @param fatalError the fatalError to set
+     */
+    public void setFatalError(boolean fatalError) {
+        this.fatalError = fatalError;
     }
 
 }

@@ -86,16 +86,16 @@ public class GXHDO101B002 implements IFormLogic {
 
             //******************************************************************************************
             // 膜厚(SPS)サブ画面初期表示データ設定
-            GXHDO101C001 beanGXHDO101C001 = (GXHDO101C001) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C001);
-            beanGXHDO101C001.setGxhdO101c001Model(GXHDO101C001Logic.createGXHDO101C001Model(""));
-
-            // PTN距離Xサブ画面初期表示データ設定
-            GXHDO101C002 beanGXHDO101C002 = (GXHDO101C002) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C002);
-            beanGXHDO101C002.setGxhdO101c002Model(GXHDO101C002Logic.createGXHDO101C002Model(""));
-
-            // PTN距離Yサブ画面初期表示データ設定
-            GXHDO101C003 beanGXHDO101C003 = (GXHDO101C003) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C003);
-            beanGXHDO101C003.setGxhdO101c003Model(GXHDO101C003Logic.createGXHDO101C003Model(""));
+//            GXHDO101C001 beanGXHDO101C001 = (GXHDO101C001) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C001);
+//            beanGXHDO101C001.setGxhdO101c001Model(GXHDO101C001Logic.createGXHDO101C001Model(""));
+//
+//            // PTN距離Xサブ画面初期表示データ設定
+//            GXHDO101C002 beanGXHDO101C002 = (GXHDO101C002) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C002);
+//            beanGXHDO101C002.setGxhdO101c002Model(GXHDO101C002Logic.createGXHDO101C002Model(""));
+//
+//            // PTN距離Yサブ画面初期表示データ設定
+//            GXHDO101C003 beanGXHDO101C003 = (GXHDO101C003) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C003);
+//            beanGXHDO101C003.setGxhdO101c003Model(GXHDO101C003Logic.createGXHDO101C003Model(""));
 
             //サブ画面呼出しをチェック処理なし(処理時にエラーの背景色を戻さない機能として登録)
             processData.setNoCheckButtonId(Arrays.asList(

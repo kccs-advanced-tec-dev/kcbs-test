@@ -87,11 +87,6 @@ public class GXHDO101B001Const {
     public static final String SHITA_COVER_TAPE1 = "insatsu_sps_gra_shita_cover_tape1";
 
     /**
-     * カバーテープ
-     */
-    public static final String COVER_TAPE = "insatsu_sps_gra_cover_tape";
-
-    /**
      * 列×行
      */
     public static final String RETSU_GYOU = "insatsu_sps_gra_retsu_gyou";
@@ -105,11 +100,6 @@ public class GXHDO101B001Const {
      * 電極ペースト
      */
     public static final String DENKYOKU_PASTE = "insatsu_sps_gra_denkyoku_paste";
-
-    /**
-     * ﾍﾟｰｽﾄ品名
-     */
-    public static final String PASTE_HINMEI = "insatsu_sps_gra_paste_hinmei";
 
     /**
      * ﾍﾟｰｽﾄﾛｯﾄNo1
@@ -267,29 +257,9 @@ public class GXHDO101B001Const {
     public static final String SQUEEGEE_OR_ATSUDOU_NO = "insatsu_sps_gra_squeegee_or_atsudou_no";
 
     /**
-     * 圧胴径1
+     * 圧胴使用枚数．
      */
-    public static final String ATSUDOU_KEI1 = "insatsu_sps_gra_atsudou_kei1";
-
-    /**
-     * 圧胴径2
-     */
-    public static final String ATSUDOU_KEI2 = "insatsu_sps_gra_atsudou_kei2";
-
-    /**
-     * 圧胴径3
-     */
-    public static final String ATSUDOU_KEI3 = "insatsu_sps_gra_atsudou_kei3";
-
-    /**
-     * 圧胴径4
-     */
-    public static final String ATSUDOU_KEI4 = "insatsu_sps_gra_atsudou_kei4";
-
-    /**
-     * 圧胴径5
-     */
-    public static final String ATSUDOU_KEI5 = "insatsu_sps_gra_atsudou_kei5";
+    public static final String ATSUDOU_SIYOU_MAISUU = "insatsu_sps_gra_atsudou_siyou_maisuu";
 
     /**
      * ブレードNo.
@@ -342,7 +312,27 @@ public class GXHDO101B001Const {
     public static final String PTN_INSATSU_START_Y_MIN = "insatsu_sps_gra_ptn_insatsu_start_y_min";
 
     /**
-     * ｽﾀｰﾄ時ﾆｼﾞﾐ・ｶｽﾚ確認 //TODO
+     * 印刷ズレ①刷り始め　開始
+     */
+    public static final String INSATSU_ZURE1_START = "insatsu_sps_gra_insatsu_zure1_start";
+
+    /**
+     * 印刷ズレ②中央　開始
+     */
+    public static final String INSATSU_ZURE2_START = "insatsu_sps_gra_insatsu_zure2_start";
+
+    /**
+     * 印刷ズレ③刷り終わり　開始
+     */
+    public static final String INSATSU_ZURE3_START = "insatsu_sps_gra_insatsu_zure3_start";
+
+    /**
+     * A/Bズレ平均スタート
+     */
+    public static final String AB_ZURE_HEIKIN_START = "insatsu_sps_gra_ab_zure_heikin_start";
+
+    /**
+     * ｽﾀｰﾄ時ﾆｼﾞﾐ・ｶｽﾚ確認
      */
     public static final String STARTJI_NIJIMI_KASURE_CHECK = "insatsu_sps_gra_startji_nijimi_kasure_check";
 
@@ -392,6 +382,26 @@ public class GXHDO101B001Const {
     public static final String PTN_INSATSU_END_Y_MIN = "insatsu_sps_gra_ptn_insatsu_end_y_min";
 
     /**
+     * 印刷ズレ①刷り始め　終了
+     */
+    public static final String INSATSU_ZURE1_END = "insatsu_sps_gra_insatsu_zure1_end";
+
+    /**
+     * 印刷ズレ②中央　終了
+     */
+    public static final String INSATSU_ZURE2_END = "insatsu_sps_gra_insatsu_zure2_end";
+
+    /**
+     * 印刷ズレ③刷り終わり　終了
+     */
+    public static final String INSATSU_ZURE3_END = "insatsu_sps_gra_insatsu_zure3_end";
+
+    /**
+     * A/Bズレ平均終了
+     */
+    public static final String AB_ZURE_HEIKIN_END = "insatsu_sps_gra_ab_zure_heikin_end";
+
+    /**
      * 終了時ニジミ・カスレ確認
      */
     public static final String SHUURYOU_JI_NIJIMI_KASURE_CHECK = "insatsu_sps_gra_shuuryou_ji_nijimi_kasure_check";
@@ -405,96 +415,117 @@ public class GXHDO101B001Const {
      * 印刷枚数
      */
     public static final String INSATSU_MAISUU = "insatsu_sps_gra_insatsu_maisuu";
+
+    /**
+     * 備考1
+     */
+    public static final String BIKOU1 = "insatsu_sps_gra_bikou1";
+
+    /**
+     * 備考2
+     */
+    public static final String BIKOU2 = "insatsu_sps_gra_bikou2";
+
+    /**
+     * 仮登録(画面下)
+     */
+    public static final String BTN_DOWN_KARI_TOUROKU = "insatsu_sps_gra_down_kari_touroku";
+
+    /**
+     * 枝番コピー(画面下)
+     */
+    public static final String BTN_DOWN_EDABAN_COPY = "insatsu_sps_gra_down_copy_edaban";
+
+    /**
+     * 開始日時(画面下)
+     */
+    public static final String BTN_DOWN_START_DATETIME = "insatsu_sps_gra_down_startdatetime";
+
+    /**
+     * 終了日時(画面下)
+     */
+    public static final String BTN_DOWN_END_DATETIME = "insatsu_sps_gra_down_enddatetime";
+
+    /**
+     * 膜圧(画面下)
+     */
+    public static final String BTN_DOWN_MAKUATSU_SUBGAMEN = "insatsu_sps_gra_down_makuatsu_subgamen";
+
+    /**
+     * PTN距離X(画面下)
+     */
+    public static final String BTN_DOWN_PTN_KYORI_X_SUBGAMEN = "insatsu_sps_gra_down_ptn_kyori_x_subgamen";
+
+    /**
+     * PTN距離Y(画面下)
+     */
+    public static final String BTN_DOWN_PTN_KYORI_Y_SUBGAMEN = "insatsu_sps_gra_down_ptn_kyori_y_subgamen";
+
+    /**
+     * 削除(画面下)
+     */
+    public static final String BTN_DOWN_SAKUJO = "insatsu_sps_gra_down_sakujo";
+
+    /**
+     * 修正(画面下)
+     */
+    public static final String BTN_DOWN_SHUSEI = "insatsu_sps_gra_down_shusei";
+
+    /**
+     * 登録(画面下)
+     */
+    public static final String BTN_DOWN_TOUROKU = "insatsu_sps_gra_down_touroku";
     
     
-   /**
-    * 仮登録(画面下)
-    */
-   public static final String BTN_DOWN_KARI_TOUROKU = "insatsu_sps_gra_down_kari_touroku";
-   
-   /**
-    * 検索(画面下)
-    */
-   public static final String BTN_DOWN_KENSAKU = "insatsu_sps_gra_down_kensaku";
-   
-   /**
-    * 膜圧(画面下)
-    */
-   public static final String BTN_DOWN_MAKUATSU_SUBGAMEN = "insatsu_sps_gra_down_makuatsu_subgamen";
-   
-   /**
-    * PTN距離X(画面下)
-    */
-   public static final String BTN_DOWN_PTN_KYORI_X_SUBGAMEN = "insatsu_sps_gra_down_ptn_kyori_x_subgamen";
-   
-   /**
-    * PTN距離Y(画面下)
-    */
-   public static final String BTN_DOWN_PTN_KYORI_Y_SUBGAMEN = "insatsu_sps_gra_down_ptn_kyori_y_subgamen";
-   
-   /**
-    * 削除(画面下)
-    */
-   public static final String BTN_DOWN_SAKUJO = "insatsu_sps_gra_down_sakujo";
-   
-   /**
-    * 修正(画面下)
-    */
-   public static final String BTN_DOWN_SHUSEI = "insatsu_sps_gra_down_shusei";
-   
-   /**
-    * 登録(画面下)
-    */
-   public static final String BTN_DOWN_TOUROKU = "insatsu_sps_gra_down_touroku";
-   
-   /**
-    * WIP取込(画面下)
-    */
-   public static final String BTN_DOWN_WIP_TORIKOMI = "insatsu_sps_gra_down_wip_torikomi";
-   
-   /**
-    * 仮登録(画面上)
-    */
-   public static final String BTN_UP_KARI_TOUROKU = "insatsu_sps_gra_up_kari_touroku";
-   
-   /**
-    * 検索(画面上)
-    */
-   public static final String BTN_UP_KENSAKU = "insatsu_sps_gra_up_kensaku";
-   
-   /**
-    * 膜圧(画面上)
-    */
-   public static final String BTN_UP_MAKUATSU_SUBGAMEN = "insatsu_sps_gra_up_makuatsu_subgamen";
-   
-   /**
-    * PTN距離X(画面上)
-    */
-   public static final String BTN_UP_PTN_KYORI_X_SUBGAMEN = "insatsu_sps_gra_up_ptn_kyori_x_subgamen";
-   
-   /**
-    * PTN距離Y(画面上)
-    */
-   public static final String BTN_UP_PTN_KYORI_Y_SUBGAMEN = "insatsu_sps_gra_up_ptn_kyori_y_subgamen";
-   
-   /**
-    * 削除(画面上)
-    */
-   public static final String BTN_UP_SAKUJO = "insatsu_sps_gra_up_sakujo";
-   
-   /**
-    * 修正(画面上)
-    */
-   public static final String BTN_UP_SHUSEI = "insatsu_sps_gra_up_shusei";
-   
-   /**
-    * 登録(画面上)
-    */
-   public static final String BTN_UP_TOUROKU = "insatsu_sps_gra_up_touroku";
-   
-   /**
-    * WIP取込(画面上)
-    */
-   public static final String BTN_UP_WIP_TORIKOMI = "insatsu_sps_gra_up_wip_torikomi";
+
+    /**
+     * 仮登録(画面上)
+     */
+    public static final String BTN_UP_KARI_TOUROKU = "insatsu_sps_gra_up_kari_touroku";
+
+    /**
+     * 枝番コピー(画面上)
+     */
+    public static final String BTN_UP_EDABAN_COPY = "insatsu_sps_gra_up_copy_edaban";
+
+    /**
+     * 開始日時(画面上)
+     */
+    public static final String BTN_UP_START_DATETIME = "insatsu_sps_gra_up_startdatetime";
+
+    /**
+     * 終了日時(画面上)
+     */
+    public static final String BTN_UP_END_DATETIME = "insatsu_sps_gra_up_enddatetime";
+
+    /**
+     * 膜圧(画面上)
+     */
+    public static final String BTN_UP_MAKUATSU_SUBGAMEN = "insatsu_sps_gra_up_makuatsu_subgamen";
+
+    /**
+     * PTN距離X(画面上)
+     */
+    public static final String BTN_UP_PTN_KYORI_X_SUBGAMEN = "insatsu_sps_gra_up_ptn_kyori_x_subgamen";
+
+    /**
+     * PTN距離Y(画面上)
+     */
+    public static final String BTN_UP_PTN_KYORI_Y_SUBGAMEN = "insatsu_sps_gra_up_ptn_kyori_y_subgamen";
+
+    /**
+     * 削除(画面上)
+     */
+    public static final String BTN_UP_SAKUJO = "insatsu_sps_gra_up_sakujo";
+
+    /**
+     * 修正(画面上)
+     */
+    public static final String BTN_UP_SHUSEI = "insatsu_sps_gra_up_shusei";
+
+    /**
+     * 登録(画面上)
+     */
+    public static final String BTN_UP_TOUROKU = "insatsu_sps_gra_up_touroku";
 
 }

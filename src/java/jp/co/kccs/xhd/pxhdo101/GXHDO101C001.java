@@ -37,6 +37,19 @@ import org.primefaces.context.RequestContext;
 public class GXHDO101C001 implements Serializable {
 
     /**
+     * 工場ｺｰﾄﾞ
+     */
+    private String kojyo;
+    /**
+     * ﾛｯﾄNo
+     */
+    private String lotno;
+    /**
+     * 枝番
+     */
+    private String edaban;
+
+    /**
      * 膜厚(SPS)サブ画面用データ
      */
     private GXHDO101C001Model gxhdO101c001Model;
@@ -51,6 +64,53 @@ public class GXHDO101C001 implements Serializable {
      * コンストラクタ
      */
     public GXHDO101C001() {
+    }
+
+    /**
+     * 工場ｺｰﾄﾞ
+     * @return the kojyo
+     */
+    public String getKojyo() {
+        return kojyo;
+    }
+
+    /**
+     * 工場ｺｰﾄﾞ
+     * @param kojyo the kojyo to set
+     */
+    public void setKojyo(String kojyo) {
+        this.kojyo = kojyo;
+    }
+
+    /**
+     * ﾛｯﾄNo.
+     * @return the lotno
+     */
+    public String getLotno() {
+        return lotno;
+    }
+
+    /**
+     * ﾛｯﾄNo.
+     * @param lotno the lotno to set
+     */
+    public void setLotno(String lotno) {
+        this.lotno = lotno;
+    }
+
+    /**
+     * 枝番
+     * @return the edaban
+     */
+    public String getEdaban() {
+        return edaban;
+    }
+
+    /**
+     * @param edaban the edaban to set
+     */
+    public void setEdaban(String edaban) {
+        this.edaban = edaban;
     }
 
     /**
@@ -122,7 +182,6 @@ public class GXHDO101C001 implements Serializable {
                 setError(makuatsuData, false, true, "XHD-000003", "エンド");
                 return false;
             }
-            makuatsuData.setEndTextBackColor("");
         }
 
         return true;

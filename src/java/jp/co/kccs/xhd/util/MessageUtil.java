@@ -100,4 +100,45 @@ public class MessageUtil {
 
         return errorMessageInfo;
     }
+    
+    
+    /**
+     * ﾒｯｾｰｼﾞ情報取得処理(ﾒｯｾｰｼﾞを直指定)
+     *
+     * @param messageId ﾒｯｾｰｼﾞID
+     * @param message ﾒｯｾｰｼﾞ
+     * @param changeBackColor 背景色変更判定
+     * @param changePage 項目ﾘｽﾄのﾍﾟｰｼﾞ変更判定
+     * @param errItemList ｴﾗｰ項目ﾘｽﾄ
+     * @return ｴﾗｰﾒｯｾｰｼﾞ情報
+     */
+    public static ErrorMessageInfo getErrorMessageInfo(String messageId, String message, boolean changeBackColor, boolean changePage, List<FXHDD01> errItemList) {
+
+        // ｴﾗｰﾒｯｾｰｼﾞ情報
+        ErrorMessageInfo errorMessageInfo = new ErrorMessageInfo();
+
+        errorMessageInfo.setErrorMessageId(messageId); // ｴﾗｰﾒｯｾｰｼﾞID
+        errorMessageInfo.setErrorMessage(message); // ｴﾗｰﾒｯｾｰｼﾞ
+        errorMessageInfo.setIsChangeBackColor(changeBackColor); // 背景色を変更するかどうか
+
+        // ｴﾗｰ対象の項目の情報を戻り値にｾｯﾄする。
+        List<ErrorMessageInfo.ErrorItemInfo> errorItemInfoList = new ArrayList<>();
+        if (errItemList != null && !errItemList.isEmpty()) {
+            // 項目一覧のﾍﾟｰｼﾞの変更をする場合
+            if (changePage) {
+                // ｴﾗｰ項目の先頭のｲﾝﾃﾞｯｸｽを設定する。
+                errorMessageInfo.setPageChangeItemIndex(errItemList.get(0).getItemIndex()); //項目Index
+            }
+
+            for (FXHDD01 fxhdd01 : errItemList) {
+                ErrorMessageInfo.ErrorItemInfo errorItemInfo = errorMessageInfo.new ErrorItemInfo();
+                errorItemInfo.setItemId(fxhdd01.getItemId()); //項目ID
+                errorItemInfoList.add(errorItemInfo);
+            }
+
+            errorMessageInfo.setErrorItemInfoList(errorItemInfoList);
+        }
+
+        return errorMessageInfo;
+    }
 }

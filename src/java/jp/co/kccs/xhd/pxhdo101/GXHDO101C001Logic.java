@@ -7,6 +7,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import jp.co.kccs.xhd.model.GXHDO101C001Model;
+import jp.co.kccs.xhd.util.ErrUtil;
+import jp.co.kccs.xhd.util.MessageUtil;
+import jp.co.kccs.xhd.util.StringUtil;
 
 /**
  * ===============================================================================<br>
@@ -25,34 +28,18 @@ import jp.co.kccs.xhd.model.GXHDO101C001Model;
  */
 public class GXHDO101C001Logic implements Serializable {
 
-    public static GXHDO101C001Model createGXHDO101C001Model(String lotNo) {
+    public static GXHDO101C001Model createGXHDO101C001Model(String[] makuatsuStart, String[] makuatsuEnd) {
         GXHDO101C001Model gxhdo101C001Model = new GXHDO101C001Model();
         List<GXHDO101C001Model.MakuatsuData> makuatsuDataList = new ArrayList<>();
 
-        // 膜厚(1行目)
-        makuatsuDataList.add(getInitMakuatsuData(gxhdo101C001Model, "1", "", "TEXT", "2", "", "", "TEXT", "2", ""));
-        // 膜厚(2行目)
-        makuatsuDataList.add(getInitMakuatsuData(gxhdo101C001Model, "2", "", "TEXT", "2", "", "", "TEXT", "2", ""));
-        // 膜厚(3行目)
-        makuatsuDataList.add(getInitMakuatsuData(gxhdo101C001Model, "3", "", "TEXT", "2", "", "", "TEXT", "2", ""));
-        // 膜厚(4行目)
-        makuatsuDataList.add(getInitMakuatsuData(gxhdo101C001Model, "4", "", "TEXT", "2", "", "", "TEXT", "2", ""));
-        // 膜厚(5行目)
-        makuatsuDataList.add(getInitMakuatsuData(gxhdo101C001Model, "5", "", "TEXT", "2", "", "", "TEXT", "2", ""));
-        // 膜厚(6行目)
-        makuatsuDataList.add(getInitMakuatsuData(gxhdo101C001Model, "6", "", "TEXT", "2", "", "", "TEXT", "2", ""));
-        // 膜厚(7行目)
-        makuatsuDataList.add(getInitMakuatsuData(gxhdo101C001Model, "7", "", "TEXT", "2", "", "", "TEXT", "2", ""));
-        // 膜厚(8行目)
-        makuatsuDataList.add(getInitMakuatsuData(gxhdo101C001Model, "8", "", "TEXT", "2", "", "", "TEXT", "2", ""));
-        // 膜厚(9行目)
-        makuatsuDataList.add(getInitMakuatsuData(gxhdo101C001Model, "9", "", "TEXT", "2", "", "", "TEXT", "2", ""));
+        // 画面内のリストの一覧を作成する。
+        for (int i = 0; i < makuatsuStart.length; i++) {
+            makuatsuDataList.add(getInitMakuatsuData(gxhdo101C001Model, String.valueOf(i + 1), makuatsuStart[i], "TEXT", "6", "", makuatsuEnd[i], "TEXT", "6", ""));
+        }
 
         gxhdo101C001Model.setMakuatsuDataList(makuatsuDataList);
         return gxhdo101C001Model;
     }
-    
-  
 
     /**
      * 膜厚データ初期化データ取得
@@ -101,5 +88,31 @@ public class GXHDO101C001Logic implements Serializable {
         makuatsuListData.setEndTextMaxLength(endTextMaxLength);
         makuatsuListData.setEndTextBackColor(endTextBackColor);
         return makuatsuListData;
+    }
+    
+    /**
+     * 入力ﾁｪｯｸ
+     * @param gXHDO101C001Model 膜厚(SPS)サブ画面用ﾓﾃﾞﾙ
+     * @return ｴﾗｰﾘｽﾄ
+     */
+    public static List<String> checkInput(GXHDO101C001Model gXHDO101C001Model) {
+        
+        List<String> errorList = new ArrayList<>();
+        List<GXHDO101C001Model.MakuatsuData> makuatsuDataList = gXHDO101C001Model.getMakuatsuDataList();
+        for (GXHDO101C001Model.MakuatsuData makuatsuData : makuatsuDataList) {
+            if (StringUtil.isEmpty(makuatsuData.getStartVal())) {
+                makuatsuData.setStartTextBackColor(ErrUtil.ERR_BACK_COLOR);
+                errorList.add("スタートが入力されていません。");
+                return errorList;
+            }
+            
+            if (StringUtil.isEmpty(makuatsuData.getEndVal())) {
+                makuatsuData.setEndTextBackColor(ErrUtil.ERR_BACK_COLOR);
+                errorList.add("エンドが入力されていません。");
+                return errorList;
+            }
+        }
+        
+        return errorList;
     }
 }
