@@ -4,6 +4,7 @@
 package jp.co.kccs.xhd.pxhdo101;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -11,7 +12,9 @@ import javax.faces.context.FacesContext;
 import jp.co.kccs.xhd.model.GXHDO101C001Model;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
+import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.StringUtil;
+import jp.co.kccs.xhd.util.ValidateUtil;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -48,6 +51,11 @@ public class GXHDO101C001 implements Serializable {
      * 枝番
      */
     private String edaban;
+    
+    /**
+     * フォームエラー判定
+     */
+    private boolean isFormError;
 
     /**
      * 膜厚(SPS)サブ画面用データ
@@ -107,10 +115,27 @@ public class GXHDO101C001 implements Serializable {
     }
 
     /**
+     * 枝番
      * @param edaban the edaban to set
      */
     public void setEdaban(String edaban) {
         this.edaban = edaban;
+    }
+
+    /**
+     * フォームエラー判定
+     * @return the isFormError
+     */
+    public boolean isIsFormError() {
+        return isFormError;
+    }
+
+    /**
+     * フォームエラー判定
+     * @param isFormError the isFormError to set
+     */
+    public void setIsFormError(boolean isFormError) {
+        this.isFormError = isFormError;
     }
 
     /**
@@ -153,7 +178,9 @@ public class GXHDO101C001 implements Serializable {
      * OKボタン押下時のチェック処理を行う。
      */
     public void doOk() {
+        this.isFormError = false;
         if (!checkOK()) {
+            this.isFormError = true;
             // エラーの場合はコールバック変数に"error"をセット
             RequestContext context = RequestContext.getCurrentInstance();
             context.addCallbackParam("firstParam", "error");
@@ -162,7 +189,8 @@ public class GXHDO101C001 implements Serializable {
 
         this.gxhdO101c001Model = this.gxhdO101c001ModelView;
     }
-
+    
+  
     /**
      * OKボタンチェック処理
      *
@@ -175,12 +203,36 @@ public class GXHDO101C001 implements Serializable {
 
         for (GXHDO101C001Model.MakuatsuData makuatsuData : this.gxhdO101c001ModelView.getMakuatsuDataList()) {
             if (StringUtil.isEmpty(makuatsuData.getStartVal())) {
-                setError(makuatsuData, true, false, "XHD-000003", "スタート");
+                setError(makuatsuData, true, false, "XHD-000027", "");
                 return false;
+            } else {
+                if (!NumberUtil.isNumeric(makuatsuData.getStartVal())) {
+                    setError(makuatsuData, true, false, "XHD-000008", "スタート");
+                    return false;
+                }
+
+                BigDecimal decStart = new BigDecimal(makuatsuData.getStartVal());
+                if (!NumberUtil.isValidDigits(decStart, 2, 3)) {
+                    setError(makuatsuData, true, false, "XHD-000007", "スタート", "2", "3");
+                    return false;
+                }
             }
+
             if (StringUtil.isEmpty(makuatsuData.getEndVal())) {
-                setError(makuatsuData, false, true, "XHD-000003", "エンド");
+                setError(makuatsuData, false, true, "XHD-000027", "");
                 return false;
+            } else {
+                if (!NumberUtil.isNumeric(makuatsuData.getEndVal())) {
+                    setError(makuatsuData, false, true, "XHD-000008", "エンド");
+                    return false;
+                }
+
+                BigDecimal decEnd = new BigDecimal(makuatsuData.getEndVal());
+                if (!NumberUtil.isValidDigits(decEnd, 2, 3)) {
+                    setError(makuatsuData, false, true, "XHD-000007", "エンド", "2", "3");
+                    return false;
+                }
+
             }
         }
 

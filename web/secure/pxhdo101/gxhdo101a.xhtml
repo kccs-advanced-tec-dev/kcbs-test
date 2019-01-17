@@ -58,6 +58,7 @@
         <f:metadata>
             <f:viewParam id="macAddr" name="macAddr" value="#{sessionManager.macAddr}"/>
             <f:viewAction action="#{sessionManager.validateUser()}"/>
+            <f:viewAction action="#{gXHDO101A.init()}"/>
         </f:metadata>
         <div style="margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;">
         <br/>
@@ -71,14 +72,30 @@
             </p:confirmDialog>
             <tr>
                 <div class='inner' style="position:relative">
-                <div class="divPad" style="HEIGHT: 28px;">
-                <h:outputText id="lblLotNo" value="ロットNo" style="margin-top: 40px;font-size:18px;"/>
-                <h:inputText id="lotNo" value="#{gXHDO101A.lotNo}" class="txt" maxlength="14" style="border-style: groove; font-size: 22px; width: 300px; margin-left: 40px;"/>
-                <p:commandButton id="searchBtn" class="button"  styleClass="ui-conf-commandbtn-def1" style="float:right;margin-left: 40px;width: 94px; height: 32px; font-size: 13px;"
-                      value="ロット検索"
-                      actionListener="#{gXHDO101A.searchHinshitsuData()}"
-                      process="@this lotNo"
-                      update="@form"/>
+                <div class="divPad" style="HEIGHT: 58px;">
+                    <table>
+                        <tr>
+                            <td>
+                                <h:outputText id="lblTantosha" value="担当者ｺｰﾄﾞ" style="margin-top: 40px;font-size:18px;"/>
+                            </td>
+                            <td>
+                                <h:inputText id="tantoshaCd" value="#{gXHDO101A.tantoshaCd}" class="txt" maxlength="6" style="border-style: groove; font-size: 22px; width: 140px; margin-left: 40px;"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h:outputText id="lblLotNo" value="ロットNo" style="margin-top: 40px;font-size:18px;"/>
+                            </td>
+                            <td>
+                                <h:inputText id="lotNo" value="#{gXHDO101A.lotNo}" class="txt" maxlength="14" style="border-style: groove; font-size: 22px; width: 300px; margin-left: 40px;"/>
+                                <p:commandButton id="searchBtn" class="button"  styleClass="ui-conf-commandbtn-def1" style="float:right;margin-left: 40px;width: 94px; height: 32px; font-size: 13px;"
+                                      value="ロット検索"
+                                      actionListener="#{gXHDO101A.searchHinshitsuData()}"
+                                      process="@this lotNo tantoshaCd"
+                                      update="@form"/>
+                            </td>
+                        </tr>
+                    </table>
                 </div>
                 </div>
             </tr>

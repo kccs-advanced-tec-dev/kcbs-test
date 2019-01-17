@@ -37,7 +37,7 @@ public class GXHDO101C001Model implements Cloneable {
     public GXHDO101C001Model clone() throws CloneNotSupportedException {
         GXHDO101C001Model cloneModel = (GXHDO101C001Model) super.clone();
         List<MakuatsuData> newList = new ArrayList();
-        for (MakuatsuData data : this.makuatsuDataList) {
+        for (MakuatsuData data : this.getMakuatsuDataList()) {
             MakuatsuData newData = new MakuatsuData();
             newData.setMakuatsu(data.getMakuatsu());
             newData.setStartVal(data.getStartVal());
@@ -56,6 +56,49 @@ public class GXHDO101C001Model implements Cloneable {
         cloneModel.setMakuatsuDataList(newList);
         return cloneModel;
     }
+    
+    
+    /**
+     * 膜厚ｽﾀｰﾄAVE設定項目ID
+     */
+    private String returnItemIdStartAve ="";
+    
+    /**
+     * 膜厚ｽﾀｰﾄMAX設定項目ID
+     */
+    private String returnItemIdStartMax ="";
+    
+    /**
+     * 膜厚ｽﾀｰﾄMIN設定項目ID
+     */
+    private String returnItemIdStartMin ="";
+    
+    /**
+     * 膜厚ｽﾀｰﾄCV設定項目ID
+     */
+    private String returnItemIdStartCv ="";
+    
+    /**
+     * 膜厚ｴﾝﾄﾞAVE設定項目ID
+     */
+    private String returnItemIdEndAve ="";
+    
+    /**
+     * 膜厚ｴﾝﾄﾞMAX設定項目ID
+     */
+    private String returnItemIdEndMax ="";
+    
+    /**
+     * 膜厚ｴﾝﾄﾞMIN設定項目ID
+     */
+    private String returnItemIdEndMin ="";
+    
+    /**
+     * 膜厚ｴﾝﾄﾞCV設定項目ID
+     */
+    private String returnItemIdEndCv ="";
+    
+    
     /**
      * 膜厚データリスト
      */
@@ -66,6 +109,134 @@ public class GXHDO101C001Model implements Cloneable {
      */
     public GXHDO101C001Model() {
         this.makuatsuDataList = new ArrayList<>();
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄAVE設定項目ID
+     * @return the returnItemIdStartAve
+     */
+    public String getReturnItemIdStartAve() {
+        return returnItemIdStartAve;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄAVE設定項目ID
+     * @param returnItemIdStartAve the returnItemIdStartAve to set
+     */
+    public void setReturnItemIdStartAve(String returnItemIdStartAve) {
+        this.returnItemIdStartAve = returnItemIdStartAve;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄMAX設定項目ID
+     * @return the returnItemIdStartMax
+     */
+    public String getReturnItemIdStartMax() {
+        return returnItemIdStartMax;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄMAX設定項目ID
+     * @param returnItemIdStartMax the returnItemIdStartMax to set
+     */
+    public void setReturnItemIdStartMax(String returnItemIdStartMax) {
+        this.returnItemIdStartMax = returnItemIdStartMax;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄMIN設定項目ID
+     * @return the returnItemIdStartMin
+     */
+    public String getReturnItemIdStartMin() {
+        return returnItemIdStartMin;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄMIN設定項目ID
+     * @param returnItemIdStartMin the returnItemIdStartMin to set
+     */
+    public void setReturnItemIdStartMin(String returnItemIdStartMin) {
+        this.returnItemIdStartMin = returnItemIdStartMin;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄCV設定項目ID
+     * @return the returnItemIdStartCv
+     */
+    public String getReturnItemIdStartCv() {
+        return returnItemIdStartCv;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄCV設定項目ID
+     * @param returnItemIdStartCv the returnItemIdStartCv to set
+     */
+    public void setReturnItemIdStartCv(String returnItemIdStartCv) {
+        this.returnItemIdStartCv = returnItemIdStartCv;
+    }
+
+    /**
+     * 膜厚ｴﾝﾄﾞAVE設定項目ID
+     * @return the returnItemIdEndAve
+     */
+    public String getReturnItemIdEndAve() {
+        return returnItemIdEndAve;
+    }
+
+    /**
+     * 膜厚ｴﾝﾄﾞAVE設定項目ID
+     * @param returnItemIdEndAve the returnItemIdEndAve to set
+     */
+    public void setReturnItemIdEndAve(String returnItemIdEndAve) {
+        this.returnItemIdEndAve = returnItemIdEndAve;
+    }
+
+    /**
+     * 膜厚ｴﾝﾄﾞMAX設定項目ID
+     * @return the returnItemIdEndMax
+     */
+    public String getReturnItemIdEndMax() {
+        return returnItemIdEndMax;
+    }
+
+    /**
+     * 膜厚ｴﾝﾄﾞMAX設定項目ID
+     * @param returnItemIdEndMax the returnItemIdEndMax to set
+     */
+    public void setReturnItemIdEndMax(String returnItemIdEndMax) {
+        this.returnItemIdEndMax = returnItemIdEndMax;
+    }
+
+    /**
+     * 膜厚ｴﾝﾄﾞMIN設定項目ID
+     * @return the returnItemIdEndMin
+     */
+    public String getReturnItemIdEndMin() {
+        return returnItemIdEndMin;
+    }
+
+    /**
+     * 膜厚ｴﾝﾄﾞMIN設定項目ID
+     * @param returnItemIdEndMin the returnItemIdEndMin to set
+     */
+    public void setReturnItemIdEndMin(String returnItemIdEndMin) {
+        this.returnItemIdEndMin = returnItemIdEndMin;
+    }
+
+    /**
+     * 膜厚ｴﾝﾄﾞCV設定項目ID
+     * @return the returnItemIdEndCv
+     */
+    public String getReturnItemIdEndCv() {
+        return returnItemIdEndCv;
+    }
+
+    /**
+     * 膜厚ｴﾝﾄﾞCV設定項目ID
+     * @param returnItemIdEndCv the returnItemIdEndCv to set
+     */
+    public void setReturnItemIdEndCv(String returnItemIdEndCv) {
+        this.returnItemIdEndCv = returnItemIdEndCv;
     }
 
     /**

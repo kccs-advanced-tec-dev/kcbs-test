@@ -50,6 +50,8 @@
                     PF('W_dlg_gxhdo101c005').show();
                 } else if('kikakuError'===args.firstParam){
                     PF('W_dlg_kikakuError').show();
+                } else if('complete'===args.firstParam){
+                    PF('W_dlg_compMessage').show();
                 }
             }
             //]]>
@@ -76,13 +78,12 @@
         
         <div style="margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;">
         <h:outputText style="background:#{gXHDO901A.titleInfo.bgColor};color: #{gXHDO901A.titleInfo.fontColor}; 
-                font-size:#{gXHDO901A.titleInfo.fontSize}px;" value="#{gXHDO901A.titleInfo.formName}"/>
-        <div style="text-align:right">
-        <h:outputText style="font-size:#{gXHDO901A.titleInfo.fontSize}px;  #{gXHDO901A.styleDisplayNone}" value="#{gXHDO901A.jotaiDisplay}"/>        
-        </div>
-        <br/>
-
+            font-size:#{gXHDO901A.titleInfo.fontSize}px;" value="#{gXHDO901A.titleInfo.formName}"/>
         <h:form id="form" onkeypress="if (event.keyCode === 13) { return false; }">
+            <div style="text-align:right">
+                <h:outputText style="font-size:#{gXHDO901A.titleInfo.fontSize}px;  #{gXHDO901A.styleDisplayNone}" value="#{gXHDO901A.jotaiDisplay}"/>        
+            </div>
+            <br/>
             <p:growl id="growlMessage" showDetail="false" sticky="true" />
             <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
                 <f:facet name="message">
@@ -160,9 +161,13 @@
             
             <p:commandButton id="returnBtn" style="margin-left:26px;font-size:#{item.fontSize}px;color:#{item.fontColor};background:#{item.backColor};"
                  value="#{myMsg.return}" action="/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true"
-                 process="@this" update="@this"/>
+                 process="@this" update="@this">
+                <f:param name="returnVal" value="return"/>
+                <f:attribute name="returnVal" value="return"/>
+            </p:commandButton>
              <div>
                 <ui:include src="gxhdo901b.xhtml"/>
+                <ui:include src="compMessage.xhtml"/>
                 <ui:include src="/secure/pxhdo101/gxhdo101c001.xhtml"/>
                 <ui:include src="/secure/pxhdo101/gxhdo101c002.xhtml"/>
                 <ui:include src="/secure/pxhdo101/gxhdo101c003.xhtml"/>

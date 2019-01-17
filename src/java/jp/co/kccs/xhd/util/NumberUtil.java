@@ -5,6 +5,8 @@ package jp.co.kccs.xhd.util;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -141,4 +143,83 @@ public class NumberUtil {
 
         return String.valueOf(num.intValue());
     }
+    
+    
+    /**
+     * リストで受け取った値の(合計、最大、最小、平均、変動係数)を受け取る
+     * @param calcDataList 計算データリスト
+     * @return 計算結果(合計、最大、最小、平均、変動係数)の順に配列で返す。
+     */
+    public static BigDecimal[] getCalculatData(List<String> calcDataList){
+        List<BigDecimal> calcDecDataList = new ArrayList<>();
+        BigDecimal sum = BigDecimal.ZERO;
+        BigDecimal max = null;
+        BigDecimal min = null;
+        BigDecimal ave;
+        BigDecimal cv = null;
+        BigDecimal length = BigDecimal.valueOf(calcDataList.size());
+        
+        BigDecimal value;
+        for (String strValue : calcDataList) {
+            try {
+                value = new BigDecimal(strValue);
+            } catch (NumberFormatException e) {
+                value = BigDecimal.ZERO;
+            }
+            //MAX
+            if(max == null || max.compareTo(value) < 0){
+                max = value;
+            }
+            
+            //MIN
+            if(min == null || 0 < min.compareTo(value)){
+                min = value;
+            }
+            
+            // 合計値
+            sum = sum.add(value);
+            
+            calcDecDataList.add(value);
+            
+        }
+        //平均値
+        ave = sum.divide(length, 15, RoundingMode.DOWN);
+        
+        // 標準偏差(不偏分散)
+        BigDecimal sdSum = BigDecimal.ZERO;
+        for (BigDecimal decValue : calcDecDataList) {
+            sdSum = sdSum.add(decValue.subtract(ave).pow(2));
+        }
+        BigDecimal sd = BigDecimal.valueOf(Math.sqrt(sdSum.divide(length.subtract(BigDecimal.ONE), 15, RoundingMode.DOWN).doubleValue()));
+        if(BigDecimal.ZERO.compareTo(ave) != 0){
+            cv = sd.divide(ave, 15, RoundingMode.DOWN);
+        }
+        return new BigDecimal[]{sum, max, min, ave, cv};
+    }
+    
+    
+    /**
+     * リストで受け取った値の最小値
+     * @param calcDataList 計算データリスト
+     * @return 最小値
+     */
+    public static BigDecimal getMin(List<String> calcDataList){
+        BigDecimal min = null;
+        BigDecimal value;
+        for (String strValue : calcDataList) {
+            try {
+                value = new BigDecimal(strValue);
+            } catch (NumberFormatException e) {
+                value = BigDecimal.ZERO;
+            }
+            
+            //MIN
+            if(min == null || 0 < min.compareTo(value)){
+                min = value;
+            }
+            
+        }
+        return min;
+    }
+    
 }

@@ -12,8 +12,6 @@ import java.security.NoSuchAlgorithmException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -38,6 +36,12 @@ import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.db.model.FXHDD02;
 import jp.co.kccs.xhd.db.model.FXHDM02;
 import jp.co.kccs.xhd.db.model.FXHDM05;
+import jp.co.kccs.xhd.pxhdo101.GXHDO101C001;
+import jp.co.kccs.xhd.pxhdo101.GXHDO101C001Logic;
+import jp.co.kccs.xhd.pxhdo101.GXHDO101C002;
+import jp.co.kccs.xhd.pxhdo101.GXHDO101C002Logic;
+import jp.co.kccs.xhd.pxhdo101.GXHDO101C003;
+import jp.co.kccs.xhd.pxhdo101.GXHDO101C003Logic;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
@@ -186,7 +190,16 @@ public class GXHDO901A implements Serializable {
      * 状態表示
      */
     private String jotaiDisplay = "";
-
+    
+    /**
+     * リビジョンチェック対象ボタンID
+     */
+    private List<String> checkRevisionButtonId;
+    
+    /**
+     * 完了メッセージ
+     */
+    private String compMessage;
 
     /**
      * コンストラクタ
@@ -381,6 +394,22 @@ public class GXHDO901A implements Serializable {
      */
     public void setJotaiDisplay(String jotaiDisplay) {
         this.jotaiDisplay = jotaiDisplay;
+    }
+
+    /**
+     * 完了メッセージ
+     * @return the compMessage
+     */
+    public String getCompMessage() {
+        return compMessage;
+    }
+
+    /**
+     * 完了メッセージ
+     * @param compMessage the compMessage to set
+     */
+    public void setCompMessage(String compMessage) {
+        this.compMessage = compMessage;
     }
 
     /**
@@ -717,6 +746,7 @@ public class GXHDO901A implements Serializable {
         // 背景色を元に戻す
         this.clearItemListBackColor(buttonId);
 
+        
         //共通ﾁｪｯｸ
         ErrorMessageInfo errorMessageInfo = getCheckResult(buttonId);
 
@@ -793,29 +823,6 @@ public class GXHDO901A implements Serializable {
             return;
         }
 
-        // ユーザー認証が必要な場合
-        if (this.processData.isRquireAuth()) {
-            this.processData.setRquireAuth(false);
-
-            // ログインユーザーの権限チェックを実施する
-            if (!this.userAuthLogin()) {
-                // 権限がない場合はユーザー認証画面を表示
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.addCallbackParam("firstParam", "auth");
-                return;
-            }
-        }
-
-        // 警告メッセージが設定されている場合、ダイアログを表示する
-        if (!StringUtil.isEmpty(this.processData.getWarnMessage())) {
-            this.warnDialogRendered = true;
-
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.addCallbackParam("firstParam", "warning");
-
-            return;
-        }
-
         try {
 
             // 規格エラーメッセージが設定されている場合、ダイアログを表示する
@@ -841,6 +848,30 @@ public class GXHDO901A implements Serializable {
                 setPageItemDataList(this.processData.getKikakuchiInputErrorInfoList().get(0).getItemIndex());
                 return;
             }
+
+            // 警告メッセージが設定されている場合、ダイアログを表示する
+            if (!StringUtil.isEmpty(this.processData.getWarnMessage())) {
+                this.warnDialogRendered = true;
+
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.addCallbackParam("firstParam", "warning");
+
+                return;
+            }
+
+            // ユーザー認証が必要な場合
+            if (this.processData.isRquireAuth()) {
+                this.processData.setRquireAuth(false);
+
+                // ログインユーザーの権限チェックを実施する
+                if (!this.userAuthLogin()) {
+                    // 権限がない場合はユーザー認証画面を表示
+                    RequestContext context = RequestContext.getCurrentInstance();
+                    context.addCallbackParam("firstParam", "auth");
+                    return;
+                }
+            }
+            
 
             // 警告もエラーも存在しない場合、後続処理を実行して結果を反映する
             IFormLogic formLogic = this.processData.getFormLogic();
@@ -888,6 +919,11 @@ public class GXHDO901A implements Serializable {
                     RequestContext context = RequestContext.getCurrentInstance();
                     context.addCallbackParam("firstParam", resultData.getCollBackParam());
                 }
+ 
+                // 完了時メッセージの設定
+                if (!StringUtil.isEmpty(resultData.getCompMessage())) {
+                    this.compMessage = resultData.getCompMessage();
+                }
 
                 // オンロード処理設定
                 if (!StringUtil.isEmpty(resultData.getExecuteScript())) {
@@ -903,7 +939,15 @@ public class GXHDO901A implements Serializable {
                 // 状態ﾌﾗｸﾞ表示を設定
                 this.jotaiDisplay = getJotaiDisplayValue(this.initJotaiFlg);
                 
+                //リビジョンチェック対象ボタンIDを設定
+                if(this.processData.getCheckRevisionButtonId() != null && !this.processData.getCheckRevisionButtonId().isEmpty()){
+                    this.checkRevisionButtonId = this.processData.getCheckRevisionButtonId();
+                }
                 
+                // 対象の処理にボタン押下時の処理についてはテーブルチェックは行わない
+                if(this.processData.getNoCheckButtonId() != null && !this.processData.getNoCheckButtonId().isEmpty()){
+                    this.noCheckButtonId = this.processData.getNoCheckButtonId();
+                }
                 //***************************************************************************************************
                 // ボタンの活性・非活性制御
                 this.setButtonEnabled(this.processData.getActiveButtonId(), this.processData.getInactiveButtonId());
@@ -1321,6 +1365,13 @@ public class GXHDO901A implements Serializable {
      * @return エラーメッセージ
      */
     private ErrorMessageInfo getCheckResult(String buttonId) {
+        
+        // リビジョンチェック
+        ErrorMessageInfo checkRevErrorMessage = checkRevision(buttonId);
+        if(checkRevErrorMessage != null){
+            return checkRevErrorMessage;
+        }
+        
         //共通ﾁｪｯｸ
         List<FXHDM05> itemRowCheckList
                 = checkListHDM05.stream().filter(n -> buttonId.equals(n.getButtonId())).collect(Collectors.toList());
@@ -1393,5 +1444,140 @@ public class GXHDO901A implements Serializable {
         this.processData.getKikakuchiInputErrorInfoList().clear();
         this.processMain();
     }
+    
+    /**
+     * リビジョンチェック
+     * @param buttonId ボタンID
+     * @return エラーメッセージ情報(エラーなし無しの場合リターン)
+     */
+    private ErrorMessageInfo checkRevision(String buttonId) {
+        try {
+            
+            //リビジョンチェック対象のボタンの場合、チェックを行う。
+            if(!this.checkRevisionButtonId.contains(buttonId)){
+                return null;
+            }
+            
+            QueryRunner queryRunnerDoc = new QueryRunner(this.dataSourceDocServer);
+            
+            // セッションから情報を取得
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            HttpSession session = (HttpSession) externalContext.getSession(false);
+            String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
+            String lotNo = (String) session.getAttribute("lotNo");
+            String kojyo = lotNo.substring(0, 3); //工場ｺｰﾄﾞ
+            String lotNo8 = lotNo.substring(3, 11); //ﾛｯﾄNo(8桁)
+            String edaban = lotNo.substring(11, 14); //枝番
+            
+            Map fxhdd03RevInfo = loadFxhdd03RevInfo(queryRunnerDoc, kojyo, lotNo8, edaban, formId);
+            if (StringUtil.isEmpty(this.initJotaiFlg)) {
+                // 新規の場合、データが存在する場合
+                if (fxhdd03RevInfo != null && !fxhdd03RevInfo.isEmpty()) {
+                    return new ErrorMessageInfo(MessageUtil.getMessage("XHD-000025"));
+                }
+            } else {
+                // 品質DB登録実績データが取得出来ていない場合エラー
+                if (fxhdd03RevInfo == null || fxhdd03RevInfo.isEmpty()) {
+                    return  new ErrorMessageInfo(MessageUtil.getMessage("XHD-000025"));
+                }
+                
+                // revisionが更新されていた場合エラー
+                if (!this.initRev.equals(StringUtil.nullToBlank(getMapData(fxhdd03RevInfo, "rev")))) {
+                    return  new ErrorMessageInfo(MessageUtil.getMessage("XHD-000025"));
+                }
+            }
+            return null;
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+            return new ErrorMessageInfo("実行時エラー");
+        }
+    }
+    
+    /**
+     * [品質DB登録実績]から、リビジョン,状態フラグを取得
+     *
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadFxhdd03RevInfo(QueryRunner queryRunnerDoc, String kojyo, String lotNo, String edaban, String formId) throws SQLException {
+        // 設計データの取得
+        String sql = "SELECT rev, jotai_flg "
+                + "FROM fxhdd03 "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND gamen_id = ?";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(formId);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
+    }
+    
+    /**
+     * Mapから値を取得する(マップがNULLまたは空の場合はNULLを返却)
+     *
+     * @param map マップ
+     * @param mapId ID
+     * @return マップから取得した値
+     */
+    private Object getMapData(Map map, String mapId) {
+        if (map == null || map.isEmpty()) {
+            return null;
+        }
+        return map.get(mapId);
+    }
+    
+    
+    public String returnPage(){
+        //セッションのロットNoをクリア
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+        session.setAttribute("lotNo", "");
+        
+        return "/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true";
+    }
+    
+    
+    public void returnSubForm(String subFormId, boolean isError){
+        if(isError){
+            // 処理なし
+            return;
+        }
+        
+        
+        switch(subFormId){
+            case SubFormUtil.FORM_ID_GXHDO101C001 :
+                GXHDO101C001 beanGXHDO101C001 = (GXHDO101C001) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C001);
+                GXHDO101C001Logic.setReturnData(beanGXHDO101C001.getGxhdO101c001Model(), this.itemList);
+                    break;
+            case SubFormUtil.FORM_ID_GXHDO101C002 :
+                GXHDO101C002 beanGXHDO101C002 = (GXHDO101C002) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C002);
+                GXHDO101C002Logic.setReturnData(beanGXHDO101C002.getGxhdO101c002Model(), this.itemList);
+                    break;
+            case SubFormUtil.FORM_ID_GXHDO101C003 :
+                GXHDO101C003 beanGXHDO101C003 = (GXHDO101C003) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C003);
+                GXHDO101C003Logic.setReturnData(beanGXHDO101C003.getGxhdO101c003Model(), this.itemList);
+                    break;
+            case SubFormUtil.FORM_ID_GXHDO101C004 :
+                    break;
+            case SubFormUtil.FORM_ID_GXHDO101C005 :
+                    break;
+            default:
+                    break;
+        }
+        
+       // GXHDO101C001Logic.checkInput(beanGXHDO101C001.getGxhdO101c001Model());
+            
+    }
+    
+    
+    //private void 
 
 }

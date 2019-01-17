@@ -11,6 +11,7 @@ import javax.faces.context.FacesContext;
 import jp.co.kccs.xhd.model.GXHDO101C003Model;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
+import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.StringUtil;
 import org.primefaces.context.RequestContext;
 
@@ -45,6 +46,13 @@ public class GXHDO101C003 implements Serializable {
      * PTN距離Yサブ画面用データ(表示制御用)
      */
     private GXHDO101C003Model gxhdO101c003ModelView;
+    
+        
+    /**
+     * フォームエラー判定
+     */
+    private boolean isFormError;
+
 
     /**
      * コンストラクタ
@@ -89,10 +97,28 @@ public class GXHDO101C003 implements Serializable {
     }
 
     /**
+     * フォームエラー判定
+     * @return the isFormError
+     */
+    public boolean isIsFormError() {
+        return isFormError;
+    }
+
+    /**
+     * フォームエラー判定
+     * @param isFormError the isFormError to set
+     */
+    public void setIsFormError(boolean isFormError) {
+        this.isFormError = isFormError;
+    }
+
+    /**
      * OKボタン押下時のチェック処理を行う。
      */
     public void doOk() {
+        this.isFormError = false;
         if (!checkOK()) {
+            this.isFormError = true;
             // エラーの場合はコールバック変数に"error"をセット
             RequestContext context = RequestContext.getCurrentInstance();
             context.addCallbackParam("firstParam", "error");
@@ -113,15 +139,29 @@ public class GXHDO101C003 implements Serializable {
         clearBackColor();
 
         for (GXHDO101C003Model.PtnKyoriYData ptnKyoriYData : this.gxhdO101c003ModelView.getPtnKyoriYDataList()) {
-            if (StringUtil.isEmpty(ptnKyoriYData.getStartVal())) {
-                setError(ptnKyoriYData, true, false, "XHD-000003", "スタート");
-                return false;
+            if (!StringUtil.isEmpty(ptnKyoriYData.getStartVal())) {
+                if (!NumberUtil.isIntegerNumeric(ptnKyoriYData.getStartVal())) {
+                    setError(ptnKyoriYData, true, false, "XHD-000008", "スタート");
+                    return false;
+                }
+
+                if (3 < StringUtil.length(ptnKyoriYData.getStartVal()) ) {
+                    setError(ptnKyoriYData, true, false, "XHD-000006", "スタート", "3");
+                    return false;
+                }
             }
-            if (StringUtil.isEmpty(ptnKyoriYData.getEndVal())) {
-                setError(ptnKyoriYData, false, true, "XHD-000003", "エンド");
-                return false;
+
+            if (!StringUtil.isEmpty(ptnKyoriYData.getEndVal())) {
+                if (!NumberUtil.isIntegerNumeric(ptnKyoriYData.getEndVal())) {
+                    setError(ptnKyoriYData, false, true, "XHD-000008", "エンド");
+                    return false;
+                }
+
+                if (3 < StringUtil.length(ptnKyoriYData.getEndVal()) ) {
+                    setError(ptnKyoriYData, false, true, "XHD-000006", "エンド", "3");
+                    return false;
+                }
             }
-            ptnKyoriYData.setEndTextBackColor("");
         }
 
         return true;

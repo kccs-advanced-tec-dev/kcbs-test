@@ -24,7 +24,7 @@ import java.util.List;
  * @author SYSNAVI K.Hisanaga
  * @since 2018/12/04
  */
-public class GXHDO101C003Model implements Cloneable{
+public class GXHDO101C003Model implements Cloneable {
 
     /**
      * クローン実装
@@ -55,19 +55,65 @@ public class GXHDO101C003Model implements Cloneable{
         cloneModel.setPtnKyoriYDataList(newList);
         return cloneModel;
     }
+
+    /**
+     * PTN距離YｽﾀｰﾄMIN設定項目ID
+     */
+    private String returnItemIdStartMin = "";
+
+    /**
+     * PTN距離YｴﾝﾄﾞMIN設定項目ID
+     */
+    private String returnItemIdEndMin = "";
+
     /**
      * PTN距離Yデータリスト
      */
     private List<GXHDO101C003Model.PtnKyoriYData> ptnKyoriYDataList;
 
-        /**
+    /**
      * コンストラクタ
      */
     public GXHDO101C003Model() {
         this.ptnKyoriYDataList = new ArrayList<>();
     }
 
-    
+    /**
+     * PTN距離YｽﾀｰﾄMIN設定項目ID
+     *
+     * @return the returnItemIdStartMin
+     */
+    public String getReturnItemIdStartMin() {
+        return returnItemIdStartMin;
+    }
+
+    /**
+     * PTN距離YｽﾀｰﾄMIN設定項目ID
+     *
+     * @param returnItemIdStartMin the returnItemIdStartMin to set
+     */
+    public void setReturnItemIdStartMin(String returnItemIdStartMin) {
+        this.returnItemIdStartMin = returnItemIdStartMin;
+    }
+
+    /**
+     * PTN距離YｴﾝﾄﾞMIN設定項目ID
+     *
+     * @return the returnItemIdEndMin
+     */
+    public String getReturnItemIdEndMin() {
+        return returnItemIdEndMin;
+    }
+
+    /**
+     * PTN距離YｴﾝﾄﾞMIN設定項目ID
+     *
+     * @param returnItemIdEndMin the returnItemIdEndMin to set
+     */
+    public void setReturnItemIdEndMin(String returnItemIdEndMin) {
+        this.returnItemIdEndMin = returnItemIdEndMin;
+    }
+
     /**
      * PTN距離Yデータリスト
      *
@@ -216,7 +262,7 @@ public class GXHDO101C003Model implements Cloneable{
         public void setStartTextMaxLength(String startTextMaxLength) {
             this.startTextMaxLength = startTextMaxLength;
         }
-        
+
         /**
          * スタート項目_テキスト(BackGround)
          *
@@ -235,7 +281,6 @@ public class GXHDO101C003Model implements Cloneable{
             this.startTextBackColor = startTextBackColor;
         }
 
-        
         /**
          * スタート項目_ラベル(Rendered)
          *
@@ -325,7 +370,7 @@ public class GXHDO101C003Model implements Cloneable{
         public void setEndTextBackColor(String endTextBackColor) {
             this.endTextBackColor = endTextBackColor;
         }
-        
+
         /**
          * エンド項目_ラベル(Rendered)
          *

@@ -57,9 +57,11 @@ import org.apache.commons.dbutils.handlers.MapListHandler;
 @Named
 @ViewScoped
 public class GXHDO101A implements Serializable {
+
     private static final Logger LOGGER = Logger.getLogger(GXHDO101A.class.getName());
     private static final String CHARSET = "MS932";
     private static final int LOTNO_BYTE = 14;
+    private static final int TANTOSHA_CODE_BYTE = 6;
     
     /**
      * DataSource
@@ -95,16 +97,50 @@ public class GXHDO101A implements Serializable {
      * 警告メッセージ
      */
     private String warnMessage;
-        /**
+    /**
      * エラーメッセージ
      */
     private String errorMessage;
+    /**
+     * 担当者ｺｰﾄﾞ
+     */
+    private String tantoshaCd;
+    
+    /**
+     * ロットNo(検索値)
+     */
+    private String searchLotNo;
+    
+    /**
+     * 担当者ｺｰﾄﾞ(検索値)
+     */
+    private String searchTantoshaCd;
+    
     /**
      * コンストラクタ
      */
     public GXHDO101A() {
     }
 
+    /**
+     * 起動時処理
+     */
+    public void init() {
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+        String sLotNo = StringUtil.nullToBlank(session.getAttribute("lotNo"));
+        String sTantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
+        this.tantoshaCd = sTantoshaCd;
+        
+        session.setAttribute("lotNo", "");
+        session.setAttribute("tantoshaCd", "");
+        if(!StringUtil.isEmpty(sLotNo)){
+            this.lotNo = sLotNo;
+            getMenuListGXHDO101();
+        }
+    }
+    
+    
     /**
      * 一覧取得処理
      * @return 一覧データ
@@ -130,34 +166,55 @@ public class GXHDO101A implements Serializable {
             isPC = true;
         }
         
-        // ユーザーグループを取得する
-        String strGamenLotNo = getLotNo();
-        
-        String strProcess = "";
-
-        // ロットNo桁数チェック
-        if (LOTNO_BYTE != StringUtil.getByte(strGamenLotNo, CHARSET, LOGGER)) {
-            setErrorMessage(MessageUtil.getMessage("XHD-000004", "ロットNo", LOTNO_BYTE));
-            setMenuTableRender(false);
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, getErrorMessage(), null);
-            facesContext.addMessage(null, message);
-            return null;
-        }
-        
-        // ﾛｯﾄNoのﾁｪｯｸﾃﾞｼﾞｯﾄﾁｪｯｸ
-        ValidateUtil validateUtil = new ValidateUtil();
-        String retMsg = validateUtil.checkValueE001(strGamenLotNo);
-        
-        if (!StringUtil.isEmpty(retMsg)) {            
-            setMenuTableRender(false);
-            setErrorMessage(retMsg);
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, getErrorMessage(), null);
-            facesContext.addMessage(null, message);
-            return null;                    
-        }
-        
         // ユーザーグループでメニューマスタを検索
         try {
+            
+            // ロットNoを取得する
+            String strGamenLotNo = getLotNo();
+
+            String strProcess = "";
+
+            // 担当者ｺｰﾄﾞ桁数チェック
+            if (TANTOSHA_CODE_BYTE != StringUtil.getByte(this.tantoshaCd, CHARSET, LOGGER)) {
+                setErrorMessage(MessageUtil.getMessage("XHD-000004", "担当者ｺｰﾄﾞ", TANTOSHA_CODE_BYTE));
+                setMenuTableRender(false);
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, getErrorMessage(), null);
+                facesContext.addMessage(null, message);
+                return null;
+            }
+
+            // ロットNo桁数チェック
+            if (LOTNO_BYTE != StringUtil.getByte(strGamenLotNo, CHARSET, LOGGER)) {
+                setErrorMessage(MessageUtil.getMessage("XHD-000004", "ロットNo", LOTNO_BYTE));
+                setMenuTableRender(false);
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, getErrorMessage(), null);
+                facesContext.addMessage(null, message);
+                return null;
+            }
+
+            // ﾛｯﾄNoのﾁｪｯｸﾃﾞｼﾞｯﾄﾁｪｯｸ
+            ValidateUtil validateUtil = new ValidateUtil();
+            String retMsg = validateUtil.checkValueE001(strGamenLotNo);
+
+            if (!StringUtil.isEmpty(retMsg)) {
+                setMenuTableRender(false);
+                setErrorMessage(retMsg);
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, getErrorMessage(), null);
+                facesContext.addMessage(null, message);
+                return null;
+            }
+            
+            QueryRunner queryRunner = new QueryRunner(dataSource);
+            retMsg = validateUtil.checkT002("担当者ｺｰﾄﾞ", this.tantoshaCd, queryRunner);
+            if (!StringUtil.isEmpty(retMsg)) {            
+                setMenuTableRender(false);
+                setErrorMessage(retMsg);
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, getErrorMessage(), null);
+                facesContext.addMessage(null, message);
+                return null;                    
+            }
+            
+            
             String strKojyo = strGamenLotNo.substring(0,3);
             String strLotNo = strGamenLotNo.substring(3,11);
             String strEdaban = strGamenLotNo.substring(11,14);
@@ -186,7 +243,6 @@ public class GXHDO101A implements Serializable {
             List<Object> params2 = new ArrayList<>();
             params2.add(strProcess);
             
-            QueryRunner queryRunner = new QueryRunner(dataSource);
             List sqlsearchResult =  (List)queryRunner.query(sqlsearchGamenID, new MapListHandler(), params2.toArray());
             
             List<Object> listGamenID = new ArrayList<>();
@@ -253,6 +309,11 @@ public class GXHDO101A implements Serializable {
                 facesContext.addMessage(null, message);
             }else{
                 setMenuTableRender(true);
+                
+                // 検索した時点のﾛｯﾄNoと担当者ｺｰﾄﾞを保持する。
+                this.searchLotNo = this.lotNo;
+                this.searchTantoshaCd = this.tantoshaCd;
+                        
             }
 
         } catch (SQLException ex) {
@@ -281,7 +342,8 @@ public class GXHDO101A implements Serializable {
         session.setAttribute("titleSetting", rowData.getTitleSetting());
         session.setAttribute("formClassName", rowData.getFormClassName());
         session.setAttribute("hyojiKensu", rowData.getHyojiKensu());
-        session.setAttribute("lotNo", getLotNo());
+        session.setAttribute("lotNo", this.searchLotNo);
+        session.setAttribute("tantoshaCd", this.searchTantoshaCd);
         
         return rowData.getLinkChar() + "?faces-redirect=true";
     }
@@ -405,5 +467,24 @@ public class GXHDO101A implements Serializable {
     public void setWarnMessage(String warnMessage) {
         this.warnMessage = warnMessage;
     }
+    
+    /**
+     * 担当者ｺｰﾄﾞ
+     * @return the tantoshaCd
+     */
+    public String getTantoshaCd() {
+        return tantoshaCd;
+    }
+
+    /**
+     * 担当者ｺｰﾄﾞ
+     * @param tantoshaCd the tantoshaCd to set
+     */
+    public void setTantoshaCd(String tantoshaCd) {
+        this.tantoshaCd = tantoshaCd;
+    }
+    
+
+   
 
 }

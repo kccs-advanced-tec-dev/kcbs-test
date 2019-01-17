@@ -55,7 +55,17 @@ public class GXHDO101C002Model implements Cloneable {
         cloneModel.setPtnKyoriXDataList(newList);
         return cloneModel;
     }
-
+    
+    /**
+     * PTN距離XｽﾀｰﾄMIN設定項目ID
+     */
+    private String returnItemIdStartMin ="";
+    
+    /**
+     * PTN距離XｴﾝﾄﾞMIN設定項目ID
+     */
+    private String returnItemIdEndMin ="";
+    
     /**
      * PTN距離Xデータリスト
      */
@@ -66,6 +76,38 @@ public class GXHDO101C002Model implements Cloneable {
      */
     public GXHDO101C002Model() {
         this.ptnKyoriXDataList = new ArrayList<>();
+    }
+
+    /**
+     * PTN距離XｽﾀｰﾄMIN設定項目ID
+     * @return the returnItemIdStartMin
+     */
+    public String getReturnItemIdStartMin() {
+        return returnItemIdStartMin;
+    }
+
+    /**
+     * PTN距離XｽﾀｰﾄMIN設定項目ID
+     * @param returnItemIdStartMin the returnItemIdStartMin to set
+     */
+    public void setReturnItemIdStartMin(String returnItemIdStartMin) {
+        this.returnItemIdStartMin = returnItemIdStartMin;
+    }
+
+    /**
+     * PTN距離XｴﾝﾄﾞMIN設定項目ID
+     * @return the returnItemIdEndMin
+     */
+    public String getReturnItemIdEndMin() {
+        return returnItemIdEndMin;
+    }
+
+    /**
+     * PTN距離XｴﾝﾄﾞMIN設定項目ID
+     * @param returnItemIdEndMin the returnItemIdEndMin to set
+     */
+    public void setReturnItemIdEndMin(String returnItemIdEndMin) {
+        this.returnItemIdEndMin = returnItemIdEndMin;
     }
 
     /**

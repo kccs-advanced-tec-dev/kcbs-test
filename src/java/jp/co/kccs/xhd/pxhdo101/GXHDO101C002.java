@@ -4,6 +4,7 @@
 package jp.co.kccs.xhd.pxhdo101;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -11,7 +12,9 @@ import javax.faces.context.FacesContext;
 import jp.co.kccs.xhd.model.GXHDO101C002Model;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
+import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.StringUtil;
+import org.apache.commons.lang.StringUtils;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -45,6 +48,11 @@ public class GXHDO101C002 implements Serializable {
      * PTN距離Xサブ画面用データ(表示制御用)
      */
     private GXHDO101C002Model gxhdO101c002ModelView;
+    
+    /**
+     * フォームエラー判定
+     */
+    private boolean isFormError;
 
     /**
      * コンストラクタ
@@ -87,12 +95,30 @@ public class GXHDO101C002 implements Serializable {
     public void setGxhdO101c002ModelView(GXHDO101C002Model gxhdO101c002ModelView) {
         this.gxhdO101c002ModelView = gxhdO101c002ModelView;
     }
+    
+    /**
+     * フォームエラー判定
+     * @return the isFormError
+     */
+    public boolean isIsFormError() {
+        return isFormError;
+    }
+
+    /**
+     * フォームエラー判定
+     * @param isFormError the isFormError to set
+     */
+    public void setIsFormError(boolean isFormError) {
+        this.isFormError = isFormError;
+    }
 
     /**
      * OKボタン押下時のチェック処理を行う。
      */
     public void doOk() {
+        this.isFormError = false;
         if (!checkOK()) {
+            this.isFormError = true;
             // エラーの場合はコールバック変数に"error"をセット
             RequestContext context = RequestContext.getCurrentInstance();
             context.addCallbackParam("firstParam", "error");
@@ -113,15 +139,30 @@ public class GXHDO101C002 implements Serializable {
         clearBackColor();
 
         for (GXHDO101C002Model.PtnKyoriXData ptnKyoriXData : this.gxhdO101c002ModelView.getPtnKyoriXDataList()) {
-            if (StringUtil.isEmpty(ptnKyoriXData.getStartVal())) {
-                setError(ptnKyoriXData, true, false, "XHD-000003", "スタート");
-                return false;
+            
+            if (!StringUtil.isEmpty(ptnKyoriXData.getStartVal())) {
+                if (!NumberUtil.isIntegerNumeric(ptnKyoriXData.getStartVal())) {
+                    setError(ptnKyoriXData, true, false, "XHD-000008", "スタート");
+                    return false;
+                }
+
+                if (3 < StringUtil.length(ptnKyoriXData.getStartVal()) ) {
+                    setError(ptnKyoriXData, true, false, "XHD-000006", "スタート", "3");
+                    return false;
+                }
             }
-            if (StringUtil.isEmpty(ptnKyoriXData.getEndVal())) {
-                setError(ptnKyoriXData, false, true, "XHD-000003", "エンド");
-                return false;
+
+            if (!StringUtil.isEmpty(ptnKyoriXData.getEndVal())) {
+                if (!NumberUtil.isIntegerNumeric(ptnKyoriXData.getEndVal())) {
+                    setError(ptnKyoriXData, false, true, "XHD-000008", "エンド");
+                    return false;
+                }
+
+                if (3 < StringUtil.length(ptnKyoriXData.getEndVal()) ) {
+                    setError(ptnKyoriXData, false, true, "XHD-000006", "エンド", "3");
+                    return false;
+                }
             }
-            ptnKyoriXData.setEndTextBackColor("");
         }
 
         return true;

@@ -37,7 +37,7 @@ import jp.co.kccs.xhd.db.model.FXHDD01;
  * @since 2018/04/24
  */
 public class ProcessData {
-
+    
     /**
      * 処理名
      */
@@ -135,7 +135,16 @@ public class ProcessData {
      * 致命的エラー
      */
     private boolean fatalError;
-
+    
+    /**
+     * リビジョンチェック対象ボタンID
+     */
+    private List<String> checkRevisionButtonId;
+    
+    /**
+     * 完了メッセージ
+     */
+    private String compMessage;
 
     /**
      * コンストラクタ
@@ -149,6 +158,7 @@ public class ProcessData {
         this.errorMessageInfoList = new ArrayList<>();
         this.initMessageList = new ArrayList<>();
         this.kikakuchiInputErrorInfoList = new ArrayList<>();
+        this.checkRevisionButtonId = new ArrayList<>();
     }
 
     /**
@@ -572,5 +582,40 @@ public class ProcessData {
     public void setFatalError(boolean fatalError) {
         this.fatalError = fatalError;
     }
+    
+    
+    /**
+     * リビジョンチェック対象ボタンID
+     * @return the checkRevisionButtonId
+     */
+    public List<String> getCheckRevisionButtonId() {
+        return checkRevisionButtonId;
+    }
+
+    /**
+     * リビジョンチェック対象ボタンID
+     * @param checkRevisionButtonId the checkRevisionButtonId to set
+     */
+    public void setCheckRevisionButtonId(List<String> checkRevisionButtonId) {
+        this.checkRevisionButtonId = checkRevisionButtonId;
+    }
+
+    /**
+     * 完了メッセージ
+     * @return the compMessage
+     */
+    public String getCompMessage() {
+        return compMessage;
+    }
+
+    /**
+     * 完了メッセージ
+     * @param compMessage the compMessage to set
+     */
+    public void setCompMessage(String compMessage) {
+        this.compMessage = compMessage;
+    }
+
+
 
 }

@@ -102,11 +102,11 @@ public class GXHDO101B002Const {
     /**
      * ﾍﾟｰｽﾄ温度1
      */
-    public static final String ONDO1 = "insatsu_sps_screen_ondo1";
+    public static final String PASTE_ONDO1 = "insatsu_sps_screen_paste_ondo1";
     /**
      * ﾍﾟｰｽﾄ固形分1
      */
-    public static final String KOKEIBUN1 = "insatsu_sps_screen_kokeibun1";
+    public static final String PASTE_KOKEIBUN1 = "insatsu_sps_screen_paste_kokeibun1";
     /**
      * ﾍﾟｰｽﾄﾛｯﾄNo2
      */
@@ -250,7 +250,7 @@ public class GXHDO101B002Const {
     /**
      * 印刷終了日
      */
-    public static final String INSATSU_SHUURYOU_DAY = "insatsu_sps_screen_insatsu_shuuryou_day";
+    public static final String INSATSU_SHUURYOU_DAY = "insatsu_sps_screen_insatsu_shuryou_day";
     /**
      * 印刷終了時刻
      */
@@ -291,16 +291,38 @@ public class GXHDO101B002Const {
      * 印刷枚数
      */
     public static final String INSATSU_MAISUU = "insatsu_sps_screen_insatsu_maisuu";
+    
+    /**
+     * 備考1
+     */
+    public static final String BIKOU1 = "insatsu_sps_screen_bikou1";
 
+    /**
+     * 備考2
+     */
+    public static final String BIKOU2 = "insatsu_sps_screen_bikou2";
+
+    
+    
     /**
      * 仮登録(画面下)
      */
     public static final String BTN_DOWN_KARI_TOUROKU = "insatsu_sps_screen_down_kari_touroku";
 
     /**
-     * 検索(画面下)
+     * 枝番コピー(画面下)
      */
-    public static final String BTN_DOWN_KENSAKU = "insatsu_sps_screen_down_kensaku";
+    public static final String BTN_DOWN_EDABAN_COPY = "insatsu_sps_screen_down_copy_edaban";
+
+    /**
+     * 開始日時(画面下)
+     */
+    public static final String BTN_DOWN_START_DATETIME = "insatsu_sps_screen_down_startdatetime";
+
+    /**
+     * 終了日時(画面下)
+     */
+    public static final String BTN_DOWN_END_DATETIME = "insatsu_sps_screen_down_enddatetime";
 
     /**
      * 膜圧(画面下)
@@ -331,11 +353,8 @@ public class GXHDO101B002Const {
      * 登録(画面下)
      */
     public static final String BTN_DOWN_TOUROKU = "insatsu_sps_screen_down_touroku";
-
-    /**
-     * WIP取込(画面下)
-     */
-    public static final String BTN_DOWN_WIP_TORIKOMI = "insatsu_sps_screen_down_wip_torikomi";
+    
+    
 
     /**
      * 仮登録(画面上)
@@ -343,9 +362,19 @@ public class GXHDO101B002Const {
     public static final String BTN_UP_KARI_TOUROKU = "insatsu_sps_screen_up_kari_touroku";
 
     /**
-     * 検索(画面上)
+     * 枝番コピー(画面上)
      */
-    public static final String BTN_UP_KENSAKU = "insatsu_sps_screen_up_kensaku";
+    public static final String BTN_UP_EDABAN_COPY = "insatsu_sps_screen_up_copy_edaban";
+
+    /**
+     * 開始日時(画面上)
+     */
+    public static final String BTN_UP_START_DATETIME = "insatsu_sps_screen_up_startdatetime";
+
+    /**
+     * 終了日時(画面上)
+     */
+    public static final String BTN_UP_END_DATETIME = "insatsu_sps_screen_up_enddatetime";
 
     /**
      * 膜圧(画面上)
@@ -376,9 +405,5 @@ public class GXHDO101B002Const {
      * 登録(画面上)
      */
     public static final String BTN_UP_TOUROKU = "insatsu_sps_screen_up_touroku";
-
-    /**
-     * WIP取込(画面上)
-     */
-    public static final String BTN_UP_WIP_TORIKOMI = "insatsu_sps_screen_up_wip_torikomi";
+    
 }
