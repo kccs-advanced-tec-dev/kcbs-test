@@ -3,9 +3,16 @@
  */
 package jp.co.kccs.xhd.pxhdo101;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.model.GXHDO101C004Model;
+import jp.co.kccs.xhd.util.ErrUtil;
+import jp.co.kccs.xhd.util.NumberUtil;
+import jp.co.kccs.xhd.util.StringUtil;
 
 /**
  * ===============================================================================<br>
@@ -24,22 +31,16 @@ import jp.co.kccs.xhd.model.GXHDO101C004Model;
  */
 public class GXHDO101C004Logic {
 
-    public static GXHDO101C004Model createGXHDO101C004Model(String lotNo) {
+    public static GXHDO101C004Model createGXHDO101C004Model(String[] makuatsuStart) {
         List<GXHDO101C004Model.MakuatsuData> makuatsuDataList = new ArrayList<>();
         GXHDO101C004Model model = new GXHDO101C004Model();
 
-        // 膜厚(1行目)
-        makuatsuDataList.add(getInitMakuatsuData(model, "1", "", "TEXT", "5", ""));
-        // 膜厚(2行目)
-        makuatsuDataList.add(getInitMakuatsuData(model, "2", "", "TEXT", "5", ""));
-        // 膜厚(3行目)
-        makuatsuDataList.add(getInitMakuatsuData(model, "3", "", "TEXT", "5", ""));
-        // 膜厚(4行目)
-        makuatsuDataList.add(getInitMakuatsuData(model, "4", "", "TEXT", "5", ""));
-        // 膜厚(5行目)
-        makuatsuDataList.add(getInitMakuatsuData(model, "5", "", "TEXT", "5", ""));
-        model.setMakuatsuDataList(makuatsuDataList);
+        // 画面内のリストの一覧を作成する。
+        for (int i = 0; i < makuatsuStart.length; i++) {
+            makuatsuDataList.add(getInitMakuatsuData(model, String.valueOf(i + 1), makuatsuStart[i], "TEXT", "5", ""));
+        }
 
+        model.setMakuatsuDataList(makuatsuDataList);
         return model;
     }
 
@@ -72,6 +73,100 @@ public class GXHDO101C004Logic {
         makuatsuData.setStartTextMaxLength(startTextMaxLength);
         makuatsuData.setStartTextBackColor(startTextBackColor);
         return makuatsuData;
+    }
+
+    /**
+     * 入力ﾁｪｯｸ
+     *
+     * @param gXHDO101C004Model 膜厚(RSUS)サブ画面用ﾓﾃﾞﾙ
+     * @return ｴﾗｰﾘｽﾄ
+     */
+    public static List<String> checkInput(GXHDO101C004Model gXHDO101C004Model) {
+
+        List<String> errorList = new ArrayList<>();
+        List<GXHDO101C004Model.MakuatsuData> makuatsuDataList = gXHDO101C004Model.getMakuatsuDataList();
+        for (GXHDO101C004Model.MakuatsuData makuatsuData : makuatsuDataList) {
+            if (StringUtil.isEmpty(makuatsuData.getStartVal())) {
+                makuatsuData.setStartTextBackColor(ErrUtil.ERR_BACK_COLOR);
+                //TODO
+                errorList.add("スタートが入力されていません。");
+                return errorList;
+            }
+        }
+        return errorList;
+    }
+
+    /**
+     * サブ画面からの戻り値をメイン画面の項目リストにセットする
+     *
+     * @param gXHDO101C004Model 膜厚(SPS)サブ画面用ﾓﾃﾞﾙ
+     * @param itemList 項目リスト
+     */
+    public static void setReturnData(GXHDO101C004Model gXHDO101C004Model, List<FXHDD01> itemList) {
+
+        List<String> startDataList = new ArrayList<>();
+        for (GXHDO101C004Model.MakuatsuData makuatsuData : gXHDO101C004Model.getMakuatsuDataList()) {
+            if (!StringUtil.isEmpty(makuatsuData.getStartVal())) {
+                startDataList.add(makuatsuData.getStartVal());
+            }
+        }
+
+        FXHDD01 itemStartAve = getItemRow(itemList, gXHDO101C004Model.getReturnItemIdStartAve());
+        FXHDD01 itemStartMax = getItemRow(itemList, gXHDO101C004Model.getReturnItemIdStartMax());
+        FXHDD01 itemStartMin = getItemRow(itemList, gXHDO101C004Model.getReturnItemIdStartMin());
+        FXHDD01 itemStartCv = getItemRow(itemList, gXHDO101C004Model.getReturnItemIdStartCv());
+        // 全て値が設定されていた場合のみ算出値をセットする
+        if (gXHDO101C004Model.getMakuatsuDataList().size() == startDataList.size()) {
+            BigDecimal[] calcDataStart = NumberUtil.getCalculatData(startDataList);
+            setItemValue(itemStartAve, calcDataStart[3]);
+            setItemValue(itemStartMax, calcDataStart[1]);
+            setItemValue(itemStartMin, calcDataStart[2]);
+            setItemValue(itemStartCv, calcDataStart[4]);
+        } else {
+            setItemValue(itemStartAve, null);
+            setItemValue(itemStartMax, null);
+            setItemValue(itemStartMin, null);
+            setItemValue(itemStartCv, null);
+        }
+    }
+
+    private static void setItemValue(FXHDD01 itemData, BigDecimal value) {
+        if (itemData == null) {
+            return;
+        }
+        if (value != null) {
+            // 小数指定されている場合は小数部以下は切り捨て
+            if (!StringUtil.isEmpty(itemData.getInputLengthDec())) {
+                try {
+                    value = value.setScale(Integer.parseInt(itemData.getInputLengthDec()), RoundingMode.DOWN);
+                } catch (NumberFormatException e) {
+                    // 処理なし
+                }
+            }
+
+            // 値をセット
+            itemData.setValue(value.toPlainString());
+        } else {
+            // 値をセット
+            itemData.setValue("");
+        }
+    }
+
+    /**
+     * 項目データ取得
+     *
+     * @param listData フォームデータ
+     * @param itemId 項目ID
+     * @return 項目データ
+     */
+    private static FXHDD01 getItemRow(List<FXHDD01> listData, String itemId) {
+        List<FXHDD01> selectData
+                = listData.stream().filter(n -> itemId.equals(n.getItemId())).collect(Collectors.toList());
+        if (null != selectData && 0 < selectData.size()) {
+            return selectData.get(0);
+        } else {
+            return null;
+        }
     }
 
 }

@@ -24,7 +24,7 @@ import java.util.List;
  * @author SYSNAVI K.Hisanaga
  * @since 2018/12/04
  */
-    public class GXHDO101C004Model implements Cloneable{
+public class GXHDO101C004Model implements Cloneable {
 
     /**
      * クローン実装
@@ -52,6 +52,26 @@ import java.util.List;
     }
 
     /**
+     * 膜厚ｽﾀｰﾄAVE設定項目ID
+     */
+    private String returnItemIdStartAve = "";
+
+    /**
+     * 膜厚ｽﾀｰﾄMAX設定項目ID
+     */
+    private String returnItemIdStartMax = "";
+
+    /**
+     * 膜厚ｽﾀｰﾄMIN設定項目ID
+     */
+    private String returnItemIdStartMin = "";
+
+    /**
+     * 膜厚ｽﾀｰﾄCV設定項目ID
+     */
+    private String returnItemIdStartCv = "";
+
+    /**
      * 膜厚データリスト
      */
     private List<MakuatsuData> makuatsuDataList;
@@ -62,9 +82,10 @@ import java.util.List;
     public GXHDO101C004Model() {
         this.makuatsuDataList = new ArrayList<>();
     }
-    
+
     /**
      * 膜厚データリスト
+     *
      * @return the makuatsuDataList
      */
     public List<MakuatsuData> getMakuatsuDataList() {
@@ -73,10 +94,83 @@ import java.util.List;
 
     /**
      * 膜厚データリスト
+     *
      * @param makuatsuDataList the makuatsuDataList to set
      */
     public void setMakuatsuDataList(List<MakuatsuData> makuatsuDataList) {
         this.makuatsuDataList = makuatsuDataList;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄAVE設定項目ID
+     *
+     * @return the returnItemIdStartAve
+     */
+    public String getReturnItemIdStartAve() {
+        return returnItemIdStartAve;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄAVE設定項目ID
+     *
+     * @param returnItemIdStartAve the returnItemIdStartAve to set
+     */
+    public void setReturnItemIdStartAve(String returnItemIdStartAve) {
+        this.returnItemIdStartAve = returnItemIdStartAve;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄMAX設定項目ID
+     *
+     * @return the returnItemIdStartMax
+     */
+    public String getReturnItemIdStartMax() {
+        return returnItemIdStartMax;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄMAX設定項目ID
+     *
+     * @param returnItemIdStartMax the returnItemIdStartMax to set
+     */
+    public void setReturnItemIdStartMax(String returnItemIdStartMax) {
+        this.returnItemIdStartMax = returnItemIdStartMax;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄMIN設定項目ID
+     *
+     * @return the returnItemIdStartMin
+     */
+    public String getReturnItemIdStartMin() {
+        return returnItemIdStartMin;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄMIN設定項目ID
+     *
+     * @param returnItemIdStartMin the returnItemIdStartMin to set
+     */
+    public void setReturnItemIdStartMin(String returnItemIdStartMin) {
+        this.returnItemIdStartMin = returnItemIdStartMin;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄCV設定項目ID
+     *
+     * @return the returnItemIdStartCv
+     */
+    public String getReturnItemIdStartCv() {
+        return returnItemIdStartCv;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄCV設定項目ID
+     *
+     * @param returnItemIdStartCv the returnItemIdStartCv to set
+     */
+    public void setReturnItemIdStartCv(String returnItemIdStartCv) {
+        this.returnItemIdStartCv = returnItemIdStartCv;
     }
 
     /**
@@ -185,6 +279,7 @@ import java.util.List;
         public void setStartTextMaxLength(String startTextMaxLength) {
             this.startTextMaxLength = startTextMaxLength;
         }
+
         /**
          * スタート項目_テキスト(BackGround)
          *

@@ -6,6 +6,8 @@ package jp.co.kccs.xhd.pxhdo101;
 import java.util.ArrayList;
 import java.util.List;
 import jp.co.kccs.xhd.model.GXHDO101C005Model;
+import jp.co.kccs.xhd.util.ErrUtil;
+import jp.co.kccs.xhd.util.StringUtil;
 
 /**
  * ===============================================================================<br>
@@ -24,23 +26,19 @@ import jp.co.kccs.xhd.model.GXHDO101C005Model;
  */
 public class GXHDO101C005Logic {
 
-    public static GXHDO101C005Model createGXHDO101C005Model(String lotNo) {
-        GXHDO101C005Model GXHDO101C005Model = new GXHDO101C005Model();
+    public static GXHDO101C005Model createGXHDO101C005Model(String[] startValues) {
+
+        GXHDO101C005Model model = new GXHDO101C005Model();
         List<GXHDO101C005Model.PrintWidthData> printWidthDataList = new ArrayList<>();
 
-        // 膜厚(1行目)
-        printWidthDataList.add(getInitPrintWidhData(GXHDO101C005Model, "1", "", "TEXT", "5", ""));
-        // 膜厚(2行目)
-        printWidthDataList.add(getInitPrintWidhData(GXHDO101C005Model, "2", "", "TEXT", "5", ""));
-        // 膜厚(3行目)
-        printWidthDataList.add(getInitPrintWidhData(GXHDO101C005Model, "3", "", "TEXT", "5", ""));
-        // 膜厚(4行目)
-        printWidthDataList.add(getInitPrintWidhData(GXHDO101C005Model, "4", "", "TEXT", "5", ""));
-        // 膜厚(5行目)
-        printWidthDataList.add(getInitPrintWidhData(GXHDO101C005Model, "5", "", "TEXT", "5", ""));
+        // 画面内のリストの一覧を作成する。
+        for (int i = 0; i < startValues.length; i++) {
+            printWidthDataList.add(getInitPrintWidhData(model, String.valueOf(i + 1), startValues[i], "TEXT", "5", ""));
+        }
 
-        GXHDO101C005Model.setPrintWidthDataList(printWidthDataList);
-        return GXHDO101C005Model;
+        model.setPrintWidthDataList(printWidthDataList);
+        return model;
+
     }
 
     /**
@@ -55,7 +53,7 @@ public class GXHDO101C005Logic {
      * @return 印刷幅データ
      */
     private static GXHDO101C005Model.PrintWidthData getInitPrintWidhData(
-            GXHDO101C005Model gxhdo101C005Model, String printWidth, String startVal, 
+            GXHDO101C005Model gxhdo101C005Model, String printWidth, String startVal,
             String startInputType, String startTextMaxLength, String startTextBackColor) {
         GXHDO101C005Model.PrintWidthData printWidthListData = gxhdo101C005Model.new PrintWidthData();
         // 印刷幅
@@ -74,4 +72,26 @@ public class GXHDO101C005Logic {
 
         return printWidthListData;
     }
+
+    /**
+     * 入力ﾁｪｯｸ
+     *
+     * @param gXHDO101C005Model 印刷幅サブ画面用ﾓﾃﾞﾙ
+     * @return ｴﾗｰﾘｽﾄ
+     */
+    public static List<String> checkInput(GXHDO101C005Model gXHDO101C005Model) {
+
+        List<String> errorList = new ArrayList<>();
+        List<GXHDO101C005Model.PrintWidthData> printWidthDataList = gXHDO101C005Model.getPrintWidthDataList();
+        for (GXHDO101C005Model.PrintWidthData printWidthData : printWidthDataList) {
+            if (StringUtil.isEmpty(printWidthData.getStartVal())) {
+                printWidthData.setStartTextBackColor(ErrUtil.ERR_BACK_COLOR);
+                //TODO
+                errorList.add("スタートが入力されていません。");
+                return errorList;
+            }
+        }
+        return errorList;
+    }
+
 }

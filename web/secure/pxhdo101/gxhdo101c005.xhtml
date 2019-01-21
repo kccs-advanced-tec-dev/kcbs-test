@@ -27,11 +27,17 @@
             <div style="text-align: center;">
                 <p:commandButton value="OK" id="okBtn"
                                  style="position:relative;right:5px;top:5px;width:90px;height:35px;"
-                                 actionListener="#{beanGXHDO101C005.doOk()}"
+                                 actionListener="#{gXHDO901A.returnSubForm('GXHDO101C005',beanGXHDO101C005.isFormError)}"
                                  async="false"
-                                 process="gxhdo101c005Form" 
-                                 update="gxhdo101c005Form form:growlMessage"
-                                 oncomplete="if('error'!=args.firstParam){PF('W_dlg_gxhdo101c005').hide();}"/>
+                                 process="@this" 
+                                 update="form:itemDataList" >   
+                    <p:ajax event="click"
+                                    async="false"
+                                    listener="#{beanGXHDO101C005.doOk()}"
+                                    process="gxhdo101c005Form" 
+                                    update="gxhdo101c005Form form:growlMessage"
+                                    oncomplete="if('error'!=args.firstParam){PF('W_dlg_gxhdo101c005').hide();}"/>
+                </p:commandButton>
                 <p:commandButton value="Cancel" id="cancelBtn"
                                  style="position:relative;right:5px;top:5px;width:90px;height:35px;"
                                  process="@this" 

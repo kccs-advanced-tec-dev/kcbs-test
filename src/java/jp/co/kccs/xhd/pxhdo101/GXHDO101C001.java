@@ -5,16 +5,28 @@ package jp.co.kccs.xhd.pxhdo101;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+import javax.annotation.Resource;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.sql.DataSource;
 import jp.co.kccs.xhd.model.GXHDO101C001Model;
+import jp.co.kccs.xhd.pxhdo901.GXHDO901A;
+import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
 import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.StringUtil;
 import jp.co.kccs.xhd.util.ValidateUtil;
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.MapHandler;
+import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -39,6 +51,14 @@ import org.primefaces.context.RequestContext;
 @SessionScoped
 public class GXHDO101C001 implements Serializable {
 
+    private static final Logger LOGGER = Logger.getLogger(GXHDO901A.class.getName());
+
+    /**
+     * DataSource(QCDB)
+     */
+    @Resource(mappedName = "jdbc/qcdb")
+    private transient DataSource dataSourceQcdb;
+
     /**
      * 工場ｺｰﾄﾞ
      */
@@ -51,7 +71,7 @@ public class GXHDO101C001 implements Serializable {
      * 枝番
      */
     private String edaban;
-    
+
     /**
      * フォームエラー判定
      */
@@ -67,7 +87,6 @@ public class GXHDO101C001 implements Serializable {
      */
     private GXHDO101C001Model gxhdO101c001ModelView;
 
-
     /**
      * コンストラクタ
      */
@@ -76,6 +95,7 @@ public class GXHDO101C001 implements Serializable {
 
     /**
      * 工場ｺｰﾄﾞ
+     *
      * @return the kojyo
      */
     public String getKojyo() {
@@ -84,6 +104,7 @@ public class GXHDO101C001 implements Serializable {
 
     /**
      * 工場ｺｰﾄﾞ
+     *
      * @param kojyo the kojyo to set
      */
     public void setKojyo(String kojyo) {
@@ -92,6 +113,7 @@ public class GXHDO101C001 implements Serializable {
 
     /**
      * ﾛｯﾄNo.
+     *
      * @return the lotno
      */
     public String getLotno() {
@@ -100,6 +122,7 @@ public class GXHDO101C001 implements Serializable {
 
     /**
      * ﾛｯﾄNo.
+     *
      * @param lotno the lotno to set
      */
     public void setLotno(String lotno) {
@@ -108,6 +131,7 @@ public class GXHDO101C001 implements Serializable {
 
     /**
      * 枝番
+     *
      * @return the edaban
      */
     public String getEdaban() {
@@ -116,6 +140,7 @@ public class GXHDO101C001 implements Serializable {
 
     /**
      * 枝番
+     *
      * @param edaban the edaban to set
      */
     public void setEdaban(String edaban) {
@@ -124,6 +149,7 @@ public class GXHDO101C001 implements Serializable {
 
     /**
      * フォームエラー判定
+     *
      * @return the isFormError
      */
     public boolean isIsFormError() {
@@ -132,6 +158,7 @@ public class GXHDO101C001 implements Serializable {
 
     /**
      * フォームエラー判定
+     *
      * @param isFormError the isFormError to set
      */
     public void setIsFormError(boolean isFormError) {
@@ -174,6 +201,98 @@ public class GXHDO101C001 implements Serializable {
         this.gxhdO101c001ModelView = gxhdO101c001ModelView;
     }
 
+    public void doMakuatsuDataImport() {
+        try {
+           List<Map<String, Object>> makuatsuDataList = getMakuatu();
+           if(makuatsuDataList.isEmpty()){
+                // メッセージをセット
+                FacesContext facesContext = FacesContext.getCurrentInstance();
+                FacesMessage message
+                        = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000033"), null);
+                facesContext.addMessage(null, message);
+                return;
+           }
+           // 膜厚1データセット
+           setMakuatsuData(makuatsuDataList,this.gxhdO101c001ModelView.getMakuatsuDataList().get(0), "1");
+           // 膜厚2データセット
+           setMakuatsuData(makuatsuDataList,this.gxhdO101c001ModelView.getMakuatsuDataList().get(1), "2");
+           // 膜厚3データセット
+           setMakuatsuData(makuatsuDataList,this.gxhdO101c001ModelView.getMakuatsuDataList().get(2), "3");
+           // 膜厚4データセット
+           setMakuatsuData(makuatsuDataList,this.gxhdO101c001ModelView.getMakuatsuDataList().get(3), "4");
+           // 膜厚5データセット
+           setMakuatsuData(makuatsuDataList,this.gxhdO101c001ModelView.getMakuatsuDataList().get(4), "5");
+           // 膜厚6データセット
+           setMakuatsuData(makuatsuDataList,this.gxhdO101c001ModelView.getMakuatsuDataList().get(5), "6");
+           // 膜厚7データセット
+           setMakuatsuData(makuatsuDataList,this.gxhdO101c001ModelView.getMakuatsuDataList().get(6), "7");
+           // 膜厚8データセット
+           setMakuatsuData(makuatsuDataList,this.gxhdO101c001ModelView.getMakuatsuDataList().get(7), "8");
+           // 膜厚9データセット
+           setMakuatsuData(makuatsuDataList,this.gxhdO101c001ModelView.getMakuatsuDataList().get(8), "9");
+           
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("実行エラー", ex, LOGGER);
+        }
+
+    }
+    
+    /**
+     * 
+     * @param makuatsuDataList
+     * @param makuatsuData
+     * @param sokuteiten 
+     */
+    private void setMakuatsuData(List<Map<String, Object>> makuatsuDataList, GXHDO101C001Model.MakuatsuData makuatsuData, String sokuteiten){
+        String makuatsuStart = "";
+        String makuatsuEnd = "";
+        boolean isFirst = true;
+        for (Map<String, Object> map : makuatsuDataList) {
+            // 測定点が引数の測定点でない場合コンティニュー
+            if(!sokuteiten.equals(StringUtil.nullToBlank(map.get("sokuteiten")))){
+                // 対象の測定点のデータがすでに取得出来ている場合はブレイク
+                if(!isFirst){
+                    break;
+                }
+                continue;
+            }
+            
+            if(isFirst){
+                isFirst = false;
+                // 回数が最小のデータ
+                makuatsuStart = StringUtil.nullToBlank(map.get("makuatu"));
+            }
+            
+            // 回数が最大のデータ
+            makuatsuEnd = StringUtil.nullToBlank(map.get("makuatu"));
+        }
+        
+        makuatsuData.setStartVal(makuatsuStart);
+        makuatsuData.setEndVal(makuatsuEnd);
+        
+    }
+
+    /**
+     * 膜厚情報取得
+     *
+     * @return 膜厚情報取得
+     */
+    private List<Map<String, Object>> getMakuatu() throws SQLException {
+        QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
+        String sql = "SELECT kaisuu,makuatu,sokuteiten "
+                + " FROM sr_makuatu "
+                + " WHERE kojyo = ? AND lotno = ? AND edaban = ? "
+                + " ORDER BY sokuteiten, kaisuu";
+
+        List<Object> params = new ArrayList<>();
+        params.add(this.kojyo);
+        params.add(this.lotno);
+        params.add(this.edaban);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return  queryRunner.query(sql, new MapListHandler(), params.toArray());
+    }
+
     /**
      * OKボタン押下時のチェック処理を行う。
      */
@@ -189,8 +308,7 @@ public class GXHDO101C001 implements Serializable {
 
         this.gxhdO101c001Model = this.gxhdO101c001ModelView;
     }
-    
-  
+
     /**
      * OKボタンチェック処理
      *

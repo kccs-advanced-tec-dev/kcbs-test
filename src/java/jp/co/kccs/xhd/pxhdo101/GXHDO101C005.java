@@ -45,6 +45,11 @@ public class GXHDO101C005 implements Serializable {
      * 印刷幅サブ画面用データ(表示制御用)
      */
     private GXHDO101C005Model gxhdO101c005ModelView;
+    
+    /**
+     * フォームエラー判定
+     */
+    private boolean isFormError;
 
     /**
      * コンストラクタ
@@ -87,12 +92,30 @@ public class GXHDO101C005 implements Serializable {
     public void setGxhdO101c005ModelView(GXHDO101C005Model gxhdO101c005ModelView) {
         this.gxhdO101c005ModelView = gxhdO101c005ModelView;
     }
+    
+        /**
+     * フォームエラー判定
+     * @return the isFormError
+     */
+    public boolean isIsFormError() {
+        return isFormError;
+    }
+
+    /**
+     * フォームエラー判定
+     * @param isFormError the isFormError to set
+     */
+    public void setIsFormError(boolean isFormError) {
+        this.isFormError = isFormError;
+    }
 
     /**
      * OKボタン押下時のチェック処理を行う。
      */
     public void doOk() {
+        this.isFormError = false;
         if (!checkOK()) {
+            this.isFormError = true;
             // エラーの場合はコールバック変数に"error"をセット
             RequestContext context = RequestContext.getCurrentInstance();
             context.addCallbackParam("firstParam", "error");

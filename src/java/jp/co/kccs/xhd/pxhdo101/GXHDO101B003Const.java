@@ -87,11 +87,6 @@ public class GXHDO101B003Const {
     public static final String SHITA_COVER_TAPE1 = "insatsu_rsus_shita_cover_tape1";
 
     /**
-     * カバーテープ
-     */
-    public static final String COVER_TAPE = "insatsu_rsus_cover_tape";
-
-    /**
      * 列×行
      */
     public static final String RETSU_GYOU = "insatsu_rsus_retsu_gyou";
@@ -107,11 +102,6 @@ public class GXHDO101B003Const {
     public static final String DENKYOKU_PASTE = "insatsu_rsus_denkyoku_paste";
 
     /**
-     * ﾍﾟｰｽﾄ品名
-     */
-    public static final String PASTE_HINMEI = "insatsu_rsus_paste_hinmei";
-
-    /**
      * ﾍﾟｰｽﾄﾛｯﾄNo1
      */
     public static final String PASTE_LOT_NO1 = "insatsu_rsus_paste_lot_no1";
@@ -124,12 +114,12 @@ public class GXHDO101B003Const {
     /**
      * ﾍﾟｰｽﾄ温度1
      */
-    public static final String ONDO1 = "insatsu_rsus_ondo1";
+    public static final String PASTE_ONDO1 = "insatsu_rsus_paste_ondo1";
 
     /**
      * ﾍﾟｰｽﾄ固形分1
      */
-    public static final String KOKEIBUN1 = "insatsu_rsus_kokeibun1";
+    public static final String PASTE_KOKEIBUN1 = "insatsu_rsus_paste_kokeibun1";
 
     /**
      * ﾍﾟｰｽﾄﾛｯﾄNo2
@@ -207,6 +197,11 @@ public class GXHDO101B003Const {
     public static final String KANSOU_ONDO_HYOUJICHI5 = "insatsu_rsus_kansou_ondo_hyoujichi5";
 
     /**
+     * テーブルクリアランス
+     */
+    public static final String TABLE_CLEARANCE = "insatsu_rsus_table_clearance";
+
+    /**
      * 製版名 / 版胴名
      */
     public static final String SEIHAN_OR_HANDOU_MEI = "insatsu_rsus_seihan_or_handou_mei";
@@ -269,7 +264,7 @@ public class GXHDO101B003Const {
     /**
      * 印刷終了日
      */
-    public static final String INSATSU_SHUURYOU_DAY = "insatsu_rsus_insatsu_shuuryou_day";
+    public static final String INSATSU_SHUURYOU_DAY = "insatsu_rsus_insatsu_shuryou_day";
 
     /**
      * 印刷終了時刻
@@ -292,11 +287,6 @@ public class GXHDO101B003Const {
     public static final String INSATSU_MAISUU = "insatsu_rsus_insatsu_maisuu";
 
     /**
-     * スキージ長さ
-     */
-    public static final String SQUEEGEE_NAGASA = "insatsu_rsus_squeegee_nagasa";
-
-    /**
      * 乾燥炉圧
      */
     public static final String KANSOU_RO_ATSU = "insatsu_rsus_kansou_ro_atsu";
@@ -312,9 +302,49 @@ public class GXHDO101B003Const {
     public static final String INSATSU_HABA = "insatsu_rsus_insatsu_haba";
 
     /**
+     * 備考1
+     */
+    public static final String BIKOU1 = "insatsu_rsus_bikou1";
+
+    /**
+     * 備考2
+     */
+    public static final String BIKOU2 = "insatsu_rsus_bikou2";
+
+    /**
+     * 膜厚(画面下)
+     */
+    public static final String BTN_DOWN_MAKUATSU_SUB_GAMEN = "insatsu_rsus_down_makuatsu_sub_gamen";
+
+    /**
+     * 印刷幅(画面下)
+     */
+    public static final String BTN_DOWN_INSATSUHABA_SUB_GAMEN = "insatsu_rsus_down_insatsuhaba_sub_gamen";
+
+    /**
+     * 枝番ｺﾋﾟｰ(画面下)
+     */
+    public static final String BTN_DOWN_COPY_EDABAN = "insatsu_rsus_down_copy_edaban";
+
+    /**
+     * 開始日時(画面下)
+     */
+    public static final String BTN_DOWN_STARTDATETIME = "insatsu_rsus_down_startdatetime";
+
+    /**
+     * 終了日時(画面下)
+     */
+    public static final String BTN_DOWN_ENDDATETIME = "insatsu_rsus_down_enddatetime";
+
+    /**
      * 仮登録(画面下)
      */
     public static final String BTN_DOWN_KARI_TOUROKU = "insatsu_rsus_down_kari_touroku";
+
+    /**
+     * 登録(画面下)
+     */
+    public static final String BTN_DOWN_INSERT = "insatsu_rsus_down_insert";
 
     /**
      * 検索(画面下)
@@ -322,40 +352,49 @@ public class GXHDO101B003Const {
     public static final String BTN_DOWN_KENSAKU = "insatsu_rsus_down_kensaku";
 
     /**
-     * 膜圧(画面下)
+     * 修正(画面下)
      */
-    public static final String BTN_DOWN_MAKUATSU_SUBGAMEN = "insatsu_rsus_down_makuatsu_subgamen";
+    public static final String BTN_DOWN_UPDATE = "insatsu_rsus_down_update";
 
     /**
      * 削除(画面下)
      */
-    public static final String BTN_DOWN_SAKUJO = "insatsu_rsus_down_sakujo";
+    public static final String BTN_DOWN_DELETE = "insatsu_rsus_down_delete";
 
     /**
-     * 修正(画面下)
+     * 膜厚(画面上)
      */
-    public static final String BTN_DOWN_SHUSEI = "insatsu_rsus_down_shusei";
+    public static final String BTN_UP_MAKUATSU_SUB_GAMEN = "insatsu_rsus_up_makuatsu_sub_gamen";
 
     /**
-     * 登録(画面下)
+     * 印刷幅(画面上)
      */
-    public static final String BTN_DOWN_TOUROKU = "insatsu_rsus_down_touroku";
+    public static final String BTN_UP_INSATSUHABA_SUB_GAMEN = "insatsu_rsus_up_insatsuhaba_sub_gamen";
 
     /**
-     * WIP取込(画面下)
+     * 枝番ｺﾋﾟｰ(画面上)
      */
-    public static final String BTN_DOWN_WIP_TORIKOMI = "insatsu_rsus_down_wip_torikomi";
+    public static final String BTN_UP_COPY_EDABAN = "insatsu_rsus_up_copy_edaban";
 
     /**
-     * 印刷幅(画面下)
+     * 開始日時(画面上)
      */
-    public static final String BTN_DOWN_PRINT_WIDTH = "insatsu_rsus_down_print_width_subgamen";
+    public static final String BTN_UP_STARTDATETIME = "insatsu_rsus_up_startdatetime";
 
-    
+    /**
+     * 終了日時(画面上)
+     */
+    public static final String BTN_UP_ENDDATETIME = "insatsu_rsus_up_enddatetime";
+
     /**
      * 仮登録(画面上)
      */
     public static final String BTN_UP_KARI_TOUROKU = "insatsu_rsus_up_kari_touroku";
+
+    /**
+     * 登録(画面上)
+     */
+    public static final String BTN_UP_INSERT = "insatsu_rsus_up_insert";
 
     /**
      * 検索(画面上)
@@ -363,34 +402,13 @@ public class GXHDO101B003Const {
     public static final String BTN_UP_KENSAKU = "insatsu_rsus_up_kensaku";
 
     /**
-     * 膜圧(画面上)
+     * 修正(画面上)
      */
-    public static final String BTN_UP_MAKUATSU_SUBGAMEN = "insatsu_rsus_up_makuatsu_subgamen";
-
+    public static final String BTN_UP_UPDATE = "insatsu_rsus_up_update";
 
     /**
      * 削除(画面上)
      */
-    public static final String BTN_UP_SAKUJO = "insatsu_rsus_up_sakujo";
-
-    /**
-     * 修正(画面上)
-     */
-    public static final String BTN_UP_SHUSEI = "insatsu_rsus_up_shusei";
-
-    /**
-     * 登録(画面上)
-     */
-    public static final String BTN_UP_TOUROKU = "insatsu_rsus_up_touroku";
-
-    /**
-     * WIP取込(画面上)
-     */
-    public static final String BTN_UP_WIP_TORIKOMI = "insatsu_rsus_up_wip_torikomi";
-    
-    /**
-     * 印刷幅(画面上)
-     */
-    public static final String BTN_UP_PRINT_WIDTH = "insatsu_rsus_up_print_width_subgamen";
+    public static final String BTN_UP_DELETE = "insatsu_rsus_up_delete";
 
 }
