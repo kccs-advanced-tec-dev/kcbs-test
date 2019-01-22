@@ -411,4 +411,9 @@ public class GXHDO101B003Const {
      */
     public static final String BTN_UP_DELETE = "insatsu_rsus_up_delete";
 
+    /**
+     * ユーザー認証パラメータ
+     */
+    public static final String USER_AUTH_PARAM = "insatsu_rsus_update_button";
+
 }

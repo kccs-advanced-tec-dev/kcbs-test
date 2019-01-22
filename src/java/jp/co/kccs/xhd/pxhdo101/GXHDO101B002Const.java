@@ -406,4 +406,10 @@ public class GXHDO101B002Const {
      */
     public static final String BTN_UP_TOUROKU = "insatsu_sps_screen_up_touroku";
     
+    /**
+     * ユーザー認証パラメータ
+     */
+    public static final String USER_AUTH_PARAM = "insatsu_sps_src_update_button";
+
+    
 }

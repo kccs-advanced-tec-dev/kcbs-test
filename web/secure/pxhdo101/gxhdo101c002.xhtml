@@ -4,35 +4,30 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <p:dialog header="#{myMsg.ptn_kyori_x}" id="dlg_gxhdo101c002" widgetVar="W_dlg_gxhdo101c002"
-              width="550" modal="true" height="270"
+              width="550" modal="true" height="275"
               dynamic="false" closable="true" closeOnEscape="false" 
               onHide="document.getElementById('form:gxhdo101c002Form:cancelBtn').click();" >
         <h:form id="gxhdo101c002Form">
             <p:panel style="width:505px">
                 <p:dataTable id="ptnKyoriXTable" var="item" value="#{beanGXHDO101C002.gxhdO101c002ModelView.ptnKyoriXDataList}"
-                            scrollable="true" style="font-size: 12px; width:470px" emptyMessage="" >
+                            scrollable="true" style="font-size: 14px; width:470px" emptyMessage="" >
                     <p:column id="mPtnKyoriX" width="30%" headerText="#{myMsg.ptn_kyori_x}" >
                         <div style="text-align:right;">
                             <p:outputLabel value="#{item.ptnKyoriX}" />
                         </div>
                     </p:column>
                     <p:column id="mStart" width="35%" headerText="#{myMsg.katakana_start}" >
-                        <div style="text-align:right;">
-                            <p:inputText value="#{item.startVal}" rendered="#{item.startTextRendered}" maxlength="#{item.startTextMaxLength}" size="17" style="text-align:right; background: #{item.startTextBackColor}"/>
-                            <p:outputLabel value="#{item.startVal}" rendered="#{item.startLabelRendered}" />
-                        </div>
+                        <p:inputText value="#{item.startVal}" rendered="#{item.startTextRendered}" maxlength="#{item.startTextMaxLength}" size="15" style="text-align:right; background: #{item.startTextBackColor}"/>
+                        <p:outputLabel value="#{item.startVal}" rendered="#{item.startLabelRendered}" />
                     </p:column>
                     <p:column id="mEnd" width="35%" headerText="#{myMsg.katakana_end}"  >
-                        <div style="text-align:right;">
-                            <p:inputText value="#{item.endVal}" rendered="#{item.endTextRendered}" maxlength="#{item.endTextMaxLength}" size="17" style="text-align:right; background: #{item.endTextBackColor}"/>
-                            <p:outputLabel value="#{item.endVal}" rendered="#{item.endLabelRendered}" />
-                        </div>
+                        <p:inputText value="#{item.endVal}" rendered="#{item.endTextRendered}" maxlength="#{item.endTextMaxLength}" size="15" style="text-align:right; background: #{item.endTextBackColor}"/>
+                        <p:outputLabel value="#{item.endVal}" rendered="#{item.endLabelRendered}" />
                     </p:column>
                 </p:dataTable>
             </p:panel>
-            <div style="text-align: center;">
                 <p:commandButton value="OK" id="okBtn"
-                                 style="position:relative;right:5px;top:5px;width:90px;height:35px;"
+                                 style="position:relative;left:140px;top:5px;width:110px;height:35px;"
                                  actionListener="#{gXHDO901A.returnSubForm('GXHDO101C002',beanGXHDO101C002.isFormError)}"
                                  async="false"
                                  process="@this" 
@@ -44,13 +39,12 @@
                                     update="gxhdo101c002Form form:growlMessage"
                                     oncomplete="if('error'!=args.firstParam){PF('W_dlg_gxhdo101c002').hide();}"/>
                 </p:commandButton>
-                
                 <p:commandButton value="Cancel" id="cancelBtn"
-                                 style="position:relative;right:5px;top:5px;width:90px;height:35px;"
+                                 style="position:relative;left:170px;top:5px;width:110px;height:35px;"
                                  process="@this" 
                                  update="form:growlMessage"
                                  oncomplete="PF('W_dlg_gxhdo101c002').hide();"/>   
-            </div>
+            
         </h:form>
     </p:dialog>
 </ui:composition>

@@ -92,6 +92,13 @@ public class GXHDO101B002 implements IFormLogic {
 
             // 初期表示データ設定処理
             processData = setInitDate(processData);
+            if(processData.isFatalError()){
+                if (!processData.getInitMessageList().isEmpty()) {
+                    // 初期表示メッセージが設定されている場合、メッセージ表示のイベントを呼ぶ
+                    processData.setMethod("openInitMessage");
+                }
+                return processData;
+            }
 
             // ボタンの活性・非活性を設定
             processData = this.setButtonEnable(processData, processData.getInitJotaiFlg());
@@ -343,18 +350,9 @@ public class GXHDO101B002 implements IFormLogic {
             // リビジョンエラー時はリターン
             if (checkRevMessageInfo != null) {
                 processData.setErrorMessageInfoList(Arrays.asList(checkRevMessageInfo));
-                try {
-                    DbUtils.rollback(conDoc);
-                } catch (SQLException ex) {
-                    ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-                }
-                try {
-                    DbUtils.rollback(conQcdb);
-                } catch (SQLException ex) {
-                    ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-                }
-                DbUtils.closeQuietly(conDoc);
-                DbUtils.closeQuietly(conQcdb);
+                rollbackConnection(conDoc);
+                rollbackConnection(conQcdb);
+
                 return processData;
             }
 
@@ -415,19 +413,8 @@ public class GXHDO101B002 implements IFormLogic {
         } catch (SQLException e) {
             ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
 
-            try {
-                DbUtils.rollback(conDoc);
-            } catch (SQLException ex) {
-                ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-            }
-            try {
-                DbUtils.rollback(conQcdb);
-            } catch (SQLException ex) {
-                ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-            }
-
-            DbUtils.closeQuietly(conDoc);
-            DbUtils.closeQuietly(conQcdb);
+            rollbackConnection(conDoc);
+            rollbackConnection(conQcdb);
 
             processData = createRegistDataErrorMessage(processData);
         }
@@ -622,18 +609,9 @@ public class GXHDO101B002 implements IFormLogic {
             // リビジョンエラー時はリターン
             if (checkRevMessageInfo != null) {
                 processData.setErrorMessageInfoList(Arrays.asList(checkRevMessageInfo));
-                try {
-                    DbUtils.rollback(conDoc);
-                } catch (SQLException ex) {
-                    ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-                }
-                try {
-                    DbUtils.rollback(conQcdb);
-                } catch (SQLException ex) {
-                    ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-                }
-                DbUtils.closeQuietly(conDoc);
-                DbUtils.closeQuietly(conQcdb);
+                rollbackConnection(conDoc);
+                rollbackConnection(conQcdb);
+
                 return processData;
             }
 
@@ -687,18 +665,8 @@ public class GXHDO101B002 implements IFormLogic {
         } catch (SQLException e) {
             ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
 
-            try {
-                DbUtils.rollback(conDoc);
-            } catch (SQLException ex) {
-                ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-            }
-            try {
-                DbUtils.rollback(conQcdb);
-            } catch (SQLException ex) {
-                ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-            }
-            DbUtils.closeQuietly(conDoc);
-            DbUtils.closeQuietly(conQcdb);
+            rollbackConnection(conDoc);
+            rollbackConnection(conQcdb);
 
             processData = createRegistDataErrorMessage(processData);
         }
@@ -770,7 +738,7 @@ public class GXHDO101B002 implements IFormLogic {
 
         // ユーザ認証用のパラメータをセットする。
         processData.setRquireAuth(true);
-        processData.setUserAuthParam("auth_list");//TODO何を定義すればよいか?
+        processData.setUserAuthParam(GXHDO101B002Const.USER_AUTH_PARAM);
 
         // 後続処理メソッド設定
         processData.setMethod("doCorrect");
@@ -819,18 +787,9 @@ public class GXHDO101B002 implements IFormLogic {
             // リビジョンエラー時はリターン
             if (checkRevMessageInfo != null) {
                 processData.setErrorMessageInfoList(Arrays.asList(checkRevMessageInfo));
-                try {
-                    DbUtils.rollback(conDoc);
-                } catch (SQLException ex) {
-                    ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-                }
-                try {
-                    DbUtils.rollback(conQcdb);
-                } catch (SQLException ex) {
-                    ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-                }
-                DbUtils.closeQuietly(conDoc);
-                DbUtils.closeQuietly(conQcdb);
+                rollbackConnection(conDoc);
+                rollbackConnection(conQcdb);
+
                 return processData;
             }
 
@@ -869,19 +828,8 @@ public class GXHDO101B002 implements IFormLogic {
         } catch (SQLException e) {
             ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
 
-            try {
-                DbUtils.rollback(conDoc);
-            } catch (SQLException ex) {
-                ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-            }
-            try {
-                DbUtils.rollback(conQcdb);
-            } catch (SQLException ex) {
-                ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-            }
-
-            DbUtils.closeQuietly(conDoc);
-            DbUtils.closeQuietly(conQcdb);
+            rollbackConnection(conDoc);
+            rollbackConnection(conQcdb);
 
             processData = createRegistDataErrorMessage(processData);
         }
@@ -904,7 +852,7 @@ public class GXHDO101B002 implements IFormLogic {
 
         // ユーザ認証用のパラメータをセットする。
         processData.setRquireAuth(true);
-        processData.setUserAuthParam("auth_list");//TODO何を定義すればよいか?
+        processData.setUserAuthParam(GXHDO101B002Const.USER_AUTH_PARAM);
 
         // 後続処理メソッド設定
         processData.setMethod("doDelete");
@@ -953,18 +901,9 @@ public class GXHDO101B002 implements IFormLogic {
             // リビジョンエラー時はリターン
             if (checkRevMessageInfo != null) {
                 processData.setErrorMessageInfoList(Arrays.asList(checkRevMessageInfo));
-                try {
-                    DbUtils.rollback(conDoc);
-                } catch (SQLException ex) {
-                    ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-                }
-                try {
-                    DbUtils.rollback(conQcdb);
-                } catch (SQLException ex) {
-                    ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-                }
-                DbUtils.closeQuietly(conDoc);
-                DbUtils.closeQuietly(conQcdb);
+                rollbackConnection(conDoc);
+                rollbackConnection(conQcdb);
+
                 return processData;
             }
 
@@ -1005,19 +944,8 @@ public class GXHDO101B002 implements IFormLogic {
         } catch (SQLException e) {
             ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
 
-            try {
-                DbUtils.rollback(conDoc);
-            } catch (SQLException ex) {
-                ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-            }
-            try {
-                DbUtils.rollback(conQcdb);
-            } catch (SQLException ex) {
-                ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-            }
-
-            DbUtils.closeQuietly(conDoc);
-            DbUtils.closeQuietly(conQcdb);
+            rollbackConnection(conDoc);
+            rollbackConnection(conQcdb);
 
             processData = createRegistDataErrorMessage(processData);
         }
@@ -1214,6 +1142,7 @@ public class GXHDO101B002 implements IFormLogic {
         Map sekkeiData = this.loadSekkeiData(queryRunnerQcdb, lotNo);
         if (sekkeiData == null || sekkeiData.isEmpty()) {
             // TODO 処理中断エラー時はどうするか
+            errorMessageList.clear();
             errorMessageList.add(MessageUtil.getMessage("XHD-000014", ""));
             processData.setFatalError(true);
             processData.setInitMessageList(errorMessageList);
@@ -1255,12 +1184,9 @@ public class GXHDO101B002 implements IFormLogic {
 
         // 入力項目の情報を画面にセットする。
         if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId)) {
-            // TODO 処理中断エラー時はどうするか
             // エラー発生時は処理を中断
-            errorMessageList.clear();
-            errorMessageList.add("致命的ｴﾗｰ※ID未設定");
             processData.setFatalError(true);
-            processData.setInitMessageList(errorMessageList);
+            processData.setInitMessageList(Arrays.asList("初期データの取得に失敗しました。"));
             return processData;
         }
 
@@ -1287,12 +1213,12 @@ public class GXHDO101B002 implements IFormLogic {
         // KCPNO
         this.setItemData(processData, GXHDO101B002Const.KCPNO, StringUtil.nullToBlank(getMapData(shikakariData, "kcpno")));
         // セット数
-        String hasseisu = StringUtil.nullToBlank(getMapData(shikakariData, "hasseisuu"));
+        String suuryo = StringUtil.nullToBlank(getMapData(shikakariData, "suuryo"));
         String torikosuu = StringUtil.nullToBlank(getMapData(shikakariData, "torikosuu"));
-        if (StringUtil.isEmpty(hasseisu) || "0".equals(hasseisu) || StringUtil.isEmpty(torikosuu) || "0".equals(torikosuu)) {
+        if (StringUtil.isEmpty(suuryo) || "0".equals(suuryo) || StringUtil.isEmpty(torikosuu) || "0".equals(torikosuu)) {
             this.setItemData(processData, GXHDO101B002Const.SET_SUU, "0");
         } else {
-            BigDecimal decHasseisu = new BigDecimal(hasseisu);
+            BigDecimal decHasseisu = new BigDecimal(suuryo);
             BigDecimal decTorikosuu = new BigDecimal(torikosuu);
             BigDecimal setsu = decHasseisu.divide(decTorikosuu, 0, RoundingMode.DOWN);
             this.setItemData(processData, GXHDO101B002Const.SET_SUU, setsu.toPlainString());
@@ -1366,7 +1292,7 @@ public class GXHDO101B002 implements IFormLogic {
         this.setItemData(processData, GXHDO101B002Const.DENKYOKU_PASTE, "");
 
         // 電極製版名
-        this.setItemData(processData, GXHDO101B002Const.DENKYOKU_SEIHAN_MEI, "");
+        this.setItemData(processData, GXHDO101B002Const.DENKYOKU_SEIHAN_MEI, StringUtil.nullToBlank(sekkeiData.get("PATTERN")));
 
         // 電極製版仕様
         this.setItemData(processData, GXHDO101B002Const.DENKYOKU_SEIHAN_SHIYOU, "");
@@ -1554,7 +1480,7 @@ public class GXHDO101B002 implements IFormLogic {
         // 印刷開始日
         this.setItemData(processData, GXHDO101B002Const.INSATSU_KAISHI_DAY, DateUtil.formattedTimestamp(srSpsprintScrData.getStartdatetime(), "yyMMdd"));
         // 印刷開始時間
-        this.setItemData(processData, GXHDO101B002Const.INSATSU_KAISHI_TIME, DateUtil.formattedTimestamp(srSpsprintScrData.getStartdatetime(), "HHss"));
+        this.setItemData(processData, GXHDO101B002Const.INSATSU_KAISHI_TIME, DateUtil.formattedTimestamp(srSpsprintScrData.getStartdatetime(), "HHmm"));
         // 印刷ｽﾀｰﾄ膜厚AVE
         this.setItemData(processData, GXHDO101B002Const.INSATSU_START_MAKUATSU_AVE, StringUtil.nullToBlank(srSpsprintScrData.getMakuatuaveStart()));
         // 印刷ｽﾀｰﾄ膜厚MAX
@@ -1568,15 +1494,6 @@ public class GXHDO101B002 implements IFormLogic {
         // PTN間距離印刷ｽﾀｰﾄ Y Min
         this.setItemData(processData, GXHDO101B002Const.PTN_INSATSU_START_Y_MIN, StringUtil.nullToBlank(srSpsprintScrData.getStartPtnDistY()));
 
-        //TODO
-//        //印刷ズレ①刷り始め
-//        this.setItemData(processData, GXHDO101B002Const.insatsu, StringUtil.nullToBlank(srSpsprintScrData.getPrintzure1SurihajimeStart()));
-//        //印刷ズレ②中央　開始
-//        this.setItemData(processData, GXHDO101B002Const.INSATSU_ZURE2_START, StringUtil.nullToBlank(srSpsprintScrData.getPrintzure2CenterStart()));
-//        //印刷ズレ③刷り終わり　
-//        this.setItemData(processData, GXHDO101B002Const.INSATSU_ZURE3_START, StringUtil.nullToBlank(srSpsprintScrData.getPrintzure3SuriowariStart()));
-//        //A/Bズレ平均スタート
-//        this.setItemData(processData, GXHDO101B002Const.INSATSU_ZURE3_START, StringUtil.nullToBlank(srSpsprintScrData.getAbzureHeikinStart()));
         // ｽﾀｰﾄ時ﾆｼﾞﾐ・ｶｽﾚ確認
         switch (StringUtil.nullToBlank(srSpsprintScrData.getNijimikasureStart())) {
             case "0":
@@ -1594,7 +1511,7 @@ public class GXHDO101B002 implements IFormLogic {
         // 印刷終了日
         this.setItemData(processData, GXHDO101B002Const.INSATSU_SHUURYOU_DAY, DateUtil.formattedTimestamp(srSpsprintScrData.getEnddatetime(), "yyMMdd"));
         // 印刷終了時刻
-        this.setItemData(processData, GXHDO101B002Const.INSATSU_SHUURYOU_TIME, DateUtil.formattedTimestamp(srSpsprintScrData.getEnddatetime(), "HHss"));
+        this.setItemData(processData, GXHDO101B002Const.INSATSU_SHUURYOU_TIME, DateUtil.formattedTimestamp(srSpsprintScrData.getEnddatetime(), "HHmm"));
         // 印刷ｴﾝﾄﾞ膜厚AVE
         this.setItemData(processData, GXHDO101B002Const.INSATSU_END_MAKUATSU_AVE, StringUtil.nullToBlank(srSpsprintScrData.getMakuatuaveEnd()));
         // 印刷ｴﾝﾄﾞ膜厚MAX
@@ -1607,15 +1524,6 @@ public class GXHDO101B002 implements IFormLogic {
         this.setItemData(processData, GXHDO101B002Const.PTN_INSATSU_END_X_MIN, StringUtil.nullToBlank(srSpsprintScrData.getEndPtnDistX()));
         // PTN間距離印刷ｴﾝﾄﾞ Y Min
         this.setItemData(processData, GXHDO101B002Const.PTN_INSATSU_END_Y_MIN, StringUtil.nullToBlank(srSpsprintScrData.getEndPtnDistY()));
-        //TODO
-//        //印刷ズレ①刷り始め　終了							
-//        this.setItemData(processData, GXHDO101B002Const.INSATSU_ZURE1_START, StringUtil.nullToBlank(srSpsprintScrData.getPrintzure1SurihajimeEnd()));
-//        //印刷ズレ②中央　終了							
-//        this.setItemData(processData, GXHDO101B002Const.INSATSU_ZURE2_START, StringUtil.nullToBlank(srSpsprintScrData.getPrintzure2CenterEnd()));
-//        //印刷ズレ③刷り終わり　終了							
-//        this.setItemData(processData, GXHDO101B002Const.INSATSU_ZURE3_START, StringUtil.nullToBlank(srSpsprintScrData.getPrintzure3SuriowariEnd()));
-//        //A/Bズレ平均終了							
-//        this.setItemData(processData, GXHDO101B002Const.INSATSU_ZURE3_START, StringUtil.nullToBlank(srSpsprintScrData.getAbzureHeikinEnd()));
         // 終了時ﾆｼﾞﾐ・ｶｽﾚ確認
         switch (StringUtil.nullToBlank(srSpsprintScrData.getNijimikasureEnd())) {
             case "0":
@@ -1843,7 +1751,7 @@ public class GXHDO101B002 implements IFormLogic {
         String lotNo1 = lotNo.substring(0, 3);
         String lotNo2 = lotNo.substring(3, 11);
         // 設計データの取得
-        String sql = "SELECT HINMEI,SEKKEINO,PROCESS,SETSUU,TOKUISAKI,KUBUN1,OWNER,"
+        String sql = "SELECT SEKKEINO,"
                 + "GENRYOU,ETAPE,EATUMI,SOUSUU,EMAISUU,TBUNRUI2,SYURUI2,ATUMI2,"
                 + "MAISUU2,TBUNRUI4,SYURUI4,ATUMI4,MAISUU4,PATTERN "
                 + "FROM da_sekkei "
@@ -1865,16 +1773,11 @@ public class GXHDO101B002 implements IFormLogic {
     private Map getMapSekkeiAssociation() {
         Map<String, String> map = new LinkedHashMap<String, String>() {
             {
-                put("HINMEI", "KCPNO");
-                put("SETSUU", "セット数");
-                put("TOKUISAKI", "客先");
                 put("GENRYOU", "電極テープ");
                 put("ETAPE", "電極テープ");
                 put("EATUMI", "積層数");
                 put("SOUSUU", "積層数");
                 put("EMAISUU", "積層数");
-                put("KUBUN1", "ロット区分");
-                put("OWNER", "オーナー");
                 put("TBUNRUI2", "上カバーテープ１");
                 put("SYURUI2", "上カバーテープ１");
                 put("ATUMI2", "上カバーテープ１");
@@ -1948,7 +1851,7 @@ public class GXHDO101B002 implements IFormLogic {
         String lotNo3 = lotNo.substring(11, 14);
 
         // 仕掛情報データの取得
-        String sql = "SELECT kcpno, oyalotedaban, hasseisuu, torikosuu, lotkubuncode, ownercode, tokuisaki"
+        String sql = "SELECT kcpno, oyalotedaban, suuryo, torikosuu, lotkubuncode, ownercode, tokuisaki"
                 + " FROM sikakari WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
 
         List<Object> params = new ArrayList<>();
@@ -2797,7 +2700,8 @@ public class GXHDO101B002 implements IFormLogic {
                 + "koshinsha = ?, koshin_date = ?,"
                 + "rev = ?, jotai_flg = ? "
                 + "WHERE gamen_id = ? AND kojyo = ? "
-                + "  AND lotno = ? AND edaban = ? ";
+                + "  AND lotno = ? AND edaban = ? "
+                + "  AND jissekino = 1  ";
 
         List<Object> params = new ArrayList<>();
         // 更新内容
@@ -3777,10 +3681,11 @@ public class GXHDO101B002 implements IFormLogic {
 
     /**
      * revisionﾁｪｯｸ
+     *
      * @param processData
      * @param fxhdd03RevInfo
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
     private ErrorMessageInfo checkRevision(ProcessData processData, Map fxhdd03RevInfo) throws SQLException {
 
@@ -3849,6 +3754,21 @@ public class GXHDO101B002 implements IFormLogic {
     private void setDateTimeItem(FXHDD01 itemDay, FXHDD01 itemTime, Date setDateTime) {
         itemDay.setValue(new SimpleDateFormat("yyMMdd").format(setDateTime));
         itemTime.setValue(new SimpleDateFormat("HHmm").format(setDateTime));
+    }
+
+    /**
+     * コネクションロールバック処理
+     *
+     * @param con
+     */
+    private void rollbackConnection(Connection con) {
+        try {
+            DbUtils.rollback(con);
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+        }
+        DbUtils.closeQuietly(con);
+
     }
 
 }

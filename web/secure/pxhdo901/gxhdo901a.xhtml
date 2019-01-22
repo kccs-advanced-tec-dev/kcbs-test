@@ -130,7 +130,7 @@
                             
                             <p:inputNumber id="numberValue" rendered="#{item.renderInputNumber}" value="#{item.value}" thousandSeparator="" 
                                            decimalPlaces="#{item.numberDecimalPlaces}" maxValue="#{item.numberMaxValue}" minValue="#{item.numberMinValue}" size="#{item.displayMaxLength}"
-                                          style="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;">
+                                          inputStyle="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;">
 								<p:ajax event="blur" process="@this" update="@this" listener="#{item.checkByte()}"  async="false"/>
                             </p:inputNumber>
                             <p:selectOneMenu id="comboBoxValue" rendered="#{item.renderInputSelect}" value="#{item.value}" styleClass="selectMenu"

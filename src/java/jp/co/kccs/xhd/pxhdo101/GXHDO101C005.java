@@ -11,6 +11,7 @@ import javax.faces.context.FacesContext;
 import jp.co.kccs.xhd.model.GXHDO101C005Model;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
+import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.StringUtil;
 import org.primefaces.context.RequestContext;
 
@@ -45,7 +46,7 @@ public class GXHDO101C005 implements Serializable {
      * 印刷幅サブ画面用データ(表示制御用)
      */
     private GXHDO101C005Model gxhdO101c005ModelView;
-    
+
     /**
      * フォームエラー判定
      */
@@ -92,9 +93,10 @@ public class GXHDO101C005 implements Serializable {
     public void setGxhdO101c005ModelView(GXHDO101C005Model gxhdO101c005ModelView) {
         this.gxhdO101c005ModelView = gxhdO101c005ModelView;
     }
-    
-        /**
+
+    /**
      * フォームエラー判定
+     *
      * @return the isFormError
      */
     public boolean isIsFormError() {
@@ -103,6 +105,7 @@ public class GXHDO101C005 implements Serializable {
 
     /**
      * フォームエラー判定
+     *
      * @param isFormError the isFormError to set
      */
     public void setIsFormError(boolean isFormError) {
@@ -136,10 +139,19 @@ public class GXHDO101C005 implements Serializable {
         clearBackColor();
 
         for (GXHDO101C005Model.PrintWidthData printWidthData : this.gxhdO101c005ModelView.getPrintWidthDataList()) {
-            if (StringUtil.isEmpty(printWidthData.getStartVal())) {
-                setError(printWidthData, "XHD-000003", "スタート");
-                return false;
+            if (!StringUtil.isEmpty(printWidthData.getStartVal())) {
+
+                if (!NumberUtil.isIntegerNumeric(printWidthData.getStartVal())) {
+                    setError(printWidthData, "XHD-000008", "スタート");
+                    return false;
+                }
+
+                if (4 < StringUtil.length(printWidthData.getStartVal())) {
+                    setError(printWidthData, "XHD-000006", "スタート", "4");
+                    return false;
+                }
             }
+
         }
 
         return true;

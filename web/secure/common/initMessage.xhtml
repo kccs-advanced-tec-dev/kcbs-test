@@ -4,7 +4,7 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <p:dialog header="設定エラー" id="dlg_initMessage" widgetVar="W_dlg_initMessage"
               width="600" modal="true" height="400" style="color: #ff0000;"
-              dynamic="false" closable="true" closeOnEscape="false" class="error-dialog-title" >
+              dynamic="false" closable="true" closeOnEscape="false" resizable="false" class="error-dialog-title" >
 
         <h:form id="initMessageForm">
                 <p:dataTable id="table" var="msg" value="#{beanInitMessage.initMessageList}"

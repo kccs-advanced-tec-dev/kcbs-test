@@ -821,7 +821,7 @@ public class GXHDO901A implements Serializable {
             // エラー項目を表示するためページを遷移する。
             // 表示したい項目のIndexを指定(0以下のIndexは内部的に無視)
             setPageItemDataList(this.processData.getErrorMessageInfoList().get(0).getPageChangeItemIndex());
-
+            
             return;
         }
 
@@ -885,15 +885,13 @@ public class GXHDO901A implements Serializable {
             // 処理実行
             ProcessData resultData = (ProcessData) method.invoke(formLogic, this.processData);
             
-            
-             // 致命的ｴﾗｰの場合
+            // 致命的ｴﾗｰの場合
             if(this.processData.isFatalError()){
                 // 画面の戻るボタン以外を非表示とする。
                 this.itemList = new ArrayList<>();
                 this.buttonListTop = new ArrayList<>();
                 this.buttonListBottom = new ArrayList<>();
                 this.styleDisplayNone = "display: none;";
-                return;
             }
 
             if (!StringUtil.isEmpty(resultData.getMethod())) {

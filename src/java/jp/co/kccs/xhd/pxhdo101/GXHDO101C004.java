@@ -4,6 +4,7 @@
 package jp.co.kccs.xhd.pxhdo101;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -11,6 +12,7 @@ import javax.faces.context.FacesContext;
 import jp.co.kccs.xhd.model.GXHDO101C004Model;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
+import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.StringUtil;
 import org.primefaces.context.RequestContext;
 
@@ -32,6 +34,8 @@ import org.primefaces.context.RequestContext;
  * @author SYSNAVI K.Hisanaga
  * @since 2018/12/08
  */
+
+
 @ManagedBean(name = "beanGXHDO101C004")
 @SessionScoped
 public class GXHDO101C004 implements Serializable {
@@ -45,7 +49,7 @@ public class GXHDO101C004 implements Serializable {
      * 膜厚(RSUS)サブ画面用データ(表示制御用)
      */
     private GXHDO101C004Model gxhdO101c004ModelView;
-    
+
     /**
      * フォームエラー判定
      */
@@ -92,9 +96,10 @@ public class GXHDO101C004 implements Serializable {
     public void setGxhdO101c004ModelView(GXHDO101C004Model gxhdO101c004ModelView) {
         this.gxhdO101c004ModelView = gxhdO101c004ModelView;
     }
-    
+
     /**
      * フォームエラー判定
+     *
      * @return the isFormError
      */
     public boolean isIsFormError() {
@@ -103,6 +108,7 @@ public class GXHDO101C004 implements Serializable {
 
     /**
      * フォームエラー判定
+     *
      * @param isFormError the isFormError to set
      */
     public void setIsFormError(boolean isFormError) {
@@ -136,9 +142,19 @@ public class GXHDO101C004 implements Serializable {
         clearBackColor();
 
         for (GXHDO101C004Model.MakuatsuData makuatsuData : this.gxhdO101c004ModelView.getMakuatsuDataList()) {
-            if (StringUtil.isEmpty(makuatsuData.getStartVal())) {
-                setError(makuatsuData, "XHD-000003", "スタート");
-                return false;
+            if (!StringUtil.isEmpty(makuatsuData.getStartVal())) {
+
+                if (!NumberUtil.isNumeric(makuatsuData.getStartVal())) {
+                    setError(makuatsuData, "XHD-000008", "スタート");
+                    return false;
+                }
+
+                BigDecimal decStart = new BigDecimal(makuatsuData.getStartVal());
+                if (!NumberUtil.isValidDigits(decStart, 2, 3)) {
+                    setError(makuatsuData, "XHD-000007", "スタート", "2", "3");
+                    return false;
+                }
+
             }
         }
 

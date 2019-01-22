@@ -397,7 +397,7 @@ public class SrSpsprintScr {
     /**
      * revision
      */
-    private String revision;
+    private Long revision;
     
     /**
      * 削除ﾌﾗｸﾞ
@@ -1881,7 +1881,7 @@ public class SrSpsprintScr {
      * revision
      * @return the revision
      */
-    public String getRevision() {
+    public Long getRevision() {
         return revision;
     }
 
@@ -1889,7 +1889,7 @@ public class SrSpsprintScr {
      * revision
      * @param revision the revision to set
      */
-    public void setRevision(String revision) {
+    public void setRevision(Long revision) {
         this.revision = revision;
     }
 

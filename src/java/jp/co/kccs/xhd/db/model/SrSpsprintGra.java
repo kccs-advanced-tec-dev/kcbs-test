@@ -93,15 +93,15 @@ public class SrSpsprintGra {
     /**
      * 版胴名
      */
-    private String seihanmei;
+    private String handoumei;
     /**
      * 版胴No
      */
-    private String seihanno;
+    private String handouno;
     /**
      * 版胴使用枚数
      */
-    private Long seihanmaisuu;
+    private Long handoumaisuu;
     /**
      * ﾌﾞﾚｰﾄﾞNo.
      */
@@ -117,11 +117,11 @@ public class SrSpsprintGra {
     /**
      * 圧胴No
      */
-    private String atsudono;
+    private String atudoNo;
     /**
      * 圧胴使用枚数
      */
-    private Long atsudomaisuu;
+    private Long atudoMaisuu;
     /**
      * 圧胴圧力
      */
@@ -289,7 +289,7 @@ public class SrSpsprintGra {
     /**
      * 原料記号
      */
-    private String genryoKigou;
+    private String genryoukigou;
     /**
      * 備考1
      */
@@ -309,7 +309,12 @@ public class SrSpsprintGra {
     /**
      * revision
      */
-    private String revision;
+    private Long revision;
+     /**
+     * KCPNO
+     */
+    private String kcpno;
+    
     /**
      * 削除ﾌﾗｸﾞ
      */
@@ -606,55 +611,55 @@ public class SrSpsprintGra {
     /**
      * 版胴名
      *
-     * @return the seihanmei
+     * @return the handoumei
      */
-    public String getSeihanmei() {
-        return seihanmei;
+    public String getHandoumei() {
+        return handoumei;
     }
 
     /**
      * 版胴名
      *
-     * @param seihanmei the seihanmei to set
+     * @param handoumei the handoumei to set
      */
-    public void setSeihanmei(String seihanmei) {
-        this.seihanmei = seihanmei;
+    public void setHandoumei(String handoumei) {
+        this.handoumei = handoumei;
     }
 
     /**
      * 版胴No
      *
-     * @return the seihanno
+     * @return the handouno
      */
-    public String getSeihanno() {
-        return seihanno;
+    public String getHandouno() {
+        return handouno;
     }
 
     /**
      * 版胴No
      *
-     * @param seihanno the seihanno to set
+     * @param handouno the handouno to set
      */
-    public void setSeihanno(String seihanno) {
-        this.seihanno = seihanno;
+    public void setHandouno(String handouno) {
+        this.handouno = handouno;
     }
 
     /**
      * 版胴使用枚数
      *
-     * @return the seihanmaisuu
+     * @return the handoumaisuu
      */
-    public Long getSeihanmaisuu() {
-        return seihanmaisuu;
+    public Long getHandoumaisuu() {
+        return handoumaisuu;
     }
 
     /**
      * 版胴使用枚数
      *
-     * @param seihanmaisuu the seihanmaisuu to set
+     * @param handoumaisuu the handoumaisuu to set
      */
-    public void setSeihanmaisuu(Long seihanmaisuu) {
-        this.seihanmaisuu = seihanmaisuu;
+    public void setHandoumaisuu(Long handoumaisuu) {
+        this.handoumaisuu = handoumaisuu;
     }
 
     /**
@@ -714,37 +719,37 @@ public class SrSpsprintGra {
     /**
      * 圧胴No
      *
-     * @return the atsudono
+     * @return the atudoNo
      */
-    public String getAtsudono() {
-        return atsudono;
+    public String getAtudoNo() {
+        return atudoNo;
     }
 
     /**
      * 圧胴No
      *
-     * @param atsudono the atsudono to set
+     * @param atudoNo the atudoNo to set
      */
-    public void setAtsudono(String atsudono) {
-        this.atsudono = atsudono;
+    public void setAtudoNo(String atudoNo) {
+        this.atudoNo = atudoNo;
     }
 
     /**
      * 圧胴使用枚数
      *
-     * @return the atsudomaisuu
+     * @return the atudoMaisuu
      */
-    public Long getAtsudomaisuu() {
-        return atsudomaisuu;
+    public Long getAtudoMaisuu() {
+        return atudoMaisuu;
     }
 
     /**
      * 圧胴使用枚数
      *
-     * @param atsudomaisuu the atsudomaisuu to set
+     * @param atudoMaisuu the atudoMaisuu to set
      */
-    public void setAtsudomaisuu(Long atsudomaisuu) {
-        this.atsudomaisuu = atsudomaisuu;
+    public void setAtudoMaisuu(Long atudoMaisuu) {
+        this.atudoMaisuu = atudoMaisuu;
     }
 
     /**
@@ -1486,19 +1491,19 @@ public class SrSpsprintGra {
     /**
      * 原料記号
      *
-     * @return the genryoKigou
+     * @return the genryoukigou
      */
-    public String getGenryoKigou() {
-        return genryoKigou;
+    public String getGenryoukigou() {
+        return genryoukigou;
     }
 
     /**
      * 原料記号
      *
-     * @param genryoKigou the genryoKigou to set
+     * @param genryoukigou the genryoukigou to set
      */
-    public void setGenryoKigou(String genryoKigou) {
-        this.genryoKigou = genryoKigou;
+    public void setGenryoukigou(String genryoukigou) {
+        this.genryoukigou = genryoukigou;
     }
 
     /**
@@ -1578,7 +1583,7 @@ public class SrSpsprintGra {
      *
      * @return the revision
      */
-    public String getRevision() {
+    public Long getRevision() {
         return revision;
     }
 
@@ -1587,8 +1592,24 @@ public class SrSpsprintGra {
      *
      * @param revision the revision to set
      */
-    public void setRevision(String revision) {
+    public void setRevision(Long revision) {
         this.revision = revision;
+    }
+
+    /**
+     * KCPNO
+     * @return the kcpno
+     */
+    public String getKcpno() {
+        return kcpno;
+    }
+
+    /**
+     * KCPNO
+     * @param kcpno the kcpno to set
+     */
+    public void setKcpno(String kcpno) {
+        this.kcpno = kcpno;
     }
 
     /**
