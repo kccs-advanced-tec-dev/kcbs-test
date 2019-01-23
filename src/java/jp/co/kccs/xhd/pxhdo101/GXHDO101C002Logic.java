@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import jp.co.kccs.xhd.db.model.FXHDD01;
-import jp.co.kccs.xhd.model.GXHDO101C001Model;
 import jp.co.kccs.xhd.model.GXHDO101C002Model;
 import jp.co.kccs.xhd.util.ErrUtil;
+import jp.co.kccs.xhd.util.MessageUtil;
 import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.StringUtil;
 
@@ -110,13 +110,13 @@ public class GXHDO101C002Logic {
         for (GXHDO101C002Model.PtnKyoriXData ptnKyoriX : ptnKyoriXDataList) {
             if (StringUtil.isEmpty(ptnKyoriX.getStartVal())) {
                 ptnKyoriX.setStartTextBackColor(ErrUtil.ERR_BACK_COLOR);
-                errorList.add("スタートが入力されていません。");
+                errorList.add(MessageUtil.getMessage("XHD-000037", "スタート"));
                 return errorList;
             }
 
             if (StringUtil.isEmpty(ptnKyoriX.getEndVal())) {
                 ptnKyoriX.setEndTextBackColor(ErrUtil.ERR_BACK_COLOR);
-                errorList.add("エンドが入力されていません。");
+                errorList.add(MessageUtil.getMessage("XHD-000037", "エンド"));
                 return errorList;
             }
         }
@@ -162,6 +162,12 @@ public class GXHDO101C002Logic {
         }
     }
 
+    /**
+     * 対象項目に値をセットする。
+     *
+     * @param itemData 項目データ
+     * @param value 値
+     */
     private static void setItemValue(FXHDD01 itemData, BigDecimal value) {
         if (itemData == null) {
             return;

@@ -104,7 +104,7 @@ public class DBUtil {
     }
 
     /**
-     * 数値の場合、Integerに変換する。その他の場合NULLを返却する。
+     * 数値の場合、Integerに変換する。その他の場合0を返却する。
      *
      * @param value 文字列
      * @return 数値変換後のオブジェクト
@@ -118,7 +118,7 @@ public class DBUtil {
     }
 
     /**
-     * 数値の場合、BigDecimalに変換する。その他の場合NULLを返却する。
+     * 数値の場合、BigDecimalに変換する。その他の場合0を返却する。
      *
      * @param value 文字列
      * @return 数値変換後のオブジェクト
@@ -153,5 +153,59 @@ public class DBUtil {
      */
     public static Object stringToStringObject(String str) {
         return StringUtil.nullToBlank(str);
+    }
+    
+    /**
+     * 数値の場合、Integerに変換する。その他の場合Nullを返却する。
+     *
+     * @param value 文字列
+     * @return 数値変換後のオブジェクト
+     */
+    public static Object stringToIntObjectDefaultNull(String value) {
+        if (NumberUtil.isIntegerNumeric(value)) {
+            return Integer.parseInt(value);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 数値の場合、BigDecimalに変換する。その他の場合Nullを返却する。
+     *
+     * @param value 文字列
+     * @return 数値変換後のオブジェクト
+     */
+    public static Object stringToBigDecimalObjectDefaultNull(String value) {
+        if (NumberUtil.isNumeric(value)) {
+            return new BigDecimal(value);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 日付文字列⇒Dateオブジェクト変換<br>
+     * DB登録用にDateがNullだった場合、Nullを返します。
+     *
+     * @param yyMMdd 年月日
+     * @param HHmm 時分
+     * @return 変換後のデータ
+     */
+    public static Object stringToDateObjectDefaultNull(String yyMMdd, String HHmm) {
+        return DateUtil.convertStringToDate(yyMMdd, HHmm);
+    }
+
+    /**
+     * DB登録用に文字列が空値の場合、Nullを返します。<br>
+     * 空値以外の場合、そのままの値を返します。<br>
+     *
+     * @param str 文字列
+     * @return 変換値
+     */
+    public static Object stringToStringObjectDefaultNull(String str) {
+        if(StringUtil.isEmpty(str)){
+            return null;
+        }
+        return str;
     }
 }

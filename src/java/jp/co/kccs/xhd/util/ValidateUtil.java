@@ -1350,7 +1350,7 @@ public class ValidateUtil {
      * @throws SQLException 例外エラー
      */
     public static void fxhdd04Insert(QueryRunner queryRunnerDoc, String tantoshaCd, BigDecimal rev, String lotNo, String formId, String gamenTitle, int jissekino, String deleteFlag, List<KikakuchiInputErrorInfo> kikakuchiErrorInfoList) throws SQLException {
-        // 焼成データの登録
+        
         String sql = "INSERT INTO fxhdd04 ("
                 + "torokusha, toroku_date, koshinsha, koshin_date, rev, gamen_id, gamen_title, kojyo, lotno, edaban,"
                 + " jissekino, item_id, item_name, kikaku, input_value, delete_flag"

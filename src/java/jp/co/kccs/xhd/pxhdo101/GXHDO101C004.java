@@ -34,8 +34,6 @@ import org.primefaces.context.RequestContext;
  * @author SYSNAVI K.Hisanaga
  * @since 2018/12/08
  */
-
-
 @ManagedBean(name = "beanGXHDO101C004")
 @SessionScoped
 public class GXHDO101C004 implements Serializable {

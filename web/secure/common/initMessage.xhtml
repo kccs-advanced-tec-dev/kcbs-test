@@ -8,9 +8,9 @@
 
         <h:form id="initMessageForm">
                 <p:dataTable id="table" var="msg" value="#{beanInitMessage.initMessageList}"
-                            style="font-size: 12px; width:560px; height: 350px; border-style: none;" 
+                            style="font-size: 12px; width:540px; height: 350px; border-style: none;" 
                             scrollable="true" scrollHeight="330"
-                             emptyMessage=""   >
+                            emptyMessage="" scrollWidth="560">
                     <p:column id="mMsg"  >
                             <p:outputLabel value="#{msg}" style="color: #ff0000;" />
                     </p:column>

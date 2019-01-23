@@ -9,9 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import jp.co.kccs.xhd.db.model.FXHDD01;
-import jp.co.kccs.xhd.model.GXHDO101C002Model;
 import jp.co.kccs.xhd.model.GXHDO101C003Model;
 import jp.co.kccs.xhd.util.ErrUtil;
+import jp.co.kccs.xhd.util.MessageUtil;
 import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.StringUtil;
 
@@ -84,7 +84,6 @@ public class GXHDO101C003Logic {
         if ("TEXT".equals(endInputType)) {
             ptnKyoriYData.setEndTextRendered(true);
             ptnKyoriYData.setEndLabelRendered(false);
-
         } else {
             ptnKyoriYData.setEndTextRendered(false);
             ptnKyoriYData.setEndLabelRendered(true);
@@ -93,35 +92,34 @@ public class GXHDO101C003Logic {
         ptnKyoriYData.setEndTextBackColor(endTextBackColor);
         return ptnKyoriYData;
     }
-    
+
     /**
      * 入力ﾁｪｯｸ
+     *
      * @param gXHDO101C003Model PTN距離Yサブ画面用ﾓﾃﾞﾙ
      * @return ｴﾗｰﾘｽﾄ
      */
     public static List<String> checkInput(GXHDO101C003Model gXHDO101C003Model) {
-        
+
         List<String> errorList = new ArrayList<>();
         List<GXHDO101C003Model.PtnKyoriYData> ptnKyoriYDataList = gXHDO101C003Model.getPtnKyoriYDataList();
         for (GXHDO101C003Model.PtnKyoriYData ptnKyoriY : ptnKyoriYDataList) {
             if (StringUtil.isEmpty(ptnKyoriY.getStartVal())) {
                 ptnKyoriY.setStartTextBackColor(ErrUtil.ERR_BACK_COLOR);
-                errorList.add("スタートが入力されていません。");
+                errorList.add(MessageUtil.getMessage("XHD-000037", "スタート"));
                 return errorList;
             }
-            
+
             if (StringUtil.isEmpty(ptnKyoriY.getEndVal())) {
                 ptnKyoriY.setEndTextBackColor(ErrUtil.ERR_BACK_COLOR);
-                errorList.add("エンドが入力されていません。");
+                errorList.add(MessageUtil.getMessage("XHD-000037", "エンド"));
                 return errorList;
             }
         }
-        
+
         return errorList;
     }
-    
-    
-    
+
     /**
      * サブ画面からの戻り値をメイン画面の項目リストにセットする
      *
@@ -160,6 +158,12 @@ public class GXHDO101C003Logic {
         }
     }
 
+    /**
+     * 対象項目に値をセットする
+     *
+     * @param itemData 項目
+     * @param value 値
+     */
     private static void setItemValue(FXHDD01 itemData, BigDecimal value) {
         if (itemData == null) {
             return;

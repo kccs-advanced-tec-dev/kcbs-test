@@ -151,9 +151,7 @@ public class GXHDO101C005 implements Serializable {
                     return false;
                 }
             }
-
         }
-
         return true;
     }
 

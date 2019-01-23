@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.model.GXHDO101C001Model;
 import jp.co.kccs.xhd.util.ErrUtil;
+import jp.co.kccs.xhd.util.MessageUtil;
 import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.StringUtil;
 
@@ -93,115 +94,120 @@ public class GXHDO101C001Logic implements Serializable {
         makuatsuListData.setEndTextBackColor(endTextBackColor);
         return makuatsuListData;
     }
-    
+
     /**
      * 入力ﾁｪｯｸ
+     *
      * @param gXHDO101C001Model 膜厚(SPS)サブ画面用ﾓﾃﾞﾙ
      * @return ｴﾗｰﾘｽﾄ
      */
     public static List<String> checkInput(GXHDO101C001Model gXHDO101C001Model) {
-        
+
         List<String> errorList = new ArrayList<>();
         List<GXHDO101C001Model.MakuatsuData> makuatsuDataList = gXHDO101C001Model.getMakuatsuDataList();
         for (GXHDO101C001Model.MakuatsuData makuatsuData : makuatsuDataList) {
             if (StringUtil.isEmpty(makuatsuData.getStartVal())) {
                 makuatsuData.setStartTextBackColor(ErrUtil.ERR_BACK_COLOR);
-                errorList.add("スタートが入力されていません。");
+                errorList.add(MessageUtil.getMessage("XHD-000037", "スタート"));
                 return errorList;
             }
-            
+
             if (StringUtil.isEmpty(makuatsuData.getEndVal())) {
                 makuatsuData.setEndTextBackColor(ErrUtil.ERR_BACK_COLOR);
-                errorList.add("エンドが入力されていません。");
+                errorList.add(MessageUtil.getMessage("XHD-000037", "エンド"));
                 return errorList;
             }
         }
-        
+
         return errorList;
     }
-    
-    
+
     /**
      * サブ画面からの戻り値をメイン画面の項目リストにセットする
+     *
      * @param gXHDO101C001Model 膜厚(SPS)サブ画面用ﾓﾃﾞﾙ
      * @param itemList 項目リスト
      */
     public static void setReturnData(GXHDO101C001Model gXHDO101C001Model, List<FXHDD01> itemList) {
-        
+
         List<String> startDataList = new ArrayList<>();
         List<String> endDataList = new ArrayList<>();
-        for(GXHDO101C001Model.MakuatsuData makuatsuData :  gXHDO101C001Model.getMakuatsuDataList()){
-            if(!StringUtil.isEmpty(makuatsuData.getStartVal())){
+        for (GXHDO101C001Model.MakuatsuData makuatsuData : gXHDO101C001Model.getMakuatsuDataList()) {
+            if (!StringUtil.isEmpty(makuatsuData.getStartVal())) {
                 startDataList.add(makuatsuData.getStartVal());
             }
-            
-            if(!StringUtil.isEmpty(makuatsuData.getEndVal())){
+
+            if (!StringUtil.isEmpty(makuatsuData.getEndVal())) {
                 endDataList.add(makuatsuData.getEndVal());
             }
         }
-        
+
         FXHDD01 itemStartAve = getItemRow(itemList, gXHDO101C001Model.getReturnItemIdStartAve());
         FXHDD01 itemStartMax = getItemRow(itemList, gXHDO101C001Model.getReturnItemIdStartMax());
         FXHDD01 itemStartMin = getItemRow(itemList, gXHDO101C001Model.getReturnItemIdStartMin());
         FXHDD01 itemStartCv = getItemRow(itemList, gXHDO101C001Model.getReturnItemIdStartCv());
         // 全て値が設定されていた場合のみ算出値をセットする
-        if(gXHDO101C001Model.getMakuatsuDataList().size() == startDataList.size()){
+        if (gXHDO101C001Model.getMakuatsuDataList().size() == startDataList.size()) {
             BigDecimal[] calcDataStart = NumberUtil.getCalculatData(startDataList);
             setItemValue(itemStartAve, calcDataStart[3]);
             setItemValue(itemStartMax, calcDataStart[1]);
             setItemValue(itemStartMin, calcDataStart[2]);
             setItemValue(itemStartCv, calcDataStart[4]);
-        }else{
+        } else {
             setItemValue(itemStartAve, null);
             setItemValue(itemStartMax, null);
             setItemValue(itemStartMin, null);
             setItemValue(itemStartCv, null);
         }
-        
+
         // 戻り先に指定した項目を取得
         FXHDD01 itemEndAve = getItemRow(itemList, gXHDO101C001Model.getReturnItemIdEndAve());
         FXHDD01 itemEndMax = getItemRow(itemList, gXHDO101C001Model.getReturnItemIdEndMax());
         FXHDD01 itemEndMin = getItemRow(itemList, gXHDO101C001Model.getReturnItemIdEndMin());
         FXHDD01 itemEndCv = getItemRow(itemList, gXHDO101C001Model.getReturnItemIdEndCv());
         // 全て値が設定されていた場合のみ算出値をセットする
-        if(gXHDO101C001Model.getMakuatsuDataList().size() == endDataList.size()){
+        if (gXHDO101C001Model.getMakuatsuDataList().size() == endDataList.size()) {
             BigDecimal[] calcDataEnd = NumberUtil.getCalculatData(endDataList);
             setItemValue(itemEndAve, calcDataEnd[3]);
             setItemValue(itemEndMax, calcDataEnd[1]);
             setItemValue(itemEndMin, calcDataEnd[2]);
             setItemValue(itemEndCv, calcDataEnd[4]);
-        }else{
+        } else {
             setItemValue(itemEndAve, null);
             setItemValue(itemEndMax, null);
             setItemValue(itemEndMin, null);
             setItemValue(itemEndCv, null);
         }
     }
-    
-    private static void setItemValue(FXHDD01 itemData, BigDecimal value){
-        if(itemData == null){
+
+    /**
+     * 対象項目に値をセットする
+     *
+     * @param itemData 項目
+     * @param value 値
+     */
+    private static void setItemValue(FXHDD01 itemData, BigDecimal value) {
+        if (itemData == null) {
             return;
         }
-        if(value != null){
+        if (value != null) {
             // 小数指定されている場合は小数部以下は切り捨て
-            if(!StringUtil.isEmpty(itemData.getInputLengthDec())){
-                try{
+            if (!StringUtil.isEmpty(itemData.getInputLengthDec())) {
+                try {
                     value = value.setScale(Integer.parseInt(itemData.getInputLengthDec()), RoundingMode.DOWN);
-                }catch(NumberFormatException e){
+                } catch (NumberFormatException e) {
                     // 処理なし
                 }
-            } 
-            
+            }
             // 値をセット
             itemData.setValue(value.toPlainString());
-        }else{
+        } else {
             // 値をセット
             itemData.setValue("");
         }
     }
-    
-    
-        /**
+
+    /**
      * 項目データ取得
      *
      * @param listData フォームデータ
@@ -217,6 +223,4 @@ public class GXHDO101C001Logic implements Serializable {
             return null;
         }
     }
-    
-   
 }

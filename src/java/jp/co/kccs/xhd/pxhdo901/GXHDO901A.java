@@ -469,6 +469,12 @@ public class GXHDO901A implements Serializable {
         boolean isExist;
         List<String> initMessageList = new ArrayList<>();
         for (int i = 0; i <= itemList.size() - 1; i++) {
+            
+            // 条件ﾃｰﾌﾞﾙ工程名が空の場合は規格値は設定しない
+            if(StringUtil.isEmpty(itemList.get(i).getJokenKoteiMei())){
+                continue;
+            }
+            
             isExist = false;
             for (int j = 0; j <= listDaJoken.size() - 1; j++) {
 

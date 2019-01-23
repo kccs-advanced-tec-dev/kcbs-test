@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import jp.co.kccs.xhd.model.GXHDO101C005Model;
 import jp.co.kccs.xhd.util.ErrUtil;
+import jp.co.kccs.xhd.util.MessageUtil;
 import jp.co.kccs.xhd.util.StringUtil;
 
 /**
@@ -33,7 +34,7 @@ public class GXHDO101C005Logic {
 
         // 画面内のリストの一覧を作成する。
         for (int i = 0; i < startValues.length; i++) {
-            printWidthDataList.add(getInitPrintWidhData(model, String.valueOf(i + 1), startValues[i], "TEXT", "5", ""));
+            printWidthDataList.add(getInitPrintWidhData(model, String.valueOf(i + 1), startValues[i], "TEXT", "4", ""));
         }
 
         model.setPrintWidthDataList(printWidthDataList);
@@ -86,8 +87,7 @@ public class GXHDO101C005Logic {
         for (GXHDO101C005Model.PrintWidthData printWidthData : printWidthDataList) {
             if (StringUtil.isEmpty(printWidthData.getStartVal())) {
                 printWidthData.setStartTextBackColor(ErrUtil.ERR_BACK_COLOR);
-                //TODO
-                errorList.add("スタートが入力されていません。");
+                errorList.add(MessageUtil.getMessage("XHD-000037", "スタート"));
                 return errorList;
             }
         }

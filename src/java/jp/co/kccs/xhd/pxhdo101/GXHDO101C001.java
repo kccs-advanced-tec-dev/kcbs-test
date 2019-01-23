@@ -23,9 +23,7 @@ import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
 import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.StringUtil;
-import jp.co.kccs.xhd.util.ValidateUtil;
 import org.apache.commons.dbutils.QueryRunner;
-import org.apache.commons.dbutils.handlers.MapHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.primefaces.context.RequestContext;
 
@@ -238,10 +236,10 @@ public class GXHDO101C001 implements Serializable {
     }
     
     /**
-     * 
-     * @param makuatsuDataList
-     * @param makuatsuData
-     * @param sokuteiten 
+     * 膜厚データ設定処理
+     * @param makuatsuDataList 膜厚データリスト(DB取得ﾃﾞｰﾀ)
+     * @param makuatsuData 膜厚データ(画面表示データ)
+     * @param sokuteiten 測定点
      */
     private void setMakuatsuData(List<Map<String, Object>> makuatsuDataList, GXHDO101C001Model.MakuatsuData makuatsuData, String sokuteiten){
         String makuatsuStart = "";

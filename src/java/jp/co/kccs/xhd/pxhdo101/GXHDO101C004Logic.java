@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.model.GXHDO101C004Model;
 import jp.co.kccs.xhd.util.ErrUtil;
+import jp.co.kccs.xhd.util.MessageUtil;
 import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.StringUtil;
 
@@ -37,7 +38,7 @@ public class GXHDO101C004Logic {
 
         // 画面内のリストの一覧を作成する。
         for (int i = 0; i < makuatsuStart.length; i++) {
-            makuatsuDataList.add(getInitMakuatsuData(model, String.valueOf(i + 1), makuatsuStart[i], "TEXT", "5", ""));
+            makuatsuDataList.add(getInitMakuatsuData(model, String.valueOf(i + 1), makuatsuStart[i], "TEXT", "6", ""));
         }
 
         model.setMakuatsuDataList(makuatsuDataList);
@@ -88,8 +89,7 @@ public class GXHDO101C004Logic {
         for (GXHDO101C004Model.MakuatsuData makuatsuData : makuatsuDataList) {
             if (StringUtil.isEmpty(makuatsuData.getStartVal())) {
                 makuatsuData.setStartTextBackColor(ErrUtil.ERR_BACK_COLOR);
-                //TODO
-                errorList.add("スタートが入力されていません。");
+                errorList.add(MessageUtil.getMessage("XHD-000037", "スタート"));
                 return errorList;
             }
         }

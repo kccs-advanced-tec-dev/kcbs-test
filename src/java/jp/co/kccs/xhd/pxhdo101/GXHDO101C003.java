@@ -46,13 +46,11 @@ public class GXHDO101C003 implements Serializable {
      * PTN距離Yサブ画面用データ(表示制御用)
      */
     private GXHDO101C003Model gxhdO101c003ModelView;
-    
-        
+
     /**
      * フォームエラー判定
      */
     private boolean isFormError;
-
 
     /**
      * コンストラクタ
@@ -98,6 +96,7 @@ public class GXHDO101C003 implements Serializable {
 
     /**
      * フォームエラー判定
+     *
      * @return the isFormError
      */
     public boolean isIsFormError() {
@@ -106,6 +105,7 @@ public class GXHDO101C003 implements Serializable {
 
     /**
      * フォームエラー判定
+     *
      * @param isFormError the isFormError to set
      */
     public void setIsFormError(boolean isFormError) {
@@ -145,7 +145,7 @@ public class GXHDO101C003 implements Serializable {
                     return false;
                 }
 
-                if (3 < StringUtil.length(ptnKyoriYData.getStartVal()) ) {
+                if (3 < StringUtil.length(ptnKyoriYData.getStartVal())) {
                     setError(ptnKyoriYData, true, false, "XHD-000006", "スタート", "3");
                     return false;
                 }
@@ -157,7 +157,7 @@ public class GXHDO101C003 implements Serializable {
                     return false;
                 }
 
-                if (3 < StringUtil.length(ptnKyoriYData.getEndVal()) ) {
+                if (3 < StringUtil.length(ptnKyoriYData.getEndVal())) {
                     setError(ptnKyoriYData, false, true, "XHD-000006", "エンド", "3");
                     return false;
                 }

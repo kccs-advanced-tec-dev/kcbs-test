@@ -46,7 +46,7 @@ public class GXHDO101C002 implements Serializable {
      * PTN距離Xサブ画面用データ(表示制御用)
      */
     private GXHDO101C002Model gxhdO101c002ModelView;
-    
+
     /**
      * フォームエラー判定
      */
@@ -93,9 +93,10 @@ public class GXHDO101C002 implements Serializable {
     public void setGxhdO101c002ModelView(GXHDO101C002Model gxhdO101c002ModelView) {
         this.gxhdO101c002ModelView = gxhdO101c002ModelView;
     }
-    
+
     /**
      * フォームエラー判定
+     *
      * @return the isFormError
      */
     public boolean isIsFormError() {
@@ -104,6 +105,7 @@ public class GXHDO101C002 implements Serializable {
 
     /**
      * フォームエラー判定
+     *
      * @param isFormError the isFormError to set
      */
     public void setIsFormError(boolean isFormError) {
@@ -137,14 +139,14 @@ public class GXHDO101C002 implements Serializable {
         clearBackColor();
 
         for (GXHDO101C002Model.PtnKyoriXData ptnKyoriXData : this.gxhdO101c002ModelView.getPtnKyoriXDataList()) {
-            
+
             if (!StringUtil.isEmpty(ptnKyoriXData.getStartVal())) {
                 if (!NumberUtil.isIntegerNumeric(ptnKyoriXData.getStartVal())) {
                     setError(ptnKyoriXData, true, false, "XHD-000008", "スタート");
                     return false;
                 }
 
-                if (3 < StringUtil.length(ptnKyoriXData.getStartVal()) ) {
+                if (3 < StringUtil.length(ptnKyoriXData.getStartVal())) {
                     setError(ptnKyoriXData, true, false, "XHD-000006", "スタート", "3");
                     return false;
                 }
@@ -156,7 +158,7 @@ public class GXHDO101C002 implements Serializable {
                     return false;
                 }
 
-                if (3 < StringUtil.length(ptnKyoriXData.getEndVal()) ) {
+                if (3 < StringUtil.length(ptnKyoriXData.getEndVal())) {
                     setError(ptnKyoriXData, false, true, "XHD-000006", "エンド", "3");
                     return false;
                 }
