@@ -661,7 +661,7 @@ public class GXHDO101B003 implements IFormLogic {
 
         // ユーザ認証用のパラメータをセットする。
         processData.setRquireAuth(true);
-        processData.setUserAuthParam(GXHDO101B003Const.USER_AUTH_PARAM);
+        processData.setUserAuthParam(GXHDO101B003Const.USER_AUTH_UPDATE_PARAM);
 
         // 後続処理メソッド設定
         processData.setMethod("doCorrect");
@@ -777,7 +777,7 @@ public class GXHDO101B003 implements IFormLogic {
 
         // ユーザ認証用のパラメータをセットする。
         processData.setRquireAuth(true);
-        processData.setUserAuthParam(GXHDO101B003Const.USER_AUTH_PARAM);
+        processData.setUserAuthParam(GXHDO101B003Const.USER_AUTH_DELETE_PARAM);
 
         // 後続処理メソッド設定
         processData.setMethod("doDelete");
@@ -1447,6 +1447,8 @@ public class GXHDO101B003 implements IFormLogic {
 
         }
 
+        // サブ画面から戻ったときに値を設定する項目を指定する。
+        model.setReturnItemIdInsatsuHaba(GXHDO101B003Const.INSATSU_HABA);
         beanGXHDO101C005.setGxhdO101c005Model(model);
     }
 

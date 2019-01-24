@@ -409,7 +409,10 @@ public class GXHDO101B002Const {
     /**
      * ユーザー認証パラメータ
      */
-    public static final String USER_AUTH_PARAM = "insatsu_sps_src_update_button";
+    public static final String USER_AUTH_UPDATE_PARAM = "insatsu_sps_src_update_button";
 
-    
+    /**
+     * ユーザー認証パラメータ(削除)
+     */
+    public static final String USER_AUTH_DELETE_PARAM = "insatsu_sps_src_delete_button";
 }

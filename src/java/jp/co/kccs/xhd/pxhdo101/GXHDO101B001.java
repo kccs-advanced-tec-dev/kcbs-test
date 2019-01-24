@@ -726,7 +726,7 @@ public class GXHDO101B001 implements IFormLogic {
 
         // ユーザ認証用のパラメータをセットする。
         processData.setRquireAuth(true);
-        processData.setUserAuthParam(GXHDO101B001Const.USER_AUTH_PARAM);
+        processData.setUserAuthParam(GXHDO101B001Const.USER_AUTH_UPDATE_PARAM);
 
         // 後続処理メソッド設定
         processData.setMethod("doCorrect");
@@ -841,7 +841,7 @@ public class GXHDO101B001 implements IFormLogic {
 
         // ユーザ認証用のパラメータをセットする。
         processData.setRquireAuth(true);
-        processData.setUserAuthParam(GXHDO101B001Const.USER_AUTH_PARAM);
+        processData.setUserAuthParam(GXHDO101B001Const.USER_AUTH_DELETE_PARAM);
 
         // 後続処理メソッド設定
         processData.setMethod("doDelete");
@@ -2858,9 +2858,9 @@ public class GXHDO101B001 implements IFormLogic {
         }
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B001Const.PTN_INSATSU_START_X_MIN, srSpsprintGraData))); //ｽﾀｰﾄ時PTN間距離X
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B001Const.PTN_INSATSU_START_Y_MIN, srSpsprintGraData))); //ｽﾀｰﾄ時PTN間距離Y
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B001Const.KAISHI_TENSION_KEI, srSpsprintGraData))); //開始ﾃﾝｼｮﾝ計
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B001Const.KAISHI_TENSION_MAE, srSpsprintGraData))); //ﾃﾝｼｮﾝ開始手前
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B001Const.KAISHI_TENSION_OKU, srSpsprintGraData))); //ﾃﾝｼｮﾝ開始奥
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B001Const.KAISHI_TENSION_KEI, srSpsprintGraData))); //開始ﾃﾝｼｮﾝ計
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B001Const.KAISHI_TENSION_MAE, srSpsprintGraData))); //ﾃﾝｼｮﾝ開始手前
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B001Const.KAISHI_TENSION_OKU, srSpsprintGraData))); //ﾃﾝｼｮﾝ開始奥
         params.add(DBUtil.stringToDateObjectDefaultNull(
                 getItemData(itemList, GXHDO101B001Const.INSATSU_SHUURYOU_DAY, srSpsprintGraData),
                 getItemData(itemList, GXHDO101B001Const.INSATSU_SHUURYOU_TIME, srSpsprintGraData))); //ﾌﾟﾘﾝﾄ終了日時
@@ -2887,9 +2887,9 @@ public class GXHDO101B001 implements IFormLogic {
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B001Const.SHURYOU_TENSION_KEI, srSpsprintGraData))); //終了ﾃﾝｼｮﾝ計
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B001Const.SHURYOU_TENSION_MAE, srSpsprintGraData))); //ﾃﾝｼｮﾝ終了手前
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B001Const.SHURYOU_TENSION_OKU, srSpsprintGraData))); //ﾃﾝｼｮﾝ終了奥
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B001Const.INSATSU_ZURE1_START, srSpsprintGraData))); //印刷ズレ①刷り始め開始
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B001Const.INSATSU_ZURE2_START, srSpsprintGraData))); //印刷ズレ②中央開始
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B001Const.INSATSU_ZURE3_START, srSpsprintGraData))); //印刷ズレ③刷り終わり開始
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B001Const.INSATSU_ZURE1_START, srSpsprintGraData))); //印刷ズレ①刷り始め開始
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B001Const.INSATSU_ZURE2_START, srSpsprintGraData))); //印刷ズレ②中央開始
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B001Const.INSATSU_ZURE3_START, srSpsprintGraData))); //印刷ズレ③刷り終わり開始
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B001Const.AB_ZURE_HEIKIN_START, srSpsprintGraData))); //ABズレ平均スタート
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B001Const.INSATSU_ZURE1_END, srSpsprintGraData))); //印刷ズレ①刷り始め終了
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B001Const.INSATSU_ZURE2_END, srSpsprintGraData))); //印刷ズレ②中央終了
@@ -3262,9 +3262,9 @@ public class GXHDO101B001 implements IFormLogic {
         }
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B001Const.PTN_INSATSU_START_X_MIN, srSpsprintGraData))); //ｽﾀｰﾄ時PTN間距離X
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B001Const.PTN_INSATSU_START_Y_MIN, srSpsprintGraData))); //ｽﾀｰﾄ時PTN間距離Y
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B001Const.KAISHI_TENSION_KEI, srSpsprintGraData))); //開始ﾃﾝｼｮﾝ計
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B001Const.KAISHI_TENSION_MAE, srSpsprintGraData))); //ﾃﾝｼｮﾝ開始手前
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B001Const.KAISHI_TENSION_OKU, srSpsprintGraData))); //ﾃﾝｼｮﾝ開始奥
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B001Const.KAISHI_TENSION_KEI, srSpsprintGraData))); //開始ﾃﾝｼｮﾝ計
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B001Const.KAISHI_TENSION_MAE, srSpsprintGraData))); //ﾃﾝｼｮﾝ開始手前
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B001Const.KAISHI_TENSION_OKU, srSpsprintGraData))); //ﾃﾝｼｮﾝ開始奥
         params.add(DBUtil.stringToDateObject(
                 getItemData(itemList, GXHDO101B001Const.INSATSU_SHUURYOU_DAY, srSpsprintGraData),
                 getItemData(itemList, GXHDO101B001Const.INSATSU_SHUURYOU_TIME, srSpsprintGraData))); //ﾌﾟﾘﾝﾄ終了日時
@@ -3290,9 +3290,9 @@ public class GXHDO101B001 implements IFormLogic {
 
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B001Const.PTN_INSATSU_END_X_MIN, srSpsprintGraData))); //終了時PTN間距離X
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B001Const.PTN_INSATSU_END_Y_MIN, srSpsprintGraData))); //終了時PTN間距離Y
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B001Const.SHURYOU_TENSION_KEI, srSpsprintGraData))); //終了ﾃﾝｼｮﾝ計
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B001Const.SHURYOU_TENSION_MAE, srSpsprintGraData))); //ﾃﾝｼｮﾝ終了手前
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B001Const.SHURYOU_TENSION_OKU, srSpsprintGraData))); //ﾃﾝｼｮﾝ終了奥
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B001Const.SHURYOU_TENSION_KEI, srSpsprintGraData))); //終了ﾃﾝｼｮﾝ計
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B001Const.SHURYOU_TENSION_MAE, srSpsprintGraData))); //ﾃﾝｼｮﾝ終了手前
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B001Const.SHURYOU_TENSION_OKU, srSpsprintGraData))); //ﾃﾝｼｮﾝ終了奥
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B001Const.INSATSU_ZURE1_START, srSpsprintGraData))); //印刷ズレ①刷り始め開始
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B001Const.INSATSU_ZURE2_START, srSpsprintGraData))); //印刷ズレ②中央開始
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B001Const.INSATSU_ZURE3_START, srSpsprintGraData))); //印刷ズレ③刷り終わり開始
@@ -3487,7 +3487,6 @@ public class GXHDO101B001 implements IFormLogic {
         params.add(DBUtil.stringToIntObject(ptnKyoriYDataList.get(4).getEndVal())); //PTN距離Y ｴﾝﾄﾞ5
         if (isInsert) {
             params.add(systemTime); //登録日時
-            //params.add(null); //更新日時
             params.add(systemTime); //更新日時
         } else {
             params.add(systemTime); //更新日時

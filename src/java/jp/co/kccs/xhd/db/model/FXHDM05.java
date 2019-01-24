@@ -121,7 +121,7 @@ public class FXHDM05 {
      *
      * @return the checkNo
      */
-    public int getButtonNo() {
+    public int getCheckNo() {
         return checkNo;
     }
 

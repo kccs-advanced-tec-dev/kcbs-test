@@ -133,6 +133,7 @@ public class ValidateUtil {
      *
      * @param validateInfoList チェック処理内容リスト
      * @param itemList 項目データリスト
+     * @param queryRunnerDoc QueryRunnerオブジェクト
      * @return エラー時はエラーメッセージを返却
      */
     public ErrorMessageInfo executeValidation(List<ValidateInfo> validateInfoList, List<FXHDD01> itemList, QueryRunner queryRunnerDoc) {
@@ -221,9 +222,6 @@ public class ValidateUtil {
 
             // エラー対象をリストに追加
             List<FXHDD01> errorItemList = Arrays.asList(fXHDD01);
-            if (ketasu != StringUtil.getByte(value, CHARSET, LOGGER)) {
-                return MessageUtil.getErrorMessageInfo("XHD-000004", true, true, errorItemList, fXHDD01.getLabel1(), ketasu);
-            }
             if (ketasu != StringUtil.getLength(value)) {
                 return MessageUtil.getErrorMessageInfo("XHD-000004", true, true, errorItemList, fXHDD01.getLabel1(), ketasu);
             }
@@ -286,10 +284,10 @@ public class ValidateUtil {
             if (NumberUtil.isIntegerNumeric(fXHDD01.getInputLength())) {
                 ketasu = Integer.parseInt(fXHDD01.getInputLength());
             }
-            String value = fXHDD01.getValue();
+            String value = StringUtil.nullToBlank(fXHDD01.getValue());
 
-            if (!NumberUtil.isNumeric(value) || !NumberUtil.isIntegerNumeric(value)
-                    || !NumberUtil.isValidDigits(new BigDecimal(value), ketasu, 0)) {
+            if (ketasu < value.length()) 
+            {
                 List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
                 return MessageUtil.getErrorMessageInfo("XHD-000006", true, true, errFxhdd01List, fXHDD01.getLabel1(), ketasu);
             }

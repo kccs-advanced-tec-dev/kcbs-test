@@ -221,5 +221,31 @@ public class NumberUtil {
         }
         return min;
     }
+    
+    /**
+     * リストで受け取った値の平均値
+     *
+     * @param calcDataList 計算データリスト
+     * @return 平均値
+     */
+    public static BigDecimal getAve(List<String> calcDataList) {
+        
+        if(calcDataList == null || calcDataList.isEmpty()){
+            return null;
+        }
+        
+        BigDecimal sum = BigDecimal.ZERO;
+        BigDecimal value;
+        for (String strValue : calcDataList) {
+            try {
+                value = new BigDecimal(strValue);
+            } catch (NumberFormatException e) {
+                value = BigDecimal.ZERO;
+            }
+            sum = sum.add(value);
+        }
+        
+        return sum.divide(BigDecimal.valueOf(calcDataList.size()), 15, RoundingMode.DOWN);
+    }
 
 }

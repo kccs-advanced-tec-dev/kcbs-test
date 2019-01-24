@@ -529,9 +529,14 @@ public class GXHDO101B001Const {
     public static final String BTN_UP_TOUROKU = "insatsu_sps_gra_up_touroku";
     
     /**
-     * ユーザー認証パラメータ
+     * ユーザー認証パラメータ(修正)
      */
-    public static final String USER_AUTH_PARAM = "insatsu_sps_gra_update_button";
+    public static final String USER_AUTH_UPDATE_PARAM = "insatsu_sps_gra_update_button";
+
+    /**
+     * ユーザー認証パラメータ(削除)
+     */
+    public static final String USER_AUTH_DELETE_PARAM = "insatsu_sps_gra_delete_button";
 
 
 }

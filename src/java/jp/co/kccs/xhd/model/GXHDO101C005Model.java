@@ -52,6 +52,12 @@ public class GXHDO101C005Model implements Cloneable {
     }
 
     /**
+     * 印刷幅設定項目ID
+     */
+    private String returnItemIdInsatsuHaba = "";
+
+    
+    /**
      * 印刷幅データリスト
      */
     private List<PrintWidthData> printWidthDataList = new ArrayList<>();
@@ -61,6 +67,20 @@ public class GXHDO101C005Model implements Cloneable {
      */
     public GXHDO101C005Model() {
         this.printWidthDataList = new ArrayList<>();
+    }
+
+    /**
+     * @return the returnItemIdInsatsuHaba
+     */
+    public String getReturnItemIdInsatsuHaba() {
+        return returnItemIdInsatsuHaba;
+    }
+
+    /**
+     * @param returnItemIdInsatsuHaba the returnItemIdInsatsuHaba to set
+     */
+    public void setReturnItemIdInsatsuHaba(String returnItemIdInsatsuHaba) {
+        this.returnItemIdInsatsuHaba = returnItemIdInsatsuHaba;
     }
 
     /**

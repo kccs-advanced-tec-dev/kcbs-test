@@ -3,11 +3,16 @@
  */
 package jp.co.kccs.xhd.pxhdo101;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.model.GXHDO101C005Model;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
+import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.StringUtil;
 
 /**
@@ -25,6 +30,8 @@ import jp.co.kccs.xhd.util.StringUtil;
 /**
  * GXHDO101C005(印刷幅)ロジッククラス
  */
+
+
 public class GXHDO101C005Logic {
 
     public static GXHDO101C005Model createGXHDO101C005Model(String[] startValues) {
@@ -92,6 +99,76 @@ public class GXHDO101C005Logic {
             }
         }
         return errorList;
+    }
+
+    /**
+     * サブ画面からの戻り値をメイン画面の項目リストにセットする
+     *
+     * @param gXHDO101C005Model 印刷幅サブ画面用ﾓﾃﾞﾙ
+     * @param itemList 項目リスト
+     */
+    public static void setReturnData(GXHDO101C005Model gXHDO101C005Model, List<FXHDD01> itemList) {
+
+        List<String> startDataList = new ArrayList<>();
+        for (GXHDO101C005Model.PrintWidthData printWidthData : gXHDO101C005Model.getPrintWidthDataList()) {
+            if (!StringUtil.isEmpty(printWidthData.getStartVal())) {
+                startDataList.add(printWidthData.getStartVal());
+            }
+        }
+
+        FXHDD01 itemInsatsuHaba = getItemRow(itemList, gXHDO101C005Model.getReturnItemIdInsatsuHaba());
+
+        // 全て値が設定されていた場合のみ算出値をセットする
+        if (gXHDO101C005Model.getPrintWidthDataList().size() == startDataList.size()) {
+            setItemValue(itemInsatsuHaba, NumberUtil.getAve(startDataList));
+        } else {
+            setItemValue(itemInsatsuHaba, null);
+        }
+    }
+
+    /**
+     * 対象項目に値をセットする
+     *
+     * @param itemData 項目
+     * @param value 値
+     */
+    private static void setItemValue(FXHDD01 itemData, BigDecimal value) {
+        if (itemData == null) {
+            return;
+        }
+        if (value != null) {
+            // 小数指定されている場合は小数部以下は切り捨て
+            if (!StringUtil.isEmpty(itemData.getInputLengthDec())) {
+                try {
+                    value = value.setScale(Integer.parseInt(itemData.getInputLengthDec()), RoundingMode.DOWN);
+                } catch (NumberFormatException e) {
+                    // 処理なし
+                }
+            }
+
+            // 値をセット
+            itemData.setValue(value.toPlainString());
+        } else {
+            // 値をセット
+            itemData.setValue("");
+        }
+    }
+
+    /**
+     * 項目データ取得
+     *
+     * @param listData フォームデータ
+     * @param itemId 項目ID
+     * @return 項目データ
+     */
+    private static FXHDD01 getItemRow(List<FXHDD01> listData, String itemId) {
+        List<FXHDD01> selectData
+                = listData.stream().filter(n -> itemId.equals(n.getItemId())).collect(Collectors.toList());
+        if (null != selectData && 0 < selectData.size()) {
+            return selectData.get(0);
+        } else {
+            return null;
+        }
     }
 
 }

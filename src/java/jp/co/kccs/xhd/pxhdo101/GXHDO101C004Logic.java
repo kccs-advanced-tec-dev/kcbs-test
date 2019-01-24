@@ -130,6 +130,12 @@ public class GXHDO101C004Logic {
         }
     }
 
+    /**
+     * 対象項目に値をセットする
+     *
+     * @param itemData 項目
+     * @param value 値
+     */
     private static void setItemValue(FXHDD01 itemData, BigDecimal value) {
         if (itemData == null) {
             return;
