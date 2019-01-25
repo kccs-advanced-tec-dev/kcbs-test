@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Kyocera Communication Systems Co., Ltd All rights reserved.
+ * Copyright 2019 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.db.model;
 
@@ -11,7 +11,7 @@ import java.sql.Timestamp;
  * <br>
  * システム名	品質DB(コンデンサ)<br>
  * <br>
- * 変更日	2018/01/07<br>
+ * 変更日	2019/01/07<br>
  * 計画書No	K1803-DS001<br>
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
@@ -22,7 +22,7 @@ import java.sql.Timestamp;
  * 印刷SPSｸﾞﾗﾋﾞｱのモデルクラスです。
  *
  * @author SYSNAVI K.Hisanaga
- * @since 2018/01/17
+ * @since 2019/01/07
  */
 public class SrSpsprintGra {
 
@@ -30,291 +30,362 @@ public class SrSpsprintGra {
      * 工場ｺｰﾄﾞ
      */
     private String kojyo;
+    
     /**
      * ﾛｯﾄNo
      */
     private String lotno;
+    
     /**
      * 枝番
      */
     private String edaban;
+    
     /**
      * ﾃｰﾌﾟｽﾘｯﾌﾟﾛｯﾄNo
      */
     private String tapelotno;
+    
     /**
      * PETﾌｨﾙﾑ種類
      */
     private String petfilmsyurui;
+    
     /**
      * ﾃｰﾌﾟﾛｰﾙNo1
      */
     private String taperollno1;
+    
     /**
      * ﾃｰﾌﾟﾛｰﾙNo2
      */
     private String taperollno2;
+    
     /**
      * ﾃｰﾌﾟﾛｰﾙNo3
      */
     private String taperollno3;
+    
     /**
      * ﾍﾟｰｽﾄﾛｯﾄNo1
      */
     private String pastelotno;
+    
     /**
      * ﾍﾟｰｽﾄ粘度1
      */
     private BigDecimal pastenendo;
+    
     /**
      * ﾍﾟｰｽﾄ温度1
      */
     private BigDecimal pasteondo;
+    
     /**
      * ﾍﾟｰｽﾄ固形分1
      */
     private BigDecimal pkokeibun1;
+    
     /**
      * ﾍﾟｰｽﾄﾛｯﾄNo2
      */
     private String pastelotno2;
+    
     /**
      * ﾍﾟｰｽﾄ粘度2
      */
     private BigDecimal pastenendo2;
+    
     /**
      * ﾍﾟｰｽﾄ温度2
      */
     private BigDecimal pasteondo2;
+    
     /**
      * ﾍﾟｰｽﾄ固形分2
      */
     private BigDecimal pkokeibun2;
+    
     /**
      * 版胴名
      */
     private String handoumei;
+    
     /**
      * 版胴No
      */
     private String handouno;
+    
     /**
      * 版胴使用枚数
      */
     private Long handoumaisuu;
+    
     /**
      * ﾌﾞﾚｰﾄﾞNo.
      */
     private String bladeno;
+    
     /**
      * ﾌﾞﾚｰﾄﾞ外観
      */
     private Integer bladegaikan;
+    
     /**
      * ﾌﾞﾚｰﾄﾞ圧力
      */
     private BigDecimal bladeATu;
+    
     /**
      * 圧胴No
      */
     private String atudoNo;
+    
     /**
      * 圧胴使用枚数
      */
     private Long atudoMaisuu;
+    
     /**
      * 圧胴圧力
      */
     private BigDecimal atuDoATu;
+    
     /**
      * 号機ｺｰﾄﾞ
      */
     private String gouki;
+    
     /**
      * 乾燥温度
      */
     private BigDecimal kansouondo;
+    
     /**
      * 乾燥温度2
      */
     private BigDecimal kansouondo2;
+    
     /**
      * 乾燥温度3
      */
     private BigDecimal kansouondo3;
+    
     /**
      * 乾燥温度4
      */
     private BigDecimal kansouondo4;
+    
     /**
      * 乾燥温度5
      */
     private BigDecimal kansouondo5;
+    
     /**
      * 搬送速度
      */
     private Integer hansouspeed;
+    
     /**
      * ﾌﾟﾘﾝﾄ開始日時
      */
     private Timestamp startdatetime;
+    
     /**
      * ｾｯﾃｨﾝｸﾞ担当者ｺｰﾄﾞ
      */
     private String tantousya;
+    
     /**
      * ｽﾀｰﾄ時膜厚AVE
      */
     private BigDecimal makuatuaveStart;
+    
     /**
      * ｽﾀｰﾄ時膜厚MAX
      */
     private BigDecimal makuatumaxStart;
+    
     /**
      * ｽﾀｰﾄ時膜厚MIN
      */
     private BigDecimal makuatuminStart;
+    
     /**
      * 印刷ｽﾀｰﾄ膜厚CV
      */
     private BigDecimal makuatucvStart;
+    
     /**
      * ｽﾀｰﾄ時ﾆｼﾞﾐ・ｶｽﾚ確認
      */
     private Integer nijimikasureStart;
+    
     /**
      * ｽﾀｰﾄ時PTN間距離X
      */
     private Integer startPtnDistX;
+    
     /**
      * ｽﾀｰﾄ時PTN間距離Y
      */
     private Integer startPtnDistY;
+    
     /**
      * 開始ﾃﾝｼｮﾝ計
      */
-    private Integer tensionSSum;
+    private BigDecimal tensionSSum;
+    
     /**
      * ﾃﾝｼｮﾝ開始手前
      */
-    private Integer tensionStemae;
+    private BigDecimal tensionStemae;
+    
     /**
      * ﾃﾝｼｮﾝ開始奥
      */
-    private Integer tensionSoku;
+    private BigDecimal tensionSoku;
+    
     /**
      * ﾌﾟﾘﾝﾄ終了日時
      */
     private Timestamp enddatetime;
+    
     /**
      * 終了時担当者ｺｰﾄﾞ
      */
     private String tantoEnd;
+    
     /**
      * 印刷枚数
      */
     private Integer printmaisuu;
+    
     /**
      * 終了時膜厚AVE
      */
     private BigDecimal makuatuaveEnd;
+    
     /**
      * 終了時膜厚MAX
      */
     private BigDecimal makuatumaxEnd;
+    
     /**
      * 終了時膜厚MIN
      */
     private BigDecimal makuatuminEnd;
+    
     /**
      * 印刷ｴﾝﾄﾞ膜厚CV
      */
     private BigDecimal makuatucvEnd;
+    
     /**
      * 終了時ﾆｼﾞﾐ・ｶｽﾚ確認
      */
     private Integer nijimikasureEnd;
+    
     /**
      * 終了時PTN間距離X
      */
     private Integer endPtnDistX;
+    
     /**
      * 終了時PTN間距離Y
      */
     private Integer endPtnDistY;
+    
     /**
      * 終了ﾃﾝｼｮﾝ計
      */
-    private Integer tensionESum;
+    private BigDecimal tensionESum;
+    
     /**
      * ﾃﾝｼｮﾝ終了手前
      */
-    private Integer tensionEtemae;
+    private BigDecimal tensionEtemae;
+    
     /**
      * ﾃﾝｼｮﾝ終了奥
      */
-    private Integer tensionEoku;
+    private BigDecimal tensionEoku;
+    
     /**
      * 印刷ズレ①刷り始め開始
      */
     private Integer printzure1SurihajimeStart;
+    
     /**
      * 印刷ズレ②中央開始
      */
     private Integer printzure2CenterStart;
+    
     /**
      * 印刷ズレ③刷り終わり開始
      */
     private Integer printzure3SuriowariStart;
+    
     /**
      * ABズレ平均スタート
      */
     private Integer abzureHeikinStart;
+    
     /**
      * 印刷ズレ①刷り始め終了
      */
     private Integer printzure1SurihajimeEnd;
+    
     /**
      * 印刷ズレ②中央終了
      */
     private Integer printzure2CenterEnd;
+    
     /**
      * 印刷ズレ③刷り終わり終了
      */
     private Integer printzure3SuriowariEnd;
+    
     /**
      * ABズレ平均終了
      */
     private Integer abzureHeikinEnd;
+    
     /**
      * 原料記号
      */
     private String genryoukigou;
+    
     /**
      * 備考1
      */
     private String bikou1;
+    
     /**
      * 備考2
      */
     private String bikou2;
+    
     /**
      * 登録日時
      */
     private Timestamp torokunichiji;
+    
     /**
      * 更新日時
      */
     private Timestamp kosinnichiji;
+    
     /**
      * revision
      */
     private Long revision;
-     /**
+    
+    /**
      * KCPNO
      */
     private String kcpno;
-    
+
     /**
      * 削除ﾌﾗｸﾞ
      */
@@ -1061,7 +1132,7 @@ public class SrSpsprintGra {
      *
      * @return the tensionSSum
      */
-    public Integer getTensionSSum() {
+    public BigDecimal getTensionSSum() {
         return tensionSSum;
     }
 
@@ -1070,7 +1141,7 @@ public class SrSpsprintGra {
      *
      * @param tensionSSum the tensionSSum to set
      */
-    public void setTensionSSum(Integer tensionSSum) {
+    public void setTensionSSum(BigDecimal tensionSSum) {
         this.tensionSSum = tensionSSum;
     }
 
@@ -1079,7 +1150,7 @@ public class SrSpsprintGra {
      *
      * @return the tensionStemae
      */
-    public Integer getTensionStemae() {
+    public BigDecimal getTensionStemae() {
         return tensionStemae;
     }
 
@@ -1088,7 +1159,7 @@ public class SrSpsprintGra {
      *
      * @param tensionStemae the tensionStemae to set
      */
-    public void setTensionStemae(Integer tensionStemae) {
+    public void setTensionStemae(BigDecimal tensionStemae) {
         this.tensionStemae = tensionStemae;
     }
 
@@ -1097,7 +1168,7 @@ public class SrSpsprintGra {
      *
      * @return the tensionSoku
      */
-    public Integer getTensionSoku() {
+    public BigDecimal getTensionSoku() {
         return tensionSoku;
     }
 
@@ -1106,7 +1177,7 @@ public class SrSpsprintGra {
      *
      * @param tensionSoku the tensionSoku to set
      */
-    public void setTensionSoku(Integer tensionSoku) {
+    public void setTensionSoku(BigDecimal tensionSoku) {
         this.tensionSoku = tensionSoku;
     }
 
@@ -1295,7 +1366,7 @@ public class SrSpsprintGra {
      *
      * @return the tensionESum
      */
-    public Integer getTensionESum() {
+    public BigDecimal getTensionESum() {
         return tensionESum;
     }
 
@@ -1304,7 +1375,7 @@ public class SrSpsprintGra {
      *
      * @param tensionESum the tensionESum to set
      */
-    public void setTensionESum(Integer tensionESum) {
+    public void setTensionESum(BigDecimal tensionESum) {
         this.tensionESum = tensionESum;
     }
 
@@ -1313,7 +1384,7 @@ public class SrSpsprintGra {
      *
      * @return the tensionEtemae
      */
-    public Integer getTensionEtemae() {
+    public BigDecimal getTensionEtemae() {
         return tensionEtemae;
     }
 
@@ -1322,7 +1393,7 @@ public class SrSpsprintGra {
      *
      * @param tensionEtemae the tensionEtemae to set
      */
-    public void setTensionEtemae(Integer tensionEtemae) {
+    public void setTensionEtemae(BigDecimal tensionEtemae) {
         this.tensionEtemae = tensionEtemae;
     }
 
@@ -1331,7 +1402,7 @@ public class SrSpsprintGra {
      *
      * @return the tensionEoku
      */
-    public Integer getTensionEoku() {
+    public BigDecimal getTensionEoku() {
         return tensionEoku;
     }
 
@@ -1340,7 +1411,7 @@ public class SrSpsprintGra {
      *
      * @param tensionEoku the tensionEoku to set
      */
-    public void setTensionEoku(Integer tensionEoku) {
+    public void setTensionEoku(BigDecimal tensionEoku) {
         this.tensionEoku = tensionEoku;
     }
 
@@ -1598,6 +1669,7 @@ public class SrSpsprintGra {
 
     /**
      * KCPNO
+     *
      * @return the kcpno
      */
     public String getKcpno() {
@@ -1606,6 +1678,7 @@ public class SrSpsprintGra {
 
     /**
      * KCPNO
+     *
      * @param kcpno the kcpno to set
      */
     public void setKcpno(String kcpno) {

@@ -956,7 +956,7 @@ public class GXHDO901A implements Serializable {
                 if(this.processData.getNoCheckButtonId() != null && !this.processData.getNoCheckButtonId().isEmpty()){
                     this.noCheckButtonId = this.processData.getNoCheckButtonId();
                 }
-                //***************************************************************************************************
+                
                 // ボタンの活性・非活性制御
                 this.setButtonEnabled(this.processData.getActiveButtonId(), this.processData.getInactiveButtonId());
                 // 処理制御データクリア
@@ -1276,8 +1276,9 @@ public class GXHDO901A implements Serializable {
             QueryRunner queryRunner = new QueryRunner(dataSourceDocServer);
             String sql = "SELECT gamen_id,button_id,item_id,check_pattern,check_no "
                     + "  FROM FXHDM05 "
-                    + " WHERE gamen_id = ? ";
-
+                    + " WHERE gamen_id = ? "
+                    + " ORDER BY button_id,item_id,check_no ";
+            
             List<Object> params = new ArrayList<>();
             params.add(formId);
 
@@ -1382,21 +1383,12 @@ public class GXHDO901A implements Serializable {
         
         //共通ﾁｪｯｸ
         List<FXHDM05> itemRowCheckList
-                = checkListHDM05.stream().filter(n -> buttonId.equals(n.getButtonId())).collect(Collectors.toList());
-        List<ValidateUtil.ValidateInfo> requireCheckList = new ArrayList<>();
+                = this.checkListHDM05.stream().filter(n -> buttonId.equals(n.getButtonId())).collect(Collectors.toList());
+        
         ValidateUtil validateUtil = new ValidateUtil();
-
-        // データを設定する
-        for (FXHDM05 fxhddM05 : itemRowCheckList) {
-            for (ValidateUtil.EnumCheckNo checkNo : ValidateUtil.EnumCheckNo.values()) {
-                if (checkNo.name().equalsIgnoreCase(fxhddM05.getCheckPattern())) {
-                    requireCheckList.add(validateUtil.new ValidateInfo(checkNo, fxhddM05.getItemId(), null, null));
-                    break;
-                }
-            }
-        }
         QueryRunner queryRunnerDoc = new QueryRunner(dataSourceDocServer);
-        ErrorMessageInfo requireCheckErrorMessage = validateUtil.executeValidation(requireCheckList, this.itemList, queryRunnerDoc);
+        ErrorMessageInfo requireCheckErrorMessage = validateUtil.executeValidation(itemRowCheckList, this.itemList, queryRunnerDoc);
+        
         return requireCheckErrorMessage;
     }
 

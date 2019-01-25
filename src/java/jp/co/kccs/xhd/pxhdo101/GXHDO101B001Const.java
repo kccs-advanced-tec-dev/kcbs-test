@@ -344,7 +344,7 @@ public class GXHDO101B001Const {
     /**
      * 印刷終了日
      */
-    public static final String INSATSU_SHUURYOU_DAY = "insatsu_sps_gra_insatsu_shuuryou_day";
+    public static final String INSATSU_SHUURYOU_DAY = "insatsu_sps_gra_insatsu_shuryou_day";
 
     /**
      * 印刷終了時刻

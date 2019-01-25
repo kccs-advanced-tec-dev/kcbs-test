@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Kyocera Communication Systems Co., Ltd All rights reserved.
+ * Copyright 2019 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.db.model;
 
@@ -11,7 +11,7 @@ import java.sql.Timestamp;
  * <br>
  * システム名	品質DB(コンデンサ)<br>
  * <br>
- * 変更日	2018/01/07<br>
+ * 変更日	2019/01/17<br>
  * 計画書No	K1803-DS001<br>
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
@@ -19,10 +19,10 @@ import java.sql.Timestamp;
  * ===============================================================================<br>
  */
 /**
- * 印刷SPSｸﾞﾗﾋﾞｱ_ｻﾌﾞ画面のモデルクラスです。
+ * 印刷RSUS_ｻﾌﾞ画面のモデルクラスです。
  *
  * @author SYSNAVI K.Hisanaga
- * @since 2018/01/17
+ * @since 2019/01/17
  */
 public class SubSrRsusprn {
 

@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Kyocera Communication Systems Co., Ltd All rights reserved.
+ * Copyright 2019 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.db.model;
 
@@ -11,7 +11,7 @@ import java.sql.Timestamp;
  * <br>
  * システム名	品質DB(コンデンサ)<br>
  * <br>
- * 変更日	2018/12/17<br>
+ * 変更日	2019/01/14<br>
  * 計画書No	K1803-DS001<br>
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
@@ -22,7 +22,7 @@ import java.sql.Timestamp;
  * SR_SPSPRINT(SPS印刷)のモデルクラスです。
  *
  * @author SYSNAVI K.Hisanaga
- * @since 2018/12/17
+ * @since 2019/01/14
  */
 public class SrSpsprintScr {
 
@@ -30,370 +30,462 @@ public class SrSpsprintScr {
      * 工場ｺｰﾄﾞ
      */
     private String kojyo;
+    
     /**
      * ﾛｯﾄNo
      */
     private String lotno;
+    
     /**
      * 枝番
      */
     private String edaban;
+    
     /**
      * ﾃｰﾌﾟ種類
      */
     private String tapesyurui;
+    
     /**
      * ﾃｰﾌﾟｽﾘｯﾌﾟﾛｯﾄNo
      */
     private String tapelotno;
+    
     /**
      * ﾃｰﾌﾟｽﾘｯﾌﾟ記号
      */
     private String tapeSlipKigo;
+    
     /**
      * 原料記号
      */
     private String genryoukigou;
+    
     /**
      * ﾍﾟｰｽﾄﾛｯﾄNo1
      */
     private String pastelotno;
+    
     /**
      * ﾍﾟｰｽﾄ粘度1
      */
     private BigDecimal pastenendo;
+    
     /**
      * ﾍﾟｰｽﾄ温度1
      */
     private BigDecimal pasteondo;
+    
     /**
      * 製版No
      */
     private String seihanno;
+    
     /**
      * 製版枚数
      */
     private Long seihanmaisuu;
+    
     /**
      * ﾌﾟﾘﾝﾄ開始日時
      */
     private Timestamp startdatetime;
+    
     /**
      * ﾌﾟﾘﾝﾄ終了日時
      */
     private Timestamp enddatetime;
+    
     /**
      * ｽｷｰｼﾞNo
      */
     private String skeegeno;
+    
     /**
      * ｽｷｰｼﾞ枚数
      */
     private Long skeegemaisuu;
+    
     /**
      * 号機ｺｰﾄﾞ
      */
     private String gouki;
+    
     /**
      * 担当者ｺｰﾄﾞ
      */
     private String tantousya;
+    
     /**
      * 確認者ｺｰﾄﾞ
      */
     private String kakuninsya;
+    
     /**
      * 乾燥温度
      */
     private BigDecimal kansouondo;
+    
     /**
      * 印刷ﾌﾟﾛﾌｧｲﾙ
      */
     private String prnprofile;
+    
     /**
      * 乾燥時間
      */
     private BigDecimal kansoutime;
+    
     /**
      * 差圧
      */
     private BigDecimal saatu;
+    
     /**
      * ｽｷｰｼﾞｽﾋﾟｰﾄﾞ
      */
     private Integer skeegespeed;
+    
     /**
      * ｽｷｰｼﾞ角度
      */
     private Integer skeegeangle;
+    
     /**
      * ﾒﾀﾙﾚｲﾀﾞｳﾝ値
      */
     private Integer mld;
+    
     /**
      * ｸﾘｱﾗﾝｽ設定値
      */
     private BigDecimal clearrance;
+    
     /**
      * 備考1
      */
     private String bikou1;
+    
     /**
      * 備考2
      */
     private String bikou2;
+    
     /**
      * 膜厚1
      */
     private BigDecimal makuatu1;
+    
     /**
      * 膜厚2
      */
     private BigDecimal makuatu2;
+    
     /**
      * 膜厚3
      */
     private BigDecimal makuatu3;
+    
     /**
      * 膜厚4
      */
     private BigDecimal makuatu4;
+    
     /**
      * 膜厚5
      */
     private BigDecimal makuatu5;
+    
     /**
      * ﾍﾟｰｽﾄﾛｯﾄNo2
      */
     private String pastelotno2;
+    
     /**
      * ﾍﾟｰｽﾄﾛｯﾄNo3
      */
     private String pastelotno3;
+    
     /**
      * ﾍﾟｰｽﾄﾛｯﾄNo4
      */
     private String pastelotno4;
+    
     /**
      * ﾍﾟｰｽﾄﾛｯﾄNo5
      */
     private String pastelotno5;
+    
     /**
      * ﾍﾟｰｽﾄ粘度2
      */
     private BigDecimal pastenendo2;
+    
     /**
      * ﾍﾟｰｽﾄ粘度3
      */
     private Integer pastenendo3;
+    
     /**
      * ﾍﾟｰｽﾄ粘度4
      */
     private Integer pastenendo4;
+    
     /**
      * ﾍﾟｰｽﾄ粘度5
      */
     private Integer pastenendo5;
+    
     /**
      * ﾍﾟｰｽﾄ温度2
      */
     private Integer pasteondo2;
+    
     /**
      * ﾍﾟｰｽﾄ温度3
      */
     private Integer pasteondo3;
+    
     /**
      * ﾍﾟｰｽﾄ温度4
      */
     private Integer pasteondo4;
+    
     /**
      * ﾍﾟｰｽﾄ温度5
      */
     private Integer pasteondo5;
+    
     /**
      * 備考3
      */
     private String bikou3;
+    
     /**
      * 備考4
      */
     private String bikou4;
+    
     /**
      * 備考5
      */
     private String bikou5;
+    
     /**
      * 乾燥温度2
      */
     private BigDecimal kansouondo2;
+    
     /**
      * 乾燥温度3
      */
     private BigDecimal kansouondo3;
+    
     /**
      * 乾燥温度4
      */
     private BigDecimal kansouondo4;
+    
     /**
      * 乾燥温度5
      */
     private BigDecimal kansouondo5;
+    
     /**
      * ｽｷｰｼﾞ枚数2
      */
     private Integer skeegemaisuu2;
+    
     /**
      * ﾃｰﾌﾟﾛｰﾙNo1
      */
     private String taperollno1;
+    
     /**
      * ﾃｰﾌﾟﾛｰﾙNo2
      */
     private String taperollno2;
+    
     /**
      * ﾃｰﾌﾟﾛｰﾙNo3
      */
     private String taperollno3;
+    
     /**
      * ﾃｰﾌﾟﾛｰﾙNo4
      */
     private String taperollno4;
+    
     /**
      * ﾃｰﾌﾟﾛｰﾙNo5
      */
     private String taperollno5;
+    
     /**
      * ﾍﾟｰｽﾄ品名
      */
     private String pastehinmei;
+    
     /**
      * 製版名
      */
     private String seihanmei;
+    
     /**
      * ｽﾀｰﾄ時膜厚AVE
      */
     private BigDecimal makuatuaveStart;
+    
     /**
      * ｽﾀｰﾄ時膜厚MAX
      */
     private BigDecimal makuatumaxStart;
+    
     /**
      * ｽﾀｰﾄ時膜厚MIN
      */
     private BigDecimal makuatuminStart;
+    
     /**
      * ｽﾀｰﾄ時PTN間距離X
      */
     private Integer startPtnDistX;
+    
     /**
      * ｽﾀｰﾄ時PTN間距離Y
      */
     private Integer startPtnDistY;
+    
     /**
      * ｾｯﾃｨﾝｸﾞ担当者ｺｰﾄﾞ
      */
     private String tantoSetting;
+    
     /**
      * 終了時膜厚AVE
      */
     private BigDecimal makuatuaveEnd;
+    
     /**
      * 終了時膜厚MAX
      */
     private BigDecimal makuatumaxEnd;
+    
     /**
      * 終了時膜厚MIN
      */
     private BigDecimal makuatuminEnd;
+    
     /**
      * 終了時PTN間距離X
      */
     private Integer endPtnDistX;
+    
     /**
      * 終了時PTN間距離Y
      */
     private Integer endPtnDistY;
+    
     /**
      * 終了時担当者ｺｰﾄﾞ
      */
     private String tantoEnd;
+    
     /**
      * KCPNO
      */
     private String kcpno;
+    
     /**
      * 指示乾燥温度1
      */
     private BigDecimal sijiondo;
+    
     /**
      * 指示乾燥温度2
      */
     private BigDecimal sijiondo2;
+    
     /**
      * 指示乾燥温度3
      */
     private BigDecimal sijiondo3;
+    
     /**
      * 指示乾燥温度4
      */
     private BigDecimal sijiondo4;
+    
     /**
      * 指示乾燥温度5
      */
     private BigDecimal sijiondo5;
+    
     /**
      * ﾍﾟｰｽﾄ固形分1
      */
     private BigDecimal pkokeibun1;
+    
     /**
      * ﾍﾟｰｽﾄ固形分2
      */
     private BigDecimal pkokeibun2;
+    
     /**
      * PETﾌｨﾙﾑ種類
      */
     private String petfilmsyurui;
+    
     /**
      * 印刷ｽﾀｰﾄ膜厚CV
      */
     private BigDecimal makuatucvStart;
+    
     /**
      * ｽﾀｰﾄ時ﾆｼﾞﾐ・ｶｽﾚ確認
      */
     private Integer nijimikasureStart;
+    
     /**
      * 印刷ｴﾝﾄﾞ膜厚CV
      */
     private BigDecimal makuatucvEnd;
+    
     /**
      * 終了時ﾆｼﾞﾐ・ｶｽﾚ確認
      */
     private Integer nijimikasureEnd;
+    
     /**
      * 印刷枚数
      */
     private Integer printmaisuu;
+    
     /**
      * ﾃｰﾌﾞﾙｸﾘｱﾗﾝｽ
      */
     private BigDecimal tableClearrance;
+    
     /**
      * ｽｸﾚｯﾊﾟｰ速度
      */
     private Integer scraperspeed;
+    
     /**
      * ｽｷｰｼﾞ外観
      */
     private Integer skeegegaikan;
+    
     /**
      * 登録日時
      */
     private Timestamp torokunichiji;
+    
     /**
      * 更新日時
      */
     private Timestamp kosinnichiji;
+    
     /**
      * revision
      */

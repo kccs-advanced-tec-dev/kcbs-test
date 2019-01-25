@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Kyocera Communication Systems Co., Ltd All rights reserved.
+ * Copyright 2019 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.db.model;
 
@@ -11,7 +11,7 @@ import java.sql.Timestamp;
  * <br>
  * システム名	品質DB(コンデンサ)<br>
  * <br>
- * 変更日	2018/01/07<br>
+ * 変更日	2019/01/14<br>
  * 計画書No	K1803-DS001<br>
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
@@ -30,178 +30,222 @@ public class SubSrSpsprintScr {
      * 工場ｺｰﾄﾞ
      */
     private String kojyo;
+    
     /**
      * ﾛｯﾄNo
      */
     private String lotno;
+    
     /**
      * 枝番
      */
     private String edaban;
+    
     /**
      * 膜厚ｽﾀｰﾄ1
      */
     private BigDecimal makuatsuStart1;
+    
     /**
      * 膜厚ｽﾀｰﾄ2
      */
     private BigDecimal makuatsuStart2;
+    
     /**
      * 膜厚ｽﾀｰﾄ3
      */
     private BigDecimal makuatsuStart3;
+    
     /**
      * 膜厚ｽﾀｰﾄ4
      */
     private BigDecimal makuatsuStart4;
+    
     /**
      * 膜厚ｽﾀｰﾄ5
      */
     private BigDecimal makuatsuStart5;
+    
     /**
      * 膜厚ｽﾀｰﾄ6
      */
     private BigDecimal makuatsuStart6;
+    
     /**
      * 膜厚ｽﾀｰﾄ7
      */
     private BigDecimal makuatsuStart7;
+    
     /**
      * 膜厚ｽﾀｰﾄ8
      */
     private BigDecimal makuatsuStart8;
+    
     /**
      * 膜厚ｽﾀｰﾄ9
      */
     private BigDecimal makuatsuStart9;
+    
     /**
      * PTN距離X ｽﾀｰﾄ1
      */
     private Integer startPtnDistX1;
+    
     /**
      * PTN距離X ｽﾀｰﾄ2
      */
     private Integer startPtnDistX2;
+    
     /**
      * PTN距離X ｽﾀｰﾄ3
      */
     private Integer startPtnDistX3;
+    
     /**
      * PTN距離X ｽﾀｰﾄ4
      */
     private Integer startPtnDistX4;
+    
     /**
      * PTN距離X ｽﾀｰﾄ5
      */
     private Integer startPtnDistX5;
+    
     /**
      * PTN距離Y ｽﾀｰﾄ1
      */
     private Integer startPtnDistY1;
+    
     /**
      * PTN距離Y ｽﾀｰﾄ2
      */
     private Integer startPtnDistY2;
+    
     /**
      * PTN距離Y ｽﾀｰﾄ3
      */
     private Integer startPtnDistY3;
+    
     /**
      * PTN距離Y ｽﾀｰﾄ4
      */
     private Integer startPtnDistY4;
+    
     /**
      * PTN距離Y ｽﾀｰﾄ5
      */
     private Integer startPtnDistY5;
+    
     /**
      * 膜厚ｴﾝﾄﾞ1
      */
     private BigDecimal makuatsuEnd1;
+    
     /**
      * 膜厚ｴﾝﾄﾞ2
      */
     private BigDecimal makuatsuEnd2;
+    
     /**
      * 膜厚ｴﾝﾄﾞ3
      */
     private BigDecimal makuatsuEnd3;
+    
     /**
      * 膜厚ｴﾝﾄﾞ4
      */
     private BigDecimal makuatsuEnd4;
+    
     /**
      * 膜厚ｴﾝﾄﾞ5
      */
     private BigDecimal makuatsuEnd5;
+    
     /**
      * 膜厚ｴﾝﾄﾞ6
      */
     private BigDecimal makuatsuEnd6;
+    
     /**
      * 膜厚ｴﾝﾄﾞ7
      */
     private BigDecimal makuatsuEnd7;
+    
     /**
      * 膜厚ｴﾝﾄﾞ8
      */
     private BigDecimal makuatsuEnd8;
+    
     /**
      * 膜厚ｴﾝﾄﾞ9
      */
     private BigDecimal makuatsuEnd9;
+    
     /**
      * PTN距離X ｴﾝﾄﾞ1
      */
     private Integer endPtnDistX1;
+    
     /**
      * PTN距離X ｴﾝﾄﾞ2
      */
     private Integer endPtnDistX2;
+    
     /**
      * PTN距離X ｴﾝﾄﾞ3
      */
     private Integer endPtnDistX3;
+    
     /**
      * PTN距離X ｴﾝﾄﾞ4
      */
     private Integer endPtnDistX4;
+    
     /**
      * PTN距離X ｴﾝﾄﾞ5
      */
     private Integer endPtnDistX5;
+    
     /**
      * PTN距離Y ｴﾝﾄﾞ1
      */
     private Integer endPtnDistY1;
+    
     /**
      * PTN距離Y ｴﾝﾄﾞ2
      */
     private Integer endPtnDistY2;
+    
     /**
      * PTN距離Y ｴﾝﾄﾞ3
      */
     private Integer endPtnDistY3;
+    
     /**
      * PTN距離Y ｴﾝﾄﾞ4
      */
     private Integer endPtnDistY4;
+    
     /**
      * PTN距離Y ｴﾝﾄﾞ5
      */
     private Integer endPtnDistY5;
+    
     /**
      * 登録日時
      */
     private Timestamp torokunichiji;
+    
     /**
      * 更新日時
      */
     private Timestamp kosinnichiji;
+    
     /**
      * revision
      */
     private String revision;
+    
     /**
      * 削除ﾌﾗｸﾞ
      */

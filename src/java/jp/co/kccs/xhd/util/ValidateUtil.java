@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import jp.co.kccs.xhd.db.model.FXHDD01;
+import jp.co.kccs.xhd.db.model.FXHDM05;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
 import org.apache.commons.dbutils.QueryRunner;
@@ -131,66 +132,78 @@ public class ValidateUtil {
      * チェック処理内容に応じたチェック処理を実施する。<BR>
      * チェックエラーが存在する場合、エラーメッセージを返却して処理を中断する。<BR>
      *
-     * @param validateInfoList チェック処理内容リスト
+     * @param itemRowCheckList チェック処理内容リスト
      * @param itemList 項目データリスト
      * @param queryRunnerDoc QueryRunnerオブジェクト
      * @return エラー時はエラーメッセージを返却
      */
-    public ErrorMessageInfo executeValidation(List<ValidateInfo> validateInfoList, List<FXHDD01> itemList, QueryRunner queryRunnerDoc) {
+    public ErrorMessageInfo executeValidation(List<FXHDM05> itemRowCheckList, List<FXHDD01> itemList, QueryRunner queryRunnerDoc) {
+        
         try {
-            for (ValidateInfo validateInfo : validateInfoList) {
-                ErrorMessageInfo errorMessageInfo = null;
-                switch (validateInfo.checkNo) {
-                    case C101:
-                        errorMessageInfo = checkC101(itemList, validateInfo.itemId);
-                        break;
-                    case C102:
-                        errorMessageInfo = checkC102(itemList, validateInfo.itemId);
-                        break;
-                    case C103:
-                        errorMessageInfo = checkC103(itemList, validateInfo.itemId);
-                        break;
-                    case C104:
-                        errorMessageInfo = checkC104(itemList, validateInfo.itemId);
-                        break;
-                    case C001:
-                        errorMessageInfo = checkC001(itemList, validateInfo.itemId);
-                        break;
-                    case C002:
-                        errorMessageInfo = checkC002(itemList, validateInfo.itemId);
-                        break;
-                    case C201:
-                        errorMessageInfo = checkC201(itemList, validateInfo.itemId);
-                        break;
-                    case C301:
-                        errorMessageInfo = checkC301(itemList, validateInfo.itemId);
-                        break;
-                    case C302:
-                        errorMessageInfo = checkC302(itemList, validateInfo.itemId);
-                        break;
-                    case C401:
-                        errorMessageInfo = checkC401(itemList, validateInfo.itemId, queryRunnerDoc);
-                        break;
-                    case C402:
-                        errorMessageInfo = checkC402(itemList, validateInfo.itemId, queryRunnerDoc);
-                        break;
-                    case C501:
-                        errorMessageInfo = checkC501(itemList, validateInfo.itemId);
-                        break;
-                    case C502:
-                        errorMessageInfo = checkC502(itemList, validateInfo.itemId);
-                        break;
-                    case C601:
-                        errorMessageInfo = checkC601(itemList, validateInfo.itemId);
-                        break;
-
-                    default:
-                        break;
+            ErrorMessageInfo errorMessageInfo = null;
+            for (FXHDD01 fxhdd01 : itemList) {
+                if (fxhdd01 == null) {
+                    continue;
                 }
-                if (errorMessageInfo != null) {
-                    return errorMessageInfo;
+
+                //共通ﾁｪｯｸ
+                List<FXHDM05> itemRowCheckListFilter
+                        = itemRowCheckList.stream().filter(n -> fxhdd01.getItemId().equals(n.getItemId())).collect(Collectors.toList());
+
+                for (FXHDM05 fxhdm05 : itemRowCheckListFilter) {
+                    switch (fxhdm05.getCheckPattern()) {
+                        case "C101":
+                            errorMessageInfo = checkC101(fxhdd01);
+                            break;
+                        case "C102":
+                            errorMessageInfo = checkC102(fxhdd01);
+                            break;
+                        case "C103":
+                            errorMessageInfo = checkC103(fxhdd01);
+                            break;
+                        case "C104":
+                            errorMessageInfo = checkC104(fxhdd01);
+                            break;
+                        case "C001":
+                            errorMessageInfo = checkC001(fxhdd01);
+                            break;
+                        case "C002":
+                            errorMessageInfo = checkC002(fxhdd01);
+                            break;
+                        case "C201":
+                            errorMessageInfo = checkC201(fxhdd01);
+                            break;
+                        case "C301":
+                            errorMessageInfo = checkC301(fxhdd01);
+                            break;
+                        case "C302":
+                            errorMessageInfo = checkC302(fxhdd01);
+                            break;
+                        case "C401":
+                            errorMessageInfo = checkC401(fxhdd01, queryRunnerDoc);
+                            break;
+                        case "C402":
+                            errorMessageInfo = checkC402(fxhdd01, queryRunnerDoc);
+                            break;
+                        case "C501":
+                            errorMessageInfo = checkC501(fxhdd01);
+                            break;
+                        case "C502":
+                            errorMessageInfo = checkC502(fxhdd01);
+                            break;
+                        case "C601":
+                            errorMessageInfo = checkC601(fxhdd01);
+                            break;
+                        default:
+                            break;
+                    }
+
+                    if (errorMessageInfo != null) {
+                        return errorMessageInfo;
+                    }
                 }
             }
+
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
             return new ErrorMessageInfo("SQLException発生");
@@ -201,30 +214,26 @@ public class ValidateUtil {
     /**
      * 桁数チェック
      *
-     * @param itemList 項目データリスト
-     * @param itemId 項目ID
+     * @param fXHDD01 項目データ
      * @return エラー時はエラーメッセージを返却
      */
-    private ErrorMessageInfo checkC101(List<FXHDD01> itemList, String itemId) {
+    private ErrorMessageInfo checkC101(FXHDD01 fXHDD01) {
         // 項目データを取得
-        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
-        if (null != fXHDD01) {
-            // 値が入っていない場合、チェック無し
-            if (StringUtil.isEmpty(fXHDD01.getValue())) {
-                return null;
-            }
+        // 値が入っていない場合、チェック無し
+        if (StringUtil.isEmpty(fXHDD01.getValue())) {
+            return null;
+        }
 
-            int ketasu = -1;
-            if (NumberUtil.isIntegerNumeric(fXHDD01.getInputLength())) {
-                ketasu = Integer.parseInt(fXHDD01.getInputLength());
-            }
-            String value = fXHDD01.getValue();
+        int ketasu = -1;
+        if (NumberUtil.isIntegerNumeric(fXHDD01.getInputLength())) {
+            ketasu = Integer.parseInt(fXHDD01.getInputLength());
+        }
+        String value = fXHDD01.getValue();
 
-            // エラー対象をリストに追加
-            List<FXHDD01> errorItemList = Arrays.asList(fXHDD01);
-            if (ketasu != StringUtil.getLength(value)) {
-                return MessageUtil.getErrorMessageInfo("XHD-000004", true, true, errorItemList, fXHDD01.getLabel1(), ketasu);
-            }
+        // エラー対象をリストに追加
+        List<FXHDD01> errorItemList = Arrays.asList(fXHDD01);
+        if (ketasu != StringUtil.getLength(value)) {
+            return MessageUtil.getErrorMessageInfo("XHD-000004", true, true, errorItemList, fXHDD01.getLabel1(), ketasu);
         }
         return null;
     }
@@ -232,224 +241,190 @@ public class ValidateUtil {
     /**
      * 指定桁数ﾁｪｯｸ(数値(小数あり))
      *
-     * @param itemList 項目データリスト
-     * @param itemId 項目ID
+     * @param fXHDD01 項目データ
      * @return エラー時はエラーメッセージを返却
      */
-    private ErrorMessageInfo checkC102(List<FXHDD01> itemList, String itemId) {
-        // 項目データを取得
-        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
-        if (null != fXHDD01) {
-            // 値が入っていない場合、チェック無し
-            if (StringUtil.isEmpty(fXHDD01.getValue())) {
-                return null;
-            }
-
-            int ketasuSeisu = -1;
-            int ketasuShosu = -1;
-            if (NumberUtil.isIntegerNumeric(fXHDD01.getInputLength())) {
-                ketasuSeisu = Integer.parseInt(fXHDD01.getInputLength());
-            }
-            if (NumberUtil.isIntegerNumeric(fXHDD01.getInputLengthDec())) {
-                ketasuShosu = Integer.parseInt(fXHDD01.getInputLengthDec());
-            }
-            String value = fXHDD01.getValue();
-
-            if (!NumberUtil.isNumeric(value) || !NumberUtil.isSameValidDigits(new BigDecimal(value), ketasuSeisu, ketasuShosu)) {
-                List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
-                return MessageUtil.getErrorMessageInfo("XHD-000005", true, true, errFxhdd01List, fXHDD01.getLabel1(), ketasuSeisu, ketasuShosu);
-            }
-
+    private ErrorMessageInfo checkC102(FXHDD01 fXHDD01) {
+        // 値が入っていない場合、チェック無し
+        if (StringUtil.isEmpty(fXHDD01.getValue())) {
+            return null;
         }
+
+        int ketasuSeisu = -1;
+        int ketasuShosu = -1;
+        if (NumberUtil.isIntegerNumeric(fXHDD01.getInputLength())) {
+            ketasuSeisu = Integer.parseInt(fXHDD01.getInputLength());
+        }
+        if (NumberUtil.isIntegerNumeric(fXHDD01.getInputLengthDec())) {
+            ketasuShosu = Integer.parseInt(fXHDD01.getInputLengthDec());
+        }
+        String value = fXHDD01.getValue();
+
+        if (!NumberUtil.isNumeric(value) || !NumberUtil.isSameValidDigits(new BigDecimal(value), ketasuSeisu, ketasuShosu)) {
+            List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
+            return MessageUtil.getErrorMessageInfo("XHD-000005", true, true, errFxhdd01List, fXHDD01.getLabel1(), ketasuSeisu, ketasuShosu);
+        }
+
         return null;
     }
 
     /**
      * 桁数ﾁｪｯｸ(小数なし)
      *
-     * @param itemList 項目データリスト
-     * @param itemId 項目ID
+     * @param fXHDD01 項目データ
      * @return エラー時はエラーメッセージを返却
      */
-    private ErrorMessageInfo checkC103(List<FXHDD01> itemList, String itemId) {
-        // 項目データを取得
-        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
-        if (null != fXHDD01) {
-            // 値が入っていない場合、チェック無し
-            if (StringUtil.isEmpty(fXHDD01.getValue())) {
-                return null;
-            }
-
-            int ketasu = -1;
-            if (NumberUtil.isIntegerNumeric(fXHDD01.getInputLength())) {
-                ketasu = Integer.parseInt(fXHDD01.getInputLength());
-            }
-            String value = StringUtil.nullToBlank(fXHDD01.getValue());
-
-            if (ketasu < value.length()) 
-            {
-                List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
-                return MessageUtil.getErrorMessageInfo("XHD-000006", true, true, errFxhdd01List, fXHDD01.getLabel1(), ketasu);
-            }
+    private ErrorMessageInfo checkC103(FXHDD01 fXHDD01) {
+        // 値が入っていない場合、チェック無し
+        if (StringUtil.isEmpty(fXHDD01.getValue())) {
+            return null;
         }
+
+        int ketasu = -1;
+        if (NumberUtil.isIntegerNumeric(fXHDD01.getInputLength())) {
+            ketasu = Integer.parseInt(fXHDD01.getInputLength());
+        }
+        String value = StringUtil.nullToBlank(fXHDD01.getValue());
+
+        if (ketasu < value.length()) {
+            List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
+            return MessageUtil.getErrorMessageInfo("XHD-000006", true, true, errFxhdd01List, fXHDD01.getLabel1(), ketasu);
+        }
+
         return null;
     }
 
     /**
      * 桁数ﾁｪｯｸ(小数あり)
      *
-     * @param itemList 項目データリスト
-     * @param itemId 項目ID
+     * @param fXHDD01 項目データ
      * @return エラー時はエラーメッセージを返却
      */
-    private ErrorMessageInfo checkC104(List<FXHDD01> itemList, String itemId) {
-        // 項目データを取得
-        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
-        if (null != fXHDD01) {
-            // 値が入っていない場合、チェック無し
-            if (StringUtil.isEmpty(fXHDD01.getValue())) {
-                return null;
-            }
-
-            int ketasuSeisu = -1;
-            int ketasuShosu = -1;
-            if (NumberUtil.isIntegerNumeric(fXHDD01.getInputLength())) {
-                ketasuSeisu = Integer.parseInt(fXHDD01.getInputLength());
-            }
-            if (NumberUtil.isIntegerNumeric(fXHDD01.getInputLengthDec())) {
-                ketasuShosu = Integer.parseInt(fXHDD01.getInputLengthDec());
-            }
-            String value = fXHDD01.getValue();
-
-            if (!NumberUtil.isNumeric(value) || !NumberUtil.isValidDigits(new BigDecimal(value), ketasuSeisu, ketasuShosu)) {
-                List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
-                return MessageUtil.getErrorMessageInfo("XHD-000007", true, true, errFxhdd01List, fXHDD01.getLabel1(), ketasuSeisu, ketasuShosu);
-            }
-
+    private ErrorMessageInfo checkC104(FXHDD01 fXHDD01) {
+        // 値が入っていない場合、チェック無し
+        if (StringUtil.isEmpty(fXHDD01.getValue())) {
+            return null;
         }
+
+        int ketasuSeisu = -1;
+        int ketasuShosu = -1;
+        if (NumberUtil.isIntegerNumeric(fXHDD01.getInputLength())) {
+            ketasuSeisu = Integer.parseInt(fXHDD01.getInputLength());
+        }
+        if (NumberUtil.isIntegerNumeric(fXHDD01.getInputLengthDec())) {
+            ketasuShosu = Integer.parseInt(fXHDD01.getInputLengthDec());
+        }
+        String value = fXHDD01.getValue();
+
+        if (!NumberUtil.isNumeric(value) || !NumberUtil.isValidDigits(new BigDecimal(value), ketasuSeisu, ketasuShosu)) {
+            List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
+            return MessageUtil.getErrorMessageInfo("XHD-000007", true, true, errFxhdd01List, fXHDD01.getLabel1(), ketasuSeisu, ketasuShosu);
+        }
+
         return null;
     }
 
     /**
      * 必須チェック
      *
-     * @param itemList 項目データリスト
-     * @param itemId 項目ID
+     * @param fXHDD01 項目データ
      * @return エラー時はエラーメッセージを返却
      */
-    private ErrorMessageInfo checkC001(List<FXHDD01> itemList, String itemId) {
+    private ErrorMessageInfo checkC001(FXHDD01 fXHDD01) {
         // 項目データを取得
-        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
-        if (null != fXHDD01) {
-            String value = fXHDD01.getValue();
-            if (StringUtil.isEmpty(value.trim())) {
-                List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
-                return MessageUtil.getErrorMessageInfo("XHD-000003", true, true, errFxhdd01List, fXHDD01.getLabel1());
-            }
+
+        String value = fXHDD01.getValue();
+        if (StringUtil.isEmpty(value.trim())) {
+            List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
+            return MessageUtil.getErrorMessageInfo("XHD-000003", true, true, errFxhdd01List, fXHDD01.getLabel1());
         }
+
         return null;
     }
 
     /**
      * 必須チェック
      *
-     * @param itemList 項目データリスト
-     * @param itemId 項目ID
+     * @param fXHDD01 項目データ
      * @return エラー時はエラーメッセージを返却
      */
-    private ErrorMessageInfo checkC002(List<FXHDD01> itemList, String itemId) {
-        // 項目データを取得
-        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
-        if (null != fXHDD01) {
-            String value = fXHDD01.getValue();
-            if (StringUtil.isEmpty(value)) {
-                List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
-                return MessageUtil.getErrorMessageInfo("XHD-000003", true, true, errFxhdd01List, fXHDD01.getLabel1());
-            }
+    private ErrorMessageInfo checkC002(FXHDD01 fXHDD01) {
+        String value = fXHDD01.getValue();
+        if (StringUtil.isEmpty(value)) {
+            List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
+            return MessageUtil.getErrorMessageInfo("XHD-000003", true, true, errFxhdd01List, fXHDD01.getLabel1());
         }
+
         return null;
     }
 
     /**
      * 型ﾁｪｯｸ
      *
-     * @param itemList 入力項目名
-     * @param itemId 入力項目ﾃﾞｰﾀ
+     * @param fXHDD01 項目データ
      * @return エラー時はエラーメッセージを返却
      */
-    private ErrorMessageInfo checkC201(List<FXHDD01> itemList, String itemId) {
-        // 項目データを取得
-        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
-        if (null != fXHDD01) {
-            String value = fXHDD01.getValue();
+    private ErrorMessageInfo checkC201(FXHDD01 fXHDD01) {
+        String value = fXHDD01.getValue();
 
-            // 値が入っていない場合、チェック無し
-            if (StringUtil.isEmpty(value)) {
-                return null;
-            }
-
-            if (!NumberUtil.isNumeric(value)) {
-                List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
-                return MessageUtil.getErrorMessageInfo("XHD-000008", true, true, errFxhdd01List, fXHDD01.getLabel1());
-            }
+        // 値が入っていない場合、チェック無し
+        if (StringUtil.isEmpty(value)) {
+            return null;
         }
-        return null;
-    }
 
-    /**
-     * 正負ﾁｪｯｸ
-     *
-     * @param itemList 入力項目名
-     * @param itemId 入力項目ﾃﾞｰﾀ
-     * @return エラー時はエラーメッセージを返却
-     */
-    private ErrorMessageInfo checkC301(List<FXHDD01> itemList, String itemId) {
-        // 項目データを取得
-        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
-        if (null != fXHDD01) {
-            String value = fXHDD01.getValue();
-            // 値が入っていない場合、チェック無し
-            if (StringUtil.isEmpty(value)) {
-                return null;
-            }
-
+        if (!NumberUtil.isNumeric(value)) {
             List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
-            if (!NumberUtil.isNumeric(value)) {
-                return MessageUtil.getErrorMessageInfo("XHD-000009", true, true, errFxhdd01List, fXHDD01.getLabel1());
-            }
-            if (new BigDecimal(value).compareTo(BigDecimal.ZERO) == -1) {
-                return MessageUtil.getErrorMessageInfo("XHD-000009", true, true, errFxhdd01List, fXHDD01.getLabel1());
-            }
+            return MessageUtil.getErrorMessageInfo("XHD-000008", true, true, errFxhdd01List, fXHDD01.getLabel1());
         }
 
         return null;
     }
 
     /**
-     * 正負ﾁｪｯｸ
+     * 正数ﾁｪｯｸ
      *
-     * @param itemList 入力項目名
-     * @param itemId 入力項目ﾃﾞｰﾀ
+     * @param fXHDD01 項目データ
      * @return エラー時はエラーメッセージを返却
      */
-    private ErrorMessageInfo checkC302(List<FXHDD01> itemList, String itemId) {
+    private ErrorMessageInfo checkC301(FXHDD01 fXHDD01) {
+        String value = fXHDD01.getValue();
+        // 値が入っていない場合、チェック無し
+        if (StringUtil.isEmpty(value)) {
+            return null;
+        }
+
+        List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
+        if (!NumberUtil.isNumeric(value)) {
+            return MessageUtil.getErrorMessageInfo("XHD-000009", true, true, errFxhdd01List, fXHDD01.getLabel1());
+        }
+        if (new BigDecimal(value).compareTo(BigDecimal.ZERO) == -1) {
+            return MessageUtil.getErrorMessageInfo("XHD-000009", true, true, errFxhdd01List, fXHDD01.getLabel1());
+        }
+
+        return null;
+    }
+
+    /**
+     * 負数ﾁｪｯｸ
+     *
+     * @param fXHDD01 項目データ
+     * @return エラー時はエラーメッセージを返却
+     */
+    private ErrorMessageInfo checkC302(FXHDD01 fXHDD01) {
         // 項目データを取得
-        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
-        if (null != fXHDD01) {
 
-            String value = fXHDD01.getValue();
-            // 値が入っていない場合、チェック無し
-            if (StringUtil.isEmpty(value)) {
-                return null;
-            }
+        String value = fXHDD01.getValue();
+        // 値が入っていない場合、チェック無し
+        if (StringUtil.isEmpty(value)) {
+            return null;
+        }
 
-            List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
-            if (!NumberUtil.isNumeric(value)) {
-                return MessageUtil.getErrorMessageInfo("XHD-000010", true, true, errFxhdd01List, fXHDD01.getLabel1());
-            }
-            if (new BigDecimal(value).compareTo(BigDecimal.ZERO) == 1) {
-                return MessageUtil.getErrorMessageInfo("XHD-000010", true, true, errFxhdd01List, fXHDD01.getLabel1());
-            }
+        List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
+        if (!NumberUtil.isNumeric(value)) {
+            return MessageUtil.getErrorMessageInfo("XHD-000010", true, true, errFxhdd01List, fXHDD01.getLabel1());
+        }
+        if (new BigDecimal(value).compareTo(BigDecimal.ZERO) == 1) {
+            return MessageUtil.getErrorMessageInfo("XHD-000010", true, true, errFxhdd01List, fXHDD01.getLabel1());
         }
 
         return null;
@@ -458,25 +433,20 @@ public class ValidateUtil {
     /**
      * 号機ﾏｽﾀﾁｪｯｸ
      *
-     * @param itemList 入力項目名
-     * @param itemId 入力項目ID
+     * @param fXHDD01 項目データ
      * @param queryRunnerDoc QueryRunnerオブジェクト(DocServer)
      * @return エラー時はエラーメッセージを返却
      */
-    private ErrorMessageInfo checkC401(List<FXHDD01> itemList, String itemId, QueryRunner queryRunnerDoc) throws SQLException {
-        // 項目データを取得
-        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
-        if (null != fXHDD01) {
-            // 値が入っていない場合、チェック無し
-            if (StringUtil.isEmpty(fXHDD01.getValue())) {
-                return null;
-            }
+    private ErrorMessageInfo checkC401(FXHDD01 fXHDD01, QueryRunner queryRunnerDoc) throws SQLException {
+        // 値が入っていない場合、チェック無し
+        if (StringUtil.isEmpty(fXHDD01.getValue())) {
+            return null;
+        }
 
-            List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
+        List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
 
-            if (!existGokukimas(fXHDD01.getValue(), queryRunnerDoc)) {
-                return MessageUtil.getErrorMessageInfo("XHD-000011", true, true, errFxhdd01List, fXHDD01.getLabel1());
-            }
+        if (!existGokukimas(fXHDD01.getValue(), queryRunnerDoc)) {
+            return MessageUtil.getErrorMessageInfo("XHD-000011", true, true, errFxhdd01List, fXHDD01.getLabel1());
         }
 
         return null;
@@ -485,25 +455,20 @@ public class ValidateUtil {
     /**
      * 担当者ﾏｽﾀﾁｪｯｸ
      *
-     * @param itemList 入力項目名
-     * @param itemId 入力項目ID
+     * @param fXHDD01 項目データ
      * @param queryRunnerDoc QueryRunnerオブジェクト(DocServer)
      * @return エラー時はエラーメッセージを返却
      */
-    private ErrorMessageInfo checkC402(List<FXHDD01> itemList, String itemId, QueryRunner queryRunnerDoc) throws SQLException {
-        // 項目データを取得
-        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
-        if (null != fXHDD01) {
-            // 値が入っていない場合、チェック無し
-            if (StringUtil.isEmpty(fXHDD01.getValue())) {
-                return null;
-            }
+    private ErrorMessageInfo checkC402(FXHDD01 fXHDD01, QueryRunner queryRunnerDoc) throws SQLException {
+        // 値が入っていない場合、チェック無し
+        if (StringUtil.isEmpty(fXHDD01.getValue())) {
+            return null;
+        }
 
-            List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
+        List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
 
-            if (!existTantomas(fXHDD01.getValue(), queryRunnerDoc)) {
-                return MessageUtil.getErrorMessageInfo("XHD-000011", true, true, errFxhdd01List, fXHDD01.getLabel1());
-            }
+        if (!existTantomas(fXHDD01.getValue(), queryRunnerDoc)) {
+            return MessageUtil.getErrorMessageInfo("XHD-000011", true, true, errFxhdd01List, fXHDD01.getLabel1());
         }
 
         return null;
@@ -512,48 +477,41 @@ public class ValidateUtil {
     /**
      * 日付チェック(YYMMDD)
      *
-     * @param itemList 項目データリスト
-     * @param itemId 項目ID
+     * @param fXHDD01 項目データ
      * @return エラー時はエラーメッセージを返却
      */
-    private ErrorMessageInfo checkC501(List<FXHDD01> itemList, String itemId) {
-        // 項目データを取得
-        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
-        if (null != fXHDD01) {
-            String value = fXHDD01.getValue();
-            if (StringUtil.isEmpty(value)) {
-                return null;
-            }
-
-            if (!DateUtil.isValidYYMMDD(value)) {
-                List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
-                return MessageUtil.getErrorMessageInfo("XHD-000012", true, true, errFxhdd01List, fXHDD01.getLabel1());
-            }
+    private ErrorMessageInfo checkC501(FXHDD01 fXHDD01) {
+        String value = fXHDD01.getValue();
+        if (StringUtil.isEmpty(value)) {
+            return null;
         }
+
+        if (!DateUtil.isValidYYMMDD(value)) {
+            List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
+            return MessageUtil.getErrorMessageInfo("XHD-000012", true, true, errFxhdd01List, fXHDD01.getLabel1());
+        }
+
         return null;
     }
 
     /**
      * 時刻チェック(HHMM)
      *
-     * @param itemList 項目データリスト
-     * @param itemId 項目ID
+     * @param fXHDD01 項目データ
      * @return エラー時はエラーメッセージを返却
      */
-    private ErrorMessageInfo checkC502(List<FXHDD01> itemList, String itemId) {
+    private ErrorMessageInfo checkC502(FXHDD01 fXHDD01) {
         // 項目データを取得
-        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
-        if (null != fXHDD01) {
-            String value = fXHDD01.getValue();
-            if (StringUtil.isEmpty(value)) {
-                return null;
-            }
-
-            if (!DateUtil.isValidHHMM(value)) {
-                List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
-                return MessageUtil.getErrorMessageInfo("XHD-000013", true, true, errFxhdd01List, fXHDD01.getLabel1());
-            }
+        String value = fXHDD01.getValue();
+        if (StringUtil.isEmpty(value)) {
+            return null;
         }
+
+        if (!DateUtil.isValidHHMM(value)) {
+            List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
+            return MessageUtil.getErrorMessageInfo("XHD-000013", true, true, errFxhdd01List, fXHDD01.getLabel1());
+        }
+
         return null;
     }
 
@@ -561,20 +519,17 @@ public class ValidateUtil {
      * 必須チェック2<BR>
      * ブランクでない、且つ入力値が"0"でないことを検証<BR>
      *
-     * @param itemList 項目データリスト
-     * @param itemId 項目ID
+     * @param fXHDD01 項目データ
      * @return エラー時はエラーメッセージを返却
      */
-    private ErrorMessageInfo checkC601(List<FXHDD01> itemList, String itemId) {
+    private ErrorMessageInfo checkC601(FXHDD01 fXHDD01) {
         // 項目データを取得
-        FXHDD01 fXHDD01 = getItemRow(itemList, itemId);
-        if (null != fXHDD01) {
-            String value = fXHDD01.getValue();
-            if (StringUtil.isEmpty(value) || "0".equals(value)) {
-                List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
-                return MessageUtil.getErrorMessageInfo("XHD-000003", true, true, errFxhdd01List, fXHDD01.getLabel1());
-            }
+        String value = fXHDD01.getValue();
+        if (StringUtil.isEmpty(value) || "0".equals(value)) {
+            List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
+            return MessageUtil.getErrorMessageInfo("XHD-000003", true, true, errFxhdd01List, fXHDD01.getLabel1());
         }
+
         return null;
     }
 
@@ -1348,7 +1303,7 @@ public class ValidateUtil {
      * @throws SQLException 例外エラー
      */
     public static void fxhdd04Insert(QueryRunner queryRunnerDoc, String tantoshaCd, BigDecimal rev, String lotNo, String formId, String gamenTitle, int jissekino, String deleteFlag, List<KikakuchiInputErrorInfo> kikakuchiErrorInfoList) throws SQLException {
-        
+
         String sql = "INSERT INTO fxhdd04 ("
                 + "torokusha, toroku_date, koshinsha, koshin_date, rev, gamen_id, gamen_title, kojyo, lotno, edaban,"
                 + " jissekino, item_id, item_name, kikaku, input_value, delete_flag"
