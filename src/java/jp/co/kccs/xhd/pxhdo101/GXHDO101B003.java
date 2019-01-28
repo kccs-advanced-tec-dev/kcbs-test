@@ -54,7 +54,7 @@ import org.apache.commons.dbutils.handlers.MapHandler;
  * <br>
  * システム名	品質DB(コンデンサ)<br>
  * <br>
- * 変更日	2018/11/29<br>
+ * 変更日	2019/01/17<br>
  * 計画書No	K1803-DS001<br>
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
@@ -62,10 +62,10 @@ import org.apache.commons.dbutils.handlers.MapHandler;
  * ===============================================================================<br>
  */
 /**
- * GXHDO101B003(SPS系印刷・SPSスクリーン)ロジック
+ * GXHDO101B003(印刷RSUS)ロジック
  *
  * @author SYSNAVI K.Hisanaga
- * @since 2018/11/29
+ * @since 2019/01/17
  */
 public class GXHDO101B003 implements IFormLogic {
 
@@ -201,8 +201,8 @@ public class GXHDO101B003 implements IFormLogic {
     /**
      * 仮登録処理(データチェック処理)
      *
-     * @param processData 処理データ
-     * @return 処理データ
+     * @param processData 処理制御データ
+     * @return 処理制御データ
      */
     public ProcessData checkDataTempResist(ProcessData processData) {
         // 項目のチェック処理を行う。
@@ -235,10 +235,10 @@ public class GXHDO101B003 implements IFormLogic {
     }
 
     /**
-     * 仮登録項目ﾁｪｯｸ
+     * 仮登録項目チェック
      *
-     * @param processData
-     * @return
+     * @param processData 処理制御データ
+     * @return エラーメッセージ情報
      */
     private ErrorMessageInfo checkItemTempResist(ProcessData processData) {
 
@@ -370,11 +370,9 @@ public class GXHDO101B003 implements IFormLogic {
             return processData;
         } catch (SQLException e) {
             ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
-
             // ロールバック処理
             rollbackConnection(conDoc);
             rollbackConnection(conQcdb);
-
             processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
         }
 
@@ -437,10 +435,10 @@ public class GXHDO101B003 implements IFormLogic {
     }
 
     /**
-     * 登録項目ﾁｪｯｸ
+     * 登録・修正項目チェック
      *
-     * @param processData
-     * @return
+     * @param processData 処理制御データ
+     * @return エラーメッセージ情報
      */
     private ErrorMessageInfo checkItemResistCorrect(ProcessData processData) {
 
@@ -605,7 +603,6 @@ public class GXHDO101B003 implements IFormLogic {
         }
 
         return processData;
-
     }
 
     /**
@@ -753,11 +750,9 @@ public class GXHDO101B003 implements IFormLogic {
             return processData;
         } catch (SQLException e) {
             ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
-
             // ロールバック処理
             rollbackConnection(conDoc);
             rollbackConnection(conQcdb);
-
             processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
         }
 
@@ -990,7 +985,6 @@ public class GXHDO101B003 implements IFormLogic {
             case GXHDO101B003Const.BTN_DOWN_DELETE:
                 method = "checkDataDelete";
                 break;
-
             // 開始日時
             case GXHDO101B003Const.BTN_UP_STARTDATETIME:
             case GXHDO101B003Const.BTN_DOWN_STARTDATETIME:
@@ -1015,12 +1009,13 @@ public class GXHDO101B003 implements IFormLogic {
      *
      * @param processData 処理制御データ
      * @return 処理制御データ
-     * @throws SQLException
+     * @throws SQLException 例外エラー
      */
     private ProcessData setInitDate(ProcessData processData) throws SQLException {
 
         QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
         QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
+        QueryRunner queryRunnerWip = new QueryRunner(processData.getDataSourceWip());
 
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
@@ -1034,7 +1029,7 @@ public class GXHDO101B003 implements IFormLogic {
         Map sekkeiData = this.loadSekkeiData(queryRunnerQcdb, lotNo);
         if (sekkeiData == null || sekkeiData.isEmpty()) {
             errorMessageList.clear();
-            errorMessageList.add(MessageUtil.getMessage("XHD-000014", ""));
+            errorMessageList.add(MessageUtil.getMessage("XHD-000014"));
             processData.setFatalError(true);
             processData.setInitMessageList(errorMessageList);
             return processData;
@@ -1047,27 +1042,27 @@ public class GXHDO101B003 implements IFormLogic {
         String pattern = StringUtil.nullToBlank(sekkeiData.get("PATTERN")); //電極製版名 
         Map daPatternMasData = loadDaPatternMas(queryRunnerQcdb, pattern);
         if (daPatternMasData == null || daPatternMasData.isEmpty()) {
-            errorMessageList.add(MessageUtil.getMessage("XHD-000034", ""));
+            errorMessageList.add(MessageUtil.getMessage("XHD-000034"));
         }
 
         //仕掛情報の取得
-        Map shikakariData = loadShikakariData(queryRunnerDoc, lotNo);
+        Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
         if (shikakariData == null || shikakariData.isEmpty()) {
-            errorMessageList.add(MessageUtil.getMessage("XHD-000029", ""));
+            errorMessageList.add(MessageUtil.getMessage("XHD-000029"));
         }
         String lotkubuncode = StringUtil.nullToBlank(getMapData(shikakariData, "lotkubuncode")); //ﾛｯﾄ区分ｺｰﾄﾞ
         String ownercode = StringUtil.nullToBlank(getMapData(shikakariData, "ownercode"));// ｵｰﾅｰｺｰﾄﾞ
 
         // ロット区分マスタ情報の取得
-        Map lotKbnMasData = loadLotKbnMas(queryRunnerDoc, lotkubuncode);
+        Map lotKbnMasData = loadLotKbnMas(queryRunnerWip, lotkubuncode);
         if (lotKbnMasData == null || lotKbnMasData.isEmpty()) {
-            errorMessageList.add(MessageUtil.getMessage("XHD-000015", ""));
+            errorMessageList.add(MessageUtil.getMessage("XHD-000015"));
         }
 
         // オーナーマスタ情報の取得
-        Map ownerMasData = loadOwnerMas(queryRunnerDoc, ownercode);
+        Map ownerMasData = loadOwnerMas(queryRunnerWip, ownercode);
         if (ownerMasData == null || ownerMasData.isEmpty()) {
-            errorMessageList.add(MessageUtil.getMessage("XHD-000016", ""));
+            errorMessageList.add(MessageUtil.getMessage("XHD-000016"));
         }
 
         // 入力項目の情報を画面にセットする。
@@ -1289,7 +1284,7 @@ public class GXHDO101B003 implements IFormLogic {
      * メイン画面データ設定処理
      *
      * @param processData 処理制御データ
-     * @param srRsusprnData 印刷RSUS
+     * @param srRsusprnData 印刷RSUSデータ
      */
     private void setInputItemDataMainForm(ProcessData processData, SrRsusprn srRsusprnData) {
         // ｽﾘｯﾌﾟﾛｯﾄNo
@@ -1383,7 +1378,7 @@ public class GXHDO101B003 implements IFormLogic {
     /**
      * 膜厚入力画面データ設定処理
      *
-     * @param subSrRsusprnData
+     * @param subSrRsusprnData 印刷RSUS_ｻﾌﾞ画面データ
      */
     private void setInputItemDataSubFormC004(SubSrRsusprn subSrRsusprnData) {
         // サブ画面の情報を取得
@@ -1421,7 +1416,7 @@ public class GXHDO101B003 implements IFormLogic {
     /**
      * 印刷幅入力画面データ設定処理
      *
-     * @param subSrRsusprnData
+     * @param subSrRsusprnData 印刷RSUS_ｻﾌﾞ画面データ
      */
     private void setInputItemDataSubFormC005(SubSrRsusprn subSrRsusprnData) {
 
@@ -1432,9 +1427,7 @@ public class GXHDO101B003 implements IFormLogic {
         GXHDO101C005Model model;
         if (subSrRsusprnData == null) {
             startValues = new String[]{"", "", "", "", ""}; //印刷幅Start
-
             model = GXHDO101C005Logic.createGXHDO101C005Model(startValues);
-
         } else {
             //スタート1～5
             startValues = new String[]{
@@ -1443,9 +1436,7 @@ public class GXHDO101B003 implements IFormLogic {
                 StringUtil.nullToBlank(subSrRsusprnData.getInsatuhabaStart3()),
                 StringUtil.nullToBlank(subSrRsusprnData.getInsatuhabaStart4()),
                 StringUtil.nullToBlank(subSrRsusprnData.getInsatuhabaStart5())};
-
             model = GXHDO101C005Logic.createGXHDO101C005Model(startValues);
-
         }
 
         // サブ画面から戻ったときに値を設定する項目を指定する。
@@ -1497,12 +1488,12 @@ public class GXHDO101B003 implements IFormLogic {
     }
 
     /**
-     * (2)[設計]から、初期表示する情報を取得
+     * [設計]から、初期表示する情報を取得
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param lotNo ロットNo(検索キー)
      * @return 取得データ
-     * @throws SQLException
+     * @throws SQLException 例外エラー
      */
     private Map loadSekkeiData(QueryRunner queryRunnerQcdb, String lotNo) throws SQLException {
         String lotNo1 = lotNo.substring(0, 3);
@@ -1554,12 +1545,12 @@ public class GXHDO101B003 implements IFormLogic {
     }
 
     /**
-     * (3)[ﾛｯﾄ区分ﾏｽﾀｰ]から、ﾛｯﾄ区分を取得
+     * [ﾛｯﾄ区分ﾏｽﾀｰ]から、ﾛｯﾄ区分を取得
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
-     * @param lotNo ロットNo(検索キー)
+     * @param lotKubunCode ﾛｯﾄ区分ｺｰﾄﾞ(検索キー)
      * @return 取得データ
-     * @throws SQLException
+     * @throws SQLException 例外エラー
      */
     private Map loadLotKbnMas(QueryRunner queryRunnerDoc, String lotKubunCode) throws SQLException {
 
@@ -1576,12 +1567,12 @@ public class GXHDO101B003 implements IFormLogic {
     }
 
     /**
-     * (4)[ｵｰﾅｰｺｰﾄﾞﾏｽﾀｰ]から、ｵｰﾅｰ名を取得
+     * [ｵｰﾅｰｺｰﾄﾞﾏｽﾀｰ]から、ｵｰﾅｰ名を取得
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
-     * @param lotNo ロットNo(検索キー)
+     * @param ownerCode ｵｰﾅｰｺｰﾄﾞ(検索キー)
      * @return 取得データ
-     * @throws SQLException
+     * @throws SQLException 例外エラー
      */
     private Map loadOwnerMas(QueryRunner queryRunnerDoc, String ownerCode) throws SQLException {
 
@@ -1598,7 +1589,7 @@ public class GXHDO101B003 implements IFormLogic {
     }
 
     /**
-     * (5)仕掛データ検索
+     * 仕掛データ検索
      *
      * @param queryRunnerDoc QueryRunnerオブジェクト
      * @param lotNo ロットNo(検索キー)
@@ -1624,12 +1615,13 @@ public class GXHDO101B003 implements IFormLogic {
     }
 
     /**
-     * (10)[品質DB登録実績]から、リビジョン,状態フラグを取得
+     * [品質DB登録実績]から、リビジョン,状態フラグを取得
      *
      * @param queryRunnerDoc QueryRunnerオブジェクト
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @param edaban 枝番(検索キー)
+     * @param formId 画面ID(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
@@ -1652,13 +1644,13 @@ public class GXHDO101B003 implements IFormLogic {
     }
 
     /**
-     * (13)[品質DB登録実績]から、ﾃﾞｰﾀを取得
+     * [品質DB登録実績]から、ﾃﾞｰﾀを取得
      *
      * @param queryRunnerDoc QueryRunnerオブジェクト
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @param edaban 枝番(検索キー)
-     * @param isLock true:ﾛｯｸする、false:ﾛｯｸしない
+     * @param formId 画面ID
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
@@ -1688,6 +1680,7 @@ public class GXHDO101B003 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @param edaban 枝番(検索キー)
+     * @param formId 画面ID(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
@@ -1716,7 +1709,7 @@ public class GXHDO101B003 implements IFormLogic {
     }
 
     /**
-     * (6)[印刷RSUS]から、ﾃﾞｰﾀを取得
+     * [印刷RSUS]から、ﾃﾞｰﾀを取得
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
@@ -1825,7 +1818,7 @@ public class GXHDO101B003 implements IFormLogic {
     }
 
     /**
-     * (7)[印刷RSUS_ｻﾌﾞ画面]から、ﾃﾞｰﾀを取得
+     * [印刷RSUS_ｻﾌﾞ画面]からデータを取得
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
@@ -1884,7 +1877,7 @@ public class GXHDO101B003 implements IFormLogic {
     }
 
     /**
-     * (8)[印刷RSUS_仮登録]から、ﾃﾞｰﾀを取得
+     * [印刷RSUS_仮登録]から、ﾃﾞｰﾀを取得
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
@@ -1993,7 +1986,7 @@ public class GXHDO101B003 implements IFormLogic {
     }
 
     /**
-     * (9)[印刷RSUS_ｻﾌﾞ画面_仮登録]から、ﾃﾞｰﾀを取得
+     * [印刷RSUS_ｻﾌﾞ画面_仮登録]から、ﾃﾞｰﾀを取得
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
@@ -2054,7 +2047,7 @@ public class GXHDO101B003 implements IFormLogic {
     }
 
     /**
-     * (12)[製版ﾏｽﾀ]から、ﾃﾞｰﾀを取得
+     * [製版ﾏｽﾀ]からデータを取得
      *
      * @param queryRunnerDoc QueryRunnerオブジェクト
      * @param pattern 電極製版名(検索キー)
@@ -2105,7 +2098,6 @@ public class GXHDO101B003 implements IFormLogic {
             String lotNo = (String) session.getAttribute("lotNo");
             String kojyo = lotNo.substring(0, 3);
             String lotNo8 = lotNo.substring(3, 11);
-            String edaban = lotNo.substring(11, 14);
 
             //仕掛情報の取得
             Map shikakariData = loadShikakariData(queryRunnerDoc, lotNo);
@@ -2176,7 +2168,7 @@ public class GXHDO101B003 implements IFormLogic {
     /**
      * 項目データ取得
      *
-     * @param listData フォームデータ
+     * @param listData 項目リスト
      * @param itemId 項目ID
      * @return 項目データ
      */
@@ -2257,7 +2249,8 @@ public class GXHDO101B003 implements IFormLogic {
      * @param edaban 枝番
      * @param jissekino 実績No
      * @param jotaiFlg 状態ﾌﾗｸﾞ
-     * @throws SQLException 例外ｴﾗｰ
+     * @param systemTime システム日付
+     * @throws SQLException 例外エラー
      */
     private void insertFxhdd03(QueryRunner queryRunnerDoc, Connection conDoc, String tantoshaCd, String formId, BigDecimal rev,
             String kojyo, String lotNo, String edaban, int jissekino, String jotaiFlg, Timestamp systemTime) throws SQLException {
@@ -2296,7 +2289,8 @@ public class GXHDO101B003 implements IFormLogic {
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
      * @param jotaiFlg 状態ﾌﾗｸﾞ
-     * @throws SQLException 例外ｴﾗｰ
+     * @param systemTime システム日付
+     * @throws SQLException 例外エラー
      */
     private void updateFxhdd03(QueryRunner queryRunnerDoc, Connection conDoc, String tantoshaCd, String formId, BigDecimal rev,
             String kojyo, String lotNo, String edaban, String jotaiFlg, Timestamp systemTime) throws SQLException {
@@ -2329,15 +2323,15 @@ public class GXHDO101B003 implements IFormLogic {
      * 印刷RSUS_仮登録(tmp_sr_rsusprn)登録処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
-     * @param conQcdb ｺﾈｸｼｮﾝ
+     * @param conQcdb コネクション
      * @param newRev 新Revision
      * @param deleteflag 削除ﾌﾗｸﾞ
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
-     * @param systemTime ｼｽﾃﾑ日付(品質DB登録実績に更新した値と同値)
-     * @param itemList 項目ﾘｽﾄ
-     * @throws SQLException 例外ｴﾗｰ
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @param itemList 項目リスト
+     * @throws SQLException 例外エラー
      */
     private void insertTmpSrRsusprn(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev, int deleteflag,
             String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
@@ -2361,16 +2355,16 @@ public class GXHDO101B003 implements IFormLogic {
      * 印刷RSUS_仮登録(tmp_sr_rsusprn)更新処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
-     * @param conQcdb ｺﾈｸｼｮﾝ
+     * @param conQcdb コネクション
      * @param rev revision
      * @param jotaiFlg 状態ﾌﾗｸﾞ
      * @param newRev 新revision
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
-     * @param systemTime ｼｽﾃﾑ日付(品質DB登録実績に更新した値と同値)
-     * @param itemList 項目ﾘｽﾄ
-     * @throws SQLException 例外ｴﾗｰ
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @param itemList 項目リスト
+     * @throws SQLException 例外エラー
      */
     private void updateTmpSrRsusprn(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, String jotaiFlg, BigDecimal newRev,
             String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
@@ -2407,12 +2401,12 @@ public class GXHDO101B003 implements IFormLogic {
      * 印刷RSUS_仮登録(tmp_sr_rsusprn)削除処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
-     * @param conQcdb ｺﾈｸｼｮﾝ
+     * @param conQcdb コネクション
      * @param rev revision
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
-     * @throws SQLException 例外ｴﾗｰ
+     * @throws SQLException 例外エラー
      */
     private void deleteTmpSrRsusprn(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev,
             String kojyo, String lotNo, String edaban) throws SQLException {
@@ -2444,7 +2438,7 @@ public class GXHDO101B003 implements IFormLogic {
      * @param systemTime ｼｽﾃﾑ日付(品質DB登録実績に更新した値と同値)
      * @param itemList 項目ﾘｽﾄ
      * @param srRsusprnData 印刷RSUSデータ
-     * @return 更新ﾊﾟﾗﾒｰﾀ
+     * @return 更新パラメータ
      */
     private List<Object> setUpdateParameterTmpSrRsusprn(boolean isInsert, BigDecimal newRev, int deleteflag, String kojyo, String lotNo,
             String edaban, Timestamp systemTime, List<FXHDD01> itemList, SrRsusprn srRsusprnData) {
@@ -2561,14 +2555,14 @@ public class GXHDO101B003 implements IFormLogic {
      * 印刷RSUS_ｻﾌﾞ画面仮登録(tmp_sub_sr_rsusprn)登録処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
-     * @param conQcdb ｺﾈｸｼｮﾝ
+     * @param conQcdb コネクション
      * @param newRev 新revision
      * @param deleteflag 削除ﾌﾗｸﾞ
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
-     * @param systemTime ｼｽﾃﾑ日付(品質DB登録実績に更新した値と同値)
-     * @throws SQLException 例外ｴﾗｰ
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @throws SQLException 例外エラー
      */
     private void insertTmpSubSrRsusprn(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev, int deleteflag,
             String kojyo, String lotNo, String edaban, Timestamp systemTime) throws SQLException {
@@ -2587,14 +2581,14 @@ public class GXHDO101B003 implements IFormLogic {
      * 印刷RSUS_ｻﾌﾞ画面仮登録(tmp_sub_sr_rsusprn)更新処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
-     * @param conQcdb ｺﾈｸｼｮﾝ
+     * @param conQcdb コネクション
      * @param newRev 新revision
      * @param deleteflag 削除ﾌﾗｸﾞ
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
-     * @param systemTime ｼｽﾃﾑ日付(品質DB登録実績に更新した値と同値)
-     * @throws SQLException 例外ｴﾗｰ
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @throws SQLException 例外エラー
      */
     private void updateTmpSubSrRsusprn(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, BigDecimal newRev,
             String kojyo, String lotNo, String edaban, Timestamp systemTime) throws SQLException {
@@ -2620,12 +2614,12 @@ public class GXHDO101B003 implements IFormLogic {
      * 印刷RSUS_ｻﾌﾞ画面仮登録(tmp_sub_sr_rsusprn)削除処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
-     * @param conQcdb ｺﾈｸｼｮﾝ
+     * @param conQcdb コネクション
      * @param rev revision
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
-     * @throws SQLException 例外ｴﾗｰ
+     * @throws SQLException 例外エラー
      */
     private void deleteTmpSubSrRsusprn(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev,
             String kojyo, String lotNo, String edaban) throws SQLException {
@@ -2651,8 +2645,8 @@ public class GXHDO101B003 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
-     * @param systemTime ｼｽﾃﾑ日付(品質DB登録実績に更新した値と同値)
-     * @return 更新ﾊﾟﾗﾒｰﾀ
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @return 更新パラメータ
      */
     private List<Object> setUpdateParameterTmpSubSrRsusprn(boolean isInsert, BigDecimal newRev, int deleteflag, String kojyo,
             String lotNo, String edaban, Timestamp systemTime) {
@@ -2697,15 +2691,15 @@ public class GXHDO101B003 implements IFormLogic {
      * 印刷RSUS(sr_rsusprn)登録処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
-     * @param conQcdb ｺﾈｸｼｮﾝ
+     * @param conQcdb コネクション
      * @param newRev 新Revision
      * @param deleteflag 削除ﾌﾗｸﾞ
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
-     * @param systemTime ｼｽﾃﾑ日付(品質DB登録実績に更新した値と同値)
-     * @param itemList 項目ﾘｽﾄ
-     * @throws SQLException 例外ｴﾗｰ
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @param itemList 項目リスト
+     * @throws SQLException 例外エラー
      */
     private void insertSrRsusprn(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev,
             String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
@@ -2729,16 +2723,16 @@ public class GXHDO101B003 implements IFormLogic {
      * 印刷RSUS(sr_rsusprn)更新処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
-     * @param conQcdb ｺﾈｸｼｮﾝ
+     * @param conQcdb コネクション
      * @param rev revision
      * @param jotaiFlg 状態ﾌﾗｸﾞ
      * @param newRev 新revision
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
-     * @param systemTime ｼｽﾃﾑ日付(品質DB登録実績に更新した値と同値)
-     * @param itemList 項目ﾘｽﾄ
-     * @throws SQLException 例外ｴﾗｰ
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @param itemList 項目リスト
+     * @throws SQLException 例外エラー
      */
     private void updateSrRsusprn(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, String jotaiFlg, BigDecimal newRev,
             String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
@@ -2772,17 +2766,17 @@ public class GXHDO101B003 implements IFormLogic {
     }
 
     /**
-     * 印刷RSUS(sr_rsusprn)更新値ﾊﾟﾗﾒｰﾀ設定
+     * 印刷RSUS(sr_rsusprn)更新値パラメータ設定
      *
      * @param isInsert 登録判定(true:insert、false:update)
      * @param newRev 新revision
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
-     * @param systemTime ｼｽﾃﾑ日付(品質DB登録実績に更新した値と同値)
-     * @param itemList 項目ﾘｽﾄ
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @param itemList 項目リスト
      * @param srRsusprnData 印刷RSUSデータ
-     * @return 更新ﾊﾟﾗﾒｰﾀ
+     * @return 更新パラメータ
      */
     private List<Object> setUpdateParameterSrRsusprn(boolean isInsert, BigDecimal newRev, String kojyo, String lotNo,
             String edaban, Timestamp systemTime, List<FXHDD01> itemList, SrRsusprn srRsusprnData) {
@@ -2851,7 +2845,6 @@ public class GXHDO101B003 implements IFormLogic {
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B003Const.KANSOU_ONDO_HYOUJICHI4, srRsusprnData))); //乾燥温度4
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B003Const.KANSOU_ONDO_HYOUJICHI5, srRsusprnData))); //乾燥温度5
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B003Const.SEIHAN_OR_HANDOU_MEI, srRsusprnData))); //製版名
-
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B003Const.INSATSU_START_MAKUATSU_AVE, srRsusprnData))); //ｽﾀｰﾄ時膜厚AVE
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B003Const.INSATSU_START_MAKUATSU_MAX, srRsusprnData))); //ｽﾀｰﾄ時膜厚MAX
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B003Const.INSATSU_START_MAKUATSU_MIN, srRsusprnData))); //ｽﾀｰﾄ時膜厚MIN
@@ -2889,7 +2882,6 @@ public class GXHDO101B003 implements IFormLogic {
         if (isInsert) {
             params.add(systemTime); //登録日時
             params.add(systemTime); //更新日時
-
         } else {
             params.add(systemTime); //更新日時
         }
@@ -2902,12 +2894,12 @@ public class GXHDO101B003 implements IFormLogic {
      * 印刷RSUS(sr_rsusprn)削除処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
-     * @param conQcdb ｺﾈｸｼｮﾝ
+     * @param conQcdb コネクション
      * @param rev revision
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
-     * @throws SQLException 例外ｴﾗｰ
+     * @throws SQLException 例外エラー
      */
     private void deleteSrRsusprn(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev,
             String kojyo, String lotNo, String edaban) throws SQLException {
@@ -2931,13 +2923,13 @@ public class GXHDO101B003 implements IFormLogic {
      * 印刷RSUS_ｻﾌﾞ画面(sub_sr_rsusprn)登録処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
-     * @param conQcdb ｺﾈｸｼｮﾝ
+     * @param conQcdb コネクション
      * @param newRev 新revision
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
-     * @param systemTime ｼｽﾃﾑ日付(品質DB登録実績に更新した値と同値)
-     * @throws SQLException 例外ｴﾗｰ
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @throws SQLException 例外エラー
      */
     private void insertSubSrRsusprn(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev,
             String kojyo, String lotNo, String edaban, Timestamp systemTime) throws SQLException {
@@ -2956,14 +2948,14 @@ public class GXHDO101B003 implements IFormLogic {
      * 印刷RSUS_ｻﾌﾞ画面(sub_sr_rsusprn)更新処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
-     * @param conQcdb ｺﾈｸｼｮﾝ
+     * @param conQcdb コネクション
      * @param rev revision
      * @param newRev 新revision
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
-     * @param systemTime ｼｽﾃﾑ日付(品質DB登録実績に更新した値と同値)
-     * @throws SQLException 例外ｴﾗｰ
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @throws SQLException 例外エラー
      */
     private void updateSubSrRsusprn(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, BigDecimal newRev,
             String kojyo, String lotNo, String edaban, Timestamp systemTime) throws SQLException {
@@ -2986,7 +2978,7 @@ public class GXHDO101B003 implements IFormLogic {
     }
 
     /**
-     * 印刷RSUS_ｻﾌﾞ画面登録(sub_sr_rsusprn)更新値ﾊﾟﾗﾒｰﾀ設定
+     * 印刷RSUS_ｻﾌﾞ画面登録(sub_sr_rsusprn)更新値パラメータ設定
      *
      * @param isInsert 登録判定(true:insert、false:update)
      * @param newRev 新revision
@@ -2994,7 +2986,7 @@ public class GXHDO101B003 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
-     * @param systemTime ｼｽﾃﾑ日付(品質DB登録実績に更新した値と同値)
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
      * @return 更新ﾊﾟﾗﾒｰﾀ
      */
     private List<Object> setUpdateParameterSubSrRsusprn(boolean isInsert, BigDecimal newRev, String kojyo, String lotNo,
@@ -3039,12 +3031,12 @@ public class GXHDO101B003 implements IFormLogic {
      * 印刷RSUS_ｻﾌﾞ画面仮登録(tmp_sub_sr_rsusprn)削除処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
-     * @param conQcdb ｺﾈｸｼｮﾝ
+     * @param conQcdb コネクション
      * @param rev revision
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
-     * @throws SQLException 例外ｴﾗｰ
+     * @throws SQLException 例外エラー
      */
     private void deleteSubSrRsusprn(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev,
             String kojyo, String lotNo, String edaban) throws SQLException {
@@ -3069,7 +3061,7 @@ public class GXHDO101B003 implements IFormLogic {
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
      * @return 削除ﾌﾗｸﾞ最大値 + 1
-     * @throws SQLException 例外ｴﾗｰ
+     * @throws SQLException 例外エラー
      */
     private int getNewDeleteflag(QueryRunner queryRunnerQcdb, String kojyo, String lotNo, String edaban) throws SQLException {
         String sql = "SELECT MAX(deleteflag) AS deleteflag "
@@ -3091,6 +3083,14 @@ public class GXHDO101B003 implements IFormLogic {
         return newDeleteFlg;
     }
 
+    /**
+     * リビジョンチェック
+     *
+     * @param processData 処理制御データ
+     * @param fxhdd03RevInfo 品質DB登録実績データ
+     * @return エラーメッセージ情報
+     * @throws SQLException 例外エラー
+     */
     private ErrorMessageInfo checkRevision(ProcessData processData, Map fxhdd03RevInfo) throws SQLException {
 
         if (StringUtil.isEmpty(processData.getInitJotaiFlg())) {
@@ -3117,8 +3117,8 @@ public class GXHDO101B003 implements IFormLogic {
     /**
      * 開始時間設定処理
      *
-     * @param processDate
-     * @return
+     * @param processDate 処理制御データ
+     * @return 処理制御データ
      */
     public ProcessData setKaishiDateTime(ProcessData processDate) {
         FXHDD01 itemDay = getItemRow(processDate.getItemList(), GXHDO101B003Const.INSATSU_KAISHI_DAY);
@@ -3133,8 +3133,8 @@ public class GXHDO101B003 implements IFormLogic {
     /**
      * 終了時間設定処理
      *
-     * @param processDate
-     * @return
+     * @param processDate 処理制御データ
+     * @return 処理制御データ
      */
     public ProcessData setShuryouDateTime(ProcessData processDate) {
         FXHDD01 itemDay = getItemRow(processDate.getItemList(), GXHDO101B003Const.INSATSU_SHUURYOU_DAY);
@@ -3150,9 +3150,9 @@ public class GXHDO101B003 implements IFormLogic {
     /**
      * 日付(日、時間)の項目にフォーマットの日付(yyMMdd,HHmm)をセットする
      *
-     * @param itemDay
-     * @param itemTime
-     * @param setDateTime
+     * @param itemDay 日付項目(日)
+     * @param itemTime 日付項目(時間)
+     * @param setDateTime 設定時間
      */
     private void setDateTimeItem(FXHDD01 itemDay, FXHDD01 itemTime, Date setDateTime) {
         itemDay.setValue(new SimpleDateFormat("yyMMdd").format(setDateTime));
@@ -3162,7 +3162,7 @@ public class GXHDO101B003 implements IFormLogic {
     /**
      * コネクションロールバック処理
      *
-     * @param con
+     * @param con コネクション
      */
     private void rollbackConnection(Connection con) {
         try {
@@ -3339,14 +3339,14 @@ public class GXHDO101B003 implements IFormLogic {
      * 印刷RSUS_仮登録(tmp_sr_rsusprn)登録処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
-     * @param conQcdb ｺﾈｸｼｮﾝ
+     * @param conQcdb コネクション
      * @param newRev 新Revision
      * @param deleteflag 削除ﾌﾗｸﾞ
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
-     * @param systemTime ｼｽﾃﾑ日付(品質DB登録実績に更新した値と同値)
-     * @throws SQLException 例外ｴﾗｰ
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @throws SQLException 例外エラー
      */
     private void insertDeleteDataTmpSrRsusprn(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev, int deleteflag,
             String kojyo, String lotNo, String edaban, Timestamp systemTime) throws SQLException {
@@ -3387,14 +3387,14 @@ public class GXHDO101B003 implements IFormLogic {
      * 印刷RSUS_ｻﾌﾞ画面仮登録(tmp_sub_sr_rsusprn)登録処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
-     * @param conQcdb ｺﾈｸｼｮﾝ
+     * @param conQcdb コネクション
      * @param newRev 新revision
      * @param deleteflag 削除ﾌﾗｸﾞ
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
-     * @param systemTime ｼｽﾃﾑ日付(品質DB登録実績に更新した値と同値)
-     * @throws SQLException 例外ｴﾗｰ
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @throws SQLException 例外エラー
      */
     private void insertDeleteDataTmpSubSrRsusprn(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev, int deleteflag,
             String kojyo, String lotNo, String edaban, Timestamp systemTime) throws SQLException {

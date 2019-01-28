@@ -30,10 +30,14 @@ import jp.co.kccs.xhd.util.StringUtil;
 /**
  * GXHDO101C005(印刷幅)ロジッククラス
  */
-
-
 public class GXHDO101C005Logic {
 
+    /**
+     * 印刷幅画面のモデルデータを作成する
+     *
+     * @param startValues 印刷幅スタートデータ
+     * @return モデルデータ
+     */
     public static GXHDO101C005Model createGXHDO101C005Model(String[] startValues) {
 
         GXHDO101C005Model model = new GXHDO101C005Model();
@@ -82,10 +86,10 @@ public class GXHDO101C005Logic {
     }
 
     /**
-     * 入力ﾁｪｯｸ
+     * 入力チェック
      *
-     * @param gXHDO101C005Model 印刷幅サブ画面用ﾓﾃﾞﾙ
-     * @return ｴﾗｰﾘｽﾄ
+     * @param gXHDO101C005Model 印刷幅サブ画面用モデル
+     * @return エラーリスト
      */
     public static List<String> checkInput(GXHDO101C005Model gXHDO101C005Model) {
 
@@ -104,7 +108,7 @@ public class GXHDO101C005Logic {
     /**
      * サブ画面からの戻り値をメイン画面の項目リストにセットする
      *
-     * @param gXHDO101C005Model 印刷幅サブ画面用ﾓﾃﾞﾙ
+     * @param gXHDO101C005Model 印刷幅サブ画面用モデル
      * @param itemList 項目リスト
      */
     public static void setReturnData(GXHDO101C005Model gXHDO101C005Model, List<FXHDD01> itemList) {

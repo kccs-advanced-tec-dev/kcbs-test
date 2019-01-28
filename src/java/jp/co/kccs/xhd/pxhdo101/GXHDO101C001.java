@@ -199,6 +199,9 @@ public class GXHDO101C001 implements Serializable {
         this.gxhdO101c001ModelView = gxhdO101c001ModelView;
     }
 
+    /**
+     * 膜厚読込処理
+     */
     public void doMakuatsuDataImport() {
         try {
            List<Map<String, Object>> makuatsuDataList = getMakuatu();

@@ -28,10 +28,17 @@ import jp.co.kccs.xhd.util.StringUtil;
  * ===============================================================================<br>
  */
 /**
- * GXHDO101C002(PTN距離X)ロジッククラス
+ * GXHDO101C002Logic(PTN距離X)ロジッククラス
  */
 public class GXHDO101C002Logic {
 
+    /**
+     * PTN距離X画面のモデルデータを作成する
+     *
+     * @param ptnKyoriXStart PTN距離Xスタートデータ
+     * @param ptnKyoriXEnd PTN距離Xエンドデータ
+     * @return モデルデータ
+     */
     public static GXHDO101C002Model createGXHDO101C002Model(String[] ptnKyoriXStart, String[] ptnKyoriXEnd) {
         GXHDO101C002Model gxhdo101c002Model = new GXHDO101C002Model();
         List<GXHDO101C002Model.PtnKyoriXData> ptnKyoriXDataList = new ArrayList<>();
@@ -39,7 +46,6 @@ public class GXHDO101C002Logic {
         //PTN距離Xのデータをセットする
         for (int i = 0; i < ptnKyoriXStart.length; i++) {
             ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c002Model, String.valueOf(i + 1), ptnKyoriXStart[i], "TEXT", "3", "", ptnKyoriXEnd[i], "TEXT", "3", ""));
-
         }
 
         gxhdo101c002Model.setPtnKyoriXDataList(ptnKyoriXDataList);
@@ -98,10 +104,10 @@ public class GXHDO101C002Logic {
     }
 
     /**
-     * 入力ﾁｪｯｸ
+     * 入力チェック
      *
-     * @param gXHDO101C002Model PTN距離Xサブ画面用ﾓﾃﾞﾙ
-     * @return ｴﾗｰﾘｽﾄ
+     * @param gXHDO101C002Model PTN距離Xサブ画面用モデル
+     * @return エラーリスト
      */
     public static List<String> checkInput(GXHDO101C002Model gXHDO101C002Model) {
 
@@ -127,7 +133,7 @@ public class GXHDO101C002Logic {
     /**
      * サブ画面からの戻り値をメイン画面の項目リストにセットする
      *
-     * @param gXHDO101C002Model PTN距離Xサブ画面用ﾓﾃﾞﾙ
+     * @param gXHDO101C002Model PTN距離Xサブ画面用モデル
      * @param itemList 項目リスト
      */
     public static void setReturnData(GXHDO101C002Model gXHDO101C002Model, List<FXHDD01> itemList) {
@@ -193,7 +199,7 @@ public class GXHDO101C002Logic {
     /**
      * 項目データ取得
      *
-     * @param listData フォームデータ
+     * @param listData 項目データリスト
      * @param itemId 項目ID
      * @return 項目データ
      */

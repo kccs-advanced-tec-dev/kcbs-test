@@ -134,10 +134,10 @@ public class ValidateUtil {
      *
      * @param itemRowCheckList チェック処理内容リスト
      * @param itemList 項目データリスト
-     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param queryRunnerWip QueryRunnerオブジェクト
      * @return エラー時はエラーメッセージを返却
      */
-    public ErrorMessageInfo executeValidation(List<FXHDM05> itemRowCheckList, List<FXHDD01> itemList, QueryRunner queryRunnerDoc) {
+    public ErrorMessageInfo executeValidation(List<FXHDM05> itemRowCheckList, List<FXHDD01> itemList, QueryRunner queryRunnerWip) {
         
         try {
             ErrorMessageInfo errorMessageInfo = null;
@@ -180,10 +180,10 @@ public class ValidateUtil {
                             errorMessageInfo = checkC302(fxhdd01);
                             break;
                         case "C401":
-                            errorMessageInfo = checkC401(fxhdd01, queryRunnerDoc);
+                            errorMessageInfo = checkC401(fxhdd01, queryRunnerWip);
                             break;
                         case "C402":
-                            errorMessageInfo = checkC402(fxhdd01, queryRunnerDoc);
+                            errorMessageInfo = checkC402(fxhdd01, queryRunnerWip);
                             break;
                         case "C501":
                             errorMessageInfo = checkC501(fxhdd01);
@@ -456,10 +456,10 @@ public class ValidateUtil {
      * 担当者ﾏｽﾀﾁｪｯｸ
      *
      * @param fXHDD01 項目データ
-     * @param queryRunnerDoc QueryRunnerオブジェクト(DocServer)
+     * @param queryRunnerWip QueryRunnerオブジェクト(Wip)
      * @return エラー時はエラーメッセージを返却
      */
-    private ErrorMessageInfo checkC402(FXHDD01 fXHDD01, QueryRunner queryRunnerDoc) throws SQLException {
+    private ErrorMessageInfo checkC402(FXHDD01 fXHDD01, QueryRunner queryRunnerWip) throws SQLException {
         // 値が入っていない場合、チェック無し
         if (StringUtil.isEmpty(fXHDD01.getValue())) {
             return null;
@@ -467,7 +467,7 @@ public class ValidateUtil {
 
         List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
 
-        if (!existTantomas(fXHDD01.getValue(), queryRunnerDoc)) {
+        if (!existTantomas(fXHDD01.getValue(), queryRunnerWip)) {
             return MessageUtil.getErrorMessageInfo("XHD-000011", true, true, errFxhdd01List, fXHDD01.getLabel1());
         }
 
@@ -659,12 +659,13 @@ public class ValidateUtil {
      *
      * @param tantoshacode 担当者ｺｰﾄﾞ
      * @param itemLabel ラベル(入力項目名)
-     * @param queryRunnerDoc QueryRunnerオブジェクト(DocServer)
+     * @param queryRunnerWip QueryRunnerオブジェクト(Wip)
      * @return エラー時はエラーメッセージを返却
+     * @throws java.sql.SQLException 例外エラー
      */
-    public String checkT002(String itemLabel, String tantoshacode, QueryRunner queryRunnerDoc) throws SQLException {
+    public String checkT002(String itemLabel, String tantoshacode, QueryRunner queryRunnerWip) throws SQLException {
         // 項目データを取得
-        if (!existTantomas(tantoshacode, queryRunnerDoc)) {
+        if (!existTantomas(tantoshacode, queryRunnerWip)) {
             return MessageUtil.getMessage("XHD-000011", itemLabel);
         }
         return "";
@@ -1360,10 +1361,10 @@ public class ValidateUtil {
      * 号機ﾏｽﾀ存在判定
      *
      * @param goukicode 号機ｺｰﾄﾞ
-     * @param queryRunnerDoc QueryRunnerオブジェクト(DocServer)
+     * @param queryRunnerWip QueryRunnerオブジェクト(Wip)
      * @return true:存在する、false:存在しない
      */
-    private boolean existGokukimas(String goukicode, QueryRunner queryRunnerDoc) throws SQLException {
+    private boolean existGokukimas(String goukicode, QueryRunner queryRunnerWip) throws SQLException {
         String sql = "SELECT goukicode "
                 + "FROM goukimas WHERE goukicode = ? ";
 
@@ -1371,7 +1372,7 @@ public class ValidateUtil {
         params.add(goukicode);
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        Map gokukimas = queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
+        Map gokukimas = queryRunnerWip.query(sql, new MapHandler(), params.toArray());
         if (null == gokukimas || gokukimas.isEmpty()) {
             return false;
         }
@@ -1383,10 +1384,10 @@ public class ValidateUtil {
      * 担当者ﾏｽﾀ存在判定
      *
      * @param tantousyacode 担当者ｺｰﾄﾞ
-     * @param queryRunnerDoc QueryRunnerオブジェクト(DocServer)
+     * @param queryRunnerWip QueryRunnerオブジェクト(Wip)
      * @return true:存在する、false:存在しない
      */
-    private boolean existTantomas(String tantousyacode, QueryRunner queryRunnerDoc) throws SQLException {
+    private boolean existTantomas(String tantousyacode, QueryRunner queryRunnerWip) throws SQLException {
         String sql = "SELECT tantousyacode "
                 + "FROM tantomas WHERE tantousyacode = ? and zaiseki = '1' ";
 
@@ -1394,7 +1395,7 @@ public class ValidateUtil {
         params.add(tantousyacode);
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        Map tantomas = queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
+        Map tantomas = queryRunnerWip.query(sql, new MapHandler(), params.toArray());
         if (null == tantomas || tantomas.isEmpty()) {
             return false;
         }

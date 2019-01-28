@@ -4,8 +4,22 @@
 package jp.co.kccs.xhd.pxhdo901;
 
 /**
+ * ===============================================================================<br>
+ * <br>
+ * システム名	品質DB(コンデンサ)<br>
+ * <br>
+ * 変更日	2018/11/29<br>
+ * 計画書No	K1803-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	新規作成<br>
+ * <br>
+ * ===============================================================================<br>
+ */
+/**
+ * 規格値エラー情報
  *
- * @author koksk-desk2
+ * @author SYSNAVI K.Hisanaga
+ * @since 2018/11/29
  */
 public class KikakuchiInputErrorInfo implements Cloneable {
 

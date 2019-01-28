@@ -29,10 +29,16 @@ import jp.co.kccs.xhd.util.StringUtil;
  * ===============================================================================<br>
  */
 /**
- * GXHDO101C001(膜厚(SPS))ロジッククラス
+ * GXHDO101C001Logic(膜厚(SPS))ロジッククラス
  */
 public class GXHDO101C001Logic implements Serializable {
 
+    /**
+     * 膜厚(SPS)画面のモデルデータを作成する
+     * @param makuatsuStart 膜厚スタートデータ
+     * @param makuatsuEnd 膜厚エンドデータ
+     * @return モデルデータ
+     */
     public static GXHDO101C001Model createGXHDO101C001Model(String[] makuatsuStart, String[] makuatsuEnd) {
         GXHDO101C001Model gxhdo101C001Model = new GXHDO101C001Model();
         List<GXHDO101C001Model.MakuatsuData> makuatsuDataList = new ArrayList<>();
@@ -96,10 +102,10 @@ public class GXHDO101C001Logic implements Serializable {
     }
 
     /**
-     * 入力ﾁｪｯｸ
+     * 入力チェック
      *
-     * @param gXHDO101C001Model 膜厚(SPS)サブ画面用ﾓﾃﾞﾙ
-     * @return ｴﾗｰﾘｽﾄ
+     * @param gXHDO101C001Model 膜厚(SPS)サブ画面用モデル
+     * @return エラーリスト
      */
     public static List<String> checkInput(GXHDO101C001Model gXHDO101C001Model) {
 

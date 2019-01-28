@@ -64,12 +64,17 @@ public class GXHDO101A implements Serializable {
     private static final int TANTOSHA_CODE_BYTE = 6;
     
     /**
-     * DataSource
+     * DataSource(wip)
+     */
+    @Resource(mappedName = "jdbc/wip")
+    private transient DataSource dataSourceWip;
+    /**
+     * DataSource(DocumentServer)
      */
     @Resource(mappedName = "jdbc/DocumentServer")
-    private transient DataSource dataSource;
+    private transient DataSource dataSourceDocServer;
     /**
-     * DataSource
+     * DataSource(QCDB)
      */
     @Resource(mappedName = "jdbc/qcdb")
     private transient DataSource dataSourceXHD;
@@ -204,8 +209,8 @@ public class GXHDO101A implements Serializable {
                 return null;
             }
             
-            QueryRunner queryRunner = new QueryRunner(dataSource);
-            retMsg = validateUtil.checkT002("担当者ｺｰﾄﾞ", this.tantoshaCd, queryRunner);
+            QueryRunner queryRunnerWip = new QueryRunner(dataSourceWip);
+            retMsg = validateUtil.checkT002("担当者ｺｰﾄﾞ", this.tantoshaCd, queryRunnerWip);
             if (!StringUtil.isEmpty(retMsg)) {            
                 setMenuTableRender(false);
                 setErrorMessage(retMsg);
@@ -239,11 +244,12 @@ public class GXHDO101A implements Serializable {
                 return null;
             }
 
+            QueryRunner queryRunnerDoc = new QueryRunner(dataSourceDocServer);
             String sqlsearchGamenID = "SELECT gamen_id, kotei_jun FROM fxhdm03 WHERE kotei_process_kubun = ? order by kotei_jun ";
             List<Object> params2 = new ArrayList<>();
             params2.add(strProcess);
             
-            List sqlsearchResult =  (List)queryRunner.query(sqlsearchGamenID, new MapListHandler(), params2.toArray());
+            List sqlsearchResult =  (List)queryRunnerDoc.query(sqlsearchGamenID, new MapListHandler(), params2.toArray());
             
             List<Object> listGamenID = new ArrayList<>();
             for (Iterator i = sqlsearchResult.iterator(); i.hasNext();) {
@@ -296,10 +302,10 @@ public class GXHDO101A implements Serializable {
             
             if(listGamenID.isEmpty()) {
                 DBUtil.outputSQLLog(sql, userGrpList.toArray(), LOGGER);
-                menuListGXHDO101 = queryRunner.query(sql, beanHandler, userGrpList.toArray()); 
+                menuListGXHDO101 = queryRunnerDoc.query(sql, beanHandler, userGrpList.toArray()); 
             }else{
                 DBUtil.outputSQLLog(sql, params3.toArray(), LOGGER);
-                menuListGXHDO101 = queryRunner.query(sql, beanHandler, params3.toArray()); 
+                menuListGXHDO101 = queryRunnerDoc.query(sql, beanHandler, params3.toArray()); 
             }
 
             if (menuListGXHDO101.isEmpty()){

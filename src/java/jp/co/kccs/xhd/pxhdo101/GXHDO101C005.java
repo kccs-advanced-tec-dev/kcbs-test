@@ -159,8 +159,6 @@ public class GXHDO101C005 implements Serializable {
      * エラーセット
      *
      * @param makuatsuData 膜厚データ
-     * @param isStartErr スタートエラー
-     * @param isEndErr エンドエラー
      * @param errorId エラーID
      * @param errParams エラーパラメータ
      */

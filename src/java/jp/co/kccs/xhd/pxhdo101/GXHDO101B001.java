@@ -1089,6 +1089,7 @@ public class GXHDO101B001 implements IFormLogic {
 
         QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
         QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
+        QueryRunner queryRunnerWip = new QueryRunner(processData.getDataSourceWip());
 
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
@@ -1102,7 +1103,7 @@ public class GXHDO101B001 implements IFormLogic {
         Map sekkeiData = this.loadSekkeiData(queryRunnerQcdb, lotNo);
         if (sekkeiData == null || sekkeiData.isEmpty()) {
             errorMessageList.clear();
-            errorMessageList.add(MessageUtil.getMessage("XHD-000014", ""));
+            errorMessageList.add(MessageUtil.getMessage("XHD-000014"));
             processData.setFatalError(true);
             processData.setInitMessageList(errorMessageList);
             return processData;
@@ -1115,27 +1116,27 @@ public class GXHDO101B001 implements IFormLogic {
         String pattern = StringUtil.nullToBlank(sekkeiData.get("PATTERN")); //電極製版名 
         Map daPatternMasData = loadDaPatternMas(queryRunnerQcdb, pattern);
         if (daPatternMasData == null || daPatternMasData.isEmpty()) {
-            errorMessageList.add(MessageUtil.getMessage("XHD-000034", ""));
+            errorMessageList.add(MessageUtil.getMessage("XHD-000034"));
         }
 
         //仕掛情報の取得
-        Map shikakariData = loadShikakariData(queryRunnerDoc, lotNo);
+        Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
         if (shikakariData == null || shikakariData.isEmpty()) {
-            errorMessageList.add(MessageUtil.getMessage("XHD-000029", ""));
+            errorMessageList.add(MessageUtil.getMessage("XHD-000029"));
         }
         String lotkubuncode = StringUtil.nullToBlank(getMapData(shikakariData, "lotkubuncode")); //ﾛｯﾄ区分ｺｰﾄﾞ
         String ownercode = StringUtil.nullToBlank(getMapData(shikakariData, "ownercode"));// ｵｰﾅｰｺｰﾄﾞ
 
         // ﾛｯﾄ区分ﾏｽﾀ情報の取得
-        Map lotKbnMasData = loadLotKbnMas(queryRunnerDoc, lotkubuncode);
+        Map lotKbnMasData = loadLotKbnMas(queryRunnerWip, lotkubuncode);
         if (lotKbnMasData == null || lotKbnMasData.isEmpty()) {
-            errorMessageList.add(MessageUtil.getMessage("XHD-000015", ""));
+            errorMessageList.add(MessageUtil.getMessage("XHD-000015"));
         }
 
         // ｵｰﾅｰﾏｽﾀ情報の取得
-        Map ownerMasData = loadOwnerMas(queryRunnerDoc, ownercode);
+        Map ownerMasData = loadOwnerMas(queryRunnerWip, ownercode);
         if (ownerMasData == null || ownerMasData.isEmpty()) {
-            errorMessageList.add(MessageUtil.getMessage("XHD-000016", ""));
+            errorMessageList.add(MessageUtil.getMessage("XHD-000016"));
         }
 
         // 入力項目の情報を画面にセットする。
@@ -1263,7 +1264,7 @@ public class GXHDO101B001 implements IFormLogic {
 
     /**
      * 入力項目のデータを画面項目に設定
-     * @param processData
+     * @param processData 処理制御データ
      * @param queryRunnerDoc QueryRunnerオブジェクト(DocServer)
      * @param queryRunnerQcdb QueryRunnerオブジェクト(Qcdb)
      * @param lotNo ﾛｯﾄNo
@@ -1690,7 +1691,7 @@ public class GXHDO101B001 implements IFormLogic {
     }
 
     /**
-     * (2)[設計]から、初期表示する情報を取得
+     * [設計]から、初期表示する情報を取得
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param lotNo ﾛｯﾄNo(検索キー)
@@ -1744,7 +1745,7 @@ public class GXHDO101B001 implements IFormLogic {
     }
 
     /**
-     * (3)[ﾛｯﾄ区分ﾏｽﾀｰ]から、ﾛｯﾄ区分を取得
+     * [ﾛｯﾄ区分ﾏｽﾀｰ]から、ﾛｯﾄ区分を取得
      *
      * @param queryRunnerDoc QueryRunnerオブジェクト
      * @param lotKubunCode ﾛｯﾄ区分ｺｰﾄﾞ(検索キー)
@@ -1766,7 +1767,7 @@ public class GXHDO101B001 implements IFormLogic {
     }
 
     /**
-     * (4)[ｵｰﾅｰｺｰﾄﾞﾏｽﾀｰ]から、ｵｰﾅｰ名を取得
+     * [ｵｰﾅｰｺｰﾄﾞﾏｽﾀｰ]から、ｵｰﾅｰ名を取得
      *
      * @param queryRunnerDoc QueryRunnerオブジェクト
      * @param ownerCode ｵｰﾅｰｺｰﾄﾞ(検索キー)
@@ -1788,7 +1789,7 @@ public class GXHDO101B001 implements IFormLogic {
     }
 
     /**
-     * (5)仕掛データ検索
+     * 仕掛データ検索
      *
      * @param queryRunnerDoc QueryRunnerオブジェクト
      * @param lotNo ﾛｯﾄNo(検索キー)
@@ -1814,7 +1815,7 @@ public class GXHDO101B001 implements IFormLogic {
     }
 
     /**
-     * (10)[品質DB登録実績]から、ﾘﾋﾞｼﾞｮﾝ,状態ﾌﾗｸﾞを取得
+     * [品質DB登録実績]から、ﾘﾋﾞｼﾞｮﾝ,状態ﾌﾗｸﾞを取得
      *
      * @param queryRunnerDoc QueryRunnerオブジェクト
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
@@ -1842,13 +1843,13 @@ public class GXHDO101B001 implements IFormLogic {
     }
 
     /**
-     * (13)[品質DB登録実績]から、ﾃﾞｰﾀを取得
+     * [品質DB登録実績]から、ﾃﾞｰﾀを取得
      *
      * @param queryRunnerDoc QueryRunnerオブジェクト
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @param edaban 枝番(検索キー)
-     * @param isLock true:ﾛｯｸする、false:ﾛｯｸしない
+     * @param formId 画面ID(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
@@ -1906,7 +1907,7 @@ public class GXHDO101B001 implements IFormLogic {
     }
 
     /**
-     * (6)[印刷SPSｸﾞﾗﾋﾞｱ]から、ﾃﾞｰﾀを取得
+     * [印刷SPSｸﾞﾗﾋﾞｱ]から、ﾃﾞｰﾀを取得
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
@@ -2038,7 +2039,7 @@ public class GXHDO101B001 implements IFormLogic {
     }
 
     /**
-     * (7)[印刷SPSｸﾞﾗﾋﾞｱ_ｻﾌﾞ画面]から、ﾃﾞｰﾀを取得
+     * [印刷SPSｸﾞﾗﾋﾞｱ_ｻﾌﾞ画面]から、ﾃﾞｰﾀを取得
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
@@ -2136,7 +2137,7 @@ public class GXHDO101B001 implements IFormLogic {
     }
 
     /**
-     * (8)[印刷SPSｸﾞﾗﾋﾞｱ_仮登録]から、ﾃﾞｰﾀを取得
+     * [印刷SPSｸﾞﾗﾋﾞｱ_仮登録]から、ﾃﾞｰﾀを取得
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
@@ -2268,7 +2269,7 @@ public class GXHDO101B001 implements IFormLogic {
     }
 
     /**
-     * (9)[印刷SPSｸﾞﾗﾋﾞｱ_ｻﾌﾞ画面_仮登録]から、ﾃﾞｰﾀを取得
+     * [印刷SPSｸﾞﾗﾋﾞｱ_ｻﾌﾞ画面_仮登録]から、ﾃﾞｰﾀを取得
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
@@ -2368,7 +2369,7 @@ public class GXHDO101B001 implements IFormLogic {
     }
 
     /**
-     * (12)[製版ﾏｽﾀ]から、ﾃﾞｰﾀを取得
+     * [製版ﾏｽﾀ]から、ﾃﾞｰﾀを取得
      *
      * @param queryRunnerDoc QueryRunnerオブジェクト
      * @param pattern 電極製版名(検索キー)

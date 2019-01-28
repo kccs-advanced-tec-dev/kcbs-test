@@ -1386,8 +1386,8 @@ public class GXHDO901A implements Serializable {
                 = this.checkListHDM05.stream().filter(n -> buttonId.equals(n.getButtonId())).collect(Collectors.toList());
         
         ValidateUtil validateUtil = new ValidateUtil();
-        QueryRunner queryRunnerDoc = new QueryRunner(dataSourceDocServer);
-        ErrorMessageInfo requireCheckErrorMessage = validateUtil.executeValidation(itemRowCheckList, this.itemList, queryRunnerDoc);
+        QueryRunner queryRunnerWip = new QueryRunner(dataSourceWip);
+        ErrorMessageInfo requireCheckErrorMessage = validateUtil.executeValidation(itemRowCheckList, this.itemList, queryRunnerWip);
         
         return requireCheckErrorMessage;
     }

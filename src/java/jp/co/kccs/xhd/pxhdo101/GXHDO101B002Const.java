@@ -1,13 +1,25 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2019 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.pxhdo101;
 
 /**
+ * ===============================================================================<br>
+ * <br>
+ * システム名	品質DB(コンデンサ)<br>
+ * <br>
+ * 変更日	2019/01/14<br>
+ * 計画書No	K1803-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	新規作成<br>
+ * <br>
+ * ===============================================================================<br>
+ */
+/**
+ * GXHDO101B002Const(SPS系印刷・SPSｽｸﾘｰﾝ)定数
  *
- * @author koksk-desk2
+ * @author SYSNAVI K.Hisanaga
+ * @since 2019/01/14
  */
 public class GXHDO101B002Const {
 
