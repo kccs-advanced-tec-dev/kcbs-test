@@ -174,32 +174,32 @@ public class GXHDO901A implements Serializable {
      * 一覧の表示件数
      */
     private String hyojiKensu;
-    
+
     /**
      * displayNoneを設定する(致命的な画面表示エラー時)
      */
     private String styleDisplayNone = "";
-    
+
     /**
      * リビジョン(起動時)
      */
     private String initRev = "";
-            
+
     /**
      * 状態フラグ(起動時)
      */
     private String initJotaiFlg = "";
-            
+
     /**
      * 状態表示
      */
     private String jotaiDisplay = "";
-    
+
     /**
      * リビジョンチェック対象ボタンID
      */
     private List<String> checkRevisionButtonId;
-    
+
     /**
      * 完了メッセージ
      */
@@ -370,6 +370,7 @@ public class GXHDO901A implements Serializable {
 
     /**
      * displayNone設定
+     *
      * @return the styleDisplayNone
      */
     public String getStyleDisplayNone() {
@@ -378,6 +379,7 @@ public class GXHDO901A implements Serializable {
 
     /**
      * displayNone設定
+     *
      * @param styleDisplayNone the styleDisplayNone to set
      */
     public void setStyleDisplayNone(String styleDisplayNone) {
@@ -386,6 +388,7 @@ public class GXHDO901A implements Serializable {
 
     /**
      * 状態表示
+     *
      * @return the jotaiDisplay
      */
     public String getJotaiDisplay() {
@@ -394,6 +397,7 @@ public class GXHDO901A implements Serializable {
 
     /**
      * 状態表示
+     *
      * @param jotaiDisplay the jotaiDisplay to set
      */
     public void setJotaiDisplay(String jotaiDisplay) {
@@ -402,6 +406,7 @@ public class GXHDO901A implements Serializable {
 
     /**
      * 完了メッセージ
+     *
      * @return the compMessage
      */
     public String getCompMessage() {
@@ -410,6 +415,7 @@ public class GXHDO901A implements Serializable {
 
     /**
      * 完了メッセージ
+     *
      * @param compMessage the compMessage to set
      */
     public void setCompMessage(String compMessage) {
@@ -471,12 +477,12 @@ public class GXHDO901A implements Serializable {
         boolean isExist;
         List<String> initMessageList = new ArrayList<>();
         for (int i = 0; i <= itemList.size() - 1; i++) {
-            
+
             // 条件ﾃｰﾌﾞﾙ工程名が空の場合は規格値は設定しない
-            if(StringUtil.isEmpty(itemList.get(i).getJokenKoteiMei())){
+            if (StringUtil.isEmpty(itemList.get(i).getJokenKoteiMei())) {
                 continue;
             }
-            
+
             isExist = false;
             for (int j = 0; j <= listDaJoken.size() - 1; j++) {
 
@@ -533,7 +539,7 @@ public class GXHDO901A implements Serializable {
         data.setInitMessageList(initMessageList);
         data.setInitRev(this.initRev);
         data.setInitJotaiFlg(this.initJotaiFlg);
-        
+
         this.processData = data;
 
         // 処理開始
@@ -756,7 +762,6 @@ public class GXHDO901A implements Serializable {
         // 背景色を元に戻す
         this.clearItemListBackColor(buttonId);
 
-        
         //共通ﾁｪｯｸ
         ErrorMessageInfo errorMessageInfo = getCheckResult(buttonId);
 
@@ -829,7 +834,7 @@ public class GXHDO901A implements Serializable {
             // エラー項目を表示するためページを遷移する。
             // 表示したい項目のIndexを指定(0以下のIndexは内部的に無視)
             setPageItemDataList(this.processData.getErrorMessageInfoList().get(0).getPageChangeItemIndex());
-            
+
             return;
         }
 
@@ -881,7 +886,6 @@ public class GXHDO901A implements Serializable {
                     return;
                 }
             }
-            
 
             // 警告もエラーも存在しない場合、後続処理を実行して結果を反映する
             IFormLogic formLogic = this.processData.getFormLogic();
@@ -892,9 +896,9 @@ public class GXHDO901A implements Serializable {
 
             // 処理実行
             ProcessData resultData = (ProcessData) method.invoke(formLogic, this.processData);
-            
+
             // 致命的ｴﾗｰの場合
-            if(this.processData.isFatalError()){
+            if (this.processData.isFatalError()) {
                 // 画面の戻るボタン以外を非表示とする。
                 this.itemList = new ArrayList<>();
                 this.buttonListTop = new ArrayList<>();
@@ -927,7 +931,7 @@ public class GXHDO901A implements Serializable {
                     RequestContext context = RequestContext.getCurrentInstance();
                     context.addCallbackParam("firstParam", resultData.getCollBackParam());
                 }
- 
+
                 // 完了時メッセージの設定
                 if (!StringUtil.isEmpty(resultData.getCompMessage())) {
                     this.compMessage = resultData.getCompMessage();
@@ -940,23 +944,23 @@ public class GXHDO901A implements Serializable {
 
                 // リビジョンを保持
                 this.initRev = resultData.getInitRev();
-                
+
                 // 状態フラグを保持
                 this.initJotaiFlg = resultData.getInitJotaiFlg();
-                
+
                 // 状態ﾌﾗｸﾞ表示を設定
                 this.jotaiDisplay = getJotaiDisplayValue(this.initJotaiFlg);
-                
+
                 //リビジョンチェック対象ボタンIDを設定
-                if(this.processData.getCheckRevisionButtonId() != null && !this.processData.getCheckRevisionButtonId().isEmpty()){
+                if (this.processData.getCheckRevisionButtonId() != null && !this.processData.getCheckRevisionButtonId().isEmpty()) {
                     this.checkRevisionButtonId = this.processData.getCheckRevisionButtonId();
                 }
-                
+
                 // 対象の処理にボタン押下時の処理についてはテーブルチェックは行わない
-                if(this.processData.getNoCheckButtonId() != null && !this.processData.getNoCheckButtonId().isEmpty()){
+                if (this.processData.getNoCheckButtonId() != null && !this.processData.getNoCheckButtonId().isEmpty()) {
                     this.noCheckButtonId = this.processData.getNoCheckButtonId();
                 }
-                
+
                 // ボタンの活性・非活性制御
                 this.setButtonEnabled(this.processData.getActiveButtonId(), this.processData.getInactiveButtonId());
                 // 処理制御データクリア
@@ -969,14 +973,15 @@ public class GXHDO901A implements Serializable {
             ErrUtil.outputErrorLog("クローン処理エラー", ex, LOGGER);
         }
     }
-    
+
     /**
      * 状態表示の表示内容を取得
+     *
      * @param jotaiFlg 状態ﾌﾗｸﾞ
-     * @return 状態表示表示内容 
+     * @return 状態表示表示内容
      */
-    private String getJotaiDisplayValue(String jotaiFlg){
-        switch(jotaiFlg){
+    private String getJotaiDisplayValue(String jotaiFlg) {
+        switch (jotaiFlg) {
             case "0":
                 return "現在「仮登録」です";
             case "1":
@@ -1255,7 +1260,6 @@ public class GXHDO901A implements Serializable {
         this.buttonListTop = new ArrayList<>();
         this.buttonListBottom = new ArrayList<>();
         this.styleDisplayNone = "display: none;";
-        
 
         // メッセージを画面に渡す
         InitMessage beanInitMessage = (InitMessage) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_INIT_MESSAGE);
@@ -1278,7 +1282,7 @@ public class GXHDO901A implements Serializable {
                     + "  FROM FXHDM05 "
                     + " WHERE gamen_id = ? "
                     + " ORDER BY button_id,item_id,check_no ";
-            
+
             List<Object> params = new ArrayList<>();
             params.add(formId);
 
@@ -1374,21 +1378,21 @@ public class GXHDO901A implements Serializable {
      * @return エラーメッセージ
      */
     private ErrorMessageInfo getCheckResult(String buttonId) {
-        
+
         // リビジョンチェック
         ErrorMessageInfo checkRevErrorMessage = checkRevision(buttonId);
-        if(checkRevErrorMessage != null){
+        if (checkRevErrorMessage != null) {
             return checkRevErrorMessage;
         }
-        
+
         //共通ﾁｪｯｸ
         List<FXHDM05> itemRowCheckList
                 = this.checkListHDM05.stream().filter(n -> buttonId.equals(n.getButtonId())).collect(Collectors.toList());
-        
+
         ValidateUtil validateUtil = new ValidateUtil();
         QueryRunner queryRunnerWip = new QueryRunner(dataSourceWip);
         ErrorMessageInfo requireCheckErrorMessage = validateUtil.executeValidation(itemRowCheckList, this.itemList, queryRunnerWip);
-        
+
         return requireCheckErrorMessage;
     }
 
@@ -1444,22 +1448,23 @@ public class GXHDO901A implements Serializable {
         this.processData.getKikakuchiInputErrorInfoList().clear();
         this.processMain();
     }
-    
+
     /**
      * リビジョンチェック
+     *
      * @param buttonId ボタンID
      * @return エラーメッセージ情報(エラーなし無しの場合リターン)
      */
     private ErrorMessageInfo checkRevision(String buttonId) {
         try {
-            
+
             //リビジョンチェック対象のボタンの場合、チェックを行う。
-            if(!this.checkRevisionButtonId.contains(buttonId)){
+            if (!this.checkRevisionButtonId.contains(buttonId)) {
                 return null;
             }
-            
+
             QueryRunner queryRunnerDoc = new QueryRunner(this.dataSourceDocServer);
-            
+
             // セッションから情報を取得
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             HttpSession session = (HttpSession) externalContext.getSession(false);
@@ -1468,7 +1473,7 @@ public class GXHDO901A implements Serializable {
             String kojyo = lotNo.substring(0, 3); //工場ｺｰﾄﾞ
             String lotNo8 = lotNo.substring(3, 11); //ﾛｯﾄNo(8桁)
             String edaban = lotNo.substring(11, 14); //枝番
-            
+
             Map fxhdd03RevInfo = loadFxhdd03RevInfo(queryRunnerDoc, kojyo, lotNo8, edaban, formId);
             if (StringUtil.isEmpty(this.initJotaiFlg)) {
                 // 新規の場合、データが存在する場合
@@ -1478,12 +1483,12 @@ public class GXHDO901A implements Serializable {
             } else {
                 // 品質DB登録実績データが取得出来ていない場合エラー
                 if (fxhdd03RevInfo == null || fxhdd03RevInfo.isEmpty()) {
-                    return  new ErrorMessageInfo(MessageUtil.getMessage("XHD-000025"));
+                    return new ErrorMessageInfo(MessageUtil.getMessage("XHD-000025"));
                 }
-                
+
                 // revisionが更新されていた場合エラー
                 if (!this.initRev.equals(StringUtil.nullToBlank(getMapData(fxhdd03RevInfo, "rev")))) {
-                    return  new ErrorMessageInfo(MessageUtil.getMessage("XHD-000025"));
+                    return new ErrorMessageInfo(MessageUtil.getMessage("XHD-000025"));
                 }
             }
             return null;
@@ -1492,7 +1497,7 @@ public class GXHDO901A implements Serializable {
             return new ErrorMessageInfo("実行時エラー");
         }
     }
-    
+
     /**
      * [品質DB登録実績]から、リビジョン,状態フラグを取得
      *
@@ -1500,6 +1505,7 @@ public class GXHDO901A implements Serializable {
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @param edaban 枝番(検索キー)
+     * @param formId 画面ID(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
@@ -1519,7 +1525,7 @@ public class GXHDO901A implements Serializable {
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
     }
-    
+
     /**
      * Mapから値を取得する(マップがNULLまたは空の場合はNULLを返却)
      *
@@ -1533,52 +1539,61 @@ public class GXHDO901A implements Serializable {
         }
         return map.get(mapId);
     }
-    
-    
-    public String returnPage(){
+
+    /**
+     * 戻る時処理
+     *
+     * @return 戻り先ページ
+     */
+    public String returnPage() {
         //セッションのロットNoをクリア
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
         session.setAttribute("lotNo", "");
-        
+
         return "/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true";
     }
-    
-    
-    public void returnSubForm(String subFormId, boolean isError){
-        if(isError){
+
+    /**
+     * サブ画面からの戻り時処理
+     *
+     * @param subFormId サブ画面ID
+     * @param isError エラー判定(true:エラー、false:エラーなし)
+     */
+    public void returnSubForm(String subFormId, boolean isError) {
+        if (isError) {
             // 処理なし
             return;
         }
-        
-        
-        switch(subFormId){
-            case SubFormUtil.FORM_ID_GXHDO101C001 :
+
+        switch (subFormId) {
+            // 膜厚(SPS)
+            case SubFormUtil.FORM_ID_GXHDO101C001:
                 GXHDO101C001 beanGXHDO101C001 = (GXHDO101C001) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C001);
                 GXHDO101C001Logic.setReturnData(beanGXHDO101C001.getGxhdO101c001Model(), this.itemList);
-                    break;
-            case SubFormUtil.FORM_ID_GXHDO101C002 :
+                break;
+            // PTN距離X
+            case SubFormUtil.FORM_ID_GXHDO101C002:
                 GXHDO101C002 beanGXHDO101C002 = (GXHDO101C002) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C002);
                 GXHDO101C002Logic.setReturnData(beanGXHDO101C002.getGxhdO101c002Model(), this.itemList);
-                    break;
-            case SubFormUtil.FORM_ID_GXHDO101C003 :
+                break;
+            // PTN距離Y
+            case SubFormUtil.FORM_ID_GXHDO101C003:
                 GXHDO101C003 beanGXHDO101C003 = (GXHDO101C003) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C003);
                 GXHDO101C003Logic.setReturnData(beanGXHDO101C003.getGxhdO101c003Model(), this.itemList);
-                    break;
-            case SubFormUtil.FORM_ID_GXHDO101C004 :
+                break;
+            // 膜厚(RSUS)
+            case SubFormUtil.FORM_ID_GXHDO101C004:
                 GXHDO101C004 beanGXHDO101C004 = (GXHDO101C004) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C004);
                 GXHDO101C004Logic.setReturnData(beanGXHDO101C004.getGxhdO101c004Model(), this.itemList);
-                    break;
-            case SubFormUtil.FORM_ID_GXHDO101C005 :
+                break;
+            // 印刷幅
+            case SubFormUtil.FORM_ID_GXHDO101C005:
                 GXHDO101C005 beanGXHDO101C005 = (GXHDO101C005) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C005);
                 GXHDO101C005Logic.setReturnData(beanGXHDO101C005.getGxhdO101c005Model(), this.itemList);
-                    break;
+                break;
             default:
-                    break;
+                break;
         }
-        
-            
     }
-    
-
 }

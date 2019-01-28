@@ -489,8 +489,5 @@ public class GXHDO101A implements Serializable {
     public void setTantoshaCd(String tantoshaCd) {
         this.tantoshaCd = tantoshaCd;
     }
-    
-
-   
-
+ 
 }
