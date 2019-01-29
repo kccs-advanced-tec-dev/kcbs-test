@@ -326,102 +326,102 @@ public class GXHDO101B003Const {
     /**
      * 膜厚(画面下)
      */
-    public static final String BTN_DOWN_MAKUATSU_SUB_GAMEN = "insatsu_rsus_down_makuatsu_sub_gamen";
+    public static final String BTN_DOWN_MAKUATSU_SUB_GAMEN = "insatsu_rsus_down_makuatsu_sub_gamen_Bottom";
 
     /**
      * 印刷幅(画面下)
      */
-    public static final String BTN_DOWN_INSATSUHABA_SUB_GAMEN = "insatsu_rsus_down_insatsuhaba_sub_gamen";
+    public static final String BTN_DOWN_INSATSUHABA_SUB_GAMEN = "insatsu_rsus_down_insatsuhaba_sub_gamen_Bottom";
 
     /**
      * 枝番ｺﾋﾟｰ(画面下)
      */
-    public static final String BTN_DOWN_COPY_EDABAN = "insatsu_rsus_down_copy_edaban";
+    public static final String BTN_DOWN_COPY_EDABAN = "insatsu_rsus_down_copy_edaban_Bottom";
 
     /**
      * 開始日時(画面下)
      */
-    public static final String BTN_DOWN_STARTDATETIME = "insatsu_rsus_down_startdatetime";
+    public static final String BTN_DOWN_STARTDATETIME = "insatsu_rsus_down_startdatetime_Bottom";
 
     /**
      * 終了日時(画面下)
      */
-    public static final String BTN_DOWN_ENDDATETIME = "insatsu_rsus_down_enddatetime";
+    public static final String BTN_DOWN_ENDDATETIME = "insatsu_rsus_down_enddatetime_Bottom";
 
     /**
      * 仮登録(画面下)
      */
-    public static final String BTN_DOWN_KARI_TOUROKU = "insatsu_rsus_down_kari_touroku";
+    public static final String BTN_DOWN_KARI_TOUROKU = "insatsu_rsus_down_kari_touroku_Bottom";
 
     /**
      * 登録(画面下)
      */
-    public static final String BTN_DOWN_INSERT = "insatsu_rsus_down_insert";
+    public static final String BTN_DOWN_INSERT = "insatsu_rsus_down_insert_Bottom";
 
     /**
      * 検索(画面下)
      */
-    public static final String BTN_DOWN_KENSAKU = "insatsu_rsus_down_kensaku";
+    public static final String BTN_DOWN_KENSAKU = "insatsu_rsus_down_kensaku_Bottom";
 
     /**
      * 修正(画面下)
      */
-    public static final String BTN_DOWN_UPDATE = "insatsu_rsus_down_update";
+    public static final String BTN_DOWN_UPDATE = "insatsu_rsus_down_update_Bottom";
 
     /**
      * 削除(画面下)
      */
-    public static final String BTN_DOWN_DELETE = "insatsu_rsus_down_delete";
+    public static final String BTN_DOWN_DELETE = "insatsu_rsus_down_delete_Bottom";
 
     /**
      * 膜厚(画面上)
      */
-    public static final String BTN_UP_MAKUATSU_SUB_GAMEN = "insatsu_rsus_up_makuatsu_sub_gamen";
+    public static final String BTN_UP_MAKUATSU_SUB_GAMEN = "insatsu_rsus_up_makuatsu_sub_gamen_Top";
 
     /**
      * 印刷幅(画面上)
      */
-    public static final String BTN_UP_INSATSUHABA_SUB_GAMEN = "insatsu_rsus_up_insatsuhaba_sub_gamen";
+    public static final String BTN_UP_INSATSUHABA_SUB_GAMEN = "insatsu_rsus_up_insatsuhaba_sub_gamen_Top";
 
     /**
      * 枝番ｺﾋﾟｰ(画面上)
      */
-    public static final String BTN_UP_COPY_EDABAN = "insatsu_rsus_up_copy_edaban";
+    public static final String BTN_UP_COPY_EDABAN = "insatsu_rsus_up_copy_edaban_Top";
 
     /**
      * 開始日時(画面上)
      */
-    public static final String BTN_UP_STARTDATETIME = "insatsu_rsus_up_startdatetime";
+    public static final String BTN_UP_STARTDATETIME = "insatsu_rsus_up_startdatetime_Top";
 
     /**
      * 終了日時(画面上)
      */
-    public static final String BTN_UP_ENDDATETIME = "insatsu_rsus_up_enddatetime";
+    public static final String BTN_UP_ENDDATETIME = "insatsu_rsus_up_enddatetime_Top";
 
     /**
      * 仮登録(画面上)
      */
-    public static final String BTN_UP_KARI_TOUROKU = "insatsu_rsus_up_kari_touroku";
+    public static final String BTN_UP_KARI_TOUROKU = "insatsu_rsus_up_kari_touroku_Top";
 
     /**
      * 登録(画面上)
      */
-    public static final String BTN_UP_INSERT = "insatsu_rsus_up_insert";
+    public static final String BTN_UP_INSERT = "insatsu_rsus_up_insert_Top";
 
     /**
      * 検索(画面上)
      */
-    public static final String BTN_UP_KENSAKU = "insatsu_rsus_up_kensaku";
+    public static final String BTN_UP_KENSAKU = "insatsu_rsus_up_kensaku_Top";
 
     /**
      * 修正(画面上)
      */
-    public static final String BTN_UP_UPDATE = "insatsu_rsus_up_update";
+    public static final String BTN_UP_UPDATE = "insatsu_rsus_up_update_Top";
 
     /**
      * 削除(画面上)
      */
-    public static final String BTN_UP_DELETE = "insatsu_rsus_up_delete";
+    public static final String BTN_UP_DELETE = "insatsu_rsus_up_delete_Top";
 
     /**
      * ユーザー認証パラメータ(修正)
