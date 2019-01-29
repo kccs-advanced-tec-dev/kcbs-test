@@ -103,29 +103,27 @@ public class GXHDO101B002 implements IFormLogic {
             processData = this.setButtonEnable(processData, processData.getInitJotaiFlg());
 
             //サブ画面呼出しをチェック処理なし(処理時にエラーの背景色を戻さない機能として登録)
-            processData.setNoCheckButtonId(Arrays.asList(
-                    GXHDO101B002Const.BTN_UP_MAKUATSU_SUBGAMEN,
-                    GXHDO101B002Const.BTN_UP_PTN_KYORI_X_SUBGAMEN,
-                    GXHDO101B002Const.BTN_UP_PTN_KYORI_Y_SUBGAMEN,
-                    GXHDO101B002Const.BTN_UP_START_DATETIME,
-                    GXHDO101B002Const.BTN_UP_END_DATETIME,
-                    GXHDO101B002Const.BTN_DOWN_MAKUATSU_SUBGAMEN,
-                    GXHDO101B002Const.BTN_DOWN_PTN_KYORI_X_SUBGAMEN,
-                    GXHDO101B002Const.BTN_DOWN_PTN_KYORI_Y_SUBGAMEN,
-                    GXHDO101B002Const.BTN_DOWN_START_DATETIME,
-                    GXHDO101B002Const.BTN_DOWN_END_DATETIME
+            processData.setNoCheckButtonId(Arrays.asList(GXHDO101B002Const.BTN_MAKUATSU_SUBGAMEN_TOP,
+                    GXHDO101B002Const.BTN_PTN_KYORI_X_SUBGAMEN_TOP,
+                    GXHDO101B002Const.BTN_PTN_KYORI_Y_SUBGAMEN_TOP,
+                    GXHDO101B002Const.BTN_START_DATETIME_TOP,
+                    GXHDO101B002Const.BTN_END_DATETIME_TOP,
+                    GXHDO101B002Const.BTN_MAKUATSU_SUBGAMEN_BUTTOM,
+                    GXHDO101B002Const.BTN_PTN_KYORI_X_SUBGAMEN_BUTTOM,
+                    GXHDO101B002Const.BTN_PTN_KYORI_Y_SUBGAMEN_BUTTOM,
+                    GXHDO101B002Const.BTN_START_DATETIME_BUTTOM,
+                    GXHDO101B002Const.BTN_END_DATETIME_BUTTOM
             ));
 
             // リビジョンチェック対象のボタンを設定する。
-            processData.setCheckRevisionButtonId(Arrays.asList(
-                    GXHDO101B002Const.BTN_UP_KARI_TOUROKU,
-                    GXHDO101B002Const.BTN_UP_TOUROKU,
-                    GXHDO101B002Const.BTN_UP_SAKUJO,
-                    GXHDO101B002Const.BTN_UP_SHUSEI,
-                    GXHDO101B002Const.BTN_DOWN_KARI_TOUROKU,
-                    GXHDO101B002Const.BTN_DOWN_TOUROKU,
-                    GXHDO101B002Const.BTN_DOWN_SAKUJO,
-                    GXHDO101B002Const.BTN_DOWN_SHUSEI));
+            processData.setCheckRevisionButtonId(Arrays.asList(GXHDO101B002Const.BTN_KARI_TOUROKU_TOP,
+                    GXHDO101B002Const.BTN_INSERT_TOP,
+                    GXHDO101B002Const.BTN_DELETE_TOP,
+                    GXHDO101B002Const.BTN_UPDATE_TOP,
+                    GXHDO101B002Const.BTN_KARI_TOUROKU_BUTTOM,
+                    GXHDO101B002Const.BTN_INSERT_BUTTOM,
+                    GXHDO101B002Const.BTN_DELETE_BUTTOM,
+                    GXHDO101B002Const.BTN_UPDATE_BUTTOM));
 
             //******************************************************************************************
             // エラーが発生していない場合
@@ -943,56 +941,52 @@ public class GXHDO101B002 implements IFormLogic {
         List<String> inactiveIdList = new ArrayList<>();
         switch (jotaiFlg) {
             case JOTAI_FLG_TOROKUZUMI:
-                activeIdList.addAll(Arrays.asList(
-                        GXHDO101B002Const.BTN_DOWN_EDABAN_COPY,
-                        GXHDO101B002Const.BTN_DOWN_MAKUATSU_SUBGAMEN,
-                        GXHDO101B002Const.BTN_DOWN_PTN_KYORI_X_SUBGAMEN,
-                        GXHDO101B002Const.BTN_DOWN_PTN_KYORI_Y_SUBGAMEN,
-                        GXHDO101B002Const.BTN_DOWN_SAKUJO,
-                        GXHDO101B002Const.BTN_DOWN_SHUSEI,
-                        GXHDO101B002Const.BTN_DOWN_START_DATETIME,
-                        GXHDO101B002Const.BTN_DOWN_END_DATETIME,
-                        GXHDO101B002Const.BTN_UP_EDABAN_COPY,
-                        GXHDO101B002Const.BTN_UP_MAKUATSU_SUBGAMEN,
-                        GXHDO101B002Const.BTN_UP_PTN_KYORI_X_SUBGAMEN,
-                        GXHDO101B002Const.BTN_UP_PTN_KYORI_Y_SUBGAMEN,
-                        GXHDO101B002Const.BTN_UP_SAKUJO,
-                        GXHDO101B002Const.BTN_UP_SHUSEI,
-                        GXHDO101B002Const.BTN_UP_START_DATETIME,
-                        GXHDO101B002Const.BTN_UP_END_DATETIME
+                activeIdList.addAll(Arrays.asList(GXHDO101B002Const.BTN_EDABAN_COPY_BUTTOM,
+                        GXHDO101B002Const.BTN_MAKUATSU_SUBGAMEN_BUTTOM,
+                        GXHDO101B002Const.BTN_PTN_KYORI_X_SUBGAMEN_BUTTOM,
+                        GXHDO101B002Const.BTN_PTN_KYORI_Y_SUBGAMEN_BUTTOM,
+                        GXHDO101B002Const.BTN_DELETE_BUTTOM,
+                        GXHDO101B002Const.BTN_UPDATE_BUTTOM,
+                        GXHDO101B002Const.BTN_START_DATETIME_BUTTOM,
+                        GXHDO101B002Const.BTN_END_DATETIME_BUTTOM,
+                        GXHDO101B002Const.BTN_EDABAN_COPY_TOP,
+                        GXHDO101B002Const.BTN_MAKUATSU_SUBGAMEN_TOP,
+                        GXHDO101B002Const.BTN_PTN_KYORI_X_SUBGAMEN_TOP,
+                        GXHDO101B002Const.BTN_PTN_KYORI_Y_SUBGAMEN_TOP,
+                        GXHDO101B002Const.BTN_DELETE_TOP,
+                        GXHDO101B002Const.BTN_UPDATE_TOP,
+                        GXHDO101B002Const.BTN_START_DATETIME_TOP,
+                        GXHDO101B002Const.BTN_END_DATETIME_TOP
                 ));
-                inactiveIdList.addAll(Arrays.asList(
-                        GXHDO101B002Const.BTN_DOWN_KARI_TOUROKU,
-                        GXHDO101B002Const.BTN_DOWN_TOUROKU,
-                        GXHDO101B002Const.BTN_UP_KARI_TOUROKU,
-                        GXHDO101B002Const.BTN_UP_TOUROKU));
+                inactiveIdList.addAll(Arrays.asList(GXHDO101B002Const.BTN_KARI_TOUROKU_BUTTOM,
+                        GXHDO101B002Const.BTN_INSERT_BUTTOM,
+                        GXHDO101B002Const.BTN_KARI_TOUROKU_TOP,
+                        GXHDO101B002Const.BTN_INSERT_TOP));
 
                 break;
             default:
-                activeIdList.addAll(Arrays.asList(
-                        GXHDO101B002Const.BTN_DOWN_KARI_TOUROKU,
-                        GXHDO101B002Const.BTN_DOWN_EDABAN_COPY,
-                        GXHDO101B002Const.BTN_DOWN_MAKUATSU_SUBGAMEN,
-                        GXHDO101B002Const.BTN_DOWN_PTN_KYORI_X_SUBGAMEN,
-                        GXHDO101B002Const.BTN_DOWN_PTN_KYORI_Y_SUBGAMEN,
-                        GXHDO101B002Const.BTN_DOWN_TOUROKU,
-                        GXHDO101B002Const.BTN_DOWN_START_DATETIME,
-                        GXHDO101B002Const.BTN_DOWN_END_DATETIME,
-                        GXHDO101B002Const.BTN_UP_KARI_TOUROKU,
-                        GXHDO101B002Const.BTN_UP_EDABAN_COPY,
-                        GXHDO101B002Const.BTN_UP_MAKUATSU_SUBGAMEN,
-                        GXHDO101B002Const.BTN_UP_PTN_KYORI_X_SUBGAMEN,
-                        GXHDO101B002Const.BTN_UP_PTN_KYORI_Y_SUBGAMEN,
-                        GXHDO101B002Const.BTN_UP_TOUROKU,
-                        GXHDO101B002Const.BTN_UP_START_DATETIME,
-                        GXHDO101B002Const.BTN_UP_END_DATETIME
+                activeIdList.addAll(Arrays.asList(GXHDO101B002Const.BTN_KARI_TOUROKU_BUTTOM,
+                        GXHDO101B002Const.BTN_EDABAN_COPY_BUTTOM,
+                        GXHDO101B002Const.BTN_MAKUATSU_SUBGAMEN_BUTTOM,
+                        GXHDO101B002Const.BTN_PTN_KYORI_X_SUBGAMEN_BUTTOM,
+                        GXHDO101B002Const.BTN_PTN_KYORI_Y_SUBGAMEN_BUTTOM,
+                        GXHDO101B002Const.BTN_INSERT_BUTTOM,
+                        GXHDO101B002Const.BTN_START_DATETIME_BUTTOM,
+                        GXHDO101B002Const.BTN_END_DATETIME_BUTTOM,
+                        GXHDO101B002Const.BTN_KARI_TOUROKU_TOP,
+                        GXHDO101B002Const.BTN_EDABAN_COPY_TOP,
+                        GXHDO101B002Const.BTN_MAKUATSU_SUBGAMEN_TOP,
+                        GXHDO101B002Const.BTN_PTN_KYORI_X_SUBGAMEN_TOP,
+                        GXHDO101B002Const.BTN_PTN_KYORI_Y_SUBGAMEN_TOP,
+                        GXHDO101B002Const.BTN_INSERT_TOP,
+                        GXHDO101B002Const.BTN_START_DATETIME_TOP,
+                        GXHDO101B002Const.BTN_END_DATETIME_TOP
                 ));
 
-                inactiveIdList.addAll(Arrays.asList(
-                        GXHDO101B002Const.BTN_DOWN_SAKUJO,
-                        GXHDO101B002Const.BTN_DOWN_SHUSEI,
-                        GXHDO101B002Const.BTN_UP_SAKUJO,
-                        GXHDO101B002Const.BTN_UP_SHUSEI));
+                inactiveIdList.addAll(Arrays.asList(GXHDO101B002Const.BTN_DELETE_BUTTOM,
+                        GXHDO101B002Const.BTN_UPDATE_BUTTOM,
+                        GXHDO101B002Const.BTN_DELETE_TOP,
+                        GXHDO101B002Const.BTN_UPDATE_TOP));
 
                 break;
 
@@ -1014,53 +1008,53 @@ public class GXHDO101B002 implements IFormLogic {
         String method;
         switch (buttonId) {
             // 膜圧
-            case GXHDO101B002Const.BTN_UP_MAKUATSU_SUBGAMEN:
-            case GXHDO101B002Const.BTN_DOWN_MAKUATSU_SUBGAMEN:
+            case GXHDO101B002Const.BTN_MAKUATSU_SUBGAMEN_TOP:
+            case GXHDO101B002Const.BTN_MAKUATSU_SUBGAMEN_BUTTOM:
                 method = "openMakuatsu";
                 break;
             // PTN距離X
-            case GXHDO101B002Const.BTN_UP_PTN_KYORI_X_SUBGAMEN:
-            case GXHDO101B002Const.BTN_DOWN_PTN_KYORI_X_SUBGAMEN:
+            case GXHDO101B002Const.BTN_PTN_KYORI_X_SUBGAMEN_TOP:
+            case GXHDO101B002Const.BTN_PTN_KYORI_X_SUBGAMEN_BUTTOM:
                 method = "openPtnKyoriX";
                 break;
             // PTN距離Y
-            case GXHDO101B002Const.BTN_UP_PTN_KYORI_Y_SUBGAMEN:
-            case GXHDO101B002Const.BTN_DOWN_PTN_KYORI_Y_SUBGAMEN:
+            case GXHDO101B002Const.BTN_PTN_KYORI_Y_SUBGAMEN_TOP:
+            case GXHDO101B002Const.BTN_PTN_KYORI_Y_SUBGAMEN_BUTTOM:
                 method = "openPtnKyoriY";
                 break;
             // 仮登録
-            case GXHDO101B002Const.BTN_UP_KARI_TOUROKU:
-            case GXHDO101B002Const.BTN_DOWN_KARI_TOUROKU:
+            case GXHDO101B002Const.BTN_KARI_TOUROKU_TOP:
+            case GXHDO101B002Const.BTN_KARI_TOUROKU_BUTTOM:
                 method = "checkDataTempResist";
                 break;
             // 登録
-            case GXHDO101B002Const.BTN_UP_TOUROKU:
-            case GXHDO101B002Const.BTN_DOWN_TOUROKU:
+            case GXHDO101B002Const.BTN_INSERT_TOP:
+            case GXHDO101B002Const.BTN_INSERT_BUTTOM:
                 method = "checkDataResist";
                 break;
             // 枝番コピー
-            case GXHDO101B002Const.BTN_UP_EDABAN_COPY:
-            case GXHDO101B002Const.BTN_DOWN_EDABAN_COPY:
+            case GXHDO101B002Const.BTN_EDABAN_COPY_TOP:
+            case GXHDO101B002Const.BTN_EDABAN_COPY_BUTTOM:
                 method = "confEdabanCopy";
                 break;
             // 修正
-            case GXHDO101B002Const.BTN_UP_SHUSEI:
-            case GXHDO101B002Const.BTN_DOWN_SHUSEI:
+            case GXHDO101B002Const.BTN_UPDATE_TOP:
+            case GXHDO101B002Const.BTN_UPDATE_BUTTOM:
                 method = "checkDataCorrect";
                 break;
             // 削除
-            case GXHDO101B002Const.BTN_UP_SAKUJO:
-            case GXHDO101B002Const.BTN_DOWN_SAKUJO:
+            case GXHDO101B002Const.BTN_DELETE_TOP:
+            case GXHDO101B002Const.BTN_DELETE_BUTTOM:
                 method = "checkDataDelete";
                 break;
             // 開始日時
-            case GXHDO101B002Const.BTN_UP_START_DATETIME:
-            case GXHDO101B002Const.BTN_DOWN_START_DATETIME:
+            case GXHDO101B002Const.BTN_START_DATETIME_TOP:
+            case GXHDO101B002Const.BTN_START_DATETIME_BUTTOM:
                 method = "setKaishiDateTime";
                 break;
             // 開始日時
-            case GXHDO101B002Const.BTN_UP_END_DATETIME:
-            case GXHDO101B002Const.BTN_DOWN_END_DATETIME:
+            case GXHDO101B002Const.BTN_END_DATETIME_TOP:
+            case GXHDO101B002Const.BTN_END_DATETIME_BUTTOM:
                 method = "setShuryouDateTime";
                 break;
             default:
