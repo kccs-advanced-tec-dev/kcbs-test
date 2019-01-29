@@ -69,27 +69,27 @@ public class SubSrRsusprn {
     /**
      * 印刷幅ｽﾀｰﾄ1
      */
-    private BigDecimal insatuhabaStart1;
+    private Integer insatuhabaStart1;
 
     /**
      * 印刷幅ｽﾀｰﾄ2
      */
-    private BigDecimal insatuhabaStart2;
+    private Integer insatuhabaStart2;
 
     /**
      * 印刷幅ｽﾀｰﾄ3
      */
-    private BigDecimal insatuhabaStart3;
+    private Integer insatuhabaStart3;
 
     /**
      * 印刷幅ｽﾀｰﾄ4
      */
-    private BigDecimal insatuhabaStart4;
+    private Integer insatuhabaStart4;
 
     /**
      * 印刷幅ｽﾀｰﾄ5
      */
-    private BigDecimal insatuhabaStart5;
+    private Integer insatuhabaStart5;
 
     /**
      * 登録日時
@@ -260,7 +260,7 @@ public class SubSrRsusprn {
      *
      * @return the insatuhabaStart1
      */
-    public BigDecimal getInsatuhabaStart1() {
+    public Integer getInsatuhabaStart1() {
         return insatuhabaStart1;
     }
 
@@ -269,7 +269,7 @@ public class SubSrRsusprn {
      *
      * @param insatuhabaStart1 the insatuhabaStart1 to set
      */
-    public void setInsatuhabaStart1(BigDecimal insatuhabaStart1) {
+    public void setInsatuhabaStart1(Integer insatuhabaStart1) {
         this.insatuhabaStart1 = insatuhabaStart1;
     }
 
@@ -278,7 +278,7 @@ public class SubSrRsusprn {
      *
      * @return the insatuhabaStart2
      */
-    public BigDecimal getInsatuhabaStart2() {
+    public Integer getInsatuhabaStart2() {
         return insatuhabaStart2;
     }
 
@@ -287,7 +287,7 @@ public class SubSrRsusprn {
      *
      * @param insatuhabaStart2 the insatuhabaStart2 to set
      */
-    public void setInsatuhabaStart2(BigDecimal insatuhabaStart2) {
+    public void setInsatuhabaStart2(Integer insatuhabaStart2) {
         this.insatuhabaStart2 = insatuhabaStart2;
     }
 
@@ -296,7 +296,7 @@ public class SubSrRsusprn {
      *
      * @return the insatuhabaStart3
      */
-    public BigDecimal getInsatuhabaStart3() {
+    public Integer getInsatuhabaStart3() {
         return insatuhabaStart3;
     }
 
@@ -305,7 +305,7 @@ public class SubSrRsusprn {
      *
      * @param insatuhabaStart3 the insatuhabaStart3 to set
      */
-    public void setInsatuhabaStart3(BigDecimal insatuhabaStart3) {
+    public void setInsatuhabaStart3(Integer insatuhabaStart3) {
         this.insatuhabaStart3 = insatuhabaStart3;
     }
 
@@ -314,7 +314,7 @@ public class SubSrRsusprn {
      *
      * @return the insatuhabaStart4
      */
-    public BigDecimal getInsatuhabaStart4() {
+    public Integer getInsatuhabaStart4() {
         return insatuhabaStart4;
     }
 
@@ -323,7 +323,7 @@ public class SubSrRsusprn {
      *
      * @param insatuhabaStart4 the insatuhabaStart4 to set
      */
-    public void setInsatuhabaStart4(BigDecimal insatuhabaStart4) {
+    public void setInsatuhabaStart4(Integer insatuhabaStart4) {
         this.insatuhabaStart4 = insatuhabaStart4;
     }
 
@@ -332,7 +332,7 @@ public class SubSrRsusprn {
      *
      * @return the insatuhabaStart5
      */
-    public BigDecimal getInsatuhabaStart5() {
+    public Integer getInsatuhabaStart5() {
         return insatuhabaStart5;
     }
 
@@ -341,7 +341,7 @@ public class SubSrRsusprn {
      *
      * @param insatuhabaStart5 the insatuhabaStart5 to set
      */
-    public void setInsatuhabaStart5(BigDecimal insatuhabaStart5) {
+    public void setInsatuhabaStart5(Integer insatuhabaStart5) {
         this.insatuhabaStart5 = insatuhabaStart5;
     }
 

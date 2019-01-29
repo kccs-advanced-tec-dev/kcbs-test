@@ -319,7 +319,7 @@ public class GXHDO101B002Const {
     /**
      * 仮登録(画面下)
      */
-    public static final String BTN_KARI_TOUROKU_BUTTOM = "insatsu_sps_screen_kari_insert_Bottom";
+    public static final String BTN_KARI_TOUROKU_BUTTOM = "insatsu_sps_screen_kari_touroku_Bottom";
 
     /**
      * 枝番コピー(画面下)
@@ -371,7 +371,7 @@ public class GXHDO101B002Const {
     /**
      * 仮登録(画面上)
      */
-    public static final String BTN_KARI_TOUROKU_TOP = "insatsu_sps_screen_kari_insert_Top";
+    public static final String BTN_KARI_TOUROKU_TOP = "insatsu_sps_screen_kari_touroku_Top";
 
     /**
      * 枝番コピー(画面上)

@@ -528,17 +528,17 @@ public class GXHDO101B001Const {
     /**
      * 削除(画面上)
      */
-    public static final String BTN_DELETE_TOP = "insatsu_sps_gra_sakujo_Top";
+    public static final String BTN_DELETE_TOP = "insatsu_sps_gra_delete_Top";
 
     /**
      * 修正(画面上)
      */
-    public static final String BTN_UPDATE_TOP = "insatsu_sps_gra_shusei_Top";
+    public static final String BTN_UPDATE_TOP = "insatsu_sps_gra_update_Top";
 
     /**
      * 登録(画面上)
      */
-    public static final String BTN_INSERT_TOP = "insatsu_sps_gra_touroku_Top";
+    public static final String BTN_INSERT_TOP = "insatsu_sps_gra_insert_Top";
     
     /**
      * ユーザー認証パラメータ(修正)

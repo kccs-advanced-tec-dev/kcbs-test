@@ -103,27 +103,25 @@ public class GXHDO101B003 implements IFormLogic {
             processData = this.setButtonEnable(processData, processData.getInitJotaiFlg());
 
             //サブ画面呼出しをチェック処理なし(処理時にエラーの背景色を戻さない機能として登録)
-            processData.setNoCheckButtonId(Arrays.asList(
-                    GXHDO101B003Const.BTN_UP_MAKUATSU_SUB_GAMEN,
-                    GXHDO101B003Const.BTN_UP_INSATSUHABA_SUB_GAMEN,
-                    GXHDO101B003Const.BTN_UP_STARTDATETIME,
-                    GXHDO101B003Const.BTN_UP_ENDDATETIME,
-                    GXHDO101B003Const.BTN_DOWN_MAKUATSU_SUB_GAMEN,
-                    GXHDO101B003Const.BTN_DOWN_INSATSUHABA_SUB_GAMEN,
-                    GXHDO101B003Const.BTN_DOWN_STARTDATETIME,
-                    GXHDO101B003Const.BTN_DOWN_ENDDATETIME
+            processData.setNoCheckButtonId(Arrays.asList(GXHDO101B003Const.BTN_MAKUATSU_SUB_GAMEN_TOP,
+                    GXHDO101B003Const.BTN_INSATSUHABA_SUB_GAMEN_TOP,
+                    GXHDO101B003Const.BTN_STARTDATETIME_TOP,
+                    GXHDO101B003Const.BTN_ENDDATETIME_TOP,
+                    GXHDO101B003Const.BTN_MAKUATSU_SUB_GAMEN_BUTTOM,
+                    GXHDO101B003Const.BTN_INSATSUHABA_SUB_GAMEN_BUTTOM,
+                    GXHDO101B003Const.BTN_STARTDATETIME_BUTTOM,
+                    GXHDO101B003Const.BTN_ENDDATETIME_BUTTOM
             ));
 
             // リビジョンチェック対象のボタンを設定する。
-            processData.setCheckRevisionButtonId(Arrays.asList(
-                    GXHDO101B003Const.BTN_UP_KARI_TOUROKU,
-                    GXHDO101B003Const.BTN_UP_INSERT,
-                    GXHDO101B003Const.BTN_UP_DELETE,
-                    GXHDO101B003Const.BTN_UP_UPDATE,
-                    GXHDO101B003Const.BTN_DOWN_KARI_TOUROKU,
-                    GXHDO101B003Const.BTN_DOWN_INSERT,
-                    GXHDO101B003Const.BTN_DOWN_DELETE,
-                    GXHDO101B003Const.BTN_DOWN_UPDATE));
+            processData.setCheckRevisionButtonId(Arrays.asList(GXHDO101B003Const.BTN_KARI_TOUROKU_TOP,
+                    GXHDO101B003Const.BTN_INSERT_TOP,
+                    GXHDO101B003Const.BTN_DELETE_TOP,
+                    GXHDO101B003Const.BTN_UPDATE_TOP,
+                    GXHDO101B003Const.BTN_KARI_TOUROKU_BUTTOM,
+                    GXHDO101B003Const.BTN_INSERT_BUTTOM,
+                    GXHDO101B003Const.BTN_DELETE_BUTTOM,
+                    GXHDO101B003Const.BTN_UPDATE_BUTTOM));
 
             // エラーが発生していない場合
             if (processData.getErrorMessageInfoList().isEmpty()) {
@@ -883,52 +881,48 @@ public class GXHDO101B003 implements IFormLogic {
         List<String> inactiveIdList = new ArrayList<>();
         switch (jotaiFlg) {
             case JOTAI_FLG_TOROKUZUMI:
-                activeIdList.addAll(Arrays.asList(
-                        GXHDO101B003Const.BTN_DOWN_COPY_EDABAN,
-                        GXHDO101B003Const.BTN_DOWN_MAKUATSU_SUB_GAMEN,
-                        GXHDO101B003Const.BTN_DOWN_INSATSUHABA_SUB_GAMEN,
-                        GXHDO101B003Const.BTN_DOWN_DELETE,
-                        GXHDO101B003Const.BTN_DOWN_UPDATE,
-                        GXHDO101B003Const.BTN_DOWN_STARTDATETIME,
-                        GXHDO101B003Const.BTN_DOWN_ENDDATETIME,
-                        GXHDO101B003Const.BTN_UP_COPY_EDABAN,
-                        GXHDO101B003Const.BTN_UP_MAKUATSU_SUB_GAMEN,
-                        GXHDO101B003Const.BTN_UP_INSATSUHABA_SUB_GAMEN,
-                        GXHDO101B003Const.BTN_UP_DELETE,
-                        GXHDO101B003Const.BTN_UP_UPDATE,
-                        GXHDO101B003Const.BTN_UP_STARTDATETIME,
-                        GXHDO101B003Const.BTN_UP_ENDDATETIME
+                activeIdList.addAll(Arrays.asList(GXHDO101B003Const.BTN_COPY_EDABAN_BUTTOM,
+                        GXHDO101B003Const.BTN_MAKUATSU_SUB_GAMEN_BUTTOM,
+                        GXHDO101B003Const.BTN_INSATSUHABA_SUB_GAMEN_BUTTOM,
+                        GXHDO101B003Const.BTN_DELETE_BUTTOM,
+                        GXHDO101B003Const.BTN_UPDATE_BUTTOM,
+                        GXHDO101B003Const.BTN_STARTDATETIME_BUTTOM,
+                        GXHDO101B003Const.BTN_ENDDATETIME_BUTTOM,
+                        GXHDO101B003Const.BTN_COPY_EDABAN_TOP,
+                        GXHDO101B003Const.BTN_MAKUATSU_SUB_GAMEN_TOP,
+                        GXHDO101B003Const.BTN_INSATSUHABA_SUB_GAMEN_TOP,
+                        GXHDO101B003Const.BTN_DELETE_TOP,
+                        GXHDO101B003Const.BTN_UPDATE_TOP,
+                        GXHDO101B003Const.BTN_STARTDATETIME_TOP,
+                        GXHDO101B003Const.BTN_ENDDATETIME_TOP
                 ));
-                inactiveIdList.addAll(Arrays.asList(
-                        GXHDO101B003Const.BTN_DOWN_KARI_TOUROKU,
-                        GXHDO101B003Const.BTN_DOWN_INSERT,
-                        GXHDO101B003Const.BTN_UP_KARI_TOUROKU,
-                        GXHDO101B003Const.BTN_UP_INSERT));
+                inactiveIdList.addAll(Arrays.asList(GXHDO101B003Const.BTN_KARI_TOUROKU_BUTTOM,
+                        GXHDO101B003Const.BTN_INSERT_BUTTOM,
+                        GXHDO101B003Const.BTN_KARI_TOUROKU_TOP,
+                        GXHDO101B003Const.BTN_INSERT_TOP));
 
                 break;
             default:
-                activeIdList.addAll(Arrays.asList(
-                        GXHDO101B003Const.BTN_DOWN_KARI_TOUROKU,
-                        GXHDO101B003Const.BTN_DOWN_COPY_EDABAN,
-                        GXHDO101B003Const.BTN_DOWN_MAKUATSU_SUB_GAMEN,
-                        GXHDO101B003Const.BTN_DOWN_INSATSUHABA_SUB_GAMEN,
-                        GXHDO101B003Const.BTN_DOWN_INSERT,
-                        GXHDO101B003Const.BTN_DOWN_STARTDATETIME,
-                        GXHDO101B003Const.BTN_DOWN_ENDDATETIME,
-                        GXHDO101B003Const.BTN_UP_KARI_TOUROKU,
-                        GXHDO101B003Const.BTN_UP_COPY_EDABAN,
-                        GXHDO101B003Const.BTN_UP_MAKUATSU_SUB_GAMEN,
-                        GXHDO101B003Const.BTN_UP_INSATSUHABA_SUB_GAMEN,
-                        GXHDO101B003Const.BTN_UP_INSERT,
-                        GXHDO101B003Const.BTN_UP_STARTDATETIME,
-                        GXHDO101B003Const.BTN_UP_ENDDATETIME
+                activeIdList.addAll(Arrays.asList(GXHDO101B003Const.BTN_KARI_TOUROKU_BUTTOM,
+                        GXHDO101B003Const.BTN_COPY_EDABAN_BUTTOM,
+                        GXHDO101B003Const.BTN_MAKUATSU_SUB_GAMEN_BUTTOM,
+                        GXHDO101B003Const.BTN_INSATSUHABA_SUB_GAMEN_BUTTOM,
+                        GXHDO101B003Const.BTN_INSERT_BUTTOM,
+                        GXHDO101B003Const.BTN_STARTDATETIME_BUTTOM,
+                        GXHDO101B003Const.BTN_ENDDATETIME_BUTTOM,
+                        GXHDO101B003Const.BTN_KARI_TOUROKU_TOP,
+                        GXHDO101B003Const.BTN_COPY_EDABAN_TOP,
+                        GXHDO101B003Const.BTN_MAKUATSU_SUB_GAMEN_TOP,
+                        GXHDO101B003Const.BTN_INSATSUHABA_SUB_GAMEN_TOP,
+                        GXHDO101B003Const.BTN_INSERT_TOP,
+                        GXHDO101B003Const.BTN_STARTDATETIME_TOP,
+                        GXHDO101B003Const.BTN_ENDDATETIME_TOP
                 ));
 
-                inactiveIdList.addAll(Arrays.asList(
-                        GXHDO101B003Const.BTN_DOWN_DELETE,
-                        GXHDO101B003Const.BTN_DOWN_UPDATE,
-                        GXHDO101B003Const.BTN_UP_DELETE,
-                        GXHDO101B003Const.BTN_UP_UPDATE));
+                inactiveIdList.addAll(Arrays.asList(GXHDO101B003Const.BTN_DELETE_BUTTOM,
+                        GXHDO101B003Const.BTN_UPDATE_BUTTOM,
+                        GXHDO101B003Const.BTN_DELETE_TOP,
+                        GXHDO101B003Const.BTN_UPDATE_TOP));
 
                 break;
 
@@ -950,49 +944,49 @@ public class GXHDO101B003 implements IFormLogic {
         String method;
         switch (buttonId) {
             // 膜圧
-            case GXHDO101B003Const.BTN_UP_MAKUATSU_SUB_GAMEN:
-            case GXHDO101B003Const.BTN_DOWN_MAKUATSU_SUB_GAMEN:
+            case GXHDO101B003Const.BTN_MAKUATSU_SUB_GAMEN_TOP:
+            case GXHDO101B003Const.BTN_MAKUATSU_SUB_GAMEN_BUTTOM:
                 method = "openMakuatsu";
                 break;
             // 印刷幅
-            case GXHDO101B003Const.BTN_UP_INSATSUHABA_SUB_GAMEN:
-            case GXHDO101B003Const.BTN_DOWN_INSATSUHABA_SUB_GAMEN:
+            case GXHDO101B003Const.BTN_INSATSUHABA_SUB_GAMEN_TOP:
+            case GXHDO101B003Const.BTN_INSATSUHABA_SUB_GAMEN_BUTTOM:
                 method = "openInsatsuhaba";
                 break;
 
             // 仮登録
-            case GXHDO101B003Const.BTN_UP_KARI_TOUROKU:
-            case GXHDO101B003Const.BTN_DOWN_KARI_TOUROKU:
+            case GXHDO101B003Const.BTN_KARI_TOUROKU_TOP:
+            case GXHDO101B003Const.BTN_KARI_TOUROKU_BUTTOM:
                 method = "checkDataTempResist";
                 break;
             // 登録
-            case GXHDO101B003Const.BTN_UP_INSERT:
-            case GXHDO101B003Const.BTN_DOWN_INSERT:
+            case GXHDO101B003Const.BTN_INSERT_TOP:
+            case GXHDO101B003Const.BTN_INSERT_BUTTOM:
                 method = "checkDataResist";
                 break;
             // 枝番コピー
-            case GXHDO101B003Const.BTN_UP_COPY_EDABAN:
-            case GXHDO101B003Const.BTN_DOWN_COPY_EDABAN:
+            case GXHDO101B003Const.BTN_COPY_EDABAN_TOP:
+            case GXHDO101B003Const.BTN_COPY_EDABAN_BUTTOM:
                 method = "confEdabanCopy";
                 break;
             // 修正
-            case GXHDO101B003Const.BTN_UP_UPDATE:
-            case GXHDO101B003Const.BTN_DOWN_UPDATE:
+            case GXHDO101B003Const.BTN_UPDATE_TOP:
+            case GXHDO101B003Const.BTN_UPDATE_BUTTOM:
                 method = "checkDataCorrect";
                 break;
             // 削除
-            case GXHDO101B003Const.BTN_UP_DELETE:
-            case GXHDO101B003Const.BTN_DOWN_DELETE:
+            case GXHDO101B003Const.BTN_DELETE_TOP:
+            case GXHDO101B003Const.BTN_DELETE_BUTTOM:
                 method = "checkDataDelete";
                 break;
             // 開始日時
-            case GXHDO101B003Const.BTN_UP_STARTDATETIME:
-            case GXHDO101B003Const.BTN_DOWN_STARTDATETIME:
+            case GXHDO101B003Const.BTN_STARTDATETIME_TOP:
+            case GXHDO101B003Const.BTN_STARTDATETIME_BUTTOM:
                 method = "setKaishiDateTime";
                 break;
             // 終了日時
-            case GXHDO101B003Const.BTN_UP_ENDDATETIME:
-            case GXHDO101B003Const.BTN_DOWN_ENDDATETIME:
+            case GXHDO101B003Const.BTN_ENDDATETIME_TOP:
+            case GXHDO101B003Const.BTN_ENDDATETIME_BUTTOM:
                 method = "setShuryouDateTime";
                 break;
 
@@ -2668,11 +2662,11 @@ public class GXHDO101B003 implements IFormLogic {
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(2).getStartVal())); //膜厚ｽﾀｰﾄ3
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(3).getStartVal())); //膜厚ｽﾀｰﾄ4
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(4).getStartVal())); //膜厚ｽﾀｰﾄ5
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(printWidthDataList.get(0).getStartVal())); //印刷幅ｽﾀｰﾄ1
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(printWidthDataList.get(1).getStartVal())); //印刷幅ｽﾀｰﾄ2
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(printWidthDataList.get(2).getStartVal())); //印刷幅ｽﾀｰﾄ3
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(printWidthDataList.get(3).getStartVal())); //印刷幅ｽﾀｰﾄ4
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(printWidthDataList.get(4).getStartVal())); //印刷幅ｽﾀｰﾄ5
+        params.add(DBUtil.stringToIntObjectDefaultNull(printWidthDataList.get(0).getStartVal())); //印刷幅ｽﾀｰﾄ1
+        params.add(DBUtil.stringToIntObjectDefaultNull(printWidthDataList.get(1).getStartVal())); //印刷幅ｽﾀｰﾄ2
+        params.add(DBUtil.stringToIntObjectDefaultNull(printWidthDataList.get(2).getStartVal())); //印刷幅ｽﾀｰﾄ3
+        params.add(DBUtil.stringToIntObjectDefaultNull(printWidthDataList.get(3).getStartVal())); //印刷幅ｽﾀｰﾄ4
+        params.add(DBUtil.stringToIntObjectDefaultNull(printWidthDataList.get(4).getStartVal())); //印刷幅ｽﾀｰﾄ5
 
         if (isInsert) {
             params.add(systemTime); //登録日時
@@ -3009,14 +3003,13 @@ public class GXHDO101B003 implements IFormLogic {
         params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(2).getStartVal())); //膜厚ｽﾀｰﾄ3
         params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(3).getStartVal())); //膜厚ｽﾀｰﾄ4
         params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(4).getStartVal())); //膜厚ｽﾀｰﾄ5
-        params.add(DBUtil.stringToBigDecimalObject(printWidthDataList.get(0).getStartVal())); //印刷幅ｽﾀｰﾄ1
-        params.add(DBUtil.stringToBigDecimalObject(printWidthDataList.get(1).getStartVal())); //印刷幅ｽﾀｰﾄ2
-        params.add(DBUtil.stringToBigDecimalObject(printWidthDataList.get(2).getStartVal())); //印刷幅ｽﾀｰﾄ3
-        params.add(DBUtil.stringToBigDecimalObject(printWidthDataList.get(3).getStartVal())); //印刷幅ｽﾀｰﾄ4
-        params.add(DBUtil.stringToBigDecimalObject(printWidthDataList.get(4).getStartVal())); //印刷幅ｽﾀｰﾄ5
+        params.add(DBUtil.stringToIntObject(printWidthDataList.get(0).getStartVal())); //印刷幅ｽﾀｰﾄ1
+        params.add(DBUtil.stringToIntObject(printWidthDataList.get(1).getStartVal())); //印刷幅ｽﾀｰﾄ2
+        params.add(DBUtil.stringToIntObject(printWidthDataList.get(2).getStartVal())); //印刷幅ｽﾀｰﾄ3
+        params.add(DBUtil.stringToIntObject(printWidthDataList.get(3).getStartVal())); //印刷幅ｽﾀｰﾄ4
+        params.add(DBUtil.stringToIntObject(printWidthDataList.get(4).getStartVal())); //印刷幅ｽﾀｰﾄ5
         if (isInsert) {
             params.add(systemTime); //登録日時
-            //params.add(null); //更新日時
             params.add(systemTime); //更新日時
         } else {
             params.add(systemTime); //更新日時
