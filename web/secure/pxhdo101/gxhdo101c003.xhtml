@@ -4,25 +4,29 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <p:dialog header="#{myMsg.ptn_kyori_y}" id="dlg_gxhdo101c003" widgetVar="W_dlg_gxhdo101c003"
-              width="550" modal="true" height="275"
+              width="560" modal="true" height="275"
               dynamic="false" closable="true" closeOnEscape="false" 
               onHide="document.getElementById('form:gxhdo101c003Form:cancelBtn').click();" >
         <h:form id="gxhdo101c003Form" >
-            <p:panel style="width:505px">
+            <p:panel style="width:515px">
                  <p:dataTable id="ptnKyoriXTable" var="item" value="#{beanGXHDO101C003.gxhdO101c003ModelView.ptnKyoriYDataList}"
-                            scrollable="true" style="font-size: 14px; width:470px" emptyMessage="" >
+                            scrollable="true" style="font-size: 14px; width:480px" emptyMessage="" >
                     <p:column id="mPtnKyoriX" width="30%" headerText="#{myMsg.ptn_kyori_y}" >
                         <div style="text-align:right;">
                         <p:outputLabel value="#{item.ptnKyoriY}" />
                         </div>
                     </p:column>
                     <p:column id="mStart" width="35%"   headerText="#{myMsg.katakana_start}" >
-                        <p:inputText value="#{item.startVal}" rendered="#{item.startTextRendered}" maxlength="#{item.startTextMaxLength}"  size="15"  style="text-align:right; background: #{item.startTextBackColor}"/>
-                        <p:outputLabel value="#{item.startVal}" rendered="#{item.startLabelRendered}" />
+                        <div style="text-align:right;">
+                            <p:inputText value="#{item.startVal}" rendered="#{item.startTextRendered}" maxlength="#{item.startTextMaxLength}"  size="14"  style="text-align:right; background: #{item.startTextBackColor}"/>
+                            <p:outputLabel value="#{item.startVal}" rendered="#{item.startLabelRendered}" />
+                        </div>
                     </p:column>
-                     <p:column id="mEnd" width="35%" headerText="#{myMsg.katakana_end}"  >
-                        <p:inputText value="#{item.endVal}" rendered="#{item.endTextRendered}" maxlength="#{item.endTextMaxLength}"  size="15"  style="text-align:right; background: #{item.endTextBackColor}"/>
-                        <p:outputLabel value="#{item.endVal}"  rendered="#{item.endLabelRendered}" />
+                    <p:column id="mEnd" width="35%" headerText="#{myMsg.katakana_end}" >
+                        <div style="text-align:right;">
+                            <p:inputText value="#{item.endVal}" rendered="#{item.endTextRendered}" maxlength="#{item.endTextMaxLength}"  size="14"  style="text-align:right; background: #{item.endTextBackColor}"/>
+                            <p:outputLabel value="#{item.endVal}"  rendered="#{item.endLabelRendered}" />
+                        </div>
                     </p:column>
                 </p:dataTable>
             </p:panel>

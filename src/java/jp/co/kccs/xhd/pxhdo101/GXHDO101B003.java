@@ -1511,8 +1511,6 @@ public class GXHDO101B003 implements IFormLogic {
                 put("EATUMI", "積層数");
                 put("SOUSUU", "積層数");
                 put("EMAISUU", "積層数");
-                put("KUBUN1", "ロット区分");
-                put("OWNER", "オーナー");
                 put("TBUNRUI2", "上カバーテープ１");
                 put("SYURUI2", "上カバーテープ１");
                 put("ATUMI2", "上カバーテープ１");
