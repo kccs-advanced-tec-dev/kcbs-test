@@ -308,13 +308,11 @@ public class GXHDO101B001 implements IFormLogic {
         try {
             // トランザクション開始
             //DocServer 
-            conDoc = queryRunnerDoc.getDataSource().getConnection();
-            conDoc.setAutoCommit(false);
-
+            conDoc = DBUtil.transactionStart(queryRunnerDoc.getDataSource().getConnection());
+            
             //Qcdb
-            conQcdb = queryRunnerQcdb.getDataSource().getConnection();
-            conQcdb.setAutoCommit(false);
-
+            conQcdb = DBUtil.transactionStart(queryRunnerQcdb.getDataSource().getConnection());
+            
             // セッションから情報を取得
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             HttpSession session = (HttpSession) externalContext.getSession(false);
@@ -333,8 +331,8 @@ public class GXHDO101B001 implements IFormLogic {
             if (checkRevMessageInfo != null) {
                 processData.setErrorMessageInfoList(Arrays.asList(checkRevMessageInfo));
                 // コネクションロールバック処理
-                rollbackConnection(conDoc);
-                rollbackConnection(conQcdb);
+                DBUtil.rollbackConnection(conDoc, LOGGER);
+                DBUtil.rollbackConnection(conQcdb, LOGGER);
                 return processData;
             }
 
@@ -402,8 +400,8 @@ public class GXHDO101B001 implements IFormLogic {
             ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
 
             // コネクションロールバック処理
-            rollbackConnection(conDoc);
-            rollbackConnection(conQcdb);
+            DBUtil.rollbackConnection(conDoc, LOGGER);
+            DBUtil.rollbackConnection(conQcdb, LOGGER);
             processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
         }
         return processData;
@@ -568,13 +566,11 @@ public class GXHDO101B001 implements IFormLogic {
         try {
             // トランザクション開始
             //DocServer 
-            conDoc = queryRunnerDoc.getDataSource().getConnection();
-            conDoc.setAutoCommit(false);
-
+            conDoc = DBUtil.transactionStart(queryRunnerDoc.getDataSource().getConnection());
+            
             //Qcdb
-            conQcdb = queryRunnerQcdb.getDataSource().getConnection();
-            conQcdb.setAutoCommit(false);
-
+            conQcdb = DBUtil.transactionStart(queryRunnerQcdb.getDataSource().getConnection());
+            
             // セッションから情報を取得
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             HttpSession session = (HttpSession) externalContext.getSession(false);
@@ -594,8 +590,8 @@ public class GXHDO101B001 implements IFormLogic {
             if (checkRevMessageInfo != null) {
                 processData.setErrorMessageInfoList(Arrays.asList(checkRevMessageInfo));
                 // コネクションロールバック処理
-                rollbackConnection(conDoc);
-                rollbackConnection(conQcdb);
+                DBUtil.rollbackConnection(conDoc, LOGGER);
+                DBUtil.rollbackConnection(conQcdb, LOGGER);
 
                 return processData;
             }
@@ -652,8 +648,8 @@ public class GXHDO101B001 implements IFormLogic {
             ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
 
             // コネクションロールバック処理
-            rollbackConnection(conDoc);
-            rollbackConnection(conQcdb);
+            DBUtil.rollbackConnection(conDoc, LOGGER);
+            DBUtil.rollbackConnection(conQcdb, LOGGER);
 
             processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
 
@@ -748,13 +744,11 @@ public class GXHDO101B001 implements IFormLogic {
         try {
             // トランザクション開始
             //DocServer 
-            conDoc = queryRunnerDoc.getDataSource().getConnection();
-            conDoc.setAutoCommit(false);
-
+            conDoc = DBUtil.transactionStart(queryRunnerDoc.getDataSource().getConnection());
+            
             //Qcdb
-            conQcdb = queryRunnerQcdb.getDataSource().getConnection();
-            conQcdb.setAutoCommit(false);
-
+            conQcdb = DBUtil.transactionStart(queryRunnerQcdb.getDataSource().getConnection());
+            
             // セッションから情報を取得
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             HttpSession session = (HttpSession) externalContext.getSession(false);
@@ -774,8 +768,8 @@ public class GXHDO101B001 implements IFormLogic {
             if (checkRevMessageInfo != null) {
                 processData.setErrorMessageInfoList(Arrays.asList(checkRevMessageInfo));
                 // コネクションロールバック処理
-                rollbackConnection(conDoc);
-                rollbackConnection(conQcdb);
+                DBUtil.rollbackConnection(conDoc, LOGGER);
+                DBUtil.rollbackConnection(conQcdb, LOGGER);
 
                 return processData;
             }
@@ -818,8 +812,8 @@ public class GXHDO101B001 implements IFormLogic {
             ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
 
             // コネクションロールバック処理
-            rollbackConnection(conDoc);
-            rollbackConnection(conQcdb);
+            DBUtil.rollbackConnection(conDoc, LOGGER);
+            DBUtil.rollbackConnection(conQcdb, LOGGER);
             processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
         }
 
@@ -862,13 +856,11 @@ public class GXHDO101B001 implements IFormLogic {
         try {
             // トランザクション開始
             //DocServer 
-            conDoc = queryRunnerDoc.getDataSource().getConnection();
-            conDoc.setAutoCommit(false);
-
+            conDoc = DBUtil.transactionStart(queryRunnerDoc.getDataSource().getConnection());
+            
             //Qcdb
-            conQcdb = queryRunnerQcdb.getDataSource().getConnection();
-            conQcdb.setAutoCommit(false);
-
+            conQcdb = DBUtil.transactionStart(queryRunnerQcdb.getDataSource().getConnection());
+            
             // セッションから情報を取得
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             HttpSession session = (HttpSession) externalContext.getSession(false);
@@ -887,8 +879,8 @@ public class GXHDO101B001 implements IFormLogic {
             if (checkRevMessageInfo != null) {
                 processData.setErrorMessageInfoList(Arrays.asList(checkRevMessageInfo));
                 // コネクションロールバック処理
-                rollbackConnection(conDoc);
-                rollbackConnection(conQcdb);
+                DBUtil.rollbackConnection(conDoc, LOGGER);
+                DBUtil.rollbackConnection(conQcdb, LOGGER);
                 return processData;
             }
 
@@ -928,8 +920,8 @@ public class GXHDO101B001 implements IFormLogic {
             ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
 
             // コネクションロールバック処理
-            rollbackConnection(conDoc);
-            rollbackConnection(conQcdb);
+            DBUtil.rollbackConnection(conDoc, LOGGER);
+            DBUtil.rollbackConnection(conQcdb, LOGGER);
             processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
         }
 
@@ -1258,6 +1250,7 @@ public class GXHDO101B001 implements IFormLogic {
 
     /**
      * 入力項目のデータを画面項目に設定
+     *
      * @param processData 処理制御データ
      * @param queryRunnerDoc QueryRunnerオブジェクト(DocServer)
      * @param queryRunnerQcdb QueryRunnerオブジェクト(Qcdb)
@@ -1266,7 +1259,7 @@ public class GXHDO101B001 implements IFormLogic {
      * @return 設定結果(失敗時false)
      * @throws SQLException 例外エラー
      */
-    private boolean setInputItemData(ProcessData processData, QueryRunner queryRunnerDoc, QueryRunner queryRunnerQcdb, 
+    private boolean setInputItemData(ProcessData processData, QueryRunner queryRunnerDoc, QueryRunner queryRunnerQcdb,
             String lotNo, String formId) throws SQLException {
 
         List<SrSpsprintGra> srSpsprintGraDataList = new ArrayList<>();
@@ -3176,7 +3169,7 @@ public class GXHDO101B001 implements IFormLogic {
      * @param srSpsprintGraData 印刷SPSｸﾞﾗﾋﾞｱデータ
      * @return 更新パラメータ
      */
-    private List<Object> setUpdateParameterSrSpsprintGra(boolean isInsert, BigDecimal newRev, String kojyo, String lotNo, String edaban, 
+    private List<Object> setUpdateParameterSrSpsprintGra(boolean isInsert, BigDecimal newRev, String kojyo, String lotNo, String edaban,
             Timestamp systemTime, List<FXHDD01> itemList, SrSpsprintGra srSpsprintGraData) {
         List<Object> params = new ArrayList<>();
 
@@ -3612,20 +3605,6 @@ public class GXHDO101B001 implements IFormLogic {
     private void setDateTimeItem(FXHDD01 itemDay, FXHDD01 itemTime, Date setDateTime) {
         itemDay.setValue(new SimpleDateFormat("yyMMdd").format(setDateTime));
         itemTime.setValue(new SimpleDateFormat("HHmm").format(setDateTime));
-    }
-
-    /**
-     * コネクションロールバック処理
-     *
-     * @param con コネクション
-     */
-    private void rollbackConnection(Connection con) {
-        try {
-            DbUtils.rollback(con);
-        } catch (SQLException ex) {
-            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-        }
-        DbUtils.closeQuietly(con);
     }
 
     /**

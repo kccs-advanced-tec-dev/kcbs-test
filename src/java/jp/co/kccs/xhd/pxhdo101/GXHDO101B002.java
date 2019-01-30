@@ -312,13 +312,11 @@ public class GXHDO101B002 implements IFormLogic {
         try {
             // トランザクション開始
             //DocServer 
-            conDoc = queryRunnerDoc.getDataSource().getConnection();
-            conDoc.setAutoCommit(false);
-
+            conDoc = DBUtil.transactionStart(queryRunnerDoc.getDataSource().getConnection());
+            
             //Qcdb
-            conQcdb = queryRunnerQcdb.getDataSource().getConnection();
-            conQcdb.setAutoCommit(false);
-
+            conQcdb = DBUtil.transactionStart(queryRunnerQcdb.getDataSource().getConnection());
+            
             // セッションから情報を取得
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             HttpSession session = (HttpSession) externalContext.getSession(false);
@@ -336,8 +334,8 @@ public class GXHDO101B002 implements IFormLogic {
             // リビジョンエラー時はリターン
             if (checkRevMessageInfo != null) {
                 processData.setErrorMessageInfoList(Arrays.asList(checkRevMessageInfo));
-                rollbackConnection(conDoc);
-                rollbackConnection(conQcdb);
+                DBUtil.rollbackConnection(conDoc, LOGGER);
+                DBUtil.rollbackConnection(conQcdb, LOGGER);
                 return processData;
             }
 
@@ -404,10 +402,9 @@ public class GXHDO101B002 implements IFormLogic {
         } catch (SQLException e) {
             ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
 
-            rollbackConnection(conDoc);
-            rollbackConnection(conQcdb);
+            DBUtil.rollbackConnection(conDoc, LOGGER);
+            DBUtil.rollbackConnection(conQcdb, LOGGER);
             processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
-
         }
 
         return processData;
@@ -573,13 +570,11 @@ public class GXHDO101B002 implements IFormLogic {
         try {
             // トランザクション開始
             //DocServer 
-            conDoc = queryRunnerDoc.getDataSource().getConnection();
-            conDoc.setAutoCommit(false);
-
+            conDoc = DBUtil.transactionStart(queryRunnerDoc.getDataSource().getConnection());
+            
             //Qcdb
-            conQcdb = queryRunnerQcdb.getDataSource().getConnection();
-            conQcdb.setAutoCommit(false);
-
+            conQcdb = DBUtil.transactionStart(queryRunnerQcdb.getDataSource().getConnection());
+            
             // セッションから情報を取得
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             HttpSession session = (HttpSession) externalContext.getSession(false);
@@ -598,8 +593,8 @@ public class GXHDO101B002 implements IFormLogic {
             // リビジョンエラー時はリターン
             if (checkRevMessageInfo != null) {
                 processData.setErrorMessageInfoList(Arrays.asList(checkRevMessageInfo));
-                rollbackConnection(conDoc);
-                rollbackConnection(conQcdb);
+                DBUtil.rollbackConnection(conDoc, LOGGER);
+                DBUtil.rollbackConnection(conQcdb, LOGGER);
                 return processData;
             }
 
@@ -652,8 +647,9 @@ public class GXHDO101B002 implements IFormLogic {
             return processData;
         } catch (SQLException e) {
             ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
-            rollbackConnection(conDoc);
-            rollbackConnection(conQcdb);
+            // ロールバック処理
+            DBUtil.rollbackConnection(conDoc, LOGGER);
+            DBUtil.rollbackConnection(conQcdb, LOGGER);
             processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
         }
 
@@ -746,13 +742,11 @@ public class GXHDO101B002 implements IFormLogic {
         try {
             // トランザクション開始
             //DocServer 
-            conDoc = queryRunnerDoc.getDataSource().getConnection();
-            conDoc.setAutoCommit(false);
-
+            conDoc = DBUtil.transactionStart(queryRunnerDoc.getDataSource().getConnection());
+            
             //Qcdb
-            conQcdb = queryRunnerQcdb.getDataSource().getConnection();
-            conQcdb.setAutoCommit(false);
-
+            conQcdb = DBUtil.transactionStart(queryRunnerQcdb.getDataSource().getConnection());
+            
             // セッションから情報を取得
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             HttpSession session = (HttpSession) externalContext.getSession(false);
@@ -771,9 +765,10 @@ public class GXHDO101B002 implements IFormLogic {
             // リビジョンエラー時はリターン
             if (checkRevMessageInfo != null) {
                 processData.setErrorMessageInfoList(Arrays.asList(checkRevMessageInfo));
-                rollbackConnection(conDoc);
-                rollbackConnection(conQcdb);
-
+                
+                //ロールバック処理
+                DBUtil.rollbackConnection(conDoc, LOGGER);
+                DBUtil.rollbackConnection(conQcdb, LOGGER);
                 return processData;
             }
 
@@ -811,8 +806,9 @@ public class GXHDO101B002 implements IFormLogic {
             return processData;
         } catch (SQLException e) {
             ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
-            rollbackConnection(conDoc);
-            rollbackConnection(conQcdb);
+            //ロールバック処理
+            DBUtil.rollbackConnection(conDoc, LOGGER);
+            DBUtil.rollbackConnection(conQcdb, LOGGER);
             processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
         }
 
@@ -856,13 +852,11 @@ public class GXHDO101B002 implements IFormLogic {
         try {
             // トランザクション開始
             //DocServer 
-            conDoc = queryRunnerDoc.getDataSource().getConnection();
-            conDoc.setAutoCommit(false);
-
+            conDoc = DBUtil.transactionStart(queryRunnerDoc.getDataSource().getConnection());
+            
             //Qcdb
-            conQcdb = queryRunnerQcdb.getDataSource().getConnection();
-            conQcdb.setAutoCommit(false);
-
+            conQcdb = DBUtil.transactionStart(queryRunnerQcdb.getDataSource().getConnection());
+            
             // セッションから情報を取得
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             HttpSession session = (HttpSession) externalContext.getSession(false);
@@ -880,10 +874,10 @@ public class GXHDO101B002 implements IFormLogic {
             // リビジョンエラー時はリターン
             if (checkRevMessageInfo != null) {
                 processData.setErrorMessageInfoList(Arrays.asList(checkRevMessageInfo));
-                rollbackConnection(conDoc);
-                rollbackConnection(conQcdb);
-
-                return processData;
+                //ロールバック処理
+                DBUtil.rollbackConnection(conDoc, LOGGER);
+                DBUtil.rollbackConnection(conQcdb, LOGGER);
+              return processData;
             }
 
             BigDecimal rev = new BigDecimal(processData.getInitRev());
@@ -919,8 +913,8 @@ public class GXHDO101B002 implements IFormLogic {
         } catch (SQLException e) {
             ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
             //ロールバック処理
-            rollbackConnection(conDoc);
-            rollbackConnection(conQcdb);
+            DBUtil.rollbackConnection(conDoc, LOGGER);
+            DBUtil.rollbackConnection(conQcdb, LOGGER);
 
             processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
         }
@@ -3677,21 +3671,6 @@ public class GXHDO101B002 implements IFormLogic {
     private void setDateTimeItem(FXHDD01 itemDay, FXHDD01 itemTime, Date setDateTime) {
         itemDay.setValue(new SimpleDateFormat("yyMMdd").format(setDateTime));
         itemTime.setValue(new SimpleDateFormat("HHmm").format(setDateTime));
-    }
-
-    /**
-     * コネクションロールバック処理
-     *
-     * @param con コネクション
-     */
-    private void rollbackConnection(Connection con) {
-        try {
-            DbUtils.rollback(con);
-        } catch (SQLException ex) {
-            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-        }
-        DbUtils.closeQuietly(con);
-
     }
 
     /**

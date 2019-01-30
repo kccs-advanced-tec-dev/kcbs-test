@@ -4,10 +4,13 @@
 package jp.co.kccs.xhd.util;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.MessageFormat;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.apache.commons.dbutils.DbUtils;
 
 /**
  * ===============================================================================<br>
@@ -208,4 +211,33 @@ public class DBUtil {
         }
         return str;
     }
+    
+    
+    /**
+     * トランザクション開始
+     * @param con コネクション
+     * @return コネクション
+     * @throws SQLException 例外エラー
+     */
+    public static Connection transactionStart(Connection con) throws SQLException{
+        con.setAutoCommit(false);
+        return con;
+    }
+    
+    /**
+     * コネクションロールバック処理
+     *
+     * @param con コネクション
+     * @param loggerClass ログクラス
+     */
+    public static void rollbackConnection(Connection con, Logger loggerClass) {
+        try {
+            DbUtils.rollback(con);
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SQLException発生", ex, loggerClass);
+        }
+        DbUtils.closeQuietly(con);
+    }
+    
+    
 }
