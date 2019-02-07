@@ -3544,7 +3544,7 @@ public class GXHDO101B001 implements IFormLogic {
         if (StringUtil.isEmpty(processData.getInitJotaiFlg())) {
             // 新規の場合、データが存在する場合
             if (fxhdd03RevInfo != null && !fxhdd03RevInfo.isEmpty()) {
-                return new ErrorMessageInfo(MessageUtil.getMessage("XHD-000025"));
+                return new ErrorMessageInfo(MessageUtil.getMessage("XHD-000026"));
             }
         } else {
             // 品質DB登録実績データが取得出来ていない場合エラー

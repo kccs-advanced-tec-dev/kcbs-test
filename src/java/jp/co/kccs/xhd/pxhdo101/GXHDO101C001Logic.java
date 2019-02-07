@@ -43,9 +43,22 @@ public class GXHDO101C001Logic implements Serializable {
         GXHDO101C001Model gxhdo101C001Model = new GXHDO101C001Model();
         List<GXHDO101C001Model.MakuatsuData> makuatsuDataList = new ArrayList<>();
 
+        String startNextControl;
+        String endNextControl;
         // 画面内のリストの一覧を作成する。
         for (int i = 0; i < makuatsuStart.length; i++) {
-            makuatsuDataList.add(getInitMakuatsuData(gxhdo101C001Model, String.valueOf(i + 1), makuatsuStart[i], "TEXT", "6", "", makuatsuEnd[i], "TEXT", "6", ""));
+            if(i < makuatsuStart.length-1){
+                startNextControl = "form:gxhdo101c001Form:makuatsuSpsTable:"+ String.valueOf(i+1) + ":startVal";
+                endNextControl = "form:gxhdo101c001Form:makuatsuSpsTable:"+ String.valueOf(i+1) + ":endVal";
+            }else{
+                startNextControl = "form:gxhdo101c001Form:makuatsuSpsTable:0:endVal";
+                endNextControl = "";
+            }
+             
+                    
+                    
+            makuatsuDataList.add(getInitMakuatsuData(gxhdo101C001Model, String.valueOf(i + 1), makuatsuStart[i], "TEXT", "6", "", startNextControl,
+                    makuatsuEnd[i], "TEXT", "6", "", endNextControl));
         }
 
         gxhdo101C001Model.setMakuatsuDataList(makuatsuDataList);
@@ -61,16 +74,18 @@ public class GXHDO101C001Logic implements Serializable {
      * @param startInputType　スタート項目(入力タイプ)
      * @param startTextMaxLength　スタート項目(テキストMaxLength)
      * @param startTextBackColor　スタート項目(BackGround)
+     * @param startNextControl　スタート項目(次コントロール)
      * @param endVal エンド項目(値)
      * @param endInputType エンド項目(入力タイプ)
      * @param endTextMaxLength　エンド項目(テキストMaxLength)
-     * @param endTextBackColor　スタート項目(BackGround)
+     * @param endTextBackColor　エンド項目(BackGround)
+     * @param endNextControl　エンド項目(次コントロール)
      * @return 膜厚データ
      */
     private static GXHDO101C001Model.MakuatsuData getInitMakuatsuData(
             GXHDO101C001Model gxhdo101C001Model, String makuatsu,
-            String startVal, String startInputType, String startTextMaxLength, String startTextBackColor,
-            String endVal, String endInputType, String endTextMaxLength, String endTextBackColor) {
+            String startVal, String startInputType, String startTextMaxLength, String startTextBackColor, String startNextControl,
+            String endVal, String endInputType, String endTextMaxLength, String endTextBackColor, String endNextControl) {
         GXHDO101C001Model.MakuatsuData makuatsuListData = gxhdo101C001Model.new MakuatsuData();
         // 膜厚
         makuatsuListData.setMakuatsu(makuatsu);
@@ -86,6 +101,7 @@ public class GXHDO101C001Logic implements Serializable {
         }
         makuatsuListData.setStartTextMaxLength(startTextMaxLength);
         makuatsuListData.setStartTextBackColor(startTextBackColor);
+        makuatsuListData.setStartNextControl(startNextControl);
 
         // エンド
         makuatsuListData.setEndVal(endVal);
@@ -98,6 +114,8 @@ public class GXHDO101C001Logic implements Serializable {
         }
         makuatsuListData.setEndTextMaxLength(endTextMaxLength);
         makuatsuListData.setEndTextBackColor(endTextBackColor);
+        makuatsuListData.setEndNextControl(endNextControl);
+
         return makuatsuListData;
     }
 

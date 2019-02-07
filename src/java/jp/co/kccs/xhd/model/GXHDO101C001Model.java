@@ -45,11 +45,13 @@ public class GXHDO101C001Model implements Cloneable {
             newData.setStartTextMaxLength(data.getStartTextMaxLength());
             newData.setStartTextBackColor(data.getStartTextBackColor());
             newData.setStartLabelRendered(data.isStartLabelRendered());
+            newData.setStartNextControl(data.getStartNextControl());
             newData.setEndVal(data.getEndVal());
             newData.setEndTextRendered(data.isEndTextRendered());
             newData.setEndTextMaxLength(data.getEndTextMaxLength());
             newData.setEndTextBackColor(data.getEndTextBackColor());
             newData.setEndLabelRendered(data.isEndLabelRendered());
+            newData.setEndNextControl(data.getEndNextControl());
             newList.add(newData);
         }
 
@@ -291,6 +293,12 @@ public class GXHDO101C001Model implements Cloneable {
          * スタート項目_ラベル(Rendered)
          */
         private boolean startLabelRendered;
+        
+        /**
+         * スタート項目_次コントロール
+         */
+        private String startNextControl;
+
 
         /**
          * エンド項目(値)
@@ -316,6 +324,12 @@ public class GXHDO101C001Model implements Cloneable {
          * エンド項目_ラベル(Rendered)
          */
         private boolean endLabelRendered;
+        
+        /**
+         * エンド項目_次コントロール
+         */
+        private String endNextControl;
+
 
         /**
          * 膜厚
@@ -426,6 +440,20 @@ public class GXHDO101C001Model implements Cloneable {
         }
 
         /**
+         * @return the startNextControl
+         */
+        public String getStartNextControl() {
+            return startNextControl;
+        }
+
+        /**
+         * @param startNextControl the startNextControl to set
+         */
+        public void setStartNextControl(String startNextControl) {
+            this.startNextControl = startNextControl;
+        }
+
+        /**
          * エンド項目(値)
          *
          * @return the endVal
@@ -514,6 +542,22 @@ public class GXHDO101C001Model implements Cloneable {
         public void setEndLabelRendered(boolean endLabelRendered) {
             this.endLabelRendered = endLabelRendered;
         }
+
+        /**
+         * @return the endNextControl
+         */
+        public String getEndNextControl() {
+            return endNextControl;
+        }
+
+        /**
+         * @param endNextControl the endNextControl to set
+         */
+        public void setEndNextControl(String endNextControl) {
+            this.endNextControl = endNextControl;
+        }
+        
+
     }
 
 }

@@ -204,6 +204,11 @@ public class GXHDO901A implements Serializable {
      * 完了メッセージ
      */
     private String compMessage;
+    
+    /**
+     * 入力項目最大幅
+     */
+    private String maxWidthInputCol;
 
     /**
      * コンストラクタ
@@ -423,6 +428,24 @@ public class GXHDO901A implements Serializable {
     }
 
     /**
+     * 入力項目最大幅
+     * 
+     * @return the maxWidthInputCol
+     */
+    public String getMaxWidthInputCol() {
+        return maxWidthInputCol;
+    }
+
+    /**
+     * 入力項目最大幅
+     * 
+     * @param maxWidthInputCol the maxWidthInputCol to set
+     */
+    public void setMaxWidthInputCol(String maxWidthInputCol) {
+        this.maxWidthInputCol = maxWidthInputCol;
+    }
+
+    /**
      * 起動時処理
      */
     public void init() {
@@ -446,6 +469,8 @@ public class GXHDO901A implements Serializable {
         String lotNo = StringUtil.nullToBlank(session.getAttribute("lotNo"));
         // 一覧の表示件数を設定
         this.hyojiKensu = StringUtil.nullToBlank(session.getAttribute("hyojiKensu"));
+        // 入力項目の最大幅を設定する。
+        this.maxWidthInputCol = "475";
 
         // タイトル設定情報取得
         if (!this.loadTitleSettings(titleSetting, formTitle)) {
@@ -1313,7 +1338,6 @@ public class GXHDO901A implements Serializable {
     private String getSekkeiNo(String lotNo) {
         String strKojyo = lotNo.substring(0, 3);
         String strLotNo = lotNo.substring(3, 11);
-        String strEdaban = lotNo.substring(11, 14);
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
             String sql = "SELECT SEKKEINO "
@@ -1323,7 +1347,7 @@ public class GXHDO901A implements Serializable {
             List<Object> params = new ArrayList<>();
             params.add(strKojyo);
             params.add(strLotNo);
-            params.add(strEdaban);
+            params.add("001");
 
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
             Map mapSekkeiNo = queryRunner.query(sql, new MapHandler(), params.toArray());
@@ -1478,7 +1502,7 @@ public class GXHDO901A implements Serializable {
             if (StringUtil.isEmpty(this.initJotaiFlg)) {
                 // 新規の場合、データが存在する場合
                 if (fxhdd03RevInfo != null && !fxhdd03RevInfo.isEmpty()) {
-                    return new ErrorMessageInfo(MessageUtil.getMessage("XHD-000025"));
+                    return new ErrorMessageInfo(MessageUtil.getMessage("XHD-000026"));
                 }
             } else {
                 // 品質DB登録実績データが取得出来ていない場合エラー

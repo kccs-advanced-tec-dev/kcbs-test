@@ -54,6 +54,13 @@
                     PF('W_dlg_compMessage').show();
                 }
             }
+            function keyDownEnterSetNextControl(controlName){
+                if(window.event.keyCode == 13){
+                    if(controlName != ''){
+                        document.getElementById(controlName).focus();
+                    }
+                }  
+            }
             //]]>
         </script>
         <style>
@@ -84,7 +91,7 @@
                 <h:outputText style="font-size:#{gXHDO901A.titleInfo.fontSize}px;  #{gXHDO901A.styleDisplayNone}" value="#{gXHDO901A.jotaiDisplay}"/>        
             </div>
             <br/>
-            <p:growl id="growlMessage" showDetail="false" sticky="true" />
+            <p:growl id="growlMessage" showDetail="false" sticky="true"  />
             <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
                 <f:facet name="message">
                     <h:outputText value="#{gXHDO901A.processData.getWarnMessage()}" escape="false"/>
@@ -107,7 +114,7 @@
             <p:panel id="entryPanel" style="margin-bottom:4px; #{gXHDO901A.styleDisplayNone}">
                 <p:dataList id="itemDataList" value="#{gXHDO901A.itemList}" var="item" type="none" itemType="none" paginator="true" rows="#{gXHDO901A.hyojiKensu}" styleClass="repeated-form;ui-paginator">
                     <ui:fragment rendered="#{gXHDO901A.itemRendered}">
-                        <p:panel id="itemPanel" style="background:#{item.backColor1};height:48px;">
+                        <p:panel id="itemPanel" style="background:#{item.backColor1}; min-height:48px;">
                             <h:outputText id="label1" rendered="#{item.render1}" value="#{item.label1}"
                                           style="margin-left:8px;font-size:#{item.fontSize1}px;color:#{item.fontColor1};vertical-align: middle;"/>
                             <h:outputText id="kikakuChi" rendered="#{item.render1}" value="#{item.kikakuChi}"
@@ -117,25 +124,22 @@
                                           style="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;"/>
 
                             <p:inputText id="textValue" rendered="#{(item.renderInputText) and (!item.renderOutputLabel)}" value="#{item.value}" maxlength="#{item.displayMaxLength}"
-                                          style="margin-left:8px;width:#{item.displayMaxLength}em;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;">
+                                          style="margin-left:8px;width:#{item.displayMaxLength}em; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901A.maxWidthInputCol}px;">
 								<p:ajax event="blur" process="@this" update="@this" listener="#{item.checkByte()}"  async="false"/>
                             </p:inputText>
                             
                             <p:calendar id="calendarDate" rendered="#{item.renderInputDate}" pattern="yyMMdd" value="#{item.value}" maxlength="#{item.displayMaxLength}" class="calendarDate"
-                                        style="margin-left:8px; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;" />
-                            <p:calendar id="calendarTime" rendered="#{item.renderInputTime}" value="#{item.value}" pattern="HHmm" timeOnly="true" class="calendarTime"
-                                        style="margin-left:8px; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;" />
+                                        style="margin-left:8px; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901A.maxWidthInputCol}px;" />
+                            <p:calendar id="calendarTime" rendered="#{item.renderInputTime}" value="#{item.value}" pattern="HHmm" timeOnly="true" class="calendarTime" 
+                                        style="margin-left:8px; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901A.maxWidthInputCol}px;" />
                             <p:inputNumber id="numberValue" rendered="#{item.renderInputNumber}" value="#{item.value}" thousandSeparator="" 
                                            decimalPlaces="#{item.numberDecimalPlaces}" maxValue="#{item.numberMaxValue}" minValue="#{item.numberMinValue}" size="#{item.displayMaxLength}"
-                                          inputStyle="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;">
-								<p:ajax event="blur" process="@this" update="@this" listener="#{item.checkByte()}"  async="false"/>
+                                          inputStyle="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901A.maxWidthInputCol}px;">
                             </p:inputNumber>
                             <p:selectOneMenu id="comboBoxValue" rendered="#{item.renderInputSelect}" value="#{item.value}" styleClass="selectMenu"
-                                          style="margin-left:8px;width:#{item.inputLength}em;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;">
+                                          style="margin-left:8px;width:#{item.inputLength}em;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901A.maxWidthInputCol}px;">
                                 <f:selectItems value="#{item.selectMenuItem}"/>
                             </p:selectOneMenu>
-
-                            
                             <p:selectOneRadio id="radioValue" rendered="#{item.renderInputRadio}" value="#{item.value}" styleClass="selectRadio"
                                           style="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};vertical-align: middle;">
                                 <f:selectItems value="#{item.selectMenuItem}"/>

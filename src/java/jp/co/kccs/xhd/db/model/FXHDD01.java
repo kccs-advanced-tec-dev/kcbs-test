@@ -869,7 +869,7 @@ public class FXHDD01 {
      */
     public void setValue(String value) {
         this.value = value;
-        this.checkByte();
+        //this.checkByte();
     }
 
     /**
