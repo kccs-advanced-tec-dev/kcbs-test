@@ -239,5 +239,15 @@ public class DBUtil {
         DbUtils.closeQuietly(con);
     }
     
-    
+    /**
+     * LIKE検索用にワイルドカード文字列("%","_")にエスケープ文字("\")を付与します
+     * @param parameter 検索文字列
+     * @return エスケープ処理後の文字列
+     */
+    public static String escapeString(String parameter) {
+        // "\"はreplaceAll内で置換文字列内のリテラル文字をエスケープするのに使用されるため、
+        // replaceAll("\\\\", "\\\\\\\\") としている。
+        // "\"→"\\" として処理される。
+        return parameter.replaceAll("%", "\\\\%").replaceAll("_", "\\\\_").replaceAll("\\\\", "\\\\\\\\");
+    }
 }

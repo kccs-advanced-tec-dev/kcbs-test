@@ -439,7 +439,19 @@ public class StringUtil {
         }
         return src.toPlainString();
     }
-
+    
+    /**
+     * 引数がNULL値または空の場合、NULLを返却します。その他の場合、そのままの値を返します。
+     * 
+     * @param src 文字列
+     * @return 変換値
+     */
+    public static String blankToNull(String src) {
+        if (isEmpty(src)) {
+            return null;
+        }
+        return src;
+    }
     
     /**
      * 文字数を取得

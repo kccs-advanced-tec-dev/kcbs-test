@@ -4,20 +4,20 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
         this.id = this.cfg.id;
         this.jqId = PrimeFaces.escapeClientId(this.id);
         this.render();
-        this.removeScriptElement(this.id)
+        this.removeScriptElement(this.id);
     },
     refresh: function(a) {
         this.cfg = a;
         this.show(a.msgs);
-        this.removeScriptElement(this.id)
+        this.removeScriptElement(this.id);
     },
     show: function(b) {
         var a = this;
         this.jq.css("z-index", ++PrimeFaces.zindex);
         this.removeAll();
         $.each(b, function(c, d) {
-            a.renderMessage(d)
-        })
+            a.renderMessage(d);
+        });
     },
     removeAll: function() {
         this.jq.children("div.ui-growl-item-container").remove()
@@ -25,7 +25,7 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
     render: function() {
         this.jq = $('<div id="' + this.id + '_container" class="ui-growl ui-widget"></div>');
         this.jq.appendTo($(document.body));
-        this.show(this.cfg.msgs)
+        this.show(this.cfg.msgs);
     },
     renderMessage: function(e) {
         var a = '<div class="ui-growl-item-container ui-state-highlight ui-corner-all ui-helper-hidden ui-shadow" aria-live="polite">';
@@ -41,13 +41,13 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
           , d = b.next();
         if (this.cfg.escape) {
             b.text(e.summary);
-            d.text(e.detail)
+            d.text(e.detail);
         } else {
             b.html(e.summary);
-            d.html(e.detail)
+            d.html(e.detail);
         }
         this.bindEvents(c);
-        c.appendTo(this.jq).fadeIn()
+        c.appendTo(this.jq).fadeIn();
     },
     bindEvents: function(b) {
         var a = this
@@ -56,25 +56,25 @@ PrimeFaces.widget.Growl = PrimeFaces.widget.BaseWidget.extend({
         b.find("div.ui-growl-icon-close").click(function() {
             a.removeMessage(b);
             if (!c) {
-                clearTimeout(b.data("timeout"))
+                clearTimeout(b.data("timeout"));
             }
         });
         if (!c) {
-            this.setRemovalTimeout(b)
+            this.setRemovalTimeout(b);
         }
     },
     removeMessage: function(a) {
         a.fadeTo("normal", 0, function() {
             a.slideUp("normal", "easeInOutCirc", function() {
-                a.remove()
-            })
-        })
+                a.remove();
+            });
+        });
     },
     setRemovalTimeout: function(b) {
         var a = this;
         var c = setTimeout(function() {
-            a.removeMessage(b)
+            a.removeMessage(b);
         }, this.cfg.life);
-        b.data("timeout", c)
+        b.data("timeout", c);
     }
 });
