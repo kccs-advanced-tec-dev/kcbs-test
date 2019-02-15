@@ -55,11 +55,17 @@
                 }
             }
             function keyDownEnterSetNextControl(controlName){
+                if(window.event.keyCode == 9){
+                     window.event.keyCode = 13
+                }
                 if(window.event.keyCode == 13){
                     if(controlName != ''){
                         document.getElementById(controlName).focus();
                     }
                 }  
+            }
+            function sliceMaxLength(elem, maxLength) {  
+                elem.value = elem.value.slice(0, maxLength);  
             }
             //]]>
         </script>

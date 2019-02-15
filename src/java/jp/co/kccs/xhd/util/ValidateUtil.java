@@ -377,7 +377,7 @@ public class ValidateUtil {
         // 項目データを取得
 
         String value = fXHDD01.getValue();
-        if (StringUtil.isEmpty(value.trim())) {
+        if (StringUtil.isEmpty(StringUtil.trimAll(value))) {
             List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
             return MessageUtil.getErrorMessageInfo("XHD-000003", true, true, errFxhdd01List, fXHDD01.getLabel1());
         }
@@ -641,12 +641,21 @@ public class ValidateUtil {
      */
     private ErrorMessageInfo checkC601(FXHDD01 fXHDD01) {
         // 項目データを取得
-        String value = fXHDD01.getValue();
-        if (StringUtil.isEmpty(value) || "0".equals(value)) {
+        BigDecimal decValue = null;
+        try {
+            decValue = new BigDecimal(fXHDD01.getValue());
+        } catch (NumberFormatException e) {
+            // 処理なし
+        }
+        
+        if(decValue == null){
+            return null;
+        }
+
+        if (BigDecimal.ZERO.compareTo(decValue) == 0) {
             List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
             return MessageUtil.getErrorMessageInfo("XHD-000003", true, true, errFxhdd01List, fXHDD01.getLabel1());
         }
-
         return null;
     }
 
@@ -1003,6 +1012,13 @@ public class ValidateUtil {
         if (minValue == null || maxValue == null) {
             // 規格値不正
             return KIKAKU_CHECK_CD_SETTING_ERR;
+        }
+        
+        // 数値の大小が反転している場合、値を入れ替える
+        if(maxValue.compareTo(minValue) < 0){
+            BigDecimal tempValue = maxValue;
+            maxValue = minValue;
+            minValue = tempValue;
         }
 
         // 入力値取得

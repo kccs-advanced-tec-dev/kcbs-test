@@ -73,7 +73,8 @@ public class GXHDO101B003 implements IFormLogic {
     private static final String JOTAI_FLG_KARI_TOROKU = "0";
     private static final String JOTAI_FLG_TOROKUZUMI = "1";
     private static final String JOTAI_FLG_SAKUJO = "9";
-
+    private static final String SQL_STATE_RECORD_LOCK_ERR = "55P03";
+    
     /**
      * 初期化処理
      *
@@ -368,7 +369,12 @@ public class GXHDO101B003 implements IFormLogic {
             //ロールバック処理
             DBUtil.rollbackConnection(conDoc, LOGGER);
             DBUtil.rollbackConnection(conQcdb, LOGGER);
-            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            if (SQL_STATE_RECORD_LOCK_ERR.equals(e.getSQLState())) {
+                // レコードロックエラー時
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000025"))));
+            } else {
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            }
         }
 
         return processData;
@@ -592,7 +598,12 @@ public class GXHDO101B003 implements IFormLogic {
             DBUtil.rollbackConnection(conDoc, LOGGER);
             DBUtil.rollbackConnection(conQcdb, LOGGER);
 
-            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            if (SQL_STATE_RECORD_LOCK_ERR.equals(e.getSQLState())) {
+                // レコードロックエラー時
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000025"))));
+            } else {
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            }
         }
 
         return processData;
@@ -744,7 +755,12 @@ public class GXHDO101B003 implements IFormLogic {
             //ロールバック処理
             DBUtil.rollbackConnection(conDoc, LOGGER);
             DBUtil.rollbackConnection(conQcdb, LOGGER);
-            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            if (SQL_STATE_RECORD_LOCK_ERR.equals(e.getSQLState())) {
+                // レコードロックエラー時
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000025"))));
+            } else {
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            }
         }
 
         return processData;
@@ -853,7 +869,12 @@ public class GXHDO101B003 implements IFormLogic {
             DBUtil.rollbackConnection(conDoc, LOGGER);
             DBUtil.rollbackConnection(conQcdb, LOGGER);
 
-            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            if (SQL_STATE_RECORD_LOCK_ERR.equals(e.getSQLState())) {
+                // レコードロックエラー時
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000025"))));
+            } else {
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            }
         }
 
         return processData;
@@ -2094,7 +2115,11 @@ public class GXHDO101B003 implements IFormLogic {
             }
 
             String jotaiFlg = StringUtil.nullToBlank(getMapData(fxhdd03RevInfo, "jotai_flg"));
-
+            if (!(JOTAI_FLG_KARI_TOROKU.equals(jotaiFlg) || JOTAI_FLG_TOROKUZUMI.equals(jotaiFlg))) {
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
+                return processData;
+            }
+            
             // 印刷RSUSデータ取得
             List<SrRsusprn> srRsusprnDataList = getSrRsusprnData(queryRunnerQcdb, "", jotaiFlg, kojyo, lotNo8, oyalotEdaban);
             if (srRsusprnDataList.isEmpty()) {

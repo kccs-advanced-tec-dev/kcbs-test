@@ -722,4 +722,15 @@ public class StringUtil {
     public static int getLength(String target) {
         return target.codePointCount(0, target.length());
     }
+    
+    /**
+     * 前後の空白(全角含む)を削除する。
+     * @param str 
+     * @return 変換値
+     */
+    public static String trimAll(String str) {
+        String trimVal = trimLeft(str);
+        trimVal = trimRight(trimVal);
+        return trimVal;
+    }
 }

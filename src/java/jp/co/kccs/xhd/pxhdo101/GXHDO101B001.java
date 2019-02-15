@@ -74,6 +74,8 @@ public class GXHDO101B001 implements IFormLogic {
     private static final String JOTAI_FLG_KARI_TOROKU = "0";
     private static final String JOTAI_FLG_TOROKUZUMI = "1";
     private static final String JOTAI_FLG_SAKUJO = "9";
+    private static final String SQL_STATE_RECORD_LOCK_ERR = "55P03";
+    
 
     /**
      * 初期化処理
@@ -402,7 +404,12 @@ public class GXHDO101B001 implements IFormLogic {
             // コネクションロールバック処理
             DBUtil.rollbackConnection(conDoc, LOGGER);
             DBUtil.rollbackConnection(conQcdb, LOGGER);
-            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            if (SQL_STATE_RECORD_LOCK_ERR.equals(e.getSQLState())) {
+                // レコードロックエラー時
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000025"))));
+            } else {
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            }
         }
         return processData;
     }
@@ -614,13 +621,21 @@ public class GXHDO101B001 implements IFormLogic {
             }
 
             // 仮登録状態の場合、仮登録のデータを削除する。
+            SrSpsprintGra tmpSrSpsprintGra = null;
             if (JOTAI_FLG_KARI_TOROKU.equals(processData.getInitJotaiFlg())) {
+                
+                // 更新前の値を取得
+                List<SrSpsprintGra> srSpsprintGraList = getSrSpsprintGraData(queryRunnerQcdb, rev.toPlainString(), processData.getInitJotaiFlg(), kojyo, lotNo8, edaban);
+                if (!srSpsprintGraList.isEmpty()) {
+                    tmpSrSpsprintGra = srSpsprintGraList.get(0);
+                }
+                
                 deleteTmpSrSpsprintGra(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban);
                 deleteTmpSubSrSpsprintGra(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban);
             }
 
             // 印刷SPSｸﾞﾗﾋﾞｱ_登録処理
-            insertSrSpsprintGra(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, systemTime, processData.getItemList());
+            insertSrSpsprintGra(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, systemTime, processData.getItemList(), tmpSrSpsprintGra);
 
             // 印刷SPSｸﾞﾗﾋﾞｱ_ｻﾌﾞ画面登録処理
             insertSubSrSpsprintGra(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, systemTime);
@@ -651,7 +666,12 @@ public class GXHDO101B001 implements IFormLogic {
             DBUtil.rollbackConnection(conDoc, LOGGER);
             DBUtil.rollbackConnection(conQcdb, LOGGER);
 
-            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            if (SQL_STATE_RECORD_LOCK_ERR.equals(e.getSQLState())) {
+                // レコードロックエラー時
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000025"))));
+            } else {
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            }
 
         }
 
@@ -814,7 +834,12 @@ public class GXHDO101B001 implements IFormLogic {
             // コネクションロールバック処理
             DBUtil.rollbackConnection(conDoc, LOGGER);
             DBUtil.rollbackConnection(conQcdb, LOGGER);
-            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            if (SQL_STATE_RECORD_LOCK_ERR.equals(e.getSQLState())) {
+                // レコードロックエラー時
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000025"))));
+            } else {
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            }
         }
 
         return processData;
@@ -922,7 +947,12 @@ public class GXHDO101B001 implements IFormLogic {
             // コネクションロールバック処理
             DBUtil.rollbackConnection(conDoc, LOGGER);
             DBUtil.rollbackConnection(conQcdb, LOGGER);
-            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            if (SQL_STATE_RECORD_LOCK_ERR.equals(e.getSQLState())) {
+                // レコードロックエラー時
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000025"))));
+            } else {
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            }
         }
 
         return processData;
@@ -2421,6 +2451,11 @@ public class GXHDO101B001 implements IFormLogic {
             }
 
             String jotaiFlg = StringUtil.nullToBlank(getMapData(fxhdd03RevInfo, "jotai_flg"));
+            
+            if (!(JOTAI_FLG_KARI_TOROKU.equals(jotaiFlg) || JOTAI_FLG_TOROKUZUMI.equals(jotaiFlg))) {
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
+                return processData;
+            }
 
             // 印刷SPSｸﾞﾗﾋﾞｱデータ取得
             List<SrSpsprintGra> srSpsprintGraDataList = getSrSpsprintGraData(queryRunnerQcdb, "", jotaiFlg, kojyo, lotNo8, oyalotEdaban);
@@ -3077,10 +3112,11 @@ public class GXHDO101B001 implements IFormLogic {
      * @param edaban 枝番
      * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
      * @param itemList 項目リスト
+     * @param tmpSrSpsprintGra 仮登録データ
      * @throws SQLException 例外エラー
      */
     private void insertSrSpsprintGra(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev,
-            String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
+            String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList, SrSpsprintGra tmpSrSpsprintGra) throws SQLException {
 
         String sql = "INSERT INTO sr_spsprint_gra ("
                 + "kojyo,lotno,edaban,tapelotno,petfilmsyurui,taperollno1,taperollno2,taperollno3,"
@@ -3099,8 +3135,9 @@ public class GXHDO101B001 implements IFormLogic {
                 + ") VALUES ("
                 + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
-
-        List<Object> params = setUpdateParameterSrSpsprintGra(true, newRev, kojyo, lotNo, edaban, systemTime, itemList, null);
+        
+        
+        List<Object> params = setUpdateParameterSrSpsprintGra(true, newRev, kojyo, lotNo, edaban, systemTime, itemList, tmpSrSpsprintGra);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
     }

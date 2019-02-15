@@ -48,6 +48,10 @@ public class NumberUtil {
      * @return 数値変換可能な場合true
      */
     public static boolean isNumeric(String value) {
+        // NULL対策
+        if (value == null) {
+            return false;
+        }
         String regex = "^-?(0|[1-9]\\d*)(\\.\\d+|)$";
         Pattern p = Pattern.compile(regex);
         Matcher matcher = p.matcher(value);
@@ -105,7 +109,7 @@ public class NumberUtil {
      */
     public static boolean isSameValidDigits(BigDecimal value, int maxSeisu, int maxSyosu) {
         BigDecimal bigSeisu = value.setScale(0, RoundingMode.DOWN);
-        return maxSeisu == bigSeisu.precision() && maxSyosu == value.stripTrailingZeros().scale();
+        return maxSeisu == bigSeisu.precision() && maxSyosu == value.scale();
     }
 
     /**
@@ -155,7 +159,7 @@ public class NumberUtil {
         Double max = null;
         Double min = null;
         Double ave;
-        Double cv = null;
+        Double cv = Double.parseDouble("0");
         Double length = Double.parseDouble(String.valueOf(calcDataList.size()));
 
         Double value;
@@ -194,6 +198,7 @@ public class NumberUtil {
         if (ave != Double.parseDouble("0")) {
             cv = sd / ave;
         }
+        
         return new BigDecimal[]{BigDecimal.valueOf(sum), BigDecimal.valueOf(max), BigDecimal.valueOf(min), BigDecimal.valueOf(ave), BigDecimal.valueOf(cv)};
     }
 

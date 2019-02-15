@@ -229,7 +229,7 @@ public class GXHDO101A implements Serializable {
             List<Object> params = new ArrayList<>();
             params.add(strKojyo);
             params.add(strLotNo);
-            params.add(strEdaban);
+            params.add("001");
             List processResult =  (List)queryRunnerXHD.query(sqlsearchProcess, new MapListHandler(), params.toArray());
             for (Iterator i = processResult.iterator(); i.hasNext();) {
                 HashMap m = (HashMap)i.next();
