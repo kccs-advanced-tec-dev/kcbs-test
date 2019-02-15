@@ -40,10 +40,10 @@
     </h:head>
     <h:body style="padding-top:30px;">
         <f:metadata>
-            <f:viewAction action="#{gXHDO201B001.init()}"/>
+            <f:viewAction action="#{gXHDO201B002.init()}"/>
         </f:metadata>
         <nav class="navbar  navbar-expand fixed-top navbar-dark" style="background-color:#0E6A89;height: 50px;z-index: 999;">
-            <span class="navbar-brand mb-0" style="font-size:18px;font-weight:bold;">#{myMsg.insatsu_spsgurabia}</span>
+            <span class="navbar-brand mb-0" style="font-size:18px;font-weight:bold;">#{myMsg.insatsu_spssukurin}</span>
             <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#Navber" aria-controls="Navber" aria-expanded="false" aria-label="ナビゲーションの切替">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -62,10 +62,10 @@
             <p:growl id="growlMessage" showDetail="false" sticky="true" escape="false"/>
             <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
                 <f:facet name="message">
-                    <h:outputText value="#{gXHDO201B001.getWarnMessage()}" escape="false"/>
+                    <h:outputText value="#{gXHDO201B002.getWarnMessage()}" escape="false"/>
                 </f:facet>
                 <p:commandButton id="warnOk" value="OK" styleClass="ui-conf-commandbtn-def1" style="width:100px;margin-left:50px;"
-                                 actionListener="#{gXHDO201B001.processWarnOk()}"
+                                 actionListener="#{gXHDO201B002.processWarnOk()}"
                                  process="@this searchpanel"
                                  update="@form growlMessage idDataTable btnExcel"
                                  onstart="PF('cd').hide();$('#loadinggif').show();"
@@ -82,8 +82,8 @@
                             <h:outputText id="lblLotNo" value="ロットNo" style="width:100px;"/>
                         </td>
                         <td>
-                            <p:inputText id="pLotNo" value="#{gXHDO201B001.lotNo}" maxlength="14" style="margin-left:20px; height:26px;">
-                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B001.checkByte('lotNo', 14)}"  async="false"/>
+                            <p:inputText id="pLotNo" value="#{gXHDO201B002.lotNo}" maxlength="14" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B002.checkByte('lotNo', 14)}"  async="false"/>
                             </p:inputText>
                         </td>
                     </tr>
@@ -92,14 +92,14 @@
                             <h:outputText id="lblStartDate" value="開始日" style="width:100px;"/>
                         </td>
                         <td>
-                            <p:inputText id="pStartDateF" value="#{gXHDO201B001.startDateF}" maxlength="6" style="margin-left:20px; height:26px;">
-                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B001.checkByte('startDateF', 6)}"  async="false"/>
+                            <p:inputText id="pStartDateF" value="#{gXHDO201B002.startDateF}" maxlength="6" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B002.checkByte('startDateF', 6)}"  async="false"/>
                             </p:inputText>
                         </td>
                         <td>～</td>
                         <td>
-                            <p:inputText id="pStartDateT" value="#{gXHDO201B001.startDateT}" maxlength="6" style="height:26px;">
-                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B001.checkByte('startDateT', 6)}"  async="false"/>
+                            <p:inputText id="pStartDateT" value="#{gXHDO201B002.startDateT}" maxlength="6" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B002.checkByte('startDateT', 6)}"  async="false"/>
                             </p:inputText>
                         </td>
                     </tr>
@@ -108,14 +108,14 @@
                             <h:outputText id="lblStartTime" value="開始時刻" style="width:100px;"/>
                         </td>
                         <td>
-                            <p:inputText id="pStartTimeF" value="#{gXHDO201B001.startTimeF}" maxlength="4" style="margin-left:20px; height:26px;">
-                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B001.checkByte('startTimeF', 4)}"  async="false"/>
+                            <p:inputText id="pStartTimeF" value="#{gXHDO201B002.startTimeF}" maxlength="4" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B002.checkByte('startTimeF', 4)}"  async="false"/>
                             </p:inputText>
                         </td>
                         <td>～</td>
                         <td>
-                            <p:inputText id="pStartTimeT" value="#{gXHDO201B001.startTimeT}" maxlength="4" style="height:26px;">
-                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B001.checkByte('startTimeT', 4)}"  async="false"/>
+                            <p:inputText id="pStartTimeT" value="#{gXHDO201B002.startTimeT}" maxlength="4" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B002.checkByte('startTimeT', 4)}"  async="false"/>
                             </p:inputText>
                         </td>
                     </tr>
@@ -124,14 +124,14 @@
                             <h:outputText id="lblEndDate" value="終了日" style="width:100px;"/>
                         </td>
                         <td>
-                            <p:inputText id="pEndDateF" value="#{gXHDO201B001.endDateF}" maxlength="6" style="margin-left:20px; height:26px;">
-                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B001.checkByte('endDateF', 6)}"  async="false"/>
+                            <p:inputText id="pEndDateF" value="#{gXHDO201B002.endDateF}" maxlength="6" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B002.checkByte('endDateF', 6)}"  async="false"/>
                             </p:inputText>
                         </td>
                         <td>～</td>
                         <td>
-                            <p:inputText id="pEndDateT" value="#{gXHDO201B001.endDateT}" maxlength="6" style="height:26px;">
-                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B001.checkByte('endDateT', 6)}"  async="false"/>
+                            <p:inputText id="pEndDateT" value="#{gXHDO201B002.endDateT}" maxlength="6" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B002.checkByte('endDateT', 6)}"  async="false"/>
                             </p:inputText>
                         </td>
                     </tr>
@@ -140,14 +140,14 @@
                             <h:outputText id="lblEndTime" value="終了時刻" style="width:100px;"/>
                         </td>
                         <td>
-                            <p:inputText id="pEndTimeF" value="#{gXHDO201B001.endTimeF}" maxlength="4" style="margin-left:20px; height:26px;">
-                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B001.checkByte('endTimeF', 4)}"  async="false"/>
+                            <p:inputText id="pEndTimeF" value="#{gXHDO201B002.endTimeF}" maxlength="4" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B002.checkByte('endTimeF', 4)}"  async="false"/>
                             </p:inputText>
                         </td>
                         <td>～</td>
                         <td>
-                            <p:inputText id="pEndTimeT" value="#{gXHDO201B001.endTimeT}" maxlength="4" style="height:26px;">
-                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B001.checkByte('endTimeT', 4)}"  async="false"/>
+                            <p:inputText id="pEndTimeT" value="#{gXHDO201B002.endTimeT}" maxlength="4" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B002.checkByte('endTimeT', 4)}"  async="false"/>
                             </p:inputText>
                         </td>
                     </tr>
@@ -156,8 +156,8 @@
                             <h:outputText id="lblGouki" value="印刷号機" style="width:100px;"/>
                         </td>
                         <td>
-                            <p:inputText id="pGouki" value="#{gXHDO201B001.gouki}" maxlength="4" style="margin-left:20px; height:26px;">
-                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B001.checkByte('gouki', 4)}"  async="false"/>
+                            <p:inputText id="pGouki" value="#{gXHDO201B002.gouki}" maxlength="4" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B002.checkByte('gouki', 4)}"  async="false"/>
                             </p:inputText>
                         </td>
                     </tr>
@@ -166,8 +166,8 @@
                             <h:outputText id="lblKcpNo" value="KCPNo" style="width:100px;"/>
                         </td>
                         <td colspan="3">
-                            <p:inputText id="pKcpNo" value="#{gXHDO201B001.kcpNo}" maxlength="25" style="margin-left:20px; height:26px; width:350px;">
-                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B001.checkByte('kcpNo', 25)}"  async="false"/>
+                            <p:inputText id="pKcpNo" value="#{gXHDO201B002.kcpNo}" maxlength="25" style="margin-left:20px; height:26px; width:350px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B002.checkByte('kcpNo', 25)}"  async="false"/>
                             </p:inputText>
                         </td>
                     </tr>
@@ -176,46 +176,43 @@
             <p:panel id="buttonpanel" style="border:none;margin-top:-10px;">
                 <p:commandButton id="btnSearch" style="width:100px;height:25px;font-size:0.7em;margin-left:0px;text-align:center;"
                                 value="検索" 
-                                actionListener="#{gXHDO201B001.checkInputAndSearch()}"
+                                actionListener="#{gXHDO201B002.checkInputAndSearch()}"
                                 process="@this searchpanel"
                                 update="growlMessage idDataTable btnExcel confDialog"
                                 onstart="$('#loadinggif').show();"
                                 oncomplete="$('#loadinggif').hide();if('warning'!=args.param1){PF('cd').hide();} else {PF('cd').show();}"/>
                 <p:commandButton id="bthClear" style="width:100px;height:25px;font-size:0.7em;margin-left:10px;text-align:center;" 
                                 value="クリア" 
-                                action="#{gXHDO201B001.clear()}"
+                                action="#{gXHDO201B002.clear()}"
                                 process="@this"
                                 update="searchpanel idDataTable btnExcel"/>
                 <p:commandButton id="btnExcel" style="width:100px;height:25px;font-size:0.7em;margin-left:10px;text-align:center;"
-                                disabled="#{gXHDO201B001.excelButtonDisable}"
+                                disabled="#{gXHDO201B002.excelButtonDisable}"
                                 value="Excel保存"
-                                actionListener="#{gXHDO201B001.downloadExcel()}"
+                                actionListener="#{gXHDO201B002.downloadExcel()}"
                                 process="@this"
                                 ajax="false"/>
             </p:panel>
             <div class="table-responsive" style="margin-top:-15px;">
                 <p:dataTable id="idDataTable" var="item" style="font-size:0.8em;margin-top:20px;" styleClass="table text-nowrap ui-paginator"
-                             value="#{gXHDO201B001.listData}" emptyMessage="" paginator="true" paginatorPosition="top" rows="#{gXHDO201B001.getPagenatorCount()}">
+                             value="#{gXHDO201B002.listData}" emptyMessage="" paginator="true" paginatorPosition="top" rows="#{gXHDO201B002.getPagenatorCount()}">
                     <p:column id="lotno" headerText="ﾛｯﾄNo." >
                         <p:outputLabel value="#{item.lotno}"/>
                     </p:column>
                     <p:column id="kcpno" headerText="KCPNO" >
                         <p:outputLabel value="#{item.kcpno}"/>
                     </p:column>
+                    <p:column id="tapesyurui" headerText="ﾃｰﾌﾟ種類" >
+                        <p:outputLabel value="#{item.tapesyurui}"/>
+                    </p:column>
                     <p:column id="tapelotno" headerText="ﾃｰﾌﾟｽﾘｯﾌﾟﾛｯﾄNo" >
                         <p:outputLabel value="#{item.tapelotno}"/>
                     </p:column>
-                    <p:column id="petfilmsyurui" headerText="PETﾌｨﾙﾑ種類" >
-                        <p:outputLabel value="#{item.petfilmsyurui}"/>
+                    <p:column id="tapeslipkigo" headerText="ﾃｰﾌﾟｽﾘｯﾌﾟ記号" >
+                        <p:outputLabel value="#{item.tapeslipkigo}"/>
                     </p:column>
-                    <p:column id="taperollno1" headerText="ﾃｰﾌﾟﾛｰﾙNo1" >
-                        <p:outputLabel value="#{item.taperollno1}"/>
-                    </p:column>
-                    <p:column id="taperollno2" headerText="ﾃｰﾌﾟﾛｰﾙNo2" >
-                        <p:outputLabel value="#{item.taperollno2}"/>
-                    </p:column>
-                    <p:column id="taperollno3" headerText="ﾃｰﾌﾟﾛｰﾙNo3" >
-                        <p:outputLabel value="#{item.taperollno3}"/>
+                    <p:column id="genryoukigou" headerText="原料記号" >
+                        <p:outputLabel value="#{item.genryoukigou}"/>
                     </p:column>
                     <p:column id="pastelotno" headerText="ﾍﾟｰｽﾄﾛｯﾄNo1" >
                         <p:outputLabel value="#{item.pastelotno}"/>
@@ -230,71 +227,170 @@
                             <f:convertNumber pattern="#0.0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="pkokeibun1" headerText="ﾍﾟｰｽﾄ固形分1" styleClass="number">
-                        <p:outputLabel value="#{item.pkokeibun1}">
-                            <f:convertNumber pattern="#0.00"/>
+                    <p:column id="seihanno" headerText="製版No" >
+                        <p:outputLabel value="#{item.seihanno}"/>
+                    </p:column>
+                    <p:column id="seihanmaisuu" headerText="製版枚数" styleClass="number">
+                        <p:outputLabel value="#{item.seihanmaisuu}">
+                            <f:convertNumber pattern="##,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="startdatetime" headerText="ﾌﾟﾘﾝﾄ開始日時" >
+                        <p:outputLabel value="#{item.startdatetime}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="enddatetime" headerText="ﾌﾟﾘﾝﾄ終了日時" >
+                        <p:outputLabel value="#{item.enddatetime}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="skeegeno" headerText="ｽｷｰｼﾞNo" >
+                        <p:outputLabel value="#{item.skeegeno}"/>
+                    </p:column>
+                    <p:column id="skeegemaisuu" headerText="ｽｷｰｼﾞ枚数" styleClass="number">
+                        <p:outputLabel value="#{item.skeegemaisuu}">
+                            <f:convertNumber pattern="#,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="gouki" headerText="号機ｺｰﾄﾞ" >
+                        <p:outputLabel value="#{item.gouki}"/>
+                    </p:column>
+                    <p:column id="tantousya" headerText="担当者ｺｰﾄﾞ" >
+                        <p:outputLabel value="#{item.tantousya}"/>
+                    </p:column>
+                    <p:column id="kakuninsya" headerText="確認者ｺｰﾄﾞ" >
+                        <p:outputLabel value="#{item.kakuninsya}"/>
+                    </p:column>
+                    <p:column id="kansouondo" headerText="乾燥温度" styleClass="number">
+                        <p:outputLabel value="#{item.kansouondo}">
+                            <f:convertNumber pattern="#,##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="prnprofile" headerText="印刷ﾌﾟﾛﾌｧｲﾙ" >
+                        <p:outputLabel value="#{item.prnprofile}"/>
+                    </p:column>
+                    <p:column id="kansoutime" headerText="乾燥時間" styleClass="number">
+                        <p:outputLabel value="#{item.kansoutime}">
+                            <f:convertNumber pattern="##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="saatu" headerText="差圧" styleClass="number">
+                        <p:outputLabel value="#{item.saatu}">
+                            <f:convertNumber pattern="#,##0.000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="skeegespeed" headerText="ｽｷｰｼﾞｽﾋﾟｰﾄﾞ" styleClass="number">
+                        <p:outputLabel value="#{item.skeegespeed}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="skeegeangle" headerText="ｽｷｰｼﾞ角度" styleClass="number">
+                        <p:outputLabel value="#{item.skeegeangle}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="mld" headerText="ﾒﾀﾙﾚｲﾀﾞｳﾝ値" styleClass="number">
+                        <p:outputLabel value="#{item.mld}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="clearrance" headerText="ｸﾘｱﾗﾝｽ設定値" styleClass="number">
+                        <p:outputLabel value="#{item.clearrance}">
+                            <f:convertNumber pattern="##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bikou1" headerText="備考1" >
+                        <p:outputLabel value="#{item.bikou1}"/>
+                    </p:column>
+                    <p:column id="bikou2" headerText="備考2" >
+                        <p:outputLabel value="#{item.bikou2}"/>
+                    </p:column>
+                    <p:column id="makuatu1" headerText="膜厚1" styleClass="number">
+                        <p:outputLabel value="#{item.makuatu1}">
+                            <f:convertNumber pattern="#0.000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatu2" headerText="膜厚2" styleClass="number">
+                        <p:outputLabel value="#{item.makuatu2}">
+                            <f:convertNumber pattern="#0.000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatu3" headerText="膜厚3" styleClass="number">
+                        <p:outputLabel value="#{item.makuatu3}">
+                            <f:convertNumber pattern="#0.000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatu4" headerText="膜厚4" styleClass="number">
+                        <p:outputLabel value="#{item.makuatu4}">
+                            <f:convertNumber pattern="#0.000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatu5" headerText="膜厚5" styleClass="number">
+                        <p:outputLabel value="#{item.makuatu5}">
+                            <f:convertNumber pattern="#0.000"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="pastelotno2" headerText="ﾍﾟｰｽﾄﾛｯﾄNo2" >
                         <p:outputLabel value="#{item.pastelotno2}"/>
+                    </p:column>
+                    <p:column id="pastelotno3" headerText="ﾍﾟｰｽﾄﾛｯﾄNo3" >
+                        <p:outputLabel value="#{item.pastelotno3}"/>
+                    </p:column>
+                    <p:column id="pastelotno4" headerText="ﾍﾟｰｽﾄﾛｯﾄNo4" >
+                        <p:outputLabel value="#{item.pastelotno4}"/>
+                    </p:column>
+                    <p:column id="pastelotno5" headerText="ﾍﾟｰｽﾄﾛｯﾄNo5" >
+                        <p:outputLabel value="#{item.pastelotno5}"/>
                     </p:column>
                     <p:column id="pastenendo2" headerText="ﾍﾟｰｽﾄ粘度2" styleClass="number">
                         <p:outputLabel value="#{item.pastenendo2}">
                             <f:convertNumber pattern="#,##0.00"/>
                         </p:outputLabel>
                     </p:column>
+                    <p:column id="pastenendo3" headerText="ﾍﾟｰｽﾄ粘度3" styleClass="number">
+                        <p:outputLabel value="#{item.pastenendo3}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="pastenendo4" headerText="ﾍﾟｰｽﾄ粘度4" styleClass="number">
+                        <p:outputLabel value="#{item.pastenendo4}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="pastenendo5" headerText="ﾍﾟｰｽﾄ粘度5" styleClass="number">
+                        <p:outputLabel value="#{item.pastenendo5}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
                     <p:column id="pasteondo2" headerText="ﾍﾟｰｽﾄ温度2" styleClass="number">
                         <p:outputLabel value="#{item.pasteondo2}">
-                            <f:convertNumber pattern="#0.0"/>
+                            <f:convertNumber pattern="#,##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="pkokeibun2" headerText="ﾍﾟｰｽﾄ固形分2" styleClass="number">
-                        <p:outputLabel value="#{item.pkokeibun2}">
-                            <f:convertNumber pattern="#0.00"/>
+                    <p:column id="pasteondo3" headerText="ﾍﾟｰｽﾄ温度3" styleClass="number">
+                        <p:outputLabel value="#{item.pasteondo3}">
+                            <f:convertNumber pattern="##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="handoumei" headerText="版胴名" >
-                        <p:outputLabel value="#{item.handoumei}"/>
-                    </p:column>
-                    <p:column id="handouno" headerText="版胴No" >
-                        <p:outputLabel value="#{item.handouno}"/>
-                    </p:column>
-                    <p:column id="handoumaisuu" headerText="版胴使用枚数" styleClass="number">
-                        <p:outputLabel value="#{item.handoumaisuu}">
-                            <f:convertNumber pattern="##,###,##0"/>
+                    <p:column id="pasteondo4" headerText="ﾍﾟｰｽﾄ温度4" styleClass="number">
+                        <p:outputLabel value="#{item.pasteondo4}">
+                            <f:convertNumber pattern="##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="bladeno" headerText="ﾌﾞﾚｰﾄﾞNo." >
-                        <p:outputLabel value="#{item.bladeno}"/>
-                    </p:column>
-                    <p:column id="bladegaikan" headerText="ﾌﾞﾚｰﾄﾞ外観" >
-                        <p:outputLabel value="#{item.bladegaikan}"/>
-                    </p:column>
-                    <p:column id="bladeatu" headerText="ﾌﾞﾚｰﾄﾞ圧力" styleClass="number">
-                        <p:outputLabel value="#{item.bladeatu}">
-                            <f:convertNumber pattern="###,##0.000"/>
+                    <p:column id="pasteondo5" headerText="ﾍﾟｰｽﾄ温度5" styleClass="number">
+                        <p:outputLabel value="#{item.pasteondo5}">
+                            <f:convertNumber pattern="##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="atudono" headerText="圧胴No" >
-                        <p:outputLabel value="#{item.atudono}"/>
+                    <p:column id="bikou3" headerText="備考3" >
+                        <p:outputLabel value="#{item.bikou3}"/>
                     </p:column>
-                    <p:column id="atudomaisuu" headerText="圧胴使用枚数" styleClass="number">
-                        <p:outputLabel value="#{item.atudomaisuu}">
-                            <f:convertNumber pattern="##,###,##0"/>
-                        </p:outputLabel>
+                    <p:column id="bikou4" headerText="備考4" >
+                        <p:outputLabel value="#{item.bikou4}"/>
                     </p:column>
-                    <p:column id="atudoatu" headerText="圧胴圧力" styleClass="number">
-                        <p:outputLabel value="#{item.atudoatu}">
-                            <f:convertNumber pattern="###,##0.000"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="gouki" headerText="号機ｺｰﾄﾞ" >
-                        <p:outputLabel value="#{item.gouki}"/>
-                    </p:column>
-                    <p:column id="kansouondo" headerText="乾燥温度" styleClass="number">
-                        <p:outputLabel value="#{item.kansouondo}">
-                            <f:convertNumber pattern="#,##0.0"/>
-                        </p:outputLabel>
+                    <p:column id="bikou5" headerText="備考5" >
+                        <p:outputLabel value="#{item.bikou5}"/>
                     </p:column>
                     <p:column id="kansouondo2" headerText="乾燥温度2" styleClass="number">
                         <p:outputLabel value="#{item.kansouondo2}">
@@ -316,18 +412,31 @@
                             <f:convertNumber pattern="#,##0.0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="hansouspeed" headerText="搬送速度" styleClass="number">
-                        <p:outputLabel value="#{item.hansouspeed}">
-                            <f:convertNumber pattern="##,##0"/>
+                    <p:column id="skeegemaisuu2" headerText="ｽｷｰｼﾞ枚数2" styleClass="number">
+                        <p:outputLabel value="#{item.skeegemaisuu2}">
+                            <f:convertNumber pattern="###,##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="startdatetime" headerText="ﾌﾟﾘﾝﾄ開始日時" >
-                        <p:outputLabel value="#{item.startdatetime}">
-                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss"/>
-                        </p:outputLabel>
+                    <p:column id="taperollno1" headerText="ﾃｰﾌﾟﾛｰﾙNo1" >
+                        <p:outputLabel value="#{item.taperollno1}"/>
                     </p:column>
-                    <p:column id="tantousya" headerText="ｾｯﾃｨﾝｸﾞ担当者ｺｰﾄﾞ" >
-                        <p:outputLabel value="#{item.tantousya}"/>
+                    <p:column id="taperollno2" headerText="ﾃｰﾌﾟﾛｰﾙNo2" >
+                        <p:outputLabel value="#{item.taperollno2}"/>
+                    </p:column>
+                    <p:column id="taperollno3" headerText="ﾃｰﾌﾟﾛｰﾙNo3" >
+                        <p:outputLabel value="#{item.taperollno3}"/>
+                    </p:column>
+                    <p:column id="taperollno4" headerText="ﾃｰﾌﾟﾛｰﾙNo4" >
+                        <p:outputLabel value="#{item.taperollno4}"/>
+                    </p:column>
+                    <p:column id="taperollno5" headerText="ﾃｰﾌﾟﾛｰﾙNo5" >
+                        <p:outputLabel value="#{item.taperollno5}"/>
+                    </p:column>
+                    <p:column id="pastehinmei" headerText="ﾍﾟｰｽﾄ品名" >
+                        <p:outputLabel value="#{item.pastehinmei}"/>
+                    </p:column>
+                    <p:column id="seihanmei" headerText="製版名" >
+                        <p:outputLabel value="#{item.seihanmei}"/>
                     </p:column>
                     <p:column id="makuatuaveStart" headerText="ｽﾀｰﾄ時膜厚AVE" styleClass="number">
                         <p:outputLabel value="#{item.makuatuaveStart}">
@@ -344,51 +453,18 @@
                             <f:convertNumber pattern="#0.000"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="makuatucvStart" headerText="印刷ｽﾀｰﾄ膜厚CV" styleClass="number">
-                        <p:outputLabel value="#{item.makuatucvStart}">
-                            <f:convertNumber pattern="#0.0000"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="nijimikasureStart" headerText="ｽﾀｰﾄ時ﾆｼﾞﾐ・ｶｽﾚ確認" >
-                        <p:outputLabel value="#{item.nijimikasureStart}"/>
-                    </p:column>
                     <p:column id="startPtnDistX" headerText="ｽﾀｰﾄ時PTN間距離X" styleClass="number">
                         <p:outputLabel value="#{item.startPtnDistX}">
-                            <f:convertNumber pattern="##,##0"/>
+                            <f:convertNumber pattern="##,###,###,##0"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="startPtnDistY" headerText="ｽﾀｰﾄ時PTN間距離Y" styleClass="number">
                         <p:outputLabel value="#{item.startPtnDistY}">
-                            <f:convertNumber pattern="##,##0"/>
+                            <f:convertNumber pattern="##,###,###,##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="tensionsSum" headerText="開始ﾃﾝｼｮﾝ計" styleClass="number">
-                        <p:outputLabel value="#{item.tensionsSum}">
-                            <f:convertNumber pattern="##,##0"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="tensionstemae" headerText="ﾃﾝｼｮﾝ開始手前" styleClass="number">
-                        <p:outputLabel value="#{item.tensionstemae}">
-                            <f:convertNumber pattern="##,##0"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="tensionsoku" headerText="ﾃﾝｼｮﾝ開始奥" styleClass="number">
-                        <p:outputLabel value="#{item.tensionsoku}">
-                            <f:convertNumber pattern="##,##0"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="enddatetime" headerText="ﾌﾟﾘﾝﾄ終了日時" >
-                        <p:outputLabel value="#{item.enddatetime}">
-                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="tantoEnd" headerText="終了時担当者ｺｰﾄﾞ" >
-                        <p:outputLabel value="#{item.tantoEnd}"/>
-                    </p:column>
-                    <p:column id="printmaisuu" headerText="印刷枚数" styleClass="number">
-                        <p:outputLabel value="#{item.printmaisuu}">
-                            <f:convertNumber pattern="#,###,##0"/>
-                        </p:outputLabel>
+                    <p:column id="tantoSetting" headerText="ｾｯﾃｨﾝｸﾞ担当者ｺｰﾄﾞ" >
+                        <p:outputLabel value="#{item.tantoSetting}"/>
                     </p:column>
                     <p:column id="makuatuaveEnd" headerText="終了時膜厚AVE" styleClass="number">
                         <p:outputLabel value="#{item.makuatuaveEnd}">
@@ -405,6 +481,65 @@
                             <f:convertNumber pattern="#0.000"/>
                         </p:outputLabel>
                     </p:column>
+                    <p:column id="endPtnDistX" headerText="終了時PTN間距離X" styleClass="number">
+                        <p:outputLabel value="#{item.endPtnDistX}">
+                            <f:convertNumber pattern="##,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="endPtnDistY" headerText="終了時PTN間距離Y" styleClass="number">
+                        <p:outputLabel value="#{item.endPtnDistY}">
+                            <f:convertNumber pattern="##,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tantoEnd" headerText="終了時担当者ｺｰﾄﾞ" >
+                        <p:outputLabel value="#{item.tantoEnd}"/>
+                    </p:column>
+                    <p:column id="sijiondo" headerText="指示乾燥温度1" styleClass="number">
+                        <p:outputLabel value="#{item.sijiondo}">
+                            <f:convertNumber pattern="#,##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="sijiondo2" headerText="指示乾燥温度2" styleClass="number">
+                        <p:outputLabel value="#{item.sijiondo2}">
+                            <f:convertNumber pattern="#,##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="sijiondo3" headerText="指示乾燥温度3" styleClass="number">
+                        <p:outputLabel value="#{item.sijiondo3}">
+                            <f:convertNumber pattern="#,##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="sijiondo4" headerText="指示乾燥温度4" styleClass="number">
+                        <p:outputLabel value="#{item.sijiondo4}">
+                            <f:convertNumber pattern="#,##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="sijiondo5" headerText="指示乾燥温度5" styleClass="number">
+                        <p:outputLabel value="#{item.sijiondo5}">
+                            <f:convertNumber pattern="#,##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="pkokeibun1" headerText="ﾍﾟｰｽﾄ固形分1" styleClass="number">
+                        <p:outputLabel value="#{item.pkokeibun1}">
+                            <f:convertNumber pattern="#0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="pkokeibun2" headerText="ﾍﾟｰｽﾄ固形分2" styleClass="number">
+                        <p:outputLabel value="#{item.pkokeibun2}">
+                            <f:convertNumber pattern="#0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="petfilmsyurui" headerText="PETﾌｨﾙﾑ種類" >
+                        <p:outputLabel value="#{item.petfilmsyurui}"/>
+                    </p:column>
+                    <p:column id="makuatucvStart" headerText="印刷ｽﾀｰﾄ膜厚CV" styleClass="number">
+                        <p:outputLabel value="#{item.makuatucvStart}">
+                            <f:convertNumber pattern="#0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="nijimikasureStart" headerText="ｽﾀｰﾄ時ﾆｼﾞﾐ・ｶｽﾚ確認" >
+                        <p:outputLabel value="#{item.nijimikasureStart}"/>
+                    </p:column>
                     <p:column id="makuatucvEnd" headerText="印刷ｴﾝﾄﾞ膜厚CV" styleClass="number">
                         <p:outputLabel value="#{item.makuatucvEnd}">
                             <f:convertNumber pattern="#0.0000"/>
@@ -413,79 +548,23 @@
                     <p:column id="nijimikasureEnd" headerText="終了時ﾆｼﾞﾐ・ｶｽﾚ確認" >
                         <p:outputLabel value="#{item.nijimikasureEnd}"/>
                     </p:column>
-                    <p:column id="endPtnDistX" headerText="終了時PTN間距離X" styleClass="number">
-                        <p:outputLabel value="#{item.endPtnDistX}">
+                    <p:column id="printmaisuu" headerText="印刷枚数" styleClass="number">
+                        <p:outputLabel value="#{item.printmaisuu}">
+                            <f:convertNumber pattern="##,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tableClearrance" headerText="ﾃｰﾌﾞﾙｸﾘｱﾗﾝｽ" styleClass="number">
+                        <p:outputLabel value="#{item.tableClearrance}">
+                            <f:convertNumber pattern="#0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="scraperspeed" headerText="ｽｸﾚｯﾊﾟｰ速度" styleClass="number">
+                        <p:outputLabel value="#{item.scraperspeed}">
                             <f:convertNumber pattern="##,##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="endPtnDistY" headerText="終了時PTN間距離Y" styleClass="number">
-                        <p:outputLabel value="#{item.endPtnDistY}">
-                            <f:convertNumber pattern="##,##0"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="tensioneSum" headerText="終了ﾃﾝｼｮﾝ計" styleClass="number">
-                        <p:outputLabel value="#{item.tensioneSum}">
-                            <f:convertNumber pattern="##,##0"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="tensionetemae" headerText="ﾃﾝｼｮﾝ終了手前" styleClass="number">
-                        <p:outputLabel value="#{item.tensionetemae}">
-                            <f:convertNumber pattern="##,##0"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="tensioneoku" headerText="ﾃﾝｼｮﾝ終了奥" styleClass="number">
-                        <p:outputLabel value="#{item.tensioneoku}">
-                            <f:convertNumber pattern="##,##0"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="printzure1SurihajimeStart" headerText="印刷ズレ①刷り始め開始" styleClass="number">
-                        <p:outputLabel value="#{item.printzure1SurihajimeStart}">
-                            <f:convertNumber pattern="##0"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="printzure2CenterStart" headerText="印刷ズレ②中央開始" styleClass="number">
-                        <p:outputLabel value="#{item.printzure2CenterStart}">
-                            <f:convertNumber pattern="##0"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="printzure3SuriowariStart" headerText="印刷ズレ③刷り終わり開始" styleClass="number">
-                        <p:outputLabel value="#{item.printzure3SuriowariStart}">
-                            <f:convertNumber pattern="##0"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="abzureHeikinStart" headerText="ABズレ平均スタート" styleClass="number">
-                        <p:outputLabel value="#{item.abzureHeikinStart}">
-                            <f:convertNumber pattern="##0"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="printzure1SurihajimeEnd" headerText="印刷ズレ①刷り始め終了" styleClass="number">
-                        <p:outputLabel value="#{item.printzure1SurihajimeEnd}">
-                            <f:convertNumber pattern="##0"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="printzure2CenterEnd" headerText="印刷ズレ②中央終了" styleClass="number">
-                        <p:outputLabel value="#{item.printzure2CenterEnd}">
-                            <f:convertNumber pattern="##0"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="printzure3SuriowariEnd" headerText="印刷ズレ③刷り終わり終了" styleClass="number">
-                        <p:outputLabel value="#{item.printzure3SuriowariEnd}">
-                            <f:convertNumber pattern="##0"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="abzureHeikinEnd" headerText="ABズレ平均終了" styleClass="number">
-                        <p:outputLabel value="#{item.abzureHeikinEnd}">
-                            <f:convertNumber pattern="##0"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="genryoukigou" headerText="原料記号" >
-                        <p:outputLabel value="#{item.genryoukigou}"/>
-                    </p:column>
-                    <p:column id="bikou1" headerText="備考1" >
-                        <p:outputLabel value="#{item.bikou1}"/>
-                    </p:column>
-                    <p:column id="bikou2" headerText="備考2" >
-                        <p:outputLabel value="#{item.bikou2}"/>
+                    <p:column id="skeegegaikan" headerText="ｽｷｰｼﾞ外観" >
+                        <p:outputLabel value="#{item.skeegegaikan}"/>
                     </p:column>
                     <p:column id="makuatsuStart1" headerText="膜厚ｽﾀｰﾄ1" styleClass="number">
                         <p:outputLabel value="#{item.makuatsuStart1}">
