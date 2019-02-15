@@ -237,6 +237,28 @@ public class ValidateUtil {
         }
         return null;
     }
+    
+    /**
+     * 桁数チェック
+     *
+     * @param value 入力値
+     * @param itemName 項目名
+     * @param length 桁数
+     * @return エラー時はエラーメッセージを返却
+     */
+    public String checkC101(String value, String itemName, int length) {
+        // 項目データを取得
+        // 値が入っていない場合、チェック無し
+        if (StringUtil.isEmpty(value)) {
+            return null;
+        }
+
+        // エラー対象をリストに追加
+        if (length != StringUtil.getLength(value)) {
+            return MessageUtil.getMessage("XHD-000004", itemName, length);
+        }
+        return null;
+    } 
 
     /**
      * 指定桁数ﾁｪｯｸ(数値(小数あり))
@@ -293,6 +315,27 @@ public class ValidateUtil {
 
         return null;
     }
+    
+    /**
+     * 桁数ﾁｪｯｸ(小数なし)
+     *
+     * @param value 入力値
+     * @param itemName 項目名
+     * @param length 桁数
+     * @return エラー時はエラーメッセージを返却
+     */
+    public String checkC103(String value, String itemName, int length) {
+        // 値が入っていない場合、チェック無し
+        if (StringUtil.isEmpty(value)) {
+            return null;
+        }
+        
+        if (length < value.length()) {
+            return MessageUtil.getMessage("XHD-000006", itemName, length);
+        }
+
+        return null;
+    }
 
     /**
      * 桁数ﾁｪｯｸ(小数あり)
@@ -341,6 +384,22 @@ public class ValidateUtil {
 
         return null;
     }
+    
+    /**
+     * 必須チェック
+     *
+     * @param value 入力値
+     * @param itemName 項目名
+     * @return エラー時はエラーメッセージを返却
+     */
+    public String checkC001(String value, String itemName) {
+        // 項目データを取得
+        if (StringUtil.isEmpty(value.trim())) {
+            return MessageUtil.getMessage("XHD-000003", itemName);
+        }
+
+        return null;
+    }
 
     /**
      * 必須チェック
@@ -359,7 +418,7 @@ public class ValidateUtil {
     }
 
     /**
-     * 型ﾁｪｯｸ
+     * 数値型ﾁｪｯｸ
      *
      * @param fXHDD01 項目データ
      * @return エラー時はエラーメッセージを返却
@@ -375,6 +434,26 @@ public class ValidateUtil {
         if (!NumberUtil.isNumeric(value)) {
             List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
             return MessageUtil.getErrorMessageInfo("XHD-000008", true, true, errFxhdd01List, fXHDD01.getLabel1());
+        }
+
+        return null;
+    }
+    
+    /**
+     * 数値型ﾁｪｯｸ
+     *
+     * @param value 入力値
+     * @param itemName 項目名
+     * @return エラー時はエラーメッセージを返却
+     */
+    public String checkC201(String value, String itemName) {
+        // 値が入っていない場合、チェック無し
+        if (StringUtil.isEmpty(value)) {
+            return null;
+        }
+
+        if (!NumberUtil.isNumeric(value)) {
+            return MessageUtil.getMessage("XHD-000008", itemName);
         }
 
         return null;
@@ -493,6 +572,25 @@ public class ValidateUtil {
 
         return null;
     }
+    
+    /**
+     * 日付チェック(YYMMDD)
+     *
+     * @param value 入力値
+     * @param itemName 項目名
+     * @return エラー時はエラーメッセージを返却
+     */
+    public String checkC501(String value, String itemName) {
+        if (StringUtil.isEmpty(value)) {
+            return null;
+        }
+
+        if (!DateUtil.isValidYYMMDD(value)) {
+            return MessageUtil.getMessage("XHD-000012", itemName);
+        }
+
+        return null;
+    }
 
     /**
      * 時刻チェック(HHMM)
@@ -510,6 +608,25 @@ public class ValidateUtil {
         if (!DateUtil.isValidHHMM(value)) {
             List<FXHDD01> errFxhdd01List = Arrays.asList(fXHDD01);
             return MessageUtil.getErrorMessageInfo("XHD-000013", true, true, errFxhdd01List, fXHDD01.getLabel1());
+        }
+
+        return null;
+    }
+    
+    /**
+     * 時刻チェック(HHMM)
+     *
+     * @param value 入力値
+     * @param itemName 項目名
+     * @return エラー時はエラーメッセージを返却
+     */
+    public String checkC502(String value, String itemName) {
+        if (StringUtil.isEmpty(value)) {
+            return null;
+        }
+
+        if (!DateUtil.isValidHHMM(value)) {
+            return MessageUtil.getMessage("XHD-000013", itemName);
         }
 
         return null;
@@ -1364,7 +1481,7 @@ public class ValidateUtil {
      * @param queryRunnerWip QueryRunnerオブジェクト(Wip)
      * @return true:存在する、false:存在しない
      */
-    private boolean existGokukimas(String goukicode, QueryRunner queryRunnerWip) throws SQLException {
+    public boolean existGokukimas(String goukicode, QueryRunner queryRunnerWip) throws SQLException {
         String sql = "SELECT goukicode "
                 + "FROM goukimas WHERE goukicode = ? ";
 

@@ -1,0 +1,1181 @@
+/*
+ * Copyright 2019 Kyocera Communication Systems Co., Ltd All rights reserved.
+ */
+package jp.co.kccs.xhd.model;
+
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.sql.Timestamp;
+
+/**
+ * ===============================================================================<br>
+ * <br>
+ * システム名	品質DB(コンデンサ)<br>
+ * <br>
+ * 変更日	2019/01/27<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	KCCS D.Yanagida<br>
+ * 変更理由	新規作成<br>
+ * <br>
+ * ===============================================================================<br>
+ */
+/**
+ * 印刷・RSUS履歴検索画面のモデルクラスです。
+ *
+ * @author KCCS D.Yanagida
+ * @since 2019/01/27
+ */
+public class GXHDO201B003Model implements Serializable {
+    /** ﾛｯﾄNo. */
+    private String lotno = "";
+    /** KCPNO */
+    private String kcpno = "";
+    /** ﾃｰﾌﾟ種類 */
+    private String tapesyurui = "";
+    /** ﾃｰﾌﾟｽﾘｯﾌﾟﾛｯﾄNo */
+    private String tapelotno = "";
+    /** ﾃｰﾌﾟｽﾘｯﾌﾟ記号 */
+    private String tapeslipkigo = "";
+    /** 原料記号 */
+    private String genryokigo = "";
+    /** 開始日時 */
+    private Timestamp kaisinichiji = null;
+    /** 終了日時 */
+    private Timestamp syuryonichiji = null;
+    /** 号機 */
+    private String goki = "";
+    /** ｽｷｰｼﾞNo */
+    private String skeegeno = "";
+    /** ｽｷｰｼﾞ枚数 */
+    private Long skeegemaisuu = null;
+    /** ｽｷｰｼﾞｽﾋﾟｰﾄﾞ */
+    private Long skeegespeed = null;
+    /** 乾燥温度 */
+    private Long kansoondo = null;
+    /** ｸﾘｱﾗﾝｽ設定値 */
+    private BigDecimal clearance = null;
+    /** 差圧 */
+    private BigDecimal saatu = null;
+    /** 膜厚1 */
+    private BigDecimal makuatu1 = null;
+    /** 製版No */
+    private String seihanno = "";
+    /** 製版枚数 */
+    private Long seihanmaisuu = null;
+    /** ﾍﾟｰｽﾄﾛｯﾄNo */
+    private String pastelotno = "";
+    /** ﾍﾟｰｽﾄ粘度 */
+    private Long pastenendo = null;
+    /** ﾍﾟｰｽﾄ温度 */
+    private Long pasteondo = null;
+    /** 印刷ﾛｰﾙNo1 */
+    private String insaturollno = "";
+    /** 印刷ﾛｰﾙNo2 */
+    private String insaturollno2 = "";
+    /** 印刷ﾛｰﾙNo3 */
+    private String insaturollno3 = "";
+    /** 印刷ﾛｰﾙNo4 */
+    private String insaturollno4 = "";
+    /** 印刷ﾛｰﾙNo5 */
+    private String insaturollno5 = "";
+    /** 印刷幅始め平均 */
+    private BigDecimal insatuhabasave = null;
+    /** 印刷幅終り平均 */
+    private BigDecimal insatuhabaeave = null;
+    /** MLD */
+    private Long mld = null;
+    /** 備考1 */
+    private String biko1 = "";
+    /** 備考2 */
+    private String biko2 = "";
+    /** 担当者ｺｰﾄﾞ */
+    private String tantosya = "";
+    /** ﾍﾟｰｽﾄ固形分1 */
+    private BigDecimal pkokeibun1 = null;
+    /** ﾍﾟｰｽﾄﾛｯﾄNo2 */
+    private String pastelotno2 = "";
+    /** ﾍﾟｰｽﾄ粘度2 */
+    private Long pastenendo2 = null;
+    /** ﾍﾟｰｽﾄ温度2 */
+    private Long pasteondo2 = null;
+    /** ﾍﾟｰｽﾄ固形分2 */
+    private BigDecimal pkokeibun2 = null;
+    /** PETﾌｨﾙﾑ種類 */
+    private String petfilmsyurui = "";
+    /** 乾燥温度表示値2 */
+    private BigDecimal kansoondo2 = null;
+    /** 乾燥温度表示値3 */
+    private BigDecimal kansoondo3 = null;
+    /** 乾燥温度表示値4 */
+    private BigDecimal kansoondo4 = null;
+    /** 乾燥温度表示値5 */
+    private BigDecimal kansoondo5 = null;
+    /** 製版名 */
+    private String seihanmei = "";
+    /** 印刷ｽﾀｰﾄ膜厚AVE */
+    private BigDecimal makuatsuAveStart = null;
+    /** 印刷ｽﾀｰﾄ膜厚MAX */
+    private BigDecimal makuatsuMaxStart = null;
+    /** 印刷ｽﾀｰﾄ膜厚MIN */
+    private BigDecimal makuatsuMinStart = null;
+    /** 印刷ｽﾀｰﾄ膜厚CV */
+    private BigDecimal makuatucvStart = null;
+    /** ｽﾀｰﾄ時ﾆｼﾞﾐ・ｶｽﾚ確認 */
+    private String nijimikasureStart = null;
+    /** 終了時ﾆｼﾞﾐ・ｶｽﾚ確認 */
+    private String nijimikasureEnd = null;
+    /** 印刷ｴﾝﾄﾞ時担当者 */
+    private String tantoEnd = "";
+    /** 印刷枚数 */
+    private Long printmaisuu = null;
+    /** 乾燥炉圧 */
+    private Long kansouroatsu = null;
+    /** 印刷幅 */
+    private Long printhaba = null;
+    /** ﾃｰﾌﾞﾙｸﾘｱﾗﾝｽ */
+    private BigDecimal tableClearrance = null;
+    /** 膜厚ｽﾀｰﾄ1 */
+    private BigDecimal makuatsuStart1 = null;
+    /** 膜厚ｽﾀｰﾄ2 */
+    private BigDecimal makuatsuStart2 = null;
+    /** 膜厚ｽﾀｰﾄ3 */
+    private BigDecimal makuatsuStart3 = null;
+    /** 膜厚ｽﾀｰﾄ4 */
+    private BigDecimal makuatsuStart4 = null;
+    /** 膜厚ｽﾀｰﾄ5 */
+    private BigDecimal makuatsuStart5 = null;
+    /** 印刷幅ｽﾀｰﾄ1 */
+    private BigDecimal insatuhabaStart1 = null;
+    /** 印刷幅ｽﾀｰﾄ2 */
+    private BigDecimal insatuhabaStart2 = null;
+    /** 印刷幅ｽﾀｰﾄ3 */
+    private BigDecimal insatuhabaStart3 = null;
+    /** 印刷幅ｽﾀｰﾄ4 */
+    private BigDecimal insatuhabaStart4 = null;
+    /** 印刷幅ｽﾀｰﾄ5 */
+    private BigDecimal insatuhabaStart5 = null;
+
+    /**
+     * ﾛｯﾄNo.
+     * @return the lotno
+     */
+    public String getLotno() {
+        return lotno;
+    }
+
+    /**
+     * ﾛｯﾄNo.
+     * @param lotno the lotno to set
+     */
+    public void setLotno(String lotno) {
+        this.lotno = lotno;
+    }
+
+    /**
+     * KCPNO
+     * @return the kcpno
+     */
+    public String getKcpno() {
+        return kcpno;
+    }
+
+    /**
+     * KCPNO
+     * @param kcpno the kcpno to set
+     */
+    public void setKcpno(String kcpno) {
+        this.kcpno = kcpno;
+    }
+
+    /**
+     * ﾃｰﾌﾟ種類
+     * @return the tapesyurui
+     */
+    public String getTapesyurui() {
+        return tapesyurui;
+    }
+
+    /**
+     * ﾃｰﾌﾟ種類
+     * @param tapesyurui the tapesyurui to set
+     */
+    public void setTapesyurui(String tapesyurui) {
+        this.tapesyurui = tapesyurui;
+    }
+
+    /**
+     * ﾃｰﾌﾟｽﾘｯﾌﾟﾛｯﾄNo
+     * @return the tapelotno
+     */
+    public String getTapelotno() {
+        return tapelotno;
+    }
+
+    /**
+     * ﾃｰﾌﾟｽﾘｯﾌﾟﾛｯﾄNo
+     * @param tapelotno the tapelotno to set
+     */
+    public void setTapelotno(String tapelotno) {
+        this.tapelotno = tapelotno;
+    }
+
+    /**
+     * ﾃｰﾌﾟｽﾘｯﾌﾟ記号
+     * @return the tapeslipkigo
+     */
+    public String getTapeslipkigo() {
+        return tapeslipkigo;
+    }
+
+    /**
+     * ﾃｰﾌﾟｽﾘｯﾌﾟ記号
+     * @param tapeslipkigo the tapeslipkigo to set
+     */
+    public void setTapeslipkigo(String tapeslipkigo) {
+        this.tapeslipkigo = tapeslipkigo;
+    }
+
+    /**
+     * 原料記号
+     * @return the genryokigo
+     */
+    public String getGenryokigo() {
+        return genryokigo;
+    }
+
+    /**
+     * 原料記号
+     * @param genryokigo the genryokigo to set
+     */
+    public void setGenryokigo(String genryokigo) {
+        this.genryokigo = genryokigo;
+    }
+
+    /**
+     * 開始日時
+     * @return the kaisinichiji
+     */
+    public Timestamp getKaisinichiji() {
+        return kaisinichiji;
+    }
+
+    /**
+     * 開始日時
+     * @param kaisinichiji the kaisinichiji to set
+     */
+    public void setKaisinichiji(Timestamp kaisinichiji) {
+        this.kaisinichiji = kaisinichiji;
+    }
+
+    /**
+     * 終了日時
+     * @return the syuryonichiji
+     */
+    public Timestamp getSyuryonichiji() {
+        return syuryonichiji;
+    }
+
+    /**
+     * 終了日時
+     * @param syuryonichiji the syuryonichiji to set
+     */
+    public void setSyuryonichiji(Timestamp syuryonichiji) {
+        this.syuryonichiji = syuryonichiji;
+    }
+
+    /**
+     * 号機
+     * @return the goki
+     */
+    public String getGoki() {
+        return goki;
+    }
+
+    /**
+     * 号機
+     * @param goki the goki to set
+     */
+    public void setGoki(String goki) {
+        this.goki = goki;
+    }
+
+    /**
+     * ｽｷｰｼﾞNo
+     * @return the skeegeno
+     */
+    public String getSkeegeno() {
+        return skeegeno;
+    }
+
+    /**
+     * ｽｷｰｼﾞNo
+     * @param skeegeno the skeegeno to set
+     */
+    public void setSkeegeno(String skeegeno) {
+        this.skeegeno = skeegeno;
+    }
+
+    /**
+     * ｽｷｰｼﾞ枚数
+     * @return the skeegemaisuu
+     */
+    public Long getSkeegemaisuu() {
+        return skeegemaisuu;
+    }
+
+    /**
+     * ｽｷｰｼﾞ枚数
+     * @param skeegemaisuu the skeegemaisuu to set
+     */
+    public void setSkeegemaisuu(Long skeegemaisuu) {
+        this.skeegemaisuu = skeegemaisuu;
+    }
+
+    /**
+     * ｽｷｰｼﾞｽﾋﾟｰﾄﾞ
+     * @return the skeegespeed
+     */
+    public Long getSkeegespeed() {
+        return skeegespeed;
+    }
+
+    /**
+     * ｽｷｰｼﾞｽﾋﾟｰﾄﾞ
+     * @param skeegespeed the skeegespeed to set
+     */
+    public void setSkeegespeed(Long skeegespeed) {
+        this.skeegespeed = skeegespeed;
+    }
+
+    /**
+     * 乾燥温度
+     * @return the kansoondo
+     */
+    public Long getKansoondo() {
+        return kansoondo;
+    }
+
+    /**
+     * 乾燥温度
+     * @param kansoondo the kansoondo to set
+     */
+    public void setKansoondo(Long kansoondo) {
+        this.kansoondo = kansoondo;
+    }
+
+    /**
+     * ｸﾘｱﾗﾝｽ設定値
+     * @return the clearance
+     */
+    public BigDecimal getClearance() {
+        return clearance;
+    }
+
+    /**
+     * ｸﾘｱﾗﾝｽ設定値
+     * @param clearance the clearance to set
+     */
+    public void setClearance(BigDecimal clearance) {
+        this.clearance = clearance;
+    }
+
+    /**
+     * 差圧
+     * @return the saatu
+     */
+    public BigDecimal getSaatu() {
+        return saatu;
+    }
+
+    /**
+     * 差圧
+     * @param saatu the saatu to set
+     */
+    public void setSaatu(BigDecimal saatu) {
+        this.saatu = saatu;
+    }
+
+    /**
+     * 膜厚1
+     * @return the makuatu1
+     */
+    public BigDecimal getMakuatu1() {
+        return makuatu1;
+    }
+
+    /**
+     * 膜厚1
+     * @param makuatu1 the makuatu1 to set
+     */
+    public void setMakuatu1(BigDecimal makuatu1) {
+        this.makuatu1 = makuatu1;
+    }
+
+    /**
+     * 製版No
+     * @return the seihanno
+     */
+    public String getSeihanno() {
+        return seihanno;
+    }
+
+    /**
+     * 製版No
+     * @param seihanno the seihanno to set
+     */
+    public void setSeihanno(String seihanno) {
+        this.seihanno = seihanno;
+    }
+
+    /**
+     * 製版枚数
+     * @return the seihanmaisuu
+     */
+    public Long getSeihanmaisuu() {
+        return seihanmaisuu;
+    }
+
+    /**
+     * 製版枚数
+     * @param seihanmaisuu the seihanmaisuu to set
+     */
+    public void setSeihanmaisuu(Long seihanmaisuu) {
+        this.seihanmaisuu = seihanmaisuu;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄﾛｯﾄNo
+     * @return the pastelotno
+     */
+    public String getPastelotno() {
+        return pastelotno;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄﾛｯﾄNo
+     * @param pastelotno the pastelotno to set
+     */
+    public void setPastelotno(String pastelotno) {
+        this.pastelotno = pastelotno;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ粘度
+     * @return the pastenendo
+     */
+    public Long getPastenendo() {
+        return pastenendo;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ粘度
+     * @param pastenendo the pastenendo to set
+     */
+    public void setPastenendo(Long pastenendo) {
+        this.pastenendo = pastenendo;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ温度
+     * @return the pasteondo
+     */
+    public Long getPasteondo() {
+        return pasteondo;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ温度
+     * @param pasteondo the pasteondo to set
+     */
+    public void setPasteondo(Long pasteondo) {
+        this.pasteondo = pasteondo;
+    }
+
+    /**
+     * 印刷ﾛｰﾙNo1
+     * @return the insaturollno
+     */
+    public String getInsaturollno() {
+        return insaturollno;
+    }
+
+    /**
+     * 印刷ﾛｰﾙNo1
+     * @param insaturollno the insaturollno to set
+     */
+    public void setInsaturollno(String insaturollno) {
+        this.insaturollno = insaturollno;
+    }
+
+    /**
+     * 印刷ﾛｰﾙNo2
+     * @return the insaturollno2
+     */
+    public String getInsaturollno2() {
+        return insaturollno2;
+    }
+
+    /**
+     * 印刷ﾛｰﾙNo2
+     * @param insaturollno2 the insaturollno2 to set
+     */
+    public void setInsaturollno2(String insaturollno2) {
+        this.insaturollno2 = insaturollno2;
+    }
+
+    /**
+     * 印刷ﾛｰﾙNo3
+     * @return the insaturollno3
+     */
+    public String getInsaturollno3() {
+        return insaturollno3;
+    }
+
+    /**
+     * 印刷ﾛｰﾙNo3
+     * @param insaturollno3 the insaturollno3 to set
+     */
+    public void setInsaturollno3(String insaturollno3) {
+        this.insaturollno3 = insaturollno3;
+    }
+
+    /**
+     * 印刷ﾛｰﾙNo4
+     * @return the insaturollno4
+     */
+    public String getInsaturollno4() {
+        return insaturollno4;
+    }
+
+    /**
+     * 印刷ﾛｰﾙNo4
+     * @param insaturollno4 the insaturollno4 to set
+     */
+    public void setInsaturollno4(String insaturollno4) {
+        this.insaturollno4 = insaturollno4;
+    }
+
+    /**
+     * 印刷ﾛｰﾙNo5
+     * @return the insaturollno5
+     */
+    public String getInsaturollno5() {
+        return insaturollno5;
+    }
+
+    /**
+     * 印刷ﾛｰﾙNo5
+     * @param insaturollno5 the insaturollno5 to set
+     */
+    public void setInsaturollno5(String insaturollno5) {
+        this.insaturollno5 = insaturollno5;
+    }
+
+    /**
+     * 印刷幅始め平均
+     * @return the insatuhabasave
+     */
+    public BigDecimal getInsatuhabasave() {
+        return insatuhabasave;
+    }
+
+    /**
+     * 印刷幅始め平均
+     * @param insatuhabasave the insatuhabasave to set
+     */
+    public void setInsatuhabasave(BigDecimal insatuhabasave) {
+        this.insatuhabasave = insatuhabasave;
+    }
+
+    /**
+     * 印刷幅終り平均
+     * @return the insatuhabaeave
+     */
+    public BigDecimal getInsatuhabaeave() {
+        return insatuhabaeave;
+    }
+
+    /**
+     * 印刷幅終り平均
+     * @param insatuhabaeave the insatuhabaeave to set
+     */
+    public void setInsatuhabaeave(BigDecimal insatuhabaeave) {
+        this.insatuhabaeave = insatuhabaeave;
+    }
+
+    /**
+     * MLD
+     * @return the mld
+     */
+    public Long getMld() {
+        return mld;
+    }
+
+    /**
+     * MLD
+     * @param mld the mld to set
+     */
+    public void setMld(Long mld) {
+        this.mld = mld;
+    }
+
+    /**
+     * 備考1
+     * @return the biko1
+     */
+    public String getBiko1() {
+        return biko1;
+    }
+
+    /**
+     * 備考1
+     * @param biko1 the biko1 to set
+     */
+    public void setBiko1(String biko1) {
+        this.biko1 = biko1;
+    }
+
+    /**
+     * 備考2
+     * @return the biko2
+     */
+    public String getBiko2() {
+        return biko2;
+    }
+
+    /**
+     * 備考2
+     * @param biko2 the biko2 to set
+     */
+    public void setBiko2(String biko2) {
+        this.biko2 = biko2;
+    }
+
+    /**
+     * 担当者ｺｰﾄﾞ
+     * @return the tantosya
+     */
+    public String getTantosya() {
+        return tantosya;
+    }
+
+    /**
+     * 担当者ｺｰﾄﾞ
+     * @param tantosya the tantosya to set
+     */
+    public void setTantosya(String tantosya) {
+        this.tantosya = tantosya;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ固形分1
+     * @return the pkokeibun1
+     */
+    public BigDecimal getPkokeibun1() {
+        return pkokeibun1;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ固形分1
+     * @param pkokeibun1 the pkokeibun1 to set
+     */
+    public void setPkokeibun1(BigDecimal pkokeibun1) {
+        this.pkokeibun1 = pkokeibun1;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄﾛｯﾄNo2
+     * @return the pastelotno2
+     */
+    public String getPastelotno2() {
+        return pastelotno2;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄﾛｯﾄNo2
+     * @param pastelotno2 the pastelotno2 to set
+     */
+    public void setPastelotno2(String pastelotno2) {
+        this.pastelotno2 = pastelotno2;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ粘度2
+     * @return the pastenendo2
+     */
+    public Long getPastenendo2() {
+        return pastenendo2;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ粘度2
+     * @param pastenendo2 the pastenendo2 to set
+     */
+    public void setPastenendo2(Long pastenendo2) {
+        this.pastenendo2 = pastenendo2;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ温度2
+     * @return the pasteondo2
+     */
+    public Long getPasteondo2() {
+        return pasteondo2;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ温度2
+     * @param pasteondo2 the pasteondo2 to set
+     */
+    public void setPasteondo2(Long pasteondo2) {
+        this.pasteondo2 = pasteondo2;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ固形分2
+     * @return the pkokeibun2
+     */
+    public BigDecimal getPkokeibun2() {
+        return pkokeibun2;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ固形分2
+     * @param pkokeibun2 the pkokeibun2 to set
+     */
+    public void setPkokeibun2(BigDecimal pkokeibun2) {
+        this.pkokeibun2 = pkokeibun2;
+    }
+
+    /**
+     * PETﾌｨﾙﾑ種類
+     * @return the petfilmsyurui
+     */
+    public String getPetfilmsyurui() {
+        return petfilmsyurui;
+    }
+
+    /**
+     * PETﾌｨﾙﾑ種類
+     * @param petfilmsyurui the petfilmsyurui to set
+     */
+    public void setPetfilmsyurui(String petfilmsyurui) {
+        this.petfilmsyurui = petfilmsyurui;
+    }
+
+    /**
+     * 乾燥温度表示値2
+     * @return the kansoondo2
+     */
+    public BigDecimal getKansoondo2() {
+        return kansoondo2;
+    }
+
+    /**
+     * 乾燥温度表示値2
+     * @param kansoondo2 the kansoondo2 to set
+     */
+    public void setKansoondo2(BigDecimal kansoondo2) {
+        this.kansoondo2 = kansoondo2;
+    }
+
+    /**
+     * 乾燥温度表示値3
+     * @return the kansoondo3
+     */
+    public BigDecimal getKansoondo3() {
+        return kansoondo3;
+    }
+
+    /**
+     * 乾燥温度表示値3
+     * @param kansoondo3 the kansoondo3 to set
+     */
+    public void setKansoondo3(BigDecimal kansoondo3) {
+        this.kansoondo3 = kansoondo3;
+    }
+
+    /**
+     * 乾燥温度表示値4
+     * @return the kansoondo4
+     */
+    public BigDecimal getKansoondo4() {
+        return kansoondo4;
+    }
+
+    /**
+     * 乾燥温度表示値4
+     * @param kansoondo4 the kansoondo4 to set
+     */
+    public void setKansoondo4(BigDecimal kansoondo4) {
+        this.kansoondo4 = kansoondo4;
+    }
+
+    /**
+     * 乾燥温度表示値5
+     * @return the kansoondo5
+     */
+    public BigDecimal getKansoondo5() {
+        return kansoondo5;
+    }
+
+    /**
+     * 乾燥温度表示値5
+     * @param kansoondo5 the kansoondo5 to set
+     */
+    public void setKansoondo5(BigDecimal kansoondo5) {
+        this.kansoondo5 = kansoondo5;
+    }
+
+    /**
+     * 製版名
+     * @return the seihanmei
+     */
+    public String getSeihanmei() {
+        return seihanmei;
+    }
+
+    /**
+     * 製版名
+     * @param seihanmei the seihanmei to set
+     */
+    public void setSeihanmei(String seihanmei) {
+        this.seihanmei = seihanmei;
+    }
+
+    /**
+     * 印刷ｽﾀｰﾄ膜厚AVE
+     * @return the makuatsuAveStart
+     */
+    public BigDecimal getMakuatsuAveStart() {
+        return makuatsuAveStart;
+    }
+
+    /**
+     * 印刷ｽﾀｰﾄ膜厚AVE
+     * @param makuatsuAveStart the makuatsuAveStart to set
+     */
+    public void setMakuatsuAveStart(BigDecimal makuatsuAveStart) {
+        this.makuatsuAveStart = makuatsuAveStart;
+    }
+
+    /**
+     * 印刷ｽﾀｰﾄ膜厚MAX
+     * @return the makuatsuMaxStart
+     */
+    public BigDecimal getMakuatsuMaxStart() {
+        return makuatsuMaxStart;
+    }
+
+    /**
+     * 印刷ｽﾀｰﾄ膜厚MAX
+     * @param makuatsuMaxStart the makuatsuMaxStart to set
+     */
+    public void setMakuatsuMaxStart(BigDecimal makuatsuMaxStart) {
+        this.makuatsuMaxStart = makuatsuMaxStart;
+    }
+
+    /**
+     * 印刷ｽﾀｰﾄ膜厚MIN
+     * @return the makuatsuMinStart
+     */
+    public BigDecimal getMakuatsuMinStart() {
+        return makuatsuMinStart;
+    }
+
+    /**
+     * 印刷ｽﾀｰﾄ膜厚MIN
+     * @param makuatsuMinStart the makuatsuMinStart to set
+     */
+    public void setMakuatsuMinStart(BigDecimal makuatsuMinStart) {
+        this.makuatsuMinStart = makuatsuMinStart;
+    }
+
+    /**
+     * 印刷ｽﾀｰﾄ膜厚CV
+     * @return the makuatucvStart
+     */
+    public BigDecimal getMakuatucvStart() {
+        return makuatucvStart;
+    }
+
+    /**
+     * 印刷ｽﾀｰﾄ膜厚CV
+     * @param makuatucvStart the makuatucvStart to set
+     */
+    public void setMakuatucvStart(BigDecimal makuatucvStart) {
+        this.makuatucvStart = makuatucvStart;
+    }
+
+    /**
+     * ｽﾀｰﾄ時ﾆｼﾞﾐ・ｶｽﾚ確認
+     * @return the nijimikasureStart
+     */
+    public String getNijimikasureStart() {
+        return nijimikasureStart;
+    }
+
+    /**
+     * ｽﾀｰﾄ時ﾆｼﾞﾐ・ｶｽﾚ確認
+     * @param nijimikasureStart the nijimikasureStart to set
+     */
+    public void setNijimikasureStart(String nijimikasureStart) {
+        this.nijimikasureStart = nijimikasureStart;
+    }
+
+    /**
+     * 終了時ﾆｼﾞﾐ・ｶｽﾚ確認
+     * @return the nijimikasureEnd
+     */
+    public String getNijimikasureEnd() {
+        return nijimikasureEnd;
+    }
+
+    /**
+     * 終了時ﾆｼﾞﾐ・ｶｽﾚ確認
+     * @param nijimikasureEnd the nijimikasureEnd to set
+     */
+    public void setNijimikasureEnd(String nijimikasureEnd) {
+        this.nijimikasureEnd = nijimikasureEnd;
+    }
+
+    /**
+     * 印刷ｴﾝﾄﾞ時担当者
+     * @return the tantoEnd
+     */
+    public String getTantoEnd() {
+        return tantoEnd;
+    }
+
+    /**
+     * 印刷ｴﾝﾄﾞ時担当者
+     * @param tantoEnd the tantoEnd to set
+     */
+    public void setTantoEnd(String tantoEnd) {
+        this.tantoEnd = tantoEnd;
+    }
+
+    /**
+     * 印刷枚数
+     * @return the printmaisuu
+     */
+    public Long getPrintmaisuu() {
+        return printmaisuu;
+    }
+
+    /**
+     * 印刷枚数
+     * @param printmaisuu the printmaisuu to set
+     */
+    public void setPrintmaisuu(Long printmaisuu) {
+        this.printmaisuu = printmaisuu;
+    }
+
+    /**
+     * 乾燥炉圧
+     * @return the kansouroatsu
+     */
+    public Long getKansouroatsu() {
+        return kansouroatsu;
+    }
+
+    /**
+     * 乾燥炉圧
+     * @param kansouroatsu the kansouroatsu to set
+     */
+    public void setKansouroatsu(Long kansouroatsu) {
+        this.kansouroatsu = kansouroatsu;
+    }
+
+    /**
+     * 印刷幅
+     * @return the printhaba
+     */
+    public Long getPrinthaba() {
+        return printhaba;
+    }
+
+    /**
+     * 印刷幅
+     * @param printhaba the printhaba to set
+     */
+    public void setPrinthaba(Long printhaba) {
+        this.printhaba = printhaba;
+    }
+
+    /**
+     * ﾃｰﾌﾞﾙｸﾘｱﾗﾝｽ
+     * @return the tableClearrance
+     */
+    public BigDecimal getTableClearrance() {
+        return tableClearrance;
+    }
+
+    /**
+     * ﾃｰﾌﾞﾙｸﾘｱﾗﾝｽ
+     * @param tableClearrance the tableClearrance to set
+     */
+    public void setTableClearrance(BigDecimal tableClearrance) {
+        this.tableClearrance = tableClearrance;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄ1
+     * @return the makuatsuStart1
+     */
+    public BigDecimal getMakuatsuStart1() {
+        return makuatsuStart1;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄ1
+     * @param makuatsuStart1 the makuatsuStart1 to set
+     */
+    public void setMakuatsuStart1(BigDecimal makuatsuStart1) {
+        this.makuatsuStart1 = makuatsuStart1;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄ2
+     * @return the makuatsuStart2
+     */
+    public BigDecimal getMakuatsuStart2() {
+        return makuatsuStart2;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄ2
+     * @param makuatsuStart2 the makuatsuStart2 to set
+     */
+    public void setMakuatsuStart2(BigDecimal makuatsuStart2) {
+        this.makuatsuStart2 = makuatsuStart2;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄ3
+     * @return the makuatsuStart3
+     */
+    public BigDecimal getMakuatsuStart3() {
+        return makuatsuStart3;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄ3
+     * @param makuatsuStart3 the makuatsuStart3 to set
+     */
+    public void setMakuatsuStart3(BigDecimal makuatsuStart3) {
+        this.makuatsuStart3 = makuatsuStart3;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄ4
+     * @return the makuatsuStart4
+     */
+    public BigDecimal getMakuatsuStart4() {
+        return makuatsuStart4;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄ4
+     * @param makuatsuStart4 the makuatsuStart4 to set
+     */
+    public void setMakuatsuStart4(BigDecimal makuatsuStart4) {
+        this.makuatsuStart4 = makuatsuStart4;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄ5
+     * @return the makuatsuStart5
+     */
+    public BigDecimal getMakuatsuStart5() {
+        return makuatsuStart5;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄ5
+     * @param makuatsuStart5 the makuatsuStart5 to set
+     */
+    public void setMakuatsuStart5(BigDecimal makuatsuStart5) {
+        this.makuatsuStart5 = makuatsuStart5;
+    }
+
+    /**
+     * 印刷幅ｽﾀｰﾄ1
+     * @return the insatuhabaStart1
+     */
+    public BigDecimal getInsatuhabaStart1() {
+        return insatuhabaStart1;
+    }
+
+    /**
+     * 印刷幅ｽﾀｰﾄ1
+     * @param insatuhabaStart1 the insatuhabaStart1 to set
+     */
+    public void setInsatuhabaStart1(BigDecimal insatuhabaStart1) {
+        this.insatuhabaStart1 = insatuhabaStart1;
+    }
+
+    /**
+     * 印刷幅ｽﾀｰﾄ2
+     * @return the insatuhabaStart2
+     */
+    public BigDecimal getInsatuhabaStart2() {
+        return insatuhabaStart2;
+    }
+
+    /**
+     * 印刷幅ｽﾀｰﾄ2
+     * @param insatuhabaStart2 the insatuhabaStart2 to set
+     */
+    public void setInsatuhabaStart2(BigDecimal insatuhabaStart2) {
+        this.insatuhabaStart2 = insatuhabaStart2;
+    }
+
+    /**
+     * 印刷幅ｽﾀｰﾄ3
+     * @return the insatuhabaStart3
+     */
+    public BigDecimal getInsatuhabaStart3() {
+        return insatuhabaStart3;
+    }
+
+    /**
+     * 印刷幅ｽﾀｰﾄ3
+     * @param insatuhabaStart3 the insatuhabaStart3 to set
+     */
+    public void setInsatuhabaStart3(BigDecimal insatuhabaStart3) {
+        this.insatuhabaStart3 = insatuhabaStart3;
+    }
+
+    /**
+     * 印刷幅ｽﾀｰﾄ4
+     * @return the insatuhabaStart4
+     */
+    public BigDecimal getInsatuhabaStart4() {
+        return insatuhabaStart4;
+    }
+
+    /**
+     * 印刷幅ｽﾀｰﾄ4
+     * @param insatuhabaStart4 the insatuhabaStart4 to set
+     */
+    public void setInsatuhabaStart4(BigDecimal insatuhabaStart4) {
+        this.insatuhabaStart4 = insatuhabaStart4;
+    }
+
+    /**
+     * 印刷幅ｽﾀｰﾄ5
+     * @return the insatuhabaStart5
+     */
+    public BigDecimal getInsatuhabaStart5() {
+        return insatuhabaStart5;
+    }
+
+    /**
+     * 印刷幅ｽﾀｰﾄ5
+     * @param insatuhabaStart5 the insatuhabaStart5 to set
+     */
+    public void setInsatuhabaStart5(BigDecimal insatuhabaStart5) {
+        this.insatuhabaStart5 = insatuhabaStart5;
+    }
+}
