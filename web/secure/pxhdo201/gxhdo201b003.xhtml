@@ -14,6 +14,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
         <link href="#{request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <link href="#{request.contextPath}/resources/css/growl.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/loading.css" rel="stylesheet" type="text/css"/>
         <script src="#{request.contextPath}/resources/bootstrap/js/bootstrap.min.js" />
         <h:outputScript library="primefaces" name="jquery/jquery.js" />
         <script src="#{request.contextPath}/resources/js/growl.js"></script>
@@ -42,7 +43,7 @@
             <f:viewAction action="#{gXHDO201B003.init()}"/>
         </f:metadata>
         <nav class="navbar  navbar-expand fixed-top navbar-dark" style="background-color:#0E6A89;height: 50px;z-index: 999;">
-            <span class="navbar-brand mb-0" style="font-size:18px;font-weight:bold;">印刷・RSUS履歴検索</span>
+            <span class="navbar-brand mb-0" style="font-size:18px;font-weight:bold;">#{myMsg.insatsu_rsus}</span>
             <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#Navber" aria-controls="Navber" aria-expanded="false" aria-label="ナビゲーションの切替">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -57,7 +58,7 @@
             </span>
         </nav>
         <br/>
-        <h:form id="mainform">
+        <h:form id="mainform" onkeypress="if (event.keyCode === 13) { return false; }">
             <p:growl id="growlMessage" showDetail="false" sticky="true" />
             <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
                 <f:facet name="message">
@@ -67,9 +68,13 @@
                                  actionListener="#{gXHDO201B003.processWarnOk()}"
                                  process="@this searchpanel"
                                  update="@form growlMessage idDataTable btnExcel"
-                                 oncomplete="PF('cd').hide();"/>
+                                 onstart="PF('cd').hide();$('#loadinggif').show();"
+                                 oncomplete="$('#loadinggif').hide();"/>
                 <p:commandButton id="warnCancel" value="Cancel" class="ui-conf-commandbtn-cancel" style="width:100px;" onclick="PF('cd').hide();" type="button" />
             </p:confirmDialog>
+            <div id="loadinggif">
+                <img src="#{request.contextPath}/resources/gif/gif-load.gif"/>
+            </div>
             <p:panel id="searchpanel" style="border:none;font-size:0.8em; ">
                 <table>
                     <tr>
@@ -194,12 +199,13 @@
                                 actionListener="#{gXHDO201B003.checkInputAndSearch()}"
                                 process="@this searchpanel"
                                 update="growlMessage idDataTable btnExcel confDialog"
-                                oncomplete="if('warning'!=args.param1){PF('cd').hide();} else {PF('cd').show();}"/>
+                                onstart="$('#loadinggif').show();"
+                                oncomplete="$('#loadinggif').hide();if('warning'!=args.param1){PF('cd').hide();} else {PF('cd').show();}"/>
                 <p:commandButton id="bthClear" style="width:100px;height:25px;font-size:0.7em;margin-left:10px;text-align:center;" 
                                 value="クリア" 
                                 action="#{gXHDO201B003.clear()}"
                                 process="@this"
-                                update="searchpanel idDataTable"/>
+                                update="searchpanel idDataTable btnExcel"/>
                 <p:commandButton id="btnExcel" style="width:100px;height:25px;font-size:0.7em;margin-left:10px;text-align:center;"
                                 disabled="#{gXHDO201B003.excelButtonDisable}"
                                 value="Excel保存"
@@ -209,7 +215,7 @@
             </p:panel>
             <div class="table-responsive" style="margin-top:-15px;">
                 <p:dataTable id="idDataTable" var="item" style="font-size:0.8em;margin-top:20px;" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap"
-                             value="#{gXHDO201B003.listData}" emptyMessage="">
+                             value="#{gXHDO201B003.listData}" emptyMessage="" paginator="true" paginatorPosition="top" rows="#{gXHDO201B003.getPagenatorCount()}">
                     <p:column id="lotno" headerText="ﾛｯﾄNo.">
                         <p:outputLabel value="#{item.lotno}"/>
                     </p:column>
@@ -403,15 +409,11 @@
                             <f:convertNumber pattern="##,##0.000"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="nijimikasureStart" headerText="ｽﾀｰﾄ時ﾆｼﾞﾐ・ｶｽﾚ確認" styleClass="number">
-                        <p:outputLabel value="#{item.nijimikasureStart}">
-                            <f:convertNumber pattern="0"/>
-                        </p:outputLabel>
+                    <p:column id="nijimikasureStart" headerText="ｽﾀｰﾄ時ﾆｼﾞﾐ・ｶｽﾚ確認">
+                        <p:outputLabel value="#{item.nijimikasureStart}"/>
                     </p:column>
-                    <p:column id="nijimikasureEnd" headerText="終了時ﾆｼﾞﾐ・ｶｽﾚ確認" styleClass="number">
-                        <p:outputLabel value="#{item.nijimikasureEnd}">
-                            <f:convertNumber pattern="0"/>
-                        </p:outputLabel>
+                    <p:column id="nijimikasureEnd" headerText="終了時ﾆｼﾞﾐ・ｶｽﾚ確認">
+                        <p:outputLabel value="#{item.nijimikasureEnd}"/>
                     </p:column>
                     <p:column id="tantoEnd" headerText="印刷ｴﾝﾄﾞ時担当者">
                         <p:outputLabel value="#{item.tantoEnd}"/>
@@ -434,6 +436,56 @@
                     <p:column id="tableClearrance" headerText="ﾃｰﾌﾞﾙｸﾘｱﾗﾝｽ" styleClass="number">
                         <p:outputLabel value="#{item.tableClearrance}">
                             <f:convertNumber pattern="###,##0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsuStart1" headerText="膜厚ｽﾀｰﾄ1" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsuStart1}">
+                            <f:convertNumber pattern="#0.000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsuStart2" headerText="膜厚ｽﾀｰﾄ2" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsuStart2}">
+                            <f:convertNumber pattern="#0.000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsuStart3" headerText="膜厚ｽﾀｰﾄ3" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsuStart3}">
+                            <f:convertNumber pattern="#0.000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsuStart4" headerText="膜厚ｽﾀｰﾄ4" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsuStart4}">
+                            <f:convertNumber pattern="#0.000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsuStart5" headerText="膜厚ｽﾀｰﾄ5" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsuStart5}">
+                            <f:convertNumber pattern="#0.000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="insatuhabaStart1" headerText="印刷幅ｽﾀｰﾄ1" styleClass="number">
+                        <p:outputLabel value="#{item.insatuhabaStart1}">
+                            <f:convertNumber pattern="#0.000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="insatuhabaStart2" headerText="印刷幅ｽﾀｰﾄ2" styleClass="number">
+                        <p:outputLabel value="#{item.insatuhabaStart2}">
+                            <f:convertNumber pattern="#0.000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="insatuhabaStart3" headerText="印刷幅ｽﾀｰﾄ3" styleClass="number">
+                        <p:outputLabel value="#{item.insatuhabaStart3}">
+                            <f:convertNumber pattern="#0.000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="insatuhabaStart4" headerText="印刷幅ｽﾀｰﾄ4" styleClass="number">
+                        <p:outputLabel value="#{item.insatuhabaStart4}">
+                            <f:convertNumber pattern="#0.000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="insatuhabaStart5" headerText="印刷幅ｽﾀｰﾄ5" styleClass="number">
+                        <p:outputLabel value="#{item.insatuhabaStart5}">
+                            <f:convertNumber pattern="#0.000"/>
                         </p:outputLabel>
                     </p:column>
                 </p:dataTable>

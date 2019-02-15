@@ -1481,7 +1481,7 @@ public class ValidateUtil {
      * @param queryRunnerWip QueryRunnerオブジェクト(Wip)
      * @return true:存在する、false:存在しない
      */
-    private boolean existGokukimas(String goukicode, QueryRunner queryRunnerWip) throws SQLException {
+    public boolean existGokukimas(String goukicode, QueryRunner queryRunnerWip) throws SQLException {
         String sql = "SELECT goukicode "
                 + "FROM goukimas WHERE goukicode = ? ";
 

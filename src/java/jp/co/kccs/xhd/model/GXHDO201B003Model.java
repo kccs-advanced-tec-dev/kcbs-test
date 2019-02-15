@@ -121,9 +121,9 @@ public class GXHDO201B003Model implements Serializable {
     /** 印刷ｽﾀｰﾄ膜厚CV */
     private BigDecimal makuatucvStart = null;
     /** ｽﾀｰﾄ時ﾆｼﾞﾐ・ｶｽﾚ確認 */
-    private Long nijimikasureStart = null;
+    private String nijimikasureStart = null;
     /** 終了時ﾆｼﾞﾐ・ｶｽﾚ確認 */
-    private Long nijimikasureEnd = null;
+    private String nijimikasureEnd = null;
     /** 印刷ｴﾝﾄﾞ時担当者 */
     private String tantoEnd = "";
     /** 印刷枚数 */
@@ -134,6 +134,26 @@ public class GXHDO201B003Model implements Serializable {
     private Long printhaba = null;
     /** ﾃｰﾌﾞﾙｸﾘｱﾗﾝｽ */
     private BigDecimal tableClearrance = null;
+    /** 膜厚ｽﾀｰﾄ1 */
+    private BigDecimal makuatsuStart1 = null;
+    /** 膜厚ｽﾀｰﾄ2 */
+    private BigDecimal makuatsuStart2 = null;
+    /** 膜厚ｽﾀｰﾄ3 */
+    private BigDecimal makuatsuStart3 = null;
+    /** 膜厚ｽﾀｰﾄ4 */
+    private BigDecimal makuatsuStart4 = null;
+    /** 膜厚ｽﾀｰﾄ5 */
+    private BigDecimal makuatsuStart5 = null;
+    /** 印刷幅ｽﾀｰﾄ1 */
+    private BigDecimal insatuhabaStart1 = null;
+    /** 印刷幅ｽﾀｰﾄ2 */
+    private BigDecimal insatuhabaStart2 = null;
+    /** 印刷幅ｽﾀｰﾄ3 */
+    private BigDecimal insatuhabaStart3 = null;
+    /** 印刷幅ｽﾀｰﾄ4 */
+    private BigDecimal insatuhabaStart4 = null;
+    /** 印刷幅ｽﾀｰﾄ5 */
+    private BigDecimal insatuhabaStart5 = null;
 
     /**
      * ﾛｯﾄNo.
@@ -891,7 +911,7 @@ public class GXHDO201B003Model implements Serializable {
      * ｽﾀｰﾄ時ﾆｼﾞﾐ・ｶｽﾚ確認
      * @return the nijimikasureStart
      */
-    public Long getNijimikasureStart() {
+    public String getNijimikasureStart() {
         return nijimikasureStart;
     }
 
@@ -899,7 +919,7 @@ public class GXHDO201B003Model implements Serializable {
      * ｽﾀｰﾄ時ﾆｼﾞﾐ・ｶｽﾚ確認
      * @param nijimikasureStart the nijimikasureStart to set
      */
-    public void setNijimikasureStart(Long nijimikasureStart) {
+    public void setNijimikasureStart(String nijimikasureStart) {
         this.nijimikasureStart = nijimikasureStart;
     }
 
@@ -907,7 +927,7 @@ public class GXHDO201B003Model implements Serializable {
      * 終了時ﾆｼﾞﾐ・ｶｽﾚ確認
      * @return the nijimikasureEnd
      */
-    public Long getNijimikasureEnd() {
+    public String getNijimikasureEnd() {
         return nijimikasureEnd;
     }
 
@@ -915,7 +935,7 @@ public class GXHDO201B003Model implements Serializable {
      * 終了時ﾆｼﾞﾐ・ｶｽﾚ確認
      * @param nijimikasureEnd the nijimikasureEnd to set
      */
-    public void setNijimikasureEnd(Long nijimikasureEnd) {
+    public void setNijimikasureEnd(String nijimikasureEnd) {
         this.nijimikasureEnd = nijimikasureEnd;
     }
 
@@ -997,5 +1017,165 @@ public class GXHDO201B003Model implements Serializable {
      */
     public void setTableClearrance(BigDecimal tableClearrance) {
         this.tableClearrance = tableClearrance;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄ1
+     * @return the makuatsuStart1
+     */
+    public BigDecimal getMakuatsuStart1() {
+        return makuatsuStart1;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄ1
+     * @param makuatsuStart1 the makuatsuStart1 to set
+     */
+    public void setMakuatsuStart1(BigDecimal makuatsuStart1) {
+        this.makuatsuStart1 = makuatsuStart1;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄ2
+     * @return the makuatsuStart2
+     */
+    public BigDecimal getMakuatsuStart2() {
+        return makuatsuStart2;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄ2
+     * @param makuatsuStart2 the makuatsuStart2 to set
+     */
+    public void setMakuatsuStart2(BigDecimal makuatsuStart2) {
+        this.makuatsuStart2 = makuatsuStart2;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄ3
+     * @return the makuatsuStart3
+     */
+    public BigDecimal getMakuatsuStart3() {
+        return makuatsuStart3;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄ3
+     * @param makuatsuStart3 the makuatsuStart3 to set
+     */
+    public void setMakuatsuStart3(BigDecimal makuatsuStart3) {
+        this.makuatsuStart3 = makuatsuStart3;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄ4
+     * @return the makuatsuStart4
+     */
+    public BigDecimal getMakuatsuStart4() {
+        return makuatsuStart4;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄ4
+     * @param makuatsuStart4 the makuatsuStart4 to set
+     */
+    public void setMakuatsuStart4(BigDecimal makuatsuStart4) {
+        this.makuatsuStart4 = makuatsuStart4;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄ5
+     * @return the makuatsuStart5
+     */
+    public BigDecimal getMakuatsuStart5() {
+        return makuatsuStart5;
+    }
+
+    /**
+     * 膜厚ｽﾀｰﾄ5
+     * @param makuatsuStart5 the makuatsuStart5 to set
+     */
+    public void setMakuatsuStart5(BigDecimal makuatsuStart5) {
+        this.makuatsuStart5 = makuatsuStart5;
+    }
+
+    /**
+     * 印刷幅ｽﾀｰﾄ1
+     * @return the insatuhabaStart1
+     */
+    public BigDecimal getInsatuhabaStart1() {
+        return insatuhabaStart1;
+    }
+
+    /**
+     * 印刷幅ｽﾀｰﾄ1
+     * @param insatuhabaStart1 the insatuhabaStart1 to set
+     */
+    public void setInsatuhabaStart1(BigDecimal insatuhabaStart1) {
+        this.insatuhabaStart1 = insatuhabaStart1;
+    }
+
+    /**
+     * 印刷幅ｽﾀｰﾄ2
+     * @return the insatuhabaStart2
+     */
+    public BigDecimal getInsatuhabaStart2() {
+        return insatuhabaStart2;
+    }
+
+    /**
+     * 印刷幅ｽﾀｰﾄ2
+     * @param insatuhabaStart2 the insatuhabaStart2 to set
+     */
+    public void setInsatuhabaStart2(BigDecimal insatuhabaStart2) {
+        this.insatuhabaStart2 = insatuhabaStart2;
+    }
+
+    /**
+     * 印刷幅ｽﾀｰﾄ3
+     * @return the insatuhabaStart3
+     */
+    public BigDecimal getInsatuhabaStart3() {
+        return insatuhabaStart3;
+    }
+
+    /**
+     * 印刷幅ｽﾀｰﾄ3
+     * @param insatuhabaStart3 the insatuhabaStart3 to set
+     */
+    public void setInsatuhabaStart3(BigDecimal insatuhabaStart3) {
+        this.insatuhabaStart3 = insatuhabaStart3;
+    }
+
+    /**
+     * 印刷幅ｽﾀｰﾄ4
+     * @return the insatuhabaStart4
+     */
+    public BigDecimal getInsatuhabaStart4() {
+        return insatuhabaStart4;
+    }
+
+    /**
+     * 印刷幅ｽﾀｰﾄ4
+     * @param insatuhabaStart4 the insatuhabaStart4 to set
+     */
+    public void setInsatuhabaStart4(BigDecimal insatuhabaStart4) {
+        this.insatuhabaStart4 = insatuhabaStart4;
+    }
+
+    /**
+     * 印刷幅ｽﾀｰﾄ5
+     * @return the insatuhabaStart5
+     */
+    public BigDecimal getInsatuhabaStart5() {
+        return insatuhabaStart5;
+    }
+
+    /**
+     * 印刷幅ｽﾀｰﾄ5
+     * @param insatuhabaStart5 the insatuhabaStart5 to set
+     */
+    public void setInsatuhabaStart5(BigDecimal insatuhabaStart5) {
+        this.insatuhabaStart5 = insatuhabaStart5;
     }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Kyocera Communication Systems Co., Ltd All rights reserved.
+ * Copyright 2018 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.pxhdo201;
 
@@ -34,7 +34,7 @@ import jp.co.kccs.xhd.SelectParam;
 import jp.co.kccs.xhd.common.ColumnInfoParser;
 import jp.co.kccs.xhd.common.ColumnInformation;
 import jp.co.kccs.xhd.common.excel.ExcelExporter;
-import jp.co.kccs.xhd.model.GXHDO201B003Model;
+import jp.co.kccs.xhd.model.GXHDO201B001Model;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.DateUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
@@ -54,38 +54,44 @@ import org.primefaces.context.RequestContext;
 /**
  * ===============================================================================<br>
  * <br>
- * システム名	品質DB(コンデンサ)<br>
+ * システム名      印刷・SPSｸﾞﾗﾋﾞｱ(コンデンサ)<br>
  * <br>
- * 変更日	2019/01/27<br>
- * 計画書No	K1811-DS001<br>
- * 変更者	KCCS D.Yanagida<br>
- * 変更理由	新規作成<br>
+ * 変更日        2019/1/29<br>
+ * 計画書No      K1811-DS001<br>
+ * 変更者        KCSS K.Jo<br>
+ * 変更理由      新規作成<br>
  * <br>
  * ===============================================================================<br>
  */
+
 /**
- * 印刷・RSUS履歴検索画面
- *
- * @author KCCS D.Yanagida
- * @since 2019/01/27
+ * GXHDO201B001(印刷・SPSｸﾞﾗﾋﾞｱ)
+ * 
+ * @author KCSS K.Jo
+ * @since  2019/1/29
  */
 @Named
 @ViewScoped
-public class GXHDO201B003 implements Serializable {
-    private static final Logger LOGGER = Logger.getLogger(GXHDO201B003.class.getName());
+public class GXHDO201B001 implements Serializable {
+    private static final Logger LOGGER = Logger.getLogger(GXHDO201B001.class.getName());
     
     /**
      * DataSource(QCDB)
      */
     @Resource(mappedName = "jdbc/qcdb")
     private transient DataSource dataSourceQcdb;
+    /**
+     * DataSource(WIP)
+     */
+    @Resource(mappedName = "jdbc/wip")
+    private transient DataSource dataSourceWip;
     
     /** パラメータマスタ操作 */
     @Inject
     private SelectParam selectParam;
     
     /** 一覧表示データ */
-    private List<GXHDO201B003Model> listData = null;
+    private List<GXHDO201B001Model> listData = null;
     
     /** 一覧表示最大件数 */
     private int listCountMax = -1;
@@ -99,12 +105,6 @@ public class GXHDO201B003 implements Serializable {
     
     /** 検索条件：ロットNo */
     private String lotNo = "";
-    /** 検索条件：KCPNo */
-    private String kcpNo = "";
-    /** 検索条件：型式 */
-    private String katashiki = "";
-    /** 検索条件：容量 */
-    private String yoryo = "";
     /** 検索条件：印刷開始日(FROM) */
     private String startDateF = "";
     /** 検索条件：印刷開始日(TO) */
@@ -121,13 +121,15 @@ public class GXHDO201B003 implements Serializable {
     private String endTimeF = "";
     /** 検索条件：印刷終了時刻(TO) */
     private String endTimeT = "";
-    /** 検索条件：印刷ロールNo */
-    private String printRollNo = "";
+    /** 検索条件：印刷号機 */
+    private String gouki = "";
+    /** 検索条件：KCPNo */
+    private String kcpNo = "";
     
     /**
      * コンストラクタ
      */
-    public GXHDO201B003() {
+    public GXHDO201B001() {
     }
 
 //<editor-fold defaultstate="collapsed" desc="#getter setter">
@@ -151,7 +153,7 @@ public class GXHDO201B003 implements Serializable {
      * 一覧表示データ取得
      * @return 一覧表示データ
      */
-    public List<GXHDO201B003Model> getListData() {
+    public List<GXHDO201B001Model> getListData() {
         return listData;
     }
     
@@ -170,55 +172,7 @@ public class GXHDO201B003 implements Serializable {
     public void setLotNo(String lotNo) {
         this.lotNo = lotNo;
     }
-
-    /**
-     * 検索条件：KCPNo
-     * @return the kcpNo
-     */
-    public String getKcpNo() {
-        return kcpNo;
-    }
-
-    /**
-     * 検索条件：KCPNo
-     * @param kcpNo the kcpNo to set
-     */
-    public void setKcpNo(String kcpNo) {
-        this.kcpNo = kcpNo;
-    }
-
-    /**
-     * 検索条件：型式
-     * @return the katashiki
-     */
-    public String getKatashiki() {
-        return katashiki;
-    }
-
-    /**
-     * 検索条件：型式
-     * @param katashiki the katashiki to set
-     */
-    public void setKatashiki(String katashiki) {
-        this.katashiki = katashiki;
-    }
-
-    /**
-     * 検索条件：容量
-     * @return the yoryo
-     */
-    public String getYoryo() {
-        return yoryo;
-    }
-
-    /**
-     * 検索条件：容量
-     * @param yoryo the yoryo to set
-     */
-    public void setYoryo(String yoryo) {
-        this.yoryo = yoryo;
-    }
-
+    
     /**
      * 検索条件：印刷開始日(FROM)
      * @return the startDateF
@@ -346,24 +300,40 @@ public class GXHDO201B003 implements Serializable {
     public void setEndTimeT(String endTimeT) {
         this.endTimeT = endTimeT;
     }
-
+    
     /**
-     * 検索条件：印刷ロールNo
-     * @return the printRollNo
+     * 検索条件：印刷号機
+     * @return the gouki
      */
-    public String getPrintRollNo() {
-        return printRollNo;
+    public String getGouki() {
+        return gouki;
     }
 
     /**
-     * 検索条件：印刷ロールNo
-     * @param printRollNo the printRollNo to set
+     * 検索条件：印刷号機
+     * @param gouki the gouki to set
      */
-    public void setPrintRollNo(String printRollNo) {
-        this.printRollNo = printRollNo;
+    public void setGouki(String gouki) {
+        this.gouki = gouki;
+    }
+
+    /**
+     * 検索条件：KCPNo
+     * @return the kcpNo
+     */
+    public String getKcpNo() {
+        return kcpNo;
+    }
+
+    /**
+     * 検索条件：KCPNo
+     * @param kcpNo the kcpNo to set
+     */
+    public void setKcpNo(String kcpNo) {
+        this.kcpNo = kcpNo;
     }
 //</editor-fold>
-    
+
     /**
      * ページング用の件数を返却
      * @return 1ページあたりの表示件数
@@ -375,7 +345,7 @@ public class GXHDO201B003 implements Serializable {
             return "";
         }
     }
-
+    
     /**
      * 画面起動時処理
      */
@@ -387,8 +357,8 @@ public class GXHDO201B003 implements Serializable {
         listCountMax = session.getAttribute("menuParam") != null ? Integer.parseInt(session.getAttribute("menuParam").toString()) : -1;
         listCountWarn = session.getAttribute("hyojiKensu") != null ? Integer.parseInt(session.getAttribute("hyojiKensu").toString()) : -1;
         
-        if (!StringUtil.isEmpty(selectParam.getValue("GXHDO201B003_display_page_count", session))) {
-            listDisplayPageCount = Integer.parseInt(selectParam.getValue("GXHDO201B003_display_page_count", session));
+        if (!StringUtil.isEmpty(selectParam.getValue("GXHDO201B001_display_page_count", session))) {
+            listDisplayPageCount = Integer.parseInt(selectParam.getValue("GXHDO201B001_display_page_count", session));
         }
         
         // 画面クリア
@@ -412,9 +382,6 @@ public class GXHDO201B003 implements Serializable {
      */
     public void clear() {
         lotNo = "";
-        kcpNo = "";
-        katashiki = "";
-        yoryo = "";
         startDateF = "";
         startDateT = "";
         startTimeF = "";
@@ -423,11 +390,12 @@ public class GXHDO201B003 implements Serializable {
         endDateT = "";
         endTimeF = "";
         endTimeT = "";
-        printRollNo = "";
+        gouki = "";
+        kcpNo = "";
         
         listData = new ArrayList<>();
     }
-           
+    
     /**
      * 入力値チェック：
      * 正常な場合検索処理を実行する
@@ -439,18 +407,6 @@ public class GXHDO201B003 implements Serializable {
         // ロットNo
         if (existError(validateUtil.checkC101(getLotNo(), "ロットNo", 14)) ||
             !StringUtil.isEmpty(getLotNo()) && existError(validateUtil.checkValueE001(getLotNo()))) {
-            return;
-        }
-        // KCPNO
-        if (existError(validateUtil.checkC103(getKcpNo(), "KCPNO", 25))) {
-            return;
-        }
-        // 型式
-        if (existError(validateUtil.checkC101(getKatashiki(), "型式", 2))) {
-            return;
-        }
-        // 容量
-        if (existError(validateUtil.checkC101(getYoryo(), "容量", 4))) {
             return;
         }
         // 開始日(FROM)
@@ -513,6 +469,33 @@ public class GXHDO201B003 implements Serializable {
         if (!StringUtil.isEmpty(endTimeT) && existError(validateUtil.checkC001(getEndDateT(), "終了日(to)"))) {
             return;
         }
+        // 号機
+        if (existError(validateUtil.checkC101(getEndTimeT(), "印刷号機", 4))) {
+            return;
+        }
+        if (!StringUtil.isEmpty(gouki)) {
+            // 号機が入力されている場合のみマスタチェックを実施
+            boolean existGoukiMaster = false;
+            try {
+                QueryRunner queryRunnerWip = new QueryRunner(dataSourceWip);
+                if (validateUtil.existGokukimas(getGouki(), queryRunnerWip)) {
+                    existGoukiMaster = true;
+                }
+            } catch (SQLException ex) {
+                ErrUtil.outputErrorLog("号機マスタ存在チェックに失敗", ex, LOGGER);
+                existGoukiMaster = false;
+            }
+            if (!existGoukiMaster) {
+                FacesMessage message = 
+                        new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000011", "印刷号機"), null);
+                FacesContext.getCurrentInstance().addMessage(null, message);
+                return;
+            }
+        }
+        // KCPNO
+        if (existError(validateUtil.checkC103(getKcpNo(), "KCPNO", 25))) {
+            return;
+        }
         
         // 一覧表示件数を取得
         long count = selectListDataCount();
@@ -564,18 +547,16 @@ public class GXHDO201B003 implements Serializable {
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
             String sql = "SELECT COUNT(*) AS CNT "
-                    + "FROM sr_rsusprn "
-                    + "WHERE (? IS NULL OR KOJYO = ?) "
-                    + "AND   (? IS NULL OR LOTNO = ?) "
-                    + "AND   (? IS NULL OR EDABAN = ?) "
-                    + "AND   (? IS NULL OR KCPNO LIKE ? ESCAPE '\\\\') "
-                    + "AND   (? IS NULL OR SUBSTR(KCPNO, 6, 2) = ?) "
-                    + "AND   (? IS NULL OR SUBSTR(KCPNO, 10, 4) = ?) "
-                    + "AND   (? IS NULL OR KAISINICHIJI >= ?) "
-                    + "AND   (? IS NULL OR KAISINICHIJI <= ?) "
-                    + "AND   (? IS NULL OR SYURYONICHIJI >= ?) "
-                    + "AND   (? IS NULL OR SYURYONICHIJI <= ?) "
-                    + "AND   (? IS NULL OR INSATUROLLNO = ?)";
+                    + "FROM sr_spsprint_gra "
+                    + "WHERE (? IS NULL OR kojyo = ?) " 
+                    + "AND   (? IS NULL OR lotno = ?) " 
+                    + "AND   (? IS NULL OR edaban = ?) "               
+                    + "AND   (? IS NULL OR startdatetime >= ?) " 
+                    + "AND   (? IS NULL OR startdatetime <= ?) " 
+                    + "AND   (? IS NULL OR enddatetime >= ?) " 
+                    + "AND   (? IS NULL OR enddatetime <= ?) " 
+                    + "AND   (? IS NULL OR gouki = ?) " 
+                    + "AND   (? IS NULL OR kcpno LIKE ? ESCAPE '\\\\') ";
             
             // パラメータ設定
             List<Object> params = createSearchParam();
@@ -598,162 +579,242 @@ public class GXHDO201B003 implements Serializable {
     public void selectListData() {
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
-            String sql = "SELECT CONCAT(IFNULL(T1.KOJYO, ''), IFNULL(T1.LOTNO, ''), IFNULL(T1.EDABAN, '')) AS LOTNO"
-                    + ", T1.KCPNO"
-                    + ", T1.TAPESYURUI"
-                    + ", T1.TAPELOTNO"
-                    + ", T1.TapeSlipKigo"
-                    + ", T1.GENRYOKIGO"
-                    + ", T1.KAISINICHIJI"
-                    + ", T1.SYURYONICHIJI"
-                    + ", T1.GOKI"
-                    + ", T1.SKEEGENO"
-                    + ", T1.SKEEGEMAISUU"
-                    + ", T1.SKEEGESPEED"
-                    + ", T1.KANSOONDO"
-                    + ", T1.CLEARANCE"
-                    + ", T1.SAATU"
-                    + ", T1.MAKUATU1"
-                    + ", T1.SEIHANNO"
-                    + ", T1.SEIHANMAISUU"
-                    + ", T1.PASTELOTNO"
-                    + ", T1.PASTENENDO"
-                    + ", T1.PASTEONDO"
-                    + ", T1.INSATUROLLNO"
-                    + ", T1.INSATUROLLNO2"
-                    + ", T1.INSATUROLLNO3"
-                    + ", T1.INSATUROLLNO4"
-                    + ", T1.INSATUROLLNO5"
-                    + ", T1.INSATUHABASAVE"
-                    + ", T1.INSATUHABAEAVE"
-                    + ", T1.MLD"
-                    + ", T1.BIKO1"
-                    + ", T1.BIKO2"
-                    + ", T1.TANTOSYA"
+            String sql ="SELECT CONCAT(T1.kojyo , T1.lotno , T1.edaban) AS lotno"
+                    + ", T1.tapelotno"
+                    + ", T1.petfilmsyurui"
+                    + ", T1.taperollno1"
+                    + ", T1.taperollno2"
+                    + ", T1.taperollno3"
+                    + ", T1.pastelotno"
+                    + ", T1.pastenendo"
+                    + ", T1.pasteondo"
                     + ", T1.pkokeibun1"
                     + ", T1.pastelotno2"
                     + ", T1.pastenendo2"
                     + ", T1.pasteondo2"
                     + ", T1.pkokeibun2"
-                    + ", T1.petfilmsyurui"
-                    + ", T1.kansoondo2"
-                    + ", T1.kansoondo3"
-                    + ", T1.kansoondo4"
-                    + ", T1.kansoondo5"
-                    + ", T1.seihanmei"
-                    + ", T1.makuatsu_ave_start"
-                    + ", T1.makuatsu_max_start"
-                    + ", T1.makuatsu_min_start"
+                    + ", T1.handoumei"
+                    + ", T1.handouno"
+                    + ", T1.handoumaisuu"
+                    + ", T1.bladeno"
+                    + ", (CASE WHEN T1.bladegaikan = 0 THEN 'NG' WHEN T1.bladegaikan = '1' THEN 'OK' ELSE NULL END) AS bladegaikan"
+                    + ", T1.BladeATu"
+                    + ", T1.AtudoNo"
+                    + ", T1.AtudoMaisuu"
+                    + ", T1.AtuDoATu"
+                    + ", T1.gouki"
+                    + ", T1.kansouondo"
+                    + ", T1.kansouondo2"
+                    + ", T1.kansouondo3"
+                    + ", T1.kansouondo4"
+                    + ", T1.kansouondo5"
+                    + ", T1.hansouspeed"
+                    + ", T1.startdatetime"
+                    + ", T1.tantousya"
+                    + ", T1.makuatuave_start"
+                    + ", T1.makuatumax_start"
+                    + ", T1.makuatumin_start"
                     + ", T1.makuatucv_start"
-                    + ", (CASE WHEN T1.nijimikasure_start = 0 THEN 'NG' WHEN T1.nijimikasure_start = 0 THEN 'OK' ELSE NULL END) AS nijimikasure_start"
-                    + ", (CASE WHEN T1.nijimikasure_end = 0 THEN 'NG' WHEN T1.nijimikasure_end = '1' THEN 'OK' ELSE NULL END) AS nijimikasure_end"
+                    + ", (CASE WHEN T1.nijimikasure_start = 0 THEN 'NG' WHEN T1.nijimikasure_start = '1' THEN 'OK' ELSE NULL END) AS nijimikasure_start"
+                    + ", T1.start_ptn_dist_x"
+                    + ", T1.start_ptn_dist_y"
+                    + ", T1.TensionS_sum"
+                    + ", T1.TensionStemae"
+                    + ", T1.TensionSoku"
+                    + ", T1.enddatetime"
                     + ", T1.tanto_end"
                     + ", T1.printmaisuu"
-                    + ", T1.kansouroatsu"
-                    + ", T1.printhaba"
-                    + ", T1.table_clearrance"
+                    + ", T1.makuatuave_end"
+                    + ", T1.makuatumax_end"
+                    + ", T1.makuatumin_end"
+                    + ", T1.makuatucv_end"
+                    + ", (CASE WHEN T1.nijimikasure_end = 0 THEN 'NG' WHEN T1.nijimikasure_end = '1' THEN 'OK' ELSE NULL END) AS nijimikasure_end"
+                    + ", T1.end_ptn_dist_x"
+                    + ", T1.end_ptn_dist_y"
+                    + ", T1.TensionE_sum"
+                    + ", T1.TensionEtemae"
+                    + ", T1.TensionEoku"
+                    + ", T1.printzure1_surihajime_start"
+                    + ", T1.printzure2_center_start"
+                    + ", T1.printzure3_suriowari_start"
+                    + ", T1.abzure_heikin_start"
+                    + ", T1.printzure1_surihajime_end"
+                    + ", T1.printzure2_center_end"
+                    + ", T1.printzure3_suriowari_end"
+                    + ", T1.abzure_heikin_end"
+                    + ", T1.genryoukigou"
+                    + ", T1.bikou1"
+                    + ", T1.bikou2"
                     + ", T1.torokunichiji"
                     + ", T1.kosinnichiji"
                     + ", T1.revision"
+                    + ", T1.kcpno"
                     + ", T2.makuatsu_start1"
                     + ", T2.makuatsu_start2"
                     + ", T2.makuatsu_start3"
                     + ", T2.makuatsu_start4"
                     + ", T2.makuatsu_start5"
-                    + ", T2.insatuhaba_start1"
-                    + ", T2.insatuhaba_start2"
-                    + ", T2.insatuhaba_start3"
-                    + ", T2.insatuhaba_start4"
-                    + ", T2.insatuhaba_start5 "
-                    + "FROM sr_rsusprn T1 "
-                    + "LEFT JOIN sub_sr_rsusprn T2 ON (T1.kojyo = T2.kojyo AND T1.lotno = T2.lotno AND T1.edaban = T2.edaban) "
-                    + "WHERE (? IS NULL OR T1.KOJYO = ?) "
-                    + "AND   (? IS NULL OR T1.LOTNO = ?) "
-                    + "AND   (? IS NULL OR T1.EDABAN = ?) "
-                    + "AND   (? IS NULL OR T1.KCPNO LIKE ? ESCAPE '\\\\') "
-                    + "AND   (? IS NULL OR SUBSTR(T1.KCPNO, 6, 2) = ?) "
-                    + "AND   (? IS NULL OR SUBSTR(T1.KCPNO, 10, 4) = ?) "
-                    + "AND   (? IS NULL OR T1.KAISINICHIJI >= ?) "
-                    + "AND   (? IS NULL OR T1.KAISINICHIJI <= ?) "
-                    + "AND   (? IS NULL OR T1.SYURYONICHIJI >= ?) "
-                    + "AND   (? IS NULL OR T1.SYURYONICHIJI <= ?) "
-                    + "AND   (? IS NULL OR T1.INSATUROLLNO = ?) "
-                    + "ORDER BY T1.KAISINICHIJI";
+                    + ", T2.makuatsu_start6"
+                    + ", T2.makuatsu_start7"
+                    + ", T2.makuatsu_start8"
+                    + ", T2.makuatsu_start9"
+                    + ", T2.start_ptn_dist_x1"
+                    + ", T2.start_ptn_dist_x2"
+                    + ", T2.start_ptn_dist_x3"
+                    + ", T2.start_ptn_dist_x4"
+                    + ", T2.start_ptn_dist_x5"
+                    + ", T2.start_ptn_dist_y1"
+                    + ", T2.start_ptn_dist_y2"
+                    + ", T2.start_ptn_dist_y3"
+                    + ", T2.start_ptn_dist_y4"
+                    + ", T2.start_ptn_dist_y5"
+                    + ", T2.makuatsu_end1"
+                    + ", T2.makuatsu_end2"
+                    + ", T2.makuatsu_end3"
+                    + ", T2.makuatsu_end4"
+                    + ", T2.makuatsu_end5"
+                    + ", T2.makuatsu_end6"
+                    + ", T2.makuatsu_end7"
+                    + ", T2.makuatsu_end8"
+                    + ", T2.makuatsu_end9"
+                    + ", T2.end_ptn_dist_x1"
+                    + ", T2.end_ptn_dist_x2"
+                    + ", T2.end_ptn_dist_x3"
+                    + ", T2.end_ptn_dist_x4"
+                    + ", T2.end_ptn_dist_x5"
+                    + ", T2.end_ptn_dist_y1"
+                    + ", T2.end_ptn_dist_y2"
+                    + ", T2.end_ptn_dist_y3"
+                    + ", T2.end_ptn_dist_y4"
+                    + ", T2.end_ptn_dist_y5 "
+                    + "FROM sr_spsprint_gra T1 "
+                    + "LEFT JOIN sub_sr_spsprint_gra T2 ON (T1.kojyo = T2.kojyo AND T1.lotno = T2.lotno AND T1.edaban = T2.edaban) "
+                    + "WHERE (? IS NULL OR T1.kojyo = ?) " 
+                    + "AND   (? IS NULL OR T1.lotno = ?) " 
+                    + "AND   (? IS NULL OR T1.edaban = ?) "               
+                    + "AND   (? IS NULL OR T1.startdatetime >= ?) " 
+                    + "AND   (? IS NULL OR T1.startdatetime <= ?) " 
+                    + "AND   (? IS NULL OR T1.enddatetime >= ?) " 
+                    + "AND   (? IS NULL OR T1.enddatetime <= ?) " 
+                    + "AND   (? IS NULL OR T1.gouki = ?) " 
+                    + "AND   (? IS NULL OR T1.kcpno LIKE ? ESCAPE '\\\\') "
+                    + "ORDER BY T1.startdatetime ";
             
             // パラメータ設定
             List<Object> params = createSearchParam();
             
             // モデルクラスとのマッピング定義
             Map<String, String> mapping = new HashMap<>();
-            mapping.put("LOTNO", "lotno");
-            mapping.put("KCPNO", "kcpno");
-            mapping.put("TAPESYURUI", "tapesyurui");
-            mapping.put("TAPELOTNO", "tapelotno");
-            mapping.put("TapeSlipKigo", "tapeslipkigo");
-            mapping.put("GENRYOKIGO", "genryokigo");
-            mapping.put("KAISINICHIJI", "kaisinichiji");
-            mapping.put("SYURYONICHIJI", "syuryonichiji");
-            mapping.put("GOKI", "goki");
-            mapping.put("SKEEGENO", "skeegeno");
-            mapping.put("SKEEGEMAISUU", "skeegemaisuu");
-            mapping.put("SKEEGESPEED", "skeegespeed");
-            mapping.put("KANSOONDO", "kansoondo");
-            mapping.put("CLEARANCE", "clearance");
-            mapping.put("SAATU", "saatu");
-            mapping.put("MAKUATU1", "makuatu1");
-            mapping.put("SEIHANNO", "seihanno");
-            mapping.put("SEIHANMAISUU", "seihanmaisuu");
-            mapping.put("PASTELOTNO", "pastelotno");
-            mapping.put("PASTENENDO", "pastenendo");
-            mapping.put("PASTEONDO", "pasteondo");
-            mapping.put("INSATUROLLNO", "insaturollno");
-            mapping.put("INSATUROLLNO2", "insaturollno2");
-            mapping.put("INSATUROLLNO3", "insaturollno3");
-            mapping.put("INSATUROLLNO4", "insaturollno4");
-            mapping.put("INSATUROLLNO5", "insaturollno5");
-            mapping.put("INSATUHABASAVE", "insatuhabasave");
-            mapping.put("INSATUHABAEAVE", "insatuhabaeave");
-            mapping.put("MLD", "mld");
-            mapping.put("BIKO1", "biko1");
-            mapping.put("BIKO2", "biko2");
-            mapping.put("TANTOSYA", "tantosya");
+            mapping.put("lotno", "lotno");
+            mapping.put("kcpno", "kcpno");
+            mapping.put("tapelotno", "tapelotno");
+            mapping.put("petfilmsyurui", "petfilmsyurui");
+            mapping.put("taperollno1", "taperollno1");
+            mapping.put("taperollno2", "taperollno2");
+            mapping.put("taperollno3", "taperollno3");
+            mapping.put("pastelotno", "pastelotno");
+            mapping.put("pastenendo", "pastenendo");
+            mapping.put("pasteondo", "pasteondo");
             mapping.put("pkokeibun1", "pkokeibun1");
             mapping.put("pastelotno2", "pastelotno2");
             mapping.put("pastenendo2", "pastenendo2");
             mapping.put("pasteondo2", "pasteondo2");
             mapping.put("pkokeibun2", "pkokeibun2");
-            mapping.put("petfilmsyurui", "petfilmsyurui");
-            mapping.put("kansoondo2", "kansoondo2");
-            mapping.put("kansoondo3", "kansoondo3");
-            mapping.put("kansoondo4", "kansoondo4");
-            mapping.put("kansoondo5", "kansoondo5");
-            mapping.put("seihanmei", "seihanmei");
-            mapping.put("makuatsu_ave_start", "makuatsuAveStart");
-            mapping.put("makuatsu_max_start", "makuatsuMaxStart");
-            mapping.put("makuatsu_min_start", "makuatsuMinStart");
+            mapping.put("handoumei", "handoumei");
+            mapping.put("handouno", "handouno");
+            mapping.put("handoumaisuu", "handoumaisuu");
+            mapping.put("bladeno", "bladeno");
+            mapping.put("bladegaikan", "bladegaikan");
+            mapping.put("BladeATu", "bladeatu");
+            mapping.put("AtudoNo", "atudono");
+            mapping.put("AtudoMaisuu", "atudomaisuu");
+            mapping.put("AtuDoATu", "atudoatu");
+            mapping.put("gouki", "gouki");
+            mapping.put("kansouondo", "kansouondo");
+            mapping.put("kansouondo2", "kansouondo2");
+            mapping.put("kansouondo3", "kansouondo3");
+            mapping.put("kansouondo4", "kansouondo4");
+            mapping.put("kansouondo5", "kansouondo5");
+            mapping.put("hansouspeed", "hansouspeed");
+            mapping.put("startdatetime", "startdatetime");
+            mapping.put("tantousya", "tantousya");
+            mapping.put("makuatuave_start", "makuatuaveStart");
+            mapping.put("makuatumax_start", "makuatumaxStart");
+            mapping.put("makuatumin_start", "makuatuminStart");
             mapping.put("makuatucv_start", "makuatucvStart");
             mapping.put("nijimikasure_start", "nijimikasureStart");
-            mapping.put("nijimikasure_end", "nijimikasureEnd");
+            mapping.put("start_ptn_dist_x", "startPtnDistX");
+            mapping.put("start_ptn_dist_y", "startPtnDistY");
+            mapping.put("TensionS_sum", "tensionsSum");
+            mapping.put("TensionStemae", "tensionstemae");
+            mapping.put("TensionSoku", "tensionsoku");
+            mapping.put("enddatetime", "enddatetime");
             mapping.put("tanto_end", "tantoEnd");
             mapping.put("printmaisuu", "printmaisuu");
-            mapping.put("kansouroatsu", "kansouroatsu");
-            mapping.put("printhaba", "printhaba");
-            mapping.put("table_clearrance", "tableClearrance");
+            mapping.put("makuatuave_end", "makuatuaveEnd");
+            mapping.put("makuatumax_end", "makuatumaxEnd");
+            mapping.put("makuatumin_end", "makuatuminEnd");
+            mapping.put("makuatucv_end", "makuatucvEnd");
+            mapping.put("nijimikasure_end", "nijimikasureEnd");
+            mapping.put("end_ptn_dist_x", "endPtnDistX");
+            mapping.put("end_ptn_dist_y", "endPtnDistY");
+            mapping.put("TensionE_sum", "tensioneSum");
+            mapping.put("TensionEtemae", "tensionetemae");
+            mapping.put("TensionEoku", "tensioneoku");
+            mapping.put("printzure1_surihajime_start", "printzure1SurihajimeStart");
+            mapping.put("printzure2_center_start", "printzure2CenterStart");
+            mapping.put("printzure3_suriowari_start", "printzure3SuriowariStart");
+            mapping.put("abzure_heikin_start", "abzureHeikinStart");
+            mapping.put("printzure1_surihajime_end", "printzure1SurihajimeEnd");
+            mapping.put("printzure2_center_end", "printzure2CenterEnd");
+            mapping.put("printzure3_suriowari_end", "printzure3SuriowariEnd");
+            mapping.put("abzure_heikin_end", "abzureHeikinEnd");
+            mapping.put("genryoukigou", "genryoukigou");
+            mapping.put("bikou1", "bikou1");
+            mapping.put("bikou2", "bikou2");
             mapping.put("makuatsu_start1", "makuatsuStart1");
             mapping.put("makuatsu_start2", "makuatsuStart2");
             mapping.put("makuatsu_start3", "makuatsuStart3");
             mapping.put("makuatsu_start4", "makuatsuStart4");
             mapping.put("makuatsu_start5", "makuatsuStart5");
-            mapping.put("insatuhaba_start1", "insatuhabaStart1");
-            mapping.put("insatuhaba_start2", "insatuhabaStart2");
-            mapping.put("insatuhaba_start3", "insatuhabaStart3");
-            mapping.put("insatuhaba_start4", "insatuhabaStart4");
-            mapping.put("insatuhaba_start5", "insatuhabaStart5");
+            mapping.put("makuatsu_start6", "makuatsuStart6");
+            mapping.put("makuatsu_start7", "makuatsuStart7");
+            mapping.put("makuatsu_start8", "makuatsuStart8");
+            mapping.put("makuatsu_start9", "makuatsuStart9");
+            mapping.put("start_ptn_dist_x1", "startPtnDistX1");
+            mapping.put("start_ptn_dist_x2", "startPtnDistX2");
+            mapping.put("start_ptn_dist_x3", "startPtnDistX3");
+            mapping.put("start_ptn_dist_x4", "startPtnDistX4");
+            mapping.put("start_ptn_dist_x5", "startPtnDistX5");
+            mapping.put("start_ptn_dist_y1", "startPtnDistY1");
+            mapping.put("start_ptn_dist_y2", "startPtnDistY2");
+            mapping.put("start_ptn_dist_y3", "startPtnDistY3");
+            mapping.put("start_ptn_dist_y4", "startPtnDistY4");
+            mapping.put("start_ptn_dist_y5", "startPtnDistY5");
+            mapping.put("makuatsu_end1", "makuatsuEnd1");
+            mapping.put("makuatsu_end2", "makuatsuEnd2");
+            mapping.put("makuatsu_end3", "makuatsuEnd3");
+            mapping.put("makuatsu_end4", "makuatsuEnd4");
+            mapping.put("makuatsu_end5", "makuatsuEnd5");
+            mapping.put("makuatsu_end6", "makuatsuEnd6");
+            mapping.put("makuatsu_end7", "makuatsuEnd7");
+            mapping.put("makuatsu_end8", "makuatsuEnd8");
+            mapping.put("makuatsu_end9", "makuatsuEnd9");
+            mapping.put("end_ptn_dist_x1", "endPtnDistX1");
+            mapping.put("end_ptn_dist_x2", "endPtnDistX2");
+            mapping.put("end_ptn_dist_x3", "endPtnDistX3");
+            mapping.put("end_ptn_dist_x4", "endPtnDistX4");
+            mapping.put("end_ptn_dist_x5", "endPtnDistX5");
+            mapping.put("end_ptn_dist_y1", "endPtnDistY1");
+            mapping.put("end_ptn_dist_y2", "endPtnDistY2");
+            mapping.put("end_ptn_dist_y3", "endPtnDistY3");
+            mapping.put("end_ptn_dist_y4", "endPtnDistY4");
+            mapping.put("end_ptn_dist_y5", "endPtnDistY5");
 
             BeanProcessor beanProcessor = new BeanProcessor(mapping);
             RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
-            ResultSetHandler<List<GXHDO201B003Model>> beanHandler = 
-                    new BeanListHandler<>(GXHDO201B003Model.class, rowProcessor);
+            ResultSetHandler<List<GXHDO201B001Model>> beanHandler = 
+                    new BeanListHandler<>(GXHDO201B001Model.class, rowProcessor);
             
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
             listData = queryRunner.query(sql, beanHandler, params.toArray());
@@ -789,7 +850,7 @@ public class GXHDO201B003 implements Serializable {
             // 処理無し
         }
     }
-    
+
     /**
      * Excelダウンロード
      * @throws Throwable 
@@ -803,14 +864,14 @@ public class GXHDO201B003 implements Serializable {
             ResourceBundle myParam = fc.getApplication().getResourceBundle(fc, "myParam");
 
             // Excel出力定義を取得
-            File file = new File(servletContext.getRealPath("/WEB-INF/classes/resources/json/gxhdo201b003.json")); 
+            File file = new File(servletContext.getRealPath("/WEB-INF/classes/resources/json/gxhdo201b001.json")); 
             List<ColumnInformation> list = (new ColumnInfoParser()).parseColumnJson(file);
 
             // 物理ファイルを生成
             File excel = ExcelExporter.outputExcel(listData, list, myParam.getString("download_temp"));
 
             // ダウンロードファイル名
-            String downloadFileName = "印刷・RSUS_" + ((new SimpleDateFormat("yyyyMMddHHmmss")).format(new Date())) + ".xlsx";
+            String downloadFileName = "印刷・SPSｸﾞﾗﾋﾞｱ_" + ((new SimpleDateFormat("yyyyMMddHHmmss")).format(new Date())) + ".xlsx";
             
             // outputstreamにファイルを転送
             ec.responseReset();
@@ -853,42 +914,38 @@ public class GXHDO201B003 implements Serializable {
             paramLotNo = StringUtils.substring(getLotNo(), 3, 11);
             paramEdaban = StringUtils.substring(getLotNo(), 11, 14);
         }
-        String paramKcpno = null;
-        if (!StringUtil.isEmpty(kcpNo)) {
-            paramKcpno = "%" + DBUtil.escapeString(getKcpNo()) + "%";
-        }
-        String paramKatashiki = StringUtil.blankToNull(getKatashiki());
-        String paramYoryo = StringUtil.blankToNull(getYoryo());
         Date paramStartDateF = null;
         if (!StringUtil.isEmpty(startDateF)) {
-            paramStartDateF = DateUtil.convertStringToDate(getStartDateF(), StringUtil.isEmpty(getStartTimeF()) ? "0000" : getStartTimeF());
+            paramStartDateF = DateUtil.convertStringToDate(startDateF, StringUtil.isEmpty(startTimeF) ? "0000" : startTimeF);
         }
         Date paramStartDateT = null;
         if (!StringUtil.isEmpty(startDateT)) {
-            paramStartDateT = DateUtil.convertStringToDate(getStartDateT(), StringUtil.isEmpty(getStartTimeT()) ? "0000" : getStartTimeT());
+            paramStartDateT = DateUtil.convertStringToDate(startDateT, StringUtil.isEmpty(startTimeT) ? "0000" : startTimeT);
         }
         Date paramEndDateF = null;
         if (!StringUtil.isEmpty(endDateF)) {
-            paramEndDateF = DateUtil.convertStringToDate(getEndDateF(), StringUtil.isEmpty(getEndTimeF()) ? "0000" : getEndTimeF());
+            paramEndDateF = DateUtil.convertStringToDate(endDateF, StringUtil.isEmpty(endTimeF) ? "0000" : endTimeF);
         }
         Date paramEndDateT = null;
         if (!StringUtil.isEmpty(endDateT)) {
-            paramEndDateT = DateUtil.convertStringToDate(getEndDateT(), StringUtil.isEmpty(getEndTimeT()) ? "0000" : getEndTimeT());
+            paramEndDateT = DateUtil.convertStringToDate(endDateT, StringUtil.isEmpty(endTimeT) ? "0000" : endTimeT);
         }
-        String paramRollNo = StringUtil.blankToNull(getPrintRollNo());
-
+        String paramGouki = StringUtil.blankToNull(getGouki());
+        String paramKcpno = null;
+        if (!StringUtil.isEmpty(kcpNo)) {
+            paramKcpno = "%" + DBUtil.escapeString(kcpNo) + "%";
+        }
+        
         List<Object> params = new ArrayList<>();
         params.addAll(Arrays.asList(paramKojo, paramKojo));
         params.addAll(Arrays.asList(paramLotNo, paramLotNo));
         params.addAll(Arrays.asList(paramEdaban, paramEdaban));
-        params.addAll(Arrays.asList(paramKcpno, paramKcpno));
-        params.addAll(Arrays.asList(paramKatashiki, paramKatashiki));
-        params.addAll(Arrays.asList(paramYoryo, paramYoryo));
         params.addAll(Arrays.asList(paramStartDateF, paramStartDateF));
         params.addAll(Arrays.asList(paramStartDateT, paramStartDateT));
         params.addAll(Arrays.asList(paramEndDateF, paramEndDateF));
         params.addAll(Arrays.asList(paramEndDateT, paramEndDateT));
-        params.addAll(Arrays.asList(paramRollNo, paramRollNo));
+        params.addAll(Arrays.asList(paramGouki, paramGouki));
+        params.addAll(Arrays.asList(paramKcpno, paramKcpno));
 
         return params;
     }
@@ -936,4 +993,5 @@ public class GXHDO201B003 implements Serializable {
             }
         }
     }
+
 }
