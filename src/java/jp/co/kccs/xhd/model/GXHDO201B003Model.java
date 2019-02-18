@@ -145,15 +145,15 @@ public class GXHDO201B003Model implements Serializable {
     /** 膜厚ｽﾀｰﾄ5 */
     private BigDecimal makuatsuStart5 = null;
     /** 印刷幅ｽﾀｰﾄ1 */
-    private BigDecimal insatuhabaStart1 = null;
+    private Long insatuhabaStart1 = null;
     /** 印刷幅ｽﾀｰﾄ2 */
-    private BigDecimal insatuhabaStart2 = null;
+    private Long insatuhabaStart2 = null;
     /** 印刷幅ｽﾀｰﾄ3 */
-    private BigDecimal insatuhabaStart3 = null;
+    private Long insatuhabaStart3 = null;
     /** 印刷幅ｽﾀｰﾄ4 */
-    private BigDecimal insatuhabaStart4 = null;
+    private Long insatuhabaStart4 = null;
     /** 印刷幅ｽﾀｰﾄ5 */
-    private BigDecimal insatuhabaStart5 = null;
+    private Long insatuhabaStart5 = null;
 
     /**
      * ﾛｯﾄNo.
@@ -1103,7 +1103,7 @@ public class GXHDO201B003Model implements Serializable {
      * 印刷幅ｽﾀｰﾄ1
      * @return the insatuhabaStart1
      */
-    public BigDecimal getInsatuhabaStart1() {
+    public Long getInsatuhabaStart1() {
         return insatuhabaStart1;
     }
 
@@ -1111,7 +1111,7 @@ public class GXHDO201B003Model implements Serializable {
      * 印刷幅ｽﾀｰﾄ1
      * @param insatuhabaStart1 the insatuhabaStart1 to set
      */
-    public void setInsatuhabaStart1(BigDecimal insatuhabaStart1) {
+    public void setInsatuhabaStart1(Long insatuhabaStart1) {
         this.insatuhabaStart1 = insatuhabaStart1;
     }
 
@@ -1119,7 +1119,7 @@ public class GXHDO201B003Model implements Serializable {
      * 印刷幅ｽﾀｰﾄ2
      * @return the insatuhabaStart2
      */
-    public BigDecimal getInsatuhabaStart2() {
+    public Long getInsatuhabaStart2() {
         return insatuhabaStart2;
     }
 
@@ -1127,7 +1127,7 @@ public class GXHDO201B003Model implements Serializable {
      * 印刷幅ｽﾀｰﾄ2
      * @param insatuhabaStart2 the insatuhabaStart2 to set
      */
-    public void setInsatuhabaStart2(BigDecimal insatuhabaStart2) {
+    public void setInsatuhabaStart2(Long insatuhabaStart2) {
         this.insatuhabaStart2 = insatuhabaStart2;
     }
 
@@ -1135,7 +1135,7 @@ public class GXHDO201B003Model implements Serializable {
      * 印刷幅ｽﾀｰﾄ3
      * @return the insatuhabaStart3
      */
-    public BigDecimal getInsatuhabaStart3() {
+    public Long getInsatuhabaStart3() {
         return insatuhabaStart3;
     }
 
@@ -1143,7 +1143,7 @@ public class GXHDO201B003Model implements Serializable {
      * 印刷幅ｽﾀｰﾄ3
      * @param insatuhabaStart3 the insatuhabaStart3 to set
      */
-    public void setInsatuhabaStart3(BigDecimal insatuhabaStart3) {
+    public void setInsatuhabaStart3(Long insatuhabaStart3) {
         this.insatuhabaStart3 = insatuhabaStart3;
     }
 
@@ -1151,7 +1151,7 @@ public class GXHDO201B003Model implements Serializable {
      * 印刷幅ｽﾀｰﾄ4
      * @return the insatuhabaStart4
      */
-    public BigDecimal getInsatuhabaStart4() {
+    public Long getInsatuhabaStart4() {
         return insatuhabaStart4;
     }
 
@@ -1159,7 +1159,7 @@ public class GXHDO201B003Model implements Serializable {
      * 印刷幅ｽﾀｰﾄ4
      * @param insatuhabaStart4 the insatuhabaStart4 to set
      */
-    public void setInsatuhabaStart4(BigDecimal insatuhabaStart4) {
+    public void setInsatuhabaStart4(Long insatuhabaStart4) {
         this.insatuhabaStart4 = insatuhabaStart4;
     }
 
@@ -1167,7 +1167,7 @@ public class GXHDO201B003Model implements Serializable {
      * 印刷幅ｽﾀｰﾄ5
      * @return the insatuhabaStart5
      */
-    public BigDecimal getInsatuhabaStart5() {
+    public Long getInsatuhabaStart5() {
         return insatuhabaStart5;
     }
 
@@ -1175,7 +1175,7 @@ public class GXHDO201B003Model implements Serializable {
      * 印刷幅ｽﾀｰﾄ5
      * @param insatuhabaStart5 the insatuhabaStart5 to set
      */
-    public void setInsatuhabaStart5(BigDecimal insatuhabaStart5) {
+    public void setInsatuhabaStart5(Long insatuhabaStart5) {
         this.insatuhabaStart5 = insatuhabaStart5;
     }
 }
