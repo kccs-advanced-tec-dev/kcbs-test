@@ -236,12 +236,12 @@
                     </p:column>
                     <p:column id="kaisinichiji" headerText="開始日時">
                         <p:outputLabel value="#{item.kaisinichiji}">
-                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss"/>
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="syuryonichiji" headerText="終了日時">
                         <p:outputLabel value="#{item.syuryonichiji}">
-                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss"/>
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="goki" headerText="号機">

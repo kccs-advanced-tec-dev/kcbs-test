@@ -237,12 +237,12 @@
                     </p:column>
                     <p:column id="startdatetime" headerText="ﾌﾟﾘﾝﾄ開始日時" >
                         <p:outputLabel value="#{item.startdatetime}">
-                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss"/>
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="enddatetime" headerText="ﾌﾟﾘﾝﾄ終了日時" >
                         <p:outputLabel value="#{item.enddatetime}">
-                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss"/>
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="skeegeno" headerText="ｽｷｰｼﾞNo" >

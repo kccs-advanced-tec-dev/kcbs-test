@@ -323,7 +323,7 @@
                     </p:column>
                     <p:column id="startdatetime" headerText="印刷開始日時" >
                         <p:outputLabel value="#{item.startdatetime}">
-                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss"/>
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="tantousya" headerText="印刷ｽﾀｰﾄ時担当者" >
@@ -379,7 +379,7 @@
                     </p:column>
                     <p:column id="enddatetime" headerText="印刷終了日時" >
                         <p:outputLabel value="#{item.enddatetime}">
-                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss"/>
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="tantoEnd" headerText="印刷エンド時担当者" >
