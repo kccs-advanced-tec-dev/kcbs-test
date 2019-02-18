@@ -470,7 +470,7 @@ public class GXHDO201B001 implements Serializable {
             return;
         }
         // 号機
-        if (existError(validateUtil.checkC101(getEndTimeT(), "印刷号機", 4))) {
+        if (existError(validateUtil.checkC101(getGouki(), "印刷号機", 4))) {
             return;
         }
         if (!StringUtil.isEmpty(gouki)) {
