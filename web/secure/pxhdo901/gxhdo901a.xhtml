@@ -102,12 +102,12 @@
                 <f:facet name="message">
                     <h:outputText value="#{gXHDO901A.processData.getWarnMessage()}" escape="false"/>
                 </f:facet>
-                <p:commandButton id="warnOk" value="はい" styleClass="ui-conf-commandbtn-def1"
+                <p:commandButton id="warnOk" value="OK" styleClass="ui-conf-commandbtn-def1"
                                  actionListener="#{gXHDO901A.processWarnOk()}"
                                  process="@form"
                                  update="@form"
                                  oncomplete="if('warning'!=args.firstParam){PF('cd').hide(); cmdButtonOncomplete(args);} else {PF('cd').show();}"/>
-                <p:commandButton id="warnCancel" value="いいえ" class="ui-conf-commandbtn-cancel" onclick="PF('cd').hide();" type="button" />
+                <p:commandButton id="warnCancel" value="Cancel" class="ui-conf-commandbtn-cancel" onclick="PF('cd').hide();" type="button" />
             </p:confirmDialog>
             <p:panel id="headerPanel" style="margin-bottom:4px; #{gXHDO901A.styleDisplayNone}">
                 <ui:repeat value="#{gXHDO901A.buttonListTop}" var="item" varStatus="stat">

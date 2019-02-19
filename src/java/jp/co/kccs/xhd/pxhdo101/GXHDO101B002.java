@@ -523,7 +523,7 @@ public class GXHDO101B002 implements IFormLogic {
         String msgCheckR001 = validateUtil.checkR001(itemInsatsuKaishiDay.getLabel1(), kaishiDate, itemInsatsuShuryouDay.getLabel1(), shuryoDate);
         if (!StringUtil.isEmpty(msgCheckR001)) {
             //エラー発生時
-            List<FXHDD01> errFxhdd01List = Arrays.asList(itemShuryojiNijimiKasure, itemInsatsuKaishiTime, itemInsatsuShuryouDay, itemInsatsuShuryouTime);
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemInsatsuKaishiDay, itemInsatsuKaishiTime, itemInsatsuShuryouDay, itemInsatsuShuryouTime);
             return MessageUtil.getErrorMessageInfo("", msgCheckR001, true, true, errFxhdd01List);
         }
 
@@ -621,13 +621,20 @@ public class GXHDO101B002 implements IFormLogic {
             }
 
             // 仮登録状態の場合、仮登録のデータを削除する。
+            SrSpsprintScr tmpSrSpsprintScr = null;
             if (JOTAI_FLG_KARI_TOROKU.equals(processData.getInitJotaiFlg())) {
+                // 更新前の値を取得
+                List<SrSpsprintScr> srSpsprintScrList = getSrSpsprintScrData(queryRunnerQcdb, rev.toPlainString(), processData.getInitJotaiFlg(), kojyo, lotNo8, edaban);
+                if (!srSpsprintScrList.isEmpty()) {
+                    tmpSrSpsprintScr = srSpsprintScrList.get(0);
+                }
+                
                 deleteTmpSrSpsprintScr(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban);
                 deleteTmpSubSrSpsprintScr(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban);
             }
 
             // 印刷SPSｽｸﾘｰﾝ_登録処理
-            insertSrSpsprint(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, systemTime, processData.getItemList());
+            insertSrSpsprint(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, systemTime, processData.getItemList(), tmpSrSpsprintScr);
 
             // 印刷SPSｽｸﾘｰﾝ_ｻﾌﾞ画面登録処理
             insertSubSrSpsprintScr(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, systemTime);
@@ -3139,10 +3146,11 @@ public class GXHDO101B002 implements IFormLogic {
      * @param edaban 枝番
      * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
      * @param itemList 項目リスト
+     * @param tmpSrSpsprintScr 仮登録データ
      * @throws SQLException 例外エラー
      */
     private void insertSrSpsprint(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev,
-            String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
+            String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList, SrSpsprintScr tmpSrSpsprintScr) throws SQLException {
         String sql = "INSERT INTO sr_spsprint ("
                 + "kojyo,lotno,edaban,tapesyurui,tapelotno,TapeSlipKigo,genryoukigou,pastelotno,pastenendo,pasteondo,"
                 + "seihanno,seihanmaisuu,startdatetime,enddatetime,skeegeno,skeegemaisuu,gouki,tantousya,kakuninsya,"
@@ -3159,7 +3167,7 @@ public class GXHDO101B002 implements IFormLogic {
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
-        List<Object> params = setUpdateParameterSrSpsprintScr(true, newRev, kojyo, lotNo, edaban, systemTime, itemList, null);
+        List<Object> params = setUpdateParameterSrSpsprintScr(true, newRev, kojyo, lotNo, edaban, systemTime, itemList, tmpSrSpsprintScr);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
     }
@@ -3845,7 +3853,7 @@ public class GXHDO101B002 implements IFormLogic {
                 }
             // 印刷スタート時担当者
             case GXHDO101B002Const.INSATSU_STARTJI_TANTOUSHA:
-                return StringUtil.nullToBlank(srSpsprintScrData.getTantousya());
+                return StringUtil.nullToBlank(srSpsprintScrData.getTantoSetting());
             // 印刷終了日
             case GXHDO101B002Const.INSATSU_SHUURYOU_DAY:
                 return DateUtil.formattedTimestamp(srSpsprintScrData.getEnddatetime(), "yyMMdd");

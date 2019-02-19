@@ -224,37 +224,37 @@ public class SrSpsprintScr {
     /**
      * ﾍﾟｰｽﾄ粘度3
      */
-    private Integer pastenendo3;
+    private BigDecimal pastenendo3;
     
     /**
      * ﾍﾟｰｽﾄ粘度4
      */
-    private Integer pastenendo4;
+    private BigDecimal pastenendo4;
     
     /**
      * ﾍﾟｰｽﾄ粘度5
      */
-    private Integer pastenendo5;
+    private BigDecimal pastenendo5;
     
     /**
      * ﾍﾟｰｽﾄ温度2
      */
-    private Integer pasteondo2;
+    private BigDecimal pasteondo2;
     
     /**
      * ﾍﾟｰｽﾄ温度3
      */
-    private Integer pasteondo3;
+    private BigDecimal pasteondo3;
     
     /**
      * ﾍﾟｰｽﾄ温度4
      */
-    private Integer pasteondo4;
+    private BigDecimal pasteondo4;
     
     /**
      * ﾍﾟｰｽﾄ温度5
      */
-    private Integer pasteondo5;
+    private BigDecimal pasteondo5;
     
     /**
      * 備考3
@@ -1125,7 +1125,7 @@ public class SrSpsprintScr {
      * ﾍﾟｰｽﾄ粘度3
      * @return the pastenendo3
      */
-    public Integer getPastenendo3() {
+    public BigDecimal getPastenendo3() {
         return pastenendo3;
     }
 
@@ -1133,7 +1133,7 @@ public class SrSpsprintScr {
      * ﾍﾟｰｽﾄ粘度3
      * @param pastenendo3 the pastenendo3 to set
      */
-    public void setPastenendo3(Integer pastenendo3) {
+    public void setPastenendo3(BigDecimal pastenendo3) {
         this.pastenendo3 = pastenendo3;
     }
 
@@ -1141,7 +1141,7 @@ public class SrSpsprintScr {
      * ﾍﾟｰｽﾄ粘度4
      * @return the pastenendo4
      */
-    public Integer getPastenendo4() {
+    public BigDecimal getPastenendo4() {
         return pastenendo4;
     }
 
@@ -1149,7 +1149,7 @@ public class SrSpsprintScr {
      * ﾍﾟｰｽﾄ粘度4
      * @param pastenendo4 the pastenendo4 to set
      */
-    public void setPastenendo4(Integer pastenendo4) {
+    public void setPastenendo4(BigDecimal pastenendo4) {
         this.pastenendo4 = pastenendo4;
     }
 
@@ -1157,7 +1157,7 @@ public class SrSpsprintScr {
      * ﾍﾟｰｽﾄ粘度5
      * @return the pastenendo5
      */
-    public Integer getPastenendo5() {
+    public BigDecimal getPastenendo5() {
         return pastenendo5;
     }
 
@@ -1165,7 +1165,7 @@ public class SrSpsprintScr {
      * ﾍﾟｰｽﾄ粘度5
      * @param pastenendo5 the pastenendo5 to set
      */
-    public void setPastenendo5(Integer pastenendo5) {
+    public void setPastenendo5(BigDecimal pastenendo5) {
         this.pastenendo5 = pastenendo5;
     }
 
@@ -1173,7 +1173,7 @@ public class SrSpsprintScr {
      * ﾍﾟｰｽﾄ温度2
      * @return the pasteondo2
      */
-    public Integer getPasteondo2() {
+    public BigDecimal getPasteondo2() {
         return pasteondo2;
     }
 
@@ -1181,7 +1181,7 @@ public class SrSpsprintScr {
      * ﾍﾟｰｽﾄ温度2
      * @param pasteondo2 the pasteondo2 to set
      */
-    public void setPasteondo2(Integer pasteondo2) {
+    public void setPasteondo2(BigDecimal pasteondo2) {
         this.pasteondo2 = pasteondo2;
     }
 
@@ -1189,7 +1189,7 @@ public class SrSpsprintScr {
      * ﾍﾟｰｽﾄ温度3
      * @return the pasteondo3
      */
-    public Integer getPasteondo3() {
+    public BigDecimal getPasteondo3() {
         return pasteondo3;
     }
 
@@ -1197,7 +1197,7 @@ public class SrSpsprintScr {
      * ﾍﾟｰｽﾄ温度3
      * @param pasteondo3 the pasteondo3 to set
      */
-    public void setPasteondo3(Integer pasteondo3) {
+    public void setPasteondo3(BigDecimal pasteondo3) {
         this.pasteondo3 = pasteondo3;
     }
 
@@ -1205,7 +1205,7 @@ public class SrSpsprintScr {
      * ﾍﾟｰｽﾄ温度4
      * @return the pasteondo4
      */
-    public Integer getPasteondo4() {
+    public BigDecimal getPasteondo4() {
         return pasteondo4;
     }
 
@@ -1213,7 +1213,7 @@ public class SrSpsprintScr {
      * ﾍﾟｰｽﾄ温度4
      * @param pasteondo4 the pasteondo4 to set
      */
-    public void setPasteondo4(Integer pasteondo4) {
+    public void setPasteondo4(BigDecimal pasteondo4) {
         this.pasteondo4 = pasteondo4;
     }
 
@@ -1221,7 +1221,7 @@ public class SrSpsprintScr {
      * ﾍﾟｰｽﾄ温度5
      * @return the pasteondo5
      */
-    public Integer getPasteondo5() {
+    public BigDecimal getPasteondo5() {
         return pasteondo5;
     }
 
@@ -1229,7 +1229,7 @@ public class SrSpsprintScr {
      * ﾍﾟｰｽﾄ温度5
      * @param pasteondo5 the pasteondo5 to set
      */
-    public void setPasteondo5(Integer pasteondo5) {
+    public void setPasteondo5(BigDecimal pasteondo5) {
         this.pasteondo5 = pasteondo5;
     }
 

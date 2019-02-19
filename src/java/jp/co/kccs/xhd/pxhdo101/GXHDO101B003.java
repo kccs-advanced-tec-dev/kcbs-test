@@ -561,13 +561,20 @@ public class GXHDO101B003 implements IFormLogic {
             }
 
             // 仮登録状態の場合、仮登録のデータを削除する。
+            SrRsusprn tmpSrRsusprn = null;
             if (JOTAI_FLG_KARI_TOROKU.equals(processData.getInitJotaiFlg())) {
+                // 更新前の値を取得
+                List<SrRsusprn> srSrRsusprnList = getSrRsusprnData(queryRunnerQcdb, rev.toPlainString(), processData.getInitJotaiFlg(), kojyo, lotNo8, edaban);
+                if (!srSrRsusprnList.isEmpty()) {
+                    tmpSrRsusprn = srSrRsusprnList.get(0);
+                }
+              
                 deleteTmpSrRsusprn(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban);
                 deleteTmpSubSrRsusprn(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban);
             }
 
             // 印刷RSUS_登録処理
-            insertSrRsusprn(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, systemTime, processData.getItemList());
+            insertSrRsusprn(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, systemTime, processData.getItemList(), tmpSrRsusprn);
 
             // 印刷RSUS_ｻﾌﾞ画面登録処理
             insertSubSrRsusprn(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, systemTime);
@@ -2707,10 +2714,11 @@ public class GXHDO101B003 implements IFormLogic {
      * @param edaban 枝番
      * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
      * @param itemList 項目リスト
+     * @param tmpSrRsusprn 仮登録データ
      * @throws SQLException 例外エラー
      */
     private void insertSrRsusprn(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev,
-            String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
+            String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList, SrRsusprn tmpSrRsusprn) throws SQLException {
         String sql = "INSERT INTO sr_rsusprn ("
                 + "KOJYO,LOTNO,EDABAN,KCPNO,TAPESYURUI,TAPELOTNO,TapeSlipKigo,GENRYOKIGO,KAISINICHIJI,SYURYONICHIJI,GOKI,SKEEGENO,"
                 + "SKEEGEMAISUU,SKEEGESPEED,KANSOONDO,CLEARANCE,SAATU,MAKUATU1,SEIHANNO,SEIHANMAISUU,PASTELOTNO,PASTENENDO,PASTEONDO,"
@@ -2722,7 +2730,7 @@ public class GXHDO101B003 implements IFormLogic {
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
                 + "?,?,?,?,?)";
 
-        List<Object> params = setUpdateParameterSrRsusprn(true, newRev, kojyo, lotNo, edaban, systemTime, itemList, null);
+        List<Object> params = setUpdateParameterSrRsusprn(true, newRev, kojyo, lotNo, edaban, systemTime, itemList, tmpSrRsusprn);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
     }
