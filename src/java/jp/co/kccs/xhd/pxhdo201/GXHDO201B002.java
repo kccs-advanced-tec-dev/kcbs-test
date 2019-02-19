@@ -100,7 +100,7 @@ public class GXHDO201B002 implements Serializable {
     /** 警告メッセージ */
     private String warnMessage = "";
     /** 1ページ当たりの表示件数 */
-    private int listDisplayPageCount = -1;
+    private int listDisplayPageCount = 30;
     
     /** 検索条件：ロットNo */
     private String lotNo = "";
@@ -410,31 +410,31 @@ public class GXHDO201B002 implements Serializable {
         }
         // 開始日(FROM)
         if (existError(validateUtil.checkC101(getStartDateF(), "開始日(from)", 6)) ||
-            existError(validateUtil.checkC201(getStartDateF(), "開始日(from)")) ||
+            existError(validateUtil.checkC201ForDate(getStartDateF(), "開始日(from)")) ||
             existError(validateUtil.checkC501(getStartDateF(), "開始日(from)"))) {
             return;
         }
         // 開始日(TO)
         if (existError(validateUtil.checkC101(getStartDateT(), "開始日(to)", 6)) ||
-            existError(validateUtil.checkC201(getStartDateT(), "開始日(to)")) ||
+            existError(validateUtil.checkC201ForDate(getStartDateT(), "開始日(to)")) ||
             existError(validateUtil.checkC501(getStartDateT(), "開始日(to)"))) {
             return;
         }
         // 終了日(FROM)
         if (existError(validateUtil.checkC101(getEndDateF(), "終了日(from)", 6)) ||
-            existError(validateUtil.checkC201(getEndDateF(), "終了日(from)")) ||
+            existError(validateUtil.checkC201ForDate(getEndDateF(), "終了日(from)")) ||
             existError(validateUtil.checkC501(getEndDateF(), "終了日(from)"))) {
             return;
         }
         // 終了日(TO)
         if (existError(validateUtil.checkC101(getEndDateT(), "終了日(to)", 6)) ||
-            existError(validateUtil.checkC201(getEndDateT(), "終了日(to)")) ||
+            existError(validateUtil.checkC201ForDate(getEndDateT(), "終了日(to)")) ||
             existError(validateUtil.checkC501(getEndDateT(), "終了日(to)"))) {
             return;
         }
         // 開始時刻(FROM)
         if (existError(validateUtil.checkC101(getStartTimeF(), "開始時刻(from)", 4)) ||
-            existError(validateUtil.checkC201(getStartTimeF(), "開始時刻(from)")) ||
+            existError(validateUtil.checkC201ForDate(getStartTimeF(), "開始時刻(from)")) ||
             existError(validateUtil.checkC502(getStartTimeF(), "開始時刻(from)"))) {
             return;
         }
@@ -443,7 +443,7 @@ public class GXHDO201B002 implements Serializable {
         }
         // 開始時刻(TO)
         if (existError(validateUtil.checkC101(getStartTimeT(), "開始時刻(to)", 4)) ||
-            existError(validateUtil.checkC201(getStartTimeT(), "開始時刻(to)")) ||
+            existError(validateUtil.checkC201ForDate(getStartTimeT(), "開始時刻(to)")) ||
             existError(validateUtil.checkC502(getStartTimeT(), "開始時刻(to)"))) {
             return;
         }
@@ -452,7 +452,7 @@ public class GXHDO201B002 implements Serializable {
         }
         // 終了時刻(FROM)
         if (existError(validateUtil.checkC101(getEndTimeF(), "終了時刻(from)", 4)) ||
-            existError(validateUtil.checkC201(getEndTimeF(), "終了時刻(from)")) ||
+            existError(validateUtil.checkC201ForDate(getEndTimeF(), "終了時刻(from)")) ||
             existError(validateUtil.checkC502(getEndTimeF(), "終了時刻(from)"))) {
             return;
         }
@@ -461,7 +461,7 @@ public class GXHDO201B002 implements Serializable {
         }
         // 終了時刻(TO)
         if (existError(validateUtil.checkC101(getEndTimeT(), "終了時刻(to)", 4)) ||
-            existError(validateUtil.checkC201(getEndTimeT(), "終了時刻(to)")) ||
+            existError(validateUtil.checkC201ForDate(getEndTimeT(), "終了時刻(to)")) ||
             existError(validateUtil.checkC502(getEndTimeT(), "終了時刻(to)"))) {
             return;
         }
@@ -894,6 +894,8 @@ public class GXHDO201B002 implements Serializable {
      * @throws Throwable 
      */
     public void downloadExcel() throws Throwable {
+        File excel = null;
+        
         try {
             FacesContext fc = FacesContext.getCurrentInstance();
             ExternalContext ec = fc.getExternalContext();
@@ -906,7 +908,7 @@ public class GXHDO201B002 implements Serializable {
             List<ColumnInformation> list = (new ColumnInfoParser()).parseColumnJson(file);
 
             // 物理ファイルを生成
-            File excel = ExcelExporter.outputExcel(listData, list, myParam.getString("download_temp"));
+            excel = ExcelExporter.outputExcel(listData, list, myParam.getString("download_temp"));
 
             // ダウンロードファイル名
             String downloadFileName = "印刷・SPSｽｸﾘｰﾝ_" + ((new SimpleDateFormat("yyyyMMddHHmmss")).format(new Date())) + ".xlsx";
@@ -935,6 +937,14 @@ public class GXHDO201B002 implements Serializable {
             
             FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, "Excel出力に失敗しました。", null);
             FacesContext.getCurrentInstance().addMessage(null, message);
+        } finally {
+            // 物理ファイルが削除されていない場合削除する
+            if (excel != null && excel.exists()) {
+                try {
+                    excel.delete();
+                } catch (Exception e) {
+                }
+            }
         }
     }
     

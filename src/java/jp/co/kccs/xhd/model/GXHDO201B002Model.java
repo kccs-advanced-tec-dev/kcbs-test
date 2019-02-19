@@ -103,19 +103,19 @@ public class GXHDO201B002Model implements Serializable {
     /** ﾍﾟｰｽﾄ粘度2 */
     private BigDecimal pastenendo2 = null;
     /** ﾍﾟｰｽﾄ粘度3 */
-    private Long pastenendo3 = null;
+    private BigDecimal pastenendo3 = null;
     /** ﾍﾟｰｽﾄ粘度4 */
-    private Long pastenendo4 = null;
+    private BigDecimal pastenendo4 = null;
     /** ﾍﾟｰｽﾄ粘度5 */
-    private Long pastenendo5 = null;
+    private BigDecimal pastenendo5 = null;
     /** ﾍﾟｰｽﾄ温度2 */
-    private Long pasteondo2 = null;
+    private BigDecimal pasteondo2 = null;
     /** ﾍﾟｰｽﾄ温度3 */
-    private Long pasteondo3 = null;
+    private BigDecimal pasteondo3 = null;
     /** ﾍﾟｰｽﾄ温度4 */
-    private Long pasteondo4 = null;
+    private BigDecimal pasteondo4 = null;
     /** ﾍﾟｰｽﾄ温度5 */
-    private Long pasteondo5 = null;
+    private BigDecimal pasteondo5 = null;
     /** 備考3 */
     private String bikou3 = "";
     /** 備考4 */
@@ -897,7 +897,7 @@ public class GXHDO201B002Model implements Serializable {
      * ﾍﾟｰｽﾄ粘度3
      * @return the pastenendo3
      */
-    public Long getPastenendo3() {
+    public BigDecimal getPastenendo3() {
         return pastenendo3;
     }
 
@@ -905,7 +905,7 @@ public class GXHDO201B002Model implements Serializable {
      * ﾍﾟｰｽﾄ粘度3
      * @param pastenendo3 the pastenendo3 to set
      */
-    public void setPastenendo3(Long pastenendo3) {
+    public void setPastenendo3(BigDecimal pastenendo3) {
         this.pastenendo3 = pastenendo3;
     }
 
@@ -913,7 +913,7 @@ public class GXHDO201B002Model implements Serializable {
      * ﾍﾟｰｽﾄ粘度4
      * @return the pastenendo4
      */
-    public Long getPastenendo4() {
+    public BigDecimal getPastenendo4() {
         return pastenendo4;
     }
 
@@ -921,7 +921,7 @@ public class GXHDO201B002Model implements Serializable {
      * ﾍﾟｰｽﾄ粘度4
      * @param pastenendo4 the pastenendo4 to set
      */
-    public void setPastenendo4(Long pastenendo4) {
+    public void setPastenendo4(BigDecimal pastenendo4) {
         this.pastenendo4 = pastenendo4;
     }
 
@@ -929,7 +929,7 @@ public class GXHDO201B002Model implements Serializable {
      * ﾍﾟｰｽﾄ粘度5
      * @return the pastenendo5
      */
-    public Long getPastenendo5() {
+    public BigDecimal getPastenendo5() {
         return pastenendo5;
     }
 
@@ -937,7 +937,7 @@ public class GXHDO201B002Model implements Serializable {
      * ﾍﾟｰｽﾄ粘度5
      * @param pastenendo5 the pastenendo5 to set
      */
-    public void setPastenendo5(Long pastenendo5) {
+    public void setPastenendo5(BigDecimal pastenendo5) {
         this.pastenendo5 = pastenendo5;
     }
 
@@ -945,7 +945,7 @@ public class GXHDO201B002Model implements Serializable {
      * ﾍﾟｰｽﾄ温度2
      * @return the pasteondo2
      */
-    public Long getPasteondo2() {
+    public BigDecimal getPasteondo2() {
         return pasteondo2;
     }
 
@@ -953,7 +953,7 @@ public class GXHDO201B002Model implements Serializable {
      * ﾍﾟｰｽﾄ温度2
      * @param pasteondo2 the pasteondo2 to set
      */
-    public void setPasteondo2(Long pasteondo2) {
+    public void setPasteondo2(BigDecimal pasteondo2) {
         this.pasteondo2 = pasteondo2;
     }
 
@@ -961,7 +961,7 @@ public class GXHDO201B002Model implements Serializable {
      * ﾍﾟｰｽﾄ温度3
      * @return the pasteondo3
      */
-    public Long getPasteondo3() {
+    public BigDecimal getPasteondo3() {
         return pasteondo3;
     }
 
@@ -969,7 +969,7 @@ public class GXHDO201B002Model implements Serializable {
      * ﾍﾟｰｽﾄ温度3
      * @param pasteondo3 the pasteondo3 to set
      */
-    public void setPasteondo3(Long pasteondo3) {
+    public void setPasteondo3(BigDecimal pasteondo3) {
         this.pasteondo3 = pasteondo3;
     }
 
@@ -977,7 +977,7 @@ public class GXHDO201B002Model implements Serializable {
      * ﾍﾟｰｽﾄ温度4
      * @return the pasteondo4
      */
-    public Long getPasteondo4() {
+    public BigDecimal getPasteondo4() {
         return pasteondo4;
     }
 
@@ -985,7 +985,7 @@ public class GXHDO201B002Model implements Serializable {
      * ﾍﾟｰｽﾄ温度4
      * @param pasteondo4 the pasteondo4 to set
      */
-    public void setPasteondo4(Long pasteondo4) {
+    public void setPasteondo4(BigDecimal pasteondo4) {
         this.pasteondo4 = pasteondo4;
     }
 
@@ -993,7 +993,7 @@ public class GXHDO201B002Model implements Serializable {
      * ﾍﾟｰｽﾄ温度5
      * @return the pasteondo5
      */
-    public Long getPasteondo5() {
+    public BigDecimal getPasteondo5() {
         return pasteondo5;
     }
 
@@ -1001,7 +1001,7 @@ public class GXHDO201B002Model implements Serializable {
      * ﾍﾟｰｽﾄ温度5
      * @param pasteondo5 the pasteondo5 to set
      */
-    public void setPasteondo5(Long pasteondo5) {
+    public void setPasteondo5(BigDecimal pasteondo5) {
         this.pasteondo5 = pasteondo5;
     }
 
@@ -2300,4 +2300,5 @@ public class GXHDO201B002Model implements Serializable {
     public void setEndPtnDistY5(Long endPtnDistY5) {
         this.endPtnDistY5 = endPtnDistY5;
     }
+
 }
