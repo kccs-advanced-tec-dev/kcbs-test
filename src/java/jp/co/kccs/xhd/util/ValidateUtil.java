@@ -458,6 +458,30 @@ public class ValidateUtil {
 
         return null;
     }
+    
+    /**
+     * 数値型ﾁｪｯｸ<br>
+     * 文字列が数値のみ且つ小数点を含まないで構成されているか判定します。<br>
+     * 先頭に"0"が含まれる場合もエラーとしません。<br>
+     * ※日時検索条件の整合性チェックに使用<br>
+     * 例)0001⇒true 1111⇒true 00.01⇒false<br>
+     *
+     * @param value 入力値
+     * @param itemName 項目名
+     * @return エラー時はエラーメッセージを返却
+     */
+    public String checkC201ForDate(String value, String itemName) {
+        // 値が入っていない場合、チェック無し
+        if (StringUtil.isEmpty(value)) {
+            return null;
+        }
+
+        if (!NumberUtil.isNumericForDate(value)) {
+            return MessageUtil.getMessage("XHD-000008", itemName);
+        }
+
+        return null;
+    }
 
     /**
      * 正数ﾁｪｯｸ

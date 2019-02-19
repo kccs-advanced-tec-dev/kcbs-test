@@ -42,7 +42,10 @@ public class NumberUtil {
     }
 
     /**
-     * 数値チェック
+     * 数値チェック<br>
+     * 文字列が数値変換可能か判定します。<br>
+     * 整数部に不要な"0"が含まれる場合はエラーとします。<br>
+     * 例)10.1234⇒true  010.1234⇒false<br>
      *
      * @param value 判定値
      * @return 数値変換可能な場合true
@@ -53,6 +56,27 @@ public class NumberUtil {
             return false;
         }
         String regex = "^-?(0|[1-9]\\d*)(\\.\\d+|)$";
+        Pattern p = Pattern.compile(regex);
+        Matcher matcher = p.matcher(value);
+        return matcher.matches();
+    }
+    
+    /**
+     * 数値チェック<br>
+     * 文字列が数値のみ且つ小数点を含まないで構成されているか判定します。<br>
+     * 先頭に"0"が含まれる場合もエラーとしません。<br>
+     * ※日時検索条件の整合性チェックに使用<br>
+     * 例)0001⇒true 1111⇒true 00.01⇒false<br>
+     *
+     * @param value 判定値
+     * @return 数値変換可能な場合true
+     */
+    public static boolean isNumericForDate(String value) {
+        // NULL対策
+        if (value == null) {
+            return false;
+        }
+        String regex = "^([0-9]\\d*)$";
         Pattern p = Pattern.compile(regex);
         Matcher matcher = p.matcher(value);
         return matcher.matches();

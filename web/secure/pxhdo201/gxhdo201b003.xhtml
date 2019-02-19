@@ -213,7 +213,7 @@
                                 process="@this"
                                 ajax="false"/>
             </p:panel>
-            <div class="table-responsive" style="margin-top:-15px;">
+            <div style="margin-top:-15px;">
                 <p:dataTable id="idDataTable" var="item" style="font-size:0.8em;margin-top:20px;" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap"
                              value="#{gXHDO201B003.listData}" emptyMessage="" paginator="true" paginatorPosition="top" rows="#{gXHDO201B003.getPagenatorCount()}">
                     <p:column id="lotno" headerText="ﾛｯﾄNo.">
@@ -236,12 +236,12 @@
                     </p:column>
                     <p:column id="kaisinichiji" headerText="開始日時">
                         <p:outputLabel value="#{item.kaisinichiji}">
-                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss"/>
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="syuryonichiji" headerText="終了日時">
                         <p:outputLabel value="#{item.syuryonichiji}">
-                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss"/>
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="goki" headerText="号機">
@@ -465,27 +465,27 @@
                     </p:column>
                     <p:column id="insatuhabaStart1" headerText="印刷幅ｽﾀｰﾄ1" styleClass="number">
                         <p:outputLabel value="#{item.insatuhabaStart1}">
-                            <f:convertNumber pattern="#0.000"/>
+                            <f:convertNumber pattern="##,###,###,##0"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="insatuhabaStart2" headerText="印刷幅ｽﾀｰﾄ2" styleClass="number">
                         <p:outputLabel value="#{item.insatuhabaStart2}">
-                            <f:convertNumber pattern="#0.000"/>
+                            <f:convertNumber pattern="##,###,###,##0"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="insatuhabaStart3" headerText="印刷幅ｽﾀｰﾄ3" styleClass="number">
                         <p:outputLabel value="#{item.insatuhabaStart3}">
-                            <f:convertNumber pattern="#0.000"/>
+                            <f:convertNumber pattern="##,###,###,##0"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="insatuhabaStart4" headerText="印刷幅ｽﾀｰﾄ4" styleClass="number">
                         <p:outputLabel value="#{item.insatuhabaStart4}">
-                            <f:convertNumber pattern="#0.000"/>
+                            <f:convertNumber pattern="##,###,###,##0"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="insatuhabaStart5" headerText="印刷幅ｽﾀｰﾄ5" styleClass="number">
                         <p:outputLabel value="#{item.insatuhabaStart5}">
-                            <f:convertNumber pattern="#0.000"/>
+                            <f:convertNumber pattern="##,###,###,##0"/>
                         </p:outputLabel>
                     </p:column>
                 </p:dataTable>

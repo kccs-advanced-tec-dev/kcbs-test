@@ -58,9 +58,9 @@
     {"no":"57","id":"makuatsuStart3","columnname":"膜厚ｽﾀｰﾄ3","type":"BigDecimal","format":"5,3"},
     {"no":"58","id":"makuatsuStart4","columnname":"膜厚ｽﾀｰﾄ4","type":"BigDecimal","format":"5,3"},
     {"no":"59","id":"makuatsuStart5","columnname":"膜厚ｽﾀｰﾄ5","type":"BigDecimal","format":"5,3"},
-    {"no":"60","id":"insatuhabaStart1","columnname":"印刷幅ｽﾀｰﾄ1","type":"BigDecimal","format":"5,3"},
-    {"no":"61","id":"insatuhabaStart2","columnname":"印刷幅ｽﾀｰﾄ2","type":"BigDecimal","format":"5,3"},
-    {"no":"62","id":"insatuhabaStart3","columnname":"印刷幅ｽﾀｰﾄ3","type":"BigDecimal","format":"5,3"},
-    {"no":"63","id":"insatuhabaStart4","columnname":"印刷幅ｽﾀｰﾄ4","type":"BigDecimal","format":"5,3"},
-    {"no":"64","id":"insatuhabaStart5","columnname":"印刷幅ｽﾀｰﾄ5","type":"BigDecimal","format":"5,3"}
+    {"no":"60","id":"insatuhabaStart1","columnname":"印刷幅ｽﾀｰﾄ1","type":"Long","format":"11,0"},
+    {"no":"61","id":"insatuhabaStart2","columnname":"印刷幅ｽﾀｰﾄ2","type":"Long","format":"11,0"},
+    {"no":"62","id":"insatuhabaStart3","columnname":"印刷幅ｽﾀｰﾄ3","type":"Long","format":"11,0"},
+    {"no":"63","id":"insatuhabaStart4","columnname":"印刷幅ｽﾀｰﾄ4","type":"Long","format":"11,0"},
+    {"no":"64","id":"insatuhabaStart5","columnname":"印刷幅ｽﾀｰﾄ5","type":"Long","format":"11,0"}
 ]

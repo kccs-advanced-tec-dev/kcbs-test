@@ -58,7 +58,7 @@ public class ExcelExporter {
     public static <T> File outputExcel(List<T> data, List<ColumnInformation> columnInfo, String tempDir) throws Throwable {
         SXSSFWorkbook workbook = new SXSSFWorkbook();
         SXSSFSheet sheet = (SXSSFSheet) workbook.createSheet();
-        sheet.trackAllColumnsForAutoSizing();
+        //sheet.trackAllColumnsForAutoSizing();
 
         int rowIdx = 0;
 
@@ -161,11 +161,11 @@ public class ExcelExporter {
             }
         }
         
-        // 列幅自動調整
-        int colIdx = 0;
-        for (ColumnInformation column : columnInfo) {
-            sheet.autoSizeColumn(colIdx++);
-        }
+//        // 列幅自動調整
+//        int colIdx = 0;
+//        for (ColumnInformation column : columnInfo) {
+//            sheet.autoSizeColumn(colIdx++);
+//        }
         
         // ランダムなファイル名を生成
         String tempFileName = RandomStringUtils.randomAlphanumeric(15);
