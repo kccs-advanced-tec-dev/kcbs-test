@@ -99,7 +99,7 @@ public class SrRsusprn {
     /**
      * 乾燥温度
      */
-    private Integer kansoondo;
+    private BigDecimal kansoondo;
 
     /**
      * ｸﾘｱﾗﾝｽ設定値
@@ -124,7 +124,7 @@ public class SrRsusprn {
     /**
      * 製版枚数
      */
-    private Integer seihanmaisuu;
+    private Long seihanmaisuu;
 
     /**
      * ﾍﾟｰｽﾄﾛｯﾄNo
@@ -134,12 +134,12 @@ public class SrRsusprn {
     /**
      * ﾍﾟｰｽﾄ粘度
      */
-    private Integer pastenendo;
+    private BigDecimal pastenendo;
 
     /**
      * ﾍﾟｰｽﾄ温度
      */
-    private Integer pasteondo;
+    private BigDecimal pasteondo;
 
     /**
      * 印刷ﾛｰﾙNo1
@@ -209,12 +209,12 @@ public class SrRsusprn {
     /**
      * ﾍﾟｰｽﾄ粘度2
      */
-    private Integer pastenendo2;
+    private BigDecimal pastenendo2;
 
     /**
      * ﾍﾟｰｽﾄ温度2
      */
-    private Integer pasteondo2;
+    private BigDecimal pasteondo2;
 
     /**
      * ﾍﾟｰｽﾄ固形分2
@@ -583,7 +583,7 @@ public class SrRsusprn {
      *
      * @return the kansoondo
      */
-    public Integer getKansoondo() {
+    public BigDecimal getKansoondo() {
         return kansoondo;
     }
 
@@ -592,7 +592,7 @@ public class SrRsusprn {
      *
      * @param kansoondo the kansoondo to set
      */
-    public void setKansoondo(Integer kansoondo) {
+    public void setKansoondo(BigDecimal kansoondo) {
         this.kansoondo = kansoondo;
     }
 
@@ -673,7 +673,7 @@ public class SrRsusprn {
      *
      * @return the seihanmaisuu
      */
-    public Integer getSeihanmaisuu() {
+    public Long getSeihanmaisuu() {
         return seihanmaisuu;
     }
 
@@ -682,7 +682,7 @@ public class SrRsusprn {
      *
      * @param seihanmaisuu the seihanmaisuu to set
      */
-    public void setSeihanmaisuu(Integer seihanmaisuu) {
+    public void setSeihanmaisuu(Long seihanmaisuu) {
         this.seihanmaisuu = seihanmaisuu;
     }
 
@@ -709,7 +709,7 @@ public class SrRsusprn {
      *
      * @return the pastenendo
      */
-    public Integer getPastenendo() {
+    public BigDecimal getPastenendo() {
         return pastenendo;
     }
 
@@ -718,7 +718,7 @@ public class SrRsusprn {
      *
      * @param pastenendo the pastenendo to set
      */
-    public void setPastenendo(Integer pastenendo) {
+    public void setPastenendo(BigDecimal pastenendo) {
         this.pastenendo = pastenendo;
     }
 
@@ -727,7 +727,7 @@ public class SrRsusprn {
      *
      * @return the pasteondo
      */
-    public Integer getPasteondo() {
+    public BigDecimal getPasteondo() {
         return pasteondo;
     }
 
@@ -736,7 +736,7 @@ public class SrRsusprn {
      *
      * @param pasteondo the pasteondo to set
      */
-    public void setPasteondo(Integer pasteondo) {
+    public void setPasteondo(BigDecimal pasteondo) {
         this.pasteondo = pasteondo;
     }
 
@@ -979,7 +979,7 @@ public class SrRsusprn {
      *
      * @return the pastenendo2
      */
-    public Integer getPastenendo2() {
+    public BigDecimal getPastenendo2() {
         return pastenendo2;
     }
 
@@ -988,7 +988,7 @@ public class SrRsusprn {
      *
      * @param pastenendo2 the pastenendo2 to set
      */
-    public void setPastenendo2(Integer pastenendo2) {
+    public void setPastenendo2(BigDecimal pastenendo2) {
         this.pastenendo2 = pastenendo2;
     }
 
@@ -997,7 +997,7 @@ public class SrRsusprn {
      *
      * @return the pasteondo2
      */
-    public Integer getPasteondo2() {
+    public BigDecimal getPasteondo2() {
         return pasteondo2;
     }
 
@@ -1006,7 +1006,7 @@ public class SrRsusprn {
      *
      * @param pasteondo2 the pasteondo2 to set
      */
-    public void setPasteondo2(Integer pasteondo2) {
+    public void setPasteondo2(BigDecimal pasteondo2) {
         this.pasteondo2 = pasteondo2;
     }
 

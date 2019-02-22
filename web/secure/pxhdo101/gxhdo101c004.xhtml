@@ -6,17 +6,17 @@
     <p:dialog header="#{myMsg.makuatsu}" id="dlg_gxhdo101c004" widgetVar="W_dlg_gxhdo101c004"
               width="440" modal="true" height="275"
               dynamic="false" closable="true" closeOnEscape="false" 
-              onHide="document.getElementById('form:gxhdo101c004Form:cancelBtn').click();" >
+              onHide="document.getElementById('form:gxhdo101c004Form:cancelBtn').click();" position="center top" >
         <h:form id="gxhdo101c004Form">
             <p:panel style="width:395px">
                 <p:dataTable id="makuatsuRsusTable" var="item" value="#{beanGXHDO101C004.gxhdO101c004ModelView.makuatsuDataList}"
                              scrollable="true" style="font-size: 14px; width:360px" emptyMessage="" >
-                   <p:column id="mMakuatsu" width="55%" headerText="#{myMsg.makuatsu}">
+                   <p:column id="mMakuatsu" width="50%" headerText="#{myMsg.makuatsu}">
                         <div style="text-align:right;">
                             <p:outputLabel value="#{item.makuatsu}" />
                         </div>
                     </p:column>
-                    <p:column id="mStart" width="45%"   headerText="#{myMsg.katakana_start}">
+                    <p:column id="mStart" width="50%"   headerText="#{myMsg.katakana_start}">
                         <div style="text-align:right;">
                             <p:inputText value="#{item.startVal}" rendered="#{item.startTextRendered}" maxlength="#{item.startTextMaxLength}"  size="14" style="text-align:right; background: #{item.startTextBackColor}"/>
                             <p:outputLabel value="#{item.startVal}" rendered="#{item.startLabelRendered}" />
