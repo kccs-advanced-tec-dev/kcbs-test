@@ -354,6 +354,18 @@ public class GXHDO201B001 implements Serializable {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
         
+        String login_user_name = (String) session.getAttribute("login_user_name");
+
+        if (null == login_user_name || "".equals(login_user_name)) {
+            // セッションタイムアウト時はセッション情報を破棄してエラー画面に遷移
+            try {
+                session.invalidate();
+                externalContext.redirect(externalContext.getRequestContextPath() + "/faces/timeout.xhtml?faces-redirect=true");
+            } catch (Exception e) {
+            }
+            return;
+        }
+        
         listCountMax = session.getAttribute("menuParam") != null ? Integer.parseInt(session.getAttribute("menuParam").toString()) : -1;
         listCountWarn = session.getAttribute("hyojiKensu") != null ? Integer.parseInt(session.getAttribute("hyojiKensu").toString()) : -1;
         

@@ -17,6 +17,10 @@
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>/faces/*</url-pattern>
     </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>/j_security_check</url-pattern>
+    </servlet-mapping>
     <filter>
         <filter-name>XHTMLSecurity Filter</filter-name>
         <filter-class>filter.XHTMLSecurityFilter</filter-class>
@@ -81,7 +85,7 @@
         <auth-method>FORM</auth-method>
         <realm-name>docserver-jdbc-realm</realm-name>
         <form-login-config>
-            <form-login-page>/login.xhtml?faces-redirect=true</form-login-page>
+            <form-login-page>/login.xhtml</form-login-page>
             <form-error-page>/error.xhtml</form-error-page>
         </form-login-config>
     </login-config>

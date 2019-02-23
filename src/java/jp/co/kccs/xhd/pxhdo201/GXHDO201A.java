@@ -86,6 +86,18 @@ public class GXHDO201A implements Serializable {
         HttpSession session = (HttpSession) externalContext.getSession(false);
         List<String> userGrpList = (List<String>)session.getAttribute("login_user_group");
         
+        String login_user_name = (String) session.getAttribute("login_user_name");
+
+        if (null == login_user_name || "".equals(login_user_name)) {
+            // セッションタイムアウト時はセッション情報を破棄してエラー画面に遷移
+            try {
+                session.invalidate();
+                externalContext.redirect(externalContext.getRequestContextPath() + "/faces/timeout.xhtml?faces-redirect=true");
+            } catch (Exception e) {
+            }
+            return;
+        }
+        
         List<FXHDM01> menuListData = new ArrayList<>();
         
         // user-agent
