@@ -1403,7 +1403,7 @@ public class ValidateUtil {
             String[] spValue = value.split("");
             StringBuilder numberStr = new StringBuilder();
             for (String str : spValue) {
-                if (StringUtil.isEmpty(str)) {
+                if (",".equals(str)) {
                     continue;
                 }
 
