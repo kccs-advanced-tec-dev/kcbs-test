@@ -954,7 +954,8 @@ public class ValidateUtil {
      */
     private static boolean isInputColumn(FXHDD01 fxhdd01) {
         if (fxhdd01.isRenderInputDate() || fxhdd01.isRenderInputNumber() || fxhdd01.isRenderInputRadio()
-                || fxhdd01.isRenderInputSelect() || fxhdd01.isRenderInputText() || fxhdd01.isRenderInputTime()) {
+                || fxhdd01.isRenderInputSelect() || fxhdd01.isRenderInputText() || fxhdd01.isRenderInputTime()
+                || fxhdd01.isRenderOutputLabel()) {
             return true;
         }
         return false;

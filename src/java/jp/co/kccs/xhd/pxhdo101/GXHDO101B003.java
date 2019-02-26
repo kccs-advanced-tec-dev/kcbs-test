@@ -1602,12 +1602,12 @@ public class GXHDO101B003 implements IFormLogic {
     /**
      * 仕掛データ検索
      *
-     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param queryRunnerWip QueryRunnerオブジェクト
      * @param lotNo ロットNo(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private Map loadShikakariData(QueryRunner queryRunnerDoc, String lotNo) throws SQLException {
+    private Map loadShikakariData(QueryRunner queryRunnerWip, String lotNo) throws SQLException {
         String lotNo1 = lotNo.substring(0, 3);
         String lotNo2 = lotNo.substring(3, 11);
         String lotNo3 = lotNo.substring(11, 14);
@@ -1622,7 +1622,7 @@ public class GXHDO101B003 implements IFormLogic {
         params.add(lotNo3);
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
+        return queryRunnerWip.query(sql, new MapHandler(), params.toArray());
     }
 
     /**
@@ -2101,6 +2101,7 @@ public class GXHDO101B003 implements IFormLogic {
         try {
 
             QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
+            QueryRunner queryRunnerWip = new QueryRunner(processData.getDataSourceWip());
             QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
 
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
@@ -2111,7 +2112,7 @@ public class GXHDO101B003 implements IFormLogic {
             String lotNo8 = lotNo.substring(3, 11);
 
             //仕掛情報の取得
-            Map shikakariData = loadShikakariData(queryRunnerDoc, lotNo);
+            Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
             String oyalotEdaban = StringUtil.nullToBlank(getMapData(shikakariData, "oyalotedaban")); //親ﾛｯﾄ枝番
 
             // 品質DB登録実績データ取得
