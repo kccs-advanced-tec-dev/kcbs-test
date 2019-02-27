@@ -668,7 +668,7 @@ public class ValidateUtil {
         BigDecimal decValue = null;
         try {
             decValue = new BigDecimal(fXHDD01.getValue());
-        } catch (NumberFormatException e) {
+        } catch (Exception e) {
             // 処理なし
         }
         
