@@ -821,7 +821,7 @@ public class GXHDO201B003 implements Serializable {
             List<ColumnInformation> list = (new ColumnInfoParser()).parseColumnJson(file);
 
             // 物理ファイルを生成
-            excel = ExcelExporter.outputExcel(listData, list, myParam.getString("download_temp"));
+            excel = ExcelExporter.outputExcel(listData, list, myParam.getString("download_temp"), "印刷・RSUS");
 
             // ダウンロードファイル名
             String downloadFileName = "印刷・RSUS_" + ((new SimpleDateFormat("yyyyMMddHHmmss")).format(new Date())) + ".xlsx";
@@ -887,7 +887,7 @@ public class GXHDO201B003 implements Serializable {
         }
         Date paramStartDateT = null;
         if (!StringUtil.isEmpty(startDateT)) {
-            paramStartDateT = DateUtil.convertStringToDate(getStartDateT(), StringUtil.isEmpty(getStartTimeT()) ? "0000" : getStartTimeT());
+            paramStartDateT = DateUtil.convertStringToDate(getStartDateT(), StringUtil.isEmpty(getStartTimeT()) ? "2359" : getStartTimeT());
         }
         Date paramEndDateF = null;
         if (!StringUtil.isEmpty(endDateF)) {
@@ -895,7 +895,7 @@ public class GXHDO201B003 implements Serializable {
         }
         Date paramEndDateT = null;
         if (!StringUtil.isEmpty(endDateT)) {
-            paramEndDateT = DateUtil.convertStringToDate(getEndDateT(), StringUtil.isEmpty(getEndTimeT()) ? "0000" : getEndTimeT());
+            paramEndDateT = DateUtil.convertStringToDate(getEndDateT(), StringUtil.isEmpty(getEndTimeT()) ? "2359" : getEndTimeT());
         }
         String paramRollNo = StringUtil.blankToNull(getPrintRollNo());
 

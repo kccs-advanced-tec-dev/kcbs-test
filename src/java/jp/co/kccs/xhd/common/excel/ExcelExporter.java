@@ -52,13 +52,16 @@ public class ExcelExporter {
      * @param data 一覧データ
      * @param columnInfo Excel出力定義情報
      * @param tempDir 一時出力フォルダ
+     * @param sheetName シート名
      * @return 出力ファイル
      * @throws Throwable 
      */
-    public static <T> File outputExcel(List<T> data, List<ColumnInformation> columnInfo, String tempDir) throws Throwable {
+    public static <T> File outputExcel(List<T> data, List<ColumnInformation> columnInfo, String tempDir, String sheetName) throws Throwable {
         SXSSFWorkbook workbook = new SXSSFWorkbook();
         SXSSFSheet sheet = (SXSSFSheet) workbook.createSheet();
         //sheet.trackAllColumnsForAutoSizing();
+        
+        workbook.setSheetName(0, sheetName);
 
         int rowIdx = 0;
 

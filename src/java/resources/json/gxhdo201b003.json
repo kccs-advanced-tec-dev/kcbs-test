@@ -11,7 +11,7 @@
     {"no":"10","id":"skeegeno","columnname":"ｽｷｰｼﾞNo","type":"String","format":""},
     {"no":"11","id":"skeegemaisuu","columnname":"ｽｷｰｼﾞ枚数","type":"Long","format":"6,0"},
     {"no":"12","id":"skeegespeed","columnname":"ｽｷｰｼﾞｽﾋﾟｰﾄﾞ","type":"Long","format":"4,0"},
-    {"no":"13","id":"kansoondo","columnname":"乾燥温度","type":"Long","format":"3,0"},
+    {"no":"13","id":"kansoondo","columnname":"乾燥温度","type":"BigDecimal","format":"5,1"},
     {"no":"14","id":"clearance","columnname":"ｸﾘｱﾗﾝｽ設定値","type":"BigDecimal","format":"3,2"},
     {"no":"15","id":"saatu","columnname":"差圧","type":"BigDecimal","format":"3,2"},
     {"no":"16","id":"makuatu1","columnname":"膜厚1","type":"BigDecimal","format":"4,3"},
