@@ -59,7 +59,7 @@
         </nav>
         <br/>
         <h:form id="mainform" onkeypress="if (event.keyCode === 13) { return false; }">
-            <p:growl id="growlMessage" showDetail="false" sticky="true" />
+            <p:growl id="growlMessage" showDetail="false" sticky="true"  escape="false"/>
             <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
                 <f:facet name="message">
                     <h:outputText value="#{gXHDO201B003.getWarnMessage()}" escape="false"/>
@@ -79,7 +79,7 @@
                 <table>
                     <tr>
                         <td>
-                            <h:outputText id="lblLotNo" value="ロットNo" style="width:100px;"/>
+                            <h:outputText id="lblLotNo" value="ﾛｯﾄNo" style="width:100px;"/>
                         </td>
                         <td>
                             <p:inputText id="pLotNo" value="#{gXHDO201B003.lotNo}" maxlength="14" style="margin-left:20px; height:26px;">
@@ -89,7 +89,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <h:outputText id="lblKcpNo" value="KCPNo" style="width:100px;"/>
+                            <h:outputText id="lblKcpNo" value="KCPNO" style="width:100px;"/>
                         </td>
                         <td colspan="3">
                             <p:inputText id="pKcpNo" value="#{gXHDO201B003.kcpNo}" maxlength="25" style="margin-left:20px; height:26px;">
@@ -183,11 +183,11 @@
                     </tr>
                     <tr>
                         <td>
-                            <h:outputText id="lblPrintRollNo" value="印刷ロールNo" style="width:100px;"/>
+                            <h:outputText id="lblPrintRollNo" value="印刷ﾛｰﾙNo" style="width:100px;"/>
                         </td>
                         <td>
-                            <p:inputText id="pPrintRollNo" value="#{gXHDO201B003.printRollNo}" maxlength="4" style="margin-left:20px; height:26px;">
-                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B003.checkByte('printRollNo', 4)}"  async="false"/>
+                            <p:inputText id="pPrintRollNo" value="#{gXHDO201B003.printRollNo}" maxlength="10" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B003.checkByte('printRollNo', 10)}"  async="false"/>
                             </p:inputText>
                         </td>
                     </tr>

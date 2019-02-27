@@ -525,6 +525,10 @@ public class GXHDO201B003 implements Serializable {
         if (!StringUtil.isEmpty(endTimeT) && existError(validateUtil.checkC001(getEndDateT(), "終了日(to)"))) {
             return;
         }
+        // 印刷ﾛｰﾙNo
+        if (existError(validateUtil.checkC103(getPrintRollNo(), "印刷ﾛｰﾙNo", 10))) {
+            return;
+        }
         
         // 一覧表示件数を取得
         long count = selectListDataCount();
