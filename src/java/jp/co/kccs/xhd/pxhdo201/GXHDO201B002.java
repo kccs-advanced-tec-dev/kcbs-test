@@ -481,7 +481,7 @@ public class GXHDO201B002 implements Serializable {
             return;
         }
         // 号機
-        if (existError(validateUtil.checkC101(getEndTimeT(), "印刷号機", 4))) {
+        if (existError(validateUtil.checkC101(getGouki(), "印刷号機", 4))) {
             return;
         }
         if (!StringUtil.isEmpty(gouki)) {
@@ -671,13 +671,13 @@ public class GXHDO201B002 implements Serializable {
                     + ", T1.pkokeibun2"
                     + ", T1.petfilmsyurui"
                     + ", T1.makuatucv_start"
-                    + ", T1.nijimikasure_start"
+                    + ", (CASE WHEN T1.nijimikasure_start = 0 THEN 'NG' WHEN T1.nijimikasure_start = '1' THEN 'OK' ELSE NULL END) AS nijimikasure_start"
                     + ", T1.makuatucv_end"
-                    + ", T1.nijimikasure_end"
+                    + ", (CASE WHEN T1.nijimikasure_end = 0 THEN 'NG' WHEN T1.nijimikasure_end = '1' THEN 'OK' ELSE NULL END) AS nijimikasure_end"
                     + ", T1.printmaisuu"
                     + ", T1.table_clearrance"
                     + ", T1.scraperspeed"
-                    + ", T1.skeegegaikan"
+                    + ", (CASE WHEN T1.skeegegaikan = 0 THEN 'NG' WHEN T1.skeegegaikan = '1' THEN 'OK' ELSE NULL END) AS skeegegaikan"
                     + ", T2.makuatsu_start1"
                     + ", T2.makuatsu_start2"
                     + ", T2.makuatsu_start3"
