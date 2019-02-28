@@ -526,7 +526,7 @@ public class ValidateUtil {
         if (!NumberUtil.isNumeric(value)) {
             return MessageUtil.getErrorMessageInfo("XHD-000010", true, true, errFxhdd01List, fXHDD01.getLabel1());
         }
-        if (new BigDecimal(value).compareTo(BigDecimal.ZERO) == 1) {
+        if (0 <= new BigDecimal(value).compareTo(BigDecimal.ZERO)) {
             return MessageUtil.getErrorMessageInfo("XHD-000010", true, true, errFxhdd01List, fXHDD01.getLabel1());
         }
 
