@@ -16,16 +16,16 @@
                         <p:outputLabel value="#{item.ptnKyoriY}" />
                         </div>
                     </p:column>
-                    <p:column id="mStart" width="35%"   headerText="#{myMsg.katakana_start}" >
+                    <p:column id="mStart" width="35%" headerText="#{myMsg.katakana_start}" >
                         <div style="text-align:right;">
-                            <p:inputText value="#{item.startVal}" rendered="#{item.startTextRendered}" maxlength="#{item.startTextMaxLength}"  size="14"  style="text-align:right; background: #{item.startTextBackColor}"/>
+                            <p:inputNumber value="#{item.startVal}" rendered="#{item.startTextRendered}" thousandSeparator="" decimalPlaces="0" maxValue="999" minValue="-999" size="14" inputStyle="text-align:right; background: #{item.startTextBackColor}"/>
                             <p:outputLabel value="#{item.startVal}" rendered="#{item.startLabelRendered}" />
                         </div>
                     </p:column>
                     <p:column id="mEnd" width="35%" headerText="#{myMsg.katakana_end}" >
                         <div style="text-align:right;">
-                            <p:inputText value="#{item.endVal}" rendered="#{item.endTextRendered}" maxlength="#{item.endTextMaxLength}"  size="14"  style="text-align:right; background: #{item.endTextBackColor}"/>
-                            <p:outputLabel value="#{item.endVal}"  rendered="#{item.endLabelRendered}" />
+                            <p:inputNumber value="#{item.endVal}" rendered="#{item.endTextRendered}" thousandSeparator="" decimalPlaces="0" maxValue="999" minValue="-999" size="14" inputStyle="text-align:right; background: #{item.endTextBackColor}"/>
+                            <p:outputLabel value="#{item.endVal}" rendered="#{item.endLabelRendered}" />
                         </div>
                     </p:column>
                 </p:dataTable>

@@ -454,13 +454,17 @@ public class GXHDO901A implements Serializable {
         String login_user_name = (String) session.getAttribute("login_user_name");
 
         if (null == login_user_name || "".equals(login_user_name)) {
-            // セッションタイムアウト時はログイン画面に遷移
-            this.setOnLoadProcess("window.location.href = '" + externalContext.getRequestContextPath() + "/faces/login.xhtml?faces-redirect=true';");
+            // セッションタイムアウト時はセッション情報を破棄してエラー画面に遷移
+            try {
+                session.invalidate();
+                externalContext.redirect(externalContext.getRequestContextPath() + "/faces/timeout.xhtml?faces-redirect=true");
+            } catch (Exception e) {
+            }
             return;
-        } else {
-            this.setOnLoadProcess("");
         }
-
+        
+        this.setOnLoadProcess("");
+        
         // 画面遷移パラメータ取得
         String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
         String callerFormId = StringUtil.nullToBlank(session.getAttribute("callerFormId"));

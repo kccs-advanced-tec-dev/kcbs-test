@@ -67,6 +67,13 @@
             function sliceMaxLength(elem, maxLength) {  
                 elem.value = elem.value.slice(0, maxLength);  
             }
+            function subFormOpen() {  
+                document.getElementById("mainForm").style.setProperty("position", "fixed");
+            }
+            function subFormClose() {  
+                document.getElementById("mainForm").style.removeProperty("position");
+            }
+            
             //]]>
         </script>
         <style>
@@ -84,7 +91,7 @@
             }
         </style>
     </h:head>
-    <h:body onload="#{gXHDO901A.onLoadProcess}" >
+    <h:body onload="#{gXHDO901A.onLoadProcess}">
         <f:metadata>
             <f:viewAction action="#{gXHDO901A.init()}"/>
         </f:metadata>
@@ -92,7 +99,10 @@
         <div style="margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;">
         <h:outputText style="background:#{gXHDO901A.titleInfo.bgColor};color: #{gXHDO901A.titleInfo.fontColor}; 
             font-size:#{gXHDO901A.titleInfo.fontSize}px;" value="#{gXHDO901A.titleInfo.formName}"/>
-        <h:form id="form" onkeypress="if (event.keyCode === 13) { return false; }">
+        </div>
+        <h:form id="form" onkeypress="if (event.keyCode === 13) { return false; }" >
+            <div  style="margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;">
+            <div id="mainForm" style="width:#{adjustModels.menuWidth}px;">
             <div style="text-align:right">
                 <h:outputText style="font-size:#{gXHDO901A.titleInfo.fontSize}px;  #{gXHDO901A.styleDisplayNone}" value="#{gXHDO901A.jotaiDisplay}"/>        
             </div>
@@ -172,7 +182,9 @@
                 <f:param name="returnVal" value="return"/>
                 <f:attribute name="returnVal" value="return"/>
             </p:commandButton>
-             <div>
+            </div>
+            </div> 
+            <div>
                 <ui:include src="gxhdo901b.xhtml"/>
                 <ui:include src="compMessage.xhtml"/>
                 <ui:include src="/secure/pxhdo101/gxhdo101c001.xhtml"/>
@@ -184,7 +196,7 @@
                 <ui:include src="/secure/common/kikakuError.xhtml"/>
             </div>
         </h:form>
-        </div>
+        
         
     </h:body>
 </html>

@@ -141,7 +141,7 @@ public class GXHDO101C002 implements Serializable {
         for (GXHDO101C002Model.PtnKyoriXData ptnKyoriXData : this.gxhdO101c002ModelView.getPtnKyoriXDataList()) {
 
             if (!StringUtil.isEmpty(ptnKyoriXData.getStartVal())) {
-                if (!NumberUtil.isIntegerNumeric(ptnKyoriXData.getStartVal())) {
+                if (!NumberUtil.isIntegerNumeric(ptnKyoriXData.getStartVal()) || !NumberUtil.isNumeric(ptnKyoriXData.getStartVal())) {
                     setError(ptnKyoriXData, true, false, "XHD-000008", "スタート");
                     return false;
                 }
@@ -153,7 +153,7 @@ public class GXHDO101C002 implements Serializable {
             }
 
             if (!StringUtil.isEmpty(ptnKyoriXData.getEndVal())) {
-                if (!NumberUtil.isIntegerNumeric(ptnKyoriXData.getEndVal())) {
+                if (!NumberUtil.isIntegerNumeric(ptnKyoriXData.getEndVal()) || !NumberUtil.isNumeric(ptnKyoriXData.getEndVal())) {
                     setError(ptnKyoriXData, false, true, "XHD-000008", "エンド");
                     return false;
                 }
