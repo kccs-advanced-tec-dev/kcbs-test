@@ -141,7 +141,7 @@ public class GXHDO101C005 implements Serializable {
         for (GXHDO101C005Model.PrintWidthData printWidthData : this.gxhdO101c005ModelView.getPrintWidthDataList()) {
             if (!StringUtil.isEmpty(printWidthData.getStartVal())) {
 
-                if (!NumberUtil.isIntegerNumeric(printWidthData.getStartVal())) {
+                if (!NumberUtil.isIntegerNumeric(printWidthData.getStartVal()) || !NumberUtil.isNumeric(printWidthData.getStartVal())) {
                     setError(printWidthData, "XHD-000008", "スタート");
                     return false;
                 }

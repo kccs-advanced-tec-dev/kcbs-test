@@ -6,7 +6,8 @@
     <p:dialog header="#{myMsg.ptn_kyori_y}" id="dlg_gxhdo101c003" widgetVar="W_dlg_gxhdo101c003"
               width="560" modal="true" height="275"
               dynamic="false" closable="true" closeOnEscape="false" 
-              onHide="document.getElementById('form:gxhdo101c003Form:cancelBtn').click();" position="center top">
+              onShow="subFormOpen();"
+              onHide="subFormClose(); document.getElementById('form:gxhdo101c003Form:cancelBtn').click();" position="center top">
         <h:form id="gxhdo101c003Form" >
             <p:panel style="width:515px">
                  <p:dataTable id="ptnKyoriXTable" var="item" value="#{beanGXHDO101C003.gxhdO101c003ModelView.ptnKyoriYDataList}"

@@ -67,11 +67,31 @@
             function sliceMaxLength(elem, maxLength) {  
                 elem.value = elem.value.slice(0, maxLength);  
             }
-            function subFormOpen() {  
+            var pointY;
+            function subFormOpen() {
+                pointY = $(window).scrollTop();
+                document.getElementById("mainForm").style.setProperty("display", "none");
                 document.getElementById("mainForm").style.setProperty("position", "fixed");
+                document.getElementById("mainForm").style.setProperty("Top", -(pointY) + 31 + "px");
+                document.getElementById("mainForm").style.removeProperty("display");
             }
             function subFormClose() {  
+                document.getElementById("mainForm").style.setProperty("display", "none");
                 document.getElementById("mainForm").style.removeProperty("position");
+                document.getElementById("mainForm").style.removeProperty("Top");
+                document.getElementById("mainForm").style.removeProperty("display");
+                $(window).scrollTop(pointY);
+            }
+            
+            function setInputModeForTableColumn(imputmode, listId, itemIds){
+                var rowsLength = document.getElementById(listId + '_data').rows.length;
+                var spItemId = itemIds.split(',');
+                var itemLength = spItemId.length;
+                for(var i=0;i<rowsLength;i++){
+                    for(var j=0; j<itemLength;j++){
+                        document.getElementById(listId +":" + i + ":" + spItemId[j]).setAttribute("inputmode",imputmode);
+                    }            
+                }
             }
             
             //]]>

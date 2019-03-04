@@ -5,8 +5,8 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <p:dialog header="#{myMsg.print_width}" id="dlg_gxhdo101c005" widgetVar="W_dlg_gxhdo101c005"
               width="440" modal="true" height="275"
-              dynamic="false" closable="true" closeOnEscape="false" 
-              onHide="document.getElementById('form:gxhdo101c005Form:cancelBtn').click();" position="center top">
+              dynamic="false" closable="true" closeOnEscape="false" onShow="subFormOpen();"
+              onHide="subFormClose(); document.getElementById('form:gxhdo101c005Form:cancelBtn').click();" position="center top">
         <h:form id="gxhdo101c005Form">
             <p:panel style="width:395px">
                 <p:dataTable id="printWidthTable" var="item" value="#{beanGXHDO101C005.gxhdO101c005ModelView.printWidthDataList}"
@@ -18,7 +18,8 @@
                     </p:column>
                     <p:column id="mStart" width="50%" headerText="#{myMsg.katakana_start}" >
                         <div style="text-align:right;">
-                            <p:inputText value="#{item.startVal}" rendered="#{item.startTextRendered}" maxlength="#{item.startTextMaxLength}"  size="14"  style="text-align:right; background: #{item.startTextBackColor}"/>
+                            <p:inputNumber value="#{item.startVal}" rendered="#{item.startTextRendered}" thousandSeparator="" decimalPlaces="0" maxValue="9999" minValue="-9999" 
+                                         size="14"  style="text-align:right; background: #{item.startTextBackColor}"/>
                             <p:outputLabel value="#{item.startVal}" rendered="#{item.startLabelRendered}" />
                         </div>
                     </p:column>

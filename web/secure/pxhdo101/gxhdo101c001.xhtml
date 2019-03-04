@@ -6,7 +6,8 @@
     <p:dialog header="#{myMsg.makuatsu}" id="dlg_gxhdo101c001" widgetVar="W_dlg_gxhdo101c001"
               width="560" modal="true" height="420" 
               dynamic="false" closable="true" closeOnEscape="false" 
-              onHide="document.getElementById('form:gxhdo101c001Form:cancelBtn').click();" position="center top" >
+              onShow="subFormOpen();"
+              onHide="subFormClose(); document.getElementById('form:gxhdo101c001Form:cancelBtn').click();" position="center top" >
 
         <h:form id="gxhdo101c001Form">
             <p:panel style="width:515px">

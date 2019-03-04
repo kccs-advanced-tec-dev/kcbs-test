@@ -4,7 +4,8 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <p:dialog header="規格外エラー" id="dlg_kikakuError" widgetVar="W_dlg_kikakuError"
               width="550" modal="true" height="390" style="color: #ff0000;"
-              dynamic="false" closable="true" closeOnEscape="false"  class="error-dialog-title"  >
+              dynamic="false" closable="true" closeOnEscape="false" class="error-dialog-title"
+              onShow="subFormOpen();" onHide="subFormClose();">
 
         <h:form id="kikakuErrorForm">
             <p:outputLabel value="規格値外の値が存在します。" style="font-size: 18px; color: red;"  />
