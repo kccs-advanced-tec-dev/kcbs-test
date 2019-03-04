@@ -18,7 +18,8 @@
                     </p:column>
                     <p:column id="mStart" width="50%" headerText="#{myMsg.katakana_start}" >
                         <div style="text-align:right;">
-                            <p:inputNumber id="makuatsuStart" value="#{item.startVal}" rendered="#{item.startTextRendered}"  thousandSeparator="" decimalPlaces="3" maxValue="99.999" minValue="-99.999" 
+                            <p:inputNumber id="makuatsuStart" value="#{item.startVal}" rendered="#{item.startTextRendered}" onkeydown="keyDownEnterSetNextControl(this)" 
+                                           tabindex="#{item.startTabIndex}" thousandSeparator="" decimalPlaces="3" maxValue="99.999" minValue="-99.999" 
                                            size="14" inputStyle="text-align:right; background: #{item.startTextBackColor}"  />
                             <p:outputLabel value="#{item.startVal}" rendered="#{item.startLabelRendered}" />
                         </div>

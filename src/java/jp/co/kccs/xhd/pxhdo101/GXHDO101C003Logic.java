@@ -42,10 +42,16 @@ public class GXHDO101C003Logic {
     public static GXHDO101C003Model createGXHDO101C003Model(String[] ptnKyoriYStart, String[] ptnKyoriYEnd) {
         GXHDO101C003Model gxhdo101c003Model = new GXHDO101C003Model();
         List<GXHDO101C003Model.PtnKyoriYData> ptnKyoriYDataList = new ArrayList<>();
-
+            
+        String startTabIndex;
+        String endTabIndex;
         //PTN距離Yのデータをセットする
         for (int i = 0; i < ptnKyoriYStart.length; i++) {
-            ptnKyoriYDataList.add(getInitPtnKyoriYData(gxhdo101c003Model, String.valueOf(i + 1), ptnKyoriYStart[i], "TEXT", "3", "", ptnKyoriYEnd[i], "TEXT", "3", ""));
+            startTabIndex = String.valueOf(i + 1);
+            endTabIndex = String.valueOf(i + 6);
+            ptnKyoriYDataList.add(getInitPtnKyoriYData(gxhdo101c003Model, String.valueOf(i + 1), 
+                    ptnKyoriYStart[i], "TEXT", "3", "", startTabIndex, 
+                    ptnKyoriYEnd[i], "TEXT", "3", "", endTabIndex));
         }
         gxhdo101c003Model.setPtnKyoriYDataList(ptnKyoriYDataList);
 
@@ -61,16 +67,18 @@ public class GXHDO101C003Logic {
      * @param startInputType　スタート項目(入力タイプ)
      * @param startTextMaxLength　スタート項目(テキストMaxLength)
      * @param startTextBackColor　スタート項目(BackGround)
+     * @param startTabIndex　スタート項目(タブインデックス)
      * @param endVal エンド項目(値)
      * @param endInputType エンド項目(入力タイプ)
      * @param endTextMaxLength　エンド項目(テキストMaxLength)
      * @param endTextBackColor　エンド項目(BackGround)
+     * @param endTabIndex　エンド項目(タブインデックス)
      * @return PTN距離データ
      */
     private static GXHDO101C003Model.PtnKyoriYData getInitPtnKyoriYData(
             GXHDO101C003Model gxhdo101c003Model, String ptnKyoriY,
-            String startVal, String startInputType, String startTextMaxLength, String startTextBackColor,
-            String endVal, String endInputType, String endTextMaxLength, String endTextBackColor) {
+            String startVal, String startInputType, String startTextMaxLength, String startTextBackColor, String startTabIndex,
+            String endVal, String endInputType, String endTextMaxLength, String endTextBackColor, String endTabIndex) {
         GXHDO101C003Model.PtnKyoriYData ptnKyoriYData = gxhdo101c003Model.new PtnKyoriYData();
         // PTN距離Y
         ptnKyoriYData.setPtnKyoriY(ptnKyoriY);
@@ -85,6 +93,7 @@ public class GXHDO101C003Logic {
         }
         ptnKyoriYData.setStartTextMaxLength(startTextMaxLength);
         ptnKyoriYData.setStartTextBackColor(startTextBackColor);
+        ptnKyoriYData.setStartTabIndex(startTabIndex);
 
         // エンド
         ptnKyoriYData.setEndVal(endVal);
@@ -97,6 +106,7 @@ public class GXHDO101C003Logic {
         }
         ptnKyoriYData.setEndTextMaxLength(endTextMaxLength);
         ptnKyoriYData.setEndTextBackColor(endTextBackColor);
+        ptnKyoriYData.setEndTabIndex(endTabIndex);
         return ptnKyoriYData;
     }
 

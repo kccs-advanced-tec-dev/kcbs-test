@@ -54,14 +54,10 @@
                     PF('W_dlg_compMessage').show();
                 }
             }
-            function keyDownEnterSetNextControl(controlName){
-                if(window.event.keyCode == 9){
-                     window.event.keyCode = 13
-                }
-                if(window.event.keyCode == 13){
-                    if(controlName != ''){
-                        document.getElementById(controlName).focus();
-                    }
+            function keyDownEnterSetNextControl(obj){
+                if(window.event.keyCode === 13){
+                    var index = obj.tabIndex + 1;
+                    $('[tabindex='+index+']').focus();
                 }  
             }
             function sliceMaxLength(elem, maxLength) {  
@@ -93,7 +89,11 @@
                     }            
                 }
             }
-            
+
+            function inputRelease() {
+                var node = document.getElementById('inputbody');
+                node.style.removeProperty('pointer-events');
+            }
             //]]>
         </script>
         <style>
@@ -111,7 +111,7 @@
             }
         </style>
     </h:head>
-    <h:body onload="#{gXHDO901A.onLoadProcess}">
+    <h:body id="inputbody" onload="inputRelease(); #{gXHDO901A.onLoadProcess}" style="pointer-events: none;" >
         <f:metadata>
             <f:viewAction action="#{gXHDO901A.init()}"/>
         </f:metadata>
@@ -139,6 +139,12 @@
                                  oncomplete="if('warning'!=args.firstParam){PF('cd').hide(); cmdButtonOncomplete(args);} else {PF('cd').show();}"/>
                 <p:commandButton id="warnCancel" value="Cancel" class="ui-conf-commandbtn-cancel" onclick="PF('cd').hide();" type="button" />
             </p:confirmDialog>
+            <p:commandButton id="returnBtnTop" style="margin-left:26px;font-size:#{item.fontSize}px;color:#{item.fontColor};background:#{item.backColor};#{gXHDO901A.styleDisplayNone}"
+                 value="#{myMsg.return}"  action="/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true"
+                 process="@this" update="@this">
+                <f:param name="returnVal" value="return"/>
+                <f:attribute name="returnVal" value="return"/>
+            </p:commandButton>
             <p:panel id="headerPanel" style="margin-bottom:4px; #{gXHDO901A.styleDisplayNone}">
                 <ui:repeat value="#{gXHDO901A.buttonListTop}" var="item" varStatus="stat">
                     <p:commandButton id="buttonId" value="#{item.buttonName}" rendered="#{item.render}" disabled="#{!item.enabled}"
@@ -197,7 +203,7 @@
             </p:panel>
             
             <p:commandButton id="returnBtn" style="margin-left:26px;font-size:#{item.fontSize}px;color:#{item.fontColor};background:#{item.backColor};"
-                 value="#{myMsg.return}" action="/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true"
+                 value="#{myMsg.return}"  action="/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true"
                  process="@this" update="@this">
                 <f:param name="returnVal" value="return"/>
                 <f:attribute name="returnVal" value="return"/>

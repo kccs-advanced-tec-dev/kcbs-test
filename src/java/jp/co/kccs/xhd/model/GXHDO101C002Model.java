@@ -44,11 +44,13 @@ public class GXHDO101C002Model implements Cloneable {
             newData.setStartTextMaxLength(data.getStartTextMaxLength());
             newData.setStartTextBackColor(data.getStartTextBackColor());
             newData.setStartLabelRendered(data.isStartLabelRendered());
+            newData.setStartTabIndex(data.getStartTabIndex());
             newData.setEndVal(data.getEndVal());
             newData.setEndTextRendered(data.isEndTextRendered());
             newData.setEndTextMaxLength(data.getEndTextMaxLength());
             newData.setEndTextBackColor(data.getEndTextBackColor());
             newData.setEndLabelRendered(data.isEndLabelRendered());
+            newData.setEndTabIndex(data.getEndTabIndex());
             newList.add(newData);
         }
 
@@ -164,6 +166,11 @@ public class GXHDO101C002Model implements Cloneable {
         private boolean startLabelRendered;
 
         /**
+         * スタート項目(タブインデックス)
+         */
+        private String startTabIndex;
+
+        /**
          * エンド項目(値)
          */
         private String endVal;
@@ -187,6 +194,11 @@ public class GXHDO101C002Model implements Cloneable {
          * エンド項目_ラベル(Rendered)
          */
         private boolean endLabelRendered;
+
+        /**
+         * エンド項目(タブインデックス)
+         */
+        private String endTabIndex;
 
         /**
          * PTN距離X
@@ -297,6 +309,24 @@ public class GXHDO101C002Model implements Cloneable {
         }
 
         /**
+         * スタート項目(タブインデックス)
+         * 
+         * @return the startTabIndex
+         */
+        public String getStartTabIndex() {
+            return startTabIndex;
+        }
+
+        /**
+         * スタート項目(タブインデックス)
+         * 
+         * @param startTabIndex the startTabIndex to set
+         */
+        public void setStartTabIndex(String startTabIndex) {
+            this.startTabIndex = startTabIndex;
+        }
+
+        /**
          * エンド項目(値)
          *
          * @return the endVal
@@ -384,6 +414,24 @@ public class GXHDO101C002Model implements Cloneable {
          */
         public void setEndLabelRendered(boolean endLabelRendered) {
             this.endLabelRendered = endLabelRendered;
+        }
+
+        /**
+         * エンド項目(タブインデックス)
+         * 
+         * @return the endTabIndex
+         */
+        public String getEndTabIndex() {
+            return endTabIndex;
+        }
+
+        /**
+         * エンド項目(タブインデックス)
+         * 
+         * @param endTabIndex the endTabIndex to set
+         */
+        public void setEndTabIndex(String endTabIndex) {
+            this.endTabIndex = endTabIndex;
         }
     }
 }

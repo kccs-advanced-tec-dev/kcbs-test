@@ -44,6 +44,7 @@ public class GXHDO101C005Model implements Cloneable {
             newData.setStartTextMaxLength(data.getStartTextMaxLength());
             newData.setStartTextBackColor(data.getStartTextBackColor());
             newData.setStartLabelRendered(data.isStartLabelRendered());
+            newData.setStartTabIndex(data.getStartTabIndex());
             newList.add(newData);
         }
 
@@ -135,6 +136,11 @@ public class GXHDO101C005Model implements Cloneable {
          * スタート項目_ラベル(Rendered)
          */
         private boolean startLabelRendered;
+       
+        /**
+         * スタート項目_タブインデックス(TabIndex)
+         */
+        private String startTabIndex;
 
         /**
          * 印刷幅
@@ -244,6 +250,25 @@ public class GXHDO101C005Model implements Cloneable {
             this.startLabelRendered = startLabelRendered;
         }
 
+        /**
+         * スタート項目_タブインデックス(TabIndex)
+         * 
+         * @return the startTabIndex
+         */
+        public String getStartTabIndex() {
+            return startTabIndex;
+        }
+
+        /**
+         * スタート項目_タブインデックス(TabIndex)
+         * 
+         * @param startTabIndex the startTabIndex to set
+         */
+        public void setStartTabIndex(String startTabIndex) {
+            this.startTabIndex = startTabIndex;
+        }
+
+        
     }
 
 }

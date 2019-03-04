@@ -45,13 +45,13 @@ public class GXHDO101C001Model implements Cloneable {
             newData.setStartTextMaxLength(data.getStartTextMaxLength());
             newData.setStartTextBackColor(data.getStartTextBackColor());
             newData.setStartLabelRendered(data.isStartLabelRendered());
-            newData.setStartNextControl(data.getStartNextControl());
+            newData.setStartTabIndex(data.getStartTabIndex());
             newData.setEndVal(data.getEndVal());
             newData.setEndTextRendered(data.isEndTextRendered());
             newData.setEndTextMaxLength(data.getEndTextMaxLength());
             newData.setEndTextBackColor(data.getEndTextBackColor());
             newData.setEndLabelRendered(data.isEndLabelRendered());
-            newData.setEndNextControl(data.getEndNextControl());
+            newData.setEndTabIndex(data.getEndTabIndex());
             newList.add(newData);
         }
 
@@ -295,9 +295,9 @@ public class GXHDO101C001Model implements Cloneable {
         private boolean startLabelRendered;
         
         /**
-         * スタート項目_次コントロール
+         * スタート項目_タブインデックス
          */
-        private String startNextControl;
+        private String startTabIndex;
 
 
         /**
@@ -326,9 +326,9 @@ public class GXHDO101C001Model implements Cloneable {
         private boolean endLabelRendered;
         
         /**
-         * エンド項目_次コントロール
+         * エンド項目_タブインデックス
          */
-        private String endNextControl;
+        private String endTabIndex;
 
 
         /**
@@ -440,17 +440,17 @@ public class GXHDO101C001Model implements Cloneable {
         }
 
         /**
-         * @return the startNextControl
+         * @return the startTabIndex
          */
-        public String getStartNextControl() {
-            return startNextControl;
+        public String getStartTabIndex() {
+            return startTabIndex;
         }
 
         /**
-         * @param startNextControl the startNextControl to set
+         * @param startTabIndex the startTabIndex to set
          */
-        public void setStartNextControl(String startNextControl) {
-            this.startNextControl = startNextControl;
+        public void setStartTabIndex(String startTabIndex) {
+            this.startTabIndex = startTabIndex;
         }
 
         /**
@@ -544,17 +544,17 @@ public class GXHDO101C001Model implements Cloneable {
         }
 
         /**
-         * @return the endNextControl
+         * @return the endTabIndex
          */
-        public String getEndNextControl() {
-            return endNextControl;
+        public String getEndTabIndex() {
+            return endTabIndex;
         }
 
         /**
-         * @param endNextControl the endNextControl to set
+         * @param endTabIndex the endTabIndex to set
          */
-        public void setEndNextControl(String endNextControl) {
-            this.endNextControl = endNextControl;
+        public void setEndTabIndex(String endTabIndex) {
+            this.endTabIndex = endTabIndex;
         }
         
 

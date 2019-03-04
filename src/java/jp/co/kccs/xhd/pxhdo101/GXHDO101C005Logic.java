@@ -42,10 +42,9 @@ public class GXHDO101C005Logic {
 
         GXHDO101C005Model model = new GXHDO101C005Model();
         List<GXHDO101C005Model.PrintWidthData> printWidthDataList = new ArrayList<>();
-
         // 画面内のリストの一覧を作成する。
         for (int i = 0; i < startValues.length; i++) {
-            printWidthDataList.add(getInitPrintWidhData(model, String.valueOf(i + 1), startValues[i], "TEXT", "4", ""));
+            printWidthDataList.add(getInitPrintWidhData(model, String.valueOf(i + 1), startValues[i], "TEXT", "4", "", String.valueOf(i + 1)));
         }
 
         model.setPrintWidthDataList(printWidthDataList);
@@ -62,11 +61,13 @@ public class GXHDO101C005Logic {
      * @param startInputType　スタート項目(入力タイプ)
      * @param startTextMaxLength　スタート項目(テキストMaxLength)
      * @param startTextBackColor　スタート項目(BackGround)
+     * @param startTabIndex　スタート項目(BackGround)
      * @return 印刷幅データ
      */
     private static GXHDO101C005Model.PrintWidthData getInitPrintWidhData(
             GXHDO101C005Model gxhdo101C005Model, String printWidth, String startVal,
-            String startInputType, String startTextMaxLength, String startTextBackColor) {
+            String startInputType, String startTextMaxLength, String startTextBackColor, 
+            String startTabIndex) {
         GXHDO101C005Model.PrintWidthData printWidthListData = gxhdo101C005Model.new PrintWidthData();
         // 印刷幅
         printWidthListData.setPrintWidth(printWidth);
@@ -81,6 +82,7 @@ public class GXHDO101C005Logic {
         }
         printWidthListData.setStartTextMaxLength(startTextMaxLength);
         printWidthListData.setStartTextBackColor(startTextBackColor);
+        printWidthListData.setStartTabIndex(startTabIndex);
 
         return printWidthListData;
     }

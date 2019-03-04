@@ -44,6 +44,7 @@ public class GXHDO101C004Model implements Cloneable {
             newData.setStartTextMaxLength(data.getStartTextMaxLength());
             newData.setStartTextBackColor(data.getStartTextBackColor());
             newData.setStartLabelRendered(data.isStartLabelRendered());
+            newData.setStartTabIndex(data.getStartTabIndex());
             newList.add(newData);
         }
 
@@ -209,6 +210,11 @@ public class GXHDO101C004Model implements Cloneable {
         private boolean startLabelRendered;
 
         /**
+         * スタート項目_タブインデックス(TabIndex)
+         */
+        private String startTabIndex;
+
+        /**
          * 膜厚
          *
          * @return the makuatsu
@@ -314,6 +320,24 @@ public class GXHDO101C004Model implements Cloneable {
          */
         public void setStartLabelRendered(boolean startLabelRendered) {
             this.startLabelRendered = startLabelRendered;
+        }
+
+        /**
+         * スタート項目_タブインデックス(TabIndex)
+         * 
+         * @return the startTabIndex
+         */
+        public String getStartTabIndex() {
+            return startTabIndex;
+        }
+
+        /**
+         * スタート項目_タブインデックス(TabIndex)
+         * 
+         * @param startTabIndex the startTabIndex to set
+         */
+        public void setStartTabIndex(String startTabIndex) {
+            this.startTabIndex = startTabIndex;
         }
 
     }

@@ -41,10 +41,11 @@ public class GXHDO101C004Logic {
     public static GXHDO101C004Model createGXHDO101C004Model(String[] makuatsuStart) {
         List<GXHDO101C004Model.MakuatsuData> makuatsuDataList = new ArrayList<>();
         GXHDO101C004Model model = new GXHDO101C004Model();
-
+        String startTabIndex;
         // 画面内のリストの一覧を作成する。
         for (int i = 0; i < makuatsuStart.length; i++) {
-            makuatsuDataList.add(getInitMakuatsuData(model, String.valueOf(i + 1), makuatsuStart[i], "TEXT", "6", ""));
+            startTabIndex = String.valueOf(i+1);
+            makuatsuDataList.add(getInitMakuatsuData(model, String.valueOf(i + 1), makuatsuStart[i], "TEXT", "6", "", startTabIndex));
         }
 
         model.setMakuatsuDataList(makuatsuDataList);
@@ -60,10 +61,11 @@ public class GXHDO101C004Logic {
      * @param startInputType　スタート項目(入力タイプ)
      * @param startTextMaxLength　スタート項目(テキストMaxLength)
      * @param startTextBackColor　スタート項目(BackGround)
+     * @param startTabIndex　スタート項目(TabIndex)
      * @return 膜厚データ
      */
     private static GXHDO101C004Model.MakuatsuData getInitMakuatsuData(GXHDO101C004Model model, String makuatsu,
-            String startVal, String startInputType, String startTextMaxLength, String startTextBackColor) {
+            String startVal, String startInputType, String startTextMaxLength, String startTextBackColor, String startTabIndex) {
         GXHDO101C004Model.MakuatsuData makuatsuData = model.new MakuatsuData();
         // 膜厚
         makuatsuData.setMakuatsu(makuatsu);
@@ -79,6 +81,7 @@ public class GXHDO101C004Logic {
         }
         makuatsuData.setStartTextMaxLength(startTextMaxLength);
         makuatsuData.setStartTextBackColor(startTextBackColor);
+        makuatsuData.setStartTabIndex(startTabIndex);
         return makuatsuData;
     }
 
