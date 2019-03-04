@@ -1211,7 +1211,7 @@ public class GXHDO101B002 implements IFormLogic {
         if (StringUtil.isEmpty(lotkubuncode)) {
             this.setItemData(processData, GXHDO101B002Const.OWNER, "");
         } else {
-            String owner = StringUtil.nullToBlank(getMapData(ownerMasData, "owner"));
+            String owner = StringUtil.nullToBlank(getMapData(ownerMasData, "ownername"));
             this.setItemData(processData, GXHDO101B002Const.OWNER, ownercode + ":" + owner);
         }
 
@@ -1759,10 +1759,10 @@ public class GXHDO101B002 implements IFormLogic {
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private Map loadOwnerMas(QueryRunner queryRunnerDoc, String ownerCode) throws SQLException {
+    private Map loadOwnerMas(QueryRunner queryRunnerWip, String ownerCode) throws SQLException {
 
-        // 設計データの取得
-        String sql = "SELECT owner "
+        // オーナーデータの取得
+        String sql = "SELECT \"owner\" AS ownername "
                 + "FROM ownermas "
                 + "WHERE ownercode = ?";
 
@@ -1770,7 +1770,7 @@ public class GXHDO101B002 implements IFormLogic {
         params.add(ownerCode);
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
+        return queryRunnerWip.query(sql, new MapHandler(), params.toArray());
     }
 
     /**
