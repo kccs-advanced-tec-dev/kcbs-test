@@ -5,7 +5,8 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <p:dialog header="#{myMsg.print_width}" id="dlg_gxhdo101c005" widgetVar="W_dlg_gxhdo101c005"
               width="440" modal="true" height="275"
-              dynamic="false" closable="true" closeOnEscape="false" onShow="subFormOpen();"
+              dynamic="false" closable="true" closeOnEscape="false" 
+              onShow="subFormOpen(); setInputModeForTableColumn('numeric','form:gxhdo101c005Form:printWidthTable','startVal'); setTimeout(setFocus, 300, 'form:gxhdo101c005Form:printWidthTable:0:startVal_input');"
               onHide="subFormClose(); document.getElementById('form:gxhdo101c005Form:cancelBtn').click();" position="center top">
         <h:form id="gxhdo101c005Form">
             <p:panel style="width:395px">
@@ -18,7 +19,7 @@
                     </p:column>
                     <p:column id="mStart" width="50%" headerText="#{myMsg.katakana_start}" >
                         <div style="text-align:right;">
-                            <p:inputNumber value="#{item.startVal}" rendered="#{item.startTextRendered}" onkeydown="keyDownEnterSetNextControl(this)" 
+                            <p:inputNumber id="startVal" value="#{item.startVal}" rendered="#{item.startTextRendered}" onkeydown="keyDownEnterSetNextControl(this)" 
                                            tabindex="#{item.startTabIndex}" thousandSeparator="" decimalPlaces="0" maxValue="9999" minValue="-9999" 
                                            size="14"  inputStyle="text-align:right; background: #{item.startTextBackColor}"/>
                             <p:outputLabel value="#{item.startVal}" rendered="#{item.startLabelRendered}" />

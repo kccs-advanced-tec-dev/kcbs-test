@@ -85,10 +85,21 @@
                 var itemLength = spItemId.length;
                 for(var i=0;i<rowsLength;i++){
                     for(var j=0; j<itemLength;j++){
-                        document.getElementById(listId +":" + i + ":" + spItemId[j]).setAttribute("inputmode",imputmode);
+                        var inputCol = document.getElementById(listId +":" + i + ":" + spItemId[j] + "_input");
+                        if(inputCol !== null){
+                            inputCol.setAttribute("inputmode",imputmode);
+                        }
                     }            
                 }
             }
+            function setFocus(itemId){
+                var inputCol = document.getElementById(itemId);
+                if(inputCol !== null){
+                    inputCol.focus();
+                }
+            }
+          
+
 
             function inputRelease() {
                 var node = document.getElementById('inputbody');
