@@ -44,7 +44,28 @@ public class SubFormUtil {
     /**
      * 印刷幅画面ID
      */
-    public static final String FORM_ID_GXHDO101C005 = "GXHDO101C005";
+    public static final String FORM_ID_GXHDO101C005 = "GXHDO101C005";    
+    /**
+     * 剥離・画処NG画面ID
+     */
+    public static final String FORM_ID_GXHDO101C006 = "GXHDO101C006";    
+    /**
+     * 電極膜厚画面ID
+     */
+    public static final String FORM_ID_GXHDO101C007 = "GXHDO101C007";    
+    /**
+     * ﾊﾟﾀｰﾝ間距離画面ID
+     */
+    public static final String FORM_ID_GXHDO101C008 = "GXHDO101C008";    
+    /**
+     * 合わせ(RZ)画面ID
+     */
+    public static final String FORM_ID_GXHDO101C009 = "GXHDO101C009";
+    /**
+     * 被り量（μｍ）画面ID
+     */
+    public static final String FORM_ID_GXHDO101C010 = "GXHDO101C010";
+            
     /**
      * 初期表示メッセージ
      */
@@ -105,8 +126,43 @@ public class SubFormUtil {
                 returnBean = FacesContext.getCurrentInstance().
                         getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
                                 getELContext(), null, "beanGXHDO101C005");
-
                 break;
+
+            // 剥離・画処NG
+            case "GXHDO101C006":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO101C006");
+                break;
+                
+            // 電極膜厚
+            case "GXHDO101C007":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO101C007");
+                break;
+                
+            // ﾊﾟﾀｰﾝ間距離
+            case "GXHDO101C008":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO101C008");
+                break;
+                
+            // 合わせ(RZ)
+            case "GXHDO101C009":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO101C009");
+                break;
+                
+            // 被り量（μｍ）
+            case "GXHDO101C010":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO101C010");
+                break;
+                
             // 初期表示メッセージ
             case "InitMessage":
                 returnBean = FacesContext.getCurrentInstance().

@@ -22,7 +22,7 @@ import jp.co.kccs.xhd.util.StringUtil;
  * <br>
  * 変更日	2018/12/08<br>
  * 計画書No	K1811-DS001<br>
- * 変更者	SYSNAVI K.Hisanaaga<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
  * ===============================================================================<br>
