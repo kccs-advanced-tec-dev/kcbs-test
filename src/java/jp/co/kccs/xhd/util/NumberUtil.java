@@ -220,7 +220,7 @@ public class NumberUtil {
         }
         Double sd = Math.sqrt(sdSum / (length - 1));
         if (ave != Double.parseDouble("0")) {
-            cv = sd / ave;
+            cv = sd / ave * 100;
         }
         
         return new BigDecimal[]{BigDecimal.valueOf(sum), BigDecimal.valueOf(max), BigDecimal.valueOf(min), BigDecimal.valueOf(ave), BigDecimal.valueOf(cv)};
