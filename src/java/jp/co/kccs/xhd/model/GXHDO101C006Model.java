@@ -1,5 +1,5 @@
 /*
- * Copyright 2018 Kyocera Communication Systems Co., Ltd All rights reserved.
+ * Copyright 2019 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.model;
 
@@ -11,18 +11,18 @@ import java.util.List;
  * <br>
  * システム名	品質DB(コンデンサ)<br>
  * <br>
- * 変更日	2018/12/04<br>
+ * 変更日	2019/03/05<br>
  * 計画書No	K1811-DS001<br>
- * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
  * ===============================================================================<br>
  */
 /**
- * GXHDO101C006Model(剥離・画処NGサブ画面用)のモデルクラスです。
+ * GXHDO101C006Model(剥離内容入力サブ画面用)のモデルクラスです。
  *
- * @author SYSNAVI K.Hisanaga
- * @since 2018/12/04
+ * @author KCSS K.Jo
+ * @since  2019/03/05
  */
 public class GXHDO101C006Model implements Cloneable {
 
@@ -35,313 +35,291 @@ public class GXHDO101C006Model implements Cloneable {
     @Override
     public GXHDO101C006Model clone() throws CloneNotSupportedException {
         GXHDO101C006Model cloneModel = (GXHDO101C006Model) super.clone();
-        List<GXHDO101C006Model.PtnKyoriXData> newList = new ArrayList();
-        for (GXHDO101C006Model.PtnKyoriXData data : this.ptnKyoriXDataList) {
-            GXHDO101C006Model.PtnKyoriXData newData = new GXHDO101C006Model.PtnKyoriXData();
-            newData.setPtnKyoriX(data.ptnKyoriX);
-            newData.setStartVal(data.getStartVal());
-            newData.setStartTextRendered(data.isStartTextRendered());
-            newData.setStartTextMaxLength(data.getStartTextMaxLength());
-            newData.setStartTextBackColor(data.getStartTextBackColor());
-            newData.setStartLabelRendered(data.isStartLabelRendered());
-            newData.setEndVal(data.getEndVal());
-            newData.setEndTextRendered(data.isEndTextRendered());
-            newData.setEndTextMaxLength(data.getEndTextMaxLength());
-            newData.setEndTextBackColor(data.getEndTextBackColor());
-            newData.setEndLabelRendered(data.isEndLabelRendered());
+        List<GXHDO101C006Model.HakuriInputData> newList = new ArrayList();
+        
+        for (GXHDO101C006Model.HakuriInputData data : this.hakuriInputDataList) {
+            GXHDO101C006Model.HakuriInputData newData = new GXHDO101C006Model.HakuriInputData();
+            newData.setHakuriInput(data.getHakuriInput());
+            newData.setSetsuuVal(data.getSetsuuVal());
+            newData.setSetsuuTextRendered(data.isSetsuuTextRendered());
+            newData.setSetsuuTextMaxLength(data.getSetsuuTextMaxLength());
+            newData.setSetsuuTextBackColor(data.getSetsuuTextBackColor());
+            newData.setSetsuuLabelRendered(data.isSetsuuLabelRendered());
+            newData.setBikouVal(data.getBikouVal());
+            newData.setBikouTextRendered(data.isBikouTextRendered());
+            newData.setBikouTextMaxLength(data.getBikouTextMaxLength());
+            newData.setBikouTextBackColor(data.getBikouTextBackColor());
+            newData.setBikouLabelRendered(data.isBikouLabelRendered());
             newList.add(newData);
         }
 
-        cloneModel.setPtnKyoriXDataList(newList);
+        cloneModel.setHakuriInputDataList(newList);
         return cloneModel;
     }
-
+    
     /**
-     * 剥離・画処NGデータリスト
+     * 剥離内容入力データリスト
      */
-    private List<PtnKyoriXData> ptnKyoriXDataList;
+    private List<HakuriInputData> hakuriInputDataList;
 
     /**
      * コンストラクタ
      */
     public GXHDO101C006Model() {
-        this.ptnKyoriXDataList = new ArrayList<>();
+        this.hakuriInputDataList = new ArrayList<>();
     }
 
     /**
-     * 剥離・画処NGデータリスト
+     * 剥離内容入力データリスト
      *
-     * @return the ptnKyoriXDataList
+     * @return the hakuriInputDataList
      */
-    public List<PtnKyoriXData> getPtnKyoriXDataList() {
-        return ptnKyoriXDataList;
+    public List<HakuriInputData> getHakuriInputDataList() {
+        return hakuriInputDataList;
     }
 
     /**
-     * 剥離・画処NGデータリスト
+     * 剥離内容入力データリスト
      *
-     * @param ptnKyoriXDataList the ptnKyoriXDataList to set
+     * @param hakuriInputDataList the ptnKyoriXDataList to set
      */
-    public void setPtnKyoriXDataList(List<PtnKyoriXData> ptnKyoriXDataList) {
-        this.ptnKyoriXDataList = ptnKyoriXDataList;
+    public void setHakuriInputDataList(List<HakuriInputData> hakuriInputDataList) {
+        this.hakuriInputDataList = hakuriInputDataList;
     }
 
     /**
-     * 剥離・画処NGデータ
+     * 剥離内容入力データ
      */
-    public class PtnKyoriXData {
+    public class HakuriInputData {
+        /**
+         * 剥離内容入力
+         */
+        private String hakuriInput;
 
         /**
-         * 剥離・画処NG
+         * ｾｯﾄ数入力(値)
          */
-        private String ptnKyoriX;
+        private String setsuuVal;
 
         /**
-         * スタート項目(値)
+         * ｾｯﾄ数入力_テキスト(Rendered)
          */
-        private String startVal;
+        private boolean setsuuTextRendered;
 
         /**
-         * スタート項目_テキスト(Rendered)
+         * ｾｯﾄ数入力_テキスト(MaxLength)
          */
-        private boolean startTextRendered;
+        private String setsuuTextMaxLength;
 
         /**
-         * スタート項目_テキスト(MaxLength)
+         * ｾｯﾄ数入力_テキスト(BackGround)
          */
-        private String startTextMaxLength;
+        private String setsuuTextBackColor;
 
         /**
-         * スタート項目_テキスト(BackGround)
+         * ｾｯﾄ数入力_ラベル(Rendered)
          */
-        private String startTextBackColor;
+        private boolean setsuuLabelRendered;
 
         /**
-         * スタート項目_ラベル(Rendered)
+         * 備考(値)
          */
-        private boolean startLabelRendered;
+        private String bikouVal;
 
         /**
-         * エンド項目(値)
+         * 備考_テキスト(Rendered)
          */
-        private String endVal;
+        private boolean bikouTextRendered;
 
         /**
-         * エンド項目_テキスト(Rendered)
+         * 備考_テキスト(MaxLength)
          */
-        private boolean endTextRendered;
+        private String bikouTextMaxLength;
 
         /**
-         * エンド項目_テキスト(MaxLength)
+         * 備考_テキスト(BackGround)
          */
-        private String endTextMaxLength;
+        private String bikouTextBackColor;
 
         /**
-         * エンド項目_テキスト(BackGround)
+         * 備考_ラベル(Rendered)
          */
-        private String endTextBackColor;
-
+        private boolean bikouLabelRendered;
+        
         /**
-         * エンド項目_ラベル(Rendered)
+         * 剥離内容入力
+         * @return the hakuriInput
          */
-        private boolean endLabelRendered;
-
-        /**
-         * 剥離・画処NG
-         *
-         * @return the ptnKyoriX
-         */
-        public String getPtnKyoriX() {
-            return ptnKyoriX;
+        public String getHakuriInput() {
+            return hakuriInput;
         }
 
         /**
-         * 剥離・画処NG
-         *
-         * @param ptnKyoriX the ptnKyoriX to set
+         * 剥離内容入力
+         * @param hakuriInput the hakuriInput to set
          */
-        public void setPtnKyoriX(String ptnKyoriX) {
-            this.ptnKyoriX = ptnKyoriX;
+        public void setHakuriInput(String hakuriInput) {
+            this.hakuriInput = hakuriInput;
         }
 
         /**
-         * スタート項目(値)
-         *
-         * @return the startVal
+         * ｾｯﾄ数入力(値)
+         * @return the setsuuVal
          */
-        public String getStartVal() {
-            return startVal;
+        public String getSetsuuVal() {
+            return setsuuVal;
         }
 
         /**
-         * スタート項目(値)
-         *
-         * @param startVal the startVal to set
+         * ｾｯﾄ数入力(値)
+         * @param setsuuVal the setsuuVal to set
          */
-        public void setStartVal(String startVal) {
-            this.startVal = startVal;
+        public void setSetsuuVal(String setsuuVal) {
+            this.setsuuVal = setsuuVal;
         }
 
         /**
-         * スタート項目_テキスト(Rendered)
-         *
-         * @return the startTextRendered
+         * ｾｯﾄ数入力_テキスト(Rendered)
+         * @return the setsuuTextRendered
          */
-        public boolean isStartTextRendered() {
-            return startTextRendered;
+        public boolean isSetsuuTextRendered() {
+            return setsuuTextRendered;
         }
 
         /**
-         * スタート項目_テキスト(Rendered)
-         *
-         * @param startTextRendered the startTextRendered to set
+         * ｾｯﾄ数入力_テキスト(Rendered)
+         * @param setsuuTextRendered the setsuuTextRendered to set
          */
-        public void setStartTextRendered(boolean startTextRendered) {
-            this.startTextRendered = startTextRendered;
+        public void setSetsuuTextRendered(boolean setsuuTextRendered) {
+            this.setsuuTextRendered = setsuuTextRendered;
         }
 
         /**
-         * スタート項目_テキスト(MaxLength)
-         *
-         * @return the startTextMaxLength
+         * ｾｯﾄ数入力_テキスト(MaxLength)
+         * @return the setsuuTextMaxLength
          */
-        public String getStartTextMaxLength() {
-            return startTextMaxLength;
+        public String getSetsuuTextMaxLength() {
+            return setsuuTextMaxLength;
         }
 
         /**
-         * スタート項目_テキスト(MaxLength)
-         *
-         * @param startTextMaxLength the startTextMaxLength to set
+         * ｾｯﾄ数入力_テキスト(MaxLength)
+         * @param setsuuTextMaxLength the setsuuTextMaxLength to set
          */
-        public void setStartTextMaxLength(String startTextMaxLength) {
-            this.startTextMaxLength = startTextMaxLength;
+        public void setSetsuuTextMaxLength(String setsuuTextMaxLength) {
+            this.setsuuTextMaxLength = setsuuTextMaxLength;
         }
 
         /**
-         * スタート項目_テキスト(BackGround)
-         *
-         * @return the startTextBackColor
+         * ｾｯﾄ数入力_テキスト(BackGround)
+         * @return the setsuuTextBackColor
          */
-        public String getStartTextBackColor() {
-            return startTextBackColor;
+        public String getSetsuuTextBackColor() {
+            return setsuuTextBackColor;
         }
 
         /**
-         * スタート項目_テキスト(BackGround)
-         *
-         * @param startTextBackColor the startTextBackColor to set
+         * ｾｯﾄ数入力_テキスト(BackGround)
+         * @param setsuuTextBackColor the setsuuTextBackColor to set
          */
-        public void setStartTextBackColor(String startTextBackColor) {
-            this.startTextBackColor = startTextBackColor;
+        public void setSetsuuTextBackColor(String setsuuTextBackColor) {
+            this.setsuuTextBackColor = setsuuTextBackColor;
         }
 
         /**
-         * スタート項目_ラベル(Rendered)
-         *
-         * @return the startLabelRendered
+         * ｾｯﾄ数入力_ラベル(Rendered)
+         * @return the setsuuLabelRendered
          */
-        public boolean isStartLabelRendered() {
-            return startLabelRendered;
+        public boolean isSetsuuLabelRendered() {
+            return setsuuLabelRendered;
         }
 
         /**
-         * スタート項目_ラベル(Rendered)
-         *
-         * @param startLabelRendered the startLabelRendered to set
+         * ｾｯﾄ数入力_ラベル(Rendered)
+         * @param setsuuLabelRendered the setsuuLabelRendered to set
          */
-        public void setStartLabelRendered(boolean startLabelRendered) {
-            this.startLabelRendered = startLabelRendered;
+        public void setSetsuuLabelRendered(boolean setsuuLabelRendered) {
+            this.setsuuLabelRendered = setsuuLabelRendered;
         }
 
         /**
-         * エンド項目(値)
-         *
-         * @return the endVal
+         * 備考(値)
+         * @return the bikouVal
          */
-        public String getEndVal() {
-            return endVal;
+        public String getBikouVal() {
+            return bikouVal;
         }
 
         /**
-         * エンド項目(値)
-         *
-         * @param endVal the endVal to set
+         * 備考(値)
+         * @param bikouVal the bikouVal to set
          */
-        public void setEndVal(String endVal) {
-            this.endVal = endVal;
+        public void setBikouVal(String bikouVal) {
+            this.bikouVal = bikouVal;
         }
 
         /**
-         * エンド項目_テキスト(Rendered)
-         *
-         * @return the endTextRendered
+         * 備考_テキスト(Rendered)
+         * @return the bikouTextRendered
          */
-        public boolean isEndTextRendered() {
-            return endTextRendered;
+        public boolean isBikouTextRendered() {
+            return bikouTextRendered;
         }
 
         /**
-         * エンド項目_テキスト(Rendered)
-         *
-         * @param endTextRendered the endTextRendered to set
+         * 備考_テキスト(Rendered)
+         * @param bikouTextRendered the bikouTextRendered to set
          */
-        public void setEndTextRendered(boolean endTextRendered) {
-            this.endTextRendered = endTextRendered;
+        public void setBikouTextRendered(boolean bikouTextRendered) {
+            this.bikouTextRendered = bikouTextRendered;
         }
 
         /**
-         * エンド項目_テキスト(MaxLength)
-         *
-         * @return the endTextMaxLength
+         * 備考_テキスト(MaxLength)
+         * @return the bikouTextMaxLength
          */
-        public String getEndTextMaxLength() {
-            return endTextMaxLength;
+        public String getBikouTextMaxLength() {
+            return bikouTextMaxLength;
         }
 
         /**
-         * エンド項目_テキスト(MaxLength)
-         *
-         * @param endTextMaxLength the endTextMaxLength to set
+         * 備考_テキスト(MaxLength)
+         * @param bikouTextMaxLength the bikouTextMaxLength to set
          */
-        public void setEndTextMaxLength(String endTextMaxLength) {
-            this.endTextMaxLength = endTextMaxLength;
+        public void setBikouTextMaxLength(String bikouTextMaxLength) {
+            this.bikouTextMaxLength = bikouTextMaxLength;
         }
 
         /**
-         * エンド項目_テキスト(BackGround)
-         *
-         * @return the endTextBackColor
+         * 備考_テキスト(BackGround)
+         * @return the bikouTextBackColor
          */
-        public String getEndTextBackColor() {
-            return endTextBackColor;
+        public String getBikouTextBackColor() {
+            return bikouTextBackColor;
         }
 
         /**
-         * エンド項目_テキスト(BackGround)
-         *
-         * @param endTextBackColor the endTextBackColor to set
+         * 備考_テキスト(BackGround)
+         * @param bikouTextBackColor the bikouTextBackColor to set
          */
-        public void setEndTextBackColor(String endTextBackColor) {
-            this.endTextBackColor = endTextBackColor;
+        public void setBikouTextBackColor(String bikouTextBackColor) {
+            this.bikouTextBackColor = bikouTextBackColor;
         }
 
         /**
-         * エンド項目_ラベル(Rendered)
-         *
-         * @return the endLabelRendered
+         * 備考_ラベル(Rendered)
+         * @return the bikouLabelRendered
          */
-        public boolean isEndLabelRendered() {
-            return endLabelRendered;
+        public boolean isBikouLabelRendered() {
+            return bikouLabelRendered;
         }
 
         /**
-         * エンド項目_ラベル(Rendered)
-         *
-         * @param endLabelRendered the endLabelRendered to set
+         * 備考_ラベル(Rendered)
+         * @param bikouLabelRendered the bikouLabelRendered to set
          */
-        public void setEndLabelRendered(boolean endLabelRendered) {
-            this.endLabelRendered = endLabelRendered;
+        public void setBikouLabelRendered(boolean bikouLabelRendered) {
+            this.bikouLabelRendered = bikouLabelRendered;
         }
     }
 }

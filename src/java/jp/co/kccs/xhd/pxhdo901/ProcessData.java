@@ -115,6 +115,10 @@ public class ProcessData {
      */
     private List<String> initMessageList;
     /**
+     * 警告メッセージ表示時メッセージリスト
+     */
+    private List<String> infoMessageList;
+    /**
      * 実行スクリプト
      */
     private String executeScript;
@@ -159,6 +163,7 @@ public class ProcessData {
         this.initMessageList = new ArrayList<>();
         this.kikakuchiInputErrorInfoList = new ArrayList<>();
         this.checkRevisionButtonId = new ArrayList<>();
+        this.infoMessageList = new ArrayList<>();
     }
 
     /**
@@ -486,6 +491,7 @@ public class ProcessData {
     }
 
     /**
+     * 初期表示時エラーメッセージリスト
      * @return the initMessageList
      */
     public List<String> getInitMessageList() {
@@ -493,10 +499,27 @@ public class ProcessData {
     }
 
     /**
+     * 初期表示時エラーメッセージリスト
      * @param initMessageList the initMessageList to set
      */
     public void setInitMessageList(List<String> initMessageList) {
         this.initMessageList = initMessageList;
+    }
+
+    /**
+     * 警告メッセージ表示時メッセージリスト
+     * @return the infoMessageList
+     */
+    public List<String> getInfoMessageList() {
+        return infoMessageList;
+    }
+
+    /**
+     * 警告メッセージ表示時メッセージリスト
+     * @param infoMessageList the infoMessageList to set
+     */
+    public void setInfoMessageList(List<String> infoMessageList) {
+        this.infoMessageList = infoMessageList;
     }
 
     /**
@@ -615,7 +638,4 @@ public class ProcessData {
     public void setCompMessage(String compMessage) {
         this.compMessage = compMessage;
     }
-
-
-
 }

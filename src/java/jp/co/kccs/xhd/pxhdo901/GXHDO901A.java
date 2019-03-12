@@ -46,6 +46,8 @@ import jp.co.kccs.xhd.pxhdo101.GXHDO101C004;
 import jp.co.kccs.xhd.pxhdo101.GXHDO101C004Logic;
 import jp.co.kccs.xhd.pxhdo101.GXHDO101C005;
 import jp.co.kccs.xhd.pxhdo101.GXHDO101C005Logic;
+import jp.co.kccs.xhd.pxhdo101.GXHDO101C006;
+import jp.co.kccs.xhd.pxhdo101.GXHDO101C006Logic;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
@@ -1619,6 +1621,11 @@ public class GXHDO901A implements Serializable {
             case SubFormUtil.FORM_ID_GXHDO101C005:
                 GXHDO101C005 beanGXHDO101C005 = (GXHDO101C005) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C005);
                 GXHDO101C005Logic.setReturnData(beanGXHDO101C005.getGxhdO101c005Model(), this.itemList);
+                break;
+            // 剥離内容入力画面
+            case SubFormUtil.FORM_ID_GXHDO101C006:
+                GXHDO101C006 beanGXHDO101C006 = (GXHDO101C006) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C006);
+                GXHDO101C006Logic.setReturnData(beanGXHDO101C006.getGxhdO101c006Model(), this.itemList);
                 break;
             default:
                 break;

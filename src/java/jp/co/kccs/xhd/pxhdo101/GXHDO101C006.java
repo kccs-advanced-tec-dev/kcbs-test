@@ -1,10 +1,9 @@
 /*
- * Copyright 2018 Kyocera Communication Systems Co., Ltd All rights reserved.
+ * Copyright 2019 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.pxhdo101;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -21,32 +20,37 @@ import org.primefaces.context.RequestContext;
  * <br>
  * システム名	品質DB(コンデンサ)<br>
  * <br>
- * 変更日	2018/12/08<br>
+ * 変更日	2019/03/05<br>
  * 計画書No	K1811-DS001<br>
- * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
  * ===============================================================================<br>
  */
 /**
- * GXHDO101C006(剥離・画処NG)
+ * GXHDO101C006(剥離内容入力)
  *
- * @author SYSNAVI K.Hisanaga
- * @since 2018/12/08
+ * @author KCSS K.Jo
+ * @since  2019/03/05
  */
 @ManagedBean(name = "beanGXHDO101C006")
 @SessionScoped
 public class GXHDO101C006 implements Serializable {
 
     /**
-     * 剥離・画処NGサブ画面用データ
+     * 剥離内容入力サブ画面用データ
      */
     private GXHDO101C006Model gxhdO101c006Model;
 
     /**
-     * 剥離・画処NGサブ画面用データ(表示制御用)
+     * 剥離内容入力サブ画面用データ(表示制御用)
      */
     private GXHDO101C006Model gxhdO101c006ModelView;
+
+    /**
+     * フォームエラー判定
+     */
+    private boolean isFormError;
 
     /**
      * コンストラクタ
@@ -55,7 +59,7 @@ public class GXHDO101C006 implements Serializable {
     }
 
     /**
-     * 剥離・画処NGサブ画面用データ
+     * 剥離内容入力サブ画面用データ
      *
      * @return the gxhdO101c006Model
      */
@@ -64,7 +68,7 @@ public class GXHDO101C006 implements Serializable {
     }
 
     /**
-     * 剥離・画処NGサブ画面用データ
+     * 剥離内容入力サブ画面用データ
      *
      * @param gxhdO101c006Model the gxhdO101c006Model to set
      */
@@ -73,7 +77,7 @@ public class GXHDO101C006 implements Serializable {
     }
 
     /**
-     * 剥離・画処NGサブ画面用データ(表示制御用)
+     * 剥離内容入力サブ画面用データ(表示制御用)
      *
      * @return the gxhdO101c006ModelView
      */
@@ -82,7 +86,7 @@ public class GXHDO101C006 implements Serializable {
     }
 
     /**
-     ** 剥離・画処NGサブ画面用データ(表示制御用)
+     ** 剥離内容入力サブ画面用データ(表示制御用)
      *
      * @param gxhdO101c006ModelView the gxhdO101c006ModelView to set
      */
@@ -91,10 +95,30 @@ public class GXHDO101C006 implements Serializable {
     }
 
     /**
+     * フォームエラー判定
+     *
+     * @return the isFormError
+     */
+    public boolean isIsFormError() {
+        return isFormError;
+    }
+
+    /**
+     * フォームエラー判定
+     *
+     * @param isFormError the isFormError to set
+     */
+    public void setIsFormError(boolean isFormError) {
+        this.isFormError = isFormError;
+    }
+
+    /**
      * OKボタン押下時のチェック処理を行う。
      */
     public void doOk() {
+        this.isFormError = false;
         if (!checkOK()) {
+            this.isFormError = true;
             // エラーの場合はコールバック変数に"error"をセット
             RequestContext context = RequestContext.getCurrentInstance();
             context.addCallbackParam("firstParam", "error");
@@ -114,32 +138,34 @@ public class GXHDO101C006 implements Serializable {
         // 背景色をクリア
         clearBackColor();
 
-        for (GXHDO101C006Model.PtnKyoriXData ptnKyoriXData : this.gxhdO101c006ModelView.getPtnKyoriXDataList()) {
-            if (!StringUtil.isEmpty(ptnKyoriXData.getStartVal())) {
-                //型ﾁｪｯｸ(スタート)
-                if (!NumberUtil.isNumeric(ptnKyoriXData.getStartVal())) {
-                    setError(ptnKyoriXData, true, false, "XHD-000008", "スタート");
+        for (GXHDO101C006Model.HakuriInputData hakuriInputData : this.gxhdO101c006ModelView.getHakuriInputDataList()) {
+            if (!StringUtil.isEmpty(hakuriInputData.getSetsuuVal())) {
+                if (!NumberUtil.isIntegerNumeric(hakuriInputData.getSetsuuVal())) {
+                    setError(hakuriInputData, true, false, "XHD-000008", "ｾｯﾄ数入力");
                     return false;
                 }
-                //桁数ﾁｪｯｸ(小数なし)(スタート)
-                if (!NumberUtil.isValidDigits(new BigDecimal(ptnKyoriXData.getStartVal()), 3, 0)){
-                    setError(ptnKyoriXData, true, false, "XHD-000006", "スタート", 3);
+
+                if (4 < StringUtil.length(hakuriInputData.getSetsuuVal())) {
+                    setError(hakuriInputData, true, false, "XHD-000006", "ｾｯﾄ数入力", "4");
+                    return false;
+                }
+            }
+
+            if (!StringUtil.isEmpty(hakuriInputData.getBikouVal())) {                
+                if (20 < StringUtil.length(hakuriInputData.getBikouVal())) {
+                    setError(hakuriInputData, false, true, "XHD-000006", "備考", "20");
                     return false;
                 }
             }
             
-            if (!StringUtil.isEmpty(ptnKyoriXData.getEndVal())) {
-                //型ﾁｪｯｸ(エンド)
-                if (!NumberUtil.isNumeric(ptnKyoriXData.getEndVal())) {
-                    setError(ptnKyoriXData, false, true, "XHD-000008", "エンド");
+            if (!StringUtil.isEmpty(hakuriInputData.getSetsuuVal()) && StringUtil.isEmpty(hakuriInputData.getBikouVal())) {
+                    setError(hakuriInputData, false, true, "XHD-000003", "備考");
                     return false;
-                }
-                //桁数ﾁｪｯｸ(小数なし)(エンド)
-                if (!NumberUtil.isValidDigits(new BigDecimal(ptnKyoriXData.getEndVal()), 3, 0)){
-                    setError(ptnKyoriXData, false, true, "XHD-000006", "エンド", 3);
+            }
+            
+            if (StringUtil.isEmpty(hakuriInputData.getSetsuuVal()) && !StringUtil.isEmpty(hakuriInputData.getBikouVal())) {
+                    setError(hakuriInputData,  true, false, "XHD-000003", "ｾｯﾄ数入力");
                     return false;
-                }
-                ptnKyoriXData.setEndTextBackColor("");
             }
         }
 
@@ -149,13 +175,13 @@ public class GXHDO101C006 implements Serializable {
     /**
      * エラーセット
      *
-     * @param ptnKyoriXData 剥離・画処NGデータ
-     * @param isStartErr スタートエラー
-     * @param isEndErr エンドエラー
+     * @param hakuriInputData 剥離内容入力データ
+     * @param isSetsuuErr ｾｯﾄ数入力エラー
+     * @param isBikouErr 備考エラー
      * @param errorId エラーID
      * @param errParams エラーパラメータ
      */
-    private void setError(GXHDO101C006Model.PtnKyoriXData ptnKyoriXData, boolean isStartErr, boolean isEndErr, String errorId, Object... errParams) {
+    private void setError(GXHDO101C006Model.HakuriInputData hakuriInputData, boolean isSetsuuErr, boolean isBikouErr, String errorId, Object... errParams) {
 
         // メッセージをセット
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -164,14 +190,14 @@ public class GXHDO101C006 implements Serializable {
         facesContext.addMessage(null, message);
 
         //エラー項目に背景色をセット
-        // スタートエラー
-        if (isStartErr) {
-            ptnKyoriXData.setStartTextBackColor(ErrUtil.ERR_BACK_COLOR);
+        // ｾｯﾄ数入力エラー
+        if (isSetsuuErr) {
+            hakuriInputData.setSetsuuTextBackColor(ErrUtil.ERR_BACK_COLOR);
         }
 
-        // エンドエラー
-        if (isEndErr) {
-            ptnKyoriXData.setEndTextBackColor(ErrUtil.ERR_BACK_COLOR);
+        // 備考エラー
+        if (isBikouErr) {
+            hakuriInputData.setBikouTextBackColor(ErrUtil.ERR_BACK_COLOR);
         }
     }
 
@@ -179,9 +205,9 @@ public class GXHDO101C006 implements Serializable {
      * 背景色のクリア処理
      */
     private void clearBackColor() {
-        for (GXHDO101C006Model.PtnKyoriXData ptnKyoriXData : this.gxhdO101c006ModelView.getPtnKyoriXDataList()) {
-            ptnKyoriXData.setStartTextBackColor("");
-            ptnKyoriXData.setEndTextBackColor("");
+        for (GXHDO101C006Model.HakuriInputData hakuriInputData : this.gxhdO101c006ModelView.getHakuriInputDataList()) {
+            hakuriInputData.setSetsuuTextBackColor("");
+            hakuriInputData.setBikouTextBackColor("");
         }
     }
 }

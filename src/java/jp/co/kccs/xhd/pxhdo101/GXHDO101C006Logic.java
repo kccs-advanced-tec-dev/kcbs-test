@@ -1,226 +1,169 @@
 /*
- * Copyright 2018 Kyocera Communication Systems Co., Ltd All rights reserved.
+ * Copyright 2019 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.pxhdo101;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.model.GXHDO101C006Model;
+import jp.co.kccs.xhd.util.ErrUtil;
+import jp.co.kccs.xhd.util.MessageUtil;
+import jp.co.kccs.xhd.util.StringUtil;
 
 /**
  * ===============================================================================<br>
  * <br>
  * システム名	品質DB(コンデンサ)<br>
  * <br>
- * 変更日	2018/12/08<br>
+ * 変更日	2019/03/05<br>
  * 計画書No	K1811-DS001<br>
- * 変更者	SYSNAVI K.Hisanaaga<br>
+ * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
  * ===============================================================================<br>
  */
 /**
- * GXHDO101C006(剥離・画処NG)ロジッククラス
+ * GXHDO101C006Logic(剥離内容入力)ロジッククラス
  */
 public class GXHDO101C006Logic {
 
-    public static GXHDO101C006Model createGXHDO101C006Model(String lotNo) {
+    /**
+     * 剥離内容入力画面のモデルデータを作成する
+     *
+     * @param setsuuInput ｾｯﾄ数入力
+     * @param bikou 備考
+     * @return モデルデータ
+     */
+    public static GXHDO101C006Model createGXHDO101C006Model(String[] setsuuInput, String[] bikou) {
         GXHDO101C006Model gxhdo101c006Model = new GXHDO101C006Model();
-        List<GXHDO101C006Model.PtnKyoriXData> ptnKyoriXDataList = new ArrayList<>();
+        List<GXHDO101C006Model.HakuriInputData> hakuriInputDataList = new ArrayList<>();
 
-        // 剥離・画処NG(1行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "1", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(2行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "2", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(3行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "3", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(4行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "4", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(5行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "5", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(6行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "6", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(7行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "7", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(8行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "8", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(9行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "9", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(10行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "10", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(11行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "11", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(12行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "12", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(13行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "13", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "14", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "15", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "16", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "17", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "18", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "19", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "20", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "21", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "22", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "23", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "24", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "25", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "26", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "27", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "28", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "29", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "30", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "31", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "32", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "33", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "34", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "35", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "36", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "37", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "38", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "39", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "40", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "41", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "42", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "43", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "44", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "45", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "46", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "47", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "48", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "49", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "50", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "51", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "52", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "53", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "54", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "55", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "56", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "57", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "58", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "59", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "60", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "61", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "62", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "63", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "64", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "65", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "66", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "67", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "68", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "69", "", "TEXT", "3", "", "", "TEXT", "3", ""));
-        // 剥離・画処NG(14行目)
-        ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c006Model, "70", "", "TEXT", "3", "", "", "TEXT", "3", ""));
+        //剥離内容入力のデータをセットする
+        for (int i = 0; i < setsuuInput.length; i++) {
+            hakuriInputDataList.add(getInitHakuriInputData(gxhdo101c006Model, String.valueOf(i + 1), setsuuInput[i], "TEXT", "4", "", bikou[i], "TEXT", "20", ""));
+        }
 
-        gxhdo101c006Model.setPtnKyoriXDataList(ptnKyoriXDataList);
+        gxhdo101c006Model.setHakuriInputDataList(hakuriInputDataList);
 
         return gxhdo101c006Model;
     }
 
     /**
-     * 剥離・画処NGデータ初期データ取得処理
+     * 剥離内容入力データ初期データ取得処理
      *
-     * @param gxhdo101c006Model 剥離・画処NG画面モデル
-     * @param ptnKyoriX 剥離・画処NG
-     * @param startVal スタート項目(値)
-     * @param startInputType　スタート項目(入力タイプ)
-     * @param startTextMaxLength　スタート項目(テキストMaxLength)
-     * @param startTextBackColor　スタート項目(BackGround)
-     * @param endVal エンド項目(値)
-     * @param endInputType エンド項目(入力タイプ)
-     * @param endTextMaxLength　エンド項目(テキストMaxLength)
-     * @param endTextBackColor　エンド項目(BackGround)
-     * @return PTN距離データ
+     * @param gxhdo101c006Model 剥離内容入力画面モデル
+     * @param hakuriInput 剥離内容入力
+     * @param setsuuVal ｾｯﾄ数入力項目(値)
+     * @param setsuuInputType　ｾｯﾄ数入力項目(入力タイプ)
+     * @param setsuuTextMaxLength　ｾｯﾄ数入力項目(テキストMaxLength)
+     * @param setsuuTextBackColor　ｾｯﾄ数入力項目(BackGround)
+     * @param bikouVal 備考項目(値)
+     * @param bikouInputType 備考項目(入力タイプ)
+     * @param bikouTextMaxLength　備考項目(テキストMaxLength)
+     * @param bikouTextBackColor　備考項目(BackGround)
+     * @return 剥離内容入力データ
      */
-    private static GXHDO101C006Model.PtnKyoriXData getInitPtnKyoriXData(
-            GXHDO101C006Model gxhdo101c006Model, String ptnKyoriX,
-            String startVal, String startInputType, String startTextMaxLength, String startTextBackColor,
-            String endVal, String endInputType, String endTextMaxLength, String endTextBackColor) {
-        GXHDO101C006Model.PtnKyoriXData ptnKyoriXData = gxhdo101c006Model.new PtnKyoriXData();
-        //剥離・画処NG
-        ptnKyoriXData.setPtnKyoriX(ptnKyoriX);
-        // スタート
-        ptnKyoriXData.setStartVal(startVal);
-        if ("TEXT".equals(startInputType)) {
-            ptnKyoriXData.setStartTextRendered(true);
-            ptnKyoriXData.setStartLabelRendered(false);
+    private static GXHDO101C006Model.HakuriInputData getInitHakuriInputData(
+            GXHDO101C006Model gxhdo101c006Model, String hakuriInput,
+            String setsuuVal, String setsuuInputType, String setsuuTextMaxLength, String setsuuTextBackColor,
+            String bikouVal, String bikouInputType, String bikouTextMaxLength, String bikouTextBackColor) {
+        GXHDO101C006Model.HakuriInputData hakuriInputData = gxhdo101c006Model.new HakuriInputData();
+        //剥離内容入力
+        hakuriInputData.setHakuriInput(hakuriInput);
+        // ｾｯﾄ数入力
+        hakuriInputData.setSetsuuVal(setsuuVal);
+        if ("TEXT".equals(setsuuInputType)) {
+            hakuriInputData.setSetsuuTextRendered(true);
+            hakuriInputData.setSetsuuLabelRendered(false);
 
         } else {
-            ptnKyoriXData.setStartTextRendered(false);
-            ptnKyoriXData.setStartLabelRendered(true);
+            hakuriInputData.setSetsuuTextRendered(false);
+            hakuriInputData.setSetsuuLabelRendered(true);
         }
-        ptnKyoriXData.setStartTextMaxLength(startTextMaxLength);
-        ptnKyoriXData.setStartTextBackColor(startTextBackColor);
+        hakuriInputData.setSetsuuTextMaxLength(setsuuTextMaxLength);
+        hakuriInputData.setSetsuuTextBackColor(setsuuTextBackColor);
 
-        // エンド
-        ptnKyoriXData.setEndVal(endVal);
-        if ("TEXT".equals(endInputType)) {
-            ptnKyoriXData.setEndTextRendered(true);
-            ptnKyoriXData.setEndLabelRendered(false);
+        // 備考
+        hakuriInputData.setBikouVal(bikouVal);
+        if ("TEXT".equals(bikouInputType)) {
+            hakuriInputData.setBikouTextRendered(true);
+            hakuriInputData.setBikouLabelRendered(false);
         } else {
-            ptnKyoriXData.setEndTextRendered(false);
-            ptnKyoriXData.setEndLabelRendered(true);
+            hakuriInputData.setBikouTextRendered(false);
+            hakuriInputData.setBikouLabelRendered(true);
         }
-        ptnKyoriXData.setEndTextMaxLength(endTextMaxLength);
-        ptnKyoriXData.setEndTextBackColor(endTextBackColor);
+        hakuriInputData.setBikouTextMaxLength(bikouTextMaxLength);
+        hakuriInputData.setBikouTextBackColor(bikouTextBackColor);
 
-        return ptnKyoriXData;
+        return hakuriInputData;
     }
+
+    /**
+     * 入力チェック
+     *
+     * @param gXHDO101C006Model 剥離内容入力サブ画面用モデル
+     * @return エラーリスト
+     */
+    public static List<String> checkInput(GXHDO101C006Model gXHDO101C006Model) {
+
+        List<String> errorList = new ArrayList<>();
+        List<GXHDO101C006Model.HakuriInputData> hakuriInputDataList = gXHDO101C006Model.getHakuriInputDataList();
+        for (GXHDO101C006Model.HakuriInputData hakuriInput : hakuriInputDataList) {
+            if (StringUtil.isEmpty(hakuriInput.getSetsuuVal())) {
+                hakuriInput.setSetsuuTextBackColor(ErrUtil.ERR_BACK_COLOR);
+                errorList.add(MessageUtil.getMessage("XHD-000037", "ｾｯﾄ数入力"));
+                return errorList;
+            }
+
+            if (StringUtil.isEmpty(hakuriInput.getBikouVal())) {
+                hakuriInput.setBikouTextBackColor(ErrUtil.ERR_BACK_COLOR);
+                errorList.add(MessageUtil.getMessage("XHD-000037", "備考"));
+                return errorList;
+            }
+        }
+
+        return errorList;
+    }
+
+    /**
+     * サブ画面からの戻り値をメイン画面の項目リストにセットする
+     *
+     * @param gXHDO101C006Model 剥離内容入力サブ画面用モデル
+     * @param itemList 項目リスト
+     */
+    public static void setReturnData(GXHDO101C006Model gXHDO101C006Model, List<FXHDD01> itemList) {
+
+        List<String> setsuuDataList = new ArrayList<>();
+        List<String> bikouDataList = new ArrayList<>();
+        for (GXHDO101C006Model.HakuriInputData hakuriInputdata : gXHDO101C006Model.getHakuriInputDataList()) {
+            if (!StringUtil.isEmpty(hakuriInputdata.getSetsuuVal())) {
+                setsuuDataList.add(hakuriInputdata.getSetsuuVal());
+            }
+
+            if (!StringUtil.isEmpty(hakuriInputdata.getBikouVal())) {
+                bikouDataList.add(hakuriInputdata.getBikouVal());
+            }
+        }
+
+    }
+
+    /**
+     * 項目データ取得
+     *
+     * @param listData 項目データリスト
+     * @param itemId 項目ID
+     * @return 項目データ
+     */
+    private static FXHDD01 getItemRow(List<FXHDD01> listData, String itemId) {
+        List<FXHDD01> selectData
+                = listData.stream().filter(n -> itemId.equals(n.getItemId())).collect(Collectors.toList());
+        if (null != selectData && 0 < selectData.size()) {
+            return selectData.get(0);
+        } else {
+            return null;
+        }
+    }
+
 }
