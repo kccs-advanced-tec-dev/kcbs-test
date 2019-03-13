@@ -694,8 +694,6 @@ public class GXHDO101B004 implements IFormLogic {
     public ProcessData doHakuriGNGKeisan(ProcessData processData) {
         
         QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
-        QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
-        QueryRunner queryRunnerWip = new QueryRunner(processData.getDataSourceWip());
 
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
@@ -718,11 +716,13 @@ public class GXHDO101B004 implements IFormLogic {
         try {
             // (19)[積層履歴ﾃﾞｰﾀ]から、ﾃﾞｰﾀを取得
             Map sekisouRirekiData = this.loadSekisouRirekiData(queryRunnerQcdb, lotNo);
-            if (sekisouRirekiData == null || sekisouRirekiData.isEmpty()) {
+            if (sekisouRirekiData == null || sekisouRirekiData.isEmpty() || 
+                    (sekisouRirekiData.get("HakuriErrSuu") == null && sekisouRirekiData.get("CcdErrSuu") == null) ) {
                 // A.取得出来なかった場合 ｱ.Ⅲ.画面表示仕様(20)を発行する。
                 // (20)[剥離NG履歴]から、ﾃﾞｰﾀを取得
                 Map hakuringrirekiData = this.loadHakuringrirekiData(queryRunnerQcdb, lotNo);
-                if (hakuringrirekiData == null || hakuringrirekiData.isEmpty()) {
+                if (hakuringrirekiData == null || hakuringrirekiData.isEmpty() || 
+                    (hakuringrirekiData.get("SekisouSuu") == null)) {
                     // α.取得出来なかった場合ｴﾗｰﾒｯｾｰｼﾞを表示し、以降の処理は実行しない。
                     // ・ｴﾗｰｺｰﾄﾞ:XHD-000036
                     // ・ｴﾗ-ﾒｯｾｰｼﾞ:剥離/画処NGﾃﾞｰﾀが取得出来ません。
@@ -738,9 +738,12 @@ public class GXHDO101B004 implements IFormLogic {
                     // a.変数SUM1
                     BigDecimal sumSekisouSuu= BigDecimal.ZERO;
                     BigDecimal valueAVE1= BigDecimal.ZERO;
-                    sumSekisouSuu = new BigDecimal(String.valueOf(hakuringrirekiData.get("SekisouSuu")));
 
-                    if (setSuu != BigDecimal.ZERO){
+                    for (Object key : hakuringrirekiData.keySet()) {
+                        sumSekisouSuu = new BigDecimal(String.valueOf(hakuringrirekiData.get(key)));
+                    }
+
+                    if (!setSuu.equals(BigDecimal.ZERO)){
                         valueAVE1 = sumSekisouSuu.divide(setSuu);
                         valueAVE1Int = valueAVE1.intValue();
                     }
@@ -754,9 +757,19 @@ public class GXHDO101B004 implements IFormLogic {
                 // 剥離ｴﾗｰ数
                 BigDecimal sumHakuriErrSuu= BigDecimal.ZERO;
                 BigDecimal valueAVE1= BigDecimal.ZERO;
-                sumHakuriErrSuu = new BigDecimal(String.valueOf(sekisouRirekiData.get("HakuriErrSuu")));
+                // 画処ｴﾗｰ数
+                BigDecimal sumCcdErrSuu= BigDecimal.ZERO;
+                BigDecimal valueAVE2= BigDecimal.ZERO;
 
-                if (setSuu != BigDecimal.ZERO){
+                for (Object key : sekisouRirekiData.keySet()) {
+                    if("HakuriErrSuu".equals(key)){
+                        sumHakuriErrSuu = new BigDecimal(String.valueOf(sekisouRirekiData.get(key)));
+                    }
+                    if("CcdErrSuu".equals(key)){
+                        sumCcdErrSuu = new BigDecimal(String.valueOf(sekisouRirekiData.get(key)));
+                    }
+                }
+                if (!setSuu.equals(BigDecimal.ZERO)){
                     valueAVE1 = sumHakuriErrSuu.divide(setSuu);
                     valueAVE1Int = valueAVE1.intValue();
                 }
@@ -764,14 +777,9 @@ public class GXHDO101B004 implements IFormLogic {
 
                 // ｳ.取得した画処ｴﾗｰ数を合計する。この値を「変数SUM2」とする。
                 // ｴ. ｳ ÷ 画面.セット数の計算を行う。この値を「変数AVE2」とする。
-                // 画処ｴﾗｰ数
-                BigDecimal sumCcdErrSuu= BigDecimal.ZERO;
-                BigDecimal valueAVE2= BigDecimal.ZERO;
-                sumCcdErrSuu = new BigDecimal(String.valueOf(sekisouRirekiData.get("CcdErrSuu")));
-
-                if (setSuu != BigDecimal.ZERO){
+                if (!setSuu.equals(BigDecimal.ZERO)){
                     valueAVE2 = sumCcdErrSuu.divide(setSuu);
-                    valueAVE1Int = valueAVE2.intValue();
+                    valueAVE2Int = valueAVE2.intValue();
                 }
                 sumHensuu2 = sumCcdErrSuu.intValue();
             }
@@ -1666,16 +1674,13 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
      * @throws SQLException 例外エラー
      */
     private Map loadSekisouRirekiData(QueryRunner queryRunnerQcdb, String lotNo) throws SQLException {
-        String lotNo1 = lotNo.substring(0, 3);
-        String lotNo2 = lotNo.substring(3, 11);
         // 積層履歴ﾃﾞｰﾀの取得
         String sql = "SELECT sum(HakuriErrSuu) HakuriErrSuu,sum(CcdErrSuu) CcdErrSuu "
                 + "FROM sekisourirekidata "
-                + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = '001'";
+                + "WHERE LotNo = ? ";
 
         List<Object> params = new ArrayList<>();
-        params.add(lotNo1);
-        params.add(lotNo2);
+        params.add(lotNo);
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
@@ -1690,16 +1695,13 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
      * @throws SQLException 例外エラー
      */
     private Map loadHakuringrirekiData(QueryRunner queryRunnerQcdb, String lotNo) throws SQLException {
-        String lotNo1 = lotNo.substring(0, 3);
-        String lotNo2 = lotNo.substring(3, 11);
         // 剥離NG履歴ﾃﾞｰﾀの取得
         String sql = "SELECT sum(SekisouSuu) SekisouSuu"
                 + "FROM hakuringrireki "
-                + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = '001'";
+                + "WHERE LotNo = ? ";
 
         List<Object> params = new ArrayList<>();
-        params.add(lotNo1);
-        params.add(lotNo2);
+        params.add(lotNo);
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
