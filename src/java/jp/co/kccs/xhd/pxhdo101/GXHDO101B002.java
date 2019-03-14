@@ -91,7 +91,7 @@ public class GXHDO101B002 implements IFormLogic {
             processData.setProcessName("initial");
 
             // 初期表示データ設定処理
-            processData = setInitDate(processData);
+            processData = setInitData(processData);
             if (processData.isFatalError()) {
                 if (!processData.getInitMessageList().isEmpty()) {
                     // 初期表示メッセージが設定されている場合、メッセージ表示のイベントを呼ぶ
@@ -1094,7 +1094,7 @@ public class GXHDO101B002 implements IFormLogic {
      * @return 処理制御データ
      * @throws SQLException 例外エラー
      */
-    private ProcessData setInitDate(ProcessData processData) throws SQLException {
+    private ProcessData setInitData(ProcessData processData) throws SQLException {
 
         QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
         QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
