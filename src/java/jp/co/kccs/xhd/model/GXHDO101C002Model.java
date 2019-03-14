@@ -19,7 +19,7 @@ import java.util.List;
  * ===============================================================================<br>
  */
 /**
- * GXHDO101C002Model(PTN距離Xサブ画面用)のモデルクラスです。
+ * GXHDO101C002Model(PTN距離ｽﾀｰﾄサブ画面用)のモデルクラスです。
  *
  * @author SYSNAVI K.Hisanaga
  * @since 2018/12/04
@@ -35,403 +35,403 @@ public class GXHDO101C002Model implements Cloneable {
     @Override
     public GXHDO101C002Model clone() throws CloneNotSupportedException {
         GXHDO101C002Model cloneModel = (GXHDO101C002Model) super.clone();
-        List<GXHDO101C002Model.PtnKyoriXData> newList = new ArrayList();
-        for (GXHDO101C002Model.PtnKyoriXData data : this.ptnKyoriXDataList) {
-            GXHDO101C002Model.PtnKyoriXData newData = new GXHDO101C002Model.PtnKyoriXData();
-            newData.setPtnKyoriX(data.ptnKyoriX);
-            newData.setStartVal(data.getStartVal());
-            newData.setStartTextRendered(data.isStartTextRendered());
-            newData.setStartTextMaxLength(data.getStartTextMaxLength());
-            newData.setStartTextBackColor(data.getStartTextBackColor());
-            newData.setStartLabelRendered(data.isStartLabelRendered());
-            newData.setStartTabIndex(data.getStartTabIndex());
-            newData.setEndVal(data.getEndVal());
-            newData.setEndTextRendered(data.isEndTextRendered());
-            newData.setEndTextMaxLength(data.getEndTextMaxLength());
-            newData.setEndTextBackColor(data.getEndTextBackColor());
-            newData.setEndLabelRendered(data.isEndLabelRendered());
-            newData.setEndTabIndex(data.getEndTabIndex());
+        List<GXHDO101C002Model.PtnKyoriStartData> newList = new ArrayList();
+        for (GXHDO101C002Model.PtnKyoriStartData data : this.ptnKyoriStartDataList) {
+            GXHDO101C002Model.PtnKyoriStartData newData = new GXHDO101C002Model.PtnKyoriStartData();
+            newData.setPtnKyoriStart(data.ptnKyoriStart);
+            newData.setPtnKyoriXVal(data.getPtnKyoriXVal());
+            newData.setPtnKyoriXTextRendered(data.isPtnKyoriXTextRendered());
+            newData.setPtnKyoriXTextMaxLength(data.getPtnKyoriXTextMaxLength());
+            newData.setPtnKyoriXTextBackColor(data.getPtnKyoriXTextBackColor());
+            newData.setPtnKyoriXLabelRendered(data.isPtnKyoriXLabelRendered());
+            newData.setPtnKyoriXTabIndex(data.getPtnKyoriXTabIndex());
+            newData.setPtnKyoriYVal(data.getPtnKyoriYVal());
+            newData.setPtnKyoriYTextRendered(data.isPtnKyoriYTextRendered());
+            newData.setPtnKyoriYTextMaxLength(data.getPtnKyoriYTextMaxLength());
+            newData.setPtnKyoriYTextBackColor(data.getPtnKyoriYTextBackColor());
+            newData.setPtnKyoriYLabelRendered(data.isPtnKyoriYLabelRendered());
+            newData.setPtnKyoriYTabIndex(data.getPtnKyoriYTabIndex());
             newList.add(newData);
         }
 
-        cloneModel.setPtnKyoriXDataList(newList);
+        cloneModel.setPtnKyoriStartDataList(newList);
         return cloneModel;
     }
     
     /**
      * PTN距離XｽﾀｰﾄMIN設定項目ID
      */
-    private String returnItemIdStartMin ="";
+    private String returnItemIdStartXMin ="";
     
     /**
-     * PTN距離XｴﾝﾄﾞMIN設定項目ID
+     * PTN距離YｽﾀｰﾄMIN設定項目ID
      */
-    private String returnItemIdEndMin ="";
+    private String returnItemIdStartYMin ="";
     
     /**
-     * PTN距離Xデータリスト
+     * PTN距離ｽﾀｰﾄデータリスト
      */
-    private List<PtnKyoriXData> ptnKyoriXDataList;
+    private List<PtnKyoriStartData> ptnKyoriStartDataList;
 
     /**
      * コンストラクタ
      */
     public GXHDO101C002Model() {
-        this.ptnKyoriXDataList = new ArrayList<>();
+        this.ptnKyoriStartDataList = new ArrayList<>();
     }
 
     /**
      * PTN距離XｽﾀｰﾄMIN設定項目ID
-     * @return the returnItemIdStartMin
+     * @return the returnItemIdStartXMin
      */
-    public String getReturnItemIdStartMin() {
-        return returnItemIdStartMin;
+    public String getReturnItemIdStartXMin() {
+        return returnItemIdStartXMin;
     }
 
     /**
      * PTN距離XｽﾀｰﾄMIN設定項目ID
-     * @param returnItemIdStartMin the returnItemIdStartMin to set
+     * @param returnItemIdStartXMin the returnItemIdStartXMin to set
      */
-    public void setReturnItemIdStartMin(String returnItemIdStartMin) {
-        this.returnItemIdStartMin = returnItemIdStartMin;
+    public void setReturnItemIdStartXMin(String returnItemIdStartXMin) {
+        this.returnItemIdStartXMin = returnItemIdStartXMin;
     }
 
     /**
-     * PTN距離XｴﾝﾄﾞMIN設定項目ID
-     * @return the returnItemIdEndMin
+     * PTN距離YｽﾀｰﾄMIN設定項目ID
+     * @return the returnItemIdStartYMin
      */
-    public String getReturnItemIdEndMin() {
-        return returnItemIdEndMin;
+    public String getReturnItemIdStartYMin() {
+        return returnItemIdStartYMin;
     }
 
     /**
-     * PTN距離XｴﾝﾄﾞMIN設定項目ID
-     * @param returnItemIdEndMin the returnItemIdEndMin to set
+     * PTN距離YｽﾀｰﾄMIN設定項目ID
+     * @param returnItemIdStartYMin the returnItemIdStartYMin to set
      */
-    public void setReturnItemIdEndMin(String returnItemIdEndMin) {
-        this.returnItemIdEndMin = returnItemIdEndMin;
+    public void setReturnItemIdStartYMin(String returnItemIdStartYMin) {
+        this.returnItemIdStartYMin = returnItemIdStartYMin;
     }
 
     /**
-     * PTN距離Xデータリスト
+     * PTN距離ｽﾀｰﾄデータリスト
      *
-     * @return the ptnKyoriXDataList
+     * @return the ptnKyoriStartDataList
      */
-    public List<PtnKyoriXData> getPtnKyoriXDataList() {
-        return ptnKyoriXDataList;
+    public List<PtnKyoriStartData> getPtnKyoriStartDataList() {
+        return ptnKyoriStartDataList;
     }
 
     /**
-     * PTN距離Xデータリスト
+     * PTN距離ｽﾀｰﾄデータリスト
      *
-     * @param ptnKyoriXDataList the ptnKyoriXDataList to set
+     * @param ptnKyoriStartDataList the ptnKyoriStartDataList to set
      */
-    public void setPtnKyoriXDataList(List<PtnKyoriXData> ptnKyoriXDataList) {
-        this.ptnKyoriXDataList = ptnKyoriXDataList;
+    public void setPtnKyoriStartDataList(List<PtnKyoriStartData> ptnKyoriStartDataList) {
+        this.ptnKyoriStartDataList = ptnKyoriStartDataList;
     }
 
     /**
-     * PTN距離Xデータ
+     * PTN距離ｽﾀｰﾄデータ
      */
-    public class PtnKyoriXData {
+    public class PtnKyoriStartData {
 
         /**
-         * PTN距離X
+         * PTN距離ｽﾀｰﾄ
          */
-        private String ptnKyoriX;
+        private String ptnKyoriStart;
 
         /**
-         * スタート項目(値)
+         * PTN距離X(値)
          */
-        private String startVal;
+        private String ptnKyoriXVal;
 
         /**
-         * スタート項目_テキスト(Rendered)
+         * PTN距離X_テキスト(Rendered)
          */
-        private boolean startTextRendered;
+        private boolean ptnKyoriXTextRendered;
 
         /**
-         * スタート項目_テキスト(MaxLength)
+         * PTN距離X_テキスト(MaxLength)
          */
-        private String startTextMaxLength;
+        private String ptnKyoriXTextMaxLength;
 
         /**
-         * スタート項目_テキスト(BackGround)
+         * PTN距離X_テキスト(BackGround)
          */
-        private String startTextBackColor;
+        private String ptnKyoriXTextBackColor;
 
         /**
-         * スタート項目_ラベル(Rendered)
+         * PTN距離X_ラベル(Rendered)
          */
-        private boolean startLabelRendered;
+        private boolean ptnKyoriXLabelRendered;
 
         /**
-         * スタート項目(タブインデックス)
+         * PTN距離X(タブインデックス)
          */
-        private String startTabIndex;
+        private String ptnKyoriXTabIndex;
 
         /**
-         * エンド項目(値)
+         * PTN距離Y(値)
          */
-        private String endVal;
+        private String ptnKyoriYVal;
 
         /**
-         * エンド項目_テキスト(Rendered)
+         * PTN距離Y_テキスト(Rendered)
          */
-        private boolean endTextRendered;
+        private boolean ptnKyoriYTextRendered;
 
         /**
-         * エンド項目_テキスト(MaxLength)
+         * PTN距離Y_テキスト(MaxLength)
          */
-        private String endTextMaxLength;
+        private String ptnKyoriYTextMaxLength;
 
         /**
-         * エンド項目_テキスト(BackGround)
+         * PTN距離Y_テキスト(BackGround)
          */
-        private String endTextBackColor;
+        private String ptnKyoriYTextBackColor;
 
         /**
-         * エンド項目_ラベル(Rendered)
+         * PTN距離Y_ラベル(Rendered)
          */
-        private boolean endLabelRendered;
+        private boolean ptnKyoriYLabelRendered;
 
         /**
-         * エンド項目(タブインデックス)
+         * PTN距離Y(タブインデックス)
          */
-        private String endTabIndex;
+        private String ptnKyoriYTabIndex;
 
         /**
-         * PTN距離X
+         * PTN距離ｽﾀｰﾄ
          *
-         * @return the ptnKyoriX
+         * @return the ptnKyoriStart
          */
-        public String getPtnKyoriX() {
-            return ptnKyoriX;
+        public String getPtnKyoriStart() {
+            return ptnKyoriStart;
         }
 
         /**
-         * PTN距離X
+         * PTN距離ｽﾀｰﾄ
          *
-         * @param ptnKyoriX the ptnKyoriX to set
+         * @param ptnKyoriStart the ptnKyoriStart to set
          */
-        public void setPtnKyoriX(String ptnKyoriX) {
-            this.ptnKyoriX = ptnKyoriX;
+        public void setPtnKyoriStart(String ptnKyoriStart) {
+            this.ptnKyoriStart = ptnKyoriStart;
         }
 
         /**
-         * スタート項目(値)
+         * PTN距離X(値)
          *
-         * @return the startVal
+         * @return the ptnKyoriXVal
          */
-        public String getStartVal() {
-            return startVal;
+        public String getPtnKyoriXVal() {
+            return ptnKyoriXVal;
         }
 
         /**
-         * スタート項目(値)
+         * PTN距離X(値)
          *
-         * @param startVal the startVal to set
+         * @param ptnKyoriXVal the ptnKyoriXVal to set
          */
-        public void setStartVal(String startVal) {
-            this.startVal = startVal;
+        public void setPtnKyoriXVal(String ptnKyoriXVal) {
+            this.ptnKyoriXVal = ptnKyoriXVal;
         }
 
         /**
-         * スタート項目_テキスト(Rendered)
+         * PTN距離X_テキスト(Rendered)
          *
-         * @return the startTextRendered
+         * @return the ptnKyoriXTextRendered
          */
-        public boolean isStartTextRendered() {
-            return startTextRendered;
+        public boolean isPtnKyoriXTextRendered() {
+            return ptnKyoriXTextRendered;
         }
 
         /**
-         * スタート項目_テキスト(Rendered)
+         * PTN距離X_テキスト(Rendered)
          *
-         * @param startTextRendered the startTextRendered to set
+         * @param ptnKyoriXTextRendered the ptnKyoriXTextRendered to set
          */
-        public void setStartTextRendered(boolean startTextRendered) {
-            this.startTextRendered = startTextRendered;
+        public void setPtnKyoriXTextRendered(boolean ptnKyoriXTextRendered) {
+            this.ptnKyoriXTextRendered = ptnKyoriXTextRendered;
         }
 
         /**
-         * スタート項目_テキスト(MaxLength)
+         * PTN距離X_テキスト(MaxLength)
          *
-         * @return the startTextMaxLength
+         * @return the ptnKyoriXTextMaxLength
          */
-        public String getStartTextMaxLength() {
-            return startTextMaxLength;
+        public String getPtnKyoriXTextMaxLength() {
+            return ptnKyoriXTextMaxLength;
         }
 
         /**
-         * スタート項目_テキスト(MaxLength)
+         * PTN距離X_テキスト(MaxLength)
          *
-         * @param startTextMaxLength the startTextMaxLength to set
+         * @param ptnKyoriXTextMaxLength the ptnKyoriXTextMaxLength to set
          */
-        public void setStartTextMaxLength(String startTextMaxLength) {
-            this.startTextMaxLength = startTextMaxLength;
+        public void setPtnKyoriXTextMaxLength(String ptnKyoriXTextMaxLength) {
+            this.ptnKyoriXTextMaxLength = ptnKyoriXTextMaxLength;
         }
 
         /**
-         * スタート項目_テキスト(BackGround)
+         * PTN距離X_テキスト(BackGround)
          *
-         * @return the startTextBackColor
+         * @return the ptnKyoriXTextBackColor
          */
-        public String getStartTextBackColor() {
-            return startTextBackColor;
+        public String getPtnKyoriXTextBackColor() {
+            return ptnKyoriXTextBackColor;
         }
 
         /**
-         * スタート項目_テキスト(BackGround)
+         * PTN距離X_テキスト(BackGround)
          *
-         * @param startTextBackColor the startTextBackColor to set
+         * @param ptnKyoriXTextBackColor the ptnKyoriXTextBackColor to set
          */
-        public void setStartTextBackColor(String startTextBackColor) {
-            this.startTextBackColor = startTextBackColor;
+        public void setPtnKyoriXTextBackColor(String ptnKyoriXTextBackColor) {
+            this.ptnKyoriXTextBackColor = ptnKyoriXTextBackColor;
         }
 
         /**
-         * スタート項目_ラベル(Rendered)
+         * PTN距離X_ラベル(Rendered)
          *
-         * @return the startLabelRendered
+         * @return the ptnKyoriXLabelRendered
          */
-        public boolean isStartLabelRendered() {
-            return startLabelRendered;
+        public boolean isPtnKyoriXLabelRendered() {
+            return ptnKyoriXLabelRendered;
         }
 
         /**
-         * スタート項目_ラベル(Rendered)
+         * PTN距離X_ラベル(Rendered)
          *
-         * @param startLabelRendered the startLabelRendered to set
+         * @param ptnKyoriXLabelRendered the ptnKyoriXLabelRendered to set
          */
-        public void setStartLabelRendered(boolean startLabelRendered) {
-            this.startLabelRendered = startLabelRendered;
+        public void setPtnKyoriXLabelRendered(boolean ptnKyoriXLabelRendered) {
+            this.ptnKyoriXLabelRendered = ptnKyoriXLabelRendered;
         }
 
         /**
-         * スタート項目(タブインデックス)
+         * PTN距離X(タブインデックス)
          * 
-         * @return the startTabIndex
+         * @return the ptnKyoriXTabIndex
          */
-        public String getStartTabIndex() {
-            return startTabIndex;
+        public String getPtnKyoriXTabIndex() {
+            return ptnKyoriXTabIndex;
         }
 
         /**
-         * スタート項目(タブインデックス)
+         * PTN距離X(タブインデックス)
          * 
-         * @param startTabIndex the startTabIndex to set
+         * @param ptnKyoriXTabIndex the ptnKyoriXTabIndex to set
          */
-        public void setStartTabIndex(String startTabIndex) {
-            this.startTabIndex = startTabIndex;
+        public void setPtnKyoriXTabIndex(String ptnKyoriXTabIndex) {
+            this.ptnKyoriXTabIndex = ptnKyoriXTabIndex;
         }
 
         /**
-         * エンド項目(値)
+         * PTN距離Y(値)
          *
-         * @return the endVal
+         * @return the ptnKyoriYVal
          */
-        public String getEndVal() {
-            return endVal;
+        public String getPtnKyoriYVal() {
+            return ptnKyoriYVal;
         }
 
         /**
-         * エンド項目(値)
+         * PTN距離Y(値)
          *
-         * @param endVal the endVal to set
+         * @param ptnKyoriYVal the ptnKyoriYVal to set
          */
-        public void setEndVal(String endVal) {
-            this.endVal = endVal;
+        public void setPtnKyoriYVal(String ptnKyoriYVal) {
+            this.ptnKyoriYVal = ptnKyoriYVal;
         }
 
         /**
-         * エンド項目_テキスト(Rendered)
+         * PTN距離Y_テキスト(Rendered)
          *
-         * @return the endTextRendered
+         * @return the ptnKyoriYTextRendered
          */
-        public boolean isEndTextRendered() {
-            return endTextRendered;
+        public boolean isPtnKyoriYTextRendered() {
+            return ptnKyoriYTextRendered;
         }
 
         /**
-         * エンド項目_テキスト(Rendered)
+         * PTN距離Y_テキスト(Rendered)
          *
-         * @param endTextRendered the endTextRendered to set
+         * @param ptnKyoriYTextRendered the ptnKyoriYTextRendered to set
          */
-        public void setEndTextRendered(boolean endTextRendered) {
-            this.endTextRendered = endTextRendered;
+        public void setPtnKyoriYTextRendered(boolean ptnKyoriYTextRendered) {
+            this.ptnKyoriYTextRendered = ptnKyoriYTextRendered;
         }
 
         /**
-         * エンド項目_テキスト(MaxLength)
+         * PTN距離Y_テキスト(MaxLength)
          *
-         * @return the endTextMaxLength
+         * @return the ptnKyoriYTextMaxLength
          */
-        public String getEndTextMaxLength() {
-            return endTextMaxLength;
+        public String getPtnKyoriYTextMaxLength() {
+            return ptnKyoriYTextMaxLength;
         }
 
         /**
-         * エンド項目_テキスト(MaxLength)
+         * PTN距離Y_テキスト(MaxLength)
          *
-         * @param endTextMaxLength the endTextMaxLength to set
+         * @param ptnKyoriYTextMaxLength the ptnKyoriYTextMaxLength to set
          */
-        public void setEndTextMaxLength(String endTextMaxLength) {
-            this.endTextMaxLength = endTextMaxLength;
+        public void setPtnKyoriYTextMaxLength(String ptnKyoriYTextMaxLength) {
+            this.ptnKyoriYTextMaxLength = ptnKyoriYTextMaxLength;
         }
 
         /**
-         * エンド項目_テキスト(BackGround)
+         * PTN距離Y_テキスト(BackGround)
          *
-         * @return the endTextBackColor
+         * @return the ptnKyoriYTextBackColor
          */
-        public String getEndTextBackColor() {
-            return endTextBackColor;
+        public String getPtnKyoriYTextBackColor() {
+            return ptnKyoriYTextBackColor;
         }
 
         /**
-         * エンド項目_テキスト(BackGround)
+         * PTN距離Y_テキスト(BackGround)
          *
-         * @param endTextBackColor the endTextBackColor to set
+         * @param ptnKyoriYTextBackColor the ptnKyoriYTextBackColor to set
          */
-        public void setEndTextBackColor(String endTextBackColor) {
-            this.endTextBackColor = endTextBackColor;
+        public void setPtnKyoriYTextBackColor(String ptnKyoriYTextBackColor) {
+            this.ptnKyoriYTextBackColor = ptnKyoriYTextBackColor;
         }
 
         /**
-         * エンド項目_ラベル(Rendered)
+         * PTN距離Y_ラベル(Rendered)
          *
-         * @return the endLabelRendered
+         * @return the ptnKyoriYLabelRendered
          */
-        public boolean isEndLabelRendered() {
-            return endLabelRendered;
+        public boolean isPtnKyoriYLabelRendered() {
+            return ptnKyoriYLabelRendered;
         }
 
         /**
-         * エンド項目_ラベル(Rendered)
+         * PTN距離Y_ラベル(Rendered)
          *
-         * @param endLabelRendered the endLabelRendered to set
+         * @param ptnKyoriYLabelRendered the ptnKyoriYLabelRendered to set
          */
-        public void setEndLabelRendered(boolean endLabelRendered) {
-            this.endLabelRendered = endLabelRendered;
+        public void setPtnKyoriYLabelRendered(boolean ptnKyoriYLabelRendered) {
+            this.ptnKyoriYLabelRendered = ptnKyoriYLabelRendered;
         }
 
         /**
-         * エンド項目(タブインデックス)
+         * PTN距離Y(タブインデックス)
          * 
-         * @return the endTabIndex
+         * @return the ptnKyoriYTabIndex
          */
-        public String getEndTabIndex() {
-            return endTabIndex;
+        public String getPtnKyoriYTabIndex() {
+            return ptnKyoriYTabIndex;
         }
 
         /**
-         * エンド項目(タブインデックス)
+         * PTN距離Y(タブインデックス)
          * 
-         * @param endTabIndex the endTabIndex to set
+         * @param ptnKyoriYTabIndex the ptnKyoriYTabIndex to set
          */
-        public void setEndTabIndex(String endTabIndex) {
-            this.endTabIndex = endTabIndex;
+        public void setPtnKyoriYTabIndex(String ptnKyoriYTabIndex) {
+            this.ptnKyoriYTabIndex = ptnKyoriYTabIndex;
         }
     }
 }

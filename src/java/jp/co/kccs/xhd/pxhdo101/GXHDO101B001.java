@@ -178,12 +178,12 @@ public class GXHDO101B001 implements IFormLogic {
     }
 
     /**
-     * PTN距離X(サブ画面Open)
+     * PTN距離ｽﾀｰﾄ(サブ画面Open)
      *
      * @param processData 処理制御データ
      * @return 処理制御データ
      */
-    public ProcessData openPtnKyoriX(ProcessData processData) {
+    public ProcessData openPtnKyoriStart(ProcessData processData) {
         try {
             // コールバックパラメータにてサブ画面起動用の値を設定
             processData.setCollBackParam("gxhdo101c002");
@@ -202,12 +202,12 @@ public class GXHDO101B001 implements IFormLogic {
     }
 
     /**
-     * PTN距離Y(サブ画面Open)
+     * PTN距離ｴﾝﾄﾞ(サブ画面Open)
      *
      * @param processData 処理制御データ
      * @return 処理制御データ
      */
-    public ProcessData openPtnKyoriY(ProcessData processData) {
+    public ProcessData openPtnKyoriEnd(ProcessData processData) {
         try {
             // コールバックパラメータにてサブ画面起動用の値を設定
             processData.setCollBackParam("gxhdo101c003");
@@ -439,19 +439,19 @@ public class GXHDO101B001 implements IFormLogic {
             return processData;
         }
 
-        // PTN距離X画面チェック
-        errorListSubForm = checkSubFormPtnKyoriX();
+        // PTN距離ｽﾀｰﾄ画面チェック
+        errorListSubForm = checkSubFormPtnKyoriStart();
         if (!errorListSubForm.isEmpty()) {
             processData.setSubInitDispMsgList(errorListSubForm);
-            processData.setMethod("openPtnKyoriX");
+            processData.setMethod("openPtnKyoriStart");
             return processData;
         }
 
-        // PTN距離Y画面チェック
-        errorListSubForm = checkSubFormPtnKyoriY();
+        // PTN距離ｴﾝﾄﾞ画面チェック
+        errorListSubForm = checkSubFormPtnKyoriEnd();
         if (!errorListSubForm.isEmpty()) {
             processData.setSubInitDispMsgList(errorListSubForm);
-            processData.setMethod("openPtnKyoriY");
+            processData.setMethod("openPtnKyoriEnd");
             return processData;
         }
 
@@ -538,21 +538,21 @@ public class GXHDO101B001 implements IFormLogic {
     }
 
     /**
-     * サブ画面(PTN距離X)チェック処理
+     * サブ画面(PTN距離ｽﾀｰﾄ)チェック処理
      *
      * @return エラーリスト
      */
-    private List<String> checkSubFormPtnKyoriX() {
+    private List<String> checkSubFormPtnKyoriStart() {
         GXHDO101C002 beanGXHDO101C002 = (GXHDO101C002) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C002);
         return GXHDO101C002Logic.checkInput(beanGXHDO101C002.getGxhdO101c002Model());
     }
 
     /**
-     * サブ画面(PTN距離X)チェック処理
+     * サブ画面(PTN距離ｴﾝﾄﾞ)チェック処理
      *
      * @return エラーリスト
      */
-    private List<String> checkSubFormPtnKyoriY() {
+    private List<String> checkSubFormPtnKyoriEnd() {
         GXHDO101C003 beanGXHDO101C003 = (GXHDO101C003) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C003);
         return GXHDO101C003Logic.checkInput(beanGXHDO101C003.getGxhdO101c003Model());
     }
@@ -704,19 +704,19 @@ public class GXHDO101B001 implements IFormLogic {
             return processData;
         }
 
-        // PTN距離X画面チェック
-        errorListSubForm = checkSubFormPtnKyoriX();
+        // PTN距離ｽﾀｰﾄ画面チェック
+        errorListSubForm = checkSubFormPtnKyoriStart();
         if (!errorListSubForm.isEmpty()) {
             processData.setSubInitDispMsgList(errorListSubForm);
-            processData.setMethod("openPtnKyoriX");
+            processData.setMethod("openPtnKyoriStart");
             return processData;
         }
 
-        // PTN距離Y画面チェック
-        errorListSubForm = checkSubFormPtnKyoriY();
+        // PTN距離ｴﾝﾄﾞ画面チェック
+        errorListSubForm = checkSubFormPtnKyoriEnd();
         if (!errorListSubForm.isEmpty()) {
             processData.setSubInitDispMsgList(errorListSubForm);
-            processData.setMethod("openPtnKyoriY");
+            processData.setMethod("openPtnKyoriEnd");
             return processData;
         }
 
@@ -1044,12 +1044,12 @@ public class GXHDO101B001 implements IFormLogic {
             // PTN距離X
             case GXHDO101B001Const.BTN_PTN_KYORI_X_SUBGAMEN_TOP:
             case GXHDO101B001Const.BTN_PTN_KYORI_X_SUBGAMEN_BOTTOM:
-                method = "openPtnKyoriX";
+                method = "openPtnKyoriStart";
                 break;
             // PTN距離Y
             case GXHDO101B001Const.BTN_PTN_KYORI_Y_SUBGAMEN_TOP:
             case GXHDO101B001Const.BTN_PTN_KYORI_Y_SUBGAMEN_BOTTOM:
-                method = "openPtnKyoriY";
+                method = "openPtnKyoriEnd";
                 break;
             // 仮登録
             case GXHDO101B001Const.BTN_KARI_TOUROKU_TOP:
@@ -1588,13 +1588,13 @@ public class GXHDO101B001 implements IFormLogic {
         GXHDO101C002 beanGXHDO101C002 = (GXHDO101C002) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C002);
         //データの設定
         String[] startPtnDistX;
-        String[] endPtnDistX;
+        String[] startPtnDistY;
         GXHDO101C002Model model;
         if (subSrSpsprintGraData == null) {
             startPtnDistX = new String[]{"", "", "", "", ""}; //PTN距離XStart
-            endPtnDistX = new String[]{"", "", "", "", ""}; //PTN距離XEnd
+            startPtnDistY = new String[]{"", "", "", "", ""}; //PTN距離YStart
 
-            model = GXHDO101C002Logic.createGXHDO101C002Model(startPtnDistX, endPtnDistX);
+            model = GXHDO101C002Logic.createGXHDO101C002Model(startPtnDistX, startPtnDistY);
 
         } else {
             //PTN距離Xスタート1～5
@@ -1604,19 +1604,19 @@ public class GXHDO101B001 implements IFormLogic {
                 StringUtil.nullToBlank(subSrSpsprintGraData.getStartPtnDistX3()),
                 StringUtil.nullToBlank(subSrSpsprintGraData.getStartPtnDistX4()),
                 StringUtil.nullToBlank(subSrSpsprintGraData.getStartPtnDistX5())};
-            //PTN距離Xエンド1～5
-            endPtnDistX = new String[]{
-                StringUtil.nullToBlank(subSrSpsprintGraData.getEndPtnDistX1()),
-                StringUtil.nullToBlank(subSrSpsprintGraData.getEndPtnDistX2()),
-                StringUtil.nullToBlank(subSrSpsprintGraData.getEndPtnDistX3()),
-                StringUtil.nullToBlank(subSrSpsprintGraData.getEndPtnDistX4()),
-                StringUtil.nullToBlank(subSrSpsprintGraData.getEndPtnDistX5())};
+            //PTN距離Yスタート1～5
+            startPtnDistY = new String[]{
+                StringUtil.nullToBlank(subSrSpsprintGraData.getStartPtnDistY1()),
+                StringUtil.nullToBlank(subSrSpsprintGraData.getStartPtnDistY2()),
+                StringUtil.nullToBlank(subSrSpsprintGraData.getStartPtnDistY3()),
+                StringUtil.nullToBlank(subSrSpsprintGraData.getStartPtnDistY4()),
+                StringUtil.nullToBlank(subSrSpsprintGraData.getStartPtnDistY5())};
 
-            model = GXHDO101C002Logic.createGXHDO101C002Model(startPtnDistX, endPtnDistX);
+            model = GXHDO101C002Logic.createGXHDO101C002Model(startPtnDistX, startPtnDistY);
 
         }
-        model.setReturnItemIdStartMin(GXHDO101B001Const.PTN_INSATSU_START_X_MIN);
-        model.setReturnItemIdEndMin(GXHDO101B001Const.PTN_INSATSU_END_X_MIN);
+        model.setReturnItemIdStartXMin(GXHDO101B001Const.PTN_INSATSU_START_X_MIN);
+        model.setReturnItemIdStartYMin(GXHDO101B001Const.PTN_INSATSU_START_Y_MIN);
         beanGXHDO101C002.setGxhdO101c002Model(model);
     }
 
@@ -1630,22 +1630,22 @@ public class GXHDO101B001 implements IFormLogic {
         // PTN距離Yサブ画面初期表示データ設定
         GXHDO101C003 beanGXHDO101C003 = (GXHDO101C003) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C003);
         //データの設定
-        String[] startPtnDistY;
+        String[] endPtnDistX;
         String[] endPtnDistY;
         GXHDO101C003Model model;
         if (subSrSpsprintGraData == null) {
-            startPtnDistY = new String[]{"", "", "", "", ""}; //PTN距離YStart
+            endPtnDistX = new String[]{"", "", "", "", ""}; //PTN距離XEnd
             endPtnDistY = new String[]{"", "", "", "", ""}; //PTN距離YEnd
-            model = GXHDO101C003Logic.createGXHDO101C003Model(startPtnDistY, endPtnDistY);
+            model = GXHDO101C003Logic.createGXHDO101C003Model(endPtnDistX, endPtnDistY);
 
         } else {
-            //PTN距離Yスタート1～5
-            startPtnDistY = new String[]{
-                StringUtil.nullToBlank(subSrSpsprintGraData.getStartPtnDistY1()),
-                StringUtil.nullToBlank(subSrSpsprintGraData.getStartPtnDistY2()),
-                StringUtil.nullToBlank(subSrSpsprintGraData.getStartPtnDistY3()),
-                StringUtil.nullToBlank(subSrSpsprintGraData.getStartPtnDistY4()),
-                StringUtil.nullToBlank(subSrSpsprintGraData.getStartPtnDistY5())};
+            //PTN距離Xエンド1～5
+            endPtnDistX = new String[]{
+                StringUtil.nullToBlank(subSrSpsprintGraData.getEndPtnDistX1()),
+                StringUtil.nullToBlank(subSrSpsprintGraData.getEndPtnDistX2()),
+                StringUtil.nullToBlank(subSrSpsprintGraData.getEndPtnDistX3()),
+                StringUtil.nullToBlank(subSrSpsprintGraData.getEndPtnDistX4()),
+                StringUtil.nullToBlank(subSrSpsprintGraData.getEndPtnDistX5())};
             //PTN距離Yエンド1～5
             endPtnDistY = new String[]{
                 StringUtil.nullToBlank(subSrSpsprintGraData.getEndPtnDistY1()),
@@ -1653,11 +1653,11 @@ public class GXHDO101B001 implements IFormLogic {
                 StringUtil.nullToBlank(subSrSpsprintGraData.getEndPtnDistY3()),
                 StringUtil.nullToBlank(subSrSpsprintGraData.getEndPtnDistY4()),
                 StringUtil.nullToBlank(subSrSpsprintGraData.getEndPtnDistY5())};
-            model = GXHDO101C003Logic.createGXHDO101C003Model(startPtnDistY, endPtnDistY);
+            model = GXHDO101C003Logic.createGXHDO101C003Model(endPtnDistX, endPtnDistY);
 
         }
-        model.setReturnItemIdStartMin(GXHDO101B001Const.PTN_INSATSU_START_Y_MIN);
-        model.setReturnItemIdEndMin(GXHDO101B001Const.PTN_INSATSU_END_Y_MIN);
+        model.setReturnItemIdEndXMin(GXHDO101B001Const.PTN_INSATSU_END_X_MIN);
+        model.setReturnItemIdEndYMin(GXHDO101B001Const.PTN_INSATSU_END_Y_MIN);
         beanGXHDO101C003.setGxhdO101c003Model(model);
     }
 
@@ -3037,9 +3037,9 @@ public class GXHDO101B001 implements IFormLogic {
         GXHDO101C001 beanGXHDO101C001 = (GXHDO101C001) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C001);
         List<GXHDO101C001Model.MakuatsuData> makuatsuDataList = beanGXHDO101C001.getGxhdO101c001Model().getMakuatsuDataList();
         GXHDO101C002 beanGXHDO101C002 = (GXHDO101C002) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C002);
-        List<GXHDO101C002Model.PtnKyoriXData> ptnKyoriXDataList = beanGXHDO101C002.getGxhdO101c002Model().getPtnKyoriXDataList();
+        List<GXHDO101C002Model.PtnKyoriStartData> ptnKyoriStartDataList = beanGXHDO101C002.getGxhdO101c002Model().getPtnKyoriStartDataList();
         GXHDO101C003 beanGXHDO101C003 = (GXHDO101C003) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C003);
-        List<GXHDO101C003Model.PtnKyoriYData> ptnKyoriYDataList = beanGXHDO101C003.getGxhdO101c003Model().getPtnKyoriYDataList();
+        List<GXHDO101C003Model.PtnKyoriEndData> ptnKyoriEndDataList = beanGXHDO101C003.getGxhdO101c003Model().getPtnKyoriEndDataList();
 
         if (isInsert) {
             params.add(kojyo); //工場ｺｰﾄﾞ
@@ -3055,16 +3055,16 @@ public class GXHDO101B001 implements IFormLogic {
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(6).getStartVal())); //膜厚ｽﾀｰﾄ7
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(7).getStartVal())); //膜厚ｽﾀｰﾄ8
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(8).getStartVal())); //膜厚ｽﾀｰﾄ9
-        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriXDataList.get(0).getStartVal())); //PTN距離X ｽﾀｰﾄ1
-        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriXDataList.get(1).getStartVal())); //PTN距離X ｽﾀｰﾄ2
-        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriXDataList.get(2).getStartVal())); //PTN距離X ｽﾀｰﾄ3
-        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriXDataList.get(3).getStartVal())); //PTN距離X ｽﾀｰﾄ4
-        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriXDataList.get(4).getStartVal())); //PTN距離X ｽﾀｰﾄ5
-        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriYDataList.get(0).getStartVal())); //PTN距離Y ｽﾀｰﾄ1
-        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriYDataList.get(1).getStartVal())); //PTN距離Y ｽﾀｰﾄ2
-        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriYDataList.get(2).getStartVal())); //PTN距離Y ｽﾀｰﾄ3
-        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriYDataList.get(3).getStartVal())); //PTN距離Y ｽﾀｰﾄ4
-        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriYDataList.get(4).getStartVal())); //PTN距離Y ｽﾀｰﾄ5
+        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriStartDataList.get(0).getPtnKyoriXVal())); //PTN距離X ｽﾀｰﾄ1
+        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriStartDataList.get(1).getPtnKyoriXVal())); //PTN距離X ｽﾀｰﾄ2
+        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriStartDataList.get(2).getPtnKyoriXVal())); //PTN距離X ｽﾀｰﾄ3
+        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriStartDataList.get(3).getPtnKyoriXVal())); //PTN距離X ｽﾀｰﾄ4
+        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriStartDataList.get(4).getPtnKyoriXVal())); //PTN距離X ｽﾀｰﾄ5
+        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriStartDataList.get(0).getPtnKyoriYVal())); //PTN距離Y ｽﾀｰﾄ1
+        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriStartDataList.get(1).getPtnKyoriYVal())); //PTN距離Y ｽﾀｰﾄ2
+        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriStartDataList.get(2).getPtnKyoriYVal())); //PTN距離Y ｽﾀｰﾄ3
+        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriStartDataList.get(3).getPtnKyoriYVal())); //PTN距離Y ｽﾀｰﾄ4
+        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriStartDataList.get(4).getPtnKyoriYVal())); //PTN距離Y ｽﾀｰﾄ5
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(0).getEndVal())); //膜厚ｴﾝﾄﾞ1
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(1).getEndVal())); //膜厚ｴﾝﾄﾞ2
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(2).getEndVal())); //膜厚ｴﾝﾄﾞ3
@@ -3074,16 +3074,16 @@ public class GXHDO101B001 implements IFormLogic {
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(6).getEndVal())); //膜厚ｴﾝﾄﾞ7
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(7).getEndVal())); //膜厚ｴﾝﾄﾞ8
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(8).getEndVal())); //膜厚ｴﾝﾄﾞ9
-        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriXDataList.get(0).getEndVal())); //PTN距離X ｴﾝﾄﾞ1
-        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriXDataList.get(1).getEndVal())); //PTN距離X ｴﾝﾄﾞ2
-        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriXDataList.get(2).getEndVal())); //PTN距離X ｴﾝﾄﾞ3
-        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriXDataList.get(3).getEndVal())); //PTN距離X ｴﾝﾄﾞ4
-        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriXDataList.get(4).getEndVal())); //PTN距離X ｴﾝﾄﾞ5
-        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriYDataList.get(0).getEndVal())); //PTN距離Y ｴﾝﾄﾞ1
-        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriYDataList.get(1).getEndVal())); //PTN距離Y ｴﾝﾄﾞ2
-        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriYDataList.get(2).getEndVal())); //PTN距離Y ｴﾝﾄﾞ3
-        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriYDataList.get(3).getEndVal())); //PTN距離Y ｴﾝﾄﾞ4
-        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriYDataList.get(4).getEndVal())); //PTN距離Y ｴﾝﾄﾞ5
+        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriEndDataList.get(0).getPtnKyoriXVal())); //PTN距離X ｴﾝﾄﾞ1
+        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriEndDataList.get(1).getPtnKyoriXVal())); //PTN距離X ｴﾝﾄﾞ2
+        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriEndDataList.get(2).getPtnKyoriXVal())); //PTN距離X ｴﾝﾄﾞ3
+        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriEndDataList.get(3).getPtnKyoriXVal())); //PTN距離X ｴﾝﾄﾞ4
+        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriEndDataList.get(4).getPtnKyoriXVal())); //PTN距離X ｴﾝﾄﾞ5
+        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriEndDataList.get(0).getPtnKyoriYVal())); //PTN距離Y ｴﾝﾄﾞ1
+        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriEndDataList.get(1).getPtnKyoriYVal())); //PTN距離Y ｴﾝﾄﾞ2
+        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriEndDataList.get(2).getPtnKyoriYVal())); //PTN距離Y ｴﾝﾄﾞ3
+        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriEndDataList.get(3).getPtnKyoriYVal())); //PTN距離Y ｴﾝﾄﾞ4
+        params.add(DBUtil.stringToIntObjectDefaultNull(ptnKyoriEndDataList.get(4).getPtnKyoriYVal())); //PTN距離Y ｴﾝﾄﾞ5
         if (isInsert) {
             params.add(systemTime); //登録日時
             params.add(systemTime); //更新日時
@@ -3447,10 +3447,10 @@ public class GXHDO101B001 implements IFormLogic {
         GXHDO101C001 beanGXHDO101C001 = (GXHDO101C001) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C001);
         List<GXHDO101C001Model.MakuatsuData> makuatsuDataList = beanGXHDO101C001.getGxhdO101c001Model().getMakuatsuDataList();
         GXHDO101C002 beanGXHDO101C002 = (GXHDO101C002) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C002);
-        List<GXHDO101C002Model.PtnKyoriXData> ptnKyoriXDataList = beanGXHDO101C002.getGxhdO101c002Model().getPtnKyoriXDataList();
+        List<GXHDO101C002Model.PtnKyoriStartData> ptnKyoriStartDataList = beanGXHDO101C002.getGxhdO101c002Model().getPtnKyoriStartDataList();
 
         GXHDO101C003 beanGXHDO101C003 = (GXHDO101C003) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C003);
-        List<GXHDO101C003Model.PtnKyoriYData> ptnKyoriYDataList = beanGXHDO101C003.getGxhdO101c003Model().getPtnKyoriYDataList();
+        List<GXHDO101C003Model.PtnKyoriEndData> ptnKyoriEndDataList = beanGXHDO101C003.getGxhdO101c003Model().getPtnKyoriEndDataList();
 
         if (isInsert) {
             params.add(kojyo); //工場ｺｰﾄﾞ
@@ -3467,16 +3467,16 @@ public class GXHDO101B001 implements IFormLogic {
         params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(6).getStartVal())); //膜厚ｽﾀｰﾄ7
         params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(7).getStartVal())); //膜厚ｽﾀｰﾄ8
         params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(8).getStartVal())); //膜厚ｽﾀｰﾄ9
-        params.add(DBUtil.stringToIntObject(ptnKyoriXDataList.get(0).getStartVal())); //PTN距離X ｽﾀｰﾄ1
-        params.add(DBUtil.stringToIntObject(ptnKyoriXDataList.get(1).getStartVal())); //PTN距離X ｽﾀｰﾄ2
-        params.add(DBUtil.stringToIntObject(ptnKyoriXDataList.get(2).getStartVal())); //PTN距離X ｽﾀｰﾄ3
-        params.add(DBUtil.stringToIntObject(ptnKyoriXDataList.get(3).getStartVal())); //PTN距離X ｽﾀｰﾄ4
-        params.add(DBUtil.stringToIntObject(ptnKyoriXDataList.get(4).getStartVal())); //PTN距離X ｽﾀｰﾄ5
-        params.add(DBUtil.stringToIntObject(ptnKyoriYDataList.get(0).getStartVal())); //PTN距離Y ｽﾀｰﾄ1
-        params.add(DBUtil.stringToIntObject(ptnKyoriYDataList.get(1).getStartVal())); //PTN距離Y ｽﾀｰﾄ2
-        params.add(DBUtil.stringToIntObject(ptnKyoriYDataList.get(2).getStartVal())); //PTN距離Y ｽﾀｰﾄ3
-        params.add(DBUtil.stringToIntObject(ptnKyoriYDataList.get(3).getStartVal())); //PTN距離Y ｽﾀｰﾄ4
-        params.add(DBUtil.stringToIntObject(ptnKyoriYDataList.get(4).getStartVal())); //PTN距離Y ｽﾀｰﾄ5
+        params.add(DBUtil.stringToIntObject(ptnKyoriStartDataList.get(0).getPtnKyoriXVal())); //PTN距離X ｽﾀｰﾄ1
+        params.add(DBUtil.stringToIntObject(ptnKyoriStartDataList.get(1).getPtnKyoriXVal())); //PTN距離X ｽﾀｰﾄ2
+        params.add(DBUtil.stringToIntObject(ptnKyoriStartDataList.get(2).getPtnKyoriXVal())); //PTN距離X ｽﾀｰﾄ3
+        params.add(DBUtil.stringToIntObject(ptnKyoriStartDataList.get(3).getPtnKyoriXVal())); //PTN距離X ｽﾀｰﾄ4
+        params.add(DBUtil.stringToIntObject(ptnKyoriStartDataList.get(4).getPtnKyoriXVal())); //PTN距離X ｽﾀｰﾄ5
+        params.add(DBUtil.stringToIntObject(ptnKyoriStartDataList.get(0).getPtnKyoriYVal())); //PTN距離Y ｽﾀｰﾄ1
+        params.add(DBUtil.stringToIntObject(ptnKyoriStartDataList.get(1).getPtnKyoriYVal())); //PTN距離Y ｽﾀｰﾄ2
+        params.add(DBUtil.stringToIntObject(ptnKyoriStartDataList.get(2).getPtnKyoriYVal())); //PTN距離Y ｽﾀｰﾄ3
+        params.add(DBUtil.stringToIntObject(ptnKyoriStartDataList.get(3).getPtnKyoriYVal())); //PTN距離Y ｽﾀｰﾄ4
+        params.add(DBUtil.stringToIntObject(ptnKyoriStartDataList.get(4).getPtnKyoriYVal())); //PTN距離Y ｽﾀｰﾄ5
         params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(0).getEndVal())); //膜厚ｴﾝﾄﾞ1
         params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(1).getEndVal())); //膜厚ｴﾝﾄﾞ2
         params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(2).getEndVal())); //膜厚ｴﾝﾄﾞ3
@@ -3486,16 +3486,16 @@ public class GXHDO101B001 implements IFormLogic {
         params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(6).getEndVal())); //膜厚ｴﾝﾄﾞ7
         params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(7).getEndVal())); //膜厚ｴﾝﾄﾞ8
         params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(8).getEndVal())); //膜厚ｴﾝﾄﾞ9
-        params.add(DBUtil.stringToIntObject(ptnKyoriXDataList.get(0).getEndVal())); //PTN距離X ｴﾝﾄﾞ1
-        params.add(DBUtil.stringToIntObject(ptnKyoriXDataList.get(1).getEndVal())); //PTN距離X ｴﾝﾄﾞ2
-        params.add(DBUtil.stringToIntObject(ptnKyoriXDataList.get(2).getEndVal())); //PTN距離X ｴﾝﾄﾞ3
-        params.add(DBUtil.stringToIntObject(ptnKyoriXDataList.get(3).getEndVal())); //PTN距離X ｴﾝﾄﾞ4
-        params.add(DBUtil.stringToIntObject(ptnKyoriXDataList.get(4).getEndVal())); //PTN距離X ｴﾝﾄﾞ5
-        params.add(DBUtil.stringToIntObject(ptnKyoriYDataList.get(0).getEndVal())); //PTN距離Y ｴﾝﾄﾞ1
-        params.add(DBUtil.stringToIntObject(ptnKyoriYDataList.get(1).getEndVal())); //PTN距離Y ｴﾝﾄﾞ2
-        params.add(DBUtil.stringToIntObject(ptnKyoriYDataList.get(2).getEndVal())); //PTN距離Y ｴﾝﾄﾞ3
-        params.add(DBUtil.stringToIntObject(ptnKyoriYDataList.get(3).getEndVal())); //PTN距離Y ｴﾝﾄﾞ4
-        params.add(DBUtil.stringToIntObject(ptnKyoriYDataList.get(4).getEndVal())); //PTN距離Y ｴﾝﾄﾞ5
+        params.add(DBUtil.stringToIntObject(ptnKyoriEndDataList.get(0).getPtnKyoriXVal())); //PTN距離X ｴﾝﾄﾞ1
+        params.add(DBUtil.stringToIntObject(ptnKyoriEndDataList.get(1).getPtnKyoriXVal())); //PTN距離X ｴﾝﾄﾞ2
+        params.add(DBUtil.stringToIntObject(ptnKyoriEndDataList.get(2).getPtnKyoriXVal())); //PTN距離X ｴﾝﾄﾞ3
+        params.add(DBUtil.stringToIntObject(ptnKyoriEndDataList.get(3).getPtnKyoriXVal())); //PTN距離X ｴﾝﾄﾞ4
+        params.add(DBUtil.stringToIntObject(ptnKyoriEndDataList.get(4).getPtnKyoriXVal())); //PTN距離X ｴﾝﾄﾞ5
+        params.add(DBUtil.stringToIntObject(ptnKyoriEndDataList.get(0).getPtnKyoriYVal())); //PTN距離Y ｴﾝﾄﾞ1
+        params.add(DBUtil.stringToIntObject(ptnKyoriEndDataList.get(1).getPtnKyoriYVal())); //PTN距離Y ｴﾝﾄﾞ2
+        params.add(DBUtil.stringToIntObject(ptnKyoriEndDataList.get(2).getPtnKyoriYVal())); //PTN距離Y ｴﾝﾄﾞ3
+        params.add(DBUtil.stringToIntObject(ptnKyoriEndDataList.get(3).getPtnKyoriYVal())); //PTN距離Y ｴﾝﾄﾞ4
+        params.add(DBUtil.stringToIntObject(ptnKyoriEndDataList.get(4).getPtnKyoriYVal())); //PTN距離Y ｴﾝﾄﾞ5
         if (isInsert) {
             params.add(systemTime); //登録日時
             params.add(systemTime); //更新日時

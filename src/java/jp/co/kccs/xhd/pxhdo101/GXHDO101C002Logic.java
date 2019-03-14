@@ -28,109 +28,113 @@ import jp.co.kccs.xhd.util.StringUtil;
  * ===============================================================================<br>
  */
 /**
- * GXHDO101C002Logic(PTN距離X)ロジッククラス
+ * GXHDO101C002Logic(PTN距離ｽﾀｰﾄ)ロジッククラス
  */
 public class GXHDO101C002Logic {
 
     /**
-     * PTN距離X画面のモデルデータを作成する
+     * PTN距離ｽﾀｰﾄ画面のモデルデータを作成する
      *
      * @param ptnKyoriXStart PTN距離Xスタートデータ
-     * @param ptnKyoriXEnd PTN距離Xエンドデータ
+     * @param ptnKyoriYStart PTN距離Yスタートデータ
      * @return モデルデータ
      */
-    public static GXHDO101C002Model createGXHDO101C002Model(String[] ptnKyoriXStart, String[] ptnKyoriXEnd) {
+    public static GXHDO101C002Model createGXHDO101C002Model(String[] ptnKyoriXStart, String[] ptnKyoriYStart) {
         GXHDO101C002Model gxhdo101c002Model = new GXHDO101C002Model();
-        List<GXHDO101C002Model.PtnKyoriXData> ptnKyoriXDataList = new ArrayList<>();
+        List<GXHDO101C002Model.PtnKyoriStartData> ptnKyoriXDataList = new ArrayList<>();
+
         String startTabIndex;
         String endTabIndex;
         //PTN距離Xのデータをセットする
         for (int i = 0; i < ptnKyoriXStart.length; i++) {
             startTabIndex = String.valueOf(i + 1);
             endTabIndex = String.valueOf(i + 6);
-            ptnKyoriXDataList.add(getInitPtnKyoriXData(gxhdo101c002Model, String.valueOf(i + 1), 
+            ptnKyoriXDataList.add(getInitPtnKyoriStartData(gxhdo101c002Model, String.valueOf(i + 1),
                     ptnKyoriXStart[i], "TEXT", "3", "", startTabIndex,
-                    ptnKyoriXEnd[i], "TEXT", "3", "", endTabIndex));
+                    ptnKyoriYStart[i], "TEXT", "3", "", endTabIndex));
         }
 
-        gxhdo101c002Model.setPtnKyoriXDataList(ptnKyoriXDataList);
+        gxhdo101c002Model.setPtnKyoriStartDataList(ptnKyoriXDataList);
+
         return gxhdo101c002Model;
     }
 
     /**
-     * PTN距離Xデータ初期データ取得処理
+     * PTN距離ｽﾀｰﾄデータ初期データ取得処理
      *
-     * @param gxhdo101c002Model PTN距離X画面モデル
-     * @param ptnKyoriX PTN距離X
-     * @param startVal スタート項目(値)
-     * @param startInputType　スタート項目(入力タイプ)
-     * @param startTextMaxLength　スタート項目(テキストMaxLength)
-     * @param startTextBackColor　スタート項目(BackGround)
+     * @param gxhdo101c002Model PTN距離ｽﾀｰﾄ画面モデル
+     * @param ptnKyoriStart PTN距離ｽﾀｰﾄ
+     * @param ptnKyoriXVal PTN距離X(値)
+     * @param ptnKyoriXInputType　PTN距離X(入力タイプ)
+     * @param ptnKyoriXTextMaxLength　PTN距離X(テキストMaxLength)
+     * @param ptnKyoriXTextBackColor　PTN距離X(BackGround)
      * @param startTabIndex　スタート項目(TabIndex)
-     * @param endVal エンド項目(値)
-     * @param endInputType エンド項目(入力タイプ)
-     * @param endTextMaxLength　エンド項目(テキストMaxLength)
-     * @param endTextBackColor　エンド項目(BackGround)
+     * @param ptnKyoriYVal PTN距離Y項目(値)
+     * @param ptnKyoriYInputType PTN距離Y(入力タイプ)
+     * @param ptnKyoriYTextMaxLength　PTN距離Y(テキストMaxLength)
+     * @param ptnKyoriYTextBackColor　PTN距離Y(BackGround)
      * @param endTabIndex　エンド項目(TabIndex)
      * @return PTN距離データ
      */
-    private static GXHDO101C002Model.PtnKyoriXData getInitPtnKyoriXData(
-            GXHDO101C002Model gxhdo101c002Model, String ptnKyoriX,
-            String startVal, String startInputType, String startTextMaxLength, String startTextBackColor, String startTabIndex,
-            String endVal, String endInputType, String endTextMaxLength, String endTextBackColor, String endTabIndex) {
-        GXHDO101C002Model.PtnKyoriXData ptnKyoriXData = gxhdo101c002Model.new PtnKyoriXData();
-        //PTN距離X
-        ptnKyoriXData.setPtnKyoriX(ptnKyoriX);
-        // スタート
-        ptnKyoriXData.setStartVal(startVal);
-        if ("TEXT".equals(startInputType)) {
-            ptnKyoriXData.setStartTextRendered(true);
-            ptnKyoriXData.setStartLabelRendered(false);
+    private static GXHDO101C002Model.PtnKyoriStartData getInitPtnKyoriStartData(
+            GXHDO101C002Model gxhdo101c002Model, String ptnKyoriStart,
+            String ptnKyoriXVal, String ptnKyoriXInputType, String ptnKyoriXTextMaxLength, String ptnKyoriXTextBackColor, String startTabIndex,
+            String ptnKyoriYVal, String ptnKyoriYInputType, String ptnKyoriYTextMaxLength, String ptnKyoriYTextBackColor, String endTabIndex) {
+        GXHDO101C002Model.PtnKyoriStartData ptnKyoriStartData = gxhdo101c002Model.new PtnKyoriStartData();
+        // PTN距離ｽﾀｰﾄ
+        ptnKyoriStartData.setPtnKyoriStart(ptnKyoriStart);
+        // PTN距離X
+        ptnKyoriStartData.setPtnKyoriXVal(ptnKyoriXVal);
+        if ("TEXT".equals(ptnKyoriXInputType)) {
+            ptnKyoriStartData.setPtnKyoriXTextRendered(true);
+            ptnKyoriStartData.setPtnKyoriXLabelRendered(false);
 
         } else {
-            ptnKyoriXData.setStartTextRendered(false);
-            ptnKyoriXData.setStartLabelRendered(true);
+            ptnKyoriStartData.setPtnKyoriXTextRendered(false);
+            ptnKyoriStartData.setPtnKyoriXLabelRendered(true);
         }
-        ptnKyoriXData.setStartTextMaxLength(startTextMaxLength);
-        ptnKyoriXData.setStartTextBackColor(startTextBackColor);
-        ptnKyoriXData.setStartTabIndex(startTabIndex);
 
-        // エンド
-        ptnKyoriXData.setEndVal(endVal);
-        if ("TEXT".equals(endInputType)) {
-            ptnKyoriXData.setEndTextRendered(true);
-            ptnKyoriXData.setEndLabelRendered(false);
+        ptnKyoriStartData.setPtnKyoriXTextMaxLength(ptnKyoriXTextMaxLength);
+        ptnKyoriStartData.setPtnKyoriXTextBackColor(ptnKyoriXTextBackColor);
+        ptnKyoriStartData.setPtnKyoriXTabIndex(startTabIndex);
+
+        // PTN距離Y
+        ptnKyoriStartData.setPtnKyoriYVal(ptnKyoriYVal);
+        if ("TEXT".equals(ptnKyoriYInputType)) {
+            ptnKyoriStartData.setPtnKyoriYTextRendered(true);
+            ptnKyoriStartData.setPtnKyoriYLabelRendered(false);
         } else {
-            ptnKyoriXData.setEndTextRendered(false);
-            ptnKyoriXData.setEndLabelRendered(true);
+            ptnKyoriStartData.setPtnKyoriYTextRendered(false);
+            ptnKyoriStartData.setPtnKyoriYLabelRendered(true);
         }
-        ptnKyoriXData.setEndTextMaxLength(endTextMaxLength);
-        ptnKyoriXData.setEndTextBackColor(endTextBackColor);
-        ptnKyoriXData.setEndTabIndex(endTabIndex);
 
-        return ptnKyoriXData;
+        ptnKyoriStartData.setPtnKyoriYTextMaxLength(ptnKyoriYTextMaxLength);
+        ptnKyoriStartData.setPtnKyoriYTextBackColor(ptnKyoriYTextBackColor);
+        ptnKyoriStartData.setPtnKyoriYTabIndex(endTabIndex);
+
+        return ptnKyoriStartData;
     }
 
     /**
      * 入力チェック
      *
-     * @param gXHDO101C002Model PTN距離Xサブ画面用モデル
+     * @param gXHDO101C002Model PTN距離ｽﾀｰﾄサブ画面用モデル
      * @return エラーリスト
      */
     public static List<String> checkInput(GXHDO101C002Model gXHDO101C002Model) {
 
         List<String> errorList = new ArrayList<>();
-        List<GXHDO101C002Model.PtnKyoriXData> ptnKyoriXDataList = gXHDO101C002Model.getPtnKyoriXDataList();
-        for (GXHDO101C002Model.PtnKyoriXData ptnKyoriX : ptnKyoriXDataList) {
-            if (StringUtil.isEmpty(ptnKyoriX.getStartVal())) {
-                ptnKyoriX.setStartTextBackColor(ErrUtil.ERR_BACK_COLOR);
-                errorList.add(MessageUtil.getMessage("XHD-000037", "スタート"));
+        List<GXHDO101C002Model.PtnKyoriStartData> ptnKyoriStartDataList = gXHDO101C002Model.getPtnKyoriStartDataList();
+        for (GXHDO101C002Model.PtnKyoriStartData ptnKyoriStart : ptnKyoriStartDataList) {
+            if (StringUtil.isEmpty(ptnKyoriStart.getPtnKyoriXVal())) {
+                ptnKyoriStart.setPtnKyoriXTextBackColor(ErrUtil.ERR_BACK_COLOR);
+                errorList.add(MessageUtil.getMessage("XHD-000037", "PTN距離X"));
                 return errorList;
             }
 
-            if (StringUtil.isEmpty(ptnKyoriX.getEndVal())) {
-                ptnKyoriX.setEndTextBackColor(ErrUtil.ERR_BACK_COLOR);
-                errorList.add(MessageUtil.getMessage("XHD-000037", "エンド"));
+            if (StringUtil.isEmpty(ptnKyoriStart.getPtnKyoriYVal())) {
+                ptnKyoriStart.setPtnKyoriYTextBackColor(ErrUtil.ERR_BACK_COLOR);
+                errorList.add(MessageUtil.getMessage("XHD-000037", "PTN距離Y"));
                 return errorList;
             }
         }
@@ -141,36 +145,36 @@ public class GXHDO101C002Logic {
     /**
      * サブ画面からの戻り値をメイン画面の項目リストにセットする
      *
-     * @param gXHDO101C002Model PTN距離Xサブ画面用モデル
+     * @param gXHDO101C002Model PTN距離ｽﾀｰﾄサブ画面用モデル
      * @param itemList 項目リスト
      */
     public static void setReturnData(GXHDO101C002Model gXHDO101C002Model, List<FXHDD01> itemList) {
 
-        List<String> startDataList = new ArrayList<>();
-        List<String> endDataList = new ArrayList<>();
-        for (GXHDO101C002Model.PtnKyoriXData ptnKyoriXdata : gXHDO101C002Model.getPtnKyoriXDataList()) {
-            if (!StringUtil.isEmpty(ptnKyoriXdata.getStartVal())) {
-                startDataList.add(ptnKyoriXdata.getStartVal());
+        List<String> startXDataList = new ArrayList<>();
+        List<String> startYDataList = new ArrayList<>();
+        for (GXHDO101C002Model.PtnKyoriStartData ptnKyoriStartData : gXHDO101C002Model.getPtnKyoriStartDataList()) {
+            if (!StringUtil.isEmpty(ptnKyoriStartData.getPtnKyoriXVal())) {
+                startXDataList.add(ptnKyoriStartData.getPtnKyoriXVal());
             }
 
-            if (!StringUtil.isEmpty(ptnKyoriXdata.getEndVal())) {
-                endDataList.add(ptnKyoriXdata.getEndVal());
+            if (!StringUtil.isEmpty(ptnKyoriStartData.getPtnKyoriYVal())) {
+                startYDataList.add(ptnKyoriStartData.getPtnKyoriYVal());
             }
         }
 
-        FXHDD01 itemStartMin = getItemRow(itemList, gXHDO101C002Model.getReturnItemIdStartMin());
+        FXHDD01 itemStartMin = getItemRow(itemList, gXHDO101C002Model.getReturnItemIdStartXMin());
         // 全て値が設定されていた場合のみ算出値をセットする
-        if (gXHDO101C002Model.getPtnKyoriXDataList().size() == startDataList.size()) {
-            setItemValue(itemStartMin, NumberUtil.getMin(startDataList));
+        if (gXHDO101C002Model.getPtnKyoriStartDataList().size() == startXDataList.size()) {
+            setItemValue(itemStartMin, NumberUtil.getMin(startXDataList));
         } else {
             setItemValue(itemStartMin, null);
         }
 
         // 戻り先に指定した項目を取得
-        FXHDD01 itemEndMin = getItemRow(itemList, gXHDO101C002Model.getReturnItemIdEndMin());
+        FXHDD01 itemEndMin = getItemRow(itemList, gXHDO101C002Model.getReturnItemIdStartYMin());
         // 全て値が設定されていた場合のみ算出値をセットする
-        if (gXHDO101C002Model.getPtnKyoriXDataList().size() == endDataList.size()) {
-            setItemValue(itemEndMin, NumberUtil.getMin(endDataList));
+        if (gXHDO101C002Model.getPtnKyoriStartDataList().size() == startYDataList.size()) {
+            setItemValue(itemEndMin, NumberUtil.getMin(startYDataList));
         } else {
             setItemValue(itemEndMin, null);
         }
@@ -220,5 +224,4 @@ public class GXHDO101C002Logic {
             return null;
         }
     }
-
 }

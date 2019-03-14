@@ -28,7 +28,7 @@ import org.primefaces.context.RequestContext;
  * ===============================================================================<br>
  */
 /**
- * GXHDO101C002(PTN距離X)
+ * GXHDO101C002(PTN距離ｽﾀｰﾄ)
  *
  * @author SYSNAVI K.Hisanaga
  * @since 2018/12/08
@@ -38,12 +38,12 @@ import org.primefaces.context.RequestContext;
 public class GXHDO101C002 implements Serializable {
 
     /**
-     * PTN距離Xサブ画面用データ
+     * PTN距離ｽﾀｰﾄサブ画面用データ
      */
     private GXHDO101C002Model gxhdO101c002Model;
 
     /**
-     * PTN距離Xサブ画面用データ(表示制御用)
+     * PTN距離ｽﾀｰﾄサブ画面用データ(表示制御用)
      */
     private GXHDO101C002Model gxhdO101c002ModelView;
 
@@ -59,7 +59,7 @@ public class GXHDO101C002 implements Serializable {
     }
 
     /**
-     * PTN距離Xサブ画面用データ
+     * PTN距離ｽﾀｰﾄサブ画面用データ
      *
      * @return the gxhdO101c002Model
      */
@@ -68,7 +68,7 @@ public class GXHDO101C002 implements Serializable {
     }
 
     /**
-     * PTN距離Xサブ画面用データ
+     * PTN距離ｽﾀｰﾄサブ画面用データ
      *
      * @param gxhdO101c002Model the gxhdO101c002Model to set
      */
@@ -77,7 +77,7 @@ public class GXHDO101C002 implements Serializable {
     }
 
     /**
-     * PTN距離Xサブ画面用データ(表示制御用)
+     * PTN距離ｽﾀｰﾄサブ画面用データ(表示制御用)
      *
      * @return the gxhdO101c002ModelView
      */
@@ -86,7 +86,7 @@ public class GXHDO101C002 implements Serializable {
     }
 
     /**
-     ** PTN距離Xサブ画面用データ(表示制御用)
+     ** PTN距離ｽﾀｰﾄサブ画面用データ(表示制御用)
      *
      * @param gxhdO101c002ModelView the gxhdO101c002ModelView to set
      */
@@ -138,28 +138,28 @@ public class GXHDO101C002 implements Serializable {
         // 背景色をクリア
         clearBackColor();
 
-        for (GXHDO101C002Model.PtnKyoriXData ptnKyoriXData : this.gxhdO101c002ModelView.getPtnKyoriXDataList()) {
+        for (GXHDO101C002Model.PtnKyoriStartData ptnKyoriStartData : this.gxhdO101c002ModelView.getPtnKyoriStartDataList()) {
 
-            if (!StringUtil.isEmpty(ptnKyoriXData.getStartVal())) {
-                if (!NumberUtil.isIntegerNumeric(ptnKyoriXData.getStartVal()) || !NumberUtil.isNumeric(ptnKyoriXData.getStartVal())) {
-                    setError(ptnKyoriXData, true, false, "XHD-000008", "スタート");
+            if (!StringUtil.isEmpty(ptnKyoriStartData.getPtnKyoriXVal())) {
+                if (!NumberUtil.isIntegerNumeric(ptnKyoriStartData.getPtnKyoriXVal())) {
+                    setError(ptnKyoriStartData, true, false, "XHD-000008", "PTN距離X");
                     return false;
                 }
 
-                if (3 < StringUtil.length(ptnKyoriXData.getStartVal())) {
-                    setError(ptnKyoriXData, true, false, "XHD-000006", "スタート", "3");
+                if (3 < StringUtil.length(ptnKyoriStartData.getPtnKyoriXVal())) {
+                    setError(ptnKyoriStartData, true, false, "XHD-000006", "PTN距離X", "3");
                     return false;
                 }
             }
 
-            if (!StringUtil.isEmpty(ptnKyoriXData.getEndVal())) {
-                if (!NumberUtil.isIntegerNumeric(ptnKyoriXData.getEndVal()) || !NumberUtil.isNumeric(ptnKyoriXData.getEndVal())) {
-                    setError(ptnKyoriXData, false, true, "XHD-000008", "エンド");
+            if (!StringUtil.isEmpty(ptnKyoriStartData.getPtnKyoriYVal())) {
+                if (!NumberUtil.isIntegerNumeric(ptnKyoriStartData.getPtnKyoriYVal())) {
+                    setError(ptnKyoriStartData, false, true, "XHD-000008", "PTN距離Y");
                     return false;
                 }
 
-                if (3 < StringUtil.length(ptnKyoriXData.getEndVal())) {
-                    setError(ptnKyoriXData, false, true, "XHD-000006", "エンド", "3");
+                if (3 < StringUtil.length(ptnKyoriStartData.getPtnKyoriYVal())) {
+                    setError(ptnKyoriStartData, false, true, "XHD-000006", "PTN距離Y", "3");
                     return false;
                 }
             }
@@ -171,13 +171,13 @@ public class GXHDO101C002 implements Serializable {
     /**
      * エラーセット
      *
-     * @param ptnKyoriXData PTN距離Xデータ
-     * @param isStartErr スタートエラー
-     * @param isEndErr エンドエラー
+     * @param ptnKyoriStartData PTN距離ｽﾀｰﾄデータ
+     * @param isItemXErr PTN距離Xエラー
+     * @param isItemYErr PTN距離Yエラー
      * @param errorId エラーID
      * @param errParams エラーパラメータ
      */
-    private void setError(GXHDO101C002Model.PtnKyoriXData ptnKyoriXData, boolean isStartErr, boolean isEndErr, String errorId, Object... errParams) {
+    private void setError(GXHDO101C002Model.PtnKyoriStartData ptnKyoriStartData, boolean isItemXErr, boolean isItemYErr, String errorId, Object... errParams) {
 
         // メッセージをセット
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -186,14 +186,14 @@ public class GXHDO101C002 implements Serializable {
         facesContext.addMessage(null, message);
 
         //エラー項目に背景色をセット
-        // スタートエラー
-        if (isStartErr) {
-            ptnKyoriXData.setStartTextBackColor(ErrUtil.ERR_BACK_COLOR);
+        // PTN距離Xエラー
+        if (isItemXErr) {
+            ptnKyoriStartData.setPtnKyoriXTextBackColor(ErrUtil.ERR_BACK_COLOR);
         }
 
-        // エンドエラー
-        if (isEndErr) {
-            ptnKyoriXData.setEndTextBackColor(ErrUtil.ERR_BACK_COLOR);
+        // PTN距離Yエラー
+        if (isItemYErr) {
+            ptnKyoriStartData.setPtnKyoriYTextBackColor(ErrUtil.ERR_BACK_COLOR);
         }
     }
 
@@ -201,9 +201,9 @@ public class GXHDO101C002 implements Serializable {
      * 背景色のクリア処理
      */
     private void clearBackColor() {
-        for (GXHDO101C002Model.PtnKyoriXData ptnKyoriXData : this.gxhdO101c002ModelView.getPtnKyoriXDataList()) {
-            ptnKyoriXData.setStartTextBackColor("");
-            ptnKyoriXData.setEndTextBackColor("");
+        for (GXHDO101C002Model.PtnKyoriStartData ptnKyoriXData : this.gxhdO101c002ModelView.getPtnKyoriStartDataList()) {
+            ptnKyoriXData.setPtnKyoriXTextBackColor("");
+            ptnKyoriXData.setPtnKyoriYTextBackColor("");
         }
     }
 }
