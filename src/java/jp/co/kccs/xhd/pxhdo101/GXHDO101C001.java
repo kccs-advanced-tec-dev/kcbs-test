@@ -326,13 +326,13 @@ public class GXHDO101C001 implements Serializable {
                 return false;
             } else {
                 if (!NumberUtil.isNumeric(makuatsuData.getStartVal())) {
-                    setError(makuatsuData, true, false, "XHD-000008", "スタート");
+                    setError(makuatsuData, true, false, "XHD-000008", "膜厚ｽﾀｰﾄ" + makuatsuData.getMakuatsu());
                     return false;
                 }
 
                 BigDecimal decStart = new BigDecimal(makuatsuData.getStartVal());
                 if (!NumberUtil.isValidDigits(decStart, 2, 3)) {
-                    setError(makuatsuData, true, false, "XHD-000007", "スタート", "2", "3");
+                    setError(makuatsuData, true, false, "XHD-000007", "膜厚ｽﾀｰﾄ" + makuatsuData.getMakuatsu(), "2", "3");
                     return false;
                 }
             }
@@ -342,13 +342,13 @@ public class GXHDO101C001 implements Serializable {
                 return false;
             } else {
                 if (!NumberUtil.isNumeric(makuatsuData.getEndVal())) {
-                    setError(makuatsuData, false, true, "XHD-000008", "エンド");
+                    setError(makuatsuData, false, true, "XHD-000008", "膜厚ｴﾝﾄﾞ" + makuatsuData.getMakuatsu());
                     return false;
                 }
 
                 BigDecimal decEnd = new BigDecimal(makuatsuData.getEndVal());
                 if (!NumberUtil.isValidDigits(decEnd, 2, 3)) {
-                    setError(makuatsuData, false, true, "XHD-000007", "エンド", "2", "3");
+                    setError(makuatsuData, false, true, "XHD-000007", "膜厚ｴﾝﾄﾞ" + makuatsuData.getMakuatsu(), "2", "3");
                     return false;
                 }
 

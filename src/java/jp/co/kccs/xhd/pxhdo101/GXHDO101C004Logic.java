@@ -98,7 +98,7 @@ public class GXHDO101C004Logic {
         for (GXHDO101C004Model.MakuatsuData makuatsuData : makuatsuDataList) {
             if (StringUtil.isEmpty(makuatsuData.getStartVal())) {
                 makuatsuData.setStartTextBackColor(ErrUtil.ERR_BACK_COLOR);
-                errorList.add(MessageUtil.getMessage("XHD-000037", "スタート"));
+                errorList.add(MessageUtil.getMessage("XHD-000037", "膜厚ｽﾀｰﾄ" + makuatsuData.getMakuatsu()));
                 return errorList;
             }
         }

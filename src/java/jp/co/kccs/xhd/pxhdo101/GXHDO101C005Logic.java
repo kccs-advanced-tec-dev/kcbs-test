@@ -100,7 +100,7 @@ public class GXHDO101C005Logic {
         for (GXHDO101C005Model.PrintWidthData printWidthData : printWidthDataList) {
             if (StringUtil.isEmpty(printWidthData.getStartVal())) {
                 printWidthData.setStartTextBackColor(ErrUtil.ERR_BACK_COLOR);
-                errorList.add(MessageUtil.getMessage("XHD-000037", "スタート"));
+                errorList.add(MessageUtil.getMessage("XHD-000037", "印刷幅ｽﾀｰﾄ" + printWidthData.getPrintWidth()));
                 return errorList;
             }
         }

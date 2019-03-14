@@ -123,13 +123,13 @@ public class GXHDO101C001Logic implements Serializable {
         for (GXHDO101C001Model.MakuatsuData makuatsuData : makuatsuDataList) {
             if (StringUtil.isEmpty(makuatsuData.getStartVal())) {
                 makuatsuData.setStartTextBackColor(ErrUtil.ERR_BACK_COLOR);
-                errorList.add(MessageUtil.getMessage("XHD-000037", "スタート"));
+                errorList.add(MessageUtil.getMessage("XHD-000037", "膜厚ｽﾀｰﾄ" + makuatsuData.getMakuatsu()));
                 return errorList;
             }
 
             if (StringUtil.isEmpty(makuatsuData.getEndVal())) {
                 makuatsuData.setEndTextBackColor(ErrUtil.ERR_BACK_COLOR);
-                errorList.add(MessageUtil.getMessage("XHD-000037", "エンド"));
+                errorList.add(MessageUtil.getMessage("XHD-000037", "膜厚ｴﾝﾄﾞ" + makuatsuData.getMakuatsu()));
                 return errorList;
             }
         }

@@ -142,12 +142,12 @@ public class GXHDO101C005 implements Serializable {
             if (!StringUtil.isEmpty(printWidthData.getStartVal())) {
 
                 if (!NumberUtil.isIntegerNumeric(printWidthData.getStartVal()) || !NumberUtil.isNumeric(printWidthData.getStartVal())) {
-                    setError(printWidthData, "XHD-000008", "スタート");
+                    setError(printWidthData, "XHD-000008", "印刷幅ｽﾀｰﾄ" + printWidthData.getPrintWidth());
                     return false;
                 }
 
                 if (4 < StringUtil.length(printWidthData.getStartVal())) {
-                    setError(printWidthData, "XHD-000006", "スタート", "4");
+                    setError(printWidthData, "XHD-000006", "印刷幅ｽﾀｰﾄ" + printWidthData.getPrintWidth(), "4");
                     return false;
                 }
             }

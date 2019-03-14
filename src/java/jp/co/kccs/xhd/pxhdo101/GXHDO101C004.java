@@ -143,13 +143,13 @@ public class GXHDO101C004 implements Serializable {
             if (!StringUtil.isEmpty(makuatsuData.getStartVal())) {
 
                 if (!NumberUtil.isNumeric(makuatsuData.getStartVal())) {
-                    setError(makuatsuData, "XHD-000008", "スタート");
+                    setError(makuatsuData, "XHD-000008", "膜厚ｽﾀｰﾄ" + makuatsuData.getMakuatsu());
                     return false;
                 }
 
                 BigDecimal decStart = new BigDecimal(makuatsuData.getStartVal());
                 if (!NumberUtil.isValidDigits(decStart, 2, 3)) {
-                    setError(makuatsuData, "XHD-000007", "スタート", "2", "3");
+                    setError(makuatsuData, "XHD-000007", "膜厚ｽﾀｰﾄ" + makuatsuData.getMakuatsu(), "2", "3");
                     return false;
                 }
 
