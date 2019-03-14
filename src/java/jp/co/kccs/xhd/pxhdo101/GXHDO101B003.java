@@ -1158,9 +1158,8 @@ public class GXHDO101B003 implements IFormLogic {
                 + "枚");
 
         // 上カバーテープ１
-        this.setItemData(processData, GXHDO101B003Const.UE_COVER_TAPE1, StringUtil.nullToBlank(sekkeiData.get("TBUNRUI2"))
-                + "-"
-                + StringUtil.nullToBlank(sekkeiData.get("SYURUI2"))
+        this.setItemData(processData, GXHDO101B003Const.UE_COVER_TAPE1,
+                StringUtil.nullToBlank(sekkeiData.get("SYURUI2"))
                 + "  "
                 + StringUtil.nullToBlank(sekkeiData.get("ATUMI2"))
                 + "μm×"
@@ -1169,13 +1168,12 @@ public class GXHDO101B003 implements IFormLogic {
         );
 
         // 下カバーテープ１
-        this.setItemData(processData, GXHDO101B003Const.SHITA_COVER_TAPE1, StringUtil.nullToBlank(sekkeiData.get("TBUNRUI4"))
-                + "-"
-                + StringUtil.nullToBlank(sekkeiData.get("SYURUI4"))
+        this.setItemData(processData, GXHDO101B003Const.SHITA_COVER_TAPE1, 
+                StringUtil.nullToBlank(sekkeiData.get("SYURUI3"))
                 + "  "
-                + StringUtil.nullToBlank(sekkeiData.get("ATUMI4"))
+                + StringUtil.nullToBlank(sekkeiData.get("ATUMI3"))
                 + "μm×"
-                + StringUtil.nullToBlank(sekkeiData.get("MAISUU4"))
+                + StringUtil.nullToBlank(sekkeiData.get("MAISUU3"))
                 + "枚");
 
         // 列 × 行
@@ -1513,8 +1511,8 @@ public class GXHDO101B003 implements IFormLogic {
         String lotNo2 = lotNo.substring(3, 11);
         // 設計データの取得
         String sql = "SELECT SEKKEINO,"
-                + "GENRYOU,ETAPE,EATUMI,SOUSUU,EMAISUU,TBUNRUI2,SYURUI2,ATUMI2,"
-                + "MAISUU2,TBUNRUI4,SYURUI4,ATUMI4,MAISUU4,PATTERN,LASTLAYERSLIDERYO "
+                + "GENRYOU,ETAPE,EATUMI,SOUSUU,EMAISUU,SYURUI2,ATUMI2,"
+                + "MAISUU2,SYURUI3,ATUMI3,MAISUU3,PATTERN,LASTLAYERSLIDERYO "
                 + "FROM da_sekkei "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = '001'";
 
@@ -1539,14 +1537,12 @@ public class GXHDO101B003 implements IFormLogic {
                 put("EATUMI", "積層数");
                 put("SOUSUU", "積層数");
                 put("EMAISUU", "積層数");
-                put("TBUNRUI2", "上カバーテープ１");
                 put("SYURUI2", "上カバーテープ１");
                 put("ATUMI2", "上カバーテープ１");
                 put("MAISUU2", "上カバーテープ１");
-                put("TBUNRUI4", "下カバーテープ１");
-                put("SYURUI4", "下カバーテープ１");
-                put("ATUMI4", "下カバーテープ１");
-                put("MAISUU4", "下カバーテープ１");
+                put("SYURUI3", "下カバーテープ１");
+                put("ATUMI3", "下カバーテープ１");
+                put("MAISUU3", "下カバーテープ１");
                 put("PATTERN", "電極製版名");
                 put("LASTLAYERSLIDERYO", "最上層スライド量");
             }
