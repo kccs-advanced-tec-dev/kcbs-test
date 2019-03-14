@@ -141,24 +141,24 @@ public class GXHDO101C003 implements Serializable {
         for (GXHDO101C003Model.PtnKyoriEndData ptnKyoriEndData : this.gxhdO101c003ModelView.getPtnKyoriEndDataList()) {
             if (!StringUtil.isEmpty(ptnKyoriEndData.getPtnKyoriXVal())) {
                 if (!NumberUtil.isIntegerNumeric(ptnKyoriEndData.getPtnKyoriXVal())) {
-                    setError(ptnKyoriEndData, true, false, "XHD-000008", "PTN距離X");
+                    setError(ptnKyoriEndData, true, false, "XHD-000008", "PTN距離Xｴﾝﾄﾞ" + ptnKyoriEndData.getPtnKyoriEnd());
                     return false;
                 }
 
                 if (3 < StringUtil.length(ptnKyoriEndData.getPtnKyoriXVal())) {
-                    setError(ptnKyoriEndData, true, false, "XHD-000006", "PTN距離X", "3");
+                    setError(ptnKyoriEndData, true, false, "XHD-000006", "PTN距離Xｴﾝﾄﾞ" + ptnKyoriEndData.getPtnKyoriEnd(), "3");
                     return false;
                 }
             }
 
             if (!StringUtil.isEmpty(ptnKyoriEndData.getPtnKyoriYVal())) {
                 if (!NumberUtil.isIntegerNumeric(ptnKyoriEndData.getPtnKyoriYVal())) {
-                    setError(ptnKyoriEndData, false, true, "XHD-000008", "PTN距離Y");
+                    setError(ptnKyoriEndData, false, true, "XHD-000008", "PTN距離Yｴﾝﾄﾞ" + ptnKyoriEndData.getPtnKyoriEnd());
                     return false;
                 }
 
                 if (3 < StringUtil.length(ptnKyoriEndData.getPtnKyoriYVal())) {
-                    setError(ptnKyoriEndData, false, true, "XHD-000006", "PTN距離Y", "3");
+                    setError(ptnKyoriEndData, false, true, "XHD-000006",  "PTN距離Yｴﾝﾄﾞ" + ptnKyoriEndData.getPtnKyoriEnd(), "3");
                     return false;
                 }
             }

@@ -128,13 +128,13 @@ public class GXHDO101C002Logic {
         for (GXHDO101C002Model.PtnKyoriStartData ptnKyoriStart : ptnKyoriStartDataList) {
             if (StringUtil.isEmpty(ptnKyoriStart.getPtnKyoriXVal())) {
                 ptnKyoriStart.setPtnKyoriXTextBackColor(ErrUtil.ERR_BACK_COLOR);
-                errorList.add(MessageUtil.getMessage("XHD-000037", "PTN距離X"));
+                errorList.add(MessageUtil.getMessage("XHD-000037", "PTN距離Xｽﾀｰﾄ" + ptnKyoriStart.getPtnKyoriStart()));
                 return errorList;
             }
 
             if (StringUtil.isEmpty(ptnKyoriStart.getPtnKyoriYVal())) {
                 ptnKyoriStart.setPtnKyoriYTextBackColor(ErrUtil.ERR_BACK_COLOR);
-                errorList.add(MessageUtil.getMessage("XHD-000037", "PTN距離Y"));
+                errorList.add(MessageUtil.getMessage("XHD-000037", "PTN距離Yｽﾀｰﾄ" + ptnKyoriStart.getPtnKyoriStart()));
                 return errorList;
             }
         }

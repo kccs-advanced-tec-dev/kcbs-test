@@ -142,24 +142,24 @@ public class GXHDO101C002 implements Serializable {
 
             if (!StringUtil.isEmpty(ptnKyoriStartData.getPtnKyoriXVal())) {
                 if (!NumberUtil.isIntegerNumeric(ptnKyoriStartData.getPtnKyoriXVal())) {
-                    setError(ptnKyoriStartData, true, false, "XHD-000008", "PTN距離X");
+                    setError(ptnKyoriStartData, true, false, "XHD-000008", "PTN距離Xｽﾀｰﾄ" + ptnKyoriStartData.getPtnKyoriStart());
                     return false;
                 }
 
                 if (3 < StringUtil.length(ptnKyoriStartData.getPtnKyoriXVal())) {
-                    setError(ptnKyoriStartData, true, false, "XHD-000006", "PTN距離X", "3");
+                    setError(ptnKyoriStartData, true, false, "XHD-000006", "PTN距離Xｽﾀｰﾄ" + ptnKyoriStartData.getPtnKyoriStart(), "3");
                     return false;
                 }
             }
 
             if (!StringUtil.isEmpty(ptnKyoriStartData.getPtnKyoriYVal())) {
                 if (!NumberUtil.isIntegerNumeric(ptnKyoriStartData.getPtnKyoriYVal())) {
-                    setError(ptnKyoriStartData, false, true, "XHD-000008", "PTN距離Y");
+                    setError(ptnKyoriStartData, false, true, "XHD-000008", "PTN距離Yｽﾀｰﾄ" + ptnKyoriStartData.getPtnKyoriStart());
                     return false;
                 }
 
                 if (3 < StringUtil.length(ptnKyoriStartData.getPtnKyoriYVal())) {
-                    setError(ptnKyoriStartData, false, true, "XHD-000006", "PTN距離Y", "3");
+                    setError(ptnKyoriStartData, false, true, "XHD-000006", "PTN距離Yｽﾀｰﾄ" + ptnKyoriStartData.getPtnKyoriStart(), "3");
                     return false;
                 }
             }

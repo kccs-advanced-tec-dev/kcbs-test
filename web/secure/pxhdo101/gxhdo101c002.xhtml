@@ -4,37 +4,37 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <p:dialog header="#{myMsg.ptn_kyori_start}" id="dlg_gxhdo101c002" widgetVar="W_dlg_gxhdo101c002"
-              width="560" modal="true" height="275"
+              width="500" modal="true" height="275"
               dynamic="false" closable="true" closeOnEscape="false" 
               onShow="subFormOpen(); setInputModeForTableColumn('numeric','form:gxhdo101c002Form:ptnKyoriXTable','startVal,endVal'); setTimeout(setFocus, 300, 'form:gxhdo101c002Form:ptnKyoriXTable:0:startVal_input');"
               onHide="subFormClose();document.getElementById('form:gxhdo101c002Form:cancelBtn').click();" position="center top">
         <h:form id="gxhdo101c002Form">
-            <p:panel style="width:515px">
+            <p:panel style="width:455px">
                 <p:dataTable id="ptnKyoriXTable" var="item" value="#{beanGXHDO101C002.gxhdO101c002ModelView.ptnKyoriStartDataList}"
-                            scrollable="true" style="font-size: 14px; width:480px" emptyMessage="" >
-                    <p:column id="mPtnKyoriX" width="30%" headerText="#{myMsg.ptn_kyori_start}" >
+                            scrollable="true" style="font-size: 14px; width:420px" emptyMessage="" >
+                    <p:column id="mPtnKyoriX" width="38%" headerText="#{myMsg.ptn_kyori_start}" >
                         <div style="text-align:right;">
                             <p:outputLabel value="#{item.ptnKyoriStart}" />
                         </div>
                     </p:column>
-                    <p:column id="mStart" width="35%" headerText="#{myMsg.ptn_kyori_x}" >
+                    <p:column id="mStart" width="31%" headerText="#{myMsg.titleX}" >
                         <div style="text-align:right;">
                             <p:inputNumber value="#{item.ptnKyoriXVal}" rendered="#{item.ptnKyoriXTextRendered}" id="startVal" onkeydown="keyDownEnterSetNextControl(this)" tabindex="#{item.ptnKyoriXTabIndex}" 
-                                           thousandSeparator="" decimalPlaces="0" maxValue="999" minValue="-999" size="14" inputStyle="text-align:right; background: #{item.ptnKyoriXTextBackColor}"/>
+                                           thousandSeparator="" decimalPlaces="0" maxValue="999" minValue="-999" size="9" inputStyle="text-align:right; background: #{item.ptnKyoriXTextBackColor}"/>
                             <p:outputLabel value="#{item.ptnKyoriXVal}" rendered="#{item.ptnKyoriXLabelRendered}" />
                         </div>
                     </p:column>
-                    <p:column id="mEnd" width="35%" headerText="#{myMsg.ptn_kyori_y}"  >
+                    <p:column id="mEnd" width="31%" headerText="#{myMsg.titleY}"  >
                         <div style="text-align:right;">
                             <p:inputNumber value="#{item.ptnKyoriYVal}" rendered="#{item.ptnKyoriYTextRendered}"  id="endVal" onkeydown="keyDownEnterSetNextControl(this)" tabindex="#{item.ptnKyoriYTabIndex}"   
-                                           thousandSeparator="" decimalPlaces="0" maxValue="999" minValue="-999" size="14" inputStyle="text-align:right; background: #{item.ptnKyoriYTextBackColor}"/>
+                                           thousandSeparator="" decimalPlaces="0" maxValue="999" minValue="-999" size="9" inputStyle="text-align:right; background: #{item.ptnKyoriYTextBackColor}"/>
                             <p:outputLabel value="#{item.ptnKyoriYVal}" rendered="#{item.ptnKyoriYLabelRendered}" />
                         </div>
                     </p:column>
                 </p:dataTable>
             </p:panel>
                 <p:commandButton value="OK" id="okBtn"
-                                 style="position:relative;left:140px;top:5px;width:110px;height:35px;"
+                                 style="position:relative;left:105px;top:5px;width:110px;height:35px;"
                                  actionListener="#{gXHDO901A.returnSubForm('GXHDO101C002',beanGXHDO101C002.isFormError)}"
                                  async="false"
                                  process="@this" 
@@ -47,7 +47,7 @@
                                     oncomplete="if('error'!=args.firstParam){PF('W_dlg_gxhdo101c002').hide();}"/>
                 </p:commandButton>
                 <p:commandButton value="Cancel" id="cancelBtn"
-                                 style="position:relative;left:170px;top:5px;width:110px;height:35px;"
+                                 style="position:relative;left:135px;top:5px;width:110px;height:35px;"
                                  process="@this" 
                                  update="form:growlMessage"
                                  oncomplete="PF('W_dlg_gxhdo101c002').hide();"/>   

@@ -121,17 +121,17 @@ public class GXHDO101C003Logic {
     public static List<String> checkInput(GXHDO101C003Model gXHDO101C003Model) {
 
         List<String> errorList = new ArrayList<>();
-        List<GXHDO101C003Model.PtnKyoriEndData> ptnKyoriYDataList = gXHDO101C003Model.getPtnKyoriEndDataList();
-        for (GXHDO101C003Model.PtnKyoriEndData ptnKyoriY : ptnKyoriYDataList) {
-            if (StringUtil.isEmpty(ptnKyoriY.getPtnKyoriXVal())) {
-                ptnKyoriY.setPtnKyoriXTextBackColor(ErrUtil.ERR_BACK_COLOR);
-                errorList.add(MessageUtil.getMessage("XHD-000037", "PTN距離X"));
+        List<GXHDO101C003Model.PtnKyoriEndData> ptnKyoriEndDataList = gXHDO101C003Model.getPtnKyoriEndDataList();
+        for (GXHDO101C003Model.PtnKyoriEndData ptnKyoriEnd : ptnKyoriEndDataList) {
+            if (StringUtil.isEmpty(ptnKyoriEnd.getPtnKyoriXVal())) {
+                ptnKyoriEnd.setPtnKyoriXTextBackColor(ErrUtil.ERR_BACK_COLOR);
+                errorList.add(MessageUtil.getMessage("XHD-000037", "PTN距離Xｴﾝﾄﾞ" + ptnKyoriEnd.getPtnKyoriEnd()));
                 return errorList;
             }
 
-            if (StringUtil.isEmpty(ptnKyoriY.getPtnKyoriYVal())) {
-                ptnKyoriY.setPtnKyoriYTextBackColor(ErrUtil.ERR_BACK_COLOR);
-                errorList.add(MessageUtil.getMessage("XHD-000037", "PTN距離Y"));
+            if (StringUtil.isEmpty(ptnKyoriEnd.getPtnKyoriYVal())) {
+                ptnKyoriEnd.setPtnKyoriYTextBackColor(ErrUtil.ERR_BACK_COLOR);
+                errorList.add(MessageUtil.getMessage("XHD-000037", "PTN距離Yｴﾝﾄﾞ" + ptnKyoriEnd.getPtnKyoriEnd()));
                 return errorList;
             }
         }
