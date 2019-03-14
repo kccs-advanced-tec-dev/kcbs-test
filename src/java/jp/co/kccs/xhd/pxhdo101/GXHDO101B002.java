@@ -394,6 +394,27 @@ public class GXHDO101B002 implements IFormLogic {
             for (FXHDD01 fxhdd01 : processData.getItemList()) {
                 fxhdd01.setBackColorInput(fxhdd01.getBackColorInputDefault());
             }
+            
+            // 膜厚入力画面背景色クリア
+            GXHDO101C001 beanGXHDO101C001 = (GXHDO101C001) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C001);
+            for (GXHDO101C001Model.MakuatsuData data : beanGXHDO101C001.getGxhdO101c001Model().getMakuatsuDataList()) {
+                data.setStartTextBackColor("");
+                data.setEndTextBackColor("");
+            }
+            
+            // PTN距離ｽﾀｰﾄ画面背景色クリア
+            GXHDO101C002 beanGXHDO101C002 = (GXHDO101C002) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C002);
+            for (GXHDO101C002Model.PtnKyoriStartData data : beanGXHDO101C002.getGxhdO101c002Model().getPtnKyoriStartDataList()) {
+                data.setPtnKyoriXTextBackColor("");
+                data.setPtnKyoriYTextBackColor("");
+            }
+            
+            // PTN距離ｴﾝﾄﾞ画面背景色クリア
+            GXHDO101C003 beanGXHDO101C003 = (GXHDO101C003) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C003);
+            for (GXHDO101C003Model.PtnKyoriEndData data : beanGXHDO101C003.getGxhdO101c003Model().getPtnKyoriEndDataList()) {
+                data.setPtnKyoriXTextBackColor("");
+                data.setPtnKyoriYTextBackColor("");
+            }
 
             // 状態ﾌﾗｸﾞ、revisionを設定する。
             processData.setInitJotaiFlg(JOTAI_FLG_KARI_TOROKU);

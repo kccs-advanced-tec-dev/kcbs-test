@@ -358,7 +358,19 @@ public class GXHDO101B003 implements IFormLogic {
             for (FXHDD01 fxhdd01 : processData.getItemList()) {
                 fxhdd01.setBackColorInput(fxhdd01.getBackColorInputDefault());
             }
-
+            
+            // 膜厚入力画面背景色クリア
+            GXHDO101C004 beanGXHDO101C004 = (GXHDO101C004) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C004);
+            for (GXHDO101C004Model.MakuatsuData data : beanGXHDO101C004.getGxhdO101c004Model().getMakuatsuDataList()) {
+                data.setStartTextBackColor("");
+            }
+            
+            // 印刷幅画面背景色クリア
+            GXHDO101C005 beanGXHDO101C005 = (GXHDO101C005) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C005);
+            for (GXHDO101C005Model.PrintWidthData data : beanGXHDO101C005.getGxhdO101c005Model().getPrintWidthDataList()) {
+                data.setStartTextBackColor("");
+            }
+            
             // 状態ﾌﾗｸﾞ、revisionを設定する。
             processData.setInitJotaiFlg(JOTAI_FLG_KARI_TOROKU);
             processData.setInitRev(newRev.toPlainString());
