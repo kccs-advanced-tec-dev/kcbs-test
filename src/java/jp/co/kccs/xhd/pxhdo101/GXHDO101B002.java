@@ -75,7 +75,7 @@ public class GXHDO101B002 implements IFormLogic {
     private static final String JOTAI_FLG_TOROKUZUMI = "1";
     private static final String JOTAI_FLG_SAKUJO = "9";
     private static final String SQL_STATE_RECORD_LOCK_ERR = "55P03";
-    
+
     /**
      * 初期化処理
      *
@@ -314,10 +314,10 @@ public class GXHDO101B002 implements IFormLogic {
             // トランザクション開始
             //DocServer 
             conDoc = DBUtil.transactionStart(queryRunnerDoc.getDataSource().getConnection());
-            
+
             //Qcdb
             conQcdb = DBUtil.transactionStart(queryRunnerQcdb.getDataSource().getConnection());
-            
+
             // セッションから情報を取得
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             HttpSession session = (HttpSession) externalContext.getSession(false);
@@ -598,10 +598,10 @@ public class GXHDO101B002 implements IFormLogic {
             // トランザクション開始
             //DocServer 
             conDoc = DBUtil.transactionStart(queryRunnerDoc.getDataSource().getConnection());
-            
+
             //Qcdb
             conQcdb = DBUtil.transactionStart(queryRunnerQcdb.getDataSource().getConnection());
-            
+
             // セッションから情報を取得
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             HttpSession session = (HttpSession) externalContext.getSession(false);
@@ -649,7 +649,7 @@ public class GXHDO101B002 implements IFormLogic {
                 if (!srSpsprintScrList.isEmpty()) {
                     tmpSrSpsprintScr = srSpsprintScrList.get(0);
                 }
-                
+
                 deleteTmpSrSpsprintScr(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban);
                 deleteTmpSubSrSpsprintScr(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban);
             }
@@ -782,10 +782,10 @@ public class GXHDO101B002 implements IFormLogic {
             // トランザクション開始
             //DocServer 
             conDoc = DBUtil.transactionStart(queryRunnerDoc.getDataSource().getConnection());
-            
+
             //Qcdb
             conQcdb = DBUtil.transactionStart(queryRunnerQcdb.getDataSource().getConnection());
-            
+
             // セッションから情報を取得
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             HttpSession session = (HttpSession) externalContext.getSession(false);
@@ -804,7 +804,7 @@ public class GXHDO101B002 implements IFormLogic {
             // リビジョンエラー時はリターン
             if (checkRevMessageInfo != null) {
                 processData.setErrorMessageInfoList(Arrays.asList(checkRevMessageInfo));
-                
+
                 //ロールバック処理
                 DBUtil.rollbackConnection(conDoc, LOGGER);
                 DBUtil.rollbackConnection(conQcdb, LOGGER);
@@ -897,10 +897,10 @@ public class GXHDO101B002 implements IFormLogic {
             // トランザクション開始
             //DocServer 
             conDoc = DBUtil.transactionStart(queryRunnerDoc.getDataSource().getConnection());
-            
+
             //Qcdb
             conQcdb = DBUtil.transactionStart(queryRunnerQcdb.getDataSource().getConnection());
-            
+
             // セッションから情報を取得
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             HttpSession session = (HttpSession) externalContext.getSession(false);
@@ -921,7 +921,7 @@ public class GXHDO101B002 implements IFormLogic {
                 //ロールバック処理
                 DBUtil.rollbackConnection(conDoc, LOGGER);
                 DBUtil.rollbackConnection(conQcdb, LOGGER);
-              return processData;
+                return processData;
             }
 
             BigDecimal rev = new BigDecimal(processData.getInitRev());
@@ -1249,7 +1249,7 @@ public class GXHDO101B002 implements IFormLogic {
                 + "枚");
 
         // 上カバーテープ１
-        this.setItemData(processData, GXHDO101B002Const.UE_COVER_TAPE1, 
+        this.setItemData(processData, GXHDO101B002Const.UE_COVER_TAPE1,
                 StringUtil.nullToBlank(sekkeiData.get("SYURUI2"))
                 + "  "
                 + StringUtil.nullToBlank(sekkeiData.get("ATUMI2"))
@@ -1259,7 +1259,7 @@ public class GXHDO101B002 implements IFormLogic {
         );
 
         // 下カバーテープ１
-        this.setItemData(processData, GXHDO101B002Const.SHITA_COVER_TAPE1, 
+        this.setItemData(processData, GXHDO101B002Const.SHITA_COVER_TAPE1,
                 StringUtil.nullToBlank(sekkeiData.get("SYURUI3"))
                 + "  "
                 + StringUtil.nullToBlank(sekkeiData.get("ATUMI3"))
@@ -1293,7 +1293,7 @@ public class GXHDO101B002 implements IFormLogic {
 
     /**
      * 入力項目のデータを画面項目に設定
-     * 
+     *
      * @param processData 処理制御データ
      * @param queryRunnerDoc queryRunner(DocServer)オブジェクト
      * @param queryRunnerQcdb queryRunner(Qcdb)オブジェクト
@@ -1504,6 +1504,7 @@ public class GXHDO101B002 implements IFormLogic {
 
     /**
      * 膜厚入力画面データ設定処理
+     *
      * @param subSrSpsprintScrData 印刷SPSｽｸﾘｰﾝ_ｻﾌﾞ画面データ
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
@@ -1931,7 +1932,9 @@ public class GXHDO101B002 implements IFormLogic {
                 + "makuatuave_start,makuatumax_start,makuatumin_start,start_ptn_dist_x,start_ptn_dist_y,tanto_setting,makuatuave_end,"
                 + "makuatumax_end,makuatumin_end,end_ptn_dist_x,end_ptn_dist_y,tanto_end,kcpno,sijiondo,sijiondo2,sijiondo3,sijiondo4,"
                 + "sijiondo5,pkokeibun1,pkokeibun2,petfilmsyurui,makuatucv_start,nijimikasure_start,makuatucv_end,nijimikasure_end,"
-                + "printmaisuu,table_clearrance,scraperspeed,skeegegaikan,torokunichiji,kosinnichiji,revision,'0' AS deleteFlag "
+                + "printmaisuu,table_clearrance,scraperspeed,skeegegaikan,torokunichiji,kosinnichiji,revision,'0' AS deleteFlag, "
+                + "TensionS,TensionE,TensionStemae,TensionEtemae,TensionSoku,TensionEoku,AtuDoATu,BladeATu,AtuDoKeiLEnd,AtuDoKeiLSide,"
+                + "AtuDoKeiCenter,AtuDoKeiRSide,AtuDoKeiREnd "
                 + "FROM sr_spsprint "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
         // revisionが入っている場合、条件に追加
@@ -2029,6 +2032,19 @@ public class GXHDO101B002 implements IFormLogic {
         mapping.put("sijiondo3", "sijiondo3"); //指示乾燥温度3
         mapping.put("sijiondo4", "sijiondo4"); //指示乾燥温度4
         mapping.put("sijiondo5", "sijiondo5"); //指示乾燥温度5
+        mapping.put("TensionS", "tensionS"); //ﾃﾝｼｮﾝ開始
+        mapping.put("TensionE", "tensionE"); //ﾃﾝｼｮﾝ終了
+        mapping.put("TensionStemae", "tensionStemae"); //ﾃﾝｼｮﾝ開始手前
+        mapping.put("TensionEtemae", "tensionEtemae"); //ﾃﾝｼｮﾝ終了手前
+        mapping.put("TensionSoku", "tensionSoku"); //ﾃﾝｼｮﾝ開始奥
+        mapping.put("TensionEoku", "tensionEoku"); //ﾃﾝｼｮﾝ終了奥
+        mapping.put("AtuDoATu", "atuDoATu"); //圧胴圧力
+        mapping.put("BladeATu", "bladeATu"); //ﾌﾞﾚｰﾄﾞ圧力
+        mapping.put("AtuDoKeiLEnd", "atuDoKeiLEnd"); //圧胴計(左)終了
+        mapping.put("AtuDoKeiLSide", "atuDoKeiLSide"); //圧胴計(左)サイド
+        mapping.put("AtuDoKeiCenter", "atuDoKeiCenter"); //圧胴計(真ん中)
+        mapping.put("AtuDoKeiRSide", "atuDoKeiRSide"); //圧胴計(右)サイド
+        mapping.put("AtuDoKeiREnd", "atuDoKeiREnd"); //圧胴計(右)終了
         mapping.put("pkokeibun1", "pkokeibun1"); //ﾍﾟｰｽﾄ固形分1
         mapping.put("pkokeibun2", "pkokeibun2"); //ﾍﾟｰｽﾄ固形分2
         mapping.put("petfilmsyurui", "petfilmsyurui"); //PETﾌｨﾙﾑ種類
@@ -2173,7 +2189,9 @@ public class GXHDO101B002 implements IFormLogic {
                 + "makuatuave_start,makuatumax_start,makuatumin_start,start_ptn_dist_x,start_ptn_dist_y,tanto_setting,makuatuave_end,"
                 + "makuatumax_end,makuatumin_end,end_ptn_dist_x,end_ptn_dist_y,tanto_end,kcpno,sijiondo,sijiondo2,sijiondo3,sijiondo4,"
                 + "sijiondo5,pkokeibun1,pkokeibun2,petfilmsyurui,makuatucv_start,nijimikasure_start,makuatucv_end,nijimikasure_end,"
-                + "printmaisuu,table_clearrance,scraperspeed,skeegegaikan,torokunichiji,kosinnichiji,revision,deleteflag "
+                + "printmaisuu,table_clearrance,scraperspeed,skeegegaikan,torokunichiji,kosinnichiji,revision,deleteflag, "
+                + "TensionS,TensionE,TensionStemae,TensionEtemae,TensionSoku,TensionEoku,AtuDoATu,BladeATu,AtuDoKeiLEnd,AtuDoKeiLSide,"
+                + "AtuDoKeiCenter,AtuDoKeiRSide,AtuDoKeiREnd "
                 + "FROM tmp_sr_spsprint_scr "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND deleteflag = ? ";
         // revisionが入っている場合、条件に追加
@@ -2272,6 +2290,19 @@ public class GXHDO101B002 implements IFormLogic {
         mapping.put("sijiondo3", "sijiondo3"); //指示乾燥温度3
         mapping.put("sijiondo4", "sijiondo4"); //指示乾燥温度4
         mapping.put("sijiondo5", "sijiondo5"); //指示乾燥温度5
+        mapping.put("TensionS", "tensionS"); //ﾃﾝｼｮﾝ開始
+        mapping.put("TensionE", "tensionE"); //ﾃﾝｼｮﾝ終了
+        mapping.put("TensionStemae", "tensionStemae"); //ﾃﾝｼｮﾝ開始手前
+        mapping.put("TensionEtemae", "tensionEtemae"); //ﾃﾝｼｮﾝ終了手前
+        mapping.put("TensionSoku", "tensionSoku"); //ﾃﾝｼｮﾝ開始奥
+        mapping.put("TensionEoku", "tensionEoku"); //ﾃﾝｼｮﾝ終了奥
+        mapping.put("AtuDoATu", "atuDoATu"); //圧胴圧力
+        mapping.put("BladeATu", "bladeATu"); //ﾌﾞﾚｰﾄﾞ圧力
+        mapping.put("AtuDoKeiLEnd", "atuDoKeiLEnd"); //圧胴計(左)終了
+        mapping.put("AtuDoKeiLSide", "atuDoKeiLSide"); //圧胴計(左)サイド
+        mapping.put("AtuDoKeiCenter", "atuDoKeiCenter"); //圧胴計(真ん中)
+        mapping.put("AtuDoKeiRSide", "atuDoKeiRSide"); //圧胴計(右)サイド
+        mapping.put("AtuDoKeiREnd", "atuDoKeiREnd"); //圧胴計(右)終了
         mapping.put("pkokeibun1", "pkokeibun1"); //ﾍﾟｰｽﾄ固形分1
         mapping.put("pkokeibun2", "pkokeibun2"); //ﾍﾟｰｽﾄ固形分2
         mapping.put("petfilmsyurui", "petfilmsyurui"); //PETﾌｨﾙﾑ種類
@@ -2463,12 +2494,11 @@ public class GXHDO101B002 implements IFormLogic {
             }
 
             String jotaiFlg = StringUtil.nullToBlank(getMapData(fxhdd03RevInfo, "jotai_flg"));
-            
+
             if (!(JOTAI_FLG_KARI_TOROKU.equals(jotaiFlg) || JOTAI_FLG_TOROKUZUMI.equals(jotaiFlg))) {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
                 return processData;
             }
-
 
             // 印刷SPSｽｸﾘｰﾝデータ取得
             List<SrSpsprintScr> srSpsprintScrDataList = getSrSpsprintScrData(queryRunnerQcdb, "", jotaiFlg, kojyo, lotNo8, oyalotEdaban);
@@ -2706,11 +2736,13 @@ public class GXHDO101B002 implements IFormLogic {
                 + "taperollno4,taperollno5,pastehinmei,seihanmei,makuatuave_start,makuatumax_start,makuatumin_start,"
                 + "start_ptn_dist_x,start_ptn_dist_y,tanto_setting,makuatuave_end,makuatumax_end,makuatumin_end,"
                 + "end_ptn_dist_x,end_ptn_dist_y,tanto_end,kcpno,sijiondo,sijiondo2,sijiondo3,sijiondo4,sijiondo5,"
+                + "TensionS,TensionE,TensionStemae,TensionEtemae,TensionSoku,TensionEoku,AtuDoATu,BladeATu,AtuDoKeiLEnd,"
+                + "AtuDoKeiLSide, AtuDoKeiCenter, AtuDoKeiRSide, AtuDoKeiREnd,"
                 + "pkokeibun1,pkokeibun2,petfilmsyurui,makuatucv_start,nijimikasure_start,makuatucv_end,nijimikasure_end,"
                 + "printmaisuu,table_clearrance,scraperspeed,skeegegaikan,torokunichiji,kosinnichiji,revision,deleteflag"
                 + ") VALUES ("
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterTmpSrSpsprintScr(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -2916,6 +2948,19 @@ public class GXHDO101B002 implements IFormLogic {
             params.add(null); //指示乾燥温度3
             params.add(null); //指示乾燥温度4
             params.add(null); //指示乾燥温度5
+            params.add(null); //ﾃﾝｼｮﾝ開始
+            params.add(null); //ﾃﾝｼｮﾝ終了
+            params.add(null); //ﾃﾝｼｮﾝ開始手前
+            params.add(null); //ﾃﾝｼｮﾝ終了手前
+            params.add(null); //ﾃﾝｼｮﾝ開始奥
+            params.add(null); //ﾃﾝｼｮﾝ終了奥
+            params.add(null); //圧胴圧力
+            params.add(null); //ﾌﾞﾚｰﾄﾞ圧力
+            params.add(null); //圧胴計(左)終了
+            params.add(null); //圧胴計(左)サイド
+            params.add(null); //圧胴計(真ん中)
+            params.add(null); //圧胴計(右)サイド
+            params.add(null); //圧胴計(右)終了
         }
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B002Const.PASTE_KOKEIBUN1, srSpsprintScrData))); //ﾍﾟｰｽﾄ固形分1
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B002Const.PASTE_KOKEIBUN2, srSpsprintScrData))); //ﾍﾟｰｽﾄ固形分2
@@ -3099,7 +3144,6 @@ public class GXHDO101B002 implements IFormLogic {
             params.add(kojyo); //工場ｺｰﾄﾞ
             params.add(lotNo); //ﾛｯﾄNo
             params.add(edaban); //枝番
-
         }
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(0).getStartVal())); //膜厚ｽﾀｰﾄ1
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(1).getStartVal())); //膜厚ｽﾀｰﾄ2
@@ -3179,11 +3223,13 @@ public class GXHDO101B002 implements IFormLogic {
                 + "taperollno4,taperollno5,pastehinmei,seihanmei,makuatuave_start,makuatumax_start,makuatumin_start,"
                 + "start_ptn_dist_x,start_ptn_dist_y,tanto_setting,makuatuave_end,makuatumax_end,makuatumin_end,"
                 + "end_ptn_dist_x,end_ptn_dist_y,tanto_end,kcpno,sijiondo,sijiondo2,sijiondo3,sijiondo4,sijiondo5,"
+                + "TensionS,TensionE,TensionStemae,TensionEtemae,TensionSoku,TensionEoku,AtuDoATu,BladeATu,AtuDoKeiLEnd,"
+                + "AtuDoKeiLSide, AtuDoKeiCenter, AtuDoKeiRSide, AtuDoKeiREnd,"
                 + "pkokeibun1,pkokeibun2,petfilmsyurui,makuatucv_start,nijimikasure_start,makuatucv_end,nijimikasure_end,"
                 + "printmaisuu,table_clearrance,scraperspeed,skeegegaikan,torokunichiji,kosinnichiji,revision"
                 + ") VALUES ("
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterSrSpsprintScr(true, newRev, kojyo, lotNo, edaban, systemTime, itemList, tmpSrSpsprintScr);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -3360,6 +3406,19 @@ public class GXHDO101B002 implements IFormLogic {
             params.add(0); //指示乾燥温度3
             params.add(0); //指示乾燥温度4
             params.add(0); //指示乾燥温度5
+            params.add(0); //ﾃﾝｼｮﾝ開始
+            params.add(0); //ﾃﾝｼｮﾝ終了
+            params.add(0); //ﾃﾝｼｮﾝ開始手前
+            params.add(0); //ﾃﾝｼｮﾝ終了手前
+            params.add(0); //ﾃﾝｼｮﾝ開始奥
+            params.add(0); //ﾃﾝｼｮﾝ終了奥
+            params.add(0); //圧胴圧力
+            params.add(0); //ﾌﾞﾚｰﾄﾞ圧力
+            params.add(0); //圧胴計(左)終了
+            params.add(0); //圧胴計(左)サイド
+            params.add(0); //圧胴計(真ん中)
+            params.add(0); //圧胴計(右)サイド
+            params.add(0); //圧胴計(右)終了
         }
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B002Const.PASTE_KOKEIBUN1, srSpsprintScrData))); //ﾍﾟｰｽﾄ固形分1
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B002Const.PASTE_KOKEIBUN2, srSpsprintScrData))); //ﾍﾟｰｽﾄ固形分2
@@ -3532,9 +3591,10 @@ public class GXHDO101B002 implements IFormLogic {
         // 子画面情報を取得
         GXHDO101C001 beanGXHDO101C001 = (GXHDO101C001) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C001);
         List<GXHDO101C001Model.MakuatsuData> makuatsuDataList = beanGXHDO101C001.getGxhdO101c001Model().getMakuatsuDataList();
+        
         GXHDO101C002 beanGXHDO101C002 = (GXHDO101C002) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C002);
         List<GXHDO101C002Model.PtnKyoriStartData> ptnKyoriStartDataList = beanGXHDO101C002.getGxhdO101c002Model().getPtnKyoriStartDataList();
-
+        
         GXHDO101C003 beanGXHDO101C003 = (GXHDO101C003) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C003);
         List<GXHDO101C003Model.PtnKyoriEndData> ptnKyoriEndDataList = beanGXHDO101C003.getGxhdO101c003Model().getPtnKyoriEndDataList();
 
@@ -3952,6 +4012,8 @@ public class GXHDO101B002 implements IFormLogic {
                 + "taperollno4,taperollno5,pastehinmei,seihanmei,makuatuave_start,makuatumax_start,makuatumin_start,"
                 + "start_ptn_dist_x,start_ptn_dist_y,tanto_setting,makuatuave_end,makuatumax_end,makuatumin_end,"
                 + "end_ptn_dist_x,end_ptn_dist_y,tanto_end,kcpno,sijiondo,sijiondo2,sijiondo3,sijiondo4,sijiondo5,"
+                + "TensionS,TensionE,TensionStemae,TensionEtemae,TensionSoku,TensionEoku,AtuDoATu,BladeATu,AtuDoKeiLEnd,"
+                + "AtuDoKeiLSide, AtuDoKeiCenter, AtuDoKeiRSide, AtuDoKeiREnd,"
                 + "pkokeibun1,pkokeibun2,petfilmsyurui,makuatucv_start,nijimikasure_start,makuatucv_end,nijimikasure_end,"
                 + "printmaisuu,table_clearrance,scraperspeed,skeegegaikan,torokunichiji,kosinnichiji,revision,deleteflag"
                 + ") SELECT "
@@ -3964,6 +4026,8 @@ public class GXHDO101B002 implements IFormLogic {
                 + "taperollno4,taperollno5,pastehinmei,seihanmei,makuatuave_start,makuatumax_start,makuatumin_start,"
                 + "start_ptn_dist_x,start_ptn_dist_y,tanto_setting,makuatuave_end,makuatumax_end,makuatumin_end,"
                 + "end_ptn_dist_x,end_ptn_dist_y,tanto_end,kcpno,sijiondo,sijiondo2,sijiondo3,sijiondo4,sijiondo5,"
+                + "TensionS,TensionE,TensionStemae,TensionEtemae,TensionSoku,TensionEoku,AtuDoATu,BladeATu,AtuDoKeiLEnd,"
+                + "AtuDoKeiLSide, AtuDoKeiCenter, AtuDoKeiRSide, AtuDoKeiREnd,"
                 + "pkokeibun1,pkokeibun2,petfilmsyurui,makuatucv_start,nijimikasure_start,makuatucv_end,nijimikasure_end,"
                 + "printmaisuu,table_clearrance,scraperspeed,skeegegaikan,?,?,?,? "
                 + "FROM sr_spsprint "

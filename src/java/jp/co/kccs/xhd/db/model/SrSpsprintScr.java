@@ -422,6 +422,71 @@ public class SrSpsprintScr {
     private BigDecimal sijiondo5;
     
     /**
+     * ﾃﾝｼｮﾝ開始
+     */
+    private BigDecimal tensionS;
+
+    /**
+     * ﾃﾝｼｮﾝ終了
+     */
+    private BigDecimal tensionE;
+
+    /**
+     * ﾃﾝｼｮﾝ開始手前
+     */
+    private BigDecimal tensionStemae;
+
+    /**
+     * ﾃﾝｼｮﾝ終了手前
+     */
+    private BigDecimal tensionEtemae;
+
+    /**
+     * ﾃﾝｼｮﾝ開始奥
+     */
+    private BigDecimal tensionSoku;
+
+    /**
+     * ﾃﾝｼｮﾝ終了奥
+     */
+    private BigDecimal tensionEoku;
+
+    /**
+     * 圧胴圧力
+     */
+    private BigDecimal atuDoATu;
+
+    /**
+     * ﾌﾞﾚｰﾄﾞ圧力
+     */
+    private BigDecimal bladeATu;
+
+    /**
+     * 圧胴計(左)終了
+     */
+    private BigDecimal atuDoKeiLEnd;
+
+    /**
+     * 圧胴計(左)サイド
+     */
+    private BigDecimal atuDoKeiLSide;
+
+    /**
+     * 圧胴計(真ん中)
+     */
+    private BigDecimal atuDoKeiCenter;
+
+    /**
+     * 圧胴計(右)サイド
+     */
+    private BigDecimal atuDoKeiRSide;
+
+    /**
+     * 圧胴計(右)終了
+     */
+    private BigDecimal atuDoKeiREnd;
+    
+    /**
      * ﾍﾟｰｽﾄ固形分1
      */
     private BigDecimal pkokeibun1;
@@ -1759,6 +1824,214 @@ public class SrSpsprintScr {
      */
     public void setSijiondo5(BigDecimal sijiondo5) {
         this.sijiondo5 = sijiondo5;
+    }
+
+    /**
+     * ﾃﾝｼｮﾝ開始
+     * @return the tensionS
+     */
+    public BigDecimal getTensionS() {
+        return tensionS;
+    }
+
+    /**
+     * ﾃﾝｼｮﾝ開始
+     * @param tensionS the tensionS to set
+     */
+    public void setTensionS(BigDecimal tensionS) {
+        this.tensionS = tensionS;
+    }
+
+    /**
+     * ﾃﾝｼｮﾝ終了
+     * @return the tensionE
+     */
+    public BigDecimal getTensionE() {
+        return tensionE;
+    }
+
+    /**
+     * ﾃﾝｼｮﾝ終了
+     * @param tensionE the tensionE to set
+     */
+    public void setTensionE(BigDecimal tensionE) {
+        this.tensionE = tensionE;
+    }
+
+    /**
+     * ﾃﾝｼｮﾝ開始手前
+     * @return the tensionStemae
+     */
+    public BigDecimal getTensionStemae() {
+        return tensionStemae;
+    }
+
+    /**
+     * ﾃﾝｼｮﾝ開始手前
+     * @param tensionStemae the tensionStemae to set
+     */
+    public void setTensionStemae(BigDecimal tensionStemae) {
+        this.tensionStemae = tensionStemae;
+    }
+
+    /**
+     * ﾃﾝｼｮﾝ終了手前
+     * @return the tensionEtemae
+     */
+    public BigDecimal getTensionEtemae() {
+        return tensionEtemae;
+    }
+
+    /**
+     * ﾃﾝｼｮﾝ終了手前
+     * @param tensionEtemae the tensionEtemae to set
+     */
+    public void setTensionEtemae(BigDecimal tensionEtemae) {
+        this.tensionEtemae = tensionEtemae;
+    }
+
+    /**
+     * ﾃﾝｼｮﾝ開始奥
+     * @return the tensionSoku
+     */
+    public BigDecimal getTensionSoku() {
+        return tensionSoku;
+    }
+
+    /**
+     * ﾃﾝｼｮﾝ開始奥
+     * @param tensionSoku the tensionSoku to set
+     */
+    public void setTensionSoku(BigDecimal tensionSoku) {
+        this.tensionSoku = tensionSoku;
+    }
+
+    /**
+     * ﾃﾝｼｮﾝ終了奥
+     * @return the tensionEoku
+     */
+    public BigDecimal getTensionEoku() {
+        return tensionEoku;
+    }
+
+    /**
+     * ﾃﾝｼｮﾝ終了奥
+     * @param tensionEoku the tensionEoku to set
+     */
+    public void setTensionEoku(BigDecimal tensionEoku) {
+        this.tensionEoku = tensionEoku;
+    }
+
+    /**
+     * 圧胴圧力
+     * @return the atuDoATu
+     */
+    public BigDecimal getAtuDoATu() {
+        return atuDoATu;
+    }
+
+    /**
+     * 圧胴圧力
+     * @param atuDoATu the atuDoATu to set
+     */
+    public void setAtuDoATu(BigDecimal atuDoATu) {
+        this.atuDoATu = atuDoATu;
+    }
+
+    /**
+     * ﾌﾞﾚｰﾄﾞ圧力
+     * @return the bladeATu
+     */
+    public BigDecimal getBladeATu() {
+        return bladeATu;
+    }
+
+    /**
+     * ﾌﾞﾚｰﾄﾞ圧力
+     * @param bladeATu the bladeATu to set
+     */
+    public void setBladeATu(BigDecimal bladeATu) {
+        this.bladeATu = bladeATu;
+    }
+
+    /**
+     * 圧胴計(左)終了
+     * @return the atuDoKeiLEnd
+     */
+    public BigDecimal getAtuDoKeiLEnd() {
+        return atuDoKeiLEnd;
+    }
+
+    /**
+     * 圧胴計(左)終了
+     * @param atuDoKeiLEnd the atuDoKeiLEnd to set
+     */
+    public void setAtuDoKeiLEnd(BigDecimal atuDoKeiLEnd) {
+        this.atuDoKeiLEnd = atuDoKeiLEnd;
+    }
+
+    /**
+     * 圧胴計(左)サイド
+     * @return the atuDoKeiLSide
+     */
+    public BigDecimal getAtuDoKeiLSide() {
+        return atuDoKeiLSide;
+    }
+
+    /**
+     * 圧胴計(左)サイド
+     * @param atuDoKeiLSide the atuDoKeiLSide to set
+     */
+    public void setAtuDoKeiLSide(BigDecimal atuDoKeiLSide) {
+        this.atuDoKeiLSide = atuDoKeiLSide;
+    }
+
+    /**
+     * 圧胴計(真ん中)
+     * @return the atuDoKeiCenter
+     */
+    public BigDecimal getAtuDoKeiCenter() {
+        return atuDoKeiCenter;
+    }
+
+    /**
+     * 圧胴計(真ん中)
+     * @param atuDoKeiCenter the atuDoKeiCenter to set
+     */
+    public void setAtuDoKeiCenter(BigDecimal atuDoKeiCenter) {
+        this.atuDoKeiCenter = atuDoKeiCenter;
+    }
+
+    /**
+     * 圧胴計(右)サイド
+     * @return the atuDoKeiRSide
+     */
+    public BigDecimal getAtuDoKeiRSide() {
+        return atuDoKeiRSide;
+    }
+
+    /**
+     * 圧胴計(右)サイド
+     * @param atuDoKeiRSide the atuDoKeiRSide to set
+     */
+    public void setAtuDoKeiRSide(BigDecimal atuDoKeiRSide) {
+        this.atuDoKeiRSide = atuDoKeiRSide;
+    }
+
+    /**
+     * 圧胴計(右)終了
+     * @return the atuDoKeiREnd
+     */
+    public BigDecimal getAtuDoKeiREnd() {
+        return atuDoKeiREnd;
+    }
+
+    /**
+     * 圧胴計(右)終了
+     * @param atuDoKeiREnd the atuDoKeiREnd to set
+     */
+    public void setAtuDoKeiREnd(BigDecimal atuDoKeiREnd) {
+        this.atuDoKeiREnd = atuDoKeiREnd;
     }
 
     /**
