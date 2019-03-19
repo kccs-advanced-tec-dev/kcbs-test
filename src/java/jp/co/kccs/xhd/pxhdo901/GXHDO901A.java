@@ -48,6 +48,10 @@ import jp.co.kccs.xhd.pxhdo101.GXHDO101C005;
 import jp.co.kccs.xhd.pxhdo101.GXHDO101C005Logic;
 import jp.co.kccs.xhd.pxhdo101.GXHDO101C006;
 import jp.co.kccs.xhd.pxhdo101.GXHDO101C006Logic;
+import jp.co.kccs.xhd.pxhdo101.GXHDO101C007;
+import jp.co.kccs.xhd.pxhdo101.GXHDO101C007Logic;
+import jp.co.kccs.xhd.pxhdo101.GXHDO101C009;
+import jp.co.kccs.xhd.pxhdo101.GXHDO101C009Logic;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
@@ -1626,6 +1630,16 @@ public class GXHDO901A implements Serializable {
             case SubFormUtil.FORM_ID_GXHDO101C006:
                 GXHDO101C006 beanGXHDO101C006 = (GXHDO101C006) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C006);
                 GXHDO101C006Logic.setReturnData(beanGXHDO101C006.getGxhdO101c006Model(), this.itemList);
+                break;
+            // 電極膜厚入力画面
+            case SubFormUtil.FORM_ID_GXHDO101C007:
+                GXHDO101C007 beanGXHDO101C007 = (GXHDO101C007) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C007);
+                GXHDO101C007Logic.setReturnData(beanGXHDO101C007.getGxhdO101c007Model(), this.itemList);
+                break;
+            // 合わせ(RZ)入力画面
+            case SubFormUtil.FORM_ID_GXHDO101C009:
+                GXHDO101C009 beanGXHDO101C009 = (GXHDO101C009) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C009);
+                GXHDO101C009Logic.setReturnData(beanGXHDO101C009.getGxhdO101c009Model(), this.itemList);
                 break;
             default:
                 break;

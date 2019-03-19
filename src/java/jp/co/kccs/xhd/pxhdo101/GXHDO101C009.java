@@ -39,6 +39,24 @@ import org.primefaces.context.RequestContext;
 public class GXHDO101C009 implements Serializable {
 
     /**
+     * 工場ｺｰﾄﾞ
+     */
+    private String kojyo;
+    /**
+     * ﾛｯﾄNo
+     */
+    private String lotno;
+    /**
+     * 枝番
+     */
+    private String edaban;
+
+    /**
+     * フォームエラー判定
+     */
+    private boolean isFormError;
+
+    /**
      * 合わせ(RZ)サブ画面用データ
      */
     private GXHDO101C009Model gxhdO101c009Model;
@@ -52,6 +70,79 @@ public class GXHDO101C009 implements Serializable {
      * コンストラクタ
      */
     public GXHDO101C009() {
+    }
+    
+    
+    /**
+     * 工場コード
+     * 
+     * @return the kojyo
+     */
+    public String getKojyo() {
+        return kojyo;
+    }
+
+    /**
+     * 工場コード
+     * 
+     * @param kojyo the kojyo to set
+     */
+    public void setKojyo(String kojyo) {
+        this.kojyo = kojyo;
+    }
+
+    /**
+     * ロットNo
+     * 
+     * @return the lotno
+     */
+    public String getLotno() {
+        return lotno;
+    }
+
+    /**
+     * ロットNo
+     * 
+     * @param lotno the lotno to set
+     */
+    public void setLotno(String lotno) {
+        this.lotno = lotno;
+    }
+
+    /**
+     * 枝番
+     * 
+     * @return the edaban
+     */
+    public String getEdaban() {
+        return edaban;
+    }
+
+    /**
+     * 枝番
+     * 
+     * @param edaban the edaban to set
+     */
+    public void setEdaban(String edaban) {
+        this.edaban = edaban;
+    }
+
+    /**
+     * フォームエラー判定
+     * 
+     * @return the isFormError
+     */
+    public boolean isIsFormError() {
+        return isFormError;
+    }
+
+    /**
+     * フォームエラー判定
+     * 
+     * @param isFormError the isFormError to set
+     */
+    public void setIsFormError(boolean isFormError) {
+        this.isFormError = isFormError;
     }
 
     /**
@@ -95,6 +186,8 @@ public class GXHDO101C009 implements Serializable {
      */
     public void doOk() {
         if (!checkOK()) {
+            this.isFormError = true;
+            
             // エラーの場合はコールバック変数に"error"をセット
             RequestContext context = RequestContext.getCurrentInstance();
             context.addCallbackParam("firstParam", "error");
@@ -114,17 +207,39 @@ public class GXHDO101C009 implements Serializable {
         // 背景色をクリア
         clearBackColor();
 
-        for (GXHDO101C009Model.PrintWidthData printWidthData : this.gxhdO101c009ModelView.getPrintWidthDataList()) {
-            
-            if (!StringUtil.isEmpty(printWidthData.getStartVal())) {
-                //型ﾁｪｯｸ(スタート)
-                if (!NumberUtil.isNumeric(printWidthData.getStartVal())) {
-                    setError(printWidthData, "XHD-000008", "スタート");
+        // 6～9にデータが入力されているかどうか確認
+        int index = 0;
+        boolean hasInputAfter6 = false;
+        for (GXHDO101C009Model.AwaseRzData awaseRzData : this.gxhdO101c009ModelView.getAwaseRzDataList()) {
+            index++;
+            if (6 <= index && !StringUtil.isEmpty(awaseRzData.getValue())) {
+                hasInputAfter6 = true;
+                break;
+            }
+        }
+
+        int indexMain = 0;
+        for (GXHDO101C009Model.AwaseRzData awaseRzData : this.gxhdO101c009ModelView.getAwaseRzDataList()) {
+            indexMain++;
+            if (StringUtil.isEmpty(awaseRzData.getValue())) {
+                if (indexMain <= 5) {
+                    //1～5は未入力はエラー
+                    setError(awaseRzData, "XHD-000027");
+                    return false;
+                } else if (hasInputAfter6) {
+                    //6～9はいずれかが入力されている場合、未入力はエラー
+                    setError(awaseRzData, "XHD-000027");
                     return false;
                 }
-                //桁数ﾁｪｯｸ(小数なし)(スタート)
-                if (!NumberUtil.isValidDigits(new BigDecimal(printWidthData.getStartVal()), 2, 3)){
-                    setError(printWidthData, "XHD-000007", "スタート", 2,3);
+            } else {
+                //型ﾁｪｯｸ
+                if (!NumberUtil.isNumeric(awaseRzData.getValue())) {
+                    setError(awaseRzData, "XHD-000008", "合わせ(RZ)" + awaseRzData.getAwaseRz());
+                    return false;
+                }
+                //桁数ﾁｪｯｸ(小数あり)(スタート)
+                if (!NumberUtil.isValidDigits(new BigDecimal(awaseRzData.getValue()), 1, 3)) {
+                    setError(awaseRzData, "XHD-000007", "合わせ(RZ)" + awaseRzData.getAwaseRz(), 1, 3);
                     return false;
                 }
             }
@@ -142,7 +257,7 @@ public class GXHDO101C009 implements Serializable {
      * @param errorId エラーID
      * @param errParams エラーパラメータ
      */
-    private void setError(GXHDO101C009Model.PrintWidthData makuatsuData, String errorId, Object... errParams) {
+    private void setError(GXHDO101C009Model.AwaseRzData makuatsuData, String errorId, Object... errParams) {
 
         // メッセージをセット
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -151,7 +266,7 @@ public class GXHDO101C009 implements Serializable {
         facesContext.addMessage(null, message);
 
         //エラー項目に背景色をセット
-        makuatsuData.setStartTextBackColor(ErrUtil.ERR_BACK_COLOR);
+        makuatsuData.setTextBackColor(ErrUtil.ERR_BACK_COLOR);
 
     }
 
@@ -159,8 +274,8 @@ public class GXHDO101C009 implements Serializable {
      * 背景色のクリア処理
      */
     private void clearBackColor() {
-        for (GXHDO101C009Model.PrintWidthData printWidthData : this.gxhdO101c009ModelView.getPrintWidthDataList()) {
-            printWidthData.setStartTextBackColor("");
+        for (GXHDO101C009Model.AwaseRzData printWidthData : this.gxhdO101c009ModelView.getAwaseRzDataList()) {
+            printWidthData.setTextBackColor("");
         }
     }
 

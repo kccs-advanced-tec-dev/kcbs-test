@@ -4,40 +4,47 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <p:dialog header="#{myMsg.ptn_kyori}" id="dlg_gxhdo101c008" widgetVar="W_dlg_gxhdo101c008"
-              width="300" modal="true" height="270"
-              dynamic="false" closable="true" closeOnEscape="false" 
-              onHide="document.getElementById('form:gxhdo101c008Form:cancelBtn').click();" >
+              width="440" modal="true" height="275" 
+              dynamic="true" closable="true" closeOnEscape="false" 
+              onShow="subFormOpen(); setInputModeForTableColumn('numeric','form:gxhdo101c008Form:ptnKyoriTable','startVal'); setTimeout(setFocus, 10, 'form:gxhdo101c008Form:ptnKyoriTable:0:startVal_input');"
+              onHide="subFormClose(); document.getElementById('form:gxhdo101c008Form:cancelBtn').click();" position="center top">
+
         <h:form id="gxhdo101c008Form">
-            <p:panel style="width:255px">
-                <p:dataTable id="printWidthTable" var="item" value="#{beanGXHDO101C008.gxhdO101c008ModelView.printWidthDataList}"
-                            scrollable="true" style="font-size: 12px; width:220px" emptyMessage="" >
-                    <p:column id="mPrintWidth" width="50%" headerText="#{myMsg.ptn_kyori}" >
+            <p:panel style="width:395px">
+                <p:dataTable id="ptnKyoriTable" var="item" value="#{beanGXHDO101C008.gxhdO101c008ModelView.ptnKanKyoriDataList}"
+                            scrollable="true" style="font-size: 14px; width:360px" emptyMessage="" >
+                    <p:column id="mPtnKyori" width="50%" headerText="#{myMsg.ptn_kyori}" >
                         <div style="text-align:right;">
-                            <p:outputLabel value="#{item.printWidth}" />
+                            <p:outputLabel value="#{item.ptnKanKyori}" />
                         </div>
                     </p:column>
                     <p:column id="mStart" width="50%" headerText="#{myMsg.ptn_kyori_tani}" >
                         <div style="text-align:right;">
-                            <p:inputText value="#{item.startVal}" rendered="#{item.startTextRendered}" maxlength="#{item.startTextMaxLength}"  size="8"  style="text-align:right; background: #{item.startTextBackColor}"/>
-                            <p:outputLabel value="#{item.startVal}" rendered="#{item.startLabelRendered}" />
+                            <p:inputNumber  value="#{item.value}" id="startVal" rendered="#{item.textRendered}" onkeydown="keyDownEnterSetNextControl(this)" tabindex="#{item.tabIndex}" thousandSeparator=""  
+                                            decimalPlaces="#{item.textDecimalPlaces}" maxValue="#{item.textMaxValue}" minValue="#{item.textMinValue}" size="14" inputStyle="text-align:right; background: #{item.textBackColor};"/>
+                            <p:outputLabel value="#{item.value}" rendered="#{item.labelRendered}" />
                         </div>
                     </p:column>
                 </p:dataTable>
             </p:panel>
-            <div style="text-align: center;">
-                <p:commandButton value="OK" id="okBtn"
-                                 style="position:relative;right:5px;top:5px;width:90px;height:35px;"
-                                 actionListener="#{beanGXHDO101C008.doOk()}"
-                                 async="false"
-                                 process="gxhdo101c008Form" 
-                                 update="gxhdo101c008Form form:growlMessage"
-                                 oncomplete="if('error'!=args.firstParam){PF('W_dlg_gxhdo101c008').hide();}"/>
-                <p:commandButton value="Cancel" id="cancelBtn"
-                                 style="position:relative;right:5px;top:5px;width:90px;height:35px;"
-                                 process="@this" 
-                                 update="form:growlMessage"
-                                 oncomplete="PF('W_dlg_gxhdo101c008').hide();"/>   
-            </div>
+            <p:commandButton value="OK" id="okBtn"
+                             style="position:relative;left:75px;top:5px;width:110px;height:35px;"
+                             actionListener="#{gXHDO901A.returnSubForm('GXHDO101C008',beanGXHDO101C008.isFormError)}"
+                             async="false"
+                             process="@this" 
+                             update="form:itemDataList" >   
+                <p:ajax event="click"
+                                async="false"
+                                listener="#{beanGXHDO101C008.doOk()}"
+                                process="gxhdo101c008Form" 
+                                update="gxhdo101c008Form form:growlMessage"
+                                oncomplete="if('error'!=args.firstParam){PF('W_dlg_gxhdo101c008').hide();}"/>
+            </p:commandButton>
+            <p:commandButton value="Cancel" id="cancelBtn"
+                             style="position:relative;left:105px;top:5px;width:110px;height:35px;"
+                             process="@this" 
+                             update="form:growlMessage"
+                             oncomplete="PF('W_dlg_gxhdo101c008').hide();"/>
         </h:form>
     </p:dialog>
 </ui:composition>

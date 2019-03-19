@@ -4,71 +4,296 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <p:dialog header="#{myMsg.kaburi_ryo}" id="dlg_gxhdo101c010" widgetVar="W_dlg_gxhdo101c010"
-              width="470" modal="true" height="205"
-              dynamic="false" closable="true" closeOnEscape="false" 
-              onHide="document.getElementById('form:gxhdo101c010Form:cancelBtn').click();" >
+              width="546" modal="true" height="235"
+              dynamic="true" closable="true" closeOnEscape="false" 
+              onShow="subFormOpen(); setInputModeForSequenceItems('numeric',20,'form:gxhdo101c010Form:kaburiryou'); setTimeout(setFocus, 10, 'form:gxhdo101c010Form:kaburiryou1_input');"
+              onHide="subFormClose(); document.getElementById('form:gxhdo101c010Form:cancelBtn').click();" position="center top">
         <h:form id="gxhdo101c010Form">
-            <p:panel style="width:420px">
+            <p:panel style="width:503px" >
                 <table  border="1" style="border-collapse:collapse;border:0px solid black;">
-                <tr>
-                <td colspan = "3" style="text-align:center;" bgcolor="#B4C6E7">#{myMsg.kaburi_ryo}</td>
-                </tr>
-                <tr>
-                <td rowspan = "2" ><input id="" name="" type="text" class="" style="height:45px;width:40px;text-align:center;border:0px;" maxlength="5" value = "20"/></td>
-                <td><input id="" name="" type="text" class="" style="width:40px;text-align:center;border:0px;" maxlength="5" value = "17"/></td>
-                <td rowspan = "2" ><input id="" name="" type="text" class="" style="height:45px;width:40px;text-align:center;border:0px;" maxlength="5" value = "4"/></td>
-                <td style="border:0px;"></td>
-                <td style="border:0px;"></td>
-                <td style="border:0px;"></td>
-                <td rowspan = "2" ><input id="" name="" type="text" class="" style="height:45px;width:40px;text-align:center;border:0px;" maxlength="5" value = "18"/></td>
-                <td><input id="" name="" type="text" class="" style="width:40px;text-align:center;border:0px;" maxlength="5" value = "9"/></td>
-                <td rowspan = "2" ><input id="" name="" type="text" class="" style="height:45px;width:40px;text-align:center;border:0px;" maxlength="5" value = "5"/></td>
-                </tr>
-                <tr>
-                <td><input id="" name="" type="text" class="" style="width:40px;text-align:center;border:0px;" maxlength="5" value = "6"/></td>
-                <td rowspan = "2" ><input id="" name="" type="text" class="" style="height:45px;width:40px;text-align:center;border:0px;" maxlength="5" value = "88"/></td>
-                <td><input id="" name="" type="text" class="" style="width:40px;text-align:center;border:0px;" maxlength="5" value = "10"/></td>
-                <td rowspan = "2" ><input id="" name="" type="text" class="" style="height:45px;width:40px;text-align:center;border:0px;" maxlength="5" value = "0"/></td>
-                <td><input id="" name="" type="text" class="" style="width:40px;text-align:center;border:0px;" maxlength="5" value = "8"/></td>
-                <td style="border:0px;"></td>
-                <td style="border:0px;"></td>
-                </tr>
-                <tr>
-                <td rowspan = "2" ><input id="" name="" type="text" class="" style="height:45px;width:40px;text-align:center;border:0px;" maxlength="5" value = "24"/></td>
-                <td><input id="" name="" type="text" class="" style="width:40px;text-align:center;border:0px;" maxlength="5" value = "7"/></td>
-                <td rowspan = "2" ><input id="" name="" type="text" class="" style="height:45px;width:40px;text-align:center;border:0px;" maxlength="5" value = "2"/></td>
-                <td><input id="" name="" type="text" class="" style="width:40px;text-align:center;border:0px;" maxlength="5" value = "4"/></td>
-                <td rowspan = "2" ><input id="" name="" type="text" class="" style="height:45px;width:40px;text-align:center;border:0px;" maxlength="5" value = "26"/></td>
-                <td><input id="" name="" type="text" class="" style="width:40px;text-align:center;border:0px;" maxlength="5" value = "07"/></td>
-                <td rowspan = "2" ><input id="" name="" type="text" class="" style="height:45px;width:40px;text-align:center;border:0px;" maxlength="5" value = "02"/></td>
-                <td style="border:0px;"></td>
-                <td style="border:0px;"></td>
-                </tr>
-                <tr>
-                <td><input id="" name="" type="text" class="" style="width:40px;text-align:center;border:0px;" maxlength="5" value = "16"/></td>
-                <td style="border:0px;"></td>
-                <td style="border:0px;"></td>
-                <td style="border:0px;"></td>
-                <td><input id="" name="" type="text" class="" style="width:40px;text-align:center;border:0px;" maxlength="5" value = "20"/></td>
-                <td style="border:0px;"></td>
-                <td style="border:0px;"></td>
-                </tr>
+                    <tr>
+                        <td colspan = "3" style="text-align:center;" bgcolor="#B4C6E7">#{myMsg.kaburi_ryo}</td>
+                    </tr>
+                    <tr>
+                        <td rowspan = "2" >
+                            <p:inputNumber id="kaburiryou1" value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData1.value}"
+                                            rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData1.textRendered}" thousandSeparator=""  
+                                            decimalPlaces="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData1.textDecimalPlaces}" 
+                                            maxValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData1.textMaxValue}" 
+                                            minValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData1.textMinValue}" 
+                                            tabindex="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData1.tabIndex}" 
+                                            onkeydown="keyDownEnterSetNextControl(this)"
+                                            inputStyle="width:41px; height:55px; text-align:center;border:0px;box-shadow:none;background:#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData1.textBackColor}; "/>
+                            <p:outputLabel value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData1.value}" 
+                                           rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData1.labelRendered}" />
+                        </td>
+                        <td>
+                            <p:inputNumber id="kaburiryou3" value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData3.value}"
+                                            rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData3.textRendered}" thousandSeparator=""  
+                                            decimalPlaces="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData3.textDecimalPlaces}" 
+                                            maxValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData3.textMaxValue}" 
+                                            minValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData3.textMinValue}" 
+                                            tabindex="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData3.tabIndex}" 
+                                            onkeydown="keyDownEnterSetNextControl(this)"
+                                            inputStyle="width:41px; text-align:center;border:0px;box-shadow:none;background:#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData3.textBackColor}; "/>
+                            <p:outputLabel value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData3.value}" 
+                                           rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData3.labelRendered}" />
+                        </td>
+                        <td rowspan = "2" >
+                            <p:inputNumber id="kaburiryou2" value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData2.value}"
+                                            rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData2.textRendered}" thousandSeparator=""  
+                                            decimalPlaces="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData2.textDecimalPlaces}" 
+                                            maxValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData2.textMaxValue}" 
+                                            minValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData2.textMinValue}" 
+                                            tabindex="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData2.tabIndex}" 
+                                            onkeydown="keyDownEnterSetNextControl(this)"
+                                            inputStyle="width:41px; height:55px; text-align:center;border:0px;box-shadow:none;background:#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData2.textBackColor}; "/>
+                            <p:outputLabel value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData2.value}" 
+                                           rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData2.labelRendered}" />
+                        </td>
+                        <td style="border:0px;"></td>
+                        <td style="border:0px;"></td>
+                        <td style="border:0px;"></td>
+                        <td rowspan = "2" >
+                            <p:inputNumber id="kaburiryou13" value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData13.value}"
+                                            rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData13.textRendered}" thousandSeparator=""  
+                                            decimalPlaces="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData13.textDecimalPlaces}" 
+                                            maxValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData13.textMaxValue}" 
+                                            minValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData13.textMinValue}" 
+                                            tabindex="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData13.tabIndex}" 
+                                            onkeydown="keyDownEnterSetNextControl(this)"
+                                            inputStyle="width:41px; height:55px; text-align:center;border:0px;box-shadow:none;background:#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData13.textBackColor}; "/>
+                            <p:outputLabel value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData13.value}" 
+                                           rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData13.labelRendered}" />
+                        </td>
+                        <td>
+                            <p:inputNumber id="kaburiryou15" value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData15.value}"
+                                            rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData15.textRendered}" thousandSeparator=""  
+                                            decimalPlaces="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData15.textDecimalPlaces}" 
+                                            maxValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData15.textMaxValue}" 
+                                            minValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData15.textMinValue}" 
+                                            tabindex="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData15.tabIndex}" 
+                                            onkeydown="keyDownEnterSetNextControl(this)"
+                                            inputStyle="width:41px; text-align:center;border:0px;box-shadow:none;background:#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData15.textBackColor}; "/>
+                            <p:outputLabel value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData15.value}" 
+                                           rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData15.labelRendered}" />
+                        </td>
+                        <td rowspan = "2" >
+                            <p:inputNumber id="kaburiryou14" value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData14.value}"
+                                            rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData14.textRendered}" thousandSeparator=""  
+                                            decimalPlaces="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData14.textDecimalPlaces}" 
+                                            maxValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData14.textMaxValue}" 
+                                            minValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData14.textMinValue}" 
+                                            tabindex="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData14.tabIndex}" 
+                                            onkeydown="keyDownEnterSetNextControl(this)"
+                                            inputStyle="width:41px; height:55px; text-align:center;border:0px;box-shadow:none;background:#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData14.textBackColor}; "/>
+                            <p:outputLabel value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData14.value}" 
+                                           rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData14.labelRendered}" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p:inputNumber id="kaburiryou4" value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData4.value}"
+                                            rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData4.textRendered}" thousandSeparator=""  
+                                            decimalPlaces="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData4.textDecimalPlaces}" 
+                                            maxValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData4.textMaxValue}" 
+                                            minValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData4.textMinValue}" 
+                                            tabindex="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData4.tabIndex}" 
+                                            onkeydown="keyDownEnterSetNextControl(this)"
+                                            inputStyle="width:41px; text-align:center;border:0px;box-shadow:none;background:#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData4.textBackColor}; "/>
+                            <p:outputLabel value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData4.value}" 
+                                           rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData4.labelRendered}" />
+                        </td>
+                        <td rowspan = "2" >
+                            <p:inputNumber id="kaburiryou9" value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData9.value}"
+                                            rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData9.textRendered}" thousandSeparator=""  
+                                            decimalPlaces="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData9.textDecimalPlaces}" 
+                                            maxValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData9.textMaxValue}" 
+                                            minValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData9.textMinValue}" 
+                                            tabindex="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData9.tabIndex}" 
+                                            onkeydown="keyDownEnterSetNextControl(this)"
+                                            inputStyle="width:41px; height:55px; text-align:center;border:0px;box-shadow:none;background:#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData9.textBackColor}; "/>
+                            <p:outputLabel value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData9.value}" 
+                                           rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData9.labelRendered}" />
+                        </td>
+                        <td>
+                            <p:inputNumber id="kaburiryou11" value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData11.value}"
+                                            rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData11.textRendered}" thousandSeparator=""  
+                                            decimalPlaces="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData11.textDecimalPlaces}" 
+                                            maxValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData11.textMaxValue}" 
+                                            minValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData11.textMinValue}" 
+                                            tabindex="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData11.tabIndex}" 
+                                            onkeydown="keyDownEnterSetNextControl(this)"
+                                            inputStyle="width:41px; text-align:center;border:0px;box-shadow:none;background:#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData11.textBackColor}; "/>
+                            <p:outputLabel value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData11.value}" 
+                                           rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData11.labelRendered}" />
+                        </td>
+                        <td rowspan = "2" >
+                            <p:inputNumber id="kaburiryou10" value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData10.value}"
+                                            rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData10.textRendered}" thousandSeparator=""  
+                                            decimalPlaces="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData10.textDecimalPlaces}" 
+                                            maxValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData10.textMaxValue}" 
+                                            minValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData10.textMinValue}" 
+                                            tabindex="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData10.tabIndex}" 
+                                            onkeydown="keyDownEnterSetNextControl(this)"
+                                            inputStyle="width:41px; height:55px; text-align:center;border:0px;box-shadow:none;background:#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData10.textBackColor}; "/>
+                            <p:outputLabel value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData10.value}" 
+                                           rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData10.labelRendered}" />
+                        </td>
+                        <td>
+                            <p:inputNumber id="kaburiryou16" value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData16.value}"
+                                            rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData16.textRendered}" thousandSeparator=""  
+                                            decimalPlaces="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData16.textDecimalPlaces}" 
+                                            maxValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData16.textMaxValue}" 
+                                            minValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData16.textMinValue}" 
+                                            tabindex="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData16.tabIndex}" 
+                                            onkeydown="keyDownEnterSetNextControl(this)"
+                                            inputStyle="width:41px; text-align:center;border:0px;box-shadow:none;background:#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData16.textBackColor}; "/>
+                            <p:outputLabel value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData16.value}" 
+                                           rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData16.labelRendered}" />
+                        </td>
+                        <td style="border:0px;"></td>
+                        <td style="border:0px;"></td>
+                    </tr>
+                    <tr>
+                        <td rowspan = "2" >
+                            <p:inputNumber id="kaburiryou5" value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData5.value}"
+                                            rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData5.textRendered}" thousandSeparator=""  
+                                            decimalPlaces="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData5.textDecimalPlaces}" 
+                                            maxValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData5.textMaxValue}" 
+                                            minValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData5.textMinValue}" 
+                                            tabindex="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData5.tabIndex}" 
+                                            onkeydown="keyDownEnterSetNextControl(this)"
+                                            inputStyle="width:41px; height:55px; text-align:center;border:0px;box-shadow:none;background:#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData5.textBackColor}; "/>
+                            <p:outputLabel value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData5.value}" 
+                                           rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData5.labelRendered}" />
+                        </td>
+                        <td>
+                            <p:inputNumber id="kaburiryou7" value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData7.value}"
+                                            rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData7.textRendered}" thousandSeparator=""  
+                                            decimalPlaces="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData7.textDecimalPlaces}" 
+                                            maxValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData7.textMaxValue}" 
+                                            minValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData7.textMinValue}" 
+                                            tabindex="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData7.tabIndex}" 
+                                            onkeydown="keyDownEnterSetNextControl(this)"
+                                            inputStyle="width:41px; text-align:center;border:0px;box-shadow:none;background:#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData7.textBackColor}; "/>
+                            <p:outputLabel value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData7.value}" 
+                                           rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData7.labelRendered}" />
+                        </td>
+                        <td rowspan = "2" >
+                            <p:inputNumber id="kaburiryou6" value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData6.value}"
+                                            rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData6.textRendered}" thousandSeparator=""  
+                                            decimalPlaces="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData6.textDecimalPlaces}" 
+                                            maxValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData6.textMaxValue}" 
+                                            minValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData6.textMinValue}" 
+                                            tabindex="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData6.tabIndex}" 
+                                            onkeydown="keyDownEnterSetNextControl(this)"
+                                            inputStyle="width:41px; height:55px; text-align:center;border:0px;box-shadow:none;background:#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData6.textBackColor}; "/>
+                            <p:outputLabel value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData6.value}" 
+                                           rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData6.labelRendered}" />
+                        </td>
+                        <td>
+                            <p:inputNumber id="kaburiryou12" value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData12.value}"
+                                            rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData12.textRendered}" thousandSeparator=""  
+                                            decimalPlaces="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData12.textDecimalPlaces}" 
+                                            maxValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData12.textMaxValue}" 
+                                            minValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData12.textMinValue}" 
+                                            tabindex="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData12.tabIndex}" 
+                                            onkeydown="keyDownEnterSetNextControl(this)"
+                                            inputStyle="width:41px; text-align:center;border:0px;box-shadow:none;background:#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData12.textBackColor}; "/>
+                            <p:outputLabel value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData12.value}" 
+                                           rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData12.labelRendered}" />
+                        </td>
+                        <td rowspan = "2" >
+                            <p:inputNumber id="kaburiryou17" value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData17.value}"
+                                            rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData17.textRendered}" thousandSeparator=""  
+                                            decimalPlaces="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData17.textDecimalPlaces}" 
+                                            maxValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData17.textMaxValue}" 
+                                            minValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData17.textMinValue}" 
+                                            tabindex="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData17.tabIndex}" 
+                                            onkeydown="keyDownEnterSetNextControl(this)"
+                                            inputStyle="width:41px; height:55px; text-align:center;border:0px;box-shadow:none;background:#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData17.textBackColor}; "/>
+                            <p:outputLabel value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData17.value}" 
+                                           rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData17.labelRendered}" />
+                        </td>
+                        <td>
+                            <p:inputNumber id="kaburiryou19" value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData19.value}"
+                                            rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData19.textRendered}" thousandSeparator=""  
+                                            decimalPlaces="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData19.textDecimalPlaces}" 
+                                            maxValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData19.textMaxValue}" 
+                                            minValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData19.textMinValue}" 
+                                            tabindex="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData19.tabIndex}" 
+                                            onkeydown="keyDownEnterSetNextControl(this)"
+                                            inputStyle="width:41px; text-align:center;border:0px;box-shadow:none;background:#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData19.textBackColor}; "/>
+                            <p:outputLabel value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData19.value}" 
+                                           rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData19.labelRendered}" />
+                        </td>
+                        <td rowspan = "2" >
+                            <p:inputNumber id="kaburiryou18" value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData18.value}"
+                                            rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData18.textRendered}" thousandSeparator=""  
+                                            decimalPlaces="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData18.textDecimalPlaces}" 
+                                            maxValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData18.textMaxValue}" 
+                                            minValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData18.textMinValue}" 
+                                            tabindex="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData18.tabIndex}" 
+                                            onkeydown="keyDownEnterSetNextControl(this)"
+                                            inputStyle="width:41px; height:55px; text-align:center;border:0px;box-shadow:none;background:#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData18.textBackColor}; "/>
+                            <p:outputLabel value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData18.value}" 
+                                           rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData18.labelRendered}" />
+                        </td>
+                        <td style="border:0px;"></td>
+                        <td style="border:0px;"></td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <p:inputNumber id="kaburiryou8" value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData8.value}"
+                                            rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData8.textRendered}" thousandSeparator=""  
+                                            decimalPlaces="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData8.textDecimalPlaces}" 
+                                            maxValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData8.textMaxValue}" 
+                                            minValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData8.textMinValue}" 
+                                            tabindex="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData8.tabIndex}" 
+                                            onkeydown="keyDownEnterSetNextControl(this)"
+                                            inputStyle="width:41px; text-align:center;border:0px;box-shadow:none;background:#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData8.textBackColor}; "/>
+                            <p:outputLabel value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData8.value}" 
+                                           rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData8.labelRendered}" />
+                        </td>
+                        <td style="border:0px;"></td>
+                        <td style="border:0px;"></td>
+                        <td style="border:0px;"></td>
+                        <td>
+                            <p:inputNumber id="kaburiryou20" value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData20.value}"
+                                            rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData20.textRendered}" thousandSeparator=""  
+                                            decimalPlaces="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData20.textDecimalPlaces}" 
+                                            maxValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData20.textMaxValue}" 
+                                            minValue="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData20.textMinValue}" 
+                                            tabindex="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData20.tabIndex}" 
+                                            onkeydown="keyDownEnterSetNextControl(this)"
+                                            inputStyle="width:41px; text-align:center;border:0px;box-shadow:none;background:#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData20.textBackColor}; "/>
+                            <p:outputLabel value="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData20.value}" 
+                                           rendered="#{beanGXHDO101C010.gxhdO101c010ModelView.kaburiryouData20.labelRendered}" />
+                        </td>
+                        <td style="border:0px;"></td>
+                        <td style="border:0px;"></td>
+                    </tr>
                 </table>
             </p:panel>
-            <div style="text-align: center;">
-                <p:commandButton value="OK" id="okBtn"
-                                 style="position:relative;right:5px;top:5px;width:90px;height:35px;"
-                                 actionListener="#{beanGXHDO101C010.doOk()}"
-                                 async="false"
-                                 process="gxhdo101c010Form" 
-                                 update="gxhdo101c010Form form:growlMessage"
-                                 oncomplete="if('error'!=args.firstParam){PF('W_dlg_gxhdo101c010').hide();}"/>
-                <p:commandButton value="Cancel" id="cancelBtn"
-                                 style="position:relative;right:5px;top:5px;width:90px;height:35px;"
-                                 process="@this" 
-                                 update="form:growlMessage"
-                                 oncomplete="PF('W_dlg_gxhdo101c010').hide();"/>   
-            </div>
+            <p:commandButton value="OK" id="okBtn"
+                             style="position:relative;left:129px;top:5px;width:110px;height:35px;"
+                             actionListener="#{gXHDO901A.returnSubForm('GXHDO101C010',beanGXHDO101C010.isFormError)}"
+                             async="false"
+                             process="@this" 
+                             update="form:itemDataList" >   
+                <p:ajax event="click"
+                                async="false"
+                                listener="#{beanGXHDO101C010.doOk()}"
+                                process="gxhdo101c010Form" 
+                                update="gxhdo101c010Form form:growlMessage"
+                                oncomplete="if('error'!=args.firstParam){PF('W_dlg_gxhdo101c010').hide();}"/>
+            </p:commandButton>
+            <p:commandButton value="Cancel" id="cancelBtn"
+                             style="position:relative;left:159px;top:5px;width:110px;height:35px;"
+                             process="@this" 
+                             update="form:growlMessage"
+                             oncomplete="PF('W_dlg_gxhdo101c010').hide();"/>   
         </h:form>
     </p:dialog>
 </ui:composition>

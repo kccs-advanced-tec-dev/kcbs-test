@@ -22,7 +22,7 @@ import java.util.List;
  * GXHDO101C009Model(合わせ(RZ)サブ画面用)のモデルクラスです。
  *
  * @author KCSS K.Jo
- * @since  2019/01/08
+ * @since 2019/01/08
  */
 public class GXHDO101C009Model implements Cloneable {
 
@@ -35,193 +35,311 @@ public class GXHDO101C009Model implements Cloneable {
     @Override
     public GXHDO101C009Model clone() throws CloneNotSupportedException {
         GXHDO101C009Model cloneModel = (GXHDO101C009Model) super.clone();
-        List<GXHDO101C009Model.PrintWidthData> newList = new ArrayList();
-        for (GXHDO101C009Model.PrintWidthData data : this.printWidthDataList) {
-            GXHDO101C009Model.PrintWidthData newData = new GXHDO101C009Model.PrintWidthData();
-            newData.setPrintWidth(data.getPrintWidth());
-            newData.setStartVal(data.getStartVal());
-            newData.setStartTextRendered(data.isStartTextRendered());
-            newData.setStartTextMaxLength(data.getStartTextMaxLength());
-            newData.setStartTextBackColor(data.getStartTextBackColor());
-            newData.setStartLabelRendered(data.isStartLabelRendered());
+        List<GXHDO101C009Model.AwaseRzData> newList = new ArrayList();
+        for (GXHDO101C009Model.AwaseRzData data : this.awaseRzDataList) {
+            GXHDO101C009Model.AwaseRzData newData = new GXHDO101C009Model.AwaseRzData();
+            newData.setAwaseRz(data.getAwaseRz());
+            newData.setValue(data.getValue());
+            newData.setTextRendered(data.isTextRendered());
+            newData.setTextMaxLength(data.getTextMaxLength());
+            newData.setTextDecimalPlaces(data.getTextDecimalPlaces());
+            newData.setTextMaxValue(data.getTextMaxValue());
+            newData.setTextMinValue(data.getTextMinValue());
+            newData.setTextBackColor(data.getTextBackColor());
+            newData.setLabelRendered(data.isLabelRendered());
+            newData.setTabIndex(data.getTabIndex());
             newList.add(newData);
         }
 
-        cloneModel.setPrintWidthDataList(newList);
+        cloneModel.setAwaseRzDataList(newList);
         return cloneModel;
     }
+    
+    /**
+     * 合わせ印刷サイドRZAVE設定項目ID
+     */
+    private String returnItemIdAve ="";
+
 
     /**
      * 合わせ(RZ)データリスト
      */
-    private List<PrintWidthData> printWidthDataList = new ArrayList<>();
-    
+    private List<AwaseRzData> awaseRzDataList = new ArrayList<>();
+
     /**
      * コンストラクタ
      */
     public GXHDO101C009Model() {
-        this.printWidthDataList = new ArrayList<>();
+        this.awaseRzDataList = new ArrayList<>();
+    }
+
+    /**
+     * 合わせ印刷サイドRZAVE設定項目ID
+     * @return the returnItemIdAve
+     */
+    public String getReturnItemIdAve() {
+        return returnItemIdAve;
+    }
+
+    /**
+     * 合わせ印刷サイドRZAVE設定項目ID
+     * @param returnItemIdAve the returnItemIdAve to set
+     */
+    public void setReturnItemIdAve(String returnItemIdAve) {
+        this.returnItemIdAve = returnItemIdAve;
     }
 
     /**
      * 合わせ(RZ)データリスト
      *
-     * @return the printWidthDataList
+     * @return the awaseRzDataList
      */
-    public List<PrintWidthData> getPrintWidthDataList() {
-        return printWidthDataList;
+    public List<AwaseRzData> getAwaseRzDataList() {
+        return awaseRzDataList;
     }
 
     /**
      * 合わせ(RZ)データリスト
      *
-     * @param printWidthDataList the printWidthDataList to set
+     * @param awaseRzDataList the awaseRzDataList to set
      */
-    public void setPrintWidthDataList(List<PrintWidthData> printWidthDataList) {
-        this.printWidthDataList = printWidthDataList;
+    public void setAwaseRzDataList(List<AwaseRzData> awaseRzDataList) {
+        this.awaseRzDataList = awaseRzDataList;
     }
 
     /**
      * 合わせ(RZ)データ
      */
-    public class PrintWidthData {
+    public class AwaseRzData {
 
         /**
          * 合わせ(RZ)
          */
-        private String printWidth;
+        private String awaseRz;
 
         /**
-         * スタート項目(値)
+         * 値
          */
-        private String startVal;
+        private String value;
 
         /**
-         * スタート項目_テキスト(Rendered)
+         * テキスト(Rendered)
          */
-        private boolean startTextRendered;
+        private boolean textRendered;
 
         /**
-         * スタート項目_テキスト(MaxLength)
+         * テキスト(MaxLength)
          */
-        private String startTextMaxLength;
+        private String textMaxLength;
 
         /**
-         * スタート項目_テキスト(BackGround)
+         * テキスト(decimalPlaces)
          */
-        private String startTextBackColor;
+        private String textDecimalPlaces;
 
         /**
-         * スタート項目_ラベル(Rendered)
+         * テキスト(maxValue)
          */
-        private boolean startLabelRendered;
+        private String textMaxValue;
+
+        /**
+         * テキスト(minValue)
+         */
+        private String textMinValue;
+
+        /**
+         * テキスト(BackGround)
+         */
+        private String textBackColor;
+
+        /**
+         * ラベル(Rendered)
+         */
+        private boolean labelRendered;
+
+        /**
+         * タブインデックス(TabIndex)
+         */
+        private String tabIndex;
 
         /**
          * 合わせ(RZ)
          *
-         * @return the printWidth
+         * @return the awaseRz
          */
-        public String getPrintWidth() {
-            return printWidth;
+        public String getAwaseRz() {
+            return awaseRz;
         }
 
         /**
          * 合わせ(RZ)
          *
-         * @param printWidth the printWidth to set
+         * @param awaseRz the awaseRz to set
          */
-        public void setPrintWidth(String printWidth) {
-            this.printWidth = printWidth;
+        public void setAwaseRz(String awaseRz) {
+            this.awaseRz = awaseRz;
         }
 
         /**
-         * スタート項目(値)
+         * 値
          *
-         * @return the startVal
+         * @return the value
          */
-        public String getStartVal() {
-            return startVal;
+        public String getValue() {
+            return value;
         }
 
         /**
-         * スタート項目(値)
+         * 値
          *
-         * @param startVal the startVal to set
+         * @param value the value to set
          */
-        public void setStartVal(String startVal) {
-            this.startVal = startVal;
+        public void setValue(String value) {
+            this.value = value;
         }
 
         /**
-         * スタート項目_テキスト(Rendered)
+         * テキスト(Rendered)
          *
-         * @return the startTextRendered
+         * @return the textRendered
          */
-        public boolean isStartTextRendered() {
-            return startTextRendered;
+        public boolean isTextRendered() {
+            return textRendered;
         }
 
         /**
-         * スタート項目_テキスト(Rendered)
+         * テキスト(Rendered)
          *
-         * @param startTextRendered the startTextRendered to set
+         * @param textRendered the textRendered to set
          */
-        public void setStartTextRendered(boolean startTextRendered) {
-            this.startTextRendered = startTextRendered;
+        public void setTextRendered(boolean textRendered) {
+            this.textRendered = textRendered;
         }
 
         /**
-         * スタート項目_テキスト(MaxLength)
+         * テキスト(MaxLength)
          *
-         * @return the startTextMaxLength
+         * @return the textMaxLength
          */
-        public String getStartTextMaxLength() {
-            return startTextMaxLength;
+        public String getTextMaxLength() {
+            return textMaxLength;
         }
 
         /**
-         * スタート項目_テキスト(MaxLength)
+         * テキスト(MaxLength)
          *
-         * @param startTextMaxLength the startTextMaxLength to set
+         * @param textMaxLength the textMaxLength to set
          */
-        public void setStartTextMaxLength(String startTextMaxLength) {
-            this.startTextMaxLength = startTextMaxLength;
+        public void setTextMaxLength(String textMaxLength) {
+            this.textMaxLength = textMaxLength;
         }
 
         /**
-         * スタート項目_テキスト(BackGround)
+         * テキスト(decimalPlaces)
          *
-         * @return the startTextBackColor
+         * @return the textDecimalPlaces
          */
-        public String getStartTextBackColor() {
-            return startTextBackColor;
+        public String getTextDecimalPlaces() {
+            return textDecimalPlaces;
         }
 
         /**
-         * スタート項目_テキスト(BackGround)
+         * テキスト(decimalPlaces)
          *
-         * @param startTextBackColor the startTextBackColor to set
+         * @param textDecimalPlaces the textDecimalPlaces to set
          */
-        public void setStartTextBackColor(String startTextBackColor) {
-            this.startTextBackColor = startTextBackColor;
+        public void setTextDecimalPlaces(String textDecimalPlaces) {
+            this.textDecimalPlaces = textDecimalPlaces;
         }
 
         /**
-         * スタート項目_ラベル(Rendered)
+         * テキスト(maxValue)
          *
-         * @return the startLabelRendered
+         * @return the textMaxValue
          */
-        public boolean isStartLabelRendered() {
-            return startLabelRendered;
+        public String getTextMaxValue() {
+            return textMaxValue;
         }
 
         /**
-         * スタート項目_ラベル(Rendered)
+         * テキスト(maxValue)
          *
-         * @param startLabelRendered the startLabelRendered to set
+         * @param textMaxValue the textMaxValue to set
          */
-        public void setStartLabelRendered(boolean startLabelRendered) {
-            this.startLabelRendered = startLabelRendered;
+        public void setTextMaxValue(String textMaxValue) {
+            this.textMaxValue = textMaxValue;
+        }
+
+        /**
+         * テキスト(minValue)
+         *
+         * @return the textMinValue
+         */
+        public String getTextMinValue() {
+            return textMinValue;
+        }
+
+        /**
+         * テキスト(minValue)
+         *
+         * @param textMinValue the textMinValue to set
+         */
+        public void setTextMinValue(String textMinValue) {
+            this.textMinValue = textMinValue;
+        }
+
+        /**
+         * テキスト(BackGround)
+         *
+         * @return the textBackColor
+         */
+        public String getTextBackColor() {
+            return textBackColor;
+        }
+
+        /**
+         * テキスト(BackGround)
+         *
+         * @param textBackColor the textBackColor to set
+         */
+        public void setTextBackColor(String textBackColor) {
+            this.textBackColor = textBackColor;
+        }
+
+        /**
+         * ラベル(Rendered)
+         *
+         * @return the labelRendered
+         */
+        public boolean isLabelRendered() {
+            return labelRendered;
+        }
+
+        /**
+         * ラベル(Rendered)
+         *
+         * @param labelRendered the labelRendered to set
+         */
+        public void setLabelRendered(boolean labelRendered) {
+            this.labelRendered = labelRendered;
+        }
+
+        /**
+         * タブインデックス(TabIndex)
+         *
+         * @return the tabIndex
+         */
+        public String getTabIndex() {
+            return tabIndex;
+        }
+
+        /**
+         * タブインデックス(TabIndex)
+         *
+         * @param tabIndex the tabIndex to set
+         */
+        public void setTabIndex(String tabIndex) {
+            this.tabIndex = tabIndex;
         }
 
     }

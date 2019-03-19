@@ -5,8 +5,8 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <p:dialog header="#{myMsg.makuatsu}" id="dlg_gxhdo101c004" widgetVar="W_dlg_gxhdo101c004"
               width="440" modal="true" height="275" 
-              dynamic="false" closable="true" closeOnEscape="false" 
-              onShow="subFormOpen(); setInputModeForTableColumn('numeric','form:gxhdo101c004Form:makuatsuRsusTable','startVal'); setTimeout(setFocus, 300, 'form:gxhdo101c004Form:makuatsuRsusTable:0:startVal_input');"
+              dynamic="true" closable="true" closeOnEscape="false" 
+              onShow="subFormOpen(); setInputModeForTableColumn('numeric','form:gxhdo101c004Form:makuatsuRsusTable','startVal'); setTimeout(setFocus, 10, 'form:gxhdo101c004Form:makuatsuRsusTable:0:startVal_input');"
               onHide="subFormClose(); document.getElementById('form:gxhdo101c004Form:cancelBtn').click();" position="center top" >
         <h:form id="gxhdo101c004Form">
             <p:panel style="width:395px">

@@ -4,7 +4,6 @@
 package jp.co.kccs.xhd.pxhdo101;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -32,11 +31,29 @@ import org.primefaces.context.RequestContext;
  * GXHDO101C008(ﾊﾟﾀｰﾝ間距離)
  *
  * @author KCSS K.Jo
- * @since  2019/01/08
+ * @since 2019/01/08
  */
 @ManagedBean(name = "beanGXHDO101C008")
 @SessionScoped
 public class GXHDO101C008 implements Serializable {
+
+    /**
+     * 工場ｺｰﾄﾞ
+     */
+    private String kojyo;
+    /**
+     * ﾛｯﾄNo
+     */
+    private String lotno;
+    /**
+     * 枝番
+     */
+    private String edaban;
+
+    /**
+     * フォームエラー判定
+     */
+    private boolean isFormError;
 
     /**
      * ﾊﾟﾀｰﾝ間距離サブ画面用データ
@@ -52,6 +69,78 @@ public class GXHDO101C008 implements Serializable {
      * コンストラクタ
      */
     public GXHDO101C008() {
+    }
+
+    /**
+     * 工場コード
+     *
+     * @return the kojyo
+     */
+    public String getKojyo() {
+        return kojyo;
+    }
+
+    /**
+     * 工場コード
+     *
+     * @param kojyo the kojyo to set
+     */
+    public void setKojyo(String kojyo) {
+        this.kojyo = kojyo;
+    }
+
+    /**
+     * ロットNo
+     *
+     * @return the lotno
+     */
+    public String getLotno() {
+        return lotno;
+    }
+
+    /**
+     * ロットNo
+     *
+     * @param lotno the lotno to set
+     */
+    public void setLotno(String lotno) {
+        this.lotno = lotno;
+    }
+
+    /**
+     * 枝番
+     *
+     * @return the edaban
+     */
+    public String getEdaban() {
+        return edaban;
+    }
+
+    /**
+     * 枝番
+     *
+     * @param edaban the edaban to set
+     */
+    public void setEdaban(String edaban) {
+        this.edaban = edaban;
+    }
+
+    /**
+     * フォームエラー判定
+     *
+     * @return the isFormError
+     */
+    public boolean isIsFormError() {
+        return isFormError;
+    }
+
+    /**
+     * フォームエラー判定
+     *
+     * @param isFormError the isFormError to set
+     */
+    public void setIsFormError(boolean isFormError) {
+        this.isFormError = isFormError;
     }
 
     /**
@@ -95,6 +184,8 @@ public class GXHDO101C008 implements Serializable {
      */
     public void doOk() {
         if (!checkOK()) {
+            this.isFormError = true;
+
             // エラーの場合はコールバック変数に"error"をセット
             RequestContext context = RequestContext.getCurrentInstance();
             context.addCallbackParam("firstParam", "error");
@@ -114,17 +205,25 @@ public class GXHDO101C008 implements Serializable {
         // 背景色をクリア
         clearBackColor();
 
-        for (GXHDO101C008Model.PrintWidthData printWidthData : this.gxhdO101c008ModelView.getPrintWidthDataList()) {
-            
-            if (!StringUtil.isEmpty(printWidthData.getStartVal())) {
-                //型ﾁｪｯｸ(スタート)
-                if (!NumberUtil.isNumeric(printWidthData.getStartVal())) {
-                    setError(printWidthData, "XHD-000008", "スタート");
+        for (GXHDO101C008Model.PtnKanKyoriData ptnKanKyoriData : this.gxhdO101c008ModelView.getPtnKanKyoriDataList()) {
+
+            // 未入力チェック
+            if (StringUtil.isEmpty(ptnKanKyoriData.getValue())) {
+
+                setError(ptnKanKyoriData, "XHD-000027");
+                return false;
+
+            } else {
+
+                // 型チェック
+                if (!NumberUtil.isIntegerNumeric(ptnKanKyoriData.getValue()) || !NumberUtil.isNumeric(ptnKanKyoriData.getValue())) {
+                    setError(ptnKanKyoriData, "XHD-000008", "ﾊﾟﾀｰﾝ間距離" + ptnKanKyoriData.getPtnKanKyori());
                     return false;
                 }
-                //桁数ﾁｪｯｸ(小数なし)(スタート)
-                if (!NumberUtil.isValidDigits(new BigDecimal(printWidthData.getStartVal()), 4, 0)){
-                    setError(printWidthData, "XHD-000006", "スタート", 4);
+
+                // 桁チェック
+                if (3 < StringUtil.length(ptnKanKyoriData.getValue())) {
+                    setError(ptnKanKyoriData, "XHD-000006", "ﾊﾟﾀｰﾝ間距離" + ptnKanKyoriData.getPtnKanKyori(), "3");
                     return false;
                 }
             }
@@ -136,13 +235,11 @@ public class GXHDO101C008 implements Serializable {
     /**
      * エラーセット
      *
-     * @param makuatsuData 膜厚データ
-     * @param isStartErr スタートエラー
-     * @param isEndErr エンドエラー
+     * @param ptnKanKyoriData ﾊﾟﾀｰﾝ間距離データ
      * @param errorId エラーID
      * @param errParams エラーパラメータ
      */
-    private void setError(GXHDO101C008Model.PrintWidthData makuatsuData, String errorId, Object... errParams) {
+    private void setError(GXHDO101C008Model.PtnKanKyoriData ptnKanKyoriData, String errorId, Object... errParams) {
 
         // メッセージをセット
         FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -151,7 +248,7 @@ public class GXHDO101C008 implements Serializable {
         facesContext.addMessage(null, message);
 
         //エラー項目に背景色をセット
-        makuatsuData.setStartTextBackColor(ErrUtil.ERR_BACK_COLOR);
+        ptnKanKyoriData.setTextBackColor(ErrUtil.ERR_BACK_COLOR);
 
     }
 
@@ -159,8 +256,8 @@ public class GXHDO101C008 implements Serializable {
      * 背景色のクリア処理
      */
     private void clearBackColor() {
-        for (GXHDO101C008Model.PrintWidthData printWidthData : this.gxhdO101c008ModelView.getPrintWidthDataList()) {
-            printWidthData.setStartTextBackColor("");
+        for (GXHDO101C008Model.PtnKanKyoriData ptnKanKyoriData : this.gxhdO101c008ModelView.getPtnKanKyoriDataList()) {
+            ptnKanKyoriData.setTextBackColor("");
         }
     }
 
