@@ -44,47 +44,47 @@ public class SubSrRhaps {
     /**
      * 電極膜厚1
      */
-    private BigDecimal dmakuatsu1;
+    private BigDecimal emakuatsu1;
 
     /**
      * 電極膜厚2
      */
-    private BigDecimal dmakuatsu2;
+    private BigDecimal emakuatsu2;
 
     /**
      * 電極膜厚3
      */
-    private BigDecimal dmakuatsu3;
+    private BigDecimal emakuatsu3;
 
     /**
      * 電極膜厚4
      */
-    private BigDecimal dmakuatsu4;
+    private BigDecimal emakuatsu4;
 
     /**
      * 電極膜厚5
      */
-    private BigDecimal dmakuatsu5;
+    private BigDecimal emakuatsu5;
 
     /**
      * 電極膜厚6
      */
-    private BigDecimal dmakuatsu6;
+    private BigDecimal emakuatsu6;
 
     /**
      * 電極膜厚7
      */
-    private BigDecimal dmakuatsu7;
+    private BigDecimal emakuatsu7;
 
     /**
      * 電極膜厚8
      */
-    private BigDecimal dmakuatsu8;
+    private BigDecimal emakuatsu8;
 
     /**
      * 電極膜厚9
      */
-    private BigDecimal dmakuatsu9;
+    private BigDecimal emakuatsu9;
 
     /**
      * ﾊﾟﾀｰﾝ間距離1
@@ -333,163 +333,163 @@ public class SubSrRhaps {
     /**
      * 電極膜厚1
      *
-     * @return the dmakuatsu1
+     * @return the emakuatsu1
      */
-    public BigDecimal getDmakuatsu1() {
-        return dmakuatsu1;
+    public BigDecimal getEmakuatsu1() {
+        return emakuatsu1;
     }
 
     /**
      * 電極膜厚1
      *
-     * @param dmakuatsu1 the dmakuatsu1 to set
+     * @param emakuatsu1 the emakuatsu1 to set
      */
-    public void setDmakuatsu1(BigDecimal dmakuatsu1) {
-        this.dmakuatsu1 = dmakuatsu1;
+    public void setEmakuatsu1(BigDecimal emakuatsu1) {
+        this.emakuatsu1 = emakuatsu1;
     }
 
     /**
      * 電極膜厚2
      *
-     * @return the dmakuatsu2
+     * @return the emakuatsu2
      */
-    public BigDecimal getDmakuatsu2() {
-        return dmakuatsu2;
+    public BigDecimal getEmakuatsu2() {
+        return emakuatsu2;
     }
 
     /**
      * 電極膜厚2
      *
-     * @param dmakuatsu2 the dmakuatsu2 to set
+     * @param emakuatsu2 the emakuatsu2 to set
      */
-    public void setDmakuatsu2(BigDecimal dmakuatsu2) {
-        this.dmakuatsu2 = dmakuatsu2;
+    public void setEmakuatsu2(BigDecimal emakuatsu2) {
+        this.emakuatsu2 = emakuatsu2;
     }
 
     /**
      * 電極膜厚3
      *
-     * @return the dmakuatsu3
+     * @return the emakuatsu3
      */
-    public BigDecimal getDmakuatsu3() {
-        return dmakuatsu3;
+    public BigDecimal getEmakuatsu3() {
+        return emakuatsu3;
     }
 
     /**
      * 電極膜厚3
      *
-     * @param dmakuatsu3 the dmakuatsu3 to set
+     * @param emakuatsu3 the emakuatsu3 to set
      */
-    public void setDmakuatsu3(BigDecimal dmakuatsu3) {
-        this.dmakuatsu3 = dmakuatsu3;
+    public void setEmakuatsu3(BigDecimal emakuatsu3) {
+        this.emakuatsu3 = emakuatsu3;
     }
 
     /**
      * 電極膜厚4
      *
-     * @return the dmakuatsu4
+     * @return the emakuatsu4
      */
-    public BigDecimal getDmakuatsu4() {
-        return dmakuatsu4;
+    public BigDecimal getEmakuatsu4() {
+        return emakuatsu4;
     }
 
     /**
      * 電極膜厚4
      *
-     * @param dmakuatsu4 the dmakuatsu4 to set
+     * @param emakuatsu4 the emakuatsu4 to set
      */
-    public void setDmakuatsu4(BigDecimal dmakuatsu4) {
-        this.dmakuatsu4 = dmakuatsu4;
+    public void setEmakuatsu4(BigDecimal emakuatsu4) {
+        this.emakuatsu4 = emakuatsu4;
     }
 
     /**
      * 電極膜厚5
      *
-     * @return the dmakuatsu5
+     * @return the emakuatsu5
      */
-    public BigDecimal getDmakuatsu5() {
-        return dmakuatsu5;
+    public BigDecimal getEmakuatsu5() {
+        return emakuatsu5;
     }
 
     /**
      * 電極膜厚5
      *
-     * @param dmakuatsu5 the dmakuatsu5 to set
+     * @param emakuatsu5 the emakuatsu5 to set
      */
-    public void setDmakuatsu5(BigDecimal dmakuatsu5) {
-        this.dmakuatsu5 = dmakuatsu5;
+    public void setEmakuatsu5(BigDecimal emakuatsu5) {
+        this.emakuatsu5 = emakuatsu5;
     }
 
     /**
      * 電極膜厚6
      *
-     * @return the dmakuatsu6
+     * @return the emakuatsu6
      */
-    public BigDecimal getDmakuatsu6() {
-        return dmakuatsu6;
+    public BigDecimal getEmakuatsu6() {
+        return emakuatsu6;
     }
 
     /**
      * 電極膜厚6
      *
-     * @param dmakuatsu6 the dmakuatsu6 to set
+     * @param emakuatsu6 the emakuatsu6 to set
      */
-    public void setDmakuatsu6(BigDecimal dmakuatsu6) {
-        this.dmakuatsu6 = dmakuatsu6;
+    public void setEmakuatsu6(BigDecimal emakuatsu6) {
+        this.emakuatsu6 = emakuatsu6;
     }
 
     /**
      * 電極膜厚7
      *
-     * @return the dmakuatsu7
+     * @return the emakuatsu7
      */
-    public BigDecimal getDmakuatsu7() {
-        return dmakuatsu7;
+    public BigDecimal getEmakuatsu7() {
+        return emakuatsu7;
     }
 
     /**
      * 電極膜厚7
      *
-     * @param dmakuatsu7 the dmakuatsu7 to set
+     * @param emakuatsu7 the emakuatsu7 to set
      */
-    public void setDmakuatsu7(BigDecimal dmakuatsu7) {
-        this.dmakuatsu7 = dmakuatsu7;
+    public void setEmakuatsu7(BigDecimal emakuatsu7) {
+        this.emakuatsu7 = emakuatsu7;
     }
 
     /**
      * 電極膜厚8
      *
-     * @return the dmakuatsu8
+     * @return the emakuatsu8
      */
-    public BigDecimal getDmakuatsu8() {
-        return dmakuatsu8;
+    public BigDecimal getEmakuatsu8() {
+        return emakuatsu8;
     }
 
     /**
      * 電極膜厚8
      *
-     * @param dmakuatsu8 the dmakuatsu8 to set
+     * @param emakuatsu8 the emakuatsu8 to set
      */
-    public void setDmakuatsu8(BigDecimal dmakuatsu8) {
-        this.dmakuatsu8 = dmakuatsu8;
+    public void setEmakuatsu8(BigDecimal emakuatsu8) {
+        this.emakuatsu8 = emakuatsu8;
     }
 
     /**
      * 電極膜厚9
      *
-     * @return the dmakuatsu9
+     * @return the emakuatsu9
      */
-    public BigDecimal getDmakuatsu9() {
-        return dmakuatsu9;
+    public BigDecimal getEmakuatsu9() {
+        return emakuatsu9;
     }
 
     /**
      * 電極膜厚9
      *
-     * @param dmakuatsu9 the dmakuatsu9 to set
+     * @param emakuatsu9 the emakuatsu9 to set
      */
-    public void setDmakuatsu9(BigDecimal dmakuatsu9) {
-        this.dmakuatsu9 = dmakuatsu9;
+    public void setEmakuatsu9(BigDecimal emakuatsu9) {
+        this.emakuatsu9 = emakuatsu9;
     }
 
     /**

@@ -689,17 +689,17 @@ public class SrRhaps {
     /**
      * 外観確認
      */
-    private Integer gaikankakunin1;
+    private Integer gaikankakunin;
 
     /**
      * 積層上昇速切替位置
      */
-    private BigDecimal sekijousyousokuichi;
+    private BigDecimal sekijsskirikaeichi;
 
     /**
      * 積層下降速切替位置
      */
-    private BigDecimal sekikakousokuichi;
+    private BigDecimal sekikkskirikaeichi;
 
     /**
      * 加圧時間
@@ -719,27 +719,27 @@ public class SrRhaps {
     /**
      * 電極膜厚設定
      */
-    private BigDecimal dmakuatsusettei;
+    private BigDecimal emakuatsusettei;
 
     /**
      * 電極熱風風量
      */
-    private Integer dneppufuryou;
+    private Integer eneppufuryou;
 
     /**
      * 電極膜厚AVE
      */
-    private BigDecimal dmakuatsuave;
+    private BigDecimal emakuatsuave;
 
     /**
      * 電極膜厚MAX
      */
-    private BigDecimal dmakuatsumax;
+    private BigDecimal emakuatsumax;
 
     /**
      * 電極膜厚MIN
      */
-    private BigDecimal dmakuatsumin;
+    private BigDecimal emakuatsumin;
 
     /**
      * にじみ量測定(ﾊﾟﾀｰﾝ間距離)
@@ -804,17 +804,17 @@ public class SrRhaps {
     /**
      * 上端子上昇速切替位置
      */
-    private BigDecimal uejousyousokuichi;
+    private BigDecimal uwajsskirikaeichi;
 
     /**
      * 下端子下降速切替位置
      */
-    private BigDecimal sitakakousokuichi;
+    private BigDecimal shitakkskirikaeichi;
 
     /**
      * ﾀｰｹﾞｯﾄｲﾝｸ種類
      */
-    private String tinkshuryui;
+    private String tinksyuryui;
 
     /**
      * ﾀｰｹﾞｯﾄｲﾝｸLOT
@@ -859,27 +859,27 @@ public class SrRhaps {
     /**
      * ﾍｯﾄﾞ交換者
      */
-    private String headkoukansha;
+    private String headkoukantantou;
 
     /**
      * 積層条件者
      */
-    private String sekisoujoukensha;
+    private String sekisoujoukentantou;
 
     /**
      * E製版ｾｯﾄ者
      */
-    private String eseihansetsha;
+    private String eseihansettantou;
 
     /**
      * C製版ｾｯﾄ者
      */
-    private String cseihansetsha;
+    private String cseihansettantou;
 
     /**
      * 段差測定者
      */
-    private String dansasokuteisha;
+    private String dansasokuteitantou;
 
     /**
      * revision
@@ -3270,55 +3270,55 @@ public class SrRhaps {
     /**
      * 外観確認
      *
-     * @return the gaikankakunin1
+     * @return the gaikankakunin
      */
-    public Integer getGaikankakunin1() {
-        return gaikankakunin1;
+    public Integer getGaikankakunin() {
+        return gaikankakunin;
     }
 
     /**
      * 外観確認
      *
-     * @param gaikankakunin1 the gaikankakunin1 to set
+     * @param gaikankakunin the gaikankakunin to set
      */
-    public void setGaikankakunin1(Integer gaikankakunin1) {
-        this.gaikankakunin1 = gaikankakunin1;
+    public void setGaikankakunin(Integer gaikankakunin) {
+        this.gaikankakunin = gaikankakunin;
     }
 
     /**
      * 積層上昇速切替位置
      *
-     * @return the sekijousyousokuichi
+     * @return the sekijsskirikaeichi
      */
-    public BigDecimal getSekijousyousokuichi() {
-        return sekijousyousokuichi;
+    public BigDecimal getSekijsskirikaeichi() {
+        return sekijsskirikaeichi;
     }
 
     /**
      * 積層上昇速切替位置
      *
-     * @param sekijousyousokuichi the sekijousyousokuichi to set
+     * @param sekijsskirikaeichi the sekijsskirikaeichi to set
      */
-    public void setSekijousyousokuichi(BigDecimal sekijousyousokuichi) {
-        this.sekijousyousokuichi = sekijousyousokuichi;
+    public void setSekijsskirikaeichi(BigDecimal sekijsskirikaeichi) {
+        this.sekijsskirikaeichi = sekijsskirikaeichi;
     }
 
     /**
      * 積層下降速切替位置
      *
-     * @return the sekikakousokuichi
+     * @return the sekikkskirikaeichi
      */
-    public BigDecimal getSekikakousokuichi() {
-        return sekikakousokuichi;
+    public BigDecimal getSekikkskirikaeichi() {
+        return sekikkskirikaeichi;
     }
 
     /**
      * 積層下降速切替位置
      *
-     * @param sekikakousokuichi the sekikakousokuichi to set
+     * @param sekikkskirikaeichi the sekikkskirikaeichi to set
      */
-    public void setSekikakousokuichi(BigDecimal sekikakousokuichi) {
-        this.sekikakousokuichi = sekikakousokuichi;
+    public void setSekikkskirikaeichi(BigDecimal sekikkskirikaeichi) {
+        this.sekikkskirikaeichi = sekikkskirikaeichi;
     }
 
     /**
@@ -3378,91 +3378,91 @@ public class SrRhaps {
     /**
      * 電極膜厚設定
      *
-     * @return the dmakuatsusettei
+     * @return the emakuatsusettei
      */
-    public BigDecimal getDmakuatsusettei() {
-        return dmakuatsusettei;
+    public BigDecimal getEmakuatsusettei() {
+        return emakuatsusettei;
     }
 
     /**
      * 電極膜厚設定
      *
-     * @param dmakuatsusettei the dmakuatsusettei to set
+     * @param emakuatsusettei the emakuatsusettei to set
      */
-    public void setDmakuatsusettei(BigDecimal dmakuatsusettei) {
-        this.dmakuatsusettei = dmakuatsusettei;
+    public void setEmakuatsusettei(BigDecimal emakuatsusettei) {
+        this.emakuatsusettei = emakuatsusettei;
     }
 
     /**
      * 電極熱風風量
      *
-     * @return the dneppufuryou
+     * @return the eneppufuryou
      */
-    public Integer getDneppufuryou() {
-        return dneppufuryou;
+    public Integer getEneppufuryou() {
+        return eneppufuryou;
     }
 
     /**
      * 電極熱風風量
      *
-     * @param dneppufuryou the dneppufuryou to set
+     * @param eneppufuryou the eneppufuryou to set
      */
-    public void setDneppufuryou(Integer dneppufuryou) {
-        this.dneppufuryou = dneppufuryou;
+    public void setEneppufuryou(Integer eneppufuryou) {
+        this.eneppufuryou = eneppufuryou;
     }
 
     /**
      * 電極膜厚AVE
      *
-     * @return the dmakuatsuave
+     * @return the emakuatsuave
      */
-    public BigDecimal getDmakuatsuave() {
-        return dmakuatsuave;
+    public BigDecimal getEmakuatsuave() {
+        return emakuatsuave;
     }
 
     /**
      * 電極膜厚AVE
      *
-     * @param dmakuatsuave the dmakuatsuave to set
+     * @param emakuatsuave the emakuatsuave to set
      */
-    public void setDmakuatsuave(BigDecimal dmakuatsuave) {
-        this.dmakuatsuave = dmakuatsuave;
+    public void setEmakuatsuave(BigDecimal emakuatsuave) {
+        this.emakuatsuave = emakuatsuave;
     }
 
     /**
      * 電極膜厚MAX
      *
-     * @return the dmakuatsumax
+     * @return the emakuatsumax
      */
-    public BigDecimal getDmakuatsumax() {
-        return dmakuatsumax;
+    public BigDecimal getEmakuatsumax() {
+        return emakuatsumax;
     }
 
     /**
      * 電極膜厚MAX
      *
-     * @param dmakuatsumax the dmakuatsumax to set
+     * @param emakuatsumax the emakuatsumax to set
      */
-    public void setDmakuatsumax(BigDecimal dmakuatsumax) {
-        this.dmakuatsumax = dmakuatsumax;
+    public void setEmakuatsumax(BigDecimal emakuatsumax) {
+        this.emakuatsumax = emakuatsumax;
     }
 
     /**
      * 電極膜厚MIN
      *
-     * @return the dmakuatsumin
+     * @return the emakuatsumin
      */
-    public BigDecimal getDmakuatsumin() {
-        return dmakuatsumin;
+    public BigDecimal getEmakuatsumin() {
+        return emakuatsumin;
     }
 
     /**
      * 電極膜厚MIN
      *
-     * @param dmakuatsumin the dmakuatsumin to set
+     * @param emakuatsumin the emakuatsumin to set
      */
-    public void setDmakuatsumin(BigDecimal dmakuatsumin) {
-        this.dmakuatsumin = dmakuatsumin;
+    public void setEmakuatsumin(BigDecimal emakuatsumin) {
+        this.emakuatsumin = emakuatsumin;
     }
 
     /**
@@ -3684,55 +3684,55 @@ public class SrRhaps {
     /**
      * 上端子上昇速切替位置
      *
-     * @return the uejousyousokuichi
+     * @return the uwajsskirikaeichi
      */
-    public BigDecimal getUejousyousokuichi() {
-        return uejousyousokuichi;
+    public BigDecimal getUwajsskirikaeichi() {
+        return uwajsskirikaeichi;
     }
 
     /**
      * 上端子上昇速切替位置
      *
-     * @param uejousyousokuichi the uejousyousokuichi to set
+     * @param uwajsskirikaeichi the uwajsskirikaeichi to set
      */
-    public void setUejousyousokuichi(BigDecimal uejousyousokuichi) {
-        this.uejousyousokuichi = uejousyousokuichi;
+    public void setUwajsskirikaeichi(BigDecimal uwajsskirikaeichi) {
+        this.uwajsskirikaeichi = uwajsskirikaeichi;
     }
 
     /**
      * 下端子下降速切替位置
      *
-     * @return the sitakakousokuichi
+     * @return the shitakkskirikaeichi
      */
-    public BigDecimal getSitakakousokuichi() {
-        return sitakakousokuichi;
+    public BigDecimal getShitakkskirikaeichi() {
+        return shitakkskirikaeichi;
     }
 
     /**
      * 下端子下降速切替位置
      *
-     * @param sitakakousokuichi the sitakakousokuichi to set
+     * @param shitakkskirikaeichi the shitakkskirikaeichi to set
      */
-    public void setSitakakousokuichi(BigDecimal sitakakousokuichi) {
-        this.sitakakousokuichi = sitakakousokuichi;
+    public void setShitakkskirikaeichi(BigDecimal shitakkskirikaeichi) {
+        this.shitakkskirikaeichi = shitakkskirikaeichi;
     }
 
     /**
      * ﾀｰｹﾞｯﾄｲﾝｸ種類
      *
-     * @return the tinkshuryui
+     * @return the tinksyuryui
      */
-    public String getTinkshuryui() {
-        return tinkshuryui;
+    public String getTinksyuryui() {
+        return tinksyuryui;
     }
 
     /**
      * ﾀｰｹﾞｯﾄｲﾝｸ種類
      *
-     * @param tinkshuryui the tinkshuryui to set
+     * @param tinksyuryui the tinksyuryui to set
      */
-    public void setTinkshuryui(String tinkshuryui) {
-        this.tinkshuryui = tinkshuryui;
+    public void setTinksyuryui(String tinksyuryui) {
+        this.tinksyuryui = tinksyuryui;
     }
 
     /**
@@ -3882,91 +3882,91 @@ public class SrRhaps {
     /**
      * ﾍｯﾄﾞ交換者
      *
-     * @return the headkoukansha
+     * @return the headkoukantantou
      */
-    public String getHeadkoukansha() {
-        return headkoukansha;
+    public String getHeadkoukantantou() {
+        return headkoukantantou;
     }
 
     /**
      * ﾍｯﾄﾞ交換者
      *
-     * @param headkoukansha the headkoukansha to set
+     * @param headkoukantantou the headkoukantantou to set
      */
-    public void setHeadkoukansha(String headkoukansha) {
-        this.headkoukansha = headkoukansha;
+    public void setHeadkoukantantou(String headkoukantantou) {
+        this.headkoukantantou = headkoukantantou;
     }
 
     /**
      * 積層条件者
      *
-     * @return the sekisoujoukensha
+     * @return the sekisoujoukentantou
      */
-    public String getSekisoujoukensha() {
-        return sekisoujoukensha;
+    public String getSekisoujoukentantou() {
+        return sekisoujoukentantou;
     }
 
     /**
      * 積層条件者
      *
-     * @param sekisoujoukensha the sekisoujoukensha to set
+     * @param sekisoujoukentantou the sekisoujoukentantou to set
      */
-    public void setSekisoujoukensha(String sekisoujoukensha) {
-        this.sekisoujoukensha = sekisoujoukensha;
+    public void setSekisoujoukentantou(String sekisoujoukentantou) {
+        this.sekisoujoukentantou = sekisoujoukentantou;
     }
 
     /**
      * E製版ｾｯﾄ者
      *
-     * @return the eseihansetsha
+     * @return the eseihansettantou
      */
-    public String getEseihansetsha() {
-        return eseihansetsha;
+    public String getEseihansettantou() {
+        return eseihansettantou;
     }
 
     /**
      * E製版ｾｯﾄ者
      *
-     * @param eseihansetsha the eseihansetsha to set
+     * @param eseihansettantou the eseihansettantou to set
      */
-    public void setEseihansetsha(String eseihansetsha) {
-        this.eseihansetsha = eseihansetsha;
+    public void setEseihansettantou(String eseihansettantou) {
+        this.eseihansettantou = eseihansettantou;
     }
 
     /**
      * C製版ｾｯﾄ者
      *
-     * @return the cseihansetsha
+     * @return the cseihansettantou
      */
-    public String getCseihansetsha() {
-        return cseihansetsha;
+    public String getCseihansettantou() {
+        return cseihansettantou;
     }
 
     /**
      * C製版ｾｯﾄ者
      *
-     * @param cseihansetsha the cseihansetsha to set
+     * @param cseihansettantou the cseihansettantou to set
      */
-    public void setCseihansetsha(String cseihansetsha) {
-        this.cseihansetsha = cseihansetsha;
+    public void setCseihansettantou(String cseihansettantou) {
+        this.cseihansettantou = cseihansettantou;
     }
 
     /**
      * 段差測定者
      *
-     * @return the dansasokuteisha
+     * @return the dansasokuteitantou
      */
-    public String getDansasokuteisha() {
-        return dansasokuteisha;
+    public String getDansasokuteitantou() {
+        return dansasokuteitantou;
     }
 
     /**
      * 段差測定者
      *
-     * @param dansasokuteisha the dansasokuteisha to set
+     * @param dansasokuteitantou the dansasokuteitantou to set
      */
-    public void setDansasokuteisha(String dansasokuteisha) {
-        this.dansasokuteisha = dansasokuteisha;
+    public void setDansasokuteitantou(String dansasokuteitantou) {
+        this.dansasokuteitantou = dansasokuteitantou;
     }
 
     /**
