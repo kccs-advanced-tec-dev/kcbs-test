@@ -21,7 +21,7 @@
                     <p:column id="mStart" width="50%" headerText="#{myMsg.ptn_kyori_tani}" >
                         <div style="text-align:right;">
                             <p:inputNumber  value="#{item.value}" id="itemValue" rendered="#{item.textRendered}" onkeydown="keyDownEnterSetNextControl(this)" tabindex="#{item.tabIndex}" thousandSeparator=""  
-                                            decimalPlaces="#{item.textDecimalPlaces}" maxValue="#{item.textMaxValue}" minValue="#{item.textMinValue}" size="15" inputStyle="text-align:right; background: #{item.textBackColor};"/>
+                                            decimalPlaces="#{item.textDecimalPlaces}" maxValue="#{item.textMaxValue}" minValue="#{item.textMinValue}" size="17" inputStyle="text-align:right; background: #{item.textBackColor};"/>
                             <p:outputLabel value="#{item.value}" rendered="#{item.labelRendered}" />
                         </div>
                     </p:column>
