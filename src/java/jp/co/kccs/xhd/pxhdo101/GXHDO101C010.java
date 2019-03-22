@@ -4,7 +4,6 @@
 package jp.co.kccs.xhd.pxhdo101;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
