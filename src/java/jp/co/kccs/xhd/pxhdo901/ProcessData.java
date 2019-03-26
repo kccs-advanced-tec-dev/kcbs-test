@@ -87,6 +87,15 @@ public class ProcessData {
      */
     private DataSource dataSourceWip;
     /**
+     * DataSource(Spskadoritu)
+     */
+    private DataSource dataSourceSpskadoritu;
+    /**
+     * DataSource(Ttpkadoritu)
+     */
+    private DataSource dataSourceTtpkadoritu;
+    
+    /**
      * ユーザー認証有無
      */
     private boolean rquireAuth;
@@ -382,6 +391,42 @@ public class ProcessData {
         this.dataSourceWip = dataSourceWip;
     }
 
+    /**
+     * DataSource(Spskadoritu)
+     *
+     * @return the dataSourceSpskadoritu
+     */
+    public DataSource getDataSourceSpskadoritu() {
+        return dataSourceSpskadoritu;
+    }
+
+    /**
+     * DataSource(Spskadoritu)
+     *
+     * @param dataSourceSpskadoritu the dataSourceSpskadoritu to set
+     */
+    public void setDataSourceSpskadoritu(DataSource dataSourceSpskadoritu) {
+        this.dataSourceSpskadoritu = dataSourceSpskadoritu;
+    }
+
+    /**
+     * DataSource(Ttpkadoritu)
+     *
+     * @return the dataSourceTtpkadoritu
+     */
+    public DataSource getDataSourceTtpkadoritu() {
+        return dataSourceTtpkadoritu;
+    }
+
+    /**
+     * DataSource(Ttpkadoritu)
+     *
+     * @param dataSourceTtpkadoritu the dataSourceTtpkadoritu to set
+     */
+    public void setDataSourceTtpkadoritu(DataSource dataSourceTtpkadoritu) {
+        this.dataSourceTtpkadoritu = dataSourceTtpkadoritu;
+    }
+    
     /**
      * ユーザー認証有無
      *

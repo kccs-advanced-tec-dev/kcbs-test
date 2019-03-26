@@ -682,7 +682,8 @@ public class GXHDO101B005 implements IFormLogic {
             return processData;
         }
     
-        QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
+        QueryRunner queryRunnerSpskadoritu = new QueryRunner(processData.getDataSourceSpskadoritu());
+        QueryRunner queryRunnerTtpkadoritu = new QueryRunner(processData.getDataSourceTtpkadoritu());
 
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
@@ -704,12 +705,12 @@ public class GXHDO101B005 implements IFormLogic {
         
         try {
             // (19)[積層履歴ﾃﾞｰﾀ]から、ﾃﾞｰﾀを取得
-            Map sekisouRirekiData = this.loadSekisouRirekiData(queryRunnerQcdb, lotNo);
+            Map sekisouRirekiData = this.loadSekisouRirekiData(queryRunnerSpskadoritu, lotNo);
             if (sekisouRirekiData == null || sekisouRirekiData.isEmpty() || 
                     (sekisouRirekiData.get("HakuriErrSuu") == null && sekisouRirekiData.get("CcdErrSuu") == null) ) {
                 // A.取得出来なかった場合 ｱ.Ⅲ.画面表示仕様(20)を発行する。
                 // (20)[剥離NG履歴]から、ﾃﾞｰﾀを取得
-                Map hakuringrirekiData = this.loadHakuringrirekiData(queryRunnerQcdb, lotNo);
+                Map hakuringrirekiData = this.loadHakuringrirekiData(queryRunnerTtpkadoritu, lotNo);
                 if (hakuringrirekiData == null || hakuringrirekiData.isEmpty() || 
                     (hakuringrirekiData.get("SekisouSuu") == null)) {
                     // α.取得出来なかった場合ｴﾗｰﾒｯｾｰｼﾞを表示し、以降の処理は実行しない。
@@ -1210,7 +1211,7 @@ public class GXHDO101B005 implements IFormLogic {
         }
 
         // 画面に取得した情報をセットする。(入力項目以外)
-        setViewItemData(processData, sekkeiData, lotKbnMasData, ownerMasData, daPatternMasData, shikakariData, lotNo);
+        setViewItemData(processData, sekkeiData, lotKbnMasData, ownerMasData, daPatternMasData, shikakariData, lotNo, sLotNo);
 
         processData.setInitMessageList(errorMessageList);
         return processData;
@@ -1227,8 +1228,9 @@ public class GXHDO101B005 implements IFormLogic {
      * @param daPatternMasData 製版ﾏｽﾀデータ
      * @param shikakariData 仕掛データ
      * @param lotNo ﾛｯﾄNo
+     * @param sLotNo 先行LotNo
      */
-    private void setViewItemData(ProcessData processData, Map sekkeiData, Map lotKbnMasData, Map ownerMasData, Map daPatternMasData, Map shikakariData, String lotNo) {
+    private void setViewItemData(ProcessData processData, Map sekkeiData, Map lotKbnMasData, Map ownerMasData, Map daPatternMasData, Map shikakariData, String lotNo, String sLotNo) {
 
         // ロットNo
         this.setItemData(processData, GXHDO101B005Const.LOTNO, lotNo);
@@ -1318,6 +1320,12 @@ public class GXHDO101B005 implements IFormLogic {
 
         // 最上層スライド量
         this.setItemData(processData, GXHDO101B005Const.LAST_LAYER_SLIDE_RYO, StringUtil.nullToBlank(sekkeiData.get("LASTLAYERSLIDERYO")));
+        
+        // 先行ロットNo
+        if ("".equals(processData.getInitJotaiFlg()) || JOTAI_FLG_SAKUJO.equals(processData.getInitJotaiFlg())){
+            this.setItemData(processData, GXHDO101B005Const.SENKOU_LOT_NO, sLotNo);
+        }
+        
     }
 
     /**
@@ -1651,14 +1659,14 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
     /**
      * [積層履歴ﾃﾞｰﾀ]から、ﾃﾞｰﾀを取得
      *
-     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param queryRunnerSpskadoritu QueryRunnerオブジェクト
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private Map loadSekisouRirekiData(QueryRunner queryRunnerQcdb, String lotNo) throws SQLException {
+    private Map loadSekisouRirekiData(QueryRunner queryRunnerSpskadoritu, String lotNo) throws SQLException {
         // 積層履歴ﾃﾞｰﾀの取得
-        String sql = "SELECT sum(HakuriErrSuu) HakuriErrSuu,sum(CcdErrSuu) CcdErrSuu "
+        String sql = "SELECT sum(HakuriErrSuu) AS HakuriErrSuu,sum(CcdErrSuu) AS CcdErrSuu "
                 + "FROM sekisourirekidata "
                 + "WHERE LotNo = ? ";
 
@@ -1666,20 +1674,20 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         params.add(lotNo);
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+        return queryRunnerSpskadoritu.query(sql, new MapHandler(), params.toArray());
     }
     
     /**
      * [剥離NG履歴]から、ﾃﾞｰﾀを取得
      *
-     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param queryRunnerTtpkadoritu QueryRunnerオブジェクト
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private Map loadHakuringrirekiData(QueryRunner queryRunnerQcdb, String lotNo) throws SQLException {
+    private Map loadHakuringrirekiData(QueryRunner queryRunnerTtpkadoritu, String lotNo) throws SQLException {
         // 剥離NG履歴ﾃﾞｰﾀの取得
-        String sql = "SELECT sum(SekisouSuu) SekisouSuu "
+        String sql = "SELECT sum(SekisouSuu) AS SekisouSuu "
                 + "FROM hakuringrireki "
                 + "WHERE LotNo = ? ";
 
@@ -1687,7 +1695,7 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         params.add(lotNo);
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+        return queryRunnerTtpkadoritu.query(sql, new MapHandler(), params.toArray());
     }
     
     /**

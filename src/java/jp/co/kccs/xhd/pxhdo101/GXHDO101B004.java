@@ -1680,7 +1680,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
      */
     private Map loadSekisouRirekiData(QueryRunner queryRunnerQcdb, String lotNo) throws SQLException {
         // 積層履歴ﾃﾞｰﾀの取得
-        String sql = "SELECT sum(HakuriErrSuu) HakuriErrSuu,sum(CcdErrSuu) CcdErrSuu "
+        String sql = "SELECT sum(HakuriErrSuu) AS HakuriErrSuu,sum(CcdErrSuu) AS CcdErrSuu "
                 + "FROM sekisourirekidata "
                 + "WHERE LotNo = ? ";
 
@@ -1701,7 +1701,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
      */
     private Map loadHakuringrirekiData(QueryRunner queryRunnerQcdb, String lotNo) throws SQLException {
         // 剥離NG履歴ﾃﾞｰﾀの取得
-        String sql = "SELECT sum(SekisouSuu) SekisouSuu"
+        String sql = "SELECT sum(SekisouSuu) AS SekisouSuu "
                 + "FROM hakuringrireki "
                 + "WHERE LotNo = ? ";
 
