@@ -167,7 +167,7 @@
                                  oncomplete="if('warning'!=args.firstParam){PF('cd').hide(); cmdButtonOncomplete(args);} else {PF('cd').show();}"/>
                 <p:commandButton id="warnCancel" value="Cancel" class="ui-conf-commandbtn-cancel" onclick="PF('cd').hide();" type="button" />
             </p:confirmDialog>
-            <p:commandButton id="returnBtnTop" style="margin-left:26px;margin-bottom:5px;font-size:#{item.fontSize}px;color:#{item.fontColor};background:#{item.backColor};#{gXHDO901A.styleDisplayNone}"
+            <p:commandButton id="returnBtnTop" style="margin-left:26px;margin-bottom:5px;#{gXHDO901A.styleDisplayNone}"
                  value="#{myMsg.return}"  action="/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true"
                  process="@this" update="@this">
                 <f:param name="returnVal" value="return"/>
@@ -230,7 +230,7 @@
                 </ui:repeat>
             </p:panel>
             
-            <p:commandButton id="returnBtn" style="margin-left:26px;font-size:#{item.fontSize}px;color:#{item.fontColor};background:#{item.backColor};"
+            <p:commandButton id="returnBtn" style="margin-left:26px;"
                  value="#{myMsg.return}"  action="/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true"
                  process="@this" update="@this">
                 <f:param name="returnVal" value="return"/>
