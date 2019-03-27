@@ -45,11 +45,13 @@ public class GXHDO101C006Model implements Cloneable {
             newData.setSetsuuTextMaxLength(data.getSetsuuTextMaxLength());
             newData.setSetsuuTextBackColor(data.getSetsuuTextBackColor());
             newData.setSetsuuLabelRendered(data.isSetsuuLabelRendered());
+            newData.setSetsuuTabIndex(data.getSetsuuTabIndex());
             newData.setBikouVal(data.getBikouVal());
             newData.setBikouTextRendered(data.isBikouTextRendered());
             newData.setBikouTextMaxLength(data.getBikouTextMaxLength());
             newData.setBikouTextBackColor(data.getBikouTextBackColor());
             newData.setBikouLabelRendered(data.isBikouLabelRendered());
+            newData.setBikouTabIndex(data.getBikouTabIndex());
             newList.add(newData);
         }
 
@@ -120,6 +122,11 @@ public class GXHDO101C006Model implements Cloneable {
          * ｾｯﾄ数入力_ラベル(Rendered)
          */
         private boolean setsuuLabelRendered;
+        
+        /**
+         * ｾｯﾄ数入力_タブインデックス(TabIndex)
+         */
+        private String setsuuTabIndex;
 
         /**
          * 備考(値)
@@ -145,6 +152,11 @@ public class GXHDO101C006Model implements Cloneable {
          * 備考_ラベル(Rendered)
          */
         private boolean bikouLabelRendered;
+        
+        /**
+         * 備考_タブインデックス(TabIndex)
+         */
+        private String bikouTabIndex;
         
         /**
          * 剥離内容入力
@@ -243,6 +255,22 @@ public class GXHDO101C006Model implements Cloneable {
         }
 
         /**
+         * ｾｯﾄ数入力_タブインデックス(TabIndex)
+         * @return the setsuuTabIndex
+         */
+        public String getSetsuuTabIndex() {
+            return setsuuTabIndex;
+        }
+
+        /**
+         * ｾｯﾄ数入力_タブインデックス(TabIndex)
+         * @param setsuuTabIndex the setsuuTabIndex to set
+         */
+        public void setSetsuuTabIndex(String setsuuTabIndex) {
+            this.setsuuTabIndex = setsuuTabIndex;
+        }
+
+        /**
          * 備考(値)
          * @return the bikouVal
          */
@@ -320,6 +348,22 @@ public class GXHDO101C006Model implements Cloneable {
          */
         public void setBikouLabelRendered(boolean bikouLabelRendered) {
             this.bikouLabelRendered = bikouLabelRendered;
+        }
+
+        /**
+         * 備考_タブインデックス(TabIndex)
+         * @return the bikouTabIndex
+         */
+        public String getBikouTabIndex() {
+            return bikouTabIndex;
+        }
+
+        /**
+         * 備考_タブインデックス(TabIndex)
+         * @param bikouTabIndex the bikouTabIndex to set
+         */
+        public void setBikouTabIndex(String bikouTabIndex) {
+            this.bikouTabIndex = bikouTabIndex;
         }
     }
 }

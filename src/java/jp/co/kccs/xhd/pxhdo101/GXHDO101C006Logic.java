@@ -40,9 +40,14 @@ public class GXHDO101C006Logic {
         GXHDO101C006Model gxhdo101c006Model = new GXHDO101C006Model();
         List<GXHDO101C006Model.HakuriInputData> hakuriInputDataList = new ArrayList<>();
 
+        int setsuuIndex = 1;
+        int bikouIndex = 2;
+        
         //剥離内容入力のデータをセットする
         for (int i = 0; i < setsuuInput.length; i++) {
-            hakuriInputDataList.add(getInitHakuriInputData(gxhdo101c006Model, String.valueOf(i + 1), setsuuInput[i], "TEXT", "4", "", bikou[i], "TEXT", "20", ""));
+            hakuriInputDataList.add(getInitHakuriInputData(gxhdo101c006Model, String.valueOf(i + 1), setsuuInput[i], "TEXT", "4", "", String.valueOf(setsuuIndex), bikou[i], "TEXT", "20", "", String.valueOf(bikouIndex)));
+            setsuuIndex += 2;
+            bikouIndex += 2;
         }
 
         gxhdo101c006Model.setHakuriInputDataList(hakuriInputDataList);
@@ -59,16 +64,18 @@ public class GXHDO101C006Logic {
      * @param setsuuInputType　ｾｯﾄ数入力項目(入力タイプ)
      * @param setsuuTextMaxLength　ｾｯﾄ数入力項目(テキストMaxLength)
      * @param setsuuTextBackColor　ｾｯﾄ数入力項目(BackGround)
+     * @param setsuuTabIndex　ｾｯﾄ数入力項目(TabIndex)
      * @param bikouVal 備考項目(値)
      * @param bikouInputType 備考項目(入力タイプ)
      * @param bikouTextMaxLength　備考項目(テキストMaxLength)
      * @param bikouTextBackColor　備考項目(BackGround)
+     * @param bikouTabIndex　備考項目(TabIndex)
      * @return 剥離内容入力データ
      */
     private static GXHDO101C006Model.HakuriInputData getInitHakuriInputData(
             GXHDO101C006Model gxhdo101c006Model, String hakuriInput,
-            String setsuuVal, String setsuuInputType, String setsuuTextMaxLength, String setsuuTextBackColor,
-            String bikouVal, String bikouInputType, String bikouTextMaxLength, String bikouTextBackColor) {
+            String setsuuVal, String setsuuInputType, String setsuuTextMaxLength, String setsuuTextBackColor, String setsuuTabIndex,
+            String bikouVal, String bikouInputType, String bikouTextMaxLength, String bikouTextBackColor, String bikouTabIndex) {
         GXHDO101C006Model.HakuriInputData hakuriInputData = gxhdo101c006Model.new HakuriInputData();
         //剥離内容入力
         hakuriInputData.setHakuriInput(hakuriInput);
@@ -84,6 +91,7 @@ public class GXHDO101C006Logic {
         }
         hakuriInputData.setSetsuuTextMaxLength(setsuuTextMaxLength);
         hakuriInputData.setSetsuuTextBackColor(setsuuTextBackColor);
+        hakuriInputData.setSetsuuTabIndex(setsuuTabIndex);
 
         // 備考
         hakuriInputData.setBikouVal(bikouVal);
@@ -96,6 +104,7 @@ public class GXHDO101C006Logic {
         }
         hakuriInputData.setBikouTextMaxLength(bikouTextMaxLength);
         hakuriInputData.setBikouTextBackColor(bikouTextBackColor);
+        hakuriInputData.setBikouTabIndex(bikouTabIndex);
 
         return hakuriInputData;
     }
