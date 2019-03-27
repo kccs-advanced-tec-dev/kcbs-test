@@ -1,0 +1,22 @@
+.ui-datatable table {
+    table-layout:auto;
+}
+.ui-datatable tbody td {
+    padding: 1px 5px;
+    vertical-align: middle;
+}
+.ui-datatable tbody tr {
+    line-height:normal;
+}
+.ui-datatable tbody label {
+    margin-top: .2rem;
+    margin-bottom: .2rem;
+}
+.number {
+    text-align: right;
+}
+@media (max-width:640px){
+    .ui-paginator .ui-paginator-pages{
+        display: inline-block;
+    }
+}
