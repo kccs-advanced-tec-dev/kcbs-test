@@ -29,6 +29,7 @@ import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.KikakuError;
+import jp.co.kccs.xhd.common.InfoMessage;
 import jp.co.kccs.xhd.db.Parameter;
 import jp.co.kccs.xhd.db.ParameterEJB;
 import jp.co.kccs.xhd.db.model.DaJoken;
@@ -888,6 +889,20 @@ public class GXHDO901A implements Serializable {
 
         try {
 
+            // 注意メッセージが設定されている場合、ダイアログを表示する
+            if (!this.processData.getInfoMessageList().isEmpty()) {
+
+                // メッセージを画面に渡す
+                InfoMessage infoMessageError = (InfoMessage) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_INFO_MESSAGE);
+
+                infoMessageError.setInfoMessageList(this.processData.getInfoMessageList());
+
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.addCallbackParam("firstParam", "infoMessage");
+
+                return;
+            }
+            
             // 規格エラーメッセージが設定されている場合、ダイアログを表示する
             if (!this.processData.getKikakuchiInputErrorInfoList().isEmpty()) {
 
@@ -1496,6 +1511,16 @@ public class GXHDO901A implements Serializable {
         this.processMain();
     }
 
+    /**
+     * 警告メッセージダイアログOK押下時
+     */
+    public void processInfoWarnOk() {
+
+        // エラーをを削除して処理再開
+        this.processData.getInfoMessageList().clear();
+        this.processMain();
+    }
+    
     /**
      * リビジョンチェック
      *

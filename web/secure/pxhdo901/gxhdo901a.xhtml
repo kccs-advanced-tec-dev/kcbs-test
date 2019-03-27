@@ -60,6 +60,8 @@
                     PF('W_dlg_gxhdo101c010').show();
                 } else if('kikakuError'===args.firstParam){
                     PF('W_dlg_kikakuError').show();
+                } else if('infoMessage'===args.firstParam){
+                    PF('W_dlg_infoMessage').show();
                 } else if('complete'===args.firstParam){
                     PF('W_dlg_compMessage').show();
                 }
@@ -251,6 +253,7 @@
                 <ui:include src="/secure/pxhdo101/gxhdo101c010.xhtml"/>
                 <ui:include src="/secure/common/initMessage.xhtml"/>
                 <ui:include src="/secure/common/kikakuError.xhtml"/>
+                <ui:include src="/secure/common/infoMessage.xhtml"/>
             </div>
         </h:form>
         

@@ -1,0 +1,34 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <p:dialog header="注意" id="dlg_infoMessage" widgetVar="W_dlg_infoMessage"
+              width="600" modal="true" height="400" style="color: #ff0000;"
+              dynamic="false" closable="true" closeOnEscape="false" resizable="false" class="error-dialog-title" >
+
+        <h:form id="infoMessageForm">
+            <p:outputLabel value="[剥離/画処NG計算]ﾎﾞﾀﾝにより、" style="font-size: 18px; color: red;"  />
+            <br />
+            <p:outputLabel value="以下のﾃﾞｰﾀが上書きされますが、よろしいですか？" style="font-size: 18px; color: red;"  />
+                <p:dataTable id="table" var="msg" value="#{beanInfoMessage.infoMessageList}"
+                            style="font-size: 12px; width:540px; height: 300px; border-style: none;" 
+                            scrollable="true" scrollHeight="280"
+                            emptyMessage="" scrollWidth="560">
+                    <p:column id="mMsg"  >
+                            <p:outputLabel value="#{msg}" style="color: #ff0000;" />
+                    </p:column>
+                </p:dataTable>
+                <p:commandButton value="OK" id="okBtn"
+                                 style="position:relative;top:5px;left:160px;width:110px;height:35px;"
+                                 actionListener="#{gXHDO901A.processInfoWarnOk()}"
+                                 process="@this"
+                                 update="form"
+                                 oncomplete="PF('W_dlg_infoMessage').hide(); cmdButtonOncomplete(args);"/>   
+                <p:commandButton value="Cancel" id="cancelBtn"
+                                 style="position:relative;top:5px; left:180px;width:110px;height:35px;"
+                                 process="@this" 
+                                 update="@this"
+                                 oncomplete="PF('W_dlg_infoMessage').hide();"/>   
+        </h:form>
+    </p:dialog>
+</ui:composition>

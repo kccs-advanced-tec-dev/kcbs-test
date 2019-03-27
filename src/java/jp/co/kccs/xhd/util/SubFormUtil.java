@@ -74,6 +74,10 @@ public class SubFormUtil {
      * 規格エラー
      */
     public static final String FORM_ID_KIKAKU_ERROR = "KikakuError";
+    /**
+     * 警告メッセージ
+     */
+    public static final String FORM_ID_INFO_MESSAGE = "InfoMessage";
 
     /**
      * コンストラクタ
@@ -174,6 +178,13 @@ public class SubFormUtil {
                 returnBean = FacesContext.getCurrentInstance().
                         getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
                                 getELContext(), null, "beanKikakuError");
+                break;
+
+            // 警告メッセージ
+            case "InfoMessage":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanInfoMessage");
                 break;
 
             default:
