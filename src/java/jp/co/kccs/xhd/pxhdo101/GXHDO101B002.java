@@ -2877,7 +2877,7 @@ public class GXHDO101B002 implements IFormLogic {
             params.add(null); //乾燥時間
         }
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B002Const.SAATSU, srSpsprintScrData))); //差圧
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B002Const.SQUEEGEE_SOKUDO, srSpsprintScrData))); //ｽｷｰｼﾞｽﾋﾟｰﾄﾞ
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B002Const.SQUEEGEE_SOKUDO, srSpsprintScrData))); //ｽｷｰｼﾞｽﾋﾟｰﾄﾞ
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B002Const.SQUEEGEE_KAKUDO, srSpsprintScrData))); //ｽｷｰｼﾞ角度
         if (isInsert) {
             params.add(null); //ﾒﾀﾙﾚｲﾀﾞｳﾝ値
@@ -3335,7 +3335,7 @@ public class GXHDO101B002 implements IFormLogic {
             params.add(0); //乾燥時間
         }
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B002Const.SAATSU, srSpsprintScrData))); //差圧
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B002Const.SQUEEGEE_SOKUDO, srSpsprintScrData))); //ｽｷｰｼﾞｽﾋﾟｰﾄﾞ
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B002Const.SQUEEGEE_SOKUDO, srSpsprintScrData))); //ｽｷｰｼﾞｽﾋﾟｰﾄﾞ
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B002Const.SQUEEGEE_KAKUDO, srSpsprintScrData))); //ｽｷｰｼﾞ角度
         if (isInsert) {
             params.add(0); //ﾒﾀﾙﾚｲﾀﾞｳﾝ値

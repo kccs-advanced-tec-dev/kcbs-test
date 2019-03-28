@@ -144,7 +144,7 @@ public class SrSpsprintScr {
     /**
      * ｽｷｰｼﾞｽﾋﾟｰﾄﾞ
      */
-    private Integer skeegespeed;
+    private BigDecimal skeegespeed;
     
     /**
      * ｽｷｰｼﾞ角度
@@ -934,7 +934,7 @@ public class SrSpsprintScr {
      * ｽｷｰｼﾞｽﾋﾟｰﾄﾞ
      * @return the skeegespeed
      */
-    public Integer getSkeegespeed() {
+    public BigDecimal getSkeegespeed() {
         return skeegespeed;
     }
 
@@ -942,7 +942,7 @@ public class SrSpsprintScr {
      * ｽｷｰｼﾞｽﾋﾟｰﾄﾞ
      * @param skeegespeed the skeegespeed to set
      */
-    public void setSkeegespeed(Integer skeegespeed) {
+    public void setSkeegespeed(BigDecimal skeegespeed) {
         this.skeegespeed = skeegespeed;
     }
 
