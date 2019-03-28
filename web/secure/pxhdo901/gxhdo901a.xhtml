@@ -154,7 +154,6 @@
             <div style="text-align:right">
                 <h:outputText style="font-size:#{gXHDO901A.titleInfo.fontSize}px;  #{gXHDO901A.styleDisplayNone}" value="#{gXHDO901A.jotaiDisplay}"/>        
             </div>
-            <br/>
             <p:growl id="growlMessage" showDetail="false" sticky="true"  />
             <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
                 <f:facet name="message">
@@ -167,7 +166,7 @@
                                  oncomplete="if('warning'!=args.firstParam){PF('cd').hide(); cmdButtonOncomplete(args);} else {PF('cd').show();}"/>
                 <p:commandButton id="warnCancel" value="Cancel" class="ui-conf-commandbtn-cancel" onclick="PF('cd').hide();" type="button" />
             </p:confirmDialog>
-            <p:commandButton id="returnBtnTop" style="margin-left:26px;margin-bottom:5px;#{gXHDO901A.styleDisplayNone}"
+            <p:commandButton id="returnBtnTop" style="margin-left:26px;margin-bottom:5px;margin-top:0px;#{gXHDO901A.styleDisplayNone}"
                  value="#{myMsg.return}"  action="/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true"
                  process="@this" update="@this">
                 <f:param name="returnVal" value="return"/>
