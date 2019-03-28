@@ -199,9 +199,7 @@ public class GXHDO101B004 implements IFormLogic {
 
         // 規格チェック内で想定外のエラーが発生した場合、エラーを出して中断
         if (errorMessageInfo != null) {
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessageInfo.getErrorMessage(), null);
-            facesContext.addMessage(null, message);
-            processData.setMethod("");
+            processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
             return processData;
         }
 
@@ -632,7 +630,8 @@ public class GXHDO101B004 implements IFormLogic {
         //・画処NG_AVE
         FXHDD01 itemGngKaisuuAVE = getItemRow(processData.getItemList(), GXHDO101B004Const.GNG_KAISUUAVE);
         
-        if (!"".equals(itemHngKaisuu.getValue()) || !"".equals(itemHngAVE.getValue()) || !"".equals(itemGngKkaisuu.getValue()) || !"".equals(itemGngKaisuuAVE.getValue())) {
+        if ((!"".equals(itemHngKaisuu.getValue()) && itemHngKaisuu.getValue() != null) || (!"".equals(itemHngAVE.getValue()) && itemHngAVE.getValue() != null) || 
+                 (!"".equals(itemGngKkaisuu.getValue()) && itemGngKkaisuu.getValue() != null) || (!"".equals(itemGngKaisuuAVE.getValue()) && itemGngKaisuuAVE.getValue() != null)) {
 
             // エラーメッセージリスト
             List<String> errorMessageList = processData.getInitMessageList();
@@ -678,14 +677,13 @@ public class GXHDO101B004 implements IFormLogic {
 
         // 変数SUM1
         int sumHensuu1 = 0;
-        // 変数AVE1
-        int valueAVE1Int = 0;
         // 変数SUM2
         int sumHensuu2 = 0;
-        // 変数AVE2
-        int valueAVE2Int = 0;
+        BigDecimal valueAVE1= BigDecimal.ZERO;
+        BigDecimal valueAVE2= BigDecimal.ZERO;
         // 画面.セット数
-        BigDecimal setSuu = BigDecimal.ZERO;        
+        BigDecimal setSuu = BigDecimal.ZERO;     
+        Boolean gngSetFlag = false;
         FXHDD01 itemSetSuu = getItemRow(processData.getItemList(), GXHDO101B004Const.SET_SUU);
         setSuu = new BigDecimal(itemSetSuu.getValue());
         
@@ -713,15 +711,13 @@ public class GXHDO101B004 implements IFormLogic {
                     // b. a ÷ 画面.セット数の計算を行う。この値を「変数AVE1」とする
                     // a.変数SUM1
                     BigDecimal sumSekisouSuu= BigDecimal.ZERO;
-                    BigDecimal valueAVE1= BigDecimal.ZERO;
 
                     for (Object key : hakuringrirekiData.keySet()) {
                         sumSekisouSuu = new BigDecimal(String.valueOf(hakuringrirekiData.get(key)));
                     }
 
                     if (!setSuu.equals(BigDecimal.ZERO)){
-                        valueAVE1 = sumSekisouSuu.divide(setSuu);
-                        valueAVE1Int = valueAVE1.intValue();
+                        valueAVE1 = sumSekisouSuu.divide(setSuu, 3 ,BigDecimal.ROUND_DOWN);
                     }
                     sumHensuu1 = sumSekisouSuu.intValue();
                 }
@@ -732,10 +728,8 @@ public class GXHDO101B004 implements IFormLogic {
 
                 // 剥離ｴﾗｰ数
                 BigDecimal sumHakuriErrSuu= BigDecimal.ZERO;
-                BigDecimal valueAVE1= BigDecimal.ZERO;
                 // 画処ｴﾗｰ数
                 BigDecimal sumCcdErrSuu= BigDecimal.ZERO;
-                BigDecimal valueAVE2= BigDecimal.ZERO;
 
                 for (Object key : sekisouRirekiData.keySet()) {
                     if("HakuriErrSuu".equals(key)){
@@ -746,28 +740,30 @@ public class GXHDO101B004 implements IFormLogic {
                     }
                 }
                 if (!setSuu.equals(BigDecimal.ZERO)){
-                    valueAVE1 = sumHakuriErrSuu.divide(setSuu);
-                    valueAVE1Int = valueAVE1.intValue();
+                    valueAVE1 = sumHakuriErrSuu.divide(setSuu, 3 ,BigDecimal.ROUND_DOWN);
                 }
                 sumHensuu1 = sumHakuriErrSuu.intValue();
 
                 // ｳ.取得した画処ｴﾗｰ数を合計する。この値を「変数SUM2」とする。
                 // ｴ. ｳ ÷ 画面.セット数の計算を行う。この値を「変数AVE2」とする。
                 if (!setSuu.equals(BigDecimal.ZERO)){
-                    valueAVE2 = sumCcdErrSuu.divide(setSuu);
-                    valueAVE2Int = valueAVE2.intValue();
+                    valueAVE2 = sumCcdErrSuu.divide(setSuu, 3 ,BigDecimal.ROUND_DOWN);
                 }
                 sumHensuu2 = sumCcdErrSuu.intValue();
+                gngSetFlag = true;
             }
 
             //・剥離NG回数
             setItemData(processData,GXHDO101B004Const.HNG_KAISUU, String.valueOf(sumHensuu1));
             //・剥離NG_AVE
-            setItemData(processData,GXHDO101B004Const.HNG_AVE, String.valueOf(valueAVE1Int));
-            //・画処NG回数
-            setItemData(processData,GXHDO101B004Const.GNG_KAISUU,String.valueOf(sumHensuu2));
-            //・画処NG_AVE
-            setItemData(processData,GXHDO101B004Const.GNG_KAISUUAVE,String.valueOf(valueAVE2Int));
+            setItemData(processData,GXHDO101B004Const.HNG_AVE, String.valueOf(valueAVE1));
+            if (gngSetFlag){
+                //・画処NG回数
+                setItemData(processData,GXHDO101B004Const.GNG_KAISUU,String.valueOf(sumHensuu2));
+                //・画処NG_AVE
+                setItemData(processData,GXHDO101B004Const.GNG_KAISUUAVE,String.valueOf(valueAVE2));
+            }
+            
 
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
@@ -2764,15 +2760,18 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
             String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
 
         String sql = "INSERT INTO tmp_sr_spssekisou ("
-                + "kojyo,lotno,edaban,gouki,startdatetime,enddatetime,bikou1,bikou2,KCPNO,HakuriSpeed,LastKaaturyoku,LastKaatuJikan,HNGKaisuu"
-                + ",HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,tapelotno,taperollno1,taperollno2,taperollno3,genryoukigou,petfilmsyurui"
-                + ",Kotyakugouki,Kotyakusheet,ShitaTanshigouki,UwaTanshigouki,ShitaTanshiBukunuki,ShitaTanshi,HakuriKyuin"
-                + ",HakuriClearrance,HakuriCutSpeed,ShitaPanchiOndo,UwaPanchiOndo,KaatuJikan,KaatuAturyoku,UwaTanshi,GaikanKakunin1"
-                + ",GaikanKakunin2,GaikanKakunin3,GaikanKakunin4,SyoriSetsuu,RyouhinSetsuu,StartTantosyacode,EndTantousyacode"
-                + ",TanshiTapeSyurui,torokunichiji,kosinnichiji,revision,deleteflag"
+                + "kojyo,lotno,edaban,tntapesyurui,tntapeno,tntapegenryou,gouki,startdatetime,enddatetime,sekisouzure,tantousya,kakuninsya,sekisouzure2"
+                + ",bikou1,bikou2,bikou3,bikou4,bikou5,KCPNO,GoukiCode,TpLot,HakuriSpeed,KanaOndo,DAturyoku,DKaatuJikan,CPressAturyoku,CPressKaatuJikan"
+                + ",CPressKankakuSosuu,LastKaaturyoku,LastKaatuJikan,FourSplitTantou,STaoreryo1,STaoreryo2,STaoreryo3,STaoreryo4,STsunAve,STsunMax,STsunMin"
+                + ",STsunSiguma,HNGKaisuu,GaikanTantou,CPressKaisuu,HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,tapelotno,taperollno1,taperollno2,taperollno3"
+                + ",genryoukigou,petfilmsyurui,Kotyakugouki,Kotyakusheet,ShitaTanshigouki,UwaTanshigouki,ShitaTanshiBukunuki,ShitaTanshi,HakuriKyuin"
+                + ",HakuriClearrance,HakuriCutSpeed,ShitaPanchiOndo,UwaPanchiOndo,KaatuJikan,KaatuAturyoku,UwaTanshi,GaikanKakunin1,GaikanKakunin2,GaikanKakunin3"
+                + ",GaikanKakunin4,SyoriSetsuu,RyouhinSetsuu,StartTantosyacode,EndTantousyacode,TanshiTapeSyurui,torokunichiji"
+                + ",kosinnichiji,revision,deleteflag"
                 + ") VALUES ("
-                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
-                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+                + " ,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterTmpSrSpssekisou(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -2798,12 +2797,15 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
             String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
 
         String sql = "UPDATE tmp_sr_spssekisou SET "
-                + "gouki = ?,startdatetime = ?,enddatetime = ?,bikou1 = ?,bikou2 = ?,KCPNO = ?,HakuriSpeed= ?,LastKaaturyoku= ?,"
-                + "LastKaatuJikan= ?,HNGKaisuu= ?,HNGKaisuuAve= ?,GNGKaisuu= ?,GNGKaisuuAve= ?,tapelotno= ?,taperollno1= ?,"
-                + "taperollno2= ?,taperollno3= ?,genryoukigou= ?,petfilmsyurui= ?,Kotyakugouki= ?,Kotyakusheet= ?,ShitaTanshigouki = ?,"
-                + "UwaTanshigouki= ?,ShitaTanshiBukunuki = ?,ShitaTanshi= ?,HakuriKyuin= ?,HakuriClearrance = ?,HakuriCutSpeed= ?,"
-                + "ShitaPanchiOndo = ?,UwaPanchiOndo = ?,KaatuJikan = ?,KaatuAturyoku = ?,UwaTanshi = ?,GaikanKakunin1 = ?,"
-                + "GaikanKakunin2 = ?,GaikanKakunin3 = ?,GaikanKakunin4 = ?,SyoriSetsuu = ?,RyouhinSetsuu = ?,StartTantosyacode= ?,"
+                + "tntapesyurui = ?,tntapeno = ?,tntapegenryou = ?,gouki = ?,startdatetime = ?,enddatetime = ?,"
+                + "sekisouzure = ?,tantousya = ?,kakuninsya = ?,sekisouzure2 = ?,bikou1 = ?,bikou2 = ?,bikou3 = ?,bikou4 = ?,bikou5 = ?,KCPNO = ?,"
+                + "GoukiCode = ?,TpLot = ?,HakuriSpeed = ?,KanaOndo = ?,DAturyoku = ?,DKaatuJikan = ?,CPressAturyoku = ?,CPressKaatuJikan = ?,"
+                + "CPressKankakuSosuu = ?,LastKaaturyoku = ?,LastKaatuJikan = ?,FourSplitTantou = ?,STaoreryo1 = ?,STaoreryo2 = ?,STaoreryo3 = ?,"
+                + "STaoreryo4 = ?,STsunAve = ?,STsunMax = ?,STsunMin = ?,STsunSiguma = ?,HNGKaisuu = ?,GaikanTantou = ?,CPressKaisuu = ?,HNGKaisuuAve = ?,"
+                + "GNGKaisuu = ?,GNGKaisuuAve = ?,tapelotno = ?,taperollno1 = ?,taperollno2 = ?,taperollno3 = ?,genryoukigou = ?,petfilmsyurui = ?,"
+                + "Kotyakugouki = ?,Kotyakusheet = ?,ShitaTanshigouki = ?,UwaTanshigouki = ?,ShitaTanshiBukunuki = ?,ShitaTanshi = ?,HakuriKyuin = ?,"
+                + "HakuriClearrance = ?,HakuriCutSpeed = ?,ShitaPanchiOndo = ?,UwaPanchiOndo = ?,KaatuJikan = ?,KaatuAturyoku = ?,UwaTanshi = ?,"
+                + "GaikanKakunin1 = ?,GaikanKakunin2 = ?,GaikanKakunin3 = ?,GaikanKakunin4 = ?,SyoriSetsuu = ?,RyouhinSetsuu = ?,StartTantosyacode = ?,"
                 + "EndTantousyacode = ?,TanshiTapeSyurui = ?,kosinnichiji = ?,revision = ?,deleteflag = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
@@ -2878,6 +2880,9 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
             params.add(lotNo); //ﾛｯﾄNo
             params.add(edaban); //枝番
         }
+        params.add(null); //端子ﾃｰﾌﾟ種類
+        params.add(null); //端子ﾃｰﾌﾟNo
+        params.add(null); //端子ﾃｰﾌﾟ原料
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.SEKISO_GOKI, srSpssekisouData))); //積層号機
         params.add(DBUtil.stringToDateObject(
                 getItemData(itemList, GXHDO101B004Const.KAISHI_DAY, srSpssekisouData),
@@ -2885,13 +2890,39 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         params.add(DBUtil.stringToDateObject(
                 getItemData(itemList, GXHDO101B004Const.SHURYO_DAY, srSpssekisouData),
                 getItemData(itemList, GXHDO101B004Const.SHURYO_TIME, srSpssekisouData))); //終了日時
+        params.add(null);//積層ｽﾞﾚ
+        params.add(null);//担当者ｺｰﾄﾞ
+        params.add(null);//確認者ｺｰﾄﾞ
+        params.add(null);//積層ｽﾞﾚ2
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.BIKOU1, srSpssekisouData))); //備考1
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.BIKOU2, srSpssekisouData))); //備考2
+        params.add(null);//備考3
+        params.add(null);//備考4
+        params.add(null);//備考5
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.KCPNO, srSpssekisouData))); //KCPNO
+        params.add(null);//号機ｺｰﾄﾞ
+        params.add(null);//ﾃｰﾌﾟLot
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.HAKURI_SPEED, srSpssekisouData))); //剥離速度
+        params.add(null);//金型温度
+        params.add(null);//電極圧力
+        params.add(null);//電極加圧時間
+        params.add(null);//中間ﾌﾟﾚｽ圧力
+        params.add(null);//中間ﾌﾟﾚｽ加圧時間
+        params.add(null);//中間ﾌﾟﾚｽ間隔総数
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.LAST_KAATURYOKU, srSpssekisouData))); //最終加圧力
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.LAST_KAATUJIKAN, srSpssekisouData))); //最終加圧時間
+        params.add(null);//4分割担当者ｺｰﾄﾞ
+        params.add(null);//積層ﾀｵﾚ量1
+        params.add(null);//積層ﾀｵﾚ量2
+        params.add(null);//積層ﾀｵﾚ量3
+        params.add(null);//積層ﾀｵﾚ量4
+        params.add(null);//積層後T寸法AVE
+        params.add(null);//積層後T寸法MAX
+        params.add(null);//積層後T寸法MIN
+        params.add(null);//積層後T寸法σ
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.HNG_KAISUU, srSpssekisouData))); //剥離NG回数
+        params.add(null);//最終外観担当者ｺｰﾄﾞ
+        params.add(null);//中間ﾌﾟﾚｽ回数
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B004Const.HNG_AVE, srSpssekisouData))); //剥離NG_AVE
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.GNG_KAISUU, srSpssekisouData))); //画処NG回数
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B004Const.GNG_KAISUUAVE, srSpssekisouData))); //画処NG_AVE
@@ -2914,7 +2945,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 params.add(1);
                 break;
             default:
-                params.add(null);
+                params.add(9);
                 break;
         }
 
@@ -2944,7 +2975,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 params.add(1);
                 break;
             default:
-                params.add(null);
+                params.add(9);
                 break;
         }
         
@@ -3196,15 +3227,19 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
             String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList, SrSpssekisou tmpSrSpssekisou) throws SQLException {
 
         String sql = "INSERT INTO sr_spssekisou ("
-                + "kojyo,lotno,edaban,gouki,startdatetime,enddatetime,bikou1,bikou2,KCPNO,HakuriSpeed,LastKaaturyoku,LastKaatuJikan,HNGKaisuu"
-                + ",HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,tapelotno,taperollno1,taperollno2,taperollno3,genryoukigou,petfilmsyurui"
-                + ",Kotyakugouki,Kotyakusheet,ShitaTanshigouki,UwaTanshigouki,ShitaTanshiBukunuki,ShitaTanshi,HakuriKyuin"
-                + ",HakuriClearrance,HakuriCutSpeed,ShitaPanchiOndo,UwaPanchiOndo,KaatuJikan,KaatuAturyoku,UwaTanshi,GaikanKakunin1"
-                + ",GaikanKakunin2,GaikanKakunin3,GaikanKakunin4,SyoriSetsuu,RyouhinSetsuu,StartTantosyacode,EndTantousyacode"
-                + ",TanshiTapeSyurui,torokunichiji,kosinnichiji,revision"
+                + "kojyo,lotno,edaban,tntapesyurui,tntapeno,tntapegenryou,gouki,startdatetime,enddatetime,sekisouzure,tantousya"
+                + ",kakuninsya,sekisouzure2,bikou1,bikou2,bikou3,bikou4,bikou5,KCPNO,GoukiCode,TpLot,HakuriSpeed,KanaOndo,DAturyoku"
+                + ",DKaatuJikan,CPressAturyoku,CPressKaatuJikan,CPressKankakuSosuu,LastKaaturyoku,LastKaatuJikan,FourSplitTantou"
+                + ",STaoreryo1,STaoreryo2,STaoreryo3,STaoreryo4,STsunAve,STsunMax,STsunMin,STsunSiguma,HNGKaisuu,GaikanTantou"
+                + ",CPressKaisuu,HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,tapelotno,taperollno1,taperollno2,taperollno3,genryoukigou"
+                + ",petfilmsyurui,Kotyakugouki,Kotyakusheet,ShitaTanshigouki,UwaTanshigouki,ShitaTanshiBukunuki,ShitaTanshi"
+                + ",HakuriKyuin,HakuriClearrance,HakuriCutSpeed,ShitaPanchiOndo,UwaPanchiOndo,KaatuJikan,KaatuAturyoku,UwaTanshi"
+                + ",GaikanKakunin1,GaikanKakunin2,GaikanKakunin3,GaikanKakunin4,SyoriSetsuu,RyouhinSetsuu,StartTantosyacode"
+                + ",EndTantousyacode,TanshiTapeSyurui,torokunichiji,kosinnichiji,revision"
                 + ") VALUES ("
-                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
-                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
         
         List<Object> params = setUpdateParameterSrSpssekisou(true, newRev, kojyo, lotNo, edaban, systemTime, itemList, tmpSrSpssekisou);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -3229,14 +3264,15 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
     private void updateSrSpssekisou(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, String jotaiFlg, BigDecimal newRev,
             String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
         String sql = "UPDATE sr_spssekisou SET "
-                + "gouki = ?,startdatetime = ?,enddatetime = ?,bikou1 = ?,bikou2 = ?,KCPNO = ?,"
-                + "HakuriSpeed = ?,LastKaaturyoku = ?,LastKaatuJikan = ?,HNGKaisuu = ?,HNGKaisuuAve = ?,GNGKaisuu = ?,"
-                + "GNGKaisuuAve = ?,tapelotno = ?,taperollno1 = ?,taperollno2 = ?,taperollno3 = ?,genryoukigou = ?,"
-                + "petfilmsyurui = ?,Kotyakugouki = ?,Kotyakusheet = ?,ShitaTanshigouki = ?,UwaTanshigouki = ?,"
-                + "ShitaTanshiBukunuki = ?,ShitaTanshi = ?,HakuriKyuin = ?,HakuriClearrance = ?,HakuriCutSpeed = ?,"
-                + "ShitaPanchiOndo = ?,UwaPanchiOndo = ?,KaatuJikan = ?,KaatuAturyoku = ?,UwaTanshi = ?,GaikanKakunin1 = ?,"
-                + "GaikanKakunin2 = ?,GaikanKakunin3 = ?,GaikanKakunin4 = ?,SyoriSetsuu = ?,RyouhinSetsuu = ?,"
-                + "StartTantosyacode = ?,EndTantousyacode = ?,TanshiTapeSyurui = ?,kosinnichiji = ?,revision = ? "
+                + "tntapesyurui = ?,tntapeno = ?,tntapegenryou = ?,gouki = ?,startdatetime = ?,enddatetime = ?,sekisouzure = ?,tantousya = ?,kakuninsya = ?,"
+                + "sekisouzure2 = ?,bikou1 = ?,bikou2 = ?,bikou3 = ?,bikou4 = ?,bikou5 = ?,KCPNO = ?,GoukiCode = ?,TpLot = ?,HakuriSpeed = ?,KanaOndo = ?,"
+                + "DAturyoku = ?,DKaatuJikan = ?,CPressAturyoku = ?,CPressKaatuJikan = ?,CPressKankakuSosuu = ?,LastKaaturyoku = ?,LastKaatuJikan = ?,"
+                + "FourSplitTantou = ?,STaoreryo1 = ?,STaoreryo2 = ?,STaoreryo3 = ?,STaoreryo4 = ?,STsunAve = ?,STsunMax = ?,STsunMin = ?,STsunSiguma = ?,"
+                + "HNGKaisuu = ?,GaikanTantou = ?,CPressKaisuu = ?,HNGKaisuuAve = ?,GNGKaisuu = ?,GNGKaisuuAve = ?,tapelotno = ?,taperollno1 = ?,taperollno2 = ?,"
+                + "taperollno3 = ?,genryoukigou = ?,petfilmsyurui = ?,Kotyakugouki = ?,Kotyakusheet = ?,ShitaTanshigouki = ?,UwaTanshigouki = ?,"
+                + "ShitaTanshiBukunuki = ?,ShitaTanshi = ?,HakuriKyuin = ?,HakuriClearrance = ?,HakuriCutSpeed = ?,ShitaPanchiOndo = ?,UwaPanchiOndo = ?,"
+                + "KaatuJikan = ?,KaatuAturyoku = ?,UwaTanshi = ?,GaikanKakunin1 = ?,GaikanKakunin2 = ?,GaikanKakunin3 = ?,GaikanKakunin4 = ?,SyoriSetsuu = ?,"
+                + "RyouhinSetsuu = ?,StartTantosyacode = ?,EndTantousyacode = ?,TanshiTapeSyurui = ?,kosinnichiji = ?,revision = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ?";
 
         // 更新前の値を取得
@@ -3280,6 +3316,9 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
             params.add(lotNo); //ﾛｯﾄNo
             params.add(edaban); //枝番
         }
+        params.add(""); //端子ﾃｰﾌﾟ種類
+        params.add(""); //端子ﾃｰﾌﾟNo
+        params.add(""); //端子ﾃｰﾌﾟ原料
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.SEKISO_GOKI, srSpssekisouData))); //積層号機
         params.add(DBUtil.stringToDateObject(
                 getItemData(itemList, GXHDO101B004Const.KAISHI_DAY, srSpssekisouData),
@@ -3287,13 +3326,39 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         params.add(DBUtil.stringToDateObject(
                 getItemData(itemList, GXHDO101B004Const.SHURYO_DAY, srSpssekisouData),
                 getItemData(itemList, GXHDO101B004Const.SHURYO_TIME, srSpssekisouData))); //終了日時
+        params.add(0); //積層ｽﾞﾚ
+        params.add(""); //担当者ｺｰﾄﾞ
+        params.add(""); //確認者ｺｰﾄﾞ
+        params.add(0); //積層ｽﾞﾚ2
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.BIKOU1, srSpssekisouData))); //備考1
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.BIKOU2, srSpssekisouData))); //備考2
+        params.add(""); //備考3
+        params.add(""); //備考4
+        params.add(""); //備考5
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.KCPNO, srSpssekisouData))); //KCPNO
+        params.add(""); //号機ｺｰﾄﾞ
+        params.add(""); //ﾃｰﾌﾟLot
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.HAKURI_SPEED, srSpssekisouData))); //剥離速度
+        params.add(0); //金型温度
+        params.add(0); //電極圧力
+        params.add(0); //電極加圧時間
+        params.add(0); //中間ﾌﾟﾚｽ圧力
+        params.add(0); //中間ﾌﾟﾚｽ加圧時間
+        params.add(0); //中間ﾌﾟﾚｽ間隔総数
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.LAST_KAATURYOKU, srSpssekisouData))); //最終加圧力
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.LAST_KAATUJIKAN, srSpssekisouData))); //最終加圧時間
+        params.add(""); //4分割担当者ｺｰﾄﾞ
+        params.add(0); //積層ﾀｵﾚ量1
+        params.add(0); //積層ﾀｵﾚ量2
+        params.add(0); //積層ﾀｵﾚ量3
+        params.add(0); //積層ﾀｵﾚ量4
+        params.add(0); //積層後T寸法AVE
+        params.add(0); //積層後T寸法MAX
+        params.add(0); //積層後T寸法MIN
+        params.add(0); //積層後T寸法σ
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.HNG_KAISUU, srSpssekisouData))); //剥離NG回数
+        params.add(""); //最終外観担当者ｺｰﾄﾞ
+        params.add(0); //中間ﾌﾟﾚｽ回数
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B004Const.HNG_AVE, srSpssekisouData))); //剥離NG_AVE
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.GNG_KAISUU, srSpssekisouData))); //画処NG回数
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B004Const.GNG_KAISUUAVE, srSpssekisouData))); //画処NG_AVE
@@ -3316,7 +3381,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 params.add(1);
                 break;
             default:
-                params.add(null);
+                params.add(9);
                 break;
         }
 
@@ -3346,7 +3411,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 params.add(1);
                 break;
             default:
-                params.add(null);
+                params.add(9);
                 break;
         }
         
