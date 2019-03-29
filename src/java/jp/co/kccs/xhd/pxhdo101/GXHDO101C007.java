@@ -275,7 +275,7 @@ public class GXHDO101C007 implements Serializable {
                     this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(7).setValue(StringUtil.nullToBlank(map.get("suiheiphanteih1")));
                     break;
                 case "9":
-                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(7).setValue(StringUtil.nullToBlank(map.get("suiheiphanteih1")));
+                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(8).setValue(StringUtil.nullToBlank(map.get("suiheiphanteih1")));
                     break;
             }
         }
@@ -321,7 +321,7 @@ public class GXHDO101C007 implements Serializable {
                     this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(4).setValue(StringUtil.nullToBlank(map.get("Mean")));
                     break;
                 case "6":
-                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(4).setValue(StringUtil.nullToBlank(map.get("Mean")));
+                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(5).setValue(StringUtil.nullToBlank(map.get("Mean")));
                     break;
                 case "7":
                     this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(6).setValue(StringUtil.nullToBlank(map.get("Mean")));
