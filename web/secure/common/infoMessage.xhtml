@@ -4,7 +4,8 @@
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <p:dialog header="注意" id="dlg_infoMessage" widgetVar="W_dlg_infoMessage"
               width="600" modal="true" height="400" style="color: #ff0000;"
-              dynamic="false" closable="true" closeOnEscape="false" resizable="false" class="error-dialog-title" >
+              dynamic="false" closable="true" closeOnEscape="false" resizable="false" class="error-dialog-title" 
+              onShow="subFormOpen();" onHide="subFormClose();">
 
         <h:form id="infoMessageForm">
             <p:outputLabel value="[剥離/画処NG計算]ﾎﾞﾀﾝにより、" style="font-size: 18px; color: red;"  />
