@@ -1447,6 +1447,32 @@ public class ValidateUtil {
         return errorMessageList;
     }
 
+    
+    /**
+     * 関連付けMapに定義されている項目が設計データで空である場合エラーとしエラー情報を返す
+     * ※関連付けMapには設計データに持っている項目IDが設定されていること
+     *
+     * @param sekkeiData 設計データ
+     * @param listSekkeiAssociation 設計データ関連付けList
+     * @return エラーメッセージリスト
+     */
+    public static List<String> checkSekkeiUnsetItems(Map<String, String> sekkeiData, List<String[]> listSekkeiAssociation) {
+
+        List<String> errorMessageList = new ArrayList<>();
+        for (String[] sekkeiAssociation : listSekkeiAssociation) {
+            String checkData = "";
+            if (sekkeiData.get(sekkeiAssociation[0]) != null) {
+                checkData = String.valueOf(sekkeiData.get(sekkeiAssociation[0]));
+            }
+
+            if (StringUtil.isEmpty(checkData)) {
+                errorMessageList.add(MessageUtil.getMessage("XHD-000021", sekkeiAssociation[0], sekkeiAssociation[1]));
+            }
+        }
+
+        return errorMessageList;
+    }
+    
     /**
      * 規格外登録履歴登録処理
      *

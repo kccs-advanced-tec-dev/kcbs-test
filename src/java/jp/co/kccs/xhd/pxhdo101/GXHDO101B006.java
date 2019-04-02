@@ -2076,36 +2076,34 @@ public class GXHDO101B006 implements IFormLogic {
     /**
      * 設計データ関連付けマップ取得
      *
-     * @return 設計データ関連付けマップ
+     * @return 設計データ関連付けリスト
      */
-    private Map getMapSekkeiAssociation() {
-        Map<String, String> map = new LinkedHashMap<String, String>() {
-            {
-                put("GENRYOU", "電極テープ");
-                put("ETAPE", "電極テープ");
-                put("EATUMI", "積層数");
-                put("SOUSUU", "積層数");
-                put("EMAISUU", "積層数");
-                put("SYURUI2", "上カバーテープ１");
-                put("ATUMI2", "上カバーテープ１");
-                put("MAISUU2", "上カバーテープ１");
-                put("SYURUI2", "上カバーテープ２");
-                put("ATUMI2", "上カバーテープ２");
-                put("MAISUU2", "上カバーテープ２");
-                put("SYURUI3", "下カバーテープ１");
-                put("ATUMI3", "下カバーテープ１");
-                put("MAISUU3", "下カバーテープ１");
-                put("SYURUI3", "下カバーテープ２");
-                put("ATUMI3", "下カバーテープ２");
-                put("MAISUU3", "下カバーテープ２");
-                put("PATTERN", "電極製版名");
-                put("EMAISUU", "電極積層仕様");
-                put("MAISUU2", "上端子仕様");
-                put("MAISUU3", "下端子仕様");
-            }
-        };
+    private List<String[]> getMapSekkeiAssociation() {
+        List<String[]> list = new ArrayList<>();
+        list.add(new String[]{"GENRYOU", "電極テープ"});
+        list.add(new String[]{"ETAPE", "電極テープ"});
+        list.add(new String[]{"EATUMI", "積層数"});
+        list.add(new String[]{"SOUSUU", "積層数"});
+        list.add(new String[]{"EMAISUU", "積層数"});
+        list.add(new String[]{"SYURUI2", "上カバーテープ１"});
+        list.add(new String[]{"ATUMI2", "上カバーテープ１"});
+        list.add(new String[]{"MAISUU2", "上カバーテープ１"});
+        list.add(new String[]{"SYURUI2", "上カバーテープ２"});
+        list.add(new String[]{"ATUMI2", "上カバーテープ２"});
+        list.add(new String[]{"MAISUU2", "上カバーテープ２"});
+        list.add(new String[]{"SYURUI3", "下カバーテープ１"});
+        list.add(new String[]{"ATUMI3", "下カバーテープ１"});
+        list.add(new String[]{"MAISUU3", "下カバーテープ１"});
+        list.add(new String[]{"SYURUI3", "下カバーテープ２"});
+        list.add(new String[]{"ATUMI3", "下カバーテープ２"});
+        list.add(new String[]{"MAISUU3", "下カバーテープ２"});
+        list.add(new String[]{"PATTERN", "電極製版名"});
+        list.add(new String[]{"PATTERN", "誘電体製版名"});
+        list.add(new String[]{"EMAISUU", "電極積層仕様"});
+        list.add(new String[]{"MAISUU2", "上端子仕様"});
+        list.add(new String[]{"MAISUU3", "下端子仕様"});
 
-        return map;
+        return list;
     }
 
     /**
