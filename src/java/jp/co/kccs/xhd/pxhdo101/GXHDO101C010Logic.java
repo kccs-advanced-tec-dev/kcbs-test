@@ -6,6 +6,7 @@ package jp.co.kccs.xhd.pxhdo101;
 import java.util.ArrayList;
 import java.util.List;
 import jp.co.kccs.xhd.model.GXHDO101C010Model;
+import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
 import jp.co.kccs.xhd.util.StringUtil;
 
@@ -91,8 +92,8 @@ public class GXHDO101C010Logic {
      * @param startTabIndex　スタート項目(TabIndex)
      * @return 被り量（μｍ）データ
      */
-    private static GXHDO101C010Model.KaburiryouData getInitKaburiryoData(GXHDO101C010Model GXHDO101C010Model, 
-            String startVal, String startInputType, String startTextMaxLength, String startTextDecimalPlaces, String startTextMaxValue, 
+    private static GXHDO101C010Model.KaburiryouData getInitKaburiryoData(GXHDO101C010Model GXHDO101C010Model,
+            String startVal, String startInputType, String startTextMaxLength, String startTextDecimalPlaces, String startTextMaxValue,
             String startTextMinValue, String startTextBackColor, String startTabIndex) {
         GXHDO101C010Model.KaburiryouData printWidthListData = GXHDO101C010Model.new KaburiryouData();
         // スタート
@@ -113,7 +114,7 @@ public class GXHDO101C010Logic {
 
         return printWidthListData;
     }
-    
+
     /**
      * 入力チェック
      *
@@ -124,29 +125,124 @@ public class GXHDO101C010Logic {
 
         List<String> errorList = new ArrayList<>();
 
-        // 1～5にデータが入力されているかどうか確認
-        if(StringUtil.isEmpty(gXHDO101C010Model.getKaburiryouData1().getValue())){
+        // 1～20にデータが入力されているかどうか確認
+        if (StringUtil.isEmpty(gXHDO101C010Model.getKaburiryouData1().getValue())) {
             errorList.add(MessageUtil.getMessage("XHD-000037", "被り量(µm)1"));
+            gXHDO101C010Model.getKaburiryouData1().setTextBackColor(ErrUtil.ERR_BACK_COLOR);
             return errorList;
         }
-        
-        if(StringUtil.isEmpty(gXHDO101C010Model.getKaburiryouData2().getValue())){
+
+        if (StringUtil.isEmpty(gXHDO101C010Model.getKaburiryouData2().getValue())) {
             errorList.add(MessageUtil.getMessage("XHD-000037", "被り量(µm)2"));
+            gXHDO101C010Model.getKaburiryouData2().setTextBackColor(ErrUtil.ERR_BACK_COLOR);
             return errorList;
         }
-        
-        if(StringUtil.isEmpty(gXHDO101C010Model.getKaburiryouData3().getValue())){
+
+        if (StringUtil.isEmpty(gXHDO101C010Model.getKaburiryouData3().getValue())) {
             errorList.add(MessageUtil.getMessage("XHD-000037", "被り量(µm)3"));
+            gXHDO101C010Model.getKaburiryouData3().setTextBackColor(ErrUtil.ERR_BACK_COLOR);
             return errorList;
         }
-        
-        if(StringUtil.isEmpty(gXHDO101C010Model.getKaburiryouData4().getValue())){
+
+        if (StringUtil.isEmpty(gXHDO101C010Model.getKaburiryouData4().getValue())) {
             errorList.add(MessageUtil.getMessage("XHD-000037", "被り量(µm)4"));
+            gXHDO101C010Model.getKaburiryouData4().setTextBackColor(ErrUtil.ERR_BACK_COLOR);
             return errorList;
         }
-        
-        if(StringUtil.isEmpty(gXHDO101C010Model.getKaburiryouData5().getValue())){
+
+        if (StringUtil.isEmpty(gXHDO101C010Model.getKaburiryouData5().getValue())) {
             errorList.add(MessageUtil.getMessage("XHD-000037", "被り量(µm)5"));
+            gXHDO101C010Model.getKaburiryouData5().setTextBackColor(ErrUtil.ERR_BACK_COLOR);
+            return errorList;
+        }
+
+        if (StringUtil.isEmpty(gXHDO101C010Model.getKaburiryouData6().getValue())) {
+            errorList.add(MessageUtil.getMessage("XHD-000037", "被り量(µm)6"));
+            gXHDO101C010Model.getKaburiryouData6().setTextBackColor(ErrUtil.ERR_BACK_COLOR);
+            return errorList;
+        }
+
+        if (StringUtil.isEmpty(gXHDO101C010Model.getKaburiryouData7().getValue())) {
+            errorList.add(MessageUtil.getMessage("XHD-000037", "被り量(µm)7"));
+            gXHDO101C010Model.getKaburiryouData7().setTextBackColor(ErrUtil.ERR_BACK_COLOR);
+            return errorList;
+        }
+
+        if (StringUtil.isEmpty(gXHDO101C010Model.getKaburiryouData8().getValue())) {
+            errorList.add(MessageUtil.getMessage("XHD-000037", "被り量(µm)8"));
+            gXHDO101C010Model.getKaburiryouData8().setTextBackColor(ErrUtil.ERR_BACK_COLOR);
+            return errorList;
+        }
+
+        if (StringUtil.isEmpty(gXHDO101C010Model.getKaburiryouData9().getValue())) {
+            errorList.add(MessageUtil.getMessage("XHD-000037", "被り量(µm)9"));
+            gXHDO101C010Model.getKaburiryouData9().setTextBackColor(ErrUtil.ERR_BACK_COLOR);
+            return errorList;
+        }
+
+        if (StringUtil.isEmpty(gXHDO101C010Model.getKaburiryouData10().getValue())) {
+            errorList.add(MessageUtil.getMessage("XHD-000037", "被り量(µm)10"));
+            gXHDO101C010Model.getKaburiryouData10().setTextBackColor(ErrUtil.ERR_BACK_COLOR);
+            return errorList;
+        }
+
+        if (StringUtil.isEmpty(gXHDO101C010Model.getKaburiryouData11().getValue())) {
+            errorList.add(MessageUtil.getMessage("XHD-000037", "被り量(µm)11"));
+            gXHDO101C010Model.getKaburiryouData11().setTextBackColor(ErrUtil.ERR_BACK_COLOR);
+            return errorList;
+        }
+
+        if (StringUtil.isEmpty(gXHDO101C010Model.getKaburiryouData12().getValue())) {
+            errorList.add(MessageUtil.getMessage("XHD-000037", "被り量(µm)12"));
+            gXHDO101C010Model.getKaburiryouData12().setTextBackColor(ErrUtil.ERR_BACK_COLOR);
+            return errorList;
+        }
+
+        if (StringUtil.isEmpty(gXHDO101C010Model.getKaburiryouData13().getValue())) {
+            errorList.add(MessageUtil.getMessage("XHD-000037", "被り量(µm)13"));
+            gXHDO101C010Model.getKaburiryouData13().setTextBackColor(ErrUtil.ERR_BACK_COLOR);
+            return errorList;
+        }
+
+        if (StringUtil.isEmpty(gXHDO101C010Model.getKaburiryouData14().getValue())) {
+            errorList.add(MessageUtil.getMessage("XHD-000037", "被り量(µm)14"));
+            gXHDO101C010Model.getKaburiryouData14().setTextBackColor(ErrUtil.ERR_BACK_COLOR);
+            return errorList;
+        }
+
+        if (StringUtil.isEmpty(gXHDO101C010Model.getKaburiryouData15().getValue())) {
+            errorList.add(MessageUtil.getMessage("XHD-000037", "被り量(µm)15"));
+            gXHDO101C010Model.getKaburiryouData15().setTextBackColor(ErrUtil.ERR_BACK_COLOR);
+            return errorList;
+        }
+
+        if (StringUtil.isEmpty(gXHDO101C010Model.getKaburiryouData16().getValue())) {
+            errorList.add(MessageUtil.getMessage("XHD-000037", "被り量(µm)16"));
+            gXHDO101C010Model.getKaburiryouData16().setTextBackColor(ErrUtil.ERR_BACK_COLOR);
+            return errorList;
+        }
+
+        if (StringUtil.isEmpty(gXHDO101C010Model.getKaburiryouData17().getValue())) {
+            errorList.add(MessageUtil.getMessage("XHD-000037", "被り量(µm)17"));
+            gXHDO101C010Model.getKaburiryouData17().setTextBackColor(ErrUtil.ERR_BACK_COLOR);
+            return errorList;
+        }
+
+        if (StringUtil.isEmpty(gXHDO101C010Model.getKaburiryouData18().getValue())) {
+            errorList.add(MessageUtil.getMessage("XHD-000037", "被り量(µm)18"));
+            gXHDO101C010Model.getKaburiryouData18().setTextBackColor(ErrUtil.ERR_BACK_COLOR);
+            return errorList;
+        }
+
+        if (StringUtil.isEmpty(gXHDO101C010Model.getKaburiryouData19().getValue())) {
+            errorList.add(MessageUtil.getMessage("XHD-000037", "被り量(µm)19"));
+            gXHDO101C010Model.getKaburiryouData19().setTextBackColor(ErrUtil.ERR_BACK_COLOR);
+            return errorList;
+        }
+
+        if (StringUtil.isEmpty(gXHDO101C010Model.getKaburiryouData20().getValue())) {
+            errorList.add(MessageUtil.getMessage("XHD-000037", "被り量(µm)20"));
+            gXHDO101C010Model.getKaburiryouData20().setTextBackColor(ErrUtil.ERR_BACK_COLOR);
             return errorList;
         }
 
