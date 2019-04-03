@@ -182,9 +182,6 @@ public class GXHDO101B004 implements IFormLogic {
      * @return 処理データ
      */
     public ProcessData checkDataTempResist(ProcessData processData) {
-
-        // メッセージをセット
-        FacesContext facesContext = FacesContext.getCurrentInstance();
         
         // 項目のチェック処理を行う。
         ErrorMessageInfo checkItemErrorInfo = checkItemTempResist(processData);
@@ -199,7 +196,7 @@ public class GXHDO101B004 implements IFormLogic {
 
         // 規格チェック内で想定外のエラーが発生した場合、エラーを出して中断
         if (errorMessageInfo != null) {
-            processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
+            processData.setErrorMessageInfoList(Arrays.asList(errorMessageInfo));
             return processData;
         }
 
@@ -687,6 +684,16 @@ public class GXHDO101B004 implements IFormLogic {
         FXHDD01 itemSetSuu = getItemRow(processData.getItemList(), GXHDO101B004Const.SET_SUU);
         setSuu = new BigDecimal(itemSetSuu.getValue());
         
+        // 「画処NG_AVE」項目情報を取得
+        FXHDD01 itemGNGKaisuuAve = getItemRow(processData.getItemList(),GXHDO101B004Const.GNG_KAISUUAVE);
+        // 「画処NG_AVE」小数桁を取得
+        int gngKaisuuAveDecLength = Integer.parseInt(itemGNGKaisuuAve.getInputLengthDec());
+
+        // 「剥離NG_AVE」項目情報を取得
+        FXHDD01 itemHNGKaisuuAve = getItemRow(processData.getItemList(),GXHDO101B004Const.HNG_AVE);
+        // 「剥離NG_AVE」小数桁を取得
+        int hngKaisuuAveDecLength = Integer.parseInt(itemHNGKaisuuAve.getInputLengthDec());
+
         try {
             // (19)[積層履歴ﾃﾞｰﾀ]から、ﾃﾞｰﾀを取得
             Map sekisouRirekiData = this.loadSekisouRirekiData(queryRunnerSpskadoritu, lotNo);
@@ -717,7 +724,7 @@ public class GXHDO101B004 implements IFormLogic {
                     }
 
                     if (!setSuu.equals(BigDecimal.ZERO)){
-                        valueAVE1 = sumSekisouSuu.divide(setSuu, 3 ,BigDecimal.ROUND_DOWN);
+                        valueAVE1 = sumSekisouSuu.divide(setSuu, hngKaisuuAveDecLength ,BigDecimal.ROUND_DOWN);
                     }
                     sumHensuu1 = sumSekisouSuu.intValue();
                 }
@@ -740,14 +747,14 @@ public class GXHDO101B004 implements IFormLogic {
                     }
                 }
                 if (!setSuu.equals(BigDecimal.ZERO)){
-                    valueAVE1 = sumHakuriErrSuu.divide(setSuu, 3 ,BigDecimal.ROUND_DOWN);
+                    valueAVE1 = sumHakuriErrSuu.divide(setSuu, hngKaisuuAveDecLength ,BigDecimal.ROUND_DOWN);
                 }
                 sumHensuu1 = sumHakuriErrSuu.intValue();
 
                 // ｳ.取得した画処ｴﾗｰ数を合計する。この値を「変数SUM2」とする。
                 // ｴ. ｳ ÷ 画面.セット数の計算を行う。この値を「変数AVE2」とする。
                 if (!setSuu.equals(BigDecimal.ZERO)){
-                    valueAVE2 = sumCcdErrSuu.divide(setSuu, 3 ,BigDecimal.ROUND_DOWN);
+                    valueAVE2 = sumCcdErrSuu.divide(setSuu, gngKaisuuAveDecLength ,BigDecimal.ROUND_DOWN);
                 }
                 sumHensuu2 = sumCcdErrSuu.intValue();
                 gngSetFlag = true;
