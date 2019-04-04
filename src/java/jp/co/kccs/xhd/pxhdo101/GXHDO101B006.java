@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -1485,10 +1484,10 @@ public class GXHDO101B006 implements IFormLogic {
         this.setItemData(processData, GXHDO101B006Const.SEKISOU_SLIDE_RYOU, "");
 
         // 電極スライド量
-        this.setItemData(processData, GXHDO101B006Const.SEKISOU_SLIDE_RYOU, "");
+        this.setItemData(processData, GXHDO101B006Const.DENKYOKU_SLIDE_RYOU, "");
 
         // 誘電体スライド量
-        this.setItemData(processData, GXHDO101B006Const.SEKISOU_SLIDE_RYOU, "");
+        this.setItemData(processData, GXHDO101B006Const.YUUDENTAI_SLIDE_RYOU, "");
 
         //電極積層仕様
         this.setItemData(processData, GXHDO101B006Const.DENKYOKU_SEKISOU_SHIYOU, StringUtil.nullToBlank(sekkeiData.get("EMAISUU")));
