@@ -663,6 +663,7 @@ public class GXHDO101B005 implements IFormLogic {
         BigDecimal setSuu = BigDecimal.ZERO;        
         BigDecimal valueAVE1= BigDecimal.ZERO;
         BigDecimal valueAVE2= BigDecimal.ZERO;
+        Boolean gngSetFlag = false;
         FXHDD01 itemSetSuu = getItemRow(processData.getItemList(), GXHDO101B005Const.SET_SUU);
         setSuu = new BigDecimal(itemSetSuu.getValue());
         // 「画処NG_AVE」項目情報を取得
@@ -738,6 +739,7 @@ public class GXHDO101B005 implements IFormLogic {
                     valueAVE2 = sumCcdErrSuu.divide(setSuu, gngKaisuuAveDecLength ,BigDecimal.ROUND_DOWN);
                 }
                 sumHensuu2 = sumCcdErrSuu.intValue();
+                gngSetFlag = true;
             }
             
             if (checkHngFlag){
@@ -747,7 +749,7 @@ public class GXHDO101B005 implements IFormLogic {
                 setItemData(processData,GXHDO101B005Const.HAKURI_NG_AVE, String.valueOf(valueAVE1));
             }
             
-            if (checkGngFlag){
+            if (checkGngFlag && gngSetFlag){
                 //・画処NG回数
                 setItemData(processData,GXHDO101B005Const.GASHO_NG_KAISU,String.valueOf(sumHensuu2));
                 //・画処NG_AVE
