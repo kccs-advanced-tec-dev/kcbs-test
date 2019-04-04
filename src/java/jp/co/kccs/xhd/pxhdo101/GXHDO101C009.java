@@ -185,6 +185,7 @@ public class GXHDO101C009 implements Serializable {
      * OKボタン押下時のチェック処理を行う。
      */
     public void doOk() {
+        this.isFormError = false;
         if (!checkOK()) {
             this.isFormError = true;
             
