@@ -1,0 +1,801 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Pragma" content="no-cache"/>
+        <meta http-equiv="Cache-Control" content="no-cache"/>
+        <meta http-equiv="Expires" content="0"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link href="#{request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/growl.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/loading.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/gxhdo201common.css" rel="stylesheet" type="text/css"/>
+        <script src="#{request.contextPath}/resources/bootstrap/js/bootstrap.min.js" />
+        <h:outputScript library="primefaces" name="jquery/jquery.js" />
+        <script src="#{request.contextPath}/resources/js/growl.js"></script>
+    </h:head>
+    <h:body style="padding-top:30px;">
+        <f:metadata>
+            <f:viewAction action="#{gXHDO201B004.init()}"/>
+        </f:metadata>
+        <nav class="navbar  navbar-expand fixed-top navbar-dark" style="background-color:#0E6A89;height: 50px;z-index: 999;">
+            <span class="navbar-brand mb-0" style="font-size:18px;font-weight:bold;">#{myMsg.insatsu_rsus}</span>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#Navber" aria-controls="Navber" aria-expanded="false" aria-label="ナビゲーションの切替">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <span class="navbar-text ml-auto">
+                <div class="collapse navbar-collapse" id="Navber">
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <h:link class="nav-link" outcome="/secure/pxhdo201/gxhdo201a.xhtml?faces-redirect=true" value="戻る"/>
+                    </li>
+                  </ul>
+                </div>
+            </span>
+        </nav>
+        <br/>
+        <h:form id="mainform" onkeypress="if (event.keyCode === 13) { return false; }">
+            <p:growl id="growlMessage" showDetail="false" sticky="true"  escape="false"/>
+            <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
+                <f:facet name="message">
+                    <h:outputText value="#{gXHDO201B004.getWarnMessage()}" escape="false"/>
+                </f:facet>
+                <p:commandButton id="warnOk" value="OK" styleClass="ui-conf-commandbtn-def1" style="width:100px;margin-left:50px;"
+                                 actionListener="#{gXHDO201B004.processWarnOk()}"
+                                 process="@this searchpanel"
+                                 update="@form growlMessage idDataTable btnExcel"
+                                 onstart="PF('cd').hide();$('#loadinggif').show();"
+                                 oncomplete="$('#loadinggif').hide();"/>
+                <p:commandButton id="warnCancel" value="Cancel" class="ui-conf-commandbtn-cancel" style="width:100px;" onclick="PF('cd').hide();" type="button" />
+            </p:confirmDialog>
+            <div id="loadinggif">
+                <img src="#{request.contextPath}/resources/gif/gif-load.gif"/>
+            </div>
+            <p:panel id="searchpanel" style="border:none;font-size:0.8em; ">
+                <table>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblLotNo" value="ﾛｯﾄNo" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pLotNo" value="#{gXHDO201B004.lotNo}" maxlength="14" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B004.checkByte('lotNo', 14)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblKcpNo" value="KCPNO" style="width:100px;"/>
+                        </td>
+                        <td colspan="3">
+                            <p:inputText id="pKcpNo" value="#{gXHDO201B004.kcpNo}" maxlength="25" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B004.checkByte('kcpNo', 25)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblKatashiki" value="型式" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pKatashiki" value="#{gXHDO201B004.katashiki}" maxlength="2" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B004.checkByte('katashiki', 2)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblYoryo" value="容量" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pYoryo" value="#{gXHDO201B004.yoryo}" maxlength="4" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B004.checkByte('yoryo', 4)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblStartDate" value="開始日" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pStartDateF" value="#{gXHDO201B004.startDateF}" maxlength="6" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B004.checkByte('startDateF', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pStartDateT" value="#{gXHDO201B004.startDateT}" maxlength="6" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B004.checkByte('startDateT', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblStartTime" value="開始時刻" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pStartTimeF" value="#{gXHDO201B004.startTimeF}" maxlength="4" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B004.checkByte('startTimeF', 4)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pStartTimeT" value="#{gXHDO201B004.startTimeT}" maxlength="4" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B004.checkByte('startTimeT', 4)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblEndDate" value="終了日" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pEndDateF" value="#{gXHDO201B004.endDateF}" maxlength="6" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B004.checkByte('endDateF', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pEndDateT" value="#{gXHDO201B004.endDateT}" maxlength="6" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B004.checkByte('endDateT', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblEndTime" value="終了時刻" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pEndTimeF" value="#{gXHDO201B004.endTimeF}" maxlength="4" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B004.checkByte('endTimeF', 4)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pEndTimeT" value="#{gXHDO201B004.endTimeT}" maxlength="4" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B004.checkByte('endTimeT', 4)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                </table>
+            </p:panel>
+            <p:panel id="buttonpanel" style="border:none;margin-top:-10px;">
+                <p:commandButton id="btnSearch" style="width:100px;height:25px;font-size:0.7em;margin-left:0px;text-align:center;"
+                                value="検索" 
+                                actionListener="#{gXHDO201B004.checkInputAndSearch()}"
+                                process="@this searchpanel"
+                                update="growlMessage idDataTable btnExcel confDialog"
+                                onstart="$('#loadinggif').show();"
+                                oncomplete="$('#loadinggif').hide();if('warning'!=args.param1){PF('cd').hide();} else {PF('cd').show();}"/>
+                <p:commandButton id="bthClear" style="width:100px;height:25px;font-size:0.7em;margin-left:10px;text-align:center;" 
+                                value="クリア" 
+                                action="#{gXHDO201B004.clear()}"
+                                process="@this"
+                                update="searchpanel idDataTable btnExcel"/>
+                <p:commandButton id="btnExcel" style="width:100px;height:25px;font-size:0.7em;margin-left:10px;text-align:center;"
+                                disabled="#{gXHDO201B004.excelButtonDisable}"
+                                value="Excel保存"
+                                actionListener="#{gXHDO201B004.downloadExcel()}"
+                                process="@this"
+                                ajax="false"/>
+            </p:panel>
+            <div style="margin-top:-15px;">
+                <p:dataTable id="idDataTable" var="item" style="font-size:0.8em;margin-top:20px;" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap"
+                             value="#{gXHDO201B004.listData}" emptyMessage="" paginator="true" paginatorPosition="top" rows="#{gXHDO201B004.getPagenatorCount()}">
+                    <p:column id="lotno" headerText="ﾛｯﾄNo." >
+                        <p:outputLabel value="#{item.lotno}"/>
+                    </p:column>
+                    <p:column id="kcpno" headerText="KCPNO" >
+                        <p:outputLabel value="#{item.kcpno}"/>
+                    </p:column>
+                    <p:column id="tntapesyurui" headerText="端子ﾃｰﾌﾟ種類" >
+                        <p:outputLabel value="#{item.tntapesyurui}"/>
+                    </p:column>
+                    <p:column id="tntapeno" headerText="端子ﾃｰﾌﾟNo" >
+                        <p:outputLabel value="#{item.tntapeno}"/>
+                    </p:column>
+                    <p:column id="tntapegenryou" headerText="端子ﾃｰﾌﾟ原料" >
+                        <p:outputLabel value="#{item.tntapegenryou}"/>
+                    </p:column>
+                    <p:column id="gouki" headerText="積層号機" >
+                        <p:outputLabel value="#{item.gouki}"/>
+                    </p:column>
+                    <p:column id="startdatetime" headerText="開始日時" >
+                        <p:outputLabel value="#{item.startdatetime}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="enddatetime" headerText="終了日時" >
+                        <p:outputLabel value="#{item.enddatetime}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="sekisouzure" headerText="積層ｽﾞﾚ" styleClass="number">
+                        <p:outputLabel value="#{item.sekisouzure}">
+                            <f:convertNumber pattern="#0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tantousya" headerText="担当者ｺｰﾄﾞ" >
+                        <p:outputLabel value="#{item.tantousya}"/>
+                    </p:column>
+                    <p:column id="kakuninsya" headerText="確認者ｺｰﾄﾞ" >
+                        <p:outputLabel value="#{item.kakuninsya}"/>
+                    </p:column>
+                    <p:column id="sekisouzure2" headerText="積層ｽﾞﾚ2" styleClass="number">
+                        <p:outputLabel value="#{item.sekisouzure2}">
+                            <f:convertNumber pattern="#0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bikou1" headerText="備考1" >
+                        <p:outputLabel value="#{item.bikou1}"/>
+                    </p:column>
+                    <p:column id="bikou2" headerText="備考2" >
+                        <p:outputLabel value="#{item.bikou2}"/>
+                    </p:column>
+                    <p:column id="bikou3" headerText="備考3" >
+                        <p:outputLabel value="#{item.bikou3}"/>
+                    </p:column>
+                    <p:column id="bikou4" headerText="備考4" >
+                        <p:outputLabel value="#{item.bikou4}"/>
+                    </p:column>
+                    <p:column id="bikou5" headerText="備考5" >
+                        <p:outputLabel value="#{item.bikou5}"/>
+                    </p:column>
+                    <p:column id="goukiCode" headerText="号機ｺｰﾄﾞ" >
+                        <p:outputLabel value="#{item.goukiCode}"/>
+                    </p:column>
+                    <p:column id="tpLot" headerText="ﾃｰﾌﾟLot" >
+                        <p:outputLabel value="#{item.tpLot}"/>
+                    </p:column>
+                    <p:column id="hakuriSpeed" headerText="剥離速度" styleClass="number">
+                        <p:outputLabel value="#{item.hakuriSpeed}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kanaOndo" headerText="金型温度" styleClass="number">
+                        <p:outputLabel value="#{item.kanaOndo}">
+                            <f:convertNumber pattern="#0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="dAturyoku" headerText="電極圧力" styleClass="number">
+                        <p:outputLabel value="#{item.dAturyoku}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="dKaatuJikan" headerText="電極加圧時間" styleClass="number">
+                        <p:outputLabel value="#{item.dKaatuJikan}">
+                            <f:convertNumber pattern="0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="cPressAturyoku" headerText="中間ﾌﾟﾚｽ圧力" styleClass="number">
+                        <p:outputLabel value="#{item.cPressAturyoku}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="cPressKaatuJikan" headerText="中間ﾌﾟﾚｽ加圧時間" styleClass="number">
+                        <p:outputLabel value="#{item.cPressKaatuJikan}">
+                            <f:convertNumber pattern="0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="cPressKankakuSosuu" headerText="中間ﾌﾟﾚｽ間隔総数" styleClass="number">
+                        <p:outputLabel value="#{item.cPressKankakuSosuu}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lastKaaturyoku" headerText="最終加圧力" styleClass="number">
+                        <p:outputLabel value="#{item.lastKaaturyoku}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lastKaatuJikan" headerText="最終加圧時間" styleClass="number">
+                        <p:outputLabel value="#{item.lastKaatuJikan}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="fourSplitTantou" headerText="4分割担当者ｺｰﾄﾞ" >
+                        <p:outputLabel value="#{item.fourSplitTantou}"/>
+                    </p:column>
+                    <p:column id="sTaoreryo1" headerText="積層ﾀｵﾚ量1" styleClass="number">
+                        <p:outputLabel value="#{item.sTaoreryo1}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="sTaoreryo2" headerText="積層ﾀｵﾚ量2" styleClass="number">
+                        <p:outputLabel value="#{item.sTaoreryo2}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="sTaoreryo3" headerText="積層ﾀｵﾚ量3" styleClass="number">
+                        <p:outputLabel value="#{item.sTaoreryo3}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="sTaoreryo4" headerText="積層ﾀｵﾚ量4" styleClass="number">
+                        <p:outputLabel value="#{item.sTaoreryo4}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="sTsunAve" headerText="積層後T寸法AVE" styleClass="number">
+                        <p:outputLabel value="#{item.sTsunAve}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="sTsunMax" headerText="積層後T寸法MAX" styleClass="number">
+                        <p:outputLabel value="#{item.sTsunMax}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="sTsunMin" headerText="積層後T寸法MIN" styleClass="number">
+                        <p:outputLabel value="#{item.sTsunMin}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="sTsunSiguma" headerText="積層後T寸法σ" styleClass="number">
+                        <p:outputLabel value="#{item.sTsunSiguma}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="hNGKaisuu" headerText="隔離NG回数" styleClass="number">
+                        <p:outputLabel value="#{item.hNGKaisuu}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="gaikanTantou" headerText="最終外観担当者ｺｰﾄﾞ" >
+                        <p:outputLabel value="#{item.gaikanTantou}"/>
+                    </p:column>
+                    <p:column id="cPressKaisuu" headerText="中間ﾌﾟﾚｽ回数" styleClass="number">
+                        <p:outputLabel value="#{item.cPressKaisuu}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="hNGKaisuuAve" headerText="剥離NG回数AVE" styleClass="number">
+                        <p:outputLabel value="#{item.hNGKaisuuAve}">
+                            <f:convertNumber pattern="##0.000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="gNGKaisuu" headerText="画処NG回数" styleClass="number">
+                        <p:outputLabel value="#{item.gNGKaisuu}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="gNGKaisuuAve" headerText="画処NG回数AVE" styleClass="number">
+                        <p:outputLabel value="#{item.gNGKaisuuAve}">
+                            <f:convertNumber pattern="##0.000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tapelotno" headerText="ｽﾘｯﾌﾟﾛｯﾄNo" >
+                        <p:outputLabel value="#{item.tapelotno}"/>
+                    </p:column>
+                    <p:column id="taperollno1" headerText="ﾛｰﾙNo1" >
+                        <p:outputLabel value="#{item.taperollno1}"/>
+                    </p:column>
+                    <p:column id="taperollno2" headerText="ﾛｰﾙNo2" >
+                        <p:outputLabel value="#{item.taperollno2}"/>
+                    </p:column>
+                    <p:column id="taperollno3" headerText="ﾛｰﾙNo3" >
+                        <p:outputLabel value="#{item.taperollno3}"/>
+                    </p:column>
+                    <p:column id="genryoukigou" headerText="原料記号" >
+                        <p:outputLabel value="#{item.genryoukigou}"/>
+                    </p:column>
+                    <p:column id="petfilmsyurui" headerText="PETﾌｨﾙﾑ種類" >
+                        <p:outputLabel value="#{item.petfilmsyurui}"/>
+                    </p:column>
+                    <p:column id="kotyakugouki" headerText="固着ｼｰﾄ貼付り機" >
+                        <p:outputLabel value="#{item.kotyakugouki}"/>
+                    </p:column>
+                    <p:column id="kotyakusheet" headerText="固着ｼｰﾄ" >
+                        <p:outputLabel value="#{item.kotyakusheet}"/>
+                    </p:column>
+                    <p:column id="shitaTanshigouki" headerText="下端子号機" >
+                        <p:outputLabel value="#{item.shitaTanshigouki}"/>
+                    </p:column>
+                    <p:column id="uwaTanshigouki" headerText="上端子号機" >
+                        <p:outputLabel value="#{item.uwaTanshigouki}"/>
+                    </p:column>
+                    <p:column id="shitaTanshiBukunuki" headerText="下端子ﾌﾞｸ抜き" >
+                        <p:outputLabel value="#{item.shitaTanshiBukunuki}"/>
+                    </p:column>
+                    <p:column id="shitaTanshi" headerText="下端子" >
+                        <p:outputLabel value="#{item.shitaTanshi}"/>
+                    </p:column>
+                    <p:column id="hakuriKyuin" headerText="剥離吸引圧" styleClass="number">
+                        <p:outputLabel value="#{item.hakuriKyuin}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="hakuriClearrance" headerText="剥離ｸﾘｱﾗﾝｽ" styleClass="number">
+                        <p:outputLabel value="#{item.hakuriClearrance}">
+                            <f:convertNumber pattern="#0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="hakuriCutSpeed" headerText="剥離ｶｯﾄ速度" styleClass="number">
+                        <p:outputLabel value="#{item.hakuriCutSpeed}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="shitaPanchiOndo" headerText="下ﾊﾟﾝﾁ温度" styleClass="number">
+                        <p:outputLabel value="#{item.shitaPanchiOndo}">
+                            <f:convertNumber pattern="#0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="uwaPanchiOndo" headerText="上ﾊﾟﾝﾁ温度" styleClass="number">
+                        <p:outputLabel value="#{item.uwaPanchiOndo}">
+                            <f:convertNumber pattern="#0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kaatuJikan" headerText="加圧時間" styleClass="number">
+                        <p:outputLabel value="#{item.kaatuJikan}">
+                            <f:convertNumber pattern="#0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kaatuAturyoku" headerText="加圧圧力" styleClass="number">
+                        <p:outputLabel value="#{item.kaatuAturyoku}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="uwaTanshi" headerText="上端子" >
+                        <p:outputLabel value="#{item.uwaTanshi}"/>
+                    </p:column>
+                    <p:column id="gaikanKakunin1" headerText="外観確認1" >
+                        <p:outputLabel value="#{item.gaikanKakunin1}"/>
+                    </p:column>
+                    <p:column id="gaikanKakunin2" headerText="外観確認2" >
+                        <p:outputLabel value="#{item.gaikanKakunin2}"/>
+                    </p:column>
+                    <p:column id="gaikanKakunin3" headerText="外観確認3" >
+                        <p:outputLabel value="#{item.gaikanKakunin3}"/>
+                    </p:column>
+                    <p:column id="gaikanKakunin4" headerText="外観確認4" >
+                        <p:outputLabel value="#{item.gaikanKakunin4}"/>
+                    </p:column>
+                    <p:column id="syoriSetsuu" headerText="処理ｾｯﾄ数" styleClass="number">
+                        <p:outputLabel value="#{item.syoriSetsuu}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ryouhinSetsuu" headerText="良品ｾｯﾄ数" styleClass="number">
+                        <p:outputLabel value="#{item.ryouhinSetsuu}">
+                            <f:convertNumber pattern="##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="startTantosyacode" headerText="開始担当者" >
+                        <p:outputLabel value="#{item.startTantosyacode}"/>
+                    </p:column>
+                    <p:column id="endTantousyacode" headerText="終了担当者" >
+                        <p:outputLabel value="#{item.endTantousyacode}"/>
+                    </p:column>
+                    <p:column id="tanshiTapeSyurui" headerText="端子ﾃｰﾌﾟ種類確認" >
+                        <p:outputLabel value="#{item.tanshiTapeSyurui}"/>
+                    </p:column>
+                    <p:column id="setsuu1" headerText="ｾｯﾄ数1" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu1}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu2" headerText="ｾｯﾄ数2" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu2}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu3" headerText="ｾｯﾄ数3" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu3}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu4" headerText="ｾｯﾄ数4" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu4}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu5" headerText="ｾｯﾄ数5" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu5}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu6" headerText="ｾｯﾄ数6" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu6}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu7" headerText="ｾｯﾄ数7" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu7}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu8" headerText="ｾｯﾄ数8" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu8}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu9" headerText="ｾｯﾄ数9" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu9}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu10" headerText="ｾｯﾄ数10" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu10}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu11" headerText="ｾｯﾄ数11" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu11}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu12" headerText="ｾｯﾄ数12" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu12}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu13" headerText="ｾｯﾄ数13" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu13}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu14" headerText="ｾｯﾄ数14" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu14}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu15" headerText="ｾｯﾄ数15" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu15}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu16" headerText="ｾｯﾄ数16" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu16}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu17" headerText="ｾｯﾄ数17" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu17}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu18" headerText="ｾｯﾄ数18" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu18}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu19" headerText="ｾｯﾄ数19" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu19}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu20" headerText="ｾｯﾄ数20" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu20}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu21" headerText="ｾｯﾄ数21" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu21}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu22" headerText="ｾｯﾄ数22" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu22}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu23" headerText="ｾｯﾄ数23" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu23}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu24" headerText="ｾｯﾄ数24" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu24}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu25" headerText="ｾｯﾄ数25" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu25}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu26" headerText="ｾｯﾄ数26" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu26}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu27" headerText="ｾｯﾄ数27" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu27}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu28" headerText="ｾｯﾄ数28" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu28}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu29" headerText="ｾｯﾄ数29" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu29}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu30" headerText="ｾｯﾄ数30" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu30}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu31" headerText="ｾｯﾄ数31" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu31}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu32" headerText="ｾｯﾄ数32" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu32}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu33" headerText="ｾｯﾄ数33" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu33}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu34" headerText="ｾｯﾄ数34" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu34}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu35" headerText="ｾｯﾄ数35" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu35}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu36" headerText="ｾｯﾄ数36" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu36}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu37" headerText="ｾｯﾄ数37" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu37}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu38" headerText="ｾｯﾄ数38" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu38}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu39" headerText="ｾｯﾄ数39" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu39}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsuu40" headerText="ｾｯﾄ数40" styleClass="number">
+                        <p:outputLabel value="#{item.setsuu40}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="hbikou1" headerText="備考1" >
+                        <p:outputLabel value="#{item.hbikou1}"/>
+                    </p:column>
+                    <p:column id="hbikou2" headerText="備考2" >
+                        <p:outputLabel value="#{item.hbikou2}"/>
+                    </p:column>
+                    <p:column id="hbikou3" headerText="備考3" >
+                        <p:outputLabel value="#{item.hbikou3}"/>
+                    </p:column>
+                    <p:column id="hbikou4" headerText="備考4" >
+                        <p:outputLabel value="#{item.hbikou4}"/>
+                    </p:column>
+                    <p:column id="hbikou5" headerText="備考5" >
+                        <p:outputLabel value="#{item.hbikou5}"/>
+                    </p:column>
+                    <p:column id="hbikou6" headerText="備考6" >
+                        <p:outputLabel value="#{item.hbikou6}"/>
+                    </p:column>
+                    <p:column id="hbikou7" headerText="備考7" >
+                        <p:outputLabel value="#{item.hbikou7}"/>
+                    </p:column>
+                    <p:column id="hbikou8" headerText="備考8" >
+                        <p:outputLabel value="#{item.hbikou8}"/>
+                    </p:column>
+                    <p:column id="hbikou9" headerText="備考9" >
+                        <p:outputLabel value="#{item.hbikou9}"/>
+                    </p:column>
+                    <p:column id="hbikou10" headerText="備考10" >
+                        <p:outputLabel value="#{item.hbikou10}"/>
+                    </p:column>
+                    <p:column id="hbikou11" headerText="備考11" >
+                        <p:outputLabel value="#{item.hbikou11}"/>
+                    </p:column>
+                    <p:column id="hbikou12" headerText="備考12" >
+                        <p:outputLabel value="#{item.hbikou12}"/>
+                    </p:column>
+                    <p:column id="hbikou13" headerText="備考13" >
+                        <p:outputLabel value="#{item.hbikou13}"/>
+                    </p:column>
+                    <p:column id="hbikou14" headerText="備考14" >
+                        <p:outputLabel value="#{item.hbikou14}"/>
+                    </p:column>
+                    <p:column id="hbikou15" headerText="備考15" >
+                        <p:outputLabel value="#{item.hbikou15}"/>
+                    </p:column>
+                    <p:column id="hbikou16" headerText="備考16" >
+                        <p:outputLabel value="#{item.hbikou16}"/>
+                    </p:column>
+                    <p:column id="hbikou17" headerText="備考17" >
+                        <p:outputLabel value="#{item.hbikou17}"/>
+                    </p:column>
+                    <p:column id="hbikou18" headerText="備考18" >
+                        <p:outputLabel value="#{item.hbikou18}"/>
+                    </p:column>
+                    <p:column id="hbikou19" headerText="備考19" >
+                        <p:outputLabel value="#{item.hbikou19}"/>
+                    </p:column>
+                    <p:column id="hbikou20" headerText="備考20" >
+                        <p:outputLabel value="#{item.hbikou20}"/>
+                    </p:column>
+                    <p:column id="hbikou21" headerText="備考21" >
+                        <p:outputLabel value="#{item.hbikou21}"/>
+                    </p:column>
+                    <p:column id="hbikou22" headerText="備考22" >
+                        <p:outputLabel value="#{item.hbikou22}"/>
+                    </p:column>
+                    <p:column id="hbikou23" headerText="備考23" >
+                        <p:outputLabel value="#{item.hbikou23}"/>
+                    </p:column>
+                    <p:column id="hbikou24" headerText="備考24" >
+                        <p:outputLabel value="#{item.hbikou24}"/>
+                    </p:column>
+                    <p:column id="hbikou25" headerText="備考25" >
+                        <p:outputLabel value="#{item.hbikou25}"/>
+                    </p:column>
+                    <p:column id="hbikou26" headerText="備考26" >
+                        <p:outputLabel value="#{item.hbikou26}"/>
+                    </p:column>
+                    <p:column id="hbikou27" headerText="備考27" >
+                        <p:outputLabel value="#{item.hbikou27}"/>
+                    </p:column>
+                    <p:column id="hbikou28" headerText="備考28" >
+                        <p:outputLabel value="#{item.hbikou28}"/>
+                    </p:column>
+                    <p:column id="hbikou29" headerText="備考29" >
+                        <p:outputLabel value="#{item.hbikou29}"/>
+                    </p:column>
+                    <p:column id="hbikou30" headerText="備考30" >
+                        <p:outputLabel value="#{item.hbikou30}"/>
+                    </p:column>
+                    <p:column id="hbikou31" headerText="備考31" >
+                        <p:outputLabel value="#{item.hbikou31}"/>
+                    </p:column>
+                    <p:column id="hbikou32" headerText="備考32" >
+                        <p:outputLabel value="#{item.hbikou32}"/>
+                    </p:column>
+                    <p:column id="hbikou33" headerText="備考33" >
+                        <p:outputLabel value="#{item.hbikou33}"/>
+                    </p:column>
+                    <p:column id="hbikou34" headerText="備考34" >
+                        <p:outputLabel value="#{item.hbikou34}"/>
+                    </p:column>
+                    <p:column id="hbikou35" headerText="備考35" >
+                        <p:outputLabel value="#{item.hbikou35}"/>
+                    </p:column>
+                    <p:column id="hbikou36" headerText="備考36" >
+                        <p:outputLabel value="#{item.hbikou36}"/>
+                    </p:column>
+                    <p:column id="hbikou37" headerText="備考37" >
+                        <p:outputLabel value="#{item.hbikou37}"/>
+                    </p:column>
+                    <p:column id="hbikou38" headerText="備考38" >
+                        <p:outputLabel value="#{item.hbikou38}"/>
+                    </p:column>
+                    <p:column id="hbikou39" headerText="備考39" >
+                        <p:outputLabel value="#{item.hbikou39}"/>
+                    </p:column>
+                    <p:column id="hbikou40" headerText="備考40" >
+                        <p:outputLabel value="#{item.hbikou40}"/>
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </h:form>
+    </h:body>
+</html>
