@@ -284,12 +284,12 @@ public class SrRhaps {
     /**
      * 誘電体ﾍﾟｰｽﾄ粘度
      */
-    private Integer cpastenendo;
+    private BigDecimal cpastenendo;
 
     /**
      * 誘電体ﾍﾟｰｽﾄ温度
      */
-    private Integer cpasteondo;
+    private BigDecimal cpasteondo;
 
     /**
      * 誘電体製版名
@@ -1814,7 +1814,7 @@ public class SrRhaps {
      *
      * @return the cpastenendo
      */
-    public Integer getCpastenendo() {
+    public BigDecimal getCpastenendo() {
         return cpastenendo;
     }
 
@@ -1823,7 +1823,7 @@ public class SrRhaps {
      *
      * @param cpastenendo the cpastenendo to set
      */
-    public void setCpastenendo(Integer cpastenendo) {
+    public void setCpastenendo(BigDecimal cpastenendo) {
         this.cpastenendo = cpastenendo;
     }
 
@@ -1832,7 +1832,7 @@ public class SrRhaps {
      *
      * @return the cpasteondo
      */
-    public Integer getCpasteondo() {
+    public BigDecimal getCpasteondo() {
         return cpasteondo;
     }
 
@@ -1841,7 +1841,7 @@ public class SrRhaps {
      *
      * @param cpasteondo the cpasteondo to set
      */
-    public void setCpasteondo(Integer cpasteondo) {
+    public void setCpasteondo(BigDecimal cpasteondo) {
         this.cpasteondo = cpasteondo;
     }
 

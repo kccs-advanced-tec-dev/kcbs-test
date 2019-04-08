@@ -654,21 +654,6 @@ public class GXHDO101B006Const {
     public static final String YUUDENTAI_SLIDE_RYOU = "sr_rhaps_yudentai_slide_ryou";
 
     /**
-     * 電極積層仕様
-     */
-    public static final String DENKYOKU_SEKISOU_SHIYOU = "sr_rhaps_denkyoku_sekisou_shiyou";
-
-    /**
-     * 上端子仕様
-     */
-    public static final String UE_TANSHI_SHIYOU = "sr_rhaps_ue_tanshi_shiyou";
-
-    /**
-     * 下端子仕様
-     */
-    public static final String SHITA_TANSHI_SHIYOU = "sr_rhaps_shita_tanshi_shiyou";
-
-    /**
      * 電極膜厚(画面上ボタン)
      */
     public static final String BTN_DENKYOKU_MAKUATSU_TOP = "sr_rhaps_denkyoku_makuatsu_Top";
