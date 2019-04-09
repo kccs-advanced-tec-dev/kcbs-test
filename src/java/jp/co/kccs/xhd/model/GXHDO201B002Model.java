@@ -71,7 +71,7 @@ public class GXHDO201B002Model implements Serializable {
     /** 差圧 */
     private BigDecimal saatu = null;
     /** ｽｷｰｼﾞｽﾋﾟｰﾄﾞ */
-    private Long skeegespeed = null;
+    private BigDecimal skeegespeed = null;
     /** ｽｷｰｼﾞ角度 */
     private Long skeegeangle = null;
     /** ﾒﾀﾙﾚｲﾀﾞｳﾝ値 */
@@ -641,7 +641,7 @@ public class GXHDO201B002Model implements Serializable {
      * ｽｷｰｼﾞｽﾋﾟｰﾄﾞ
      * @return the skeegespeed
      */
-    public Long getSkeegespeed() {
+    public BigDecimal getSkeegespeed() {
         return skeegespeed;
     }
 
@@ -649,7 +649,7 @@ public class GXHDO201B002Model implements Serializable {
      * ｽｷｰｼﾞｽﾋﾟｰﾄﾞ
      * @param skeegespeed the skeegespeed to set
      */
-    public void setSkeegespeed(Long skeegespeed) {
+    public void setSkeegespeed(BigDecimal skeegespeed) {
         this.skeegespeed = skeegespeed;
     }
 

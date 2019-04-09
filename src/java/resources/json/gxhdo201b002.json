@@ -21,7 +21,7 @@
     {"no":"20","id":"prnprofile","columnname":"印刷ﾌﾟﾛﾌｧｲﾙ","type":"String","format":""},
     {"no":"21","id":"kansoutime","columnname":"乾燥時間","type":"BigDecimal","format":"4,1"},
     {"no":"22","id":"saatu","columnname":"差圧","type":"BigDecimal","format":"7,3"},
-    {"no":"23","id":"skeegespeed","columnname":"ｽｷｰｼﾞ速度","type":"Long","format":"3,0"},
+    {"no":"23","id":"skeegespeed","columnname":"ｽｷｰｼﾞ速度","type":"BigDecimal","format":"7,3"},
     {"no":"24","id":"skeegeangle","columnname":"ｽｷｰｼﾞ角度","type":"Long","format":"3,0"},
     {"no":"25","id":"mld","columnname":"ﾒﾀﾙﾚｲﾀﾞｳﾝ値","type":"Long","format":"4,0"},
     {"no":"26","id":"clearrance","columnname":"ｸﾘｱﾗﾝｽ設定値","type":"BigDecimal","format":"4,1"},
