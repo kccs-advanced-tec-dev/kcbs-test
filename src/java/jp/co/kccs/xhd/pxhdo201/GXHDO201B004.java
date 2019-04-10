@@ -742,7 +742,7 @@ public class GXHDO201B004 implements Serializable {
                     + ", T2.bikou38 AS hbikou38"
                     + ", T2.bikou39 AS hbikou39"
                     + ", T2.bikou40 AS hbikou40"
-                    + "FROM sr_spssekisou T1 "
+                    + " FROM sr_spssekisou T1 "
                     + "LEFT JOIN sub_sr_spssekisou T2 ON (T1.kojyo = T2.kojyo AND T1.lotno = T2.lotno AND T1.edaban = T2.edaban) "
                     + "WHERE (? IS NULL OR T1.kojyo = ?) "
                     + "AND   (? IS NULL OR T1.lotno = ?) "
