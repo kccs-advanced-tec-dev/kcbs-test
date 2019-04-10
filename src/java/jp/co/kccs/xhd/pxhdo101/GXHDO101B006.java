@@ -3271,8 +3271,8 @@ public class GXHDO101B006 implements IFormLogic {
                 + "ETAPELOT = ?,ETapeSlipKigo = ?,ETapeRollNo1 = ?,ETapeRollNo2 = ?,ETapeRollNo3 = ?,ETapeRollNo4 = ?,ETapeRollNo5 = ?,SPTUDENJIKAN = ?,"
                 + "SKAATURYOKU = ?,SKHEADNO = ?,SUSSKAISUU = ?,ECPASTEMEI = ?,EPASTELOTNO = ?,EPASTENENDO = ?,EPASTEONDO = ?,ESEIHANMEI = ?,ESEIHANNO = ?,"
                 + "ESEIMAISUU = ?,ECLEARANCE = ?,ESAATU = ?,ESKEEGENO = ?,ESKMAISUU = ?,ESKSPEED = ?,ESCCLEARANCE = ?,ESKKMJIKAN = ?,ELDSTART = ?,"
-                + "ESLIDERYO = ?,EKANSOONDO = ?,CPASTELOTNO = ?,CPASTENENDO = ?,CPASTEONDO = ?,CSEIHANMEI = ?,CSEIHANNO = ?,CSEIMAISUU = ?,CSAATU = ?,"
-                + "CSKEEGENO = ?,CSKMAISUU = ?,CSCCLEARANCE = ?,CSKKMJIKAN = ?,CSHIFTINSATU = ?,CLDSTART = ?,CSLIDERYO = ?,CKANSOONDO = ?,AINSATUSRZAVE = ?,"
+                + "EKANSOONDO = ?,CPASTELOTNO = ?,CPASTENENDO = ?,CPASTEONDO = ?,CSEIHANMEI = ?,CSEIHANNO = ?,CSEIMAISUU = ?,CSAATU = ?,"
+                + "CSKEEGENO = ?,CSKMAISUU = ?,CSCCLEARANCE = ?,CSKKMJIKAN = ?,CSHIFTINSATU = ?,CLDSTART = ?,CKANSOONDO = ?,AINSATUSRZAVE = ?,"
                 + "UTKAATURYOKU = ?,TICLEARANCE = ?,TISAATU = ?,TISKSPEED = ?,BIKO1 = ?,BIKO2 = ?,KOSINNICHIJI = ?,GOKI = ?,SHUNKANKANETSUJIKAN = ?,"
                 + "PETFILMSYURUI = ?,KAATURYOKU = ?,GAIKANKAKUNIN = ?,SEKIJSSKIRIKAEICHI = ?,SEKIKKSKIRIKAEICHI = ?,KAATUJIKAN = ?,TAPEHANSOUPITCH = ?,"
                 + "TAPEHANSOUKAKUNIN = ?,EMAKUATSUSETTEI = ?,ENEPPUFURYOU = ?,EMAKUATSUAVE = ?,EMAKUATSUMAX = ?,EMAKUATSUMIN = ?,NIJIMISOKUTEIPTN = ?,"
@@ -3407,8 +3407,8 @@ public class GXHDO101B006 implements IFormLogic {
         if (isInsert) {
             params.add(null); //電極製版面積
             params.add(null); //電極膜厚
+            params.add(null); //電極ｽﾗｲﾄﾞ量
         }
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.DENKYOKU_SLIDE_RYOU, srRhapsData)));  //電極ｽﾗｲﾄﾞ量
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.DENKYOKU_KANSOU_ONDO, srRhapsData)));  //電極乾燥温度
         if (isInsert) {
             params.add(null); //電極乾燥時間
@@ -3431,8 +3431,8 @@ public class GXHDO101B006 implements IFormLogic {
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.YUUDENTAI_L_D_STARTJI, srRhapsData)));  //誘電体L/Dｽﾀｰﾄ時
         if (isInsert) {
             params.add(null); //誘電体製版面積
+            params.add(null);  //誘電体ｽﾗｲﾄﾞ量
         }
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.YUUDENTAI_SLIDE_RYOU, srRhapsData)));  //誘電体ｽﾗｲﾄﾞ量
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.YUUDENTAI_KANSOU_ONDO, srRhapsData)));  //誘電体乾燥温度
         if (isInsert) {
             params.add(null); //誘電体乾燥時間
@@ -3817,8 +3817,8 @@ public class GXHDO101B006 implements IFormLogic {
                 + "ETAPELOT = ?,ETapeSlipKigo = ?,ETapeRollNo1 = ?,ETapeRollNo2 = ?,ETapeRollNo3 = ?,ETapeRollNo4 = ?,ETapeRollNo5 = ?,SPTUDENJIKAN = ?,"
                 + "SKAATURYOKU = ?,SKHEADNO = ?,SUSSKAISUU = ?,ECPASTEMEI = ?,EPASTELOTNO = ?,EPASTENENDO = ?,EPASTEONDO = ?,ESEIHANMEI = ?,ESEIHANNO = ?,"
                 + "ESEIMAISUU = ?,ECLEARANCE = ?,ESAATU = ?,ESKEEGENO = ?,ESKMAISUU = ?,ESKSPEED = ?,ESCCLEARANCE = ?,ESKKMJIKAN = ?,ELDSTART = ?,"
-                + "ESLIDERYO = ?,EKANSOONDO = ?,CPASTELOTNO = ?,CPASTENENDO = ?,CPASTEONDO = ?,CSEIHANMEI = ?,CSEIHANNO = ?,CSEIMAISUU = ?,CSAATU = ?,"
-                + "CSKEEGENO = ?,CSKMAISUU = ?,CSCCLEARANCE = ?,CSKKMJIKAN = ?,CSHIFTINSATU = ?,CLDSTART = ?,CSLIDERYO = ?,CKANSOONDO = ?,AINSATUSRZAVE = ?,"
+                + "EKANSOONDO = ?,CPASTELOTNO = ?,CPASTENENDO = ?,CPASTEONDO = ?,CSEIHANMEI = ?,CSEIHANNO = ?,CSEIMAISUU = ?,CSAATU = ?,"
+                + "CSKEEGENO = ?,CSKMAISUU = ?,CSCCLEARANCE = ?,CSKKMJIKAN = ?,CSHIFTINSATU = ?,CLDSTART = ?,CKANSOONDO = ?,AINSATUSRZAVE = ?,"
                 + "UTKAATURYOKU = ?,TICLEARANCE = ?,TISAATU = ?,TISKSPEED = ?,BIKO1 = ?,BIKO2 = ?,KOSINNICHIJI = ?,GOKI = ?,SHUNKANKANETSUJIKAN = ?,"
                 + "PETFILMSYURUI = ?,KAATURYOKU = ?,GAIKANKAKUNIN = ?,SEKIJSSKIRIKAEICHI = ?,SEKIKKSKIRIKAEICHI = ?,KAATUJIKAN = ?,TAPEHANSOUPITCH = ?,"
                 + "TAPEHANSOUKAKUNIN = ?,EMAKUATSUSETTEI = ?,ENEPPUFURYOU = ?,EMAKUATSUAVE = ?,EMAKUATSUMAX = ?,EMAKUATSUMIN = ?,NIJIMISOKUTEIPTN = ?,"
@@ -3923,8 +3923,8 @@ public class GXHDO101B006 implements IFormLogic {
         if (isInsert) {
             params.add(0); //電極製版面積
             params.add(0); //電極膜厚
+            params.add(0);  //電極ｽﾗｲﾄﾞ量
         }
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B006Const.DENKYOKU_SLIDE_RYOU, srRhapsData)));  //電極ｽﾗｲﾄﾞ量
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B006Const.DENKYOKU_KANSOU_ONDO, srRhapsData)));  //電極乾燥温度
         if (isInsert) {
             params.add(0); //電極乾燥時間
@@ -3947,8 +3947,8 @@ public class GXHDO101B006 implements IFormLogic {
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B006Const.YUUDENTAI_L_D_STARTJI, srRhapsData)));  //誘電体L/Dｽﾀｰﾄ時
         if (isInsert) {
             params.add(0); //誘電体製版面積
+            params.add(0);  //誘電体ｽﾗｲﾄﾞ量
         }
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B006Const.YUUDENTAI_SLIDE_RYOU, srRhapsData)));  //誘電体ｽﾗｲﾄﾞ量
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B006Const.YUUDENTAI_KANSOU_ONDO, srRhapsData)));  //誘電体乾燥温度
         if (isInsert) {
             params.add(0); //誘電体乾燥時間
@@ -4425,6 +4425,9 @@ public class GXHDO101B006 implements IFormLogic {
      */
     private String getSrRhapsItemData(String itemId, SrRhaps srRhapsData) {
         switch (itemId) {
+            //KCPNo
+            case GXHDO101B006Const.KCPNO:
+                return StringUtil.nullToBlank(srRhapsData.getKcpno());
             //電極テープ種類
             case GXHDO101B006Const.DENKYOKU_TAPE_SHURUI:
                 return StringUtil.nullToBlank(srRhapsData.getEtapesyurui());
@@ -4482,6 +4485,9 @@ public class GXHDO101B006 implements IFormLogic {
             //電極ペースト温度
             case GXHDO101B006Const.DENKYOKU_PASTE_ONDO:
                 return StringUtil.nullToBlank(srRhapsData.getEpasteondo());
+            //電極製版名
+            case GXHDO101B006Const.DENKYOKU_SEIHAN_MEI:
+                return StringUtil.nullToBlank(srRhapsData.getEseihanmei());
             //電極誘電体ペースト名
             case GXHDO101B006Const.DENKYOKU_YUUDENTAI_PASTE_MEI:
                 return StringUtil.nullToBlank(srRhapsData.getEcpastemei());
@@ -4494,6 +4500,9 @@ public class GXHDO101B006 implements IFormLogic {
             //誘電体ペースト温度
             case GXHDO101B006Const.YUUDENTAI_PASTE_ONDO:
                 return StringUtil.nullToBlank(srRhapsData.getCpasteondo());
+            //誘電体製版名
+            case GXHDO101B006Const.YUUDENTAI_SEIHAN_MEI:
+                return StringUtil.nullToBlank(srRhapsData.getCseihanmei());
             //ＰＥＴフィルム種類
             case GXHDO101B006Const.PET_FILM_SHURUI:
                 return StringUtil.nullToBlank(srRhapsData.getPetfilmsyurui());
