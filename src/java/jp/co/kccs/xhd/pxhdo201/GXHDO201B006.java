@@ -591,7 +591,6 @@ public class GXHDO201B006 implements Serializable {
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
             String sql = "SELECT CONCAT(IFNULL(T1.KOJYO, ''), IFNULL(T1.LOTNO, ''), IFNULL(T1.EDABAN, '')) AS LOTNO"
-                    + ", T1.LOTNO"
                     + ", T1.KCPNO"
                     + ", T1.KAISINICHIJI"
                     + ", T1.SYURYONICHIJI"
@@ -746,7 +745,7 @@ public class GXHDO201B006 implements Serializable {
                     + ", T1.SHITAKKSKIRIKAEICHI"
                     + ", T1.TINKSYURYUI"
                     + ", T1.TINKLOT"
-                    + ", T1.TGAIKAN"
+                    + ", (CASE WHEN T1.TGAIKAN = 0 THEN 'NG' WHEN T1.TGAIKAN = 1 THEN 'OK' ELSE NULL END) AS TGAIKAN"
                     + ", T1.STARTTANTOU"
                     + ", T1.ENDTANTOU"
                     + ", T1.TENDDAY"
@@ -801,7 +800,7 @@ public class GXHDO201B006 implements Serializable {
                     + ", T2.KABURIMIGISITAX2"
                     + ", T2.KABURIMIGISITAY1"
                     + ", T2.KABURIMIGISITAY2"
-                    + "FROM sr_rhaps T1 "
+                    + " FROM sr_rhaps T1 "
                     + "LEFT JOIN sub_sr_rhaps T2 ON (T1.KOJYO = T2.KOJYO AND T1.LOTNO = T2.LOTNO AND T1.EDABAN = T2.EDABAN) "
                     + "WHERE (? IS NULL OR T1.KOJYO = ?) "
                     + "AND   (? IS NULL OR T1.LOTNO = ?) "

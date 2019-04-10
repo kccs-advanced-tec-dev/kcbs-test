@@ -336,7 +336,7 @@ public class GXHDO201B006Model {
     /** ﾀｰｹﾞｯﾄｲﾝｸLOT */
     private String tinklot = "";
     /** ﾀｰｹﾞｯﾄ印刷外観 */
-    private Long tgaikan = null;
+    private String tgaikan = null;
     /** 印刷積層開始担当者 */
     private String starttantou = "";
     /** 印刷積層終了担当者 */
@@ -2930,7 +2930,7 @@ public class GXHDO201B006Model {
      * ﾀｰｹﾞｯﾄ印刷外観
      * @return the tgaikan
      */
-    public Long getTgaikan() {
+    public String getTgaikan() {
         return tgaikan;
     }
 
@@ -2938,7 +2938,7 @@ public class GXHDO201B006Model {
      * ﾀｰｹﾞｯﾄ印刷外観
      * @param tgaikan the tgaikan to set
      */
-    public void setTgaikan(Long tgaikan) {
+    public void setTgaikan(String tgaikan) {
         this.tgaikan = tgaikan;
     }
 
