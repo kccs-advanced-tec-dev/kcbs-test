@@ -196,12 +196,12 @@
                     </p:column>
                     <p:column id="kaisinichiji" headerText="開始日時" >
                         <p:outputLabel value="#{item.kaisinichiji}">
-                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss"/>
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="syuryonichiji" headerText="終了日時" >
                         <p:outputLabel value="#{item.syuryonichiji}">
-                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss"/>
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="ttapesyurui" headerText="端子ﾃｰﾌﾟ種類" >
@@ -873,10 +873,8 @@
                     <p:column id="tinklot" headerText="ﾀｰｹﾞｯﾄｲﾝｸLOT" >
                         <p:outputLabel value="#{item.tinklot}"/>
                     </p:column>
-                    <p:column id="tgaikan" headerText="ﾀｰｹﾞｯﾄ印刷外観" styleClass="number">
-                        <p:outputLabel value="#{item.tgaikan}">
-                            <f:convertNumber pattern="#,###,###,##0"/>
-                        </p:outputLabel>
+                    <p:column id="tgaikan" headerText="ﾀｰｹﾞｯﾄ印刷外観" >
+                        <p:outputLabel value="#{item.tgaikan}"/>
                     </p:column>
                     <p:column id="starttantou" headerText="印刷積層開始担当者" >
                         <p:outputLabel value="#{item.starttantou}"/>

@@ -208,12 +208,12 @@
                     </p:column>
                     <p:column id="startdatetime" headerText="開始日時" >
                         <p:outputLabel value="#{item.startdatetime}">
-                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss"/>
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="enddatetime" headerText="終了日時" >
                         <p:outputLabel value="#{item.enddatetime}">
-                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss"/>
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="sekisouzure" headerText="積層ｽﾞﾚ" styleClass="number">
