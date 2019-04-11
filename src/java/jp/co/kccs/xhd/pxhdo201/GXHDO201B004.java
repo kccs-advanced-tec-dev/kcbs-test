@@ -643,7 +643,7 @@ public class GXHDO201B004 implements Serializable {
                     + ", T1.Kotyakusheet"
                     + ", T1.ShitaTanshigouki"
                     + ", T1.UwaTanshigouki"
-                    + ", (CASE WHEN T1.ShitaTanshiBukunuki = 1 THEN '実施' WHEN T1.ShitaTanshiBukunuki = 2 THEN '未実施' ELSE NULL END) AS ShitaTanshiBukunuki"
+                    + ", (CASE WHEN T1.ShitaTanshiBukunuki = 1 THEN '実施' WHEN T1.ShitaTanshiBukunuki = 0 THEN '未実施' ELSE NULL END) AS ShitaTanshiBukunuki"
                     + ", T1.ShitaTanshi"
                     + ", T1.HakuriKyuin"
                     + ", T1.HakuriClearrance"
