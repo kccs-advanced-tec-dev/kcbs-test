@@ -154,7 +154,7 @@
     {"no":"153","id":"shitakkskirikaeichi","columnname":"下端子下降速切替位置","type":"BigDecimal","format":"3,1"},
     {"no":"154","id":"tinksyuryui","columnname":"ﾀｰｹﾞｯﾄｲﾝｸ種類","type":"String","format":""},
     {"no":"155","id":"tinklot","columnname":"ﾀｰｹﾞｯﾄｲﾝｸLOT","type":"String","format":""},
-    {"no":"156","id":"tgaikan","columnname":"ﾀｰｹﾞｯﾄ印刷外観","type":"Long","format":"10,0"},
+    {"no":"156","id":"tgaikan","columnname":"ﾀｰｹﾞｯﾄ印刷外観","type":"String","format":""},
     {"no":"157","id":"starttantou","columnname":"印刷積層開始担当者","type":"String","format":""},
     {"no":"158","id":"endtantou","columnname":"印刷積層終了担当者","type":"String","format":""},
     {"no":"159","id":"tendday","columnname":"ﾀｰｹﾞｯﾄ印刷終了日","type":"String","format":""},
