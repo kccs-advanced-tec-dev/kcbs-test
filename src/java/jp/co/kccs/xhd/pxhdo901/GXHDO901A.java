@@ -225,11 +225,23 @@ public class GXHDO901A implements Serializable {
      * 入力項目最大幅
      */
     private String maxWidthInputCol;
-
+    
+    
     /**
      * コンストラクタ
      */
     public GXHDO901A() {
+    }
+    
+    /**
+     * フォームID取得
+     *
+     * @return the formId
+     */
+    public String getFormId() {
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+        return StringUtil.nullToBlank(session.getAttribute("formId"));
     }
 
     /**
@@ -487,6 +499,7 @@ public class GXHDO901A implements Serializable {
         String formTitle = StringUtil.nullToBlank(session.getAttribute("formTitle"));
         String titleSetting = StringUtil.nullToBlank(session.getAttribute("titleSetting"));
         String lotNo = StringUtil.nullToBlank(session.getAttribute("lotNo"));
+        
         // 一覧の表示件数を設定
         this.hyojiKensu = StringUtil.nullToBlank(session.getAttribute("hyojiKensu"));
         // 入力項目の最大幅を設定する。

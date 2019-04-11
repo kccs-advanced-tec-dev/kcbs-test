@@ -30,7 +30,8 @@
                 g_macAddr = '#{sessionInfo.macAddr}';
                 //location
                 g_location = '#{myMsg.NotAvailable}';
-                g_prgname = 'gxhdo901a.xhtml';
+                g_prgname = 'gxhdo901a.xhtml(#{gXHDO901A.formId})';
+                
                 var interval_id = setInterval(getLocation, #{myParam.sendLocInterval});
             });
             function cmdButtonOncomplete(args) {
