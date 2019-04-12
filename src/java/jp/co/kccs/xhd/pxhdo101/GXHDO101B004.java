@@ -1926,7 +1926,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + ",HakuriCutSpeed,ShitaPanchiOndo,UwaPanchiOndo,KaatuJikan,KaatuAturyoku"
                 + ",UwaTanshi,GaikanKakunin1,GaikanKakunin2,GaikanKakunin3,GaikanKakunin4"
                 + ",SyoriSetsuu,RyouhinSetsuu,StartTantosyacode,EndTantousyacode"
-                + ",TanshiTapeSyurui,SKOJYO,SLOTNO,SEDABAN,torokunichiji,kosinnichiji"
+                + ",TanshiTapeSyurui,torokunichiji,kosinnichiji"
                 + ",revision,'0' AS deleteflag "
                 + "FROM sr_spssekisou "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
@@ -2020,9 +2020,6 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         mapping.put("StartTantosyacode", "startTantosyacode"); // 開始担当者ｺｰﾄﾞ
         mapping.put("EndTantousyacode", "endTantousyacode"); // 終了担当者ｺｰﾄﾞ
         mapping.put("TanshiTapeSyurui", "tanshiTapeSyurui"); // 端子ﾃｰﾌﾟ種類
-        mapping.put("SKOJYO", "skojyo"); // 先行工場ｺｰﾄﾞ
-        mapping.put("SLOTNO", "slotno"); // 先行ﾛｯﾄNo
-        mapping.put("SEDABAN", "sedaban"); // 先行枝番
         mapping.put("torokunichiji", "torokunichiji"); // 登録日時
         mapping.put("kosinnichiji", "kosinnichiji"); // 更新日時
         mapping.put("revision", "revision"); // revision
@@ -2201,7 +2198,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + ",HakuriCutSpeed,ShitaPanchiOndo,UwaPanchiOndo,KaatuJikan,KaatuAturyoku"
                 + ",UwaTanshi,GaikanKakunin1,GaikanKakunin2,GaikanKakunin3,GaikanKakunin4"
                 + ",SyoriSetsuu,RyouhinSetsuu,StartTantosyacode,EndTantousyacode"
-                + ",TanshiTapeSyurui,SKOJYO,SLOTNO,SEDABAN,torokunichiji,kosinnichiji"
+                + ",TanshiTapeSyurui,torokunichiji,kosinnichiji"
                 + ",revision,deleteflag "
                 + "FROM tmp_sr_spssekisou "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND deleteflag = ? ";
@@ -2296,9 +2293,6 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         mapping.put("starttantosyacode", "StartTantosyacode"); // 開始担当者ｺｰﾄﾞ
         mapping.put("endtantousyacode", "EndTantousyacode"); // 終了担当者ｺｰﾄﾞ
         mapping.put("tanshitapesyurui", "TanshiTapeSyurui"); // 端子ﾃｰﾌﾟ種類
-        mapping.put("skojyo", "SKOJYO"); // 先行工場ｺｰﾄﾞ
-        mapping.put("slotno", "SLOTNO"); // 先行ﾛｯﾄNo
-        mapping.put("sedaban", "SEDABAN"); // 先行枝番
         mapping.put("torokunichiji", "torokunichiji"); // 登録日時
         mapping.put("kosinnichiji", "kosinnichiji"); // 更新日時
         mapping.put("revision", "revision"); // revision
@@ -2496,6 +2490,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
 
             QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
             QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
+            QueryRunner queryRunnerWip = new QueryRunner(processData.getDataSourceWip());
 
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             HttpSession session = (HttpSession) externalContext.getSession(false);
@@ -2506,7 +2501,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
             String edaban = lotNo.substring(11, 14);
 
             //仕掛情報の取得
-            Map shikakariData = loadShikakariData(queryRunnerDoc, lotNo);
+            Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
             String oyalotEdaban = StringUtil.nullToBlank(getMapData(shikakariData, "oyalotedaban")); //親ﾛｯﾄ枝番
 
             // 品質DB登録実績データ取得
@@ -3970,7 +3965,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + ",taperollno2,taperollno3,genryoukigou,petfilmsyurui,Kotyakugouki,Kotyakusheet,ShitaTanshigouki,UwaTanshigouki"
                 + ",ShitaTanshiBukunuki,ShitaTanshi,HakuriKyuin,HakuriClearrance,HakuriCutSpeed,ShitaPanchiOndo,UwaPanchiOndo"
                 + ",KaatuJikan,KaatuAturyoku,UwaTanshi,GaikanKakunin1,GaikanKakunin2,GaikanKakunin3,GaikanKakunin4,SyoriSetsuu"
-                + ",RyouhinSetsuu,StartTantosyacode,EndTantousyacode,TanshiTapeSyurui,SKOJYO,SLOTNO,SEDABAN,torokunichiji"
+                + ",RyouhinSetsuu,StartTantosyacode,EndTantousyacode,TanshiTapeSyurui,torokunichiji"
                 + ",kosinnichiji,revision,deleteflag"
                 + ") SELECT "
                 + "kojyo,lotno,edaban,tntapesyurui,tntapeno,tntapegenryou,gouki,startdatetime,enddatetime,sekisouzure"
@@ -3981,7 +3976,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + ",taperollno2,taperollno3,genryoukigou,petfilmsyurui,Kotyakugouki,Kotyakusheet,ShitaTanshigouki,UwaTanshigouki"
                 + ",ShitaTanshiBukunuki,ShitaTanshi,HakuriKyuin,HakuriClearrance,HakuriCutSpeed,ShitaPanchiOndo,UwaPanchiOndo"
                 + ",KaatuJikan,KaatuAturyoku,UwaTanshi,GaikanKakunin1,GaikanKakunin2,GaikanKakunin3,GaikanKakunin4,SyoriSetsuu"
-                + ",RyouhinSetsuu,StartTantosyacode,EndTantousyacode,TanshiTapeSyurui,SKOJYO,SLOTNO,SEDABAN"
+                + ",RyouhinSetsuu,StartTantosyacode,EndTantousyacode,TanshiTapeSyurui"
                 + ",?,?,?,? "
                 + "FROM sr_spssekisou "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? ";

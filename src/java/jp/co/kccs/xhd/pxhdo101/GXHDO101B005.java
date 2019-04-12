@@ -2400,7 +2400,8 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
 
             QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
             QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
-
+            QueryRunner queryRunnerWip = new QueryRunner(processData.getDataSourceWip());
+            
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             HttpSession session = (HttpSession) externalContext.getSession(false);
             String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
@@ -2410,7 +2411,7 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
             String edaban = lotNo.substring(11, 14);
 
             //仕掛情報の取得
-            Map shikakariData = loadShikakariData(queryRunnerDoc, lotNo);
+            Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
             String oyalotEdaban = StringUtil.nullToBlank(getMapData(shikakariData, "oyalotedaban")); //親ﾛｯﾄ枝番
 
             // 品質DB登録実績データ取得
