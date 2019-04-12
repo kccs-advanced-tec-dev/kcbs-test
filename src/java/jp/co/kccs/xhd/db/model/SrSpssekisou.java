@@ -397,21 +397,6 @@ public class SrSpssekisou {
     private Integer tanshiTapeSyurui;
 
     /**
-     * 先行工場ｺｰﾄﾞ
-     */
-    private String skojyo;
-
-    /**
-     * 先行ﾛｯﾄNo
-     */
-    private String slotno;
-
-    /**
-     * 先行枝番
-     */
-    private String sedaban;
-
-    /**
      * 登録日時
      */
     private Timestamp torokunichiji;
@@ -1613,54 +1598,6 @@ public class SrSpssekisou {
      */
     public void setTanshiTapeSyurui(Integer tanshiTapeSyurui) {
         this.tanshiTapeSyurui = tanshiTapeSyurui;
-    }
-
-    /**
-     * 先行工場ｺｰﾄﾞ
-     * @return skojyo
-     */
-    public String getSkojyo() {
-        return skojyo;
-    }
-
-    /**
-     * 先行工場ｺｰﾄﾞ
-     * @param skojyo セットする skojyo
-     */
-    public void setSkojyo(String skojyo) {
-        this.skojyo = skojyo;
-    }
-
-    /**
-     * 先行ﾛｯﾄNo
-     * @return slotno
-     */
-    public String getSlotno() {
-        return slotno;
-    }
-
-    /**
-     * 先行ﾛｯﾄNo
-     * @param slotno セットする slotno
-     */
-    public void setSlotno(String slotno) {
-        this.slotno = slotno;
-    }
-
-    /**
-     * 先行枝番
-     * @return sedaban
-     */
-    public String getSedaban() {
-        return sedaban;
-    }
-
-    /**
-     * 先行枝番
-     * @param sedaban セットする sedaban
-     */
-    public void setSedaban(String sedaban) {
-        this.sedaban = sedaban;
     }
 
     /**
