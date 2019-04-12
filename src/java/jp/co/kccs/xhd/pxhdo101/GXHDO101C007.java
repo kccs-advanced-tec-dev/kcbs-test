@@ -213,10 +213,10 @@ public class GXHDO101C007 implements Serializable {
             // 測定Noを取得
             String sokuteino = getSokuteino();
             if (StringUtil.isEmpty(sokuteino)) {
-                // 膜厚測定データをが読込データをセット
+                // 膜厚測定データを読込データにセット
                 setMakuatsuSokuteiData();
             } else {
-                // 膜厚測定データをが読込データをセット
+                // 測定データテーブルデータを読込データにセット
                 setSokuteiData(sokuteino);
             }
 
@@ -298,42 +298,11 @@ public class GXHDO101C007 implements Serializable {
             return;
         }
 
-        // データをクリア
-        for (GXHDO101C007Model.DenkyokuMakuatsuData denkyokuMakuatsuData : this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList()) {
-            denkyokuMakuatsuData.setValue("");
+        // 電極膜厚1～9にデータをセット
+        for (int i = 0; i < 9; i++) {
+            this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(i).setValue(getMakuatsuData(sokuteiDataList, String.valueOf(i + 1)));
         }
 
-        for (Map<String, Object> map : sokuteiDataList) {
-            switch (StringUtil.nullToBlank(map.get("Position"))) {
-                case "1":
-                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(0).setValue(StringUtil.nullToBlank(map.get("Mean")));
-                    break;
-                case "2":
-                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(1).setValue(StringUtil.nullToBlank(map.get("Mean")));
-                    break;
-                case "3":
-                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(2).setValue(StringUtil.nullToBlank(map.get("Mean")));
-                    break;
-                case "4":
-                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(3).setValue(StringUtil.nullToBlank(map.get("Mean")));
-                    break;
-                case "5":
-                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(4).setValue(StringUtil.nullToBlank(map.get("Mean")));
-                    break;
-                case "6":
-                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(5).setValue(StringUtil.nullToBlank(map.get("Mean")));
-                    break;
-                case "7":
-                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(6).setValue(StringUtil.nullToBlank(map.get("Mean")));
-                    break;
-                case "8":
-                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(7).setValue(StringUtil.nullToBlank(map.get("Mean")));
-                    break;
-                case "9":
-                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(8).setValue(StringUtil.nullToBlank(map.get("Mean")));
-                    break;
-            }
-        }
     }
 
     /**
@@ -344,7 +313,7 @@ public class GXHDO101C007 implements Serializable {
     private String getSokuteino() throws SQLException {
         String sokuteino = "";
         QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
-        String sql = "SELECT sokuteino "
+        String sql = "SELECT MAX(sokuteino) as sokuteino "
                 + " FROM sr_rhapsmakuatsu1 "
                 + " WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
 
@@ -393,7 +362,7 @@ public class GXHDO101C007 implements Serializable {
         String sql = "SELECT Mean,Position "
                 + " FROM sr_zygo_e "
                 + " WHERE kojyo = ? AND lotno = ? AND edaban = ? "
-                + " ORDER BY Position ";
+                + " ORDER BY Position, SokuteiKaisuu desc ";
 
         List<Object> params = new ArrayList<>();
         params.add(this.kojyo);
@@ -403,6 +372,22 @@ public class GXHDO101C007 implements Serializable {
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunner.query(sql, new MapListHandler(), params.toArray());
     }
+    
+    /**
+     * 膜厚データ取得処理(該当測定位置の1件目(測定回数が最大値)のデータを取得)
+     * @param sokuteiDataList 膜厚測定データリスト(DB取得ﾃﾞｰﾀ)
+     * @param position 測定位置
+     */
+    private String getMakuatsuData(List<Map<String, Object>> sokuteiDataList,  String position){
+        for (Map<String, Object> map : sokuteiDataList) {
+            // 該当の測定位置のデータが取得出来たらbreak
+            if(position.equals(StringUtil.nullToBlank(map.get("Position")))){
+                return StringUtil.nullToBlank(map.get("Mean"));
+            }
+        }
+        return "";
+    }
+    
 
     /**
      * OKボタン押下時のチェック処理を行う。
