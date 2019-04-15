@@ -2780,35 +2780,24 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
             params.add(lotNo); //ﾛｯﾄNo
             params.add(edaban); //枝番
         }
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.KCPNO, srRsussekData))); //KCPNO
-        // 端子テープ種類
-        switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B005Const.TANSHI_TAPE_SHURUI, srRsussekData))) {
-            case "NG":
-                params.add(0);
-                break;
-            case "OK":
-                params.add(1);
-                break;
-            default:
-                params.add(9);
-                break;
-        }
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.KCPNO, srRsussekData))); //KCPNO        
+        params.add(null);// 端子テープ種類
         params.add(null); //端子ﾃｰﾌﾟＮo
         params.add(null); //端子ﾃｰﾌﾟ原料
-        params.add(DBUtil.stringToDateObject(getItemData(itemList, GXHDO101B005Const.KAISHI_DAY, srRsussekData),
-                getItemData(itemList, GXHDO101B005Const.KAISHI_TIME, srRsussekData))); //開始日時
-        params.add(DBUtil.stringToDateObject(getItemData(itemList, GXHDO101B005Const.SHURYOU_DAY, srRsussekData),
-                getItemData(itemList, GXHDO101B005Const.SHURYOU_TIME, srRsussekData))); //終了日時
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.SEKISOU_GOKI, srRsussekData))); //積層号機
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.KAISHI_DAY, srRsussekData),
+            getItemData(itemList, GXHDO101B005Const.KAISHI_TIME, srRsussekData))); //開始日時
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SHURYOU_DAY, srRsussekData),
+           getItemData(itemList, GXHDO101B005Const.SHURYOU_TIME, srRsussekData))); //終了日時
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SEKISOU_GOKI, srRsussekData))); //積層号機
         params.add(null); //実圧力
         params.add(null); //積層ｽﾞﾚ値2
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.KAISHI_TANTOUSHA, srRsussekData))); //開始担当者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.KAISHI_TANTOUSHA, srRsussekData))); //開始担当者
         params.add(null); //確認者ｺｰﾄﾞ
         params.add(null); //印刷ﾛｰﾙNo
         params.add(null); //発砲ｼｰﾄNo
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B005Const.SHUNJI_KANETSU_TIME, srRsussekData))); //瞬時加熱時間
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B005Const.TAKT, srRsussekData))); //タクト
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.BIKOU1, srRsussekData))); //備考1        
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SHUNJI_KANETSU_TIME, srRsussekData))); //瞬時加熱時間
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.TAKT, srRsussekData))); //タクト
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.BIKOU1, srRsussekData))); //備考1        
         if (isInsert) {
             params.add(systemTime); //登録日時
             params.add(systemTime); //更新日時
@@ -2818,16 +2807,16 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         params.add(skojyo); //先行工場ｺｰﾄﾞ
         params.add(slotNo); //先行ﾛｯﾄNo
         params.add(sedaban); //先行枝番
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.SLIP_LOTNO, srRsussekData))); //ﾃｰﾌﾟｽﾘｯﾌﾟﾛｯﾄNo
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.ROLL_NO1, srRsussekData))); //ﾃｰﾌﾟﾛｰﾙNo1
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.ROLL_NO2, srRsussekData))); //ﾃｰﾌﾟﾛｰﾙNo2
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.ROLL_NO3, srRsussekData))); //ﾃｰﾌﾟﾛｰﾙNo3  
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.GENRYO_KIGOU, srRsussekData))); //原料記号
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.PET_FILM_SHURUI, srRsussekData))); //PETﾌｨﾙﾑ種類
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.KOTYAKU_SHEET_HARITSUKEKI, srRsussekData))); //固着シート貼付り機
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.KOTYAKU_SHEET, srRsussekData))); //固着シート
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.SHITA_TANSHI_GOUKI, srRsussekData))); //下端子号機
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.UE_TANSHI_GOUKI, srRsussekData))); //上端子号機  
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SLIP_LOTNO, srRsussekData))); //ﾃｰﾌﾟｽﾘｯﾌﾟﾛｯﾄNo
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.ROLL_NO1, srRsussekData))); //ﾃｰﾌﾟﾛｰﾙNo1
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.ROLL_NO2, srRsussekData))); //ﾃｰﾌﾟﾛｰﾙNo2
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.ROLL_NO3, srRsussekData))); //ﾃｰﾌﾟﾛｰﾙNo3  
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.GENRYO_KIGOU, srRsussekData))); //原料記号
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.PET_FILM_SHURUI, srRsussekData))); //PETﾌｨﾙﾑ種類
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.KOTYAKU_SHEET_HARITSUKEKI, srRsussekData))); //固着シート貼付り機
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.KOTYAKU_SHEET, srRsussekData))); //固着シート
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SHITA_TANSHI_GOUKI, srRsussekData))); //下端子号機
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.UE_TANSHI_GOUKI, srRsussekData))); //上端子号機  
         // 下端子ﾌﾞｸ抜き
         switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B005Const.SHITA_TANSHI_BUKUNUKI, srRsussekData))) {
             case "未実施":
@@ -2837,18 +2826,18 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 params.add(1);
                 break;
             default:
-                params.add(9);
+                params.add(null);
                 break;
         }
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.SHITA_TANSHI, srRsussekData))); //下端子
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.UWE_TANSHI, srRsussekData))); //上端子
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B005Const.SYORI_SET_SU, srRsussekData))); //処理セット数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B005Const.RYOUHIN_SET_SU, srRsussekData))); //良品セット数
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.GAIKAN_KAKUNIN1, srRsussekData))); //外観確認1
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.GAIKAN_KAKUNIN2, srRsussekData))); //外観確認2
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.GAIKAN_KAKUNIN3, srRsussekData))); //外観確認3
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.GAIKAN_KAKUNIN4, srRsussekData))); //外観確認4
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.SHURYOU_TANTOUSHA, srRsussekData))); //終了担当者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SHITA_TANSHI, srRsussekData))); //下端子
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.UWE_TANSHI, srRsussekData))); //上端子
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SYORI_SET_SU, srRsussekData))); //処理セット数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.RYOUHIN_SET_SU, srRsussekData))); //良品セット数
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.GAIKAN_KAKUNIN1, srRsussekData))); //外観確認1
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.GAIKAN_KAKUNIN2, srRsussekData))); //外観確認2
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.GAIKAN_KAKUNIN3, srRsussekData))); //外観確認3
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.GAIKAN_KAKUNIN4, srRsussekData))); //外観確認4
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SHURYOU_TANTOUSHA, srRsussekData))); //終了担当者
         // 端子テープ種類
         switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B005Const.TANSHI_TAPE_SHURUI, srRsussekData))) {
             case "NG":
@@ -2858,14 +2847,14 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 params.add(1);
                 break;
             default:
-                params.add(9);
+                params.add(null);
                 break;
         }
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B005Const.HAKURI_NG_KAISU, srRsussekData))); //剥離NG回数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B005Const.HAKURI_NG_AVE, srRsussekData))); //剥離NG_AVE        
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B005Const.GASHO_NG_KAISU, srRsussekData))); //画処NG回数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B005Const.GASHO_NG_AVE, srRsussekData))); //画処NG_AVE        
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.BIKOU2, srRsussekData))); //備考2
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.HAKURI_NG_KAISU, srRsussekData))); //剥離NG回数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.HAKURI_NG_AVE, srRsussekData))); //剥離NG_AVE        
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.GASHO_NG_KAISU, srRsussekData))); //画処NG回数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.GASHO_NG_AVE, srRsussekData))); //画処NG_AVE        
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.BIKOU2, srRsussekData))); //備考2
 
         params.add(newRev); //revision
         params.add(deleteflag); //削除ﾌﾗｸﾞ

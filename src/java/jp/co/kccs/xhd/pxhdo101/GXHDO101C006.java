@@ -137,34 +137,35 @@ public class GXHDO101C006 implements Serializable {
 
         // 背景色をクリア
         clearBackColor();
-
+        int lineNo = 0;
         for (GXHDO101C006Model.HakuriInputData hakuriInputData : this.gxhdO101c006ModelView.getHakuriInputDataList()) {
+            lineNo++;
             if (!StringUtil.isEmpty(hakuriInputData.getSetsuuVal())) {
                 if (!NumberUtil.isIntegerNumeric(hakuriInputData.getSetsuuVal())) {
-                    setError(hakuriInputData, true, false, "XHD-000008", "ｾｯﾄ数入力");
+                    setError(hakuriInputData, true, false, "XHD-000008", "ｾｯﾄ数入力"+lineNo);
                     return false;
                 }
 
                 if (4 < StringUtil.length(hakuriInputData.getSetsuuVal())) {
-                    setError(hakuriInputData, true, false, "XHD-000006", "ｾｯﾄ数入力", "4");
+                    setError(hakuriInputData, true, false, "XHD-000006", "ｾｯﾄ数入力"+lineNo, "4");
                     return false;
                 }
             }
 
-            if (!StringUtil.isEmpty(hakuriInputData.getBikouVal())) {                
+            if (!StringUtil.isEmpty(hakuriInputData.getBikouVal())) {
                 if (20 < StringUtil.length(hakuriInputData.getBikouVal())) {
-                    setError(hakuriInputData, false, true, "XHD-000006", "備考", "20");
+                    setError(hakuriInputData, false, true, "XHD-000006", "備考"+lineNo, "20");
                     return false;
                 }
             }
             
             if (!StringUtil.isEmpty(hakuriInputData.getSetsuuVal()) && StringUtil.isEmpty(hakuriInputData.getBikouVal())) {
-                    setError(hakuriInputData, false, true, "XHD-000003", "備考");
+                    setError(hakuriInputData, false, true, "XHD-000003", "備考"+lineNo);
                     return false;
             }
             
             if (StringUtil.isEmpty(hakuriInputData.getSetsuuVal()) && !StringUtil.isEmpty(hakuriInputData.getBikouVal())) {
-                    setError(hakuriInputData,  true, false, "XHD-000003", "ｾｯﾄ数入力");
+                    setError(hakuriInputData,  true, false, "XHD-000003", "ｾｯﾄ数入力"+lineNo);
                     return false;
             }
         }

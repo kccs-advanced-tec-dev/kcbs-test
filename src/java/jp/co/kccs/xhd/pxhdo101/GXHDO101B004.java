@@ -531,7 +531,7 @@ public class GXHDO101B004 implements IFormLogic {
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
             if (kikakuError.getKikakuchiInputErrorInfoList() != null && !kikakuError.getKikakuchiInputErrorInfoList().isEmpty()) {
-                ValidateUtil.fxhdd04Insert(queryRunnerDoc,  conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, jissekiNo, "0", kikakuError.getKikakuchiInputErrorInfoList());
+                ValidateUtil.fxhdd04Insert(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, jissekiNo, "0", kikakuError.getKikakuchiInputErrorInfoList());
             }
             // 処理後はエラーリストをクリア
             kikakuError.setKikakuchiInputErrorInfoList(new ArrayList<>());
@@ -2872,7 +2872,6 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
     private List<Object> setUpdateParameterTmpSrSpssekisou(boolean isInsert, BigDecimal newRev, int deleteflag, String kojyo,
             String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList, SrSpssekisou srSpssekisouData) {
         List<Object> params = new ArrayList<>();
-
         if (isInsert) {
             params.add(kojyo); //工場ｺｰﾄﾞ
             params.add(lotNo); //ﾛｯﾄNo
@@ -2881,34 +2880,34 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         params.add(null); //端子ﾃｰﾌﾟ種類
         params.add(null); //端子ﾃｰﾌﾟNo
         params.add(null); //端子ﾃｰﾌﾟ原料
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.SEKISO_GOKI, srSpssekisouData))); //積層号機
-        params.add(DBUtil.stringToDateObject(
-                getItemData(itemList, GXHDO101B004Const.KAISHI_DAY, srSpssekisouData),
-                getItemData(itemList, GXHDO101B004Const.KAISHI_TIME, srSpssekisouData))); //開始日時
-        params.add(DBUtil.stringToDateObject(
-                getItemData(itemList, GXHDO101B004Const.SHURYO_DAY, srSpssekisouData),
-                getItemData(itemList, GXHDO101B004Const.SHURYO_TIME, srSpssekisouData))); //終了日時
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.SEKISO_GOKI, srSpssekisouData))); //積層号機
+        params.add(DBUtil.stringToDateObjectDefaultNull(
+            getItemData(itemList, GXHDO101B004Const.KAISHI_DAY, srSpssekisouData),
+            getItemData(itemList, GXHDO101B004Const.KAISHI_TIME, srSpssekisouData))); //開始日時
+        params.add(DBUtil.stringToDateObjectDefaultNull(
+            getItemData(itemList, GXHDO101B004Const.SHURYO_DAY, srSpssekisouData),
+            getItemData(itemList, GXHDO101B004Const.SHURYO_TIME, srSpssekisouData))); //終了日時
         params.add(null);//積層ｽﾞﾚ
         params.add(null);//担当者ｺｰﾄﾞ
         params.add(null);//確認者ｺｰﾄﾞ
         params.add(null);//積層ｽﾞﾚ2
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.BIKOU1, srSpssekisouData))); //備考1
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.BIKOU2, srSpssekisouData))); //備考2
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.BIKOU1, srSpssekisouData))); //備考1
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.BIKOU2, srSpssekisouData))); //備考2
         params.add(null);//備考3
         params.add(null);//備考4
         params.add(null);//備考5
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.KCPNO, srSpssekisouData))); //KCPNO
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.KCPNO, srSpssekisouData))); //KCPNO
         params.add(null);//号機ｺｰﾄﾞ
         params.add(null);//ﾃｰﾌﾟLot
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.HAKURI_SPEED, srSpssekisouData))); //剥離速度
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.HAKURI_SPEED, srSpssekisouData))); //剥離速度
         params.add(null);//金型温度
         params.add(null);//電極圧力
         params.add(null);//電極加圧時間
         params.add(null);//中間ﾌﾟﾚｽ圧力
         params.add(null);//中間ﾌﾟﾚｽ加圧時間
         params.add(null);//中間ﾌﾟﾚｽ間隔総数
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.LAST_KAATURYOKU, srSpssekisouData))); //最終加圧力
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.LAST_KAATUJIKAN, srSpssekisouData))); //最終加圧時間
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.LAST_KAATURYOKU, srSpssekisouData))); //最終加圧力
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.LAST_KAATUJIKAN, srSpssekisouData))); //最終加圧時間
         params.add(null);//4分割担当者ｺｰﾄﾞ
         params.add(null);//積層ﾀｵﾚ量1
         params.add(null);//積層ﾀｵﾚ量2
@@ -2918,22 +2917,22 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         params.add(null);//積層後T寸法MAX
         params.add(null);//積層後T寸法MIN
         params.add(null);//積層後T寸法σ
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.HNG_KAISUU, srSpssekisouData))); //剥離NG回数
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.HNG_KAISUU, srSpssekisouData))); //剥離NG回数
         params.add(null);//最終外観担当者ｺｰﾄﾞ
         params.add(null);//中間ﾌﾟﾚｽ回数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B004Const.HNG_AVE, srSpssekisouData))); //剥離NG_AVE
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.GNG_KAISUU, srSpssekisouData))); //画処NG回数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B004Const.GNG_KAISUUAVE, srSpssekisouData))); //画処NG_AVE
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.SLIP_LOTNO, srSpssekisouData))); //ﾃｰﾌﾟｽﾘｯﾌﾟﾛｯﾄNo
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.ROLL_NO1, srSpssekisouData))); //ﾃｰﾌﾟﾛｰﾙNo1
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.ROLL_NO2, srSpssekisouData))); //ﾃｰﾌﾟﾛｰﾙNo2
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.ROLL_NO3, srSpssekisouData))); //ﾃｰﾌﾟﾛｰﾙNo3
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.GENRYO_KIGOU, srSpssekisouData))); //原料記号
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.PET_FILM_SHURUI, srSpssekisouData))); //PETﾌｨﾙﾑ種類
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.KOTYAKU_GOUKI, srSpssekisouData))); //固着シート貼付り機
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.KOTYAKU_SHEET, srSpssekisouData))); //固着シート
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.SHITATANSHI_GOUKI, srSpssekisouData))); //下端子号機
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.UWATANSHI_GOUKI, srSpssekisouData))); //上端子号機
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.HNG_AVE, srSpssekisouData))); //剥離NG_AVE
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.GNG_KAISUU, srSpssekisouData))); //画処NG回数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.GNG_KAISUUAVE, srSpssekisouData))); //画処NG_AVE
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.SLIP_LOTNO, srSpssekisouData))); //ﾃｰﾌﾟｽﾘｯﾌﾟﾛｯﾄNo
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.ROLL_NO1, srSpssekisouData))); //ﾃｰﾌﾟﾛｰﾙNo1
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.ROLL_NO2, srSpssekisouData))); //ﾃｰﾌﾟﾛｰﾙNo2
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.ROLL_NO3, srSpssekisouData))); //ﾃｰﾌﾟﾛｰﾙNo3
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.GENRYO_KIGOU, srSpssekisouData))); //原料記号
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.PET_FILM_SHURUI, srSpssekisouData))); //PETﾌｨﾙﾑ種類
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.KOTYAKU_GOUKI, srSpssekisouData))); //固着シート貼付り機
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.KOTYAKU_SHEET, srSpssekisouData))); //固着シート
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.SHITATANSHI_GOUKI, srSpssekisouData))); //下端子号機
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.UWATANSHI_GOUKI, srSpssekisouData))); //上端子号機
         // 下端子ﾌﾞｸ抜き
         switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B004Const.SHITA_TANSHI_BUKUNUKI, srSpssekisouData))) {
             case "未実施":
@@ -2943,27 +2942,27 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 params.add(1);
                 break;
             default:
-                params.add(9);
+                params.add(null);
                 break;
         }
 
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.SHITA_TANSHI, srSpssekisouData))); //下端子
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.HAKURI_KYUIN, srSpssekisouData))); //剥離吸引圧
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B004Const.HAKURI_CLEARRANCE, srSpssekisouData))); //剥離クリアランス
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.HAKURI_CUT_SPEED, srSpssekisouData))); //剥離カット速度
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B004Const.SHITA_PANCHI_ONDO, srSpssekisouData))); //下パンチ温度
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B004Const.UWA_PANCHI_ONDO, srSpssekisouData))); //上パンチ温度
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B004Const.KAATU_JIKAN, srSpssekisouData))); //加圧時間
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.KAATU_ATURYOKU, srSpssekisouData))); //加圧圧力
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.UWA_TANSHI, srSpssekisouData))); //上端子
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.GAIKAN_KAKUNIN1, srSpssekisouData))); //外観確認1
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.GAIKAN_KAKUNIN2, srSpssekisouData))); //外観確認2
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.GAIKAN_KAKUNIN3, srSpssekisouData))); //外観確認3
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.GAIKAN_KAKUNIN4, srSpssekisouData))); //外観確認4
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.SYORI_SETSUU, srSpssekisouData))); //処理セット数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B004Const.RYOUHIN_SETSUU, srSpssekisouData))); //良品セット数
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.KAISHI_TANTOSYA, srSpssekisouData))); //開始担当者
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.SHURYO_TANTOSYA, srSpssekisouData))); //終了担当者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.SHITA_TANSHI, srSpssekisouData))); //下端子
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.HAKURI_KYUIN, srSpssekisouData))); //剥離吸引圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.HAKURI_CLEARRANCE, srSpssekisouData))); //剥離クリアランス
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.HAKURI_CUT_SPEED, srSpssekisouData))); //剥離カット速度
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.SHITA_PANCHI_ONDO, srSpssekisouData))); //下パンチ温度
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.UWA_PANCHI_ONDO, srSpssekisouData))); //上パンチ温度
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.KAATU_JIKAN, srSpssekisouData))); //加圧時間
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.KAATU_ATURYOKU, srSpssekisouData))); //加圧圧力
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.UWA_TANSHI, srSpssekisouData))); //上端子
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.GAIKAN_KAKUNIN1, srSpssekisouData))); //外観確認1
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.GAIKAN_KAKUNIN2, srSpssekisouData))); //外観確認2
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.GAIKAN_KAKUNIN3, srSpssekisouData))); //外観確認3
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.GAIKAN_KAKUNIN4, srSpssekisouData))); //外観確認4
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.SYORI_SETSUU, srSpssekisouData))); //処理セット数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.RYOUHIN_SETSUU, srSpssekisouData))); //良品セット数
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.KAISHI_TANTOSYA, srSpssekisouData))); //開始担当者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.SHURYO_TANTOSYA, srSpssekisouData))); //終了担当者
         // 端子テープ種類
         switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B004Const.TTAPE_SYURUI, srSpssekisouData))) {
             case "NG":
@@ -2973,7 +2972,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 params.add(1);
                 break;
             default:
-                params.add(9);
+                params.add(null);
                 break;
         }
         
