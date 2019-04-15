@@ -375,7 +375,7 @@ public class GXHDO101B001 implements IFormLogic {
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
             if (kikakuError.getKikakuchiInputErrorInfoList() != null && !kikakuError.getKikakuchiInputErrorInfoList().isEmpty()) {
-                ValidateUtil.fxhdd04Insert(queryRunnerDoc, tantoshaCd, newRev, lotNo, formId, formTitle, jissekiNo, "0", kikakuError.getKikakuchiInputErrorInfoList());
+                ValidateUtil.fxhdd04Insert(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, jissekiNo, "0", kikakuError.getKikakuchiInputErrorInfoList());
             }
             // 処理後はエラーリストをクリア
             kikakuError.setKikakuchiInputErrorInfoList(new ArrayList<>());
@@ -664,7 +664,7 @@ public class GXHDO101B001 implements IFormLogic {
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
             if (kikakuError.getKikakuchiInputErrorInfoList() != null && !kikakuError.getKikakuchiInputErrorInfoList().isEmpty()) {
-                ValidateUtil.fxhdd04Insert(queryRunnerDoc, tantoshaCd, newRev, lotNo, formId, formTitle, jissekiNo, "0", kikakuError.getKikakuchiInputErrorInfoList());
+                ValidateUtil.fxhdd04Insert(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, jissekiNo, "0", kikakuError.getKikakuchiInputErrorInfoList());
             }
             // 処理後はエラーリストをクリア
             kikakuError.setKikakuchiInputErrorInfoList(new ArrayList<>());
@@ -833,7 +833,7 @@ public class GXHDO101B001 implements IFormLogic {
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
             if (kikakuError.getKikakuchiInputErrorInfoList() != null && !kikakuError.getKikakuchiInputErrorInfoList().isEmpty()) {
-                ValidateUtil.fxhdd04Insert(queryRunnerDoc, tantoshaCd, newRev, lotNo, formId, formTitle, jissekiNo, "0", kikakuError.getKikakuchiInputErrorInfoList());
+                ValidateUtil.fxhdd04Insert(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, jissekiNo, "0", kikakuError.getKikakuchiInputErrorInfoList());
             }
             // 処理後はエラーリストをクリア
             kikakuError.setKikakuchiInputErrorInfoList(new ArrayList<>());

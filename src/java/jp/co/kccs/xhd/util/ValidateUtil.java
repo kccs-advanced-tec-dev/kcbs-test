@@ -4,6 +4,7 @@
 package jp.co.kccs.xhd.util;
 
 import java.math.BigDecimal;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -1477,6 +1478,7 @@ public class ValidateUtil {
      * 規格外登録履歴登録処理
      *
      * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param conDoc コネクション
      * @param tantoshaCd 担当者コード
      * @param rev 履歴No
      * @param lotNo ロットNo
@@ -1487,7 +1489,7 @@ public class ValidateUtil {
      * @param kikakuchiErrorInfoList 規格値エラー情報リスト
      * @throws SQLException 例外エラー
      */
-    public static void fxhdd04Insert(QueryRunner queryRunnerDoc, String tantoshaCd, BigDecimal rev, String lotNo, String formId, String gamenTitle, int jissekino, String deleteFlag, List<KikakuchiInputErrorInfo> kikakuchiErrorInfoList) throws SQLException {
+    public static void fxhdd04Insert(QueryRunner queryRunnerDoc, Connection conDoc, String tantoshaCd, BigDecimal rev, String lotNo, String formId, String gamenTitle, int jissekino, String deleteFlag, List<KikakuchiInputErrorInfo> kikakuchiErrorInfoList) throws SQLException {
 
         String sql = "INSERT INTO fxhdd04 ("
                 + "torokusha, toroku_date, koshinsha, koshin_date, rev, gamen_id, gamen_title, kojyo, lotno, edaban,"
@@ -1499,7 +1501,7 @@ public class ValidateUtil {
         for (KikakuchiInputErrorInfo kikakuchiInputErrorInfo : kikakuchiErrorInfoList) {
             params = getFxhdd04UpdateParams(tantoshaCd, rev, lotNo, formId, gamenTitle, jissekino, deleteFlag, kikakuchiInputErrorInfo);
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-            queryRunnerDoc.update(sql, params.toArray());
+            queryRunnerDoc.update(conDoc, sql, params.toArray());
         }
     }
 
