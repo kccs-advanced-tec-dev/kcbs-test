@@ -311,27 +311,27 @@
                     <p:column id="uwaTanshi" headerText="上端子" >
                         <p:outputLabel value="#{item.uwaTanshi}"/>
                     </p:column>
-                    <p:column id="syoriSetsuu" headerText="外観確認1" styleClass="number">
+                    <p:column id="syoriSetsuu" headerText="外観確認1">
+                        <p:outputLabel value="#{item.gaikanKakunin1}"/>
+                    </p:column>
+                    <p:column id="ryouhinSetsuu" headerText="外観確認2">
+                        <p:outputLabel value="#{item.gaikanKakunin2}"/>
+                    </p:column>
+                    <p:column id="gaikanKakunin1" headerText="外観確認3" >
+                        <p:outputLabel value="#{item.gaikanKakunin3}"/>
+                    </p:column>
+                    <p:column id="gaikanKakunin2" headerText="外観確認4" >
+                        <p:outputLabel value="#{item.gaikanKakunin4}"/>
+                    </p:column>
+                    <p:column id="gaikanKakunin3" headerText="処理ｾｯﾄ数" styleClass="number">
                         <p:outputLabel value="#{item.syoriSetsuu}">
                             <f:convertNumber pattern="#,###,###,##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="ryouhinSetsuu" headerText="外観確認2" styleClass="number">
+                    <p:column id="gaikanKakunin4" headerText="良品ｾｯﾄ数"  styleClass="number">
                         <p:outputLabel value="#{item.ryouhinSetsuu}">
                             <f:convertNumber pattern="##0.0"/>
                         </p:outputLabel>
-                    </p:column>
-                    <p:column id="gaikanKakunin1" headerText="外観確認3" >
-                        <p:outputLabel value="#{item.gaikanKakunin1}"/>
-                    </p:column>
-                    <p:column id="gaikanKakunin2" headerText="外観確認4" >
-                        <p:outputLabel value="#{item.gaikanKakunin2}"/>
-                    </p:column>
-                    <p:column id="gaikanKakunin3" headerText="処理ｾｯﾄ数" >
-                        <p:outputLabel value="#{item.gaikanKakunin3}"/>
-                    </p:column>
-                    <p:column id="gaikanKakunin4" headerText="良品ｾｯﾄ数" >
-                        <p:outputLabel value="#{item.gaikanKakunin4}"/>
                     </p:column>
                     <p:column id="endTantousyacode" headerText="終了担当者" >
                         <p:outputLabel value="#{item.endTantousyacode}"/>
