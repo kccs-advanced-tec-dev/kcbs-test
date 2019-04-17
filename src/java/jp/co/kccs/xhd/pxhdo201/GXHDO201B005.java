@@ -567,7 +567,7 @@ public class GXHDO201B005 implements Serializable {
         if (listCountMax > 0 && count > listCountMax) {
             // 検索結果が上限件数以上の場合エラー終了
             FacesMessage message = 
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000056", listCountMax), null);
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000046", listCountMax), null);
             FacesContext.getCurrentInstance().addMessage(null, message);
             return;
         } 
@@ -620,6 +620,7 @@ public class GXHDO201B005 implements Serializable {
             // パラメータ設定
             List<Object> params = createSearchParam();
             
+            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
             Map result = queryRunner.query(sql, new MapHandler(), params.toArray());
             count = (long)result.get("CNT");
             

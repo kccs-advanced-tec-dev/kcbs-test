@@ -572,6 +572,7 @@ public class GXHDO201B004 implements Serializable {
             // パラメータ設定
             List<Object> params = createSearchParam();
             
+            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
             Map result = queryRunner.query(sql, new MapHandler(), params.toArray());
             count = (long)result.get("CNT");
             
