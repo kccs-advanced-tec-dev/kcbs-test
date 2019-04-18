@@ -38,7 +38,7 @@
     {"no":"33","id":"ryouhinSetsuu","columnname":"良品ｾｯﾄ数","type":"BigDecimal","format":"4,1"},
     {"no":"38","id":"endTantousyacode","columnname":"終了担当者","type":"String","format":""},
     {"no":"39","id":"tanshiTapeSyurui","columnname":"端子ﾃｰﾌﾟ種類確認","type":"String","format":""},
-    {"no":"40","id":"hNGKaisuu","columnname":"隔離NG回数","type":"Long","format":"10,0"},
+    {"no":"40","id":"hNGKaisuu","columnname":"剥離NG回数","type":"Long","format":"10,0"},
     {"no":"41","id":"hNGKaisuuAve","columnname":"剥離NG回数AVE","type":"BigDecimal","format":"6,3"},
     {"no":"42","id":"gNGKaisuu","columnname":"画処NG回数","type":"Long","format":"10,0"},
     {"no":"43","id":"gNGKaisuuAve","columnname":"画処NG回数AVE","type":"BigDecimal","format":"6,3"},

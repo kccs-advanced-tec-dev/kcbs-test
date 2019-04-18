@@ -33,7 +33,7 @@
     {"no":"32","id":"epasteondo","columnname":"電極ﾍﾟｰｽﾄ温度","type":"BigDecimal","format":"4,1"},
     {"no":"33","id":"eseihanmei","columnname":"電極製版名","type":"String","format":""},
     {"no":"34","id":"eseihanno","columnname":"電極製版No","type":"String","format":""},
-    {"no":"35","id":"eseimaisuu","columnname":"電極製版枚数","type":"Long","format":"6,1"},
+    {"no":"35","id":"eseimaisuu","columnname":"電極製版枚数","type":"Long","format":"6,0"},
     {"no":"36","id":"eclearance","columnname":"電極ｸﾘｱﾗﾝｽ","type":"BigDecimal","format":"3,2"},
     {"no":"37","id":"esaatu","columnname":"電極差圧","type":"BigDecimal","format":"7,2"},
     {"no":"38","id":"eskeegeno","columnname":"電極ｽｷｰｼﾞNo","type":"String","format":""},

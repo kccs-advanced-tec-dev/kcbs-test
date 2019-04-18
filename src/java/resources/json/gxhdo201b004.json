@@ -35,7 +35,7 @@
     {"no":"34","id":"sTsunAve","columnname":"積層後T寸法AVE","type":"Long","format":"10,0"},
     {"no":"35","id":"sTsunMax","columnname":"積層後T寸法MAX","type":"Long","format":"10,0"},
     {"no":"36","id":"sTsunMin","columnname":"積層後T寸法MIN","type":"Long","format":"10,0"},
-    {"no":"37","id":"sTsunSiguma","columnname":"積層後T寸法σ","type":"BigDecimal","format":"3,0"},
+    {"no":"37","id":"sTsunSiguma","columnname":"積層後T寸法σ","type":"BigDecimal","format":"3,1"},
     {"no":"38","id":"hNGKaisuu","columnname":"隔離NG回数","type":"Long","format":"10,0"},
     {"no":"39","id":"gaikanTantou","columnname":"最終外観担当者ｺｰﾄﾞ","type":"String","format":""},
     {"no":"40","id":"cPressKaisuu","columnname":"中間ﾌﾟﾚｽ回数","type":"Long","format":"10,0"},
