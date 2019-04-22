@@ -3200,19 +3200,8 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
             params.add(lotNo); //ﾛｯﾄNo
             params.add(edaban); //枝番
         }
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.KCPNO, srRsussekData))); //KCPNO
-        // 端子テープ種類
-        switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B005Const.TANSHI_TAPE_SHURUI, srRsussekData))) {
-            case "NG":
-                params.add(0);
-                break;
-            case "OK":
-                params.add(1);
-                break;
-            default:
-                params.add(9);
-                break;
-        }
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.KCPNO, srRsussekData))); //KCPNO        
+        params.add(""); // 端子テープ種類
         params.add(""); //端子ﾃｰﾌﾟＮo
         params.add(""); //端子ﾃｰﾌﾟ原料
         params.add(DBUtil.stringToDateObject(getItemData(itemList, GXHDO101B005Const.KAISHI_DAY, srRsussekData),
@@ -3742,7 +3731,7 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 return StringUtil.nullToBlank(srRsussekData.getEndtantousyacode());
             // 端子テープ種類
             case GXHDO101B005Const.TANSHI_TAPE_SHURUI:
-                switch (StringUtil.nullToBlank(srRsussekData.getTntapesyurui())) {
+                switch (StringUtil.nullToBlank(srRsussekData.getTanshitapesyurui())) {
                     case "0":
                         return "NG";
                     case "1":
