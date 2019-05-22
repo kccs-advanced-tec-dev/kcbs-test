@@ -136,7 +136,9 @@ public class GXHDO101C007Logic {
     public static void setReturnData(GXHDO101C007Model gXHDO101C007Model, List<FXHDD01> itemList) {
 
         FXHDD01 itemAve = getItemRow(itemList, gXHDO101C007Model.getReturnItemIdAve());
-        if (itemAve == null) {
+        FXHDD01 itemMax = getItemRow(itemList, gXHDO101C007Model.getReturnItemIdMax());
+        FXHDD01 itemMin = getItemRow(itemList, gXHDO101C007Model.getReturnItemIdMin());
+        if (itemAve == null && itemMax == null && itemMin == null) {
             return;
         }
 
@@ -152,13 +154,22 @@ public class GXHDO101C007Logic {
             }
         }
 
+        BigDecimal[] analysisData = null;
         if (dataList.size() == 9) {
             // 全て値が設定されていた場合のみ算出値をセットする
-            setItemValue(itemAve, NumberUtil.getAve(dataList));
+            analysisData = NumberUtil.getAnalysisData(dataList);
         } else if (dataList5.size() == 5) {
             // 1～5値が設定されていた場合のみ算出値をセットする
-            setItemValue(itemAve, NumberUtil.getAve(dataList5));
+            analysisData = NumberUtil.getAnalysisData(dataList5);
+        }
+
+        if (analysisData != null) {
+            setItemValue(itemMax, analysisData[0]);
+            setItemValue(itemMin, analysisData[1]);
+            setItemValue(itemAve, analysisData[2]);
         } else {
+            setItemValue(itemMax, null);
+            setItemValue(itemMin, null);
             setItemValue(itemAve, null);
         }
     }

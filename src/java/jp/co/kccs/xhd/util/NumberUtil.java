@@ -276,5 +276,57 @@ public class NumberUtil {
         
         return sum.divide(BigDecimal.valueOf(calcDataList.size()), 15, RoundingMode.DOWN);
     }
+    
+    
+    /**
+     * リストで受け取った値の(最大、最小、平均、合計)を受け取る
+     * ※算出できない場合は各値NULLを返却
+     *
+     * @param calcDataList 計算データリスト
+     * @return 計算結果(最大、最小、平均、合計)の順に配列で返す。
+     */
+    public static BigDecimal[] getAnalysisData(List<String> calcDataList) {
+        if (calcDataList == null || calcDataList.isEmpty()) {
+            return new BigDecimal[]{null, null, null, null};
+        }
 
+        BigDecimal sum = null;
+        BigDecimal max = null;
+        BigDecimal min = null;
+        BigDecimal ave = null;
+        BigDecimal value;
+        for (String strValue : calcDataList) {
+            try {
+                value = new BigDecimal(strValue);
+                
+                // 合計
+                if (sum == null) {
+                    sum = value;
+                } else {
+                    sum = sum.add(value);
+                }
+
+                // 最大
+                if (max == null || max.compareTo(value) < 0) {
+                    max = value;
+                }
+
+                // 最小
+                if (min == null || 0 < min.compareTo(value)) {
+                    min = value;
+                }
+
+            } catch (NumberFormatException e) {
+                // 処理なし
+            }
+        }
+        //平均
+        if (sum != null) {
+            ave = sum.divide(BigDecimal.valueOf(calcDataList.size()), 15, RoundingMode.DOWN);
+        }
+
+        return new BigDecimal[]{max, min, ave, sum};
+    }
+    
+    
 }

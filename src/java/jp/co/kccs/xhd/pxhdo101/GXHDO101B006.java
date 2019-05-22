@@ -1336,7 +1336,7 @@ public class GXHDO101B006 implements IFormLogic {
         }
 
         // 入力項目の情報を画面にセットする。
-        if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId)) {
+        if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId, StringUtil.nullToBlank(sekkeiData.get("SEKKEINO")))) {
             // エラー発生時は処理を中断
             processData.setFatalError(true);
             processData.setInitMessageList(Arrays.asList(MessageUtil.getMessage("XHD-000038")));
@@ -1501,11 +1501,12 @@ public class GXHDO101B006 implements IFormLogic {
      * @param queryRunnerQcdb QueryRunnerオブジェクト(Qcdb)
      * @param lotNo ﾛｯﾄNo
      * @param formId 画面ID
+     * @param sekkeino 設計No
      * @return 設定結果(失敗時false)
      * @throws SQLException 例外エラー
      */
     private boolean setInputItemData(ProcessData processData, QueryRunner queryRunnerDoc, QueryRunner queryRunnerQcdb,
-            String lotNo, String formId) throws SQLException {
+            String lotNo, String formId, String sekkeino) throws SQLException {
 
         List<SrRhaps> srRhapsDataList = new ArrayList<>();
         List<SubSrRhaps> subSrRhapsDataList = new ArrayList<>();
@@ -1542,7 +1543,7 @@ public class GXHDO101B006 implements IFormLogic {
                 setInputItemDataSubFormC009(null, kojyo, lotNo8, edaban);
 
                 // 被り量(µm)(データ設定
-                setInputItemDataSubFormC010(null, kojyo, lotNo8, edaban);
+                setInputItemDataSubFormC010(null, kojyo, lotNo8, edaban, sekkeino, queryRunnerQcdb);
 
                 return true;
             }
@@ -1586,7 +1587,7 @@ public class GXHDO101B006 implements IFormLogic {
         setInputItemDataSubFormC009(subSrRhapsDataList.get(0), kojyo, lotNo8, edaban);
 
         // 被り量(µm)画面データ設定
-        setInputItemDataSubFormC010(subSrRhapsDataList.get(0), kojyo, lotNo8, edaban);
+        setInputItemDataSubFormC010(subSrRhapsDataList.get(0), kojyo, lotNo8, edaban, sekkeino, queryRunnerQcdb);
 
         return true;
 
@@ -1850,6 +1851,8 @@ public class GXHDO101B006 implements IFormLogic {
 
         // サブ画面から戻ったときに値を設定する項目を指定する。
         model.setReturnItemIdAve(GXHDO101B006Const.DENKYOKU_MAKUATSU_AVE);
+        model.setReturnItemIdMax(GXHDO101B006Const.DENKYOKU_MAKUATSU_MAX);
+        model.setReturnItemIdMin(GXHDO101B006Const.DENKYOKU_MAKUATSU_MIN);
 
         beanGXHDO101C007.setGxhdO101c007Model(model);
     }
@@ -1948,8 +1951,9 @@ public class GXHDO101B006 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
+     * @param sekkeino 設計No
      */
-    private void setInputItemDataSubFormC010(SubSrRhaps subSrRhapsData, String kojyo, String lotNo, String edaban) {
+    private void setInputItemDataSubFormC010(SubSrRhaps subSrRhapsData, String kojyo, String lotNo, String edaban, String sekkeino, QueryRunner queryRunnerQcdb) throws SQLException {
         // サブ画面の情報を取得
         GXHDO101C010 beanGXHDO101C010 = (GXHDO101C010) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C010);
 
@@ -1958,7 +1962,12 @@ public class GXHDO101B006 implements IFormLogic {
         beanGXHDO101C010.setKojyo(kojyo); //工場ｺｰﾄﾞ
         beanGXHDO101C010.setLotno(lotNo); //ﾛｯﾄNo
         beanGXHDO101C010.setEdaban(edaban); //枝番
-
+        if (!StringUtil.isEmpty(sekkeino)) {
+            String[] kaburiryoXY = GXHDO101C010Logic.getKaburiryo(LOGGER, queryRunnerQcdb, sekkeino);
+            beanGXHDO101C010.setKaburiryoX(kaburiryoXY[0]); //被り量X
+            beanGXHDO101C010.setKaburiryoY(kaburiryoXY[1]); //被り量Y
+        }
+        
         GXHDO101C010Model model;
         if (subSrRhapsData == null) {
             // 登録データが無い場合空の状態で初期値をセットする。
@@ -2064,6 +2073,8 @@ public class GXHDO101B006 implements IFormLogic {
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
     }
+    
+    
 
     /**
      * 設計データ関連付けマップ取得
@@ -3020,7 +3031,7 @@ public class GXHDO101B006 implements IFormLogic {
             setInputItemDataSubFormC009(subSrRhapsDataList.get(0), kojyo, lotNo8, edaban);
 
             // 被り量(µm)画面データ設定
-            setInputItemDataSubFormC010(subSrRhapsDataList.get(0), kojyo, lotNo8, edaban);
+            setInputItemDataSubFormC010(subSrRhapsDataList.get(0), kojyo, lotNo8, edaban, null, null);
 
             // 次呼出しメソッドをクリア
             processData.setMethod("");

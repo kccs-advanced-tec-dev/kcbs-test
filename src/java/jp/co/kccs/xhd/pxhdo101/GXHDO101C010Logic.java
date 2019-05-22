@@ -3,12 +3,19 @@
  */
 package jp.co.kccs.xhd.pxhdo101;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
 import jp.co.kccs.xhd.model.GXHDO101C010Model;
+import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
 import jp.co.kccs.xhd.util.StringUtil;
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.MapHandler;
+import org.apache.commons.dbutils.handlers.MapListHandler;
 
 /**
  * ===============================================================================<br>
@@ -247,5 +254,43 @@ public class GXHDO101C010Logic {
         }
 
         return errorList;
+    }
+    
+    /**
+     * [条件]から初期表示する情報を取得
+     *
+     * @param logger ロガー
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param sekkeino 設計No
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    public static String[] getKaburiryo(Logger logger, QueryRunner queryRunnerQcdb, String sekkeino) throws SQLException {
+        String kaburiryoX = "";
+        String kaburiryoY = "";
+
+        // 条件データの取得
+        String sql = "SELECT KIKAKUCHI,KANRIKOUMOKU "
+                + "FROM da_joken "
+                + "WHERE SEKKEINO = ? "
+                + "AND KOUTEIMEI = '印刷/積層' "
+                + "AND KOUMOKUMEI = '誘電体被り量測定' "
+                + "AND KANRIKOUMOKU IN('合わせ5点1', '合わせ5点2')";
+
+        List<Object> params = new ArrayList<>();
+        params.add(sekkeino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), logger);
+        List<Map<String, Object>> dataList = queryRunnerQcdb.query(sql, new MapListHandler(), params.toArray());
+        for (Map<String, Object> map : dataList) {
+            if ("合わせ5点1".equals(map.get("KANRIKOUMOKU"))) {
+                kaburiryoX = StringUtil.nullToBlank(map.get("KIKAKUCHI"));
+            }
+            if ("合わせ5点2".equals(map.get("KANRIKOUMOKU"))) {
+                kaburiryoY = StringUtil.nullToBlank(map.get("KIKAKUCHI"));
+            }
+        }
+
+        return new String[]{kaburiryoX, kaburiryoY};
     }
 }

@@ -59,6 +59,16 @@ public class GXHDO101C007Model implements Cloneable {
      * 電極膜厚AVE設定項目ID
      */
     private String returnItemIdAve ="";
+
+    /**
+     * 電極膜厚MAX設定項目ID
+     */
+    private String returnItemIdMax ="";
+
+    /**
+     * 電極膜厚MIN設定項目ID
+     */
+    private String returnItemIdMin ="";
     
     /**
      * 電極膜厚データリスト
@@ -86,6 +96,38 @@ public class GXHDO101C007Model implements Cloneable {
      */
     public void setReturnItemIdAve(String returnItemIdAve) {
         this.returnItemIdAve = returnItemIdAve;
+    }
+
+    /**
+     * 電極膜厚MAX設定項目ID
+     * @return the returnItemIdMax
+     */
+    public String getReturnItemIdMax() {
+        return returnItemIdMax;
+    }
+
+    /**
+     * 電極膜厚MAX設定項目ID
+     * @param returnItemIdMax the returnItemIdMax to set
+     */
+    public void setReturnItemIdMax(String returnItemIdMax) {
+        this.returnItemIdMax = returnItemIdMax;
+    }
+
+    /**
+     * 電極膜厚MIN設定項目ID
+     * @return the returnItemIdMin
+     */
+    public String getReturnItemIdMin() {
+        return returnItemIdMin;
+    }
+
+    /**
+     * 電極膜厚MIN設定項目ID
+     * @param returnItemIdMin the returnItemIdMin to set
+     */
+    public void setReturnItemIdMin(String returnItemIdMin) {
+        this.returnItemIdMin = returnItemIdMin;
     }
 
     /**

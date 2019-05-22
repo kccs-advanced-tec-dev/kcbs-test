@@ -53,6 +53,14 @@ public class GXHDO101C010 implements Serializable {
      * 枝番
      */
     private String edaban;
+    /**
+     * 被り量X
+     */
+    private String kaburiryoX;
+    /**
+     * 被り量Y
+     */
+    private String kaburiryoY;
 
     /**
      * フォームエラー判定
@@ -136,6 +144,38 @@ public class GXHDO101C010 implements Serializable {
      */
     public void setEdaban(String edaban) {
         this.edaban = edaban;
+    }
+
+    /**
+     * 被り量X
+     * @return the kaburiryoX
+     */
+    public String getKaburiryoX() {
+        return kaburiryoX;
+    }
+
+    /**
+     * 被り量X
+     * @param kaburiryoX the kaburiryoX to set
+     */
+    public void setKaburiryoX(String kaburiryoX) {
+        this.kaburiryoX = kaburiryoX;
+    }
+
+    /**
+     * 被り量Y
+     * @return the kaburiryoY
+     */
+    public String getKaburiryoY() {
+        return kaburiryoY;
+    }
+
+    /**
+     * 被り量Y
+     * @param kaburiryoY the kaburiryoY to set
+     */
+    public void setKaburiryoY(String kaburiryoY) {
+        this.kaburiryoY = kaburiryoY;
     }
 
     /**

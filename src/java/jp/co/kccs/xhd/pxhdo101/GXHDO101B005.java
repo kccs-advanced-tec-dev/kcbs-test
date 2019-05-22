@@ -1282,7 +1282,7 @@ public class GXHDO101B005 implements IFormLogic {
         this.setItemData(processData, GXHDO101B005Const.DENKYOKU_PASTE, "");
         
         // 積層スライド量
-        this.setItemData(processData, GXHDO101B005Const.SEKISOU_SLIDE_RYOU, "");
+        this.setItemData(processData, GXHDO101B005Const.SEKISOU_SLIDE_RYOU,  StringUtil.nullToBlank(sekkeiData.get("ABSLIDE")));
 
         // 最上層スライド量
         this.setItemData(processData, GXHDO101B005Const.LAST_LAYER_SLIDE_RYO, StringUtil.nullToBlank(sekkeiData.get("LASTLAYERSLIDERYO")));
@@ -1678,7 +1678,7 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         // 設計データの取得
         String sql = "SELECT SEKKEINO,"
                 + "GENRYOU,ETAPE,EATUMI,SOUSUU,EMAISUU,SYURUI2,ATUMI2,"
-                + "MAISUU2,SYURUI3,ATUMI3,MAISUU3,PATTERN,LASTLAYERSLIDERYO "
+                + "MAISUU2,SYURUI3,ATUMI3,MAISUU3,PATTERN,LASTLAYERSLIDERYO,ABSLIDE "
                 + "FROM da_sekkei "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = '001'";
 
@@ -1710,6 +1710,8 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 put("ATUMI3", "下カバーテープ１");
                 put("MAISUU3", "下カバーテープ１");
                 put("PATTERN", "電極製版名");
+                put("ABSLIDE", "積層スライド量");
+                put("LASTLAYERSLIDERYO", "最上層スライド量");
             }
         };
 
