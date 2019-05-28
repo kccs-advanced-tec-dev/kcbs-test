@@ -191,30 +191,31 @@
                                           style="margin-left:8px;font-size:#{item.fontSize3}px;color:#{item.fontColor3};vertical-align: middle;"/>
 
                             <h:outputText id="lblValue" rendered="#{item.renderOutputLabel}" value="#{item.value}"
-                                          style="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;"/>
+                                          style="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;#{item.customStyleInput}"/>
 
                             <p:inputText id="textValue" rendered="#{(item.renderInputText) and (!item.renderOutputLabel)}" value="#{item.value}" maxlength="#{item.displayMaxLength}"
-                                          style="margin-left:8px;width:#{item.displayMaxLength}em; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901A.maxWidthInputCol}px;">
+                                          style="margin-left:8px;width:#{item.displayMaxLength}em; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901A.maxWidthInputCol}px;#{item.customStyleInput}">
 								<p:ajax event="blur" process="@this" update="@this" listener="#{item.checkByte()}"  async="false"/>
                             </p:inputText>
                             
                             <p:calendar id="calendarDate" rendered="#{item.renderInputDate}" pattern="yyMMdd" value="#{item.value}" maxlength="#{item.displayMaxLength}" class="calendarDate"
-                                        style="margin-left:8px; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901A.maxWidthInputCol}px;" />
+                                        style="margin-left:8px; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901A.maxWidthInputCol}px;#{item.customStyleInput}" />
                             <p:calendar id="calendarTime" rendered="#{item.renderInputTime}" value="#{item.value}" pattern="HHmm" timeOnly="true" class="calendarTime" 
-                                        style="margin-left:8px; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901A.maxWidthInputCol}px;" />
+                                        style="margin-left:8px; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901A.maxWidthInputCol}px;#{item.customStyleInput}" />
                             <p:inputNumber id="numberValue" rendered="#{item.renderInputNumber}" value="#{item.value}" thousandSeparator="" 
                                            decimalPlaces="#{item.numberDecimalPlaces}" maxValue="#{item.numberMaxValue}" minValue="#{item.numberMinValue}" size="#{item.displayMaxLength}"
-                                          inputStyle="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901A.maxWidthInputCol}px;">
+                                          inputStyle="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901A.maxWidthInputCol}px;#{item.customStyleInput}">
                             </p:inputNumber>
                             <p:selectOneMenu id="comboBoxValue" rendered="#{item.renderInputSelect}" value="#{item.value}" styleClass="selectMenu"
-                                          style="margin-left:8px;width:#{item.inputLength}em;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901A.maxWidthInputCol}px;">
+                                          style="margin-left:8px;width:#{item.inputLength}em;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901A.maxWidthInputCol}px;#{item.customStyleInput}">
                                 <f:selectItems value="#{item.selectMenuItem}"/>
                             </p:selectOneMenu>
                             <p:selectOneRadio id="radioValue" rendered="#{item.renderInputRadio}" value="#{item.value}" styleClass="selectRadio"
-                                          style="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};vertical-align: middle;">
+                                          style="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};vertical-align: middle;#{item.customStyleInput}">
                                 <f:selectItems value="#{item.selectMenuItem}"/>
                             </p:selectOneRadio>
-                            
+                            <p:selectBooleanCheckbox id="checkValue" rendered="#{item.renderInputCheckBox}" value="#{item.value}" 
+                                          style="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};vertical-align: middle;#{item.customStyleInput}"/>
                             <h:outputText id="label2" rendered="#{item.render2}" value="#{item.label2}"
                                           style="margin-left:8px;font-size:#{item.fontSize2}px;color:#{item.fontColor2};background:#{item.backColor2};vertical-align: middle;"/>
                         </p:panel>

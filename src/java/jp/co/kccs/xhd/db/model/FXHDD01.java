@@ -150,6 +150,14 @@ public class FXHDD01 {
      */
     private boolean renderInputTime;
     /**
+     * 入力項目(チェックボックス)render有無
+     */
+    private boolean renderInputCheckBox;
+    /**
+     * 入力項目カスタムスタイル
+     */
+    private String customStyleInput;
+    /**
      * ラベル表示render有無
      */
     private boolean renderOutputLabel;
@@ -674,6 +682,22 @@ public class FXHDD01 {
     }
 
     /**
+     * 入力項目(チェックボックス)render有無
+     * @return the renderInputCheckBox
+     */
+    public boolean isRenderInputCheckBox() {
+        return renderInputCheckBox;
+    }
+
+    /**
+     * 入力項目(チェックボックス)render有無
+     * @param renderInputCheckBox the renderInputCheckBox to set
+     */
+    public void setRenderInputCheckBox(boolean renderInputCheckBox) {
+        this.renderInputCheckBox = renderInputCheckBox;
+    }
+
+    /**
      * 入力項目(時刻)render有無
      *
      * @return the renderInputTime
@@ -689,6 +713,22 @@ public class FXHDD01 {
      */
     public void setRenderInputTime(boolean renderInputTime) {
         this.renderInputTime = renderInputTime;
+    }
+
+    /**
+     * 入力項目カスタムスタイル
+     * @return the customStyleInput
+     */
+    public String getCustomStyleInput() {
+        return customStyleInput;
+    }
+
+    /**
+     * 入力項目カスタムスタイル
+     * @param customStyleInput the customStyleInput to set
+     */
+    public void setCustomStyleInput(String customStyleInput) {
+        this.customStyleInput = customStyleInput;
     }
 
     /**

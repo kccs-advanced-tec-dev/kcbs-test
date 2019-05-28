@@ -87,6 +87,11 @@ import org.primefaces.context.RequestContext;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	共通機能実装<br>
  * <br>
+ * 変更日	2019/05/22<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	属性にﾁｪｯｸﾎﾞｯｸｽを追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -1177,6 +1182,7 @@ public class GXHDO901A implements Serializable {
                         + "'false' AS render_iput_select, "
                         + "'false' AS render_iput_radio, "
                         + "'false' AS render_iput_time, "
+                        + "'false' AS render_iput_checkbox, "
                         + "'true' AS render_output_label, ";
             } else {
                 inputItemInfo = "hdm02_3.font_color AS font_color_input, hdm02_3.bg_color AS bg_color_input, "
@@ -1186,6 +1192,7 @@ public class GXHDO901A implements Serializable {
                         + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '4' THEN 'false' ELSE 'true' END AS render_iput_select, "
                         + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '5' THEN 'false' ELSE 'true' END AS render_iput_radio, "
                         + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '6' THEN 'false' ELSE 'true' END AS render_iput_time, "
+                        + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '8' THEN 'false' ELSE 'true' END AS render_iput_checkbox, "
                         + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '7' THEN 'false' ELSE 'true' END AS render_output_label, ";
             }
 
@@ -1243,6 +1250,7 @@ public class GXHDO901A implements Serializable {
             mapping.put("render_iput_select", "renderInputSelect");
             mapping.put("render_iput_radio", "renderInputRadio");
             mapping.put("render_iput_time", "renderInputTime");
+            mapping.put("render_iput_checkbox", "renderInputCheckBox");
             mapping.put("render_output_label", "renderOutputLabel");
             mapping.put("font_size_3", "fontSize3");
             mapping.put("font_color_3", "fontColor3");
