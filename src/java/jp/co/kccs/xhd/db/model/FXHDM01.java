@@ -70,6 +70,10 @@ public class FXHDM01 implements Serializable {
      * 表示件数
      */
     private int hyojiKensu;
+    /**
+     * 画面ID(前工程)
+     */
+    private String maeKoteiFormId;
 
     /**
      * 画面ID
@@ -249,5 +253,22 @@ public class FXHDM01 implements Serializable {
      */
     public void setHyojiKensu(int hyojiKensu) {
         this.hyojiKensu = hyojiKensu;
+    }
+
+    /**
+     * 画面ID(前工程)
+     * 
+     * @return the maeKoteiFormId
+     */
+    public String getMaeKoteiFormId() {
+        return maeKoteiFormId;
+    }
+
+    /**
+     * 画面ID(前工程)
+     * @param maeKoteiFormId the maeKoteiFormId to set
+     */
+    public void setMaeKoteiFormId(String maeKoteiFormId) {
+        this.maeKoteiFormId = maeKoteiFormId;
     }
 }

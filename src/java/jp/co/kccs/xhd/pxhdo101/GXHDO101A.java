@@ -319,7 +319,13 @@ public class GXHDO101A implements Serializable {
                 // 検索した時点のﾛｯﾄNoと担当者ｺｰﾄﾞを保持する。
                 this.searchLotNo = this.lotNo;
                 this.searchTantoshaCd = this.tantoshaCd;
-                        
+                
+                // 前工程の画面IDを設定
+                String maeKoteiFormId = "";
+                for(FXHDM01 fxhdm01 : menuListGXHDO101){
+                    fxhdm01.setMaeKoteiFormId(maeKoteiFormId);
+                    maeKoteiFormId = fxhdm01.getFormId();
+                }
             }
 
         } catch (SQLException ex) {
@@ -350,6 +356,7 @@ public class GXHDO101A implements Serializable {
         session.setAttribute("hyojiKensu", rowData.getHyojiKensu());
         session.setAttribute("lotNo", this.searchLotNo);
         session.setAttribute("tantoshaCd", this.searchTantoshaCd);
+        session.setAttribute("maeKoteiformId", rowData.getMaeKoteiFormId());
         
         return rowData.getLinkChar() + "?faces-redirect=true";
     }
