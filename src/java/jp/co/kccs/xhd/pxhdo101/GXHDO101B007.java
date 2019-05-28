@@ -42,6 +42,7 @@ import org.apache.commons.dbutils.RowProcessor;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
+import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import org.apache.commons.dbutils.DbUtils;
 
@@ -837,6 +838,7 @@ public class GXHDO101B007 implements IFormLogic {
         HttpSession session = (HttpSession) externalContext.getSession(false);
         String lotNo = (String) session.getAttribute("lotNo");
         String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
+        String maeKoteiformId = StringUtil.nullToBlank(session.getAttribute("maeKoteiformId"));
 
         // エラーメッセージリスト
         List<String> errorMessageList = processData.getInitMessageList();
@@ -853,13 +855,6 @@ public class GXHDO101B007 implements IFormLogic {
 
         // 設計情報チェック(対象のデータが取得出来ていない場合エラー)
         errorMessageList.addAll(ValidateUtil.checkSekkeiUnsetItems(sekkeiData, getMapSekkeiAssociation()));
-
-        // 製版ﾏｽﾀ情報取得
-        String pattern = StringUtil.nullToBlank(sekkeiData.get("PATTERN")); //電極製版名 
-        Map daPatternMasData = loadDaPatternMas(queryRunnerQcdb, pattern);
-        if (daPatternMasData == null || daPatternMasData.isEmpty()) {
-            errorMessageList.add(MessageUtil.getMessage("XHD-000034"));
-        }
 
         //仕掛情報の取得
         Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
@@ -880,6 +875,13 @@ public class GXHDO101B007 implements IFormLogic {
         if (ownerMasData == null || ownerMasData.isEmpty()) {
             errorMessageList.add(MessageUtil.getMessage("XHD-000016"));
         }
+        
+        // 前工程良品数取得
+        List<String> getRyohinsetsuErrorList = new ArrayList<>();
+        String maeKoteiRyohinsetsu = CommonUtil.getMaeKoteiRyouhinsetSu(lotNo, maeKoteiformId, queryRunnerDoc, queryRunnerQcdb, getRyohinsetsuErrorList);
+        if (!getRyohinsetsuErrorList.isEmpty()) {
+            errorMessageList.addAll(getRyohinsetsuErrorList);
+        }
 
         // 入力項目の情報を画面にセットする。
         if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId)) {
@@ -890,7 +892,7 @@ public class GXHDO101B007 implements IFormLogic {
         }
 
         // 画面に取得した情報をセットする。(入力項目以外)
-        setViewItemData(processData, sekkeiData, lotKbnMasData, ownerMasData, daPatternMasData, shikakariData, lotNo);
+        setViewItemData(processData, lotKbnMasData, ownerMasData, shikakariData, lotNo, maeKoteiRyohinsetsu, getRyohinsetsuErrorList);
 
         processData.setInitMessageList(errorMessageList);
         return processData;
@@ -901,14 +903,13 @@ public class GXHDO101B007 implements IFormLogic {
      * 入力項目以外のデータを画面項目に設定
      *
      * @param processData 処理制御データ
-     * @param sekkeiData 設計データ
      * @param lotKbnMasData ﾛｯﾄ区分ﾏｽﾀデータ
      * @param ownerMasData ｵｰﾅｰﾏｽﾀデータ
-     * @param daPatternMasData 製版ﾏｽﾀデータ
      * @param shikakariData 仕掛データ
      * @param lotNo ﾛｯﾄNo
      */
-    private void setViewItemData(ProcessData processData, Map sekkeiData, Map lotKbnMasData, Map ownerMasData, Map daPatternMasData, Map shikakariData, String lotNo) {
+    private void setViewItemData(ProcessData processData, Map lotKbnMasData, Map ownerMasData,  Map shikakariData, String lotNo, 
+            String maeKoteiRyohinsetsu, List<String> getRyohinsetsuErrorList) {
 
         // ロットNo
         this.setItemData(processData, GXHDO101B007Const.LOTNO, lotNo);
@@ -935,7 +936,14 @@ public class GXHDO101B007 implements IFormLogic {
             this.setItemData(processData, GXHDO101B007Const.OWNER, ownercode + ":" + owner);
         }
 
-        // セット数 TODO
+        // セット数
+        FXHDD01 itemRowSetsu = this.getItemRow(processData.getItemList(), GXHDO101B007Const.SET_SUU);
+        itemRowSetsu.setValue(maeKoteiRyohinsetsu);
+        if (!getRyohinsetsuErrorList.isEmpty()) {
+            itemRowSetsu.setFontColorInput("Red");
+            itemRowSetsu.setLabel2("");
+            itemRowSetsu.setCustomStyleInput("font-weight: bold;");
+        }
 
     }
 
@@ -1096,9 +1104,7 @@ public class GXHDO101B007 implements IFormLogic {
         String lotNo1 = lotNo.substring(0, 3);
         String lotNo2 = lotNo.substring(3, 11);
         // 設計データの取得
-        String sql = "SELECT SEKKEINO,"
-                + "GENRYOU,ETAPE,EATUMI,SOUSUU,EMAISUU,TBUNRUI2,SYURUI2,ATUMI2,"
-                + "MAISUU2,TBUNRUI4,SYURUI4,ATUMI4,MAISUU4,PATTERN "
+        String sql = "SELECT SEKKEINO "
                 + "FROM da_sekkei "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = '001'";
 
@@ -1116,25 +1122,7 @@ public class GXHDO101B007 implements IFormLogic {
      * @return 設計データ関連付けマップ
      */
     private Map getMapSekkeiAssociation() {
-        Map<String, String> map = new LinkedHashMap<String, String>() {
-            {
-                put("GENRYOU", "電極テープ");
-                put("ETAPE", "電極テープ");
-                put("EATUMI", "積層数");
-                put("SOUSUU", "積層数");
-                put("EMAISUU", "積層数");
-                put("TBUNRUI2", "上カバーテープ１");
-                put("SYURUI2", "上カバーテープ１");
-                put("ATUMI2", "上カバーテープ１");
-                put("MAISUU2", "上カバーテープ１");
-                put("TBUNRUI4", "下カバーテープ１");
-                put("SYURUI4", "下カバーテープ１");
-                put("ATUMI4", "下カバーテープ１");
-                put("MAISUU4", "下カバーテープ１");
-                put("PATTERN", "電極製版名");
-            }
-        };
-
+        Map<String, String> map = new LinkedHashMap<>();
         return map;
     }
 
@@ -1772,7 +1760,7 @@ public class GXHDO101B007 implements IFormLogic {
 
         String sql = "UPDATE tmp_sr_prepress SET "
                 + "startdatetime = ?,enddatetime = ?,ondohyoji = ?,aturyokusetteiti = ?,kaatujikan = ?,goki = ?,tantosya = ?,kakuninsya = ?,"
-                + "biko1 = ?,torokunichiji = ?,kosinnichiji = ?,sagyokubun = ?,setsuu = ?,tansimaisuu = ?,aturyokuhyouji = ?,pressside = ?,"
+                + "biko1 = ?,kosinnichiji = ?,sagyokubun = ?,setsuu = ?,tansimaisuu = ?,aturyokuhyouji = ?,pressside = ?,"
                 + "jissekino = ?,koteicode = ?,kansyouzai = ?,shinkuuhoji = ?,aturyokusetteiti2 = ?,kaatujikan2 = ?,aturyokusetteiti3 = ?,"
                 + "kaatujikan3 = ?,shinkuudo = ?,Hokanjouken = ?,EndTantousyacode = ?,RyouhinSetsuu = ?,biko2 = ?,revision = ?,deleteflag = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
