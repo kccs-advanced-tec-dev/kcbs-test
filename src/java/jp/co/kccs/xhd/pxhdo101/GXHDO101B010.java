@@ -453,32 +453,8 @@ public class GXHDO101B010 implements IFormLogic {
      * @param srHapscut 押切カットデータ
      */
     private void setInputItemDataMainForm(ProcessData processData, SrHapscut srHapscut) {
-//        // ﾛｯﾄNo.
-//        this.setItemData(processData, GXHDO101B010Const.LOTNO, getHapscutItemData(GXHDO101B010Const.LOTNO, srHapscut));
-//        // KCPNO
-//        this.setItemData(processData, GXHDO101B010Const.KCPNO, getHapscutItemData(GXHDO101B010Const.KCPNO, srHapscut));
-//        // 客先
-//        this.setItemData(processData, GXHDO101B010Const.KYAKUSAKI, getHapscutItemData(GXHDO101B010Const.KYAKUSAKI, srHapscut));
-//        // ﾛｯﾄ区分
-//        this.setItemData(processData, GXHDO101B010Const.LOT_KUBUN, getHapscutItemData(GXHDO101B010Const.LOT_KUBUN, srHapscut));
-//        // ｵｰﾅｰ
-//        this.setItemData(processData, GXHDO101B010Const.OWNER, getHapscutItemData(GXHDO101B010Const.OWNER, srHapscut));
-//        // ｾｯﾄ数
-//        this.setItemData(processData, GXHDO101B010Const.SETSU, getHapscutItemData(GXHDO101B010Const.SETSU, srHapscut));
-//        // 指示
-//        this.setItemData(processData, GXHDO101B010Const.SIJI, getHapscutItemData(GXHDO101B010Const.SIJI, srHapscut));
-//        // 列×行
-//        this.setItemData(processData, GXHDO101B010Const.GYORETU, getHapscutItemData(GXHDO101B010Const.GYORETU, srHapscut));
-//        // ﾋﾟｯﾁ
-//        this.setItemData(processData, GXHDO101B010Const.PITCH, getHapscutItemData(GXHDO101B010Const.PITCH, srHapscut));
-//        // 電極製版名
-//        this.setItemData(processData, GXHDO101B010Const.PATTERN, getHapscutItemData(GXHDO101B010Const.PATTERN, srHapscut));
-//        // 取個数
-//        this.setItemData(processData, GXHDO101B010Const.TORIKOSU, getHapscutItemData(GXHDO101B010Const.TORIKOSU, srHapscut));
         // 号機
         this.setItemData(processData, GXHDO101B010Const.GOKI, getHapscutItemData(GXHDO101B010Const.GOKI, srHapscut));
-//        // ｶｯﾄ刃種類
-//        this.setItemData(processData, GXHDO101B010Const.CUTBA_SHURUI, getHapscutItemData(GXHDO101B010Const.CUTBA_SHURUI, srHapscut));
         // ｶｯﾄ刃種類確認
         this.setItemData(processData, GXHDO101B010Const.CUTBA_SHURUI_CHECK, getHapscutItemData(GXHDO101B010Const.CUTBA_SHURUI_CHECK, srHapscut));
         // ｶｯﾄ刃直進度
@@ -540,45 +516,9 @@ public class GXHDO101B010 implements IFormLogic {
      */
     private String getHapscutItemData(String itemId, SrHapscut data) {
         switch (itemId) {
-//            // ﾛｯﾄNo.
-//            case GXHDO101B010Const.LOTNO:
-//                return StringUtil.nullToBlank(data.getLotno());
-//            // KCPNO
-//            case GXHDO101B010Const.KCPNO:
-//                return StringUtil.nullToBlank(data.getLotno());
-//            // 客先
-//            case GXHDO101B010Const.KYAKUSAKI:
-//                return StringUtil.nullToBlank(data.getLotno());
-//            // ﾛｯﾄ区分
-//            case GXHDO101B010Const.LOT_KUBUN:
-//                return StringUtil.nullToBlank(data.getLotno());
-//            // ｵｰﾅｰ
-//            case GXHDO101B010Const.OWNER:
-//                return StringUtil.nullToBlank(data.getLotno());
-//            // ｾｯﾄ数
-//            case GXHDO101B010Const.SETSU:
-//                return StringUtil.nullToBlank(data.getLotno());
-//            // 指示
-//            case GXHDO101B010Const.SIJI:
-//                return StringUtil.nullToBlank(data.getLotno());
-//            // 列×行
-//            case GXHDO101B010Const.GYORETU:
-//                return StringUtil.nullToBlank(data.getLotno());
-//            // ﾋﾟｯﾁ
-//            case GXHDO101B010Const.PITCH:
-//                return StringUtil.nullToBlank(data.getLotno());
-//            // 電極製版名
-//            case GXHDO101B010Const.PATTERN:
-//                return StringUtil.nullToBlank(data.getLotno());
-//            // 取個数
-//            case GXHDO101B010Const.TORIKOSU:
-//                return StringUtil.nullToBlank(data.getLotno());
             // 号機
             case GXHDO101B010Const.GOKI:
                 return StringUtil.nullToBlank(data.getGoki());
-//            // ｶｯﾄ刃種類
-//            case GXHDO101B010Const.CUTBA_SHURUI:
-//                return StringUtil.nullToBlank(data.getLotno());
             // ｶｯﾄ刃種類確認
             case GXHDO101B010Const.CUTBA_SHURUI_CHECK:
                 return getNgOkBlank(data.getCutbashuruicheck());
