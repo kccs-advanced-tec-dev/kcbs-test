@@ -155,7 +155,7 @@ public class GXHDO101B012 implements IFormLogic {
      * @param processData 処理データ
      * @return 処理データ
      */
-    public ProcessData checkDataTempResist(ProcessData processData) {
+    public ProcessData checkDataTempRegist(ProcessData processData) {
 
         // 規格チェック
         List<KikakuchiInputErrorInfo> kikakuchiInputErrorInfoList = new ArrayList<>();
@@ -173,7 +173,7 @@ public class GXHDO101B012 implements IFormLogic {
         }
 
         // 後続処理メソッド設定
-        processData.setMethod("doTempResist");
+        processData.setMethod("doTempRegist");
 
         return processData;
 
@@ -185,7 +185,7 @@ public class GXHDO101B012 implements IFormLogic {
      * @param processData 処理制御データ
      * @return 処理制御データ
      */
-    public ProcessData doTempResist(ProcessData processData) {
+    public ProcessData doTempRegist(ProcessData processData) {
 
         QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
         QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
@@ -299,10 +299,10 @@ public class GXHDO101B012 implements IFormLogic {
      * @param processData 処理制御データ
      * @return 処理制御データ
      */
-    public ProcessData checkDataResist(ProcessData processData) {
+    public ProcessData checkDataRegist(ProcessData processData) {
 
         // 項目のチェック処理を行う。
-        ErrorMessageInfo checkItemErrorInfo = checkItemResistCorrect(processData);
+        ErrorMessageInfo checkItemErrorInfo = checkItemRegistCorrect(processData);
         if (checkItemErrorInfo != null) {
             processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
             return processData;
@@ -324,7 +324,7 @@ public class GXHDO101B012 implements IFormLogic {
         }
 
         // 後続処理メソッド設定
-        processData.setMethod("doResist");
+        processData.setMethod("doRegist");
 
         return processData;
     }
@@ -335,7 +335,7 @@ public class GXHDO101B012 implements IFormLogic {
      * @param processData 処理データ
      * @return エラーメッセージ情報
      */
-    private ErrorMessageInfo checkItemResistCorrect(ProcessData processData) {
+    private ErrorMessageInfo checkItemRegistCorrect(ProcessData processData) {
 
         // ばらし方法が「"円筒発泡" or "ホットプレート発泡」の場合、条件が未入力はエラー
         FXHDD01 barashiHouhou = getItemRow(processData.getItemList(), GXHDO101B012Const.BARASHI_HOUHOU); //ばらし方法
@@ -386,7 +386,7 @@ public class GXHDO101B012 implements IFormLogic {
      * @param processData 処理制御データ
      * @return 処理制御データ
      */
-    public ProcessData doResist(ProcessData processData) {
+    public ProcessData doRegist(ProcessData processData) {
         QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
         QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
 
@@ -508,7 +508,7 @@ public class GXHDO101B012 implements IFormLogic {
     public ProcessData checkDataCorrect(ProcessData processData) {
 
         // 項目のチェック処理を行う。
-        ErrorMessageInfo checkItemErrorInfo = checkItemResistCorrect(processData);
+        ErrorMessageInfo checkItemErrorInfo = checkItemRegistCorrect(processData);
         if (checkItemErrorInfo != null) {
             processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
             return processData;
@@ -838,12 +838,12 @@ public class GXHDO101B012 implements IFormLogic {
             // 仮登録
             case GXHDO101B012Const.BTN_KARI_TOUROKU_TOP:
             case GXHDO101B012Const.BTN_KARI_TOUROKU_BOTTOM:
-                method = "checkDataTempResist";
+                method = "checkDataTempRegist";
                 break;
             // 登録
             case GXHDO101B012Const.BTN_INSERT_TOP:
             case GXHDO101B012Const.BTN_INSERT_BOTTOM:
-                method = "checkDataResist";
+                method = "checkDataRegist";
                 break;
             // 枝番コピー
             case GXHDO101B012Const.BTN_COPY_EDABAN_TOP:
