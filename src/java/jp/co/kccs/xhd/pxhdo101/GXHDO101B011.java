@@ -1108,9 +1108,7 @@ public class GXHDO101B011 implements IFormLogic {
         String lotNo1 = lotNo.substring(0, 3);
         String lotNo2 = lotNo.substring(3, 11);
         // 設計データの取得
-        String sql = "SELECT SEKKEINO,"
-                + "GENRYOU,ETAPE,EATUMI,SOUSUU,EMAISUU,TBUNRUI2,SYURUI2,ATUMI2,"
-                + "MAISUU2,TBUNRUI4,SYURUI4,ATUMI4,MAISUU4,PATTERN "
+        String sql = "SELECT SEKKEINO, PATTERN "
                 + "FROM da_sekkei "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = '001'";
 
@@ -1130,19 +1128,6 @@ public class GXHDO101B011 implements IFormLogic {
     private Map getMapSekkeiAssociation() {
         Map<String, String> map = new LinkedHashMap<String, String>() {
             {
-                put("GENRYOU", "電極テープ");
-                put("ETAPE", "電極テープ");
-                put("EATUMI", "積層数");
-                put("SOUSUU", "積層数");
-                put("EMAISUU", "積層数");
-                put("TBUNRUI2", "上カバーテープ１");
-                put("SYURUI2", "上カバーテープ１");
-                put("ATUMI2", "上カバーテープ１");
-                put("MAISUU2", "上カバーテープ１");
-                put("TBUNRUI4", "下カバーテープ１");
-                put("SYURUI4", "下カバーテープ１");
-                put("ATUMI4", "下カバーテープ１");
-                put("MAISUU4", "下カバーテープ１");
                 put("PATTERN", "電極製版名");
             }
         };
@@ -1515,8 +1500,7 @@ public class GXHDO101B011 implements IFormLogic {
             String lotNo = (String) session.getAttribute("lotNo");
             String kojyo = lotNo.substring(0, 3);
             String lotNo8 = lotNo.substring(3, 11);
-            String edaban = lotNo.substring(11, 14);
-
+            
             //仕掛情報の取得
             Map shikakariData = loadShikakariData(queryRunnerDoc, lotNo);
             String oyalotEdaban = StringUtil.nullToBlank(getMapData(shikakariData, "oyalotedaban")); //親ﾛｯﾄ枝番

@@ -75,6 +75,7 @@ public class GXHDO101B010 implements IFormLogic {
      * @param processData 処理制御データ
      * @return 処理制御データ
      */
+    @Override
     public ProcessData initial(ProcessData processData) {
         try
         {
@@ -168,11 +169,6 @@ public class GXHDO101B010 implements IFormLogic {
         String pattern = StringUtil.nullToBlank(sekkeiData.get("PATTERN")); //電極製版名 
         
         // 設計情報のチェック(必須データが取得出来ていない場合エラー)
-        Map<String, String> sekkeiChkMap = new LinkedHashMap<String, String>() {
-            {
-                put("PATTERN", "電極製版名");
-            }
-        };
         errorMessageList.addAll(ValidateUtil.checkSekkeiUnsetItems(sekkeiData, 
                 new LinkedHashMap<String, String>(){{put("PATTERN", "電極製版名");}}));
         
@@ -652,7 +648,7 @@ public class GXHDO101B010 implements IFormLogic {
             }
             
             // 押切ｶｯﾄデータ取得
-            List<SrHapscut> srHapscutDataList = loadSrHapscut(queryRunnerQcdb, "", jotaiFlg, kojyo, lotNo8, oyalotEdaban);
+            List<SrHapscut> srHapscutDataList = loadSrHapscut(queryRunnerQcdb, kojyo, lotNo8, oyalotEdaban, "", jotaiFlg);
             if (srHapscutDataList.isEmpty()) {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
                 return processData;
@@ -1579,7 +1575,7 @@ public class GXHDO101B010 implements IFormLogic {
      * @param processData 処理制御データ
      * @return 処理制御データ
      */
-    public ProcessData doTempResist(ProcessData processData) {
+    public ProcessData doTempRegist(ProcessData processData) {
 
         QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
         QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
@@ -1818,17 +1814,14 @@ public class GXHDO101B010 implements IFormLogic {
     private void updateTmpSrHapscut(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, String jotaiFlg, BigDecimal newRev,
             String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
         String sql = "UPDATE tmp_sr_hapscut SET "
-                + "KCPNO = ?,TAPELOTNO = ?,GENRYOKIGO = ?,KAISINICHIJI = ?,SYURYONICHIJI = ?,"
-                + "GOKI = ?,SKEEGENO = ?,KANSOONDO = ?,SEIHANNO = ?,SEIHANMAISUU = ?,PASTELOTNO = ?,PASTENENDO = ?,PASTEONDO = ?,"
-                + "INSATUROLLNO = ?,INSATUROLLNO2 = ?,INSATUROLLNO3 = ?,MLD = ?,BIKO1 = ?,BIKO2 = ?,TANTOSYA = ?,pkokeibun1 = ?,"
-                + "pastelotno2 = ?,pastenendo2 = ?,pasteondo2 = ?,pkokeibun2 = ?,petfilmsyurui = ?,kansoondo2 = ?,kansoondo3 = ?,"
-                + "kansoondo4 = ?,kansoondo5 = ?,seihanmei = ?,makuatsu_ave_start = ?,makuatsu_max_start = ?,makuatsu_min_start = ?,"
-                + "makuatucv_start = ?,nijimikasure_start = ?,nijimikasure_end = ?,tanto_end = ?,printmaisuu = ?,kansouroatsu = ?,"
-                + "printhaba = ?,table_clearrance = ?,kosinnichiji = ?,revision = ?,deleteflag = ? "
+                + "KCPNO = ?,KAISINICHIJI = ?,SYURYONICHIJI = ?,CUTBAMAISUU = ?,GOKI = ?,CUTTANTOSYA = ?,KAKUNINSYA = ?,CHKTANTOSYA = ?,"
+                + "BIKO1 = ?,BIKO2 = ?,KOSINNICHIJI = ?,cutbashuruicheck = ?,cutbachokushindo = ?,cutbasiyoukaisuuST1 = ?,cutbasiyoukaisuuST2 = ?," 
+                + "programmei = ?,gyoretukakunin = ?,marktorisuu = ?,cuthoseiryou = ?,tableondoset = ?,tableondosoku = ?,gaikancheck = ?," 
+                + "hatakasang = ?,syorisetsuu = ?,ryouhinsetsuu = ?,sagyoubasyo = ?,revision = ?,deleteflag = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
         // 更新前の値を取得
-        List<SrHapscut> srSrHapscutList = loadSrHapscut(queryRunnerQcdb, rev.toPlainString(), jotaiFlg, kojyo, lotNo, edaban);
+        List<SrHapscut> srSrHapscutList = loadSrHapscut(queryRunnerQcdb, kojyo, lotNo, edaban, rev.toPlainString(), jotaiFlg);
         SrHapscut srHapscut = null;
         if (!srSrHapscutList.isEmpty()) {
             srHapscut = srSrHapscutList.get(0);
@@ -1963,11 +1956,11 @@ public class GXHDO101B010 implements IFormLogic {
                 + "cutbasiyoukaisuuST1,cutbasiyoukaisuuST2,programmei,gyoretukakunin,marktorisuu,cuthoseiryou,tableondoset,tableondosoku," 
                 + "gaikancheck,hatakasang,syorisetsuu,ryouhinsetsuu,sagyoubasyo,revision,deleteflag"
                 + ") SELECT "
-                + "KOJYO,LOTNO,EDABAN,KCPNO,?,?,CUTBAMAISUU,GOKI,CUTTABLEONDO,CUTTANTOSYA,KAKUNINSYA,CHKTANTOSYA,BTANTOSYA,"
+                + "KOJYO,LOTNO,EDABAN,KCPNO,KAISINICHIJI,SYURYONICHIJI,CUTBAMAISUU,GOKI,CUTTABLEONDO,CUTTANTOSYA,KAKUNINSYA,CHKTANTOSYA,BTANTOSYA,"
                 + "ATANTOSYA,UKEIREKOSUU,RYOHINKOSUU,Atumi01,Atumi02,Atumi03,Atumi04,Atumi05,Atumi06,Atumi07,Atumi08,Atumi09,Atumi10,ATUMIMIN,ATUMIMAX," 
-                + "BIKO1,BIKO2,BIKO3,BIKO4,TOROKUNICHIJI,KOSINNICHIJI,TENSYASYA,NIJIMICNT,Soujyuryo,Tanijyuryo,cutbashuruicheck,cutbachokushindo," 
+                + "BIKO1,BIKO2,BIKO3,BIKO4,?,?,TENSYASYA,NIJIMICNT,Soujyuryo,Tanijyuryo,cutbashuruicheck,cutbachokushindo," 
                 + "cutbasiyoukaisuuST1,cutbasiyoukaisuuST2,programmei,gyoretukakunin,marktorisuu,cuthoseiryou,tableondoset,tableondosoku," 
-                + "gaikancheck,hatakasang,syorisetsuu,ryouhinsetsuu,sagyoubasyo,?,?"
+                + "gaikancheck,hatakasang,syorisetsuu,ryouhinsetsuu,sagyoubasyo,?,? "
                 + "FROM sr_hapscut "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
 
@@ -2069,11 +2062,11 @@ public class GXHDO101B010 implements IFormLogic {
                 + "KCPNO = ?,KAISINICHIJI = ?,SYURYONICHIJI = ?,CUTBAMAISUU = ?,GOKI = ?,CUTTANTOSYA = ?,KAKUNINSYA = ?,CHKTANTOSYA = ?,"
                 + "BIKO1 = ?,BIKO2 = ?,KOSINNICHIJI = ?,cutbashuruicheck = ?,cutbachokushindo = ?,cutbasiyoukaisuuST1 = ?,cutbasiyoukaisuuST2 = ?," 
                 + "programmei = ?,gyoretukakunin = ?,marktorisuu = ?,cuthoseiryou = ?,tableondoset = ?,tableondosoku = ?,gaikancheck = ?," 
-                + "hatakasang = ?,syorisetsuu = ?,ryouhinsetsuu = ?,sagyoubasyo = ?,revision = ?"
+                + "hatakasang = ?,syorisetsuu = ?,ryouhinsetsuu = ?,sagyoubasyo = ?,revision = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ?";
 
         // 更新前の値を取得
-        List<SrHapscut> srSrHapscutList = loadSrHapscut(queryRunnerQcdb, rev.toPlainString(), jotaiFlg, kojyo, lotNo, edaban);
+        List<SrHapscut> srSrHapscutList = loadSrHapscut(queryRunnerQcdb, kojyo, lotNo, edaban, rev.toPlainString(), jotaiFlg);
         SrHapscut srHapscut = null;
         if (!srSrHapscutList.isEmpty()) {
             srHapscut = srSrHapscutList.get(0);
@@ -2289,6 +2282,10 @@ public class GXHDO101B010 implements IFormLogic {
      * @return "NG" or "OK" or Blank
      */
     private String getNgOkBlank(Integer kbn) {
+        if(kbn == null){
+            return "";
+        }
+        
         switch (kbn) {
             case 0:
                 return "NG";
