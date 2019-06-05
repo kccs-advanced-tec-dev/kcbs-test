@@ -2382,6 +2382,9 @@ public class GXHDO101B012 implements IFormLogic {
             BigDecimal decSojuryo = new BigDecimal(sojuryo);
             // 単位重量を数値変換
             BigDecimal decTanijuryo = new BigDecimal(tanijuryo);
+            if(BigDecimal.ZERO.compareTo(decTanijuryo) == 0){
+                return processDate;
+            }
 
             // 良品個数算出(小数以下四捨五入)
             // 総重量 / 単位重量 ※100をかけた後に四捨五入を行うので小数部を3桁は残す
@@ -2418,6 +2421,9 @@ public class GXHDO101B012 implements IFormLogic {
 
             // 処理個数を数値変換
             BigDecimal decShorikosu = new BigDecimal(shorikosu);
+            if(BigDecimal.ZERO.compareTo(decShorikosu) == 0){
+                return processDate;
+            }
 
             // 良品個数を数値変換
             BigDecimal decRyohinsu = new BigDecimal(ryohinkosu);
