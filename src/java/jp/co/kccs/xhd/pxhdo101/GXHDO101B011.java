@@ -1852,33 +1852,9 @@ public class GXHDO101B011 implements IFormLogic {
         params.add(null); //方式
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B011Const.ATUMIMIN, srCutData))); //厚みMIN
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B011Const.ATUMIMAX, srCutData))); //厚みMAX
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B011Const.CUTBASHURUI, srCutData))); //ｶｯﾄ刃種類
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B011Const.CUTMUKI, srCutData))); //ｶｯﾄ向き
-//        //ｶｯﾄ向き
-//        switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B011Const.KASHOZAI, srCutData))) {
-//            case "なし":
-//                params.add(0);
-//                break;
-//            case "あり":
-//                params.add(1);
-//                break;
-//            default:
-//                params.add(null);
-//                break;
-//        }
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B011Const.CUTBASHURUI, srCutData))); //ｶｯﾄ刃種類
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B011Const.CUTMUKI, srCutData))); //ｶｯﾄ向き
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B011Const.HAPPOSHEETCOLOR, srCutData))); //発泡ｼｰﾄ色
-//        //発泡ｼｰﾄ色
-//        switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B011Const.KASHOZAI, srCutData))) {
-//            case "なし":
-//                params.add(0);
-//                break;
-//            case "あり":
-//                params.add(1);
-//                break;
-//            default:
-//                params.add(null);
-//                break;
-//        }
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B011Const.KANSOU, srCutData))); //乾燥
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B011Const.HOSEIHANTEI, srCutData))); //補正判定
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B011Const.SHURYO_TANTOSYA, srCutData))); //終了担当者
@@ -2006,35 +1982,9 @@ public class GXHDO101B011 implements IFormLogic {
         params.add(""); //方式
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B011Const.ATUMIMIN, srCutData))); //厚みMIN
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B011Const.ATUMIMAX, srCutData))); //厚みMAX
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B011Const.CUTBASHURUI, srCutData))); //ｶｯﾄ刃種類
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B011Const.CUTMUKI, srCutData))); //ｶｯﾄ向き
-//        // ｶｯﾄ向き
-//        switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B011Const.KASHOZAI, srCutData))) {
-//            case "なし":
-//                params.add(0);
-//                break;
-//            case "あり":
-//                params.add(1);
-//                break;
-//            default:
-//                params.add(null);
-//                //params.add(9);
-//                break;
-//        }
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B011Const.CUTBASHURUI, srCutData))); //ｶｯﾄ刃種類
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B011Const.CUTMUKI, srCutData))); //ｶｯﾄ向き
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B011Const.HAPPOSHEETCOLOR, srCutData))); //発泡ｼｰﾄ色
-//        //発泡ｼｰﾄ色
-//        switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B011Const.KASHOZAI, srCutData))) {
-//            case "なし":
-//                params.add(0);
-//                break;
-//            case "あり":
-//                params.add(1);
-//                break;
-//            default:
-//                params.add(null);
-//                //params.add(9);
-//                break;
-//        }
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B011Const.KANSOU, srCutData))); //乾燥
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B011Const.HOSEIHANTEI, srCutData))); //補正判定
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B011Const.SHURYO_TANTOSYA, srCutData))); //終了担当者

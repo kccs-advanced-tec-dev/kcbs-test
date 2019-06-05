@@ -118,12 +118,12 @@ public class SrCut {
     /**
      * ｶｯﾄ刃種類
      */
-    private Integer cutbashurui;
+    private String cutbashurui;
 
     /**
      * ｶｯﾄ向き
      */
-    private Integer cutmuki;
+    private String cutmuki;
 
     /**
      * 発泡ｼｰﾄ色
@@ -420,28 +420,28 @@ public class SrCut {
     /**
      * @return cutbashurui
      */
-    public Integer getCutbashurui() {
+    public String getCutbashurui() {
         return cutbashurui;
     }
 
     /**
      * @param cutbashurui cutbashurui
      */
-    public void setCutbashurui(Integer cutbashurui) {
+    public void setCutbashurui(String cutbashurui) {
         this.cutbashurui = cutbashurui;
     }
 
     /**
      * @return cutmuki
      */
-    public Integer getCutmuki() {
+    public String getCutmuki() {
         return cutmuki;
     }
 
     /**
      * @param cutmuki cutmuki
      */
-    public void setCutmuki(Integer cutmuki) {
+    public void setCutmuki(String cutmuki) {
         this.cutmuki = cutmuki;
     }
 
