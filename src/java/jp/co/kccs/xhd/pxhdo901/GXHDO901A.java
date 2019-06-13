@@ -225,19 +225,18 @@ public class GXHDO901A implements Serializable {
      * 完了メッセージ
      */
     private String compMessage;
-    
+
     /**
      * 入力項目最大幅
      */
     private String maxWidthInputCol;
-    
-    
+
     /**
      * コンストラクタ
      */
     public GXHDO901A() {
     }
-    
+
     /**
      * フォームID取得
      *
@@ -462,7 +461,7 @@ public class GXHDO901A implements Serializable {
 
     /**
      * 入力項目最大幅
-     * 
+     *
      * @return the maxWidthInputCol
      */
     public String getMaxWidthInputCol() {
@@ -471,7 +470,7 @@ public class GXHDO901A implements Serializable {
 
     /**
      * 入力項目最大幅
-     * 
+     *
      * @param maxWidthInputCol the maxWidthInputCol to set
      */
     public void setMaxWidthInputCol(String maxWidthInputCol) {
@@ -495,16 +494,16 @@ public class GXHDO901A implements Serializable {
             }
             return;
         }
-        
+
         this.setOnLoadProcess("");
-        
+
         // 画面遷移パラメータ取得
         String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
         String callerFormId = StringUtil.nullToBlank(session.getAttribute("callerFormId"));
         String formTitle = StringUtil.nullToBlank(session.getAttribute("formTitle"));
         String titleSetting = StringUtil.nullToBlank(session.getAttribute("titleSetting"));
         String lotNo = StringUtil.nullToBlank(session.getAttribute("lotNo"));
-        
+
         // 一覧の表示件数を設定
         this.hyojiKensu = StringUtil.nullToBlank(session.getAttribute("hyojiKensu"));
         // 入力項目の最大幅を設定する。
@@ -920,7 +919,7 @@ public class GXHDO901A implements Serializable {
 
                 return;
             }
-            
+
             // 規格エラーメッセージが設定されている場合、ダイアログを表示する
             if (!this.processData.getKikakuchiInputErrorInfoList().isEmpty()) {
 
@@ -1541,7 +1540,7 @@ public class GXHDO901A implements Serializable {
         this.processData.getInfoMessageList().clear();
         this.processMain();
     }
-    
+
     /**
      * リビジョンチェック
      *
@@ -1566,8 +1565,9 @@ public class GXHDO901A implements Serializable {
             String kojyo = lotNo.substring(0, 3); //工場ｺｰﾄﾞ
             String lotNo8 = lotNo.substring(3, 11); //ﾛｯﾄNo(8桁)
             String edaban = lotNo.substring(11, 14); //枝番
+            Integer jissekino = (Integer) session.getAttribute("jissekino"); //実績No
 
-            Map fxhdd03RevInfo = loadFxhdd03RevInfo(queryRunnerDoc, kojyo, lotNo8, edaban, formId);
+            Map fxhdd03RevInfo = loadFxhdd03RevInfo(queryRunnerDoc, kojyo, lotNo8, edaban, formId, jissekino);
             if (StringUtil.isEmpty(this.initJotaiFlg)) {
                 // 新規の場合、データが存在する場合
                 if (fxhdd03RevInfo != null && !fxhdd03RevInfo.isEmpty()) {
@@ -1599,21 +1599,28 @@ public class GXHDO901A implements Serializable {
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @param edaban 枝番(検索キー)
      * @param formId 画面ID(検索キー)
+     * @param jissekino 実績No(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private Map loadFxhdd03RevInfo(QueryRunner queryRunnerDoc, String kojyo, String lotNo, String edaban, String formId) throws SQLException {
-        // 設計データの取得
+    private Map loadFxhdd03RevInfo(QueryRunner queryRunnerDoc, String kojyo, String lotNo, String edaban, String formId, Integer jissekino) throws SQLException {
+        // 品質DB登録実績の取得
         String sql = "SELECT rev, jotai_flg "
                 + "FROM fxhdd03 "
                 + "WHERE kojyo = ? AND lotno = ? "
-                + "AND edaban = ? AND gamen_id = ?";
+                + "AND edaban = ? AND gamen_id = ? ";
+        if (jissekino != null) {
+            sql += "AND jissekino = ? ";
+        }
 
         List<Object> params = new ArrayList<>();
         params.add(kojyo);
         params.add(lotNo);
         params.add(edaban);
         params.add(formId);
+        if (jissekino != null) {
+            params.add(jissekino);
+        }
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerDoc.query(sql, new MapHandler(), params.toArray());

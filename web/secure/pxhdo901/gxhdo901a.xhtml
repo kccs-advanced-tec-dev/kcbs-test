@@ -211,11 +211,11 @@
                                 <f:selectItems value="#{item.selectMenuItem}"/>
                             </p:selectOneMenu>
                             <p:selectOneRadio id="radioValue" rendered="#{item.renderInputRadio}" value="#{item.value}" styleClass="selectRadio"
-                                          style="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};vertical-align: middle;#{item.customStyleInput}">
+                                          style="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};vertical-align: middle;background: #{item.backColorInput};#{item.customStyleInput}">
                                 <f:selectItems value="#{item.selectMenuItem}"/>
                             </p:selectOneRadio>
                             <p:selectBooleanCheckbox id="checkValue" rendered="#{item.renderInputCheckBox}" value="#{item.value}" 
-                                          style="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};vertical-align: middle;#{item.customStyleInput}"/>
+                                          style="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};vertical-align: middle;background: #{item.backColorInput};#{item.customStyleInput}"/>
                             <h:outputText id="label2" rendered="#{item.render2}" value="#{item.label2}"
                                           style="margin-left:8px;font-size:#{item.fontSize2}px;color:#{item.fontColor2};background:#{item.backColor2};vertical-align: middle;"/>
                         </p:panel>
