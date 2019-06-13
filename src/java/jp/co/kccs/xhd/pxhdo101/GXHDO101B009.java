@@ -840,7 +840,6 @@ public class GXHDO101B009 implements IFormLogic {
         HttpSession session = (HttpSession) externalContext.getSession(false);
         String lotNo = (String) session.getAttribute("lotNo");
         String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
-        String maeKoteiformId = StringUtil.nullToBlank(session.getAttribute("maeKoteiformId"));
         
         // エラーメッセージリスト
         List<String> errorMessageList = processData.getInitMessageList();
@@ -878,13 +877,6 @@ public class GXHDO101B009 implements IFormLogic {
             errorMessageList.add(MessageUtil.getMessage("XHD-000016"));
         }
         
-        // 前工程良品数取得
-        List<String> getRyohinsetsuErrorList = new ArrayList<>();
-        String maeKoteiRyohinsetsu = CommonUtil.getMaeKoteiRyouhinsetSu(lotNo, maeKoteiformId, queryRunnerDoc, queryRunnerQcdb, getRyohinsetsuErrorList);
-        if (!getRyohinsetsuErrorList.isEmpty()) {
-            errorMessageList.addAll(getRyohinsetsuErrorList);
-        }
-
         // 入力項目の情報を画面にセットする。
         if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId, sekkeiData)) {
             // エラー発生時は処理を中断
@@ -894,7 +886,7 @@ public class GXHDO101B009 implements IFormLogic {
         }
 
         // 画面に取得した情報をセットする。(入力項目以外)
-        setViewItemData(processData, lotKbnMasData, ownerMasData, shikakariData, lotNo, maeKoteiRyohinsetsu, getRyohinsetsuErrorList);
+        setViewItemData(processData, lotKbnMasData, ownerMasData, shikakariData, lotNo);
 
         processData.setInitMessageList(errorMessageList);
         return processData;
@@ -909,12 +901,14 @@ public class GXHDO101B009 implements IFormLogic {
      * @param ownerMasData ｵｰﾅｰﾏｽﾀデータ
      * @param shikakariData 仕掛データ
      * @param lotNo ﾛｯﾄNo
-     * @param maeKoteiRyohinsetsu 前工程良品ｾｯﾄ数
-     * @param getRyohinsetsuErrorList 良品ｾｯﾄ数取得時エラーリスト
      */
-    private void setViewItemData(ProcessData processData, Map lotKbnMasData, Map ownerMasData, Map shikakariData, String lotNo,
-             String maeKoteiRyohinsetsu, List<String> getRyohinsetsuErrorList) {
+    private void setViewItemData(ProcessData processData, Map lotKbnMasData, Map ownerMasData, Map shikakariData, String lotNo) {
 
+        // 前工程情報の取得
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+        Map maekoteiInfo = (Map) session.getAttribute("maekoteiInfo");
+        
         // ロットNo
         this.setItemData(processData, GXHDO101B009Const.LOTNO, lotNo);
         // KCPNO
@@ -940,15 +934,10 @@ public class GXHDO101B009 implements IFormLogic {
             this.setItemData(processData, GXHDO101B009Const.OWNER, ownercode + ":" + owner);
         }
 
-        // セット数
+        // セット数(前工程情報があれば前工程情報をセットする)
         FXHDD01 itemRowSetsu = this.getItemRow(processData.getItemList(), GXHDO101B009Const.SETSU);
-        itemRowSetsu.setValue(maeKoteiRyohinsetsu);
-        if (!getRyohinsetsuErrorList.isEmpty()) {
-            itemRowSetsu.setFontColorInput("Red");
-            itemRowSetsu.setLabel2("");
-            itemRowSetsu.setCustomStyleInput("font-weight: bold;");
-        }
-
+        CommonUtil.setMaekoteiInfo(itemRowSetsu, maekoteiInfo, "RyouhinSetsuu", true, true);
+        
         // 指示
         this.setItemData(processData, GXHDO101B009Const.SIJI, "");
 
@@ -994,7 +983,16 @@ public class GXHDO101B009 implements IFormLogic {
 
                 // 新規のときのみ設定圧力に設計.ﾌﾟﾚｽ圧を設定する。
                 this.setItemData(processData, GXHDO101B009Const.SETTEI_ATURYOKU, StringUtil.nullToBlank(sekkeiData.get("PRSATU")));
-
+                
+                // 前工程情報を取得する。
+                ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+                HttpSession session = (HttpSession) externalContext.getSession(false);
+                Map maekoteiInfo = (Map) session.getAttribute("maekoteiInfo");
+                
+                // 処理セット数(前工程情報がある場合は前工程情報の値をセットする。)
+                FXHDD01 itemSyoriSetsu = this.getItemRow(processData.getItemList(), GXHDO101B009Const.SHORI_SETSU);
+                CommonUtil.setMaekoteiInfo(itemSyoriSetsu, maekoteiInfo, "RyouhinSetsuu", false, true);
+        
                 return true;
             }
 
@@ -1314,7 +1312,7 @@ public class GXHDO101B009 implements IFormLogic {
             String edaban, String rev) throws SQLException {
 
         String sql = "SELECT "
-                + "KOJYO,LOTNO,EDABAN,KCPNO,KAISINICHIJI,SYURYONICHIJI,UKEIRESETSUU,RYOHINSETSUU,GOKI,ONDO,ATURYOKU,"
+                + "KOJYO,LOTNO,EDABAN,KCPNO,KAISINICHIJI,SYURYONICHIJI,UKEIRESETSUU,RyouhinSetsuu,GOKI,ONDO,ATURYOKU,"
                 + "SITUON,SITUDO,ATUMIMIN,ATUMIMAX,ATUMITANTOSYA,TANTOSYA,KAKUNINSYA,BIKO1,BIKO2,TOROKUNICHIJI,KOSINNICHIJI,"
                 + "airnuki,dakkijikan,dakkiaturyoku,EndTantousyacode,revision,'0' AS deleteflag "
                 + "FROM sr_mekapress "
@@ -1342,7 +1340,7 @@ public class GXHDO101B009 implements IFormLogic {
         mapping.put("KAISINICHIJI", "kaisinichiji"); //開始日時
         mapping.put("SYURYONICHIJI", "syuryonichiji"); //終了日時
         mapping.put("UKEIRESETSUU", "ukeiresetsuu"); //受入ｾｯﾄ数
-        mapping.put("RYOHINSETSUU", "ryohinsetsuu"); //良品ｾｯﾄ数
+        mapping.put("RyouhinSetsuu", "ryouhinsetsuu"); //良品ｾｯﾄ数
         mapping.put("GOKI", "goki"); //号機ｺｰﾄﾞ
         mapping.put("ONDO", "ondo"); //温度
         mapping.put("ATURYOKU", "aturyoku"); //圧力
@@ -1386,7 +1384,7 @@ public class GXHDO101B009 implements IFormLogic {
     private List<SrMekapress> loadTmpSrMekapress(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev) throws SQLException {
         String sql = "SELECT "
-                + "KOJYO,LOTNO,EDABAN,KCPNO,KAISINICHIJI,SYURYONICHIJI,UKEIRESETSUU,RYOHINSETSUU,GOKI,ONDO,ATURYOKU,"
+                + "KOJYO,LOTNO,EDABAN,KCPNO,KAISINICHIJI,SYURYONICHIJI,UKEIRESETSUU,RyouhinSetsuu,GOKI,ONDO,ATURYOKU,"
                 + "SITUON,SITUDO,ATUMIMIN,ATUMIMAX,ATUMITANTOSYA,TANTOSYA,KAKUNINSYA,BIKO1,BIKO2,TOROKUNICHIJI,KOSINNICHIJI,"
                 + "airnuki,dakkijikan,dakkiaturyoku,EndTantousyacode,revision,deleteflag "
                 + "FROM tmp_sr_mekapress "
@@ -1415,7 +1413,7 @@ public class GXHDO101B009 implements IFormLogic {
         mapping.put("KAISINICHIJI", "kaisinichiji"); //開始日時
         mapping.put("SYURYONICHIJI", "syuryonichiji"); //終了日時
         mapping.put("UKEIRESETSUU", "ukeiresetsuu"); //受入ｾｯﾄ数
-        mapping.put("RYOHINSETSUU", "ryohinsetsuu"); //良品ｾｯﾄ数
+        mapping.put("RyouhinSetsuu", "ryouhinsetsuu"); //良品ｾｯﾄ数
         mapping.put("GOKI", "goki"); //号機ｺｰﾄﾞ
         mapping.put("ONDO", "ondo"); //温度
         mapping.put("ATURYOKU", "aturyoku"); //圧力
@@ -1705,7 +1703,7 @@ public class GXHDO101B009 implements IFormLogic {
             String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
 
         String sql = "INSERT INTO tmp_sr_mekapress ("
-                + "KOJYO,LOTNO,EDABAN,KCPNO,KAISINICHIJI,SYURYONICHIJI,UKEIRESETSUU,RYOHINSETSUU,GOKI,ONDO,ATURYOKU,"
+                + "KOJYO,LOTNO,EDABAN,KCPNO,KAISINICHIJI,SYURYONICHIJI,UKEIRESETSUU,RyouhinSetsuu,GOKI,ONDO,ATURYOKU,"
                 + "SITUON,SITUDO,ATUMIMIN,ATUMIMAX,ATUMITANTOSYA,TANTOSYA,KAKUNINSYA,BIKO1,BIKO2,TOROKUNICHIJI,KOSINNICHIJI,"
                 + "airnuki,dakkijikan,dakkiaturyoku,EndTantousyacode,revision,deleteflag "
                 + ") VALUES ("
@@ -1737,7 +1735,7 @@ public class GXHDO101B009 implements IFormLogic {
             String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
 
         String sql = "UPDATE tmp_sr_mekapress SET "
-                + "KCPNO = ?,KAISINICHIJI = ?,SYURYONICHIJI = ?,UKEIRESETSUU = ?,RYOHINSETSUU = ?,GOKI = ?,ONDO = ?,"
+                + "KCPNO = ?,KAISINICHIJI = ?,SYURYONICHIJI = ?,UKEIRESETSUU = ?,RyouhinSetsuu = ?,GOKI = ?,ONDO = ?,"
                 + "ATURYOKU = ?,SITUON = ?,SITUDO = ?,ATUMIMIN = ?,ATUMIMAX = ?,ATUMITANTOSYA = ?,TANTOSYA = ?,KAKUNINSYA = ?,"
                 + "BIKO1 = ?,BIKO2 = ?,KOSINNICHIJI = ?,airnuki = ?,dakkijikan = ?,dakkiaturyoku = ?,"
                 + "EndTantousyacode = ?,revision = ?,deleteflag = ? "
@@ -1867,7 +1865,7 @@ public class GXHDO101B009 implements IFormLogic {
             String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList, SrMekapress tmpSrMekapress) throws SQLException {
 
         String sql = "INSERT INTO sr_mekapress ("
-                + "KOJYO,LOTNO,EDABAN,KCPNO,KAISINICHIJI,SYURYONICHIJI,UKEIRESETSUU,RYOHINSETSUU,GOKI,ONDO,ATURYOKU,"
+                + "KOJYO,LOTNO,EDABAN,KCPNO,KAISINICHIJI,SYURYONICHIJI,UKEIRESETSUU,RyouhinSetsuu,GOKI,ONDO,ATURYOKU,"
                 + "SITUON,SITUDO,ATUMIMIN,ATUMIMAX,ATUMITANTOSYA,TANTOSYA,KAKUNINSYA,BIKO1,BIKO2,TOROKUNICHIJI,KOSINNICHIJI,"
                 + "airnuki,dakkijikan,dakkiaturyoku,EndTantousyacode,revision "
                 + ") VALUES ("
@@ -1897,7 +1895,7 @@ public class GXHDO101B009 implements IFormLogic {
     private void updateSrMekapress(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, String jotaiFlg, BigDecimal newRev,
             String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
         String sql = "UPDATE sr_mekapress SET "
-                + "KCPNO = ?,KAISINICHIJI = ?,SYURYONICHIJI = ?,UKEIRESETSUU = ?,RYOHINSETSUU = ?,GOKI = ?,ONDO = ?,"
+                + "KCPNO = ?,KAISINICHIJI = ?,SYURYONICHIJI = ?,UKEIRESETSUU = ?,RyouhinSetsuu = ?,GOKI = ?,ONDO = ?,"
                 + "ATURYOKU = ?,SITUON = ?,SITUDO = ?,ATUMIMIN = ?,ATUMIMAX = ?,ATUMITANTOSYA = ?,TANTOSYA = ?,KAKUNINSYA = ?,"
                 + "BIKO1 = ?,BIKO2 = ?,KOSINNICHIJI = ?,airnuki = ?,dakkijikan = ?,dakkiaturyoku = ?,"
                 + "EndTantousyacode = ?,revision = ? "
@@ -2126,6 +2124,9 @@ public class GXHDO101B009 implements IFormLogic {
      */
     private String getSrMekapressItemData(String itemId, SrMekapress srMekapressData) {
         switch (itemId) {
+            //KCPNo
+            case GXHDO101B009Const.KCPNO:
+                return StringUtil.nullToBlank(srMekapressData.getKcpno());
             //Air抜き
             case GXHDO101B009Const.AIR_NUKI:
                 return StringUtil.nullToBlank(srMekapressData.getAirnuki());
@@ -2185,7 +2186,7 @@ public class GXHDO101B009 implements IFormLogic {
                 return StringUtil.nullToBlank(srMekapressData.getUkeiresetsuu());
             //良品ｾｯﾄ数
             case GXHDO101B009Const.RYOHIN_SETSU:
-                return StringUtil.nullToBlank(srMekapressData.getRyohinsetsuu());
+                return StringUtil.nullToBlank(srMekapressData.getRyouhinsetsuu());
             //備考1
             case GXHDO101B009Const.BIKOU1:
                 return StringUtil.nullToBlank(srMekapressData.getBiko1());
@@ -2216,11 +2217,11 @@ public class GXHDO101B009 implements IFormLogic {
             String kojyo, String lotNo, String edaban, Timestamp systemTime) throws SQLException {
 
         String sql = "INSERT INTO tmp_sr_mekapress ("
-                + "KOJYO,LOTNO,EDABAN,KCPNO,KAISINICHIJI,SYURYONICHIJI,UKEIRESETSUU,RYOHINSETSUU,GOKI,ONDO,ATURYOKU,SITUON,"
+                + "KOJYO,LOTNO,EDABAN,KCPNO,KAISINICHIJI,SYURYONICHIJI,UKEIRESETSUU,RyouhinSetsuu,GOKI,ONDO,ATURYOKU,SITUON,"
                 + "SITUDO,ATUMIMIN,ATUMIMAX,ATUMITANTOSYA,TANTOSYA,KAKUNINSYA,BIKO1,BIKO2,TOROKUNICHIJI,KOSINNICHIJI,"
                 + "airnuki,dakkijikan,dakkiaturyoku,EndTantousyacode,revision,deleteflag"
                 + ") SELECT "
-                + "KOJYO,LOTNO,EDABAN,KCPNO,KAISINICHIJI,SYURYONICHIJI,UKEIRESETSUU,RYOHINSETSUU,GOKI,ONDO,ATURYOKU,SITUON,"
+                + "KOJYO,LOTNO,EDABAN,KCPNO,KAISINICHIJI,SYURYONICHIJI,UKEIRESETSUU,RyouhinSetsuu,GOKI,ONDO,ATURYOKU,SITUON,"
                 + "SITUDO,ATUMIMIN,ATUMIMAX,ATUMITANTOSYA,TANTOSYA,KAKUNINSYA,BIKO1,BIKO2,?,?,"
                 + "airnuki,dakkijikan,dakkiaturyoku,EndTantousyacode,?,? "
                 + "FROM sr_mekapress "

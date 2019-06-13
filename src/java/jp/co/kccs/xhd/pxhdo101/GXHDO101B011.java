@@ -42,6 +42,7 @@ import org.apache.commons.dbutils.RowProcessor;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
+import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import org.apache.commons.dbutils.DbUtils;
 
@@ -910,6 +911,11 @@ public class GXHDO101B011 implements IFormLogic {
      */
     private void setViewItemData(ProcessData processData, Map sekkeiData, Map lotKbnMasData, Map ownerMasData, Map daPatternMasData, Map shikakariData, String lotNo) {
 
+        // 前工程情報の取得
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+        Map maekoteiInfo = (Map) session.getAttribute("maekoteiInfo");
+        
         // ロットNo
         this.setItemData(processData, GXHDO101B011Const.LOTNO, lotNo);
         // KCPNO
@@ -935,9 +941,9 @@ public class GXHDO101B011 implements IFormLogic {
             this.setItemData(processData, GXHDO101B011Const.OWNER, ownercode + ":" + owner);
         }
 
-        // セット数 TODO
-        //this.setItemData(processData, GXHDO101B011Const.SET_SUU, "");
-
+        // セット数(前工程情報をセットする)
+        FXHDD01 itemRowSetsu = this.getItemRow(processData.getItemList(), GXHDO101B011Const.SET_SUU);
+        CommonUtil.setMaekoteiInfo(itemRowSetsu, maekoteiInfo, "RyouhinSetsuu", true, true);
         
         // 指示
         this.setItemData(processData, GXHDO101B011Const.SIJI, "");
@@ -996,7 +1002,15 @@ public class GXHDO101B011 implements IFormLogic {
                 for (FXHDD01 fxhdd001 : processData.getItemList()) {
                     this.setItemData(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
                 }
-
+                
+                // 前工程情報を取得
+                ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+                HttpSession session = (HttpSession) externalContext.getSession(false);
+                Map maekoteiInfo = (Map) session.getAttribute("maekoteiInfo");
+                
+                // 処理セット数(前工程情報がある場合は前工程情報の値をセットする。)
+                FXHDD01 itemSyoriSetsu = this.getItemRow(processData.getItemList(), GXHDO101B011Const.SHORI_SETSU);
+                CommonUtil.setMaekoteiInfo(itemSyoriSetsu, maekoteiInfo, "RyouhinSetsuu", false, true);
                 return true;
             }
 

@@ -27,6 +27,7 @@ import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.IFormLogic;
 import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
 import jp.co.kccs.xhd.pxhdo901.ProcessData;
+import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.DateUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
@@ -227,6 +228,12 @@ public class GXHDO101B010 implements IFormLogic {
     private void setViewItemData(ProcessData processData, Map sekkeiData, Map lotKbnMasData, Map ownerMasData, Map daPatternMasData,
             Map shikakariData, String lotNo) {
         
+                
+        // 前工程情報の取得
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+        Map maekoteiInfo = (Map) session.getAttribute("maekoteiInfo");
+
         // ロットNo
         this.setItemData(processData, GXHDO101B010Const.LOTNO, lotNo);
         // KCPNO
@@ -249,7 +256,11 @@ public class GXHDO101B010 implements IFormLogic {
             String owner = StringUtil.nullToBlank(getMapData(ownerMasData, "ownername"));
             this.setItemData(processData, GXHDO101B010Const.OWNER, ownercode + ":" + owner);
         }
-        // セット数
+        
+        // セット数(前工程情報があれば前工程情報をセットする。)
+        FXHDD01 itemRowSetsu = this.getItemRow(processData.getItemList(), GXHDO101B010Const.SETSU);
+        CommonUtil.setMaekoteiInfo(itemRowSetsu, maekoteiInfo, "RyouhinSetsuu", true, true);
+        
         // 列 × 行
         String lRetsu = StringUtil.nullToBlank(getMapData(daPatternMasData, "LRETU")); //列
         String wRetsu = StringUtil.nullToBlank(getMapData(daPatternMasData, "WRETU")); //行
@@ -303,6 +314,14 @@ public class GXHDO101B010 implements IFormLogic {
                     this.setItemData(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
                 });
                 
+                ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+                HttpSession session = (HttpSession) externalContext.getSession(false);
+                Map maekoteiInfo = (Map) session.getAttribute("maekoteiInfo");
+                
+                // 処理セット数(前工程情報がある場合は前工程情報の値をセットする。)
+                FXHDD01 itemSyoriSetsu = this.getItemRow(processData.getItemList(), GXHDO101B010Const.SHORI_SETSU);
+                CommonUtil.setMaekoteiInfo(itemSyoriSetsu, maekoteiInfo, "RyouhinSetsuu", false, true);
+        
                 // 新規登録時は設定OKとしてReturn
                 return true;
             }
@@ -512,6 +531,9 @@ public class GXHDO101B010 implements IFormLogic {
      */
     private String getHapscutItemData(String itemId, SrHapscut data) {
         switch (itemId) {
+            // KCPNo
+            case GXHDO101B010Const.KCPNO:
+                return StringUtil.nullToBlank(data.getKcpno());
             // 号機
             case GXHDO101B010Const.GOKI:
                 return StringUtil.nullToBlank(data.getGoki());

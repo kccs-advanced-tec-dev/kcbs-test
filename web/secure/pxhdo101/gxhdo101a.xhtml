@@ -27,6 +27,12 @@
                 g_prgname = 'gxhdo101a.xhtml(GXHDO101A)';
                 var interval_id = setInterval(getLocation, #{myParam.sendLocInterval});
             });
+            
+            function cmdButtonOncomplete(args) {
+                if('warning'===args.firstParam){
+                    PF('cd').show();
+                }
+            }
             //]]>
         </script>
         <style type='text/css'>
@@ -67,8 +73,13 @@
             <p:growl id="growlMessage" showDetail="false" sticky="true"/>
             <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
                 <f:facet name="message">
-                    <h:outputText value="" escape="false"/>
+                    <h:outputText value="#{gXHDO101A.getWarnMessage()}" escape="false"/>
                 </f:facet>
+                <p:commandButton id="warnOk" value="OK" styleClass="ui-conf-commandbtn-def1"
+                                 action="#{gXHDO101A.getLinkPage()}"
+                                 process="@this"
+                                 update="@this"
+                                 oncomplete="PF('cd').hide();"/>
             </p:confirmDialog>
             <tr>
                 <div class='inner' style="position:relative">
@@ -106,9 +117,10 @@
                          emptyMessage="">
                 <div style="text-align:center">
                 <p:column id="mItem" width="30%" headerText="#{myMsg.hinshitsuDB_Name}" style="font-size: 17px;">
-                    <h:commandLink value="#{item.menuName}" style="color:Indigo;font-size: 17px;"
-                                   action="#{gXHDO101A.openXhdForm(item)}"  >
-                    </h:commandLink>
+                    <p:commandLink value="#{item.menuName}" style="color:Indigo;font-size: 17px;"
+                                   action="#{gXHDO101A.openXhdForm(item)}" oncomplete="cmdButtonOncomplete(args);" 
+                                   update="@form">
+                    </p:commandLink>
                 </p:column>
                 </div>
                 <p:column id="mComment" width="70%" headerText="#{myMsg.menuComment}" style="font-size: 17px;">

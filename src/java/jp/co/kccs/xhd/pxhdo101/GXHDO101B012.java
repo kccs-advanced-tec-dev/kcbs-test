@@ -920,7 +920,6 @@ public class GXHDO101B012 implements IFormLogic {
         HttpSession session = (HttpSession) externalContext.getSession(false);
         String lotNo = (String) session.getAttribute("lotNo");
         String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
-        String maeKoteiformId = StringUtil.nullToBlank(session.getAttribute("maeKoteiformId"));
 
         // エラーメッセージリスト
         List<String> errorMessageList = processData.getInitMessageList();
@@ -958,13 +957,6 @@ public class GXHDO101B012 implements IFormLogic {
             errorMessageList.add(MessageUtil.getMessage("XHD-000016"));
         }
 
-        // 前工程良品数取得
-        List<String> getRyohinsetsuErrorList = new ArrayList<>();
-        String maeKoteiRyohinsetsu = CommonUtil.getMaeKoteiRyouhinsetSu(lotNo, maeKoteiformId, queryRunnerDoc, queryRunnerQcdb, getRyohinsetsuErrorList);
-        if (!getRyohinsetsuErrorList.isEmpty()) {
-            errorMessageList.addAll(getRyohinsetsuErrorList);
-        }
-
         // 入力項目の情報を画面にセットする。
         if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId)) {
             // エラー発生時は処理を中断
@@ -974,7 +966,7 @@ public class GXHDO101B012 implements IFormLogic {
         }
 
         // 画面に取得した情報をセットする。(入力項目以外)
-        setViewItemData(processData, lotKbnMasData, ownerMasData, shikakariData, lotNo, maeKoteiRyohinsetsu, getRyohinsetsuErrorList);
+        setViewItemData(processData, lotKbnMasData, ownerMasData, shikakariData, lotNo);
 
         processData.setInitMessageList(errorMessageList);
         return processData;
@@ -989,11 +981,13 @@ public class GXHDO101B012 implements IFormLogic {
      * @param ownerMasData ｵｰﾅｰﾏｽﾀデータ
      * @param shikakariData 仕掛データ
      * @param lotNo ﾛｯﾄNo
-     * @param maeKoteiRyohinsetsu 前工程良品ｾｯﾄ数
-     * @param getRyohinsetsuErrorList 良品ｾｯﾄ数取得時エラーリスト
      */
-    private void setViewItemData(ProcessData processData, Map lotKbnMasData, Map ownerMasData, Map shikakariData, String lotNo,
-            String maeKoteiRyohinsetsu, List<String> getRyohinsetsuErrorList) {
+    private void setViewItemData(ProcessData processData, Map lotKbnMasData, Map ownerMasData, Map shikakariData, String lotNo) {
+        
+        // 前工程情報の取得
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+        Map maekoteiInfo = (Map) session.getAttribute("maekoteiInfo");
 
         // ロットNo
         this.setItemData(processData, GXHDO101B012Const.LOTNO, lotNo);
@@ -1019,15 +1013,10 @@ public class GXHDO101B012 implements IFormLogic {
             String owner = StringUtil.nullToBlank(getMapData(ownerMasData, "ownername"));
             this.setItemData(processData, GXHDO101B012Const.OWNER, ownercode + ":" + owner);
         }
-
-        // セット数
+        
+        // セット数(前工程情報をセットする。)
         FXHDD01 itemRowSetsu = this.getItemRow(processData.getItemList(), GXHDO101B012Const.SETSU);
-        itemRowSetsu.setValue(maeKoteiRyohinsetsu);
-        if (!getRyohinsetsuErrorList.isEmpty()) {
-            itemRowSetsu.setFontColorInput("Red");
-            itemRowSetsu.setLabel2("");
-            itemRowSetsu.setCustomStyleInput("font-weight: bold;");
-        }
+        CommonUtil.setMaekoteiInfo(itemRowSetsu, maekoteiInfo, "RyouhinSetsuu", true, true);
 
         // 指示
         this.setItemData(processData, GXHDO101B012Const.SIJI, "");

@@ -64,7 +64,7 @@ public class SrMekapress {
     /**
      * 良品ｾｯﾄ数
      */
-    private Integer ryohinsetsuu;
+    private Integer ryouhinsetsuu;
 
     /**
      * 号機ｺｰﾄﾞ
@@ -295,19 +295,19 @@ public class SrMekapress {
     /**
      * 良品ｾｯﾄ数
      *
-     * @return the ryohinsetsuu
+     * @return the ryouhinsetsuu
      */
-    public Integer getRyohinsetsuu() {
-        return ryohinsetsuu;
+    public Integer getRyouhinsetsuu() {
+        return ryouhinsetsuu;
     }
 
     /**
      * 良品ｾｯﾄ数
      *
-     * @param ryohinsetsuu the ryohinsetsuu to set
+     * @param ryouhinsetsuu the ryouhinsetsuu to set
      */
-    public void setRyohinsetsuu(Integer ryohinsetsuu) {
-        this.ryohinsetsuu = ryohinsetsuu;
+    public void setRyouhinsetsuu(Integer ryouhinsetsuu) {
+        this.ryouhinsetsuu = ryouhinsetsuu;
     }
 
     /**
