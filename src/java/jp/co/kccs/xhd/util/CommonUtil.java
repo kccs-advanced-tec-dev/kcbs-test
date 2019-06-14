@@ -860,7 +860,7 @@ public class CommonUtil {
         String sql = "SELECT kojyo,lotno,edaban,startdatetime,enddatetime,gouki,ondo,tantousya,kakuninsya,bikou1,"
                 + "bikou2,bikou3,bikou4,bikou5,situon,situdo,aturyoku,jikan1,jikan2,atumimin,atumimax,shinkuuhojicheck,"
                 + "cerapeel,kansyouzai1,susborad,kansyouzai2,seisuiatupressgouki,yonetujikan1,yonetujikan2,yonetujikan3,"
-                + "aturyoku1max,aturyoku2max,mizunurecheck,Pressgoreikyakujikan,pressmaeaging,EndTantousyacode,Setsuu,"
+                + "aturyoku1max,aturyoku2max,mizunureSetsuu,Pressgoreikyakujikan,pressmaeaging,EndTantousyacode,Setsuu,"
                 + "RyouhinSetsuu,Presskaisuu,torokunichiji,kosinnichiji,revision "
                 + "FROM sr_press "
                 + "WHERE KOJYO = ? AND LOTNO = ? "

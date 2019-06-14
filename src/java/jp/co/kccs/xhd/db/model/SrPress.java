@@ -187,9 +187,9 @@ public class SrPress {
     private Integer aturyoku2max;
 
     /**
-     * 水ﾇﾚ目視ﾁｪｯｸ
+     * 水ﾇﾚｾｯﾄ数
      */
-    private Integer mizunurecheck;
+    private Integer mizunureSetsuu;
 
     /**
      * ﾌﾟﾚｽ後冷却時間
@@ -818,21 +818,21 @@ public class SrPress {
     }
 
     /**
-     * 水ﾇﾚ目視ﾁｪｯｸ
+     * 水ﾇﾚｾｯﾄ数
      *
-     * @return the mizunurecheck
+     * @return the mizunureSetsuu
      */
-    public Integer getMizunurecheck() {
-        return mizunurecheck;
+    public Integer getMizunureSetsuu() {
+        return mizunureSetsuu;
     }
 
     /**
-     * 水ﾇﾚ目視ﾁｪｯｸ
+     * 水ﾇﾚｾｯﾄ数
      *
-     * @param mizunurecheck the mizunurecheck to set
+     * @param mizunureSetsuu the mizunureSetsuu to set
      */
-    public void setMizunurecheck(Integer mizunurecheck) {
-        this.mizunurecheck = mizunurecheck;
+    public void setMizunureSetsuu(Integer mizunureSetsuu) {
+        this.mizunureSetsuu = mizunureSetsuu;
     }
 
     /**
