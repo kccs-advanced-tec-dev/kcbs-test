@@ -251,31 +251,31 @@ public class GXHDO101C007 implements Serializable {
         for (Map<String, Object> map : sokuteiDataList) {
             switch (StringUtil.nullToBlank(map.get("number"))) {
                 case "1":
-                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(0).setValue(StringUtil.nullToBlank(map.get("suiheiphanteih1")));
+                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(0).setValue(StringUtil.nullToBlank(map.get("suiheipkeisokuh1")));
                     break;
                 case "2":
-                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(1).setValue(StringUtil.nullToBlank(map.get("suiheiphanteih1")));
+                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(1).setValue(StringUtil.nullToBlank(map.get("suiheipkeisokuh1")));
                     break;
                 case "3":
-                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(2).setValue(StringUtil.nullToBlank(map.get("suiheiphanteih1")));
+                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(2).setValue(StringUtil.nullToBlank(map.get("suiheipkeisokuh1")));
                     break;
                 case "4":
-                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(3).setValue(StringUtil.nullToBlank(map.get("suiheiphanteih1")));
+                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(3).setValue(StringUtil.nullToBlank(map.get("suiheipkeisokuh1")));
                     break;
                 case "5":
-                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(4).setValue(StringUtil.nullToBlank(map.get("suiheiphanteih1")));
+                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(4).setValue(StringUtil.nullToBlank(map.get("suiheipkeisokuh1")));
                     break;
                 case "6":
-                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(5).setValue(StringUtil.nullToBlank(map.get("suiheiphanteih1")));
+                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(5).setValue(StringUtil.nullToBlank(map.get("suiheipkeisokuh1")));
                     break;
                 case "7":
-                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(6).setValue(StringUtil.nullToBlank(map.get("suiheiphanteih1")));
+                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(6).setValue(StringUtil.nullToBlank(map.get("suiheipkeisokuh1")));
                     break;
                 case "8":
-                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(7).setValue(StringUtil.nullToBlank(map.get("suiheiphanteih1")));
+                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(7).setValue(StringUtil.nullToBlank(map.get("suiheipkeisokuh1")));
                     break;
                 case "9":
-                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(8).setValue(StringUtil.nullToBlank(map.get("suiheiphanteih1")));
+                    this.gxhdO101c007ModelView.getDenkyokuMakuatsuDataList().get(8).setValue(StringUtil.nullToBlank(map.get("suiheipkeisokuh1")));
                     break;
             }
         }
@@ -339,7 +339,7 @@ public class GXHDO101C007 implements Serializable {
      */
     private List<Map<String, Object>> getSokuteiData(String sokuteino) throws SQLException {
         QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
-        String sql = "SELECT suiheiphanteih1,number "
+        String sql = "SELECT suiheipkeisokuh1,number "
                 + " FROM sr_rhapsmakuatsu2 "
                 + " WHERE sokuteino = ? "
                 + " ORDER BY number ";
