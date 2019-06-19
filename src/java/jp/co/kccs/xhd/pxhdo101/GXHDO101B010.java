@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
+import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.db.model.SrHapscut;
@@ -270,9 +271,9 @@ public class GXHDO101B010 implements IFormLogic {
         String wSun = StringUtil.nullToBlank(getMapData(daPatternMasData, "WSUN")); //WSUN
         this.setItemData(processData, GXHDO101B010Const.PITCH, lSun + "×" + wSun);
         // 電極製版名
-        this.setItemData(processData, GXHDO101B010Const.PATTERN, StringUtil.nullToBlank(sekkeiData.get("PATTERN")));
+        this.setItemData(processData, GXHDO101B010Const.PATTERN, StringUtil.nullToBlank(getMapData(sekkeiData, "PATTERN")));
         // 取個数
-        this.setItemData(processData, GXHDO101B010Const.TORIKOSU, StringUtil.nullToBlank(shikakariData.get("torikosuu")));
+        this.setItemData(processData, GXHDO101B010Const.TORIKOSU, StringUtil.nullToBlank(getMapData(shikakariData, "torikosuu")));
     }
     
     /**
@@ -615,6 +616,26 @@ public class GXHDO101B010 implements IFormLogic {
             default:
                 return null;
         }
+    }
+    
+    /**
+     * 初期表示メッセージ表示
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData openInitMessage(ProcessData processData) {
+
+        processData.setMethod("");
+
+        // メッセージを画面に渡す
+        InitMessage beanInitMessage = (InitMessage) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_INIT_MESSAGE);
+        beanInitMessage.setInitMessageList(processData.getInitMessageList());
+
+        // 実行スクリプトを設定
+        processData.setExecuteScript("PF('W_dlg_initMessage').show();");
+
+        return processData;
     }
 //</editor-fold>
 
