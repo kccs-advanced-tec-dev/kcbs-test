@@ -1899,7 +1899,7 @@ public class GXHDO101B008 implements IFormLogic {
             params.add(null); //厚みMIN
             params.add(null); //厚みMAX
         }
-        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B008Const.SINKU_CHECK, srPressData)));  //真空ﾁｪｯｸ
+        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B008Const.SINKU_CHECK, srPressData), null));  //真空ﾁｪｯｸ
         params.add(DBUtil.stringToStringObjectDefaultNull(StringUtil.nullToBlank(getItemData(itemList, GXHDO101B008Const.CERAPEEL_BLAST, srPressData))));  //ｾﾗﾋﾟｰﾙ/ﾌﾞﾗｽﾄ
         params.add(getComboAriNashiValue(getItemData(itemList, GXHDO101B008Const.KASHOZAI1, srPressData), null));//緩衝材1
         params.add(getComboAriNashiValue(getItemData(itemList, GXHDO101B008Const.SUS_BAN, srPressData), null));//SUS板
@@ -2054,7 +2054,7 @@ public class GXHDO101B008 implements IFormLogic {
             params.add(0); //厚みMIN
             params.add(0); //厚みMAX
         }
-        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B008Const.SINKU_CHECK, srPressData)));  //真空ﾁｪｯｸ
+        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B008Const.SINKU_CHECK, srPressData), 9));  //真空ﾁｪｯｸ
         params.add(DBUtil.stringToStringObject(StringUtil.nullToBlank(getItemData(itemList, GXHDO101B008Const.CERAPEEL_BLAST, srPressData))));  //ｾﾗﾋﾟｰﾙ/ﾌﾞﾗｽﾄ
         params.add(getComboAriNashiValue(getItemData(itemList, GXHDO101B008Const.KASHOZAI1, srPressData), 9));//緩衝材1
         params.add(getComboAriNashiValue(getItemData(itemList, GXHDO101B008Const.SUS_BAN, srPressData), 9));//SUS板
@@ -2423,15 +2423,13 @@ public class GXHDO101B008 implements IFormLogic {
      * チェックボックス値(DB内のValue値)取得
      *
      * @param checkBoxValue コンボボックスValue値
+     * @param defaultValue チェックがついていない場合のデフォルト値
      * @return コンボボックステキスト値
      */
-    private String getCheckBoxDbValue(String checkBoxValue) {
+    private Integer getCheckBoxDbValue(String checkBoxValue, Integer defaultValue) {
         if ("true".equals(StringUtil.nullToBlank(checkBoxValue).toLowerCase())) {
-            return "1";
+            return 1;
         }
-        return "0";
+        return defaultValue;
     }
-    
-    
-
 }
