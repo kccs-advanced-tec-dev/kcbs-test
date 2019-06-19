@@ -4,6 +4,7 @@
 package jp.co.kccs.xhd.pxhdo101;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -878,7 +879,7 @@ public class GXHDO101B009 implements IFormLogic {
         }
         
         // 入力項目の情報を画面にセットする。
-        if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId, sekkeiData)) {
+        if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId)) {
             // エラー発生時は処理を中断
             processData.setFatalError(true);
             processData.setInitMessageList(Arrays.asList(MessageUtil.getMessage("XHD-000038")));
@@ -886,7 +887,7 @@ public class GXHDO101B009 implements IFormLogic {
         }
 
         // 画面に取得した情報をセットする。(入力項目以外)
-        setViewItemData(processData, lotKbnMasData, ownerMasData, shikakariData, lotNo);
+        setViewItemData(processData, lotKbnMasData, ownerMasData, shikakariData, lotNo, sekkeiData);
 
         processData.setInitMessageList(errorMessageList);
         return processData;
@@ -901,8 +902,9 @@ public class GXHDO101B009 implements IFormLogic {
      * @param ownerMasData ｵｰﾅｰﾏｽﾀデータ
      * @param shikakariData 仕掛データ
      * @param lotNo ﾛｯﾄNo
+     * @param sekkeiData 設計データ
      */
-    private void setViewItemData(ProcessData processData, Map lotKbnMasData, Map ownerMasData, Map shikakariData, String lotNo) {
+    private void setViewItemData(ProcessData processData, Map lotKbnMasData, Map ownerMasData, Map shikakariData, String lotNo, Map sekkeiData) {
 
         // 前工程情報の取得
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
@@ -940,6 +942,10 @@ public class GXHDO101B009 implements IFormLogic {
         
         // 指示
         this.setItemData(processData, GXHDO101B009Const.SIJI, "");
+        
+        // 設定圧力に設計.ﾌﾟﾚｽ圧を設定する。
+        this.setItemData(processData, GXHDO101B009Const.SETTEI_ATURYOKU, StringUtil.nullToBlank(sekkeiData.get("PRSATU")));
+                
 
     }
 
@@ -951,12 +957,11 @@ public class GXHDO101B009 implements IFormLogic {
      * @param queryRunnerQcdb QueryRunnerオブジェクト(Qcdb)
      * @param lotNo ﾛｯﾄNo
      * @param formId 画面ID
-     * @param sekkeiData 設計データ
      * @return 設定結果(失敗時false)
      * @throws SQLException 例外エラー
      */
     private boolean setInputItemData(ProcessData processData, QueryRunner queryRunnerDoc, QueryRunner queryRunnerQcdb,
-            String lotNo, String formId, Map sekkeiData) throws SQLException {
+            String lotNo, String formId) throws SQLException {
 
         List<SrMekapress> srMekapressDataList = new ArrayList<>();
         String rev = "";
@@ -981,9 +986,6 @@ public class GXHDO101B009 implements IFormLogic {
                     this.setItemData(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
                 }
 
-                // 新規のときのみ設定圧力に設計.ﾌﾟﾚｽ圧を設定する。
-                this.setItemData(processData, GXHDO101B009Const.SETTEI_ATURYOKU, StringUtil.nullToBlank(sekkeiData.get("PRSATU")));
-                
                 // 前工程情報を取得する。
                 ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
                 HttpSession session = (HttpSession) externalContext.getSession(false);
@@ -1041,8 +1043,6 @@ public class GXHDO101B009 implements IFormLogic {
         this.setItemData(processData, GXHDO101B009Const.DAKKI_TIME, getSrMekapressItemData(GXHDO101B009Const.DAKKI_TIME, srMekapressData));
         //脱気圧力
         this.setItemData(processData, GXHDO101B009Const.DAKKI_ATURYOKU, getSrMekapressItemData(GXHDO101B009Const.DAKKI_ATURYOKU, srMekapressData));
-        //設定圧力
-        this.setItemData(processData, GXHDO101B009Const.SETTEI_ATURYOKU, getSrMekapressItemData(GXHDO101B009Const.SETTEI_ATURYOKU, srMekapressData));
         //ﾌﾟﾚｽ温度
         this.setItemData(processData, GXHDO101B009Const.PRESS_ONDO, getSrMekapressItemData(GXHDO101B009Const.PRESS_ONDO, srMekapressData));
         //ﾌﾟﾚｽ後厚みMAX
@@ -1823,7 +1823,15 @@ public class GXHDO101B009 implements IFormLogic {
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B009Const.RYOHIN_SETSU, srMekapressData)));  //良品ｾｯﾄ数
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B009Const.GOKI, srMekapressData)));  //号機ｺｰﾄﾞ
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B009Const.PRESS_ONDO, srMekapressData)));  //温度
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B009Const.SETTEI_ATURYOKU, srMekapressData)));  //圧力
+        //設定圧力は小数以下を切り捨てる
+        String setteiAturyoku = StringUtil.nullToBlank(getItemData(itemList, GXHDO101B009Const.SETTEI_ATURYOKU, srMekapressData));
+        try {
+            BigDecimal decSetteiAturyoku = new BigDecimal(setteiAturyoku);
+            setteiAturyoku = decSetteiAturyoku.setScale(0, RoundingMode.DOWN).toPlainString();
+        } catch (NumberFormatException e) {
+            // 処理なし
+        }
+        params.add(DBUtil.stringToIntObjectDefaultNull(setteiAturyoku));  //圧力
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B009Const.SETTIBASHO_ONDO, srMekapressData)));  //室温
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B009Const.SETTIBASHO_SITUDO, srMekapressData)));  //湿度
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B009Const.PRESS_GO_ATUMI_MIN, srMekapressData)));  //厚みMIN
@@ -1953,7 +1961,15 @@ public class GXHDO101B009 implements IFormLogic {
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B009Const.RYOHIN_SETSU, srMekapressData)));  //良品ｾｯﾄ数
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B009Const.GOKI, srMekapressData)));  //号機ｺｰﾄﾞ
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B009Const.PRESS_ONDO, srMekapressData)));  //温度
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B009Const.SETTEI_ATURYOKU, srMekapressData)));  //圧力
+        //設定圧力は小数以下を切り捨てる
+        String setteiAturyoku = StringUtil.nullToBlank(getItemData(itemList, GXHDO101B009Const.SETTEI_ATURYOKU, srMekapressData));
+        try {
+            BigDecimal decSetteiAturyoku = new BigDecimal(setteiAturyoku);
+            setteiAturyoku = decSetteiAturyoku.setScale(0, RoundingMode.DOWN).toPlainString();
+        } catch (NumberFormatException e) {
+            // 処理なし
+        }
+        params.add(DBUtil.stringToIntObject(setteiAturyoku));  //圧力
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B009Const.SETTIBASHO_ONDO, srMekapressData)));  //室温
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B009Const.SETTIBASHO_SITUDO, srMekapressData)));  //湿度
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B009Const.PRESS_GO_ATUMI_MIN, srMekapressData)));  //厚みMIN
