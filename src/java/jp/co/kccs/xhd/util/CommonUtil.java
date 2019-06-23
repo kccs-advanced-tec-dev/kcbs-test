@@ -1085,8 +1085,7 @@ public class CommonUtil {
                 + "bikou1,bikou2,tourokunichiji,koushinnichiji,revision "
                 + "FROM sr_nijidasshi "
                 + "WHERE kojyo = ? AND lotno = ? "
-                + "AND edaban = ? AND revision = ? "
-                + "AND jissekino = ? ";
+                + "AND edaban = ? AND revision = ? ";
 
         List<Object> params = new ArrayList<>();
         params.add(kojyo);
