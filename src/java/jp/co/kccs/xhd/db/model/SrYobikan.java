@@ -89,7 +89,7 @@ public class SrYobikan {
     /**
      * ﾋﾟｰｸ時間
      */
-    private Integer peakjikan;
+    private BigDecimal peakjikan;
 
     /**
      * 開始担当者ｺｰﾄﾞ
@@ -407,7 +407,7 @@ public class SrYobikan {
      *
      * @return the peakjikan
      */
-    public Integer getPeakjikan() {
+    public BigDecimal getPeakjikan() {
         return peakjikan;
     }
 
@@ -416,7 +416,7 @@ public class SrYobikan {
      *
      * @param peakjikan the peakjikan to set
      */
-    public void setPeakjikan(Integer peakjikan) {
+    public void setPeakjikan(BigDecimal peakjikan) {
         this.peakjikan = peakjikan;
     }
 
