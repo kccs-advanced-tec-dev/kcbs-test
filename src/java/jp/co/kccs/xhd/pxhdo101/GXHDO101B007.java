@@ -1449,27 +1449,6 @@ public class GXHDO101B007 implements IFormLogic {
     }
 
     /**
-     * [製版ﾏｽﾀ]から、ﾃﾞｰﾀを取得
-     *
-     * @param queryRunnerDoc QueryRunnerオブジェクト
-     * @param pattern 電極製版名(検索キー)
-     * @return 取得データ
-     * @throws SQLException 例外エラー
-     */
-    private Map loadDaPatternMas(QueryRunner queryRunnerQcdb, String pattern) throws SQLException {
-
-        // 製版ﾏｽﾀデータの取得
-        String sql = "SELECT LRETU, WRETU, LSUN, WSUN "
-                + " FROM da_patternmas WHERE PATTERN = ? ";
-
-        List<Object> params = new ArrayList<>();
-        params.add(pattern);
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
-    }
-
-    /**
      * 枝番コピー確認メッセージ表示
      *
      * @param processData 処理データ
@@ -2018,8 +1997,7 @@ public class GXHDO101B007 implements IFormLogic {
                 params.add(1);
                 break;
             default:
-                params.add(null);
-                //params.add(9);
+                params.add(9);
                 break;
         }
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B007Const.SINKU_HOJI, srPrepressData))); //真空保持
