@@ -172,7 +172,10 @@ public class GXHDO101B010 implements IFormLogic {
         
         // 設計情報のチェック(必須データが取得出来ていない場合エラー)
         errorMessageList.addAll(ValidateUtil.checkSekkeiUnsetItems(sekkeiData, 
-                new LinkedHashMap<String, String>(){{put("PATTERN", "電極製版名");}}));
+                new LinkedHashMap<String, String>(){{
+                    put("PATTERN", "電極製版名");
+                    put("CUTHOSEIRYO", "ｶｯﾄ補正量");
+                }}));
         
         // [製版ﾏｽﾀ]情報取得
         Map daPatternMasData = loadDaPatternMas(queryRunnerQcdb, pattern);
@@ -274,6 +277,12 @@ public class GXHDO101B010 implements IFormLogic {
         this.setItemData(processData, GXHDO101B010Const.PATTERN, StringUtil.nullToBlank(getMapData(sekkeiData, "PATTERN")));
         // 取個数
         this.setItemData(processData, GXHDO101B010Const.TORIKOSU, StringUtil.nullToBlank(getMapData(shikakariData, "torikosuu")));
+        // ｶｯﾄ補正量
+        BigDecimal calcCutHosei = null;
+        if (null != getMapData(sekkeiData, "CUTHOSEIRYO") && getMapData(sekkeiData, "CUTHOSEIRYO") instanceof Double) {
+            calcCutHosei = BigDecimal.valueOf((Double)getMapData(sekkeiData, "CUTHOSEIRYO")).multiply(BigDecimal.valueOf(1000.0)).stripTrailingZeros();
+        }
+        this.setItemData(processData, GXHDO101B010Const.CUT_HOSEI_RYOU, StringUtil.nullToBlank(calcCutHosei));
     }
     
     /**
@@ -487,8 +496,8 @@ public class GXHDO101B010 implements IFormLogic {
         this.setItemData(processData, GXHDO101B010Const.GYORETU_KAKUNIN, getHapscutItemData(GXHDO101B010Const.GYORETU_KAKUNIN, srHapscut));
         // ﾏｰｸ外取り数
         this.setItemData(processData, GXHDO101B010Const.MARKTORISU, getHapscutItemData(GXHDO101B010Const.MARKTORISU, srHapscut));
-        // ｶｯﾄ補正量
-        this.setItemData(processData, GXHDO101B010Const.CUT_HOSEI_RYOU, getHapscutItemData(GXHDO101B010Const.CUT_HOSEI_RYOU, srHapscut));
+//        // ｶｯﾄ補正量
+//        this.setItemData(processData, GXHDO101B010Const.CUT_HOSEI_RYOU, getHapscutItemData(GXHDO101B010Const.CUT_HOSEI_RYOU, srHapscut));
         // ﾃｰﾌﾞﾙ温度 設定
         this.setItemData(processData, GXHDO101B010Const.TABLEONDO_SET, getHapscutItemData(GXHDO101B010Const.TABLEONDO_SET, srHapscut));
         // ﾃｰﾌﾞﾙ温度 実測
@@ -979,7 +988,7 @@ public class GXHDO101B010 implements IFormLogic {
         // 設計データの取得
         String sql = "SELECT SEKKEINO,"
                 + "GENRYOU,ETAPE,EATUMI,SOUSUU,EMAISUU,SYURUI2,ATUMI2,"
-                + "MAISUU2,SYURUI3,ATUMI3,MAISUU3,PATTERN,LASTLAYERSLIDERYO "
+                + "MAISUU2,SYURUI3,ATUMI3,MAISUU3,PATTERN,LASTLAYERSLIDERYO,CUTHOSEIRYO "
                 + "FROM da_sekkei "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = '001'";
         
