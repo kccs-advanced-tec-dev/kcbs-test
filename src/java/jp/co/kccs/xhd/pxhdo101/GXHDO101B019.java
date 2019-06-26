@@ -2239,7 +2239,7 @@ public class GXHDO101B019 implements IFormLogic {
      * @return 変換後の数値
      */
     private Integer getNgOkBlankToIntDbValue(String value) {
-        switch (value) {
+        switch (StringUtil.nullToBlank(value)) {
             case "NG":
                 return 0;
             case "OK":
@@ -2255,7 +2255,7 @@ public class GXHDO101B019 implements IFormLogic {
      * @return 変換後の数値
      */
     private Integer getNgOkBlankToIntDbValueForTemp(String value) {
-        switch (value) {
+        switch (StringUtil.nullToBlank(value)) {
             case "NG":
                 return 0;
             case "OK":
