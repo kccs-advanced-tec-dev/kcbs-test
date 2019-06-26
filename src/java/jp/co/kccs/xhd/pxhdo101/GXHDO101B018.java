@@ -41,6 +41,7 @@ import org.apache.commons.dbutils.RowProcessor;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
+import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import org.apache.commons.dbutils.DbUtils;
 
@@ -383,40 +384,32 @@ public class GXHDO101B018 implements IFormLogic {
      * @return エラーメッセージ情報
      */
     private ErrorMessageInfo checkSaisanka(ProcessData processData) {
-        List<String[]> checkItemList = new ArrayList<>();
-        checkItemList.add(new String[]{GXHDO101B018Const.FIRST_SAISANKA_GOUKI1, null}); //1回目再酸化号機1
-        checkItemList.add(new String[]{GXHDO101B018Const.FIRST_SAISANKA_GOUKI2, null}); //1回目再酸化号機2
-        checkItemList.add(new String[]{GXHDO101B018Const.FIRST_SAISANKA_SETTEI_PTN, "true"}); //1回目再酸化設定ﾊﾟﾀｰﾝ(true以外は未入力扱い)
-        checkItemList.add(new String[]{GXHDO101B018Const.FIRST_SAISANKA_KEEP_ONDO, null});//1回目再酸化ｷｰﾌﾟ温度
-        checkItemList.add(new String[]{GXHDO101B018Const.FIRST_SAISANKA_CONVEYER_SPEED, null});//1回目再酸化ｺﾝﾍﾞｱ速度
-        checkItemList.add(new String[]{GXHDO101B018Const.FIRST_SAISANKA_ATO_GAIKAN, null});//1回目再酸化後外観
+        List<String> checkItemList = new ArrayList<>();
+        // チェック対象をリストに追加
+        checkItemList.add(GXHDO101B018Const.FIRST_SAISANKA_GOUKI1); //1回目再酸化号機1
+        checkItemList.add(GXHDO101B018Const.FIRST_SAISANKA_GOUKI2); //1回目再酸化号機2
+        checkItemList.add(GXHDO101B018Const.FIRST_SAISANKA_SETTEI_PTN); //1回目再酸化設定ﾊﾟﾀｰﾝ(true以外は未入力扱い)
+        checkItemList.add(GXHDO101B018Const.FIRST_SAISANKA_KEEP_ONDO);//1回目再酸化ｷｰﾌﾟ温度
+        checkItemList.add(GXHDO101B018Const.FIRST_SAISANKA_CONVEYER_SPEED);//1回目再酸化ｺﾝﾍﾞｱ速度
+        checkItemList.add(GXHDO101B018Const.FIRST_SAISANKA_ATO_GAIKAN);//1回目再酸化後外観
 
         // 入力項目有無
         boolean existInputData = false;
         // 未入力項目
         FXHDD01 nonInputitemRow = null;
 
-        for (String[] checkItem : checkItemList) {
+        for (String checkItemId : checkItemList) {
             // 項目の取得
-            FXHDD01 itemRow = getItemRow(processData.getItemList(), checkItem[0]);
-            if (StringUtil.isEmpty(checkItem[1])) {
-                // 入力判定(指定の値がない場合)
-                if (!StringUtil.isEmpty(itemRow.getValue())) {
-                    // 値が入力されている場合
-                    existInputData = true;
-                } else if (nonInputitemRow == null) {
-                    // 値が入力されていない場合(既に対象が存在している場合は1件目を保持する)
+            FXHDD01 itemRow = getItemRow(processData.getItemList(), checkItemId);
+            if (isNonInputItem(itemRow)) {
+                // 値が入力されていない場合
+                if (nonInputitemRow == null) {
+                    // 未入力の項目、1件目を保持する
                     nonInputitemRow = itemRow;
                 }
             } else {
-                // 入力判定(指定の値がある場合)
-                if (checkItem[1].equals(StringUtil.nullToBlank(itemRow.getValue()))) {
-                    // 値が入力されている場合
-                    existInputData = true;
-                } else if (nonInputitemRow == null) {
-                    // 値が入力されていない場合(既に対象が存在している場合は1件目を保持する)
-                    nonInputitemRow = itemRow;
-                }
+                // 値が入力されている場合
+                existInputData = true;
             }
 
             // 入力項目が存在するかつ未入力の項目も存在する場合
@@ -446,26 +439,19 @@ public class GXHDO101B018 implements IFormLogic {
             return null;
         }
 
-        List<String[]> checkItemList = new ArrayList<>();
-        checkItemList.add(new String[]{GXHDO101B018Const.NIJIDASSHI_GOUKI, null}); //2次脱脂号機
-        checkItemList.add(new String[]{GXHDO101B018Const.NIJIDASSHI_SETTEI_PATTERN, "true"}); //2次脱脂設定ﾊﾟﾀｰﾝ(true以外は未入力扱い)
-        checkItemList.add(new String[]{GXHDO101B018Const.NIJIDASSHI_KEEPONDO, null});//2次脱脂ｷｰﾌﾟ温度
-        checkItemList.add(new String[]{GXHDO101B018Const.NIJIDASSHI_CONVEYER_SPEED, null});//2次脱脂ｺﾝﾍﾞｱ速度
+        List<String> checkItemList = new ArrayList<>();
+        checkItemList.add(GXHDO101B018Const.NIJIDASSHI_GOUKI); //2次脱脂号機
+        checkItemList.add(GXHDO101B018Const.NIJIDASSHI_SETTEI_PATTERN); //2次脱脂設定ﾊﾟﾀｰﾝ
+        checkItemList.add(GXHDO101B018Const.NIJIDASSHI_KEEPONDO);//2次脱脂ｷｰﾌﾟ温度
+        checkItemList.add(GXHDO101B018Const.NIJIDASSHI_CONVEYER_SPEED);//2次脱脂ｺﾝﾍﾞｱ速度
 
-        for (String[] checkItem : checkItemList) {
+        for (String checkItemId : checkItemList) {
             // 項目の取得
-            FXHDD01 itemRow = getItemRow(processData.getItemList(), checkItem[0]);
-            if (StringUtil.isEmpty(checkItem[1])) {
-                // 入力がある場合
-                if(!StringUtil.isEmpty(itemRow.getValue())){
-                    continue;
-                }
-            } else if (checkItem[1].equals(StringUtil.nullToBlank(itemRow.getValue()))) {
-                // 入力内容が特定の値の場合
-                continue;
+            FXHDD01 itemRow = getItemRow(processData.getItemList(), checkItemId);
+            if (isNonInputItem(itemRow)) {
+                // 未入力項目がある場合、リターン
+                return MessageUtil.getErrorMessageInfo("XHD-000003", true, true, Arrays.asList(itemRow), itemRow.getLabel1());
             }
-            // 未入力項目がある場合、リターン
-            return MessageUtil.getErrorMessageInfo("XHD-000003", true, true, Arrays.asList(itemRow), itemRow.getLabel1());
         }
         return null;
     }
@@ -2121,7 +2107,7 @@ public class GXHDO101B018 implements IFormLogic {
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B018Const.SYOSEI_PURGE, srSyoseiData)));  //焼成ﾊﾟｰｼﾞ
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B018Const.FIRST_SAISANKA_GOUKI1, srSyoseiData)));  //1回目再酸化号機1
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B018Const.FIRST_SAISANKA_GOUKI2, srSyoseiData)));  //1回目再酸化号機2
-        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B018Const.FIRST_SAISANKA_SETTEI_PTN, srSyoseiData), null));  //2次脱脂設定ﾊﾟﾀｰﾝ
+        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B018Const.FIRST_SAISANKA_SETTEI_PTN, srSyoseiData), null));  //1回目再酸化設定ﾊﾟﾀｰﾝ
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B018Const.FIRST_SAISANKA_KEEP_ONDO, srSyoseiData)));  //1回目再酸化ｷｰﾌﾟ温度
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B018Const.FIRST_SAISANKA_CONVEYER_SPEED, srSyoseiData)));  //1回目再酸化ｺﾝﾍﾞｱ速度
         params.add(getComboValue(getItemData(itemList, GXHDO101B018Const.FIRST_SAISANKA_ATO_GAIKAN, srSyoseiData), null));//1回目再酸化後外観
@@ -2280,8 +2266,8 @@ public class GXHDO101B018 implements IFormLogic {
         params.add(systemTime); //更新日時
         if (isInsert) {
             params.add(""); //再酸化号機
-            params.add(null); //再酸化温度
-            params.add(null); //再酸化終了日時
+            params.add(0); //再酸化温度
+            params.add("0000-00-00 00:00:00"); //再酸化終了日時
         }
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B018Const.TOUNYU_SETTA_MAISU, srSyoseiData)));  //投入ｾｯﾀ枚数
         params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B018Const.SYOSEI_SETTEI_PTN_CHECK, srSyoseiData), 9));  //焼成設定ﾊﾟﾀｰﾝﾁｪｯｸ
@@ -2300,7 +2286,7 @@ public class GXHDO101B018 implements IFormLogic {
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B018Const.SYOSEI_PURGE, srSyoseiData)));  //焼成ﾊﾟｰｼﾞ
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B018Const.FIRST_SAISANKA_GOUKI1, srSyoseiData)));  //1回目再酸化号機1
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B018Const.FIRST_SAISANKA_GOUKI2, srSyoseiData)));  //1回目再酸化号機2
-        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B018Const.FIRST_SAISANKA_SETTEI_PTN, srSyoseiData), 9));  //2次脱脂設定ﾊﾟﾀｰﾝ
+        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B018Const.FIRST_SAISANKA_SETTEI_PTN, srSyoseiData), 9));  //1回目再酸化設定ﾊﾟﾀｰﾝ
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B018Const.FIRST_SAISANKA_KEEP_ONDO, srSyoseiData)));  //1回目再酸化ｷｰﾌﾟ温度
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B018Const.FIRST_SAISANKA_CONVEYER_SPEED, srSyoseiData)));  //1回目再酸化ｺﾝﾍﾞｱ速度
         params.add(getComboValue(getItemData(itemList, GXHDO101B018Const.FIRST_SAISANKA_ATO_GAIKAN, srSyoseiData), 9));//1回目再酸化後外観
@@ -2666,6 +2652,31 @@ public class GXHDO101B018 implements IFormLogic {
             return 1;
         }
         return defaultValue;
+    }
+    
+    /**
+     * 項目の未入力判定
+     * @param itemRow 項目データ
+     * @return 未入力時にtrueを返却
+     */
+    private boolean isNonInputItem(FXHDD01 itemRow){
+        if (itemRow.isRenderInputNumber()) {
+            // 数値項目の場合、空またはZEROの場合未入力とする。
+            if(StringUtil.isEmpty(itemRow.getValue()) || NumberUtil.isZero(itemRow.getValue())){
+                return true;
+            }
+        } else if (itemRow.isRenderInputCheckBox()) {
+            // チェックボックスの場合、"true"以外未入力とする。
+            if(!"true".equals(itemRow.getValue())){
+                return true;
+            }
+        } else {
+            // その他、空の場合未入力とする。
+            if(StringUtil.isEmpty(itemRow.getValue())){
+                return true;
+            }
+        }
+        return false;
     }
 
 }
