@@ -2015,7 +2015,7 @@ public class GXHDO101B019 implements IFormLogic {
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B019Const.SITEI_SAISANKA_KAISU, srSaisankaData)));  //指定再酸化回数
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B019Const.TOUNYU_SETTA_MAISU, srSaisankaData)));  //投入ｾｯﾀ枚数
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B019Const.GOKI, srSaisankaData)));  //号機
-        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B019Const.SETTEI_PATTERN, srSaisankaData), 9));  //設定ﾊﾟﾀｰﾝ
+        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B019Const.SETTEI_PATTERN, srSaisankaData), null));  //設定ﾊﾟﾀｰﾝ
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B019Const.KEEP_ONDO, srSaisankaData)));  //ｷｰﾌﾟ温度
         params.add(getNgOkBlankToIntDbValueForTemp(getItemData(itemList, GXHDO101B019Const.ATO_GAIKAN_CHECK, srSaisankaData)));  //後外観確認
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B019Const.KAISHU_SETTA_MAISU, srSaisankaData)));  //回収ｾｯﾀ枚数
