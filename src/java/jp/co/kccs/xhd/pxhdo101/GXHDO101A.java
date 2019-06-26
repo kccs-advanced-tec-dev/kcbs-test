@@ -21,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import jp.co.kccs.xhd.GetModel;
+import jp.co.kccs.xhd.db.model.DaJoken;
 import jp.co.kccs.xhd.db.model.FXHDM01;
 import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.DBUtil;
@@ -228,9 +229,10 @@ public class GXHDO101A implements Serializable {
 
             String strKojyo = strGamenLotNo.substring(0, 3);
             String strLotNo = strGamenLotNo.substring(3, 11);
+            String strSekkeiNo = "";
 
             QueryRunner queryRunnerXHD = new QueryRunner(dataSourceXHD);
-            String sqlsearchProcess = "SELECT PrintFmt FROM da_sekkei WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
+            String sqlsearchProcess = "SELECT PrintFmt,SEKKEINO FROM da_sekkei WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
             List<Object> params = new ArrayList<>();
             params.add(strKojyo);
             params.add(strLotNo);
@@ -239,6 +241,7 @@ public class GXHDO101A implements Serializable {
             for (Iterator i = processResult.iterator(); i.hasNext();) {
                 HashMap m = (HashMap) i.next();
                 strProcess = m.get("PrintFmt").toString();
+                strSekkeiNo = m.get("SEKKEINO").toString();
             }
 
             if (processResult.isEmpty()) {
@@ -312,6 +315,22 @@ public class GXHDO101A implements Serializable {
                 DBUtil.outputSQLLog(sql, params3.toArray(), LOGGER);
                 menuListGXHDO101 = queryRunnerDoc.query(sql, beanHandler, params3.toArray());
             }
+            
+            if (!menuListGXHDO101.isEmpty()) {
+                // ﾌｨﾙﾀｰ画面IDの取得
+                List<String> filterGamenIdList = getFilterGamenIdList(queryRunnerDoc, queryRunnerXHD, strSekkeiNo);
+                
+                // データが取得できた場合、フィルターしたデータのみ表示
+                if(filterGamenIdList != null){
+                    List<FXHDM01> filterMenuList = new ArrayList();
+                    for(FXHDM01 data : menuListGXHDO101){
+                        if(filterGamenIdList.contains(data.getFormId())){
+                            filterMenuList.add(data);
+                        }
+                    }
+                    menuListGXHDO101 = filterMenuList;
+                }
+            }
 
             if (menuListGXHDO101.isEmpty()) {
                 setMenuTableRender(false);
@@ -380,9 +399,17 @@ public class GXHDO101A implements Serializable {
             session.setAttribute("lotNo", this.searchLotNo);
             session.setAttribute("tantoshaCd", this.searchTantoshaCd);
             session.setAttribute("jissekino", jissekino);
-            session.setAttribute("maekoteiInfo", maekoteiInfo);
+            
+            // 自身の枝番でない(親ﾛｯﾄの枝番)場合、前工程情報は引き渡さない
+            if (StringUtil.nullToBlank(getMapData(maekoteiInfo, "edaban")).equals(this.searchLotNo.substring(11, 14))) {
+                session.setAttribute("maekoteiInfo", maekoteiInfo);
+            } else {
+                session.setAttribute("maekoteiInfo", null);
+            }
             if (maeKoteiGamenInfo != null) {
                 session.setAttribute("maekoteiFormId", maeKoteiGamenInfo[0]);
+            } else {
+                session.setAttribute("maekoteiFormId", null);
             }
            
             // 前工程が存在するかつ前工程のデータが取得できなかった場合
@@ -585,8 +612,9 @@ public class GXHDO101A implements Serializable {
 
         // (1)設計ﾃｰﾌﾞﾙより、ﾌﾟﾛｾｽを取得する
         String strProcess = "";
+        String sekkeiNo = "";
         QueryRunner queryRunnerXHD = new QueryRunner(dataSourceXHD);
-        String sqlsearchProcess = "SELECT PrintFmt FROM da_sekkei WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
+        String sqlsearchProcess = "SELECT PrintFmt,SEKKEINO FROM da_sekkei WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
         List<Object> params = new ArrayList<>();
         params.add(strKojyo);
         params.add(strLotNo);
@@ -597,6 +625,7 @@ public class GXHDO101A implements Serializable {
         for (Iterator i = processResult.iterator(); i.hasNext();) {
             HashMap m = (HashMap) i.next();
             strProcess = m.get("PrintFmt").toString();
+            sekkeiNo = m.get("SEKKEINO").toString();
         }
 
         // データが取得できなかった場合
@@ -640,7 +669,25 @@ public class GXHDO101A implements Serializable {
             HashMap m = (HashMap) i.next();
             gamenIdList.add(new String[]{StringUtil.nullToBlank(m.get("gamen_id")), StringUtil.nullToBlank(m.get("menu_name"))});
         }
+        
+        if (sqlsearchMenuData.isEmpty()) {
+            return gamenIdList;
+        }
+        
+        // ﾌｨﾙﾀｰ画面IDの取得
+        //(1)～(3)でデータが取得出来た場合、データをフィルタリングして返す。
+        List<String> filterGamenIdList = getFilterGamenIdList(queryRunnerDoc, queryRunnerXHD, sekkeiNo);
 
+        // データが取得できた場合、フィルターしたデータのみ表示
+        if (filterGamenIdList != null) {
+            List<String[]> newGamenIdList = new ArrayList();
+            for (String[] data : gamenIdList) {
+                if (filterGamenIdList.contains(data[0])) {
+                    newGamenIdList.add(data);
+                }
+            }
+            gamenIdList = newGamenIdList;
+        }
         return gamenIdList;
     }
 
@@ -861,4 +908,86 @@ public class GXHDO101A implements Serializable {
         Map sikakariInfo = queryRunnerWip.query(sql, new MapHandler(), params.toArray());
         return StringUtil.nullToBlank(getMapData(sikakariInfo, "oyalotedaban"));
     }
+    
+    /**
+     * ﾌﾟﾛｾｽﾏｽﾀ、条件ﾃｰﾌﾞﾙをもとに表示対象の画面IDを返します。(フィルターなしの場合はNULLをリターン)
+     * @param gamenIdList 画面IDリスト
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param queryRunnerXHD QueryRunnerオブジェクト
+     * @param sekkeiNo 設計No
+     * @return フィルタリングデータ
+     * @throws SQLException 例外エラー
+     */
+    private List<String> getFilterGamenIdList(QueryRunner queryRunnerDoc,QueryRunner queryRunnerXHD, String sekkeiNo) throws SQLException{
+        
+        
+        List<String> filterGamenIdList = new ArrayList<>();
+        
+        // プロセスマスターを検索する
+        String sqlsearchGamenID = "SELECT gamen_id,kouteimei,koumokumei,kanrikoumoku,kikakuchi FROM fxhdm03 WHERE kotei_process_kubun = ? ";
+        List<Object> paramsM03 = new ArrayList<>();
+        paramsM03.add("joken_connect");
+
+        DBUtil.outputSQLLog(sqlsearchGamenID, paramsM03.toArray(), LOGGER);
+        List listFxhdm03 = (List) queryRunnerDoc.query(sqlsearchGamenID, new MapListHandler(), paramsM03.toArray());
+        
+        // データが取得できなかった場合、フィルタリングなし
+        if(listFxhdm03.isEmpty()){
+            return null;
+        }
+
+        // 条件ﾃｰﾌﾞﾙデータ取得
+        List<DaJoken> listDaJoken = getDaJokenList(queryRunnerXHD, sekkeiNo);
+        
+        // データが取得できなかった場合、フィルタリングなし
+        if(listDaJoken.isEmpty()){
+            return null;
+        }
+        
+        for (Iterator i = listFxhdm03.iterator(); i.hasNext();) {
+            HashMap m = (HashMap) i.next();
+            for (DaJoken dajoken : listDaJoken) {
+                //工程名,項目名,管理項目,規格値が一致する画面IDを表示対象としてリストに追加する。
+                if (StringUtil.nullToBlank(dajoken.getKouteiMei()).equals(StringUtil.nullToBlank(m.get("kouteimei")))
+                        && StringUtil.nullToBlank(dajoken.getKoumokuMei()).equals(StringUtil.nullToBlank(m.get("koumokumei")))
+                        && StringUtil.nullToBlank(dajoken.getKanriKoumoku()).equals(StringUtil.nullToBlank(m.get("kanrikoumoku")))
+                        && StringUtil.nullToBlank(dajoken.getKikakuChi()).equals(StringUtil.nullToBlank(m.get("kikakuchi")))) {
+
+                    filterGamenIdList.add(StringUtil.nullToBlank(m.get("gamen_id")));
+                    break;
+                }
+            }
+        }
+
+        return filterGamenIdList;
+    }
+    
+    /**
+     * 条件データ取得
+     * @param queryRunnerXHD データオブジェクト
+     * @param sekkeiNo 設計No
+     * @return 条件データリスト
+     * @throws SQLException 
+     */
+    private List<DaJoken> getDaJokenList(QueryRunner queryRunnerXHD,String sekkeiNo) throws SQLException{
+        // 条件ﾃｰﾌﾞﾙを検索
+        String sql = "SELECT KOUTEIMEI,KOUMOKUMEI,KANRIKOUMOKU,KIKAKUCHI "
+                + "  FROM da_joken "
+                + " WHERE SEKKEINO = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(sekkeiNo);
+
+        Map<String, String> mapping = new HashMap<>();
+        mapping.put("KOUTEIMEI", "kouteiMei");
+        mapping.put("KOUMOKUMEI", "koumokuMei");
+        mapping.put("KANRIKOUMOKU", "kanriKoumoku");
+        mapping.put("KIKAKUCHI", "kikakuChi");
+        BeanProcessor beanProcessor = new BeanProcessor(mapping);
+        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+        ResultSetHandler<List<DaJoken>> beanHandler = new BeanListHandler<>(DaJoken.class, rowProcessor);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerXHD.query(sql, beanHandler, params.toArray());
+    }
+    
 }
