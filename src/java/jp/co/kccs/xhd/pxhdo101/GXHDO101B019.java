@@ -454,6 +454,8 @@ public class GXHDO101B019 implements IFormLogic {
     private void setInputItemDataMainForm(ProcessData processData, SrSaisanka srSaisanka) {
         // 受入ｾｯﾀ枚数
         this.setItemData(processData, GXHDO101B019Const.UKEIRE_SETTA_MAISU, getSaisankaItemData(GXHDO101B019Const.UKEIRE_SETTA_MAISU, srSaisanka));
+        // 指定再酸化回数
+        this.setItemData(processData, GXHDO101B019Const.SITEI_SAISANKA_KAISU, getSaisankaItemData(GXHDO101B019Const.SITEI_SAISANKA_KAISU, srSaisanka));
         // 投入ｾｯﾀ枚数
         this.setItemData(processData, GXHDO101B019Const.TOUNYU_SETTA_MAISU, getSaisankaItemData(GXHDO101B019Const.TOUNYU_SETTA_MAISU, srSaisanka));
         // 号機
@@ -501,6 +503,9 @@ public class GXHDO101B019 implements IFormLogic {
             // 受入ｾｯﾀ枚数
             case GXHDO101B019Const.UKEIRE_SETTA_MAISU:
                 return StringUtil.nullToBlank(data.getUkeiresettamaisuu());
+            // 指定再酸化回数
+            case GXHDO101B019Const.SITEI_SAISANKA_KAISU:
+                return StringUtil.nullToBlank(data.getSiteisaisaka());
             // 投入ｾｯﾀ枚数
             case GXHDO101B019Const.TOUNYU_SETTA_MAISU:
                 return StringUtil.nullToBlank(data.getTounyusettasuu());
