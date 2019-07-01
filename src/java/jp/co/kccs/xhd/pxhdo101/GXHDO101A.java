@@ -321,14 +321,14 @@ public class GXHDO101A implements Serializable {
                 List<String> filterGamenIdList = getFilterGamenIdList(queryRunnerDoc, queryRunnerXHD, strSekkeiNo);
                 
                 // データが取得できた場合、フィルターしたデータのみ表示
-                if(filterGamenIdList != null){
-                    List<FXHDM01> filterMenuList = new ArrayList();
-                    for(FXHDM01 data : menuListGXHDO101){
-                        if(filterGamenIdList.contains(data.getFormId())){
-                            filterMenuList.add(data);
-                        }
+                List<FXHDM01> removeMenuList = new ArrayList();
+                for(FXHDM01 data : menuListGXHDO101){
+                    if(filterGamenIdList.contains(data.getFormId())){
+                        removeMenuList.add(data);
                     }
-                    menuListGXHDO101 = filterMenuList;
+                }
+                for(FXHDM01 removeData : removeMenuList){
+                    menuListGXHDO101.remove(removeData);
                 }
             }
 
@@ -675,19 +675,19 @@ public class GXHDO101A implements Serializable {
         }
         
         // ﾌｨﾙﾀｰ画面IDの取得
-        //(1)～(3)でデータが取得出来た場合、データをフィルタリングして返す。
         List<String> filterGamenIdList = getFilterGamenIdList(queryRunnerDoc, queryRunnerXHD, sekkeiNo);
 
-        // データが取得できた場合、フィルターしたデータのみ表示
-        if (filterGamenIdList != null) {
-            List<String[]> newGamenIdList = new ArrayList();
-            for (String[] data : gamenIdList) {
-                if (filterGamenIdList.contains(data[0])) {
-                    newGamenIdList.add(data);
-                }
+        List<String[]> removeIdList = new ArrayList();
+        for (String[] data : gamenIdList) {
+            if (filterGamenIdList.contains(data[0])) {
+                removeIdList.add(data);
             }
-            gamenIdList = newGamenIdList;
         }
+
+        for (String[] removeData : removeIdList) {
+            gamenIdList.remove(removeData);
+        }
+      
         return gamenIdList;
     }
 
@@ -933,7 +933,7 @@ public class GXHDO101A implements Serializable {
         
         // データが取得できなかった場合、フィルタリングなし
         if(listFxhdm03.isEmpty()){
-            return null;
+            return filterGamenIdList;
         }
 
         // 条件ﾃｰﾌﾞﾙデータ取得
@@ -941,10 +941,12 @@ public class GXHDO101A implements Serializable {
         
         // データが取得できなかった場合、フィルタリングなし
         if(listDaJoken.isEmpty()){
-            return null;
+            return filterGamenIdList;
         }
         
+        boolean existData;
         for (Iterator i = listFxhdm03.iterator(); i.hasNext();) {
+            existData = false;
             HashMap m = (HashMap) i.next();
             for (DaJoken dajoken : listDaJoken) {
                 //工程名,項目名,管理項目,規格値が一致する画面IDを表示対象としてリストに追加する。
@@ -953,9 +955,12 @@ public class GXHDO101A implements Serializable {
                         && StringUtil.nullToBlank(dajoken.getKanriKoumoku()).equals(StringUtil.nullToBlank(m.get("kanrikoumoku")))
                         && StringUtil.nullToBlank(dajoken.getKikakuChi()).equals(StringUtil.nullToBlank(m.get("kikakuchi")))) {
 
-                    filterGamenIdList.add(StringUtil.nullToBlank(m.get("gamen_id")));
+                    existData = true;
                     break;
                 }
+            }
+            if(!existData){
+                filterGamenIdList.add(StringUtil.nullToBlank(m.get("gamen_id")));
             }
         }
 
