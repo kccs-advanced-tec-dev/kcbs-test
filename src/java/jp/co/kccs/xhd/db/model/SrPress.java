@@ -232,6 +232,11 @@ public class SrPress {
     private Timestamp kosinnichiji;
 
     /**
+     * KCPNO
+     */
+    private String kcpno;
+    
+    /**
      * revision
      */
     private Long revision;
@@ -977,6 +982,20 @@ public class SrPress {
      */
     public void setKosinnichiji(Timestamp kosinnichiji) {
         this.kosinnichiji = kosinnichiji;
+    }
+
+    /**
+     * @return the kcpno
+     */
+    public String getKcpno() {
+        return kcpno;
+    }
+
+    /**
+     * @param kcpno the kcpno to set
+     */
+    public void setKcpno(String kcpno) {
+        this.kcpno = kcpno;
     }
 
     /**

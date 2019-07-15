@@ -1337,7 +1337,7 @@ public class GXHDO101B008 implements IFormLogic {
                 + "bikou4,bikou5,situon,situdo,aturyoku,jikan1,jikan2,atumimin,atumimax,shinkuuhojicheck,cerapeel,"
                 + "kansyouzai1,susborad,kansyouzai2,seisuiatupressgouki,yonetujikan1,yonetujikan2,yonetujikan3,aturyoku1max,"
                 + "aturyoku2max,mizunureSetsuu,Pressgoreikyakujikan,pressmaeaging,EndTantousyacode,Setsuu,"
-                + "RyouhinSetsuu,Presskaisuu,torokunichiji,kosinnichiji,revision,'0' AS deleteflag "
+                + "RyouhinSetsuu,Presskaisuu,torokunichiji,kosinnichiji,KCPNO,revision,'0' AS deleteflag "
                 + "FROM sr_press "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
         // revisionが入っている場合、条件に追加
@@ -1397,6 +1397,7 @@ public class GXHDO101B008 implements IFormLogic {
         mapping.put("Presskaisuu", "presskaisuu"); //ﾌﾟﾚｽ回数
         mapping.put("torokunichiji", "torokunichiji"); //登録日時
         mapping.put("kosinnichiji", "kosinnichiji"); //更新日時
+        mapping.put("KCPNO", "kcpno"); //KCPNO
         mapping.put("revision", "revision"); //revision
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
 
@@ -1426,7 +1427,7 @@ public class GXHDO101B008 implements IFormLogic {
                 + "bikou4,bikou5,situon,situdo,aturyoku,jikan1,jikan2,atumimin,atumimax,shinkuuhojicheck,cerapeel,"
                 + "kansyouzai1,susborad,kansyouzai2,seisuiatupressgouki,yonetujikan1,yonetujikan2,yonetujikan3,aturyoku1max,"
                 + "aturyoku2max,mizunureSetsuu,Pressgoreikyakujikan,pressmaeaging,EndTantousyacode,Setsuu,"
-                + "RyouhinSetsuu,Presskaisuu,torokunichiji,kosinnichiji,revision,deleteflag "
+                + "RyouhinSetsuu,Presskaisuu,torokunichiji,kosinnichiji,KCPNO,revision,deleteflag "
                 + "FROM tmp_sr_press "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND deleteflag = ? ";
         // revisionが入っている場合、条件に追加
@@ -1487,6 +1488,7 @@ public class GXHDO101B008 implements IFormLogic {
         mapping.put("Presskaisuu", "presskaisuu"); //ﾌﾟﾚｽ回数
         mapping.put("torokunichiji", "torokunichiji"); //登録日時
         mapping.put("kosinnichiji", "kosinnichiji"); //更新日時
+        mapping.put("KCPNO", "kcpno"); //KCPNO
         mapping.put("revision", "revision"); //revision
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
 
@@ -1761,9 +1763,9 @@ public class GXHDO101B008 implements IFormLogic {
                 + "kojyo,lotno,edaban,startdatetime,enddatetime,gouki,ondo,tantousya,kakuninsya,bikou1,bikou2,bikou3,bikou4,bikou5,"
                 + "situon,situdo,aturyoku,jikan1,jikan2,atumimin,atumimax,shinkuuhojicheck,cerapeel,kansyouzai1,susborad,kansyouzai2,"
                 + "seisuiatupressgouki,yonetujikan1,yonetujikan2,yonetujikan3,aturyoku1max,aturyoku2max,mizunureSetsuu,"
-                + "Pressgoreikyakujikan,pressmaeaging,EndTantousyacode,Setsuu,RyouhinSetsuu,Presskaisuu,torokunichiji,kosinnichiji,revision,deleteflag"
+                + "Pressgoreikyakujikan,pressmaeaging,EndTantousyacode,Setsuu,RyouhinSetsuu,Presskaisuu,torokunichiji,kosinnichiji,KCPNO,revision,deleteflag"
                 + ") VALUES ("
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
                 + ") ";
 
         List<Object> params = setUpdateParameterTmpSrPress(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null);
@@ -1921,6 +1923,7 @@ public class GXHDO101B008 implements IFormLogic {
             params.add(systemTime); //登録日時
         }
         params.add(systemTime); //更新日時
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B008Const.KCPNO, srPressData)));  //KCPNO
         params.add(newRev); //revision
         params.add(deleteflag); //削除ﾌﾗｸﾞ
 
@@ -1948,9 +1951,9 @@ public class GXHDO101B008 implements IFormLogic {
                 + "kojyo,lotno,edaban,startdatetime,enddatetime,gouki,ondo,tantousya,kakuninsya,bikou1,bikou2,bikou3,bikou4,bikou5,"
                 + "situon,situdo,aturyoku,jikan1,jikan2,atumimin,atumimax,shinkuuhojicheck,cerapeel,kansyouzai1,susborad,kansyouzai2,"
                 + "seisuiatupressgouki,yonetujikan1,yonetujikan2,yonetujikan3,aturyoku1max,aturyoku2max,mizunureSetsuu,"
-                + "Pressgoreikyakujikan,pressmaeaging,EndTantousyacode,Setsuu,RyouhinSetsuu,Presskaisuu,torokunichiji,kosinnichiji,revision"
+                + "Pressgoreikyakujikan,pressmaeaging,EndTantousyacode,Setsuu,RyouhinSetsuu,Presskaisuu,torokunichiji,kosinnichiji,KCPNO,revision"
                 + ") VALUES ("
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
                 + ") ";
 
         List<Object> params = setUpdateParameterSrPress(true, newRev, kojyo, lotNo, edaban, systemTime, itemList, tmpSrPress);
@@ -1981,7 +1984,7 @@ public class GXHDO101B008 implements IFormLogic {
                 + "shinkuuhojicheck = ?,cerapeel = ?,kansyouzai1 = ?,susborad = ?,kansyouzai2 = ?,"
                 + "seisuiatupressgouki = ?,yonetujikan1 = ?,yonetujikan2 = ?,yonetujikan3 = ?,aturyoku1max = ?,aturyoku2max = ?,"
                 + "mizunureSetsuu = ?,Pressgoreikyakujikan = ?,pressmaeaging = ?,EndTantousyacode = ?,Setsuu = ?,RyouhinSetsuu = ?,Presskaisuu = ?,"
-                + "kosinnichiji = ?,revision = ? "
+                + "kosinnichiji = ?,KCPNO = ?,revision = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
         // 更新前の値を取得
@@ -2076,6 +2079,7 @@ public class GXHDO101B008 implements IFormLogic {
             params.add(systemTime); //登録日時
         }
         params.add(systemTime); //更新日時
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B008Const.KCPNO, srPressData)));  //KCPNO
         params.add(newRev); //revision
         return params;
     }
@@ -2347,12 +2351,12 @@ public class GXHDO101B008 implements IFormLogic {
                 + "kojyo,lotno,edaban,startdatetime,enddatetime,gouki,ondo,tantousya,kakuninsya,bikou1,bikou2,bikou3,bikou4,bikou5,"
                 + "situon,situdo,aturyoku,jikan1,jikan2,atumimin,atumimax,shinkuuhojicheck,cerapeel,kansyouzai1,susborad,kansyouzai2,"
                 + "seisuiatupressgouki,yonetujikan1,yonetujikan2,yonetujikan3,aturyoku1max,aturyoku2max,mizunureSetsuu,"
-                + "Pressgoreikyakujikan,pressmaeaging,EndTantousyacode,Setsuu,RyouhinSetsuu,Presskaisuu,torokunichiji,kosinnichiji,revision,deleteflag"
+                + "Pressgoreikyakujikan,pressmaeaging,EndTantousyacode,Setsuu,RyouhinSetsuu,Presskaisuu,torokunichiji,kosinnichiji,KCPNO,revision,deleteflag"
                 + ") SELECT "
                 + "kojyo,lotno,edaban,startdatetime,enddatetime,gouki,ondo,tantousya,kakuninsya,bikou1,bikou2,bikou3,bikou4,bikou5,"
                 + "situon,situdo,aturyoku,jikan1,jikan2,atumimin,atumimax,shinkuuhojicheck,cerapeel,kansyouzai1,susborad,kansyouzai2,"
                 + "seisuiatupressgouki,yonetujikan1,yonetujikan2,yonetujikan3,aturyoku1max,aturyoku2max,mizunureSetsuu,"
-                + "Pressgoreikyakujikan,pressmaeaging,EndTantousyacode,Setsuu,RyouhinSetsuu,Presskaisuu,?,?,?,? "
+                + "Pressgoreikyakujikan,pressmaeaging,EndTantousyacode,Setsuu,RyouhinSetsuu,Presskaisuu,?,?,KCPNO,?,? "
                 + "FROM sr_press "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
 

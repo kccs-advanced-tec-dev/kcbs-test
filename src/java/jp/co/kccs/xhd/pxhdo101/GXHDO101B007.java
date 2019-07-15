@@ -1306,7 +1306,7 @@ public class GXHDO101B007 implements IFormLogic {
         String sql = "SELECT kojyo,lotno,edaban,startdatetime,enddatetime,ondohyoji,aturyokusetteiti,kaatujikan,goki,tantosya"
                 + ",kakuninsya,biko1,torokunichiji,kosinnichiji,sagyokubun,setsuu,tansimaisuu,aturyokuhyouji,pressside"
                 + ",jissekino,koteicode,kansyouzai,shinkuuhoji,aturyokusetteiti2,kaatujikan2,aturyokusetteiti3,kaatujikan3"
-                + ",shinkuudo,Hokanjouken,EndTantousyacode,RyouhinSetsuu,biko2,revision,'0' AS deleteflag "
+                + ",shinkuudo,Hokanjouken,EndTantousyacode,RyouhinSetsuu,biko2,KCPNO,revision,'0' AS deleteflag "
                 + "FROM sr_prepress "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
         // revisionが入っている場合、条件に追加
@@ -1357,6 +1357,7 @@ public class GXHDO101B007 implements IFormLogic {
         mapping.put("EndTantousyacode", "endtantousyacode"); //終了担当者
         mapping.put("RyouhinSetsuu", "ryouhinsetsuu"); //良品ｾｯﾄ数
         mapping.put("biko2", "biko2"); //備考2
+        mapping.put("KCPNO", "kcpno"); //KCPNO
         mapping.put("revision", "revision"); //revision
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
 
@@ -1385,7 +1386,7 @@ public class GXHDO101B007 implements IFormLogic {
         String sql = "SELECT kojyo,lotno,edaban,startdatetime,enddatetime,ondohyoji,aturyokusetteiti,kaatujikan,goki,tantosya"
                 + ",kakuninsya,biko1,torokunichiji,kosinnichiji,sagyokubun,setsuu,tansimaisuu,aturyokuhyouji,pressside"
                 + ",jissekino,koteicode,kansyouzai,shinkuuhoji,aturyokusetteiti2,kaatujikan2,aturyokusetteiti3,kaatujikan3"
-                + ",shinkuudo,Hokanjouken,EndTantousyacode,RyouhinSetsuu,biko2,revision,deleteflag "
+                + ",shinkuudo,Hokanjouken,EndTantousyacode,RyouhinSetsuu,biko2,KCPNO,revision,deleteflag "
                 + "FROM tmp_sr_prepress "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND deleteflag = ? ";
         // revisionが入っている場合、条件に追加
@@ -1437,6 +1438,7 @@ public class GXHDO101B007 implements IFormLogic {
         mapping.put("EndTantousyacode", "endtantousyacode"); //終了担当者
         mapping.put("RyouhinSetsuu", "ryouhinsetsuu"); //良品ｾｯﾄ数
         mapping.put("biko2", "biko2"); //備考2
+        mapping.put("KCPNO", "kcpno"); //KCPNO
         mapping.put("revision", "revision"); //revision
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
 
@@ -1711,9 +1713,9 @@ public class GXHDO101B007 implements IFormLogic {
                 + "kojyo,lotno,edaban,startdatetime,enddatetime,ondohyoji,aturyokusetteiti,kaatujikan,goki,tantosya"
                 + ",kakuninsya,biko1,torokunichiji,kosinnichiji,sagyokubun,setsuu,tansimaisuu,aturyokuhyouji,pressside"
                 + ",jissekino,koteicode,kansyouzai,shinkuuhoji,aturyokusetteiti2,kaatujikan2,aturyokusetteiti3,kaatujikan3"
-                + ",shinkuudo,Hokanjouken,EndTantousyacode,RyouhinSetsuu,biko2,revision,deleteflag"
+                + ",shinkuudo,Hokanjouken,EndTantousyacode,RyouhinSetsuu,biko2,KCPNO,revision,deleteflag"
                 + ") VALUES ("
-                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterTmpSrPrepress(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -1862,6 +1864,7 @@ public class GXHDO101B007 implements IFormLogic {
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B007Const.SHURYO_TANTOSYA, srPrepressData))); //終了担当者
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B007Const.RYOUHIN_SETSUU, srPrepressData))); //良品ｾｯﾄ数
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B007Const.BIKOU2, srPrepressData))); //備考2
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B007Const.KCPNO, srPrepressData)));  //KCPNO
         params.add(newRev); //revision
         params.add(deleteflag); //削除ﾌﾗｸﾞ
 
@@ -1889,9 +1892,9 @@ public class GXHDO101B007 implements IFormLogic {
                 +  "kojyo,lotno,edaban,startdatetime,enddatetime,ondohyoji,aturyokusetteiti,kaatujikan,goki,tantosya"
                 + ",kakuninsya,biko1,torokunichiji,kosinnichiji,sagyokubun,setsuu,tansimaisuu,aturyokuhyouji,pressside"
                 + ",jissekino,koteicode,kansyouzai,shinkuuhoji,aturyokusetteiti2,kaatujikan2,aturyokusetteiti3,kaatujikan3"
-                + ",shinkuudo,Hokanjouken,EndTantousyacode,RyouhinSetsuu,biko2,revision "
+                + ",shinkuudo,Hokanjouken,EndTantousyacode,RyouhinSetsuu,biko2,KCPNO,revision "
                 + ") VALUES ("
-                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
         
         List<Object> params = setUpdateParameterSrPrepress(true, newRev, kojyo, lotNo, edaban, systemTime, itemList, tmpSrPrepress);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -1919,7 +1922,7 @@ public class GXHDO101B007 implements IFormLogic {
                 + "startdatetime = ?,enddatetime = ?,ondohyoji = ?,aturyokusetteiti = ?,kaatujikan = ?,goki = ?,tantosya = ?,kakuninsya = ?,"
                 + "biko1 = ?,kosinnichiji = ?,sagyokubun = ?,setsuu = ?,tansimaisuu = ?,aturyokuhyouji = ?,pressside = ?,"
                 + "jissekino = ?,koteicode = ?,kansyouzai = ?,shinkuuhoji = ?,aturyokusetteiti2 = ?,kaatujikan2 = ?,aturyokusetteiti3 = ?,"
-                + "kaatujikan3 = ?,shinkuudo = ?,Hokanjouken = ?,EndTantousyacode = ?,RyouhinSetsuu = ?,biko2 = ?,revision = ? "                
+                + "kaatujikan3 = ?,shinkuudo = ?,Hokanjouken = ?,EndTantousyacode = ?,RyouhinSetsuu = ?,biko2 = ?,KCPNO = ?,revision = ? "                
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
         // 更新前の値を取得
@@ -2010,6 +2013,7 @@ public class GXHDO101B007 implements IFormLogic {
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B007Const.SHURYO_TANTOSYA, srPrepressData))); //終了担当者
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B007Const.RYOUHIN_SETSUU, srPrepressData))); //良品セット数
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B007Const.BIKOU2, srPrepressData))); //備考2
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B007Const.KCPNO, srPrepressData)));  //KCPNO
         params.add(newRev); //revision
         
         return params;
@@ -2261,12 +2265,12 @@ public class GXHDO101B007 implements IFormLogic {
                 +  "kojyo,lotno,edaban,startdatetime,enddatetime,ondohyoji,aturyokusetteiti,kaatujikan,goki,tantosya"
                 + ",kakuninsya,biko1,torokunichiji,kosinnichiji,sagyokubun,setsuu,tansimaisuu,aturyokuhyouji,pressside"
                 + ",jissekino,koteicode,kansyouzai,shinkuuhoji,aturyokusetteiti2,kaatujikan2,aturyokusetteiti3,kaatujikan3"
-                + ",shinkuudo,Hokanjouken,EndTantousyacode,RyouhinSetsuu,biko2,revision,deleteflag"
+                + ",shinkuudo,Hokanjouken,EndTantousyacode,RyouhinSetsuu,biko2,KCPNO,revision,deleteflag"
                 + ") SELECT "
                 +  "kojyo,lotno,edaban,startdatetime,enddatetime,ondohyoji,aturyokusetteiti,kaatujikan,goki,tantosya"
                 + ",kakuninsya,biko1,?,?,sagyokubun,setsuu,tansimaisuu,aturyokuhyouji,pressside"
                 + ",jissekino,koteicode,kansyouzai,shinkuuhoji,aturyokusetteiti2,kaatujikan2,aturyokusetteiti3,kaatujikan3"
-                + ",shinkuudo,Hokanjouken,EndTantousyacode,RyouhinSetsuu,biko2,?,? "
+                + ",shinkuudo,Hokanjouken,EndTantousyacode,RyouhinSetsuu,biko2,KCPNO,?,? "
                 + "FROM sr_prepress "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
 

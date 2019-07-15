@@ -184,6 +184,11 @@ public class SrPrepress {
      * 備考2
      */
     private String biko2;
+    
+    /**
+     * KCPNO
+     */
+    private String kcpno;
 
     /**
      * revision
@@ -641,6 +646,20 @@ public class SrPrepress {
      */
     public void setBiko2(String biko2) {
         this.biko2 = biko2;
+    }
+
+    /**
+     * @return the kcpno
+     */
+    public String getKcpno() {
+        return kcpno;
+    }
+
+    /**
+     * @param kcpno the kcpno to set
+     */
+    public void setKcpno(String kcpno) {
+        this.kcpno = kcpno;
     }
 
     /**
