@@ -11,6 +11,7 @@
         <meta http-equiv="Expires" content="0"/>
         <title>#{myParam.application_id} #{myMsg.hinshitsuMenu}</title>
         <link href="#{request.contextPath}/resources/css/growl.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/loading.css" rel="stylesheet" type="text/css"/>
         <link href="#{request.contextPath}/resources/css/gxhco901a.css" rel="stylesheet" type="text/css"/>
         <h:outputScript library="primefaces" name="jquery/jquery.js" />
         <script src="#{request.contextPath}/resources/js/locUpload.js"></script>
@@ -81,6 +82,9 @@
                                  update="@this"
                                  oncomplete="PF('cd').hide();"/>
             </p:confirmDialog>
+            <div id="loadinggif">
+                <img src="#{request.contextPath}/resources/gif/gif-load.gif"/>
+            </div>
             <tr>
                 <div class='inner' style="position:relative">
                 <div class="divPad" style="HEIGHT: 58px;">
@@ -103,7 +107,9 @@
                                       value="ロット検索"
                                       actionListener="#{gXHDO101A.searchHinshitsuData()}"
                                       process="@this lotNo tantoshaCd"
-                                      update="@form"/>
+                                      update="@form"
+                                      onstart="PF('cd').hide();$('#loadinggif').show();$('#dataTableDiv').hide();"
+                                      oncomplete="$('#loadinggif').hide();$('#dataTableDiv').show();"/>
                             </td>
                         </tr>
                     </table>
@@ -111,22 +117,24 @@
                 </div>
             </tr>
             <tr>
-            <p:dataTable id="menuTable" var="item" rendered="#{gXHDO101A.menuTableRender}" value="#{gXHDO101A.listData}"
-                         style="margin-top: 20px;margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;font-size: 17px;"
-                         scrollable="true"
-                         emptyMessage="">
-                <div style="text-align:center">
-                <p:column id="mItem" width="30%" headerText="#{myMsg.hinshitsuDB_Name}" style="font-size: 17px;">
-                    <p:commandLink value="#{item.menuName}" style="color:Indigo;font-size: 17px;"
-                                   action="#{gXHDO101A.openXhdForm(item)}" oncomplete="cmdButtonOncomplete(args);" 
-                                   update="@form">
-                    </p:commandLink>
-                </p:column>
-                </div>
-                <p:column id="mComment" width="70%" headerText="#{myMsg.menuComment}" style="font-size: 17px;">
-                    <p:outputLabel value="#{item.menuComment}" style="font-size: 17px;"/>
-                </p:column>
-            </p:dataTable>
+            <div id="dataTableDiv">
+                <p:dataTable id="menuTable" var="item" rendered="#{gXHDO101A.menuTableRender}" value="#{gXHDO101A.listData}"
+                             style="margin-top: 20px;margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;font-size: 17px;"
+                             scrollable="true"
+                             emptyMessage="">
+                    <div style="text-align:center">
+                    <p:column id="mItem" width="30%" headerText="#{myMsg.hinshitsuDB_Name}" style="font-size: 17px;">
+                        <p:commandLink value="#{item.menuName}" style="color:Indigo;font-size: 17px;"
+                                       action="#{gXHDO101A.openXhdForm(item)}" oncomplete="cmdButtonOncomplete(args);" 
+                                       update="@form">
+                        </p:commandLink>
+                    </p:column>
+                    </div>
+                    <p:column id="mComment" width="70%" headerText="#{myMsg.menuComment}" style="font-size: 17px;">
+                        <p:outputLabel value="#{item.menuComment}" style="font-size: 17px;"/>
+                    </p:column>
+                </p:dataTable>
+            </div>
             </tr>
             <br/>
             <tr>
