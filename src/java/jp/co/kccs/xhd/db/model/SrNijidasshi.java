@@ -48,7 +48,7 @@ public class SrNijidasshi {
     /**
      * セッタ枚数
      */
-    private Integer settasuu;
+    private Integer ukeiresettamaisuu;
 
     /**
      * 開始日時
@@ -210,19 +210,19 @@ public class SrNijidasshi {
     /**
      * セッタ枚数
      *
-     * @return the settasuu
+     * @return the ukeiresettamaisuu
      */
-    public Integer getSettasuu() {
-        return settasuu;
+    public Integer getUkeiresettamaisuu() {
+        return ukeiresettamaisuu;
     }
 
     /**
      * セッタ枚数
      *
-     * @param settasuu the settasuu to set
+     * @param ukeiresettamaisuu the ukeiresettamaisuu to set
      */
-    public void setSettasuu(Integer settasuu) {
-        this.settasuu = settasuu;
+    public void setUkeiresettamaisuu(Integer ukeiresettamaisuu) {
+        this.ukeiresettamaisuu = ukeiresettamaisuu;
     }
 
     /**

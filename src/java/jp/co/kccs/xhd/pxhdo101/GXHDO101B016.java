@@ -1284,7 +1284,7 @@ public class GXHDO101B016 implements IFormLogic {
             String edaban, String rev) throws SQLException {
 
         String sql = "SELECT "
-                + "kojyo,lotno,edaban,kcpno,settasuu,kaisinichiji,StartTantosyacode,StartKakuninsyacode,tounyusettasuu,Nijidasshigouki,"
+                + "kojyo,lotno,edaban,kcpno,ukeiresettamaisuu,kaisinichiji,StartTantosyacode,StartKakuninsyacode,tounyusettasuu,Nijidasshigouki,"
                 + "NijidasshisetteiPT,Nijidasshikeepondo,Nijidasshispeed,syuuryounichiji,EndTantosyacode,kaishuusettasuu,bikou1,bikou2,"
                 + "tourokunichiji,koushinnichiji,revision,'0' AS deleteflag "
                 + "FROM sr_nijidasshi "
@@ -1309,7 +1309,7 @@ public class GXHDO101B016 implements IFormLogic {
         mapping.put("lotno", "lotno"); //ﾛｯﾄNo
         mapping.put("edaban", "edaban"); //枝番
         mapping.put("kcpno", "kcpno"); //KCPNO
-        mapping.put("settasuu", "settasuu"); //セッタ枚数
+        mapping.put("ukeiresettamaisuu", "ukeiresettamaisuu"); //受入セッタ枚数
         mapping.put("kaisinichiji", "kaisinichiji"); //開始日時
         mapping.put("StartTantosyacode", "starttantosyacode"); //開始担当者
         mapping.put("StartKakuninsyacode", "startkakuninsyacode"); //開始確認者
@@ -1350,7 +1350,7 @@ public class GXHDO101B016 implements IFormLogic {
     private List<SrNijidasshi> loadTmpSrNijidasshi(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev) throws SQLException {
         String sql = "SELECT "
-                + "kojyo,lotno,edaban,kcpno,settasuu,kaisinichiji,StartTantosyacode,StartKakuninsyacode,tounyusettasuu,Nijidasshigouki,"
+                + "kojyo,lotno,edaban,kcpno,ukeiresettamaisuu,kaisinichiji,StartTantosyacode,StartKakuninsyacode,tounyusettasuu,Nijidasshigouki,"
                 + "NijidasshisetteiPT,Nijidasshikeepondo,Nijidasshispeed,syuuryounichiji,EndTantosyacode,kaishuusettasuu,bikou1,bikou2,"
                 + "tourokunichiji,koushinnichiji,revision,deleteflag "
                 + "FROM tmp_sr_nijidasshi "
@@ -1376,7 +1376,7 @@ public class GXHDO101B016 implements IFormLogic {
         mapping.put("lotno", "lotno"); //ﾛｯﾄNo
         mapping.put("edaban", "edaban"); //枝番
         mapping.put("kcpno", "kcpno"); //KCPNO
-        mapping.put("settasuu", "settasuu"); //セッタ枚数
+        mapping.put("ukeiresettamaisuu", "ukeiresettamaisuu"); //受入セッタ枚数
         mapping.put("kaisinichiji", "kaisinichiji"); //開始日時
         mapping.put("StartTantosyacode", "starttantosyacode"); //開始担当者
         mapping.put("StartKakuninsyacode", "startkakuninsyacode"); //開始確認者
@@ -1663,7 +1663,7 @@ public class GXHDO101B016 implements IFormLogic {
             String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
 
         String sql = "INSERT INTO tmp_sr_nijidasshi ("
-                + "kojyo,lotno,edaban,kcpno,settasuu,kaisinichiji,StartTantosyacode,StartKakuninsyacode,tounyusettasuu,Nijidasshigouki,"
+                + "kojyo,lotno,edaban,kcpno,ukeiresettamaisuu,kaisinichiji,StartTantosyacode,StartKakuninsyacode,tounyusettasuu,Nijidasshigouki,"
                 + "NijidasshisetteiPT,Nijidasshikeepondo,Nijidasshispeed,syuuryounichiji,EndTantosyacode,kaishuusettasuu,bikou1,bikou2,"
                 + "tourokunichiji,koushinnichiji,revision,deleteflag "
                 + ") VALUES ("
@@ -1695,7 +1695,7 @@ public class GXHDO101B016 implements IFormLogic {
             String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
 
         String sql = "UPDATE tmp_sr_nijidasshi SET "
-                + "kcpno = ?,settasuu = ?,kaisinichiji = ?,StartTantosyacode = ?,StartKakuninsyacode = ?,tounyusettasuu = ?,Nijidasshigouki = ?,"
+                + "kcpno = ?,ukeiresettamaisuu = ?,kaisinichiji = ?,StartTantosyacode = ?,StartKakuninsyacode = ?,tounyusettasuu = ?,Nijidasshigouki = ?,"
                 + "NijidasshisetteiPT = ?,Nijidasshikeepondo = ?,Nijidasshispeed = ?,syuuryounichiji = ?,EndTantosyacode = ?,kaishuusettasuu = ?,"
                 + "bikou1 = ?,bikou2 = ?,koushinnichiji = ?,revision = ?,deleteflag = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
@@ -1818,7 +1818,7 @@ public class GXHDO101B016 implements IFormLogic {
             String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList, SrNijidasshi tmpSrNijidasshi) throws SQLException {
 
         String sql = "INSERT INTO sr_nijidasshi ("
-                + "kojyo,lotno,edaban,kcpno,settasuu,kaisinichiji,StartTantosyacode,StartKakuninsyacode,tounyusettasuu,Nijidasshigouki,"
+                + "kojyo,lotno,edaban,kcpno,ukeiresettamaisuu,kaisinichiji,StartTantosyacode,StartKakuninsyacode,tounyusettasuu,Nijidasshigouki,"
                 + "NijidasshisetteiPT,Nijidasshikeepondo,Nijidasshispeed,syuuryounichiji,EndTantosyacode,kaishuusettasuu,bikou1,bikou2,"
                 + "tourokunichiji,koushinnichiji,revision "
                 + ") VALUES ("
@@ -1848,7 +1848,7 @@ public class GXHDO101B016 implements IFormLogic {
     private void updateSrNijidasshi(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, String jotaiFlg, BigDecimal newRev,
             String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
         String sql = "UPDATE sr_nijidasshi SET "
-                + "kcpno = ?,settasuu = ?,kaisinichiji = ?,StartTantosyacode = ?,StartKakuninsyacode = ?,tounyusettasuu = ?,Nijidasshigouki = ?,"
+                + "kcpno = ?,ukeiresettamaisuu = ?,kaisinichiji = ?,StartTantosyacode = ?,StartKakuninsyacode = ?,tounyusettasuu = ?,Nijidasshigouki = ?,"
                 + "NijidasshisetteiPT = ?,Nijidasshikeepondo = ?,Nijidasshispeed = ?,syuuryounichiji = ?,EndTantosyacode = ?,kaishuusettasuu = ?,"
                 + "bikou1 = ?,bikou2 = ?,koushinnichiji = ?,revision = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
@@ -2076,7 +2076,7 @@ public class GXHDO101B016 implements IFormLogic {
                 return StringUtil.nullToBlank(srNijidasshiData.getKcpno());
             //受入ｾｯﾀ枚数
             case GXHDO101B016Const.UKEIRE_SETTA_MAISU:
-                return StringUtil.nullToBlank(srNijidasshiData.getSettasuu());
+                return StringUtil.nullToBlank(srNijidasshiData.getUkeiresettamaisuu());
             //開始日
             case GXHDO101B016Const.KAISHI_DAY:
                 return DateUtil.formattedTimestamp(srNijidasshiData.getKaisinichiji(), "yyMMdd");
@@ -2146,11 +2146,11 @@ public class GXHDO101B016 implements IFormLogic {
             String kojyo, String lotNo, String edaban, Timestamp systemTime) throws SQLException {
 
         String sql = "INSERT INTO tmp_sr_nijidasshi ("
-                + "kojyo,lotno,edaban,kcpno,settasuu,kaisinichiji,StartTantosyacode,StartKakuninsyacode,tounyusettasuu,"
+                + "kojyo,lotno,edaban,kcpno,ukeiresettamaisuu,kaisinichiji,StartTantosyacode,StartKakuninsyacode,tounyusettasuu,"
                 + "Nijidasshigouki,NijidasshisetteiPT,Nijidasshikeepondo,Nijidasshispeed,syuuryounichiji,EndTantosyacode,"
                 + "kaishuusettasuu,bikou1,bikou2,tourokunichiji,koushinnichiji,revision,deleteflag"
                 + ") SELECT "
-                + "kojyo,lotno,edaban,kcpno,settasuu,kaisinichiji,StartTantosyacode,StartKakuninsyacode,tounyusettasuu,"
+                + "kojyo,lotno,edaban,kcpno,ukeiresettamaisuu,kaisinichiji,StartTantosyacode,StartKakuninsyacode,tounyusettasuu,"
                 + "Nijidasshigouki,NijidasshisetteiPT,Nijidasshikeepondo,Nijidasshispeed,syuuryounichiji,EndTantosyacode,"
                 + "kaishuusettasuu,bikou1,bikou2,?,?,?,? "
                 + "FROM sr_nijidasshi "
