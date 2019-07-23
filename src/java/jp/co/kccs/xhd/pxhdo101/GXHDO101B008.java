@@ -1798,7 +1798,7 @@ public class GXHDO101B008 implements IFormLogic {
                 + "shinkuuhojicheck = ?,cerapeel = ?,kansyouzai1 = ?,susborad = ?,kansyouzai2 = ?,"
                 + "seisuiatupressgouki = ?,yonetujikan1 = ?,yonetujikan2 = ?,yonetujikan3 = ?,aturyoku1max = ?,aturyoku2max = ?,"
                 + "mizunureSetsuu = ?,Pressgoreikyakujikan = ?,pressmaeaging = ?,EndTantousyacode = ?,Setsuu = ?,RyouhinSetsuu = ?,Presskaisuu = ?,"
-                + "kosinnichiji = ?,revision = ?,deleteflag = ? "
+                + "kosinnichiji = ?,KCPNO = ?,revision = ?,deleteflag = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
         // 更新前の値を取得
