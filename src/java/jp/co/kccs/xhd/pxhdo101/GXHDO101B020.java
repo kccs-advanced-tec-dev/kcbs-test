@@ -1877,52 +1877,10 @@ public class GXHDO101B020 implements IFormLogic {
         } else {
             params.add(systemTime); //更新日時
         }
-        // 研磨方式
-        switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B020Const.KENMA, srBarrel1Data))) {
-            case "横遠心":
-                params.add(0);
-                break;
-            case "回転":
-                params.add(1);
-                break;
-            default:
-                params.add(null);
-                break;
-        }
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.KENMA, srBarrel1Data))); // 研磨方式
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.KENMAZAIRYO, srBarrel1Data))); // 研磨材量
-        // 研磨材種類
-        switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B020Const.KENMAZAISYURUI, srBarrel1Data))) {
-            case "#220":
-                params.add(0);
-                break;
-            case "#600":
-                params.add(1);
-                break;
-            case "#2000":
-                params.add(2);
-                break;
-            case "#4000":
-                params.add(3);
-                break;
-            default:
-                params.add(null);
-                break;
-        }
-        // 玉石種類
-        switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B020Const.TAMAISHISYURUI, srBarrel1Data))) {
-            case "2Φ":
-                params.add(0);
-                break;
-            case "3Φ":
-                params.add(1);
-                break;
-            case "4Φ":
-                params.add(2);
-                break;
-            default:
-                params.add(null);
-                break;
-        }
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.KENMAZAISYURUI, srBarrel1Data))); // 研磨材種類
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.TAMAISHISYURUI, srBarrel1Data))); // 玉石種類
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.TAMAISHIRYOU, srBarrel1Data))); // 玉石量
 
         //外観確認
@@ -2089,53 +2047,11 @@ public class GXHDO101B020 implements IFormLogic {
         } else {
             params.add(systemTime); //更新日時
         }
-
-        // 研磨方式
-        switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B020Const.KENMA, srBarrel1Data))) {
-            case "横遠心":
-                params.add(0);
-                break;
-            case "回転":
-                params.add(1);
-                break;
-            default:
-                params.add(9);
-                break;
-        }
+        
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B020Const.KENMA, srBarrel1Data))); // 研磨方式
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B020Const.KENMAZAIRYO, srBarrel1Data))); // 研磨材量
-        // 研磨材種類
-        switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B020Const.KENMAZAISYURUI, srBarrel1Data))) {
-            case "#220":
-                params.add(0);
-                break;
-            case "#600":
-                params.add(1);
-                break;
-            case "#2000":
-                params.add(2);
-                break;
-            case "#4000":
-                params.add(3);
-                break;
-            default:
-                params.add(9);
-                break;
-        }
-        // 玉石種類
-        switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B020Const.TAMAISHISYURUI, srBarrel1Data))) {
-            case "2Φ":
-                params.add(0);
-                break;
-            case "3Φ":
-                params.add(1);
-                break;
-            case "4Φ":
-                params.add(2);
-                break;
-            default:
-                params.add(9);
-                break;
-        }
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B020Const.KENMAZAISYURUI, srBarrel1Data))); // 研磨材種類
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B020Const.TAMAISHISYURUI, srBarrel1Data))); // 玉石種類
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B020Const.TAMAISHIRYOU, srBarrel1Data))); // 玉石量
         // 外観確認
         switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B020Const.GAIKANCHECK, srBarrel1Data))) {
@@ -2311,14 +2227,7 @@ public class GXHDO101B020 implements IFormLogic {
                 return StringUtil.nullToBlank(srBarrel1Data.getUkeirekosuu());
             // 研磨方式
             case GXHDO101B020Const.KENMA:
-                switch (StringUtil.nullToBlank(srBarrel1Data.getKenma())) {
-                    case "0":
-                        return "横遠心";
-                    case "1":
-                        return "回転";
-                    default:
-                        return "";                        
-                }
+                return StringUtil.nullToBlank(srBarrel1Data.getKenma());
             // 研磨号機
             case GXHDO101B020Const.BGOKI:
                 return StringUtil.nullToBlank(srBarrel1Data.getBgoki());
@@ -2336,30 +2245,10 @@ public class GXHDO101B020 implements IFormLogic {
                 return StringUtil.nullToBlank(srBarrel1Data.getKenmazairyo());
             // 研磨材種類
             case GXHDO101B020Const.KENMAZAISYURUI:
-                switch (StringUtil.nullToBlank(srBarrel1Data.getKenmazaisyurui())) {
-                    case "0":
-                        return "#220";
-                    case "1":
-                        return "#600";
-                    case "2":
-                        return "#2000";
-                    case "3":
-                        return "#4000";
-                    default:
-                        return "";
-                }
+                return StringUtil.nullToBlank(srBarrel1Data.getKenmazaisyurui());
             // 玉石種類
             case GXHDO101B020Const.TAMAISHISYURUI:
-                switch (StringUtil.nullToBlank(srBarrel1Data.getTamaishisyurui())) {
-                    case "0":
-                        return "2Φ";
-                    case "1":
-                        return "3Φ";
-                    case "2":
-                        return "4Φ";
-                    default:
-                        return "";
-                }
+                return StringUtil.nullToBlank(srBarrel1Data.getTamaishisyurui());
             // 玉石量
             case GXHDO101B020Const.TAMAISHIRYOU:
                 return StringUtil.nullToBlank(srBarrel1Data.getTamaishiryou());
