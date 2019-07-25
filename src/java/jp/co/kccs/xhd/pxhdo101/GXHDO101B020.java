@@ -1156,12 +1156,12 @@ public class GXHDO101B020 implements IFormLogic {
     /**
      * 仕掛データ検索
      *
-     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param queryRunnerWip QueryRunnerオブジェクト
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private Map loadShikakariData(QueryRunner queryRunnerDoc, String lotNo) throws SQLException {
+    private Map loadShikakariData(QueryRunner queryRunnerWip, String lotNo) throws SQLException {
         String lotNo1 = lotNo.substring(0, 3);
         String lotNo2 = lotNo.substring(3, 11);
         String lotNo3 = lotNo.substring(11, 14);
@@ -1176,7 +1176,7 @@ public class GXHDO101B020 implements IFormLogic {
         params.add(lotNo3);
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
+        return queryRunnerWip.query(sql, new MapHandler(), params.toArray());
     }
 
     /**
