@@ -1484,6 +1484,7 @@ public class GXHDO101B020 implements IFormLogic {
 
             QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
             QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
+            QueryRunner queryRunnerWip = new QueryRunner(processData.getDataSourceWip());
 
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             HttpSession session = (HttpSession) externalContext.getSession(false);
@@ -1494,7 +1495,7 @@ public class GXHDO101B020 implements IFormLogic {
             String lotNo8 = lotNo.substring(3, 11);
             
             //仕掛情報の取得
-            Map shikakariData = loadShikakariData(queryRunnerDoc, lotNo);
+            Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
             String oyalotEdaban = StringUtil.nullToBlank(getMapData(shikakariData, "oyalotedaban")); //親ﾛｯﾄ枝番
 
             // 品質DB登録実績データ取得
