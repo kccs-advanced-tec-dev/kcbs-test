@@ -1080,7 +1080,7 @@ public class CommonUtil {
             String edaban, String rev) throws SQLException {
         
         // 画面実装時に再確認
-        String sql = "SELECT kojyo,lotno,edaban,kcpno,settasuu,kaisinichiji,StartTantosyacode,StartKakuninsyacode,tounyusettasuu,"
+        String sql = "SELECT kojyo,lotno,edaban,kcpno,ukeiresettamaisuu,kaisinichiji,StartTantosyacode,StartKakuninsyacode,tounyusettasuu,"
                 + "Nijidasshigouki,NijidasshisetteiPT,Nijidasshikeepondo,Nijidasshispeed,syuuryounichiji,EndTantosyacode,kaishuusettasuu,"
                 + "bikou1,bikou2,tourokunichiji,koushinnichiji,revision "
                 + "FROM sr_nijidasshi "
