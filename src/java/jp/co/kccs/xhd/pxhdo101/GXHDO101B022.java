@@ -1722,55 +1722,14 @@ public class GXHDO101B022 implements IFormLogic {
         }
 
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B022Const.KCPNO, srJikiqcData))); //KCPNO
-        // 合否判定
-        switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B022Const.GOUHIHANTEI, srJikiqcData))) {
-            case "合格":
-                params.add(0);
-                break;
-            case "不合格":
-                params.add(1);
-                break;
-            case "未判定":
-                params.add(2);
-                break;
-            case "再酸化":
-                params.add(3);
-                break;
-            case "再ﾊﾞﾚﾙ":
-                params.add(4);
-                break;
-            case "MV":
-                params.add(5);
-                break;
-            default:
-                params.add(null);
-                break;
-        }
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B022Const.GOUHIHANTEI, srJikiqcData))); //合否判定
         params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B022Const.CHECK_DAY, srJikiqcData),
             getItemData(itemList, GXHDO101B022Const.CHECK_TIME, srJikiqcData))); //ﾁｪｯｸ日時
         
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B022Const.CHECKTANTOUSYACODE, srJikiqcData))); //チェック担当者
-        // 後工程指示内容1
-        switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B022Const.SIJINAIYOU1, srJikiqcData))) {
-            case "ﾛｯﾄ混合不可":
-                params.add(0);
-                break;
-            default:
-                params.add(null);
-                break;
-        }
-        // 後工程指示内容2
-        switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B022Const.SIJINAIYOU2, srJikiqcData))) {
-            case "後工程外観選別":
-                params.add(0);
-                break;
-            case "後工程外観確認":
-                params.add(1);
-                break;
-            default:
-                params.add(null);
-                break;
-        }
+        
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B022Const.SIJINAIYOU1, srJikiqcData))); //後工程指示内容1
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B022Const.SIJINAIYOU2, srJikiqcData))); //後工程指示内容2
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B022Const.SIJINAIYOU6, srJikiqcData))); //後工程指示内容6
         
         if (isInsert) {
@@ -1883,57 +1842,13 @@ public class GXHDO101B022 implements IFormLogic {
         }
         
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B022Const.KCPNO, srJikiqcData))); // KCPNO
-        // 合否判定
-        switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B022Const.GOUHIHANTEI, srJikiqcData))) {
-            case "合格":
-                params.add(0);
-                break;
-            case "不合格":
-                params.add(1);
-                break;
-            case "未判定":
-                params.add(2);
-                break;
-            case "再酸化":
-                params.add(3);
-                break;
-            case "再ﾊﾞﾚﾙ":
-                params.add(4);
-                break;
-            case "MV":
-                params.add(5);
-                break;
-            default:
-                params.add(null);
-                //params.add(9);
-                break;
-        }
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B022Const.GOUHIHANTEI, srJikiqcData))); // 合否判定
+        
         params.add(DBUtil.stringToDateObject(getItemData(itemList, GXHDO101B022Const.CHECK_DAY, srJikiqcData),
                 getItemData(itemList, GXHDO101B022Const.CHECK_TIME, srJikiqcData))); // ﾁｪｯｸ日
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B022Const.CHECKTANTOUSYACODE, srJikiqcData))); // チェック担当者
-        // 後工程指示内容1
-        switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B022Const.SIJINAIYOU1, srJikiqcData))) {
-            case "ﾛｯﾄ混合不可":
-                params.add(0);
-                break;
-            default:
-                params.add(null);
-                //params.add(9);
-                break;
-        }
-        // 後工程指示内容2
-        switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B022Const.SIJINAIYOU2, srJikiqcData))) {
-            case "後工程外観選別":
-                params.add(0);
-                break;
-            case "後工程外観確認":
-                params.add(1);
-                break;
-            default:
-                params.add(null);
-                //params.add(9);
-                break;
-        }
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B022Const.SIJINAIYOU1, srJikiqcData))); // 後工程指示内容1
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B022Const.SIJINAIYOU2, srJikiqcData))); // 後工程指示内容2
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B022Const.SIJINAIYOU6, srJikiqcData))); // 後工程指示内容6
 
         if (isInsert) {
@@ -2081,22 +1996,7 @@ public class GXHDO101B022 implements IFormLogic {
         switch (itemId) {
             // 合否判定
             case GXHDO101B022Const.GOUHIHANTEI:
-                switch (StringUtil.nullToBlank(srJikiqcData.getGouhihantei())) {
-                    case "0":
-                        return "合格";
-                    case "1":
-                        return "不合格";
-                    case "2":
-                        return "未判定";
-                    case "3":
-                        return "再酸化";
-                    case "4":
-                        return "再ﾊﾞﾚﾙ";
-                    case "5":
-                        return "MV";
-                    default:
-                        return "";
-                }
+                return StringUtil.nullToBlank(srJikiqcData.getGouhihantei());
             // ﾁｪｯｸ日
             case GXHDO101B022Const.CHECK_DAY:
                 return DateUtil.formattedTimestamp(srJikiqcData.getCheckbi(), "yyMMdd");
@@ -2108,22 +2008,10 @@ public class GXHDO101B022 implements IFormLogic {
                 return StringUtil.nullToBlank(srJikiqcData.getChecktantousyacode());
             // 後工程指示内容1
             case GXHDO101B022Const.SIJINAIYOU1:
-                switch (StringUtil.nullToBlank(srJikiqcData.getSijinaiyou1())) {
-                    case "0":
-                        return "ﾛｯﾄ混合不可";
-                    default:
-                        return "";
-                }
+                return StringUtil.nullToBlank(srJikiqcData.getSijinaiyou1());
             // 後工程指示内容2
             case GXHDO101B022Const.SIJINAIYOU2:
-                switch (StringUtil.nullToBlank(srJikiqcData.getSijinaiyou2())) {
-                    case "0":
-                        return "後工程外観選別";
-                    case "1":
-                        return "後工程外観確認";
-                    default:
-                        return "";
-                }
+                return StringUtil.nullToBlank(srJikiqcData.getSijinaiyou2());
             // 後工程指示内容6
             case GXHDO101B022Const.SIJINAIYOU6:
                 return StringUtil.nullToBlank(srJikiqcData.getSijinaiyou6());
