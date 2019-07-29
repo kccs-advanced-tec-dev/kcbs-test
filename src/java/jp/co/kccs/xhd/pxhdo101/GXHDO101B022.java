@@ -1108,12 +1108,12 @@ public class GXHDO101B022 implements IFormLogic {
     /**
      * 仕掛データ検索
      *
-     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param queryRunnerWip QueryRunnerオブジェクト
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private Map loadShikakariData(QueryRunner queryRunnerDoc, String lotNo) throws SQLException {
+    private Map loadShikakariData(QueryRunner queryRunnerWip, String lotNo) throws SQLException {
         String lotNo1 = lotNo.substring(0, 3);
         String lotNo2 = lotNo.substring(3, 11);
         String lotNo3 = lotNo.substring(11, 14);
@@ -1128,7 +1128,7 @@ public class GXHDO101B022 implements IFormLogic {
         params.add(lotNo3);
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
+        return queryRunnerWip.query(sql, new MapHandler(), params.toArray());
     }
 
     /**
@@ -1146,7 +1146,7 @@ public class GXHDO101B022 implements IFormLogic {
             String edaban, int jissekino, String formId) throws SQLException {
         // 設計データの取得
         String sql = "SELECT rev, jotai_flg "
-                + "FROM fxhdd03 "
+                + "FROM fxhdd03 " 
                 + "WHERE kojyo = ? AND lotno = ? "
                 + "AND edaban = ? AND jissekino = ? AND gamen_id = ?";
 
@@ -1374,6 +1374,7 @@ public class GXHDO101B022 implements IFormLogic {
 
             QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
             QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
+            QueryRunner queryRunnerWip = new QueryRunner(processData.getDataSourceWip());
 
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             HttpSession session = (HttpSession) externalContext.getSession(false);
@@ -1384,7 +1385,7 @@ public class GXHDO101B022 implements IFormLogic {
             String lotNo8 = lotNo.substring(3, 11);
             
             //仕掛情報の取得
-            Map shikakariData = loadShikakariData(queryRunnerDoc, lotNo);
+            Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
             String oyalotEdaban = StringUtil.nullToBlank(getMapData(shikakariData, "oyalotedaban")); //親ﾛｯﾄ枝番
 
             // 品質DB登録実績データ取得
