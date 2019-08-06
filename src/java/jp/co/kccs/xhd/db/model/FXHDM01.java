@@ -3,7 +3,11 @@
  */
 package jp.co.kccs.xhd.db.model;
 
+import java.io.Closeable;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import jp.co.kccs.xhd.model.GXHDO101C001Model;
 
 /**
  * ===============================================================================<br>
@@ -28,7 +32,7 @@ import java.io.Serializable;
  * @author KCCS D.Yanagida
  * @since 2018/04/24
  */
-public class FXHDM01 implements Serializable {
+public class FXHDM01 implements Serializable, Cloneable {
 
     /**
      * 画面ID
@@ -74,7 +78,23 @@ public class FXHDM01 implements Serializable {
      * 画面ID(前工程)
      */
     private String maeKoteiFormId;
+    /**
+     * 実績No
+     */
+    private int jissekiNo;
 
+    /**
+     * クローン実装
+     *
+     * @return クローン
+     * @throws java.lang.CloneNotSupportedException
+     */
+    @Override
+    public FXHDM01 clone() throws CloneNotSupportedException {
+       
+        return (FXHDM01) super.clone();
+    }
+    
     /**
      * 画面ID
      *
@@ -270,5 +290,21 @@ public class FXHDM01 implements Serializable {
      */
     public void setMaeKoteiFormId(String maeKoteiFormId) {
         this.maeKoteiFormId = maeKoteiFormId;
+    }
+    
+    /**
+     * 実績No
+     * @return the jissekiNo
+     */
+    public int getJissekiNo() {
+        return jissekiNo;
+    }
+
+    /**
+     * 実績No
+     * @param jissekiNo the jissekiNo to set
+     */
+    public void setJissekiNo(int jissekiNo) {
+        this.jissekiNo = jissekiNo;
     }
 }

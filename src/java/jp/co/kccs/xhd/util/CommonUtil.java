@@ -36,57 +36,6 @@ public class CommonUtil {
     private static final Logger LOGGER = Logger.getLogger(CommonUtil.class.getName());
 
     /**
-     * 良品ｾｯﾄ数の取得
-     *
-     * @param lotNo ﾛｯﾄNo
-     * @param gamenId 画面ID
-     * @param queryRunnerDoc QueryRunner(Doc)
-     * @param queryRunnerQcdb QueryRunner(QCDB)
-     * @param rtnErrorMsgList
-     * @return 良品ｾｯﾄ数
-     * @throws SQLException 例外エラー
-     */
-    public static String getMaeKoteiRyouhinsetSu(String lotNo, String gamenId, QueryRunner queryRunnerDoc, QueryRunner queryRunnerQcdb, List<String> rtnErrorMsgList) throws SQLException {
-
-        // 画面IDが指定されていない場合は前工程無しとしてそのままリターン
-        if (StringUtil.isEmpty(gamenId)) {
-            return "";
-        }
-
-        String kojyo = lotNo.substring(0, 3);
-        String lotNo8 = lotNo.substring(3, 11);
-        String edaban = lotNo.substring(11, 14);
-        for (int i = 0; i < 5; i++) {
-            Map fxhdd03 = loadFxhdd03(queryRunnerDoc, kojyo, lotNo8, edaban, gamenId);
-            if (fxhdd03 == null || fxhdd03.isEmpty()) {
-                String msg = MessageUtil.getMessage("XHD-000051");
-                rtnErrorMsgList.add(msg);
-                return msg;
-            }
-
-            // 状態フラグが1(登録済)以外の場合エラー
-            if (!"1".equals(StringUtil.nullToBlank(fxhdd03.get("jotai_flg")))) {
-                String msg = MessageUtil.getMessage("XHD-000052");
-                rtnErrorMsgList.add(msg);
-                return msg;
-            }
-
-            // 良品ｾｯﾄ数を取得
-            String ryohinSetsu = getRyohinsetsuTargetGamenId(queryRunnerQcdb, gamenId, kojyo, lotNo8, edaban, StringUtil.nullToBlank(fxhdd03.get("rev")));
-
-            // 戻り値が"nodata"以外の場合、値取得完了
-            if (!"nodata".equals(ryohinSetsu)) {
-                return ryohinSetsu;
-            }
-        }
-
-        return "";
-
-    }
-
-    
-
-    /**
      * 対象画面のﾃｰﾌﾞﾙ情報を取得(該当データがない場合はNULLを返却)
      *
      * @param queryRunnerQcdb queryRunner
@@ -146,6 +95,24 @@ public class CommonUtil {
             // 焼成・ﾍﾞﾙﾄ脱脂
             case "GXHDO101B016":
                 return getSrNijidasshiData(queryRunnerQcdb, kojyo, lotNo, edaban, rev);
+            // 焼成・焼成
+            case "GXHDO101B017":
+                return getSrSyoseiData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
+            // 焼成・RHK焼成
+            case "GXHDO101B018":
+                return getSrSyoseiData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
+            // 焼成・再酸化
+            case "GXHDO101B019":
+                return getSrSaisankaData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
+            // 研磨・ﾊﾞﾚﾙ
+            case "GXHDO101B020":
+                return getSrBarrel1Data(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
+            // 研磨・計数
+            case "GXHDO101B021":
+                return getSrSyoseikeisuuData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
+            // 磁器QC
+            case "GXHDO101B022":
+                return getSrJikiqcData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
             default:
                 break;
         }
@@ -204,389 +171,7 @@ public class CommonUtil {
         return true;
     }
     
-
     /**
-     * [品質DB登録実績]から、ﾃﾞｰﾀを取得
-     *
-     * @param queryRunnerDoc QueryRunnerオブジェクト(Doc)
-     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
-     * @param lotNo ﾛｯﾄNo(検索キー)
-     * @param edaban 枝番(検索キー)
-     * @param formId 画面ID(検索キー)
-     * @return 取得データ
-     * @throws SQLException 例外エラー
-     */
-    private static Map loadFxhdd03(QueryRunner queryRunnerDoc, String kojyo, String lotNo,
-            String edaban, String gamenId) throws SQLException {
-        // 設計データの取得
-        String sql = "SELECT rev, jotai_flg "
-                + "FROM fxhdd03 "
-                + "WHERE kojyo = ? AND lotno = ? "
-                + "AND edaban = ? AND gamen_id = ? ";
-
-        List<Object> params = new ArrayList<>();
-        params.add(kojyo);
-        params.add(lotNo);
-        params.add(edaban);
-        params.add(gamenId);
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
-    }
-
-    /**
-     * 対象画面の良品セット数を取得
-     *
-     * @param queryRunnerQcdb queryRunner
-     * @param gamenId 画面ID
-     * @param kojyo 工場ｺｰﾄﾞ
-     * @param lotNo ﾛｯﾄNo
-     * @param edaban 枝番
-     * @param rev ﾘﾋﾞｼﾞｮﾝ
-     * @return 良品ｾｯﾄ数
-     * @throws SQLException
-     */
-    private static String getRyohinsetsuTargetGamenId(QueryRunner queryRunnerQcdb, String gamenId, String kojyo, String lotNo, String edaban, String rev) throws SQLException {
-        switch (gamenId) {
-            // 積層・SPS
-            case "GXHDO101B004":
-                return getRyohinsetsuSrSpssekisou(queryRunnerQcdb, kojyo, lotNo, edaban, rev);
-            // 積層・RSUS
-            case "GXHDO101B005":
-                return getRyohinsetsuSrRsussek(queryRunnerQcdb, kojyo, lotNo, edaban, rev);
-            // 印刷積層・RHAPS
-            case "GXHDO101B006":
-                return getRyohinsetsuSrRhaps(queryRunnerQcdb, kojyo, lotNo, edaban, rev);
-            // ﾌﾟﾚｽ・仮ﾌﾟﾚｽ
-            case "GXHDO101B007":
-                return getRyohinsetsuSrPrepress(queryRunnerQcdb, kojyo, lotNo, edaban, rev);
-            // ﾌﾟﾚｽ・真空脱気
-            case "GXHDO101B008":
-                return getRyohinsetsuSrPress(queryRunnerQcdb, kojyo, lotNo, edaban, rev);
-            // ﾌﾟﾚｽ・ﾒｶﾌﾟﾚｽ
-            case "GXHDO101B009":
-                return getRyohinsetsuSrMekapress(queryRunnerQcdb, kojyo, lotNo, edaban, rev);
-            // ｶｯﾄ・押切ｶｯﾄ
-            case "GXHDO101B010":
-                return getRyohinsetsuSrHapscut(queryRunnerQcdb, kojyo, lotNo, edaban, rev);
-            // ｶｯﾄ・ﾀﾞｲｼﾝｸﾞｶｯﾄ
-            case "GXHDO101B011":
-                return getRyohinsetsuSrCut(queryRunnerQcdb, kojyo, lotNo, edaban, rev);
-            // 生品質検査
-            case "GXHDO101B012":
-                return getRyohinsetsuSrCutcheck(queryRunnerQcdb, kojyo, lotNo, edaban, rev);
-            // 焼成・ｾｯﾀ詰め
-            case "GXHDO101B013":
-
-                //TODO テーブル未定
-                break;
-            // 焼成・Air脱脂
-            case "GXHDO101B014":
-                //TODO テーブル未定
-                break;
-            // 焼成・窒素脱脂
-            case "GXHDO101B015":
-                //TODO テーブル未定
-                break;
-            // 焼成・ﾍﾞﾙﾄ脱脂
-            case "GXHDO101B016":
-                //TODO テーブル未定
-                break;
-            default:
-                break;
-        }
-        return "";
-    }
-
-    /**
-     * 積層・SPS工程の良品ｾｯﾄ数を取得する。 ※データ無し時は"nodata"の文字列を返す。
-     *
-     * @param queryRunnerDoc QueryRunnerオブジェクト
-     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
-     * @param lotNo ﾛｯﾄNo(検索キー)
-     * @param edaban 枝番(検索キー)
-     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
-     * @return 取得データ
-     * @throws SQLException 例外エラー
-     */
-    private static String getRyohinsetsuSrSpssekisou(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
-            String edaban, String rev) throws SQLException {
-        String sql = "SELECT RyouhinSetsuu "
-                + "FROM sr_spssekisou "
-                + "WHERE kojyo = ? AND lotno = ? "
-                + "AND edaban = ? AND revision = ? ";
-
-        List<Object> params = new ArrayList<>();
-        params.add(kojyo);
-        params.add(lotNo);
-        params.add(edaban);
-        params.add(rev);
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        Map data = queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
-        if (null == data || data.isEmpty()) {
-            return "nodata";
-        }
-        return StringUtil.nullToBlank(data.get("RyouhinSetsuu"));
-    }
-
-    /**
-     * 積層・RSUS工程の良品ｾｯﾄ数を取得する。 ※データ無し時は"nodata"の文字列を返す。
-     *
-     * @param queryRunnerQcdb QueryRunnerオブジェクト
-     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
-     * @param lotNo ﾛｯﾄNo(検索キー)
-     * @param edaban 枝番(検索キー)
-     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
-     * @return 良品ｾｯﾄ数
-     * @throws SQLException 例外エラー
-     */
-    private static String getRyohinsetsuSrRsussek(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
-            String edaban, String rev) throws SQLException {
-        String sql = "SELECT RyouhinSetsuu "
-                + "FROM sr_rsussek "
-                + "WHERE KOJYO = ? AND LOTNO = ? "
-                + "AND EDABAN = ? AND revision = ? ";
-
-        List<Object> params = new ArrayList<>();
-        params.add(kojyo);
-        params.add(lotNo);
-        params.add(edaban);
-        params.add(rev);
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        Map data = queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
-        if (null == data || data.isEmpty()) {
-            return "nodata";
-        }
-        return StringUtil.nullToBlank(data.get("RyouhinSetsuu"));
-    }
-
-    /**
-     * 印刷積層・RHAPS工程の良品ｾｯﾄ数を取得する。 ※データ無し時は"nodata"の文字列を返す。
-     *
-     * @param queryRunnerQcdb QueryRunnerオブジェクト
-     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
-     * @param lotNo ﾛｯﾄNo(検索キー)
-     * @param edaban 枝番(検索キー)
-     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
-     * @return 良品ｾｯﾄ数
-     * @throws SQLException 例外エラー
-     */
-    private static String getRyohinsetsuSrRhaps(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
-            String edaban, String rev) throws SQLException {
-        String sql = "SELECT RYOUHINSETSUU "
-                + "FROM sr_rhaps "
-                + "WHERE KOJYO = ? AND LOTNO = ? "
-                + "AND EDABAN = ? AND revision = ? ";
-
-        List<Object> params = new ArrayList<>();
-        params.add(kojyo);
-        params.add(lotNo);
-        params.add(edaban);
-        params.add(rev);
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        Map data = queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
-        if (null == data || data.isEmpty()) {
-            return "nodata";
-        }
-        return StringUtil.nullToBlank(data.get("RYOUHINSETSUU"));
-    }
-
-    /**
-     * ﾌﾟﾚｽ・仮ﾌﾟﾚｽ工程の良品ｾｯﾄ数を取得する。 ※データ無し時は"nodata"の文字列を返す。
-     *
-     * @param queryRunnerQcdb QueryRunnerオブジェクト
-     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
-     * @param lotNo ﾛｯﾄNo(検索キー)
-     * @param edaban 枝番(検索キー)
-     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
-     * @return 良品ｾｯﾄ数
-     * @throws SQLException 例外エラー
-     */
-    private static String getRyohinsetsuSrPrepress(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
-            String edaban, String rev) throws SQLException {
-        String sql = "SELECT RYOUHINSETSUU "
-                + "FROM sr_prepress "
-                + "WHERE KOJYO = ? AND LOTNO = ? "
-                + "AND EDABAN = ? AND revision = ? ";
-
-        List<Object> params = new ArrayList<>();
-        params.add(kojyo);
-        params.add(lotNo);
-        params.add(edaban);
-        params.add(rev);
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        Map data = queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
-        if (null == data || data.isEmpty()) {
-            return "nodata";
-        }
-        return StringUtil.nullToBlank(data.get("RYOUHINSETSUU"));
-    }
-
-    /**
-     * ﾌﾟﾚｽ・真空脱気工程の良品ｾｯﾄ数を取得する。 ※データ無し時は"nodata"の文字列を返す。
-     *
-     * @param queryRunnerQcdb QueryRunnerオブジェクト
-     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
-     * @param lotNo ﾛｯﾄNo(検索キー)
-     * @param edaban 枝番(検索キー)
-     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
-     * @return 良品ｾｯﾄ数
-     * @throws SQLException 例外エラー
-     */
-    private static String getRyohinsetsuSrPress(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
-            String edaban, String rev) throws SQLException {
-        String sql = "SELECT RyouhinSetsuu "
-                + "FROM sr_press "
-                + "WHERE KOJYO = ? AND LOTNO = ? "
-                + "AND EDABAN = ? AND revision = ? ";
-
-        List<Object> params = new ArrayList<>();
-        params.add(kojyo);
-        params.add(lotNo);
-        params.add(edaban);
-        params.add(rev);
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        Map data = queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
-        if (null == data || data.isEmpty()) {
-            return "nodata";
-        }
-        return StringUtil.nullToBlank(data.get("RyouhinSetsuu"));
-    }
-
-    /**
-     * ﾌﾟﾚｽ・ﾒｶﾌﾟﾚｽ工程の良品ｾｯﾄ数を取得する。 ※データ無し時は"nodata"の文字列を返す。
-     *
-     * @param queryRunnerQcdb QueryRunnerオブジェクト
-     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
-     * @param lotNo ﾛｯﾄNo(検索キー)
-     * @param edaban 枝番(検索キー)
-     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
-     * @return 良品ｾｯﾄ数
-     * @throws SQLException 例外エラー
-     */
-    private static String getRyohinsetsuSrMekapress(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
-            String edaban, String rev) throws SQLException {
-        String sql = "SELECT RYOHINSETSUU "
-                + "FROM sr_mekapress "
-                + "WHERE KOJYO = ? AND LOTNO = ? "
-                + "AND EDABAN = ? AND revision = ? ";
-
-        List<Object> params = new ArrayList<>();
-        params.add(kojyo);
-        params.add(lotNo);
-        params.add(edaban);
-        params.add(rev);
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        Map data = queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
-        if (null == data || data.isEmpty()) {
-            return "nodata";
-        }
-        return StringUtil.nullToBlank(data.get("RYOHINSETSUU"));
-    }
-
-    /**
-     * ｶｯﾄ・押切ｶｯﾄ工程の良品ｾｯﾄ数を取得する。 ※データ無し時は"nodata"の文字列を返す。
-     *
-     * @param queryRunnerQcdb QueryRunnerオブジェクト
-     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
-     * @param lotNo ﾛｯﾄNo(検索キー)
-     * @param edaban 枝番(検索キー)
-     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
-     * @return 良品ｾｯﾄ数
-     * @throws SQLException 例外エラー
-     */
-    private static String getRyohinsetsuSrHapscut(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
-            String edaban, String rev) throws SQLException {
-        String sql = "SELECT RyouhinSetsuu "
-                + "FROM sr_hapscut "
-                + "WHERE KOJYO = ? AND LOTNO = ? "
-                + "AND EDABAN = ? AND revision = ? ";
-
-        List<Object> params = new ArrayList<>();
-        params.add(kojyo);
-        params.add(lotNo);
-        params.add(edaban);
-        params.add(rev);
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        Map data = queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
-        if (null == data || data.isEmpty()) {
-            return "nodata";
-        }
-        return StringUtil.nullToBlank(data.get("RyouhinSetsuu"));
-    }
-
-    /**
-     * ｶｯﾄ・ﾀﾞｲｼﾝｸﾞｶｯﾄ工程の良品ｾｯﾄ数を取得する。 ※データ無し時は"nodata"の文字列を返す。
-     *
-     * @param queryRunnerQcdb QueryRunnerオブジェクト
-     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
-     * @param lotNo ﾛｯﾄNo(検索キー)
-     * @param edaban 枝番(検索キー)
-     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
-     * @return 良品ｾｯﾄ数
-     * @throws SQLException 例外エラー
-     */
-    private static String getRyohinsetsuSrCut(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
-            String edaban, String rev) throws SQLException {
-        String sql = "SELECT RyouhinSetsuu "
-                + "FROM sr_cut "
-                + "WHERE kojyo = ? AND lotno = ? "
-                + "AND edaban = ? AND revision = ? ";
-
-        List<Object> params = new ArrayList<>();
-        params.add(kojyo);
-        params.add(lotNo);
-        params.add(edaban);
-        params.add(rev);
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        Map data = queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
-        if (null == data || data.isEmpty()) {
-            return "nodata";
-        }
-        return StringUtil.nullToBlank(data.get("RyouhinSetsuu"));
-    }
-
-    /**
-     * 生品質検査工程の良品ｾｯﾄ数を取得する。 ※データ無し時は"nodata"の文字列を返す。
-     *
-     * @param queryRunnerQcdb QueryRunnerオブジェクト
-     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
-     * @param lotNo ﾛｯﾄNo(検索キー)
-     * @param edaban 枝番(検索キー)
-     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
-     * @return 良品ｾｯﾄ数
-     * @throws SQLException 例外エラー
-     */
-    private static String getRyohinsetsuSrCutcheck(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
-            String edaban, String rev) throws SQLException {
-        String sql = "SELECT RyouhinSetsuu "
-                + "FROM sr_cutcheck "
-                + "WHERE kojyo = ? AND lotno = ? "
-                + "AND edaban = ? AND revision = ? ";
-
-        List<Object> params = new ArrayList<>();
-        params.add(kojyo);
-        params.add(lotNo);
-        params.add(edaban);
-        params.add(rev);
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        Map data = queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
-        if (null == data || data.isEmpty()) {
-            return "nodata";
-        }
-        return StringUtil.nullToBlank(data.get("RyouhinSetsuu"));
-    }
-
-        /**
      * 印刷・SPSｸﾞﾗﾋﾞｱ工程のデータを取得する
      *
      * @param queryRunnerDoc QueryRunnerオブジェクト
@@ -700,8 +285,6 @@ public class CommonUtil {
 
     }
 
-    
-    
     /**
      * 積層・SPS工程のデータを取得する
      *
@@ -1065,7 +648,7 @@ public class CommonUtil {
         return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
     }
     
-        /**
+    /**
      * 2次脱脂(ﾍﾞﾙﾄ)のデータを取得する。
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
@@ -1096,5 +679,171 @@ public class CommonUtil {
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
     }
+     
+    /**
+     * 焼成のデータを取得する。
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 工程データ
+     * @throws SQLException 例外エラー
+     */
+    private static Map getSrSyoseiData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev, int jissekino) throws SQLException {
+        String sql = "SELECT kojyo,lotno,edaban,jissekino,kcpno,kosuu,genryohinsyumei,genryogroup,skaisinichiji,ssyuryonichiji,bprogramno,"
+                + "syoseiondo,goki,ssettermaisuu,nyurodaibanmaisuu,skaisitantosya,ssyuryotantosya,biko1,biko2,biko3,biko4,biko5,bkaisinichiji,"
+                + "bsyuryonichiji,bsettermaisuu,potsuu,potno,btantosya,biko6,biko7,torokunichiji,kosinnichiji,SankaGoki,SankaOndo,SankaSyuryoNichiJi,"
+                + "tounyusettasuu,setteipattern,dansuu,gaikancheck,kaishusettasuu,StartKakuninsyacode,nijidasshigouki,NijidasshisetteiPT,"
+                + "Nijidasshikeepondo,Nijidasshispeed,peakondo,syoseispeed,syoseipurge,saisankagouki1,saisankagouki2,saisankasetteiPT,saisankakeepondo,saisankaCsokudo,saisankagogaikan,syoseisyurui,revision "
+                + "FROM sr_syosei "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND revision = ? "
+                + "AND jissekino = ? ";
 
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+      
+    /**
+     * 再酸化のデータを取得する。
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 工程データ
+     * @throws SQLException 例外エラー
+     */
+    private static Map getSrSaisankaData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev, int jissekino) throws SQLException {
+        String sql = "SELECT kojyo,lotno,edaban,jissekino,KCPNO,ukeiresettamaisuu,siteisaisaka,tounyusettasuu,gouki,setteipattern,"
+                + "keepondo,atogaikan,kaishusettasuu,kaisinichiji,StartTantosyacode,StartKakuninsyacode,syuuryounichiji,"
+                + "EndTantosyacode,bikou1,bikou2,tourokunichiji,koushinnichiji,revision "
+                + "FROM sr_saisanka "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND revision = ? "
+                + "AND jissekino = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+    
+    /**
+     * ﾊﾞﾚﾙのデータを取得する。
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 工程データ
+     * @throws SQLException 例外エラー
+     */
+    private static Map getSrBarrel1Data(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev, int jissekino) throws SQLException {
+        String sql = "SELECT kojyo,lotno,edaban,jissekino,kcpno,bkaisinichiji,bsyuryonichiji,bjyokensetteimode,bjyokensyusokudo,"
+                + "bgoki,bjikan,potsuu,chiphahenkakunin,potkakunin,btantosya,ptantosya,bpotno1,kankaisinichiji,kansyuryonichiji,"
+                + "kantantosya,mediasenbetu,bpotno2,keinichiji,ukeirekosuu,tanijyuryo,ryohinkosuu,furyosuu,budomari,keitantosya,"
+                + "biko1,biko2,torokunichiji,kosinNichiji,kenma,kenmazairyo,kenmazaisyurui,tamaishisyurui,tamaishiryou,gaikancheck,"
+                + "StartKakuninsyacode,EndTantosyacode,revision "
+                + "FROM sr_barrel1 "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND revision = ? "
+                + "AND jissekino = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+    
+    /**
+     * ﾊﾞﾚﾙ・計数のデータを取得する。
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 工程データ
+     * @throws SQLException 例外エラー
+     */
+    private static Map getSrSyoseikeisuuData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev, int jissekino) throws SQLException {
+        String sql = "SELECT kojyo,lotno,edaban,jissekino,kcpno,ukeirekosuu,tanijyuryo,soujuryou,ryohinkosuu,keinichiji,"
+                + "keitantosya,budomari,biko1,biko2,barrelgohantei,torokunichiji,kosinNichiji,revision "
+                + "FROM sr_syoseikeisuu "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND revision = ? "
+                + "AND jissekino = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+    
+    /**
+     * 磁器QCのデータを取得する。
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 工程データ
+     * @throws SQLException 例外エラー
+     */
+    private static Map getSrJikiqcData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev, int jissekino) throws SQLException {
+        String sql = "SELECT kojyo,lotno,edaban,jissekino,kcpno,gouhihantei,checkbi,checktantousyacode,sijinaiyou1,"
+                + "sijinaiyou2,sijinaiyou6,torokunichiji,kosinnichiji,revision "
+                + "FROM sr_jikiqc "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND revision = ? "
+                + "AND jissekino = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
 }

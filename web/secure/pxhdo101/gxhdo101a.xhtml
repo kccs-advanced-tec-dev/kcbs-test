@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
         <meta http-equiv="Pragma" content="no-cache"/>
@@ -32,7 +33,24 @@
             function cmdButtonOncomplete(args) {
                 if('warning'===args.firstParam){
                     PF('cd').show();
+                } else if('initMessage'===args.firstParam){
+                    PF('W_dlg_initMessage').show();
                 }
+            }
+            var pointY;
+            function subFormOpen() {
+                pointY = $(window).scrollTop();
+                document.getElementById("mainForm").style.setProperty("display", "none");
+                document.getElementById("mainForm").style.setProperty("position", "fixed");
+                document.getElementById("mainForm").style.setProperty("Top", -(pointY) + 100 + "px");
+                document.getElementById("mainForm").style.removeProperty("display");
+            }
+            function subFormClose() {  
+                document.getElementById("mainForm").style.setProperty("display", "none");
+                document.getElementById("mainForm").style.removeProperty("position");
+                document.getElementById("mainForm").style.removeProperty("Top");
+                document.getElementById("mainForm").style.removeProperty("display");
+                $(window).scrollTop(pointY);
             }
             //]]>
         </script>
@@ -71,6 +89,7 @@
         <br/>
         <h2>#{myMsg.hinshitsuDB}</h2>
         <h:form id="form" onkeypress="if (event.keyCode === 13) { return false; }">
+            <div id="mainForm">
             <p:growl id="growlMessage" showDetail="false" sticky="true"/>
             <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
                 <f:facet name="message">
@@ -109,7 +128,7 @@
                                       process="@this lotNo tantoshaCd"
                                       update="@form"
                                       onstart="PF('cd').hide();$('#loadinggif').show();$('#dataTableDiv').hide();"
-                                      oncomplete="$('#loadinggif').hide();$('#dataTableDiv').show();"/>
+                                      oncomplete="$('#loadinggif').hide();$('#dataTableDiv').show();cmdButtonOncomplete(args);"/>
                             </td>
                         </tr>
                     </table>
@@ -123,14 +142,14 @@
                              scrollable="true"
                              emptyMessage="">
                     <div style="text-align:center">
-                    <p:column id="mItem" width="30%" headerText="#{myMsg.hinshitsuDB_Name}" style="font-size: 17px;">
+                    <p:column id="mItem" width="50%" headerText="#{myMsg.hinshitsuDB_Name}" style="font-size: 17px;">
                         <p:commandLink value="#{item.menuName}" style="color:Indigo;font-size: 17px;"
                                        action="#{gXHDO101A.openXhdForm(item)}" oncomplete="cmdButtonOncomplete(args);" 
                                        update="@form">
                         </p:commandLink>
                     </p:column>
                     </div>
-                    <p:column id="mComment" width="70%" headerText="#{myMsg.menuComment}" style="font-size: 17px;">
+                    <p:column id="mComment" width="50%" headerText="#{myMsg.menuComment}" style="font-size: 17px;">
                         <p:outputLabel value="#{item.menuComment}" style="font-size: 17px;"/>
                     </p:column>
                 </p:dataTable>
@@ -144,6 +163,10 @@
                                     process="@this" update="@this"/>          
                 </td>
             </tr>
+            </div>
+            <div>
+                <ui:include src="/secure/common/initMessage.xhtml"/>
+            </div>
         </h:form>
         </div>
     </h:body>
