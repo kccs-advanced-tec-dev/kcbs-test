@@ -107,11 +107,11 @@ public class GXHDO201B001Model implements Serializable {
     /** ｽﾀｰﾄ時PTN間距離Y */
     private Long startPtnDistY = null;
     /** 開始ﾃﾝｼｮﾝ計 */
-    private Long tensionsSum = null;
+    private BigDecimal tensionsSum = null;
     /** ﾃﾝｼｮﾝ開始手前 */
-    private Long tensionstemae = null;
+    private BigDecimal tensionstemae = null;
     /** ﾃﾝｼｮﾝ開始奥 */
-    private Long tensionsoku = null;
+    private BigDecimal tensionsoku = null;
     /** ﾌﾟﾘﾝﾄ終了日時 */
     private Timestamp enddatetime = null;
     /** 終了時担当者ｺｰﾄﾞ */
@@ -133,11 +133,11 @@ public class GXHDO201B001Model implements Serializable {
     /** 終了時PTN間距離Y */
     private Long endPtnDistY = null;
     /** 終了ﾃﾝｼｮﾝ計 */
-    private Long tensioneSum = null;
+    private BigDecimal tensioneSum = null;
     /** ﾃﾝｼｮﾝ終了手前 */
-    private Long tensionetemae = null;
+    private BigDecimal tensionetemae = null;
     /** ﾃﾝｼｮﾝ終了奥 */
-    private Long tensioneoku = null;
+    private BigDecimal tensioneoku = null;
     /** 印刷ズレ①刷り始め開始 */
     private Long printzure1SurihajimeStart = null;
     /** 印刷ズレ②中央開始 */
@@ -881,7 +881,7 @@ public class GXHDO201B001Model implements Serializable {
      * 開始ﾃﾝｼｮﾝ計
      * @return the tensionsSum
      */
-    public Long getTensionsSum() {
+    public BigDecimal getTensionsSum() {
         return tensionsSum;
     }
 
@@ -889,7 +889,7 @@ public class GXHDO201B001Model implements Serializable {
      * 開始ﾃﾝｼｮﾝ計
      * @param tensionsSum the tensionsSum to set
      */
-    public void setTensionsSum(Long tensionsSum) {
+    public void setTensionsSum(BigDecimal tensionsSum) {
         this.tensionsSum = tensionsSum;
     }
 
@@ -897,7 +897,7 @@ public class GXHDO201B001Model implements Serializable {
      * ﾃﾝｼｮﾝ開始手前
      * @return the tensionstemae
      */
-    public Long getTensionstemae() {
+    public BigDecimal getTensionstemae() {
         return tensionstemae;
     }
 
@@ -905,7 +905,7 @@ public class GXHDO201B001Model implements Serializable {
      * ﾃﾝｼｮﾝ開始手前
      * @param tensionstemae the tensionstemae to set
      */
-    public void setTensionstemae(Long tensionstemae) {
+    public void setTensionstemae(BigDecimal tensionstemae) {
         this.tensionstemae = tensionstemae;
     }
 
@@ -913,7 +913,7 @@ public class GXHDO201B001Model implements Serializable {
      * ﾃﾝｼｮﾝ開始奥
      * @return the tensionsoku
      */
-    public Long getTensionsoku() {
+    public BigDecimal getTensionsoku() {
         return tensionsoku;
     }
 
@@ -921,7 +921,7 @@ public class GXHDO201B001Model implements Serializable {
      * ﾃﾝｼｮﾝ開始奥
      * @param tensionsoku the tensionsoku to set
      */
-    public void setTensionsoku(Long tensionsoku) {
+    public void setTensionsoku(BigDecimal tensionsoku) {
         this.tensionsoku = tensionsoku;
     }
 
@@ -1089,7 +1089,7 @@ public class GXHDO201B001Model implements Serializable {
      * 終了ﾃﾝｼｮﾝ計
      * @return the tensioneSum
      */
-    public Long getTensioneSum() {
+    public BigDecimal getTensioneSum() {
         return tensioneSum;
     }
 
@@ -1097,7 +1097,7 @@ public class GXHDO201B001Model implements Serializable {
      * 終了ﾃﾝｼｮﾝ計
      * @param tensioneSum the tensioneSum to set
      */
-    public void setTensioneSum(Long tensioneSum) {
+    public void setTensioneSum(BigDecimal tensioneSum) {
         this.tensioneSum = tensioneSum;
     }
 
@@ -1105,7 +1105,7 @@ public class GXHDO201B001Model implements Serializable {
      * ﾃﾝｼｮﾝ終了手前
      * @return the tensionetemae
      */
-    public Long getTensionetemae() {
+    public BigDecimal getTensionetemae() {
         return tensionetemae;
     }
 
@@ -1113,7 +1113,7 @@ public class GXHDO201B001Model implements Serializable {
      * ﾃﾝｼｮﾝ終了手前
      * @param tensionetemae the tensionetemae to set
      */
-    public void setTensionetemae(Long tensionetemae) {
+    public void setTensionetemae(BigDecimal tensionetemae) {
         this.tensionetemae = tensionetemae;
     }
 
@@ -1121,7 +1121,7 @@ public class GXHDO201B001Model implements Serializable {
      * ﾃﾝｼｮﾝ終了奥
      * @return the tensioneoku
      */
-    public Long getTensioneoku() {
+    public BigDecimal getTensioneoku() {
         return tensioneoku;
     }
 
@@ -1129,7 +1129,7 @@ public class GXHDO201B001Model implements Serializable {
      * ﾃﾝｼｮﾝ終了奥
      * @param tensioneoku the tensioneoku to set
      */
-    public void setTensioneoku(Long tensioneoku) {
+    public void setTensioneoku(BigDecimal tensioneoku) {
         this.tensioneoku = tensioneoku;
     }
 
