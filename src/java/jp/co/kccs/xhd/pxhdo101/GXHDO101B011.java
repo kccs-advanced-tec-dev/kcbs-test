@@ -1328,7 +1328,7 @@ public class GXHDO101B011 implements IFormLogic {
         String sql = "SELECT kojyo,lotno,edaban,startdatetime,enddatetime,cutbamaisuu,gouki,cuttableondo,tantousya,"
                 + "kakuninsya,bikou1,bikou2,bikou3,bikou4,bikou5,housiki,atumimin,atumimax,cutbashurui,cutmuki,happosheetcolor,"
                 + "kansou,hoseihantei,EndTantousyacode,syorisetsuu,ryouhinsetsuu,torokunichiji,kosinnichiji"
-                + ",revision,'0' AS deleteflag "
+                + ",revision,'0' AS deleteflag,KCPNO "
                 + "FROM sr_cut "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
         // revisionが入っている場合、条件に追加
@@ -1377,6 +1377,8 @@ public class GXHDO101B011 implements IFormLogic {
         mapping.put("kosinnichiji", "kosinnichiji"); //更新日時
         mapping.put("revision", "revision"); //revision
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
+        mapping.put("KCPNO", "kcpno"); //KCPNO
+        
 
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
@@ -1403,7 +1405,7 @@ public class GXHDO101B011 implements IFormLogic {
         String sql = "SELECT kojyo,lotno,edaban,startdatetime,enddatetime,cutbamaisuu,gouki,cuttableondo,tantousya,"
                 + "kakuninsya,bikou1,bikou2,bikou3,bikou4,bikou5,housiki,atumimin,atumimax,cutbashurui,"
                 + "cutmuki,happosheetcolor,kansou,hoseihantei,EndTantousyacode,syorisetsuu,ryouhinsetsuu,"
-                + "torokunichiji,kosinnichiji,revision,deleteflag "
+                + "torokunichiji,kosinnichiji,revision,deleteflag,KCPNO "
                 + "FROM tmp_sr_cut "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND deleteflag = ? ";
         // revisionが入っている場合、条件に追加
@@ -1453,7 +1455,8 @@ public class GXHDO101B011 implements IFormLogic {
         mapping.put("kosinnichiji", "kosinnichiji"); //更新日時
         mapping.put("revision", "revision"); //revision
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
-
+        mapping.put("KCPNO", "kcpno"); //KCPNO
+        
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
         ResultSetHandler<List<SrCut>> beanHandler = new BeanListHandler<>(SrCut.class, rowProcessor);
@@ -1746,9 +1749,9 @@ public class GXHDO101B011 implements IFormLogic {
                 + "kojyo,lotno,edaban,startdatetime,enddatetime,cutbamaisuu,gouki,cuttableondo,tantousya"
                 + ",kakuninsya,bikou1,bikou2,bikou3,bikou4,bikou5,housiki,atumimin,atumimax,cutbashurui"
                 + ",cutmuki,happosheetcolor,kansou,hoseihantei,EndTantousyacode,syorisetsuu,ryouhinsetsuu"
-                + ",torokunichiji,kosinnichiji,revision,deleteflag"
+                + ",torokunichiji,kosinnichiji,revision,deleteflag,KCPNO"
                 + ") VALUES ("
-                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterTmpSrCut(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -1776,7 +1779,7 @@ public class GXHDO101B011 implements IFormLogic {
         String sql = "UPDATE tmp_sr_cut SET "
                 + "startdatetime = ?,enddatetime = ?,cutbamaisuu = ?,gouki = ?,cuttableondo = ?,tantousya = ?,kakuninsya = ?,bikou1 = ?,"
                 + "bikou2 = ?,bikou3 = ?,bikou4 = ?,bikou5 = ?,housiki = ?,atumimin = ?,atumimax = ?,cutbashurui = ?,cutmuki = ?,happosheetcolor = ?,"
-                + "kansou = ?,hoseihantei = ?,EndTantousyacode = ?,syorisetsuu = ?,ryouhinsetsuu = ?,kosinnichiji = ?,revision = ?,deleteflag = ? "
+                + "kansou = ?,hoseihantei = ?,EndTantousyacode = ?,syorisetsuu = ?,ryouhinsetsuu = ?,kosinnichiji = ?,revision = ?,deleteflag = ?,KCPNO = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
         // 更新前の値を取得
@@ -1883,6 +1886,7 @@ public class GXHDO101B011 implements IFormLogic {
         }
         params.add(newRev); //revision
         params.add(deleteflag); //削除ﾌﾗｸﾞ
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B011Const.KCPNO, srCutData))); //KCPNO
         
         return params;
     }
@@ -1907,9 +1911,9 @@ public class GXHDO101B011 implements IFormLogic {
         String sql = "INSERT INTO sr_cut ("
                 +  "kojyo,lotno,edaban,startdatetime,enddatetime,cutbamaisuu,gouki,cuttableondo,tantousya,"
                 + "kakuninsya,bikou1,bikou2,bikou3,bikou4,bikou5,housiki,atumimin,atumimax,cutbashurui,cutmuki,happosheetcolor,"
-                + "kansou,hoseihantei,EndTantousyacode,syorisetsuu,ryouhinsetsuu,torokunichiji,kosinnichiji,revision "
+                + "kansou,hoseihantei,EndTantousyacode,syorisetsuu,ryouhinsetsuu,torokunichiji,kosinnichiji,revision,KCPNO "
                 + ") VALUES ("
-                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterSrCut(true, newRev, kojyo, lotNo, edaban, systemTime, itemList, tmpSrCut);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -1936,7 +1940,7 @@ public class GXHDO101B011 implements IFormLogic {
         String sql = "UPDATE sr_cut SET "
                 + "startdatetime = ?,enddatetime = ?,cutbamaisuu = ?,gouki = ?,cuttableondo = ?,tantousya = ?,kakuninsya = ?,bikou1 = ?,"
                 + "bikou2 = ?,bikou3 = ?,bikou4 = ?,bikou5 = ?,housiki = ?,atumimin = ?,atumimax = ?,cutbashurui = ?,cutmuki = ?,happosheetcolor = ?,"
-                + "kansou = ?,hoseihantei = ?,EndTantousyacode = ?,syorisetsuu = ?,ryouhinsetsuu = ?,kosinnichiji = ?,revision = ? "
+                + "kansou = ?,hoseihantei = ?,EndTantousyacode = ?,syorisetsuu = ?,ryouhinsetsuu = ?,kosinnichiji = ?,revision = ?,KCPNO = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
         // 更新前の値を取得
@@ -2013,6 +2017,7 @@ public class GXHDO101B011 implements IFormLogic {
             params.add(systemTime); //更新日時
         }
         params.add(newRev); //revision
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B011Const.KCPNO, srCutData))); //KCPNO
         
         return params;
     }
@@ -2218,6 +2223,9 @@ public class GXHDO101B011 implements IFormLogic {
             // 備考2
             case GXHDO101B011Const.BIKOU2:
                 return StringUtil.nullToBlank(srCutData.getBikou2());
+            // KCPNO
+            case GXHDO101B011Const.KCPNO:
+                return StringUtil.nullToBlank(srCutData.getKcpno());
             default:
                 return null;
 
@@ -2243,11 +2251,11 @@ public class GXHDO101B011 implements IFormLogic {
         String sql = "INSERT INTO tmp_sr_cut ("
                 +  "kojyo,lotno,edaban,startdatetime,enddatetime,cutbamaisuu,gouki,cuttableondo,tantousya,kakuninsya,"
                 + "bikou1,bikou2,bikou3,bikou4,bikou5,housiki,atumimin,atumimax,cutbashurui,cutmuki,happosheetcolor,"
-                + "kansou,hoseihantei,EndTantousyacode,syorisetsuu,ryouhinsetsuu,torokunichiji,kosinnichiji,revision,deleteflag"
+                + "kansou,hoseihantei,EndTantousyacode,syorisetsuu,ryouhinsetsuu,torokunichiji,kosinnichiji,revision,deleteflag,KCPNO"
                 + ") SELECT "
                 +  "kojyo,lotno,edaban,startdatetime,enddatetime,cutbamaisuu,gouki,cuttableondo,tantousya,kakuninsya,"
                 + "bikou1,bikou2,bikou3,bikou4,bikou5,housiki,atumimin,atumimax,cutbashurui,cutmuki,happosheetcolor,"
-                + "kansou,hoseihantei,EndTantousyacode,syorisetsuu,ryouhinsetsuu,?,?,?,? "
+                + "kansou,hoseihantei,EndTantousyacode,syorisetsuu,ryouhinsetsuu,?,?,?,?,KCPNO "
                 + "FROM sr_cut "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
 

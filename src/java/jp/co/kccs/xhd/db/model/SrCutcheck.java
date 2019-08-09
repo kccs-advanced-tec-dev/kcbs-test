@@ -230,6 +230,11 @@ public class SrCutcheck {
      * 削除ﾌﾗｸﾞ
      */
     private Integer deleteflag;
+    
+    /**
+     * KCPNO
+     */
+    private String kcpno;
 
     /**
      * 工場ｺｰﾄﾞ
@@ -967,6 +972,22 @@ public class SrCutcheck {
      */
     public void setDeleteflag(Integer deleteflag) {
         this.deleteflag = deleteflag;
+    }
+
+    /**
+     * KCPNO
+     * @return the kcpno
+     */
+    public String getKcpno() {
+        return kcpno;
+    }
+
+    /**
+     * KCPNO
+     * @param kcpno the kcpno to set
+     */
+    public void setKcpno(String kcpno) {
+        this.kcpno = kcpno;
     }
 
 }

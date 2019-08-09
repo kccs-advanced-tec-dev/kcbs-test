@@ -1407,7 +1407,7 @@ public class GXHDO101B012 implements IFormLogic {
                 + "kojyo,lotno,edaban,startdatetime,enddatetime,tantousya,kakuninsya,AtumiMin,AtumiMax,Atumi01,Atumi02,"
                 + "Atumi03,Atumi04,Atumi05,Atumi06,Atumi07,Atumi08,Atumi09,Atumi10,bikou1,bikou2,bikou3,bikou4,bikou5,Soujyuryo,"
                 + "Tanijyuryo,gaikankensatantousya,barasshi,joken,barashistartnichiji,batashistarttantousya,barashiendnichiji,"
-                + "barashiendtantousya,konamabushi,syorisetsuu,ryouhinsetsuu,budomari,torokunichiji,kosinnichiji,revision,'0' AS deleteflag "
+                + "barashiendtantousya,konamabushi,syorisetsuu,ryouhinsetsuu,budomari,torokunichiji,kosinnichiji,revision,'0' AS deleteflag, KCPNO "
                 + "FROM sr_cutcheck "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
         // revisionが入っている場合、条件に追加
@@ -1467,6 +1467,7 @@ public class GXHDO101B012 implements IFormLogic {
         mapping.put("kosinnichiji", "kosinnichiji"); //更新日時
         mapping.put("revision", "revision"); //revision
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
+        mapping.put("KCPNO", "kcpno"); //KCPNO
 
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
@@ -1493,7 +1494,7 @@ public class GXHDO101B012 implements IFormLogic {
                 + "kojyo,lotno,edaban,startdatetime,enddatetime,tantousya,kakuninsya,AtumiMin,AtumiMax,Atumi01,Atumi02,"
                 + "Atumi03,Atumi04,Atumi05,Atumi06,Atumi07,Atumi08,Atumi09,Atumi10,bikou1,bikou2,bikou3,bikou4,bikou5,Soujyuryo,"
                 + "Tanijyuryo,gaikankensatantousya,barasshi,joken,barashistartnichiji,batashistarttantousya,barashiendnichiji,"
-                + "barashiendtantousya,konamabushi,syorisetsuu,ryouhinsetsuu,budomari,torokunichiji,kosinnichiji,revision,deleteflag "
+                + "barashiendtantousya,konamabushi,syorisetsuu,ryouhinsetsuu,budomari,torokunichiji,kosinnichiji,revision,deleteflag,KCPNO "
                 + "FROM tmp_sr_cutcheck "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND deleteflag = ? ";
         // revisionが入っている場合、条件に追加
@@ -1554,6 +1555,7 @@ public class GXHDO101B012 implements IFormLogic {
         mapping.put("kosinnichiji", "kosinnichiji"); //更新日時
         mapping.put("revision", "revision"); //revision
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
+        mapping.put("KCPNO", "kcpno"); //KCPNO
 
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
@@ -1826,9 +1828,9 @@ public class GXHDO101B012 implements IFormLogic {
                 + "kojyo,lotno,edaban,startdatetime,enddatetime,tantousya,kakuninsya,AtumiMin,AtumiMax,Atumi01,Atumi02,Atumi03,"
                 + "Atumi04,Atumi05,Atumi06,Atumi07,Atumi08,Atumi09,Atumi10,bikou1,bikou2,bikou3,bikou4,bikou5,Soujyuryo,Tanijyuryo,"
                 + "gaikankensatantousya,barasshi,joken,barashistartnichiji,batashistarttantousya,barashiendnichiji,barashiendtantousya,"
-                + "konamabushi,syorisetsuu,ryouhinsetsuu,budomari,torokunichiji,kosinnichiji,revision,deleteflag "
+                + "konamabushi,syorisetsuu,ryouhinsetsuu,budomari,torokunichiji,kosinnichiji,revision,deleteflag,KCPNO "
                 + ") VALUES ("
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
                 + ") ";
 
         List<Object> params = setUpdateParameterTmpSrCutcheck(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null);
@@ -1859,7 +1861,7 @@ public class GXHDO101B012 implements IFormLogic {
                 + "startdatetime = ?,enddatetime = ?,tantousya = ?,Atumi01 = ?,Atumi02 = ?,Atumi03 = ?,Atumi04 = ?,Atumi05 = ?,Atumi06 = ?,Atumi07 = ?,"
                 + "Atumi08 = ?,Atumi09 = ?,Atumi10 = ?,bikou1 = ?,bikou2 = ?,Soujyuryo = ?,Tanijyuryo = ?,gaikankensatantousya = ?,barasshi = ?,joken = ?,"
                 + "barashistartnichiji = ?,batashistarttantousya = ?,barashiendnichiji = ?,barashiendtantousya = ?,konamabushi = ?,syorisetsuu = ?,"
-                + "ryouhinsetsuu = ?,budomari = ?,kosinnichiji = ?,revision = ?,deleteflag = ? "
+                + "ryouhinsetsuu = ?,budomari = ?,kosinnichiji = ?,revision = ?,deleteflag = ?,KCPNO = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
         // 更新前の値を取得
@@ -1987,7 +1989,8 @@ public class GXHDO101B012 implements IFormLogic {
         params.add(systemTime); //更新日時
         params.add(newRev); //revision
         params.add(deleteflag); //削除ﾌﾗｸﾞ
-
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B012Const.KCPNO, srCutcheckData)));  //KCPNO
+        
         return params;
     }
 
@@ -2012,9 +2015,9 @@ public class GXHDO101B012 implements IFormLogic {
                 + "kojyo,lotno,edaban,startdatetime,enddatetime,tantousya,kakuninsya,AtumiMin,AtumiMax,Atumi01,Atumi02,Atumi03,"
                 + "Atumi04,Atumi05,Atumi06,Atumi07,Atumi08,Atumi09,Atumi10,bikou1,bikou2,bikou3,bikou4,bikou5,Soujyuryo,Tanijyuryo,"
                 + "gaikankensatantousya,barasshi,joken,barashistartnichiji,batashistarttantousya,barashiendnichiji,barashiendtantousya,"
-                + "konamabushi,syorisetsuu,ryouhinsetsuu,budomari,torokunichiji,kosinnichiji,revision "
+                + "konamabushi,syorisetsuu,ryouhinsetsuu,budomari,torokunichiji,kosinnichiji,revision,KCPNO "
                 + ") VALUES ("
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
                 + ") ";
 
         List<Object> params = setUpdateParameterSrCutcheck(true, newRev, kojyo, lotNo, edaban, systemTime, itemList, tmpSrCutcheck);
@@ -2043,7 +2046,7 @@ public class GXHDO101B012 implements IFormLogic {
                 + "startdatetime = ?,enddatetime = ?,tantousya = ?,Atumi01 = ?,Atumi02 = ?,Atumi03 = ?,Atumi04 = ?,Atumi05 = ?,Atumi06 = ?,Atumi07 = ?,"
                 + "Atumi08 = ?,Atumi09 = ?,Atumi10 = ?,bikou1 = ?,bikou2 = ?,Soujyuryo = ?,Tanijyuryo = ?,gaikankensatantousya = ?,barasshi = ?,joken = ?,"
                 + "barashistartnichiji = ?,batashistarttantousya = ?,barashiendnichiji = ?,barashiendtantousya = ?,konamabushi = ?,syorisetsuu = ?,"
-                + "ryouhinsetsuu = ?,budomari = ?,kosinnichiji = ?,revision = ? "
+                + "ryouhinsetsuu = ?,budomari = ?,kosinnichiji = ?,revision = ?,KCPNO = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
         // 更新前の値を取得
@@ -2140,7 +2143,8 @@ public class GXHDO101B012 implements IFormLogic {
         }
         params.add(systemTime); //更新日時
         params.add(newRev); //revision
-
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B012Const.KCPNO, srCutcheckData)));  //KCPNO
+        
         return params;
     }
 
@@ -2554,6 +2558,9 @@ public class GXHDO101B012 implements IFormLogic {
             //備考2
             case GXHDO101B012Const.BIKOU2:
                 return StringUtil.nullToBlank(srCutcheckData.getBikou2());
+            //KCPNO
+            case GXHDO101B012Const.KCPNO:
+                return StringUtil.nullToBlank(srCutcheckData.getKcpno());
 
             default:
                 return null;
@@ -2581,12 +2588,12 @@ public class GXHDO101B012 implements IFormLogic {
                 + "kojyo,lotno,edaban,startdatetime,enddatetime,tantousya,kakuninsya,AtumiMin,AtumiMax,Atumi01,Atumi02,Atumi03,Atumi04,"
                 + "Atumi05,Atumi06,Atumi07,Atumi08,Atumi09,Atumi10,bikou1,bikou2,bikou3,bikou4,bikou5,Soujyuryo,Tanijyuryo,"
                 + "gaikankensatantousya,barasshi,joken,barashistartnichiji,batashistarttantousya,barashiendnichiji,barashiendtantousya,"
-                + "konamabushi,syorisetsuu,ryouhinsetsuu,budomari,torokunichiji,kosinnichiji,revision,deleteflag"
+                + "konamabushi,syorisetsuu,ryouhinsetsuu,budomari,torokunichiji,kosinnichiji,revision,deleteflag,KCPNO"
                 + ") SELECT "
                 + "kojyo,lotno,edaban,startdatetime,enddatetime,tantousya,kakuninsya,AtumiMin,AtumiMax,Atumi01,Atumi02,Atumi03,Atumi04,"
                 + "Atumi05,Atumi06,Atumi07,Atumi08,Atumi09,Atumi10,bikou1,bikou2,bikou3,bikou4,bikou5,Soujyuryo,Tanijyuryo,"
                 + "gaikankensatantousya,barasshi,joken,barashistartnichiji,batashistarttantousya,barashiendnichiji,barashiendtantousya,"
-                + "konamabushi,syorisetsuu,ryouhinsetsuu,budomari,?,?,?,? "
+                + "konamabushi,syorisetsuu,ryouhinsetsuu,budomari,?,?,?,?,KCPNO "
                 + "FROM sr_cutcheck "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
 
