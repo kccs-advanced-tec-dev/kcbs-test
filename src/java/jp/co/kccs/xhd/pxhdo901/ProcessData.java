@@ -4,7 +4,9 @@
 package jp.co.kccs.xhd.pxhdo901;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import javax.sql.DataSource;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 
@@ -160,6 +162,11 @@ public class ProcessData {
     private String compMessage;
 
     /**
+     * 隠し項目MAP
+     */
+    private Map<String, Object> hiddenDataMap;
+
+    /**
      * コンストラクタ
      */
     public ProcessData() {
@@ -173,6 +180,7 @@ public class ProcessData {
         this.kikakuchiInputErrorInfoList = new ArrayList<>();
         this.checkRevisionButtonId = new ArrayList<>();
         this.infoMessageList = new ArrayList<>();
+        this.hiddenDataMap = new HashMap<>();
     }
 
     /**
@@ -682,5 +690,21 @@ public class ProcessData {
      */
     public void setCompMessage(String compMessage) {
         this.compMessage = compMessage;
+    }
+
+    /**
+     * 隠し項目MAP
+     * @return the hiddenDataMap
+     */
+    public Map getHiddenDataMap() {
+        return hiddenDataMap;
+    }
+
+    /**
+     * 隠し項目MAP
+     * @param hiddenItemMap the hiddenDataMap to set
+     */
+    public void setHiddenDataMap(Map hiddenItemMap) {
+        this.hiddenDataMap = hiddenItemMap;
     }
 }

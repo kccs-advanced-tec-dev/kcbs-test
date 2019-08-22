@@ -230,6 +230,12 @@ public class GXHDO901A implements Serializable {
      * 入力項目最大幅
      */
     private String maxWidthInputCol;
+    
+    /**
+     * 隠し項目MAP
+     */
+    private Map<String, Object> hiddenDataMap = new HashMap<>();
+
 
     /**
      * コンストラクタ
@@ -603,6 +609,7 @@ public class GXHDO901A implements Serializable {
         data.setInitMessageList(initMessageList);
         data.setInitRev(this.initRev);
         data.setInitJotaiFlg(this.initJotaiFlg);
+        data.setHiddenDataMap(this.hiddenDataMap);
 
         this.processData = data;
 
@@ -861,6 +868,7 @@ public class GXHDO901A implements Serializable {
         data.setDataSourceWip(this.dataSourceWip);
         data.setInitRev(this.initRev);
         data.setInitJotaiFlg(this.initJotaiFlg);
+        data.setHiddenDataMap(this.hiddenDataMap);
 
         this.processData = data;
 
@@ -1030,6 +1038,10 @@ public class GXHDO901A implements Serializable {
 
                 // 状態ﾌﾗｸﾞ表示を設定
                 this.jotaiDisplay = getJotaiDisplayValue(this.initJotaiFlg);
+                
+                // 隠し項目
+                this.hiddenDataMap = resultData.getHiddenDataMap();
+           
 
                 //リビジョンチェック対象ボタンIDを設定
                 if (this.processData.getCheckRevisionButtonId() != null && !this.processData.getCheckRevisionButtonId().isEmpty()) {
