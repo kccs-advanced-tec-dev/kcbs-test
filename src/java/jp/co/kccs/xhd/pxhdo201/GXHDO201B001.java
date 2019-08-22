@@ -422,63 +422,63 @@ public class GXHDO201B001 implements Serializable {
             return;
         }
         // 開始日(FROM)
-        if (existError(validateUtil.checkC101(getStartDateF(), "開始日(from)", 6)) ||
-            existError(validateUtil.checkC201ForDate(getStartDateF(), "開始日(from)")) ||
-            existError(validateUtil.checkC501(getStartDateF(), "開始日(from)"))) {
+        if (existError(validateUtil.checkC101(getStartDateF(), "印刷開始日(from)", 6)) ||
+            existError(validateUtil.checkC201ForDate(getStartDateF(), "印刷開始日(from)")) ||
+            existError(validateUtil.checkC501(getStartDateF(), "印刷開始日(from)"))) {
             return;
         }
         // 開始日(TO)
-        if (existError(validateUtil.checkC101(getStartDateT(), "開始日(to)", 6)) ||
-            existError(validateUtil.checkC201ForDate(getStartDateT(), "開始日(to)")) ||
-            existError(validateUtil.checkC501(getStartDateT(), "開始日(to)"))) {
+        if (existError(validateUtil.checkC101(getStartDateT(), "印刷開始日(to)", 6)) ||
+            existError(validateUtil.checkC201ForDate(getStartDateT(), "印刷開始日(to)")) ||
+            existError(validateUtil.checkC501(getStartDateT(), "印刷開始日(to)"))) {
             return;
         }
         // 終了日(FROM)
-        if (existError(validateUtil.checkC101(getEndDateF(), "終了日(from)", 6)) ||
-            existError(validateUtil.checkC201ForDate(getEndDateF(), "終了日(from)")) ||
-            existError(validateUtil.checkC501(getEndDateF(), "終了日(from)"))) {
+        if (existError(validateUtil.checkC101(getEndDateF(), "印刷終了日(from)", 6)) ||
+            existError(validateUtil.checkC201ForDate(getEndDateF(), "印刷終了日(from)")) ||
+            existError(validateUtil.checkC501(getEndDateF(), "印刷終了日(from)"))) {
             return;
         }
         // 終了日(TO)
-        if (existError(validateUtil.checkC101(getEndDateT(), "終了日(to)", 6)) ||
-            existError(validateUtil.checkC201ForDate(getEndDateT(), "終了日(to)")) ||
-            existError(validateUtil.checkC501(getEndDateT(), "終了日(to)"))) {
+        if (existError(validateUtil.checkC101(getEndDateT(), "印刷終了日(to)", 6)) ||
+            existError(validateUtil.checkC201ForDate(getEndDateT(), "印刷終了日(to)")) ||
+            existError(validateUtil.checkC501(getEndDateT(), "印刷終了日(to)"))) {
             return;
         }
         // 開始時刻(FROM)
-        if (existError(validateUtil.checkC101(getStartTimeF(), "開始時刻(from)", 4)) ||
-            existError(validateUtil.checkC201ForDate(getStartTimeF(), "開始時刻(from)")) ||
-            existError(validateUtil.checkC502(getStartTimeF(), "開始時刻(from)"))) {
+        if (existError(validateUtil.checkC101(getStartTimeF(), "印刷開始時刻(from)", 4)) ||
+            existError(validateUtil.checkC201ForDate(getStartTimeF(), "印刷開始時刻(from)")) ||
+            existError(validateUtil.checkC502(getStartTimeF(), "印刷開始時刻(from)"))) {
             return;
         }
-        if (!StringUtil.isEmpty(startTimeF) && existError(validateUtil.checkC001(getStartDateF(), "開始日(from)"))) {
+        if (!StringUtil.isEmpty(startTimeF) && existError(validateUtil.checkC001(getStartDateF(), "印刷開始日(from)"))) {
             return;
         }
         // 開始時刻(TO)
-        if (existError(validateUtil.checkC101(getStartTimeT(), "開始時刻(to)", 4)) ||
-            existError(validateUtil.checkC201ForDate(getStartTimeT(), "開始時刻(to)")) ||
-            existError(validateUtil.checkC502(getStartTimeT(), "開始時刻(to)"))) {
+        if (existError(validateUtil.checkC101(getStartTimeT(), "印刷開始時刻(to)", 4)) ||
+            existError(validateUtil.checkC201ForDate(getStartTimeT(), "印刷開始時刻(to)")) ||
+            existError(validateUtil.checkC502(getStartTimeT(), "印刷開始時刻(to)"))) {
             return;
         }
-        if (!StringUtil.isEmpty(startTimeT) && existError(validateUtil.checkC001(getStartDateT(), "開始日(to)"))) {
+        if (!StringUtil.isEmpty(startTimeT) && existError(validateUtil.checkC001(getStartDateT(), "印刷開始日(to)"))) {
             return;
         }
         // 終了時刻(FROM)
-        if (existError(validateUtil.checkC101(getEndTimeF(), "終了時刻(from)", 4)) ||
-            existError(validateUtil.checkC201ForDate(getEndTimeF(), "終了時刻(from)")) ||
-            existError(validateUtil.checkC502(getEndTimeF(), "終了時刻(from)"))) {
+        if (existError(validateUtil.checkC101(getEndTimeF(), "印刷終了時刻(from)", 4)) ||
+            existError(validateUtil.checkC201ForDate(getEndTimeF(), "印刷終了時刻(from)")) ||
+            existError(validateUtil.checkC502(getEndTimeF(), "印刷終了時刻(from)"))) {
             return;
         }
-        if (!StringUtil.isEmpty(endTimeF) && existError(validateUtil.checkC001(getEndDateF(), "終了日(from)"))) {
+        if (!StringUtil.isEmpty(endTimeF) && existError(validateUtil.checkC001(getEndDateF(), "印刷終了日(from)"))) {
             return;
         }
         // 終了時刻(TO)
-        if (existError(validateUtil.checkC101(getEndTimeT(), "終了時刻(to)", 4)) ||
-            existError(validateUtil.checkC201ForDate(getEndTimeT(), "終了時刻(to)")) ||
-            existError(validateUtil.checkC502(getEndTimeT(), "終了時刻(to)"))) {
+        if (existError(validateUtil.checkC101(getEndTimeT(), "印刷終了時刻(to)", 4)) ||
+            existError(validateUtil.checkC201ForDate(getEndTimeT(), "印刷終了時刻(to)")) ||
+            existError(validateUtil.checkC502(getEndTimeT(), "印刷終了時刻(to)"))) {
             return;
         }
-        if (!StringUtil.isEmpty(endTimeT) && existError(validateUtil.checkC001(getEndDateT(), "終了日(to)"))) {
+        if (!StringUtil.isEmpty(endTimeT) && existError(validateUtil.checkC001(getEndDateT(), "印刷終了日(to)"))) {
             return;
         }
         // 号機
