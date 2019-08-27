@@ -1,0 +1,22 @@
+[
+    {"no":"1","id":"lotno","columnname":"ﾛｯﾄNo.","type":"String","format":""},
+    {"no":"2","id":"kcpno","columnname":"KCPNO","type":"String","format":""},
+    {"no":"3","id":"kaishinichiji","columnname":"開始日時","type":"timestamp","format":"yyyy/mm/dd hh:mm:ss"},
+    {"no":"4","id":"syuuryounichiji","columnname":"終了日時","type":"timestamp","format":"yyyy/mm/dd hh:mm:ss"},
+    {"no":"5","id":"sayadumegouki","columnname":"ｾｯﾀ詰め号機","type":"String","format":""},
+    {"no":"6","id":"sayasuu","columnname":"ｾｯﾀ枚数(枚)","type":"Integer","format":"##0"},
+    {"no":"7","id":"kosuu","columnname":"処理数(個)","type":"Integer","format":"#,###,##0"},
+    {"no":"8","id":"tantousya","columnname":"開始担当者","type":"String","format":""},
+    {"no":"9","id":"jissekino","columnname":"実績No","type":"Integer","format":"#,###,###,##0"},
+    {"no":"10","id":"bikou1","columnname":"備考1","type":"String","format":""},
+    {"no":"11","id":"bikou2","columnname":"備考2","type":"String","format":""},
+    {"no":"12","id":"bikou3","columnname":"備考3","type":"String","format":""},
+    {"no":"13","id":"bikou4","columnname":"備考4","type":"String","format":""},
+    {"no":"14","id":"bikou5","columnname":"備考5","type":"String","format":""},
+    {"no":"15","id":"settertumeryou","columnname":"ｾｯﾀ詰め量(個)","type":"Integer","format":"###,##0"},
+    {"no":"16","id":"settertumehouhou","columnname":"ｾｯﾀ詰め方法","type":"String","format":""},
+    {"no":"17","id":"settersyurui","columnname":"ｾｯﾀ種類","type":"String","format":""},
+    {"no":"18","id":"konamabushi","columnname":"粉まぶし","type":"String","format":""},
+    {"no":"19","id":"startkakuninsyacode","columnname":"開始確認者","type":"String","format":""},
+    {"no":"20","id":"endtantousyacode","columnname":"終了担当者","type":"String","format":""}
+]

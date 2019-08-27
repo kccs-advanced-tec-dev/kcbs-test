@@ -1,0 +1,18 @@
+[
+    {"no":"1","id":"lotno","columnname":"ﾛｯﾄNo.","type":"String","format":""},
+    {"no":"2","id":"kcpno","columnname":"KCPNO","type":"String","format":""},
+    {"no":"3","id":"ukeiresettamaisuu","columnname":"受入ｾｯﾀ枚数(枚)","type":"Integer","format":"##0"},
+    {"no":"4","id":"kaisinichiji","columnname":"開始日時","type":"timestamp","format":"yyyy/mm/dd hh:mm:ss"},
+    {"no":"5","id":"starttantosyacode","columnname":"開始担当者","type":"String","format":""},
+    {"no":"6","id":"startkakuninsyacode","columnname":"開始確認者","type":"String","format":""},
+    {"no":"7","id":"tounyusettasuu","columnname":"投入ｾｯﾀ枚数(枚)","type":"Integer","format":"##0"},
+    {"no":"8","id":"nijidasshigouki","columnname":"2次脱脂号機","type":"String","format":""},
+    {"no":"9","id":"nijidasshisetteipt","columnname":"2次脱脂設定ﾊﾟﾀｰﾝ","type":"integer","format":""},
+    {"no":"10","id":"nijidasshikeepondo","columnname":"2次脱脂ｷｰﾌﾟ温度(℃)","type":"Integer","format":"##0"},
+    {"no":"11","id":"nijidasshispeed","columnname":"2次脱脂ｺﾝﾍﾞｱ速度(mm/min)","type":"Integer","format":"##0"},
+    {"no":"12","id":"syuuryounichiji","columnname":"終了日時","type":"timestamp","format":"yyyy/mm/dd hh:mm:ss"},
+    {"no":"13","id":"endtantosyacode","columnname":"終了担当者","type":"String","format":""},
+    {"no":"14","id":"kaishuusettasuu","columnname":"回収ｾｯﾀ枚数(枚)","type":"Integer","format":"##0"},
+    {"no":"15","id":"bikou1","columnname":"備考1","type":"String","format":""},
+    {"no":"16","id":"bikou2","columnname":"備考2","type":"String","format":""}
+]

@@ -1,0 +1,15 @@
+[
+    {"no":"1","id":"lotno","columnname":"ﾛｯﾄNo.","type":"String","format":""},
+    {"no":"2","id":"kcpno","columnname":"KCPNO","type":"String","format":""},
+    {"no":"3","id":"jissekion","columnname":"実績No","type":"Integer","format":"10,0"},
+    {"no":"4","id":"ukeirekosu","columnname":"受入個数(個)","type":"Integer","format":"9,0"},
+    {"no":"5","id":"tanijyuryo","columnname":"単位重量(g/100個)","type":"BigDecimal","format":"5,4"},
+    {"no":"6","id":"soujuryou","columnname":"総重量(g)","type":"BigDecimal","format":"8,2"},
+    {"no":"7","id":"ryohinkosu","columnname":"良品個数(個)","type":"Integer","format":"9,0"},  
+    {"no":"8","id":"keisunichiji","columnname":"計数日時","type":"timestamp","format":"yyyy/mm/dd hh:mm:ss"},
+    {"no":"9","id":"keisuutantosya","columnname":"計数担当者","type":"String","format":""},
+    {"no":"10","id":"budomari","columnname":"歩留まり","type":"BigDecimal","format":"5,2"},
+    {"no":"11","id":"biko1","columnname":"備考1","type":"String","format":""},
+    {"no":"12","id":"biko2","columnname":"備考2","type":"String","format":""},
+    {"no":"13","id":"barrelgohantei","columnname":"ﾊﾞﾚﾙ後判定","type":"String","format":""}
+]
