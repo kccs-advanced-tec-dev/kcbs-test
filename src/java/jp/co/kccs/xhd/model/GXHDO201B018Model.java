@@ -275,7 +275,7 @@ public class GXHDO201B018Model implements Serializable {
     /**
      * 1回目再酸化後外観
      */
-    private Integer saisankagogaikan = null;
+    private String saisankagogaikan = "";
 
     /**
      * 焼成種類
@@ -971,14 +971,14 @@ public class GXHDO201B018Model implements Serializable {
     /**
      * @return saisankagogaikan
      */
-    public Integer getSaisankagogaikan() {
+    public String getSaisankagogaikan() {
         return saisankagogaikan;
     }
 
     /**
      * @param saisankagogaikan セットする saisankagogaikan
      */
-    public void setSaisankagogaikan(Integer saisankagogaikan) {
+    public void setSaisankagogaikan(String saisankagogaikan) {
         this.saisankagogaikan = saisankagogaikan;
     }
 

@@ -85,11 +85,6 @@ public class GXHDO201B011 implements Serializable {
      */
     @Resource(mappedName = "jdbc/wip")
     private transient DataSource dataSourceWip;
-    /**
-     * DataSource(DocumentServer)
-     */
-    @Resource(mappedName = "jdbc/DocumentServer")
-    private transient DataSource dataSourceDocServer;
     
     /** パラメータマスタ操作 */
     @Inject

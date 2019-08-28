@@ -79,12 +79,6 @@ public class GXHDO201B018 implements Serializable {
      */
     @Resource(mappedName = "jdbc/qcdb")
     private transient DataSource dataSourceQcdb;
-
-    /**
-     * DataSource(DocumentServer)
-     */
-    @Resource(mappedName = "jdbc/DocumentServer")
-    private transient DataSource dataSourceDocServer;
     
     /**
      * DataSource(WIP)
@@ -699,7 +693,7 @@ public class GXHDO201B018 implements Serializable {
                     + ", (CASE WHEN saisankasetteiPT = 1 THEN 'ﾁｪｯｸ' ELSE '未ﾁｪｯｸ' END) AS saisankasetteiPT "
                     + ", saisankakeepondo"
                     + ", saisankaCsokudo"
-                    + ", saisankagogaikan"
+                    + ", (CASE WHEN saisankagogaikan = 0 THEN 'NG' WHEN saisankagogaikan = 1 THEN 'OK' ELSE NULL END) AS saisankagogaikan "
                     + ", syoseisyurui "
                     + " FROM sr_syosei "
                     + "WHERE (? IS NULL OR KOJYO = ?) "

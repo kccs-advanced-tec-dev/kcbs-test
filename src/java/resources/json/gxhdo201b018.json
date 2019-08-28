@@ -48,6 +48,6 @@
     {"no":"47","id":"saisankasetteipt","columnname":"1回目再酸化設定ﾊﾟﾀｰﾝ","type":"String","format":""},
     {"no":"48","id":"saisankakeepondo","columnname":"1回目再酸化ｷｰﾌﾟ温度(℃)","type":"Integer","format":"#,##0"},
     {"no":"49","id":"saisankacsokudo","columnname":"1回目再酸化ｺﾝﾍﾞｱ速度(mm/min)","type":"Integer","format":"##0"},
-    {"no":"50","id":"saisankagogaikan","columnname":"1回目再酸化後外観","type":"Integer","format":""},
+    {"no":"50","id":"saisankagogaikan","columnname":"1回目再酸化後外観","type":"String","format":""},
     {"no":"51","id":"syoseisyurui","columnname":"焼成種類","type":"String","format":""}
 ]

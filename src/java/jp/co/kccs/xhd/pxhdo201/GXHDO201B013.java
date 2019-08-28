@@ -79,12 +79,6 @@ public class GXHDO201B013 implements Serializable {
      */
     @Resource(mappedName = "jdbc/qcdb")
     private transient DataSource dataSourceQcdb;
-
-    /**
-     * DataSource(DocumentServer)
-     */
-    @Resource(mappedName = "jdbc/DocumentServer")
-    private transient DataSource dataSourceDocServer;
     
     /**
      * DataSource(WIP)
@@ -767,10 +761,10 @@ public class GXHDO201B013 implements Serializable {
             List<ColumnInformation> list = (new ColumnInfoParser()).parseColumnJson(file);
 
             // 物理ファイルを生成
-            excel = ExcelExporter.outputExcel(listData, list, myParam.getString("download_temp"), "焼成・ｾｯﾀ詰め");
+            excel = ExcelExporter.outputExcel(listData, list, myParam.getString("download_temp"), "焼成・セッタ詰め");
 
             // ダウンロードファイル名
-            String downloadFileName = "焼成・ｾｯﾀ詰め_" + ((new SimpleDateFormat("yyyyMMddHHmmss")).format(new Date())) + ".xlsx";
+            String downloadFileName = "焼成・セッタ詰め_" + ((new SimpleDateFormat("yyyyMMddHHmmss")).format(new Date())) + ".xlsx";
             
             // outputstreamにファイルを転送
             ec.responseReset();

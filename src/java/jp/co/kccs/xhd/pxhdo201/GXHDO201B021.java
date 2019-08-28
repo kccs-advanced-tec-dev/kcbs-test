@@ -80,11 +80,6 @@ public class GXHDO201B021 implements Serializable {
      */
     @Resource(mappedName = "jdbc/qcdb")
     private transient DataSource dataSourceQcdb;
-    /**
-     * DataSource(DocumentServer)
-     */
-    @Resource(mappedName = "jdbc/DocumentServer")
-    private transient DataSource dataSourceDocServer;
     
     /** パラメータマスタ操作 */
     @Inject
