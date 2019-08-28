@@ -231,10 +231,10 @@ public class GXHDO101B001 implements IFormLogic {
      * @param processData 処理データ
      * @return 処理データ
      */
-    public ProcessData checkDataTempResist(ProcessData processData) {
+    public ProcessData checkDataTempRegist(ProcessData processData) {
 
         // 項目のチェック処理を行う。
-        ErrorMessageInfo checkItemErrorInfo = checkItemTempResist(processData);
+        ErrorMessageInfo checkItemErrorInfo = checkItemTempRegist(processData);
         if (checkItemErrorInfo != null) {
             processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
             return processData;
@@ -256,7 +256,7 @@ public class GXHDO101B001 implements IFormLogic {
         }
 
         // 後続処理メソッド設定
-        processData.setMethod("doTempResist");
+        processData.setMethod("doTempRegist");
 
         return processData;
 
@@ -268,7 +268,7 @@ public class GXHDO101B001 implements IFormLogic {
      * @param processData 処理データ
      * @return エラーメッセージ情報
      */
-    private ErrorMessageInfo checkItemTempResist(ProcessData processData) {
+    private ErrorMessageInfo checkItemTempRegist(ProcessData processData) {
 
         //ブレード外観
         FXHDD01 itemBladeGikan = getItemRow(processData.getItemList(), GXHDO101B001Const.BLADE_GAIKAN);
@@ -300,7 +300,7 @@ public class GXHDO101B001 implements IFormLogic {
      * @param processData 処理制御データ
      * @return 処理制御データ
      */
-    public ProcessData doTempResist(ProcessData processData) {
+    public ProcessData doTempRegist(ProcessData processData) {
 
         QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
         QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
@@ -441,10 +441,10 @@ public class GXHDO101B001 implements IFormLogic {
      * @param processData 処理制御データ
      * @return 処理制御データ
      */
-    public ProcessData checkDataResist(ProcessData processData) {
+    public ProcessData checkDataRegist(ProcessData processData) {
 
         // 項目のチェック処理を行う。
-        ErrorMessageInfo checkItemErrorInfo = checkItemResistCorrect(processData);
+        ErrorMessageInfo checkItemErrorInfo = checkItemRegistCorrect(processData);
         if (checkItemErrorInfo != null) {
             processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
             return processData;
@@ -492,7 +492,7 @@ public class GXHDO101B001 implements IFormLogic {
         }
 
         // 後続処理メソッド設定
-        processData.setMethod("doResist");
+        processData.setMethod("doRegist");
 
         return processData;
     }
@@ -503,7 +503,7 @@ public class GXHDO101B001 implements IFormLogic {
      * @param processData 処理データ
      * @return エラーメッセージ情報
      */
-    private ErrorMessageInfo checkItemResistCorrect(ProcessData processData) {
+    private ErrorMessageInfo checkItemRegistCorrect(ProcessData processData) {
 
         //ブレード外観
         FXHDD01 itemBladeGikan = getItemRow(processData.getItemList(), GXHDO101B001Const.BLADE_GAIKAN);
@@ -584,7 +584,7 @@ public class GXHDO101B001 implements IFormLogic {
      * @param processData 処理制御データ
      * @return 処理制御データ
      */
-    public ProcessData doResist(ProcessData processData) {
+    public ProcessData doRegist(ProcessData processData) {
         QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
         QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
 
@@ -709,7 +709,7 @@ public class GXHDO101B001 implements IFormLogic {
     public ProcessData checkDataCorrect(ProcessData processData) {
 
         // 項目のチェック処理を行う。
-        ErrorMessageInfo checkItemErrorInfo = checkItemResistCorrect(processData);
+        ErrorMessageInfo checkItemErrorInfo = checkItemRegistCorrect(processData);
         if (checkItemErrorInfo != null) {
             processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
             return processData;
@@ -1075,12 +1075,12 @@ public class GXHDO101B001 implements IFormLogic {
             // 仮登録
             case GXHDO101B001Const.BTN_KARI_TOUROKU_TOP:
             case GXHDO101B001Const.BTN_KARI_TOUROKU_BOTTOM:
-                method = "checkDataTempResist";
+                method = "checkDataTempRegist";
                 break;
             // 登録
             case GXHDO101B001Const.BTN_INSERT_TOP:
             case GXHDO101B001Const.BTN_INSERT_BOTTOM:
-                method = "checkDataResist";
+                method = "checkDataRegist";
                 break;
             // 枝番コピー
             case GXHDO101B001Const.BTN_EDABAN_COPY_TOP:

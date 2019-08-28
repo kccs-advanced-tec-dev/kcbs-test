@@ -436,12 +436,12 @@ public class GXHDO101B010 implements IFormLogic {
             // 仮登録
             case GXHDO101B010Const.BTN_KARI_TOUROKU_TOP:
             case GXHDO101B010Const.BTN_KARI_TOUROKU_BOTTOM:
-                method = "checkDataTempResist";
+                method = "checkDataTempRegist";
                 break;
             // 登録
             case GXHDO101B010Const.BTN_INSERT_TOP:
             case GXHDO101B010Const.BTN_INSERT_BOTTOM:
-                method = "checkDataResist";
+                method = "checkDataRegist";
                 break;
             // 修正
             case GXHDO101B010Const.BTN_UPDATE_TOP:
@@ -727,7 +727,7 @@ public class GXHDO101B010 implements IFormLogic {
      * @param processData 処理制御データ
      * @return 処理制御データ
      */
-    public ProcessData checkDataTempResist(ProcessData processData) {
+    public ProcessData checkDataTempRegist(ProcessData processData) {
         // 項目のチェック処理を行う。
         ErrorMessageInfo checkItemErrorInfo = checkItemTempRegist(processData);
         if (checkItemErrorInfo != null) {
@@ -791,9 +791,9 @@ public class GXHDO101B010 implements IFormLogic {
      * @param processData 処理制御データ
      * @return 処理制御データ
      */
-    public ProcessData checkDataResist(ProcessData processData) {
+    public ProcessData checkDataRegist(ProcessData processData) {
         // 項目のチェック処理を行う。
-        ErrorMessageInfo checkItemErrorInfo = checkItemResistCorrect(processData);
+        ErrorMessageInfo checkItemErrorInfo = checkItemRegistCorrect(processData);
         if (checkItemErrorInfo != null) {
             processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
             return processData;
@@ -829,7 +829,7 @@ public class GXHDO101B010 implements IFormLogic {
     public ProcessData checkDataCorrect(ProcessData processData) {
 
         // 項目のチェック処理を行う。
-        ErrorMessageInfo checkItemErrorInfo = checkItemResistCorrect(processData);
+        ErrorMessageInfo checkItemErrorInfo = checkItemRegistCorrect(processData);
         if (checkItemErrorInfo != null) {
             processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
             return processData;
@@ -869,7 +869,7 @@ public class GXHDO101B010 implements IFormLogic {
      * @param processData 処理制御データ
      * @return エラーメッセージ情報
      */
-    private ErrorMessageInfo checkItemResistCorrect(ProcessData processData) {
+    private ErrorMessageInfo checkItemRegistCorrect(ProcessData processData) {
         // ｶｯﾄ刃種類確認
         FXHDD01 itemCutbaCheck = getItemRow(processData.getItemList(), GXHDO101B010Const.CUTBA_SHURUI_CHECK);
         if ("NG".equals(itemCutbaCheck.getValue())) {
