@@ -168,7 +168,7 @@
                             <h:outputText id="lblYobikangoki" value="号機" style="width:100px;"/>
                         </td>
                         <td>
-                            <p:inputText id="pYobikangoki" value="#{gXHDO201B014.yobikangoki}" maxlength="10" style="margin-left:20px; height:26px;">
+                            <p:inputText id="pYobikangoki" value="#{gXHDO201B014.yobikangoki}" maxlength="4" style="margin-left:20px; height:26px;">
                                 <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B014.checkByte('yobikangoki', 4)}"  async="false"/>
                             </p:inputText>
                         </td>
