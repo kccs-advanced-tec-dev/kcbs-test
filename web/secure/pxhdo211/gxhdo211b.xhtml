@@ -1,0 +1,322 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Pragma" content="no-cache"/>
+        <meta http-equiv="Cache-Control" content="no-cache"/>
+        <meta http-equiv="Expires" content="0"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link href="#{request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/growllarge.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/loading.css" rel="stylesheet" type="text/css"/>
+        <script src="#{request.contextPath}/resources/bootstrap/js/bootstrap.min.js" />
+        <h:outputScript library="primefaces" name="jquery/jquery.js" />
+        <script src="#{request.contextPath}/resources/js/growl.js"></script>
+    </h:head>
+    <h:body style="padding-top:30px;">
+        <f:metadata>
+            <f:viewAction action="#{gXHDO211B.init()}"/>
+        </f:metadata>
+        <nav class="navbar  navbar-expand fixed-top navbar-dark" style="background-color:#0E6A89;height: 50px;z-index: 999;">
+            <span class="navbar-brand mb-0" style="font-size:18px;font-weight:bold;">#{myMsg.GXHDO211B_GamenTitle}</span>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#Navber" aria-controls="Navber" aria-expanded="false" aria-label="ナビゲーションの切替">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <span class="navbar-text ml-auto">
+                <div class="collapse navbar-collapse" id="Navber">
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <h:link class="nav-link" outcome="/secure/pxhdo211/gxhdo211a.xhtml?faces-redirect=true" value="戻る"/>
+                    </li>
+                  </ul>
+                </div>
+            </span>
+        </nav>
+        <br/>
+        <h:form id="mainform" onkeypress="if (event.keyCode === 13) { return false; }">
+            <p:growl id="growlMessage" showDetail="false" sticky="true"  escape="false" />
+            <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
+                <f:facet name="message">
+                    <h:outputText value="#{gXHDO211B.getWarnMessage()}" escape="false"/>
+                </f:facet>
+                <p:commandButton id="warnOk" value="OK" styleClass="ui-conf-commandbtn-def1" style="width:100px;margin-left:50px;"
+                                 actionListener="#{gXHDO211B.processWarnOk()}"
+                                 process="@this"
+                                 update="@form"
+                                 onstart="PF('cd').hide();$('#loadinggif').show();"
+                                 oncomplete="$('#loadinggif').hide();if('warning'!=args.param1){PF('cd').hide();} else {PF('cd').show();}"/>
+                <p:commandButton id="warnCancel" value="Cancel" class="ui-conf-commandbtn-cancel" style="width:100px;" onclick="PF('cd').hide();" type="button" />
+            </p:confirmDialog>
+            <div id="loadinggif">
+                <img src="#{request.contextPath}/resources/gif/gif-load.gif"/>
+            </div>
+            <p:panel id="searchpanel" style="border:none;font-size:0.8em; margin-top: 10px; margin-bottom: 10px;">
+                <table width="100%">
+                    <tr>
+                        <td width="48px">
+                            <h:outputText id="lblLotNo" value="ﾛｯﾄNo"/>
+                        </td>
+                        <td width="190px">
+                            <p:inputText id="pLotNo" value="#{gXHDO211B.lotno}"  maxlength="14" style="width:14em; background:#{gXHDO211B.lotnoBackGround};" disabled="#{gXHDO211B.searchAreaDisabled}">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO211B.checkByte('lotno', 14)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td width="50px">
+                            <h:outputText id="lblShijisya" value="指示者" />
+                        </td>
+                        <td width="100px">
+                            <p:inputText id="pShijisya" value="#{gXHDO211B.shijisya}" maxlength="6" style="width:7em; background:#{gXHDO211B.shijisyaBackGround};" disabled="#{gXHDO211B.searchAreaDisabled}">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO211B.checkByte('shijisya', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td align="right">
+                            <p:commandButton id="btnSearch" style="width:100px;height:25px;font-size:0.7em;margin-left:0px;text-align:center;" disabled="#{gXHDO211B.btnSearchDisabled}"
+                                value="検索" 
+                                actionListener="#{gXHDO211B.doSearch()}"
+                                process="searchpanel"
+                                update="growlMessage @form"
+                                onstart="$('#loadinggif').show();"
+                                oncomplete="$('#loadinggif').hide();if('warning'!=args.param1){PF('cd').hide();} else {PF('cd').show();}"/>
+                        </td>
+                    </tr>
+                </table>
+            </p:panel>
+            <p:panel id="jokenInfoPanel" style="border: 1;font-size:0.8em;  margin-left: 15px;margin-right: 15px; background: #e1ffff;">
+                <h:outputText  value="【条件情報】"/>
+                <table width="100%" style="margin-left:20px; word-break: break-all; border-collapse:separate; border-spacing: 0px 2px; ">
+                    <tr>
+                        <td width="54px" style="vertical-align:top;  ">
+                            <h:outputText  value="温度"/>
+                        </td>
+                        <td width="5px"  style="vertical-align:top;  ">
+                            <h:outputText  value="：" />
+                        </td>
+                        <td>
+                            <h:outputText id="jokenOndo" value="#{gXHDO211B.jokenOndo}" style=""/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="54px">
+                            <h:outputText value="水素濃度"/>
+                        </td>
+                        <td width="5px">
+                            <h:outputText  value="："/>
+                        </td>
+                        <td>
+                            <h:outputText id="jokenSuisoNodo" value="#{gXHDO211B.jokenSuisoNoudo}"/>
+                        </td>
+                    </tr>
+                </table>            
+            </p:panel>
+            <p:panel id="sikakariInfoPanel" style="border: 1;font-size:0.8em;  margin-top: 10px; margin-left: 15px;margin-right: 15px; background: #e8ffdf;">
+                <h:outputText  value="【仕掛情報】"/>
+                <table width="100%" style="margin-left:20px; word-break: break-all;  border-collapse:separate; border-spacing: 0px 2px;">
+                    <tr>
+                        <td width="54px" style="vertical-align:top;  ">
+                            <h:outputText  value="KCPNO"/>
+                        </td>
+                        <td width="5px"  style="vertical-align:top;  ">
+                            <h:outputText  value="："/>
+                        </td>
+                        <td>
+                            <h:outputText id="sikakariKcpno"  value="#{gXHDO211B.sikakariKcpno}"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="54px" style="vertical-align:top;  ">
+                            <h:outputText  value="工程"/>
+                        </td>
+                        <td width="5px"  style="vertical-align:top;  ">
+                            <h:outputText  value="："/>
+                        </td>
+                        <td>
+                            <h:outputText id="sikakariKotei"  value="#{gXHDO211B.sikakariKotei}" />
+                        </td>
+                    </tr>
+                    <tr>
+                        <td width="54px" style="vertical-align:top;  ">
+                            <h:outputText  value="数量"/>
+                        </td>
+                        <td width="5px"  style="vertical-align:top;  ">
+                            <h:outputText  value="："/>
+                        </td>
+                        <td>
+                            <h:outputText id="shikakariSuryo" value="#{gXHDO211B.sikakariSuryo}" />
+                        </td>
+                    </tr>
+                </table>
+            </p:panel>
+            <p:panel id="inputpanel" style="border:none;font-size:0.8em; ">
+                <table  style="border-collapse:separate; border-spacing: 0px 8px;" >
+                    <tr>
+                        <td>
+                            <h:outputText value="号機"/>
+                        </td>
+                        <td>
+                            <p:inputText id="inputGouki1" value="#{gXHDO211B.gouki1}" maxlength="40" style="width:14em; margin-left:20px; background:#{gXHDO211B.gouki1BackGround}; color: #{gXHDO211B.inputAreaColor};"
+                                         readonly="#{gXHDO211B.inputAreaReadOnly}" disabled="#{gXHDO211B.inputAreaDisabled}" >
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO211B.checkByte('gouki1', 40)}"  async="false"/>
+                            </p:inputText>
+                            
+                        </td>
+                        <td>
+                            <h:outputText value="ﾋﾟｰｸ温度"  style="margin-left:10px;"/>
+                        </td>
+                        <td>
+                            <p:inputNumber id="inputPeakOndo1"  value="#{gXHDO211B.peakOndo1}" thousandSeparator=""  readonly="#{gXHDO211B.inputAreaReadOnly}" disabled="#{gXHDO211B.inputAreaDisabled}" 
+                                           decimalPlaces="0" maxValue="9999" minValue="0" size="4" inputStyle="margin-left:10px; background:#{gXHDO211B.peakOndo1BackGround}; color: #{gXHDO211B.inputAreaColor};" />
+                            <h:outputText value="℃"/>
+                        </td>
+                        <td>
+                            <h:outputText value="水素濃度" style="margin-left:10px;"/>
+                        </td>
+                        <td>
+                            <p:inputNumber id="inputSuisoNoudo1"  value="#{gXHDO211B.suisoNoudo1}" thousandSeparator="" roundMethod="D" readonly="#{gXHDO211B.inputAreaReadOnly}" disabled="#{gXHDO211B.inputAreaDisabled}"
+                                           decimalPlaces="3" maxValue="99.999" minValue="0" size="6" inputStyle="margin-left:10px; background:#{gXHDO211B.suisoNoudo1BackGround}; color: #{gXHDO211B.inputAreaColor};"/>
+                            <h:outputText value="％"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText value="号機"/>
+                        </td>
+                        <td>
+                            <p:inputText id="inputGouki2" value="#{gXHDO211B.gouki2}" maxlength="40" style="width:14em; margin-left:20px; background:#{gXHDO211B.gouki2BackGround}; color: #{gXHDO211B.inputAreaColor};" 
+                                         readonly="#{gXHDO211B.inputAreaReadOnly}" disabled="#{gXHDO211B.inputAreaDisabled}">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO211B.checkByte('gouki2', 40)}"  async="false"/>
+                            </p:inputText>
+                            
+                        </td>
+                        <td>
+                            <h:outputText value="ﾋﾟｰｸ温度"  style="margin-left:10px;"/>
+                        </td>
+                        <td>
+                            <p:inputNumber id="inputPeakOndo2"  value="#{gXHDO211B.peakOndo2}" thousandSeparator="" readonly="#{gXHDO211B.inputAreaReadOnly}" disabled="#{gXHDO211B.inputAreaDisabled}"
+                                           decimalPlaces="0" maxValue="9999" minValue="0" size="4" inputStyle="margin-left:10px; background:#{gXHDO211B.peakOndo2BackGround}; color: #{gXHDO211B.inputAreaColor};"/>
+                            <h:outputText value="℃"/>
+                        </td>
+                        <td>
+                            <h:outputText value="水素濃度" style="margin-left:10px;"/>
+                        </td>
+                        <td>
+                            <p:inputNumber id="inputSuisoNoudo2"  value="#{gXHDO211B.suisoNoudo2}" thousandSeparator="" roundMethod="D" readonly="#{gXHDO211B.inputAreaReadOnly}" disabled="#{gXHDO211B.inputAreaDisabled}"
+                                           decimalPlaces="3" maxValue="99.999" minValue="0" size="6" inputStyle="margin-left:10px; background:#{gXHDO211B.suisoNoudo2BackGround}; color: #{gXHDO211B.inputAreaColor};"/>
+                            <h:outputText value="％"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText value="号機"/>
+                        </td>
+                        <td>
+                            <p:inputText id="inputGouki3" value="#{gXHDO211B.gouki3}" maxlength="40" style="width:14em; margin-left:20px; background:#{gXHDO211B.gouki3BackGround}; color: #{gXHDO211B.inputAreaColor};" 
+                                         readonly="#{gXHDO211B.inputAreaReadOnly}" disabled="#{gXHDO211B.inputAreaDisabled}">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO211B.checkByte('gouki3', 40)}"  async="false"/>
+                            </p:inputText>
+                            
+                        </td>
+                        <td>
+                            <h:outputText value="ﾋﾟｰｸ温度"  style="margin-left:10px;"/>
+                        </td>
+                        <td>
+                            <p:inputNumber id="inputPeakOndo3"  value="#{gXHDO211B.peakOndo3}" thousandSeparator="" readonly="#{gXHDO211B.inputAreaReadOnly}" disabled="#{gXHDO211B.inputAreaDisabled}"
+                                           decimalPlaces="0" maxValue="9999" minValue="0" size="4" inputStyle="margin-left:10px; background:#{gXHDO211B.peakOndo3BackGround}; color: #{gXHDO211B.inputAreaColor};"/>
+                            <h:outputText value="℃"/>
+                        </td>
+                        <td>
+                            <h:outputText value="水素濃度" style="margin-left:10px;"/>
+                        </td>
+                        <td>
+                            <p:inputNumber id="inputSuisoNoudo3"  value="#{gXHDO211B.suisoNoudo3}" thousandSeparator="" roundMethod="D" readonly="#{gXHDO211B.inputAreaReadOnly}" disabled="#{gXHDO211B.inputAreaDisabled}"
+                                           decimalPlaces="3" maxValue="99.999" minValue="0" size="6" inputStyle="margin-left:10px; background:#{gXHDO211B.suisoNoudo3BackGround}; color: #{gXHDO211B.inputAreaColor};"/>
+                            <h:outputText value="％"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText value="号機"/>
+                        </td>
+                        <td>
+                            <p:inputText id="inputGouki4" value="#{gXHDO211B.gouki4}" maxlength="40" style="width:14em; margin-left:20px; background:#{gXHDO211B.gouki4BackGround}; color: #{gXHDO211B.inputAreaColor};" 
+                                         readonly="#{gXHDO211B.inputAreaReadOnly}" disabled="#{gXHDO211B.inputAreaDisabled}">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO211B.checkByte('gouki4', 40)}"  async="false"/>
+                            </p:inputText>
+                            
+                        </td>
+                        <td>
+                            <h:outputText value="ﾋﾟｰｸ温度"  style="margin-left:10px;"/>
+                        </td>
+                        <td>
+                            <p:inputNumber id="inputPeakOndo4"  value="#{gXHDO211B.peakOndo4}" thousandSeparator="" readonly="#{gXHDO211B.inputAreaReadOnly}" disabled="#{gXHDO211B.inputAreaDisabled}"
+                                           decimalPlaces="0" maxValue="9999" minValue="0" size="4" inputStyle="margin-left:10px; background:#{gXHDO211B.peakOndo4BackGround}; color: #{gXHDO211B.inputAreaColor};"/>
+                            <h:outputText value="℃"/>
+                        </td>
+                        <td>
+                            <h:outputText value="水素濃度" style="margin-left:10px;"/>
+                        </td>
+                        <td>
+                            <p:inputNumber id="inputSuisoNoudo4"  value="#{gXHDO211B.suisoNoudo4}" thousandSeparator="" roundMethod="D" readonly="#{gXHDO211B.inputAreaReadOnly}" disabled="#{gXHDO211B.inputAreaDisabled}"
+                                           decimalPlaces="3" maxValue="99.999" minValue="0" size="6" inputStyle="margin-left:10px; background:#{gXHDO211B.suisoNoudo4BackGround}; color: #{gXHDO211B.inputAreaColor};"/>
+                            <h:outputText value="％"/>
+                        </td>
+                    <tr>
+                        <td>
+                            <h:outputText value="号機"/>
+                        </td>
+                        <td>
+                            <p:inputText id="inputGouki5" value="#{gXHDO211B.gouki5}" maxlength="40" style="width:14em; margin-left:20px; background:#{gXHDO211B.gouki5BackGround}; color: #{gXHDO211B.inputAreaColor};" 
+                                         readonly="#{gXHDO211B.inputAreaReadOnly}" disabled="#{gXHDO211B.inputAreaDisabled}">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO211B.checkByte('gouki5', 40)}"  async="false"/>
+                            </p:inputText>
+                            
+                        </td>
+                        <td>
+                            <h:outputText value="ﾋﾟｰｸ温度"  style="margin-left:10px;"/>
+                        </td>
+                        <td>
+                            <p:inputNumber id="inputPeakOndo5"  value="#{gXHDO211B.peakOndo5}" thousandSeparator="" readonly="#{gXHDO211B.inputAreaReadOnly}" disabled="#{gXHDO211B.inputAreaDisabled}"
+                                           decimalPlaces="0" maxValue="9999" minValue="0" size="4" inputStyle="margin-left:10px; background:#{gXHDO211B.peakOndo5BackGround}; color: #{gXHDO211B.inputAreaColor};"/>
+                            <h:outputText value="℃"/>
+                        </td>
+                        <td>
+                            <h:outputText value="水素濃度" style="margin-left:10px;"/>
+                        </td>
+                        <td>
+                            <p:inputNumber id="inputSuisoNoudo5"  value="#{gXHDO211B.suisoNoudo5}" thousandSeparator="" roundMethod="D" readonly="#{gXHDO211B.inputAreaReadOnly}" disabled="#{gXHDO211B.inputAreaDisabled}"
+                                           decimalPlaces="3" maxValue="99.999" minValue="0" size="6" inputStyle="margin-left:10px; background:#{gXHDO211B.suisoNoudo5BackGround}; color: #{gXHDO211B.inputAreaColor};"/>
+                            <h:outputText value="％"/>
+                        </td>
+                    </tr>
+                    </tr>
+                </table>
+            </p:panel>
+            <p:panel id="buttonpanel" style="border:none;margin-top:20px; text-align: right;">
+                <p:commandButton id="bthClear" style="width:100px;height:25px;font-size:0.7em;margin-right :30px;text-align:center;" disabled="#{gXHDO211B.btnClearDisabled}"
+                                value="クリア" 
+                                action="#{gXHDO211B.confirmClear()}"
+                                process="@this"
+                                update="@form"
+                                oncomplete="if('warning'!=args.param1){PF('cd').hide();} else {PF('cd').show();}"/>
+                <p:commandButton id="btnDelete" style="width:100px;height:25px;font-size:0.7em;margin-right :30px;text-align:center;" disabled="#{gXHDO211B.btnDeleteDisabled}"
+                                value="削除" 
+                                actionListener="#{gXHDO211B.confirmDelete()}"
+                                process="@this"
+                                update="@form"
+                                onstart="$('#loadinggif').show();"
+                                oncomplete="$('#loadinggif').hide();if('warning'!=args.param1){PF('cd').hide();} else {PF('cd').show();}"/>
+                <p:commandButton id="btnRegist" style="width:100px;height:25px;font-size:0.7em;text-align:center;" disabled="#{gXHDO211B.btnRegistDisabled}"
+                                value="登録" 
+                                actionListener="#{gXHDO211B.confirmRegist()}"
+                                process="@this inputpanel searchpanel"
+                                update="@form"
+                                onstart="$('#loadinggif').show();"
+                                oncomplete="$('#loadinggif').hide();if('warning'!=args.param1){PF('cd').hide();} else {PF('cd').show();}"/>
+            </p:panel>
+            
+        </h:form>
+    </h:body>
+</html>
