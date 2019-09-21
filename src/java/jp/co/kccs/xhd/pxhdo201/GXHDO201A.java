@@ -16,10 +16,8 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
-import jp.co.kccs.xhd.GetModel;
 import jp.co.kccs.xhd.db.model.FXHDM01;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
@@ -99,21 +97,7 @@ public class GXHDO201A implements Serializable {
         }
         
         List<FXHDM01> menuListData = new ArrayList<>();
-        
-        // user-agent
-        HttpServletRequest request = (HttpServletRequest)FacesContext.getCurrentInstance().getExternalContext().getRequest();
-        String uAgent = request.getHeader("user-agent");
-        // model
-        GetModel getModel = new GetModel(uAgent);
-        String model = getModel.getModel();
-        String submodel = getModel.getSubmodel();
-        
-        // userAgentでPC or タブレットを判定
-        boolean isPC = false;
-        if (model.equals("ie11")) {
-            isPC = true;
-        }
-        
+                
         if (0 == userGrpList.size()) {
             // ユーザーグループ未登録の場合、ブランクメニューを表示する
         } else {
@@ -124,9 +108,6 @@ public class GXHDO201A implements Serializable {
                            + "WHERE menu_group_id = 'rireki' AND " 
                         + DBUtil.getInConditionPreparedStatement("user_role", userGrpList.size());
                 
-                if (!isPC) {
-                    sql += " AND pc_flg = '0'";
-                }
                 
                 sql += " ORDER BY menu_no ";
 
