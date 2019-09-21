@@ -71,8 +71,11 @@ public class GXHDO101B025 implements IFormLogic {
     private static final String JOTAI_FLG_TOROKUZUMI = "1";
     private static final String JOTAI_FLG_SAKUJO = "9";
     private static final String SQL_STATE_RECORD_LOCK_ERR = "55P03";
+    private static final String TANSISU_THREE = "三端子";
+    private static final String TANSISU_FOUR = "4端子";
     // 端子数
     private static String hiddenTansisu = "";
+    
     
     /**
      * 初期化処理
@@ -407,7 +410,7 @@ public class GXHDO101B025 implements IFormLogic {
         
         // 端子間幅MIN:4端子のみ
         // 端子数が「4端子」の場合、入力されていること。
-        if ("4端子".equals(this.hiddenTansisu)){
+        if (TANSISU_FOUR.equals(hiddenTansisu)){
             FXHDD01 tansikanhaba = getItemRow(processData.getItemList(), GXHDO101B025Const.TANSIKANHABA);
             if(StringUtil.isEmpty(tansikanhaba.getValue())){
                 //エラー発生時
@@ -986,6 +989,7 @@ public class GXHDO101B025 implements IFormLogic {
         String lotNo = (String) session.getAttribute("lotNo");
         int paramJissekino = (Integer) session.getAttribute("jissekino");
         String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
+        hiddenTansisu = "";
 
         // エラーメッセージリスト
         List<String> errorMessageList = processData.getInitMessageList();
@@ -1081,7 +1085,7 @@ public class GXHDO101B025 implements IFormLogic {
         boolean hanteiFlg = false;
         for(int i = 0; i < fxhbm03data.length; i++){
            if (!StringUtil.isEmpty(tansiStr) && tansiStr.equals(fxhbm03data[i])){
-               hiddenTansisu = fxhbm03data[i];
+               hiddenTansisu = TANSISU_THREE;
                hanteiFlg = true;
                break;
            } 
@@ -1092,7 +1096,7 @@ public class GXHDO101B025 implements IFormLogic {
             fxhbm03data = StringUtil.nullToBlank(getMapData(fxhbm03Data214, "data")).split(",");
             for(int i = 0; i < fxhbm03data.length; i++){
                 if (!StringUtil.isEmpty(tansiStr) && tansiStr.equals(fxhbm03data[i])){
-                    hiddenTansisu = fxhbm03data[i];
+                    hiddenTansisu = TANSISU_FOUR;
                     hanteiFlg = true;
                     break;
                 } 
@@ -1460,6 +1464,9 @@ public class GXHDO101B025 implements IFormLogic {
                        sql= sql + " key = 'xhd_gaibudenkyoku_tofu_4tanshi' ";
                     }
            
+                    List<Object> params = new ArrayList<>();
+                    DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+
             return queryRunnerDoc.query(sql, new MapHandler());
 
         } catch (SQLException ex) {
