@@ -16,6 +16,11 @@ import java.sql.Timestamp;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2019/09/20<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -890,6 +895,16 @@ public class SrRhaps {
      * 削除ﾌﾗｸﾞ
      */
     private Integer deleteflag;
+
+    /**
+     * 印刷積層開始確認者
+     */
+    private String startkakunin;
+
+    /**
+     * ﾀｰｹﾞｯﾄ有無
+     */
+    private String tumu;
 
     /**
      * 工場ｺｰﾄﾞ
@@ -4003,6 +4018,38 @@ public class SrRhaps {
      */
     public void setDeleteflag(Integer deleteflag) {
         this.deleteflag = deleteflag;
+    }
+
+    /**
+     * 印刷積層開始確認者
+     * @return the startkakunin
+     */
+    public String getStartkakunin() {
+        return startkakunin;
+    }
+
+    /**
+     * 印刷積層開始確認者
+     * @param startkakunin the startkakunin to set
+     */
+    public void setStartkakunin(String startkakunin) {
+        this.startkakunin = startkakunin;
+    }
+
+    /**
+     * ﾀｰｹﾞｯﾄ有無
+     * @return the tumu
+     */
+    public String getTumu() {
+        return tumu;
+    }
+
+    /**
+     * ﾀｰｹﾞｯﾄ有無
+     * @param tumu the tumu to set
+     */
+    public void setTumu(String tumu) {
+        this.tumu = tumu;
     }
 
 }

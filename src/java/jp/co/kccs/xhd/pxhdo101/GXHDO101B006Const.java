@@ -13,6 +13,11 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2019/09/20<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -652,6 +657,16 @@ public class GXHDO101B006Const {
      * 誘電体スライド量
      */
     public static final String YUUDENTAI_SLIDE_RYOU = "sr_rhaps_yudentai_slide_ryou";
+
+    /**
+     * 印刷積層開始確認者
+     */
+    public static final String INSATSU_SEKISOU_KAISHI_KAKUNINSHA = "sr_rhaps_insatsu_sekisou_kaishi_kakuninsha";
+
+    /**
+     * ﾀｰｹﾞｯﾄ有無
+     */
+    public static final String TARGET_UMU = "sr_rhaps_target_umu";
 
     /**
      * 電極膜厚(画面上ボタン)

@@ -61,6 +61,11 @@ import org.primefaces.context.RequestContext;
  * 変更者	KCCS D.Yanagida<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2019/09/20<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -430,8 +435,13 @@ public class GXHDO201B006 implements Serializable {
         ValidateUtil validateUtil = new ValidateUtil();
         
         // ロットNo
-        if (existError(validateUtil.checkC101(getLotNo(), "ロットNo", 14)) ||
-            !StringUtil.isEmpty(getLotNo()) && existError(validateUtil.checkValueE001(getLotNo()))) {
+        if (!StringUtil.isEmpty(getLotNo()) && (StringUtil.getLength(getLotNo()) != 11 && StringUtil.getLength(getLotNo()) != 14)) {
+            // エラー対象をリストに追加
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000064"), null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return;
+        }
+        if (!StringUtil.isEmpty(getLotNo()) && existError(validateUtil.checkValueE001(getLotNo()))) {
             return;
         }
         // KCPNO
@@ -758,6 +768,8 @@ public class GXHDO201B006 implements Serializable {
                     + ", T1.ESEIHANSETTANTOU"
                     + ", T1.CSEIHANSETTANTOU"
                     + ", T1.DANSASOKUTEITANTOU"
+                    + ", T1.startkakunin"
+                    + ", T1.TUMU"
                     + ", T2.EMAKUATSU1"
                     + ", T2.EMAKUATSU2"
                     + ", T2.EMAKUATSU3"
@@ -987,6 +999,8 @@ public class GXHDO201B006 implements Serializable {
             mapping.put("ESEIHANSETTANTOU", "eseihansettantou");
             mapping.put("CSEIHANSETTANTOU", "cseihansettantou");
             mapping.put("DANSASOKUTEITANTOU", "dansasokuteitantou");
+            mapping.put("startkakunin", "startkakunin");
+            mapping.put("TUMU", "tumu");
             mapping.put("EMAKUATSU1", "emakuatsu1");
             mapping.put("EMAKUATSU2", "emakuatsu2");
             mapping.put("EMAKUATSU3", "emakuatsu3");
@@ -1142,7 +1156,7 @@ public class GXHDO201B006 implements Serializable {
         if (!StringUtil.isEmpty(lotNo)) {
             paramKojo = StringUtils.substring(getLotNo(), 0, 3);
             paramLotNo = StringUtils.substring(getLotNo(), 3, 11);
-            paramEdaban = StringUtils.substring(getLotNo(), 11, 14);
+            paramEdaban = StringUtil.blankToNull(StringUtils.substring(getLotNo(), 11, 14));
         }
         String paramKcpno = null;
         if (!StringUtil.isEmpty(kcpNo)) {

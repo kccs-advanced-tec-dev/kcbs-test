@@ -501,7 +501,7 @@
                             <f:convertNumber pattern="0.000"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="utkaaturyoku" headerText="上端子加圧力" styleClass="number">
+                    <p:column id="utkaaturyoku" headerText="上端子加圧力(Mpa)" styleClass="number">
                         <p:outputLabel value="#{item.utkaaturyoku}">
                             <f:convertNumber pattern="#0.0"/>
                         </p:outputLabel>
@@ -867,6 +867,9 @@
                             <f:convertNumber pattern="#0.0"/>
                         </p:outputLabel>
                     </p:column>
+                    <p:column id="tumu" headerText="ﾀｰｹﾞｯﾄ有無" >
+                        <p:outputLabel value="#{item.tumu}"/>
+                    </p:column>
                     <p:column id="tinksyuryui" headerText="ﾀｰｹﾞｯﾄｲﾝｸ種類" >
                         <p:outputLabel value="#{item.tinksyuryui}"/>
                     </p:column>
@@ -878,6 +881,9 @@
                     </p:column>
                     <p:column id="starttantou" headerText="印刷積層開始担当者" >
                         <p:outputLabel value="#{item.starttantou}"/>
+                    </p:column>
+                    <p:column id="startkakunin" headerText="印刷積層開始確認者" >
+                        <p:outputLabel value="#{item.startkakunin}"/>
                     </p:column>
                     <p:column id="endtantou" headerText="印刷積層終了担当者" >
                         <p:outputLabel value="#{item.endtantou}"/>

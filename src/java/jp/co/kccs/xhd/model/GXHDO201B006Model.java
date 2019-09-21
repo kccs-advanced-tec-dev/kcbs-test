@@ -16,6 +16,11 @@ import java.sql.Timestamp;
  * 変更者	KCCS D.Yanagida<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2019/09/20<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -175,7 +180,7 @@ public class GXHDO201B006Model {
     private BigDecimal utsiyo = null;
     /** 上端子通電時間 */
     private BigDecimal uttudenjikan = null;
-    /** 上端子加圧力 */
+    /** 上端子加圧力(Mpa) */
     private BigDecimal utkaaturyoku = null;
     /** 積層体厚み補正 */
     private BigDecimal stahosei = null;
@@ -331,6 +336,8 @@ public class GXHDO201B006Model {
     private BigDecimal uwajsskirikaeichi = null;
     /** 下端子下降速切替位置 */
     private BigDecimal shitakkskirikaeichi = null;
+    /** ﾀｰｹﾞｯﾄ有無 */
+    private String tumu = "";
     /** ﾀｰｹﾞｯﾄｲﾝｸ種類 */
     private String tinksyuryui = "";
     /** ﾀｰｹﾞｯﾄｲﾝｸLOT */
@@ -339,6 +346,8 @@ public class GXHDO201B006Model {
     private String tgaikan = null;
     /** 印刷積層開始担当者 */
     private String starttantou = "";
+    /** 印刷積層開始確認者 */
+    private String startkakunin = "";
     /** 印刷積層終了担当者 */
     private String endtantou = "";
     /** ﾀｰｹﾞｯﾄ印刷終了日 */
@@ -2893,7 +2902,23 @@ public class GXHDO201B006Model {
     public void setShitakkskirikaeichi(BigDecimal shitakkskirikaeichi) {
         this.shitakkskirikaeichi = shitakkskirikaeichi;
     }
+        
+    /**
+     * ﾀｰｹﾞｯﾄ有無
+     * @return the tumu
+     */
+    public String getTumu() {
+        return tumu;
+    }
 
+    /**
+     * ﾀｰｹﾞｯﾄ有無
+     * @param tumu the tumu to set
+     */
+    public void setTumu(String tumu) {
+        this.tumu = tumu;
+    }
+    
     /**
      * ﾀｰｹﾞｯﾄｲﾝｸ種類
      * @return the tinksyuryui
@@ -2956,6 +2981,22 @@ public class GXHDO201B006Model {
      */
     public void setStarttantou(String starttantou) {
         this.starttantou = starttantou;
+    }
+
+    /**
+     * 印刷積層開始確認者
+     * @return the startkakunin
+     */
+    public String getStartkakunin() {
+        return startkakunin;
+    }
+
+    /**
+     * 印刷積層開始確認者
+     * @param startkakunin the startkakunin to set
+     */
+    public void setStartkakunin(String startkakunin) {
+        this.startkakunin = startkakunin;
     }
 
     /**
