@@ -51,6 +51,6 @@
     {"no":"50","id":"tntapegenryo","columnname":"端子ﾃｰﾌﾟ原料","type":"String","format":""},
     {"no":"51","id":"jituaturyoku","columnname":"実圧力","type":"String","format":""},
     {"no":"52","id":"sekisozure2","columnname":"積層ｽﾞﾚ値2","type":"Long","format":"2,0"},
-    {"no":"53","id":"happosheetno","columnname":"発泡ｼｰﾄNo","type":"String","format":""}
+    {"no":"53","id":"happosheetno","columnname":"発砲ｼｰﾄNo","type":"String","format":""}
 
 ]
