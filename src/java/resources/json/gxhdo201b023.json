@@ -19,7 +19,7 @@
     {"no":"16","id":"bladeno","columnname":"ﾌﾞﾚｰﾄﾞNo.","type":"String","format":""},
     {"no":"17","id":"bladegaikan","columnname":"ﾌﾞﾚｰﾄﾞ外観","type":"String","format":""},
     {"no":"18","id":"bladeatu","columnname":"ﾌﾞﾚｰﾄﾞ圧力(Mpa)","type":"BigDecimal","format":"9,3"},
-    {"no":"19","id":"atudono","columnname":"圧胴ﾛｯﾄNo．","type":"String","format":""},
+    {"no":"19","id":"atudono","columnname":"圧胴ﾛｯﾄNo.","type":"String","format":""},
     {"no":"20","id":"atudomaisuu","columnname":"圧胴使用枚数(枚)","type":"Long","format":"8,0"},
     {"no":"21","id":"atudoatu","columnname":"圧胴圧力(N)","type":"BigDecimal","format":"9,3"},
     {"no":"22","id":"gouki","columnname":"印刷号機","type":"String","format":""},
