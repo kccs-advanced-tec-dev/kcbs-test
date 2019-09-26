@@ -190,6 +190,16 @@ public class SrRsusprn {
      * 備考2
      */
     private String biko2;
+    
+    /**
+     * 登録日時
+     */
+    private Timestamp torokunichiji;
+
+    /**
+     * 更新日時
+     */
+    private Timestamp kosinnichiji;
 
     /**
      * 担当者ｺｰﾄﾞ
@@ -305,17 +315,62 @@ public class SrRsusprn {
      * ﾃｰﾌﾞﾙｸﾘｱﾗﾝｽ
      */
     private BigDecimal tableClearrance;
-
+    
     /**
-     * 登録日時
+     * 客先
      */
-    private Timestamp torokunichiji;
-
+    private String tokuisaki;
+    
     /**
-     * 更新日時
+     * ﾛｯﾄ区分
      */
-    private Timestamp kosinnichiji;
-
+    private String lotkubuncode;
+    
+    /**
+     * ｵｰﾅｰ
+     */
+    private String ownercode;
+    
+    /**
+     * 成形長さ
+     */
+    private Integer seikeinagasa;
+    
+    /**
+     * 原料
+     */
+    private String genryou;
+    
+    /**
+     * 電極厚み
+     */
+    private Double eatumi;
+    
+    /**
+     * 電極ﾍﾟｰｽﾄ
+     */
+    private String epaste;
+    
+    /**
+     * 電極製版仕様
+     */
+    private String pattern;
+    
+    /**
+     * ｽｸﾚｯﾊﾟｰ速度
+     */
+    private Integer scraperspeed;
+    
+    /**
+     * 印刷位置確認
+     */
+    private Integer startitikakunin;
+    
+    /**
+     * 印刷ｽﾀｰﾄ確認者
+     */
+    private String kakuninsya;
+    
     /**
      * revision
      */
@@ -1405,5 +1460,203 @@ public class SrRsusprn {
     public void setDeleteflag(Integer deleteflag) {
         this.deleteflag = deleteflag;
     }
+
+    /**
+     * 客先
+     *
+     * @return the tokuisaki
+     */
+    public String getTokuisaki() {
+        return tokuisaki;
+    }
+
+    /**
+     * 客先
+     *
+     * @param tokuisaki the tokuisaki to set
+     */
+    public void setTokuisaki(String tokuisaki) {
+        this.tokuisaki = tokuisaki;
+    }
+
+    /**
+     * ﾛｯﾄ区分
+     *
+     * @return the lotkubuncode
+     */
+    public String getLotkubuncode() {
+        return lotkubuncode;
+    }
+
+    /**
+     * ﾛｯﾄ区分
+     *
+     * @param lotkubuncode the lotkubuncode to set
+     */
+    public void setLotkubuncode(String lotkubuncode) {
+        this.lotkubuncode = lotkubuncode;
+    }
+
+    /**
+     * ｵｰﾅｰ
+     *
+     * @return the ownercode
+     */
+    public String getOwnercode() {
+        return ownercode;
+    }
+
+    /**
+     * ｵｰﾅｰ
+     *
+     * @param ownercode the ownercode to set
+     */
+    public void setOwnercode(String ownercode) {
+        this.ownercode = ownercode;
+    }
+
+    /**
+     * 成形長さ
+     *
+     * @return the seikeinagasa
+     */
+    public Integer getSeikeinagasa() {
+        return seikeinagasa;
+    }
+
+    /**
+     * 成形長さ
+     *
+     * @param seikeinagasa the seikeinagasa to set
+     */
+    public void setSeikeinagasa(Integer seikeinagasa) {
+        this.seikeinagasa = seikeinagasa;
+    }
+
+    /**
+     * 原料
+     *
+     * @return the genryou
+     */
+    public String getGenryou() {
+        return genryou;
+    }
+
+    /**
+     * 原料
+     *
+     * @param genryou the genryou to set
+     */
+    public void setGenryou(String genryou) {
+        this.genryou = genryou;
+    }
+
+    /**
+     * 電極厚み
+     *
+     * @return the eatumi
+     */
+    public Double getEatumi() {
+        return eatumi;
+    }
+
+    /**
+     * 電極厚み
+     *
+     * @param eatumi the eatumi to set
+     */
+    public void setEatumi(Double eatumi) {
+        this.eatumi = eatumi;
+    }
+
+    /**
+     * 電極ﾍﾟｰｽﾄ
+     *
+     * @return the epaste
+     */
+    public String getEpaste() {
+        return epaste;
+    }
+
+    /**
+     * 電極ﾍﾟｰｽﾄ
+     *
+     * @param epaste the epaste to set
+     */
+    public void setEpaste(String epaste) {
+        this.epaste = epaste;
+    }
+
+    /**
+     * 電極製版仕様
+     *
+     * @return the pattern
+     */
+    public String getPattern() {
+        return pattern;
+    }
+
+    /**
+     * 電極製版仕様
+     *
+     * @param pattern the pattern to set
+     */
+    public void setPattern(String pattern) {
+        this.pattern = pattern;
+    }
+
+    /**
+     * ｽｸﾚｯﾊﾟｰ速度
+     *
+     * @return the scraperspeed
+     */
+    public Integer getScraperspeed() {
+        return scraperspeed;
+    }
+
+    /**
+     * ｽｸﾚｯﾊﾟｰ速度
+     *
+     * @param scraperspeed the scraperspeed to set
+     */
+    public void setScraperspeed(Integer scraperspeed) {
+        this.scraperspeed = scraperspeed;
+    }
+
+    /**
+     * 印刷位置確認
+     *
+     * @return the startitikakunin
+     */
+    public Integer getStartitikakunin() {
+        return startitikakunin;
+    }
+
+    /**
+     * 印刷位置確認
+     *
+     * @param startitikakunin the startitikakunin to set
+     */
+    public void setStartitikakunin(Integer startitikakunin) {
+        this.startitikakunin = startitikakunin;
+    }
+
+    /**
+     * 印刷ｽﾀｰﾄ確認者
+     *
+     * @return the kakuninsya
+     */
+    public String getKakuninsya() {
+        return kakuninsya;
+    }
+
+    /**
+     * 印刷ｽﾀｰﾄ確認者
+     *
+     * @param kakuninsya the kakuninsya to set
+     */
+    public void setKakuninsya(String kakuninsya) {
+        this.kakuninsya = kakuninsya;
+    }    
 
 }

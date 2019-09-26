@@ -76,25 +76,9 @@ public class GXHDO101B002Const {
      */
     public static final String GENRYO_KIGOU = "insatsu_sps_screen_genryo_kigou";
     /**
-     * 上カバーテープ１
-     */
-    public static final String UE_COVER_TAPE1 = "insatsu_sps_screen_ue_cover_tape1";
-    /**
-     * 下カバーテープ１
-     */
-    public static final String SHITA_COVER_TAPE1 = "insatsu_sps_screen_shita_cover_tape1";
-    /**
      * カバーテープ
      */
     public static final String COVER_TAPE = "insatsu_sps_screen_cover_tape";
-    /**
-     * 列×行
-     */
-    public static final String RETSU_GYOU = "insatsu_sps_screen_retsu_gyou";
-    /**
-     * ピッチ
-     */
-    public static final String PITCH = "insatsu_sps_screen_pitch";
     /**
      * 電極ペースト
      */
@@ -140,17 +124,9 @@ public class GXHDO101B002Const {
      */
     public static final String DENKYOKU_SEIHAN_MEI = "insatsu_sps_screen_denkyoku_seihan_mei ";
     /**
-     * 電極製版仕様
-     */
-    public static final String DENKYOKU_SEIHAN_SHIYOU = "insatsu_sps_screen_denkyoku_seihan_shiyou";
-    /**
      * ＰＥＴフィルム種類
      */
     public static final String PET_FILM_SHURUI = "insatsu_sps_screen_pet_film_shurui";
-    /**
-     * 積層スライド量
-     */
-    public static final String SEKISOU_SLIDE_RYOU = "insatsu_sps_screen_sekisou_slide_ryou";
     /**
      * 印刷号機
      */
@@ -259,6 +235,10 @@ public class GXHDO101B002Const {
      * 印刷スタート時担当者
      */
     public static final String INSATSU_STARTJI_TANTOUSHA = "insatsu_sps_screen_insatsu_startji_tantousha";
+    /**
+     * 印刷ｽﾀｰﾄ時確認者
+     */
+    public static final String INSATSU_STARTJI_KAKUNINSYA = "insatsu_sps_screen_insatsu_startji_kakuninsya";
     /**
      * 印刷終了日
      */

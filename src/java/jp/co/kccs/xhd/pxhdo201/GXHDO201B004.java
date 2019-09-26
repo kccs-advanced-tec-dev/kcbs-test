@@ -430,8 +430,12 @@ public class GXHDO201B004 implements Serializable {
         ValidateUtil validateUtil = new ValidateUtil();
         
         // ロットNo
-        if (existError(validateUtil.checkC101(getLotNo(), "ロットNo", 14)) ||
-            !StringUtil.isEmpty(getLotNo()) && existError(validateUtil.checkValueE001(getLotNo()))) {
+        if (!StringUtil.isEmpty(getLotNo()) && (StringUtil.getLength(getLotNo()) != 11 && StringUtil.getLength(getLotNo()) != 14)) {
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000064"), null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return;
+        }
+        if (!StringUtil.isEmpty(getLotNo()) && existError(validateUtil.checkValueE001(getLotNo()))) {
             return;
         }
         // KCPNO
@@ -663,6 +667,11 @@ public class GXHDO201B004 implements Serializable {
                     + ", T1.StartTantosyacode"
                     + ", T1.EndTantousyacode"
                     + ", (CASE WHEN T1.TanshiTapeSyurui = 0 THEN 'NG' WHEN T1.TanshiTapeSyurui = 1 THEN 'OK' ELSE NULL END) AS TanshiTapeSyurui"
+                    + ", T1.karauti"
+                    + ", T1.karautibyou"
+                    + ", T1.karautikai"
+                    + ", T1.zureti"
+                    + ", T1.GaikanKakunin5"
                     + ", T2.setsuu1"
                     + ", T2.setsuu2"
                     + ", T2.setsuu3"
@@ -834,6 +843,11 @@ public class GXHDO201B004 implements Serializable {
             mapping.put("StartTantosyacode", "startTantosyacode");
             mapping.put("EndTantousyacode", "endTantousyacode");
             mapping.put("TanshiTapeSyurui", "tanshiTapeSyurui");
+            mapping.put("karauti", "karauti");
+            mapping.put("karautibyou", "karautibyou");
+            mapping.put("karautikai", "karautikai");
+            mapping.put("zureti", "zureti");
+            mapping.put("GaikanKakunin5", "gaikanKakunin5");
             mapping.put("setsuu1", "setsuu1");
             mapping.put("setsuu2", "setsuu2");
             mapping.put("setsuu3", "setsuu3");

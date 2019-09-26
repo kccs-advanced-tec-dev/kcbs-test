@@ -62,6 +62,11 @@ public class GXHDO101B003Const {
      * 積層数
      */
     public static final String SEKISOU_SU = "insatsu_rsus_sekisou_su";
+    
+    /**
+     * 成形長さ
+     */
+    public static final String SEIKEINAGASA = "insatsu_rsus_seikeinagasa";
 
     /**
      * ｽﾘｯﾌﾟﾛｯﾄNo
@@ -74,39 +79,9 @@ public class GXHDO101B003Const {
     public static final String ROLL_NO1 = "insatsu_rsus_roll_no1";
 
     /**
-     * ﾛｰﾙNo2
-     */
-    public static final String ROLL_NO2 = "insatsu_rsus_roll_no2";
-
-    /**
-     * ﾛｰﾙNo3
-     */
-    public static final String ROLL_NO3 = "insatsu_rsus_roll_no3";
-
-    /**
      * 原料記号
      */
     public static final String GENRYO_KIGOU = "insatsu_rsus_genryo_kigou";
-
-    /**
-     * 上カバーテープ１
-     */
-    public static final String UE_COVER_TAPE1 = "insatsu_rsus_ue_cover_tape1";
-
-    /**
-     * 下カバーテープ１
-     */
-    public static final String SHITA_COVER_TAPE1 = "insatsu_rsus_shita_cover_tape1";
-
-    /**
-     * 列×行
-     */
-    public static final String RETSU_GYOU = "insatsu_rsus_retsu_gyou";
-
-    /**
-     * ピッチ
-     */
-    public static final String PITCH = "insatsu_rsus_pitch";
 
     /**
      * 電極ペースト
@@ -154,11 +129,6 @@ public class GXHDO101B003Const {
     public static final String PASTE_KOKEIBUN2 = "insatsu_rsus_paste_kokeibun2";
 
     /**
-     * 電極製版名
-     */
-    public static final String DENKYOKU_SEIHAN_MEI = "insatsu_rsus_denkyoku_seihan_mei ";
-
-    /**
      * 電極製版仕様
      */
     public static final String DENKYOKU_SEIHAN_SHIYOU = "insatsu_rsus_denkyoku_seihan_shiyou";
@@ -167,16 +137,6 @@ public class GXHDO101B003Const {
      * ＰＥＴフィルム種類
      */
     public static final String PET_FILM_SHURUI = "insatsu_rsus_pet_film_shurui";
-
-    /**
-     * 積層スライド量
-     */
-    public static final String SEKISOU_SLIDE_RYOU = "insatsu_rsus_sekisou_slide_ryou";
-
-    /**
-     * 最上層スライド量
-     */
-    public static final String SAIJOSOU_SLIDE_RYOU = "insatsu_rsus_saijosou_slide_ryou";
 
     /**
      * 印刷号機
@@ -312,6 +272,36 @@ public class GXHDO101B003Const {
      * 印刷幅
      */
     public static final String INSATSU_HABA = "insatsu_rsus_insatsu_haba";
+    
+    /**
+     * ｽｷｰｼﾞ枚数
+     */
+    public static final String SQUEEGEE_MAISU = "insatsu_rsus_squeegee_maisu";
+    
+    /**
+     * ｽｷｰｼﾞｽﾋﾟｰﾄﾞ
+     */
+    public static final String SQUEEGEE_SPEED = "insatsu_rsus_squeegee_speed";
+    
+    /**
+     * ｽｸﾚｯﾊﾟｰｽﾋﾟｰﾄﾞ
+     */
+    public static final String SCRAPER_SPEED = "insatsu_rsus_scraper_speed";
+    
+    /**
+     * 差圧
+     */
+    public static final String SAATSU = "insatsu_rsus_saatsu";
+    
+    /**
+     * 印刷位置確認
+     */
+    public static final String STARTITIKAKUNIN = "insatsu_rsus_startitikakunin";
+    
+    /**
+     * 印刷ｽﾀｰﾄ確認者
+     */
+    public static final String INSATSU_STARTJI_KAKUNINSYA = "insatsu_rsus_insatsu_startji_kakuninsya";
 
     /**
      * 備考1

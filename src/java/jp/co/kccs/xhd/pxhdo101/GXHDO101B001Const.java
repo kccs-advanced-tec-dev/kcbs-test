@@ -89,26 +89,6 @@ public class GXHDO101B001Const {
     public static final String GENRYO_KIGOU = "insatsu_sps_gra_genryo_kigou";
 
     /**
-     * 上カバーテープ１
-     */
-    public static final String UE_COVER_TAPE1 = "insatsu_sps_gra_ue_cover_tape1";
-
-    /**
-     * 下カバーテープ１
-     */
-    public static final String SHITA_COVER_TAPE1 = "insatsu_sps_gra_shita_cover_tape1";
-
-    /**
-     * 列×行
-     */
-    public static final String RETSU_GYOU = "insatsu_sps_gra_retsu_gyou";
-
-    /**
-     * ピッチ
-     */
-    public static final String PITCH = "insatsu_sps_gra_pitch";
-
-    /**
      * 電極ペースト
      */
     public static final String DENKYOKU_PASTE = "insatsu_sps_gra_denkyoku_paste";
@@ -159,19 +139,9 @@ public class GXHDO101B001Const {
     public static final String DENKYOKU_SEIHAN_MEI = "insatsu_sps_gra_denkyoku_seihan_mei ";
 
     /**
-     * 電極製版仕様
-     */
-    public static final String DENKYOKU_SEIHAN_SHIYOU = "insatsu_sps_gra_denkyoku_seihan_shiyou";
-
-    /**
      * ＰＥＴフィルム種類
      */
     public static final String PET_FILM_SHURUI = "insatsu_sps_gra_pet_film_shurui";
-
-    /**
-     * 積層スライド量
-     */
-    public static final String SEKISOU_SLIDE_RYOU = "insatsu_sps_gra_sekisou_slide_ryou";
 
     /**
      * 印刷号機
@@ -324,26 +294,6 @@ public class GXHDO101B001Const {
     public static final String PTN_INSATSU_START_Y_MIN = "insatsu_sps_gra_ptn_insatsu_start_y_min";
 
     /**
-     * 印刷ズレ①刷り始め　開始
-     */
-    public static final String INSATSU_ZURE1_START = "insatsu_sps_gra_insatsu_zure1_start";
-
-    /**
-     * 印刷ズレ②中央　開始
-     */
-    public static final String INSATSU_ZURE2_START = "insatsu_sps_gra_insatsu_zure2_start";
-
-    /**
-     * 印刷ズレ③刷り終わり　開始
-     */
-    public static final String INSATSU_ZURE3_START = "insatsu_sps_gra_insatsu_zure3_start";
-
-    /**
-     * A/Bズレ平均スタート
-     */
-    public static final String AB_ZURE_HEIKIN_START = "insatsu_sps_gra_ab_zure_heikin_start";
-
-    /**
      * ｽﾀｰﾄ時ﾆｼﾞﾐ・ｶｽﾚ確認
      */
     public static final String STARTJI_NIJIMI_KASURE_CHECK = "insatsu_sps_gra_startji_nijimi_kasure_check";
@@ -353,6 +303,11 @@ public class GXHDO101B001Const {
      */
     public static final String INSATSU_STARTJI_TANTOUSHA = "insatsu_sps_gra_insatsu_startji_tantousha";
 
+    /**
+     * 印刷スタート時確認者
+     */
+    public static final String INSATSU_STARTJI_KAKUNINSYA = "insatsu_sps_gra_insatsu_startji_kakuninsya";
+    
     /**
      * 印刷終了日
      */
@@ -392,26 +347,6 @@ public class GXHDO101B001Const {
      * PTN間距離印刷ｴﾝﾄﾞ Y Min
      */
     public static final String PTN_INSATSU_END_Y_MIN = "insatsu_sps_gra_ptn_insatsu_end_y_min";
-
-    /**
-     * 印刷ズレ①刷り始め　終了
-     */
-    public static final String INSATSU_ZURE1_END = "insatsu_sps_gra_insatsu_zure1_end";
-
-    /**
-     * 印刷ズレ②中央　終了
-     */
-    public static final String INSATSU_ZURE2_END = "insatsu_sps_gra_insatsu_zure2_end";
-
-    /**
-     * 印刷ズレ③刷り終わり　終了
-     */
-    public static final String INSATSU_ZURE3_END = "insatsu_sps_gra_insatsu_zure3_end";
-
-    /**
-     * A/Bズレ平均終了
-     */
-    public static final String AB_ZURE_HEIKIN_END = "insatsu_sps_gra_ab_zure_heikin_end";
 
     /**
      * 終了時ニジミ・カスレ確認

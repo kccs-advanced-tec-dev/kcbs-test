@@ -78,9 +78,15 @@ public class GXHDO201B004Model {
     /** 中間ﾌﾟﾚｽ間隔総数 */
     private Long cPressKankakuSosuu = null;
     /** 最終加圧力 */
-    private Long lastKaaturyoku = null;
+    private BigDecimal lastKaaturyoku = null;
     /** 最終加圧時間 */
-    private Long lastKaatuJikan = null;
+    private BigDecimal lastKaatuJikan = null;
+    /** 空打ち */
+    private String karauti = "";
+    /** 空打ち[秒] */
+    private Integer karautibyou = null;
+    /** 空打ち[回] */
+    private Integer karautikai = null;
     /** 4分割担当者ｺｰﾄﾞ */
     private String fourSplitTantou = "";
     /** 積層ﾀｵﾚ量1 */
@@ -151,6 +157,10 @@ public class GXHDO201B004Model {
     private Long kaatuAturyoku = null;
     /** 上端子 */
     private String uwaTanshi = "";
+    /** ズレ値 */
+    private Integer zureti = null;
+    /** ﾜﾚ、ｳｷ、かみ込みなき事 */
+    private String gaikanKakunin5 = "";
     /** 外観確認1 */
     private String gaikanKakunin1 = "";
     /** 外観確認2 */
@@ -750,7 +760,7 @@ public class GXHDO201B004Model {
      * 最終加圧力
      * @return the lastKaaturyoku
      */
-    public Long getLastKaaturyoku() {
+    public BigDecimal getLastKaaturyoku() {
         return lastKaaturyoku;
     }
 
@@ -758,7 +768,7 @@ public class GXHDO201B004Model {
      * 最終加圧力
      * @param lastKaaturyoku the lastKaaturyoku to set
      */
-    public void setLastKaaturyoku(Long lastKaaturyoku) {
+    public void setLastKaaturyoku(BigDecimal lastKaaturyoku) {
         this.lastKaaturyoku = lastKaaturyoku;
     }
 
@@ -766,7 +776,7 @@ public class GXHDO201B004Model {
      * 最終加圧時間
      * @return the lastKaatuJikan
      */
-    public Long getLastKaatuJikan() {
+    public BigDecimal getLastKaatuJikan() {
         return lastKaatuJikan;
     }
 
@@ -774,8 +784,56 @@ public class GXHDO201B004Model {
      * 最終加圧時間
      * @param lastKaatuJikan the lastKaatuJikan to set
      */
-    public void setLastKaatuJikan(Long lastKaatuJikan) {
+    public void setLastKaatuJikan(BigDecimal lastKaatuJikan) {
         this.lastKaatuJikan = lastKaatuJikan;
+    }
+    
+    /**
+     * 空打ち
+     * @return the karauti
+     */
+    public String getKarauti() {
+        return karauti;
+    }
+
+    /**
+     * 空打ち
+     * @param karauti the karauti to set
+     */
+    public void setKarauti(String karauti) {
+        this.karauti = karauti;
+    }
+
+    /**
+     * 空打ち[秒]
+     * @return the karautibyou
+     */
+    public Integer getKarautibyou() {
+        return karautibyou;
+    }
+
+    /**
+     * 空打ち[秒]
+     * @param karautibyou the karautibyou to set
+     */
+    public void setKarautibyou(Integer karautibyou) {
+        this.karautibyou = karautibyou;
+    }
+
+    /**
+     * 空打ち[回]
+     * @return the karautikai
+     */
+    public Integer getKarautikai() {
+        return karautikai;
+    }
+
+    /**
+     * 空打ち[回]
+     * @param karautikai the karautikai to set
+     */
+    public void setKarautikai(Integer karautikai) {
+        this.karautikai = karautikai;
     }
 
     /**
@@ -1336,6 +1394,38 @@ public class GXHDO201B004Model {
      */
     public void setUwaTanshi(String uwaTanshi) {
         this.uwaTanshi = uwaTanshi;
+    }
+    
+    /**
+     * ズレ値
+     * @return the zureti
+     */
+    public Integer getZureti() {
+        return zureti;
+    }
+
+    /**
+     * ズレ値
+     * @param zureti the zureti to set
+     */
+    public void setZureti(Integer zureti) {
+        this.zureti = zureti;
+    }
+
+    /**
+     * ﾜﾚ、ｳｷ、かみ込みなき事
+     * @return the gaikanKakunin5
+     */
+    public String getGaikanKakunin5() {
+        return gaikanKakunin5;
+    }
+
+    /**
+     * ﾜﾚ、ｳｷ、かみ込みなき事
+     * @param gaikanKakunin5 the gaikanKakunin5 to set
+     */
+    public void setGaikanKakunin5(String gaikanKakunin5) {
+        this.gaikanKakunin5 = gaikanKakunin5;
     }
 
     /**

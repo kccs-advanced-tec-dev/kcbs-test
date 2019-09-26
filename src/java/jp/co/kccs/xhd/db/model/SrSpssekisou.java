@@ -282,11 +282,6 @@ public class SrSpssekisou {
     private String petfilmsyurui;
 
     /**
-     * 固着ｼｰﾄ張付け機
-     */
-    private String kotyakugouki;
-
-    /**
      * 固着ｼｰﾄ
      */
     private String kotyakusheet;
@@ -304,7 +299,7 @@ public class SrSpssekisou {
     /**
      * 下端子ﾌﾞｸ抜き
      */
-    private Integer shitaTanshiBukunuki;
+    private String shitaTanshiBukunuki;
 
     /**
      * 下端子
@@ -352,26 +347,6 @@ public class SrSpssekisou {
     private String uwaTanshi;
 
     /**
-     * 外観確認1
-     */
-    private String gaikanKakunin1;
-
-    /**
-     * 外観確認2
-     */
-    private String gaikanKakunin2;
-
-    /**
-     * 外観確認3
-     */
-    private String gaikanKakunin3;
-
-    /**
-     * 外観確認4
-     */
-    private String gaikanKakunin4;
-
-    /**
      * 処理ｾｯﾄ数
      */
     private Integer syoriSetsuu;
@@ -405,6 +380,31 @@ public class SrSpssekisou {
      * 更新日時
      */
     private Timestamp kosinnichiji;
+
+    /**
+     * 空打ち
+     */
+    private String karauti;
+    
+    /**
+     * 空打ち秒
+     */
+    private Integer karautibyou;
+    
+    /**
+     * 空打ち回
+     */
+    private Integer karautikai;
+    
+    /**
+     * ｽﾞﾚ値
+     */
+    private Integer zureti;
+    
+    /**
+     * 外観確認5
+     */
+    private String gaikanKakunin5;
 
     /**
      * revision
@@ -1233,22 +1233,6 @@ public class SrSpssekisou {
     }
 
     /**
-     * 固着ｼｰﾄ張付け機
-     * @return kotyakugouki
-     */
-    public String getKotyakugouki() {
-        return kotyakugouki;
-    }
-
-    /**
-     * 固着ｼｰﾄ張付け機
-     * @param kotyakugouki セットする kotyakugouki
-     */
-    public void setKotyakugouki(String kotyakugouki) {
-        this.kotyakugouki = kotyakugouki;
-    }
-
-    /**
      * 固着ｼｰﾄ
      * @return kotyakusheet
      */
@@ -1300,7 +1284,7 @@ public class SrSpssekisou {
      * 下端子ﾌﾞｸ抜き
      * @return shitaTanshiBukunuki
      */
-    public Integer getShitaTanshiBukunuki() {
+    public String getShitaTanshiBukunuki() {
         return shitaTanshiBukunuki;
     }
 
@@ -1308,7 +1292,7 @@ public class SrSpssekisou {
      * 下端子ﾌﾞｸ抜き
      * @param shitaTanshiBukunuki セットする shitaTanshiBukunuki
      */
-    public void setShitaTanshiBukunuki(Integer shitaTanshiBukunuki) {
+    public void setShitaTanshiBukunuki(String shitaTanshiBukunuki) {
         this.shitaTanshiBukunuki = shitaTanshiBukunuki;
     }
 
@@ -1457,70 +1441,6 @@ public class SrSpssekisou {
     }
 
     /**
-     * 外観確認1
-     * @return gaikanKakunin1
-     */
-    public String getGaikanKakunin1() {
-        return gaikanKakunin1;
-    }
-
-    /**
-     * 外観確認1
-     * @param gaikanKakunin1 セットする gaikanKakunin1
-     */
-    public void setGaikanKakunin1(String gaikanKakunin1) {
-        this.gaikanKakunin1 = gaikanKakunin1;
-    }
-
-    /**
-     * 外観確認2
-     * @return gaikanKakunin2
-     */
-    public String getGaikanKakunin2() {
-        return gaikanKakunin2;
-    }
-
-    /**
-     * 外観確認2
-     * @param gaikanKakunin2 セットする gaikanKakunin2
-     */
-    public void setGaikanKakunin2(String gaikanKakunin2) {
-        this.gaikanKakunin2 = gaikanKakunin2;
-    }
-
-    /**
-     * 外観確認3
-     * @return gaikanKakunin3
-     */
-    public String getGaikanKakunin3() {
-        return gaikanKakunin3;
-    }
-
-    /**
-     * 外観確認3
-     * @param gaikanKakunin3 セットする gaikanKakunin3
-     */
-    public void setGaikanKakunin3(String gaikanKakunin3) {
-        this.gaikanKakunin3 = gaikanKakunin3;
-    }
-
-    /**
-     * 外観確認4
-     * @return gaikanKakunin4
-     */
-    public String getGaikanKakunin4() {
-        return gaikanKakunin4;
-    }
-
-    /**
-     * 外観確認4
-     * @param gaikanKakunin4 セットする gaikanKakunin4
-     */
-    public void setGaikanKakunin4(String gaikanKakunin4) {
-        this.gaikanKakunin4 = gaikanKakunin4;
-    }
-
-    /**
      * 処理ｾｯﾄ数
      * @return syoriSetsuu
      */
@@ -1630,6 +1550,86 @@ public class SrSpssekisou {
      */
     public void setKosinnichiji(Timestamp kosinnichiji) {
         this.kosinnichiji = kosinnichiji;
+    }
+    
+    /**
+     * 空打ち
+     * @return karauti
+     */
+    public String getKarauti() {
+        return karauti;
+    }
+
+    /**
+     * 空打ち
+     * @param karauti セットする karauti
+     */
+    public void setKarauti(String karauti) {
+        this.karauti = karauti;
+    }
+
+    /**
+     * 空打ち秒
+     * @return karautibyou
+     */
+    public Integer getKarautibyou() {
+        return karautibyou;
+    }
+
+    /**
+     * 空打ち秒
+     * @param karautibyou セットする karautibyou
+     */
+    public void setKarautibyou(Integer karautibyou) {
+        this.karautibyou = karautibyou;
+    }
+
+    /**
+     * 空打ち回
+     * @return karautikai
+     */
+    public Integer getKarautikai() {
+        return karautikai;
+    }
+
+    /**
+     * 空打ち回
+     * @param karautikai セットする karautikai
+     */
+    public void setKarautikai(Integer karautikai) {
+        this.karautikai = karautikai;
+    }
+
+    /**
+     * ｽﾞﾚ値
+     * @return zureti
+     */
+    public Integer getZureti() {
+        return zureti;
+    }
+
+    /**
+     * ｽﾞﾚ値
+     * @param zureti セットする zureti
+     */
+    public void setZureti(Integer zureti) {
+        this.zureti = zureti;
+    }
+
+    /**
+     * 外観確認5
+     * @return gaikanKakunin5
+     */
+    public String getGaikanKakunin5() {
+        return gaikanKakunin5;
+    }
+
+    /**
+     * 外観確認5
+     * @param gaikanKakunin5 セットする gaikanKakunin5
+     */
+    public void setGaikanKakunin5(String gaikanKakunin5) {
+        this.gaikanKakunin5 = gaikanKakunin5;
     }
 
     /**

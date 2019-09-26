@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
@@ -90,7 +89,7 @@ public class GXHDO101B005 implements IFormLogic {
             processData.setProcessName("initial");
 
             // 初期表示データ設定処理
-            processData = setInitDate(processData);
+            processData = setInitData(processData);
             // 中断エラー発生時
             if (processData.isFatalError()) {
                 if (!processData.getInitMessageList().isEmpty()) {
@@ -105,12 +104,8 @@ public class GXHDO101B005 implements IFormLogic {
 
             //サブ画面呼出しをチェック処理なし(処理時にエラーの背景色を戻さない機能として登録)
             processData.setNoCheckButtonId(Arrays.asList(
-                    GXHDO101B005Const.BTN_HAKURI_GASHO_NG_KEISAN_TOP,
-                    GXHDO101B005Const.BTN_HAKURI_NAIYOU_NYURYOKU_TOP,
                     GXHDO101B005Const.BTN_STARTDATETIME_TOP,
                     GXHDO101B005Const.BTN_ENDDATETIME_TOP,
-                    GXHDO101B005Const.BTN_HAKURI_GASHO_NG_KEISAN_BOTTOM,
-                    GXHDO101B005Const.BTN_HAKURI_NAIYOU_NYURYOKU_BOTTOM,
                     GXHDO101B005Const.BTN_STARTDATETIME_BOTTOM,
                     GXHDO101B005Const.BTN_ENDDATETIME_BOTTOM
             ));
@@ -144,34 +139,6 @@ public class GXHDO101B005 implements IFormLogic {
         }
 
         return processData;
-    }
-
-    /**
-     * 剥離内容入力画面(サブ画面Open)
-     *
-     * @param processData 処理制御データ
-     * @return 処理制御データ
-     */
-    public ProcessData openHakuriInput(ProcessData processData) {
-
-        try {
-
-            processData.setMethod("");
-            // コールバックパラメータにてサブ画面起動用の値を設定
-            processData.setCollBackParam("gxhdo101c006");
-
-            // 膜厚(SPS)の現在の値をサブ画面の表示用の値に渡す
-            GXHDO101C006 beanGXHDO101C006 = (GXHDO101C006) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C006);
-            beanGXHDO101C006.setGxhdO101c006ModelView(beanGXHDO101C006.getGxhdO101c006Model().clone());
-
-            return processData;
-        } catch (CloneNotSupportedException ex) {
-
-            ErrUtil.outputErrorLog("CloneNotSupportedException発生", ex, LOGGER);
-            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
-            return processData;
-
-        }
     }
 
     /**
@@ -218,15 +185,6 @@ public class GXHDO101B005 implements IFormLogic {
      * @return エラーメッセージ情報
      */
     private ErrorMessageInfo checkItemTempRegist(ProcessData processData) {
-        
-        //端子テープ種類
-        FXHDD01 itemTtapeSyurui = getItemRow(processData.getItemList(), GXHDO101B005Const.TANSHI_TAPE_SHURUI);
-        if ("NG".equals(itemTtapeSyurui.getValue())) {
-            // ｴﾗｰ項目をﾘｽﾄに追加
-            List<FXHDD01> errFxhdd01List = Arrays.asList(itemTtapeSyurui);
-            return MessageUtil.getErrorMessageInfo("XHD-000032", true, true, errFxhdd01List, itemTtapeSyurui.getLabel1());
-        }
-
         return null;
     }
 
@@ -264,6 +222,7 @@ public class GXHDO101B005 implements IFormLogic {
 
             // 品質DB登録実績データ取得
             Map fxhdd03RevInfo = loadFxhdd03RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, formId);
+
             ErrorMessageInfo checkRevMessageInfo = checkRevision(processData, fxhdd03RevInfo);
             // リビジョンエラー時はリターン
             if (checkRevMessageInfo != null) {
@@ -394,22 +353,6 @@ public class GXHDO101B005 implements IFormLogic {
      */
     private ErrorMessageInfo checkItemRegistCorrect(ProcessData processData) {
 
-        //下端子ﾌﾞｸ抜き
-        FXHDD01 itemShitaTanshiBukunuki = getItemRow(processData.getItemList(), GXHDO101B005Const.SHITA_TANSHI_BUKUNUKI);
-        if (!"実施".equals(itemShitaTanshiBukunuki.getValue()) && !"未実施".equals(itemShitaTanshiBukunuki.getValue())) {
-            // ｴﾗｰ項目をﾘｽﾄに追加
-            List<FXHDD01> errFxhdd01List = Arrays.asList(itemShitaTanshiBukunuki);
-            return MessageUtil.getErrorMessageInfo("XHD-000032", true, true, errFxhdd01List, itemShitaTanshiBukunuki.getLabel1());
-        }
-
-        //端子テープ種類
-        FXHDD01 itemTtapeSyurui = getItemRow(processData.getItemList(), GXHDO101B005Const.TANSHI_TAPE_SHURUI);
-        if ("NG".equals(itemTtapeSyurui.getValue())) {
-            // ｴﾗｰ項目をﾘｽﾄに追加
-            List<FXHDD01> errFxhdd01List = Arrays.asList(itemTtapeSyurui);
-            return MessageUtil.getErrorMessageInfo("XHD-000032", true, true, errFxhdd01List, itemTtapeSyurui.getLabel1());
-        }
-
         ValidateUtil validateUtil = new ValidateUtil();
         // 開始日時、終了日時前後チェック
         FXHDD01 itemKaishiDay = getItemRow(processData.getItemList(), GXHDO101B005Const.KAISHI_DAY); //開始日
@@ -427,16 +370,6 @@ public class GXHDO101B005 implements IFormLogic {
         }
 
         return null;
-    }
-
-    /**
-     * 剥離内容入力画面チェック処理
-     *
-     * @return エラーリスト
-     */
-    private List<String> checkSubFormHakuriInput() {
-        GXHDO101C006 beanGXHDO101C006 = (GXHDO101C006) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C006);
-        return GXHDO101C006Logic.checkInput(beanGXHDO101C006.getGxhdO101c006Model());
     }
     
     /**
@@ -603,170 +536,7 @@ public class GXHDO101B005 implements IFormLogic {
 
         return processData;
     }
-        
-    /**
-     * 剥離/画処NG計算処理(データチェック処理)
-     *
-     * @param processData 処理制御データ
-     * @return 処理制御データ
-     */
-    public ProcessData checkHakuriGNGKeisan(ProcessData processData) {
-        Boolean checkHngFlag = false;
-        Boolean checkGngFlag = false;
-        //・剥離NG回数
-        FXHDD01 itemHngKaisuu = getItemRow(processData.getItemList(), GXHDO101B005Const.HAKURI_NG_KAISU);
-        //・剥離NG_AVE
-        FXHDD01 itemHngAVE = getItemRow(processData.getItemList(), GXHDO101B005Const.HAKURI_NG_AVE);
-        //・画処NG回数
-        FXHDD01 itemGngKkaisuu = getItemRow(processData.getItemList(), GXHDO101B005Const.GASHO_NG_KAISU);
-        //・画処NG_AVE
-        FXHDD01 itemGngKaisuuAVE = getItemRow(processData.getItemList(), GXHDO101B005Const.GASHO_NG_AVE);
-        //1.以下の項目のいずれか、もしくは両方が入力されているかﾁｪｯｸを行う。
-        //  ・剥離NG回数
-        //  ・剥離NG_AVE
-        // A.入力されている場合、上記項目は以降の処理で値を設定する対象項目とはしない。
-        //  ※両方入力されていない場合、値を設定する対象項目とする。        
-        if (("".equals(itemHngKaisuu.getValue()) && "".equals(itemHngAVE.getValue())) || 
-            (itemHngKaisuu.getValue() == null && itemHngAVE.getValue() == null)) {
-            checkHngFlag = true;
-        }
-        //2.以下の項目のいずれか、もしくは両方が入力されているかﾁｪｯｸを行う。
-        //  ・画処NG回数
-        //  ・画処NG_AVE
-        // A.入力されている場合、上記項目は以降の処理で値を設定する対象項目とはしない。
-        //  ※両方入力されていない場合、値を設定する対象項目とする。        
-        if (("".equals(itemGngKkaisuu.getValue()) && "".equals(itemGngKaisuuAVE.getValue())) || 
-            (itemGngKkaisuu.getValue() == null && itemGngKaisuuAVE.getValue() == null)) {
-            checkGngFlag = true;
-        }
-
-        //3.上記1、2の両方で値を設定する対象項目としない結果となった場合、以降の処理は実行しない。
-        if (!checkHngFlag && !checkGngFlag){
-            // 後続処理メソッド設定
-            processData.setMethod("");
-            return processData;
-        }
-    
-        QueryRunner queryRunnerSpskadoritu = new QueryRunner(processData.getDataSourceSpskadoritu());
-        QueryRunner queryRunnerTtpkadoritu = new QueryRunner(processData.getDataSourceTtpkadoritu());
-
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        HttpSession session = (HttpSession) externalContext.getSession(false);
-        String lotNo = (String) session.getAttribute("lotNo");
-        String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
-
-        // 変数SUM1
-        int sumHensuu1 = 0;
-        // 変数SUM2
-        int sumHensuu2 = 0;
-        // 画面.セット数
-        BigDecimal setSuu = BigDecimal.ZERO;        
-        BigDecimal valueAVE1= BigDecimal.ZERO;
-        BigDecimal valueAVE2= BigDecimal.ZERO;
-        Boolean gngSetFlag = false;
-        FXHDD01 itemSetSuu = getItemRow(processData.getItemList(), GXHDO101B005Const.SET_SUU);
-        setSuu = new BigDecimal(itemSetSuu.getValue());
-        // 「画処NG_AVE」項目情報を取得
-        FXHDD01 itemGNGKaisuuAve = getItemRow(processData.getItemList(),GXHDO101B005Const.GASHO_NG_AVE);
-        // 「画処NG_AVE」小数桁を取得
-        int gngKaisuuAveDecLength = Integer.parseInt(itemGNGKaisuuAve.getInputLengthDec());
-
-        // 「剥離NG_AVE」項目情報を取得
-        FXHDD01 itemHNGKaisuuAve = getItemRow(processData.getItemList(),GXHDO101B005Const.HAKURI_NG_AVE);
-        // 「剥離NG_AVE」小数桁を取得
-        int hngKaisuuAveDecLength = Integer.parseInt(itemHNGKaisuuAve.getInputLengthDec());
-        
-        try {
-            // (19)[積層履歴ﾃﾞｰﾀ]から、ﾃﾞｰﾀを取得
-            Map sekisouRirekiData = this.loadSekisouRirekiData(queryRunnerSpskadoritu, lotNo);
-            if (sekisouRirekiData == null || sekisouRirekiData.isEmpty() || 
-                    (sekisouRirekiData.get("HakuriErrSuu") == null && sekisouRirekiData.get("CcdErrSuu") == null) ) {
-                // A.取得出来なかった場合 ｱ.Ⅲ.画面表示仕様(20)を発行する。
-                // (20)[剥離NG履歴]から、ﾃﾞｰﾀを取得
-                Map hakuringrirekiData = this.loadHakuringrirekiData(queryRunnerTtpkadoritu, lotNo);
-                if (hakuringrirekiData == null || hakuringrirekiData.isEmpty() || 
-                    (hakuringrirekiData.get("SekisouSuu") == null)) {
-                    // α.取得出来なかった場合ｴﾗｰﾒｯｾｰｼﾞを表示し、以降の処理は実行しない。
-                    // ・ｴﾗｰｺｰﾄﾞ:XHD-000036
-                    // ・ｴﾗ-ﾒｯｾｰｼﾞ:剥離/画処NGﾃﾞｰﾀが取得出来ません。
-                    FacesContext facesContext = FacesContext.getCurrentInstance();
-                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000036"), null);
-                    facesContext.addMessage(null, message);
-                    processData.setMethod("");
-                    return processData;
-                }else{
-                    // β.取得出来た場合
-                    // a.取得した積層数を合計する。この値を「変数SUM1」とする
-                    // b. a ÷ 画面.セット数の計算を行う。この値を「変数AVE1」とする
-                    // a.変数SUM1
-                    BigDecimal sumSekisouSuu= BigDecimal.ZERO;
-
-                    for (Object key : hakuringrirekiData.keySet()) {
-                        sumSekisouSuu = new BigDecimal(String.valueOf(hakuringrirekiData.get(key)));
-                    }
-
-                    if (!setSuu.equals(BigDecimal.ZERO)){
-                        valueAVE1 = sumSekisouSuu.divide(setSuu, hngKaisuuAveDecLength ,BigDecimal.ROUND_DOWN);
-                    }
-                    sumHensuu1 = sumSekisouSuu.intValue();
-                }
-            }else{
-                // B.取得出来た場合
-                // ｱ.取得した剥離ｴﾗｰ数を合計する。この値を「変数SUM1」とする。
-                // ｲ. ｱ ÷ 画面.セット数の計算を行う。この値を「変数AVE1」とする。
-
-                // 剥離ｴﾗｰ数
-                BigDecimal sumHakuriErrSuu= BigDecimal.ZERO;
-                // 画処ｴﾗｰ数
-                BigDecimal sumCcdErrSuu= BigDecimal.ZERO;
-
-                for (Object key : sekisouRirekiData.keySet()) {
-                    if("HakuriErrSuu".equals(key)){
-                        sumHakuriErrSuu = new BigDecimal(String.valueOf(sekisouRirekiData.get(key)));
-                    }
-                    if("CcdErrSuu".equals(key)){
-                        sumCcdErrSuu = new BigDecimal(String.valueOf(sekisouRirekiData.get(key)));
-                    }
-                }
-                if (!setSuu.equals(BigDecimal.ZERO)){
-                    valueAVE1 = sumHakuriErrSuu.divide(setSuu, hngKaisuuAveDecLength ,BigDecimal.ROUND_DOWN);
-                }
-                sumHensuu1 = sumHakuriErrSuu.intValue();
-
-                // ｳ.取得した画処ｴﾗｰ数を合計する。この値を「変数SUM2」とする。
-                // ｴ. ｳ ÷ 画面.セット数の計算を行う。この値を「変数AVE2」とする。
-                if (!setSuu.equals(BigDecimal.ZERO)){
-                    valueAVE2 = sumCcdErrSuu.divide(setSuu, gngKaisuuAveDecLength ,BigDecimal.ROUND_DOWN);
-                }
-                sumHensuu2 = sumCcdErrSuu.intValue();
-                gngSetFlag = true;
-            }
-            
-            if (checkHngFlag){
-                //・剥離NG回数
-                setItemData(processData,GXHDO101B005Const.HAKURI_NG_KAISU, String.valueOf(sumHensuu1));
-                //・剥離NG_AVE
-                setItemData(processData,GXHDO101B005Const.HAKURI_NG_AVE, String.valueOf(valueAVE1));
-            }
-            
-            if (checkGngFlag && gngSetFlag){
-                //・画処NG回数
-                setItemData(processData,GXHDO101B005Const.GASHO_NG_KAISU,String.valueOf(sumHensuu2));
-                //・画処NG_AVE
-                setItemData(processData,GXHDO101B005Const.GASHO_NG_AVE,String.valueOf(valueAVE2));
-            }
-
-        } catch (SQLException ex) {
-            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
-            return processData;
-        }
-
-        // 後続処理メソッド設定
-        processData.setMethod("");
-        return processData;
-    }
-
+ 
     /**
      * 修正処理(実処理)
      *
@@ -992,15 +762,11 @@ public class GXHDO101B005 implements IFormLogic {
             case JOTAI_FLG_TOROKUZUMI:
                 activeIdList.addAll(Arrays.asList(
                         GXHDO101B005Const.BTN_COPY_EDABAN_BOTTOM,
-                        GXHDO101B005Const.BTN_HAKURI_NAIYOU_NYURYOKU_BOTTOM,
-                        GXHDO101B005Const.BTN_HAKURI_GASHO_NG_KEISAN_BOTTOM,
                         GXHDO101B005Const.BTN_DELETE_BOTTOM,
                         GXHDO101B005Const.BTN_UPDATE_BOTTOM,
                         GXHDO101B005Const.BTN_STARTDATETIME_BOTTOM,
                         GXHDO101B005Const.BTN_ENDDATETIME_BOTTOM,
                         GXHDO101B005Const.BTN_COPY_EDABAN_TOP,
-                        GXHDO101B005Const.BTN_HAKURI_NAIYOU_NYURYOKU_TOP,
-                        GXHDO101B005Const.BTN_HAKURI_GASHO_NG_KEISAN_TOP,
                         GXHDO101B005Const.BTN_DELETE_TOP,
                         GXHDO101B005Const.BTN_UPDATE_TOP,
                         GXHDO101B005Const.BTN_STARTDATETIME_TOP,
@@ -1017,15 +783,11 @@ public class GXHDO101B005 implements IFormLogic {
                 activeIdList.addAll(Arrays.asList(
                         GXHDO101B005Const.BTN_KARI_TOUROKU_BOTTOM,
                         GXHDO101B005Const.BTN_COPY_EDABAN_BOTTOM,
-                        GXHDO101B005Const.BTN_HAKURI_NAIYOU_NYURYOKU_BOTTOM,
-                        GXHDO101B005Const.BTN_HAKURI_GASHO_NG_KEISAN_BOTTOM,
                         GXHDO101B005Const.BTN_INSERT_BOTTOM,
                         GXHDO101B005Const.BTN_STARTDATETIME_BOTTOM,
                         GXHDO101B005Const.BTN_ENDDATETIME_BOTTOM,
                         GXHDO101B005Const.BTN_KARI_TOUROKU_TOP,
                         GXHDO101B005Const.BTN_COPY_EDABAN_TOP,
-                        GXHDO101B005Const.BTN_HAKURI_NAIYOU_NYURYOKU_TOP,
-                        GXHDO101B005Const.BTN_HAKURI_GASHO_NG_KEISAN_TOP,
                         GXHDO101B005Const.BTN_INSERT_TOP,
                         GXHDO101B005Const.BTN_STARTDATETIME_TOP,
                         GXHDO101B005Const.BTN_ENDDATETIME_TOP
@@ -1055,16 +817,6 @@ public class GXHDO101B005 implements IFormLogic {
     public String convertButtonIdToMethod(String buttonId) {
         String method;
         switch (buttonId) {
-            // 剥離内容入力
-            case GXHDO101B005Const.BTN_HAKURI_NAIYOU_NYURYOKU_TOP:
-            case GXHDO101B005Const.BTN_HAKURI_NAIYOU_NYURYOKU_BOTTOM:
-                method = "openHakuriInput";
-                break;
-            // 剥離/画処NG計算
-            case GXHDO101B005Const.BTN_HAKURI_GASHO_NG_KEISAN_TOP:
-            case GXHDO101B005Const.BTN_HAKURI_GASHO_NG_KEISAN_BOTTOM:
-                method = "checkHakuriGNGKeisan";
-                break;
             // 仮登録
             case GXHDO101B005Const.BTN_KARI_TOUROKU_TOP:
             case GXHDO101B005Const.BTN_KARI_TOUROKU_BOTTOM:
@@ -1115,7 +867,7 @@ public class GXHDO101B005 implements IFormLogic {
      * @return 処理制御データ
      * @throws SQLException 例外エラー
      */
-    private ProcessData setInitDate(ProcessData processData) throws SQLException {
+    private ProcessData setInitData(ProcessData processData) throws SQLException {
 
         QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
         QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
@@ -1139,9 +891,56 @@ public class GXHDO101B005 implements IFormLogic {
             processData.setInitMessageList(errorMessageList);
             return processData;
         }
-
+        
         // 設計情報チェック(対象のデータが取得出来ていない場合エラー)
         errorMessageList.addAll(ValidateUtil.checkSekkeiUnsetItems(sekkeiData, getMapSekkeiAssociation()));
+
+        //上ｶﾊﾞｰﾃｰﾌﾟ
+        String ueCoverTape1DataValue = "";
+        //下ｶﾊﾞｰﾃｰﾌﾟ
+        String shitaCoverTape1DataValue = "";
+        //印刷ﾛｰﾙNo
+        String rollnoDataValue = "";
+
+        List<String> checkListDataVal = new ArrayList<>();
+        
+        //2.上ｶﾊﾞｰﾃｰﾌﾟ対象項目の決定
+        checkListDataVal = checkYoutoItems(processData,sekkeiData, getMapYoutoAssociation(),"CT",getMapSekkeiAssociation());
+        for(int i=0; i<=checkListDataVal.size()-1; i++){
+            if(i > 0){
+                if("ERROR".equals(checkListDataVal.get(0))){
+                    errorMessageList.add(checkListDataVal.get(i));
+                }else if("OK".equals(checkListDataVal.get(0))){
+                    ueCoverTape1DataValue = checkListDataVal.get(i);
+                }
+            }
+        }
+
+        //3.下ｶﾊﾞｰﾃｰﾌﾟ対象項目の決定
+        checkListDataVal.clear();
+        checkListDataVal = checkYoutoItems(processData,sekkeiData, getMapYoutoAssociation(),"CB",getMapSekkeiAssociation());
+        for(int i=0; i<=checkListDataVal.size()-1; i++){
+            if(i > 0){
+                if("ERROR".equals(checkListDataVal.get(0))){
+                    errorMessageList.add(checkListDataVal.get(i));
+                }else if("OK".equals(checkListDataVal.get(0))){
+                    shitaCoverTape1DataValue = checkListDataVal.get(i);
+                }
+            }
+        }
+
+        //4.印刷ﾛｰﾙNo対象項目の決定
+        checkListDataVal.clear();
+        checkListDataVal = checkYoutoItems(processData,sekkeiData, getMapYoutoAssociation(),"EA",getMapSekkeiAssociation());
+        for(int i=0; i<=checkListDataVal.size()-1; i++){
+            if(i > 0){
+                if("ERROR".equals(checkListDataVal.get(0))){
+                    errorMessageList.add(checkListDataVal.get(i));
+                }else if("OK".equals(checkListDataVal.get(0))){
+                    rollnoDataValue = checkListDataVal.get(i);
+                }
+            }
+        }
 
         // 製版ﾏｽﾀ情報取得
         String pattern = StringUtil.nullToBlank(sekkeiData.get("PATTERN")); //電極製版名 
@@ -1179,13 +978,142 @@ public class GXHDO101B005 implements IFormLogic {
         }
 
         // 画面に取得した情報をセットする。(入力項目以外)
-        setViewItemData(processData, sekkeiData, lotKbnMasData, ownerMasData, daPatternMasData, shikakariData, lotNo, sLotNo);
+        setViewItemData(processData, sekkeiData, lotKbnMasData, ownerMasData, daPatternMasData, shikakariData, lotNo, 
+                sLotNo,ueCoverTape1DataValue,shitaCoverTape1DataValue,rollnoDataValue);
 
         processData.setInitMessageList(errorMessageList);
         return processData;
 
     }
 
+    /**
+     * 関連付けMapに定義されている項目が用途データで['CT','CB','EA']が存在しない場合エラーとしエラー情報を返す
+     * ※関連付けMapには設計データに持っている項目IDが設定されていること
+     *
+     * @param processData 処理制御データ
+     * @param sekkeiData 設計データ
+     * @param mapYoutoAssociation 用途関連付けMap
+     * @param youtoType 用途データ型
+     * @param mapSekkeiAssociation 設計データ関連付けMap
+     * @return エラーメッセージリスト
+     */
+    public List<String> checkYoutoItems(ProcessData processData,Map<String, String> sekkeiData,
+            Map<String, String> mapYoutoAssociation,String youtoType, Map<String, String> mapSekkeiAssociation) {
+
+        List<String> retListData =  new ArrayList<>();
+        boolean checkExistFlag = false;
+        boolean checkCTCBExistFlag = false;
+        String sekkeiDataKey = "";
+        String checkSyuruiData = "";
+        String checkAtumiData = "";
+        String checkMaisuuData = "";
+        String checkRollnoData = "";
+
+        for (Map.Entry<String, String> entry : mapYoutoAssociation.entrySet()) {
+            String checkData = "";
+            if (sekkeiData.get(entry.getKey()) != null) {
+                checkData = String.valueOf(sekkeiData.get(entry.getKey()));
+            }
+
+            if (youtoType.equals(checkData)) {
+                checkExistFlag = true;
+                sekkeiDataKey = entry.getKey();
+                break;
+            }
+        }
+
+        if(!checkExistFlag){
+            retListData.add("ERROR");
+            if(null != youtoType)switch (youtoType) {
+                case "CT":
+                    retListData.add(MessageUtil.getMessage("XHD-000100"));
+                    break;
+                case "CB":
+                    retListData.add(MessageUtil.getMessage("XHD-000101"));
+                    break;
+                case "EA":
+                    retListData.add(MessageUtil.getMessage("XHD-000104"));
+                    break;
+                default:
+                    break;
+            }
+            return retListData;
+        }
+
+        String sekkeiDataRowNo = sekkeiDataKey.substring(5);
+        String syuruiDataKey = "SYURUI" + sekkeiDataRowNo;
+        String atumiDataKey = "ATUMI" + sekkeiDataRowNo;
+        String maisuuDataKey = "MAISUU" + sekkeiDataRowNo;
+        String rollnoDataKey = "ROLLNO" + sekkeiDataRowNo;
+
+        checkSyuruiData = StringUtil.nullToBlank(sekkeiData.get(syuruiDataKey));
+        checkAtumiData = StringUtil.nullToBlank(String.valueOf(sekkeiData.get(atumiDataKey)));
+        checkMaisuuData = StringUtil.nullToBlank(String.valueOf(sekkeiData.get(maisuuDataKey)));
+        checkRollnoData = StringUtil.nullToBlank(sekkeiData.get(rollnoDataKey));
+
+        if("CT".equals(youtoType) || "CB".equals(youtoType)){
+            if ("".equals(checkSyuruiData) || "null".equals(checkSyuruiData)) {
+                checkCTCBExistFlag = true;
+                retListData.add("ERROR");
+                for (Map.Entry<String, String> entry : mapSekkeiAssociation.entrySet()) {
+                    if (syuruiDataKey.equals(entry.getKey())) {
+                        retListData.add(MessageUtil.getMessage("XHD-000021", entry.getKey(), entry.getValue()));
+                        break;
+                    }
+                }
+            }
+
+            if ("".equals(checkAtumiData) || "null".equals(checkAtumiData)) {
+                if(!checkCTCBExistFlag){
+                    retListData.add("ERROR");
+                    checkCTCBExistFlag = true;
+                }
+                for (Map.Entry<String, String> entry : mapSekkeiAssociation.entrySet()) {
+                    if (atumiDataKey.equals(entry.getKey())) {
+                        retListData.add(MessageUtil.getMessage("XHD-000021", entry.getKey(), entry.getValue()));
+                        break;
+                    }
+                }
+            }
+
+            if ("".equals(checkMaisuuData) || "null".equals(checkMaisuuData)) {
+                if(!checkCTCBExistFlag){
+                    retListData.add("ERROR");
+                    checkCTCBExistFlag = true;
+                }
+                for (Map.Entry<String, String> entry : mapSekkeiAssociation.entrySet()) {
+                    if (maisuuDataKey.equals(entry.getKey())) {
+                        retListData.add(MessageUtil.getMessage("XHD-000021", entry.getKey(), entry.getValue()));
+                        break;
+                    }
+                }
+            }
+
+            if(!checkCTCBExistFlag){
+                retListData.add("OK");
+                String retCTCBValue = checkSyuruiData + "  " + checkAtumiData + "μm×" + checkMaisuuData + "枚";
+                retListData.add(retCTCBValue);
+            }
+            return retListData;
+        }else if("EA".equals(youtoType)){
+            if ("".equals(checkRollnoData) || "null".equals(checkRollnoData)) {
+                retListData.add("ERROR");
+                for (Map.Entry<String, String> entry : mapSekkeiAssociation.entrySet()) {
+                    if (rollnoDataKey.equals(entry.getKey())) {
+                        retListData.add(MessageUtil.getMessage("XHD-000021", entry.getKey(), entry.getValue()));
+                        break;
+                    }
+                }
+            }else{
+                retListData.add("OK");
+                retListData.add(checkRollnoData);
+                return retListData;
+            }
+        }
+
+        return retListData;
+    }
+    
     /**
      * 入力項目以外のデータを画面項目に設定
      *
@@ -1197,8 +1125,12 @@ public class GXHDO101B005 implements IFormLogic {
      * @param shikakariData 仕掛データ
      * @param lotNo ﾛｯﾄNo
      * @param sLotNo 先行LotNo
+     * @param ueCoverTape1 上カバーテープ１
+     * @param shitaCoverTape1 下カバーテープ１
+     * @param rollno 印刷ﾛｰﾙNo
      */
-    private void setViewItemData(ProcessData processData, Map sekkeiData, Map lotKbnMasData, Map ownerMasData, Map daPatternMasData, Map shikakariData, String lotNo, String sLotNo) {
+    private void setViewItemData(ProcessData processData, Map sekkeiData, Map lotKbnMasData, Map ownerMasData, Map daPatternMasData,
+            Map shikakariData, String lotNo, String sLotNo,String ueCoverTape1,String shitaCoverTape1,String rollno) {
 
         // ロットNo
         this.setItemData(processData, GXHDO101B005Const.LOTNO, lotNo);
@@ -1250,23 +1182,10 @@ public class GXHDO101B005 implements IFormLogic {
                 + "枚");
 
         // 上カバーテープ１
-        this.setItemData(processData, GXHDO101B005Const.UE_COVER_TAPE1, 
-                StringUtil.nullToBlank(sekkeiData.get("SYURUI2"))
-                + "  "
-                + StringUtil.nullToBlank(sekkeiData.get("ATUMI2"))
-                + "μm×"
-                + StringUtil.nullToBlank(sekkeiData.get("MAISUU2"))
-                + "枚"
-        );
+        this.setItemData(processData, GXHDO101B005Const.UE_COVER_TAPE1, ueCoverTape1);
 
         // 下カバーテープ１
-        this.setItemData(processData, GXHDO101B005Const.SHITA_COVER_TAPE1, 
-                StringUtil.nullToBlank(sekkeiData.get("SYURUI3"))
-                + "  "
-                + StringUtil.nullToBlank(sekkeiData.get("ATUMI3"))
-                + "μm×"
-                + StringUtil.nullToBlank(sekkeiData.get("MAISUU3"))
-                + "枚");
+        this.setItemData(processData, GXHDO101B005Const.SHITA_COVER_TAPE1, shitaCoverTape1);
 
         // 列 × 行
         String lRetsu = StringUtil.nullToBlank(getMapData(daPatternMasData, "LRETU")); //列
@@ -1291,6 +1210,18 @@ public class GXHDO101B005 implements IFormLogic {
         if ("".equals(processData.getInitJotaiFlg()) || JOTAI_FLG_SAKUJO.equals(processData.getInitJotaiFlg())){
             this.setItemData(processData, GXHDO101B005Const.SENKOU_LOT_NO, sLotNo);
         }
+
+        // 印刷ﾛｰﾙNo
+        this.setItemData(processData, GXHDO101B005Const.PRINT_ROLLNO, rollno);
+        
+        //製版名
+        this.setItemData(processData, GXHDO101B005Const.PATERN, StringUtil.nullToBlank(sekkeiData.get("PATTERN")));
+        
+        //取り個数
+        this.setItemData(processData, GXHDO101B005Const.TORIKOSUU, StringUtil.nullToBlank(sekkeiData.get("TORIKOSUU")));
+        
+        //連続積層枚数
+        this.setItemData(processData, GXHDO101B005Const.RENZOKUSEKISOUMAISUU, StringUtil.nullToBlank(sekkeiData.get("RENZOKUINSATUN")));
         
     }
 
@@ -1386,10 +1317,6 @@ public class GXHDO101B005 implements IFormLogic {
         this.setItemData(processData, GXHDO101B005Const.SLIP_LOTNO, getSrRsussekItemData(GXHDO101B005Const.SLIP_LOTNO, srSrRsussekData));
         // ﾛｰﾙNo1
         this.setItemData(processData, GXHDO101B005Const.ROLL_NO1, getSrRsussekItemData(GXHDO101B005Const.ROLL_NO1, srSrRsussekData));
-        // ﾛｰﾙNo2
-        this.setItemData(processData, GXHDO101B005Const.ROLL_NO2, getSrRsussekItemData(GXHDO101B005Const.ROLL_NO2, srSrRsussekData));
-        // ﾛｰﾙNo3
-        this.setItemData(processData, GXHDO101B005Const.ROLL_NO3, getSrRsussekItemData(GXHDO101B005Const.ROLL_NO3, srSrRsussekData));
         // 原料記号
         this.setItemData(processData, GXHDO101B005Const.GENRYO_KIGOU, getSrRsussekItemData(GXHDO101B005Const.GENRYO_KIGOU, srSrRsussekData));
         // ＰＥＴフィルム種類
@@ -1402,8 +1329,6 @@ public class GXHDO101B005 implements IFormLogic {
         this.setItemData(processData, GXHDO101B005Const.SHITA_TANSHI_GOUKI, getSrRsussekItemData(GXHDO101B005Const.SHITA_TANSHI_GOUKI, srSrRsussekData));
         // 上端子号機
         this.setItemData(processData, GXHDO101B005Const.UE_TANSHI_GOUKI, getSrRsussekItemData(GXHDO101B005Const.UE_TANSHI_GOUKI, srSrRsussekData));
-        // 下端子ﾌﾞｸ抜き
-        this.setItemData(processData, GXHDO101B005Const.SHITA_TANSHI_BUKUNUKI, getSrRsussekItemData(GXHDO101B005Const.SHITA_TANSHI_BUKUNUKI, srSrRsussekData));
         // 積層号機
         this.setItemData(processData, GXHDO101B005Const.SEKISOU_GOKI, getSrRsussekItemData(GXHDO101B005Const.SEKISOU_GOKI, srSrRsussekData));
         // 下端子
@@ -1416,12 +1341,6 @@ public class GXHDO101B005 implements IFormLogic {
         this.setItemData(processData, GXHDO101B005Const.RYOUHIN_SET_SU, getSrRsussekItemData(GXHDO101B005Const.RYOUHIN_SET_SU, srSrRsussekData));
         // 外観確認1
         this.setItemData(processData, GXHDO101B005Const.GAIKAN_KAKUNIN1, getSrRsussekItemData(GXHDO101B005Const.GAIKAN_KAKUNIN1, srSrRsussekData));
-        // 外観確認2
-        this.setItemData(processData, GXHDO101B005Const.GAIKAN_KAKUNIN2, getSrRsussekItemData(GXHDO101B005Const.GAIKAN_KAKUNIN2, srSrRsussekData));
-        // 外観確認3
-        this.setItemData(processData, GXHDO101B005Const.GAIKAN_KAKUNIN3, getSrRsussekItemData(GXHDO101B005Const.GAIKAN_KAKUNIN3, srSrRsussekData));
-        // 外観確認4
-        this.setItemData(processData, GXHDO101B005Const.GAIKAN_KAKUNIN4, getSrRsussekItemData(GXHDO101B005Const.GAIKAN_KAKUNIN4, srSrRsussekData));
         // 開始日
         this.setItemData(processData, GXHDO101B005Const.KAISHI_DAY, getSrRsussekItemData(GXHDO101B005Const.KAISHI_DAY, srSrRsussekData));
         // 開始時刻
@@ -1434,27 +1353,28 @@ public class GXHDO101B005 implements IFormLogic {
         this.setItemData(processData, GXHDO101B005Const.SHURYOU_TIME, getSrRsussekItemData(GXHDO101B005Const.SHURYOU_TIME, srSrRsussekData));
         // 終了担当者
         this.setItemData(processData, GXHDO101B005Const.SHURYOU_TANTOUSHA, getSrRsussekItemData(GXHDO101B005Const.SHURYOU_TANTOUSHA, srSrRsussekData));
-        // 端子テープ種類
-        this.setItemData(processData, GXHDO101B005Const.TANSHI_TAPE_SHURUI, getSrRsussekItemData(GXHDO101B005Const.TANSHI_TAPE_SHURUI, srSrRsussekData));
         // 瞬時加熱時間
         this.setItemData(processData, GXHDO101B005Const.SHUNJI_KANETSU_TIME, getSrRsussekItemData(GXHDO101B005Const.SHUNJI_KANETSU_TIME, srSrRsussekData));
         // タクト
         this.setItemData(processData, GXHDO101B005Const.TAKT, getSrRsussekItemData(GXHDO101B005Const.TAKT, srSrRsussekData));
         // 先行ロットNo
         this.setItemData(processData, GXHDO101B005Const.SENKOU_LOT_NO, getSrRsussekItemData(GXHDO101B005Const.SENKOU_LOT_NO, srSrRsussekData));
-        // 剥離NG回数
-        this.setItemData(processData, GXHDO101B005Const.HAKURI_NG_KAISU, getSrRsussekItemData(GXHDO101B005Const.HAKURI_NG_KAISU, srSrRsussekData));
-        // 剥離NG_AVE
-        this.setItemData(processData, GXHDO101B005Const.HAKURI_NG_AVE, getSrRsussekItemData(GXHDO101B005Const.HAKURI_NG_AVE, srSrRsussekData));
-        // 画処NG回数
-        this.setItemData(processData, GXHDO101B005Const.GASHO_NG_KAISU, getSrRsussekItemData(GXHDO101B005Const.GASHO_NG_KAISU, srSrRsussekData));
-        // 画処NG_AVE
-        this.setItemData(processData, GXHDO101B005Const.GASHO_NG_AVE, getSrRsussekItemData(GXHDO101B005Const.GASHO_NG_AVE, srSrRsussekData));
         // 備考1
         this.setItemData(processData, GXHDO101B005Const.BIKOU1, getSrRsussekItemData(GXHDO101B005Const.BIKOU1, srSrRsussekData));
         // 備考2
         this.setItemData(processData, GXHDO101B005Const.BIKOU2, getSrRsussekItemData(GXHDO101B005Const.BIKOU2, srSrRsussekData));
-
+        // 製版名
+        this.setItemData(processData, GXHDO101B005Const.PATERN, getSrRsussekItemData(GXHDO101B005Const.PATERN, srSrRsussekData));
+        // 取り個数
+        this.setItemData(processData, GXHDO101B005Const.TORIKOSUU, getSrRsussekItemData(GXHDO101B005Const.TORIKOSUU, srSrRsussekData));
+        // 連続積層枚数
+        this.setItemData(processData, GXHDO101B005Const.RENZOKUSEKISOUMAISUU, getSrRsussekItemData(GXHDO101B005Const.RENZOKUSEKISOUMAISUU, srSrRsussekData));
+        // B層補正量
+        this.setItemData(processData, GXHDO101B005Const.BSOUHOSEIRYOU, getSrRsussekItemData(GXHDO101B005Const.BSOUHOSEIRYOU, srSrRsussekData));
+        // Y軸補正量
+        this.setItemData(processData, GXHDO101B005Const.YJIKUHOSEIRYOU, getSrRsussekItemData(GXHDO101B005Const.YJIKUHOSEIRYOU, srSrRsussekData));
+        // 電極ｽﾀｰﾄ確認者
+        this.setItemData(processData, GXHDO101B005Const.KAKUNINSYA, getSrRsussekItemData(GXHDO101B005Const.KAKUNINSYA, srSrRsussekData));
     }
 
     /**
@@ -1621,48 +1541,6 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
             return loadTmpSubSrRsussek(queryRunnerQcdb, kojyo, lotNo, edaban, rev);
         }
     }
-
-    /**
-     * [積層履歴ﾃﾞｰﾀ]から、ﾃﾞｰﾀを取得
-     *
-     * @param queryRunnerSpskadoritu QueryRunnerオブジェクト
-     * @param lotNo ﾛｯﾄNo(検索キー)
-     * @return 取得データ
-     * @throws SQLException 例外エラー
-     */
-    private Map loadSekisouRirekiData(QueryRunner queryRunnerSpskadoritu, String lotNo) throws SQLException {
-        // 積層履歴ﾃﾞｰﾀの取得
-        String sql = "SELECT sum(HakuriErrSuu) AS HakuriErrSuu,sum(CcdErrSuu) AS CcdErrSuu "
-                + "FROM sekisourirekidata "
-                + "WHERE LotNo = ? ";
-
-        List<Object> params = new ArrayList<>();
-        params.add(lotNo);
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerSpskadoritu.query(sql, new MapHandler(), params.toArray());
-    }
-    
-    /**
-     * [剥離NG履歴]から、ﾃﾞｰﾀを取得
-     *
-     * @param queryRunnerTtpkadoritu QueryRunnerオブジェクト
-     * @param lotNo ﾛｯﾄNo(検索キー)
-     * @return 取得データ
-     * @throws SQLException 例外エラー
-     */
-    private Map loadHakuringrirekiData(QueryRunner queryRunnerTtpkadoritu, String lotNo) throws SQLException {
-        // 剥離NG履歴ﾃﾞｰﾀの取得
-        String sql = "SELECT sum(SekisouSuu) AS SekisouSuu "
-                + "FROM hakuringrireki "
-                + "WHERE LotNo = ? ";
-
-        List<Object> params = new ArrayList<>();
-        params.add(lotNo);
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerTtpkadoritu.query(sql, new MapHandler(), params.toArray());
-    }
     
     /**
      * [設計]から、初期表示する情報を取得
@@ -1676,9 +1554,10 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         String lotNo1 = lotNo.substring(0, 3);
         String lotNo2 = lotNo.substring(3, 11);
         // 設計データの取得
-        String sql = "SELECT SEKKEINO,"
-                + "GENRYOU,ETAPE,EATUMI,SOUSUU,EMAISUU,SYURUI2,ATUMI2,"
-                + "MAISUU2,SYURUI3,ATUMI3,MAISUU3,PATTERN,LASTLAYERSLIDERYO,ABSLIDE "
+        String sql = "SELECT SEKKEINO,GENRYOU,ETAPE,EATUMI,SOUSUU,EMAISUU,YOUTO1,YOUTO2,YOUTO3,YOUTO4,YOUTO5,YOUTO6,YOUTO7,YOUTO8,SYURUI1"
+                + ",SYURUI2,SYURUI3,SYURUI4,SYURUI5,SYURUI6,SYURUI7,SYURUI8,ATUMI1,ATUMI2,ATUMI3,ATUMI4,ATUMI5,ATUMI6,ATUMI7"
+                + ",ATUMI8,MAISUU1,MAISUU2,MAISUU3,MAISUU4,MAISUU5,MAISUU6,MAISUU7,MAISUU8,ROLLNO1,ROLLNO2,ROLLNO3,ROLLNO4"
+                + ",ROLLNO5,ROLLNO6,ROLLNO7,ROLLNO8,PATTERN,LASTLAYERSLIDERYO,TORIKOSUU,RENZOKUINSATUN "
                 + "FROM da_sekkei "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = '001'";
 
@@ -1698,26 +1577,84 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
     private Map getMapSekkeiAssociation() {
         Map<String, String> map = new LinkedHashMap<String, String>() {
             {
-                put("GENRYOU", "電極テープ");
-                put("ETAPE", "電極テープ");
-                put("EATUMI", "積層数");
-                put("SOUSUU", "積層数");
-                put("EMAISUU", "積層数");
-                put("SYURUI2", "上カバーテープ１");
-                put("ATUMI2", "上カバーテープ１");
-                put("MAISUU2", "上カバーテープ１");
-                put("SYURUI3", "下カバーテープ１");
-                put("ATUMI3", "下カバーテープ１");
-                put("MAISUU3", "下カバーテープ１");
+                put("SEKKEINO", "設計No");
+                put("GENRYOU", "原料");
+                put("ETAPE", "電極ﾃｰﾌﾟ");
+                put("EATUMI", "電極厚み");
+                put("SOUSUU", "総数");
+                put("EMAISUU", "電極枚数");
+                put("YOUTO1", "用途1");
+                put("YOUTO2", "用途2");
+                put("YOUTO3", "用途3");
+                put("YOUTO4", "用途4");
+                put("YOUTO5", "用途5");
+                put("YOUTO6", "用途6");
+                put("YOUTO7", "用途7");
+                put("YOUTO8", "用途8");
+                put("SYURUI1", "種類1");
+                put("SYURUI2", "種類2");
+                put("SYURUI3", "種類3");
+                put("SYURUI4", "種類4");
+                put("SYURUI5", "種類5");
+                put("SYURUI6", "種類6");
+                put("SYURUI7", "種類7");
+                put("SYURUI8", "種類8");
+                put("ATUMI1", "厚み1");
+                put("ATUMI2", "厚み2");
+                put("ATUMI3", "厚み3");
+                put("ATUMI4", "厚み4");
+                put("ATUMI5", "厚み5");
+                put("ATUMI6", "厚み6");
+                put("ATUMI7", "厚み7");
+                put("ATUMI8", "厚み8");
+                put("MAISUU1", "枚数1");
+                put("MAISUU2", "枚数2");
+                put("MAISUU3", "枚数3");
+                put("MAISUU4", "枚数4");
+                put("MAISUU5", "枚数5");
+                put("MAISUU6", "枚数6");
+                put("MAISUU7", "枚数7");
+                put("MAISUU8", "枚数8");
+                put("ROLLNO1", "ﾛｰﾙNo1");
+                put("ROLLNO2", "ﾛｰﾙNo2");
+                put("ROLLNO3", "ﾛｰﾙNo3");
+                put("ROLLNO4", "ﾛｰﾙNo4");
+                put("ROLLNO5", "ﾛｰﾙNo5");
+                put("ROLLNO6", "ﾛｰﾙNo6");
+                put("ROLLNO7", "ﾛｰﾙNo7");
+                put("ROLLNO8", "ﾛｰﾙNo8");
                 put("PATTERN", "電極製版名");
-                put("ABSLIDE", "積層スライド量");
-                put("LASTLAYERSLIDERYO", "最上層スライド量");
+                put("LASTLAYERSLIDERYO", "最上層ｽﾗｲﾄﾞ量");
+                put("TORIKOSUU", "取り個数");
+                put("RENZOKUINSATUN", "連続積層枚数");
             }
         };
 
         return map;
     }
 
+    /**
+     * 用途関連付けマップ取得
+     *
+     * @return 設計データ関連付けマップ
+     */
+    private Map getMapYoutoAssociation() {
+        Map<String, String> map = new LinkedHashMap<String, String>() {
+            {
+                put("YOUTO1", "用途1");
+                put("YOUTO2", "用途2");
+                put("YOUTO3", "用途3");
+                put("YOUTO4", "用途4");
+                put("YOUTO5", "用途5");
+                put("YOUTO6", "用途6");
+                put("YOUTO7", "用途7");
+                put("YOUTO8", "用途8");
+            }
+        };
+
+        return map;
+    }
+    
     /**
      * [ﾛｯﾄ区分ﾏｽﾀｰ]から、ﾛｯﾄ区分を取得
      *
@@ -1900,7 +1837,10 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + ",taperollno2,taperollno3,genryoukigou,petfilmsyurui,Kotyakugouki,Kotyakusheet,ShitaTanshigouki"
                 + ",UwaTanshigouki,ShitaTanshiBukunuki,ShitaTanshi,UwaTanshi,SyoriSetsuu,RyouhinSetsuu"
                 + ",GaikanKakunin1,GaikanKakunin2,GaikanKakunin3,GaikanKakunin4,EndTantousyacode,TanshiTapeSyurui"
-                + ",HNGKaisuu,HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,bikou2,revision,'0' AS deleteflag "
+                + ",HNGKaisuu,HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,bikou2,setsuu,tokuisaki,lotkubuncode,ownercode"
+                + ",syurui3,atumi3,maisuu3,patern,torikosuu,etape,lretu,wretu,lsun,wsun,epaste,genryou,eatumi,sousuu"
+                + ",emaisuu,sekisouslideryo,lastlayerslideryo,renzokusekisoumaisuu,bsouhoseiryou,yjikuhoseiryou"
+                + ",syurui2,atumi2,maisuu2,revision,'0' AS deleteflag "
                 + "FROM sr_rsussek "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
         // revisionが入っている場合、条件に追加
@@ -1969,6 +1909,33 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         mapping.put("GNGKaisuu", "gngkaisuu"); //画像NG回数
         mapping.put("GNGKaisuuAve", "gngkaisuuave"); //画像NG回数AVE
         mapping.put("bikou2", "bikou2"); //備考2
+        mapping.put("setsuu", "setsuu"); //ｾｯﾄ数
+        mapping.put("tokuisaki", "tokuisaki"); //客先
+        mapping.put("lotkubuncode", "lotkubuncode"); //ﾛｯﾄ区分
+        mapping.put("ownercode", "ownercode"); //ｵｰﾅｰ
+        mapping.put("syurui3", "syurui3"); //下ｶﾊﾞｰﾃｰﾌﾟ1種類
+        mapping.put("atumi3", "atumi3"); //下ｶﾊﾞｰﾃｰﾌﾟ1厚み
+        mapping.put("maisuu3", "maisuu3"); //下ｶﾊﾞｰﾃｰﾌﾟ1枚数
+        mapping.put("patern", "patern"); //製版名
+        mapping.put("torikosuu", "torikosuu"); //取り個数
+        mapping.put("etape", "etape"); //電極ﾃｰﾌﾟ
+        mapping.put("lretu", "lretu"); //列
+        mapping.put("wretu", "wretu"); //行
+        mapping.put("lsun", "lsun"); //LSUN
+        mapping.put("wsun", "wsun"); //WSUN
+        mapping.put("epaste", "epaste"); //電極ﾍﾟｰｽﾄ
+        mapping.put("genryou", "genryou"); //原料
+        mapping.put("eatumi", "eatumi"); //電極厚み
+        mapping.put("sousuu", "sousuu"); //総数
+        mapping.put("emaisuu", "emaisuu"); //電極枚数
+        mapping.put("sekisouslideryo", "sekisouslideryo"); //積層ｽﾗｲﾄﾞ量
+        mapping.put("lastlayerslideryo", "lastlayerslideryo"); //最上層ｽﾗｲﾄﾞ量
+        mapping.put("renzokusekisoumaisuu", "renzokusekisoumaisuu"); //連続積層枚数
+        mapping.put("bsouhoseiryou", "bsouhoseiryou"); //B層補正量
+        mapping.put("yjikuhoseiryou", "yjikuhoseiryou"); //Y軸補正量
+        mapping.put("syurui2", "syurui2"); //上ｶﾊﾞｰﾃｰﾌﾟ1種類
+        mapping.put("atumi2", "atumi2"); //上ｶﾊﾞｰﾃｰﾌﾟ1厚み
+        mapping.put("maisuu2", "maisuu2"); //上ｶﾊﾞｰﾃｰﾌﾟ1枚数
         mapping.put("revision", "revision"); //revision
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
 
@@ -2137,9 +2104,12 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + ",taperollno2,taperollno3,genryoukigou,petfilmsyurui,Kotyakugouki,Kotyakusheet,ShitaTanshigouki"
                 + ",UwaTanshigouki,ShitaTanshiBukunuki,ShitaTanshi,UwaTanshi,SyoriSetsuu,RyouhinSetsuu"
                 + ",GaikanKakunin1,GaikanKakunin2,GaikanKakunin3,GaikanKakunin4,EndTantousyacode,TanshiTapeSyurui"
-                + ",HNGKaisuu,HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,bikou2,revision,deleteflag "
-                + "FROM tmp_sr_rsussek "
-                + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND deleteflag = ? ";
+                + ",HNGKaisuu,HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,bikou2,setsuu,tokuisaki,lotkubuncode,ownercode"
+                + ",syurui3,atumi3,maisuu3,patern,torikosuu,etape,lretu,wretu,lsun,wsun,epaste,genryou,eatumi,sousuu"
+                + ",emaisuu,sekisouslideryo,lastlayerslideryo,renzokusekisoumaisuu,bsouhoseiryou,yjikuhoseiryou"
+                + ",syurui2,atumi2,maisuu2,revision,deleteflag "
+                + "  FROM tmp_sr_rsussek "
+                + " WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND deleteflag = ? ";
         // revisionが入っている場合、条件に追加
         if (!StringUtil.isEmpty(rev)) {
             sql += "AND revision = ? ";
@@ -2207,6 +2177,33 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         mapping.put("GNGKaisuu", "gngkaisuu"); //画像NG回数
         mapping.put("GNGKaisuuAve", "gngkaisuuave"); //画像NG回数AVE
         mapping.put("bikou2", "bikou2"); //備考2
+        mapping.put("setsuu", "setsuu"); //ｾｯﾄ数
+        mapping.put("tokuisaki", "tokuisaki"); //客先
+        mapping.put("lotkubuncode", "lotkubuncode"); //ﾛｯﾄ区分
+        mapping.put("ownercode", "ownercode"); //ｵｰﾅｰ
+        mapping.put("syurui3", "syurui3"); //下ｶﾊﾞｰﾃｰﾌﾟ1種類
+        mapping.put("atumi3", "atumi3"); //下ｶﾊﾞｰﾃｰﾌﾟ1厚み
+        mapping.put("maisuu3", "maisuu3"); //下ｶﾊﾞｰﾃｰﾌﾟ1枚数
+        mapping.put("patern", "patern"); //製版名
+        mapping.put("torikosuu", "torikosuu"); //取り個数
+        mapping.put("etape", "etape"); //電極ﾃｰﾌﾟ
+        mapping.put("lretu", "lretu"); //列
+        mapping.put("wretu", "wretu"); //行
+        mapping.put("lsun", "lsun"); //LSUN
+        mapping.put("wsun", "wsun"); //WSUN
+        mapping.put("epaste", "epaste"); //電極ﾍﾟｰｽﾄ
+        mapping.put("genryou", "genryou"); //原料
+        mapping.put("eatumi", "eatumi"); //電極厚み
+        mapping.put("sousuu", "sousuu"); //総数
+        mapping.put("emaisuu", "emaisuu"); //電極枚数
+        mapping.put("sekisouslideryo", "sekisouslideryo"); //積層ｽﾗｲﾄﾞ量
+        mapping.put("lastlayerslideryo", "lastlayerslideryo"); //最上層ｽﾗｲﾄﾞ量
+        mapping.put("renzokusekisoumaisuu", "renzokusekisoumaisuu"); //連続積層枚数
+        mapping.put("bsouhoseiryou", "bsouhoseiryou"); //B層補正量
+        mapping.put("yjikuhoseiryou", "yjikuhoseiryou"); //Y軸補正量
+        mapping.put("syurui2", "syurui2"); //上ｶﾊﾞｰﾃｰﾌﾟ1種類
+        mapping.put("atumi2", "atumi2"); //上ｶﾊﾞｰﾃｰﾌﾟ1厚み
+        mapping.put("maisuu2", "maisuu2"); //上ｶﾊﾞｰﾃｰﾌﾟ1枚数
         mapping.put("revision", "revision"); //revision
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
 
@@ -2650,15 +2647,17 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
             String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
 
         String sql = "INSERT INTO tmp_sr_rsussek ("
-                + "KOJYO,LOTNO,EDABAN,KCPNO,TNTAPESYURUI,TNTAPENO,TNTAPEGENRYO,KAISINICHIJI,SYURYONICHIJI,GOKI,JITUATURYOKU,SEKISOZURE2"
+                + " KOJYO,LOTNO,EDABAN,KCPNO,TNTAPESYURUI,TNTAPENO,TNTAPEGENRYO,KAISINICHIJI,SYURYONICHIJI,GOKI,JITUATURYOKU,SEKISOZURE2"
                 + ",TANTOSYA,KAKUNINSYA,INSATUROLLNO,HAPPOSHEETNO,SKJIKAN,TAKUTO,BIKO1,TOROKUNICHIJI,KOSINNICHIJI,SKOJYO,SLOTNO,SEDABAN"
                 + ",tapelotno,taperollno1,taperollno2,taperollno3,genryoukigou,petfilmsyurui,Kotyakugouki"
-                + ",Kotyakusheet,ShitaTanshigouki,UwaTanshigouki,ShitaTanshiBukunuki,ShitaTanshi,UwaTanshi,SyoriSetsuu,RyouhinSetsuu"
-                + ",GaikanKakunin1,GaikanKakunin2,GaikanKakunin3,GaikanKakunin4,EndTantousyacode,TanshiTapeSyurui"
-                + ",HNGKaisuu,HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,bikou2,revision,deleteflag"
+                + ",Kotyakusheet,ShitaTanshigouki,UwaTanshigouki,ShitaTanshiBukunuki,ShitaTanshi,UwaTanshi"
+                + ",GaikanKakunin1,GaikanKakunin2,GaikanKakunin3,GaikanKakunin4,SyoriSetsuu,RyouhinSetsuu,EndTantousyacode,TanshiTapeSyurui"
+                + ",HNGKaisuu,HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,bikou2,setsuu,tokuisaki,lotkubuncode,ownercode,syurui3,atumi3,maisuu3"
+                + ",patern,torikosuu,etape,lretu,wretu,lsun,wsun,epaste,genryou,eatumi,sousuu,emaisuu,sekisouslideryo,lastlayerslideryo"
+                + ",renzokusekisoumaisuu,bsouhoseiryou,yjikuhoseiryou,syurui2,atumi2,maisuu2,revision,deleteflag"
                 + ") VALUES ("
-                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? "
-                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? "
+                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterTmpSrRsussek(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -2687,9 +2686,11 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + "KCPNO = ?,TNTAPESYURUI = ?,TNTAPENO = ?,TNTAPEGENRYO = ?,KAISINICHIJI = ?,SYURYONICHIJI = ?,GOKI = ?,JITUATURYOKU = ?,SEKISOZURE2 = ?,"
                 + "TANTOSYA = ?,KAKUNINSYA = ?,INSATUROLLNO = ?,HAPPOSHEETNO = ?,SKJIKAN = ?,TAKUTO = ?,BIKO1 = ?,KOSINNICHIJI = ?,SKOJYO = ?,SLOTNO = ?,SEDABAN = ?,"
                 + "tapelotno = ?,taperollno1 = ?,taperollno2 = ?,taperollno3 = ?,genryoukigou = ?,petfilmsyurui = ?,Kotyakugouki = ?,Kotyakusheet = ?,"
-                + "ShitaTanshigouki = ?,UwaTanshigouki = ?,ShitaTanshiBukunuki = ?,ShitaTanshi = ?,UwaTanshi = ?,SyoriSetsuu = ?,RyouhinSetsuu = ?,GaikanKakunin1 = ?,"
-                + "GaikanKakunin2 = ?,GaikanKakunin3 = ?,GaikanKakunin4 = ?,EndTantousyacode = ?,TanshiTapeSyurui = ?,HNGKaisuu = ?,"
-                + "HNGKaisuuAve = ?,GNGKaisuu = ?,GNGKaisuuAve = ?,bikou2 = ?,revision = ?,deleteflag = ? "
+                + "ShitaTanshigouki = ?,UwaTanshigouki = ?,ShitaTanshiBukunuki = ?,ShitaTanshi = ?,UwaTanshi = ?,GaikanKakunin1 = ?,"
+                + "GaikanKakunin2 = ?,GaikanKakunin3 = ?,GaikanKakunin4 = ?,SyoriSetsuu = ?,RyouhinSetsuu = ?,EndTantousyacode = ?,TanshiTapeSyurui = ?,HNGKaisuu = ?,"
+                + "HNGKaisuuAve = ?,GNGKaisuu = ?,GNGKaisuuAve = ?,bikou2 = ?,setsuu = ?,tokuisaki = ?,lotkubuncode = ?,ownercode = ?,syurui3 = ?,atumi3 = ?,maisuu3 = ?,"
+                + "patern = ?,torikosuu = ?,etape = ?,lretu = ?,wretu = ?,lsun = ?,wsun = ?,epaste = ?,genryou = ?,eatumi = ?,sousuu = ?,emaisuu = ?,sekisouslideryo = ?,"
+                + "lastlayerslideryo = ?,renzokusekisoumaisuu = ?,bsouhoseiryou = ?,yjikuhoseiryou = ?,syurui2 = ?,atumi2 = ?,maisuu2 = ?,revision = ?,deleteflag = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
         // 更新前の値を取得
@@ -2776,6 +2777,101 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 sedaban = senkouLotno.substring(11, senkouLotno.length());
             }
         }
+        
+        //上ｶﾊﾞｰﾃｰﾌﾟ
+        String ueCoverTape1 = getItemData(itemList, GXHDO101B005Const.UE_COVER_TAPE1, srRsussekData);
+        String strUeCoverTape1Syurui2[] = null;
+        String strUeCoverTape1Atumi2[] = null;
+        String strSyurui2 = "";
+        String strAtumi2 = "";
+        String strMaisuu2 = "";
+
+        if(!"".equals(ueCoverTape1) && ueCoverTape1 != null){
+            strUeCoverTape1Syurui2 = ueCoverTape1.split("  ");
+            //上ｶﾊﾞｰﾃｰﾌﾟ1種類 syurui2
+            strSyurui2 = strUeCoverTape1Syurui2[0];
+            //上ｶﾊﾞｰﾃｰﾌﾟ1厚み atumi2 "μm×"
+            strUeCoverTape1Atumi2 = strUeCoverTape1Syurui2[1].split("μm×");
+            strAtumi2 = strUeCoverTape1Atumi2[0];
+            //上ｶﾊﾞｰﾃｰﾌﾟ1枚数 maisuu2 "枚"
+            strMaisuu2 = strUeCoverTape1Atumi2[1].replaceAll("枚", "");
+        }
+
+        //下ｶﾊﾞｰﾃｰﾌﾟ
+        String shitaCoverTape1 = getItemData(itemList, GXHDO101B005Const.SHITA_COVER_TAPE1, srRsussekData);
+        String strShitaCoverTape1Syurui2[] = null;
+        String strShitaCoverTape1Atumi2[] = null;
+        String strSyurui3 = "";
+        String strAtumi3 = "";
+        String strMaisuu3 = "";
+
+        if(!"".equals(shitaCoverTape1) && shitaCoverTape1 != null){
+            strShitaCoverTape1Syurui2 = shitaCoverTape1.split("  ");
+            //下ｶﾊﾞｰﾃｰﾌﾟ1種類  syurui3
+            strSyurui3 = strShitaCoverTape1Syurui2[0];
+            //下ｶﾊﾞｰﾃｰﾌﾟ1厚み atumi3 "μm×"
+            strShitaCoverTape1Atumi2 = strShitaCoverTape1Syurui2[1].split("μm×");
+            strAtumi3 = strShitaCoverTape1Atumi2[0];
+            //下ｶﾊﾞｰﾃｰﾌﾟ1枚数 maisuu3 "枚"
+            strMaisuu3 = strShitaCoverTape1Atumi2[1].replaceAll("枚", "");
+        }
+        
+        //電極ﾃｰﾌﾟ
+        String strDenkyokuTape = getItemData(itemList, GXHDO101B005Const.DENKYOKU_TAPE, srRsussekData);
+        String strEtape = "";
+        String strDenkyokuTapeSplit[] = null;
+        if(!"".equals(strDenkyokuTape) && strDenkyokuTape != null){
+            strDenkyokuTapeSplit = strDenkyokuTape.split("  ");
+            strEtape = strDenkyokuTapeSplit[0];
+        }
+        
+        String retsuGyou = getItemData(itemList, GXHDO101B005Const.RETSU_GYOU, srRsussekData);
+        String strRetsuGyouLretu[] = null;
+        //列
+        String strLretu = "";
+        //行
+        String strWretu = "";
+
+        if(!"".equals(retsuGyou) && retsuGyou != null){
+            strRetsuGyouLretu = retsuGyou.split("×");
+            //列
+            strLretu = strRetsuGyouLretu[0];
+            //行
+            strWretu = strRetsuGyouLretu[1];
+        }
+        
+        String pitch = getItemData(itemList, GXHDO101B005Const.PITCH, srRsussekData);
+        String strPitch[] = null;
+        //LSUN
+        String strLsun = "";
+        //WSUN
+        String strWsun = "";
+
+        if(!"".equals(pitch) && pitch != null){
+            strPitch = pitch.split("×");
+            //LSUN
+            strLsun = strPitch[0];
+            //WSUN
+            strWsun = strPitch[1];
+        }
+        
+        String sekisousu = getItemData(itemList, GXHDO101B005Const.SEKISOU_SU, srRsussekData);
+        String strSekisousuEatumi[] = null;
+        String strSekisousuSousuu[] = null;
+        String strEatumi = "";
+        String strSousuu = "";
+        String strEmaisuu = "";
+
+        if(!"".equals(sekisousu) && sekisousu != null){
+            strSekisousuEatumi = sekisousu.split("μm×");
+            //電極厚み
+            strEatumi = strSekisousuEatumi[0];
+            //総数
+            strSekisousuSousuu = strSekisousuEatumi[1].split("層  ");
+            strSousuu = strSekisousuSousuu[0];
+            //電極枚数
+            strEmaisuu = strSekisousuSousuu[1].replaceAll("枚", "");
+        }
 
         if (isInsert) {
             params.add(kojyo); //工場ｺｰﾄﾞ
@@ -2794,8 +2890,8 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         params.add(null); //実圧力
         params.add(null); //積層ｽﾞﾚ値2
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.KAISHI_TANTOUSHA, srRsussekData))); //開始担当者
-        params.add(null); //確認者ｺｰﾄﾞ
-        params.add(null); //印刷ﾛｰﾙNo
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.KAKUNINSYA, srRsussekData))); //確認者ｺｰﾄﾞ
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.PRINT_ROLLNO, srRsussekData))); //印刷ﾛｰﾙNo
         params.add(null); //発砲ｼｰﾄNo
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SHUNJI_KANETSU_TIME, srRsussekData))); //瞬時加熱時間
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.TAKT, srRsussekData))); //タクト
@@ -2811,53 +2907,57 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         params.add(sedaban); //先行枝番
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SLIP_LOTNO, srRsussekData))); //ﾃｰﾌﾟｽﾘｯﾌﾟﾛｯﾄNo
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.ROLL_NO1, srRsussekData))); //ﾃｰﾌﾟﾛｰﾙNo1
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.ROLL_NO2, srRsussekData))); //ﾃｰﾌﾟﾛｰﾙNo2
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.ROLL_NO3, srRsussekData))); //ﾃｰﾌﾟﾛｰﾙNo3  
+        params.add(null); //ﾃｰﾌﾟﾛｰﾙNo2
+        params.add(null); //ﾃｰﾌﾟﾛｰﾙNo3  
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.GENRYO_KIGOU, srRsussekData))); //原料記号
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.PET_FILM_SHURUI, srRsussekData))); //PETﾌｨﾙﾑ種類
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.KOTYAKU_SHEET_HARITSUKEKI, srRsussekData))); //固着シート貼付り機
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.KOTYAKU_SHEET, srRsussekData))); //固着シート
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SHITA_TANSHI_GOUKI, srRsussekData))); //下端子号機
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.UE_TANSHI_GOUKI, srRsussekData))); //上端子号機  
-        // 下端子ﾌﾞｸ抜き
-        switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B005Const.SHITA_TANSHI_BUKUNUKI, srRsussekData))) {
-            case "未実施":
-                params.add(0);
-                break;
-            case "実施":
-                params.add(1);
-                break;
-            default:
-                params.add(null);
-                break;
-        }
+        params.add(null); // 下端子ﾌﾞｸ抜き
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SHITA_TANSHI, srRsussekData))); //下端子
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.UWE_TANSHI, srRsussekData))); //上端子
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.GAIKAN_KAKUNIN1, srRsussekData))); //外観確認1
+        params.add(null); //外観確認2
+        params.add(null); //外観確認3
+        params.add(null); //外観確認4
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SYORI_SET_SU, srRsussekData))); //処理セット数
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.RYOUHIN_SET_SU, srRsussekData))); //良品セット数
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.GAIKAN_KAKUNIN1, srRsussekData))); //外観確認1
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.GAIKAN_KAKUNIN2, srRsussekData))); //外観確認2
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.GAIKAN_KAKUNIN3, srRsussekData))); //外観確認3
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.GAIKAN_KAKUNIN4, srRsussekData))); //外観確認4
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SHURYOU_TANTOUSHA, srRsussekData))); //終了担当者
-        // 端子テープ種類
-        switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B005Const.TANSHI_TAPE_SHURUI, srRsussekData))) {
-            case "NG":
-                params.add(0);
-                break;
-            case "OK":
-                params.add(1);
-                break;
-            default:
-                params.add(null);
-                break;
-        }
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.HAKURI_NG_KAISU, srRsussekData))); //剥離NG回数
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.HAKURI_NG_AVE, srRsussekData))); //剥離NG_AVE        
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.GASHO_NG_KAISU, srRsussekData))); //画処NG回数
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.GASHO_NG_AVE, srRsussekData))); //画処NG_AVE        
+        params.add(null);//端子ﾃｰﾌﾟ種類
+        params.add(null);//隔離NG回数
+        params.add(null);//剥離NG回数AVE
+        params.add(null);//画像NG回数
+        params.add(null);//画像NG回数AVE
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.BIKOU2, srRsussekData))); //備考2
-
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SET_SUU, srRsussekData))); //ｾｯﾄ数
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.KYAKUSAKI, srRsussekData))); //客先
+        params.add(DBUtil.stringToStringObjectDefaultNull((getItemData(itemList, GXHDO101B005Const.LOT_KUBUN, srRsussekData)).substring(0,3))); //ﾛｯﾄ区分
+        params.add(DBUtil.stringToStringObjectDefaultNull((getItemData(itemList, GXHDO101B005Const.OWNER, srRsussekData)).substring(0,3))); //ｵｰﾅｰ
+        params.add(strSyurui3); //下ｶﾊﾞｰﾃｰﾌﾟ1種類
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(strAtumi3)); //下ｶﾊﾞｰﾃｰﾌﾟ1厚み
+        params.add(DBUtil.stringToIntObjectDefaultNull(strMaisuu3)); //下ｶﾊﾞｰﾃｰﾌﾟ1枚数
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.PATERN, srRsussekData))); //製版名
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.TORIKOSUU, srRsussekData))); //取り個数
+        params.add(DBUtil.stringToStringObjectDefaultNull(strEtape));//電極ﾃｰﾌﾟ
+        params.add(DBUtil.stringToIntObjectDefaultNull(StringUtil.nullToBlank(strLretu)));//列
+        params.add(DBUtil.stringToIntObjectDefaultNull(StringUtil.nullToBlank(strWretu)));//行
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(StringUtil.nullToBlank(strLsun)));//LSUN
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(StringUtil.nullToBlank(strWsun)));//WSUN
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.DENKYOKU_PASTE, srRsussekData))); //電極ﾍﾟｰｽﾄ
+        params.add(DBUtil.stringToStringObjectDefaultNull(strEtape));//原料
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(strEatumi));//電極厚み
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(strSousuu));//総数
+        params.add(DBUtil.stringToIntObjectDefaultNull(strEmaisuu));//電極枚数
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SEKISOU_SLIDE_RYOU, srRsussekData))); //積層ｽﾗｲﾄﾞ量
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.TORIKOSUU, srRsussekData))); //最上層ｽﾗｲﾄﾞ量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.RENZOKUSEKISOUMAISUU, srRsussekData))); //連続積層枚数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.BSOUHOSEIRYOU, srRsussekData))); //B層補正量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.YJIKUHOSEIRYOU, srRsussekData))); //Y軸補正量
+        params.add(strSyurui2);//上ｶﾊﾞｰﾃｰﾌﾟ1種類
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(strAtumi2));//上ｶﾊﾞｰﾃｰﾌﾟ1厚み
+        params.add(DBUtil.stringToIntObjectDefaultNull(strMaisuu2));//上ｶﾊﾞｰﾃｰﾌﾟ1枚数
         params.add(newRev); //revision
         params.add(deleteflag); //削除ﾌﾗｸﾞ
 
@@ -3098,16 +3198,18 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
      */
     private void insertSrRsussek(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev,
             String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList, SrRsussek tmpSrRsussek) throws SQLException {
-
         String sql = "INSERT INTO sr_rsussek ("
-                + "KOJYO,LOTNO,EDABAN,KCPNO,TNTAPESYURUI,TNTAPENO,TNTAPEGENRYO,KAISINICHIJI,SYURYONICHIJI,GOKI,JITUATURYOKU,SEKISOZURE2"
-                + ",TANTOSYA,KAKUNINSYA,INSATUROLLNO,HAPPOSHEETNO,SKJIKAN,TAKUTO,BIKO1,TOROKUNICHIJI,KOSINNICHIJI,SKOJYO,SLOTNO"
-                + ",SEDABAN,tapelotno,taperollno1,taperollno2,taperollno3,genryoukigou,petfilmsyurui,Kotyakugouki,Kotyakusheet,ShitaTanshigouki"
-                + ",UwaTanshigouki,ShitaTanshiBukunuki,ShitaTanshi,UwaTanshi,SyoriSetsuu,RyouhinSetsuu,GaikanKakunin1,GaikanKakunin2,GaikanKakunin3"
-                + ",GaikanKakunin4,EndTantousyacode,TanshiTapeSyurui,HNGKaisuu,HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,bikou2,revision"
+                + " KOJYO,LOTNO,EDABAN,KCPNO,TNTAPESYURUI,TNTAPENO,TNTAPEGENRYO,KAISINICHIJI,SYURYONICHIJI,GOKI,JITUATURYOKU,SEKISOZURE2"
+                + ",TANTOSYA,KAKUNINSYA,INSATUROLLNO,HAPPOSHEETNO,SKJIKAN,TAKUTO,BIKO1,TOROKUNICHIJI,KOSINNICHIJI,SKOJYO,SLOTNO,SEDABAN"
+                + ",tapelotno,taperollno1,taperollno2,taperollno3,genryoukigou,petfilmsyurui,Kotyakugouki"
+                + ",Kotyakusheet,ShitaTanshigouki,UwaTanshigouki,ShitaTanshiBukunuki,ShitaTanshi,UwaTanshi"
+                + ",GaikanKakunin1,GaikanKakunin2,GaikanKakunin3,GaikanKakunin4,SyoriSetsuu,RyouhinSetsuu,EndTantousyacode,TanshiTapeSyurui"
+                + ",HNGKaisuu,HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,bikou2,setsuu,tokuisaki,lotkubuncode,ownercode,syurui3,atumi3,maisuu3"
+                + ",patern,torikosuu,etape,lretu,wretu,lsun,wsun,epaste,genryou,eatumi,sousuu,emaisuu,sekisouslideryo,lastlayerslideryo"
+                + ",renzokusekisoumaisuu,bsouhoseiryou,yjikuhoseiryou,syurui2,atumi2,maisuu2,revision"
                 + ") VALUES ("
-                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
-                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? "
+                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
         
         List<Object> params = setUpdateParameterSrRsussek(true, newRev, kojyo, lotNo, edaban, systemTime, itemList, tmpSrRsussek);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -3136,10 +3238,13 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + "SEKISOZURE2 = ?,TANTOSYA = ?,KAKUNINSYA = ?,INSATUROLLNO = ?,HAPPOSHEETNO = ?,SKJIKAN = ?,TAKUTO = ?,BIKO1 = ?,"
                 + "KOSINNICHIJI = ?,SKOJYO = ?,SLOTNO = ?,SEDABAN = ?,tapelotno = ?,taperollno1 = ?,taperollno2 = ?,taperollno3 = ?,genryoukigou = ?,"
                 + "petfilmsyurui = ?,Kotyakugouki = ?,Kotyakusheet = ?,ShitaTanshigouki = ?,UwaTanshigouki = ?,ShitaTanshiBukunuki = ?,"
-                + "ShitaTanshi = ?,UwaTanshi = ?,SyoriSetsuu = ?,RyouhinSetsuu = ?,GaikanKakunin1 = ?,GaikanKakunin2 = ?,GaikanKakunin3 = ?,"
-                + "GaikanKakunin4 = ?,EndTantousyacode = ?,TanshiTapeSyurui = ?,HNGKaisuu = ?,HNGKaisuuAve = ?,GNGKaisuu = ?,GNGKaisuuAve = ?,"
-                + "bikou2 = ?,revision = ? "
-                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ?";
+                + "ShitaTanshi = ?,UwaTanshi = ?,GaikanKakunin1 = ?,GaikanKakunin2 = ?,GaikanKakunin3 = ?,GaikanKakunin4 = ?,SyoriSetsuu = ?,"
+                + "RyouhinSetsuu = ?,EndTantousyacode = ?,TanshiTapeSyurui = ?,HNGKaisuu = ?,HNGKaisuuAve = ?,GNGKaisuu = ?,GNGKaisuuAve = ?,"
+                + "bikou2 = ?,setsuu = ?,tokuisaki = ?,lotkubuncode = ?,ownercode = ?,syurui3 = ?,atumi3 = ?,maisuu3 = ?,patern = ?,torikosuu = ?,"
+                + "etape = ?,lretu = ?,wretu = ?,lsun = ?,wsun = ?,epaste = ?,genryou = ?,eatumi = ?,sousuu = ?,emaisuu = ?,sekisouslideryo = ?,"
+                + "lastlayerslideryo = ?,renzokusekisoumaisuu = ?,bsouhoseiryou = ?,yjikuhoseiryou = ?,syurui2 = ?,atumi2 = ?,maisuu2 = ?,"
+                + "revision = ? "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
         // 更新前の値を取得
         List<SrRsussek> srRsussekList = getSrRsussekData(queryRunnerQcdb, rev.toPlainString(), jotaiFlg, kojyo, lotNo, edaban);
@@ -3196,7 +3301,102 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 sedaban = senkouLotno.substring(11, senkouLotno.length());
             }
         }
+
+        //上ｶﾊﾞｰﾃｰﾌﾟ
+        String ueCoverTape1 = getItemData(itemList, GXHDO101B005Const.UE_COVER_TAPE1, srRsussekData);
+        String strUeCoverTape1Syurui2[] = null;
+        String strUeCoverTape1Atumi2[] = null;
+        String strSyurui2 = "";
+        String strAtumi2 = "";
+        String strMaisuu2 = "";
+
+        if(!"".equals(ueCoverTape1) && ueCoverTape1 != null){
+            strUeCoverTape1Syurui2 = ueCoverTape1.split("  ");
+            //上ｶﾊﾞｰﾃｰﾌﾟ1種類 syurui2
+            strSyurui2 = strUeCoverTape1Syurui2[0];
+            //上ｶﾊﾞｰﾃｰﾌﾟ1厚み atumi2 "μm×"
+            strUeCoverTape1Atumi2 = strUeCoverTape1Syurui2[1].split("μm×");
+            strAtumi2 = strUeCoverTape1Atumi2[0];
+            //上ｶﾊﾞｰﾃｰﾌﾟ1枚数 maisuu2 "枚"
+            strMaisuu2 = strUeCoverTape1Atumi2[1].replaceAll("枚", "");
+        }
+
+        //下ｶﾊﾞｰﾃｰﾌﾟ
+        String shitaCoverTape1 = getItemData(itemList, GXHDO101B005Const.SHITA_COVER_TAPE1, srRsussekData);
+        String strShitaCoverTape1Syurui2[] = null;
+        String strShitaCoverTape1Atumi2[] = null;
+        String strSyurui3 = "";
+        String strAtumi3 = "";
+        String strMaisuu3 = "";
+
+        if(!"".equals(shitaCoverTape1) && shitaCoverTape1 != null){
+            strShitaCoverTape1Syurui2 = shitaCoverTape1.split("  ");
+            //下ｶﾊﾞｰﾃｰﾌﾟ1種類  syurui3
+            strSyurui3 = strShitaCoverTape1Syurui2[0];
+            //下ｶﾊﾞｰﾃｰﾌﾟ1厚み atumi3 "μm×"
+            strShitaCoverTape1Atumi2 = strShitaCoverTape1Syurui2[1].split("μm×");
+            strAtumi3 = strShitaCoverTape1Atumi2[0];
+            //下ｶﾊﾞｰﾃｰﾌﾟ1枚数 maisuu3 "枚"
+            strMaisuu3 = strShitaCoverTape1Atumi2[1].replaceAll("枚", "");
+        }
         
+        //電極ﾃｰﾌﾟ
+        String strDenkyokuTape = getItemData(itemList, GXHDO101B005Const.DENKYOKU_TAPE, srRsussekData);
+        String strEtape = "";
+        String strDenkyokuTapeSplit[] = null;
+        if(!"".equals(strDenkyokuTape) && strDenkyokuTape != null){
+            strDenkyokuTapeSplit = strDenkyokuTape.split("  ");
+            strEtape = strDenkyokuTapeSplit[0];
+        }
+        
+        String retsuGyou = getItemData(itemList, GXHDO101B005Const.RETSU_GYOU, srRsussekData);
+        String strRetsuGyouLretu[] = null;
+        //列
+        String strLretu = "";
+        //行
+        String strWretu = "";
+
+        if(!"".equals(retsuGyou) && retsuGyou != null){
+            strRetsuGyouLretu = retsuGyou.split("×");
+            //列
+            strLretu = strRetsuGyouLretu[0];
+            //行
+            strWretu = strRetsuGyouLretu[1];
+        }
+        
+        String pitch = getItemData(itemList, GXHDO101B005Const.PITCH, srRsussekData);
+        String strPitch[] = null;
+        //LSUN
+        String strLsun = "";
+        //WSUN
+        String strWsun = "";
+
+        if(!"".equals(pitch) && pitch != null){
+            strPitch = pitch.split("×");
+            //LSUN
+            strLsun = strPitch[0];
+            //WSUN
+            strWsun = strPitch[1];
+        }
+        
+        String sekisousu = getItemData(itemList, GXHDO101B005Const.SEKISOU_SU, srRsussekData);
+        String strSekisousuEatumi[] = null;
+        String strSekisousuSousuu[] = null;
+        String strEatumi = "";
+        String strSousuu = "";
+        String strEmaisuu = "";
+
+        if(!"".equals(sekisousu) && sekisousu != null){
+            strSekisousuEatumi = sekisousu.split("μm×");
+            //電極厚み
+            strEatumi = strSekisousuEatumi[0];
+            //総数
+            strSekisousuSousuu = strSekisousuEatumi[1].split("層  ");
+            strSousuu = strSekisousuSousuu[0];
+            //電極枚数
+            strEmaisuu = strSekisousuSousuu[1].replaceAll("枚", "");
+        }
+
         if (isInsert) {
             params.add(kojyo); //工場ｺｰﾄﾞ
             params.add(lotNo); //ﾛｯﾄNo
@@ -3214,8 +3414,8 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         params.add(""); //実圧力
         params.add(0); //積層ｽﾞﾚ値2
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.KAISHI_TANTOUSHA, srRsussekData))); //開始担当者
-        params.add(""); //確認者ｺｰﾄﾞ
-        params.add(""); //印刷ﾛｰﾙNo
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.KAKUNINSYA, srRsussekData))); //確認者ｺｰﾄﾞ
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.PRINT_ROLLNO, srRsussekData))); //印刷ﾛｰﾙNo
         params.add(""); //発砲ｼｰﾄNo
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B005Const.SHUNJI_KANETSU_TIME, srRsussekData))); //瞬時加熱時間
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B005Const.TAKT, srRsussekData))); //タクト
@@ -3232,53 +3432,57 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         params.add(sedaban); //先行枝番   
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.SLIP_LOTNO, srRsussekData))); //ﾃｰﾌﾟｽﾘｯﾌﾟﾛｯﾄNo 
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.ROLL_NO1, srRsussekData))); //ﾃｰﾌﾟﾛｰﾙNo1
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.ROLL_NO2, srRsussekData))); //ﾃｰﾌﾟﾛｰﾙNo2
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.ROLL_NO3, srRsussekData))); //ﾃｰﾌﾟﾛｰﾙNo3
+        params.add(""); //ﾃｰﾌﾟﾛｰﾙNo2
+        params.add(""); //ﾃｰﾌﾟﾛｰﾙNo3
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.GENRYO_KIGOU, srRsussekData))); //原料記号
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.PET_FILM_SHURUI, srRsussekData))); //PETﾌｨﾙﾑ種類
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.KOTYAKU_SHEET_HARITSUKEKI, srRsussekData))); //固着シート貼付り機
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.KOTYAKU_SHEET, srRsussekData))); //固着シート
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.SHITA_TANSHI_GOUKI, srRsussekData))); //下端子号機
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.UE_TANSHI_GOUKI, srRsussekData))); //上端子号機 
-        // 下端子ﾌﾞｸ抜き
-        switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B005Const.SHITA_TANSHI_BUKUNUKI, srRsussekData))) {
-            case "未実施":
-                params.add(0);
-                break;
-            case "実施":
-                params.add(1);
-                break;
-            default:
-                params.add(9);
-                break;
-        }
+        params.add(0);// 下端子ﾌﾞｸ抜き
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.SHITA_TANSHI, srRsussekData))); //下端子
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.UWE_TANSHI, srRsussekData))); //上端子
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.GAIKAN_KAKUNIN1, srRsussekData))); //外観確認1
+        params.add(""); //外観確認2
+        params.add(""); //外観確認3
+        params.add(""); //外観確認4
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B005Const.SYORI_SET_SU, srRsussekData))); //処理セット数
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B005Const.RYOUHIN_SET_SU, srRsussekData))); //良品セット数
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.GAIKAN_KAKUNIN1, srRsussekData))); //外観確認1
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.GAIKAN_KAKUNIN2, srRsussekData))); //外観確認2
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.GAIKAN_KAKUNIN3, srRsussekData))); //外観確認3
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.GAIKAN_KAKUNIN4, srRsussekData))); //外観確認4
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.SHURYOU_TANTOUSHA, srRsussekData))); //終了担当者
-        // 端子テープ種類
-        switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B005Const.TANSHI_TAPE_SHURUI, srRsussekData))) {
-            case "NG":
-                params.add(0);
-                break;
-            case "OK":
-                params.add(1);
-                break;
-            default:
-                params.add(9);
-                break;
-        }
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B005Const.HAKURI_NG_KAISU, srRsussekData))); //剥離NG回数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B005Const.HAKURI_NG_AVE, srRsussekData))); //剥離NG_AVE        
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B005Const.GASHO_NG_KAISU, srRsussekData))); //画処NG回数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B005Const.GASHO_NG_AVE, srRsussekData))); //画処NG_AVE        
+        params.add(0);// 端子テープ種類
+        params.add(0); //剥離NG回数
+        params.add(0); //剥離NG_AVE
+        params.add(0); //画処NG回数
+        params.add(0); //画処NG_AVE
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.BIKOU2, srRsussekData))); //備考2
-        
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B005Const.SET_SUU, srRsussekData))); //ｾｯﾄ数
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.KYAKUSAKI, srRsussekData))); //客先
+        params.add(DBUtil.stringToStringObject((getItemData(itemList, GXHDO101B005Const.LOT_KUBUN, srRsussekData)).substring(0,3))); //ﾛｯﾄ区分
+        params.add(DBUtil.stringToStringObject((getItemData(itemList, GXHDO101B005Const.OWNER, srRsussekData)).substring(0,3))); //ｵｰﾅｰ
+        params.add(strSyurui3); //下ｶﾊﾞｰﾃｰﾌﾟ1種類
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(strAtumi3)); //下ｶﾊﾞｰﾃｰﾌﾟ1厚み
+        params.add(DBUtil.stringToIntObjectDefaultNull(strMaisuu3)); //下ｶﾊﾞｰﾃｰﾌﾟ1枚数
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.PATERN, srRsussekData))); //製版名
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B005Const.TORIKOSUU, srRsussekData))); //取り個数
+        params.add(DBUtil.stringToStringObjectDefaultNull(strEtape));//電極ﾃｰﾌﾟ
+        params.add(DBUtil.stringToIntObjectDefaultNull(StringUtil.nullToBlank(strLretu)));//列
+        params.add(DBUtil.stringToIntObjectDefaultNull(StringUtil.nullToBlank(strWretu)));//行
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(StringUtil.nullToBlank(strLsun)));//LSUN
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(StringUtil.nullToBlank(strWsun)));//WSUN
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.DENKYOKU_PASTE, srRsussekData))); //電極ﾍﾟｰｽﾄ
+        params.add(DBUtil.stringToStringObjectDefaultNull(strEtape));//原料
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(strEatumi));//電極厚み
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(strSousuu));//総数
+        params.add(DBUtil.stringToIntObjectDefaultNull(strEmaisuu));//電極枚数
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.SEKISOU_SLIDE_RYOU, srRsussekData))); //積層ｽﾗｲﾄﾞ量
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B005Const.TORIKOSUU, srRsussekData))); //最上層ｽﾗｲﾄﾞ量
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B005Const.RENZOKUSEKISOUMAISUU, srRsussekData))); //連続積層枚数
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B005Const.BSOUHOSEIRYOU, srRsussekData))); //B層補正量
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B005Const.YJIKUHOSEIRYOU, srRsussekData))); //Y軸補正量
+        params.add(strSyurui2);//上ｶﾊﾞｰﾃｰﾌﾟ1種類
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(strAtumi2));//上ｶﾊﾞｰﾃｰﾌﾟ1厚み
+        params.add(DBUtil.stringToIntObjectDefaultNull(strMaisuu2));//上ｶﾊﾞｰﾃｰﾌﾟ1枚数
         params.add(newRev); //revision
 
         return params;
@@ -3652,12 +3856,6 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
             // ﾛｰﾙNo1
             case GXHDO101B005Const.ROLL_NO1:
                 return StringUtil.nullToBlank(srRsussekData.getTaperollno1());
-            // ﾛｰﾙNo2
-            case GXHDO101B005Const.ROLL_NO2:
-                return StringUtil.nullToBlank(srRsussekData.getTaperollno2());
-            // ﾛｰﾙNo3
-            case GXHDO101B005Const.ROLL_NO3:
-                return StringUtil.nullToBlank(srRsussekData.getTaperollno3());
             // 原料記号
             case GXHDO101B005Const.GENRYO_KIGOU:
                 return StringUtil.nullToBlank(srRsussekData.getGenryoukigou());
@@ -3676,16 +3874,6 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
             // 上端子号機
             case GXHDO101B005Const.UE_TANSHI_GOUKI:
                 return StringUtil.nullToBlank(srRsussekData.getUwatanshigouki());
-            // 下端子ﾌﾞｸ抜き
-            case GXHDO101B005Const.SHITA_TANSHI_BUKUNUKI:
-                switch (StringUtil.nullToBlank(srRsussekData.getShitatanshibukunuki())) {
-                    case "0":
-                        return "未実施";
-                    case "1":
-                        return "実施";
-                    default:
-                        return "";
-                }
             // 積層号機
             case GXHDO101B005Const.SEKISOU_GOKI:
                 return StringUtil.nullToBlank(srRsussekData.getGoki());
@@ -3704,15 +3892,6 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
             // 外観確認1
             case GXHDO101B005Const.GAIKAN_KAKUNIN1:
                 return StringUtil.nullToBlank(srRsussekData.getGaikankakunin1());
-            // 外観確認2
-            case GXHDO101B005Const.GAIKAN_KAKUNIN2:
-                return StringUtil.nullToBlank(srRsussekData.getGaikankakunin2());
-            // 外観確認3
-            case GXHDO101B005Const.GAIKAN_KAKUNIN3:
-                return StringUtil.nullToBlank(srRsussekData.getGaikankakunin3());
-            // 外観確認4
-            case GXHDO101B005Const.GAIKAN_KAKUNIN4:
-                return StringUtil.nullToBlank(srRsussekData.getGaikankakunin4());
             // 開始日
             case GXHDO101B005Const.KAISHI_DAY:
                 return DateUtil.formattedTimestamp(srRsussekData.getKaisinichiji(), "yyMMdd");
@@ -3731,16 +3910,6 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
             // 終了担当者
             case GXHDO101B005Const.SHURYOU_TANTOUSHA:
                 return StringUtil.nullToBlank(srRsussekData.getEndtantousyacode());
-            // 端子テープ種類
-            case GXHDO101B005Const.TANSHI_TAPE_SHURUI:
-                switch (StringUtil.nullToBlank(srRsussekData.getTanshitapesyurui())) {
-                    case "0":
-                        return "NG";
-                    case "1":
-                        return "OK";
-                    default:
-                        return "";
-                }
             // 瞬時加熱時間
             case GXHDO101B005Const.SHUNJI_KANETSU_TIME:
                 return StringUtil.nullToBlank(srRsussekData.getSkjikan());
@@ -3749,19 +3918,7 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 return StringUtil.nullToBlank(srRsussekData.getTakuto());
             // 先行ロットNo
             case GXHDO101B005Const.SENKOU_LOT_NO:
-                return StringUtil.nullToBlank(srRsussekData.getSkojyo() + srRsussekData.getSlotno() + srRsussekData.getSedaban());                
-            // 剥離NG回数
-            case GXHDO101B005Const.HAKURI_NG_KAISU:
-                return StringUtil.nullToBlank(srRsussekData.getHngkaisuu());
-            // 剥離NG_AVE
-            case GXHDO101B005Const.HAKURI_NG_AVE:
-                return StringUtil.nullToBlank(srRsussekData.getHngkaisuuave());
-            // 画処NG回数
-            case GXHDO101B005Const.GASHO_NG_KAISU:
-                return StringUtil.nullToBlank(srRsussekData.getGngkaisuu());
-            // 画処NG_AVE
-            case GXHDO101B005Const.GASHO_NG_AVE:
-                return StringUtil.nullToBlank(srRsussekData.getGngkaisuuave());
+                return StringUtil.nullToBlank(srRsussekData.getSkojyo() + srRsussekData.getSlotno() + srRsussekData.getSedaban());
             // 備考1
             case GXHDO101B005Const.BIKOU1:
                 return StringUtil.nullToBlank(srRsussekData.getBiko1());
@@ -3771,7 +3928,24 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
             //KCPNo
             case GXHDO101B005Const.KCPNO:
                 return StringUtil.nullToBlank(srRsussekData.getKcpno());
-
+            // 製版名
+            case GXHDO101B005Const.PATERN:
+                return StringUtil.nullToBlank(srRsussekData.getPatern());
+            // 取り個数
+            case GXHDO101B005Const.TORIKOSUU:
+                return StringUtil.nullToBlank(srRsussekData.getTorikosuu());
+            // 連続積層枚数
+            case GXHDO101B005Const.RENZOKUSEKISOUMAISUU:
+                return StringUtil.nullToBlank(srRsussekData.getRenzokusekisoumaisuu());
+            // B層補正量
+            case GXHDO101B005Const.BSOUHOSEIRYOU:
+                return StringUtil.nullToBlank(srRsussekData.getBsouhoseiryou());
+            // Y軸補正量
+            case GXHDO101B005Const.YJIKUHOSEIRYOU:
+                return StringUtil.nullToBlank(srRsussekData.getYjikuhoseiryou());
+            // 電極ｽﾀｰﾄ確認者
+            case GXHDO101B005Const.KAKUNINSYA:
+                return StringUtil.nullToBlank(srRsussekData.getKakuninsya());
             default:
                 return null;
 
@@ -3795,19 +3969,24 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
             String kojyo, String lotNo, String edaban, Timestamp systemTime) throws SQLException {
 
         String sql = "INSERT INTO tmp_sr_rsussek ("
-                + "KOJYO,LOTNO,EDABAN,KCPNO,TNTAPESYURUI,TNTAPENO,TNTAPEGENRYO,KAISINICHIJI,SYURYONICHIJI,GOKI,JITUATURYOKU,SEKISOZURE2"
+                + " KOJYO,LOTNO,EDABAN,KCPNO,TNTAPESYURUI,TNTAPENO,TNTAPEGENRYO,KAISINICHIJI,SYURYONICHIJI,GOKI,JITUATURYOKU,SEKISOZURE2"
                 + ",TANTOSYA,KAKUNINSYA,INSATUROLLNO,HAPPOSHEETNO,SKJIKAN,TAKUTO,BIKO1,TOROKUNICHIJI,KOSINNICHIJI,SKOJYO,SLOTNO,SEDABAN,tapelotno,taperollno1"
                 + ",taperollno2,taperollno3,genryoukigou,petfilmsyurui,Kotyakugouki,Kotyakusheet,ShitaTanshigouki,UwaTanshigouki"
                 + ",ShitaTanshiBukunuki,ShitaTanshi,UwaTanshi,SyoriSetsuu,RyouhinSetsuu,GaikanKakunin1,GaikanKakunin2,GaikanKakunin3,GaikanKakunin4"
-                + ",EndTantousyacode,TanshiTapeSyurui,HNGKaisuu,HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,bikou2,revision,deleteflag"
+                + ",EndTantousyacode,TanshiTapeSyurui,HNGKaisuu,HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,bikou2"
+                + ",setsuu,tokuisaki,lotkubuncode,ownercode,syurui3,atumi3,maisuu3,patern,torikosuu,etape,lretu,wretu,lsun,wsun,epaste,genryou,eatumi,sousuu"
+                + ",emaisuu,sekisouslideryo,lastlayerslideryo,renzokusekisoumaisuu,bsouhoseiryou,yjikuhoseiryou"
+                + ",syurui2,atumi2,maisuu2,revision,deleteflag "
                 + ") SELECT "
-                + "KOJYO,LOTNO,EDABAN,KCPNO,TNTAPESYURUI,TNTAPENO,TNTAPEGENRYO,KAISINICHIJI,SYURYONICHIJI,GOKI,JITUATURYOKU,SEKISOZURE2"
+                + " KOJYO,LOTNO,EDABAN,KCPNO,TNTAPESYURUI,TNTAPENO,TNTAPEGENRYO,KAISINICHIJI,SYURYONICHIJI,GOKI,JITUATURYOKU,SEKISOZURE2"
                 + ",TANTOSYA,KAKUNINSYA,INSATUROLLNO,HAPPOSHEETNO,SKJIKAN,TAKUTO,BIKO1,?,?,SKOJYO,SLOTNO,SEDABAN,tapelotno,taperollno1"
                 + ",taperollno2,taperollno3,genryoukigou,petfilmsyurui,Kotyakugouki,Kotyakusheet,ShitaTanshigouki,UwaTanshigouki"
                 + ",ShitaTanshiBukunuki,ShitaTanshi,UwaTanshi,SyoriSetsuu,RyouhinSetsuu,GaikanKakunin1,GaikanKakunin2,GaikanKakunin3,GaikanKakunin4"
                 + ",EndTantousyacode,TanshiTapeSyurui,HNGKaisuu,HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,bikou2"
-                + ",?,? "
-                + "FROM sr_rsussek "
+                + ",setsuu,tokuisaki,lotkubuncode,ownercode,syurui3,atumi3,maisuu3,patern,torikosuu,etape,lretu,wretu,lsun,wsun,epaste,genryou,eatumi,sousuu"
+                + ",emaisuu,sekisouslideryo,lastlayerslideryo,renzokusekisoumaisuu,bsouhoseiryou,yjikuhoseiryou"
+                + ",syurui2,atumi2,maisuu2,?,? "
+                + " FROM sr_rsussek "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
 
         List<Object> params = new ArrayList<>();

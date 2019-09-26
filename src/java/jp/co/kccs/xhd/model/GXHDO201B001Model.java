@@ -92,6 +92,8 @@ public class GXHDO201B001Model implements Serializable {
     private Timestamp startdatetime = null;
     /** ｾｯﾃｨﾝｸﾞ担当者ｺｰﾄﾞ */
     private String tantousya = "";
+    /** 印刷ｽﾀｰﾄ時確認者 */
+    private String kakuninsya = "";
     /** ｽﾀｰﾄ時膜厚AVE */
     private BigDecimal makuatuaveStart = null;
     /** ｽﾀｰﾄ時膜厚MAX */
@@ -763,6 +765,22 @@ public class GXHDO201B001Model implements Serializable {
      */
     public void setTantousya(String tantousya) {
         this.tantousya = tantousya;
+    }
+
+    /**
+     * 印刷ｽﾀｰﾄ時確認者
+     * @return the kakuninsya
+     */
+    public String getKakuninsya() {
+        return kakuninsya;
+    }
+
+    /**
+     * 印刷ｽﾀｰﾄ時確認者
+     * @param kakuninsya the kakuninsya to set
+     */
+    public void setKakuninsya(String kakuninsya) {
+        this.kakuninsya = kakuninsya;
     }
 
     /**

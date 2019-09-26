@@ -417,8 +417,13 @@ public class GXHDO201B001 implements Serializable {
         ValidateUtil validateUtil = new ValidateUtil();
         
         // ロットNo
-        if (existError(validateUtil.checkC101(getLotNo(), "ロットNo", 14)) ||
-            !StringUtil.isEmpty(getLotNo()) && existError(validateUtil.checkValueE001(getLotNo()))) {
+        if(!StringUtil.isEmpty(getLotNo()) && (StringUtil.getLength(getLotNo()) != 11 && StringUtil.getLength(getLotNo()) != 14)){
+         FacesMessage message = 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000064"), null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return;
+        }
+        if (!StringUtil.isEmpty(getLotNo()) && existError(validateUtil.checkValueE001(getLotNo()))) {
             return;
         }
         // 開始日(FROM)
@@ -624,6 +629,7 @@ public class GXHDO201B001 implements Serializable {
                     + ", T1.hansouspeed"
                     + ", T1.startdatetime"
                     + ", T1.tantousya"
+                    + ", T1.kakuninsya"
                     + ", T1.makuatuave_start"
                     + ", T1.makuatumax_start"
                     + ", T1.makuatumin_start"
@@ -751,6 +757,7 @@ public class GXHDO201B001 implements Serializable {
             mapping.put("hansouspeed", "hansouspeed");
             mapping.put("startdatetime", "startdatetime");
             mapping.put("tantousya", "tantousya");
+            mapping.put("kakuninsya", "kakuninsya");
             mapping.put("makuatuave_start", "makuatuaveStart");
             mapping.put("makuatumax_start", "makuatumaxStart");
             mapping.put("makuatumin_start", "makuatuminStart");

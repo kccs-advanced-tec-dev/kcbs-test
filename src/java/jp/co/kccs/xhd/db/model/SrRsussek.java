@@ -282,6 +282,141 @@ public class SrRsussek {
     private Integer revision;
 
     /**
+     * ｾｯﾄ数
+     */
+    private Integer setsuu;
+
+    /**
+     * 客先
+     */
+    private String tokuisaki;
+
+    /**
+     * ﾛｯﾄ区分
+     */
+    private String lotkubuncode;
+
+    /**
+     * ｵｰﾅｰ
+     */
+    private String ownercode;
+
+    /**
+     * 下ｶﾊﾞｰﾃｰﾌﾟ1種類
+     */
+    private String syurui3;
+
+    /**
+     * 下ｶﾊﾞｰﾃｰﾌﾟ1厚み
+     */
+    private double atumi3;
+
+    /**
+     * 下ｶﾊﾞｰﾃｰﾌﾟ1枚数
+     */
+    private Integer maisuu3;
+
+    /**
+     * 製版名
+     */
+    private String patern;
+
+    /**
+     * 取り個数
+     */
+    private Integer torikosuu;
+
+    /**
+     * 電極ﾃｰﾌﾟ
+     */
+    private String etape;
+
+    /**
+     * 列
+     */
+    private Integer lretu;
+
+    /**
+     * 行
+     */
+    private Integer wretu;
+
+    /**
+     * LSUN
+     */
+    private BigDecimal lsun;
+
+    /**
+     * WSUN
+     */
+    private BigDecimal wsun;
+
+    /**
+     * 電極ﾍﾟｰｽﾄ
+     */
+    private String epaste;
+
+    /**
+     * 原料
+     */
+    private String genryou;
+
+    /**
+     * 電極厚み
+     */
+    private double eatumi;
+
+    /**
+     * 総数
+     */
+    private double sousuu;
+
+    /**
+     * 電極枚数
+     */
+    private Integer emaisuu;
+
+    /**
+     * 積層ｽﾗｲﾄﾞ量
+     */
+    private String sekisouslideryo;
+
+    /**
+     * 最上層ｽﾗｲﾄﾞ量
+     */
+    private double lastlayerslideryo;
+
+    /**
+     * 連続積層枚数
+     */
+    private Integer renzokusekisoumaisuu;
+
+    /**
+     * B層補正量
+     */
+    private BigDecimal bsouhoseiryou;
+
+    /**
+     * Y軸補正量
+     */
+    private Integer yjikuhoseiryou;
+
+    /**
+     * 上ｶﾊﾞｰﾃｰﾌﾟ1種類
+     */
+    private String syurui2;
+
+    /**
+     * 上ｶﾊﾞｰﾃｰﾌﾟ1厚み
+     */
+    private double atumi2;
+
+    /**
+     * 上ｶﾊﾞｰﾃｰﾌﾟ1枚数
+     */
+    private Integer maisuu2;
+
+    /**
      * @return kojyo
      */
     public String getKojyo() {
@@ -994,4 +1129,437 @@ public class SrRsussek {
     public void setRevision(Integer revision) {
             this.revision = revision;
     }
+
+
+    /**
+     * @return setsuu
+     */
+    public Integer getSetsuu() {
+            return setsuu;
+    }
+
+
+    /**
+     * @param setsuu セットする setsuu
+     */
+    public void setSetsuu(Integer setsuu) {
+            this.setsuu = setsuu;
+    }
+
+
+    /**
+     * @return tokuisaki
+     */
+    public String getTokuisaki() {
+            return tokuisaki;
+    }
+
+
+    /**
+     * @param tokuisaki セットする tokuisaki
+     */
+    public void setTokuisaki(String tokuisaki) {
+            this.tokuisaki = tokuisaki;
+    }
+
+
+    /**
+     * @return lotkubuncode
+     */
+    public String getLotkubuncode() {
+            return lotkubuncode;
+    }
+
+
+    /**
+     * @param lotkubuncode セットする lotkubuncode
+     */
+    public void setLotkubuncode(String lotkubuncode) {
+            this.lotkubuncode = lotkubuncode;
+    }
+
+
+    /**
+     * @return ownercode
+     */
+    public String getOwnercode() {
+            return ownercode;
+    }
+
+
+    /**
+     * @param ownercode セットする ownercode
+     */
+    public void setOwnercode(String ownercode) {
+            this.ownercode = ownercode;
+    }
+
+
+    /**
+     * @return syurui3
+     */
+    public String getSyurui3() {
+            return syurui3;
+    }
+
+
+    /**
+     * @param syurui3 セットする syurui3
+     */
+    public void setSyurui3(String syurui3) {
+            this.syurui3 = syurui3;
+    }
+
+
+    /**
+     * @return atumi3
+     */
+    public double getAtumi3() {
+            return atumi3;
+    }
+
+
+    /**
+     * @param atumi3 セットする atumi3
+     */
+    public void setAtumi3(double atumi3) {
+            this.atumi3 = atumi3;
+    }
+
+
+    /**
+     * @return maisuu3
+     */
+    public Integer getMaisuu3() {
+            return maisuu3;
+    }
+
+
+    /**
+     * @param maisuu3 セットする maisuu3
+     */
+    public void setMaisuu3(Integer maisuu3) {
+            this.maisuu3 = maisuu3;
+    }
+
+
+    /**
+     * @return patern
+     */
+    public String getPatern() {
+            return patern;
+    }
+
+
+    /**
+     * @param patern セットする patern
+     */
+    public void setPatern(String patern) {
+            this.patern = patern;
+    }
+
+
+    /**
+     * @return torikosuu
+     */
+    public Integer getTorikosuu() {
+            return torikosuu;
+    }
+
+
+    /**
+     * @param torikosuu セットする torikosuu
+     */
+    public void setTorikosuu(Integer torikosuu) {
+            this.torikosuu = torikosuu;
+    }
+
+
+    /**
+     * @return etape
+     */
+    public String getEtape() {
+            return etape;
+    }
+
+
+    /**
+     * @param etape セットする etape
+     */
+    public void setEtape(String etape) {
+            this.etape = etape;
+    }
+
+
+    /**
+     * @return lretu
+     */
+    public Integer getLretu() {
+            return lretu;
+    }
+
+
+    /**
+     * @param lretu セットする lretu
+     */
+    public void setLretu(Integer lretu) {
+            this.lretu = lretu;
+    }
+
+
+    /**
+     * @return wretu
+     */
+    public Integer getWretu() {
+            return wretu;
+    }
+
+
+    /**
+     * @param wretu セットする wretu
+     */
+    public void setWretu(Integer wretu) {
+            this.wretu = wretu;
+    }
+
+
+    /**
+     * @return lsun
+     */
+    public BigDecimal getLsun() {
+            return lsun;
+    }
+
+
+    /**
+     * @param lsun セットする lsun
+     */
+    public void setLsun(BigDecimal lsun) {
+            this.lsun = lsun;
+    }
+
+
+    /**
+     * @return wsun
+     */
+    public BigDecimal getWsun() {
+            return wsun;
+    }
+
+
+    /**
+     * @param wsun セットする wsun
+     */
+    public void setWsun(BigDecimal wsun) {
+            this.wsun = wsun;
+    }
+
+
+    /**
+     * @return epaste
+     */
+    public String getEpaste() {
+            return epaste;
+    }
+
+
+    /**
+     * @param epaste セットする epaste
+     */
+    public void setEpaste(String epaste) {
+            this.epaste = epaste;
+    }
+
+
+    /**
+     * @return genryou
+     */
+    public String getGenryou() {
+            return genryou;
+    }
+
+
+    /**
+     * @param genryou セットする genryou
+     */
+    public void setGenryou(String genryou) {
+            this.genryou = genryou;
+    }
+
+
+    /**
+     * @return eatumi
+     */
+    public double getEatumi() {
+            return eatumi;
+    }
+
+
+    /**
+     * @param eatumi セットする eatumi
+     */
+    public void setEatumi(double eatumi) {
+            this.eatumi = eatumi;
+    }
+
+
+    /**
+     * @return sousuu
+     */
+    public double getSousuu() {
+            return sousuu;
+    }
+
+
+    /**
+     * @param sousuu セットする sousuu
+     */
+    public void setSousuu(double sousuu) {
+            this.sousuu = sousuu;
+    }
+
+
+    /**
+     * @return emaisuu
+     */
+    public Integer getEmaisuu() {
+            return emaisuu;
+    }
+
+
+    /**
+     * @param emaisuu セットする emaisuu
+     */
+    public void setEmaisuu(Integer emaisuu) {
+            this.emaisuu = emaisuu;
+    }
+
+
+    /**
+     * @return sekisouslideryo
+     */
+    public String getSekisouslideryo() {
+            return sekisouslideryo;
+    }
+
+
+    /**
+     * @param sekisouslideryo セットする sekisouslideryo
+     */
+    public void setSekisouslideryo(String sekisouslideryo) {
+            this.sekisouslideryo = sekisouslideryo;
+    }
+
+
+    /**
+     * @return lastlayerslideryo
+     */
+    public double getLastlayerslideryo() {
+            return lastlayerslideryo;
+    }
+
+
+    /**
+     * @param lastlayerslideryo セットする lastlayerslideryo
+     */
+    public void setLastlayerslideryo(double lastlayerslideryo) {
+            this.lastlayerslideryo = lastlayerslideryo;
+    }
+
+
+    /**
+     * @return renzokusekisoumaisuu
+     */
+    public Integer getRenzokusekisoumaisuu() {
+            return renzokusekisoumaisuu;
+    }
+
+
+    /**
+     * @param renzokusekisoumaisuu セットする renzokusekisoumaisuu
+     */
+    public void setRenzokusekisoumaisuu(Integer renzokusekisoumaisuu) {
+            this.renzokusekisoumaisuu = renzokusekisoumaisuu;
+    }
+
+
+    /**
+     * @return bsouhoseiryou
+     */
+    public BigDecimal getBsouhoseiryou() {
+            return bsouhoseiryou;
+    }
+
+
+    /**
+     * @param bsouhoseiryou セットする bsouhoseiryou
+     */
+    public void setBsouhoseiryou(BigDecimal bsouhoseiryou) {
+            this.bsouhoseiryou = bsouhoseiryou;
+    }
+
+
+    /**
+     * @return yjikuhoseiryou
+     */
+    public Integer getYjikuhoseiryou() {
+            return yjikuhoseiryou;
+    }
+
+
+    /**
+     * @param yjikuhoseiryou セットする yjikuhoseiryou
+     */
+    public void setYjikuhoseiryou(Integer yjikuhoseiryou) {
+            this.yjikuhoseiryou = yjikuhoseiryou;
+    }
+
+
+    /**
+     * @return syurui2
+     */
+    public String getSyurui2() {
+            return syurui2;
+    }
+
+
+    /**
+     * @param syurui2 セットする syurui2
+     */
+    public void setSyurui2(String syurui2) {
+            this.syurui2 = syurui2;
+    }
+
+
+    /**
+     * @return atumi2
+     */
+    public double getAtumi2() {
+            return atumi2;
+    }
+
+
+    /**
+     * @param atumi2 セットする atumi2
+     */
+    public void setAtumi2(double atumi2) {
+            this.atumi2 = atumi2;
+    }
+
+
+    /**
+     * @return maisuu2
+     */
+    public Integer getMaisuu2() {
+            return maisuu2;
+    }
+
+
+    /**
+     * @param maisuu2 セットする maisuu2
+     */
+    public void setMaisuu2(Integer maisuu2) {
+            this.maisuu2 = maisuu2;
+    }
+    
 }

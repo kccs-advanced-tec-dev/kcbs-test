@@ -447,10 +447,15 @@ public class GXHDO201B003 implements Serializable {
     public void checkInputAndSearch() {
         // 入力チェック処理
         ValidateUtil validateUtil = new ValidateUtil();
-        
+
         // ロットNo
-        if (existError(validateUtil.checkC101(getLotNo(), "ロットNo", 14)) ||
-            !StringUtil.isEmpty(getLotNo()) && existError(validateUtil.checkValueE001(getLotNo()))) {
+        if(!StringUtil.isEmpty(getLotNo()) && (StringUtil.getLength(getLotNo()) != 11 && StringUtil.getLength(getLotNo()) != 14)){
+         FacesMessage message = 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000064"), null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return;
+        }
+        if (!StringUtil.isEmpty(getLotNo()) && existError(validateUtil.checkValueE001(getLotNo()))) {
             return;
         }
         // KCPNO
@@ -617,61 +622,59 @@ public class GXHDO201B003 implements Serializable {
             QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
             String sql = "SELECT CONCAT(IFNULL(T1.KOJYO, ''), IFNULL(T1.LOTNO, ''), IFNULL(T1.EDABAN, '')) AS LOTNO"
                     + ", T1.KCPNO"
-                    + ", T1.TAPESYURUI"
-                    + ", T1.TAPELOTNO"
-                    + ", T1.TapeSlipKigo"
-                    + ", T1.GENRYOKIGO"
-                    + ", T1.KAISINICHIJI"
-                    + ", T1.SYURYONICHIJI"
+                    + ", T1.tokuisaki"
+                    + ", T1.lotkubuncode"
+                    + ", T1.ownercode"
                     + ", T1.GOKI"
-                    + ", T1.SKEEGENO"
-                    + ", T1.SKEEGEMAISUU"
-                    + ", T1.SKEEGESPEED"
-                    + ", T1.KANSOONDO"
-                    + ", T1.CLEARANCE"
-                    + ", T1.SAATU"
-                    + ", T1.MAKUATU1"
-                    + ", T1.SEIHANNO"
-                    + ", T1.SEIHANMAISUU"
+                    + ", T1.genryou"
+                    + ", T1.eatumi"
+                    + ", T1.seikeinagasa"
+                    + ", T1.petfilmsyurui"
+                    + ", T1.TAPELOTNO"
+                    + ", T1.INSATUROLLNO"
+                    + ", T1.GENRYOKIGO"
+                    + ", T1.epaste"
                     + ", T1.PASTELOTNO"
                     + ", T1.PASTENENDO"
                     + ", T1.PASTEONDO"
-                    + ", T1.INSATUROLLNO"
-                    + ", T1.INSATUROLLNO2"
-                    + ", T1.INSATUROLLNO3"
-                    + ", T1.INSATUROLLNO4"
-                    + ", T1.INSATUROLLNO5"
-                    + ", T1.INSATUHABASAVE"
-                    + ", T1.INSATUHABAEAVE"
-                    + ", T1.MLD"
-                    + ", T1.BIKO1"
-                    + ", T1.BIKO2"
-                    + ", T1.TANTOSYA"
                     + ", T1.pkokeibun1"
                     + ", T1.pastelotno2"
                     + ", T1.pastenendo2"
                     + ", T1.pasteondo2"
                     + ", T1.pkokeibun2"
-                    + ", T1.petfilmsyurui"
+                    + ", T1.seihanmei"
+                    + ", T1.pattern"
+                    + ", T1.SEIHANNO"
+                    + ", T1.SEIHANMAISUU"
+                    + ", T1.SKEEGENO"
+                    + ", T1.SKEEGEMAISUU"
+                    + ", T1.SKEEGESPEED"
+                    + ", T1.scraperspeed"
+                    + ", T1.KANSOONDO"
                     + ", T1.kansoondo2"
                     + ", T1.kansoondo3"
                     + ", T1.kansoondo4"
                     + ", T1.kansoondo5"
-                    + ", T1.seihanmei"
+                    + ", T1.SAATU"
+                    + ", T1.table_clearrance"
+                    + ", T1.kansouroatsu"
+                    + ", T1.MLD"
+                    + ", T1.printhaba"
                     + ", T1.makuatsu_ave_start"
                     + ", T1.makuatsu_max_start"
                     + ", T1.makuatsu_min_start"
                     + ", T1.makuatucv_start"
                     + ", (CASE WHEN T1.nijimikasure_start = 0 THEN 'NG' WHEN T1.nijimikasure_start = 1 THEN 'OK' ELSE NULL END) AS nijimikasure_start"
+                    + ", T1.startitikakunin"
+                    + ", T1.printmaisuu"
+                    + ", T1.KAISINICHIJI"
+                    + ", T1.TANTOSYA"
+                    + ", T1.kakuninsya"
+                    + ", T1.SYURYONICHIJI"
                     + ", (CASE WHEN T1.nijimikasure_end = 0 THEN 'NG' WHEN T1.nijimikasure_end = 1 THEN 'OK' ELSE NULL END) AS nijimikasure_end"
                     + ", T1.tanto_end"
-                    + ", T1.printmaisuu"
-                    + ", T1.kansouroatsu"
-                    + ", T1.printhaba"
-                    + ", T1.table_clearrance"
-                    + ", T1.torokunichiji"
-                    + ", T1.kosinnichiji"
-                    + ", T1.revision"
+                    + ", T1.BIKO1"
+                    + ", T1.BIKO2"
                     + ", T2.makuatsu_start1"
                     + ", T2.makuatsu_start2"
                     + ", T2.makuatsu_start3"
@@ -682,7 +685,7 @@ public class GXHDO201B003 implements Serializable {
                     + ", T2.insatuhaba_start3"
                     + ", T2.insatuhaba_start4"
                     + ", T2.insatuhaba_start5 "
-                    + "FROM sr_rsusprn T1 "
+                    + " FROM sr_rsusprn T1 "
                     + "LEFT JOIN sub_sr_rsusprn T2 ON (T1.kojyo = T2.kojyo AND T1.lotno = T2.lotno AND T1.edaban = T2.edaban) "
                     + "WHERE (? IS NULL OR T1.KOJYO = ?) "
                     + "AND   (? IS NULL OR T1.LOTNO = ?) "
@@ -702,70 +705,71 @@ public class GXHDO201B003 implements Serializable {
             
             // モデルクラスとのマッピング定義
             Map<String, String> mapping = new HashMap<>();
-            mapping.put("LOTNO", "lotno");
-            mapping.put("KCPNO", "kcpno");
-            mapping.put("TAPESYURUI", "tapesyurui");
-            mapping.put("TAPELOTNO", "tapelotno");
-            mapping.put("TapeSlipKigo", "tapeslipkigo");
-            mapping.put("GENRYOKIGO", "genryokigo");
-            mapping.put("KAISINICHIJI", "kaisinichiji");
-            mapping.put("SYURYONICHIJI", "syuryonichiji");
-            mapping.put("GOKI", "goki");
-            mapping.put("SKEEGENO", "skeegeno");
-            mapping.put("SKEEGEMAISUU", "skeegemaisuu");
-            mapping.put("SKEEGESPEED", "skeegespeed");
-            mapping.put("KANSOONDO", "kansoondo");
-            mapping.put("CLEARANCE", "clearance");
-            mapping.put("SAATU", "saatu");
-            mapping.put("MAKUATU1", "makuatu1");
-            mapping.put("SEIHANNO", "seihanno");
-            mapping.put("SEIHANMAISUU", "seihanmaisuu");
-            mapping.put("PASTELOTNO", "pastelotno");
-            mapping.put("PASTENENDO", "pastenendo");
-            mapping.put("PASTEONDO", "pasteondo");
-            mapping.put("INSATUROLLNO", "insaturollno");
-            mapping.put("INSATUROLLNO2", "insaturollno2");
-            mapping.put("INSATUROLLNO3", "insaturollno3");
-            mapping.put("INSATUROLLNO4", "insaturollno4");
-            mapping.put("INSATUROLLNO5", "insaturollno5");
-            mapping.put("INSATUHABASAVE", "insatuhabasave");
-            mapping.put("INSATUHABAEAVE", "insatuhabaeave");
-            mapping.put("MLD", "mld");
-            mapping.put("BIKO1", "biko1");
-            mapping.put("BIKO2", "biko2");
-            mapping.put("TANTOSYA", "tantosya");
-            mapping.put("pkokeibun1", "pkokeibun1");
-            mapping.put("pastelotno2", "pastelotno2");
-            mapping.put("pastenendo2", "pastenendo2");
-            mapping.put("pasteondo2", "pasteondo2");
-            mapping.put("pkokeibun2", "pkokeibun2");
-            mapping.put("petfilmsyurui", "petfilmsyurui");
-            mapping.put("kansoondo2", "kansoondo2");
-            mapping.put("kansoondo3", "kansoondo3");
-            mapping.put("kansoondo4", "kansoondo4");
-            mapping.put("kansoondo5", "kansoondo5");
-            mapping.put("seihanmei", "seihanmei");
-            mapping.put("makuatsu_ave_start", "makuatsuAveStart");
-            mapping.put("makuatsu_max_start", "makuatsuMaxStart");
-            mapping.put("makuatsu_min_start", "makuatsuMinStart");
-            mapping.put("makuatucv_start", "makuatucvStart");
-            mapping.put("nijimikasure_start", "nijimikasureStart");
-            mapping.put("nijimikasure_end", "nijimikasureEnd");
-            mapping.put("tanto_end", "tantoEnd");
-            mapping.put("printmaisuu", "printmaisuu");
-            mapping.put("kansouroatsu", "kansouroatsu");
-            mapping.put("printhaba", "printhaba");
-            mapping.put("table_clearrance", "tableClearrance");
-            mapping.put("makuatsu_start1", "makuatsuStart1");
-            mapping.put("makuatsu_start2", "makuatsuStart2");
-            mapping.put("makuatsu_start3", "makuatsuStart3");
-            mapping.put("makuatsu_start4", "makuatsuStart4");
-            mapping.put("makuatsu_start5", "makuatsuStart5");
-            mapping.put("insatuhaba_start1", "insatuhabaStart1");
-            mapping.put("insatuhaba_start2", "insatuhabaStart2");
-            mapping.put("insatuhaba_start3", "insatuhabaStart3");
-            mapping.put("insatuhaba_start4", "insatuhabaStart4");
-            mapping.put("insatuhaba_start5", "insatuhabaStart5");
+            mapping.put("LOTNO", "lotno");                                // ﾛｯﾄNo.
+            mapping.put("KCPNO", "kcpno");                                // KCPNO
+            mapping.put("tokuisaki", "tokuisaki");                        // 客先
+            mapping.put("lotkubuncode", "lotkubuncode");                  // ﾛｯﾄ区分
+            mapping.put("ownercode", "ownercode");                        // ｵｰﾅｰ
+            mapping.put("GOKI", "goki");                                  // 号機
+            mapping.put("genryou", "genryou");                            // 電極ﾃｰﾌﾟ
+            mapping.put("eatumi", "eatumi");                              // ﾃｰﾌﾟ厚み
+            mapping.put("seikeinagasa", "seikeinagasa");                  // 成形長さ
+            mapping.put("petfilmsyurui", "petfilmsyurui");                // PETﾌｨﾙﾑ種類
+            mapping.put("TAPELOTNO", "tapelotno");                        // ﾃｰﾌﾟｽﾘｯﾌﾟﾛｯﾄNo
+            mapping.put("INSATUROLLNO", "insaturollno");                  // 印刷ﾛｰﾙNo1
+            mapping.put("GENRYOKIGO", "genryokigo");                      // 原料記号
+            mapping.put("epaste", "epaste");                              // 電極ﾍﾟｰｽﾄ
+            mapping.put("PASTELOTNO", "pastelotno");                      // ﾍﾟｰｽﾄﾛｯﾄNo
+            mapping.put("PASTENENDO", "pastenendo");                      // ﾍﾟｰｽﾄ粘度(P)
+            mapping.put("PASTEONDO", "pasteondo");                        // ﾍﾟｰｽﾄ温度(℃)
+            mapping.put("pkokeibun1", "pkokeibun1");                      // ﾍﾟｰｽﾄ固形分1(%)
+            mapping.put("pastelotno2", "pastelotno2");                    // ﾍﾟｰｽﾄﾛｯﾄNo2
+            mapping.put("pastenendo2", "pastenendo2");                    // ﾍﾟｰｽﾄ粘度2(P)
+            mapping.put("pasteondo2", "pasteondo2");                      // ﾍﾟｰｽﾄ温度2(℃)
+            mapping.put("pkokeibun2", "pkokeibun2");                      // ﾍﾟｰｽﾄ固形分2(%)
+            mapping.put("seihanmei", "seihanmei");                        // 製版名
+            mapping.put("pattern", "pattern");                            // 電極製版仕様
+            mapping.put("SEIHANNO", "seihanno");                          // 製版No
+            mapping.put("SEIHANMAISUU", "seihanmaisuu");                  // 製版枚数(枚)
+            mapping.put("SKEEGENO", "skeegeno");                          // ｽｷｰｼﾞNo
+            mapping.put("SKEEGEMAISUU", "skeegemaisuu");                  // ｽｷｰｼﾞ枚数(枚)
+            mapping.put("SKEEGESPEED", "skeegespeed");                    // ｽｷｰｼﾞｽﾋﾟｰﾄﾞ
+            mapping.put("scraperspeed", "scraperspeed");                  // ｽｸﾚｯﾊﾟｰ速度
+            mapping.put("KANSOONDO", "kansoondo");                        // 乾燥温度
+            mapping.put("kansoondo2", "kansoondo2");                      // 乾燥温度表示値2(℃)
+            mapping.put("kansoondo3", "kansoondo3");                      // 乾燥温度表示値3(℃)
+            mapping.put("kansoondo4", "kansoondo4");                      // 乾燥温度表示値4(℃)
+            mapping.put("kansoondo5", "kansoondo5");                      // 乾燥温度表示値5(℃)
+            mapping.put("SAATU", "saatu");                                // 差圧
+            mapping.put("table_clearrance", "tableClearrance");           // ﾃｰﾌﾞﾙｸﾘｱﾗﾝｽ(m/min)
+            mapping.put("kansouroatsu", "kansouroatsu");                  // 乾燥炉圧(Mpa)
+            mapping.put("MLD", "mld");                                    // MLD
+            mapping.put("printhaba", "printhaba");                        // 印刷幅(μm)
+            mapping.put("makuatsu_ave_start", "makuatsuAveStart");        // 印刷ｽﾀｰﾄ膜厚AVE(μm)
+            mapping.put("makuatsu_max_start", "makuatsuMaxStart");        // 印刷ｽﾀｰﾄ膜厚MAX(μm)
+            mapping.put("makuatsu_min_start", "makuatsuMinStart");        // 印刷ｽﾀｰﾄ膜厚MIN(μm)
+            mapping.put("makuatucv_start", "makuatucvStart");             // 印刷ｽﾀｰﾄ膜厚CV(%)
+            mapping.put("nijimikasure_start", "nijimikasureStart");       // ｽﾀｰﾄ時ﾆｼﾞﾐ・ｶｽﾚ確認
+            mapping.put("startitikakunin", "startitikakunin");            // 印刷位置確認
+            mapping.put("printmaisuu", "printmaisuu");                    // 印刷枚数(枚)
+            mapping.put("KAISINICHIJI", "kaisinichiji");                  // 開始日時
+            mapping.put("TANTOSYA", "tantosya");                          // 印刷ｽﾀｰﾄ担当者
+            mapping.put("kakuninsya", "kakuninsya");                      // 印刷ｽﾀｰﾄ確認者
+            mapping.put("SYURYONICHIJI", "syuryonichiji");                // 終了日時
+            mapping.put("nijimikasure_end", "nijimikasureEnd");           // 終了時ﾆｼﾞﾐ・ｶｽﾚ確認
+            mapping.put("tanto_end", "tantoEnd");                         // 印刷ｴﾝﾄﾞ時担当者
+            mapping.put("BIKO1", "biko1");                                // 備考1
+            mapping.put("BIKO2", "biko2");                                // 備考2
+            mapping.put("makuatsu_start1", "makuatsuStart1");             // 膜厚ｽﾀｰﾄ1
+            mapping.put("makuatsu_start2", "makuatsuStart2");             // 膜厚ｽﾀｰﾄ2
+            mapping.put("makuatsu_start3", "makuatsuStart3");             // 膜厚ｽﾀｰﾄ3
+            mapping.put("makuatsu_start4", "makuatsuStart4");             // 膜厚ｽﾀｰﾄ4
+            mapping.put("makuatsu_start5", "makuatsuStart5");             // 膜厚ｽﾀｰﾄ5
+            mapping.put("insatuhaba_start1", "insatuhabaStart1");         // 印刷幅ｽﾀｰﾄ1
+            mapping.put("insatuhaba_start2", "insatuhabaStart2");         // 印刷幅ｽﾀｰﾄ2
+            mapping.put("insatuhaba_start3", "insatuhabaStart3");         // 印刷幅ｽﾀｰﾄ3
+            mapping.put("insatuhaba_start4", "insatuhabaStart4");         // 印刷幅ｽﾀｰﾄ4
+            mapping.put("insatuhaba_start5", "insatuhabaStart5");         // 印刷幅ｽﾀｰﾄ5
 
             BeanProcessor beanProcessor = new BeanProcessor(mapping);
             RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);

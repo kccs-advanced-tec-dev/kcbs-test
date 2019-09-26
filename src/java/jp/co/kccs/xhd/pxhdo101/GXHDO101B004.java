@@ -227,7 +227,23 @@ public class GXHDO101B004 implements IFormLogic {
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemTtapeSyurui);
             return MessageUtil.getErrorMessageInfo("XHD-000032", true, true, errFxhdd01List, itemTtapeSyurui.getLabel1());
         }
-
+        
+        // 空打ち
+        FXHDD01 itemKaraut = getItemRow(processData.getItemList(), GXHDO101B004Const.KARAUTI);
+        // 空打ち[秒]
+        FXHDD01 itemKarautibyou = getItemRow(processData.getItemList(), GXHDO101B004Const.KARAUTIBYOU);
+        // 空打ち[回]
+        FXHDD01 itemKarautikai = getItemRow(processData.getItemList(), GXHDO101B004Const.KARAUTIKAI);
+        
+        // 関連ﾁｪｯｸ
+        if("なし".equals(itemKaraut.getValue())){
+            if(!StringUtil.isEmpty(itemKarautibyou.getValue()) || !StringUtil.isEmpty(itemKarautikai.getValue())){
+                List<FXHDD01> errFxhdd01List = Arrays.asList(itemKaraut,itemKarautibyou,itemKarautikai);
+                return MessageUtil.getErrorMessageInfo("XHD-000098", true, true, errFxhdd01List);
+            }
+        
+        }
+        
         return null;
     }
 
@@ -402,10 +418,18 @@ public class GXHDO101B004 implements IFormLogic {
 
         //下端子ﾌﾞｸ抜き
         FXHDD01 itemShitaTanshiBukunuki = getItemRow(processData.getItemList(), GXHDO101B004Const.SHITA_TANSHI_BUKUNUKI);
-        if (!"実施".equals(itemShitaTanshiBukunuki.getValue()) && !"未実施".equals(itemShitaTanshiBukunuki.getValue())) {
-            // ｴﾗｰ項目をﾘｽﾄに追加
+        if(StringUtil.isEmpty(itemShitaTanshiBukunuki.getValue())){
+            //エラー発生時
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemShitaTanshiBukunuki);
-            return MessageUtil.getErrorMessageInfo("XHD-000032", true, true, errFxhdd01List, itemShitaTanshiBukunuki.getLabel1());
+            return MessageUtil.getErrorMessageInfo("", MessageUtil.getMessage("XHD-000032", "下端子ﾌﾞｸ抜き"), true, true, errFxhdd01List);
+        }
+        
+        //ﾜﾚ、ｳｷ、かみ込みなき事
+        FXHDD01 itemGaikanKakunin5 = getItemRow(processData.getItemList(), GXHDO101B004Const.GAIKAN_KAKUNIN5);
+        if(StringUtil.isEmpty(itemGaikanKakunin5.getValue())){
+            //エラー発生時
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemGaikanKakunin5);
+            return MessageUtil.getErrorMessageInfo("", MessageUtil.getMessage("XHD-000032", "ﾜﾚ、ｳｷ、かみ込みなき事"), true, true, errFxhdd01List);
         }
 
         //端子テープ種類
@@ -415,6 +439,38 @@ public class GXHDO101B004 implements IFormLogic {
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemTtapeSyurui);
             return MessageUtil.getErrorMessageInfo("XHD-000032", true, true, errFxhdd01List, itemTtapeSyurui.getLabel1());
         }
+        
+        //空打ち
+        FXHDD01 itemKarauti = getItemRow(processData.getItemList(), GXHDO101B004Const.KARAUTI);
+        if(StringUtil.isEmpty(itemKarauti.getValue())){
+            //エラー発生時
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemKarauti);
+            return MessageUtil.getErrorMessageInfo("", MessageUtil.getMessage("XHD-000032", "空打ち"), true, true, errFxhdd01List);
+        }
+        
+        // 空打ち
+        FXHDD01 itemKaraut = getItemRow(processData.getItemList(), GXHDO101B004Const.KARAUTI);
+        // 空打ち[秒]
+        FXHDD01 itemKarautibyou = getItemRow(processData.getItemList(), GXHDO101B004Const.KARAUTIBYOU);
+        // 空打ち[回]
+        FXHDD01 itemKarautikai = getItemRow(processData.getItemList(), GXHDO101B004Const.KARAUTIKAI);
+        
+        // 関連ﾁｪｯｸ
+        if("なし".equals(itemKaraut.getValue())){
+            if(!StringUtil.isEmpty(itemKarautibyou.getValue()) || !StringUtil.isEmpty(itemKarautikai.getValue())){
+                List<FXHDD01> errFxhdd01List = Arrays.asList(itemKaraut,itemKarautibyou,itemKarautikai);
+                return MessageUtil.getErrorMessageInfo("XHD-000098", true, true, errFxhdd01List);
+            }
+        
+        }
+        if("あり".equals(itemKaraut.getValue())){
+            if(StringUtil.isEmpty(itemKarautibyou.getValue()) || StringUtil.isEmpty(itemKarautikai.getValue())){
+                List<FXHDD01> errFxhdd01List = Arrays.asList(itemKaraut,itemKarautibyou,itemKarautikai);
+                return MessageUtil.getErrorMessageInfo("XHD-000099", true, true, errFxhdd01List);
+            }
+        
+        }
+        
 
         ValidateUtil validateUtil = new ValidateUtil();
         // 開始日時、終了日時前後チェック
@@ -1400,8 +1456,6 @@ public class GXHDO101B004 implements IFormLogic {
         this.setItemData(processData, GXHDO101B004Const.GENRYO_KIGOU, getSrSpssekisouItemData(GXHDO101B004Const.GENRYO_KIGOU, srSpssekisouData));
         // ＰＥＴフィルム種類
         this.setItemData(processData, GXHDO101B004Const.PET_FILM_SHURUI, getSrSpssekisouItemData(GXHDO101B004Const.PET_FILM_SHURUI, srSpssekisouData));
-        // 固着シート貼付り機
-        this.setItemData(processData, GXHDO101B004Const.KOTYAKU_GOUKI, getSrSpssekisouItemData(GXHDO101B004Const.KOTYAKU_GOUKI, srSpssekisouData));
         // 固着シート
         this.setItemData(processData, GXHDO101B004Const.KOTYAKU_SHEET, getSrSpssekisouItemData(GXHDO101B004Const.KOTYAKU_SHEET, srSpssekisouData));
         // 下端子号機
@@ -1434,16 +1488,18 @@ public class GXHDO101B004 implements IFormLogic {
         this.setItemData(processData, GXHDO101B004Const.LAST_KAATURYOKU, getSrSpssekisouItemData(GXHDO101B004Const.LAST_KAATURYOKU, srSpssekisouData));
         // 最終加圧時間
         this.setItemData(processData, GXHDO101B004Const.LAST_KAATUJIKAN, getSrSpssekisouItemData(GXHDO101B004Const.LAST_KAATUJIKAN, srSpssekisouData));
+        //空打ち
+        this.setItemData(processData, GXHDO101B004Const.KARAUTI, getSrSpssekisouItemData(GXHDO101B004Const.KARAUTI, srSpssekisouData));
+        // 空打ち[秒]
+        this.setItemData(processData, GXHDO101B004Const.KARAUTIBYOU, getSrSpssekisouItemData(GXHDO101B004Const.KARAUTIBYOU, srSpssekisouData));
+        // 空打ち[回]
+        this.setItemData(processData, GXHDO101B004Const.KARAUTIKAI, getSrSpssekisouItemData(GXHDO101B004Const.KARAUTIKAI, srSpssekisouData));
         // 上端子
         this.setItemData(processData, GXHDO101B004Const.UWA_TANSHI, getSrSpssekisouItemData(GXHDO101B004Const.UWA_TANSHI, srSpssekisouData));
-        // 外観確認1
-        this.setItemData(processData, GXHDO101B004Const.GAIKAN_KAKUNIN1, getSrSpssekisouItemData(GXHDO101B004Const.GAIKAN_KAKUNIN1, srSpssekisouData));
-        // 外観確認2
-        this.setItemData(processData, GXHDO101B004Const.GAIKAN_KAKUNIN2, getSrSpssekisouItemData(GXHDO101B004Const.GAIKAN_KAKUNIN2, srSpssekisouData));
-        // 外観確認3
-        this.setItemData(processData, GXHDO101B004Const.GAIKAN_KAKUNIN3, getSrSpssekisouItemData(GXHDO101B004Const.GAIKAN_KAKUNIN3, srSpssekisouData));
-        // 外観確認4
-        this.setItemData(processData, GXHDO101B004Const.GAIKAN_KAKUNIN4, getSrSpssekisouItemData(GXHDO101B004Const.GAIKAN_KAKUNIN4, srSpssekisouData));
+        // ｽﾞﾚ値
+        this.setItemData(processData, GXHDO101B004Const.ZURETI, getSrSpssekisouItemData(GXHDO101B004Const.ZURETI, srSpssekisouData));
+        // ﾜﾚ、ｳｷ、かみ込みなき事
+        this.setItemData(processData, GXHDO101B004Const.GAIKAN_KAKUNIN5, getSrSpssekisouItemData(GXHDO101B004Const.GAIKAN_KAKUNIN5, srSpssekisouData));
         // 処理セット数
         this.setItemData(processData, GXHDO101B004Const.SYORI_SETSUU, getSrSpssekisouItemData(GXHDO101B004Const.SYORI_SETSUU, srSpssekisouData));
         // 良品セット数
@@ -1454,6 +1510,8 @@ public class GXHDO101B004 implements IFormLogic {
         this.setItemData(processData, GXHDO101B004Const.KAISHI_TIME, getSrSpssekisouItemData(GXHDO101B004Const.KAISHI_TIME, srSpssekisouData));
         // 開始担当者
         this.setItemData(processData, GXHDO101B004Const.KAISHI_TANTOSYA, getSrSpssekisouItemData(GXHDO101B004Const.KAISHI_TANTOSYA, srSpssekisouData));
+        // 開始確認者
+        this.setItemData(processData, GXHDO101B004Const.KAISHI_KAKUNINSYA, getSrSpssekisouItemData(GXHDO101B004Const.KAISHI_KAKUNINSYA, srSpssekisouData));
         // 終了日
         this.setItemData(processData, GXHDO101B004Const.SHURYO_DAY, getSrSpssekisouItemData(GXHDO101B004Const.SHURYO_DAY, srSpssekisouData));
         // 終了時刻
@@ -1921,13 +1979,13 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + ",STsunAve,STsunMax,STsunMin,STsunSiguma,HNGKaisuu,GaikanTantou"
                 + ",CPressKaisuu,HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,tapelotno"
                 + ",taperollno1,taperollno2,taperollno3,genryoukigou,petfilmsyurui"
-                + ",Kotyakugouki,Kotyakusheet,ShitaTanshigouki,UwaTanshigouki"
+                + ",Kotyakusheet,ShitaTanshigouki,UwaTanshigouki"
                 + ",ShitaTanshiBukunuki,ShitaTanshi,HakuriKyuin,HakuriClearrance"
                 + ",HakuriCutSpeed,ShitaPanchiOndo,UwaPanchiOndo,KaatuJikan,KaatuAturyoku"
-                + ",UwaTanshi,GaikanKakunin1,GaikanKakunin2,GaikanKakunin3,GaikanKakunin4"
+                + ",UwaTanshi"
                 + ",SyoriSetsuu,RyouhinSetsuu,StartTantosyacode,EndTantousyacode"
-                + ",TanshiTapeSyurui,torokunichiji,kosinnichiji"
-                + ",revision,'0' AS deleteflag "
+                + ",TanshiTapeSyurui,torokunichiji,kosinnichiji,karauti,karautibyou"
+                + ",karautikai,zureti,GaikanKakunin5,revision,'0' AS deleteflag "
                 + "FROM sr_spssekisou "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
         // revisionが入っている場合、条件に追加
@@ -1997,7 +2055,6 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         mapping.put("taperollno3", "taperollno3"); // ﾃｰﾌﾟﾛｰﾙNo3
         mapping.put("genryoukigou", "genryoukigou"); // 原料記号
         mapping.put("petfilmsyurui", "petfilmsyurui"); // PETﾌｨﾙﾑ種類
-        mapping.put("Kotyakugouki", "kotyakugouki"); // 固着ｼｰﾄ張付け機
         mapping.put("Kotyakusheet", "kotyakusheet"); // 固着ｼｰﾄ
         mapping.put("ShitaTanshigouki", "shitaTanshigouki"); // 下端子号機
         mapping.put("UwaTanshigouki", "uwaTanshigouki"); // 上端子号機
@@ -2011,10 +2068,6 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         mapping.put("KaatuJikan", "kaatuJikan"); // 加圧時間
         mapping.put("KaatuAturyoku", "kaatuAturyoku"); // 加圧圧力
         mapping.put("UwaTanshi", "uwaTanshi"); // 上端子
-        mapping.put("GaikanKakunin1", "gaikanKakunin1"); // 外観確認1
-        mapping.put("GaikanKakunin2", "gaikanKakunin2"); // 外観確認2
-        mapping.put("GaikanKakunin3", "gaikanKakunin3"); // 外観確認3
-        mapping.put("GaikanKakunin4", "gaikanKakunin4"); // 外観確認4
         mapping.put("SyoriSetsuu", "syoriSetsuu"); // 処理ｾｯﾄ数
         mapping.put("RyouhinSetsuu", "ryouhinSetsuu"); // 良品ｾｯﾄ数
         mapping.put("StartTantosyacode", "startTantosyacode"); // 開始担当者ｺｰﾄﾞ
@@ -2022,6 +2075,11 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         mapping.put("TanshiTapeSyurui", "tanshiTapeSyurui"); // 端子ﾃｰﾌﾟ種類
         mapping.put("torokunichiji", "torokunichiji"); // 登録日時
         mapping.put("kosinnichiji", "kosinnichiji"); // 更新日時
+        mapping.put("karauti", "karauti"); // 空打ち
+        mapping.put("karautibyou", "karautibyou"); // 空打ち秒
+        mapping.put("karautikai", "karautikai"); // 空打ち回
+        mapping.put("zureti", "zureti"); // ｽﾞﾚ値
+        mapping.put("GaikanKakunin5", "gaikanKakunin5"); // 外観確認5
         mapping.put("revision", "revision"); // revision
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
 
@@ -2193,13 +2251,13 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + ",STsunAve,STsunMax,STsunMin,STsunSiguma,HNGKaisuu,GaikanTantou"
                 + ",CPressKaisuu,HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,tapelotno"
                 + ",taperollno1,taperollno2,taperollno3,genryoukigou,petfilmsyurui"
-                + ",Kotyakugouki,Kotyakusheet,ShitaTanshigouki,UwaTanshigouki"
+                + ",Kotyakusheet,ShitaTanshigouki,UwaTanshigouki"
                 + ",ShitaTanshiBukunuki,ShitaTanshi,HakuriKyuin,HakuriClearrance"
                 + ",HakuriCutSpeed,ShitaPanchiOndo,UwaPanchiOndo,KaatuJikan,KaatuAturyoku"
-                + ",UwaTanshi,GaikanKakunin1,GaikanKakunin2,GaikanKakunin3,GaikanKakunin4"
+                + ",UwaTanshi"
                 + ",SyoriSetsuu,RyouhinSetsuu,StartTantosyacode,EndTantousyacode"
-                + ",TanshiTapeSyurui,torokunichiji,kosinnichiji"
-                + ",revision,deleteflag "
+                + ",TanshiTapeSyurui,torokunichiji,kosinnichiji,karauti,karautibyou"
+                + ",karautikai,zureti,GaikanKakunin5,revision,deleteflag "
                 + "FROM tmp_sr_spssekisou "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND deleteflag = ? ";
         // revisionが入っている場合、条件に追加
@@ -2270,7 +2328,6 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         mapping.put("taperollno3", "taperollno3"); // ﾃｰﾌﾟﾛｰﾙNo3
         mapping.put("genryoukigou", "genryoukigou"); // 原料記号
         mapping.put("petfilmsyurui", "petfilmsyurui"); // PETﾌｨﾙﾑ種類
-        mapping.put("kotyakugouki", "Kotyakugouki"); // 固着ｼｰﾄ張付け機
         mapping.put("kotyakusheet", "Kotyakusheet"); // 固着ｼｰﾄ
         mapping.put("shitatanshigouki", "ShitaTanshigouki"); // 下端子号機
         mapping.put("uwatanshigouki", "UwaTanshigouki"); // 上端子号機
@@ -2284,10 +2341,6 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         mapping.put("kaatujikan", "KaatuJikan"); // 加圧時間
         mapping.put("kaatuaturyoku", "KaatuAturyoku"); // 加圧圧力
         mapping.put("uwatanshi", "UwaTanshi"); // 上端子
-        mapping.put("gaikankakunin1", "GaikanKakunin1"); // 外観確認1
-        mapping.put("gaikankakunin2", "GaikanKakunin2"); // 外観確認2
-        mapping.put("gaikankakunin3", "GaikanKakunin3"); // 外観確認3
-        mapping.put("gaikankakunin4", "GaikanKakunin4"); // 外観確認4
         mapping.put("syorisetsuu", "SyoriSetsuu"); // 処理ｾｯﾄ数
         mapping.put("ryouhinsetsuu", "RyouhinSetsuu"); // 良品ｾｯﾄ数
         mapping.put("starttantosyacode", "StartTantosyacode"); // 開始担当者ｺｰﾄﾞ
@@ -2295,6 +2348,11 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         mapping.put("tanshitapesyurui", "TanshiTapeSyurui"); // 端子ﾃｰﾌﾟ種類
         mapping.put("torokunichiji", "torokunichiji"); // 登録日時
         mapping.put("kosinnichiji", "kosinnichiji"); // 更新日時
+        mapping.put("karauti", "karauti"); // 空打ち
+        mapping.put("karautibyou", "karautibyou"); // 空打ち秒
+        mapping.put("karautikai", "karautikai"); // 空打ち回
+        mapping.put("zureti", "zureti"); // ｽﾞﾚ値
+        mapping.put("gaikanKakunin5", "GaikanKakunin5"); // 外観確認5
         mapping.put("revision", "revision"); // revision
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
 
@@ -2755,17 +2813,17 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
      * @throws SQLException 例外エラー
      */
     private void insertTmpSrSpssekisou(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev, int deleteflag,
-            String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
+              String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
 
         String sql = "INSERT INTO tmp_sr_spssekisou ("
                 + "kojyo,lotno,edaban,tntapesyurui,tntapeno,tntapegenryou,gouki,startdatetime,enddatetime,sekisouzure,tantousya,kakuninsya,sekisouzure2"
                 + ",bikou1,bikou2,bikou3,bikou4,bikou5,KCPNO,GoukiCode,TpLot,HakuriSpeed,KanaOndo,DAturyoku,DKaatuJikan,CPressAturyoku,CPressKaatuJikan"
                 + ",CPressKankakuSosuu,LastKaaturyoku,LastKaatuJikan,FourSplitTantou,STaoreryo1,STaoreryo2,STaoreryo3,STaoreryo4,STsunAve,STsunMax,STsunMin"
                 + ",STsunSiguma,HNGKaisuu,GaikanTantou,CPressKaisuu,HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,tapelotno,taperollno1,taperollno2,taperollno3"
-                + ",genryoukigou,petfilmsyurui,Kotyakugouki,Kotyakusheet,ShitaTanshigouki,UwaTanshigouki,ShitaTanshiBukunuki,ShitaTanshi,HakuriKyuin"
-                + ",HakuriClearrance,HakuriCutSpeed,ShitaPanchiOndo,UwaPanchiOndo,KaatuJikan,KaatuAturyoku,UwaTanshi,GaikanKakunin1,GaikanKakunin2,GaikanKakunin3"
-                + ",GaikanKakunin4,SyoriSetsuu,RyouhinSetsuu,StartTantosyacode,EndTantousyacode,TanshiTapeSyurui,torokunichiji"
-                + ",kosinnichiji,revision,deleteflag"
+                + ",genryoukigou,petfilmsyurui,Kotyakusheet,ShitaTanshigouki,UwaTanshigouki,ShitaTanshiBukunuki,ShitaTanshi,HakuriKyuin"
+                + ",HakuriClearrance,HakuriCutSpeed,ShitaPanchiOndo,UwaPanchiOndo,KaatuJikan,KaatuAturyoku,UwaTanshi"
+                + ",SyoriSetsuu,RyouhinSetsuu,StartTantosyacode,EndTantousyacode,TanshiTapeSyurui,torokunichiji"
+                + ",kosinnichiji,karauti,karautibyou,karautikai,zureti,GaikanKakunin5,revision,deleteflag"
                 + ") VALUES ("
                 + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
                 + " ,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
@@ -2801,10 +2859,10 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + "CPressKankakuSosuu = ?,LastKaaturyoku = ?,LastKaatuJikan = ?,FourSplitTantou = ?,STaoreryo1 = ?,STaoreryo2 = ?,STaoreryo3 = ?,"
                 + "STaoreryo4 = ?,STsunAve = ?,STsunMax = ?,STsunMin = ?,STsunSiguma = ?,HNGKaisuu = ?,GaikanTantou = ?,CPressKaisuu = ?,HNGKaisuuAve = ?,"
                 + "GNGKaisuu = ?,GNGKaisuuAve = ?,tapelotno = ?,taperollno1 = ?,taperollno2 = ?,taperollno3 = ?,genryoukigou = ?,petfilmsyurui = ?,"
-                + "Kotyakugouki = ?,Kotyakusheet = ?,ShitaTanshigouki = ?,UwaTanshigouki = ?,ShitaTanshiBukunuki = ?,ShitaTanshi = ?,HakuriKyuin = ?,"
+                + "Kotyakusheet = ?,ShitaTanshigouki = ?,UwaTanshigouki = ?,ShitaTanshiBukunuki = ?,ShitaTanshi = ?,HakuriKyuin = ?,"
                 + "HakuriClearrance = ?,HakuriCutSpeed = ?,ShitaPanchiOndo = ?,UwaPanchiOndo = ?,KaatuJikan = ?,KaatuAturyoku = ?,UwaTanshi = ?,"
-                + "GaikanKakunin1 = ?,GaikanKakunin2 = ?,GaikanKakunin3 = ?,GaikanKakunin4 = ?,SyoriSetsuu = ?,RyouhinSetsuu = ?,StartTantosyacode = ?,"
-                + "EndTantousyacode = ?,TanshiTapeSyurui = ?,kosinnichiji = ?,revision = ?,deleteflag = ? "
+                + "SyoriSetsuu = ?,RyouhinSetsuu = ?,StartTantosyacode = ?,EndTantousyacode = ?,TanshiTapeSyurui = ?,kosinnichiji = ?,"
+                + "karauti = ?,karautibyou = ?,karautikai = ?,zureti = ?,GaikanKakunin5 = ?,revision = ?,deleteflag = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
         // 更新前の値を取得
@@ -2889,7 +2947,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
             getItemData(itemList, GXHDO101B004Const.SHURYO_TIME, srSpssekisouData))); //終了日時
         params.add(null);//積層ｽﾞﾚ
         params.add(null);//担当者ｺｰﾄﾞ
-        params.add(null);//確認者ｺｰﾄﾞ
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.KAISHI_KAKUNINSYA, srSpssekisouData)));//確認者ｺｰﾄﾞ
         params.add(null);//積層ｽﾞﾚ2
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.BIKOU1, srSpssekisouData))); //備考1
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.BIKOU2, srSpssekisouData))); //備考2
@@ -2929,23 +2987,10 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.ROLL_NO3, srSpssekisouData))); //ﾃｰﾌﾟﾛｰﾙNo3
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.GENRYO_KIGOU, srSpssekisouData))); //原料記号
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.PET_FILM_SHURUI, srSpssekisouData))); //PETﾌｨﾙﾑ種類
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.KOTYAKU_GOUKI, srSpssekisouData))); //固着シート貼付り機
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.KOTYAKU_SHEET, srSpssekisouData))); //固着シート
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.SHITATANSHI_GOUKI, srSpssekisouData))); //下端子号機
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.UWATANSHI_GOUKI, srSpssekisouData))); //上端子号機
-        // 下端子ﾌﾞｸ抜き
-        switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B004Const.SHITA_TANSHI_BUKUNUKI, srSpssekisouData))) {
-            case "未実施":
-                params.add(0);
-                break;
-            case "実施":
-                params.add(1);
-                break;
-            default:
-                params.add(null);
-                break;
-        }
-
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.SHITA_TANSHI_BUKUNUKI, srSpssekisouData))); // 下端子ﾌﾞｸ抜き
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.SHITA_TANSHI, srSpssekisouData))); //下端子
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.HAKURI_KYUIN, srSpssekisouData))); //剥離吸引圧
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.HAKURI_CLEARRANCE, srSpssekisouData))); //剥離クリアランス
@@ -2955,10 +3000,6 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.KAATU_JIKAN, srSpssekisouData))); //加圧時間
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.KAATU_ATURYOKU, srSpssekisouData))); //加圧圧力
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.UWA_TANSHI, srSpssekisouData))); //上端子
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.GAIKAN_KAKUNIN1, srSpssekisouData))); //外観確認1
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.GAIKAN_KAKUNIN2, srSpssekisouData))); //外観確認2
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.GAIKAN_KAKUNIN3, srSpssekisouData))); //外観確認3
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.GAIKAN_KAKUNIN4, srSpssekisouData))); //外観確認4
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.SYORI_SETSUU, srSpssekisouData))); //処理セット数
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.RYOUHIN_SETSUU, srSpssekisouData))); //良品セット数
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.KAISHI_TANTOSYA, srSpssekisouData))); //開始担当者
@@ -2982,8 +3023,14 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         } else {
             params.add(systemTime); //更新日時
         }
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.KARAUTI, srSpssekisouData))); //空打ち
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.KARAUTIBYOU, srSpssekisouData))); //空打ち[秒]
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.KARAUTIKAI, srSpssekisouData))); //空打ち[回]
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.ZURETI, srSpssekisouData))); //ｽﾞﾚ値
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.GAIKAN_KAKUNIN5, srSpssekisouData))); //外観確認5
         params.add(newRev); //revision
         params.add(deleteflag); //削除ﾌﾗｸﾞ
+        
 
         return params;
     }
@@ -3229,10 +3276,10 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + ",DKaatuJikan,CPressAturyoku,CPressKaatuJikan,CPressKankakuSosuu,LastKaaturyoku,LastKaatuJikan,FourSplitTantou"
                 + ",STaoreryo1,STaoreryo2,STaoreryo3,STaoreryo4,STsunAve,STsunMax,STsunMin,STsunSiguma,HNGKaisuu,GaikanTantou"
                 + ",CPressKaisuu,HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,tapelotno,taperollno1,taperollno2,taperollno3,genryoukigou"
-                + ",petfilmsyurui,Kotyakugouki,Kotyakusheet,ShitaTanshigouki,UwaTanshigouki,ShitaTanshiBukunuki,ShitaTanshi"
+                + ",petfilmsyurui,Kotyakusheet,ShitaTanshigouki,UwaTanshigouki,ShitaTanshiBukunuki,ShitaTanshi"
                 + ",HakuriKyuin,HakuriClearrance,HakuriCutSpeed,ShitaPanchiOndo,UwaPanchiOndo,KaatuJikan,KaatuAturyoku,UwaTanshi"
-                + ",GaikanKakunin1,GaikanKakunin2,GaikanKakunin3,GaikanKakunin4,SyoriSetsuu,RyouhinSetsuu,StartTantosyacode"
-                + ",EndTantousyacode,TanshiTapeSyurui,torokunichiji,kosinnichiji,revision"
+                + ",SyoriSetsuu,RyouhinSetsuu,StartTantosyacode"
+                + ",EndTantousyacode,TanshiTapeSyurui,torokunichiji,kosinnichiji,karauti,karautibyou,karautikai,zureti,GaikanKakunin5,revision"
                 + ") VALUES ("
                 + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
                 + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
@@ -3266,10 +3313,10 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + "DAturyoku = ?,DKaatuJikan = ?,CPressAturyoku = ?,CPressKaatuJikan = ?,CPressKankakuSosuu = ?,LastKaaturyoku = ?,LastKaatuJikan = ?,"
                 + "FourSplitTantou = ?,STaoreryo1 = ?,STaoreryo2 = ?,STaoreryo3 = ?,STaoreryo4 = ?,STsunAve = ?,STsunMax = ?,STsunMin = ?,STsunSiguma = ?,"
                 + "HNGKaisuu = ?,GaikanTantou = ?,CPressKaisuu = ?,HNGKaisuuAve = ?,GNGKaisuu = ?,GNGKaisuuAve = ?,tapelotno = ?,taperollno1 = ?,taperollno2 = ?,"
-                + "taperollno3 = ?,genryoukigou = ?,petfilmsyurui = ?,Kotyakugouki = ?,Kotyakusheet = ?,ShitaTanshigouki = ?,UwaTanshigouki = ?,"
+                + "taperollno3 = ?,genryoukigou = ?,petfilmsyurui = ?,Kotyakusheet = ?,ShitaTanshigouki = ?,UwaTanshigouki = ?,"
                 + "ShitaTanshiBukunuki = ?,ShitaTanshi = ?,HakuriKyuin = ?,HakuriClearrance = ?,HakuriCutSpeed = ?,ShitaPanchiOndo = ?,UwaPanchiOndo = ?,"
-                + "KaatuJikan = ?,KaatuAturyoku = ?,UwaTanshi = ?,GaikanKakunin1 = ?,GaikanKakunin2 = ?,GaikanKakunin3 = ?,GaikanKakunin4 = ?,SyoriSetsuu = ?,"
-                + "RyouhinSetsuu = ?,StartTantosyacode = ?,EndTantousyacode = ?,TanshiTapeSyurui = ?,kosinnichiji = ?,revision = ? "
+                + "KaatuJikan = ?,KaatuAturyoku = ?,UwaTanshi = ?,SyoriSetsuu = ?,RyouhinSetsuu = ?,StartTantosyacode = ?,EndTantousyacode = ?,TanshiTapeSyurui = ?,"
+                + "kosinnichiji = ?,karauti = ?,karautibyou = ?,karautikai = ?,zureti = ?,GaikanKakunin5 = ?,revision = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ?";
 
         // 更新前の値を取得
@@ -3325,7 +3372,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 getItemData(itemList, GXHDO101B004Const.SHURYO_TIME, srSpssekisouData))); //終了日時
         params.add(0); //積層ｽﾞﾚ
         params.add(""); //担当者ｺｰﾄﾞ
-        params.add(""); //確認者ｺｰﾄﾞ
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.KAISHI_KAKUNINSYA, srSpssekisouData))); //確認者ｺｰﾄﾞ
         params.add(0); //積層ｽﾞﾚ2
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.BIKOU1, srSpssekisouData))); //備考1
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.BIKOU2, srSpssekisouData))); //備考2
@@ -3365,23 +3412,10 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.ROLL_NO3, srSpssekisouData))); //ﾃｰﾌﾟﾛｰﾙNo3
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.GENRYO_KIGOU, srSpssekisouData))); //原料記号
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.PET_FILM_SHURUI, srSpssekisouData))); //PETﾌｨﾙﾑ種類
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.KOTYAKU_GOUKI, srSpssekisouData))); //固着シート貼付り機
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.KOTYAKU_SHEET, srSpssekisouData))); //固着シート
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.SHITATANSHI_GOUKI, srSpssekisouData))); //下端子号機
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.UWATANSHI_GOUKI, srSpssekisouData))); //上端子号機
-        // 下端子ﾌﾞｸ抜き
-        switch (StringUtil.nullToBlank(getItemData(itemList, GXHDO101B004Const.SHITA_TANSHI_BUKUNUKI, srSpssekisouData))) {
-            case "未実施":
-                params.add(0);
-                break;
-            case "実施":
-                params.add(1);
-                break;
-            default:
-                params.add(9);
-                break;
-        }
-
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.SHITA_TANSHI_BUKUNUKI, srSpssekisouData))); //下端子ﾌﾞｸ抜き
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.SHITA_TANSHI, srSpssekisouData))); //下端子
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.HAKURI_KYUIN, srSpssekisouData))); //剥離吸引圧
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B004Const.HAKURI_CLEARRANCE, srSpssekisouData))); //剥離クリアランス
@@ -3391,10 +3425,6 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B004Const.KAATU_JIKAN, srSpssekisouData))); //加圧時間
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.KAATU_ATURYOKU, srSpssekisouData))); //加圧圧力
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.UWA_TANSHI, srSpssekisouData))); //上端子
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.GAIKAN_KAKUNIN1, srSpssekisouData))); //外観確認1
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.GAIKAN_KAKUNIN2, srSpssekisouData))); //外観確認2
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.GAIKAN_KAKUNIN3, srSpssekisouData))); //外観確認3
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.GAIKAN_KAKUNIN4, srSpssekisouData))); //外観確認4
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.SYORI_SETSUU, srSpssekisouData))); //処理セット数
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B004Const.RYOUHIN_SETSUU, srSpssekisouData))); //良品セット数
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.KAISHI_TANTOSYA, srSpssekisouData))); //開始担当者
@@ -3419,6 +3449,11 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         } else {
             params.add(systemTime); //更新日時
         }
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.KARAUTI, srSpssekisouData))); //空打ち
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.KARAUTIBYOU, srSpssekisouData)));//空打ち[秒]
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.KARAUTIKAI, srSpssekisouData)));//空打ち[回]
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.ZURETI, srSpssekisouData)));//ｽﾞﾚ値
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.GAIKAN_KAKUNIN5, srSpssekisouData)));//外観確認5
         params.add(newRev); //revision
 
         return params;
@@ -3804,9 +3839,6 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
             // ＰＥＴフィルム種類
             case GXHDO101B004Const.PET_FILM_SHURUI:
                 return StringUtil.nullToBlank(srSpssekisouData.getPetfilmsyurui());
-            // 固着シート貼付り機
-            case GXHDO101B004Const.KOTYAKU_GOUKI:
-                return StringUtil.nullToBlank(srSpssekisouData.getKotyakugouki());
             // 固着シート
             case GXHDO101B004Const.KOTYAKU_SHEET:
                 return StringUtil.nullToBlank(srSpssekisouData.getKotyakusheet());
@@ -3818,14 +3850,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 return StringUtil.nullToBlank(srSpssekisouData.getUwaTanshigouki());
             // 下端子ﾌﾞｸ抜き
             case GXHDO101B004Const.SHITA_TANSHI_BUKUNUKI:
-                switch (StringUtil.nullToBlank(srSpssekisouData.getShitaTanshiBukunuki())) {
-                    case "0":
-                        return "未実施";
-                    case "1":
-                        return "実施";
-                    default:
-                        return "";
-                }
+                return StringUtil.nullToBlank(srSpssekisouData.getShitaTanshiBukunuki());
             // 積層号機
             case GXHDO101B004Const.SEKISO_GOKI:
                 return StringUtil.nullToBlank(srSpssekisouData.getGouki());
@@ -3862,21 +3887,24 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
             // 最終加圧時間
             case GXHDO101B004Const.LAST_KAATUJIKAN:
                 return StringUtil.nullToBlank(srSpssekisouData.getLastKaatuJikan());
+            //空打ち
+            case GXHDO101B004Const.KARAUTI:
+                return StringUtil.nullToBlank(srSpssekisouData.getKarauti());
+            //空打ち[秒]
+            case GXHDO101B004Const.KARAUTIBYOU:
+                return StringUtil.nullToBlank(srSpssekisouData.getKarautibyou());
+            //空打ち[回]
+            case GXHDO101B004Const.KARAUTIKAI:
+                return StringUtil.nullToBlank(srSpssekisouData.getKarautikai());
             // 上端子
             case GXHDO101B004Const.UWA_TANSHI:
                 return StringUtil.nullToBlank(srSpssekisouData.getUwaTanshi());
-            // 外観確認1
-            case GXHDO101B004Const.GAIKAN_KAKUNIN1:
-                return StringUtil.nullToBlank(srSpssekisouData.getGaikanKakunin1());
-            // 外観確認2
-            case GXHDO101B004Const.GAIKAN_KAKUNIN2:
-                return StringUtil.nullToBlank(srSpssekisouData.getGaikanKakunin2());
-            // 外観確認3
-            case GXHDO101B004Const.GAIKAN_KAKUNIN3:
-                return StringUtil.nullToBlank(srSpssekisouData.getGaikanKakunin3());
-            // 外観確認4
-            case GXHDO101B004Const.GAIKAN_KAKUNIN4:
-                return StringUtil.nullToBlank(srSpssekisouData.getGaikanKakunin4());
+            //ｽﾞﾚ値
+            case GXHDO101B004Const.ZURETI:
+                return StringUtil.nullToBlank(srSpssekisouData.getZureti()); 
+            //ﾜﾚ、ｳｷ、かみ込みなき事
+            case GXHDO101B004Const.GAIKAN_KAKUNIN5:
+                return StringUtil.nullToBlank(srSpssekisouData.getGaikanKakunin5());
             // 処理セット数
             case GXHDO101B004Const.SYORI_SETSUU:
                 return StringUtil.nullToBlank(srSpssekisouData.getSyoriSetsuu());
@@ -3892,6 +3920,9 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
             // 開始担当者
             case GXHDO101B004Const.KAISHI_TANTOSYA:
                 return StringUtil.nullToBlank(srSpssekisouData.getStartTantosyacode());
+            //開始確認者
+            case GXHDO101B004Const.KAISHI_KAKUNINSYA:
+                return StringUtil.nullToBlank(srSpssekisouData.getKakuninsya());
             // 終了日
             case GXHDO101B004Const.SHURYO_DAY:
                 return DateUtil.formattedTimestamp(srSpssekisouData.getEnddatetime(), "yyMMdd");
@@ -3965,7 +3996,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + ",ShitaTanshiBukunuki,ShitaTanshi,HakuriKyuin,HakuriClearrance,HakuriCutSpeed,ShitaPanchiOndo,UwaPanchiOndo"
                 + ",KaatuJikan,KaatuAturyoku,UwaTanshi,GaikanKakunin1,GaikanKakunin2,GaikanKakunin3,GaikanKakunin4,SyoriSetsuu"
                 + ",RyouhinSetsuu,StartTantosyacode,EndTantousyacode,TanshiTapeSyurui,torokunichiji"
-                + ",kosinnichiji,revision,deleteflag"
+                + ",kosinnichiji,karauti,karautibyou,karautikai,zureti,GaikanKakunin5,revision,deleteflag"
                 + ") SELECT "
                 + "kojyo,lotno,edaban,tntapesyurui,tntapeno,tntapegenryou,gouki,startdatetime,enddatetime,sekisouzure"
                 + ",tantousya,kakuninsya,sekisouzure2,bikou1,bikou2,bikou3,bikou4,bikou5,KCPNO,GoukiCode,TpLot,HakuriSpeed"
@@ -3976,7 +4007,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + ",ShitaTanshiBukunuki,ShitaTanshi,HakuriKyuin,HakuriClearrance,HakuriCutSpeed,ShitaPanchiOndo,UwaPanchiOndo"
                 + ",KaatuJikan,KaatuAturyoku,UwaTanshi,GaikanKakunin1,GaikanKakunin2,GaikanKakunin3,GaikanKakunin4,SyoriSetsuu"
                 + ",RyouhinSetsuu,StartTantosyacode,EndTantousyacode,TanshiTapeSyurui"
-                + ",?,?,?,? "
+                + ",?,?,karauti,karautibyou,karautikai,zureti,GaikanKakunin5,?,? "
                 + "FROM sr_spssekisou "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
 

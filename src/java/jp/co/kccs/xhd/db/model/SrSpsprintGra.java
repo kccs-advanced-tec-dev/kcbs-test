@@ -197,6 +197,11 @@ public class SrSpsprintGra {
     private String tantousya;
     
     /**
+     * 印刷スタート時確認者
+     */
+    private String kakuninsya;
+    
+    /**
      * ｽﾀｰﾄ時膜厚AVE
      */
     private BigDecimal makuatuaveStart;
@@ -1001,6 +1006,24 @@ public class SrSpsprintGra {
         this.tantousya = tantousya;
     }
 
+    /**
+     * 印刷スタート時確認者
+     *
+     * @return the kakuninsya
+     */
+    public String getKakuninsya() {
+        return kakuninsya;
+    }
+
+    /**
+     * 印刷スタート時確認者
+     *
+     * @param kakuninsya the kakuninsya to set
+     */
+    public void setKakuninsya(String kakuninsya) {
+        this.kakuninsya = kakuninsya;
+    }
+    
     /**
      * ｽﾀｰﾄ時膜厚AVE
      *

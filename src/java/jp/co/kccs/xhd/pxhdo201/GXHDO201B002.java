@@ -414,10 +414,15 @@ public class GXHDO201B002 implements Serializable {
     public void checkInputAndSearch() {
         // 入力チェック処理
         ValidateUtil validateUtil = new ValidateUtil();
-        
+
         // ロットNo
-        if (existError(validateUtil.checkC101(getLotNo(), "ロットNo", 14)) ||
-            !StringUtil.isEmpty(getLotNo()) && existError(validateUtil.checkValueE001(getLotNo()))) {
+        if(!StringUtil.isEmpty(getLotNo()) && (StringUtil.getLength(getLotNo()) != 11 && StringUtil.getLength(getLotNo()) != 14)){
+         FacesMessage message = 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000064"), null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return;
+        }
+        if (!StringUtil.isEmpty(getLotNo()) && existError(validateUtil.checkValueE001(getLotNo()))) {
             return;
         }
         // 開始日(FROM)

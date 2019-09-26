@@ -290,11 +290,24 @@
                     </p:column>
                     <p:column id="lastKaaturyoku" headerText="最終加圧力" styleClass="number">
                         <p:outputLabel value="#{item.lastKaaturyoku}">
-                            <f:convertNumber pattern="#,###,###,##0"/>
+                            <f:convertNumber pattern="#,###,###,##0.0"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="lastKaatuJikan" headerText="最終加圧時間" styleClass="number">
                         <p:outputLabel value="#{item.lastKaatuJikan}">
+                            <f:convertNumber pattern="#,###,###,##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="karauti" headerText="空打ち" >
+                        <p:outputLabel value="#{item.karauti}"/>
+                    </p:column>
+                    <p:column id="karautibyou" headerText="空打ち[秒]" styleClass="number">
+                        <p:outputLabel value="#{item.karautibyou}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="karautikai" headerText="空打ち[回]" styleClass="number">
+                        <p:outputLabel value="#{item.karautikai}">
                             <f:convertNumber pattern="#,###,###,##0"/>
                         </p:outputLabel>
                     </p:column>
@@ -442,6 +455,14 @@
                     </p:column>
                     <p:column id="uwaTanshi" headerText="上端子" >
                         <p:outputLabel value="#{item.uwaTanshi}"/>
+                    </p:column>
+                    <p:column id="zureti" headerText="ｽﾞﾚ値" styleClass="number">
+                        <p:outputLabel value="#{item.zureti}">
+                            <f:convertNumber pattern="#,###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="gaikanKakunin5" headerText="ﾜﾚ、ｳｷ、かみ込みなき事" >
+                        <p:outputLabel value="#{item.gaikanKakunin5}"/>
                     </p:column>
                     <p:column id="gaikanKakunin1" headerText="外観確認1" >
                         <p:outputLabel value="#{item.gaikanKakunin1}"/>

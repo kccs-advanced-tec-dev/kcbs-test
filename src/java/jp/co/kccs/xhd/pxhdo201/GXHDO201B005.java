@@ -468,8 +468,13 @@ public class GXHDO201B005 implements Serializable {
         ValidateUtil validateUtil = new ValidateUtil();
         
         // ロットNo
-        if (existError(validateUtil.checkC101(getLotNo(), "ロットNo", 14)) ||
-            !StringUtil.isEmpty(getLotNo()) && existError(validateUtil.checkValueE001(getLotNo()))) {
+        if(!StringUtil.isEmpty(getLotNo()) && (StringUtil.getLength(getLotNo()) != 11 && StringUtil.getLength(getLotNo()) != 14)){
+         FacesMessage message = 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000064"), null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return;
+        }
+        if (!StringUtil.isEmpty(getLotNo()) && existError(validateUtil.checkValueE001(getLotNo()))) {
             return;
         }
         // KCPNO
@@ -683,88 +688,31 @@ public class GXHDO201B005 implements Serializable {
                     + ", T1.GNGKaisuu"
                     + ", T1.GNGKaisuuAve"
                     + ", T1.bikou2"
-                    + ", T2.setsuu1"
-                    + ", T2.setsuu2"
-                    + ", T2.setsuu3"
-                    + ", T2.setsuu4"
-                    + ", T2.setsuu5"
-                    + ", T2.setsuu6"
-                    + ", T2.setsuu7"
-                    + ", T2.setsuu8"
-                    + ", T2.setsuu9"
-                    + ", T2.setsuu10"
-                    + ", T2.setsuu11"
-                    + ", T2.setsuu12"
-                    + ", T2.setsuu13"
-                    + ", T2.setsuu14"
-                    + ", T2.setsuu15"
-                    + ", T2.setsuu16"
-                    + ", T2.setsuu17"
-                    + ", T2.setsuu18"
-                    + ", T2.setsuu19"
-                    + ", T2.setsuu20"
-                    + ", T2.setsuu21"
-                    + ", T2.setsuu22"
-                    + ", T2.setsuu23"
-                    + ", T2.setsuu24"
-                    + ", T2.setsuu25"
-                    + ", T2.setsuu26"
-                    + ", T2.setsuu27"
-                    + ", T2.setsuu28"
-                    + ", T2.setsuu29"
-                    + ", T2.setsuu30"
-                    + ", T2.setsuu31"
-                    + ", T2.setsuu32"
-                    + ", T2.setsuu33"
-                    + ", T2.setsuu34"
-                    + ", T2.setsuu35"
-                    + ", T2.setsuu36"
-                    + ", T2.setsuu37"
-                    + ", T2.setsuu38"
-                    + ", T2.setsuu39"
-                    + ", T2.setsuu40"
-                    + ", T2.bikou1 AS hbikou1"
-                    + ", T2.bikou2 AS hbikou2"
-                    + ", T2.bikou3 AS hbikou3"
-                    + ", T2.bikou4 AS hbikou4"
-                    + ", T2.bikou5 AS hbikou5"
-                    + ", T2.bikou6 AS hbikou6"
-                    + ", T2.bikou7 AS hbikou7"
-                    + ", T2.bikou8 AS hbikou8"
-                    + ", T2.bikou9 AS hbikou9"
-                    + ", T2.bikou10 AS hbikou10"
-                    + ", T2.bikou11 AS hbikou11"
-                    + ", T2.bikou12 AS hbikou12"
-                    + ", T2.bikou13 AS hbikou13"
-                    + ", T2.bikou14 AS hbikou14"
-                    + ", T2.bikou15 AS hbikou15"
-                    + ", T2.bikou16 AS hbikou16"
-                    + ", T2.bikou17 AS hbikou17"
-                    + ", T2.bikou18 AS hbikou18"
-                    + ", T2.bikou19 AS hbikou19"
-                    + ", T2.bikou20 AS hbikou20"
-                    + ", T2.bikou21 AS hbikou21"
-                    + ", T2.bikou22 AS hbikou22"
-                    + ", T2.bikou23 AS hbikou23"
-                    + ", T2.bikou24 AS hbikou24"
-                    + ", T2.bikou25 AS hbikou25"
-                    + ", T2.bikou26 AS hbikou26"
-                    + ", T2.bikou27 AS hbikou27"
-                    + ", T2.bikou28 AS hbikou28"
-                    + ", T2.bikou29 AS hbikou29"
-                    + ", T2.bikou30 AS hbikou30"
-                    + ", T2.bikou31 AS hbikou31"
-                    + ", T2.bikou32 AS hbikou32"
-                    + ", T2.bikou33 AS hbikou33"
-                    + ", T2.bikou34 AS hbikou34"
-                    + ", T2.bikou35 AS hbikou35"
-                    + ", T2.bikou36 AS hbikou36"
-                    + ", T2.bikou37 AS hbikou37"
-                    + ", T2.bikou38 AS hbikou38"
-                    + ", T2.bikou39 AS hbikou39"
-                    + ", T2.bikou40 AS hbikou40"
+                    + ", T1.revision"
+                    + ", T1.setsuu"
+                    + ", T1.tokuisaki"
+                    + ", T1.lotkubuncode"
+                    + ", T1.ownercode"
+                    + ", CONCAT(IFNULL(T1.syurui3, ''), '  ', IFNULL(T1.atumi3, '')) AS shitaTanshiTape"
+                    + ", T1.maisuu3"
+                    + ", T1.patern"
+                    + ", T1.torikosuu"
+                    + ", T1.etape"
+                    + ", CONCAT(IFNULL(T1.lretu, ''), '×', IFNULL(T1.wretu, '')) AS lretuWretu"
+                    + ", CONCAT(IFNULL(T1.lsun, ''), '×', IFNULL(T1.wsun, '')) AS pitch"
+                    + ", T1.epaste"
+                    + ", T1.genryou"
+                    + ", T1.eatumi"
+                    + ", T1.sousuu"
+                    + ", T1.emaisuu"
+                    + ", T1.sekisouslideryo"
+                    + ", T1.lastlayerslideryo"
+                    + ", T1.renzokusekisoumaisuu"
+                    + ", T1.bsouhoseiryou"
+                    + ", T1.yjikuhoseiryou"
+                    + ", CONCAT(IFNULL(T1.syurui2, ''), '  ', IFNULL(T1.atumi2, '')) AS uwaTanshiTape"
+                    + ", T1.maisuu2"
                     + " FROM sr_rsussek T1 "
-                    + "LEFT JOIN sub_sr_rsussek T2 ON (T1.KOJYO = T2.kojyo AND T1.LOTNO = T2.lotno AND T1.EDABAN = T2.edaban) "
                     + "WHERE (? IS NULL OR T1.KOJYO = ?) "
                     + "AND   (? IS NULL OR T1.LOTNO = ?) "
                     + "AND   (? IS NULL OR T1.EDABAN = ?) "
@@ -796,7 +744,6 @@ public class GXHDO201B005 implements Serializable {
             mapping.put("SEKISOZURE2", "sekisozure2");
             mapping.put("TANTOSYA", "tantosya");
             mapping.put("KAKUNINSYA", "kakuninsya");
-            mapping.put("INSATUROLLNO", "insaturollno");
             mapping.put("HAPPOSHEETNO", "happosheetno");
             mapping.put("SKJIKAN", "skjikan");
             mapping.put("TAKUTO", "takuto");
@@ -804,110 +751,40 @@ public class GXHDO201B005 implements Serializable {
             mapping.put("SLOTNO", "slotno");
             mapping.put("tapelotno", "tapelotno");
             mapping.put("taperollno1", "taperollno1");
-            mapping.put("taperollno2", "taperollno2");
-            mapping.put("taperollno3", "taperollno3");
             mapping.put("genryoukigou", "genryoukigou");
             mapping.put("petfilmsyurui", "petfilmsyurui");
             mapping.put("Kotyakugouki", "kotyakugouki");
             mapping.put("Kotyakusheet", "kotyakusheet");
             mapping.put("ShitaTanshigouki", "shitaTanshigouki");
             mapping.put("UwaTanshigouki", "uwaTanshigouki");
-            mapping.put("ShitaTanshiBukunuki", "shitaTanshiBukunuki");
             mapping.put("ShitaTanshi", "shitaTanshi");
             mapping.put("UwaTanshi", "uwaTanshi");
             mapping.put("SyoriSetsuu", "syoriSetsuu");
             mapping.put("RyouhinSetsuu", "ryouhinSetsuu");
             mapping.put("GaikanKakunin1", "gaikanKakunin1");
-            mapping.put("GaikanKakunin2", "gaikanKakunin2");
-            mapping.put("GaikanKakunin3", "gaikanKakunin3");
-            mapping.put("GaikanKakunin4", "gaikanKakunin4");
             mapping.put("EndTantousyacode", "endTantousyacode");
-            mapping.put("TanshiTapeSyurui", "tanshiTapeSyurui");
-            mapping.put("HNGKaisuu", "hNGKaisuu");
-            mapping.put("HNGKaisuuAve", "hNGKaisuuAve");
-            mapping.put("GNGKaisuu", "gNGKaisuu");
-            mapping.put("GNGKaisuuAve", "gNGKaisuuAve");
-            mapping.put("bikou2", "bikou2");
-            mapping.put("setsuu1", "setsuu1");
-            mapping.put("setsuu2", "setsuu2");
-            mapping.put("setsuu3", "setsuu3");
-            mapping.put("setsuu4", "setsuu4");
-            mapping.put("setsuu5", "setsuu5");
-            mapping.put("setsuu6", "setsuu6");
-            mapping.put("setsuu7", "setsuu7");
-            mapping.put("setsuu8", "setsuu8");
-            mapping.put("setsuu9", "setsuu9");
-            mapping.put("setsuu10", "setsuu10");
-            mapping.put("setsuu11", "setsuu11");
-            mapping.put("setsuu12", "setsuu12");
-            mapping.put("setsuu13", "setsuu13");
-            mapping.put("setsuu14", "setsuu14");
-            mapping.put("setsuu15", "setsuu15");
-            mapping.put("setsuu16", "setsuu16");
-            mapping.put("setsuu17", "setsuu17");
-            mapping.put("setsuu18", "setsuu18");
-            mapping.put("setsuu19", "setsuu19");
-            mapping.put("setsuu20", "setsuu20");
-            mapping.put("setsuu21", "setsuu21");
-            mapping.put("setsuu22", "setsuu22");
-            mapping.put("setsuu23", "setsuu23");
-            mapping.put("setsuu24", "setsuu24");
-            mapping.put("setsuu25", "setsuu25");
-            mapping.put("setsuu26", "setsuu26");
-            mapping.put("setsuu27", "setsuu27");
-            mapping.put("setsuu28", "setsuu28");
-            mapping.put("setsuu29", "setsuu29");
-            mapping.put("setsuu30", "setsuu30");
-            mapping.put("setsuu31", "setsuu31");
-            mapping.put("setsuu32", "setsuu32");
-            mapping.put("setsuu33", "setsuu33");
-            mapping.put("setsuu34", "setsuu34");
-            mapping.put("setsuu35", "setsuu35");
-            mapping.put("setsuu36", "setsuu36");
-            mapping.put("setsuu37", "setsuu37");
-            mapping.put("setsuu38", "setsuu38");
-            mapping.put("setsuu39", "setsuu39");
-            mapping.put("setsuu40", "setsuu40");
-            mapping.put("hbikou1", "hbikou1");
-            mapping.put("hbikou2", "hbikou2");
-            mapping.put("hbikou3", "hbikou3");
-            mapping.put("hbikou4", "hbikou4");
-            mapping.put("hbikou5", "hbikou5");
-            mapping.put("hbikou6", "hbikou6");
-            mapping.put("hbikou7", "hbikou7");
-            mapping.put("hbikou8", "hbikou8");
-            mapping.put("hbikou9", "hbikou9");
-            mapping.put("hbikou10", "hbikou10");
-            mapping.put("hbikou11", "hbikou11");
-            mapping.put("hbikou12", "hbikou12");
-            mapping.put("hbikou13", "hbikou13");
-            mapping.put("hbikou14", "hbikou14");
-            mapping.put("hbikou15", "hbikou15");
-            mapping.put("hbikou16", "hbikou16");
-            mapping.put("hbikou17", "hbikou17");
-            mapping.put("hbikou18", "hbikou18");
-            mapping.put("hbikou19", "hbikou19");
-            mapping.put("hbikou20", "hbikou20");
-            mapping.put("hbikou21", "hbikou21");
-            mapping.put("hbikou22", "hbikou22");
-            mapping.put("hbikou23", "hbikou23");
-            mapping.put("hbikou24", "hbikou24");
-            mapping.put("hbikou25", "hbikou25");
-            mapping.put("hbikou26", "hbikou26");
-            mapping.put("hbikou27", "hbikou27");
-            mapping.put("hbikou28", "hbikou28");
-            mapping.put("hbikou29", "hbikou29");
-            mapping.put("hbikou30", "hbikou30");
-            mapping.put("hbikou31", "hbikou31");
-            mapping.put("hbikou32", "hbikou32");
-            mapping.put("hbikou33", "hbikou33");
-            mapping.put("hbikou34", "hbikou34");
-            mapping.put("hbikou35", "hbikou35");
-            mapping.put("hbikou36", "hbikou36");
-            mapping.put("hbikou37", "hbikou37");
-            mapping.put("hbikou38", "hbikou38");
-            mapping.put("hbikou39", "hbikou39");
-            mapping.put("hbikou40", "hbikou40");
+            mapping.put("bikou2", "bikou2");   
+            mapping.put("setsuu", "setsuu"); //ｾｯﾄ数
+            mapping.put("tokuisaki", "tokuisaki"); //客先
+            mapping.put("lotkubuncode", "lotkubuncode"); //ﾛｯﾄ区分
+            mapping.put("ownercode", "ownercode");//ｵｰﾅｰ
+            mapping.put("shitaTanshiTape", "shitaTanshiTape");//下端子ﾃｰﾌﾟ
+            mapping.put("maisuu3", "shitaTanshiMaisuu");//下端子積層数
+            mapping.put("patern", "patern");//製版名
+            mapping.put("torikosuu", "torikosuu");//取り個数
+            mapping.put("lretuWretu", "lretuWretu");//列×行
+            mapping.put("pitch", "pitch");//ﾋﾟｯﾁ
+            mapping.put("epaste", "epaste");//電極ﾍﾟｰｽﾄ
+            mapping.put("etape", "etape");//電極ﾃｰﾌﾟ
+            mapping.put("eatumi", "etapeatumi");//電極ﾃｰﾌﾟ厚み
+            mapping.put("emaisuu", "sekisousu");//電極積層数
+            mapping.put("sekisouslideryo", "sekisouslideryo");//積層ｽﾗｲﾄﾞ量(mm)
+            mapping.put("lastlayerslideryo", "lastlayerslideryo");//最上層ｽﾗｲﾄﾞ量(μm)
+            mapping.put("renzokusekisoumaisuu", "renzokusekisoumaisuu");//連続積層枚数
+            mapping.put("bsouhoseiryou", "bsouhoseiryou");//B層補正量
+            mapping.put("yjikuhoseiryou", "yjikuhoseiryou");//Y軸補正量
+            mapping.put("uwaTanshiTape", "uwaTanshiTape");//上端子ﾃｰﾌﾟ
+            mapping.put("maisuu2", "uwaTanshiMaisuu");//上端子積層数           
 
             BeanProcessor beanProcessor = new BeanProcessor(mapping);
             RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);

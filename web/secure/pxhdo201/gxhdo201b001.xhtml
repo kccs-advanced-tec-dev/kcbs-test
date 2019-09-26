@@ -202,17 +202,17 @@
                     <p:column id="pastelotno" headerText="内部電極ﾍﾟｰｽﾄﾛｯﾄNo1" >
                         <p:outputLabel value="#{item.pastelotno}"/>
                     </p:column>
-                    <p:column id="pastenendo" headerText="内部電極ﾍﾟｰｽﾄ粘度1" styleClass="number">
+                    <p:column id="pastenendo" headerText="内部電極ﾍﾟｰｽﾄ粘度1(P)" styleClass="number">
                         <p:outputLabel value="#{item.pastenendo}">
                             <f:convertNumber pattern="#,##0.00"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="pasteondo" headerText="内部電極ﾍﾟｰｽﾄ温度1" styleClass="number">
+                    <p:column id="pasteondo" headerText="内部電極ﾍﾟｰｽﾄ温度1(℃)" styleClass="number">
                         <p:outputLabel value="#{item.pasteondo}">
                             <f:convertNumber pattern="#0.0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="pkokeibun1" headerText="内部電極ﾍﾟｰｽﾄ固形分1" styleClass="number">
+                    <p:column id="pkokeibun1" headerText="内部電極ﾍﾟｰｽﾄ固形分1(%)" styleClass="number">
                         <p:outputLabel value="#{item.pkokeibun1}">
                             <f:convertNumber pattern="#0.00"/>
                         </p:outputLabel>
@@ -220,17 +220,17 @@
                     <p:column id="pastelotno2" headerText="内部電極ﾍﾟｰｽﾄﾛｯﾄNo2" >
                         <p:outputLabel value="#{item.pastelotno2}"/>
                     </p:column>
-                    <p:column id="pastenendo2" headerText="内部電極ﾍﾟｰｽﾄ粘度2" styleClass="number">
+                    <p:column id="pastenendo2" headerText="内部電極ﾍﾟｰｽﾄ粘度2(P)" styleClass="number">
                         <p:outputLabel value="#{item.pastenendo2}">
                             <f:convertNumber pattern="#,##0.00"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="pasteondo2" headerText="内部電極ﾍﾟｰｽﾄ温度2" styleClass="number">
+                    <p:column id="pasteondo2" headerText="内部電極ﾍﾟｰｽﾄ温度2(℃)" styleClass="number">
                         <p:outputLabel value="#{item.pasteondo2}">
                             <f:convertNumber pattern="#0.0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="pkokeibun2" headerText="内部電極ﾍﾟｰｽﾄ固形分2" styleClass="number">
+                    <p:column id="pkokeibun2" headerText="内部電極ﾍﾟｰｽﾄ固形分2(%)" styleClass="number">
                         <p:outputLabel value="#{item.pkokeibun2}">
                             <f:convertNumber pattern="#0.00"/>
                         </p:outputLabel>
@@ -241,7 +241,7 @@
                     <p:column id="handouno" headerText="版胴ﾛｯﾄNo" >
                         <p:outputLabel value="#{item.handouno}"/>
                     </p:column>
-                    <p:column id="handoumaisuu" headerText="版胴使用枚数" styleClass="number">
+                    <p:column id="handoumaisuu" headerText="版胴使用枚数(枚)" styleClass="number">
                         <p:outputLabel value="#{item.handoumaisuu}">
                             <f:convertNumber pattern="##,###,##0"/>
                         </p:outputLabel>
@@ -252,7 +252,7 @@
                     <p:column id="bladegaikan" headerText="ﾌﾞﾚｰﾄﾞ外観" >
                         <p:outputLabel value="#{item.bladegaikan}"/>
                     </p:column>
-                    <p:column id="bladeatu" headerText="ﾌﾞﾚｰﾄﾞ圧力" styleClass="number">
+                    <p:column id="bladeatu" headerText="ﾌﾞﾚｰﾄﾞ圧力(Mpa)" styleClass="number">
                         <p:outputLabel value="#{item.bladeatu}">
                             <f:convertNumber pattern="###,##0.000"/>
                         </p:outputLabel>
@@ -260,7 +260,7 @@
                     <p:column id="atudono" headerText="圧胴ﾛｯﾄNo．" >
                         <p:outputLabel value="#{item.atudono}"/>
                     </p:column>
-                    <p:column id="atudomaisuu" headerText="圧胴使用枚数" styleClass="number">
+                    <p:column id="atudomaisuu" headerText="圧胴使用枚数(枚)" styleClass="number">
                         <p:outputLabel value="#{item.atudomaisuu}">
                             <f:convertNumber pattern="##,###,##0"/>
                         </p:outputLabel>
@@ -273,32 +273,32 @@
                     <p:column id="gouki" headerText="印刷号機" >
                         <p:outputLabel value="#{item.gouki}"/>
                     </p:column>
-                    <p:column id="kansouondo" headerText="乾燥温度表示値1" styleClass="number">
+                    <p:column id="kansouondo" headerText="乾燥温度表示値1(℃)" styleClass="number">
                         <p:outputLabel value="#{item.kansouondo}">
                             <f:convertNumber pattern="#,##0.0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="kansouondo2" headerText="乾燥温度表示値2" styleClass="number">
+                    <p:column id="kansouondo2" headerText="乾燥温度表示値2(℃)" styleClass="number">
                         <p:outputLabel value="#{item.kansouondo2}">
                             <f:convertNumber pattern="#,##0.0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="kansouondo3" headerText="乾燥温度表示値3" styleClass="number">
+                    <p:column id="kansouondo3" headerText="乾燥温度表示値3(℃)" styleClass="number">
                         <p:outputLabel value="#{item.kansouondo3}">
                             <f:convertNumber pattern="#,##0.0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="kansouondo4" headerText="乾燥温度表示値4" styleClass="number">
+                    <p:column id="kansouondo4" headerText="乾燥温度表示値4(℃)" styleClass="number">
                         <p:outputLabel value="#{item.kansouondo4}">
                             <f:convertNumber pattern="#,##0.0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="kansouondo5" headerText="乾燥温度表示値5" styleClass="number">
+                    <p:column id="kansouondo5" headerText="乾燥温度表示値5(℃)" styleClass="number">
                         <p:outputLabel value="#{item.kansouondo5}">
                             <f:convertNumber pattern="#,##0.0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="hansouspeed" headerText="搬送速度" styleClass="number">
+                    <p:column id="hansouspeed" headerText="搬送速度(m/min)" styleClass="number">
                         <p:outputLabel value="#{item.hansouspeed}">
                             <f:convertNumber pattern="##,##0"/>
                         </p:outputLabel>
@@ -311,22 +311,25 @@
                     <p:column id="tantousya" headerText="印刷ｽﾀｰﾄ時担当者" >
                         <p:outputLabel value="#{item.tantousya}"/>
                     </p:column>
-                    <p:column id="makuatuaveStart" headerText="印刷ｽﾀｰﾄ膜厚AVE" styleClass="number">
+                    <p:column id="kakuninsya" headerText="印刷ｽﾀｰﾄ時確認者" >
+                        <p:outputLabel value="#{item.kakuninsya}"/>
+                    </p:column>
+                    <p:column id="makuatuaveStart" headerText="印刷ｽﾀｰﾄ膜厚AVE(μm)" styleClass="number">
                         <p:outputLabel value="#{item.makuatuaveStart}">
                             <f:convertNumber pattern="#0.000"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="makuatumaxStart" headerText="印刷ｽﾀｰﾄ膜厚MAX" styleClass="number">
+                    <p:column id="makuatumaxStart" headerText="印刷ｽﾀｰﾄ膜厚MAX(μm)" styleClass="number">
                         <p:outputLabel value="#{item.makuatumaxStart}">
                             <f:convertNumber pattern="#0.000"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="makuatuminStart" headerText="印刷ｽﾀｰﾄ膜厚MIN" styleClass="number">
+                    <p:column id="makuatuminStart" headerText="印刷ｽﾀｰﾄ膜厚MIN(μm)" styleClass="number">
                         <p:outputLabel value="#{item.makuatuminStart}">
                             <f:convertNumber pattern="#0.000"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="makuatucvStart" headerText="印刷ｽﾀｰﾄ膜厚CV" styleClass="number">
+                    <p:column id="makuatucvStart" headerText="印刷ｽﾀｰﾄ膜厚CV(%)" styleClass="number">
                         <p:outputLabel value="#{item.makuatucvStart}">
                             <f:convertNumber pattern="#0.0000"/>
                         </p:outputLabel>
@@ -334,27 +337,27 @@
                     <p:column id="nijimikasureStart" headerText="ｽﾀｰﾄ時ﾆｼﾞﾐ・ｶｽﾚ確認" >
                         <p:outputLabel value="#{item.nijimikasureStart}"/>
                     </p:column>
-                    <p:column id="startPtnDistX" headerText="PTN間距離印刷ｽﾀｰﾄ X Min" styleClass="number">
+                    <p:column id="startPtnDistX" headerText="PTN間距離印刷ｽﾀｰﾄ X Min(μm)" styleClass="number">
                         <p:outputLabel value="#{item.startPtnDistX}">
                             <f:convertNumber pattern="##,##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="startPtnDistY" headerText="PTN間距離印刷ｽﾀｰﾄ Y Min" styleClass="number">
+                    <p:column id="startPtnDistY" headerText="PTN間距離印刷ｽﾀｰﾄ Y Min(μm)" styleClass="number">
                         <p:outputLabel value="#{item.startPtnDistY}">
                             <f:convertNumber pattern="##,##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="tensionsSum" headerText="開始ﾃﾝｼｮﾝ計" styleClass="number">
+                    <p:column id="tensionsSum" headerText="開始ﾃﾝｼｮﾝ計(N)" styleClass="number">
                         <p:outputLabel value="#{item.tensionsSum}">
                             <f:convertNumber pattern="##,##0.0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="tensionstemae" headerText="開始ﾃﾝｼｮﾝ前" styleClass="number">
+                    <p:column id="tensionstemae" headerText="開始ﾃﾝｼｮﾝ前(N)" styleClass="number">
                         <p:outputLabel value="#{item.tensionstemae}">
                             <f:convertNumber pattern="##,##0.0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="tensionsoku" headerText="開始ﾃﾝｼｮﾝ奥" styleClass="number">
+                    <p:column id="tensionsoku" headerText="開始ﾃﾝｼｮﾝ奥(N)" styleClass="number">
                         <p:outputLabel value="#{item.tensionsoku}">
                             <f:convertNumber pattern="##,##0.0"/>
                         </p:outputLabel>
@@ -364,30 +367,30 @@
                             <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="tantoEnd" headerText="印刷エンド時担当者" >
+                    <p:column id="tantoEnd" headerText="印刷ｴﾝﾄﾞ時担当者" >
                         <p:outputLabel value="#{item.tantoEnd}"/>
                     </p:column>
-                    <p:column id="printmaisuu" headerText="印刷枚数" styleClass="number">
+                    <p:column id="printmaisuu" headerText="印刷枚数(枚)" styleClass="number">
                         <p:outputLabel value="#{item.printmaisuu}">
                             <f:convertNumber pattern="#,###,##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="makuatuaveEnd" headerText="印刷ｴﾝﾄﾞ膜厚AVE" styleClass="number">
+                    <p:column id="makuatuaveEnd" headerText="印刷ｴﾝﾄﾞ膜厚AVE(μm)" styleClass="number">
                         <p:outputLabel value="#{item.makuatuaveEnd}">
                             <f:convertNumber pattern="#0.000"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="makuatumaxEnd" headerText="印刷ｴﾝﾄﾞ膜厚MAX" styleClass="number">
+                    <p:column id="makuatumaxEnd" headerText="印刷ｴﾝﾄﾞ膜厚MAX(μm)" styleClass="number">
                         <p:outputLabel value="#{item.makuatumaxEnd}">
                             <f:convertNumber pattern="#0.000"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="makuatuminEnd" headerText="印刷ｴﾝﾄﾞ膜厚MIN" styleClass="number">
+                    <p:column id="makuatuminEnd" headerText="印刷ｴﾝﾄﾞ膜厚MIN(μm)" styleClass="number">
                         <p:outputLabel value="#{item.makuatuminEnd}">
                             <f:convertNumber pattern="#0.000"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="makuatucvEnd" headerText="印刷ｴﾝﾄﾞ膜厚CV" styleClass="number">
+                    <p:column id="makuatucvEnd" headerText="印刷ｴﾝﾄﾞ膜厚CV(%)" styleClass="number">
                         <p:outputLabel value="#{item.makuatucvEnd}">
                             <f:convertNumber pattern="#0.0000"/>
                         </p:outputLabel>
@@ -395,27 +398,27 @@
                     <p:column id="nijimikasureEnd" headerText="終了時ﾆｼﾞﾐ・ｶｽﾚ確認" >
                         <p:outputLabel value="#{item.nijimikasureEnd}"/>
                     </p:column>
-                    <p:column id="endPtnDistX" headerText="PTN間距離印刷ｴﾝﾄﾞ X Min" styleClass="number">
+                    <p:column id="endPtnDistX" headerText="PTN間距離印刷ｴﾝﾄﾞ X Min(μm)" styleClass="number">
                         <p:outputLabel value="#{item.endPtnDistX}">
                             <f:convertNumber pattern="##,##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="endPtnDistY" headerText="PTN間距離印刷ｴﾝﾄﾞ Y Min" styleClass="number">
+                    <p:column id="endPtnDistY" headerText="PTN間距離印刷ｴﾝﾄﾞ Y Min(μm)" styleClass="number">
                         <p:outputLabel value="#{item.endPtnDistY}">
                             <f:convertNumber pattern="##,##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="tensioneSum" headerText="終了ﾃﾝｼｮﾝ計" styleClass="number">
+                    <p:column id="tensioneSum" headerText="終了ﾃﾝｼｮﾝ計(N)" styleClass="number">
                         <p:outputLabel value="#{item.tensioneSum}">
                             <f:convertNumber pattern="##,##0.0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="tensionetemae" headerText="終了ﾃﾝｼｮﾝ前" styleClass="number">
+                    <p:column id="tensionetemae" headerText="終了ﾃﾝｼｮﾝ前(N)" styleClass="number">
                         <p:outputLabel value="#{item.tensionetemae}">
                             <f:convertNumber pattern="##,##0.0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="tensioneoku" headerText="終了ﾃﾝｼｮﾝ奥" styleClass="number">
+                    <p:column id="tensioneoku" headerText="終了ﾃﾝｼｮﾝ奥(N)" styleClass="number">
                         <p:outputLabel value="#{item.tensioneoku}">
                             <f:convertNumber pattern="##,##0.0"/>
                         </p:outputLabel>

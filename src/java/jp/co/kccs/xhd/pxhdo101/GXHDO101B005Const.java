@@ -74,16 +74,6 @@ public class GXHDO101B005Const {
     public static final String ROLL_NO1 = "sr_rsussek_roll_no1";
 
     /**
-     * ﾛｰﾙNo2
-     */
-    public static final String ROLL_NO2 = "sr_rsussek_roll_no2";
-
-    /**
-     * ﾛｰﾙNo3
-     */
-    public static final String ROLL_NO3 = "sr_rsussek_roll_no3";
-
-    /**
      * 原料記号
      */
     public static final String GENRYO_KIGOU = "sr_rsussek_genryo_kigou";
@@ -149,11 +139,6 @@ public class GXHDO101B005Const {
     public static final String UE_TANSHI_GOUKI = "sr_rsussek_ue_tanshi_gouki";
 
     /**
-     * 下端子ﾌﾞｸ抜き
-     */
-    public static final String SHITA_TANSHI_BUKUNUKI = "sr_rsussek_shita_tanshi_bukunuki";
-
-    /**
      * 積層号機
      */
     public static final String SEKISOU_GOKI = "sr_rsussek_sekisou_gouki";
@@ -162,7 +147,7 @@ public class GXHDO101B005Const {
      * 下端子
      */
     public static final String SHITA_TANSHI = "sr_rsussek_shita_tanshi";
-
+    
     /**
      * 上端子
      */
@@ -172,21 +157,6 @@ public class GXHDO101B005Const {
      * 外観確認1
      */
     public static final String GAIKAN_KAKUNIN1 = "sr_rsussek_gaikan_kakunin1";
-
-    /**
-     * 外観確認2
-     */
-    public static final String GAIKAN_KAKUNIN2 = "sr_rsussek_gaikan_kakunin2";
-
-    /**
-     * 外観確認3
-     */
-    public static final String GAIKAN_KAKUNIN3 = "sr_rsussek_gaikan_kakunin3";
-
-    /**
-     * 外観確認4
-     */
-    public static final String GAIKAN_KAKUNIN4 = "sr_rsussek_gaikan_kakunin4";
 
     /**
      * 処理セット数
@@ -229,11 +199,6 @@ public class GXHDO101B005Const {
     public static final String SHURYOU_TANTOUSHA = "sr_rsussek_shuryou_tantousha";
 
     /**
-     * 端子テープ種類
-     */
-    public static final String TANSHI_TAPE_SHURUI = "sr_rsussek_tanshi_tape_shurui";
-
-    /**
      * 瞬時加熱時間
      */
     public static final String SHUNJI_KANETSU_TIME = "sr_rsussek_shunji_kanetsu_time";
@@ -249,26 +214,6 @@ public class GXHDO101B005Const {
     public static final String SENKOU_LOT_NO = "sr_rsussek_senkou_lot_no";
 
     /**
-     * 剥離NG回数
-     */
-    public static final String HAKURI_NG_KAISU = "sr_rsussek_hakuri_ng_kaisu";
-
-    /**
-     * 剥離NG_AVE
-     */
-    public static final String HAKURI_NG_AVE = "sr_rsussek_hakuri_ng_ave";
-
-    /**
-     * 画処NG回数
-     */
-    public static final String GASHO_NG_KAISU = "sr_rsussek_gasho_ng_kaisu";
-
-    /**
-     * 画処NG_AVE
-     */
-    public static final String GASHO_NG_AVE = "sr_rsussek_gasho_ng_ave";
-
-    /**
      * 備考1
      */
     public static final String BIKOU1 = "sr_rsussek_bikou1";
@@ -277,6 +222,41 @@ public class GXHDO101B005Const {
      * 備考2
      */
     public static final String BIKOU2 = "sr_rsussek_bikou2";
+
+    /**
+     * 印刷ﾛｰﾙNo.
+     */
+    public static final String PRINT_ROLLNO = "sr_rsussek_print_rollno";
+    
+    /**
+     * 製版名
+     */
+    public static final String PATERN = "sr_rsussek_patern";
+
+    /**
+     * 取り個数
+     */
+    public static final String TORIKOSUU = "sr_rsussek_torikosuu";
+
+    /**
+     * 連続積層枚数
+     */
+    public static final String RENZOKUSEKISOUMAISUU = "sr_rsussek_renzokusekisoumaisuu";
+
+    /**
+     * B層補正量
+     */
+    public static final String BSOUHOSEIRYOU = "sr_rsussek_bsouhoseiryou";
+
+    /**
+     * Y軸補正量
+     */
+    public static final String YJIKUHOSEIRYOU = "sr_rsussek_yjikuhoseiryou";
+
+    /**
+     * 電極ｽﾀｰﾄ確認者
+     */
+    public static final String KAKUNINSYA = "sr_rsussek_kakuninsya";
 
     /**
      * 仮登録(画面下)
@@ -297,16 +277,6 @@ public class GXHDO101B005Const {
      * 終了日時(画面下)
      */
     public static final String BTN_ENDDATETIME_BOTTOM = "sr_rsussek_enddatetime_Bottom";
-
-    /**
-     * 剥離内容入力(画面下)
-     */
-    public static final String BTN_HAKURI_NAIYOU_NYURYOKU_BOTTOM = "sr_rsussek_hakuri_naiyou_nyuryoku_Bottom";
-
-    /**
-     * 剥離/画処NG計算(画面下)
-     */
-    public static final String BTN_HAKURI_GASHO_NG_KEISAN_BOTTOM = "sr_rsussek_hakuri_gasho_ng_keisan_Bottom";
 
     /**
      * 登録(画面下)
@@ -342,16 +312,6 @@ public class GXHDO101B005Const {
      * 終了日時(画面上)
      */
     public static final String BTN_ENDDATETIME_TOP = "sr_rsussek_enddatetime_Top";
-
-    /**
-     * 剥離内容入力(画面上)
-     */
-    public static final String BTN_HAKURI_NAIYOU_NYURYOKU_TOP = "sr_rsussek_hakuri_naiyou_nyuryoku_Top";
-
-    /**
-     * 剥離/画処NG計算(画面上)
-     */
-    public static final String BTN_HAKURI_GASHO_NG_KEISAN_TOP = "sr_rsussek_hakuri_gasho_ng_keisan_Top";
 
     /**
      * 登録(画面上)

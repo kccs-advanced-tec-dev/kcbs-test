@@ -29,6 +29,14 @@ public class GXHDO201B005Model {
     private String lotno = "";
     /** KCPNO */
     private String kcpno = "";
+    /** ｾｯﾄ数 */
+    private String setsuu = "";
+    /** 客先 */
+    private String tokuisaki = "";
+    /** ﾛｯﾄ区分 */
+    private String lotkubuncode = "";
+    /** ｵｰﾅｰ */
+    private String ownercode = "";
     /** 端子ﾃｰﾌﾟ種類 */
     private String tntapesyurui = "";
     /** 端子ﾃｰﾌﾟNo */
@@ -49,8 +57,6 @@ public class GXHDO201B005Model {
     private String tantosya = "";
     /** 確認者ｺｰﾄﾞ */
     private String kakuninsya = "";
-    /** 印刷ﾛｰﾙNo */
-    private String insaturollno = "";
     /** 発泡ｼｰﾄNo */
     private String happosheetno = "";
     /** 瞬時加熱時間 */
@@ -65,10 +71,6 @@ public class GXHDO201B005Model {
     private String tapelotno = "";
     /** ﾛｰﾙNo1 */
     private String taperollno1 = "";
-    /** ﾛｰﾙNo2 */
-    private String taperollno2 = "";
-    /** ﾛｰﾙNo3 */
-    private String taperollno3 = "";
     /** 原料記号 */
     private String genryoukigou = "";
     /** PETﾌｨﾙﾑ種類 */
@@ -81,198 +83,54 @@ public class GXHDO201B005Model {
     private String shitaTanshigouki = "";
     /** 上端子号機 */
     private String uwaTanshigouki = "";
-    /** 下端子ﾌﾞｸ抜き */
-    private String shitaTanshiBukunuki = "";
+    /** 上端子ﾃｰﾌﾟ */
+    private String uwaTanshiTape = "";
+    /** 上端子積層数 */
+    private Long uwaTanshiMaisuu = null;
+    /** 下端子ﾃｰﾌﾟ */
+    private String shitaTanshiTape = "";
+    /** 下端子積層数 */
+    private Long shitaTanshiMaisuu = null;
     /** 下端子 */
     private String shitaTanshi = "";
     /** 上端子 */
     private String uwaTanshi = "";
     /** 外観確認1 */
-    private Long syoriSetsuu = null;
-    /** 外観確認2 */
-    private BigDecimal ryouhinSetsuu = null;
-    /** 外観確認3 */
     private String gaikanKakunin1 = "";
-    /** 外観確認4 */
-    private String gaikanKakunin2 = "";
     /** 処理ｾｯﾄ数 */
-    private String gaikanKakunin3 = "";
+    private Long syoriSetsuu = null;    
     /** 良品ｾｯﾄ数 */
-    private String gaikanKakunin4 = "";
+    private BigDecimal ryouhinSetsuu = null;
     /** 終了担当者 */
     private String endTantousyacode = "";
-    /** 端子ﾃｰﾌﾟ種類確認 */
-    private String tanshiTapeSyurui = "";
-    /** 隔離NG回数 */
-    private Long hNGKaisuu = null;
-    /** 剥離NG回数AVE */
-    private BigDecimal hNGKaisuuAve = null;
-    /** 画処NG回数 */
-    private Long gNGKaisuu = null;
-    /** 画処NG回数AVE */
-    private BigDecimal gNGKaisuuAve = null;
     /** 備考2 */
     private String bikou2 = "";
-    /** ｾｯﾄ数1 */
-    private Long setsuu1 = null;
-    /** ｾｯﾄ数2 */
-    private Long setsuu2 = null;
-    /** ｾｯﾄ数3 */
-    private Long setsuu3 = null;
-    /** ｾｯﾄ数4 */
-    private Long setsuu4 = null;
-    /** ｾｯﾄ数5 */
-    private Long setsuu5 = null;
-    /** ｾｯﾄ数6 */
-    private Long setsuu6 = null;
-    /** ｾｯﾄ数7 */
-    private Long setsuu7 = null;
-    /** ｾｯﾄ数8 */
-    private Long setsuu8 = null;
-    /** ｾｯﾄ数9 */
-    private Long setsuu9 = null;
-    /** ｾｯﾄ数10 */
-    private Long setsuu10 = null;
-    /** ｾｯﾄ数11 */
-    private Long setsuu11 = null;
-    /** ｾｯﾄ数12 */
-    private Long setsuu12 = null;
-    /** ｾｯﾄ数13 */
-    private Long setsuu13 = null;
-    /** ｾｯﾄ数14 */
-    private Long setsuu14 = null;
-    /** ｾｯﾄ数15 */
-    private Long setsuu15 = null;
-    /** ｾｯﾄ数16 */
-    private Long setsuu16 = null;
-    /** ｾｯﾄ数17 */
-    private Long setsuu17 = null;
-    /** ｾｯﾄ数18 */
-    private Long setsuu18 = null;
-    /** ｾｯﾄ数19 */
-    private Long setsuu19 = null;
-    /** ｾｯﾄ数20 */
-    private Long setsuu20 = null;
-    /** ｾｯﾄ数21 */
-    private Long setsuu21 = null;
-    /** ｾｯﾄ数22 */
-    private Long setsuu22 = null;
-    /** ｾｯﾄ数23 */
-    private Long setsuu23 = null;
-    /** ｾｯﾄ数24 */
-    private Long setsuu24 = null;
-    /** ｾｯﾄ数25 */
-    private Long setsuu25 = null;
-    /** ｾｯﾄ数26 */
-    private Long setsuu26 = null;
-    /** ｾｯﾄ数27 */
-    private Long setsuu27 = null;
-    /** ｾｯﾄ数28 */
-    private Long setsuu28 = null;
-    /** ｾｯﾄ数29 */
-    private Long setsuu29 = null;
-    /** ｾｯﾄ数30 */
-    private Long setsuu30 = null;
-    /** ｾｯﾄ数31 */
-    private Long setsuu31 = null;
-    /** ｾｯﾄ数32 */
-    private Long setsuu32 = null;
-    /** ｾｯﾄ数33 */
-    private Long setsuu33 = null;
-    /** ｾｯﾄ数34 */
-    private Long setsuu34 = null;
-    /** ｾｯﾄ数35 */
-    private Long setsuu35 = null;
-    /** ｾｯﾄ数36 */
-    private Long setsuu36 = null;
-    /** ｾｯﾄ数37 */
-    private Long setsuu37 = null;
-    /** ｾｯﾄ数38 */
-    private Long setsuu38 = null;
-    /** ｾｯﾄ数39 */
-    private Long setsuu39 = null;
-    /** ｾｯﾄ数40 */
-    private Long setsuu40 = null;
-    /** 備考1 */
-    private String hbikou1 = "";
-    /** 備考2 */
-    private String hbikou2 = "";
-    /** 備考3 */
-    private String hbikou3 = "";
-    /** 備考4 */
-    private String hbikou4 = "";
-    /** 備考5 */
-    private String hbikou5 = "";
-    /** 備考6 */
-    private String hbikou6 = "";
-    /** 備考7 */
-    private String hbikou7 = "";
-    /** 備考8 */
-    private String hbikou8 = "";
-    /** 備考9 */
-    private String hbikou9 = "";
-    /** 備考10 */
-    private String hbikou10 = "";
-    /** 備考11 */
-    private String hbikou11 = "";
-    /** 備考12 */
-    private String hbikou12 = "";
-    /** 備考13 */
-    private String hbikou13 = "";
-    /** 備考14 */
-    private String hbikou14 = "";
-    /** 備考15 */
-    private String hbikou15 = "";
-    /** 備考16 */
-    private String hbikou16 = "";
-    /** 備考17 */
-    private String hbikou17 = "";
-    /** 備考18 */
-    private String hbikou18 = "";
-    /** 備考19 */
-    private String hbikou19 = "";
-    /** 備考20 */
-    private String hbikou20 = "";
-    /** 備考21 */
-    private String hbikou21 = "";
-    /** 備考22 */
-    private String hbikou22 = "";
-    /** 備考23 */
-    private String hbikou23 = "";
-    /** 備考24 */
-    private String hbikou24 = "";
-    /** 備考25 */
-    private String hbikou25 = "";
-    /** 備考26 */
-    private String hbikou26 = "";
-    /** 備考27 */
-    private String hbikou27 = "";
-    /** 備考28 */
-    private String hbikou28 = "";
-    /** 備考29 */
-    private String hbikou29 = "";
-    /** 備考30 */
-    private String hbikou30 = "";
-    /** 備考31 */
-    private String hbikou31 = "";
-    /** 備考32 */
-    private String hbikou32 = "";
-    /** 備考33 */
-    private String hbikou33 = "";
-    /** 備考34 */
-    private String hbikou34 = "";
-    /** 備考35 */
-    private String hbikou35 = "";
-    /** 備考36 */
-    private String hbikou36 = "";
-    /** 備考37 */
-    private String hbikou37 = "";
-    /** 備考38 */
-    private String hbikou38 = "";
-    /** 備考39 */
-    private String hbikou39 = "";
-    /** 備考40 */
-    private String hbikou40 = "";
+    /** 列×行 */
+    private String lretuWretu = "";
+    /** 製版名 */
+    private String patern = "";
+    /** 取り個数 */
+    private Long torikosuu = null;
+    /** ﾋﾟｯﾁ */
+    private String pitch = "";
+    /** 電極ﾍﾟｰｽﾄ */
+    private String epaste = "";
+    /** 電極ﾃｰﾌﾟ */
+    private String etape = "";
+    /** 電極ﾃｰﾌﾟ厚み */
+    private Double etapeatumi = null;
+    /** 電極積層数 */
+    private Long sekisousu = null;
+    /** 積層ｽﾗｲﾄﾞ量(mm) */
+    private String sekisouslideryo = "";
+    /** 最上層ｽﾗｲﾄﾞ量(μm) */
+    private String lastlayerslideryo = "";
+    /** 連続積層枚数 */
+    private Long renzokusekisoumaisuu = null;
+    /** B層補正量 */
+    private BigDecimal bsouhoseiryou = null;
+    /** Y軸補正量 */
+    private Long yjikuhoseiryou = null;    
 
     /**
      * ﾛｯﾄNo.
@@ -467,22 +325,6 @@ public class GXHDO201B005Model {
     }
 
     /**
-     * 印刷ﾛｰﾙNo
-     * @return the insaturollno
-     */
-    public String getInsaturollno() {
-        return insaturollno;
-    }
-
-    /**
-     * 印刷ﾛｰﾙNo
-     * @param insaturollno the insaturollno to set
-     */
-    public void setInsaturollno(String insaturollno) {
-        this.insaturollno = insaturollno;
-    }
-
-    /**
      * 発砲ｼｰﾄNo
      * @return the happosheetno
      */
@@ -595,38 +437,6 @@ public class GXHDO201B005Model {
     }
 
     /**
-     * ﾛｰﾙNo2
-     * @return the taperollno2
-     */
-    public String getTaperollno2() {
-        return taperollno2;
-    }
-
-    /**
-     * ﾛｰﾙNo2
-     * @param taperollno2 the taperollno2 to set
-     */
-    public void setTaperollno2(String taperollno2) {
-        this.taperollno2 = taperollno2;
-    }
-
-    /**
-     * ﾛｰﾙNo3
-     * @return the taperollno3
-     */
-    public String getTaperollno3() {
-        return taperollno3;
-    }
-
-    /**
-     * ﾛｰﾙNo3
-     * @param taperollno3 the taperollno3 to set
-     */
-    public void setTaperollno3(String taperollno3) {
-        this.taperollno3 = taperollno3;
-    }
-
-    /**
      * 原料記号
      * @return the genryoukigou
      */
@@ -723,22 +533,6 @@ public class GXHDO201B005Model {
     }
 
     /**
-     * 下端子ﾌﾞｸ抜き
-     * @return the shitaTanshiBukunuki
-     */
-    public String getShitaTanshiBukunuki() {
-        return shitaTanshiBukunuki;
-    }
-
-    /**
-     * 下端子ﾌﾞｸ抜き
-     * @param shitaTanshiBukunuki the shitaTanshiBukunuki to set
-     */
-    public void setShitaTanshiBukunuki(String shitaTanshiBukunuki) {
-        this.shitaTanshiBukunuki = shitaTanshiBukunuki;
-    }
-
-    /**
      * 下端子
      * @return the shitaTanshi
      */
@@ -771,7 +565,7 @@ public class GXHDO201B005Model {
     }
 
     /**
-     * 外観確認1
+     * 処理ｾｯﾄ数
      * @return the syoriSetsuu
      */
     public Long getSyoriSetsuu() {
@@ -779,31 +573,15 @@ public class GXHDO201B005Model {
     }
 
     /**
-     * 外観確認1
+     * 処理ｾｯﾄ数
      * @param syoriSetsuu the syoriSetsuu to set
      */
     public void setSyoriSetsuu(Long syoriSetsuu) {
         this.syoriSetsuu = syoriSetsuu;
     }
-
+    
     /**
-     * 外観確認2
-     * @return the ryouhinSetsuu
-     */
-    public BigDecimal getRyouhinSetsuu() {
-        return ryouhinSetsuu;
-    }
-
-    /**
-     * 外観確認2
-     * @param ryouhinSetsuu the ryouhinSetsuu to set
-     */
-    public void setRyouhinSetsuu(BigDecimal ryouhinSetsuu) {
-        this.ryouhinSetsuu = ryouhinSetsuu;
-    }
-
-    /**
-     * 外観確認3
+     * 外観確認1
      * @return the gaikanKakunin1
      */
     public String getGaikanKakunin1() {
@@ -811,7 +589,7 @@ public class GXHDO201B005Model {
     }
 
     /**
-     * 外観確認3
+     * 外観確認1
      * @param gaikanKakunin1 the gaikanKakunin1 to set
      */
     public void setGaikanKakunin1(String gaikanKakunin1) {
@@ -819,51 +597,19 @@ public class GXHDO201B005Model {
     }
 
     /**
-     * 外観確認4
-     * @return the gaikanKakunin2
+     * 良品ｾｯﾄ数
+     * @return the ryouhinSetsuu
      */
-    public String getGaikanKakunin2() {
-        return gaikanKakunin2;
-    }
-
-    /**
-     * 外観確認4
-     * @param gaikanKakunin2 the gaikanKakunin2 to set
-     */
-    public void setGaikanKakunin2(String gaikanKakunin2) {
-        this.gaikanKakunin2 = gaikanKakunin2;
-    }
-
-    /**
-     * 処理ｾｯﾄ数
-     * @return the gaikanKakunin3
-     */
-    public String getGaikanKakunin3() {
-        return gaikanKakunin3;
-    }
-
-    /**
-     * 処理ｾｯﾄ数
-     * @param gaikanKakunin3 the gaikanKakunin3 to set
-     */
-    public void setGaikanKakunin3(String gaikanKakunin3) {
-        this.gaikanKakunin3 = gaikanKakunin3;
+    public BigDecimal getRyouhinSetsuu() {
+        return ryouhinSetsuu;
     }
 
     /**
      * 良品ｾｯﾄ数
-     * @return the gaikanKakunin4
+     * @param ryouhinSetsuu the ryouhinSetsuu to set
      */
-    public String getGaikanKakunin4() {
-        return gaikanKakunin4;
-    }
-
-    /**
-     * 良品ｾｯﾄ数
-     * @param gaikanKakunin4 the gaikanKakunin4 to set
-     */
-    public void setGaikanKakunin4(String gaikanKakunin4) {
-        this.gaikanKakunin4 = gaikanKakunin4;
+    public void setRyouhinSetsuu(BigDecimal ryouhinSetsuu) {
+        this.ryouhinSetsuu = ryouhinSetsuu;
     }
 
     /**
@@ -883,86 +629,6 @@ public class GXHDO201B005Model {
     }
 
     /**
-     * 端子ﾃｰﾌﾟ種類確認
-     * @return the tanshiTapeSyurui
-     */
-    public String getTanshiTapeSyurui() {
-        return tanshiTapeSyurui;
-    }
-
-    /**
-     * 端子ﾃｰﾌﾟ種類確認
-     * @param tanshiTapeSyurui the tanshiTapeSyurui to set
-     */
-    public void setTanshiTapeSyurui(String tanshiTapeSyurui) {
-        this.tanshiTapeSyurui = tanshiTapeSyurui;
-    }
-
-    /**
-     * 隔離NG回数
-     * @return the hNGKaisuu
-     */
-    public Long gethNGKaisuu() {
-        return hNGKaisuu;
-    }
-
-    /**
-     * 隔離NG回数
-     * @param hNGKaisuu the hNGKaisuu to set
-     */
-    public void sethNGKaisuu(Long hNGKaisuu) {
-        this.hNGKaisuu = hNGKaisuu;
-    }
-
-    /**
-     * 剥離NG回数AVE
-     * @return the hNGKaisuuAve
-     */
-    public BigDecimal gethNGKaisuuAve() {
-        return hNGKaisuuAve;
-    }
-
-    /**
-     * 剥離NG回数AVE
-     * @param hNGKaisuuAve the hNGKaisuuAve to set
-     */
-    public void sethNGKaisuuAve(BigDecimal hNGKaisuuAve) {
-        this.hNGKaisuuAve = hNGKaisuuAve;
-    }
-
-    /**
-     * 画処NG回数
-     * @return the gNGKaisuu
-     */
-    public Long getgNGKaisuu() {
-        return gNGKaisuu;
-    }
-
-    /**
-     * 画処NG回数
-     * @param gNGKaisuu the gNGKaisuu to set
-     */
-    public void setgNGKaisuu(Long gNGKaisuu) {
-        this.gNGKaisuu = gNGKaisuu;
-    }
-
-    /**
-     * 画処NG回数AVE
-     * @return the gNGKaisuuAve
-     */
-    public BigDecimal getgNGKaisuuAve() {
-        return gNGKaisuuAve;
-    }
-
-    /**
-     * 画処NG回数AVE
-     * @param gNGKaisuuAve the gNGKaisuuAve to set
-     */
-    public void setgNGKaisuuAve(BigDecimal gNGKaisuuAve) {
-        this.gNGKaisuuAve = gNGKaisuuAve;
-    }
-
-    /**
      * 備考2
      * @return the bikou2
      */
@@ -979,1282 +645,339 @@ public class GXHDO201B005Model {
     }
 
     /**
-     * ｾｯﾄ数1
-     * @return the setsuu1
+     * ｾｯﾄ数
+     * @return the setsuu
      */
-    public Long getSetsuu1() {
-        return setsuu1;
+    public String getSetsuu() {
+        return setsuu;
     }
 
     /**
-     * ｾｯﾄ数1
-     * @param setsuu1 the setsuu1 to set
+     * ｾｯﾄ数
+     * @param setsuu the setsuu to set
      */
-    public void setSetsuu1(Long setsuu1) {
-        this.setsuu1 = setsuu1;
+    public void setSetsuu(String setsuu) {
+        this.setsuu = setsuu;
     }
 
     /**
-     * ｾｯﾄ数2
-     * @return the setsuu2
+     * 客先
+     * @return the tokuisaki
      */
-    public Long getSetsuu2() {
-        return setsuu2;
+    public String getTokuisaki() {
+        return tokuisaki;
     }
 
     /**
-     * ｾｯﾄ数2
-     * @param setsuu2 the setsuu2 to set
+     * 客先
+     * @param tokuisaki the tokuisaki to set
      */
-    public void setSetsuu2(Long setsuu2) {
-        this.setsuu2 = setsuu2;
+    public void setTokuisaki(String tokuisaki) {
+        this.tokuisaki = tokuisaki;
     }
 
     /**
-     * ｾｯﾄ数3
-     * @return the setsuu3
+     * ﾛｯﾄ区分
+     * @return the lotkubuncode
      */
-    public Long getSetsuu3() {
-        return setsuu3;
+    public String getLotkubuncode() {
+        return lotkubuncode;
     }
 
     /**
-     * ｾｯﾄ数3
-     * @param setsuu3 the setsuu3 to set
+     * ﾛｯﾄ区分
+     * @param lotkubuncode the lotkubuncode to set
      */
-    public void setSetsuu3(Long setsuu3) {
-        this.setsuu3 = setsuu3;
+    public void setLotkubuncode(String lotkubuncode) {
+        this.lotkubuncode = lotkubuncode;
     }
 
     /**
-     * ｾｯﾄ数4
-     * @return the setsuu4
+     * ｵｰﾅｰ
+     * @return the ownercode
      */
-    public Long getSetsuu4() {
-        return setsuu4;
+    public String getOwnercode() {
+        return ownercode;
     }
 
     /**
-     * ｾｯﾄ数4
-     * @param setsuu4 the setsuu4 to set
+     * ｵｰﾅｰ
+     * @param ownercode the ownercode to set
      */
-    public void setSetsuu4(Long setsuu4) {
-        this.setsuu4 = setsuu4;
+    public void setOwnercode(String ownercode) {
+        this.ownercode = ownercode;
     }
 
     /**
-     * ｾｯﾄ数5
-     * @return the setsuu5
+     * 上端子ﾃｰﾌﾟ
+     * @return the uwaTanshiTape
      */
-    public Long getSetsuu5() {
-        return setsuu5;
+    public String getUwaTanshiTape() {
+        return uwaTanshiTape;
     }
 
-    /**
-     * ｾｯﾄ数5
-     * @param setsuu5 the setsuu5 to set
-     */
-    public void setSetsuu5(Long setsuu5) {
-        this.setsuu5 = setsuu5;
-    }
-
-    /**
-     * ｾｯﾄ数6
-     * @return the setsuu6
-     */
-    public Long getSetsuu6() {
-        return setsuu6;
-    }
-
-    /**
-     * ｾｯﾄ数6
-     * @param setsuu6 the setsuu6 to set
-     */
-    public void setSetsuu6(Long setsuu6) {
-        this.setsuu6 = setsuu6;
-    }
-
-    /**
-     * ｾｯﾄ数7
-     * @return the setsuu7
-     */
-    public Long getSetsuu7() {
-        return setsuu7;
-    }
-
-    /**
-     * ｾｯﾄ数7
-     * @param setsuu7 the setsuu7 to set
-     */
-    public void setSetsuu7(Long setsuu7) {
-        this.setsuu7 = setsuu7;
-    }
-
-    /**
-     * ｾｯﾄ数8
-     * @return the setsuu8
-     */
-    public Long getSetsuu8() {
-        return setsuu8;
-    }
-
-    /**
-     * ｾｯﾄ数8
-     * @param setsuu8 the setsuu8 to set
-     */
-    public void setSetsuu8(Long setsuu8) {
-        this.setsuu8 = setsuu8;
-    }
-
-    /**
-     * ｾｯﾄ数9
-     * @return the setsuu9
-     */
-    public Long getSetsuu9() {
-        return setsuu9;
-    }
-
-    /**
-     * ｾｯﾄ数9
-     * @param setsuu9 the setsuu9 to set
-     */
-    public void setSetsuu9(Long setsuu9) {
-        this.setsuu9 = setsuu9;
-    }
-
-    /**
-     * ｾｯﾄ数10
-     * @return the setsuu10
-     */
-    public Long getSetsuu10() {
-        return setsuu10;
-    }
-
-    /**
-     * ｾｯﾄ数10
-     * @param setsuu10 the setsuu10 to set
-     */
-    public void setSetsuu10(Long setsuu10) {
-        this.setsuu10 = setsuu10;
-    }
-
-    /**
-     * ｾｯﾄ数11
-     * @return the setsuu11
-     */
-    public Long getSetsuu11() {
-        return setsuu11;
-    }
-
-    /**
-     * ｾｯﾄ数11
-     * @param setsuu11 the setsuu11 to set
-     */
-    public void setSetsuu11(Long setsuu11) {
-        this.setsuu11 = setsuu11;
-    }
-
-    /**
-     * ｾｯﾄ数12
-     * @return the setsuu12
-     */
-    public Long getSetsuu12() {
-        return setsuu12;
-    }
-
-    /**
-     * ｾｯﾄ数12
-     * @param setsuu12 the setsuu12 to set
-     */
-    public void setSetsuu12(Long setsuu12) {
-        this.setsuu12 = setsuu12;
-    }
-
-    /**
-     * ｾｯﾄ数13
-     * @return the setsuu13
-     */
-    public Long getSetsuu13() {
-        return setsuu13;
-    }
-
-    /**
-     * ｾｯﾄ数13
-     * @param setsuu13 the setsuu13 to set
-     */
-    public void setSetsuu13(Long setsuu13) {
-        this.setsuu13 = setsuu13;
-    }
-
-    /**
-     * ｾｯﾄ数14
-     * @return the setsuu14
-     */
-    public Long getSetsuu14() {
-        return setsuu14;
-    }
-
-    /**
-     * ｾｯﾄ数14
-     * @param setsuu14 the setsuu14 to set
-     */
-    public void setSetsuu14(Long setsuu14) {
-        this.setsuu14 = setsuu14;
-    }
-
-    /**
-     * ｾｯﾄ数15
-     * @return the setsuu15
-     */
-    public Long getSetsuu15() {
-        return setsuu15;
-    }
-
-    /**
-     * ｾｯﾄ数15
-     * @param setsuu15 the setsuu15 to set
-     */
-    public void setSetsuu15(Long setsuu15) {
-        this.setsuu15 = setsuu15;
-    }
-
-    /**
-     * ｾｯﾄ数16
-     * @return the setsuu16
-     */
-    public Long getSetsuu16() {
-        return setsuu16;
-    }
-
-    /**
-     * ｾｯﾄ数16
-     * @param setsuu16 the setsuu16 to set
-     */
-    public void setSetsuu16(Long setsuu16) {
-        this.setsuu16 = setsuu16;
-    }
-
-    /**
-     * ｾｯﾄ数17
-     * @return the setsuu17
-     */
-    public Long getSetsuu17() {
-        return setsuu17;
-    }
-
-    /**
-     * ｾｯﾄ数17
-     * @param setsuu17 the setsuu17 to set
-     */
-    public void setSetsuu17(Long setsuu17) {
-        this.setsuu17 = setsuu17;
-    }
-
-    /**
-     * ｾｯﾄ数18
-     * @return the setsuu18
-     */
-    public Long getSetsuu18() {
-        return setsuu18;
-    }
-
-    /**
-     * ｾｯﾄ数18
-     * @param setsuu18 the setsuu18 to set
-     */
-    public void setSetsuu18(Long setsuu18) {
-        this.setsuu18 = setsuu18;
-    }
-
-    /**
-     * ｾｯﾄ数19
-     * @return the setsuu19
-     */
-    public Long getSetsuu19() {
-        return setsuu19;
-    }
-
-    /**
-     * ｾｯﾄ数19
-     * @param setsuu19 the setsuu19 to set
-     */
-    public void setSetsuu19(Long setsuu19) {
-        this.setsuu19 = setsuu19;
-    }
-
-    /**
-     * ｾｯﾄ数20
-     * @return the setsuu20
-     */
-    public Long getSetsuu20() {
-        return setsuu20;
-    }
-
-    /**
-     * ｾｯﾄ数20
-     * @param setsuu20 the setsuu20 to set
-     */
-    public void setSetsuu20(Long setsuu20) {
-        this.setsuu20 = setsuu20;
-    }
-
-    /**
-     * ｾｯﾄ数21
-     * @return the setsuu21
-     */
-    public Long getSetsuu21() {
-        return setsuu21;
-    }
-
-    /**
-     * ｾｯﾄ数21
-     * @param setsuu21 the setsuu21 to set
-     */
-    public void setSetsuu21(Long setsuu21) {
-        this.setsuu21 = setsuu21;
-    }
-
-    /**
-     * ｾｯﾄ数22
-     * @return the setsuu22
-     */
-    public Long getSetsuu22() {
-        return setsuu22;
-    }
-
-    /**
-     * ｾｯﾄ数22
-     * @param setsuu22 the setsuu22 to set
-     */
-    public void setSetsuu22(Long setsuu22) {
-        this.setsuu22 = setsuu22;
-    }
-
-    /**
-     * ｾｯﾄ数23
-     * @return the setsuu23
-     */
-    public Long getSetsuu23() {
-        return setsuu23;
-    }
-
-    /**
-     * ｾｯﾄ数23
-     * @param setsuu23 the setsuu23 to set
-     */
-    public void setSetsuu23(Long setsuu23) {
-        this.setsuu23 = setsuu23;
-    }
-
-    /**
-     * ｾｯﾄ数24
-     * @return the setsuu24
-     */
-    public Long getSetsuu24() {
-        return setsuu24;
-    }
-
-    /**
-     * ｾｯﾄ数24
-     * @param setsuu24 the setsuu24 to set
-     */
-    public void setSetsuu24(Long setsuu24) {
-        this.setsuu24 = setsuu24;
-    }
-
-    /**
-     * ｾｯﾄ数25
-     * @return the setsuu25
-     */
-    public Long getSetsuu25() {
-        return setsuu25;
-    }
-
-    /**
-     * ｾｯﾄ数25
-     * @param setsuu25 the setsuu25 to set
-     */
-    public void setSetsuu25(Long setsuu25) {
-        this.setsuu25 = setsuu25;
-    }
-
-    /**
-     * ｾｯﾄ数26
-     * @return the setsuu26
-     */
-    public Long getSetsuu26() {
-        return setsuu26;
-    }
-
-    /**
-     * ｾｯﾄ数26
-     * @param setsuu26 the setsuu26 to set
-     */
-    public void setSetsuu26(Long setsuu26) {
-        this.setsuu26 = setsuu26;
-    }
-
-    /**
-     * ｾｯﾄ数27
-     * @return the setsuu27
-     */
-    public Long getSetsuu27() {
-        return setsuu27;
-    }
-
-    /**
-     * ｾｯﾄ数27
-     * @param setsuu27 the setsuu27 to set
-     */
-    public void setSetsuu27(Long setsuu27) {
-        this.setsuu27 = setsuu27;
-    }
-
-    /**
-     * ｾｯﾄ数28
-     * @return the setsuu28
-     */
-    public Long getSetsuu28() {
-        return setsuu28;
-    }
-
-    /**
-     * ｾｯﾄ数28
-     * @param setsuu28 the setsuu28 to set
-     */
-    public void setSetsuu28(Long setsuu28) {
-        this.setsuu28 = setsuu28;
-    }
-
-    /**
-     * ｾｯﾄ数29
-     * @return the setsuu29
-     */
-    public Long getSetsuu29() {
-        return setsuu29;
-    }
-
-    /**
-     * ｾｯﾄ数29
-     * @param setsuu29 the setsuu29 to set
-     */
-    public void setSetsuu29(Long setsuu29) {
-        this.setsuu29 = setsuu29;
-    }
-
-    /**
-     * ｾｯﾄ数30
-     * @return the setsuu30
-     */
-    public Long getSetsuu30() {
-        return setsuu30;
-    }
-
-    /**
-     * ｾｯﾄ数30
-     * @param setsuu30 the setsuu30 to set
-     */
-    public void setSetsuu30(Long setsuu30) {
-        this.setsuu30 = setsuu30;
-    }
-
-    /**
-     * ｾｯﾄ数31
-     * @return the setsuu31
-     */
-    public Long getSetsuu31() {
-        return setsuu31;
-    }
-
-    /**
-     * ｾｯﾄ数31
-     * @param setsuu31 the setsuu31 to set
-     */
-    public void setSetsuu31(Long setsuu31) {
-        this.setsuu31 = setsuu31;
-    }
-
-    /**
-     * ｾｯﾄ数32
-     * @return the setsuu32
-     */
-    public Long getSetsuu32() {
-        return setsuu32;
-    }
-
-    /**
-     * ｾｯﾄ数32
-     * @param setsuu32 the setsuu32 to set
-     */
-    public void setSetsuu32(Long setsuu32) {
-        this.setsuu32 = setsuu32;
-    }
-
-    /**
-     * ｾｯﾄ数33
-     * @return the setsuu33
-     */
-    public Long getSetsuu33() {
-        return setsuu33;
-    }
-
-    /**
-     * ｾｯﾄ数33
-     * @param setsuu33 the setsuu33 to set
-     */
-    public void setSetsuu33(Long setsuu33) {
-        this.setsuu33 = setsuu33;
-    }
-
-    /**
-     * ｾｯﾄ数34
-     * @return the setsuu34
-     */
-    public Long getSetsuu34() {
-        return setsuu34;
-    }
-
-    /**
-     * ｾｯﾄ数34
-     * @param setsuu34 the setsuu34 to set
-     */
-    public void setSetsuu34(Long setsuu34) {
-        this.setsuu34 = setsuu34;
-    }
-
-    /**
-     * ｾｯﾄ数35
-     * @return the setsuu35
-     */
-    public Long getSetsuu35() {
-        return setsuu35;
-    }
-
-    /**
-     * ｾｯﾄ数35
-     * @param setsuu35 the setsuu35 to set
-     */
-    public void setSetsuu35(Long setsuu35) {
-        this.setsuu35 = setsuu35;
-    }
-
-    /**
-     * ｾｯﾄ数36
-     * @return the setsuu36
-     */
-    public Long getSetsuu36() {
-        return setsuu36;
-    }
-
-    /**
-     * ｾｯﾄ数36
-     * @param setsuu36 the setsuu36 to set
-     */
-    public void setSetsuu36(Long setsuu36) {
-        this.setsuu36 = setsuu36;
-    }
-
-    /**
-     * ｾｯﾄ数37
-     * @return the setsuu37
-     */
-    public Long getSetsuu37() {
-        return setsuu37;
-    }
-
-    /**
-     * ｾｯﾄ数37
-     * @param setsuu37 the setsuu37 to set
-     */
-    public void setSetsuu37(Long setsuu37) {
-        this.setsuu37 = setsuu37;
-    }
-
-    /**
-     * ｾｯﾄ数38
-     * @return the setsuu38
-     */
-    public Long getSetsuu38() {
-        return setsuu38;
-    }
-
-    /**
-     * ｾｯﾄ数38
-     * @param setsuu38 the setsuu38 to set
-     */
-    public void setSetsuu38(Long setsuu38) {
-        this.setsuu38 = setsuu38;
-    }
-
-    /**
-     * ｾｯﾄ数39
-     * @return the setsuu39
-     */
-    public Long getSetsuu39() {
-        return setsuu39;
-    }
-
-    /**
-     * ｾｯﾄ数39
-     * @param setsuu39 the setsuu39 to set
-     */
-    public void setSetsuu39(Long setsuu39) {
-        this.setsuu39 = setsuu39;
-    }
-
-    /**
-     * ｾｯﾄ数40
-     * @return the setsuu40
-     */
-    public Long getSetsuu40() {
-        return setsuu40;
-    }
-
-    /**
-     * ｾｯﾄ数40
-     * @param setsuu40 the setsuu40 to set
-     */
-    public void setSetsuu40(Long setsuu40) {
-        this.setsuu40 = setsuu40;
-    }
-
-    /**
-     * 備考1
-     * @return the hbikou1
-     */
-    public String getHbikou1() {
-        return hbikou1;
-    }
-
-    /**
-     * 備考1
-     * @param hbikou1 the hbikou1 to set
-     */
-    public void setHbikou1(String hbikou1) {
-        this.hbikou1 = hbikou1;
-    }
-
-    /**
-     * 備考2
-     * @return the hbikou2
-     */
-    public String getHbikou2() {
-        return hbikou2;
-    }
-
-    /**
-     * 備考2
-     * @param hbikou2 the hbikou2 to set
-     */
-    public void setHbikou2(String hbikou2) {
-        this.hbikou2 = hbikou2;
-    }
-
-    /**
-     * 備考3
-     * @return the hbikou3
-     */
-    public String getHbikou3() {
-        return hbikou3;
-    }
-
-    /**
-     * 備考3
-     * @param hbikou3 the hbikou3 to set
-     */
-    public void setHbikou3(String hbikou3) {
-        this.hbikou3 = hbikou3;
-    }
-
-    /**
-     * 備考4
-     * @return the hbikou4
-     */
-    public String getHbikou4() {
-        return hbikou4;
-    }
-
-    /**
-     * 備考4
-     * @param hbikou4 the hbikou4 to set
-     */
-    public void setHbikou4(String hbikou4) {
-        this.hbikou4 = hbikou4;
-    }
-
-    /**
-     * 備考5
-     * @return the hbikou5
-     */
-    public String getHbikou5() {
-        return hbikou5;
-    }
-
-    /**
-     * 備考5
-     * @param hbikou5 the hbikou5 to set
-     */
-    public void setHbikou5(String hbikou5) {
-        this.hbikou5 = hbikou5;
-    }
-
-    /**
-     * 備考6
-     * @return the hbikou6
-     */
-    public String getHbikou6() {
-        return hbikou6;
-    }
-
-    /**
-     * 備考6
-     * @param hbikou6 the hbikou6 to set
-     */
-    public void setHbikou6(String hbikou6) {
-        this.hbikou6 = hbikou6;
-    }
-
-    /**
-     * 備考7
-     * @return the hbikou7
-     */
-    public String getHbikou7() {
-        return hbikou7;
-    }
-
-    /**
-     * 備考7
-     * @param hbikou7 the hbikou7 to set
-     */
-    public void setHbikou7(String hbikou7) {
-        this.hbikou7 = hbikou7;
-    }
-
-    /**
-     * 備考8
-     * @return the hbikou8
-     */
-    public String getHbikou8() {
-        return hbikou8;
-    }
-
-    /**
-     * 備考8
-     * @param hbikou8 the hbikou8 to set
-     */
-    public void setHbikou8(String hbikou8) {
-        this.hbikou8 = hbikou8;
-    }
-
-    /**
-     * 備考9
-     * @return the hbikou9
-     */
-    public String getHbikou9() {
-        return hbikou9;
-    }
-
-    /**
-     * 備考9
-     * @param hbikou9 the hbikou9 to set
-     */
-    public void setHbikou9(String hbikou9) {
-        this.hbikou9 = hbikou9;
-    }
-
-    /**
-     * 備考10
-     * @return the hbikou10
-     */
-    public String getHbikou10() {
-        return hbikou10;
-    }
-
-    /**
-     * 備考10
-     * @param hbikou10 the hbikou10 to set
-     */
-    public void setHbikou10(String hbikou10) {
-        this.hbikou10 = hbikou10;
-    }
-
-    /**
-     * 備考11
-     * @return the hbikou11
-     */
-    public String getHbikou11() {
-        return hbikou11;
-    }
-
-    /**
-     * 備考11
-     * @param hbikou11 the hbikou11 to set
-     */
-    public void setHbikou11(String hbikou11) {
-        this.hbikou11 = hbikou11;
-    }
-
-    /**
-     * 備考12
-     * @return the hbikou12
-     */
-    public String getHbikou12() {
-        return hbikou12;
-    }
-
-    /**
-     * 備考12
-     * @param hbikou12 the hbikou12 to set
-     */
-    public void setHbikou12(String hbikou12) {
-        this.hbikou12 = hbikou12;
-    }
-
-    /**
-     * 備考13
-     * @return the hbikou13
-     */
-    public String getHbikou13() {
-        return hbikou13;
-    }
-
-    /**
-     * 備考13
-     * @param hbikou13 the hbikou13 to set
-     */
-    public void setHbikou13(String hbikou13) {
-        this.hbikou13 = hbikou13;
-    }
-
-    /**
-     * 備考14
-     * @return the hbikou14
-     */
-    public String getHbikou14() {
-        return hbikou14;
-    }
-
-    /**
-     * 備考14
-     * @param hbikou14 the hbikou14 to set
-     */
-    public void setHbikou14(String hbikou14) {
-        this.hbikou14 = hbikou14;
-    }
-
-    /**
-     * 備考15
-     * @return the hbikou15
-     */
-    public String getHbikou15() {
-        return hbikou15;
-    }
-
-    /**
-     * 備考15
-     * @param hbikou15 the hbikou15 to set
-     */
-    public void setHbikou15(String hbikou15) {
-        this.hbikou15 = hbikou15;
-    }
-
-    /**
-     * 備考16
-     * @return the hbikou16
-     */
-    public String getHbikou16() {
-        return hbikou16;
-    }
-
-    /**
-     * 備考16
-     * @param hbikou16 the hbikou16 to set
-     */
-    public void setHbikou16(String hbikou16) {
-        this.hbikou16 = hbikou16;
-    }
-
-    /**
-     * 備考17
-     * @return the hbikou17
+     /**
+     * 上端子ﾃｰﾌﾟ
+     * @param uwaTanshiTape the uwaTanshiTape to set
      */
-    public String getHbikou17() {
-        return hbikou17;
+    public void setUwaTanshiTape(String uwaTanshiTape) {
+        this.uwaTanshiTape = uwaTanshiTape;
     }
 
     /**
-     * 備考17
-     * @param hbikou17 the hbikou17 to set
+     * 上端子積層数
+     * @return the uwaTanshiMaisuu
      */
-    public void setHbikou17(String hbikou17) {
-        this.hbikou17 = hbikou17;
+    public Long getUwaTanshiMaisuu() {
+        return uwaTanshiMaisuu;
     }
 
     /**
-     * 備考18
-     * @return the hbikou18
+     * 上端子積層数
+     * @param uwaTanshiMaisuu the uwaTanshiMaisuu to set
      */
-    public String getHbikou18() {
-        return hbikou18;
+    public void setUwaTanshiMaisuu(Long uwaTanshiMaisuu) {
+        this.uwaTanshiMaisuu = uwaTanshiMaisuu;
     }
 
     /**
-     * 備考18
-     * @param hbikou18 the hbikou18 to set
+     * 下端子ﾃｰﾌﾟ
+     * @return the shitaTanshiTape
      */
-    public void setHbikou18(String hbikou18) {
-        this.hbikou18 = hbikou18;
+    public String getShitaTanshiTape() {
+        return shitaTanshiTape;
     }
 
     /**
-     * 備考19
-     * @return the hbikou19
+     * 下端子ﾃｰﾌﾟ
+     * @param shitaTanshiTape the shitaTanshiTape to set
      */
-    public String getHbikou19() {
-        return hbikou19;
+    public void setShitaTanshiTape(String shitaTanshiTape) {
+        this.shitaTanshiTape = shitaTanshiTape;
     }
 
     /**
-     * 備考19
-     * @param hbikou19 the hbikou19 to set
+     * 下端子積層数
+     * @return the shitaTanshiMaisuu
      */
-    public void setHbikou19(String hbikou19) {
-        this.hbikou19 = hbikou19;
+    public Long getShitaTanshiMaisuu() {
+        return shitaTanshiMaisuu;
     }
 
     /**
-     * 備考20
-     * @return the hbikou20
+     * 下端子積層数
+     * @param shitaTanshiMaisuu the shitaTanshiMaisuu to set
      */
-    public String getHbikou20() {
-        return hbikou20;
+    public void setShitaTanshiMaisuu(Long shitaTanshiMaisuu) {
+        this.shitaTanshiMaisuu = shitaTanshiMaisuu;
     }
 
     /**
-     * 備考20
-     * @param hbikou20 the hbikou20 to set
+     * 列×行
+     * @return the lretuWretu
      */
-    public void setHbikou20(String hbikou20) {
-        this.hbikou20 = hbikou20;
+    public String getLretuWretu() {
+        return lretuWretu;
     }
 
     /**
-     * 備考21
-     * @return the hbikou21
+     * 列×行
+     * @param lretuWretu the lretuWretu to set
      */
-    public String getHbikou21() {
-        return hbikou21;
+    public void setLretuWretu(String lretuWretu) {
+        this.lretuWretu = lretuWretu;
     }
 
     /**
-     * 備考21
-     * @param hbikou21 the hbikou21 to set
+     * 製版名
+     * @return the patern
      */
-    public void setHbikou21(String hbikou21) {
-        this.hbikou21 = hbikou21;
+    public String getPatern() {
+        return patern;
     }
 
     /**
-     * 備考22
-     * @return the hbikou22
+     * 製版名
+     * @param patern the patern to set
      */
-    public String getHbikou22() {
-        return hbikou22;
+    public void setPatern(String patern) {
+        this.patern = patern;
     }
 
     /**
-     * 備考22
-     * @param hbikou22 the hbikou22 to set
+     * 取り個数
+     * @return the torikosuu
      */
-    public void setHbikou22(String hbikou22) {
-        this.hbikou22 = hbikou22;
+    public Long getTorikosuu() {
+        return torikosuu;
     }
 
     /**
-     * 備考23
-     * @return the hbikou23
+     * 取り個数
+     * @param torikosuu the torikosuu to set
      */
-    public String getHbikou23() {
-        return hbikou23;
+    public void setTorikosuu(Long torikosuu) {
+        this.torikosuu = torikosuu;
     }
 
     /**
-     * 備考23
-     * @param hbikou23 the hbikou23 to set
+     * ﾋﾟｯﾁ
+     * @return the pitch
      */
-    public void setHbikou23(String hbikou23) {
-        this.hbikou23 = hbikou23;
+    public String getPitch() {
+        return pitch;
     }
 
     /**
-     * 備考24
-     * @return the hbikou24
+     * ﾋﾟｯﾁ
+     * @param pitch the pitch to set
      */
-    public String getHbikou24() {
-        return hbikou24;
+    public void setPitch(String pitch) {
+        this.pitch = pitch;
     }
 
     /**
-     * 備考24
-     * @param hbikou24 the hbikou24 to set
+     * 電極ﾍﾟｰｽﾄ
+     * @return the epaste
      */
-    public void setHbikou24(String hbikou24) {
-        this.hbikou24 = hbikou24;
+    public String getEpaste() {
+        return epaste;
     }
 
     /**
-     * 備考25
-     * @return the hbikou25
+     * 電極ﾍﾟｰｽﾄ
+     * @param epaste the epaste to set
      */
-    public String getHbikou25() {
-        return hbikou25;
+    public void setEpaste(String epaste) {
+        this.epaste = epaste;
     }
 
     /**
-     * 備考25
-     * @param hbikou25 the hbikou25 to set
+     * 電極ﾃｰﾌﾟ
+     * @return the etape
      */
-    public void setHbikou25(String hbikou25) {
-        this.hbikou25 = hbikou25;
+    public String getEtape() {
+        return etape;
     }
 
     /**
-     * 備考26
-     * @return the hbikou26
+     * 電極ﾃｰﾌﾟ
+     * @param etape the etape to set
      */
-    public String getHbikou26() {
-        return hbikou26;
+    public void setEtape(String etape) {
+        this.etape = etape;
     }
 
     /**
-     * 備考26
-     * @param hbikou26 the hbikou26 to set
+     * 電極ﾃｰﾌﾟ厚み
+     * @return the etapeatumi
      */
-    public void setHbikou26(String hbikou26) {
-        this.hbikou26 = hbikou26;
+    public Double getEtapeatumi() {
+        return etapeatumi;
     }
 
     /**
-     * 備考27
-     * @return the hbikou27
+     * 電極ﾃｰﾌﾟ厚み
+     * @param etapeatumi the etapeatumi to set
      */
-    public String getHbikou27() {
-        return hbikou27;
+    public void setEtapeatumi(Double etapeatumi) {
+        this.etapeatumi = etapeatumi;
     }
 
     /**
-     * 備考27
-     * @param hbikou27 the hbikou27 to set
+     * 電極積層数
+     * @return the sekisousu
      */
-    public void setHbikou27(String hbikou27) {
-        this.hbikou27 = hbikou27;
+    public Long getSekisousu() {
+        return sekisousu;
     }
 
     /**
-     * 備考28
-     * @return the hbikou28
+     * 電極積層数
+     * @param sekisousu the sekisousu to set
      */
-    public String getHbikou28() {
-        return hbikou28;
+    public void setSekisousu(Long sekisousu) {
+        this.sekisousu = sekisousu;
     }
 
     /**
-     * 備考28
-     * @param hbikou28 the hbikou28 to set
+     * 積層ｽﾗｲﾄﾞ量(mm)
+     * @return the sekisouslideryo
      */
-    public void setHbikou28(String hbikou28) {
-        this.hbikou28 = hbikou28;
+    public String getSekisouslideryo() {
+        return sekisouslideryo;
     }
 
     /**
-     * 備考29
-     * @return the hbikou29
+     * 積層ｽﾗｲﾄﾞ量(mm)
+     * @param sekisouslideryo the sekisouslideryo to set
      */
-    public String getHbikou29() {
-        return hbikou29;
+    public void setSekisouslideryo(String sekisouslideryo) {
+        this.sekisouslideryo = sekisouslideryo;
     }
 
     /**
-     * 備考29
-     * @param hbikou29 the hbikou29 to set
+     * 最上層ｽﾗｲﾄﾞ量(μm)
+     * @return the lastlayerslideryo
      */
-    public void setHbikou29(String hbikou29) {
-        this.hbikou29 = hbikou29;
+    public String getLastlayerslideryo() {
+        return lastlayerslideryo;
     }
 
     /**
-     * 備考30
-     * @return the hbikou30
+     * 最上層ｽﾗｲﾄﾞ量(μm)
+     * @param lastlayerslideryo the lastlayerslideryo to set
      */
-    public String getHbikou30() {
-        return hbikou30;
+    public void setLastlayerslideryo(String lastlayerslideryo) {
+        this.lastlayerslideryo = lastlayerslideryo;
     }
 
     /**
-     * 備考30
-     * @param hbikou30 the hbikou30 to set
+     * 連続積層枚数
+     * @return the renzokusekisoumaisuu
      */
-    public void setHbikou30(String hbikou30) {
-        this.hbikou30 = hbikou30;
+    public Long getRenzokusekisoumaisuu() {
+        return renzokusekisoumaisuu;
     }
 
     /**
-     * 備考31
-     * @return the hbikou31
+     * 連続積層枚数
+     * @param renzokusekisoumaisuu the renzokusekisoumaisuu to set
      */
-    public String getHbikou31() {
-        return hbikou31;
+    public void setRenzokusekisoumaisuu(Long renzokusekisoumaisuu) {
+        this.renzokusekisoumaisuu = renzokusekisoumaisuu;
     }
 
     /**
-     * 備考31
-     * @param hbikou31 the hbikou31 to set
+     * B層補正量
+     * @return the bsouhoseiryou
      */
-    public void setHbikou31(String hbikou31) {
-        this.hbikou31 = hbikou31;
+    public BigDecimal getBsouhoseiryou() {
+        return bsouhoseiryou;
     }
 
     /**
-     * 備考32
-     * @return the hbikou32
+     * B層補正量
+     * @param bsouhoseiryou the bsouhoseiryou to set
      */
-    public String getHbikou32() {
-        return hbikou32;
+    public void setBsouhoseiryou(BigDecimal bsouhoseiryou) {
+        this.bsouhoseiryou = bsouhoseiryou;
     }
 
     /**
-     * 備考32
-     * @param hbikou32 the hbikou32 to set
+     * Y軸補正量
+     * @return the yjikuhoseiryou
      */
-    public void setHbikou32(String hbikou32) {
-        this.hbikou32 = hbikou32;
+    public Long getYjikuhoseiryou() {
+        return yjikuhoseiryou;
     }
 
     /**
-     * 備考33
-     * @return the hbikou33
+     * Y軸補正量
+     * @param yjikuhoseiryou the yjikuhoseiryou to set
      */
-    public String getHbikou33() {
-        return hbikou33;
+    public void setYjikuhoseiryou(Long yjikuhoseiryou) {
+        this.yjikuhoseiryou = yjikuhoseiryou;
     }
 
-    /**
-     * 備考33
-     * @param hbikou33 the hbikou33 to set
-     */
-    public void setHbikou33(String hbikou33) {
-        this.hbikou33 = hbikou33;
-    }
-
-    /**
-     * 備考34
-     * @return the hbikou34
-     */
-    public String getHbikou34() {
-        return hbikou34;
-    }
-
-    /**
-     * 備考34
-     * @param hbikou34 the hbikou34 to set
-     */
-    public void setHbikou34(String hbikou34) {
-        this.hbikou34 = hbikou34;
-    }
-
-    /**
-     * 備考35
-     * @return the hbikou35
-     */
-    public String getHbikou35() {
-        return hbikou35;
-    }
-
-    /**
-     * 備考35
-     * @param hbikou35 the hbikou35 to set
-     */
-    public void setHbikou35(String hbikou35) {
-        this.hbikou35 = hbikou35;
-    }
-
-    /**
-     * 備考36
-     * @return the hbikou36
-     */
-    public String getHbikou36() {
-        return hbikou36;
-    }
-
-    /**
-     * 備考36
-     * @param hbikou36 the hbikou36 to set
-     */
-    public void setHbikou36(String hbikou36) {
-        this.hbikou36 = hbikou36;
-    }
-
-    /**
-     * 備考37
-     * @return the hbikou37
-     */
-    public String getHbikou37() {
-        return hbikou37;
-    }
-
-    /**
-     * 備考37
-     * @param hbikou37 the hbikou37 to set
-     */
-    public void setHbikou37(String hbikou37) {
-        this.hbikou37 = hbikou37;
-    }
-
-    /**
-     * 備考38
-     * @return the hbikou38
-     */
-    public String getHbikou38() {
-        return hbikou38;
-    }
-
-    /**
-     * 備考38
-     * @param hbikou38 the hbikou38 to set
-     */
-    public void setHbikou38(String hbikou38) {
-        this.hbikou38 = hbikou38;
-    }
-
-    /**
-     * 備考39
-     * @return the hbikou39
-     */
-    public String getHbikou39() {
-        return hbikou39;
-    }
-
-    /**
-     * 備考39
-     * @param hbikou39 the hbikou39 to set
-     */
-    public void setHbikou39(String hbikou39) {
-        this.hbikou39 = hbikou39;
-    }
-
-    /**
-     * 備考40
-     * @return the hbikou40
-     */
-    public String getHbikou40() {
-        return hbikou40;
-    }
-
-    /**
-     * 備考40
-     * @param hbikou40 the hbikou40 to set
-     */
-    public void setHbikou40(String hbikou40) {
-        this.hbikou40 = hbikou40;
-    }
 }

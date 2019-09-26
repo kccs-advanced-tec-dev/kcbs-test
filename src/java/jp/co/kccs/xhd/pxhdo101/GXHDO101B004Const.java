@@ -123,11 +123,6 @@ public class GXHDO101B004Const {
     public static final String SEKISOU_SLIDE_RYOU = "sr_spssekisou_sekisou_slide_ryou";
 
     /**
-     * 固着シート貼付り機
-     */
-    public static final String KOTYAKU_GOUKI = "sr_spssekisou_kotyaku_sheet_haritsukeki";
-
-    /**
      * 固着シート
      */
     public static final String KOTYAKU_SHEET = "sr_spssekisou_kotyaku_sheet";
@@ -206,31 +201,36 @@ public class GXHDO101B004Const {
      * 最終加圧時間
      */
     public static final String LAST_KAATUJIKAN = "sr_spssekisou_saishuu_kaatsu_time";
+    
+    /**
+     * 空打ち
+     */
+    public static final String KARAUTI = "sr_spssekisou_karauti";
+    
+    /**
+     * 空打ち[秒]
+     */
+    public static final String KARAUTIBYOU = "sr_spssekisou_karautibyou";
+    
+    /**
+     * 空打ち[回]
+     */
+    public static final String KARAUTIKAI = "sr_spssekisou_karautikai";
 
     /**
      * 上端子
      */
     public static final String UWA_TANSHI = "sr_spssekisou_ue_tanshi";
-
+    
     /**
-     * 外観確認1
+     * ｽﾞﾚ値
      */
-    public static final String GAIKAN_KAKUNIN1 = "sr_spssekisou_gaikan_kakunin1";
-
+    public static final String ZURETI = "sr_spssekisou_zureti";
+    
     /**
-     * 外観確認2
+     * ﾜﾚ、ｳｷ、かみ込みなき事
      */
-    public static final String GAIKAN_KAKUNIN2 = "sr_spssekisou_gaikan_kakunin2";
-
-    /**
-     * 外観確認3
-     */
-    public static final String GAIKAN_KAKUNIN3 = "sr_spssekisou_gaikan_kakunin3";
-
-    /**
-     * 外観確認4
-     */
-    public static final String GAIKAN_KAKUNIN4 = "sr_spssekisou_gaikan_kakunin4";
+    public static final String GAIKAN_KAKUNIN5 = "sr_spssekisou_gaikan_kakunin5";
 
     /**
      * 処理セット数
@@ -256,6 +256,11 @@ public class GXHDO101B004Const {
      * 開始担当者
      */
     public static final String KAISHI_TANTOSYA = "sr_spssekisou_kaishi_tantousha";
+    
+    /**
+     * 開始確認者
+     */
+    public static final String KAISHI_KAKUNINSYA = "sr_spssekisou_kaishi_kakuninsya";
 
     /**
      * 終了日
