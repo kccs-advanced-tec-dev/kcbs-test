@@ -264,6 +264,11 @@ public class SrTerm {
      * 削除ﾌﾗｸﾞ
      */
     private Integer deleteflag;
+    
+    /**
+     * 処理数
+     */
+    private Integer syorisuu;
 
     /**
      * @return kojyo
@@ -935,5 +940,19 @@ public class SrTerm {
      */
     public void setDeleteflag(Integer deleteflag) {
         this.deleteflag = deleteflag;
+    }
+    
+    /**
+     * @return syorisuu
+     */
+    public Integer getSyorisuu() {
+        return syorisuu;
+    }
+
+    /**
+     * @param syorisuu セットする syorisuu
+     */
+    public void setSyorisuu(Integer syorisuu) {
+        this.syorisuu = syorisuu;
     }
 }

@@ -276,7 +276,6 @@ public class GXHDO101B026 implements IFormLogic {
             }
 
             BigDecimal newRev = BigDecimal.ONE;
-            int jissekiNo = 1;
             Timestamp systemTime = new Timestamp(System.currentTimeMillis());
 
             BigDecimal rev = BigDecimal.ZERO;
@@ -289,7 +288,7 @@ public class GXHDO101B026 implements IFormLogic {
                 newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, paramJissekino, formId);
 
                 // 品質DB登録実績更新処理
-                updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_KARI_TOROKU, systemTime);
+                updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_KARI_TOROKU, systemTime, paramJissekino);
             }
 
             if (StringUtil.isEmpty(processData.getInitJotaiFlg()) || JOTAI_FLG_SAKUJO.equals(processData.getInitJotaiFlg())) {
@@ -307,7 +306,7 @@ public class GXHDO101B026 implements IFormLogic {
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
             if (kikakuError.getKikakuchiInputErrorInfoList() != null && !kikakuError.getKikakuchiInputErrorInfoList().isEmpty()) {
-                ValidateUtil.fxhdd04Insert(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, jissekiNo, "0", kikakuError.getKikakuchiInputErrorInfoList());
+                ValidateUtil.fxhdd04Insert(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, paramJissekino, "0", kikakuError.getKikakuchiInputErrorInfoList());
             }
             // 処理後はエラーリストをクリア
             kikakuError.setKikakuchiInputErrorInfoList(new ArrayList<>());
@@ -731,7 +730,6 @@ public class GXHDO101B026 implements IFormLogic {
 
             BigDecimal rev = BigDecimal.ZERO;
             BigDecimal newRev = BigDecimal.ONE;
-            int jissekiNo = 1;
             Timestamp systemTime = new Timestamp(System.currentTimeMillis());
 
             if (StringUtil.isEmpty(processData.getInitRev())) {
@@ -743,7 +741,7 @@ public class GXHDO101B026 implements IFormLogic {
                 newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, paramJissekino, formId);
 
                 // 品質DB登録実績更新処理
-                updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_TOROKUZUMI, systemTime);
+                updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_TOROKUZUMI, systemTime, paramJissekino);
             }
 
             // 仮登録状態の場合、仮登録のデータを削除する。
@@ -765,7 +763,7 @@ public class GXHDO101B026 implements IFormLogic {
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
             if (kikakuError.getKikakuchiInputErrorInfoList() != null && !kikakuError.getKikakuchiInputErrorInfoList().isEmpty()) {
-                ValidateUtil.fxhdd04Insert(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, jissekiNo, "0", kikakuError.getKikakuchiInputErrorInfoList());
+                ValidateUtil.fxhdd04Insert(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, paramJissekino, "0", kikakuError.getKikakuchiInputErrorInfoList());
             }
             // 処理後はエラーリストをクリア
             kikakuError.setKikakuchiInputErrorInfoList(new ArrayList<>());
@@ -949,10 +947,9 @@ public class GXHDO101B026 implements IFormLogic {
             // 最新のリビジョンを採番
             BigDecimal newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, paramJissekino, formId);
 
-            int jissekiNo = 1;
             Timestamp systemTime = new Timestamp(System.currentTimeMillis());
             // 品質DB登録実績更新処理
-            updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_TOROKUZUMI, systemTime);
+            updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_TOROKUZUMI, systemTime, paramJissekino);
 
             // 外部電極塗布_更新処理
             updateSrTerm(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo8, edaban, paramJissekino, systemTime, processData.getItemList());
@@ -960,7 +957,7 @@ public class GXHDO101B026 implements IFormLogic {
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
             if (kikakuError.getKikakuchiInputErrorInfoList() != null && !kikakuError.getKikakuchiInputErrorInfoList().isEmpty()) {
-                ValidateUtil.fxhdd04Insert(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, jissekiNo, "0", kikakuError.getKikakuchiInputErrorInfoList());
+                ValidateUtil.fxhdd04Insert(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, paramJissekino, "0", kikakuError.getKikakuchiInputErrorInfoList());
             }
             // 処理後はエラーリストをクリア
             kikakuError.setKikakuchiInputErrorInfoList(new ArrayList<>());
@@ -1064,7 +1061,7 @@ public class GXHDO101B026 implements IFormLogic {
 
             Timestamp systemTime = new Timestamp(System.currentTimeMillis());
             // 品質DB登録実績更新処理
-            updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_SAKUJO, systemTime);
+            updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_SAKUJO, systemTime, paramJissekino);
 
             // 外部電極塗布_仮登録登録処理
             int newDeleteflag = getNewDeleteflag(queryRunnerQcdb, kojyo, lotNo8, edaban, paramJissekino);
@@ -2226,16 +2223,17 @@ public class GXHDO101B026 implements IFormLogic {
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
      * @param jotaiFlg 状態ﾌﾗｸﾞ
+     * @param jissekino 実績No
      * @throws SQLException 例外ｴﾗｰ
      */
     private void updateFxhdd03(QueryRunner queryRunnerDoc, Connection conDoc, String tantoshaCd, String formId, BigDecimal rev,
-            String kojyo, String lotNo, String edaban, String jotaiFlg, Timestamp systemTime) throws SQLException {
+            String kojyo, String lotNo, String edaban, String jotaiFlg, Timestamp systemTime, int jissekino) throws SQLException {
         String sql = "UPDATE fxhdd03 SET "
                 + "koshinsha = ?, koshin_date = ?,"
                 + "rev = ?, jotai_flg = ? "
                 + "WHERE gamen_id = ? AND kojyo = ? "
                 + "  AND lotno = ? AND edaban = ? "
-                + "  AND jissekino = 1  ";
+                + "  AND jissekino = ?  ";
 
         List<Object> params = new ArrayList<>();
         // 更新内容
@@ -2249,6 +2247,7 @@ public class GXHDO101B026 implements IFormLogic {
         params.add(kojyo); //工場ｺｰﾄﾞ
         params.add(lotNo); //ﾛｯﾄNo
         params.add(edaban); //枝番
+        params.add(jissekino); //実績No
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerDoc.update(conDoc, sql, params.toArray());
@@ -2462,12 +2461,30 @@ public class GXHDO101B026 implements IFormLogic {
             String kojyo, String lotNo, String edaban, int jissekino,Timestamp systemTime, List<FXHDD01> itemList, SrTerm tmpSrTerm) throws SQLException {
 
         String sql = "INSERT INTO sr_term ("
-                + " kojyo,lotno,edaban,lotpre,kcpno,suuryou,kyakusaki,sagyobasyo,gouki1,setteisya1,pastehinmei,pastelotno,pastesaiseikaisuu,pastenendo,startdatetime"
-                + ",enddatetime,psunpouave2,dipjigusize,dipjigumaisuu,dipgogaikankekka,bikou1,bikou2,lsunpouave2,lsunpoumin2,lsunpoumax2,psunpoumin2,psunpoumax2"
-                + ",setubisyurui,tofukaisuu,hojijigu,nentyakusheetlot1,nentyakusheetlot2,tofujigutorikosuu,StartTantosyacode,StartKakuninsyacode,juryou,syorikosuu"
-                + ",EndTantosyacode,pasteatsumi1ji,pasteatsumi2ji,atsumiinkua,atsumiinkub,kaisuu,torokunichiji,kosinnichiji,revision"
+                + " kojyo,lotno,edaban,lotpre,kcpno,suuryou,kyakusaki,sagyobasyo,gouki1,setteisya1,gouki2,setteisya2,pastehinmei,pastelotno,pastesaiseikaisuu"
+                + ",pastekoukanjikan,pastenendo,pasteondo,pastekansannendo,pastekigen,startdatetime,enddatetime,senkougaikan,jikilsunpou,jikitsunpou,psunpou1a"
+                + ",psunpou1b,psunpou1c,psunpou1d,psunpou1e,psunpouave1,psunpourange1,lsunpou1a,lsunpou1b,lsunpou1c,lsunpou1d,lsunpou1e,tanmenatsumi1"
+                + ",sunpouhantei1,psunpou2a,psunpou2b,psunpou2c,psunpou2d,psunpou2e,psunpouave2,psunpourange2,lsunpou2a,lsunpou2b,lsunpou2c,lsunpou2d,lsunpou2e"
+                + ",tanmenatsumi2,sunpouhantei2,pasteatsumi1,pasteatsumi2,dipjigusize,dipjigumaisuu,dipgogaikankekka,syochinaiyou,inkuatsumia,inkuatsumib"
+                + ",setteijyouken,bikou1,bikou2,bikou3,psunpou1f,psunpou1g,psunpou1h,psunpou1i,psunpou1j,lsunpou1f,lsunpou1g,lsunpou1h,lsunpou1i,lsunpou1j"
+                + ",psunpou2f,psunpou2g,psunpou2h,psunpou2i,psunpou2j,lsunpou2f,lsunpou2g,lsunpou2h,lsunpou2i,lsunpou2j,lsunpouave1,lsunpouave2,pastekokeibun"
+                + ",Dip1AtamaDashiSettei,Dip1Clearance,Dip1SkeegeSettei,Dip1BlotClearance,Dip1Reveler,Dip2AtamaDashiSettei,Dip2Clearance,Dip2SkeegeSettei"
+                + ",Dip2BlotClearance,Dip2Reveler,psunpou2k,psunpou2l,psunpou2m,psunpou2n,psunpou2o,psunpou2p,psunpou2q,psunpou2r,psunpou2s,psunpou2t,psunpou2u"
+                + ",psunpou2v,psunpou2w,psunpou2x,psunpou2y,psunpou2z,psunpou2aa,psunpou2ab,psunpou2ac,psunpou2ad,psunpou2ae,psunpou2af,psunpou2ag,psunpou2ah"
+                + ",psunpou2ai,psunpou2aj,psunpou2ak,psunpou2al,psunpou2am,psunpou2an,lsunpou2k,lsunpou2l,lsunpou2m,lsunpou2n,lsunpou2o,lsunpou2p,lsunpou2q"
+                + ",lsunpou2r,lsunpou2s,lsunpou2t,lsunpou2u,lsunpou2v,lsunpou2w,lsunpou2x,lsunpou2y,lsunpou2z,lsunpou2aa,lsunpou2ab,lsunpou2ac,lsunpou2ad"
+                + ",lsunpou2ae,lsunpou2af,lsunpou2ag,lsunpou2ah,lsunpou2ai,lsunpou2aj,lsunpou2ak,lsunpou2al,lsunpou2am,lsunpou2an,lsunpourange2,lsunpoumin2"
+                + ",lsunpoumax2,wtsunpou2a,wtsunpou2b,wtsunpou2c,wtsunpou2d,wtsunpou2e,wtsunpou2f,wtsunpou2g,wtsunpou2h,wtsunpou2i,wtsunpou2j,wtsunpou2k,wtsunpou2l"
+                + ",wtsunpou2m,wtsunpou2n,wtsunpou2o,wtsunpou2p,wtsunpou2q,wtsunpou2r,wtsunpou2s,wtsunpou2t,wtsunpou2u,wtsunpou2v,wtsunpou2w,wtsunpou2x,wtsunpou2y"
+                + ",wtsunpou2z,wtsunpou2aa,wtsunpou2ab,wtsunpou2ac,wtsunpou2ad,wtsunpou2ae,wtsunpou2af,wtsunpou2ag,wtsunpou2ah,wtsunpou2ai,wtsunpou2aj,wtsunpou2ak"
+                + ",wtsunpou2al,wtsunpou2am,wtsunpou2an,wtsunpouave2,wtsunpourange2,wtsunpoumin2,wtsunpoumax2,psunpoumin2,psunpoumax2,setubisyurui,tofukaisuu"
+                + ",hojijigu,nentyakusheetlot1,nentyakusheetlot2,tofujigutorikosuu,StartTantosyacode,StartKakuninsyacode,juryou,syorikosuu,EndTantosyacode"
+                + ",pasteatsumi1ji,pasteatsumi2ji,atsumiinkua,atsumiinkub,kaisuu,torokunichiji,kosinnichiji,revision"
                 + ") VALUES ("
-                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterSrTerm(true, newRev, kojyo, lotNo, edaban, jissekino, systemTime, itemList, tmpSrTerm);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -2552,23 +2569,221 @@ public class GXHDO101B026 implements IFormLogic {
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B026Const.SAGYOBASYO, srTermData))); //作業場所
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B026Const.GOUKI1, srTermData))); //号機1
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B026Const.SETTEISYA1, srTermData))); //条件設定者1
+        if (isInsert) {
+            params.add("");  // 号機2
+            params.add("");  // 条件設定者2
+        }
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B026Const.PASTEHINMEI, srTermData))); //ﾍﾟｰｽﾄ品名
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B026Const.PASTELOTNO, srTermData))); //ﾍﾟｰｽﾄﾛｯﾄNo
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B026Const.PASTESAISEIKAISUU, srTermData))); //ﾍﾟｰｽﾄ再生回数
+        if (isInsert) {
+            params.add("");  // ﾍﾟｰｽﾄ交換時間
+        }
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B026Const.PASTENENDO, srTermData))); //ﾍﾟｰｽﾄ粘度
+        if (isInsert) {
+            params.add(0);  // ﾍﾟｰｽﾄ温度
+            params.add(0);  // ﾍﾟｰｽﾄ換算粘度
+            params.add("");  // ﾍﾟｰｽﾄ期限
+        }
         params.add(DBUtil.stringToDateObject(getItemData(itemList, GXHDO101B026Const.KAISHI_DAY, srTermData),
             getItemData(itemList, GXHDO101B026Const.KAISHI_TIME, srTermData))); // 開始日時
         params.add(DBUtil.stringToDateObject(getItemData(itemList, GXHDO101B026Const.SHURYOU_DAY, srTermData),
             getItemData(itemList, GXHDO101B026Const.SHURYOU_TIME, srTermData))); // 終了日時
+        if (isInsert) {
+            params.add("");  // 先行外観
+            params.add(0);  // 磁器L寸法
+            params.add(0);  // 磁器T寸法
+            params.add(0);  // P寸法1OLD
+            params.add(0);  // P寸法2OLD
+            params.add(0);  // P寸法3OLD
+            params.add(0);  // P寸法4OLD
+            params.add(0);  // P寸法5OLD
+            params.add(0);  // P寸法AVEOLD
+            params.add(0);  // P寸法RANGEOLD
+            params.add(0);  // L寸法1OLD
+            params.add(0);  // L寸法2OLD
+            params.add(0);  // L寸法3OLD
+            params.add(0);  // L寸法4OLD
+            params.add(0);  // L寸法5OLD
+            params.add(0);  // 端面厚みOLD
+            params.add(0);  // 判定OLD
+            params.add(0);  // P寸法1
+            params.add(0);  // P寸法2
+            params.add(0);  // P寸法3
+            params.add(0);  // P寸法4
+            params.add(0);  // P寸法5
+        }
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B026Const.PSUNPOUAVE2, srTermData)));  // P寸法AVE
+        if (isInsert) {
+            params.add(0);  // P寸法RANGE
+            params.add(0);  // L寸法1
+            params.add(0);  // L寸法2
+            params.add(0);  // L寸法3
+            params.add(0);  // L寸法4
+            params.add(0);  // L寸法5
+            params.add(0);  // 端面厚み
+            params.add(0);  // 判定
+            params.add(0);  // ﾍﾟｰｽﾄ厚み設定値1次
+            params.add(0);  // ﾍﾟｰｽﾄ厚み設定値2次
+        }
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B026Const.DIPJIGUSIZE, srTermData))); //DIP治具ｻｲｽﾞ
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B026Const.DIPJIGUMAISUU, srTermData))); //DIP治具枚数
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B026Const.DIPGOGAIKANKEKKA, srTermData))); // DIP後外観結果
+        if (isInsert) {
+            params.add("");  // 処置内容
+            params.add("");  // ｲﾝｸ厚みa
+            params.add("");  // ｲﾝｸ厚みb
+            params.add("");  // 設定条件
+        }
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B026Const.BIKO1, srTermData))); // 備考1
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B026Const.BIKO2, srTermData))); // 備考2
+        if (isInsert) {
+            params.add("");  // 備考3
+            params.add(0);  // P寸法6OLD
+            params.add(0);  // P寸法7OLD
+            params.add(0);  // P寸法8OLD
+            params.add(0);  // P寸法9OLD
+            params.add(0);  // P寸法10OLD
+            params.add(0);  // L寸法6OLD
+            params.add(0);  // L寸法7OLD
+            params.add(0);  // L寸法8OLD
+            params.add(0);  // L寸法9OLD
+            params.add(0);  // L寸法10OLD
+            params.add(0);  // P寸法6
+            params.add(0);  // P寸法7
+            params.add(0);  // P寸法8
+            params.add(0);  // P寸法9
+            params.add(0);  // P寸法10
+            params.add(0);  // L寸法6
+            params.add(0);  // L寸法7
+            params.add(0);  // L寸法8
+            params.add(0);  // L寸法9
+            params.add(0);  // L寸法10
+            params.add(0);  // L寸法AVEOLD
+        }
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B026Const.LSUNPOUAVE2, srTermData)));  // L寸法AVE
+        if (isInsert) {
+            params.add(0);  // ﾍﾟｰｽﾄ固形分
+            params.add(0);  // 1次頭出し設定
+            params.add(0);  // 1次DIPｸﾘｱﾗﾝｽ設定
+            params.add(0);  // 1次DIPｽｷｰｼﾞ設定
+            params.add(0);  // 1次ﾌﾞﾛｯﾄｸﾘｱﾗﾝｽ設定
+            params.add(0);  // 1次ﾚﾍﾞﾗｰ設定
+            params.add(0);  // 2次頭出し設定
+            params.add(0);  // 2次DIPｸﾘｱﾗﾝｽ設定
+            params.add(0);  // 2次DIPｽｷｰｼﾞ設定
+            params.add(0);  // 2次ﾌﾞﾛｯﾄｸﾘｱﾗﾝｽ設定
+            params.add(0);  // 2次ﾚﾍﾞﾗｰ設定
+            params.add(0);  // P寸法11
+            params.add(0);  // P寸法12
+            params.add(0);  // P寸法13
+            params.add(0);  // P寸法14
+            params.add(0);  // P寸法15
+            params.add(0);  // P寸法16
+            params.add(0);  // P寸法17
+            params.add(0);  // P寸法18
+            params.add(0);  // P寸法19
+            params.add(0);  // P寸法20
+            params.add(0);  // P寸法21
+            params.add(0);  // P寸法22
+            params.add(0);  // P寸法23
+            params.add(0);  // P寸法24
+            params.add(0);  // P寸法25
+            params.add(0);  // P寸法26
+            params.add(0);  // P寸法27
+            params.add(0);  // P寸法28
+            params.add(0);  // P寸法29
+            params.add(0);  // P寸法30
+            params.add(0);  // P寸法31
+            params.add(0);  // P寸法32
+            params.add(0);  // P寸法33
+            params.add(0);  // P寸法34
+            params.add(0);  // P寸法35
+            params.add(0);  // P寸法36
+            params.add(0);  // P寸法37
+            params.add(0);  // P寸法38
+            params.add(0);  // P寸法39
+            params.add(0);  // P寸法40
+            params.add(0);  // L寸法11
+            params.add(0);  // L寸法12
+            params.add(0);  // L寸法13
+            params.add(0);  // L寸法14
+            params.add(0);  // L寸法15
+            params.add(0);  // L寸法16
+            params.add(0);  // L寸法17
+            params.add(0);  // L寸法18
+            params.add(0);  // L寸法19
+            params.add(0);  // L寸法20
+            params.add(0);  // L寸法21
+            params.add(0);  // L寸法22
+            params.add(0);  // L寸法23
+            params.add(0);  // L寸法24
+            params.add(0);  // L寸法25
+            params.add(0);  // L寸法26
+            params.add(0);  // L寸法27
+            params.add(0);  // L寸法28
+            params.add(0);  // L寸法29
+            params.add(0);  // L寸法30
+            params.add(0);  // L寸法31
+            params.add(0);  // L寸法32
+            params.add(0);  // L寸法33
+            params.add(0);  // L寸法34
+            params.add(0);  // L寸法35
+            params.add(0);  // L寸法36
+            params.add(0);  // L寸法37
+            params.add(0);  // L寸法38
+            params.add(0);  // L寸法39
+            params.add(0);  // L寸法40
+            params.add(0);  // L寸法RANGE
+        }
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B026Const.LSUNPOUMIN2, srTermData)));  // L寸法MIN
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B026Const.LSUNPOUMAX2, srTermData)));  // L寸法MAX
+        if (isInsert) {
+            params.add(0);  // WT寸法1
+            params.add(0);  // WT寸法2
+            params.add(0);  // WT寸法3
+            params.add(0);  // WT寸法4
+            params.add(0);  // WT寸法5
+            params.add(0);  // WT寸法6
+            params.add(0);  // WT寸法7
+            params.add(0);  // WT寸法8
+            params.add(0);  // WT寸法9
+            params.add(0);  // WT寸法10
+            params.add(0);  // WT寸法11
+            params.add(0);  // WT寸法12
+            params.add(0);  // WT寸法13
+            params.add(0);  // WT寸法14
+            params.add(0);  // WT寸法15
+            params.add(0);  // WT寸法16
+            params.add(0);  // WT寸法17
+            params.add(0);  // WT寸法18
+            params.add(0);  // WT寸法19
+            params.add(0);  // WT寸法20
+            params.add(0);  // WT寸法21
+            params.add(0);  // WT寸法22
+            params.add(0);  // WT寸法23
+            params.add(0);  // WT寸法24
+            params.add(0);  // WT寸法25
+            params.add(0);  // WT寸法26
+            params.add(0);  // WT寸法27
+            params.add(0);  // WT寸法28
+            params.add(0);  // WT寸法29
+            params.add(0);  // WT寸法30
+            params.add(0);  // WT寸法31
+            params.add(0);  // WT寸法32
+            params.add(0);  // WT寸法33
+            params.add(0);  // WT寸法34
+            params.add(0);  // WT寸法35
+            params.add(0);  // WT寸法36
+            params.add(0);  // WT寸法37
+            params.add(0);  // WT寸法38
+            params.add(0);  // WT寸法39
+            params.add(0);  // WT寸法40
+            params.add(0);  // WT寸法AVE
+            params.add(0);  // WT寸法RANGE
+            params.add(0);  // WT寸法MIN
+            params.add(0);  // WT寸法MAX
+        }
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B026Const.PSUNPOUMIN2, srTermData))); //P寸法MIN
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B026Const.PSUNPOUMAX2, srTermData))); //P寸法MAX
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B026Const.SETUBISYURUI, srTermData))); // 設備種類
@@ -2856,7 +3071,10 @@ public class GXHDO101B026 implements IFormLogic {
                 return StringUtil.nullToBlank(srTermData.getBikou1());
             //備考2
             case GXHDO101B026Const.BIKO2:
-                return StringUtil.nullToBlank(srTermData.getBikou2());            
+                return StringUtil.nullToBlank(srTermData.getBikou2()); 
+            // 処理数
+            case GXHDO101B026Const.SHORISU:
+                return StringUtil.nullToBlank(srTermData.getSyorisuu());
             default:
                 return null;            
         }
