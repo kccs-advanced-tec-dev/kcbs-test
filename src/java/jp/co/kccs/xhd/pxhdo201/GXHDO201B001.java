@@ -61,6 +61,11 @@ import org.primefaces.context.RequestContext;
  * 変更者        KCSS K.Jo<br>
  * 変更理由      新規作成<br>
  * <br>
+ * 変更日        2019/9/18<br>
+ * 計画書No      K1811-DS001<br>
+ * 変更者        KCSS K.Jo<br>
+ * 変更理由      項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 
@@ -942,7 +947,7 @@ public class GXHDO201B001 implements Serializable {
         if (!StringUtil.isEmpty(lotNo)) {
             paramKojo = StringUtils.substring(getLotNo(), 0, 3);
             paramLotNo = StringUtils.substring(getLotNo(), 3, 11);
-            paramEdaban = StringUtils.substring(getLotNo(), 11, 14);
+            paramEdaban = StringUtil.blankToNull(StringUtils.substring(getLotNo(), 11, 14));
         }
         Date paramStartDateF = null;
         if (!StringUtil.isEmpty(startDateF)) {
