@@ -996,6 +996,11 @@ public class GXHDO101A implements Serializable {
             messageList.add(MessageUtil.getMessage("XHD-000062"));
             return;
         }
+        
+        // 再酸化回数が1の場合処理なし
+        if(saisankaKaisu == 1){
+            return;
+        }
 
         // メニュに再酸化回数分のメニューを追加
         for (int i = 0; i < saisankaKaisu; i++) {
@@ -1376,7 +1381,7 @@ public class GXHDO101A implements Serializable {
     private void checkMenuFormId(List<String> messageList, List<FXHDM01> menuList) throws SQLException {
 
         // 印刷画面IDチェック
-        if (!existFormIds(menuList, "GXHDO101B001", "GXHDO101B002", "GXHDO101B003", "GXHDO101B006")) {
+        if (!existFormIds(menuList, "GXHDO101B001", "GXHDO101B002", "GXHDO101B003", "GXHDO101B006", "GXHDO101B023")) {
             messageList.add(MessageUtil.getMessage("XHD-000061", "印刷"));
         }
         // 積層画面IDチェック
@@ -1425,31 +1430,25 @@ public class GXHDO101A implements Serializable {
         }
     }
 
-    /**
-     * 画面IDがメニュー存在しているか確認
+/**
+     * 画面IDがメニュー存在しているか確認(1項目でも存在すればtrue)
      *
      * @param menuList
      * @param formIds
      * @return
      */
     private boolean existFormIds(List<FXHDM01> menuList, String... formIds) {
-        boolean existId;
         for (String formId : formIds) {
-            existId = false;
             for (FXHDM01 gamenInfo : menuList) {
                 if (formId.equals(gamenInfo.getFormId())) {
-                    existId = true;
-                    break;
+                    return true;
                 }
-            }
-            if (!existId) {
-                return false;
             }
         }
 
-        return true;
+        return false;
     }
-
+        
     /**
      * メニューリスト取得(権限絞りこみあり)
      *
