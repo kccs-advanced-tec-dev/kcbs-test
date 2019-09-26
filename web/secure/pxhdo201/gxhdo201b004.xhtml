@@ -253,7 +253,7 @@
                     <p:column id="tpLot" headerText="ﾃｰﾌﾟLot" >
                         <p:outputLabel value="#{item.tpLot}"/>
                     </p:column>
-                    <p:column id="hakuriSpeed" headerText="剥離速度" styleClass="number">
+                    <p:column id="hakuriSpeed" headerText="剥離速度(mm/s)" styleClass="number">
                         <p:outputLabel value="#{item.hakuriSpeed}">
                             <f:convertNumber pattern="#,###,###,##0"/>
                         </p:outputLabel>
@@ -400,7 +400,7 @@
                     <p:column id="petfilmsyurui" headerText="PETﾌｨﾙﾑ種類" >
                         <p:outputLabel value="#{item.petfilmsyurui}"/>
                     </p:column>
-                    <p:column id="kotyakugouki" headerText="固着ｼｰﾄ貼付り機" >
+                    <p:column id="kotyakugouki" headerText="固着ｼｰﾄ貼付機" >
                         <p:outputLabel value="#{item.kotyakugouki}"/>
                     </p:column>
                     <p:column id="kotyakusheet" headerText="固着ｼｰﾄ" >
@@ -418,37 +418,37 @@
                     <p:column id="shitaTanshi" headerText="下端子" >
                         <p:outputLabel value="#{item.shitaTanshi}"/>
                     </p:column>
-                    <p:column id="hakuriKyuin" headerText="剥離吸引圧" styleClass="number">
+                    <p:column id="hakuriKyuin" headerText="剥離吸引圧(Kpa)" styleClass="number">
                         <p:outputLabel value="#{item.hakuriKyuin}">
                             <f:convertNumber pattern="#,###,###,##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="hakuriClearrance" headerText="剥離ｸﾘｱﾗﾝｽ" styleClass="number">
+                    <p:column id="hakuriClearrance" headerText="剥離ｸﾘｱﾗﾝｽ(mm)" styleClass="number">
                         <p:outputLabel value="#{item.hakuriClearrance}">
                             <f:convertNumber pattern="#0.00"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="hakuriCutSpeed" headerText="剥離ｶｯﾄ速度" styleClass="number">
+                    <p:column id="hakuriCutSpeed" headerText="剥離ｶｯﾄ速度(mm/s)" styleClass="number">
                         <p:outputLabel value="#{item.hakuriCutSpeed}">
                             <f:convertNumber pattern="#,###,###,##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="shitaPanchiOndo" headerText="下ﾊﾟﾝﾁ温度" styleClass="number">
+                    <p:column id="shitaPanchiOndo" headerText="下ﾊﾟﾝﾁ温度(℃)" styleClass="number">
                         <p:outputLabel value="#{item.shitaPanchiOndo}">
                             <f:convertNumber pattern="#0.0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="uwaPanchiOndo" headerText="上ﾊﾟﾝﾁ温度" styleClass="number">
+                    <p:column id="uwaPanchiOndo" headerText="上ﾊﾟﾝﾁ温度(℃)" styleClass="number">
                         <p:outputLabel value="#{item.uwaPanchiOndo}">
                             <f:convertNumber pattern="#0.0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="kaatuJikan" headerText="加圧時間" styleClass="number">
+                    <p:column id="kaatuJikan" headerText="加圧時間(t)" styleClass="number">
                         <p:outputLabel value="#{item.kaatuJikan}">
                             <f:convertNumber pattern="#0.00"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="kaatuAturyoku" headerText="加圧圧力" styleClass="number">
+                    <p:column id="kaatuAturyoku" headerText="加圧圧力(s)" styleClass="number">
                         <p:outputLabel value="#{item.kaatuAturyoku}">
                             <f:convertNumber pattern="#,###,###,##0"/>
                         </p:outputLabel>
@@ -476,12 +476,12 @@
                     <p:column id="gaikanKakunin4" headerText="外観確認4" >
                         <p:outputLabel value="#{item.gaikanKakunin4}"/>
                     </p:column>
-                    <p:column id="syoriSetsuu" headerText="処理ｾｯﾄ数" styleClass="number">
+                    <p:column id="syoriSetsuu" headerText="処理ｾｯﾄ数(SET)" styleClass="number">
                         <p:outputLabel value="#{item.syoriSetsuu}">
                             <f:convertNumber pattern="#,###,###,##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="ryouhinSetsuu" headerText="良品ｾｯﾄ数" styleClass="number">
+                    <p:column id="ryouhinSetsuu" headerText="良品ｾｯﾄ数(SET)" styleClass="number">
                         <p:outputLabel value="#{item.ryouhinSetsuu}">
                             <f:convertNumber pattern="##0.0"/>
                         </p:outputLabel>
