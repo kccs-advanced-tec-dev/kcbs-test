@@ -34,7 +34,7 @@
     {"no":"33","id":"kansoondo3","columnname":"乾燥温度表示値3(℃)","type":"BigDecimal","format":"5,1"},
     {"no":"34","id":"kansoondo4","columnname":"乾燥温度表示値4(℃)","type":"BigDecimal","format":"5,1"},
     {"no":"35","id":"kansoondo5","columnname":"乾燥温度表示値5(℃)","type":"BigDecimal","format":"5,1"},
-    {"no":"36","id":"saatu","columnname":"差圧","type":"Integer","format":"3,2"},
+    {"no":"36","id":"saatu","columnname":"差圧","type":"BigDecimal","format":"3,2"},
     {"no":"37","id":"tableClearrance","columnname":"ﾃｰﾌﾞﾙｸﾘｱﾗﾝｽ(m/min)","type":"BigDecimal","format":"6,4"},
     {"no":"38","id":"kansouroatsu","columnname":"乾燥炉圧(Mpa)","type":"Long","format":"4,0"},
     {"no":"39","id":"mld","columnname":"MLD","type":"Long","format":"3,0"},

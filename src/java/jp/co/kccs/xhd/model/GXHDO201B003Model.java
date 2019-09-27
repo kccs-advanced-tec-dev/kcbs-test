@@ -103,7 +103,7 @@ public class GXHDO201B003Model implements Serializable {
     /** 乾燥温度表示値5 */
     private BigDecimal kansoondo5 = null;
     /** 差圧 */
-    private Integer saatu = null;
+    private BigDecimal saatu = null;
     /** ﾃｰﾌﾞﾙｸﾘｱﾗﾝｽ */
     private BigDecimal tableClearrance = null;
     /** 乾燥炉圧 */
@@ -656,14 +656,14 @@ public class GXHDO201B003Model implements Serializable {
 	/**
 	 * @return saatu
 	 */
-	public Integer getSaatu() {
+	public BigDecimal getSaatu() {
 		return saatu;
 	}
 
 	/**
 	 * @param saatu セットする saatu
 	 */
-	public void setSaatu(Integer saatu) {
+	public void setSaatu(BigDecimal saatu) {
 		this.saatu = saatu;
 	}
 
