@@ -339,7 +339,7 @@
                     </p:column>
                     <p:column id="saatu" headerText="差圧" styleClass="number">
                         <p:outputLabel value="#{item.saatu}">
-                            <f:convertNumber pattern="#,##0"/>
+                            <f:convertNumber pattern="0.00"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="tableClearrance" headerText="ﾃｰﾌﾞﾙｸﾘｱﾗﾝｽ(m/min)" styleClass="number">
@@ -414,7 +414,7 @@
                     <p:column id="nijimikasureEnd" headerText="終了時ﾆｼﾞﾐ・ｶｽﾚ確認">
                         <p:outputLabel value="#{item.nijimikasureEnd}"/>
                     </p:column>
-                    <p:column id="tantoEnd" headerText="印刷ｴﾝﾄﾞ時担当者" >
+                    <p:column id="tantoEnd" headerText="印刷ｴﾝﾄﾞ担当者" >
                         <p:outputLabel value="#{item.tantoEnd}"/>
                     </p:column>
                     <p:column id="biko1" headerText="備考1" >
