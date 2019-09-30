@@ -1359,9 +1359,10 @@ public class GXHDO211B implements Serializable {
             }
             // 削除後コントロール制御
             controlAfterDeletion();
-
-            // 完了メッセージを表示
-            addErrorMessage("削除しました。");
+            
+            FacesMessage message
+                    = new FacesMessage(FacesMessage.SEVERITY_INFO, "削除しました。", null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
 
         } catch (SQLException e) {
             ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
@@ -1409,7 +1410,9 @@ public class GXHDO211B implements Serializable {
             this.btnRegistDisabled = false;
 
             // 完了メッセージを表示
-            addErrorMessage("登録しました。");
+            FacesMessage message
+                    = new FacesMessage(FacesMessage.SEVERITY_INFO, "登録しました。", null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
 
         } catch (SQLException e) {
             ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);

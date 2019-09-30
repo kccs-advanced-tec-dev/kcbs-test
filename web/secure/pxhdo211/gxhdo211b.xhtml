@@ -298,13 +298,13 @@
                 <p:commandButton id="bthClear" style="width:100px;height:25px;font-size:0.7em;margin-right :30px;text-align:center;" disabled="#{gXHDO211B.btnClearDisabled}"
                                 value="クリア" 
                                 action="#{gXHDO211B.confirmClear()}"
-                                process="@this"
+                                process="@this inputpanel searchpanel"
                                 update="@form"
                                 oncomplete="if('warning'!=args.param1){PF('cd').hide();} else {PF('cd').show();}"/>
                 <p:commandButton id="btnDelete" style="width:100px;height:25px;font-size:0.7em;margin-right :30px;text-align:center;" disabled="#{gXHDO211B.btnDeleteDisabled}"
                                 value="削除" 
                                 actionListener="#{gXHDO211B.confirmDelete()}"
-                                process="@this"
+                                process="@this inputpanel searchpanel"
                                 update="@form"
                                 onstart="$('#loadinggif').show();"
                                 oncomplete="$('#loadinggif').hide();if('warning'!=args.param1){PF('cd').hide();} else {PF('cd').show();}"/>
