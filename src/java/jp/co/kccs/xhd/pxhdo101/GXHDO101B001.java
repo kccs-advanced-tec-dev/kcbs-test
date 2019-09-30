@@ -60,6 +60,11 @@ import org.apache.commons.dbutils.DbUtils;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日        2019/9/18<br>
+ * 計画書No      K1811-DS001<br>
+ * 変更者        KCSS K.Jo<br>
+ * 変更理由      項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -1953,8 +1958,12 @@ public class GXHDO101B001 implements IFormLogic {
                 + "TensionSoku,enddatetime,tanto_end,printmaisuu,makuatuave_end,"
                 + "makuatumax_end,makuatumin_end,makuatucv_end,nijimikasure_end,"
                 + "end_ptn_dist_x,end_ptn_dist_y,TensionE_sum,TensionEtemae,"
-                + "TensionEoku,genryoukigou,bikou1,bikou2,"
-                + "torokunichiji,kosinnichiji,revision,kcpno,kakuninsya,'0' AS deleteflag "
+                + "TensionEoku,printzure1_surihajime_start,"
+                + "printzure2_center_start,printzure3_suriowari_start,"
+                + "abzure_heikin_start,printzure1_surihajime_end,"
+                + "printzure2_center_end,printzure3_suriowari_end,"
+                + "abzure_heikin_end,genryoukigou,bikou1,bikou2,"
+                + "torokunichiji,kosinnichiji,revision,kcpno,'0' AS deleteflag,kakuninsya "
                 + "FROM sr_spsprint_gra "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
         // revisionが入っている場合、条件に追加
@@ -2030,6 +2039,14 @@ public class GXHDO101B001 implements IFormLogic {
         mapping.put("TensionE_sum", "tensionESum"); //終了ﾃﾝｼｮﾝ計
         mapping.put("TensionEtemae", "tensionEtemae"); //ﾃﾝｼｮﾝ終了手前
         mapping.put("TensionEoku", "tensionEoku"); //ﾃﾝｼｮﾝ終了奥
+        mapping.put("printzure1_surihajime_start", "printzure1SurihajimeStart"); //印刷ズレ①刷り始め開始
+        mapping.put("printzure2_center_start", "printzure2CenterStart"); //印刷ズレ②中央開始
+        mapping.put("printzure3_suriowari_start", "printzure3SuriowariStart"); //印刷ズレ③刷り終わり開始
+        mapping.put("abzure_heikin_start", "abzureHeikinStart"); //ABズレ平均スタート
+        mapping.put("printzure1_surihajime_end", "printzure1SurihajimeEnd"); //印刷ズレ①刷り始め終了
+        mapping.put("printzure2_center_end", "printzure2CenterEnd"); //印刷ズレ②中央終了
+        mapping.put("printzure3_suriowari_end", "printzure3SuriowariEnd"); //印刷ズレ③刷り終わり終了
+        mapping.put("abzure_heikin_end", "abzureHeikinEnd"); //ABズレ平均終了
         mapping.put("genryoukigou", "genryoukigou"); //原料記号
         mapping.put("bikou1", "bikou1"); //備考1
         mapping.put("bikou2", "bikou2"); //備考2
@@ -2037,9 +2054,9 @@ public class GXHDO101B001 implements IFormLogic {
         mapping.put("kosinnichiji", "kosinnichiji"); //更新日時
         mapping.put("revision", "revision"); //revision
         mapping.put("kcpno", "kcpno"); //KCPNO
-        mapping.put("kakuninsya", "kakuninsya"); //印刷スタート時確認者
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
-
+        mapping.put("kakuninsya", "kakuninsya"); //印刷スタート時確認者
+        
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
         ResultSetHandler<List<SrSpsprintGra>> beanHandler = new BeanListHandler<>(SrSpsprintGra.class, rowProcessor);
@@ -2171,8 +2188,12 @@ public class GXHDO101B001 implements IFormLogic {
                 + "TensionSoku,enddatetime,tanto_end,printmaisuu,makuatuave_end,"
                 + "makuatumax_end,makuatumin_end,makuatucv_end,nijimikasure_end,"
                 + "end_ptn_dist_x,end_ptn_dist_y,TensionE_sum,TensionEtemae,"
-                + "TensionEoku,genryoukigou,bikou1,bikou2,"
-                + "torokunichiji,kosinnichiji,revision,kcpno,kakuninsya,deleteflag "
+                + "TensionEoku,printzure1_surihajime_start,"
+                + "printzure2_center_start,printzure3_suriowari_start,"
+                + "abzure_heikin_start,printzure1_surihajime_end,"
+                + "printzure2_center_end,printzure3_suriowari_end,"
+                + "abzure_heikin_end,genryoukigou,bikou1,bikou2,"
+                + "torokunichiji,kosinnichiji,revision,kcpno,deleteflag,kakuninsya "
                 + "FROM tmp_sr_spsprint_gra "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND deleteflag = ? ";
         // revisionが入っている場合、条件に追加
@@ -2249,6 +2270,14 @@ public class GXHDO101B001 implements IFormLogic {
         mapping.put("TensionE_sum", "tensionESum"); //終了ﾃﾝｼｮﾝ計
         mapping.put("TensionEtemae", "tensionEtemae"); //ﾃﾝｼｮﾝ終了手前
         mapping.put("TensionEoku", "tensionEoku"); //ﾃﾝｼｮﾝ終了奥
+        mapping.put("printzure1_surihajime_start", "printzure1SurihajimeStart"); //印刷ズレ①刷り始め開始
+        mapping.put("printzure2_center_start", "printzure2CenterStart"); //印刷ズレ②中央開始
+        mapping.put("printzure3_suriowari_start", "printzure3SuriowariStart"); //印刷ズレ③刷り終わり開始
+        mapping.put("abzure_heikin_start", "abzureHeikinStart"); //ABズレ平均スタート
+        mapping.put("printzure1_surihajime_end", "printzure1SurihajimeEnd"); //印刷ズレ①刷り始め終了
+        mapping.put("printzure2_center_end", "printzure2CenterEnd"); //印刷ズレ②中央終了
+        mapping.put("printzure3_suriowari_end", "printzure3SuriowariEnd"); //印刷ズレ③刷り終わり終了
+        mapping.put("abzure_heikin_end", "abzureHeikinEnd"); //ABズレ平均終了
         mapping.put("genryoukigou", "genryoukigou"); //原料記号
         mapping.put("bikou1", "bikou1"); //備考1
         mapping.put("bikou2", "bikou2"); //備考2
@@ -2256,9 +2285,9 @@ public class GXHDO101B001 implements IFormLogic {
         mapping.put("kosinnichiji", "kosinnichiji"); //更新日時
         mapping.put("revision", "revision"); //revision
         mapping.put("kcpno", "kcpno"); //KCPNO
-        mapping.put("kakuninsya", "kakuninsya"); //印刷スタート時確認者
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
-
+        mapping.put("kakuninsya", "kakuninsya"); //印刷スタート時確認者
+        
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
         ResultSetHandler<List<SrSpsprintGra>> beanHandler = new BeanListHandler<>(SrSpsprintGra.class, rowProcessor);
@@ -2653,10 +2682,13 @@ public class GXHDO101B001 implements IFormLogic {
                 + "makuatumin_start,makuatucv_start,nijimikasure_start,start_ptn_dist_x,start_ptn_dist_y,"
                 + "TensionS_sum,TensionStemae,TensionSoku,enddatetime,tanto_end,printmaisuu,"
                 + "makuatuave_end,makuatumax_end,makuatumin_end,makuatucv_end,nijimikasure_end,end_ptn_dist_x,"
-                + "end_ptn_dist_y,TensionE_sum,TensionEtemae,TensionEoku,genryoukigou,bikou1,bikou2,"
-                + "torokunichiji,kosinnichiji,revision,kcpno,kakuninsya,deleteflag"
+                + "end_ptn_dist_y,TensionE_sum,TensionEtemae,TensionEoku,printzure1_surihajime_start,"
+                + "printzure2_center_start,printzure3_suriowari_start,abzure_heikin_start,"
+                + "printzure1_surihajime_end,printzure2_center_end,printzure3_suriowari_end,"
+                + "abzure_heikin_end,genryoukigou,bikou1,bikou2,torokunichiji,kosinnichiji,"
+                + "revision,kcpno,kakuninsya,deleteflag"
                 + ") VALUES ("
-                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterTmpSrSpsprintGra(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null);
@@ -2857,6 +2889,16 @@ public class GXHDO101B001 implements IFormLogic {
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B001Const.SHURYOU_TENSION_KEI, srSpsprintGraData))); //終了ﾃﾝｼｮﾝ計
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B001Const.SHURYOU_TENSION_MAE, srSpsprintGraData))); //ﾃﾝｼｮﾝ終了手前
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B001Const.SHURYOU_TENSION_OKU, srSpsprintGraData))); //ﾃﾝｼｮﾝ終了奥
+        if (isInsert) {
+            params.add(null); //印刷ズレ①刷り始め開始
+            params.add(null); //印刷ズレ②中央開始
+            params.add(null); //印刷ズレ③刷り終わり開始
+            params.add(null); //ABズレ平均スタート
+            params.add(null); //印刷ズレ①刷り始め終了
+            params.add(null); //印刷ズレ②中央終了
+            params.add(null); //印刷ズレ③刷り終わり終了
+            params.add(null); //ABズレ平均終了
+        }
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B001Const.GENRYO_KIGOU, srSpsprintGraData))); //原料記号
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B001Const.BIKOU1, srSpsprintGraData))); //備考1
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B001Const.BIKOU2, srSpsprintGraData))); //備考2
@@ -3077,12 +3119,15 @@ public class GXHDO101B001 implements IFormLogic {
                 + "makuatumin_start,makuatucv_start,nijimikasure_start,start_ptn_dist_x,start_ptn_dist_y,"
                 + "TensionS_sum,TensionStemae,TensionSoku,enddatetime,tanto_end,printmaisuu,"
                 + "makuatuave_end,makuatumax_end,makuatumin_end,makuatucv_end,nijimikasure_end,end_ptn_dist_x,"
-                + "end_ptn_dist_y,TensionE_sum,TensionEtemae,TensionEoku,genryoukigou,bikou1,bikou2,torokunichiji,kosinnichiji,"
+                + "end_ptn_dist_y,TensionE_sum,TensionEtemae,TensionEoku,printzure1_surihajime_start,"
+                + "printzure2_center_start,printzure3_suriowari_start,abzure_heikin_start,"
+                + "printzure1_surihajime_end,printzure2_center_end,printzure3_suriowari_end,"
+                + "abzure_heikin_end,genryoukigou,bikou1,bikou2,torokunichiji,kosinnichiji,"
                 + "revision,kcpno,kakuninsya"
                 + ") VALUES ("
-                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
-        
+
         
         List<Object> params = setUpdateParameterSrSpsprintGra(true, newRev, kojyo, lotNo, edaban, systemTime, itemList, tmpSrSpsprintGra);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -3186,7 +3231,7 @@ public class GXHDO101B001 implements IFormLogic {
                 params.add(1);
                 break;
             default:
-                params.add(null);
+                params.add(9);
                 break;
         }
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B001Const.BLADE_ATSURYOKU, srSpsprintGraData))); //ﾌﾞﾚｰﾄﾞ圧力
@@ -3217,7 +3262,7 @@ public class GXHDO101B001 implements IFormLogic {
                 params.add(1);
                 break;
             default:
-                params.add(null);
+                params.add(9);
                 break;
         }
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B001Const.PTN_INSATSU_START_X_MIN, srSpsprintGraData))); //ｽﾀｰﾄ時PTN間距離X
@@ -3244,7 +3289,7 @@ public class GXHDO101B001 implements IFormLogic {
                 params.add(1);
                 break;
             default:
-                params.add(null);
+                params.add(9);
                 break;
         }
 
@@ -3253,6 +3298,16 @@ public class GXHDO101B001 implements IFormLogic {
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B001Const.SHURYOU_TENSION_KEI, srSpsprintGraData))); //終了ﾃﾝｼｮﾝ計
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B001Const.SHURYOU_TENSION_MAE, srSpsprintGraData))); //ﾃﾝｼｮﾝ終了手前
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B001Const.SHURYOU_TENSION_OKU, srSpsprintGraData))); //ﾃﾝｼｮﾝ終了奥
+        if (isInsert) {
+            params.add(0); //印刷ズレ①刷り始め開始
+            params.add(0); //印刷ズレ②中央開始
+            params.add(0); //印刷ズレ③刷り終わり開始
+            params.add(0); //ABズレ平均スタート
+            params.add(0); //印刷ズレ①刷り始め終了
+            params.add(0); //印刷ズレ②中央終了
+            params.add(0); //印刷ズレ③刷り終わり終了
+            params.add(0); //ABズレ平均終了
+        }
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B001Const.GENRYO_KIGOU, srSpsprintGraData))); //原料記号
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B001Const.BIKOU1, srSpsprintGraData))); //備考1
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B001Const.BIKOU2, srSpsprintGraData))); //備考2

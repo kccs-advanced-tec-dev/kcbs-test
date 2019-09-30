@@ -58,6 +58,11 @@ import org.apache.commons.dbutils.DbUtils;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日       2019/9/18<br>
+ * 計画書No     K1811-DS001<br>
+ * 変更者       KCSS K.Jo<br>
+ * 変更理由     項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -905,7 +910,7 @@ public class GXHDO101B005 implements IFormLogic {
         List<String> checkListDataVal = new ArrayList<>();
         
         //2.上ｶﾊﾞｰﾃｰﾌﾟ対象項目の決定
-        checkListDataVal = checkYoutoItems(processData,sekkeiData, getMapYoutoAssociation(),"CT",getMapSekkeiAssociation());
+        checkListDataVal = checkYoutoItems(processData,sekkeiData, getMapYoutoAssociation(),"CT",getMapSekkeiYotoAssociation());
         for(int i=0; i<=checkListDataVal.size()-1; i++){
             if(i > 0){
                 if("ERROR".equals(checkListDataVal.get(0))){
@@ -918,7 +923,7 @@ public class GXHDO101B005 implements IFormLogic {
 
         //3.下ｶﾊﾞｰﾃｰﾌﾟ対象項目の決定
         checkListDataVal.clear();
-        checkListDataVal = checkYoutoItems(processData,sekkeiData, getMapYoutoAssociation(),"CB",getMapSekkeiAssociation());
+        checkListDataVal = checkYoutoItems(processData,sekkeiData, getMapYoutoAssociation(),"CB",getMapSekkeiYotoAssociation());
         for(int i=0; i<=checkListDataVal.size()-1; i++){
             if(i > 0){
                 if("ERROR".equals(checkListDataVal.get(0))){
@@ -931,7 +936,7 @@ public class GXHDO101B005 implements IFormLogic {
 
         //4.印刷ﾛｰﾙNo対象項目の決定
         checkListDataVal.clear();
-        checkListDataVal = checkYoutoItems(processData,sekkeiData, getMapYoutoAssociation(),"EA",getMapSekkeiAssociation());
+        checkListDataVal = checkYoutoItems(processData,sekkeiData, getMapYoutoAssociation(),"EA",getMapSekkeiYotoAssociation());
         for(int i=0; i<=checkListDataVal.size()-1; i++){
             if(i > 0){
                 if("ERROR".equals(checkListDataVal.get(0))){
@@ -1223,6 +1228,10 @@ public class GXHDO101B005 implements IFormLogic {
         //連続積層枚数
         this.setItemData(processData, GXHDO101B005Const.RENZOKUSEKISOUMAISUU, StringUtil.nullToBlank(sekkeiData.get("RENZOKUINSATUN")));
         
+        // B層補正量
+        this.setItemData(processData, GXHDO101B005Const.BSOUHOSEIRYOU, "");
+        
+        
     }
 
     /**
@@ -1369,8 +1378,6 @@ public class GXHDO101B005 implements IFormLogic {
         this.setItemData(processData, GXHDO101B005Const.TORIKOSUU, getSrRsussekItemData(GXHDO101B005Const.TORIKOSUU, srSrRsussekData));
         // 連続積層枚数
         this.setItemData(processData, GXHDO101B005Const.RENZOKUSEKISOUMAISUU, getSrRsussekItemData(GXHDO101B005Const.RENZOKUSEKISOUMAISUU, srSrRsussekData));
-        // B層補正量
-        this.setItemData(processData, GXHDO101B005Const.BSOUHOSEIRYOU, getSrRsussekItemData(GXHDO101B005Const.BSOUHOSEIRYOU, srSrRsussekData));
         // Y軸補正量
         this.setItemData(processData, GXHDO101B005Const.YJIKUHOSEIRYOU, getSrRsussekItemData(GXHDO101B005Const.YJIKUHOSEIRYOU, srSrRsussekData));
         // 電極ｽﾀｰﾄ確認者
@@ -1583,6 +1590,24 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 put("EATUMI", "電極厚み");
                 put("SOUSUU", "総数");
                 put("EMAISUU", "電極枚数");
+                put("PATTERN", "電極製版名");
+                put("LASTLAYERSLIDERYO", "最上層ｽﾗｲﾄﾞ量");
+                put("TORIKOSUU", "取り個数");
+                put("RENZOKUINSATUN", "連続積層枚数");
+            }
+        };
+
+        return map;
+    }
+    
+    /**
+     * 設計データ関連付けマップ取得(用途関連)
+     *
+     * @return 設計データ関連付けマップ
+     */
+    private Map getMapSekkeiYotoAssociation() {
+        Map<String, String> map = new LinkedHashMap<String, String>() {
+            {
                 put("YOUTO1", "用途1");
                 put("YOUTO2", "用途2");
                 put("YOUTO3", "用途3");
@@ -1623,15 +1648,12 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 put("ROLLNO6", "ﾛｰﾙNo6");
                 put("ROLLNO7", "ﾛｰﾙNo7");
                 put("ROLLNO8", "ﾛｰﾙNo8");
-                put("PATTERN", "電極製版名");
-                put("LASTLAYERSLIDERYO", "最上層ｽﾗｲﾄﾞ量");
-                put("TORIKOSUU", "取り個数");
-                put("RENZOKUINSATUN", "連続積層枚数");
             }
         };
 
         return map;
     }
+
 
     /**
      * 用途関連付けマップ取得
@@ -2685,10 +2707,10 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         String sql = "UPDATE tmp_sr_rsussek SET "
                 + "KCPNO = ?,TNTAPESYURUI = ?,TNTAPENO = ?,TNTAPEGENRYO = ?,KAISINICHIJI = ?,SYURYONICHIJI = ?,GOKI = ?,JITUATURYOKU = ?,SEKISOZURE2 = ?,"
                 + "TANTOSYA = ?,KAKUNINSYA = ?,INSATUROLLNO = ?,HAPPOSHEETNO = ?,SKJIKAN = ?,TAKUTO = ?,BIKO1 = ?,KOSINNICHIJI = ?,SKOJYO = ?,SLOTNO = ?,SEDABAN = ?,"
-                + "tapelotno = ?,taperollno1 = ?,taperollno2 = ?,taperollno3 = ?,genryoukigou = ?,petfilmsyurui = ?,Kotyakugouki = ?,Kotyakusheet = ?,"
-                + "ShitaTanshigouki = ?,UwaTanshigouki = ?,ShitaTanshiBukunuki = ?,ShitaTanshi = ?,UwaTanshi = ?,GaikanKakunin1 = ?,"
-                + "GaikanKakunin2 = ?,GaikanKakunin3 = ?,GaikanKakunin4 = ?,SyoriSetsuu = ?,RyouhinSetsuu = ?,EndTantousyacode = ?,TanshiTapeSyurui = ?,HNGKaisuu = ?,"
-                + "HNGKaisuuAve = ?,GNGKaisuu = ?,GNGKaisuuAve = ?,bikou2 = ?,setsuu = ?,tokuisaki = ?,lotkubuncode = ?,ownercode = ?,syurui3 = ?,atumi3 = ?,maisuu3 = ?,"
+                + "tapelotno = ?,taperollno1 = ?,genryoukigou = ?,petfilmsyurui = ?,Kotyakugouki = ?,Kotyakusheet = ?,"
+                + "ShitaTanshigouki = ?,UwaTanshigouki = ?,ShitaTanshi = ?,UwaTanshi = ?,GaikanKakunin1 = ?,"
+                + "SyoriSetsuu = ?,RyouhinSetsuu = ?,EndTantousyacode = ?,"
+                + "bikou2 = ?,setsuu = ?,tokuisaki = ?,lotkubuncode = ?,ownercode = ?,syurui3 = ?,atumi3 = ?,maisuu3 = ?,"
                 + "patern = ?,torikosuu = ?,etape = ?,lretu = ?,wretu = ?,lsun = ?,wsun = ?,epaste = ?,genryou = ?,eatumi = ?,sousuu = ?,emaisuu = ?,sekisouslideryo = ?,"
                 + "lastlayerslideryo = ?,renzokusekisoumaisuu = ?,bsouhoseiryou = ?,yjikuhoseiryou = ?,syurui2 = ?,atumi2 = ?,maisuu2 = ?,revision = ?,deleteflag = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
@@ -2787,11 +2809,11 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         String strMaisuu2 = "";
 
         if(!"".equals(ueCoverTape1) && ueCoverTape1 != null){
-            strUeCoverTape1Syurui2 = ueCoverTape1.split("  ");
+            strUeCoverTape1Syurui2 = ueCoverTape1.split("  ", -1);
             //上ｶﾊﾞｰﾃｰﾌﾟ1種類 syurui2
             strSyurui2 = strUeCoverTape1Syurui2[0];
             //上ｶﾊﾞｰﾃｰﾌﾟ1厚み atumi2 "μm×"
-            strUeCoverTape1Atumi2 = strUeCoverTape1Syurui2[1].split("μm×");
+            strUeCoverTape1Atumi2 = strUeCoverTape1Syurui2[1].split("μm×", -1);
             strAtumi2 = strUeCoverTape1Atumi2[0];
             //上ｶﾊﾞｰﾃｰﾌﾟ1枚数 maisuu2 "枚"
             strMaisuu2 = strUeCoverTape1Atumi2[1].replaceAll("枚", "");
@@ -2806,11 +2828,11 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         String strMaisuu3 = "";
 
         if(!"".equals(shitaCoverTape1) && shitaCoverTape1 != null){
-            strShitaCoverTape1Syurui2 = shitaCoverTape1.split("  ");
+            strShitaCoverTape1Syurui2 = shitaCoverTape1.split("  ", -1);
             //下ｶﾊﾞｰﾃｰﾌﾟ1種類  syurui3
             strSyurui3 = strShitaCoverTape1Syurui2[0];
             //下ｶﾊﾞｰﾃｰﾌﾟ1厚み atumi3 "μm×"
-            strShitaCoverTape1Atumi2 = strShitaCoverTape1Syurui2[1].split("μm×");
+            strShitaCoverTape1Atumi2 = strShitaCoverTape1Syurui2[1].split("μm×", -1);
             strAtumi3 = strShitaCoverTape1Atumi2[0];
             //下ｶﾊﾞｰﾃｰﾌﾟ1枚数 maisuu3 "枚"
             strMaisuu3 = strShitaCoverTape1Atumi2[1].replaceAll("枚", "");
@@ -2821,7 +2843,7 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         String strEtape = "";
         String strDenkyokuTapeSplit[] = null;
         if(!"".equals(strDenkyokuTape) && strDenkyokuTape != null){
-            strDenkyokuTapeSplit = strDenkyokuTape.split("  ");
+            strDenkyokuTapeSplit = strDenkyokuTape.split("  ", -1);
             strEtape = strDenkyokuTapeSplit[0];
         }
         
@@ -2833,7 +2855,7 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         String strWretu = "";
 
         if(!"".equals(retsuGyou) && retsuGyou != null){
-            strRetsuGyouLretu = retsuGyou.split("×");
+            strRetsuGyouLretu = retsuGyou.split("×", -1);
             //列
             strLretu = strRetsuGyouLretu[0];
             //行
@@ -2848,7 +2870,7 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         String strWsun = "";
 
         if(!"".equals(pitch) && pitch != null){
-            strPitch = pitch.split("×");
+            strPitch = pitch.split("×", -1);
             //LSUN
             strLsun = strPitch[0];
             //WSUN
@@ -2863,11 +2885,11 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         String strEmaisuu = "";
 
         if(!"".equals(sekisousu) && sekisousu != null){
-            strSekisousuEatumi = sekisousu.split("μm×");
+            strSekisousuEatumi = sekisousu.split("μm×", -1);
             //電極厚み
             strEatumi = strSekisousuEatumi[0];
             //総数
-            strSekisousuSousuu = strSekisousuEatumi[1].split("層  ");
+            strSekisousuSousuu = strSekisousuEatumi[1].split("層  ", -1);
             strSousuu = strSekisousuSousuu[0];
             //電極枚数
             strEmaisuu = strSekisousuSousuu[1].replaceAll("枚", "");
@@ -2902,40 +2924,52 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         } else {
             params.add(systemTime); //更新日時
         }
-        params.add(skojyo); //先行工場ｺｰﾄﾞ
-        params.add(slotNo); //先行ﾛｯﾄNo
-        params.add(sedaban); //先行枝番
+        params.add(DBUtil.stringToStringObjectDefaultNull(skojyo)); //先行工場ｺｰﾄﾞ
+        params.add(DBUtil.stringToStringObjectDefaultNull(slotNo)); //先行ﾛｯﾄNo
+        params.add(DBUtil.stringToStringObjectDefaultNull(sedaban)); //先行枝番
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SLIP_LOTNO, srRsussekData))); //ﾃｰﾌﾟｽﾘｯﾌﾟﾛｯﾄNo
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.ROLL_NO1, srRsussekData))); //ﾃｰﾌﾟﾛｰﾙNo1
-        params.add(null); //ﾃｰﾌﾟﾛｰﾙNo2
-        params.add(null); //ﾃｰﾌﾟﾛｰﾙNo3  
+        if (isInsert) {
+            params.add(null); //ﾃｰﾌﾟﾛｰﾙNo2
+            params.add(null); //ﾃｰﾌﾟﾛｰﾙNo3  
+        }
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.GENRYO_KIGOU, srRsussekData))); //原料記号
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.PET_FILM_SHURUI, srRsussekData))); //PETﾌｨﾙﾑ種類
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.KOTYAKU_SHEET_HARITSUKEKI, srRsussekData))); //固着シート貼付り機
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.KOTYAKU_SHEET, srRsussekData))); //固着シート
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SHITA_TANSHI_GOUKI, srRsussekData))); //下端子号機
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.UE_TANSHI_GOUKI, srRsussekData))); //上端子号機  
-        params.add(null); // 下端子ﾌﾞｸ抜き
+        if (isInsert) {
+            params.add(null); // 下端子ﾌﾞｸ抜き
+        }
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SHITA_TANSHI, srRsussekData))); //下端子
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.UWE_TANSHI, srRsussekData))); //上端子
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.GAIKAN_KAKUNIN1, srRsussekData))); //外観確認1
-        params.add(null); //外観確認2
-        params.add(null); //外観確認3
-        params.add(null); //外観確認4
+        if (isInsert) {
+            params.add(null); //外観確認2
+            params.add(null); //外観確認3
+            params.add(null); //外観確認4
+        }
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SYORI_SET_SU, srRsussekData))); //処理セット数
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.RYOUHIN_SET_SU, srRsussekData))); //良品セット数
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SHURYOU_TANTOUSHA, srRsussekData))); //終了担当者
-        params.add(null);//端子ﾃｰﾌﾟ種類
-        params.add(null);//隔離NG回数
-        params.add(null);//剥離NG回数AVE
-        params.add(null);//画像NG回数
-        params.add(null);//画像NG回数AVE
+        if (isInsert) {
+            params.add(null);//端子ﾃｰﾌﾟ種類
+            params.add(null);//隔離NG回数
+            params.add(null);//剥離NG回数AVE
+            params.add(null);//画像NG回数
+            params.add(null);//画像NG回数AVE
+        }
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.BIKOU2, srRsussekData))); //備考2
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SET_SUU, srRsussekData))); //ｾｯﾄ数
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.KYAKUSAKI, srRsussekData))); //客先
-        params.add(DBUtil.stringToStringObjectDefaultNull((getItemData(itemList, GXHDO101B005Const.LOT_KUBUN, srRsussekData)).substring(0,3))); //ﾛｯﾄ区分
-        params.add(DBUtil.stringToStringObjectDefaultNull((getItemData(itemList, GXHDO101B005Const.OWNER, srRsussekData)).substring(0,3))); //ｵｰﾅｰ
-        params.add(strSyurui3); //下ｶﾊﾞｰﾃｰﾌﾟ1種類
+        String lotKbn = StringUtil.nullToBlank(getItemData(itemList, GXHDO101B005Const.LOT_KUBUN, srRsussekData));
+        String[] spLotKbn = lotKbn.split(":", -1);
+        params.add(DBUtil.stringToStringObjectDefaultNull(spLotKbn[0])); //ﾛｯﾄ区分
+        String owner = StringUtil.nullToBlank(getItemData(itemList, GXHDO101B005Const.OWNER, srRsussekData));
+        String[] spOwner = owner.split(":", -1);
+        params.add(DBUtil.stringToStringObjectDefaultNull(spOwner[0])); //ｵｰﾅｰ
+        params.add(DBUtil.stringToStringObjectDefaultNull(strSyurui3)); //下ｶﾊﾞｰﾃｰﾌﾟ1種類
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(strAtumi3)); //下ｶﾊﾞｰﾃｰﾌﾟ1厚み
         params.add(DBUtil.stringToIntObjectDefaultNull(strMaisuu3)); //下ｶﾊﾞｰﾃｰﾌﾟ1枚数
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.PATERN, srRsussekData))); //製版名
@@ -2951,11 +2985,11 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(strSousuu));//総数
         params.add(DBUtil.stringToIntObjectDefaultNull(strEmaisuu));//電極枚数
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SEKISOU_SLIDE_RYOU, srRsussekData))); //積層ｽﾗｲﾄﾞ量
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.TORIKOSUU, srRsussekData))); //最上層ｽﾗｲﾄﾞ量
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.LAST_LAYER_SLIDE_RYO, srRsussekData))); //最上層ｽﾗｲﾄﾞ量
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.RENZOKUSEKISOUMAISUU, srRsussekData))); //連続積層枚数
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.BSOUHOSEIRYOU, srRsussekData))); //B層補正量
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.YJIKUHOSEIRYOU, srRsussekData))); //Y軸補正量
-        params.add(strSyurui2);//上ｶﾊﾞｰﾃｰﾌﾟ1種類
+        params.add(DBUtil.stringToStringObjectDefaultNull(strSyurui2));//上ｶﾊﾞｰﾃｰﾌﾟ1種類
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(strAtumi2));//上ｶﾊﾞｰﾃｰﾌﾟ1厚み
         params.add(DBUtil.stringToIntObjectDefaultNull(strMaisuu2));//上ｶﾊﾞｰﾃｰﾌﾟ1枚数
         params.add(newRev); //revision
@@ -3128,46 +3162,46 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(hakuriInputDataList.get(37).getSetsuuVal())); // ｾｯﾄ数38
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(hakuriInputDataList.get(38).getSetsuuVal())); // ｾｯﾄ数39
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(hakuriInputDataList.get(39).getSetsuuVal())); // ｾｯﾄ数40
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(0).getBikouVal())); // 備考1
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(1).getBikouVal())); // 備考2
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(2).getBikouVal())); // 備考3
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(3).getBikouVal())); // 備考4
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(4).getBikouVal())); // 備考5
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(5).getBikouVal())); // 備考6
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(6).getBikouVal())); // 備考7
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(7).getBikouVal())); // 備考8
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(8).getBikouVal())); // 備考9
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(9).getBikouVal())); // 備考10
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(10).getBikouVal())); // 備考11
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(11).getBikouVal())); // 備考12
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(12).getBikouVal())); // 備考13
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(13).getBikouVal())); // 備考14
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(14).getBikouVal())); // 備考15
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(15).getBikouVal())); // 備考16
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(16).getBikouVal())); // 備考17
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(17).getBikouVal())); // 備考18
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(18).getBikouVal())); // 備考19
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(19).getBikouVal())); // 備考20
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(20).getBikouVal())); // 備考21
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(21).getBikouVal())); // 備考22
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(22).getBikouVal())); // 備考23
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(23).getBikouVal())); // 備考24
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(24).getBikouVal())); // 備考25
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(25).getBikouVal())); // 備考26
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(26).getBikouVal())); // 備考27
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(27).getBikouVal())); // 備考28
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(28).getBikouVal())); // 備考29
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(29).getBikouVal())); // 備考30
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(30).getBikouVal())); // 備考31
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(31).getBikouVal())); // 備考32
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(32).getBikouVal())); // 備考33
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(33).getBikouVal())); // 備考34
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(34).getBikouVal())); // 備考35
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(35).getBikouVal())); // 備考36
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(36).getBikouVal())); // 備考37
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(37).getBikouVal())); // 備考38
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(38).getBikouVal())); // 備考39
-        params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(39).getBikouVal())); // 備考40
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(0).getBikouVal())); // 備考1
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(1).getBikouVal())); // 備考2
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(2).getBikouVal())); // 備考3
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(3).getBikouVal())); // 備考4
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(4).getBikouVal())); // 備考5
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(5).getBikouVal())); // 備考6
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(6).getBikouVal())); // 備考7
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(7).getBikouVal())); // 備考8
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(8).getBikouVal())); // 備考9
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(9).getBikouVal())); // 備考10
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(10).getBikouVal())); // 備考11
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(11).getBikouVal())); // 備考12
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(12).getBikouVal())); // 備考13
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(13).getBikouVal())); // 備考14
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(14).getBikouVal())); // 備考15
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(15).getBikouVal())); // 備考16
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(16).getBikouVal())); // 備考17
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(17).getBikouVal())); // 備考18
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(18).getBikouVal())); // 備考19
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(19).getBikouVal())); // 備考20
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(20).getBikouVal())); // 備考21
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(21).getBikouVal())); // 備考22
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(22).getBikouVal())); // 備考23
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(23).getBikouVal())); // 備考24
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(24).getBikouVal())); // 備考25
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(25).getBikouVal())); // 備考26
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(26).getBikouVal())); // 備考27
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(27).getBikouVal())); // 備考28
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(28).getBikouVal())); // 備考29
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(29).getBikouVal())); // 備考30
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(30).getBikouVal())); // 備考31
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(31).getBikouVal())); // 備考32
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(32).getBikouVal())); // 備考33
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(33).getBikouVal())); // 備考34
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(34).getBikouVal())); // 備考35
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(35).getBikouVal())); // 備考36
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(36).getBikouVal())); // 備考37
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(37).getBikouVal())); // 備考38
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(38).getBikouVal())); // 備考39
+        params.add(DBUtil.stringToStringObjectDefaultNull(hakuriInputDataList.get(39).getBikouVal())); // 備考40
 
         if (isInsert) {
             params.add(systemTime); //登録日時
@@ -3236,10 +3270,10 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         String sql = "UPDATE sr_rsussek SET "
                 + "KCPNO = ?,TNTAPESYURUI = ?,TNTAPENO = ?,TNTAPEGENRYO = ?,KAISINICHIJI = ?,SYURYONICHIJI = ?,GOKI = ?,JITUATURYOKU = ?,"
                 + "SEKISOZURE2 = ?,TANTOSYA = ?,KAKUNINSYA = ?,INSATUROLLNO = ?,HAPPOSHEETNO = ?,SKJIKAN = ?,TAKUTO = ?,BIKO1 = ?,"
-                + "KOSINNICHIJI = ?,SKOJYO = ?,SLOTNO = ?,SEDABAN = ?,tapelotno = ?,taperollno1 = ?,taperollno2 = ?,taperollno3 = ?,genryoukigou = ?,"
+                + "KOSINNICHIJI = ?,SKOJYO = ?,SLOTNO = ?,SEDABAN = ?,tapelotno = ?,taperollno1 = ?,genryoukigou = ?,"
                 + "petfilmsyurui = ?,Kotyakugouki = ?,Kotyakusheet = ?,ShitaTanshigouki = ?,UwaTanshigouki = ?,ShitaTanshiBukunuki = ?,"
-                + "ShitaTanshi = ?,UwaTanshi = ?,GaikanKakunin1 = ?,GaikanKakunin2 = ?,GaikanKakunin3 = ?,GaikanKakunin4 = ?,SyoriSetsuu = ?,"
-                + "RyouhinSetsuu = ?,EndTantousyacode = ?,TanshiTapeSyurui = ?,HNGKaisuu = ?,HNGKaisuuAve = ?,GNGKaisuu = ?,GNGKaisuuAve = ?,"
+                + "ShitaTanshi = ?,UwaTanshi = ?,GaikanKakunin1 = ?,SyoriSetsuu = ?,"
+                + "RyouhinSetsuu = ?,EndTantousyacode = ?,"
                 + "bikou2 = ?,setsuu = ?,tokuisaki = ?,lotkubuncode = ?,ownercode = ?,syurui3 = ?,atumi3 = ?,maisuu3 = ?,patern = ?,torikosuu = ?,"
                 + "etape = ?,lretu = ?,wretu = ?,lsun = ?,wsun = ?,epaste = ?,genryou = ?,eatumi = ?,sousuu = ?,emaisuu = ?,sekisouslideryo = ?,"
                 + "lastlayerslideryo = ?,renzokusekisoumaisuu = ?,bsouhoseiryou = ?,yjikuhoseiryou = ?,syurui2 = ?,atumi2 = ?,maisuu2 = ?,"
@@ -3311,11 +3345,11 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         String strMaisuu2 = "";
 
         if(!"".equals(ueCoverTape1) && ueCoverTape1 != null){
-            strUeCoverTape1Syurui2 = ueCoverTape1.split("  ");
+            strUeCoverTape1Syurui2 = ueCoverTape1.split("  ", -1);
             //上ｶﾊﾞｰﾃｰﾌﾟ1種類 syurui2
             strSyurui2 = strUeCoverTape1Syurui2[0];
             //上ｶﾊﾞｰﾃｰﾌﾟ1厚み atumi2 "μm×"
-            strUeCoverTape1Atumi2 = strUeCoverTape1Syurui2[1].split("μm×");
+            strUeCoverTape1Atumi2 = strUeCoverTape1Syurui2[1].split("μm×", -1);
             strAtumi2 = strUeCoverTape1Atumi2[0];
             //上ｶﾊﾞｰﾃｰﾌﾟ1枚数 maisuu2 "枚"
             strMaisuu2 = strUeCoverTape1Atumi2[1].replaceAll("枚", "");
@@ -3330,11 +3364,11 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         String strMaisuu3 = "";
 
         if(!"".equals(shitaCoverTape1) && shitaCoverTape1 != null){
-            strShitaCoverTape1Syurui2 = shitaCoverTape1.split("  ");
+            strShitaCoverTape1Syurui2 = shitaCoverTape1.split("  ", -1);
             //下ｶﾊﾞｰﾃｰﾌﾟ1種類  syurui3
             strSyurui3 = strShitaCoverTape1Syurui2[0];
             //下ｶﾊﾞｰﾃｰﾌﾟ1厚み atumi3 "μm×"
-            strShitaCoverTape1Atumi2 = strShitaCoverTape1Syurui2[1].split("μm×");
+            strShitaCoverTape1Atumi2 = strShitaCoverTape1Syurui2[1].split("μm×", -1);
             strAtumi3 = strShitaCoverTape1Atumi2[0];
             //下ｶﾊﾞｰﾃｰﾌﾟ1枚数 maisuu3 "枚"
             strMaisuu3 = strShitaCoverTape1Atumi2[1].replaceAll("枚", "");
@@ -3345,7 +3379,7 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         String strEtape = "";
         String strDenkyokuTapeSplit[] = null;
         if(!"".equals(strDenkyokuTape) && strDenkyokuTape != null){
-            strDenkyokuTapeSplit = strDenkyokuTape.split("  ");
+            strDenkyokuTapeSplit = strDenkyokuTape.split("  ", -1);
             strEtape = strDenkyokuTapeSplit[0];
         }
         
@@ -3357,7 +3391,7 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         String strWretu = "";
 
         if(!"".equals(retsuGyou) && retsuGyou != null){
-            strRetsuGyouLretu = retsuGyou.split("×");
+            strRetsuGyouLretu = retsuGyou.split("×", -1);
             //列
             strLretu = strRetsuGyouLretu[0];
             //行
@@ -3372,7 +3406,7 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         String strWsun = "";
 
         if(!"".equals(pitch) && pitch != null){
-            strPitch = pitch.split("×");
+            strPitch = pitch.split("×", -1);
             //LSUN
             strLsun = strPitch[0];
             //WSUN
@@ -3387,11 +3421,11 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         String strEmaisuu = "";
 
         if(!"".equals(sekisousu) && sekisousu != null){
-            strSekisousuEatumi = sekisousu.split("μm×");
+            strSekisousuEatumi = sekisousu.split("μm×", -1);
             //電極厚み
             strEatumi = strSekisousuEatumi[0];
             //総数
-            strSekisousuSousuu = strSekisousuEatumi[1].split("層  ");
+            strSekisousuSousuu = strSekisousuEatumi[1].split("層  ", -1);
             strSousuu = strSekisousuSousuu[0];
             //電極枚数
             strEmaisuu = strSekisousuSousuu[1].replaceAll("枚", "");
@@ -3427,13 +3461,15 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         } else {
             params.add(systemTime); //更新日時
         }
-        params.add(skojyo); //先行工場ｺｰﾄﾞ
-        params.add(slotNo); //先行ﾛｯﾄNo
-        params.add(sedaban); //先行枝番   
+        params.add(DBUtil.stringToStringObject(skojyo)); //先行工場ｺｰﾄﾞ
+        params.add(DBUtil.stringToStringObject(slotNo)); //先行ﾛｯﾄNo
+        params.add(DBUtil.stringToStringObject(sedaban)); //先行枝番   
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.SLIP_LOTNO, srRsussekData))); //ﾃｰﾌﾟｽﾘｯﾌﾟﾛｯﾄNo 
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.ROLL_NO1, srRsussekData))); //ﾃｰﾌﾟﾛｰﾙNo1
-        params.add(""); //ﾃｰﾌﾟﾛｰﾙNo2
-        params.add(""); //ﾃｰﾌﾟﾛｰﾙNo3
+        if (isInsert) {
+            params.add(""); //ﾃｰﾌﾟﾛｰﾙNo2
+            params.add(""); //ﾃｰﾌﾟﾛｰﾙNo3
+        }
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.GENRYO_KIGOU, srRsussekData))); //原料記号
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.PET_FILM_SHURUI, srRsussekData))); //PETﾌｨﾙﾑ種類
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.KOTYAKU_SHEET_HARITSUKEKI, srRsussekData))); //固着シート貼付り機
@@ -3444,45 +3480,53 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.SHITA_TANSHI, srRsussekData))); //下端子
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.UWE_TANSHI, srRsussekData))); //上端子
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.GAIKAN_KAKUNIN1, srRsussekData))); //外観確認1
-        params.add(""); //外観確認2
-        params.add(""); //外観確認3
-        params.add(""); //外観確認4
+        if (isInsert) {
+            params.add(""); //外観確認2
+            params.add(""); //外観確認3
+            params.add(""); //外観確認4
+        }
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B005Const.SYORI_SET_SU, srRsussekData))); //処理セット数
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B005Const.RYOUHIN_SET_SU, srRsussekData))); //良品セット数
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.SHURYOU_TANTOUSHA, srRsussekData))); //終了担当者
-        params.add(0);// 端子テープ種類
-        params.add(0); //剥離NG回数
-        params.add(0); //剥離NG_AVE
-        params.add(0); //画処NG回数
-        params.add(0); //画処NG_AVE
+        if (isInsert) {
+            params.add(0);// 端子テープ種類
+            params.add(0); //剥離NG回数
+            params.add(0); //剥離NG_AVE
+            params.add(0); //画処NG回数
+            params.add(0); //画処NG_AVE
+        }
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.BIKOU2, srRsussekData))); //備考2
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B005Const.SET_SUU, srRsussekData))); //ｾｯﾄ数
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.KYAKUSAKI, srRsussekData))); //客先
-        params.add(DBUtil.stringToStringObject((getItemData(itemList, GXHDO101B005Const.LOT_KUBUN, srRsussekData)).substring(0,3))); //ﾛｯﾄ区分
-        params.add(DBUtil.stringToStringObject((getItemData(itemList, GXHDO101B005Const.OWNER, srRsussekData)).substring(0,3))); //ｵｰﾅｰ
-        params.add(strSyurui3); //下ｶﾊﾞｰﾃｰﾌﾟ1種類
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(strAtumi3)); //下ｶﾊﾞｰﾃｰﾌﾟ1厚み
-        params.add(DBUtil.stringToIntObjectDefaultNull(strMaisuu3)); //下ｶﾊﾞｰﾃｰﾌﾟ1枚数
+        String lotKbn = StringUtil.nullToBlank(getItemData(itemList, GXHDO101B005Const.LOT_KUBUN, srRsussekData));
+        String[] spLotKbn = lotKbn.split(":", -1);
+        params.add(DBUtil.stringToStringObject(spLotKbn[0])); //ﾛｯﾄ区分
+        String owner = StringUtil.nullToBlank(getItemData(itemList, GXHDO101B005Const.OWNER, srRsussekData));
+        String[] spOwner = owner.split(":", -1);
+        params.add(DBUtil.stringToStringObject(spOwner[0])); //ｵｰﾅｰ
+        params.add(DBUtil.stringToStringObject(strSyurui3)); //下ｶﾊﾞｰﾃｰﾌﾟ1種類
+        params.add(DBUtil.stringToBigDecimalObject(strAtumi3)); //下ｶﾊﾞｰﾃｰﾌﾟ1厚み
+        params.add(DBUtil.stringToIntObject(strMaisuu3)); //下ｶﾊﾞｰﾃｰﾌﾟ1枚数
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.PATERN, srRsussekData))); //製版名
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B005Const.TORIKOSUU, srRsussekData))); //取り個数
-        params.add(DBUtil.stringToStringObjectDefaultNull(strEtape));//電極ﾃｰﾌﾟ
-        params.add(DBUtil.stringToIntObjectDefaultNull(StringUtil.nullToBlank(strLretu)));//列
-        params.add(DBUtil.stringToIntObjectDefaultNull(StringUtil.nullToBlank(strWretu)));//行
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(StringUtil.nullToBlank(strLsun)));//LSUN
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(StringUtil.nullToBlank(strWsun)));//WSUN
+        params.add(DBUtil.stringToStringObject(strEtape));//電極ﾃｰﾌﾟ
+        params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(strLretu)));//列
+        params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(strWretu)));//行
+        params.add(DBUtil.stringToBigDecimalObject(StringUtil.nullToBlank(strLsun)));//LSUN
+        params.add(DBUtil.stringToBigDecimalObject(StringUtil.nullToBlank(strWsun)));//WSUN
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.DENKYOKU_PASTE, srRsussekData))); //電極ﾍﾟｰｽﾄ
-        params.add(DBUtil.stringToStringObjectDefaultNull(strEtape));//原料
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(strEatumi));//電極厚み
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(strSousuu));//総数
-        params.add(DBUtil.stringToIntObjectDefaultNull(strEmaisuu));//電極枚数
+        params.add(DBUtil.stringToStringObject(strEtape));//原料
+        params.add(DBUtil.stringToBigDecimalObject(strEatumi));//電極厚み
+        params.add(DBUtil.stringToBigDecimalObject(strSousuu));//総数
+        params.add(DBUtil.stringToIntObject(strEmaisuu));//電極枚数
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.SEKISOU_SLIDE_RYOU, srRsussekData))); //積層ｽﾗｲﾄﾞ量
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B005Const.TORIKOSUU, srRsussekData))); //最上層ｽﾗｲﾄﾞ量
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B005Const.LAST_LAYER_SLIDE_RYO, srRsussekData))); //最上層ｽﾗｲﾄﾞ量
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B005Const.RENZOKUSEKISOUMAISUU, srRsussekData))); //連続積層枚数
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B005Const.BSOUHOSEIRYOU, srRsussekData))); //B層補正量
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B005Const.YJIKUHOSEIRYOU, srRsussekData))); //Y軸補正量
-        params.add(strSyurui2);//上ｶﾊﾞｰﾃｰﾌﾟ1種類
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(strAtumi2));//上ｶﾊﾞｰﾃｰﾌﾟ1厚み
-        params.add(DBUtil.stringToIntObjectDefaultNull(strMaisuu2));//上ｶﾊﾞｰﾃｰﾌﾟ1枚数
+        params.add(DBUtil.stringToStringObject(strSyurui2));//上ｶﾊﾞｰﾃｰﾌﾟ1種類
+        params.add(DBUtil.stringToBigDecimalObject(strAtumi2));//上ｶﾊﾞｰﾃｰﾌﾟ1厚み
+        params.add(DBUtil.stringToIntObject(strMaisuu2));//上ｶﾊﾞｰﾃｰﾌﾟ1枚数
         params.add(newRev); //revision
 
         return params;
@@ -3616,46 +3660,46 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
             params.add(edaban); //枝番
 
         }
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(0).getSetsuuVal())); // ｾｯﾄ数1
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(1).getSetsuuVal())); // ｾｯﾄ数2
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(2).getSetsuuVal())); // ｾｯﾄ数3
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(3).getSetsuuVal())); // ｾｯﾄ数4
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(4).getSetsuuVal())); // ｾｯﾄ数5
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(5).getSetsuuVal())); // ｾｯﾄ数6
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(6).getSetsuuVal())); // ｾｯﾄ数7
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(7).getSetsuuVal())); // ｾｯﾄ数8
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(8).getSetsuuVal())); // ｾｯﾄ数9
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(9).getSetsuuVal())); // ｾｯﾄ数10
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(10).getSetsuuVal())); // ｾｯﾄ数11
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(11).getSetsuuVal())); // ｾｯﾄ数12
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(12).getSetsuuVal())); // ｾｯﾄ数13
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(13).getSetsuuVal())); // ｾｯﾄ数14
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(14).getSetsuuVal())); // ｾｯﾄ数15
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(15).getSetsuuVal())); // ｾｯﾄ数16
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(16).getSetsuuVal())); // ｾｯﾄ数17
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(17).getSetsuuVal())); // ｾｯﾄ数18
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(18).getSetsuuVal())); // ｾｯﾄ数19
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(19).getSetsuuVal())); // ｾｯﾄ数20
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(20).getSetsuuVal())); // ｾｯﾄ数21
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(21).getSetsuuVal())); // ｾｯﾄ数22
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(22).getSetsuuVal())); // ｾｯﾄ数23
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(23).getSetsuuVal())); // ｾｯﾄ数24
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(24).getSetsuuVal())); // ｾｯﾄ数25
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(25).getSetsuuVal())); // ｾｯﾄ数26
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(26).getSetsuuVal())); // ｾｯﾄ数27
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(27).getSetsuuVal())); // ｾｯﾄ数28
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(28).getSetsuuVal())); // ｾｯﾄ数29
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(29).getSetsuuVal())); // ｾｯﾄ数30
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(30).getSetsuuVal())); // ｾｯﾄ数31
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(31).getSetsuuVal())); // ｾｯﾄ数32
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(32).getSetsuuVal())); // ｾｯﾄ数33
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(33).getSetsuuVal())); // ｾｯﾄ数34
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(34).getSetsuuVal())); // ｾｯﾄ数35
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(35).getSetsuuVal())); // ｾｯﾄ数36
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(36).getSetsuuVal())); // ｾｯﾄ数37
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(37).getSetsuuVal())); // ｾｯﾄ数38
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(38).getSetsuuVal())); // ｾｯﾄ数39
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(makuatsuDataList.get(39).getSetsuuVal())); // ｾｯﾄ数40
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(0).getSetsuuVal())); // ｾｯﾄ数1
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(1).getSetsuuVal())); // ｾｯﾄ数2
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(2).getSetsuuVal())); // ｾｯﾄ数3
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(3).getSetsuuVal())); // ｾｯﾄ数4
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(4).getSetsuuVal())); // ｾｯﾄ数5
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(5).getSetsuuVal())); // ｾｯﾄ数6
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(6).getSetsuuVal())); // ｾｯﾄ数7
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(7).getSetsuuVal())); // ｾｯﾄ数8
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(8).getSetsuuVal())); // ｾｯﾄ数9
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(9).getSetsuuVal())); // ｾｯﾄ数10
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(10).getSetsuuVal())); // ｾｯﾄ数11
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(11).getSetsuuVal())); // ｾｯﾄ数12
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(12).getSetsuuVal())); // ｾｯﾄ数13
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(13).getSetsuuVal())); // ｾｯﾄ数14
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(14).getSetsuuVal())); // ｾｯﾄ数15
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(15).getSetsuuVal())); // ｾｯﾄ数16
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(16).getSetsuuVal())); // ｾｯﾄ数17
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(17).getSetsuuVal())); // ｾｯﾄ数18
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(18).getSetsuuVal())); // ｾｯﾄ数19
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(19).getSetsuuVal())); // ｾｯﾄ数20
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(20).getSetsuuVal())); // ｾｯﾄ数21
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(21).getSetsuuVal())); // ｾｯﾄ数22
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(22).getSetsuuVal())); // ｾｯﾄ数23
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(23).getSetsuuVal())); // ｾｯﾄ数24
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(24).getSetsuuVal())); // ｾｯﾄ数25
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(25).getSetsuuVal())); // ｾｯﾄ数26
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(26).getSetsuuVal())); // ｾｯﾄ数27
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(27).getSetsuuVal())); // ｾｯﾄ数28
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(28).getSetsuuVal())); // ｾｯﾄ数29
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(29).getSetsuuVal())); // ｾｯﾄ数30
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(30).getSetsuuVal())); // ｾｯﾄ数31
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(31).getSetsuuVal())); // ｾｯﾄ数32
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(32).getSetsuuVal())); // ｾｯﾄ数33
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(33).getSetsuuVal())); // ｾｯﾄ数34
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(34).getSetsuuVal())); // ｾｯﾄ数35
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(35).getSetsuuVal())); // ｾｯﾄ数36
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(36).getSetsuuVal())); // ｾｯﾄ数37
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(37).getSetsuuVal())); // ｾｯﾄ数38
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(38).getSetsuuVal())); // ｾｯﾄ数39
+        params.add(DBUtil.stringToBigDecimalObject(makuatsuDataList.get(39).getSetsuuVal())); // ｾｯﾄ数40
         params.add(DBUtil.stringToStringObject(makuatsuDataList.get(0).getBikouVal())); // 備考1
         params.add(DBUtil.stringToStringObject(makuatsuDataList.get(1).getBikouVal())); // 備考2
         params.add(DBUtil.stringToStringObject(makuatsuDataList.get(2).getBikouVal())); // 備考3
@@ -3918,7 +3962,7 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 return StringUtil.nullToBlank(srRsussekData.getTakuto());
             // 先行ロットNo
             case GXHDO101B005Const.SENKOU_LOT_NO:
-                return StringUtil.nullToBlank(srRsussekData.getSkojyo() + srRsussekData.getSlotno() + srRsussekData.getSedaban());
+                return StringUtil.nullToBlank(srRsussekData.getSkojyo()) + StringUtil.nullToBlank(srRsussekData.getSlotno()) + StringUtil.nullToBlank(srRsussekData.getSedaban());
             // 備考1
             case GXHDO101B005Const.BIKOU1:
                 return StringUtil.nullToBlank(srRsussekData.getBiko1());

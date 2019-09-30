@@ -52,7 +52,7 @@ import org.apache.commons.dbutils.DbUtils;
  * システム名  品質DB(コンデンサ)<br>
  * <br>
  * 変更日      2019/09/02<br>
- * 計画書No    K1803-DS001<br>
+ * 計画書No    K1811-DS001<br>
  * 変更者      KCSS K.Jo<br>
  * 変更理由    新規作成<br>
  * <br>
@@ -73,8 +73,6 @@ public class GXHDO101B026 implements IFormLogic {
     private static final String SQL_STATE_RECORD_LOCK_ERR = "55P03";
     private static final String TANSISU_THREE = "三端子";
     private static final String TANSISU_FOUR = "4端子";
-    // 端子数
-    private static String hiddenTansisu = "";
     
     /**
      * 初期化処理
@@ -1265,7 +1263,6 @@ public class GXHDO101B026 implements IFormLogic {
         String lotNo = (String) session.getAttribute("lotNo");
         int paramJissekino = (Integer) session.getAttribute("jissekino");
         String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
-        hiddenTansisu = "";
 
         // エラーメッセージリスト
         List<String> errorMessageList = processData.getInitMessageList();
@@ -1346,7 +1343,7 @@ public class GXHDO101B026 implements IFormLogic {
             errorMessageList.add(MessageUtil.getMessage("XHD-000074", "外部電極塗布、4端子数判定文字"));
         }
         // (Hidden)端子数取得処理
-        
+        Map hiddenMap = processData.getHiddenDataMap();
         // ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ
         String fxhbm03data[] = null;
 
@@ -1355,7 +1352,7 @@ public class GXHDO101B026 implements IFormLogic {
         boolean hanteiFlg = false;
         for(int i = 0; i < fxhbm03data.length; i++){
            if (!StringUtil.isEmpty(tansiStr) && tansiStr.equals(fxhbm03data[i])){
-               hiddenTansisu = TANSISU_THREE;
+               hiddenMap.put("hiddenTansisu", TANSISU_THREE);
                hanteiFlg = true;
                break;
            }
@@ -1366,12 +1363,14 @@ public class GXHDO101B026 implements IFormLogic {
             fxhbm03data = StringUtil.nullToBlank(getMapData(fxhbm03Data214, "data")).split(",");
             for(int i = 0; i < fxhbm03data.length; i++){
                 if (tansiStr.equals(fxhbm03data[i])){
-                    hiddenTansisu = TANSISU_FOUR;
+                    hiddenMap.put("hiddenTansisu", TANSISU_FOUR);
                     hanteiFlg = true;
                     break;
                 }
             }
         }
+        
+        
 
         // 上記処理にて端子数が判定できなかった場合、ｴﾗｰﾒｯｾｰｼﾞを表示する。処理は続行。
         if(!hanteiFlg){
@@ -2606,7 +2605,7 @@ public class GXHDO101B026 implements IFormLogic {
             params.add(0);  // L寸法4OLD
             params.add(0);  // L寸法5OLD
             params.add(0);  // 端面厚みOLD
-            params.add(0);  // 判定OLD
+            params.add("");  // 判定OLD
             params.add(0);  // P寸法1
             params.add(0);  // P寸法2
             params.add(0);  // P寸法3
@@ -2622,7 +2621,7 @@ public class GXHDO101B026 implements IFormLogic {
             params.add(0);  // L寸法4
             params.add(0);  // L寸法5
             params.add(0);  // 端面厚み
-            params.add(0);  // 判定
+            params.add("");  // 判定
             params.add(0);  // ﾍﾟｰｽﾄ厚み設定値1次
             params.add(0);  // ﾍﾟｰｽﾄ厚み設定値2次
         }
@@ -3075,6 +3074,12 @@ public class GXHDO101B026 implements IFormLogic {
             // 処理数
             case GXHDO101B026Const.SHORISU:
                 return StringUtil.nullToBlank(srTermData.getSyorisuu());
+            // KCPNO
+            case GXHDO101B026Const.KCPNO:
+                return StringUtil.nullToBlank(srTermData.getKcpno());
+            // ﾛｯﾄﾌﾟﾚ
+            case GXHDO101B026Const.LOTPRE:
+                return StringUtil.nullToBlank(srTermData.getLotpre());
             default:
                 return null;            
         }

@@ -60,6 +60,11 @@ import org.apache.commons.dbutils.handlers.MapHandler;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日        2019/9/18<br>
+ * 計画書No      K1811-DS001<br>
+ * 変更者        KCSS K.Jo<br>
+ * 変更理由      項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -3364,7 +3369,7 @@ public class GXHDO101B002 implements IFormLogic {
                 params.add(1);
                 break;
             default:
-                params.add(null);
+                params.add(9);
                 break;
         }
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B002Const.INSATSU_END_MAKUATSU_CV, srSpsprintScrData))); //印刷ｴﾝﾄﾞ膜厚CV
@@ -3377,7 +3382,7 @@ public class GXHDO101B002 implements IFormLogic {
                 params.add(1);
                 break;
             default:
-                params.add(null);
+                params.add(9);
                 break;
         }
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B002Const.INSATSU_MAISUU, srSpsprintScrData))); //印刷枚数
@@ -3392,7 +3397,7 @@ public class GXHDO101B002 implements IFormLogic {
                 params.add(1);
                 break;
             default:
-                params.add(null);
+                params.add(9);
                 break;
         }
 

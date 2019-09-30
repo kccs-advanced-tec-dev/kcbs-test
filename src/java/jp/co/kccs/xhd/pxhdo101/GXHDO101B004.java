@@ -59,6 +59,11 @@ import org.apache.commons.dbutils.DbUtils;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日       2019/9/18<br>
+ * 計画書No     K1811-DS001<br>
+ * 変更者       KCSS K.Jo<br>
+ * 変更理由     項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -1979,10 +1984,10 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + ",STsunAve,STsunMax,STsunMin,STsunSiguma,HNGKaisuu,GaikanTantou"
                 + ",CPressKaisuu,HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,tapelotno"
                 + ",taperollno1,taperollno2,taperollno3,genryoukigou,petfilmsyurui"
-                + ",Kotyakusheet,ShitaTanshigouki,UwaTanshigouki"
+                + ",Kotyakugouki,Kotyakusheet,ShitaTanshigouki,UwaTanshigouki"
                 + ",ShitaTanshiBukunuki,ShitaTanshi,HakuriKyuin,HakuriClearrance"
                 + ",HakuriCutSpeed,ShitaPanchiOndo,UwaPanchiOndo,KaatuJikan,KaatuAturyoku"
-                + ",UwaTanshi"
+                + ",UwaTanshi,GaikanKakunin1,GaikanKakunin2,GaikanKakunin3,GaikanKakunin4"
                 + ",SyoriSetsuu,RyouhinSetsuu,StartTantosyacode,EndTantousyacode"
                 + ",TanshiTapeSyurui,torokunichiji,kosinnichiji,karauti,karautibyou"
                 + ",karautikai,zureti,GaikanKakunin5,revision,'0' AS deleteflag "
@@ -2055,6 +2060,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         mapping.put("taperollno3", "taperollno3"); // ﾃｰﾌﾟﾛｰﾙNo3
         mapping.put("genryoukigou", "genryoukigou"); // 原料記号
         mapping.put("petfilmsyurui", "petfilmsyurui"); // PETﾌｨﾙﾑ種類
+        mapping.put("Kotyakugouki", "kotyakugouki"); // 固着ｼｰﾄ張付け機
         mapping.put("Kotyakusheet", "kotyakusheet"); // 固着ｼｰﾄ
         mapping.put("ShitaTanshigouki", "shitaTanshigouki"); // 下端子号機
         mapping.put("UwaTanshigouki", "uwaTanshigouki"); // 上端子号機
@@ -2068,6 +2074,10 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         mapping.put("KaatuJikan", "kaatuJikan"); // 加圧時間
         mapping.put("KaatuAturyoku", "kaatuAturyoku"); // 加圧圧力
         mapping.put("UwaTanshi", "uwaTanshi"); // 上端子
+        mapping.put("GaikanKakunin1", "gaikanKakunin1"); // 外観確認1
+        mapping.put("GaikanKakunin2", "gaikanKakunin2"); // 外観確認2
+        mapping.put("GaikanKakunin3", "gaikanKakunin3"); // 外観確認3
+        mapping.put("GaikanKakunin4", "gaikanKakunin4"); // 外観確認4
         mapping.put("SyoriSetsuu", "syoriSetsuu"); // 処理ｾｯﾄ数
         mapping.put("RyouhinSetsuu", "ryouhinSetsuu"); // 良品ｾｯﾄ数
         mapping.put("StartTantosyacode", "startTantosyacode"); // 開始担当者ｺｰﾄﾞ
@@ -2251,10 +2261,10 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + ",STsunAve,STsunMax,STsunMin,STsunSiguma,HNGKaisuu,GaikanTantou"
                 + ",CPressKaisuu,HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,tapelotno"
                 + ",taperollno1,taperollno2,taperollno3,genryoukigou,petfilmsyurui"
-                + ",Kotyakusheet,ShitaTanshigouki,UwaTanshigouki"
+                + ",Kotyakugouki,Kotyakusheet,ShitaTanshigouki,UwaTanshigouki"
                 + ",ShitaTanshiBukunuki,ShitaTanshi,HakuriKyuin,HakuriClearrance"
                 + ",HakuriCutSpeed,ShitaPanchiOndo,UwaPanchiOndo,KaatuJikan,KaatuAturyoku"
-                + ",UwaTanshi"
+                + ",UwaTanshi,GaikanKakunin1,GaikanKakunin2,GaikanKakunin3,GaikanKakunin4"
                 + ",SyoriSetsuu,RyouhinSetsuu,StartTantosyacode,EndTantousyacode"
                 + ",TanshiTapeSyurui,torokunichiji,kosinnichiji,karauti,karautibyou"
                 + ",karautikai,zureti,GaikanKakunin5,revision,deleteflag "
@@ -2328,6 +2338,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         mapping.put("taperollno3", "taperollno3"); // ﾃｰﾌﾟﾛｰﾙNo3
         mapping.put("genryoukigou", "genryoukigou"); // 原料記号
         mapping.put("petfilmsyurui", "petfilmsyurui"); // PETﾌｨﾙﾑ種類
+        mapping.put("kotyakugouki", "Kotyakugouki"); // 固着ｼｰﾄ張付け機
         mapping.put("kotyakusheet", "Kotyakusheet"); // 固着ｼｰﾄ
         mapping.put("shitatanshigouki", "ShitaTanshigouki"); // 下端子号機
         mapping.put("uwatanshigouki", "UwaTanshigouki"); // 上端子号機
@@ -2341,6 +2352,10 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         mapping.put("kaatujikan", "KaatuJikan"); // 加圧時間
         mapping.put("kaatuaturyoku", "KaatuAturyoku"); // 加圧圧力
         mapping.put("uwatanshi", "UwaTanshi"); // 上端子
+        mapping.put("gaikankakunin1", "GaikanKakunin1"); // 外観確認1
+        mapping.put("gaikankakunin2", "GaikanKakunin2"); // 外観確認2
+        mapping.put("gaikankakunin3", "GaikanKakunin3"); // 外観確認3
+        mapping.put("gaikankakunin4", "GaikanKakunin4"); // 外観確認4
         mapping.put("syorisetsuu", "SyoriSetsuu"); // 処理ｾｯﾄ数
         mapping.put("ryouhinsetsuu", "RyouhinSetsuu"); // 良品ｾｯﾄ数
         mapping.put("starttantosyacode", "StartTantosyacode"); // 開始担当者ｺｰﾄﾞ
@@ -2820,14 +2835,14 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + ",bikou1,bikou2,bikou3,bikou4,bikou5,KCPNO,GoukiCode,TpLot,HakuriSpeed,KanaOndo,DAturyoku,DKaatuJikan,CPressAturyoku,CPressKaatuJikan"
                 + ",CPressKankakuSosuu,LastKaaturyoku,LastKaatuJikan,FourSplitTantou,STaoreryo1,STaoreryo2,STaoreryo3,STaoreryo4,STsunAve,STsunMax,STsunMin"
                 + ",STsunSiguma,HNGKaisuu,GaikanTantou,CPressKaisuu,HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,tapelotno,taperollno1,taperollno2,taperollno3"
-                + ",genryoukigou,petfilmsyurui,Kotyakusheet,ShitaTanshigouki,UwaTanshigouki,ShitaTanshiBukunuki,ShitaTanshi,HakuriKyuin"
-                + ",HakuriClearrance,HakuriCutSpeed,ShitaPanchiOndo,UwaPanchiOndo,KaatuJikan,KaatuAturyoku,UwaTanshi"
-                + ",SyoriSetsuu,RyouhinSetsuu,StartTantosyacode,EndTantousyacode,TanshiTapeSyurui,torokunichiji"
+                + ",genryoukigou,petfilmsyurui,Kotyakugouki,Kotyakusheet,ShitaTanshigouki,UwaTanshigouki,ShitaTanshiBukunuki,ShitaTanshi,HakuriKyuin"
+                + ",HakuriClearrance,HakuriCutSpeed,ShitaPanchiOndo,UwaPanchiOndo,KaatuJikan,KaatuAturyoku,UwaTanshi,GaikanKakunin1,GaikanKakunin2,GaikanKakunin3"
+                + ",GaikanKakunin4,SyoriSetsuu,RyouhinSetsuu,StartTantosyacode,EndTantousyacode,TanshiTapeSyurui,torokunichiji"
                 + ",kosinnichiji,karauti,karautibyou,karautikai,zureti,GaikanKakunin5,revision,deleteflag"
                 + ") VALUES ("
                 + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
                 + " ,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
-                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterTmpSrSpssekisou(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -2987,6 +3002,9 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.ROLL_NO3, srSpssekisouData))); //ﾃｰﾌﾟﾛｰﾙNo3
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.GENRYO_KIGOU, srSpssekisouData))); //原料記号
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.PET_FILM_SHURUI, srSpssekisouData))); //PETﾌｨﾙﾑ種類
+        if (isInsert) {
+            params.add(null); //固着シート貼付り機    
+        }
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.KOTYAKU_SHEET, srSpssekisouData))); //固着シート
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.SHITATANSHI_GOUKI, srSpssekisouData))); //下端子号機
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.UWATANSHI_GOUKI, srSpssekisouData))); //上端子号機
@@ -3000,6 +3018,12 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.KAATU_JIKAN, srSpssekisouData))); //加圧時間
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.KAATU_ATURYOKU, srSpssekisouData))); //加圧圧力
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.UWA_TANSHI, srSpssekisouData))); //上端子
+        if (isInsert) {
+            params.add(null); //外観確認1
+            params.add(null); //外観確認2
+            params.add(null); //外観確認3
+            params.add(null); //外観確認4  
+        }
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.SYORI_SETSUU, srSpssekisouData))); //処理セット数
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.RYOUHIN_SETSUU, srSpssekisouData))); //良品セット数
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.KAISHI_TANTOSYA, srSpssekisouData))); //開始担当者
@@ -3276,14 +3300,14 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + ",DKaatuJikan,CPressAturyoku,CPressKaatuJikan,CPressKankakuSosuu,LastKaaturyoku,LastKaatuJikan,FourSplitTantou"
                 + ",STaoreryo1,STaoreryo2,STaoreryo3,STaoreryo4,STsunAve,STsunMax,STsunMin,STsunSiguma,HNGKaisuu,GaikanTantou"
                 + ",CPressKaisuu,HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,tapelotno,taperollno1,taperollno2,taperollno3,genryoukigou"
-                + ",petfilmsyurui,Kotyakusheet,ShitaTanshigouki,UwaTanshigouki,ShitaTanshiBukunuki,ShitaTanshi"
+                + ",petfilmsyurui,Kotyakugouki,Kotyakusheet,ShitaTanshigouki,UwaTanshigouki,ShitaTanshiBukunuki,ShitaTanshi"
                 + ",HakuriKyuin,HakuriClearrance,HakuriCutSpeed,ShitaPanchiOndo,UwaPanchiOndo,KaatuJikan,KaatuAturyoku,UwaTanshi"
-                + ",SyoriSetsuu,RyouhinSetsuu,StartTantosyacode"
+                + ",GaikanKakunin1,GaikanKakunin2,GaikanKakunin3,GaikanKakunin4,SyoriSetsuu,RyouhinSetsuu,StartTantosyacode"
                 + ",EndTantousyacode,TanshiTapeSyurui,torokunichiji,kosinnichiji,karauti,karautibyou,karautikai,zureti,GaikanKakunin5,revision"
                 + ") VALUES ("
                 + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
                 + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
-                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
         
         List<Object> params = setUpdateParameterSrSpssekisou(true, newRev, kojyo, lotNo, edaban, systemTime, itemList, tmpSrSpssekisou);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -3412,6 +3436,9 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.ROLL_NO3, srSpssekisouData))); //ﾃｰﾌﾟﾛｰﾙNo3
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.GENRYO_KIGOU, srSpssekisouData))); //原料記号
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.PET_FILM_SHURUI, srSpssekisouData))); //PETﾌｨﾙﾑ種類
+        if (isInsert) {
+            params.add(""); //固着シート貼付り機
+        }
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.KOTYAKU_SHEET, srSpssekisouData))); //固着シート
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.SHITATANSHI_GOUKI, srSpssekisouData))); //下端子号機
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.UWATANSHI_GOUKI, srSpssekisouData))); //上端子号機
@@ -3425,6 +3452,12 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B004Const.KAATU_JIKAN, srSpssekisouData))); //加圧時間
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.KAATU_ATURYOKU, srSpssekisouData))); //加圧圧力
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.UWA_TANSHI, srSpssekisouData))); //上端子
+        if (isInsert) {
+            params.add(""); //外観確認1
+            params.add(""); //外観確認2
+            params.add(""); //外観確認3
+            params.add(""); //外観確認4
+        }
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.SYORI_SETSUU, srSpssekisouData))); //処理セット数
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B004Const.RYOUHIN_SETSUU, srSpssekisouData))); //良品セット数
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.KAISHI_TANTOSYA, srSpssekisouData))); //開始担当者
