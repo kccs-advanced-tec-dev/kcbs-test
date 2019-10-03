@@ -3080,6 +3080,9 @@ public class GXHDO101B026 implements IFormLogic {
             // ﾛｯﾄﾌﾟﾚ
             case GXHDO101B026Const.LOTPRE:
                 return StringUtil.nullToBlank(srTermData.getLotpre());
+            // 客先
+            case GXHDO101B026Const.KYAKUSAKI:
+                return StringUtil.nullToBlank(srTermData.getKyakusaki());
             default:
                 return null;            
         }
