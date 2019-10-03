@@ -1203,11 +1203,11 @@ public class GXHDO101B005 implements IFormLogic {
         this.setItemData(processData, GXHDO101B005Const.PITCH, lSun + "×" + wSun);
 
         // 電極ペースト
-        this.setItemData(processData, GXHDO101B005Const.DENKYOKU_PASTE, "");
+        this.setItemData(processData, GXHDO101B005Const.DENKYOKU_PASTE, getKikakuchiValue(processData.getItemList(), GXHDO101B005Const.DENKYOKU_PASTE));
         
         // 積層スライド量
-        this.setItemData(processData, GXHDO101B005Const.SEKISOU_SLIDE_RYOU,  StringUtil.nullToBlank(sekkeiData.get("ABSLIDE")));
-
+        this.setItemData(processData, GXHDO101B005Const.SEKISOU_SLIDE_RYOU, getKikakuchiValue(processData.getItemList(), GXHDO101B005Const.SEKISOU_SLIDE_RYOU));
+        
         // 最上層スライド量
         this.setItemData(processData, GXHDO101B005Const.LAST_LAYER_SLIDE_RYO, StringUtil.nullToBlank(sekkeiData.get("LASTLAYERSLIDERYO")));
         
@@ -1229,8 +1229,7 @@ public class GXHDO101B005 implements IFormLogic {
         this.setItemData(processData, GXHDO101B005Const.RENZOKUSEKISOUMAISUU, StringUtil.nullToBlank(sekkeiData.get("RENZOKUINSATUN")));
         
         // B層補正量
-        this.setItemData(processData, GXHDO101B005Const.BSOUHOSEIRYOU, "");
-        
+        this.setItemData(processData, GXHDO101B005Const.BSOUHOSEIRYOU, getKikakuchiValue(processData.getItemList(), GXHDO101B005Const.BSOUHOSEIRYOU));
         
     }
 
@@ -3990,6 +3989,30 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
             // 電極ｽﾀｰﾄ確認者
             case GXHDO101B005Const.KAKUNINSYA:
                 return StringUtil.nullToBlank(srRsussekData.getKakuninsya());
+            // 電極ﾍﾟｰｽﾄ
+            case GXHDO101B005Const.DENKYOKU_PASTE:
+                return StringUtil.nullToBlank(srRsussekData.getEpaste());
+            // 積層ｽﾗｲﾄﾞ量
+            case GXHDO101B005Const.SEKISOU_SLIDE_RYOU:
+                return StringUtil.nullToBlank(srRsussekData.getSekisouslideryo());
+            // 最上層ｽﾗｲﾄﾞ量
+            case GXHDO101B005Const.LAST_LAYER_SLIDE_RYO:
+                return StringUtil.nullToBlank(srRsussekData.getLastlayerslideryo());
+            // 印刷ﾛｰﾙNo
+            case GXHDO101B005Const.PRINT_ROLLNO:
+                return StringUtil.nullToBlank(srRsussekData.getInsaturollno());
+            // ｾｯﾄ数
+            case GXHDO101B005Const.SET_SUU:
+                return StringUtil.nullToBlank(srRsussekData.getSetsuu());
+            // 客先
+            case GXHDO101B005Const.KYAKUSAKI:
+                return StringUtil.nullToBlank(srRsussekData.getTokuisaki());
+            // ﾛｯﾄ区分
+            case GXHDO101B005Const.LOT_KUBUN:
+                return StringUtil.nullToBlank(srRsussekData.getLotkubuncode());
+            // ｵｰﾅｰ
+            case GXHDO101B005Const.OWNER:
+                return StringUtil.nullToBlank(srRsussekData.getOwnercode());
             default:
                 return null;
 
@@ -4097,6 +4120,42 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         params.add(edaban); //枝番
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+    
+    /**
+     * 規格値を括り【】を除いて取得
+     * @param itemList 項目リスト
+     * @param itemId 項目ID
+     * @return 規格値
+     */
+    private String getKikakuchiValue(List<FXHDD01> itemList, String itemId) {
+
+        FXHDD01 item = getItemRow(itemList, itemId); // 規格値を取得する項目を取得
+        // 項目が取得出来ないまたは規格値が設定されていない場合
+        if (item == null || StringUtil.isEmpty(item.getKikakuChi())) {
+            return "";
+        }
+
+        String kikakuchi = item.getKikakuChi();
+        if (kikakuchi.startsWith("【")) {
+            // 本来ありえないが1文字しかない場合、空を返却
+            if (StringUtil.length(kikakuchi) == 1) {
+                return "";
+            }
+            // 先頭文字以降を切り出し
+            kikakuchi = kikakuchi.substring(1);
+        }
+
+        if (kikakuchi.endsWith("】")) {
+            // 本来ありえないが1文字しかない場合、空を返却
+            if (StringUtil.length(kikakuchi) == 1) {
+                return "";
+            }
+            // 最終文字文字以前を切り出し
+            kikakuchi = kikakuchi.substring(0, StringUtil.length(kikakuchi) - 1);
+        }
+
+        return kikakuchi;
     }
 
 }

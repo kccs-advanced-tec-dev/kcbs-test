@@ -129,7 +129,7 @@ public class GXHDO201B005Model {
     /** 積層ｽﾗｲﾄﾞ量(mm) */
     private String sekisouslideryo = "";
     /** 最上層ｽﾗｲﾄﾞ量(μm) */
-    private String lastlayerslideryo = "";
+    private Double lastlayerslideryo = null;
     /** 連続積層枚数 */
     private Long renzokusekisoumaisuu = null;
     /** B層補正量 */
@@ -925,7 +925,7 @@ public class GXHDO201B005Model {
      * 最上層ｽﾗｲﾄﾞ量(μm)
      * @return the lastlayerslideryo
      */
-    public String getLastlayerslideryo() {
+    public Double getLastlayerslideryo() {
         return lastlayerslideryo;
     }
 
@@ -933,7 +933,7 @@ public class GXHDO201B005Model {
      * 最上層ｽﾗｲﾄﾞ量(μm)
      * @param lastlayerslideryo the lastlayerslideryo to set
      */
-    public void setLastlayerslideryo(String lastlayerslideryo) {
+    public void setLastlayerslideryo(Double lastlayerslideryo) {
         this.lastlayerslideryo = lastlayerslideryo;
     }
 

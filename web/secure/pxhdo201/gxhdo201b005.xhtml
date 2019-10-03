@@ -295,13 +295,13 @@
                             <f:convertNumber pattern="#,###,###,##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="sekisouslideryo" headerText="積層ｽﾗｲﾄﾞ量(mm)" styleClass="number">
-                        <p:outputLabel value="#{item.sekisouslideryo}">
-                            <f:convertNumber pattern="#,###,###,##0.0"/>
-                        </p:outputLabel>
+                    <p:column id="sekisouslideryo" headerText="積層ｽﾗｲﾄﾞ量(mm)" >
+                        <p:outputLabel value="#{item.sekisouslideryo}" />
                     </p:column>
-                    <p:column id="lastlayerslideryo" headerText="最上層ｽﾗｲﾄﾞ量(μm)" >
-                        <p:outputLabel value="#{item.lastlayerslideryo}"/>
+                    <p:column id="lastlayerslideryo" headerText="最上層ｽﾗｲﾄﾞ量(μm)" styleClass="number" >
+                        <p:outputLabel value="#{item.lastlayerslideryo}">
+                            <f:convertNumber pattern="#,###,###,##0.0"/>
+                        </p:outputLabel>                        
                     </p:column>
                     <p:column id="renzokusekisoumaisuu" headerText="連続積層枚数" styleClass="number">
                         <p:outputLabel value="#{item.renzokusekisoumaisuu}">
