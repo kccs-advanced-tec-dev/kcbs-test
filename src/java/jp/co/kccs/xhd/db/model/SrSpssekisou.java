@@ -169,12 +169,12 @@ public class SrSpssekisou {
     /**
      * 最終加圧力
      */
-    private Integer lastKaaturyoku;
+    private BigDecimal lastKaaturyoku;
 
     /**
      * 最終加圧時間
      */
-    private Integer lastKaatuJikan;
+    private BigDecimal lastKaatuJikan;
 
     /**
      * 4分割担当者ｺｰﾄﾞ
@@ -868,7 +868,7 @@ public class SrSpssekisou {
      * 最終加圧力
      * @return lastKaaturyoku
      */
-    public Integer getLastKaaturyoku() {
+    public BigDecimal getLastKaaturyoku() {
         return lastKaaturyoku;
     }
 
@@ -876,7 +876,7 @@ public class SrSpssekisou {
      * 最終加圧力
      * @param lastKaaturyoku セットする lastKaaturyoku
      */
-    public void setLastKaaturyoku(Integer lastKaaturyoku) {
+    public void setLastKaaturyoku(BigDecimal lastKaaturyoku) {
         this.lastKaaturyoku = lastKaaturyoku;
     }
 
@@ -884,7 +884,7 @@ public class SrSpssekisou {
      * 最終加圧時間
      * @return lastKaatuJikan
      */
-    public Integer getLastKaatuJikan() {
+    public BigDecimal getLastKaatuJikan() {
         return lastKaatuJikan;
     }
 
@@ -892,7 +892,7 @@ public class SrSpssekisou {
      * 最終加圧時間
      * @param lastKaatuJikan セットする lastKaatuJikan
      */
-    public void setLastKaatuJikan(Integer lastKaatuJikan) {
+    public void setLastKaatuJikan(BigDecimal lastKaatuJikan) {
         this.lastKaatuJikan = lastKaatuJikan;
     }
 

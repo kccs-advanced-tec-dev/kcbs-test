@@ -2979,8 +2979,8 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         params.add(null);//中間ﾌﾟﾚｽ圧力
         params.add(null);//中間ﾌﾟﾚｽ加圧時間
         params.add(null);//中間ﾌﾟﾚｽ間隔総数
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.LAST_KAATURYOKU, srSpssekisouData))); //最終加圧力
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.LAST_KAATUJIKAN, srSpssekisouData))); //最終加圧時間
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.LAST_KAATURYOKU, srSpssekisouData))); //最終加圧力
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.LAST_KAATUJIKAN, srSpssekisouData))); //最終加圧時間
         params.add(null);//4分割担当者ｺｰﾄﾞ
         params.add(null);//積層ﾀｵﾚ量1
         params.add(null);//積層ﾀｵﾚ量2
@@ -3413,8 +3413,8 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         params.add(0); //中間ﾌﾟﾚｽ圧力
         params.add(0); //中間ﾌﾟﾚｽ加圧時間
         params.add(0); //中間ﾌﾟﾚｽ間隔総数
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.LAST_KAATURYOKU, srSpssekisouData))); //最終加圧力
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.LAST_KAATUJIKAN, srSpssekisouData))); //最終加圧時間
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B004Const.LAST_KAATURYOKU, srSpssekisouData))); //最終加圧力
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B004Const.LAST_KAATUJIKAN, srSpssekisouData))); //最終加圧時間
         params.add(""); //4分割担当者ｺｰﾄﾞ
         params.add(0); //積層ﾀｵﾚ量1
         params.add(0); //積層ﾀｵﾚ量2
