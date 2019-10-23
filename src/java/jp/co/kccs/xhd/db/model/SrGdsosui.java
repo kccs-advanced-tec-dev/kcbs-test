@@ -18,12 +18,12 @@ import java.sql.Timestamp;
  * ===============================================================================<br>
  */
 /**
- * SR_SOSUI(疎水処理)のモデルクラスです。
+ * SR_GDSOSUI(疎水処理)のモデルクラスです。
  *
  * @author 863 K.Zhang
  * @since  2019/09/02
  */
-public class SrSosui {
+public class SrGdsosui {
     /**
      * 工場ｺｰﾄﾞ
      */

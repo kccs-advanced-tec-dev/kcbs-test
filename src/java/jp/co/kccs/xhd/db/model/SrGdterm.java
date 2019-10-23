@@ -19,12 +19,12 @@ import java.sql.Timestamp;
  * ===============================================================================<br>
  */
 /**
- * SR_TERM(外部電極塗布)のモデルクラスです。
+ * SR_GDTERM(外部電極塗布)のモデルクラスです。
  *
  * @author KCSS K.Jo
  * @since  2019/09/02
  */
-public class SrTerm {
+public class SrGdterm {
     /** 
      * 工場ｺｰﾄﾞ 
      */

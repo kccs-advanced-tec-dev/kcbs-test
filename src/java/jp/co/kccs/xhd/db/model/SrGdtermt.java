@@ -24,7 +24,7 @@ import java.sql.Timestamp;
  * @author 863 F.Zhang
  * @since  2019/09/02
  */
-public class SrTermt {
+public class SrGdtermt {
     /**
      * 工場ｺｰﾄﾞ
      */
