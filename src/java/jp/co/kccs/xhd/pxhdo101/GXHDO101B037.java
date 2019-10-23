@@ -161,14 +161,10 @@ public class GXHDO101B037 implements IFormLogic {
         
         // 処理数ﾁｪｯｸ
         String syorisuu = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B037Const.SYORISUU, null)); // 処理数
-        if (!syorisuu.isEmpty()) {
-            // 処理数を数値変換
-            BigDecimal decSyorisuu = new BigDecimal(syorisuu);
-            // 0以下の場合
-            if (BigDecimal.ZERO.compareTo(decSyorisuu) >= 0) {
-                // 警告メッセージの設定
-                processData.setWarnMessage(MessageUtil.getMessage("XHD-000078"));
-            }
+        // 0以下の場合
+        if("".equals(syorisuu)) {
+            // 警告メッセージの設定
+            processData.setWarnMessage(MessageUtil.getMessage("XHD-000078"));
         }
 
         // 後続処理メソッド設定
@@ -313,14 +309,10 @@ public class GXHDO101B037 implements IFormLogic {
 
         // 処理数ﾁｪｯｸ
         String syorisuu = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B037Const.SYORISUU, null)); // 処理数
-        if (!syorisuu.isEmpty()) {
-            // 処理数を数値変換
-            BigDecimal decSyorisuu = new BigDecimal(syorisuu);
-            // 0以下の場合
-            if (BigDecimal.ZERO.compareTo(decSyorisuu) >= 0) {
-                // 警告メッセージの設定
-                processData.setWarnMessage(MessageUtil.getMessage("XHD-000078"));
-            }
+        // 0以下の場合
+        if("".equals(syorisuu)) {
+            // 警告メッセージの設定
+            processData.setWarnMessage(MessageUtil.getMessage("XHD-000078"));
         }
 
         // 後続処理メソッド設定
@@ -471,14 +463,10 @@ public class GXHDO101B037 implements IFormLogic {
 
         // 処理数ﾁｪｯｸ
         String syorisuu = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B037Const.SYORISUU, null)); // 処理数
-        if (!syorisuu.isEmpty()) {
-            // 処理数を数値変換
-            BigDecimal decSyorisuu = new BigDecimal(syorisuu);
-            // 0以下の場合
-            if (BigDecimal.ZERO.compareTo(decSyorisuu) >= 0) {
-                // 警告メッセージの設定
-                processData.setWarnMessage(MessageUtil.getMessage("XHD-000078"));
-            }
+        // 0以下の場合
+        if("".equals(syorisuu)) {
+            // 警告メッセージの設定
+            processData.setWarnMessage(MessageUtil.getMessage("XHD-000078"));
         }
 
         // ユーザ認証用のパラメータをセットする。
@@ -2364,9 +2352,6 @@ public class GXHDO101B037 implements IFormLogic {
      */
     public ProcessData doWipTorikomi(ProcessData processData) throws SQLException {
 
-        // 後続処理メソッド設定
-        processData.setMethod("");
-        
         QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
         QueryRunner queryRunnerWip = new QueryRunner(processData.getDataSourceWip());
 
@@ -2395,22 +2380,29 @@ public class GXHDO101B037 implements IFormLogic {
                     processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000119", dbShorisu))));
                     return processData;
                 }
+
+                itemOkuriryohinsuu.setValue(String.valueOf(dbShorisu));
+                itemKeisuuday.setValue(DateUtil.getDisplayDate(jissekiData.get(0).getSyoribi(), "yyMMdd"));
+                itemKeisuutime.setValue(DateUtil.getDisplayTime(jissekiData.get(0).getSyorijikoku(), "HHmm"));
+                itemTantousya.setValue(jissekiData.get(0).getTantousyacode());
+
                 // 仕掛情報の取得
                 Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
-
+                
                 if (shikakariData == null || shikakariData.isEmpty()) {
                     processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000029"))));
+                    return processData;
                 } else {
                     // 単位重量
                     BigDecimal tanijyuryo = new BigDecimal(StringUtil.nullToBlank(getMapData(shikakariData, "tanijuryo")));
                     itemTanijyuryo.setValue(tanijyuryo.setScale(4, RoundingMode.DOWN).toString());
                 }
-                itemOkuriryohinsuu.setValue(String.valueOf(dbShorisu));
-                itemKeisuuday.setValue(DateUtil.getDisplayDate(jissekiData.get(0).getSyoribi(), "yyMMdd"));
-                itemKeisuutime.setValue(DateUtil.getDisplayTime(jissekiData.get(0).getSyorijikoku(), "HHmm"));
-                itemTantousya.setValue(jissekiData.get(0).getTantousyacode());
             }
         }
+        
+        // 後続処理メソッド設定
+        processData.setMethod("");
+        
         return processData;
     }
     

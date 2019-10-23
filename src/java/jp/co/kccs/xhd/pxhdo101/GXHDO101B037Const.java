@@ -144,42 +144,42 @@ public class GXHDO101B037Const {
     public static final String BTN_BUDOMARI_KEISAN_TOP = "sr_keisuu_budomari_keisan_Top";
     
     /**
-     * 枝番ｺﾋﾟｰ(画面上ボタン)
+     * 枝番ｺﾋﾟｰ(画面下ボタン)
      */
     public static final String BTN_COPY_EDABAN_BOTTOM = "sr_keisuu_copy_edaban_Bottom";
     
     /**
-     * 仮登録(画面上ボタン)
+     * 仮登録(画面下ボタン)
      */
     public static final String BTN_KARI_TOUROKU_BOTTOM = "sr_keisuu_kari_touroku_Bottom";
     
     /**
-     * 登録(画面上ボタン)
+     * 登録(画面下ボタン)
      */
     public static final String BTN_INSERT_BOTTOM = "sr_keisuu_insert_Bottom";
     
     /**
-     * 修正(画面上ボタン)
+     * 修正(画面下ボタン)
      */
     public static final String BTN_UPDATE_BOTTOM = "sr_keisuu_update_Bottom";
     
     /**
-     * 削除(画面上ボタン)
+     * 削除(画面下ボタン)
      */
     public static final String BTN_DELETE_BOTTOM = "sr_keisuu_delete_Bottom";
     
     /**
-     * 計数日時(画面上ボタン)
+     * 計数日時(画面下ボタン)
      */
     public static final String BTN_KEISUUDATETIME_BOTTOM = "sr_keisuu_keisuudatetime_Bottom";
     
     /**
-     * WIP取込(画面上ボタン)
+     * WIP取込(画面下ボタン)
      */
     public static final String BTN_WIP_TORIKOMI_BOTTOM = "sr_keisuu_wip_torikomi_Bottom";
     
     /**
-     * 歩留まり計算(画面上ボタン)
+     * 歩留まり計算(画面下ボタン)
      */
     public static final String BTN_BUDOMARI_KEISAN_BOTTOM = "sr_keisuu_budomari_keisan_Bottom";
     

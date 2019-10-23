@@ -1200,6 +1200,8 @@ public class GXHDO101B036 implements IFormLogic {
             String sql = "SELECT data "
                     + " FROM fxhbm03 "
                     + " WHERE user_name = 'common_user' AND key = 'xhd_gaibudenkyoku_dandori_koteicode' ";
+            List<Object> params = new ArrayList<>();
+            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
             return queryRunnerDoc.query(sql, new MapHandler());
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
