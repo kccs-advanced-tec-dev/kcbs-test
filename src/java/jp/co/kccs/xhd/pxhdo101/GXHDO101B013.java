@@ -202,9 +202,10 @@ public class GXHDO101B013 implements IFormLogic {
             String edaban = lotNo.substring(11, 14); //枝番
             String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
             String formTitle = StringUtil.nullToBlank(session.getAttribute("formTitle"));
-
+            int jissekiNo = Integer.parseInt(StringUtil.nullToBlank(session.getAttribute("jissekino")));
+            
             // 品質DB登録実績データ取得
-            Map fxhdd03RevInfo = loadFxhdd03RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, formId);
+            Map fxhdd03RevInfo = loadFxhdd03RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, jissekiNo, formId);
             ErrorMessageInfo checkRevMessageInfo = checkRevision(processData, fxhdd03RevInfo);
             // リビジョンエラー時はリターン
             if (checkRevMessageInfo != null) {
@@ -216,7 +217,6 @@ public class GXHDO101B013 implements IFormLogic {
             }
 
             BigDecimal newRev = BigDecimal.ONE;
-            int jissekiNo = 1;
             Timestamp systemTime = new Timestamp(System.currentTimeMillis());
 
             BigDecimal rev = BigDecimal.ZERO;
@@ -229,18 +229,18 @@ public class GXHDO101B013 implements IFormLogic {
                 newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, formId);
 
                 // 品質DB登録実績更新処理
-                updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_KARI_TOROKU, systemTime);
+                updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, jissekiNo, JOTAI_FLG_KARI_TOROKU, systemTime);
             }
 
             if (StringUtil.isEmpty(processData.getInitJotaiFlg()) || JOTAI_FLG_SAKUJO.equals(processData.getInitJotaiFlg())) {
 
                 // ｾｯﾀ詰め_仮登録登録処理
-                insertTmpSrSayadume(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, systemTime, processData.getItemList());
+                insertTmpSrSayadume(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, jissekiNo, systemTime, processData.getItemList());
 
             } else {
 
                 // ｾｯﾀ詰め_仮登録更新処理
-                updateTmpSrSayadume(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo8, edaban, systemTime, processData.getItemList());
+                updateTmpSrSayadume(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo8, edaban, jissekiNo, systemTime, processData.getItemList());
             }
 
             // 規格情報でエラーが発生している場合、エラー内容を更新
@@ -389,10 +389,11 @@ public class GXHDO101B013 implements IFormLogic {
             String edaban = lotNo.substring(11, 14); //枝番
             String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
             String formTitle = StringUtil.nullToBlank(session.getAttribute("formTitle"));
-
+            int jissekiNo = Integer.parseInt(StringUtil.nullToBlank(session.getAttribute("jissekino")));
+            
             // 品質DB登録実績データ取得
             //ここでロックを掛ける
-            Map fxhdd03RevInfo = loadFxhdd03RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, formId);
+            Map fxhdd03RevInfo = loadFxhdd03RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, jissekiNo, formId);
             ErrorMessageInfo checkRevMessageInfo = checkRevision(processData, fxhdd03RevInfo);
             // リビジョンエラー時はリターン
             if (checkRevMessageInfo != null) {
@@ -405,7 +406,6 @@ public class GXHDO101B013 implements IFormLogic {
 
             BigDecimal rev = BigDecimal.ZERO;
             BigDecimal newRev = BigDecimal.ONE;
-            int jissekiNo = 1;
             Timestamp systemTime = new Timestamp(System.currentTimeMillis());
 
             if (StringUtil.isEmpty(processData.getInitRev())) {
@@ -417,7 +417,7 @@ public class GXHDO101B013 implements IFormLogic {
                 newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, formId);
 
                 // 品質DB登録実績更新処理
-                updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_TOROKUZUMI, systemTime);
+                updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, jissekiNo, JOTAI_FLG_TOROKUZUMI, systemTime);
             }
 
             // 仮登録状態の場合、仮登録のデータを削除する。
@@ -430,11 +430,11 @@ public class GXHDO101B013 implements IFormLogic {
                     tmpSrSayadume = srSayadumeList.get(0);
                 }
 
-                deleteTmpSrSayadume(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban);
+                deleteTmpSrSayadume(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban, jissekiNo);
             }
 
             // ｾｯﾀ詰め_登録処理
-            insertSrSayadume(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, systemTime, processData.getItemList(), tmpSrSayadume);
+            insertSrSayadume(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, jissekiNo, systemTime, processData.getItemList(), tmpSrSayadume);
 
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
@@ -550,10 +550,11 @@ public class GXHDO101B013 implements IFormLogic {
             String edaban = lotNo.substring(11, 14); //枝番
             String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
             String formTitle = StringUtil.nullToBlank(session.getAttribute("formTitle"));
-
+            int jissekiNo = Integer.parseInt(StringUtil.nullToBlank(session.getAttribute("jissekino")));
+            
             // 品質DB登録実績データ取得
             //ここでロックを掛ける
-            Map fxhdd03RevInfo = loadFxhdd03RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, formId);
+            Map fxhdd03RevInfo = loadFxhdd03RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, jissekiNo, formId);
             ErrorMessageInfo checkRevMessageInfo = checkRevision(processData, fxhdd03RevInfo);
             // リビジョンエラー時はリターン
             if (checkRevMessageInfo != null) {
@@ -569,13 +570,12 @@ public class GXHDO101B013 implements IFormLogic {
             // 最新のリビジョンを採番
             BigDecimal newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, formId);
 
-            int jissekiNo = 1;
             Timestamp systemTime = new Timestamp(System.currentTimeMillis());
             // 品質DB登録実績更新処理
-            updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_TOROKUZUMI, systemTime);
+            updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, jissekiNo, JOTAI_FLG_TOROKUZUMI, systemTime);
 
             // ｾｯﾀ詰め_更新処理
-            updateSrSayadume(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo8, edaban, systemTime, processData.getItemList());
+            updateSrSayadume(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo8, edaban, jissekiNo, systemTime, processData.getItemList());
 
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
@@ -664,10 +664,11 @@ public class GXHDO101B013 implements IFormLogic {
             String lotNo8 = lotNo.substring(3, 11); //ﾛｯﾄNo(8桁)
             String edaban = lotNo.substring(11, 14); //枝番
             String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
-
+            int jissekiNo = Integer.parseInt(StringUtil.nullToBlank(session.getAttribute("jissekino")));
+            
             // 品質DB登録実績データ取得
             //ここでロックを掛ける
-            Map fxhdd03RevInfo = loadFxhdd03RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, formId);
+            Map fxhdd03RevInfo = loadFxhdd03RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, jissekiNo, formId);
             ErrorMessageInfo checkRevMessageInfo = checkRevision(processData, fxhdd03RevInfo);
             // リビジョンエラー時はリターン
             if (checkRevMessageInfo != null) {
@@ -684,14 +685,14 @@ public class GXHDO101B013 implements IFormLogic {
 
             Timestamp systemTime = new Timestamp(System.currentTimeMillis());
             // 品質DB登録実績更新処理
-            updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_SAKUJO, systemTime);
+            updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, jissekiNo, JOTAI_FLG_SAKUJO, systemTime);
 
             // ｾｯﾀ詰め_仮登録登録処理
             int newDeleteflag = getNewDeleteflag(queryRunnerQcdb, kojyo, lotNo8, edaban);
-            insertDeleteDataTmpSrSayadume(queryRunnerQcdb, conQcdb, newRev, newDeleteflag, kojyo, lotNo8, edaban, systemTime);
+            insertDeleteDataTmpSrSayadume(queryRunnerQcdb, conQcdb, newRev, newDeleteflag, kojyo, lotNo8, edaban, jissekiNo, systemTime);
 
             // ｾｯﾀ詰め_削除処理
-            deleteSrSayadume(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban);
+            deleteSrSayadume(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban, jissekiNo);
 
             DbUtils.commitAndCloseQuietly(conDoc);
             DbUtils.commitAndCloseQuietly(conQcdb);
@@ -950,7 +951,6 @@ public class GXHDO101B013 implements IFormLogic {
             String owner = StringUtil.nullToBlank(getMapData(ownerMasData, "ownername"));
             this.setItemData(processData, GXHDO101B013Const.OWNER, ownercode + ":" + owner);
         }
-        // 処理数　TODO
 
         // 指示
         this.setItemData(processData, GXHDO101B013Const.SIJI, "");
@@ -1246,12 +1246,13 @@ public class GXHDO101B013 implements IFormLogic {
      * @throws SQLException 例外エラー
      */
     private Map loadFxhdd03RevInfoWithLock(QueryRunner queryRunnerDoc, Connection conDoc, String kojyo, String lotNo,
-            String edaban, String formId) throws SQLException {
+            String edaban, int jissekino, String formId) throws SQLException {
         // 品質DB登録実績データの取得
         String sql = "SELECT rev, jotai_flg "
                 + "FROM fxhdd03 "
                 + "WHERE kojyo = ? AND lotno = ? "
                 + "AND edaban = ? AND gamen_id = ? "
+                + "AND jissekino = ? "
                 + "FOR UPDATE NOWAIT ";
 
         List<Object> params = new ArrayList<>();
@@ -1259,7 +1260,8 @@ public class GXHDO101B013 implements IFormLogic {
         params.add(lotNo);
         params.add(edaban);
         params.add(formId);
-
+        params.add(jissekino);
+        
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerDoc.query(conDoc, sql, new MapHandler(), params.toArray());
     }
@@ -1653,17 +1655,18 @@ public class GXHDO101B013 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
+     * @param jissekino 実績No
      * @param jotaiFlg 状態ﾌﾗｸﾞ
      * @throws SQLException 例外ｴﾗｰ
      */
     private void updateFxhdd03(QueryRunner queryRunnerDoc, Connection conDoc, String tantoshaCd, String formId, BigDecimal rev,
-            String kojyo, String lotNo, String edaban, String jotaiFlg, Timestamp systemTime) throws SQLException {
+            String kojyo, String lotNo, String edaban, int jissekino, String jotaiFlg, Timestamp systemTime) throws SQLException {
         String sql = "UPDATE fxhdd03 SET "
                 + "koshinsha = ?, koshin_date = ?,"
                 + "rev = ?, jotai_flg = ? "
                 + "WHERE gamen_id = ? AND kojyo = ? "
                 + "  AND lotno = ? AND edaban = ? "
-                + "  AND jissekino = 1  ";
+                + "  AND jissekino = ?  ";
 
         List<Object> params = new ArrayList<>();
         // 更新内容
@@ -1677,6 +1680,7 @@ public class GXHDO101B013 implements IFormLogic {
         params.add(kojyo); //工場ｺｰﾄﾞ
         params.add(lotNo); //ﾛｯﾄNo
         params.add(edaban); //枝番
+        params.add(jissekino); //実績No
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerDoc.update(conDoc, sql, params.toArray());
@@ -1692,12 +1696,13 @@ public class GXHDO101B013 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
+     * @param jissekino 実績No
      * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
      * @param itemList 項目リスト
      * @throws SQLException 例外エラー
      */
     private void insertTmpSrSayadume(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev, int deleteflag,
-            String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
+            String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
 
         String sql = "INSERT INTO tmp_sr_sayadume ("
                 + "kojyo,lotno,edaban,kcpno,kaishinichiji,syuuryounichiji,sayadumegouki,sayasuu,kosuu,tantousya,jissekino,bikou1,"
@@ -1707,7 +1712,7 @@ public class GXHDO101B013 implements IFormLogic {
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
                 + ") ";
 
-        List<Object> params = setUpdateParameterTmpSrSayadume(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null);
+        List<Object> params = setUpdateParameterTmpSrSayadume(true, newRev, deleteflag, kojyo, lotNo, edaban, jissekino, systemTime, itemList, null);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
 
@@ -1724,18 +1729,19 @@ public class GXHDO101B013 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
+     * @param jissekino 実績No
      * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
      * @param itemList 項目リスト
      * @throws SQLException 例外エラー
      */
     private void updateTmpSrSayadume(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, String jotaiFlg, BigDecimal newRev,
-            String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
+            String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
 
         String sql = "UPDATE tmp_sr_sayadume SET "
                 + "kcpno = ?,kaishinichiji = ?,syuuryounichiji = ?,sayadumegouki = ?,sayasuu = ?,kosuu = ?,tantousya = ?,bikou1 = ?,bikou2 = ?,"
                 + "koushinnichiji = ?,settertumeryou = ?,settertumehouhou = ?,settersyurui = ?,konamabushi = ?,StartKakuninsyacode = ?,"
                 + "EndTantousyacode = ?,revision = ?,deleteflag = ? "
-                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND jissekino = ? AND revision = ? ";
 
         // 更新前の値を取得
         List<SrSayadume> srSayadumeList = getSrSayadumeData(queryRunnerQcdb, rev.toPlainString(), jotaiFlg, kojyo, lotNo, edaban);
@@ -1745,12 +1751,13 @@ public class GXHDO101B013 implements IFormLogic {
         }
 
         //更新値設定
-        List<Object> params = setUpdateParameterTmpSrSayadume(false, newRev, 0, "", "", "", systemTime, itemList, srSayadume);
+        List<Object> params = setUpdateParameterTmpSrSayadume(false, newRev, 0, "", "", "", jissekino, systemTime, itemList, srSayadume);
 
         //検索条件設定
         params.add(kojyo);
         params.add(lotNo);
         params.add(edaban);
+        params.add(jissekino);
         params.add(rev);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
@@ -1765,13 +1772,14 @@ public class GXHDO101B013 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
+     * @param jissekino 実績No
      * @throws SQLException 例外エラー
      */
     private void deleteTmpSrSayadume(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev,
-            String kojyo, String lotNo, String edaban) throws SQLException {
+            String kojyo, String lotNo, String edaban, int jissekino) throws SQLException {
 
         String sql = "DELETE FROM tmp_sr_sayadume "
-                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ?";
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND jissekino = ? AND revision = ?";
 
         //更新値設定
         List<Object> params = new ArrayList<>();
@@ -1780,6 +1788,7 @@ public class GXHDO101B013 implements IFormLogic {
         params.add(kojyo);
         params.add(lotNo);
         params.add(edaban);
+        params.add(jissekino);
         params.add(rev);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
@@ -1794,13 +1803,14 @@ public class GXHDO101B013 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
+     * @param jissekino 実績No
      * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
      * @param itemList 項目リスト
      * @param srSayadumeData ｾｯﾀ詰めデータ
      * @return 更新パラメータ
      */
     private List<Object> setUpdateParameterTmpSrSayadume(boolean isInsert, BigDecimal newRev, int deleteflag, String kojyo,
-            String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList, SrSayadume srSayadumeData) {
+            String lotNo, String edaban, int jissekino, Timestamp systemTime, List<FXHDD01> itemList, SrSayadume srSayadumeData) {
         List<Object> params = new ArrayList<>();
         if (isInsert) {
             params.add(kojyo); //工場ｺｰﾄﾞ
@@ -1819,7 +1829,7 @@ public class GXHDO101B013 implements IFormLogic {
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B013Const.SHORISU, srSayadumeData)));  //処理数
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B013Const.KAISHI_TANTOUSYA, srSayadumeData)));  //担当者ｺｰﾄﾞ
         if (isInsert) {
-            params.add(null); //実績No
+            params.add(jissekino); //実績No
         }
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B013Const.BIKOU1, srSayadumeData)));  //備考1
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B013Const.BIKOU2, srSayadumeData)));  //備考2
@@ -1851,13 +1861,14 @@ public class GXHDO101B013 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
+     * @param jissekino 実績No
      * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
      * @param itemList 項目リスト
      * @param tmpSrSayadume 仮登録データ
      * @throws SQLException 例外エラー
      */
     private void insertSrSayadume(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev,
-            String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList, SrSayadume tmpSrSayadume) throws SQLException {
+            String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, List<FXHDD01> itemList, SrSayadume tmpSrSayadume) throws SQLException {
 
         String sql = "INSERT INTO sr_sayadume ("
                 + "kojyo,lotno,edaban,kcpno,kaishinichiji,syuuryounichiji,sayadumegouki,sayasuu,kosuu,tantousya,jissekino,bikou1,"
@@ -1867,7 +1878,7 @@ public class GXHDO101B013 implements IFormLogic {
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
                 + ") ";
 
-        List<Object> params = setUpdateParameterSrSayadume(true, newRev, kojyo, lotNo, edaban, systemTime, itemList, tmpSrSayadume);
+        List<Object> params = setUpdateParameterSrSayadume(true, newRev, kojyo, lotNo, edaban, jissekino, systemTime, itemList, tmpSrSayadume);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
     }
@@ -1883,17 +1894,18 @@ public class GXHDO101B013 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
+     * @param jissekino 実績No
      * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
      * @param itemList 項目リスト
      * @throws SQLException 例外エラー
      */
     private void updateSrSayadume(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, String jotaiFlg, BigDecimal newRev,
-            String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
+            String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
         String sql = "UPDATE sr_sayadume SET "
                 + "kcpno = ?,kaishinichiji = ?,syuuryounichiji = ?,sayadumegouki = ?,sayasuu = ?,kosuu = ?,tantousya = ?,bikou1 = ?,bikou2 = ?,"
                 + "koushinnichiji = ?,settertumeryou = ?,settertumehouhou = ?,settersyurui = ?,konamabushi = ?,StartKakuninsyacode = ?,"
                 + "EndTantousyacode = ?,revision = ? "
-                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ?  AND jissekino = ? AND revision = ? ";
 
         // 更新前の値を取得
         List<SrSayadume> srSayadumeList = getSrSayadumeData(queryRunnerQcdb, rev.toPlainString(), jotaiFlg, kojyo, lotNo, edaban);
@@ -1903,12 +1915,13 @@ public class GXHDO101B013 implements IFormLogic {
         }
 
         //更新値設定
-        List<Object> params = setUpdateParameterSrSayadume(false, newRev, "", "", "", systemTime, itemList, srSayadume);
+        List<Object> params = setUpdateParameterSrSayadume(false, newRev, "", "", "", jissekino, systemTime, itemList, srSayadume);
 
         //検索条件設定
         params.add(kojyo);
         params.add(lotNo);
         params.add(edaban);
+        params.add(jissekino);
         params.add(rev);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
@@ -1922,13 +1935,14 @@ public class GXHDO101B013 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
+     * @param jissekino 実績No
      * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
      * @param itemList 項目リスト
      * @param srSayadumeData ｾｯﾀ詰めデータ
      * @return 更新パラメータ
      */
     private List<Object> setUpdateParameterSrSayadume(boolean isInsert, BigDecimal newRev, String kojyo, String lotNo, String edaban,
-            Timestamp systemTime, List<FXHDD01> itemList, SrSayadume srSayadumeData) {
+            int jissekino, Timestamp systemTime, List<FXHDD01> itemList, SrSayadume srSayadumeData) {
         List<Object> params = new ArrayList<>();
 
         if (isInsert) {
@@ -1948,7 +1962,7 @@ public class GXHDO101B013 implements IFormLogic {
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B013Const.SHORISU, srSayadumeData)));  //処理数
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B013Const.KAISHI_TANTOUSYA, srSayadumeData)));  //担当者ｺｰﾄﾞ
         if (isInsert) {
-            params.add(0); //実績No
+            params.add(jissekino); //実績No
         }
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B013Const.BIKOU1, srSayadumeData)));  //備考1
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B013Const.BIKOU2, srSayadumeData)));  //備考2
@@ -1979,13 +1993,14 @@ public class GXHDO101B013 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
+     * @param jissekino 実績No
      * @throws SQLException 例外エラー
      */
     private void deleteSrSayadume(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev,
-            String kojyo, String lotNo, String edaban) throws SQLException {
+            String kojyo, String lotNo, String edaban, int jissekino) throws SQLException {
 
         String sql = "DELETE FROM sr_sayadume "
-                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ?";
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ?  AND jissekino = ? AND revision = ?";
 
         //更新値設定
         List<Object> params = new ArrayList<>();
@@ -1994,6 +2009,7 @@ public class GXHDO101B013 implements IFormLogic {
         params.add(kojyo);
         params.add(lotNo);
         params.add(edaban);
+        params.add(jissekino);
         params.add(rev);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
@@ -2213,11 +2229,12 @@ public class GXHDO101B013 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
+     * @param jissekino 実績No
      * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
      * @throws SQLException 例外エラー
      */
     private void insertDeleteDataTmpSrSayadume(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev, int deleteflag,
-            String kojyo, String lotNo, String edaban, Timestamp systemTime) throws SQLException {
+            String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime) throws SQLException {
 
         String sql = "INSERT INTO tmp_sr_sayadume ("
                 + "kojyo,lotno,edaban,kcpno,kaishinichiji,syuuryounichiji,sayadumegouki,sayasuu,kosuu,tantousya,jissekino,bikou1,bikou2,"
@@ -2228,7 +2245,7 @@ public class GXHDO101B013 implements IFormLogic {
                 + "bikou3,bikou4,bikou5,?,?,settertumeryou,settertumehouhou,settersyurui,konamabushi,"
                 + "StartKakuninsyacode,EndTantousyacode,?,? "
                 + "FROM sr_sayadume "
-                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND jissekino = ? ";
 
         List<Object> params = new ArrayList<>();
         // 更新値
@@ -2241,6 +2258,7 @@ public class GXHDO101B013 implements IFormLogic {
         params.add(kojyo); //工場ｺｰﾄﾞ
         params.add(lotNo); //ﾛｯﾄNo
         params.add(edaban); //枝番
+        params.add(jissekino); //実績No
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
