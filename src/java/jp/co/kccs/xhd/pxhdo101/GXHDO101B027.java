@@ -1,0 +1,3279 @@
+/*
+ * Copyright 2019 Kyocera Communication Systems Co., Ltd All rights reserved.
+ */
+package jp.co.kccs.xhd.pxhdo101;
+
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+import java.util.stream.Collectors;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
+import jp.co.kccs.xhd.common.InitMessage;
+import jp.co.kccs.xhd.common.KikakuError;
+import jp.co.kccs.xhd.db.model.FXHDD01;
+import jp.co.kccs.xhd.db.model.Jisseki;
+import jp.co.kccs.xhd.db.model.SrGdsayadume;
+import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
+import jp.co.kccs.xhd.pxhdo901.GXHDO901A;
+import jp.co.kccs.xhd.pxhdo901.IFormLogic;
+import jp.co.kccs.xhd.pxhdo901.ProcessData;
+import jp.co.kccs.xhd.util.DBUtil;
+import jp.co.kccs.xhd.util.DateUtil;
+import jp.co.kccs.xhd.util.ErrUtil;
+import jp.co.kccs.xhd.util.MessageUtil;
+import jp.co.kccs.xhd.util.StringUtil;
+import jp.co.kccs.xhd.util.ValidateUtil;
+import org.apache.commons.dbutils.BasicRowProcessor;
+import org.apache.commons.dbutils.BeanProcessor;
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.ResultSetHandler;
+import org.apache.commons.dbutils.RowProcessor;
+import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.MapHandler;
+import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
+import jp.co.kccs.xhd.util.NumberUtil;
+import jp.co.kccs.xhd.util.SubFormUtil;
+import org.apache.commons.dbutils.DbUtils;
+
+/**
+ * ===============================================================================<br>
+ * <br>
+ * システム名  品質DB(コンデンサ)<br>
+ * <br>
+ * 変更日      2019/10/08<br>
+ * 計画書No    K1803-DS001<br>
+ * 変更者      KCSS K.Jo<br>
+ * 変更理由    新規作成<br>
+ * <br>
+ * ===============================================================================<br>
+ */
+/**
+ * GXHDO101B027(外部電極・外部電極焼成(ｻﾔ詰め))ロジック
+ *
+ * @author KCSS K.Jo
+ * @since  2019/10/08
+ */
+public class GXHDO101B027 implements IFormLogic {
+
+    private static final Logger LOGGER = Logger.getLogger(GXHDO901A.class.getName());
+    private static final String JOTAI_FLG_KARI_TOROKU = "0";
+    private static final String JOTAI_FLG_TOROKUZUMI = "1";
+    private static final String JOTAI_FLG_SAKUJO = "9";
+    private static final String SQL_STATE_RECORD_LOCK_ERR = "55P03";
+    
+    /**
+     * 初期化処理
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    @Override
+    public ProcessData initial(ProcessData processData) {
+
+        try {
+
+            // 処理名を登録
+            processData.setProcessName("initial");
+
+            // 初期表示データ設定処理
+            processData = setInitData(processData);
+            // 中断エラー発生時
+            if (processData.isFatalError()) {
+                if (!processData.getInitMessageList().isEmpty()) {
+                    // 初期表示メッセージが設定されている場合、メッセージ表示のイベントを呼ぶ
+                    processData.setMethod("openInitMessage");
+                }
+                return processData;
+            }
+
+            // ボタンの活性・非活性を設定
+            processData = this.setButtonEnable(processData, processData.getInitJotaiFlg());
+
+            //サブ画面呼出しをチェック処理なし(処理時にエラーの背景色を戻さない機能として登録)
+            processData.setNoCheckButtonId(Arrays.asList(
+                    GXHDO101B027Const.BTN_START_DATETIME_TOP,
+                    GXHDO101B027Const.BTN_END_DATETIME_TOP,
+                    GXHDO101B027Const.BTN_BNFUNMARYOUU_KEISAN_TOP,
+                    GXHDO101B027Const.BTN_SAYAMAISUU_KEISAN_TOP,
+                    GXHDO101B027Const.BTN_SAYAJUURYOU_KEISAN_TOP,
+                    GXHDO101B027Const.BTN_CHARGERYOUU_KEISAN_TOP,
+                    GXHDO101B027Const.BTN_IKKATSU_KEISAN_TOP,
+                    GXHDO101B027Const.BTN_SAYAJUURYOUU_CLEAR_TOP,
+                    GXHDO101B027Const.BTN_START_DATETIME_BOTTOM,
+                    GXHDO101B027Const.BTN_END_DATETIME_BOTTOM,
+                    GXHDO101B027Const.BTN_BNFUNMARYOUU_KEISAN_BOTTOM,
+                    GXHDO101B027Const.BTN_SAYAMAISUU_KEISAN_BOTTOM,
+                    GXHDO101B027Const.BTN_SAYAJUURYOU_KEISAN_BOTTOM,
+                    GXHDO101B027Const.BTN_CHARGERYOUU_KEISAN_BOTTOM,
+                    GXHDO101B027Const.BTN_IKKATSU_KEISAN_BOTTOM,
+                    GXHDO101B027Const.BTN_SAYAJUURYOUU_CLEAR_BOTTOM
+            ));
+
+            // リビジョンチェック対象のボタンを設定する。
+            processData.setCheckRevisionButtonId(Arrays.asList(
+                    GXHDO101B027Const.BTN_KARI_TOUROKU_TOP,
+                    GXHDO101B027Const.BTN_INSERT_TOP,
+                    GXHDO101B027Const.BTN_DELETE_TOP,
+                    GXHDO101B027Const.BTN_UPDATE_TOP,
+                    GXHDO101B027Const.BTN_KARI_TOUROKU_BOTTOM,
+                    GXHDO101B027Const.BTN_INSERT_BOTTOM,
+                    GXHDO101B027Const.BTN_DELETE_BOTTOM,
+                    GXHDO101B027Const.BTN_UPDATE_BOTTOM));
+
+            // エラーが発生していない場合
+            if (processData.getErrorMessageInfoList().isEmpty()) {
+                if (!processData.getInitMessageList().isEmpty()) {
+                    // 初期表示メッセージが設定されている場合、メッセージ表示のイベントを呼ぶ
+                    processData.setMethod("openInitMessage");
+                } else {
+                    // 後続処理なし
+                    processData.setMethod("");
+                }
+            }
+
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            return processData;
+        }
+
+        return processData;
+    }
+
+    /**
+     * 仮登録処理(データチェック処理)
+     *
+     * @param processData 処理データ
+     * @return 処理データ
+     */
+    public ProcessData checkDataTempResist(ProcessData processData) {
+
+        //1.関連ﾁｪｯｸ
+        ErrorMessageInfo checkKanren1ErrorInfo = checkKanren5(processData);
+        if (checkKanren1ErrorInfo != null) {
+            processData.setErrorMessageInfoList(Arrays.asList(checkKanren1ErrorInfo));
+            return processData;
+        }
+        
+        // 規格チェック
+        List<KikakuchiInputErrorInfo> kikakuchiInputErrorInfoList = new ArrayList<>();
+        ErrorMessageInfo errorMessageInfo = ValidateUtil.checkInputKikakuchi(processData.getItemList(), kikakuchiInputErrorInfoList);
+
+        // 規格チェック内で想定外のエラーが発生した場合、エラーを出して中断
+        if (errorMessageInfo != null) {
+            processData.setErrorMessageInfoList(Arrays.asList(errorMessageInfo));
+            return processData;
+        }
+
+        // 規格値エラーがある場合は規格値エラーをセット(警告表示)
+        if (!kikakuchiInputErrorInfoList.isEmpty()) {
+            processData.setKikakuchiInputErrorInfoList(kikakuchiInputErrorInfoList);
+        }
+
+        // 処理数ﾁｪｯｸ
+        FXHDD01 itemShorisu = getItemRow(processData.getItemList(), GXHDO101B027Const.SYORISUU);
+        if("".equals(itemShorisu.getValue()) || (itemShorisu.getValue() == null)){
+            // 警告メッセージの設定
+            processData.setWarnMessage(MessageUtil.getMessage("XHD-000078"));
+
+        }
+
+        // 後続処理メソッド設定
+        processData.setMethod("doTempResist");
+            
+        return processData;
+
+    }
+
+    /**
+     * 仮登録処理(実処理)
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData doTempResist(ProcessData processData) {
+        QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
+        QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
+        Connection conDoc = null;
+        Connection conQcdb = null;
+
+        try {
+            // トランザクション開始
+            //DocServer 
+            conDoc = DBUtil.transactionStart(queryRunnerDoc.getDataSource().getConnection());
+            
+            //Qcdb
+            conQcdb = DBUtil.transactionStart(queryRunnerQcdb.getDataSource().getConnection());
+            
+            // セッションから情報を取得
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            HttpSession session = (HttpSession) externalContext.getSession(false);
+            String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
+            String lotNo = (String) session.getAttribute("lotNo");
+            int paramJissekino = (Integer) session.getAttribute("jissekino");
+            String kojyo = lotNo.substring(0, 3); //工場ｺｰﾄﾞ
+            String lotNo8 = lotNo.substring(3, 11); //ﾛｯﾄNo(8桁)
+            String edaban = lotNo.substring(11, 14); //枝番
+            String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
+            String formTitle = StringUtil.nullToBlank(session.getAttribute("formTitle"));
+
+            // 品質DB登録実績データ取得
+            Map fxhdd03RevInfo = loadFxhdd03RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, paramJissekino, formId);
+            ErrorMessageInfo checkRevMessageInfo = checkRevision(processData, fxhdd03RevInfo);
+            // リビジョンエラー時はリターン
+            if (checkRevMessageInfo != null) {
+                processData.setErrorMessageInfoList(Arrays.asList(checkRevMessageInfo));
+                // コネクションロールバック処理
+                DBUtil.rollbackConnection(conDoc, LOGGER);
+                DBUtil.rollbackConnection(conQcdb, LOGGER);
+                return processData;
+            }
+
+            BigDecimal newRev = BigDecimal.ONE;
+            Timestamp systemTime = new Timestamp(System.currentTimeMillis());
+
+            BigDecimal rev = BigDecimal.ZERO;
+            if (StringUtil.isEmpty(processData.getInitJotaiFlg())) {
+                // 品質DB登録実績登録処理
+                insertFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, paramJissekino, JOTAI_FLG_KARI_TOROKU, systemTime);
+            } else {
+                rev = new BigDecimal(processData.getInitRev());
+                // 最新のリビジョンを採番
+                newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, paramJissekino, formId);
+
+                // 品質DB登録実績更新処理
+                updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_KARI_TOROKU, systemTime, paramJissekino);
+            }
+
+            if (StringUtil.isEmpty(processData.getInitJotaiFlg()) || JOTAI_FLG_SAKUJO.equals(processData.getInitJotaiFlg())) {
+
+                // 外部電極焼成(ｻﾔ詰め)_仮登録処理
+                insertTmpSrGdsayadume(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, paramJissekino, systemTime, processData.getItemList());
+
+            } else {
+
+                // 外部電極焼成(ｻﾔ詰め)_仮登録更新処理
+                updateTmpSrGdsayadume(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo8, edaban, paramJissekino, systemTime, processData.getItemList());
+
+            }
+
+            // 規格情報でエラーが発生している場合、エラー内容を更新
+            KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
+            if (kikakuError.getKikakuchiInputErrorInfoList() != null && !kikakuError.getKikakuchiInputErrorInfoList().isEmpty()) {
+                ValidateUtil.fxhdd04Insert(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, paramJissekino, "0", kikakuError.getKikakuchiInputErrorInfoList());
+            }
+            // 処理後はエラーリストをクリア
+            kikakuError.setKikakuchiInputErrorInfoList(new ArrayList<>());
+
+            DbUtils.commitAndCloseQuietly(conDoc);
+            DbUtils.commitAndCloseQuietly(conQcdb);
+
+            // 後続処理メソッド設定
+            processData.setMethod("");
+            //完了メッセージ設定
+            processData.setInfoMessage("仮登録完了");
+
+            // 背景色をクリア
+            for (FXHDD01 fxhdd01 : processData.getItemList()) {
+                fxhdd01.setBackColorInput(fxhdd01.getBackColorInputDefault());
+            }
+
+            // 状態ﾌﾗｸﾞ、revisionを設定する。
+            processData.setInitJotaiFlg(JOTAI_FLG_KARI_TOROKU);
+            processData.setInitRev(newRev.toPlainString());
+
+            return processData;
+        } catch (SQLException e) {
+            ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
+
+            // コネクションロールバック処理
+            DBUtil.rollbackConnection(conDoc, LOGGER);
+            DBUtil.rollbackConnection(conQcdb, LOGGER);
+            if (SQL_STATE_RECORD_LOCK_ERR.equals(e.getSQLState())) {
+                // レコードロックエラー時
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000025"))));
+            } else {
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            }
+        }
+        return processData;
+    }
+
+    /**
+     * 登録処理(データチェック処理)
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData checkDataResist(ProcessData processData) {
+
+        // 項目のチェック処理を行う。
+        ErrorMessageInfo checkItemResistAndCorrectInfo = checkItemResistAndCorrect(processData);
+        if (checkItemResistAndCorrectInfo != null) {
+            processData.setErrorMessageInfoList(Arrays.asList(checkItemResistAndCorrectInfo));
+            return processData;
+        }
+        
+        // 項目のチェック処理を行う。
+        ErrorMessageInfo checkItemErrorInfo = checkItemResistCorrect(processData);
+        if (checkItemErrorInfo != null) {
+            processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
+            return processData;
+        }
+
+        // 規格チェック
+        List<KikakuchiInputErrorInfo> kikakuchiInputErrorInfoList = new ArrayList<>();
+        ErrorMessageInfo errorMessageInfo = ValidateUtil.checkInputKikakuchi(processData.getItemList(), kikakuchiInputErrorInfoList);
+
+        // 規格チェック内で想定外のエラーが発生した場合、エラーを出して中断
+        if (errorMessageInfo != null) {
+            processData.setErrorMessageInfoList(Arrays.asList(errorMessageInfo));
+            return processData;
+        }
+
+        // 規格値エラーがある場合は規格値エラーをセット(警告表示)
+        if (!kikakuchiInputErrorInfoList.isEmpty()) {
+            processData.setKikakuchiInputErrorInfoList(kikakuchiInputErrorInfoList);
+        }
+
+        // 処理数ﾁｪｯｸ
+        FXHDD01 itemShorisu = getItemRow(processData.getItemList(), GXHDO101B027Const.SYORISUU);
+        if("".equals(itemShorisu.getValue()) || (itemShorisu.getValue() == null)){
+            // 警告メッセージの設定
+            processData.setWarnMessage(MessageUtil.getMessage("XHD-000078"));
+
+        }
+
+        // 後続処理メソッド設定
+        processData.setMethod("doResist");
+        
+        return processData;
+    }
+    
+    /**
+     * 登録・修正項目チェック
+     *
+     * @param processData 処理データ
+     * @return エラーメッセージ情報
+     */
+    private ErrorMessageInfo checkItemResistAndCorrect(ProcessData processData) {
+
+        //ｻﾔ詰め方法
+        FXHDD01 itemSayadumehouhou = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYADUMEHOUHOU);
+        if ("".equals(itemSayadumehouhou.getValue()) || itemSayadumehouhou.getValue() == null) {
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemSayadumehouhou);
+            return MessageUtil.getErrorMessageInfo("XHD-000032", true, true, errFxhdd01List, itemSayadumehouhou.getLabel1());
+        }
+        
+        //粉まぶし
+        FXHDD01 itemKonamabushi = getItemRow(processData.getItemList(), GXHDO101B027Const.KONAMABUSHI);
+        if ("".equals(itemKonamabushi.getValue()) || itemKonamabushi.getValue() == null) {
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemKonamabushi);
+            return MessageUtil.getErrorMessageInfo("XHD-000032", true, true, errFxhdd01List, itemKonamabushi.getLabel1());
+        }
+        
+        //ｻﾔ/SUS板種類
+        FXHDD01 itemSayasussyurui = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYASUSSYURUI);
+        if ("".equals(itemSayasussyurui.getValue()) || itemSayasussyurui.getValue() == null) {
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemSayasussyurui);
+            return MessageUtil.getErrorMessageInfo("XHD-000032", true, true, errFxhdd01List, itemSayasussyurui.getLabel1());
+        }
+        
+        //4.関連ﾁｪｯｸ
+        ErrorMessageInfo checkKanren4ErrorInfo = checkKanren4(processData);
+        if (checkKanren4ErrorInfo != null) {
+            return checkKanren4ErrorInfo;
+        }
+
+        //5.関連ﾁｪｯｸ
+        ErrorMessageInfo checkKanren5ErrorInfo = checkKanren5(processData);
+        if (checkKanren5ErrorInfo != null) {
+            return checkKanren5ErrorInfo;
+        }
+        return null;
+    }
+
+    /**
+     *【4.関連ﾁｪｯｸ】
+     *
+     * @param processData 処理データ
+     * @return エラーメッセージ情報
+     */
+    private ErrorMessageInfo checkKanren4(ProcessData processData) {
+        //ｻﾔ/SUS板種類
+        FXHDD01 itemSayasussyurui = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYASUSSYURUI);
+        //「画面.ｻﾔ/SUS板種類」が"ｻﾔ"もしくは"ｼﾞﾙｺﾆｱｻﾔ"である場合、下記項目のすべてが入力されていること。
+        if (("ｻﾔ".equals(itemSayasussyurui.getValue())) || ("ｼﾞﾙｺﾆｱｻﾔ".equals(itemSayasussyurui.getValue()))) {
+                //・ｻﾔ重量範囲(g)MIN
+                FXHDD01 itemSjyuuryourangemin = getItemRow(processData.getItemList(), GXHDO101B027Const.SJYUURYOURANGEMIN);
+                //・ｻﾔ重量範囲(g)MAX
+                FXHDD01 itemSjyuuryourangemax = getItemRow(processData.getItemList(), GXHDO101B027Const.SJYUURYOURANGEMAX);
+                //・ｻﾔ重量(g/枚)
+                FXHDD01 itemSayajyuuryou = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYAJYUURYOU);
+            
+                if((itemSjyuuryourangemin.getValue() == null || "".equals(itemSjyuuryourangemin.getValue())) || 
+                       (itemSjyuuryourangemax.getValue() == null || "".equals(itemSjyuuryourangemax.getValue())) || 
+                       (itemSayajyuuryou.getValue() == null || "".equals(itemSayajyuuryou.getValue()))){
+                            // ｴﾗｰ項目をﾘｽﾄに追加
+                            List<FXHDD01> errFxhdd01List = Arrays.asList(itemSayasussyurui);
+                            ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000110", true, true, errFxhdd01List);
+                            return errorMessageInfo;
+                }
+        }
+        return null;
+    }
+  
+    /**
+     *【5.関連ﾁｪｯｸ】
+     *
+     * @param processData 処理データ
+     * @return エラーメッセージ情報
+     */
+    private ErrorMessageInfo checkKanren5(ProcessData processData) {
+        //ｻﾔ/SUS板種類
+        FXHDD01 itemSayasussyurui = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYASUSSYURUI);
+        //「画面.ｻﾔ/SUS板種類」が"ｻﾔ"もしくは"ｼﾞﾙｺﾆｱｻﾔ"ではない場合、下記項目のすべてが未入力であること。
+        if ((!"ｻﾔ".equals(itemSayasussyurui.getValue())) && (!"ｼﾞﾙｺﾆｱｻﾔ".equals(itemSayasussyurui.getValue()))) {
+                //・ｻﾔ重量範囲(g)MIN
+                FXHDD01 itemSjyuuryourangemin = getItemRow(processData.getItemList(), GXHDO101B027Const.SJYUURYOURANGEMIN);
+                //・ｻﾔ重量範囲(g)MAX
+                FXHDD01 itemSjyuuryourangemax = getItemRow(processData.getItemList(), GXHDO101B027Const.SJYUURYOURANGEMAX);
+                //・ｻﾔ重量(g/枚)
+                FXHDD01 itemSayajyuuryou = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYAJYUURYOU);
+            
+                if((itemSjyuuryourangemin.getValue() != null && !"".equals(itemSjyuuryourangemin.getValue())) || 
+                       (itemSjyuuryourangemax.getValue() != null && !"".equals(itemSjyuuryourangemax.getValue())) || 
+                       (itemSayajyuuryou.getValue() != null && !"".equals(itemSayajyuuryou.getValue()))){
+                            // ｴﾗｰ項目をﾘｽﾄに追加
+                            List<FXHDD01> errFxhdd01List = Arrays.asList(itemSayasussyurui,itemSjyuuryourangemin,itemSjyuuryourangemax,itemSayajyuuryou);
+                            ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000108", true, true, errFxhdd01List);
+                            return errorMessageInfo;
+                }
+        }
+        return null;
+    }
+    
+    /**
+     * 登録・修正項目チェック
+     *
+     * @param processData 処理データ
+     * @return エラーメッセージ情報
+     */
+    private ErrorMessageInfo checkItemResistCorrect(ProcessData processData) {
+
+        ValidateUtil validateUtil = new ValidateUtil();
+        // 開始日時、終了日時前後チェック
+        FXHDD01 itemKaishiDay = getItemRow(processData.getItemList(), GXHDO101B027Const.KAISHI_DAY); //開始日
+        FXHDD01 itemKaishiTime = getItemRow(processData.getItemList(), GXHDO101B027Const.KAISHI_TIME); // 開始時刻
+        Date kaishiDate = DateUtil.convertStringToDate(itemKaishiDay.getValue(), itemKaishiTime.getValue());
+        FXHDD01 itemShuryouDay = getItemRow(processData.getItemList(), GXHDO101B027Const.SHURYOU_DAY); //終了日
+        FXHDD01 itemShuryouTime = getItemRow(processData.getItemList(), GXHDO101B027Const.SHURYOU_TIME); //終了時刻
+        Date shuryoDate = DateUtil.convertStringToDate(itemShuryouDay.getValue(), itemShuryouTime.getValue());
+        //R001チェック呼出し
+        String msgCheckR001 = validateUtil.checkR001(itemKaishiDay.getLabel1(), kaishiDate, itemShuryouDay.getLabel1(), shuryoDate);
+        if (!StringUtil.isEmpty(msgCheckR001)) {
+            //エラー発生時
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemKaishiDay, itemKaishiTime, itemShuryouDay, itemShuryouTime);
+            return MessageUtil.getErrorMessageInfo("", msgCheckR001, true, true, errFxhdd01List);
+        }
+
+        return null;
+    }
+    
+    /**
+     * 登録処理(実処理)
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData doResist(ProcessData processData) {
+        QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
+        QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
+
+        Connection conDoc = null;
+        Connection conQcdb = null;
+
+        try {
+            // トランザクション開始
+            //DocServer 
+            conDoc = DBUtil.transactionStart(queryRunnerDoc.getDataSource().getConnection());
+            
+            //Qcdb
+            conQcdb = DBUtil.transactionStart(queryRunnerQcdb.getDataSource().getConnection());
+            
+            // セッションから情報を取得
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            HttpSession session = (HttpSession) externalContext.getSession(false);
+            String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
+            String lotNo = (String) session.getAttribute("lotNo");
+            int paramJissekino = (Integer) session.getAttribute("jissekino");
+            String kojyo = lotNo.substring(0, 3); //工場ｺｰﾄﾞ
+            String lotNo8 = lotNo.substring(3, 11); //ﾛｯﾄNo(8桁)
+            String edaban = lotNo.substring(11, 14); //枝番
+            String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
+            String formTitle = StringUtil.nullToBlank(session.getAttribute("formTitle"));
+
+            // 品質DB登録実績データ取得
+            //ここでロックを掛ける
+            Map fxhdd03RevInfo = loadFxhdd03RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, paramJissekino, formId);
+            ErrorMessageInfo checkRevMessageInfo = checkRevision(processData, fxhdd03RevInfo);
+            // リビジョンエラー時はリターン
+            if (checkRevMessageInfo != null) {
+                processData.setErrorMessageInfoList(Arrays.asList(checkRevMessageInfo));
+                // コネクションロールバック処理
+                DBUtil.rollbackConnection(conDoc, LOGGER);
+                DBUtil.rollbackConnection(conQcdb, LOGGER);
+
+                return processData;
+            }
+
+            BigDecimal rev = BigDecimal.ZERO;
+            BigDecimal newRev = BigDecimal.ONE;
+            Timestamp systemTime = new Timestamp(System.currentTimeMillis());
+
+            if (StringUtil.isEmpty(processData.getInitRev())) {
+                // 品質DB登録実績登録処理
+                insertFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, paramJissekino, JOTAI_FLG_TOROKUZUMI, systemTime);
+            } else {
+                rev = new BigDecimal(processData.getInitRev());
+                // 最新のリビジョンを採番
+                newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, paramJissekino, formId);
+
+                // 品質DB登録実績更新処理
+                updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_TOROKUZUMI, systemTime, paramJissekino);
+            }
+
+            // 仮登録状態の場合、仮登録のデータを削除する。
+            SrGdsayadume tmpSrGdsayadume = null;
+            if (JOTAI_FLG_KARI_TOROKU.equals(processData.getInitJotaiFlg())) {
+                
+                // 更新前の値を取得
+                List<SrGdsayadume> srGdsayadumeList = getSrGdsayadumeData(queryRunnerQcdb, rev.toPlainString(), processData.getInitJotaiFlg(), kojyo, lotNo8, edaban, paramJissekino);
+                if (!srGdsayadumeList.isEmpty()) {
+                    tmpSrGdsayadume = srGdsayadumeList.get(0);
+                }
+                
+                deleteTmpSrGdsayadume(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban, paramJissekino);
+            }
+
+            // 外部電極焼成(ｻﾔ詰め)_登録処理
+            insertSrGdsayadume(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, paramJissekino, systemTime, processData.getItemList(), tmpSrGdsayadume);
+
+            // 規格情報でエラーが発生している場合、エラー内容を更新
+            KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
+            if (kikakuError.getKikakuchiInputErrorInfoList() != null && !kikakuError.getKikakuchiInputErrorInfoList().isEmpty()) {
+                ValidateUtil.fxhdd04Insert(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, paramJissekino, "0", kikakuError.getKikakuchiInputErrorInfoList());
+            }
+            // 処理後はエラーリストをクリア
+            kikakuError.setKikakuchiInputErrorInfoList(new ArrayList<>());
+
+            DbUtils.commitAndCloseQuietly(conDoc);
+            DbUtils.commitAndCloseQuietly(conQcdb);
+
+            // 後続処理メソッド設定
+            processData.setMethod("");
+
+            // 完了メッセージとコールバックパラメータを設定
+            processData.setCompMessage("登録しました。");
+            processData.setCollBackParam("complete");
+
+            return processData;
+        } catch (SQLException e) {
+            ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
+
+            // コネクションロールバック処理
+            DBUtil.rollbackConnection(conDoc, LOGGER);
+            DBUtil.rollbackConnection(conQcdb, LOGGER);
+
+            if (SQL_STATE_RECORD_LOCK_ERR.equals(e.getSQLState())) {
+                // レコードロックエラー時
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000025"))));
+            } else {
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            }
+
+        }
+
+        return processData;
+
+    }
+
+    /**
+     * 修正処理(データチェック処理)
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData checkDataCorrect(ProcessData processData) {
+        
+        // 項目のチェック処理を行う。
+        ErrorMessageInfo checkItemResistAndCorrectInfo = checkItemResistAndCorrect(processData);
+        if (checkItemResistAndCorrectInfo != null) {
+            processData.setErrorMessageInfoList(Arrays.asList(checkItemResistAndCorrectInfo));
+            return processData;
+        }
+        
+        // 項目のチェック処理を行う。
+        ErrorMessageInfo checkItemErrorInfo = checkItemResistCorrect(processData);
+        if (checkItemErrorInfo != null) {
+            processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
+            return processData;
+        }
+
+        // 規格チェック
+        List<KikakuchiInputErrorInfo> kikakuchiInputErrorInfoList = new ArrayList<>();
+        ErrorMessageInfo errorMessageInfo = ValidateUtil.checkInputKikakuchi(processData.getItemList(), kikakuchiInputErrorInfoList);
+
+        // 規格チェック内で想定外のエラーが発生した場合、エラーを出して中断
+        if (errorMessageInfo != null) {
+            processData.setErrorMessageInfoList(Arrays.asList(errorMessageInfo));
+            return processData;
+        }
+
+        // 規格値エラーがある場合は規格値エラーをセット(警告表示)
+        if (!kikakuchiInputErrorInfoList.isEmpty()) {
+            processData.setKikakuchiInputErrorInfoList(kikakuchiInputErrorInfoList);
+        }
+
+        // 警告メッセージの設定
+        processData.setWarnMessage("修正します。よろしいですか？");
+
+        // ユーザ認証用のパラメータをセットする。
+        processData.setRquireAuth(true);
+        processData.setUserAuthParam(GXHDO101B027Const.USER_AUTH_UPDATE_PARAM);
+
+        // 処理数ﾁｪｯｸ
+        FXHDD01 itemShorisu = getItemRow(processData.getItemList(), GXHDO101B027Const.SYORISUU);
+        if("".equals(itemShorisu.getValue()) || (itemShorisu.getValue() == null)){
+            // 警告メッセージの設定
+            processData.setWarnMessage(MessageUtil.getMessage("XHD-000078"));
+
+        }
+
+        // 後続処理メソッド設定
+        processData.setMethod("doCorrect");
+        
+        return processData;
+    }
+        
+    /**
+     * 修正処理(実処理)
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData doCorrect(ProcessData processData) {
+        QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
+        QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
+
+        Connection conDoc = null;
+        Connection conQcdb = null;
+
+        try {
+            // トランザクション開始
+            //DocServer 
+            conDoc = DBUtil.transactionStart(queryRunnerDoc.getDataSource().getConnection());
+            
+            //Qcdb
+            conQcdb = DBUtil.transactionStart(queryRunnerQcdb.getDataSource().getConnection());
+            
+            // セッションから情報を取得
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            HttpSession session = (HttpSession) externalContext.getSession(false);
+            String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
+            String lotNo = (String) session.getAttribute("lotNo");
+            int paramJissekino = (Integer) session.getAttribute("jissekino");
+            String kojyo = lotNo.substring(0, 3); //工場ｺｰﾄﾞ
+            String lotNo8 = lotNo.substring(3, 11); //ﾛｯﾄNo(8桁)
+            String edaban = lotNo.substring(11, 14); //枝番
+            String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
+            String formTitle = StringUtil.nullToBlank(session.getAttribute("formTitle"));
+
+            // 品質DB登録実績データ取得
+            //ここでロックを掛ける
+            Map fxhdd03RevInfo = loadFxhdd03RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, paramJissekino, formId);
+            ErrorMessageInfo checkRevMessageInfo = checkRevision(processData, fxhdd03RevInfo);
+            // リビジョンエラー時はリターン
+            if (checkRevMessageInfo != null) {
+                processData.setErrorMessageInfoList(Arrays.asList(checkRevMessageInfo));
+                // コネクションロールバック処理
+                DBUtil.rollbackConnection(conDoc, LOGGER);
+                DBUtil.rollbackConnection(conQcdb, LOGGER);
+
+                return processData;
+            }
+
+            BigDecimal rev = new BigDecimal(processData.getInitRev());
+            // 最新のリビジョンを採番
+            BigDecimal newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, paramJissekino, formId);
+
+            Timestamp systemTime = new Timestamp(System.currentTimeMillis());
+            // 品質DB登録実績更新処理
+            updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_TOROKUZUMI, systemTime, paramJissekino);
+
+            // 外部電極焼成(ｻﾔ詰め)_更新処理
+            updateSrGdsayadume(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo8, edaban, paramJissekino, systemTime, processData.getItemList());
+
+            // 規格情報でエラーが発生している場合、エラー内容を更新
+            KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
+            if (kikakuError.getKikakuchiInputErrorInfoList() != null && !kikakuError.getKikakuchiInputErrorInfoList().isEmpty()) {
+                ValidateUtil.fxhdd04Insert(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, paramJissekino, "0", kikakuError.getKikakuchiInputErrorInfoList());
+            }
+            // 処理後はエラーリストをクリア
+            kikakuError.setKikakuchiInputErrorInfoList(new ArrayList<>());
+
+            DbUtils.commitAndCloseQuietly(conDoc);
+            DbUtils.commitAndCloseQuietly(conQcdb);
+
+            // 後続処理メソッド設定
+            processData.setMethod("");
+
+            // 完了メッセージとコールバックパラメータを設定
+            processData.setCompMessage("修正しました。");
+            processData.setCollBackParam("complete");
+
+            return processData;
+        } catch (SQLException e) {
+            ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
+
+            // コネクションロールバック処理
+            DBUtil.rollbackConnection(conDoc, LOGGER);
+            DBUtil.rollbackConnection(conQcdb, LOGGER);
+            if (SQL_STATE_RECORD_LOCK_ERR.equals(e.getSQLState())) {
+                // レコードロックエラー時
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000025"))));
+            } else {
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            }
+        }
+
+        return processData;
+    }
+
+    /**
+     * 削除処理(データチェック処理)
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData checkDataDelete(ProcessData processData) {
+
+        // 警告メッセージの設定
+        processData.setWarnMessage("削除します。よろしいですか？");
+
+        // ユーザ認証用のパラメータをセットする。
+        processData.setRquireAuth(true);
+        processData.setUserAuthParam(GXHDO101B027Const.USER_AUTH_DELETE_PARAM);
+
+        // 後続処理メソッド設定
+        processData.setMethod("doDelete");
+        return processData;
+    }
+
+    /**
+     * 削除処理(実処理)
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData doDelete(ProcessData processData) {
+        QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
+        QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
+
+        Connection conDoc = null;
+        Connection conQcdb = null;
+
+        try {
+            // トランザクション開始
+            //DocServer 
+            conDoc = DBUtil.transactionStart(queryRunnerDoc.getDataSource().getConnection());
+            
+            //Qcdb
+            conQcdb = DBUtil.transactionStart(queryRunnerQcdb.getDataSource().getConnection());
+            
+            // セッションから情報を取得
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            HttpSession session = (HttpSession) externalContext.getSession(false);
+            String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
+            String lotNo = (String) session.getAttribute("lotNo");
+            int paramJissekino = (Integer) session.getAttribute("jissekino");
+            String kojyo = lotNo.substring(0, 3); //工場ｺｰﾄﾞ
+            String lotNo8 = lotNo.substring(3, 11); //ﾛｯﾄNo(8桁)
+            String edaban = lotNo.substring(11, 14); //枝番
+            String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
+
+            // 品質DB登録実績データ取得
+            //ここでロックを掛ける
+            Map fxhdd03RevInfo = loadFxhdd03RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, paramJissekino, formId);
+            ErrorMessageInfo checkRevMessageInfo = checkRevision(processData, fxhdd03RevInfo);
+            // リビジョンエラー時はリターン
+            if (checkRevMessageInfo != null) {
+                processData.setErrorMessageInfoList(Arrays.asList(checkRevMessageInfo));
+                // コネクションロールバック処理
+                DBUtil.rollbackConnection(conDoc, LOGGER);
+                DBUtil.rollbackConnection(conQcdb, LOGGER);
+                return processData;
+            }
+
+            BigDecimal rev = new BigDecimal(processData.getInitRev());
+            // 最新のリビジョンを採番
+            BigDecimal newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, paramJissekino, formId);
+
+            Timestamp systemTime = new Timestamp(System.currentTimeMillis());
+            // 品質DB登録実績更新処理
+            updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_SAKUJO, systemTime, paramJissekino);
+
+            // 外部電極焼成(ｻﾔ詰め)_仮登録登録処理
+            int newDeleteflag = getNewDeleteflag(queryRunnerQcdb, kojyo, lotNo8, edaban, paramJissekino);
+            insertDeleteDataTmpSrGdsayadume(queryRunnerQcdb, conQcdb, newRev, newDeleteflag, kojyo, lotNo8, edaban, paramJissekino, systemTime);
+
+            // 外部電極焼成(ｻﾔ詰め)_削除処理
+            deleteSrGdsayadume(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban, paramJissekino);
+
+            DbUtils.commitAndCloseQuietly(conDoc);
+            DbUtils.commitAndCloseQuietly(conQcdb);
+
+            // 後続処理メソッド設定
+            processData.setMethod("");
+
+            // 完了メッセージとコールバックパラメータを設定
+            processData.setCompMessage("削除しました。");
+            processData.setCollBackParam("complete");
+
+            return processData;
+        } catch (SQLException e) {
+            ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
+
+            // コネクションロールバック処理
+            DBUtil.rollbackConnection(conDoc, LOGGER);
+            DBUtil.rollbackConnection(conQcdb, LOGGER);
+            if (SQL_STATE_RECORD_LOCK_ERR.equals(e.getSQLState())) {
+                // レコードロックエラー時
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000025"))));
+            } else {
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            }
+        }
+
+        return processData;
+    }
+
+    /**
+     * ボタン活性・非活性設定
+     *
+     * @param processData 処理制御データ
+     * @param jotaiFlg 状態ﾌﾗｸﾞ
+     * @return 処理制御データ
+     */
+    private ProcessData setButtonEnable(ProcessData processData, String jotaiFlg) {
+
+        List<String> activeIdList = new ArrayList<>();
+        List<String> inactiveIdList = new ArrayList<>();
+        switch (jotaiFlg) {
+            case JOTAI_FLG_TOROKUZUMI:
+                activeIdList.addAll(Arrays.asList(
+                        GXHDO101B027Const.BTN_EDABAN_COPY_BOTTOM,
+                        GXHDO101B027Const.BTN_DELETE_BOTTOM,
+                        GXHDO101B027Const.BTN_UPDATE_BOTTOM,
+                        GXHDO101B027Const.BTN_START_DATETIME_BOTTOM,
+                        GXHDO101B027Const.BTN_END_DATETIME_BOTTOM,
+                        GXHDO101B027Const.BTN_BNFUNMARYOUU_KEISAN_BOTTOM,
+                        GXHDO101B027Const.BTN_SAYAMAISUU_KEISAN_BOTTOM,
+                        GXHDO101B027Const.BTN_SAYAJUURYOU_KEISAN_BOTTOM,
+                        GXHDO101B027Const.BTN_CHARGERYOUU_KEISAN_BOTTOM,
+                        GXHDO101B027Const.BTN_IKKATSU_KEISAN_BOTTOM,
+                        GXHDO101B027Const.BTN_SAYAJUURYOUU_CLEAR_BOTTOM,
+                        GXHDO101B027Const.BTN_EDABAN_COPY_TOP,
+                        GXHDO101B027Const.BTN_DELETE_TOP,
+                        GXHDO101B027Const.BTN_UPDATE_TOP,
+                        GXHDO101B027Const.BTN_START_DATETIME_TOP,
+                        GXHDO101B027Const.BTN_END_DATETIME_TOP,
+                        GXHDO101B027Const.BTN_BNFUNMARYOUU_KEISAN_TOP,
+                        GXHDO101B027Const.BTN_SAYAMAISUU_KEISAN_TOP,
+                        GXHDO101B027Const.BTN_SAYAJUURYOU_KEISAN_TOP,
+                        GXHDO101B027Const.BTN_CHARGERYOUU_KEISAN_TOP,
+                        GXHDO101B027Const.BTN_IKKATSU_KEISAN_TOP,
+                        GXHDO101B027Const.BTN_SAYAJUURYOUU_CLEAR_TOP
+                ));
+                inactiveIdList.addAll(Arrays.asList(
+                        GXHDO101B027Const.BTN_KARI_TOUROKU_BOTTOM,
+                        GXHDO101B027Const.BTN_INSERT_BOTTOM,
+                        GXHDO101B027Const.BTN_KARI_TOUROKU_TOP,
+                        GXHDO101B027Const.BTN_INSERT_TOP));
+
+                break;
+            default:
+                activeIdList.addAll(Arrays.asList(
+                        GXHDO101B027Const.BTN_KARI_TOUROKU_BOTTOM,
+                        GXHDO101B027Const.BTN_EDABAN_COPY_BOTTOM,
+                        GXHDO101B027Const.BTN_INSERT_BOTTOM,
+                        GXHDO101B027Const.BTN_START_DATETIME_BOTTOM,
+                        GXHDO101B027Const.BTN_END_DATETIME_BOTTOM,
+                        GXHDO101B027Const.BTN_BNFUNMARYOUU_KEISAN_BOTTOM,
+                        GXHDO101B027Const.BTN_SAYAMAISUU_KEISAN_BOTTOM,
+                        GXHDO101B027Const.BTN_SAYAJUURYOU_KEISAN_BOTTOM,
+                        GXHDO101B027Const.BTN_CHARGERYOUU_KEISAN_BOTTOM,
+                        GXHDO101B027Const.BTN_IKKATSU_KEISAN_BOTTOM,
+                        GXHDO101B027Const.BTN_SAYAJUURYOUU_CLEAR_BOTTOM,
+                        GXHDO101B027Const.BTN_KARI_TOUROKU_TOP,
+                        GXHDO101B027Const.BTN_EDABAN_COPY_TOP,
+                        GXHDO101B027Const.BTN_INSERT_TOP,
+                        GXHDO101B027Const.BTN_START_DATETIME_TOP,
+                        GXHDO101B027Const.BTN_END_DATETIME_TOP,
+                        GXHDO101B027Const.BTN_BNFUNMARYOUU_KEISAN_TOP,
+                        GXHDO101B027Const.BTN_SAYAMAISUU_KEISAN_TOP,
+                        GXHDO101B027Const.BTN_SAYAJUURYOU_KEISAN_TOP,
+                        GXHDO101B027Const.BTN_CHARGERYOUU_KEISAN_TOP,
+                        GXHDO101B027Const.BTN_IKKATSU_KEISAN_TOP,
+                        GXHDO101B027Const.BTN_SAYAJUURYOUU_CLEAR_TOP
+                ));
+
+                inactiveIdList.addAll(Arrays.asList(
+                        GXHDO101B027Const.BTN_DELETE_BOTTOM,
+                        GXHDO101B027Const.BTN_UPDATE_BOTTOM,
+                        GXHDO101B027Const.BTN_DELETE_TOP,
+                        GXHDO101B027Const.BTN_UPDATE_TOP));
+
+                break;
+
+        }
+        processData.setActiveButtonId(activeIdList);
+        processData.setInactiveButtonId(inactiveIdList);
+        return processData;
+    }
+
+    /**
+     * ボタンID⇒メソッド名変換
+     *
+     * @param buttonId ボタンID
+     * @return メソッド名
+     */
+    @Override
+    public String convertButtonIdToMethod(String buttonId) {
+        String method;
+        switch (buttonId) {
+            // 仮登録
+            case GXHDO101B027Const.BTN_KARI_TOUROKU_TOP:
+            case GXHDO101B027Const.BTN_KARI_TOUROKU_BOTTOM:
+                method = "checkDataTempResist";
+                break;
+            // 登録
+            case GXHDO101B027Const.BTN_INSERT_TOP:
+            case GXHDO101B027Const.BTN_INSERT_BOTTOM:
+                method = "checkDataResist";
+                break;
+            // 枝番コピー
+            case GXHDO101B027Const.BTN_EDABAN_COPY_TOP:
+            case GXHDO101B027Const.BTN_EDABAN_COPY_BOTTOM:
+                method = "confEdabanCopy";
+                break;
+            // 修正
+            case GXHDO101B027Const.BTN_UPDATE_TOP:
+            case GXHDO101B027Const.BTN_UPDATE_BOTTOM:
+                method = "checkDataCorrect";
+                break;
+            // 削除
+            case GXHDO101B027Const.BTN_DELETE_TOP:
+            case GXHDO101B027Const.BTN_DELETE_BOTTOM:
+                method = "checkDataDelete";
+                break;
+            // 開始日時
+            case GXHDO101B027Const.BTN_START_DATETIME_TOP:
+            case GXHDO101B027Const.BTN_START_DATETIME_BOTTOM:
+                method = "setKaishiDateTime";
+                break;
+            // 終了日時
+            case GXHDO101B027Const.BTN_END_DATETIME_TOP:
+            case GXHDO101B027Const.BTN_END_DATETIME_BOTTOM:
+                method = "setShuryouDateTime";
+                break;
+            // BN粉末量計算
+            case GXHDO101B027Const.BTN_BNFUNMARYOUU_KEISAN_TOP:
+            case GXHDO101B027Const.BTN_BNFUNMARYOUU_KEISAN_BOTTOM:
+                method = "setBnfunmaryouuKeisan";
+                break;
+            // さや枚数計算
+            case GXHDO101B027Const.BTN_SAYAMAISUU_KEISAN_TOP:
+            case GXHDO101B027Const.BTN_SAYAMAISUU_KEISAN_BOTTOM:
+                method = "setSayamaisuuKeisan";
+                break;
+            // さや重量計算
+            case GXHDO101B027Const.BTN_SAYAJUURYOU_KEISAN_TOP:
+            case GXHDO101B027Const.BTN_SAYAJUURYOU_KEISAN_BOTTOM:
+                method = "setSayajuuryouKeisan";
+                break;
+            // ﾁｬｰｼﾞ量計算
+            case GXHDO101B027Const.BTN_CHARGERYOUU_KEISAN_TOP:
+            case GXHDO101B027Const.BTN_CHARGERYOUU_KEISAN_BOTTOM:
+                method = "setChargeryouuKeisan";
+                break;
+            // 一括計算
+            case GXHDO101B027Const.BTN_IKKATSU_KEISAN_TOP:
+            case GXHDO101B027Const.BTN_IKKATSU_KEISAN_BOTTOM:
+                method = "setIkkatsuKeisan";
+                break;
+            // さや重量ｸﾘｱ
+            case GXHDO101B027Const.BTN_SAYAJUURYOUU_CLEAR_TOP:
+            case GXHDO101B027Const.BTN_SAYAJUURYOUU_CLEAR_BOTTOM:
+                method = "setSayajuuryouuClear";
+                break;
+            default:
+                method = "error";
+                break;
+        }
+
+        return method;
+    }
+
+    /**
+     * 初期表示データ設定
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     * @throws SQLException 例外エラー
+     */
+    private ProcessData setInitData(ProcessData processData) throws SQLException {
+
+        QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
+        QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
+        QueryRunner queryRunnerWip = new QueryRunner(processData.getDataSourceWip());
+
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+        String lotNo = (String) session.getAttribute("lotNo");
+        int paramJissekino = (Integer) session.getAttribute("jissekino");
+        String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
+
+        // エラーメッセージリスト
+        List<String> errorMessageList = processData.getInitMessageList();
+
+        // 設計情報の取得
+        Map sekkeiData = this.loadSekkeiData(queryRunnerQcdb, lotNo);
+        if (sekkeiData == null || sekkeiData.isEmpty()) {
+            errorMessageList.clear();
+            errorMessageList.add(MessageUtil.getMessage("XHD-000014"));
+            processData.setFatalError(true);
+            processData.setInitMessageList(errorMessageList);
+            return processData;
+        }
+
+        // 設計情報チェック(対象のデータが取得出来ていない場合エラー)
+        errorMessageList.addAll(ValidateUtil.checkSekkeiUnsetItems(sekkeiData, getMapSekkeiAssociation()));
+
+        //仕掛情報の取得
+        Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
+        if (shikakariData == null || shikakariData.isEmpty()) {
+            errorMessageList.add(MessageUtil.getMessage("XHD-000029"));
+        }
+        
+        String kcpno = StringUtil.nullToBlank(getMapData(shikakariData, "kcpno")); //KCPNO
+        String lotkubuncode = StringUtil.nullToBlank(getMapData(shikakariData, "lotkubuncode")); //ﾛｯﾄ区分ｺｰﾄﾞ
+        String ownercode = StringUtil.nullToBlank(getMapData(shikakariData, "ownercode"));// ｵｰﾅｰｺｰﾄﾞ
+
+        // ﾛｯﾄ区分ﾏｽﾀ情報の取得
+        Map lotKbnMasData = loadLotKbnMas(queryRunnerWip, lotkubuncode);
+        if (lotKbnMasData == null || lotKbnMasData.isEmpty()) {
+            errorMessageList.add(MessageUtil.getMessage("XHD-000015"));
+        }
+
+        // ｵｰﾅｰﾏｽﾀ情報の取得
+        Map ownerMasData = loadOwnerMas(queryRunnerWip, ownercode);
+        if (ownerMasData == null || ownerMasData.isEmpty()) {
+            errorMessageList.add(MessageUtil.getMessage("XHD-000016"));
+        }
+
+        // 処理数の取得
+        String shorisuu = null;
+
+        // ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ情報の取得
+        String strfxhbm03List = "";
+        
+        Map fxhbm03Data20 = loadFxhbm03Data(queryRunnerDoc);
+        if(fxhbm03Data20 != null && !fxhbm03Data20.isEmpty()){
+            strfxhbm03List = StringUtil.nullToBlank(getMapData(fxhbm03Data20, "data"));
+            String fxhbm03Data[] = strfxhbm03List.split(",");
+            
+            // 実績情報の取得
+            List<Jisseki> jissekiData = loadJissekiData(queryRunnerDoc, lotNo, fxhbm03Data);
+            if(jissekiData != null && jissekiData.size() > 0){
+                int dbShorisu = jissekiData.get(0).getSyorisuu(); //処理数
+                if(dbShorisu > 0){
+                    shorisuu = String.valueOf(dbShorisu);
+                }
+            }
+        }
+        
+        // 入力項目の情報を画面にセットする。
+        if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId, paramJissekino)) {
+            // エラー発生時は処理を中断
+            processData.setFatalError(true);
+            processData.setInitMessageList(Arrays.asList(MessageUtil.getMessage("XHD-000038")));
+            return processData;
+        }
+
+        // 画面に取得した情報をセットする。(入力項目以外)
+        setViewItemData(processData, lotKbnMasData, ownerMasData, shikakariData, lotNo, shorisuu);
+
+        processData.setInitMessageList(errorMessageList);
+        return processData;
+
+    }
+
+    /**
+     * 入力項目以外のデータを画面項目に設定
+     *
+     * @param processData 処理制御データ
+     * @param lotKbnMasData ﾛｯﾄ区分ﾏｽﾀデータ
+     * @param ownerMasData ｵｰﾅｰﾏｽﾀデータ
+     * @param daPatternMasData 製版ﾏｽﾀデータ
+     * @param shikakariData 仕掛データ
+     * @param lotNo ﾛｯﾄNo
+     */
+    private void setViewItemData(ProcessData processData, Map lotKbnMasData, Map ownerMasData, Map shikakariData, String lotNo, String shorisuu) {
+        
+        // ロットNo
+        this.setItemData(processData, GXHDO101B027Const.LOTNO, lotNo);
+        // KCPNO
+        this.setItemData(processData, GXHDO101B027Const.KCPNO, StringUtil.nullToBlank(getMapData(shikakariData, "kcpno")));
+        // 客先
+        this.setItemData(processData, GXHDO101B027Const.TOKUISAKI, StringUtil.nullToBlank(getMapData(shikakariData, "tokuisaki")));
+
+        // ロット区分
+        String lotkubuncode = StringUtil.nullToBlank(getMapData(shikakariData, "lotkubuncode")); //ﾛｯﾄ区分ｺｰﾄﾞ
+        if (StringUtil.isEmpty(lotkubuncode)) {
+            this.setItemData(processData, GXHDO101B027Const.LOTKUBUNCODE, "");
+        } else {
+            String lotKubun = StringUtil.nullToBlank(getMapData(lotKbnMasData, "lotkubun"));
+            this.setItemData(processData, GXHDO101B027Const.LOTKUBUNCODE, lotkubuncode + ":" + lotKubun);
+        }
+
+        // オーナー
+        String ownercode = StringUtil.nullToBlank(getMapData(shikakariData, "ownercode"));// ｵｰﾅｰｺｰﾄﾞ
+        if (StringUtil.isEmpty(lotkubuncode)) {
+            this.setItemData(processData, GXHDO101B027Const.OWNERCODE, "");
+        } else {
+            String owner = StringUtil.nullToBlank(getMapData(ownerMasData, "ownername"));
+            this.setItemData(processData, GXHDO101B027Const.OWNERCODE, ownercode + ":" + owner);
+        }
+        
+        String lotpre = StringUtil.nullToBlank(getMapData(shikakariData, "lotpre")); // ﾛｯﾄﾌﾟﾚ
+        // ﾛｯﾄﾌﾟﾚ
+        this.setItemData(processData, GXHDO101B027Const.LOTPRE, lotpre);
+
+        // 処理数
+        this.setItemData(processData, GXHDO101B027Const.SYORISUU, shorisuu);
+
+    }
+
+    /**
+     * 入力項目のデータを画面項目に設定
+     *
+     * @param processData 処理制御データ
+     * @param queryRunnerDoc QueryRunnerオブジェクト(DocServer)
+     * @param queryRunnerQcdb QueryRunnerオブジェクト(Qcdb)
+     * @param lotNo ﾛｯﾄNo
+     * @param formId 画面ID
+     * @param jissekino 実績No
+     * @return 設定結果(失敗時false)
+     * @throws SQLException 例外エラー
+     */
+    private boolean setInputItemData(ProcessData processData, QueryRunner queryRunnerDoc, QueryRunner queryRunnerQcdb,
+            String lotNo, String formId, int jissekino) throws SQLException {
+
+        List<SrGdsayadume> srGdsayadumeDataList = new ArrayList<>();
+        String rev = "";
+        String jotaiFlg = "";
+        String kojyo = lotNo.substring(0, 3);
+        String lotNo8 = lotNo.substring(3, 11);
+        String edaban = lotNo.substring(11, 14);
+
+        for (int i = 0; i < 5; i++) {
+            // 品質DB実績登録Revision情報取得
+            Map fxhdd03RevInfo = loadFxhdd03RevInfo(queryRunnerDoc, kojyo, lotNo8, edaban, jissekino, formId);
+            rev = StringUtil.nullToBlank(getMapData(fxhdd03RevInfo, "rev"));
+            jotaiFlg = StringUtil.nullToBlank(getMapData(fxhdd03RevInfo, "jotai_flg"));
+
+            // revisionが空のまたはjotaiFlgが"0"でも"1"でもない場合、新規としてデフォルト値を設定してリターンする。
+            if (StringUtil.isEmpty(rev) || !(JOTAI_FLG_KARI_TOROKU.equals(jotaiFlg) || JOTAI_FLG_TOROKUZUMI.equals(jotaiFlg))) {
+                processData.setInitRev(rev);
+                processData.setInitJotaiFlg(jotaiFlg);
+
+                // メイン画面にデータを設定する(デフォルト値)
+                for (FXHDD01 fxhdd001 : processData.getItemList()) {
+                    this.setItemData(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
+                }
+                return true;
+            }
+
+            if(!(JOTAI_FLG_SAKUJO.equals(jotaiFlg))){
+                // 作業回数
+                this.setItemData(processData, GXHDO101B027Const.KAISUU, StringUtil.nullToBlank(jissekino));
+            }
+            
+            // 外部電極焼成(ｻﾔ詰め)データ取得
+            srGdsayadumeDataList = getSrGdsayadumeData(queryRunnerQcdb, rev, jotaiFlg, kojyo, lotNo8, edaban, jissekino);
+            if (srGdsayadumeDataList.isEmpty()) {
+                //該当データが取得できなかった場合は処理を繰り返す。
+                continue;
+            }
+
+            // データが全て取得出来た場合、ループを抜ける。
+            break;
+        }
+
+        // 制限回数内にデータが取得できなかった場合
+        if (srGdsayadumeDataList.isEmpty()) {
+            return false;
+        }
+
+        processData.setInitRev(rev);
+        processData.setInitJotaiFlg(jotaiFlg);
+
+        // メイン画面データ設定
+        setInputItemDataMainForm(processData, srGdsayadumeDataList.get(0));
+
+        return true;
+
+    }
+
+    /**
+     * メイン画面データ設定処理
+     *
+     * @param processData 処理制御データ
+     * @param srGdsayadumeData 外部電極焼成(ｻﾔ詰め)データ
+     */
+    private void setInputItemDataMainForm(ProcessData processData, SrGdsayadume srGdsayadumeData) {
+        //ｻﾔ詰め方法
+        this.setItemData(processData, GXHDO101B027Const.SAYADUMEHOUHOU, getSrGdsayadumeItemData(GXHDO101B027Const.SAYADUMEHOUHOU, srGdsayadumeData));
+        //粉まぶし
+        this.setItemData(processData, GXHDO101B027Const.KONAMABUSHI, getSrGdsayadumeItemData(GXHDO101B027Const.KONAMABUSHI, srGdsayadumeData));
+        //製品重量
+        this.setItemData(processData, GXHDO101B027Const.JURYOU, getSrGdsayadumeItemData(GXHDO101B027Const.JURYOU, srGdsayadumeData));
+        //BN粉末量
+        this.setItemData(processData, GXHDO101B027Const.BNFUNMATURYOU, getSrGdsayadumeItemData(GXHDO101B027Const.BNFUNMATURYOU, srGdsayadumeData));
+        //BN粉末量確認
+        this.setItemData(processData, GXHDO101B027Const.BNFUNMATURYOUKAKUNIN, getSrGdsayadumeItemData(GXHDO101B027Const.BNFUNMATURYOUKAKUNIN, srGdsayadumeData));
+        //ｻﾔ/SUS板種類
+        this.setItemData(processData, GXHDO101B027Const.SAYASUSSYURUI, getSrGdsayadumeItemData(GXHDO101B027Const.SAYASUSSYURUI, srGdsayadumeData));
+        //ｻﾔ/SUS板枚数 計算値
+        this.setItemData(processData, GXHDO101B027Const.SAYAMAISUUKEISAN, getSrGdsayadumeItemData(GXHDO101B027Const.SAYAMAISUUKEISAN, srGdsayadumeData));
+        //ｻﾔ重量範囲(g)MIN
+        this.setItemData(processData, GXHDO101B027Const.SJYUURYOURANGEMIN, getSrGdsayadumeItemData(GXHDO101B027Const.SJYUURYOURANGEMIN, srGdsayadumeData));
+        //ｻﾔ重量範囲(g)MAX
+        this.setItemData(processData, GXHDO101B027Const.SJYUURYOURANGEMAX, getSrGdsayadumeItemData(GXHDO101B027Const.SJYUURYOURANGEMAX, srGdsayadumeData));
+        //ｻﾔ重量(g/枚)
+        this.setItemData(processData, GXHDO101B027Const.SAYAJYUURYOU, getSrGdsayadumeItemData(GXHDO101B027Const.SAYAJYUURYOU, srGdsayadumeData));
+        //ｻﾔ/SUS板枚数
+        this.setItemData(processData, GXHDO101B027Const.SAYAMAISUU, getSrGdsayadumeItemData(GXHDO101B027Const.SAYAMAISUU, srGdsayadumeData));
+        //ｻﾔ/SUS板ﾁｬｰｼﾞ量
+        this.setItemData(processData, GXHDO101B027Const.SAYSUSACHARGE, getSrGdsayadumeItemData(GXHDO101B027Const.SAYSUSACHARGE, srGdsayadumeData));
+        //ｻﾔ/SUS板詰め開始日
+        this.setItemData(processData, GXHDO101B027Const.KAISHI_DAY, getSrGdsayadumeItemData(GXHDO101B027Const.KAISHI_DAY, srGdsayadumeData));
+        //ｻﾔ/SUS板詰め開始時刻
+        this.setItemData(processData, GXHDO101B027Const.KAISHI_TIME, getSrGdsayadumeItemData(GXHDO101B027Const.KAISHI_TIME, srGdsayadumeData));
+        //ｻﾔ/SUS板詰め開始担当者
+        this.setItemData(processData, GXHDO101B027Const.STARTTANTOSYACODE, getSrGdsayadumeItemData(GXHDO101B027Const.STARTTANTOSYACODE, srGdsayadumeData));
+        //ｻﾔ/SUS板詰め開始確認者
+        this.setItemData(processData, GXHDO101B027Const.STARTKAKUNINSYACODE, getSrGdsayadumeItemData(GXHDO101B027Const.STARTKAKUNINSYACODE, srGdsayadumeData));
+        //ｻﾔ/SUS板詰め終了日
+        this.setItemData(processData, GXHDO101B027Const.SHURYOU_DAY, getSrGdsayadumeItemData(GXHDO101B027Const.SHURYOU_DAY, srGdsayadumeData));
+        //ｻﾔ/SUS板詰め終了時刻
+        this.setItemData(processData, GXHDO101B027Const.SHURYOU_TIME, getSrGdsayadumeItemData(GXHDO101B027Const.SHURYOU_TIME, srGdsayadumeData));
+        //ｻﾔ/SUS板詰め終了担当者
+        this.setItemData(processData, GXHDO101B027Const.ENDTANTOSYACODE, getSrGdsayadumeItemData(GXHDO101B027Const.ENDTANTOSYACODE, srGdsayadumeData));
+        //備考1
+        this.setItemData(processData, GXHDO101B027Const.BIKO1, getSrGdsayadumeItemData(GXHDO101B027Const.BIKO1, srGdsayadumeData));
+        //備考2
+        this.setItemData(processData, GXHDO101B027Const.BIKO2, getSrGdsayadumeItemData(GXHDO101B027Const.BIKO2, srGdsayadumeData));
+    }
+
+    /**
+     * 外部電極焼成(ｻﾔ詰め)の入力項目の登録データ(仮登録時は仮登録データ)を取得
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param rev revision
+     * @param jotaiFlg 状態ﾌﾗｸﾞ
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo.
+     * @param edaban 枝番
+     * @param jissekino 実績No
+     * @return 外部電極焼成(ｻﾔ詰め)登録データ
+     * @throws SQLException 例外エラー
+     */
+    private List<SrGdsayadume> getSrGdsayadumeData(QueryRunner queryRunnerQcdb, String rev, String jotaiFlg,
+            String kojyo, String lotNo, String edaban, int jissekino) throws SQLException {
+
+        if (JOTAI_FLG_TOROKUZUMI.equals(jotaiFlg)) {
+            return loadSrGdsayadume(queryRunnerQcdb, kojyo, lotNo, edaban, jissekino, rev);
+        } else {
+            return loadTmpSrGdsayadume(queryRunnerQcdb, kojyo, lotNo, edaban, jissekino, rev);
+        }
+    }
+    
+    /**
+     * [設計]から、初期表示する情報を取得
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadSekkeiData(QueryRunner queryRunnerQcdb, String lotNo) throws SQLException {
+        String lotNo1 = lotNo.substring(0, 3);
+        String lotNo2 = lotNo.substring(3, 11);
+        // 設計データの取得
+        String sql = "SELECT SEKKEINO "
+                + "FROM da_sekkei "
+                + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = '001'";
+
+        List<Object> params = new ArrayList<>();
+        params.add(lotNo1);
+        params.add(lotNo2);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+
+    /**
+     * 設計データ関連付けマップ取得
+     *
+     * @return 設計データ関連付けマップ
+     */
+    private Map getMapSekkeiAssociation() {
+        Map<String, String> map = new LinkedHashMap<>();
+        return map;
+    }
+
+    /**
+     * [ﾛｯﾄ区分ﾏｽﾀｰ]から、ﾛｯﾄ区分を取得
+     *
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param lotKubunCode ﾛｯﾄ区分ｺｰﾄﾞ(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadLotKbnMas(QueryRunner queryRunnerDoc, String lotKubunCode) throws SQLException {
+
+        // 設計データの取得
+        String sql = "SELECT lotkubun "
+                + "FROM lotkumas "
+                + "WHERE lotkubuncode = ?";
+
+        List<Object> params = new ArrayList<>();
+        params.add(lotKubunCode);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
+    }
+
+    /**
+     * [ｵｰﾅｰｺｰﾄﾞﾏｽﾀｰ]から、ｵｰﾅｰ名を取得
+     *
+     * @param queryRunnerWip QueryRunnerオブジェクト
+     * @param ownerCode ｵｰﾅｰｺｰﾄﾞ(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadOwnerMas(QueryRunner queryRunnerWip, String ownerCode) throws SQLException {
+
+        // オーナーデータの取得
+        String sql = "SELECT \"owner\" AS ownername "
+                + "FROM ownermas "
+                + "WHERE ownercode = ?";
+
+        List<Object> params = new ArrayList<>();
+        params.add(ownerCode);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerWip.query(sql, new MapHandler(), params.toArray());
+    }
+
+    /**
+     * 仕掛データ検索
+     *
+     * @param queryRunnerWip QueryRunnerオブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadShikakariData(QueryRunner queryRunnerWip, String lotNo) throws SQLException {
+        String lotNo1 = lotNo.substring(0, 3);
+        String lotNo2 = lotNo.substring(3, 11);
+        String lotNo3 = lotNo.substring(11, 14);
+
+        // 仕掛情報データの取得
+        String sql = "SELECT kcpno, oyalotedaban, tokuisaki, lotkubuncode, ownercode, lotpre "
+                + " FROM sikakari WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(lotNo1);
+        params.add(lotNo2);
+        params.add(lotNo3);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerWip.query(sql, new MapHandler(), params.toArray());
+    }
+
+    /**
+     * [品質DB登録実績]から、ﾘﾋﾞｼﾞｮﾝ,状態ﾌﾗｸﾞを取得
+     *
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadFxhdd03RevInfo(QueryRunner queryRunnerDoc, String kojyo, String lotNo,
+            String edaban, int jissekino, String formId) throws SQLException {
+        // 設計データの取得
+        String sql = "SELECT rev, jotai_flg "
+                + "FROM fxhdd03 "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND jissekino = ? AND gamen_id = ?";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(jissekino);
+        params.add(formId);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
+    }
+
+    /**
+     * [品質DB登録実績]から、ﾃﾞｰﾀを取得
+     *
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @param formId 画面ID(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadFxhdd03RevInfoWithLock(QueryRunner queryRunnerDoc, Connection conDoc, String kojyo, String lotNo,
+            String edaban, int jissekino, String formId) throws SQLException {
+        // 設計データの取得
+        String sql = "SELECT rev, jotai_flg "
+                + "FROM fxhdd03 "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND jissekino = ? AND gamen_id = ? "
+                + "FOR UPDATE NOWAIT ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(jissekino);
+        params.add(formId);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerDoc.query(conDoc, sql, new MapHandler(), params.toArray());
+    }
+
+    /**
+     * 最大リビジョン+1のデータを取得
+     *
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private BigDecimal getNewRev(QueryRunner queryRunnerDoc, Connection conDoc, String kojyo, String lotNo,
+            String edaban, int jissekino, String formId) throws SQLException {
+        BigDecimal newRev = BigDecimal.ONE;
+        // 設計データの取得
+        String sql = "SELECT MAX(rev) AS rev "
+                + "FROM fxhdd03 "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND jissekino = ? AND gamen_id = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(jissekino);
+        params.add(formId);
+        Map map = queryRunnerDoc.query(conDoc, sql, new MapHandler(), params.toArray());
+        if (map != null && !map.isEmpty()) {
+            newRev = new BigDecimal(String.valueOf(map.get("rev")));
+            newRev = newRev.add(BigDecimal.ONE);
+        }
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return newRev;
+    }
+
+    /**
+     * [外部電極焼成(ｻﾔ詰め)]から、ﾃﾞｰﾀを取得
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @param rev revision(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private List<SrGdsayadume> loadSrGdsayadume(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, int jissekino, String rev) throws SQLException {
+
+        String sql = "SELECT "
+                + " kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,sayadumehouhou,konamabushi,juryou"
+                + ",bnfunmaturyou,bnfunmaturyoukakunin,sayasussyurui,sayamaisuukeisan,SJyuuryouRangeMin,SJyuuryouRangeMax,sayajyuuryou"
+                + ",sayamaisuu,saysusacharge,startdatetime,StartTantosyacode,StartKakuninsyacode,enddatetime,EndTantosyacode,biko1,biko2"
+                + ",torokunichiji,kosinnichiji,revision,'0' AS deleteflag "
+                + "FROM sr_gdsayadume "
+                + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND kaisuu = ? ";
+        // revisionが入っている場合、条件に追加
+        if (!StringUtil.isEmpty(rev)) {
+            sql += "AND revision = ? ";
+        }
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(jissekino);
+
+        // revisionが入っている場合、条件に追加
+        if (!StringUtil.isEmpty(rev)) {
+            params.add(rev);
+        }
+
+        Map<String, String> mapping = new HashMap<>();
+        mapping.put("kojyo", "kojyo");                                  //工場ｺｰﾄﾞ
+        mapping.put("lotno", "lotno");                                  //ﾛｯﾄNo
+        mapping.put("edaban", "edaban");                                //枝番
+        mapping.put("kaisuu", "kaisuu");                                //作業回数
+        mapping.put("kcpno", "kcpno");                                  //KCPNO
+        mapping.put("tokuisaki", "tokuisaki");                          //客先
+        mapping.put("lotkubuncode", "lotkubuncode");                    //ﾛｯﾄ区分
+        mapping.put("ownercode", "ownercode");                          //ｵｰﾅｰ
+        mapping.put("lotpre", "lotpre");                                //ﾛｯﾄﾌﾟﾚ
+        mapping.put("syorisuu", "syorisuu");                            //処理数
+        mapping.put("sayadumehouhou", "sayadumehouhou");                //ｻﾔ詰め方法
+        mapping.put("konamabushi", "konamabushi");                      //粉まぶし
+        mapping.put("juryou", "juryou");                                //製品重量
+        mapping.put("bnfunmaturyou", "bnfunmaturyou");                  //BN粉末量
+        mapping.put("bnfunmaturyoukakunin", "bnfunmaturyoukakunin");    //BN粉末量確認
+        mapping.put("sayasussyurui", "sayasussyurui");                  //ｻﾔ/SUS板種類
+        mapping.put("sayamaisuukeisan", "sayamaisuukeisan");            //ｻﾔ/SUS板枚数 計算値
+        mapping.put("SJyuuryouRangeMin", "sjyuuryourangemin");          //ｻﾔ重量範囲(g)MIN
+        mapping.put("SJyuuryouRangeMax", "sjyuuryourangemax");          //ｻﾔ重量範囲(g)MAX
+        mapping.put("sayajyuuryou", "sayajyuuryou");                    //ｻﾔ重量(g/枚)
+        mapping.put("sayamaisuu", "sayamaisuu");                        //ｻﾔ/SUS板枚数
+        mapping.put("saysusacharge", "saysusacharge");                  //ｻﾔ/SUS板ﾁｬｰｼﾞ量
+        mapping.put("startdatetime", "startdatetime");                  //ｻﾔ/SUS板詰め開始日時
+        mapping.put("StartTantosyacode", "starttantosyacode");          //ｻﾔ/SUS板詰め開始担当者
+        mapping.put("StartKakuninsyacode", "startkakuninsyacode");      //ｻﾔ/SUS板詰め開始確認者
+        mapping.put("enddatetime", "enddatetime");                      //ｻﾔ/SUS板詰め終了日時
+        mapping.put("EndTantosyacode", "endtantosyacode");              //ｻﾔ/SUS板詰め終了担当者
+        mapping.put("biko1", "biko1");                                  //備考1
+        mapping.put("biko2", "biko2");                                  //備考2
+        mapping.put("torokunichiji", "torokunichiji");                  //登録日時
+        mapping.put("kosinnichiji", "kosinnichiji");                    //更新日時
+        mapping.put("revision", "revision");                            //revision
+        mapping.put("deleteflag", "deleteflag");                        //削除ﾌﾗｸﾞ
+
+        BeanProcessor beanProcessor = new BeanProcessor(mapping);
+        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+        ResultSetHandler<List<SrGdsayadume>> beanHandler = new BeanListHandler<>(SrGdsayadume.class, rowProcessor);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, beanHandler, params.toArray());
+    }
+
+    /**
+     * [外部電極焼成(ｻﾔ詰め)_仮登録]から、ﾃﾞｰﾀを取得
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @param rev revision(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private List<SrGdsayadume> loadTmpSrGdsayadume(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, int jissekino, String rev) throws SQLException {
+        
+        String sql = "SELECT "
+                + " kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,sayadumehouhou,konamabushi,juryou"
+                + ",bnfunmaturyou,bnfunmaturyoukakunin,sayasussyurui,sayamaisuukeisan,SJyuuryouRangeMin,SJyuuryouRangeMax,sayajyuuryou"
+                + ",sayamaisuu,saysusacharge,startdatetime,StartTantosyacode,StartKakuninsyacode,enddatetime,EndTantosyacode,biko1,biko2"
+                + ",torokunichiji,kosinnichiji,revision,deleteflag "
+                + " FROM tmp_sr_gdsayadume "
+                + " WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND kaisuu = ? AND deleteflag = ? ";
+        // revisionが入っている場合、条件に追加
+        if (!StringUtil.isEmpty(rev)) {
+            sql += "AND revision = ? ";
+        }
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(jissekino);
+        params.add(0);
+
+        // revisionが入っている場合、条件に追加
+        if (!StringUtil.isEmpty(rev)) {
+            params.add(rev);
+        }
+
+        Map<String, String> mapping = new HashMap<>();
+        mapping.put("kojyo", "kojyo");                                  //工場ｺｰﾄﾞ
+        mapping.put("lotno", "lotno");                                  //ﾛｯﾄNo
+        mapping.put("edaban", "edaban");                                //枝番
+        mapping.put("kaisuu", "kaisuu");                                //作業回数
+        mapping.put("kcpno", "kcpno");                                  //KCPNO
+        mapping.put("tokuisaki", "tokuisaki");                          //客先
+        mapping.put("lotkubuncode", "lotkubuncode");                    //ﾛｯﾄ区分
+        mapping.put("ownercode", "ownercode");                          //ｵｰﾅｰ
+        mapping.put("lotpre", "lotpre");                                //ﾛｯﾄﾌﾟﾚ
+        mapping.put("syorisuu", "syorisuu");                            //処理数
+        mapping.put("sayadumehouhou", "sayadumehouhou");                //ｻﾔ詰め方法
+        mapping.put("konamabushi", "konamabushi");                      //粉まぶし
+        mapping.put("juryou", "juryou");                                //製品重量
+        mapping.put("bnfunmaturyou", "bnfunmaturyou");                  //BN粉末量
+        mapping.put("bnfunmaturyoukakunin", "bnfunmaturyoukakunin");    //BN粉末量確認
+        mapping.put("sayasussyurui", "sayasussyurui");                  //ｻﾔ/SUS板種類
+        mapping.put("sayamaisuukeisan", "sayamaisuukeisan");            //ｻﾔ/SUS板枚数 計算値
+        mapping.put("SJyuuryouRangeMin", "sjyuuryourangemin");          //ｻﾔ重量範囲(g)MIN
+        mapping.put("SJyuuryouRangeMax", "sjyuuryourangemax");          //ｻﾔ重量範囲(g)MAX
+        mapping.put("sayajyuuryou", "sayajyuuryou");                    //ｻﾔ重量(g/枚)
+        mapping.put("sayamaisuu", "sayamaisuu");                        //ｻﾔ/SUS板枚数
+        mapping.put("saysusacharge", "saysusacharge");                  //ｻﾔ/SUS板ﾁｬｰｼﾞ量
+        mapping.put("startdatetime", "startdatetime");                  //ｻﾔ/SUS板詰め開始日時
+        mapping.put("StartTantosyacode", "starttantosyacode");          //ｻﾔ/SUS板詰め開始担当者
+        mapping.put("StartKakuninsyacode", "startkakuninsyacode");      //ｻﾔ/SUS板詰め開始確認者
+        mapping.put("enddatetime", "enddatetime");                      //ｻﾔ/SUS板詰め終了日時
+        mapping.put("EndTantosyacode", "endtantosyacode");              //ｻﾔ/SUS板詰め終了担当者
+        mapping.put("biko1", "biko1");                                  //備考1
+        mapping.put("biko2", "biko2");                                  //備考2
+        mapping.put("torokunichiji", "torokunichiji");                  //登録日時
+        mapping.put("kosinnichiji", "kosinnichiji");                    //更新日時
+        mapping.put("revision", "revision");                            //revision
+        mapping.put("deleteflag", "deleteflag");                        //削除ﾌﾗｸﾞ
+
+        BeanProcessor beanProcessor = new BeanProcessor(mapping);
+        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+        ResultSetHandler<List<SrGdsayadume>> beanHandler = new BeanListHandler<>(SrGdsayadume.class, rowProcessor);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, beanHandler, params.toArray());
+    }
+
+    /**
+     * 枝番コピー確認メッセージ表示
+     *
+     * @param processData 処理データ
+     * @return 処理データ
+     */
+    public ProcessData confEdabanCopy(ProcessData processData) {
+        processData.setWarnMessage("親ﾃﾞｰﾀを取得します。よろしいですか？");
+
+        processData.setMethod("edabanCopy");
+        return processData;
+    }
+
+    /**
+     * 枝番コピー
+     *
+     * @param processData 処理データ
+     * @return 処理データ
+     */
+    public ProcessData edabanCopy(ProcessData processData) {
+        try {
+
+            QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
+            QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
+            QueryRunner queryRunnerWip = new QueryRunner(processData.getDataSourceWip());
+
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            HttpSession session = (HttpSession) externalContext.getSession(false);
+            String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
+            String lotNo = (String) session.getAttribute("lotNo");
+            int paramJissekino = (Integer) session.getAttribute("jissekino");
+            String kojyo = lotNo.substring(0, 3);
+            String lotNo8 = lotNo.substring(3, 11);
+            
+            //仕掛情報の取得
+            Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
+            String oyalotEdaban = StringUtil.nullToBlank(getMapData(shikakariData, "oyalotedaban")); //親ﾛｯﾄ枝番
+
+            // 品質DB登録実績データ取得
+            Map fxhdd03RevInfo = loadFxhdd03RevInfo(queryRunnerDoc, kojyo, lotNo8, oyalotEdaban, paramJissekino, formId);
+            if (fxhdd03RevInfo == null || fxhdd03RevInfo.isEmpty()) {
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
+                return processData;
+            }
+
+            String jotaiFlg = StringUtil.nullToBlank(getMapData(fxhdd03RevInfo, "jotai_flg"));
+            
+            if (!(JOTAI_FLG_KARI_TOROKU.equals(jotaiFlg) || JOTAI_FLG_TOROKUZUMI.equals(jotaiFlg))) {
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
+                return processData;
+            }
+
+            // 外部電極焼成(ｻﾔ詰め)データ取得
+            List<SrGdsayadume> srGdsayadumeDataList = getSrGdsayadumeData(queryRunnerQcdb, "", jotaiFlg, kojyo, lotNo8, oyalotEdaban, paramJissekino);
+            if (srGdsayadumeDataList.isEmpty()) {
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
+                return processData;
+            }
+
+            // メイン画面データ設定
+            setInputItemDataMainForm(processData, srGdsayadumeDataList.get(0));
+
+            // 次呼出しメソッドをクリア
+            processData.setMethod("");
+
+            return processData;
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            return processData;
+        }
+    }
+
+    /**
+     * 項目データ設定
+     *
+     * @param processData 処理制御データ
+     * @param itemId 項目ID
+     * @param value 設定値
+     * @return 処理制御データ
+     */
+    private ProcessData setItemData(ProcessData processData, String itemId, String value) {
+        List<FXHDD01> selectData
+                = processData.getItemList().stream().filter(n -> itemId.equals(n.getItemId())).collect(Collectors.toList());
+        if (null != selectData && 0 < selectData.size()) {
+            selectData.get(0).setValue(value);
+        }
+        return processData;
+    }
+
+    /**
+     * 項目データ取得
+     *
+     * @param listData フォームデータ
+     * @param itemId 項目ID
+     * @return 項目データ
+     */
+    private FXHDD01 getItemRow(List<FXHDD01> listData, String itemId) {
+        List<FXHDD01> selectData
+                = listData.stream().filter(n -> itemId.equals(n.getItemId())).collect(Collectors.toList());
+        if (null != selectData && 0 < selectData.size()) {
+            return selectData.get(0);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 項目データ(入力値)取得
+     *
+     * @param listData フォームデータ
+     * @param itemId 項目ID
+     * @param srGdsayadumeData 外部電極焼成(ｻﾔ詰め)
+     * @return 入力値
+     */
+    private String getItemData(List<FXHDD01> listData, String itemId, SrGdsayadume srGdsayadumeData) {
+        List<FXHDD01> selectData
+                = listData.stream().filter(n -> itemId.equals(n.getItemId())).collect(Collectors.toList());
+        if (null != selectData && 0 < selectData.size()) {
+            return selectData.get(0).getValue();
+        } else if (srGdsayadumeData != null) {
+            // 元データが存在する場合元データより取得
+            return getSrGdsayadumeItemData(itemId, srGdsayadumeData);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 初期表示メッセージ表示
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData openInitMessage(ProcessData processData) {
+
+        processData.setMethod("");
+
+        // メッセージを画面に渡す
+        InitMessage beanInitMessage = (InitMessage) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_INIT_MESSAGE);
+        beanInitMessage.setInitMessageList(processData.getInitMessageList());
+
+        // 実行スクリプトを設定
+        processData.setExecuteScript("PF('W_dlg_initMessage').show();");
+
+        return processData;
+    }
+    
+    /**
+     * Mapから値を取得する(マップがNULLまたは空の場合はNULLを返却)
+     *
+     * @param map マップ
+     * @param mapId ID
+     * @return マップから取得した値
+     */
+    private Object getMapData(Map map, String mapId) {
+        if (map == null || map.isEmpty()) {
+            return null;
+        }
+        return map.get(mapId);
+    }
+
+    /**
+     * 品質DB登録実績(fxhdd03)登録処理
+     *
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param conDoc コネクション
+     * @param tantoshaCd 担当者ｺｰﾄﾞ
+     * @param formId 画面ID
+     * @param rev revision
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param jissekino 実績No
+     * @param jotaiFlg 状態ﾌﾗｸﾞ
+     * @param systemTime システム日付
+     * @throws SQLException 例外エラー
+     */
+    private void insertFxhdd03(QueryRunner queryRunnerDoc, Connection conDoc, String tantoshaCd, String formId, BigDecimal rev,
+            String kojyo, String lotNo, String edaban, int jissekino, String jotaiFlg, Timestamp systemTime) throws SQLException {
+        String sql = "INSERT INTO fxhdd03 ("
+                + "torokusha,toroku_date,koshinsha,koshin_date,gamen_id,rev,kojyo,lotno,"
+                + "edaban,jissekino,jotai_flg,tsuika_kotei_flg"
+                + ") VALUES ("
+                + "?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(tantoshaCd); //登録者
+        params.add(systemTime); //登録日
+        params.add(null); //更新者
+        params.add(null); //更新日
+        params.add(formId); //画面ID
+        params.add(rev); //revision
+        params.add(kojyo); //工場ｺｰﾄﾞ
+        params.add(lotNo); //ﾛｯﾄNo
+        params.add(edaban); //枝番
+        params.add(jissekino); //実績No
+        params.add(jotaiFlg); //状態ﾌﾗｸﾞ
+        params.add("0"); //追加工程ﾌﾗｸﾞ
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerDoc.update(conDoc, sql, params.toArray());
+    }
+
+    /**
+     * 品質DB登録実績(fxhdd03)更新処理
+     *
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param tantoshaCd 担当者ｺｰﾄﾞ
+     * @param formId 画面ID
+     * @param rev revision
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param jotaiFlg 状態ﾌﾗｸﾞ
+     * @param jissekino 実績No
+     * @throws SQLException 例外ｴﾗｰ
+     */
+    private void updateFxhdd03(QueryRunner queryRunnerDoc, Connection conDoc, String tantoshaCd, String formId, BigDecimal rev,
+            String kojyo, String lotNo, String edaban, String jotaiFlg, Timestamp systemTime, int jissekino) throws SQLException {
+        String sql = "UPDATE fxhdd03 SET "
+                + "koshinsha = ?, koshin_date = ?,"
+                + "rev = ?, jotai_flg = ? "
+                + "WHERE gamen_id = ? AND kojyo = ? "
+                + "  AND lotno = ? AND edaban = ? "
+                + "  AND jissekino = ?  ";
+
+        List<Object> params = new ArrayList<>();
+        // 更新内容
+        params.add(tantoshaCd); //更新者
+        params.add(systemTime); //更新日
+        params.add(rev); //revision
+        params.add(jotaiFlg); //状態ﾌﾗｸﾞ
+
+        // 検索条件
+        params.add(formId); //画面ID
+        params.add(kojyo); //工場ｺｰﾄﾞ
+        params.add(lotNo); //ﾛｯﾄNo
+        params.add(edaban); //枝番
+        params.add(jissekino); //実績No
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerDoc.update(conDoc, sql, params.toArray());
+    }
+
+    /**
+     * 外部電極焼成(ｻﾔ詰め)_仮登録(tmp_sr_gdsayadume)登録処理
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param newRev 新Revision
+     * @param deleteflag 削除ﾌﾗｸﾞ
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param jissekino 実績No
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @param itemList 項目リスト
+     * @throws SQLException 例外エラー
+     */
+    private void insertTmpSrGdsayadume(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev, int deleteflag,
+            String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
+
+        String sql = "INSERT INTO tmp_sr_gdsayadume ("
+                + " kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,sayadumehouhou,konamabushi,juryou"
+                + ",bnfunmaturyou,bnfunmaturyoukakunin,sayasussyurui,sayamaisuukeisan,SJyuuryouRangeMin,SJyuuryouRangeMax,sayajyuuryou"
+                + ",sayamaisuu,saysusacharge,startdatetime,StartTantosyacode,StartKakuninsyacode,enddatetime,EndTantosyacode,biko1,biko2"
+                + ",torokunichiji,kosinnichiji,revision,deleteflag"
+                + ") VALUES ("
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+
+        List<Object> params = setUpdateParameterTmpSrGdsayadume(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null, jissekino);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+
+    /**
+     * 外部電極焼成(ｻﾔ詰め)_仮登録(tmp_sr_gdsayadume)更新処理
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param rev revision
+     * @param jotaiFlg 状態ﾌﾗｸﾞ
+     * @param newRev 新revision
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param jissekino 実績No
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @param itemList 項目リスト
+     * @throws SQLException 例外エラー
+     */
+    private void updateTmpSrGdsayadume(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, String jotaiFlg, BigDecimal newRev,
+            String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
+
+        String sql = "UPDATE tmp_sr_gdsayadume SET "
+                + " kcpno = ?,tokuisaki = ?,lotkubuncode = ?,ownercode = ?,lotpre = ?,syorisuu = ?,sayadumehouhou = ?,konamabushi = ?,juryou = ?,"
+                + "bnfunmaturyou = ?,bnfunmaturyoukakunin = ?,sayasussyurui = ?,sayamaisuukeisan = ?,SJyuuryouRangeMin = ?,SJyuuryouRangeMax = ?,"
+                + "sayajyuuryou = ?,sayamaisuu = ?,saysusacharge = ?,startdatetime = ?,StartTantosyacode = ?,StartKakuninsyacode = ?,enddatetime = ?,"
+                + "EndTantosyacode = ?,biko1 = ?,biko2 = ?,kosinnichiji = ?,revision = ?,deleteflag = ? "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ? ";
+
+        // 更新前の値を取得
+        List<SrGdsayadume> srGdsayadumeList = getSrGdsayadumeData(queryRunnerQcdb, rev.toPlainString(), jotaiFlg, kojyo, lotNo, edaban, jissekino);
+        SrGdsayadume srGdsayadume = null;
+        if (!srGdsayadumeList.isEmpty()) {
+            srGdsayadume = srGdsayadumeList.get(0);
+        }
+
+        //更新値設定
+        List<Object> params = setUpdateParameterTmpSrGdsayadume(false, newRev, 0, "", "", "", systemTime, itemList, srGdsayadume, jissekino);
+
+        //検索条件設定
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(jissekino);
+        params.add(rev);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+
+    /**
+     * 外部電極焼成(ｻﾔ詰め)_仮登録(tmp_sr_gdsayadume)削除処理
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param rev revision
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param jissekino 実績No
+     * @throws SQLException 例外エラー
+     */
+    private void deleteTmpSrGdsayadume(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev,
+            String kojyo, String lotNo, String edaban, int jissekino) throws SQLException {
+
+        String sql = "DELETE FROM tmp_sr_gdsayadume "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ?";
+
+        //更新値設定
+        List<Object> params = new ArrayList<>();
+
+        //検索条件設定
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(jissekino);
+        params.add(rev);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+
+    /**
+     * 外部電極焼成(ｻﾔ詰め)_仮登録(tmp_sr_gdsayadume)更新値パラメータ設定
+     *
+     * @param isInsert 登録判定(true:insert、false:update)
+     * @param newRev 新revision
+     * @param deleteflag 削除ﾌﾗｸﾞ
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @param itemList 項目リスト
+     * @param srGdsayadumeData 外部電極焼成(ｻﾔ詰め)データ
+     * @param jissekino 実績No
+     * @return 更新パラメータ
+     */
+    private List<Object> setUpdateParameterTmpSrGdsayadume(boolean isInsert, BigDecimal newRev, int deleteflag, String kojyo,
+            String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList, SrGdsayadume srGdsayadumeData, int jissekino) {
+        List<Object> params = new ArrayList<>();
+        if (isInsert) {
+            params.add(kojyo); //工場ｺｰﾄﾞ
+            params.add(lotNo); //ﾛｯﾄNo
+            params.add(edaban); //枝番
+            params.add(jissekino); //作業回数
+        }
+        //ﾛｯﾄ区分
+        String lotKubun = getItemData(itemList, GXHDO101B027Const.LOTKUBUNCODE, srGdsayadumeData);
+        String strLotKubuncode[] = null;
+        String lotKubunCode = "";
+
+        if(!"".equals(lotKubun) && lotKubun != null){
+            strLotKubuncode = lotKubun.split(":");
+            lotKubunCode = strLotKubuncode[0];
+        }
+        
+        //ｵｰﾅｰ
+        String owner = getItemData(itemList, GXHDO101B027Const.OWNERCODE, srGdsayadumeData);
+        String strOwnerCode[] = null;
+        String ownerCode = "";
+
+        if(!"".equals(owner) && owner != null){
+            strOwnerCode = owner.split(":");
+            ownerCode = strOwnerCode[0];
+        }
+        
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.KCPNO, srGdsayadumeData))); //KCPNO
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.TOKUISAKI, srGdsayadumeData))); //客先
+        params.add(DBUtil.stringToStringObjectDefaultNull(lotKubunCode)); //ﾛｯﾄ区分
+        params.add(DBUtil.stringToStringObjectDefaultNull(ownerCode)); //ｵｰﾅｰ
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.LOTPRE, srGdsayadumeData))); //ﾛｯﾄﾌﾟﾚ
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SYORISUU, srGdsayadumeData))); //処理数
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SAYADUMEHOUHOU, srGdsayadumeData))); //ｻﾔ詰め方法
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.KONAMABUSHI, srGdsayadumeData))); //粉まぶし
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.JURYOU, srGdsayadumeData)));  // 製品重量
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.BNFUNMATURYOU, srGdsayadumeData)));  // BN粉末量
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.BNFUNMATURYOUKAKUNIN, srGdsayadumeData))); //BN粉末量確認
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SAYASUSSYURUI, srGdsayadumeData))); //ｻﾔ/SUS板種類
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SAYAMAISUUKEISAN, srGdsayadumeData))); //ｻﾔ/SUS板枚数 計算値
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SJYUURYOURANGEMIN, srGdsayadumeData)));  // ｻﾔ重量範囲(g)MIN
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SJYUURYOURANGEMAX, srGdsayadumeData)));  // ｻﾔ重量範囲(g)MAX
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SAYAJYUURYOU, srGdsayadumeData)));  // ｻﾔ重量(g/枚)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SAYAMAISUU, srGdsayadumeData))); //ｻﾔ/SUS板枚数
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SAYSUSACHARGE, srGdsayadumeData))); //ｻﾔ/SUS板ﾁｬｰｼﾞ量
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.KAISHI_DAY, srGdsayadumeData),
+            getItemData(itemList, GXHDO101B027Const.KAISHI_TIME, srGdsayadumeData))); // ｻﾔ/SUS板詰め開始日時
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.STARTTANTOSYACODE, srGdsayadumeData))); // ｻﾔ/SUS板詰め開始担当者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.STARTKAKUNINSYACODE, srGdsayadumeData))); // ｻﾔ/SUS板詰め開始確認者
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SHURYOU_DAY, srGdsayadumeData),
+            getItemData(itemList, GXHDO101B027Const.SHURYOU_TIME, srGdsayadumeData))); // ｻﾔ/SUS板詰め終了日時
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.ENDTANTOSYACODE, srGdsayadumeData))); // ｻﾔ/SUS板詰め終了担当者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.BIKO1, srGdsayadumeData))); // 備考1
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.BIKO2, srGdsayadumeData))); // 備考2
+        if (isInsert) {
+            params.add(systemTime); //登録日時
+            params.add(systemTime); //更新日時
+        } else {
+            params.add(systemTime); //更新日時
+        }
+        params.add(newRev); //revision
+        params.add(deleteflag); //削除ﾌﾗｸﾞ
+        
+        return params;
+    }
+
+    /**
+     * 外部電極焼成(ｻﾔ詰め)(sr_gdsayadume)登録処理
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param newRev 新Revision
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param jissekino 実績No
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @param itemList 項目リスト
+     * @param tmpSrGdsayadume 仮登録データ
+     * @throws SQLException 例外エラー
+     */
+    private void insertSrGdsayadume(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev,
+            String kojyo, String lotNo, String edaban, int jissekino,Timestamp systemTime, List<FXHDD01> itemList, SrGdsayadume tmpSrGdsayadume) throws SQLException {
+
+        String sql = "INSERT INTO sr_gdsayadume ("
+                + " kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,sayadumehouhou,konamabushi,juryou"
+                + ",bnfunmaturyou,bnfunmaturyoukakunin,sayasussyurui,sayamaisuukeisan,SJyuuryouRangeMin,SJyuuryouRangeMax,sayajyuuryou"
+                + ",sayamaisuu,saysusacharge,startdatetime,StartTantosyacode,StartKakuninsyacode,enddatetime,EndTantosyacode,biko1,biko2"
+                + ",torokunichiji,kosinnichiji,revision"
+                + ") VALUES ("
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+
+        List<Object> params = setUpdateParameterSrGdsayadume(true, newRev, kojyo, lotNo, edaban, jissekino, systemTime, itemList, tmpSrGdsayadume);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+
+    /**
+     * 外部電極焼成(ｻﾔ詰め)(sr_gdsayadume)更新処理
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param rev revision
+     * @param jotaiFlg 状態ﾌﾗｸﾞ
+     * @param newRev 新revision
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param jissekino 実績No
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @param itemList 項目リスト
+     * @throws SQLException 例外エラー
+     */
+    private void updateSrGdsayadume(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, String jotaiFlg, BigDecimal newRev,
+            String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
+        String sql = "UPDATE sr_gdsayadume SET "
+                + " kcpno = ?,tokuisaki = ?,lotkubuncode = ?,ownercode = ?,lotpre = ?,syorisuu = ?,sayadumehouhou = ?,konamabushi = ?,juryou = ?,"
+                + "bnfunmaturyou = ?,bnfunmaturyoukakunin = ?,sayasussyurui = ?,sayamaisuukeisan = ?,SJyuuryouRangeMin = ?,SJyuuryouRangeMax = ?,"
+                + "sayajyuuryou = ?,sayamaisuu = ?,saysusacharge = ?,startdatetime = ?,StartTantosyacode = ?,StartKakuninsyacode = ?,enddatetime = ?,"
+                + "EndTantosyacode = ?,biko1 = ?,biko2 = ?,kosinnichiji = ?,revision = ? "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ? ";
+
+        // 更新前の値を取得
+        List<SrGdsayadume> srGdsayadumeList = getSrGdsayadumeData(queryRunnerQcdb, rev.toPlainString(), jotaiFlg, kojyo, lotNo, edaban, jissekino);
+        SrGdsayadume srGdsayadume = null;
+        if (!srGdsayadumeList.isEmpty()) {
+            srGdsayadume = srGdsayadumeList.get(0);
+        }
+
+        //更新値設定
+        List<Object> params = setUpdateParameterSrGdsayadume(false, newRev, "", "", "", jissekino, systemTime, itemList, srGdsayadume);
+
+        //検索条件設定
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(jissekino);
+        params.add(rev);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+
+    /**
+     * 外部電極焼成(ｻﾔ詰め)(sr_gdsayadume)更新値パラメータ設定
+     *
+     * @param isInsert 登録判定(true:insert、false:update)
+     * @param newRev 新revision
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param jissekino 実績No
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @param itemList 項目リスト
+     * @param srGdsayadumeData 外部電極焼成(ｻﾔ詰め)データ
+     * @return 更新パラメータ
+     */
+    private List<Object> setUpdateParameterSrGdsayadume(boolean isInsert, BigDecimal newRev, String kojyo, String lotNo, String edaban,
+            int jissekino, Timestamp systemTime, List<FXHDD01> itemList, SrGdsayadume srGdsayadumeData) {
+        List<Object> params = new ArrayList<>();
+
+        if (isInsert) {
+            params.add(kojyo);  // 工場ｺｰﾄﾞ
+            params.add(lotNo);  // ﾛｯﾄNo
+            params.add(edaban); // 枝番
+            params.add(jissekino); //作業回数
+        }
+
+        //ﾛｯﾄ区分
+        String lotKubun = getItemData(itemList, GXHDO101B027Const.LOTKUBUNCODE, srGdsayadumeData);
+        String strLotKubuncode[] = null;
+        String lotKubunCode = "";
+
+        if(!"".equals(lotKubun) && lotKubun != null){
+            strLotKubuncode = lotKubun.split(":");
+            lotKubunCode = strLotKubuncode[0];
+        }
+        
+        //ｵｰﾅｰ
+        String owner = getItemData(itemList, GXHDO101B027Const.OWNERCODE, srGdsayadumeData);
+        String strOwnerCode[] = null;
+        String ownerCode = "";
+
+        if(!"".equals(owner) && owner != null){
+            strOwnerCode = owner.split(":");
+            ownerCode = strOwnerCode[0];
+        }
+        
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.KCPNO, srGdsayadumeData))); //KCPNO
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.TOKUISAKI, srGdsayadumeData))); //客先
+        params.add(DBUtil.stringToStringObject(lotKubunCode)); //ﾛｯﾄ区分
+        params.add(DBUtil.stringToStringObject(ownerCode)); //ｵｰﾅｰ
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.LOTPRE, srGdsayadumeData))); //ﾛｯﾄﾌﾟﾚ
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B027Const.SYORISUU, srGdsayadumeData))); //処理数
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.SAYADUMEHOUHOU, srGdsayadumeData))); //ｻﾔ詰め方法
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.KONAMABUSHI, srGdsayadumeData))); //粉まぶし
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B027Const.JURYOU, srGdsayadumeData)));  // 製品重量
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B027Const.BNFUNMATURYOU, srGdsayadumeData)));  // BN粉末量
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.BNFUNMATURYOUKAKUNIN, srGdsayadumeData))); //BN粉末量確認
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.SAYASUSSYURUI, srGdsayadumeData))); //ｻﾔ/SUS板種類
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B027Const.SAYAMAISUUKEISAN, srGdsayadumeData))); //ｻﾔ/SUS板枚数 計算値
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B027Const.SJYUURYOURANGEMIN, srGdsayadumeData)));  // ｻﾔ重量範囲(g)MIN
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B027Const.SJYUURYOURANGEMAX, srGdsayadumeData)));  // ｻﾔ重量範囲(g)MAX
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B027Const.SAYAJYUURYOU, srGdsayadumeData)));  // ｻﾔ重量(g/枚)
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B027Const.SAYAMAISUU, srGdsayadumeData))); //ｻﾔ/SUS板枚数
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B027Const.SAYSUSACHARGE, srGdsayadumeData))); //ｻﾔ/SUS板ﾁｬｰｼﾞ量
+        params.add(DBUtil.stringToDateObject(getItemData(itemList, GXHDO101B027Const.KAISHI_DAY, srGdsayadumeData),
+            getItemData(itemList, GXHDO101B027Const.KAISHI_TIME, srGdsayadumeData))); // ｻﾔ/SUS板詰め開始日時
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.STARTTANTOSYACODE, srGdsayadumeData))); // ｻﾔ/SUS板詰め開始担当者
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.STARTKAKUNINSYACODE, srGdsayadumeData))); // ｻﾔ/SUS板詰め開始確認者
+        params.add(DBUtil.stringToDateObject(getItemData(itemList, GXHDO101B027Const.SHURYOU_DAY, srGdsayadumeData),
+            getItemData(itemList, GXHDO101B027Const.SHURYOU_TIME, srGdsayadumeData))); // ｻﾔ/SUS板詰め終了日時
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.ENDTANTOSYACODE, srGdsayadumeData))); // ｻﾔ/SUS板詰め終了担当者
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.BIKO1, srGdsayadumeData))); // 備考1
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.BIKO2, srGdsayadumeData))); // 備考2
+
+        if (isInsert) {
+            params.add(systemTime); //登録日時
+            params.add(systemTime); //更新日時
+        } else {
+            params.add(systemTime); //更新日時
+        }
+        params.add(newRev); //revision
+        
+        return params;
+    }
+
+    /**
+     * 外部電極焼成(ｻﾔ詰め)(sr_gdsayadume)削除処理
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param rev revision
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param jissekino 実績No
+     * @throws SQLException 例外エラー
+     */
+    private void deleteSrGdsayadume(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev,
+            String kojyo, String lotNo, String edaban, int jissekino) throws SQLException {
+
+        String sql = "DELETE FROM sr_gdsayadume "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ?";
+
+        //更新値設定
+        List<Object> params = new ArrayList<>();
+
+        //検索条件設定
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(jissekino);
+        params.add(rev);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+
+    /**
+     * [外部電極焼成(ｻﾔ詰め)_仮登録]から最大値+1の削除ﾌﾗｸﾞを取得する
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param jissekino 実績No
+     * @return 削除ﾌﾗｸﾞ最大値 + 1
+     * @throws SQLException 例外エラー
+     */
+    private int getNewDeleteflag(QueryRunner queryRunnerQcdb, String kojyo, String lotNo, String edaban, int jissekino) throws SQLException {
+        String sql = "SELECT MAX(deleteflag) AS deleteflag "
+                + "FROM tmp_sr_gdsayadume "
+                + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND KAISUU = ? ";
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        Map resultMap = queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+        int newDeleteFlg = 0;
+        if (!StringUtil.isEmpty(StringUtil.nullToBlank(resultMap.get("deleteflag")))) {
+            newDeleteFlg = Integer.parseInt(StringUtil.nullToBlank(resultMap.get("deleteflag")));
+        }
+        newDeleteFlg++;
+
+        return newDeleteFlg;
+    }
+
+    /**
+     * リビジョンチェック
+     *
+     * @param processData 処理制御データ
+     * @param fxhdd03RevInfo 品質DB登録実績データ
+     * @return エラーメッセージ情報
+     * @throws SQLException 例外エラー
+     */
+    private ErrorMessageInfo checkRevision(ProcessData processData, Map fxhdd03RevInfo) throws SQLException {
+
+        if (StringUtil.isEmpty(processData.getInitJotaiFlg())) {
+            // 新規の場合、データが存在する場合
+            if (fxhdd03RevInfo != null && !fxhdd03RevInfo.isEmpty()) {
+                return new ErrorMessageInfo(MessageUtil.getMessage("XHD-000026"));
+            }
+        } else {
+            // 品質DB登録実績データが取得出来ていない場合エラー
+            if (fxhdd03RevInfo == null || fxhdd03RevInfo.isEmpty()) {
+                return new ErrorMessageInfo(MessageUtil.getMessage("XHD-000025"));
+            }
+
+            // revisionが更新されていた場合エラー
+            if (!processData.getInitRev().equals(StringUtil.nullToBlank(getMapData(fxhdd03RevInfo, "rev")))) {
+                return new ErrorMessageInfo(MessageUtil.getMessage("XHD-000025"));
+            }
+        }
+
+        return null;
+
+    }
+
+    /**
+     * 開始時間設定処理
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData setKaishiDateTime(ProcessData processData) {
+        FXHDD01 itemDay = getItemRow(processData.getItemList(), GXHDO101B027Const.KAISHI_DAY);
+        FXHDD01 itemTime = getItemRow(processData.getItemList(), GXHDO101B027Const.KAISHI_TIME);
+        if (StringUtil.isEmpty(itemDay.getValue()) && StringUtil.isEmpty(itemTime.getValue())) {
+            setDateTimeItem(itemDay, itemTime, new Date());
+        }
+        processData.setMethod("");
+        return processData;
+    }
+
+    /**
+     * 終了時間設定処理
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData setShuryouDateTime(ProcessData processData) {
+        FXHDD01 itemDay = getItemRow(processData.getItemList(), GXHDO101B027Const.SHURYOU_DAY);
+        FXHDD01 itemTime = getItemRow(processData.getItemList(), GXHDO101B027Const.SHURYOU_TIME);
+        if (StringUtil.isEmpty(itemDay.getValue()) && StringUtil.isEmpty(itemTime.getValue())) {
+            setDateTimeItem(itemDay, itemTime, new Date());
+        }
+
+        processData.setMethod("");
+        return processData;
+    }
+    
+    /**
+     * 日付(日、時間)の項目にフォーマットの日付(yyMMdd,HHmm)をセットする
+     *
+     * @param itemDay 項目日付(日)
+     * @param itemTime 項目日付(時間)
+     * @param setDateTime 設定日付
+     */
+    private void setDateTimeItem(FXHDD01 itemDay, FXHDD01 itemTime, Date setDateTime) {
+        itemDay.setValue(new SimpleDateFormat("yyMMdd").format(setDateTime));
+        itemTime.setValue(new SimpleDateFormat("HHmm").format(setDateTime));
+    }
+
+    /**
+     * 項目IDに該当するDBの値を取得する。
+     *
+     * @param itemId 項目ID
+     * @param srGdsayadumeData 外部電極焼成(ｻﾔ詰め)データ
+     * @return DB値
+     */
+    private String getSrGdsayadumeItemData(String itemId, SrGdsayadume srGdsayadumeData) {
+        switch (itemId) {
+            // KCPNO
+            case GXHDO101B027Const.KCPNO:
+                return StringUtil.nullToBlank(srGdsayadumeData.getKcpno());
+            // ﾛｯﾄﾌﾟﾚ
+            case GXHDO101B027Const.LOTPRE:
+                return StringUtil.nullToBlank(srGdsayadumeData.getLotpre());
+            // 処理数
+            case GXHDO101B027Const.SYORISUU:
+                return StringUtil.nullToBlank(srGdsayadumeData.getSyorisuu());
+            //ｻﾔ詰め方法
+            case GXHDO101B027Const.SAYADUMEHOUHOU:
+                return StringUtil.nullToBlank(srGdsayadumeData.getSayadumehouhou());
+            //粉まぶし
+            case GXHDO101B027Const.KONAMABUSHI:
+                return StringUtil.nullToBlank(srGdsayadumeData.getKonamabushi());
+            //製品重量
+            case GXHDO101B027Const.JURYOU:
+                return StringUtil.nullToBlank(srGdsayadumeData.getJuryou());
+            //BN粉末量
+            case GXHDO101B027Const.BNFUNMATURYOU:
+                return StringUtil.nullToBlank(srGdsayadumeData.getBnfunmaturyou());
+            //BN粉末量確認
+            case GXHDO101B027Const.BNFUNMATURYOUKAKUNIN:
+                return StringUtil.nullToBlank(srGdsayadumeData.getBnfunmaturyoukakunin());
+            //ｻﾔ/SUS板種類
+            case GXHDO101B027Const.SAYASUSSYURUI:
+                return StringUtil.nullToBlank(srGdsayadumeData.getSayasussyurui());
+            //ｻﾔ/SUS板枚数 計算値
+            case GXHDO101B027Const.SAYAMAISUUKEISAN:
+                return StringUtil.nullToBlank(srGdsayadumeData.getSayamaisuukeisan());
+            //ｻﾔ重量範囲(g)MIN
+            case GXHDO101B027Const.SJYUURYOURANGEMIN:
+                return StringUtil.nullToBlank(srGdsayadumeData.getSjyuuryourangemin());
+            //ｻﾔ重量範囲(g)MAX
+            case GXHDO101B027Const.SJYUURYOURANGEMAX:
+                return StringUtil.nullToBlank(srGdsayadumeData.getSjyuuryourangemax());
+            //ｻﾔ重量(g/枚)
+            case GXHDO101B027Const.SAYAJYUURYOU:
+                return StringUtil.nullToBlank(srGdsayadumeData.getSayajyuuryou());
+            //ｻﾔ/SUS板枚数
+            case GXHDO101B027Const.SAYAMAISUU:
+                return StringUtil.nullToBlank(srGdsayadumeData.getSayamaisuu());
+            //ｻﾔ/SUS板ﾁｬｰｼﾞ量
+            case GXHDO101B027Const.SAYSUSACHARGE:
+                return StringUtil.nullToBlank(srGdsayadumeData.getSaysusacharge());
+            //ｻﾔ/SUS板詰め開始日
+            case GXHDO101B027Const.KAISHI_DAY:
+                return DateUtil.formattedTimestamp(srGdsayadumeData.getStartdatetime(), "yyMMdd");
+            //ｻﾔ/SUS板詰め開始時刻
+            case GXHDO101B027Const.KAISHI_TIME:
+                return DateUtil.formattedTimestamp(srGdsayadumeData.getStartdatetime(), "HHmm");
+            //ｻﾔ/SUS板詰め開始担当者
+            case GXHDO101B027Const.STARTTANTOSYACODE:
+                return StringUtil.nullToBlank(srGdsayadumeData.getStarttantosyacode());
+            //ｻﾔ/SUS板詰め開始確認者
+            case GXHDO101B027Const.STARTKAKUNINSYACODE:
+                return StringUtil.nullToBlank(srGdsayadumeData.getStartkakuninsyacode());
+            //ｻﾔ/SUS板詰め終了日
+            case GXHDO101B027Const.SHURYOU_DAY:
+                return DateUtil.formattedTimestamp(srGdsayadumeData.getEnddatetime(), "yyMMdd");
+            //ｻﾔ/SUS板詰め終了時刻
+            case GXHDO101B027Const.SHURYOU_TIME:
+                return DateUtil.formattedTimestamp(srGdsayadumeData.getEnddatetime(), "HHmm");
+            //ｻﾔ/SUS板詰め終了担当者
+            case GXHDO101B027Const.ENDTANTOSYACODE:
+                return StringUtil.nullToBlank(srGdsayadumeData.getEndtantosyacode());
+            //備考1
+            case GXHDO101B027Const.BIKO1:
+                return StringUtil.nullToBlank(srGdsayadumeData.getBiko1());
+            //備考2
+            case GXHDO101B027Const.BIKO2:
+                return StringUtil.nullToBlank(srGdsayadumeData.getBiko2()); 
+            default:
+                return null;            
+        }
+    }
+
+    /**
+     * 外部電極焼成(ｻﾔ詰め)_仮登録(tmp_sr_gdsayadume)登録処理(削除時)
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param newRev 新Revision
+     * @param deleteflag 削除ﾌﾗｸﾞ
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param jissekino 実績No
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @throws SQLException 例外エラー
+     */
+    private void insertDeleteDataTmpSrGdsayadume(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev, int deleteflag,
+            String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime) throws SQLException {
+
+        String sql = "INSERT INTO tmp_sr_gdsayadume ("
+                + " kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,sayadumehouhou,konamabushi,juryou"
+                + ",bnfunmaturyou,bnfunmaturyoukakunin,sayasussyurui,sayamaisuukeisan,SJyuuryouRangeMin,SJyuuryouRangeMax,sayajyuuryou"
+                + ",sayamaisuu,saysusacharge,startdatetime,StartTantosyacode,StartKakuninsyacode,enddatetime,EndTantosyacode,biko1,biko2"
+                + ",torokunichiji,kosinnichiji,revision,deleteflag"
+                + ") SELECT "
+                + " kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,sayadumehouhou,konamabushi,juryou"
+                + ",bnfunmaturyou,bnfunmaturyoukakunin,sayasussyurui,sayamaisuukeisan,SJyuuryouRangeMin,SJyuuryouRangeMax,sayajyuuryou"
+                + ",sayamaisuu,saysusacharge,startdatetime,StartTantosyacode,StartKakuninsyacode,enddatetime,EndTantosyacode,biko1,biko2"
+                + ",?,?,?,? "
+                + " FROM sr_gdsayadume "
+                + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? ";
+
+        List<Object> params = new ArrayList<>();
+        // 更新値
+        params.add(systemTime); //登録日時
+        params.add(systemTime); //更新日時
+        params.add(newRev); //revision
+        params.add(deleteflag); //削除ﾌﾗｸﾞ
+
+        // 検索値
+        params.add(kojyo); //工場ｺｰﾄﾞ
+        params.add(lotNo); //ﾛｯﾄNo
+        params.add(edaban); //枝番
+        params.add(jissekino); //実績No
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+    
+    /**
+     * [実績]から、処理数を取得
+     *
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param data ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private List<Jisseki> loadJissekiData(QueryRunner queryRunnerDoc, String lotNo, String[] data) throws SQLException {
+
+        String lotNo1 = lotNo.substring(0, 3);
+        String lotNo2 = lotNo.substring(3, 11);
+        String lotNo3 = lotNo.substring(11, 14);
+        
+        List<String> dataList= new ArrayList<>(Arrays.asList(data));
+        
+        // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+        String sql = "SELECT syorisuu "
+                + "FROM jisseki "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND ";
+        
+        sql += DBUtil.getInConditionPreparedStatement("koteicode", dataList.size());
+        
+        sql += " ORDER BY syoribi DESC, syorijikoku DESC";
+        
+        Map<String, String> mapping = new HashMap<>();
+        mapping.put("syorisuu", "syorisuu");
+        
+        BeanProcessor beanProcessor = new BeanProcessor(mapping);
+        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+        ResultSetHandler<List<Jisseki>> beanHandler = new BeanListHandler<>(Jisseki.class, rowProcessor);
+
+        List<Object> params = new ArrayList<>();
+        
+        params.add(lotNo1);
+        params.add(lotNo2);
+        params.add(lotNo3);
+        params.addAll(dataList);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerDoc.query(sql, beanHandler, params.toArray());       
+    }
+    
+    /**
+     * [ﾊﾟﾗﾒｰﾀﾏｽﾀ]から、ﾃﾞｰﾀを取得
+     *
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadFxhbm03Data(QueryRunner queryRunnerDoc) {
+        try {
+            
+            // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+            String sql = "SELECT data "
+                    + "  FROM fxhbm03 "
+                    + " WHERE user_name = 'common_user' "
+                    + "   AND key = 'xhd_gaibudenkyoku_dandori_koteicode' ";
+           
+            return queryRunnerDoc.query(sql, new MapHandler());
+
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+        }
+        return null;
+    }
+
+    /**
+     * BN粉末量計算
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData setBnfunmaryouuKeisan(ProcessData processData) {
+
+        // 背景色をクリア
+        for (FXHDD01 fxhdd01 : processData.getItemList()) {
+            fxhdd01.setBackColorInput(fxhdd01.getBackColorInputDefault());
+        }
+
+        //BN粉末量計算①ﾁｪｯｸ処理
+        //1.「BN粉末量」ﾁｪｯｸ
+        FXHDD01 itemBnfunmaturyou = getItemRow(processData.getItemList(), GXHDO101B027Const.BNFUNMATURYOU);
+        //A.入力されてる場合、以降の処理は実行しない。(※ｴﾗｰﾒｯｾｰｼﾞは表示しない)
+        if ("".equals(itemBnfunmaturyou.getValue()) || itemBnfunmaturyou.getValue() == null) {
+            ErrorMessageInfo checkItemErrorInfo = checkBnfunmaryouu(processData);
+            if (checkItemErrorInfo != null) {
+                processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
+                return processData;
+            }else{
+                //BN粉末量計算②計算処理
+                processData = calculateBnfunmaryouu(processData);
+            }
+        }
+        
+         // 継続メソッドのクリア
+        processData.setMethod("");
+        
+        return processData;
+    }
+
+    /**
+     * 【BN粉末量計算】ﾎﾞﾀﾝ押下時計算処理
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData calculateBnfunmaryouu(ProcessData processData) {
+
+        try {
+            //1.「BN粉末量」
+            FXHDD01 itemBnfunmaturyou = getItemRow(processData.getItemList(), GXHDO101B027Const.BNFUNMATURYOU);
+
+            //3.「BN粉末量」の規格値
+            String valBnfunmaturyou = getStringToDecValue(StringUtil.nullToBlank(itemBnfunmaturyou.getKikakuChi()).replace("【", ""));
+
+             //製品重量
+            String juryou = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B027Const.JURYOU, null));
+
+            // 製品重量を数値変換
+            BigDecimal decJuryou = new BigDecimal(juryou);
+            // BN粉末量を数値変換
+            BigDecimal decBnfunmaturyou = new BigDecimal(valBnfunmaturyou);
+            //1.「製品重量」 × 「BN粉末量」の規格値 を算出する。(小数以下四捨五入)
+            BigDecimal decShorikosu = decJuryou.multiply(decBnfunmaturyou).setScale(2, RoundingMode.HALF_UP);
+
+            // 算出結果をBN粉末量に設定
+            itemBnfunmaturyou.setValue(decShorikosu.toPlainString());
+
+        } catch (NumberFormatException e) {
+            //数値型変換失敗時はそのままリターン
+        }
+        return processData;
+    }
+    
+    /**
+     *【BN粉末量計算】①ﾁｪｯｸ処理
+     *
+     * @param processData 処理データ
+     * @return エラーメッセージ情報
+     */
+    private ErrorMessageInfo checkBnfunmaryouu(ProcessData processData) {
+        //1.「BN粉末量」ﾁｪｯｸ
+        FXHDD01 itemBnfunmaturyou = getItemRow(processData.getItemList(), GXHDO101B027Const.BNFUNMATURYOU);
+        //A.入力されてる場合、以降の処理は実行しない。(※ｴﾗｰﾒｯｾｰｼﾞは表示しない)
+        if ("".equals(itemBnfunmaturyou.getValue()) || itemBnfunmaturyou.getValue() == null) {
+            //2.「製品重量」ﾁｪｯｸ
+            FXHDD01 itemJuryou = getItemRow(processData.getItemList(), GXHDO101B027Const.JURYOU);
+            //A.入力されていない場合 ｴﾗｰﾒｯｾｰｼﾞを表示し、以降の処理を中止する。
+            if ("".equals(itemJuryou.getValue()) || itemJuryou.getValue() == null) {
+                // ｴﾗｰ項目をﾘｽﾄに追加
+                List<FXHDD01> errFxhdd01List = Arrays.asList(itemJuryou);
+                ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000106", true, true, errFxhdd01List);
+                return errorMessageInfo;
+            }
+            //B.数値ではない場合 ｴﾗｰﾒｯｾｰｼﾞを表示し、以降の処理を中止する。
+            if (!NumberUtil.isNumeric(itemJuryou.getValue())) {
+                // ｴﾗｰ項目をﾘｽﾄに追加
+                List<FXHDD01> errFxhdd01List = Arrays.asList(itemJuryou);
+                ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000107", true, true, errFxhdd01List);
+                return errorMessageInfo;
+            }
+            //C.上記以外の場合
+            //以降の処理を続行する。
+            //3.「BN粉末量」の規格値ﾁｪｯｸ
+            String valBnfunmaturyou = getStringToDecValue(StringUtil.nullToBlank(itemBnfunmaturyou.getKikakuChi()).replace("【", ""));
+            if ("".equals(valBnfunmaturyou) || NumberUtil.isZero(valBnfunmaturyou) || valBnfunmaturyou == null){
+                // ｴﾗｰ項目をﾘｽﾄに追加
+                List<FXHDD01> errFxhdd01List = Arrays.asList(itemBnfunmaturyou);
+                ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000028", true, true, errFxhdd01List,itemBnfunmaturyou.getLabel1());
+                return errorMessageInfo;
+            }
+        }
+
+        return null;
+    }
+    
+    /**
+     * 文字列が出現するまでの数値を設定する。
+     *
+     * @param str 文字列
+
+     * @return ret 文字列が出現するまでの数値
+     */
+    private String getStringToDecValue(String str){
+        String ret = null;
+        StringBuilder strBud = new StringBuilder("");
+        if(!StringUtil.isEmpty(str)){
+            for (int i = 0;i<str.length();i++){                
+                if(i == 0 && !NumberUtil.isIntegerNumeric(str.valueOf(0))){
+                    return ret;
+                }
+                if(NumberUtil.isIntegerNumeric(StringUtil.nullToBlank(str.charAt(i)))){
+                    strBud.append(str.charAt(i));
+                }else if(".".equals(StringUtil.nullToBlank(str.charAt(i)))){
+                    strBud.append(str.charAt(i));
+                }
+                if (!NumberUtil.isIntegerNumeric(StringUtil.nullToBlank(str.charAt(i))) &&
+                       !".".equals(StringUtil.nullToBlank(str.charAt(i)))) {
+                    return strBud.toString();
+                }
+            }
+        }
+        return strBud.toString();
+    }
+    
+    /**
+     * さや枚数計算
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData setSayamaisuuKeisan(ProcessData processData) {
+
+        // 背景色をクリア
+        for (FXHDD01 fxhdd01 : processData.getItemList()) {
+            fxhdd01.setBackColorInput(fxhdd01.getBackColorInputDefault());
+        }
+        
+        //さや枚数計算①ﾁｪｯｸ処理
+        //1.「ｻﾔ/SUS板枚数 計算値」ﾁｪｯｸ
+        FXHDD01 itemSayamaisuukeisan = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYAMAISUUKEISAN);
+            //A.入力されてる場合、以降の処理は実行しない。(※ｴﾗｰﾒｯｾｰｼﾞは表示しない)
+            if ("".equals(itemSayamaisuukeisan.getValue()) || itemSayamaisuukeisan.getValue() == null) {
+            ErrorMessageInfo checkItemErrorInfo = checkSayamaisuu(processData);
+            if (checkItemErrorInfo != null) {
+                processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
+                return processData;
+            }else{
+                //さや枚数計算②計算処理
+                processData = calculateSayamaisuu(processData);
+            }
+        }
+        
+         // 継続メソッドのクリア
+        processData.setMethod("");
+
+        return processData;
+    }
+
+    /**
+     * 【さや枚数計算】ﾎﾞﾀﾝ押下時計算処理
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData calculateSayamaisuu(ProcessData processData) {
+
+        try {
+            FXHDD01 itemSayamaisuukeisan = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYAMAISUUKEISAN);
+            //「処理数」
+            String syorisuu = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B027Const.SYORISUU, null));
+            
+            //3.「ｻﾔ/SUS板ﾁｬｰｼﾞ量」の規格値
+            FXHDD01 itemSaysusacharge = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYSUSACHARGE);
+            String valSaysusacharge = itemSaysusacharge.getKikakuChi().replace("【", "");
+            valSaysusacharge = valSaysusacharge.replace("】", "");
+            String saysusachargeData[] = valSaysusacharge.split("±");            
+            String maruSaysusacharge = getStringToDecValue(StringUtil.nullToBlank(saysusachargeData[0]));
+            
+            // 処理数を数値変換
+            BigDecimal decSyorisuu = new BigDecimal(syorisuu);
+            //「ｻﾔ/SUS板ﾁｬｰｼﾞ量」の規格値(〇部分)を数値変換
+            BigDecimal decMaruSaysusacharge = new BigDecimal(maruSaysusacharge);
+            
+            //1.「処理数」 ÷ 「ｻﾔ/SUS板ﾁｬｰｼﾞ量」の規格値(〇部分) を算出する。
+            //2.1の計算結果の小数を切り上げる
+            BigDecimal decShoriRes = decSyorisuu.divide(decMaruSaysusacharge,0,BigDecimal.ROUND_UP);
+
+            // 算出結果をｻﾔ/SUS板枚数 計算値に設定
+            itemSayamaisuukeisan.setValue(decShoriRes.toPlainString());
+
+        } catch (NumberFormatException e) {
+            //数値型変換失敗時はそのままリターン
+        }
+        return processData;
+    }
+    
+    /**
+     *【さや枚数計算】①ﾁｪｯｸ処理
+     *
+     * @param processData 処理データ
+     * @return エラーメッセージ情報
+     */
+    private ErrorMessageInfo checkSayamaisuu(ProcessData processData) {
+        //1.「ｻﾔ/SUS板枚数 計算値」ﾁｪｯｸ
+        FXHDD01 itemSayamaisuukeisan = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYAMAISUUKEISAN);
+        //A.入力されてる場合、以降の処理は実行しない。(※ｴﾗｰﾒｯｾｰｼﾞは表示しない)
+        if ("".equals(itemSayamaisuukeisan.getValue()) || itemSayamaisuukeisan.getValue() == null) {
+            //2.「処理数」ﾁｪｯｸ
+            FXHDD01 itemSyorisuu = getItemRow(processData.getItemList(), GXHDO101B027Const.SYORISUU);
+            //A.入力されていない場合 ｴﾗｰﾒｯｾｰｼﾞを表示し、以降の処理を中止する。
+            if ("".equals(itemSyorisuu.getValue()) || itemSyorisuu.getValue() == null || NumberUtil.isZero(itemSyorisuu.getValue())) {
+                // ｴﾗｰ項目をﾘｽﾄに追加
+                List<FXHDD01> errFxhdd01List = Arrays.asList(itemSyorisuu);
+                ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000105", true, true, errFxhdd01List);
+                return errorMessageInfo;
+            }
+            //B.数値ではない場合 ｴﾗｰﾒｯｾｰｼﾞを表示し、以降の処理を中止する。
+            if (!NumberUtil.isNumeric(itemSyorisuu.getValue())) {
+                // ｴﾗｰ項目をﾘｽﾄに追加
+                List<FXHDD01> errFxhdd01List = Arrays.asList(itemSyorisuu);
+                ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000105", true, true, errFxhdd01List);
+                return errorMessageInfo;
+            }
+            //C.上記以外の場合
+            //以降の処理を続行する。
+            //3.「ｻﾔ/SUS板ﾁｬｰｼﾞ量」の規格値ﾁｪｯｸ
+            FXHDD01 itemSaysusacharge = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYSUSACHARGE);
+
+            if ("".equals(itemSaysusacharge.getKikakuChi()) || itemSaysusacharge.getKikakuChi() == null){
+                // ｴﾗｰ項目をﾘｽﾄに追加
+                List<FXHDD01> errFxhdd01List = Arrays.asList(itemSaysusacharge);
+                ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000028", true, true, errFxhdd01List,itemSaysusacharge.getLabel1());
+                return errorMessageInfo;
+            }
+            
+            String valSaysusacharge = itemSaysusacharge.getKikakuChi().replace("【", "");
+            valSaysusacharge = valSaysusacharge.replace("】", "");
+
+            String saysusachargeData[] = valSaysusacharge.split("±");
+            if(saysusachargeData.length != 2){
+                // ｴﾗｰ項目をﾘｽﾄに追加
+                List<FXHDD01> errFxhdd01List = Arrays.asList(itemSaysusacharge);
+                ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000028", true, true, errFxhdd01List,itemSaysusacharge.getLabel1());
+                return errorMessageInfo;
+            }
+
+            String maruSaysusacharge = getStringToDecValue(StringUtil.nullToBlank(saysusachargeData[0]));
+            String sankakuSaysusacharge = getStringToDecValue(StringUtil.nullToBlank(saysusachargeData[1]));
+
+            if(maruSaysusacharge.length() < 1 || sankakuSaysusacharge.length() < 1){
+                // ｴﾗｰ項目をﾘｽﾄに追加
+                List<FXHDD01> errFxhdd01List = Arrays.asList(itemSaysusacharge);
+                ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000028", true, true, errFxhdd01List,itemSaysusacharge.getLabel1());
+                return errorMessageInfo;
+            }
+
+        }
+        return null;
+    }
+    
+    /**
+     * さや重量計算
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData setSayajuuryouKeisan(ProcessData processData) {
+
+        // 背景色をクリア
+        for (FXHDD01 fxhdd01 : processData.getItemList()) {
+            fxhdd01.setBackColorInput(fxhdd01.getBackColorInputDefault());
+        }
+        //さや重量計算①ﾁｪｯｸ処理
+        ErrorMessageInfo checkItemErrorInfo = checkSayajuuryou(processData);
+        if (checkItemErrorInfo != null) {
+            processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
+            return processData;
+        }else{
+            //さや重量計算②計算処理
+            processData = calculateSayajuuryou(processData);
+        }
+        
+         // 継続メソッドのクリア
+        processData.setMethod("");
+
+        return processData;
+    }
+    
+    /**
+     * 【さや重量計算】ﾎﾞﾀﾝ押下時計算処理
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData calculateSayajuuryou(ProcessData processData) {
+
+        try {
+            //ｻﾔ重量(g/枚)
+            FXHDD01 itemSayajyuuryou = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYAJYUURYOU);            
+            
+            //ｻﾔ重量範囲(g)MIN
+            FXHDD01 itemSjyuuryourangemin = getItemRow(processData.getItemList(), GXHDO101B027Const.SJYUURYOURANGEMIN);
+            
+            //ｻﾔ重量範囲(g)MAX
+            FXHDD01 itemSjyuuryourangemax = getItemRow(processData.getItemList(), GXHDO101B027Const.SJYUURYOURANGEMAX);
+            
+            //「製品重量」
+            String juryou = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B027Const.JURYOU, null));
+
+            //3.「ｻﾔ/SUS板ﾁｬｰｼﾞ量」の規格値
+            FXHDD01 itemSaysusacharge = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYSUSACHARGE);
+            String valSaysusacharge = itemSaysusacharge.getKikakuChi().replace("【", "");
+            valSaysusacharge = valSaysusacharge.replace("】", "");
+            String saysusachargeData[] = valSaysusacharge.split("±");            
+            String maruSaysusacharge = getStringToDecValue(StringUtil.nullToBlank(saysusachargeData[0]));
+
+            // 製品重量を数値変換
+            BigDecimal decJuryou = new BigDecimal(juryou);
+            //「ｻﾔ/SUS板ﾁｬｰｼﾞ量」の規格値(〇部分)を数値変換
+            BigDecimal decMaruSaysusacharge = new BigDecimal(maruSaysusacharge);
+
+            //1.「製品重量」 ÷ 「ｻﾔ/SUS板ﾁｬｰｼﾞ量」の規格値(〇部分) を算出する。
+            //2.1の計算結果の小数点第三位を四捨五入する。
+            BigDecimal decShoriRes = decJuryou.divide(decMaruSaysusacharge,2,BigDecimal.ROUND_HALF_UP);
+
+            // 算出結果をｻﾔ重量(g/枚)に設定
+            itemSayajyuuryou.setValue(decShoriRes.toPlainString());
+
+            // 算出結果をｻﾔ重量範囲(g)MINに設定
+            itemSjyuuryourangemin.setValue((decShoriRes.multiply(new BigDecimal(0.9)).setScale(2, RoundingMode.DOWN).toPlainString()));
+
+            // 算出結果をｻﾔ重量範囲(g)MAXに設定
+            itemSjyuuryourangemax.setValue((decShoriRes.multiply(new BigDecimal(1.1)).setScale(2, RoundingMode.UP).toPlainString()));
+
+        } catch (NumberFormatException e) {
+            //数値型変換失敗時はそのままリターン
+        }
+        return processData;
+    }
+    
+    /**
+     *【さや重量計算】①ﾁｪｯｸ処理
+     *
+     * @param processData 処理データ
+     * @return エラーメッセージ情報
+     */
+    private ErrorMessageInfo checkSayajuuryou(ProcessData processData) {
+        //1.「ｻﾔ/SUS板種類」ﾁｪｯｸ
+        FXHDD01 itemSayasussyurui = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYASUSSYURUI);
+        //1.「ｻﾔ/SUS板種類」ﾁｪｯｸ A."ｻﾔ"、もしくは"ｼﾞﾙｺﾆｱｻﾔ"が選択されていない場合
+        if (!"ｻﾔ".equals(itemSayasussyurui.getValue()) && !"ｼﾞﾙｺﾆｱｻﾔ".equals(itemSayasussyurui)) {
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemSayasussyurui);
+                ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000109", true, true, errFxhdd01List,itemSayasussyurui.getLabel1());
+            return errorMessageInfo;
+        }
+        //2.「製品重量」ﾁｪｯｸ
+        FXHDD01 itemJuryou = getItemRow(processData.getItemList(), GXHDO101B027Const.JURYOU);
+        //A.入力されていない場合 ｴﾗｰﾒｯｾｰｼﾞを表示し、以降の処理を中止する。
+        if ("".equals(itemJuryou.getValue()) || itemJuryou.getValue() == null) {
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemJuryou);
+            ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000106", true, true, errFxhdd01List);
+            return errorMessageInfo;
+        }
+        
+        //3.「ｻﾔ/SUS板ﾁｬｰｼﾞ量」の規格値ﾁｪｯｸ
+        FXHDD01 itemSaysusacharge = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYSUSACHARGE);
+        String valSaysusacharge = itemSaysusacharge.getKikakuChi().replace("【", "");
+        valSaysusacharge = valSaysusacharge.replace("】", "");
+
+        if ("".equals(valSaysusacharge) || valSaysusacharge == null){
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemSaysusacharge);
+            ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000028", true, true, errFxhdd01List,itemSaysusacharge.getLabel1());
+            return errorMessageInfo;
+        }
+
+        String saysusachargeData[] = valSaysusacharge.split("±");
+        if(saysusachargeData.length != 2){
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemSaysusacharge);
+            ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000028", true, true, errFxhdd01List,itemSaysusacharge.getLabel1());
+            return errorMessageInfo;
+        }
+
+        String maruSaysusacharge = getStringToDecValue(StringUtil.nullToBlank(saysusachargeData[0]));
+        String sankakuSaysusacharge = getStringToDecValue(StringUtil.nullToBlank(saysusachargeData[1]));
+
+        if(maruSaysusacharge.length() < 1 || sankakuSaysusacharge.length() < 1 ){
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemSaysusacharge);
+            ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000028", true, true, errFxhdd01List,itemSaysusacharge.getLabel1());
+            return errorMessageInfo;
+        }
+            
+        return null;
+    }
+    
+    /**
+     * ﾁｬｰｼﾞ量計算
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData setChargeryouuKeisan(ProcessData processData) {
+
+        // 背景色をクリア
+        for (FXHDD01 fxhdd01 : processData.getItemList()) {
+            fxhdd01.setBackColorInput(fxhdd01.getBackColorInputDefault());
+        }
+        
+        //1.「ｻﾔ/SUS板ﾁｬｰｼﾞ量」ﾁｪｯｸ
+        FXHDD01 itemSaysusacharge = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYSUSACHARGE);
+        //A.入力されてる場合、以降の処理は実行しない。(※ｴﾗｰﾒｯｾｰｼﾞは表示しない)
+        if ("".equals(itemSaysusacharge.getValue()) || itemSaysusacharge.getValue() == null) {
+            //ﾁｬｰｼﾞ量計算①ﾁｪｯｸ処理
+            ErrorMessageInfo checkItemErrorInfo = checkChargeryouu(processData);
+            if (checkItemErrorInfo != null) {
+                processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
+                return processData;
+            }else{
+                //ﾁｬｰｼﾞ量計算②計算処理
+                processData = calculateChargeryouu(processData);
+            }            
+        }
+        
+         // 継続メソッドのクリア
+        processData.setMethod("");
+
+        return processData;
+    }
+
+    /**
+     * 【ﾁｬｰｼﾞ量計算】ﾎﾞﾀﾝ押下時計算処理
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData calculateChargeryouu(ProcessData processData) {
+
+        try {
+            //ｻﾔ/SUS板ﾁｬｰｼﾞ量
+            FXHDD01 itemSaysusacharge = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYSUSACHARGE);
+            //「処理数」
+            String syorisuu = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B027Const.SYORISUU, null));
+
+            //3.「ｻﾔ/SUS板枚数」
+            String sayamaisuu = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B027Const.SAYAMAISUU, null));
+
+            // 処理数を数値変換
+            BigDecimal decSyorisuu = new BigDecimal(syorisuu);
+
+            //「ｻﾔ/SUS板枚数」を数値変換
+            BigDecimal decSayamaisuu = new BigDecimal(sayamaisuu);
+
+            //1.「処理数」 ÷ 「ｻﾔ/SUS板枚数」 を算出する。
+            //2.1の計算結果の小数を四捨五入する。
+            BigDecimal decShoriRes = decSyorisuu.divide(decSayamaisuu,0,BigDecimal.ROUND_HALF_UP);
+
+            // 算出結果をｻﾔ/SUS板ﾁｬｰｼﾞ量に設定
+            itemSaysusacharge.setValue(decShoriRes.toPlainString());
+
+        } catch (NumberFormatException e) {
+            //数値型変換失敗時はそのままリターン
+        }
+        return processData;
+    }
+    
+    /**
+     *【ﾁｬｰｼﾞ量計算】①ﾁｪｯｸ処理
+     *
+     * @param processData 処理データ
+     * @return エラーメッセージ情報
+     */
+    private ErrorMessageInfo checkChargeryouu(ProcessData processData) {
+        //1.「ｻﾔ/SUS板ﾁｬｰｼﾞ量」ﾁｪｯｸ
+        FXHDD01 itemSaysusacharge = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYSUSACHARGE);
+        //A.入力されてる場合、以降の処理は実行しない。(※ｴﾗｰﾒｯｾｰｼﾞは表示しない)
+        if ("".equals(itemSaysusacharge.getValue()) || itemSaysusacharge.getValue() == null) {
+            //2.「処理数」ﾁｪｯｸ
+            FXHDD01 itemSyorisuu = getItemRow(processData.getItemList(), GXHDO101B027Const.SYORISUU);
+            //A.0やNULLだった場合 ｴﾗｰﾒｯｾｰｼﾞを表示し、以降の処理を中止する。
+            if ("".equals(itemSyorisuu.getValue()) || itemSyorisuu.getValue() == null || NumberUtil.isZero(itemSyorisuu.getValue())) {
+                // ｴﾗｰ項目をﾘｽﾄに追加
+                List<FXHDD01> errFxhdd01List = Arrays.asList(itemSyorisuu);
+                ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000105", true, true, errFxhdd01List);
+                return errorMessageInfo;
+            }
+
+            //B.数値ではない場合 ｴﾗｰﾒｯｾｰｼﾞを表示し、以降の処理を中止する。
+            if (!NumberUtil.isNumeric(itemSyorisuu.getValue())) {
+                // ｴﾗｰ項目をﾘｽﾄに追加
+                List<FXHDD01> errFxhdd01List = Arrays.asList(itemSyorisuu);
+                ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000105", true, true, errFxhdd01List);
+                return errorMessageInfo;
+            }
+
+            //3.「ｻﾔ/SUS板枚数」ﾁｪｯｸ
+            FXHDD01 itemSayamaisuu = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYAMAISUU);
+            //A.0やNULLだった場合 ｴﾗｰﾒｯｾｰｼﾞを表示し、以降の処理を中止する。
+            if ("".equals(itemSayamaisuu.getValue()) || itemSayamaisuu.getValue() == null) {
+                // ｴﾗｰ項目をﾘｽﾄに追加
+                List<FXHDD01> errFxhdd01List = Arrays.asList(itemSayamaisuu);
+                ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000125", true, true, errFxhdd01List);
+                return errorMessageInfo;
+            }
+        }
+        return null;
+    }
+
+    /**
+     * 一括計算
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData setIkkatsuKeisan(ProcessData processData) {
+
+        // 背景色をクリア
+        for (FXHDD01 fxhdd01 : processData.getItemList()) {
+            fxhdd01.setBackColorInput(fxhdd01.getBackColorInputDefault());
+        }
+        
+        //BN粉末量計算①ﾁｪｯｸ処理
+        ErrorMessageInfo checkBnfunmaryouuErrorInfo = checkBnfunmaryouu(processData);
+        if (checkBnfunmaryouuErrorInfo != null) {
+            processData.setErrorMessageInfoList(Arrays.asList(checkBnfunmaryouuErrorInfo));
+            return processData;
+        }
+        
+        //さや枚数計算①ﾁｪｯｸ処理
+        ErrorMessageInfo checkSayamaisuuErrorInfo = checkSayamaisuu(processData);
+        if (checkSayamaisuuErrorInfo != null) {
+            processData.setErrorMessageInfoList(Arrays.asList(checkSayamaisuuErrorInfo));
+            return processData;
+        }
+        
+        //さや重量計算①ﾁｪｯｸ処理
+        ErrorMessageInfo checkSayajuuryouErrorInfo = checkSayajuuryou(processData);
+        if (checkSayajuuryouErrorInfo != null) {
+            processData.setErrorMessageInfoList(Arrays.asList(checkSayajuuryouErrorInfo));
+            return processData;
+        }
+
+        //ﾁｬｰｼﾞ量計算①ﾁｪｯｸ処理
+        ErrorMessageInfo checkChargeryouuErrorInfo = checkChargeryouu(processData);
+        if (checkChargeryouuErrorInfo != null) {
+            processData.setErrorMessageInfoList(Arrays.asList(checkChargeryouuErrorInfo));
+            return processData;
+        }
+        
+        //1.「BN粉末量」ﾁｪｯｸ
+        FXHDD01 itemBnfunmaturyou = getItemRow(processData.getItemList(), GXHDO101B027Const.BNFUNMATURYOU);
+        //A.入力されてる場合、以降の処理は実行しない。(※ｴﾗｰﾒｯｾｰｼﾞは表示しない)
+        if ("".equals(itemBnfunmaturyou.getValue()) || itemBnfunmaturyou.getValue() == null) {
+            //BN粉末量計算②計算処理
+            processData = calculateBnfunmaryouu(processData);
+        }
+
+        //1.「ｻﾔ/SUS板枚数 計算値」ﾁｪｯｸ
+        FXHDD01 itemSayamaisuukeisan = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYAMAISUUKEISAN);
+        //A.入力されてる場合、以降の処理は実行しない。(※ｴﾗｰﾒｯｾｰｼﾞは表示しない)
+        if ("".equals(itemSayamaisuukeisan.getValue()) || itemSayamaisuukeisan.getValue() == null) {
+            //さや枚数計算②計算処理
+            processData = calculateSayamaisuu(processData);
+        }
+
+        //さや重量計算②計算処理
+        processData = calculateSayajuuryou(processData);
+
+        //1.「ｻﾔ/SUS板ﾁｬｰｼﾞ量」ﾁｪｯｸ
+        FXHDD01 itemSaysusacharge = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYSUSACHARGE);
+        //A.入力されてる場合、以降の処理は実行しない。(※ｴﾗｰﾒｯｾｰｼﾞは表示しない)
+        if ("".equals(itemSaysusacharge.getValue()) || itemSaysusacharge.getValue() == null) {
+            //ﾁｬｰｼﾞ量計算②計算処理
+            processData = calculateChargeryouu(processData);
+        }
+
+         // 継続メソッドのクリア
+        processData.setMethod("");
+
+        return processData;
+    }
+    
+    /**
+     * さや重量ｸﾘｱ
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData setSayajuuryouuClear(ProcessData processData) {
+
+        // 警告メッセージの設定
+        processData.setWarnMessage(MessageUtil.getMessage("XHD-000111"));
+
+         // 継続メソッドのクリア
+        processData.setMethod("clearSayajuuryou");
+
+        return processData;
+    }
+
+    /**
+     * 【さや重量ｸﾘｱ】ﾎﾞﾀﾝ押下時計算処理
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData clearSayajuuryou(ProcessData processData) {
+
+        // 背景色をクリア
+        for (FXHDD01 fxhdd01 : processData.getItemList()) {
+            fxhdd01.setBackColorInput(fxhdd01.getBackColorInputDefault());
+        }
+
+        //ｻﾔ重量範囲(g)MIN
+        FXHDD01 itemSjyuuryourangemin = getItemRow(processData.getItemList(), GXHDO101B027Const.SJYUURYOURANGEMIN);
+        //ｻﾔ重量範囲(g)MIN設定
+        itemSjyuuryourangemin.setValue(itemSjyuuryourangemin.getInputDefault());
+
+        //ｻﾔ重量範囲(g)MAX
+        FXHDD01 itemSjyuuryourangemax = getItemRow(processData.getItemList(), GXHDO101B027Const.SJYUURYOURANGEMAX);
+        //ｻﾔ重量範囲(g)MAX設定
+        itemSjyuuryourangemax.setValue(itemSjyuuryourangemax.getInputDefault());
+
+        //ｻﾔ重量(g/枚)
+        FXHDD01 itemSayajyuuryou = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYAJYUURYOU);
+        //ｻﾔ重量(g/枚)設定
+        itemSayajyuuryou.setValue(itemSayajyuuryou.getInputDefault());
+
+         // 継続メソッドのクリア
+        processData.setMethod("");
+        return processData;
+    }
+}
