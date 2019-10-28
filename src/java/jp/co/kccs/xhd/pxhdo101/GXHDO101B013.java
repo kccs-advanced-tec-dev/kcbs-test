@@ -1000,8 +1000,11 @@ public class GXHDO101B013 implements IFormLogic {
                 Map maekoteiInfo = (Map) session.getAttribute("maekoteiInfo");
                 
                 // 処理数(前工程情報がある場合は前工程情報の値をセットする。)
-                FXHDD01 itemSyorisu = this.getItemRow(processData.getItemList(), GXHDO101B013Const.SHORISU);
-                CommonUtil.setMaekoteiInfo(itemSyorisu, maekoteiInfo, "RyouhinSetsuu", false, true);
+                // ※前工程画面IDが'GXHDO101B012'(生品質検査)の場合のみ
+                if ("GXHDO101B012".equals(session.getAttribute("maekoteiFormId"))) {
+                    FXHDD01 itemSyorisu = this.getItemRow(processData.getItemList(), GXHDO101B013Const.SHORISU);
+                    CommonUtil.setMaekoteiInfo(itemSyorisu, maekoteiInfo, "RyouhinSetsuu", false, true);
+                }
                 
                 return true;
             }

@@ -22,6 +22,7 @@ import javax.servlet.http.HttpSession;
 import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.db.model.FXHDD01;
+import jp.co.kccs.xhd.db.model.FXHDD06;
 import jp.co.kccs.xhd.db.model.SrSyosei;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.GXHDO901A;
@@ -41,9 +42,12 @@ import org.apache.commons.dbutils.RowProcessor;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
+import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
+import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.dbutils.DbUtils;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * ===============================================================================<br>
@@ -1016,6 +1020,29 @@ public class GXHDO101B018 implements IFormLogic {
         if (ownerMasData == null || ownerMasData.isEmpty()) {
             errorMessageList.add(MessageUtil.getMessage("XHD-000016"));
         }
+        
+        // 指示温度データ取得
+        List<FXHDD06> shijiOndoData = loadFxhdd06(queryRunnerDoc, lotNo);
+        
+        // 条件データ取得
+        String sekkeiNo = StringUtil.nullToBlank(getMapData(sekkeiData, "SEKKEINO")); // 設計No
+        
+        // 条件から規格値(号機/温度)を取得
+        Map jokenDataGokiOndo = loadDaJokenData(queryRunnerQcdb, sekkeiNo, "焼成", "設定", "ﾋﾟｰｸ温度");
+        String kikakuchiGokiOndo = StringUtil.nullToBlank(getMapData(jokenDataGokiOndo, "KIKAKUCHI"));
+        
+        // 条件から規格値(水素濃度)を取得
+        Map jokenDataH2Nodo = loadDaJokenData(queryRunnerQcdb, sekkeiNo, "焼成", "設定", "水素濃度");
+        String kikakuchiH2Nodo = StringUtil.nullToBlank(getMapData(jokenDataH2Nodo, "KIKAKUCHI"));
+        
+        // 焼成ピーク温度指示取得
+        Map ondoShijiInfo = getPeakShijiOndo(shijiOndoData, kikakuchiGokiOndo, kikakuchiH2Nodo);
+        String ondoShiji = "";
+        if (null != ondoShijiInfo.get("errorMessage")) {
+            errorMessageList.add((String) ondoShijiInfo.get("errorMessage"));
+        } else {
+            ondoShiji = (String)ondoShijiInfo.get("peakShijiOndo");
+        }
 
         // 入力項目の情報を画面にセットする。
         if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId, jissekino)) {
@@ -1026,11 +1053,163 @@ public class GXHDO101B018 implements IFormLogic {
         }
 
         // 画面に取得した情報をセットする。(入力項目以外)
-        setViewItemData(processData, lotKbnMasData, ownerMasData, shikakariData, lotNo);
+        setViewItemData(processData, lotKbnMasData, ownerMasData, shikakariData, lotNo, ondoShiji);
 
         processData.setInitMessageList(errorMessageList);
         return processData;
+    }
+    
+    /**
+     * 焼成ﾋﾟｰｸ温度指示情報の取得
+     * 
+     * @param shijiOndoData 指示温度情報
+     * @param kikakuchiGokiOndo 規格値(号機/温度)
+     * @param kikakuchiH2Nodo 規格値(水素濃度)
+     * @return 焼成ﾋﾟｰｸ温度指示情報 / エラーメッセージ
+     */
+    private Map<String, String> getPeakShijiOndo(List<FXHDD06> shijiOndoData, String kikakuchiGokiOndo, String kikakuchiH2Nodo) {
+        Map result = new HashMap<String, String>();
+        result.put("peakShijiOndo", null);
+        result.put("errorMessage", null);
+        
+        if (!CollectionUtils.isEmpty(shijiOndoData)) {
+            // 1.指示温度情報取得
+            Map<Integer, List<FXHDD06>> groupOndoMap = 
+                    shijiOndoData.stream().collect(Collectors.groupingBy(n -> n.getShijiondogroup()));
+            
+            // 同一グループ内の「指示温度」、「水素濃度」が同一であるかチェック
+            for (int group : groupOndoMap.keySet()) {
+                List<FXHDD06> data = groupOndoMap.get(group);
+                
+                // 同一グループ内のデータを「指示温度」でグループ化し、2件以上のグループが存在する場合はエラー
+                int chkOndoCount = data.stream().collect(Collectors.groupingBy(n -> n.getShijiondo())).size();
+                if (1 < chkOndoCount) {
+                    result.put("errorMessage", MessageUtil.getMessage("XHD-000079"));
+                    return result;
+                }
+                // 同一グループ内のデータを「水素濃度」でグループ化し、2件以上のグループが存在する場合はエラー
+                int chkH2Count = data.stream().collect(Collectors.groupingBy(n -> n.getSuisonoudo())).size();
+                if (1 < chkH2Count) {
+                    result.put("errorMessage", MessageUtil.getMessage("XHD-000080"));
+                    return result;
+                }
+            }
 
+            // グループごとに号機情報(文字列)を連結し、「焼成ﾋﾟｰｸ温度指示」に設定する文字列を編集する
+            StringBuilder sb = new StringBuilder();
+            for (int group : groupOndoMap.keySet()) {
+                List<FXHDD06> data = groupOndoMap.get(group);
+                String[] ondoGroupStr = getGroupData(data, group);
+                if (0 < sb.length()) {
+                    sb.append("、");
+                }
+                sb.append(String.format("[号機情報:%s/指示温度:%s/水素濃度:%s]", (Object[]) ondoGroupStr));
+            }
+            
+            result.put("peakShijiOndo", sb.toString());
+            return result;
+            
+        } else {
+            // 2.条件情報取得
+            // 規格値(号機/温度)が取得できない場合エラー
+            if (StringUtils.isEmpty(kikakuchiGokiOndo)) {
+                result.put("errorMessage", MessageUtil.getMessage("XHD-000071"));
+                return result;
+            }
+            // 規格値(水素濃度)が取得できない場合エラー
+            if (StringUtils.isEmpty(kikakuchiH2Nodo)) {
+                result.put("errorMessage", MessageUtil.getMessage("XHD-000072"));
+                return result;
+            }
+            
+            // 規格値(号機/温度) + " " + 規格値(水素濃度) の文字列を返却する
+            result.put("peakShijiOndo", kikakuchiGokiOndo + " " + kikakuchiH2Nodo);
+            return result;
+        }
+    }
+    
+    /**
+     * 指示温度データグループ別データ取得 ※グループ別にまとめて1レコードとしてデータを取得、号機情報については
+     * 値がそれぞれ異なるため、結合して値を返す
+     *
+     * @param fxhdd06List 指示温度データリスト
+     */
+    private String[] getGroupData(List<FXHDD06> fxhdd06List, Integer getgroup) {
+        String shijiOndo = "";
+        String suisoNoudo = "";
+        StringBuilder goukiJouhoGroup = new StringBuilder();
+        int goukiJouho;
+        int sabun;
+        int prevGoukiJouho = 0;
+        int renbanCount = 0;
+
+        for (FXHDD06 fxhdd06 : fxhdd06List) {
+            // 一致しないグループについてはコンティニュー
+            if (!getgroup.equals(fxhdd06.getShijiondogroup())) {
+                continue;
+            }
+
+            // 号機情報を数値化
+            try {
+                goukiJouho = Integer.parseInt(StringUtil.nullToBlank(fxhdd06.getGoukijyoho()));
+            } catch (NumberFormatException e) {
+                // ※エラーになることはありえないはずだが念の為、例外対応
+                continue;
+            }
+
+            // 初回データセット
+            if (0 == goukiJouhoGroup.length()) {
+                //指示温度
+                shijiOndo = StringUtil.nullToBlank(fxhdd06.getShijiondo());
+                //水素濃度
+                suisoNoudo = StringUtil.nullToBlank(fxhdd06.getSuisonoudo());
+                // 号機情報
+                goukiJouhoGroup.append(goukiJouho);
+                prevGoukiJouho = goukiJouho;
+                continue;
+            }
+
+            // 号機情報の前回値の差分を比較
+            sabun = goukiJouho - prevGoukiJouho;
+
+            // 差分が1の場合
+            if (sabun == 1) {
+                // 連番が続いている場合
+                renbanCount++;
+            } else if (1 < sabun) {
+                if (1 < renbanCount) {
+                    // 3つ以上の連番が途切れた場合
+                    //前回までの連番分を追加
+                    goukiJouhoGroup.append("～");
+                    goukiJouhoGroup.append(StringUtil.nullToBlank(prevGoukiJouho));
+                    renbanCount = 0;
+                } else if (1 == renbanCount) {
+                    // 1回の連番が途切れた場合
+                    goukiJouhoGroup.append(",");
+                    goukiJouhoGroup.append(StringUtil.nullToBlank(prevGoukiJouho));
+                    renbanCount = 0;
+                }
+
+                //今回の号機情報を追加
+                goukiJouhoGroup.append(",");
+                goukiJouhoGroup.append(StringUtil.nullToBlank(goukiJouho));
+            }
+            //今回の号機情報を前回値にセット
+            prevGoukiJouho = goukiJouho;
+        }
+
+        if (1 < renbanCount) {
+            // 3つ以上の連番が途切れた場合
+            //前回までの連番分を追加
+            goukiJouhoGroup.append("～");
+            goukiJouhoGroup.append(StringUtil.nullToBlank(prevGoukiJouho));
+        } else if (1 == renbanCount) {
+            // 1回の連番が途切れた場合
+            goukiJouhoGroup.append(",");
+            goukiJouhoGroup.append(StringUtil.nullToBlank(prevGoukiJouho));
+        }
+
+        return new String[]{goukiJouhoGroup.toString(), shijiOndo, suisoNoudo};
     }
 
     /**
@@ -1041,8 +1220,9 @@ public class GXHDO101B018 implements IFormLogic {
      * @param ownerMasData ｵｰﾅｰﾏｽﾀデータ
      * @param shikakariData 仕掛データ
      * @param lotNo ﾛｯﾄNo
+     * @param ondoShiji 焼成ﾋﾟｰｸ温度指示
      */
-    private void setViewItemData(ProcessData processData, Map lotKbnMasData, Map ownerMasData, Map shikakariData, String lotNo) {
+    private void setViewItemData(ProcessData processData, Map lotKbnMasData, Map ownerMasData, Map shikakariData, String lotNo, String ondoShiji) {
 
         // ロットNo
         this.setItemData(processData, GXHDO101B018Const.LOTNO, lotNo);
@@ -1071,7 +1251,9 @@ public class GXHDO101B018 implements IFormLogic {
 
         // 指示
         this.setItemData(processData, GXHDO101B018Const.SIJI, "");
-
+        
+        // 焼成ﾋﾟｰｸ温度指示
+        this.setItemData(processData, GXHDO101B018Const.SYOSEI_PEAK_ONDO_SIJI, ondoShiji);
     }
 
     /**
@@ -1111,6 +1293,36 @@ public class GXHDO101B018 implements IFormLogic {
                 for (FXHDD01 fxhdd001 : processData.getItemList()) {
                     this.setItemData(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
                 }
+                
+                // 前工程情報取得
+                ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+                HttpSession session = (HttpSession) externalContext.getSession(false);
+                Map maekoteiInfo = (Map) session.getAttribute("maekoteiInfo");
+                String maekoteiFormId = StringUtil.nullToBlank(session.getAttribute("maekoteiFormId"));
+                
+                // 受入ｾｯﾀ枚数(前工程情報がある場合は前工程情報の値をセットする。)
+                FXHDD01 itemSettaMaisu = this.getItemRow(processData.getItemList(), GXHDO101B018Const.UKEIRE_SETTA_MAISU);
+                if ("GXHDO101B013".equals(maekoteiFormId)) {
+                    //前工程がｾｯﾀ詰めの場合、ｾｯﾀ枚数をセット
+                    CommonUtil.setMaekoteiInfo(itemSettaMaisu, maekoteiInfo, "sayasuu", false, true);
+                } else if ("GXHDO101B014".equals(maekoteiFormId) ||
+                           "GXHDO101B015".equals(maekoteiFormId) ||
+                           "GXHDO101B016".equals(maekoteiFormId) ||
+                           "GXHDO101B017".equals(maekoteiFormId) ||
+                           "GXHDO101B018".equals(maekoteiFormId) ||
+                           "GXHDO101B019".equals(maekoteiFormId)) {
+                    //前工程がAir脱脂、窒素脱脂、2次脱脂(ﾍﾞﾙﾄ)、焼成、RHK焼成、再酸化の場合、回収ｾｯﾀ枚数をセット
+                    if ("GXHDO101B014".equals(maekoteiFormId) ||
+                        "GXHDO101B015".equals(maekoteiFormId)) {
+                        CommonUtil.setMaekoteiInfo(itemSettaMaisu, maekoteiInfo, "kaisyusettersuu", false, true);
+                    } else if ("GXHDO101B016".equals(maekoteiFormId)) {
+                        CommonUtil.setMaekoteiInfo(itemSettaMaisu, maekoteiInfo, "kaishuusettasuu", false, true);
+                    } else if ("GXHDO101B017".equals(maekoteiFormId) ||
+                               "GXHDO101B018".equals(maekoteiFormId) ||
+                               "GXHDO101B019".equals(maekoteiFormId)) {
+                        CommonUtil.setMaekoteiInfo(itemSettaMaisu, maekoteiInfo, "kaishusettasuu", false, true);
+                    }
+                }
 
                 return true;
             }
@@ -1138,7 +1350,6 @@ public class GXHDO101B018 implements IFormLogic {
         setInputItemDataMainForm(processData, srSyoseiDataList.get(0));
 
         return true;
-
     }
 
     /**
@@ -1172,8 +1383,8 @@ public class GXHDO101B018 implements IFormLogic {
         this.setItemData(processData, GXHDO101B018Const.SYOSEI_GOUKI, getSrSyoseiItemData(GXHDO101B018Const.SYOSEI_GOUKI, srSyoseiData));
         //焼成設定ﾊﾟﾀｰﾝﾁｪｯｸ
         this.setItemData(processData, GXHDO101B018Const.SYOSEI_SETTEI_PTN_CHECK, getSrSyoseiItemData(GXHDO101B018Const.SYOSEI_SETTEI_PTN_CHECK, srSyoseiData));
-        //焼成ﾋﾟｰｸ温度指示
-        this.setItemData(processData, GXHDO101B018Const.SYOSEI_PEAK_ONDO_SIJI, getSrSyoseiItemData(GXHDO101B018Const.SYOSEI_PEAK_ONDO_SIJI, srSyoseiData));
+//        //焼成ﾋﾟｰｸ温度指示
+//        this.setItemData(processData, GXHDO101B018Const.SYOSEI_PEAK_ONDO_SIJI, getSrSyoseiItemData(GXHDO101B018Const.SYOSEI_PEAK_ONDO_SIJI, srSyoseiData));
         //焼成ﾋﾟｰｸ温度設定値
         this.setItemData(processData, GXHDO101B018Const.SYOSEI_PEAK_ONDO_SETTEICHI, getSrSyoseiItemData(GXHDO101B018Const.SYOSEI_PEAK_ONDO_SETTEICHI, srSyoseiData));
         //焼成ﾛｰﾗｰ速度
@@ -1333,6 +1544,67 @@ public class GXHDO101B018 implements IFormLogic {
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerWip.query(sql, new MapHandler(), params.toArray());
+    }
+    
+    /**
+     * [指示温度]から、ﾃﾞｰﾀを取得
+     *
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private List<FXHDD06> loadFxhdd06(QueryRunner queryRunnerDoc, String lotNo) throws SQLException {
+        String lotNo1 = lotNo.substring(0, 3);
+        String lotNo2 = lotNo.substring(3, 11);
+        String lotNo3 = lotNo.substring(11, 14);
+
+        String sql = "SELECT goukijyoho,shijiondo,suisonoudo,shijiondogroup,rev "
+                + "FROM fxhdd06 "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND deleteflag = ? "
+                + "ORDER BY shijiondogroup, goukijyoho";
+
+        List<Object> params = new ArrayList<>();
+        params.add(lotNo1);
+        params.add(lotNo2);
+        params.add(lotNo3);
+        params.add(0);
+
+        Map<String, String> mapping = new HashMap<>();
+        mapping.put("goukijyoho", "goukijyoho"); //号機情報
+        mapping.put("shijiondo", "shijiondo"); //指示温度
+        mapping.put("suisonoudo", "suisonoudo"); //水素濃度
+        mapping.put("shijiondogroup", "shijiondogroup"); //指示温度ｸﾞﾙｰﾌﾟ
+        mapping.put("rev", "rev"); //REV
+
+        BeanProcessor beanProcessor = new BeanProcessor(mapping);
+        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+        ResultSetHandler<List<FXHDD06>> beanHandler = new BeanListHandler<>(FXHDD06.class, rowProcessor);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerDoc.query(sql, beanHandler, params.toArray());
+    }
+    
+    /**
+     * 条件データ検索
+     * 
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param sekkeiNo 設計No(検索キー)
+     * @param kouteiMei 工程名(検索キー)
+     * @param komokuMei 項目名(検索キー)
+     * @param kanriKomoku 管理項目名(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadDaJokenData(QueryRunner queryRunnerQcdb, String sekkeiNo, String kouteiMei, String komokuMei, String kanriKomoku) throws SQLException {
+        // 条件データ取得
+        String sql = "SELECT KIKAKUCHI FROM da_joken "
+                + "WHERE SEKKEINO = ? AND KOUTEIMEI = ? AND KOUMOKUMEI = ? AND KANRIKOUMOKU = ? ";
+        
+        List<Object> params = Arrays.asList(sekkeiNo, kouteiMei, komokuMei, kanriKomoku);
+        
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
     }
 
     /**
@@ -2102,7 +2374,7 @@ public class GXHDO101B018 implements IFormLogic {
         params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B018Const.NIJIDASSHI_SETTEI_PATTERN, srSyoseiData), null));  //2次脱脂設定ﾊﾟﾀｰﾝ
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B018Const.NIJIDASSHI_KEEPONDO, srSyoseiData)));  //2次脱脂ｷｰﾌﾟ温度
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B018Const.NIJIDASSHI_CONVEYER_SPEED, srSyoseiData)));  //2次脱脂ｺﾝﾍﾞｱ速度
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B018Const.SYOSEI_PEAK_ONDO_SIJI, srSyoseiData)));  //焼成ﾋﾟｰｸ温度指示
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B018Const.SYOSEI_PEAK_ONDO_SIJI, srSyoseiData)));  //焼成ﾋﾟｰｸ温度指示
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B018Const.SYOSEI_ROLLER_SPEED, srSyoseiData)));  //焼成ﾛｰﾗｰ速度
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B018Const.SYOSEI_PURGE, srSyoseiData)));  //焼成ﾊﾟｰｼﾞ
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B018Const.FIRST_SAISANKA_GOUKI1, srSyoseiData)));  //1回目再酸化号機1
@@ -2281,7 +2553,7 @@ public class GXHDO101B018 implements IFormLogic {
         params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B018Const.NIJIDASSHI_SETTEI_PATTERN, srSyoseiData), 9));  //2次脱脂設定ﾊﾟﾀｰﾝ
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B018Const.NIJIDASSHI_KEEPONDO, srSyoseiData)));  //2次脱脂ｷｰﾌﾟ温度
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B018Const.NIJIDASSHI_CONVEYER_SPEED, srSyoseiData)));  //2次脱脂ｺﾝﾍﾞｱ速度
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B018Const.SYOSEI_PEAK_ONDO_SIJI, srSyoseiData)));  //焼成ﾋﾟｰｸ温度指示
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B018Const.SYOSEI_PEAK_ONDO_SIJI, srSyoseiData)));  //焼成ﾋﾟｰｸ温度指示
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B018Const.SYOSEI_ROLLER_SPEED, srSyoseiData)));  //焼成ﾛｰﾗｰ速度
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B018Const.SYOSEI_PURGE, srSyoseiData)));  //焼成ﾊﾟｰｼﾞ
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B018Const.FIRST_SAISANKA_GOUKI1, srSyoseiData)));  //1回目再酸化号機1

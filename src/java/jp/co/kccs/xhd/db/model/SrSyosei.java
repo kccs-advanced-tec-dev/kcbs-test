@@ -254,7 +254,7 @@ public class SrSyosei {
     /**
      * 焼成ﾋﾟｰｸ温度指示
      */
-    private Integer peakondo;
+    private String peakondo;
 
     /**
      * 焼成ﾛｰﾗｰ速度
@@ -1127,7 +1127,7 @@ public class SrSyosei {
      *
      * @return the peakondo
      */
-    public Integer getPeakondo() {
+    public String getPeakondo() {
         return peakondo;
     }
 
@@ -1136,7 +1136,7 @@ public class SrSyosei {
      *
      * @param peakondo the peakondo to set
      */
-    public void setPeakondo(Integer peakondo) {
+    public void setPeakondo(String peakondo) {
         this.peakondo = peakondo;
     }
 

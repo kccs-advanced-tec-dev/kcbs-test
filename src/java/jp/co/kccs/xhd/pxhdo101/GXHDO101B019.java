@@ -40,6 +40,7 @@ import org.apache.commons.dbutils.RowProcessor;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
+import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import org.apache.commons.dbutils.DbUtils;
 
@@ -289,6 +290,36 @@ public class GXHDO101B019 implements IFormLogic {
                 // メイン画面にデータを設定する(デフォルト値)
                 for (FXHDD01 fxhdd001 : processData.getItemList()) {
                     this.setItemData(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
+                }
+                
+                // 前工程情報取得
+                ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+                HttpSession session = (HttpSession) externalContext.getSession(false);
+                Map maekoteiInfo = (Map) session.getAttribute("maekoteiInfo");
+                String maekoteiFormId = StringUtil.nullToBlank(session.getAttribute("maekoteiFormId"));
+                
+                // 受入ｾｯﾀ枚数(前工程情報がある場合は前工程情報の値をセットする。)
+                FXHDD01 itemSettaMaisu = this.getItemRow(processData.getItemList(), GXHDO101B019Const.UKEIRE_SETTA_MAISU);
+                if ("GXHDO101B013".equals(maekoteiFormId)) {
+                    //前工程がｾｯﾀ詰めの場合、ｾｯﾀ枚数をセット
+                    CommonUtil.setMaekoteiInfo(itemSettaMaisu, maekoteiInfo, "sayasuu", false, true);
+                } else if ("GXHDO101B014".equals(maekoteiFormId) ||
+                           "GXHDO101B015".equals(maekoteiFormId) ||
+                           "GXHDO101B016".equals(maekoteiFormId) ||
+                           "GXHDO101B017".equals(maekoteiFormId) ||
+                           "GXHDO101B018".equals(maekoteiFormId) ||
+                           "GXHDO101B019".equals(maekoteiFormId)) {
+                    //前工程がAir脱脂、窒素脱脂、2次脱脂(ﾍﾞﾙﾄ)、焼成、RHK焼成、再酸化の場合、回収ｾｯﾀ枚数をセット
+                    if ("GXHDO101B014".equals(maekoteiFormId) ||
+                        "GXHDO101B015".equals(maekoteiFormId)) {
+                        CommonUtil.setMaekoteiInfo(itemSettaMaisu, maekoteiInfo, "kaisyusettersuu", false, true);
+                    } else if ("GXHDO101B016".equals(maekoteiFormId)) {
+                        CommonUtil.setMaekoteiInfo(itemSettaMaisu, maekoteiInfo, "kaishuusettasuu", false, true);
+                    } else if ("GXHDO101B017".equals(maekoteiFormId) ||
+                               "GXHDO101B018".equals(maekoteiFormId) ||
+                               "GXHDO101B019".equals(maekoteiFormId)) {
+                        CommonUtil.setMaekoteiInfo(itemSettaMaisu, maekoteiInfo, "kaishusettasuu", false, true);
+                    }
                 }
 
                 return true;

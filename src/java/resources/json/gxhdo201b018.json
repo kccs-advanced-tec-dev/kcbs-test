@@ -40,7 +40,7 @@
     {"no":"39","id":"nijidasshisetteipt","columnname":"2次脱脂設定ﾊﾟﾀｰﾝ","type":"String","format":""},
     {"no":"40","id":"nijidasshikeepondo","columnname":"2次脱脂ｷｰﾌﾟ温度(℃)","type":"Integer","format":"#,##0"},
     {"no":"41","id":"nijidasshispeed","columnname":"2次脱脂ｺﾝﾍﾞｱ速度(mm/min)","type":"Integer","format":"#,##0"},
-    {"no":"42","id":"peakondo","columnname":"焼成ﾋﾟｰｸ温度指示(℃)","type":"Integer","format":"#,###,###,##0"},
+    {"no":"42","id":"peakondo","columnname":"焼成ﾋﾟｰｸ温度指示(℃)","type":"String","format":""},
     {"no":"43","id":"syoseispeed","columnname":"焼成ﾛｰﾗｰ速度(mm/min)","type":"Integer","format":"##0"},
     {"no":"44","id":"syoseipurge","columnname":"焼成ﾊﾟｰｼﾞ(s)","type":"Integer","format":"##0"},
     {"no":"45","id":"saisankagouki1","columnname":"1回目再酸化号機1","type":"String","format":""},

@@ -235,7 +235,7 @@ public class GXHDO201B018Model implements Serializable {
     /**
      * 焼成ﾋﾟｰｸ温度指示
      */
-    private Integer peakondo = null;
+    private String peakondo = null;
 
     /**
      * 焼成ﾛｰﾗｰ速度
@@ -859,14 +859,14 @@ public class GXHDO201B018Model implements Serializable {
     /**
      * @return peakondo
      */
-    public Integer getPeakondo() {
+    public String getPeakondo() {
         return peakondo;
     }
 
     /**
      * @param peakondo セットする peakondo
      */
-    public void setPeakondo(Integer peakondo) {
+    public void setPeakondo(String peakondo) {
         this.peakondo = peakondo;
     }
 

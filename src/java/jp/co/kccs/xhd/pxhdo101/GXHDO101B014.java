@@ -1026,9 +1026,23 @@ public class GXHDO101B014 implements IFormLogic {
                 if ("GXHDO101B013".equals(maekoteiFormId)) {
                     //前工程がｾｯﾀ詰めの場合、ｾｯﾀ枚数をセット
                     CommonUtil.setMaekoteiInfo(itemSettaMaisu, maekoteiInfo, "sayasuu", false, true);
-                } else if ("GXHDO101B014".equals(maekoteiFormId)) {
-                    //前工程がAir脱脂の場合、回収ｾｯﾀ枚数をセット
-                    CommonUtil.setMaekoteiInfo(itemSettaMaisu, maekoteiInfo, "kaisyusettersuu", false, true);
+                } else if ("GXHDO101B014".equals(maekoteiFormId) ||
+                           "GXHDO101B015".equals(maekoteiFormId) ||
+                           "GXHDO101B016".equals(maekoteiFormId) ||
+                           "GXHDO101B017".equals(maekoteiFormId) ||
+                           "GXHDO101B018".equals(maekoteiFormId) ||
+                           "GXHDO101B019".equals(maekoteiFormId)) {
+                    //前工程がAir脱脂、窒素脱脂、2次脱脂(ﾍﾞﾙﾄ)、焼成、RHK焼成、再酸化の場合、回収ｾｯﾀ枚数をセット
+                    if ("GXHDO101B014".equals(maekoteiFormId) ||
+                        "GXHDO101B015".equals(maekoteiFormId)) {
+                        CommonUtil.setMaekoteiInfo(itemSettaMaisu, maekoteiInfo, "kaisyusettersuu", false, true);
+                    } else if ("GXHDO101B016".equals(maekoteiFormId)) {
+                        CommonUtil.setMaekoteiInfo(itemSettaMaisu, maekoteiInfo, "kaishuusettasuu", false, true);
+                    } else if ("GXHDO101B017".equals(maekoteiFormId) ||
+                               "GXHDO101B018".equals(maekoteiFormId) ||
+                               "GXHDO101B019".equals(maekoteiFormId)) {
+                        CommonUtil.setMaekoteiInfo(itemSettaMaisu, maekoteiInfo, "kaishusettasuu", false, true);
+                    }
                 }
 
                 return true;
