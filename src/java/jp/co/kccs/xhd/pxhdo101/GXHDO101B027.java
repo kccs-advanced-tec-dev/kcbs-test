@@ -47,7 +47,6 @@ import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
 import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import org.apache.commons.dbutils.DbUtils;
-import org.apache.commons.lang.StringUtils;
 
 /**
  * ===============================================================================<br>
