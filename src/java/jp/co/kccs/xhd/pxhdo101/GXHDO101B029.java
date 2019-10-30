@@ -946,7 +946,7 @@ public class GXHDO101B029 implements IFormLogic {
              String fxhbm03DataArr []= strfxhbm03List.split(",");
              
             // 実績情報の取得
-            List<Jisseki> jissekiData = loadJissekiData(queryRunnerDoc, lotNo, fxhbm03DataArr);
+            List<Jisseki> jissekiData = loadJissekiData(queryRunnerWip, lotNo, fxhbm03DataArr);
             if(jissekiData != null && jissekiData.size() > 0){
                 int dbShorisu = jissekiData.get(0).getSyorisuu(); //処理数               
                 if(dbShorisu > 0){
@@ -1235,13 +1235,13 @@ public class GXHDO101B029 implements IFormLogic {
     
      /**
      * [実績]から、ﾃﾞｰﾀを取得
-     * @param queryRunnerDoc オブジェクト
+     * @param queryRunnerWip オブジェクト
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @param date ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ(検索キー)
      * @return 取得データ
      * @throws SQLException 
      */
-     private List<Jisseki> loadJissekiData(QueryRunner queryRunnerDoc, String lotNo, String[] data) throws SQLException {
+     private List<Jisseki> loadJissekiData(QueryRunner queryRunnerWip, String lotNo, String[] data) throws SQLException {
          
 
         String lotNo1 = lotNo.substring(0, 3);
@@ -1273,7 +1273,7 @@ public class GXHDO101B029 implements IFormLogic {
         params.addAll(dataList);
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerDoc.query(sql, beanHandler, params.toArray());
+        return queryRunnerWip.query(sql, beanHandler, params.toArray());
     }
      
      

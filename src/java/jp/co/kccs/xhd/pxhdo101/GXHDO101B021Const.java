@@ -13,6 +13,11 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日      2019/10/28<br>
+ * 計画書No    K1803-DS001<br>
+ * 変更者      SYSNAVI K.Hisanaga<br>
+ * 変更理由    WIP取込ボタン追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -133,6 +138,11 @@ public class GXHDO101B021Const {
     public static final String BTN_KEISUUDATETIME_TOP = "sr_syoseikeisuu_keisuudatetime_Top";
 
     /**
+     * WIP取込(画面上)
+     */
+    public static final String BTN_WIP_TORIKOMI_TOP = "sr_syoseikeisuu_wip_torikomi_Top";
+
+    /**
      * 歩留まり計算(画面上)
      */
     public static final String BTN_BUDOMARI_KEISAN_TOP = "sr_syoseikeisuu_budomari_keisan_Top";
@@ -166,6 +176,11 @@ public class GXHDO101B021Const {
      * 計数日時(画面下)
      */
     public static final String BTN_KEISUUDATETIME_BOTTOM = "sr_syoseikeisuu_keisuudatetime_Bottom";
+
+    /**
+     * WIP取込(画面下)
+     */
+    public static final String BTN_WIP_TORIKOMI_BOTTOM = "sr_syoseikeisuu_wip_torikomi_Bottom";
 
     /**
      * 歩留まり計算(画面下)

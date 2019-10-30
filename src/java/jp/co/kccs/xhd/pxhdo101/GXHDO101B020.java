@@ -23,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.db.model.FXHDD01;
+import jp.co.kccs.xhd.db.model.Jisseki;
 import jp.co.kccs.xhd.db.model.SrBarrel1;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.GXHDO901A;
@@ -54,6 +55,11 @@ import org.apache.commons.dbutils.DbUtils;
  * 計画書No    K1803-DS001<br>
  * 変更者      KCSS K.Jo<br>
  * 変更理由    新規作成<br>
+ * <br>
+ * 変更日      2019/10/28<br>
+ * 計画書No    K1803-DS001<br>
+ * 変更者      SYSNAVI K.Hisanaga<br>
+ * 変更理由    受入個数初期データ取得<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -877,13 +883,14 @@ public class GXHDO101B020 implements IFormLogic {
         }
 
         // 入力項目の情報を画面にセットする。
-        if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId, paramJissekino)) {
+        if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, queryRunnerWip, lotNo, formId, paramJissekino)) {
             // エラー発生時は処理を中断
             processData.setFatalError(true);
             processData.setInitMessageList(Arrays.asList(MessageUtil.getMessage("XHD-000038")));
             return processData;
         }
-
+        
+        
         // 画面に取得した情報をセットする。(入力項目以外)
         setViewItemData(processData, sekkeiData, lotKbnMasData, ownerMasData, shikakariData, lotNo);
 
@@ -938,6 +945,7 @@ public class GXHDO101B020 implements IFormLogic {
      * @param processData 処理制御データ
      * @param queryRunnerDoc QueryRunnerオブジェクト(DocServer)
      * @param queryRunnerQcdb QueryRunnerオブジェクト(Qcdb)
+     * @param queryRunnerWip QueryRunnerオブジェクト(Wip)
      * @param lotNo ﾛｯﾄNo
      * @param formId 画面ID
      * @param jissekino 実績No
@@ -945,7 +953,7 @@ public class GXHDO101B020 implements IFormLogic {
      * @throws SQLException 例外エラー
      */
     private boolean setInputItemData(ProcessData processData, QueryRunner queryRunnerDoc, QueryRunner queryRunnerQcdb,
-            String lotNo, String formId, int jissekino) throws SQLException {
+            QueryRunner queryRunnerWip, String lotNo, String formId, int jissekino) throws SQLException {
 
         List<SrBarrel1> srBarrel1DataList = new ArrayList<>();
         String rev = "";
@@ -969,6 +977,10 @@ public class GXHDO101B020 implements IFormLogic {
                 for (FXHDD01 fxhdd001 : processData.getItemList()) {
                     this.setItemData(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
                 }
+                
+                // 受入個数初期値設定
+                this.setItemData(processData, GXHDO101B020Const.UKEIREKOSUU, getSyorisu(queryRunnerDoc, queryRunnerWip, lotNo));
+                
                 return true;
             }
 
@@ -2342,5 +2354,98 @@ public class GXHDO101B020 implements IFormLogic {
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+    
+    /**
+     * [実績]から、ﾃﾞｰﾀを取得
+     * @param queryRunnerWip オブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param date ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ(検索キー)
+     * @return 取得データ
+     * @throws SQLException 
+     */
+     private List<Jisseki> loadJissekiData(QueryRunner queryRunnerWip, String lotNo, String[] data) throws SQLException {
+         
+
+        String lotNo1 = lotNo.substring(0, 3);
+        String lotNo2 = lotNo.substring(3, 11);
+        String lotNo3 = lotNo.substring(11, 14);
+        
+        List<String> dataList= new ArrayList<>(Arrays.asList(data));
+        
+        // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+        String sql = "SELECT syorisuu "
+                + "FROM jisseki "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND ";
+        
+        sql += DBUtil.getInConditionPreparedStatement("koteicode", dataList.size());
+        
+        sql += " ORDER BY syoribi DESC, syorijikoku DESC";
+        
+        Map mapping = new HashMap<>();
+        mapping.put("syorisuu", "syorisuu");
+        
+        BeanProcessor beanProcessor = new BeanProcessor(mapping);
+        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+        ResultSetHandler<List<Jisseki>> beanHandler = new BeanListHandler<>(Jisseki.class, rowProcessor);
+
+        List<Object> params = new ArrayList<>();
+        params.add(lotNo1);
+        params.add(lotNo2);
+        params.add(lotNo3);                
+        params.addAll(dataList);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerWip.query(sql, beanHandler, params.toArray());
+    }
+     
+     
+    /**
+     * [ﾊﾟﾗﾒｰﾀﾏｽﾀ]から、ﾃﾞｰﾀを取得
+     * @param queryRunnerDoc オブジェクト
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadFxhbm03Data(QueryRunner queryRunnerDoc) {
+        try {
+
+            // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+             String sql = "SELECT data "
+                        + " FROM fxhbm03 "
+                        + " WHERE user_name = 'common_user' AND key = 'xhd_syosei_sankasyorikanryou_koteicode' ";
+            return queryRunnerDoc.query(sql, new MapHandler());
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+        }
+        return null;
+                
+    }
+    
+    /**
+     * 処理数取得処理
+     * @param queryRunnerDoc queryRunner(Doc)オブジェクト
+     * @param queryRunnerWip queryRunner(Wip)オブジェクト
+     * @param lotNo ﾛｯﾄNo
+     * @return 処理
+     */
+    private String getSyorisu(QueryRunner queryRunnerDoc, QueryRunner queryRunnerWip, String lotNo) throws SQLException{
+        // 処理数の取得
+        String syorisuu = null;
+
+        Map fxhbm03Data = loadFxhbm03Data(queryRunnerDoc);
+        if (fxhbm03Data != null && !fxhbm03Data.isEmpty()) {
+            String strfxhbm03List = StringUtil.nullToBlank(getMapData(fxhbm03Data, "data"));
+            String fxhbm03DataArr[] = strfxhbm03List.split(",");
+
+            // 実績情報の取得
+            List<Jisseki> jissekiData = loadJissekiData(queryRunnerWip, lotNo, fxhbm03DataArr);
+            if (jissekiData != null && jissekiData.size() > 0) {
+                int dbShorisu = jissekiData.get(0).getSyorisuu(); //処理数  
+                if (0 < dbShorisu) {
+                    syorisuu = String.valueOf(dbShorisu);
+                }
+            }
+        }
+        return syorisuu;
     }
 }
