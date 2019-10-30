@@ -2180,6 +2180,9 @@ public class GXHDO101B036 implements IFormLogic {
      */
     private String getSrGdSinsuiItemData(String itemId, SrGdSinsui srGdSinsuiData) {
         switch (itemId) {
+            // KCPNO
+            case GXHDO101B036Const.KCPNO:
+                return StringUtil.nullToBlank(srGdSinsuiData.getKcpno());
             // 処理号機
             case GXHDO101B036Const.SYORIGOKI:
                 return StringUtil.nullToBlank(srGdSinsuiData.getSyorigoki());

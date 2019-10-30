@@ -2162,6 +2162,15 @@ public class GXHDO101B037 implements IFormLogic {
      */
     private String getSrGdKeisuuItemData(String itemId, SrGdKeisuu srGdKeisuuData) {
         switch (itemId) {
+            // KCPNO
+            case GXHDO101B037Const.KCPNO:
+                return StringUtil.nullToBlank(srGdKeisuuData.getKcpno());
+            // 得意先
+            case GXHDO101B037Const.KYAKUSAKI:
+                return StringUtil.nullToBlank(srGdKeisuuData.getTokuisaki());
+            // ﾛｯﾄﾌﾟﾚ
+            case GXHDO101B037Const.LOTPRE:
+                return StringUtil.nullToBlank(srGdKeisuuData.getLotpre());
             // 単位重量
             case GXHDO101B037Const.TANIJURYO:
                 return StringUtil.nullToBlank(srGdKeisuuData.getTanijyuryo());
