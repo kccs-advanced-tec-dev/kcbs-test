@@ -24,6 +24,7 @@ import javax.servlet.http.HttpSession;
 import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.db.model.FXHDD01;
+import jp.co.kccs.xhd.db.model.Jisseki;
 import jp.co.kccs.xhd.db.model.SrSyoseikeisuu;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.GXHDO901A;
@@ -43,6 +44,7 @@ import org.apache.commons.dbutils.RowProcessor;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
+import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import org.apache.commons.dbutils.DbUtils;
 
@@ -55,6 +57,11 @@ import org.apache.commons.dbutils.DbUtils;
  * 計画書No    K1803-DS001<br>
  * 変更者      KCSS K.Jo<br>
  * 変更理由    新規作成<br>
+ * <br>
+ * 変更日      2019/10/28<br>
+ * 計画書No    K1803-DS001<br>
+ * 変更者      SYSNAVI K.Hisanaga<br>
+ * 変更理由    初期データ取得・WIP取込対応<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -100,12 +107,10 @@ public class GXHDO101B021 implements IFormLogic {
             // ボタンの活性・非活性を設定
             processData = this.setButtonEnable(processData, processData.getInitJotaiFlg());
 
-            //サブ画面呼出しをチェック処理なし(処理時にエラーの背景色を戻さない機能として登録)
+            //実行時チェック処理なし(処理時にエラーの背景色を戻さない機能として登録)
             processData.setNoCheckButtonId(Arrays.asList(
                     GXHDO101B021Const.BTN_KEISUUDATETIME_TOP,
-                    GXHDO101B021Const.BTN_BUDOMARI_KEISAN_TOP,
-                    GXHDO101B021Const.BTN_KEISUUDATETIME_BOTTOM,
-                    GXHDO101B021Const.BTN_BUDOMARI_KEISAN_BOTTOM
+                    GXHDO101B021Const.BTN_KEISUUDATETIME_BOTTOM
             ));
 
             // リビジョンチェック対象のボタンを設定する。
@@ -684,16 +689,17 @@ public class GXHDO101B021 implements IFormLogic {
         List<String> inactiveIdList = new ArrayList<>();
         switch (jotaiFlg) {
             case JOTAI_FLG_TOROKUZUMI:
-                activeIdList.addAll(Arrays.asList(
-                        GXHDO101B021Const.BTN_COPY_EDABAN_BOTTOM,
+                activeIdList.addAll(Arrays.asList(GXHDO101B021Const.BTN_COPY_EDABAN_BOTTOM,
                         GXHDO101B021Const.BTN_DELETE_BOTTOM,
                         GXHDO101B021Const.BTN_UPDATE_BOTTOM,
                         GXHDO101B021Const.BTN_KEISUUDATETIME_BOTTOM,
+                        GXHDO101B021Const.BTN_WIP_TORIKOMI_BOTTOM,
                         GXHDO101B021Const.BTN_BUDOMARI_KEISAN_BOTTOM,
                         GXHDO101B021Const.BTN_COPY_EDABAN_TOP,
                         GXHDO101B021Const.BTN_DELETE_TOP,
                         GXHDO101B021Const.BTN_UPDATE_TOP,
                         GXHDO101B021Const.BTN_KEISUUDATETIME_TOP,
+                        GXHDO101B021Const.BTN_WIP_TORIKOMI_TOP,
                         GXHDO101B021Const.BTN_BUDOMARI_KEISAN_TOP
                 ));
                 inactiveIdList.addAll(Arrays.asList(
@@ -704,16 +710,17 @@ public class GXHDO101B021 implements IFormLogic {
 
                 break;
             default:
-                activeIdList.addAll(Arrays.asList(
-                        GXHDO101B021Const.BTN_KARI_TOUROKU_BOTTOM,
+                activeIdList.addAll(Arrays.asList(GXHDO101B021Const.BTN_KARI_TOUROKU_BOTTOM,
                         GXHDO101B021Const.BTN_COPY_EDABAN_BOTTOM,
                         GXHDO101B021Const.BTN_INSERT_BOTTOM,
                         GXHDO101B021Const.BTN_KEISUUDATETIME_BOTTOM,
+                        GXHDO101B021Const.BTN_WIP_TORIKOMI_BOTTOM,
                         GXHDO101B021Const.BTN_BUDOMARI_KEISAN_BOTTOM,
                         GXHDO101B021Const.BTN_KARI_TOUROKU_TOP,
                         GXHDO101B021Const.BTN_COPY_EDABAN_TOP,
                         GXHDO101B021Const.BTN_INSERT_TOP,
                         GXHDO101B021Const.BTN_KEISUUDATETIME_TOP,
+                        GXHDO101B021Const.BTN_WIP_TORIKOMI_TOP,
                         GXHDO101B021Const.BTN_BUDOMARI_KEISAN_TOP
                 ));
 
@@ -771,10 +778,15 @@ public class GXHDO101B021 implements IFormLogic {
             case GXHDO101B021Const.BTN_KEISUUDATETIME_BOTTOM:
                 method = "setKeisuuDateTime";
                 break;
+            // WIP取込
+            case GXHDO101B021Const.BTN_WIP_TORIKOMI_TOP:
+            case GXHDO101B021Const.BTN_WIP_TORIKOMI_BOTTOM:
+                method = "confWipTorikomi";
+                break;
             // 歩留まり計算
             case GXHDO101B021Const.BTN_BUDOMARI_KEISAN_TOP:
             case GXHDO101B021Const.BTN_BUDOMARI_KEISAN_BOTTOM:
-                method = "setBudomariKeisan";
+                method = "checkDataCalculatBudomari";
                 break;
             default:
                 method = "error";
@@ -840,7 +852,7 @@ public class GXHDO101B021 implements IFormLogic {
         }
 
         // 入力項目の情報を画面にセットする。
-        if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId, paramJissekino)) {
+        if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, queryRunnerWip, lotNo, formId, paramJissekino)) {
             // エラー発生時は処理を中断
             processData.setFatalError(true);
             processData.setInitMessageList(Arrays.asList(MessageUtil.getMessage("XHD-000038")));
@@ -901,6 +913,7 @@ public class GXHDO101B021 implements IFormLogic {
      * @param processData 処理制御データ
      * @param queryRunnerDoc QueryRunnerオブジェクト(DocServer)
      * @param queryRunnerQcdb QueryRunnerオブジェクト(Qcdb)
+     * @param queryRunnerWip QueryRunnerオブジェクト(Wip)
      * @param lotNo ﾛｯﾄNo
      * @param formId 画面ID
      * @param jissekino 実績No
@@ -908,7 +921,7 @@ public class GXHDO101B021 implements IFormLogic {
      * @throws SQLException 例外エラー
      */
     private boolean setInputItemData(ProcessData processData, QueryRunner queryRunnerDoc, QueryRunner queryRunnerQcdb,
-            String lotNo, String formId, int jissekino) throws SQLException {
+            QueryRunner queryRunnerWip, String lotNo, String formId, int jissekino) throws SQLException {
 
         List<SrSyoseikeisuu> srSyoseikeisuuDataList = new ArrayList<>();
         String rev = "";
@@ -932,6 +945,10 @@ public class GXHDO101B021 implements IFormLogic {
                 for (FXHDD01 fxhdd001 : processData.getItemList()) {
                     this.setItemData(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
                 }
+                
+                // 受入個数初期値設定
+                this.setItemData(processData, GXHDO101B021Const.UKEIREKOSUU, getSyorisu(queryRunnerDoc, queryRunnerWip, lotNo));
+           
                 return true;
             }
 
@@ -1107,7 +1124,7 @@ public class GXHDO101B021 implements IFormLogic {
         String lotNo3 = lotNo.substring(11, 14);
 
         // 仕掛情報データの取得
-        String sql = "SELECT kcpno, oyalotedaban, tokuisaki, lotkubuncode, ownercode "
+        String sql = "SELECT kcpno, oyalotedaban, tokuisaki, lotkubuncode, ownercode, tanijuryo "
                 + " FROM sikakari WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
 
         List<Object> params = new ArrayList<>();
@@ -1994,49 +2011,6 @@ public class GXHDO101B021 implements IFormLogic {
         return processDate;
     }
 
-    /**
-     * 歩留まり計算処理
-     *
-     * @param processDate 処理制御データ
-     * @return 処理制御データ
-     */
-    public ProcessData setBudomariKeisan(ProcessData processDate) {
-
-        // 継続メソッドのクリア
-        processDate.setMethod("");
-
-        try {
-            
-            FXHDD01 itemBudomari = getItemRow(processDate.getItemList(), GXHDO101B021Const.BUDOMARI);
-            //1.以下の全項目が入力されているかﾁｪｯｸを行う。            
-            String ukeirekosuu = StringUtil.nullToBlank(getItemData(processDate.getItemList(), GXHDO101B021Const.UKEIREKOSUU, null)); // 受入個数
-            String ryohinkosu = StringUtil.nullToBlank(getItemData(processDate.getItemList(), GXHDO101B021Const.RYOHINKOSU, null)); // 良品個数
-
-            if (StringUtil.isEmpty(ukeirekosuu) || StringUtil.isEmpty(ryohinkosu)) {
-                return processDate;
-            }
-
-            // 受入個数を数値変換
-            BigDecimal decUkeirekosuu = new BigDecimal(ukeirekosuu);
-            if (BigDecimal.ZERO.compareTo(decUkeirekosuu) == 0) {
-                return processDate;
-            }
-
-            // 良品個数を数値変換
-            BigDecimal decRyohinkosu = new BigDecimal(ryohinkosu);
-            // 歩留まり算出(小数以下一位四捨五入)
-            BigDecimal decBudomari = decRyohinkosu.divide(decUkeirekosuu, 5, RoundingMode.DOWN);
-            decBudomari = decBudomari.multiply(new BigDecimal(100)).setScale(1, RoundingMode.HALF_UP);
-            
-            // 算出結果を歩留まりに設定
-            itemBudomari.setValue(decBudomari.toPlainString());
-            
-        } catch (NumberFormatException e) {
-            //数値型変換失敗時はそのままリターン
-        }
-        return processDate;
-
-    }
     
     /**
      * 日付(日、時間)の項目にフォーマットの日付(yyMMdd,HHmm)をセットする
@@ -2135,5 +2109,290 @@ public class GXHDO101B021 implements IFormLogic {
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+    
+    
+    /**
+     * WIP取込確認メッセージ表示
+     *
+     * @param processData 処理データ
+     * @return 処理データ
+     */
+    public ProcessData confWipTorikomi(ProcessData processData) {
+        
+        String keisuuday = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B021Const.KEISUU_DAY, null)); // 計数日
+        String keisuutime = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B021Const.KEISUU_TIME, null)); // 計数時刻
+        String tantousya = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B021Const.KEISUU_TANTOUSYA, null)); // 担当者
+        String ryohinkosu = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B021Const.RYOHINKOSU, null)); // 良品個数
+        String tanijuryo = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B021Const.TANIJURYO, null)); // 単位重量
+            
+        // 1項目以上が入力されている
+        if (!StringUtil.isEmpty(keisuuday) || !StringUtil.isEmpty(keisuutime) || !StringUtil.isEmpty(tantousya) 
+                || !StringUtil.isEmpty(ryohinkosu) || !StringUtil.isEmpty(tanijuryo)) {
+            // 確認メッセージの設定
+            processData.setWarnMessage(MessageUtil.getMessage("XHD-000120"));
+        }
+
+        // 後続処理メソッド設定
+        processData.setMethod("doWipTorikomi");
+        return processData;
+    }
+    
+    /**
+     * WIP取込処理
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     * @throws SQLException 例外エラー
+     */
+    public ProcessData doWipTorikomi(ProcessData processData) throws SQLException {
+
+        QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
+        QueryRunner queryRunnerWip = new QueryRunner(processData.getDataSourceWip());
+
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+        String lotNo = (String) session.getAttribute("lotNo");
+
+        List<Jisseki> jissekiData = null;
+        // 実績データを取得
+        Map fxhbm03Data = loadFxhbm03Data(queryRunnerDoc, "xhd_syosei_sankasyorikanryou_koteicode");
+        if (fxhbm03Data != null && !fxhbm03Data.isEmpty()) {
+            String strfxhbm03List = StringUtil.nullToBlank(getMapData(fxhbm03Data, "data"));
+            String fxhbm03DataArr[] = strfxhbm03List.split(",");
+
+            // 実績情報の取得
+            jissekiData = loadJissekiData(queryRunnerWip, lotNo, fxhbm03DataArr);
+            if (jissekiData != null && 0 < jissekiData.size()) {
+                int dbShorisu = jissekiData.get(0).getSyorisuu(); // 処理数               
+                if (dbShorisu <= 0) {
+                    processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000119", dbShorisu))));
+                    return processData;
+                }
+            }
+
+        }
+
+        // 仕掛情報の取得
+        Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
+
+        if (shikakariData == null || shikakariData.isEmpty()) {
+            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000029"))));
+            return processData;
+        }
+
+        // 実績ﾃﾞｰﾀ設定処理
+        if (jissekiData != null && 0 < jissekiData.size()) {
+            setItemData(processData, GXHDO101B021Const.RYOHINKOSU, StringUtil.nullToBlank(jissekiData.get(0).getSyorisuu()));
+            setItemData(processData, GXHDO101B021Const.KEISUU_DAY, DateUtil.getDisplayDate(jissekiData.get(0).getSyoribi(), "yyMMdd"));
+            setItemData(processData, GXHDO101B021Const.KEISUU_TIME, DateUtil.getDisplayTime(jissekiData.get(0).getSyorijikoku(), "HHmm"));
+            setItemData(processData, GXHDO101B021Const.KEISUU_TANTOUSYA, jissekiData.get(0).getTantousyacode());
+        }
+
+        // 仕掛データ設定処理
+        if (!shikakariData.isEmpty()) {
+
+            // 単位重量
+            FXHDD01 itemTanijyuryo = getItemRow(processData.getItemList(), GXHDO101B021Const.TANIJURYO);
+            BigDecimal tanijyuryo = new BigDecimal(StringUtil.nullToBlank(getMapData(shikakariData, "tanijuryo")));
+            int scale = 0;
+            try {
+                scale = Integer.parseInt(itemTanijyuryo.getInputLengthDec());
+            } catch (NumberFormatException e) {
+                //処理なし  
+            }
+            itemTanijyuryo.setValue(tanijyuryo.setScale(scale, RoundingMode.DOWN).toPlainString());
+        }
+
+        // 後続処理メソッド設定
+        processData.setMethod("");
+
+        return processData;
+    }
+    
+     /**
+     * [実績]から、ﾃﾞｰﾀを取得
+     * @param queryRunnerWip オブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param date ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ(検索キー)
+     * @return 取得データ
+     * @throws SQLException 
+     */
+     private List<Jisseki> loadJissekiData(QueryRunner queryRunnerWip, String lotNo, String[] data) throws SQLException {
+         
+
+        String lotNo1 = lotNo.substring(0, 3);
+        String lotNo2 = lotNo.substring(3, 11);
+        String lotNo3 = lotNo.substring(11, 14);
+        
+        List<String> dataList= new ArrayList<>(Arrays.asList(data));
+        
+        // 実績ﾃﾞｰﾀの取得
+        String sql = "SELECT syorisuu, syoribi, syorijikoku, tantousyacode "
+                + "FROM jisseki "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND ";
+
+        sql += DBUtil.getInConditionPreparedStatement("koteicode", dataList.size());
+
+        sql += " ORDER BY syoribi DESC, syorijikoku DESC";
+
+        Map mapping = new HashMap<>();
+        mapping.put("syorisuu", "syorisuu");
+        mapping.put("syoribi", "syoribi");
+        mapping.put("syorijikoku", "syorijikoku");
+        mapping.put("tantousyacode", "tantousyacode");
+        
+        BeanProcessor beanProcessor = new BeanProcessor(mapping);
+        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+        ResultSetHandler<List<Jisseki>> beanHandler = new BeanListHandler<>(Jisseki.class, rowProcessor);
+
+        List<Object> params = new ArrayList<>();
+        params.add(lotNo1);
+        params.add(lotNo2);
+        params.add(lotNo3);                
+        params.addAll(dataList);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerWip.query(sql, beanHandler, params.toArray());
+    }
+     
+     
+    /**
+     * [ﾊﾟﾗﾒｰﾀﾏｽﾀ]から、ﾃﾞｰﾀを取得
+     * @param queryRunnerDoc オブジェクト
+     * @param key キー値
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadFxhbm03Data(QueryRunner queryRunnerDoc, String key) {
+        try {
+
+            // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+            String sql = "SELECT data "
+                    + " FROM fxhbm03 "
+                    + " WHERE user_name = 'common_user' "
+                    + " AND key = ? ";
+
+            List<Object> params = new ArrayList<>();
+            params.add(key);
+
+            return queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+        }
+        return null;
+    }
+    
+    /**
+     * 処理数取得処理
+     * @param queryRunnerDoc queryRunner(Doc)オブジェクト
+     * @param queryRunnerWip queryRunner(Wip)オブジェクト
+     * @param lotNo ﾛｯﾄNo
+     * @return 処理
+     */
+    private String getSyorisu(QueryRunner queryRunnerDoc, QueryRunner queryRunnerWip, String lotNo) throws SQLException{
+        // 処理数の取得
+        String syorisuu = null;
+
+        Map fxhbm03Data = loadFxhbm03Data(queryRunnerDoc, "xhd_syosei_sankasyorikanryou_koteicode");
+        if (fxhbm03Data != null && !fxhbm03Data.isEmpty()) {
+            String strfxhbm03List = StringUtil.nullToBlank(getMapData(fxhbm03Data, "data"));
+            String fxhbm03DataArr[] = strfxhbm03List.split(",");
+
+            // 実績情報の取得
+            List<Jisseki> jissekiData = loadJissekiData(queryRunnerWip, lotNo, fxhbm03DataArr);
+            if (jissekiData != null && jissekiData.size() > 0) {
+                int dbShorisu = jissekiData.get(0).getSyorisuu(); //処理数  
+                if (0 < dbShorisu) {
+                    syorisuu = String.valueOf(dbShorisu);
+                }
+            }
+        }
+        return syorisuu;
+    }
+    
+    
+    /**
+     * 歩留まり計算処理(データチェック処理)
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData checkDataCalculatBudomari(ProcessData processData) {
+
+        String ryohinkosuu = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B021Const.RYOHINKOSU, null)); // 良品個数
+        String ukeirekosuu = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B021Const.UKEIREKOSUU, null)); // 受入個数
+
+        // 良品個数チェック
+        // 入力チェック
+        if (StringUtil.isEmpty(ryohinkosuu)) {
+            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000140"))));
+            return processData;
+            // 数値チェック
+        } else if (!NumberUtil.isNumeric(ryohinkosuu)) {
+            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000141"))));
+            return processData;
+        }
+
+        // 受入個数チェック
+        // 入力チェック
+        if (StringUtil.isEmpty(ukeirekosuu)) {
+            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000142"))));
+            return processData;
+            // 数値チェック
+        } else if (!NumberUtil.isNumeric(ukeirekosuu)) {
+            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000142"))));
+            return processData;
+        } else {
+            // 受入個数を数値変換
+            BigDecimal decSyorisuu = new BigDecimal(ukeirekosuu);
+            // 0の場合
+            if (BigDecimal.ZERO.compareTo(decSyorisuu) == 0) {
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000142"))));
+                return processData;
+            }
+        }
+
+        // 後続処理メソッド設定
+        processData.setMethod("doCalculatBudomari");
+
+        return processData;
+    }
+
+    /**
+     * 歩留まり計算処理(実処理)
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData doCalculatBudomari(ProcessData processData) {
+
+        // 継続メソッドのクリア
+        processData.setMethod("");
+
+        try {
+            
+            FXHDD01 itemBudomari = getItemRow(processData.getItemList(), GXHDO101B021Const.BUDOMARI);
+            //1.以下の全項目が入力されているかﾁｪｯｸを行う。            
+            String ukeirekosuu = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B021Const.UKEIREKOSUU, null)); // 受入個数
+            String ryohinkosu = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B021Const.RYOHINKOSU, null)); // 良品個数
+         
+            // 受入個数を数値変換
+            BigDecimal decUkeirekosuu = new BigDecimal(ukeirekosuu);
+            // 良品個数を数値変換
+            BigDecimal decRyohinkosu = new BigDecimal(ryohinkosu);
+
+            // 歩留まり算出(小数以下3位四捨五入)
+            BigDecimal decBudomari = decRyohinkosu.divide(decUkeirekosuu, 5, RoundingMode.DOWN);
+            decBudomari = decBudomari.multiply(new BigDecimal(100)).setScale(2, RoundingMode.HALF_UP);
+            
+            // 算出結果を歩留まりに設定
+            itemBudomari.setValue(decBudomari.toPlainString());
+            
+        } catch (NumberFormatException e) {
+            //数値型変換失敗時はそのままリターン
+        }
+        return processData;
+       
     }
 }
