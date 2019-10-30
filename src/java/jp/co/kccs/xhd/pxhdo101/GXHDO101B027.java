@@ -428,9 +428,9 @@ public class GXHDO101B027 implements IFormLogic {
                 //・ｻﾔ重量(g/枚)
                 FXHDD01 itemSayajyuuryou = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYAJYUURYOU);
             
-                if((itemSjyuuryourangemin.getValue() == null || "".equals(itemSjyuuryourangemin.getValue())) || 
-                       (itemSjyuuryourangemax.getValue() == null || "".equals(itemSjyuuryourangemax.getValue())) || 
-                       (itemSayajyuuryou.getValue() == null || "".equals(itemSayajyuuryou.getValue()))){
+                if(NumberUtil.isZeroOrEmpty(itemSjyuuryourangemin.getValue()) || 
+                       NumberUtil.isZeroOrEmpty(itemSjyuuryourangemax.getValue()) || 
+                       NumberUtil.isZeroOrEmpty(itemSayajyuuryou.getValue())){
                             // ｴﾗｰ項目をﾘｽﾄに追加
                             List<FXHDD01> errFxhdd01List = Arrays.asList(itemSayasussyurui);
                             ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000110", true, true, errFxhdd01List);
@@ -2993,7 +2993,7 @@ public class GXHDO101B027 implements IFormLogic {
         //1.「ｻﾔ/SUS板種類」ﾁｪｯｸ
         FXHDD01 itemSayasussyurui = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYASUSSYURUI);
         //1.「ｻﾔ/SUS板種類」ﾁｪｯｸ A."ｻﾔ"、もしくは"ｼﾞﾙｺﾆｱｻﾔ"が選択されていない場合
-        if (!"ｻﾔ".equals(itemSayasussyurui.getValue()) && !"ｼﾞﾙｺﾆｱｻﾔ".equals(itemSayasussyurui)) {
+        if (!"ｻﾔ".equals(itemSayasussyurui.getValue()) && !"ｼﾞﾙｺﾆｱｻﾔ".equals(itemSayasussyurui.getValue())) {
             // ｴﾗｰ項目をﾘｽﾄに追加
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemSayasussyurui);
                 ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000109", true, true, errFxhdd01List,itemSayasussyurui.getLabel1());

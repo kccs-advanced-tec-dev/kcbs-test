@@ -2327,10 +2327,10 @@ public class GXHDO101B033 implements IFormLogic {
                 return StringUtil.nullToBlank(srGdnijibarrelData.getTokuisaki());
             // ﾛｯﾄ区分
             case GXHDO101B033Const.LOT_KUBUN:
-                return StringUtil.nullToBlank(srGdnijibarrelData.getKcpno());
+                return StringUtil.nullToBlank(srGdnijibarrelData.getLotkubuncode());
             // ｵｰﾅｰ
             case GXHDO101B033Const.OWNER:
-                return StringUtil.nullToBlank(srGdnijibarrelData.getKcpno());
+                return StringUtil.nullToBlank(srGdnijibarrelData.getOwnercode());
             // ﾛｯﾄﾌﾟﾚ
             case GXHDO101B033Const.LOTPRE:
                 return StringUtil.nullToBlank(srGdnijibarrelData.getLotpre());
