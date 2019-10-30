@@ -370,22 +370,60 @@ public class GXHDO101B030 implements IFormLogic {
             String kcpno89 = itemKcpno.getValue().substring(7, 9);
             if(("01".equals(kcpno67) || "02".equals(kcpno67) || "03".equals(kcpno67) || "05".equals(kcpno67) || "15".equals(kcpno67)) && 
                    "CG".equals(kcpno89) ){
-                if ("".equals(itemRyohinjuryou.getValue()) || itemRyohinjuryou.getValue() == null || 
-                        "".equals(itemFuryoujuryou.getValue()) || itemFuryoujuryou.getValue() == null || 
-                        "".equals(itemFuryouritsu.getValue()) || itemFuryouritsu.getValue() == null) {
+                    List<FXHDD01> errFxhdd01List = new ArrayList<FXHDD01>();
+                    String errMsg = "";
+                if ("".equals(itemRyohinjuryou.getValue()) || itemRyohinjuryou.getValue() == null) {
                     // ｴﾗｰ項目をﾘｽﾄに追加
-                    List<FXHDD01> errFxhdd01List = Arrays.asList(itemRyohinjuryou,itemFuryoujuryou,itemFuryouritsu);
-                    return MessageUtil.getErrorMessageInfo("XHD-000112", true, true, errFxhdd01List);
+                    errFxhdd01List.addAll(Arrays.asList(itemRyohinjuryou));
+                    errMsg = MessageUtil.getMessage("XHD-000143");
+                }
+                if ("".equals(itemFuryoujuryou.getValue()) || itemFuryoujuryou.getValue() == null) {
+                    // ｴﾗｰ項目をﾘｽﾄに追加
+                    errFxhdd01List.addAll(Arrays.asList(itemFuryoujuryou));
+                    if(!"".equals(errMsg)){
+                        errMsg = errMsg + "<BR/>";                        
+                    }
+                    errMsg = errMsg + MessageUtil.getMessage("XHD-000144");
+                }
+                if ("".equals(itemFuryouritsu.getValue()) || itemFuryouritsu.getValue() == null) {
+                    // ｴﾗｰ項目をﾘｽﾄに追加
+                    errFxhdd01List.addAll(Arrays.asList(itemFuryouritsu));
+                    if(!"".equals(errMsg)){
+                        errMsg = errMsg + "<BR/>";                        
+                    }
+                    errMsg = errMsg + MessageUtil.getMessage("XHD-000145");
+                }
+                if(!"".equals(errMsg)){
+                    return MessageUtil.getErrorMessageInfo("",errMsg, true, true, errFxhdd01List);
                 }
             }
             if((!"01".equals(kcpno67) && !"02".equals(kcpno67) && !"03".equals(kcpno67) && !"05".equals(kcpno67) && !"15".equals(kcpno67)) || 
                    !"CG".equals(kcpno89) ){
-                if ((!"".equals(itemRyohinjuryou.getValue()) && itemRyohinjuryou.getValue() != null) || 
-                        (!"".equals(itemFuryoujuryou.getValue()) && itemFuryoujuryou.getValue() != null) || 
-                        (!"".equals(itemFuryouritsu.getValue()) && itemFuryouritsu.getValue() != null)) {
+                List<FXHDD01> errFxhdd01List = new ArrayList<FXHDD01>();
+                String errMsg = "";
+                if (!"".equals(itemRyohinjuryou.getValue()) && itemRyohinjuryou.getValue() != null) {
                     // ｴﾗｰ項目をﾘｽﾄに追加
-                    List<FXHDD01> errFxhdd01List = Arrays.asList(itemRyohinjuryou,itemFuryoujuryou,itemFuryouritsu);
-                    return MessageUtil.getErrorMessageInfo("XHD-000113", true, true, errFxhdd01List);
+                    errFxhdd01List.addAll(Arrays.asList(itemRyohinjuryou));
+                    errMsg = MessageUtil.getMessage("XHD-000146");
+                }
+                if (!"".equals(itemFuryoujuryou.getValue()) && itemFuryoujuryou.getValue() != null) {
+                    // ｴﾗｰ項目をﾘｽﾄに追加
+                    errFxhdd01List.addAll(Arrays.asList(itemFuryoujuryou));
+                    if(!"".equals(errMsg)){
+                        errMsg = errMsg + "<BR/>";                        
+                    }
+                    errMsg = errMsg + MessageUtil.getMessage("XHD-000147");
+                }
+                if (!"".equals(itemFuryouritsu.getValue()) && itemFuryouritsu.getValue() != null) {
+                    // ｴﾗｰ項目をﾘｽﾄに追加
+                    errFxhdd01List.addAll(Arrays.asList(itemFuryouritsu));
+                    if(!"".equals(errMsg)){
+                        errMsg = errMsg + "<BR/>";                        
+                    }
+                    errMsg = errMsg + MessageUtil.getMessage("XHD-000148");
+                }
+                if(!"".equals(errMsg)){
+                    return MessageUtil.getErrorMessageInfo("",errMsg, true, true, errFxhdd01List);
                 }
             }
         }
