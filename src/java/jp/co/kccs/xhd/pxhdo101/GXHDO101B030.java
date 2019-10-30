@@ -43,6 +43,7 @@ import org.apache.commons.dbutils.RowProcessor;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
+import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import org.apache.commons.dbutils.DbUtils;
 
@@ -372,12 +373,12 @@ public class GXHDO101B030 implements IFormLogic {
                    "CG".equals(kcpno89) ){
                     List<FXHDD01> errFxhdd01List = new ArrayList<FXHDD01>();
                     String errMsg = "";
-                if ("".equals(itemRyohinjuryou.getValue()) || itemRyohinjuryou.getValue() == null) {
+                if (NumberUtil.isZeroOrEmpty(itemRyohinjuryou.getValue())) {
                     // ｴﾗｰ項目をﾘｽﾄに追加
                     errFxhdd01List.addAll(Arrays.asList(itemRyohinjuryou));
                     errMsg = MessageUtil.getMessage("XHD-000143");
                 }
-                if ("".equals(itemFuryoujuryou.getValue()) || itemFuryoujuryou.getValue() == null) {
+                if (NumberUtil.isZeroOrEmpty(itemFuryoujuryou.getValue())) {
                     // ｴﾗｰ項目をﾘｽﾄに追加
                     errFxhdd01List.addAll(Arrays.asList(itemFuryoujuryou));
                     if(!"".equals(errMsg)){
@@ -385,7 +386,7 @@ public class GXHDO101B030 implements IFormLogic {
                     }
                     errMsg = errMsg + MessageUtil.getMessage("XHD-000144");
                 }
-                if ("".equals(itemFuryouritsu.getValue()) || itemFuryouritsu.getValue() == null) {
+                if (NumberUtil.isZeroOrEmpty(itemFuryouritsu.getValue())) {
                     // ｴﾗｰ項目をﾘｽﾄに追加
                     errFxhdd01List.addAll(Arrays.asList(itemFuryouritsu));
                     if(!"".equals(errMsg)){
@@ -401,12 +402,12 @@ public class GXHDO101B030 implements IFormLogic {
                    !"CG".equals(kcpno89) ){
                 List<FXHDD01> errFxhdd01List = new ArrayList<FXHDD01>();
                 String errMsg = "";
-                if (!"".equals(itemRyohinjuryou.getValue()) && itemRyohinjuryou.getValue() != null) {
+                if (!NumberUtil.isZeroOrEmpty(itemRyohinjuryou.getValue())) {
                     // ｴﾗｰ項目をﾘｽﾄに追加
                     errFxhdd01List.addAll(Arrays.asList(itemRyohinjuryou));
                     errMsg = MessageUtil.getMessage("XHD-000146");
                 }
-                if (!"".equals(itemFuryoujuryou.getValue()) && itemFuryoujuryou.getValue() != null) {
+                if (!NumberUtil.isZeroOrEmpty(itemFuryoujuryou.getValue())) {
                     // ｴﾗｰ項目をﾘｽﾄに追加
                     errFxhdd01List.addAll(Arrays.asList(itemFuryoujuryou));
                     if(!"".equals(errMsg)){
@@ -414,7 +415,7 @@ public class GXHDO101B030 implements IFormLogic {
                     }
                     errMsg = errMsg + MessageUtil.getMessage("XHD-000147");
                 }
-                if (!"".equals(itemFuryouritsu.getValue()) && itemFuryouritsu.getValue() != null) {
+                if (!NumberUtil.isZeroOrEmpty(itemFuryouritsu.getValue())) {
                     // ｴﾗｰ項目をﾘｽﾄに追加
                     errFxhdd01List.addAll(Arrays.asList(itemFuryouritsu));
                     if(!"".equals(errMsg)){

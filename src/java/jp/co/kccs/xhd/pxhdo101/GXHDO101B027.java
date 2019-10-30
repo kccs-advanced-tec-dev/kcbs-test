@@ -47,6 +47,7 @@ import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
 import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import org.apache.commons.dbutils.DbUtils;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * ===============================================================================<br>
@@ -450,24 +451,24 @@ public class GXHDO101B027 implements IFormLogic {
         FXHDD01 itemSayasussyurui = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYASUSSYURUI);
         //「画面.ｻﾔ/SUS板種類」が"ｻﾔ"もしくは"ｼﾞﾙｺﾆｱｻﾔ"ではない場合、下記項目のすべてが未入力であること。
         if ((!"ｻﾔ".equals(itemSayasussyurui.getValue())) && (!"ｼﾞﾙｺﾆｱｻﾔ".equals(itemSayasussyurui.getValue()))) {
-                //・ｻﾔ重量範囲(g)MIN
-                FXHDD01 itemSjyuuryourangemin = getItemRow(processData.getItemList(), GXHDO101B027Const.SJYUURYOURANGEMIN);
-                //・ｻﾔ重量範囲(g)MAX
-                FXHDD01 itemSjyuuryourangemax = getItemRow(processData.getItemList(), GXHDO101B027Const.SJYUURYOURANGEMAX);
-                //・ｻﾔ重量(g/枚)
-                FXHDD01 itemSayajyuuryou = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYAJYUURYOU);
-            
-                if((itemSjyuuryourangemin.getValue() != null && !"".equals(itemSjyuuryourangemin.getValue())) || 
-                       (itemSjyuuryourangemax.getValue() != null && !"".equals(itemSjyuuryourangemax.getValue())) || 
-                       (itemSayajyuuryou.getValue() != null && !"".equals(itemSayajyuuryou.getValue()))){
-                            // ｴﾗｰ項目をﾘｽﾄに追加
-                            List<FXHDD01> errFxhdd01List = Arrays.asList(itemSayasussyurui,itemSjyuuryourangemin,itemSjyuuryourangemax,itemSayajyuuryou);
-                            ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000108", true, true, errFxhdd01List);
-                            return errorMessageInfo;
-                }
+            //・ｻﾔ重量範囲(g)MIN
+            FXHDD01 itemSjyuuryourangemin = getItemRow(processData.getItemList(), GXHDO101B027Const.SJYUURYOURANGEMIN);
+            //・ｻﾔ重量範囲(g)MAX
+            FXHDD01 itemSjyuuryourangemax = getItemRow(processData.getItemList(), GXHDO101B027Const.SJYUURYOURANGEMAX);
+            //・ｻﾔ重量(g/枚)
+            FXHDD01 itemSayajyuuryou = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYAJYUURYOU);
+
+            if (!NumberUtil.isZeroOrEmpty(itemSjyuuryourangemin.getValue()) || !NumberUtil.isZeroOrEmpty(itemSjyuuryourangemax.getValue()) || !NumberUtil.isZeroOrEmpty(itemSayajyuuryou.getValue())) {
+                // ｴﾗｰ項目をﾘｽﾄに追加
+                List<FXHDD01> errFxhdd01List = Arrays.asList(itemSayasussyurui, itemSjyuuryourangemin, itemSjyuuryourangemax, itemSayajyuuryou);
+                ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000108", true, true, errFxhdd01List);
+                return errorMessageInfo;
+            }
         }
         return null;
     }
+    
+    
     
     /**
      * 登録・修正項目チェック

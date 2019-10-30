@@ -350,4 +350,26 @@ public class NumberUtil {
         return false;
     }
     
+    /**
+     * ZERO、Enptyチェック
+     *
+     * @param value 文字列
+     * @return ZEROか空の場合true
+     */
+    public static boolean isZeroOrEmpty(String value) {
+        if (StringUtil.isEmpty(value)) {
+            return true;
+        }
+
+        try {
+            // 値が0の場合、trueを返却
+            if (BigDecimal.ZERO.compareTo(new BigDecimal(value)) == 0) {
+                return true;
+            }
+        } catch (NumberFormatException e) {
+            //処理なし
+        }
+        return false;
+    }
+    
 }
