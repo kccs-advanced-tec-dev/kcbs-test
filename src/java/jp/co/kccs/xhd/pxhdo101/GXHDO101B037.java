@@ -2263,35 +2263,52 @@ public class GXHDO101B037 implements IFormLogic {
      */
     public ProcessData checkDataCalculatBudomari(ProcessData processData) {
 
-        String ryohinsuu = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B037Const.OKURIRYOHINSUU, null)); // 送り良品数
-        String syorisuu = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B037Const.SYORISUU, null)); // 処理数
+        // 背景色をクリア
+        for (FXHDD01 fxhdd01 : processData.getItemList()) {
+            fxhdd01.setBackColorInput(fxhdd01.getBackColorInputDefault());
+        }
+        
+        List<FXHDD01> errFxhdd01List = null;
+        
+        FXHDD01 itemRyohinsuu = getItemRow(processData.getItemList(), GXHDO101B037Const.OKURIRYOHINSUU);
+        FXHDD01 itemSyorisuu = getItemRow(processData.getItemList(), GXHDO101B037Const.SYORISUU);
+        
+        String ryohinsuu = itemRyohinsuu.getValue(); // 送り良品数
+        String syorisuu = itemSyorisuu.getValue(); // 処理数
 
         // 送り良品数チェック
         // 入力チェック
         if (StringUtil.isEmpty(ryohinsuu)) {
-            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000117"))));
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            errFxhdd01List = Arrays.asList(itemRyohinsuu);
+            processData.setErrorMessageInfoList(Arrays.asList(MessageUtil.getErrorMessageInfo("XHD-000117", true, true, errFxhdd01List, itemRyohinsuu.getLabel1())));
             return processData;
             // 数値チェック
         } else if (!NumberUtil.isNumeric(ryohinsuu)) {
-            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000118"))));
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            errFxhdd01List = Arrays.asList(itemRyohinsuu);
+            processData.setErrorMessageInfoList(Arrays.asList(MessageUtil.getErrorMessageInfo("XHD-000118", true, true, errFxhdd01List, itemRyohinsuu.getLabel1())));
             return processData;
         }
 
         // 処理数チェック
         // 入力チェック
         if (StringUtil.isEmpty(syorisuu)) {
-            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000105"))));
+            errFxhdd01List = Arrays.asList(itemSyorisuu);
+            processData.setErrorMessageInfoList(Arrays.asList(MessageUtil.getErrorMessageInfo("XHD-000105", true, true, errFxhdd01List, itemSyorisuu.getLabel1())));
             return processData;
             // 数値チェック
         } else if (!NumberUtil.isNumeric(syorisuu)) {
-            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000105"))));
+            errFxhdd01List = Arrays.asList(itemSyorisuu);
+            processData.setErrorMessageInfoList(Arrays.asList(MessageUtil.getErrorMessageInfo("XHD-000105", true, true, errFxhdd01List, itemSyorisuu.getLabel1())));
             return processData;
         } else {
             // 処理数を数値変換
             BigDecimal decSyorisuu = new BigDecimal(syorisuu);
             // 0の場合
             if (BigDecimal.ZERO.compareTo(decSyorisuu) == 0) {
-                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000105"))));
+                errFxhdd01List = Arrays.asList(itemSyorisuu);
+                processData.setErrorMessageInfoList(Arrays.asList(MessageUtil.getErrorMessageInfo("XHD-000105", true, true, errFxhdd01List, itemSyorisuu.getLabel1())));
                 return processData;
             }
         }
