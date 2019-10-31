@@ -2438,6 +2438,9 @@ public class GXHDO101B027 implements IFormLogic {
             // KCPNO
             case GXHDO101B027Const.KCPNO:
                 return StringUtil.nullToBlank(srGdsayadumeData.getKcpno());
+            // 客先
+            case GXHDO101B027Const.TOKUISAKI:
+                return StringUtil.nullToBlank(srGdsayadumeData.getTokuisaki());
             // ﾛｯﾄﾌﾟﾚ
             case GXHDO101B027Const.LOTPRE:
                 return StringUtil.nullToBlank(srGdsayadumeData.getLotpre());
