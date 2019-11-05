@@ -653,25 +653,6 @@ public class GXHDO101A implements Serializable {
     }
 
     /**
-     * 前工程画面ID、ﾒﾆｭｰ名取得
-     *
-     * @param gamenIdList 画面IDリスト
-     * @param gamenId 画面ID
-     * @return 前工程画面ID
-     */
-    private String[] getMaeKoteiGamenInfo(List<String[]> gamenIdList, String gamenId) {
-        // 画面IDリストから指定の画面IDの一つ前の画面IDを取得
-        String[] maeKoteiInfo = null;
-        for (String[] compGamenInfo : gamenIdList) {
-            if (gamenId.equals(compGamenInfo[0])) {
-                return maeKoteiInfo;
-            }
-            maeKoteiInfo = compGamenInfo;
-        }
-        return maeKoteiInfo;
-    }
-
-    /**
      * Mapから値を取得する(マップがNULLまたは空の場合はNULLを返却)
      *
      * @param map マップ
