@@ -2760,7 +2760,7 @@ public class GXHDO101B027 implements IFormLogic {
         StringBuilder strBud = new StringBuilder("");
         if(!StringUtil.isEmpty(str)){
             for (int i = 0;i<str.length();i++){                
-                if(i == 0 && !NumberUtil.isIntegerNumeric(str.valueOf(0))){
+                if(i == 0 && !NumberUtil.isIntegerNumeric(String.valueOf(0))){
                     return ret;
                 }
                 if(NumberUtil.isIntegerNumeric(StringUtil.nullToBlank(str.charAt(i)))){
@@ -2791,20 +2791,15 @@ public class GXHDO101B027 implements IFormLogic {
         }
         
         //さや枚数計算①ﾁｪｯｸ処理
-        //1.「ｻﾔ/SUS板枚数 計算値」ﾁｪｯｸ
-        FXHDD01 itemSayamaisuukeisan = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYAMAISUUKEISAN);
-        //A.入力されてる場合、以降の処理は実行しない。(※ｴﾗｰﾒｯｾｰｼﾞは表示しない)
-        if ("".equals(itemSayamaisuukeisan.getValue()) || itemSayamaisuukeisan.getValue() == null) {
-            ErrorMessageInfo checkItemErrorInfo = checkSayamaisuu(processData);
-            if (checkItemErrorInfo != null) {
-                processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
-                return processData;
-            }else{
-                //さや枚数計算②計算処理
-                processData = calculateSayamaisuu(processData);
-            }
+        ErrorMessageInfo checkItemErrorInfo = checkSayamaisuu(processData);
+        if (checkItemErrorInfo != null) {
+            processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
+            return processData;
+        } else {
+            //さや枚数計算②計算処理
+            processData = calculateSayamaisuu(processData);
         }
-        
+
          // 継続メソッドのクリア
         processData.setMethod("");
 
@@ -2863,60 +2858,55 @@ public class GXHDO101B027 implements IFormLogic {
      * @return エラーメッセージ情報
      */
     private ErrorMessageInfo checkSayamaisuu(ProcessData processData) {
-        //1.「ｻﾔ/SUS板枚数 計算値」ﾁｪｯｸ
-        FXHDD01 itemSayamaisuukeisan = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYAMAISUUKEISAN);
-        //A.入力されてる場合、以降の処理は実行しない。(※ｴﾗｰﾒｯｾｰｼﾞは表示しない)
-        if ("".equals(itemSayamaisuukeisan.getValue()) || itemSayamaisuukeisan.getValue() == null) {
-            //2.「処理数」ﾁｪｯｸ
-            FXHDD01 itemSyorisuu = getItemRow(processData.getItemList(), GXHDO101B027Const.SYORISUU);
-            //A.入力されていない場合 ｴﾗｰﾒｯｾｰｼﾞを表示し、以降の処理を中止する。
-            if ("".equals(itemSyorisuu.getValue()) || itemSyorisuu.getValue() == null || NumberUtil.isZero(itemSyorisuu.getValue())) {
-                // ｴﾗｰ項目をﾘｽﾄに追加
-                List<FXHDD01> errFxhdd01List = Arrays.asList(itemSyorisuu);
-                ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000105", true, true, errFxhdd01List);
-                return errorMessageInfo;
-            }
-            //B.数値ではない場合 ｴﾗｰﾒｯｾｰｼﾞを表示し、以降の処理を中止する。
-            if (!NumberUtil.isNumeric(itemSyorisuu.getValue())) {
-                // ｴﾗｰ項目をﾘｽﾄに追加
-                List<FXHDD01> errFxhdd01List = Arrays.asList(itemSyorisuu);
-                ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000105", true, true, errFxhdd01List);
-                return errorMessageInfo;
-            }
-            //C.上記以外の場合
-            //以降の処理を続行する。
-            //3.「ｻﾔ/SUS板ﾁｬｰｼﾞ量」の規格値ﾁｪｯｸ
-            FXHDD01 itemSaysusacharge = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYSUSACHARGE);
-
-            if ("".equals(itemSaysusacharge.getKikakuChi()) || itemSaysusacharge.getKikakuChi() == null){
-                // ｴﾗｰ項目をﾘｽﾄに追加
-                List<FXHDD01> errFxhdd01List = Arrays.asList(itemSaysusacharge);
-                ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000149", true, true, errFxhdd01List,itemSaysusacharge.getLabel1());
-                return errorMessageInfo;
-            }
-            
-            String valSaysusacharge = itemSaysusacharge.getKikakuChi().replace("【", "");
-            valSaysusacharge = valSaysusacharge.replace("】", "");
-
-            String saysusachargeData[] = valSaysusacharge.split("±");
-            if(saysusachargeData.length != 2){
-                // ｴﾗｰ項目をﾘｽﾄに追加
-                List<FXHDD01> errFxhdd01List = Arrays.asList(itemSaysusacharge);
-                ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000028", true, true, errFxhdd01List,itemSaysusacharge.getLabel1());
-                return errorMessageInfo;
-            }
-
-            String maruSaysusacharge = getStringToDecValue(StringUtil.nullToBlank(saysusachargeData[0]));
-            String sankakuSaysusacharge = getStringToDecValue(StringUtil.nullToBlank(saysusachargeData[1]));
-
-            if(maruSaysusacharge.length() < 1 || sankakuSaysusacharge.length() < 1){
-                // ｴﾗｰ項目をﾘｽﾄに追加
-                List<FXHDD01> errFxhdd01List = Arrays.asList(itemSaysusacharge);
-                ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000028", true, true, errFxhdd01List,itemSaysusacharge.getLabel1());
-                return errorMessageInfo;
-            }
-
+           //2.「処理数」ﾁｪｯｸ
+        FXHDD01 itemSyorisuu = getItemRow(processData.getItemList(), GXHDO101B027Const.SYORISUU);
+        //A.入力されていない場合 ｴﾗｰﾒｯｾｰｼﾞを表示し、以降の処理を中止する。
+        if ("".equals(itemSyorisuu.getValue()) || itemSyorisuu.getValue() == null || NumberUtil.isZero(itemSyorisuu.getValue())) {
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemSyorisuu);
+            ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000105", true, true, errFxhdd01List);
+            return errorMessageInfo;
         }
+        //B.数値ではない場合 ｴﾗｰﾒｯｾｰｼﾞを表示し、以降の処理を中止する。
+        if (!NumberUtil.isNumeric(itemSyorisuu.getValue())) {
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemSyorisuu);
+            ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000105", true, true, errFxhdd01List);
+            return errorMessageInfo;
+        }
+        //C.上記以外の場合
+        //以降の処理を続行する。
+        //3.「ｻﾔ/SUS板ﾁｬｰｼﾞ量」の規格値ﾁｪｯｸ
+        FXHDD01 itemSaysusacharge = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYSUSACHARGE);
+
+        if ("".equals(itemSaysusacharge.getKikakuChi()) || itemSaysusacharge.getKikakuChi() == null) {
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemSaysusacharge);
+            ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000149", true, true, errFxhdd01List, itemSaysusacharge.getLabel1());
+            return errorMessageInfo;
+        }
+
+        String valSaysusacharge = itemSaysusacharge.getKikakuChi().replace("【", "");
+        valSaysusacharge = valSaysusacharge.replace("】", "");
+
+        String saysusachargeData[] = valSaysusacharge.split("±");
+        if (saysusachargeData.length != 2) {
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemSaysusacharge);
+            ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000028", true, true, errFxhdd01List, itemSaysusacharge.getLabel1());
+            return errorMessageInfo;
+        }
+
+        String maruSaysusacharge = getStringToDecValue(StringUtil.nullToBlank(saysusachargeData[0]));
+        String sankakuSaysusacharge = getStringToDecValue(StringUtil.nullToBlank(saysusachargeData[1]));
+
+        if (maruSaysusacharge.length() < 1 || sankakuSaysusacharge.length() < 1) {
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemSaysusacharge);
+            ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000028", true, true, errFxhdd01List, itemSaysusacharge.getLabel1());
+            return errorMessageInfo;
+        }
+
         return null;
     }
     
@@ -2937,7 +2927,7 @@ public class GXHDO101B027 implements IFormLogic {
         if (checkItemErrorInfo != null) {
             processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
             return processData;
-        }else{
+        } else {
             //さや重量計算②計算処理
             processData = calculateSayajuuryou(processData);
         }
@@ -3236,13 +3226,8 @@ public class GXHDO101B027 implements IFormLogic {
             processData = calculateBnfunmaryouu(processData);
         }
 
-        //1.「ｻﾔ/SUS板枚数 計算値」ﾁｪｯｸ
-        FXHDD01 itemSayamaisuukeisan = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYAMAISUUKEISAN);
-        //A.入力されてる場合、以降の処理は実行しない。(※ｴﾗｰﾒｯｾｰｼﾞは表示しない)
-        if ("".equals(itemSayamaisuukeisan.getValue()) || itemSayamaisuukeisan.getValue() == null) {
-            //さや枚数計算②計算処理
-            processData = calculateSayamaisuu(processData);
-        }
+        //さや枚数計算②計算処理
+        processData = calculateSayamaisuu(processData);
 
         //さや重量計算②計算処理
         processData = calculateSayajuuryou(processData);
