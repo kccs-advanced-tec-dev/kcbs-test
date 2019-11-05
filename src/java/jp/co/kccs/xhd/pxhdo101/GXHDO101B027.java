@@ -1128,7 +1128,7 @@ public class GXHDO101B027 implements IFormLogic {
         }
 
         // 画面に取得した情報をセットする。(入力項目以外)
-        setViewItemData(processData, lotKbnMasData, ownerMasData, shikakariData, lotNo, shorisuu);
+        setViewItemData(processData, lotKbnMasData, ownerMasData, shikakariData, lotNo, shorisuu ,paramJissekino);
 
         processData.setInitMessageList(errorMessageList);
         return processData;
@@ -1144,8 +1144,10 @@ public class GXHDO101B027 implements IFormLogic {
      * @param daPatternMasData 製版ﾏｽﾀデータ
      * @param shikakariData 仕掛データ
      * @param lotNo ﾛｯﾄNo
+     * @param shorisuu 処理数
+     * @param jissekino ﾛｯﾄNo
      */
-    private void setViewItemData(ProcessData processData, Map lotKbnMasData, Map ownerMasData, Map shikakariData, String lotNo, String shorisuu) {
+    private void setViewItemData(ProcessData processData, Map lotKbnMasData, Map ownerMasData, Map shikakariData, String lotNo, String shorisuu, int jissekino) {
         
         // ロットNo
         this.setItemData(processData, GXHDO101B027Const.LOTNO, lotNo);
@@ -1178,6 +1180,9 @@ public class GXHDO101B027 implements IFormLogic {
 
         // 処理数
         this.setItemData(processData, GXHDO101B027Const.SYORISUU, shorisuu);
+        
+        // 作業回数
+        this.setItemData(processData, GXHDO101B027Const.KAISUU, StringUtil.nullToBlank(jissekino));
 
     }
 
@@ -1219,11 +1224,6 @@ public class GXHDO101B027 implements IFormLogic {
                     this.setItemData(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
                 }
                 return true;
-            }
-
-            if(!(JOTAI_FLG_SAKUJO.equals(jotaiFlg))){
-                // 作業回数
-                this.setItemData(processData, GXHDO101B027Const.KAISUU, StringUtil.nullToBlank(jissekino));
             }
             
             // 外部電極焼成(ｻﾔ詰め)データ取得
