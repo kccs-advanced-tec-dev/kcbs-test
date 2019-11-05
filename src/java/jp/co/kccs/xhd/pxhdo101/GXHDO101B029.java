@@ -1016,13 +1016,10 @@ public class GXHDO101B029 implements IFormLogic {
         this.setItemData(processData, GXHDO101B029Const.SYORISUU, syorisuu);
         
         //作業回数
-        if(JOTAI_FLG_KARI_TOROKU.equals(processData.getInitJotaiFlg()) || JOTAI_FLG_TOROKUZUMI.equals(processData.getInitJotaiFlg())){
-            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-            HttpSession session = (HttpSession) externalContext.getSession(false);
-            String paramJissekino = StringUtil.nullToBlank(session.getAttribute("jissekino"));
-            this.setItemData(processData, GXHDO101B029Const.KAISUU, paramJissekino);
-        }      
-
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+        this.setItemData(processData, GXHDO101B029Const.KAISUU, StringUtil.nullToBlank(session.getAttribute("jissekino")));
+        
     }
 
     /**
