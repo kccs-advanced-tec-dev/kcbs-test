@@ -2508,6 +2508,14 @@ public class GXHDO101B034 implements IFormLogic {
             BigDecimal decSyorisuu = new BigDecimal(syorisuu);
             //「ﾁｬｰｼﾞ量」の規格値を数値変換
             BigDecimal decUpdChargeroyu = new BigDecimal(updChargeroyu);
+
+            // C.規格値(〇部分)が0(数値変換後0になるものも含む)の場合
+            // 以降の処理を実行せず、「ﾁｬｰｼﾞ量」,「ｽﾃﾝﾊﾞｯﾄ数」に0を設定する。
+            if (BigDecimal.ZERO.compareTo(decUpdChargeroyu) == 0) {
+                itemVatsuu.setValue("0");
+                itemChargeroyu.setValue("0");
+                return processData;
+            }
             
             //1.「処理数」 ÷ 「ﾁｬｰｼﾞ量」の規格値 を算出する。
             //2.1の計算結果の小数を切り上げる
@@ -2557,6 +2565,13 @@ public class GXHDO101B034 implements IFormLogic {
             
             //2.「ﾁｬｰｼﾞ量」の規格値ﾁｪｯｸ
             FXHDD01 itemChargeroyu = getItemRow(processData.getItemList(), GXHDO101B034Const.CHARGEROYU);
+            // A.規格値が取得できない場合
+            if (StringUtil.isEmpty(StringUtil.nullToBlank(itemChargeroyu.getKikakuChi()))) {
+                // ｴﾗｰ項目をﾘｽﾄに追加
+                List<FXHDD01> errFxhdd01List = Arrays.asList(itemChargeroyu);
+                ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000149", true, true, errFxhdd01List,itemChargeroyu.getLabel1());
+                return errorMessageInfo;
+            }
             boolean valChargeroyu = checkKikakuChi(StringUtil.nullToBlank(itemChargeroyu.getKikakuChi()).replace("【", ""));
             if (valChargeroyu){
                 // ｴﾗｰ項目をﾘｽﾄに追加

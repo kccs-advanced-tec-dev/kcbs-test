@@ -2686,6 +2686,14 @@ public class GXHDO101B027 implements IFormLogic {
             BigDecimal decJuryou = new BigDecimal(juryou);
             // BN粉末量を数値変換
             BigDecimal decBnfunmaturyou = new BigDecimal(valBnfunmaturyou);
+            
+            // B.規格値が0(数値変換後0になるものも含む)の場合
+            // 以降の処理を実行せず、「BN粉末量」に0を設定する。
+            if (BigDecimal.ZERO.compareTo(decBnfunmaturyou) == 0) {
+                itemBnfunmaturyou.setValue("0");
+                return processData;
+            }
+            
             //1.「製品重量」 × 「BN粉末量」の規格値 を算出する。(小数以下四捨五入)
             BigDecimal decShorikosu = decJuryou.multiply(decBnfunmaturyou).setScale(2, RoundingMode.HALF_UP);
 
@@ -2712,7 +2720,7 @@ public class GXHDO101B027 implements IFormLogic {
             //2.「製品重量」ﾁｪｯｸ
             FXHDD01 itemJuryou = getItemRow(processData.getItemList(), GXHDO101B027Const.JURYOU);
             //A.入力されていない場合 ｴﾗｰﾒｯｾｰｼﾞを表示し、以降の処理を中止する。
-            if ("".equals(itemJuryou.getValue()) || itemJuryou.getValue() == null) {
+            if ("".equals(itemJuryou.getValue()) || itemJuryou.getValue() == null || "0".equals(itemJuryou.getValue())) {
                 // ｴﾗｰ項目をﾘｽﾄに追加
                 List<FXHDD01> errFxhdd01List = Arrays.asList(itemJuryou);
                 ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000106", true, true, errFxhdd01List);
@@ -2729,10 +2737,10 @@ public class GXHDO101B027 implements IFormLogic {
             //以降の処理を続行する。
             //3.「BN粉末量」の規格値ﾁｪｯｸ
             String valBnfunmaturyou = getStringToDecValue(StringUtil.nullToBlank(itemBnfunmaturyou.getKikakuChi()).replace("【", ""));
-            if ("".equals(valBnfunmaturyou) || NumberUtil.isZero(valBnfunmaturyou) || valBnfunmaturyou == null){
+            if ("".equals(valBnfunmaturyou) || valBnfunmaturyou == null){
                 // ｴﾗｰ項目をﾘｽﾄに追加
                 List<FXHDD01> errFxhdd01List = Arrays.asList(itemBnfunmaturyou);
-                ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000028", true, true, errFxhdd01List,itemBnfunmaturyou.getLabel1());
+                ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000149", true, true, errFxhdd01List,itemBnfunmaturyou.getLabel1());
                 return errorMessageInfo;
             }
         }
@@ -2785,8 +2793,8 @@ public class GXHDO101B027 implements IFormLogic {
         //さや枚数計算①ﾁｪｯｸ処理
         //1.「ｻﾔ/SUS板枚数 計算値」ﾁｪｯｸ
         FXHDD01 itemSayamaisuukeisan = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYAMAISUUKEISAN);
-            //A.入力されてる場合、以降の処理は実行しない。(※ｴﾗｰﾒｯｾｰｼﾞは表示しない)
-            if ("".equals(itemSayamaisuukeisan.getValue()) || itemSayamaisuukeisan.getValue() == null) {
+        //A.入力されてる場合、以降の処理は実行しない。(※ｴﾗｰﾒｯｾｰｼﾞは表示しない)
+        if ("".equals(itemSayamaisuukeisan.getValue()) || itemSayamaisuukeisan.getValue() == null) {
             ErrorMessageInfo checkItemErrorInfo = checkSayamaisuu(processData);
             if (checkItemErrorInfo != null) {
                 processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
@@ -2827,6 +2835,13 @@ public class GXHDO101B027 implements IFormLogic {
             BigDecimal decSyorisuu = new BigDecimal(syorisuu);
             //「ｻﾔ/SUS板ﾁｬｰｼﾞ量」の規格値(〇部分)を数値変換
             BigDecimal decMaruSaysusacharge = new BigDecimal(maruSaysusacharge);
+            
+            // C.規格値(〇部分)が0(数値変換後0になるものも含む)の場合
+            // 以降の処理を実行せず、「ｻﾔ/SUS板枚数 計算値」に0を設定する。
+            if (BigDecimal.ZERO.compareTo(decMaruSaysusacharge) == 0) {
+                itemSayamaisuukeisan.setValue("0");
+                return processData;
+            }
             
             //1.「処理数」 ÷ 「ｻﾔ/SUS板ﾁｬｰｼﾞ量」の規格値(〇部分) を算出する。
             //2.1の計算結果の小数を切り上げる
@@ -2876,7 +2891,7 @@ public class GXHDO101B027 implements IFormLogic {
             if ("".equals(itemSaysusacharge.getKikakuChi()) || itemSaysusacharge.getKikakuChi() == null){
                 // ｴﾗｰ項目をﾘｽﾄに追加
                 List<FXHDD01> errFxhdd01List = Arrays.asList(itemSaysusacharge);
-                ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000028", true, true, errFxhdd01List,itemSaysusacharge.getLabel1());
+                ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000149", true, true, errFxhdd01List,itemSaysusacharge.getLabel1());
                 return errorMessageInfo;
             }
             
@@ -2966,6 +2981,15 @@ public class GXHDO101B027 implements IFormLogic {
             //「ｻﾔ/SUS板ﾁｬｰｼﾞ量」の規格値(〇部分)を数値変換
             BigDecimal decMaruSaysusacharge = new BigDecimal(maruSaysusacharge);
 
+            // C.規格値(〇部分)が0(数値変換後0になるものも含む)の場合
+            // 以降の処理を実行せず、「ｻﾔ重量(g/枚)」に0を設定する。
+            if (BigDecimal.ZERO.compareTo(decMaruSaysusacharge) == 0) {
+                itemSayajyuuryou.setValue("0");
+                itemSjyuuryourangemin.setValue("0");
+                itemSjyuuryourangemax.setValue("0");
+                return processData;
+            }
+            
             //1.「製品重量」 ÷ 「ｻﾔ/SUS板ﾁｬｰｼﾞ量」の規格値(〇部分) を算出する。
             //2.1の計算結果の小数点第三位を四捨五入する。
             BigDecimal decShoriRes = decJuryou.divide(decMaruSaysusacharge,2,BigDecimal.ROUND_HALF_UP);
@@ -3004,7 +3028,7 @@ public class GXHDO101B027 implements IFormLogic {
         //2.「製品重量」ﾁｪｯｸ
         FXHDD01 itemJuryou = getItemRow(processData.getItemList(), GXHDO101B027Const.JURYOU);
         //A.入力されていない場合 ｴﾗｰﾒｯｾｰｼﾞを表示し、以降の処理を中止する。
-        if ("".equals(itemJuryou.getValue()) || itemJuryou.getValue() == null) {
+        if ("".equals(itemJuryou.getValue()) || itemJuryou.getValue() == null || "0".equals(itemJuryou.getValue())) {
             // ｴﾗｰ項目をﾘｽﾄに追加
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemJuryou);
             ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000106", true, true, errFxhdd01List);
@@ -3019,7 +3043,7 @@ public class GXHDO101B027 implements IFormLogic {
         if ("".equals(valSaysusacharge) || valSaysusacharge == null){
             // ｴﾗｰ項目をﾘｽﾄに追加
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemSaysusacharge);
-            ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000028", true, true, errFxhdd01List,itemSaysusacharge.getLabel1());
+            ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000149", true, true, errFxhdd01List,itemSaysusacharge.getLabel1());
             return errorMessageInfo;
         }
 
@@ -3101,6 +3125,13 @@ public class GXHDO101B027 implements IFormLogic {
             //「ｻﾔ/SUS板枚数」を数値変換
             BigDecimal decSayamaisuu = new BigDecimal(sayamaisuu);
 
+            // B.入力されている値が0の場合
+            // 以降の処理を実行せず、「ｻﾔ/SUS板ﾁｬｰｼﾞ量」に0を設定する。
+            if (BigDecimal.ZERO.compareTo(decSayamaisuu) == 0) {
+                itemSaysusacharge.setValue("0");
+                return processData;
+            }
+            
             //1.「処理数」 ÷ 「ｻﾔ/SUS板枚数」 を算出する。
             //2.1の計算結果の小数を四捨五入する。
             BigDecimal decShoriRes = decSyorisuu.divide(decSayamaisuu,0,BigDecimal.ROUND_HALF_UP);
