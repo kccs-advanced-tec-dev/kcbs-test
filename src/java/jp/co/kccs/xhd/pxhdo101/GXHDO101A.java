@@ -4,6 +4,7 @@
 package jp.co.kccs.xhd.pxhdo101;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -72,7 +73,9 @@ public class GXHDO101A implements Serializable {
     private static final String FORM_ID_KENMA_BARREL = "GXHDO101B020";
     private static final String FORM_ID_KENMA_KEISU = "GXHDO101B021";
     private static final String FORM_ID_JIKI_QC = "GXHDO101B022";
-
+    private static final String FORM_ID_GAIBUDENKYOKU_TOFU_TANSHI = "GXHDO101B025";
+    private static final String FORM_ID_GAIBUDENKYOKU_TOFU = "GXHDO101B026";
+    
     /**
      * DataSource(wip)
      */
@@ -410,6 +413,7 @@ public class GXHDO101A implements Serializable {
             session.setAttribute("tantoshaCd", this.searchTantoshaCd);
             session.setAttribute("jissekino", rowData.getJissekiNo());
             
+            
             // 自身の枝番でない(親ﾛｯﾄの枝番)場合、前工程情報は引き渡さない
             if (StringUtil.nullToBlank(getMapData(maekoteiInfo, "edaban")).equals(this.searchLotNo.substring(11, 14))) {
                 session.setAttribute("maekoteiInfo", maekoteiInfo);
@@ -431,7 +435,12 @@ public class GXHDO101A implements Serializable {
                     session.setAttribute("barrelgohantei", "計数のみ");
                 }
             }
-
+            
+            // 外部電極塗布(三端子,4端子)、外部電極塗布の場合は総重量を取得してセットする
+            if (FORM_ID_GAIBUDENKYOKU_TOFU_TANSHI.equals(rowData.getFormId()) || FORM_ID_GAIBUDENKYOKU_TOFU.equals(rowData.getFormId())) {
+                session.setAttribute("soujuryou", getSoujuryou(this.menuListGXHDO101Nofiltering));
+            }
+            
             // 前工程が存在するかつ前工程のデータが取得できなかった場合
             if (maeKoteiMenuInfo != null && maekoteiInfo == null) {
                 this.warnMessage = MessageUtil.getMessage("XHD-000035", maeKoteiMenuInfo.getMenuName());
@@ -1302,10 +1311,6 @@ public class GXHDO101A implements Serializable {
         if (!existFormIds(menuList, "GXHDO101B017", "GXHDO101B018")) {
             messageList.add(MessageUtil.getMessage("XHD-000061", "焼成"));
         }
-        // 再酸化チェック
-        if (!existFormIds(menuList, "GXHDO101B019")) {
-            messageList.add(MessageUtil.getMessage("XHD-000061", "再酸化"));
-        }
         // ﾊﾞﾚﾙチェック
         if (!existFormIds(menuList, "GXHDO101B020")) {
             messageList.add(MessageUtil.getMessage("XHD-000061", "ﾊﾞﾚﾙ"));
@@ -1449,5 +1454,106 @@ public class GXHDO101A implements Serializable {
                 menuList.remove(removeData);
             }
         }
+    }
+    
+    
+    /**
+     * 総重量の取得処理(研磨計測より総重量を取得する。)
+     * @param menuListAll メニューデータ(権限でのフィルタリング無し)
+     * @return 総重量
+     */
+    private BigDecimal getSoujuryou(List<FXHDM01> menuListAll) throws SQLException {
+
+        // メニューに研磨(計数)が存在しない場合、0を返却
+        if (0 == menuListAll.stream().filter(fxhdm01 -> FORM_ID_KENMA_KEISU.equals(fxhdm01.getFormId())).count()) {
+            return BigDecimal.ZERO;
+        }
+        String strKojyo = this.searchLotNo.substring(0, 3);
+        String strLotNo = this.searchLotNo.substring(3, 11);
+        String strEdaban = this.searchLotNo.substring(11, 14);
+        QueryRunner queryRunnerDoc = new QueryRunner(dataSourceDocServer);
+        QueryRunner queryRunnerXHD = new QueryRunner(dataSourceXHD);
+
+        // データが存在しないまたは状態フラグが"1"以外の場合、0を返却
+        List<String[]> fxhdd03List = loadFxhdd03InfoListJisekiNoDesc(queryRunnerDoc, strKojyo, strLotNo, strEdaban, FORM_ID_KENMA_KEISU);
+        if (fxhdd03List.isEmpty() || !"1".equals(fxhdd03List.get(0)[0])) {
+            return BigDecimal.ZERO;
+        }
+
+        return getSrSyoseikeisuuSojuryo(queryRunnerXHD, strKojyo, strLotNo, strEdaban, fxhdd03List.get(0)[1], fxhdd03List.get(0)[2]);
+    }
+    
+     /**
+     * [品質DB登録実績]から、状態ﾌﾗｸﾞ,実績No,ﾘﾋﾞｼﾞｮﾝを取得
+     *
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param formId 画面ID(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private List<String[]> loadFxhdd03InfoListJisekiNoDesc(QueryRunner queryRunnerDoc, String kojyo, String lotNo,
+            String edaban, String formId) throws SQLException {
+
+        // 品質DB登録実績情報の取得
+        String sql = "SELECT jotai_flg, jissekino, rev "
+                + "FROM fxhdd03 "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND gamen_id = ? "
+                + "ORDER BY jissekino DESC ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(formId);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        List processResult = (List) queryRunnerDoc.query(sql, new MapListHandler(), params.toArray());
+
+        List<String[]> fxhdd03InfoList = new ArrayList<>();
+        for (Iterator i = processResult.iterator(); i.hasNext();) {
+            HashMap m = (HashMap) i.next();
+            fxhdd03InfoList.add(new String[]{m.get("jotai_flg").toString(), m.get("jissekino").toString(), m.get("rev").toString()});
+
+        }
+
+        return fxhdd03InfoList;
+    }
+    
+    /**
+     * [計数]から、総重量を取得(値が無い場合は0を返却)
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @param rev revision(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private BigDecimal getSrSyoseikeisuuSojuryo(QueryRunner queryRunnerXHD, String kojyo, String lotNo,
+            String edaban, String jissekino, String rev) throws SQLException {
+
+        String sql = "SELECT soujuryou "
+                + "FROM sr_syoseikeisuu "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND jissekino = ? AND revision = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(jissekino);
+        params.add(rev);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        Map resultMap = queryRunnerXHD.query(sql, new MapHandler(), params.toArray());
+        BigDecimal soujuryou = BigDecimal.ZERO;
+        if (resultMap != null && !StringUtil.isEmpty(StringUtil.nullToBlank(resultMap.get("soujuryou")))) {
+            soujuryou = new BigDecimal(StringUtil.nullToBlank(resultMap.get("soujuryou")));
+        }
+
+        return soujuryou;
     }
 }
