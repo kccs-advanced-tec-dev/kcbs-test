@@ -43,6 +43,7 @@ import org.apache.commons.dbutils.RowProcessor;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
+import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import org.apache.commons.dbutils.DbUtils;
 
@@ -453,14 +454,14 @@ public class GXHDO101B026 implements IFormLogic {
                 FXHDD01 itemDipjigusize = getItemRow(processData.getItemList(), GXHDO101B026Const.DIPJIGUSIZE);
             if ("ADM".equals(itemSetubisyurui.getValue())) {
                 //粘着ｼｰﾄﾛｯﾄ  1次側
-                if(itemNentyakusheetlot1.getValue() != null && !"".equals(itemNentyakusheetlot1.getValue())){
+                if(!NumberUtil.isZeroOrEmpty(itemNentyakusheetlot1.getValue())){
                     // ｴﾗｰ項目をﾘｽﾄに追加
                     List<FXHDD01> errFxhdd01List = Arrays.asList(itemSetubisyurui,itemNentyakusheetlot1);
                     ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000077", true, true, errFxhdd01List, itemSetubisyurui.getLabel1(),"ADM",itemNentyakusheetlot1.getLabel1());
                     return errorMessageInfo;                    
                 }
                 //粘着ｼｰﾄﾛｯﾄ  2次側
-                if(itemNentyakusheetlot2.getValue() != null && !"".equals(itemNentyakusheetlot2.getValue())){
+                if(!NumberUtil.isZeroOrEmpty(itemNentyakusheetlot2.getValue())){
                     // ｴﾗｰ項目をﾘｽﾄに追加
                     List<FXHDD01> errFxhdd01List = Arrays.asList(itemSetubisyurui,itemNentyakusheetlot2);
                     ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000077", true, true, errFxhdd01List, itemSetubisyurui.getLabel1(),"ADM",itemNentyakusheetlot2.getLabel1());
@@ -468,21 +469,21 @@ public class GXHDO101B026 implements IFormLogic {
                 }
             }else if ("N-ADM".equals(itemSetubisyurui.getValue())) {
                 //粘着ｼｰﾄﾛｯﾄ  1次側
-                if(itemNentyakusheetlot1.getValue() != null && !"".equals(itemNentyakusheetlot1.getValue())){
+                if(!NumberUtil.isZeroOrEmpty(itemNentyakusheetlot1.getValue())){
                     // ｴﾗｰ項目をﾘｽﾄに追加
                     List<FXHDD01> errFxhdd01List = Arrays.asList(itemSetubisyurui,itemNentyakusheetlot1);
                     ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000077", true, true, errFxhdd01List, itemSetubisyurui.getLabel1(),"N-ADM",itemNentyakusheetlot1.getLabel1());
                     return errorMessageInfo;                    
                 }
                 //粘着ｼｰﾄﾛｯﾄ  2次側
-                if(itemNentyakusheetlot2.getValue() != null && !"".equals(itemNentyakusheetlot2.getValue())){
+                if(!NumberUtil.isZeroOrEmpty(itemNentyakusheetlot2.getValue())){
                     // ｴﾗｰ項目をﾘｽﾄに追加
                     List<FXHDD01> errFxhdd01List = Arrays.asList(itemSetubisyurui,itemNentyakusheetlot2);
                     ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000077", true, true, errFxhdd01List, itemSetubisyurui.getLabel1(),"N-ADM",itemNentyakusheetlot2.getLabel1());
                     return errorMessageInfo;                    
                 }
                 //塗布ｼﾞｸﾞｻｲｽﾞ
-                if(itemDipjigusize.getValue() != null && !"".equals(itemDipjigusize.getValue())){
+                if(!NumberUtil.isZeroOrEmpty(itemDipjigusize.getValue())){
                     // ｴﾗｰ項目をﾘｽﾄに追加
                     List<FXHDD01> errFxhdd01List = Arrays.asList(itemSetubisyurui,itemDipjigusize);
                     ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000077", true, true, errFxhdd01List, itemSetubisyurui.getLabel1(),"N-ADM",itemDipjigusize.getLabel1());
@@ -490,7 +491,7 @@ public class GXHDO101B026 implements IFormLogic {
                 }
             }else if ("MDS".equals(itemSetubisyurui.getValue())) {
                 //塗布ｼﾞｸﾞｻｲｽﾞ
-                if(itemDipjigusize.getValue() != null && !"".equals(itemDipjigusize.getValue())){
+                if(!NumberUtil.isZeroOrEmpty(itemDipjigusize.getValue())){
                     // ｴﾗｰ項目をﾘｽﾄに追加
                     List<FXHDD01> errFxhdd01List = Arrays.asList(itemSetubisyurui,itemDipjigusize);
                     ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000077", true, true, errFxhdd01List, itemSetubisyurui.getLabel1(),"MDS",itemDipjigusize.getLabel1());
@@ -525,21 +526,21 @@ public class GXHDO101B026 implements IFormLogic {
                 FXHDD01 itemDipjigumaisuu = getItemRow(processData.getItemList(), GXHDO101B026Const.DIPJIGUMAISUU);
             if ("ADM".equals(itemSetubisyurui.getValue())) {
                 //塗布ｼﾞｸﾞｻｲｽﾞ
-                if(itemDipjigusize.getValue() == null || "".equals(itemDipjigusize.getValue())){
+                if(NumberUtil.isZeroOrEmpty(itemDipjigusize.getValue())){
                     // ｴﾗｰ項目をﾘｽﾄに追加
                     List<FXHDD01> errFxhdd01List = Arrays.asList(itemSetubisyurui,itemDipjigusize);
                     ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000081", true, true, errFxhdd01List, itemSetubisyurui.getLabel1(),"ADM",itemDipjigusize.getLabel1());
                     return errorMessageInfo;                    
                 }
                 //塗布ｼﾞｸﾞ取り個数
-                if(itemTofujigutorikosuu.getValue() == null || "".equals(itemTofujigutorikosuu.getValue())){
+                if(NumberUtil.isZeroOrEmpty(itemTofujigutorikosuu.getValue())){
                     // ｴﾗｰ項目をﾘｽﾄに追加
                     List<FXHDD01> errFxhdd01List = Arrays.asList(itemSetubisyurui,itemTofujigutorikosuu);
                     ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000081", true, true, errFxhdd01List, itemSetubisyurui.getLabel1(),"ADM",itemTofujigutorikosuu.getLabel1());
                     return errorMessageInfo;                    
                 }
                 //塗布ｼﾞｸﾞ枚数
-                if(itemDipjigumaisuu.getValue() == null || "".equals(itemDipjigumaisuu.getValue())){
+                if(NumberUtil.isZeroOrEmpty(itemDipjigumaisuu.getValue())){
                     // ｴﾗｰ項目をﾘｽﾄに追加
                     List<FXHDD01> errFxhdd01List = Arrays.asList(itemSetubisyurui,itemDipjigumaisuu);
                     ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000081", true, true, errFxhdd01List, itemSetubisyurui.getLabel1(),"ADM",itemDipjigumaisuu.getLabel1());
@@ -547,14 +548,14 @@ public class GXHDO101B026 implements IFormLogic {
                 }
             }else if ("N-ADM".equals(itemSetubisyurui.getValue())) {
                 //塗布ｼﾞｸﾞ取り個数
-                if(itemTofujigutorikosuu.getValue() == null || "".equals(itemTofujigutorikosuu.getValue())){
+                if(NumberUtil.isZeroOrEmpty(itemTofujigutorikosuu.getValue())){
                     // ｴﾗｰ項目をﾘｽﾄに追加
                     List<FXHDD01> errFxhdd01List = Arrays.asList(itemSetubisyurui,itemTofujigutorikosuu);
                     ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000081", true, true, errFxhdd01List, itemSetubisyurui.getLabel1(),"N-ADM",itemTofujigutorikosuu.getLabel1());
                     return errorMessageInfo;                    
                 }
                 //塗布ｼﾞｸﾞ枚数
-                if(itemDipjigumaisuu.getValue() == null || "".equals(itemDipjigumaisuu.getValue())){
+                if(NumberUtil.isZeroOrEmpty(itemDipjigumaisuu.getValue())){
                     // ｴﾗｰ項目をﾘｽﾄに追加
                     List<FXHDD01> errFxhdd01List = Arrays.asList(itemSetubisyurui,itemDipjigumaisuu);
                     ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000081", true, true, errFxhdd01List, itemSetubisyurui.getLabel1(),"N-ADM",itemDipjigumaisuu.getLabel1());
@@ -562,28 +563,28 @@ public class GXHDO101B026 implements IFormLogic {
                 }
             }else if ("MDS".equals(itemSetubisyurui.getValue())) {
                 //粘着ｼｰﾄﾛｯﾄ  1次側
-                if(itemNentyakusheetlot1.getValue() == null || "".equals(itemNentyakusheetlot1.getValue())){
+                if(NumberUtil.isZeroOrEmpty(itemNentyakusheetlot1.getValue())){
                     // ｴﾗｰ項目をﾘｽﾄに追加
                     List<FXHDD01> errFxhdd01List = Arrays.asList(itemSetubisyurui,itemNentyakusheetlot1);
                     ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000081", true, true, errFxhdd01List, itemSetubisyurui.getLabel1(),"MDS",itemNentyakusheetlot1.getLabel1());
                     return errorMessageInfo;                    
                 }
                 //粘着ｼｰﾄﾛｯﾄ  2次側
-                if(itemNentyakusheetlot2.getValue() == null || "".equals(itemNentyakusheetlot2.getValue())){
+                if(NumberUtil.isZeroOrEmpty(itemNentyakusheetlot2.getValue())){
                     // ｴﾗｰ項目をﾘｽﾄに追加
                     List<FXHDD01> errFxhdd01List = Arrays.asList(itemSetubisyurui,itemNentyakusheetlot2);
                     ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000081", true, true, errFxhdd01List, itemSetubisyurui.getLabel1(),"MDS",itemNentyakusheetlot2.getLabel1());
                     return errorMessageInfo;                    
                 }
                 //塗布ｼﾞｸﾞ取り個数
-                if(itemTofujigutorikosuu.getValue() == null || "".equals(itemTofujigutorikosuu.getValue())){
+                if(NumberUtil.isZeroOrEmpty(itemTofujigutorikosuu.getValue())){
                     // ｴﾗｰ項目をﾘｽﾄに追加
                     List<FXHDD01> errFxhdd01List = Arrays.asList(itemSetubisyurui,itemTofujigutorikosuu);
                     ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000081", true, true, errFxhdd01List, itemSetubisyurui.getLabel1(),"MDS",itemTofujigutorikosuu.getLabel1());
                     return errorMessageInfo;                    
                 }
                 //塗布ｼﾞｸﾞ枚数
-                if(itemDipjigumaisuu.getValue() == null || "".equals(itemDipjigumaisuu.getValue())){
+                if(NumberUtil.isZeroOrEmpty(itemDipjigumaisuu.getValue())){
                     // ｴﾗｰ項目をﾘｽﾄに追加
                     List<FXHDD01> errFxhdd01List = Arrays.asList(itemSetubisyurui,itemDipjigumaisuu);
                     ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000081", true, true, errFxhdd01List, itemSetubisyurui.getLabel1(),"MDS",itemDipjigumaisuu.getLabel1());
