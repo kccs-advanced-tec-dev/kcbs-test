@@ -6,6 +6,7 @@ package jp.co.kccs.xhd.util;
 import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -116,7 +117,7 @@ public class CommonUtil {
             default:
                 break;
         }
-        return null;
+        return new HashMap();
     }
     
     /**
