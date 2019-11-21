@@ -425,6 +425,17 @@ public class GXHDO101B025 implements IFormLogic {
             return MessageUtil.getErrorMessageInfo("XHD-000032", true, true, errFxhdd01List, sagyobasyo.getLabel1());
         }
         
+        // 位置ｽﾞﾚMAX
+        // 端子数が「3端子」の場合、入力されていること。
+        if (TANSISU_THREE.equals(StringUtil.nullToBlank(processData.getHiddenDataMap().get("hiddenTansisu")))){
+            FXHDD01 itizure = getItemRow(processData.getItemList(), GXHDO101B025Const.ITIZURE);
+            if(StringUtil.isEmpty(itizure.getValue())){
+                //エラー発生時
+                errFxhdd01List = Arrays.asList(itizure);
+                return MessageUtil.getErrorMessageInfo("XHD-000032", true, true, errFxhdd01List, itizure.getLabel1());
+            }
+        }
+        
         // 端子間幅MIN:4端子のみ
         // 端子数が「4端子」の場合、入力されていること。
         if (TANSISU_FOUR.equals(StringUtil.nullToBlank(processData.getHiddenDataMap().get("hiddenTansisu")))){
