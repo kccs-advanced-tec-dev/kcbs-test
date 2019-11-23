@@ -26,6 +26,11 @@ import jp.co.kccs.xhd.db.ParameterEJB;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	ﾛｯﾄｶｰﾄﾞ電子化対応<br>
  * <br>
+ * 変更日	2019/11/04<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	K.Hisanaga<br>
+ * 変更理由	各種機能メニュー追加処理<br>
+ * <br>
  * ===============================================================================<br>
  */
 
@@ -132,5 +137,29 @@ public class SelectParam {
             bool = true;
         }
         return bool;
+    }
+    
+    
+    /**
+     * パラメータマスタから、キー、ユーザー名が一致する情報を取得します。<BR>
+     * 
+     * @param key キー
+     * @param session セッション
+     * @return 値
+     * @author SYSNAVI K.Hisanaga
+     * @since 2019/11/06
+     */
+    public boolean existKey(String key, HttpSession session) {
+        //キーは大文字
+        key = key.toUpperCase();
+        
+        //parameterMap
+        HashMap<String, String> parameterMap = (HashMap<String, String>) session.getAttribute("parameter");
+        if (parameterMap == null || parameterMap.get(key) == null) {
+            // パラメータの読み込み自体されていない可能性がある為、読み込み処理を実行して取得しなおす。
+            getValue(key, session);
+            parameterMap = (HashMap<String, String>) session.getAttribute("parameter");
+        }
+        return parameterMap.containsKey(key);
     }
 }
