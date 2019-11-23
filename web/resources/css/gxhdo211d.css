@@ -1,0 +1,19 @@
+.ui-selectlistbox-filter-container .ui-icon {
+    position: absolute;
+    top: 8px;
+    left: 4px;
+}
+
+.ui-chkbox {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+
+.ui-selectlistbox-filter.ui-inputfield {
+    padding-right: 1%;
+    padding-left: 7%;
+    width: 100%;
+    box-shadow: none;
+}
+

@@ -1,0 +1,20 @@
+[
+    {"no":"1","id":"lotnoView","columnname":"ﾛｯﾄNo","type":"String","format":""},
+    {"no":"2","id":"kcpno","columnname":"KCPNO","type":"String","format":""},
+    {"no":"3","id":"koteicode","columnname":"工程ｺｰﾄﾞ","type":"String","format":""},
+    {"no":"4","id":"gouki","columnname":"号機","type":"String","format":""},
+    {"no":"5","id":"ukeirebiView","columnname":"受入日","type":"String","format":""},
+    {"no":"6","id":"kosu","columnname":"個数","type":"String","format":""},
+    {"no":"7","id":"tapelotNo","columnname":"ﾃｰﾌﾟﾛｯﾄNo","type":"String","format":""},
+    {"no":"8","id":"tissonoudo","columnname":"窒素濃度","type":"String","format":""},
+    {"no":"9","id":"suisonoudo1","columnname":"水素濃度1","type":"String","format":""},
+    {"no":"10","id":"peakondo1","columnname":"ﾋﾟｰｸ温度1","type":"String","format":""},
+    {"no":"11","id":"suisonoudo2","columnname":"水素濃度2","type":"String","format":""},
+    {"no":"12","id":"peakondo2","columnname":"ﾋﾟｰｸ温度2","type":"String","format":""},
+    {"no":"13","id":"suisonoudo3","columnname":"水素濃度3","type":"String","format":""},
+    {"no":"14","id":"peakondo3","columnname":"ﾋﾟｰｸ温度3","type":"String","format":""},
+    {"no":"15","id":"suisonoudo4","columnname":"水素濃度4","type":"String","format":""},
+    {"no":"16","id":"peakondo4","columnname":"ﾋﾟｰｸ温度4","type":"String","format":""},
+    {"no":"17","id":"suisonoudo5","columnname":"水素濃度5","type":"String","format":""},
+    {"no":"18","id":"peakondo5","columnname":"ﾋﾟｰｸ温度5","type":"String","format":""}
+]

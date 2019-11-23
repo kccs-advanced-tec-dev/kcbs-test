@@ -27,6 +27,11 @@ import org.apache.commons.lang3.time.DateUtils;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	ﾛｯﾄｶｰﾄﾞ電子化対応<br>
  * <br>
+ * 変更日 2019/11/12<br>
+ * 計画書No K1811-DS001<br>
+ * 変更者 SYSNAVI K.Hisanaga<br>
+ * 変更理由 日付文字列をIntegerに変換する処理を追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 
@@ -53,6 +58,9 @@ public class DateUtil {
 
     // フォーマット(yy.MM.dd)
     public static final String YYYY_MM_DD = "yyyy.MM.dd";
+    
+    // フォーマット(yyyy.MM.dd)
+    public static final String YYYYMMDD_WITH_SLASH = "yyyy/MM/dd";
     
     // フォーマット(hhmmss)
     public static final String HHMMSS = "HHmmss";
@@ -413,6 +421,21 @@ public class DateUtil {
             return "";
         }
         return new SimpleDateFormat(timeFormat).format(timestamp);
+    }
+    
+    /**
+     * 日付文字列⇒Integer変換
+     * @param yyMMdd 年月日
+     * @return 変換後のデータ
+     */
+    public static Integer convertDateStringToInteger(String yyMMdd) {
+        DateFormat format = new SimpleDateFormat("yyMMdd");
+        try {
+            format.setLenient(false);
+            return convDateToInteger(format.parse(yyMMdd));
+        } catch (ParseException e) {
+            return null;
+        }
     }
     
 }

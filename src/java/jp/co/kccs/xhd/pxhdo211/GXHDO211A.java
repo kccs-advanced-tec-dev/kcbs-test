@@ -37,6 +37,11 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2019/11/12<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	メニューパラメータ、表示件数を呼び出し先に渡すように修正<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -109,6 +114,8 @@ public class GXHDO211A implements Serializable {
                         + ", link_char"
                         + ", menu_name"
                         + ", menu_comment"
+                        + ", menu_parameter"
+                        + ", hyouji_kensu"
                         + " FROM fxhdm01 "
                         + "WHERE menu_group_id = 'syosei_ondokanri' AND "
                         + DBUtil.getInConditionPreparedStatement("user_role", userGrpList.size());
@@ -119,8 +126,10 @@ public class GXHDO211A implements Serializable {
                 mapping.put("gamen_id", "formId");
                 mapping.put("menu_name", "menuName");
                 mapping.put("link_char", "linkChar");
-                mapping.put("menu_comment", "menuComment");
-
+                mapping.put("menu_comment", "menuComment");     
+                mapping.put("menu_parameter", "menuParam");
+                mapping.put("hyouji_kensu", "hyojiKensu");
+     
                 BeanProcessor beanProcessor = new BeanProcessor(mapping);
                 RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
                 ResultSetHandler<List<FXHDM01>> beanHandler = new BeanListHandler<>(FXHDM01.class, rowProcessor);
@@ -143,6 +152,12 @@ public class GXHDO211A implements Serializable {
      * @return 遷移先画面
      */
     public String openXhdForm(FXHDM01 rowData) {
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+        
+        session.setAttribute("menuParam", rowData.getMenuParam());
+        session.setAttribute("hyojiKensu", rowData.getHyojiKensu());
+        
         return rowData.getLinkChar() + "?faces-redirect=true";
     }
 }

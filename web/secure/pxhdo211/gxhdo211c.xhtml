@@ -1,0 +1,245 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:t="http://myfaces.apache.org/tomahawk">
+    <h:head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Pragma" content="no-cache"/>
+        <meta http-equiv="Cache-Control" content="no-cache"/>
+        <meta http-equiv="Expires" content="0"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link href="#{request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/growl.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/loading.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/gxhdo201common.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/gxhdo211d.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/gxhdo211d.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/primefaces-aristo/theme.css" rel="stylesheet" type="text/css"/>
+        <script src="#{request.contextPath}/resources/bootstrap/js/bootstrap.min.js" />
+        <h:outputScript library="primefaces" name="jquery/jquery.js" />
+        <script src="#{request.contextPath}/resources/js/growl.js"></script>
+        <script type="text/javascript">
+            //<![CDATA[
+            var pointY;
+            function subFormOpen() {
+                pointY = $(window).scrollTop();
+                document.getElementById("mainForm").style.setProperty("display", "none");
+                document.getElementById("mainForm").style.setProperty("position", "fixed");
+                document.getElementById("mainForm").style.setProperty("Top", -(pointY) + 54 + "px");
+                document.getElementById("mainForm").style.removeProperty("display");
+            }
+            function subFormClose() {
+                document.getElementById("mainForm").style.setProperty("display", "none");
+                document.getElementById("mainForm").style.removeProperty("position");
+                document.getElementById("mainForm").style.removeProperty("Top");
+                document.getElementById("mainForm").style.removeProperty("display");
+                $(window).scrollTop(pointY);
+            }
+            //]]>
+        </script>
+    </h:head>
+    <h:body style="padding-top:30px;">
+        <f:metadata>
+            <f:viewAction action="#{gXHDO211C.init()}"/>
+        </f:metadata>
+        <nav class="navbar  navbar-expand fixed-top navbar-dark" style="background-color:#0E6A89;height: 50px;z-index: 999;">
+            <span class="navbar-brand mb-0" style="font-size:18px;font-weight:bold;">#{myMsg.GXHDO211C_GamenTitle}</span>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#Navber" aria-controls="Navber" aria-expanded="false" aria-label="ナビゲーションの切替">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <span class="navbar-text ml-auto">
+                <div class="collapse navbar-collapse" id="Navber">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <h:link class="nav-link" outcome="/secure/pxhdo211/gxhdo211a.xhtml?faces-redirect=true" value="戻る"/>
+                        </li>
+                    </ul>
+                </div>
+            </span>
+        </nav>
+        <br/>
+        <h:form id="form" onkeypress="if (event.keyCode === 13) {
+                    return false;
+                }">
+            <div id="mainForm" style="width: 100%;">
+                <p:growl id="growlMessage" showDetail="false" sticky="true" escape="false"/>
+                <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
+                    <f:facet name="message">
+                        <h:outputText value="#{gXHDO211C.getWarnMessage()}" escape="false"/>
+                    </f:facet>
+                    <p:commandButton id="warnOk" value="OK" styleClass="ui-conf-commandbtn-def1" style="width:100px;margin-left:50px;"
+                                     actionListener="#{gXHDO211C.processWarnOk()}"
+                                     process="@this searchpanel"
+                                     update="@form growlMessage idDataTable btnExcel"
+                                     onstart="PF('cd').hide();$('#loadinggif').show();"
+                                     oncomplete="$('#loadinggif').hide();"/>
+                    <p:commandButton id="warnCancel" value="Cancel" class="ui-conf-commandbtn-cancel" style="width:100px;" onclick="PF('cd').hide();" type="button" />
+                </p:confirmDialog>
+                <div id="loadinggif">
+                    <img src="#{request.contextPath}/resources/gif/gif-load.gif"/>
+                </div>
+                <p:panel id="searchpanel" style="border:none;font-size:0.8em;#{gXHDO211C.displayStyle}">
+                    <table>
+                        <tr>
+                            <td>
+                                <h:outputText id="lblLotNo" value="ﾛｯﾄNo" style="width:100px;"/>
+                            </td>
+                            <td>
+                                <p:inputText id="pLotNo" value="#{gXHDO211C.lotNo}" maxlength="14" style="margin-left:20px; height:26px; width: 160px;">
+                                    <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO211C.checkByte('lotNo', 14)}"  async="false"/>
+                                </p:inputText>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h:outputText id="lblKcpNo" value="KCPNO" style="width:100px;"/>
+                            </td>
+                            <td colspan="3">
+                                <p:inputText id="pKcpNo" value="#{gXHDO211C.kcpNo}" maxlength="25" style="margin-left:20px; height:26px; width:390px;">
+                                    <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO211C.checkByte('kcpNo', 25)}"  async="false"/>
+                                </p:inputText>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <p:commandLink value="工程"  style="color: indigo; text-decoration: underline;" update="gxhdo211dForm" oncomplete="PF('W_dlg_gxhdo211d').show();"    />
+                            </td>
+                            <td colspan="3">
+                                <h:outputText id="lblKoutei" value="#{gXHDO211C.koutei}" style="width:100px; margin-left:20px; height:26px;"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h:outputText id="lblUkeirebiF" value="受入日(From)" style="width:100px;"/>
+                            </td>
+                            <td>
+                                <p:inputText id="pUkeirebiF" value="#{gXHDO211C.ukeirebiF}" maxlength="6" style="margin-left:20px; height:26px; width: 160px;">
+                                    <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO211C.checkByte('ukeirebiF', 6)}"  async="false"/>
+                                </p:inputText>
+                            </td>
+                            <td>
+                                <h:outputText id="lblUkeirebiT" value="受入日(To)" style="width:100px;"/>
+                            </td>
+                            <td>
+                                <p:inputText id="pUkeirebiT" value="#{gXHDO211C.ukeirebiT}" maxlength="6" style="height:26px; width: 160px;">
+                                    <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO211C.checkByte('ukeirebiT', 6)}"  async="false"/>
+                                </p:inputText>
+                            </td>
+                        </tr>   
+                        <tr>
+                            <td>
+                                <h:outputText id="lblProcess" value="ﾌﾟﾛｾｽ" style="width:100px;"/>
+                            </td>
+                            <td>
+                                <p:inputText id="pProcess" value="#{gXHDO211C.process}" maxlength="10" style="margin-left:20px; height:26px; width: 160px;">
+                                    <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO211C.checkByte('process', 10)}"  async="false"/>
+                                </p:inputText>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h:outputText id="lblHinsyu" value="品種" style="width:100px;"/>
+                            </td>
+                            <td>
+                                <p:inputText id="pHinsyu" value="#{gXHDO211C.hinsyu}" maxlength="2" style="margin-left:20px; height:26px; width: 160px;">
+                                    <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO211C.checkByte('hinsyu', 2)}"  async="false"/>
+                                </p:inputText>
+                            </td>
+                        </tr>
+                    </table>
+                </p:panel>
+                <p:panel id="buttonpanel" style="border:none;margin-top:-10px;#{gXHDO211C.displayStyle}">
+                    <p:commandButton id="btnSearch" style="width:100px;height:25px;font-size:0.7em;margin-left:0px;text-align:center;"
+                                     value="検索" 
+                                     actionListener="#{gXHDO211C.checkInputAndSearch()}"
+                                     process="@this searchpanel"
+                                     update="growlMessage idDataTable btnExcel confDialog"
+                                     onstart="$('#loadinggif').show();"
+                                     oncomplete="$('#loadinggif').hide();if('warning'!=args.param1){PF('cd').hide();} else {PF('cd').show();}"/>
+                    <p:commandButton id="bthClear" style="width:100px;height:25px;font-size:0.7em;margin-left:10px;text-align:center;" 
+                                     value="クリア" 
+                                     action="#{gXHDO211C.clear()}"
+                                     process="@this"
+                                     update="searchpanel idDataTable btnExcel"/>
+                    <p:commandButton id="btnExcel" style="width:100px;height:25px;font-size:0.7em;margin-left:10px;text-align:center;"
+                                     disabled="#{gXHDO211C.excelButtonDisable}"
+                                     value="Excel保存"
+                                     actionListener="#{gXHDO211C.downloadExcel()}"
+                                     process="@this"
+                                     ajax="false"/>
+                </p:panel>
+                <div style="margin-top:-15px; #{gXHDO211C.displayStyle}">
+                    <p:dataTable id="idDataTable" var="item" style="font-size:0.8em;margin-top:20px;" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap"
+                                 value="#{gXHDO211C.listData}" emptyMessage="" paginator="true" paginatorPosition="top" rows="#{gXHDO211C.getPagenatorCount()}">
+                        <p:column id="lotno" headerText="ﾛｯﾄNo" >
+                            <p:outputLabel value="#{item.lotnoView}"/>
+                        </p:column>
+                        <p:column id="kcpno" headerText="KCPNO" >
+                            <p:outputLabel value="#{item.kcpno}"/>
+                        </p:column>
+                        <p:column id="koteicode" headerText="工程ｺｰﾄﾞ" >
+                            <p:outputLabel value="#{item.koteicode}"/>
+                        </p:column>
+                        <p:column id="gouki" headerText="号機" >
+                            <p:outputLabel value="#{item.gouki}"/>
+                        </p:column>
+                        <p:column id="ukeirebi" headerText="受入日" >
+                            <p:outputLabel value="#{item.ukeirebiView}"/>
+                        </p:column>
+                        <p:column id="kosu" headerText="個数" >
+                            <p:outputLabel value="#{item.kosu}" />
+                        </p:column>
+                        <p:column id="tapelotNo" headerText="ﾃｰﾌﾟﾛｯﾄNo" >
+                            <p:outputLabel value="#{item.tapelotNo}"/>
+                        </p:column>
+                        <p:column id="tissonoudo" headerText="窒素濃度" >
+                            <p:outputLabel value="#{item.tissonoudo}"/>
+                        </p:column>
+                        <p:column id="suisonoudo1" headerText="水素濃度1">
+                            <p:outputLabel value="#{item.suisonoudo1}" />
+                        </p:column>
+                        <p:column id="peakondo1" headerText="ﾋﾟｰｸ温度1" >
+                            <p:outputLabel value="#{item.peakondo1}"/>
+                        </p:column>
+                        <p:column id="suisonoudo2" headerText="水素濃度2">
+                            <p:outputLabel value="#{item.suisonoudo2}" />
+                        </p:column>
+                        <p:column id="peakondo2" headerText="ﾋﾟｰｸ温度2" >
+                            <p:outputLabel value="#{item.peakondo2}"/>
+                        </p:column>
+                        <p:column id="suisonoudo3" headerText="水素濃度3">
+                            <p:outputLabel value="#{item.suisonoudo3}" />
+                        </p:column>
+                        <p:column id="peakondo3" headerText="ﾋﾟｰｸ温度3" >
+                            <p:outputLabel value="#{item.peakondo3}"/>
+                        </p:column>
+                        <p:column id="suisonoudo4" headerText="水素濃度4">
+                            <p:outputLabel value="#{item.suisonoudo4}" />
+                        </p:column>
+                        <p:column id="peakondo4" headerText="ﾋﾟｰｸ温度4" >
+                            <p:outputLabel value="#{item.peakondo4}"/>
+                        </p:column>
+                        <p:column id="suisonoudo5" headerText="水素濃度5">
+                            <p:outputLabel value="#{item.suisonoudo5}" />
+                        </p:column>
+                        <p:column id="peakondo5" headerText="ﾋﾟｰｸ温度5" >
+                            <p:outputLabel value="#{item.peakondo5}"/>
+                        </p:column>
+                    </p:dataTable>
+                </div>
+
+            </div>
+            <div>
+                <ui:include src="/secure/common/initMessage.xhtml"/>
+                <t:aliasBean alias="#{parentBean}" value="#{gXHDO211C}">
+                    <ui:include src="/secure/pxhdo211/gxhdo211d.xhtml"/>
+                </t:aliasBean>
+            </div>
+        </h:form>
+    </h:body>
+</html>

@@ -36,6 +36,11 @@ import org.apache.poi.xssf.streaming.SXSSFWorkbook;
  * 変更者	KCCS D.Yanagida<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2019/11/18<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	複数シートを書き込めるように対応<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -181,6 +186,157 @@ public class ExcelExporter {
 
         return outputFile;
     }
+    
+    /**
+     * Excelファイル生成(複数シートを書き込む場合)
+     * ※sheetNamesとdatasはサイズが同じであることが前提
+     * @param <T> 一覧データのジェネリクス
+     * @param datas 一覧データ
+     * @param columnInfo Excel出力定義情報
+     * @param tempDir 一時出力フォルダ
+     * @param sheetNames シート名
+     * @return 出力ファイル
+     * @throws Throwable 
+     */
+    public static <T> File outputExcelMultipleSheet(List<ColumnInformation> columnInfo, String tempDir, String[] sheetNames, List<List<T>> datas) throws Throwable {
+        SXSSFWorkbook workbook = new SXSSFWorkbook();
+        
+        // シート書き込み処理
+        for(int i = 0; i < sheetNames.length;i++){
+            writeSheet(columnInfo, workbook, sheetNames[i], i, datas.get(i));
+        }
+                
+        // ランダムなファイル名を生成
+        String tempFileName = RandomStringUtils.randomAlphanumeric(15);
+        
+        File outputFile = new File(tempDir, tempFileName);
+        try (FileOutputStream fos = new FileOutputStream(outputFile)) {
+            workbook.write(fos);
+            fos.flush();
+        }
+
+        return outputFile;
+    }
+    
+    /**
+     * シート書き込み処理
+     * @param <T> 一覧データのジェネリクス
+     * @param columnInfo Excel出力定義情報
+     * @param workbook workbook
+     * @param sheetName シート名
+     * @param sheetIdx シートインデックス
+     * @param data data 一覧データ
+     * @throws Throwable 
+     */
+    private static <T> void  writeSheet(List<ColumnInformation> columnInfo, SXSSFWorkbook workbook, String sheetName, int sheetIdx, List<T> data)  throws Throwable{
+        
+        SXSSFSheet sheet = (SXSSFSheet) workbook.createSheet();
+        if(!StringUtil.isEmpty(sheetName)){
+            workbook.setSheetName(sheetIdx, sheetName);
+        }
+        
+        int rowIdx = 0;
+
+        // ヘッダ行出力
+        CellStyle headerCellStyle = createHeaderCellStyle(workbook);
+
+        int headerCol = 0;
+        SXSSFRow headerRow = (SXSSFRow)sheet.createRow(rowIdx++);
+        for (ColumnInformation column : columnInfo) {
+            SXSSFCell cell = (SXSSFCell) headerRow.createCell(headerCol++);
+            cell.setCellStyle(headerCellStyle);
+            cell.setCellValue(column.getColumnname());
+        }            
+
+        // データ行出力
+        Map<Integer, CellStyle> decStyleMap = new HashMap<>();
+        decStyleMap.put(0, createNumericCellStyle(workbook, 0));
+
+        Map<String, CellStyle> dateStyleMap = new HashMap<>();
+        
+        CellStyle stringCellStyle = workbook.createCellStyle();
+        Font font = workbook.createFont();
+        font.setFontName("ＭＳ Ｐゴシック");
+        stringCellStyle.setFont(font);
+
+        Iterator<T> iterator = data.iterator();
+
+        while (iterator.hasNext()) {
+            SXSSFRow row = (SXSSFRow)sheet.createRow(rowIdx++);
+            T rowData = iterator.next();
+            int colIdx = 0;
+
+            for (ColumnInformation column : columnInfo) {
+                Field f = rowData.getClass().getDeclaredField(column.getId());
+                f.setAccessible(true);
+                
+                if ("Integer".equals(column.getType()) || "Long".equals(column.getType()) || "BigDecimal".equals(column.getType())) {
+                    // 数値項目
+                    int decLength = getCellDecimalLength(column);
+
+                    CellStyle decCellStyle;
+                    if (!decStyleMap.containsKey(decLength)) {
+                        decCellStyle = createNumericCellStyle(workbook, decLength);
+                        decStyleMap.put(decLength, decCellStyle);
+                    } else {
+                        decCellStyle = decStyleMap.get(decLength);
+                    }
+
+                    Double decValue = null;
+                    if ("BigDecimal".equals(column.getType())) {
+                        decValue = f.get(rowData) != null ? ((BigDecimal)f.get(rowData)).doubleValue() : null;
+                    } else if ("Long".equals(column.getType())) {
+                        decValue = f.get(rowData) != null ? ((Long)f.get(rowData)).doubleValue(): null;
+                    } else if ("Integer".equals(column.getType())) {
+                        decValue = f.get(rowData) != null ? ((Integer)f.get(rowData)).doubleValue(): null;
+                    }
+
+                    SXSSFCell cell = (SXSSFCell)row.createCell(colIdx++);
+                    cell.setCellStyle(decCellStyle);
+                    if (null != decValue) {
+                        cell.setCellValue(decValue);
+                    } else {
+                        cell.setCellValue("");
+                    }
+
+                } else if ("timestamp".equals(column.getType()) && !StringUtil.isEmpty(column.getFormat())) {
+                    // 日付 ※フォーマットが指定されている場合のみ
+                    CellStyle dateCellStyle = null;
+                    if (!dateStyleMap.containsKey(column.getFormat())) {
+                        dateCellStyle = createDateCellStyle(workbook, column.getFormat());
+                        dateStyleMap.put(column.getFormat(), dateCellStyle);
+                    } else {
+                        dateCellStyle = dateStyleMap.get(column.getFormat());
+                    }
+
+                    Date dateValue = null;
+                    if (f.get(rowData) != null) {
+                        dateValue = (Date)f.get(rowData);
+                    }
+
+                    SXSSFCell cell = (SXSSFCell)row.createCell(colIdx++);
+                    cell.setCellStyle(dateCellStyle);
+                    if (dateValue != null) {
+                        cell.setCellValue(dateValue);
+                    } else {
+                        cell.setCellValue("");
+                    }
+                } else {
+                    // その他：文字列
+                    String strValue = StringUtil.nullToBlank(f.get(rowData));
+                    SXSSFCell cell = (SXSSFCell)row.createCell(colIdx++);
+                    cell.setCellStyle(stringCellStyle);
+                    if (!StringUtil.isEmpty(strValue)) {
+                        cell.setCellValue(strValue);
+                    } else {
+                        cell.setCellValue("");
+                    }
+                }
+            }
+        }
+    }
+    
+    
     
     /**
      * 数値フォーマット小数桁取得
