@@ -134,6 +134,11 @@ public class GXHDO901A implements Serializable {
     @Resource(mappedName = "jdbc/ttpkadoritu")
     private transient DataSource dataSourceTtpkadoritu;
     /**
+     * DataSource(equipment)
+     */
+    @Resource(mappedName = "jdbc/equipment")
+    private transient DataSource dataSourceEquipment;
+    /**
      * パラメータ操作(DB)
      */
     @Inject
@@ -605,6 +610,7 @@ public class GXHDO901A implements Serializable {
         data.setDataSourceQcdb(this.dataSourceQcdb);
         data.setDataSourceSpskadoritu(this.dataSourceSpskadoritu);
         data.setDataSourceTtpkadoritu(this.dataSourceTtpkadoritu);
+        data.setDataSourceEquipment(this.dataSourceEquipment);
         data.setDataSourceWip(this.dataSourceWip);
         data.setInitMessageList(initMessageList);
         data.setInitRev(this.initRev);
@@ -865,6 +871,7 @@ public class GXHDO901A implements Serializable {
         data.setDataSourceQcdb(this.dataSourceQcdb);
         data.setDataSourceSpskadoritu(this.dataSourceSpskadoritu);
         data.setDataSourceTtpkadoritu(this.dataSourceTtpkadoritu);
+        data.setDataSourceEquipment(this.dataSourceEquipment);
         data.setDataSourceWip(this.dataSourceWip);
         data.setInitRev(this.initRev);
         data.setInitJotaiFlg(this.initJotaiFlg);

@@ -1,0 +1,22 @@
+[
+    {"no":"1","id":"lotno","columnname":"ﾛｯﾄNo.","type":"String","format":""},
+    {"no":"2","id":"kaisuu","columnname":"回数","type":"Integer","format":"9,0"},
+    {"no":"3","id":"kcpno","columnname":"KCPNO","type":"String","format":""},
+    {"no":"4","id":"tokuisaki","columnname":"客先","type":"String","format":""},
+    {"no":"5","id":"lotkubuncode","columnname":"ﾛｯﾄ区分","type":"String","format":""},
+    {"no":"6","id":"ownercode","columnname":"ｵｰﾅｰ","type":"String","format":""},
+    {"no":"7","id":"lotpre","columnname":"ﾛｯﾄﾌﾟﾚ","type":"String","format":""},
+    {"no":"8","id":"syorisuu","columnname":"処理数(個)","type":"Integer","format":"9,0"},
+    {"no":"9","id":"sinsekijikan","columnname":"浸漬時間(分)","type":"Integer","format":"9,0"},
+    {"no":"10","id":"senjoujikan","columnname":"洗浄時間(分)","type":"Integer","format":"9,0"},
+    {"no":"11","id":"methanolkoukanjikan","columnname":"ﾒﾀﾉｰﾙ交換時間","type":"String","format":""},
+    {"no":"12","id":"methanolkoukantantousya","columnname":"ﾒﾀﾉｰﾙ交換担当者","type":"String","format":""},
+    {"no":"13","id":"hassuidatetime","columnname":"撥水処理日時","type":"timestamp","format":"yyyy/mm/dd hh:mm:ss"},
+    {"no":"14","id":"hassuitantosyacode","columnname":"撥水処理担当者","type":"String","format":""},
+    {"no":"15","id":"kansoujikan","columnname":"乾燥時間(分)","type":"Integer","format":"9,0"},
+    {"no":"16","id":"kansouondo","columnname":"乾燥温度(℃)","type":"String","format":""},
+    {"no":"17","id":"kansoudatetime","columnname":"乾燥処理日時","type":"timestamp","format":"yyyy/mm/dd hh:mm:ss"},
+    {"no":"18","id":"kansoutantosyacode","columnname":"乾燥処理担当者","type":"String","format":""},
+    {"no":"19","id":"biko1","columnname":"備考1","type":"String","format":""},
+    {"no":"20","id":"biko2","columnname":"備考2","type":"String","format":""}
+]

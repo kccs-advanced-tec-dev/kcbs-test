@@ -96,6 +96,10 @@ public class ProcessData {
      * DataSource(Ttpkadoritu)
      */
     private DataSource dataSourceTtpkadoritu;
+    /**
+     * DataSource(equipment)
+     */
+    private DataSource dataSourceEquipment;
     
     /**
      * ユーザー認証有無
@@ -433,6 +437,22 @@ public class ProcessData {
      */
     public void setDataSourceTtpkadoritu(DataSource dataSourceTtpkadoritu) {
         this.dataSourceTtpkadoritu = dataSourceTtpkadoritu;
+    }
+
+    /**
+     * DataSource(equipment)
+     * @return the dataSourceEquipment
+     */
+    public DataSource getDataSourceEquipment() {
+        return dataSourceEquipment;
+    }
+
+    /**
+     * DataSource(equipment)
+     * @param dataSourceEquipment the dataSourceEquipment to set
+     */
+    public void setDataSourceEquipment(DataSource dataSourceEquipment) {
+        this.dataSourceEquipment = dataSourceEquipment;
     }
     
     /**

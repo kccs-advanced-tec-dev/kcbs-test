@@ -1,0 +1,18 @@
+[
+    {"no":"1","id":"lotno","columnname":"ﾛｯﾄNo","type":"String","format":""},
+    {"no":"2","id":"kaisuu","columnname":"回数","type":"Integer","format":"9,0"},
+    {"no":"3","id":"kcpno","columnname":"KCPNO","type":"String","format":""},
+    {"no":"4","id":"tokuisaki","columnname":"客先","type":"String","format":""},
+    {"no":"5","id":"lotkubuncode","columnname":"ﾛｯﾄ区分","type":"String","format":""},
+    {"no":"6","id":"ownercode","columnname":"ｵｰﾅｰ","type":"String","format":""},
+    {"no":"7","id":"lotpre","columnname":"ﾛｯﾄﾌﾟﾚ","type":"String","format":""},
+    {"no":"8","id":"syorisuu","columnname":"処理数(個)","type":"Integer","format":"9,0"},
+    {"no":"9","id":"gaikan","columnname":"外観","type":"String","format":""},
+    {"no":"10","id":"ryohinjuryou","columnname":"ｱﾍﾞｯｸ選別後良品重量(g)","type":"BigDecimal","format":"6,2"},
+    {"no":"11","id":"furyoujuryou","columnname":"不良重量(g)","type":"BigDecimal","format":"3,2"},
+    {"no":"12","id":"furyouritsu","columnname":"不良率(%)","type":"BigDecimal","format":"2,2"},
+    {"no":"13","id":"gaikandatetime","columnname":"外観確認日時","type":"timestamp","format":"yyyy/mm/dd hh:mm:ss"},
+    {"no":"14","id":"gaikantantosyacode","columnname":"外観確認担当者","type":"String","format":""},
+    {"no":"15","id":"biko1","columnname":"備考1","type":"String","format":""},
+    {"no":"16","id":"biko2","columnname":"備考2","type":"String","format":""}
+]
