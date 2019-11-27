@@ -2988,10 +2988,10 @@ public class GXHDO101B027 implements IFormLogic {
             itemSayajyuuryou.setValue(decShoriRes.toPlainString());
 
             // 算出結果をｻﾔ重量範囲(g)MINに設定
-            itemSjyuuryourangemin.setValue((decShoriRes.multiply(new BigDecimal(0.9)).setScale(2, RoundingMode.DOWN).toPlainString()));
+            itemSjyuuryourangemin.setValue((decShoriRes.multiply(new BigDecimal("0.9")).setScale(2, RoundingMode.DOWN).toPlainString()));
 
             // 算出結果をｻﾔ重量範囲(g)MAXに設定
-            itemSjyuuryourangemax.setValue((decShoriRes.multiply(new BigDecimal(1.1)).setScale(2, RoundingMode.UP).toPlainString()));
+            itemSjyuuryourangemax.setValue((decShoriRes.multiply(new BigDecimal("1.1")).setScale(2, RoundingMode.UP).toPlainString()));
 
         } catch (NumberFormatException e) {
             //数値型変換失敗時はそのままリターン
@@ -3027,7 +3027,7 @@ public class GXHDO101B027 implements IFormLogic {
         
         //3.「ｻﾔ/SUS板ﾁｬｰｼﾞ量」の規格値ﾁｪｯｸ
         FXHDD01 itemSaysusacharge = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYSUSACHARGE);
-        String valSaysusacharge = itemSaysusacharge.getKikakuChi().replace("【", "");
+        String valSaysusacharge = StringUtil.nullToBlank(itemSaysusacharge.getKikakuChi()).replace("【", "");
         valSaysusacharge = valSaysusacharge.replace("】", "");
 
         if ("".equals(valSaysusacharge) || valSaysusacharge == null){
