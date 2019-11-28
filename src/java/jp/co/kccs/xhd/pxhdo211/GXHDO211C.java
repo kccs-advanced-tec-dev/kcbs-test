@@ -724,7 +724,7 @@ public class GXHDO211C implements Serializable {
     }
 
     /**
-     * 文字列をバイトでカットします。
+     * 文字列を文字数でカットします。
      *
      * @param fieldName フィールド
      * @param length バイト数
@@ -1354,6 +1354,7 @@ public class GXHDO211C implements Serializable {
      */
     private List<Map<String, Object>> loadSekkeiData(QueryRunner queryRunnerQcdb, List<Map<String, String>> lotnoList) throws SQLException {
 
+        List<Object> params = new ArrayList<>();
         StringBuilder sbSql = new StringBuilder();
         sbSql.append(" SELECT KOJYO,LOTNO,EDABAN,SEKKEINO");
         sbSql.append("   FROM da_sekkei");
@@ -1366,23 +1367,21 @@ public class GXHDO211C implements Serializable {
                 notFirst = true;
             }
             sbSql.append("(");
-            sbSql.append("KOJYO = '").append(lotnoInfo.get("kojyo")).append("'");
+            sbSql.append("KOJYO = ? ");
             sbSql.append(" AND ");
-            sbSql.append("LOTNO = '").append(lotnoInfo.get("lotno")).append("'");
+            sbSql.append("LOTNO = ? ");
             sbSql.append(" AND ");
             sbSql.append("EDABAN = '001'");
             sbSql.append(")");
+            // パラメータをセット
+            params.add(lotnoInfo.get("kojyo"));
+            params.add(lotnoInfo.get("lotno"));
         }
         sbSql.append(")");
 
         // プロセスが入力されている場合、条件に追加
         if (!StringUtil.isEmpty(this.process)) {
             sbSql.append(" AND PROCESS = ? ");
-        }
-
-        //パラメータをセット
-        List<Object> params = new ArrayList<>();
-        if (!StringUtil.isEmpty(this.process)) {
             params.add(this.process);
         }
 
@@ -1426,6 +1425,7 @@ public class GXHDO211C implements Serializable {
      */
     private List<Map<String, Object>> loadJokenData(QueryRunner queryRunnerWip, List<Map<String, Object>> sekkeiData, String kouteimei, String koumokumei, String kanrikoumoku) throws SQLException {
 
+        List<Object> params = new ArrayList<>();
         StringBuilder sbSql = new StringBuilder();
         sbSql.append(" SELECT SEKKEINO, KIKAKUCHI");
         sbSql.append("   FROM da_joken");
@@ -1437,14 +1437,15 @@ public class GXHDO211C implements Serializable {
             } else {
                 notFirst = true;
             }
-            sbSql.append(" SEKKEINO = ").append(StringUtil.nullToBlank(sekkeiDataInfo.get("SEKKEINO")));
+            sbSql.append(" SEKKEINO = ? ");
+            // パラメータセット
+            params.add(StringUtil.nullToBlank(sekkeiDataInfo.get("SEKKEINO")));
         }
         sbSql.append(" )");
         sbSql.append(" AND KOUTEIMEI = ? ");
         sbSql.append(" AND KOUMOKUMEI = ? ");
         sbSql.append(" AND KANRIKOUMOKU = ? ");
 
-        List<Object> params = new ArrayList<>();
         params.add(kouteimei);
         params.add(koumokumei);
         params.add(kanrikoumoku);
@@ -1489,6 +1490,7 @@ public class GXHDO211C implements Serializable {
      */
     private List<Map<String, Object>> loadFxhdd06Data(QueryRunner queryRunnerDoc, List<GXHDO211CModel> mainData) throws SQLException {
 
+        List<Object> params = new ArrayList<>();
         StringBuilder sbSql = new StringBuilder();
         sbSql.append(" SELECT kojyo,lotno,edaban,goukijyoho,shijiondo,suisonoudo,shijiondogroup");
         sbSql.append("   FROM fxhdd06");
@@ -1501,18 +1503,20 @@ public class GXHDO211C implements Serializable {
                 notFirst = true;
             }
             sbSql.append("(");
-            sbSql.append(" kojyo = '").append(model.getKojyo()).append("'");
+            sbSql.append(" kojyo = ?");
             sbSql.append(" AND ");
-            sbSql.append(" lotno = '").append(model.getLotno()).append("'");
+            sbSql.append(" lotno = ?");
             sbSql.append(" AND ");
-            sbSql.append(" edaban = '").append(model.getEdaban()).append("'");
+            sbSql.append(" edaban = ?");
             sbSql.append(")");
+            // パラメータセット
+            params.add(model.getKojyo());
+            params.add(model.getLotno());
+            params.add(model.getEdaban());
         }
         sbSql.append(" )");
         sbSql.append(" AND deleteflag = 0 ");
         sbSql.append(" ORDER BY kojyo,lotno,edaban,shijiondogroup,goukijyoho");
-        //パラメータをセット
-        List<Object> params = new ArrayList<>();
         DBUtil.outputSQLLog(sbSql.toString(), params.toArray(), LOGGER);
         return queryRunnerDoc.query(sbSql.toString(), new MapListHandler(), params.toArray());
     }
@@ -1553,6 +1557,7 @@ public class GXHDO211C implements Serializable {
      */
     private List<Map<String, Object>> loadSrSpssekisouData(QueryRunner queryRunnerQcdb, List<GXHDO211CModel> mainData) throws SQLException {
 
+        List<Object> params = new ArrayList<>();
         StringBuilder sbSql = new StringBuilder();
         sbSql.append(" SELECT kojyo,lotno,edaban,tapelotno");
         sbSql.append(" FROM sr_spssekisou");
@@ -1565,17 +1570,19 @@ public class GXHDO211C implements Serializable {
                 notFirst = true;
             }
             sbSql.append("(");
-            sbSql.append(" kojyo = '").append(model.getKojyo()).append("'");
+            sbSql.append(" kojyo = ?");
             sbSql.append(" AND ");
-            sbSql.append(" lotno = '").append(model.getLotno()).append("'");
+            sbSql.append(" lotno = ?");
             sbSql.append(" AND ");
-            sbSql.append(" edaban = '").append(model.getEdaban()).append("'");
+            sbSql.append(" edaban = ?");
             sbSql.append(")");
+            // パラメータセット
+            params.add(model.getKojyo());
+            params.add(model.getLotno());
+            params.add(model.getEdaban());
         }
         sbSql.append(" )");
 
-        //パラメータをセット
-        List<Object> params = new ArrayList<>();
         DBUtil.outputSQLLog(sbSql.toString(), params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sbSql.toString(), new MapListHandler(), params.toArray());
     }
@@ -1615,7 +1622,7 @@ public class GXHDO211C implements Serializable {
      * @throws SQLException 例外エラー
      */
     private List<Map<String, Object>> loadSrRsussekData(QueryRunner queryRunnerQcdb, List<GXHDO211CModel> mainData) throws SQLException {
-
+        List<Object> params = new ArrayList<>();
         StringBuilder sbSql = new StringBuilder();
         sbSql.append(" SELECT KOJYO,LOTNO,EDABAN,tapelotno");
         sbSql.append(" FROM sr_rsussek");
@@ -1628,17 +1635,19 @@ public class GXHDO211C implements Serializable {
                 notFirst = true;
             }
             sbSql.append("(");
-            sbSql.append(" KOJYO = '").append(model.getKojyo()).append("'");
+            sbSql.append(" KOJYO = ?");
             sbSql.append(" AND ");
-            sbSql.append(" LOTNO = '").append(model.getLotno()).append("'");
+            sbSql.append(" LOTNO = ?");
             sbSql.append(" AND ");
-            sbSql.append(" EDABAN = '").append(model.getEdaban()).append("'");
+            sbSql.append(" EDABAN = ?");
             sbSql.append(")");
+            // パラメータセット
+            params.add(model.getKojyo());
+            params.add(model.getLotno());
+            params.add(model.getEdaban());
         }
         sbSql.append(" )");
 
-        //パラメータをセット
-        List<Object> params = new ArrayList<>();
         DBUtil.outputSQLLog(sbSql.toString(), params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sbSql.toString(), new MapListHandler(), params.toArray());
     }
@@ -1679,6 +1688,7 @@ public class GXHDO211C implements Serializable {
      */
     private List<Map<String, Object>> loadSrRhapsData(QueryRunner queryRunnerQcdb, List<GXHDO211CModel> mainData) throws SQLException {
 
+        List<Object> params = new ArrayList<>();
         StringBuilder sbSql = new StringBuilder();
         sbSql.append(" SELECT KOJYO,LOTNO,EDABAN,ETAPELOT");
         sbSql.append(" FROM sr_rhaps");
@@ -1691,17 +1701,20 @@ public class GXHDO211C implements Serializable {
                 notFirst = true;
             }
             sbSql.append("(");
-            sbSql.append(" KOJYO = '").append(model.getKojyo()).append("'");
+            sbSql.append(" KOJYO = ?");
             sbSql.append(" AND ");
-            sbSql.append(" LOTNO = '").append(model.getLotno()).append("'");
+            sbSql.append(" LOTNO = ?");
             sbSql.append(" AND ");
-            sbSql.append(" EDABAN = '").append(model.getEdaban()).append("'");
+            sbSql.append(" EDABAN = ?");
             sbSql.append(")");
+            // パラメータセット
+            params.add(model.getKojyo());
+            params.add(model.getLotno());
+            params.add(model.getEdaban());
+
         }
         sbSql.append(" )");
 
-        //パラメータをセット
-        List<Object> params = new ArrayList<>();
         DBUtil.outputSQLLog(sbSql.toString(), params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sbSql.toString(), new MapListHandler(), params.toArray());
     }
