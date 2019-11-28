@@ -393,7 +393,7 @@ public class GXHDO201B032 implements Serializable {
             boolean existGoki = false;
             try {
                 QueryRunner queryRunnerWip = new QueryRunner(dataSourceWip);
-                if(validateUtil.existTantomas(getHassuitantosyacode(), queryRunnerWip)){
+                if(validateUtil.existTantomasEx(getHassuitantosyacode(), queryRunnerWip)){
                     existGoki = true;
                 }
             } catch (SQLException ex){

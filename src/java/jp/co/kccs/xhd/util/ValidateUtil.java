@@ -1588,5 +1588,28 @@ public class ValidateUtil {
         return true;
 
     }
+    
+    /**
+     * 担当者ﾏｽﾀ存在判定
+     *
+     * @param tantousyacode 担当者ｺｰﾄﾞ
+     * @param queryRunnerWip QueryRunnerオブジェクト(Wip)
+     * @return true:存在する、false:存在しない
+     */
+    public boolean existTantomasEx(String tantousyacode, QueryRunner queryRunnerWip) throws SQLException {
+        String sql = "SELECT tantousyacode "
+                + "FROM tantomas WHERE tantousyacode = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(tantousyacode);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        Map tantomas = queryRunnerWip.query(sql, new MapHandler(), params.toArray());
+        if (null == tantomas || tantomas.isEmpty()) {
+            return false;
+        }
+        return true;
+
+    }
 
 }
