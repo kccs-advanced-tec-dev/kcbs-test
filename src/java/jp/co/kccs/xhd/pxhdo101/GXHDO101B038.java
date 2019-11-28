@@ -278,7 +278,13 @@ public class GXHDO101B038 implements IFormLogic {
             // 状態ﾌﾗｸﾞ、revisionを設定する。
             processData.setInitJotaiFlg(JOTAI_FLG_KARI_TOROKU);
             processData.setInitRev(newRev.toPlainString());
-
+            
+            // 使用ﾄﾞｰﾑ明細の更新値を保持
+            FXHDD01 domemeisai = getItemRow(processData.getItemList(), GXHDO101B038Const.DOMEMEISAI);
+            if (domemeisai != null) {
+                processData.getHiddenDataMap().put("domemeisai", StringUtil.nullToBlank(domemeisai.getValue()));
+            }
+            
             return processData;
         } catch (SQLException e) {
             ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
@@ -829,7 +835,7 @@ public class GXHDO101B038 implements IFormLogic {
 
             // ﾒｯｷ_仮登録登録処理
             int newDeleteflag = getNewDeleteflag(queryRunnerQcdb, kojyo, lotNo8, edaban, paramJissekino);
-            insertDeleteDataTmpSrMekki(queryRunnerQcdb, conQcdb, newRev, newDeleteflag, kojyo, lotNo8, edaban, paramJissekino, systemTime);
+            insertDeleteDataTmpSrMekki(queryRunnerQcdb, conQcdb, newRev, newDeleteflag, kojyo, lotNo8, edaban, paramJissekino, systemTime, processData);
 
             // ﾒｯｷ削除処理
             deleteSrMekki(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban, paramJissekino, processData);
@@ -1107,7 +1113,7 @@ public class GXHDO101B038 implements IFormLogic {
              String fxhbm03DataArr[]= strfxhbm03List.split(",");
              
             // 実績情報の取得
-            List<Jisseki> jissekiData = loadJissekiData(queryRunnerDoc, lotNo, fxhbm03DataArr);
+            List<Jisseki> jissekiData = loadJissekiData(queryRunnerWip, lotNo, fxhbm03DataArr);
             if(jissekiData != null && jissekiData.size() > 0){
                 int dbShorisu = jissekiData.get(0).getSyorisuu(); //処理数               
                 if(dbShorisu > 0){
@@ -1365,6 +1371,7 @@ public class GXHDO101B038 implements IFormLogic {
      */
     private void setInputItemDataMainForm(ProcessData processData, SrMekki srMekkiData) {
 
+        Map hiddenMap = processData.getHiddenDataMap();
         //受入れ単位重量
         this.setItemData(processData, GXHDO101B038Const.UKEIRE_TANNIJYURYO, getSrMekkiItemData(GXHDO101B038Const.UKEIRE_TANNIJYURYO, srMekkiData));
         //受入れ総重量
@@ -1378,7 +1385,8 @@ public class GXHDO101B038 implements IFormLogic {
         //ﾄﾞｰﾑ個数
         this.setItemData(processData, GXHDO101B038Const.DOMEKOSUU, getSrMekkiItemData(GXHDO101B038Const.DOMEKOSUU, srMekkiData));
         //使用ﾄﾞｰﾑ明細
-        this.setItemData(processData, GXHDO101B038Const.DOMEMEISAI, getSrMekkiItemData(GXHDO101B038Const.DOMEMEISAI, srMekkiData));
+        this.setItemData(processData, GXHDO101B038Const.DOMEMEISAI, getSrMekkiItemData(GXHDO101B038Const.DOMEMEISAI, srMekkiData));        
+        hiddenMap.put("domemeisai", getSrMekkiItemData(GXHDO101B038Const.DOMEMEISAI, srMekkiData));
         //条件NI(A)
         this.setItemData(processData, GXHDO101B038Const.JYOUKENNI_A, getSrMekkiItemData(GXHDO101B038Const.JYOUKENNI_A, srMekkiData));
         //条件NI(AM)
@@ -1398,8 +1406,7 @@ public class GXHDO101B038 implements IFormLogic {
         // ﾒｯｷ終了時間
         this.setItemData(processData, GXHDO101B038Const.SHURYOU_TIME, getSrMekkiItemData(GXHDO101B038Const.SHURYOU_TIME, srMekkiData));
         // 終了担当者
-        this.setItemData(processData, GXHDO101B038Const.SHURYOU_TANTOUSYA_CODE, getSrMekkiItemData(GXHDO101B038Const.SHURYOU_TANTOUSYA_CODE, srMekkiData));
-        
+        this.setItemData(processData, GXHDO101B038Const.SHURYOU_TANTOUSYA_CODE, getSrMekkiItemData(GXHDO101B038Const.SHURYOU_TANTOUSYA_CODE, srMekkiData));        
         //Ni膜厚(AVE)
         this.setItemData(processData, GXHDO101B038Const.MAKUATSUNI_AVE, getSrMekkiItemData(GXHDO101B038Const.MAKUATSUNI_AVE, srMekkiData));
         //Ni膜厚(MAX)
@@ -1564,13 +1571,13 @@ public class GXHDO101B038 implements IFormLogic {
     
     /**
      * [実績]から、ﾃﾞｰﾀを取得
-     * @param queryRunnerDoc オブジェクト
+     * @param queryRunnerWip オブジェクト
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @param date ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ(検索キー)
      * @return 取得データ
      * @throws SQLException 
      */
-     private List<Jisseki> loadJissekiData(QueryRunner queryRunnerDoc, String lotNo, String[] data) throws SQLException {
+     private List<Jisseki> loadJissekiData(QueryRunner queryRunnerWip, String lotNo, String[] data) throws SQLException {
          
 
         String lotNo1 = lotNo.substring(0, 3);
@@ -1602,7 +1609,7 @@ public class GXHDO101B038 implements IFormLogic {
         params.addAll(dataList);
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerDoc.query(sql, beanHandler, params.toArray());
+        return queryRunnerWip.query(sql, beanHandler, params.toArray());
     }
      
      /**
@@ -1621,7 +1628,8 @@ public class GXHDO101B038 implements IFormLogic {
         // QA寸法情報データの取得
         String sql = "SELECT tsunave "
                 + "FROM sr_qasumpou1 "
-                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? "
+                + "ORDER BY jissekino desc ";
         
         Map mapping = new HashMap<>();
         mapping.put("tsunave", "tsunave");
@@ -1680,6 +1688,7 @@ public class GXHDO101B038 implements IFormLogic {
                 default:
                 break;
             }
+            DBUtil.outputSQLLog(sql, new Object[0], LOGGER);
             return queryRunnerDoc.query(sql, new MapHandler());
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
@@ -2397,7 +2406,7 @@ public class GXHDO101B038 implements IFormLogic {
                 + " budomari = ?, makuatsunimin = ?, makuatsunimax = ?, makuatsuniave = ?, "
                 + " makuatsusnmin = ?, makuatsusnmax = ?, makuatsusnave = ?, nurekensakekka = ?, "
                 + " tainetsukensakekka = ?, gaikankensakekka = ?, bikou1 = ?, bikou2 = ?, "
-                + " koushinnichiji = ?, kensanichiji = ?, kensatantousya = ?, "
+                + " koushinnichiji = ?, domemeisai = ?, kensanichiji = ?, kensatantousya = ?, "
                 + " tokuisaki = ?, lotkubuncode = ?, ownercode = ?, ukeiretannijyuryo = ?, "
                 + " ukeiresoujyuryou = ?, mekkibasyo = ?, mekkibasyosetubi = ?, "
                 + " mekkisyuryounichiji = ?, syuryousya = ?, kensatannijyuryo = ?, "
@@ -2422,7 +2431,7 @@ public class GXHDO101B038 implements IFormLogic {
         params.add(lotNo);
         params.add(edaban);
         params.add(jissekino);        
-        params.add(DBUtil.stringToStringObject(getItemRow(processData.getItemList(), GXHDO101B038Const.DOMEMEISAI).getValue()));
+        params.add(processData.getHiddenDataMap().get("domemeisai"));
         params.add(rev);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
@@ -2454,7 +2463,7 @@ public class GXHDO101B038 implements IFormLogic {
         params.add(lotNo);
         params.add(edaban);
         params.add(jissekino);
-        params.add(DBUtil.stringToStringObject(getItemRow(processData.getItemList(), GXHDO101B038Const.DOMEMEISAI).getValue()));
+        params.add(processData.getHiddenDataMap().get("domemeisai"));
         params.add(rev);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
@@ -2546,6 +2555,7 @@ public class GXHDO101B038 implements IFormLogic {
             params.add(null); // Sn膜厚(CV)
         } else {
             params.add(systemTime); //更新日時
+            params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B038Const.DOMEMEISAI, srMekkiData))); //使用ﾄﾞｰﾑ明細
         }
         
         params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.KENSA_DAY, srMekkiData),
@@ -2585,7 +2595,7 @@ public class GXHDO101B038 implements IFormLogic {
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.MAKUATSU_KAKUNIN, srMekkiData))); // 膜厚確認
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.TESTHIN, srMekkiData))); // ﾃｽﾄ品
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.TSUNPOU, srMekkiData))); // T寸法AVE
-        params.add(DBUtil.stringToStringObjectDefaultNull(StringUtil.nullToBlank(processData.getHiddenDataMap().get("mekkisyurui")))); // ﾒｯｷ種類
+        params.add(DBUtil.stringToStringObject(StringUtil.nullToBlank(processData.getHiddenDataMap().get("mekkisyurui")))); // ﾒｯｷ種類
 
         params.add(newRev); //revision
         params.add(deleteflag); //削除ﾌﾗｸﾞ
@@ -2664,7 +2674,7 @@ public class GXHDO101B038 implements IFormLogic {
                 + " budomari = ?, makuatsunimin = ?, makuatsunimax = ?, makuatsuniave = ?, "
                 + " makuatsusnmin = ?, makuatsusnmax = ?, makuatsusnave = ?, nurekensakekka = ?, "
                 + " tainetsukensakekka = ?, gaikankensakekka = ?, bikou1 = ?, bikou2 = ?, "
-                + " koushinnichiji = ?, kensanichiji = ?, kensatantousya = ?, "
+                + " koushinnichiji = ?, domemeisai = ?, kensanichiji = ?, kensatantousya = ?, "
                 + " tokuisaki = ?, lotkubuncode = ?, ownercode = ?, ukeiretannijyuryo = ?, "
                 + " ukeiresoujyuryou = ?, mekkibasyo = ?, mekkibasyosetubi = ?, "
                 + " mekkisyuryounichiji = ?, syuryousya = ?, kensatannijyuryo = ?, "
@@ -2689,7 +2699,7 @@ public class GXHDO101B038 implements IFormLogic {
         params.add(lotNo);
         params.add(edaban);
         params.add(jissekino);
-        params.add(DBUtil.stringToStringObject(getItemRow(processData.getItemList(), GXHDO101B038Const.DOMEMEISAI).getValue()));
+        params.add(processData.getHiddenDataMap().get("domemeisai"));
         params.add(rev);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
@@ -2781,6 +2791,7 @@ public class GXHDO101B038 implements IFormLogic {
             params.add(BigDecimal.ZERO); // Sn膜厚(CV)
         } else {
             params.add(systemTime); //更新日時
+            params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B038Const.DOMEMEISAI, srMekkiData))); //使用ﾄﾞｰﾑ明細
         }
         
         params.add(DBUtil.stringToDateObject(getItemData(itemList, GXHDO101B038Const.KENSA_DAY, srMekkiData),
@@ -2853,7 +2864,7 @@ public class GXHDO101B038 implements IFormLogic {
         params.add(lotNo);
         params.add(edaban);
         params.add(jissekino);
-        params.add(DBUtil.stringToStringObject(getItemRow(processData.getItemList(), GXHDO101B038Const.DOMEMEISAI).getValue()));
+        params.add(processData.getHiddenDataMap().get("domemeisai"));
         params.add(rev);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
@@ -3027,6 +3038,9 @@ public class GXHDO101B038 implements IFormLogic {
      */
     private String getSrMekkiItemData(String itemId, SrMekki srMekkiData) {
         switch (itemId) {
+            // 客先
+            case GXHDO101B038Const.KYAKUSAKI:
+                return StringUtil.nullToBlank(srMekkiData.getTokuisaki());
             // KCPNO
             case GXHDO101B038Const.KCPNO:
                 return StringUtil.nullToBlank(srMekkiData.getKcpno());
@@ -3194,7 +3208,7 @@ public class GXHDO101B038 implements IFormLogic {
      * @throws SQLException 例外エラー
      */
     private void insertDeleteDataTmpSrMekki(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev, int deleteflag,
-            String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime) throws SQLException {
+            String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, ProcessData processData) throws SQLException {
 
         String sql = "INSERT INTO tmp_sr_mekki ("
                 + "kojyo, lotno, edaban, kcpno, ukeiresuu, domekosuu, gouki, tantousya, "
@@ -3230,7 +3244,7 @@ public class GXHDO101B038 implements IFormLogic {
                 + "jisyakusenbetukaisinichiji, jisyakusenbetutantousya, ijouhakkou, "
                 + "ijourank, makuatsukakunin, testhin, tsunpouave, mekkisyurui, ?, ? "
                 + " FROM sr_mekki "
-                + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND jissekino = ? ";
+                + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND jissekino = ? AND domemeisai = ? ";
 
         List<Object> params = new ArrayList<>();
         // 更新値
@@ -3244,7 +3258,8 @@ public class GXHDO101B038 implements IFormLogic {
         params.add(lotNo); //ﾛｯﾄNo
         params.add(edaban); //枝番
         params.add(jissekino); //作業回数
-
+        params.add(processData.getHiddenDataMap().get("domemeisai"));//ﾄﾞｰﾑ明細
+        
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
     }
@@ -3322,7 +3337,7 @@ public class GXHDO101B038 implements IFormLogic {
         String strfxhbm03List = StringUtil.nullToBlank(getMapData(shukkakosuuData, "data"));
         String fxhbm03DataArr[] = strfxhbm03List.split(",");
         // 実績情報の取得
-        List<Jisseki> jissekiData = loadJissekiData(queryRunnerDoc, lotNo, fxhbm03DataArr);
+        List<Jisseki> jissekiData = loadJissekiData(queryRunnerWip, lotNo, fxhbm03DataArr);
         if(jissekiData != null && jissekiData.size() > 0){
             int dbShorisu = jissekiData.get(0).getSyorisuu(); //処理数               
             if(dbShorisu > 0){
@@ -3399,10 +3414,10 @@ public class GXHDO101B038 implements IFormLogic {
         if(StringUtil.isEmpty(shukkakosuuItem.getValue())){
             // ｴﾗｰﾒｯｾｰｼﾞを表示し、当処理(歩留まり計算)を終了する。
             if(syoriKubun == 0) {
-                processData.getInitMessageList().add(MessageUtil.getMessage("XHD-000117"));
+                processData.getInitMessageList().add(MessageUtil.getMessage("XHD-000158"));
             } else {
                 errFxhdd01List = Arrays.asList(shukkakosuuItem);
-                processData.getErrorMessageInfoList().add(MessageUtil.getErrorMessageInfo("XHD-000117", true, true, errFxhdd01List));
+                processData.getErrorMessageInfoList().add(MessageUtil.getErrorMessageInfo("XHD-000158", true, true, errFxhdd01List));
             }
             return processData;
         }
@@ -3410,10 +3425,10 @@ public class GXHDO101B038 implements IFormLogic {
         if(!NumberUtil.isNumeric(shukkakosuuItem.getValue())){
             // ｴﾗｰﾒｯｾｰｼﾞを表示し、当処理(歩留まり計算)を終了する。
             if(syoriKubun == 0) {
-                processData.getInitMessageList().add(MessageUtil.getMessage("XHD-000118"));
+                processData.getInitMessageList().add(MessageUtil.getMessage("XHD-000159"));
             } else {
                 errFxhdd01List = Arrays.asList(shukkakosuuItem);
-                processData.getErrorMessageInfoList().add(MessageUtil.getErrorMessageInfo("XHD-000118", true, true, errFxhdd01List));
+                processData.getErrorMessageInfoList().add(MessageUtil.getErrorMessageInfo("XHD-000159", true, true, errFxhdd01List));
             }
             return processData;
             
