@@ -1206,7 +1206,7 @@ public class GXHDO101B005 implements IFormLogic {
         this.setItemData(processData, GXHDO101B005Const.DENKYOKU_PASTE, getKikakuchiValue(processData.getItemList(), GXHDO101B005Const.DENKYOKU_PASTE));
         
         // 積層スライド量
-        this.setItemData(processData, GXHDO101B005Const.SEKISOU_SLIDE_RYOU, getKikakuchiValue(processData.getItemList(), GXHDO101B005Const.SEKISOU_SLIDE_RYOU));
+        this.setItemData(processData, GXHDO101B005Const.SEKISOU_SLIDE_RYOU, StringUtil.nullToBlank(sekkeiData.get("ABSlide")));
         
         // 最上層スライド量
         this.setItemData(processData, GXHDO101B005Const.LAST_LAYER_SLIDE_RYO, StringUtil.nullToBlank(sekkeiData.get("LASTLAYERSLIDERYO")));
@@ -1563,7 +1563,7 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         String sql = "SELECT SEKKEINO,GENRYOU,ETAPE,EATUMI,SOUSUU,EMAISUU,YOUTO1,YOUTO2,YOUTO3,YOUTO4,YOUTO5,YOUTO6,YOUTO7,YOUTO8,SYURUI1"
                 + ",SYURUI2,SYURUI3,SYURUI4,SYURUI5,SYURUI6,SYURUI7,SYURUI8,ATUMI1,ATUMI2,ATUMI3,ATUMI4,ATUMI5,ATUMI6,ATUMI7"
                 + ",ATUMI8,MAISUU1,MAISUU2,MAISUU3,MAISUU4,MAISUU5,MAISUU6,MAISUU7,MAISUU8,ROLLNO1,ROLLNO2,ROLLNO3,ROLLNO4"
-                + ",ROLLNO5,ROLLNO6,ROLLNO7,ROLLNO8,PATTERN,LASTLAYERSLIDERYO,TORIKOSUU,RENZOKUINSATUN "
+                + ",ROLLNO5,ROLLNO6,ROLLNO7,ROLLNO8,PATTERN,LASTLAYERSLIDERYO,TORIKOSUU,RENZOKUINSATUN,ABSlide "
                 + "FROM da_sekkei "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = '001'";
 
@@ -1590,9 +1590,11 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 put("SOUSUU", "総数");
                 put("EMAISUU", "電極枚数");
                 put("PATTERN", "電極製版名");
-                put("LASTLAYERSLIDERYO", "最上層ｽﾗｲﾄﾞ量");
                 put("TORIKOSUU", "取り個数");
+                put("ABSlide", "積層ｽﾗｲﾄﾞ量");
+                put("LASTLAYERSLIDERYO", "最上層ｽﾗｲﾄﾞ量");
                 put("RENZOKUINSATUN", "連続積層枚数");
+                
             }
         };
 
@@ -2711,7 +2713,7 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + "SyoriSetsuu = ?,RyouhinSetsuu = ?,EndTantousyacode = ?,"
                 + "bikou2 = ?,setsuu = ?,tokuisaki = ?,lotkubuncode = ?,ownercode = ?,syurui3 = ?,atumi3 = ?,maisuu3 = ?,"
                 + "patern = ?,torikosuu = ?,etape = ?,lretu = ?,wretu = ?,lsun = ?,wsun = ?,epaste = ?,genryou = ?,eatumi = ?,sousuu = ?,emaisuu = ?,sekisouslideryo = ?,"
-                + "lastlayerslideryo = ?,renzokusekisoumaisuu = ?,bsouhoseiryou = ?,yjikuhoseiryou = ?,syurui2 = ?,atumi2 = ?,maisuu2 = ?,revision = ?,deleteflag = ? "
+                + "lastlayerslideryo = ?,renzokusekisoumaisuu = ?,yjikuhoseiryou = ?,syurui2 = ?,atumi2 = ?,maisuu2 = ?,revision = ?,deleteflag = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
         // 更新前の値を取得
@@ -2986,7 +2988,9 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SEKISOU_SLIDE_RYOU, srRsussekData))); //積層ｽﾗｲﾄﾞ量
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.LAST_LAYER_SLIDE_RYO, srRsussekData))); //最上層ｽﾗｲﾄﾞ量
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.RENZOKUSEKISOUMAISUU, srRsussekData))); //連続積層枚数
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.BSOUHOSEIRYOU, srRsussekData))); //B層補正量
+        if (isInsert) {
+            params.add(null); //B層補正量
+        }
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.YJIKUHOSEIRYOU, srRsussekData))); //Y軸補正量
         params.add(DBUtil.stringToStringObjectDefaultNull(strSyurui2));//上ｶﾊﾞｰﾃｰﾌﾟ1種類
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(strAtumi2));//上ｶﾊﾞｰﾃｰﾌﾟ1厚み
@@ -3275,7 +3279,7 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + "RyouhinSetsuu = ?,EndTantousyacode = ?,"
                 + "bikou2 = ?,setsuu = ?,tokuisaki = ?,lotkubuncode = ?,ownercode = ?,syurui3 = ?,atumi3 = ?,maisuu3 = ?,patern = ?,torikosuu = ?,"
                 + "etape = ?,lretu = ?,wretu = ?,lsun = ?,wsun = ?,epaste = ?,genryou = ?,eatumi = ?,sousuu = ?,emaisuu = ?,sekisouslideryo = ?,"
-                + "lastlayerslideryo = ?,renzokusekisoumaisuu = ?,bsouhoseiryou = ?,yjikuhoseiryou = ?,syurui2 = ?,atumi2 = ?,maisuu2 = ?,"
+                + "lastlayerslideryo = ?,renzokusekisoumaisuu = ?,yjikuhoseiryou = ?,syurui2 = ?,atumi2 = ?,maisuu2 = ?,"
                 + "revision = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
@@ -3521,7 +3525,9 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.SEKISOU_SLIDE_RYOU, srRsussekData))); //積層ｽﾗｲﾄﾞ量
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B005Const.LAST_LAYER_SLIDE_RYO, srRsussekData))); //最上層ｽﾗｲﾄﾞ量
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B005Const.RENZOKUSEKISOUMAISUU, srRsussekData))); //連続積層枚数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B005Const.BSOUHOSEIRYOU, srRsussekData))); //B層補正量
+        if (isInsert) {
+            params.add(0); //B層補正量
+        }
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B005Const.YJIKUHOSEIRYOU, srRsussekData))); //Y軸補正量
         params.add(DBUtil.stringToStringObject(strSyurui2));//上ｶﾊﾞｰﾃｰﾌﾟ1種類
         params.add(DBUtil.stringToBigDecimalObject(strAtumi2));//上ｶﾊﾞｰﾃｰﾌﾟ1厚み

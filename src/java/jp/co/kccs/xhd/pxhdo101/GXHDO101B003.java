@@ -1190,8 +1190,12 @@ public class GXHDO101B003 implements IFormLogic {
         // 電極ペースト
         this.setItemData(processData, GXHDO101B003Const.DENKYOKU_PASTE, getKikakuchiValue(processData.getItemList(), GXHDO101B003Const.DENKYOKU_PASTE));
 
+        // 製版名
+        this.setItemData(processData, GXHDO101B003Const.SEIHAN_OR_HANDOU_MEI, StringUtil.nullToBlank(sekkeiData.get("PATTERN")));
+        
         // 電極製版仕様
         this.setItemData(processData, GXHDO101B003Const.DENKYOKU_SEIHAN_SHIYOU, getKikakuchiValue(processData.getItemList(), GXHDO101B003Const.DENKYOKU_SEIHAN_SHIYOU));
+        
 
     }
 
@@ -1333,8 +1337,6 @@ public class GXHDO101B003 implements IFormLogic {
         this.setItemData(processData, GXHDO101B003Const.KANSOU_ONDO_HYOUJICHI4, getSrRsusprnItemData(GXHDO101B003Const.KANSOU_ONDO_HYOUJICHI4, srRsusprnData));
         // 乾燥温度表示値5
         this.setItemData(processData, GXHDO101B003Const.KANSOU_ONDO_HYOUJICHI5, getSrRsusprnItemData(GXHDO101B003Const.KANSOU_ONDO_HYOUJICHI5, srRsusprnData));
-        // 製版名
-        this.setItemData(processData, GXHDO101B003Const.SEIHAN_OR_HANDOU_MEI, getSrRsusprnItemData(GXHDO101B003Const.SEIHAN_OR_HANDOU_MEI, srRsusprnData));
         // 製版No
         this.setItemData(processData, GXHDO101B003Const.SEIHAN_OR_HANDOU_NO, getSrRsusprnItemData(GXHDO101B003Const.SEIHAN_OR_HANDOU_NO, srRsusprnData));
         // 製版使用枚数
