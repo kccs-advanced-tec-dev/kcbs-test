@@ -280,7 +280,7 @@ public class GXHDO101B010 implements IFormLogic {
         // ｶｯﾄ補正量
         BigDecimal calcCutHosei = null;
         if (null != getMapData(sekkeiData, "CUTHOSEIRYO") && getMapData(sekkeiData, "CUTHOSEIRYO") instanceof Double) {
-            calcCutHosei = BigDecimal.valueOf((Double)getMapData(sekkeiData, "CUTHOSEIRYO")).multiply(BigDecimal.valueOf(1000.0)).stripTrailingZeros();
+            calcCutHosei = BigDecimal.valueOf((Double)getMapData(sekkeiData, "CUTHOSEIRYO")).stripTrailingZeros();
         }
         this.setItemData(processData, GXHDO101B010Const.CUT_HOSEI_RYOU, StringUtil.nullToBlank(calcCutHosei));
     }
