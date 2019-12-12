@@ -2122,7 +2122,7 @@ public class GXHDO101A implements Serializable {
 
         // 仕掛情報データの取得
         String sql = "SELECT kcpno, oyalotedaban, suuryo, torikosuu, lotkubuncode, ownercode, tokuisaki"
-                + " FROM sikakari WHERE kojyo = ? AND lotno = ? AND edaban = ? AND opencloseflag = '1'";
+                + " FROM sikakari WHERE kojyo = ? AND lotno = ? AND edaban = ?";
 
         List<Object> params = new ArrayList<>();
         params.add(lotNo1);
