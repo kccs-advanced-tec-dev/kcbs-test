@@ -247,8 +247,20 @@ public class GXHDO101A implements Serializable {
                 facesContext.addMessage(null, message);
                 return null;
             }
-
+            
+            // ﾛｯﾄNo仕掛存在ﾁｪｯｸ
             QueryRunner queryRunnerWip = new QueryRunner(dataSourceWip);
+            
+            Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
+            if (shikakariData == null || shikakariData.isEmpty()) {
+                setMenuTableRender(false);
+                setErrorMessage(MessageUtil.getMessage("XHD-000039"));
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, getErrorMessage(), null);
+                facesContext.addMessage(null, message);
+                return null;
+            }
+            
+            // 担当者ﾏｽﾀﾁｪｯｸ
             retMsg = validateUtil.checkT002("担当者ｺｰﾄﾞ", this.tantoshaCd, queryRunnerWip);
             if (!StringUtil.isEmpty(retMsg)) {
                 setMenuTableRender(false);
@@ -2021,7 +2033,6 @@ public class GXHDO101A implements Serializable {
         return getSrSyoseikeisuuSojuryo(queryRunnerXHD, strKojyo, strLotNo, strEdaban, fxhdd03List.get(0)[1], fxhdd03List.get(0)[2]);
     }
     
-    
      /**
      * [品質DB登録実績]から、状態ﾌﾗｸﾞ,実績No,ﾘﾋﾞｼﾞｮﾝを取得
      *
@@ -2060,7 +2071,6 @@ public class GXHDO101A implements Serializable {
         return fxhdd03InfoList;
     }
     
-    
     /**
      * [計数]から、総重量を取得(値が無い場合は0を返却)
      *
@@ -2095,5 +2105,31 @@ public class GXHDO101A implements Serializable {
         }
 
         return soujuryou;
+    }
+    
+    /**
+     * 仕掛データ検索
+     *
+     * @param queryRunnerWip QueryRunnerオブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadShikakariData(QueryRunner queryRunnerWip, String lotNo) throws SQLException {
+        String lotNo1 = lotNo.substring(0, 3);
+        String lotNo2 = lotNo.substring(3, 11);
+        String lotNo3 = lotNo.substring(11, 14);
+
+        // 仕掛情報データの取得
+        String sql = "SELECT kcpno, oyalotedaban, suuryo, torikosuu, lotkubuncode, ownercode, tokuisaki"
+                + " FROM sikakari WHERE kojyo = ? AND lotno = ? AND edaban = ?";
+
+        List<Object> params = new ArrayList<>();
+        params.add(lotNo1);
+        params.add(lotNo2);
+        params.add(lotNo3);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerWip.query(sql, new MapHandler(), params.toArray());
     }
 }
