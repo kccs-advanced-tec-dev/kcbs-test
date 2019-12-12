@@ -1125,9 +1125,19 @@ public class GXHDO211C implements Serializable {
 
         DBUtil.outputSQLLog(sbSql.toString(), params.toArray(), LOGGER);
         Map result = queryRunnerWip.query(sbSql.toString(), new MapHandler(), params.toArray());
-        long count = (long) result.get("CNT");
-
-        return count;
+        long cnt = 0;
+        if (null != result && !result.isEmpty()) {
+            Object value = result.get("CNT");
+            if (value instanceof Integer) {
+                cnt = Long.parseLong(String.valueOf(value));
+            } else if (value instanceof Long) {
+                cnt = Long.parseLong(String.valueOf(value));
+            } else if (value instanceof BigDecimal) {
+                cnt = ((BigDecimal) value).longValue();
+            }
+        }
+        
+        return cnt;
     }
 
     /**
