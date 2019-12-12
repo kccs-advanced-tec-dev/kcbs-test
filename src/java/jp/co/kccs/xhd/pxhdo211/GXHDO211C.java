@@ -1129,9 +1129,9 @@ public class GXHDO211C implements Serializable {
         if (null != result && !result.isEmpty()) {
             Object value = result.get("CNT");
             if (value instanceof Integer) {
-                cnt = Long.parseLong(String.valueOf(value));
+                cnt = (Integer)value;
             } else if (value instanceof Long) {
-                cnt = Long.parseLong(String.valueOf(value));
+                cnt = (Long)value;
             } else if (value instanceof BigDecimal) {
                 cnt = ((BigDecimal) value).longValue();
             }
