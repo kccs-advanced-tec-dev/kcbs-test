@@ -1085,7 +1085,7 @@ public class GXHDO211C implements Serializable {
         mapping.put("edaban", "edaban");
         mapping.put("koteicode", "koteicode");
         mapping.put("ukeirebi", "ukeirebi");
-        mapping.put("suuryo", "kosu");
+        mapping.put("suuryo", "kosuValue");
         mapping.put("goukicode", "gouki");
         mapping.put("hinsyu", "hinsyu");
 
@@ -1768,9 +1768,9 @@ public class GXHDO211C implements Serializable {
             model.setLotnoView(kojyo + lotno + edaban);
             
             // 個数(フォーマット処理)
-            BigDecimal kosu = new BigDecimal(StringUtil.nullToBlank(model.getKosu()));
+            BigDecimal kosu = new BigDecimal(StringUtil.nullToBlank(model.getKosuValue()));
             model.setKosu(decimalFormat.format(kosu));
-
+            
             //受入日(表示用)
             if (model.getUkeirebi() != null) {
                 model.setUkeirebiView(DateUtil.getDisplayDate(model.getUkeirebi(), DateUtil.YYYYMMDD_WITH_SLASH));
@@ -1812,7 +1812,6 @@ public class GXHDO211C implements Serializable {
                     model.setSuisonoudo1(shijiOndoGropu1[2]);
                     // ﾋﾟｰｸ温度1
                     model.setPeakondo1(shijiOndoGropu1[0] + ":" + shijiOndoGropu1[1]);
-
                 }
 
                 String[] shijiOndoGropu2 = getShijiOndoGroupData(fxhdd06MapList, 2);

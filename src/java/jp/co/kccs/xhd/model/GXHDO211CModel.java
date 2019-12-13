@@ -64,6 +64,10 @@ public class GXHDO211CModel implements Serializable {
      */
     private Integer ukeirebi = null;
     /**
+     * 個数(value)
+     */
+    private Integer kosuValue = null;
+    /**
      * 個数
      */
     private String kosu = null;
@@ -278,6 +282,22 @@ public class GXHDO211CModel implements Serializable {
      */
     public void setUkeirebi(Integer ukeirebi) {
         this.ukeirebi = ukeirebi;
+    }
+
+    /**
+     * 個数(value)
+     * @return the kosuValue
+     */
+    public Integer getKosuValue() {
+        return kosuValue;
+    }
+
+    /**
+     * 個数(value)
+     * @param kosuValue the kosuValue to set
+     */
+    public void setKosuValue(Integer kosuValue) {
+        this.kosuValue = kosuValue;
     }
 
     /**
