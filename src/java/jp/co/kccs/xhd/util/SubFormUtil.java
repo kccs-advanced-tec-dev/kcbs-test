@@ -65,6 +65,10 @@ public class SubFormUtil {
      * 被り量（μｍ）画面ID
      */
     public static final String FORM_ID_GXHDO101C010 = "GXHDO101C010";
+    /**
+     * ﾛｯﾄ参照画面ID
+     */
+    public static final String FORM_ID_GXHDO101C012 = "GXHDO101C012";
             
     /**
      * 初期表示メッセージ
@@ -165,6 +169,13 @@ public class SubFormUtil {
                 returnBean = FacesContext.getCurrentInstance().
                         getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
                                 getELContext(), null, "beanGXHDO101C010");
+                break;
+                
+            // ﾛｯﾄ参照
+            case "GXHDO101C012":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO101C012");
                 break;
                 
             // 初期表示メッセージ
