@@ -23,6 +23,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
@@ -1053,14 +1054,14 @@ public class GXHDO211C implements Serializable {
 
         // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
         StringBuilder sbSql = new StringBuilder();
-        sbSql.append(" SELECT S.kojyo ");
-        sbSql.append("       ,S.lotno ");
-        sbSql.append("       ,S.edaban ");
-        sbSql.append("       ,S.kcpno ");
-        sbSql.append("       ,S.koteicode ");
-        sbSql.append("       ,S.ukeirebi ");
-        sbSql.append("       ,S.suuryo ");
-        sbSql.append("       ,SE.goukicode ");
+        sbSql.append(" SELECT S.kojyo as kojyo ");
+        sbSql.append("       ,S.lotno as lotno ");
+        sbSql.append("       ,S.edaban as edaban ");
+        sbSql.append("       ,S.kcpno as kcpno ");
+        sbSql.append("       ,S.koteicode as koteicode ");
+        sbSql.append("       ,S.ukeirebi as ukeirebi ");
+        sbSql.append("       ,S.suuryo as kosuValue ");
+        sbSql.append("       ,SE.goukicode as gouki ");
 
         if ("1".equals(this.db_connect_mode)) {
             // PSQLの場合
@@ -1085,8 +1086,8 @@ public class GXHDO211C implements Serializable {
         mapping.put("edaban", "edaban");
         mapping.put("koteicode", "koteicode");
         mapping.put("ukeirebi", "ukeirebi");
-        mapping.put("suuryo", "kosuValue");
-        mapping.put("goukicode", "gouki");
+        mapping.put("kosuValue", "kosuValue");
+        mapping.put("gouki", "gouki");
         mapping.put("hinsyu", "hinsyu");
 
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
@@ -1095,6 +1096,7 @@ public class GXHDO211C implements Serializable {
                 = new BeanListHandler<>(GXHDO211CModel.class, rowProcessor);
 
         DBUtil.outputSQLLog(sbSql.toString(), params.toArray(), LOGGER);
+        
         return queryRunnerWip.query(sbSql.toString(), beanHandler, params.toArray());
 
     }
