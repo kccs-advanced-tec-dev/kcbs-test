@@ -683,7 +683,7 @@ public class GXHDO201B010 implements Serializable {
                     +", programmei"
                     + ", (CASE WHEN gyoretukakunin = 0 THEN 'NG' WHEN gyoretukakunin = 1 THEN 'OK' ELSE '' END) AS gyoretukakunin"
                     + ", (CASE WHEN marktorisuu = 0 THEN 'NG' WHEN marktorisuu = 1 THEN 'OK' ELSE '' END) AS marktorisuu"
-                    +", cuthoseiryou * 1000 as cuthoseiryou"
+                    +", cuthoseiryou"
                     +", tableondoset"
                     +", tableondosoku"
                     + ", (CASE WHEN gaikancheck = 0 THEN 'NG' WHEN gaikancheck = 1 THEN 'OK' ELSE '' END) AS gaikancheck"
