@@ -2171,6 +2171,27 @@
                                              <td style="border-left: hidden;" rowspan="2">
                                                 <h:outputText  value="g"/>
                                             </td>
+                                            
+                                            
+                                            <td class="ryohin_juryo_td" rowspan="2">
+                                                <p:inputText id="ryouhinJuryoT" styleClass="ryohin_juryo_input_text"
+                                                             rendered="#{gXHDO101B040.setteiJouken.ryouhinJuryo.renderInputText}" value="#{gXHDO101B040.setteiJouken.ryouhinJuryo.value}" 
+                                                             maxlength="#{gXHDO101B040.setteiJouken.ryouhinJuryo.displayMaxLength}" 
+                                                             style="width:#{gXHDO101B040.setteiJouken.ryouhinJuryo.displayMaxLength}em; font-size:#{gXHDO101B040.setteiJouken.ryouhinJuryo.fontSizeInput}px;
+                                                             color:#{gXHDO101B040.setteiJouken.ryouhinJuryo.fontColorInput};background:#{gXHDO101B040.setteiJouken.ryouhinJuryo.backColorInput};#{gXHDO101B040.setteiJouken.ryouhinJuryo.customStyleInput}">
+                                                </p:inputText>
+                                                <p:inputNumber id="ryouhinJuryoN" inputStyleClass="ryohin_juryo_input_number" 
+                                                               rendered="#{gXHDO101B040.setteiJouken.ryouhinJuryo.renderInputNumber}" value="#{gXHDO101B040.setteiJouken.ryouhinJuryo.value}" 
+                                                               decimalPlaces="#{gXHDO101B040.setteiJouken.ryouhinJuryo.numberDecimalPlaces}" maxValue="#{gXHDO101B040.setteiJouken.ryouhinJuryo.numberMaxValue}" minValue="#{gXHDO101B040.setteiJouken.ryouhinJuryo.numberMinValue}" 
+                                                               thousandSeparator="" roundMethod="D" size="#{gXHDO101B040.setteiJouken.ryouhinJuryo.displayMaxLength}"
+                                                               inputStyle="font-size:#{gXHDO101B040.setteiJouken.ryouhinJuryo.fontSizeInput}px;
+                                                               color:#{gXHDO101B040.setteiJouken.ryouhinJuryo.fontColorInput}; background:#{gXHDO101B040.setteiJouken.ryouhinJuryo.backColorInput};#{gXHDO101B040.setteiJouken.ryouhinJuryo.customStyleInput}">
+                                                </p:inputNumber>
+                                            </td>
+                                            
+                                             <td style="border-left: hidden;" rowspan="2">
+                                                <h:outputText  value="%"/>
+                                            </td>
                                         </tr>
                                         <tr>
                                             <th class="kosa_th">
@@ -2289,13 +2310,9 @@
                                                 <h:outputText  value="ケ"/>
                                             </td>
 
-                                            <td style="min-width:250px; background-color: lightgrey;" colspan="2"><h:outputText value="良品重量"/></td>
+                                            <td style="min-width:250px; background-color: lightgrey; text-align: center;" colspan="2"><h:outputText value="良品個数"/></td>
                                             
-                                            <td class="ryohin_kosu_td">
-                                                <p:inputNumber value="" thousandSeparator="" roundMethod="D"
-                                                               decimalPlaces="0" maxValue="99999999" minValue="-99999999" inputStyleClass="ryohin_kosu_input_number"/>
-                                            </td>
-
+                                            
                                         </tr>
                                         <tr>
                                             <th class="kosa_th">
@@ -2354,17 +2371,26 @@
                                                 <h:outputText  value="ケ"/>
                                             </td>
 
-                                            <td class="ryohin_juryo_td">
-                                                <p:inputNumber value="" thousandSeparator="" roundMethod="D"
-                                                               decimalPlaces="2" maxValue="9999.99" minValue="-9999.99" inputStyleClass="ryohin_juryo_input_number"/>
+                                            <td class="ryohin_kosu_td" rowspan="2">
+                                                 <p:inputText id="ryouhinKosuT" styleClass="ryohin_kosu_input_text"
+                                                             rendered="#{gXHDO101B040.setteiJouken.ryouhinKosu.renderInputText}" value="#{gXHDO101B040.setteiJouken.ryouhinKosu.value}" 
+                                                             maxlength="#{gXHDO101B040.setteiJouken.ryouhinKosu.displayMaxLength}" 
+                                                             style="width:#{gXHDO101B040.setteiJouken.ryouhinKosu.displayMaxLength}em; font-size:#{gXHDO101B040.setteiJouken.ryouhinKosu.fontSizeInput}px;
+                                                             color:#{gXHDO101B040.setteiJouken.ryouhinKosu.fontColorInput};background:#{gXHDO101B040.setteiJouken.ryouhinKosu.backColorInput};#{gXHDO101B040.setteiJouken.ryouhinKosu.customStyleInput}">
+                                                </p:inputText>
+                                                <p:inputNumber id="ryouhinKosuN" inputStyleClass="ryohin_kosu_input_number" 
+                                                               rendered="#{gXHDO101B040.setteiJouken.ryouhinKosu.renderInputNumber}" value="#{gXHDO101B040.setteiJouken.ryouhinKosu.value}" 
+                                                               decimalPlaces="#{gXHDO101B040.setteiJouken.ryouhinKosu.numberDecimalPlaces}" maxValue="#{gXHDO101B040.setteiJouken.ryouhinKosu.numberMaxValue}" minValue="#{gXHDO101B040.setteiJouken.ryouhinKosu.numberMinValue}" 
+                                                               thousandSeparator="" roundMethod="D" size="#{gXHDO101B040.setteiJouken.ryouhinKosu.displayMaxLength}"
+                                                               inputStyle="font-size:#{gXHDO101B040.setteiJouken.ryouhinKosu.fontSizeInput}px;
+                                                               color:#{gXHDO101B040.setteiJouken.ryouhinKosu.fontColorInput}; background:#{gXHDO101B040.setteiJouken.ryouhinKosu.backColorInput};#{gXHDO101B040.setteiJouken.ryouhinKosu.customStyleInput}">
+                                                </p:inputNumber>
                                             </td>
-                                            <td style="border-left: hidden;">
+
+                                            <td style="border-left: hidden;"  rowspan="2">
                                                 <h:outputText  value="ケ"/>
                                             </td>
-                                            <td class="ryohin_kosu_td">
-                                                <p:inputNumber value="" thousandSeparator="" roundMethod="D"
-                                                               decimalPlaces="0" maxValue="99999999" minValue="-99999999" inputStyleClass="ryohin_kosu_input_number"/>
-                                            </td>
+                                            
                                         </tr>
 
                                     </tbody>

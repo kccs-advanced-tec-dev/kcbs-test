@@ -443,14 +443,41 @@
 
 /* 良品個数 td */
 .ryohin_kosu_td {
-    text-align: right;
+    text-align: left;
 }
+
+/* 良品個数 input_text */
+.ryohin_kosu_input_text {
+    border:hidden!important;
+    box-shadow:none!important;
+    height: 25px;
+}
+
 /* 良品個数 input_number */
 .ryohin_kosu_input_number {
     border:hidden!important;
     box-shadow:none!important;
     height: 25px;
-    width: 140px;
+}
+
+
+/* 歩留まり td */
+.budomari_td {
+    text-align: left;
+}
+
+/* 歩留まり input_text */
+.budomari_input_text {
+    border:hidden!important;
+    box-shadow:none!important;
+    height: 25px;
+}
+
+/* 歩留まり input_number */
+.budomari_input_number {
+    border:hidden!important;
+    box-shadow:none!important;
+    height: 25px;
 }
 
 /* 確認者 td */
