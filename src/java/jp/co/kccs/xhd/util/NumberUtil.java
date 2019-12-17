@@ -372,4 +372,48 @@ public class NumberUtil {
         return false;
     }
     
+    
+    /**
+     * 指定桁数で切り捨てた値を取得
+     * @param value 切り捨てを行う値
+     * @param length 整数桁数
+     * @param decLength 小数桁数
+     * @return 切捨値(文字列)
+     */
+    public static String getTruncatData(String value, String length, String decLength){
+
+        String resultValue = "";
+        BigDecimal decValue; // 切捨値
+        int iLength; // 整数桁数
+        int iDecLength; // 小数桁数
+        try {
+            // 値をそれぞれ数値型に変換
+            decValue = new BigDecimal(value);
+            iLength = Integer.parseInt(length);
+            if (!StringUtil.isEmpty(decLength)) {
+                iDecLength = Integer.parseInt(decLength);
+            } else {
+                // 小数部は空の場合は0として扱う
+                iDecLength = 0;
+            }
+        } catch (NumberFormatException ex) {
+            // 変換失敗時は空を返却
+            return resultValue;
+        }
+        
+        // 整数部と小数部を分割
+        String[] spValue = decValue.abs().toPlainString().split("\\.", -1);
+        resultValue = StringUtil.right(spValue[0], iLength); 
+        if(1 < spValue.length && 0 < iDecLength){
+            resultValue += "." + StringUtil.left(spValue[1], iDecLength); 
+        }
+        
+        // マイナス値の場合頭にマイナスをセット
+        if(decValue.compareTo(BigDecimal.ZERO) < 0){
+            resultValue = "-" + resultValue;
+        }
+        
+        return resultValue;
+    }
+    
 }
