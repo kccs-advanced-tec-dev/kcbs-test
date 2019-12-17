@@ -3347,10 +3347,9 @@ public class GXHDO101B038 implements IFormLogic {
         
         // 画面表示設定
         // 検査単位重量(単位重量)
-        BigDecimal tanijuryoValue = new BigDecimal(tanijuryo);
-        tanijuryoValue.setScale(4, BigDecimal.ROUND_DOWN);
+        FXHDD01 itemKensaTanniJuryo = getItemRow(processData.getItemList(), GXHDO101B038Const.KENSA_TANNIJYURYO);
+        itemKensaTanniJuryo.setValue(NumberUtil.getTruncatData(tanijuryo, itemKensaTanniJuryo.getInputLength(),itemKensaTanniJuryo.getInputLengthDec()));
         
-        this.setItemData(processData, GXHDO101B038Const.KENSA_TANNIJYURYO, tanijuryoValue.toPlainString()); 
         //良品数
         this.setItemData(processData, GXHDO101B038Const.SHUKKAKOSUU, shukkakosuu);
         if (syoriKubun == 1) {
@@ -3358,6 +3357,7 @@ public class GXHDO101B038 implements IFormLogic {
         }
         return processData; 
     }
+    
     
     /**
      * 仕掛データの単位重量検索
