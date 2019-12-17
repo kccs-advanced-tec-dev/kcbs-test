@@ -61,6 +61,10 @@ public class ProcessData {
      */
     private List<FXHDD01> itemList;
     /**
+     * 項目データ(拡張)
+     */
+    private List<FXHDD01> itemListEx;
+    /**
      * 活性ボタンIDリスト
      */
     private List<String> activeButtonId;
@@ -275,6 +279,22 @@ public class ProcessData {
      */
     public void setItemList(List<FXHDD01> itemList) {
         this.itemList = itemList;
+    }
+
+    /**
+     * 項目データ(拡張)
+     * @return the itemListEx
+     */
+    public List<FXHDD01> getItemListEx() {
+        return itemListEx;
+    }
+
+    /**
+     * 項目データ(拡張)
+     * @param itemListEx the itemListEx to set
+     */
+    public void setItemListEx(List<FXHDD01> itemListEx) {
+        this.itemListEx = itemListEx;
     }
 
     /**

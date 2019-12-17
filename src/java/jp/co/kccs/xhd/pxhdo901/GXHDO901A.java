@@ -104,80 +104,85 @@ import org.primefaces.context.RequestContext;
 @ViewScoped
 public class GXHDO901A implements Serializable {
 
-    private static final Logger LOGGER = Logger.getLogger(GXHDO901A.class.getName());
+    protected static final Logger LOGGER = Logger.getLogger(GXHDO901A.class.getName());
     private static final int LOTNO_ITEMNO = 100;
-    private static final String FORM_ID_LOT_CORD_SHOKAI = "GXHDO301A";
-
+    protected static final String FORM_ID_LOT_CORD_SHOKAI = "GXHDO301A";
+    
     /**
      * DataSource(DocumentServer)
      */
     @Resource(mappedName = "jdbc/DocumentServer")
-    private transient DataSource dataSourceDocServer;
+    protected transient DataSource dataSourceDocServer;
     /**
      * DataSource(QCDB)
      */
     @Resource(mappedName = "jdbc/qcdb")
-    private transient DataSource dataSourceQcdb;
+    protected transient DataSource dataSourceQcdb;
     /**
      * DataSource(WIP)
      */
     @Resource(mappedName = "jdbc/wip")
-    private transient DataSource dataSourceWip;
+    protected transient DataSource dataSourceWip;
     /**
      * DataSource(Spskadoritu)
      */
     @Resource(mappedName = "jdbc/spskadoritu")
-    private transient DataSource dataSourceSpskadoritu;
+    protected transient DataSource dataSourceSpskadoritu;
     /**
      * DataSource(Ttpkadoritu)
      */
     @Resource(mappedName = "jdbc/ttpkadoritu")
-    private transient DataSource dataSourceTtpkadoritu;
+    protected transient DataSource dataSourceTtpkadoritu;
     /**
      * DataSource(equipment)
      */
     @Resource(mappedName = "jdbc/equipment")
-    private transient DataSource dataSourceEquipment;
+    protected transient DataSource dataSourceEquipment;
     /**
      * パラメータ操作(DB)
      */
     @Inject
-    private ParameterEJB parameterEJB;
+    protected ParameterEJB parameterEJB;
 
     /**
      * 起動時処理
      */
-    private String onLoadProcess = "";
+    protected String onLoadProcess = "";
 
     /**
      * タイトル情報
      */
-    private FXHDM02 titleInfo;
+    protected FXHDM02 titleInfo;
     /**
      * 画面上部ボタン
      */
-    private List<FXHDD02> buttonListTop;
+    protected List<FXHDD02> buttonListTop;
     /**
      * 画面下部ボタン
      */
-    private List<FXHDD02> buttonListBottom;
+    protected List<FXHDD02> buttonListBottom;
     /**
      * チェックリスト
      */
-    private List<FXHDM05> checkListHDM05;
+    protected List<FXHDM05> checkListHDM05;
     /**
      * DaJokenリスト
      */
-    private List<DaJoken> listDaJoken;
+    protected List<DaJoken> listDaJoken;
     /**
      *
      * 項目データ
      */
-    private List<FXHDD01> itemList;
+    protected List<FXHDD01> itemList;
+    /**
+     *
+     * 項目データ(拡張)※複数画面IDの情報保持
+     */
+    protected List<FXHDD01> itemListEx;
     /**
      * 処理データ
      */
-    private ProcessData processData = null;
+    protected ProcessData processData = null;
     /**
      * 警告ダイアログ
      */
@@ -240,6 +245,8 @@ public class GXHDO901A implements Serializable {
      * 隠し項目MAP
      */
     private Map<String, Object> hiddenDataMap = new HashMap<>();
+    
+    
 
 
     /**
@@ -311,6 +318,30 @@ public class GXHDO901A implements Serializable {
      */
     public List<FXHDD01> getItemList() {
         return itemList;
+    }
+    
+    /**
+     * 項目データ
+     * @param itemList
+     */
+    public void setItemList(List<FXHDD01> itemList) {
+        this.itemList = itemList;
+    }
+
+    /**
+     * 項目データ(拡張)※複数画面IDの情報保持
+     * @return the itemListEx
+     */
+    public List<FXHDD01> getItemListEx() {
+        return itemListEx;
+    }
+    
+    /**
+     * 項目データ(拡張)※複数画面IDの情報保持
+     * @param itemListEx
+     */
+    public void setItemListEx(List<FXHDD01> itemListEx) {
+        this.itemListEx = itemListEx;
     }
 
     /**
@@ -606,6 +637,7 @@ public class GXHDO901A implements Serializable {
         data.setFormLogic(formLogic);
         data.setMethod("initial");
         data.setItemList(this.itemList);
+        data.setItemListEx(this.itemListEx);
         data.setDataSourceDocServer(this.dataSourceDocServer);
         data.setDataSourceQcdb(this.dataSourceQcdb);
         data.setDataSourceSpskadoritu(this.dataSourceSpskadoritu);
@@ -811,7 +843,7 @@ public class GXHDO901A implements Serializable {
         HttpSession session = (HttpSession) externalContext.getSession(false);
         String formClassName = StringUtil.nullToBlank(session.getAttribute("formClassName"));
         String login_user_name = (String) session.getAttribute("login_user_name");
-
+        
         if (null == login_user_name || "".equals(login_user_name)) {
             // セッションタイムアウト時はログイン画面に遷移
             this.setOnLoadProcess("window.location.href = '" + externalContext.getRequestContextPath() + "/faces/login.xhtml?faces-redirect=true';");
@@ -867,6 +899,7 @@ public class GXHDO901A implements Serializable {
         data.setFormLogic(formLogic);
         data.setMethod(method);
         data.setItemList(this.itemList);
+        data.setItemListEx(this.itemListEx);
         data.setDataSourceDocServer(this.dataSourceDocServer);
         data.setDataSourceQcdb(this.dataSourceQcdb);
         data.setDataSourceSpskadoritu(this.dataSourceSpskadoritu);
@@ -1180,7 +1213,7 @@ public class GXHDO901A implements Serializable {
      * @param callerFormId 画面ID(呼出し元)
      * @return データ取得判定(true:データ取得有り、false：データ取得無し)
      */
-    private boolean loadItemSettings(String formId, String callerFormId) {
+    protected boolean loadItemSettings(String formId, String callerFormId) {
         boolean result = false;
         // ユーザーグループ取得
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
@@ -1295,6 +1328,10 @@ public class GXHDO901A implements Serializable {
         }
         return result;
     }
+    
+    
+     
+
 
     /**
      * ボタンパラメータ情報取得
@@ -1302,7 +1339,7 @@ public class GXHDO901A implements Serializable {
      * @param formId 画面ID
      * @return データ取得判定(true:データ取得有り、false：データ取得無し)
      */
-    private boolean loadButtonSettings(String formId) {
+    protected boolean loadButtonSettings(String formId) {
         boolean result = false;
 
         // ユーザーグループ取得
@@ -1376,7 +1413,7 @@ public class GXHDO901A implements Serializable {
      *
      * @param formId 画面ID
      */
-    private void loadCheckList(String formId) {
+    protected void loadCheckList(String formId) {
 
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceDocServer);
@@ -1406,7 +1443,8 @@ public class GXHDO901A implements Serializable {
             ErrUtil.outputErrorLog("チェック処理項目取得失敗", ex, LOGGER);
         }
     }
-
+    
+    
     /**
      * SekkeiNo取得
      *
