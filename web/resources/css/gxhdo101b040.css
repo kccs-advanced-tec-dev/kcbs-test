@@ -102,13 +102,9 @@
 }
 /* ％区分 input_text */
 .percent_kbn_input_text {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 /* ％区分 input_number */
 .percent_kbn_input_number {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 /* 設定区分 td */
 .settei_kbn_td {
@@ -117,13 +113,9 @@
 }
 /* 設定区分 input_text */
 .settei_kbn_input_text {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 /* 設定区分 input_number */
 .settei_kbn_input_number {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 
 /* ①計量後数量 td */
@@ -133,14 +125,10 @@
 }
 /* ①計量後数量 input_number */
 .keiryo_ato_suryo_input_number {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 
 /* ①計量後数量 input_text */
 .keiryo_ato_suryo_input_text {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 
 
@@ -151,12 +139,8 @@
 }
 /* カウンター数 input_number */
 .counter_su_input_number {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 .counter_su_input_text {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 
 /* 誤差率 td */
@@ -166,13 +150,9 @@
 }
 /* 誤差率 input_number */
 .gosa_ritsu_input_number {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 /* 誤差率 input_text */
 .gosa_ritsu_input_text {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 
 /* マシン不良率(%) td */
@@ -182,13 +162,9 @@
 }
 /* マシン不良率(%) input_number */
 .machine_furyoritsu_input_number {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 /* マシン不良率(%) input_text */
 .machine_furyoritsu_input_text {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 
 /* 取出者 td */
@@ -198,13 +174,9 @@
 }
 /* 取出者 input_text */
 .toridashisha_input_text {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 /* 取出者 input_number */
 .toridashisha_input_number {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 
 /* タイトル output_text */
@@ -230,13 +202,9 @@
 
 /* 抜き取り結果 input_number */
 .nukitori_kekka_input_number {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 /* 抜き取り結果 input_text */
 .nukitori_kekka_input_text {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 
 /* 真の不良率(%) td */
@@ -246,14 +214,10 @@
 }
 /* 真の不良率(%) input_number */
 .shin_furyoritsu_input_number {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 
 /* 真の不良率(%) input_text */
 .shin_furyoritsu_input_text {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 
 /* 新不良判定者 td */
@@ -263,13 +227,9 @@
 }
 /* 新不良判定者 input_text */
 .shin_furyo_keisansha_input_text {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 /* 新不良判定者 input_number */
 .shin_furyo_keisansha_input_number {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 
 /* 入力者 td */
@@ -279,14 +239,10 @@
 }
 /* 入力者 input_text */
 .nyuryokusha_input_text {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 
 /* 入力者 input_number */
 .nyuryokusha_input_number {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 
 /* 結果チェック td */
@@ -314,14 +270,10 @@
 
 /*袋チェック input_text */
 .fukuro_check_input_text {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 
 /* 袋チェック input_number */
 .fukuro_check_input_number {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 /* 公差 th */
 .kosa_th {
@@ -330,13 +282,9 @@
 }
 /* 公差 input_text */
 .kosa_input_text {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 /* 公差 input_number */
 .kosa_input_number {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 
 
@@ -346,13 +294,9 @@
 }
 /* 重量 input_text */
 .juryo_input_text {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 /* 重量 input_number */
 .juryo_input_number {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 
 /* 個数 td */
@@ -361,13 +305,9 @@
 }
 /* 個数 input_text */
 .kosu_input_text {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 /* 個数 input_number */
 .kosu_input_number {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 
 /* カウンター総数 td */
@@ -376,13 +316,9 @@
 }
 /* カウンター総数 input_text */
 .counter_sosu_input_text {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 /* カウンター総数 input_number */
 .counter_sosu_input_number {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 
 /* 良品重量 td */
@@ -392,14 +328,10 @@
 
 /* 良品重量 input_text */
 .ryohin_juryo_input_text {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 
 /* 良品重量 input_number */
 .ryohin_juryo_input_number {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 
 /* 良品個数 td */
@@ -408,13 +340,9 @@
 }
 /* 良品個数 input_text */
 .ryohin_kosu_input_text {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 /* 良品個数 input_number */
 .ryohin_kosu_input_number {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 
 
@@ -424,13 +352,9 @@
 }
 /* 歩留まり input_text */
 .budomari_input_text {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 /* 歩留まり input_number */
 .budomari_input_number {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 
 /* 確認者 td */
@@ -440,12 +364,8 @@
 }
 /* 確認者 input_text */
 .kakuninsha_input_text {
-    border:hidden!important;
-    box-shadow:none!important;
 }
 
 /* 確認者 input_number */
 .kakuninsha_input_number {
-    border:hidden!important;
-    box-shadow:none!important;
 }

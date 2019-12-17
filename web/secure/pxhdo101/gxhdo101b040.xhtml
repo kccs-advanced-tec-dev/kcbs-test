@@ -2174,6 +2174,9 @@
                                                     <h:outputText  value="g"/>
                                                 </td>
                                                 <td class="budomari_td" rowspan="2">
+                                                                                <h:outputText id="budomariL" rendered="#{item.renderOutputLabel}" value="#{item.value}"
+                                          style="margin-left:3px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;#{item.customStyleInput}"/>
+
                                                     <p:inputText id="budomariT" styleClass="budomari_input_text"
                                                                  rendered="#{gXHDO101B040.setteiJouken.budomari.renderInputText}" value="#{gXHDO101B040.setteiJouken.budomari.value}" 
                                                                  maxlength="#{gXHDO101B040.setteiJouken.budomari.displayMaxLength}" 
@@ -2409,7 +2412,6 @@
                                             <tr style="text-align: center; height: 30px;">
                                                 <td colspan="7" style="border-left: hidden; border-bottom: hidden;"/>
                                             </tr>
-
                                         </tbody>
                                     </table>
                                 </div>
