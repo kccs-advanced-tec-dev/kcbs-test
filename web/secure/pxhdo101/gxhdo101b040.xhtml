@@ -62,6 +62,10 @@
                     PF('W_dlg_compMessage').show();
                 }
             }
+            
+            function tabChange(args) {
+                document.getElementById("mainDiv").setAttribute("style", args.firstParam);
+            }
             //]]>
         </script>
     </h:head>
@@ -76,17 +80,17 @@
         <h:form id="form" style="" onkeypress="if (event.keyCode === 13) {
                     return false;
                 }">
-            <div style="#{gXHDO101B040.mainDivStyle}">
+            <div id="mainDiv" style="#{gXHDO101B040.mainDivStyle}">
                 <div id="mainForm" >
 
-                   
+
                     <div style="text-align:right">
-                         <p:commandButton id="returnBtnTop" style="margin-left:26px;margin-bottom:5px;margin-top:0px;#{gXHDO901A.styleDisplayNone}"
-                 value="#{myMsg.return}"  action="/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true"
-                 process="@this" update="@this">
-                <f:param name="returnVal" value="return"/>
-                <f:attribute name="returnVal" value="return"/>
-            </p:commandButton>
+                        <p:commandButton id="returnBtnTop" style="margin-left:26px;margin-bottom:5px;margin-top:0px;#{gXHDO901A.styleDisplayNone}"
+                                         value="#{myMsg.return}"  action="/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true"
+                                         process="@this" update="@this">
+                            <f:param name="returnVal" value="return"/>
+                            <f:attribute name="returnVal" value="return"/>
+                        </p:commandButton>
                         <h:outputText style="font-size:#{gXHDO101B040.titleInfo.fontSize}px; display: none;  #{gXHDO101B040.styleDisplayNone}" value="#{gXHDO101B040.jotaiDisplay}"/>        
                     </div>
                     <p:growl id="growlMessage" showDetail="false" sticky="true" escape="false" />
@@ -112,9 +116,9 @@
                     </p:panel>
 
 
-                    <p:tabView id="tabV_joken" orientation="top" scrollable="true" class="tab_view" >
+                    <p:tabView id="tabV_joken" orientation="top" scrollable="true" class="tab_view" style="#{gXHDO101B040.styleDisplayNone}" >
 
-                        <p:ajax event="tabChange" listener="#{gXHDO101B040.onTabChange}" async="false" process="@form" update="@form" />
+                        <p:ajax event="tabChange" listener="#{gXHDO101B040.onTabChange}" async="false" oncomplete="tabChange(args);"  />
                         <p:tab title="製品情報" titleStyle="font-size:0.9em;" id="tab1" >
                             <div class="tab_div">
                                 <p:dataList id="itemDataList" value="#{gXHDO101B040.itemList}" var="item" type="none"  itemType="none" paginator="true" rows="#{gXHDO101B040.hyojiKensu}" styleClass="repeated-form;ui-paginator">
@@ -930,13 +934,13 @@
                                                 </td>
                                                 <td class="background-diagonal-line" />
                                                 <td class="background-diagonal-line" />
-                                                <td style="vertical-align: top; text-align: left;" rowspan="2">
+                                                <td class="handa_sample_td" rowspan="2">
                                                     <h:outputText  value="半田サンプル"/>
                                                     <br/>
-                                                    <p:selectOneMenu id="handaSample" rendered="#{gXHDO101B040.setteiJouken.handaSample.renderInputSelect}" value="#{gXHDO101B040.setteiJouken.handaSample.value}" editable="true" 
+                                                    <p:selectOneMenu id="handaSample"  rendered="#{gXHDO101B040.setteiJouken.handaSample.renderInputSelect}" value="#{gXHDO101B040.setteiJouken.handaSample.value}" editable="true"
                                                                      style="margin-left:8px;width:#{gXHDO101B040.setteiJouken.handaSample.inputLength}em;font-size:#{gXHDO101B040.setteiJouken.handaSample.fontSizeInput}px;color:#{gXHDO101B040.setteiJouken.handaSample.fontColorInput};background:#{gXHDO101B040.setteiJouken.handaSample.backColorInput};
                                                                      #{gXHDO101B040.setteiJouken.handaSample.customStyleInput}">
-                                                        <f:selectItem  itemLabel="" itemValue="" />
+                                                        <f:selectItem  itemLabel="" itemValue=""  />
                                                         <f:selectItems value="#{gXHDO101B040.setteiJouken.handaSample.selectMenuItem}" />
                                                     </p:selectOneMenu> 
                                                 </td>
@@ -2174,8 +2178,8 @@
                                                     <h:outputText  value="g"/>
                                                 </td>
                                                 <td class="budomari_td" rowspan="2">
-                                                                                <h:outputText id="budomariL" rendered="#{item.renderOutputLabel}" value="#{item.value}"
-                                          style="margin-left:3px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;#{item.customStyleInput}"/>
+                                                    <h:outputText id="budomariL" rendered="#{item.renderOutputLabel}" value="#{item.value}"
+                                                                  style="margin-left:3px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;#{item.customStyleInput}"/>
 
                                                     <p:inputText id="budomariT" styleClass="budomari_input_text"
                                                                  rendered="#{gXHDO101B040.setteiJouken.budomari.renderInputText}" value="#{gXHDO101B040.setteiJouken.budomari.value}" 
@@ -2195,7 +2199,7 @@
                                                 <td style="border-left: hidden; width: 25px;" rowspan="2">
                                                     <h:outputText  value="%"/>
                                                 </td>
-                                                
+
                                                 <td style="width:100%; border-top: hidden;border-right: hidden;border-bottom: hidden" rowspan="5"/>
                                             </tr>
                                             <tr>

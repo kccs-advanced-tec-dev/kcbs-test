@@ -20,6 +20,7 @@ import jp.co.kccs.xhd.db.model.FXHDM05;
 import static jp.co.kccs.xhd.pxhdo901.GXHDO901A.LOGGER;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
+import jp.co.kccs.xhd.util.ValidateUtil;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.dbutils.QueryRunner;
@@ -33,6 +34,9 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
  * @author kokskgp04_nw
  */
 public class GXHDO901AEX extends GXHDO901A {
+    
+    
+
     
         /**
      * 画面ID(拡張処理の複数IDの保持)
@@ -56,11 +60,7 @@ public class GXHDO901AEX extends GXHDO901A {
     }
 
 
-        
-    
-    
-    
-    
+      
     @Override
     protected boolean loadItemSettings(String formId, String callerFormId) {
         if (this.formIds != null && 0 < this.formIds.length) {
@@ -78,6 +78,22 @@ public class GXHDO901AEX extends GXHDO901A {
              super.loadCheckList(formId);
          }
     }
+    
+    /**
+     * ボタンパラメータ情報取得
+     *
+     * @param formId 画面ID
+     * @return データ取得判定(true:データ取得有り、false：データ取得無し)
+     */
+     @Override
+    protected boolean loadButtonSettings(String formId) {
+         if (this.formIds != null && 0 < this.formIds.length) {
+            return super.loadButtonSettings(this.formIds[0]);
+        } else {
+            return super.loadButtonSettings(formId);
+        }
+    }
+    
     
     /**
      * 項目定義情報取得(拡張)
@@ -249,9 +265,52 @@ public class GXHDO901AEX extends GXHDO901A {
             ErrUtil.outputErrorLog("チェック処理項目取得失敗", ex, LOGGER);
         }
     }
+    
+    
+    /**
+     * 背景色をデフォルトの背景色に戻す
+     *
+     * @param buttonId ボタンID
+     */
+    @Override
+    protected void clearItemListBackColor(String buttonId) {
+        // 背景色を戻さない特定の処理を除き背景色をデフォルトの背景色に戻す。
+        if (this.noCheckButtonId == null || !this.noCheckButtonId.contains(buttonId)) {
+            for (FXHDD01 fxhdd01 : this.itemList) {
+                fxhdd01.setBackColorInput(fxhdd01.getBackColorInputDefault());
+            }
+            for (FXHDD01 fxhdd01 : this.itemListEx) {
+                fxhdd01.setBackColorInput(fxhdd01.getBackColorInputDefault());
+            }
+        }
+    }
 
     
-    
+    /**
+     * 共通チェック
+     *
+     * @param buttonId ボタンID
+     * @return エラーメッセージ
+     */
+    @Override
+    protected ErrorMessageInfo getCheckResult(String buttonId) {
+
+        // リビジョンチェック
+        ErrorMessageInfo checkRevErrorMessage = checkRevision(buttonId);
+        if (checkRevErrorMessage != null) {
+            return checkRevErrorMessage;
+        }
+
+        //共通ﾁｪｯｸ
+        List<FXHDM05> itemRowCheckList
+                = this.checkListHDM05.stream().filter(n -> buttonId.equals(n.getButtonId())).collect(Collectors.toList());
+
+        ValidateUtil validateUtil = new ValidateUtil();
+        QueryRunner queryRunnerWip = new QueryRunner(dataSourceWip);
+        ErrorMessageInfo requireCheckErrorMessage = validateUtil.executeValidation(itemRowCheckList, this.itemList, queryRunnerWip);
+
+        return requireCheckErrorMessage;
+    }
     
     
 }

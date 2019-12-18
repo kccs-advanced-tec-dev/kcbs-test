@@ -199,7 +199,7 @@ public class GXHDO901A implements Serializable {
     /**
      * チェック無しボタンIDリスト(設定しているIDについてはエラー処理の背景色をクリアしない)
      */
-    private List<String> noCheckButtonId;
+    protected List<String> noCheckButtonId;
 
     /**
      * 一覧の表示件数
@@ -1029,6 +1029,7 @@ public class GXHDO901A implements Serializable {
             if (this.processData.isFatalError()) {
                 // 画面の戻るボタン以外を非表示とする。
                 this.itemList = new ArrayList<>();
+                this.itemListEx = new ArrayList<>();
                 this.buttonListTop = new ArrayList<>();
                 this.buttonListBottom = new ArrayList<>();
                 this.styleDisplayNone = "display: none;";
@@ -1041,6 +1042,7 @@ public class GXHDO901A implements Serializable {
             } else {
                 // 後続処理が定義されていない場合は結果を反映して処理を終了する
                 this.itemList = resultData.getItemList();
+                this.itemListEx = resultData.getItemListEx();
                 // 情報メッセージが設定されていれば出力する
                 if (!StringUtils.isEmpty(this.processData.getInfoMessage())) {
                     FacesMessage message
@@ -1513,10 +1515,10 @@ public class GXHDO901A implements Serializable {
     /**
      * 共通チェック
      *
-     * @param method 処理メソッド名
+     * @param buttonId ボタンID
      * @return エラーメッセージ
      */
-    private ErrorMessageInfo getCheckResult(String buttonId) {
+    protected ErrorMessageInfo getCheckResult(String buttonId) {
 
         // リビジョンチェック
         ErrorMessageInfo checkRevErrorMessage = checkRevision(buttonId);
@@ -1540,7 +1542,7 @@ public class GXHDO901A implements Serializable {
      *
      * @param buttonId ボタンID
      */
-    private void clearItemListBackColor(String buttonId) {
+    protected void clearItemListBackColor(String buttonId) {
         // 背景色を戻さない特定の処理を除き背景色をデフォルトの背景色に戻す。
         if (this.noCheckButtonId == null || !this.noCheckButtonId.contains(buttonId)) {
             for (FXHDD01 fxhdd01 : this.itemList) {
@@ -1604,7 +1606,7 @@ public class GXHDO901A implements Serializable {
      * @param buttonId ボタンID
      * @return エラーメッセージ情報(エラーなし無しの場合リターン)
      */
-    private ErrorMessageInfo checkRevision(String buttonId) {
+    protected ErrorMessageInfo checkRevision(String buttonId) {
         try {
 
             //リビジョンチェック対象のボタンの場合、チェックを行う。

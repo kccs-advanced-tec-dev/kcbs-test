@@ -369,3 +369,8 @@
 /* 確認者 input_number */
 .kakuninsha_input_number {
 }
+
+.handa_sample_td{
+    vertical-align: top; 
+    text-align: left;
+}

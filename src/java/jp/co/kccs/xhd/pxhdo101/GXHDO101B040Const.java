@@ -1081,7 +1081,7 @@ public class GXHDO101B040Const {
     /**
      * 選別終了日時(画面上ボタン)
      */
-    public static final String BTN_SENBETSU_BARRELSTARTDATETIME_TOP = "sr_denkitokuseiesi_senbetsu_barrelstartdatetime_Top";
+    public static final String BTN_SENBETSU_ENDDATETIME_TOP = "sr_denkitokuseiesi_senbetsu_enddatetime_Top";
 
     /**
      * BIN計算(画面上ボタン)
