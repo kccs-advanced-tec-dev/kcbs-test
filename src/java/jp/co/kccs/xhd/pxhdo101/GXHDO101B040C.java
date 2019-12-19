@@ -6,6 +6,7 @@ package jp.co.kccs.xhd.pxhdo101;
 import jp.co.kccs.xhd.model.gxhdo101b040.*;
 import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 
@@ -27,7 +28,7 @@ import jp.co.kccs.xhd.db.model.FXHDD01;
  * @author SYSNAVI K.Hisanaga
  * @since 2018/12/04
  */
-@SessionScoped
+@ViewScoped
 @Named("beanGXHDO101C040C")
 public class GXHDO101B040C implements Serializable {
 

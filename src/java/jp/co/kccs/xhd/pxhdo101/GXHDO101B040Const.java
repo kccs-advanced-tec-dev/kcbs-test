@@ -8,18 +8,18 @@ package jp.co.kccs.xhd.pxhdo101;
  * <br>
  * システム名	品質情報管理システム<br>
  * <br>
- * 変更日	2019/11/05<br>
+ * 変更日	2019/12/18<br>
  * 計画書No	K1811-DS001<br>
- * 変更者	863 K.Zhang<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
  * ===============================================================================<br>
  */
 /**
- * GXHDO101B039Const(外部電極・ﾒｯｷ真空乾燥)定数
+ * GXHDO101B040Const(電気特性・ESI)定数
  *
- * @author 863 K.Zhang
- * @since 2019/11/05
+ * @author SYSNAVI K.Hisanaga
+ * @since 2019/12/18
  */
 public class GXHDO101B040Const {
 
@@ -146,22 +146,22 @@ public class GXHDO101B040Const {
     /**
      * 製品情報:使用後ｽﾃｰｼｮﾝ確認PC1
      */
-    public static final String SEIHIN_SIYOATO_STATION_PD1 = "sr_denkitokuseiesi_seihin_siyoato_station_pd1";
+    public static final String SEIHIN_SIYOATO_STATION_PC1 = "sr_denkitokuseiesi_seihin_siyoato_station_pc1";
 
     /**
      * 製品情報:使用後ｽﾃｰｼｮﾝ確認PC2
      */
-    public static final String SEIHIN_SIYOATO_STATION_PD2 = "sr_denkitokuseiesi_seihin_siyoato_station_pd2";
+    public static final String SEIHIN_SIYOATO_STATION_PC2 = "sr_denkitokuseiesi_seihin_siyoato_station_pc2";
 
     /**
      * 製品情報:使用後ｽﾃｰｼｮﾝ確認PC3
      */
-    public static final String SEIHIN_SIYOATO_STATION_PD3 = "sr_denkitokuseiesi_seihin_siyoato_station_pd3";
+    public static final String SEIHIN_SIYOATO_STATION_PC3 = "sr_denkitokuseiesi_seihin_siyoato_station_pc3";
 
     /**
      * 製品情報:使用後ｽﾃｰｼｮﾝ確認PC4
      */
-    public static final String SEIHIN_SIYOATO_STATION_PD4 = "sr_denkitokuseiesi_seihin_siyoato_station_pd4";
+    public static final String SEIHIN_SIYOATO_STATION_PC4 = "sr_denkitokuseiesi_seihin_siyoato_station_pc4";
 
     /**
      * 製品情報:使用後ｽﾃｰｼｮﾝ確認IR1
@@ -206,7 +206,7 @@ public class GXHDO101B040Const {
     /**
      * 製品情報:固定電極 外観･段差
      */
-    public static final String SEIHIN_KOTEI__GAIKAN_DANSA = "sr_denkitokuseiesi_seihin_kotei__gaikan_dansa";
+    public static final String SEIHIN_K_GAIKAN_DANSA = "sr_denkitokuseiesi_seihin_k_gaikan_dansa";
 
     /**
      * 製品情報:ﾄﾗｯｸｶﾞｲﾄﾞ隙間
@@ -1089,22 +1089,22 @@ public class GXHDO101B040Const {
     public static final String BTN_BIN_KEISAN_TOP = "sr_denkitokuseiesi_bin_keisan_Top";
 
     /**
-     * 良品計算(画面下ボタン)
+     * 良品計算(画面上ボタン)
      */
     public static final String BTN_RYOHIN_KEISAN_TOP = "sr_denkitokuseiesi_ryohin_keisan_Top";
 
     /**
-     * 歩留まり計算(画面下ボタン)
+     * 歩留まり計算(画面上ボタン)
      */
     public static final String BTN_BUDOMARI_KEISAN_TOP = "sr_denkitokuseiesi_budomari_keisan_Top";
 
     /**
-     * 熱処理ｴｰｼﾞﾝｸﾞ計算(画面下ボタン)
+     * 熱処理ｴｰｼﾞﾝｸﾞ計算(画面上ボタン)
      */
     public static final String BTN_NETSUSYORI_KEISAN_TOP = "sr_denkitokuseiesi_netsusyori_keisan_Top";
 
     /**
-     * 補正率計算(画面下ボタン)
+     * 補正率計算(画面上ボタン)
      */
     public static final String BTN_HOSEIRITSU_KEISAN_TOP = "sr_denkitokuseiesi_hoseiritsu_keisan_Top";
 

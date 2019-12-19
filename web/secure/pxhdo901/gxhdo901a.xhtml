@@ -5,7 +5,8 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:pe="http://primefaces.org/ui/extensions">
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:t="http://myfaces.apache.org/tomahawk">
     <h:head>
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
         <meta http-equiv="Pragma" content="no-cache"/>
@@ -240,8 +241,6 @@
             </div>
             </div> 
             <div>
-                <ui:include src="gxhdo901b.xhtml"/>
-                <ui:include src="compMessage.xhtml"/>
                 <ui:include src="/secure/pxhdo101/gxhdo101c001.xhtml"/>
                 <ui:include src="/secure/pxhdo101/gxhdo101c002.xhtml"/>
                 <ui:include src="/secure/pxhdo101/gxhdo101c003.xhtml"/>
@@ -253,8 +252,12 @@
                 <ui:include src="/secure/pxhdo101/gxhdo101c009.xhtml"/>
                 <ui:include src="/secure/pxhdo101/gxhdo101c010.xhtml"/>
                 <ui:include src="/secure/common/initMessage.xhtml"/>
-                <ui:include src="/secure/common/kikakuError.xhtml"/>
                 <ui:include src="/secure/common/infoMessage.xhtml"/>
+                <t:aliasBean alias="#{gXHDO901ACommon}" value="#{gXHDO901A}">
+                    <ui:include src="/secure/pxhdo901/gxhdo901b.xhtml"/>
+                    <ui:include src="/secure/pxhdo901/compMessage.xhtml"/>
+                    <ui:include src="/secure/common/kikakuError.xhtml"/>
+                </t:aliasBean>
             </div>
         </h:form>
         

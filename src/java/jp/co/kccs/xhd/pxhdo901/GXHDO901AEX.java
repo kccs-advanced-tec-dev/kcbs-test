@@ -242,7 +242,7 @@ public class GXHDO901AEX extends GXHDO901A {
                     + "  FROM FXHDM05 "
                     + " WHERE "
                     + DBUtil.getInConditionPreparedStatement("gamen_id", formIds.length) + " "
-                    + " ORDER BY button_id,item_id,check_no ";
+                    + " ORDER BY gamen_id,button_id,item_id,check_no ";
 
             List<Object> params = new ArrayList<>();
             params.addAll(Arrays.asList(formIds));
@@ -308,6 +308,10 @@ public class GXHDO901AEX extends GXHDO901A {
         ValidateUtil validateUtil = new ValidateUtil();
         QueryRunner queryRunnerWip = new QueryRunner(dataSourceWip);
         ErrorMessageInfo requireCheckErrorMessage = validateUtil.executeValidation(itemRowCheckList, this.itemList, queryRunnerWip);
+        if(requireCheckErrorMessage == null){
+            requireCheckErrorMessage = validateUtil.executeValidation(itemRowCheckList, this.itemListEx, queryRunnerWip);
+        }
+        
 
         return requireCheckErrorMessage;
     }
