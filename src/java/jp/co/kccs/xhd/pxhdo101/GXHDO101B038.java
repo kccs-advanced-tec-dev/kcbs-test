@@ -1320,20 +1320,21 @@ public class GXHDO101B038 implements IFormLogic {
                 for (FXHDD01 fxhdd001 : processData.getItemList()) {
                     this.setItemData(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
                 }
-                //【WIP取込】ﾎﾞﾀﾝ押下時の処理を呼び出す。	
-                doWipTorikomi(processData, 0);
+                if (StringUtil.isEmpty(rev)) {
+                    //【WIP取込】ﾎﾞﾀﾝ押下時の処理を呼び出す。	
+                    doWipTorikomi(processData, 0);
 
-                //【歩留まり計算】ﾎﾞﾀﾝ押下時の処理を呼び出す。
-                checkBudomariKeisan(processData, 0);
+                    //【歩留まり計算】ﾎﾞﾀﾝ押下時の処理を呼び出す。
+                    checkBudomariKeisan(processData, 0);
 
-                //【異常品ﾗﾝｸ取得】ﾎﾞﾀﾝ押下時の処理を呼び出す。
-                // TODO  該当処理の設計がなし
+                    //【異常品ﾗﾝｸ取得】ﾎﾞﾀﾝ押下時の処理を呼び出す。
+                    // TODO  該当処理の設計がなし
+                    //【ﾒｯｷ履歴取込】ﾎﾞﾀﾝ押下時の処理を呼び出す。
+                    doRirekiTorikomi(processData, 0);
 
-                //【ﾒｯｷ履歴取込】ﾎﾞﾀﾝ押下時の処理を呼び出す。
-                doRirekiTorikomi(processData, 0);
-
-                //【ﾒｯｷ膜厚取込】ﾎﾞﾀﾝ押下時の処理を呼び出す。
-                // TODO  該当処理の設計がなし
+                    //【ﾒｯｷ膜厚取込】ﾎﾞﾀﾝ押下時の処理を呼び出す。
+                    // TODO  該当処理の設計がなし
+                }
                 return true;
             }
 
