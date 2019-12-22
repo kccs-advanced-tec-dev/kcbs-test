@@ -80,12 +80,6 @@ public class GXHDO201B039 implements Serializable {
     @Resource(mappedName = "jdbc/qcdb")
     private transient DataSource dataSourceQcdb;
     
-    /**
-     * DataSource(WIP)
-     */
-    @Resource(mappedName = "jdbc/wip")
-    private transient DataSource dataSourceWip;
-    
     /** パラメータマスタ操作 */
     @Inject
     private SelectParam selectParam;

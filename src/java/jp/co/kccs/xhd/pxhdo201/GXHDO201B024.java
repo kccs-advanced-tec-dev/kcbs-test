@@ -511,17 +511,17 @@ public class GXHDO201B024 implements Serializable {
             return;
         }
         if(!StringUtil.isEmpty(getTantousya())){
-            boolean existGoki = false;
+            boolean existTantousya = false;
             try {
                 QueryRunner queryRunnerWip = new QueryRunner(dataSourceWip);
                 if(validateUtil.existTantomasEx(getTantousya(), queryRunnerWip)){
-                    existGoki = true;
+                    existTantousya = true;
                 }
             } catch (SQLException ex){
                 ErrUtil.outputErrorLog("担当者マスタ存在チェックに失敗", ex, LOGGER);
-                existGoki = false;
+                existTantousya = false;
             }
-            if (!existGoki) {
+            if (!existTantousya) {
               // 入力された担当者が[tantomas]に存在しない場合ｴﾗｰ。
                 FacesMessage message = 
                         new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000011", "開始担当者"), null);
