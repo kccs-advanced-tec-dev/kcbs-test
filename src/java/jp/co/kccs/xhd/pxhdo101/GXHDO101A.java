@@ -27,10 +27,6 @@ import jp.co.kccs.xhd.SelectParam;
 import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.db.model.DaJoken;
 import jp.co.kccs.xhd.db.model.FXHDM01;
-import jp.co.kccs.xhd.db.model.SrSpsprintGra;
-import jp.co.kccs.xhd.db.model.SubSrSpsprintGra;
-import jp.co.kccs.xhd.db.model.SrSpsprintScr;
-import jp.co.kccs.xhd.db.model.SubSrSpsprintScr;
 import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
@@ -173,107 +169,12 @@ public class GXHDO101A implements Serializable {
      * 印刷工程画面ID
      */
     private String insatsuKoteiGamenID;
-
-    // ﾛｯﾄ参照の値をサブ画面の表示用の値に渡す
-    GXHDO101C012 beanGXHDO101C012 = (GXHDO101C012) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C012);
-
+    
     /**
      * 参照元ﾃﾞｰﾀ
      */
     private FXHDM01 sanshouMotoInfo = null;
-
-    /**
-     * 参照元ﾃﾞｰﾀ(印刷SPSｸﾞﾗﾋﾞｱ情報)
-     */
-    private List<SrSpsprintGra> srSpsprintGraInfo;
-	
-    /**
-     * 参照元ﾃﾞｰﾀ(印刷SPSｸﾞﾗﾋﾞｱ_ｻﾌﾞ情報)
-     */
-    private List<SubSrSpsprintGra> subSrSpsprintGraInfo;
-	
-	/**
-     * 参照元ﾃﾞｰﾀ(印刷SPSｽｸﾘｰﾝ)
-     */
-    private List<SrSpsprintScr> srSpsprintInfo;
     
-    /**
-     * 参照元ﾃﾞｰﾀ(印刷SPSｽｸﾘｰﾝ_ｻﾌﾞ)
-     */
-    private List <SubSrSpsprintScr> subSrSpsprintScrInfo;
-
-    /**
-     * 参照元ﾃﾞｰﾀ(印刷SPSｸﾞﾗﾋﾞｱ情報)
-     *
-     * @return srSpsprintGraInfo
-     */
-    public List<SrSpsprintGra> getSrSpsprintGraInfo() {
-        return srSpsprintGraInfo;
-    }
-
-    /**
-     * 参照元ﾃﾞｰﾀ(印刷SPSｸﾞﾗﾋﾞｱ情報)
-     *
-     * @param srSpsprintGraInfo
-     */
-    public void setSrSpsprintGraInfo(List<SrSpsprintGra> srSpsprintGraInfo) {
-        this.srSpsprintGraInfo = srSpsprintGraInfo;
-    }
-
-    /**
-     * 参照元ﾃﾞｰﾀ(印刷SPSｸﾞﾗﾋﾞｱ_ｻﾌﾞ情報)
-     *
-     * @return subSrSpsprintGraInfo
-     */
-    public List<SubSrSpsprintGra> getSubSrSpsprintGraInfo() {
-        return subSrSpsprintGraInfo;
-    }
-
-    /**
-     * 参照元ﾃﾞｰﾀ(印刷SPSｸﾞﾗﾋﾞｱ_ｻﾌﾞ情報)
-     *
-     * @param subSrSpsprintGraInfo
-     */
-    public void setSubSrSpsprintGraInfo(List<SubSrSpsprintGra> subSrSpsprintGraInfo) {
-        this.subSrSpsprintGraInfo = subSrSpsprintGraInfo;
-    }
-	
-	/**
-     * 参照元ﾃﾞｰﾀ(印刷SPSｽｸﾘｰﾝ)
-	 *
-     * @return srSpsprintInfo
-     */
-    public List<SrSpsprintScr> getSrSpsprintInfo() {
-        return srSpsprintInfo;
-    }
-
-    /**
-     * 参照元ﾃﾞｰﾀ(印刷SPSｽｸﾘｰﾝ)
-	 *
-     * @param srSpsprintInfo 
-     */
-    public void setSrSpsprintInfo(List<SrSpsprintScr> srSpsprintInfo) {
-        this.srSpsprintInfo = srSpsprintInfo;
-    }
-
-    /**
-     * 参照元ﾃﾞｰﾀ(印刷SPSｽｸﾘｰﾝ_ｻﾌﾞ)
-	 *
-     * @return subSrSpsprintScrInfo
-     */
-    public List<SubSrSpsprintScr> getSubSrSpsprintScrInfo() {
-        return subSrSpsprintScrInfo;
-    }
-
-    /**
-     * 参照元ﾃﾞｰﾀ(印刷SPSｽｸﾘｰﾝ_ｻﾌﾞ)
-	 *
-     * @param subSrSpsprintScrInfo 
-     */
-    public void setSubSrSpsprintScrInfo(List<SubSrSpsprintScr> subSrSpsprintScrInfo) {
-        this.subSrSpsprintScrInfo = subSrSpsprintScrInfo;
-    }
-
     /**
      * コンストラクタ
      */
@@ -560,20 +461,18 @@ public class GXHDO101A implements Serializable {
     /**
      * 参照元画面を開き
      *
+     * @param isFormError エラー判定
      * @return 遷移先画面
      */
     public String openNextXhdForm(boolean isFormError) {
         String nextPageUrl = "";
         if (!isFormError) {
             nextPageUrl = openXhdForm(sanshouMotoInfo);
+            GXHDO101C012 beanGXHDO101C012 = (GXHDO101C012) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C012);
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             HttpSession session = (HttpSession) externalContext.getSession(false);
             session.setAttribute("maeGamenID", "GXHDO101C012");
-            session.setAttribute("srSpsprintGraInfo", srSpsprintGraInfo);
-            session.setAttribute("subSrSpsprintGraInfo", subSrSpsprintGraInfo);
-            session.setAttribute("srSpsprintInfo", srSpsprintInfo);
-            session.setAttribute("subSrSpsprintScrInfo", subSrSpsprintScrInfo);
-            session.setAttribute("sanshouSakiLotNo", beanGXHDO101C012.getSanshouSakiLotNo());
+            session.setAttribute("lotNo", beanGXHDO101C012.getSanshouSakiLotNo());
             session.setAttribute("sanshouMotoLotNo", this.searchLotNo);
         }
         return nextPageUrl;
@@ -619,13 +518,8 @@ public class GXHDO101A implements Serializable {
             session.setAttribute("lotNo", this.searchLotNo);
             session.setAttribute("tantoshaCd", this.searchTantoshaCd);
             session.setAttribute("jissekino", rowData.getJissekiNo());
-            
+            // ﾛｯﾄ参照情報初期化
             session.setAttribute("maeGamenID", "");
-            session.setAttribute("srSpsprintGraInfo", null);
-            session.setAttribute("subSrSpsprintGraInfo", null);
-            session.setAttribute("srSpsprintInfo", null);
-            session.setAttribute("subSrSpsprintScrInfo", null);
-            session.setAttribute("sanshouSakiLotNo", "");
             session.setAttribute("sanshouMotoLotNo", "");
 
             // 自身の枝番でない(親ﾛｯﾄの枝番)場合、前工程情報は引き渡さない
@@ -743,11 +637,11 @@ public class GXHDO101A implements Serializable {
             //  ②【印刷工程画面ID】をもとに、対象ﾃｰﾌﾞﾙからﾃﾞｰﾀを取得する。
             //   1.【印刷工程画面ID】 == "GXHDO101B001" の場合
             String jissekiInforev = StringUtil.nullToBlank(getMapData(fxhdd03JissekinoInfo, "rev"));
-            if ("GXHDO101B001".equals(getInsatsuKoteiGamenID())) {
+            if("GXHDO101B001".equals(getInsatsuKoteiGamenID())){
                 //    A.Ⅲ.画面表示仕様(27),(28)を発行する。
-                srSpsprintGraInfo = loadSrSpsprintGraInfo(queryRunnerQcdb, strKojyo, strLotNo, strEdaban, jissekiInforev);
-                subSrSpsprintGraInfo = loadSubSrSpsprintGraInfo(queryRunnerQcdb, strKojyo, strLotNo, strEdaban, jissekiInforev);
-                if (srSpsprintGraInfo.isEmpty() || subSrSpsprintGraInfo.isEmpty()) {
+                Map srSpsprintGraInfo = loadSrSpsprintGraInfo(queryRunnerQcdb, strKojyo, strLotNo, strEdaban, jissekiInforev);
+                Map subSrSpsprintGraInfo = loadSubSrSpsprintGraInfo(queryRunnerQcdb, strKojyo, strLotNo, strEdaban, jissekiInforev);
+                if(srSpsprintGraInfo == null || subSrSpsprintGraInfo == null){
                     //     ｱ.取得できなかった場合
                     //      ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。
                     //        ・ｴﾗｰｺｰﾄﾞ:XHD-000083
@@ -765,9 +659,9 @@ public class GXHDO101A implements Serializable {
             //   2.【印刷工程画面ID】 == "GXHDO101B002" の場合
             if ("GXHDO101B002".equals(getInsatsuKoteiGamenID())) {
                 //    A.Ⅲ.画面表示仕様(29),(30)を発行する。
-                srSpsprintInfo = loadSrSpsprintInfo(queryRunnerQcdb, strKojyo, strLotNo, strEdaban, jissekiInforev);
-                subSrSpsprintScrInfo = loadSubSrSpsprintScrInfo(queryRunnerQcdb, strKojyo, strLotNo, strEdaban, jissekiInforev);
-                if (srSpsprintInfo.isEmpty() || subSrSpsprintScrInfo.isEmpty()) {
+                Map srSpsprintInfo = loadSrSpsprintInfo(queryRunnerQcdb, strKojyo, strLotNo, strEdaban, jissekiInforev);
+                Map subSrSpsprintScrInfo = loadSubSrSpsprintScrInfo(queryRunnerQcdb, strKojyo, strLotNo, strEdaban, jissekiInforev);
+                if(srSpsprintInfo == null || subSrSpsprintScrInfo == null){
                     //      ｱ.取得できなかった場合
                     //       ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。
                     //         ・ｴﾗｰｺｰﾄﾞ:XHD-000083
@@ -781,6 +675,9 @@ public class GXHDO101A implements Serializable {
                 //      ｲ.取得できた場合
                 //       以降の処理を実行する。
             }
+
+            // ﾛｯﾄ参照の値をサブ画面の表示用の値に渡す
+            GXHDO101C012 beanGXHDO101C012 = (GXHDO101C012) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C012);
             //参照元ﾛｯﾄNo
             beanGXHDO101C012.setSanshouMotoLotNo(searchLotNo);
             //参照元画面ID
@@ -1109,28 +1006,11 @@ public class GXHDO101A implements Serializable {
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private List<SrSpsprintGra> loadSrSpsprintGraInfo(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    private Map loadSrSpsprintGraInfo(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev) throws SQLException {
 
         // 印刷SPSｸﾞﾗﾋﾞｱ情報の取得
-        String sql = "SELECT kojyo,lotno,edaban,tapelotno,petfilmsyurui,taperollno1,"
-                + "taperollno2,taperollno3,pastelotno,pastenendo,pasteondo,"
-                + "pkokeibun1,pastelotno2,pastenendo2,pasteondo2,pkokeibun2,"
-                + "handoumei,handouno,handoumaisuu,bladeno,bladegaikan,BladeATu,"
-                + "AtudoNo,AtudoMaisuu,AtuDoATu,gouki,kansouondo,kansouondo2,"
-                + "kansouondo3,kansouondo4,kansouondo5,hansouspeed,"
-                + "startdatetime,tantousya,makuatuave_start,makuatumax_start,"
-                + "makuatumin_start,makuatucv_start,nijimikasure_start,"
-                + "start_ptn_dist_x,start_ptn_dist_y,TensionS_sum,TensionStemae,"
-                + "TensionSoku,enddatetime,tanto_end,printmaisuu,makuatuave_end,"
-                + "makuatumax_end,makuatumin_end,makuatucv_end,nijimikasure_end,"
-                + "end_ptn_dist_x,end_ptn_dist_y,TensionE_sum,TensionEtemae,"
-                + "TensionEoku,printzure1_surihajime_start,"
-                + "printzure2_center_start,printzure3_suriowari_start,"
-                + "abzure_heikin_start,printzure1_surihajime_end,"
-                + "printzure2_center_end,printzure3_suriowari_end,"
-                + "abzure_heikin_end,genryoukigou,bikou1,bikou2,"
-                + "torokunichiji,kosinnichiji,revision,kcpno,'0' AS deleteflag,kakuninsya "
+        String sql = "SELECT kojyo "
                 + "FROM sr_spsprint_gra "
                 + "WHERE kojyo = ? AND lotno = ? "
                 + "AND edaban = ? AND revision = ? ";
@@ -1141,89 +1021,8 @@ public class GXHDO101A implements Serializable {
         params.add(edaban);
         params.add(rev);
 
-        Map<String, String> mapping = new HashMap<>();
-        mapping.put("kojyo", "kojyo"); //工場ｺｰﾄﾞ
-        mapping.put("lotno", "lotno"); //ﾛｯﾄNo
-        mapping.put("edaban", "edaban"); //枝番
-        mapping.put("tapelotno", "tapelotno"); //ﾃｰﾌﾟｽﾘｯﾌﾟﾛｯﾄNo
-        mapping.put("petfilmsyurui", "petfilmsyurui"); //PETﾌｨﾙﾑ種類
-        mapping.put("taperollno1", "taperollno1"); //ﾃｰﾌﾟﾛｰﾙNo1
-        mapping.put("taperollno2", "taperollno2"); //ﾃｰﾌﾟﾛｰﾙNo2
-        mapping.put("taperollno3", "taperollno3"); //ﾃｰﾌﾟﾛｰﾙNo3
-        mapping.put("pastelotno", "pastelotno"); //ﾍﾟｰｽﾄﾛｯﾄNo1
-        mapping.put("pastenendo", "pastenendo"); //ﾍﾟｰｽﾄ粘度1
-        mapping.put("pasteondo", "pasteondo"); //ﾍﾟｰｽﾄ温度1
-        mapping.put("pkokeibun1", "pkokeibun1"); //ﾍﾟｰｽﾄ固形分1
-        mapping.put("pastelotno2", "pastelotno2"); //ﾍﾟｰｽﾄﾛｯﾄNo2
-        mapping.put("pastenendo2", "pastenendo2"); //ﾍﾟｰｽﾄ粘度2
-        mapping.put("pasteondo2", "pasteondo2"); //ﾍﾟｰｽﾄ温度2
-        mapping.put("pkokeibun2", "pkokeibun2"); //ﾍﾟｰｽﾄ固形分2
-        mapping.put("handoumei", "handoumei"); //版胴名
-        mapping.put("handouno", "handouno"); //版胴No
-        mapping.put("handoumaisuu", "handoumaisuu"); //版胴使用枚数
-        mapping.put("bladeno", "bladeno"); //ﾌﾞﾚｰﾄﾞNo.
-        mapping.put("bladegaikan", "bladegaikan"); //ﾌﾞﾚｰﾄﾞ外観
-        mapping.put("BladeATu", "bladeATu"); //ﾌﾞﾚｰﾄﾞ圧力
-        mapping.put("AtudoNo", "atudoNo"); //圧胴No
-        mapping.put("AtudoMaisuu", "atudoMaisuu"); //圧胴使用枚数
-        mapping.put("AtuDoATu", "atuDoATu"); //圧胴圧力
-        mapping.put("gouki", "gouki"); //号機ｺｰﾄﾞ
-        mapping.put("kansouondo", "kansouondo"); //乾燥温度
-        mapping.put("kansouondo2", "kansouondo2"); //乾燥温度2
-        mapping.put("kansouondo3", "kansouondo3"); //乾燥温度3
-        mapping.put("kansouondo4", "kansouondo4"); //乾燥温度4
-        mapping.put("kansouondo5", "kansouondo5"); //乾燥温度5
-        mapping.put("hansouspeed", "hansouspeed"); //搬送速度
-        mapping.put("startdatetime", "startdatetime"); //ﾌﾟﾘﾝﾄ開始日時
-        mapping.put("tantousya", "tantousya"); //ｾｯﾃｨﾝｸﾞ担当者ｺｰﾄﾞ
-        mapping.put("makuatuave_start", "makuatuaveStart"); //ｽﾀｰﾄ時膜厚AVE
-        mapping.put("makuatumax_start", "makuatumaxStart"); //ｽﾀｰﾄ時膜厚MAX
-        mapping.put("makuatumin_start", "makuatuminStart"); //ｽﾀｰﾄ時膜厚MIN
-        mapping.put("makuatucv_start", "makuatucvStart"); //印刷ｽﾀｰﾄ膜厚CV
-        mapping.put("nijimikasure_start", "nijimikasureStart"); //ｽﾀｰﾄ時ﾆｼﾞﾐ・ｶｽﾚ確認
-        mapping.put("start_ptn_dist_x", "startPtnDistX"); //ｽﾀｰﾄ時PTN間距離X
-        mapping.put("start_ptn_dist_y", "startPtnDistY"); //ｽﾀｰﾄ時PTN間距離Y
-        mapping.put("TensionS_sum", "tensionSSum"); //開始ﾃﾝｼｮﾝ計
-        mapping.put("TensionStemae", "tensionStemae"); //ﾃﾝｼｮﾝ開始手前
-        mapping.put("TensionSoku", "tensionSoku"); //ﾃﾝｼｮﾝ開始奥
-        mapping.put("enddatetime", "enddatetime"); //ﾌﾟﾘﾝﾄ終了日時
-        mapping.put("tanto_end", "tantoEnd"); //終了時担当者ｺｰﾄﾞ
-        mapping.put("printmaisuu", "printmaisuu"); //印刷枚数
-        mapping.put("makuatuave_end", "makuatuaveEnd"); //終了時膜厚AVE
-        mapping.put("makuatumax_end", "makuatumaxEnd"); //終了時膜厚MAX
-        mapping.put("makuatumin_end", "makuatuminEnd"); //終了時膜厚MIN
-        mapping.put("makuatucv_end", "makuatucvEnd"); //印刷ｴﾝﾄﾞ膜厚CV
-        mapping.put("nijimikasure_end", "nijimikasureEnd"); //終了時ﾆｼﾞﾐ・ｶｽﾚ確認
-        mapping.put("end_ptn_dist_x", "endPtnDistX"); //終了時PTN間距離X
-        mapping.put("end_ptn_dist_y", "endPtnDistY"); //終了時PTN間距離Y
-        mapping.put("TensionE_sum", "tensionESum"); //終了ﾃﾝｼｮﾝ計
-        mapping.put("TensionEtemae", "tensionEtemae"); //ﾃﾝｼｮﾝ終了手前
-        mapping.put("TensionEoku", "tensionEoku"); //ﾃﾝｼｮﾝ終了奥
-        mapping.put("printzure1_surihajime_start", "printzure1SurihajimeStart"); //印刷ズレ①刷り始め開始
-        mapping.put("printzure2_center_start", "printzure2CenterStart"); //印刷ズレ②中央開始
-        mapping.put("printzure3_suriowari_start", "printzure3SuriowariStart"); //印刷ズレ③刷り終わり開始
-        mapping.put("abzure_heikin_start", "abzureHeikinStart"); //ABズレ平均スタート
-        mapping.put("printzure1_surihajime_end", "printzure1SurihajimeEnd"); //印刷ズレ①刷り始め終了
-        mapping.put("printzure2_center_end", "printzure2CenterEnd"); //印刷ズレ②中央終了
-        mapping.put("printzure3_suriowari_end", "printzure3SuriowariEnd"); //印刷ズレ③刷り終わり終了
-        mapping.put("abzure_heikin_end", "abzureHeikinEnd"); //ABズレ平均終了
-        mapping.put("genryoukigou", "genryoukigou"); //原料記号
-        mapping.put("bikou1", "bikou1"); //備考1
-        mapping.put("bikou2", "bikou2"); //備考2
-        mapping.put("torokunichiji", "torokunichiji"); //登録日時
-        mapping.put("kosinnichiji", "kosinnichiji"); //更新日時
-        mapping.put("revision", "revision"); //revision
-        mapping.put("kcpno", "kcpno"); //KCPNO
-        mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
-        mapping.put("kakuninsya", "kakuninsya"); //印刷スタート時確認者
-
-        BeanProcessor beanProcessor = new BeanProcessor(mapping);
-        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
-        ResultSetHandler<List<SrSpsprintGra>> beanHandler = new BeanListHandler<>(SrSpsprintGra.class, rowProcessor);
-
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerQcdb.query(sql, beanHandler, params.toArray());
-
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
     }
 
     /**
@@ -1236,24 +1035,11 @@ public class GXHDO101A implements Serializable {
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private List<SubSrSpsprintGra> loadSubSrSpsprintGraInfo(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    private Map loadSubSrSpsprintGraInfo(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev) throws SQLException {
 
         // 印刷SPSｸﾞﾗﾋﾞｱ情報の取得
-        String sql = "SELECT kojyo,lotno,edaban,makuatsu_start1,makuatsu_start2,"
-                + "makuatsu_start3,makuatsu_start4,makuatsu_start5,"
-                + "makuatsu_start6,makuatsu_start7,makuatsu_start8,"
-                + "makuatsu_start9,start_ptn_dist_x1,start_ptn_dist_x2,"
-                + "start_ptn_dist_x3,start_ptn_dist_x4,start_ptn_dist_x5,"
-                + "start_ptn_dist_y1,start_ptn_dist_y2,start_ptn_dist_y3,"
-                + "start_ptn_dist_y4,start_ptn_dist_y5,makuatsu_end1,"
-                + "makuatsu_end2,makuatsu_end3,makuatsu_end4,"
-                + "makuatsu_end5,makuatsu_end6,makuatsu_end7,"
-                + "makuatsu_end8,makuatsu_end9,end_ptn_dist_x1,"
-                + "end_ptn_dist_x2,end_ptn_dist_x3,end_ptn_dist_x4,"
-                + "end_ptn_dist_x5,end_ptn_dist_y1,end_ptn_dist_y2,"
-                + "end_ptn_dist_y3,end_ptn_dist_y4,end_ptn_dist_y5,"
-                + "torokunichiji,kosinnichiji,revision,'0' AS deleteflag "
+        String sql = "SELECT kojyo "
                 + "FROM sub_sr_spsprint_gra "
                 + "WHERE kojyo = ? AND lotno = ? "
                 + "AND edaban = ? AND revision = ? ";
@@ -1264,59 +1050,8 @@ public class GXHDO101A implements Serializable {
         params.add(edaban);
         params.add(rev);
 
-        Map<String, String> mapping = new HashMap<>();
-        mapping.put("kojyo", "kojyo"); //工場ｺｰﾄﾞ
-        mapping.put("lotno", "lotno"); //ﾛｯﾄNo
-        mapping.put("edaban", "edaban"); //枝番
-        mapping.put("makuatsu_start1", "makuatsuStart1"); //膜厚ｽﾀｰﾄ1
-        mapping.put("makuatsu_start2", "makuatsuStart2"); //膜厚ｽﾀｰﾄ2
-        mapping.put("makuatsu_start3", "makuatsuStart3"); //膜厚ｽﾀｰﾄ3
-        mapping.put("makuatsu_start4", "makuatsuStart4"); //膜厚ｽﾀｰﾄ4
-        mapping.put("makuatsu_start5", "makuatsuStart5"); //膜厚ｽﾀｰﾄ5
-        mapping.put("makuatsu_start6", "makuatsuStart6"); //膜厚ｽﾀｰﾄ6
-        mapping.put("makuatsu_start7", "makuatsuStart7"); //膜厚ｽﾀｰﾄ7
-        mapping.put("makuatsu_start8", "makuatsuStart8"); //膜厚ｽﾀｰﾄ8
-        mapping.put("makuatsu_start9", "makuatsuStart9"); //膜厚ｽﾀｰﾄ9
-        mapping.put("start_ptn_dist_x1", "startPtnDistX1"); //PTN距離X ｽﾀｰﾄ1
-        mapping.put("start_ptn_dist_x2", "startPtnDistX2"); //PTN距離X ｽﾀｰﾄ2
-        mapping.put("start_ptn_dist_x3", "startPtnDistX3"); //PTN距離X ｽﾀｰﾄ3
-        mapping.put("start_ptn_dist_x4", "startPtnDistX4"); //PTN距離X ｽﾀｰﾄ4
-        mapping.put("start_ptn_dist_x5", "startPtnDistX5"); //PTN距離X ｽﾀｰﾄ5
-        mapping.put("start_ptn_dist_y1", "startPtnDistY1"); //PTN距離Y ｽﾀｰﾄ1
-        mapping.put("start_ptn_dist_y2", "startPtnDistY2"); //PTN距離Y ｽﾀｰﾄ2
-        mapping.put("start_ptn_dist_y3", "startPtnDistY3"); //PTN距離Y ｽﾀｰﾄ3
-        mapping.put("start_ptn_dist_y4", "startPtnDistY4"); //PTN距離Y ｽﾀｰﾄ4
-        mapping.put("start_ptn_dist_y5", "startPtnDistY5"); //PTN距離Y ｽﾀｰﾄ5
-        mapping.put("makuatsu_end1", "makuatsuEnd1"); //膜厚ｴﾝﾄﾞ1
-        mapping.put("makuatsu_end2", "makuatsuEnd2"); //膜厚ｴﾝﾄﾞ2
-        mapping.put("makuatsu_end3", "makuatsuEnd3"); //膜厚ｴﾝﾄﾞ3
-        mapping.put("makuatsu_end4", "makuatsuEnd4"); //膜厚ｴﾝﾄﾞ4
-        mapping.put("makuatsu_end5", "makuatsuEnd5"); //膜厚ｴﾝﾄﾞ5
-        mapping.put("makuatsu_end6", "makuatsuEnd6"); //膜厚ｴﾝﾄﾞ6
-        mapping.put("makuatsu_end7", "makuatsuEnd7"); //膜厚ｴﾝﾄﾞ7
-        mapping.put("makuatsu_end8", "makuatsuEnd8"); //膜厚ｴﾝﾄﾞ8
-        mapping.put("makuatsu_end9", "makuatsuEnd9"); //膜厚ｴﾝﾄﾞ9
-        mapping.put("end_ptn_dist_x1", "endPtnDistX1"); //PTN距離X ｴﾝﾄﾞ1
-        mapping.put("end_ptn_dist_x2", "endPtnDistX2"); //PTN距離X ｴﾝﾄﾞ2
-        mapping.put("end_ptn_dist_x3", "endPtnDistX3"); //PTN距離X ｴﾝﾄﾞ3
-        mapping.put("end_ptn_dist_x4", "endPtnDistX4"); //PTN距離X ｴﾝﾄﾞ4
-        mapping.put("end_ptn_dist_x5", "endPtnDistX5"); //PTN距離X ｴﾝﾄﾞ5
-        mapping.put("end_ptn_dist_y1", "endPtnDistY1"); //PTN距離Y ｴﾝﾄﾞ1
-        mapping.put("end_ptn_dist_y2", "endPtnDistY2"); //PTN距離Y ｴﾝﾄﾞ2
-        mapping.put("end_ptn_dist_y3", "endPtnDistY3"); //PTN距離Y ｴﾝﾄﾞ3
-        mapping.put("end_ptn_dist_y4", "endPtnDistY4"); //PTN距離Y ｴﾝﾄﾞ4
-        mapping.put("end_ptn_dist_y5", "endPtnDistY5"); //PTN距離Y ｴﾝﾄﾞ5
-        mapping.put("torokunichiji", "torokunichiji"); //登録日時
-        mapping.put("kosinnichiji", "kosinnichiji"); //更新日時
-        mapping.put("revision", "revision"); //revision
-        mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
-
-        BeanProcessor beanProcessor = new BeanProcessor(mapping);
-        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
-        ResultSetHandler<List<SubSrSpsprintGra>> beanHandler = new BeanListHandler<>(SubSrSpsprintGra.class, rowProcessor);
-
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerQcdb.query(sql, beanHandler, params.toArray());
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
     }
 
     /**
@@ -1329,147 +1064,23 @@ public class GXHDO101A implements Serializable {
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private List<SrSpsprintScr> loadSrSpsprintInfo(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    private Map loadSrSpsprintInfo(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev) throws SQLException {
 
         // 印刷SPSｽｸﾘｰﾝ情報の取得
-        String sql = "SELECT kojyo,lotno,edaban,tapesyurui,tapelotno,TapeSlipKigo,genryoukigou,pastelotno,pastenendo,pasteondo,"
-                + "seihanno,seihanmaisuu,startdatetime,enddatetime,skeegeno,skeegemaisuu,gouki,tantousya,kakuninsya,kansouondo,"
-                + "prnprofile,kansoutime,saatu,skeegespeed,skeegeangle,mld,clearrance,bikou1,bikou2,makuatu1,makuatu2,makuatu3,"
-                + "makuatu4,makuatu5,pastelotno2,pastelotno3,pastelotno4,pastelotno5,pastenendo2,pastenendo3,pastenendo4,"
-                + "pastenendo5,pasteondo2,pasteondo3,pasteondo4,pasteondo5,bikou3,bikou4,bikou5,kansouondo2,kansouondo3,kansouondo4,"
-                + "kansouondo5,skeegemaisuu2,taperollno1,taperollno2,taperollno3,taperollno4,taperollno5,pastehinmei,seihanmei,"
-                + "makuatuave_start,makuatumax_start,makuatumin_start,start_ptn_dist_x,start_ptn_dist_y,tanto_setting,makuatuave_end,"
-                + "makuatumax_end,makuatumin_end,end_ptn_dist_x,end_ptn_dist_y,tanto_end,kcpno,sijiondo,sijiondo2,sijiondo3,sijiondo4,"
-                + "sijiondo5,pkokeibun1,pkokeibun2,petfilmsyurui,makuatucv_start,nijimikasure_start,makuatucv_end,nijimikasure_end,"
-                + "printmaisuu,table_clearrance,scraperspeed,skeegegaikan,torokunichiji,kosinnichiji,revision,'0' AS deleteFlag, "
-                + "TensionS,TensionE,TensionStemae,TensionEtemae,TensionSoku,TensionEoku,AtuDoATu,BladeATu,AtuDoKeiLEnd,AtuDoKeiLSide,"
-                + "AtuDoKeiCenter,AtuDoKeiRSide,AtuDoKeiREnd "
+        String sql = "SELECT kojyo "
                 + "FROM sr_spsprint "
                 + "WHERE kojyo = ? AND lotno = ? "
-                + "AND edaban = ? AND revision = ? ";       
+                + "AND edaban = ? AND revision = ? ";
 
         List<Object> params = new ArrayList<>();
         params.add(kojyo);
         params.add(lotNo);
         params.add(edaban);
         params.add(rev);
-        
-        Map<String, String> mapping = new HashMap<>();
-        mapping.put("kojyo", "kojyo"); //工場ｺｰﾄﾞ
-        mapping.put("lotno", "lotno"); //ﾛｯﾄNo
-        mapping.put("edaban", "edaban"); //枝番
-        mapping.put("tapesyurui", "tapesyurui"); //ﾃｰﾌﾟ種類
-        mapping.put("tapelotno", "tapelotno"); //ﾃｰﾌﾟｽﾘｯﾌﾟﾛｯﾄNo
-        mapping.put("TapeSlipKigo", "tapeSlipKigo"); //ﾃｰﾌﾟｽﾘｯﾌﾟ記号
-        mapping.put("genryoukigou", "genryoukigou"); //原料記号
-        mapping.put("pastelotno", "pastelotno"); //ﾍﾟｰｽﾄﾛｯﾄNo1
-        mapping.put("pastenendo", "pastenendo"); //ﾍﾟｰｽﾄ粘度1
-        mapping.put("pasteondo", "pasteondo"); //ﾍﾟｰｽﾄ温度1
-        mapping.put("seihanno", "seihanno"); //製版No
-        mapping.put("seihanmaisuu", "seihanmaisuu"); //製版枚数
-        mapping.put("startdatetime", "startdatetime"); //ﾌﾟﾘﾝﾄ開始日時
-        mapping.put("enddatetime", "enddatetime"); //ﾌﾟﾘﾝﾄ終了日時
-        mapping.put("skeegeno", "skeegeno"); //ｽｷｰｼﾞNo
-        mapping.put("skeegemaisuu", "skeegemaisuu"); //ｽｷｰｼﾞ枚数
-        mapping.put("gouki", "gouki"); //号機ｺｰﾄﾞ
-        mapping.put("tantousya", "tantousya"); //担当者ｺｰﾄﾞ
-        mapping.put("kakuninsya", "kakuninsya"); //確認者ｺｰﾄﾞ
-        mapping.put("kansouondo", "kansouondo"); //乾燥温度
-        mapping.put("prnprofile", "prnprofile"); //印刷ﾌﾟﾛﾌｧｲﾙ
-        mapping.put("kansoutime", "kansoutime"); //乾燥時間
-        mapping.put("saatu", "saatu"); //差圧
-        mapping.put("skeegespeed", "skeegespeed"); //ｽｷｰｼﾞｽﾋﾟｰﾄﾞ
-        mapping.put("skeegeangle", "skeegeangle"); //ｽｷｰｼﾞ角度
-        mapping.put("mld", "mld"); //ﾒﾀﾙﾚｲﾀﾞｳﾝ値
-        mapping.put("clearrance", "clearrance"); //ｸﾘｱﾗﾝｽ設定値
-        mapping.put("bikou1", "bikou1"); //備考1
-        mapping.put("bikou2", "bikou2"); //備考2
-        mapping.put("makuatu1", "makuatu1"); //膜厚1
-        mapping.put("makuatu2", "makuatu2"); //膜厚2
-        mapping.put("makuatu3", "makuatu3"); //膜厚3
-        mapping.put("makuatu4", "makuatu4"); //膜厚4
-        mapping.put("makuatu5", "makuatu5"); //膜厚5
-        mapping.put("pastelotno2", "pastelotno2"); //ﾍﾟｰｽﾄﾛｯﾄNo2
-        mapping.put("pastelotno3", "pastelotno3"); //ﾍﾟｰｽﾄﾛｯﾄNo3
-        mapping.put("pastelotno4", "pastelotno4"); //ﾍﾟｰｽﾄﾛｯﾄNo4
-        mapping.put("pastelotno5", "pastelotno5"); //ﾍﾟｰｽﾄﾛｯﾄNo5
-        mapping.put("pastenendo2", "pastenendo2"); //ﾍﾟｰｽﾄ粘度2
-        mapping.put("pastenendo3", "pastenendo3"); //ﾍﾟｰｽﾄ粘度3
-        mapping.put("pastenendo4", "pastenendo4"); //ﾍﾟｰｽﾄ粘度4
-        mapping.put("pastenendo5", "pastenendo5"); //ﾍﾟｰｽﾄ粘度5
-        mapping.put("pasteondo2", "pasteondo2"); //ﾍﾟｰｽﾄ温度2
-        mapping.put("pasteondo3", "pasteondo3"); //ﾍﾟｰｽﾄ温度3
-        mapping.put("pasteondo4", "pasteondo4"); //ﾍﾟｰｽﾄ温度4
-        mapping.put("pasteondo5", "pasteondo5"); //ﾍﾟｰｽﾄ温度5
-        mapping.put("bikou3", "bikou3"); //備考3
-        mapping.put("bikou4", "bikou4"); //備考4
-        mapping.put("bikou5", "bikou5"); //備考5
-        mapping.put("kansouondo2", "kansouondo2"); //乾燥温度2
-        mapping.put("kansouondo3", "kansouondo3"); //乾燥温度3
-        mapping.put("kansouondo4", "kansouondo4"); //乾燥温度4
-        mapping.put("kansouondo5", "kansouondo5"); //乾燥温度5
-        mapping.put("skeegemaisuu2", "skeegemaisuu2"); //ｽｷｰｼﾞ枚数2
-        mapping.put("taperollno1", "taperollno1"); //ﾃｰﾌﾟﾛｰﾙNo1
-        mapping.put("taperollno2", "taperollno2"); //ﾃｰﾌﾟﾛｰﾙNo2
-        mapping.put("taperollno3", "taperollno3"); //ﾃｰﾌﾟﾛｰﾙNo3
-        mapping.put("taperollno4", "taperollno4"); //ﾃｰﾌﾟﾛｰﾙNo4
-        mapping.put("taperollno5", "taperollno5"); //ﾃｰﾌﾟﾛｰﾙNo5
-        mapping.put("pastehinmei", "pastehinmei"); //ﾍﾟｰｽﾄ品名
-        mapping.put("seihanmei", "seihanmei"); //製版名
-        mapping.put("makuatuave_start", "makuatuaveStart"); //ｽﾀｰﾄ時膜厚AVE
-        mapping.put("makuatumax_start", "makuatumaxStart"); //ｽﾀｰﾄ時膜厚MAX
-        mapping.put("makuatumin_start", "makuatuminStart"); //ｽﾀｰﾄ時膜厚MIN
-        mapping.put("start_ptn_dist_x", "startPtnDistX"); //ｽﾀｰﾄ時PTN間距離X
-        mapping.put("start_ptn_dist_y", "startPtnDistY"); //ｽﾀｰﾄ時PTN間距離Y
-        mapping.put("tanto_setting", "tantoSetting"); //ｾｯﾃｨﾝｸﾞ担当者ｺｰﾄﾞ
-        mapping.put("makuatuave_end", "makuatuaveEnd"); //終了時膜厚AVE
-        mapping.put("makuatumax_end", "makuatumaxEnd"); //終了時膜厚MAX
-        mapping.put("makuatumin_end", "makuatuminEnd"); //終了時膜厚MIN
-        mapping.put("end_ptn_dist_x", "endPtnDistX"); //終了時PTN間距離X
-        mapping.put("end_ptn_dist_y", "endPtnDistY"); //終了時PTN間距離Y
-        mapping.put("tanto_end", "tantoEnd"); //終了時担当者ｺｰﾄﾞ
-        mapping.put("kcpno", "kcpno"); //KCPNO
-        mapping.put("sijiondo", "sijiondo"); //指示乾燥温度1
-        mapping.put("sijiondo2", "sijiondo2"); //指示乾燥温度2
-        mapping.put("sijiondo3", "sijiondo3"); //指示乾燥温度3
-        mapping.put("sijiondo4", "sijiondo4"); //指示乾燥温度4
-        mapping.put("sijiondo5", "sijiondo5"); //指示乾燥温度5
-        mapping.put("TensionS", "tensionS"); //ﾃﾝｼｮﾝ開始
-        mapping.put("TensionE", "tensionE"); //ﾃﾝｼｮﾝ終了
-        mapping.put("TensionStemae", "tensionStemae"); //ﾃﾝｼｮﾝ開始手前
-        mapping.put("TensionEtemae", "tensionEtemae"); //ﾃﾝｼｮﾝ終了手前
-        mapping.put("TensionSoku", "tensionSoku"); //ﾃﾝｼｮﾝ開始奥
-        mapping.put("TensionEoku", "tensionEoku"); //ﾃﾝｼｮﾝ終了奥
-        mapping.put("AtuDoATu", "atuDoATu"); //圧胴圧力
-        mapping.put("BladeATu", "bladeATu"); //ﾌﾞﾚｰﾄﾞ圧力
-        mapping.put("AtuDoKeiLEnd", "atuDoKeiLEnd"); //圧胴計(左)終了
-        mapping.put("AtuDoKeiLSide", "atuDoKeiLSide"); //圧胴計(左)サイド
-        mapping.put("AtuDoKeiCenter", "atuDoKeiCenter"); //圧胴計(真ん中)
-        mapping.put("AtuDoKeiRSide", "atuDoKeiRSide"); //圧胴計(右)サイド
-        mapping.put("AtuDoKeiREnd", "atuDoKeiREnd"); //圧胴計(右)終了
-        mapping.put("pkokeibun1", "pkokeibun1"); //ﾍﾟｰｽﾄ固形分1
-        mapping.put("pkokeibun2", "pkokeibun2"); //ﾍﾟｰｽﾄ固形分2
-        mapping.put("petfilmsyurui", "petfilmsyurui"); //PETﾌｨﾙﾑ種類
-        mapping.put("makuatucv_start", "makuatucvStart"); //印刷ｽﾀｰﾄ膜厚CV
-        mapping.put("nijimikasure_start", "nijimikasureStart"); //ｽﾀｰﾄ時ﾆｼﾞﾐ・ｶｽﾚ確認
-        mapping.put("makuatucv_end", "makuatucvEnd"); //印刷ｴﾝﾄﾞ膜厚CV
-        mapping.put("nijimikasure_end", "nijimikasureEnd"); //終了時ﾆｼﾞﾐ・ｶｽﾚ確認
-        mapping.put("printmaisuu", "printmaisuu"); //印刷枚数
-        mapping.put("table_clearrance", "tableClearrance"); //ﾃｰﾌﾞﾙｸﾘｱﾗﾝｽ
-        mapping.put("scraperspeed", "scraperspeed"); //ｽｸﾚｯﾊﾟｰ速度
-        mapping.put("skeegegaikan", "skeegegaikan"); //ｽｷｰｼﾞ外観
-        mapping.put("torokunichiji", "torokunichiji"); //登録日時
-        mapping.put("kosinnichiji", "kosinnichiji"); //更新日時
-        mapping.put("revision", "revision"); //revision
-        mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
-        
-        BeanProcessor beanProcessor = new BeanProcessor(mapping);
-        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
-        ResultSetHandler<List<SrSpsprintScr>> beanHandler = new BeanListHandler<>(SrSpsprintScr.class, rowProcessor);
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerQcdb.query(sql, beanHandler, params.toArray());
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
     }
 
     /**
@@ -1482,24 +1093,11 @@ public class GXHDO101A implements Serializable {
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private List<SubSrSpsprintScr> loadSubSrSpsprintScrInfo(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    private Map loadSubSrSpsprintScrInfo(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev) throws SQLException {
 
         // 印刷SPSｽｸﾘｰﾝ_ｻﾌﾞ情報の取得
-        String sql = "SELECT kojyo,lotno,edaban,makuatsu_start1,makuatsu_start2,"
-                + "makuatsu_start3,makuatsu_start4,makuatsu_start5,"
-                + "makuatsu_start6,makuatsu_start7,makuatsu_start8,"
-                + "makuatsu_start9,start_ptn_dist_x1,start_ptn_dist_x2,"
-                + "start_ptn_dist_x3,start_ptn_dist_x4,start_ptn_dist_x5,"
-                + "start_ptn_dist_y1,start_ptn_dist_y2,start_ptn_dist_y3,"
-                + "start_ptn_dist_y4,start_ptn_dist_y5,makuatsu_end1,"
-                + "makuatsu_end2,makuatsu_end3,makuatsu_end4,"
-                + "makuatsu_end5,makuatsu_end6,makuatsu_end7,"
-                + "makuatsu_end8,makuatsu_end9,end_ptn_dist_x1,"
-                + "end_ptn_dist_x2,end_ptn_dist_x3,end_ptn_dist_x4,"
-                + "end_ptn_dist_x5,end_ptn_dist_y1,end_ptn_dist_y2,"
-                + "end_ptn_dist_y3,end_ptn_dist_y4,end_ptn_dist_y5,"
-                + "torokunichiji,kosinnichiji,revision,'0' AS deleteflag "
+        String sql = "SELECT kojyo "
                 + "FROM sub_sr_spsprint_scr "
                 + "WHERE kojyo = ? AND lotno = ? "
                 + "AND edaban = ? AND revision = ? ";
@@ -1509,60 +1107,9 @@ public class GXHDO101A implements Serializable {
         params.add(lotNo);
         params.add(edaban);
         params.add(rev);
-        
-        Map<String, String> mapping = new HashMap<>();
-        mapping.put("kojyo", "kojyo"); //工場ｺｰﾄﾞ
-        mapping.put("lotno", "lotno"); //ﾛｯﾄNo
-        mapping.put("edaban", "edaban"); //枝番
-        mapping.put("makuatsu_start1", "makuatsuStart1"); //膜厚ｽﾀｰﾄ1
-        mapping.put("makuatsu_start2", "makuatsuStart2"); //膜厚ｽﾀｰﾄ2
-        mapping.put("makuatsu_start3", "makuatsuStart3"); //膜厚ｽﾀｰﾄ3
-        mapping.put("makuatsu_start4", "makuatsuStart4"); //膜厚ｽﾀｰﾄ4
-        mapping.put("makuatsu_start5", "makuatsuStart5"); //膜厚ｽﾀｰﾄ5
-        mapping.put("makuatsu_start6", "makuatsuStart6"); //膜厚ｽﾀｰﾄ6
-        mapping.put("makuatsu_start7", "makuatsuStart7"); //膜厚ｽﾀｰﾄ7
-        mapping.put("makuatsu_start8", "makuatsuStart8"); //膜厚ｽﾀｰﾄ8
-        mapping.put("makuatsu_start9", "makuatsuStart9"); //膜厚ｽﾀｰﾄ9
-        mapping.put("start_ptn_dist_x1", "startPtnDistX1"); //PTN距離X ｽﾀｰﾄ1
-        mapping.put("start_ptn_dist_x2", "startPtnDistX2"); //PTN距離X ｽﾀｰﾄ2
-        mapping.put("start_ptn_dist_x3", "startPtnDistX3"); //PTN距離X ｽﾀｰﾄ3
-        mapping.put("start_ptn_dist_x4", "startPtnDistX4"); //PTN距離X ｽﾀｰﾄ4
-        mapping.put("start_ptn_dist_x5", "startPtnDistX5"); //PTN距離X ｽﾀｰﾄ5
-        mapping.put("start_ptn_dist_y1", "startPtnDistY1"); //PTN距離Y ｽﾀｰﾄ1
-        mapping.put("start_ptn_dist_y2", "startPtnDistY2"); //PTN距離Y ｽﾀｰﾄ2
-        mapping.put("start_ptn_dist_y3", "startPtnDistY3"); //PTN距離Y ｽﾀｰﾄ3
-        mapping.put("start_ptn_dist_y4", "startPtnDistY4"); //PTN距離Y ｽﾀｰﾄ4
-        mapping.put("start_ptn_dist_y5", "startPtnDistY5"); //PTN距離Y ｽﾀｰﾄ5
-        mapping.put("makuatsu_end1", "makuatsuEnd1"); //膜厚ｴﾝﾄﾞ1
-        mapping.put("makuatsu_end2", "makuatsuEnd2"); //膜厚ｴﾝﾄﾞ2
-        mapping.put("makuatsu_end3", "makuatsuEnd3"); //膜厚ｴﾝﾄﾞ3
-        mapping.put("makuatsu_end4", "makuatsuEnd4"); //膜厚ｴﾝﾄﾞ4
-        mapping.put("makuatsu_end5", "makuatsuEnd5"); //膜厚ｴﾝﾄﾞ5
-        mapping.put("makuatsu_end6", "makuatsuEnd6"); //膜厚ｴﾝﾄﾞ6
-        mapping.put("makuatsu_end7", "makuatsuEnd7"); //膜厚ｴﾝﾄﾞ7
-        mapping.put("makuatsu_end8", "makuatsuEnd8"); //膜厚ｴﾝﾄﾞ8
-        mapping.put("makuatsu_end9", "makuatsuEnd9"); //膜厚ｴﾝﾄﾞ9
-        mapping.put("end_ptn_dist_x1", "endPtnDistX1"); //PTN距離X ｴﾝﾄﾞ1
-        mapping.put("end_ptn_dist_x2", "endPtnDistX2"); //PTN距離X ｴﾝﾄﾞ2
-        mapping.put("end_ptn_dist_x3", "endPtnDistX3"); //PTN距離X ｴﾝﾄﾞ3
-        mapping.put("end_ptn_dist_x4", "endPtnDistX4"); //PTN距離X ｴﾝﾄﾞ4
-        mapping.put("end_ptn_dist_x5", "endPtnDistX5"); //PTN距離X ｴﾝﾄﾞ5
-        mapping.put("end_ptn_dist_y1", "endPtnDistY1"); //PTN距離Y ｴﾝﾄﾞ1
-        mapping.put("end_ptn_dist_y2", "endPtnDistY2"); //PTN距離Y ｴﾝﾄﾞ2
-        mapping.put("end_ptn_dist_y3", "endPtnDistY3"); //PTN距離Y ｴﾝﾄﾞ3
-        mapping.put("end_ptn_dist_y4", "endPtnDistY4"); //PTN距離Y ｴﾝﾄﾞ4
-        mapping.put("end_ptn_dist_y5", "endPtnDistY5"); //PTN距離Y ｴﾝﾄﾞ5
-        mapping.put("torokunichiji", "torokunichiji"); //登録日時
-        mapping.put("kosinnichiji", "kosinnichiji"); //更新日時
-        mapping.put("revision", "revision"); //revision
-        mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
-
-        BeanProcessor beanProcessor = new BeanProcessor(mapping);
-        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
-        ResultSetHandler<List<SubSrSpsprintScr>> beanHandler = new BeanListHandler<>(SubSrSpsprintScr.class, rowProcessor);
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerQcdb.query(sql, beanHandler, params.toArray());
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
     }
 
     /**
