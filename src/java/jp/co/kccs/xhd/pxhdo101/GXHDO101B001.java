@@ -351,6 +351,13 @@ public class GXHDO101B001 implements IFormLogic {
             HttpSession session = (HttpSession) externalContext.getSession(false);
             String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
             String lotNo = (String) session.getAttribute("lotNo");
+            // 参照先ﾃﾞｰﾀ[画面ID]
+            String maeGamenID = (String) session.getAttribute("maeGamenID");
+            // ﾛｯﾄ参照画面より遷移してきた場合
+            if (!StringUtil.isEmpty(maeGamenID) && "GXHDO101C012".equals(maeGamenID)) {
+                // 参照先ﾃﾞｰﾀ[ﾛｯﾄNo]
+                lotNo = (String) session.getAttribute("sanshouSakiLotNo");
+            }
             String kojyo = lotNo.substring(0, 3); //工場ｺｰﾄﾞ
             String lotNo8 = lotNo.substring(3, 11); //ﾛｯﾄNo(8桁)
             String edaban = lotNo.substring(11, 14); //枝番
@@ -661,6 +668,13 @@ public class GXHDO101B001 implements IFormLogic {
             HttpSession session = (HttpSession) externalContext.getSession(false);
             String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
             String lotNo = (String) session.getAttribute("lotNo");
+            // 参照先ﾃﾞｰﾀ[画面ID]
+            String maeGamenID = (String) session.getAttribute("maeGamenID");
+            // ﾛｯﾄ参照画面より遷移してきた場合
+            if (!StringUtil.isEmpty(maeGamenID) && "GXHDO101C012".equals(maeGamenID)) {
+                // 参照先ﾃﾞｰﾀ[ﾛｯﾄNo]
+                lotNo = (String) session.getAttribute("sanshouSakiLotNo");
+            }
             String kojyo = lotNo.substring(0, 3); //工場ｺｰﾄﾞ
             String lotNo8 = lotNo.substring(3, 11); //ﾛｯﾄNo(8桁)
             String edaban = lotNo.substring(11, 14); //枝番
@@ -1189,6 +1203,10 @@ public class GXHDO101B001 implements IFormLogic {
         HttpSession session = (HttpSession) externalContext.getSession(false);
         String lotNo = (String) session.getAttribute("lotNo");
         String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
+        // 参照先ﾃﾞｰﾀ[画面ID]
+        String maeGamenID = (String) session.getAttribute("maeGamenID");
+        // 参照先ﾃﾞｰﾀ[ﾛｯﾄNo]
+        String sanshouSakiLotNo = (String) session.getAttribute("sanshouSakiLotNo");
 
         // エラーメッセージリスト
         List<String> errorMessageList = processData.getInitMessageList();
@@ -1235,7 +1253,13 @@ public class GXHDO101B001 implements IFormLogic {
         }
 
         // 画面に取得した情報をセットする。(入力項目以外)
-        setViewItemData(processData, sekkeiData, lotKbnMasData, ownerMasData, shikakariData, lotNo);
+        if (!StringUtil.isEmpty(maeGamenID) && "GXHDO101C012".equals(maeGamenID)) {
+            // ﾛｯﾄ参照画面より遷移してきた場合
+            setViewItemData(processData, sekkeiData, lotKbnMasData, ownerMasData, shikakariData, sanshouSakiLotNo);
+            session.setAttribute("lotNo", sanshouSakiLotNo);
+        } else {
+            setViewItemData(processData, sekkeiData, lotKbnMasData, ownerMasData, shikakariData, lotNo);
+        }
 
         processData.setInitMessageList(errorMessageList);
         return processData;
@@ -1256,6 +1280,7 @@ public class GXHDO101B001 implements IFormLogic {
 
         // ロットNo
         this.setItemData(processData, GXHDO101B001Const.LOTNO, lotNo);
+
         // KCPNO
         this.setItemData(processData, GXHDO101B001Const.KCPNO, StringUtil.nullToBlank(getMapData(shikakariData, "kcpno")));
         // セット数
@@ -1324,9 +1349,20 @@ public class GXHDO101B001 implements IFormLogic {
      */
     private boolean setInputItemData(ProcessData processData, QueryRunner queryRunnerDoc, QueryRunner queryRunnerQcdb,
             String lotNo, String formId) throws SQLException {
+        
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+        String maeGamenID = (String) session.getAttribute("maeGamenID");
+        List<SrSpsprintGra> srSpsprintGraSessionDataList = (List<SrSpsprintGra>) session.getAttribute("srSpsprintGraInfo");
+        List<SubSrSpsprintGra> subSrSpsprintGraSessionDataList = (List<SubSrSpsprintGra>) session.getAttribute("subSrSpsprintGraInfo");
+        // 参照先ﾃﾞｰﾀ[ﾛｯﾄNo]
+        if (!StringUtil.isEmpty(maeGamenID) && "GXHDO101C012".equals(maeGamenID)) {
+            lotNo = (String) session.getAttribute("sanshouSakiLotNo");
 
+        }
         List<SrSpsprintGra> srSpsprintGraDataList = new ArrayList<>();
         List<SubSrSpsprintGra> subSrSpsprintGraDataList = new ArrayList<>();
+        
         String rev = "";
         String jotaiFlg = "";
         String kojyo = lotNo.substring(0, 3);
@@ -1350,14 +1386,29 @@ public class GXHDO101B001 implements IFormLogic {
                 }
 
                 // サブ画面データ設定
-                // 膜厚入力画面データ設定
-                setInputItemDataSubFormC001(null, kojyo, lotNo8, edaban);
+                if (!StringUtil.isEmpty(maeGamenID) && "GXHDO101C012".equals(maeGamenID)) {
+                    if (!srSpsprintGraSessionDataList.isEmpty() && !subSrSpsprintGraSessionDataList.isEmpty()) {
+                        // メイン画面データ設定
+                        setInputItemDataMainForm(processData, srSpsprintGraSessionDataList.get(0));
+                        // 膜厚入力画面データ設定
+                        setInputItemDataSubFormC001(subSrSpsprintGraSessionDataList.get(0), kojyo, lotNo8, edaban);
 
-                // PTN距離X入力画面データ設定
-                setInputItemDataSubFormC002(null);
+                        // PTN距離X入力画面データ設定
+                        setInputItemDataSubFormC002(subSrSpsprintGraSessionDataList.get(0));
 
-                // PTN距離Y入力画面データ設定
-                setInputItemDataSubFormC003(null);
+                        // PTN距離Y入力画面データ設定
+                        setInputItemDataSubFormC003(subSrSpsprintGraSessionDataList.get(0));
+                    }
+                } else {
+                    // 膜厚入力画面データ設定
+                    setInputItemDataSubFormC001(null, kojyo, lotNo8, edaban);
+
+                    // PTN距離X入力画面データ設定
+                    setInputItemDataSubFormC002(null);
+
+                    // PTN距離Y入力画面データ設定
+                    setInputItemDataSubFormC003(null);
+                }
 
                 return true;
             }
@@ -2426,6 +2477,13 @@ public class GXHDO101B001 implements IFormLogic {
             HttpSession session = (HttpSession) externalContext.getSession(false);
             String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
             String lotNo = (String) session.getAttribute("lotNo");
+            // 参照先ﾃﾞｰﾀ[画面ID]
+            String maeGamenID = (String) session.getAttribute("maeGamenID");
+            // ﾛｯﾄ参照画面より遷移してきた場合
+            if (!StringUtil.isEmpty(maeGamenID) && "GXHDO101C012".equals(maeGamenID)) {
+                // 参照元ﾃﾞｰﾀ[ﾛｯﾄNo]
+                lotNo = (String) session.getAttribute("sanshouMotoLotNo");
+            }
             String kojyo = lotNo.substring(0, 3);
             String lotNo8 = lotNo.substring(3, 11);
             String edaban = lotNo.substring(11, 14);
