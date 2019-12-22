@@ -733,4 +733,18 @@ public class StringUtil {
         trimVal = trimRight(trimVal);
         return trimVal;
     }
+    
+    
+     /**
+     * 引数が空またはNULL値の場合、"0"の値を返します。それ以外の場合元の値を返します。
+     *
+     * @param src 文字列
+     * @return 変換値
+     */
+    public static String emptyToZero(String src) {
+        if (isEmpty(src)) {
+            return "0";
+        }
+        return src;
+    }
 }

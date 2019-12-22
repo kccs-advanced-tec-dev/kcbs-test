@@ -26,37 +26,31 @@ import javax.faces.bean.SessionScoped;
  * @author KCSS K.Jo
  * @since  2019/03/06
  */
-@ManagedBean(name = "beanInfoMessage")
+@ManagedBean(name = "beanCompMessage")
 @SessionScoped
-public class InfoMessage implements Serializable {
+public class CompMessage implements Serializable {
 
     /**
-     * 警告メッセージリスト
+     * 完了メッセージ
      */
-    private List<String> infoMessageList;
+    private String compMessage;
 
-    /**
-     * コンストラクタ
+        /**
+     * 完了メッセージ
+     * @return the compMessage
      */
-    public InfoMessage() {
+    public String getCompMessage() {
+        return compMessage;
     }
 
     /**
-     * 警告メッセージリスト
-     *
-     * @return the infoMessageList
+     * 完了メッセージ
+     * @param compMessage the compMessage to set
      */
-    public List<String> getInfoMessageList() {
-        return infoMessageList;
+    public void setCompMessage(String compMessage) {
+        this.compMessage = compMessage;
     }
 
-    /**
-     * 警告メッセージリスト
-     *
-     * @param infoMessageList the infoMessageList to set
-     */
-    public void setInfoMessageList(List<String> infoMessageList) {
-        this.infoMessageList = infoMessageList;
-    }
+
 
 }

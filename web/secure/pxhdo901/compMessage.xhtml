@@ -8,10 +8,10 @@
               dynamic="false" closable="false" closeOnEscape="false" resizable="false">
 
         <h:form id="compMessageForm">
-                <p:outputLabel value="#{gXHDO901ACommon.compMessage}"  />
+                <p:outputLabel value="#{gXHDO901A.compMessage}"  />
                 <BR/>
                 <p:commandButton id="okBtn" style="position:relative;left:120px;top:5px;width:80px;height:35px;"
-                 value="OK" action="#{gXHDO901ACommon.returnPage}"
+                 value="OK" action="#{gXHDO901A.returnPage}"
                  process="@this" update="@this" >
                     <f:param name="returnVal" value="complete"/>
                 </p:commandButton>

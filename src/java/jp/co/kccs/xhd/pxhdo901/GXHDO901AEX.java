@@ -5,6 +5,8 @@
  */
 package jp.co.kccs.xhd.pxhdo901;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +22,7 @@ import jp.co.kccs.xhd.db.model.FXHDM05;
 import static jp.co.kccs.xhd.pxhdo901.GXHDO901A.LOGGER;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
+import jp.co.kccs.xhd.util.StringUtil;
 import jp.co.kccs.xhd.util.ValidateUtil;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.BeanProcessor;
@@ -27,6 +30,9 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.RowProcessor;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import org.apache.commons.dbutils.handlers.MapHandler;
+import org.apache.commons.dbutils.handlers.MapListHandler;
+import org.primefaces.component.datalist.DataList;
 
 
 /**
@@ -316,5 +322,38 @@ public class GXHDO901AEX extends GXHDO901A {
         return requireCheckErrorMessage;
     }
     
+    
+     /**
+     * ページ選択処理
+     *
+     * @param itemIndex 表示項目のインデックス
+     */
+    @Override
+    protected void setPageItemDataList(int itemIndex) {
+
+        // Indexが0未満の場合はリターン
+        if (itemIndex <= 0) {
+            return;
+        }
+
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+
+        DataList itemDataList
+                = (DataList) facesContext.getViewRoot().findComponent(":form:tabMain:itemDataList");
+
+        // 項目インデックス
+        BigDecimal decItemIndex = BigDecimal.valueOf(itemIndex);
+        // 一覧の表示件数
+        BigDecimal decHyojiKensu = new BigDecimal(this.hyojiKensu);
+        // ページ数(インデックス / 表示件数)の切り上げ
+        BigDecimal decPage = decItemIndex.divide(decHyojiKensu, RoundingMode.UP);
+        // 開始インデックス = 表示件数 * (ページ数 - 1)
+        BigDecimal startIdx = decHyojiKensu.multiply(decPage.subtract(BigDecimal.ONE));
+        itemDataList.setFirst(startIdx.intValue());
+
+    }
+    
+     
+     
     
 }

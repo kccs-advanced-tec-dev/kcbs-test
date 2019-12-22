@@ -253,11 +253,13 @@
                 <ui:include src="/secure/pxhdo101/gxhdo101c010.xhtml"/>
                 <ui:include src="/secure/common/initMessage.xhtml"/>
                 <ui:include src="/secure/common/infoMessage.xhtml"/>
+                <ui:include src="/secure/pxhdo901/compMessage.xhtml"/>
                 <t:aliasBean alias="#{gXHDO901ACommon}" value="#{gXHDO901A}">
-                    <ui:include src="/secure/pxhdo901/gxhdo901b.xhtml"/>
-                    <ui:include src="/secure/pxhdo901/compMessage.xhtml"/>
-                    <ui:include src="/secure/common/kikakuError.xhtml"/>
-                </t:aliasBean>
+                        <ui:include src="/secure/pxhdo901/gxhdo901b.xhtml"/>
+                    </t:aliasBean>
+                    <t:aliasBean alias="#{gXHDO101Common}" value="#{gXHDO901A}">
+                        <ui:include src="/secure/common/kikakuError.xhtml"/>
+                  </t:aliasBean>
             </div>
         </h:form>
         

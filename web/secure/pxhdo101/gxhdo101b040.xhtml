@@ -30,21 +30,25 @@
                 g_macAddr = '#{sessionInfo.macAddr}';
                 //location
                 g_location = '#{myMsg.NotAvailable}';
-                g_prgname = 'gxhdo101b040.xhtml(#{gXHDO101B040.formId})';
+                g_prgname = 'gxhdo101b040.xhtml(#{gXHDO101B040A.formId})';
 
                 var interval_id = setInterval(getLocation, #{myParam.sendLocInterval});
             });
             var pointY;
+            var selectTab = 'tab1';
             function subFormOpen() {
                 pointY = $(window).scrollTop();
                 document.getElementById("mainForm").style.setProperty("display", "none");
                 document.getElementById("mainForm").style.setProperty("position", "fixed");
+                document.getElementById("mainForm").style.setProperty("width", #{adjustModels.menuWidth} + "px");
                 document.getElementById("mainForm").style.setProperty("Top", -(pointY) + 34 + "px");
                 document.getElementById("mainForm").style.removeProperty("display");
+                
             }
             function subFormClose() {
                 document.getElementById("mainForm").style.setProperty("display", "none");
                 document.getElementById("mainForm").style.removeProperty("position");
+                document.getElementById("mainForm").style.removeProperty("width");
                 document.getElementById("mainForm").style.removeProperty("Top");
                 document.getElementById("mainForm").style.removeProperty("display");
                 $(window).scrollTop(pointY);
@@ -72,16 +76,16 @@
     </h:head>
     <h:body style="padding-top:30px;" >
         <f:metadata>
-            <f:viewAction action="#{gXHDO101B040.init(adjustModels.menuWidth)}"/>
+            <f:viewAction action="#{gXHDO101B040A.init(adjustModels.menuWidth)}"/>
         </f:metadata>
         <div style="margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;">
-            <h:outputText style="background:#{gXHDO101B040.titleInfo.bgColor};color: #{gXHDO101B040.titleInfo.fontColor}; 
-                          font-size:#{gXHDO101B040.titleInfo.fontSize}px;" value="#{gXHDO101B040.titleInfo.formName}"/>
+            <h:outputText style="background:#{gXHDO101B040A.titleInfo.bgColor};color: #{gXHDO101B040A.titleInfo.fontColor}; 
+                          font-size:#{gXHDO101B040A.titleInfo.fontSize}px;" value="#{gXHDO101B040A.titleInfo.formName}"/>
         </div>
         <h:form id="form" style="" onkeypress="if (event.keyCode === 13) {
                     return false;
                 }">
-            <div id="mainDiv" style="#{gXHDO101B040.mainDivStyle}">
+            <div id="mainDiv" style="#{gXHDO101B040A.mainDivStyle}">
                 <div id="mainForm" >
 
 
@@ -92,38 +96,38 @@
                             <f:param name="returnVal" value="return"/>
                             <f:attribute name="returnVal" value="return"/>
                         </p:commandButton>
-                        <h:outputText style="font-size:#{gXHDO101B040.titleInfo.fontSize}px; display: none;  #{gXHDO101B040.styleDisplayNone}" value="#{gXHDO101B040.jotaiDisplay}"/>        
+                        <h:outputText style="font-size:#{gXHDO101B040A.titleInfo.fontSize}px; display: none;  #{gXHDO101B040A.styleDisplayNone}" value="#{gXHDO101B040A.jotaiDisplay}"/>        
                     </div>
                     <p:growl id="growlMessage" showDetail="false" sticky="true" escape="false" />
                     <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
                         <f:facet name="message">
-                            <h:outputText value="#{gXHDO101B040.processData.getWarnMessage()}" escape="false"/>
+                            <h:outputText value="#{gXHDO101B040A.processData.getWarnMessage()}" escape="false"/>
                         </f:facet>
                         <p:commandButton id="warnOk" value="OK" styleClass="ui-conf-commandbtn-def1"
-                                         actionListener="#{gXHDO101B040.processWarnOk()}"
+                                         actionListener="#{gXHDO101B040A.processWarnOk()}"
                                          process="@form"
                                          update="@form"
                                          oncomplete="if('warning'!=args.firstParam){PF('cd').hide(); cmdButtonOncomplete(args);} else {PF('cd').show();}"/>
                         <p:commandButton id="warnCancel" value="Cancel" class="ui-conf-commandbtn-cancel" onclick="PF('cd').hide();" type="button" />
                     </p:confirmDialog>
                     <br/>
-                    <p:panel id="headerPanel" style="margin-bottom:4px; #{gXHDO101B040.styleDisplayNone}">
-                        <ui:repeat value="#{gXHDO101B040.buttonListTop}" var="item" varStatus="stat">
+                    <p:panel id="headerPanel" style="margin-bottom:4px; #{gXHDO101B040A.styleDisplayNone}">
+                        <ui:repeat value="#{gXHDO101B040A.buttonListTop}" var="item" varStatus="stat">
                             <p:commandButton id="buttonId" value="#{item.buttonName}" rendered="#{item.render}" disabled="#{!item.enabled}"
                                              style="margin-left:4px;margin-bottom:2px;font-size:#{item.fontSize}px;color:#{item.fontColor};background:#{item.backColor};"
-                                             actionListener="#{gXHDO101B040.btnClick(item.buttonId)}" process="@form" update="@form" async="false"
+                                             actionListener="#{gXHDO101B040A.btnClick(item.buttonId)}" process="@form" update="@form" async="false"
                                              oncomplete="cmdButtonOncomplete(args);" />       
                         </ui:repeat>
                     </p:panel>
 
 
-                    <p:tabView id="tabV_joken" orientation="top" scrollable="true" class="tab_view" style="#{gXHDO101B040.styleDisplayNone}" >
+                    <p:tabView id="tabMain" orientation="top" scrollable="true" class="tab_view" style="#{gXHDO101B040A.styleDisplayNone}" >
 
-                        <p:ajax event="tabChange" listener="#{gXHDO101B040.onTabChange}" async="false" oncomplete="tabChange(args);"  />
+                        <p:ajax event="tabChange" listener="#{gXHDO101B040A.onTabChange}" async="false" oncomplete="tabChange(args);"  />
                         <p:tab title="製品情報" titleStyle="font-size:0.9em;" id="tab1" >
                             <div class="tab_div">
-                                <p:dataList id="itemDataList" value="#{gXHDO101B040.itemList}" var="item" type="none"  itemType="none" paginator="true" rows="#{gXHDO101B040.hyojiKensu}" styleClass="repeated-form;ui-paginator">
-                                    <ui:fragment rendered="#{gXHDO101B040.itemRendered}">
+                                <p:dataList id="itemDataList" value="#{gXHDO101B040A.itemList}" var="item" type="none"  itemType="none" paginator="true" rows="#{gXHDO101B040A.hyojiKensu}" styleClass="repeated-form;ui-paginator">
+                                    <ui:fragment rendered="#{gXHDO101B040A.itemRendered}">
                                         <p:panel id="itemPanel" style="background:#{item.backColor1}; min-height:48px;">
                                             <h:outputText id="label1" rendered="#{item.render1}" value="#{item.label1}"
                                                           style="margin-left:8px;font-size:#{item.fontSize1}px;color:#{item.fontColor1};vertical-align: middle;"/>
@@ -134,20 +138,20 @@
                                                           style="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;#{item.customStyleInput}"/>
 
                                             <p:inputText id="textValue" rendered="#{(item.renderInputText) and (!item.renderOutputLabel)}" value="#{item.value}" maxlength="#{item.displayMaxLength}"
-                                                         style="margin-left:8px;width:#{item.displayMaxLength}em; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO101B040.maxWidthInputCol}px;#{item.customStyleInput}">
+                                                         style="margin-left:8px;width:#{item.displayMaxLength}em; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO101B040A.maxWidthInputCol}px;#{item.customStyleInput}">
                                                 <p:ajax event="blur" process="@this" update="@this" listener="#{item.checkByte()}"  async="false"/>
                                             </p:inputText>
 
                                             <p:calendar id="calendarDate" rendered="#{item.renderInputDate}" pattern="yyMMdd" value="#{item.value}" maxlength="#{item.displayMaxLength}" class="calendarDate"
-                                                        style="margin-left:8px; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO101B040.maxWidthInputCol}px;#{item.customStyleInput}" />
+                                                        style="margin-left:8px; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO101B040A.maxWidthInputCol}px;#{item.customStyleInput}" />
                                             <p:calendar id="calendarTime" rendered="#{item.renderInputTime}" value="#{item.value}" pattern="HHmm" timeOnly="true" class="calendarTime" 
-                                                        style="margin-left:8px; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO101B040.maxWidthInputCol}px;#{item.customStyleInput}" />
+                                                        style="margin-left:8px; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO101B040A.maxWidthInputCol}px;#{item.customStyleInput}" />
                                             <p:inputNumber id="numberValue" rendered="#{item.renderInputNumber}" value="#{item.value}" thousandSeparator="" roundMethod="D"
                                                            decimalPlaces="#{item.numberDecimalPlaces}" maxValue="#{item.numberMaxValue}" minValue="#{item.numberMinValue}" size="#{item.displayMaxLength}"
-                                                           inputStyle="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO101B040.maxWidthInputCol}px;#{item.customStyleInput}">
+                                                           inputStyle="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO101B040A.maxWidthInputCol}px;#{item.customStyleInput}">
                                             </p:inputNumber>
                                             <p:selectOneMenu id="comboBoxValue" rendered="#{item.renderInputSelect}" value="#{item.value}" styleClass="selectMenu"
-                                                             style="margin-left:8px;width:#{item.inputLength}em;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO101B040.maxWidthInputCol}px;#{item.customStyleInput}">
+                                                             style="margin-left:8px;width:#{item.inputLength}em;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO101B040A.maxWidthInputCol}px;#{item.customStyleInput}">
                                                 <f:selectItems value="#{item.selectMenuItem}"/>
                                             </p:selectOneMenu>
                                             <p:selectOneRadio id="radioValue" rendered="#{item.renderInputRadio}" value="#{item.value}" styleClass="selectRadio"
@@ -793,15 +797,15 @@
                                         <thead>
                                             <tr style="text-align: center;">
                                                 <th style="min-width:150px;"></th>
-                                                <th style="min-width:140px;"><p:commandLink value="BIN1" style="color: blue;"  oncomplete="PF('W_dlg_gxhdo111c').show();" /></th>
-                                                <th style="min-width:140px;"><p:commandLink value="BIN2" style="color: blue;"  oncomplete="PF('W_dlg_gxhdo111c').show();" /></th>
-                                                <th style="min-width:140px;"><p:commandLink value="BIN3" style="color: blue;"  oncomplete="PF('W_dlg_gxhdo111c').show();" /></th>
-                                                <th style="min-width:140px;"><p:commandLink value="BIN4" style="color: blue;"  oncomplete="PF('W_dlg_gxhdo111c').show();" /></th>
-                                                <th style="min-width:140px;"><p:commandLink value="BIN5" style="color: blue;"  oncomplete="PF('W_dlg_gxhdo111c').show();" /></th>
-                                                <th style="min-width:140px;"><p:commandLink value="BIN6" style="color: blue;"  oncomplete="PF('W_dlg_gxhdo111c').show();" /></th>
-                                                <th style="min-width:140px;"><p:commandLink value="BIN7" style="color: blue;"  oncomplete="PF('W_dlg_gxhdo111c').show();" /></th>
-                                                <th style="min-width:140px;"><p:commandLink value="BIN8" style="color: blue;"  oncomplete="PF('W_dlg_gxhdo111c').show();" /></th>
-                                                <th style="min-width:140px;"><p:commandLink value="BIN9" style="color: blue;"  oncomplete="PF('W_dlg_gxhdo111c').show();" /></th>
+                                                <th style="min-width:140px;"><h:outputText  value="BIN1"/></th>
+                                                <th style="min-width:140px;"><h:outputText  value="BIN2"/></th>
+                                                <th style="min-width:140px;"><h:outputText  value="BIN3"/></th>
+                                                <th style="min-width:140px;"><h:outputText  value="BIN4"/></th>
+                                                <th style="min-width:140px;"><h:outputText  value="BIN5"/></th>
+                                                <th style="min-width:140px;"><h:outputText  value="BIN6"/></th>
+                                                <th style="min-width:140px;"><h:outputText  value="BIN7"/></th>
+                                                <th style="min-width:140px;"><h:outputText  value="BIN8"/></th>
+                                                <th style="min-width:140px;"><h:outputText  value="BIN9"/></th>
                                                 <th style="min-width:140px;"><h:outputText value="－"/></th>
                                                 <th style="min-width:140px;"><h:outputText value="サンプル"/></th>
                                             </tr>
@@ -2139,7 +2143,7 @@
 
                                                 </td>
                                                 <td style="border-left: hidden;">
-                                                    <h:outputText  value="ケ"/>
+                                                    <h:outputText  value="ｹ"/>
                                                 </td>
                                                 <td class="counter_sosu_td" rowspan="4">
                                                     <p:inputText id="counterSosuT" styleClass="counter_sosu_input_text"
@@ -2157,7 +2161,7 @@
                                                     </p:inputNumber>
                                                 </td>
                                                 <td style="border-left: hidden;" rowspan="4">
-                                                    <h:outputText  value="ケ"/>
+                                                    <h:outputText  value="ｹ"/>
                                                 </td>
 
                                                 <td class="ryohin_juryo_td" rowspan="2">
@@ -2254,7 +2258,7 @@
 
                                                 </td>
                                                 <td style="border-left: hidden; width: 25px;">
-                                                    <h:outputText  value="ケ"/>
+                                                    <h:outputText  value="ｹ"/>
                                                 </td>
                                             </tr>
                                             <tr>
@@ -2312,12 +2316,12 @@
 
                                                 </td>
                                                 <td style="border-left: hidden; width: 25px;">
-                                                    <h:outputText  value="ケ"/>
+                                                    <h:outputText  value="ｹ"/>
                                                 </td>
 
-                                                <td style="min-width:250px; background-color: lightgrey; text-align: center;" colspan="2"><h:outputText value="良品個数"/></td>
+                                                <th style="min-width:250px; background-color: lightgrey; text-align: center;" colspan="2"><h:outputText value="良品個数"/></th>
 
-                                                <td style="min-width:250px; background-color: lightgrey; text-align: center;" colspan="2"><h:outputText value="確認者"/></td>
+                                                <th style="min-width:250px; background-color: lightgrey; text-align: center;" colspan="2"><h:outputText value="確認者"/></th>
                                             </tr>
                                             <tr>
                                                 <th class="kosa_th">
@@ -2373,7 +2377,7 @@
 
                                                 </td>
                                                 <td style="border-left: hidden; width: 25px;">
-                                                    <h:outputText  value="ケ"/>
+                                                    <h:outputText  value="ｹ"/>
                                                 </td>
 
                                                 <td class="ryohin_kosu_td" rowspan="2">
@@ -2393,7 +2397,7 @@
                                                 </td>
 
                                                 <td style="border-left: hidden; width: 25px;"  rowspan="2">
-                                                    <h:outputText  value="ケ"/>
+                                                    <h:outputText  value="ｹ"/>
                                                 </td>
 
 
@@ -2427,13 +2431,14 @@
                 </div>
                 <div>
 
-                    <ui:include src="/secure/pxhdo111/gxhdo111c.xhtml"/>
                     <ui:include src="/secure/common/initMessage.xhtml"/>
-                    <t:aliasBean alias="#{gXHDO901ACommon}" value="#{gXHDO101B040}">
+                    <t:aliasBean alias="#{gXHDO901ACommon}" value="#{gXHDO101B040A}">
                         <ui:include src="/secure/pxhdo901/gxhdo901b.xhtml"/>
-                        <ui:include src="/secure/pxhdo901/compMessage.xhtml"/>
-                        <ui:include src="/secure/common/kikakuError.xhtml"/>
                     </t:aliasBean>
+                    <t:aliasBean alias="#{gXHDO101Common}" value="#{gXHDO101B040A}">
+                        <ui:include src="/secure/common/compMessage.xhtml"/>
+                        <ui:include src="/secure/common/kikakuError.xhtml"/>
+                  </t:aliasBean>
                 </div>
             </div>
         </h:form>

@@ -186,7 +186,7 @@ public class GXHDO901A implements Serializable {
     /**
      * 警告ダイアログ
      */
-    private boolean warnDialogRendered = false;
+    protected boolean warnDialogRendered = false;
     /**
      * ユーザー認証：ユーザー
      */
@@ -204,7 +204,7 @@ public class GXHDO901A implements Serializable {
     /**
      * 一覧の表示件数
      */
-    private String hyojiKensu;
+    protected String hyojiKensu;
 
     /**
      * displayNoneを設定する(致命的な画面表示エラー時)
@@ -1556,7 +1556,7 @@ public class GXHDO901A implements Serializable {
      *
      * @param itemIndex 表示項目のインデックス
      */
-    private void setPageItemDataList(int itemIndex) {
+    protected void setPageItemDataList(int itemIndex) {
 
         // Indexが0未満の場合はリターン
         if (itemIndex <= 0) {
