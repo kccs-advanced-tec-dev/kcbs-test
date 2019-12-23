@@ -230,6 +230,21 @@ public class SrDenkitokuseiesi {
      * 電極清掃･動作
      */
     private String denkyokuseisou;
+    
+    /**
+     * 選別順序変更
+     */
+    private String senbetujunjo;
+
+    /**
+     * 設定ﾓｰﾄﾞ確認
+     */
+    private String setteikakunin;
+
+    /**
+     * 配線確認
+     */
+    private String haisenkakunin;
 
     /**
      * 製品投入状態
@@ -530,6 +545,56 @@ public class SrDenkitokuseiesi {
      * 耐電圧設定条件 IR⑧ 充電時間
      */
     private Integer irjudenjikan8;
+    
+    /**
+     * RDC1 ﾚﾝｼﾞ
+     */
+    private BigDecimal rdcrange1;
+
+    /**
+     * RDC1 判定値
+     */
+    private BigDecimal rdchantei1;
+
+    /**
+     * RDC2 ﾚﾝｼﾞ
+     */
+    private BigDecimal rdcrange2;
+
+    /**
+     * RDC2 判定値
+     */
+    private BigDecimal rdchantei2;
+
+    /**
+     * DROP1,3 PC
+     */
+    private BigDecimal drop13pc;
+
+    /**
+     * DROP1,3 PS
+     */
+    private BigDecimal drop13ps;
+
+    /**
+     * DROP1,3 MS･DC
+     */
+    private BigDecimal drop13msdc;
+
+    /**
+     * DROP2,4 PC
+     */
+    private BigDecimal drop24pc;
+
+    /**
+     * DROP2,4 PS
+     */
+    private BigDecimal drop24ps;
+
+    /**
+     * DROP2,4 MS･DC
+     */
+    private BigDecimal drop24msdc;
 
     /**
      * BIN1 %区分(設定値)
@@ -1729,6 +1794,54 @@ public class SrDenkitokuseiesi {
     }
 
     /**
+     * 選別順序変更
+     * @return the senbetujunjo
+     */
+    public String getSenbetujunjo() {
+        return senbetujunjo;
+    }
+
+    /**
+     * 選別順序変更
+     * @param senbetujunjo the senbetujunjo to set
+     */
+    public void setSenbetujunjo(String senbetujunjo) {
+        this.senbetujunjo = senbetujunjo;
+    }
+
+    /**
+     * 設定ﾓｰﾄﾞ確認
+     * @return the setteikakunin
+     */
+    public String getSetteikakunin() {
+        return setteikakunin;
+    }
+
+    /**
+     * 設定ﾓｰﾄﾞ確認
+     * @param setteikakunin the setteikakunin to set
+     */
+    public void setSetteikakunin(String setteikakunin) {
+        this.setteikakunin = setteikakunin;
+    }
+
+    /**
+     * 配線確認
+     * @return the haisenkakunin
+     */
+    public String getHaisenkakunin() {
+        return haisenkakunin;
+    }
+
+    /**
+     * 配線確認
+     * @param haisenkakunin the haisenkakunin to set
+     */
+    public void setHaisenkakunin(String haisenkakunin) {
+        this.haisenkakunin = haisenkakunin;
+    }
+
+    /**
      * 製品投入状態
      * @return the seihintounyuujotai
      */
@@ -2686,6 +2799,166 @@ public class SrDenkitokuseiesi {
      */
     public void setIrjudenjikan8(Integer irjudenjikan8) {
         this.irjudenjikan8 = irjudenjikan8;
+    }
+
+    /**
+     * RDC1 ﾚﾝｼﾞ
+     * @return the rdcrange1
+     */
+    public BigDecimal getRdcrange1() {
+        return rdcrange1;
+    }
+
+    /**
+     * RDC1 ﾚﾝｼﾞ
+     * @param rdcrange1 the rdcrange1 to set
+     */
+    public void setRdcrange1(BigDecimal rdcrange1) {
+        this.rdcrange1 = rdcrange1;
+    }
+
+    /**
+     * RDC1 判定値
+     * @return the rdchantei1
+     */
+    public BigDecimal getRdchantei1() {
+        return rdchantei1;
+    }
+
+    /**
+     * RDC1 判定値
+     * @param rdchantei1 the rdchantei1 to set
+     */
+    public void setRdchantei1(BigDecimal rdchantei1) {
+        this.rdchantei1 = rdchantei1;
+    }
+
+    /**
+     * RDC2 ﾚﾝｼﾞ
+     * @return the rdcrange2
+     */
+    public BigDecimal getRdcrange2() {
+        return rdcrange2;
+    }
+
+    /**
+     * RDC2 ﾚﾝｼﾞ
+     * @param rdcrange2 the rdcrange2 to set
+     */
+    public void setRdcrange2(BigDecimal rdcrange2) {
+        this.rdcrange2 = rdcrange2;
+    }
+
+    /**
+     * RDC2 判定値
+     * @return the rdchantei2
+     */
+    public BigDecimal getRdchantei2() {
+        return rdchantei2;
+    }
+
+    /**
+     * RDC2 判定値
+     * @param rdchantei2 the rdchantei2 to set
+     */
+    public void setRdchantei2(BigDecimal rdchantei2) {
+        this.rdchantei2 = rdchantei2;
+    }
+
+    /**
+     * DROP1,3 PC
+     * @return the drop13pc
+     */
+    public BigDecimal getDrop13pc() {
+        return drop13pc;
+    }
+
+    /**
+     * DROP1,3 PC
+     * @param drop13pc the drop13pc to set
+     */
+    public void setDrop13pc(BigDecimal drop13pc) {
+        this.drop13pc = drop13pc;
+    }
+
+    /**
+     * DROP1,3 PS
+     * @return the drop13ps
+     */
+    public BigDecimal getDrop13ps() {
+        return drop13ps;
+    }
+
+    /**
+     * DROP1,3 PS
+     * @param drop13ps the drop13ps to set
+     */
+    public void setDrop13ps(BigDecimal drop13ps) {
+        this.drop13ps = drop13ps;
+    }
+
+    /**
+     * DROP1,3 MS･DC
+     * @return the drop13msdc
+     */
+    public BigDecimal getDrop13msdc() {
+        return drop13msdc;
+    }
+
+    /**
+     * DROP1,3 MS･DC
+     * @param drop13msdc the drop13msdc to set
+     */
+    public void setDrop13msdc(BigDecimal drop13msdc) {
+        this.drop13msdc = drop13msdc;
+    }
+
+    /**
+     * DROP2,4 PC
+     * @return the drop24pc
+     */
+    public BigDecimal getDrop24pc() {
+        return drop24pc;
+    }
+
+    /**
+     * DROP2,4 PC
+     * @param drop24pc the drop24pc to set
+     */
+    public void setDrop24pc(BigDecimal drop24pc) {
+        this.drop24pc = drop24pc;
+    }
+
+    /**
+     * DROP2,4 PS
+     * @return the drop24ps
+     */
+    public BigDecimal getDrop24ps() {
+        return drop24ps;
+    }
+
+    /**
+     * DROP2,4 PS
+     * @param drop24ps the drop24ps to set
+     */
+    public void setDrop24ps(BigDecimal drop24ps) {
+        this.drop24ps = drop24ps;
+    }
+
+    /**
+     * DROP2,4 MS･DC
+     * @return the drop24msdc
+     */
+    public BigDecimal getDrop24msdc() {
+        return drop24msdc;
+    }
+
+    /**
+     * DROP2,4 MS･DC
+     * @param drop24msdc the drop24msdc to set
+     */
+    public void setDrop24msdc(BigDecimal drop24msdc) {
+        this.drop24msdc = drop24msdc;
     }
 
     /**
