@@ -1,0 +1,20 @@
+[
+    {"no":"1","id":"lotno","columnname":"ﾛｯﾄNo.","type":"String","format":""},
+    {"no":"2","id":"kcpno","columnname":"KCPNO","type":"String","format":""},
+    {"no":"3","id":"goukicode","columnname":"号機","type":"String","format":""},
+    {"no":"4","id":"syorikaisuu","columnname":"回数","type":"Integer","format":"9,0"},
+    {"no":"5","id":"tantousyacode","columnname":"開始担当者","type":"String","format":""},
+    {"no":"6","id":"kansoujikan","columnname":"乾燥時間","type":"String","format":""},
+    {"no":"7","id":"ondo","columnname":"温度(℃)","type":"String","format":""},
+    {"no":"8","id":"sinkuudo","columnname":"真空度","type":"String","format":""},
+    {"no":"9","id":"kaisinichiji","columnname":"開始日時","type":"timestamp","format":"yyyy/mm/dd hh:mm:ss"},
+    {"no":"10","id":"bikou","columnname":"備考1","type":"String","format":""},
+    {"no":"11","id":"tokuisaki","columnname":"客先","type":"String","format":""},
+    {"no":"12","id":"lotkubuncode","columnname":"ﾛｯﾄ区分","type":"String","format":""},
+    {"no":"13","id":"ownercode","columnname":"ｵｰﾅｰ","type":"String","format":""},
+    {"no":"14","id":"syorisuu","columnname":"処理数(個)","type":"Integer","format":"9,0"},
+    {"no":"15","id":"sagyoubasyo","columnname":"作業場所","type":"String","format":""},
+    {"no":"16","id":"barrelkaishinichiji","columnname":"ﾊﾞﾚﾙ洗浄開始日時","type":"timestamp","format":"yyyy/mm/dd hh:mm:ss"},
+    {"no":"17","id":"barreltantousya","columnname":"ﾊﾞﾚﾙ洗浄担当者","type":"String","format":""},
+    {"no":"18","id":"bikou2","columnname":"備考2","type":"String","format":""}
+]
