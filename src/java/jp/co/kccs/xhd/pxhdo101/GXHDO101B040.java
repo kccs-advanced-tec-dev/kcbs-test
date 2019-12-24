@@ -62,7 +62,7 @@ import org.apache.commons.dbutils.handlers.MapListHandler;
  * GXHD101b040(電気特性)
  *
  * @author SYSNAVI K.Hisanaga
- * @since 2019/09/06
+ * @since 2019/12/05
  */
 public class GXHDO101B040 implements IFormLogic {
 
@@ -233,6 +233,160 @@ public class GXHDO101B040 implements IFormLogic {
 
     }
 
+    private List<String> checkExistFormItem(ProcessData processData) {
+        List<String> errorItemNameList = new ArrayList<>();
+
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.PRECHARGE_DENATSU1, "・ﾌﾟﾘﾁｬｰｼﾞ条件 PC① 電圧");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.PRECHARGE_JUDEN_TIME1, "・ﾌﾟﾘﾁｬｰｼﾞ条件 PC① 充電時間");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.PRECHARGE_DENATSU2, "・ﾌﾟﾘﾁｬｰｼﾞ条件 PC② 電圧");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.PRECHARGE_JUDEN_TIME2, "・ﾌﾟﾘﾁｬｰｼﾞ条件 PC② 充電時間");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.PRECHARGE_DENATSU3, "・ﾌﾟﾘﾁｬｰｼﾞ条件 PC③ 電圧");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.PRECHARGE_JUDEN_TIME3, "・ﾌﾟﾘﾁｬｰｼﾞ条件 PC③ 充電時間");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.PRECHARGE_DENATSU4, "・ﾌﾟﾘﾁｬｰｼﾞ条件 PC④ 電圧");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.PRECHARGE_JUDEN_TIME4, "・ﾌﾟﾘﾁｬｰｼﾞ条件 PC④ 充電時間");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_DENATSU1, "・耐電圧設定条件 IR① 電圧");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_HANTEICHI1, "・耐電圧設定条件 IR① 判定値");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_JUDEN_TIME1, "・耐電圧設定条件 IR① 充電時間");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_DENATSU2, "・耐電圧設定条件 IR② 電圧");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_HANTEICHI2, "・耐電圧設定条件 IR② 判定値");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_JUDEN_TIME2, "・耐電圧設定条件 IR② 充電時間");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_DENATSU3, "・耐電圧設定条件 IR③ 電圧");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_HANTEICHI3, "・耐電圧設定条件 IR③ 判定値");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_JUDEN_TIME3, "・耐電圧設定条件 IR③ 充電時間");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_DENATSU4, "・耐電圧設定条件 IR④ 電圧");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_HANTEICHI4, "・耐電圧設定条件 IR④ 判定値");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_JUDEN_TIME4, "・耐電圧設定条件 IR④ 充電時間");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_DENATSU5, "・耐電圧設定条件 IR⑤ 電圧");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_HANTEICHI5, "・耐電圧設定条件 IR⑤ 判定値");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_JUDEN_TIME5, "・耐電圧設定条件 IR⑤ 充電時間");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_DENATSU6, "・耐電圧設定条件 IR⑥ 電圧");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_HANTEICHI6, "・耐電圧設定条件 IR⑥ 判定値");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_JUDEN_TIME6, "・耐電圧設定条件 IR⑥ 充電時間");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_DENATSU7, "・耐電圧設定条件 IR⑦ 電圧");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_HANTEICHI7, "・耐電圧設定条件 IR⑦ 判定値");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_JUDEN_TIME7, "・耐電圧設定条件 IR⑦ 充電時間");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_DENATSU8, "・耐電圧設定条件 IR⑧ 電圧");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_HANTEICHI8, "・耐電圧設定条件 IR⑧ 判定値");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_JUDEN_TIME8, "・耐電圧設定条件 IR⑧ 充電時間");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_PERCENT_KBN, "・BIN1 %区分(設定値)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_SENBETSU_KBN, "・BIN1 選別区分");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_KEIRYOGO_SURYO, "・BIN1 計量後数量");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_COUNTER_SU, "・BIN1 ｶｳﾝﾀｰ数");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_GOSARITSU, "・BIN1 誤差率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_MACHINE_FURYORITSU, "・BIN1 ﾏｼﾝ不良率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_NUKITORIKEKKA_S, "・BIN1 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_NUKITORIKEKKA_T, "・BIN1 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_SHIN_FURYORITSU, "・BIN1 真の不良率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_KEKKA_CHECK, "・BIN1 結果ﾁｪｯｸ");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_PERCENT_KBN, "・BIN2 %区分(設定値)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_SENBETSU_KBN, "・BIN2 選別区分");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_KEIRYOGO_SURYO, "・BIN2 計量後数量");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_COUNTER_SU, "・BIN2 ｶｳﾝﾀｰ数");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_GOSARITSU, "・BIN2 誤差率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_MACHINE_FURYORITSU, "・BIN2 ﾏｼﾝ不良率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_NUKITORIKEKKA_S, "・BIN2 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_NUKITORIKEKKA_T, "・BIN2 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_SHIN_FURYORITSU, "・BIN2 真の不良率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_KEKKA_CHECK, "・BIN2 結果ﾁｪｯｸ");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_PERCENT_KBN, "・BIN3 %区分(設定値)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_SENBETSU_KBN, "・BIN3 選別区分");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_KEIRYOGO_SURYO, "・BIN3 計量後数量");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_COUNTER_SU, "・BIN3 ｶｳﾝﾀｰ数");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_GOSARITSU, "・BIN3 誤差率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_MACHINE_FURYORITSU, "・BIN3 ﾏｼﾝ不良率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_NUKITORIKEKKA_S, "・BIN3 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_NUKITORIKEKKA_T, "・BIN3 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_SHIN_FURYORITSU, "・BIN3 真の不良率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_KEKKA_CHECK, "・BIN3 結果ﾁｪｯｸ");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_PERCENT_KBN, "・BIN4 %区分(設定値)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_SENBETSU_KBN, "・BIN4 選別区分");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_KEIRYOGO_SURYO, "・BIN4 計量後数量");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_COUNTER_SU, "・BIN4 ｶｳﾝﾀｰ数");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_GOSARITSU, "・BIN4 誤差率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_MACHINE_FURYORITSU, "・BIN4 ﾏｼﾝ不良率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_NUKITORIKEKKA_S, "・BIN4 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_NUKITORIKEKKA_T, "・BIN4 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_SHIN_FURYORITSU, "・BIN4 真の不良率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_KEKKA_CHECK, "・BIN4 結果ﾁｪｯｸ");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_PERCENT_KBN, "・BIN5 %区分(設定値)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_SENBETSU_KBN, "・BIN5 選別区分");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_KEIRYOGO_SURYO, "・BIN5 計量後数量");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_COUNTER_SU, "・BIN5 ｶｳﾝﾀｰ数");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_GOSARITSU, "・BIN5 誤差率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_MACHINE_FURYORITSU, "・BIN5 ﾏｼﾝ不良率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_NUKITORIKEKKA_S, "・BIN5 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_NUKITORIKEKKA_T, "・BIN5 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_SHIN_FURYORITSU, "・BIN5 真の不良率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_KEKKA_CHECK, "・BIN5 結果ﾁｪｯｸ");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_FUKURO_CHECK, "・BIN5 袋ﾁｪｯｸ");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_PERCENT_KBN, "・BIN6 %区分(設定値)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_SENBETSU_KBN, "・BIN6 選別区分");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_KEIRYOGO_SURYO, "・BIN6 計量後数量");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_COUNTER_SU, "・BIN6 ｶｳﾝﾀｰ数");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_GOSARITSU, "・BIN6 誤差率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_MACHINE_FURYORITSU, "・BIN6 ﾏｼﾝ不良率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_NUKITORIKEKKA_S, "・BIN6 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_NUKITORIKEKKA_T, "・BIN6 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_SHIN_FURYORITSU, "・BIN6 真の不良率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_KEKKA_CHECK, "・BIN6 結果ﾁｪｯｸ");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_FUKURO_CHECK, "・BIN6 袋ﾁｪｯｸ");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN7_PERCENT_KBN, "・BIN7 %区分(設定値)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN7_SENBETSU_KBN, "・BIN7 選別区分");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN7_KEIRYOGO_SURYO, "・BIN7 計量後数量");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN7_COUNTER_SU, "・BIN7 ｶｳﾝﾀｰ数");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN7_GOSARITSU, "・BIN7 誤差率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN7_MACHINE_FURYORITSU, "・BIN7 ﾏｼﾝ不良率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN7_FUKURO_CHECK, "・BIN7 袋ﾁｪｯｸ");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN8_PERCENT_KBN, "・BIN8 %区分(設定値)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN8_SENBETSU_KBN, "・BIN8 選別区分");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN8_KEIRYOGO_SURYO, "・BIN8 計量後数量");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN8_COUNTER_SU, "・BIN8 ｶｳﾝﾀｰ数");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN8_GOSARITSU, "・BIN8 誤差率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN8_MACHINE_FURYORITSU, "・BIN8 ﾏｼﾝ不良率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN8_FUKURO_CHECK, "・BIN8 袋ﾁｪｯｸ");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN9_K_KEIRYOGO_SURYO, "・BIN9 強制排出 計量後数量");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN9_K_MACHINE_FURYORITSU, "・BIN9 強制排出 ﾏｼﾝ不良率");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_RAKKA_KEIRYOGO_SURYO, "・落下 計量後数量");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_RAKKA_MACHINE_FURYORITSU, "・落下 ﾏｼﾝ不良率");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_HANDA_SAMPLE, "・半田ｻﾝﾌﾟﾙ");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_SHINRAISEI_SAMPLE, "・信頼性ｻﾝﾌﾟﾙ");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_SHIN_FURYO_HANTEISHA, "・真不良判定者");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_HANTEI_NYURYOKUSHA, "・判定入力者");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_TORIDASHISHA, "・取出者");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_KOUSA1, "・公差①");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_JURYO1, "・重量①");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_KOSU1, "・個数①");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_KOUSA2, "・公差②");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_JURYO2, "・重量②");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_KOSU2, "・個数②");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_KOUSA3, "・公差③");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_JURYO3, "・重量③");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_KOSU3, "・個数③");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_KOUSA4, "・公差④");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_JURYO4, "・重量④");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_KOSU4, "・個数④");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_COUNTER_SOSU, "・ｶｳﾝﾀｰ総数");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_RYOUHIN_JURYO, "・良品重量");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_RYOUHIN_KOSU, "・良品個数");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BUDOMARI, "・歩留まり");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_KAKUNINSHA, "・確認者");
+        
+        List<String> errorMassageList = new ArrayList<>();
+        if(0 < errorItemNameList.size()){
+            errorMassageList.add("以下の画面項目に対する情報が設定されていません。ｼｽﾃﾑに連絡してください。");
+            errorMassageList.add("【対象項目】");
+            errorMassageList.addAll(errorItemNameList);
+        }
+
+        return errorMassageList;
+    }
+
+    private void checkExistItem(List<String> errorItemNameList, List<FXHDD01> itemList, String itemId, String itemName) {
+        if (getItemRow(itemList, itemId) == null) {
+            errorItemNameList.add(itemName);
+        }
+    }
+
     /**
      * 初期化処理
      *
@@ -245,6 +399,14 @@ public class GXHDO101B040 implements IFormLogic {
 
             // 処理名を登録
             processData.setProcessName("initial");
+            
+            List<String> errorMassageList = checkExistFormItem(processData);
+            if(0 < errorMassageList.size()){
+                processData.setFatalError(true);
+                processData.setInitMessageList(errorMassageList);
+                processData.setMethod("openInitMessage");
+                return processData;
+            }
 
             // 「プリチャージ」初期設定
             initGXHDO101B040B(processData);
@@ -487,7 +649,7 @@ public class GXHDO101B040 implements IFormLogic {
         StringBuilder setErrorItem = new StringBuilder();
         List<FXHDD01> errFxhdd01List = new ArrayList<>();
         for (String id : idList) {
-            FXHDD01 fxhdd01 = getItemRow(processData.getItemList(), id);
+            FXHDD01 fxhdd01 = getItemRow(processData.getItemListEx(), id);
 
             if (fxhdd01 == null) {
                 continue;
@@ -510,7 +672,7 @@ public class GXHDO101B040 implements IFormLogic {
 
         if (!errFxhdd01List.isEmpty()) {
             //TODO 複数項目エラー時について
-            return MessageUtil.getErrorMessageInfo("XHD-000173", true, true, errFxhdd01List, setErrorItem.toString());
+            return MessageUtil.getErrorMessageInfo("XHD-000173", true, false, errFxhdd01List, setErrorItem.toString());
         }
         return null;
     }
@@ -545,7 +707,7 @@ public class GXHDO101B040 implements IFormLogic {
     private String checkKekkaCheck(ProcessData processData, String[] idList) {
         StringBuilder setErrorItem = new StringBuilder();
         for (String id : idList) {
-            FXHDD01 fxhdd01 = getItemRow(processData.getItemList(), id);
+            FXHDD01 fxhdd01 = getItemRow(processData.getItemListEx(), id);
 
             if (fxhdd01 == null) {
                 continue;
@@ -563,6 +725,10 @@ public class GXHDO101B040 implements IFormLogic {
             }
             setErrorItem.append(fxhdd01.getLabel1());
 
+        }
+        
+        if(StringUtil.isEmpty(setErrorItem.toString())){
+            return null;
         }
 
         return MessageUtil.getMessage("XHD-000166", setErrorItem.toString());
@@ -691,20 +857,42 @@ public class GXHDO101B040 implements IFormLogic {
             processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
             return processData;
         }
+//
+//        // 警告メッセージの設定
+//        processData.setWarnMessage("修正します。よろしいですか？");
+//
+//        // ユーザ認証用のパラメータをセットする。
+//        processData.setRquireAuth(true);
+//        processData.setUserAuthParam(GXHDO101B040Const.USER_AUTH_UPDATE_PARAM);
 
+        // 後続処理メソッド設定
+        processData.setMethod("doCorrectKakunin");
+
+        return processData;
+
+    }
+    
+     /**
+     * 修正処理時の確認
+     * 
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData doCorrectKakunin(ProcessData processData) {
+        
         // 警告メッセージの設定
         processData.setWarnMessage("修正します。よろしいですか？");
 
         // ユーザ認証用のパラメータをセットする。
         processData.setRquireAuth(true);
-        processData.setUserAuthParam(GXHDO101B040Const.USER_AUTH_UPDATE_PARAM);
+        processData.setUserAuthParam(GXHDO101B038Const.USER_AUTH_UPDATE_PARAM);
 
         // 後続処理メソッド設定
         processData.setMethod("doCorrect");
-
+        
         return processData;
-
     }
+    
 
     /**
      * 修正処理(実処理)
@@ -1078,9 +1266,8 @@ public class GXHDO101B040 implements IFormLogic {
         }
 
         // 指定公差歩留まりの取得(QA履歴情報の表示)
-        Map<String,Object> siteiKousaBudomariInfo = getShiteiKousabudomari(processData, queryRunnerWip, lotNo, errorMessageList);
+        Map<String, Object> siteiKousaBudomariInfo = getShiteiKousabudomari(processData, queryRunnerWip, lotNo, errorMessageList);
 
-        
         // 検査場所選択値初期設定
         if (!initKensabasho(queryRunnerDoc, session, processData, errorMessageList)) {
             return processData;
@@ -1132,7 +1319,8 @@ public class GXHDO101B040 implements IFormLogic {
 
     /**
      * 指定公差歩留まり情報取得
-     * @param processData  処理制御データ
+     *
+     * @param processData 処理制御データ
      * @param queryRunnerWip queryRunnerDoc QueryRunnerオブジェクト(Wip)
      * @param lotNo ﾛｯﾄNo
      * @param errorMessageList エラーメッセージリスト
@@ -1140,26 +1328,35 @@ public class GXHDO101B040 implements IFormLogic {
      */
     private Map<String, Object> getShiteiKousabudomari(ProcessData processData, QueryRunner queryRunnerWip, String lotNo, List<String> errorMessageList) {
 
+        
+        FXHDD01 siteikousaBudomari1 = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI1);
+        FXHDD01 siteikousaBudomari2 = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI2);
         // QA履歴データ取得
         List<Map<String, Object>> qaRirekiDataList = loadQaRirekiData(queryRunnerWip, lotNo);
         if (qaRirekiDataList.isEmpty()) {
-            errorMessageList.add(MessageUtil.getMessage("XHD-000167"));
+            errorMessageList.add(MessageUtil.getMessage("XHD-000167",siteikousaBudomari1.getLabel1() + " " +siteikousaBudomari2.getLabel1()));
             return null;
         }
 
+        String errorItemNames = "";
         // 公差歩留まり1
         Map<String, Object> qaRirekiData = qaRirekiDataList.get(0);
-        if (!NumberUtil.isNumeric(StringUtil.nullToBlank(qaRirekiData.get("kousa1"))) || !NumberUtil.isNumeric(StringUtil.nullToBlank(qaRirekiData.get("budomari1")))) {
-            FXHDD01 siteikousaBudomari1 = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI1);
-            errorMessageList.add(MessageUtil.getMessage("XHD-000168", siteikousaBudomari1.getLabel1()));
+        if (!NumberUtil.isNumeric(StringUtil.nullToBlank(qaRirekiData.get("budomari1")))) {
+            errorItemNames = siteikousaBudomari1.getLabel1();
         }
 
         // 公差歩留まり2
-        if (!NumberUtil.isNumeric(StringUtil.nullToBlank(qaRirekiData.get("kousa2"))) || !NumberUtil.isNumeric(StringUtil.nullToBlank(qaRirekiData.get("budomari2")))) {
-            FXHDD01 siteikousaBudomari2 = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI2);
-            errorMessageList.add(MessageUtil.getMessage("XHD-000168", siteikousaBudomari2.getLabel1()));
+        if (!NumberUtil.isNumeric(StringUtil.nullToBlank(qaRirekiData.get("budomari2")))) {
+            if(!StringUtil.isEmpty(errorItemNames)){
+               // 項目間の間のスペースをセットする。
+                errorItemNames += " ";
+            }
+            errorItemNames += siteikousaBudomari2.getLabel1();
         }
-
+        if(!StringUtil.isEmpty(errorItemNames)){
+            errorMessageList.add(MessageUtil.getMessage("XHD-000168", errorItemNames));
+            return null;
+        }
         return qaRirekiData;
     }
 
@@ -1246,23 +1443,22 @@ public class GXHDO101B040 implements IFormLogic {
             //後工程指示内容←磁器QC[後工程指示内容2]
             this.setItemData(processData, GXHDO101B040Const.SEIHIN_ATOKOUTEI_SHIJI_NAIYO, StringUtil.nullToBlank(srJikiqcInfo.get("sijinaiyou2")));
         }
-        
+
         // 指定公差歩留まり設定処理
-        if(siteiKousaBudomariInfo != null){
-            //TODO
+        if (siteiKousaBudomariInfo != null) {
             StringBuilder kousaBudomari1 = new StringBuilder();
             kousaBudomari1.append(StringUtil.nullToBlank(siteiKousaBudomariInfo.get("kousa1")));
             kousaBudomari1.append(" = ");
             kousaBudomari1.append(StringUtil.nullToBlank(siteiKousaBudomariInfo.get("budomari1")));
             kousaBudomari1.append(" %");
             this.setItemData(processData, GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI1, kousaBudomari1.toString());
-            
+
             StringBuilder kousaBudomari2 = new StringBuilder();
             kousaBudomari2.append(StringUtil.nullToBlank(siteiKousaBudomariInfo.get("kousa2")));
             kousaBudomari2.append(" = ");
             kousaBudomari2.append(StringUtil.nullToBlank(siteiKousaBudomariInfo.get("budomari2")));
             kousaBudomari2.append(" %");
-            this.setItemData(processData, GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI2,  kousaBudomari2.toString());
+            this.setItemData(processData, GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI2, kousaBudomari2.toString());
         }
 
     }
@@ -3996,15 +4192,16 @@ public class GXHDO101B040 implements IFormLogic {
             BigDecimal hoseiato = new BigDecimal(itemHoseiato.getValue());
             BigDecimal hoseimae = new BigDecimal(itemHoseimae.getValue());
 
-            // 送り良品数、良品個数の値のいずれかが0以下の場合"0"をセットしてリターン
-            if (0 <= BigDecimal.ZERO.compareTo(hoseimae) || 0 <= BigDecimal.ZERO.compareTo(hoseiato)) {
-                itemHoseiritsu.setValue("0");
+            // 送り良品数、良品個数の値のいずれかが0の場合リターン
+            if (0 == BigDecimal.ZERO.compareTo(hoseimae) || 0 == BigDecimal.ZERO.compareTo(hoseiato)) {
                 return;
             }
 
             //補正後 / 補正前 * 100(小数点第三位を四捨五入) → 式を変換して先に100を乗算
             BigDecimal hoseiritsu = hoseiato.multiply(BigDecimal.valueOf(100)).divide(hoseimae, 2, RoundingMode.HALF_UP);
 
+            hoseiritsu = hoseiritsu.abs();
+            
             // 100 - 計算結果
             hoseiritsu = BigDecimal.valueOf(100).subtract(hoseiritsu);
             //計算結果を誤差率にセット

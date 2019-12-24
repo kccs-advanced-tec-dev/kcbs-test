@@ -884,6 +884,9 @@ public class GXHDO901A implements Serializable {
             if (errorMessageInfo.getIsChangeBackColor()) {
                 // エラー項目の背景色を設定
                 ErrUtil.setErrorItemBackColor(this.itemList, errorMessageInfo);
+                if(this.itemListEx != null){
+                    ErrUtil.setErrorItemBackColor(this.itemListEx, errorMessageInfo);
+                }
             }
 
             // エラー項目を表示するためページを遷移する。

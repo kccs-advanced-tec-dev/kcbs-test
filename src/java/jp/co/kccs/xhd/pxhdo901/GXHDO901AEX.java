@@ -316,6 +316,10 @@ public class GXHDO901AEX extends GXHDO901A {
         ErrorMessageInfo requireCheckErrorMessage = validateUtil.executeValidation(itemRowCheckList, this.itemList, queryRunnerWip);
         if(requireCheckErrorMessage == null){
             requireCheckErrorMessage = validateUtil.executeValidation(itemRowCheckList, this.itemListEx, queryRunnerWip);
+            if(requireCheckErrorMessage != null){
+                //this.itemListExの場合はページ遷移は無いので強制的に0を指定
+                requireCheckErrorMessage.setPageChangeItemIndex(0);
+            }
         }
         
 
