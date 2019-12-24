@@ -24,6 +24,11 @@ import org.apache.commons.dbutils.handlers.MapHandler;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2019/12/05<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	入力画面選択で使用するデータ取得を追加また直接データの取得メソッドが呼べるように変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -919,6 +924,5 @@ public class CommonUtil {
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
     }
-    
     
 }

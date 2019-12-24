@@ -92,6 +92,11 @@ import org.primefaces.context.RequestContext;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	属性にﾁｪｯｸﾎﾞｯｸｽを追加<br>
  * <br>
+ * 変更日	2019/12/05<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	電気特性用のロジックを追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**

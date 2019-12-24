@@ -1,7 +1,5 @@
 /*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+ * Copyright 2019 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.pxhdo901;
 
@@ -22,7 +20,6 @@ import jp.co.kccs.xhd.db.model.FXHDM05;
 import static jp.co.kccs.xhd.pxhdo901.GXHDO901A.LOGGER;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
-import jp.co.kccs.xhd.util.StringUtil;
 import jp.co.kccs.xhd.util.ValidateUtil;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.BeanProcessor;
@@ -30,27 +27,36 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.RowProcessor;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
-import org.apache.commons.dbutils.handlers.MapHandler;
-import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.primefaces.component.datalist.DataList;
 
-
 /**
+ * ===============================================================================<br>
+ * <br>
+ * システム名	品質DB(コンデンサ)<br>
+ * <br>
+ * 変更日	2019/12/05<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	新規作成<br>
+ * <br>
+ * ===============================================================================<br>
+ */
+/**
+ * GXHDO901AEX(品質DB画面共通(入力画面拡張))
  *
- * @author kokskgp04_nw
+ * @author SYSNAVI K.Hisanaga
+ * @since 2019/12/05
  */
 public class GXHDO901AEX extends GXHDO901A {
-    
-    
 
-    
-        /**
+    /**
      * 画面ID(拡張処理の複数IDの保持)
      */
     private String[] formIds;
-    
+
     /**
      * 画面ID(拡張処理の複数IDの保持)
+     *
      * @return the formIds
      */
     public String[] getFormIds() {
@@ -59,14 +65,20 @@ public class GXHDO901AEX extends GXHDO901A {
 
     /**
      * 画面ID(拡張処理の複数IDの保持)
+     *
      * @param formIds the formIds to set
      */
     public void setFormIds(String[] formIds) {
         this.formIds = formIds;
     }
 
-
-      
+    /**
+     * 項目定義情報取得(拡張)
+     *
+     * @param formId 画面ID
+     * @param callerFormId 画面ID(呼出し元)
+     * @return データ取得判定(true:データ取得有り、false：データ取得無し)
+     */
     @Override
     protected boolean loadItemSettings(String formId, String callerFormId) {
         if (this.formIds != null && 0 < this.formIds.length) {
@@ -75,32 +87,117 @@ public class GXHDO901AEX extends GXHDO901A {
             return super.loadItemSettings(formId, callerFormId);
         }
     }
-    
-     @Override
-    protected void loadCheckList(String formId) {
-         if (this.formIds != null && 0 < this.formIds.length) {
-             loadCheckList(this.formIds);
-         } else {
-             super.loadCheckList(formId);
-         }
-    }
-    
+
     /**
-     * ボタンパラメータ情報取得
+     * チェック処理情報取得(拡張)
+     *
+     * @param formId 画面ID
+     */
+    @Override
+    protected void loadCheckList(String formId) {
+        if (this.formIds != null && 0 < this.formIds.length) {
+            loadCheckList(this.formIds);
+        } else {
+            super.loadCheckList(formId);
+        }
+    }
+
+    /**
+     * ボタンパラメータ情報取得(拡張)
      *
      * @param formId 画面ID
      * @return データ取得判定(true:データ取得有り、false：データ取得無し)
      */
-     @Override
+    @Override
     protected boolean loadButtonSettings(String formId) {
-         if (this.formIds != null && 0 < this.formIds.length) {
+        if (this.formIds != null && 0 < this.formIds.length) {
             return super.loadButtonSettings(this.formIds[0]);
         } else {
             return super.loadButtonSettings(formId);
         }
     }
-    
-    
+
+    /**
+     * 背景色をデフォルトの背景色に戻す(拡張)
+     *
+     * @param buttonId ボタンID
+     */
+    @Override
+    protected void clearItemListBackColor(String buttonId) {
+        // 背景色を戻さない特定の処理を除き背景色をデフォルトの背景色に戻す。
+        if (this.noCheckButtonId == null || !this.noCheckButtonId.contains(buttonId)) {
+            for (FXHDD01 fxhdd01 : this.itemList) {
+                fxhdd01.setBackColorInput(fxhdd01.getBackColorInputDefault());
+            }
+            for (FXHDD01 fxhdd01 : this.itemListEx) {
+                fxhdd01.setBackColorInput(fxhdd01.getBackColorInputDefault());
+            }
+        }
+    }
+
+    /**
+     * 共通チェック(拡張)
+     *
+     * @param buttonId ボタンID
+     * @return エラーメッセージ
+     */
+    @Override
+    protected ErrorMessageInfo getCheckResult(String buttonId) {
+
+        // リビジョンチェック
+        ErrorMessageInfo checkRevErrorMessage = checkRevision(buttonId);
+        if (checkRevErrorMessage != null) {
+            return checkRevErrorMessage;
+        }
+
+        //共通ﾁｪｯｸ
+        List<FXHDM05> itemRowCheckList
+                = this.checkListHDM05.stream().filter(n -> buttonId.equals(n.getButtonId())).collect(Collectors.toList());
+
+        ValidateUtil validateUtil = new ValidateUtil();
+        QueryRunner queryRunnerWip = new QueryRunner(dataSourceWip);
+        ErrorMessageInfo requireCheckErrorMessage = validateUtil.executeValidation(itemRowCheckList, this.itemList, queryRunnerWip);
+        if (requireCheckErrorMessage == null) {
+            requireCheckErrorMessage = validateUtil.executeValidation(itemRowCheckList, this.itemListEx, queryRunnerWip);
+            if (requireCheckErrorMessage != null) {
+                //this.itemListExの場合はページ遷移は無いので強制的に0を指定
+                requireCheckErrorMessage.setPageChangeItemIndex(0);
+            }
+        }
+
+        return requireCheckErrorMessage;
+    }
+
+    /**
+     * ページ選択処理(拡張)
+     *
+     * @param itemIndex 表示項目のインデックス
+     */
+    @Override
+    protected void setPageItemDataList(int itemIndex) {
+
+        // Indexが0未満の場合はリターン
+        if (itemIndex <= 0) {
+            return;
+        }
+
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+
+        DataList itemDataList
+                = (DataList) facesContext.getViewRoot().findComponent(":form:tabMain:itemDataList");
+
+        // 項目インデックス
+        BigDecimal decItemIndex = BigDecimal.valueOf(itemIndex);
+        // 一覧の表示件数
+        BigDecimal decHyojiKensu = new BigDecimal(this.hyojiKensu);
+        // ページ数(インデックス / 表示件数)の切り上げ
+        BigDecimal decPage = decItemIndex.divide(decHyojiKensu, RoundingMode.UP);
+        // 開始インデックス = 表示件数 * (ページ数 - 1)
+        BigDecimal startIdx = decHyojiKensu.multiply(decPage.subtract(BigDecimal.ONE));
+        itemDataList.setFirst(startIdx.intValue());
+
+    }
+
     /**
      * 項目定義情報取得(拡張)
      *
@@ -116,7 +213,7 @@ public class GXHDO901AEX extends GXHDO901A {
         List<String> userGrpList = (List<String>) session.getAttribute("login_user_group");
 
         try {
-            
+
             QueryRunner queryRunner = new QueryRunner(dataSourceDocServer);
 
             String inputItemInfo;
@@ -217,9 +314,8 @@ public class GXHDO901AEX extends GXHDO901A {
 
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
             List<FXHDD01> list = queryRunner.query(sql, beanHandler, params.toArray());
-            
+
             // メインデータ(通常入力画面データ)
-            
             this.itemListEx = list.stream().filter(n -> !n.getGamenId().equals(formIds[0])).collect(Collectors.toList());
             // 拡張画面データ
             this.itemList = list.stream().filter(n -> n.getGamenId().equals(formIds[0])).collect(Collectors.toList());
@@ -232,9 +328,7 @@ public class GXHDO901AEX extends GXHDO901A {
         }
         return result;
     }
-    
-   
-    
+
     /**
      * チェック処理情報取得
      *
@@ -271,93 +365,4 @@ public class GXHDO901AEX extends GXHDO901A {
             ErrUtil.outputErrorLog("チェック処理項目取得失敗", ex, LOGGER);
         }
     }
-    
-    
-    /**
-     * 背景色をデフォルトの背景色に戻す
-     *
-     * @param buttonId ボタンID
-     */
-    @Override
-    protected void clearItemListBackColor(String buttonId) {
-        // 背景色を戻さない特定の処理を除き背景色をデフォルトの背景色に戻す。
-        if (this.noCheckButtonId == null || !this.noCheckButtonId.contains(buttonId)) {
-            for (FXHDD01 fxhdd01 : this.itemList) {
-                fxhdd01.setBackColorInput(fxhdd01.getBackColorInputDefault());
-            }
-            for (FXHDD01 fxhdd01 : this.itemListEx) {
-                fxhdd01.setBackColorInput(fxhdd01.getBackColorInputDefault());
-            }
-        }
-    }
-
-    
-    /**
-     * 共通チェック
-     *
-     * @param buttonId ボタンID
-     * @return エラーメッセージ
-     */
-    @Override
-    protected ErrorMessageInfo getCheckResult(String buttonId) {
-
-        // リビジョンチェック
-        ErrorMessageInfo checkRevErrorMessage = checkRevision(buttonId);
-        if (checkRevErrorMessage != null) {
-            return checkRevErrorMessage;
-        }
-
-        //共通ﾁｪｯｸ
-        List<FXHDM05> itemRowCheckList
-                = this.checkListHDM05.stream().filter(n -> buttonId.equals(n.getButtonId())).collect(Collectors.toList());
-
-        ValidateUtil validateUtil = new ValidateUtil();
-        QueryRunner queryRunnerWip = new QueryRunner(dataSourceWip);
-        ErrorMessageInfo requireCheckErrorMessage = validateUtil.executeValidation(itemRowCheckList, this.itemList, queryRunnerWip);
-        if(requireCheckErrorMessage == null){
-            requireCheckErrorMessage = validateUtil.executeValidation(itemRowCheckList, this.itemListEx, queryRunnerWip);
-            if(requireCheckErrorMessage != null){
-                //this.itemListExの場合はページ遷移は無いので強制的に0を指定
-                requireCheckErrorMessage.setPageChangeItemIndex(0);
-            }
-        }
-        
-
-        return requireCheckErrorMessage;
-    }
-    
-    
-     /**
-     * ページ選択処理
-     *
-     * @param itemIndex 表示項目のインデックス
-     */
-    @Override
-    protected void setPageItemDataList(int itemIndex) {
-
-        // Indexが0未満の場合はリターン
-        if (itemIndex <= 0) {
-            return;
-        }
-
-        FacesContext facesContext = FacesContext.getCurrentInstance();
-
-        DataList itemDataList
-                = (DataList) facesContext.getViewRoot().findComponent(":form:tabMain:itemDataList");
-
-        // 項目インデックス
-        BigDecimal decItemIndex = BigDecimal.valueOf(itemIndex);
-        // 一覧の表示件数
-        BigDecimal decHyojiKensu = new BigDecimal(this.hyojiKensu);
-        // ページ数(インデックス / 表示件数)の切り上げ
-        BigDecimal decPage = decItemIndex.divide(decHyojiKensu, RoundingMode.UP);
-        // 開始インデックス = 表示件数 * (ページ数 - 1)
-        BigDecimal startIdx = decHyojiKensu.multiply(decPage.subtract(BigDecimal.ONE));
-        itemDataList.setFirst(startIdx.intValue());
-
-    }
-    
-     
-     
-    
 }

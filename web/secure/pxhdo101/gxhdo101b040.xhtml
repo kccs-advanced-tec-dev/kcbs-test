@@ -87,8 +87,6 @@
                 }">
             <div id="mainDiv" style="#{gXHDO101B040A.mainDivStyle}">
                 <div id="mainForm" >
-
-
                     <div style="text-align:right">
                         <p:commandButton id="returnBtnTop" style="margin-left:26px;margin-bottom:5px;margin-top:0px;#{gXHDO901A.styleDisplayNone}"
                                          value="#{myMsg.return}"  action="/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true"
@@ -119,10 +117,7 @@
                                              oncomplete="cmdButtonOncomplete(args);" />       
                         </ui:repeat>
                     </p:panel>
-
-
                     <p:tabView id="tabMain" orientation="top" scrollable="true" class="tab_view" style="#{gXHDO101B040A.styleDisplayNone}" >
-
                         <p:ajax event="tabChange" listener="#{gXHDO101B040A.onTabChange}" async="false" oncomplete="tabChange(args);"  />
                         <p:tab title="製品情報" titleStyle="font-size:0.9em;" id="tab1" >
                             <div class="tab_div">
@@ -133,15 +128,12 @@
                                                           style="margin-left:8px;font-size:#{item.fontSize1}px;color:#{item.fontColor1};vertical-align: middle;"/>
                                             <h:outputText id="kikakuChi" rendered="#{item.render1}" value="#{item.kikakuChi}"
                                                           style="margin-left:8px;font-size:#{item.fontSize3}px;color:#{item.fontColor3};vertical-align: middle;"/>
-
                                             <h:outputText id="lblValue" rendered="#{item.renderOutputLabel}" value="#{item.value}"
                                                           style="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;#{item.customStyleInput}"/>
-
                                             <p:inputText id="textValue" rendered="#{(item.renderInputText) and (!item.renderOutputLabel)}" value="#{item.value}" maxlength="#{item.displayMaxLength}"
                                                          style="margin-left:8px;width:#{item.displayMaxLength}em; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO101B040A.maxWidthInputCol}px;#{item.customStyleInput}">
                                                 <p:ajax event="blur" process="@this" update="@this" listener="#{item.checkByte()}"  async="false"/>
                                             </p:inputText>
-
                                             <p:calendar id="calendarDate" rendered="#{item.renderInputDate}" pattern="yyMMdd" value="#{item.value}" maxlength="#{item.displayMaxLength}" class="calendarDate"
                                                         style="margin-left:8px; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO101B040A.maxWidthInputCol}px;#{item.customStyleInput}" />
                                             <p:calendar id="calendarTime" rendered="#{item.renderInputTime}" value="#{item.value}" pattern="HHmm" timeOnly="true" class="calendarTime" 
@@ -679,7 +671,6 @@
                                         </p:column>
                                     </p:row>
                                     <p:row class="taidenatsu_table_tr">
-
                                         <p:column style="border-right-style: hidden; ">
                                             <h:outputText value="IR7" styleClass="taidenatsu_table_rowheader_label"/>
                                         </p:column>
@@ -788,7 +779,6 @@
                                 </p:panelGrid>
                             </div>
                         </p:tab>
-
                         <p:tab title="設定条件及び処理結果" titleStyle="font-size:0.9em;" id="tab4">
                             <div class="tab_div" style="overflow: scroll; height: 65vh"  >
                                 <div style="width:fit-content;">
@@ -881,7 +871,6 @@
                                                         <f:selectItem itemLabel="" itemValue="" />
                                                         <f:selectItems value="#{beanGXHDO101C040D.bin3PercentKbn.selectMenuItem}" />
                                                     </p:selectOneMenu> 
-
                                                 </td>
                                                 <td class="percent_kbn_td">
                                                     <p:inputText id="bin4PercentKbnT" styleClass="percent_kbn_input_text"
@@ -1554,7 +1543,6 @@
                                                 <td class="background-diagonal-line" />
                                                 <td class="background-diagonal-line" />
                                                 <td class="background-diagonal-line" />
-
                                             </tr>
                                             <tr style="text-align: center;">
                                                 <th style="text-align: center;">
@@ -1574,7 +1562,6 @@
                                                                    inputStyle="font-size:#{beanGXHDO101C040D.bin1MachineFuryoritsu.fontSizeInput}px;
                                                                    color:#{beanGXHDO101C040D.bin1MachineFuryoritsu.fontColorInput}; background:#{beanGXHDO101C040D.bin1MachineFuryoritsu.backColorInput};#{beanGXHDO101C040D.bin1MachineFuryoritsu.customStyleInput}">
                                                     </p:inputNumber>
-
                                                 </td>
                                                 <td class="machine_furyoritsu_td">
                                                     <p:inputText id="bin2MachineFuryoritsuT" styleClass="machine_furyoritsu_input_text"
@@ -1711,7 +1698,6 @@
                                                                    inputStyle="font-size:#{beanGXHDO101C040D.rakkaMachineFuryoritsu.fontSizeInput}px;
                                                                    color:#{beanGXHDO101C040D.rakkaMachineFuryoritsu.fontColorInput}; background:#{beanGXHDO101C040D.rakkaMachineFuryoritsu.backColorInput};#{beanGXHDO101C040D.rakkaMachineFuryoritsu.customStyleInput}">
                                                     </p:inputNumber>
-
                                                 </td> 
                                                 <td>
                                                     <h:outputText value="取出者" class="title_output_text"/>
@@ -1764,7 +1750,6 @@
                                                                    inputStyle="font-size:#{beanGXHDO101C040D.bin2NukitorikekkaT.fontSizeInput}px;
                                                                    color:#{beanGXHDO101C040D.bin2NukitorikekkaT.fontColorInput}; background:#{beanGXHDO101C040D.bin2NukitorikekkaT.backColorInput};#{beanGXHDO101C040D.bin2NukitorikekkaT.customStyleInput}">
                                                     </p:inputNumber>
-
                                                 </td>
                                                 <td class="nukitori_kekka_td">
                                                     <p:selectOneMenu id="bin3NukitorikekkaS" rendered="#{beanGXHDO101C040D.bin3NukitorikekkaS.renderInputSelect}" value="#{beanGXHDO101C040D.bin3NukitorikekkaS.value}" editable="true"
@@ -1787,7 +1772,6 @@
                                                                    inputStyle="font-size:#{beanGXHDO101C040D.bin3NukitorikekkaT.fontSizeInput}px;
                                                                    color:#{beanGXHDO101C040D.bin3NukitorikekkaT.fontColorInput}; background:#{beanGXHDO101C040D.bin3NukitorikekkaT.backColorInput};#{beanGXHDO101C040D.bin3NukitorikekkaT.customStyleInput}">
                                                     </p:inputNumber>
-
                                                 </td>
                                                 <td class="nukitori_kekka_td">
                                                     <p:selectOneMenu id="bin4NukitorikekkaS" rendered="#{beanGXHDO101C040D.bin4NukitorikekkaS.renderInputSelect}" value="#{beanGXHDO101C040D.bin4NukitorikekkaS.value}"  editable="true"
@@ -1854,7 +1838,6 @@
                                                                    inputStyle="font-size:#{beanGXHDO101C040D.bin6NukitorikekkaT.fontSizeInput}px;
                                                                    color:#{beanGXHDO101C040D.bin6NukitorikekkaT.fontColorInput}; background:#{beanGXHDO101C040D.bin6NukitorikekkaT.backColorInput};#{beanGXHDO101C040D.bin6NukitorikekkaT.customStyleInput}">
                                                     </p:inputNumber>
-
                                                 </td>
                                                 <td  colspan="2" >
                                                     <h:outputText value="新不良計算者" class="title_output_text"/>
@@ -1973,7 +1956,6 @@
                                                                    color:#{beanGXHDO101C040D.bin6ShinFuryoritsu.fontColorInput}; background:#{beanGXHDO101C040D.bin6ShinFuryoritsu.backColorInput};#{beanGXHDO101C040D.bin6ShinFuryoritsu.customStyleInput}">
                                                     </p:inputNumber>
                                                 </td>
-
                                                 <td class="shin_furyo_keisansha_td" rowspan="2" colspan="2">
                                                     <p:inputText id="shinFuryoHanteishaT" styleClass="shin_furyo_keisansha_input_text"
                                                                  rendered="#{beanGXHDO101C040D.shinFuryoHanteisha.renderInputText}" value="#{beanGXHDO101C040D.shinFuryoHanteisha.value}" 
@@ -2003,7 +1985,6 @@
                                                                    inputStyle="font-size:#{beanGXHDO101C040D.hanteiNyuryokusha.fontSizeInput}px;
                                                                    color:#{beanGXHDO101C040D.hanteiNyuryokusha.fontColorInput}; background:#{beanGXHDO101C040D.hanteiNyuryokusha.backColorInput};#{beanGXHDO101C040D.hanteiNyuryokusha.customStyleInput}">
                                                     </p:inputNumber>
-
                                                 </td>
                                             </tr>
                                             <tr style="text-align: center;">
@@ -2203,7 +2184,6 @@
                                                 <td class="background-diagonal-line" />
                                                 <td class="background-diagonal-line" />
                                                 <td class="background-diagonal-line" />
-
                                             </tr>
                                         </tbody>
                                     </table>
@@ -2269,7 +2249,6 @@
                                                                    inputStyle="font-size:#{beanGXHDO101C040D.kosu1.fontSizeInput}px;
                                                                    color:#{beanGXHDO101C040D.kosu1.fontColorInput}; background:#{beanGXHDO101C040D.kosu1.backColorInput};#{beanGXHDO101C040D.kosu1.customStyleInput}">
                                                     </p:inputNumber>
-
                                                 </td>
                                                 <td style="border-left: hidden;">
                                                     <h:outputText  value="ｹ"/>
@@ -2332,7 +2311,6 @@
                                                 <td style="border-left: hidden; width: 25px;" rowspan="2">
                                                     <h:outputText  value="%"/>
                                                 </td>
-
                                                 <td style="width:100%; border-top: hidden;border-right: hidden;border-bottom: hidden" rowspan="5"/>
                                             </tr>
                                             <tr>
@@ -2383,7 +2361,6 @@
                                                                    inputStyle="font-size:#{beanGXHDO101C040D.kosu2.fontSizeInput}px;
                                                                    color:#{beanGXHDO101C040D.kosu2.fontColorInput}; background:#{beanGXHDO101C040D.kosu2.backColorInput};#{beanGXHDO101C040D.kosu2.customStyleInput}">
                                                     </p:inputNumber>
-
                                                 </td>
                                                 <td style="border-left: hidden; width: 25px;">
                                                     <h:outputText  value="ｹ"/>
@@ -2438,7 +2415,6 @@
                                                                    inputStyle="font-size:#{beanGXHDO101C040D.kosu3.fontSizeInput}px;
                                                                    color:#{beanGXHDO101C040D.kosu3.fontColorInput}; background:#{beanGXHDO101C040D.kosu3.backColorInput};#{beanGXHDO101C040D.kosu3.customStyleInput}">
                                                     </p:inputNumber>
-
                                                 </td>
                                                 <td style="border-left: hidden; width: 25px;">
                                                     <h:outputText  value="ｹ"/>
@@ -2478,12 +2454,10 @@
                                                                    inputStyle="font-size:#{beanGXHDO101C040D.juryo4.fontSizeInput}px;
                                                                    color:#{beanGXHDO101C040D.juryo4.fontColorInput}; background:#{beanGXHDO101C040D.juryo4.backColorInput};#{beanGXHDO101C040D.juryo4.customStyleInput}">
                                                     </p:inputNumber>
-
                                                 </td>
                                                 <td style="border-left: hidden; width: 25px;">
                                                     <h:outputText  value="g"/>
                                                 </td>
-
                                                 <td class="kosu_td">
                                                     <p:inputText id="kosu4T" styleClass="kosu_input_text"
                                                                  rendered="#{beanGXHDO101C040D.kosu4.renderInputText}" value="#{beanGXHDO101C040D.kosu4.value}" 
@@ -2519,12 +2493,9 @@
                                                                    color:#{beanGXHDO101C040D.ryouhinKosu.fontColorInput}; background:#{beanGXHDO101C040D.ryouhinKosu.backColorInput};#{beanGXHDO101C040D.ryouhinKosu.customStyleInput}">
                                                     </p:inputNumber>
                                                 </td>
-
                                                 <td style="border-left: hidden; width: 25px;"  rowspan="2">
                                                     <h:outputText  value="ｹ"/>
                                                 </td>
-
-
                                                 <td class="kakuninsha_td" colspan="2" rowspan="2">
                                                     <p:inputText id="kakuninshaT" styleClass="kakuninsha_input_text"
                                                                  rendered="#{beanGXHDO101C040D.kakuninsha.renderInputText}" value="#{beanGXHDO101C040D.kakuninsha.value}" 
@@ -2540,7 +2511,6 @@
                                                                    color:#{beanGXHDO101C040D.kakuninsha.fontColorInput}; background:#{beanGXHDO101C040D.kakuninsha.backColorInput};#{beanGXHDO101C040D.kakuninsha.customStyleInput}">
                                                     </p:inputNumber>
                                                 </td>
-
                                             </tr>
                                             <tr style="text-align: center; height: 30px;">
                                                 <td colspan="7" style="border-left: hidden; border-bottom: hidden;"/>

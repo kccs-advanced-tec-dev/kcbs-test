@@ -8,7 +8,7 @@ package jp.co.kccs.xhd.pxhdo101;
  * <br>
  * システム名	品質情報管理システム<br>
  * <br>
- * 変更日	2019/12/18<br>
+ * 変更日	2019/12/05<br>
  * 計画書No	K1811-DS001<br>
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
@@ -19,7 +19,7 @@ package jp.co.kccs.xhd.pxhdo101;
  * GXHDO101B040Const(電気特性・ESI)定数
  *
  * @author SYSNAVI K.Hisanaga
- * @since 2019/12/18
+ * @since 2019/12/05
  */
 public class GXHDO101B040Const {
 

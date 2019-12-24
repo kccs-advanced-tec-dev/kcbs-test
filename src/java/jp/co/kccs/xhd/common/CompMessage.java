@@ -4,7 +4,6 @@
 package jp.co.kccs.xhd.common;
 
 import java.io.Serializable;
-import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
@@ -13,18 +12,18 @@ import javax.faces.bean.SessionScoped;
  * <br>
  * システム名	品質DB(コンデンサ)<br>
  * <br>
- * 変更日	2019/03/06<br>
+ * 変更日	2019/12/05<br>
  * 計画書No	K1811-DS001<br>
- * 変更者	KCSS K.Jo<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
  * ===============================================================================<br>
  */
 /**
- * InfoMessage(警告メッセージ)
+ * CompMessage(完了メッセージ)
  *
- * @author KCSS K.Jo
- * @since  2019/03/06
+ * @author SYSNAVI K.Hisanaga
+ * @since  2019/12/05
  */
 @ManagedBean(name = "beanCompMessage")
 @SessionScoped
@@ -50,7 +49,4 @@ public class CompMessage implements Serializable {
     public void setCompMessage(String compMessage) {
         this.compMessage = compMessage;
     }
-
-
-
 }

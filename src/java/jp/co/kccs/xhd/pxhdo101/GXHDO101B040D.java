@@ -3,9 +3,7 @@
  */
 package jp.co.kccs.xhd.pxhdo101;
 
-import jp.co.kccs.xhd.model.gxhdo101b040.*;
 import java.io.Serializable;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 import jp.co.kccs.xhd.db.model.FXHDD01;
@@ -15,7 +13,7 @@ import jp.co.kccs.xhd.db.model.FXHDD01;
  * <br>
  * システム名	品質DB(コンデンサ)<br>
  * <br>
- * 変更日	2019/12/04<br>
+ * 変更日	2019/12/05<br>
  * 計画書No	K1811-DS001<br>
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
@@ -23,10 +21,10 @@ import jp.co.kccs.xhd.db.model.FXHDD01;
  * ===============================================================================<br>
  */
 /**
- * GXHDO101B040DModel(電気特性・ESI 設定条件及び処理結果タブ)のモデルクラスです。
+ * GXHDO101B040D(電気特性・ESI(設定条件及び処理結果))
  *
  * @author SYSNAVI K.Hisanaga
- * @since 2019/12/04
+ * @since 2019/12/05
  */
 @ViewScoped
 @Named("beanGXHDO101C040D")
