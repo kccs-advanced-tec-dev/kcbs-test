@@ -250,6 +250,13 @@
     text-align: left; 
     vertical-align: middle;
 }
+
+/* 結果チェック input_text */
+.kekka_check_text {
+}
+/* 結果チェック input_number */
+.kekka_check_number {
+}
 /* 結果チェック selectOneMenu 
 .kekka_check_select_one_menu {
     width: 140px;

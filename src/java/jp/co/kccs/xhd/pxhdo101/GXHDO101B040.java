@@ -32,6 +32,7 @@ import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.DateUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
+import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.StringUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import jp.co.kccs.xhd.util.ValidateUtil;
@@ -50,7 +51,7 @@ import org.apache.commons.dbutils.handlers.MapListHandler;
  * <br>
  * システム名	電気特性画面選択(コンデンサ)<br>
  * <br>
- * 変更日	2019/XX/XX<br>
+ * 変更日	2019/12/05<br>
  * 計画書No	K1811-DS001<br>
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
@@ -232,19 +233,6 @@ public class GXHDO101B040 implements IFormLogic {
 
     }
 
-//    public void onTabChange(TabChangeEvent event) {
-//        System.out.println("tab id = " + event.getTab().getId());
-//        if ("tab4".equals(event.getTab().getId())) {
-//            this.mainDivStyle = "width:auto;";
-//
-//        } else {
-//            this.mainDivStyle = this.mainDefaultStyle;
-//        }
-//
-//        RequestContext context = RequestContext.getCurrentInstance();
-//        context.addCallbackParam("firstParam", this.mainDivStyle);
-//
-//    }
     /**
      * 初期化処理
      *
@@ -521,8 +509,8 @@ public class GXHDO101B040 implements IFormLogic {
         }
 
         if (!errFxhdd01List.isEmpty()) {
-            //TODO エラーID等確認 
-            return MessageUtil.getErrorMessageInfo("XHD-000166", true, true, errFxhdd01List, setErrorItem.toString());
+            //TODO 複数項目エラー時について
+            return MessageUtil.getErrorMessageInfo("XHD-000173", true, true, errFxhdd01List, setErrorItem.toString());
         }
         return null;
     }
@@ -541,8 +529,7 @@ public class GXHDO101B040 implements IFormLogic {
         if (hoseiritsu.compareTo(convBigDecimal(itemHoseiritsu.getValue())) < 0) {
             errFxhdd01List.add(itemHoseiritsu);
 
-            //TODO 
-            return MessageUtil.getErrorMessageInfo("XHD-000165", true, true, errFxhdd01List);
+            return MessageUtil.getErrorMessageInfo("XHD-000174", true, true, errFxhdd01List);
         }
 
         return null;
@@ -1068,7 +1055,7 @@ public class GXHDO101B040 implements IFormLogic {
         errorMessageList.addAll(ValidateUtil.checkSekkeiUnsetItems(sekkeiData, getMapSekkeiAssociation()));
 
         //仕掛情報の取得
-        Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
+        Map shikakariData = loadSikakariData(queryRunnerWip, lotNo);
         if (shikakariData == null || shikakariData.isEmpty()) {
             errorMessageList.add(MessageUtil.getMessage("XHD-000029"));
         }
@@ -1090,27 +1077,10 @@ public class GXHDO101B040 implements IFormLogic {
             errorMessageList.add(MessageUtil.getMessage("XHD-000016"));
         }
 
-        // TODO QA履歴
-        Map qarireki = new HashMap<String, Object>();
+        // 指定公差歩留まりの取得(QA履歴情報の表示)
+        Map<String,Object> siteiKousaBudomariInfo = getShiteiKousabudomari(processData, queryRunnerWip, lotNo, errorMessageList);
 
-//        //ﾃﾞｰﾀの取得
-//        String strfxhbm03List = "";
-//
-//        Map fxhbm03Data = loadFxhbm03Data(queryRunnerDoc, 20);
-//        if (fxhbm03Data != null && !fxhbm03Data.isEmpty()) {
-//            strfxhbm03List = StringUtil.nullToBlank(getMapData(fxhbm03Data, "data"));
-//            String fxhbm03DataArr[] = strfxhbm03List.split(",");
-//
-//            // 実績情報の取得
-//            List<Jisseki> jissekiData = loadJissekiData(queryRunnerWip, lotNo, fxhbm03DataArr);
-//            if (jissekiData != null && jissekiData.size() > 0) {
-//                int dbShorisu = jissekiData.get(0).getSyorisuu(); //処理数  
-//                if (dbShorisu > 0) {
-//                    syorisuu = String.valueOf(dbShorisu);
-//
-//                }
-//            }
-//        }
+        
         // 検査場所選択値初期設定
         if (!initKensabasho(queryRunnerDoc, session, processData, errorMessageList)) {
             return processData;
@@ -1125,7 +1095,7 @@ public class GXHDO101B040 implements IFormLogic {
         }
 
         // 画面に取得した情報をセットする。(入力項目以外)
-        setViewItemData(processData, sekkeiData, lotKbnMasData, ownerMasData, shikakariData, lotNo);
+        setViewItemData(processData, sekkeiData, lotKbnMasData, ownerMasData, shikakariData, siteiKousaBudomariInfo, lotNo);
 
         // 誤差率、補正率判定値セット処理
         setHanteichi(queryRunnerDoc, processData, errorMessageList);
@@ -1155,17 +1125,42 @@ public class GXHDO101B040 implements IFormLogic {
             return false;
         }
 
-        // 取得したデータをすべてカンマ区切りで結合
-        String kensaBashoSetValue = "";
-        for (String kensaBasho : paramList) {
-            if (!StringUtil.isEmpty(kensaBashoSetValue)) {
-                kensaBashoSetValue += ",";
-            }
-            kensaBashoSetValue += kensaBasho;
+        // 取得したデータの1件目をコンボボックスの項目として追加
+        itemKensaBasho.setInputList(paramList.get(0));
+        return true;
+    }
+
+    /**
+     * 指定公差歩留まり情報取得
+     * @param processData  処理制御データ
+     * @param queryRunnerWip queryRunnerDoc QueryRunnerオブジェクト(Wip)
+     * @param lotNo ﾛｯﾄNo
+     * @param errorMessageList エラーメッセージリスト
+     * @return 指定公差歩留まり情報
+     */
+    private Map<String, Object> getShiteiKousabudomari(ProcessData processData, QueryRunner queryRunnerWip, String lotNo, List<String> errorMessageList) {
+
+        // QA履歴データ取得
+        List<Map<String, Object>> qaRirekiDataList = loadQaRirekiData(queryRunnerWip, lotNo);
+        if (qaRirekiDataList.isEmpty()) {
+            errorMessageList.add(MessageUtil.getMessage("XHD-000167"));
+            return null;
         }
 
-        itemKensaBasho.setInputList(kensaBashoSetValue);
-        return true;
+        // 公差歩留まり1
+        Map<String, Object> qaRirekiData = qaRirekiDataList.get(0);
+        if (!NumberUtil.isNumeric(StringUtil.nullToBlank(qaRirekiData.get("kousa1"))) || !NumberUtil.isNumeric(StringUtil.nullToBlank(qaRirekiData.get("budomari1")))) {
+            FXHDD01 siteikousaBudomari1 = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI1);
+            errorMessageList.add(MessageUtil.getMessage("XHD-000168", siteikousaBudomari1.getLabel1()));
+        }
+
+        // 公差歩留まり2
+        if (!NumberUtil.isNumeric(StringUtil.nullToBlank(qaRirekiData.get("kousa2"))) || !NumberUtil.isNumeric(StringUtil.nullToBlank(qaRirekiData.get("budomari2")))) {
+            FXHDD01 siteikousaBudomari2 = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI2);
+            errorMessageList.add(MessageUtil.getMessage("XHD-000168", siteikousaBudomari2.getLabel1()));
+        }
+
+        return qaRirekiData;
     }
 
     /**
@@ -1212,7 +1207,7 @@ public class GXHDO101B040 implements IFormLogic {
      * @param shikakariData 仕掛データ
      * @param lotNo ﾛｯﾄNo
      */
-    private void setViewItemData(ProcessData processData, Map sekkeiData, Map lotKbnMasData, Map ownerMasData, Map shikakariData, String lotNo) {
+    private void setViewItemData(ProcessData processData, Map sekkeiData, Map lotKbnMasData, Map ownerMasData, Map shikakariData, Map siteiKousaBudomariInfo, String lotNo) {
 
         // ロットNo
         this.setItemData(processData, GXHDO101B040Const.SEIHIN_LOTNO, lotNo);
@@ -1241,6 +1236,34 @@ public class GXHDO101B040 implements IFormLogic {
 
         // 指定公差
         this.setItemData(processData, GXHDO101B040Const.SEIHIN_SHITEI_KOUSA, StringUtil.nullToBlank(getMapData(sekkeiData, "KOUSA")));
+
+        // 入力画面選択から受け取った情報を表示する。
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+
+        Map srJikiqcInfo = (Map) session.getAttribute("SrJikiqcInfo");
+        if (srJikiqcInfo != null && !srJikiqcInfo.isEmpty()) {
+            //後工程指示内容←磁器QC[後工程指示内容2]
+            this.setItemData(processData, GXHDO101B040Const.SEIHIN_ATOKOUTEI_SHIJI_NAIYO, StringUtil.nullToBlank(srJikiqcInfo.get("sijinaiyou2")));
+        }
+        
+        // 指定公差歩留まり設定処理
+        if(siteiKousaBudomariInfo != null){
+            //TODO
+            StringBuilder kousaBudomari1 = new StringBuilder();
+            kousaBudomari1.append(StringUtil.nullToBlank(siteiKousaBudomariInfo.get("kousa1")));
+            kousaBudomari1.append(" = ");
+            kousaBudomari1.append(StringUtil.nullToBlank(siteiKousaBudomariInfo.get("budomari1")));
+            kousaBudomari1.append(" %");
+            this.setItemData(processData, GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI1, kousaBudomari1.toString());
+            
+            StringBuilder kousaBudomari2 = new StringBuilder();
+            kousaBudomari2.append(StringUtil.nullToBlank(siteiKousaBudomariInfo.get("kousa2")));
+            kousaBudomari2.append(" = ");
+            kousaBudomari2.append(StringUtil.nullToBlank(siteiKousaBudomariInfo.get("budomari2")));
+            kousaBudomari2.append(" %");
+            this.setItemData(processData, GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI2,  kousaBudomari2.toString());
+        }
 
     }
 
@@ -1284,6 +1307,38 @@ public class GXHDO101B040 implements IFormLogic {
                 for (FXHDD01 fxhdd001 : processData.getItemListEx()) {
                     this.setItemData(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
                 }
+
+                // 入力画面選択から受け取った情報を初期表示する。
+                ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+                HttpSession session = (HttpSession) externalContext.getSession(false);
+
+                Map srMekkiInfo = (Map) session.getAttribute("SrMekkiInfo");
+                if (srMekkiInfo != null && !srMekkiInfo.isEmpty()) {
+                    // 送り良品数←ﾒｯｷ品質検査[良品数]
+                    setItemData(processData, GXHDO101B040Const.SEIHIN_OKURI_RYOHINSU, StringUtil.nullToBlank(srMekkiInfo.get("shukkakosuu")));
+
+                    // 受入れ単位重量←ﾒｯｷ品質検査[検査単位重量]
+                    setItemData(processData, GXHDO101B040Const.SEIHIN_UKEIRE_TANNIJURYO, StringUtil.nullToBlank((BigDecimal) srMekkiInfo.get("kensatannijyuryo")));
+
+                    // 受入れ総重量←ﾒｯｷ品質検査[検査総重量]
+                    setItemData(processData, GXHDO101B040Const.SEIHIN_UKEIRE_SOUJURYO, StringUtil.nullToBlank((BigDecimal) srMekkiInfo.get("kensasoujyuryou")));
+
+                    // ﾒｯｷ日←ﾒｯｷ品質検査[終了日時のYYMMMDD部分] 
+                    setItemData(processData, GXHDO101B040Const.SEIHIN_MEKKI_DAY, DateUtil.formattedTimestamp((Timestamp) srMekkiInfo.get("mekkisyuryounichiji"), "yyMMdd"));
+
+                    // ﾒｯｷ時間←ﾒｯｷ品質検査[終了日時のHHMM部分]
+                    setItemData(processData, GXHDO101B040Const.SEIHIN_MEKKI_TIME, DateUtil.formattedTimestamp((Timestamp) srMekkiInfo.get("mekkisyuryounichiji"), "HHmm"));
+                }
+
+                Map srGdyakitukeInfo = (Map) session.getAttribute("SrGdyakitukeInfo");
+                if (srGdyakitukeInfo != null && !srGdyakitukeInfo.isEmpty()) {
+                    // 外部電極焼付日←外部電極焼成[終了日時]のYYMMMDD部分
+                    setItemData(processData, GXHDO101B040Const.SEIHIN_G_YAKITSUKE_DAY, DateUtil.formattedTimestamp((Timestamp) srGdyakitukeInfo.get("enddatetime"), "yyMMdd"));
+
+                    // 外部電極焼付時間←外部電極焼成[終了日時]のHHMM部分
+                    setItemData(processData, GXHDO101B040Const.SEIHIN_G_YAKITSUKE_TIME, DateUtil.formattedTimestamp((Timestamp) srGdyakitukeInfo.get("enddatetime"), "HHmm"));
+                }
+
                 return true;
             }
 
@@ -2076,7 +2131,7 @@ public class GXHDO101B040 implements IFormLogic {
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private Map loadShikakariData(QueryRunner queryRunnerWip, String lotNo) throws SQLException {
+    private Map loadSikakariData(QueryRunner queryRunnerWip, String lotNo) throws SQLException {
         String lotNo1 = lotNo.substring(0, 3);
         String lotNo2 = lotNo.substring(3, 11);
         String lotNo3 = lotNo.substring(11, 14);
@@ -5316,6 +5371,40 @@ public class GXHDO101B040 implements IFormLogic {
 
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
             return mapList.stream().map(n -> n.get("data").toString()).collect(Collectors.toList());
+
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+        }
+        return null;
+
+    }
+
+    /**
+     * [QA履歴]から、ﾃﾞｰﾀを取得
+     *
+     * @param queryRunnerWip オブジェクト
+     * @param lotNo ﾛｯﾄNo
+     * @return 取得データ
+     */
+    private List<Map<String, Object>> loadQaRirekiData(QueryRunner queryRunnerWip, String lotNo) {
+        try {
+
+            String lotNo1 = lotNo.substring(0, 3);
+            String lotNo2 = lotNo.substring(3, 11);
+            String lotNo3 = lotNo.substring(11, 14);
+
+            // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+            String sql = "SELECT kousa1,kousa2,budomari1,budomari2 "
+                    + " FROM qarireki "
+                    + " WHERE kojyo = ? AND lotno = ? AND edaban = ? "
+                    + " ORDER BY sokuteino desc";
+
+            List<Object> params = new ArrayList<>();
+            params.add(lotNo1);
+            params.add(lotNo2);
+            params.add(lotNo3);
+            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+            return queryRunnerWip.query(sql, new MapListHandler(), params.toArray());
 
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);

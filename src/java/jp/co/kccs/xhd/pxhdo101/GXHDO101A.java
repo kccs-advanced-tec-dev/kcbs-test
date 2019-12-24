@@ -86,7 +86,9 @@ public class GXHDO101A implements Serializable {
     private static final String FORM_ID_GAIBUDENKYOKU_SYOSEI = "GXHDO101B029";
     private static final String FORM_ID_GAIBUDENKYOKU_SYOSEIGAIKAN = "GXHDO101B030";
     private static final String FORM_ID_GAIBUDENKYOKU_MEKKI_HINSHITSU_KENSA = "GXHDO101B038";
-    
+    private static final String FORM_ID_DENKITOKUSEI_ESI = "GXHDO101B040";
+    private static final String FORM_ID_DENKITOKUSEI_3TANSHI_4TANSHI = "GXHDO101B041";
+    private static final String FORM_ID_DENKITOKUSEI_IPPANHIN = "GXHDO101B042";
     
     /**
      * DataSource(wip)
@@ -548,6 +550,9 @@ public class GXHDO101A implements Serializable {
             if (FORM_ID_GAIBUDENKYOKU_TOFU_TANSHI.equals(rowData.getFormId()) || FORM_ID_GAIBUDENKYOKU_TOFU.equals(rowData.getFormId())) {
                 session.setAttribute("soujuryou", getSoujuryou(this.menuListGXHDO101Nofiltering));
             }
+            
+            // 電気特性画面用の情報をｾｯｼｮﾝにセットする。
+            setDenkitokuseiSessionData(rowData.getFormId(), session);
 
             // 前工程が存在するかつ前工程のデータが取得できなかった場合
             if (maeKoteiMenuInfo != null && maekoteiInfo == null) {
@@ -2589,5 +2594,51 @@ public class GXHDO101A implements Serializable {
             }
         }
         return "";
+    }
+    
+    
+     /**
+      * 電気特性画面に必要な情報をセッションにセットする。
+      * @param formId 画面ID
+      * @param session セッション情報
+      * @throws SQLException 例外エラー
+      */
+    private void setDenkitokuseiSessionData(String formId, HttpSession session) throws SQLException {
+        
+        if(!FORM_ID_DENKITOKUSEI_ESI.equals(formId) && !FORM_ID_DENKITOKUSEI_3TANSHI_4TANSHI.equals(formId) && !FORM_ID_DENKITOKUSEI_IPPANHIN.equals(formId)){
+            // 電気特性の画面ID以外は処理なし
+            return;
+        }
+        
+        QueryRunner queryRunnerDoc = new QueryRunner(dataSourceDocServer);
+        QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
+        String strKojyo = this.searchLotNo.substring(0, 3);
+        String strLotNo = this.searchLotNo.substring(3, 11);
+        String strEdaban = this.searchLotNo.substring(11, 14);
+        
+        // ﾒｯｷ品質検査(登録済みのデータが存在すれば値を取得する。)
+        Map srMekkiInfo = null;
+        List<String[]> Fxhdd03InfoListB038 = loadFxhdd03InfoListJisekiNoDesc(queryRunnerDoc, strKojyo, strLotNo, strEdaban, "GXHDO101B038");
+        if (!Fxhdd03InfoListB038.isEmpty() && "1".equals(Fxhdd03InfoListB038.get(0)[0])) {
+            srMekkiInfo = CommonUtil.getSrMekkiData(queryRunnerQcdb, strKojyo, strLotNo, strEdaban, Fxhdd03InfoListB038.get(0)[2], Integer.parseInt(Fxhdd03InfoListB038.get(0)[1]));
+        }
+        session.setAttribute("SrMekkiInfo", srMekkiInfo);
+
+        //外部電極焼成
+        Map srGdyakitukeInfo = null;
+        List<String[]> Fxhdd03InfoListB029 = loadFxhdd03InfoListJisekiNoDesc(queryRunnerDoc, strKojyo, strLotNo, strEdaban, "GXHDO101B029");
+        if (!Fxhdd03InfoListB029.isEmpty() && "1".equals(Fxhdd03InfoListB029.get(0)[0])) {
+            srGdyakitukeInfo = CommonUtil.getSrGdyakitukeData(queryRunnerQcdb, strKojyo, strLotNo, strEdaban, Fxhdd03InfoListB029.get(0)[2], Integer.parseInt(Fxhdd03InfoListB029.get(0)[1]));
+        }
+        session.setAttribute("SrGdyakitukeInfo", srGdyakitukeInfo);
+
+        //磁器QC
+        Map srJikiqcInfo = null;
+        List<String[]> Fxhdd03InfoListB022 = loadFxhdd03InfoListJisekiNoDesc(queryRunnerDoc, strKojyo, strLotNo, strEdaban, "GXHDO101B022");
+        if (!Fxhdd03InfoListB022.isEmpty() && "1".equals(Fxhdd03InfoListB022.get(0)[0])) {
+            srJikiqcInfo = CommonUtil.getSrJikiqcData(queryRunnerQcdb, strKojyo, strLotNo, strEdaban, Fxhdd03InfoListB022.get(0)[2], Integer.parseInt(Fxhdd03InfoListB022.get(0)[1]));
+        }
+        session.setAttribute("SrJikiqcInfo", srJikiqcInfo);
+
     }
 }

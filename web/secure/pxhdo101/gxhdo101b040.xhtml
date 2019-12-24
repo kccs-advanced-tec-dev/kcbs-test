@@ -43,7 +43,7 @@
                 document.getElementById("mainForm").style.setProperty("width", #{adjustModels.menuWidth} + "px");
                 document.getElementById("mainForm").style.setProperty("Top", -(pointY) + 34 + "px");
                 document.getElementById("mainForm").style.removeProperty("display");
-                
+
             }
             function subFormClose() {
                 document.getElementById("mainForm").style.setProperty("display", "none");
@@ -831,6 +831,13 @@
                                                                    inputStyle="font-size:#{beanGXHDO101C040D.bin1PercentKbn.fontSizeInput}px;
                                                                    color:#{beanGXHDO101C040D.bin1PercentKbn.fontColorInput}; background:#{beanGXHDO101C040D.bin1PercentKbn.backColorInput};#{beanGXHDO101C040D.bin1PercentKbn.customStyleInput}">
                                                     </p:inputNumber>
+                                                    <p:selectOneMenu id="bin1PercentKbn" styleClass="selectMenu" rendered="#{beanGXHDO101C040D.bin1PercentKbn.renderInputSelect}" value="#{beanGXHDO101C040D.bin1PercentKbn.value}" editable="true"
+                                                                     style="margin-left:8px;width:#{beanGXHDO101C040D.bin1PercentKbn.inputLength}em;font-size:#{beanGXHDO101C040D.bin1PercentKbn.fontSizeInput}px;color:#{beanGXHDO101C040D.bin1PercentKbn.fontColorInput};background:#{beanGXHDO101C040D.bin1PercentKbn.backColorInput};
+                                                                     #{beanGXHDO101C040D.bin1PercentKbn.customStyleInput}">
+                                                        <f:selectItem itemLabel="" itemValue="" />
+                                                        <f:selectItems value="#{beanGXHDO101C040D.bin1PercentKbn.selectMenuItem}" />
+                                                    </p:selectOneMenu> 
+
                                                 </td>
                                                 <td style="text-align: center; vertical-align: middle; ">
                                                     <p:inputText id="bin2PercentKbnT" styleClass="percent_kbn_input_text"
@@ -846,6 +853,12 @@
                                                                    inputStyle="font-size:#{beanGXHDO101C040D.bin2PercentKbn.fontSizeInput}px;
                                                                    color:#{beanGXHDO101C040D.bin2PercentKbn.fontColorInput}; background:#{beanGXHDO101C040D.bin2PercentKbn.backColorInput};#{beanGXHDO101C040D.bin2PercentKbn.customStyleInput}">
                                                     </p:inputNumber>
+                                                    <p:selectOneMenu id="bin2PercentKbn" styleClass="selectMenu" rendered="#{beanGXHDO101C040D.bin2PercentKbn.renderInputSelect}" value="#{beanGXHDO101C040D.bin2PercentKbn.value}" editable="true"
+                                                                     style="margin-left:8px;width:#{beanGXHDO101C040D.bin2PercentKbn.inputLength}em;font-size:#{beanGXHDO101C040D.bin2PercentKbn.fontSizeInput}px;color:#{beanGXHDO101C040D.bin2PercentKbn.fontColorInput};background:#{beanGXHDO101C040D.bin2PercentKbn.backColorInput};
+                                                                     #{beanGXHDO101C040D.bin2PercentKbn.customStyleInput}">
+                                                        <f:selectItem itemLabel="" itemValue="" />
+                                                        <f:selectItems value="#{beanGXHDO101C040D.bin2PercentKbn.selectMenuItem}" />
+                                                    </p:selectOneMenu> 
                                                 </td>
                                                 <td class="percent_kbn_td">
                                                     <p:inputText id="bin3PercentKbnT" styleClass="percent_kbn_input_text"
@@ -861,6 +874,14 @@
                                                                    inputStyle="font-size:#{beanGXHDO101C040D.bin3PercentKbn.fontSizeInput}px;
                                                                    color:#{beanGXHDO101C040D.bin3PercentKbn.fontColorInput}; background:#{beanGXHDO101C040D.bin3PercentKbn.backColorInput};#{beanGXHDO101C040D.bin3PercentKbn.customStyleInput}">
                                                     </p:inputNumber>
+
+                                                    <p:selectOneMenu id="bin3PercentKbn" styleClass="selectMenu" rendered="#{beanGXHDO101C040D.bin3PercentKbn.renderInputSelect}" value="#{beanGXHDO101C040D.bin3PercentKbn.value}" editable="true"
+                                                                     style="margin-left:8px;width:#{beanGXHDO101C040D.bin3PercentKbn.inputLength}em;font-size:#{beanGXHDO101C040D.bin3PercentKbn.fontSizeInput}px;color:#{beanGXHDO101C040D.bin3PercentKbn.fontColorInput};background:#{beanGXHDO101C040D.bin3PercentKbn.backColorInput};
+                                                                     #{beanGXHDO101C040D.bin3PercentKbn.customStyleInput}">
+                                                        <f:selectItem itemLabel="" itemValue="" />
+                                                        <f:selectItems value="#{beanGXHDO101C040D.bin3PercentKbn.selectMenuItem}" />
+                                                    </p:selectOneMenu> 
+
                                                 </td>
                                                 <td class="percent_kbn_td">
                                                     <p:inputText id="bin4PercentKbnT" styleClass="percent_kbn_input_text"
@@ -876,6 +897,13 @@
                                                                    inputStyle="font-size:#{beanGXHDO101C040D.bin4PercentKbn.fontSizeInput}px;
                                                                    color:#{beanGXHDO101C040D.bin4PercentKbn.fontColorInput}; background:#{beanGXHDO101C040D.bin4PercentKbn.backColorInput};#{beanGXHDO101C040D.bin4PercentKbn.customStyleInput}">
                                                     </p:inputNumber>
+                                                    <p:selectOneMenu id="bin4PercentKbn" styleClass="selectMenu" rendered="#{beanGXHDO101C040D.bin4PercentKbn.renderInputSelect}" value="#{beanGXHDO101C040D.bin4PercentKbn.value}" editable="true"
+                                                                     style="margin-left:8px;width:#{beanGXHDO101C040D.bin4PercentKbn.inputLength}em;font-size:#{beanGXHDO101C040D.bin4PercentKbn.fontSizeInput}px;color:#{beanGXHDO101C040D.bin4PercentKbn.fontColorInput};background:#{beanGXHDO101C040D.bin4PercentKbn.backColorInput};
+                                                                     #{beanGXHDO101C040D.bin4PercentKbn.customStyleInput}">
+                                                        <f:selectItem itemLabel="" itemValue="" />
+                                                        <f:selectItems value="#{beanGXHDO101C040D.bin4PercentKbn.selectMenuItem}" />
+                                                    </p:selectOneMenu> 
+
                                                 </td>
                                                 <td class="percent_kbn_td">
                                                     <p:inputText id="bin5PercentKbnT" class="percent_kbn_input_text"
@@ -891,6 +919,12 @@
                                                                    inputStyle="font-size:#{beanGXHDO101C040D.bin5PercentKbn.fontSizeInput}px;
                                                                    color:#{beanGXHDO101C040D.bin5PercentKbn.fontColorInput}; background:#{beanGXHDO101C040D.bin5PercentKbn.backColorInput};#{beanGXHDO101C040D.bin5PercentKbn.customStyleInput}">
                                                     </p:inputNumber>
+                                                    <p:selectOneMenu id="bin5PercentKbn" styleClass="selectMenu" rendered="#{beanGXHDO101C040D.bin5PercentKbn.renderInputSelect}" value="#{beanGXHDO101C040D.bin5PercentKbn.value}" editable="true"
+                                                                     style="margin-left:8px;width:#{beanGXHDO101C040D.bin5PercentKbn.inputLength}em;font-size:#{beanGXHDO101C040D.bin5PercentKbn.fontSizeInput}px;color:#{beanGXHDO101C040D.bin5PercentKbn.fontColorInput};background:#{beanGXHDO101C040D.bin5PercentKbn.backColorInput};
+                                                                     #{beanGXHDO101C040D.bin5PercentKbn.customStyleInput}">
+                                                        <f:selectItem itemLabel="" itemValue="" />
+                                                        <f:selectItems value="#{beanGXHDO101C040D.bin5PercentKbn.selectMenuItem}" />
+                                                    </p:selectOneMenu> 
                                                 </td>
                                                 <td class="percent_kbn_td">
                                                     <p:inputText id="bin6PercentKbnT" styleClass="percent_kbn_input_text"
@@ -906,6 +940,12 @@
                                                                    inputStyle="font-size:#{beanGXHDO101C040D.bin6PercentKbn.fontSizeInput}px;
                                                                    color:#{beanGXHDO101C040D.bin6PercentKbn.fontColorInput}; background:#{beanGXHDO101C040D.bin6PercentKbn.backColorInput};#{beanGXHDO101C040D.bin6PercentKbn.customStyleInput}">
                                                     </p:inputNumber>
+                                                    <p:selectOneMenu id="bin6PercentKbn" styleClass="selectMenu" rendered="#{beanGXHDO101C040D.bin6PercentKbn.renderInputSelect}" value="#{beanGXHDO101C040D.bin6PercentKbn.value}" editable="true"
+                                                                     style="margin-left:8px;width:#{beanGXHDO101C040D.bin6PercentKbn.inputLength}em;font-size:#{beanGXHDO101C040D.bin6PercentKbn.fontSizeInput}px;color:#{beanGXHDO101C040D.bin6PercentKbn.fontColorInput};background:#{beanGXHDO101C040D.bin6PercentKbn.backColorInput};
+                                                                     #{beanGXHDO101C040D.bin6PercentKbn.customStyleInput}">
+                                                        <f:selectItem itemLabel="" itemValue="" />
+                                                        <f:selectItems value="#{beanGXHDO101C040D.bin6PercentKbn.selectMenuItem}" />
+                                                    </p:selectOneMenu> 
                                                 </td>
                                                 <td class="percent_kbn_td">
                                                     <p:inputText id="bin7PercentKbnT" styleClass="percent_kbn_input_text"
@@ -921,6 +961,12 @@
                                                                    inputStyle="font-size:#{beanGXHDO101C040D.bin7PercentKbn.fontSizeInput}px;
                                                                    color:#{beanGXHDO101C040D.bin7PercentKbn.fontColorInput}; background:#{beanGXHDO101C040D.bin7PercentKbn.backColorInput};#{beanGXHDO101C040D.bin7PercentKbn.customStyleInput}">
                                                     </p:inputNumber>
+                                                    <p:selectOneMenu id="bin7PercentKbn" styleClass="selectMenu" rendered="#{beanGXHDO101C040D.bin7PercentKbn.renderInputSelect}" value="#{beanGXHDO101C040D.bin7PercentKbn.value}" editable="true"
+                                                                     style="margin-left:8px;width:#{beanGXHDO101C040D.bin7PercentKbn.inputLength}em;font-size:#{beanGXHDO101C040D.bin7PercentKbn.fontSizeInput}px;color:#{beanGXHDO101C040D.bin7PercentKbn.fontColorInput};background:#{beanGXHDO101C040D.bin7PercentKbn.backColorInput};
+                                                                     #{beanGXHDO101C040D.bin7PercentKbn.customStyleInput}">
+                                                        <f:selectItem itemLabel="" itemValue="" />
+                                                        <f:selectItems value="#{beanGXHDO101C040D.bin7PercentKbn.selectMenuItem}" />
+                                                    </p:selectOneMenu> 
                                                 </td>
                                                 <td class="percent_kbn_td">
                                                     <p:inputText id="bin8PercentKbnT" styleClass="percent_kbn_input_text"
@@ -936,6 +982,12 @@
                                                                    inputStyle="font-size:#{beanGXHDO101C040D.bin8PercentKbn.fontSizeInput}px;
                                                                    color:#{beanGXHDO101C040D.bin8PercentKbn.fontColorInput}; background:#{beanGXHDO101C040D.bin8PercentKbn.backColorInput};#{beanGXHDO101C040D.bin8PercentKbn.customStyleInput}">
                                                     </p:inputNumber>
+                                                    <p:selectOneMenu id="bin8PercentKbn" styleClass="selectMenu" rendered="#{beanGXHDO101C040D.bin8PercentKbn.renderInputSelect}" value="#{beanGXHDO101C040D.bin8PercentKbn.value}" editable="true"
+                                                                     style="margin-left:8px;width:#{beanGXHDO101C040D.bin8PercentKbn.inputLength}em;font-size:#{beanGXHDO101C040D.bin8PercentKbn.fontSizeInput}px;color:#{beanGXHDO101C040D.bin8PercentKbn.fontColorInput};background:#{beanGXHDO101C040D.bin8PercentKbn.backColorInput};
+                                                                     #{beanGXHDO101C040D.bin8PercentKbn.customStyleInput}">
+                                                        <f:selectItem itemLabel="" itemValue="" />
+                                                        <f:selectItems value="#{beanGXHDO101C040D.bin8PercentKbn.selectMenuItem}" />
+                                                    </p:selectOneMenu> 
                                                 </td>
                                                 <td class="background-diagonal-line" />
                                                 <td class="background-diagonal-line" />
@@ -1963,14 +2015,40 @@
                                                                      style="margin-left:8px;width:#{beanGXHDO101C040D.bin1KekkaCheck.inputLength}em;font-size:#{beanGXHDO101C040D.bin1KekkaCheck.fontSizeInput}px;color:#{beanGXHDO101C040D.bin1KekkaCheck.fontColorInput};background:#{beanGXHDO101C040D.bin1KekkaCheck.backColorInput};
                                                                      #{beanGXHDO101C040D.bin1KekkaCheck.customStyleInput}">
                                                         <f:selectItems value="#{beanGXHDO101C040D.bin1KekkaCheck.selectMenuItem}" />
-                                                    </p:selectOneMenu> 
+                                                    </p:selectOneMenu>
+                                                    <p:inputText id="bin1KekkaCheckT" styleClass="kekka_check_text"
+                                                                 rendered="#{beanGXHDO101C040D.bin1KekkaCheck.renderInputText}" value="#{beanGXHDO101C040D.bin1KekkaCheck.value}" 
+                                                                 maxlength="#{beanGXHDO101C040D.bin1KekkaCheck.displayMaxLength}" 
+                                                                 style="width:#{beanGXHDO101C040D.bin1KekkaCheck.displayMaxLength}em; font-size:#{beanGXHDO101C040D.bin1KekkaCheck.fontSizeInput}px;
+                                                                 color:#{beanGXHDO101C040D.bin1KekkaCheck.fontColorInput};background:#{beanGXHDO101C040D.bin1KekkaCheck.backColorInput};#{beanGXHDO101C040D.bin1KekkaCheck.customStyleInput}">
+                                                    </p:inputText>
+                                                    <p:inputNumber id="bin1KekkaCheckN" inputStyleClass="kekka_check_number" 
+                                                                   rendered="#{beanGXHDO101C040D.bin1KekkaCheck.renderInputNumber}" value="#{beanGXHDO101C040D.bin1KekkaCheck.value}" 
+                                                                   decimalPlaces="#{beanGXHDO101C040D.bin1KekkaCheck.numberDecimalPlaces}" maxValue="#{beanGXHDO101C040D.bin1KekkaCheck.numberMaxValue}" minValue="#{beanGXHDO101C040D.bin1KekkaCheck.numberMinValue}" 
+                                                                   thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C040D.bin1KekkaCheck.displayMaxLength}"
+                                                                   inputStyle="font-size:#{beanGXHDO101C040D.bin1KekkaCheck.fontSizeInput}px;
+                                                                   color:#{beanGXHDO101C040D.bin1KekkaCheck.fontColorInput}; background:#{beanGXHDO101C040D.bin1KekkaCheck.backColorInput};#{beanGXHDO101C040D.bin1KekkaCheck.customStyleInput}">
+                                                    </p:inputNumber>
                                                 </td>
                                                 <td class="kekka_check_td">
                                                     <p:selectOneMenu id="bin2KekkaCheck" rendered="#{beanGXHDO101C040D.bin2KekkaCheck.renderInputSelect}" value="#{beanGXHDO101C040D.bin2KekkaCheck.value}" 
                                                                      style="margin-left:8px;width:#{beanGXHDO101C040D.bin2KekkaCheck.inputLength}em;font-size:#{beanGXHDO101C040D.bin2KekkaCheck.fontSizeInput}px;color:#{beanGXHDO101C040D.bin2KekkaCheck.fontColorInput};background:#{beanGXHDO101C040D.bin2KekkaCheck.backColorInput};
                                                                      #{beanGXHDO101C040D.bin2KekkaCheck.customStyleInput}">
                                                         <f:selectItems value="#{beanGXHDO101C040D.bin2KekkaCheck.selectMenuItem}" />
-                                                    </p:selectOneMenu> 
+                                                    </p:selectOneMenu>
+                                                    <p:inputText id="bin2KekkaCheckT" styleClass="kekka_check_text"
+                                                                 rendered="#{beanGXHDO101C040D.bin2KekkaCheck.renderInputText}" value="#{beanGXHDO101C040D.bin2KekkaCheck.value}" 
+                                                                 maxlength="#{beanGXHDO101C040D.bin2KekkaCheck.displayMaxLength}" 
+                                                                 style="width:#{beanGXHDO101C040D.bin2KekkaCheck.displayMaxLength}em; font-size:#{beanGXHDO101C040D.bin2KekkaCheck.fontSizeInput}px;
+                                                                 color:#{beanGXHDO101C040D.bin2KekkaCheck.fontColorInput};background:#{beanGXHDO101C040D.bin2KekkaCheck.backColorInput};#{beanGXHDO101C040D.bin2KekkaCheck.customStyleInput}">
+                                                    </p:inputText>
+                                                    <p:inputNumber id="bin2KekkaCheckN" inputStyleClass="kekka_check_number" 
+                                                                   rendered="#{beanGXHDO101C040D.bin2KekkaCheck.renderInputNumber}" value="#{beanGXHDO101C040D.bin2KekkaCheck.value}" 
+                                                                   decimalPlaces="#{beanGXHDO101C040D.bin2KekkaCheck.numberDecimalPlaces}" maxValue="#{beanGXHDO101C040D.bin2KekkaCheck.numberMaxValue}" minValue="#{beanGXHDO101C040D.bin2KekkaCheck.numberMinValue}" 
+                                                                   thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C040D.bin2KekkaCheck.displayMaxLength}"
+                                                                   inputStyle="font-size:#{beanGXHDO101C040D.bin2KekkaCheck.fontSizeInput}px;
+                                                                   color:#{beanGXHDO101C040D.bin2KekkaCheck.fontColorInput}; background:#{beanGXHDO101C040D.bin2KekkaCheck.backColorInput};#{beanGXHDO101C040D.bin2KekkaCheck.customStyleInput}">
+                                                    </p:inputNumber>
                                                 </td>
                                                 <td class="kekka_check_td">
                                                     <p:selectOneMenu id="bin3KekkaCheck" rendered="#{beanGXHDO101C040D.bin3KekkaCheck.renderInputSelect}" value="#{beanGXHDO101C040D.bin3KekkaCheck.value}" 
@@ -1999,6 +2077,10 @@
                                                                      #{beanGXHDO101C040D.bin6KekkaCheck.customStyleInput}">
                                                         <f:selectItems value="#{beanGXHDO101C040D.bin6KekkaCheck.selectMenuItem}" />
                                                     </p:selectOneMenu> 
+
+
+
+
                                                 </td>
                                             </tr>
                                             <tr style="text-align: center;">
@@ -2054,7 +2136,6 @@
                                                                    inputStyle="font-size:#{beanGXHDO101C040D.bin7FukuroCheck.fontSizeInput}px;
                                                                    color:#{beanGXHDO101C040D.bin7FukuroCheck.fontColorInput}; background:#{beanGXHDO101C040D.bin7FukuroCheck.backColorInput};#{beanGXHDO101C040D.bin7FukuroCheck.customStyleInput}">
                                                     </p:inputNumber>
-
                                                 </td>
                                                 <td class="fukuro_check_td">
                                                     <p:inputText id="bin8FukuroCheckT" styleClass="fukuro_check_input_text"
@@ -2163,7 +2244,6 @@
                                                 <td style="border-left: hidden;" rowspan="4">
                                                     <h:outputText  value="ｹ"/>
                                                 </td>
-
                                                 <td class="ryohin_juryo_td" rowspan="2">
                                                     <p:inputText id="ryouhinJuryoT" styleClass="ryohin_juryo_input_text"
                                                                  rendered="#{beanGXHDO101C040D.ryouhinJuryo.renderInputText}" value="#{beanGXHDO101C040D.ryouhinJuryo.value}" 
@@ -2276,7 +2356,6 @@
                                                                    inputStyle="font-size:#{beanGXHDO101C040D.kousa3.fontSizeInput}px;
                                                                    color:#{beanGXHDO101C040D.kousa3.fontColorInput}; background:#{beanGXHDO101C040D.kousa3.backColorInput};#{beanGXHDO101C040D.kousa3.customStyleInput}">
                                                     </p:inputNumber>
-
                                                 </th>
                                                 <td class="juryo_td">
                                                     <p:inputText id="juryo3T" styleClass="juryo_input_text"
@@ -2292,8 +2371,6 @@
                                                                    inputStyle="font-size:#{beanGXHDO101C040D.juryo3.fontSizeInput}px;
                                                                    color:#{beanGXHDO101C040D.juryo3.fontColorInput}; background:#{beanGXHDO101C040D.juryo3.backColorInput};#{beanGXHDO101C040D.juryo3.customStyleInput}">
                                                     </p:inputNumber>
-
-
                                                 </td>
                                                 <td style="border-left: hidden; width: 25px;">
                                                     <h:outputText  value="g"/>
