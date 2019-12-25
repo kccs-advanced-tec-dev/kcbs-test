@@ -981,7 +981,7 @@ public class GXHDO101B030 implements IFormLogic {
         //ﾃﾞｰﾀの取得
          String strfxhbm03List = "";
          
-        Map fxhbm03Data = loadFxhbm03Data(queryRunnerDoc);
+        Map fxhbm03Data = loadFxhbm03Data(queryRunnerDoc, "xhd_gaibudenkyoku_dandori_koteicode");
         if (fxhbm03Data != null && !fxhbm03Data.isEmpty()) {
              strfxhbm03List = StringUtil.nullToBlank(getMapData(fxhbm03Data, "data"));
              String fxhbm03DataArr []= strfxhbm03List.split(",");
@@ -1006,6 +1006,9 @@ public class GXHDO101B030 implements IFormLogic {
 
         // 画面に取得した情報をセットする。(入力項目以外)
         setViewItemData(processData, lotKbnMasData, ownerMasData, shikakariData, lotNo, syorisuu);
+        
+        // 追加表示処理
+        addView(processData, queryRunnerDoc, StringUtil.nullToBlank(getMapData(shikakariData, "kcpno")));           
 
         processData.setInitMessageList(errorMessageList);
         return processData;
@@ -1094,6 +1097,7 @@ public class GXHDO101B030 implements IFormLogic {
                 for (FXHDD01 fxhdd001 : processData.getItemList()) {
                     this.setItemData(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
                 }
+                
                 return true;
             }
 
@@ -1299,17 +1303,22 @@ public class GXHDO101B030 implements IFormLogic {
     /**
      * [ﾊﾟﾗﾒｰﾀﾏｽﾀ]から、ﾃﾞｰﾀを取得
      * @param queryRunnerDoc オブジェクト
+     * @param key キー
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private Map loadFxhbm03Data(QueryRunner queryRunnerDoc) {
+    private Map loadFxhbm03Data(QueryRunner queryRunnerDoc, String key) {
         try {
 
             // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
-             String sql = "SELECT data "
-                        + " FROM fxhbm03 "
-                        + " WHERE user_name = 'common_user' AND key = 'xhd_gaibudenkyoku_dandori_koteicode' ";
-            return queryRunnerDoc.query(sql, new MapHandler());
+            String sql = "SELECT data "
+                    + " FROM fxhbm03 "
+                    + " WHERE user_name = 'common_user' AND key = ? ";
+            List<Object> params = new ArrayList<>();
+            params.add(key);
+
+            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+            return queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
         }
@@ -2341,6 +2350,43 @@ public class GXHDO101B030 implements IFormLogic {
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+    
+    /**
+     * 追加表示処理
+     * @param processData 処理制御データ
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param kcpNo KCPNO
+     */
+    private void addView(ProcessData processData, QueryRunner queryRunnerDoc, String kcpNo){
+        //品質DB登録実績が取得されていない場合、処理
+        if (!StringUtil.isEmpty(processData.getInitRev())){
+             return;
+        }
+         
+        //追加表示1
+        Map fxhbm03Data = loadFxhbm03Data(queryRunnerDoc, "xhd_外部電極焼成(焼成外観)_次工程磁器QC_KCPNO");
+        if (fxhbm03Data != null && !fxhbm03Data.isEmpty()) {
+            String[] spData = StringUtil.nullToBlank(getMapData(fxhbm03Data, "data")).split(",", -1);
+            for(String data : spData){
+                if(kcpNo.startsWith(data)){
+                    setItemData(processData, GXHDO101B030Const.BIKO1, "次工程磁器QC");
+                    return;
+                }
+            }
+        }
+        
+        //追加表示2
+        fxhbm03Data = loadFxhbm03Data(queryRunnerDoc, "xhd_外部電極焼成(焼成外観)_銅焼きｻﾝﾌﾟﾙを磁器QC_KCPNO");
+        if (fxhbm03Data != null && !fxhbm03Data.isEmpty()) {
+            String[] spData = StringUtil.nullToBlank(getMapData(fxhbm03Data, "data")).split(",", -1);
+            for(String data : spData){
+                if(kcpNo.startsWith(data)){
+                    setItemData(processData, GXHDO101B030Const.BIKO1, "銅焼きｻﾝﾌﾟﾙを磁器QC");
+                    return;
+                }
+            }
+        }
     }
     
 }
