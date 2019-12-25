@@ -250,8 +250,6 @@ public class GXHDO901A implements Serializable {
      * 隠し項目MAP
      */
     private Map<String, Object> hiddenDataMap = new HashMap<>();
-    
-    
 
 
     /**
@@ -324,15 +322,6 @@ public class GXHDO901A implements Serializable {
     public List<FXHDD01> getItemList() {
         return itemList;
     }
-    
-    /**
-     * 項目データ
-     * @param itemList
-     */
-    public void setItemList(List<FXHDD01> itemList) {
-        this.itemList = itemList;
-    }
-
     /**
      * 項目データ(拡張)※複数画面IDの情報保持
      * @return the itemListEx
@@ -848,7 +837,7 @@ public class GXHDO901A implements Serializable {
         HttpSession session = (HttpSession) externalContext.getSession(false);
         String formClassName = StringUtil.nullToBlank(session.getAttribute("formClassName"));
         String login_user_name = (String) session.getAttribute("login_user_name");
-        
+
         if (null == login_user_name || "".equals(login_user_name)) {
             // セッションタイムアウト時はログイン画面に遷移
             this.setOnLoadProcess("window.location.href = '" + externalContext.getRequestContextPath() + "/faces/login.xhtml?faces-redirect=true';");
@@ -1341,10 +1330,6 @@ public class GXHDO901A implements Serializable {
         }
         return result;
     }
-    
-    
-     
-
 
     /**
      * ボタンパラメータ情報取得
@@ -1456,8 +1441,7 @@ public class GXHDO901A implements Serializable {
             ErrUtil.outputErrorLog("チェック処理項目取得失敗", ex, LOGGER);
         }
     }
-    
-    
+
     /**
      * SekkeiNo取得
      *

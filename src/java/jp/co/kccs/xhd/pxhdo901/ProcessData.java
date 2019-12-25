@@ -30,6 +30,11 @@ import jp.co.kccs.xhd.db.model.FXHDD01;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	項目追加<br>
  * <br>
+ * 変更日	2019/12/05<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	拡張用項目の追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
