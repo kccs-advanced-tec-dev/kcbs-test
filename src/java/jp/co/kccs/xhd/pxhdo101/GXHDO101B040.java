@@ -5664,9 +5664,10 @@ public class GXHDO101B040 implements IFormLogic {
         BigDecimal returnValue = BigDecimal.ZERO;
         try {
             returnValue = new BigDecimal(value);
-        } catch (NumberFormatException e) {
+        } catch (NumberFormatException | NullPointerException e) {
             //処理なし
         }
+        //処理なし
         return returnValue;
 
     }

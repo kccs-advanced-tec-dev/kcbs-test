@@ -31,6 +31,7 @@ import org.primefaces.event.TabChangeEvent;
 @ViewScoped
 public class GXHDO101B040A extends GXHDO901AEX {
     private String mainDefaultStyle = "";
+    private String mainAutoStyle = "";
     private String mainDivStyle = "";
 
     /**
@@ -69,6 +70,7 @@ public class GXHDO101B040A extends GXHDO901AEX {
         super.init();
 
         this.mainDefaultStyle = "width:" + mainWidth + "px;margin-left:auto;margin-right:auto;";
+        this.mainAutoStyle = "width:auto;" + "min-width:" + mainWidth + "px;";
         this.mainDivStyle = this.mainDefaultStyle;
 
     }
@@ -80,7 +82,7 @@ public class GXHDO101B040A extends GXHDO901AEX {
     public void onTabChange(TabChangeEvent event) {
         // 選択したタブよりごとにスタイルを切り替える。
         if ("tab4".equals(event.getTab().getId())) {
-            this.mainDivStyle = "width:auto;";
+            this.mainDivStyle = this.mainAutoStyle;
         } else {
             this.mainDivStyle = this.mainDefaultStyle;
         }
