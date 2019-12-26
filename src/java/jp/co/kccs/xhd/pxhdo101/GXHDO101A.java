@@ -429,8 +429,9 @@ public class GXHDO101A implements Serializable {
             filterGamenList.add("GXHDO101B002");
             boolean gamenExistFlg = false;
             gamenExistFlg = lotSanshouMenuListFiltering(this.menuListGXHDO101, filterGamenList);
+            
             //ﾛｯﾄ参照ﾎﾞﾀﾝ表示/非表示の設定
-            if(gamenExistFlg){
+            if(gamenExistFlg && userGrpList.contains("ﾛｯﾄ参照_利用ﾕｰｻﾞｰ")){
                 setSanshouBtnRender(true);
             }else{
                 setSanshouBtnRender(false);
