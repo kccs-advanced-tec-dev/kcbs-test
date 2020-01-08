@@ -119,6 +119,58 @@ public class CommonUtil {
             // 磁器QC
             case "GXHDO101B022":
                 return getSrJikiqcData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
+            // 印刷・DP2
+            case "GXHDO101B023":
+                return getSrDpprintData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
+            // 外部電極・疎水処理
+            case "GXHDO101B024":
+                return getSrGdsosuiData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
+            // 外部電極・外部電極塗布(三端子・4端子)
+            case "GXHDO101B025":
+                return getSrGdtermtData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
+            // 外部電極・外部電極塗布
+            case "GXHDO101B026":
+                return getSrGdtermData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);                
+            // 外部電極・外部電極焼成(ｻﾔ詰め)
+            case "GXHDO101B027":
+                return getSrGdsayadumeData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
+            // 外部電極・外部電極焼成(脱ﾊﾞｲ)
+            case "GXHDO101B028":
+                return getSrGddatubaiData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
+            // 外部電極・外部電極焼成(焼成)
+            case "GXHDO101B029":
+                return getSrGdyakitukeData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
+            // 外部電極・外部電極焼成(焼成外観)
+            case "GXHDO101B030":
+                return getSrGdyakitukegaikanData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
+            // 外部電極・外部電極焼成(樹脂電極硬化)
+            case "GXHDO101B031":
+                return getSrGdjusikoukaData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
+            // 外部電極・外部電極洗浄(撥水処理)
+            case "GXHDO101B032":
+                return getSrGdhassuiData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
+            // 外部電極・外部電極洗浄(ﾊﾞﾚﾙ)
+            case "GXHDO101B033":
+                return getSrGdnijibarrelData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
+            // 外部電極・外部電極洗浄(超音波)
+            case "GXHDO101B034":
+                return getSrGdsenjouData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
+            // 外部電極・外部電極洗浄(乾燥)
+            case "GXHDO101B035":
+                return getSrGdkansouData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
+            // 外部電極・親水処理
+            case "GXHDO101B036":
+                return getSrGdsinsuiData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
+            // 外部電極・計数
+            case "GXHDO101B037":
+                return getSrGdkeisuuData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
+            // 外部電極・ﾒｯｷ品質検査
+            case "GXHDO101B038":
+                return getSrMekkiData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
+            // 外部電極・ﾒｯｷ真空乾燥
+            case "GXHDO101B039":
+                return getSrMksinkuukansouData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
+
             default:
                 break;
         }
@@ -854,7 +906,228 @@ public class CommonUtil {
     }
     
     /**
-     * 外部電極焼成(焼成)のデータを取得する。
+     * 印刷・DP2のデータを取得する。
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 工程データ
+     * @throws SQLException 例外エラー
+     */
+    public static Map getSrDpprintData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev, int jissekino) throws SQLException {
+        String sql = "SELECT kojyo,lotno,edaban,kaisuu,kcpno,kouteikubun,tapelotno,petfilmsyurui,taperollno1,taperollno2,taperollno3,"
+                + "pastelotno,pastenendo,pasteondo,pkokeibun1,pastelotno2,handoumei,handouno,handoumaisuu,bladeno,bladegaikan,BladeATu,"
+                + "AtudoNo,AtudoMaisuu,AtuDoATu,gouki,kansouondo,kansouondo2,kansouondo3,kansouondo4,kansouondo5,hansouspeed,startdatetime,"
+                + "tantousya,kakuninsya,makuatuave_start,makuatumax_start,makuatumin_start,makuatucv_start,nijimikasure_start,"
+                + "start_ptn_dist_x,start_ptn_dist_y,TensionS_sum,TensionStemae,TensionSoku,enddatetime,tanto_end,printmaisuu,makuatuave_end,"
+                + "makuatumax_end,makuatumin_end,makuatucv_end,nijimikasure_end,end_ptn_dist_x,end_ptn_dist_y,TensionE_sum,TensionEtemae,"
+                + "TensionEoku,genryoukigou,bikou1,bikou2,torokunichiji,kosinnichiji,revision "
+                + "FROM sr_dpprint "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND revision = ? "
+                + "AND kaisuu = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+    
+    /**
+     * 外部電極・疎水処理のデータを取得する。
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 工程データ
+     * @throws SQLException 例外エラー
+     */
+    public static Map getSrGdsosuiData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev, int jissekino) throws SQLException {
+        String sql = "SELECT kojyo,lotno,edaban,kcpno,syorisuu,syorigoki,chargeryou,traymaisuu,programno,kaisinichiji,"
+                + "StartTantosyacode,StartKakuninsyacode,syuuryounichiji,EndTantosyacode,sagyoubasyo,biko1,biko2,kaisuu,torokunichiji,"
+                + "kosinnichiji,revision "
+                + "FROM sr_gdsosui "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND revision = ? "
+                + "AND kaisuu = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+    
+    /**
+     * 外部電極・外部電極塗布(三端子・4端子)のデータを取得する。
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 工程データ
+     * @throws SQLException 例外エラー
+     */
+    public static Map getSrGdtermtData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev, int jissekino) throws SQLException {
+        String sql = "SELECT kojyo,lotno,edaban,kaisuu,kcpno,syorisuu,lotpre,tofugoki,pastehinmei,pastelotno,"
+                + "pastesaiseikaisuu,pastenendo,setteisya,startdatetime,StartTantosyacode,StartKakuninsyacode,carriertape,"
+                + "insatsuhaba,mawarikomi,itizure,tansikanhaba,tofugogaikan,syorikosuu,juryou,enddatetime,EndTantosyacode,"
+                + "sagyobasyo,biko1,biko2,torokunichiji,kosinnichiji,revision "
+                + "FROM sr_gdtermt "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND revision = ? "
+                + "AND kaisuu = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+    
+    /**
+     * 外部電極・外部電極塗布のデータを取得する。
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 工程データ
+     * @throws SQLException 例外エラー
+     */
+    public static Map getSrGdtermData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev, int jissekino) throws SQLException {
+        String sql = "SELECT kojyo,lotno,edaban,lotpre,kcpno,suuryou,kyakusaki,sagyobasyo,gouki1,setteisya1,gouki2,setteisya2,pastehinmei,"
+                + "pastelotno,pastesaiseikaisuu,pastekoukanjikan,pastenendo,pasteondo,pastekansannendo,pastekigen,startdatetime,enddatetime,"
+                + "senkougaikan,jikilsunpou,jikitsunpou,psunpou1a,psunpou1b,psunpou1c,psunpou1d,psunpou1e,psunpouave1,psunpourange1,lsunpou1a,"
+                + "lsunpou1b,lsunpou1c,lsunpou1d,lsunpou1e,tanmenatsumi1,sunpouhantei1,psunpou2a,psunpou2b,psunpou2c,psunpou2d,psunpou2e,psunpouave2,"
+                + "psunpourange2,lsunpou2a,lsunpou2b,lsunpou2c,lsunpou2d,lsunpou2e,tanmenatsumi2,sunpouhantei2,pasteatsumi1,pasteatsumi2,dipjigusize,"
+                + "dipjigumaisuu,dipgogaikankekka,syochinaiyou,inkuatsumia,inkuatsumib,setteijyouken,bikou1,bikou2,bikou3,psunpou1f,psunpou1g,psunpou1h,"
+                + "psunpou1i,psunpou1j,lsunpou1f,lsunpou1g,lsunpou1h,lsunpou1i,lsunpou1j,psunpou2f,psunpou2g,psunpou2h,psunpou2i,psunpou2j,lsunpou2f,"
+                + "lsunpou2g,lsunpou2h,lsunpou2i,lsunpou2j,lsunpouave1,lsunpouave2,pastekokeibun,Dip1AtamaDashiSettei,Dip1Clearance,Dip1SkeegeSettei,"
+                + "Dip1BlotClearance,Dip1Reveler,Dip2AtamaDashiSettei,Dip2Clearance,Dip2SkeegeSettei,Dip2BlotClearance,Dip2Reveler,psunpou2k,psunpou2l,"
+                + "psunpou2m,psunpou2n,psunpou2o,psunpou2p,psunpou2q,psunpou2r,psunpou2s,psunpou2t,psunpou2u,psunpou2v,psunpou2w,psunpou2x,psunpou2y,"
+                + "psunpou2z,psunpou2aa,psunpou2ab,psunpou2ac,psunpou2ad,psunpou2ae,psunpou2af,psunpou2ag,psunpou2ah,psunpou2ai,psunpou2aj,psunpou2ak,"
+                + "psunpou2al,psunpou2am,psunpou2an,lsunpou2k,lsunpou2l,lsunpou2m,lsunpou2n,lsunpou2o,lsunpou2p,lsunpou2q,lsunpou2r,lsunpou2s,lsunpou2t,"
+                + "lsunpou2u,lsunpou2v,lsunpou2w,lsunpou2x,lsunpou2y,lsunpou2z,lsunpou2aa,lsunpou2ab,lsunpou2ac,lsunpou2ad,lsunpou2ae,lsunpou2af,lsunpou2ag,"
+                + "lsunpou2ah,lsunpou2ai,lsunpou2aj,lsunpou2ak,lsunpou2al,lsunpou2am,lsunpou2an,lsunpourange2,lsunpoumin2,lsunpoumax2,wtsunpou2a,wtsunpou2b,"
+                + "wtsunpou2c,wtsunpou2d,wtsunpou2e,wtsunpou2f,wtsunpou2g,wtsunpou2h,wtsunpou2i,wtsunpou2j,wtsunpou2k,wtsunpou2l,wtsunpou2m,wtsunpou2n,"
+                + "wtsunpou2o,wtsunpou2p,wtsunpou2q,wtsunpou2r,wtsunpou2s,wtsunpou2t,wtsunpou2u,wtsunpou2v,wtsunpou2w,wtsunpou2x,wtsunpou2y,wtsunpou2z,"
+                + "wtsunpou2aa,wtsunpou2ab,wtsunpou2ac,wtsunpou2ad,wtsunpou2ae,wtsunpou2af,wtsunpou2ag,wtsunpou2ah,wtsunpou2ai,wtsunpou2aj,wtsunpou2ak,"
+                + "wtsunpou2al,wtsunpou2am,wtsunpou2an,wtsunpouave2,wtsunpourange2,wtsunpoumin2,wtsunpoumax2,psunpoumin2,psunpoumax2,setubisyurui,tofukaisuu,"
+                + "hojijigu,nentyakusheetlot1,nentyakusheetlot2,tofujigutorikosuu,StartTantosyacode,StartKakuninsyacode,juryou,syorikosuu,EndTantosyacode,"
+                + "pasteatsumi1ji,pasteatsumi2ji,atsumiinkua,atsumiinkub,kaisuu,torokunichiji,kosinnichiji,revision "
+                + "FROM sr_gdterm "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND revision = ? "
+                + "AND kaisuu = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+    
+    /**
+     * 外部電極・外部電極焼成(ｻﾔ詰め)のデータを取得する。
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 工程データ
+     * @throws SQLException 例外エラー
+     */
+    public static Map getSrGdsayadumeData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev, int jissekino) throws SQLException {
+        String sql = "SELECT kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,"
+                + "sayadumehouhou,konamabushi,juryou,bnfunmaturyou,bnfunmaturyoukakunin,sayasussyurui,sayamaisuukeisan,"
+                + "SJyuuryouRangeMin,SJyuuryouRangeMax,sayajyuuryou,sayamaisuu,saysusacharge,startdatetime,StartTantosyacode,"
+                + "StartKakuninsyacode,enddatetime,EndTantosyacode,biko1,biko2,torokunichiji,kosinnichiji,revision "
+                + "FROM sr_gdsayadume "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND revision = ? "
+                + "AND kaisuu = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+    
+    /**
+     * 外部電極・外部電極焼成(脱ﾊﾞｲ)のデータを取得する。
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 工程データ
+     * @throws SQLException 例外エラー
+     */
+    public static Map getSrGddatubaiData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev, int jissekino) throws SQLException {
+        String sql = "SELECT kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,"
+                + "gouki,ondo,jikan,ptnno,sayamaisuu,startdatetime,StartTantosyacode,StartKakuninsyacode,enddatetime,"
+                + "EndTantosyacode,biko1,biko2,torokunichiji,kosinnichiji,revision "
+                + "FROM sr_gddatubai "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND revision = ? "
+                + "AND kaisuu = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+    
+    /**
+     * 外部電極・外部電極焼成(焼成)のデータを取得する。
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
@@ -885,7 +1158,271 @@ public class CommonUtil {
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
     }
+    
+    /**
+     * 外部電極・外部電極焼成(焼成外観)のデータを取得する。
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 工程データ
+     * @throws SQLException 例外エラー
+     */
+    public static Map getSrGdyakitukegaikanData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev, int jissekino) throws SQLException {
+        String sql = "SELECT kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,"
+                + "syorisuu,gaikan,ryohinjuryou,furyoujuryou,furyouritsu,gaikandatetime,gaikantantosyacode,"
+                + "biko1,biko2,torokunichiji,kosinnichiji,revision"
+                + "FROM sr_gdyakitukegaikan "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND revision = ? "
+                + "AND kaisuu = ? ";
 
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+    
+    /**
+     * 外部電極・外部電極焼成(樹脂電極硬化)のデータを取得する。
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 工程データ
+     * @throws SQLException 例外エラー
+     */
+    public static Map getSrGdjusikoukaData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev, int jissekino) throws SQLException {
+        String sql = "SELECT kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,gouki,ondo,"
+                + "jikan,ptnno,startdatetime,StartTantosyacode,StartKakuninsyacode,enddatetime,EndTantosyacode,biko1,biko2,"
+                + "torokunichiji,kosinnichiji,revision "
+                + "FROM sr_gdjusikouka "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND revision = ? "
+                + "AND kaisuu = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+    
+    
+    /**
+     * 外部電極・外部電極洗浄(撥水処理)のデータを取得する。
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 工程データ
+     * @throws SQLException 例外エラー
+     */
+    public static Map getSrGdhassuiData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev, int jissekino) throws SQLException {
+        String sql = "SELECT kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,sinsekijikan,senjoujikan,"
+                + "methanolkoukanjikan,methanolkoukantantousya,hassuidatetime,hassuitantosyacode,kansoujikan,kansouondo,kansoudatetime,"
+                + "kansoutantosyacode,biko1,biko2,torokunichiji,kosinnichiji,revision "
+                + "FROM sr_gdhassui "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND revision = ? "
+                + "AND kaisuu = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+    
+    /**
+     * 外部電極・外部電極洗浄(ﾊﾞﾚﾙ)のデータを取得する。
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 工程データ
+     * @throws SQLException 例外エラー
+     */
+    public static Map getSrGdnijibarrelData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev, int jissekino) throws SQLException {
+        String sql = "SELECT kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,gouki,"
+                + "syorijikan,kaitensuu,potsuu,methanolkoukanjikan,methanolkoukantantousya,methanolkoukanpotruikeisuu,"
+                + "startdatetime,StartTantosyacode,StartKakuninsyacode,enddatetime,EndTantosyacode,biko1,biko2,biko3,"
+                + "torokunichiji,kosinnichiji,revision "
+                + "FROM sr_gdnijibarrel "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND revision = ? "
+                + "AND kaisuu = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+    
+    /**
+     * 外部電極・外部電極洗浄(超音波)のデータを取得する。
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 工程データ
+     * @throws SQLException 例外エラー
+     */
+    public static Map getSrGdsenjouData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev, int jissekino) throws SQLException {
+        String sql = "SELECT kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,gouki,jikan,"
+                + "chargeroyu,vatsuu,methanolkoukanjikan,methanolkoukantantousya,startdatetime,StartTantosyacode,StartKakuninsyacode,"
+                + "enddatetime,EndTantosyacode,biko1,biko2,torokunichiji,kosinnichiji,revision"
+                + "FROM sr_gdsenjou "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND revision = ? "
+                + "AND kaisuu = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+    
+    /**
+     * 外部電極・外部電極洗浄(乾燥)のデータを取得する。
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 工程データ
+     * @throws SQLException 例外エラー
+     */
+    public static Map getSrGdkansouData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev, int jissekino) throws SQLException {
+        String sql = "SELECT kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,gouki,startdatetime,"
+                + "StartTantosyacode,StartKakuninsyacode,enddatetime,EndTantosyacode,furuisenbetu,gaikan,biko1,biko2,torokunichiji,"
+                + "kosinnichiji,revision "
+                + "FROM sr_gdkansou "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND revision = ? "
+                + "AND kaisuu = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+    
+    /**
+     * 外部電極・親水処理のデータを取得する。
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 工程データ
+     * @throws SQLException 例外エラー
+     */
+    public static Map getSrGdsinsuiData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev, int jissekino) throws SQLException {
+        String sql = "SELECT kojyo,lotno,edaban,kcpno,syorisuu,syorigoki,chargeryou,traymaisuu,programno,kaisinichiji,StartTantosyacode,"
+                + "StartKakuninsyacode,syuuryounichiji,EndTantosyacode,sagyoubasyo,biko1,biko2,kaisuu,torokunichiji,kosinnichiji,revision "
+                + "FROM sr_gdsinsui "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND revision = ? "
+                + "AND kaisuu = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+
+    /**
+     * 外部電極・計数のデータを取得する。
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 工程データ
+     * @throws SQLException 例外エラー
+     */
+    public static Map getSrGdkeisuuData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev, int jissekino) throws SQLException {
+        String sql = "SELECT kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,tanijyuryo,"
+                + "soujuryou,ryohinkosuu,keinichiji,keitantosya,budomari,biko1,biko2,torokunichiji,kosinnichiji,revision "
+                + "FROM sr_gdkeisuu "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND revision = ? "
+                + "AND kaisuu = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+    
     /**
      * 外部電極・ﾒｯｷ品質検査のデータを取得する。
      *
@@ -913,6 +1450,40 @@ public class CommonUtil {
                 + "WHERE kojyo = ? AND lotno = ? "
                 + "AND edaban = ? AND revision = ? "
                 + "AND jissekino = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+    
+       
+    /**
+     * 外部電極・ﾒｯｷ真空乾燥のデータを取得する。
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 工程データ
+     * @throws SQLException 例外エラー
+     */
+    public static Map getSrMksinkuukansouData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev, int jissekino) throws SQLException {
+        String sql = "SELECT GoukiCode,Kojyo,LotNo,EdaBan,Syorikaisuu,KCPNO,TantousyaCode,KansouJikan,Ondo,Sinkuudo,KaisiNichiji,"
+                + "Bikou,TourokuNichiji,KousinNichiji,tokuisaki,lotkubuncode,ownercode,syorisuu,sagyoubasyo,barrelkaishinichiji,"
+                + "barreltantousya,bikou2,revision "
+                + "FROM sr_mksinkuukansou "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND revision = ? "
+                + "AND Syorikaisuu = ? ";
 
         List<Object> params = new ArrayList<>();
         params.add(kojyo);
