@@ -248,6 +248,6 @@ public class DBUtil {
         // "\"はreplaceAll内で置換文字列内のリテラル文字をエスケープするのに使用されるため、
         // replaceAll("\\\\", "\\\\\\\\") としている。
         // "\"→"\\" として処理される。
-        return parameter.replaceAll("%", "\\\\%").replaceAll("_", "\\\\_").replaceAll("\\\\", "\\\\\\\\");
+        return parameter.replaceAll("\\\\", "\\\\\\\\").replaceAll("%", "\\\\%").replaceAll("_", "\\\\_");
     }
 }

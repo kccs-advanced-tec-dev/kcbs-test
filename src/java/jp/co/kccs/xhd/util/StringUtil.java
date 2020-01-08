@@ -25,6 +25,11 @@ import java.util.logging.Logger;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	ﾛｯﾄｶｰﾄﾞ電子化対応<br>
  * <br>
+ * 変更日	2019/12/05<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	関数追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 
@@ -732,5 +737,19 @@ public class StringUtil {
         String trimVal = trimLeft(str);
         trimVal = trimRight(trimVal);
         return trimVal;
+    }
+    
+    
+     /**
+     * 引数が空またはNULL値の場合、"0"の値を返します。それ以外の場合元の値を返します。
+     *
+     * @param src 文字列
+     * @return 変換値
+     */
+    public static String emptyToZero(String src) {
+        if (isEmpty(src)) {
+            return "0";
+        }
+        return src;
     }
 }

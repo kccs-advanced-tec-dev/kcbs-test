@@ -1,0 +1,1238 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Pragma" content="no-cache"/>
+        <meta http-equiv="Cache-Control" content="no-cache"/>
+        <meta http-equiv="Expires" content="0"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link href="#{request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/growl.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/loading.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/gxhdo201common.css" rel="stylesheet" type="text/css"/>
+        <script src="#{request.contextPath}/resources/bootstrap/js/bootstrap.min.js" />
+        <h:outputScript library="primefaces" name="jquery/jquery.js" />
+        <script src="#{request.contextPath}/resources/js/growl.js"></script>
+    </h:head>
+    <h:body style="padding-top:30px;">
+        <f:metadata>
+            <f:viewAction action="#{gXHDO201B026.init()}"/>
+        </f:metadata>
+        <nav class="navbar  navbar-expand fixed-top navbar-dark" style="background-color:#0E6A89;height: 50px;z-index: 999;">
+            <span class="navbar-brand mb-0" style="font-size:18px;font-weight:bold;">#{myMsg.GXHDO201B026_GamenTitle}</span>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#Navber" aria-controls="Navber" aria-expanded="false" aria-label="ナビゲーションの切替">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <span class="navbar-text ml-auto">
+                <div class="collapse navbar-collapse" id="Navber">
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <h:link class="nav-link" outcome="/secure/pxhdo201/gxhdo201a.xhtml?faces-redirect=true" value="戻る"/>
+                    </li>
+                  </ul>
+                </div>
+            </span>
+        </nav>
+        <br/>
+        <h:form id="mainform" onkeypress="if (event.keyCode === 13) { return false; }">
+            <p:growl id="growlMessage" showDetail="false" sticky="true"  escape="false"/>
+            <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
+                <f:facet name="message">
+                    <h:outputText value="#{gXHDO201B026.getWarnMessage()}" escape="false"/>
+                </f:facet>
+                <p:commandButton id="warnOk" value="OK" styleClass="ui-conf-commandbtn-def1" style="width:100px;margin-left:50px;"
+                                 actionListener="#{gXHDO201B026.processWarnOk()}"
+                                 process="@this searchpanel"
+                                 update="@form growlMessage idDataTable btnExcel"
+                                 onstart="PF('cd').hide();$('#loadinggif').show();"
+                                 oncomplete="$('#loadinggif').hide();"/>
+                <p:commandButton id="warnCancel" value="Cancel" class="ui-conf-commandbtn-cancel" style="width:100px;" onclick="PF('cd').hide();" type="button" />
+            </p:confirmDialog>
+            <div id="loadinggif">
+                <img src="#{request.contextPath}/resources/gif/gif-load.gif"/>
+            </div>
+            <p:panel id="searchpanel" style="border:none;font-size:0.8em; ">
+                <table>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblLotNo" value="ﾛｯﾄNo" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pLotNo" value="#{gXHDO201B026.lotNo}" maxlength="14" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B026.checkByte('lotNo', 14)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblStartDate" value="開始日" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pStartDateF" value="#{gXHDO201B026.startDateF}" maxlength="6" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B026.checkByte('startDateF', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pStartDateT" value="#{gXHDO201B026.startDateT}" maxlength="6" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B026.checkByte('startDateT', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblStartTime" value="開始時刻" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pStartTimeF" value="#{gXHDO201B026.startTimeF}" maxlength="4" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B026.checkByte('startTimeF', 4)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pStartTimeT" value="#{gXHDO201B026.startTimeT}" maxlength="4" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B026.checkByte('startTimeT', 4)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblEndDate" value="終了日" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pEndDateF" value="#{gXHDO201B026.endDateF}" maxlength="6" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B026.checkByte('endDateF', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pEndDateT" value="#{gXHDO201B026.endDateT}" maxlength="6" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B026.checkByte('endDateT', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblEndTime" value="終了時刻" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pEndTimeF" value="#{gXHDO201B026.endTimeF}" maxlength="4" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B026.checkByte('endTimeF', 4)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pEndTimeT" value="#{gXHDO201B026.endTimeT}" maxlength="4" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B026.checkByte('endTimeT', 4)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblTantousya" value="開始担当者" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pTantousya" value="#{gXHDO201B026.tantousya}" maxlength="6" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B026.checkByte('tantousya', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblKcpNo" value="KCPNO" style="width:100px;"/>
+                        </td>
+                        <td colspan="3">
+                            <p:inputText id="pKcpNo" value="#{gXHDO201B026.kcpNo}" maxlength="25" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B026.checkByte('kcpNo', 25)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblSyorigoki" value="号機" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pSyorigoki" value="#{gXHDO201B026.gouki}" maxlength="4" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B026.checkByte('gouki', 4)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                </table>
+            </p:panel>
+            <p:panel id="buttonpanel" style="border:none;margin-top:-10px;">
+                <p:commandButton id="btnSearch" style="width:100px;height:25px;font-size:0.7em;margin-left:0px;text-align:center;"
+                                value="検索" 
+                                actionListener="#{gXHDO201B026.checkInputAndSearch()}"
+                                process="@this searchpanel"
+                                update="growlMessage idDataTable btnExcel confDialog"
+                                onstart="$('#loadinggif').show();"
+                                oncomplete="$('#loadinggif').hide();if('warning'!=args.param1){PF('cd').hide();} else {PF('cd').show();}"/>
+                <p:commandButton id="bthClear" style="width:100px;height:25px;font-size:0.7em;margin-left:10px;text-align:center;" 
+                                value="クリア" 
+                                action="#{gXHDO201B026.clear()}"
+                                process="@this"
+                                update="searchpanel idDataTable btnExcel"/>
+                <p:commandButton id="btnExcel" style="width:100px;height:25px;font-size:0.7em;margin-left:10px;text-align:center;"
+                                disabled="#{gXHDO201B026.excelButtonDisable}"
+                                value="Excel保存"
+                                actionListener="#{gXHDO201B026.downloadExcel()}"
+                                process="@this"
+                                ajax="false"/>
+            </p:panel>
+            <div style="margin-top:-15px;">
+                <p:dataTable id="idDataTable" var="item" style="font-size:0.8em;margin-top:20px;" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap"
+                             value="#{gXHDO201B026.listData}" emptyMessage="" paginator="true" paginatorPosition="top" rows="#{gXHDO201B026.getPagenatorCount()}">
+                    <p:column id="lotno" headerText="ﾛｯﾄNo">
+                        <p:outputLabel value="#{item.lotno}"/>
+                    </p:column>
+                    <p:column id="lotpre" headerText="ﾛｯﾄﾌﾟﾚ">
+                        <p:outputLabel value="#{item.lotpre}"/>
+                    </p:column>
+                    <p:column id="kcpno" headerText="KCPNO">
+                        <p:outputLabel value="#{item.kcpno}"/>
+                    </p:column>
+                    <p:column id="suuryou" headerText="数量(個)" styleClass="number">
+                        <p:outputLabel value="#{item.suuryou}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kyakusaki" headerText="客先">
+                        <p:outputLabel value="#{item.kyakusaki}"/>
+                    </p:column>
+                    <p:column id="sagyobasyo" headerText="作業場所">
+                        <p:outputLabel value="#{item.sagyobasyo}"/>
+                    </p:column>
+                    <p:column id="gouki1" headerText="号機1">
+                        <p:outputLabel value="#{item.gouki1}"/>
+                    </p:column>
+                    <p:column id="setteisya1" headerText="条件設定者1">
+                        <p:outputLabel value="#{item.setteisya1}"/>
+                    </p:column>
+                    <p:column id="gouki2" headerText="号機2">
+                        <p:outputLabel value="#{item.gouki2}"/>
+                    </p:column>
+                    <p:column id="setteisya2" headerText="条件設定者2">
+                        <p:outputLabel value="#{item.setteisya2}"/>
+                    </p:column>
+                    <p:column id="pastehinmei" headerText="ﾍﾟｰｽﾄ品名">
+                        <p:outputLabel value="#{item.pastehinmei}"/>
+                    </p:column>
+                    <p:column id="pastelotno" headerText="ﾍﾟｰｽﾄﾛｯﾄNo">
+                        <p:outputLabel value="#{item.pastelotno}"/>
+                    </p:column>
+                    <p:column id="pastesaiseikaisuu" headerText="ﾍﾟｰｽﾄ再生回数(回)" styleClass="number">
+                        <p:outputLabel value="#{item.pastesaiseikaisuu}">
+                            <f:convertNumber pattern="#0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="pastekoukanjikan" headerText="ﾍﾟｰｽﾄ交換時間(P)">
+                        <p:outputLabel value="#{item.pastekoukanjikan}"/>
+                    </p:column>
+                    <p:column id="pastenendo" headerText="ﾍﾟｰｽﾄ粘度" styleClass="number">
+                        <p:outputLabel value="#{item.pastenendo}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="pasteondo" headerText="ﾍﾟｰｽﾄ温度" styleClass="number">
+                        <p:outputLabel value="#{item.pasteondo}">
+                            <f:convertNumber pattern="#,##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="pastekansannendo" headerText="ﾍﾟｰｽﾄ換算粘度" styleClass="number">
+                        <p:outputLabel value="#{item.pastekansannendo}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="pastekigen" headerText="ﾍﾟｰｽﾄ期限">
+                        <p:outputLabel value="#{item.pastekigen}"/>
+                    </p:column>
+                    <p:column id="startdatetime" headerText="開始日時">
+                        <p:outputLabel value="#{item.startdatetime}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="enddatetime" headerText="終了日時">
+                        <p:outputLabel value="#{item.enddatetime}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="senkougaikan" headerText="先行外観">
+                        <p:outputLabel value="#{item.senkougaikan}"/>
+                    </p:column>
+                    <p:column id="jikilsunpou" headerText="磁器L寸法" styleClass="number">
+                        <p:outputLabel value="#{item.jikilsunpou}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="jikitsunpou" headerText="磁器T寸法" styleClass="number">
+                        <p:outputLabel value="#{item.jikitsunpou}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou1a" headerText="P寸法1OLD" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou1a}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou1b" headerText="P寸法2OLD" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou1b}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou1c" headerText="P寸法3OLD" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou1c}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou1d" headerText="P寸法4OLD" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou1d}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou1e" headerText="P寸法5OLD" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou1e}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpouave1" headerText="P寸法AVEOLD" styleClass="number">
+                        <p:outputLabel value="#{item.psunpouave1}">
+                            <f:convertNumber pattern="##,##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpourange1" headerText="P寸法RANGEOLD" styleClass="number">
+                        <p:outputLabel value="#{item.psunpourange1}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou1a" headerText="L寸法1OLD" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou1a}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou1b" headerText="L寸法2OLD" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou1b}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou1c" headerText="L寸法3OLD" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou1c}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou1d" headerText="L寸法4OLD" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou1d}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou1e" headerText="L寸法5OLD" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou1e}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tanmenatsumi1" headerText="端面厚みOLD" styleClass="number">
+                        <p:outputLabel value="#{item.tanmenatsumi1}">
+                            <f:convertNumber pattern="#,##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="sunpouhantei1" headerText="判定OLD">
+                        <p:outputLabel value="#{item.sunpouhantei1}"/>
+                    </p:column>
+                    <p:column id="psunpou2a" headerText="P寸法1" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2a}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2b" headerText="P寸法2" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2b}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2c" headerText="P寸法3" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2c}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2d" headerText="P寸法4" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2d}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2e" headerText="P寸法5" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2e}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpouave2" headerText="P寸法AVE(µm)" styleClass="number">
+                        <p:outputLabel value="#{item.psunpouave2}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpourange2" headerText="P寸法RANGE" styleClass="number">
+                        <p:outputLabel value="#{item.psunpourange2}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2a" headerText="L寸法1" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2a}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2b" headerText="L寸法2" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2b}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2c" headerText="L寸法3" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2c}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2d" headerText="L寸法4" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2d}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2e" headerText="L寸法5" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2e}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tanmenatsumi2" headerText="端面厚み" styleClass="number">
+                        <p:outputLabel value="#{item.tanmenatsumi2}">
+                            <f:convertNumber pattern="#,##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="sunpouhantei2" headerText="判定">
+                        <p:outputLabel value="#{item.sunpouhantei2}"/>
+                    </p:column>
+                    <p:column id="pasteatsumi1" headerText="ﾍﾟｰｽﾄ厚み設定値1次" styleClass="number">
+                        <p:outputLabel value="#{item.pasteatsumi1}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="pasteatsumi2" headerText="ﾍﾟｰｽﾄ厚み設定値2次" styleClass="number">
+                        <p:outputLabel value="#{item.pasteatsumi2}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="dipjigusize" headerText="DIP治具ｻｲｽﾞ" styleClass="number">
+                        <p:outputLabel value="#{item.dipjigusize}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="dipjigumaisuu" headerText="DIP治具枚数(枚)" styleClass="number">
+                        <p:outputLabel value="#{item.dipjigumaisuu}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="dipgogaikankekka" headerText="DIP後外観結果">
+                        <p:outputLabel value="#{item.dipgogaikankekka}"/>
+                    </p:column>
+                    <p:column id="syochinaiyou" headerText="処置内容">
+                        <p:outputLabel value="#{item.syochinaiyou}"/>
+                    </p:column>
+                    <p:column id="inkuatsumia" headerText="ｲﾝｸ厚みa">
+                        <p:outputLabel value="#{item.inkuatsumia}"/>
+                    </p:column>
+                    <p:column id="inkuatsumib" headerText="ｲﾝｸ厚みb">
+                        <p:outputLabel value="#{item.inkuatsumib}"/>
+                    </p:column>
+                    <p:column id="setteijyouken" headerText="設定条件">
+                        <p:outputLabel value="#{item.setteijyouken}"/>
+                    </p:column>
+                    <p:column id="bikou1" headerText="備考1">
+                        <p:outputLabel value="#{item.bikou1}"/>
+                    </p:column>
+                    <p:column id="bikou2" headerText="備考2">
+                        <p:outputLabel value="#{item.bikou2}"/>
+                    </p:column>
+                    <p:column id="bikou3" headerText="備考3">
+                        <p:outputLabel value="#{item.bikou3}"/>
+                    </p:column>
+                    <p:column id="psunpou1f" headerText="P寸法6OLD" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou1f}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou1g" headerText="P寸法7OLD" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou1g}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou1h" headerText="P寸法8OLD" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou1h}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou1i" headerText="P寸法9OLD" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou1i}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou1j" headerText="P寸法10OLD" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou1j}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou1f" headerText="L寸法6OLD" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou1f}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou1g" headerText="L寸法7OLD" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou1g}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou1h" headerText="L寸法8OLD" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou1h}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou1i" headerText="L寸法9OLD" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou1i}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou1j" headerText="L寸法10OLD" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou1j}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2f" headerText="P寸法6" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2f}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2g" headerText="P寸法7" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2g}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2h" headerText="P寸法8" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2h}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2i" headerText="P寸法9" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2i}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2j" headerText="P寸法10" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2j}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2f" headerText="L寸法6" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2f}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2g" headerText="L寸法7" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2g}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2h" headerText="L寸法8" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2h}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2i" headerText="L寸法9" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2i}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2j" headerText="L寸法10" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2j}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpouave1" headerText="L寸法AVEOLD" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpouave1}">
+                            <f:convertNumber pattern="##,##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpouave2" headerText="L寸法AVE(µm)" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpouave2}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="pastekokeibun" headerText="ﾍﾟｰｽﾄ固形分" styleClass="number">
+                        <p:outputLabel value="#{item.pastekokeibun}">
+                            <f:convertNumber pattern="#0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="dip1atamadashisettei" headerText="1次頭出し設定" styleClass="number">
+                        <p:outputLabel value="#{item.dip1atamadashisettei}">
+                            <f:convertNumber pattern="##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="dip1clearance" headerText="1次DIPｸﾘｱﾗﾝｽ設定" styleClass="number">
+                        <p:outputLabel value="#{item.dip1clearance}">
+                            <f:convertNumber pattern="##,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="dip1skeegesettei" headerText="1次DIPｽｷｰｼﾞ設定" styleClass="number">
+                        <p:outputLabel value="#{item.dip1skeegesettei}">
+                            <f:convertNumber pattern="##,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="dip1blotclearance" headerText="1次ﾌﾞﾛｯﾄｸﾘｱﾗﾝｽ設定" styleClass="number">
+                        <p:outputLabel value="#{item.dip1blotclearance}">
+                            <f:convertNumber pattern="##,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="dip1reveler" headerText="1次ﾚﾍﾞﾗｰ設定" styleClass="number">
+                        <p:outputLabel value="#{item.dip1reveler}">
+                            <f:convertNumber pattern="##,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="dip2atamadashisettei" headerText="2次頭出し設定" styleClass="number">
+                        <p:outputLabel value="#{item.dip2atamadashisettei}">
+                            <f:convertNumber pattern="##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="dip2clearance" headerText="2次DIPｸﾘｱﾗﾝｽ設定" styleClass="number">
+                        <p:outputLabel value="#{item.dip2clearance}">
+                            <f:convertNumber pattern="##,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="dip2skeegesettei" headerText="2次DIPｽｷｰｼﾞ設定" styleClass="number">
+                        <p:outputLabel value="#{item.dip2skeegesettei}">
+                            <f:convertNumber pattern="##,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="dip2blotclearance" headerText="2次ﾌﾞﾛｯﾄｸﾘｱﾗﾝｽ設定" styleClass="number">
+                        <p:outputLabel value="#{item.dip2blotclearance}">
+                            <f:convertNumber pattern="##,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="dip2reveler" headerText="2次ﾚﾍﾞﾗｰ設定" styleClass="number">
+                        <p:outputLabel value="#{item.dip2reveler}">
+                            <f:convertNumber pattern="##,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2k" headerText="P寸法11" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2k}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2l" headerText="P寸法12" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2l}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2m" headerText="P寸法13" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2m}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2n" headerText="P寸法14" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2n}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2o" headerText="P寸法15" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2o}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2p" headerText="P寸法16" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2p}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2q" headerText="P寸法17" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2q}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2r" headerText="P寸法18" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2r}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2s" headerText="P寸法19" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2s}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2t" headerText="P寸法20" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2t}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2u" headerText="P寸法21" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2u}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2v" headerText="P寸法22" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2v}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2w" headerText="P寸法23" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2w}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2x" headerText="P寸法24" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2x}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2y" headerText="P寸法25" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2y}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2z" headerText="P寸法26" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2z}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2aa" headerText="P寸法27" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2aa}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2ab" headerText="P寸法28" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2ab}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2ac" headerText="P寸法29" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2ac}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2ad" headerText="P寸法30" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2ad}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2ae" headerText="P寸法31" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2ae}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2af" headerText="P寸法32" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2af}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2ag" headerText="P寸法33" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2ag}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2ah" headerText="P寸法34" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2ah}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2ai" headerText="P寸法35" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2ai}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2aj" headerText="P寸法36" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2aj}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2ak" headerText="P寸法37" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2ak}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2al" headerText="P寸法38" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2al}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2am" headerText="P寸法39" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2am}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpou2an" headerText="P寸法40" styleClass="number">
+                        <p:outputLabel value="#{item.psunpou2an}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2k" headerText="L寸法11" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2k}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2l" headerText="L寸法12" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2l}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2m" headerText="L寸法13" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2m}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2n" headerText="L寸法14" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2n}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2o" headerText="L寸法15" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2o}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2p" headerText="L寸法16" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2p}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2q" headerText="L寸法17" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2q}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2r" headerText="L寸法18" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2r}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2s" headerText="L寸法19" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2s}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2t" headerText="L寸法20" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2t}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2u" headerText="L寸法21" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2u}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2v" headerText="L寸法22" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2v}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2w" headerText="L寸法23" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2w}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2x" headerText="L寸法24" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2x}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2y" headerText="L寸法25" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2y}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2z" headerText="L寸法26" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2z}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2aa" headerText="L寸法27" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2aa}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2ab" headerText="L寸法28" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2ab}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2ac" headerText="L寸法29" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2ac}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2ad" headerText="L寸法30" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2ad}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2ae" headerText="L寸法31" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2ae}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2af" headerText="L寸法32" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2af}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2ag" headerText="L寸法33" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2ag}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2ah" headerText="L寸法34" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2ah}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2ai" headerText="L寸法35" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2ai}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2aj" headerText="L寸法36" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2aj}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2ak" headerText="L寸法37" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2ak}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2al" headerText="L寸法38" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2al}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2am" headerText="L寸法39" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2am}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpou2an" headerText="L寸法40" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpou2an}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpourange2" headerText="L寸法RANGE" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpourange2}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpoumin2" headerText="L寸法MIN(µm)" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpoumin2}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="lsunpoumax2" headerText="L寸法MAX(µm)" styleClass="number">
+                        <p:outputLabel value="#{item.lsunpoumax2}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2a" headerText="WT寸法1" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2a}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2b" headerText="WT寸法2" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2b}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2c" headerText="WT寸法3" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2c}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2d" headerText="WT寸法4" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2d}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2e" headerText="WT寸法5" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2e}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2f" headerText="WT寸法6" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2f}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2g" headerText="WT寸法7" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2g}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2h" headerText="WT寸法8" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2h}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2i" headerText="WT寸法9" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2i}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2j" headerText="WT寸法10" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2j}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2k" headerText="WT寸法11" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2k}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2l" headerText="WT寸法12" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2l}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2m" headerText="WT寸法13" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2m}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2n" headerText="WT寸法14" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2n}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2o" headerText="WT寸法15" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2o}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2p" headerText="WT寸法16" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2p}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2q" headerText="WT寸法17" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2q}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2r" headerText="WT寸法18" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2r}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2s" headerText="WT寸法19" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2s}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2t" headerText="WT寸法20" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2t}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2u" headerText="WT寸法21" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2u}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2v" headerText="WT寸法22" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2v}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2w" headerText="WT寸法23" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2w}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2x" headerText="WT寸法24" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2x}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2y" headerText="WT寸法25" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2y}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2z" headerText="WT寸法26" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2z}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2aa" headerText="WT寸法27" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2aa}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2ab" headerText="WT寸法28" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2ab}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2ac" headerText="WT寸法29" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2ac}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2ad" headerText="WT寸法30" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2ad}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2ae" headerText="WT寸法31" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2ae}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2af" headerText="WT寸法32" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2af}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2ag" headerText="WT寸法33" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2ag}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2ah" headerText="WT寸法34" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2ah}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2ai" headerText="WT寸法35" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2ai}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2aj" headerText="WT寸法36" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2aj}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2ak" headerText="WT寸法37" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2ak}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2al" headerText="WT寸法38" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2al}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2am" headerText="WT寸法39" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2am}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpou2an" headerText="WT寸法40" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpou2an}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpouave2" headerText="WT寸法AVE" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpouave2}">
+                            <f:convertNumber pattern="##,##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpourange2" headerText="WT寸法RANGE" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpourange2}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpoumin2" headerText="WT寸法MIN" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpoumin2}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="wtsunpoumax2" headerText="WT寸法MAX" styleClass="number">
+                        <p:outputLabel value="#{item.wtsunpoumax2}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpoumin2" headerText="P寸法MIN(µm)" styleClass="number">
+                        <p:outputLabel value="#{item.psunpoumin2}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="psunpoumax2" headerText="P寸法MAX(µm)" styleClass="number">
+                        <p:outputLabel value="#{item.psunpoumax2}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setubisyurui" headerText="設備種類">
+                        <p:outputLabel value="#{item.setubisyurui}"/>
+                    </p:column>
+                    <p:column id="tofukaisuu" headerText="塗布回数(回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tofukaisuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="hojijigu" headerText="保持ｼﾞｸﾞ">
+                        <p:outputLabel value="#{item.hojijigu}"/>
+                    </p:column>
+                    <p:column id="nentyakusheetlot1" headerText="粘着ｼｰﾄﾛｯﾄ  1次側">
+                        <p:outputLabel value="#{item.nentyakusheetlot1}"/>
+                    </p:column>
+                    <p:column id="nentyakusheetlot2" headerText="粘着ｼｰﾄﾛｯﾄ  2次側">
+                        <p:outputLabel value="#{item.nentyakusheetlot2}"/>
+                    </p:column>
+                    <p:column id="tofujigutorikosuu" headerText="塗布ｼﾞｸﾞ取り個数(個)" styleClass="number">
+                        <p:outputLabel value="#{item.tofujigutorikosuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="starttantosyacode" headerText="開始担当者">
+                        <p:outputLabel value="#{item.starttantosyacode}"/>
+                    </p:column>
+                    <p:column id="startkakuninsyacode" headerText="開始確認者">
+                        <p:outputLabel value="#{item.startkakuninsyacode}"/>
+                    </p:column>
+                    <p:column id="juryou" headerText="重量(g)" styleClass="number">
+                        <p:outputLabel value="#{item.juryou}">
+                            <f:convertNumber pattern="###,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="syorikosuu" headerText="処理個数(個)" styleClass="number">
+                        <p:outputLabel value="#{item.syorikosuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="endtantosyacode" headerText="終了担当者">
+                        <p:outputLabel value="#{item.endtantosyacode}"/>
+                    </p:column>
+                    <p:column id="pasteatsumi1ji" headerText="1次ﾍﾟｰｽﾄ厚み設定値" styleClass="number">
+                        <p:outputLabel value="#{item.pasteatsumi1ji}">
+                            <f:convertNumber pattern="#,###,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="pasteatsumi2ji" headerText="2次ﾍﾟｰｽﾄ厚み設定値" styleClass="number">
+                        <p:outputLabel value="#{item.pasteatsumi2ji}">
+                            <f:convertNumber pattern="#,###,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="atsumiinkua" headerText="ｲﾝｸ厚みA(µm)" styleClass="number">
+                        <p:outputLabel value="#{item.atsumiinkua}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="atsumiinkub" headerText="ｲﾝｸ厚みB(µm)" styleClass="number">
+                        <p:outputLabel value="#{item.atsumiinkub}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kaisuu" headerText="回数" styleClass="number">
+                        <p:outputLabel value="#{item.kaisuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </h:form>
+    </h:body>
+</html>

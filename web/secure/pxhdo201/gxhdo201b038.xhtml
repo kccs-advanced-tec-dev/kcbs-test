@@ -1,0 +1,616 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Pragma" content="no-cache"/>
+        <meta http-equiv="Cache-Control" content="no-cache"/>
+        <meta http-equiv="Expires" content="0"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link href="#{request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/growl.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/loading.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/gxhdo201common.css" rel="stylesheet" type="text/css"/>
+        <script src="#{request.contextPath}/resources/bootstrap/js/bootstrap.min.js" />
+        <h:outputScript library="primefaces" name="jquery/jquery.js" />
+        <script src="#{request.contextPath}/resources/js/growl.js"></script>
+    </h:head>
+    <h:body style="padding-top:30px;">
+        <f:metadata>
+            <f:viewAction action="#{gXHDO201B038.init()}"/>
+        </f:metadata>
+        <nav class="navbar  navbar-expand fixed-top navbar-dark" style="background-color:#0E6A89;height: 50px;z-index: 999;">
+            <span class="navbar-brand mb-0" style="font-size:18px;font-weight:bold;">#{myMsg.GXHDO201B038_GamenTitle}</span>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#Navber" aria-controls="Navber" aria-expanded="false" aria-label="ナビゲーションの切替">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <span class="navbar-text ml-auto">
+                <div class="collapse navbar-collapse" id="Navber">
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <h:link class="nav-link" outcome="/secure/pxhdo201/gxhdo201a.xhtml?faces-redirect=true" value="戻る"/>
+                    </li>
+                  </ul>
+                </div>
+            </span>
+        </nav>
+        <br/>
+        <h:form id="mainform" onkeypress="if (event.keyCode === 13) { return false; }">
+            <p:growl id="growlMessage" showDetail="false" sticky="true"  escape="false"/>
+            <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
+                <f:facet name="message">
+                    <h:outputText value="#{gXHDO201B038.getWarnMessage()}" escape="false"/>
+                </f:facet>
+                <p:commandButton id="warnOk" value="OK" styleClass="ui-conf-commandbtn-def1" style="width:100px;margin-left:50px;"
+                                 actionListener="#{gXHDO201B038.processWarnOk()}"
+                                 process="@this searchpanel"
+                                 update="@form growlMessage idDataTable btnExcel"
+                                 onstart="PF('cd').hide();$('#loadinggif').show();"
+                                 oncomplete="$('#loadinggif').hide();"/>
+                <p:commandButton id="warnCancel" value="Cancel" class="ui-conf-commandbtn-cancel" style="width:100px;" onclick="PF('cd').hide();" type="button" />
+            </p:confirmDialog>
+            <div id="loadinggif">
+                <img src="#{request.contextPath}/resources/gif/gif-load.gif"/>
+            </div>
+            <p:panel id="searchpanel" style="border:none;font-size:0.8em; ">
+                <table>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblLotNo" value="ﾛｯﾄNo" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pLotNo" value="#{gXHDO201B038.lotNo}" maxlength="14" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B038.checkByte('lotNo', 14)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblStartMekkiDate" value="ﾒｯｷ開始日" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pStartMekkiDateF" value="#{gXHDO201B038.startMekkiDateF}" maxlength="6" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B038.checkByte('startMekkiDateF', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pStartMekkiDateT" value="#{gXHDO201B038.startMekkiDateT}" maxlength="6" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B038.checkByte('startMekkiDateT', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblStartMekkiTime" value="ﾒｯｷ開始時刻" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pStartMekkiTimeF" value="#{gXHDO201B038.startMekkiTimeF}" maxlength="4" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B038.checkByte('startMekkiTimeF', 4)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pStartMekkiTimeT" value="#{gXHDO201B038.startMekkiTimeT}" maxlength="4" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B038.checkByte('startMekkiTimeT', 4)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                </table>
+            </p:panel>
+            <p:panel id="buttonpanel" style="border:none;margin-top:-10px;">
+                <p:commandButton id="btnSearch" style="width:100px;height:25px;font-size:0.7em;margin-left:0px;text-align:center;"
+                                value="検索" 
+                                actionListener="#{gXHDO201B038.checkInputAndSearch()}"
+                                process="@this searchpanel"
+                                update="growlMessage idDataTable btnExcel confDialog"
+                                onstart="$('#loadinggif').show();"
+                                oncomplete="$('#loadinggif').hide();if('warning'!=args.param1){PF('cd').hide();} else {PF('cd').show();}"/>
+                <p:commandButton id="bthClear" style="width:100px;height:25px;font-size:0.7em;margin-left:10px;text-align:center;" 
+                                value="クリア" 
+                                action="#{gXHDO201B038.clear()}"
+                                process="@this"
+                                update="searchpanel idDataTable btnExcel"/>
+                <p:commandButton id="btnExcel" style="width:100px;height:25px;font-size:0.7em;margin-left:10px;text-align:center;"
+                                disabled="#{gXHDO201B038.excelButtonDisable}"
+                                value="Excel保存"
+                                actionListener="#{gXHDO201B038.downloadExcel()}"
+                                process="@this"
+                                ajax="false"/>
+            </p:panel>
+            <div style="margin-top:-15px;">
+                <p:dataTable id="idDataTable" var="item" style="font-size:0.8em;margin-top:20px;" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap"
+                             value="#{gXHDO201B038.listData}" emptyMessage="" paginator="true" paginatorPosition="top" rows="#{gXHDO201B038.getPagenatorCount()}">
+                    <p:column id="lotno" headerText="ﾛｯﾄNo." >
+                        <p:outputLabel value="#{item.lotno}"/>
+                    </p:column>
+                    <p:column id="kcpno" headerText="KCPNO" >
+                        <p:outputLabel value="#{item.kcpno}"/>
+                    </p:column>
+                    <p:column id="ukeiresuu" headerText="処理数(個)" styleClass="number">
+                        <p:outputLabel value="#{item.ukeiresuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="domekosuu" headerText="ﾄﾞｰﾑ個数" styleClass="number">
+                        <p:outputLabel value="#{item.domekosuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="gouki" headerText="号機" >
+                        <p:outputLabel value="#{item.gouki}"/>
+                    </p:column>
+                    <p:column id="starttantosyacode" headerText="開始担当者">
+                        <p:outputLabel value="#{item.starttantosyacode}"/>
+                    </p:column>
+                    <p:column id="mekkikaishinichiji" headerText="ﾒｯｷ開始日時">
+                        <p:outputLabel value="#{item.mekkikaishinichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="mekkijyoukennia" headerText="条件NI(A) " styleClass="number">
+                        <p:outputLabel value="#{item.mekkijyoukennia}">
+                            <f:convertNumber pattern="###,###0.000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="mekkijyoukenniam" headerText="条件NI(AM)" styleClass="number">
+                        <p:outputLabel value="#{item.mekkijyoukenniam}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="mekkijyoukensna" headerText="条件SN(A)" styleClass="number">
+                        <p:outputLabel value="#{item.mekkijyoukensna}">
+                            <f:convertNumber pattern="###,###0.000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="mekkijyoukensnam" headerText="条件SN(AM)" styleClass="number">
+                        <p:outputLabel value="#{item.mekkijyoukensnam}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel></p:column>
+                    <p:column id="shukkakosuu" headerText="良品数" styleClass="number">
+                        <p:outputLabel value="#{item.shukkakosuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel></p:column>
+                    <p:column id="budomari" headerText="歩留まり" styleClass="number">
+                        <p:outputLabel value="#{item.budomari}">
+                            <f:convertNumber pattern="##0.00"/>
+                        </p:outputLabel></p:column>
+                    <p:column id="makuatsunimin" headerText="Ni膜厚(MIN)" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsunimin}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsunimax" headerText="Ni膜厚(MAX)" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsunimax}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsuniave" headerText="Ni膜厚(AVE)" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsuniave}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsunistd" headerText="Ni膜厚(STD)" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsunistd}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsusnmin" headerText="Sn膜厚(MIN)" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsusnmin}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsusnmax" headerText="Sn膜厚(MAX)" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsusnmax}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsusnave" headerText="Sn膜厚(AVE)" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsusnave}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsusnstd" headerText="Sn膜厚(STD)" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsusnstd}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="nurekensakekka" headerText="半田ﾇﾚ性">
+                        <p:outputLabel value="#{item.nurekensakekka}"/>
+                    </p:column>
+                    <p:column id="tainetsukensakekka" headerText="半田耐熱性">
+                        <p:outputLabel value="#{item.tainetsukensakekka}"/>
+                    </p:column>
+                    <p:column id="gaikankensakekka" headerText="外観">
+                        <p:outputLabel value="#{item.gaikankensakekka}"/>
+                    </p:column>
+                    <p:column id="biko1" headerText="備考1">
+                        <p:outputLabel value="#{item.biko1}"/>
+                    </p:column>
+                    <p:column id="biko2" headerText="備考2">
+                        <p:outputLabel value="#{item.biko2}"/>
+                    </p:column>
+                    <p:column id="biko3" headerText="備考3">
+                        <p:outputLabel value="#{item.biko3}"/>
+                    </p:column>
+                    <p:column id="jissekino" headerText="回数" styleClass="number">
+                        <p:outputLabel value="#{item.jissekino}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="domemeisai" headerText="使用ﾄﾞｰﾑ明細">
+                        <p:outputLabel value="#{item.domemeisai}"/>
+                    </p:column>
+                    <p:column id="tyoseimaeph1" headerText="1回目調整前PH値" styleClass="number">
+                        <p:outputLabel value="#{item.tyoseimaeph1}">
+                            <f:convertNumber pattern="0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tyoseigoph1" headerText="1回目調整後PH値" styleClass="number">
+                        <p:outputLabel value="#{item.tyoseigoph1}">
+                            <f:convertNumber pattern="0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tyoseijikan1" headerText="1回目調整時間" styleClass="number">
+                        <p:outputLabel value="#{item.tyoseijikan1}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tyoseimaeph2" headerText="2回目調整前PH値" styleClass="number">
+                        <p:outputLabel value="#{item.tyoseimaeph2}">
+                            <f:convertNumber pattern="0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tyoseigoph2" headerText="2回目調整後PH値" styleClass="number">
+                        <p:outputLabel value="#{item.tyoseigoph2}">
+                            <f:convertNumber pattern="0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tyoseijikan2" headerText="2回目調整時間" styleClass="number">
+                        <p:outputLabel value="#{item.tyoseijikan2}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tsunpou" headerText="Ｔ寸法" styleClass="number">
+                        <p:outputLabel value="#{item.tsunpou}">
+                            <f:convertNumber pattern="0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="barrelno" headerText="ﾊﾞﾚﾙNo" styleClass="number">
+                        <p:outputLabel value="#{item.barrelno}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsunicpl" headerText="Ni膜厚(CPL)" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsunicpl}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsusncpl" headerText="Sn膜厚(CPL)" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsusncpl}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="sokuteinichiji" headerText="測定日時">
+                        <p:outputLabel value="#{item.sokuteinichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsunicv" headerText="Ni膜厚(CV)" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsunicv}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsusncv" headerText="Sn膜厚(CV)" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsusncv}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kensanichiji" headerText="検査日時">
+                        <p:outputLabel value="#{item.kensanichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kensatantousya" headerText="検査・外観担当者">
+                        <p:outputLabel value="#{item.kensatantousya}"/>
+                    </p:column>
+                    <p:column id="makuatsutantosya" headerText="膜厚担当者">
+                        <p:outputLabel value="#{item.makuatsutantosya}"/>
+                    </p:column>
+                    <p:column id="kaishinichiji_sn" headerText="Sn開始日時">
+                        <p:outputLabel value="#{item.kaishinichiji_sn}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tokuisaki" headerText="客先">
+                        <p:outputLabel value="#{item.tokuisaki}"/>
+                    </p:column>
+                    <p:column id="lotkubuncode" headerText="ﾛｯﾄ区分">
+                        <p:outputLabel value="#{item.lotkubuncode}"/>
+                    </p:column>
+                    <p:column id="ownercode" headerText="ｵｰﾅｰ">
+                        <p:outputLabel value="#{item.ownercode}"/>
+                    </p:column>
+                    <p:column id="ukeiretannijyuryo" headerText="受入れ単位重量(g/100個)" styleClass="number">
+                        <p:outputLabel value="#{item.ukeiretannijyuryo}">
+                            <f:convertNumber pattern="#0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ukeiresoujyuryou" headerText="受入れ総重量(g)" styleClass="number">
+                        <p:outputLabel value="#{item.ukeiresoujyuryou}">
+                            <f:convertNumber pattern="###,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="mekkibasyo" headerText="ﾒｯｷ場所">
+                        <p:outputLabel value="#{item.mekkibasyo}"/>
+                    </p:column>
+                    <p:column id="mekkibasyosetubi" headerText="ﾒｯｷ場所設備">
+                        <p:outputLabel value="#{item.mekkibasyosetubi}"/>
+                    </p:column>
+                    <p:column id="mekkisyuryounichiji" headerText="ﾒｯｷ終了日時">
+                        <p:outputLabel value="#{item.mekkisyuryounichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="syuryousya" headerText="終了担当者">
+                        <p:outputLabel value="#{item.syuryousya}"/>
+                    </p:column>
+                    <p:column id="kensatannijyuryo" headerText="検査単位重量" styleClass="number">
+                        <p:outputLabel value="#{item.kensatannijyuryo}">
+                            <f:convertNumber pattern="#0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kensasoujyuryou" headerText="検査総重量" styleClass="number">
+                        <p:outputLabel value="#{item.kensasoujyuryou}">
+                            <f:convertNumber pattern="###,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="netusyorijyouken" headerText="熱処理条件">
+                        <p:outputLabel value="#{item.netusyorijyouken}"/>
+                    </p:column>
+                    <p:column id="netusyorikaisinichiji" headerText="熱処理開始日時">
+                        <p:outputLabel value="#{item.netusyorikaisinichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="netusyoritantousya" headerText="熱処理担当者">
+                        <p:outputLabel value="#{item.netusyoritantousya}"/>
+                    </p:column>
+                    <p:column id="jisyakusenbetukaisinichiji" headerText="磁石選別開始日時">
+                        <p:outputLabel value="#{item.jisyakusenbetukaisinichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="jisyakusenbetutantousya" headerText="磁石選別担当者">
+                        <p:outputLabel value="#{item.jisyakusenbetutantousya}"/>
+                    </p:column>
+                    <p:column id="ijouhakkou" headerText="異常発行">
+                        <p:outputLabel value="#{item.ijouhakkou}"/>
+                    </p:column>
+                    <p:column id="ijourank" headerText="異常品ﾗﾝｸ">
+                        <p:outputLabel value="#{item.ijourank}"/>
+                    </p:column>
+                    <p:column id="makuatsukakunin" headerText="膜厚確認">
+                        <p:outputLabel value="#{item.makuatsukakunin}"/>
+                    </p:column>
+                    <p:column id="testhin" headerText="ﾃｽﾄ品">
+                        <p:outputLabel value="#{item.testhin}"/>
+                    </p:column>
+                    <p:column id="tsunpouave" headerText="T寸法AVE(mm)" styleClass="number">
+                        <p:outputLabel value="#{item.tsunpouave}">
+                            <f:convertNumber pattern="#0.000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="mekkisyurui" headerText="ﾒｯｷ種類">
+                        <p:outputLabel value="#{item.mekkisyurui}"/>
+                    </p:column>
+                    <p:column id="makuatsuni01" headerText="Ni膜厚01" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsuni01}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsuni02" headerText="Ni膜厚02" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsuni02}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsuni03" headerText="Ni膜厚03" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsuni03}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsuni04" headerText="Ni膜厚04" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsuni04}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsuni05" headerText="Ni膜厚05" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsuni05}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsuni06" headerText="Ni膜厚06" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsuni06}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsuni07" headerText="Ni膜厚07" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsuni07}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsuni08" headerText="Ni膜厚08" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsuni08}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsuni09" headerText="Ni膜厚09" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsuni09}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsuni10" headerText="Ni膜厚10" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsuni10}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsuni11" headerText="Ni膜厚11" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsuni11}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsuni12" headerText="Ni膜厚12" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsuni12}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsuni13" headerText="Ni膜厚13" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsuni13}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsuni14" headerText="Ni膜厚14" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsuni14}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsuni15" headerText="Ni膜厚15" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsuni15}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsuni16" headerText="Ni膜厚16" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsuni16}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsuni17" headerText="Ni膜厚17" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsuni17}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsuni18" headerText="Ni膜厚18" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsuni18}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsuni19" headerText="Ni膜厚19" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsuni19}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsuni20" headerText="Ni膜厚20" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsuni20}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsusn01" headerText="Sn膜厚01" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsusn01}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsusn02" headerText="Sn膜厚02" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsusn02}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsusn03" headerText="Sn膜厚03" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsusn03}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsusn04" headerText="Sn膜厚04" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsusn04}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsusn05" headerText="Sn膜厚05" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsusn05}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsusn06" headerText="Sn膜厚06" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsusn06}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsusn07" headerText="Sn膜厚07" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsusn07}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsusn08" headerText="Sn膜厚08" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsusn08}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsusn09" headerText="Sn膜厚09" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsusn09}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsusn10" headerText="Sn膜厚10" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsusn10}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsusn11" headerText="Sn膜厚11" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsusn11}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsusn12" headerText="Sn膜厚12" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsusn12}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsusn13" headerText="Sn膜厚13" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsusn13}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsusn14" headerText="Sn膜厚14" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsusn14}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsusn15" headerText="Sn膜厚15" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsusn15}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                            </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsusn16" headerText="Sn膜厚16" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsusn16}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsusn17" headerText="Sn膜厚17" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsusn17}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsusn18" headerText="Sn膜厚18" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsusn18}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsusn19" headerText="Sn膜厚19" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsusn19}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="makuatsusn20" headerText="Sn膜厚20" styleClass="number">
+                        <p:outputLabel value="#{item.makuatsusn20}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </h:form>
+    </h:body>
+</html>

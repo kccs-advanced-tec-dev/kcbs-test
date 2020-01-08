@@ -35,6 +35,8 @@
                     PF('cd').show();
                 } else if('initMessage'===args.firstParam){
                     PF('W_dlg_initMessage').show();
+                } else if('gxhdo101c012'===args.firstParam){
+                    PF('W_dlg_gxhdo101c012').show();
                 }
             }
             var pointY;
@@ -106,7 +108,7 @@
             </div>
             <tr>
                 <div class='inner' style="position:relative">
-                <div class="divPad" style="HEIGHT: 58px;">
+                <div class="divPad" style="HEIGHT: 92px;">
                     <table>
                         <tr>
                             <td>
@@ -125,6 +127,19 @@
                                 <p:commandButton id="searchBtn" class="button"  styleClass="ui-conf-commandbtn-def1" style="float:right;margin-left: 40px;width: 94px; height: 32px; font-size: 13px;"
                                       value="ロット検索"
                                       actionListener="#{gXHDO101A.searchHinshitsuData()}"
+                                      process="@this lotNo tantoshaCd"
+                                      update="@form"
+                                      onstart="PF('cd').hide();$('#loadinggif').show();$('#dataTableDiv').hide();"
+                                      oncomplete="$('#loadinggif').hide();$('#dataTableDiv').show();cmdButtonOncomplete(args);"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td>
+                                <h:outputText id="outText" value="" style="width: 300px; margin-left: 40px;"/>
+                                <p:commandButton id="sanshouBtn" class="button" rendered="#{gXHDO101A.sanshouBtnRender}"  styleClass="ui-conf-commandbtn-def1" style="float:right;margin-left: 40px;width: 94px; height: 32px; font-size: 13px;"
+                                      value="ロット参照"
+                                      actionListener="#{gXHDO101A.getLotSanshou()}"
                                       process="@this lotNo tantoshaCd"
                                       update="@form"
                                       onstart="PF('cd').hide();$('#loadinggif').show();$('#dataTableDiv').hide();"
@@ -166,6 +181,7 @@
             </div>
             <div>
                 <ui:include src="/secure/common/initMessage.xhtml"/>
+                <ui:include src="/secure/pxhdo101/gxhdo101c012.xhtml"/>
             </div>
         </h:form>
         </div>
