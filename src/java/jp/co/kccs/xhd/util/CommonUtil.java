@@ -1175,7 +1175,7 @@ public class CommonUtil {
             String edaban, String rev, int jissekino) throws SQLException {
         String sql = "SELECT kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,"
                 + "syorisuu,gaikan,ryohinjuryou,furyoujuryou,furyouritsu,gaikandatetime,gaikantantosyacode,"
-                + "biko1,biko2,torokunichiji,kosinnichiji,revision"
+                + "biko1,biko2,torokunichiji,kosinnichiji,revision "
                 + "FROM sr_gdyakitukegaikan "
                 + "WHERE kojyo = ? AND lotno = ? "
                 + "AND edaban = ? AND revision = ? "
@@ -1309,7 +1309,7 @@ public class CommonUtil {
             String edaban, String rev, int jissekino) throws SQLException {
         String sql = "SELECT kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,gouki,jikan,"
                 + "chargeroyu,vatsuu,methanolkoukanjikan,methanolkoukantantousya,startdatetime,StartTantosyacode,StartKakuninsyacode,"
-                + "enddatetime,EndTantosyacode,biko1,biko2,torokunichiji,kosinnichiji,revision"
+                + "enddatetime,EndTantosyacode,biko1,biko2,torokunichiji,kosinnichiji,revision "
                 + "FROM sr_gdsenjou "
                 + "WHERE kojyo = ? AND lotno = ? "
                 + "AND edaban = ? AND revision = ? "
