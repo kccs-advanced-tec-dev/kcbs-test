@@ -127,7 +127,12 @@ public class GXHDO101B040 implements IFormLogic {
             processData.setNoCheckButtonId(Arrays.asList(
                     GXHDO101B040Const.BTN_SENBETSU_STARTDATETIME_TOP,
                     GXHDO101B040Const.BTN_SENBETSU_ENDDATETIME_TOP,
-                    GXHDO101B040Const.BTN_BIN_KEISAN_TOP
+                    GXHDO101B040Const.BTN_BIN_KEISAN_TOP,
+                    GXHDO101B040Const.BTN_RYOHIN_KEISAN_TOP,
+                    GXHDO101B040Const.BTN_BUDOMARI_KEISAN_TOP,
+                    GXHDO101B040Const.BTN_NETSUSYORI_KEISAN_TOP,
+                    GXHDO101B040Const.BTN_HOSEIRITSU_KEISAN_TOP,
+                    GXHDO101B040Const.BTN_SETSUBI_DATA_TORIKOMI_TOP
             ));
 
             // リビジョンチェック対象のボタンを設定する。
