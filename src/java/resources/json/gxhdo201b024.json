@@ -1,0 +1,18 @@
+[
+    {"no":"1","id":"lotno","columnname":"ﾛｯﾄNo","type":"String","format":""},
+    {"no":"2","id":"kcpno","columnname":"KCPNO","type":"String","format":""},
+    {"no":"3","id":"syorisuu","columnname":"処理数(個)","type":"Integer","format":"9,0"},
+    {"no":"4","id":"syorigoki","columnname":"処理号機(号機)","type":"String","format":""},
+    {"no":"5","id":"chargeryou","columnname":"ﾁｬｰｼﾞ量(個/枚)","type":"Integer","format":"9,0"},
+    {"no":"6","id":"traymaisuu","columnname":"ﾄﾚｰ枚数(枚)","type":"Integer","format":"9,0"},
+    {"no":"7","id":"programno","columnname":"処理ﾌﾟﾛｸﾞﾗﾑNo","type":"Integer","format":"9,0"},
+    {"no":"8","id":"kaisinichiji","columnname":"開始日時","type":"timestamp","format":"yyyy/mm/dd hh:mm:ss"},
+    {"no":"9","id":"starttantosyacode","columnname":"開始担当者","type":"String","format":""},
+    {"no":"10","id":"startkakuninsyacode","columnname":"開始確認者","type":"String","format":""},
+    {"no":"11","id":"syuuryounichiji","columnname":"終了日時","type":"timestamp","format":"yyyy/mm/dd hh:mm:ss"},
+    {"no":"12","id":"endtantosyacode","columnname":"終了担当者","type":"String","format":""},
+    {"no":"13","id":"sagyoubasyo","columnname":"作業場所","type":"String","format":""},
+    {"no":"14","id":"biko1","columnname":"備考1","type":"String","format":""},
+    {"no":"15","id":"biko2","columnname":"備考2","type":"String","format":""},
+    {"no":"16","id":"kaisuu","columnname":"回数","type":"Integer","format":"9,0"}
+]
