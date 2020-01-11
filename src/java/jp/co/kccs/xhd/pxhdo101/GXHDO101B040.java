@@ -2095,7 +2095,7 @@ public class GXHDO101B040 implements IFormLogic {
      */
     private Map loadFxhdd03RevInfo(QueryRunner queryRunnerDoc, String kojyo, String lotNo,
             String edaban, int jissekino, String formId) throws SQLException {
-        // 設計データの取得
+        // 品質DB登録実績データの取得
         String sql = "SELECT rev, jotai_flg "
                 + "FROM fxhdd03 "
                 + "WHERE kojyo = ? AND lotno = ? "
@@ -2126,7 +2126,7 @@ public class GXHDO101B040 implements IFormLogic {
      */
     private Map loadFxhdd03RevInfoWithLock(QueryRunner queryRunnerDoc, Connection conDoc, String kojyo, String lotNo,
             String edaban, int jissekino, String formId) throws SQLException {
-        // 設計データの取得
+        // 品質DB登録実績データの取得
         String sql = "SELECT rev, jotai_flg "
                 + "FROM fxhdd03 "
                 + "WHERE kojyo = ? AND lotno = ? "
@@ -2159,7 +2159,7 @@ public class GXHDO101B040 implements IFormLogic {
     private BigDecimal getNewRev(QueryRunner queryRunnerDoc, Connection conDoc, String kojyo, String lotNo,
             String edaban, int jissekino, String formId) throws SQLException {
         BigDecimal newRev = BigDecimal.ONE;
-        // 設計データの取得
+        // 品質DB登録実績データの取得
         String sql = "SELECT rev "
                 + "FROM fxhdd03 "
                 + "WHERE kojyo = ? AND lotno = ? "
