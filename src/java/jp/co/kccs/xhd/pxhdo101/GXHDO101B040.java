@@ -3175,28 +3175,28 @@ public class GXHDO101B040 implements IFormLogic {
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.PRECHARGE_DENATSU4, srDenkitokuseiesi))); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC④ 電圧
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.PRECHARGE_JUDEN_TIME4, srDenkitokuseiesi))); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC④ 充電時間
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 電圧
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 判定値
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 判定値
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 充電時間
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 電圧
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 判定値
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 判定値
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 充電時間
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 電圧
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 判定値
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 判定値
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 充電時間
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 電圧
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 判定値
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 判定値
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 充電時間
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 電圧
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 判定値
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 判定値
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 充電時間
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 電圧
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 判定値
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 判定値
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 充電時間
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 電圧
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 判定値
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 判定値
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 充電時間
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 電圧
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 判定値
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 判定値
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 充電時間
         if (isInsert) {
             params.add(null); //RDC1 ﾚﾝｼﾞ
@@ -3551,28 +3551,28 @@ public class GXHDO101B040 implements IFormLogic {
         params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.PRECHARGE_DENATSU4, srDenkitokuseiesi))); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC④ 電圧
         params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.PRECHARGE_JUDEN_TIME4, srDenkitokuseiesi))); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC④ 充電時間
         params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 電圧
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 判定値
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 判定値
         params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 充電時間
         params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 電圧
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 判定値
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 判定値
         params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 充電時間
         params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 電圧
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 判定値
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 判定値
         params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 充電時間
         params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 電圧
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 判定値
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 判定値
         params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 充電時間
         params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 電圧
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 判定値
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 判定値
         params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 充電時間
         params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 電圧
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 判定値
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 判定値
         params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 充電時間
         params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 電圧
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 判定値
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 判定値
         params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 充電時間
         params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 電圧
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 判定値
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 判定値
         params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 充電時間
         if (isInsert) {
             params.add(0); //RDC1 ﾚﾝｼﾞ

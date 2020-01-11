@@ -434,7 +434,7 @@ public class SrDenkitokuseiesi {
     /**
      * 耐電圧設定条件 IR① 判定値
      */
-    private String irhanteiti1;
+    private BigDecimal irhanteiti1;
 
     /**
      * 耐電圧設定条件 IR① 充電時間
@@ -449,7 +449,7 @@ public class SrDenkitokuseiesi {
     /**
      * 耐電圧設定条件 IR② 判定値
      */
-    private String irhanteiti2;
+    private BigDecimal irhanteiti2;
 
     /**
      * 耐電圧設定条件 IR② 充電時間
@@ -464,7 +464,7 @@ public class SrDenkitokuseiesi {
     /**
      * 耐電圧設定条件 IR③ 判定値
      */
-    private String irhanteiti3;
+    private BigDecimal irhanteiti3;
 
     /**
      * 耐電圧設定条件 IR③ 充電時間
@@ -479,7 +479,7 @@ public class SrDenkitokuseiesi {
     /**
      * 耐電圧設定条件 IR④ 判定値
      */
-    private String irhanteiti4;
+    private BigDecimal irhanteiti4;
 
     /**
      * 耐電圧設定条件 IR④ 充電時間
@@ -494,7 +494,7 @@ public class SrDenkitokuseiesi {
     /**
      * 耐電圧設定条件 IR⑤ 判定値
      */
-    private String irhanteiti5;
+    private BigDecimal irhanteiti5;
 
     /**
      * 耐電圧設定条件 IR⑤ 充電時間
@@ -509,7 +509,7 @@ public class SrDenkitokuseiesi {
     /**
      * 耐電圧設定条件 IR⑥ 判定値
      */
-    private String irhanteiti6;
+    private BigDecimal irhanteiti6;
 
     /**
      * 耐電圧設定条件 IR⑥ 充電時間
@@ -524,7 +524,7 @@ public class SrDenkitokuseiesi {
     /**
      * 耐電圧設定条件 IR⑦ 判定値
      */
-    private String irhanteiti7;
+    private BigDecimal irhanteiti7;
 
     /**
      * 耐電圧設定条件 IR⑦ 充電時間
@@ -539,7 +539,7 @@ public class SrDenkitokuseiesi {
     /**
      * 耐電圧設定条件 IR⑧ 判定値
      */
-    private String irhanteiti8;
+    private BigDecimal irhanteiti8;
 
     /**
      * 耐電圧設定条件 IR⑧ 充電時間
@@ -2437,7 +2437,7 @@ public class SrDenkitokuseiesi {
      * 耐電圧設定条件 IR① 判定値
      * @return the irhanteiti1
      */
-    public String getIrhanteiti1() {
+    public BigDecimal getIrhanteiti1() {
         return irhanteiti1;
     }
 
@@ -2445,7 +2445,7 @@ public class SrDenkitokuseiesi {
      * 耐電圧設定条件 IR① 判定値
      * @param irhanteiti1 the irhanteiti1 to set
      */
-    public void setIrhanteiti1(String irhanteiti1) {
+    public void setIrhanteiti1(BigDecimal irhanteiti1) {
         this.irhanteiti1 = irhanteiti1;
     }
 
@@ -2485,7 +2485,7 @@ public class SrDenkitokuseiesi {
      * 耐電圧設定条件 IR② 判定値
      * @return the irhanteiti2
      */
-    public String getIrhanteiti2() {
+    public BigDecimal getIrhanteiti2() {
         return irhanteiti2;
     }
 
@@ -2493,7 +2493,7 @@ public class SrDenkitokuseiesi {
      * 耐電圧設定条件 IR② 判定値
      * @param irhanteiti2 the irhanteiti2 to set
      */
-    public void setIrhanteiti2(String irhanteiti2) {
+    public void setIrhanteiti2(BigDecimal irhanteiti2) {
         this.irhanteiti2 = irhanteiti2;
     }
 
@@ -2533,7 +2533,7 @@ public class SrDenkitokuseiesi {
      * 耐電圧設定条件 IR③ 判定値
      * @return the irhanteiti3
      */
-    public String getIrhanteiti3() {
+    public BigDecimal getIrhanteiti3() {
         return irhanteiti3;
     }
 
@@ -2541,7 +2541,7 @@ public class SrDenkitokuseiesi {
      * 耐電圧設定条件 IR③ 判定値
      * @param irhanteiti3 the irhanteiti3 to set
      */
-    public void setIrhanteiti3(String irhanteiti3) {
+    public void setIrhanteiti3(BigDecimal irhanteiti3) {
         this.irhanteiti3 = irhanteiti3;
     }
 
@@ -2581,7 +2581,7 @@ public class SrDenkitokuseiesi {
      * 耐電圧設定条件 IR④ 判定値
      * @return the irhanteiti4
      */
-    public String getIrhanteiti4() {
+    public BigDecimal getIrhanteiti4() {
         return irhanteiti4;
     }
 
@@ -2589,7 +2589,7 @@ public class SrDenkitokuseiesi {
      * 耐電圧設定条件 IR④ 判定値
      * @param irhanteiti4 the irhanteiti4 to set
      */
-    public void setIrhanteiti4(String irhanteiti4) {
+    public void setIrhanteiti4(BigDecimal irhanteiti4) {
         this.irhanteiti4 = irhanteiti4;
     }
 
@@ -2629,7 +2629,7 @@ public class SrDenkitokuseiesi {
      * 耐電圧設定条件 IR⑤ 判定値
      * @return the irhanteiti5
      */
-    public String getIrhanteiti5() {
+    public BigDecimal getIrhanteiti5() {
         return irhanteiti5;
     }
 
@@ -2637,7 +2637,7 @@ public class SrDenkitokuseiesi {
      * 耐電圧設定条件 IR⑤ 判定値
      * @param irhanteiti5 the irhanteiti5 to set
      */
-    public void setIrhanteiti5(String irhanteiti5) {
+    public void setIrhanteiti5(BigDecimal irhanteiti5) {
         this.irhanteiti5 = irhanteiti5;
     }
 
@@ -2677,7 +2677,7 @@ public class SrDenkitokuseiesi {
      * 耐電圧設定条件 IR⑥ 判定値
      * @return the irhanteiti6
      */
-    public String getIrhanteiti6() {
+    public BigDecimal getIrhanteiti6() {
         return irhanteiti6;
     }
 
@@ -2685,7 +2685,7 @@ public class SrDenkitokuseiesi {
      * 耐電圧設定条件 IR⑥ 判定値
      * @param irhanteiti6 the irhanteiti6 to set
      */
-    public void setIrhanteiti6(String irhanteiti6) {
+    public void setIrhanteiti6(BigDecimal irhanteiti6) {
         this.irhanteiti6 = irhanteiti6;
     }
 
@@ -2725,7 +2725,7 @@ public class SrDenkitokuseiesi {
      * 耐電圧設定条件 IR⑦ 判定値
      * @return the irhanteiti7
      */
-    public String getIrhanteiti7() {
+    public BigDecimal getIrhanteiti7() {
         return irhanteiti7;
     }
 
@@ -2733,7 +2733,7 @@ public class SrDenkitokuseiesi {
      * 耐電圧設定条件 IR⑦ 判定値
      * @param irhanteiti7 the irhanteiti7 to set
      */
-    public void setIrhanteiti7(String irhanteiti7) {
+    public void setIrhanteiti7(BigDecimal irhanteiti7) {
         this.irhanteiti7 = irhanteiti7;
     }
 
@@ -2773,7 +2773,7 @@ public class SrDenkitokuseiesi {
      * 耐電圧設定条件 IR⑧ 判定値
      * @return the irhanteiti8
      */
-    public String getIrhanteiti8() {
+    public BigDecimal getIrhanteiti8() {
         return irhanteiti8;
     }
 
@@ -2781,7 +2781,7 @@ public class SrDenkitokuseiesi {
      * 耐電圧設定条件 IR⑧ 判定値
      * @param irhanteiti8 the irhanteiti8 to set
      */
-    public void setIrhanteiti8(String irhanteiti8) {
+    public void setIrhanteiti8(BigDecimal irhanteiti8) {
         this.irhanteiti8 = irhanteiti8;
     }
 
