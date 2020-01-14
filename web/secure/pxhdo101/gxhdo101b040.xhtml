@@ -41,7 +41,7 @@
                 document.getElementById("mainForm").style.setProperty("display", "none");
                 document.getElementById("mainForm").style.setProperty("position", "fixed");
                 document.getElementById("mainForm").style.setProperty("width", #{adjustModels.menuWidth} + "px");
-                document.getElementById("mainForm").style.setProperty("Top", -(pointY) + 64 + "px");
+                document.getElementById("mainForm").style.setProperty("Top", -(pointY) + 37 + "px");
                 document.getElementById("mainForm").style.removeProperty("display");
 
             }
@@ -88,14 +88,14 @@
             <div id="mainDiv" style="#{gXHDO101B040A.mainDivStyle}">
                 <div id="mainForm" >
                     <div style="text-align:right">
-                        <p:commandButton id="returnBtnTop" style="margin-left:26px;margin-bottom:5px;margin-top:0px;#{gXHDO901A.styleDisplayNone}"
-                                         value="#{myMsg.return}"  action="/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true"
-                                         process="@this" update="@this">
-                            <f:param name="returnVal" value="return"/>
-                            <f:attribute name="returnVal" value="return"/>
-                        </p:commandButton>
-                        <h:outputText style="font-size:#{gXHDO101B040A.titleInfo.fontSize}px; display: none;  #{gXHDO101B040A.styleDisplayNone}" value="#{gXHDO101B040A.jotaiDisplay}"/>        
+                        <h:outputText style="font-size:#{gXHDO101B040A.titleInfo.fontSize}px; #{gXHDO101B040A.styleDisplayNone}" value="#{gXHDO101B040A.jotaiDisplay}"/>        
                     </div>
+                    <p:commandButton id="returnBtnTop" style="margin-left:26px;margin-bottom:5px;margin-top:0px;"
+                                     value="#{myMsg.return}"  action="/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true"
+                                     process="@this" update="@this">
+                        <f:param name="returnVal" value="return"/>
+                        <f:attribute name="returnVal" value="return"/>
+                    </p:commandButton>
                     <p:growl id="growlMessage" showDetail="false" sticky="true" escape="false" />
                     <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
                         <f:facet name="message">
