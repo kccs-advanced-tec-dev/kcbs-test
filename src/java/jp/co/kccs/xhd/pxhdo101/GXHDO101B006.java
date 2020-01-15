@@ -1616,6 +1616,10 @@ public class GXHDO101B006 implements IFormLogic {
         String kojyo = lotNo.substring(0, 3);
         String lotNo8 = lotNo.substring(3, 11);
         String edaban = lotNo.substring(11, 14);
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+        String maeGamenID = StringUtil.nullToBlank(session.getAttribute("maeGamenID"));
+        String motoLotNo = (String) session.getAttribute("sanshouMotoLotNo");// 参照元ﾃﾞｰﾀﾛｯﾄNo
 
         for (int i = 0; i < 5; i++) {
             // 品質DB実績登録Revision情報取得
@@ -1628,6 +1632,15 @@ public class GXHDO101B006 implements IFormLogic {
                 processData.setInitRev(rev);
                 processData.setInitJotaiFlg(jotaiFlg);
 
+                // ﾛｯﾄ参照画面より遷移してきた場合
+                if ("GXHDO101C012".equals(maeGamenID)) {
+                    // 参照元ﾛｯﾄのデータをセットする。
+                    if (setSanshouMotoLotData(processData, queryRunnerQcdb, queryRunnerDoc, formId, motoLotNo, kojyo, lotNo8, edaban, sekkeino)) {
+                        //ｾｯﾄ成功時はリターン
+                        return true;
+                    }
+                }
+                
                 // メイン画面にデータを設定する(デフォルト値)
                 for (FXHDD01 fxhdd001 : processData.getItemList()) {
                     this.setItemData(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
@@ -5038,5 +5051,64 @@ public class GXHDO101B006 implements IFormLogic {
                 return "";
         }
     }
+    
+    /**
+     * 元データ設定処理
+     *
+     * @param processData 処理制御データ
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param formId 画面ID
+     * @param motoLotno 参照元ﾛｯﾄNo(ﾌﾙ桁)
+     * @param sakiKojyo 工場ｺｰﾄﾞ
+     * @param sakilotNo8 ﾛｯﾄNo(8桁)
+     * @param sakiEdaban 枝番
+     * @param sakiEdaban 設計No
+     * @return 元データ設定 true(成功) false(失敗)
+     * @throws SQLException 例外
+     */
+    private boolean setSanshouMotoLotData(ProcessData processData, QueryRunner queryRunnerQcdb, QueryRunner queryRunnerDoc, String formId, String motoLotno,
+            String sakiKojyo, String sakilotNo8, String sakiEdaban, String sekkeino) throws SQLException {
+
+        // 元ﾛｯﾄを分解
+        String motoKojyo = motoLotno.substring(0, 3);
+        String motoLotNo8 = motoLotno.substring(3, 11);
+        String motoEdaban = motoLotno.substring(11, 14);
+
+        Map fxhdd03RevInfo = loadFxhdd03RevInfo(queryRunnerDoc, motoKojyo, motoLotNo8, motoEdaban, formId);
+        String rev = StringUtil.nullToBlank(getMapData(fxhdd03RevInfo, "rev"));
+
+        // 印刷積層RHAPSデータ取得
+        List<SrRhaps> srSpRhapsDataList = getSrRhapsData(queryRunnerQcdb, rev, "1", motoKojyo, motoLotNo8, motoEdaban);
+        if (srSpRhapsDataList.isEmpty()) {
+            //該当データが取得できなかった処理失敗としてリターンする
+            return false;
+        }
+
+        // 印刷積層RHAPS_ｻﾌﾞ画面データ取得
+        List<SubSrRhaps> subSrRhapsDataList = getSubSrRhapsData(queryRunnerQcdb, rev, "1", motoKojyo, motoLotNo8, motoEdaban);
+        if (subSrRhapsDataList.isEmpty()) {
+            //該当データが取得できなかった処理失敗としてリターンする
+            return false;
+        }
+
+        // メイン画面データ設定
+        setInputItemDataMainForm(processData, srSpRhapsDataList.get(0));
+
+        // 電極膜厚画面データ設定
+        setInputItemDataSubFormC007(subSrRhapsDataList.get(0), sakiKojyo, sakilotNo8, sakiEdaban);
+
+        // ﾊﾟﾀｰﾝ間距離画面データ設定
+        setInputItemDataSubFormC008(subSrRhapsDataList.get(0), sakiKojyo, sakilotNo8, sakiEdaban);
+
+        // 合わせ(RZ)画面データ設定
+        setInputItemDataSubFormC009(subSrRhapsDataList.get(0), sakiKojyo, sakilotNo8, sakiEdaban);
+
+        // 被り量(µm)画面データ設定
+        setInputItemDataSubFormC010(subSrRhapsDataList.get(0), sakiKojyo, sakilotNo8, sakiEdaban, sekkeino, queryRunnerQcdb);
+
+        return true;
+    }
+
 
 }

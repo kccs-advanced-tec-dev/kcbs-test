@@ -420,6 +420,7 @@ public class GXHDO101A implements Serializable {
             List<String> filterGamenList = new ArrayList<>();
             filterGamenList.add("GXHDO101B001");
             filterGamenList.add("GXHDO101B002");
+            filterGamenList.add("GXHDO101B006");
             boolean gamenExistFlg = false;
             gamenExistFlg = lotSanshouMenuListFiltering(this.menuListGXHDO101, filterGamenList);
             //ﾛｯﾄ参照ﾎﾞﾀﾝ表示/非表示の設定
@@ -675,6 +676,27 @@ public class GXHDO101A implements Serializable {
                 //      ｲ.取得できた場合
                 //       以降の処理を実行する。
             }
+            
+            //   3.【印刷工程画面ID】 == "GXHDO101B006" の場合
+            if ("GXHDO101B006".equals(getInsatsuKoteiGamenID())) {
+                //    A.Ⅲ.画面表示仕様(29),(30)を発行する。
+                Map srSpRhapsInfo = loadSrRhapsInfo(queryRunnerQcdb, strKojyo, strLotNo, strEdaban, jissekiInforev);
+                Map subSrSpRhapsInfo = loadSubSrRhapsInfo(queryRunnerQcdb, strKojyo, strLotNo, strEdaban, jissekiInforev);
+                if(srSpRhapsInfo == null || subSrSpRhapsInfo == null){
+                    //      ｱ.取得できなかった場合
+                    //       ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。
+                    //         ・ｴﾗｰｺｰﾄﾞ:XHD-000083
+                    //         ・ｴﾗｰﾒｯｾｰｼﾞ:ﾃﾞｰﾀ取得ｴﾗｰ。ｼｽﾃﾑに連絡してください。{0}
+                    //         0には、”EXHD-000006” を設定。
+                    setErrorMessage(MessageUtil.getMessage("XHD-000083", "EXHD-000006"));
+                    FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, getErrorMessage(), null);
+                    facesContext.addMessage(null, message);
+                    return;
+                }
+                //      ｲ.取得できた場合
+                //       以降の処理を実行する。
+            }
+            
 
             // ﾛｯﾄ参照の値をサブ画面の表示用の値に渡す
             GXHDO101C012 beanGXHDO101C012 = (GXHDO101C012) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C012);
@@ -1112,6 +1134,64 @@ public class GXHDO101A implements Serializable {
         return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
     }
 
+    /**
+     * [印刷積層RHAPS]から、ﾃﾞｰﾀを取得
+     *
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev (26)で取得したREV(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadSrRhapsInfo(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev) throws SQLException {
+
+        // 印刷SPSｽｸﾘｰﾝ情報の取得
+        String sql = "SELECT kojyo "
+                + "FROM sr_rhaps "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND revision = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+
+    /**
+     * [印刷積層RHAPS_ｻﾌﾞ画面]から、ﾃﾞｰﾀを取得
+     *
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev (26)で取得したREV(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadSubSrRhapsInfo(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev) throws SQLException {
+
+        // 印刷SPSｽｸﾘｰﾝ_ｻﾌﾞ情報の取得
+        String sql = "SELECT kojyo "
+                + "FROM sub_sr_rhaps "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND revision = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+    
     /**
      * 前工程画面ID、ﾒﾆｭｰ名取得
      *
@@ -2556,22 +2636,15 @@ public class GXHDO101A implements Serializable {
      * @param filterGamenIdList フィルタリングID
      */
     private boolean lotSanshouMenuListFiltering(List<FXHDM01> menuList, List<String> filterGamenIdList) {
-        int dataCount = 0;
-        boolean existFlg = false;
         if (!menuList.isEmpty()) {
-            for (FXHDM01 data : menuList) {
-                if (filterGamenIdList.contains(data.getFormId())) {
-                    //【印刷工程画面ID】を決定する。
-                    setInsatsuKoteiGamenID(data.getFormId());
-                    dataCount++;
-                    existFlg = true;
+            for (String formId : filterGamenIdList) {
+                if(0 < menuList.stream().filter(n -> formId.equals(n.getFormId())).count()){
+                    setInsatsuKoteiGamenID(formId);
+                    return true;
                 }
             }
         }
-        if(dataCount > 1){
-            setInsatsuKoteiGamenID("GXHDO101B001");            
-        }
-        return existFlg;
+        return false;
     }
     
     /**
