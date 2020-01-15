@@ -532,7 +532,7 @@ public class GXHDO101B040 implements IFormLogic {
 
         // ユーザ認証用のパラメータをセットする。
         processData.setRquireAuth(true);
-        processData.setUserAuthParam(GXHDO101B038Const.USER_AUTH_UPDATE_PARAM);
+        processData.setUserAuthParam(GXHDO101B040Const.USER_AUTH_UPDATE_PARAM);
 
         // 後続処理メソッド設定
         processData.setMethod("doCorrect");
