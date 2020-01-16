@@ -12,7 +12,7 @@
         <meta http-equiv="Cache-Control" content="no-cache"/>
         <meta http-equiv="Expires" content="0"/>
         <link href="#{request.contextPath}/resources/css/growllarge.css" rel="stylesheet" type="text/css"/>
-        <link href="#{request.contextPath}/resources/css/gxhdo101b040.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/gxhdo101b042.css" rel="stylesheet" type="text/css"/>
         <link href="#{request.contextPath}/resources/css/gxhco901a.css" rel="stylesheet" type="text/css"/>
         <link href="#{request.contextPath}/resources/css/errordialog.css" rel="stylesheet" type="text/css"/>
         <h:outputScript library="primefaces" name="jquery/jquery.js" />
@@ -41,7 +41,7 @@
                 document.getElementById("mainForm").style.setProperty("display", "none");
                 document.getElementById("mainForm").style.setProperty("position", "fixed");
                 document.getElementById("mainForm").style.setProperty("width", #{adjustModels.menuWidth} + "px");
-                document.getElementById("mainForm").style.setProperty("Top", -(pointY) + 64 + "px");
+                document.getElementById("mainForm").style.setProperty("Top", -(pointY) + 37 + "px");
                 document.getElementById("mainForm").style.removeProperty("display");
 
             }
@@ -74,7 +74,7 @@
             //]]>
         </script>
     </h:head>
-    <h:body style="padding-top:30px;" >
+    <h:body>
         <f:metadata>
             <f:viewAction action="#{gXHDO101B042A.init(adjustModels.menuWidth)}"/>
         </f:metadata>
@@ -88,14 +88,15 @@
             <div id="mainDiv" style="#{gXHDO101B042A.mainDivStyle}">
                 <div id="mainForm" >
                     <div style="text-align:right">
-                        <p:commandButton id="returnBtnTop" style="margin-left:26px;margin-bottom:5px;margin-top:0px;#{gXHDO901A.styleDisplayNone}"
-                                         value="#{myMsg.return}"  action="/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true"
-                                         process="@this" update="@this">
-                            <f:param name="returnVal" value="return"/>
-                            <f:attribute name="returnVal" value="return"/>
-                        </p:commandButton>
-                        <h:outputText style="font-size:#{gXHDO101B042A.titleInfo.fontSize}px; display: none;  #{gXHDO101B042A.styleDisplayNone}" value="#{gXHDO101B042A.jotaiDisplay}"/>        
+                        <h:outputText style="font-size:#{gXHDO101B042A.titleInfo.fontSize}px; #{gXHDO101B042A.styleDisplayNone}" value="#{gXHDO101B042A.jotaiDisplay}"/>        
                     </div>
+                    <p:commandButton id="returnBtnTop" style="margin-left:26px;margin-bottom:5px;margin-top:0px;"
+                                        value="#{myMsg.return}"  action="/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true"
+                                        process="@this" update="@this">
+                        <f:param name="returnVal" value="return"/>
+                        <f:attribute name="returnVal" value="return"/>
+                    </p:commandButton>                       
+                        
                     <p:growl id="growlMessage" showDetail="false" sticky="true" escape="false" />
                     <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
                         <f:facet name="message">
@@ -183,7 +184,7 @@
                                     </p:row>
                                     <p:row class="taidenatsu_table_tr">
                                         <p:column style="border-right-style: hidden; ">
-                                            <h:outputText value="IR1" styleClass="taidenatsu_table_rowheader_label"/>
+                                            <h:outputText value="IR1" styleClass="taidenatsu_table_rowheader_label" />
                                         </p:column>
                                         <p:column style="border-right-style: hidden; ">
                                             <p:inputText id="taidenatsuDenatsuT1" styleClass="taidenatsu_table_text"
@@ -401,12 +402,12 @@
                         <p:tab title="電圧DROP設定条件" titleStyle="font-size:0.9em;" id="tab3">
                             <div class="tab_div">
                                 <p:panelGrid style="width: 100%;border: 1px;">
-                                    <p:row class="taidenatsu_table_header_tr" style="border-bottom-style: hidden;">
+                                    <p:row class="denatsudrop_table_header_tr" style="border-bottom-style: hidden;">
                                         <p:column style="text-align: center;" colspan="8" >
                                             <h:outputText  value="電圧DROP設定条件"/>
                                         </p:column>
                                     </p:row>
-                                    <p:row class="taidenatsu_table_header_tr">
+                                    <p:row class="denatsudrop_table_header_tr">
                                         <p:column style="border-right-style: hidden; width: 50px;">
                                             <h:outputText value="" style="margin-left: 18px;" />
                                         </p:column>
@@ -420,110 +421,110 @@
                                             <h:outputText value="MS･DC" />
                                         </p:column>
                                     </p:row>
-                                    <p:row class="taidenatsu_table_tr">
+                                    <p:row class="denatsudrop_table_tr">
                                         <p:column style="border-right-style: hidden; ">
-                                            <h:outputText value="DROP1,3" styleClass="taidenatsu_table_rowheader_label"/>
+                                            <h:outputText value="DROP1,3" styleClass="denatsudrop_table_rowheader_label"/>
                                         </p:column>
                                         <p:column style="border-right-style: hidden; ">
-                                            <p:inputText id="drop13pcT1" styleClass="taidenatsu_table_text"
+                                            <p:inputText id="drop13pcT1" styleClass="denatsudrop_table_text"
                                                          rendered="#{beanGXHDO101C042C.drop13pc.renderInputText}" value="#{beanGXHDO101C042C.drop13pc.value}" 
                                                          maxlength="#{beanGXHDO101C042C.drop13pc.displayMaxLength}" 
                                                          style="width:#{beanGXHDO101C042C.drop13pc.displayMaxLength}em; font-size:#{beanGXHDO101C042C.drop13pc.fontSizeInput}px;
                                                          color:#{beanGXHDO101C042C.drop13pc.fontColorInput};background:#{beanGXHDO101C042C.drop13pc.backColorInput};#{beanGXHDO101C042C.drop13pc.customStyleInput}">
                                             </p:inputText>
-                                            <p:inputNumber id="drop13pcN1" inputStyleClass="taidenatsu_table_number_text"
+                                            <p:inputNumber id="drop13pcN1" inputStyleClass="denatsudrop_table_number_text"
                                                            rendered="#{beanGXHDO101C042C.drop13pc.renderInputNumber}" value="#{beanGXHDO101C042C.drop13pc.value}" 
                                                            decimalPlaces="#{beanGXHDO101C042C.drop13pc.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042C.drop13pc.numberMaxValue}" minValue="#{beanGXHDO101C042C.drop13pc.numberMinValue}" 
                                                            thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042C.drop13pc.displayMaxLength}"
                                                            inputStyle="font-size:#{beanGXHDO101C042C.drop13pc.fontSizeInput}px;
                                                            color:#{beanGXHDO101C042C.drop13pc.fontColorInput}; background:#{beanGXHDO101C042C.drop13pc.backColorInput};#{beanGXHDO101C042C.drop13pc.customStyleInput}">
                                             </p:inputNumber>
-                                            <h:outputText value="V" styleClass="taidenatsu_table_label"/>
+                                            <h:outputText value="V" styleClass="denatsudrop_table_label"/>
                                         </p:column>
                                         <p:column style="border-right-style: hidden; ">
-                                            <p:inputText id="drop13psT1" styleClass="taidenatsu_table_text"
+                                            <p:inputText id="drop13psT1" styleClass="denatsudrop_table_text"
                                                          rendered="#{beanGXHDO101C042C.drop13ps.renderInputText}" value="#{beanGXHDO101C042C.drop13ps.value}" 
                                                          maxlength="#{beanGXHDO101C042C.drop13ps.displayMaxLength}" 
                                                          style="width:#{beanGXHDO101C042C.drop13ps.displayMaxLength}em; font-size:#{beanGXHDO101C042C.drop13ps.fontSizeInput}px;
                                                          color:#{beanGXHDO101C042C.drop13ps.fontColorInput};background:#{beanGXHDO101C042C.drop13ps.backColorInput};#{beanGXHDO101C042C.drop13ps.customStyleInput}">
                                             </p:inputText>
-                                            <p:inputNumber id="drop13psN1" inputStyleClass="taidenatsu_table_number_text"
+                                            <p:inputNumber id="drop13psN1" inputStyleClass="denatsudrop_table_number_text"
                                                            rendered="#{beanGXHDO101C042C.drop13ps.renderInputNumber}" value="#{beanGXHDO101C042C.drop13ps.value}" 
                                                            decimalPlaces="#{beanGXHDO101C042C.drop13ps.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042C.drop13ps.numberMaxValue}" minValue="#{beanGXHDO101C042C.drop13ps.numberMinValue}" 
                                                            thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042C.drop13ps.displayMaxLength}"
                                                            inputStyle="font-size:#{beanGXHDO101C042C.drop13ps.fontSizeInput}px;
                                                            color:#{beanGXHDO101C042C.drop13ps.fontColorInput}; background:#{beanGXHDO101C042C.drop13ps.backColorInput};#{beanGXHDO101C042C.drop13ps.customStyleInput}">
                                             </p:inputNumber>
-                                            <h:outputText value="V" styleClass="taidenatsu_table_label"/>
+                                            <h:outputText value="V" styleClass="denatsudrop_table_label"/>
                                         </p:column>
                                         <p:column>
-                                            <p:inputText id="drop13psdcT1" styleClass="taidenatsu_table_text"
+                                            <p:inputText id="drop13psdcT1" styleClass="denatsudrop_table_text"
                                                          rendered="#{beanGXHDO101C042C.drop13msdc.renderInputText}" value="#{beanGXHDO101C042C.drop13msdc.value}" 
                                                          maxlength="#{beanGXHDO101C042C.drop13msdc.displayMaxLength}" 
                                                          style="width:#{beanGXHDO101C042C.drop13msdc.displayMaxLength}em; font-size:#{beanGXHDO101C042C.drop13msdc.fontSizeInput}px;
                                                          color:#{beanGXHDO101C042C.drop13msdc.fontColorInput};background:#{beanGXHDO101C042C.drop13msdc.backColorInput};#{beanGXHDO101C042C.drop13msdc.customStyleInput}">
                                             </p:inputText>
-                                            <p:inputNumber id="drop13psdcN1" inputStyleClass="taidenatsu_table_number_text"
+                                            <p:inputNumber id="drop13psdcN1" inputStyleClass="denatsudrop_table_number_text"
                                                            rendered="#{beanGXHDO101C042C.drop13msdc.renderInputNumber}" value="#{beanGXHDO101C042C.drop13msdc.value}" 
                                                            decimalPlaces="#{beanGXHDO101C042C.drop13msdc.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042C.drop13msdc.numberMaxValue}" minValue="#{beanGXHDO101C042C.drop13msdc.numberMinValue}" 
                                                            thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042C.drop13msdc.displayMaxLength}"
                                                            inputStyle="font-size:#{beanGXHDO101C042C.drop13msdc.fontSizeInput}px;
                                                            color:#{beanGXHDO101C042C.drop13msdc.fontColorInput}; background:#{beanGXHDO101C042C.drop13msdc.backColorInput};#{beanGXHDO101C042C.drop13msdc.customStyleInput}">
                                             </p:inputNumber>
-                                            <h:outputText value="V" styleClass="taidenatsu_table_label"/>
+                                            <h:outputText value="V" styleClass="denatsudrop_table_label"/>
                                         </p:column>
                                     </p:row>
-                                    <p:row class="taidenatsu_table_tr">
+                                    <p:row class="denatsudrop_table_tr">
                                         <p:column style="border-right-style: hidden; ">
-                                            <h:outputText value="DROP2,4" styleClass="taidenatsu_table_rowheader_label"/>
+                                            <h:outputText value="DROP2,4" styleClass="denatsudrop_table_rowheader_label"/>
                                         </p:column>
                                         <p:column style="border-right-style: hidden; ">
-                                            <p:inputText id="drop24pcT1" styleClass="taidenatsu_table_text"
+                                            <p:inputText id="drop24pcT1" styleClass="denatsudrop_table_text"
                                                          rendered="#{beanGXHDO101C042C.drop24pc.renderInputText}" value="#{beanGXHDO101C042C.drop24pc.value}" 
                                                          maxlength="#{beanGXHDO101C042C.drop24pc.displayMaxLength}" 
                                                          style="width:#{beanGXHDO101C042C.drop24pc.displayMaxLength}em; font-size:#{beanGXHDO101C042C.drop24pc.fontSizeInput}px;
                                                          color:#{beanGXHDO101C042C.drop24pc.fontColorInput};background:#{beanGXHDO101C042C.drop24pc.backColorInput};#{beanGXHDO101C042C.drop24pc.customStyleInput}">
                                             </p:inputText>
-                                            <p:inputNumber id="drop24pcN1" inputStyleClass="taidenatsu_table_number_text"
+                                            <p:inputNumber id="drop24pcN1" inputStyleClass="denatsudrop_table_number_text"
                                                            rendered="#{beanGXHDO101C042C.drop24pc.renderInputNumber}" value="#{beanGXHDO101C042C.drop24pc.value}" 
                                                            decimalPlaces="#{beanGXHDO101C042C.drop24pc.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042C.drop24pc.numberMaxValue}" minValue="#{beanGXHDO101C042C.drop24pc.numberMinValue}" 
                                                            thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042C.drop24pc.displayMaxLength}"
                                                            inputStyle="font-size:#{beanGXHDO101C042C.drop24pc.fontSizeInput}px;
                                                            color:#{beanGXHDO101C042C.drop24pc.fontColorInput}; background:#{beanGXHDO101C042C.drop24pc.backColorInput};#{beanGXHDO101C042C.drop24pc.customStyleInput}">
                                             </p:inputNumber>
-                                            <h:outputText value="V" styleClass="taidenatsu_table_label"/>
+                                            <h:outputText value="V" styleClass="denatsudrop_table_label"/>
                                         </p:column>
                                         <p:column style="border-right-style: hidden; ">
-                                            <p:inputText id="drop24psT1" styleClass="taidenatsu_table_text"
+                                            <p:inputText id="drop24psT1" styleClass="denatsudrop_table_text"
                                                          rendered="#{beanGXHDO101C042C.drop24ps.renderInputText}" value="#{beanGXHDO101C042C.drop24ps.value}" 
                                                          maxlength="#{beanGXHDO101C042C.drop24ps.displayMaxLength}" 
                                                          style="width:#{beanGXHDO101C042C.drop24ps.displayMaxLength}em; font-size:#{beanGXHDO101C042C.drop24ps.fontSizeInput}px;
                                                          color:#{beanGXHDO101C042C.drop24ps.fontColorInput};background:#{beanGXHDO101C042C.drop24ps.backColorInput};#{beanGXHDO101C042C.drop24ps.customStyleInput}">
                                             </p:inputText>
-                                            <p:inputNumber id="drop24psN1" inputStyleClass="taidenatsu_table_number_text"
+                                            <p:inputNumber id="drop24psN1" inputStyleClass="denatsudrop_table_number_text"
                                                            rendered="#{beanGXHDO101C042C.drop24ps.renderInputNumber}" value="#{beanGXHDO101C042C.drop24ps.value}" 
                                                            decimalPlaces="#{beanGXHDO101C042C.drop24ps.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042C.drop24ps.numberMaxValue}" minValue="#{beanGXHDO101C042C.drop24ps.numberMinValue}" 
                                                            thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042C.drop24ps.displayMaxLength}"
                                                            inputStyle="font-size:#{beanGXHDO101C042C.drop24ps.fontSizeInput}px;
                                                            color:#{beanGXHDO101C042C.drop24ps.fontColorInput}; background:#{beanGXHDO101C042C.drop24ps.backColorInput};#{beanGXHDO101C042C.drop24ps.customStyleInput}">
                                             </p:inputNumber>
-                                            <h:outputText value="V" styleClass="taidenatsu_table_label"/>
+                                            <h:outputText value="V" styleClass="denatsudrop_table_label"/>
                                         </p:column>
                                         <p:column>
-                                            <p:inputText id="drop24psdcT1" styleClass="taidenatsu_table_text"
+                                            <p:inputText id="drop24psdcT1" styleClass="denatsudrop_table_text"
                                                          rendered="#{beanGXHDO101C042C.drop24msdc.renderInputText}" value="#{beanGXHDO101C042C.drop24msdc.value}" 
                                                          maxlength="#{beanGXHDO101C042C.drop24msdc.displayMaxLength}" 
                                                          style="width:#{beanGXHDO101C042C.drop24msdc.displayMaxLength}em; font-size:#{beanGXHDO101C042C.drop24msdc.fontSizeInput}px;
                                                          color:#{beanGXHDO101C042C.drop24msdc.fontColorInput};background:#{beanGXHDO101C042C.drop24msdc.backColorInput};#{beanGXHDO101C042C.drop24msdc.customStyleInput}">
                                             </p:inputText>
-                                            <p:inputNumber id="drop24psdcN1" inputStyleClass="taidenatsu_table_number_text"
+                                            <p:inputNumber id="drop24psdcN1" inputStyleClass="denatsudrop_table_number_text"
                                                            rendered="#{beanGXHDO101C042C.drop24msdc.renderInputNumber}" value="#{beanGXHDO101C042C.drop24msdc.value}" 
                                                            decimalPlaces="#{beanGXHDO101C042C.drop24msdc.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042C.drop24msdc.numberMaxValue}" minValue="#{beanGXHDO101C042C.drop24msdc.numberMinValue}" 
                                                            thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042C.drop24msdc.displayMaxLength}"
                                                            inputStyle="font-size:#{beanGXHDO101C042C.drop24msdc.fontSizeInput}px;
                                                            color:#{beanGXHDO101C042C.drop24msdc.fontColorInput}; background:#{beanGXHDO101C042C.drop24msdc.backColorInput};#{beanGXHDO101C042C.drop24msdc.customStyleInput}">
                                             </p:inputNumber>
-                                            <h:outputText value="V" styleClass="taidenatsu_table_label"/>
+                                            <h:outputText value="V" styleClass="denatsudrop_table_label"/>
                                         </p:column>
                                     </p:row>                                
                                 </p:panelGrid>

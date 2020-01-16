@@ -24,6 +24,7 @@ import javax.servlet.http.HttpSession;
 import jp.co.kccs.xhd.common.CompMessage;
 import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.db.model.FXHDD01;
+import jp.co.kccs.xhd.db.model.FXHDD07;
 import jp.co.kccs.xhd.db.model.SrDenkitokuseiesi;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.IFormLogic;
@@ -126,7 +127,13 @@ public class GXHDO101B041 implements IFormLogic {
             processData.setNoCheckButtonId(Arrays.asList(
                     GXHDO101B041Const.BTN_SENBETSU_STARTDATETIME_TOP,
                     GXHDO101B041Const.BTN_SENBETSU_ENDDATETIME_TOP,
-                    GXHDO101B041Const.BTN_BIN_KEISAN_TOP
+                    GXHDO101B041Const.BTN_BIN_KEISAN_TOP,
+                    GXHDO101B041Const.BTN_RYOHIN_KEISAN_TOP,
+                    GXHDO101B041Const.BTN_BUDOMARI_KEISAN_TOP,
+                    GXHDO101B041Const.BTN_NETSUSYORI_KEISAN_TOP,
+                    GXHDO101B041Const.BTN_HOSEIRITSU_KEISAN_TOP,
+                    GXHDO101B041Const.BTN_SETSUBI_DATA_TORIKOMI_TOP
+                    
             ));
 
             // リビジョンチェック対象のボタンを設定する。
@@ -209,6 +216,10 @@ public class GXHDO101B041 implements IFormLogic {
             // 補正率計算
             case GXHDO101B041Const.BTN_HOSEIRITSU_KEISAN_TOP:
                 method = "doHoseiritsuKeisan";
+                break;
+            // 設備データ取込
+            case GXHDO101B041Const.BTN_SETSUBI_DATA_TORIKOMI_TOP:
+                method = "confSetsubiDataTorikomi";
                 break;
             default:
                 method = "error";
@@ -521,7 +532,7 @@ public class GXHDO101B041 implements IFormLogic {
 
         // ユーザ認証用のパラメータをセットする。
         processData.setRquireAuth(true);
-        processData.setUserAuthParam(GXHDO101B038Const.USER_AUTH_UPDATE_PARAM);
+        processData.setUserAuthParam(GXHDO101B041Const.USER_AUTH_UPDATE_PARAM);
 
         // 後続処理メソッド設定
         processData.setMethod("doCorrect");
@@ -827,6 +838,54 @@ public class GXHDO101B041 implements IFormLogic {
         calcHoseiritsu(processData);
         return processData;
     }
+    /**
+     * 設備データ取込(確認メッセージ表示)
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData confSetsubiDataTorikomi(ProcessData processData) {
+        processData.setMethod("doSetsubiDataTorikomi");
+        // 警告メッセージの設定
+        processData.setWarnMessage(MessageUtil.getMessage("XHD-000175"));
+        return processData;
+    }
+
+    /**
+     * 設備データ取込
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData doSetsubiDataTorikomi(ProcessData processData) {
+
+        try {
+            QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
+
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            HttpSession session = (HttpSession) externalContext.getSession(false);
+            String lotNo = (String) session.getAttribute("lotNo");
+            List<ErrorMessageInfo> errorList = new ArrayList<>();
+
+            List<FXHDD07> fxhdd07List = loadFXHDD07(queryRunnerDoc, lotNo);
+            if (fxhdd07List.isEmpty()) {
+                errorList.add(MessageUtil.getErrorMessageInfo("XHD-000176", false, false, new ArrayList<>()));
+                processData.setErrorMessageInfoList(errorList);
+                return processData;
+            }
+
+            // 取得したデータを項目にセット
+            setSetsubiData(processData, fxhdd07List.get(0));
+            processData.setMethod("");
+            return processData;
+
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            return processData;
+        }
+
+    }
 
     /**
      * ボタン活性・非活性設定
@@ -850,7 +909,8 @@ public class GXHDO101B041 implements IFormLogic {
                         GXHDO101B041Const.BTN_RYOHIN_KEISAN_TOP,
                         GXHDO101B041Const.BTN_BUDOMARI_KEISAN_TOP,
                         GXHDO101B041Const.BTN_NETSUSYORI_KEISAN_TOP,
-                        GXHDO101B041Const.BTN_HOSEIRITSU_KEISAN_TOP
+                        GXHDO101B041Const.BTN_HOSEIRITSU_KEISAN_TOP,
+                        GXHDO101B041Const.BTN_SETSUBI_DATA_TORIKOMI_TOP
                 ));
                 inactiveIdList.addAll(Arrays.asList(
                         GXHDO101B041Const.BTN_KARI_TOUROKU_TOP,
@@ -867,7 +927,8 @@ public class GXHDO101B041 implements IFormLogic {
                         GXHDO101B041Const.BTN_RYOHIN_KEISAN_TOP,
                         GXHDO101B041Const.BTN_BUDOMARI_KEISAN_TOP,
                         GXHDO101B041Const.BTN_NETSUSYORI_KEISAN_TOP,
-                        GXHDO101B041Const.BTN_HOSEIRITSU_KEISAN_TOP
+                        GXHDO101B041Const.BTN_HOSEIRITSU_KEISAN_TOP,
+                        GXHDO101B041Const.BTN_SETSUBI_DATA_TORIKOMI_TOP
                 ));
                 inactiveIdList.addAll(Arrays.asList(
                         GXHDO101B041Const.BTN_UPDATE_TOP,
@@ -1934,7 +1995,7 @@ public class GXHDO101B041 implements IFormLogic {
      */
     private Map loadFxhdd03RevInfo(QueryRunner queryRunnerDoc, String kojyo, String lotNo,
             String edaban, int jissekino, String formId) throws SQLException {
-        // 設計データの取得
+        // 品質DB登録実績データの取得
         String sql = "SELECT rev, jotai_flg "
                 + "FROM fxhdd03 "
                 + "WHERE kojyo = ? AND lotno = ? "
@@ -1965,7 +2026,7 @@ public class GXHDO101B041 implements IFormLogic {
      */
     private Map loadFxhdd03RevInfoWithLock(QueryRunner queryRunnerDoc, Connection conDoc, String kojyo, String lotNo,
             String edaban, int jissekino, String formId) throws SQLException {
-        // 設計データの取得
+        // 品質DB登録実績データの取得
         String sql = "SELECT rev, jotai_flg "
                 + "FROM fxhdd03 "
                 + "WHERE kojyo = ? AND lotno = ? "
@@ -1998,8 +2059,8 @@ public class GXHDO101B041 implements IFormLogic {
     private BigDecimal getNewRev(QueryRunner queryRunnerDoc, Connection conDoc, String kojyo, String lotNo,
             String edaban, int jissekino, String formId) throws SQLException {
         BigDecimal newRev = BigDecimal.ONE;
-        // 設計データの取得
-        String sql = "SELECT MAX(rev) AS rev "
+        // 品質DB登録実績データの取得
+        String sql = "SELECT rev "
                 + "FROM fxhdd03 "
                 + "WHERE kojyo = ? AND lotno = ? "
                 + "AND edaban = ? AND jissekino = ? AND gamen_id = ? ";
@@ -3746,12 +3807,6 @@ public class GXHDO101B041 implements IFormLogic {
         try {
 
             FXHDD01 itemBudomari = getItemRow(processData.getItemListEx(), GXHDO101B041Const.SET_BUDOMARI); //歩留まり
-
-            // 歩留まりに値が入力されている場合、リターン
-            if (!StringUtil.isEmpty(itemBudomari.getValue())) {
-                return;
-            }
-
             FXHDD01 itemOkuriRyohinsu = getItemRow(processData.getItemList(), GXHDO101B041Const.SEIHIN_OKURI_RYOHINSU); //送り良品数
             FXHDD01 itemRyohinkosu = getItemRow(processData.getItemListEx(), GXHDO101B041Const.SET_RYOUHIN_KOSU); //良品個数
 
@@ -3794,7 +3849,7 @@ public class GXHDO101B041 implements IFormLogic {
             BigDecimal juryo3 = new BigDecimal(StringUtil.emptyToZero(getItemData(processData.getItemListEx(), GXHDO101B041Const.SET_JURYO3, null))); //重量3
             BigDecimal juryo4 = new BigDecimal(StringUtil.emptyToZero(getItemData(processData.getItemListEx(), GXHDO101B041Const.SET_JURYO4, null))); //重量4
 
-            // 重量の値のいずれかが0以下の場合"0"をセットしてリターン
+            // 重量の値のいずれかが0以下の場合リターン
             if (0 <= BigDecimal.ZERO.compareTo(juryo1) || 0 <= BigDecimal.ZERO.compareTo(juryo2)
                     || 0 <= BigDecimal.ZERO.compareTo(juryo3) || 0 <= BigDecimal.ZERO.compareTo(juryo4)) {
                 return;
@@ -5415,6 +5470,74 @@ public class GXHDO101B041 implements IFormLogic {
         }
         //処理なし
         return returnValue;
+
+    }
+    
+    /**
+     * [電気特性設備]から、ﾃﾞｰﾀを取得
+     *
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param lotNo(14桁) ﾛｯﾄNo(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private List<FXHDD07> loadFXHDD07(QueryRunner queryRunnerDoc, String lotNo) throws SQLException {
+
+        String sql = "SELECT kojyo,lotno,edaban,gouki,irdenatu1,irhanteiti1,irjudenjikan1,irdenatu2,irhanteiti2,"
+                + "irjudenjikan2,rdcrange1,rdchantei1,rdcrange2,rdchantei2,toroku_date,deleteflag "
+                + "FROM fxhdd07 "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND deleteflag = ? ";
+        List<Object> params = new ArrayList<>();
+        params.add(lotNo.substring(0, 3));
+        params.add(lotNo.substring(3, 11));
+        params.add(lotNo.substring(11, 14));
+        params.add(0);
+
+        Map<String, String> mapping = new HashMap<>();
+        mapping.put("kojyo", "kojyo"); //工場ｺｰﾄﾞ
+        mapping.put("lotno", "lotno"); //ﾛｯﾄNo
+        mapping.put("edaban", "edaban"); //枝番
+        mapping.put("gouki", "gouki"); //号機
+        mapping.put("irdenatu1", "irdenatu1"); //耐電圧設定条件 ＩＲ① 電圧
+        mapping.put("irhanteiti1", "irhanteiti1"); //耐電圧設定条件 ＩＲ① 判定値
+        mapping.put("irjudenjikan1", "irjudenjikan1"); //耐電圧設定条件 ＩＲ① 充電時間
+        mapping.put("irdenatu2", "irdenatu2"); //耐電圧設定条件 ＩＲ② 電圧
+        mapping.put("irhanteiti2", "irhanteiti2"); //耐電圧設定条件 ＩＲ② 判定値
+        mapping.put("irjudenjikan2", "irjudenjikan2"); //耐電圧設定条件 ＩＲ② 充電時間
+        mapping.put("rdcrange1", "rdcrange1"); //RDC1 ﾚﾝｼﾞ
+        mapping.put("rdchantei1", "rdchantei1"); //RDC1 判定値
+        mapping.put("rdcrange2", "rdcrange2"); //RDC2 ﾚﾝｼﾞ
+        mapping.put("rdchantei2", "rdchantei2"); //RDC2 判定値
+        mapping.put("toroku_date", "torokuDate"); //登録日時
+        mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
+
+        BeanProcessor beanProcessor = new BeanProcessor(mapping);
+        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+        ResultSetHandler<List<FXHDD07>> beanHandler = new BeanListHandler<>(FXHDD07.class, rowProcessor);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerDoc.query(sql, beanHandler, params.toArray());
+    }
+
+    /**
+     * [電気特性設備]の値を項目にセット
+     *
+     * @param processData 処理制御データ
+     * @param fxhdd07 電気特性設備データ
+     */
+    private void setSetsubiData(ProcessData processData, FXHDD07 fxhdd07) {
+        //耐電圧設定条件						
+        setItemDataEx(processData, GXHDO101B041Const.TAIDEN_DENATSU1, StringUtil.nullToBlank(fxhdd07.getIrdenatu1())); //耐電圧設定条件 IR① 電圧
+        setItemDataEx(processData, GXHDO101B041Const.TAIDEN_HANTEICHI1, StringUtil.nullToBlank(fxhdd07.getIrhanteiti1())); //耐電圧設定条件 IR① 判定値
+        setItemDataEx(processData, GXHDO101B041Const.TAIDEN_JUDEN_TIME1, StringUtil.nullToBlank(fxhdd07.getIrjudenjikan1())); //耐電圧設定条件 IR① 充電時間
+        setItemDataEx(processData, GXHDO101B041Const.TAIDEN_DENATSU2, StringUtil.nullToBlank(fxhdd07.getIrdenatu2())); //耐電圧設定条件 IR② 電圧
+        setItemDataEx(processData, GXHDO101B041Const.TAIDEN_HANTEICHI2, StringUtil.nullToBlank(fxhdd07.getIrhanteiti2())); //耐電圧設定条件 IR② 判定値
+        setItemDataEx(processData, GXHDO101B041Const.TAIDEN_JUDEN_TIME2, StringUtil.nullToBlank(fxhdd07.getIrjudenjikan2())); //耐電圧設定条件 IR② 充電時間
+        setItemDataEx(processData, GXHDO101B041Const.TAIDEN_RDC1_RENJI, StringUtil.nullToBlank(fxhdd07.getRdcrange1())); //RDC1 ﾚﾝｼﾞ
+        setItemDataEx(processData, GXHDO101B041Const.TAIDEN_RDC1HANTEICHI, StringUtil.nullToBlank(fxhdd07.getRdchantei1())); //RDC1 判定値
+        setItemDataEx(processData, GXHDO101B041Const.TAIDEN_RDC2_RENJI, StringUtil.nullToBlank(fxhdd07.getRdcrange2())); //RDC2 ﾚﾝｼﾞ
+        setItemDataEx(processData, GXHDO101B041Const.TAIDEN_RDC2HANTEICHI, StringUtil.nullToBlank(fxhdd07.getRdchantei2())); //RDC2 判定値
+
 
     }
 }

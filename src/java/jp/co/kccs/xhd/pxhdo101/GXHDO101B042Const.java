@@ -952,6 +952,11 @@ public class GXHDO101B042Const {
      * 補正率計算(画面上ボタン)
      */
     public static final String BTN_HOSEIRITSU_KEISAN_TOP = "sr_denkitokuseiesi_hoseiritsu_keisan_42_Top";
+    
+    /**
+     * 設備ﾃﾞｰﾀ取込(画面上ボタン)
+     */
+    public static final String BTN_SETSUBI_DATA_TORIKOMI_TOP = "sr_denkitokuseiesi_setsubi_data_torikomi_42_Top";
 
     /**
      * ユーザー認証パラメータ(修正)

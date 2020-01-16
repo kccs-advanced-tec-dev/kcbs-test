@@ -33,6 +33,7 @@ import javax.sql.DataSource;
 import jp.co.kccs.xhd.SelectParam;
 import jp.co.kccs.xhd.common.ColumnInfoParser;
 import jp.co.kccs.xhd.common.ColumnInformation;
+import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.excel.ExcelExporter;
 import jp.co.kccs.xhd.model.GXHDO201B040Model;
 import jp.co.kccs.xhd.util.DBUtil;
@@ -40,6 +41,7 @@ import jp.co.kccs.xhd.util.DateUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
 import jp.co.kccs.xhd.util.StringUtil;
+import jp.co.kccs.xhd.util.SubFormUtil;
 import jp.co.kccs.xhd.util.ValidateUtil;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.BeanProcessor;
@@ -126,7 +128,12 @@ public class GXHDO201B040 implements Serializable {
     /** 検索条件：終了時刻(TO) */
     private String senbetuEndTimeT = "";
     //表示可能ﾃﾞｰﾀ
-    private String possibleDate[];
+    private String possibleData[];
+    
+    /**
+     * メインデータの件数を保持
+     */
+    private String displayStyle = "";
     
     /**
      * コンストラクタ
@@ -335,6 +342,24 @@ public class GXHDO201B040 implements Serializable {
         this.senbetuEndTimeT = senbetuEndTimeT;
     }
     
+    /**
+     * メインデータの件数を保持
+     *
+     * @return the displayStyle
+     */
+    public String getDisplayStyle() {
+        return displayStyle;
+    }
+
+    /**
+     * メインデータの件数を保持
+     *
+     * @param displayStyle the displayStyle to set
+     */
+    public void setDisplayStyle(String displayStyle) {
+        this.displayStyle = displayStyle;
+    }
+    
 //</editor-fold>
     
     /**
@@ -386,29 +411,25 @@ public class GXHDO201B040 implements Serializable {
         if (fxhbm03Data7 == null || fxhbm03Data7.isEmpty()) {
             // ・ｴﾗｰｺｰﾄﾞ:XHD-000172
             // ・ｴﾗ-ﾒｯｾｰｼﾞ:電気特性履歴_表示可能ﾃﾞｰﾀﾊﾟﾗﾒｰﾀ取得ｴﾗｰ。ｼｽﾃﾑに連絡してください。
-            FacesMessage message
-                    = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000172"), null);
-            FacesContext.getCurrentInstance().addMessage(null, message);
+            // メッセージを画面に渡す
+            settingError();
             return;
         } else {
             for (Object data : fxhbm03Data7.values()) {
                 //取得したﾃﾞｰﾀが ALL の場合
                 if ("ALL".equals(fxhbm03Data7.get(data))) {
                     strfxhbm03List7 = StringUtil.nullToBlank(getMapData(fxhbm03Data7, "data"));
-                    possibleDate = strfxhbm03List7.split(",");
+                    possibleData = strfxhbm03List7.split(",");
                     //取得したﾃﾞｰﾀが NULL の場合、ｴﾗｰ。以降の処理は実行しない。
                 } else if (data == null || "".equals(data)) {
                     //・ｴﾗｰｺｰﾄﾞ:XHD-000172
                     //・ｴﾗ-ﾒｯｾｰｼﾞ:電気特性履歴_表示可能ﾃﾞｰﾀﾊﾟﾗﾒｰﾀ取得ｴﾗｰ。ｼｽﾃﾑに連絡してください。
-                    FacesMessage message
-                            = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000172"), null);
-                    FacesContext.getCurrentInstance().addMessage(null, message);
+                    settingError();
                     return;
-
                 } else {
                     //取得したﾃﾞｰﾀが ALL以外の場合
                     strfxhbm03List7 = StringUtil.nullToBlank(getMapData(fxhbm03Data7, "data"));
-                    possibleDate = strfxhbm03List7.split(",");
+                    possibleData = strfxhbm03List7.split(",");
                 }
             }
         }
@@ -417,6 +438,19 @@ public class GXHDO201B040 implements Serializable {
         // 画面クリア
         clear();
     }
+    
+    /**
+     * 設定エラー
+     */
+    private void settingError() {
+        List<String> messageList = new ArrayList<>();
+        messageList.add(MessageUtil.getMessage("XHD-000172"));
+        displayStyle = "display:none;";
+        InitMessage beanInitMessage = (InitMessage) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_INIT_MESSAGE);
+        beanInitMessage.setInitMessageList(messageList);
+        RequestContext.getCurrentInstance().execute("PF('W_dlg_initMessage').show();");
+    }
+    
     /**
      * Excel保存ボタン非活性制御
      * @return 一覧データが表示しない場合true
@@ -530,7 +564,7 @@ public class GXHDO201B040 implements Serializable {
             return;
         }       
         
-        if (possibleDate == null) {
+        if (possibleData == null) {
             return;
         }
         // 一覧表示件数を取得
@@ -579,7 +613,8 @@ public class GXHDO201B040 implements Serializable {
      */
     public long selectListDataCount() {
         long count = 0;
-        List<String> dataList = new ArrayList<>(Arrays.asList(possibleDate));
+        //検査場所データリスト
+        List<String> kensaBasyoDataList = new ArrayList<>(Arrays.asList(possibleData));
         
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
@@ -590,10 +625,10 @@ public class GXHDO201B040 implements Serializable {
                     + "AND   (? IS NULL OR EDABAN = ?) "
                     + "AND   (? IS NULL OR KCPNO LIKE ? ESCAPE '\\\\') ";
 
-            for (String data : dataList) {
+            for (String data : kensaBasyoDataList) {
                 if (!StringUtil.isEmpty(data) && !"ALL".equals(data)) {
                     sql += " AND ";
-                    sql += DBUtil.getInConditionPreparedStatement("kensabasyo", dataList.size());
+                    sql += DBUtil.getInConditionPreparedStatement("kensabasyo", kensaBasyoDataList.size());
                 }
             }
 
@@ -624,7 +659,8 @@ public class GXHDO201B040 implements Serializable {
     public void selectListData() {
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
-            List<String> dataList = new ArrayList<>(Arrays.asList(possibleDate));  
+            //検査場所データリスト
+            List<String> kensaBasyoDataList = new ArrayList<>(Arrays.asList(possibleData));  
             String sql = "SELECT CONCAT(IFNULL(KOJYO, ''), IFNULL(LOTNO, ''), IFNULL(EDABAN, '')) AS LOTNO"
                     + ", kaisuu "
                     + ", kcpno "
@@ -846,10 +882,10 @@ public class GXHDO201B040 implements Serializable {
                     + " AND   (? IS NULL OR LOTNO = ?) "
                     + " AND   (? IS NULL OR EDABAN = ?) "
                     + " AND   (? IS NULL OR KCPNO LIKE ? ESCAPE '\\\\') ";
-            for (String data : dataList) {
+            for (String data : kensaBasyoDataList) {
                 if (!StringUtil.isEmpty(data) && !"ALL".equals(data)) {
                     sql += " AND ";
-                    sql += DBUtil.getInConditionPreparedStatement("kensabasyo", dataList.size());
+                    sql += DBUtil.getInConditionPreparedStatement("kensabasyo", kensaBasyoDataList.size());
                 }
             }
             sql += " AND   (? IS NULL OR SENBETUKAISINITIJI >= ?) "
@@ -1185,7 +1221,8 @@ public class GXHDO201B040 implements Serializable {
      */
     private List<Object> createSearchParam() {
         // パラメータ設定
-        List<String> dataList= new ArrayList<>(Arrays.asList(possibleDate));
+        //検査場所データリスト
+        List<String> kensaBasyoDataList= new ArrayList<>(Arrays.asList(possibleData));
         String paramKojo = null;
         String paramLotNo = null;
         String paramEdaban = null;
@@ -1220,9 +1257,9 @@ public class GXHDO201B040 implements Serializable {
         params.addAll(Arrays.asList(paramLotNo, paramLotNo));
         params.addAll(Arrays.asList(paramEdaban, paramEdaban));
         params.addAll(Arrays.asList(paramKcpno, paramKcpno));
-        for (String data : dataList) {
+        for (String data : kensaBasyoDataList) {
             if (!StringUtil.isEmpty(data) && !"ALL".equals(data)) {
-                params.addAll(dataList);
+                params.addAll(kensaBasyoDataList);
             }
         }
         params.addAll(Arrays.asList(paramSenbetuStartDateF, paramSenbetuStartDateF));

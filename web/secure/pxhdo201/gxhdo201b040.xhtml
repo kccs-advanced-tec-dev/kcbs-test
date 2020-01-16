@@ -19,6 +19,25 @@
         <script src="#{request.contextPath}/resources/bootstrap/js/bootstrap.min.js" />
         <h:outputScript library="primefaces" name="jquery/jquery.js" />
         <script src="#{request.contextPath}/resources/js/growl.js"></script>
+        <script type="text/javascript">
+            //<![CDATA[
+            var pointY;
+            function subFormOpen() {
+                pointY = $(window).scrollTop();
+                document.getElementById("mainForm").style.setProperty("display", "none");
+                document.getElementById("mainForm").style.setProperty("position", "fixed");
+                document.getElementById("mainForm").style.setProperty("Top", -(pointY) + 54 + "px");
+                document.getElementById("mainForm").style.removeProperty("display");
+            }
+            function subFormClose() {
+                document.getElementById("mainForm").style.setProperty("display", "none");
+                document.getElementById("mainForm").style.removeProperty("position");
+                document.getElementById("mainForm").style.removeProperty("Top");
+                document.getElementById("mainForm").style.removeProperty("display");
+                $(window).scrollTop(pointY);
+            }
+            //]]>
+        </script>
     </h:head>
     <h:body style="padding-top:30px;">
         <f:metadata>
@@ -40,7 +59,10 @@
             </span>
         </nav>
         <br/>
-        <h:form id="mainform" onkeypress="if (event.keyCode === 13) { return false; }">
+        <h:form id="form" onkeypress="if (event.keyCode === 13) {
+                    return false;
+                }">
+            <div id="mainForm" style="width: 100%;">
             <p:growl id="growlMessage" showDetail="false" sticky="true"  escape="false"/>
             <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
                 <f:facet name="message">
@@ -57,7 +79,7 @@
             <div id="loadinggif">
                 <img src="#{request.contextPath}/resources/gif/gif-load.gif"/>
             </div>
-            <p:panel id="searchpanel" style="border:none;font-size:0.8em; ">
+            <p:panel id="searchpanel" style="border:none;font-size:0.8em;#{gXHDO201B040.displayStyle}">
                 <table>
                     <tr>
                         <td>
@@ -145,7 +167,7 @@
                     </tr>
                 </table>
             </p:panel>
-            <p:panel id="buttonpanel" style="border:none;margin-top:-10px;">
+            <p:panel id="buttonpanel" style="border:none;margin-top:-10px;#{gXHDO201B040.displayStyle}">
                 <p:commandButton id="btnSearch" style="width:100px;height:25px;font-size:0.7em;margin-left:0px;text-align:center;"
                                 value="検索" 
                                 actionListener="#{gXHDO201B040.checkInputAndSearch()}"
@@ -165,7 +187,7 @@
                                 process="@this"
                                 ajax="false"/>
             </p:panel>
-            <div style="margin-top:-15px;">
+            <div style="margin-top:-15px;#{gXHDO201B040.displayStyle}">
                 <p:dataTable id="idDataTable" var="item" style="font-size:0.8em;margin-top:20px;" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap"
                              value="#{gXHDO201B040.listData}" emptyMessage="" paginator="true" paginatorPosition="top" rows="#{gXHDO201B040.getPagenatorCount()}">
                     <p:column id="lotno" headerText="ﾛｯﾄNo">
@@ -206,7 +228,7 @@
                     </p:column>
                     <p:column id="ukeiresoujyuryou" headerText="受入れ総重量" styleClass="number">
                         <p:outputLabel value="#{item.ukeiresoujyuryou}">
-                            <f:convertNumber pattern="###,##0.00"/>
+                            <f:convertNumber pattern="#####0.00"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="gdyakitukenitiji" headerText="外部電極焼付日時">
@@ -378,22 +400,22 @@
                     </p:column>
                     <p:column id="hoseiyoutippuyoryou" headerText="補正用ﾁｯﾌﾟ容量" styleClass="number">
                         <p:outputLabel value="#{item.hoseiyoutippuyoryou}">
-                            <f:convertNumber pattern="#,##0.00000"/>
+                            <f:convertNumber pattern="###0.00000"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="hoseiyoutipputan" headerText="補正用ﾁｯﾌﾟTanδ" styleClass="number">
                         <p:outputLabel value="#{item.hoseiyoutipputan}">
-                            <f:convertNumber pattern="#,##0.00000"/>
+                            <f:convertNumber pattern="###0.00000"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="hoseimae" headerText="補正前" styleClass="number">
                         <p:outputLabel value="#{item.hoseimae}">
-                            <f:convertNumber pattern="#,##0.00000"/>
+                            <f:convertNumber pattern="###0.00000"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="hoseigo" headerText="補正後" styleClass="number">
                         <p:outputLabel value="#{item.hoseigo}">
-                            <f:convertNumber pattern="#,##0.00000"/>
+                            <f:convertNumber pattern="###0.00000"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="hoseiritu" headerText="補正率" styleClass="number">
@@ -1106,8 +1128,11 @@
                     <p:column id="setubikubun" headerText="設備区分">
                         <p:outputLabel value="#{item.setubikubun}"/>
                     </p:column>
-
                 </p:dataTable>
+            </div>            
+            </div>
+            <div>
+                <ui:include src="/secure/common/initMessage.xhtml"/>
             </div>
         </h:form>
     </h:body>

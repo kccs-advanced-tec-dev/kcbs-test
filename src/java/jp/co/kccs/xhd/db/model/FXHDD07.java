@@ -237,7 +237,26 @@ public class FXHDD07 {
      * 耐電圧設定条件 ＩＲ⑧ 充電時間
      */
     private Integer irjudenjikan8;
+    
+    /**
+     * RDC1 ﾚﾝｼﾞ
+     */
+    private BigDecimal rdcrange1;
 
+    /**
+     * RDC1 判定値
+     */
+    private BigDecimal rdchantei1;
+    
+    /**
+     * RDC2 ﾚﾝｼﾞ
+     */
+    private BigDecimal rdcrange2;
+    
+    /**
+     * RDC2 判定値
+     */
+    private BigDecimal rdchantei2;
     /**
      * BIN1 ｶｳﾝﾀｰ数
      */
@@ -979,6 +998,70 @@ public class FXHDD07 {
      */
     public void setIrjudenjikan8(Integer irjudenjikan8) {
         this.irjudenjikan8 = irjudenjikan8;
+    }
+    
+    /**
+     * RDC1 ﾚﾝｼﾞ
+     * @return the rdcrange1
+     */
+    public BigDecimal getRdcrange1() {
+        return rdcrange1;
+    }
+
+    /**
+     * RDC1 ﾚﾝｼﾞ
+     * @param rdcrange1 the rdcrange1 to set
+     */
+    public void setRdcrange1(BigDecimal rdcrange1) {
+        this.rdcrange1 = rdcrange1;
+    }
+
+    /**
+     * RDC1 判定値
+     * @return the rdchantei1
+     */
+    public BigDecimal getRdchantei1() {
+        return rdchantei1;
+    }
+
+    /**
+     * RDC1 判定値
+     * @param rdchantei1 the rdchantei1 to set
+     */
+    public void setRdchantei1(BigDecimal rdchantei1) {
+        this.rdchantei1 = rdchantei1;
+    }
+
+    /**
+     * RDC2 ﾚﾝｼﾞ
+     * @return the rdcrange2
+     */
+    public BigDecimal getRdcrange2() {
+        return rdcrange2;
+    }
+
+    /**
+     * RDC2 ﾚﾝｼﾞ
+     * @param rdcrange2 the rdcrange2 to set
+     */
+    public void setRdcrange2(BigDecimal rdcrange2) {
+        this.rdcrange2 = rdcrange2;
+    }
+
+    /**
+     * RDC2 判定値
+     * @return the rdchantei2
+     */
+    public BigDecimal getRdchantei2() {
+        return rdchantei2;
+    }
+
+    /**
+     * RDC2 判定値
+     * @param rdchantei2 the rdchantei2 to set
+     */
+    public void setRdchantei2(BigDecimal rdchantei2) {
+        this.rdchantei2 = rdchantei2;
     }
 
     /**
