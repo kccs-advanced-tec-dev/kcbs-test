@@ -228,7 +228,7 @@
                     </p:column>
                     <p:column id="ukeiresoujyuryou" headerText="受入れ総重量" styleClass="number">
                         <p:outputLabel value="#{item.ukeiresoujyuryou}">
-                            <f:convertNumber pattern="#####0.00"/>
+                            <f:convertNumber pattern="###,##0.00"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="gdyakitukenitiji" headerText="外部電極焼付日時">
@@ -400,22 +400,22 @@
                     </p:column>
                     <p:column id="hoseiyoutippuyoryou" headerText="補正用ﾁｯﾌﾟ容量" styleClass="number">
                         <p:outputLabel value="#{item.hoseiyoutippuyoryou}">
-                            <f:convertNumber pattern="###0.00000"/>
+                            <f:convertNumber pattern="#,##0.00000"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="hoseiyoutipputan" headerText="補正用ﾁｯﾌﾟTanδ" styleClass="number">
                         <p:outputLabel value="#{item.hoseiyoutipputan}">
-                            <f:convertNumber pattern="###0.00000"/>
+                            <f:convertNumber pattern="#,##0.00000"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="hoseimae" headerText="補正前" styleClass="number">
                         <p:outputLabel value="#{item.hoseimae}">
-                            <f:convertNumber pattern="###0.00000"/>
+                            <f:convertNumber pattern="#,##0.00000"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="hoseigo" headerText="補正後" styleClass="number">
                         <p:outputLabel value="#{item.hoseigo}">
-                            <f:convertNumber pattern="###0.00000"/>
+                            <f:convertNumber pattern="#,##0.00000"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="hoseiritu" headerText="補正率" styleClass="number">
