@@ -124,9 +124,14 @@ public class FXHDD07 {
     private BigDecimal irdenatu1;
 
     /**
+     * 耐電圧設定条件 ＩＲ① 判定値(低)
+     */
+    private BigDecimal irhanteiti1Low;
+
+    /**
      * 耐電圧設定条件 ＩＲ① 判定値
      */
-    private String irhanteiti1;
+    private BigDecimal irhanteiti1;
 
     /**
      * 耐電圧設定条件 ＩＲ① 充電時間
@@ -139,9 +144,14 @@ public class FXHDD07 {
     private BigDecimal irdenatu2;
 
     /**
+     * 耐電圧設定条件 ＩＲ② 判定値(低)
+     */
+    private BigDecimal irhanteiti2Low;
+
+    /**
      * 耐電圧設定条件 ＩＲ② 判定値
      */
-    private String irhanteiti2;
+    private BigDecimal irhanteiti2;
 
     /**
      * 耐電圧設定条件 ＩＲ② 充電時間
@@ -154,9 +164,14 @@ public class FXHDD07 {
     private BigDecimal irdenatu3;
 
     /**
+     * 耐電圧設定条件 ＩＲ③ 判定値(低)
+     */
+    private BigDecimal irhanteiti3Low;
+
+    /**
      * 耐電圧設定条件 ＩＲ③ 判定値
      */
-    private String irhanteiti3;
+    private BigDecimal irhanteiti3;
 
     /**
      * 耐電圧設定条件 ＩＲ③ 充電時間
@@ -169,9 +184,14 @@ public class FXHDD07 {
     private BigDecimal irdenatu4;
 
     /**
+     * 耐電圧設定条件 ＩＲ④ 判定値(低)
+     */
+    private BigDecimal irhanteiti4Low;
+
+    /**
      * 耐電圧設定条件 ＩＲ④ 判定値
      */
-    private String irhanteiti4;
+    private BigDecimal irhanteiti4;
 
     /**
      * 耐電圧設定条件 ＩＲ④ 充電時間
@@ -184,9 +204,14 @@ public class FXHDD07 {
     private BigDecimal irdenatu5;
 
     /**
+     * 耐電圧設定条件 ＩＲ⑤ 判定値(低)
+     */
+    private BigDecimal irhanteiti5Low;
+
+    /**
      * 耐電圧設定条件 ＩＲ⑤ 判定値
      */
-    private String irhanteiti5;
+    private BigDecimal irhanteiti5;
 
     /**
      * 耐電圧設定条件 ＩＲ⑤ 充電時間
@@ -199,9 +224,14 @@ public class FXHDD07 {
     private BigDecimal irdenatu6;
 
     /**
+     * 耐電圧設定条件 ＩＲ⑥ 判定値(低)
+     */
+    private BigDecimal irhanteiti6Low;
+
+    /**
      * 耐電圧設定条件 ＩＲ⑥ 判定値
      */
-    private String irhanteiti6;
+    private BigDecimal irhanteiti6;
 
     /**
      * 耐電圧設定条件 ＩＲ⑥ 充電時間
@@ -214,9 +244,14 @@ public class FXHDD07 {
     private BigDecimal irdenatu7;
 
     /**
+     * 耐電圧設定条件 ＩＲ⑦ 判定値(低)
+     */
+    private BigDecimal irhanteiti7Low;
+
+    /**
      * 耐電圧設定条件 ＩＲ⑦ 判定値
      */
-    private String irhanteiti7;
+    private BigDecimal irhanteiti7;
 
     /**
      * 耐電圧設定条件 ＩＲ⑦ 充電時間
@@ -229,9 +264,14 @@ public class FXHDD07 {
     private BigDecimal irdenatu8;
 
     /**
+     * 耐電圧設定条件 ＩＲ⑧ 判定値(低)
+     */
+    private BigDecimal irhanteiti8Low;
+
+    /**
      * 耐電圧設定条件 ＩＲ⑧ 判定値
      */
-    private String irhanteiti8;
+    private BigDecimal irhanteiti8;
 
     /**
      * 耐電圧設定条件 ＩＲ⑧ 充電時間
@@ -328,7 +368,7 @@ public class FXHDD07 {
     private Integer deleteflag;
     
     
-        /**
+    /**
      * 工場ｺｰﾄﾞ
      * @return the kojyo
      */
@@ -633,10 +673,26 @@ public class FXHDD07 {
     }
 
     /**
+     * 耐電圧設定条件 ＩＲ① 判定値(低)
+     * @return the irhanteiti1Low
+     */
+    public BigDecimal getIrhanteiti1Low() {
+        return irhanteiti1Low;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ① 判定値(低)
+     * @param irhanteiti1Low the irhanteiti1Low to set
+     */
+    public void setIrhanteiti1Low(BigDecimal irhanteiti1Low) {
+        this.irhanteiti1Low = irhanteiti1Low;
+    }
+
+    /**
      * 耐電圧設定条件 ＩＲ① 判定値
      * @return the irhanteiti1
      */
-    public String getIrhanteiti1() {
+    public BigDecimal getIrhanteiti1() {
         return irhanteiti1;
     }
 
@@ -644,7 +700,7 @@ public class FXHDD07 {
      * 耐電圧設定条件 ＩＲ① 判定値
      * @param irhanteiti1 the irhanteiti1 to set
      */
-    public void setIrhanteiti1(String irhanteiti1) {
+    public void setIrhanteiti1(BigDecimal irhanteiti1) {
         this.irhanteiti1 = irhanteiti1;
     }
 
@@ -681,10 +737,26 @@ public class FXHDD07 {
     }
 
     /**
+     * 耐電圧設定条件 ＩＲ② 判定値(低)
+     * @return the irhanteiti2Low
+     */
+    public BigDecimal getIrhanteiti2Low() {
+        return irhanteiti2Low;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ② 判定値(低)
+     * @param irhanteiti2Low the irhanteiti2Low to set
+     */
+    public void setIrhanteiti2Low(BigDecimal irhanteiti2Low) {
+        this.irhanteiti2Low = irhanteiti2Low;
+    }
+
+    /**
      * 耐電圧設定条件 ＩＲ② 判定値
      * @return the irhanteiti2
      */
-    public String getIrhanteiti2() {
+    public BigDecimal getIrhanteiti2() {
         return irhanteiti2;
     }
 
@@ -692,7 +764,7 @@ public class FXHDD07 {
      * 耐電圧設定条件 ＩＲ② 判定値
      * @param irhanteiti2 the irhanteiti2 to set
      */
-    public void setIrhanteiti2(String irhanteiti2) {
+    public void setIrhanteiti2(BigDecimal irhanteiti2) {
         this.irhanteiti2 = irhanteiti2;
     }
 
@@ -732,15 +804,31 @@ public class FXHDD07 {
      * 耐電圧設定条件 ＩＲ③ 判定値
      * @return the irhanteiti3
      */
-    public String getIrhanteiti3() {
+    public BigDecimal getIrhanteiti3() {
         return irhanteiti3;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ③ 判定値(低)
+     * @return the irhanteiti3Low
+     */
+    public BigDecimal getIrhanteiti3Low() {
+        return irhanteiti3Low;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ③ 判定値(低)
+     * @param irhanteiti3Low the irhanteiti3Low to set
+     */
+    public void setIrhanteiti3Low(BigDecimal irhanteiti3Low) {
+        this.irhanteiti3Low = irhanteiti3Low;
     }
 
     /**
      * 耐電圧設定条件 ＩＲ③ 判定値
      * @param irhanteiti3 the irhanteiti3 to set
      */
-    public void setIrhanteiti3(String irhanteiti3) {
+    public void setIrhanteiti3(BigDecimal irhanteiti3) {
         this.irhanteiti3 = irhanteiti3;
     }
 
@@ -777,10 +865,26 @@ public class FXHDD07 {
     }
 
     /**
+     * 耐電圧設定条件 ＩＲ④ 判定値(低)
+     * @return the irhanteiti4Low
+     */
+    public BigDecimal getIrhanteiti4Low() {
+        return irhanteiti4Low;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ④ 判定値(低)
+     * @param irhanteiti4Low the irhanteiti4Low to set
+     */
+    public void setIrhanteiti4Low(BigDecimal irhanteiti4Low) {
+        this.irhanteiti4Low = irhanteiti4Low;
+    }
+
+    /**
      * 耐電圧設定条件 ＩＲ④ 判定値
      * @return the irhanteiti4
      */
-    public String getIrhanteiti4() {
+    public BigDecimal getIrhanteiti4() {
         return irhanteiti4;
     }
 
@@ -788,7 +892,7 @@ public class FXHDD07 {
      * 耐電圧設定条件 ＩＲ④ 判定値
      * @param irhanteiti4 the irhanteiti4 to set
      */
-    public void setIrhanteiti4(String irhanteiti4) {
+    public void setIrhanteiti4(BigDecimal irhanteiti4) {
         this.irhanteiti4 = irhanteiti4;
     }
 
@@ -825,10 +929,26 @@ public class FXHDD07 {
     }
 
     /**
+     * 耐電圧設定条件 ＩＲ⑤ 判定値(低)
+     * @return the irhanteiti5Low
+     */
+    public BigDecimal getIrhanteiti5Low() {
+        return irhanteiti5Low;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑤ 判定値(低)
+     * @param irhanteiti5Low the irhanteiti5Low to set
+     */
+    public void setIrhanteiti5Low(BigDecimal irhanteiti5Low) {
+        this.irhanteiti5Low = irhanteiti5Low;
+    }
+
+    /**
      * 耐電圧設定条件 ＩＲ⑤ 判定値
      * @return the irhanteiti5
      */
-    public String getIrhanteiti5() {
+    public BigDecimal getIrhanteiti5() {
         return irhanteiti5;
     }
 
@@ -836,7 +956,7 @@ public class FXHDD07 {
      * 耐電圧設定条件 ＩＲ⑤ 判定値
      * @param irhanteiti5 the irhanteiti5 to set
      */
-    public void setIrhanteiti5(String irhanteiti5) {
+    public void setIrhanteiti5(BigDecimal irhanteiti5) {
         this.irhanteiti5 = irhanteiti5;
     }
 
@@ -873,10 +993,26 @@ public class FXHDD07 {
     }
 
     /**
+     * 耐電圧設定条件 ＩＲ⑥ 判定値(低)
+     * @return the irhanteiti6Low
+     */
+    public BigDecimal getIrhanteiti6Low() {
+        return irhanteiti6Low;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑥ 判定値(低)
+     * @param irhanteiti6Low the irhanteiti6Low to set
+     */
+    public void setIrhanteiti6Low(BigDecimal irhanteiti6Low) {
+        this.irhanteiti6Low = irhanteiti6Low;
+    }
+
+    /**
      * 耐電圧設定条件 ＩＲ⑥ 判定値
      * @return the irhanteiti6
      */
-    public String getIrhanteiti6() {
+    public BigDecimal getIrhanteiti6() {
         return irhanteiti6;
     }
 
@@ -884,7 +1020,7 @@ public class FXHDD07 {
      * 耐電圧設定条件 ＩＲ⑥ 判定値
      * @param irhanteiti6 the irhanteiti6 to set
      */
-    public void setIrhanteiti6(String irhanteiti6) {
+    public void setIrhanteiti6(BigDecimal irhanteiti6) {
         this.irhanteiti6 = irhanteiti6;
     }
 
@@ -921,10 +1057,26 @@ public class FXHDD07 {
     }
 
     /**
+     * 耐電圧設定条件 ＩＲ⑦ 判定値(低)
+     * @return the irhanteiti7Low
+     */
+    public BigDecimal getIrhanteiti7Low() {
+        return irhanteiti7Low;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑦ 判定値(低)
+     * @param irhanteiti7Low the irhanteiti7Low to set
+     */
+    public void setIrhanteiti7Low(BigDecimal irhanteiti7Low) {
+        this.irhanteiti7Low = irhanteiti7Low;
+    }
+
+    /**
      * 耐電圧設定条件 ＩＲ⑦ 判定値
      * @return the irhanteiti7
      */
-    public String getIrhanteiti7() {
+    public BigDecimal getIrhanteiti7() {
         return irhanteiti7;
     }
 
@@ -932,7 +1084,7 @@ public class FXHDD07 {
      * 耐電圧設定条件 ＩＲ⑦ 判定値
      * @param irhanteiti7 the irhanteiti7 to set
      */
-    public void setIrhanteiti7(String irhanteiti7) {
+    public void setIrhanteiti7(BigDecimal irhanteiti7) {
         this.irhanteiti7 = irhanteiti7;
     }
 
@@ -969,10 +1121,26 @@ public class FXHDD07 {
     }
 
     /**
+     * 耐電圧設定条件 ＩＲ⑧ 判定値(低)
+     * @return the irhanteiti8Low
+     */
+    public BigDecimal getIrhanteiti8Low() {
+        return irhanteiti8Low;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑧ 判定値(低)
+     * @param irhanteiti8Low the irhanteiti8Low to set
+     */
+    public void setIrhanteiti8Low(BigDecimal irhanteiti8Low) {
+        this.irhanteiti8Low = irhanteiti8Low;
+    }
+
+    /**
      * 耐電圧設定条件 ＩＲ⑧ 判定値
      * @return the irhanteiti8
      */
-    public String getIrhanteiti8() {
+    public BigDecimal getIrhanteiti8() {
         return irhanteiti8;
     }
 
@@ -980,7 +1148,7 @@ public class FXHDD07 {
      * 耐電圧設定条件 ＩＲ⑧ 判定値
      * @param irhanteiti8 the irhanteiti8 to set
      */
-    public void setIrhanteiti8(String irhanteiti8) {
+    public void setIrhanteiti8(BigDecimal irhanteiti8) {
         this.irhanteiti8 = irhanteiti8;
     }
 
