@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.faces.application.FacesMessage;
@@ -524,12 +525,12 @@ public class GXHDO201B039 implements Serializable {
             ResourceBundle myParam = fc.getApplication().getResourceBundle(fc, "myParam");
 
             // Excel出力定義を取得
-            File file = new File(servletContext.getRealPath("/WEB-INF/classes/resources/json/GXHDO201B039.json")); 
+            File file = new File(servletContext.getRealPath("/WEB-INF/classes/resources/json/gxhdo201b039.json")); 
             List<ColumnInformation> list = (new ColumnInfoParser()).parseColumnJson(file);
 
             // 物理ファイルを生成
             excel = ExcelExporter.outputExcel(listData, list, myParam.getString("download_temp"), "外部電極・メッキ真空乾燥");
-
+            
             // ダウンロードファイル名
             String downloadFileName = "外部電極・メッキ真空乾燥_" + ((new SimpleDateFormat("yyyyMMddHHmmss")).format(new Date())) + ".xlsx";
             
