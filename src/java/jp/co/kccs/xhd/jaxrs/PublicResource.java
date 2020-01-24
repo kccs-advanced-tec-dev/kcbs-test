@@ -8,7 +8,11 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
@@ -23,6 +27,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import jp.co.kccs.xhd.util.DBUtil;
+import jp.co.kccs.xhd.util.ErrUtil;
+import org.apache.commons.dbutils.DbUtils;
+import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.dbutils.handlers.MapHandler;
 
 /**
  * ===============================================================================<br>
@@ -169,6 +178,156 @@ public class PublicResource {
         }
 
         return termNo + " ok";
+    }
+    
+    /**
+     * 設備データ登録処理
+     * 
+     * @param param 設備データ
+     * @return 結果
+     */
+    @POST
+    @Path("pxhdo411")
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response pxhdo411(FXHDD07Json param) {
+        QueryRunner queryRunner = new QueryRunner(dataSource);
+        Connection con = null;
+        
+        try {
+            java.sql.Date sqlNow = new java.sql.Date(System.currentTimeMillis());
+            java.util.Date utilDate = sqlNow;
+            java.sql.Date registDate = new java.sql.Date(utilDate.getTime());
+            
+            // トランザクション開始
+            con = DBUtil.transactionStart(queryRunner.getDataSource().getConnection());
+            
+            // データ検索
+            String sql = "SELECT MAX(deleteflag) AS deleteflag FROM FXHDD07 " 
+                       + "WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
+            List<Object> params = new ArrayList<>(Arrays.asList(param.getKojyo(), param.getLotno(), param.getEdaban()));
+            
+            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+            Map fxhdd07_delflag = queryRunner.query(sql, new MapHandler(), params.toArray());
+            
+            // 削除フラグ + 1 を取得
+            int deleteflag = 1;
+            if (null != fxhdd07_delflag && null != fxhdd07_delflag.get("deleteflag")) {
+                deleteflag = (int)fxhdd07_delflag.get("deleteflag") + 1;
+            }
+            
+            // 削除フラグ = 0 のデータが存在する場合はUPDATE
+            String sqlUpd = "UPDATE FXHDD07 SET koshin_date = ?, deleteflag = ? "
+                          + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND deleteflag = 0";
+            List<Object> paramsUpd = 
+                    new ArrayList<>(Arrays.asList(registDate, deleteflag, param.getKojyo(), param.getLotno(), param.getEdaban()));
+            
+            DBUtil.outputSQLLog(sqlUpd, paramsUpd.toArray(), LOGGER);
+            queryRunner.update(con, sqlUpd, paramsUpd.toArray());
+            
+            // データ登録
+            String sqlIns = "INSERT INTO FXHDD07 ("
+                          + "kojyo, lotno, edaban, gouki, bunruiairatu, cdcontactatu, ircontactatu, tan, sokuteisyuhasuu, sokuteidenatu, pcdenatu1, pcjudenjikan1, "
+                          + "pcdenatu2, pcjudenjikan2, pcdenatu3, pcjudenjikan3, pcdenatu4, pcjudenjikan4, irdenatu1, irhanteiti1_low, irhanteiti1, irjudenjikan1, "
+                          + "irdenatu2, irhanteiti2_low, irhanteiti2, irjudenjikan2, irdenatu3, irhanteiti3_low, irhanteiti3, irjudenjikan3, "
+                          + "irdenatu4, irhanteiti4_low, irhanteiti4, irjudenjikan4, irdenatu5, irhanteiti5_low, irhanteiti5, irjudenjikan5, " 
+                          + "irdenatu6, irhanteiti6_low, irhanteiti6, irjudenjikan6, irdenatu7, irhanteiti7_low, irhanteiti7, irjudenjikan7, "
+                          + "irdenatu8, irhanteiti8_low, irhanteiti8, irjudenjikan8, rdcrange1, rdchantei1, rdcrange2, rdchantei2, "
+                          + "bin1countersuu, bin2countersuu, bin3countersuu, bin4countersuu, bin5countersuu, bin6countersuu, bin7countersuu, "
+                          + "bin8countersuu, bin5setteiti, bin6setteiti, bin7setteiti, bin8setteiti, toroku_date, koshin_date, deleteflag"
+                          + ") VALUES ("
+                          + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+                          + ")";
+            
+            List<Object> paramIns = 
+                    new ArrayList<>(Arrays.asList(
+                            param.getKojyo()
+                            , param.getLotno()
+                            , param.getEdaban()
+                            , param.getGouki()
+                            , param.getBunruiairatu()
+                            , param.getCdcontactatu()
+                            , param.getIrcontactatu()
+                            , param.getTan()
+                            , param.getSokuteisyuhasuu()
+                            , param.getSokuteidenatu()
+                            , param.getPcdenatu1()
+                            , param.getPcjudenjikan1()
+                            , param.getPcdenatu2()
+                            , param.getPcjudenjikan2()
+                            , param.getPcdenatu3()
+                            , param.getPcjudenjikan3()
+                            , param.getPcdenatu4()
+                            , param.getPcjudenjikan4()
+                            , param.getIrdenatu1()
+                            , param.getIrhanteiti1_low()
+                            , param.getIrhanteiti1()
+                            , param.getIrjudenjikan1()
+                            , param.getIrdenatu2()
+                            , param.getIrhanteiti2_low()
+                            , param.getIrhanteiti2()
+                            , param.getIrjudenjikan2()
+                            , param.getIrdenatu3()
+                            , param.getIrhanteiti3_low()
+                            , param.getIrhanteiti3()
+                            , param.getIrjudenjikan3()
+                            , param.getIrdenatu4()
+                            , param.getIrhanteiti4_low()
+                            , param.getIrhanteiti4()
+                            , param.getIrjudenjikan4()
+                            , param.getIrdenatu5()
+                            , param.getIrhanteiti5_low()
+                            , param.getIrhanteiti5()
+                            , param.getIrjudenjikan5()
+                            , param.getIrdenatu6()
+                            , param.getIrhanteiti6_low()
+                            , param.getIrhanteiti6()
+                            , param.getIrjudenjikan6()
+                            , param.getIrdenatu7()
+                            , param.getIrhanteiti7_low()
+                            , param.getIrhanteiti7()
+                            , param.getIrjudenjikan7()
+                            , param.getIrdenatu8()
+                            , param.getIrhanteiti8_low()
+                            , param.getIrhanteiti8()
+                            , param.getIrjudenjikan8()
+                            , param.getRdcrange1()
+                            , param.getRdchantei1()
+                            , param.getRdcrange2()
+                            , param.getRdchantei2()
+                            , param.getBin1countersuu()
+                            , param.getBin2countersuu()
+                            , param.getBin3countersuu()
+                            , param.getBin4countersuu()
+                            , param.getBin5countersuu()
+                            , param.getBin6countersuu()
+                            , param.getBin7countersuu()
+                            , param.getBin8countersuu()
+                            , param.getBin5setteiti()
+                            , param.getBin6setteiti()
+                            , param.getBin7setteiti()
+                            , param.getBin8setteiti()
+                            , registDate
+                            , null
+                            , 0
+                    ));
+            
+            DBUtil.outputSQLLog(sqlIns, paramIns.toArray(), LOGGER);
+            queryRunner.update(con, sqlIns, paramIns.toArray());
+            
+            // commit
+            DbUtils.commitAndCloseQuietly(con);
+            
+            return Response.ok().build();
+            
+        } catch (SQLException e) {
+            ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
+            DBUtil.rollbackConnection(con, LOGGER);
+            return Response.serverError().build();
+        } catch (Exception e) {
+            ErrUtil.outputErrorLog("Exception発生", e, LOGGER);
+            DBUtil.rollbackConnection(con, LOGGER);
+            return Response.serverError().build();
+        }
     }
 
     /**
