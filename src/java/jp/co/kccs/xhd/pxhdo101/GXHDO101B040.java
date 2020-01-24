@@ -1442,12 +1442,6 @@ public class GXHDO101B040 implements IFormLogic {
         // 製品情報:確認者
         this.setItemData(processData, GXHDO101B040Const.SEIHIN_KAKUNINSHA, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_KAKUNINSHA, srDenkitokuseiesi));
 
-        // 製品情報:指定公差歩留まり1
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI1, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI1, srDenkitokuseiesi));
-
-        // 製品情報:指定公差歩留まり2
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI2, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI2, srDenkitokuseiesi));
-
         // 製品情報:ﾃｽﾄﾌﾟﾚｰﾄ管理No
         this.setItemData(processData, GXHDO101B040Const.SEIHIN_TEST_PLATE_KANRINO, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_TEST_PLATE_KANRINO, srDenkitokuseiesi));
 
@@ -1461,7 +1455,7 @@ public class GXHDO101B040 implements IFormLogic {
         this.setItemData(processData, GXHDO101B040Const.SEIHIN_SOKUTEI_DENATSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_SOKUTEI_DENATSU, srDenkitokuseiesi));
 
         // 製品情報:補正用ﾁｯﾌﾟ容量
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_HOSEIYOU_CHIP_YORYO, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_SOKUTEI_DENATSU, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B040Const.SEIHIN_HOSEIYOU_CHIP_YORYO, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_HOSEIYOU_CHIP_YORYO, srDenkitokuseiesi));
 
         // 製品情報:補正用ﾁｯﾌﾟTanδ
         this.setItemData(processData, GXHDO101B040Const.SEIHIN_HOSEIYOU_CHIP_TAN_DELTA, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_HOSEIYOU_CHIP_TAN_DELTA, srDenkitokuseiesi));
@@ -3469,8 +3463,8 @@ public class GXHDO101B040 implements IFormLogic {
 
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_KCPNO, srDenkitokuseiesi))); //KCPNO
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_TOKUISAKI, srDenkitokuseiesi))); //客先
-        params.add(DBUtil.stringToStringObjectDefaultNull(StringUtil.nullToBlank(processData.getHiddenDataMap().get("ownercode")))); //ｵｰﾅｰ
-        params.add(DBUtil.stringToStringObjectDefaultNull(StringUtil.nullToBlank(processData.getHiddenDataMap().get("lotkubuncode")))); // ﾛｯﾄ区分
+        params.add(DBUtil.stringToStringObject(StringUtil.nullToBlank(processData.getHiddenDataMap().get("ownercode")))); //ｵｰﾅｰ
+        params.add(DBUtil.stringToStringObject(StringUtil.nullToBlank(processData.getHiddenDataMap().get("lotkubuncode")))); // ﾛｯﾄ区分
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SHITEI_KOUSA, srDenkitokuseiesi))); //指定公差
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_ATOKOUTEI_SHIJI_NAIYO, srDenkitokuseiesi))); //後工程指示内容
         params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_OKURI_RYOHINSU, srDenkitokuseiesi))); //送り良品数
@@ -4112,8 +4106,8 @@ public class GXHDO101B040 implements IFormLogic {
                 return;
             }
 
-            //BINX 計量後数量 ÷送り良品数(小数点第五位を四捨五入)
-            BigDecimal furyoritsu = keiryogoSuryo.divide(okuriRyohinsu, 4, RoundingMode.HALF_UP);
+            //BINX 計量後数量 ÷送り良品数 × 100(小数点第五位を四捨五入) 
+            BigDecimal furyoritsu = keiryogoSuryo.multiply(BigDecimal.valueOf(100)).divide(okuriRyohinsu, 4, RoundingMode.HALF_UP);
 
             //計算結果をマシン不良率にセット
             itemMcnFuryoritsu.setValue(furyoritsu.toPlainString());
@@ -4172,8 +4166,8 @@ public class GXHDO101B040 implements IFormLogic {
                 return;
             }
 
-            //.BINX マシン不良率(%) ÷ BINX 抜き取り結果(SelectOneMenu)(小数点第五位を四捨五入)
-            BigDecimal shinFuryoritsu = mcnFuryoritsu.divide(nukitorikekka, 4, RoundingMode.HALF_UP);
+            //.BINX マシン不良率(%) ÷ BINX 抜き取り結果(SelectOneMenu) × 100(小数点第五位を四捨五入)
+            BigDecimal shinFuryoritsu = mcnFuryoritsu.multiply(BigDecimal.valueOf(100)).divide(nukitorikekka, 4, RoundingMode.HALF_UP);
 
             //計算結果を真の不良率にセット
             itemShinFuryoritsu.setValue(shinFuryoritsu.toPlainString());

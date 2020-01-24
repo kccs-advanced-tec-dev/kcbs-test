@@ -176,6 +176,7 @@
 .nukitori_kekka_td {
     text-align: left; 
     vertical-align: middle;
+    white-space:nowrap;
 }
 /* 抜き取り結果 input_number */
 .nukitori_kekka_input_number {
