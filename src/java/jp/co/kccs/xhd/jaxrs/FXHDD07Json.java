@@ -21,72 +21,87 @@ import java.math.BigDecimal;
  * データ取込処理のモデルクラスです。
  */
 public class FXHDD07Json {
+    private String maker;
     private String kojyo;
     private String lotno;
     private String edaban;
     private String gouki;
-    private Integer bunruiairatu;
-    private Integer cdcontactatu;
-    private Integer ircontactatu;
-    private BigDecimal tan;
+    private String bunruiairatu;
+    private String cdcontactatu;
+    private String ircontactatu;
+    private String tan;
     private String sokuteisyuhasuu;
-    private BigDecimal sokuteidenatu;
-    private BigDecimal pcdenatu1;
-    private Integer pcjudenjikan1;
-    private BigDecimal pcdenatu2;
-    private Integer pcjudenjikan2;
-    private BigDecimal pcdenatu3;
-    private Integer pcjudenjikan3;
-    private BigDecimal pcdenatu4;
-    private Integer pcjudenjikan4;
-    private BigDecimal irdenatu1;
-    private BigDecimal irhanteiti1_low;
-    private BigDecimal irhanteiti1;
-    private Integer irjudenjikan1;
-    private BigDecimal irdenatu2;
-    private BigDecimal irhanteiti2_low;
-    private BigDecimal irhanteiti2;
-    private Integer irjudenjikan2;
-    private BigDecimal irdenatu3;
-    private BigDecimal irhanteiti3_low;
-    private BigDecimal irhanteiti3;
-    private Integer irjudenjikan3;
-    private BigDecimal irdenatu4;
-    private BigDecimal irhanteiti4_low;
-    private BigDecimal irhanteiti4;
-    private Integer irjudenjikan4;
-    private BigDecimal irdenatu5;
-    private BigDecimal irhanteiti5_low;
-    private BigDecimal irhanteiti5;
-    private Integer irjudenjikan5;
-    private BigDecimal irdenatu6;
-    private BigDecimal irhanteiti6_low;
-    private BigDecimal irhanteiti6;
-    private Integer irjudenjikan6;
-    private BigDecimal irdenatu7;
-    private BigDecimal irhanteiti7_low;
-    private BigDecimal irhanteiti7;
-    private Integer irjudenjikan7;
-    private BigDecimal irdenatu8;
-    private BigDecimal irhanteiti8_low;
-    private BigDecimal irhanteiti8;
-    private Integer irjudenjikan8;
-    private BigDecimal rdcrange1;
-    private BigDecimal rdchantei1;
-    private BigDecimal rdcrange2;
-    private BigDecimal rdchantei2;
-    private Integer bin1countersuu;
-    private Integer bin2countersuu;
-    private Integer bin3countersuu;
-    private Integer bin4countersuu;
-    private Integer bin5countersuu;
-    private Integer bin6countersuu;
-    private Integer bin7countersuu;
-    private Integer bin8countersuu;
+    private String sokuteidenatu;
+    private String pcdenatu1;
+    private String pcjudenjikan1;
+    private String pcdenatu2;
+    private String pcjudenjikan2;
+    private String pcdenatu3;
+    private String pcjudenjikan3;
+    private String pcdenatu4;
+    private String pcjudenjikan4;
+    private String irdenatu1;
+    private String irhanteiti1_low;
+    private String irhanteiti1;
+    private String irjudenjikan1;
+    private String irdenatu2;
+    private String irhanteiti2_low;
+    private String irhanteiti2;
+    private String irjudenjikan2;
+    private String irdenatu3;
+    private String irhanteiti3_low;
+    private String irhanteiti3;
+    private String irjudenjikan3;
+    private String irdenatu4;
+    private String irhanteiti4_low;
+    private String irhanteiti4;
+    private String irjudenjikan4;
+    private String irdenatu5;
+    private String irhanteiti5_low;
+    private String irhanteiti5;
+    private String irjudenjikan5;
+    private String irdenatu6;
+    private String irhanteiti6_low;
+    private String irhanteiti6;
+    private String irjudenjikan6;
+    private String irdenatu7;
+    private String irhanteiti7_low;
+    private String irhanteiti7;
+    private String irjudenjikan7;
+    private String irdenatu8;
+    private String irhanteiti8_low;
+    private String irhanteiti8;
+    private String irjudenjikan8;
+    private String rdcrange1;
+    private String rdchantei1;
+    private String rdcrange2;
+    private String rdchantei2;
+    private String bin1countersuu;
+    private String bin2countersuu;
+    private String bin3countersuu;
+    private String bin4countersuu;
+    private String bin5countersuu;
+    private String bin6countersuu;
+    private String bin7countersuu;
+    private String bin8countersuu;
     private String bin5setteiti;
     private String bin6setteiti;
     private String bin7setteiti;
     private String bin8setteiti;
+
+    /**
+     * @return the maker
+     */
+    public String getMaker() {
+        return maker;
+    }
+
+    /**
+     * @param maker the maker to set
+     */
+    public void setMaker(String maker) {
+        this.maker = maker;
+    }
     
     /**
      * @return the kojyo
@@ -147,56 +162,56 @@ public class FXHDD07Json {
     /**
      * @return the bunruiairatu
      */
-    public Integer getBunruiairatu() {
+    public String getBunruiairatu() {
         return bunruiairatu;
     }
 
     /**
      * @param bunruiairatu the bunruiairatu to set
      */
-    public void setBunruiairatu(Integer bunruiairatu) {
+    public void setBunruiairatu(String bunruiairatu) {
         this.bunruiairatu = bunruiairatu;
     }
 
     /**
      * @return the cdcontactatu
      */
-    public Integer getCdcontactatu() {
+    public String getCdcontactatu() {
         return cdcontactatu;
     }
 
     /**
      * @param cdcontactatu the cdcontactatu to set
      */
-    public void setCdcontactatu(Integer cdcontactatu) {
+    public void setCdcontactatu(String cdcontactatu) {
         this.cdcontactatu = cdcontactatu;
     }
 
     /**
      * @return the ircontactatu
      */
-    public Integer getIrcontactatu() {
+    public String getIrcontactatu() {
         return ircontactatu;
     }
 
     /**
      * @param ircontactatu the ircontactatu to set
      */
-    public void setIrcontactatu(Integer ircontactatu) {
+    public void setIrcontactatu(String ircontactatu) {
         this.ircontactatu = ircontactatu;
     }
 
     /**
      * @return the tan
      */
-    public BigDecimal getTan() {
+    public String getTan() {
         return tan;
     }
 
     /**
      * @param tan the tan to set
      */
-    public void setTan(BigDecimal tan) {
+    public void setTan(String tan) {
         this.tan = tan;
     }
 
@@ -217,742 +232,742 @@ public class FXHDD07Json {
     /**
      * @return the sokuteidenatu
      */
-    public BigDecimal getSokuteidenatu() {
+    public String getSokuteidenatu() {
         return sokuteidenatu;
     }
 
     /**
      * @param sokuteidenatu the sokuteidenatu to set
      */
-    public void setSokuteidenatu(BigDecimal sokuteidenatu) {
+    public void setSokuteidenatu(String sokuteidenatu) {
         this.sokuteidenatu = sokuteidenatu;
     }
 
     /**
      * @return the pcdenatu1
      */
-    public BigDecimal getPcdenatu1() {
+    public String getPcdenatu1() {
         return pcdenatu1;
     }
 
     /**
      * @param pcdenatu1 the pcdenatu1 to set
      */
-    public void setPcdenatu1(BigDecimal pcdenatu1) {
+    public void setPcdenatu1(String pcdenatu1) {
         this.pcdenatu1 = pcdenatu1;
     }
 
     /**
      * @return the pcjudenjikan1
      */
-    public Integer getPcjudenjikan1() {
+    public String getPcjudenjikan1() {
         return pcjudenjikan1;
     }
 
     /**
      * @param pcjudenjikan1 the pcjudenjikan1 to set
      */
-    public void setPcjudenjikan1(Integer pcjudenjikan1) {
+    public void setPcjudenjikan1(String pcjudenjikan1) {
         this.pcjudenjikan1 = pcjudenjikan1;
     }
 
     /**
      * @return the pcdenatu2
      */
-    public BigDecimal getPcdenatu2() {
+    public String getPcdenatu2() {
         return pcdenatu2;
     }
 
     /**
      * @param pcdenatu2 the pcdenatu2 to set
      */
-    public void setPcdenatu2(BigDecimal pcdenatu2) {
+    public void setPcdenatu2(String pcdenatu2) {
         this.pcdenatu2 = pcdenatu2;
     }
 
     /**
      * @return the pcjudenjikan2
      */
-    public Integer getPcjudenjikan2() {
+    public String getPcjudenjikan2() {
         return pcjudenjikan2;
     }
 
     /**
      * @param pcjudenjikan2 the pcjudenjikan2 to set
      */
-    public void setPcjudenjikan2(Integer pcjudenjikan2) {
+    public void setPcjudenjikan2(String pcjudenjikan2) {
         this.pcjudenjikan2 = pcjudenjikan2;
     }
 
     /**
      * @return the pcdenatu3
      */
-    public BigDecimal getPcdenatu3() {
+    public String getPcdenatu3() {
         return pcdenatu3;
     }
 
     /**
      * @param pcdenatu3 the pcdenatu3 to set
      */
-    public void setPcdenatu3(BigDecimal pcdenatu3) {
+    public void setPcdenatu3(String pcdenatu3) {
         this.pcdenatu3 = pcdenatu3;
     }
 
     /**
      * @return the pcjudenjikan3
      */
-    public Integer getPcjudenjikan3() {
+    public String getPcjudenjikan3() {
         return pcjudenjikan3;
     }
 
     /**
      * @param pcjudenjikan3 the pcjudenjikan3 to set
      */
-    public void setPcjudenjikan3(Integer pcjudenjikan3) {
+    public void setPcjudenjikan3(String pcjudenjikan3) {
         this.pcjudenjikan3 = pcjudenjikan3;
     }
 
     /**
      * @return the pcdenatu4
      */
-    public BigDecimal getPcdenatu4() {
+    public String getPcdenatu4() {
         return pcdenatu4;
     }
 
     /**
      * @param pcdenatu4 the pcdenatu4 to set
      */
-    public void setPcdenatu4(BigDecimal pcdenatu4) {
+    public void setPcdenatu4(String pcdenatu4) {
         this.pcdenatu4 = pcdenatu4;
     }
 
     /**
      * @return the pcjudenjikan4
      */
-    public Integer getPcjudenjikan4() {
+    public String getPcjudenjikan4() {
         return pcjudenjikan4;
     }
 
     /**
      * @param pcjudenjikan4 the pcjudenjikan4 to set
      */
-    public void setPcjudenjikan4(Integer pcjudenjikan4) {
+    public void setPcjudenjikan4(String pcjudenjikan4) {
         this.pcjudenjikan4 = pcjudenjikan4;
     }
 
     /**
      * @return the irdenatu1
      */
-    public BigDecimal getIrdenatu1() {
+    public String getIrdenatu1() {
         return irdenatu1;
     }
 
     /**
      * @param irdenatu1 the irdenatu1 to set
      */
-    public void setIrdenatu1(BigDecimal irdenatu1) {
+    public void setIrdenatu1(String irdenatu1) {
         this.irdenatu1 = irdenatu1;
     }
 
     /**
      * @return the irhanteiti1_low
      */
-    public BigDecimal getIrhanteiti1_low() {
+    public String getIrhanteiti1_low() {
         return irhanteiti1_low;
     }
 
     /**
      * @param irhanteiti1_low the irhanteiti1_low to set
      */
-    public void setIrhanteiti1_low(BigDecimal irhanteiti1_low) {
+    public void setIrhanteiti1_low(String irhanteiti1_low) {
         this.irhanteiti1_low = irhanteiti1_low;
     }
 
     /**
      * @return the irhanteiti1
      */
-    public BigDecimal getIrhanteiti1() {
+    public String getIrhanteiti1() {
         return irhanteiti1;
     }
 
     /**
      * @param irhanteiti1 the irhanteiti1 to set
      */
-    public void setIrhanteiti1(BigDecimal irhanteiti1) {
+    public void setIrhanteiti1(String irhanteiti1) {
         this.irhanteiti1 = irhanteiti1;
     }
 
     /**
      * @return the irjudenjikan1
      */
-    public Integer getIrjudenjikan1() {
+    public String getIrjudenjikan1() {
         return irjudenjikan1;
     }
 
     /**
      * @param irjudenjikan1 the irjudenjikan1 to set
      */
-    public void setIrjudenjikan1(Integer irjudenjikan1) {
+    public void setIrjudenjikan1(String irjudenjikan1) {
         this.irjudenjikan1 = irjudenjikan1;
     }
 
     /**
      * @return the irdenatu2
      */
-    public BigDecimal getIrdenatu2() {
+    public String getIrdenatu2() {
         return irdenatu2;
     }
 
     /**
      * @param irdenatu2 the irdenatu2 to set
      */
-    public void setIrdenatu2(BigDecimal irdenatu2) {
+    public void setIrdenatu2(String irdenatu2) {
         this.irdenatu2 = irdenatu2;
     }
 
     /**
      * @return the irhanteiti2_low
      */
-    public BigDecimal getIrhanteiti2_low() {
+    public String getIrhanteiti2_low() {
         return irhanteiti2_low;
     }
 
     /**
      * @param irhanteiti2_low the irhanteiti2_low to set
      */
-    public void setIrhanteiti2_low(BigDecimal irhanteiti2_low) {
+    public void setIrhanteiti2_low(String irhanteiti2_low) {
         this.irhanteiti2_low = irhanteiti2_low;
     }
 
     /**
      * @return the irhanteiti2
      */
-    public BigDecimal getIrhanteiti2() {
+    public String getIrhanteiti2() {
         return irhanteiti2;
     }
 
     /**
      * @param irhanteiti2 the irhanteiti2 to set
      */
-    public void setIrhanteiti2(BigDecimal irhanteiti2) {
+    public void setIrhanteiti2(String irhanteiti2) {
         this.irhanteiti2 = irhanteiti2;
     }
 
     /**
      * @return the irjudenjikan2
      */
-    public Integer getIrjudenjikan2() {
+    public String getIrjudenjikan2() {
         return irjudenjikan2;
     }
 
     /**
      * @param irjudenjikan2 the irjudenjikan2 to set
      */
-    public void setIrjudenjikan2(Integer irjudenjikan2) {
+    public void setIrjudenjikan2(String irjudenjikan2) {
         this.irjudenjikan2 = irjudenjikan2;
     }
 
     /**
      * @return the irdenatu3
      */
-    public BigDecimal getIrdenatu3() {
+    public String getIrdenatu3() {
         return irdenatu3;
     }
 
     /**
      * @param irdenatu3 the irdenatu3 to set
      */
-    public void setIrdenatu3(BigDecimal irdenatu3) {
+    public void setIrdenatu3(String irdenatu3) {
         this.irdenatu3 = irdenatu3;
     }
 
     /**
      * @return the irhanteiti3_low
      */
-    public BigDecimal getIrhanteiti3_low() {
+    public String getIrhanteiti3_low() {
         return irhanteiti3_low;
     }
 
     /**
      * @param irhanteiti3_low the irhanteiti3_low to set
      */
-    public void setIrhanteiti3_low(BigDecimal irhanteiti3_low) {
+    public void setIrhanteiti3_low(String irhanteiti3_low) {
         this.irhanteiti3_low = irhanteiti3_low;
     }
 
     /**
      * @return the irhanteiti3
      */
-    public BigDecimal getIrhanteiti3() {
+    public String getIrhanteiti3() {
         return irhanteiti3;
     }
 
     /**
      * @param irhanteiti3 the irhanteiti3 to set
      */
-    public void setIrhanteiti3(BigDecimal irhanteiti3) {
+    public void setIrhanteiti3(String irhanteiti3) {
         this.irhanteiti3 = irhanteiti3;
     }
 
     /**
      * @return the irjudenjikan3
      */
-    public Integer getIrjudenjikan3() {
+    public String getIrjudenjikan3() {
         return irjudenjikan3;
     }
 
     /**
      * @param irjudenjikan3 the irjudenjikan3 to set
      */
-    public void setIrjudenjikan3(Integer irjudenjikan3) {
+    public void setIrjudenjikan3(String irjudenjikan3) {
         this.irjudenjikan3 = irjudenjikan3;
     }
 
     /**
      * @return the irdenatu4
      */
-    public BigDecimal getIrdenatu4() {
+    public String getIrdenatu4() {
         return irdenatu4;
     }
 
     /**
      * @param irdenatu4 the irdenatu4 to set
      */
-    public void setIrdenatu4(BigDecimal irdenatu4) {
+    public void setIrdenatu4(String irdenatu4) {
         this.irdenatu4 = irdenatu4;
     }
 
     /**
      * @return the irhanteiti4_low
      */
-    public BigDecimal getIrhanteiti4_low() {
+    public String getIrhanteiti4_low() {
         return irhanteiti4_low;
     }
 
     /**
      * @param irhanteiti4_low the irhanteiti4_low to set
      */
-    public void setIrhanteiti4_low(BigDecimal irhanteiti4_low) {
+    public void setIrhanteiti4_low(String irhanteiti4_low) {
         this.irhanteiti4_low = irhanteiti4_low;
     }
 
     /**
      * @return the irhanteiti4
      */
-    public BigDecimal getIrhanteiti4() {
+    public String getIrhanteiti4() {
         return irhanteiti4;
     }
 
     /**
      * @param irhanteiti4 the irhanteiti4 to set
      */
-    public void setIrhanteiti4(BigDecimal irhanteiti4) {
+    public void setIrhanteiti4(String irhanteiti4) {
         this.irhanteiti4 = irhanteiti4;
     }
 
     /**
      * @return the irjudenjikan4
      */
-    public Integer getIrjudenjikan4() {
+    public String getIrjudenjikan4() {
         return irjudenjikan4;
     }
 
     /**
      * @param irjudenjikan4 the irjudenjikan4 to set
      */
-    public void setIrjudenjikan4(Integer irjudenjikan4) {
+    public void setIrjudenjikan4(String irjudenjikan4) {
         this.irjudenjikan4 = irjudenjikan4;
     }
 
     /**
      * @return the irdenatu5
      */
-    public BigDecimal getIrdenatu5() {
+    public String getIrdenatu5() {
         return irdenatu5;
     }
 
     /**
      * @param irdenatu5 the irdenatu5 to set
      */
-    public void setIrdenatu5(BigDecimal irdenatu5) {
+    public void setIrdenatu5(String irdenatu5) {
         this.irdenatu5 = irdenatu5;
     }
 
     /**
      * @return the irhanteiti5_low
      */
-    public BigDecimal getIrhanteiti5_low() {
+    public String getIrhanteiti5_low() {
         return irhanteiti5_low;
     }
 
     /**
      * @param irhanteiti5_low the irhanteiti5_low to set
      */
-    public void setIrhanteiti5_low(BigDecimal irhanteiti5_low) {
+    public void setIrhanteiti5_low(String irhanteiti5_low) {
         this.irhanteiti5_low = irhanteiti5_low;
     }
 
     /**
      * @return the irhanteiti5
      */
-    public BigDecimal getIrhanteiti5() {
+    public String getIrhanteiti5() {
         return irhanteiti5;
     }
 
     /**
      * @param irhanteiti5 the irhanteiti5 to set
      */
-    public void setIrhanteiti5(BigDecimal irhanteiti5) {
+    public void setIrhanteiti5(String irhanteiti5) {
         this.irhanteiti5 = irhanteiti5;
     }
 
     /**
      * @return the irjudenjikan5
      */
-    public Integer getIrjudenjikan5() {
+    public String getIrjudenjikan5() {
         return irjudenjikan5;
     }
 
     /**
      * @param irjudenjikan5 the irjudenjikan5 to set
      */
-    public void setIrjudenjikan5(Integer irjudenjikan5) {
+    public void setIrjudenjikan5(String irjudenjikan5) {
         this.irjudenjikan5 = irjudenjikan5;
     }
 
     /**
      * @return the irdenatu6
      */
-    public BigDecimal getIrdenatu6() {
+    public String getIrdenatu6() {
         return irdenatu6;
     }
 
     /**
      * @param irdenatu6 the irdenatu6 to set
      */
-    public void setIrdenatu6(BigDecimal irdenatu6) {
+    public void setIrdenatu6(String irdenatu6) {
         this.irdenatu6 = irdenatu6;
     }
 
     /**
      * @return the irhanteiti6_low
      */
-    public BigDecimal getIrhanteiti6_low() {
+    public String getIrhanteiti6_low() {
         return irhanteiti6_low;
     }
 
     /**
      * @param irhanteiti6_low the irhanteiti6_low to set
      */
-    public void setIrhanteiti6_low(BigDecimal irhanteiti6_low) {
+    public void setIrhanteiti6_low(String irhanteiti6_low) {
         this.irhanteiti6_low = irhanteiti6_low;
     }
 
     /**
      * @return the irhanteiti6
      */
-    public BigDecimal getIrhanteiti6() {
+    public String getIrhanteiti6() {
         return irhanteiti6;
     }
 
     /**
      * @param irhanteiti6 the irhanteiti6 to set
      */
-    public void setIrhanteiti6(BigDecimal irhanteiti6) {
+    public void setIrhanteiti6(String irhanteiti6) {
         this.irhanteiti6 = irhanteiti6;
     }
 
     /**
      * @return the irjudenjikan6
      */
-    public Integer getIrjudenjikan6() {
+    public String getIrjudenjikan6() {
         return irjudenjikan6;
     }
 
     /**
      * @param irjudenjikan6 the irjudenjikan6 to set
      */
-    public void setIrjudenjikan6(Integer irjudenjikan6) {
+    public void setIrjudenjikan6(String irjudenjikan6) {
         this.irjudenjikan6 = irjudenjikan6;
     }
 
     /**
      * @return the irdenatu7
      */
-    public BigDecimal getIrdenatu7() {
+    public String getIrdenatu7() {
         return irdenatu7;
     }
 
     /**
      * @param irdenatu7 the irdenatu7 to set
      */
-    public void setIrdenatu7(BigDecimal irdenatu7) {
+    public void setIrdenatu7(String irdenatu7) {
         this.irdenatu7 = irdenatu7;
     }
 
     /**
      * @return the irhanteiti7_low
      */
-    public BigDecimal getIrhanteiti7_low() {
+    public String getIrhanteiti7_low() {
         return irhanteiti7_low;
     }
 
     /**
      * @param irhanteiti7_low the irhanteiti7_low to set
      */
-    public void setIrhanteiti7_low(BigDecimal irhanteiti7_low) {
+    public void setIrhanteiti7_low(String irhanteiti7_low) {
         this.irhanteiti7_low = irhanteiti7_low;
     }
 
     /**
      * @return the irhanteiti7
      */
-    public BigDecimal getIrhanteiti7() {
+    public String getIrhanteiti7() {
         return irhanteiti7;
     }
 
     /**
      * @param irhanteiti7 the irhanteiti7 to set
      */
-    public void setIrhanteiti7(BigDecimal irhanteiti7) {
+    public void setIrhanteiti7(String irhanteiti7) {
         this.irhanteiti7 = irhanteiti7;
     }
 
     /**
      * @return the irjudenjikan7
      */
-    public Integer getIrjudenjikan7() {
+    public String getIrjudenjikan7() {
         return irjudenjikan7;
     }
 
     /**
      * @param irjudenjikan7 the irjudenjikan7 to set
      */
-    public void setIrjudenjikan7(Integer irjudenjikan7) {
+    public void setIrjudenjikan7(String irjudenjikan7) {
         this.irjudenjikan7 = irjudenjikan7;
     }
 
     /**
      * @return the irdenatu8
      */
-    public BigDecimal getIrdenatu8() {
+    public String getIrdenatu8() {
         return irdenatu8;
     }
 
     /**
      * @param irdenatu8 the irdenatu8 to set
      */
-    public void setIrdenatu8(BigDecimal irdenatu8) {
+    public void setIrdenatu8(String irdenatu8) {
         this.irdenatu8 = irdenatu8;
     }
 
     /**
      * @return the irhanteiti8_low
      */
-    public BigDecimal getIrhanteiti8_low() {
+    public String getIrhanteiti8_low() {
         return irhanteiti8_low;
     }
 
     /**
      * @param irhanteiti8_low the irhanteiti8_low to set
      */
-    public void setIrhanteiti8_low(BigDecimal irhanteiti8_low) {
+    public void setIrhanteiti8_low(String irhanteiti8_low) {
         this.irhanteiti8_low = irhanteiti8_low;
     }
 
     /**
      * @return the irhanteiti8
      */
-    public BigDecimal getIrhanteiti8() {
+    public String getIrhanteiti8() {
         return irhanteiti8;
     }
 
     /**
      * @param irhanteiti8 the irhanteiti8 to set
      */
-    public void setIrhanteiti8(BigDecimal irhanteiti8) {
+    public void setIrhanteiti8(String irhanteiti8) {
         this.irhanteiti8 = irhanteiti8;
     }
 
     /**
      * @return the irjudenjikan8
      */
-    public Integer getIrjudenjikan8() {
+    public String getIrjudenjikan8() {
         return irjudenjikan8;
     }
 
     /**
      * @param irjudenjikan8 the irjudenjikan8 to set
      */
-    public void setIrjudenjikan8(Integer irjudenjikan8) {
+    public void setIrjudenjikan8(String irjudenjikan8) {
         this.irjudenjikan8 = irjudenjikan8;
     }
 
     /**
      * @return the rdcrange1
      */
-    public BigDecimal getRdcrange1() {
+    public String getRdcrange1() {
         return rdcrange1;
     }
 
     /**
      * @param rdcrange1 the rdcrange1 to set
      */
-    public void setRdcrange1(BigDecimal rdcrange1) {
+    public void setRdcrange1(String rdcrange1) {
         this.rdcrange1 = rdcrange1;
     }
 
     /**
      * @return the rdchantei1
      */
-    public BigDecimal getRdchantei1() {
+    public String getRdchantei1() {
         return rdchantei1;
     }
 
     /**
      * @param rdchantei1 the rdchantei1 to set
      */
-    public void setRdchantei1(BigDecimal rdchantei1) {
+    public void setRdchantei1(String rdchantei1) {
         this.rdchantei1 = rdchantei1;
     }
 
     /**
      * @return the rdcrange2
      */
-    public BigDecimal getRdcrange2() {
+    public String getRdcrange2() {
         return rdcrange2;
     }
 
     /**
      * @param rdcrange2 the rdcrange2 to set
      */
-    public void setRdcrange2(BigDecimal rdcrange2) {
+    public void setRdcrange2(String rdcrange2) {
         this.rdcrange2 = rdcrange2;
     }
 
     /**
      * @return the rdchantei2
      */
-    public BigDecimal getRdchantei2() {
+    public String getRdchantei2() {
         return rdchantei2;
     }
 
     /**
      * @param rdchantei2 the rdchantei2 to set
      */
-    public void setRdchantei2(BigDecimal rdchantei2) {
+    public void setRdchantei2(String rdchantei2) {
         this.rdchantei2 = rdchantei2;
     }
 
     /**
      * @return the bin1countersuu
      */
-    public Integer getBin1countersuu() {
+    public String getBin1countersuu() {
         return bin1countersuu;
     }
 
     /**
      * @param bin1countersuu the bin1countersuu to set
      */
-    public void setBin1countersuu(Integer bin1countersuu) {
+    public void setBin1countersuu(String bin1countersuu) {
         this.bin1countersuu = bin1countersuu;
     }
 
     /**
      * @return the bin2countersuu
      */
-    public Integer getBin2countersuu() {
+    public String getBin2countersuu() {
         return bin2countersuu;
     }
 
     /**
      * @param bin2countersuu the bin2countersuu to set
      */
-    public void setBin2countersuu(Integer bin2countersuu) {
+    public void setBin2countersuu(String bin2countersuu) {
         this.bin2countersuu = bin2countersuu;
     }
 
     /**
      * @return the bin3countersuu
      */
-    public Integer getBin3countersuu() {
+    public String getBin3countersuu() {
         return bin3countersuu;
     }
 
     /**
      * @param bin3countersuu the bin3countersuu to set
      */
-    public void setBin3countersuu(Integer bin3countersuu) {
+    public void setBin3countersuu(String bin3countersuu) {
         this.bin3countersuu = bin3countersuu;
     }
 
     /**
      * @return the bin4countersuu
      */
-    public Integer getBin4countersuu() {
+    public String getBin4countersuu() {
         return bin4countersuu;
     }
 
     /**
      * @param bin4countersuu the bin4countersuu to set
      */
-    public void setBin4countersuu(Integer bin4countersuu) {
+    public void setBin4countersuu(String bin4countersuu) {
         this.bin4countersuu = bin4countersuu;
     }
 
     /**
      * @return the bin5countersuu
      */
-    public Integer getBin5countersuu() {
+    public String getBin5countersuu() {
         return bin5countersuu;
     }
 
     /**
      * @param bin5countersuu the bin5countersuu to set
      */
-    public void setBin5countersuu(Integer bin5countersuu) {
+    public void setBin5countersuu(String bin5countersuu) {
         this.bin5countersuu = bin5countersuu;
     }
 
     /**
      * @return the bin6countersuu
      */
-    public Integer getBin6countersuu() {
+    public String getBin6countersuu() {
         return bin6countersuu;
     }
 
     /**
      * @param bin6countersuu the bin6countersuu to set
      */
-    public void setBin6countersuu(Integer bin6countersuu) {
+    public void setBin6countersuu(String bin6countersuu) {
         this.bin6countersuu = bin6countersuu;
     }
 
     /**
      * @return the bin7countersuu
      */
-    public Integer getBin7countersuu() {
+    public String getBin7countersuu() {
         return bin7countersuu;
     }
 
     /**
      * @param bin7countersuu the bin7countersuu to set
      */
-    public void setBin7countersuu(Integer bin7countersuu) {
+    public void setBin7countersuu(String bin7countersuu) {
         this.bin7countersuu = bin7countersuu;
     }
 
     /**
      * @return the bin8countersuu
      */
-    public Integer getBin8countersuu() {
+    public String getBin8countersuu() {
         return bin8countersuu;
     }
 
     /**
      * @param bin8countersuu the bin8countersuu to set
      */
-    public void setBin8countersuu(Integer bin8countersuu) {
+    public void setBin8countersuu(String bin8countersuu) {
         this.bin8countersuu = bin8countersuu;
     }
 
