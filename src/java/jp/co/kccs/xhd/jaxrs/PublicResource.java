@@ -435,6 +435,9 @@ public class PublicResource {
             case "mA":
                 devValue = new BigDecimal("1000");
                 break;
+            case "μA":
+                devValue = new BigDecimal("1000000");
+                break;
             case "µA":
                 devValue = new BigDecimal("1000000");
                 break;
