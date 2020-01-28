@@ -24,6 +24,11 @@ import org.apache.commons.dbutils.handlers.MapHandler;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2019/12/05<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	入力画面選択で使用するデータ取得を追加また直接データの取得メソッドが呼べるように変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -175,7 +180,7 @@ public class CommonUtil {
     /**
      * 印刷・SPSｸﾞﾗﾋﾞｱ工程のデータを取得する
      *
-     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @param edaban 枝番(検索キー)
@@ -183,7 +188,7 @@ public class CommonUtil {
      * @return 工程データ
      * @throws SQLException 例外エラー
      */
-    private static Map getSrSpsprintGraData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    public static Map getSrSpsprintGraData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev) throws SQLException {
 
         String sql = "SELECT kojyo,lotno,edaban,tapelotno,petfilmsyurui,taperollno1,taperollno2,taperollno3,pastelotno,pastenendo,"
@@ -210,10 +215,10 @@ public class CommonUtil {
 
     }
     
-            /**
+    /**
      * 印刷・SPSｽｸﾘｰﾝ工程のデータを取得する
      *
-     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @param edaban 枝番(検索キー)
@@ -221,7 +226,7 @@ public class CommonUtil {
      * @return 工程データ
      * @throws SQLException 例外エラー
      */
-    private static Map getSrSpsprintData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    public static Map getSrSpsprintData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev) throws SQLException {
 
         String sql = "SELECT kojyo,lotno,edaban,tapesyurui,tapelotno,TapeSlipKigo,genryoukigou,pastelotno,pastenendo,pasteondo,"
@@ -253,7 +258,7 @@ public class CommonUtil {
     /**
      * 印刷・SPSｽｸﾘｰﾝ工程のデータを取得する
      *
-     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @param edaban 枝番(検索キー)
@@ -261,7 +266,7 @@ public class CommonUtil {
      * @return 工程データ
      * @throws SQLException 例外エラー
      */
-    private static Map getSrRsusprnData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    public static Map getSrRsusprnData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev) throws SQLException {
 
         String sql = "SELECT KOJYO,LOTNO,EDABAN,KCPNO,TAPESYURUI,TAPELOTNO,TapeSlipKigo,GENRYOKIGO,KAISINICHIJI,SYURYONICHIJI,"
@@ -289,7 +294,7 @@ public class CommonUtil {
     /**
      * 積層・SPS工程のデータを取得する
      *
-     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @param edaban 枝番(検索キー)
@@ -297,7 +302,7 @@ public class CommonUtil {
      * @return 工程データ
      * @throws SQLException 例外エラー
      */
-    private static Map getSrSpssekisouData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    public static Map getSrSpssekisouData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev) throws SQLException {
 
         String sql = "SELECT kojyo,lotno,edaban,tntapesyurui,tntapeno,tntapegenryou,gouki,startdatetime,enddatetime,sekisouzure,"
@@ -334,7 +339,7 @@ public class CommonUtil {
      * @return 工程データ
      * @throws SQLException 例外エラー
      */
-    private static Map getSrRsussekData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    public static Map getSrRsussekData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev) throws SQLException {
         String sql = "SELECT KOJYO,LOTNO,EDABAN,KCPNO,TNTAPESYURUI,TNTAPENO,TNTAPEGENRYO,KAISINICHIJI,SYURYONICHIJI,GOKI,"
                 + "JITUATURYOKU,SEKISOZURE2,TANTOSYA,KAKUNINSYA,INSATUROLLNO,HAPPOSHEETNO,SKJIKAN,TAKUTO,BIKO1,TOROKUNICHIJI,"
@@ -367,7 +372,7 @@ public class CommonUtil {
      * @return 工程データ
      * @throws SQLException 例外エラー
      */
-    private static Map getSrRhapsData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    public static Map getSrRhapsData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev) throws SQLException {
         String sql = "SELECT KOJYO,LOTNO,EDABAN,KCPNO,KAISINICHIJI,SYURYONICHIJI,TTAPESYURUI,TTAPELOTNO,TTapeSlipKigo,TTapeRollNo1,"
                 + "TTapeRollNo2,TTapeRollNo3,TTapeRollNo4,TTapeRollNo5,TGENRYOKIGO,STSIYO,ESEKISOSIYO,ETAPESYURUI,ETAPEGLOT,ETAPELOT,ETapeSlipKigo,"
@@ -408,7 +413,7 @@ public class CommonUtil {
      * @return 工程データ
      * @throws SQLException 例外エラー
      */
-    private static Map getSrPrepressData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    public static Map getSrPrepressData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev) throws SQLException {
         String sql = "SELECT kojyo,lotno,edaban,startdatetime,enddatetime,ondohyoji,aturyokusetteiti,kaatujikan,goki,"
                 + "tantosya,kakuninsya,biko1,torokunichiji,kosinnichiji,sagyokubun,setsuu,tansimaisuu,aturyokuhyouji,"
@@ -439,7 +444,7 @@ public class CommonUtil {
      * @return 工程データ
      * @throws SQLException 例外エラー
      */
-    private static Map getSrPressData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    public static Map getSrPressData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev) throws SQLException {
         String sql = "SELECT kojyo,lotno,edaban,startdatetime,enddatetime,gouki,ondo,tantousya,kakuninsya,bikou1,"
                 + "bikou2,bikou3,bikou4,bikou5,situon,situdo,aturyoku,jikan1,jikan2,atumimin,atumimax,shinkuuhojicheck,"
@@ -472,7 +477,7 @@ public class CommonUtil {
      * @return 工程データ
      * @throws SQLException 例外エラー
      */
-    private static Map getSrMekapressData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    public static Map getSrMekapressData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev) throws SQLException {
         String sql = "SELECT KOJYO,LOTNO,EDABAN,KCPNO,KAISINICHIJI,SYURYONICHIJI,UKEIRESETSUU,RyouhinSetsuu,GOKI,ONDO,ATURYOKU,"
                 + "SITUON,SITUDO,ATUMIMIN,ATUMIMAX,ATUMITANTOSYA,TANTOSYA,KAKUNINSYA,BIKO1,BIKO2,TOROKUNICHIJI,KOSINNICHIJI,"
@@ -502,7 +507,7 @@ public class CommonUtil {
      * @return 工程データ
      * @throws SQLException 例外エラー
      */
-    private static Map getSrHapscutData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    public static Map getSrHapscutData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev) throws SQLException {
         String sql = "SELECT KOJYO,LOTNO,EDABAN,KCPNO,KAISINICHIJI,SYURYONICHIJI,CUTBAMAISUU,GOKI,CUTTABLEONDO,CUTTANTOSYA,KAKUNINSYA,CHKTANTOSYA,"
                 + "BTANTOSYA,ATANTOSYA,UKEIREKOSUU,RYOHINKOSUU,Atumi01,Atumi02,Atumi03,Atumi04,Atumi05,Atumi06,Atumi07,Atumi08,Atumi09,Atumi10,"
@@ -534,7 +539,7 @@ public class CommonUtil {
      * @return 工程データ
      * @throws SQLException 例外エラー
      */
-    private static Map getSrCutData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    public static Map getSrCutData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev) throws SQLException {
         String sql = "SELECT kojyo,lotno,edaban,startdatetime,enddatetime,cutbamaisuu,gouki,cuttableondo,tantousya,kakuninsya,"
                 + "bikou1,bikou2,bikou3,bikou4,bikou5,housiki,atumimin,atumimax,cutbashurui,cutmuki,happosheetcolor,kansou,"
@@ -564,7 +569,7 @@ public class CommonUtil {
      * @return 工程データ
      * @throws SQLException 例外エラー
      */
-    private static Map getSrCutcheckData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    public static Map getSrCutcheckData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev) throws SQLException {
         String sql = "SELECT kojyo,lotno,edaban,startdatetime,enddatetime,tantousya,kakuninsya,AtumiMin,AtumiMax,Atumi01,"
                 + "Atumi02,Atumi03,Atumi04,Atumi05,Atumi06,Atumi07,Atumi08,Atumi09,Atumi10,bikou1,bikou2,bikou3,bikou4,bikou5,"
@@ -596,7 +601,7 @@ public class CommonUtil {
      * @return 工程データ
      * @throws SQLException 例外エラー
      */
-    private static Map getSrSayadumeData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    public static Map getSrSayadumeData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev) throws SQLException {
         String sql = "SELECT kojyo,lotno,edaban,kcpno,kaishinichiji,syuuryounichiji,sayadumegouki,sayasuu,kosuu,tantousya,"
                 + "jissekino,bikou1,bikou2,bikou3,bikou4,bikou5,tourokunichiji,koushinnichiji,settertumeryou,settertumehouhou,"
@@ -627,7 +632,7 @@ public class CommonUtil {
      * @return 工程データ
      * @throws SQLException 例外エラー
      */
-    private static Map getSrYobikanData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    public static Map getSrYobikanData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev, int jissekino) throws SQLException {
         String sql = "SELECT kojyo,lotno,edaban,kcpno,kosuu,kaisinichiji,syuryoyoteinichiji,syuryonichiji,"
                 + "yobikangoki,sayasuu,yobikanjikan,yobikanondo,peakjikan,kaisitantosya,syuryotantosya,jissekino,"
@@ -660,7 +665,7 @@ public class CommonUtil {
      * @return 工程データ
      * @throws SQLException 例外エラー
      */
-    private static Map getSrNijidasshiData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    public static Map getSrNijidasshiData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev) throws SQLException {
         
         // 画面実装時に再確認
@@ -693,7 +698,7 @@ public class CommonUtil {
      * @return 工程データ
      * @throws SQLException 例外エラー
      */
-    private static Map getSrSyoseiData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    public static Map getSrSyoseiData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev, int jissekino) throws SQLException {
         String sql = "SELECT kojyo,lotno,edaban,jissekino,kcpno,kosuu,genryohinsyumei,genryogroup,skaisinichiji,ssyuryonichiji,bprogramno,"
                 + "syoseiondo,goki,ssettermaisuu,nyurodaibanmaisuu,skaisitantosya,ssyuryotantosya,biko1,biko2,biko3,biko4,biko5,bkaisinichiji,"
@@ -728,7 +733,7 @@ public class CommonUtil {
      * @return 工程データ
      * @throws SQLException 例外エラー
      */
-    private static Map getSrSaisankaData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    public static Map getSrSaisankaData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev, int jissekino) throws SQLException {
         String sql = "SELECT kojyo,lotno,edaban,jissekino,KCPNO,ukeiresettamaisuu,siteisaisaka,tounyusettasuu,gouki,setteipattern,"
                 + "keepondo,atogaikan,kaishusettasuu,kaisinichiji,StartTantosyacode,StartKakuninsyacode,syuuryounichiji,"
@@ -761,7 +766,7 @@ public class CommonUtil {
      * @return 工程データ
      * @throws SQLException 例外エラー
      */
-    private static Map getSrBarrel1Data(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    public static Map getSrBarrel1Data(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev, int jissekino) throws SQLException {
         String sql = "SELECT kojyo,lotno,edaban,jissekino,kcpno,bkaisinichiji,bsyuryonichiji,bjyokensetteimode,bjyokensyusokudo,"
                 + "bgoki,bjikan,potsuu,chiphahenkakunin,potkakunin,btantosya,ptantosya,bpotno1,kankaisinichiji,kansyuryonichiji,"
@@ -796,7 +801,7 @@ public class CommonUtil {
      * @return 工程データ
      * @throws SQLException 例外エラー
      */
-    private static Map getSrSyoseikeisuuData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    public static Map getSrSyoseikeisuuData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev, int jissekino) throws SQLException {
         String sql = "SELECT kojyo,lotno,edaban,jissekino,kcpno,ukeirekosuu,tanijyuryo,soujuryou,ryohinkosuu,keinichiji,"
                 + "keitantosya,budomari,biko1,biko2,barrelgohantei,torokunichiji,kosinNichiji,revision "
@@ -828,7 +833,7 @@ public class CommonUtil {
      * @return 工程データ
      * @throws SQLException 例外エラー
      */
-    private static Map getSrJikiqcData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    public static Map getSrJikiqcData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev, int jissekino) throws SQLException {
         String sql = "SELECT kojyo,lotno,edaban,jissekino,kcpno,gouhihantei,checkbi,checktantousyacode,sijinaiyou1,"
                 + "sijinaiyou2,sijinaiyou6,torokunichiji,kosinnichiji,revision "
@@ -847,4 +852,77 @@ public class CommonUtil {
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
     }
+    
+    /**
+     * 外部電極焼成(焼成)のデータを取得する。
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 工程データ
+     * @throws SQLException 例外エラー
+     */
+    public static Map getSrGdyakitukeData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev, int jissekino) throws SQLException {
+        String sql = "SELECT kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,"
+                + "syorisuu,gouki,sayamaisuu,ondo,okurispeed,startdatetime,StartTantosyacode,StartKakuninsyacode,"
+                + "enddatetime,EndTantosyacode,biko1,biko2,biko3,torokunichiji,kosinnichiji,revision "
+                + "FROM sr_gdyakituke "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND revision = ? "
+                + "AND kaisuu = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+
+    /**
+     * 外部電極・ﾒｯｷ品質検査のデータを取得する。
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 工程データ
+     * @throws SQLException 例外エラー
+     */
+    public static Map getSrMekkiData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev, int jissekino) throws SQLException {
+        String sql = "SELECT kojyo,lotno,edaban,kcpno,ukeiresuu,domekosuu,gouki,tantousya,mekkikaishinichiji,mekkijyoukennia,"
+                + "mekkijyoukenniam,mekkijyoukensna,mekkijyoukensnam,shukkakosuu,budomari,makuatsunimin,makuatsunimax,makuatsuniave,"
+                + "makuatsunistd,makuatsusnmin,makuatsusnmax,makuatsusnave,makuatsusnstd,nurekensakekka,tainetsukensakekka,gaikankensakekka,"
+                + "bikou1,bikou2,bikou3,jissekino,tourokunichiji,koushinnichiji,domemeisai,tyoseimaeph1,tyoseigoph1,tyoseijikan1,tyoseimaeph2,"
+                + "tyoseigoph2,tyoseijikan2,tsunpou,barrelno,makuatsunicpl,makuatsusncpl,sokuteinichiji,makuatsunicv,makuatsusncv,kensanichiji,"
+                + "kensatantousya,makuatsutantosya,kaishinichiji_sn,tokuisaki,lotkubuncode,ownercode,ukeiretannijyuryo,ukeiresoujyuryou,"
+                + "mekkibasyo,mekkibasyosetubi,mekkisyuryounichiji,syuryousya,kensatannijyuryo,kensasoujyuryou,netusyorijyouken,netusyorikaisinichiji,"
+                + "netusyoritantousya,jisyakusenbetukaisinichiji,jisyakusenbetutantousya,ijouhakkou,ijourank,makuatsukakunin,testhin,tsunpouave,"
+                + "mekkisyurui,revision "
+                + "FROM sr_mekki "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND revision = ? "
+                + "AND jissekino = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+    
 }
