@@ -246,58 +246,27 @@ public class PublicResource {
 
             // 計算処理
             BigDecimal tan; // Tanδ
-            BigDecimal irHanteiti1Low; // 耐電圧設定条件 IR① 判定値(低)
-            BigDecimal irHanteiti1; // 耐電圧設定条件 IR① 判定値
-            BigDecimal irHanteiti2Low; // 耐電圧設定条件 IR② 判定値(低)
-            BigDecimal irHanteiti2; // 耐電圧設定条件 IR② 判定値
-            BigDecimal irHanteiti3Low; // 耐電圧設定条件 IR③ 判定値(低)
-            BigDecimal irHanteiti3; // 耐電圧設定条件 IR③ 判定値
-            BigDecimal irHanteiti4Low; // 耐電圧設定条件 IR④ 判定値(低)
-            BigDecimal irHanteiti4; // 耐電圧設定条件 IR④ 判定値
-            BigDecimal irHanteiti5Low; // 耐電圧設定条件 IR⑤ 判定値(低)
-            BigDecimal irHanteiti5; // 耐電圧設定条件 IR⑤ 判定値
-            BigDecimal irHanteiti6Low; // 耐電圧設定条件 IR⑥ 判定値(低)
-            BigDecimal irHanteiti6; // 耐電圧設定条件 IR⑥ 判定値
-            BigDecimal irHanteiti7Low; // 耐電圧設定条件 IR⑦ 判定値(低)
-            BigDecimal irHanteiti7; // 耐電圧設定条件 IR⑦ 判定値
-            BigDecimal irHanteiti8Low; // 耐電圧設定条件 IR⑧ 判定値(低)
-            BigDecimal irHanteiti8; // 耐電圧設定条件 IR⑧ 判定値
+            BigDecimal irHanteiti1Low = getHanteichi(param.getIrhanteiti1_low()); // 耐電圧設定条件 IR① 判定値(低)
+            BigDecimal irHanteiti1 = getHanteichi(param.getIrhanteiti1()); // 耐電圧設定条件 IR① 判定値
+            BigDecimal irHanteiti2Low = getHanteichi(param.getIrhanteiti2_low()); // 耐電圧設定条件 IR② 判定値(低)
+            BigDecimal irHanteiti2 = getHanteichi(param.getIrhanteiti2()); // 耐電圧設定条件 IR② 判定値
+            BigDecimal irHanteiti3Low = getHanteichi(param.getIrhanteiti3_low()); // 耐電圧設定条件 IR③ 判定値(低)
+            BigDecimal irHanteiti3 = getHanteichi(param.getIrhanteiti3()); // 耐電圧設定条件 IR③ 判定値
+            BigDecimal irHanteiti4Low = getHanteichi(param.getIrhanteiti4_low()); // 耐電圧設定条件 IR④ 判定値(低)
+            BigDecimal irHanteiti4 = getHanteichi(param.getIrhanteiti4()); // 耐電圧設定条件 IR④ 判定値
+            BigDecimal irHanteiti5Low = getHanteichi(param.getIrhanteiti5_low()); // 耐電圧設定条件 IR⑤ 判定値(低)
+            BigDecimal irHanteiti5 = getHanteichi(param.getIrhanteiti5()); // 耐電圧設定条件 IR⑤ 判定値
+            BigDecimal irHanteiti6Low = getHanteichi(param.getIrhanteiti6_low()); // 耐電圧設定条件 IR⑥ 判定値(低)
+            BigDecimal irHanteiti6 = getHanteichi(param.getIrhanteiti6()); // 耐電圧設定条件 IR⑥ 判定値
+            BigDecimal irHanteiti7Low = getHanteichi(param.getIrhanteiti7_low()); // 耐電圧設定条件 IR⑦ 判定値(低)
+            BigDecimal irHanteiti7 = getHanteichi(param.getIrhanteiti7()); // 耐電圧設定条件 IR⑦ 判定値
+            BigDecimal irHanteiti8Low = getHanteichi(param.getIrhanteiti8_low()); // 耐電圧設定条件 IR⑧ 判定値(低)
+            BigDecimal irHanteiti8 = getHanteichi(param.getIrhanteiti8()); // 耐電圧設定条件 IR⑧ 判定値
+
             if ("ESI".equals(param.getMaker())) {
                 tan = getCalcTan(param.getTan());
-                irHanteiti1Low = getHanteichi(param.getIrhanteiti1_low());
-                irHanteiti1 = getHanteichi(param.getIrhanteiti1());
-                irHanteiti2Low = getHanteichi(param.getIrhanteiti2_low());
-                irHanteiti2 = getHanteichi(param.getIrhanteiti2());
-                irHanteiti3Low = getHanteichi(param.getIrhanteiti3_low());
-                irHanteiti3 = getHanteichi(param.getIrhanteiti3());
-                irHanteiti4Low = getHanteichi(param.getIrhanteiti4_low());
-                irHanteiti4 = getHanteichi(param.getIrhanteiti4());
-                irHanteiti5Low = getHanteichi(param.getIrhanteiti5_low());
-                irHanteiti5 = getHanteichi(param.getIrhanteiti5());
-                irHanteiti6Low = getHanteichi(param.getIrhanteiti6_low());
-                irHanteiti6 = getHanteichi(param.getIrhanteiti6());
-                irHanteiti7Low = getHanteichi(param.getIrhanteiti7_low());
-                irHanteiti7 = getHanteichi(param.getIrhanteiti7());
-                irHanteiti8Low = getHanteichi(param.getIrhanteiti8_low());
-                irHanteiti8 = getHanteichi(param.getIrhanteiti8());
             } else {
                 tan = (BigDecimal) getFormatData(param.getTan(), "3", "1", "BigDecimal");
-                irHanteiti1Low = (BigDecimal) getFormatData(param.getIrhanteiti1_low(), "2", "12", "BigDecimal");
-                irHanteiti1 = (BigDecimal) getFormatData(param.getIrhanteiti1(), "2", "12", "BigDecimal");
-                irHanteiti2Low = (BigDecimal) getFormatData(param.getIrhanteiti2_low(), "2", "12", "BigDecimal");
-                irHanteiti2 = (BigDecimal) getFormatData(param.getIrhanteiti2(), "2", "12", "BigDecimal");
-                irHanteiti3Low = (BigDecimal) getFormatData(param.getIrhanteiti3_low(), "2", "12", "BigDecimal");
-                irHanteiti3 = (BigDecimal) getFormatData(param.getIrhanteiti3(), "2", "12", "BigDecimal");
-                irHanteiti4Low = (BigDecimal) getFormatData(param.getIrhanteiti4_low(), "2", "12", "BigDecimal");
-                irHanteiti4 = (BigDecimal) getFormatData(param.getIrhanteiti4(), "2", "12", "BigDecimal");
-                irHanteiti5Low = (BigDecimal) getFormatData(param.getIrhanteiti5_low(), "2", "12", "BigDecimal");
-                irHanteiti5 = (BigDecimal) getFormatData(param.getIrhanteiti5(), "2", "12", "BigDecimal");
-                irHanteiti6Low = (BigDecimal) getFormatData(param.getIrhanteiti6_low(), "2", "12", "BigDecimal");
-                irHanteiti6 = (BigDecimal) getFormatData(param.getIrhanteiti6(), "2", "12", "BigDecimal");
-                irHanteiti7Low = (BigDecimal) getFormatData(param.getIrhanteiti7_low(), "2", "12", "BigDecimal");
-                irHanteiti7 = (BigDecimal) getFormatData(param.getIrhanteiti7(), "2", "12", "BigDecimal");
-                irHanteiti8Low = (BigDecimal) getFormatData(param.getIrhanteiti8_low(), "2", "12", "BigDecimal");
-                irHanteiti8 = (BigDecimal) getFormatData(param.getIrhanteiti8(), "2", "12", "BigDecimal");
             }
 
             List<Object> paramIns
