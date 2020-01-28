@@ -4166,8 +4166,8 @@ public class GXHDO101B040 implements IFormLogic {
                 return;
             }
 
-            //.BINX マシン不良率(%) ÷ BINX 抜き取り結果(SelectOneMenu) × 100(小数点第五位を四捨五入)
-            BigDecimal shinFuryoritsu = mcnFuryoritsu.multiply(BigDecimal.valueOf(100)).divide(nukitorikekka, 4, RoundingMode.HALF_UP);
+            //BINX マシン不良率(%) × BINX 抜き取り結果(SelectOneMenu)
+            BigDecimal shinFuryoritsu = mcnFuryoritsu.multiply(nukitorikekka).setScale(4, RoundingMode.HALF_UP);
 
             //計算結果を真の不良率にセット
             itemShinFuryoritsu.setValue(shinFuryoritsu.toPlainString());
