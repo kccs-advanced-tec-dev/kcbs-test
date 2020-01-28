@@ -19,12 +19,12 @@ import java.sql.Timestamp;
  * ===============================================================================<br>
  */
 /**
- * sr_qasumpou1(QA寸法)のモデルクラスです。
+ * sr_qasunpou1(QA寸法)のモデルクラスです。
  *
  * @author 863 F.Zhang
  * @since 2019/11/07
  */
-public class SrQasumpou1 {
+public class SrQasunpou1 {
 
     /**
      * 工場ｺｰﾄﾞ
