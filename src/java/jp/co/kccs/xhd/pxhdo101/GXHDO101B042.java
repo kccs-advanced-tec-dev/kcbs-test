@@ -52,22 +52,22 @@ import org.apache.commons.dbutils.handlers.MapListHandler;
  * <br>
  * システム名	品質DB(コンデンサ)<br>
  * <br>
- * 変更日	2019/12/05<br>
+ * 変更日	2019/12/30<br>
  * 計画書No	K1811-DS001<br>
- * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更者	863 F.Zhang<br>
  * 変更理由	新規作成<br>
  * <br>
  * ===============================================================================<br>
  */
 /**
- * GXHD101b040(電気特性)
+ * GXHD101B042(電気特性・一般品(製品情報))
  *
- * @author SYSNAVI K.Hisanaga
- * @since 2019/12/05
+ * @author 863 F.Zhang
+ * @since 2019/12/30
  */
-public class GXHDO101B040 implements IFormLogic {
+public class GXHDO101B042 implements IFormLogic {
 
-    private static final Logger LOGGER = Logger.getLogger(GXHDO101B040.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GXHDO101B042.class.getName());
     private static final String JOTAI_FLG_KARI_TOROKU = "0";
     private static final String JOTAI_FLG_TOROKUZUMI = "1";
     private static final String JOTAI_FLG_SAKUJO = "9";
@@ -76,7 +76,7 @@ public class GXHDO101B040 implements IFormLogic {
     /**
      * コンストラクタ
      */
-    public GXHDO101B040() {
+    public GXHDO101B042() {
     }
 
     /**
@@ -100,14 +100,14 @@ public class GXHDO101B040 implements IFormLogic {
                 return processData;
             }
 
-            // 「プリチャージ」初期設定
-            initGXHDO101B040B(processData);
+            // 「耐電圧設定条件」初期設定
+            initGXHDO101B042B(processData);
 
-            //「耐電圧」初期設定
-            initGXHDO101B040C(processData);
+            //「電圧DROP設定条件」初期設定
+            initGXHDO101B042C(processData);
 
             //「設定条件及び処理結果」初期設定
-            initGXHDO101B040D(processData);
+            initGXHDO101B042D(processData);
 
             // 初期表示データ設定処理
             processData = setInitData(processData);
@@ -125,22 +125,22 @@ public class GXHDO101B040 implements IFormLogic {
 
             //処理時にエラーの背景色を戻さない機能として登録
             processData.setNoCheckButtonId(Arrays.asList(
-                    GXHDO101B040Const.BTN_SENBETSU_STARTDATETIME_TOP,
-                    GXHDO101B040Const.BTN_SENBETSU_ENDDATETIME_TOP,
-                    GXHDO101B040Const.BTN_BIN_KEISAN_TOP,
-                    GXHDO101B040Const.BTN_RYOHIN_KEISAN_TOP,
-                    GXHDO101B040Const.BTN_BUDOMARI_KEISAN_TOP,
-                    GXHDO101B040Const.BTN_NETSUSYORI_KEISAN_TOP,
-                    GXHDO101B040Const.BTN_HOSEIRITSU_KEISAN_TOP,
-                    GXHDO101B040Const.BTN_SETSUBI_DATA_TORIKOMI_TOP
+                    GXHDO101B042Const.BTN_SENBETSU_STARTDATETIME_TOP,
+                    GXHDO101B042Const.BTN_SENBETSU_ENDDATETIME_TOP,
+                    GXHDO101B042Const.BTN_BIN_KEISAN_TOP,
+                    GXHDO101B042Const.BTN_RYOHIN_KEISAN_TOP,
+                    GXHDO101B042Const.BTN_BUDOMARI_KEISAN_TOP,
+                    GXHDO101B042Const.BTN_NETSUSYORI_KEISAN_TOP,
+                    GXHDO101B042Const.BTN_HOSEIRITSU_KEISAN_TOP,
+                    GXHDO101B042Const.BTN_SETSUBI_DATA_TORIKOMI_TOP
             ));
 
             // リビジョンチェック対象のボタンを設定する。
             processData.setCheckRevisionButtonId(Arrays.asList(
-                    GXHDO101B040Const.BTN_KARI_TOUROKU_TOP,
-                    GXHDO101B040Const.BTN_INSERT_TOP,
-                    GXHDO101B040Const.BTN_DELETE_TOP,
-                    GXHDO101B040Const.BTN_UPDATE_TOP));
+                    GXHDO101B042Const.BTN_KARI_TOUROKU_TOP,
+                    GXHDO101B042Const.BTN_INSERT_TOP,
+                    GXHDO101B042Const.BTN_DELETE_TOP,
+                    GXHDO101B042Const.BTN_UPDATE_TOP));
 
             // エラーが発生していない場合
             if (processData.getErrorMessageInfoList().isEmpty()) {
@@ -173,52 +173,54 @@ public class GXHDO101B040 implements IFormLogic {
         String method;
         switch (buttonId) {
             // 仮登録
-            case GXHDO101B040Const.BTN_KARI_TOUROKU_TOP:
+            case GXHDO101B042Const.BTN_KARI_TOUROKU_TOP:
                 method = "checkDataTempResist";
                 break;
             // 登録
-            case GXHDO101B040Const.BTN_INSERT_TOP:
+            case GXHDO101B042Const.BTN_INSERT_TOP:
                 method = "checkDataResist";
                 break;
             // 修正
-            case GXHDO101B040Const.BTN_UPDATE_TOP:
+            case GXHDO101B042Const.BTN_UPDATE_TOP:
                 method = "checkDataCorrect";
                 break;
             // 削除
-            case GXHDO101B040Const.BTN_DELETE_TOP:
+            case GXHDO101B042Const.BTN_DELETE_TOP:
                 method = "checkDataDelete";
                 break;
             // 選別開始日時
-            case GXHDO101B040Const.BTN_SENBETSU_STARTDATETIME_TOP:
+            case GXHDO101B042Const.BTN_SENBETSU_STARTDATETIME_TOP:
                 method = "setSenbetsuKaishiDateTime";
                 break;
             // 選別終了日時
-            case GXHDO101B040Const.BTN_SENBETSU_ENDDATETIME_TOP:
+            case GXHDO101B042Const.BTN_SENBETSU_ENDDATETIME_TOP:
                 method = "setSenbetsuShuryoDateTime";
                 break;
 
             // BIN計算
-            case GXHDO101B040Const.BTN_BIN_KEISAN_TOP:
+            case GXHDO101B042Const.BTN_BIN_KEISAN_TOP:
                 method = "doBinKeisan";
                 break;
             // 良品計算
-            case GXHDO101B040Const.BTN_RYOHIN_KEISAN_TOP:
+            case GXHDO101B042Const.BTN_RYOHIN_KEISAN_TOP:
                 method = "doRyohinKeisan";
                 break;
+
             // 歩留まり計算
-            case GXHDO101B040Const.BTN_BUDOMARI_KEISAN_TOP:
+            case GXHDO101B042Const.BTN_BUDOMARI_KEISAN_TOP:
                 method = "doBudomariKeisan";
                 break;
             // 熱処理ｴｰｼﾞﾝｸﾞ計算
-            case GXHDO101B040Const.BTN_NETSUSYORI_KEISAN_TOP:
+            case GXHDO101B042Const.BTN_NETSUSYORI_KEISAN_TOP:
                 method = "doNetsushoriAgingKeisan";
                 break;
+
             // 補正率計算
-            case GXHDO101B040Const.BTN_HOSEIRITSU_KEISAN_TOP:
+            case GXHDO101B042Const.BTN_HOSEIRITSU_KEISAN_TOP:
                 method = "doHoseiritsuKeisan";
                 break;
             // 設備データ取込
-            case GXHDO101B040Const.BTN_SETSUBI_DATA_TORIKOMI_TOP:
+            case GXHDO101B042Const.BTN_SETSUBI_DATA_TORIKOMI_TOP:
                 method = "confSetsubiDataTorikomi";
                 break;
             default:
@@ -532,7 +534,7 @@ public class GXHDO101B040 implements IFormLogic {
 
         // ユーザ認証用のパラメータをセットする。
         processData.setRquireAuth(true);
-        processData.setUserAuthParam(GXHDO101B040Const.USER_AUTH_UPDATE_PARAM);
+        processData.setUserAuthParam(GXHDO101B042Const.USER_AUTH_UPDATE_PARAM);
 
         // 後続処理メソッド設定
         processData.setMethod("doCorrect");
@@ -638,7 +640,7 @@ public class GXHDO101B040 implements IFormLogic {
 
         // ユーザ認証用のパラメータをセットする。
         processData.setRquireAuth(true);
-        processData.setUserAuthParam(GXHDO101B040Const.USER_AUTH_DELETE_PARAM);
+        processData.setUserAuthParam(GXHDO101B042Const.USER_AUTH_DELETE_PARAM);
 
         // 後続処理メソッド設定
         processData.setMethod("doDelete");
@@ -740,8 +742,8 @@ public class GXHDO101B040 implements IFormLogic {
      * @return 処理制御データ
      */
     public ProcessData setSenbetsuKaishiDateTime(ProcessData processData) {
-        FXHDD01 itemDay = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_SENBETSU_KAISHI_DAY);
-        FXHDD01 itemTime = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_SENBETSU_KAISHI_TIME);
+        FXHDD01 itemDay = getItemRow(processData.getItemList(), GXHDO101B042Const.SEIHIN_SENBETSU_KAISHI_DAY);
+        FXHDD01 itemTime = getItemRow(processData.getItemList(), GXHDO101B042Const.SEIHIN_SENBETSU_KAISHI_TIME);
         if (StringUtil.isEmpty(itemDay.getValue()) && StringUtil.isEmpty(itemTime.getValue())) {
             setDateTimeItem(itemDay, itemTime, new Date());
         }
@@ -756,8 +758,8 @@ public class GXHDO101B040 implements IFormLogic {
      * @return 処理制御データ
      */
     public ProcessData setSenbetsuShuryoDateTime(ProcessData processData) {
-        FXHDD01 itemDay = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_SENBETSU_SHURYO_DAY);
-        FXHDD01 itemTime = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_SENBETSU_SHURYO_TIME);
+        FXHDD01 itemDay = getItemRow(processData.getItemList(), GXHDO101B042Const.SEIHIN_SENBETSU_SHURYO_DAY);
+        FXHDD01 itemTime = getItemRow(processData.getItemList(), GXHDO101B042Const.SEIHIN_SENBETSU_SHURYO_TIME);
         if (StringUtil.isEmpty(itemDay.getValue()) && StringUtil.isEmpty(itemTime.getValue())) {
             setDateTimeItem(itemDay, itemTime, new Date());
         }
@@ -838,7 +840,7 @@ public class GXHDO101B040 implements IFormLogic {
         calcHoseiritsu(processData);
         return processData;
     }
-
+    
     /**
      * 設備データ取込(確認メッセージ表示)
      *
@@ -902,38 +904,38 @@ public class GXHDO101B040 implements IFormLogic {
         switch (jotaiFlg) {
             case JOTAI_FLG_TOROKUZUMI:
                 activeIdList.addAll(Arrays.asList(
-                        GXHDO101B040Const.BTN_UPDATE_TOP,
-                        GXHDO101B040Const.BTN_DELETE_TOP,
-                        GXHDO101B040Const.BTN_SENBETSU_STARTDATETIME_TOP,
-                        GXHDO101B040Const.BTN_SENBETSU_ENDDATETIME_TOP,
-                        GXHDO101B040Const.BTN_BIN_KEISAN_TOP,
-                        GXHDO101B040Const.BTN_RYOHIN_KEISAN_TOP,
-                        GXHDO101B040Const.BTN_BUDOMARI_KEISAN_TOP,
-                        GXHDO101B040Const.BTN_NETSUSYORI_KEISAN_TOP,
-                        GXHDO101B040Const.BTN_HOSEIRITSU_KEISAN_TOP,
-                        GXHDO101B040Const.BTN_SETSUBI_DATA_TORIKOMI_TOP
+                        GXHDO101B042Const.BTN_UPDATE_TOP,
+                        GXHDO101B042Const.BTN_DELETE_TOP,
+                        GXHDO101B042Const.BTN_SENBETSU_STARTDATETIME_TOP,
+                        GXHDO101B042Const.BTN_SENBETSU_ENDDATETIME_TOP,
+                        GXHDO101B042Const.BTN_BIN_KEISAN_TOP,
+                        GXHDO101B042Const.BTN_RYOHIN_KEISAN_TOP,
+                        GXHDO101B042Const.BTN_BUDOMARI_KEISAN_TOP,
+                        GXHDO101B042Const.BTN_NETSUSYORI_KEISAN_TOP,
+                        GXHDO101B042Const.BTN_HOSEIRITSU_KEISAN_TOP,
+                        GXHDO101B042Const.BTN_SETSUBI_DATA_TORIKOMI_TOP
                 ));
                 inactiveIdList.addAll(Arrays.asList(
-                        GXHDO101B040Const.BTN_KARI_TOUROKU_TOP,
-                        GXHDO101B040Const.BTN_INSERT_TOP));
+                        GXHDO101B042Const.BTN_KARI_TOUROKU_TOP,
+                        GXHDO101B042Const.BTN_INSERT_TOP));
 
                 break;
             default:
                 activeIdList.addAll(Arrays.asList(
-                        GXHDO101B040Const.BTN_KARI_TOUROKU_TOP,
-                        GXHDO101B040Const.BTN_INSERT_TOP,
-                        GXHDO101B040Const.BTN_SENBETSU_STARTDATETIME_TOP,
-                        GXHDO101B040Const.BTN_SENBETSU_ENDDATETIME_TOP,
-                        GXHDO101B040Const.BTN_BIN_KEISAN_TOP,
-                        GXHDO101B040Const.BTN_RYOHIN_KEISAN_TOP,
-                        GXHDO101B040Const.BTN_BUDOMARI_KEISAN_TOP,
-                        GXHDO101B040Const.BTN_NETSUSYORI_KEISAN_TOP,
-                        GXHDO101B040Const.BTN_HOSEIRITSU_KEISAN_TOP,
-                        GXHDO101B040Const.BTN_SETSUBI_DATA_TORIKOMI_TOP
+                        GXHDO101B042Const.BTN_KARI_TOUROKU_TOP,
+                        GXHDO101B042Const.BTN_INSERT_TOP,
+                        GXHDO101B042Const.BTN_SENBETSU_STARTDATETIME_TOP,
+                        GXHDO101B042Const.BTN_SENBETSU_ENDDATETIME_TOP,
+                        GXHDO101B042Const.BTN_BIN_KEISAN_TOP,
+                        GXHDO101B042Const.BTN_RYOHIN_KEISAN_TOP,
+                        GXHDO101B042Const.BTN_BUDOMARI_KEISAN_TOP,
+                        GXHDO101B042Const.BTN_NETSUSYORI_KEISAN_TOP,
+                        GXHDO101B042Const.BTN_HOSEIRITSU_KEISAN_TOP,
+                        GXHDO101B042Const.BTN_SETSUBI_DATA_TORIKOMI_TOP
                 ));
                 inactiveIdList.addAll(Arrays.asList(
-                        GXHDO101B040Const.BTN_UPDATE_TOP,
-                        GXHDO101B040Const.BTN_DELETE_TOP
+                        GXHDO101B042Const.BTN_UPDATE_TOP,
+                        GXHDO101B042Const.BTN_DELETE_TOP
                 ));
 
                 break;
@@ -1040,7 +1042,7 @@ public class GXHDO101B040 implements IFormLogic {
     private boolean initKensabasho(QueryRunner queryRunnerDoc, HttpSession session, ProcessData processData, List<String> errorMessageList) {
         List<String> userGrpList = (List<String>) session.getAttribute("login_user_group");
         List<String> paramList = loadUnitGroupParamData(queryRunnerDoc, userGrpList, "電気特性_検査場所ﾄﾞﾛｯﾌﾟﾀﾞｳﾝ");
-        FXHDD01 itemKensaBasho = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_KENSA_BASHO);
+        FXHDD01 itemKensaBasho = getItemRow(processData.getItemList(), GXHDO101B042Const.SEIHIN_KENSA_BASHO);
         if (paramList == null || paramList.isEmpty()) {
             errorMessageList.clear();
             errorMessageList.add(MessageUtil.getMessage("XHD-000169", itemKensaBasho.getLabel1()));
@@ -1065,8 +1067,8 @@ public class GXHDO101B040 implements IFormLogic {
      */
     private Map<String, Object> getShiteiKousabudomari(ProcessData processData, QueryRunner queryRunnerWip, String lotNo, List<String> errorMessageList) {
 
-        FXHDD01 siteikousaBudomari1 = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI1);
-        FXHDD01 siteikousaBudomari2 = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI2);
+        FXHDD01 siteikousaBudomari1 = getItemRow(processData.getItemList(), GXHDO101B042Const.SEIHIN_SHITEI_KOUSA_BUDOMARI1);
+        FXHDD01 siteikousaBudomari2 = getItemRow(processData.getItemList(), GXHDO101B042Const.SEIHIN_SHITEI_KOUSA_BUDOMARI2);
         // QA履歴データ取得
         List<Map<String, Object>> qaRirekiDataList = loadQaRirekiData(queryRunnerWip, lotNo);
         if (qaRirekiDataList.isEmpty()) {
@@ -1106,7 +1108,7 @@ public class GXHDO101B040 implements IFormLogic {
     private void setHanteichi(QueryRunner queryRunnerDoc, ProcessData processData, List<String> errorMessageList) {
         // 誤差率(判定値) ※デフォルト10
         BigDecimal gosaritsu = BigDecimal.valueOf(10);
-        String gosaritsuHantei = loadParamData(queryRunnerDoc, "common_user", "電気特性ESI_誤差率");
+        String gosaritsuHantei = loadParamData(queryRunnerDoc, "common_user", "電気特性一般品_誤差率");
         if (!StringUtil.isEmpty(gosaritsuHantei)) {
             try {
                 gosaritsu = new BigDecimal(gosaritsuHantei);
@@ -1118,7 +1120,7 @@ public class GXHDO101B040 implements IFormLogic {
 
         // 補正率(判定値) ※デフォルト5
         BigDecimal hoseiritsu = BigDecimal.valueOf(5);
-        String hoseiritsuHantei = loadParamData(queryRunnerDoc, "common_user", "電気特性ESI_補正率");
+        String hoseiritsuHantei = loadParamData(queryRunnerDoc, "common_user", "電気特性一般品_補正率");
         if (!StringUtil.isEmpty(hoseiritsuHantei)) {
             try {
                 hoseiritsu = new BigDecimal(hoseiritsuHantei);
@@ -1143,32 +1145,32 @@ public class GXHDO101B040 implements IFormLogic {
     private void setViewItemData(ProcessData processData, Map sekkeiData, Map lotKbnMasData, Map ownerMasData, Map shikakariData, Map siteiKousaBudomariInfo, String lotNo) {
 
         // ロットNo
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_LOTNO, lotNo);
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_LOTNO, lotNo);
         // KCPNO
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_KCPNO, StringUtil.nullToBlank(getMapData(shikakariData, "kcpno")));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_KCPNO, StringUtil.nullToBlank(getMapData(shikakariData, "kcpno")));
         // 客先
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_TOKUISAKI, StringUtil.nullToBlank(getMapData(shikakariData, "tokuisaki")));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_TOKUISAKI, StringUtil.nullToBlank(getMapData(shikakariData, "tokuisaki")));
 
         // ロット区分
         String lotkubuncode = StringUtil.nullToBlank(getMapData(shikakariData, "lotkubuncode")); //ﾛｯﾄ区分ｺｰﾄﾞ
         if (StringUtil.isEmpty(lotkubuncode)) {
-            this.setItemData(processData, GXHDO101B040Const.SEIHIN_LOT_KUBUN, "");
+            this.setItemData(processData, GXHDO101B042Const.SEIHIN_LOT_KUBUN, "");
         } else {
             String lotKubun = StringUtil.nullToBlank(getMapData(lotKbnMasData, "lotkubun"));
-            this.setItemData(processData, GXHDO101B040Const.SEIHIN_LOT_KUBUN, lotkubuncode + ":" + lotKubun);
+            this.setItemData(processData, GXHDO101B042Const.SEIHIN_LOT_KUBUN, lotkubuncode + ":" + lotKubun);
         }
 
         // オーナー
         String ownercode = StringUtil.nullToBlank(getMapData(shikakariData, "ownercode"));// ｵｰﾅｰｺｰﾄﾞ
         if (StringUtil.isEmpty(lotkubuncode)) {
-            this.setItemData(processData, GXHDO101B040Const.SEIHIN_OWNER, "");
+            this.setItemData(processData, GXHDO101B042Const.SEIHIN_OWNER, "");
         } else {
             String owner = StringUtil.nullToBlank(getMapData(ownerMasData, "ownername"));
-            this.setItemData(processData, GXHDO101B040Const.SEIHIN_OWNER, ownercode + ":" + owner);
+            this.setItemData(processData, GXHDO101B042Const.SEIHIN_OWNER, ownercode + ":" + owner);
         }
 
         // 指定公差
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_SHITEI_KOUSA, StringUtil.nullToBlank(getMapData(sekkeiData, "KOUSA")));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_SHITEI_KOUSA, StringUtil.nullToBlank(getMapData(sekkeiData, "KOUSA")));
 
         // 入力画面選択から受け取った情報を表示する。
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
@@ -1177,7 +1179,7 @@ public class GXHDO101B040 implements IFormLogic {
         Map srJikiqcInfo = (Map) session.getAttribute("SrJikiqcInfo");
         if (srJikiqcInfo != null && !srJikiqcInfo.isEmpty()) {
             //後工程指示内容←磁器QC[後工程指示内容2]
-            this.setItemData(processData, GXHDO101B040Const.SEIHIN_ATOKOUTEI_SHIJI_NAIYO, StringUtil.nullToBlank(srJikiqcInfo.get("sijinaiyou2")));
+            this.setItemData(processData, GXHDO101B042Const.SEIHIN_ATOKOUTEI_SHIJI_NAIYO, StringUtil.nullToBlank(srJikiqcInfo.get("sijinaiyou2")));
         }
 
         // 指定公差歩留まり設定処理
@@ -1187,14 +1189,14 @@ public class GXHDO101B040 implements IFormLogic {
             kousaBudomari1.append(" = ");
             kousaBudomari1.append(StringUtil.nullToBlank(siteiKousaBudomariInfo.get("budomari1")));
             kousaBudomari1.append(" %");
-            this.setItemData(processData, GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI1, kousaBudomari1.toString());
+            this.setItemData(processData, GXHDO101B042Const.SEIHIN_SHITEI_KOUSA_BUDOMARI1, kousaBudomari1.toString());
 
             StringBuilder kousaBudomari2 = new StringBuilder();
             kousaBudomari2.append(StringUtil.nullToBlank(siteiKousaBudomariInfo.get("kousa2")));
             kousaBudomari2.append(" = ");
             kousaBudomari2.append(StringUtil.nullToBlank(siteiKousaBudomariInfo.get("budomari2")));
             kousaBudomari2.append(" %");
-            this.setItemData(processData, GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI2, kousaBudomari2.toString());
+            this.setItemData(processData, GXHDO101B042Const.SEIHIN_SHITEI_KOUSA_BUDOMARI2, kousaBudomari2.toString());
         }
 
     }
@@ -1237,7 +1239,7 @@ public class GXHDO101B040 implements IFormLogic {
                     this.setItemData(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
                 }
                 for (FXHDD01 fxhdd001 : processData.getItemListEx()) {
-                    this.setItemDataEx(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
+                    this.setItemData(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
                 }
 
                 // 入力画面選択から受け取った情報を初期表示する。
@@ -1247,28 +1249,28 @@ public class GXHDO101B040 implements IFormLogic {
                 Map srMekkiInfo = (Map) session.getAttribute("SrMekkiInfo");
                 if (srMekkiInfo != null && !srMekkiInfo.isEmpty()) {
                     // 送り良品数←ﾒｯｷ品質検査[良品数]
-                    setItemData(processData, GXHDO101B040Const.SEIHIN_OKURI_RYOHINSU, StringUtil.nullToBlank(srMekkiInfo.get("shukkakosuu")));
+                    setItemData(processData, GXHDO101B042Const.SEIHIN_OKURI_RYOHINSU, StringUtil.nullToBlank(srMekkiInfo.get("shukkakosuu")));
 
                     // 受入れ単位重量←ﾒｯｷ品質検査[検査単位重量]
-                    setItemData(processData, GXHDO101B040Const.SEIHIN_UKEIRE_TANNIJURYO, StringUtil.nullToBlank((BigDecimal) srMekkiInfo.get("kensatannijyuryo")));
+                    setItemData(processData, GXHDO101B042Const.SEIHIN_UKEIRE_TANNIJURYO, StringUtil.nullToBlank((BigDecimal) srMekkiInfo.get("kensatannijyuryo")));
 
                     // 受入れ総重量←ﾒｯｷ品質検査[検査総重量]
-                    setItemData(processData, GXHDO101B040Const.SEIHIN_UKEIRE_SOUJURYO, StringUtil.nullToBlank((BigDecimal) srMekkiInfo.get("kensasoujyuryou")));
+                    setItemData(processData, GXHDO101B042Const.SEIHIN_UKEIRE_SOUJURYO, StringUtil.nullToBlank((BigDecimal) srMekkiInfo.get("kensasoujyuryou")));
 
                     // ﾒｯｷ日←ﾒｯｷ品質検査[終了日時のYYMMMDD部分] 
-                    setItemData(processData, GXHDO101B040Const.SEIHIN_MEKKI_DAY, DateUtil.formattedTimestamp((Timestamp) srMekkiInfo.get("mekkisyuryounichiji"), "yyMMdd"));
+                    setItemData(processData, GXHDO101B042Const.SEIHIN_MEKKI_DAY, DateUtil.formattedTimestamp((Timestamp) srMekkiInfo.get("mekkisyuryounichiji"), "yyMMdd"));
 
                     // ﾒｯｷ時間←ﾒｯｷ品質検査[終了日時のHHMM部分]
-                    setItemData(processData, GXHDO101B040Const.SEIHIN_MEKKI_TIME, DateUtil.formattedTimestamp((Timestamp) srMekkiInfo.get("mekkisyuryounichiji"), "HHmm"));
+                    setItemData(processData, GXHDO101B042Const.SEIHIN_MEKKI_TIME, DateUtil.formattedTimestamp((Timestamp) srMekkiInfo.get("mekkisyuryounichiji"), "HHmm"));
                 }
 
                 Map srGdyakitukeInfo = (Map) session.getAttribute("SrGdyakitukeInfo");
                 if (srGdyakitukeInfo != null && !srGdyakitukeInfo.isEmpty()) {
                     // 外部電極焼付日←外部電極焼成[終了日時]のYYMMMDD部分
-                    setItemData(processData, GXHDO101B040Const.SEIHIN_G_YAKITSUKE_DAY, DateUtil.formattedTimestamp((Timestamp) srGdyakitukeInfo.get("enddatetime"), "yyMMdd"));
+                    setItemData(processData, GXHDO101B042Const.SEIHIN_G_YAKITSUKE_DAY, DateUtil.formattedTimestamp((Timestamp) srGdyakitukeInfo.get("enddatetime"), "yyMMdd"));
 
                     // 外部電極焼付時間←外部電極焼成[終了日時]のHHMM部分
-                    setItemData(processData, GXHDO101B040Const.SEIHIN_G_YAKITSUKE_TIME, DateUtil.formattedTimestamp((Timestamp) srGdyakitukeInfo.get("enddatetime"), "HHmm"));
+                    setItemData(processData, GXHDO101B042Const.SEIHIN_G_YAKITSUKE_TIME, DateUtil.formattedTimestamp((Timestamp) srGdyakitukeInfo.get("enddatetime"), "HHmm"));
                 }
 
                 return true;
@@ -1309,9 +1311,9 @@ public class GXHDO101B040 implements IFormLogic {
     private void setInputItemData(ProcessData processData, SrDenkitokuseiesi srDenkitokuseiesi) {
         //製品情報
         setInputItemDataFormA(processData, srDenkitokuseiesi);
-        //ﾌﾟﾘﾁｬｰｼﾞ条件
-        setInputItemDataFormB(processData, srDenkitokuseiesi);
         //耐電圧設定条件
+        setInputItemDataFormB(processData, srDenkitokuseiesi);
+        //電圧DROP設定条件
         setInputItemDataFormC(processData, srDenkitokuseiesi);
         //設定条件及び処理結果
         setInputItemDataFormD(processData, srDenkitokuseiesi);
@@ -1326,228 +1328,148 @@ public class GXHDO101B040 implements IFormLogic {
     private void setInputItemDataFormA(ProcessData processData, SrDenkitokuseiesi srDenkitokuseiesi) {
 
         // 製品情報:送り良品数
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_OKURI_RYOHINSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_OKURI_RYOHINSU, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_OKURI_RYOHINSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_OKURI_RYOHINSU, srDenkitokuseiesi));
 
         // 製品情報:受入れ単位重量
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_UKEIRE_TANNIJURYO, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_UKEIRE_TANNIJURYO, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_UKEIRE_TANNIJURYO, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_UKEIRE_TANNIJURYO, srDenkitokuseiesi));
 
         // 製品情報:受入れ総重量
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_UKEIRE_SOUJURYO, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_UKEIRE_SOUJURYO, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_UKEIRE_SOUJURYO, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_UKEIRE_SOUJURYO, srDenkitokuseiesi));
 
         // 製品情報:外部電極焼付日
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_G_YAKITSUKE_DAY, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_G_YAKITSUKE_DAY, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_G_YAKITSUKE_DAY, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_G_YAKITSUKE_DAY, srDenkitokuseiesi));
 
         // 製品情報:外部電極焼付時間
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_G_YAKITSUKE_TIME, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_G_YAKITSUKE_TIME, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_G_YAKITSUKE_TIME, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_G_YAKITSUKE_TIME, srDenkitokuseiesi));
 
         // 製品情報:ﾒｯｷ日
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_MEKKI_DAY, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_MEKKI_DAY, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_MEKKI_DAY, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_MEKKI_DAY, srDenkitokuseiesi));
 
         // 製品情報:ﾒｯｷ時間
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_MEKKI_TIME, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_MEKKI_TIME, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_MEKKI_TIME, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_MEKKI_TIME, srDenkitokuseiesi));
 
         // 製品情報:検査場所
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_KENSA_BASHO, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_KENSA_BASHO, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_KENSA_BASHO, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_KENSA_BASHO, srDenkitokuseiesi));
 
         // 製品情報:選別開始日
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_SENBETSU_KAISHI_DAY, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_SENBETSU_KAISHI_DAY, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_SENBETSU_KAISHI_DAY, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_SENBETSU_KAISHI_DAY, srDenkitokuseiesi));
 
         // 製品情報:選別開始時間
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_SENBETSU_KAISHI_TIME, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_SENBETSU_KAISHI_TIME, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_SENBETSU_KAISHI_TIME, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_SENBETSU_KAISHI_TIME, srDenkitokuseiesi));
 
         // 製品情報:選別終了日
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_SENBETSU_SHURYO_DAY, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_SENBETSU_SHURYO_DAY, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_SENBETSU_SHURYO_DAY, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_SENBETSU_SHURYO_DAY, srDenkitokuseiesi));
 
         // 製品情報:選別終了時間
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_SENBETSU_SHURYO_TIME, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_SENBETSU_SHURYO_TIME, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_SENBETSU_SHURYO_TIME, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_SENBETSU_SHURYO_TIME, srDenkitokuseiesi));
 
         // 製品情報:検査号機
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_KENSA_GOKI, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_KENSA_GOKI, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_KENSA_GOKI, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_KENSA_GOKI, srDenkitokuseiesi));
 
         // 製品情報:分類ｴｱｰ圧
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_BUNRUI_AIR_ATSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_BUNRUI_AIR_ATSU, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_BUNRUI_AIR_ATSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_BUNRUI_AIR_ATSU, srDenkitokuseiesi));
 
-        // 製品情報:CDｺﾝﾀｸﾄ圧
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_CD_CONTACT_ATSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_CD_CONTACT_ATSU, srDenkitokuseiesi));
+        // 製品情報:選別順序変更
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_SENBETSU_JUNJO_CHANGE, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_SENBETSU_JUNJO_CHANGE, srDenkitokuseiesi));
 
-        // 製品情報:IRｺﾝﾀｸﾄ圧
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_IR_CONTACT_ATSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_IR_CONTACT_ATSU, srDenkitokuseiesi));
+        // 製品情報:設定ﾓｰﾄﾞ確認
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_SET_MODO_KAKUNIN, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_SET_MODO_KAKUNIN, srDenkitokuseiesi));
 
-        // 製品情報:使用後ｽﾃｰｼｮﾝ確認CD1
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_CD1, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_SIYOATO_STATION_CD1, srDenkitokuseiesi));
-
-        // 製品情報:使用後ｽﾃｰｼｮﾝ確認PC1
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_PC1, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_SIYOATO_STATION_PC1, srDenkitokuseiesi));
-
-        // 製品情報:使用後ｽﾃｰｼｮﾝ確認PC2
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_PC2, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_SIYOATO_STATION_PC2, srDenkitokuseiesi));
-
-        // 製品情報:使用後ｽﾃｰｼｮﾝ確認PC3
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_PC3, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_SIYOATO_STATION_PC3, srDenkitokuseiesi));
-
-        // 製品情報:使用後ｽﾃｰｼｮﾝ確認PC4
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_PC4, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_SIYOATO_STATION_PC4, srDenkitokuseiesi));
-
-        // 製品情報:使用後ｽﾃｰｼｮﾝ確認IR1
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR1, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR1, srDenkitokuseiesi));
-
-        // 製品情報:使用後ｽﾃｰｼｮﾝ確認IR2
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR2, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR2, srDenkitokuseiesi));
-
-        // 製品情報:使用後ｽﾃｰｼｮﾝ確認IR3
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR3, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR3, srDenkitokuseiesi));
-
-        // 製品情報:使用後ｽﾃｰｼｮﾝ確認IR4
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR4, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR4, srDenkitokuseiesi));
-
-        // 製品情報:使用後ｽﾃｰｼｮﾝ確認IR5
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR5, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR5, srDenkitokuseiesi));
-
-        // 製品情報:使用後ｽﾃｰｼｮﾝ確認IR6
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR6, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR6, srDenkitokuseiesi));
-
-        // 製品情報:使用後ｽﾃｰｼｮﾝ確認IR7
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR7, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR7, srDenkitokuseiesi));
-
-        // 製品情報:使用後ｽﾃｰｼｮﾝ確認IR8
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR8, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR8, srDenkitokuseiesi));
+        // 製品情報:配線確認
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_HAISEN_KAKUNIN, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_HAISEN_KAKUNIN, srDenkitokuseiesi));
 
         // 製品情報:固定電極 外観･段差
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_K_GAIKAN_DANSA, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_K_GAIKAN_DANSA, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_K_GAIKAN_DANSA, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_K_GAIKAN_DANSA, srDenkitokuseiesi));
 
         // 製品情報:ﾄﾗｯｸｶﾞｲﾄﾞ隙間
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_TRACK_GUIDE_SUKIMA, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_TRACK_GUIDE_SUKIMA, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_TRACK_GUIDE_SUKIMA, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_TRACK_GUIDE_SUKIMA, srDenkitokuseiesi));
 
         // 製品情報:ﾃｽﾄﾌﾟﾚｰﾄ 形状･清掃
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_TEST_PLATE_KEIJO_SEISOU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_TEST_PLATE_KEIJO_SEISOU, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_TEST_PLATE_KEIJO_SEISOU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_TEST_PLATE_KEIJO_SEISOU, srDenkitokuseiesi));
 
         // 製品情報:分類吹き出し穴
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_BUNRUI_FUKIDASHIANA, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_BUNRUI_FUKIDASHIANA, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_BUNRUI_FUKIDASHIANA, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_BUNRUI_FUKIDASHIANA, srDenkitokuseiesi));
 
         // 製品情報:ﾃｽﾄﾌﾟﾚｰﾄ位置確認(穴位置)
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_TEST_PLATE_ICHI_KAKUNIN, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_TEST_PLATE_ICHI_KAKUNIN, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_TEST_PLATE_ICHI_KAKUNIN, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_TEST_PLATE_ICHI_KAKUNIN, srDenkitokuseiesi));
 
         // 製品情報:電極清掃・動作
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_DENKYOKU_SEISOU_DOUSA, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_DENKYOKU_SEISOU_DOUSA, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_DENKYOKU_SEISOU_DOUSA, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_DENKYOKU_SEISOU_DOUSA, srDenkitokuseiesi));
 
         // 製品情報:製品投入状態
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_SEIHIN_TOUNYU_JOTAI, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_SEIHIN_TOUNYU_JOTAI, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_SEIHIN_TOUNYU_JOTAI, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_SEIHIN_TOUNYU_JOTAI, srDenkitokuseiesi));
 
         // 製品情報:BINﾎﾞｯｸｽ内の清掃ﾁｪｯｸ
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_BIN_BOX_SEISOU_CHECK, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_BIN_BOX_SEISOU_CHECK, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_BIN_BOX_SEISOU_CHECK, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_BIN_BOX_SEISOU_CHECK, srDenkitokuseiesi));
 
         // 製品情報:ｾｯﾄ者
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_SETSHA, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_SETSHA, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_SETSHA, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_SETSHA, srDenkitokuseiesi));
 
         // 製品情報:確認者
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_KAKUNINSHA, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_KAKUNINSHA, srDenkitokuseiesi));
-
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_KAKUNINSHA, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_KAKUNINSHA, srDenkitokuseiesi));
+        
+        // 製品情報:指定公差歩留まり1
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_SHITEI_KOUSA_BUDOMARI1, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_SHITEI_KOUSA_BUDOMARI1, srDenkitokuseiesi));
+        
+        // 製品情報:指定公差歩留まり2
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_SHITEI_KOUSA_BUDOMARI2, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_SHITEI_KOUSA_BUDOMARI2, srDenkitokuseiesi));
+        
         // 製品情報:ﾃｽﾄﾌﾟﾚｰﾄ管理No
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_TEST_PLATE_KANRINO, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_TEST_PLATE_KANRINO, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_TEST_PLATE_KANRINO, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_TEST_PLATE_KANRINO, srDenkitokuseiesi));
 
         // 製品情報:Tanδ
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_TAN_DELTA, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_TAN_DELTA, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_TAN_DELTA, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_TAN_DELTA, srDenkitokuseiesi));
 
         // 製品情報:測定周波数
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_SOKUTEI_SHUHASU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_SOKUTEI_SHUHASU, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_SOKUTEI_SHUHASU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_SOKUTEI_SHUHASU, srDenkitokuseiesi));
 
         // 製品情報:測定電圧
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_SOKUTEI_DENATSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_SOKUTEI_DENATSU, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_SOKUTEI_DENATSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_SOKUTEI_DENATSU, srDenkitokuseiesi));
 
         // 製品情報:補正用ﾁｯﾌﾟ容量
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_HOSEIYOU_CHIP_YORYO, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_HOSEIYOU_CHIP_YORYO, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_HOSEIYOU_CHIP_YORYO, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_SOKUTEI_DENATSU, srDenkitokuseiesi));
 
         // 製品情報:補正用ﾁｯﾌﾟTanδ
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_HOSEIYOU_CHIP_TAN_DELTA, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_HOSEIYOU_CHIP_TAN_DELTA, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_HOSEIYOU_CHIP_TAN_DELTA, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_HOSEIYOU_CHIP_TAN_DELTA, srDenkitokuseiesi));
 
         // 製品情報:補正前
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_HOSEIMAE, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_HOSEIMAE, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_HOSEIMAE, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_HOSEIMAE, srDenkitokuseiesi));
 
         // 製品情報:補正後
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_HOSEIATO, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_HOSEIATO, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_HOSEIATO, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_HOSEIATO, srDenkitokuseiesi));
 
         // 製品情報:補正率
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_HOSEIRITSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_HOSEIRITSU, srDenkitokuseiesi));
-
-        // 製品情報:ｽﾀﾝﾀﾞｰﾄﾞ補正
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_STANDARD_HOSEI, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_STANDARD_HOSEI, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_HOSEIRITSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_HOSEIRITSU, srDenkitokuseiesi));
 
         // 製品情報:分類確認
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_BUNRUI_KAKUNIN, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_BUNRUI_KAKUNIN, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_BUNRUI_KAKUNIN, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_BUNRUI_KAKUNIN, srDenkitokuseiesi));
 
         // 製品情報:外観確認
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_GAIKAN_KAKUNIN, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_GAIKAN_KAKUNIN, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_GAIKAN_KAKUNIN, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_GAIKAN_KAKUNIN, srDenkitokuseiesi));
 
         // 製品情報:熱処理日
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_NETSUSYORI_DAY, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_NETSUSYORI_DAY, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_NETSUSYORI_DAY, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_NETSUSYORI_DAY, srDenkitokuseiesi));
 
         // 製品情報:熱処理時刻
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_NETSUSYORI_TIME, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_NETSUSYORI_TIME, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_NETSUSYORI_TIME, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_NETSUSYORI_TIME, srDenkitokuseiesi));
 
         // 製品情報:ｴｰｼﾞﾝｸﾞ時間
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_AGING_TIME, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_AGING_TIME, srDenkitokuseiesi));
-
-        // 製品情報:充填率
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_JUTENRITSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_JUTENRITSU, srDenkitokuseiesi));
-
-        // 製品情報:MC
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_MC, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_MC, srDenkitokuseiesi));
-
-        // 製品情報:強制排出
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_KYOSEI_HAISHUTSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_KYOSEI_HAISHUTSU, srDenkitokuseiesi));
-
-        // 製品情報:落下
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_RAKKA, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_RAKKA, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_AGING_TIME, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_AGING_TIME, srDenkitokuseiesi));
 
         // 製品情報:承認者
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_SHONINSHA, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_SHONINSHA, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_SHONINSHA, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_SHONINSHA, srDenkitokuseiesi));
 
         // 製品情報:振向者
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_FURIMUKESHA, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_FURIMUKESHA, srDenkitokuseiesi));
-
-        // 製品情報:電気特性再検
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_DENKITOKUSEI_SAIKEN, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_DENKITOKUSEI_SAIKEN, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_FURIMUKESHA, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_FURIMUKESHA, srDenkitokuseiesi));
 
         // 製品情報:備考1
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_BIKOU1, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_BIKOU1, srDenkitokuseiesi));
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_BIKOU1, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_BIKOU1, srDenkitokuseiesi));
 
         // 製品情報:備考2
-        this.setItemData(processData, GXHDO101B040Const.SEIHIN_BIKOU2, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SEIHIN_BIKOU2, srDenkitokuseiesi));
-
-    }
-
-    /**
-     * ﾌﾟﾘﾁｬｰｼﾞ条件データ設定処理
-     *
-     * @param processData 処理制御データ
-     * @param srDenkitokuseiesi 電気特性データ
-     */
-    private void setInputItemDataFormB(ProcessData processData, SrDenkitokuseiesi srDenkitokuseiesi) {
-
-        // ﾌﾟﾘﾁｬｰｼﾞ条件:PC① 電圧
-        this.setItemDataEx(processData, GXHDO101B040Const.PRECHARGE_DENATSU1, getSrDenkitokuseiesiItemData(GXHDO101B040Const.PRECHARGE_DENATSU1, srDenkitokuseiesi));
-
-        // ﾌﾟﾘﾁｬｰｼﾞ条件:PC① 充電時間
-        this.setItemDataEx(processData, GXHDO101B040Const.PRECHARGE_JUDEN_TIME1, getSrDenkitokuseiesiItemData(GXHDO101B040Const.PRECHARGE_JUDEN_TIME1, srDenkitokuseiesi));
-
-        // ﾌﾟﾘﾁｬｰｼﾞ条件:PC② 電圧
-        this.setItemDataEx(processData, GXHDO101B040Const.PRECHARGE_DENATSU2, getSrDenkitokuseiesiItemData(GXHDO101B040Const.PRECHARGE_DENATSU2, srDenkitokuseiesi));
-
-        // ﾌﾟﾘﾁｬｰｼﾞ条件:PC② 充電時間
-        this.setItemDataEx(processData, GXHDO101B040Const.PRECHARGE_JUDEN_TIME2, getSrDenkitokuseiesiItemData(GXHDO101B040Const.PRECHARGE_JUDEN_TIME2, srDenkitokuseiesi));
-
-        // ﾌﾟﾘﾁｬｰｼﾞ条件:PC③ 電圧
-        this.setItemDataEx(processData, GXHDO101B040Const.PRECHARGE_DENATSU3, getSrDenkitokuseiesiItemData(GXHDO101B040Const.PRECHARGE_DENATSU3, srDenkitokuseiesi));
-
-        // ﾌﾟﾘﾁｬｰｼﾞ条件:PC③ 充電時間
-        this.setItemDataEx(processData, GXHDO101B040Const.PRECHARGE_JUDEN_TIME3, getSrDenkitokuseiesiItemData(GXHDO101B040Const.PRECHARGE_JUDEN_TIME3, srDenkitokuseiesi));
-
-        // ﾌﾟﾘﾁｬｰｼﾞ条件:PC④ 電圧
-        this.setItemDataEx(processData, GXHDO101B040Const.PRECHARGE_DENATSU4, getSrDenkitokuseiesiItemData(GXHDO101B040Const.PRECHARGE_DENATSU4, srDenkitokuseiesi));
-
-        // ﾌﾟﾘﾁｬｰｼﾞ条件:PC④ 充電時間
-        this.setItemDataEx(processData, GXHDO101B040Const.PRECHARGE_JUDEN_TIME4, getSrDenkitokuseiesiItemData(GXHDO101B040Const.PRECHARGE_JUDEN_TIME4, srDenkitokuseiesi));
-
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_BIKOU2, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_BIKOU2, srDenkitokuseiesi));
+        
+        // 製品情報:電気特性再検
+        this.setItemData(processData, GXHDO101B042Const.SEIHIN_DENKITOKUSEI_SAIKEN, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SEIHIN_DENKITOKUSEI_SAIKEN, srDenkitokuseiesi));
     }
 
     /**
@@ -1556,79 +1478,71 @@ public class GXHDO101B040 implements IFormLogic {
      * @param processData 処理制御データ
      * @param srDenkitokuseiesi 電気特性データ
      */
-    private void setInputItemDataFormC(ProcessData processData, SrDenkitokuseiesi srDenkitokuseiesi) {
+    private void setInputItemDataFormB(ProcessData processData, SrDenkitokuseiesi srDenkitokuseiesi) {
 
         // 耐電圧設定条件:IR① 電圧
-        this.setItemDataEx(processData, GXHDO101B040Const.TAIDEN_DENATSU1, getSrDenkitokuseiesiItemData(GXHDO101B040Const.TAIDEN_DENATSU1, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.TAIDEN_DENATSU1, getSrDenkitokuseiesiItemData(GXHDO101B042Const.TAIDEN_DENATSU1, srDenkitokuseiesi));
 
         // 耐電圧設定条件:IR① 判定値
-        this.setItemDataEx(processData, GXHDO101B040Const.TAIDEN_HANTEICHI1, getSrDenkitokuseiesiItemData(GXHDO101B040Const.TAIDEN_HANTEICHI1, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.TAIDEN_HANTEICHI1, getSrDenkitokuseiesiItemData(GXHDO101B042Const.TAIDEN_HANTEICHI1, srDenkitokuseiesi));
 
         // 耐電圧設定条件:IR① 充電時間
-        this.setItemDataEx(processData, GXHDO101B040Const.TAIDEN_JUDEN_TIME1, getSrDenkitokuseiesiItemData(GXHDO101B040Const.TAIDEN_JUDEN_TIME1, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.TAIDEN_JUDEN_TIME1, getSrDenkitokuseiesiItemData(GXHDO101B042Const.TAIDEN_JUDEN_TIME1, srDenkitokuseiesi));
 
         // 耐電圧設定条件:IR② 電圧
-        this.setItemDataEx(processData, GXHDO101B040Const.TAIDEN_DENATSU2, getSrDenkitokuseiesiItemData(GXHDO101B040Const.TAIDEN_DENATSU2, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.TAIDEN_DENATSU2, getSrDenkitokuseiesiItemData(GXHDO101B042Const.TAIDEN_DENATSU2, srDenkitokuseiesi));
 
         // 耐電圧設定条件:IR② 判定値
-        this.setItemDataEx(processData, GXHDO101B040Const.TAIDEN_HANTEICHI2, getSrDenkitokuseiesiItemData(GXHDO101B040Const.TAIDEN_HANTEICHI2, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.TAIDEN_HANTEICHI2, getSrDenkitokuseiesiItemData(GXHDO101B042Const.TAIDEN_HANTEICHI2, srDenkitokuseiesi));
 
         // 耐電圧設定条件:IR② 充電時間
-        this.setItemDataEx(processData, GXHDO101B040Const.TAIDEN_JUDEN_TIME2, getSrDenkitokuseiesiItemData(GXHDO101B040Const.TAIDEN_JUDEN_TIME2, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.TAIDEN_JUDEN_TIME2, getSrDenkitokuseiesiItemData(GXHDO101B042Const.TAIDEN_JUDEN_TIME2, srDenkitokuseiesi));
 
         // 耐電圧設定条件:IR③ 電圧
-        this.setItemDataEx(processData, GXHDO101B040Const.TAIDEN_DENATSU3, getSrDenkitokuseiesiItemData(GXHDO101B040Const.TAIDEN_DENATSU3, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.TAIDEN_DENATSU3, getSrDenkitokuseiesiItemData(GXHDO101B042Const.TAIDEN_DENATSU3, srDenkitokuseiesi));
 
         // 耐電圧設定条件:IR③ 判定値
-        this.setItemDataEx(processData, GXHDO101B040Const.TAIDEN_HANTEICHI3, getSrDenkitokuseiesiItemData(GXHDO101B040Const.TAIDEN_HANTEICHI3, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.TAIDEN_HANTEICHI3, getSrDenkitokuseiesiItemData(GXHDO101B042Const.TAIDEN_HANTEICHI3, srDenkitokuseiesi));
 
         // 耐電圧設定条件:IR③ 充電時間
-        this.setItemDataEx(processData, GXHDO101B040Const.TAIDEN_JUDEN_TIME3, getSrDenkitokuseiesiItemData(GXHDO101B040Const.TAIDEN_JUDEN_TIME3, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.TAIDEN_JUDEN_TIME3, getSrDenkitokuseiesiItemData(GXHDO101B042Const.TAIDEN_JUDEN_TIME3, srDenkitokuseiesi));
 
         // 耐電圧設定条件:IR④ 電圧
-        this.setItemDataEx(processData, GXHDO101B040Const.TAIDEN_DENATSU4, getSrDenkitokuseiesiItemData(GXHDO101B040Const.TAIDEN_DENATSU4, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.TAIDEN_DENATSU4, getSrDenkitokuseiesiItemData(GXHDO101B042Const.TAIDEN_DENATSU4, srDenkitokuseiesi));
 
         // 耐電圧設定条件:IR④ 判定値
-        this.setItemDataEx(processData, GXHDO101B040Const.TAIDEN_HANTEICHI4, getSrDenkitokuseiesiItemData(GXHDO101B040Const.TAIDEN_HANTEICHI4, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.TAIDEN_HANTEICHI4, getSrDenkitokuseiesiItemData(GXHDO101B042Const.TAIDEN_HANTEICHI4, srDenkitokuseiesi));
 
         // 耐電圧設定条件:IR④ 充電時間
-        this.setItemDataEx(processData, GXHDO101B040Const.TAIDEN_JUDEN_TIME4, getSrDenkitokuseiesiItemData(GXHDO101B040Const.TAIDEN_JUDEN_TIME4, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.TAIDEN_JUDEN_TIME4, getSrDenkitokuseiesiItemData(GXHDO101B042Const.TAIDEN_JUDEN_TIME4, srDenkitokuseiesi));
 
-        // 耐電圧設定条件:IR⑤ 電圧
-        this.setItemDataEx(processData, GXHDO101B040Const.TAIDEN_DENATSU5, getSrDenkitokuseiesiItemData(GXHDO101B040Const.TAIDEN_DENATSU5, srDenkitokuseiesi));
+    }
 
-        // 耐電圧設定条件:IR⑤ 判定値
-        this.setItemDataEx(processData, GXHDO101B040Const.TAIDEN_HANTEICHI5, getSrDenkitokuseiesiItemData(GXHDO101B040Const.TAIDEN_HANTEICHI5, srDenkitokuseiesi));
+    /**
+     * 電圧DROP設定条件データ設定処理
+     *
+     * @param processData 処理制御データ
+     * @param srDenkitokuseiesi 電気特性データ
+     */
+    private void setInputItemDataFormC(ProcessData processData, SrDenkitokuseiesi srDenkitokuseiesi) {
 
-        // 耐電圧設定条件:IR⑤ 充電時間
-        this.setItemDataEx(processData, GXHDO101B040Const.TAIDEN_JUDEN_TIME5, getSrDenkitokuseiesiItemData(GXHDO101B040Const.TAIDEN_JUDEN_TIME5, srDenkitokuseiesi));
+        // 電圧DROP設定条件:DROP1,3 PC
+        this.setItemDataEx(processData, GXHDO101B042Const.DROP1_3PC, getSrDenkitokuseiesiItemData(GXHDO101B042Const.DROP1_3PC, srDenkitokuseiesi));
 
-        // 耐電圧設定条件:IR⑥ 電圧
-        this.setItemDataEx(processData, GXHDO101B040Const.TAIDEN_DENATSU6, getSrDenkitokuseiesiItemData(GXHDO101B040Const.TAIDEN_DENATSU6, srDenkitokuseiesi));
+        // 電圧DROP設定条件:DROP1,3 PS
+        this.setItemDataEx(processData, GXHDO101B042Const.DROP1_3PS, getSrDenkitokuseiesiItemData(GXHDO101B042Const.DROP1_3PS, srDenkitokuseiesi));
 
-        // 耐電圧設定条件:IR⑥ 判定値
-        this.setItemDataEx(processData, GXHDO101B040Const.TAIDEN_HANTEICHI6, getSrDenkitokuseiesiItemData(GXHDO101B040Const.TAIDEN_HANTEICHI6, srDenkitokuseiesi));
+        // 電圧DROP設定条件:DROP1,3 MS･DC
+        this.setItemDataEx(processData, GXHDO101B042Const.DROP1_3MSDC, getSrDenkitokuseiesiItemData(GXHDO101B042Const.DROP1_3MSDC, srDenkitokuseiesi));
 
-        // 耐電圧設定条件:IR⑥ 充電時間
-        this.setItemDataEx(processData, GXHDO101B040Const.TAIDEN_JUDEN_TIME6, getSrDenkitokuseiesiItemData(GXHDO101B040Const.TAIDEN_JUDEN_TIME6, srDenkitokuseiesi));
+        // 電圧DROP設定条件:DROP2,4 PC
+        this.setItemDataEx(processData, GXHDO101B042Const.DROP2_4PC, getSrDenkitokuseiesiItemData(GXHDO101B042Const.DROP2_4PC, srDenkitokuseiesi));
 
-        // 耐電圧設定条件:IR⑦ 電圧
-        this.setItemDataEx(processData, GXHDO101B040Const.TAIDEN_DENATSU7, getSrDenkitokuseiesiItemData(GXHDO101B040Const.TAIDEN_DENATSU7, srDenkitokuseiesi));
+        // 電圧DROP設定条件:DROP2,4 PS
+        this.setItemDataEx(processData, GXHDO101B042Const.DROP2_4PS, getSrDenkitokuseiesiItemData(GXHDO101B042Const.DROP2_4PS, srDenkitokuseiesi));
 
-        // 耐電圧設定条件:IR⑦ 判定値
-        this.setItemDataEx(processData, GXHDO101B040Const.TAIDEN_HANTEICHI7, getSrDenkitokuseiesiItemData(GXHDO101B040Const.TAIDEN_HANTEICHI7, srDenkitokuseiesi));
-
-        // 耐電圧設定条件:IR⑦ 充電時間
-        this.setItemDataEx(processData, GXHDO101B040Const.TAIDEN_JUDEN_TIME7, getSrDenkitokuseiesiItemData(GXHDO101B040Const.TAIDEN_JUDEN_TIME7, srDenkitokuseiesi));
-
-        // 耐電圧設定条件:IR⑧ 電圧
-        this.setItemDataEx(processData, GXHDO101B040Const.TAIDEN_DENATSU8, getSrDenkitokuseiesiItemData(GXHDO101B040Const.TAIDEN_DENATSU8, srDenkitokuseiesi));
-
-        // 耐電圧設定条件:IR⑧ 判定値
-        this.setItemDataEx(processData, GXHDO101B040Const.TAIDEN_HANTEICHI8, getSrDenkitokuseiesiItemData(GXHDO101B040Const.TAIDEN_HANTEICHI8, srDenkitokuseiesi));
-
-        // 耐電圧設定条件:IR⑧ 充電時間
-        this.setItemDataEx(processData, GXHDO101B040Const.TAIDEN_JUDEN_TIME8, getSrDenkitokuseiesiItemData(GXHDO101B040Const.TAIDEN_JUDEN_TIME8, srDenkitokuseiesi));
+        // 電圧DROP設定条件:DROP2,4 MS･DC
+        this.setItemDataEx(processData, GXHDO101B042Const.DROP2_4MSDC, getSrDenkitokuseiesiItemData(GXHDO101B042Const.DROP2_4MSDC, srDenkitokuseiesi));
 
     }
 
@@ -1641,310 +1555,310 @@ public class GXHDO101B040 implements IFormLogic {
     private void setInputItemDataFormD(ProcessData processData, SrDenkitokuseiesi srDenkitokuseiesi) {
 
         // 設定条件及び処理結果:BIN1 %区分(設定値)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN1_PERCENT_KBN, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN1_PERCENT_KBN, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN1_PERCENT_KBN, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN1_PERCENT_KBN, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN1 選別区分
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN1_SENBETSU_KBN, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN1_SENBETSU_KBN, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN1_SENBETSU_KBN, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN1_SENBETSU_KBN, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN1 計量後数量
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN1_KEIRYOGO_SURYO, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN1_KEIRYOGO_SURYO, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN1_KEIRYOGO_SURYO, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN1_KEIRYOGO_SURYO, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN1 ｶｳﾝﾀｰ数
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN1_COUNTER_SU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN1_COUNTER_SU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN1_COUNTER_SU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN1_COUNTER_SU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN1 誤差率(%)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN1_GOSARITSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN1_GOSARITSU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN1_GOSARITSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN1_GOSARITSU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN1 ﾏｼﾝ不良率(%)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN1_MACHINE_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN1_MACHINE_FURYORITSU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN1_MACHINE_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN1_MACHINE_FURYORITSU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN1 抜き取り結果
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN1_NUKITORIKEKKA_S, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN1_NUKITORIKEKKA_S, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN1_NUKITORIKEKKA_S, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN1_NUKITORIKEKKA_S, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN1 抜き取り結果
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN1_NUKITORIKEKKA_T, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN1_NUKITORIKEKKA_T, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN1_NUKITORIKEKKA_T, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN1_NUKITORIKEKKA_T, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN1 真の不良率(%)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN1_SHIN_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN1_SHIN_FURYORITSU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN1_SHIN_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN1_SHIN_FURYORITSU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN1 結果ﾁｪｯｸ
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN1_KEKKA_CHECK, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN1_KEKKA_CHECK, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN1_KEKKA_CHECK, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN1_KEKKA_CHECK, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN2 %区分(設定値)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN2_PERCENT_KBN, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN2_PERCENT_KBN, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN2_PERCENT_KBN, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN2_PERCENT_KBN, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN2 選別区分
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN2_SENBETSU_KBN, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN2_SENBETSU_KBN, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN2_SENBETSU_KBN, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN2_SENBETSU_KBN, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN2 計量後数量
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN2_KEIRYOGO_SURYO, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN2_KEIRYOGO_SURYO, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN2_KEIRYOGO_SURYO, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN2_KEIRYOGO_SURYO, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN2 ｶｳﾝﾀｰ数
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN2_COUNTER_SU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN2_COUNTER_SU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN2_COUNTER_SU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN2_COUNTER_SU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN2 誤差率(%)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN2_GOSARITSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN2_GOSARITSU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN2_GOSARITSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN2_GOSARITSU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN2 ﾏｼﾝ不良率(%)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN2_MACHINE_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN2_MACHINE_FURYORITSU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN2_MACHINE_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN2_MACHINE_FURYORITSU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN2 抜き取り結果
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN2_NUKITORIKEKKA_S, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN2_NUKITORIKEKKA_S, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN2_NUKITORIKEKKA_S, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN2_NUKITORIKEKKA_S, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN2 抜き取り結果
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN2_NUKITORIKEKKA_T, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN2_NUKITORIKEKKA_T, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN2_NUKITORIKEKKA_T, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN2_NUKITORIKEKKA_T, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN2 真の不良率(%)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN2_SHIN_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN2_SHIN_FURYORITSU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN2_SHIN_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN2_SHIN_FURYORITSU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN2 結果ﾁｪｯｸ
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN2_KEKKA_CHECK, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN2_KEKKA_CHECK, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN2_KEKKA_CHECK, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN2_KEKKA_CHECK, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN3 %区分(設定値)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN3_PERCENT_KBN, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN3_PERCENT_KBN, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN3_PERCENT_KBN, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN3_PERCENT_KBN, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN3 選別区分
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN3_SENBETSU_KBN, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN3_SENBETSU_KBN, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN3_SENBETSU_KBN, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN3_SENBETSU_KBN, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN3 計量後数量
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN3_KEIRYOGO_SURYO, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN3_KEIRYOGO_SURYO, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN3_KEIRYOGO_SURYO, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN3_KEIRYOGO_SURYO, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN3 ｶｳﾝﾀｰ数
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN3_COUNTER_SU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN3_COUNTER_SU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN3_COUNTER_SU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN3_COUNTER_SU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN3 誤差率(%)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN3_GOSARITSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN3_GOSARITSU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN3_GOSARITSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN3_GOSARITSU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN3 ﾏｼﾝ不良率(%)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN3_MACHINE_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN3_MACHINE_FURYORITSU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN3_MACHINE_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN3_MACHINE_FURYORITSU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN3 抜き取り結果
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN3_NUKITORIKEKKA_S, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN3_NUKITORIKEKKA_S, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN3_NUKITORIKEKKA_S, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN3_NUKITORIKEKKA_S, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN3 抜き取り結果
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN3_NUKITORIKEKKA_T, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN3_NUKITORIKEKKA_T, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN3_NUKITORIKEKKA_T, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN3_NUKITORIKEKKA_T, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN3 真の不良率(%)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN3_SHIN_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN3_SHIN_FURYORITSU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN3_SHIN_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN3_SHIN_FURYORITSU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN3 結果ﾁｪｯｸ
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN3_KEKKA_CHECK, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN3_KEKKA_CHECK, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN3_KEKKA_CHECK, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN3_KEKKA_CHECK, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN4 %区分(設定値)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN4_PERCENT_KBN, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN4_PERCENT_KBN, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN4_PERCENT_KBN, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN4_PERCENT_KBN, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN4 選別区分
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN4_SENBETSU_KBN, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN4_SENBETSU_KBN, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN4_SENBETSU_KBN, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN4_SENBETSU_KBN, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN4 計量後数量
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN4_KEIRYOGO_SURYO, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN4_KEIRYOGO_SURYO, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN4_KEIRYOGO_SURYO, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN4_KEIRYOGO_SURYO, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN4 ｶｳﾝﾀｰ数
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN4_COUNTER_SU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN4_COUNTER_SU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN4_COUNTER_SU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN4_COUNTER_SU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN4 誤差率(%)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN4_GOSARITSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN4_GOSARITSU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN4_GOSARITSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN4_GOSARITSU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN4 ﾏｼﾝ不良率(%)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN4_MACHINE_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN4_MACHINE_FURYORITSU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN4_MACHINE_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN4_MACHINE_FURYORITSU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN4 抜き取り結果
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN4_NUKITORIKEKKA_S, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN4_NUKITORIKEKKA_S, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN4_NUKITORIKEKKA_S, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN4_NUKITORIKEKKA_S, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN4 抜き取り結果
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN4_NUKITORIKEKKA_T, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN4_NUKITORIKEKKA_T, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN4_NUKITORIKEKKA_T, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN4_NUKITORIKEKKA_T, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN4 真の不良率(%)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN4_SHIN_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN4_SHIN_FURYORITSU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN4_SHIN_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN4_SHIN_FURYORITSU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN4 結果ﾁｪｯｸ
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN4_KEKKA_CHECK, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN4_KEKKA_CHECK, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN4_KEKKA_CHECK, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN4_KEKKA_CHECK, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN5 %区分(設定値)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN5_PERCENT_KBN, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN5_PERCENT_KBN, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN5_PERCENT_KBN, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN5_PERCENT_KBN, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN5 選別区分
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN5_SENBETSU_KBN, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN5_SENBETSU_KBN, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN5_SENBETSU_KBN, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN5_SENBETSU_KBN, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN5 計量後数量
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN5_KEIRYOGO_SURYO, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN5_KEIRYOGO_SURYO, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN5_KEIRYOGO_SURYO, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN5_KEIRYOGO_SURYO, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN5 ｶｳﾝﾀｰ数
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN5_COUNTER_SU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN5_COUNTER_SU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN5_COUNTER_SU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN5_COUNTER_SU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN5 誤差率(%)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN5_GOSARITSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN5_GOSARITSU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN5_GOSARITSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN5_GOSARITSU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN5 ﾏｼﾝ不良率(%)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN5_MACHINE_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN5_MACHINE_FURYORITSU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN5_MACHINE_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN5_MACHINE_FURYORITSU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN5 抜き取り結果
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN5_NUKITORIKEKKA_S, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN5_NUKITORIKEKKA_S, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN5_NUKITORIKEKKA_S, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN5_NUKITORIKEKKA_S, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN5 抜き取り結果
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN5_NUKITORIKEKKA_T, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN5_NUKITORIKEKKA_T, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN5_NUKITORIKEKKA_T, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN5_NUKITORIKEKKA_T, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN5 真の不良率(%)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN5_SHIN_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN5_SHIN_FURYORITSU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN5_SHIN_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN5_SHIN_FURYORITSU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN5 結果ﾁｪｯｸ
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN5_KEKKA_CHECK, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN5_KEKKA_CHECK, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN5_KEKKA_CHECK, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN5_KEKKA_CHECK, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN5 袋ﾁｪｯｸ
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN5_FUKURO_CHECK, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN5_FUKURO_CHECK, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN5_FUKURO_CHECK, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN5_FUKURO_CHECK, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN6 %区分(設定値)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN6_PERCENT_KBN, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN6_PERCENT_KBN, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN6_PERCENT_KBN, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN6_PERCENT_KBN, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN6 選別区分
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN6_SENBETSU_KBN, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN6_SENBETSU_KBN, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN6_SENBETSU_KBN, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN6_SENBETSU_KBN, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN6 計量後数量
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN6_KEIRYOGO_SURYO, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN6_KEIRYOGO_SURYO, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN6_KEIRYOGO_SURYO, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN6_KEIRYOGO_SURYO, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN6 ｶｳﾝﾀｰ数
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN6_COUNTER_SU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN6_COUNTER_SU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN6_COUNTER_SU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN6_COUNTER_SU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN6 誤差率(%)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN6_GOSARITSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN6_GOSARITSU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN6_GOSARITSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN6_GOSARITSU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN6 ﾏｼﾝ不良率(%)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN6_MACHINE_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN6_MACHINE_FURYORITSU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN6_MACHINE_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN6_MACHINE_FURYORITSU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN6 抜き取り結果
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN6_NUKITORIKEKKA_S, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN6_NUKITORIKEKKA_S, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN6_NUKITORIKEKKA_S, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN6_NUKITORIKEKKA_S, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN6 抜き取り結果
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN6_NUKITORIKEKKA_T, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN6_NUKITORIKEKKA_T, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN6_NUKITORIKEKKA_T, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN6_NUKITORIKEKKA_T, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN6 真の不良率(%)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN6_SHIN_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN6_SHIN_FURYORITSU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN6_SHIN_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN6_SHIN_FURYORITSU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN6 結果ﾁｪｯｸ
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN6_KEKKA_CHECK, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN6_KEKKA_CHECK, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN6_KEKKA_CHECK, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN6_KEKKA_CHECK, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN6 袋ﾁｪｯｸ
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN6_FUKURO_CHECK, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN6_FUKURO_CHECK, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN6_FUKURO_CHECK, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN6_FUKURO_CHECK, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN7 %区分(設定値)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN7_PERCENT_KBN, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN7_PERCENT_KBN, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN7_PERCENT_KBN, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN7_PERCENT_KBN, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN7 選別区分
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN7_SENBETSU_KBN, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN7_SENBETSU_KBN, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN7_SENBETSU_KBN, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN7_SENBETSU_KBN, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN7 計量後数量
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN7_KEIRYOGO_SURYO, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN7_KEIRYOGO_SURYO, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN7_KEIRYOGO_SURYO, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN7_KEIRYOGO_SURYO, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN7 ｶｳﾝﾀｰ数
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN7_COUNTER_SU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN7_COUNTER_SU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN7_COUNTER_SU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN7_COUNTER_SU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN7 誤差率(%)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN7_GOSARITSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN7_GOSARITSU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN7_GOSARITSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN7_GOSARITSU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN7 ﾏｼﾝ不良率(%)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN7_MACHINE_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN7_MACHINE_FURYORITSU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN7_MACHINE_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN7_MACHINE_FURYORITSU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN7 袋ﾁｪｯｸ
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN7_FUKURO_CHECK, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN7_FUKURO_CHECK, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN7_FUKURO_CHECK, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN7_FUKURO_CHECK, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN8 %区分(設定値)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN8_PERCENT_KBN, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN8_PERCENT_KBN, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN8_PERCENT_KBN, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN8_PERCENT_KBN, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN8 選別区分
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN8_SENBETSU_KBN, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN8_SENBETSU_KBN, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN8_SENBETSU_KBN, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN8_SENBETSU_KBN, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN8 計量後数量
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN8_KEIRYOGO_SURYO, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN8_KEIRYOGO_SURYO, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN8_KEIRYOGO_SURYO, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN8_KEIRYOGO_SURYO, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN8 ｶｳﾝﾀｰ数
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN8_COUNTER_SU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN8_COUNTER_SU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN8_COUNTER_SU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN8_COUNTER_SU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN8 誤差率(%)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN8_GOSARITSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN8_GOSARITSU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN8_GOSARITSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN8_GOSARITSU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN8 ﾏｼﾝ不良率(%)
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN8_MACHINE_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN8_MACHINE_FURYORITSU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN8_MACHINE_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN8_MACHINE_FURYORITSU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN8 袋ﾁｪｯｸ
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN8_FUKURO_CHECK, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN8_FUKURO_CHECK, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN8_FUKURO_CHECK, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN8_FUKURO_CHECK, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN9 強制排出 計量後数量
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN9_K_KEIRYOGO_SURYO, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN9_K_KEIRYOGO_SURYO, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN9_K_KEIRYOGO_SURYO, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN9_K_KEIRYOGO_SURYO, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:BIN9 強制排出 ﾏｼﾝ不良率
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BIN9_K_MACHINE_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BIN9_K_MACHINE_FURYORITSU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BIN9_K_MACHINE_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BIN9_K_MACHINE_FURYORITSU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:落下 計量後数量
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_RAKKA_KEIRYOGO_SURYO, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_RAKKA_KEIRYOGO_SURYO, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_RAKKA_KEIRYOGO_SURYO, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_RAKKA_KEIRYOGO_SURYO, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:落下 ﾏｼﾝ不良率
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_RAKKA_MACHINE_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_RAKKA_MACHINE_FURYORITSU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_RAKKA_MACHINE_FURYORITSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_RAKKA_MACHINE_FURYORITSU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:半田ｻﾝﾌﾟﾙ
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_HANDA_SAMPLE, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_HANDA_SAMPLE, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_HANDA_SAMPLE, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_HANDA_SAMPLE, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:信頼性ｻﾝﾌﾟﾙ
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_SHINRAISEI_SAMPLE, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_SHINRAISEI_SAMPLE, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_SHINRAISEI_SAMPLE, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_SHINRAISEI_SAMPLE, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:真不良判定者
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_SHIN_FURYO_HANTEISHA, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_SHIN_FURYO_HANTEISHA, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_SHIN_FURYO_HANTEISHA, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_SHIN_FURYO_HANTEISHA, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:判定入力者
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_HANTEI_NYURYOKUSHA, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_HANTEI_NYURYOKUSHA, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_HANTEI_NYURYOKUSHA, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_HANTEI_NYURYOKUSHA, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:取出者
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_TORIDASHISHA, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_TORIDASHISHA, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_TORIDASHISHA, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_TORIDASHISHA, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:公差①
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_KOUSA1, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_KOUSA1, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_KOUSA1, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_KOUSA1, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:重量①
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_JURYO1, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_JURYO1, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_JURYO1, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_JURYO1, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:個数①
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_KOSU1, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_KOSU1, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_KOSU1, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_KOSU1, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:公差②
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_KOUSA2, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_KOUSA2, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_KOUSA2, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_KOUSA2, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:重量②
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_JURYO2, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_JURYO2, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_JURYO2, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_JURYO2, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:個数②
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_KOSU2, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_KOSU2, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_KOSU2, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_KOSU2, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:公差③
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_KOUSA3, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_KOUSA3, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_KOUSA3, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_KOUSA3, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:重量③
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_JURYO3, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_JURYO3, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_JURYO3, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_JURYO3, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:個数③
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_KOSU3, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_KOSU3, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_KOSU3, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_KOSU3, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:公差④
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_KOUSA4, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_KOUSA4, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_KOUSA4, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_KOUSA4, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:重量④
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_JURYO4, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_JURYO4, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_JURYO4, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_JURYO4, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:個数④
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_KOSU4, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_KOSU4, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_KOSU4, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_KOSU4, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:ｶｳﾝﾀｰ総数
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_COUNTER_SOSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_COUNTER_SOSU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_COUNTER_SOSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_COUNTER_SOSU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:良品重量
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_RYOUHIN_JURYO, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_RYOUHIN_JURYO, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_RYOUHIN_JURYO, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_RYOUHIN_JURYO, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:良品個数
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_RYOUHIN_KOSU, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_RYOUHIN_KOSU, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_RYOUHIN_KOSU, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_RYOUHIN_KOSU, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:歩留まり
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_BUDOMARI, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_BUDOMARI, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_BUDOMARI, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_BUDOMARI, srDenkitokuseiesi));
 
         // 設定条件及び処理結果:確認者
-        this.setItemDataEx(processData, GXHDO101B040Const.SET_KAKUNINSHA, getSrDenkitokuseiesiItemData(GXHDO101B040Const.SET_KAKUNINSHA, srDenkitokuseiesi));
+        this.setItemDataEx(processData, GXHDO101B042Const.SET_KAKUNINSHA, getSrDenkitokuseiesiItemData(GXHDO101B042Const.SET_KAKUNINSHA, srDenkitokuseiesi));
     }
 
     /**
@@ -2980,15 +2894,13 @@ public class GXHDO101B040 implements IFormLogic {
 
         String sql = "UPDATE tmp_sr_denkitokuseiesi SET "
                 + "kcpno = ?,tokuisaki = ?,ownercode = ?,lotkubuncode = ?,siteikousa = ?,atokouteisijinaiyou = ?,okuriryouhinsuu = ?,ukeiretannijyuryo = ?,ukeiresoujyuryou = ?,gdyakitukenitiji = ?,"
-                + "mekkinitiji = ?,kensabasyo = ?,senbetukaisinitiji = ?,senbetusyuryounitiji = ?,kensagouki = ?,bunruiairatu = ?,cdcontactatu = ?,ircontactatu = ?,stationcd1 = ?,stationpc1 = ?,"
-                + "stationpc2 = ?,stationpc3 = ?,stationpc4 = ?,stationir1 = ?,stationir2 = ?,stationir3 = ?,stationir4 = ?,stationir5 = ?,stationir6 = ?,stationir7 = ?,stationir8 = ?,koteidenkyoku = ?,"
-                + "torakkugaido = ?,testplatekeijo = ?,bunruifukidasi = ?,testplatekakunin = ?,denkyokuseisou = ?,seihintounyuujotai = ?,binboxseisoucheck = ?,setsya = ?,kakuninsya = ?,"
+                + "mekkinitiji = ?,kensabasyo = ?,senbetukaisinitiji = ?,senbetusyuryounitiji = ?,kensagouki = ?,bunruiairatu = ?,koteidenkyoku = ?,torakkugaido = ?,testplatekeijo = ?,"
+                + "bunruifukidasi = ?,testplatekakunin = ?,denkyokuseisou = ?,senbetujunjo = ?,setteikakunin = ?,haisenkakunin = ?,seihintounyuujotai = ?,binboxseisoucheck = ?,setsya = ?,kakuninsya = ?,"
                 + "siteikousabudomari1 = ?,siteikousabudomari2 = ?,testplatekanrino = ?,tan = ?,sokuteisyuhasuu = ?,sokuteidenatu = ?,hoseiyoutippuyoryou = ?,hoseiyoutipputan = ?,hoseimae = ?,"
-                + "hoseigo = ?,hoseiritu = ?,Standard = ?,bunruikakunin = ?,gaikankakunin = ?,netsusyorinitiji = ?,agingjikan = ?,jutenritu = ?,mc = ?,kyoseihaisyutu = ?,rakka = ?,syoninsha = ?,"
-                + "furimukesya = ?,bikou1 = ?,bikou2 = ?,pcdenatu1 = ?,pcjudenjikan1 = ?,pcdenatu2 = ?,pcjudenjikan2 = ?,pcdenatu3 = ?,pcjudenjikan3 = ?,pcdenatu4 = ?,pcjudenjikan4 = ?,irdenatu1 = ?,"
-                + "irhanteiti1 = ?,irjudenjikan1 = ?,irdenatu2 = ?,irhanteiti2 = ?,irjudenjikan2 = ?,irdenatu3 = ?,irhanteiti3 = ?,irjudenjikan3 = ?,irdenatu4 = ?,irhanteiti4 = ?,irjudenjikan4 = ?,"
-                + "irdenatu5 = ?,irhanteiti5 = ?,irjudenjikan5 = ?,irdenatu6 = ?,irhanteiti6 = ?,irjudenjikan6 = ?,irdenatu7 = ?,irhanteiti7 = ?,irjudenjikan7 = ?,irdenatu8 = ?,irhanteiti8 = ?,"
-                + "irjudenjikan8 = ?,bin1setteiti = ?,bin1senbetukubun = ?,bin1keiryougosuryou = ?,bin1countersuu = ?,bin1gosaritu = ?,bin1masinfuryouritu = ?,bin1nukitorikekkabosuu = ?,"
+                + "hoseigo = ?,hoseiritu = ?,bunruikakunin = ?,gaikankakunin = ?,netsusyorinitiji = ?,agingjikan = ?,syoninsha = ?,furimukesya = ?,"
+                + "bikou1 = ?,bikou2 = ?,irdenatu1 = ?,irhanteiti1 = ?,irjudenjikan1 = ?,irdenatu2 = ?,irhanteiti2 = ?,irjudenjikan2 = ?,irdenatu3 = ?,irhanteiti3 = ?,irjudenjikan3 = ?,irdenatu4 = ?,"
+                + "irhanteiti4 = ?,irjudenjikan4 = ?,drop13pc = ?,drop13ps = ?,drop13msdc = ?,drop24pc = ?,drop24ps = ?,drop24msdc = ?,"
+                + "bin1setteiti = ?,bin1senbetukubun = ?,bin1keiryougosuryou = ?,bin1countersuu = ?,bin1gosaritu = ?,bin1masinfuryouritu = ?,bin1nukitorikekkabosuu = ?,"
                 + "bin1nukitorikekka = ?,bin1sinnofuryouritu = ?,bin1kekkacheck = ?,bin2setteiti = ?,bin2senbetukubun = ?,bin2keiryougosuryou = ?,bin2countersuu = ?,bin2gosaritu = ?,"
                 + "bin2masinfuryouritu = ?,bin2nukitorikekkabosuu = ?,bin2nukitorikekka = ?,bin2sinnofuryouritu = ?,bin2kekkacheck = ?,bin3setteiti = ?,bin3senbetukubun = ?,bin3keiryougosuryou = ?,"
                 + "bin3countersuu = ?,bin3gosaritu = ?,bin3masinfuryouritu = ?,bin3nukitorikekkabosuu = ?,bin3nukitorikekka = ?,bin3sinnofuryouritu = ?,bin3kekkacheck = ?,bin4setteiti = ?,"
@@ -3085,228 +2997,234 @@ public class GXHDO101B040 implements IFormLogic {
             params.add(jissekino); // 回数
         }
 
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_KCPNO, srDenkitokuseiesi))); //KCPNO
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_TOKUISAKI, srDenkitokuseiesi))); //客先
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_KCPNO, srDenkitokuseiesi))); //KCPNO
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_TOKUISAKI, srDenkitokuseiesi))); //客先
         params.add(DBUtil.stringToStringObjectDefaultNull(StringUtil.nullToBlank(processData.getHiddenDataMap().get("ownercode")))); //ｵｰﾅｰ
         params.add(DBUtil.stringToStringObjectDefaultNull(StringUtil.nullToBlank(processData.getHiddenDataMap().get("lotkubuncode")))); // ﾛｯﾄ区分
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SHITEI_KOUSA, srDenkitokuseiesi))); //指定公差
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_ATOKOUTEI_SHIJI_NAIYO, srDenkitokuseiesi))); //後工程指示内容
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_OKURI_RYOHINSU, srDenkitokuseiesi))); //送り良品数
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_UKEIRE_TANNIJURYO, srDenkitokuseiesi))); //受入れ単位重量
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_UKEIRE_SOUJURYO, srDenkitokuseiesi))); //受入れ総重量
-        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_G_YAKITSUKE_DAY, srDenkitokuseiesi),
-                getItemData(pItemList, GXHDO101B040Const.SEIHIN_G_YAKITSUKE_TIME, srDenkitokuseiesi))); //外部電極焼付日時
-        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_MEKKI_DAY, srDenkitokuseiesi),
-                getItemData(pItemList, GXHDO101B040Const.SEIHIN_MEKKI_TIME, srDenkitokuseiesi))); //ﾒｯｷ日
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_KENSA_BASHO, srDenkitokuseiesi))); //検査場所
-        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SENBETSU_KAISHI_DAY, srDenkitokuseiesi),
-                getItemData(pItemList, GXHDO101B040Const.SEIHIN_SENBETSU_KAISHI_TIME, srDenkitokuseiesi))); //選別開始日時
-        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SENBETSU_SHURYO_DAY, srDenkitokuseiesi),
-                getItemData(pItemList, GXHDO101B040Const.SEIHIN_SENBETSU_SHURYO_TIME, srDenkitokuseiesi))); //選別終了日時
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_KENSA_GOKI, srDenkitokuseiesi))); //検査号機
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_BUNRUI_AIR_ATSU, srDenkitokuseiesi))); //分類ｴｱｰ圧
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_CD_CONTACT_ATSU, srDenkitokuseiesi))); //CDｺﾝﾀｸﾄ圧
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_IR_CONTACT_ATSU, srDenkitokuseiesi))); //IRｺﾝﾀｸﾄ圧
-        params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_CD1, srDenkitokuseiesi), null)); //使用後ｽﾃｰｼｮﾝ確認CD1
-        params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_PC1, srDenkitokuseiesi), null)); //使用後ｽﾃｰｼｮﾝ確認PC1
-        params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_PC2, srDenkitokuseiesi), null)); //使用後ｽﾃｰｼｮﾝ確認PC2
-        params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_PC3, srDenkitokuseiesi), null)); //使用後ｽﾃｰｼｮﾝ確認PC3
-        params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_PC4, srDenkitokuseiesi), null)); //使用後ｽﾃｰｼｮﾝ確認PC4
-        params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR1, srDenkitokuseiesi), null)); //使用後ｽﾃｰｼｮﾝ確認IR1
-        params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR2, srDenkitokuseiesi), null)); //使用後ｽﾃｰｼｮﾝ確認IR2
-        params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR3, srDenkitokuseiesi), null)); //使用後ｽﾃｰｼｮﾝ確認IR3
-        params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR4, srDenkitokuseiesi), null)); //使用後ｽﾃｰｼｮﾝ確認IR4
-        params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR5, srDenkitokuseiesi), null)); //使用後ｽﾃｰｼｮﾝ確認IR5
-        params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR6, srDenkitokuseiesi), null)); //使用後ｽﾃｰｼｮﾝ確認IR6
-        params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR7, srDenkitokuseiesi), null)); //使用後ｽﾃｰｼｮﾝ確認IR7
-        params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR8, srDenkitokuseiesi), null)); //使用後ｽﾃｰｼｮﾝ確認IR8
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_K_GAIKAN_DANSA, srDenkitokuseiesi))); //固定電極 外観･段差
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_TRACK_GUIDE_SUKIMA, srDenkitokuseiesi))); //ﾄﾗｯｸｶﾞｲﾄﾞ隙間
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_TEST_PLATE_KEIJO_SEISOU, srDenkitokuseiesi))); //ﾃｽﾄﾌﾟﾚｰﾄ 形状･清掃
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_BUNRUI_FUKIDASHIANA, srDenkitokuseiesi))); //分類吹き出し穴
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_TEST_PLATE_ICHI_KAKUNIN, srDenkitokuseiesi))); //ﾃｽﾄﾌﾟﾚｰﾄ位置確認(穴位置)
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_DENKYOKU_SEISOU_DOUSA, srDenkitokuseiesi))); //電極清掃・動作
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_SHITEI_KOUSA, srDenkitokuseiesi))); //指定公差
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_ATOKOUTEI_SHIJI_NAIYO, srDenkitokuseiesi))); //後工程指示内容
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_OKURI_RYOHINSU, srDenkitokuseiesi))); //送り良品数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_UKEIRE_TANNIJURYO, srDenkitokuseiesi))); //受入れ単位重量
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_UKEIRE_SOUJURYO, srDenkitokuseiesi))); //受入れ総重量
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_G_YAKITSUKE_DAY, srDenkitokuseiesi),
+                getItemData(pItemList, GXHDO101B042Const.SEIHIN_G_YAKITSUKE_TIME, srDenkitokuseiesi))); //外部電極焼付日時
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_MEKKI_DAY, srDenkitokuseiesi),
+                getItemData(pItemList, GXHDO101B042Const.SEIHIN_MEKKI_TIME, srDenkitokuseiesi))); //ﾒｯｷ日
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_KENSA_BASHO, srDenkitokuseiesi))); //検査場所
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_SENBETSU_KAISHI_DAY, srDenkitokuseiesi),
+                getItemData(pItemList, GXHDO101B042Const.SEIHIN_SENBETSU_KAISHI_TIME, srDenkitokuseiesi))); //選別開始日時
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_SENBETSU_SHURYO_DAY, srDenkitokuseiesi),
+                getItemData(pItemList, GXHDO101B042Const.SEIHIN_SENBETSU_SHURYO_TIME, srDenkitokuseiesi))); //選別終了日時
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_KENSA_GOKI, srDenkitokuseiesi))); //検査号機
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_BUNRUI_AIR_ATSU, srDenkitokuseiesi))); //分類ｴｱｰ圧
         if (isInsert) {
-            params.add(null); //選別順序変更
-            params.add(null); //設定ﾓｰﾄﾞ確認
-            params.add(null); //配線確認
+            params.add(null); //CDｺﾝﾀｸﾄ圧
+            params.add(null); //IRｺﾝﾀｸﾄ圧
+            params.add(null); //使用後ｽﾃｰｼｮﾝ確認CD1
+            params.add(null); //使用後ｽﾃｰｼｮﾝ確認PC1
+            params.add(null); //使用後ｽﾃｰｼｮﾝ確認PC2
+            params.add(null); //使用後ｽﾃｰｼｮﾝ確認PC3
+            params.add(null); //使用後ｽﾃｰｼｮﾝ確認PC4
+            params.add(null); //使用後ｽﾃｰｼｮﾝ確認IR1
+            params.add(null); //使用後ｽﾃｰｼｮﾝ確認IR2
+            params.add(null); //使用後ｽﾃｰｼｮﾝ確認IR3
+            params.add(null); //使用後ｽﾃｰｼｮﾝ確認IR4
+            params.add(null); //使用後ｽﾃｰｼｮﾝ確認IR5
+            params.add(null); //使用後ｽﾃｰｼｮﾝ確認IR6
+            params.add(null); //使用後ｽﾃｰｼｮﾝ確認IR7
+            params.add(null); //使用後ｽﾃｰｼｮﾝ確認IR8
         }
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SEIHIN_TOUNYU_JOTAI, srDenkitokuseiesi))); //製品投入状態
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_BIN_BOX_SEISOU_CHECK, srDenkitokuseiesi))); //BINﾎﾞｯｸｽ内の清掃ﾁｪｯｸ
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SETSHA, srDenkitokuseiesi))); //ｾｯﾄ者
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_KAKUNINSHA, srDenkitokuseiesi))); //確認者
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI1, srDenkitokuseiesi))); //指定公差歩留まり1
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI2, srDenkitokuseiesi))); //指定公差歩留まり2
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_TEST_PLATE_KANRINO, srDenkitokuseiesi))); //ﾃｽﾄﾌﾟﾚｰﾄ管理No
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_TAN_DELTA, srDenkitokuseiesi))); //Tanδ
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SOKUTEI_SHUHASU, srDenkitokuseiesi))); //測定周波数
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SOKUTEI_DENATSU, srDenkitokuseiesi))); //測定電圧
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_HOSEIYOU_CHIP_YORYO, srDenkitokuseiesi))); //補正用ﾁｯﾌﾟ容量
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_HOSEIYOU_CHIP_TAN_DELTA, srDenkitokuseiesi))); //補正用ﾁｯﾌﾟTanδ
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_HOSEIMAE, srDenkitokuseiesi))); //補正前
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_HOSEIATO, srDenkitokuseiesi))); //補正後
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_HOSEIRITSU, srDenkitokuseiesi))); //補正率
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_STANDARD_HOSEI, srDenkitokuseiesi))); //ｽﾀﾝﾀﾞｰﾄﾞ補正
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_BUNRUI_KAKUNIN, srDenkitokuseiesi))); //分類確認
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_GAIKAN_KAKUNIN, srDenkitokuseiesi))); //外観確認
-        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_NETSUSYORI_DAY, srDenkitokuseiesi),
-                getItemData(pItemList, GXHDO101B040Const.SEIHIN_NETSUSYORI_TIME, srDenkitokuseiesi))); //熱処理日時
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_AGING_TIME, srDenkitokuseiesi))); //ｴｰｼﾞﾝｸﾞ時間
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_JUTENRITSU, srDenkitokuseiesi))); //充填率
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_MC, srDenkitokuseiesi))); //MC
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_KYOSEI_HAISHUTSU, srDenkitokuseiesi))); //強制排出
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_RAKKA, srDenkitokuseiesi))); //落下
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SHONINSHA, srDenkitokuseiesi))); //承認者
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_FURIMUKESHA, srDenkitokuseiesi))); //振向者
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_BIKOU1, srDenkitokuseiesi))); //備考1
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_BIKOU2, srDenkitokuseiesi))); //備考2
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.PRECHARGE_DENATSU1, srDenkitokuseiesi))); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC① 電圧
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.PRECHARGE_JUDEN_TIME1, srDenkitokuseiesi))); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC① 充電時間
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.PRECHARGE_DENATSU2, srDenkitokuseiesi))); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC② 電圧
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.PRECHARGE_JUDEN_TIME2, srDenkitokuseiesi))); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC② 充電時間
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.PRECHARGE_DENATSU3, srDenkitokuseiesi))); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC③ 電圧
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.PRECHARGE_JUDEN_TIME3, srDenkitokuseiesi))); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC③ 充電時間
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.PRECHARGE_DENATSU4, srDenkitokuseiesi))); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC④ 電圧
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.PRECHARGE_JUDEN_TIME4, srDenkitokuseiesi))); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC④ 充電時間
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 電圧
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 判定値
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 充電時間
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 電圧
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 判定値
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 充電時間
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 電圧
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 判定値
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 充電時間
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 電圧
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 判定値
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 充電時間
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 電圧
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 判定値
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 充電時間
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 電圧
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 判定値
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 充電時間
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 電圧
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 判定値
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 充電時間
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 電圧
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 判定値
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 充電時間
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_K_GAIKAN_DANSA, srDenkitokuseiesi))); //固定電極 外観･段差
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_TRACK_GUIDE_SUKIMA, srDenkitokuseiesi))); //ﾄﾗｯｸｶﾞｲﾄﾞ隙間
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_TEST_PLATE_KEIJO_SEISOU, srDenkitokuseiesi))); //ﾃｽﾄﾌﾟﾚｰﾄ 形状･清掃
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_BUNRUI_FUKIDASHIANA, srDenkitokuseiesi))); //分類吹き出し穴
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_TEST_PLATE_ICHI_KAKUNIN, srDenkitokuseiesi))); //ﾃｽﾄﾌﾟﾚｰﾄ位置確認(穴位置)
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_DENKYOKU_SEISOU_DOUSA, srDenkitokuseiesi))); //電極清掃・動作
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_SENBETSU_JUNJO_CHANGE, srDenkitokuseiesi))); //選別順序変更
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_SET_MODO_KAKUNIN, srDenkitokuseiesi))); //設定ﾓｰﾄﾞ確認
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_HAISEN_KAKUNIN, srDenkitokuseiesi))); //配線確認
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_SEIHIN_TOUNYU_JOTAI, srDenkitokuseiesi))); //製品投入状態
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_BIN_BOX_SEISOU_CHECK, srDenkitokuseiesi))); //BINﾎﾞｯｸｽ内の清掃ﾁｪｯｸ
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_SETSHA, srDenkitokuseiesi))); //ｾｯﾄ者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_KAKUNINSHA, srDenkitokuseiesi))); //確認者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_SHITEI_KOUSA_BUDOMARI1, srDenkitokuseiesi))); //指定公差歩留まり1
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_SHITEI_KOUSA_BUDOMARI2, srDenkitokuseiesi))); //指定公差歩留まり2
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_TEST_PLATE_KANRINO, srDenkitokuseiesi))); //ﾃｽﾄﾌﾟﾚｰﾄ管理No
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_TAN_DELTA, srDenkitokuseiesi))); //Tanδ
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_SOKUTEI_SHUHASU, srDenkitokuseiesi))); //測定周波数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_SOKUTEI_DENATSU, srDenkitokuseiesi))); //測定電圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_HOSEIYOU_CHIP_YORYO, srDenkitokuseiesi))); //補正用ﾁｯﾌﾟ容量
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_HOSEIYOU_CHIP_TAN_DELTA, srDenkitokuseiesi))); //補正用ﾁｯﾌﾟTanδ
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_HOSEIMAE, srDenkitokuseiesi))); //補正前
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_HOSEIATO, srDenkitokuseiesi))); //補正後
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_HOSEIRITSU, srDenkitokuseiesi))); //補正率
         if (isInsert) {
+            params.add(null); //ｽﾀﾝﾀﾞｰﾄﾞ補正
+        }
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_BUNRUI_KAKUNIN, srDenkitokuseiesi))); //分類確認
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_GAIKAN_KAKUNIN, srDenkitokuseiesi))); //外観確認
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_NETSUSYORI_DAY, srDenkitokuseiesi),
+                getItemData(pItemList, GXHDO101B042Const.SEIHIN_NETSUSYORI_TIME, srDenkitokuseiesi))); //熱処理日時
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_AGING_TIME, srDenkitokuseiesi))); //ｴｰｼﾞﾝｸﾞ時間
+        if (isInsert) {
+            params.add(null); //充填率
+            params.add(null); //MC
+            params.add(null); //強制排出
+            params.add(null); //落下
+        }
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_SHONINSHA, srDenkitokuseiesi))); //承認者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_FURIMUKESHA, srDenkitokuseiesi))); //振向者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_BIKOU1, srDenkitokuseiesi))); //備考1
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_BIKOU2, srDenkitokuseiesi))); //備考2
+        if (isInsert) {
+            params.add(null); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC① 電圧
+            params.add(null); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC① 充電時間
+            params.add(null); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC② 電圧
+            params.add(null); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC② 充電時間
+            params.add(null); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC③ 電圧
+            params.add(null); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC③ 充電時間
+            params.add(null); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC④ 電圧
+            params.add(null); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC④ 充電時間
+        }
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.TAIDEN_DENATSU1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 電圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.TAIDEN_HANTEICHI1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 判定値
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.TAIDEN_JUDEN_TIME1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 充電時間
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.TAIDEN_DENATSU2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 電圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.TAIDEN_HANTEICHI2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 判定値
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.TAIDEN_JUDEN_TIME2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 充電時間
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.TAIDEN_DENATSU3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 電圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.TAIDEN_HANTEICHI3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 判定値
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.TAIDEN_JUDEN_TIME3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 充電時間
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.TAIDEN_DENATSU4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 電圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.TAIDEN_HANTEICHI4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 判定値
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.TAIDEN_JUDEN_TIME4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 充電時間
+        if (isInsert) {
+            params.add(null); //耐電圧設定条件 IR⑤ 電圧
+            params.add(null); //耐電圧設定条件 IR⑤ 判定値
+            params.add(null); //耐電圧設定条件 IR⑤ 充電時間
+            params.add(null); //耐電圧設定条件 IR⑥ 電圧
+            params.add(null); //耐電圧設定条件 IR⑥ 判定値
+            params.add(null); //耐電圧設定条件 IR⑥ 充電時間
+            params.add(null); //耐電圧設定条件 IR⑦ 電圧
+            params.add(null); //耐電圧設定条件 IR⑦ 判定値
+            params.add(null); //耐電圧設定条件 IR⑦ 充電時間
+            params.add(null); //耐電圧設定条件 IR⑧ 電圧
+            params.add(null); //耐電圧設定条件 IR⑧ 判定値
+            params.add(null); //耐電圧設定条件 IR⑧ 充電時間
             params.add(null); //RDC1 ﾚﾝｼﾞ
             params.add(null); //RDC1 判定値
             params.add(null); //RDC2 ﾚﾝｼﾞ
             params.add(null); //RDC2 判定値
-            params.add(null); //DROP1,3 PC
-            params.add(null); //DROP1,3 PS
-            params.add(null); //DROP1,3 MS･DC
-            params.add(null); //DROP2,4 PC
-            params.add(null); //DROP2,4 PS
-            params.add(null); //DROP2,4 MS･DC
         }
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN1_PERCENT_KBN, srDenkitokuseiesi))); //BIN1 %区分(設定値)
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN1_SENBETSU_KBN, srDenkitokuseiesi))); //BIN1 選別区分
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN1_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN1 計量後数量
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN1_COUNTER_SU, srDenkitokuseiesi))); //BIN1 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN1_GOSARITSU, srDenkitokuseiesi))); //BIN1 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN1_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN1 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN1_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN1 抜き取り結果
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN1_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN1 抜き取り結果 
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN1_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN1 真の不良率(%)
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN1_KEKKA_CHECK, srDenkitokuseiesi))); //BIN1 結果ﾁｪｯｸ
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN2_PERCENT_KBN, srDenkitokuseiesi))); //BIN2 %区分(設定値)
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN2_SENBETSU_KBN, srDenkitokuseiesi))); //BIN2 選別区分
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN2_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN2 計量後数量
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN2_COUNTER_SU, srDenkitokuseiesi))); //BIN2 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN2_GOSARITSU, srDenkitokuseiesi))); //BIN2 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN2_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN2 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN2_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN2 抜き取り結果
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN2_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN2 抜き取り結果
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN2_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN2 真の不良率(%)
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN2_KEKKA_CHECK, srDenkitokuseiesi))); //BIN2 結果ﾁｪｯｸ
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN3_PERCENT_KBN, srDenkitokuseiesi))); //BIN3 %区分(設定値)
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN3_SENBETSU_KBN, srDenkitokuseiesi))); //BIN3 選別区分
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN3_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN3 計量後数量
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN3_COUNTER_SU, srDenkitokuseiesi))); //BIN3 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN3_GOSARITSU, srDenkitokuseiesi))); //BIN3 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN3_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN3 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN3_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN3 抜き取り結果
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN3_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN3 抜き取り結果
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN3_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN3 真の不良率(%)
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN3_KEKKA_CHECK, srDenkitokuseiesi))); //BIN3 結果ﾁｪｯｸ
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN4_PERCENT_KBN, srDenkitokuseiesi))); //BIN4 %区分(設定値)
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN4_SENBETSU_KBN, srDenkitokuseiesi))); //BIN4 選別区分
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN4_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN4 計量後数量
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN4_COUNTER_SU, srDenkitokuseiesi))); //BIN4 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN4_GOSARITSU, srDenkitokuseiesi))); //BIN4 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN4_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN4 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN4_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN4 抜き取り結果
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN4_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN4 抜き取り結果
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN4_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN4 真の不良率(%)
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN4_KEKKA_CHECK, srDenkitokuseiesi))); //BIN4 結果ﾁｪｯｸ
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN5_PERCENT_KBN, srDenkitokuseiesi))); //BIN5 %区分(設定値)
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN5_SENBETSU_KBN, srDenkitokuseiesi))); //BIN5 選別区分
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN5_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN5 計量後数量
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN5_COUNTER_SU, srDenkitokuseiesi))); //BIN5 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN5_GOSARITSU, srDenkitokuseiesi))); //BIN5 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN5_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN5 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN5_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN5 抜き取り結果
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN5_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN5 抜き取り結果
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN5_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN5 真の不良率(%)
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN5_KEKKA_CHECK, srDenkitokuseiesi))); //BIN5 結果ﾁｪｯｸ
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN5_FUKURO_CHECK, srDenkitokuseiesi))); //BIN5 袋ﾁｪｯｸ
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN6_PERCENT_KBN, srDenkitokuseiesi))); //BIN6 %区分(設定値)
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN6_SENBETSU_KBN, srDenkitokuseiesi))); //BIN6 選別区分
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN6_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN6 計量後数量
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN6_COUNTER_SU, srDenkitokuseiesi))); //BIN6 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN6_GOSARITSU, srDenkitokuseiesi))); //BIN6 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN6_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN6 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN6_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN6 抜き取り結果
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN6_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN6 抜き取り結果
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN6_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN6 真の不良率(%)
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN6_KEKKA_CHECK, srDenkitokuseiesi))); //BIN6 結果ﾁｪｯｸ
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN6_FUKURO_CHECK, srDenkitokuseiesi))); //BIN6 袋ﾁｪｯｸ
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN7_PERCENT_KBN, srDenkitokuseiesi))); //BIN7 %区分(設定値)
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN7_SENBETSU_KBN, srDenkitokuseiesi))); //BIN7 選別区分
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN7_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN7 計量後数量
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN7_COUNTER_SU, srDenkitokuseiesi))); //BIN7 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN7_GOSARITSU, srDenkitokuseiesi))); //BIN7 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN7_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN7 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN7_FUKURO_CHECK, srDenkitokuseiesi))); //BIN7 袋ﾁｪｯｸ
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN8_PERCENT_KBN, srDenkitokuseiesi))); //BIN8 %区分(設定値)
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN8_SENBETSU_KBN, srDenkitokuseiesi))); //BIN8 選別区分
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN8_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN8 計量後数量
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN8_COUNTER_SU, srDenkitokuseiesi))); //BIN8 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN8_GOSARITSU, srDenkitokuseiesi))); //BIN8 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN8_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN8 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN8_FUKURO_CHECK, srDenkitokuseiesi))); //BIN8 袋ﾁｪｯｸ
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN9_K_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN9 強制排出 計量後数量
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN9_K_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN9 強制排出 ﾏｼﾝ不良率
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_RAKKA_KEIRYOGO_SURYO, srDenkitokuseiesi))); //落下 計量後数量 
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_RAKKA_MACHINE_FURYORITSU, srDenkitokuseiesi))); //落下 ﾏｼﾝ不良率
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_HANDA_SAMPLE, srDenkitokuseiesi))); //半田ｻﾝﾌﾟﾙ
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_SHINRAISEI_SAMPLE, srDenkitokuseiesi))); //信頼性ｻﾝﾌﾟﾙ
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_SHIN_FURYO_HANTEISHA, srDenkitokuseiesi))); //真不良判定者
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_HANTEI_NYURYOKUSHA, srDenkitokuseiesi))); //判定入力者
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_TORIDASHISHA, srDenkitokuseiesi))); //取出者
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_KOUSA1, srDenkitokuseiesi))); //公差①
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_JURYO1, srDenkitokuseiesi))); //重量①
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_KOSU1, srDenkitokuseiesi))); //個数①
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_KOUSA2, srDenkitokuseiesi))); //公差②
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_JURYO2, srDenkitokuseiesi))); //重量②
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_KOSU2, srDenkitokuseiesi))); //個数②
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_KOUSA3, srDenkitokuseiesi))); //公差③
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_JURYO3, srDenkitokuseiesi))); //重量③
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_KOSU3, srDenkitokuseiesi))); //個数③
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_KOUSA4, srDenkitokuseiesi))); //公差④
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_JURYO4, srDenkitokuseiesi))); //重量④
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_KOSU4, srDenkitokuseiesi))); //個数④
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_COUNTER_SOSU, srDenkitokuseiesi))); //ｶｳﾝﾀｰ総数
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_RYOUHIN_JURYO, srDenkitokuseiesi))); //良品重量
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_RYOUHIN_KOSU, srDenkitokuseiesi))); //良品個数
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_BUDOMARI, srDenkitokuseiesi))); //歩留まり
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B040Const.SET_KAKUNINSHA, srDenkitokuseiesi))); //BIN確認者
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_DENKITOKUSEI_SAIKEN, srDenkitokuseiesi))); //電気特性再検
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.DROP1_3PC, srDenkitokuseiesi))); //DROP1,3 PC
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.DROP1_3PS, srDenkitokuseiesi))); //DROP1,3 PS
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.DROP1_3MSDC, srDenkitokuseiesi))); //DROP1,3 MS･DC
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.DROP2_4PC, srDenkitokuseiesi))); //DROP2,4 PC
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.DROP2_4PS, srDenkitokuseiesi))); //DROP2,4 PS
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.DROP2_4MSDC, srDenkitokuseiesi))); //DROP2,4 MS･DC
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN1_PERCENT_KBN, srDenkitokuseiesi))); //BIN1 %区分(設定値)
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN1_SENBETSU_KBN, srDenkitokuseiesi))); //BIN1 選別区分
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN1_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN1 計量後数量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN1_COUNTER_SU, srDenkitokuseiesi))); //BIN1 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN1_GOSARITSU, srDenkitokuseiesi))); //BIN1 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN1_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN1 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN1_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN1 抜き取り結果
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN1_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN1 抜き取り結果 
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN1_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN1 真の不良率(%)
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN1_KEKKA_CHECK, srDenkitokuseiesi))); //BIN1 結果ﾁｪｯｸ
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN2_PERCENT_KBN, srDenkitokuseiesi))); //BIN2 %区分(設定値)
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN2_SENBETSU_KBN, srDenkitokuseiesi))); //BIN2 選別区分
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN2_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN2 計量後数量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN2_COUNTER_SU, srDenkitokuseiesi))); //BIN2 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN2_GOSARITSU, srDenkitokuseiesi))); //BIN2 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN2_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN2 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN2_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN2 抜き取り結果
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN2_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN2 抜き取り結果
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN2_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN2 真の不良率(%)
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN2_KEKKA_CHECK, srDenkitokuseiesi))); //BIN2 結果ﾁｪｯｸ
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN3_PERCENT_KBN, srDenkitokuseiesi))); //BIN3 %区分(設定値)
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN3_SENBETSU_KBN, srDenkitokuseiesi))); //BIN3 選別区分
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN3_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN3 計量後数量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN3_COUNTER_SU, srDenkitokuseiesi))); //BIN3 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN3_GOSARITSU, srDenkitokuseiesi))); //BIN3 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN3_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN3 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN3_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN3 抜き取り結果
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN3_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN3 抜き取り結果
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN3_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN3 真の不良率(%)
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN3_KEKKA_CHECK, srDenkitokuseiesi))); //BIN3 結果ﾁｪｯｸ
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN4_PERCENT_KBN, srDenkitokuseiesi))); //BIN4 %区分(設定値)
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN4_SENBETSU_KBN, srDenkitokuseiesi))); //BIN4 選別区分
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN4_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN4 計量後数量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN4_COUNTER_SU, srDenkitokuseiesi))); //BIN4 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN4_GOSARITSU, srDenkitokuseiesi))); //BIN4 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN4_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN4 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN4_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN4 抜き取り結果
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN4_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN4 抜き取り結果
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN4_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN4 真の不良率(%)
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN4_KEKKA_CHECK, srDenkitokuseiesi))); //BIN4 結果ﾁｪｯｸ
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN5_PERCENT_KBN, srDenkitokuseiesi))); //BIN5 %区分(設定値)
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN5_SENBETSU_KBN, srDenkitokuseiesi))); //BIN5 選別区分
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN5_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN5 計量後数量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN5_COUNTER_SU, srDenkitokuseiesi))); //BIN5 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN5_GOSARITSU, srDenkitokuseiesi))); //BIN5 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN5_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN5 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN5_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN5 抜き取り結果
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN5_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN5 抜き取り結果
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN5_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN5 真の不良率(%)
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN5_KEKKA_CHECK, srDenkitokuseiesi))); //BIN5 結果ﾁｪｯｸ
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN5_FUKURO_CHECK, srDenkitokuseiesi))); //BIN5 袋ﾁｪｯｸ
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN6_PERCENT_KBN, srDenkitokuseiesi))); //BIN6 %区分(設定値)
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN6_SENBETSU_KBN, srDenkitokuseiesi))); //BIN6 選別区分
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN6_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN6 計量後数量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN6_COUNTER_SU, srDenkitokuseiesi))); //BIN6 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN6_GOSARITSU, srDenkitokuseiesi))); //BIN6 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN6_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN6 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN6_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN6 抜き取り結果
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN6_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN6 抜き取り結果
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN6_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN6 真の不良率(%)
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN6_KEKKA_CHECK, srDenkitokuseiesi))); //BIN6 結果ﾁｪｯｸ
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN6_FUKURO_CHECK, srDenkitokuseiesi))); //BIN6 袋ﾁｪｯｸ
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN7_PERCENT_KBN, srDenkitokuseiesi))); //BIN7 %区分(設定値)
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN7_SENBETSU_KBN, srDenkitokuseiesi))); //BIN7 選別区分
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN7_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN7 計量後数量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN7_COUNTER_SU, srDenkitokuseiesi))); //BIN7 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN7_GOSARITSU, srDenkitokuseiesi))); //BIN7 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN7_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN7 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN7_FUKURO_CHECK, srDenkitokuseiesi))); //BIN7 袋ﾁｪｯｸ
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN8_PERCENT_KBN, srDenkitokuseiesi))); //BIN8 %区分(設定値)
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN8_SENBETSU_KBN, srDenkitokuseiesi))); //BIN8 選別区分
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN8_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN8 計量後数量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN8_COUNTER_SU, srDenkitokuseiesi))); //BIN8 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN8_GOSARITSU, srDenkitokuseiesi))); //BIN8 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN8_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN8 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN8_FUKURO_CHECK, srDenkitokuseiesi))); //BIN8 袋ﾁｪｯｸ
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN9_K_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN9 強制排出 計量後数量
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN9_K_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN9 強制排出 ﾏｼﾝ不良率
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_RAKKA_KEIRYOGO_SURYO, srDenkitokuseiesi))); //落下 計量後数量 
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_RAKKA_MACHINE_FURYORITSU, srDenkitokuseiesi))); //落下 ﾏｼﾝ不良率
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_HANDA_SAMPLE, srDenkitokuseiesi))); //半田ｻﾝﾌﾟﾙ
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_SHINRAISEI_SAMPLE, srDenkitokuseiesi))); //信頼性ｻﾝﾌﾟﾙ
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_SHIN_FURYO_HANTEISHA, srDenkitokuseiesi))); //真不良判定者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_HANTEI_NYURYOKUSHA, srDenkitokuseiesi))); //判定入力者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_TORIDASHISHA, srDenkitokuseiesi))); //取出者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_KOUSA1, srDenkitokuseiesi))); //公差①
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_JURYO1, srDenkitokuseiesi))); //重量①
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_KOSU1, srDenkitokuseiesi))); //個数①
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_KOUSA2, srDenkitokuseiesi))); //公差②
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_JURYO2, srDenkitokuseiesi))); //重量②
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_KOSU2, srDenkitokuseiesi))); //個数②
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_KOUSA3, srDenkitokuseiesi))); //公差③
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_JURYO3, srDenkitokuseiesi))); //重量③
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_KOSU3, srDenkitokuseiesi))); //個数③
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_KOUSA4, srDenkitokuseiesi))); //公差④
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_JURYO4, srDenkitokuseiesi))); //重量④
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_KOSU4, srDenkitokuseiesi))); //個数④
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_COUNTER_SOSU, srDenkitokuseiesi))); //ｶｳﾝﾀｰ総数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_RYOUHIN_JURYO, srDenkitokuseiesi))); //良品重量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_RYOUHIN_KOSU, srDenkitokuseiesi))); //良品個数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BUDOMARI, srDenkitokuseiesi))); //歩留まり
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_KAKUNINSHA, srDenkitokuseiesi))); //BIN確認者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_DENKITOKUSEI_SAIKEN, srDenkitokuseiesi))); //電気特性再検
         params.add(formId); //設備区分
         if (isInsert) {
             params.add(systemTime); //登録日時
@@ -3389,15 +3307,13 @@ public class GXHDO101B040 implements IFormLogic {
             String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, ProcessData processData, String formId) throws SQLException {
         String sql = "UPDATE sr_denkitokuseiesi SET "
                 + "kcpno = ?,tokuisaki = ?,ownercode = ?,lotkubuncode = ?,siteikousa = ?,atokouteisijinaiyou = ?,okuriryouhinsuu = ?,ukeiretannijyuryo = ?,ukeiresoujyuryou = ?,gdyakitukenitiji = ?,"
-                + "mekkinitiji = ?,kensabasyo = ?,senbetukaisinitiji = ?,senbetusyuryounitiji = ?,kensagouki = ?,bunruiairatu = ?,cdcontactatu = ?,ircontactatu = ?,stationcd1 = ?,stationpc1 = ?,"
-                + "stationpc2 = ?,stationpc3 = ?,stationpc4 = ?,stationir1 = ?,stationir2 = ?,stationir3 = ?,stationir4 = ?,stationir5 = ?,stationir6 = ?,stationir7 = ?,stationir8 = ?,koteidenkyoku = ?,"
-                + "torakkugaido = ?,testplatekeijo = ?,bunruifukidasi = ?,testplatekakunin = ?,denkyokuseisou = ?,seihintounyuujotai = ?,binboxseisoucheck = ?,setsya = ?,kakuninsya = ?,"
+                + "mekkinitiji = ?,kensabasyo = ?,senbetukaisinitiji = ?,senbetusyuryounitiji = ?,kensagouki = ?,bunruiairatu = ?,koteidenkyoku = ?,torakkugaido = ?,testplatekeijo = ?,"
+                + "bunruifukidasi = ?,testplatekakunin = ?,denkyokuseisou = ?,senbetujunjo = ?,setteikakunin = ?,haisenkakunin = ?,seihintounyuujotai = ?,binboxseisoucheck = ?,setsya = ?,kakuninsya = ?,"
                 + "siteikousabudomari1 = ?,siteikousabudomari2 = ?,testplatekanrino = ?,tan = ?,sokuteisyuhasuu = ?,sokuteidenatu = ?,hoseiyoutippuyoryou = ?,hoseiyoutipputan = ?,hoseimae = ?,"
-                + "hoseigo = ?,hoseiritu = ?,Standard = ?,bunruikakunin = ?,gaikankakunin = ?,netsusyorinitiji = ?,agingjikan = ?,jutenritu = ?,mc = ?,kyoseihaisyutu = ?,rakka = ?,syoninsha = ?,"
-                + "furimukesya = ?,bikou1 = ?,bikou2 = ?,pcdenatu1 = ?,pcjudenjikan1 = ?,pcdenatu2 = ?,pcjudenjikan2 = ?,pcdenatu3 = ?,pcjudenjikan3 = ?,pcdenatu4 = ?,pcjudenjikan4 = ?,irdenatu1 = ?,"
-                + "irhanteiti1 = ?,irjudenjikan1 = ?,irdenatu2 = ?,irhanteiti2 = ?,irjudenjikan2 = ?,irdenatu3 = ?,irhanteiti3 = ?,irjudenjikan3 = ?,irdenatu4 = ?,irhanteiti4 = ?,irjudenjikan4 = ?,"
-                + "irdenatu5 = ?,irhanteiti5 = ?,irjudenjikan5 = ?,irdenatu6 = ?,irhanteiti6 = ?,irjudenjikan6 = ?,irdenatu7 = ?,irhanteiti7 = ?,irjudenjikan7 = ?,irdenatu8 = ?,irhanteiti8 = ?,"
-                + "irjudenjikan8 = ?,bin1setteiti = ?,bin1senbetukubun = ?,bin1keiryougosuryou = ?,bin1countersuu = ?,bin1gosaritu = ?,bin1masinfuryouritu = ?,bin1nukitorikekkabosuu = ?,"
+                + "hoseigo = ?,hoseiritu = ?,bunruikakunin = ?,gaikankakunin = ?,netsusyorinitiji = ?,agingjikan = ?,syoninsha = ?,furimukesya = ?,"
+                + "bikou1 = ?,bikou2 = ?,irdenatu1 = ?,irhanteiti1 = ?,irjudenjikan1 = ?,irdenatu2 = ?,irhanteiti2 = ?,irjudenjikan2 = ?,irdenatu3 = ?,irhanteiti3 = ?,irjudenjikan3 = ?,irdenatu4 = ?,"
+                + "irhanteiti4 = ?,irjudenjikan4 = ?,drop13pc = ?,drop13ps = ?,drop13msdc = ?,drop24pc = ?,drop24ps = ?,drop24msdc = ?,"
+                + "bin1setteiti = ?,bin1senbetukubun = ?,bin1keiryougosuryou = ?,bin1countersuu = ?,bin1gosaritu = ?,bin1masinfuryouritu = ?,bin1nukitorikekkabosuu = ?,"
                 + "bin1nukitorikekka = ?,bin1sinnofuryouritu = ?,bin1kekkacheck = ?,bin2setteiti = ?,bin2senbetukubun = ?,bin2keiryougosuryou = ?,bin2countersuu = ?,bin2gosaritu = ?,"
                 + "bin2masinfuryouritu = ?,bin2nukitorikekkabosuu = ?,bin2nukitorikekka = ?,bin2sinnofuryouritu = ?,bin2kekkacheck = ?,bin3setteiti = ?,bin3senbetukubun = ?,bin3keiryougosuryou = ?,"
                 + "bin3countersuu = ?,bin3gosaritu = ?,bin3masinfuryouritu = ?,bin3nukitorikekkabosuu = ?,bin3nukitorikekka = ?,bin3sinnofuryouritu = ?,bin3kekkacheck = ?,bin4setteiti = ?,"
@@ -3460,229 +3376,235 @@ public class GXHDO101B040 implements IFormLogic {
             params.add(edaban); //枝番
             params.add(jissekino); // 回数
         }
-
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_KCPNO, srDenkitokuseiesi))); //KCPNO
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_TOKUISAKI, srDenkitokuseiesi))); //客先
-        params.add(DBUtil.stringToStringObject(StringUtil.nullToBlank(processData.getHiddenDataMap().get("ownercode")))); //ｵｰﾅｰ
-        params.add(DBUtil.stringToStringObject(StringUtil.nullToBlank(processData.getHiddenDataMap().get("lotkubuncode")))); // ﾛｯﾄ区分
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SHITEI_KOUSA, srDenkitokuseiesi))); //指定公差
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_ATOKOUTEI_SHIJI_NAIYO, srDenkitokuseiesi))); //後工程指示内容
-        params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_OKURI_RYOHINSU, srDenkitokuseiesi))); //送り良品数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_UKEIRE_TANNIJURYO, srDenkitokuseiesi))); //受入れ単位重量
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_UKEIRE_SOUJURYO, srDenkitokuseiesi))); //受入れ総重量
-        params.add(DBUtil.stringToDateObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_G_YAKITSUKE_DAY, srDenkitokuseiesi),
-                getItemData(pItemList, GXHDO101B040Const.SEIHIN_G_YAKITSUKE_TIME, srDenkitokuseiesi))); //外部電極焼付日時
-        params.add(DBUtil.stringToDateObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_MEKKI_DAY, srDenkitokuseiesi),
-                getItemData(pItemList, GXHDO101B040Const.SEIHIN_MEKKI_TIME, srDenkitokuseiesi))); //ﾒｯｷ日
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_KENSA_BASHO, srDenkitokuseiesi))); //検査場所
-        params.add(DBUtil.stringToDateObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SENBETSU_KAISHI_DAY, srDenkitokuseiesi),
-                getItemData(pItemList, GXHDO101B040Const.SEIHIN_SENBETSU_KAISHI_TIME, srDenkitokuseiesi))); //選別開始日時
-        params.add(DBUtil.stringToDateObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SENBETSU_SHURYO_DAY, srDenkitokuseiesi),
-                getItemData(pItemList, GXHDO101B040Const.SEIHIN_SENBETSU_SHURYO_TIME, srDenkitokuseiesi))); //選別終了日時
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_KENSA_GOKI, srDenkitokuseiesi))); //検査号機
-        params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_BUNRUI_AIR_ATSU, srDenkitokuseiesi))); //分類ｴｱｰ圧
-        params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_CD_CONTACT_ATSU, srDenkitokuseiesi))); //CDｺﾝﾀｸﾄ圧
-        params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_IR_CONTACT_ATSU, srDenkitokuseiesi))); //IRｺﾝﾀｸﾄ圧
-        params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_CD1, srDenkitokuseiesi), 0)); //使用後ｽﾃｰｼｮﾝ確認CD1
-        params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_PC1, srDenkitokuseiesi), 0)); //使用後ｽﾃｰｼｮﾝ確認PC1
-        params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_PC2, srDenkitokuseiesi), 0)); //使用後ｽﾃｰｼｮﾝ確認PC2
-        params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_PC3, srDenkitokuseiesi), 0)); //使用後ｽﾃｰｼｮﾝ確認PC3
-        params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_PC4, srDenkitokuseiesi), 0)); //使用後ｽﾃｰｼｮﾝ確認PC4
-        params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR1, srDenkitokuseiesi), 0)); //使用後ｽﾃｰｼｮﾝ確認IR1
-        params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR2, srDenkitokuseiesi), 0)); //使用後ｽﾃｰｼｮﾝ確認IR2
-        params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR3, srDenkitokuseiesi), 0)); //使用後ｽﾃｰｼｮﾝ確認IR3
-        params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR4, srDenkitokuseiesi), 0)); //使用後ｽﾃｰｼｮﾝ確認IR4
-        params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR5, srDenkitokuseiesi), 0)); //使用後ｽﾃｰｼｮﾝ確認IR5
-        params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR6, srDenkitokuseiesi), 0)); //使用後ｽﾃｰｼｮﾝ確認IR6
-        params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR7, srDenkitokuseiesi), 0)); //使用後ｽﾃｰｼｮﾝ確認IR7
-        params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR8, srDenkitokuseiesi), 0)); //使用後ｽﾃｰｼｮﾝ確認IR8
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_K_GAIKAN_DANSA, srDenkitokuseiesi))); //固定電極 外観･段差
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_TRACK_GUIDE_SUKIMA, srDenkitokuseiesi))); //ﾄﾗｯｸｶﾞｲﾄﾞ隙間
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_TEST_PLATE_KEIJO_SEISOU, srDenkitokuseiesi))); //ﾃｽﾄﾌﾟﾚｰﾄ 形状･清掃
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_BUNRUI_FUKIDASHIANA, srDenkitokuseiesi))); //分類吹き出し穴
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_TEST_PLATE_ICHI_KAKUNIN, srDenkitokuseiesi))); //ﾃｽﾄﾌﾟﾚｰﾄ位置確認(穴位置)
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_DENKYOKU_SEISOU_DOUSA, srDenkitokuseiesi))); //電極清掃・動作
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_KCPNO, srDenkitokuseiesi))); //KCPNO
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_TOKUISAKI, srDenkitokuseiesi))); //客先
+        params.add(DBUtil.stringToStringObjectDefaultNull(StringUtil.nullToBlank(processData.getHiddenDataMap().get("ownercode")))); //ｵｰﾅｰ
+        params.add(DBUtil.stringToStringObjectDefaultNull(StringUtil.nullToBlank(processData.getHiddenDataMap().get("lotkubuncode")))); // ﾛｯﾄ区分
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_SHITEI_KOUSA, srDenkitokuseiesi))); //指定公差
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_ATOKOUTEI_SHIJI_NAIYO, srDenkitokuseiesi))); //後工程指示内容
+        params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_OKURI_RYOHINSU, srDenkitokuseiesi))); //送り良品数
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_UKEIRE_TANNIJURYO, srDenkitokuseiesi))); //受入れ単位重量
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_UKEIRE_SOUJURYO, srDenkitokuseiesi))); //受入れ総重量
+        params.add(DBUtil.stringToDateObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_G_YAKITSUKE_DAY, srDenkitokuseiesi),
+                getItemData(pItemList, GXHDO101B042Const.SEIHIN_G_YAKITSUKE_TIME, srDenkitokuseiesi))); //外部電極焼付日時
+        params.add(DBUtil.stringToDateObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_MEKKI_DAY, srDenkitokuseiesi),
+                getItemData(pItemList, GXHDO101B042Const.SEIHIN_MEKKI_TIME, srDenkitokuseiesi))); //ﾒｯｷ日
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_KENSA_BASHO, srDenkitokuseiesi))); //検査場所
+        params.add(DBUtil.stringToDateObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_SENBETSU_KAISHI_DAY, srDenkitokuseiesi),
+                getItemData(pItemList, GXHDO101B042Const.SEIHIN_SENBETSU_KAISHI_TIME, srDenkitokuseiesi))); //選別開始日時
+        params.add(DBUtil.stringToDateObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_SENBETSU_SHURYO_DAY, srDenkitokuseiesi),
+                getItemData(pItemList, GXHDO101B042Const.SEIHIN_SENBETSU_SHURYO_TIME, srDenkitokuseiesi))); //選別終了日時
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_KENSA_GOKI, srDenkitokuseiesi))); //検査号機
+        params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_BUNRUI_AIR_ATSU, srDenkitokuseiesi))); //分類ｴｱｰ圧
         if (isInsert) {
-            params.add(""); //選別順序変更
-            params.add(""); //設定ﾓｰﾄﾞ確認
-            params.add(""); //配線確認
+            params.add(0); //CDｺﾝﾀｸﾄ圧
+            params.add(0); //IRｺﾝﾀｸﾄ圧
+            params.add(0); //使用後ｽﾃｰｼｮﾝ確認CD1
+            params.add(0); //使用後ｽﾃｰｼｮﾝ確認PC1
+            params.add(0); //使用後ｽﾃｰｼｮﾝ確認PC2
+            params.add(0); //使用後ｽﾃｰｼｮﾝ確認PC3
+            params.add(0); //使用後ｽﾃｰｼｮﾝ確認PC4
+            params.add(0); //使用後ｽﾃｰｼｮﾝ確認IR1
+            params.add(0); //使用後ｽﾃｰｼｮﾝ確認IR2
+            params.add(0); //使用後ｽﾃｰｼｮﾝ確認IR3
+            params.add(0); //使用後ｽﾃｰｼｮﾝ確認IR4
+            params.add(0); //使用後ｽﾃｰｼｮﾝ確認IR5
+            params.add(0); //使用後ｽﾃｰｼｮﾝ確認IR6
+            params.add(0); //使用後ｽﾃｰｼｮﾝ確認IR7
+            params.add(0); //使用後ｽﾃｰｼｮﾝ確認IR8
         }
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SEIHIN_TOUNYU_JOTAI, srDenkitokuseiesi))); //製品投入状態
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_BIN_BOX_SEISOU_CHECK, srDenkitokuseiesi))); //BINﾎﾞｯｸｽ内の清掃ﾁｪｯｸ
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SETSHA, srDenkitokuseiesi))); //ｾｯﾄ者
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_KAKUNINSHA, srDenkitokuseiesi))); //確認者
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI1, srDenkitokuseiesi))); //指定公差歩留まり1
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI2, srDenkitokuseiesi))); //指定公差歩留まり2
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_TEST_PLATE_KANRINO, srDenkitokuseiesi))); //ﾃｽﾄﾌﾟﾚｰﾄ管理No
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_TAN_DELTA, srDenkitokuseiesi))); //Tanδ
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SOKUTEI_SHUHASU, srDenkitokuseiesi))); //測定周波数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SOKUTEI_DENATSU, srDenkitokuseiesi))); //測定電圧
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_HOSEIYOU_CHIP_YORYO, srDenkitokuseiesi))); //補正用ﾁｯﾌﾟ容量
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_HOSEIYOU_CHIP_TAN_DELTA, srDenkitokuseiesi))); //補正用ﾁｯﾌﾟTanδ
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_HOSEIMAE, srDenkitokuseiesi))); //補正前
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_HOSEIATO, srDenkitokuseiesi))); //補正後
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_HOSEIRITSU, srDenkitokuseiesi))); //補正率
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_STANDARD_HOSEI, srDenkitokuseiesi))); //ｽﾀﾝﾀﾞｰﾄﾞ補正
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_BUNRUI_KAKUNIN, srDenkitokuseiesi))); //分類確認
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_GAIKAN_KAKUNIN, srDenkitokuseiesi))); //外観確認
-        params.add(DBUtil.stringToDateObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_NETSUSYORI_DAY, srDenkitokuseiesi),
-                getItemData(pItemList, GXHDO101B040Const.SEIHIN_NETSUSYORI_TIME, srDenkitokuseiesi))); //熱処理日時
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_AGING_TIME, srDenkitokuseiesi))); //ｴｰｼﾞﾝｸﾞ時間
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_JUTENRITSU, srDenkitokuseiesi))); //充填率
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_MC, srDenkitokuseiesi))); //MC
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_KYOSEI_HAISHUTSU, srDenkitokuseiesi))); //強制排出
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_RAKKA, srDenkitokuseiesi))); //落下
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SHONINSHA, srDenkitokuseiesi))); //承認者
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_FURIMUKESHA, srDenkitokuseiesi))); //振向者
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_BIKOU1, srDenkitokuseiesi))); //備考1
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_BIKOU2, srDenkitokuseiesi))); //備考2
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.PRECHARGE_DENATSU1, srDenkitokuseiesi))); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC① 電圧
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.PRECHARGE_JUDEN_TIME1, srDenkitokuseiesi))); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC① 充電時間
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.PRECHARGE_DENATSU2, srDenkitokuseiesi))); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC② 電圧
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.PRECHARGE_JUDEN_TIME2, srDenkitokuseiesi))); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC② 充電時間
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.PRECHARGE_DENATSU3, srDenkitokuseiesi))); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC③ 電圧
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.PRECHARGE_JUDEN_TIME3, srDenkitokuseiesi))); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC③ 充電時間
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.PRECHARGE_DENATSU4, srDenkitokuseiesi))); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC④ 電圧
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.PRECHARGE_JUDEN_TIME4, srDenkitokuseiesi))); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC④ 充電時間
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 電圧
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 判定値
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 充電時間
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 電圧
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 判定値
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 充電時間
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 電圧
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 判定値
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 充電時間
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 電圧
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 判定値
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 充電時間
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 電圧
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 判定値
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 充電時間
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 電圧
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 判定値
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 充電時間
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 電圧
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 判定値
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 充電時間
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_DENATSU8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 電圧
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_HANTEICHI8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 判定値
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.TAIDEN_JUDEN_TIME8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 充電時間
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_K_GAIKAN_DANSA, srDenkitokuseiesi))); //固定電極 外観･段差
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_TRACK_GUIDE_SUKIMA, srDenkitokuseiesi))); //ﾄﾗｯｸｶﾞｲﾄﾞ隙間
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_TEST_PLATE_KEIJO_SEISOU, srDenkitokuseiesi))); //ﾃｽﾄﾌﾟﾚｰﾄ 形状･清掃
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_BUNRUI_FUKIDASHIANA, srDenkitokuseiesi))); //分類吹き出し穴
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_TEST_PLATE_ICHI_KAKUNIN, srDenkitokuseiesi))); //ﾃｽﾄﾌﾟﾚｰﾄ位置確認(穴位置)
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_DENKYOKU_SEISOU_DOUSA, srDenkitokuseiesi))); //電極清掃・動作
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_SENBETSU_JUNJO_CHANGE, srDenkitokuseiesi))); //選別順序変更
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_SET_MODO_KAKUNIN, srDenkitokuseiesi))); //設定ﾓｰﾄﾞ確認
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_HAISEN_KAKUNIN, srDenkitokuseiesi))); //配線確認
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_SEIHIN_TOUNYU_JOTAI, srDenkitokuseiesi))); //製品投入状態
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_BIN_BOX_SEISOU_CHECK, srDenkitokuseiesi))); //BINﾎﾞｯｸｽ内の清掃ﾁｪｯｸ
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_SETSHA, srDenkitokuseiesi))); //ｾｯﾄ者
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_KAKUNINSHA, srDenkitokuseiesi))); //確認者
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_SHITEI_KOUSA_BUDOMARI1, srDenkitokuseiesi))); //指定公差歩留まり1
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_SHITEI_KOUSA_BUDOMARI2, srDenkitokuseiesi))); //指定公差歩留まり2
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_TEST_PLATE_KANRINO, srDenkitokuseiesi))); //ﾃｽﾄﾌﾟﾚｰﾄ管理No
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_TAN_DELTA, srDenkitokuseiesi))); //Tanδ
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_SOKUTEI_SHUHASU, srDenkitokuseiesi))); //測定周波数
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_SOKUTEI_DENATSU, srDenkitokuseiesi))); //測定電圧
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_HOSEIYOU_CHIP_YORYO, srDenkitokuseiesi))); //補正用ﾁｯﾌﾟ容量
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_HOSEIYOU_CHIP_TAN_DELTA, srDenkitokuseiesi))); //補正用ﾁｯﾌﾟTanδ
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_HOSEIMAE, srDenkitokuseiesi))); //補正前
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_HOSEIATO, srDenkitokuseiesi))); //補正後
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_HOSEIRITSU, srDenkitokuseiesi))); //補正率
         if (isInsert) {
+            params.add(""); //ｽﾀﾝﾀﾞｰﾄﾞ補正
+        }
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_BUNRUI_KAKUNIN, srDenkitokuseiesi))); //分類確認
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_GAIKAN_KAKUNIN, srDenkitokuseiesi))); //外観確認
+        params.add(DBUtil.stringToDateObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_NETSUSYORI_DAY, srDenkitokuseiesi),
+                getItemData(pItemList, GXHDO101B042Const.SEIHIN_NETSUSYORI_TIME, srDenkitokuseiesi))); //熱処理日時
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_AGING_TIME, srDenkitokuseiesi))); //ｴｰｼﾞﾝｸﾞ時間
+        if (isInsert) {
+            params.add(""); //充填率
+            params.add(""); //MC
+            params.add(""); //強制排出
+            params.add(""); //落下
+        }
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_SHONINSHA, srDenkitokuseiesi))); //承認者
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_FURIMUKESHA, srDenkitokuseiesi))); //振向者
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_BIKOU1, srDenkitokuseiesi))); //備考1
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_BIKOU2, srDenkitokuseiesi))); //備考2
+        if (isInsert) {
+            params.add(0); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC① 電圧
+            params.add(0); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC① 充電時間
+            params.add(0); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC② 電圧
+            params.add(0); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC② 充電時間
+            params.add(0); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC③ 電圧
+            params.add(0); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC③ 充電時間
+            params.add(0); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC④ 電圧
+            params.add(0); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC④ 充電時間
+        }
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.TAIDEN_DENATSU1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 電圧
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.TAIDEN_HANTEICHI1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 判定値
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.TAIDEN_JUDEN_TIME1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 充電時間
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.TAIDEN_DENATSU2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 電圧
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.TAIDEN_HANTEICHI2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 判定値
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.TAIDEN_JUDEN_TIME2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 充電時間
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.TAIDEN_DENATSU3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 電圧
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.TAIDEN_HANTEICHI3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 判定値
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.TAIDEN_JUDEN_TIME3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 充電時間
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.TAIDEN_DENATSU4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 電圧
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.TAIDEN_HANTEICHI4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 判定値
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.TAIDEN_JUDEN_TIME4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 充電時間
+        if (isInsert) {
+            params.add(0); //耐電圧設定条件 IR⑤ 電圧
+            params.add(0); //耐電圧設定条件 IR⑤ 判定値
+            params.add(0); //耐電圧設定条件 IR⑤ 充電時間
+            params.add(0); //耐電圧設定条件 IR⑥ 電圧
+            params.add(0); //耐電圧設定条件 IR⑥ 判定値
+            params.add(0); //耐電圧設定条件 IR⑥ 充電時間
+            params.add(0); //耐電圧設定条件 IR⑦ 電圧
+            params.add(0); //耐電圧設定条件 IR⑦ 判定値
+            params.add(0); //耐電圧設定条件 IR⑦ 充電時間
+            params.add(0); //耐電圧設定条件 IR⑧ 電圧
+            params.add(0); //耐電圧設定条件 IR⑧ 判定値
+            params.add(0); //耐電圧設定条件 IR⑧ 充電時間
             params.add(0); //RDC1 ﾚﾝｼﾞ
             params.add(0); //RDC1 判定値
             params.add(0); //RDC2 ﾚﾝｼﾞ
             params.add(0); //RDC2 判定値
-            params.add(0); //DROP1,3 PC
-            params.add(0); //DROP1,3 PS
-            params.add(0); //DROP1,3 MS･DC
-            params.add(0); //DROP2,4 PC
-            params.add(0); //DROP2,4 PS
-            params.add(0); //DROP2,4 MS･DC
         }
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN1_PERCENT_KBN, srDenkitokuseiesi))); //BIN1 %区分(設定値)
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN1_SENBETSU_KBN, srDenkitokuseiesi))); //BIN1 選別区分
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN1_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN1 計量後数量
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN1_COUNTER_SU, srDenkitokuseiesi))); //BIN1 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN1_GOSARITSU, srDenkitokuseiesi))); //BIN1 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN1_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN1 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN1_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN1 抜き取り結果
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN1_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN1 抜き取り結果 
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN1_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN1 真の不良率(%)
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN1_KEKKA_CHECK, srDenkitokuseiesi))); //BIN1 結果ﾁｪｯｸ
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN2_PERCENT_KBN, srDenkitokuseiesi))); //BIN2 %区分(設定値)
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN2_SENBETSU_KBN, srDenkitokuseiesi))); //BIN2 選別区分
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN2_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN2 計量後数量
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN2_COUNTER_SU, srDenkitokuseiesi))); //BIN2 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN2_GOSARITSU, srDenkitokuseiesi))); //BIN2 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN2_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN2 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN2_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN2 抜き取り結果
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN2_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN2 抜き取り結果
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN2_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN2 真の不良率(%)
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN2_KEKKA_CHECK, srDenkitokuseiesi))); //BIN2 結果ﾁｪｯｸ
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN3_PERCENT_KBN, srDenkitokuseiesi))); //BIN3 %区分(設定値)
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN3_SENBETSU_KBN, srDenkitokuseiesi))); //BIN3 選別区分
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN3_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN3 計量後数量
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN3_COUNTER_SU, srDenkitokuseiesi))); //BIN3 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN3_GOSARITSU, srDenkitokuseiesi))); //BIN3 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN3_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN3 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN3_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN3 抜き取り結果
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN3_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN3 抜き取り結果
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN3_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN3 真の不良率(%)
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN3_KEKKA_CHECK, srDenkitokuseiesi))); //BIN3 結果ﾁｪｯｸ
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN4_PERCENT_KBN, srDenkitokuseiesi))); //BIN4 %区分(設定値)
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN4_SENBETSU_KBN, srDenkitokuseiesi))); //BIN4 選別区分
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN4_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN4 計量後数量
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN4_COUNTER_SU, srDenkitokuseiesi))); //BIN4 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN4_GOSARITSU, srDenkitokuseiesi))); //BIN4 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN4_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN4 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN4_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN4 抜き取り結果
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN4_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN4 抜き取り結果
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN4_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN4 真の不良率(%)
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN4_KEKKA_CHECK, srDenkitokuseiesi))); //BIN4 結果ﾁｪｯｸ
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN5_PERCENT_KBN, srDenkitokuseiesi))); //BIN5 %区分(設定値)
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN5_SENBETSU_KBN, srDenkitokuseiesi))); //BIN5 選別区分
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN5_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN5 計量後数量
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN5_COUNTER_SU, srDenkitokuseiesi))); //BIN5 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN5_GOSARITSU, srDenkitokuseiesi))); //BIN5 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN5_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN5 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN5_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN5 抜き取り結果
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN5_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN5 抜き取り結果
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN5_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN5 真の不良率(%)
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN5_KEKKA_CHECK, srDenkitokuseiesi))); //BIN5 結果ﾁｪｯｸ
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN5_FUKURO_CHECK, srDenkitokuseiesi))); //BIN5 袋ﾁｪｯｸ
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN6_PERCENT_KBN, srDenkitokuseiesi))); //BIN6 %区分(設定値)
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN6_SENBETSU_KBN, srDenkitokuseiesi))); //BIN6 選別区分
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN6_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN6 計量後数量
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN6_COUNTER_SU, srDenkitokuseiesi))); //BIN6 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN6_GOSARITSU, srDenkitokuseiesi))); //BIN6 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN6_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN6 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN6_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN6 抜き取り結果
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN6_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN6 抜き取り結果
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN6_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN6 真の不良率(%)
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN6_KEKKA_CHECK, srDenkitokuseiesi))); //BIN6 結果ﾁｪｯｸ
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN6_FUKURO_CHECK, srDenkitokuseiesi))); //BIN6 袋ﾁｪｯｸ
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN7_PERCENT_KBN, srDenkitokuseiesi))); //BIN7 %区分(設定値)
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN7_SENBETSU_KBN, srDenkitokuseiesi))); //BIN7 選別区分
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN7_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN7 計量後数量
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN7_COUNTER_SU, srDenkitokuseiesi))); //BIN7 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN7_GOSARITSU, srDenkitokuseiesi))); //BIN7 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN7_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN7 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN7_FUKURO_CHECK, srDenkitokuseiesi))); //BIN7 袋ﾁｪｯｸ
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN8_PERCENT_KBN, srDenkitokuseiesi))); //BIN8 %区分(設定値)
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN8_SENBETSU_KBN, srDenkitokuseiesi))); //BIN8 選別区分
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN8_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN8 計量後数量
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN8_COUNTER_SU, srDenkitokuseiesi))); //BIN8 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN8_GOSARITSU, srDenkitokuseiesi))); //BIN8 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN8_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN8 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN8_FUKURO_CHECK, srDenkitokuseiesi))); //BIN8 袋ﾁｪｯｸ
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN9_K_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN9 強制排出 計量後数量
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BIN9_K_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN9 強制排出 ﾏｼﾝ不良率
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_RAKKA_KEIRYOGO_SURYO, srDenkitokuseiesi))); //落下 計量後数量 
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_RAKKA_MACHINE_FURYORITSU, srDenkitokuseiesi))); //落下 ﾏｼﾝ不良率
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_HANDA_SAMPLE, srDenkitokuseiesi))); //半田ｻﾝﾌﾟﾙ
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_SHINRAISEI_SAMPLE, srDenkitokuseiesi))); //信頼性ｻﾝﾌﾟﾙ
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_SHIN_FURYO_HANTEISHA, srDenkitokuseiesi))); //真不良判定者
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_HANTEI_NYURYOKUSHA, srDenkitokuseiesi))); //判定入力者
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_TORIDASHISHA, srDenkitokuseiesi))); //取出者
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_KOUSA1, srDenkitokuseiesi))); //公差①
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_JURYO1, srDenkitokuseiesi))); //重量①
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_KOSU1, srDenkitokuseiesi))); //個数①
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_KOUSA2, srDenkitokuseiesi))); //公差②
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_JURYO2, srDenkitokuseiesi))); //重量②
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_KOSU2, srDenkitokuseiesi))); //個数②
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_KOUSA3, srDenkitokuseiesi))); //公差③
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_JURYO3, srDenkitokuseiesi))); //重量③
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_KOSU3, srDenkitokuseiesi))); //個数③
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_KOUSA4, srDenkitokuseiesi))); //公差④
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_JURYO4, srDenkitokuseiesi))); //重量④
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_KOSU4, srDenkitokuseiesi))); //個数④
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_COUNTER_SOSU, srDenkitokuseiesi))); //ｶｳﾝﾀｰ総数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_RYOUHIN_JURYO, srDenkitokuseiesi))); //良品重量
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B040Const.SET_RYOUHIN_KOSU, srDenkitokuseiesi))); //良品個数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B040Const.SET_BUDOMARI, srDenkitokuseiesi))); //歩留まり
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B040Const.SET_KAKUNINSHA, srDenkitokuseiesi))); //BIN確認者
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_DENKITOKUSEI_SAIKEN, srDenkitokuseiesi))); //電気特性再検
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.DROP1_3PC, srDenkitokuseiesi))); //DROP1,3 PC
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.DROP1_3PS, srDenkitokuseiesi))); //DROP1,3 PS
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.DROP1_3MSDC, srDenkitokuseiesi))); //DROP1,3 MS･DC
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.DROP2_4PC, srDenkitokuseiesi))); //DROP2,4 PC
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.DROP2_4PS, srDenkitokuseiesi))); //DROP2,4 PS
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.DROP2_4MSDC, srDenkitokuseiesi))); //DROP2,4 MS･DC
+
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN1_PERCENT_KBN, srDenkitokuseiesi))); //BIN1 %区分(設定値)
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN1_SENBETSU_KBN, srDenkitokuseiesi))); //BIN1 選別区分
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN1_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN1 計量後数量
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN1_COUNTER_SU, srDenkitokuseiesi))); //BIN1 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN1_GOSARITSU, srDenkitokuseiesi))); //BIN1 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN1_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN1 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN1_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN1 抜き取り結果
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN1_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN1 抜き取り結果 
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN1_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN1 真の不良率(%)
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN1_KEKKA_CHECK, srDenkitokuseiesi))); //BIN1 結果ﾁｪｯｸ
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN2_PERCENT_KBN, srDenkitokuseiesi))); //BIN2 %区分(設定値)
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN2_SENBETSU_KBN, srDenkitokuseiesi))); //BIN2 選別区分
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN2_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN2 計量後数量
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN2_COUNTER_SU, srDenkitokuseiesi))); //BIN2 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN2_GOSARITSU, srDenkitokuseiesi))); //BIN2 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN2_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN2 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN2_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN2 抜き取り結果
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN2_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN2 抜き取り結果
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN2_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN2 真の不良率(%)
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN2_KEKKA_CHECK, srDenkitokuseiesi))); //BIN2 結果ﾁｪｯｸ
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN3_PERCENT_KBN, srDenkitokuseiesi))); //BIN3 %区分(設定値)
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN3_SENBETSU_KBN, srDenkitokuseiesi))); //BIN3 選別区分
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN3_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN3 計量後数量
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN3_COUNTER_SU, srDenkitokuseiesi))); //BIN3 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN3_GOSARITSU, srDenkitokuseiesi))); //BIN3 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN3_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN3 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN3_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN3 抜き取り結果
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN3_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN3 抜き取り結果
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN3_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN3 真の不良率(%)
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN3_KEKKA_CHECK, srDenkitokuseiesi))); //BIN3 結果ﾁｪｯｸ
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN4_PERCENT_KBN, srDenkitokuseiesi))); //BIN4 %区分(設定値)
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN4_SENBETSU_KBN, srDenkitokuseiesi))); //BIN4 選別区分
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN4_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN4 計量後数量
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN4_COUNTER_SU, srDenkitokuseiesi))); //BIN4 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN4_GOSARITSU, srDenkitokuseiesi))); //BIN4 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN4_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN4 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN4_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN4 抜き取り結果
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN4_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN4 抜き取り結果
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN4_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN4 真の不良率(%)
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN4_KEKKA_CHECK, srDenkitokuseiesi))); //BIN4 結果ﾁｪｯｸ
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN5_PERCENT_KBN, srDenkitokuseiesi))); //BIN5 %区分(設定値)
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN5_SENBETSU_KBN, srDenkitokuseiesi))); //BIN5 選別区分
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN5_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN5 計量後数量
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN5_COUNTER_SU, srDenkitokuseiesi))); //BIN5 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN5_GOSARITSU, srDenkitokuseiesi))); //BIN5 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN5_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN5 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN5_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN5 抜き取り結果
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN5_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN5 抜き取り結果
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN5_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN5 真の不良率(%)
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN5_KEKKA_CHECK, srDenkitokuseiesi))); //BIN5 結果ﾁｪｯｸ
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN5_FUKURO_CHECK, srDenkitokuseiesi))); //BIN5 袋ﾁｪｯｸ
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN6_PERCENT_KBN, srDenkitokuseiesi))); //BIN6 %区分(設定値)
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN6_SENBETSU_KBN, srDenkitokuseiesi))); //BIN6 選別区分
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN6_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN6 計量後数量
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN6_COUNTER_SU, srDenkitokuseiesi))); //BIN6 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN6_GOSARITSU, srDenkitokuseiesi))); //BIN6 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN6_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN6 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN6_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN6 抜き取り結果
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN6_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN6 抜き取り結果
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN6_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN6 真の不良率(%)
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN6_KEKKA_CHECK, srDenkitokuseiesi))); //BIN6 結果ﾁｪｯｸ
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN6_FUKURO_CHECK, srDenkitokuseiesi))); //BIN6 袋ﾁｪｯｸ
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN7_PERCENT_KBN, srDenkitokuseiesi))); //BIN7 %区分(設定値)
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN7_SENBETSU_KBN, srDenkitokuseiesi))); //BIN7 選別区分
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN7_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN7 計量後数量
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN7_COUNTER_SU, srDenkitokuseiesi))); //BIN7 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN7_GOSARITSU, srDenkitokuseiesi))); //BIN7 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN7_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN7 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN7_FUKURO_CHECK, srDenkitokuseiesi))); //BIN7 袋ﾁｪｯｸ
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN8_PERCENT_KBN, srDenkitokuseiesi))); //BIN8 %区分(設定値)
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN8_SENBETSU_KBN, srDenkitokuseiesi))); //BIN8 選別区分
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN8_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN8 計量後数量
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN8_COUNTER_SU, srDenkitokuseiesi))); //BIN8 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN8_GOSARITSU, srDenkitokuseiesi))); //BIN8 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN8_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN8 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN8_FUKURO_CHECK, srDenkitokuseiesi))); //BIN8 袋ﾁｪｯｸ
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN9_K_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN9 強制排出 計量後数量
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN9_K_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN9 強制排出 ﾏｼﾝ不良率
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_RAKKA_KEIRYOGO_SURYO, srDenkitokuseiesi))); //落下 計量後数量 
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_RAKKA_MACHINE_FURYORITSU, srDenkitokuseiesi))); //落下 ﾏｼﾝ不良率
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_HANDA_SAMPLE, srDenkitokuseiesi))); //半田ｻﾝﾌﾟﾙ
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_SHINRAISEI_SAMPLE, srDenkitokuseiesi))); //信頼性ｻﾝﾌﾟﾙ
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_SHIN_FURYO_HANTEISHA, srDenkitokuseiesi))); //真不良判定者
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_HANTEI_NYURYOKUSHA, srDenkitokuseiesi))); //判定入力者
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_TORIDASHISHA, srDenkitokuseiesi))); //取出者
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_KOUSA1, srDenkitokuseiesi))); //公差①
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_JURYO1, srDenkitokuseiesi))); //重量①
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_KOSU1, srDenkitokuseiesi))); //個数①
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_KOUSA2, srDenkitokuseiesi))); //公差②
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_JURYO2, srDenkitokuseiesi))); //重量②
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_KOSU2, srDenkitokuseiesi))); //個数②
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_KOUSA3, srDenkitokuseiesi))); //公差③
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_JURYO3, srDenkitokuseiesi))); //重量③
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_KOSU3, srDenkitokuseiesi))); //個数③
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_KOUSA4, srDenkitokuseiesi))); //公差④
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_JURYO4, srDenkitokuseiesi))); //重量④
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_KOSU4, srDenkitokuseiesi))); //個数④
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_COUNTER_SOSU, srDenkitokuseiesi))); //ｶｳﾝﾀｰ総数
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_RYOUHIN_JURYO, srDenkitokuseiesi))); //良品重量
+        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_RYOUHIN_KOSU, srDenkitokuseiesi))); //良品個数
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BUDOMARI, srDenkitokuseiesi))); //歩留まり
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.SET_KAKUNINSHA, srDenkitokuseiesi))); //BIN確認者
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_DENKITOKUSEI_SAIKEN, srDenkitokuseiesi))); //電気特性再検
         params.add(formId); //設備区分
         if (isInsert) {
             params.add(systemTime); //登録日時
@@ -3690,11 +3612,10 @@ public class GXHDO101B040 implements IFormLogic {
         } else {
             params.add(systemTime); //更新日時
         }
-
-        params.add(newRev); //revision
+        params.add(newRev); //revision        
         return params;
     }
-
+        
     /**
      * 電気特性(sr_denkitokuseiesi)削除処理
      *
@@ -3797,9 +3718,9 @@ public class GXHDO101B040 implements IFormLogic {
     private void calcHoseiritsu(ProcessData processData) {
         try {
 
-            FXHDD01 itemHoseiritsu = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_HOSEIRITSU); //補正率
-            FXHDD01 itemHoseiato = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_HOSEIATO); //補正後
-            FXHDD01 itemHoseimae = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_HOSEIMAE); //補正前
+            FXHDD01 itemHoseiritsu = getItemRow(processData.getItemList(), GXHDO101B042Const.SEIHIN_HOSEIRITSU); //補正率
+            FXHDD01 itemHoseiato = getItemRow(processData.getItemList(), GXHDO101B042Const.SEIHIN_HOSEIATO); //補正後
+            FXHDD01 itemHoseimae = getItemRow(processData.getItemList(), GXHDO101B042Const.SEIHIN_HOSEIMAE); //補正前
 
             // 補正率に値が入力されている場合、リターン
             if (!StringUtil.isEmpty(itemHoseiritsu.getValue())) {
@@ -3810,15 +3731,17 @@ public class GXHDO101B040 implements IFormLogic {
             BigDecimal hoseimae = new BigDecimal(itemHoseimae.getValue());
 
             // 送り良品数、良品個数の値のいずれかが0の場合リターン
-            if (0 <= BigDecimal.ZERO.compareTo(hoseimae) || 0 <= BigDecimal.ZERO.compareTo(hoseiato)) {
+            if (0 == BigDecimal.ZERO.compareTo(hoseimae) || 0 == BigDecimal.ZERO.compareTo(hoseiato)) {
                 return;
             }
-            
+
             //補正後 / 補正前 * 100(小数点第三位を四捨五入) → 式を変換して先に100を乗算
             BigDecimal hoseiritsu = hoseiato.multiply(BigDecimal.valueOf(100)).divide(hoseimae, 2, RoundingMode.HALF_UP);
 
+            hoseiritsu = hoseiritsu.abs();
+
             // 100 - 計算結果
-            hoseiritsu = BigDecimal.valueOf(100).subtract(hoseiritsu).abs();
+            hoseiritsu = BigDecimal.valueOf(100).subtract(hoseiritsu);
             //計算結果を誤差率にセット
             itemHoseiritsu.setValue(hoseiritsu.toPlainString());
 
@@ -3835,7 +3758,7 @@ public class GXHDO101B040 implements IFormLogic {
     private void calcNetsusyoriAging(ProcessData processData) {
         try {
 
-            FXHDD01 itemAgingTime = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_AGING_TIME); //ｴｰｼﾞﾝｸﾞ時間
+            FXHDD01 itemAgingTime = getItemRow(processData.getItemList(), GXHDO101B042Const.SEIHIN_AGING_TIME); //ｴｰｼﾞﾝｸﾞ時間
 
             // ｴｰｼﾞﾝｸﾞ時間に値が入力されている場合、リターン
             if (!StringUtil.isEmpty(itemAgingTime.getValue())) {
@@ -3843,20 +3766,20 @@ public class GXHDO101B040 implements IFormLogic {
             }
 
             // 選別開始日時
-            Date senbetsuKaishiDate = (Date) DBUtil.stringToDateObjectDefaultNull(getItemData(processData.getItemList(), GXHDO101B040Const.SEIHIN_SENBETSU_KAISHI_DAY, null),
-                    getItemData(processData.getItemList(), GXHDO101B040Const.SEIHIN_SENBETSU_KAISHI_TIME, null));
+            Date senbetsuKaishiDate = (Date) DBUtil.stringToDateObjectDefaultNull(getItemData(processData.getItemList(), GXHDO101B042Const.SEIHIN_SENBETSU_KAISHI_DAY, null),
+                    getItemData(processData.getItemList(), GXHDO101B042Const.SEIHIN_SENBETSU_KAISHI_TIME, null));
 
             // 熱処理日時
-            Date netsusyoriDate = (Date) DBUtil.stringToDateObjectDefaultNull(getItemData(processData.getItemList(), GXHDO101B040Const.SEIHIN_NETSUSYORI_DAY, null),
-                    getItemData(processData.getItemList(), GXHDO101B040Const.SEIHIN_NETSUSYORI_TIME, null));
+            Date netsusyoriDate = (Date) DBUtil.stringToDateObjectDefaultNull(getItemData(processData.getItemList(), GXHDO101B042Const.SEIHIN_NETSUSYORI_DAY, null),
+                    getItemData(processData.getItemList(), GXHDO101B042Const.SEIHIN_NETSUSYORI_TIME, null));
 
             // 日時の値が取れていない場合、処理なし
             if (senbetsuKaishiDate == null || netsusyoriDate == null) {
                 return;
             }
 
-            long dateTimeFrom = netsusyoriDate.getTime();
-            long dateTimeTo = senbetsuKaishiDate.getTime();
+            long dateTimeFrom = senbetsuKaishiDate.getTime();
+            long dateTimeTo = netsusyoriDate.getTime();
             if (dateTimeTo < dateTimeFrom) {
                 return;
             }
@@ -3892,9 +3815,9 @@ public class GXHDO101B040 implements IFormLogic {
     private void calcBudomari(ProcessData processData) {
         try {
 
-            FXHDD01 itemBudomari = getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BUDOMARI); //歩留まり
-            FXHDD01 itemOkuriRyohinsu = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_OKURI_RYOHINSU); //送り良品数
-            FXHDD01 itemRyohinkosu = getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_RYOUHIN_KOSU); //良品個数
+            FXHDD01 itemBudomari = getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BUDOMARI); //歩留まり
+            FXHDD01 itemOkuriRyohinsu = getItemRow(processData.getItemList(), GXHDO101B042Const.SEIHIN_OKURI_RYOHINSU); //送り良品数
+            FXHDD01 itemRyohinkosu = getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_RYOUHIN_KOSU); //良品個数
 
             BigDecimal okuriRyohinsu = new BigDecimal(itemOkuriRyohinsu.getValue());
             BigDecimal ryohinKosu = new BigDecimal(itemRyohinkosu.getValue());
@@ -3923,17 +3846,17 @@ public class GXHDO101B040 implements IFormLogic {
      */
     private void calcRyouhinJuryo(ProcessData processData) {
         try {
-            FXHDD01 itemRyohinJuryo = getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_RYOUHIN_JURYO); //良品重量
+            FXHDD01 itemRyohinJuryo = getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_RYOUHIN_JURYO); //良品重量
 
             // 良品重量に値が入力されている場合、リターン
             if (!StringUtil.isEmpty(itemRyohinJuryo.getValue())) {
                 return;
             }
 
-            BigDecimal juryo1 = new BigDecimal(StringUtil.emptyToZero(getItemData(processData.getItemListEx(), GXHDO101B040Const.SET_JURYO1, null))); //重量1
-            BigDecimal juryo2 = new BigDecimal(StringUtil.emptyToZero(getItemData(processData.getItemListEx(), GXHDO101B040Const.SET_JURYO2, null))); //重量2
-            BigDecimal juryo3 = new BigDecimal(StringUtil.emptyToZero(getItemData(processData.getItemListEx(), GXHDO101B040Const.SET_JURYO3, null))); //重量3
-            BigDecimal juryo4 = new BigDecimal(StringUtil.emptyToZero(getItemData(processData.getItemListEx(), GXHDO101B040Const.SET_JURYO4, null))); //重量4
+            BigDecimal juryo1 = new BigDecimal(StringUtil.emptyToZero(getItemData(processData.getItemListEx(), GXHDO101B042Const.SET_JURYO1, null))); //重量1
+            BigDecimal juryo2 = new BigDecimal(StringUtil.emptyToZero(getItemData(processData.getItemListEx(), GXHDO101B042Const.SET_JURYO2, null))); //重量2
+            BigDecimal juryo3 = new BigDecimal(StringUtil.emptyToZero(getItemData(processData.getItemListEx(), GXHDO101B042Const.SET_JURYO3, null))); //重量3
+            BigDecimal juryo4 = new BigDecimal(StringUtil.emptyToZero(getItemData(processData.getItemListEx(), GXHDO101B042Const.SET_JURYO4, null))); //重量4
 
             // 重量の値のいずれかが0以下の場合リターン
             if (0 <= BigDecimal.ZERO.compareTo(juryo1) || 0 <= BigDecimal.ZERO.compareTo(juryo2)
@@ -3957,17 +3880,17 @@ public class GXHDO101B040 implements IFormLogic {
      */
     private void calcRyouhinKosu(ProcessData processData) {
         try {
-            FXHDD01 itemRyohinKosu = getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_RYOUHIN_KOSU); //良品個数
+            FXHDD01 itemRyohinKosu = getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_RYOUHIN_KOSU); //良品個数
 
             // 良品個数に値が入力されている場合、リターン
             if (!StringUtil.isEmpty(itemRyohinKosu.getValue())) {
                 return;
             }
 
-            BigDecimal kosu1 = new BigDecimal(StringUtil.emptyToZero(getItemData(processData.getItemListEx(), GXHDO101B040Const.SET_KOSU1, null))); //個数1
-            BigDecimal kosu2 = new BigDecimal(StringUtil.emptyToZero(getItemData(processData.getItemListEx(), GXHDO101B040Const.SET_KOSU2, null))); //個数2
-            BigDecimal kosu3 = new BigDecimal(StringUtil.emptyToZero(getItemData(processData.getItemListEx(), GXHDO101B040Const.SET_KOSU3, null))); //個数3
-            BigDecimal kosu4 = new BigDecimal(StringUtil.emptyToZero(getItemData(processData.getItemListEx(), GXHDO101B040Const.SET_KOSU4, null))); //個数4
+            BigDecimal kosu1 = new BigDecimal(StringUtil.emptyToZero(getItemData(processData.getItemListEx(), GXHDO101B042Const.SET_KOSU1, null))); //個数1
+            BigDecimal kosu2 = new BigDecimal(StringUtil.emptyToZero(getItemData(processData.getItemListEx(), GXHDO101B042Const.SET_KOSU2, null))); //個数2
+            BigDecimal kosu3 = new BigDecimal(StringUtil.emptyToZero(getItemData(processData.getItemListEx(), GXHDO101B042Const.SET_KOSU3, null))); //個数3
+            BigDecimal kosu4 = new BigDecimal(StringUtil.emptyToZero(getItemData(processData.getItemListEx(), GXHDO101B042Const.SET_KOSU4, null))); //個数4
 
             // 個数の値のいずれかが0以下の場合リターン
             if (0 <= BigDecimal.ZERO.compareTo(kosu1) || 0 <= BigDecimal.ZERO.compareTo(kosu2)
@@ -3991,21 +3914,21 @@ public class GXHDO101B040 implements IFormLogic {
      */
     private void calcGosaritsu(ProcessData processData) {
         //BIN1 誤差率計算
-        calcGosaritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_GOSARITSU, GXHDO101B040Const.SET_BIN1_KEIRYOGO_SURYO, GXHDO101B040Const.SET_BIN1_COUNTER_SU);
+        calcGosaritsuMain(processData.getItemListEx(), GXHDO101B042Const.SET_BIN1_GOSARITSU, GXHDO101B042Const.SET_BIN1_KEIRYOGO_SURYO, GXHDO101B042Const.SET_BIN1_COUNTER_SU);
         //BIN2 誤差率計算
-        calcGosaritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_GOSARITSU, GXHDO101B040Const.SET_BIN2_KEIRYOGO_SURYO, GXHDO101B040Const.SET_BIN2_COUNTER_SU);
+        calcGosaritsuMain(processData.getItemListEx(), GXHDO101B042Const.SET_BIN2_GOSARITSU, GXHDO101B042Const.SET_BIN2_KEIRYOGO_SURYO, GXHDO101B042Const.SET_BIN2_COUNTER_SU);
         //BIN3 誤差率計算
-        calcGosaritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_GOSARITSU, GXHDO101B040Const.SET_BIN3_KEIRYOGO_SURYO, GXHDO101B040Const.SET_BIN3_COUNTER_SU);
+        calcGosaritsuMain(processData.getItemListEx(), GXHDO101B042Const.SET_BIN3_GOSARITSU, GXHDO101B042Const.SET_BIN3_KEIRYOGO_SURYO, GXHDO101B042Const.SET_BIN3_COUNTER_SU);
         //BIN4 誤差率計算
-        calcGosaritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_GOSARITSU, GXHDO101B040Const.SET_BIN4_KEIRYOGO_SURYO, GXHDO101B040Const.SET_BIN4_COUNTER_SU);
+        calcGosaritsuMain(processData.getItemListEx(), GXHDO101B042Const.SET_BIN4_GOSARITSU, GXHDO101B042Const.SET_BIN4_KEIRYOGO_SURYO, GXHDO101B042Const.SET_BIN4_COUNTER_SU);
         //BIN5 誤差率計算
-        calcGosaritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_GOSARITSU, GXHDO101B040Const.SET_BIN5_KEIRYOGO_SURYO, GXHDO101B040Const.SET_BIN5_COUNTER_SU);
+        calcGosaritsuMain(processData.getItemListEx(), GXHDO101B042Const.SET_BIN5_GOSARITSU, GXHDO101B042Const.SET_BIN5_KEIRYOGO_SURYO, GXHDO101B042Const.SET_BIN5_COUNTER_SU);
         //BIN6 誤差率計算
-        calcGosaritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_GOSARITSU, GXHDO101B040Const.SET_BIN6_KEIRYOGO_SURYO, GXHDO101B040Const.SET_BIN6_COUNTER_SU);
+        calcGosaritsuMain(processData.getItemListEx(), GXHDO101B042Const.SET_BIN6_GOSARITSU, GXHDO101B042Const.SET_BIN6_KEIRYOGO_SURYO, GXHDO101B042Const.SET_BIN6_COUNTER_SU);
         //BIN7 誤差率計算
-        calcGosaritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN7_GOSARITSU, GXHDO101B040Const.SET_BIN7_KEIRYOGO_SURYO, GXHDO101B040Const.SET_BIN7_COUNTER_SU);
+        calcGosaritsuMain(processData.getItemListEx(), GXHDO101B042Const.SET_BIN7_GOSARITSU, GXHDO101B042Const.SET_BIN7_KEIRYOGO_SURYO, GXHDO101B042Const.SET_BIN7_COUNTER_SU);
         //BIN8 誤差率計算
-        calcGosaritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN8_GOSARITSU, GXHDO101B040Const.SET_BIN8_KEIRYOGO_SURYO, GXHDO101B040Const.SET_BIN8_COUNTER_SU);
+        calcGosaritsuMain(processData.getItemListEx(), GXHDO101B042Const.SET_BIN8_GOSARITSU, GXHDO101B042Const.SET_BIN8_KEIRYOGO_SURYO, GXHDO101B042Const.SET_BIN8_COUNTER_SU);
 
     }
 
@@ -4040,7 +3963,7 @@ public class GXHDO101B040 implements IFormLogic {
             //計量後数量 / カウンター数 * 100(小数点第三位を四捨五入) → 式を変換して先に100を乗算
             BigDecimal gosaritsu = keiryogoSuryo.multiply(BigDecimal.valueOf(100)).divide(counterSu, 2, RoundingMode.HALF_UP);
             // 100- 計算結果
-            gosaritsu = BigDecimal.valueOf(100).subtract(gosaritsu).abs();
+            gosaritsu = BigDecimal.valueOf(100).subtract(gosaritsu);
             //計算結果を誤差率にセット
             itemGosaritsu.setValue(gosaritsu.toPlainString());
 
@@ -4056,27 +3979,27 @@ public class GXHDO101B040 implements IFormLogic {
      */
     private void calcMachineFuryoritsu(ProcessData processData) {
         // 送り良品数
-        FXHDD01 itemOkuriRryohinsu = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_OKURI_RYOHINSU);
+        FXHDD01 itemOkuriRryohinsu = getItemRow(processData.getItemList(), GXHDO101B042Const.SEIHIN_OKURI_RYOHINSU);
         //BIN1 マシン不良率計算
-        calcMachineFuryoritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_MACHINE_FURYORITSU, GXHDO101B040Const.SET_BIN1_KEIRYOGO_SURYO, itemOkuriRryohinsu);
+        calcMachineFuryoritsuMain(processData.getItemListEx(), GXHDO101B042Const.SET_BIN1_MACHINE_FURYORITSU, GXHDO101B042Const.SET_BIN1_KEIRYOGO_SURYO, itemOkuriRryohinsu);
         //BIN2 マシン不良率計算
-        calcMachineFuryoritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_MACHINE_FURYORITSU, GXHDO101B040Const.SET_BIN2_KEIRYOGO_SURYO, itemOkuriRryohinsu);
+        calcMachineFuryoritsuMain(processData.getItemListEx(), GXHDO101B042Const.SET_BIN2_MACHINE_FURYORITSU, GXHDO101B042Const.SET_BIN2_KEIRYOGO_SURYO, itemOkuriRryohinsu);
         //BIN3 マシン不良率計算
-        calcMachineFuryoritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_MACHINE_FURYORITSU, GXHDO101B040Const.SET_BIN3_KEIRYOGO_SURYO, itemOkuriRryohinsu);
+        calcMachineFuryoritsuMain(processData.getItemListEx(), GXHDO101B042Const.SET_BIN3_MACHINE_FURYORITSU, GXHDO101B042Const.SET_BIN3_KEIRYOGO_SURYO, itemOkuriRryohinsu);
         //BIN4 マシン不良率計算
-        calcMachineFuryoritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_MACHINE_FURYORITSU, GXHDO101B040Const.SET_BIN4_KEIRYOGO_SURYO, itemOkuriRryohinsu);
+        calcMachineFuryoritsuMain(processData.getItemListEx(), GXHDO101B042Const.SET_BIN4_MACHINE_FURYORITSU, GXHDO101B042Const.SET_BIN4_KEIRYOGO_SURYO, itemOkuriRryohinsu);
         //BIN5 マシン不良率計算
-        calcMachineFuryoritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_MACHINE_FURYORITSU, GXHDO101B040Const.SET_BIN5_KEIRYOGO_SURYO, itemOkuriRryohinsu);
+        calcMachineFuryoritsuMain(processData.getItemListEx(), GXHDO101B042Const.SET_BIN5_MACHINE_FURYORITSU, GXHDO101B042Const.SET_BIN5_KEIRYOGO_SURYO, itemOkuriRryohinsu);
         //BIN6 マシン不良率計算
-        calcMachineFuryoritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_MACHINE_FURYORITSU, GXHDO101B040Const.SET_BIN6_KEIRYOGO_SURYO, itemOkuriRryohinsu);
+        calcMachineFuryoritsuMain(processData.getItemListEx(), GXHDO101B042Const.SET_BIN6_MACHINE_FURYORITSU, GXHDO101B042Const.SET_BIN6_KEIRYOGO_SURYO, itemOkuriRryohinsu);
         //BIN7 マシン不良率計算
-        calcMachineFuryoritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN7_MACHINE_FURYORITSU, GXHDO101B040Const.SET_BIN7_KEIRYOGO_SURYO, itemOkuriRryohinsu);
+        calcMachineFuryoritsuMain(processData.getItemListEx(), GXHDO101B042Const.SET_BIN7_MACHINE_FURYORITSU, GXHDO101B042Const.SET_BIN7_KEIRYOGO_SURYO, itemOkuriRryohinsu);
         //BIN8 マシン不良率計算
-        calcMachineFuryoritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN8_MACHINE_FURYORITSU, GXHDO101B040Const.SET_BIN8_KEIRYOGO_SURYO, itemOkuriRryohinsu);
+        calcMachineFuryoritsuMain(processData.getItemListEx(), GXHDO101B042Const.SET_BIN8_MACHINE_FURYORITSU, GXHDO101B042Const.SET_BIN8_KEIRYOGO_SURYO, itemOkuriRryohinsu);
         //BIN9 マシン不良率計算
-        calcMachineFuryoritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN9_K_MACHINE_FURYORITSU, GXHDO101B040Const.SET_BIN9_K_KEIRYOGO_SURYO, itemOkuriRryohinsu);
+        calcMachineFuryoritsuMain(processData.getItemListEx(), GXHDO101B042Const.SET_BIN9_K_MACHINE_FURYORITSU, GXHDO101B042Const.SET_BIN9_K_KEIRYOGO_SURYO, itemOkuriRryohinsu);
         //落下 マシン不良率計算
-        calcMachineFuryoritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_RAKKA_MACHINE_FURYORITSU, GXHDO101B040Const.SET_RAKKA_KEIRYOGO_SURYO, itemOkuriRryohinsu);
+        calcMachineFuryoritsuMain(processData.getItemListEx(), GXHDO101B042Const.SET_RAKKA_MACHINE_FURYORITSU, GXHDO101B042Const.SET_RAKKA_KEIRYOGO_SURYO, itemOkuriRryohinsu);
     }
 
     /**
@@ -4106,8 +4029,8 @@ public class GXHDO101B040 implements IFormLogic {
                 return;
             }
 
-            //BINX 計量後数量 ÷送り良品数 × 100(小数点第五位を四捨五入) 
-            BigDecimal furyoritsu = keiryogoSuryo.multiply(BigDecimal.valueOf(100)).divide(okuriRyohinsu, 4, RoundingMode.HALF_UP);
+            //BINX 計量後数量 ÷送り良品数(小数点第五位を四捨五入)
+            BigDecimal furyoritsu = keiryogoSuryo.divide(okuriRyohinsu, 4, RoundingMode.HALF_UP);
 
             //計算結果をマシン不良率にセット
             itemMcnFuryoritsu.setValue(furyoritsu.toPlainString());
@@ -4124,17 +4047,17 @@ public class GXHDO101B040 implements IFormLogic {
      */
     private void calcShinFuryoritsu(ProcessData processData) {
         //BIN1 真の不良率計算
-        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_SHIN_FURYORITSU, GXHDO101B040Const.SET_BIN1_MACHINE_FURYORITSU, GXHDO101B040Const.SET_BIN1_NUKITORIKEKKA_S);
+        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B042Const.SET_BIN1_SHIN_FURYORITSU, GXHDO101B042Const.SET_BIN1_MACHINE_FURYORITSU, GXHDO101B042Const.SET_BIN1_NUKITORIKEKKA_S);
         //BIN2 真の不良率計算
-        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_SHIN_FURYORITSU, GXHDO101B040Const.SET_BIN2_MACHINE_FURYORITSU, GXHDO101B040Const.SET_BIN2_NUKITORIKEKKA_S);
+        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B042Const.SET_BIN2_SHIN_FURYORITSU, GXHDO101B042Const.SET_BIN2_MACHINE_FURYORITSU, GXHDO101B042Const.SET_BIN2_NUKITORIKEKKA_S);
         //BIN3 真の不良率計算
-        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_SHIN_FURYORITSU, GXHDO101B040Const.SET_BIN3_MACHINE_FURYORITSU, GXHDO101B040Const.SET_BIN3_NUKITORIKEKKA_S);
+        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B042Const.SET_BIN3_SHIN_FURYORITSU, GXHDO101B042Const.SET_BIN3_MACHINE_FURYORITSU, GXHDO101B042Const.SET_BIN3_NUKITORIKEKKA_S);
         //BIN4 真の不良率計算
-        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_SHIN_FURYORITSU, GXHDO101B040Const.SET_BIN4_MACHINE_FURYORITSU, GXHDO101B040Const.SET_BIN4_NUKITORIKEKKA_S);
+        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B042Const.SET_BIN4_SHIN_FURYORITSU, GXHDO101B042Const.SET_BIN4_MACHINE_FURYORITSU, GXHDO101B042Const.SET_BIN4_NUKITORIKEKKA_S);
         //BIN5 真の不良率計算
-        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_SHIN_FURYORITSU, GXHDO101B040Const.SET_BIN5_MACHINE_FURYORITSU, GXHDO101B040Const.SET_BIN5_NUKITORIKEKKA_S);
+        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B042Const.SET_BIN5_SHIN_FURYORITSU, GXHDO101B042Const.SET_BIN5_MACHINE_FURYORITSU, GXHDO101B042Const.SET_BIN5_NUKITORIKEKKA_S);
         //BIN6 真の不良率計算
-        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_SHIN_FURYORITSU, GXHDO101B040Const.SET_BIN6_MACHINE_FURYORITSU, GXHDO101B040Const.SET_BIN6_NUKITORIKEKKA_S);
+        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B042Const.SET_BIN6_SHIN_FURYORITSU, GXHDO101B042Const.SET_BIN6_MACHINE_FURYORITSU, GXHDO101B042Const.SET_BIN6_NUKITORIKEKKA_S);
 
     }
 
@@ -4166,8 +4089,8 @@ public class GXHDO101B040 implements IFormLogic {
                 return;
             }
 
-            //BINX マシン不良率(%) × BINX 抜き取り結果(SelectOneMenu)
-            BigDecimal shinFuryoritsu = mcnFuryoritsu.multiply(nukitorikekka).setScale(4, RoundingMode.HALF_UP);
+            //.BINX マシン不良率(%) ÷ BINX 抜き取り結果(SelectOneMenu)(小数点第五位を四捨五入)
+            BigDecimal shinFuryoritsu = mcnFuryoritsu.divide(nukitorikekka, 4, RoundingMode.HALF_UP);
 
             //計算結果を真の不良率にセット
             itemShinFuryoritsu.setValue(shinFuryoritsu.toPlainString());
@@ -4199,824 +4122,700 @@ public class GXHDO101B040 implements IFormLogic {
     private String getSrDenkitokuseiesiItemData(String itemId, SrDenkitokuseiesi srDenkitokuseiesi) {
         switch (itemId) {
             //製品情報:KCPNO
-            case GXHDO101B040Const.SEIHIN_KCPNO:
+            case GXHDO101B042Const.SEIHIN_KCPNO:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getKcpno());
 
             //製品情報:客先
-            case GXHDO101B040Const.SEIHIN_TOKUISAKI:
+            case GXHDO101B042Const.SEIHIN_TOKUISAKI:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getTokuisaki());
 
             //製品情報:ﾛｯﾄ区分
-            case GXHDO101B040Const.SEIHIN_LOT_KUBUN:
+            case GXHDO101B042Const.SEIHIN_LOT_KUBUN:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getLotkubuncode());
 
             //製品情報:ｵｰﾅｰ
-            case GXHDO101B040Const.SEIHIN_OWNER:
+            case GXHDO101B042Const.SEIHIN_OWNER:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getOwnercode());
 
             //製品情報:指定公差
-            case GXHDO101B040Const.SEIHIN_SHITEI_KOUSA:
+            case GXHDO101B042Const.SEIHIN_SHITEI_KOUSA:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getSiteikousa());
 
             //製品情報:後工程指示内容
-            case GXHDO101B040Const.SEIHIN_ATOKOUTEI_SHIJI_NAIYO:
+            case GXHDO101B042Const.SEIHIN_ATOKOUTEI_SHIJI_NAIYO:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getAtokouteisijinaiyou());
 
             //製品情報:送り良品数
-            case GXHDO101B040Const.SEIHIN_OKURI_RYOHINSU:
+            case GXHDO101B042Const.SEIHIN_OKURI_RYOHINSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getOkuriryouhinsuu());
 
             //製品情報:受入れ単位重量
-            case GXHDO101B040Const.SEIHIN_UKEIRE_TANNIJURYO:
+            case GXHDO101B042Const.SEIHIN_UKEIRE_TANNIJURYO:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getUkeiretannijyuryo());
 
             //製品情報:受入れ総重量
-            case GXHDO101B040Const.SEIHIN_UKEIRE_SOUJURYO:
+            case GXHDO101B042Const.SEIHIN_UKEIRE_SOUJURYO:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getUkeiresoujyuryou());
 
             //製品情報:外部電極焼付日
-            case GXHDO101B040Const.SEIHIN_G_YAKITSUKE_DAY:
+            case GXHDO101B042Const.SEIHIN_G_YAKITSUKE_DAY:
                 return DateUtil.formattedTimestamp(srDenkitokuseiesi.getGdyakitukenitiji(), "yyMMdd");
 
             //製品情報:外部電極焼付時間
-            case GXHDO101B040Const.SEIHIN_G_YAKITSUKE_TIME:
+            case GXHDO101B042Const.SEIHIN_G_YAKITSUKE_TIME:
                 return DateUtil.formattedTimestamp(srDenkitokuseiesi.getGdyakitukenitiji(), "HHmm");
 
             //製品情報:ﾒｯｷ日
-            case GXHDO101B040Const.SEIHIN_MEKKI_DAY:
+            case GXHDO101B042Const.SEIHIN_MEKKI_DAY:
                 return DateUtil.formattedTimestamp(srDenkitokuseiesi.getMekkinitiji(), "yyMMdd");
 
             //製品情報:ﾒｯｷ時間
-            case GXHDO101B040Const.SEIHIN_MEKKI_TIME:
+            case GXHDO101B042Const.SEIHIN_MEKKI_TIME:
                 return DateUtil.formattedTimestamp(srDenkitokuseiesi.getMekkinitiji(), "HHmm");
 
             //製品情報:検査場所
-            case GXHDO101B040Const.SEIHIN_KENSA_BASHO:
+            case GXHDO101B042Const.SEIHIN_KENSA_BASHO:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getKensabasyo());
 
             //製品情報:選別開始日
-            case GXHDO101B040Const.SEIHIN_SENBETSU_KAISHI_DAY:
+            case GXHDO101B042Const.SEIHIN_SENBETSU_KAISHI_DAY:
                 return DateUtil.formattedTimestamp(srDenkitokuseiesi.getSenbetukaisinitiji(), "yyMMdd");
 
             //製品情報:選別開始時間
-            case GXHDO101B040Const.SEIHIN_SENBETSU_KAISHI_TIME:
+            case GXHDO101B042Const.SEIHIN_SENBETSU_KAISHI_TIME:
                 return DateUtil.formattedTimestamp(srDenkitokuseiesi.getSenbetukaisinitiji(), "HHmm");
 
             //製品情報:選別終了日
-            case GXHDO101B040Const.SEIHIN_SENBETSU_SHURYO_DAY:
+            case GXHDO101B042Const.SEIHIN_SENBETSU_SHURYO_DAY:
                 return DateUtil.formattedTimestamp(srDenkitokuseiesi.getSenbetusyuryounitiji(), "yyMMdd");
 
             //製品情報:選別終了時間
-            case GXHDO101B040Const.SEIHIN_SENBETSU_SHURYO_TIME:
+            case GXHDO101B042Const.SEIHIN_SENBETSU_SHURYO_TIME:
                 return DateUtil.formattedTimestamp(srDenkitokuseiesi.getSenbetusyuryounitiji(), "HHmm");
 
             //製品情報:検査号機
-            case GXHDO101B040Const.SEIHIN_KENSA_GOKI:
+            case GXHDO101B042Const.SEIHIN_KENSA_GOKI:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getKensagouki());
 
             //製品情報:分類ｴｱｰ圧
-            case GXHDO101B040Const.SEIHIN_BUNRUI_AIR_ATSU:
+            case GXHDO101B042Const.SEIHIN_BUNRUI_AIR_ATSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBunruiairatu());
 
-            //製品情報:CDｺﾝﾀｸﾄ圧
-            case GXHDO101B040Const.SEIHIN_CD_CONTACT_ATSU:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getCdcontactatu());
+            //製品情報:選別順序変更
+            case GXHDO101B042Const.SEIHIN_SENBETSU_JUNJO_CHANGE:
+                return StringUtil.nullToBlank(srDenkitokuseiesi.getSenbetujunjo());
 
-            //製品情報:IRｺﾝﾀｸﾄ圧
-            case GXHDO101B040Const.SEIHIN_IR_CONTACT_ATSU:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getIrcontactatu());
+            //製品情報:設定ﾓｰﾄﾞ確認
+            case GXHDO101B042Const.SEIHIN_SET_MODO_KAKUNIN:
+                return StringUtil.nullToBlank(srDenkitokuseiesi.getSetteikakunin());
 
-            //製品情報:使用後ｽﾃｰｼｮﾝ確認CD1
-            case GXHDO101B040Const.SEIHIN_SIYOATO_STATION_CD1:
-                return getCheckBoxCheckValue(StringUtil.nullToBlank(srDenkitokuseiesi.getStationcd1()));
-
-            //製品情報:使用後ｽﾃｰｼｮﾝ確認PC1
-            case GXHDO101B040Const.SEIHIN_SIYOATO_STATION_PC1:
-                return getCheckBoxCheckValue(StringUtil.nullToBlank(srDenkitokuseiesi.getStationpc1()));
-
-            //製品情報:使用後ｽﾃｰｼｮﾝ確認PC2
-            case GXHDO101B040Const.SEIHIN_SIYOATO_STATION_PC2:
-                return getCheckBoxCheckValue(StringUtil.nullToBlank(srDenkitokuseiesi.getStationpc2()));
-
-            //製品情報:使用後ｽﾃｰｼｮﾝ確認PC3
-            case GXHDO101B040Const.SEIHIN_SIYOATO_STATION_PC3:
-                return getCheckBoxCheckValue(StringUtil.nullToBlank(srDenkitokuseiesi.getStationpc3()));
-
-            //製品情報:使用後ｽﾃｰｼｮﾝ確認PC4
-            case GXHDO101B040Const.SEIHIN_SIYOATO_STATION_PC4:
-                return getCheckBoxCheckValue(StringUtil.nullToBlank(srDenkitokuseiesi.getStationpc4()));
-
-            //製品情報:使用後ｽﾃｰｼｮﾝ確認IR1
-            case GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR1:
-                return getCheckBoxCheckValue(StringUtil.nullToBlank(srDenkitokuseiesi.getStationir1()));
-
-            //製品情報:使用後ｽﾃｰｼｮﾝ確認IR2
-            case GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR2:
-                return getCheckBoxCheckValue(StringUtil.nullToBlank(srDenkitokuseiesi.getStationir2()));
-
-            //製品情報:使用後ｽﾃｰｼｮﾝ確認IR3
-            case GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR3:
-                return getCheckBoxCheckValue(StringUtil.nullToBlank(srDenkitokuseiesi.getStationir3()));
-
-            //製品情報:使用後ｽﾃｰｼｮﾝ確認IR4
-            case GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR4:
-                return getCheckBoxCheckValue(StringUtil.nullToBlank(srDenkitokuseiesi.getStationir4()));
-
-            //製品情報:使用後ｽﾃｰｼｮﾝ確認IR5
-            case GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR5:
-                return getCheckBoxCheckValue(StringUtil.nullToBlank(srDenkitokuseiesi.getStationir5()));
-
-            //製品情報:使用後ｽﾃｰｼｮﾝ確認IR6
-            case GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR6:
-                return getCheckBoxCheckValue(StringUtil.nullToBlank(srDenkitokuseiesi.getStationir6()));
-
-            //製品情報:使用後ｽﾃｰｼｮﾝ確認IR7
-            case GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR7:
-                return getCheckBoxCheckValue(StringUtil.nullToBlank(srDenkitokuseiesi.getStationir7()));
-
-            //製品情報:使用後ｽﾃｰｼｮﾝ確認IR8
-            case GXHDO101B040Const.SEIHIN_SIYOATO_STATION_IR8:
-                return getCheckBoxCheckValue(StringUtil.nullToBlank(srDenkitokuseiesi.getStationir8()));
+            //製品情報:配線確認
+            case GXHDO101B042Const.SEIHIN_HAISEN_KAKUNIN:
+                return StringUtil.nullToBlank(srDenkitokuseiesi.getHaisenkakunin());
 
             //製品情報:固定電極 外観･段差
-            case GXHDO101B040Const.SEIHIN_K_GAIKAN_DANSA:
+            case GXHDO101B042Const.SEIHIN_K_GAIKAN_DANSA:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getKoteidenkyoku());
 
             //製品情報:ﾄﾗｯｸｶﾞｲﾄﾞ隙間
-            case GXHDO101B040Const.SEIHIN_TRACK_GUIDE_SUKIMA:
+            case GXHDO101B042Const.SEIHIN_TRACK_GUIDE_SUKIMA:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getTorakkugaido());
 
             //製品情報:ﾃｽﾄﾌﾟﾚｰﾄ 形状･清掃
-            case GXHDO101B040Const.SEIHIN_TEST_PLATE_KEIJO_SEISOU:
+            case GXHDO101B042Const.SEIHIN_TEST_PLATE_KEIJO_SEISOU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getTestplatekeijo());
 
             //製品情報:分類吹き出し穴
-            case GXHDO101B040Const.SEIHIN_BUNRUI_FUKIDASHIANA:
+            case GXHDO101B042Const.SEIHIN_BUNRUI_FUKIDASHIANA:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBunruifukidasi());
 
             //製品情報:ﾃｽﾄﾌﾟﾚｰﾄ位置確認(穴位置)
-            case GXHDO101B040Const.SEIHIN_TEST_PLATE_ICHI_KAKUNIN:
+            case GXHDO101B042Const.SEIHIN_TEST_PLATE_ICHI_KAKUNIN:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getTestplatekakunin());
 
             //製品情報:電極清掃・動作
-            case GXHDO101B040Const.SEIHIN_DENKYOKU_SEISOU_DOUSA:
+            case GXHDO101B042Const.SEIHIN_DENKYOKU_SEISOU_DOUSA:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getDenkyokuseisou());
 
             //製品情報:製品投入状態
-            case GXHDO101B040Const.SEIHIN_SEIHIN_TOUNYU_JOTAI:
+            case GXHDO101B042Const.SEIHIN_SEIHIN_TOUNYU_JOTAI:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getSeihintounyuujotai());
 
             //製品情報:BINﾎﾞｯｸｽ内の清掃ﾁｪｯｸ
-            case GXHDO101B040Const.SEIHIN_BIN_BOX_SEISOU_CHECK:
+            case GXHDO101B042Const.SEIHIN_BIN_BOX_SEISOU_CHECK:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBinboxseisoucheck());
 
             //製品情報:ｾｯﾄ者
-            case GXHDO101B040Const.SEIHIN_SETSHA:
+            case GXHDO101B042Const.SEIHIN_SETSHA:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getSetsya());
 
             //製品情報:確認者
-            case GXHDO101B040Const.SEIHIN_KAKUNINSHA:
+            case GXHDO101B042Const.SEIHIN_KAKUNINSHA:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getKakuninsya());
 
             //製品情報:指定公差歩留まり1
-            case GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI1:
+            case GXHDO101B042Const.SEIHIN_SHITEI_KOUSA_BUDOMARI1:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getSiteikousabudomari1());
 
             //製品情報:指定公差歩留まり2
-            case GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI2:
+            case GXHDO101B042Const.SEIHIN_SHITEI_KOUSA_BUDOMARI2:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getSiteikousabudomari2());
 
             //製品情報:ﾃｽﾄﾌﾟﾚｰﾄ管理No
-            case GXHDO101B040Const.SEIHIN_TEST_PLATE_KANRINO:
+            case GXHDO101B042Const.SEIHIN_TEST_PLATE_KANRINO:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getTestplatekanrino());
 
             //製品情報:Tanδ
-            case GXHDO101B040Const.SEIHIN_TAN_DELTA:
+            case GXHDO101B042Const.SEIHIN_TAN_DELTA:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getTan());
 
             //製品情報:測定周波数
-            case GXHDO101B040Const.SEIHIN_SOKUTEI_SHUHASU:
+            case GXHDO101B042Const.SEIHIN_SOKUTEI_SHUHASU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getSokuteisyuhasuu());
 
             //製品情報:測定電圧
-            case GXHDO101B040Const.SEIHIN_SOKUTEI_DENATSU:
+            case GXHDO101B042Const.SEIHIN_SOKUTEI_DENATSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getSokuteidenatu());
 
             //製品情報:補正用ﾁｯﾌﾟ容量
-            case GXHDO101B040Const.SEIHIN_HOSEIYOU_CHIP_YORYO:
+            case GXHDO101B042Const.SEIHIN_HOSEIYOU_CHIP_YORYO:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getHoseiyoutippuyoryou());
 
             //製品情報:補正用ﾁｯﾌﾟTanδ
-            case GXHDO101B040Const.SEIHIN_HOSEIYOU_CHIP_TAN_DELTA:
+            case GXHDO101B042Const.SEIHIN_HOSEIYOU_CHIP_TAN_DELTA:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getHoseiyoutipputan());
 
             //製品情報:補正前
-            case GXHDO101B040Const.SEIHIN_HOSEIMAE:
+            case GXHDO101B042Const.SEIHIN_HOSEIMAE:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getHoseimae());
 
             //製品情報:補正後
-            case GXHDO101B040Const.SEIHIN_HOSEIATO:
+            case GXHDO101B042Const.SEIHIN_HOSEIATO:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getHoseigo());
 
             //製品情報:補正率
-            case GXHDO101B040Const.SEIHIN_HOSEIRITSU:
+            case GXHDO101B042Const.SEIHIN_HOSEIRITSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getHoseiritu());
 
-            //製品情報:ｽﾀﾝﾀﾞｰﾄﾞ補正
-            case GXHDO101B040Const.SEIHIN_STANDARD_HOSEI:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getStandard());
-
             //製品情報:分類確認
-            case GXHDO101B040Const.SEIHIN_BUNRUI_KAKUNIN:
+            case GXHDO101B042Const.SEIHIN_BUNRUI_KAKUNIN:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBunruikakunin());
 
             //製品情報:外観確認
-            case GXHDO101B040Const.SEIHIN_GAIKAN_KAKUNIN:
+            case GXHDO101B042Const.SEIHIN_GAIKAN_KAKUNIN:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getGaikankakunin());
 
             //製品情報:熱処理日
-            case GXHDO101B040Const.SEIHIN_NETSUSYORI_DAY:
+            case GXHDO101B042Const.SEIHIN_NETSUSYORI_DAY:
                 return DateUtil.formattedTimestamp(srDenkitokuseiesi.getNetsusyorinitiji(), "yyMMdd");
 
             //製品情報:熱処理時刻
-            case GXHDO101B040Const.SEIHIN_NETSUSYORI_TIME:
+            case GXHDO101B042Const.SEIHIN_NETSUSYORI_TIME:
                 return DateUtil.formattedTimestamp(srDenkitokuseiesi.getNetsusyorinitiji(), "HHmm");
 
             //製品情報:ｴｰｼﾞﾝｸﾞ時間
-            case GXHDO101B040Const.SEIHIN_AGING_TIME:
+            case GXHDO101B042Const.SEIHIN_AGING_TIME:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getAgingjikan());
 
-            //製品情報:充填率
-            case GXHDO101B040Const.SEIHIN_JUTENRITSU:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getJutenritu());
-
-            //製品情報:MC
-            case GXHDO101B040Const.SEIHIN_MC:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getMc());
-
-            //製品情報:強制排出
-            case GXHDO101B040Const.SEIHIN_KYOSEI_HAISHUTSU:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getKyoseihaisyutu());
-
-            //製品情報:落下
-            case GXHDO101B040Const.SEIHIN_RAKKA:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getRakka());
-
             //製品情報:承認者
-            case GXHDO101B040Const.SEIHIN_SHONINSHA:
+            case GXHDO101B042Const.SEIHIN_SHONINSHA:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getSyoninsha());
 
             //製品情報:振向者
-            case GXHDO101B040Const.SEIHIN_FURIMUKESHA:
+            case GXHDO101B042Const.SEIHIN_FURIMUKESHA:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getFurimukesya());
 
             //製品情報:電気特性再検
-            case GXHDO101B040Const.SEIHIN_DENKITOKUSEI_SAIKEN:
+            case GXHDO101B042Const.SEIHIN_DENKITOKUSEI_SAIKEN:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getSaiken());
 
             //製品情報:備考1
-            case GXHDO101B040Const.SEIHIN_BIKOU1:
+            case GXHDO101B042Const.SEIHIN_BIKOU1:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBikou1());
 
             //製品情報:備考2
-            case GXHDO101B040Const.SEIHIN_BIKOU2:
+            case GXHDO101B042Const.SEIHIN_BIKOU2:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBikou2());
 
-            //ﾌﾟﾘﾁｬｰｼﾞ条件:PC① 電圧
-            case GXHDO101B040Const.PRECHARGE_DENATSU1:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getPcdenatu1());
-
-            //ﾌﾟﾘﾁｬｰｼﾞ条件:PC① 充電時間
-            case GXHDO101B040Const.PRECHARGE_JUDEN_TIME1:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getPcjudenjikan1());
-
-            //ﾌﾟﾘﾁｬｰｼﾞ条件:PC② 電圧
-            case GXHDO101B040Const.PRECHARGE_DENATSU2:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getPcdenatu2());
-
-            //ﾌﾟﾘﾁｬｰｼﾞ条件:PC② 充電時間
-            case GXHDO101B040Const.PRECHARGE_JUDEN_TIME2:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getPcjudenjikan2());
-
-            //ﾌﾟﾘﾁｬｰｼﾞ条件:PC③ 電圧
-            case GXHDO101B040Const.PRECHARGE_DENATSU3:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getPcdenatu3());
-
-            //ﾌﾟﾘﾁｬｰｼﾞ条件:PC③ 充電時間
-            case GXHDO101B040Const.PRECHARGE_JUDEN_TIME3:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getPcjudenjikan3());
-
-            //ﾌﾟﾘﾁｬｰｼﾞ条件:PC④ 電圧
-            case GXHDO101B040Const.PRECHARGE_DENATSU4:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getPcdenatu4());
-
-            //ﾌﾟﾘﾁｬｰｼﾞ条件:PC④ 充電時間
-            case GXHDO101B040Const.PRECHARGE_JUDEN_TIME4:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getPcjudenjikan4());
-
             //耐電圧設定条件:IR① 電圧
-            case GXHDO101B040Const.TAIDEN_DENATSU1:
+            case GXHDO101B042Const.TAIDEN_DENATSU1:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getIrdenatu1());
 
             //耐電圧設定条件:IR① 判定値
-            case GXHDO101B040Const.TAIDEN_HANTEICHI1:
+            case GXHDO101B042Const.TAIDEN_HANTEICHI1:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getIrhanteiti1());
 
             //耐電圧設定条件:IR① 充電時間
-            case GXHDO101B040Const.TAIDEN_JUDEN_TIME1:
+            case GXHDO101B042Const.TAIDEN_JUDEN_TIME1:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getIrjudenjikan1());
 
             //耐電圧設定条件:IR② 電圧
-            case GXHDO101B040Const.TAIDEN_DENATSU2:
+            case GXHDO101B042Const.TAIDEN_DENATSU2:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getIrdenatu2());
 
             //耐電圧設定条件:IR② 判定値
-            case GXHDO101B040Const.TAIDEN_HANTEICHI2:
+            case GXHDO101B042Const.TAIDEN_HANTEICHI2:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getIrhanteiti2());
 
             //耐電圧設定条件:IR② 充電時間
-            case GXHDO101B040Const.TAIDEN_JUDEN_TIME2:
+            case GXHDO101B042Const.TAIDEN_JUDEN_TIME2:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getIrjudenjikan2());
 
             //耐電圧設定条件:IR③ 電圧
-            case GXHDO101B040Const.TAIDEN_DENATSU3:
+            case GXHDO101B042Const.TAIDEN_DENATSU3:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getIrdenatu3());
 
             //耐電圧設定条件:IR③ 判定値
-            case GXHDO101B040Const.TAIDEN_HANTEICHI3:
+            case GXHDO101B042Const.TAIDEN_HANTEICHI3:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getIrhanteiti3());
 
             //耐電圧設定条件:IR③ 充電時間
-            case GXHDO101B040Const.TAIDEN_JUDEN_TIME3:
+            case GXHDO101B042Const.TAIDEN_JUDEN_TIME3:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getIrjudenjikan3());
 
             //耐電圧設定条件:IR④ 電圧
-            case GXHDO101B040Const.TAIDEN_DENATSU4:
+            case GXHDO101B042Const.TAIDEN_DENATSU4:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getIrdenatu4());
 
             //耐電圧設定条件:IR④ 判定値
-            case GXHDO101B040Const.TAIDEN_HANTEICHI4:
+            case GXHDO101B042Const.TAIDEN_HANTEICHI4:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getIrhanteiti4());
 
             //耐電圧設定条件:IR④ 充電時間
-            case GXHDO101B040Const.TAIDEN_JUDEN_TIME4:
+            case GXHDO101B042Const.TAIDEN_JUDEN_TIME4:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getIrjudenjikan4());
 
-            //耐電圧設定条件:IR⑤ 電圧
-            case GXHDO101B040Const.TAIDEN_DENATSU5:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getIrdenatu5());
+            //電圧DROP設定条件:DROP1,3 PC
+            case GXHDO101B042Const.DROP1_3PC:
+                return StringUtil.nullToBlank(srDenkitokuseiesi.getDrop13pc());
 
-            //耐電圧設定条件:IR⑤ 判定値
-            case GXHDO101B040Const.TAIDEN_HANTEICHI5:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getIrhanteiti5());
+            //電圧DROP設定条件:DROP1,3 PS
+            case GXHDO101B042Const.DROP1_3PS:
+                return StringUtil.nullToBlank(srDenkitokuseiesi.getDrop13ps());
 
-            //耐電圧設定条件:IR⑤ 充電時間
-            case GXHDO101B040Const.TAIDEN_JUDEN_TIME5:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getIrjudenjikan5());
+            //電圧DROP設定条件:DROP1,3 MS･DC
+            case GXHDO101B042Const.DROP1_3MSDC:
+                return StringUtil.nullToBlank(srDenkitokuseiesi.getDrop13msdc());
 
-            //耐電圧設定条件:IR⑥ 電圧
-            case GXHDO101B040Const.TAIDEN_DENATSU6:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getIrdenatu6());
+            //電圧DROP設定条件:DROP1,3 PC
+            case GXHDO101B042Const.DROP2_4PC:
+                return StringUtil.nullToBlank(srDenkitokuseiesi.getDrop24pc());
 
-            //耐電圧設定条件:IR⑥ 判定値
-            case GXHDO101B040Const.TAIDEN_HANTEICHI6:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getIrhanteiti6());
+            //電圧DROP設定条件:DROP1,3 PS
+            case GXHDO101B042Const.DROP2_4PS:
+                return StringUtil.nullToBlank(srDenkitokuseiesi.getDrop24ps());
 
-            //耐電圧設定条件:IR⑥ 充電時間
-            case GXHDO101B040Const.TAIDEN_JUDEN_TIME6:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getIrjudenjikan6());
-
-            //耐電圧設定条件:IR⑦ 電圧
-            case GXHDO101B040Const.TAIDEN_DENATSU7:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getIrdenatu7());
-
-            //耐電圧設定条件:IR⑦ 判定値
-            case GXHDO101B040Const.TAIDEN_HANTEICHI7:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getIrhanteiti7());
-
-            //耐電圧設定条件:IR⑦ 充電時間
-            case GXHDO101B040Const.TAIDEN_JUDEN_TIME7:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getIrjudenjikan7());
-
-            //耐電圧設定条件:IR⑧ 電圧
-            case GXHDO101B040Const.TAIDEN_DENATSU8:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getIrdenatu8());
-
-            //耐電圧設定条件:IR⑧ 判定値
-            case GXHDO101B040Const.TAIDEN_HANTEICHI8:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getIrhanteiti8());
-
-            //耐電圧設定条件:IR⑧ 充電時間
-            case GXHDO101B040Const.TAIDEN_JUDEN_TIME8:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getIrjudenjikan8());
+            //電圧DROP設定条件:DROP1,3 MS･DC
+            case GXHDO101B042Const.DROP2_4MSDC:
+                return StringUtil.nullToBlank(srDenkitokuseiesi.getDrop24msdc());
 
             //設定条件及び処理結果:BIN1 %区分(設定値)
-            case GXHDO101B040Const.SET_BIN1_PERCENT_KBN:
+            case GXHDO101B042Const.SET_BIN1_PERCENT_KBN:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin1setteiti());
 
             //設定条件及び処理結果:BIN1 選別区分
-            case GXHDO101B040Const.SET_BIN1_SENBETSU_KBN:
+            case GXHDO101B042Const.SET_BIN1_SENBETSU_KBN:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin1senbetukubun());
 
             //設定条件及び処理結果:BIN1 計量後数量
-            case GXHDO101B040Const.SET_BIN1_KEIRYOGO_SURYO:
+            case GXHDO101B042Const.SET_BIN1_KEIRYOGO_SURYO:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin1keiryougosuryou());
 
             //設定条件及び処理結果:BIN1 ｶｳﾝﾀｰ数
-            case GXHDO101B040Const.SET_BIN1_COUNTER_SU:
+            case GXHDO101B042Const.SET_BIN1_COUNTER_SU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin1countersuu());
 
             //設定条件及び処理結果:BIN1 誤差率(%)
-            case GXHDO101B040Const.SET_BIN1_GOSARITSU:
+            case GXHDO101B042Const.SET_BIN1_GOSARITSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin1gosaritu());
 
             //設定条件及び処理結果:BIN1 ﾏｼﾝ不良率(%)
-            case GXHDO101B040Const.SET_BIN1_MACHINE_FURYORITSU:
+            case GXHDO101B042Const.SET_BIN1_MACHINE_FURYORITSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin1masinfuryouritu());
 
             //設定条件及び処理結果:BIN1 抜き取り結果
-            case GXHDO101B040Const.SET_BIN1_NUKITORIKEKKA_S:
+            case GXHDO101B042Const.SET_BIN1_NUKITORIKEKKA_S:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin1nukitorikekkabosuu());
 
             //設定条件及び処理結果:BIN1 抜き取り結果
-            case GXHDO101B040Const.SET_BIN1_NUKITORIKEKKA_T:
+            case GXHDO101B042Const.SET_BIN1_NUKITORIKEKKA_T:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin1nukitorikekka());
 
             //設定条件及び処理結果:BIN1 真の不良率(%)
-            case GXHDO101B040Const.SET_BIN1_SHIN_FURYORITSU:
+            case GXHDO101B042Const.SET_BIN1_SHIN_FURYORITSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin1sinnofuryouritu());
 
             //設定条件及び処理結果:BIN1 結果ﾁｪｯｸ
-            case GXHDO101B040Const.SET_BIN1_KEKKA_CHECK:
+            case GXHDO101B042Const.SET_BIN1_KEKKA_CHECK:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin1kekkacheck());
 
             //設定条件及び処理結果:BIN2 %区分(設定値)
-            case GXHDO101B040Const.SET_BIN2_PERCENT_KBN:
+            case GXHDO101B042Const.SET_BIN2_PERCENT_KBN:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin2setteiti());
 
             //設定条件及び処理結果:BIN2 選別区分
-            case GXHDO101B040Const.SET_BIN2_SENBETSU_KBN:
+            case GXHDO101B042Const.SET_BIN2_SENBETSU_KBN:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin2senbetukubun());
 
             //設定条件及び処理結果:BIN2 計量後数量
-            case GXHDO101B040Const.SET_BIN2_KEIRYOGO_SURYO:
+            case GXHDO101B042Const.SET_BIN2_KEIRYOGO_SURYO:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin2keiryougosuryou());
 
             //設定条件及び処理結果:BIN2 ｶｳﾝﾀｰ数
-            case GXHDO101B040Const.SET_BIN2_COUNTER_SU:
+            case GXHDO101B042Const.SET_BIN2_COUNTER_SU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin2countersuu());
 
             //設定条件及び処理結果:BIN2 誤差率(%)
-            case GXHDO101B040Const.SET_BIN2_GOSARITSU:
+            case GXHDO101B042Const.SET_BIN2_GOSARITSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin2gosaritu());
 
             //設定条件及び処理結果:BIN2 ﾏｼﾝ不良率(%)
-            case GXHDO101B040Const.SET_BIN2_MACHINE_FURYORITSU:
+            case GXHDO101B042Const.SET_BIN2_MACHINE_FURYORITSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin2masinfuryouritu());
 
             //設定条件及び処理結果:BIN2 抜き取り結果
-            case GXHDO101B040Const.SET_BIN2_NUKITORIKEKKA_S:
+            case GXHDO101B042Const.SET_BIN2_NUKITORIKEKKA_S:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin2nukitorikekkabosuu());
 
             //設定条件及び処理結果:BIN2 抜き取り結果
-            case GXHDO101B040Const.SET_BIN2_NUKITORIKEKKA_T:
+            case GXHDO101B042Const.SET_BIN2_NUKITORIKEKKA_T:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin2nukitorikekka());
 
             //設定条件及び処理結果:BIN2 真の不良率(%)
-            case GXHDO101B040Const.SET_BIN2_SHIN_FURYORITSU:
+            case GXHDO101B042Const.SET_BIN2_SHIN_FURYORITSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin2sinnofuryouritu());
 
             //設定条件及び処理結果:BIN2 結果ﾁｪｯｸ
-            case GXHDO101B040Const.SET_BIN2_KEKKA_CHECK:
+            case GXHDO101B042Const.SET_BIN2_KEKKA_CHECK:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin2kekkacheck());
 
             //設定条件及び処理結果:BIN3 %区分(設定値)
-            case GXHDO101B040Const.SET_BIN3_PERCENT_KBN:
+            case GXHDO101B042Const.SET_BIN3_PERCENT_KBN:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin3setteiti());
 
             //設定条件及び処理結果:BIN3 選別区分
-            case GXHDO101B040Const.SET_BIN3_SENBETSU_KBN:
+            case GXHDO101B042Const.SET_BIN3_SENBETSU_KBN:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin3senbetukubun());
 
             //設定条件及び処理結果:BIN3 計量後数量
-            case GXHDO101B040Const.SET_BIN3_KEIRYOGO_SURYO:
+            case GXHDO101B042Const.SET_BIN3_KEIRYOGO_SURYO:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin3keiryougosuryou());
 
             //設定条件及び処理結果:BIN3 ｶｳﾝﾀｰ数
-            case GXHDO101B040Const.SET_BIN3_COUNTER_SU:
+            case GXHDO101B042Const.SET_BIN3_COUNTER_SU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin3countersuu());
 
             //設定条件及び処理結果:BIN3 誤差率(%)
-            case GXHDO101B040Const.SET_BIN3_GOSARITSU:
+            case GXHDO101B042Const.SET_BIN3_GOSARITSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin3gosaritu());
 
             //設定条件及び処理結果:BIN3 ﾏｼﾝ不良率(%)
-            case GXHDO101B040Const.SET_BIN3_MACHINE_FURYORITSU:
+            case GXHDO101B042Const.SET_BIN3_MACHINE_FURYORITSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin3masinfuryouritu());
 
             //設定条件及び処理結果:BIN3 抜き取り結果
-            case GXHDO101B040Const.SET_BIN3_NUKITORIKEKKA_S:
+            case GXHDO101B042Const.SET_BIN3_NUKITORIKEKKA_S:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin3nukitorikekkabosuu());
 
             //設定条件及び処理結果:BIN3 抜き取り結果
-            case GXHDO101B040Const.SET_BIN3_NUKITORIKEKKA_T:
+            case GXHDO101B042Const.SET_BIN3_NUKITORIKEKKA_T:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin3nukitorikekka());
 
             //設定条件及び処理結果:BIN3 真の不良率(%)
-            case GXHDO101B040Const.SET_BIN3_SHIN_FURYORITSU:
+            case GXHDO101B042Const.SET_BIN3_SHIN_FURYORITSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin3sinnofuryouritu());
 
             //設定条件及び処理結果:BIN3 結果ﾁｪｯｸ
-            case GXHDO101B040Const.SET_BIN3_KEKKA_CHECK:
+            case GXHDO101B042Const.SET_BIN3_KEKKA_CHECK:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin3kekkacheck());
 
             //設定条件及び処理結果:BIN4 %区分(設定値)
-            case GXHDO101B040Const.SET_BIN4_PERCENT_KBN:
+            case GXHDO101B042Const.SET_BIN4_PERCENT_KBN:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin4setteiti());
 
             //設定条件及び処理結果:BIN4 選別区分
-            case GXHDO101B040Const.SET_BIN4_SENBETSU_KBN:
+            case GXHDO101B042Const.SET_BIN4_SENBETSU_KBN:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin4senbetukubun());
 
             //設定条件及び処理結果:BIN4 計量後数量
-            case GXHDO101B040Const.SET_BIN4_KEIRYOGO_SURYO:
+            case GXHDO101B042Const.SET_BIN4_KEIRYOGO_SURYO:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin4keiryougosuryou());
 
             //設定条件及び処理結果:BIN4 ｶｳﾝﾀｰ数
-            case GXHDO101B040Const.SET_BIN4_COUNTER_SU:
+            case GXHDO101B042Const.SET_BIN4_COUNTER_SU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin4countersuu());
 
             //設定条件及び処理結果:BIN4 誤差率(%)
-            case GXHDO101B040Const.SET_BIN4_GOSARITSU:
+            case GXHDO101B042Const.SET_BIN4_GOSARITSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin4gosaritu());
 
             //設定条件及び処理結果:BIN4 ﾏｼﾝ不良率(%)
-            case GXHDO101B040Const.SET_BIN4_MACHINE_FURYORITSU:
+            case GXHDO101B042Const.SET_BIN4_MACHINE_FURYORITSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin4masinfuryouritu());
 
             //設定条件及び処理結果:BIN4 抜き取り結果
-            case GXHDO101B040Const.SET_BIN4_NUKITORIKEKKA_S:
+            case GXHDO101B042Const.SET_BIN4_NUKITORIKEKKA_S:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin4nukitorikekkabosuu());
 
             //設定条件及び処理結果:BIN4 抜き取り結果
-            case GXHDO101B040Const.SET_BIN4_NUKITORIKEKKA_T:
+            case GXHDO101B042Const.SET_BIN4_NUKITORIKEKKA_T:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin4nukitorikekka());
 
             //設定条件及び処理結果:BIN4 真の不良率(%)
-            case GXHDO101B040Const.SET_BIN4_SHIN_FURYORITSU:
+            case GXHDO101B042Const.SET_BIN4_SHIN_FURYORITSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin4sinnofuryouritu());
 
             //設定条件及び処理結果:BIN4 結果ﾁｪｯｸ
-            case GXHDO101B040Const.SET_BIN4_KEKKA_CHECK:
+            case GXHDO101B042Const.SET_BIN4_KEKKA_CHECK:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin4kekkacheck());
 
             //設定条件及び処理結果:BIN5 %区分(設定値)
-            case GXHDO101B040Const.SET_BIN5_PERCENT_KBN:
+            case GXHDO101B042Const.SET_BIN5_PERCENT_KBN:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin5setteiti());
 
             //設定条件及び処理結果:BIN5 選別区分
-            case GXHDO101B040Const.SET_BIN5_SENBETSU_KBN:
+            case GXHDO101B042Const.SET_BIN5_SENBETSU_KBN:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin5senbetukubun());
 
             //設定条件及び処理結果:BIN5 計量後数量
-            case GXHDO101B040Const.SET_BIN5_KEIRYOGO_SURYO:
+            case GXHDO101B042Const.SET_BIN5_KEIRYOGO_SURYO:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin5keiryougosuryou());
 
             //設定条件及び処理結果:BIN5 ｶｳﾝﾀｰ数
-            case GXHDO101B040Const.SET_BIN5_COUNTER_SU:
+            case GXHDO101B042Const.SET_BIN5_COUNTER_SU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin5countersuu());
 
             //設定条件及び処理結果:BIN5 誤差率(%)
-            case GXHDO101B040Const.SET_BIN5_GOSARITSU:
+            case GXHDO101B042Const.SET_BIN5_GOSARITSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin5gosaritu());
 
             //設定条件及び処理結果:BIN5 ﾏｼﾝ不良率(%)
-            case GXHDO101B040Const.SET_BIN5_MACHINE_FURYORITSU:
+            case GXHDO101B042Const.SET_BIN5_MACHINE_FURYORITSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin5masinfuryouritu());
 
             //設定条件及び処理結果:BIN5 抜き取り結果
-            case GXHDO101B040Const.SET_BIN5_NUKITORIKEKKA_S:
+            case GXHDO101B042Const.SET_BIN5_NUKITORIKEKKA_S:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin5nukitorikekkabosuu());
 
             //設定条件及び処理結果:BIN5 抜き取り結果
-            case GXHDO101B040Const.SET_BIN5_NUKITORIKEKKA_T:
+            case GXHDO101B042Const.SET_BIN5_NUKITORIKEKKA_T:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin5nukitorikekka());
 
             //設定条件及び処理結果:BIN5 真の不良率(%)
-            case GXHDO101B040Const.SET_BIN5_SHIN_FURYORITSU:
+            case GXHDO101B042Const.SET_BIN5_SHIN_FURYORITSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin5sinnofuryouritu());
 
             //設定条件及び処理結果:BIN5 結果ﾁｪｯｸ
-            case GXHDO101B040Const.SET_BIN5_KEKKA_CHECK:
+            case GXHDO101B042Const.SET_BIN5_KEKKA_CHECK:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin5kekkacheck());
 
             //設定条件及び処理結果:BIN5 袋ﾁｪｯｸ
-            case GXHDO101B040Const.SET_BIN5_FUKURO_CHECK:
+            case GXHDO101B042Const.SET_BIN5_FUKURO_CHECK:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin5fukurocheck());
 
             //設定条件及び処理結果:BIN6 %区分(設定値)
-            case GXHDO101B040Const.SET_BIN6_PERCENT_KBN:
+            case GXHDO101B042Const.SET_BIN6_PERCENT_KBN:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin6setteiti());
 
             //設定条件及び処理結果:BIN6 選別区分
-            case GXHDO101B040Const.SET_BIN6_SENBETSU_KBN:
+            case GXHDO101B042Const.SET_BIN6_SENBETSU_KBN:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin6senbetukubun());
 
             //設定条件及び処理結果:BIN6 計量後数量
-            case GXHDO101B040Const.SET_BIN6_KEIRYOGO_SURYO:
+            case GXHDO101B042Const.SET_BIN6_KEIRYOGO_SURYO:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin6keiryougosuryou());
 
             //設定条件及び処理結果:BIN6 ｶｳﾝﾀｰ数
-            case GXHDO101B040Const.SET_BIN6_COUNTER_SU:
+            case GXHDO101B042Const.SET_BIN6_COUNTER_SU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin6countersuu());
 
             //設定条件及び処理結果:BIN6 誤差率(%)
-            case GXHDO101B040Const.SET_BIN6_GOSARITSU:
+            case GXHDO101B042Const.SET_BIN6_GOSARITSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin6gosaritu());
 
             //設定条件及び処理結果:BIN6 ﾏｼﾝ不良率(%)
-            case GXHDO101B040Const.SET_BIN6_MACHINE_FURYORITSU:
+            case GXHDO101B042Const.SET_BIN6_MACHINE_FURYORITSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin6masinfuryouritu());
 
             //設定条件及び処理結果:BIN6 抜き取り結果
-            case GXHDO101B040Const.SET_BIN6_NUKITORIKEKKA_S:
+            case GXHDO101B042Const.SET_BIN6_NUKITORIKEKKA_S:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin6nukitorikekkabosuu());
 
             //設定条件及び処理結果:BIN6 抜き取り結果
-            case GXHDO101B040Const.SET_BIN6_NUKITORIKEKKA_T:
+            case GXHDO101B042Const.SET_BIN6_NUKITORIKEKKA_T:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin6nukitorikekka());
 
             //設定条件及び処理結果:BIN6 真の不良率(%)
-            case GXHDO101B040Const.SET_BIN6_SHIN_FURYORITSU:
+            case GXHDO101B042Const.SET_BIN6_SHIN_FURYORITSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin6sinnofuryouritu());
 
             //設定条件及び処理結果:BIN6 結果ﾁｪｯｸ
-            case GXHDO101B040Const.SET_BIN6_KEKKA_CHECK:
+            case GXHDO101B042Const.SET_BIN6_KEKKA_CHECK:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin6kekkacheck());
 
             //設定条件及び処理結果:BIN6 袋ﾁｪｯｸ
-            case GXHDO101B040Const.SET_BIN6_FUKURO_CHECK:
+            case GXHDO101B042Const.SET_BIN6_FUKURO_CHECK:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin6fukurocheck());
 
             //設定条件及び処理結果:BIN7 %区分(設定値)
-            case GXHDO101B040Const.SET_BIN7_PERCENT_KBN:
+            case GXHDO101B042Const.SET_BIN7_PERCENT_KBN:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin7setteiti());
 
             //設定条件及び処理結果:BIN7 選別区分
-            case GXHDO101B040Const.SET_BIN7_SENBETSU_KBN:
+            case GXHDO101B042Const.SET_BIN7_SENBETSU_KBN:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin7senbetukubun());
 
             //設定条件及び処理結果:BIN7 計量後数量
-            case GXHDO101B040Const.SET_BIN7_KEIRYOGO_SURYO:
+            case GXHDO101B042Const.SET_BIN7_KEIRYOGO_SURYO:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin7keiryougosuryou());
 
             //設定条件及び処理結果:BIN7 ｶｳﾝﾀｰ数
-            case GXHDO101B040Const.SET_BIN7_COUNTER_SU:
+            case GXHDO101B042Const.SET_BIN7_COUNTER_SU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin7countersuu());
 
             //設定条件及び処理結果:BIN7 誤差率(%)
-            case GXHDO101B040Const.SET_BIN7_GOSARITSU:
+            case GXHDO101B042Const.SET_BIN7_GOSARITSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin7gosaritu());
 
             //設定条件及び処理結果:BIN7 ﾏｼﾝ不良率(%)
-            case GXHDO101B040Const.SET_BIN7_MACHINE_FURYORITSU:
+            case GXHDO101B042Const.SET_BIN7_MACHINE_FURYORITSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin7masinfuryouritu());
 
             //設定条件及び処理結果:BIN7 袋ﾁｪｯｸ
-            case GXHDO101B040Const.SET_BIN7_FUKURO_CHECK:
+            case GXHDO101B042Const.SET_BIN7_FUKURO_CHECK:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin7fukurocheck());
 
             //設定条件及び処理結果:BIN8 %区分(設定値)
-            case GXHDO101B040Const.SET_BIN8_PERCENT_KBN:
+            case GXHDO101B042Const.SET_BIN8_PERCENT_KBN:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin8setteiti());
 
             //設定条件及び処理結果:BIN8 選別区分
-            case GXHDO101B040Const.SET_BIN8_SENBETSU_KBN:
+            case GXHDO101B042Const.SET_BIN8_SENBETSU_KBN:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin8senbetukubun());
 
             //設定条件及び処理結果:BIN8 計量後数量
-            case GXHDO101B040Const.SET_BIN8_KEIRYOGO_SURYO:
+            case GXHDO101B042Const.SET_BIN8_KEIRYOGO_SURYO:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin8keiryougosuryou());
 
             //設定条件及び処理結果:BIN8 ｶｳﾝﾀｰ数
-            case GXHDO101B040Const.SET_BIN8_COUNTER_SU:
+            case GXHDO101B042Const.SET_BIN8_COUNTER_SU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin8countersuu());
 
             //設定条件及び処理結果:BIN8 誤差率(%)
-            case GXHDO101B040Const.SET_BIN8_GOSARITSU:
+            case GXHDO101B042Const.SET_BIN8_GOSARITSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin8gosaritu());
 
             //設定条件及び処理結果:BIN8 ﾏｼﾝ不良率(%)
-            case GXHDO101B040Const.SET_BIN8_MACHINE_FURYORITSU:
+            case GXHDO101B042Const.SET_BIN8_MACHINE_FURYORITSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin8masinfuryouritu());
 
             //設定条件及び処理結果:BIN8 袋ﾁｪｯｸ
-            case GXHDO101B040Const.SET_BIN8_FUKURO_CHECK:
+            case GXHDO101B042Const.SET_BIN8_FUKURO_CHECK:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin8fukurocheck());
 
             //設定条件及び処理結果:BIN9 強制排出 計量後数量
-            case GXHDO101B040Const.SET_BIN9_K_KEIRYOGO_SURYO:
+            case GXHDO101B042Const.SET_BIN9_K_KEIRYOGO_SURYO:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin9keiryougosuryou());
 
             //設定条件及び処理結果:BIN9 強制排出 ﾏｼﾝ不良率
-            case GXHDO101B040Const.SET_BIN9_K_MACHINE_FURYORITSU:
+            case GXHDO101B042Const.SET_BIN9_K_MACHINE_FURYORITSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBin9masinfuryouritu());
 
             //設定条件及び処理結果:落下 計量後数量
-            case GXHDO101B040Const.SET_RAKKA_KEIRYOGO_SURYO:
+            case GXHDO101B042Const.SET_RAKKA_KEIRYOGO_SURYO:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getRakkakeiryougosuryou());
 
             //設定条件及び処理結果:落下 ﾏｼﾝ不良率
-            case GXHDO101B040Const.SET_RAKKA_MACHINE_FURYORITSU:
+            case GXHDO101B042Const.SET_RAKKA_MACHINE_FURYORITSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getRakkamasinfuryouritu());
 
             //設定条件及び処理結果:半田ｻﾝﾌﾟﾙ
-            case GXHDO101B040Const.SET_HANDA_SAMPLE:
+            case GXHDO101B042Const.SET_HANDA_SAMPLE:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getHandasample());
 
             //設定条件及び処理結果:信頼性ｻﾝﾌﾟﾙ
-            case GXHDO101B040Const.SET_SHINRAISEI_SAMPLE:
+            case GXHDO101B042Const.SET_SHINRAISEI_SAMPLE:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getSinraiseisample());
 
             //設定条件及び処理結果:真不良判定者
-            case GXHDO101B040Const.SET_SHIN_FURYO_HANTEISHA:
+            case GXHDO101B042Const.SET_SHIN_FURYO_HANTEISHA:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getSinfuryouhanteisya());
 
             //設定条件及び処理結果:判定入力者
-            case GXHDO101B040Const.SET_HANTEI_NYURYOKUSHA:
+            case GXHDO101B042Const.SET_HANTEI_NYURYOKUSHA:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getHanteinyuuryokusya());
 
             //設定条件及び処理結果:取出者
-            case GXHDO101B040Const.SET_TORIDASHISHA:
+            case GXHDO101B042Const.SET_TORIDASHISHA:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getToridasisya());
 
             //設定条件及び処理結果:公差①
-            case GXHDO101B040Const.SET_KOUSA1:
+            case GXHDO101B042Const.SET_KOUSA1:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getKousa1());
 
             //設定条件及び処理結果:重量①
-            case GXHDO101B040Const.SET_JURYO1:
+            case GXHDO101B042Const.SET_JURYO1:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getJuryou1());
 
             //設定条件及び処理結果:個数①
-            case GXHDO101B040Const.SET_KOSU1:
+            case GXHDO101B042Const.SET_KOSU1:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getKosuu1());
 
             //設定条件及び処理結果:公差②
-            case GXHDO101B040Const.SET_KOUSA2:
+            case GXHDO101B042Const.SET_KOUSA2:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getKousa2());
 
             //設定条件及び処理結果:重量②
-            case GXHDO101B040Const.SET_JURYO2:
+            case GXHDO101B042Const.SET_JURYO2:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getJuryou2());
 
             //設定条件及び処理結果:個数②
-            case GXHDO101B040Const.SET_KOSU2:
+            case GXHDO101B042Const.SET_KOSU2:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getKosuu2());
 
             //設定条件及び処理結果:公差③
-            case GXHDO101B040Const.SET_KOUSA3:
+            case GXHDO101B042Const.SET_KOUSA3:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getKousa3());
 
             //設定条件及び処理結果:重量③
-            case GXHDO101B040Const.SET_JURYO3:
+            case GXHDO101B042Const.SET_JURYO3:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getJuryou3());
 
             //設定条件及び処理結果:個数③
-            case GXHDO101B040Const.SET_KOSU3:
+            case GXHDO101B042Const.SET_KOSU3:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getKosuu3());
 
             //設定条件及び処理結果:公差④
-            case GXHDO101B040Const.SET_KOUSA4:
+            case GXHDO101B042Const.SET_KOUSA4:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getKousa4());
 
             //設定条件及び処理結果:重量④
-            case GXHDO101B040Const.SET_JURYO4:
+            case GXHDO101B042Const.SET_JURYO4:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getJuryou4());
 
             //設定条件及び処理結果:個数④
-            case GXHDO101B040Const.SET_KOSU4:
+            case GXHDO101B042Const.SET_KOSU4:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getKosuu4());
 
             //設定条件及び処理結果:ｶｳﾝﾀｰ総数
-            case GXHDO101B040Const.SET_COUNTER_SOSU:
+            case GXHDO101B042Const.SET_COUNTER_SOSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getCountersousuu());
 
             //設定条件及び処理結果:良品重量
-            case GXHDO101B040Const.SET_RYOUHIN_JURYO:
+            case GXHDO101B042Const.SET_RYOUHIN_JURYO:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getRyohinjuryou());
 
             //設定条件及び処理結果:良品個数
-            case GXHDO101B040Const.SET_RYOUHIN_KOSU:
+            case GXHDO101B042Const.SET_RYOUHIN_KOSU:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getRyohinkosuu());
 
             //設定条件及び処理結果:歩留まり
-            case GXHDO101B040Const.SET_BUDOMARI:
+            case GXHDO101B042Const.SET_BUDOMARI:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getBudomari());
 
             //設定条件及び処理結果:確認者
-            case GXHDO101B040Const.SET_KAKUNINSHA:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getBinkakuninsya());
+            case GXHDO101B042Const.SET_KAKUNINSHA:
+                return StringUtil.nullToBlank(srDenkitokuseiesi.getKakuninsya());
 
             default:
                 return null;
@@ -5222,54 +5021,40 @@ public class GXHDO101B040 implements IFormLogic {
     }
 
     /**
-     * ﾌﾟﾘﾁｬｰｼﾞ条件 画面データ設定処理
-     *
-     * @param processData 処理制御データ
-     */
-    private void initGXHDO101B040B(ProcessData processData) {
-        GXHDO101B040B bean = (GXHDO101B040B) getFormBean("beanGXHDO101C040B");
-        bean.setDenatsu1(getItemRow(processData.getItemListEx(), GXHDO101B040Const.PRECHARGE_DENATSU1));
-        bean.setJudenTime1(getItemRow(processData.getItemListEx(), GXHDO101B040Const.PRECHARGE_JUDEN_TIME1));
-        bean.setDenatsu2(getItemRow(processData.getItemListEx(), GXHDO101B040Const.PRECHARGE_DENATSU2));
-        bean.setJudenTime2(getItemRow(processData.getItemListEx(), GXHDO101B040Const.PRECHARGE_JUDEN_TIME2));
-        bean.setDenatsu3(getItemRow(processData.getItemListEx(), GXHDO101B040Const.PRECHARGE_DENATSU3));
-        bean.setJudenTime3(getItemRow(processData.getItemListEx(), GXHDO101B040Const.PRECHARGE_JUDEN_TIME3));
-        bean.setDenatsu4(getItemRow(processData.getItemListEx(), GXHDO101B040Const.PRECHARGE_DENATSU4));
-        bean.setJudenTime4(getItemRow(processData.getItemListEx(), GXHDO101B040Const.PRECHARGE_JUDEN_TIME4));
-    }
-
-    /**
      * 耐電圧設定条件 画面データ設定処理
      *
      * @param processData 処理制御データ
      */
-    private void initGXHDO101B040C(ProcessData processData) {
-        GXHDO101B040C bean = (GXHDO101B040C) getFormBean("beanGXHDO101C040C");
+    private void initGXHDO101B042B(ProcessData processData) {
+        GXHDO101B042B bean = (GXHDO101B042B) getFormBean("beanGXHDO101C042B");
+        bean.setDenatsu1(getItemRow(processData.getItemListEx(), GXHDO101B042Const.TAIDEN_DENATSU1));
+        bean.setHanteichi1(getItemRow(processData.getItemListEx(), GXHDO101B042Const.TAIDEN_HANTEICHI1));
+        bean.setJudenTime1(getItemRow(processData.getItemListEx(), GXHDO101B042Const.TAIDEN_JUDEN_TIME1));
+        bean.setDenatsu2(getItemRow(processData.getItemListEx(), GXHDO101B042Const.TAIDEN_DENATSU2));
+        bean.setHanteichi2(getItemRow(processData.getItemListEx(), GXHDO101B042Const.TAIDEN_HANTEICHI2));
+        bean.setJudenTime2(getItemRow(processData.getItemListEx(), GXHDO101B042Const.TAIDEN_JUDEN_TIME2));
+        bean.setDenatsu3(getItemRow(processData.getItemListEx(), GXHDO101B042Const.TAIDEN_DENATSU3));
+        bean.setHanteichi3(getItemRow(processData.getItemListEx(), GXHDO101B042Const.TAIDEN_HANTEICHI3));
+        bean.setJudenTime3(getItemRow(processData.getItemListEx(), GXHDO101B042Const.TAIDEN_JUDEN_TIME3));
+        bean.setDenatsu4(getItemRow(processData.getItemListEx(), GXHDO101B042Const.TAIDEN_DENATSU4));
+        bean.setHanteichi4(getItemRow(processData.getItemListEx(), GXHDO101B042Const.TAIDEN_HANTEICHI4));
+        bean.setJudenTime4(getItemRow(processData.getItemListEx(), GXHDO101B042Const.TAIDEN_JUDEN_TIME4));
 
-        bean.setDenatsu1(getItemRow(processData.getItemListEx(), GXHDO101B040Const.TAIDEN_DENATSU1));
-        bean.setHanteichi1(getItemRow(processData.getItemListEx(), GXHDO101B040Const.TAIDEN_HANTEICHI1));
-        bean.setJudenTime1(getItemRow(processData.getItemListEx(), GXHDO101B040Const.TAIDEN_JUDEN_TIME1));
-        bean.setDenatsu2(getItemRow(processData.getItemListEx(), GXHDO101B040Const.TAIDEN_DENATSU2));
-        bean.setHanteichi2(getItemRow(processData.getItemListEx(), GXHDO101B040Const.TAIDEN_HANTEICHI2));
-        bean.setJudenTime2(getItemRow(processData.getItemListEx(), GXHDO101B040Const.TAIDEN_JUDEN_TIME2));
-        bean.setDenatsu3(getItemRow(processData.getItemListEx(), GXHDO101B040Const.TAIDEN_DENATSU3));
-        bean.setHanteichi3(getItemRow(processData.getItemListEx(), GXHDO101B040Const.TAIDEN_HANTEICHI3));
-        bean.setJudenTime3(getItemRow(processData.getItemListEx(), GXHDO101B040Const.TAIDEN_JUDEN_TIME3));
-        bean.setDenatsu4(getItemRow(processData.getItemListEx(), GXHDO101B040Const.TAIDEN_DENATSU4));
-        bean.setHanteichi4(getItemRow(processData.getItemListEx(), GXHDO101B040Const.TAIDEN_HANTEICHI4));
-        bean.setJudenTime4(getItemRow(processData.getItemListEx(), GXHDO101B040Const.TAIDEN_JUDEN_TIME4));
-        bean.setDenatsu5(getItemRow(processData.getItemListEx(), GXHDO101B040Const.TAIDEN_DENATSU5));
-        bean.setHanteichi5(getItemRow(processData.getItemListEx(), GXHDO101B040Const.TAIDEN_HANTEICHI5));
-        bean.setJudenTime5(getItemRow(processData.getItemListEx(), GXHDO101B040Const.TAIDEN_JUDEN_TIME5));
-        bean.setDenatsu6(getItemRow(processData.getItemListEx(), GXHDO101B040Const.TAIDEN_DENATSU6));
-        bean.setHanteichi6(getItemRow(processData.getItemListEx(), GXHDO101B040Const.TAIDEN_HANTEICHI6));
-        bean.setJudenTime6(getItemRow(processData.getItemListEx(), GXHDO101B040Const.TAIDEN_JUDEN_TIME6));
-        bean.setDenatsu7(getItemRow(processData.getItemListEx(), GXHDO101B040Const.TAIDEN_DENATSU7));
-        bean.setHanteichi7(getItemRow(processData.getItemListEx(), GXHDO101B040Const.TAIDEN_HANTEICHI7));
-        bean.setJudenTime7(getItemRow(processData.getItemListEx(), GXHDO101B040Const.TAIDEN_JUDEN_TIME7));
-        bean.setDenatsu8(getItemRow(processData.getItemListEx(), GXHDO101B040Const.TAIDEN_DENATSU8));
-        bean.setHanteichi8(getItemRow(processData.getItemListEx(), GXHDO101B040Const.TAIDEN_HANTEICHI8));
-        bean.setJudenTime8(getItemRow(processData.getItemListEx(), GXHDO101B040Const.TAIDEN_JUDEN_TIME8));
+    }
+
+    /**
+     * 電圧DROP設定条件 画面データ設定処理
+     *
+     * @param processData 処理制御データ
+     */
+    private void initGXHDO101B042C(ProcessData processData) {
+        GXHDO101B042C bean = (GXHDO101B042C) getFormBean("beanGXHDO101C042C");
+        bean.setDrop13pc(getItemRow(processData.getItemListEx(), GXHDO101B042Const.DROP1_3PC));
+        bean.setDrop13ps(getItemRow(processData.getItemListEx(), GXHDO101B042Const.DROP1_3PS));
+        bean.setDrop13msdc(getItemRow(processData.getItemListEx(), GXHDO101B042Const.DROP1_3MSDC));
+        bean.setDrop24pc(getItemRow(processData.getItemListEx(), GXHDO101B042Const.DROP2_4PC));
+        bean.setDrop24ps(getItemRow(processData.getItemListEx(), GXHDO101B042Const.DROP2_4PS));
+        bean.setDrop24msdc(getItemRow(processData.getItemListEx(), GXHDO101B042Const.DROP2_4MSDC));
     }
 
     /**
@@ -5277,111 +5062,111 @@ public class GXHDO101B040 implements IFormLogic {
      *
      * @param processData 処理制御データ
      */
-    private void initGXHDO101B040D(ProcessData processData) {
-        GXHDO101B040D bean = (GXHDO101B040D) getFormBean("beanGXHDO101C040D");
+    private void initGXHDO101B042D(ProcessData processData) {
+        GXHDO101B042D bean = (GXHDO101B042D) getFormBean("beanGXHDO101C042D");
 
-        bean.setBin1PercentKbn(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_PERCENT_KBN));
-        bean.setBin1SenbetsuKbn(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_SENBETSU_KBN));
-        bean.setBin1KeiryogoSuryo(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_KEIRYOGO_SURYO));
-        bean.setBin1CounterSu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_COUNTER_SU));
-        bean.setBin1Gosaritsu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_GOSARITSU));
-        bean.setBin1MachineFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_MACHINE_FURYORITSU));
-        bean.setBin1NukitorikekkaS(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_NUKITORIKEKKA_S));
-        bean.setBin1NukitorikekkaT(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_NUKITORIKEKKA_T));
-        bean.setBin1ShinFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_SHIN_FURYORITSU));
-        bean.setBin1KekkaCheck(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_KEKKA_CHECK));
-        bean.setBin2PercentKbn(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_PERCENT_KBN));
-        bean.setBin2SenbetsuKbn(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_SENBETSU_KBN));
-        bean.setBin2KeiryogoSuryo(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_KEIRYOGO_SURYO));
-        bean.setBin2CounterSu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_COUNTER_SU));
-        bean.setBin2Gosaritsu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_GOSARITSU));
-        bean.setBin2MachineFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_MACHINE_FURYORITSU));
-        bean.setBin2NukitorikekkaS(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_NUKITORIKEKKA_S));
-        bean.setBin2NukitorikekkaT(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_NUKITORIKEKKA_T));
-        bean.setBin2ShinFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_SHIN_FURYORITSU));
-        bean.setBin2KekkaCheck(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_KEKKA_CHECK));
-        bean.setBin3PercentKbn(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_PERCENT_KBN));
-        bean.setBin3SenbetsuKbn(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_SENBETSU_KBN));
-        bean.setBin3KeiryogoSuryo(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_KEIRYOGO_SURYO));
-        bean.setBin3CounterSu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_COUNTER_SU));
-        bean.setBin3Gosaritsu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_GOSARITSU));
-        bean.setBin3MachineFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_MACHINE_FURYORITSU));
-        bean.setBin3NukitorikekkaS(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_NUKITORIKEKKA_S));
-        bean.setBin3NukitorikekkaT(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_NUKITORIKEKKA_T));
-        bean.setBin3ShinFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_SHIN_FURYORITSU));
-        bean.setBin3KekkaCheck(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_KEKKA_CHECK));
-        bean.setBin4PercentKbn(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_PERCENT_KBN));
-        bean.setBin4SenbetsuKbn(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_SENBETSU_KBN));
-        bean.setBin4KeiryogoSuryo(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_KEIRYOGO_SURYO));
-        bean.setBin4CounterSu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_COUNTER_SU));
-        bean.setBin4Gosaritsu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_GOSARITSU));
-        bean.setBin4MachineFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_MACHINE_FURYORITSU));
-        bean.setBin4NukitorikekkaS(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_NUKITORIKEKKA_S));
-        bean.setBin4NukitorikekkaT(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_NUKITORIKEKKA_T));
-        bean.setBin4ShinFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_SHIN_FURYORITSU));
-        bean.setBin4KekkaCheck(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_KEKKA_CHECK));
-        bean.setBin5PercentKbn(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_PERCENT_KBN));
-        bean.setBin5SenbetsuKbn(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_SENBETSU_KBN));
-        bean.setBin5KeiryogoSuryo(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_KEIRYOGO_SURYO));
-        bean.setBin5CounterSu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_COUNTER_SU));
-        bean.setBin5Gosaritsu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_GOSARITSU));
-        bean.setBin5MachineFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_MACHINE_FURYORITSU));
-        bean.setBin5NukitorikekkaS(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_NUKITORIKEKKA_S));
-        bean.setBin5NukitorikekkaT(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_NUKITORIKEKKA_T));
-        bean.setBin5ShinFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_SHIN_FURYORITSU));
-        bean.setBin5KekkaCheck(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_KEKKA_CHECK));
-        bean.setBin5FukuroCheck(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_FUKURO_CHECK));
-        bean.setBin6PercentKbn(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_PERCENT_KBN));
-        bean.setBin6SenbetsuKbn(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_SENBETSU_KBN));
-        bean.setBin6KeiryogoSuryo(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_KEIRYOGO_SURYO));
-        bean.setBin6CounterSu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_COUNTER_SU));
-        bean.setBin6Gosaritsu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_GOSARITSU));
-        bean.setBin6MachineFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_MACHINE_FURYORITSU));
-        bean.setBin6NukitorikekkaS(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_NUKITORIKEKKA_S));
-        bean.setBin6NukitorikekkaT(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_NUKITORIKEKKA_T));
-        bean.setBin6ShinFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_SHIN_FURYORITSU));
-        bean.setBin6KekkaCheck(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_KEKKA_CHECK));
-        bean.setBin6FukuroCheck(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_FUKURO_CHECK));
-        bean.setBin7PercentKbn(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN7_PERCENT_KBN));
-        bean.setBin7SenbetsuKbn(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN7_SENBETSU_KBN));
-        bean.setBin7KeiryogoSuryo(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN7_KEIRYOGO_SURYO));
-        bean.setBin7CounterSu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN7_COUNTER_SU));
-        bean.setBin7Gosaritsu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN7_GOSARITSU));
-        bean.setBin7MachineFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN7_MACHINE_FURYORITSU));
-        bean.setBin7FukuroCheck(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN7_FUKURO_CHECK));
-        bean.setBin8PercentKbn(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN8_PERCENT_KBN));
-        bean.setBin8SenbetsuKbn(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN8_SENBETSU_KBN));
-        bean.setBin8KeiryogoSuryo(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN8_KEIRYOGO_SURYO));
-        bean.setBin8CounterSu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN8_COUNTER_SU));
-        bean.setBin8Gosaritsu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN8_GOSARITSU));
-        bean.setBin8MachineFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN8_MACHINE_FURYORITSU));
-        bean.setBin8FukuroCheck(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN8_FUKURO_CHECK));
-        bean.setBin9KKeiryogoSuryo(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN9_K_KEIRYOGO_SURYO));
-        bean.setBin9KMachineFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BIN9_K_MACHINE_FURYORITSU));
-        bean.setRakkaKeiryogoSuryo(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_RAKKA_KEIRYOGO_SURYO));
-        bean.setRakkaMachineFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_RAKKA_MACHINE_FURYORITSU));
-        bean.setHandaSample(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_HANDA_SAMPLE));
-        bean.setShinraiseiSample(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_SHINRAISEI_SAMPLE));
-        bean.setShinFuryoHanteisha(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_SHIN_FURYO_HANTEISHA));
-        bean.setHanteiNyuryokusha(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_HANTEI_NYURYOKUSHA));
-        bean.setToridashisha(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_TORIDASHISHA));
-        bean.setKousa1(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_KOUSA1));
-        bean.setJuryo1(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_JURYO1));
-        bean.setKosu1(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_KOSU1));
-        bean.setKousa2(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_KOUSA2));
-        bean.setJuryo2(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_JURYO2));
-        bean.setKosu2(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_KOSU2));
-        bean.setKousa3(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_KOUSA3));
-        bean.setJuryo3(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_JURYO3));
-        bean.setKosu3(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_KOSU3));
-        bean.setKousa4(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_KOUSA4));
-        bean.setJuryo4(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_JURYO4));
-        bean.setKosu4(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_KOSU4));
-        bean.setCounterSosu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_COUNTER_SOSU));
-        bean.setRyouhinJuryo(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_RYOUHIN_JURYO));
-        bean.setRyouhinKosu(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_RYOUHIN_KOSU));
-        bean.setBudomari(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_BUDOMARI));
-        bean.setKakuninsha(getItemRow(processData.getItemListEx(), GXHDO101B040Const.SET_KAKUNINSHA));
+        bean.setBin1PercentKbn(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN1_PERCENT_KBN));
+        bean.setBin1SenbetsuKbn(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN1_SENBETSU_KBN));
+        bean.setBin1KeiryogoSuryo(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN1_KEIRYOGO_SURYO));
+        bean.setBin1CounterSu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN1_COUNTER_SU));
+        bean.setBin1Gosaritsu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN1_GOSARITSU));
+        bean.setBin1MachineFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN1_MACHINE_FURYORITSU));
+        bean.setBin1NukitorikekkaS(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN1_NUKITORIKEKKA_S));
+        bean.setBin1NukitorikekkaT(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN1_NUKITORIKEKKA_T));
+        bean.setBin1ShinFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN1_SHIN_FURYORITSU));
+        bean.setBin1KekkaCheck(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN1_KEKKA_CHECK));
+        bean.setBin2PercentKbn(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN2_PERCENT_KBN));
+        bean.setBin2SenbetsuKbn(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN2_SENBETSU_KBN));
+        bean.setBin2KeiryogoSuryo(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN2_KEIRYOGO_SURYO));
+        bean.setBin2CounterSu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN2_COUNTER_SU));
+        bean.setBin2Gosaritsu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN2_GOSARITSU));
+        bean.setBin2MachineFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN2_MACHINE_FURYORITSU));
+        bean.setBin2NukitorikekkaS(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN2_NUKITORIKEKKA_S));
+        bean.setBin2NukitorikekkaT(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN2_NUKITORIKEKKA_T));
+        bean.setBin2ShinFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN2_SHIN_FURYORITSU));
+        bean.setBin2KekkaCheck(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN2_KEKKA_CHECK));
+        bean.setBin3PercentKbn(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN3_PERCENT_KBN));
+        bean.setBin3SenbetsuKbn(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN3_SENBETSU_KBN));
+        bean.setBin3KeiryogoSuryo(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN3_KEIRYOGO_SURYO));
+        bean.setBin3CounterSu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN3_COUNTER_SU));
+        bean.setBin3Gosaritsu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN3_GOSARITSU));
+        bean.setBin3MachineFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN3_MACHINE_FURYORITSU));
+        bean.setBin3NukitorikekkaS(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN3_NUKITORIKEKKA_S));
+        bean.setBin3NukitorikekkaT(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN3_NUKITORIKEKKA_T));
+        bean.setBin3ShinFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN3_SHIN_FURYORITSU));
+        bean.setBin3KekkaCheck(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN3_KEKKA_CHECK));
+        bean.setBin4PercentKbn(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN4_PERCENT_KBN));
+        bean.setBin4SenbetsuKbn(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN4_SENBETSU_KBN));
+        bean.setBin4KeiryogoSuryo(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN4_KEIRYOGO_SURYO));
+        bean.setBin4CounterSu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN4_COUNTER_SU));
+        bean.setBin4Gosaritsu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN4_GOSARITSU));
+        bean.setBin4MachineFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN4_MACHINE_FURYORITSU));
+        bean.setBin4NukitorikekkaS(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN4_NUKITORIKEKKA_S));
+        bean.setBin4NukitorikekkaT(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN4_NUKITORIKEKKA_T));
+        bean.setBin4ShinFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN4_SHIN_FURYORITSU));
+        bean.setBin4KekkaCheck(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN4_KEKKA_CHECK));
+        bean.setBin5PercentKbn(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN5_PERCENT_KBN));
+        bean.setBin5SenbetsuKbn(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN5_SENBETSU_KBN));
+        bean.setBin5KeiryogoSuryo(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN5_KEIRYOGO_SURYO));
+        bean.setBin5CounterSu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN5_COUNTER_SU));
+        bean.setBin5Gosaritsu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN5_GOSARITSU));
+        bean.setBin5MachineFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN5_MACHINE_FURYORITSU));
+        bean.setBin5NukitorikekkaS(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN5_NUKITORIKEKKA_S));
+        bean.setBin5NukitorikekkaT(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN5_NUKITORIKEKKA_T));
+        bean.setBin5ShinFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN5_SHIN_FURYORITSU));
+        bean.setBin5KekkaCheck(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN5_KEKKA_CHECK));
+        bean.setBin5FukuroCheck(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN5_FUKURO_CHECK));
+        bean.setBin6PercentKbn(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN6_PERCENT_KBN));
+        bean.setBin6SenbetsuKbn(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN6_SENBETSU_KBN));
+        bean.setBin6KeiryogoSuryo(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN6_KEIRYOGO_SURYO));
+        bean.setBin6CounterSu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN6_COUNTER_SU));
+        bean.setBin6Gosaritsu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN6_GOSARITSU));
+        bean.setBin6MachineFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN6_MACHINE_FURYORITSU));
+        bean.setBin6NukitorikekkaS(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN6_NUKITORIKEKKA_S));
+        bean.setBin6NukitorikekkaT(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN6_NUKITORIKEKKA_T));
+        bean.setBin6ShinFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN6_SHIN_FURYORITSU));
+        bean.setBin6KekkaCheck(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN6_KEKKA_CHECK));
+        bean.setBin6FukuroCheck(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN6_FUKURO_CHECK));
+        bean.setBin7PercentKbn(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN7_PERCENT_KBN));
+        bean.setBin7SenbetsuKbn(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN7_SENBETSU_KBN));
+        bean.setBin7KeiryogoSuryo(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN7_KEIRYOGO_SURYO));
+        bean.setBin7CounterSu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN7_COUNTER_SU));
+        bean.setBin7Gosaritsu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN7_GOSARITSU));
+        bean.setBin7MachineFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN7_MACHINE_FURYORITSU));
+        bean.setBin7FukuroCheck(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN7_FUKURO_CHECK));
+        bean.setBin8PercentKbn(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN8_PERCENT_KBN));
+        bean.setBin8SenbetsuKbn(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN8_SENBETSU_KBN));
+        bean.setBin8KeiryogoSuryo(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN8_KEIRYOGO_SURYO));
+        bean.setBin8CounterSu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN8_COUNTER_SU));
+        bean.setBin8Gosaritsu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN8_GOSARITSU));
+        bean.setBin8MachineFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN8_MACHINE_FURYORITSU));
+        bean.setBin8FukuroCheck(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN8_FUKURO_CHECK));
+        bean.setBin9KKeiryogoSuryo(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN9_K_KEIRYOGO_SURYO));
+        bean.setBin9KMachineFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BIN9_K_MACHINE_FURYORITSU));
+        bean.setRakkaKeiryogoSuryo(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_RAKKA_KEIRYOGO_SURYO));
+        bean.setRakkaMachineFuryoritsu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_RAKKA_MACHINE_FURYORITSU));
+        bean.setHandaSample(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_HANDA_SAMPLE));
+        bean.setShinraiseiSample(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_SHINRAISEI_SAMPLE));
+        bean.setShinFuryoHanteisha(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_SHIN_FURYO_HANTEISHA));
+        bean.setHanteiNyuryokusha(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_HANTEI_NYURYOKUSHA));
+        bean.setToridashisha(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_TORIDASHISHA));
+        bean.setKousa1(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_KOUSA1));
+        bean.setJuryo1(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_JURYO1));
+        bean.setKosu1(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_KOSU1));
+        bean.setKousa2(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_KOUSA2));
+        bean.setJuryo2(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_JURYO2));
+        bean.setKosu2(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_KOSU2));
+        bean.setKousa3(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_KOUSA3));
+        bean.setJuryo3(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_JURYO3));
+        bean.setKosu3(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_KOSU3));
+        bean.setKousa4(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_KOUSA4));
+        bean.setJuryo4(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_JURYO4));
+        bean.setKosu4(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_KOSU4));
+        bean.setCounterSosu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_COUNTER_SOSU));
+        bean.setRyouhinJuryo(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_RYOUHIN_JURYO));
+        bean.setRyouhinKosu(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_RYOUHIN_KOSU));
+        bean.setBudomari(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_BUDOMARI));
+        bean.setKakuninsha(getItemRow(processData.getItemListEx(), GXHDO101B042Const.SET_KAKUNINSHA));
     }
 
     /**
@@ -5393,140 +5178,126 @@ public class GXHDO101B040 implements IFormLogic {
     private List<String> checkExistFormItem(ProcessData processData) {
         List<String> errorItemNameList = new ArrayList<>();
 
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.PRECHARGE_DENATSU1, "・ﾌﾟﾘﾁｬｰｼﾞ条件 PC① 電圧");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.PRECHARGE_JUDEN_TIME1, "・ﾌﾟﾘﾁｬｰｼﾞ条件 PC① 充電時間");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.PRECHARGE_DENATSU2, "・ﾌﾟﾘﾁｬｰｼﾞ条件 PC② 電圧");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.PRECHARGE_JUDEN_TIME2, "・ﾌﾟﾘﾁｬｰｼﾞ条件 PC② 充電時間");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.PRECHARGE_DENATSU3, "・ﾌﾟﾘﾁｬｰｼﾞ条件 PC③ 電圧");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.PRECHARGE_JUDEN_TIME3, "・ﾌﾟﾘﾁｬｰｼﾞ条件 PC③ 充電時間");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.PRECHARGE_DENATSU4, "・ﾌﾟﾘﾁｬｰｼﾞ条件 PC④ 電圧");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.PRECHARGE_JUDEN_TIME4, "・ﾌﾟﾘﾁｬｰｼﾞ条件 PC④ 充電時間");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_DENATSU1, "・耐電圧設定条件 IR① 電圧");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_HANTEICHI1, "・耐電圧設定条件 IR① 判定値");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_JUDEN_TIME1, "・耐電圧設定条件 IR① 充電時間");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_DENATSU2, "・耐電圧設定条件 IR② 電圧");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_HANTEICHI2, "・耐電圧設定条件 IR② 判定値");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_JUDEN_TIME2, "・耐電圧設定条件 IR② 充電時間");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_DENATSU3, "・耐電圧設定条件 IR③ 電圧");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_HANTEICHI3, "・耐電圧設定条件 IR③ 判定値");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_JUDEN_TIME3, "・耐電圧設定条件 IR③ 充電時間");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_DENATSU4, "・耐電圧設定条件 IR④ 電圧");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_HANTEICHI4, "・耐電圧設定条件 IR④ 判定値");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_JUDEN_TIME4, "・耐電圧設定条件 IR④ 充電時間");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_DENATSU5, "・耐電圧設定条件 IR⑤ 電圧");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_HANTEICHI5, "・耐電圧設定条件 IR⑤ 判定値");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_JUDEN_TIME5, "・耐電圧設定条件 IR⑤ 充電時間");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_DENATSU6, "・耐電圧設定条件 IR⑥ 電圧");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_HANTEICHI6, "・耐電圧設定条件 IR⑥ 判定値");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_JUDEN_TIME6, "・耐電圧設定条件 IR⑥ 充電時間");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_DENATSU7, "・耐電圧設定条件 IR⑦ 電圧");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_HANTEICHI7, "・耐電圧設定条件 IR⑦ 判定値");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_JUDEN_TIME7, "・耐電圧設定条件 IR⑦ 充電時間");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_DENATSU8, "・耐電圧設定条件 IR⑧ 電圧");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_HANTEICHI8, "・耐電圧設定条件 IR⑧ 判定値");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.TAIDEN_JUDEN_TIME8, "・耐電圧設定条件 IR⑧ 充電時間");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_PERCENT_KBN, "・BIN1 %区分(設定値)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_SENBETSU_KBN, "・BIN1 選別区分");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_KEIRYOGO_SURYO, "・BIN1 計量後数量");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_COUNTER_SU, "・BIN1 ｶｳﾝﾀｰ数");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_GOSARITSU, "・BIN1 誤差率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_MACHINE_FURYORITSU, "・BIN1 ﾏｼﾝ不良率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_NUKITORIKEKKA_S, "・BIN1 抜き取り結果");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_NUKITORIKEKKA_T, "・BIN1 抜き取り結果");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_SHIN_FURYORITSU, "・BIN1 真の不良率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_KEKKA_CHECK, "・BIN1 結果ﾁｪｯｸ");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_PERCENT_KBN, "・BIN2 %区分(設定値)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_SENBETSU_KBN, "・BIN2 選別区分");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_KEIRYOGO_SURYO, "・BIN2 計量後数量");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_COUNTER_SU, "・BIN2 ｶｳﾝﾀｰ数");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_GOSARITSU, "・BIN2 誤差率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_MACHINE_FURYORITSU, "・BIN2 ﾏｼﾝ不良率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_NUKITORIKEKKA_S, "・BIN2 抜き取り結果");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_NUKITORIKEKKA_T, "・BIN2 抜き取り結果");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_SHIN_FURYORITSU, "・BIN2 真の不良率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_KEKKA_CHECK, "・BIN2 結果ﾁｪｯｸ");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_PERCENT_KBN, "・BIN3 %区分(設定値)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_SENBETSU_KBN, "・BIN3 選別区分");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_KEIRYOGO_SURYO, "・BIN3 計量後数量");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_COUNTER_SU, "・BIN3 ｶｳﾝﾀｰ数");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_GOSARITSU, "・BIN3 誤差率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_MACHINE_FURYORITSU, "・BIN3 ﾏｼﾝ不良率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_NUKITORIKEKKA_S, "・BIN3 抜き取り結果");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_NUKITORIKEKKA_T, "・BIN3 抜き取り結果");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_SHIN_FURYORITSU, "・BIN3 真の不良率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_KEKKA_CHECK, "・BIN3 結果ﾁｪｯｸ");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_PERCENT_KBN, "・BIN4 %区分(設定値)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_SENBETSU_KBN, "・BIN4 選別区分");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_KEIRYOGO_SURYO, "・BIN4 計量後数量");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_COUNTER_SU, "・BIN4 ｶｳﾝﾀｰ数");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_GOSARITSU, "・BIN4 誤差率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_MACHINE_FURYORITSU, "・BIN4 ﾏｼﾝ不良率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_NUKITORIKEKKA_S, "・BIN4 抜き取り結果");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_NUKITORIKEKKA_T, "・BIN4 抜き取り結果");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_SHIN_FURYORITSU, "・BIN4 真の不良率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_KEKKA_CHECK, "・BIN4 結果ﾁｪｯｸ");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_PERCENT_KBN, "・BIN5 %区分(設定値)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_SENBETSU_KBN, "・BIN5 選別区分");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_KEIRYOGO_SURYO, "・BIN5 計量後数量");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_COUNTER_SU, "・BIN5 ｶｳﾝﾀｰ数");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_GOSARITSU, "・BIN5 誤差率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_MACHINE_FURYORITSU, "・BIN5 ﾏｼﾝ不良率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_NUKITORIKEKKA_S, "・BIN5 抜き取り結果");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_NUKITORIKEKKA_T, "・BIN5 抜き取り結果");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_SHIN_FURYORITSU, "・BIN5 真の不良率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_KEKKA_CHECK, "・BIN5 結果ﾁｪｯｸ");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_FUKURO_CHECK, "・BIN5 袋ﾁｪｯｸ");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_PERCENT_KBN, "・BIN6 %区分(設定値)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_SENBETSU_KBN, "・BIN6 選別区分");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_KEIRYOGO_SURYO, "・BIN6 計量後数量");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_COUNTER_SU, "・BIN6 ｶｳﾝﾀｰ数");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_GOSARITSU, "・BIN6 誤差率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_MACHINE_FURYORITSU, "・BIN6 ﾏｼﾝ不良率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_NUKITORIKEKKA_S, "・BIN6 抜き取り結果");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_NUKITORIKEKKA_T, "・BIN6 抜き取り結果");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_SHIN_FURYORITSU, "・BIN6 真の不良率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_KEKKA_CHECK, "・BIN6 結果ﾁｪｯｸ");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_FUKURO_CHECK, "・BIN6 袋ﾁｪｯｸ");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN7_PERCENT_KBN, "・BIN7 %区分(設定値)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN7_SENBETSU_KBN, "・BIN7 選別区分");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN7_KEIRYOGO_SURYO, "・BIN7 計量後数量");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN7_COUNTER_SU, "・BIN7 ｶｳﾝﾀｰ数");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN7_GOSARITSU, "・BIN7 誤差率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN7_MACHINE_FURYORITSU, "・BIN7 ﾏｼﾝ不良率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN7_FUKURO_CHECK, "・BIN7 袋ﾁｪｯｸ");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN8_PERCENT_KBN, "・BIN8 %区分(設定値)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN8_SENBETSU_KBN, "・BIN8 選別区分");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN8_KEIRYOGO_SURYO, "・BIN8 計量後数量");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN8_COUNTER_SU, "・BIN8 ｶｳﾝﾀｰ数");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN8_GOSARITSU, "・BIN8 誤差率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN8_MACHINE_FURYORITSU, "・BIN8 ﾏｼﾝ不良率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN8_FUKURO_CHECK, "・BIN8 袋ﾁｪｯｸ");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN9_K_KEIRYOGO_SURYO, "・BIN9 強制排出 計量後数量");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BIN9_K_MACHINE_FURYORITSU, "・BIN9 強制排出 ﾏｼﾝ不良率");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_RAKKA_KEIRYOGO_SURYO, "・落下 計量後数量");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_RAKKA_MACHINE_FURYORITSU, "・落下 ﾏｼﾝ不良率");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_HANDA_SAMPLE, "・半田ｻﾝﾌﾟﾙ");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_SHINRAISEI_SAMPLE, "・信頼性ｻﾝﾌﾟﾙ");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_SHIN_FURYO_HANTEISHA, "・真不良判定者");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_HANTEI_NYURYOKUSHA, "・判定入力者");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_TORIDASHISHA, "・取出者");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_KOUSA1, "・公差①");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_JURYO1, "・重量①");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_KOSU1, "・個数①");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_KOUSA2, "・公差②");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_JURYO2, "・重量②");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_KOSU2, "・個数②");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_KOUSA3, "・公差③");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_JURYO3, "・重量③");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_KOSU3, "・個数③");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_KOUSA4, "・公差④");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_JURYO4, "・重量④");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_KOSU4, "・個数④");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_COUNTER_SOSU, "・ｶｳﾝﾀｰ総数");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_RYOUHIN_JURYO, "・良品重量");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_RYOUHIN_KOSU, "・良品個数");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_BUDOMARI, "・歩留まり");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B040Const.SET_KAKUNINSHA, "・確認者");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.TAIDEN_DENATSU1, "・耐電圧設定条件 IR① 電圧");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.TAIDEN_HANTEICHI1, "・耐電圧設定条件 IR① 判定値");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.TAIDEN_JUDEN_TIME1, "・耐電圧設定条件 IR① 充電時間");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.TAIDEN_DENATSU2, "・耐電圧設定条件 IR② 電圧");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.TAIDEN_HANTEICHI2, "・耐電圧設定条件 IR② 判定値");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.TAIDEN_JUDEN_TIME2, "・耐電圧設定条件 IR② 充電時間");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.TAIDEN_DENATSU3, "・耐電圧設定条件 IR③ 電圧");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.TAIDEN_HANTEICHI3, "・耐電圧設定条件 IR③ 判定値");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.TAIDEN_JUDEN_TIME3, "・耐電圧設定条件 IR③ 充電時間");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.TAIDEN_DENATSU4, "・耐電圧設定条件 IR④ 電圧");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.TAIDEN_HANTEICHI4, "・耐電圧設定条件 IR④ 判定値");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.TAIDEN_JUDEN_TIME4, "・耐電圧設定条件 IR④ 充電時間");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.DROP1_3PC, "・電圧DROP設定条件 DROP1,3 PC");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.DROP1_3PS, "・電圧DROP設定条件 DROP1,3 PS");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.DROP1_3MSDC, "・電圧DROP設定条件 DROP1,3 MS･DC");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.DROP2_4PC, "・電圧DROP設定条件 DROP2,4 PC");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.DROP2_4PS, "・電圧DROP設定条件 DROP2,4 PS");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.DROP2_4MSDC, "・電圧DROP設定条件 DROP2,4 MS･DC");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN1_PERCENT_KBN, "・BIN1 %区分(設定値)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN1_SENBETSU_KBN, "・BIN1 選別区分");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN1_KEIRYOGO_SURYO, "・BIN1 計量後数量");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN1_COUNTER_SU, "・BIN1 ｶｳﾝﾀｰ数");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN1_GOSARITSU, "・BIN1 誤差率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN1_MACHINE_FURYORITSU, "・BIN1 ﾏｼﾝ不良率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN1_NUKITORIKEKKA_S, "・BIN1 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN1_NUKITORIKEKKA_T, "・BIN1 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN1_SHIN_FURYORITSU, "・BIN1 真の不良率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN1_KEKKA_CHECK, "・BIN1 結果ﾁｪｯｸ");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN2_PERCENT_KBN, "・BIN2 %区分(設定値)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN2_SENBETSU_KBN, "・BIN2 選別区分");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN2_KEIRYOGO_SURYO, "・BIN2 計量後数量");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN2_COUNTER_SU, "・BIN2 ｶｳﾝﾀｰ数");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN2_GOSARITSU, "・BIN2 誤差率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN2_MACHINE_FURYORITSU, "・BIN2 ﾏｼﾝ不良率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN2_NUKITORIKEKKA_S, "・BIN2 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN2_NUKITORIKEKKA_T, "・BIN2 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN2_SHIN_FURYORITSU, "・BIN2 真の不良率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN2_KEKKA_CHECK, "・BIN2 結果ﾁｪｯｸ");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN3_PERCENT_KBN, "・BIN3 %区分(設定値)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN3_SENBETSU_KBN, "・BIN3 選別区分");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN3_KEIRYOGO_SURYO, "・BIN3 計量後数量");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN3_COUNTER_SU, "・BIN3 ｶｳﾝﾀｰ数");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN3_GOSARITSU, "・BIN3 誤差率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN3_MACHINE_FURYORITSU, "・BIN3 ﾏｼﾝ不良率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN3_NUKITORIKEKKA_S, "・BIN3 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN3_NUKITORIKEKKA_T, "・BIN3 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN3_SHIN_FURYORITSU, "・BIN3 真の不良率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN3_KEKKA_CHECK, "・BIN3 結果ﾁｪｯｸ");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN4_PERCENT_KBN, "・BIN4 %区分(設定値)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN4_SENBETSU_KBN, "・BIN4 選別区分");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN4_KEIRYOGO_SURYO, "・BIN4 計量後数量");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN4_COUNTER_SU, "・BIN4 ｶｳﾝﾀｰ数");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN4_GOSARITSU, "・BIN4 誤差率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN4_MACHINE_FURYORITSU, "・BIN4 ﾏｼﾝ不良率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN4_NUKITORIKEKKA_S, "・BIN4 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN4_NUKITORIKEKKA_T, "・BIN4 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN4_SHIN_FURYORITSU, "・BIN4 真の不良率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN4_KEKKA_CHECK, "・BIN4 結果ﾁｪｯｸ");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN5_PERCENT_KBN, "・BIN5 %区分(設定値)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN5_SENBETSU_KBN, "・BIN5 選別区分");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN5_KEIRYOGO_SURYO, "・BIN5 計量後数量");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN5_COUNTER_SU, "・BIN5 ｶｳﾝﾀｰ数");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN5_GOSARITSU, "・BIN5 誤差率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN5_MACHINE_FURYORITSU, "・BIN5 ﾏｼﾝ不良率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN5_NUKITORIKEKKA_S, "・BIN5 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN5_NUKITORIKEKKA_T, "・BIN5 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN5_SHIN_FURYORITSU, "・BIN5 真の不良率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN5_KEKKA_CHECK, "・BIN5 結果ﾁｪｯｸ");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN5_FUKURO_CHECK, "・BIN5 袋ﾁｪｯｸ");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN6_PERCENT_KBN, "・BIN6 %区分(設定値)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN6_SENBETSU_KBN, "・BIN6 選別区分");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN6_KEIRYOGO_SURYO, "・BIN6 計量後数量");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN6_COUNTER_SU, "・BIN6 ｶｳﾝﾀｰ数");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN6_GOSARITSU, "・BIN6 誤差率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN6_MACHINE_FURYORITSU, "・BIN6 ﾏｼﾝ不良率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN6_NUKITORIKEKKA_S, "・BIN6 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN6_NUKITORIKEKKA_T, "・BIN6 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN6_SHIN_FURYORITSU, "・BIN6 真の不良率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN6_KEKKA_CHECK, "・BIN6 結果ﾁｪｯｸ");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN6_FUKURO_CHECK, "・BIN6 袋ﾁｪｯｸ");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN7_PERCENT_KBN, "・BIN7 %区分(設定値)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN7_SENBETSU_KBN, "・BIN7 選別区分");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN7_KEIRYOGO_SURYO, "・BIN7 計量後数量");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN7_COUNTER_SU, "・BIN7 ｶｳﾝﾀｰ数");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN7_GOSARITSU, "・BIN7 誤差率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN7_MACHINE_FURYORITSU, "・BIN7 ﾏｼﾝ不良率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN7_FUKURO_CHECK, "・BIN7 袋ﾁｪｯｸ");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN8_PERCENT_KBN, "・BIN8 %区分(設定値)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN8_SENBETSU_KBN, "・BIN8 選別区分");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN8_KEIRYOGO_SURYO, "・BIN8 計量後数量");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN8_COUNTER_SU, "・BIN8 ｶｳﾝﾀｰ数");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN8_GOSARITSU, "・BIN8 誤差率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN8_MACHINE_FURYORITSU, "・BIN8 ﾏｼﾝ不良率(%)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN8_FUKURO_CHECK, "・BIN8 袋ﾁｪｯｸ");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN9_K_KEIRYOGO_SURYO, "・BIN9 強制排出 計量後数量");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BIN9_K_MACHINE_FURYORITSU, "・BIN9 強制排出 ﾏｼﾝ不良率");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_RAKKA_KEIRYOGO_SURYO, "・落下 計量後数量");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_RAKKA_MACHINE_FURYORITSU, "・落下 ﾏｼﾝ不良率");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_HANDA_SAMPLE, "・半田ｻﾝﾌﾟﾙ");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_SHINRAISEI_SAMPLE, "・信頼性ｻﾝﾌﾟﾙ");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_SHIN_FURYO_HANTEISHA, "・真不良判定者");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_HANTEI_NYURYOKUSHA, "・判定入力者");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_TORIDASHISHA, "・取出者");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_KOUSA1, "・公差①");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_JURYO1, "・重量①");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_KOSU1, "・個数①");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_KOUSA2, "・公差②");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_JURYO2, "・重量②");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_KOSU2, "・個数②");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_KOUSA3, "・公差③");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_JURYO3, "・重量③");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_KOSU3, "・個数③");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_KOUSA4, "・公差④");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_JURYO4, "・重量④");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_KOSU4, "・個数④");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_COUNTER_SOSU, "・ｶｳﾝﾀｰ総数");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_RYOUHIN_JURYO, "・良品重量");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_RYOUHIN_KOSU, "・良品個数");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_BUDOMARI, "・歩留まり");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B042Const.SET_KAKUNINSHA, "・確認者");
 
         List<String> errorMassageList = new ArrayList<>();
         if (0 < errorItemNameList.size()) {
@@ -5561,8 +5332,8 @@ public class GXHDO101B040 implements IFormLogic {
     private ErrorMessageInfo checkItemResistCorrect(ProcessData processData) {
 
         ErrorMessageInfo messageInfo;
-        messageInfo = checkGosaritsu(processData, new String[]{GXHDO101B040Const.SET_BIN1_GOSARITSU, GXHDO101B040Const.SET_BIN2_GOSARITSU, GXHDO101B040Const.SET_BIN3_GOSARITSU,
-            GXHDO101B040Const.SET_BIN4_GOSARITSU, GXHDO101B040Const.SET_BIN5_GOSARITSU, GXHDO101B040Const.SET_BIN6_GOSARITSU, GXHDO101B040Const.SET_BIN7_GOSARITSU, GXHDO101B040Const.SET_BIN8_GOSARITSU});
+        messageInfo = checkGosaritsu(processData, new String[]{GXHDO101B042Const.SET_BIN1_GOSARITSU, GXHDO101B042Const.SET_BIN2_GOSARITSU, GXHDO101B042Const.SET_BIN3_GOSARITSU,
+            GXHDO101B042Const.SET_BIN4_GOSARITSU, GXHDO101B042Const.SET_BIN5_GOSARITSU, GXHDO101B042Const.SET_BIN6_GOSARITSU, GXHDO101B042Const.SET_BIN7_GOSARITSU, GXHDO101B042Const.SET_BIN8_GOSARITSU});
         if (messageInfo != null) {
             return messageInfo;
         }
@@ -5572,8 +5343,8 @@ public class GXHDO101B040 implements IFormLogic {
             return messageInfo;
         }
 
-        String warningMassage = checkKekkaCheck(processData, new String[]{GXHDO101B040Const.SET_BIN1_KEKKA_CHECK, GXHDO101B040Const.SET_BIN2_KEKKA_CHECK, GXHDO101B040Const.SET_BIN3_KEKKA_CHECK,
-            GXHDO101B040Const.SET_BIN4_KEKKA_CHECK, GXHDO101B040Const.SET_BIN5_KEKKA_CHECK, GXHDO101B040Const.SET_BIN6_KEKKA_CHECK});
+        String warningMassage = checkKekkaCheck(processData, new String[]{GXHDO101B042Const.SET_BIN1_KEKKA_CHECK, GXHDO101B042Const.SET_BIN2_KEKKA_CHECK, GXHDO101B042Const.SET_BIN3_KEKKA_CHECK,
+            GXHDO101B042Const.SET_BIN4_KEKKA_CHECK, GXHDO101B042Const.SET_BIN5_KEKKA_CHECK, GXHDO101B042Const.SET_BIN6_KEKKA_CHECK});
         if (!StringUtil.isEmpty(warningMassage)) {
             processData.setWarnMessage(warningMassage);
         }
@@ -5628,7 +5399,7 @@ public class GXHDO101B040 implements IFormLogic {
      */
     private ErrorMessageInfo checkHoseiritsu(ProcessData processData) {
         BigDecimal hoseiritsu = convBigDecimal(StringUtil.nullToBlank(processData.getHiddenDataMap().get("hoseiritsu")));
-        FXHDD01 itemHoseiritsu = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_HOSEIRITSU);
+        FXHDD01 itemHoseiritsu = getItemRow(processData.getItemList(), GXHDO101B042Const.SEIHIN_HOSEIRITSU);
         List<FXHDD01> errFxhdd01List = new ArrayList<>();
         // 誤差率(判定値)以下の場合、正常次の処理を実行
         if (hoseiritsu.compareTo(convBigDecimal(itemHoseiritsu.getValue())) < 0) {
@@ -5719,8 +5490,9 @@ public class GXHDO101B040 implements IFormLogic {
         }
         //処理なし
         return returnValue;
-    }
 
+    }
+    
     /**
      * [電気特性設備]から、ﾃﾞｰﾀを取得
      *
@@ -5819,63 +5591,13 @@ public class GXHDO101B040 implements IFormLogic {
      * @param fxhdd07 電気特性設備データ
      */
     private void setSetsubiData(ProcessData processData, FXHDD07 fxhdd07) {
-        //製品情報
-        setItemData(processData, GXHDO101B040Const.SEIHIN_BUNRUI_AIR_ATSU, StringUtil.nullToBlank(fxhdd07.getBunruiairatu())); //分類ｴｱｰ圧
-        setItemData(processData, GXHDO101B040Const.SEIHIN_CD_CONTACT_ATSU, StringUtil.nullToBlank(fxhdd07.getCdcontactatu())); //CDｺﾝﾀｸﾄ圧
-        setItemData(processData, GXHDO101B040Const.SEIHIN_IR_CONTACT_ATSU, StringUtil.nullToBlank(fxhdd07.getIrcontactatu())); //IRｺﾝﾀｸﾄ圧
-        setItemData(processData, GXHDO101B040Const.SEIHIN_TAN_DELTA, StringUtil.nullToBlank(fxhdd07.getTan())); //Tanδ
-        setItemData(processData, GXHDO101B040Const.SEIHIN_SOKUTEI_SHUHASU, StringUtil.nullToBlank(fxhdd07.getSokuteisyuhasuu())); //測定周波数
-        setItemData(processData, GXHDO101B040Const.SEIHIN_SOKUTEI_DENATSU, StringUtil.nullToBlank(fxhdd07.getSokuteidenatu())); //測定電圧
-
-        //ﾌﾟﾘﾁｬｰｼﾞ条件						
-        setItemDataEx(processData, GXHDO101B040Const.PRECHARGE_DENATSU1, StringUtil.nullToBlank(fxhdd07.getPcdenatu1())); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC① 電圧
-        setItemDataEx(processData, GXHDO101B040Const.PRECHARGE_JUDEN_TIME1, StringUtil.nullToBlank(fxhdd07.getPcjudenjikan1())); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC① 充電時間
-        setItemDataEx(processData, GXHDO101B040Const.PRECHARGE_DENATSU2, StringUtil.nullToBlank(fxhdd07.getPcdenatu2())); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC② 電圧
-        setItemDataEx(processData, GXHDO101B040Const.PRECHARGE_JUDEN_TIME2, StringUtil.nullToBlank(fxhdd07.getPcjudenjikan2())); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC② 充電時間
-        setItemDataEx(processData, GXHDO101B040Const.PRECHARGE_DENATSU3, StringUtil.nullToBlank(fxhdd07.getPcdenatu3())); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC③ 電圧
-        setItemDataEx(processData, GXHDO101B040Const.PRECHARGE_JUDEN_TIME3, StringUtil.nullToBlank(fxhdd07.getPcjudenjikan3())); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC③ 充電時間
-        setItemDataEx(processData, GXHDO101B040Const.PRECHARGE_DENATSU4, StringUtil.nullToBlank(fxhdd07.getPcdenatu4())); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC④ 電圧
-        setItemDataEx(processData, GXHDO101B040Const.PRECHARGE_JUDEN_TIME4, StringUtil.nullToBlank(fxhdd07.getPcjudenjikan4())); //ﾌﾟﾘﾁｬｰｼﾞ条件 PC④ 充電時間
-
         //耐電圧設定条件						
-        setItemDataEx(processData, GXHDO101B040Const.TAIDEN_DENATSU1, StringUtil.nullToBlank(fxhdd07.getIrdenatu1())); //耐電圧設定条件 IR① 電圧
-        setItemDataEx(processData, GXHDO101B040Const.TAIDEN_HANTEICHI1, StringUtil.nullToBlank(fxhdd07.getIrhanteiti1())); //耐電圧設定条件 IR① 判定値
-        setItemDataEx(processData, GXHDO101B040Const.TAIDEN_JUDEN_TIME1, StringUtil.nullToBlank(fxhdd07.getIrjudenjikan1())); //耐電圧設定条件 IR① 充電時間
-        setItemDataEx(processData, GXHDO101B040Const.TAIDEN_DENATSU2, StringUtil.nullToBlank(fxhdd07.getIrdenatu2())); //耐電圧設定条件 IR② 電圧
-        setItemDataEx(processData, GXHDO101B040Const.TAIDEN_HANTEICHI2, StringUtil.nullToBlank(fxhdd07.getIrhanteiti2())); //耐電圧設定条件 IR② 判定値
-        setItemDataEx(processData, GXHDO101B040Const.TAIDEN_JUDEN_TIME2, StringUtil.nullToBlank(fxhdd07.getIrjudenjikan2())); //耐電圧設定条件 IR② 充電時間
-        setItemDataEx(processData, GXHDO101B040Const.TAIDEN_DENATSU3, StringUtil.nullToBlank(fxhdd07.getIrdenatu3())); //耐電圧設定条件 IR③ 電圧
-        setItemDataEx(processData, GXHDO101B040Const.TAIDEN_HANTEICHI3, StringUtil.nullToBlank(fxhdd07.getIrhanteiti3())); //耐電圧設定条件 IR③ 判定値
-        setItemDataEx(processData, GXHDO101B040Const.TAIDEN_JUDEN_TIME3, StringUtil.nullToBlank(fxhdd07.getIrjudenjikan3())); //耐電圧設定条件 IR③ 充電時間
-        setItemDataEx(processData, GXHDO101B040Const.TAIDEN_DENATSU4, StringUtil.nullToBlank(fxhdd07.getIrdenatu4())); //耐電圧設定条件 IR④ 電圧
-        setItemDataEx(processData, GXHDO101B040Const.TAIDEN_HANTEICHI4, StringUtil.nullToBlank(fxhdd07.getIrhanteiti4())); //耐電圧設定条件 IR④ 判定値
-        setItemDataEx(processData, GXHDO101B040Const.TAIDEN_JUDEN_TIME4, StringUtil.nullToBlank(fxhdd07.getIrjudenjikan4())); //耐電圧設定条件 IR④ 充電時間
-        setItemDataEx(processData, GXHDO101B040Const.TAIDEN_DENATSU5, StringUtil.nullToBlank(fxhdd07.getIrdenatu5())); //耐電圧設定条件 IR⑤ 電圧
-        setItemDataEx(processData, GXHDO101B040Const.TAIDEN_HANTEICHI5, StringUtil.nullToBlank(fxhdd07.getIrhanteiti5())); //耐電圧設定条件 IR⑤ 判定値
-        setItemDataEx(processData, GXHDO101B040Const.TAIDEN_JUDEN_TIME5, StringUtil.nullToBlank(fxhdd07.getIrjudenjikan5())); //耐電圧設定条件 IR⑤ 充電時間
-        setItemDataEx(processData, GXHDO101B040Const.TAIDEN_DENATSU6, StringUtil.nullToBlank(fxhdd07.getIrdenatu6())); //耐電圧設定条件 IR⑥ 電圧
-        setItemDataEx(processData, GXHDO101B040Const.TAIDEN_HANTEICHI6, StringUtil.nullToBlank(fxhdd07.getIrhanteiti6())); //耐電圧設定条件 IR⑥ 判定値
-        setItemDataEx(processData, GXHDO101B040Const.TAIDEN_JUDEN_TIME6, StringUtil.nullToBlank(fxhdd07.getIrjudenjikan6())); //耐電圧設定条件 IR⑥ 充電時間
-        setItemDataEx(processData, GXHDO101B040Const.TAIDEN_DENATSU7, StringUtil.nullToBlank(fxhdd07.getIrdenatu7())); //耐電圧設定条件 IR⑦ 電圧
-        setItemDataEx(processData, GXHDO101B040Const.TAIDEN_HANTEICHI7, StringUtil.nullToBlank(fxhdd07.getIrhanteiti7())); //耐電圧設定条件 IR⑦ 判定値
-        setItemDataEx(processData, GXHDO101B040Const.TAIDEN_JUDEN_TIME7, StringUtil.nullToBlank(fxhdd07.getIrjudenjikan7())); //耐電圧設定条件 IR⑦ 充電時間
-        setItemDataEx(processData, GXHDO101B040Const.TAIDEN_DENATSU8, StringUtil.nullToBlank(fxhdd07.getIrdenatu8())); //耐電圧設定条件 IR⑧ 電圧
-        setItemDataEx(processData, GXHDO101B040Const.TAIDEN_HANTEICHI8, StringUtil.nullToBlank(fxhdd07.getIrhanteiti8())); //耐電圧設定条件 IR⑧ 判定値
-        setItemDataEx(processData, GXHDO101B040Const.TAIDEN_JUDEN_TIME8, StringUtil.nullToBlank(fxhdd07.getIrjudenjikan8())); //耐電圧設定条件 IR⑧ 充電時間
-
-        // 設定条件及び処理結果
-        setItemDataEx(processData, GXHDO101B040Const.SET_BIN1_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin1countersuu())); //BIN1 ｶｳﾝﾀｰ数
-        setItemDataEx(processData, GXHDO101B040Const.SET_BIN2_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin2countersuu())); //BIN2 ｶｳﾝﾀｰ数
-        setItemDataEx(processData, GXHDO101B040Const.SET_BIN3_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin3countersuu())); //BIN3 ｶｳﾝﾀｰ数
-        setItemDataEx(processData, GXHDO101B040Const.SET_BIN4_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin4countersuu())); //BIN4 ｶｳﾝﾀｰ数
-        setItemDataEx(processData, GXHDO101B040Const.SET_BIN5_PERCENT_KBN, StringUtil.nullToBlank(fxhdd07.getBin5setteiti())); //BIN5 %区分(設定値)
-        setItemDataEx(processData, GXHDO101B040Const.SET_BIN5_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin5countersuu())); //BIN5 ｶｳﾝﾀｰ数
-        setItemDataEx(processData, GXHDO101B040Const.SET_BIN6_PERCENT_KBN, StringUtil.nullToBlank(fxhdd07.getBin6setteiti())); //BIN6 %区分(設定値)
-        setItemDataEx(processData, GXHDO101B040Const.SET_BIN6_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin6countersuu())); //BIN6 ｶｳﾝﾀｰ数
-        setItemDataEx(processData, GXHDO101B040Const.SET_BIN7_PERCENT_KBN, StringUtil.nullToBlank(fxhdd07.getBin7setteiti())); //BIN7 %区分(設定値)
-        setItemDataEx(processData, GXHDO101B040Const.SET_BIN7_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin7countersuu())); //BIN7 ｶｳﾝﾀｰ数
-        setItemDataEx(processData, GXHDO101B040Const.SET_BIN8_PERCENT_KBN, StringUtil.nullToBlank(fxhdd07.getBin8setteiti())); //BIN8 %区分(設定値)
-        setItemDataEx(processData, GXHDO101B040Const.SET_BIN8_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin8countersuu())); //BIN8 ｶｳﾝﾀｰ数
+        setItemDataEx(processData, GXHDO101B042Const.TAIDEN_DENATSU1, StringUtil.nullToBlank(fxhdd07.getIrdenatu1())); //耐電圧設定条件 IR① 電圧
+        setItemDataEx(processData, GXHDO101B042Const.TAIDEN_HANTEICHI1, StringUtil.nullToBlank(fxhdd07.getIrhanteiti1())); //耐電圧設定条件 IR① 判定値
+        setItemDataEx(processData, GXHDO101B042Const.TAIDEN_JUDEN_TIME1, StringUtil.nullToBlank(fxhdd07.getIrjudenjikan1())); //耐電圧設定条件 IR① 充電時間
+        setItemDataEx(processData, GXHDO101B042Const.TAIDEN_DENATSU2, StringUtil.nullToBlank(fxhdd07.getIrdenatu2())); //耐電圧設定条件 IR② 電圧
+        setItemDataEx(processData, GXHDO101B042Const.TAIDEN_HANTEICHI2, StringUtil.nullToBlank(fxhdd07.getIrhanteiti2())); //耐電圧設定条件 IR② 判定値
+        setItemDataEx(processData, GXHDO101B042Const.TAIDEN_JUDEN_TIME2, StringUtil.nullToBlank(fxhdd07.getIrjudenjikan2())); //耐電圧設定条件 IR② 充電時間
 
     }
 }

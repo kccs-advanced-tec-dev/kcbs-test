@@ -1,1157 +1,1112 @@
 /*
  * Copyright 2019 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
-package jp.co.kccs.xhd.db.model;
+package jp.co.kccs.xhd.model;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
  * ===============================================================================<br>
  * <br>
- * システム名	品質DB(コンデンサ)<br>
+ * システム名	品質情報管理システム<br>
  * <br>
- * 変更日	2019/12/18<br>
- * 計画書No	K1803-DS001<br>
- * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更日	2019/12/28<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	863 K.Zhang<br>
  * 変更理由	新規作成<br>
  * <br>
  * ===============================================================================<br>
  */
 /**
- * sr_denkitokuseiesi(電気特性)のモデルクラスです。
+ * 電気特性履歴検索画面のモデルクラスです。
  *
- * @author SYSNAVI K.Hisanaga
- * @since 2019/12/18
+ * @author 863 K.Zhang
+ * @since  2019/12/28
  */
-public class SrDenkitokuseiesi {
-
-    /**
-     * 工場ｺｰﾄﾞ
-     */
-    private String kojyo;
+public class GXHDO201B040Model implements Serializable{
 
     /**
      * ﾛｯﾄNo
      */
-    private String lotno;
-
-    /**
-     * 枝番
-     */
-    private String edaban;
+    private String lotno = "";
 
     /**
      * 回数
      */
-    private Integer kaisuu;
+    private Integer kaisuu = null;
 
     /**
      * KCPNO
      */
-    private String kcpno;
+    private String kcpno = "";
 
     /**
      * 客先
      */
-    private String tokuisaki;
+    private String tokuisaki = "";
 
     /**
      * ｵｰﾅｰ
      */
-    private String ownercode;
+    private String ownercode = "";
 
     /**
      * ﾛｯﾄ区分
      */
-    private String lotkubuncode;
+    private String lotkubuncode = "";
 
     /**
      * 指定公差
      */
-    private String siteikousa;
+    private String siteikousa = "";
 
     /**
      * 後工程指示内容
      */
-    private String atokouteisijinaiyou;
+    private String atokouteisijinaiyou = "";
 
     /**
      * 送り良品数
      */
-    private Integer okuriryouhinsuu;
+    private Integer okuriryouhinsuu = null;
 
     /**
      * 受入れ単位重量
      */
-    private BigDecimal ukeiretannijyuryo;
+    private BigDecimal ukeiretannijyuryo = null;
 
     /**
      * 受入れ総重量
      */
-    private BigDecimal ukeiresoujyuryou;
+    private BigDecimal ukeiresoujyuryou = null;
 
     /**
      * 外部電極焼付日時
      */
-    private Timestamp gdyakitukenitiji;
+    private Timestamp gdyakitukenitiji = null;
 
     /**
      * ﾒｯｷ日時
      */
-    private Timestamp mekkinitiji;
+    private Timestamp mekkinitiji = null;
 
     /**
      * 検査場所
      */
-    private String kensabasyo;
+    private String kensabasyo = "";
 
     /**
      * 選別開始日時
      */
-    private Timestamp senbetukaisinitiji;
+    private Timestamp senbetukaisinitiji = null;
 
     /**
      * 選別終了日時
      */
-    private Timestamp senbetusyuryounitiji;
+    private Timestamp senbetusyuryounitiji = null;
 
     /**
      * 検査号機
      */
-    private String kensagouki;
+    private String kensagouki = "";
 
     /**
      * 分類ｴｱｰ圧
      */
-    private Integer bunruiairatu;
+    private Integer bunruiairatu = null;
 
     /**
      * CDｺﾝﾀｸﾄ圧
      */
-    private Integer cdcontactatu;
+    private Integer cdcontactatu = null;
 
     /**
      * IRｺﾝﾀｸﾄ圧
      */
-    private Integer ircontactatu;
+    private Integer ircontactatu = null;
 
     /**
      * 使用後ｽﾃｰｼｮﾝ確認CD1
      */
-    private Integer stationcd1;
+    private Integer stationcd1 = null;
 
     /**
      * 使用後ｽﾃｰｼｮﾝ確認PC1
      */
-    private Integer stationpc1;
+    private Integer stationpc1 = null;
 
     /**
      * 使用後ｽﾃｰｼｮﾝ確認PC2
      */
-    private Integer stationpc2;
+    private Integer stationpc2 = null;
 
     /**
      * 使用後ｽﾃｰｼｮﾝ確認PC3
      */
-    private Integer stationpc3;
+    private Integer stationpc3 = null;
 
     /**
      * 使用後ｽﾃｰｼｮﾝ確認PC4
      */
-    private Integer stationpc4;
+    private Integer stationpc4 = null;
 
     /**
      * 使用後ｽﾃｰｼｮﾝ確認IR1
      */
-    private Integer stationir1;
+    private Integer stationir1 = null;
 
     /**
      * 使用後ｽﾃｰｼｮﾝ確認IR2
      */
-    private Integer stationir2;
+    private Integer stationir2 = null;
 
     /**
      * 使用後ｽﾃｰｼｮﾝ確認IR3
      */
-    private Integer stationir3;
+    private Integer stationir3 = null;
 
     /**
      * 使用後ｽﾃｰｼｮﾝ確認IR4
      */
-    private Integer stationir4;
+    private Integer stationir4 = null;
 
     /**
      * 使用後ｽﾃｰｼｮﾝ確認IR5
      */
-    private Integer stationir5;
+    private Integer stationir5 = null;
 
     /**
      * 使用後ｽﾃｰｼｮﾝ確認IR6
      */
-    private Integer stationir6;
+    private Integer stationir6 = null;
 
     /**
      * 使用後ｽﾃｰｼｮﾝ確認IR7
      */
-    private Integer stationir7;
+    private Integer stationir7 = null;
 
     /**
      * 使用後ｽﾃｰｼｮﾝ確認IR8
      */
-    private Integer stationir8;
+    private Integer stationir8 = null;
 
     /**
      * 固定電極 外観･段差
      */
-    private String koteidenkyoku;
+    private String koteidenkyoku = "";
 
     /**
      * ﾄﾗｯｸｶﾞｲﾄﾞ隙間
      */
-    private String torakkugaido;
+    private String torakkugaido = "";
 
     /**
      * ﾃｽﾄﾌﾟﾚｰﾄ 形状･清掃
      */
-    private String testplatekeijo;
+    private String testplatekeijo = "";
 
     /**
      * 分類吹き出し穴
      */
-    private String bunruifukidasi;
+    private String bunruifukidasi = "";
 
     /**
      * ﾃｽﾄﾌﾟﾚｰﾄ位置確認(穴位置)
      */
-    private String testplatekakunin;
+    private String testplatekakunin = "";
 
     /**
      * 電極清掃･動作
      */
-    private String denkyokuseisou;
+    private String denkyokuseisou = "";
     
     /**
      * 選別順序変更
      */
-    private String senbetujunjo;
+    private String senbetujunjo = "";
 
     /**
      * 設定ﾓｰﾄﾞ確認
      */
-    private String setteikakunin;
+    private String setteikakunin = "";
 
     /**
      * 配線確認
      */
-    private String haisenkakunin;
+    private String haisenkakunin = "";
 
     /**
      * 製品投入状態
      */
-    private String seihintounyuujotai;
+    private String seihintounyuujotai = "";
 
     /**
      * BINﾎﾞｯｸｽ内の清掃ﾁｪｯｸ
      */
-    private String binboxseisoucheck;
+    private String binboxseisoucheck = "";
 
     /**
      * ｾｯﾄ者
      */
-    private String setsya;
+    private String setsya = "";
 
     /**
      * 確認者
      */
-    private String kakuninsya;
+    private String kakuninsya = "";
 
     /**
      * 指定公差歩留まり1
      */
-    private String siteikousabudomari1;
+    private String siteikousabudomari1 = "";
 
     /**
      * 指定公差歩留まり2
      */
-    private String siteikousabudomari2;
+    private String siteikousabudomari2 = "";
 
     /**
      * ﾃｽﾄﾌﾟﾚｰﾄ管理No
      */
-    private String testplatekanrino;
+    private String testplatekanrino = "";
 
     /**
      * Tanδ
      */
-    private BigDecimal tan;
+    private BigDecimal tan = null;
 
     /**
      * 測定周波数
      */
-    private String sokuteisyuhasuu;
+    private String sokuteisyuhasuu = "";
 
     /**
      * 測定電圧
      */
-    private BigDecimal sokuteidenatu;
+    private BigDecimal sokuteidenatu = null;
 
     /**
      * 補正用ﾁｯﾌﾟ容量
      */
-    private BigDecimal hoseiyoutippuyoryou;
+    private BigDecimal hoseiyoutippuyoryou = null;
 
     /**
      * 補正用ﾁｯﾌﾟTanδ
      */
-    private BigDecimal hoseiyoutipputan;
+    private BigDecimal hoseiyoutipputan = null;
 
     /**
      * 補正前
      */
-    private BigDecimal hoseimae;
+    private BigDecimal hoseimae = null;
 
     /**
      * 補正後
      */
-    private BigDecimal hoseigo;
+    private BigDecimal hoseigo = null;
 
     /**
      * 補正率
      */
-    private BigDecimal hoseiritu;
+    private BigDecimal hoseiritu = null;
 
     /**
      * ｽﾀﾝﾀﾞｰﾄﾞ補正
      */
-    private String standard;
+    private String standard = "";
 
     /**
      * 分類確認
      */
-    private String bunruikakunin;
+    private String bunruikakunin = "";
 
     /**
      * 外観確認
      */
-    private String gaikankakunin;
+    private String gaikankakunin = "";
 
     /**
      * 熱処理日時
      */
-    private Timestamp netsusyorinitiji;
+    private Timestamp netsusyorinitiji = null;
 
     /**
      * ｴｰｼﾞﾝｸﾞ時間
      */
-    private BigDecimal agingjikan;
+    private BigDecimal agingjikan = null;
 
     /**
      * 充填率
      */
-    private String jutenritu;
+    private String jutenritu = "";
 
     /**
      * MC
      */
-    private String mc;
+    private String mc = "";
 
     /**
      * 強制排出
      */
-    private String kyoseihaisyutu;
+    private String kyoseihaisyutu = "";
 
     /**
      * 落下
      */
-    private String rakka;
+    private String rakka = "";
 
     /**
      * 承認者
      */
-    private String syoninsha;
+    private String syoninsha = "";
 
     /**
      * 振向者
      */
-    private String furimukesya;
+    private String furimukesya = "";
 
     /**
      * 備考1
      */
-    private String bikou1;
+    private String bikou1 = "";
 
     /**
      * 備考2
      */
-    private String bikou2;
+    private String bikou2 = "";
 
     /**
      * ﾌﾟﾘﾁｬｰｼﾞ条件 PC① 電圧
      */
-    private BigDecimal pcdenatu1;
+    private BigDecimal pcdenatu1 = null;
 
     /**
      * ﾌﾟﾘﾁｬｰｼﾞ条件 PC① 充電時間
      */
-    private Integer pcjudenjikan1;
+    private Integer pcjudenjikan1 = null;
 
     /**
      * ﾌﾟﾘﾁｬｰｼﾞ条件 PC② 電圧
      */
-    private BigDecimal pcdenatu2;
+    private BigDecimal pcdenatu2 = null;
 
     /**
      * ﾌﾟﾘﾁｬｰｼﾞ条件 PC② 充電時間
      */
-    private Integer pcjudenjikan2;
+    private Integer pcjudenjikan2 = null;
 
     /**
      * ﾌﾟﾘﾁｬｰｼﾞ条件 PC③ 電圧
      */
-    private BigDecimal pcdenatu3;
+    private BigDecimal pcdenatu3 = null;
 
     /**
      * ﾌﾟﾘﾁｬｰｼﾞ条件 PC③ 充電時間
      */
-    private Integer pcjudenjikan3;
+    private Integer pcjudenjikan3 = null;
 
     /**
      * ﾌﾟﾘﾁｬｰｼﾞ条件 PC④ 電圧
      */
-    private BigDecimal pcdenatu4;
+    private BigDecimal pcdenatu4 = null;
 
     /**
      * ﾌﾟﾘﾁｬｰｼﾞ条件 PC④ 充電時間
      */
-    private Integer pcjudenjikan4;
+    private Integer pcjudenjikan4 = null;
 
     /**
      * 耐電圧設定条件 IR① 電圧
      */
-    private BigDecimal irdenatu1;
+    private BigDecimal irdenatu1 = null;
 
     /**
      * 耐電圧設定条件 IR① 判定値
      */
-    private BigDecimal irhanteiti1;
+    private BigDecimal irhanteiti1 = null;
 
     /**
      * 耐電圧設定条件 IR① 充電時間
      */
-    private Integer irjudenjikan1;
+    private Integer irjudenjikan1 = null;
 
     /**
      * 耐電圧設定条件 IR② 電圧
      */
-    private BigDecimal irdenatu2;
+    private BigDecimal irdenatu2 = null;
 
     /**
      * 耐電圧設定条件 IR② 判定値
      */
-    private BigDecimal irhanteiti2;
+    private BigDecimal irhanteiti2 = null;
 
     /**
      * 耐電圧設定条件 IR② 充電時間
      */
-    private Integer irjudenjikan2;
+    private Integer irjudenjikan2 = null;
 
     /**
      * 耐電圧設定条件 IR③ 電圧
      */
-    private BigDecimal irdenatu3;
+    private BigDecimal irdenatu3 = null;
 
     /**
      * 耐電圧設定条件 IR③ 判定値
      */
-    private BigDecimal irhanteiti3;
+    private BigDecimal irhanteiti3 = null;
 
     /**
      * 耐電圧設定条件 IR③ 充電時間
      */
-    private Integer irjudenjikan3;
+    private Integer irjudenjikan3 = null;
 
     /**
      * 耐電圧設定条件 IR④ 電圧
      */
-    private BigDecimal irdenatu4;
+    private BigDecimal irdenatu4 = null;
 
     /**
      * 耐電圧設定条件 IR④ 判定値
      */
-    private BigDecimal irhanteiti4;
+    private BigDecimal irhanteiti4 = null;
 
     /**
      * 耐電圧設定条件 IR④ 充電時間
      */
-    private Integer irjudenjikan4;
+    private Integer irjudenjikan4 = null;
 
     /**
      * 耐電圧設定条件 IR⑤ 電圧
      */
-    private BigDecimal irdenatu5;
+    private BigDecimal irdenatu5 = null;
 
     /**
      * 耐電圧設定条件 IR⑤ 判定値
      */
-    private BigDecimal irhanteiti5;
+    private BigDecimal irhanteiti5 = null;
 
     /**
      * 耐電圧設定条件 IR⑤ 充電時間
      */
-    private Integer irjudenjikan5;
+    private Integer irjudenjikan5 = null;
 
     /**
      * 耐電圧設定条件 IR⑥ 電圧
      */
-    private BigDecimal irdenatu6;
+    private BigDecimal irdenatu6 = null;
 
     /**
      * 耐電圧設定条件 IR⑥ 判定値
      */
-    private BigDecimal irhanteiti6;
+    private BigDecimal irhanteiti6 = null;
 
     /**
      * 耐電圧設定条件 IR⑥ 充電時間
      */
-    private Integer irjudenjikan6;
+    private Integer irjudenjikan6 = null;
 
     /**
      * 耐電圧設定条件 IR⑦ 電圧
      */
-    private BigDecimal irdenatu7;
+    private BigDecimal irdenatu7 = null;
 
     /**
      * 耐電圧設定条件 IR⑦ 判定値
      */
-    private BigDecimal irhanteiti7;
+    private BigDecimal irhanteiti7 = null;
 
     /**
      * 耐電圧設定条件 IR⑦ 充電時間
      */
-    private Integer irjudenjikan7;
+    private Integer irjudenjikan7 = null;
 
     /**
      * 耐電圧設定条件 IR⑧ 電圧
      */
-    private BigDecimal irdenatu8;
+    private BigDecimal irdenatu8 = null;
 
     /**
      * 耐電圧設定条件 IR⑧ 判定値
      */
-    private BigDecimal irhanteiti8;
+    private BigDecimal irhanteiti8 = null;
 
     /**
      * 耐電圧設定条件 IR⑧ 充電時間
      */
-    private Integer irjudenjikan8;
+    private Integer irjudenjikan8 = null;
     
     /**
      * RDC1 ﾚﾝｼﾞ
      */
-    private BigDecimal rdcrange1;
+    private BigDecimal rdcrange1 = null;
 
     /**
      * RDC1 判定値
      */
-    private BigDecimal rdchantei1;
+    private BigDecimal rdchantei1 = null;
 
     /**
      * RDC2 ﾚﾝｼﾞ
      */
-    private BigDecimal rdcrange2;
+    private BigDecimal rdcrange2 = null;
 
     /**
      * RDC2 判定値
      */
-    private BigDecimal rdchantei2;
+    private BigDecimal rdchantei2 = null;
 
     /**
      * DROP1,3 PC
      */
-    private BigDecimal drop13pc;
+    private BigDecimal drop13pc = null;
 
     /**
      * DROP1,3 PS
      */
-    private BigDecimal drop13ps;
+    private BigDecimal drop13ps = null;
 
     /**
      * DROP1,3 MS･DC
      */
-    private BigDecimal drop13msdc;
+    private BigDecimal drop13msdc = null;
 
     /**
      * DROP2,4 PC
      */
-    private BigDecimal drop24pc;
+    private BigDecimal drop24pc = null;
 
     /**
      * DROP2,4 PS
      */
-    private BigDecimal drop24ps;
+    private BigDecimal drop24ps = null;
 
     /**
      * DROP2,4 MS･DC
      */
-    private BigDecimal drop24msdc;
+    private BigDecimal drop24msdc = null;
 
     /**
      * BIN1 %区分(設定値)
      */
-    private String bin1setteiti;
+    private String bin1setteiti = "";
 
     /**
      * BIN1 選別区分
      */
-    private String bin1senbetukubun;
+    private String bin1senbetukubun = "";
 
     /**
      * BIN1 計量後数量
      */
-    private Integer bin1keiryougosuryou;
+    private Integer bin1keiryougosuryou = null;
 
     /**
      * BIN1 ｶｳﾝﾀｰ数
      */
-    private Integer bin1countersuu;
+    private Integer bin1countersuu = null;
 
     /**
      * BIN1 誤差率(%)
      */
-    private BigDecimal bin1gosaritu;
+    private BigDecimal bin1gosaritu = null;
 
     /**
      * BIN1 ﾏｼﾝ不良率(%)
      */
-    private BigDecimal bin1masinfuryouritu;
+    private BigDecimal bin1masinfuryouritu = null;
 
     /**
      * BIN1 抜き取り結果
      */
-    private Integer bin1nukitorikekkabosuu;
+    private Integer bin1nukitorikekkabosuu = null;
 
     /**
      * BIN1 抜き取り結果
      */
-    private Integer bin1nukitorikekka;
+    private Integer bin1nukitorikekka = null;
 
     /**
      * BIN1 真の不良率(%)
      */
-    private BigDecimal bin1sinnofuryouritu;
+    private BigDecimal bin1sinnofuryouritu = null;
 
     /**
      * BIN1 結果ﾁｪｯｸ
      */
-    private String bin1kekkacheck;
+    private String bin1kekkacheck = "";
 
     /**
      * BIN2 %区分(設定値)
      */
-    private String bin2setteiti;
+    private String bin2setteiti = "";
 
     /**
      * BIN2 選別区分
      */
-    private String bin2senbetukubun;
+    private String bin2senbetukubun = "";
 
     /**
      * BIN2 計量後数量
      */
-    private Integer bin2keiryougosuryou;
+    private Integer bin2keiryougosuryou = null;
 
     /**
      * BIN2 ｶｳﾝﾀｰ数
      */
-    private Integer bin2countersuu;
+    private Integer bin2countersuu = null;
 
     /**
      * BIN2 誤差率(%)
      */
-    private BigDecimal bin2gosaritu;
+    private BigDecimal bin2gosaritu = null;
 
     /**
      * BIN2 ﾏｼﾝ不良率(%)
      */
-    private BigDecimal bin2masinfuryouritu;
+    private BigDecimal bin2masinfuryouritu = null;
 
     /**
      * BIN2 抜き取り結果
      */
-    private Integer bin2nukitorikekkabosuu;
+    private Integer bin2nukitorikekkabosuu = null;
 
     /**
      * BIN2 抜き取り結果
      */
-    private Integer bin2nukitorikekka;
+    private Integer bin2nukitorikekka = null;
 
     /**
      * BIN2 真の不良率(%)
      */
-    private BigDecimal bin2sinnofuryouritu;
+    private BigDecimal bin2sinnofuryouritu = null;
 
     /**
      * BIN2 結果ﾁｪｯｸ
      */
-    private String bin2kekkacheck;
+    private String bin2kekkacheck = "";
 
     /**
      * BIN3 %区分(設定値)
      */
-    private String bin3setteiti;
+    private String bin3setteiti = "";
 
     /**
      * BIN3 選別区分
      */
-    private String bin3senbetukubun;
+    private String bin3senbetukubun = "";
 
     /**
      * BIN3 計量後数量
      */
-    private Integer bin3keiryougosuryou;
+    private Integer bin3keiryougosuryou = null;
 
     /**
      * BIN3 ｶｳﾝﾀｰ数
      */
-    private Integer bin3countersuu;
+    private Integer bin3countersuu = null;
 
     /**
      * BIN3 誤差率(%)
      */
-    private BigDecimal bin3gosaritu;
+    private BigDecimal bin3gosaritu = null;
 
     /**
      * BIN3 ﾏｼﾝ不良率(%)
      */
-    private BigDecimal bin3masinfuryouritu;
+    private BigDecimal bin3masinfuryouritu = null;
 
     /**
      * BIN3 抜き取り結果
      */
-    private Integer bin3nukitorikekkabosuu;
+    private Integer bin3nukitorikekkabosuu = null;
 
     /**
      * BIN3 抜き取り結果
      */
-    private Integer bin3nukitorikekka;
+    private Integer bin3nukitorikekka = null;
 
     /**
      * BIN3 真の不良率(%)
      */
-    private BigDecimal bin3sinnofuryouritu;
+    private BigDecimal bin3sinnofuryouritu = null;
 
     /**
      * BIN3 結果ﾁｪｯｸ
      */
-    private String bin3kekkacheck;
+    private String bin3kekkacheck = "";
 
     /**
      * BIN4 %区分(設定値)
      */
-    private String bin4setteiti;
+    private String bin4setteiti = "";
 
     /**
      * BIN4 選別区分
      */
-    private String bin4senbetukubun;
+    private String bin4senbetukubun = "";
 
     /**
      * BIN4 計量後数量
      */
-    private Integer bin4keiryougosuryou;
+    private Integer bin4keiryougosuryou = null;
 
     /**
      * BIN4 ｶｳﾝﾀｰ数
      */
-    private Integer bin4countersuu;
+    private Integer bin4countersuu = null;
 
     /**
      * BIN4 誤差率(%)
      */
-    private BigDecimal bin4gosaritu;
+    private BigDecimal bin4gosaritu = null;
 
     /**
      * BIN4 ﾏｼﾝ不良率(%)
      */
-    private BigDecimal bin4masinfuryouritu;
+    private BigDecimal bin4masinfuryouritu = null;
 
     /**
      * BIN4 抜き取り結果
      */
-    private Integer bin4nukitorikekkabosuu;
+    private Integer bin4nukitorikekkabosuu = null;
 
     /**
      * BIN4 抜き取り結果
      */
-    private Integer bin4nukitorikekka;
+    private Integer bin4nukitorikekka = null;
 
     /**
      * BIN4 真の不良率(%)
      */
-    private BigDecimal bin4sinnofuryouritu;
+    private BigDecimal bin4sinnofuryouritu = null;
 
     /**
      * BIN4 結果ﾁｪｯｸ
      */
-    private String bin4kekkacheck;
+    private String bin4kekkacheck = "";
 
     /**
      * BIN5 %区分(設定値)
      */
-    private String bin5setteiti;
+    private String bin5setteiti = "";
 
     /**
      * BIN5 選別区分
      */
-    private String bin5senbetukubun;
+    private String bin5senbetukubun = "";
 
     /**
      * BIN5 計量後数量
      */
-    private Integer bin5keiryougosuryou;
+    private Integer bin5keiryougosuryou = null;
 
     /**
      * BIN5 ｶｳﾝﾀｰ数
      */
-    private Integer bin5countersuu;
+    private Integer bin5countersuu = null;
 
     /**
      * BIN5 誤差率(%)
      */
-    private BigDecimal bin5gosaritu;
+    private BigDecimal bin5gosaritu = null;
 
     /**
      * BIN5 ﾏｼﾝ不良率(%)
      */
-    private BigDecimal bin5masinfuryouritu;
+    private BigDecimal bin5masinfuryouritu = null;
 
     /**
      * BIN5 抜き取り結果
      */
-    private Integer bin5nukitorikekkabosuu;
+    private Integer bin5nukitorikekkabosuu = null;
 
     /**
      * BIN5 抜き取り結果
      */
-    private Integer bin5nukitorikekka;
+    private Integer bin5nukitorikekka = null;
 
     /**
      * BIN5 真の不良率(%)
      */
-    private BigDecimal bin5sinnofuryouritu;
+    private BigDecimal bin5sinnofuryouritu = null;
 
     /**
      * BIN5 結果ﾁｪｯｸ
      */
-    private String bin5kekkacheck;
+    private String bin5kekkacheck = "";
 
     /**
      * BIN5 袋ﾁｪｯｸ
      */
-    private Integer bin5fukurocheck;
+    private Integer bin5fukurocheck = null;
 
     /**
      * BIN6 %区分(設定値)
      */
-    private String bin6setteiti;
+    private String bin6setteiti = "";
 
     /**
      * BIN6 選別区分
      */
-    private String bin6senbetukubun;
+    private String bin6senbetukubun = "";
 
     /**
      * BIN6 計量後数量
      */
-    private Integer bin6keiryougosuryou;
+    private Integer bin6keiryougosuryou = null;
 
     /**
      * BIN6 ｶｳﾝﾀｰ数
      */
-    private Integer bin6countersuu;
+    private Integer bin6countersuu = null;
 
     /**
      * BIN6 誤差率(%)
      */
-    private BigDecimal bin6gosaritu;
+    private BigDecimal bin6gosaritu = null;
 
     /**
      * BIN6 ﾏｼﾝ不良率(%)
      */
-    private BigDecimal bin6masinfuryouritu;
+    private BigDecimal bin6masinfuryouritu = null;
 
     /**
      * BIN6 抜き取り結果
      */
-    private Integer bin6nukitorikekkabosuu;
+    private Integer bin6nukitorikekkabosuu = null;
 
     /**
      * BIN6 抜き取り結果
      */
-    private Integer bin6nukitorikekka;
+    private Integer bin6nukitorikekka = null;
 
     /**
      * BIN6 真の不良率(%)
      */
-    private BigDecimal bin6sinnofuryouritu;
+    private BigDecimal bin6sinnofuryouritu = null;
 
     /**
      * BIN6 結果ﾁｪｯｸ
      */
-    private String bin6kekkacheck;
+    private String bin6kekkacheck = "";
 
     /**
      * BIN6 袋ﾁｪｯｸ
      */
-    private Integer bin6fukurocheck;
+    private Integer bin6fukurocheck = null;
 
     /**
      * BIN7 %区分(設定値)
      */
-    private String bin7setteiti;
+    private String bin7setteiti = "";
 
     /**
      * BIN7 選別区分
      */
-    private String bin7senbetukubun;
+    private String bin7senbetukubun = "";
 
     /**
      * BIN7 計量後数量
      */
-    private Integer bin7keiryougosuryou;
+    private Integer bin7keiryougosuryou = null;
 
     /**
      * BIN7 ｶｳﾝﾀｰ数
      */
-    private Integer bin7countersuu;
+    private Integer bin7countersuu = null;
 
     /**
      * BIN7 誤差率(%)
      */
-    private BigDecimal bin7gosaritu;
+    private BigDecimal bin7gosaritu = null;
 
     /**
      * BIN7 ﾏｼﾝ不良率(%)
      */
-    private BigDecimal bin7masinfuryouritu;
+    private BigDecimal bin7masinfuryouritu = null;
 
     /**
      * BIN7 袋ﾁｪｯｸ
      */
-    private Integer bin7fukurocheck;
+    private Integer bin7fukurocheck = null;
 
     /**
      * BIN8 %区分(設定値)
      */
-    private String bin8setteiti;
+    private String bin8setteiti = "";
 
     /**
      * BIN8 選別区分
      */
-    private String bin8senbetukubun;
+    private String bin8senbetukubun = "";
 
     /**
      * BIN8 計量後数量
      */
-    private Integer bin8keiryougosuryou;
+    private Integer bin8keiryougosuryou = null;
 
     /**
      * BIN8 ｶｳﾝﾀｰ数
      */
-    private Integer bin8countersuu;
+    private Integer bin8countersuu = null;
 
     /**
      * BIN8 誤差率(%)
      */
-    private BigDecimal bin8gosaritu;
+    private BigDecimal bin8gosaritu = null;
 
     /**
      * BIN8 ﾏｼﾝ不良率(%)
      */
-    private BigDecimal bin8masinfuryouritu;
+    private BigDecimal bin8masinfuryouritu = null;
 
     /**
      * BIN8 袋ﾁｪｯｸ
      */
-    private Integer bin8fukurocheck;
+    private Integer bin8fukurocheck = null;
 
     /**
      * BIN9 強制排出 計量後数量
      */
-    private Integer bin9keiryougosuryou;
+    private Integer bin9keiryougosuryou = null;
 
     /**
      * BIN9 強制排出 ﾏｼﾝ不良率
      */
-    private BigDecimal bin9masinfuryouritu;
+    private BigDecimal bin9masinfuryouritu = null;
 
     /**
      * 落下 計量後数量
      */
-    private Integer rakkakeiryougosuryou;
+    private Integer rakkakeiryougosuryou = null;
 
     /**
      * 落下 ﾏｼﾝ不良率
      */
-    private BigDecimal rakkamasinfuryouritu;
+    private BigDecimal rakkamasinfuryouritu = null;
 
     /**
      * 半田ｻﾝﾌﾟﾙ
      */
-    private String handasample;
+    private String handasample = "";
 
     /**
      * 信頼性ｻﾝﾌﾟﾙ
      */
-    private String sinraiseisample;
+    private String sinraiseisample = "";
 
     /**
      * 真不良判定者
      */
-    private String sinfuryouhanteisya;
+    private String sinfuryouhanteisya = "";
 
     /**
      * 判定入力者
      */
-    private String hanteinyuuryokusya;
+    private String hanteinyuuryokusya = "";
 
     /**
      * 取出者
      */
-    private String toridasisya;
+    private String toridasisya = "";
 
     /**
      * 公差①
      */
-    private String kousa1;
+    private String kousa1 = "";
 
     /**
      * 重量①
      */
-    private BigDecimal juryou1;
+    private BigDecimal juryou1 = null;
 
     /**
      * 個数①
      */
-    private Integer kosuu1;
+    private Integer kosuu1 = null;
 
     /**
      * 公差②
      */
-    private String kousa2;
+    private String kousa2 = "";
 
     /**
      * 重量②
      */
-    private BigDecimal juryou2;
+    private BigDecimal juryou2 = null;
 
     /**
      * 個数②
      */
-    private Integer kosuu2;
+    private Integer kosuu2 = null;
 
     /**
      * 公差③
      */
-    private String kousa3;
+    private String kousa3 = "";
 
     /**
      * 重量③
      */
-    private BigDecimal juryou3;
+    private BigDecimal juryou3 = null;
 
     /**
      * 個数③
      */
-    private Integer kosuu3;
+    private Integer kosuu3 = null;
 
     /**
      * 公差④
      */
-    private String kousa4;
+    private String kousa4 = "";
 
     /**
      * 重量④
      */
-    private BigDecimal juryou4;
+    private BigDecimal juryou4 = null;
 
     /**
      * 個数④
      */
-    private Integer kosuu4;
+    private Integer kosuu4 = null;
 
     /**
      * ｶｳﾝﾀｰ総数
      */
-    private Integer countersousuu;
+    private Integer countersousuu = null;
 
     /**
      * 良品重量
      */
-    private BigDecimal ryohinjuryou;
+    private BigDecimal ryohinjuryou = null;
 
     /**
      * 良品個数
      */
-    private Integer ryohinkosuu;
+    private Integer ryohinkosuu = null;
 
     /**
      * 歩留まり
      */
-    private BigDecimal budomari;
+    private BigDecimal budomari = null;
 
     /**
      * BIN確認者
      */
-    private String binkakuninsya;
+    private String binkakuninsya = "";
 
     /**
      * 電気特性再検
      */
-    private String saiken;
+    private String saiken = "";
 
     /**
      * 設備区分
      */
-    private String setubikubun;
+    private String setubikubun = "";
 
-    /**
-     * 登録日時
-     */
-    private Timestamp torokunichiji;
-
-    /**
-     * 更新日時
-     */
-    private Timestamp kosinnichiji;
-
-    /**
-     * revision
-     */
-    private Long revision;
-
-    /**
-     * 削除ﾌﾗｸﾞ
-     */
-    private Integer deleteflag;
-    
-    
-    /**
-     * 工場ｺｰﾄﾞ
-     * @return the kojyo
-     */
-    public String getKojyo() {
-        return kojyo;
-    }
-
-    /**
-     * 工場ｺｰﾄﾞ
-     * @param kojyo the kojyo to set
-     */
-    public void setKojyo(String kojyo) {
-        this.kojyo = kojyo;
-    }
 
     /**
      * ﾛｯﾄNo
@@ -1167,22 +1122,6 @@ public class SrDenkitokuseiesi {
      */
     public void setLotno(String lotno) {
         this.lotno = lotno;
-    }
-
-    /**
-     * 枝番
-     * @return the edaban
-     */
-    public String getEdaban() {
-        return edaban;
-    }
-
-    /**
-     * 枝番
-     * @param edaban the edaban to set
-     */
-    public void setEdaban(String edaban) {
-        this.edaban = edaban;
     }
 
     /**
@@ -4625,68 +4564,6 @@ public class SrDenkitokuseiesi {
         this.setubikubun = setubikubun;
     }
 
-    /**
-     * 登録日時
-     * @return the torokunichiji
-     */
-    public Timestamp getTorokunichiji() {
-        return torokunichiji;
-    }
-
-    /**
-     * 登録日時
-     * @param torokunichiji the torokunichiji to set
-     */
-    public void setTorokunichiji(Timestamp torokunichiji) {
-        this.torokunichiji = torokunichiji;
-    }
-
-    /**
-     * 更新日時
-     * @return the kosinnichiji
-     */
-    public Timestamp getKosinnichiji() {
-        return kosinnichiji;
-    }
-
-    /**
-     * 更新日時
-     * @param kosinnichiji the kosinnichiji to set
-     */
-    public void setKosinnichiji(Timestamp kosinnichiji) {
-        this.kosinnichiji = kosinnichiji;
-    }
-
-    /**
-     * revision
-     * @return the revision
-     */
-    public Long getRevision() {
-        return revision;
-    }
-
-    /**
-     * revision
-     * @param revision the revision to set
-     */
-    public void setRevision(Long revision) {
-        this.revision = revision;
-    }
-
-    /**
-     * 削除ﾌﾗｸﾞ
-     * @return the deleteflag
-     */
-    public Integer getDeleteflag() {
-        return deleteflag;
-    }
-
-    /**
-     * 削除ﾌﾗｸﾞ
-     * @param deleteflag the deleteflag to set
-     */
-    public void setDeleteflag(Integer deleteflag) {
-        this.deleteflag = deleteflag;
-    }
+   
 
 }

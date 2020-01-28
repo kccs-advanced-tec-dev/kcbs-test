@@ -1109,6 +1109,11 @@ public class GXHDO101B040Const {
     public static final String BTN_HOSEIRITSU_KEISAN_TOP = "sr_denkitokuseiesi_hoseiritsu_keisan_Top";
 
     /**
+     * 設備ﾃﾞｰﾀ取込(画面上ボタン)
+     */
+    public static final String BTN_SETSUBI_DATA_TORIKOMI_TOP = "sr_denkitokuseiesi_setsubi_data_torikomi_Top";
+
+    /**
      * ユーザー認証パラメータ(修正)
      */
     public static final String USER_AUTH_UPDATE_PARAM = "sr_denkitokuseiesi_update_button";
