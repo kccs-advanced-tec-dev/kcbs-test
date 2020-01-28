@@ -92,6 +92,11 @@ import org.primefaces.context.RequestContext;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	属性にﾁｪｯｸﾎﾞｯｸｽを追加<br>
  * <br>
+ * 変更日	2019/12/05<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	電気特性用のロジックを追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -104,84 +109,89 @@ import org.primefaces.context.RequestContext;
 @ViewScoped
 public class GXHDO901A implements Serializable {
 
-    private static final Logger LOGGER = Logger.getLogger(GXHDO901A.class.getName());
+    protected static final Logger LOGGER = Logger.getLogger(GXHDO901A.class.getName());
     private static final int LOTNO_ITEMNO = 100;
-    private static final String FORM_ID_LOT_CORD_SHOKAI = "GXHDO301A";
-
+    protected static final String FORM_ID_LOT_CORD_SHOKAI = "GXHDO301A";
+    
     /**
      * DataSource(DocumentServer)
      */
     @Resource(mappedName = "jdbc/DocumentServer")
-    private transient DataSource dataSourceDocServer;
+    protected transient DataSource dataSourceDocServer;
     /**
      * DataSource(QCDB)
      */
     @Resource(mappedName = "jdbc/qcdb")
-    private transient DataSource dataSourceQcdb;
+    protected transient DataSource dataSourceQcdb;
     /**
      * DataSource(WIP)
      */
     @Resource(mappedName = "jdbc/wip")
-    private transient DataSource dataSourceWip;
+    protected transient DataSource dataSourceWip;
     /**
      * DataSource(Spskadoritu)
      */
     @Resource(mappedName = "jdbc/spskadoritu")
-    private transient DataSource dataSourceSpskadoritu;
+    protected transient DataSource dataSourceSpskadoritu;
     /**
      * DataSource(Ttpkadoritu)
      */
     @Resource(mappedName = "jdbc/ttpkadoritu")
-    private transient DataSource dataSourceTtpkadoritu;
+    protected transient DataSource dataSourceTtpkadoritu;
     /**
      * DataSource(equipment)
      */
     @Resource(mappedName = "jdbc/equipment")
-    private transient DataSource dataSourceEquipment;
+    protected transient DataSource dataSourceEquipment;
     /**
      * パラメータ操作(DB)
      */
     @Inject
-    private ParameterEJB parameterEJB;
+    protected ParameterEJB parameterEJB;
 
     /**
      * 起動時処理
      */
-    private String onLoadProcess = "";
+    protected String onLoadProcess = "";
 
     /**
      * タイトル情報
      */
-    private FXHDM02 titleInfo;
+    protected FXHDM02 titleInfo;
     /**
      * 画面上部ボタン
      */
-    private List<FXHDD02> buttonListTop;
+    protected List<FXHDD02> buttonListTop;
     /**
      * 画面下部ボタン
      */
-    private List<FXHDD02> buttonListBottom;
+    protected List<FXHDD02> buttonListBottom;
     /**
      * チェックリスト
      */
-    private List<FXHDM05> checkListHDM05;
+    protected List<FXHDM05> checkListHDM05;
     /**
      * DaJokenリスト
      */
-    private List<DaJoken> listDaJoken;
+    protected List<DaJoken> listDaJoken;
     /**
      *
      * 項目データ
      */
-    private List<FXHDD01> itemList;
+    protected List<FXHDD01> itemList;
+    /**
+     *
+     * 項目データ(拡張)※複数画面IDの情報保持
+     */
+    protected List<FXHDD01> itemListEx;
     /**
      * 処理データ
      */
-    private ProcessData processData = null;
+    protected ProcessData processData = null;
     /**
      * 警告ダイアログ
      */
-    private boolean warnDialogRendered = false;
+    protected boolean warnDialogRendered = false;
     /**
      * ユーザー認証：ユーザー
      */
@@ -194,12 +204,12 @@ public class GXHDO901A implements Serializable {
     /**
      * チェック無しボタンIDリスト(設定しているIDについてはエラー処理の背景色をクリアしない)
      */
-    private List<String> noCheckButtonId;
+    protected List<String> noCheckButtonId;
 
     /**
      * 一覧の表示件数
      */
-    private String hyojiKensu;
+    protected String hyojiKensu;
 
     /**
      * displayNoneを設定する(致命的な画面表示エラー時)
@@ -311,6 +321,21 @@ public class GXHDO901A implements Serializable {
      */
     public List<FXHDD01> getItemList() {
         return itemList;
+    }
+    /**
+     * 項目データ(拡張)※複数画面IDの情報保持
+     * @return the itemListEx
+     */
+    public List<FXHDD01> getItemListEx() {
+        return itemListEx;
+    }
+    
+    /**
+     * 項目データ(拡張)※複数画面IDの情報保持
+     * @param itemListEx
+     */
+    public void setItemListEx(List<FXHDD01> itemListEx) {
+        this.itemListEx = itemListEx;
     }
 
     /**
@@ -606,6 +631,7 @@ public class GXHDO901A implements Serializable {
         data.setFormLogic(formLogic);
         data.setMethod("initial");
         data.setItemList(this.itemList);
+        data.setItemListEx(this.itemListEx);
         data.setDataSourceDocServer(this.dataSourceDocServer);
         data.setDataSourceQcdb(this.dataSourceQcdb);
         data.setDataSourceSpskadoritu(this.dataSourceSpskadoritu);
@@ -852,6 +878,9 @@ public class GXHDO901A implements Serializable {
             if (errorMessageInfo.getIsChangeBackColor()) {
                 // エラー項目の背景色を設定
                 ErrUtil.setErrorItemBackColor(this.itemList, errorMessageInfo);
+                if(this.itemListEx != null){
+                    ErrUtil.setErrorItemBackColor(this.itemListEx, errorMessageInfo);
+                }
             }
 
             // エラー項目を表示するためページを遷移する。
@@ -867,6 +896,7 @@ public class GXHDO901A implements Serializable {
         data.setFormLogic(formLogic);
         data.setMethod(method);
         data.setItemList(this.itemList);
+        data.setItemListEx(this.itemListEx);
         data.setDataSourceDocServer(this.dataSourceDocServer);
         data.setDataSourceQcdb(this.dataSourceQcdb);
         data.setDataSourceSpskadoritu(this.dataSourceSpskadoritu);
@@ -909,6 +939,9 @@ public class GXHDO901A implements Serializable {
                 if (errorMessageInfo.getIsChangeBackColor()) {
                     // エラー項目の背景色を設定
                     ErrUtil.setErrorItemBackColor(this.itemList, errorMessageInfo);
+                    if(this.itemListEx != null && !this.itemListEx.isEmpty()){
+                        ErrUtil.setErrorItemBackColor(this.itemListEx, errorMessageInfo);
+                    }
                 }
             }
 
@@ -996,6 +1029,7 @@ public class GXHDO901A implements Serializable {
             if (this.processData.isFatalError()) {
                 // 画面の戻るボタン以外を非表示とする。
                 this.itemList = new ArrayList<>();
+                this.itemListEx = new ArrayList<>();
                 this.buttonListTop = new ArrayList<>();
                 this.buttonListBottom = new ArrayList<>();
                 this.styleDisplayNone = "display: none;";
@@ -1008,6 +1042,7 @@ public class GXHDO901A implements Serializable {
             } else {
                 // 後続処理が定義されていない場合は結果を反映して処理を終了する
                 this.itemList = resultData.getItemList();
+                this.itemListEx = resultData.getItemListEx();
                 // 情報メッセージが設定されていれば出力する
                 if (!StringUtils.isEmpty(this.processData.getInfoMessage())) {
                     FacesMessage message
@@ -1180,7 +1215,7 @@ public class GXHDO901A implements Serializable {
      * @param callerFormId 画面ID(呼出し元)
      * @return データ取得判定(true:データ取得有り、false：データ取得無し)
      */
-    private boolean loadItemSettings(String formId, String callerFormId) {
+    protected boolean loadItemSettings(String formId, String callerFormId) {
         boolean result = false;
         // ユーザーグループ取得
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
@@ -1302,7 +1337,7 @@ public class GXHDO901A implements Serializable {
      * @param formId 画面ID
      * @return データ取得判定(true:データ取得有り、false：データ取得無し)
      */
-    private boolean loadButtonSettings(String formId) {
+    protected boolean loadButtonSettings(String formId) {
         boolean result = false;
 
         // ユーザーグループ取得
@@ -1376,7 +1411,7 @@ public class GXHDO901A implements Serializable {
      *
      * @param formId 画面ID
      */
-    private void loadCheckList(String formId) {
+    protected void loadCheckList(String formId) {
 
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceDocServer);
@@ -1475,10 +1510,10 @@ public class GXHDO901A implements Serializable {
     /**
      * 共通チェック
      *
-     * @param method 処理メソッド名
+     * @param buttonId ボタンID
      * @return エラーメッセージ
      */
-    private ErrorMessageInfo getCheckResult(String buttonId) {
+    protected ErrorMessageInfo getCheckResult(String buttonId) {
 
         // リビジョンチェック
         ErrorMessageInfo checkRevErrorMessage = checkRevision(buttonId);
@@ -1502,7 +1537,7 @@ public class GXHDO901A implements Serializable {
      *
      * @param buttonId ボタンID
      */
-    private void clearItemListBackColor(String buttonId) {
+    protected void clearItemListBackColor(String buttonId) {
         // 背景色を戻さない特定の処理を除き背景色をデフォルトの背景色に戻す。
         if (this.noCheckButtonId == null || !this.noCheckButtonId.contains(buttonId)) {
             for (FXHDD01 fxhdd01 : this.itemList) {
@@ -1516,7 +1551,7 @@ public class GXHDO901A implements Serializable {
      *
      * @param itemIndex 表示項目のインデックス
      */
-    private void setPageItemDataList(int itemIndex) {
+    protected void setPageItemDataList(int itemIndex) {
 
         // Indexが0未満の場合はリターン
         if (itemIndex <= 0) {
@@ -1566,7 +1601,7 @@ public class GXHDO901A implements Serializable {
      * @param buttonId ボタンID
      * @return エラーメッセージ情報(エラーなし無しの場合リターン)
      */
-    private ErrorMessageInfo checkRevision(String buttonId) {
+    protected ErrorMessageInfo checkRevision(String buttonId) {
         try {
 
             //リビジョンチェック対象のボタンの場合、チェックを行う。

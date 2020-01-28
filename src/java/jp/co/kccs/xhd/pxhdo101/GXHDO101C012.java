@@ -335,9 +335,9 @@ public class GXHDO101C012 implements Serializable {
         String strKojyo = "";
         String strLotNo = "";
 
-        if(!"".equals(sanshouMotoLotNo) && sanshouMotoLotNo != null){
-            strKojyo = this.sanshouMotoLotNo.substring(0, 3);
-            strLotNo = this.sanshouMotoLotNo.substring(3, 11);
+        if(!StringUtil.isEmpty(sanshouSakiLotNo)){
+            strKojyo = this.sanshouSakiLotNo.substring(0, 3);
+            strLotNo = this.sanshouSakiLotNo.substring(3, 11);
         }
 
         try {

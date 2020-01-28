@@ -11,14 +11,14 @@
             <p:panel>
                 <h:panelGrid columns="2" cellpadding="0" style="font-size: 20px;">
                     <h:outputText value="担当者コード" style="position:relative;top:3px;"/>
-                    <p:inputText id="authUser" value="#{gXHDO901A.authUser}"
+                    <p:inputText id="authUser" value="#{gXHDO901ACommon.authUser}"
                                  maxlength="6"
                                  style="position:relative; left: 10px; top:1px; width:150px;">
                     </p:inputText>
                 </h:panelGrid>
                 <h:panelGrid columns="2" cellpadding="0" style="font-size: 20px;">
                     <h:outputText value="パスワード"  style="position:relative;top:3px;"/>
-                    <p:password id="authPassword" value="#{gXHDO901A.authPassword}"
+                    <p:password id="authPassword" value="#{gXHDO901ACommon.authPassword}"
                                  maxlength="10"
                                  style="position:relative; left: 30px; top:1px; width:150px;">
                     </p:password>   
@@ -26,7 +26,7 @@
             </p:panel>
             <p:commandButton value="OK" id="okuriBtn"
                              style="position:relative;left:65px;top:20px;width:110px;height:38px;"
-                             actionListener="#{gXHDO901A.userAuth()}"
+                             actionListener="#{gXHDO901ACommon.userAuth()}"
                              process="form:userAuthForm"
                              update="form:confDialog form:growlMessage form:compMessageForm"
                              oncomplete="PF('W_dlg_userAuth').hide(); cmdButtonOncomplete(args);"/>

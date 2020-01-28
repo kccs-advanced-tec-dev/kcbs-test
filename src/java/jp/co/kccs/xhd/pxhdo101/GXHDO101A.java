@@ -59,6 +59,11 @@ import org.primefaces.context.RequestContext;
  * 変更者	K.Hisanaga<br>
  * 変更理由	各種機能メニュー追加処理<br>
  * <br>
+ * 変更日	2019/12/22<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	K.Hisanaga<br>
+ * 変更理由	電気特性パラメータ設定処理追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -86,7 +91,9 @@ public class GXHDO101A implements Serializable {
     private static final String FORM_ID_GAIBUDENKYOKU_SYOSEI = "GXHDO101B029";
     private static final String FORM_ID_GAIBUDENKYOKU_SYOSEIGAIKAN = "GXHDO101B030";
     private static final String FORM_ID_GAIBUDENKYOKU_MEKKI_HINSHITSU_KENSA = "GXHDO101B038";
-    
+    private static final String FORM_ID_DENKITOKUSEI_ESI = "GXHDO101B040";
+    private static final String FORM_ID_DENKITOKUSEI_3TANSHI_4TANSHI = "GXHDO101B041";
+    private static final String FORM_ID_DENKITOKUSEI_IPPANHIN = "GXHDO101B042";
     
     /**
      * DataSource(wip)
@@ -363,6 +370,9 @@ public class GXHDO101A implements Serializable {
             String menuNameGaibuDenkyokuSyosei = this.menuListGXHDO101Nofiltering.stream().filter(n -> FORM_ID_GAIBUDENKYOKU_SYOSEI.equals(n.getFormId())).findFirst().map(f -> f.getMenuName()).orElse("");
             String menuNameGaibuDenkyokuTofu = this.menuListGXHDO101Nofiltering.stream().filter(n -> FORM_ID_GAIBUDENKYOKU_TOFU.equals(n.getFormId())).findFirst().map(f -> f.getMenuName()).orElse("");
             String menuNameGaibuDenkyokuMekki = this.menuListGXHDO101Nofiltering.stream().filter(n -> FORM_ID_GAIBUDENKYOKU_MEKKI_HINSHITSU_KENSA.equals(n.getFormId())).findFirst().map(f -> f.getMenuName()).orElse("");
+            String menuNameDenkitokuseiEsi = this.menuListGXHDO101Nofiltering.stream().filter(n -> FORM_ID_DENKITOKUSEI_ESI.equals(n.getFormId())).findFirst().map(f -> f.getMenuName()).orElse("");
+            String menuNameDenkitokusei3Tanshi4Tanshi = this.menuListGXHDO101Nofiltering.stream().filter(n -> FORM_ID_DENKITOKUSEI_3TANSHI_4TANSHI.equals(n.getFormId())).findFirst().map(f -> f.getMenuName()).orElse("");
+            String menuNameDenkitokuseiIppanhin = this.menuListGXHDO101Nofiltering.stream().filter(n -> FORM_ID_DENKITOKUSEI_IPPANHIN.equals(n.getFormId())).findFirst().map(f -> f.getMenuName()).orElse("");
             
             //画面ID(メニュー)追加(再酸化)
             addMenuSaisanka(strSekkeiNo, this.menuListGXHDO101, this.menuListGXHDO101Nofiltering, messageListMain, menuNameSaisanka, queryRunnerXHD, session);
@@ -384,6 +394,16 @@ public class GXHDO101A implements Serializable {
             
             //画面ID(メニュー)追加(外部電極・ﾒｯｷ品質検査)
             addMenuGaibuDenkyokuMekkiHinshitsuKensa(this.menuListGXHDO101, this.menuListGXHDO101Nofiltering, messageListMain, menuNameGaibuDenkyokuMekki,queryRunnerXHD, queryRunnerDoc);
+            
+            //画面ID(メニュー)追加(電気特性・ESI)
+            addMenuDenkitokusei(menuListGXHDO101, menuListGXHDO101Nofiltering, messageListMain, menuNameDenkitokuseiEsi, queryRunnerXHD, queryRunnerDoc, FORM_ID_DENKITOKUSEI_ESI);
+
+            //画面ID(メニュー)追加(電気特性・3端子4端子)
+            addMenuDenkitokusei(menuListGXHDO101, menuListGXHDO101Nofiltering, messageListMain, menuNameDenkitokusei3Tanshi4Tanshi, queryRunnerXHD, queryRunnerDoc, FORM_ID_DENKITOKUSEI_3TANSHI_4TANSHI);
+
+            //画面ID(メニュー)追加(電気特性・一般品)
+            addMenuDenkitokusei(menuListGXHDO101, menuListGXHDO101Nofiltering, messageListMain, menuNameDenkitokuseiIppanhin, queryRunnerXHD, queryRunnerDoc, FORM_ID_DENKITOKUSEI_IPPANHIN);
+
             
             // メニューに実績Noを設定
             setMenuJisekiNo(this.menuListGXHDO101);// 権限絞り込みありメニュー
@@ -423,8 +443,9 @@ public class GXHDO101A implements Serializable {
             filterGamenList.add("GXHDO101B006");
             boolean gamenExistFlg = false;
             gamenExistFlg = lotSanshouMenuListFiltering(this.menuListGXHDO101, filterGamenList);
+            
             //ﾛｯﾄ参照ﾎﾞﾀﾝ表示/非表示の設定
-            if(gamenExistFlg){
+            if(gamenExistFlg && userGrpList.contains("ﾛｯﾄ参照_利用ﾕｰｻﾞｰ")){
                 setSanshouBtnRender(true);
             }else{
                 setSanshouBtnRender(false);
@@ -549,6 +570,9 @@ public class GXHDO101A implements Serializable {
             if (FORM_ID_GAIBUDENKYOKU_TOFU_TANSHI.equals(rowData.getFormId()) || FORM_ID_GAIBUDENKYOKU_TOFU.equals(rowData.getFormId())) {
                 session.setAttribute("soujuryou", getSoujuryou(this.menuListGXHDO101Nofiltering));
             }
+            
+            // 電気特性画面用の情報をｾｯｼｮﾝにセットする。
+            setDenkitokuseiSessionData(rowData.getFormId(), session);
 
             // 前工程が存在するかつ前工程のデータが取得できなかった場合
             if (maeKoteiMenuInfo != null && maekoteiInfo == null) {
@@ -2663,4 +2687,145 @@ public class GXHDO101A implements Serializable {
         }
         return "";
     }
+    
+    
+     /**
+      * 電気特性画面に必要な情報をセッションにセットする。
+      * @param formId 画面ID
+      * @param session セッション情報
+      * @throws SQLException 例外エラー
+      */
+    private void setDenkitokuseiSessionData(String formId, HttpSession session) throws SQLException {
+        
+        if(!FORM_ID_DENKITOKUSEI_ESI.equals(formId) && !FORM_ID_DENKITOKUSEI_3TANSHI_4TANSHI.equals(formId) && !FORM_ID_DENKITOKUSEI_IPPANHIN.equals(formId)){
+            // 電気特性の画面ID以外は処理なし
+            return;
+        }
+        
+        QueryRunner queryRunnerDoc = new QueryRunner(dataSourceDocServer);
+        QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
+        String strKojyo = this.searchLotNo.substring(0, 3);
+        String strLotNo = this.searchLotNo.substring(3, 11);
+        String strEdaban = this.searchLotNo.substring(11, 14);
+        
+        // ﾒｯｷ品質検査(登録済みのデータが存在すれば値を取得する。)
+        Map srMekkiInfo = null;
+        List<String[]> Fxhdd03InfoListB038 = loadFxhdd03InfoListJisekiNoDesc(queryRunnerDoc, strKojyo, strLotNo, strEdaban, "GXHDO101B038");
+        if (!Fxhdd03InfoListB038.isEmpty() && "1".equals(Fxhdd03InfoListB038.get(0)[0])) {
+            srMekkiInfo = CommonUtil.getSrMekkiData(queryRunnerQcdb, strKojyo, strLotNo, strEdaban, Fxhdd03InfoListB038.get(0)[2], Integer.parseInt(Fxhdd03InfoListB038.get(0)[1]));
+        }
+        session.setAttribute("SrMekkiInfo", srMekkiInfo);
+
+        //外部電極焼成
+        Map srGdyakitukeInfo = null;
+        List<String[]> Fxhdd03InfoListB029 = loadFxhdd03InfoListJisekiNoDesc(queryRunnerDoc, strKojyo, strLotNo, strEdaban, "GXHDO101B029");
+        if (!Fxhdd03InfoListB029.isEmpty() && "1".equals(Fxhdd03InfoListB029.get(0)[0])) {
+            srGdyakitukeInfo = CommonUtil.getSrGdyakitukeData(queryRunnerQcdb, strKojyo, strLotNo, strEdaban, Fxhdd03InfoListB029.get(0)[2], Integer.parseInt(Fxhdd03InfoListB029.get(0)[1]));
+        }
+        session.setAttribute("SrGdyakitukeInfo", srGdyakitukeInfo);
+
+        //磁器QC
+        Map srJikiqcInfo = null;
+        List<String[]> Fxhdd03InfoListB022 = loadFxhdd03InfoListJisekiNoDesc(queryRunnerDoc, strKojyo, strLotNo, strEdaban, "GXHDO101B022");
+        if (!Fxhdd03InfoListB022.isEmpty() && "1".equals(Fxhdd03InfoListB022.get(0)[0])) {
+            srJikiqcInfo = CommonUtil.getSrJikiqcData(queryRunnerQcdb, strKojyo, strLotNo, strEdaban, Fxhdd03InfoListB022.get(0)[2], Integer.parseInt(Fxhdd03InfoListB022.get(0)[1]));
+        }
+        session.setAttribute("SrJikiqcInfo", srJikiqcInfo);
+
+    }
+    
+    
+    
+    /**
+     * 電気特性メニュー 追加処理
+     *
+     * @param menuListGXHDO101 メニューリスト(絞込有り)
+     * @param menuListGXHDO101Nofiltering メニューリスト(絞込無し)
+     * @param messageList メッセージリスト
+     * @param menuName メニュー名
+     * @param queryRunnerXHD データオブジェクト
+     * @param formId 画面ID
+     * @throws SQLException 例外エラー
+     * @throws CloneNotSupportedException 例外エラー
+     */
+    private void addMenuDenkitokusei(List<FXHDM01> menuListGXHDO101, List<FXHDM01> menuListGXHDO101Nofiltering, List<String> messageList,
+            String menuName, QueryRunner queryRunnerXHD, QueryRunner queryRunnerDoc, String formId) throws SQLException, CloneNotSupportedException {
+        // 電気特性のメニューがが存在しない場合
+        if (!existFormIds(menuListGXHDO101Nofiltering, formId)) {
+            return;
+        }
+        // ﾛｯﾄNoを分割(チェック処理が実行されている前提の為、桁数の不足などは考慮しない)
+        String strKojyo = this.lotNo.substring(0, 3);
+        String strLotNo = this.lotNo.substring(3, 11);
+        String strEdaban = this.lotNo.substring(11, 14);
+
+        // 品質DB登録実績情報(登録済)取得
+        List<String[]> fxhdd03InfoList = loadFxhdd03InfoList(queryRunnerDoc, strKojyo, strLotNo, strEdaban, formId);
+        int jissekiNo = 1;
+        for (String[] info : fxhdd03InfoList) {
+            
+            // 実績Noをセット
+            jissekiNo = Integer.parseInt(info[1]);
+            // 状態ﾌﾗｸﾞが"1"(登録済)以外の場合ブレイク
+            if (!"1".equals(info[0])) {
+                break;
+            }
+
+            // 電気特性から電気特性再検を取得
+            String saiken = getSrDenkitokuseiesi(queryRunnerXHD, strKojyo, strLotNo, strEdaban, info[1], info[2], formId);
+            // データが存在しない場合、エラー
+            if (saiken == null) {
+                messageList.add(MessageUtil.getMessage("XHD-000170"));
+                return;
+            }
+
+            // 再検査以外ループを抜ける
+            if (!"再検査".equals(saiken)) {
+                break;
+            }
+
+            jissekiNo++;
+        }
+
+        // メニューを回数(実績No)分追加
+        addMenuKaisu(menuListGXHDO101, jissekiNo, menuName, formId);// 権限絞り込みありメニュー
+        addMenuKaisu(menuListGXHDO101Nofiltering, jissekiNo, menuName, formId);// 権限絞り込みなしメニュー
+    }
+    
+    
+    /**
+     * [電気特性]から、電気特性再検を取得(値が無い場合はNULLを返却)
+     *
+     * @param queryRunnerXHD QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @param rev revision(検索キー)
+     * @return 電気特性再検(saiken)
+     * @throws SQLException 例外エラー
+     */
+    private String getSrDenkitokuseiesi(QueryRunner queryRunnerXHD, String kojyo, String lotNo,
+            String edaban, String jissekino, String rev, String formId) throws SQLException {
+
+        String sql = "SELECT saiken "
+                + "FROM sr_denkitokuseiesi "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ? AND setubikubun = ?";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(jissekino);
+        params.add(rev);
+        params.add(formId);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        Map resultMap = queryRunnerXHD.query(sql, new MapHandler(), params.toArray());
+        if (resultMap == null) {
+            return null;
+        }
+
+        return StringUtil.nullToBlank(resultMap.get("saiken"));
+    }
+    
 }
