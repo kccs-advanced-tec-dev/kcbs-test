@@ -26,7 +26,7 @@ import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.db.model.Jisseki;
 import jp.co.kccs.xhd.db.model.MekkiRireki;
 import jp.co.kccs.xhd.db.model.SrMekki;
-import jp.co.kccs.xhd.db.model.SrQasumpou1;
+import jp.co.kccs.xhd.db.model.SrQasunpou1;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.GXHDO901A;
 import jp.co.kccs.xhd.pxhdo901.IFormLogic;
@@ -1127,13 +1127,13 @@ public class GXHDO101B038 implements IFormLogic {
         
         // T寸法の取得
         String tsunpouave = null;
-         List<SrQasumpou1> srQasumpou1Data = loadSrQasumpou1Data(queryRunnerQcdb, lotNo);
-         if(srQasumpou1Data != null && srQasumpou1Data.size() > 0){
-                BigDecimal dbTsunpouave = srQasumpou1Data.get(0).getTsunave(); //T寸法(AVE)
-                if(dbTsunpouave.compareTo(BigDecimal.ZERO) > 0){
-                    tsunpouave = String.valueOf(dbTsunpouave);                
-                }
+        List<SrQasunpou1> srQasunpou1Data = loadSrQasunpou1Data(queryRunnerQcdb, lotNo);
+        if (srQasunpou1Data != null && srQasunpou1Data.size() > 0) {
+            BigDecimal dbTsunpouave = srQasunpou1Data.get(0).getTsunave(); //T寸法(AVE)
+            if (dbTsunpouave.compareTo(BigDecimal.ZERO) > 0) {
+                tsunpouave = String.valueOf(dbTsunpouave);
             }
+        }
         
         // 入力項目の情報を画面にセットする。
         if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId, paramJissekino)) {
@@ -1620,7 +1620,7 @@ public class GXHDO101B038 implements IFormLogic {
      * @return 取得データ
      * @throws SQLException 
      */
-     private List<SrQasumpou1> loadSrQasumpou1Data(QueryRunner queryRunnerQcdb, String lotNo) throws SQLException {
+     private List<SrQasunpou1> loadSrQasunpou1Data(QueryRunner queryRunnerQcdb, String lotNo) throws SQLException {
         String lotNo1 = lotNo.substring(0, 3);
         String lotNo2 = lotNo.substring(3, 11);
         String lotNo3 = lotNo.substring(11, 14);
@@ -1628,7 +1628,7 @@ public class GXHDO101B038 implements IFormLogic {
         
         // QA寸法情報データの取得
         String sql = "SELECT tsunave "
-                + "FROM sr_qasumpou1 "
+                + "FROM sr_qasunpou1 "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? "
                 + "ORDER BY jissekino desc ";
         
@@ -1637,7 +1637,7 @@ public class GXHDO101B038 implements IFormLogic {
         
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
-        ResultSetHandler<List<SrQasumpou1>> beanHandler = new BeanListHandler<>(SrQasumpou1.class, rowProcessor);
+        ResultSetHandler<List<SrQasunpou1>> beanHandler = new BeanListHandler<>(SrQasunpou1.class, rowProcessor);
 
         List<Object> params = new ArrayList<>();
         params.add(lotNo1);
