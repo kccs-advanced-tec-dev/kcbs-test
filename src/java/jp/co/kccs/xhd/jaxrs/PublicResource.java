@@ -4,7 +4,6 @@
 package jp.co.kccs.xhd.jaxrs;
 
 import java.math.BigDecimal;
-import java.math.MathContext;
 import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -19,7 +18,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
@@ -415,6 +413,11 @@ public class PublicResource {
                 break;
             case "nA":
                 devValue = new BigDecimal("1000000000");
+                break;
+            case "pA":
+                devValue = new BigDecimal("1000000000000");
+                // 元の小数部は全て切り捨て
+                decHanteichi = decHanteichi.setScale(0, RoundingMode.DOWN);
                 break;
             default:
                 break;
