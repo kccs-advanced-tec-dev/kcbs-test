@@ -1,0 +1,79 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <p:dialog header="#{myMsg.tp_sagyo_tyui}" id="dlg_gxhdo101c013" widgetVar="W_dlg_gxhdo101c013"
+              width="530" modal="true" height="430"
+              dynamic="true" closable="true" closeOnEscape="false" 
+              onShow="subFormOpen();" resizable="false"
+              onHide="subFormClose();" position="center top">
+
+        <h:form id="gxhdo101c013Form">
+            <p:panelGrid style="border: 1px;margin-top: 20px;margin-left: 20px;">
+                <p:row style="text-align: center; height: 40px; background: #b8daff">
+                    <p:column style="width: 120px;">
+                        <h:outputText value="形式"/>
+                    </p:column>
+                    <p:column style="width: 200px;">
+                        <h:outputText value="バラシチェック数量"/>
+                    </p:column>
+                </p:row>
+                <p:row style="text-align: center; height: 40px;">
+                    <p:column>
+                        <h:outputText value="1005系以下"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="1,000pcs"/>
+                    </p:column>
+                </p:row>
+                <p:row style="text-align: center; height: 40px;">
+                    <p:column>
+                        <h:outputText value="1608系以上"/>
+                    </p:column>
+                    <p:column>
+                        <h:outputText value="250pcs"/>
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            <p:panelGrid style="margin-left: 10px;margin-top: 20px; font-size: 0.8em">
+                <p:row>
+                    <p:column style="border-style:hidden;padding-bottom: 0px;">
+                        <h:outputText  value="※1:バラシチェック"/>
+                        <BR/>
+                        <h:outputText style="margin-left: 20px;" value="チップのくっつき、製品外観、カバーテープのずれ、キズ、キレ、"/>
+                        <BR/>
+                        <h:outputText style="margin-left: 20px;" value="糸くず状の発生無き事。"/>
+                        <BR/>
+                        <h:outputText style="margin-left: 20px;" value="・・・数量については、上表を参照のうえOKを入れる"/>
+                    </p:column>
+                </p:row>
+               <p:row>
+                    <p:column style="border-style:hidden;">
+                        <h:outputText  value="※2:バラシ対象リールにはラベル部分に×をつける事。"/>
+                    </p:column>
+               </p:row>
+                <p:row>
+                    <p:column style="border-style:hidden;">
+                        <h:outputText  value="※3:リール数が会わない場合は、不適合連絡品(Bランク)を作成し、"/>
+                        <BR/>
+                        <h:outputText style="margin-left: 20px;" value="指示に従うこと。"/>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column style="border-style:hidden;">
+                        <h:outputText  value="注）:多台掛けは禁止とし、必要があればロット分割をして処理する事。"/>
+                        <BR/>
+                        <h:outputText style="margin-left: 20px;" value="また、ロット分割は製造部責任者の承認をする事。"/>
+                    </p:column>
+                </p:row>
+               
+            </p:panelGrid>
+            <p:commandButton value="OK" id="okBtn"
+                             style="position:relative;left:350px;top:13px;width:110px;height:35px;"
+                             process="@this" 
+                             update="form:growlMessage"
+                             oncomplete="PF('W_dlg_gxhdo101c013').hide();"/>
+        </h:form>
+    </p:dialog>
+</ui:composition>
