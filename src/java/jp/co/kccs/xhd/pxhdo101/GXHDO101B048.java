@@ -448,6 +448,81 @@ public class GXHDO101B048 implements IFormLogic {
      */
     private ErrorMessageInfo checkItemRegistCorrect(ProcessData processData) {
 
+        ErrorMessageInfo errorMessageInfo;
+
+        // ﾎｯﾊﾟｰﾈｼﾞ確認
+        errorMessageInfo = checkComboBoxSelectNG(getItemRow(processData.getItemList(), GXHDO101B048Const.HOPPERNEJI_KAKUNIN));
+        if (errorMessageInfo != null) {
+            return errorMessageInfo;
+        }
+        
+        // ｺﾃ清掃
+        errorMessageInfo = checkComboBoxSelectNG(getItemRow(processData.getItemList(), GXHDO101B048Const.KOTE_SEISOU));
+        if (errorMessageInfo != null) {
+            return errorMessageInfo;
+        }
+        
+        // 開始前に製品残無き事
+        errorMessageInfo = checkComboBoxSelectNG(getItemRow(processData.getItemList(), GXHDO101B048Const.KAISIMAESEHINZANNASI));
+        if (errorMessageInfo != null) {
+            return errorMessageInfo;
+        }
+        
+        // 自重落下試験
+        errorMessageInfo = checkComboBoxSelectNG(getItemRow(processData.getItemList(), GXHDO101B048Const.JIJU_RAKKA));
+        if (errorMessageInfo != null) {
+            return errorMessageInfo;
+        }
+        
+        // ﾊﾞﾗｼﾁｪｯｸ
+        errorMessageInfo = checkComboBoxSelectNG(getItemRow(processData.getItemList(), GXHDO101B048Const.BARASHI_CHECK));
+        if (errorMessageInfo != null) {
+            return errorMessageInfo;
+        }
+        
+        // ﾄｯﾌﾟﾃｰﾌﾟ確認
+        errorMessageInfo = checkComboBoxSelectNG(getItemRow(processData.getItemList(), GXHDO101B048Const.TOPTAPE_KAKUNIN));
+        if (errorMessageInfo != null) {
+            return errorMessageInfo;
+        }
+        
+        // ﾒﾝﾃ後TP外観
+        errorMessageInfo = checkComboBoxSelectNG(getItemRow(processData.getItemList(), GXHDO101B048Const.MAINTGO_TP_GAIKAN));
+        if (errorMessageInfo != null) {
+            return errorMessageInfo;
+        }
+        
+        // ﾘｰﾙ数ﾁｪｯｸ
+        errorMessageInfo = checkComboBoxSelectNG(getItemRow(processData.getItemList(), GXHDO101B048Const.REELSU_CHECK));
+        if (errorMessageInfo != null) {
+            return errorMessageInfo;
+        }
+
+        // TP後清掃：ﾎｯﾊﾟｰ部
+        errorMessageInfo = checkComboBoxSelectNG(getItemRow(processData.getItemList(), GXHDO101B048Const.TPATO_SEISOU_HOPPER_PART));
+        if (errorMessageInfo != null) {
+            return errorMessageInfo;
+        }
+
+        // TP後清掃：ﾌｨｰﾀﾞ部
+        errorMessageInfo = checkComboBoxSelectNG(getItemRow(processData.getItemList(), GXHDO101B048Const.TPATO_SEISOU_FEEDER_PART));
+        if (errorMessageInfo != null) {
+            return errorMessageInfo;
+        }
+
+        // TP後清掃：INDEX内
+        errorMessageInfo = checkComboBoxSelectNG(getItemRow(processData.getItemList(), GXHDO101B048Const.TPATO_SEISOU_IN_INDEX));
+        if (errorMessageInfo != null) {
+            return errorMessageInfo;
+        }
+
+        // TP後清掃：NGBOX内
+        errorMessageInfo = checkComboBoxSelectNG(getItemRow(processData.getItemList(), GXHDO101B048Const.TPATO_SEISOU_IN_NGBOX));
+        if (errorMessageInfo != null) {
+            return errorMessageInfo;
+        }
+
+        
         ValidateUtil validateUtil = new ValidateUtil();
         // 開始日時、終了日時前後チェック
         FXHDD01 kaishiDay = getItemRow(processData.getItemList(), GXHDO101B048Const.KAISHI_DAY); //開始日
@@ -3196,6 +3271,24 @@ public class GXHDO101B048 implements IFormLogic {
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+    
+    /**
+     * コンボボックスNG選択チェック
+     *
+     * @param itemData 項目データデータ
+     * @return エラーメッセージ情報
+     */
+    private ErrorMessageInfo checkComboBoxSelectNG(FXHDD01 itemData) {
+        if (itemData == null) {
+            return null;
+        }
+
+        if ("NG".equals(itemData.getValue())) {
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemData);
+            return MessageUtil.getErrorMessageInfo("XHD-000032", true, true, errFxhdd01List, itemData.getLabel1());
+        }
+        return null;
     }
 
 }
