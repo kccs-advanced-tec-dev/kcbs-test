@@ -921,7 +921,7 @@ public class GXHDO101B042Const {
     /**
      * 選別開始日時(画面上ボタン)
      */
-    public static final String BTN_SENBETSU_STARTDATETIME_TOP = "sr_denkitokuseiesi_senbetsu_startdatetime_42_Top";
+    public static final String BTN_SENBETSU_STARTDATETIME_TOP = "sr_denkitokuseiesi_senbetsu_stdatetime_42_Top";
 
     /**
      * 選別終了日時(画面上ボタン)
@@ -957,6 +957,66 @@ public class GXHDO101B042Const {
      * 設備ﾃﾞｰﾀ取込(画面上ボタン)
      */
     public static final String BTN_SETSUBI_DATA_TORIKOMI_TOP = "sr_denkitokuseiesi_setsubi_data_torikomi_42_Top";
+    
+        /**
+     * 仮登録(画面下ボタン)
+     */
+    public static final String BTN_KARI_TOUROKU_BOTTOM = "sr_denkitokuseiesi_kari_touroku_42_Bottom";
+
+    /**
+     * 登録(画面下ボタン)
+     */
+    public static final String BTN_INSERT_BOTTOM = "sr_denkitokuseiesi_insert_42_Bottom";
+
+    /**
+     * 修正(画面下ボタン)
+     */
+    public static final String BTN_UPDATE_BOTTOM = "sr_denkitokuseiesi_update_42_Bottom";
+
+    /**
+     * 削除(画面下ボタン)
+     */
+    public static final String BTN_DELETE_BOTTOM = "sr_denkitokuseiesi_delete_42_Bottom";
+
+    /**
+     * 選別開始日時(画面下ボタン)
+     */
+    public static final String BTN_SENBETSU_STARTDATETIME_BOTTOM = "sr_denkitokuseiesi_senbetsu_stdatetime_42_Bottom";
+
+    /**
+     * 選別終了日時(画面下ボタン)
+     */
+    public static final String BTN_SENBETSU_ENDDATETIME_BOTTOM = "sr_denkitokuseiesi_senbetsu_enddatetime_42_Bottom";
+
+    /**
+     * BIN計算(画面下ボタン)
+     */
+    public static final String BTN_BIN_KEISAN_BOTTOM = "sr_denkitokuseiesi_bin_keisan_42_Bottom";
+
+    /**
+     * 良品計算(画面下ボタン)
+     */
+    public static final String BTN_RYOHIN_KEISAN_BOTTOM = "sr_denkitokuseiesi_ryohin_keisan_42_Bottom";
+
+    /**
+     * 歩留まり計算(画面下ボタン)
+     */
+    public static final String BTN_BUDOMARI_KEISAN_BOTTOM = "sr_denkitokuseiesi_budomari_keisan_42_Bottom";
+
+    /**
+     * 熱処理ｴｰｼﾞﾝｸﾞ計算(画面下ボタン)
+     */
+    public static final String BTN_NETSUSYORI_KEISAN_BOTTOM = "sr_denkitokuseiesi_netsusyori_keisan_42_Bottom";
+
+    /**
+     * 補正率計算(画面下ボタン)
+     */
+    public static final String BTN_HOSEIRITSU_KEISAN_BOTTOM = "sr_denkitokuseiesi_hoseiritsu_keisan_42_Bottom";
+    
+    /**
+     * 設備ﾃﾞｰﾀ取込(画面下ボタン)
+     */
+    public static final String BTN_SETSUBI_DATA_TORIKOMI_BOTTOM = "sr_denkitokuseiesi_setsubi_data_torikomi_42_Bottom";
 
     /**
      * ユーザー認証パラメータ(修正)

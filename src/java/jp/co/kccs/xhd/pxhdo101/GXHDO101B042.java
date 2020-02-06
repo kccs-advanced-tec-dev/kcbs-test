@@ -132,7 +132,16 @@ public class GXHDO101B042 implements IFormLogic {
                     GXHDO101B042Const.BTN_BUDOMARI_KEISAN_TOP,
                     GXHDO101B042Const.BTN_NETSUSYORI_KEISAN_TOP,
                     GXHDO101B042Const.BTN_HOSEIRITSU_KEISAN_TOP,
-                    GXHDO101B042Const.BTN_SETSUBI_DATA_TORIKOMI_TOP
+                    GXHDO101B042Const.BTN_SETSUBI_DATA_TORIKOMI_TOP,
+                    GXHDO101B042Const.BTN_SENBETSU_STARTDATETIME_BOTTOM,
+                    GXHDO101B042Const.BTN_SENBETSU_ENDDATETIME_BOTTOM,
+                    GXHDO101B042Const.BTN_BIN_KEISAN_BOTTOM,
+                    GXHDO101B042Const.BTN_RYOHIN_KEISAN_BOTTOM,
+                    GXHDO101B042Const.BTN_BUDOMARI_KEISAN_BOTTOM,
+                    GXHDO101B042Const.BTN_NETSUSYORI_KEISAN_BOTTOM,
+                    GXHDO101B042Const.BTN_HOSEIRITSU_KEISAN_BOTTOM,
+                    GXHDO101B042Const.BTN_SETSUBI_DATA_TORIKOMI_BOTTOM
+
             ));
 
             // リビジョンチェック対象のボタンを設定する。
@@ -140,7 +149,12 @@ public class GXHDO101B042 implements IFormLogic {
                     GXHDO101B042Const.BTN_KARI_TOUROKU_TOP,
                     GXHDO101B042Const.BTN_INSERT_TOP,
                     GXHDO101B042Const.BTN_DELETE_TOP,
-                    GXHDO101B042Const.BTN_UPDATE_TOP));
+                    GXHDO101B042Const.BTN_UPDATE_TOP,
+                    GXHDO101B042Const.BTN_KARI_TOUROKU_BOTTOM,
+                    GXHDO101B042Const.BTN_INSERT_BOTTOM,
+                    GXHDO101B042Const.BTN_DELETE_BOTTOM,
+                    GXHDO101B042Const.BTN_UPDATE_BOTTOM
+            ));
 
             // エラーが発生していない場合
             if (processData.getErrorMessageInfoList().isEmpty()) {
@@ -174,53 +188,62 @@ public class GXHDO101B042 implements IFormLogic {
         switch (buttonId) {
             // 仮登録
             case GXHDO101B042Const.BTN_KARI_TOUROKU_TOP:
+            case GXHDO101B042Const.BTN_KARI_TOUROKU_BOTTOM:
                 method = "checkDataTempResist";
                 break;
             // 登録
             case GXHDO101B042Const.BTN_INSERT_TOP:
+            case GXHDO101B042Const.BTN_INSERT_BOTTOM:
                 method = "checkDataResist";
                 break;
             // 修正
             case GXHDO101B042Const.BTN_UPDATE_TOP:
+            case GXHDO101B042Const.BTN_UPDATE_BOTTOM:
                 method = "checkDataCorrect";
                 break;
             // 削除
             case GXHDO101B042Const.BTN_DELETE_TOP:
+            case GXHDO101B042Const.BTN_DELETE_BOTTOM:
                 method = "checkDataDelete";
                 break;
             // 選別開始日時
             case GXHDO101B042Const.BTN_SENBETSU_STARTDATETIME_TOP:
+            case GXHDO101B042Const.BTN_SENBETSU_STARTDATETIME_BOTTOM:
                 method = "setSenbetsuKaishiDateTime";
                 break;
             // 選別終了日時
             case GXHDO101B042Const.BTN_SENBETSU_ENDDATETIME_TOP:
+            case GXHDO101B042Const.BTN_SENBETSU_ENDDATETIME_BOTTOM:
                 method = "setSenbetsuShuryoDateTime";
                 break;
-
             // BIN計算
             case GXHDO101B042Const.BTN_BIN_KEISAN_TOP:
+            case GXHDO101B042Const.BTN_BIN_KEISAN_BOTTOM:
                 method = "doBinKeisan";
                 break;
             // 良品計算
             case GXHDO101B042Const.BTN_RYOHIN_KEISAN_TOP:
+            case GXHDO101B042Const.BTN_RYOHIN_KEISAN_BOTTOM:
                 method = "doRyohinKeisan";
                 break;
-
             // 歩留まり計算
             case GXHDO101B042Const.BTN_BUDOMARI_KEISAN_TOP:
+            case GXHDO101B042Const.BTN_BUDOMARI_KEISAN_BOTTOM:
                 method = "doBudomariKeisan";
                 break;
             // 熱処理ｴｰｼﾞﾝｸﾞ計算
             case GXHDO101B042Const.BTN_NETSUSYORI_KEISAN_TOP:
+            case GXHDO101B042Const.BTN_NETSUSYORI_KEISAN_BOTTOM:
                 method = "doNetsushoriAgingKeisan";
                 break;
-
             // 補正率計算
             case GXHDO101B042Const.BTN_HOSEIRITSU_KEISAN_TOP:
+            case GXHDO101B042Const.BTN_HOSEIRITSU_KEISAN_BOTTOM:
                 method = "doHoseiritsuKeisan";
                 break;
             // 設備データ取込
             case GXHDO101B042Const.BTN_SETSUBI_DATA_TORIKOMI_TOP:
+            case GXHDO101B042Const.BTN_SETSUBI_DATA_TORIKOMI_BOTTOM:
                 method = "confSetsubiDataTorikomi";
                 break;
             default:
@@ -913,11 +936,24 @@ public class GXHDO101B042 implements IFormLogic {
                         GXHDO101B042Const.BTN_BUDOMARI_KEISAN_TOP,
                         GXHDO101B042Const.BTN_NETSUSYORI_KEISAN_TOP,
                         GXHDO101B042Const.BTN_HOSEIRITSU_KEISAN_TOP,
-                        GXHDO101B042Const.BTN_SETSUBI_DATA_TORIKOMI_TOP
+                        GXHDO101B042Const.BTN_SETSUBI_DATA_TORIKOMI_TOP,
+                        GXHDO101B042Const.BTN_UPDATE_BOTTOM,
+                        GXHDO101B042Const.BTN_DELETE_BOTTOM,
+                        GXHDO101B042Const.BTN_SENBETSU_STARTDATETIME_BOTTOM,
+                        GXHDO101B042Const.BTN_SENBETSU_ENDDATETIME_BOTTOM,
+                        GXHDO101B042Const.BTN_BIN_KEISAN_BOTTOM,
+                        GXHDO101B042Const.BTN_RYOHIN_KEISAN_BOTTOM,
+                        GXHDO101B042Const.BTN_BUDOMARI_KEISAN_BOTTOM,
+                        GXHDO101B042Const.BTN_NETSUSYORI_KEISAN_BOTTOM,
+                        GXHDO101B042Const.BTN_HOSEIRITSU_KEISAN_BOTTOM,
+                        GXHDO101B042Const.BTN_SETSUBI_DATA_TORIKOMI_BOTTOM
                 ));
                 inactiveIdList.addAll(Arrays.asList(
                         GXHDO101B042Const.BTN_KARI_TOUROKU_TOP,
-                        GXHDO101B042Const.BTN_INSERT_TOP));
+                        GXHDO101B042Const.BTN_INSERT_TOP,
+                        GXHDO101B042Const.BTN_KARI_TOUROKU_BOTTOM,
+                        GXHDO101B042Const.BTN_INSERT_BOTTOM
+                ));
 
                 break;
             default:
@@ -931,11 +967,23 @@ public class GXHDO101B042 implements IFormLogic {
                         GXHDO101B042Const.BTN_BUDOMARI_KEISAN_TOP,
                         GXHDO101B042Const.BTN_NETSUSYORI_KEISAN_TOP,
                         GXHDO101B042Const.BTN_HOSEIRITSU_KEISAN_TOP,
-                        GXHDO101B042Const.BTN_SETSUBI_DATA_TORIKOMI_TOP
+                        GXHDO101B042Const.BTN_SETSUBI_DATA_TORIKOMI_TOP,
+                        GXHDO101B042Const.BTN_KARI_TOUROKU_BOTTOM,
+                        GXHDO101B042Const.BTN_INSERT_BOTTOM,
+                        GXHDO101B042Const.BTN_SENBETSU_STARTDATETIME_BOTTOM,
+                        GXHDO101B042Const.BTN_SENBETSU_ENDDATETIME_BOTTOM,
+                        GXHDO101B042Const.BTN_BIN_KEISAN_BOTTOM,
+                        GXHDO101B042Const.BTN_RYOHIN_KEISAN_BOTTOM,
+                        GXHDO101B042Const.BTN_BUDOMARI_KEISAN_BOTTOM,
+                        GXHDO101B042Const.BTN_NETSUSYORI_KEISAN_BOTTOM,
+                        GXHDO101B042Const.BTN_HOSEIRITSU_KEISAN_BOTTOM,
+                        GXHDO101B042Const.BTN_SETSUBI_DATA_TORIKOMI_BOTTOM
                 ));
                 inactiveIdList.addAll(Arrays.asList(
                         GXHDO101B042Const.BTN_UPDATE_TOP,
-                        GXHDO101B042Const.BTN_DELETE_TOP
+                        GXHDO101B042Const.BTN_DELETE_TOP,
+                        GXHDO101B042Const.BTN_UPDATE_BOTTOM,
+                        GXHDO101B042Const.BTN_DELETE_BOTTOM
                 ));
 
                 break;
