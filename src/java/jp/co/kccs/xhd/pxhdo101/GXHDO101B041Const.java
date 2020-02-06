@@ -6,12 +6,12 @@ package jp.co.kccs.xhd.pxhdo101;
 /**
  * ===============================================================================<br>
  * <br>
- * システム名    品質DB(コンデンサ)<br>
+ * システム名 品質DB(コンデンサ)<br>
  * <br>
- * 変更日        2019/12/28<br>
- * 計画書No      K1811-DS001<br>
- * 変更者        KCSS K.Jo<br>
- * 変更理由      新規作成<br>
+ * 変更日 2019/12/28<br>
+ * 計画書No K1811-DS001<br>
+ * 変更者 KCSS K.Jo<br>
+ * 変更理由 新規作成<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -19,7 +19,7 @@ package jp.co.kccs.xhd.pxhdo101;
  * GXHDO101B041Const(電気特性・3端子4端子)定数
  *
  * @author KCSS K.Jo
- * @since  2019/12/28
+ * @since 2019/12/28
  */
 public class GXHDO101B041Const {
 
@@ -377,7 +377,7 @@ public class GXHDO101B041Const {
      * 電圧DROP設定条件:DROP2,4 MS･DC
      */
     public static final String DENATSU_DROP_2_4_MS_DC = "sr_denkitokuseiesi_drop_2_4_ms_dc_41";
-    
+
     /**
      * 設定条件及び処理結果:BIN1 %区分(設定値)
      */
@@ -911,7 +911,7 @@ public class GXHDO101B041Const {
     /**
      * 選別開始日時(画面上ボタン)
      */
-    public static final String BTN_SENBETSU_STARTDATETIME_TOP = "sr_denkitokuseiesi_senbetsu_startdatetime_41_Top";
+    public static final String BTN_SENBETSU_STARTDATETIME_TOP = "sr_denkitokuseiesi_senbetsu_stdatetime_41_Top";
 
     /**
      * 選別終了日時(画面上ボタン)
@@ -943,12 +943,71 @@ public class GXHDO101B041Const {
      */
     public static final String BTN_HOSEIRITSU_KEISAN_TOP = "sr_denkitokuseiesi_hoseiritsu_keisan_41_Top";
 
-        
     /**
      * 設備ﾃﾞｰﾀ取込(画面上ボタン)
      */
     public static final String BTN_SETSUBI_DATA_TORIKOMI_TOP = "sr_denkitokuseiesi_setsubi_data_torikomi_41_Top";
-    
+
+    /**
+     * 仮登録(画面下ボタン)
+     */
+    public static final String BTN_KARI_TOUROKU_BOTTOM = "sr_denkitokuseiesi_kari_touroku_41_Bottom";
+
+    /**
+     * 登録(画面下ボタン)
+     */
+    public static final String BTN_INSERT_BOTTOM = "sr_denkitokuseiesi_insert_41_Bottom";
+
+    /**
+     * 修正(画面下ボタン)
+     */
+    public static final String BTN_UPDATE_BOTTOM = "sr_denkitokuseiesi_update_41_Bottom";
+
+    /**
+     * 削除(画面下ボタン)
+     */
+    public static final String BTN_DELETE_BOTTOM = "sr_denkitokuseiesi_delete_41_Bottom";
+
+    /**
+     * 選別開始日時(画面下ボタン)
+     */
+    public static final String BTN_SENBETSU_STARTDATETIME_BOTTOM = "sr_denkitokuseiesi_senbetsu_stdatetime_41_Bottom";
+
+    /**
+     * 選別終了日時(画面下ボタン)
+     */
+    public static final String BTN_SENBETSU_ENDDATETIME_BOTTOM = "sr_denkitokuseiesi_senbetsu_enddatetime_41_Bottom";
+
+    /**
+     * BIN計算(画面下ボタン)
+     */
+    public static final String BTN_BIN_KEISAN_BOTTOM = "sr_denkitokuseiesi_bin_keisan_41_Bottom";
+
+    /**
+     * 良品計算(画面下ボタン)
+     */
+    public static final String BTN_RYOHIN_KEISAN_BOTTOM = "sr_denkitokuseiesi_ryohin_keisan_41_Bottom";
+
+    /**
+     * 歩留まり計算(画面下ボタン)
+     */
+    public static final String BTN_BUDOMARI_KEISAN_BOTTOM = "sr_denkitokuseiesi_budomari_keisan_41_Bottom";
+
+    /**
+     * 熱処理ｴｰｼﾞﾝｸﾞ計算(画面下ボタン)
+     */
+    public static final String BTN_NETSUSYORI_KEISAN_BOTTOM = "sr_denkitokuseiesi_netsusyori_keisan_41_Bottom";
+
+    /**
+     * 補正率計算(画面下ボタン)
+     */
+    public static final String BTN_HOSEIRITSU_KEISAN_BOTTOM = "sr_denkitokuseiesi_hoseiritsu_keisan_41_Bottom";
+
+    /**
+     * 設備ﾃﾞｰﾀ取込(画面下ボタン)
+     */
+    public static final String BTN_SETSUBI_DATA_TORIKOMI_BOTTOM = "sr_denkitokuseiesi_setsubi_data_torikomi_41_Bottom";
+
     /**
      * ユーザー認証パラメータ(修正)
      */

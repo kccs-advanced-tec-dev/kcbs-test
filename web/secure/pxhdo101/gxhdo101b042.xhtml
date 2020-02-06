@@ -531,9 +531,8 @@
                             </div>
                         </p:tab>
                         <p:tab title="設定条件及び処理結果" titleStyle="font-size:0.9em;" id="tab4">
-                            <div class="tab_div" style="overflow: scroll; height: 65vh"  >
+                            <div class="tab4_div" style="overflow: scroll; height: 73vh;"  >
                                 <div style="width:fit-content;">
-
                                     <table  border="1" id="tablefix"  class="sticky_table" style="border-collapse: collapse; border-spacing: 0px;" >
                                         <thead>
                                             <tr style="text-align: center;">
@@ -2382,6 +2381,20 @@
                             </div>                        
                         </p:tab>
                     </p:tabView>
+                    <p:panel id="bottomPanel" style="margin-top:4px; #{gXHDO101B042A.styleDisplayNone}">
+                        <ui:repeat value="#{gXHDO101B042A.buttonListBottom}" var="item" varStatus="stat">
+                            <p:commandButton id="buttonId" value="#{item.buttonName}" rendered="#{item.render}" disabled="#{!item.enabled}"
+                                             style="margin-left:4px;margin-bottom:2px;font-size:#{item.fontSize}px;color:#{item.fontColor};background:#{item.backColor};"
+                                             actionListener="#{gXHDO101B042A.btnClick(item.buttonId)}" process="@form" update="@form" async="false"
+                                             oncomplete="cmdButtonOncomplete(args);" />       
+                        </ui:repeat>
+                    </p:panel>
+                    <p:commandButton id="returnBtnBottom" style="margin-left:26px;margin-bottom:0px;margin-top:5px; #{gXHDO101B042A.styleDisplayNone}"
+                                     value="#{myMsg.return}"  action="/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true"
+                                     process="@this" update="@this">
+                        <f:param name="returnVal" value="return"/>
+                        <f:attribute name="returnVal" value="return"/>
+                    </p:commandButton>
                 </div>
                 <div>
                     <ui:include src="/secure/common/initMessage.xhtml"/>
