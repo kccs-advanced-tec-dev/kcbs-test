@@ -42,6 +42,11 @@ public class SrTapingSagyo {
     private String edaban;
 
     /**
+     * 検査回数
+     */
+    private Integer kaisuu;
+
+    /**
      * KCPNO
      */
     private String kcpno;
@@ -603,6 +608,22 @@ public class SrTapingSagyo {
      */
     public void setEdaban(String edaban) {
         this.edaban = edaban;
+    }
+
+    /**
+     * 検査回数
+     * @return the kaisuu
+     */
+    public Integer getKaisuu() {
+        return kaisuu;
+    }
+
+    /**
+     * 検査回数
+     * @param kaisuu the kaisuu to set
+     */
+    public void setKaisuu(Integer kaisuu) {
+        this.kaisuu = kaisuu;
     }
 
     /**

@@ -64,6 +64,11 @@ public class GXHDO101B048Const {
     public static final String UKEIRE_SOUJURYO = "sr_taping_sagyo_ukeire_soujuryo";
 
     /**
+     * 検査回数
+     */
+    public static final String KENSA_KAISUU = "sr_taping_sagyo_kensa_kaisuu";
+    
+    /**
      * 検査場所
      */
     public static final String KENSA_BASHO = "sr_taping_sagyo_kensa_basho";

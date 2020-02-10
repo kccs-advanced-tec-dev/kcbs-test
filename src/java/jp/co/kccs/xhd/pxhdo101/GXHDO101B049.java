@@ -4,7 +4,6 @@
 package jp.co.kccs.xhd.pxhdo101;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -13,16 +12,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.db.model.FXHDD01;
+import jp.co.kccs.xhd.db.model.Jisseki;
 import jp.co.kccs.xhd.db.model.SrTapingCheck;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.GXHDO901A;
@@ -45,6 +48,7 @@ import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
 import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import org.apache.commons.dbutils.DbUtils;
+import org.apache.commons.dbutils.handlers.MapListHandler;
 
 /**
  * ===============================================================================<br>
@@ -189,7 +193,7 @@ public class GXHDO101B049 implements IFormLogic {
             // TPNG取得
             case GXHDO101B049Const.BTN_TPNG_SHUTOKU_TOP:
             case GXHDO101B049Const.BTN_TPNG_SHUTOKU_BOTTOM:
-                method = "openTpngShutoku";
+                method = "doTpngShutoku";
                 break;
 
             default:
@@ -261,9 +265,10 @@ public class GXHDO101B049 implements IFormLogic {
             String edaban = lotNo.substring(11, 14); //枝番
             String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
             String formTitle = StringUtil.nullToBlank(session.getAttribute("formTitle"));
+            int jissekiNo = (Integer) session.getAttribute("jissekino");
 
             // 品質DB登録実績データ取得
-            Map fxhdd03RevInfo = loadFxhdd03RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, formId);
+            Map fxhdd03RevInfo = loadFxhdd03RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, jissekiNo, formId);
             ErrorMessageInfo checkRevMessageInfo = checkRevision(processData, fxhdd03RevInfo);
             // リビジョンエラー時はリターン
             if (checkRevMessageInfo != null) {
@@ -275,7 +280,6 @@ public class GXHDO101B049 implements IFormLogic {
             }
 
             BigDecimal newRev = BigDecimal.ONE;
-            int jissekiNo = 1;
             Timestamp systemTime = new Timestamp(System.currentTimeMillis());
 
             BigDecimal rev = BigDecimal.ZERO;
@@ -285,21 +289,21 @@ public class GXHDO101B049 implements IFormLogic {
             } else {
                 rev = new BigDecimal(processData.getInitRev());
                 // 最新のリビジョンを採番
-                newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, formId);
+                newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, jissekiNo, formId);
 
                 // 品質DB登録実績更新処理
-                updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_KARI_TOROKU, systemTime);
+                updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, jissekiNo, JOTAI_FLG_KARI_TOROKU, systemTime);
             }
 
             if (StringUtil.isEmpty(processData.getInitJotaiFlg()) || JOTAI_FLG_SAKUJO.equals(processData.getInitJotaiFlg())) {
 
                 // テーピングチェック_仮登録登録処理
-                insertTmpSrTapingCheck(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, systemTime, processData.getItemList(), processData.getHiddenDataMap());
+                insertTmpSrTapingCheck(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, jissekiNo, systemTime, processData.getItemList(), processData.getHiddenDataMap());
 
             } else {
 
                 // テーピングチェック_仮登録更新処理
-                updateTmpSrTapingCheck(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo8, edaban, systemTime, processData.getItemList(), processData.getHiddenDataMap());
+                updateTmpSrTapingCheck(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo8, edaban, jissekiNo, systemTime, processData.getItemList(), processData.getHiddenDataMap());
             }
 
             // 規格情報でエラーが発生している場合、エラー内容を更新
@@ -446,10 +450,11 @@ public class GXHDO101B049 implements IFormLogic {
             String edaban = lotNo.substring(11, 14); //枝番
             String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
             String formTitle = StringUtil.nullToBlank(session.getAttribute("formTitle"));
+            int jissekiNo = (Integer) session.getAttribute("jissekino");
 
             // 品質DB登録実績データ取得
             //ここでロックを掛ける
-            Map fxhdd03RevInfo = loadFxhdd03RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, formId);
+            Map fxhdd03RevInfo = loadFxhdd03RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, jissekiNo, formId);
             ErrorMessageInfo checkRevMessageInfo = checkRevision(processData, fxhdd03RevInfo);
             // リビジョンエラー時はリターン
             if (checkRevMessageInfo != null) {
@@ -463,7 +468,6 @@ public class GXHDO101B049 implements IFormLogic {
 
             BigDecimal rev = BigDecimal.ZERO;
             BigDecimal newRev = BigDecimal.ONE;
-            int jissekiNo = 1;
             Timestamp systemTime = new Timestamp(System.currentTimeMillis());
 
             if (StringUtil.isEmpty(processData.getInitRev())) {
@@ -472,10 +476,10 @@ public class GXHDO101B049 implements IFormLogic {
             } else {
                 rev = new BigDecimal(processData.getInitRev());
                 // 最新のリビジョンを採番
-                newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, formId);
+                newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, jissekiNo, formId);
 
                 // 品質DB登録実績更新処理
-                updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_TOROKUZUMI, systemTime);
+                updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, jissekiNo, JOTAI_FLG_TOROKUZUMI, systemTime);
             }
 
             // 仮登録状態の場合、仮登録のデータを削除する。
@@ -483,16 +487,16 @@ public class GXHDO101B049 implements IFormLogic {
             if (JOTAI_FLG_KARI_TOROKU.equals(processData.getInitJotaiFlg())) {
 
                 // 更新前の値を取得
-                List<SrTapingCheck> srTapingCheckList = getSrTapingCheckData(queryRunnerQcdb, rev.toPlainString(), processData.getInitJotaiFlg(), kojyo, lotNo8, edaban);
+                List<SrTapingCheck> srTapingCheckList = getSrTapingCheckData(queryRunnerQcdb, rev.toPlainString(), processData.getInitJotaiFlg(), kojyo, lotNo8, edaban, jissekiNo);
                 if (!srTapingCheckList.isEmpty()) {
                     tmpSrTapingCheck = srTapingCheckList.get(0);
                 }
 
-                deleteTmpSrTapingCheck(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban);
+                deleteTmpSrTapingCheck(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban, jissekiNo);
             }
 
             // テーピングチェック_登録処理
-            insertSrTapingCheck(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, systemTime, processData.getItemList(), tmpSrTapingCheck, processData.getHiddenDataMap());
+            insertSrTapingCheck(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, jissekiNo, systemTime, processData.getItemList(), tmpSrTapingCheck, processData.getHiddenDataMap());
 
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
@@ -608,10 +612,11 @@ public class GXHDO101B049 implements IFormLogic {
             String edaban = lotNo.substring(11, 14); //枝番
             String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
             String formTitle = StringUtil.nullToBlank(session.getAttribute("formTitle"));
+            int jissekiNo = (Integer) session.getAttribute("jissekino");
 
             // 品質DB登録実績データ取得
             //ここでロックを掛ける
-            Map fxhdd03RevInfo = loadFxhdd03RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, formId);
+            Map fxhdd03RevInfo = loadFxhdd03RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, jissekiNo, formId);
             ErrorMessageInfo checkRevMessageInfo = checkRevision(processData, fxhdd03RevInfo);
             // リビジョンエラー時はリターン
             if (checkRevMessageInfo != null) {
@@ -625,15 +630,14 @@ public class GXHDO101B049 implements IFormLogic {
 
             BigDecimal rev = new BigDecimal(processData.getInitRev());
             // 最新のリビジョンを採番
-            BigDecimal newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, formId);
+            BigDecimal newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, jissekiNo, formId);
 
-            int jissekiNo = 1;
             Timestamp systemTime = new Timestamp(System.currentTimeMillis());
             // 品質DB登録実績更新処理
-            updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_TOROKUZUMI, systemTime);
+            updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, jissekiNo, JOTAI_FLG_TOROKUZUMI, systemTime);
 
             // テーピングチェック_更新処理
-            updateSrTapingCheck(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo8, edaban, systemTime, processData.getItemList(), processData.getHiddenDataMap());
+            updateSrTapingCheck(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo8, edaban, jissekiNo, systemTime, processData.getItemList(), processData.getHiddenDataMap());
 
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
@@ -722,10 +726,11 @@ public class GXHDO101B049 implements IFormLogic {
             String lotNo8 = lotNo.substring(3, 11); //ﾛｯﾄNo(8桁)
             String edaban = lotNo.substring(11, 14); //枝番
             String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
+            int jissekiNo = (Integer) session.getAttribute("jissekino");
 
             // 品質DB登録実績データ取得
             //ここでロックを掛ける
-            Map fxhdd03RevInfo = loadFxhdd03RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, formId);
+            Map fxhdd03RevInfo = loadFxhdd03RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, jissekiNo, formId);
             ErrorMessageInfo checkRevMessageInfo = checkRevision(processData, fxhdd03RevInfo);
             // リビジョンエラー時はリターン
             if (checkRevMessageInfo != null) {
@@ -738,18 +743,18 @@ public class GXHDO101B049 implements IFormLogic {
 
             BigDecimal rev = new BigDecimal(processData.getInitRev());
             // 最新のリビジョンを採番
-            BigDecimal newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, formId);
+            BigDecimal newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, jissekiNo, formId);
 
             Timestamp systemTime = new Timestamp(System.currentTimeMillis());
             // 品質DB登録実績更新処理
-            updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_SAKUJO, systemTime);
+            updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, jissekiNo, JOTAI_FLG_SAKUJO, systemTime);
 
             // テーピングチェック_仮登録登録処理
-            int newDeleteflag = getNewDeleteflag(queryRunnerQcdb, kojyo, lotNo8, edaban);
-            insertDeleteDataTmpSrTapingCheck(queryRunnerQcdb, conQcdb, newRev, newDeleteflag, kojyo, lotNo8, edaban, systemTime);
+            int newDeleteflag = getNewDeleteflag(queryRunnerQcdb, kojyo, lotNo8, edaban, jissekiNo);
+            insertDeleteDataTmpSrTapingCheck(queryRunnerQcdb, conQcdb, newRev, newDeleteflag, kojyo, lotNo8, edaban, jissekiNo, systemTime);
 
             // テーピングチェック_削除処理
-            deleteSrTapingCheck(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban);
+            deleteSrTapingCheck(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban, jissekiNo);
 
             DbUtils.commitAndCloseQuietly(conDoc);
             DbUtils.commitAndCloseQuietly(conQcdb);
@@ -832,17 +837,62 @@ public class GXHDO101B049 implements IFormLogic {
     }
 
     /**
-     * TP作業注意(サブ画面Open)
+     *TP取得
      *
      * @param processData 処理制御データ
      * @return 処理制御データ
      */
-    public ProcessData openTpngShutoku(ProcessData processData) {
+    public ProcessData doTpngShutoku(ProcessData processData) {
 
-        processData.setMethod("");
+        try {
+            QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
+            
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            HttpSession session = (HttpSession) externalContext.getSession(false);
+            String lotNo = (String) session.getAttribute("lotNo");
+            String kojyo = lotNo.substring(0, 3);
+            String lotNo8 = lotNo.substring(3, 11);
+            String edaban = lotNo.substring(11, 14);
+            
+            List<ErrorMessageInfo> erroMessageInfoList = new ArrayList<>();
+            
+            //TPNG1より判定を取得
+            List<Map<String,Object>> srTpng1Data = loadSrTpng1Data(queryRunnerQcdb, kojyo, lotNo8, edaban);
+            String tpng1Hantei = "";
+            if(srTpng1Data.isEmpty()){
+               erroMessageInfoList.add(MessageUtil.getErrorMessageInfo("","TPNG1を取得できませんでした", false, false, new ArrayList<>())); 
+            }else{
+                tpng1Hantei =  StringUtil.nullToBlank(getMapData(srTpng1Data.get(0), "hantei"));
+            }
+           
+            //TPNG2より判定を取得
+            List<Map<String,Object>> srTpng2Data = loadSrTpng2Data(queryRunnerQcdb, kojyo, lotNo8, edaban);
+            String tpng2Hantei = "";
+            if(srTpng1Data.isEmpty()){
+               erroMessageInfoList.add(MessageUtil.getErrorMessageInfo("","TPNG2を取得できませんでした", false, false, new ArrayList<>())); 
+            }else{
+                tpng2Hantei =  StringUtil.nullToBlank(getMapData(srTpng2Data.get(0), "hantei"));
+            }
+           
+            //エラーがあればエラーメッセージをセット(通常ならばリターンを行うが、処理は継続な為、メッセージ表示処理を行う。)
+            if (!erroMessageInfoList.isEmpty()) {
+                FacesContext facesContext = FacesContext.getCurrentInstance();
+                for (ErrorMessageInfo errorMessageInfo : erroMessageInfoList) {
+                    facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessageInfo.getErrorMessage(), null));
+                }
+            }
 
-        //TODO
-        return processData;
+            setItemData(processData, GXHDO101B049Const.TPNG1, getHanteiOkNgText(tpng1Hantei));
+            setItemData(processData, GXHDO101B049Const.TPNG2, getHanteiOkNgText(tpng2Hantei));
+
+            processData.setMethod("");
+            
+            return processData;
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            return processData;
+        }
     }
 
     /**
@@ -927,6 +977,7 @@ public class GXHDO101B049 implements IFormLogic {
         HttpSession session = (HttpSession) externalContext.getSession(false);
         String lotNo = (String) session.getAttribute("lotNo");
         String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
+        int jissekiNo = (Integer) session.getAttribute("jissekino");
 
         // エラーメッセージリスト
         List<String> errorMessageList = processData.getInitMessageList();
@@ -966,9 +1017,10 @@ public class GXHDO101B049 implements IFormLogic {
         if (ownerMasData == null || ownerMasData.isEmpty()) {
             errorMessageList.add(MessageUtil.getMessage("XHD-000016"));
         }
-
+        
+        
         // 入力項目の情報を画面にセットする。
-        if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId)) {
+        if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, jissekiNo, formId)) {
             // エラー発生時は処理を中断
             processData.setFatalError(true);
             processData.setInitMessageList(Arrays.asList(MessageUtil.getMessage("XHD-000038")));
@@ -1028,12 +1080,13 @@ public class GXHDO101B049 implements IFormLogic {
      * @param queryRunnerDoc QueryRunnerオブジェクト(DocServer)
      * @param queryRunnerQcdb QueryRunnerオブジェクト(Qcdb)
      * @param lotNo ﾛｯﾄNo
+     * @param jissekino 実績No
      * @param formId 画面ID
      * @return 設定結果(失敗時false)
      * @throws SQLException 例外エラー
      */
     private boolean setInputItemData(ProcessData processData, QueryRunner queryRunnerDoc, QueryRunner queryRunnerQcdb,
-            String lotNo, String formId) throws SQLException {
+            String lotNo, int jissekino, String formId) throws SQLException {
 
         List<SrTapingCheck> srTapingCheckDataList = new ArrayList<>();
         String rev = "";
@@ -1044,7 +1097,7 @@ public class GXHDO101B049 implements IFormLogic {
 
         for (int i = 0; i < 5; i++) {
             // 品質DB実績登録Revision情報取得
-            Map fxhdd03RevInfo = loadFxhdd03RevInfo(queryRunnerDoc, kojyo, lotNo8, edaban, formId);
+            Map fxhdd03RevInfo = loadFxhdd03RevInfo(queryRunnerDoc, kojyo, lotNo8, edaban, jissekino, formId);
             rev = StringUtil.nullToBlank(getMapData(fxhdd03RevInfo, "rev"));
             jotaiFlg = StringUtil.nullToBlank(getMapData(fxhdd03RevInfo, "jotai_flg"));
 
@@ -1072,6 +1125,8 @@ public class GXHDO101B049 implements IFormLogic {
                 CommonUtil.setMaekoteiInfo(getItemRow(processData.getItemList(), GXHDO101B049Const.RYOHIN_TP_REEL_MAKISU2), maekoteiInfo, "ryouhintopreelmaki2", true, true);
                 //良品TPﾘｰﾙ本数②
                 CommonUtil.setMaekoteiInfo(getItemRow(processData.getItemList(), GXHDO101B049Const.RYOHIN_TP_REEL_HONSU2), maekoteiInfo, "ryouhintopreelhonsu2", true, true);
+                //検査回数
+                CommonUtil.setMaekoteiInfo(getItemRow(processData.getItemList(), GXHDO101B049Const.KENSA_KAISUU), maekoteiInfo, "kaisuu", true, true);
                 //ﾃｰﾋﾟﾝｸﾞ号機
                 CommonUtil.setMaekoteiInfo(getItemRow(processData.getItemList(), GXHDO101B049Const.TP_GOKI), maekoteiInfo, "gouki", true, false);//TODO 0チェック不要でいいか
                 //検査場所
@@ -1082,7 +1137,7 @@ public class GXHDO101B049 implements IFormLogic {
             }
 
             // テーピングチェックデータ取得
-            srTapingCheckDataList = getSrTapingCheckData(queryRunnerQcdb, rev, jotaiFlg, kojyo, lotNo8, edaban);
+            srTapingCheckDataList = getSrTapingCheckData(queryRunnerQcdb, rev, jotaiFlg, kojyo, lotNo8, edaban, jissekino);
             if (srTapingCheckDataList.isEmpty()) {
                 //該当データが取得できなかった場合は処理を繰り返す。
                 continue;
@@ -1123,6 +1178,8 @@ public class GXHDO101B049 implements IFormLogic {
         this.setItemData(processData, GXHDO101B049Const.RYOHIN_TP_REEL_MAKISU2, getSrTapingCheckItemData(GXHDO101B049Const.RYOHIN_TP_REEL_MAKISU2, srTapingCheckData));
         //良品TPﾘｰﾙ本数②
         this.setItemData(processData, GXHDO101B049Const.RYOHIN_TP_REEL_HONSU2, getSrTapingCheckItemData(GXHDO101B049Const.RYOHIN_TP_REEL_HONSU2, srTapingCheckData));
+        //検査回数
+        this.setItemData(processData, GXHDO101B049Const.KENSA_KAISUU, getSrTapingCheckItemData(GXHDO101B049Const.KENSA_KAISUU, srTapingCheckData));
         //ﾃｰﾋﾟﾝｸﾞ号機
         this.setItemData(processData, GXHDO101B049Const.TP_GOKI, getSrTapingCheckItemData(GXHDO101B049Const.TP_GOKI, srTapingCheckData));
         //検査場所
@@ -1183,16 +1240,17 @@ public class GXHDO101B049 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo.
      * @param edaban 枝番
+     * @param jissekino 実績No
      * @return テーピングチェック登録データ
      * @throws SQLException 例外エラー
      */
     private List<SrTapingCheck> getSrTapingCheckData(QueryRunner queryRunnerQcdb, String rev, String jotaiFlg,
-            String kojyo, String lotNo, String edaban) throws SQLException {
+            String kojyo, String lotNo, String edaban, int jissekino) throws SQLException {
 
         if (JOTAI_FLG_TOROKUZUMI.equals(jotaiFlg)) {
-            return loadSrTapingCheck(queryRunnerQcdb, kojyo, lotNo, edaban, rev);
+            return loadSrTapingCheck(queryRunnerQcdb, kojyo, lotNo, edaban, jissekino, rev);
         } else {
-            return loadTmpSrTapingCheck(queryRunnerQcdb, kojyo, lotNo, edaban, rev);
+            return loadTmpSrTapingCheck(queryRunnerQcdb, kojyo, lotNo, edaban, jissekino, rev);
         }
     }
 
@@ -1313,17 +1371,18 @@ public class GXHDO101B049 implements IFormLogic {
      * @throws SQLException 例外エラー
      */
     private Map loadFxhdd03RevInfo(QueryRunner queryRunnerDoc, String kojyo, String lotNo,
-            String edaban, String formId) throws SQLException {
+            String edaban, int jissekino, String formId) throws SQLException {
         // 設計データの取得
         String sql = "SELECT rev, jotai_flg "
                 + "FROM fxhdd03 "
                 + "WHERE kojyo = ? AND lotno = ? "
-                + "AND edaban = ? AND gamen_id = ?";
+                + "AND edaban = ? AND jissekino = ? AND gamen_id = ?";
 
         List<Object> params = new ArrayList<>();
         params.add(kojyo);
         params.add(lotNo);
         params.add(edaban);
+        params.add(jissekino);
         params.add(formId);
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -1337,23 +1396,25 @@ public class GXHDO101B049 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @param edaban 枝番(検索キー)
+     * @param jissekino 実績No(検索キー)
      * @param formId 画面ID(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
     private Map loadFxhdd03RevInfoWithLock(QueryRunner queryRunnerDoc, Connection conDoc, String kojyo, String lotNo,
-            String edaban, String formId) throws SQLException {
+            String edaban, int jissekino, String formId) throws SQLException {
         // 設計データの取得
         String sql = "SELECT rev, jotai_flg "
                 + "FROM fxhdd03 "
                 + "WHERE kojyo = ? AND lotno = ? "
-                + "AND edaban = ? AND gamen_id = ? "
+                + "AND edaban = ? AND jissekino = ? AND gamen_id = ? "
                 + "FOR UPDATE NOWAIT ";
 
         List<Object> params = new ArrayList<>();
         params.add(kojyo);
         params.add(lotNo);
         params.add(edaban);
+        params.add(jissekino);
         params.add(formId);
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -1367,22 +1428,25 @@ public class GXHDO101B049 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @param edaban 枝番(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @param formId 画面ID(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
     private BigDecimal getNewRev(QueryRunner queryRunnerDoc, Connection conDoc, String kojyo, String lotNo,
-            String edaban, String formId) throws SQLException {
+            String edaban, int jissekino, String formId) throws SQLException {
         BigDecimal newRev = BigDecimal.ONE;
         // 設計データの取得
         String sql = "SELECT MAX(rev) AS rev "
                 + "FROM fxhdd03 "
                 + "WHERE kojyo = ? AND lotno = ? "
-                + "AND edaban = ? AND gamen_id = ? ";
+                + "AND edaban = ? AND jissekino= ? AND gamen_id = ? ";
 
         List<Object> params = new ArrayList<>();
         params.add(kojyo);
         params.add(lotNo);
         params.add(edaban);
+        params.add(jissekino);
         params.add(formId);
         Map map = queryRunnerDoc.query(conDoc, sql, new MapHandler(), params.toArray());
         if (map != null && !map.isEmpty()) {
@@ -1401,20 +1465,21 @@ public class GXHDO101B049 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @param edaban 枝番(検索キー)
+     * @param jissekino 実績No(検索キー)
      * @param rev revision(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
     private List<SrTapingCheck> loadSrTapingCheck(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
-            String edaban, String rev) throws SQLException {
+            String edaban, int jissekino, String rev) throws SQLException {
 
         String sql = "SELECT "
-                + "kojyo,lotno,edaban,kcpno,ownercode,ryouhintopreelmaki1,ryouhintopreelhonsu1,ryouhintopreelmaki2,ryouhintopreelhonsu2,"
+                + "kojyo,lotno,edaban,kaisuu,kcpno,ownercode,ryouhintopreelmaki1,ryouhintopreelhonsu1,ryouhintopreelmaki2,ryouhintopreelhonsu2,"
                 + "tapinggouki,kensabasyo,reelchecksu,kensakaisinichiji,kensakaisitantou,monotati,hakuri,hanuke,rabure,kakeng,dipfuryo,"
                 + "sonota,tapeijyo,reelcheckkekka,kensasyuryonichiji,kensasyuryotantou,tapeng1,tapeng2,denkitokuseisaikensa,gaikansaikensa,"
                 + "bikou1,bikou2,torokunichiji,kosinnichiji,revision,'0' AS deleteflag "
                 + "FROM sr_taping_check "
-                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? ";
         // revisionが入っている場合、条件に追加
         if (!StringUtil.isEmpty(rev)) {
             sql += "AND revision = ? ";
@@ -1424,6 +1489,7 @@ public class GXHDO101B049 implements IFormLogic {
         params.add(kojyo);
         params.add(lotNo);
         params.add(edaban);
+        params.add(jissekino);
 
         // revisionが入っている場合、条件に追加
         if (!StringUtil.isEmpty(rev)) {
@@ -1434,6 +1500,7 @@ public class GXHDO101B049 implements IFormLogic {
         mapping.put("kojyo", "kojyo"); //工場ｺｰﾄﾞ
         mapping.put("lotno", "lotno"); //ﾛｯﾄNo
         mapping.put("edaban", "edaban"); //枝番
+        mapping.put("kaisuu", "kaisuu"); //検査回数
         mapping.put("kcpno", "kcpno"); //KCPNO
         mapping.put("ownercode", "ownercode"); //オーナー
         mapping.put("ryouhintopreelmaki1", "ryouhintopreelmaki1"); //良品TPﾘｰﾙ巻数①
@@ -1487,14 +1554,14 @@ public class GXHDO101B049 implements IFormLogic {
      * @throws SQLException 例外エラー
      */
     private List<SrTapingCheck> loadTmpSrTapingCheck(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
-            String edaban, String rev) throws SQLException {
+            String edaban, int jissekino, String rev) throws SQLException {
         String sql = "SELECT "
-                + "kojyo,lotno,edaban,kcpno,ownercode,ryouhintopreelmaki1,ryouhintopreelhonsu1,ryouhintopreelmaki2,ryouhintopreelhonsu2,"
+                + "kojyo,lotno,edaban,kaisuu,kcpno,ownercode,ryouhintopreelmaki1,ryouhintopreelhonsu1,ryouhintopreelmaki2,ryouhintopreelhonsu2,"
                 + "tapinggouki,kensabasyo,reelchecksu,kensakaisinichiji,kensakaisitantou,monotati,hakuri,hanuke,rabure,kakeng,dipfuryo,"
                 + "sonota,tapeijyo,reelcheckkekka,kensasyuryonichiji,kensasyuryotantou,tapeng1,tapeng2,denkitokuseisaikensa,gaikansaikensa,"
                 + "bikou1,bikou2,torokunichiji,kosinnichiji,revision,deleteflag "
                 + "FROM tmp_sr_taping_check "
-                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND deleteflag = ? ";
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND deleteflag = ? ";
         // revisionが入っている場合、条件に追加
         if (!StringUtil.isEmpty(rev)) {
             sql += "AND revision = ? ";
@@ -1504,6 +1571,7 @@ public class GXHDO101B049 implements IFormLogic {
         params.add(kojyo);
         params.add(lotNo);
         params.add(edaban);
+        params.add(jissekino);
         params.add(0);
 
         // revisionが入っている場合、条件に追加
@@ -1515,6 +1583,7 @@ public class GXHDO101B049 implements IFormLogic {
         mapping.put("kojyo", "kojyo"); //工場ｺｰﾄﾞ
         mapping.put("lotno", "lotno"); //ﾛｯﾄNo
         mapping.put("edaban", "edaban"); //枝番
+        mapping.put("kaisuu", "kaisuu"); //検査回数
         mapping.put("kcpno", "kcpno"); //KCPNO
         mapping.put("ownercode", "ownercode"); //オーナー
         mapping.put("ryouhintopreelmaki1", "ryouhintopreelmaki1"); //良品TPﾘｰﾙ巻数①
@@ -1588,13 +1657,14 @@ public class GXHDO101B049 implements IFormLogic {
             String lotNo = (String) session.getAttribute("lotNo");
             String kojyo = lotNo.substring(0, 3);
             String lotNo8 = lotNo.substring(3, 11);
+            int jissekiNo = (Integer) session.getAttribute("jissekino");
 
             //仕掛情報の取得
             Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
             String oyalotEdaban = StringUtil.nullToBlank(getMapData(shikakariData, "oyalotedaban")); //親ﾛｯﾄ枝番
 
             // 品質DB登録実績データ取得
-            Map fxhdd03RevInfo = loadFxhdd03RevInfo(queryRunnerDoc, kojyo, lotNo8, oyalotEdaban, formId);
+            Map fxhdd03RevInfo = loadFxhdd03RevInfo(queryRunnerDoc, kojyo, lotNo8, oyalotEdaban, jissekiNo, formId);
             if (fxhdd03RevInfo == null || fxhdd03RevInfo.isEmpty()) {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
                 return processData;
@@ -1608,7 +1678,7 @@ public class GXHDO101B049 implements IFormLogic {
             }
 
             // テーピングチェックデータ取得
-            List<SrTapingCheck> srTapingCheckDataList = getSrTapingCheckData(queryRunnerQcdb, "", jotaiFlg, kojyo, lotNo8, oyalotEdaban);
+            List<SrTapingCheck> srTapingCheckDataList = getSrTapingCheckData(queryRunnerQcdb, "", jotaiFlg, kojyo, lotNo8, oyalotEdaban, jissekiNo);
             if (srTapingCheckDataList.isEmpty()) {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
                 return processData;
@@ -1749,17 +1819,19 @@ public class GXHDO101B049 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
+     * @param jissekino 実績No
      * @param jotaiFlg 状態ﾌﾗｸﾞ
-     * @throws SQLException 例外ｴﾗｰ
+     * @param systemTime システム日付
+     * @throws SQLException 例外エラー
      */
     private void updateFxhdd03(QueryRunner queryRunnerDoc, Connection conDoc, String tantoshaCd, String formId, BigDecimal rev,
-            String kojyo, String lotNo, String edaban, String jotaiFlg, Timestamp systemTime) throws SQLException {
+            String kojyo, String lotNo, String edaban, int jissekino, String jotaiFlg, Timestamp systemTime) throws SQLException {
         String sql = "UPDATE fxhdd03 SET "
                 + "koshinsha = ?, koshin_date = ?,"
                 + "rev = ?, jotai_flg = ? "
                 + "WHERE gamen_id = ? AND kojyo = ? "
                 + "  AND lotno = ? AND edaban = ? "
-                + "  AND jissekino = 1  ";
+                + "  AND jissekino = ?  ";
 
         List<Object> params = new ArrayList<>();
         // 更新内容
@@ -1773,6 +1845,7 @@ public class GXHDO101B049 implements IFormLogic {
         params.add(kojyo); //工場ｺｰﾄﾞ
         params.add(lotNo); //ﾛｯﾄNo
         params.add(edaban); //枝番
+        params.add(jissekino); //実績No
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerDoc.update(conDoc, sql, params.toArray());
@@ -1788,24 +1861,25 @@ public class GXHDO101B049 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
+     * @param jissekino 実績No
      * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
      * @param itemList 項目リスト
      * @param hiddenDataMap 保持データ
      * @throws SQLException 例外エラー
      */
     private void insertTmpSrTapingCheck(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev, int deleteflag,
-            String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList, Map hiddenDataMap) throws SQLException {
+            String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, List<FXHDD01> itemList, Map hiddenDataMap) throws SQLException {
 
         String sql = "INSERT INTO tmp_sr_taping_check ("
-                + "kojyo,lotno,edaban,kcpno,ownercode,ryouhintopreelmaki1,ryouhintopreelhonsu1,ryouhintopreelmaki2,ryouhintopreelhonsu2,"
+                + "kojyo,lotno,edaban,kaisuu,kcpno,ownercode,ryouhintopreelmaki1,ryouhintopreelhonsu1,ryouhintopreelmaki2,ryouhintopreelhonsu2,"
                 + "tapinggouki,kensabasyo,reelchecksu,kensakaisinichiji,kensakaisitantou,monotati,hakuri,hanuke,rabure,kakeng,dipfuryo,"
                 + "sonota,tapeijyo,reelcheckkekka,kensasyuryonichiji,kensasyuryotantou,tapeng1,tapeng2,denkitokuseisaikensa,gaikansaikensa,"
                 + "bikou1,bikou2,torokunichiji,kosinnichiji,revision,deleteflag "
                 + ") VALUES ("
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
                 + ") ";
 
-        List<Object> params = setUpdateParameterTmpSrTapingCheck(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null, hiddenDataMap);
+        List<Object> params = setUpdateParameterTmpSrTapingCheck(true, newRev, deleteflag, kojyo, lotNo, edaban, jissekino, systemTime, itemList, null, hiddenDataMap);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
 
@@ -1828,29 +1902,30 @@ public class GXHDO101B049 implements IFormLogic {
      * @throws SQLException 例外エラー
      */
     private void updateTmpSrTapingCheck(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, String jotaiFlg, BigDecimal newRev,
-            String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList, Map hiddenDataMap) throws SQLException {
+            String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, List<FXHDD01> itemList, Map hiddenDataMap) throws SQLException {
 
         String sql = "UPDATE tmp_sr_taping_check SET "
                 + "kcpno = ?,ownercode = ?,ryouhintopreelmaki1 = ?,ryouhintopreelhonsu1 = ?,ryouhintopreelmaki2 = ?,ryouhintopreelhonsu2 = ?,tapinggouki = ?,"
                 + "kensabasyo = ?,reelchecksu = ?,kensakaisinichiji = ?,kensakaisitantou = ?,monotati = ?,hakuri = ?,hanuke = ?,rabure = ?,kakeng = ?,"
                 + "dipfuryo = ?,sonota = ?,tapeijyo = ?,reelcheckkekka = ?,kensasyuryonichiji = ?,kensasyuryotantou = ?,tapeng1 = ?,tapeng2 = ?,"
                 + "denkitokuseisaikensa = ?,gaikansaikensa = ?,bikou1 = ?,bikou2 = ?,kosinnichiji = ?,revision = ?,deleteflag = ? "
-                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ?  AND kaisuu = ? AND revision = ? ";
 
         // 更新前の値を取得
-        List<SrTapingCheck> srTapingCheckList = getSrTapingCheckData(queryRunnerQcdb, rev.toPlainString(), jotaiFlg, kojyo, lotNo, edaban);
+        List<SrTapingCheck> srTapingCheckList = getSrTapingCheckData(queryRunnerQcdb, rev.toPlainString(), jotaiFlg, kojyo, lotNo, edaban, jissekino);
         SrTapingCheck srTapingCheck = null;
         if (!srTapingCheckList.isEmpty()) {
             srTapingCheck = srTapingCheckList.get(0);
         }
 
         //更新値設定
-        List<Object> params = setUpdateParameterTmpSrTapingCheck(false, newRev, 0, "", "", "", systemTime, itemList, srTapingCheck, hiddenDataMap);
+        List<Object> params = setUpdateParameterTmpSrTapingCheck(false, newRev, 0, "", "", "", jissekino, systemTime, itemList, srTapingCheck, hiddenDataMap);
 
         //検索条件設定
         params.add(kojyo);
         params.add(lotNo);
         params.add(edaban);
+        params.add(jissekino);
         params.add(rev);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
@@ -1865,13 +1940,14 @@ public class GXHDO101B049 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
+     * @param jissekino 実績No
      * @throws SQLException 例外エラー
      */
     private void deleteTmpSrTapingCheck(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev,
-            String kojyo, String lotNo, String edaban) throws SQLException {
+            String kojyo, String lotNo, String edaban, int jissekino) throws SQLException {
 
         String sql = "DELETE FROM tmp_sr_taping_check "
-                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ?";
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ?";
 
         //更新値設定
         List<Object> params = new ArrayList<>();
@@ -1880,6 +1956,7 @@ public class GXHDO101B049 implements IFormLogic {
         params.add(kojyo);
         params.add(lotNo);
         params.add(edaban);
+        params.add(jissekino);
         params.add(rev);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
@@ -1894,6 +1971,7 @@ public class GXHDO101B049 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
+     * @param jissekino 実績No
      * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
      * @param itemList 項目リスト
      * @param srTapingCheckData テーピングチェックデータ
@@ -1901,13 +1979,14 @@ public class GXHDO101B049 implements IFormLogic {
      * @return 更新パラメータ
      */
     private List<Object> setUpdateParameterTmpSrTapingCheck(boolean isInsert, BigDecimal newRev, int deleteflag, String kojyo,
-            String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList, SrTapingCheck srTapingCheckData, Map hiddenDataMap) {
+            String lotNo, String edaban, int jissekino, Timestamp systemTime, List<FXHDD01> itemList, SrTapingCheck srTapingCheckData, Map hiddenDataMap) {
         List<Object> params = new ArrayList<>();
 
         if (isInsert) {
             params.add(kojyo); //工場ｺｰﾄﾞ
             params.add(lotNo); //ﾛｯﾄNo
             params.add(edaban); //枝番
+            params.add(jissekino); //実績No
         }
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.KCPNO, srTapingCheckData))); //KCPNO
         params.add(DBUtil.stringToStringObjectDefaultNull(StringUtil.nullToBlank(hiddenDataMap.get("ownercode")))); //ｵｰﾅｰ
@@ -1959,6 +2038,7 @@ public class GXHDO101B049 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
+     * @param jissekino 実績No
      * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
      * @param itemList 項目リスト
      * @param tmpSrTapingCheck 仮登録データ
@@ -1966,18 +2046,18 @@ public class GXHDO101B049 implements IFormLogic {
      * @throws SQLException 例外エラー
      */
     private void insertSrTapingCheck(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev,
-            String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList, SrTapingCheck tmpSrTapingCheck, Map hiddenDataMap) throws SQLException {
+            String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, List<FXHDD01> itemList, SrTapingCheck tmpSrTapingCheck, Map hiddenDataMap) throws SQLException {
 
         String sql = "INSERT INTO sr_taping_check ("
-                + "kojyo,lotno,edaban,kcpno,ownercode,ryouhintopreelmaki1,ryouhintopreelhonsu1,ryouhintopreelmaki2,ryouhintopreelhonsu2,"
+                + "kojyo,lotno,edaban,kaisuu,kcpno,ownercode,ryouhintopreelmaki1,ryouhintopreelhonsu1,ryouhintopreelmaki2,ryouhintopreelhonsu2,"
                 + "tapinggouki,kensabasyo,reelchecksu,kensakaisinichiji,kensakaisitantou,monotati,hakuri,hanuke,rabure,kakeng,dipfuryo,"
                 + "sonota,tapeijyo,reelcheckkekka,kensasyuryonichiji,kensasyuryotantou,tapeng1,tapeng2,denkitokuseisaikensa,gaikansaikensa,"
                 + "bikou1,bikou2,torokunichiji,kosinnichiji,revision "
                 + ") VALUES ("
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
                 + ") ";
 
-        List<Object> params = setUpdateParameterSrTapingCheck(true, newRev, kojyo, lotNo, edaban, systemTime, itemList, tmpSrTapingCheck, hiddenDataMap);
+        List<Object> params = setUpdateParameterSrTapingCheck(true, newRev, kojyo, lotNo, edaban, jissekino, systemTime, itemList, tmpSrTapingCheck, hiddenDataMap);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
     }
@@ -1993,34 +2073,36 @@ public class GXHDO101B049 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
+     * @param jissekino 実績No
      * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
      * @param itemList 項目リスト
      * @param hiddenDataMap 保持データ
      * @throws SQLException 例外エラー
      */
     private void updateSrTapingCheck(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, String jotaiFlg, BigDecimal newRev,
-            String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList, Map hiddenDataMap) throws SQLException {
+            String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, List<FXHDD01> itemList, Map hiddenDataMap) throws SQLException {
         String sql = "UPDATE sr_taping_check SET "
                 + "kcpno = ?,ownercode = ?,ryouhintopreelmaki1 = ?,ryouhintopreelhonsu1 = ?,ryouhintopreelmaki2 = ?,ryouhintopreelhonsu2 = ?,tapinggouki = ?,"
                 + "kensabasyo = ?,reelchecksu = ?,kensakaisinichiji = ?,kensakaisitantou = ?,monotati = ?,hakuri = ?,hanuke = ?,rabure = ?,kakeng = ?,"
                 + "dipfuryo = ?,sonota = ?,tapeijyo = ?,reelcheckkekka = ?,kensasyuryonichiji = ?,kensasyuryotantou = ?,tapeng1 = ?,tapeng2 = ?,"
                 + "denkitokuseisaikensa = ?,gaikansaikensa = ?,bikou1 = ?,bikou2 = ?,kosinnichiji = ?,revision = ? "
-                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ? ";
 
         // 更新前の値を取得
-        List<SrTapingCheck> srTapingCheckList = getSrTapingCheckData(queryRunnerQcdb, rev.toPlainString(), jotaiFlg, kojyo, lotNo, edaban);
+        List<SrTapingCheck> srTapingCheckList = getSrTapingCheckData(queryRunnerQcdb, rev.toPlainString(), jotaiFlg, kojyo, lotNo, edaban, jissekino);
         SrTapingCheck srTapingCheck = null;
         if (!srTapingCheckList.isEmpty()) {
             srTapingCheck = srTapingCheckList.get(0);
         }
 
         //更新値設定
-        List<Object> params = setUpdateParameterSrTapingCheck(false, newRev, "", "", "", systemTime, itemList, srTapingCheck, hiddenDataMap);
+        List<Object> params = setUpdateParameterSrTapingCheck(false, newRev, "", "", "", jissekino, systemTime, itemList, srTapingCheck, hiddenDataMap);
 
         //検索条件設定
         params.add(kojyo);
         params.add(lotNo);
         params.add(edaban);
+        params.add(jissekino);
         params.add(rev);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
@@ -2034,6 +2116,7 @@ public class GXHDO101B049 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
+     * @param jissekino 実績No
      * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
      * @param itemList 項目リスト
      * @param srTapingCheckData テーピングチェックデータ
@@ -2041,13 +2124,14 @@ public class GXHDO101B049 implements IFormLogic {
      * @return 更新パラメータ
      */
     private List<Object> setUpdateParameterSrTapingCheck(boolean isInsert, BigDecimal newRev, String kojyo, String lotNo, String edaban,
-            Timestamp systemTime, List<FXHDD01> itemList, SrTapingCheck srTapingCheckData, Map hiddenDataMap) {
+            int jissekino, Timestamp systemTime, List<FXHDD01> itemList, SrTapingCheck srTapingCheckData, Map hiddenDataMap) {
         List<Object> params = new ArrayList<>();
 
         if (isInsert) {
             params.add(kojyo); //工場ｺｰﾄﾞ
             params.add(lotNo); //ﾛｯﾄNo
             params.add(edaban); //枝番
+            params.add(jissekino); //検査回数
         }
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B049Const.KCPNO, srTapingCheckData))); //KCPNO
         params.add(DBUtil.stringToStringObject(StringUtil.nullToBlank(hiddenDataMap.get("ownercode")))); //ｵｰﾅｰ
@@ -2097,13 +2181,14 @@ public class GXHDO101B049 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
+     * @param jissekino 実績No
      * @throws SQLException 例外エラー
      */
     private void deleteSrTapingCheck(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev,
-            String kojyo, String lotNo, String edaban) throws SQLException {
+            String kojyo, String lotNo, String edaban, int jissekino) throws SQLException {
 
         String sql = "DELETE FROM sr_taping_check "
-                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ?";
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ?";
 
         //更新値設定
         List<Object> params = new ArrayList<>();
@@ -2112,6 +2197,7 @@ public class GXHDO101B049 implements IFormLogic {
         params.add(kojyo);
         params.add(lotNo);
         params.add(edaban);
+        params.add(jissekino);
         params.add(rev);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
@@ -2124,17 +2210,19 @@ public class GXHDO101B049 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
+     * @param jissekino 実績No
      * @return 削除ﾌﾗｸﾞ最大値 + 1
      * @throws SQLException 例外エラー
      */
-    private int getNewDeleteflag(QueryRunner queryRunnerQcdb, String kojyo, String lotNo, String edaban) throws SQLException {
+    private int getNewDeleteflag(QueryRunner queryRunnerQcdb, String kojyo, String lotNo, String edaban, int jissekino) throws SQLException {
         String sql = "SELECT MAX(deleteflag) AS deleteflag "
                 + "FROM tmp_sr_taping_check "
-                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? ";
         List<Object> params = new ArrayList<>();
         params.add(kojyo);
         params.add(lotNo);
         params.add(edaban);
+        params.add(jissekino);
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         Map resultMap = queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
@@ -2222,6 +2310,9 @@ public class GXHDO101B049 implements IFormLogic {
             //良品TPﾘｰﾙ本数②
             case GXHDO101B049Const.RYOHIN_TP_REEL_HONSU2:
                 return StringUtil.nullToBlank(srTapingCheckData.getRyouhintopreelhonsu2());
+            //検査回数
+            case GXHDO101B049Const.KENSA_KAISUU:
+                return StringUtil.nullToBlank(srTapingCheckData.getKaisuu());
             //ﾃｰﾋﾟﾝｸﾞ号機
             case GXHDO101B049Const.TP_GOKI:
                 return StringUtil.nullToBlank(srTapingCheckData.getTapinggouki());
@@ -2311,24 +2402,25 @@ public class GXHDO101B049 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
+     * @param jissekino 実績No
      * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
      * @throws SQLException 例外エラー
      */
     private void insertDeleteDataTmpSrTapingCheck(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev, int deleteflag,
-            String kojyo, String lotNo, String edaban, Timestamp systemTime) throws SQLException {
+            String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime) throws SQLException {
 
         String sql = "INSERT INTO tmp_sr_taping_check ("
-                + "kojyo,lotno,edaban,kcpno,ownercode,ryouhintopreelmaki1,ryouhintopreelhonsu1,ryouhintopreelmaki2,ryouhintopreelhonsu2,"
+                + "kojyo,lotno,edaban,kaisuu,kcpno,ownercode,ryouhintopreelmaki1,ryouhintopreelhonsu1,ryouhintopreelmaki2,ryouhintopreelhonsu2,"
                 + "tapinggouki,kensabasyo,reelchecksu,kensakaisinichiji,kensakaisitantou,monotati,hakuri,hanuke,rabure,kakeng,dipfuryo,"
                 + "sonota,tapeijyo,reelcheckkekka,kensasyuryonichiji,kensasyuryotantou,tapeng1,tapeng2,denkitokuseisaikensa,gaikansaikensa,"
                 + "bikou1,bikou2,torokunichiji,kosinnichiji,revision,deleteflag "
                 + ") SELECT "
-                + "kojyo,lotno,edaban,kcpno,ownercode,ryouhintopreelmaki1,ryouhintopreelhonsu1,ryouhintopreelmaki2,ryouhintopreelhonsu2,"
+                + "kojyo,lotno,edaban,kaisuu,kcpno,ownercode,ryouhintopreelmaki1,ryouhintopreelhonsu1,ryouhintopreelmaki2,ryouhintopreelhonsu2,"
                 + "tapinggouki,kensabasyo,reelchecksu,kensakaisinichiji,kensakaisitantou,monotati,hakuri,hanuke,rabure,kakeng,dipfuryo,"
                 + "sonota,tapeijyo,reelcheckkekka,kensasyuryonichiji,kensasyuryotantou,tapeng1,tapeng2,denkitokuseisaikensa,gaikansaikensa,"
                 + "bikou1,bikou2,?,?,?,? "
                 + "FROM sr_taping_check "
-                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? ";
 
         List<Object> params = new ArrayList<>();
         // 更新値
@@ -2341,6 +2433,7 @@ public class GXHDO101B049 implements IFormLogic {
         params.add(kojyo); //工場ｺｰﾄﾞ
         params.add(lotNo); //ﾛｯﾄNo
         params.add(edaban); //枝番
+        params.add(jissekino); //検査回数
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
@@ -2431,8 +2524,150 @@ public class GXHDO101B049 implements IFormLogic {
                 return "";
         }
     }
-    
-    
-   
 
+    /**
+     * [TPNG1]から情報を取得
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private List loadSrTpng1Data(QueryRunner queryRunnerQcdb, String kojyo, String lotNo, String edaban) throws SQLException {
+
+        // TPNG1データの取得
+        String sql = "SELECT hantei "
+                + "FROM sr_tpng1 "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? "
+                + "ORDER BY jissekino desc";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapListHandler(), params.toArray());
+    }
+    
+    /**
+     * [TPNG2]から情報を取得
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private List loadSrTpng2Data(QueryRunner queryRunnerQcdb, String kojyo, String lotNo, String edaban) throws SQLException {
+
+        // TPNG2データの取得
+        String sql = "SELECT hantei "
+                + "FROM sr_tpng2 "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? "
+                + "ORDER BY jissekino desc";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapListHandler(), params.toArray());
+    }
+    
+    /**
+     * 判定項目(あり,なし)テキスト値取得
+     *
+     * @param hanteiValue 判定項目Value値
+     * @return コンボボックステキスト値
+     */
+    private String getHanteiOkNgText(String hanteiValue) {
+        switch (hanteiValue) {
+            case "1":
+                return "OK";
+            case "2":
+                return "NG";
+            default:
+                return "";
+        }
+    }
+    
+    
+    /**
+     * [ﾊﾟﾗﾒｰﾀﾏｽﾀ]から、データを取得
+     *
+     * @param queryRunnerDoc オブジェクト
+     * @param userName ユーザー名
+     * @param key Key
+     * @return 取得データ
+     */
+    private String loadParamData(QueryRunner queryRunnerDoc, String userName, String key) {
+        try {
+
+            // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+            String sql = "SELECT data "
+                    + " FROM fxhbm03 "
+                    + " WHERE user_name = ? AND key = ? ";
+
+            List<Object> params = new ArrayList<>();
+            params.add(userName);
+            params.add(key);
+            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+            Map data = queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
+            if (data != null && !data.isEmpty()) {
+                return StringUtil.nullToBlank(data.get("data"));
+            }
+
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+        }
+        return null;
+
+    }
+    
+     /**
+     * [実績]から、ﾃﾞｰﾀを取得
+     * @param queryRunnerWip オブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param date ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ(検索キー)
+     * @return 取得データ
+     * @throws SQLException 
+     */
+     private List<Jisseki> loadJissekiData(QueryRunner queryRunnerWip, String lotNo, String[] data) throws SQLException {
+         
+
+        String lotNo1 = lotNo.substring(0, 3);
+        String lotNo2 = lotNo.substring(3, 11);
+        String lotNo3 = lotNo.substring(11, 14);
+        
+        List<String> dataList= new ArrayList<>(Arrays.asList(data));
+        
+        // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+        String sql = "SELECT syorisuu "
+                + "FROM jisseki "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND ";
+        
+        sql += DBUtil.getInConditionPreparedStatement("koteicode", dataList.size());
+        
+        sql += " ORDER BY syoribi DESC, syorijikoku DESC";
+        
+        Map mapping = new HashMap<>();
+        mapping.put("syorisuu", "syorisuu");
+        
+        BeanProcessor beanProcessor = new BeanProcessor(mapping);
+        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+        ResultSetHandler<List<Jisseki>> beanHandler = new BeanListHandler<>(Jisseki.class, rowProcessor);
+
+        List<Object> params = new ArrayList<>();
+        params.add(lotNo1);
+        params.add(lotNo2);
+        params.add(lotNo3);                
+        params.addAll(dataList);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerWip.query(sql, beanHandler, params.toArray());
+    }
+     
+     
+   
 }

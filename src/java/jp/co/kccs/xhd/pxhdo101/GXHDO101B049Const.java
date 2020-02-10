@@ -60,6 +60,10 @@ public class GXHDO101B049Const {
      */
     public static final String RYOHIN_TP_REEL_HONSU2 = "sr_taping_check_ryohin_tp_reel_honsu2";
     /**
+     * 検査回数
+     */
+    public static final String KENSA_KAISUU = "sr_taping_check_kensa_kaisuu";
+    /**
      * ﾃｰﾋﾟﾝｸﾞ号機
      */
     public static final String TP_GOKI = "sr_taping_check_tp_goki";
