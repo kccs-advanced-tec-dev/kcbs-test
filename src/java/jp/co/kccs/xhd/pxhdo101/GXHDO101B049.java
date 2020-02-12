@@ -12,10 +12,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.faces.application.FacesMessage;
@@ -1128,9 +1126,9 @@ public class GXHDO101B049 implements IFormLogic {
                 //検査回数
                 CommonUtil.setMaekoteiInfo(getItemRow(processData.getItemList(), GXHDO101B049Const.KENSA_KAISUU), maekoteiInfo, "kaisuu", true, true);
                 //ﾃｰﾋﾟﾝｸﾞ号機
-                CommonUtil.setMaekoteiInfo(getItemRow(processData.getItemList(), GXHDO101B049Const.TP_GOKI), maekoteiInfo, "gouki", true, false);//TODO 0チェック不要でいいか
+                CommonUtil.setMaekoteiInfo(getItemRow(processData.getItemList(), GXHDO101B049Const.TP_GOKI), maekoteiInfo, "gouki", true, false);
                 //検査場所
-                CommonUtil.setMaekoteiInfo(getItemRow(processData.getItemList(), GXHDO101B049Const.KENSA_BASHO), maekoteiInfo, "kensabasyo", true, false);//TODO 0チェック不要でいいか
+                CommonUtil.setMaekoteiInfo(getItemRow(processData.getItemList(), GXHDO101B049Const.KENSA_BASHO), maekoteiInfo, "kensabasyo", true, false);
                 //ﾘｰﾙﾁｪｯｸ数
                 CommonUtil.setMaekoteiInfo(getItemRow(processData.getItemList(), GXHDO101B049Const.REEL_CHECKSU), maekoteiInfo, "ryouhinreelsu2", true, true);
                 return true;
@@ -1997,7 +1995,7 @@ public class GXHDO101B049 implements IFormLogic {
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.TP_GOKI, srTapingCheckData))); //ﾃｰﾋﾟﾝｸﾞ号機
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.KENSA_BASHO, srTapingCheckData))); //検査場所
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.REEL_CHECKSU, srTapingCheckData))); //ﾘｰﾙﾁｪｯｸ数
-        params.add(DBUtil.stringToDateObject(getItemData(itemList, GXHDO101B049Const.KENSA_KAISHI_DAY, srTapingCheckData),
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.KENSA_KAISHI_DAY, srTapingCheckData),
                 getItemData(itemList, GXHDO101B049Const.KENSA_KAISHI_TIME, srTapingCheckData))); //検査開始日時
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.KENSA_KAISHI_TANTOUSYA, srTapingCheckData))); //検査開始担当者
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.MONODACHI, srTapingCheckData))); //物立ち
@@ -2009,13 +2007,13 @@ public class GXHDO101B049 implements IFormLogic {
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.SONOTA, srTapingCheckData))); //その他
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.TOP_CARRIER_BOTTOM_TAPE_IJOU, srTapingCheckData))); //ﾄｯﾌﾟﾃｰﾌﾟ、ｷｬﾘｱﾃｰﾌﾟ、ﾎﾞﾄﾑﾃｰﾌﾟ異常
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.REEL_CHECK_KEKKA, srTapingCheckData))); //ﾘｰﾙﾁｪｯｸ結果 //TODO
-        params.add(DBUtil.stringToDateObject(getItemData(itemList, GXHDO101B049Const.KENSA_SHURYOU_DAY, srTapingCheckData),
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.KENSA_SHURYOU_DAY, srTapingCheckData),
                 getItemData(itemList, GXHDO101B049Const.KENSA_SHURYOU_TIME, srTapingCheckData))); //検査終了日時
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.KENSA_SHURYOU_TANTOUSYA, srTapingCheckData))); //検査終了担当者
-        params.add(getComboOkNgValue(getItemData(itemList, GXHDO101B049Const.TPNG1, srTapingCheckData), null));//TPNG1
-        params.add(getComboOkNgValue(getItemData(itemList, GXHDO101B049Const.TPNG2, srTapingCheckData), null));//TPNG2
-        params.add(getComboAriNashiValue(getItemData(itemList, GXHDO101B049Const.DENKITOKUSEI_SAIKENSA, srTapingCheckData), null));//電気特性再検査
-        params.add(getComboAriNashiValue(getItemData(itemList, GXHDO101B049Const.GAIKAN_SAIKENSA, srTapingCheckData), null));//外観再検査
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.TPNG1, srTapingCheckData)));//TPNG1
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.TPNG2, srTapingCheckData)));//TPNG2
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.DENKITOKUSEI_SAIKENSA, srTapingCheckData)));//電気特性再検査
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.GAIKAN_SAIKENSA, srTapingCheckData)));//外観再検査
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.BIKOU1, srTapingCheckData))); //備考1
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.BIKOU2, srTapingCheckData))); //備考2
 
@@ -2153,14 +2151,14 @@ public class GXHDO101B049 implements IFormLogic {
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B049Const.DIP_FURYO, srTapingCheckData))); //DIP不良
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B049Const.SONOTA, srTapingCheckData))); //その他
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B049Const.TOP_CARRIER_BOTTOM_TAPE_IJOU, srTapingCheckData))); //ﾄｯﾌﾟﾃｰﾌﾟ、ｷｬﾘｱﾃｰﾌﾟ、ﾎﾞﾄﾑﾃｰﾌﾟ異常
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B049Const.REEL_CHECK_KEKKA, srTapingCheckData))); //ﾘｰﾙﾁｪｯｸ結果 //TODO
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B049Const.REEL_CHECK_KEKKA, srTapingCheckData))); //ﾘｰﾙﾁｪｯｸ結果
         params.add(DBUtil.stringToDateObject(getItemData(itemList, GXHDO101B049Const.KENSA_SHURYOU_DAY, srTapingCheckData),
                 getItemData(itemList, GXHDO101B049Const.KENSA_SHURYOU_TIME, srTapingCheckData))); //検査終了日時
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B049Const.KENSA_SHURYOU_TANTOUSYA, srTapingCheckData))); //検査終了担当者
-        params.add(getComboOkNgValue(getItemData(itemList, GXHDO101B049Const.TPNG1, srTapingCheckData), 9));//TPNG1
-        params.add(getComboOkNgValue(getItemData(itemList, GXHDO101B049Const.TPNG2, srTapingCheckData), 9));//TPNG2
-        params.add(getComboAriNashiValue(getItemData(itemList, GXHDO101B049Const.DENKITOKUSEI_SAIKENSA, srTapingCheckData), 9));//電気特性再検査
-        params.add(getComboAriNashiValue(getItemData(itemList, GXHDO101B049Const.GAIKAN_SAIKENSA, srTapingCheckData), 9));//外観再検査
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B049Const.TPNG1, srTapingCheckData)));//TPNG1
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B049Const.TPNG2, srTapingCheckData)));//TPNG2
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B049Const.DENKITOKUSEI_SAIKENSA, srTapingCheckData)));//電気特性再検査
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B049Const.GAIKAN_SAIKENSA, srTapingCheckData)));//外観再検査
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B049Const.BIKOU1, srTapingCheckData))); //備考1
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B049Const.BIKOU2, srTapingCheckData))); //備考2
         if (isInsert) {
@@ -2369,16 +2367,16 @@ public class GXHDO101B049 implements IFormLogic {
                 return StringUtil.nullToBlank(srTapingCheckData.getKensasyuryotantou());
             //TPNG1
             case GXHDO101B049Const.TPNG1:
-                return getComboOkNgText(StringUtil.nullToBlank(srTapingCheckData.getTapeng1()));
+                return StringUtil.nullToBlank(srTapingCheckData.getTapeng1());
             //TPNG2
             case GXHDO101B049Const.TPNG2:
-                return getComboOkNgText(StringUtil.nullToBlank(srTapingCheckData.getTapeng2()));
+                return StringUtil.nullToBlank(srTapingCheckData.getTapeng2());
             //電気特性再検査
             case GXHDO101B049Const.DENKITOKUSEI_SAIKENSA:
-                return getComboAriNashiText(StringUtil.nullToBlank(srTapingCheckData.getDenkitokuseisaikensa()));
+                return StringUtil.nullToBlank(srTapingCheckData.getDenkitokuseisaikensa());
             //外観再検査
             case GXHDO101B049Const.GAIKAN_SAIKENSA:
-                return getComboAriNashiText(StringUtil.nullToBlank(srTapingCheckData.getGaikansaikensa()));
+                return StringUtil.nullToBlank(srTapingCheckData.getGaikansaikensa());
             //備考1
             case GXHDO101B049Const.BIKOU1:
                 return StringUtil.nullToBlank(srTapingCheckData.getBikou1());
@@ -2456,74 +2454,74 @@ public class GXHDO101B049 implements IFormLogic {
         }
         return null;
     }
-
-    /**
-     * コンボボックス(OK,NG)Value値取得
-     *
-     * @param comboText コンボボックステキスト
-     * @return コンボボックスValue値
-     */
-    private Integer getComboOkNgValue(String comboText, Integer defaultValue) {
-        switch (StringUtil.nullToBlank(comboText)) {
-            case "NG":
-                return 0;
-            case "OK":
-                return 1;
-            default:
-                return defaultValue;
-        }
-    }
-
-    /**
-     * コンボボックス(OK,NG)テキスト値取得
-     *
-     * @param comboValue コンボボックスValue値
-     * @return コンボボックステキスト値
-     */
-    private String getComboOkNgText(String comboValue) {
-        switch (comboValue) {
-            case "0":
-                return "NG";
-            case "1":
-                return "OK";
-            default:
-                return "";
-        }
-    }
-
-    /**
-     * コンボボックス(あり,なし)Value値取得
-     *
-     * @param comboText コンボボックステキスト
-     * @return コンボボックスValue値
-     */
-    private Integer getComboAriNashiValue(String comboText, Integer defaultValue) {
-        switch (StringUtil.nullToBlank(comboText)) {
-            case "なし":
-                return 0;
-            case "あり":
-                return 1;
-            default:
-                return defaultValue;
-        }
-    }
-
-    /**
-     * コンボボックス(あり,なし)テキスト値取得
-     *
-     * @param comboValue コンボボックスValue値
-     * @return コンボボックステキスト値
-     */
-    private String getComboAriNashiText(String comboValue) {
-        switch (comboValue) {
-            case "0":
-                return "なし";
-            case "1":
-                return "あり";
-            default:
-                return "";
-        }
-    }
+//
+//    /**
+//     * コンボボックス(OK,NG)Value値取得
+//     *
+//     * @param comboText コンボボックステキスト
+//     * @return コンボボックスValue値
+//     */
+//    private Integer getComboOkNgValue(String comboText, Integer defaultValue) {
+//        switch (StringUtil.nullToBlank(comboText)) {
+//            case "NG":
+//                return 0;
+//            case "OK":
+//                return 1;
+//            default:
+//                return defaultValue;
+//        }
+//    }
+//
+//    /**
+//     * コンボボックス(OK,NG)テキスト値取得
+//     *
+//     * @param comboValue コンボボックスValue値
+//     * @return コンボボックステキスト値
+//     */
+//    private String getComboOkNgText(String comboValue) {
+//        switch (comboValue) {
+//            case "0":
+//                return "NG";
+//            case "1":
+//                return "OK";
+//            default:
+//                return "";
+//        }
+//    }
+//
+//    /**
+//     * コンボボックス(あり,なし)Value値取得
+//     *
+//     * @param comboText コンボボックステキスト
+//     * @return コンボボックスValue値
+//     */
+//    private Integer getComboAriNashiValue(String comboText, Integer defaultValue) {
+//        switch (StringUtil.nullToBlank(comboText)) {
+//            case "なし":
+//                return 0;
+//            case "あり":
+//                return 1;
+//            default:
+//                return defaultValue;
+//        }
+//    }
+//
+//    /**
+//     * コンボボックス(あり,なし)テキスト値取得
+//     *
+//     * @param comboValue コンボボックスValue値
+//     * @return コンボボックステキスト値
+//     */
+//    private String getComboAriNashiText(String comboValue) {
+//        switch (comboValue) {
+//            case "0":
+//                return "なし";
+//            case "1":
+//                return "あり";
+//            default:
+//                return "";
+//        }
+//    }
 
     /**
      * [TPNG1]から情報を取得
@@ -2625,49 +2623,49 @@ public class GXHDO101B049 implements IFormLogic {
 
     }
     
-     /**
-     * [実績]から、ﾃﾞｰﾀを取得
-     * @param queryRunnerWip オブジェクト
-     * @param lotNo ﾛｯﾄNo(検索キー)
-     * @param date ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ(検索キー)
-     * @return 取得データ
-     * @throws SQLException 
-     */
-     private List<Jisseki> loadJissekiData(QueryRunner queryRunnerWip, String lotNo, String[] data) throws SQLException {
-         
-
-        String lotNo1 = lotNo.substring(0, 3);
-        String lotNo2 = lotNo.substring(3, 11);
-        String lotNo3 = lotNo.substring(11, 14);
-        
-        List<String> dataList= new ArrayList<>(Arrays.asList(data));
-        
-        // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
-        String sql = "SELECT syorisuu "
-                + "FROM jisseki "
-                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND ";
-        
-        sql += DBUtil.getInConditionPreparedStatement("koteicode", dataList.size());
-        
-        sql += " ORDER BY syoribi DESC, syorijikoku DESC";
-        
-        Map mapping = new HashMap<>();
-        mapping.put("syorisuu", "syorisuu");
-        
-        BeanProcessor beanProcessor = new BeanProcessor(mapping);
-        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
-        ResultSetHandler<List<Jisseki>> beanHandler = new BeanListHandler<>(Jisseki.class, rowProcessor);
-
-        List<Object> params = new ArrayList<>();
-        params.add(lotNo1);
-        params.add(lotNo2);
-        params.add(lotNo3);                
-        params.addAll(dataList);
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerWip.query(sql, beanHandler, params.toArray());
-    }
-     
+//     /**
+//     * [実績]から、ﾃﾞｰﾀを取得
+//     * @param queryRunnerWip オブジェクト
+//     * @param lotNo ﾛｯﾄNo(検索キー)
+//     * @param date ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ(検索キー)
+//     * @return 取得データ
+//     * @throws SQLException 
+//     */
+//     private List<Jisseki> loadJissekiData(QueryRunner queryRunnerWip, String lotNo, String[] data) throws SQLException {
+//         
+//
+//        String lotNo1 = lotNo.substring(0, 3);
+//        String lotNo2 = lotNo.substring(3, 11);
+//        String lotNo3 = lotNo.substring(11, 14);
+//        
+//        List<String> dataList= new ArrayList<>(Arrays.asList(data));
+//        
+//        // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+//        String sql = "SELECT syorisuu "
+//                + "FROM jisseki "
+//                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND ";
+//        
+//        sql += DBUtil.getInConditionPreparedStatement("koteicode", dataList.size());
+//        
+//        sql += " ORDER BY syoribi DESC, syorijikoku DESC";
+//        
+//        Map mapping = new HashMap<>();
+//        mapping.put("syorisuu", "syorisuu");
+//        
+//        BeanProcessor beanProcessor = new BeanProcessor(mapping);
+//        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+//        ResultSetHandler<List<Jisseki>> beanHandler = new BeanListHandler<>(Jisseki.class, rowProcessor);
+//
+//        List<Object> params = new ArrayList<>();
+//        params.add(lotNo1);
+//        params.add(lotNo2);
+//        params.add(lotNo3);                
+//        params.addAll(dataList);
+//
+//        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+//        return queryRunnerWip.query(sql, beanHandler, params.toArray());
+//    }
+//     
      
    
 }
