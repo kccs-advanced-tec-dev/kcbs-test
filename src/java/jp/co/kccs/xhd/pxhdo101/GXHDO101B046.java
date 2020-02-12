@@ -1507,8 +1507,8 @@ public class GXHDO101B046 implements IFormLogic {
                 + "kensakaishininteisya,10Kcheckmikensa,10Kcheckcamerasa,1kaimesyorikosuu,1kaimeryouhinkosuu,1kaimeNG1suu,1kaimeNG2suu,1kaimebudomari,"
                 + "1kaimemisyori,2kaimesyorikosuu,2kaimeryouhinkosuu,2kaimeNG1suu,2kaimeNG2suu,2kaimebudomari,2kaimemisyori,3kaimesyorikosuu,3kaimeryouhinkosuu,"
                 + "3kaimeNG1suu,3kaimeNG2suu,3kaimebudomari,3kaimemisyori,goukeisyorikosuu,ryouhinsoujyuuryou,goukeiryouhinkosuu,NGsoujyuuryou,goukeiNGsuu,"
-                + "goukeibudomari,goukeimisyori,mikennsaritu,kensasyuuryounichiji,kensasyuuryoutantousya,kensasyuuryouninteisya,bikou1,bikou2,tourokunichiji,"
-                + "koushinnichiji,revision,'0' AS deleteflag "
+                + "goukeibudomari,goukeimisyori,mikennsaritu,kensasyuuryounichiji,kensasyuuryoutantousya,kensasyuuryouninteisya,QAgaikannukitorikensa,bikou1,"
+                + "bikou2,tourokunichiji,koushinnichiji,revision,'0' AS deleteflag "
                 + "FROM sr_gaikankensa "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? ";
 
@@ -1581,6 +1581,7 @@ public class GXHDO101B046 implements IFormLogic {
         mapping.put("kensasyuuryounichiji", "kensasyuuryounichiji"); //検査終了日
         mapping.put("kensasyuuryoutantousya", "kensasyuuryoutantousya"); //検査終了担当者
         mapping.put("kensasyuuryouninteisya", "kensasyuuryouninteisya"); //検査終了認定者
+        mapping.put("QAgaikannukitorikensa", "qagaikannukitorikensa"); //QA外観抜き取り検査
         mapping.put("bikou1", "bikou1"); //備考1
         mapping.put("bikou2", "bikou2"); //備考2
         mapping.put("tourokunichiji", "tourokunichiji"); //登録日時
@@ -1616,8 +1617,8 @@ public class GXHDO101B046 implements IFormLogic {
                 + "kensakaishininteisya,10Kcheckmikensa,10Kcheckcamerasa,1kaimesyorikosuu,1kaimeryouhinkosuu,1kaimeNG1suu,1kaimeNG2suu,1kaimebudomari,"
                 + "1kaimemisyori,2kaimesyorikosuu,2kaimeryouhinkosuu,2kaimeNG1suu,2kaimeNG2suu,2kaimebudomari,2kaimemisyori,3kaimesyorikosuu,3kaimeryouhinkosuu,"
                 + "3kaimeNG1suu,3kaimeNG2suu,3kaimebudomari,3kaimemisyori,goukeisyorikosuu,ryouhinsoujyuuryou,goukeiryouhinkosuu,NGsoujyuuryou,goukeiNGsuu,"
-                + "goukeibudomari,goukeimisyori,mikennsaritu,kensasyuuryounichiji,kensasyuuryoutantousya,kensasyuuryouninteisya,bikou1,bikou2,tourokunichiji,"
-                + "koushinnichiji,revision,deleteflag "
+                + "goukeibudomari,goukeimisyori,mikennsaritu,kensasyuuryounichiji,kensasyuuryoutantousya,kensasyuuryouninteisya,QAgaikannukitorikensa,bikou1,bikou2,"
+                + "tourokunichiji,koushinnichiji,revision,deleteflag "
                 + "FROM tmp_sr_gaikankensa "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? ";
 
@@ -1691,6 +1692,7 @@ public class GXHDO101B046 implements IFormLogic {
         mapping.put("kensasyuuryounichiji", "kensasyuuryounichiji"); //検査終了日
         mapping.put("kensasyuuryoutantousya", "kensasyuuryoutantousya"); //検査終了担当者
         mapping.put("kensasyuuryouninteisya", "kensasyuuryouninteisya"); //検査終了認定者
+        mapping.put("QAgaikannukitorikensa", "qagaikannukitorikensa"); //QA外観抜き取り検査
         mapping.put("bikou1", "bikou1"); //備考1
         mapping.put("bikou2", "bikou2"); //備考2
         mapping.put("tourokunichiji", "tourokunichiji"); //登録日時
@@ -1976,9 +1978,10 @@ public class GXHDO101B046 implements IFormLogic {
                 + "10Kcheckmikensa,10Kcheckcamerasa,1kaimesyorikosuu,1kaimeryouhinkosuu,1kaimeNG1suu,1kaimeNG2suu,1kaimebudomari,1kaimemisyori,2kaimesyorikosuu,"
                 + "2kaimeryouhinkosuu,2kaimeNG1suu,2kaimeNG2suu,2kaimebudomari,2kaimemisyori,3kaimesyorikosuu,3kaimeryouhinkosuu,3kaimeNG1suu,3kaimeNG2suu,"
                 + "3kaimebudomari,3kaimemisyori,goukeisyorikosuu,ryouhinsoujyuuryou,goukeiryouhinkosuu,NGsoujyuuryou,goukeiNGsuu,goukeibudomari,goukeimisyori,"
-                + "mikennsaritu,kensasyuuryounichiji,kensasyuuryoutantousya,kensasyuuryouninteisya,bikou1,bikou2,tourokunichiji,koushinnichiji,revision,deleteflag"
+                + "mikennsaritu,kensasyuuryounichiji,kensasyuuryoutantousya,kensasyuuryouninteisya,QAgaikannukitorikensa,bikou1,bikou2,tourokunichiji,"
+                + "koushinnichiji,revision,deleteflag"
                 + ") VALUES ("
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterTmpSrGaikankensa(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null, jissekino, processData);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -2012,8 +2015,8 @@ public class GXHDO101B046 implements IFormLogic {
                 + "1kaimeryouhinkosuu = ?,1kaimeNG1suu = ?,1kaimeNG2suu = ?,1kaimebudomari = ?,1kaimemisyori = ?,2kaimesyorikosuu = ?,2kaimeryouhinkosuu = ?,"
                 + "2kaimeNG1suu = ?,2kaimeNG2suu = ?,2kaimebudomari = ?,2kaimemisyori = ?,3kaimesyorikosuu = ?,3kaimeryouhinkosuu = ?,3kaimeNG1suu = ?,3kaimeNG2suu = ?,"
                 + "3kaimebudomari = ?,3kaimemisyori = ?,goukeisyorikosuu = ?,ryouhinsoujyuuryou = ?,goukeiryouhinkosuu = ?,NGsoujyuuryou = ?,goukeiNGsuu = ?,"
-                + "goukeibudomari = ?,goukeimisyori = ?,mikennsaritu = ?,kensasyuuryounichiji = ?,kensasyuuryoutantousya = ?,kensasyuuryouninteisya = ?,bikou1 = ?,"
-                + "bikou2 = ?,koushinnichiji = ?,revision = ?,deleteflag = ? "
+                + "goukeibudomari = ?,goukeimisyori = ?,mikennsaritu = ?,kensasyuuryounichiji = ?,kensasyuuryoutantousya = ?,kensasyuuryouninteisya = ?,QAgaikannukitorikensa = ?,"
+                + "bikou1 = ?,bikou2 = ?,koushinnichiji = ?,revision = ?,deleteflag = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ? ";
 
         // 更新前の値を取得
@@ -2087,7 +2090,7 @@ public class GXHDO101B046 implements IFormLogic {
             String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList, SrGaikankensa srGaikankensaData, int jissekino, ProcessData processData) {
         List<Object> params = new ArrayList<>();
 
-       if (isInsert) {
+        if (isInsert) {
             params.add(kojyo);  // 工場ｺｰﾄﾞ
             params.add(lotNo);  // ﾛｯﾄNo
             params.add(edaban); // 枝番
@@ -2143,7 +2146,7 @@ public class GXHDO101B046 implements IFormLogic {
                 getItemData(itemList, GXHDO101B046Const.KENSA_SHURYO_TIME, srGaikankensaData))); //検査終了日
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B046Const.KENSA_SHURYO_TANTOUSYA, srGaikankensaData))); //検査終了担当者
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B046Const.KENSA_SHURYO_NINTEISYA, srGaikankensaData))); //検査終了認定者
-        //params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B046Const.QAGAIKAN_NUKITORIKENSA, srGaikankensaData))); //QA外観抜き取り検査 //TODO
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B046Const.QAGAIKAN_NUKITORIKENSA, srGaikankensaData))); //QA外観抜き取り検査
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B046Const.BIKOU1, srGaikankensaData))); //備考1
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B046Const.BIKOU2, srGaikankensaData))); //備考2
         if (isInsert) {
@@ -2183,9 +2186,9 @@ public class GXHDO101B046 implements IFormLogic {
                 + "10Kcheckmikensa,10Kcheckcamerasa,1kaimesyorikosuu,1kaimeryouhinkosuu,1kaimeNG1suu,1kaimeNG2suu,1kaimebudomari,1kaimemisyori,2kaimesyorikosuu,"
                 + "2kaimeryouhinkosuu,2kaimeNG1suu,2kaimeNG2suu,2kaimebudomari,2kaimemisyori,3kaimesyorikosuu,3kaimeryouhinkosuu,3kaimeNG1suu,3kaimeNG2suu,"
                 + "3kaimebudomari,3kaimemisyori,goukeisyorikosuu,ryouhinsoujyuuryou,goukeiryouhinkosuu,NGsoujyuuryou,goukeiNGsuu,goukeibudomari,goukeimisyori,"
-                + "mikennsaritu,kensasyuuryounichiji,kensasyuuryoutantousya,kensasyuuryouninteisya,bikou1,bikou2,tourokunichiji,koushinnichiji,revision"
+                + "mikennsaritu,kensasyuuryounichiji,kensasyuuryoutantousya,kensasyuuryouninteisya,QAgaikannukitorikensa,bikou1,bikou2,tourokunichiji,koushinnichiji,revision"
                 + ") VALUES ("
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterSrGaikankensa(true, newRev, kojyo, lotNo, edaban, jissekino, systemTime, itemList, tmpSrGaikankensa, processData);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -2218,8 +2221,8 @@ public class GXHDO101B046 implements IFormLogic {
                 + "1kaimeryouhinkosuu = ?,1kaimeNG1suu = ?,1kaimeNG2suu = ?,1kaimebudomari = ?,1kaimemisyori = ?,2kaimesyorikosuu = ?,2kaimeryouhinkosuu = ?,"
                 + "2kaimeNG1suu = ?,2kaimeNG2suu = ?,2kaimebudomari = ?,2kaimemisyori = ?,3kaimesyorikosuu = ?,3kaimeryouhinkosuu = ?,3kaimeNG1suu = ?,3kaimeNG2suu = ?,"
                 + "3kaimebudomari = ?,3kaimemisyori = ?,goukeisyorikosuu = ?,ryouhinsoujyuuryou = ?,goukeiryouhinkosuu = ?,NGsoujyuuryou = ?,goukeiNGsuu = ?,"
-                + "goukeibudomari = ?,goukeimisyori = ?,mikennsaritu = ?,kensasyuuryounichiji = ?,kensasyuuryoutantousya = ?,kensasyuuryouninteisya = ?,bikou1 = ?,"
-                + "bikou2 = ?,koushinnichiji = ?,revision = ? "
+                + "goukeibudomari = ?,goukeimisyori = ?,mikennsaritu = ?,kensasyuuryounichiji = ?,kensasyuuryoutantousya = ?,kensasyuuryouninteisya = ?,QAgaikannukitorikensa = ?,"
+                + "bikou1 = ?,bikou2 = ?,koushinnichiji = ?,revision = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ? ";
 
         // 更新前の値を取得
@@ -2317,7 +2320,7 @@ public class GXHDO101B046 implements IFormLogic {
                 getItemData(itemList, GXHDO101B046Const.KENSA_SHURYO_TIME, srGaikankensaData))); //検査終了日
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B046Const.KENSA_SHURYO_TANTOUSYA, srGaikankensaData))); //検査終了担当者
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B046Const.KENSA_SHURYO_NINTEISYA, srGaikankensaData))); //検査終了認定者
-        //params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B046Const.QAGAIKAN_NUKITORIKENSA, srGaikankensaData))); //QA外観抜き取り検査 //TODO
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B046Const.QAGAIKAN_NUKITORIKENSA, srGaikankensaData))); //QA外観抜き取り検査
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B046Const.BIKOU1, srGaikankensaData))); //備考1
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B046Const.BIKOU2, srGaikankensaData))); //備考2
         if (isInsert) {
@@ -2732,7 +2735,7 @@ public class GXHDO101B046 implements IFormLogic {
                 return StringUtil.nullToBlank(srGaikankensaData.getKensasyuuryouninteisya());
             // QA外観抜き取り検査
             case GXHDO101B046Const.QAGAIKAN_NUKITORIKENSA:
-                return ""; //TODO
+                return StringUtil.nullToBlank(srGaikankensaData.getQagaikannukitorikensa());
             // 備考1
             case GXHDO101B046Const.BIKOU1:
                 return StringUtil.nullToBlank(srGaikankensaData.getBikou1());
@@ -2768,14 +2771,14 @@ public class GXHDO101B046 implements IFormLogic {
                 + "10Kcheckmikensa,10Kcheckcamerasa,1kaimesyorikosuu,1kaimeryouhinkosuu,1kaimeNG1suu,1kaimeNG2suu,1kaimebudomari,1kaimemisyori,2kaimesyorikosuu,"
                 + "2kaimeryouhinkosuu,2kaimeNG1suu,2kaimeNG2suu,2kaimebudomari,2kaimemisyori,3kaimesyorikosuu,3kaimeryouhinkosuu,3kaimeNG1suu,3kaimeNG2suu,"
                 + "3kaimebudomari,3kaimemisyori,goukeisyorikosuu,ryouhinsoujyuuryou,goukeiryouhinkosuu,NGsoujyuuryou,goukeiNGsuu,goukeibudomari,goukeimisyori,"
-                + "mikennsaritu,kensasyuuryounichiji,kensasyuuryoutantousya,kensasyuuryouninteisya,bikou1,bikou2,tourokunichiji,koushinnichiji,revision,deleteflag"
+                + "mikennsaritu,kensasyuuryounichiji,kensasyuuryoutantousya,kensasyuuryouninteisya,QAgaikannukitorikensa,bikou1,bikou2,tourokunichiji,koushinnichiji,revision,deleteflag"
                 + ") SELECT "
                 + " kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,ownercode,lotkubuncode,atokouteisijinaiyou,okuriryouhinsuu,ukeiretannijyuryo,ukeiresoujyuryou,"
                 + "gaikankensasyurui,kensabasyo,kensasyurui,kensagouki,kensafileno,kensamen,kensakaishinichiji,kensakaishitantousya,kensakaishininteisya,"
                 + "10Kcheckmikensa,10Kcheckcamerasa,1kaimesyorikosuu,1kaimeryouhinkosuu,1kaimeNG1suu,1kaimeNG2suu,1kaimebudomari,1kaimemisyori,2kaimesyorikosuu,"
                 + "2kaimeryouhinkosuu,2kaimeNG1suu,2kaimeNG2suu,2kaimebudomari,2kaimemisyori,3kaimesyorikosuu,3kaimeryouhinkosuu,3kaimeNG1suu,3kaimeNG2suu,"
                 + "3kaimebudomari,3kaimemisyori,goukeisyorikosuu,ryouhinsoujyuuryou,goukeiryouhinkosuu,NGsoujyuuryou,goukeiNGsuu,goukeibudomari,goukeimisyori,"
-                + "mikennsaritu,kensasyuuryounichiji,kensasyuuryoutantousya,kensasyuuryouninteisya,bikou1,bikou2,?,?,?,?"
+                + "mikennsaritu,kensasyuuryounichiji,kensasyuuryoutantousya,kensasyuuryouninteisya,QAgaikannukitorikensabikou1,bikou2,?,?,?,?"
                 + " FROM sr_gaikankensa "
                 + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? ";
 
@@ -2798,9 +2801,10 @@ public class GXHDO101B046 implements IFormLogic {
 
     /**
      * 歩留まりを計算し値を項目に値をセットする。
+     *
      * @param itemBudomari 歩留まり項目
      * @param itemRyohinkosu 良品個数項目
-     * @param itemSyorikosu  処理個数項目
+     * @param itemSyorikosu 処理個数項目
      */
     private void calcBudomari(FXHDD01 itemBudomari, FXHDD01 itemRyohinkosu, FXHDD01 itemSyorikosu) {
         try {
@@ -2830,6 +2834,7 @@ public class GXHDO101B046 implements IFormLogic {
 
     /**
      * 合計計算(対象項目に値の合計値を設定する。)
+     *
      * @param sumItem 合計項目
      * @param addItemList 追加対象
      */
@@ -2856,6 +2861,7 @@ public class GXHDO101B046 implements IFormLogic {
 
     /**
      * 重量を元に個数を算出しセットする。
+     *
      * @param itemKosu 個数
      * @param itemSojuryo 総重量
      * @param itemTanijuryo 単位重量

@@ -287,6 +287,11 @@ public class SrGaikankensa {
     private String kensasyuuryouninteisya;
 
     /**
+     * QA外観抜き取り検査
+     */
+    private String qagaikannukitorikensa;
+
+    /**
      * 備考1
      */
     private String bikou1;
@@ -1250,6 +1255,22 @@ public class SrGaikankensa {
      */
     public void setKensasyuuryouninteisya(String kensasyuuryouninteisya) {
         this.kensasyuuryouninteisya = kensasyuuryouninteisya;
+    }
+
+    /**
+     * QA外観抜き取り検査
+     * @return the qagaikannukitorikensa
+     */
+    public String getQagaikannukitorikensa() {
+        return qagaikannukitorikensa;
+    }
+
+    /**
+     * QA外観抜き取り検査
+     * @param qagaikannukitorikensa the qagaikannukitorikensa to set
+     */
+    public void setQagaikannukitorikensa(String qagaikannukitorikensa) {
+        this.qagaikannukitorikensa = qagaikannukitorikensa;
     }
 
     /**
