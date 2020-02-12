@@ -3700,7 +3700,6 @@ public class GXHDO101B048 implements IFormLogic {
             BigDecimal ukeireTaniJuryo = new BigDecimal(itemUkeireTanijuryo.getValue());
 
             if (0 <= BigDecimal.ZERO.compareTo(okuriRyohinsu) || 0 <= BigDecimal.ZERO.compareTo(ukeireTaniJuryo)) {
-                setItemData(processData, GXHDO101B048Const.UKEIRE_SOUJURYO, null);
                 return;
             }
 
@@ -3711,7 +3710,7 @@ public class GXHDO101B048 implements IFormLogic {
             setItemData(processData, GXHDO101B048Const.UKEIRE_SOUJURYO, ukeireSojuryo.toPlainString());
 
         } catch (NullPointerException | NumberFormatException ex) {
-            setItemData(processData, GXHDO101B048Const.UKEIRE_SOUJURYO, null);
+            //何もしない
         }
     }
     
@@ -3790,7 +3789,4 @@ public class GXHDO101B048 implements IFormLogic {
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerWip.query(sql, beanHandler, params.toArray());
     }
-     
-    
-
 }
