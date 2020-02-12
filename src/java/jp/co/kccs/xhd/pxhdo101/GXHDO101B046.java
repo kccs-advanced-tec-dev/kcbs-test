@@ -2938,7 +2938,6 @@ public class GXHDO101B046 implements IFormLogic {
 
             // 受入れ単位重量、送り良品数の値のいずれかが0以下の場合、リターン
             if (0 <= BigDecimal.ZERO.compareTo(taniJuryo) || 0 <= BigDecimal.ZERO.compareTo(okuriRyohinsu)) {
-                itemUkeireSojuryo.setValue(null);
                 return;
             }
 
@@ -2949,7 +2948,7 @@ public class GXHDO101B046 implements IFormLogic {
             itemUkeireSojuryo.setValue(budomari.toPlainString());
 
         } catch (NullPointerException | NumberFormatException ex) {
-            itemUkeireSojuryo.setValue(null);
+            //処理なし
         }
     }
 
