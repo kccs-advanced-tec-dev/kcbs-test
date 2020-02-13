@@ -847,7 +847,7 @@ public class GXHDO101B046 implements IFormLogic {
             // 受入れ総重量計算
             case GXHDO101B046Const.BTN_UKEIRESOJURYO_KEISAN_TOP:
             case GXHDO101B046Const.BTN_UKEIRESOJURYO_KEISAN_BOTTOM:
-                method = "doUkeireSojuryoKeisan";
+                method = "confUkeireSojuryoKeisan";
                 break;
             // 検査終了日時
             case GXHDO101B046Const.BTN_KENSA_ENDDATETIME_TOP:
@@ -995,6 +995,16 @@ public class GXHDO101B046 implements IFormLogic {
         
         // 検査回数
         this.setItemData(processData, GXHDO101B046Const.KENSA_KAISUU, StringUtil.nullToBlank(jissekino));
+        
+        // 入力画面選択から受け取った情報を表示する。
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+        
+        Map srJikiqcInfo = (Map) session.getAttribute("SrJikiqcInfo");
+        if (srJikiqcInfo != null && !srJikiqcInfo.isEmpty()) {
+            //後工程指示内容←磁器QC[後工程指示内容2]
+            this.setItemData(processData, GXHDO101B046Const.ATOKOUTEI_SHIJI_NAIYO, StringUtil.nullToBlank(srJikiqcInfo.get("sijinaiyou2")));
+        }
         
     }
 
@@ -2812,7 +2822,7 @@ public class GXHDO101B046 implements IFormLogic {
                 + "10Kcheckmikensa,10Kcheckcamerasa,1kaimesyorikosuu,1kaimeryouhinkosuu,1kaimeNG1suu,1kaimeNG2suu,1kaimebudomari,1kaimemisyori,2kaimesyorikosuu,"
                 + "2kaimeryouhinkosuu,2kaimeNG1suu,2kaimeNG2suu,2kaimebudomari,2kaimemisyori,3kaimesyorikosuu,3kaimeryouhinkosuu,3kaimeNG1suu,3kaimeNG2suu,"
                 + "3kaimebudomari,3kaimemisyori,goukeisyorikosuu,ryouhinsoujyuuryou,goukeiryouhinkosuu,NGsoujyuuryou,goukeiNGsuu,goukeibudomari,goukeimisyori,"
-                + "mikennsaritu,kensasyuuryounichiji,kensasyuuryoutantousya,kensasyuuryouninteisya,QAgaikannukitorikensabikou1,bikou2,?,?,?,?"
+                + "mikennsaritu,kensasyuuryounichiji,kensasyuuryoutantousya,kensasyuuryouninteisya,QAgaikannukitorikensa,bikou1,bikou2,?,?,?,?"
                 + " FROM sr_gaikankensa "
                 + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? ";
 
@@ -2880,17 +2890,20 @@ public class GXHDO101B046 implements IFormLogic {
         }
 
         BigDecimal sumData = BigDecimal.ZERO;
+        int addCount = 0;
         for (FXHDD01 addItem : addItemList) {
             try {
-                sumData.add(new BigDecimal(addItem.getValue()));
+                sumData = sumData.add(new BigDecimal(addItem.getValue()));
+                addCount++;
             } catch (NullPointerException | NumberFormatException ex) {
                 // 数値変換できない場合は処理なし
             }
         }
 
-        //計算結果を誤差率にセット
-        sumItem.setValue(sumData.toPlainString());
-
+        if(0 < addCount){
+            //計算結果を合計項目にセット
+            sumItem.setValue(sumData.toPlainString());
+        }
     }
 
     /**
@@ -2910,8 +2923,8 @@ public class GXHDO101B046 implements IFormLogic {
             BigDecimal sojuryo = new BigDecimal(itemSojuryo.getValue());//総重量
             BigDecimal taniJuryo = new BigDecimal(itemTanijuryo.getValue());//単位重量
 
-            // 総重量、単位重量の値のいずれかが0以下の場合リターン
-            if (0 <= BigDecimal.ZERO.compareTo(sojuryo) || 0 <= BigDecimal.ZERO.compareTo(taniJuryo)) {
+            // 単位重量の値のが0の場合リターン
+            if (0 == BigDecimal.ZERO.compareTo(taniJuryo)) {
                 return;
             }
 
@@ -2943,16 +2956,16 @@ public class GXHDO101B046 implements IFormLogic {
             BigDecimal gokeiMisyori = new BigDecimal(itemGokeiMisyoriReTestkosu.getValue());
             BigDecimal okuriRyohinsu = new BigDecimal(itemOkuriRyohinsu.getValue());
 
-            // 合計未処理・ﾘﾃｽﾄ個数、送り良品数の値のいずれかが0以下の場合、リターン
-            if (0 < BigDecimal.ZERO.compareTo(gokeiMisyori) || 0 <= BigDecimal.ZERO.compareTo(okuriRyohinsu)) {
+            // 送り良品数の値のいずれかが0以下の場合、リターン
+            if (0 == BigDecimal.ZERO.compareTo(okuriRyohinsu)) {
                 return;
             }
 
             //合計未処理・ﾘﾃｽﾄ個数 / 送り良品数 * 100(小数点第三位を四捨五入) → 式を変換して先に100を乗算
-            BigDecimal budomari = gokeiMisyori.multiply(BigDecimal.valueOf(100)).divide(okuriRyohinsu, 2, RoundingMode.HALF_UP);
+            BigDecimal mikensaritsu = gokeiMisyori.multiply(BigDecimal.valueOf(100)).divide(okuriRyohinsu, 2, RoundingMode.HALF_UP);
 
             //計算結果を未検査率にセット
-            itemMiKensaritsu.setValue(budomari.toPlainString());
+            itemMiKensaritsu.setValue(mikensaritsu.toPlainString());
 
         } catch (NullPointerException | NumberFormatException ex) {
             // 数値変換できない場合はリターン
