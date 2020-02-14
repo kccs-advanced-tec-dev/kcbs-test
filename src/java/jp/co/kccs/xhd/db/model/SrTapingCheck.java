@@ -158,22 +158,22 @@ public class SrTapingCheck {
     /**
      * TPNG１
      */
-    private Integer tapeng1;
+    private String tapeng1;
 
     /**
      * TPNG2
      */
-    private Integer tapeng2;
+    private String tapeng2;
 
     /**
      * 電気特性再検査
      */
-    private Integer denkitokuseisaikensa;
+    private String denkitokuseisaikensa;
 
     /**
      * 外観再検査
      */
-    private Integer gaikansaikensa;
+    private String gaikansaikensa;
 
     /**
      * 備考1
@@ -676,7 +676,7 @@ public class SrTapingCheck {
      *
      * @return the tapeng1
      */
-    public Integer getTapeng1() {
+    public String getTapeng1() {
         return tapeng1;
     }
 
@@ -685,7 +685,7 @@ public class SrTapingCheck {
      *
      * @param tapeng1 the tapeng1 to set
      */
-    public void setTapeng1(Integer tapeng1) {
+    public void setTapeng1(String tapeng1) {
         this.tapeng1 = tapeng1;
     }
 
@@ -694,7 +694,7 @@ public class SrTapingCheck {
      *
      * @return the tapeng2
      */
-    public Integer getTapeng2() {
+    public String getTapeng2() {
         return tapeng2;
     }
 
@@ -703,7 +703,7 @@ public class SrTapingCheck {
      *
      * @param tapeng2 the tapeng2 to set
      */
-    public void setTapeng2(Integer tapeng2) {
+    public void setTapeng2(String tapeng2) {
         this.tapeng2 = tapeng2;
     }
 
@@ -712,7 +712,7 @@ public class SrTapingCheck {
      *
      * @return the denkitokuseisaikensa
      */
-    public Integer getDenkitokuseisaikensa() {
+    public String getDenkitokuseisaikensa() {
         return denkitokuseisaikensa;
     }
 
@@ -721,7 +721,7 @@ public class SrTapingCheck {
      *
      * @param denkitokuseisaikensa the denkitokuseisaikensa to set
      */
-    public void setDenkitokuseisaikensa(Integer denkitokuseisaikensa) {
+    public void setDenkitokuseisaikensa(String denkitokuseisaikensa) {
         this.denkitokuseisaikensa = denkitokuseisaikensa;
     }
 
@@ -730,7 +730,7 @@ public class SrTapingCheck {
      *
      * @return the gaikansaikensa
      */
-    public Integer getGaikansaikensa() {
+    public String getGaikansaikensa() {
         return gaikansaikensa;
     }
 
@@ -739,7 +739,7 @@ public class SrTapingCheck {
      *
      * @param gaikansaikensa the gaikansaikensa to set
      */
-    public void setGaikansaikensa(Integer gaikansaikensa) {
+    public void setGaikansaikensa(String gaikansaikensa) {
         this.gaikansaikensa = gaikansaikensa;
     }
 
