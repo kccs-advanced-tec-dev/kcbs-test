@@ -9,6 +9,8 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -75,6 +77,11 @@ import org.primefaces.context.RequestContext;
 @ViewScoped
 public class GXHDO201B044 implements Serializable {
 
+    /**
+     * 検索LIMIT値
+     */
+    private static final int SEARCH_LIMIT = 200;
+    
     private static final Logger LOGGER = Logger.getLogger(GXHDO201B044.class.getName());
 
     /**
@@ -394,6 +401,23 @@ public class GXHDO201B044 implements Serializable {
                 return;
             }
 
+            // 入力チェックでエラーが存在しない場合検索処理を実行する
+            List<Map<String, Object>> srMekkiList = loadSrMekkiListData();
+            
+            // ﾒｯｷ履歴ﾃｰﾌﾞﾙの件数を取得
+            long mekkiLirekiCount = getMekkiRirekiDataCount(srMekkiList);
+            if (mekkiLirekiCount == 0) {
+                // 検索結果が0件の場合エラー終了
+                FacesMessage message
+                        = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000031"), null);
+                FacesContext.getCurrentInstance().addMessage(null, message);
+                return;
+            }
+
+            // ﾒｯｷ履歴ﾃｰﾌﾞﾙのﾃﾞｰﾀを取得
+            List<MekkiRireki> mekkiRirekiList = getMekkiRirekiData(srMekkiList);
+           
+
             if (listCountMax > 0 && count > listCountMax) {
                 // 検索結果が上限件数以上の場合エラー終了
                 FacesMessage message
@@ -445,7 +469,7 @@ public class GXHDO201B044 implements Serializable {
     private long loadSrMekkiListDataCount() throws SQLException {
 
         QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
-        String sql = "SELECT COUNT(LOTNO) AS CNT "
+        String sql = "SELECT COUNT(*) AS CNT "
                 + "FROM sr_mekki "
                 + "WHERE (? IS NULL OR kojyo = ?) "
                 + "AND   (? IS NULL OR lotno = ?) "
@@ -475,6 +499,10 @@ public class GXHDO201B044 implements Serializable {
                 + "AND   (? IS NULL OR edaban = ?) "
                 + "AND   (? IS NULL OR mekkikaishinichiji >= ?) "
                 + "AND   (? IS NULL OR mekkikaishinichiji <= ?) "
+                + "GROUP BY "
+                + "   kojyo "
+                + "  ,lotno "
+                + "  ,edaban "
                 + "ORDER BY "
                 + "   kojyo "
                 + "  ,lotno "
@@ -487,15 +515,101 @@ public class GXHDO201B044 implements Serializable {
         return queryRunner.query(sql, new MapListHandler(), params.toArray());
 
     }
+    
+    private long getMekkiRirekiDataCount(List<Map<String, Object>> srMekkiList) throws SQLException{
+        // 取得ﾛｯﾄを対象に検索を行う。
+            BigDecimal mekkiListSize = BigDecimal.valueOf(srMekkiList.size());
+            BigDecimal limit = BigDecimal.valueOf(SEARCH_LIMIT);
+            long loopCount = mekkiListSize.divide(limit, 0, RoundingMode.UP).longValue();
+
+            long mekkiRirekiCount = 0;
+            //ﾒｯｷ履歴情報取得
+        for (int i = 0; i < loopCount; i++) {
+            int startIdx = i * SEARCH_LIMIT;
+            int endIdx = ((i + 1) * SEARCH_LIMIT);
+            if (srMekkiList.size() < endIdx) {
+                endIdx = srMekkiList.size();
+            }
+            mekkiRirekiCount += loadMekkiRirekiDataCount(srMekkiList.subList(startIdx, endIdx));
+            
+        }
+        
+        return mekkiRirekiCount;
+    }
+
+    /**
+     * [ﾒｯｷ履歴]データ件数取得取得
+     *
+     * @param srMekkiList ﾒｯｷ品質検査データリスト
+     * @return 検索結果件数
+     * @throws SQLException 例外エラー
+     */
+    private long loadMekkiRirekiDataCount(List<Map<String, Object>> srMekkiList) throws SQLException {
+
+        QueryRunner queryRunner = new QueryRunner(dataSourceEquipment);
+        List<Object> params = new ArrayList<>();
+        StringBuilder sbSql = new StringBuilder();
+
+        // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+        sbSql.append(" SELECT SELECT COUNT(*) AS CNT ");
+        sbSql.append(" FROM mekki_rireki ");
+        sbSql.append(" WHERE (");
+        boolean notFirst = false;
+        for (Map lotnoInfo : srMekkiList) {
+            if (notFirst) {
+                sbSql.append(" OR ");
+            } else {
+                notFirst = true;
+            }
+            sbSql.append("(");
+            sbSql.append("Kojyo = ? ");
+            sbSql.append(" AND ");
+            sbSql.append("LotNo = ? ");
+            sbSql.append(" AND ");
+            sbSql.append("EdaBan = ? ");
+            sbSql.append(")");
+            // パラメータをセット
+            params.add(lotnoInfo.get("kojyo"));
+            params.add(lotnoInfo.get("lotno"));
+            params.add(lotnoInfo.get("edaban"));
+        }
+        sbSql.append(")");
+        DBUtil.outputSQLLog(sbSql.toString(), params.toArray(), LOGGER);
+        Map result = queryRunner.query(sbSql.toString(), new MapHandler(), params.toArray());
+
+        return (long) result.get("CNT");
+
+    }
+    
+    private List<MekkiRireki> getMekkiRirekiData(List<Map<String, Object>> srMekkiList) throws SQLException{
+        // 取得ﾛｯﾄを対象に検索を行う。
+            BigDecimal mekkiListSize = BigDecimal.valueOf(srMekkiList.size());
+            BigDecimal limit = BigDecimal.valueOf(SEARCH_LIMIT);
+            long loopCount = mekkiListSize.divide(limit, 0, RoundingMode.UP).longValue();
+
+            List<MekkiRireki> mekkiRirekiList = new ArrayList<>();
+            //ﾒｯｷ履歴情報取得
+        for (int i = 0; i < loopCount; i++) {
+            int startIdx = i * SEARCH_LIMIT;
+            int endIdx = ((i + 1) * SEARCH_LIMIT);
+            if (srMekkiList.size() < endIdx) {
+                endIdx = srMekkiList.size();
+            }
+            mekkiRirekiList.addAll(loadMekkiRirekiData(srMekkiList.subList(startIdx, endIdx)));
+            
+        }
+        
+        return mekkiRirekiList;
+    }
+    
+    
 
     /**
      * [ﾒｯｷ履歴]データ取得取得
      *
-     * @param queryRunnerEquipment オブジェクト
-     * @param lotNo ﾛｯﾄNo(検索キー)
-     * @param date ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ(検索キー)
+     * @param SrMekkiList ﾒｯｷ品質検査データリスト
      * @return 取得データ
-     * @throws SQLException
+     * @throws SQLException 例外エラー
      */
     private List<MekkiRireki> loadMekkiRirekiData(List<Map<String, Object>> SrMekkiList) throws SQLException {
 
@@ -530,6 +644,10 @@ public class GXHDO201B044 implements Serializable {
             params.add(lotnoInfo.get("edaban"));
         }
         sbSql.append(")");
+        sbSql.append(" ORDER BY Kojyo");
+        sbSql.append(" ,LotNo");
+        sbSql.append(" ,EdaBan");
+        
         Map mapping = new HashMap<>();
         mapping.put("Kojyo", "kojyo");
         mapping.put("LotNo", "lotNo");
@@ -574,6 +692,10 @@ public class GXHDO201B044 implements Serializable {
         return queryRunner.query(sbSql.toString(), beanHandler, params.toArray());
     }
 
+    private void setListData(List<MekkiRireki> mekkiRirekiList){
+        
+    }
+    
 //    /**
 //     * 一覧表示データ検索
 //     */
