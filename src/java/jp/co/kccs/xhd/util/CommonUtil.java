@@ -1502,6 +1502,41 @@ public class CommonUtil {
     }
     
     
+    
+        /**
+     * 電気特性・熱処理のデータを取得する。
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 工程データ
+     * @throws SQLException 例外エラー
+     */
+    public static Map getSrShinkuukansouData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev, int jissekino) throws SQLException {
+        String sql = "SELECT kojyo,lotno,edaban,lotpre,kcpno,syoribi,kaishijikan,syuuryoujikan,sagyosya,koutei,gouki,"
+                + "setteiondo,setteijikan,kaisuu,suuryo,bikou1,bikou2,bikou3,tokuisaki,lotkubuncode,ownercode,ukeiretannijyuryo,"
+                + "ukeiresoujyuryou,syurui,startkakunin,syuryonichiji,endtantou,torokunichiji,kosinnichiji,revision "
+                + "FROM sr_shinkuukansou "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND revision = ? "
+                + "AND kaisuu = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+    
+    
     /**
      * ﾃｰﾋﾟﾝｸﾞ・TP作業のデータを取得する。
      *

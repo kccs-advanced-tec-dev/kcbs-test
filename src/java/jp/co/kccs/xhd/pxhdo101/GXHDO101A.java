@@ -94,7 +94,7 @@ public class GXHDO101A implements Serializable {
     private static final String FORM_ID_DENKITOKUSEI_ESI = "GXHDO101B040";
     private static final String FORM_ID_DENKITOKUSEI_3TANSHI_4TANSHI = "GXHDO101B041";
     private static final String FORM_ID_DENKITOKUSEI_IPPANHIN = "GXHDO101B042";
-    private static final String FORM_ID_GAIKAN_KENSA = "GXHDO101B046";//TODO
+    private static final String FORM_ID_GAIKAN_KENSA = "GXHDO101B046";
     
     /**
      * DataSource(wip)
@@ -2735,7 +2735,15 @@ public class GXHDO101A implements Serializable {
             srJikiqcInfo = CommonUtil.getSrJikiqcData(queryRunnerQcdb, strKojyo, strLotNo, strEdaban, Fxhdd03InfoListB022.get(0)[2], Integer.parseInt(Fxhdd03InfoListB022.get(0)[1]));
         }
         session.setAttribute("SrJikiqcInfo", srJikiqcInfo);
-
+        
+        //熱処理
+        Map srShinkuukansou = null;
+        List<String[]> Fxhdd03InfoListB043 = loadFxhdd03InfoListJisekiNoDesc(queryRunnerDoc, strKojyo, strLotNo, strEdaban, "GXHDO101B043");
+        if (!Fxhdd03InfoListB043.isEmpty() && "1".equals(Fxhdd03InfoListB043.get(0)[0])) {
+            srShinkuukansou = CommonUtil.getSrShinkuukansouData(queryRunnerQcdb, strKojyo, strLotNo, strEdaban, Fxhdd03InfoListB043.get(0)[2], Integer.parseInt(Fxhdd03InfoListB043.get(0)[1]));
+        }
+        session.setAttribute("SrShinkuukansou", srShinkuukansou);
+        
     }
     
     
@@ -2757,9 +2765,7 @@ public class GXHDO101A implements Serializable {
         String strKojyo = this.searchLotNo.substring(0, 3);
         String strLotNo = this.searchLotNo.substring(3, 11);
         String strEdaban = this.searchLotNo.substring(11, 14);
-        
-        
-
+      
         //磁器QC
         Map srJikiqcInfo = null;
         List<String[]> Fxhdd03InfoListB022 = loadFxhdd03InfoListJisekiNoDesc(queryRunnerDoc, strKojyo, strLotNo, strEdaban, "GXHDO101B022");
