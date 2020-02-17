@@ -170,7 +170,12 @@ public class CommonUtil {
             // 外部電極・ﾒｯｷ真空乾燥
             case "GXHDO101B039":
                 return getSrMksinkuukansouData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
-
+            // ﾃｰﾋﾟﾝｸﾞ・TP作業
+            case "GXHDO101B048":
+                return getSrTapingSagyoData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
+            // ﾃｰﾋﾟﾝｸﾞ・TPﾁｪｯｸ
+            case "GXHDO101B049":
+                return getSrTapingCheckData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
             default:
                 break;
         }
@@ -1496,4 +1501,116 @@ public class CommonUtil {
         return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
     }
     
+    
+    
+        /**
+     * 電気特性・熱処理のデータを取得する。
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 工程データ
+     * @throws SQLException 例外エラー
+     */
+    public static Map getSrShinkuukansouData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev, int jissekino) throws SQLException {
+        String sql = "SELECT kojyo,lotno,edaban,lotpre,kcpno,syoribi,kaishijikan,syuuryoujikan,sagyosya,koutei,gouki,"
+                + "setteiondo,setteijikan,kaisuu,suuryo,bikou1,bikou2,bikou3,tokuisaki,lotkubuncode,ownercode,ukeiretannijyuryo,"
+                + "ukeiresoujyuryou,syurui,startkakunin,syuryonichiji,endtantou,torokunichiji,kosinnichiji,revision "
+                + "FROM sr_shinkuukansou "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND revision = ? "
+                + "AND kaisuu = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+    
+    
+    /**
+     * ﾃｰﾋﾟﾝｸﾞ・TP作業のデータを取得する。
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 工程データ
+     * @throws SQLException 例外エラー
+     */
+    public static Map getSrTapingSagyoData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev, int jissekino) throws SQLException {
+        String sql = "SELECT kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,okuriryouhinsuu,ukeiretannijyuryo,"
+                + "ukeiresoujyuryou,kensabasyo,gouki,tpsiyou,kakuhosu,kakuhoreelmaki1,kakuhoreelhonsu1,kakuhoreelmaki2,kakuhoreelhonsu2,"
+                + "tapelotno1,tapelotno2,tapelotno3,tapelotno4,tapelotno5,tapelotno6,tapelotno7,tapelotno8,tapelotno9,tapelotno10,toptapelotno1,"
+                + "toptapelotno2,toptapelotno3,toptapelotno4,toptapelotno5,toptapelotno6,toptapelotno7,toptapelotno8,toptapelotno9,toptapelotno10,"
+                + "bottomtapelot1,bottomtapelot2,bottomtapelot3,yoryohannihi,yoryohannilo,yoryohannitanni,rangehyoji,rangehyojitanni,youryou,"
+                + "youryoutanni,dfsethi,dfsetlo,dfatai,gazousetteijyoken,hoperneji,koteseisou,kaisimaesehinzannasi,setsya,kakuninsya,kaisinichiji,"
+                + "sikentantou,jijyurakkasiken,barasicheck,toptapekakunin,sounyuusu,tounyuusu,ryouhintopreelmaki1,ryouhintopreelhonsu1,"
+                + "ryouhintopreelmaki2,ryouhintopreelhonsu2,ryouhinsu,youryong1,gazoungue2,gazoungsita2,budomari,shuryonichiji,mentekaisu,"
+                + "mentegotpgaikan,barasitaisyoreelsu,akireelsu,ryouhinreelsu,qakakuniniraireelsu,reelsucheck,tpatohopper,tpatofeeder,"
+                + "tpatoindex,tpatongbox,seisoutantou,seisoukakunin,barasiiraireelsu,barasikaisinichiji,barasiksyuryonichiji,barasitantou,"
+                + "datujiiraireelsu,datujikaisinichiji,datujitantou,kakuhoreelsu,akireelsu2,ryouhinreelsu2,qakakuniniraireelsu2,saisyukakuninn,"
+                + "bikou1,bikou2,torokunichiji,kosinnichiji,revision "
+                + "FROM sr_taping_sagyo "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND revision = ? "
+                + "AND kaisuu = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+
+    /**
+     * ﾃｰﾋﾟﾝｸﾞ・TPﾁｪｯｸのデータを取得する。
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev ﾘﾋﾞｼﾞｮﾝ(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 工程データ
+     * @throws SQLException 例外エラー
+     */
+    public static Map getSrTapingCheckData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev, int jissekino) throws SQLException {
+        String sql = "SELECT kojyo,lotno,edaban,kaisuu,kcpno,ownercode,ryouhintopreelmaki1,ryouhintopreelhonsu1,ryouhintopreelmaki2,"
+                + "ryouhintopreelhonsu2,tapinggouki,kensabasyo,reelchecksu,kensakaisinichiji,kensakaisitantou,monotati,hakuri,hanuke,"
+                + "rabure,kakeng,dipfuryo,sonota,tapeijyo,reelcheckkekka,kensasyuryonichiji,kensasyuryotantou,tapeng1,tapeng2,denkitokuseisaikensa,"
+                + "gaikansaikensa,bikou1,bikou2,torokunichiji,kosinnichiji,revision"
+                + "FROM sr_taping_check "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND revision = ? "
+                + "AND kaisuu = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+   
 }
