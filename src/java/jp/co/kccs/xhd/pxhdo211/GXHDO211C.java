@@ -696,6 +696,9 @@ public class GXHDO211C implements Serializable {
             // 条件ﾃｰﾌﾞﾙよりﾋﾟｰｸ温度の規格値を取得
             List<Map<String, Object>> jokenDataPeakondo = getJokenData(queryRunnerQcdb, sekkeiData, "焼成", "設定", "ﾋﾟｰｸ温度");
 
+            // 条件ﾃｰﾌﾞﾙより焼成ﾋﾟｰｸ温度の規格値を取得
+            List<Map<String, Object>> jokenDataSyoseiPeakondo = getJokenData(queryRunnerQcdb, sekkeiData, "焼成", "条件", "焼成ﾋﾟｰｸ温度");
+
             // 条件ﾃｰﾌﾞﾙより窒素濃度の規格値を取得
             List<Map<String, Object>> jokenDataTissonoudo = new ArrayList<>();
             if (tissonoudoParam != null) {
@@ -715,7 +718,7 @@ public class GXHDO211C implements Serializable {
             List<Map<String, Object>> srRhapsData = getSrRhapsData(queryRunnerQcdb, mainData);
 
             // 取得した全データを結合する。
-            this.listData = getMergeData(mainData, sekkeiData, jokenDataSuisonoudo, jokenDataPeakondo, jokenDataTissonoudo, fxhdd06Data, srSpssekisouData, srRsussekData, srRhapsData);
+            this.listData = getMergeData(mainData, sekkeiData, jokenDataSuisonoudo, jokenDataPeakondo, jokenDataSyoseiPeakondo, jokenDataTissonoudo, fxhdd06Data, srSpssekisouData, srRsussekData, srRhapsData);
 
         } catch (SQLException ex) {
             listData = new ArrayList<>();
@@ -1737,6 +1740,7 @@ public class GXHDO211C implements Serializable {
      * @param sekkeiData 設計データ
      * @param jokenDataSuisonoudo 条件データ(水素濃度)
      * @param jokenDataPeakondo 条件データPeakOndo
+     * @param jokenDataSyoseiPeakondo 条件データ(焼成ﾋﾟｰｸ温度)
      * @param jokenDataTissonoudo 条件データ窒素温度
      * @param fxhdd06Data 指示温度データ
      * @param srSpssekisouData 積層SPSデータ
@@ -1745,8 +1749,8 @@ public class GXHDO211C implements Serializable {
      * @return 表示用データ
      */
     private List<GXHDO211CModel> getMergeData(List<GXHDO211CModel> mainData, List<Map<String, Object>> sekkeiData, List<Map<String, Object>> jokenDataSuisonoudo,
-            List<Map<String, Object>> jokenDataPeakondo, List<Map<String, Object>> jokenDataTissonoudo, List<Map<String, Object>> fxhdd06Data,
-            List<Map<String, Object>> srSpssekisouData, List<Map<String, Object>> srRsussekData, List<Map<String, Object>> srRhapsData) {
+            List<Map<String, Object>> jokenDataPeakondo, List<Map<String, Object>>  jokenDataSyoseiPeakondo, List<Map<String, Object>> jokenDataTissonoudo, 
+            List<Map<String, Object>> fxhdd06Data, List<Map<String, Object>> srSpssekisouData, List<Map<String, Object>> srRsussekData, List<Map<String, Object>> srRhapsData) {
 
         List<GXHDO211CModel> resultData = new ArrayList<>();
 
@@ -1803,6 +1807,11 @@ public class GXHDO211C implements Serializable {
                 Map<String, Object> jokenPeakondMap = jokenDataPeakondo.stream().filter(n -> sekkeino.equals(StringUtil.nullToBlank(n.get("SEKKEINO")))).findFirst().orElse(null);
                 if (jokenPeakondMap != null) {
                     model.setPeakondo1(StringUtil.nullToBlank(jokenPeakondMap.get("KIKAKUCHI")));
+                } else {
+                    Map<String, Object> jokenSyoseiPeakondMap = jokenDataSyoseiPeakondo.stream().filter(n -> sekkeino.equals(StringUtil.nullToBlank(n.get("SEKKEINO")))).findFirst().orElse(null);
+                    if (jokenSyoseiPeakondMap != null) {
+                        model.setPeakondo1(StringUtil.nullToBlank(jokenSyoseiPeakondMap.get("KIKAKUCHI")));
+                    }
                 }
 
             } else {
