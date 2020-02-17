@@ -3634,7 +3634,7 @@ public class GXHDO101B048 implements IFormLogic {
         if (errorMessageInfo != null) {
             return errorMessageInfo;
         }
-        errorMessageInfo = checkNumberItem(itemTounyusu, true, true, "XHD-000178", "XHD-000037"); //TODO メッセージは正しいか?
+        errorMessageInfo = checkNumberItem(itemTounyusu, true, true, "XHD-000181", "XHD-000181");
         if (errorMessageInfo != null) {
             return errorMessageInfo;
         }
@@ -3698,7 +3698,6 @@ public class GXHDO101B048 implements IFormLogic {
             return MessageUtil.getErrorMessageInfo(checkNumberErrorId, true, true, Arrays.asList(item), item.getLabel1());
         }
 
-        //TODO 0未満は許容?
         if (checkZero && 0 == BigDecimal.ZERO.compareTo(decValue)) {
             return MessageUtil.getErrorMessageInfo(checkInputErrorId, true, true, Arrays.asList(item), item.getLabel1());
         }
@@ -3706,37 +3705,6 @@ public class GXHDO101B048 implements IFormLogic {
         return null;
     }
 
-//    /**
-//     * 受入れ総重量計算
-//     *
-//     * @param processData 処理制御データ
-//     */
-//    private void calcUkeireSojuryo(ProcessData processData) {
-//
-//        try {
-//            FXHDD01 itemOkuriRyohinsu = getItemRow(processData.getItemList(), GXHDO101B048Const.OKURI_RYOHINSU); //送り良品数
-//            FXHDD01 itemUkeireTanijuryo = getItemRow(processData.getItemList(), GXHDO101B048Const.UKEIRE_TANNIJURYO); //受入単位重量
-//
-//            // 計算用に変換
-//            BigDecimal okuriRyohinsu = new BigDecimal(itemOkuriRyohinsu.getValue());
-//            BigDecimal ukeireTaniJuryo = new BigDecimal(itemUkeireTanijuryo.getValue());
-//
-//            if (0 <= BigDecimal.ZERO.compareTo(okuriRyohinsu) || 0 <= BigDecimal.ZERO.compareTo(ukeireTaniJuryo)) {
-//                return;
-//            }
-//
-//            //「送り良品数」÷100×「受入れ単位重量」※小数第3位を四捨五入
-//            BigDecimal ukeireSojuryo = okuriRyohinsu.multiply(ukeireTaniJuryo).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
-//
-//            // 歩留まりの項目に値をセット
-//            setItemData(processData, GXHDO101B048Const.UKEIRE_SOUJURYO, ukeireSojuryo.toPlainString());
-//
-//        } catch (NullPointerException | NumberFormatException ex) {
-//            //何もしない
-//        }
-//    }
-//    
-//    
     /**
      * 受入れ総重量の計算前ﾁｪｯｸ
      *
