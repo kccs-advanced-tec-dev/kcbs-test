@@ -992,20 +992,20 @@ public class GXHDO101B046 implements IFormLogic {
             String owner = StringUtil.nullToBlank(getMapData(ownerMasData, "ownername"));
             this.setItemData(processData, GXHDO101B046Const.OWNER, ownercode + ":" + owner);
         }
-        
-        // 検査回数
-        this.setItemData(processData, GXHDO101B046Const.KENSA_KAISUU, StringUtil.nullToBlank(jissekino));
-        
+
         // 入力画面選択から受け取った情報を表示する。
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
-        
+
         Map srJikiqcInfo = (Map) session.getAttribute("SrJikiqcInfo");
         if (srJikiqcInfo != null && !srJikiqcInfo.isEmpty()) {
             //後工程指示内容←磁器QC[後工程指示内容2]
             this.setItemData(processData, GXHDO101B046Const.ATOKOUTEI_SHIJI_NAIYO, StringUtil.nullToBlank(srJikiqcInfo.get("sijinaiyou2")));
         }
         
+        // 外観検査種類 
+        this.setItemData(processData, GXHDO101B046Const.GAIKANKENSA_SYURUI, (String) session.getAttribute("kensashuri46"));
+
     }
 
     /**
@@ -1059,6 +1059,10 @@ public class GXHDO101B046 implements IFormLogic {
                     // ﾁｪｯｸに問題なければ値をセット
                     calcUkeireSojuryo(itemUkeireSojuryo, itemOkuriRyohinsu, itemUkeireTanijuryo);
                 }
+
+                // 検査回数
+                this.setItemData(processData, GXHDO101B046Const.KENSA_KAISUU, StringUtil.nullToBlank(jissekino));
+                
                 return true;
 
             }
@@ -1097,16 +1101,12 @@ public class GXHDO101B046 implements IFormLogic {
      */
     private void setInputItemDataMainForm(ProcessData processData, SrGaikankensa srGaikankensaData) {
 
-        //後工程指示内容
-        this.setItemData(processData, GXHDO101B046Const.ATOKOUTEI_SHIJI_NAIYO, getSrGaikankensaItemData(GXHDO101B046Const.ATOKOUTEI_SHIJI_NAIYO, srGaikankensaData));
         //送り良品数
         this.setItemData(processData, GXHDO101B046Const.OKURI_RYOHINSU, getSrGaikankensaItemData(GXHDO101B046Const.OKURI_RYOHINSU, srGaikankensaData));
         //受入れ単位重量
         this.setItemData(processData, GXHDO101B046Const.UKEIRE_TANNIJURYO, getSrGaikankensaItemData(GXHDO101B046Const.UKEIRE_TANNIJURYO, srGaikankensaData));
         //受入れ総重量
         this.setItemData(processData, GXHDO101B046Const.UKEIRE_SOUJURYO, getSrGaikankensaItemData(GXHDO101B046Const.UKEIRE_SOUJURYO, srGaikankensaData));
-        //外観検査種類
-        this.setItemData(processData, GXHDO101B046Const.GAIKANKENSA_SYURUI, getSrGaikankensaItemData(GXHDO101B046Const.GAIKANKENSA_SYURUI, srGaikankensaData));
         //検査回数
         this.setItemData(processData, GXHDO101B046Const.KENSA_KAISUU, getSrGaikankensaItemData(GXHDO101B046Const.KENSA_KAISUU, srGaikankensaData));
         //検査場所
@@ -2900,7 +2900,7 @@ public class GXHDO101B046 implements IFormLogic {
             }
         }
 
-        if(0 < addCount){
+        if (0 < addCount) {
             //計算結果を合計項目にセット
             sumItem.setValue(sumData.toPlainString());
         }
