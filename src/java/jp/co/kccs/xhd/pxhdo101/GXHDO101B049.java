@@ -1081,8 +1081,6 @@ public class GXHDO101B049 implements IFormLogic {
         CommonUtil.setMaekoteiInfo(getItemRow(processData.getItemList(), GXHDO101B049Const.RYOHIN_TP_REEL_MAKISU2), maekoteiInfo, "ryouhintopreelmaki2", true, true);
         //良品TPﾘｰﾙ本数②
         CommonUtil.setMaekoteiInfo(getItemRow(processData.getItemList(), GXHDO101B049Const.RYOHIN_TP_REEL_HONSU2), maekoteiInfo, "ryouhintopreelhonsu2", true, true);
-        //検査回数
-        CommonUtil.setMaekoteiInfo(getItemRow(processData.getItemList(), GXHDO101B049Const.KENSA_KAISUU), maekoteiInfo, "kaisuu", true, true);
         //ﾃｰﾋﾟﾝｸﾞ号機
         CommonUtil.setMaekoteiInfo(getItemRow(processData.getItemList(), GXHDO101B049Const.TP_GOKI), maekoteiInfo, "gouki", true, false);
         //検査場所
@@ -1130,6 +1128,8 @@ public class GXHDO101B049 implements IFormLogic {
                     this.setItemData(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
                 }
 
+                //検査回数
+                this.setItemData(processData, GXHDO101B049Const.KENSA_KAISUU, String.valueOf(jissekino));
                 return true;
             }
 
@@ -1167,6 +1167,8 @@ public class GXHDO101B049 implements IFormLogic {
      */
     private void setInputItemDataMainForm(ProcessData processData, SrTapingCheck srTapingCheckData) {
 
+        //検査回数
+        this.setItemData(processData, GXHDO101B049Const.KENSA_KAISUU, getSrTapingCheckItemData(GXHDO101B049Const.KENSA_KAISUU, srTapingCheckData));
         //検査開始日
         this.setItemData(processData, GXHDO101B049Const.KENSA_KAISHI_DAY, getSrTapingCheckItemData(GXHDO101B049Const.KENSA_KAISHI_DAY, srTapingCheckData));
         //検査開始時間
