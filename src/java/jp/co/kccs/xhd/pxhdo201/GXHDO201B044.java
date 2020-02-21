@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
@@ -51,7 +52,6 @@ import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.RowProcessor;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
-import org.apache.commons.dbutils.handlers.MapListHandler;
 import org.apache.commons.lang3.StringUtils;
 import org.primefaces.context.RequestContext;
 
@@ -60,9 +60,9 @@ import org.primefaces.context.RequestContext;
  * <br>
  * システム名	品質情報管理システム<br>
  * <br>
- * 変更日	2019/12/02<br>
+ * 変更日	2020/02/20<br>
  * 計画書No	K1811-DS001<br>
- * 変更者	863 F.Zhang<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
  * ===============================================================================<br>
@@ -70,8 +70,8 @@ import org.primefaces.context.RequestContext;
 /**
  * 外部電極・ﾒｯｷ膜厚履歴検索画面
  *
- * @author 863 F.Zhang
- * @since 2019/12/02
+ * @author SYSNAVI K.Hisanaga
+ * @since 2020/02/20
  */
 @Named
 @ViewScoped
@@ -81,7 +81,7 @@ public class GXHDO201B044 implements Serializable {
      * 検索LIMIT値
      */
     private static final int SEARCH_LIMIT = 200;
-    
+
     private static final Logger LOGGER = Logger.getLogger(GXHDO201B044.class.getName());
 
     /**
@@ -391,7 +391,7 @@ public class GXHDO201B044 implements Serializable {
             }
 
             // 一覧表示件数を取得
-            long count = loadSrMekkiListDataCount();
+            long count = loadMekkiRirekiDataCount();
 
             if (count == 0) {
                 // 検索結果が0件の場合エラー終了
@@ -400,23 +400,6 @@ public class GXHDO201B044 implements Serializable {
                 FacesContext.getCurrentInstance().addMessage(null, message);
                 return;
             }
-
-            // 入力チェックでエラーが存在しない場合検索処理を実行する
-            List<Map<String, Object>> srMekkiList = loadSrMekkiListData();
-            
-            // ﾒｯｷ履歴ﾃｰﾌﾞﾙの件数を取得
-            long mekkiLirekiCount = getMekkiRirekiDataCount(srMekkiList);
-            if (mekkiLirekiCount == 0) {
-                // 検索結果が0件の場合エラー終了
-                FacesMessage message
-                        = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000031"), null);
-                FacesContext.getCurrentInstance().addMessage(null, message);
-                return;
-            }
-
-            // ﾒｯｷ履歴ﾃｰﾌﾞﾙのﾃﾞｰﾀを取得
-            List<MekkiRireki> mekkiRirekiList = getMekkiRirekiData(srMekkiList);
-           
 
             if (listCountMax > 0 && count > listCountMax) {
                 // 検索結果が上限件数以上の場合エラー終了
@@ -436,7 +419,7 @@ public class GXHDO201B044 implements Serializable {
             }
 
             // 入力チェックでエラーが存在しない場合検索処理を実行する
-            loadSrMekkiListData();
+            selectListData();
 
         } catch (SQLException ex) {
 
@@ -450,35 +433,134 @@ public class GXHDO201B044 implements Serializable {
      */
     public void processWarnOk() {
         try {
+
             // 検索処理実行
-            loadSrMekkiListData();
+            selectListData();
 
         } catch (SQLException ex) {
 
             this.listData = new ArrayList<>();
             ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
         }
+    }
 
+    /**
+     * 一覧表示データ検索
+     */
+    private void selectListData() throws SQLException {
+        // 入力チェックでエラーが存在しない場合検索処理を実行する
+        List<MekkiRireki> mekkiRirkiList = loadMekkiRirekiData();
+
+        // ﾛｯﾄNoのリストを取得
+        List<Map<String, String>> lotnoList = getLotNoList(mekkiRirkiList);
+
+        // 取得ﾛｯﾄを対象に検索を行う。
+        BigDecimal mekkiListSize = BigDecimal.valueOf(lotnoList.size());
+        BigDecimal limit = BigDecimal.valueOf(SEARCH_LIMIT);
+        long loopCount = mekkiListSize.divide(limit, 0, RoundingMode.UP).longValue();
+        List<GXHDO201B044Model> makuatsuDataList = new ArrayList<>();
+        //ﾒｯｷ履歴情報取得
+        for (int i = 0; i < loopCount; i++) {
+            int startIdx = i * SEARCH_LIMIT;
+            int endIdx = ((i + 1) * SEARCH_LIMIT);
+            if (lotnoList.size() < endIdx) {
+                endIdx = lotnoList.size();
+            }
+            makuatsuDataList.addAll(loadSrMkmakuatsuData(lotnoList.subList(startIdx, endIdx)));
+        }
+
+        // マージしたデータを一覧にセットする。
+        this.listData = mergeData(mekkiRirkiList, makuatsuDataList);
+    }
+
+    /**
+     * ﾒｯｷ履歴と外部電極ﾒｯｷ膜厚の取得データをマージして取得
+     * @param mekkiRirkiList ﾒｯｷ履歴リスト
+     * @param makuatsuDataList 外部電極ﾒｯｷ膜厚リスト
+     * @return 
+     */
+    private List<GXHDO201B044Model> mergeData(List<MekkiRireki> mekkiRirkiList, List<GXHDO201B044Model> makuatsuDataList) {
+
+        List<GXHDO201B044Model> mergeDataList = new ArrayList<>();
+        for (MekkiRireki mekkirireki : mekkiRirkiList) {
+
+            // ﾛｯﾄ、分割No単位でデータを取得
+            List<GXHDO201B044Model> makuatsuDataListFil = makuatsuDataList.stream()
+                    .filter(n -> mekkirireki.getKojyo().equals(n.getKojyo()))
+                    .filter(n -> mekkirireki.getLotNo().equals(n.getLotno()))
+                    .filter(n -> mekkirireki.getEdaBan().equals(n.getEdaban()))
+                    .filter(n -> mekkirireki.getBunkatuNo().equals(n.getBunkatuno()))
+                    .collect(Collectors.toList());
+
+            // ﾒｯｷ履歴にだけﾃﾞｰﾀが存在する場合
+            if (makuatsuDataListFil.isEmpty()) {
+                GXHDO201B044Model model = new GXHDO201B044Model();
+                mergeDataList.add(setModelData(model, mekkirireki));
+                continue;
+            }
+
+            // 外部電極ﾒｯｷ膜厚が存在する場合
+            for (GXHDO201B044Model model : makuatsuDataListFil) {
+                mergeDataList.add(setModelData(model, mekkirireki));
+            }
+        }
+        // マージ結果をリターン
+        return mergeDataList;
+    }
+
+    /**
+     * 表示用のmodelに履歴データをセット
+     * @param model model
+     * @param mekkirireki ﾒｯｷ履歴ﾃﾞｰﾀ
+     * @return  編集したモデルデータ
+     */
+    private GXHDO201B044Model setModelData(GXHDO201B044Model model, MekkiRireki mekkirireki) {
+
+        model.setLotnoView(mekkirireki.getKojyo() + mekkirireki.getLotNo() + mekkirireki.getEdaBan());//ﾛｯﾄNo
+        model.setBunkatuno(mekkirireki.getBunkatuNo());//分割No
+        model.setKcpno(mekkirireki.getKcpno());//KCPNO
+        model.setBunkatuSuu(mekkirireki.getBunkatuSuu());//個数
+        model.setMediaName1(mekkirireki.getMediaName1());//ﾒﾃﾞｨｱ
+        model.setMediacc1(mekkirireki.getMediacc1());//ﾒﾃﾞｨｱ量1(cc)
+        model.setMediaName2(mekkirireki.getMediaName2());//ﾒﾃﾞｨｱ2
+        model.setMediacc2(mekkirireki.getMediacc2());//ﾒﾃﾞｨｱ量2(cc)
+        model.setNiA(mekkirireki.getNiA());//条件NIﾒｯｷ(電力)
+        model.setNiAM(mekkirireki.getNiAM());//条件NIﾒｯｷ(積算)
+        model.setSnA(mekkirireki.getSnA());//条件SNﾒｯｷ(電力)
+        model.setSnAM(mekkirireki.getSnAM());//条件SNﾒｯｷ(積算)
+        model.setJokenNo(mekkirireki.getJokenNo());//ﾌﾟﾛｸﾞﾗﾑNo
+        model.setTorokuNichiji(mekkirireki.getTorokuNichiji());//登録日時
+        model.setTorokuSyaCode(mekkirireki.getTorokuSyaCode());//登録者
+        model.setStartNichiji(mekkirireki.getStartNichiji());//投入日時
+        model.setTonyuSyaCode(mekkirireki.getTonyuSyaCode());//投入者
+        model.setDomeZanChk(mekkirireki.getDomeZanChk());//ﾄﾞｰﾑ製品残
+        model.setDomeNo(mekkirireki.getDomeNo());//ﾄﾞｰﾑ番号
+        model.setNiSou(mekkirireki.getNiSou());//槽NI
+        model.setSnSou(mekkirireki.getSnSou());//槽SN
+        model.setEndNichiji(mekkirireki.getEndNichiji());//回収日時
+
+        return model;
     }
 
     /**
      * sr_mekki:ﾒｯｷ品質検査データ件数取得
      *
      * @return 検索結果件数
+     * @throws SQLException 例外エラー
      */
-    private long loadSrMekkiListDataCount() throws SQLException {
+    private long loadMekkiRirekiDataCount() throws SQLException {
 
-        QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
+        QueryRunner queryRunner = new QueryRunner(dataSourceEquipment);
         String sql = "SELECT COUNT(*) AS CNT "
-                + "FROM sr_mekki "
-                + "WHERE (? IS NULL OR kojyo = ?) "
-                + "AND   (? IS NULL OR lotno = ?) "
-                + "AND   (? IS NULL OR edaban = ?) "
-                + "AND   (? IS NULL OR mekkikaishinichiji >= ?) "
-                + "AND   (? IS NULL OR mekkikaishinichiji <= ?) ";
+                + "FROM mekki_rireki "
+                + "WHERE (? IS NULL OR Kojyo = ?) "
+                + "AND   (? IS NULL OR LotNo = ?) "
+                + "AND   (? IS NULL OR EdaBan = ?) "
+                + "AND   (? IS NULL OR StartNichiji >= ?) "
+                + "AND   (? IS NULL OR StartNichiji <= ?) ";
 
         // パラメータ設定
-        List<Object> params = createSearchParamSrMekkiList();
+        List<Object> params = createSearchParamMekkiRirekiList();
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         Map result = queryRunner.query(sql, new MapHandler(), params.toArray());
@@ -487,167 +569,30 @@ public class GXHDO201B044 implements Serializable {
     }
 
     /**
-     * sr_mekki:ﾒｯｷ品質検査データ検索
+     * mekki_rireki_ﾒｯｷ履歴ﾃﾞｰﾀ検索
+     *
+     * @return ﾒｯｷ履歴データリスト
+     * @throws SQLException 例外エラー
      */
-    private List loadSrMekkiListData() throws SQLException {
+    private List<MekkiRireki> loadMekkiRirekiData() throws SQLException {
 
-        QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
-        String sql = "SELECT kojyo,lotno,edaban "
-                + "FROM sr_mekki "
-                + "WHERE (? IS NULL OR kojyo = ?) "
-                + "AND   (? IS NULL OR lotno = ?) "
-                + "AND   (? IS NULL OR edaban = ?) "
-                + "AND   (? IS NULL OR mekkikaishinichiji >= ?) "
-                + "AND   (? IS NULL OR mekkikaishinichiji <= ?) "
-                + "GROUP BY "
-                + "   kojyo "
-                + "  ,lotno "
-                + "  ,edaban "
+        QueryRunner queryRunner = new QueryRunner(dataSourceEquipment);
+        String sql = "SELECT Kojyo,LotNo,EdaBan,BunkatuNo,GoukiCode,KCPNO,BunkatuSuu,MediaName1,Mediacc1,"
+                + "MediaName2,Mediacc2,NiA,NiAM,SnA,SnAM,JokenNo,TorokuSyaCode,TonyuSyaCode,DomeZanChk,DomeNo,"
+                + "NiSou,SnSou,TorokuNichiji,StartNichiji,EndNichiji,KaisyuSyaCode,ContainerNo,NiTime,SnTime,"
+                + "StartNichiji_Sn,EndNichiji_Ni,Nurekensakekka,Tainetsukensakekka,Gaikankensakekka "
+                + "FROM mekki_rireki "
+                + "WHERE (? IS NULL OR Kojyo = ?) "
+                + "AND   (? IS NULL OR LotNo = ?) "
+                + "AND   (? IS NULL OR EdaBan = ?) "
+                + "AND   (? IS NULL OR StartNichiji >= ?) "
+                + "AND   (? IS NULL OR StartNichiji <= ?) "
                 + "ORDER BY "
-                + "   kojyo "
-                + "  ,lotno "
-                + "  ,edaban ";
+                + "   Kojyo "
+                + "  ,LotNo "
+                + "  ,EdaBan "
+                + "  ,BunkatuNo desc ";
 
-        // パラメータ設定
-        List<Object> params = createSearchParamSrMekkiList();
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunner.query(sql, new MapListHandler(), params.toArray());
-
-    }
-    
-    private long getMekkiRirekiDataCount(List<Map<String, Object>> srMekkiList) throws SQLException{
-        // 取得ﾛｯﾄを対象に検索を行う。
-            BigDecimal mekkiListSize = BigDecimal.valueOf(srMekkiList.size());
-            BigDecimal limit = BigDecimal.valueOf(SEARCH_LIMIT);
-            long loopCount = mekkiListSize.divide(limit, 0, RoundingMode.UP).longValue();
-
-            long mekkiRirekiCount = 0;
-            //ﾒｯｷ履歴情報取得
-        for (int i = 0; i < loopCount; i++) {
-            int startIdx = i * SEARCH_LIMIT;
-            int endIdx = ((i + 1) * SEARCH_LIMIT);
-            if (srMekkiList.size() < endIdx) {
-                endIdx = srMekkiList.size();
-            }
-            mekkiRirekiCount += loadMekkiRirekiDataCount(srMekkiList.subList(startIdx, endIdx));
-            
-        }
-        
-        return mekkiRirekiCount;
-    }
-
-    /**
-     * [ﾒｯｷ履歴]データ件数取得取得
-     *
-     * @param srMekkiList ﾒｯｷ品質検査データリスト
-     * @return 検索結果件数
-     * @throws SQLException 例外エラー
-     */
-    private long loadMekkiRirekiDataCount(List<Map<String, Object>> srMekkiList) throws SQLException {
-
-        QueryRunner queryRunner = new QueryRunner(dataSourceEquipment);
-        List<Object> params = new ArrayList<>();
-        StringBuilder sbSql = new StringBuilder();
-
-        // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
-        sbSql.append(" SELECT SELECT COUNT(*) AS CNT ");
-        sbSql.append(" FROM mekki_rireki ");
-        sbSql.append(" WHERE (");
-        boolean notFirst = false;
-        for (Map lotnoInfo : srMekkiList) {
-            if (notFirst) {
-                sbSql.append(" OR ");
-            } else {
-                notFirst = true;
-            }
-            sbSql.append("(");
-            sbSql.append("Kojyo = ? ");
-            sbSql.append(" AND ");
-            sbSql.append("LotNo = ? ");
-            sbSql.append(" AND ");
-            sbSql.append("EdaBan = ? ");
-            sbSql.append(")");
-            // パラメータをセット
-            params.add(lotnoInfo.get("kojyo"));
-            params.add(lotnoInfo.get("lotno"));
-            params.add(lotnoInfo.get("edaban"));
-        }
-        sbSql.append(")");
-        DBUtil.outputSQLLog(sbSql.toString(), params.toArray(), LOGGER);
-        Map result = queryRunner.query(sbSql.toString(), new MapHandler(), params.toArray());
-
-        return (long) result.get("CNT");
-
-    }
-    
-    private List<MekkiRireki> getMekkiRirekiData(List<Map<String, Object>> srMekkiList) throws SQLException{
-        // 取得ﾛｯﾄを対象に検索を行う。
-            BigDecimal mekkiListSize = BigDecimal.valueOf(srMekkiList.size());
-            BigDecimal limit = BigDecimal.valueOf(SEARCH_LIMIT);
-            long loopCount = mekkiListSize.divide(limit, 0, RoundingMode.UP).longValue();
-
-            List<MekkiRireki> mekkiRirekiList = new ArrayList<>();
-            //ﾒｯｷ履歴情報取得
-        for (int i = 0; i < loopCount; i++) {
-            int startIdx = i * SEARCH_LIMIT;
-            int endIdx = ((i + 1) * SEARCH_LIMIT);
-            if (srMekkiList.size() < endIdx) {
-                endIdx = srMekkiList.size();
-            }
-            mekkiRirekiList.addAll(loadMekkiRirekiData(srMekkiList.subList(startIdx, endIdx)));
-            
-        }
-        
-        return mekkiRirekiList;
-    }
-    
-    
-
-    /**
-     * [ﾒｯｷ履歴]データ取得取得
-     *
-     * @param SrMekkiList ﾒｯｷ品質検査データリスト
-     * @return 取得データ
-     * @throws SQLException 例外エラー
-     */
-    private List<MekkiRireki> loadMekkiRirekiData(List<Map<String, Object>> SrMekkiList) throws SQLException {
-
-        QueryRunner queryRunner = new QueryRunner(dataSourceEquipment);
-        List<Object> params = new ArrayList<>();
-        StringBuilder sbSql = new StringBuilder();
-
-        // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
-        sbSql.append(" SELECT Kojyo,LotNo,EdaBan,BunkatuNo,GoukiCode,KCPNO,BunkatuSuu,MediaName1,Mediacc1,");
-        sbSql.append(" MediaName2,Mediacc2,NiA,NiAM,SnA,SnAM,JokenNo,TorokuSyaCode,TonyuSyaCode,DomeZanChk,DomeNo,");
-        sbSql.append(" NiSou,SnSou,TorokuNichiji,StartNichiji,EndNichiji,KaisyuSyaCode,ContainerNo,NiTime,SnTime,");
-        sbSql.append(" StartNichiji_Sn,EndNichiji_Ni,Nurekensakekka,Tainetsukensakekka,Gaikankensakekka");
-        sbSql.append(" FROM mekki_rireki ");
-        sbSql.append(" WHERE (");
-        boolean notFirst = false;
-        for (Map lotnoInfo : SrMekkiList) {
-            if (notFirst) {
-                sbSql.append(" OR ");
-            } else {
-                notFirst = true;
-            }
-            sbSql.append("(");
-            sbSql.append("Kojyo = ? ");
-            sbSql.append(" AND ");
-            sbSql.append("LotNo = ? ");
-            sbSql.append(" AND ");
-            sbSql.append("EdaBan = ? ");
-            sbSql.append(")");
-            // パラメータをセット
-            params.add(lotnoInfo.get("kojyo"));
-            params.add(lotnoInfo.get("lotno"));
-            params.add(lotnoInfo.get("edaban"));
-        }
-        sbSql.append(")");
-        sbSql.append(" ORDER BY Kojyo");
-        sbSql.append(" ,LotNo");
-        sbSql.append(" ,EdaBan");
-        
         Map mapping = new HashMap<>();
         mapping.put("Kojyo", "kojyo");
         mapping.put("LotNo", "lotNo");
@@ -688,372 +633,165 @@ public class GXHDO201B044 implements Serializable {
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
         ResultSetHandler<List<MekkiRireki>> beanHandler = new BeanListHandler<>(MekkiRireki.class, rowProcessor);
 
-        DBUtil.outputSQLLog(sbSql.toString(), params.toArray(), LOGGER);
-        return queryRunner.query(sbSql.toString(), beanHandler, params.toArray());
+        List<Object> params = createSearchParamMekkiRirekiList();
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunner.query(sql, beanHandler, params.toArray());
+
     }
 
-    private void setListData(List<MekkiRireki> mekkiRirekiList){
-        
+
+    /**
+     * sr_mkmakuatsu:外部電極ﾒｯｷ膜厚
+     * @param lotNoList ﾛｯﾄNoリスト
+     * @return 外部電極ﾒｯｷ膜厚データリスト
+     * @throws SQLException 例外エラー
+     */
+    private List<GXHDO201B044Model> loadSrMkmakuatsuData(List<Map<String, String>> lotNoList) throws SQLException {
+
+        StringBuilder sbSql = new StringBuilder();
+        // パラメータ
+        List<Object> params = new ArrayList<>();
+
+        QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
+        sbSql.append("  SELECT ");
+        sbSql.append("     kojyo ");
+        sbSql.append("    ,lotno ");
+        sbSql.append("    ,edaban ");
+        sbSql.append("    ,barelno ");
+        sbSql.append("    ,sokuteikaisuu ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '1' THEN nimakuatsu ELSE NULL END) AS makuatsuni01 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '2' THEN nimakuatsu ELSE NULL END) AS makuatsuni02 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '3' THEN nimakuatsu ELSE NULL END) AS makuatsuni03 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '4' THEN nimakuatsu ELSE NULL END) AS makuatsuni04 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '5' THEN nimakuatsu ELSE NULL END) AS makuatsuni05 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '6' THEN nimakuatsu ELSE NULL END) AS makuatsuni06 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '7' THEN nimakuatsu ELSE NULL END) AS makuatsuni07 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '8' THEN nimakuatsu ELSE NULL END) AS makuatsuni08 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '9' THEN nimakuatsu ELSE NULL END) AS makuatsuni09 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '10' THEN nimakuatsu ELSE NULL END) AS makuatsuni10 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '11' THEN nimakuatsu ELSE NULL END) AS makuatsuni11 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '12' THEN nimakuatsu ELSE NULL END) AS makuatsuni12 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '13' THEN nimakuatsu ELSE NULL END) AS makuatsuni13 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '14' THEN nimakuatsu ELSE NULL END) AS makuatsuni14 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '15' THEN nimakuatsu ELSE NULL END) AS makuatsuni15 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '16' THEN nimakuatsu ELSE NULL END) AS makuatsuni16 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '17' THEN nimakuatsu ELSE NULL END) AS makuatsuni17 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '18' THEN nimakuatsu ELSE NULL END) AS makuatsuni18 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '19' THEN nimakuatsu ELSE NULL END) AS makuatsuni19 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '20' THEN nimakuatsu ELSE NULL END) AS makuatsuni20 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '1' THEN snmakuatsu ELSE NULL END) AS makuatsusn01 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '2' THEN snmakuatsu ELSE NULL END) AS makuatsusn02 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '3' THEN snmakuatsu ELSE NULL END) AS makuatsusn03 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '4' THEN snmakuatsu ELSE NULL END) AS makuatsusn04 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '5' THEN snmakuatsu ELSE NULL END) AS makuatsusn05 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '6' THEN snmakuatsu ELSE NULL END) AS makuatsusn06 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '7' THEN snmakuatsu ELSE NULL END) AS makuatsusn07 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '8' THEN snmakuatsu ELSE NULL END) AS makuatsusn08 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '9' THEN snmakuatsu ELSE NULL END) AS makuatsusn09 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '10' THEN snmakuatsu ELSE NULL END) AS makuatsusn10 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '11' THEN snmakuatsu ELSE NULL END) AS makuatsusn11 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '12' THEN snmakuatsu ELSE NULL END) AS makuatsusn12 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '13' THEN snmakuatsu ELSE NULL END) AS makuatsusn13 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '14' THEN snmakuatsu ELSE NULL END) AS makuatsusn14 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '15' THEN snmakuatsu ELSE NULL END) AS makuatsusn15 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '16' THEN snmakuatsu ELSE NULL END) AS makuatsusn16 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '17' THEN snmakuatsu ELSE NULL END) AS makuatsusn17 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '18' THEN snmakuatsu ELSE NULL END) AS makuatsusn18 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '19' THEN snmakuatsu ELSE NULL END) AS makuatsusn19 ");
+        sbSql.append("    ,MAX(CASE WHEN sokuteino = '20' THEN snmakuatsu ELSE NULL END) AS makuatsusn20 ");
+        sbSql.append("  FROM sr_mkmakuatsu ");
+        sbSql.append(" WHERE (");
+        boolean notFirst = false;
+        for (Map lotnoInfo : lotNoList) {
+            if (notFirst) {
+                sbSql.append(" OR ");
+            } else {
+                notFirst = true;
+            }
+            sbSql.append("(");
+            sbSql.append("kojyo = ? ");
+            sbSql.append(" AND ");
+            sbSql.append("lotno = ? ");
+            sbSql.append(" AND ");
+            sbSql.append("edaban = ? ");
+            sbSql.append(")");
+            // パラメータをセット
+            params.add(lotnoInfo.get("kojyo"));
+            params.add(lotnoInfo.get("lotno"));
+            params.add(lotnoInfo.get("edaban"));
+        }
+        sbSql.append(")");
+        sbSql.append("  GROUP BY ");
+        sbSql.append("    kojyo ");
+        sbSql.append("    ,lotno ");
+        sbSql.append("    ,edaban ");
+        sbSql.append("    ,barelno ");
+        sbSql.append("    , sokuteikaisuu ");
+        sbSql.append("ORDER BY ");
+        sbSql.append("  kojyo ");
+        sbSql.append("  ,lotno ");
+        sbSql.append("  ,edaban ");
+        sbSql.append("  ,barelno desc ");
+        sbSql.append("  ,sokuteikaisuu desc ");
+
+        // モデルクラスとのマッピング定義
+        Map<String, String> mapping = new HashMap<>();
+        mapping.put("kojyo", "kojyo"); // 工場ｺｰﾄﾞ
+        mapping.put("lotno", "lotno"); // ﾛｯﾄNo.
+        mapping.put("edaban", "edaban"); // 枝番
+        mapping.put("barelno", "bunkatuno"); // ﾊﾞﾚﾙNo(分割No)
+        mapping.put("sokuteikaisuu", "sokuteikaisuu"); // 測定回数
+        mapping.put("makuatsuni01", "makuatsuni01"); // Ni膜厚01
+        mapping.put("makuatsuni02", "makuatsuni02"); // Ni膜厚02
+        mapping.put("makuatsuni03", "makuatsuni03"); // Ni膜厚03
+        mapping.put("makuatsuni04", "makuatsuni04"); // Ni膜厚04
+        mapping.put("makuatsuni05", "makuatsuni05"); // Ni膜厚05
+        mapping.put("makuatsuni06", "makuatsuni06"); // Ni膜厚06
+        mapping.put("makuatsuni07", "makuatsuni07"); // Ni膜厚07
+        mapping.put("makuatsuni08", "makuatsuni08"); // Ni膜厚08
+        mapping.put("makuatsuni09", "makuatsuni09"); // Ni膜厚09
+        mapping.put("makuatsuni10", "makuatsuni10"); // Ni膜厚10
+        mapping.put("makuatsuni11", "makuatsuni11"); // Ni膜厚11
+        mapping.put("makuatsuni12", "makuatsuni12"); // Ni膜厚12
+        mapping.put("makuatsuni13", "makuatsuni13"); // Ni膜厚13
+        mapping.put("makuatsuni14", "makuatsuni14"); // Ni膜厚14
+        mapping.put("makuatsuni15", "makuatsuni15"); // Ni膜厚15
+        mapping.put("makuatsuni16", "makuatsuni16"); // Ni膜厚16
+        mapping.put("makuatsuni17", "makuatsuni17"); // Ni膜厚17
+        mapping.put("makuatsuni18", "makuatsuni18"); // Ni膜厚18
+        mapping.put("makuatsuni19", "makuatsuni19"); // Ni膜厚19
+        mapping.put("makuatsuni20", "makuatsuni20"); // Ni膜厚20
+        mapping.put("makuatsusn01", "makuatsusn01"); // Sn膜厚01
+        mapping.put("makuatsusn02", "makuatsusn02"); // Sn膜厚02
+        mapping.put("makuatsusn03", "makuatsusn03"); // Sn膜厚03
+        mapping.put("makuatsusn04", "makuatsusn04"); // Sn膜厚04
+        mapping.put("makuatsusn05", "makuatsusn05"); // Sn膜厚05
+        mapping.put("makuatsusn06", "makuatsusn06"); // Sn膜厚06
+        mapping.put("makuatsusn07", "makuatsusn07"); // Sn膜厚07
+        mapping.put("makuatsusn08", "makuatsusn08"); // Sn膜厚08
+        mapping.put("makuatsusn09", "makuatsusn09"); // Sn膜厚09
+        mapping.put("makuatsusn10", "makuatsusn10"); // Sn膜厚10
+        mapping.put("makuatsusn11", "makuatsusn11"); // Sn膜厚11
+        mapping.put("makuatsusn12", "makuatsusn12"); // Sn膜厚12
+        mapping.put("makuatsusn13", "makuatsusn13"); // Sn膜厚13
+        mapping.put("makuatsusn14", "makuatsusn14"); // Sn膜厚14
+        mapping.put("makuatsusn15", "makuatsusn15"); // Sn膜厚15
+        mapping.put("makuatsusn16", "makuatsusn16"); // Sn膜厚16
+        mapping.put("makuatsusn17", "makuatsusn17"); // Sn膜厚17
+        mapping.put("makuatsusn18", "makuatsusn18"); // Sn膜厚18
+        mapping.put("makuatsusn19", "makuatsusn19"); // Sn膜厚19
+        mapping.put("makuatsusn20", "makuatsusn20"); // Sn膜厚20
+
+        BeanProcessor beanProcessor = new BeanProcessor(mapping);
+        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+        ResultSetHandler<List<GXHDO201B044Model>> beanHandler
+                = new BeanListHandler<>(GXHDO201B044Model.class, rowProcessor);
+
+        DBUtil.outputSQLLog(sbSql.toString(), params.toArray(), LOGGER);
+        return queryRunner.query(sbSql.toString(), beanHandler, params.toArray());
+
     }
-    
-//    /**
-//     * 一覧表示データ検索
-//     */
-//    public void loadSrMekkiListData() {
-//
-//        try {
-//            QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
-//            String sql = "SELECT "
-//                    + "  CONCAT(IFNULL(SR_MEKKI.KOJYO, ''), IFNULL(SR_MEKKI.LOTNO, ''), IFNULL(SR_MEKKI.EDABAN, '')) AS LOTNO "
-//                    + "  , SR_MEKKI.kcpno "
-//                    + "  , SR_MEKKI.ukeiresuu "
-//                    + "  , SR_MEKKI.domekosuu "
-//                    + "  , SR_MEKKI.gouki "
-//                    + "  , SR_MEKKI.tantousya "
-//                    + "  , SR_MEKKI.mekkikaishinichiji "
-//                    + "  , SR_MEKKI.mekkijyoukennia "
-//                    + "  , SR_MEKKI.mekkijyoukenniam "
-//                    + "  , SR_MEKKI.mekkijyoukensna "
-//                    + "  , SR_MEKKI.mekkijyoukensnam "
-//                    + "  , SR_MEKKI.shukkakosuu "
-//                    + "  , SR_MEKKI.budomari "
-//                    + "  , SR_MEKKI.makuatsunimin "
-//                    + "  , SR_MEKKI.makuatsunimax "
-//                    + "  , SR_MEKKI.makuatsuniave "
-//                    + "  , SR_MEKKI.makuatsunistd "
-//                    + "  , SR_MEKKI.makuatsusnmin "
-//                    + "  , SR_MEKKI.makuatsusnmax "
-//                    + "  , SR_MEKKI.makuatsusnave "
-//                    + "  , SR_MEKKI.makuatsusnstd "
-//                    + "  , SR_MEKKI.nurekensakekka "
-//                    + "  , SR_MEKKI.tainetsukensakekka "
-//                    + "  , SR_MEKKI.gaikankensakekka "
-//                    + "  , SR_MEKKI.bikou1 "
-//                    + "  , SR_MEKKI.bikou2 "
-//                    + "  , SR_MEKKI.bikou3 "
-//                    + "  , SR_MEKKI.jissekino "
-//                    + "  , SR_MEKKI.domemeisai "
-//                    + "  , SR_MEKKI.tyoseimaeph1 "
-//                    + "  , SR_MEKKI.tyoseigoph1 "
-//                    + "  , SR_MEKKI.tyoseijikan1 "
-//                    + "  , SR_MEKKI.tyoseimaeph2 "
-//                    + "  , SR_MEKKI.tyoseigoph2 "
-//                    + "  , SR_MEKKI.tyoseijikan2 "
-//                    + "  , SR_MEKKI.tsunpou "
-//                    + "  , SR_MEKKI.barrelno "
-//                    + "  , SR_MEKKI.makuatsunicpl "
-//                    + "  , SR_MEKKI.makuatsusncpl "
-//                    + "  , SR_MEKKI.sokuteinichiji "
-//                    + "  , SR_MEKKI.makuatsunicv "
-//                    + "  , SR_MEKKI.makuatsusncv "
-//                    + "  , SR_MEKKI.kensanichiji "
-//                    + "  , SR_MEKKI.kensatantousya "
-//                    + "  , SR_MEKKI.makuatsutantosya "
-//                    + "  , SR_MEKKI.kaishinichiji_sn "
-//                    + "  , SR_MEKKI.tokuisaki "
-//                    + "  , SR_MEKKI.lotkubuncode "
-//                    + "  , SR_MEKKI.ownercode "
-//                    + "  , SR_MEKKI.ukeiretannijyuryo "
-//                    + "  , SR_MEKKI.ukeiresoujyuryou "
-//                    + "  , SR_MEKKI.mekkibasyo "
-//                    + "  , SR_MEKKI.mekkibasyosetubi "
-//                    + "  , SR_MEKKI.mekkisyuryounichiji "
-//                    + "  , SR_MEKKI.syuryousya "
-//                    + "  , SR_MEKKI.kensatannijyuryo "
-//                    + "  , SR_MEKKI.kensasoujyuryou "
-//                    + "  , SR_MEKKI.netusyorijyouken "
-//                    + "  , SR_MEKKI.netusyorikaisinichiji "
-//                    + "  , SR_MEKKI.netusyoritantousya "
-//                    + "  , SR_MEKKI.jisyakusenbetukaisinichiji "
-//                    + "  , SR_MEKKI.jisyakusenbetutantousya "
-//                    + "  , SR_MEKKI.ijouhakkou "
-//                    + "  , SR_MEKKI.ijourank "
-//                    + "  , SR_MEKKI.makuatsukakunin "
-//                    + "  , SR_MEKKI.testhin "
-//                    + "  , SR_MEKKI.tsunpouave "
-//                    + "  , SR_MEKKI.mekkisyurui "
-//                    + "  , SRMK_LOT.makuatsuni01 "
-//                    + "  , SRMK_LOT.makuatsuni02 "
-//                    + "  , SRMK_LOT.makuatsuni03 "
-//                    + "  , SRMK_LOT.makuatsuni04 "
-//                    + "  , SRMK_LOT.makuatsuni05 "
-//                    + "  , SRMK_LOT.makuatsuni06 "
-//                    + "  , SRMK_LOT.makuatsuni07 "
-//                    + "  , SRMK_LOT.makuatsuni08 "
-//                    + "  , SRMK_LOT.makuatsuni09 "
-//                    + "  , SRMK_LOT.makuatsuni10 "
-//                    + "  , SRMK_LOT.makuatsuni11 "
-//                    + "  , SRMK_LOT.makuatsuni12 "
-//                    + "  , SRMK_LOT.makuatsuni13 "
-//                    + "  , SRMK_LOT.makuatsuni14 "
-//                    + "  , SRMK_LOT.makuatsuni15 "
-//                    + "  , SRMK_LOT.makuatsuni16 "
-//                    + "  , SRMK_LOT.makuatsuni17 "
-//                    + "  , SRMK_LOT.makuatsuni18 "
-//                    + "  , SRMK_LOT.makuatsuni19 "
-//                    + "  , SRMK_LOT.makuatsuni20 "
-//                    + "  , SRMK_LOT.makuatsusn01 "
-//                    + "  , SRMK_LOT.makuatsusn02 "
-//                    + "  , SRMK_LOT.makuatsusn03 "
-//                    + "  , SRMK_LOT.makuatsusn04 "
-//                    + "  , SRMK_LOT.makuatsusn05 "
-//                    + "  , SRMK_LOT.makuatsusn06 "
-//                    + "  , SRMK_LOT.makuatsusn07 "
-//                    + "  , SRMK_LOT.makuatsusn08 "
-//                    + "  , SRMK_LOT.makuatsusn09 "
-//                    + "  , SRMK_LOT.makuatsusn10 "
-//                    + "  , SRMK_LOT.makuatsusn11 "
-//                    + "  , SRMK_LOT.makuatsusn12 "
-//                    + "  , SRMK_LOT.makuatsusn13 "
-//                    + "  , SRMK_LOT.makuatsusn14 "
-//                    + "  , SRMK_LOT.makuatsusn15 "
-//                    + "  , SRMK_LOT.makuatsusn16 "
-//                    + "  , SRMK_LOT.makuatsusn17 "
-//                    + "  , SRMK_LOT.makuatsusn18 "
-//                    + "  , SRMK_LOT.makuatsusn19 "
-//                    + "  , SRMK_LOT.makuatsusn20 "
-//                    + "FROM sr_mekki SR_MEKKI "
-//                    + "LEFT JOIN ( "
-//                    + "  SELECT "
-//                    + "    SRMK.kojyo "
-//                    + "    , SRMK.lotno "
-//                    + "    , SRMK.edaban "
-//                    + "    , SRMK.sokuteikaisuu "
-//                    + "    , MAX(CASE WHEN sokuteino = '1' THEN nimakuatsu ELSE NULL END) AS makuatsuni01 "
-//                    + "    , MAX(CASE WHEN sokuteino = '2' THEN nimakuatsu ELSE NULL END) AS makuatsuni02 "
-//                    + "    , MAX(CASE WHEN sokuteino = '3' THEN nimakuatsu ELSE NULL END) AS makuatsuni03 "
-//                    + "    , MAX(CASE WHEN sokuteino = '4' THEN nimakuatsu ELSE NULL END) AS makuatsuni04 "
-//                    + "    , MAX(CASE WHEN sokuteino = '5' THEN nimakuatsu ELSE NULL END) AS makuatsuni05 "
-//                    + "    , MAX(CASE WHEN sokuteino = '6' THEN nimakuatsu ELSE NULL END) AS makuatsuni06 "
-//                    + "    , MAX(CASE WHEN sokuteino = '7' THEN nimakuatsu ELSE NULL END) AS makuatsuni07 "
-//                    + "    , MAX(CASE WHEN sokuteino = '8' THEN nimakuatsu ELSE NULL END) AS makuatsuni08 "
-//                    + "    , MAX(CASE WHEN sokuteino = '9' THEN nimakuatsu ELSE NULL END) AS makuatsuni09 "
-//                    + "    , MAX(CASE WHEN sokuteino = '10' THEN nimakuatsu ELSE NULL END) AS makuatsuni10 "
-//                    + "    , MAX(CASE WHEN sokuteino = '11' THEN nimakuatsu ELSE NULL END) AS makuatsuni11 "
-//                    + "    , MAX(CASE WHEN sokuteino = '12' THEN nimakuatsu ELSE NULL END) AS makuatsuni12 "
-//                    + "    , MAX(CASE WHEN sokuteino = '13' THEN nimakuatsu ELSE NULL END) AS makuatsuni13 "
-//                    + "    , MAX(CASE WHEN sokuteino = '14' THEN nimakuatsu ELSE NULL END) AS makuatsuni14 "
-//                    + "    , MAX(CASE WHEN sokuteino = '15' THEN nimakuatsu ELSE NULL END) AS makuatsuni15 "
-//                    + "    , MAX(CASE WHEN sokuteino = '16' THEN nimakuatsu ELSE NULL END) AS makuatsuni16 "
-//                    + "    , MAX(CASE WHEN sokuteino = '17' THEN nimakuatsu ELSE NULL END) AS makuatsuni17 "
-//                    + "    , MAX(CASE WHEN sokuteino = '18' THEN nimakuatsu ELSE NULL END) AS makuatsuni18 "
-//                    + "    , MAX(CASE WHEN sokuteino = '19' THEN nimakuatsu ELSE NULL END) AS makuatsuni19 "
-//                    + "    , MAX(CASE WHEN sokuteino = '20' THEN nimakuatsu ELSE NULL END) AS makuatsuni20 "
-//                    + "    , MAX(CASE WHEN sokuteino = '1' THEN snmakuatsu ELSE NULL END) AS makuatsusn01 "
-//                    + "    , MAX(CASE WHEN sokuteino = '2' THEN snmakuatsu ELSE NULL END) AS makuatsusn02 "
-//                    + "    , MAX(CASE WHEN sokuteino = '3' THEN snmakuatsu ELSE NULL END) AS makuatsusn03 "
-//                    + "    , MAX(CASE WHEN sokuteino = '4' THEN snmakuatsu ELSE NULL END) AS makuatsusn04 "
-//                    + "    , MAX(CASE WHEN sokuteino = '5' THEN snmakuatsu ELSE NULL END) AS makuatsusn05 "
-//                    + "    , MAX(CASE WHEN sokuteino = '6' THEN snmakuatsu ELSE NULL END) AS makuatsusn06 "
-//                    + "    , MAX(CASE WHEN sokuteino = '7' THEN snmakuatsu ELSE NULL END) AS makuatsusn07 "
-//                    + "    , MAX(CASE WHEN sokuteino = '8' THEN snmakuatsu ELSE NULL END) AS makuatsusn08 "
-//                    + "    , MAX(CASE WHEN sokuteino = '9' THEN snmakuatsu ELSE NULL END) AS makuatsusn09 "
-//                    + "    , MAX(CASE WHEN sokuteino = '10' THEN snmakuatsu ELSE NULL END) AS makuatsusn10 "
-//                    + "    , MAX(CASE WHEN sokuteino = '11' THEN snmakuatsu ELSE NULL END) AS makuatsusn11 "
-//                    + "    , MAX(CASE WHEN sokuteino = '12' THEN snmakuatsu ELSE NULL END) AS makuatsusn12 "
-//                    + "    , MAX(CASE WHEN sokuteino = '13' THEN snmakuatsu ELSE NULL END) AS makuatsusn13 "
-//                    + "    , MAX(CASE WHEN sokuteino = '14' THEN snmakuatsu ELSE NULL END) AS makuatsusn14 "
-//                    + "    , MAX(CASE WHEN sokuteino = '15' THEN snmakuatsu ELSE NULL END) AS makuatsusn15 "
-//                    + "    , MAX(CASE WHEN sokuteino = '16' THEN snmakuatsu ELSE NULL END) AS makuatsusn16 "
-//                    + "    , MAX(CASE WHEN sokuteino = '17' THEN snmakuatsu ELSE NULL END) AS makuatsusn17 "
-//                    + "    , MAX(CASE WHEN sokuteino = '18' THEN snmakuatsu ELSE NULL END) AS makuatsusn18 "
-//                    + "    , MAX(CASE WHEN sokuteino = '19' THEN snmakuatsu ELSE NULL END) AS makuatsusn19 "
-//                    + "    , MAX(CASE WHEN sokuteino = '20' THEN snmakuatsu ELSE NULL END) AS makuatsusn20 "
-//                    + "  FROM "
-//                    + "  ( "
-//                    + "      SELECT "
-//                    + "        SRMK_1.kojyo "
-//                    + "        , SRMK_1.lotno "
-//                    + "        , SRMK_1.edaban "
-//                    + "        , SRMK_1.sokuteikaisuu "
-//                    + "        , SRMK_1.sokuteino "
-//                    + "        , SRMK_1.barelno "
-//                    + "        , SRMK_1.nimakuatsu "
-//                    + "        , SRMK_1.snmakuatsu "
-//                    + "      FROM "
-//                    + "        sr_mkmakuatsu SRMK_1 "
-//                    + "        INNER JOIN ( "
-//                    + "            SELECT "
-//                    + "              SRMK_BMIN.kojyo "
-//                    + "              , SRMK_BMIN.lotno "
-//                    + "              , SRMK_BMIN.edaban "
-//                    + "              , SRMK_BMIN.sokuteikaisuu "
-//                    + "              , SRMK_BMIN.sokuteino "
-//                    + "              , min(SRMK_BMIN.barelno) as min_barelno "
-//                    + "            FROM "
-//                    + "              sr_mkmakuatsu SRMK_BMIN "
-//                    + "            WHERE "
-//                    + "              SRMK_BMIN.sokuteikaisuu = ( "
-//                    + "                  SELECT MAX(sokuteikaisuu) "
-//                    + "                  FROM   sr_mkmakuatsu SRMK_SMAX "
-//                    + "                  WHERE  SRMK_SMAX.kojyo = SRMK_BMIN.kojyo "
-//                    + "                  AND    SRMK_SMAX.lotno = SRMK_BMIN.lotno "
-//                    + "                  AND    SRMK_SMAX.edaban = SRMK_BMIN.edaban "
-//                    + "                  GROUP BY "
-//                    + "                         SRMK_SMAX.kojyo "
-//                    + "                         , SRMK_SMAX.lotno "
-//                    + "                         , SRMK_SMAX.edaban "
-//                    + "              ) "
-//                    + "            GROUP BY "
-//                    + "              SRMK_BMIN.kojyo "
-//                    + "              , SRMK_BMIN.lotno "
-//                    + "              , SRMK_BMIN.edaban "
-//                    + "              , SRMK_BMIN.sokuteikaisuu "
-//                    + "              , SRMK_BMIN.sokuteino "
-//                    + "        ) SRMK_2 ON ( "
-//                    + "                            SRMK_1.kojyo = SRMK_2.kojyo "
-//                    + "                        AND SRMK_1.lotno = SRMK_2.lotno "
-//                    + "                        AND SRMK_1.edaban = SRMK_2.edaban "
-//                    + "                        AND SRMK_1.sokuteikaisuu = SRMK_2.sokuteikaisuu "
-//                    + "                        AND SRMK_1.sokuteino = SRMK_2.sokuteino "
-//                    + "                        AND SRMK_1.barelno = SRMK_2.min_barelno "
-//                    + "                    ) "
-//                    + "  ) SRMK "
-//                    + "  GROUP BY "
-//                    + "    SRMK.kojyo "
-//                    + "    , SRMK.lotno "
-//                    + "    , SRMK.edaban "
-//                    + "    , SRMK.sokuteikaisuu "
-//                    + ") SRMK_LOT "
-//                    + "    ON SR_MEKKI.kojyo = SRMK_LOT.kojyo "
-//                    + "    AND SR_MEKKI.lotno = SRMK_LOT.lotno "
-//                    + "    AND SR_MEKKI.edaban = SRMK_LOT.edaban "
-//                    + "WHERE (? IS NULL OR SR_MEKKI.kojyo = ?) "
-//                    + "AND   (? IS NULL OR SR_MEKKI.lotno = ?) "
-//                    + "AND   (? IS NULL OR SR_MEKKI.edaban = ?) "
-//                    + "AND   (? IS NULL OR SR_MEKKI.mekkikaishinichiji >= ?) "
-//                    + "AND   (? IS NULL OR SR_MEKKI.mekkikaishinichiji <= ?) "
-//                    + "ORDER BY "
-//                    + "  SR_MEKKI.kojyo "
-//                    + "  , SR_MEKKI.lotno "
-//                    + "  , SR_MEKKI.edaban ";
-//
-//            // パラメータ設定
-//            List<Object> params = createSearchParamSrMekkiList();
-//
-//            // モデルクラスとのマッピング定義
-//            Map<String, String> mapping = new HashMap<>();
-//            mapping.put("LOTNO", "lotno"); // ﾛｯﾄNo.
-//            mapping.put("kcpno", "kcpno"); // KCPNO
-//            mapping.put("ukeiresuu", "ukeiresuu"); // 処理数(個)
-//            mapping.put("domekosuu", "domekosuu"); // ﾄﾞｰﾑ個数
-//            mapping.put("gouki", "gouki"); // 号機
-//            mapping.put("tantousya", "starttantosyacode"); // 開始担当者
-//            mapping.put("mekkikaishinichiji", "mekkikaishinichiji"); // ﾒｯｷ開始日時
-//            mapping.put("mekkijyoukennia", "mekkijyoukennia"); // 条件NI(A)
-//            mapping.put("mekkijyoukenniam", "mekkijyoukenniam"); // 条件NI(AM)
-//            mapping.put("mekkijyoukensna", "mekkijyoukensna"); // 条件SN(A)
-//            mapping.put("mekkijyoukensnam", "mekkijyoukensnam"); // 条件SN(AM)
-//            mapping.put("shukkakosuu", "shukkakosuu"); // 良品数
-//            mapping.put("budomari", "budomari"); // 歩留まり
-//            mapping.put("makuatsunimin", "makuatsunimin"); // Ni膜厚(MIN)
-//            mapping.put("makuatsunimax", "makuatsunimax"); // Ni膜厚(MAX)
-//            mapping.put("makuatsuniave", "makuatsuniave"); // Ni膜厚(AVE)
-//            mapping.put("makuatsunistd", "makuatsunistd"); // Ni膜厚(STD)
-//            mapping.put("makuatsusnmin", "makuatsusnmin"); // Sn膜厚(MIN)
-//            mapping.put("makuatsusnmax", "makuatsusnmax"); // Sn膜厚(MAX)
-//            mapping.put("makuatsusnave", "makuatsusnave"); // Sn膜厚(AVE)
-//            mapping.put("makuatsusnstd", "makuatsusnstd"); // Sn膜厚(STD)
-//            mapping.put("nurekensakekka", "nurekensakekka"); // 半田ﾇﾚ性
-//            mapping.put("tainetsukensakekka", "tainetsukensakekka"); // 半田耐熱性
-//            mapping.put("gaikankensakekka", "gaikankensakekka"); // 外観
-//            mapping.put("bikou1", "biko1"); // 備考1
-//            mapping.put("bikou2", "biko2"); // 備考2
-//            mapping.put("bikou3", "biko3"); // 備考3
-//            mapping.put("jissekino", "jissekino"); // 回数
-//            mapping.put("domemeisai", "domemeisai"); // 使用ﾄﾞｰﾑ明細
-//            mapping.put("tyoseimaeph1", "tyoseimaeph1"); // 1回目調整前PH値
-//            mapping.put("tyoseigoph1", "tyoseigoph1"); // 1回目調整後PH値
-//            mapping.put("tyoseijikan1", "tyoseijikan1"); // 1回目調整時間
-//            mapping.put("tyoseimaeph2", "tyoseimaeph2"); // 2回目調整前PH値
-//            mapping.put("tyoseigoph2", "tyoseigoph2"); // 2回目調整後PH値
-//            mapping.put("tyoseijikan2", "tyoseijikan2"); // 2回目調整時間
-//            mapping.put("tsunpou", "tsunpou"); // Ｔ寸法
-//            mapping.put("barrelno", "barrelno"); // ﾊﾞﾚﾙNo
-//            mapping.put("makuatsunicpl", "makuatsunicpl"); // Ni膜厚(CPL)
-//            mapping.put("makuatsusncpl", "makuatsusncpl"); // Sn膜厚(CPL)
-//            mapping.put("sokuteinichiji", "sokuteinichiji"); // 測定日時
-//            mapping.put("makuatsunicv", "makuatsunicv"); // Ni膜厚(CV)
-//            mapping.put("makuatsusncv", "makuatsusncv"); // Sn膜厚(CV)
-//            mapping.put("kensanichiji", "kensanichiji"); // 検査日時
-//            mapping.put("kensatantousya", "kensatantousya"); // 検査・外観担当者
-//            mapping.put("makuatsutantosya", "makuatsutantosya"); // 膜厚担当者
-//            mapping.put("kaishinichiji_sn", "kaishinichiji_sn"); // Sn開始日時
-//            mapping.put("tokuisaki", "tokuisaki"); // 客先
-//            mapping.put("lotkubuncode", "lotkubuncode"); // ﾛｯﾄ区分
-//            mapping.put("ownercode", "ownercode"); // ｵｰﾅｰ
-//            mapping.put("ukeiretannijyuryo", "ukeiretannijyuryo"); // 受入れ単位重量(g/100個)
-//            mapping.put("ukeiresoujyuryou", "ukeiresoujyuryou"); // 受入れ総重量(g)
-//            mapping.put("mekkibasyo", "mekkibasyo"); // ﾒｯｷ場所
-//            mapping.put("mekkibasyosetubi", "mekkibasyosetubi"); // ﾒｯｷ場所設備
-//            mapping.put("mekkisyuryounichiji", "mekkisyuryounichiji"); // ﾒｯｷ終了日時
-//            mapping.put("syuryousya", "syuryousya"); // 終了担当者
-//            mapping.put("kensatannijyuryo", "kensatannijyuryo"); // 検査単位重量
-//            mapping.put("kensasoujyuryou", "kensasoujyuryou"); // 検査総重量
-//            mapping.put("netusyorijyouken", "netusyorijyouken"); // 熱処理条件
-//            mapping.put("netusyorikaisinichiji", "netusyorikaisinichiji"); // 熱処理開始日時
-//            mapping.put("netusyoritantousya", "netusyoritantousya"); // 熱処理担当者
-//            mapping.put("jisyakusenbetukaisinichiji", "jisyakusenbetukaisinichiji"); // 磁石選別開始日時
-//            mapping.put("jisyakusenbetutantousya", "jisyakusenbetutantousya"); // 磁石選別担当者
-//            mapping.put("ijouhakkou", "ijouhakkou"); // 異常発行
-//            mapping.put("ijourank", "ijourank"); // 異常品ﾗﾝｸ
-//            mapping.put("makuatsukakunin", "makuatsukakunin"); // 膜厚確認
-//            mapping.put("testhin", "testhin"); // ﾃｽﾄ品
-//            mapping.put("tsunpouave", "tsunpouave"); // T寸法AVE(mm)
-//            mapping.put("mekkisyurui", "mekkisyurui"); // ﾒｯｷ種類
-//            mapping.put("makuatsuni01", "makuatsuni01"); // Ni膜厚01
-//            mapping.put("makuatsuni02", "makuatsuni02"); // Ni膜厚02
-//            mapping.put("makuatsuni03", "makuatsuni03"); // Ni膜厚03
-//            mapping.put("makuatsuni04", "makuatsuni04"); // Ni膜厚04
-//            mapping.put("makuatsuni05", "makuatsuni05"); // Ni膜厚05
-//            mapping.put("makuatsuni06", "makuatsuni06"); // Ni膜厚06
-//            mapping.put("makuatsuni07", "makuatsuni07"); // Ni膜厚07
-//            mapping.put("makuatsuni08", "makuatsuni08"); // Ni膜厚08
-//            mapping.put("makuatsuni09", "makuatsuni09"); // Ni膜厚09
-//            mapping.put("makuatsuni10", "makuatsuni10"); // Ni膜厚10
-//            mapping.put("makuatsuni11", "makuatsuni11"); // Ni膜厚11
-//            mapping.put("makuatsuni12", "makuatsuni12"); // Ni膜厚12
-//            mapping.put("makuatsuni13", "makuatsuni13"); // Ni膜厚13
-//            mapping.put("makuatsuni14", "makuatsuni14"); // Ni膜厚14
-//            mapping.put("makuatsuni15", "makuatsuni15"); // Ni膜厚15
-//            mapping.put("makuatsuni16", "makuatsuni16"); // Ni膜厚16
-//            mapping.put("makuatsuni17", "makuatsuni17"); // Ni膜厚17
-//            mapping.put("makuatsuni18", "makuatsuni18"); // Ni膜厚18
-//            mapping.put("makuatsuni19", "makuatsuni19"); // Ni膜厚19
-//            mapping.put("makuatsuni20", "makuatsuni20"); // Ni膜厚20
-//            mapping.put("makuatsusn01", "makuatsusn01"); // Sn膜厚01
-//            mapping.put("makuatsusn02", "makuatsusn02"); // Sn膜厚02
-//            mapping.put("makuatsusn03", "makuatsusn03"); // Sn膜厚03
-//            mapping.put("makuatsusn04", "makuatsusn04"); // Sn膜厚04
-//            mapping.put("makuatsusn05", "makuatsusn05"); // Sn膜厚05
-//            mapping.put("makuatsusn06", "makuatsusn06"); // Sn膜厚06
-//            mapping.put("makuatsusn07", "makuatsusn07"); // Sn膜厚07
-//            mapping.put("makuatsusn08", "makuatsusn08"); // Sn膜厚08
-//            mapping.put("makuatsusn09", "makuatsusn09"); // Sn膜厚09
-//            mapping.put("makuatsusn10", "makuatsusn10"); // Sn膜厚10
-//            mapping.put("makuatsusn11", "makuatsusn11"); // Sn膜厚11
-//            mapping.put("makuatsusn12", "makuatsusn12"); // Sn膜厚12
-//            mapping.put("makuatsusn13", "makuatsusn13"); // Sn膜厚13
-//            mapping.put("makuatsusn14", "makuatsusn14"); // Sn膜厚14
-//            mapping.put("makuatsusn15", "makuatsusn15"); // Sn膜厚15
-//            mapping.put("makuatsusn16", "makuatsusn16"); // Sn膜厚16
-//            mapping.put("makuatsusn17", "makuatsusn17"); // Sn膜厚17
-//            mapping.put("makuatsusn18", "makuatsusn18"); // Sn膜厚18
-//            mapping.put("makuatsusn19", "makuatsusn19"); // Sn膜厚19
-//            mapping.put("makuatsusn20", "makuatsusn20"); // Sn膜厚20
-//
-//            BeanProcessor beanProcessor = new BeanProcessor(mapping);
-//            RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
-//            ResultSetHandler<List<GXHDO201B044Model>> beanHandler
-//                    = new BeanListHandler<>(GXHDO201B044Model.class, rowProcessor);
-//
-//            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-//            listData = queryRunner.query(sql, beanHandler, params.toArray());
-//        } catch (SQLException ex) {
-//            listData = new ArrayList<>();
-//            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-//        }
-//    }
+
     /**
      * 文字列をバイトでカットします。
      *
@@ -1146,7 +884,7 @@ public class GXHDO201B044 implements Serializable {
      *
      * @return パラメータ
      */
-    private List<Object> createSearchParamSrMekkiList() {
+    private List<Object> createSearchParamMekkiRirekiList() {
         // パラメータ設定
         String paramKojo = null;
         String paramLotNo = null;
@@ -1158,11 +896,11 @@ public class GXHDO201B044 implements Serializable {
         }
         Date paramStartDateF = null;
         if (!StringUtil.isEmpty(startMekkiDateF)) {
-            paramStartDateF = DateUtil.convertStringToDate(getStartMekkiDateF(), StringUtil.isEmpty(getStartMekkiTimeF()) ? "0000" : getStartMekkiTimeF());
+            paramStartDateF = DateUtil.convertStringToDateInSeconds(getStartMekkiDateF(), StringUtil.isEmpty(getStartMekkiTimeF()) ? "000000" : getStartMekkiTimeF());
         }
         Date paramStartDateT = null;
         if (!StringUtil.isEmpty(startMekkiDateT)) {
-            paramStartDateT = DateUtil.convertStringToDate(getStartMekkiDateT(), StringUtil.isEmpty(getStartMekkiTimeT()) ? "2359" : getStartMekkiTimeT());
+            paramStartDateT = DateUtil.convertStringToDateInSeconds(getStartMekkiDateT(), StringUtil.isEmpty(getStartMekkiTimeT()) ? "235959" : getStartMekkiTimeT());
         }
 
         List<Object> params = new ArrayList<>();
@@ -1219,5 +957,25 @@ public class GXHDO201B044 implements Serializable {
                 os.write(buffer, 0, size);
             }
         }
+    }
+
+    /**
+     * ﾛｯﾄNo(工場ｺｰﾄﾞ、ﾛｯﾄNo、枝番)のリストを取得(重複排除)
+     *
+     * @param mainData メインデータ
+     * @return ﾛｯﾄNoリスト
+     */
+    private List<Map<String, String>> getLotNoList(List<MekkiRireki> mainData) {
+        // 工場ｺｰﾄﾞとﾛｯﾄNoだけのリストを作成
+        List<Map<String, String>> list = new ArrayList<>();
+        for (MekkiRireki mekkirireki : mainData) {
+            Map<String, String> map = new HashMap<>();
+            map.put("kojyo", mekkirireki.getKojyo());
+            map.put("lotno", mekkirireki.getLotNo());
+            map.put("edaban", mekkirireki.getEdaBan());
+            list.add(map);
+        }
+        // 重複を排除してリターン
+        return list.stream().distinct().collect(Collectors.toList());
     }
 }

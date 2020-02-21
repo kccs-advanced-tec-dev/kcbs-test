@@ -28,9 +28,29 @@ import java.sql.Timestamp;
 public class GXHDO201B044Model implements Serializable {
 
     /**
+     * 工場ｺｰﾄﾞ
+     */
+    private String kojyo = "";
+
+    /**
      * ﾛｯﾄNo
      */
     private String lotno = "";
+
+    /**
+     * 枝番
+     */
+    private String edaban = "";
+    
+    /**
+     * 測定回数
+     */
+    private Integer sokuteikaisuu = null;
+
+    /**
+     * ﾛｯﾄNo(表示用)
+     */
+    private String lotnoView = "";
 
     /**
      * KCPNO
@@ -141,36 +161,6 @@ public class GXHDO201B044Model implements Serializable {
      * 回収者
      */
     private String kaisyuSyaCode = "";
-
-    /**
-     * Ni膜厚(MIN)
-     */
-    private BigDecimal makuatsunimin = null;
-
-    /**
-     * Ni膜厚(MAX)
-     */
-    private BigDecimal makuatsunimax = null;
-
-    /**
-     * Ni膜厚(AVE)
-     */
-    private BigDecimal makuatsuniave = null;
-
-    /**
-     * Sn膜厚(MIN)
-     */
-    private BigDecimal makuatsusnmin = null;
-
-    /**
-     * Sn膜厚(MAX)
-     */
-    private BigDecimal makuatsusnmax = null;
-
-    /**
-     * Sn膜厚(AVE)
-     */
-    private BigDecimal makuatsusnave = null;
 
     /**
      * Ni膜厚01
@@ -373,6 +363,22 @@ public class GXHDO201B044Model implements Serializable {
     private BigDecimal makuatsusn20 = null;
 
     /**
+     * 工場ｺｰﾄﾞ
+     * @return the kojyo
+     */
+    public String getKojyo() {
+        return kojyo;
+    }
+
+    /**
+     * 工場ｺｰﾄﾞ
+     * @param kojyo the kojyo to set
+     */
+    public void setKojyo(String kojyo) {
+        this.kojyo = kojyo;
+    }
+
+    /**
      * ﾛｯﾄNo
      *
      * @return the lotno
@@ -388,6 +394,54 @@ public class GXHDO201B044Model implements Serializable {
      */
     public void setLotno(String lotno) {
         this.lotno = lotno;
+    }
+
+    /**
+     * 枝番
+     * @return the edaban
+     */
+    public String getEdaban() {
+        return edaban;
+    }
+
+    /**
+     * 枝番
+     * @param edaban the edaban to set
+     */
+    public void setEdaban(String edaban) {
+        this.edaban = edaban;
+    }
+
+    /**
+     * 測定回数
+     * @return the sokuteikaisuu
+     */
+    public Integer getSokuteikaisuu() {
+        return sokuteikaisuu;
+    }
+
+    /**
+     * 測定回数
+     * @param sokuteikaisuu the sokuteikaisuu to set
+     */
+    public void setSokuteikaisuu(Integer sokuteikaisuu) {
+        this.sokuteikaisuu = sokuteikaisuu;
+    }
+
+    /**
+     * ﾛｯﾄNo(表示用)
+     * @return the lotnoView
+     */
+    public String getLotnoView() {
+        return lotnoView;
+    }
+
+    /**
+     * ﾛｯﾄNo(表示用)
+     * @param lotnoView the lotnoView to set
+     */
+    public void setLotnoView(String lotnoView) {
+        this.lotnoView = lotnoView;
     }
 
     /**
@@ -786,114 +840,7 @@ public class GXHDO201B044Model implements Serializable {
         this.kaisyuSyaCode = kaisyuSyaCode;
     }
 
-    /**
-     * Ni膜厚(MIN)
-     *
-     * @return the makuatsunimin
-     */
-    public BigDecimal getMakuatsunimin() {
-        return makuatsunimin;
-    }
-
-    /**
-     * Ni膜厚(MIN)
-     *
-     * @param makuatsunimin the makuatsunimin to set
-     */
-    public void setMakuatsunimin(BigDecimal makuatsunimin) {
-        this.makuatsunimin = makuatsunimin;
-    }
-
-    /**
-     * Ni膜厚(MAX)
-     *
-     * @return the makuatsunimax
-     */
-    public BigDecimal getMakuatsunimax() {
-        return makuatsunimax;
-    }
-
-    /**
-     * Ni膜厚(MAX)
-     *
-     * @param makuatsunimax the makuatsunimax to set
-     */
-    public void setMakuatsunimax(BigDecimal makuatsunimax) {
-        this.makuatsunimax = makuatsunimax;
-    }
-
-    /**
-     * Ni膜厚(AVE)
-     *
-     * @return the makuatsuniave
-     */
-    public BigDecimal getMakuatsuniave() {
-        return makuatsuniave;
-    }
-
-    /**
-     * Ni膜厚(AVE)
-     *
-     * @param makuatsuniave the makuatsuniave to set
-     */
-    public void setMakuatsuniave(BigDecimal makuatsuniave) {
-        this.makuatsuniave = makuatsuniave;
-    }
-
-    /**
-     * Sn膜厚(MIN)
-     *
-     * @return the makuatsusnmin
-     */
-    public BigDecimal getMakuatsusnmin() {
-        return makuatsusnmin;
-    }
-
-    /**
-     * Sn膜厚(MIN)
-     *
-     * @param makuatsusnmin the makuatsusnmin to set
-     */
-    public void setMakuatsusnmin(BigDecimal makuatsusnmin) {
-        this.makuatsusnmin = makuatsusnmin;
-    }
-
-    /**
-     * Sn膜厚(MAX)
-     *
-     * @return the makuatsusnmax
-     */
-    public BigDecimal getMakuatsusnmax() {
-        return makuatsusnmax;
-    }
-
-    /**
-     * Sn膜厚(MAX)
-     *
-     * @param makuatsusnmax the makuatsusnmax to set
-     */
-    public void setMakuatsusnmax(BigDecimal makuatsusnmax) {
-        this.makuatsusnmax = makuatsusnmax;
-    }
-
-    /**
-     * Sn膜厚(AVE)
-     *
-     * @return the makuatsusnave
-     */
-    public BigDecimal getMakuatsusnave() {
-        return makuatsusnave;
-    }
-
-    /**
-     * Sn膜厚(AVE)
-     *
-     * @param makuatsusnave the makuatsusnave to set
-     */
-    public void setMakuatsusnave(BigDecimal makuatsusnave) {
-        this.makuatsusnave = makuatsusnave;
-    }
-
+   
     /**
      * Ni膜厚01
      *

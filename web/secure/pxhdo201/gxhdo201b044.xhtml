@@ -127,13 +127,18 @@
                 <p:dataTable id="idDataTable" var="item" style="font-size:0.8em;margin-top:20px;" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap"
                              value="#{gXHDO201B044.listData}" emptyMessage="" paginator="true" paginatorPosition="top" rows="#{gXHDO201B044.getPagenatorCount()}">
                     <p:column id="lotno" headerText="ﾛｯﾄNo." >
-                        <p:outputLabel value="#{item.lotno}"/>
+                        <p:outputLabel value="#{item.lotnoView}"/>
                     </p:column>
                     <p:column id="kcpno" headerText="KCPNO" >
                         <p:outputLabel value="#{item.kcpno}"/>
                     </p:column>
-                    <p:column id="bunkatuno" headerText="分割No" styleClass="number">
+                    <p:column id="bunkatuno" headerText="分割No">
                         <p:outputLabel value="#{item.bunkatuno}" />
+                    </p:column>
+                    <p:column id="sokuteikaisuu" headerText="測定回数" styleClass="number">
+                        <p:outputLabel value="#{item.sokuteikaisuu}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
                     </p:column>
                     <p:column id="bunkatuSuu" headerText="個数" styleClass="number">
                         <p:outputLabel value="#{item.bunkatuSuu}">
@@ -158,7 +163,7 @@
                         </p:outputLabel>
                     </p:column>
                     
-                    <p:column id="niA" headerText="'条件NIﾒｯｷ(電力)" styleClass="number">
+                    <p:column id="niA" headerText="条件NIﾒｯｷ(電力)" styleClass="number">
                         <p:outputLabel value="#{item.niA}">
                             <f:convertNumber pattern="#,##0"/>
                         </p:outputLabel>
@@ -178,7 +183,7 @@
                             <f:convertNumber pattern="#,##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="jokenNo" headerText="ﾌﾟﾛｸﾞﾗﾑNo" styleClass="number">
+                    <p:column id="jokenNo" headerText="ﾌﾟﾛｸﾞﾗﾑNo">
                         <p:outputLabel value="#{item.jokenNo}" />
                     </p:column>
                     <p:column id="torokuNichiji" headerText="登録日時">
@@ -224,38 +229,6 @@
                         <p:outputLabel value="#{item.kaisyuSyaCode}"/>
                     </p:column>
                     
-                    
-                    
-                    <p:column id="makuatsunimin" headerText="Ni膜厚(MIN)" styleClass="number">
-                        <p:outputLabel value="#{item.makuatsunimin}">
-                            <f:convertNumber pattern="#,##0.00"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="makuatsunimax" headerText="Ni膜厚(MAX)" styleClass="number">
-                        <p:outputLabel value="#{item.makuatsunimax}">
-                            <f:convertNumber pattern="#,##0.00"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="makuatsuniave" headerText="Ni膜厚(AVE)" styleClass="number">
-                        <p:outputLabel value="#{item.makuatsuniave}">
-                            <f:convertNumber pattern="#,##0.00"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="makuatsusnmin" headerText="Sn膜厚(MIN)" styleClass="number">
-                        <p:outputLabel value="#{item.makuatsusnmin}">
-                            <f:convertNumber pattern="#,##0.00"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="makuatsusnmax" headerText="Sn膜厚(MAX)" styleClass="number">
-                        <p:outputLabel value="#{item.makuatsusnmax}">
-                            <f:convertNumber pattern="#,##0.00"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="makuatsusnave" headerText="Sn膜厚(AVE)" styleClass="number">
-                        <p:outputLabel value="#{item.makuatsusnave}">
-                            <f:convertNumber pattern="#,##0.00"/>
-                        </p:outputLabel>
-                    </p:column>
                    
                     <p:column id="makuatsuni01" headerText="Ni膜厚01" styleClass="number">
                         <p:outputLabel value="#{item.makuatsuni01}">
