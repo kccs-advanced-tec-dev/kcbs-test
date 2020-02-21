@@ -411,6 +411,23 @@ public class DateUtil {
     }
     
     /**
+     * 日付文字列⇒Dateオブジェクト変換
+     * @param yyMMdd 年月日
+     * @param HHmmss 時分秒
+     * @return 変換後のデータ
+     */
+    public static Date convertStringToDateInSeconds(String yyMMdd, String HHmmss) {
+        DateFormat format = new SimpleDateFormat("yyMMddHHmmss");
+        try {
+            format.setLenient(false);
+            Date result = format.parse(yyMMdd + HHmmss);
+            return result;
+        } catch (ParseException e) {
+            return null;
+        }
+    }
+    
+    /**
      * タイムスタンプを指定のフォーマットで返す
      * @param timestamp タイムスタンプ
      * @param timeFormat フォーマット
