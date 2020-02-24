@@ -2863,7 +2863,7 @@ public class GXHDO101B046 implements IFormLogic {
             BigDecimal syorikosu = new BigDecimal(itemSyorikosu.getValue());
             BigDecimal ryohinKosu = new BigDecimal(itemRyohinkosu.getValue());
 
-            // 処理個数、良品個数の値のいずれかが0以下の場合"0"をセットしてリターン
+            // 処理個数、良品個数の値のいずれかが0以下の場合、リターン
             if (0 < BigDecimal.ZERO.compareTo(ryohinKosu) || 0 <= BigDecimal.ZERO.compareTo(syorikosu)) {
                 return;
             }
