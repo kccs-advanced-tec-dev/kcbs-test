@@ -475,9 +475,10 @@ public class GXHDO201B044 implements Serializable {
 
     /**
      * ﾒｯｷ履歴と外部電極ﾒｯｷ膜厚の取得データをマージして取得
+     *
      * @param mekkiRirkiList ﾒｯｷ履歴リスト
      * @param makuatsuDataList 外部電極ﾒｯｷ膜厚リスト
-     * @return 
+     * @return
      */
     private List<GXHDO201B044Model> mergeData(List<MekkiRireki> mekkiRirkiList, List<GXHDO201B044Model> makuatsuDataList) {
 
@@ -510,9 +511,10 @@ public class GXHDO201B044 implements Serializable {
 
     /**
      * 表示用のmodelに履歴データをセット
+     *
      * @param model model
      * @param mekkirireki ﾒｯｷ履歴ﾃﾞｰﾀ
-     * @return  編集したモデルデータ
+     * @return 編集したモデルデータ
      */
     private GXHDO201B044Model setModelData(GXHDO201B044Model model, MekkiRireki mekkirireki) {
 
@@ -538,6 +540,7 @@ public class GXHDO201B044 implements Serializable {
         model.setNiSou(mekkirireki.getNiSou());//槽NI
         model.setSnSou(mekkirireki.getSnSou());//槽SN
         model.setEndNichiji(mekkirireki.getEndNichiji());//回収日時
+        model.setKaisyuSyaCode(mekkirireki.getKaisyuSyaCode());//回収者
 
         return model;
     }
@@ -639,9 +642,9 @@ public class GXHDO201B044 implements Serializable {
 
     }
 
-
     /**
      * sr_mkmakuatsu:外部電極ﾒｯｷ膜厚
+     *
      * @param lotNoList ﾛｯﾄNoリスト
      * @return 外部電極ﾒｯｷ膜厚データリスト
      * @throws SQLException 例外エラー
@@ -896,11 +899,11 @@ public class GXHDO201B044 implements Serializable {
         }
         Date paramStartDateF = null;
         if (!StringUtil.isEmpty(startMekkiDateF)) {
-            paramStartDateF = DateUtil.convertStringToDateInSeconds(getStartMekkiDateF(), StringUtil.isEmpty(getStartMekkiTimeF()) ? "000000" : getStartMekkiTimeF());
+            paramStartDateF = DateUtil.convertStringToDateInSeconds(getStartMekkiDateF(), StringUtil.isEmpty(getStartMekkiTimeF()) ? "000000" : getStartMekkiTimeF() + "00");
         }
         Date paramStartDateT = null;
         if (!StringUtil.isEmpty(startMekkiDateT)) {
-            paramStartDateT = DateUtil.convertStringToDateInSeconds(getStartMekkiDateT(), StringUtil.isEmpty(getStartMekkiTimeT()) ? "235959" : getStartMekkiTimeT());
+            paramStartDateT = DateUtil.convertStringToDateInSeconds(getStartMekkiDateT(), StringUtil.isEmpty(getStartMekkiTimeT()) ? "235959" : getStartMekkiTimeT() + "59");
         }
 
         List<Object> params = new ArrayList<>();
