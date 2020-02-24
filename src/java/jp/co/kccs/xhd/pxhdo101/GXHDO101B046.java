@@ -1002,7 +1002,7 @@ public class GXHDO101B046 implements IFormLogic {
             //後工程指示内容←磁器QC[後工程指示内容2]
             this.setItemData(processData, GXHDO101B046Const.ATOKOUTEI_SHIJI_NAIYO, StringUtil.nullToBlank(srJikiqcInfo.get("sijinaiyou2")));
         }
-        
+
         // 外観検査種類 
         this.setItemData(processData, GXHDO101B046Const.GAIKANKENSA_SYURUI, (String) session.getAttribute("kensashuri46"));
 
@@ -1062,7 +1062,7 @@ public class GXHDO101B046 implements IFormLogic {
 
                 // 検査回数
                 this.setItemData(processData, GXHDO101B046Const.KENSA_KAISUU, StringUtil.nullToBlank(jissekino));
-                
+
                 return true;
 
             }
@@ -1347,8 +1347,9 @@ public class GXHDO101B046 implements IFormLogic {
     /**
      * [ﾊﾟﾗﾒｰﾀﾏｽﾀ]から、ﾃﾞｰﾀを取得
      *
-     * @param queryRunnerDoc オブジェクト
-     * @param selectNo 処理区分
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param userName ユーザ名
+     * @param key Key
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
@@ -1409,6 +1410,7 @@ public class GXHDO101B046 implements IFormLogic {
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @param edaban 枝番(検索キー)
      * @param jissekino 実績No(検索キー)
+     * @param formId 画面ID(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
@@ -1471,6 +1473,7 @@ public class GXHDO101B046 implements IFormLogic {
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @param edaban 枝番(検索キー)
      * @param jissekino 実績No(検索キー)
+     * @param formId 画面ID(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
@@ -1937,7 +1940,7 @@ public class GXHDO101B046 implements IFormLogic {
      * @param jotaiFlg 状態ﾌﾗｸﾞ
      * @param systemTime システム日付
      * @param jissekino 実績No
-     * @throws SQLException 例外ｴﾗｰ
+     * @throws SQLException 例外エラー
      */
     private void updateFxhdd03(QueryRunner queryRunnerDoc, Connection conDoc, String tantoshaCd, String formId, BigDecimal rev,
             String kojyo, String lotNo, String edaban, String jotaiFlg, Timestamp systemTime, int jissekino) throws SQLException {
