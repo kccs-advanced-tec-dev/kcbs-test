@@ -3313,7 +3313,7 @@ public class GXHDO101B048 implements IFormLogic {
                 return StringUtil.nullToBlank(srTapingSagyoData.getMentegotpgaikan());
             //ﾊﾞﾗｼ対象ﾘｰﾙ数
             case GXHDO101B048Const.BARASHI_TAISYO_REELSU:
-                return StringUtil.nullToBlank(srTapingSagyoData.getBarasiiraireelsu());
+                return StringUtil.nullToBlank(srTapingSagyoData.getBarasitaisyoreelsu());
             //空ﾘｰﾙ数
             case GXHDO101B048Const.KARA_REELSU:
                 return StringUtil.nullToBlank(srTapingSagyoData.getAkireelsu());

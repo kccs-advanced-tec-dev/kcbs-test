@@ -2114,8 +2114,8 @@ public class GXHDO101B046 implements IFormLogic {
         }
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B046Const.KCPNO, srGaikankensaData))); //KCPNO
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B046Const.TOKUISAKI, srGaikankensaData))); //客先
-        params.add(StringUtil.nullToBlank(processData.getHiddenDataMap().get("ownercode"))); //ｵｰﾅｰ
-        params.add(StringUtil.nullToBlank(processData.getHiddenDataMap().get("lotkubuncode"))); // ﾛｯﾄ区分
+        params.add(DBUtil.stringToStringObjectDefaultNull(StringUtil.nullToBlank(processData.getHiddenDataMap().get("ownercode")))); //ｵｰﾅｰ
+        params.add(DBUtil.stringToStringObjectDefaultNull(StringUtil.nullToBlank(processData.getHiddenDataMap().get("lotkubuncode")))); // ﾛｯﾄ区分
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B046Const.ATOKOUTEI_SHIJI_NAIYO, srGaikankensaData))); //後工程指示内容
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B046Const.OKURI_RYOHINSU, srGaikankensaData))); //送り良品数
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B046Const.UKEIRE_TANNIJURYO, srGaikankensaData))); //受入れ単位重量
@@ -2288,8 +2288,8 @@ public class GXHDO101B046 implements IFormLogic {
         }
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B046Const.KCPNO, srGaikankensaData))); //KCPNO
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B046Const.TOKUISAKI, srGaikankensaData))); //客先
-        params.add(StringUtil.nullToBlank(processData.getHiddenDataMap().get("ownercode"))); //ｵｰﾅｰ
-        params.add(StringUtil.nullToBlank(processData.getHiddenDataMap().get("lotkubuncode"))); // ﾛｯﾄ区分
+        params.add(DBUtil.stringToStringObject(StringUtil.nullToBlank(processData.getHiddenDataMap().get("ownercode")))); //ｵｰﾅｰ
+        params.add(DBUtil.stringToStringObject(StringUtil.nullToBlank(processData.getHiddenDataMap().get("lotkubuncode")))); // ﾛｯﾄ区分
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B046Const.ATOKOUTEI_SHIJI_NAIYO, srGaikankensaData))); //後工程指示内容
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B046Const.OKURI_RYOHINSU, srGaikankensaData))); //送り良品数
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B046Const.UKEIRE_TANNIJURYO, srGaikankensaData))); //受入れ単位重量
