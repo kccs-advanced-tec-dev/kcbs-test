@@ -1350,6 +1350,8 @@ public class GXHDO101B049 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @param edaban 枝番(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @param formId 画面ID(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
@@ -1532,6 +1534,7 @@ public class GXHDO101B049 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @param edaban 枝番(検索キー)
+     * @param jissekino 枝番(検索キー)
      * @param rev revision(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
@@ -1624,8 +1627,8 @@ public class GXHDO101B049 implements IFormLogic {
     /**
      * 枝番コピー
      *
-     * @param processData 処理データ
-     * @return 処理データ
+     * @param processData 処理制御データ
+     * @return 処理制御データ
      */
     public ProcessData edabanCopy(ProcessData processData) {
         try {
