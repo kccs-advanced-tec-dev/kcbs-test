@@ -857,7 +857,8 @@ public class GXHDO101B049 implements IFormLogic {
             List<Map<String, Object>> srTpng1Data = loadSrTpng1Data(queryRunnerQcdb, kojyo, lotNo8, edaban);
             String tpng1Hantei = "";
             if (srTpng1Data.isEmpty()) {
-                erroMessageInfoList.add(MessageUtil.getErrorMessageInfo("", "TPNG1を取得できませんでした", false, false, new ArrayList<>()));
+                String msg1 = MessageUtil.getMessage("XHD-000182", "TPNG1");
+                erroMessageInfoList.add(MessageUtil.getErrorMessageInfo("", msg1, false, false, new ArrayList<>()));
             } else {
                 tpng1Hantei = StringUtil.nullToBlank(getMapData(srTpng1Data.get(0), "hantei"));
             }
@@ -866,7 +867,8 @@ public class GXHDO101B049 implements IFormLogic {
             List<Map<String, Object>> srTpng2Data = loadSrTpng2Data(queryRunnerQcdb, kojyo, lotNo8, edaban);
             String tpng2Hantei = "";
             if (srTpng2Data.isEmpty()) {
-                erroMessageInfoList.add(MessageUtil.getErrorMessageInfo("", "TPNG2を取得できませんでした", false, false, new ArrayList<>()));
+                String msg2 = MessageUtil.getMessage("XHD-000182", "TPNG2");
+                erroMessageInfoList.add(MessageUtil.getErrorMessageInfo("", msg2, false, false, new ArrayList<>()));
             } else {
                 tpng2Hantei = StringUtil.nullToBlank(getMapData(srTpng2Data.get(0), "hantei"));
             }
