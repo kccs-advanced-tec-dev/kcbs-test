@@ -107,13 +107,11 @@ public class GXHDO101B046 implements IFormLogic {
                     GXHDO101B046Const.BTN_GOUKEIKOUMOKU_KEISAN_TOP,
                     GXHDO101B046Const.BTN_MIKENSARITSU_KEISAN_TOP,
                     GXHDO101B046Const.BTN_KENSA_ENDDATETIME_TOP,
-                    GXHDO101B046Const.BTN_UKEIRESOJURYO_KEISAN_TOP,
                     GXHDO101B046Const.BTN_KENSA_STARTDATETIME_BOTTOM,
                     GXHDO101B046Const.BTN_BUDOMARI_KEISAN_BOTTOM,
                     GXHDO101B046Const.BTN_GOUKEIKOUMOKU_KEISAN_BOTTOM,
                     GXHDO101B046Const.BTN_MIKENSARITSU_KEISAN_BOTTOM,
-                    GXHDO101B046Const.BTN_KENSA_ENDDATETIME_BOTTOM,
-                    GXHDO101B046Const.BTN_UKEIRESOJURYO_KEISAN_BOTTOM
+                    GXHDO101B046Const.BTN_KENSA_ENDDATETIME_BOTTOM
             ));
 
             // リビジョンチェック対象のボタンを設定する。
@@ -948,7 +946,7 @@ public class GXHDO101B046 implements IFormLogic {
         }
 
         // 画面に取得した情報をセットする。(入力項目以外)
-        setViewItemData(processData, lotKbnMasData, ownerMasData, shikakariData, lotNo, paramJissekino);
+        setViewItemData(processData, lotKbnMasData, ownerMasData, shikakariData, lotNo);
 
         processData.setInitMessageList(errorMessageList);
         return processData;
@@ -964,9 +962,8 @@ public class GXHDO101B046 implements IFormLogic {
      * @param daPatternMasData 製版ﾏｽﾀデータ
      * @param shikakariData 仕掛データ
      * @param lotNo ﾛｯﾄNo
-     * @param jissekino 実績No
      */
-    private void setViewItemData(ProcessData processData, Map lotKbnMasData, Map ownerMasData, Map shikakariData, String lotNo, int jissekino) {
+    private void setViewItemData(ProcessData processData, Map lotKbnMasData, Map ownerMasData, Map shikakariData, String lotNo) {
 
         // ロットNo
         this.setItemData(processData, GXHDO101B046Const.LOTNO, lotNo);

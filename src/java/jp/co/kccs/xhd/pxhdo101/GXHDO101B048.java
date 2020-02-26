@@ -110,7 +110,6 @@ public class GXHDO101B048 implements IFormLogic {
                     GXHDO101B048Const.BTN_TP_SAGYO_TYUI_TOP,
                     GXHDO101B048Const.BTN_BARASHI_SAGYO_TYUI_TOP,
                     GXHDO101B048Const.BTN_REELKEISU_TYUI_TOP,
-                    GXHDO101B048Const.BTN_UKEIRE_SOUJURYO_KEISAN_TOP,
                     GXHDO101B048Const.BTN_SAGYO_START_BOTTOM,
                     GXHDO101B048Const.BTN_SAGYO_END_BOTTOM,
                     GXHDO101B048Const.BTN_BARASHI_START_BOTTOM,
@@ -118,8 +117,7 @@ public class GXHDO101B048 implements IFormLogic {
                     GXHDO101B048Const.BTN_DATSUJI_START_BOTTOM,
                     GXHDO101B048Const.BTN_TP_SAGYO_TYUI_BOTTOM,
                     GXHDO101B048Const.BTN_BARASHI_SAGYO_TYUI_BOTTOM,
-                    GXHDO101B048Const.BTN_REELKEISU_TYUI_BOTTOM,
-                    GXHDO101B048Const.BTN_UKEIRE_SOUJURYO_KEISAN_BOTTOM
+                    GXHDO101B048Const.BTN_REELKEISU_TYUI_BOTTOM
             ));
 
             // リビジョンチェック対象のボタンを設定する。
