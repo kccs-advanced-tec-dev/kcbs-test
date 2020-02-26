@@ -1584,11 +1584,11 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         Map<String, String> map = new LinkedHashMap<String, String>() {
             {
                 put("SEKKEINO", "設計No");
-                put("GENRYOU", "原料");
+                put("GENRYOU", "電極ﾃｰﾌﾟ");
                 put("ETAPE", "電極ﾃｰﾌﾟ");
-                put("EATUMI", "電極厚み");
-                put("SOUSUU", "総数");
-                put("EMAISUU", "電極枚数");
+                put("EATUMI", "積層数");
+                put("SOUSUU", "積層数");
+                put("EMAISUU", "積層数");
                 put("PATTERN", "電極製版名");
                 put("TORIKOSUU", "取り個数");
                 put("ABSlide", "積層ｽﾗｲﾄﾞ量");
