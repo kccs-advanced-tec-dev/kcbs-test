@@ -2419,7 +2419,7 @@ public class GXHDO101B043 implements IFormLogic {
             // A.送り良品数が0以下の場合 
             // 送り良品数を数値変換
             BigDecimal decSuuryo = new BigDecimal(suuryo);
-            if (BigDecimal.ZERO.compareTo(decSuuryo) == 1) {
+            if(0 <= BigDecimal.ZERO.compareTo(decSuuryo)){
                 //  何もしない(受入れ総重量==null)
                 return processData;
             }
@@ -2431,7 +2431,7 @@ public class GXHDO101B043 implements IFormLogic {
             // A.受入れ単位重量が0以下の場合 
             // 受入れ単位重量を数値変換
             BigDecimal decUkeiretannijyuryo = new BigDecimal(ukeiretannijyuryo);
-            if (BigDecimal.ZERO.compareTo(decUkeiretannijyuryo) == 1) {
+            if (0 <= BigDecimal.ZERO.compareTo(decUkeiretannijyuryo)) {
                 //  何もしない(受入れ総重量==null)
                 return processData;
             }

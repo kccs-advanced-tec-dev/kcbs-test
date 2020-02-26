@@ -941,16 +941,18 @@ public class GXHDO101B045 implements IFormLogic {
         this.setItemData(processData, GXHDO101B045Const.KCPNO, StringUtil.nullToBlank(getMapData(shikakariData, "kcpno")));
         
         // ｾｯﾄ数
-        String suuryo = StringUtil.nullToBlank(getMapData(shikakariData, "suuryo"));
-        String torikosuu = StringUtil.nullToBlank(getMapData(shikakariData, "torikosuu"));
-        if (StringUtil.isEmpty(suuryo) || "0".equals(suuryo) || StringUtil.isEmpty(torikosuu) || "0".equals(torikosuu)) {
-            this.setItemData(processData, GXHDO101B045Const.SET_SUU, "0");
-        } else {
-            BigDecimal decHasseisu = new BigDecimal(suuryo);
-            BigDecimal decTorikosuu = new BigDecimal(torikosuu);
-            BigDecimal setsu = decHasseisu.divide(decTorikosuu, 0, RoundingMode.DOWN);
-            this.setItemData(processData, GXHDO101B045Const.SET_SUU, setsu.toPlainString());
-        }
+        if (!JOTAI_FLG_KARI_TOROKU.equals(processData.getInitJotaiFlg()) && !JOTAI_FLG_TOROKUZUMI.equals(processData.getInitJotaiFlg())) {
+            String suuryo = StringUtil.nullToBlank(getMapData(shikakariData, "suuryo"));
+            String torikosuu = StringUtil.nullToBlank(getMapData(shikakariData, "torikosuu"));
+            if (StringUtil.isEmpty(suuryo) || "0".equals(suuryo) || StringUtil.isEmpty(torikosuu) || "0".equals(torikosuu)) {
+                this.setItemData(processData, GXHDO101B045Const.SET_SUU, "0");
+            } else {
+                BigDecimal decHasseisu = new BigDecimal(suuryo);
+                BigDecimal decTorikosuu = new BigDecimal(torikosuu);
+                BigDecimal setsu = decHasseisu.divide(decTorikosuu, 0, RoundingMode.DOWN);
+                this.setItemData(processData, GXHDO101B045Const.SET_SUU, setsu.toPlainString());
+            }
+        }        
         
         // 客先
         this.setItemData(processData, GXHDO101B045Const.KYAKUSAKI, StringUtil.nullToBlank(getMapData(shikakariData, "tokuisaki")));
@@ -983,12 +985,14 @@ public class GXHDO101B045 implements IFormLogic {
         }
 
         // 積層数
-        this.setItemData(processData, GXHDO101B045Const.SEKISOU_SU, StringUtil.nullToBlank(sekkeiData.get("EATUMI"))
-                + "μm×"
-                + StringUtil.nullToBlank(sekkeiData.get("SOUSUU"))
-                + "層  "
-                + StringUtil.nullToBlank(sekkeiData.get("EMAISUU"))
-                + "枚");
+        if (!JOTAI_FLG_KARI_TOROKU.equals(processData.getInitJotaiFlg()) && !JOTAI_FLG_TOROKUZUMI.equals(processData.getInitJotaiFlg())) {
+            this.setItemData(processData, GXHDO101B045Const.SEKISOU_SU, StringUtil.nullToBlank(sekkeiData.get("EATUMI"))
+                    + "μm×"
+                    + StringUtil.nullToBlank(sekkeiData.get("SOUSUU"))
+                    + "層  "
+                    + StringUtil.nullToBlank(sekkeiData.get("EMAISUU"))
+                    + "枚");
+        }
 
         // 列 × 行
         String lRetsu = StringUtil.nullToBlank(getMapData(daPatternMasData, "LRETU")); //列
@@ -1085,6 +1089,10 @@ public class GXHDO101B045 implements IFormLogic {
      * @param srHapsData 印刷積層HAPSデータ
      */
     private void setInputItemDataMainForm(ProcessData processData, SrHaps srHapsData) {
+        // ｾｯﾄ数
+        this.setItemData(processData, GXHDO101B045Const.SET_SUU, getSrHapsItemData(GXHDO101B045Const.SET_SUU, srHapsData));
+        // 積層数
+        this.setItemData(processData, GXHDO101B045Const.SEKISOU_SU, getSrHapsItemData(GXHDO101B045Const.SEKISOU_SU, srHapsData));
         // 電極ﾍﾟｰｽﾄ	    
         this.setItemData(processData, GXHDO101B045Const.EPASTE, getSrHapsItemData(GXHDO101B045Const.EPASTE, srHapsData));
         // 電極ﾍﾟｰｽﾄﾛｯﾄNo 
@@ -1227,11 +1235,11 @@ public class GXHDO101B045 implements IFormLogic {
         Map<String, String> map = new LinkedHashMap<String, String>() {
             {
                 put("SEKKEINO", "設計No");
-                put("GENRYOU", "原料");
+                put("GENRYOU", "電極ﾃｰﾌﾟ");
                 put("ETAPE", "電極ﾃｰﾌﾟ");
-                put("EATUMI", "電極厚み");
-                put("SOUSUU", "総数");
-                put("EMAISUU", "電極枚数");
+                put("EATUMI", "積層数");
+                put("SOUSUU", "積層数");
+                put("EMAISUU", "積層数");
                 put("PATTERN", "電極製版名");
             }
         };
@@ -2503,6 +2511,11 @@ public class GXHDO101B045 implements IFormLogic {
             // 電極ﾍﾟｰｽﾄ粘度	
             case GXHDO101B045Const.PASTENENDO:
                 return StringUtil.nullToBlank(srHapsData.getPastenendo());
+                
+            // 電極製版名
+            case GXHDO101B045Const.ESEIHANMEI:
+                return StringUtil.nullToBlank(srHapsData.getEseihanmei());
+                
             // 積層ｽﾗｲﾄﾞ量
             case GXHDO101B045Const.SEKISOUSLIDERYO:
                 return StringUtil.nullToBlank(srHapsData.getSekisouslideryo());

@@ -274,7 +274,7 @@
                     </p:column>
                     <p:column id="saatu" headerText="電極差圧" styleClass="number">
                         <p:outputLabel value="#{item.saatu}">
-                            <f:convertNumber pattern="0.00"/>
+                            <f:convertNumber pattern="##,##0.00"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="skeegespeed" headerText="電極ｽｷｰｼﾞｽﾋﾟｰﾄﾞ" styleClass="number">
@@ -348,8 +348,10 @@
                     <p:column id="gaikane" headerText="外観終わり" >
                         <p:outputLabel value="#{item.gaikane}"/>
                     </p:column>
-                    <p:column id="setsuu" headerText="ｾｯﾄ数" >
-                        <p:outputLabel value="#{item.setsuu}"/>
+                    <p:column id="setsuu" headerText="ｾｯﾄ数" styleClass="number" >
+                        <p:outputLabel value="#{item.setsuu}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
                     </p:column>
                     <p:column id="sekisouryo" headerText="積層量" >
                         <p:outputLabel value="#{item.sekisouryo}"/>
