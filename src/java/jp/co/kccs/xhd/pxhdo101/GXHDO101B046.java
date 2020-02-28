@@ -107,13 +107,11 @@ public class GXHDO101B046 implements IFormLogic {
                     GXHDO101B046Const.BTN_GOUKEIKOUMOKU_KEISAN_TOP,
                     GXHDO101B046Const.BTN_MIKENSARITSU_KEISAN_TOP,
                     GXHDO101B046Const.BTN_KENSA_ENDDATETIME_TOP,
-                    GXHDO101B046Const.BTN_UKEIRESOJURYO_KEISAN_TOP,
                     GXHDO101B046Const.BTN_KENSA_STARTDATETIME_BOTTOM,
                     GXHDO101B046Const.BTN_BUDOMARI_KEISAN_BOTTOM,
                     GXHDO101B046Const.BTN_GOUKEIKOUMOKU_KEISAN_BOTTOM,
                     GXHDO101B046Const.BTN_MIKENSARITSU_KEISAN_BOTTOM,
-                    GXHDO101B046Const.BTN_KENSA_ENDDATETIME_BOTTOM,
-                    GXHDO101B046Const.BTN_UKEIRESOJURYO_KEISAN_BOTTOM
+                    GXHDO101B046Const.BTN_KENSA_ENDDATETIME_BOTTOM
             ));
 
             // リビジョンチェック対象のボタンを設定する。
@@ -948,7 +946,7 @@ public class GXHDO101B046 implements IFormLogic {
         }
 
         // 画面に取得した情報をセットする。(入力項目以外)
-        setViewItemData(processData, lotKbnMasData, ownerMasData, shikakariData, lotNo, paramJissekino);
+        setViewItemData(processData, lotKbnMasData, ownerMasData, shikakariData, lotNo);
 
         processData.setInitMessageList(errorMessageList);
         return processData;
@@ -964,9 +962,8 @@ public class GXHDO101B046 implements IFormLogic {
      * @param daPatternMasData 製版ﾏｽﾀデータ
      * @param shikakariData 仕掛データ
      * @param lotNo ﾛｯﾄNo
-     * @param jissekino 実績No
      */
-    private void setViewItemData(ProcessData processData, Map lotKbnMasData, Map ownerMasData, Map shikakariData, String lotNo, int jissekino) {
+    private void setViewItemData(ProcessData processData, Map lotKbnMasData, Map ownerMasData, Map shikakariData, String lotNo) {
 
         // ロットNo
         this.setItemData(processData, GXHDO101B046Const.LOTNO, lotNo);
@@ -992,20 +989,20 @@ public class GXHDO101B046 implements IFormLogic {
             String owner = StringUtil.nullToBlank(getMapData(ownerMasData, "ownername"));
             this.setItemData(processData, GXHDO101B046Const.OWNER, ownercode + ":" + owner);
         }
-        
-        // 検査回数
-        this.setItemData(processData, GXHDO101B046Const.KENSA_KAISUU, StringUtil.nullToBlank(jissekino));
-        
+
         // 入力画面選択から受け取った情報を表示する。
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
-        
+
         Map srJikiqcInfo = (Map) session.getAttribute("SrJikiqcInfo");
         if (srJikiqcInfo != null && !srJikiqcInfo.isEmpty()) {
             //後工程指示内容←磁器QC[後工程指示内容2]
             this.setItemData(processData, GXHDO101B046Const.ATOKOUTEI_SHIJI_NAIYO, StringUtil.nullToBlank(srJikiqcInfo.get("sijinaiyou2")));
         }
-        
+
+        // 外観検査種類 
+        this.setItemData(processData, GXHDO101B046Const.GAIKANKENSA_SYURUI, (String) session.getAttribute("kensashuri46"));
+
     }
 
     /**
@@ -1059,6 +1056,10 @@ public class GXHDO101B046 implements IFormLogic {
                     // ﾁｪｯｸに問題なければ値をセット
                     calcUkeireSojuryo(itemUkeireSojuryo, itemOkuriRyohinsu, itemUkeireTanijuryo);
                 }
+
+                // 検査回数
+                this.setItemData(processData, GXHDO101B046Const.KENSA_KAISUU, StringUtil.nullToBlank(jissekino));
+
                 return true;
 
             }
@@ -1097,16 +1098,12 @@ public class GXHDO101B046 implements IFormLogic {
      */
     private void setInputItemDataMainForm(ProcessData processData, SrGaikankensa srGaikankensaData) {
 
-        //後工程指示内容
-        this.setItemData(processData, GXHDO101B046Const.ATOKOUTEI_SHIJI_NAIYO, getSrGaikankensaItemData(GXHDO101B046Const.ATOKOUTEI_SHIJI_NAIYO, srGaikankensaData));
         //送り良品数
         this.setItemData(processData, GXHDO101B046Const.OKURI_RYOHINSU, getSrGaikankensaItemData(GXHDO101B046Const.OKURI_RYOHINSU, srGaikankensaData));
         //受入れ単位重量
         this.setItemData(processData, GXHDO101B046Const.UKEIRE_TANNIJURYO, getSrGaikankensaItemData(GXHDO101B046Const.UKEIRE_TANNIJURYO, srGaikankensaData));
         //受入れ総重量
         this.setItemData(processData, GXHDO101B046Const.UKEIRE_SOUJURYO, getSrGaikankensaItemData(GXHDO101B046Const.UKEIRE_SOUJURYO, srGaikankensaData));
-        //外観検査種類
-        this.setItemData(processData, GXHDO101B046Const.GAIKANKENSA_SYURUI, getSrGaikankensaItemData(GXHDO101B046Const.GAIKANKENSA_SYURUI, srGaikankensaData));
         //検査回数
         this.setItemData(processData, GXHDO101B046Const.KENSA_KAISUU, getSrGaikankensaItemData(GXHDO101B046Const.KENSA_KAISUU, srGaikankensaData));
         //検査場所
@@ -1347,8 +1344,9 @@ public class GXHDO101B046 implements IFormLogic {
     /**
      * [ﾊﾟﾗﾒｰﾀﾏｽﾀ]から、ﾃﾞｰﾀを取得
      *
-     * @param queryRunnerDoc オブジェクト
-     * @param selectNo 処理区分
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param userName ユーザ名
+     * @param key Key
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
@@ -1409,6 +1407,7 @@ public class GXHDO101B046 implements IFormLogic {
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @param edaban 枝番(検索キー)
      * @param jissekino 実績No(検索キー)
+     * @param formId 画面ID(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
@@ -1471,6 +1470,7 @@ public class GXHDO101B046 implements IFormLogic {
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @param edaban 枝番(検索キー)
      * @param jissekino 実績No(検索キー)
+     * @param formId 画面ID(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
@@ -1937,7 +1937,7 @@ public class GXHDO101B046 implements IFormLogic {
      * @param jotaiFlg 状態ﾌﾗｸﾞ
      * @param systemTime システム日付
      * @param jissekino 実績No
-     * @throws SQLException 例外ｴﾗｰ
+     * @throws SQLException 例外エラー
      */
     private void updateFxhdd03(QueryRunner queryRunnerDoc, Connection conDoc, String tantoshaCd, String formId, BigDecimal rev,
             String kojyo, String lotNo, String edaban, String jotaiFlg, Timestamp systemTime, int jissekino) throws SQLException {
@@ -2111,8 +2111,8 @@ public class GXHDO101B046 implements IFormLogic {
         }
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B046Const.KCPNO, srGaikankensaData))); //KCPNO
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B046Const.TOKUISAKI, srGaikankensaData))); //客先
-        params.add(StringUtil.nullToBlank(processData.getHiddenDataMap().get("ownercode"))); //ｵｰﾅｰ
-        params.add(StringUtil.nullToBlank(processData.getHiddenDataMap().get("lotkubuncode"))); // ﾛｯﾄ区分
+        params.add(DBUtil.stringToStringObjectDefaultNull(StringUtil.nullToBlank(processData.getHiddenDataMap().get("ownercode")))); //ｵｰﾅｰ
+        params.add(DBUtil.stringToStringObjectDefaultNull(StringUtil.nullToBlank(processData.getHiddenDataMap().get("lotkubuncode")))); // ﾛｯﾄ区分
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B046Const.ATOKOUTEI_SHIJI_NAIYO, srGaikankensaData))); //後工程指示内容
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B046Const.OKURI_RYOHINSU, srGaikankensaData))); //送り良品数
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B046Const.UKEIRE_TANNIJURYO, srGaikankensaData))); //受入れ単位重量
@@ -2285,8 +2285,8 @@ public class GXHDO101B046 implements IFormLogic {
         }
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B046Const.KCPNO, srGaikankensaData))); //KCPNO
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B046Const.TOKUISAKI, srGaikankensaData))); //客先
-        params.add(StringUtil.nullToBlank(processData.getHiddenDataMap().get("ownercode"))); //ｵｰﾅｰ
-        params.add(StringUtil.nullToBlank(processData.getHiddenDataMap().get("lotkubuncode"))); // ﾛｯﾄ区分
+        params.add(DBUtil.stringToStringObject(StringUtil.nullToBlank(processData.getHiddenDataMap().get("ownercode")))); //ｵｰﾅｰ
+        params.add(DBUtil.stringToStringObject(StringUtil.nullToBlank(processData.getHiddenDataMap().get("lotkubuncode")))); // ﾛｯﾄ区分
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B046Const.ATOKOUTEI_SHIJI_NAIYO, srGaikankensaData))); //後工程指示内容
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B046Const.OKURI_RYOHINSU, srGaikankensaData))); //送り良品数
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B046Const.UKEIRE_TANNIJURYO, srGaikankensaData))); //受入れ単位重量
@@ -2860,7 +2860,7 @@ public class GXHDO101B046 implements IFormLogic {
             BigDecimal syorikosu = new BigDecimal(itemSyorikosu.getValue());
             BigDecimal ryohinKosu = new BigDecimal(itemRyohinkosu.getValue());
 
-            // 処理個数、良品個数の値のいずれかが0以下の場合"0"をセットしてリターン
+            // 処理個数、良品個数の値のいずれかが0以下の場合、リターン
             if (0 < BigDecimal.ZERO.compareTo(ryohinKosu) || 0 <= BigDecimal.ZERO.compareTo(syorikosu)) {
                 return;
             }
@@ -2900,7 +2900,7 @@ public class GXHDO101B046 implements IFormLogic {
             }
         }
 
-        if(0 < addCount){
+        if (0 < addCount) {
             //計算結果を合計項目にセット
             sumItem.setValue(sumData.toPlainString());
         }

@@ -64,6 +64,10 @@ import org.primefaces.context.RequestContext;
  * 変更者	K.Hisanaga<br>
  * 変更理由	電気特性パラメータ設定処理追加<br>
  * <br>
+ * 変更日	2020/02/17<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	K.Hisanaga<br>
+ * 変更理由	熱処理情報と磁器QC情報の受渡し追加<br>
  * ===============================================================================<br>
  */
 /**
@@ -91,6 +95,7 @@ public class GXHDO101A implements Serializable {
     private static final String FORM_ID_GAIBUDENKYOKU_SYOSEI = "GXHDO101B029";
     private static final String FORM_ID_GAIBUDENKYOKU_SYOSEIGAIKAN = "GXHDO101B030";
     private static final String FORM_ID_GAIBUDENKYOKU_MEKKI_HINSHITSU_KENSA = "GXHDO101B038";
+    private static final String FORM_ID_GAIBUDENKYOKU_MEKKI_SHINKU_KANSO = "GXHDO101B039";
     private static final String FORM_ID_DENKITOKUSEI_ESI = "GXHDO101B040";
     private static final String FORM_ID_DENKITOKUSEI_3TANSHI_4TANSHI = "GXHDO101B041";
     private static final String FORM_ID_DENKITOKUSEI_IPPANHIN = "GXHDO101B042";
@@ -576,7 +581,7 @@ public class GXHDO101A implements Serializable {
             setDenkitokuseiSessionData(rowData.getFormId(), session);
             
             // 検査・外観検査用の情報をｾｯｼｮﾝにセットする。
-            setGaikanKensaSessionData(rowData.getFormId(), session);
+            setGaikanKensaSessionData(rowData.getFormId(), maeKoteiMenuInfo, session);
 
             // 前工程が存在するかつ前工程のデータが取得できなかった場合
             if (maeKoteiMenuInfo != null && maekoteiInfo == null) {
@@ -2750,25 +2755,47 @@ public class GXHDO101A implements Serializable {
     /**
       * 検査・外観検査画面に必要な情報をセッションにセットする。
       * @param formId 画面ID
+      * @param maeKoteiMenuInfo 前工程メニュー情報
       * @param session セッション情報
       * @throws SQLException 例外エラー
       */
-    private void setGaikanKensaSessionData(String formId, HttpSession session) throws SQLException {
-        
-        if(!FORM_ID_GAIKAN_KENSA.equals(formId)){
+    private void setGaikanKensaSessionData(String formId, FXHDM01 maeKoteiMenuInfo, HttpSession session) throws SQLException {
+
+        if (!FORM_ID_GAIKAN_KENSA.equals(formId)) {
             // 検査・外観検査の画面ID以外は処理なし
             return;
         }
-        
+
+        // 前工程の画面IDを取得
+        String maekoteiFormId = "";
+        if (maeKoteiMenuInfo != null) {
+            maekoteiFormId = maeKoteiMenuInfo.getFormId();
+        }
+
+        // 前工程の画面により検査種類をセッションにセット
+        switch (maekoteiFormId) {
+            // 磁器QC
+            case FORM_ID_JIKI_QC:
+                session.setAttribute("kensashuri46", "2");
+                break;
+            // 外部電極・ﾒｯｷ真空乾燥
+            case FORM_ID_GAIBUDENKYOKU_MEKKI_SHINKU_KANSO:
+                session.setAttribute("kensashuri46", "3");
+                break;
+            default:
+                session.setAttribute("kensashuri46", "4");
+                break;
+        }
+
         QueryRunner queryRunnerDoc = new QueryRunner(dataSourceDocServer);
         QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
         String strKojyo = this.searchLotNo.substring(0, 3);
         String strLotNo = this.searchLotNo.substring(3, 11);
         String strEdaban = this.searchLotNo.substring(11, 14);
-      
+
         //磁器QC
         Map srJikiqcInfo = null;
-        List<String[]> Fxhdd03InfoListB022 = loadFxhdd03InfoListJisekiNoDesc(queryRunnerDoc, strKojyo, strLotNo, strEdaban, "GXHDO101B022");
+        List<String[]> Fxhdd03InfoListB022 = loadFxhdd03InfoListJisekiNoDesc(queryRunnerDoc, strKojyo, strLotNo, strEdaban, FORM_ID_JIKI_QC);
         if (!Fxhdd03InfoListB022.isEmpty() && "1".equals(Fxhdd03InfoListB022.get(0)[0])) {
             srJikiqcInfo = CommonUtil.getSrJikiqcData(queryRunnerQcdb, strKojyo, strLotNo, strEdaban, Fxhdd03InfoListB022.get(0)[2], Integer.parseInt(Fxhdd03InfoListB022.get(0)[1]));
         }

@@ -1705,11 +1705,11 @@ public class GXHDO101B002 implements IFormLogic {
         Map<String, String> map = new LinkedHashMap<String, String>() {
             {
                 put("SEKKEINO", "設計No");
-                put("GENRYOU", "原料");
+                put("GENRYOU", "電極テープ");
                 put("ETAPE", "電極テープ");
-                put("EATUMI", "電極厚み");
-                put("SOUSUU", "総数");
-                put("EMAISUU", "電極枚数");
+                put("EATUMI", "積層数");
+                put("SOUSUU", "積層数");
+                put("EMAISUU", "積層数");
                 put("PATTERN", "電極製版名");
             }
         };

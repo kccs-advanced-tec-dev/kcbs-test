@@ -1318,6 +1318,16 @@ public class GXHDO101B040 implements IFormLogic {
                     // 外部電極焼付時間←外部電極焼成[終了日時]のHHMM部分
                     setItemData(processData, GXHDO101B040Const.SEIHIN_G_YAKITSUKE_TIME, DateUtil.formattedTimestamp((Timestamp) srGdyakitukeInfo.get("enddatetime"), "HHmm"));
                 }
+                
+                Map srShinkuukansou = (Map) session.getAttribute("SrShinkuukansou");
+                if (srShinkuukansou != null && !srShinkuukansou.isEmpty()) {
+                    
+                    // 熱処理日 ← 熱処理[熱処理終了日時]のYYMMDD部分
+                    setItemData(processData, GXHDO101B040Const.SEIHIN_NETSUSYORI_DAY, DateUtil.formattedTimestamp((Timestamp) srShinkuukansou.get("syuryonichiji"), "yyMMdd"));
+
+                    // 熱処理時刻 ← 熱処理[熱処理終了日時]のHHMM部分
+                    setItemData(processData, GXHDO101B040Const.SEIHIN_NETSUSYORI_TIME, DateUtil.formattedTimestamp((Timestamp) srShinkuukansou.get("syuryonichiji"), "HHmm"));
+                }
 
                 return true;
             }
