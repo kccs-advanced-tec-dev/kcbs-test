@@ -51,6 +51,11 @@ import org.primefaces.context.RequestContext;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/02/28<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	登録実行後は次の入力が可能なように画面をクリアするように修正<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -1405,15 +1410,16 @@ public class GXHDO211B implements Serializable {
                 return;
             }
 
-            // 実行後ボタン制御
-            this.btnDeleteDisabled = false;
-            this.btnRegistDisabled = false;
-
+            // クリア処理
+            this.lotno = "";
+            this.shijisya = "";
+            formClear();
+            
             // 完了メッセージを表示
             FacesMessage message
                     = new FacesMessage(FacesMessage.SEVERITY_INFO, "登録しました。", null);
             FacesContext.getCurrentInstance().addMessage(null, message);
-
+            
         } catch (SQLException e) {
             ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
             addErrorMessage("実行時エラー");
