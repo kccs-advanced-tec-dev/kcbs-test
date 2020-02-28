@@ -1011,6 +1011,12 @@ public class GXHDO101B045 implements IFormLogic {
             String wSun = StringUtil.nullToBlank(getMapData(daPatternMasData, "WSUN")); //WSUN
             this.setItemData(processData, GXHDO101B045Const.PITCH, lSun + "×" + wSun);
         }
+        
+        // 電極ﾍﾟｰｽﾄ	    
+        this.setItemData(processData, GXHDO101B045Const.EPASTE, "");
+        
+        // 積層ｽﾗｲﾄﾞ量	 
+        this.setItemData(processData, GXHDO101B045Const.SEKISOUSLIDERYO, "");
 
         // 電極製版名
         this.setItemData(processData, GXHDO101B045Const.ESEIHANMEI, StringUtil.nullToBlank(sekkeiData.get("PATTERN")));
@@ -1093,14 +1099,10 @@ public class GXHDO101B045 implements IFormLogic {
         this.setItemData(processData, GXHDO101B045Const.SET_SUU, getSrHapsItemData(GXHDO101B045Const.SET_SUU, srHapsData));
         // 積層数
         this.setItemData(processData, GXHDO101B045Const.SEKISOU_SU, getSrHapsItemData(GXHDO101B045Const.SEKISOU_SU, srHapsData));
-        // 電極ﾍﾟｰｽﾄ	    
-        this.setItemData(processData, GXHDO101B045Const.EPASTE, getSrHapsItemData(GXHDO101B045Const.EPASTE, srHapsData));
         // 電極ﾍﾟｰｽﾄﾛｯﾄNo 
         this.setItemData(processData, GXHDO101B045Const.PASTELOTNO, getSrHapsItemData(GXHDO101B045Const.PASTELOTNO, srHapsData));
         // 電極ﾍﾟｰｽﾄ粘度 
         this.setItemData(processData, GXHDO101B045Const.PASTENENDO, getSrHapsItemData(GXHDO101B045Const.PASTENENDO, srHapsData));
-        // 積層ｽﾗｲﾄﾞ量	 
-        this.setItemData(processData, GXHDO101B045Const.SEKISOUSLIDERYO, getSrHapsItemData(GXHDO101B045Const.SEKISOUSLIDERYO, srHapsData));
         // 仮ﾌﾟﾚｽ高圧	 
         this.setItemData(processData, GXHDO101B045Const.KARIPRESSKOU, getSrHapsItemData(GXHDO101B045Const.KARIPRESSKOU, srHapsData));
         // 仮ﾌﾟﾚｽ低圧	 
@@ -1117,7 +1119,6 @@ public class GXHDO101B045 implements IFormLogic {
         this.setItemData(processData, GXHDO101B045Const.SKEEGENO, getSrHapsItemData(GXHDO101B045Const.SKEEGENO, srHapsData));
         // 電極ｽｷｰｼﾞ枚数 
         this.setItemData(processData, GXHDO101B045Const.SKEEGEMAISUU, getSrHapsItemData(GXHDO101B045Const.SKEEGEMAISUU, srHapsData));
-
         // 電極ｸﾘｱﾗﾝｽ 
         this.setItemData(processData, GXHDO101B045Const.CLEARANCE, getSrHapsItemData(GXHDO101B045Const.CLEARANCE, srHapsData));
         // 電極差圧 
@@ -2269,18 +2270,18 @@ public class GXHDO101B045 implements IFormLogic {
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B045Const.KCPNO, srHapsData))); // KCPNO    
         
         if (isInsert) {
-            params.add(null); // ﾃｰﾌﾟ種類
-            params.add(null); // ﾃｰﾌﾟﾛｯﾄNo
-            params.add(null); // 原料記号
-            params.add(null); // 設備温度
-            params.add(null); // 設備湿度
+            params.add(""); // ﾃｰﾌﾟ種類
+            params.add(""); // ﾃｰﾌﾟﾛｯﾄNo
+            params.add(""); // 原料記号
+            params.add(0); // 設備温度
+            params.add(0); // 設備湿度
         }
         
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B045Const.PASTELOTNO, srHapsData))); // 電極ﾍﾟｰｽﾄﾛｯﾄNo
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B045Const.PASTENENDO, srHapsData))); // 電極ﾍﾟｰｽﾄ粘度
         
         if (isInsert) {
-            params.add(null); // ﾍﾟｰｽﾄ温度
+            params.add(0); // ﾍﾟｰｽﾄ温度
         }
 
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B045Const.SEIHANNO, srHapsData))); // 電極製版No
@@ -2290,7 +2291,7 @@ public class GXHDO101B045 implements IFormLogic {
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B045Const.CLEARANCE, srHapsData))); // 電極ｸﾘｱﾗﾝｽ
 
         if (isInsert) {
-            params.add(null); // 乾燥温度
+            params.add(0); // 乾燥温度
         }
         
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B045Const.KANSOSOKUDO, srHapsData))); // 乾燥速度
@@ -2302,7 +2303,7 @@ public class GXHDO101B045 implements IFormLogic {
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B045Const.SKEEGEKAKUDO, srHapsData))); // ｽｷｰｼﾞ角度
 
         if (isInsert) {
-            params.add(null); // MLD
+            params.add(""); // MLD
         }
 
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B045Const.SEKISOATUMI, srHapsData))); // 積層後厚み
@@ -2511,11 +2512,9 @@ public class GXHDO101B045 implements IFormLogic {
             // 電極ﾍﾟｰｽﾄ粘度	
             case GXHDO101B045Const.PASTENENDO:
                 return StringUtil.nullToBlank(srHapsData.getPastenendo());
-                
             // 電極製版名
             case GXHDO101B045Const.ESEIHANMEI:
                 return StringUtil.nullToBlank(srHapsData.getEseihanmei());
-                
             // 積層ｽﾗｲﾄﾞ量
             case GXHDO101B045Const.SEKISOUSLIDERYO:
                 return StringUtil.nullToBlank(srHapsData.getSekisouslideryo());
