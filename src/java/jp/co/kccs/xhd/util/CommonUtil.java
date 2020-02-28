@@ -223,6 +223,11 @@ public class CommonUtil {
             return false;
         }
         
+        // 値がnullまたは空の場合、false
+        if (StringUtil.isEmpty(StringUtil.nullToBlank(mapInfo.get(key)))) {
+            return false;
+        }
+        
         // 値が0かどうかチェックする(0の場合データなしとする。)
         if(checkZero){
             BigDecimal checkValue;
@@ -1598,7 +1603,7 @@ public class CommonUtil {
         String sql = "SELECT kojyo,lotno,edaban,kaisuu,kcpno,ownercode,ryouhintopreelmaki1,ryouhintopreelhonsu1,ryouhintopreelmaki2,"
                 + "ryouhintopreelhonsu2,tapinggouki,kensabasyo,reelchecksu,kensakaisinichiji,kensakaisitantou,monotati,hakuri,hanuke,"
                 + "rabure,kakeng,dipfuryo,sonota,tapeijyo,reelcheckkekka,kensasyuryonichiji,kensasyuryotantou,tapeng1,tapeng2,denkitokuseisaikensa,"
-                + "gaikansaikensa,bikou1,bikou2,torokunichiji,kosinnichiji,revision"
+                + "gaikansaikensa,bikou1,bikou2,torokunichiji,kosinnichiji,revision "
                 + "FROM sr_taping_check "
                 + "WHERE kojyo = ? AND lotno = ? "
                 + "AND edaban = ? AND revision = ? "
