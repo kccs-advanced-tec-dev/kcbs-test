@@ -179,6 +179,11 @@ public class GXHDO101A implements Serializable {
     private boolean sanshouBtnRender;
     
     /**
+     * 総合判定表示render有無
+     */
+    private boolean sougouHanteiBtnRender;
+    
+    /**
      * 印刷工程画面ID
      */
     private String insatsuKoteiGamenID;
@@ -241,6 +246,7 @@ public class GXHDO101A implements Serializable {
         // ユーザーグループでメニューマスタを検索
         try {
             setSanshouBtnRender(false);
+            setSougouHanteiBtnRender(false);
 
             // ロットNoを取得する
             String strGamenLotNo = getLotNo();
@@ -412,6 +418,8 @@ public class GXHDO101A implements Serializable {
             //画面ID(メニュー)追加(電気特性・一般品)
             addMenuDenkitokusei(menuListGXHDO101, menuListGXHDO101Nofiltering, messageListMain, menuNameDenkitokuseiIppanhin, queryRunnerXHD, queryRunnerDoc, FORM_ID_DENKITOKUSEI_IPPANHIN);
 
+            //画面ID(メニュー)追加(検査・外観検査)
+            addMenuKensaGaikanKensa(menuListGXHDO101, menuListGXHDO101Nofiltering, messageListMain, menuNameGaikanKensa, queryRunnerXHD, queryRunnerDoc);
             
             // メニューに実績Noを設定
             setMenuJisekiNo(this.menuListGXHDO101);// 権限絞り込みありメニュー
@@ -453,11 +461,13 @@ public class GXHDO101A implements Serializable {
             gamenExistFlg = lotSanshouMenuListFiltering(this.menuListGXHDO101, filterGamenList);
             
             //ﾛｯﾄ参照ﾎﾞﾀﾝ表示/非表示の設定
-            if(gamenExistFlg && userGrpList.contains("ﾛｯﾄ参照_利用ﾕｰｻﾞｰ")){
+            if (gamenExistFlg && userGrpList.contains("ﾛｯﾄ参照_利用ﾕｰｻﾞｰ")) {
                 setSanshouBtnRender(true);
-            }else{
+            } else {
                 setSanshouBtnRender(false);
             }
+            //総合判定ﾎﾞﾀﾝ表示
+            setSougouHanteiBtnRender(true);
             
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("メニュー項目未登録", ex, LOGGER);
@@ -772,6 +782,45 @@ public class GXHDO101A implements Serializable {
         }
         
     }
+    
+    
+    /**
+     * 総合判定ﾎﾞﾀﾝ押下
+     */
+    public void doSougouHantei() {
+
+        try {
+            // ﾛｯﾄNoを分割、桁数については検索がされていること前提の為、ﾁｪｯｸしない
+            String kojyo = this.searchLotNo.substring(0, 3);
+            String lotno = this.searchLotNo.substring(3, 11);
+            String edaban = this.searchLotNo.substring(11, 14);
+            QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
+
+            String sogoHantei = getSogoHantei(queryRunnerQcdb, kojyo, lotno, edaban);
+            String hanteiMsg;
+            switch (sogoHantei) {
+                case "OK":
+                    hanteiMsg = "合格";
+                    break;
+                case "NG":
+                    hanteiMsg = "不合格";
+                    break;
+                default:
+                    hanteiMsg = "未判定";
+                    break;
+            }
+
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, hanteiMsg, null);
+            facesContext.addMessage(null, message);
+
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("総合判定処理エラー", ex, LOGGER);
+        }
+
+    }
+    
+    
 
     /**
      * [設計]から、ﾃﾞｰﾀを取得(設計.printfmt,設計.pattern)
@@ -990,7 +1039,22 @@ public class GXHDO101A implements Serializable {
     public boolean getSanshouBtnRender() {
         return sanshouBtnRender;
     }
-    
+
+    /**
+     * 総合判定表示render有無
+     * @return the sougouHanteiBtnRender
+     */
+    public boolean getSougouHanteiBtnRender() {
+        return sougouHanteiBtnRender;
+    }
+
+    /**
+     * 総合判定表示render有無
+     * @param sougouHanteiBtnRender the sougouHanteiBtnRender to set
+     */
+    public void setSougouHanteiBtnRender(boolean sougouHanteiBtnRender) {
+        this.sougouHanteiBtnRender = sougouHanteiBtnRender;
+    }
 
     /**
      * [品質DB登録実績]から、ﾘﾋﾞｼﾞｮﾝ,状態ﾌﾗｸﾞを取得
@@ -2985,6 +3049,39 @@ public class GXHDO101A implements Serializable {
         return StringUtil.nullToBlank(resultMap.get("QAgaikannukitorikensa"));
     }
 
-    
+ 
+    /**
+     * [出荷検査判定]から総合判定を取得
+     *
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @return 総合判定
+     * @throws SQLException 例外エラー
+     */
+    private String getSogoHantei(QueryRunner queryRunnerXHD, String kojyo, String lotNo,
+            String edaban) throws SQLException {
+
+        // 出荷検査判定情報の取得
+        String sql = "SELECT sogohantei "
+                + "FROM sr_sqchantei "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        Map map = queryRunnerXHD.query(sql, new MapHandler(), params.toArray());
+        if (map != null && !map.isEmpty()) {
+            return String.valueOf(map.get("sogohantei"));
+        }
+
+        return "";
+    }
+
+
     
 }

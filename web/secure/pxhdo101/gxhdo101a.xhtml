@@ -37,6 +37,8 @@
                     PF('W_dlg_initMessage').show();
                 } else if('gxhdo101c012'===args.firstParam){
                     PF('W_dlg_gxhdo101c012').show();
+                } else if('gxhdo101c017'===args.firstParam){
+                    PF('W_dlg_gxhdo101c017').show();
                 }
             }
             var pointY;
@@ -137,7 +139,16 @@
                             <td></td>
                             <td>
                                 <h:outputText id="outText" value="" style="width: 300px; margin-left: 40px;"/>
-                                <p:commandButton id="sanshouBtn" class="button" rendered="#{gXHDO101A.sanshouBtnRender}"  styleClass="ui-conf-commandbtn-def1" style="float:right;margin-left: 40px;width: 94px; height: 32px; font-size: 13px;"
+                                
+                                <p:commandButton id="sougouHanteiBtn" class="button" rendered="#{gXHDO101A.sougouHanteiBtnRender}"  styleClass="ui-conf-commandbtn-def1" style="position:relative; left: 213px; margin-top: 3px; width: 94px; height: 32px; font-size: 13px; "
+                                      value="総合判定"
+                                      actionListener="#{gXHDO101A.doSougouHantei()}"
+                                      process="@this"
+                                      update="growlMessage"
+                                      onstart="PF('cd').hide();$('#loadinggif').show();"
+                                      oncomplete="$('#loadinggif').hide();"/>
+                                
+                                <p:commandButton id="sanshouBtn" class="button" rendered="#{gXHDO101A.sanshouBtnRender}"  styleClass="ui-conf-commandbtn-def1" style="float:right; margin-top: 3px; margin-left: 40px;width: 94px; height: 32px; font-size: 13px;"
                                       value="ロット参照"
                                       actionListener="#{gXHDO101A.getLotSanshou()}"
                                       process="@this lotNo tantoshaCd"
