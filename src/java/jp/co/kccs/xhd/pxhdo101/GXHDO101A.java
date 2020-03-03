@@ -379,6 +379,8 @@ public class GXHDO101A implements Serializable {
             String menuNameDenkitokuseiEsi = this.menuListGXHDO101Nofiltering.stream().filter(n -> FORM_ID_DENKITOKUSEI_ESI.equals(n.getFormId())).findFirst().map(f -> f.getMenuName()).orElse("");
             String menuNameDenkitokusei3Tanshi4Tanshi = this.menuListGXHDO101Nofiltering.stream().filter(n -> FORM_ID_DENKITOKUSEI_3TANSHI_4TANSHI.equals(n.getFormId())).findFirst().map(f -> f.getMenuName()).orElse("");
             String menuNameDenkitokuseiIppanhin = this.menuListGXHDO101Nofiltering.stream().filter(n -> FORM_ID_DENKITOKUSEI_IPPANHIN.equals(n.getFormId())).findFirst().map(f -> f.getMenuName()).orElse("");
+            String menuNameGaikanKensa = this.menuListGXHDO101Nofiltering.stream().filter(n -> FORM_ID_GAIKAN_KENSA.equals(n.getFormId())).findFirst().map(f -> f.getMenuName()).orElse("");
+            
             
             //画面ID(メニュー)追加(再酸化)
             addMenuSaisanka(strSekkeiNo, this.menuListGXHDO101, this.menuListGXHDO101Nofiltering, messageListMain, menuNameSaisanka, queryRunnerXHD, session);
@@ -2894,5 +2896,95 @@ public class GXHDO101A implements Serializable {
 
         return StringUtil.nullToBlank(resultMap.get("saiken"));
     }
+    
+    /**
+     * 検査・外観検査メニュー 追加処理
+     *
+     * @param menuListGXHDO101 メニューリスト(絞込有り)
+     * @param menuListGXHDO101Nofiltering メニューリスト(絞込無し)
+     * @param messageList メッセージリスト
+     * @param menuName メニュー名
+     * @param queryRunnerXHD データオブジェクト
+     * @throws SQLException 例外エラー
+     * @throws CloneNotSupportedException 例外エラー
+     */
+    private void addMenuKensaGaikanKensa(List<FXHDM01> menuListGXHDO101, List<FXHDM01> menuListGXHDO101Nofiltering, List<String> messageList,
+            String menuName, QueryRunner queryRunnerXHD, QueryRunner queryRunnerDoc) throws SQLException, CloneNotSupportedException {
+        // 検査・外観検査IDが存在しない場合
+        if (!existFormIds(menuListGXHDO101Nofiltering, FORM_ID_GAIKAN_KENSA)) {
+            return;
+        }
+        // ﾛｯﾄNoを分割(チェック処理が実行されている前提の為、桁数の不足などは考慮しない)
+        String strKojyo = this.lotNo.substring(0, 3);
+        String strLotNo = this.lotNo.substring(3, 11);
+        String strEdaban = this.lotNo.substring(11, 14);
+
+        // 品質DB登録実績情報(登録済)取得
+        List<String[]> fxhdd03InfoList = loadFxhdd03InfoRegisteredList(queryRunnerDoc, strKojyo, strLotNo, strEdaban, FORM_ID_GAIKAN_KENSA);
+        int jissekiNo = 1;
+        for (String[] info : fxhdd03InfoList) {
+            // 実績Noを1から順番にチェック、一致しなくなったタイミングでループを抜ける
+            if (!String.valueOf(jissekiNo).equals(info[0])) {
+                break;
+            }
+
+            // QA外観抜き取り検査を取得
+            String gaikan = getSrGaikankensaQAGaikan(queryRunnerXHD, strKojyo, strLotNo, strEdaban, info[0], info[1]);
+            // データが存在しない場合、エラー
+            if (gaikan == null) {
+                messageList.add(MessageUtil.getMessage("XHD-000184", "検査・外観検査"));
+                return;
+            }
+
+            // NG以外ループを抜ける
+            if (!"NG".equals(gaikan)) {
+                break;
+            }
+
+            jissekiNo++;
+        }
+
+        // メニューを回数(実績No)分追加
+        addMenuKaisu(menuListGXHDO101, jissekiNo, menuName, FORM_ID_GAIKAN_KENSA);// 権限絞り込みありメニュー
+        addMenuKaisu(menuListGXHDO101Nofiltering, jissekiNo, menuName, FORM_ID_GAIKAN_KENSA);// 権限絞り込みなしメニュー
+
+    }
+
+    /**
+     * [検査・外観検査]から、QA外観抜き取り検査を取得(値が無い場合はNULLを返却)
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @param rev revision(検索キー)
+     * @return QA外観抜き取り検査(QAgaikannukitorikensa)
+     * @throws SQLException 例外エラー
+     */
+    private String getSrGaikankensaQAGaikan(QueryRunner queryRunnerXHD, String kojyo, String lotNo,
+            String edaban, String jissekino, String rev) throws SQLException {
+
+        String sql = "SELECT QAgaikannukitorikensa "
+                + "FROM sr_gaikankensa "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(jissekino);
+        params.add(rev);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        Map resultMap = queryRunnerXHD.query(sql, new MapHandler(), params.toArray());
+        if (resultMap == null) {
+            return null;
+        }
+
+        return StringUtil.nullToBlank(resultMap.get("QAgaikannukitorikensa"));
+    }
+
+    
     
 }
