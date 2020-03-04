@@ -12,6 +12,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 import javax.annotation.Resource;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
@@ -100,7 +101,7 @@ public class GXHDO101A implements Serializable {
     private static final String FORM_ID_DENKITOKUSEI_3TANSHI_4TANSHI = "GXHDO101B041";
     private static final String FORM_ID_DENKITOKUSEI_IPPANHIN = "GXHDO101B042";
     private static final String FORM_ID_GAIKAN_KENSA = "GXHDO101B046";
-    
+
     /**
      * DataSource(wip)
      */
@@ -116,8 +117,10 @@ public class GXHDO101A implements Serializable {
      */
     @Resource(mappedName = "jdbc/qcdb")
     private transient DataSource dataSourceXHD;
-    
-    /** パラメータマスタ操作 */
+
+    /**
+     * パラメータマスタ操作
+     */
     @Inject
     private SelectParam selectParam;
 
@@ -177,22 +180,22 @@ public class GXHDO101A implements Serializable {
      * ロット参照表示render有無
      */
     private boolean sanshouBtnRender;
-    
+
     /**
      * 総合判定表示render有無
      */
     private boolean sougouHanteiBtnRender;
-    
+
     /**
      * 印刷工程画面ID
      */
     private String insatsuKoteiGamenID;
-    
+
     /**
      * 参照元ﾃﾞｰﾀ
      */
     private FXHDM01 sanshouMotoInfo = null;
-    
+
     /**
      * コンストラクタ
      */
@@ -282,10 +285,10 @@ public class GXHDO101A implements Serializable {
                 facesContext.addMessage(null, message);
                 return null;
             }
-            
+
             // ﾛｯﾄNo仕掛存在ﾁｪｯｸ
             QueryRunner queryRunnerWip = new QueryRunner(dataSourceWip);
-            
+
             Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
             if (shikakariData == null || shikakariData.isEmpty()) {
                 setMenuTableRender(false);
@@ -294,7 +297,7 @@ public class GXHDO101A implements Serializable {
                 facesContext.addMessage(null, message);
                 return null;
             }
-            
+
             // 担当者ﾏｽﾀﾁｪｯｸ
             retMsg = validateUtil.checkT002("担当者ｺｰﾄﾞ", this.tantoshaCd, queryRunnerWip);
             if (!StringUtil.isEmpty(retMsg)) {
@@ -382,12 +385,13 @@ public class GXHDO101A implements Serializable {
             String menuNameGaibuDenkyokuSyosei = this.menuListGXHDO101Nofiltering.stream().filter(n -> FORM_ID_GAIBUDENKYOKU_SYOSEI.equals(n.getFormId())).findFirst().map(f -> f.getMenuName()).orElse("");
             String menuNameGaibuDenkyokuTofu = this.menuListGXHDO101Nofiltering.stream().filter(n -> FORM_ID_GAIBUDENKYOKU_TOFU.equals(n.getFormId())).findFirst().map(f -> f.getMenuName()).orElse("");
             String menuNameGaibuDenkyokuMekki = this.menuListGXHDO101Nofiltering.stream().filter(n -> FORM_ID_GAIBUDENKYOKU_MEKKI_HINSHITSU_KENSA.equals(n.getFormId())).findFirst().map(f -> f.getMenuName()).orElse("");
-            String menuNameDenkitokuseiEsi = this.menuListGXHDO101Nofiltering.stream().filter(n -> FORM_ID_DENKITOKUSEI_ESI.equals(n.getFormId())).findFirst().map(f -> f.getMenuName()).orElse("");
-            String menuNameDenkitokusei3Tanshi4Tanshi = this.menuListGXHDO101Nofiltering.stream().filter(n -> FORM_ID_DENKITOKUSEI_3TANSHI_4TANSHI.equals(n.getFormId())).findFirst().map(f -> f.getMenuName()).orElse("");
-            String menuNameDenkitokuseiIppanhin = this.menuListGXHDO101Nofiltering.stream().filter(n -> FORM_ID_DENKITOKUSEI_IPPANHIN.equals(n.getFormId())).findFirst().map(f -> f.getMenuName()).orElse("");
-            String menuNameGaikanKensa = this.menuListGXHDO101Nofiltering.stream().filter(n -> FORM_ID_GAIKAN_KENSA.equals(n.getFormId())).findFirst().map(f -> f.getMenuName()).orElse("");
             
-            
+            // 画面制御情報取得
+            List<Map<String, Object>> fxhdd08Info = loadFxhdd08Info(queryRunnerDoc, strKojyo, strLotNo, strEdaban);
+
+            // 実績Noの最大値管理(画面別)
+            Map mapMaxJissekiNo = new HashMap<>();
+
             //画面ID(メニュー)追加(再酸化)
             addMenuSaisanka(strSekkeiNo, this.menuListGXHDO101, this.menuListGXHDO101Nofiltering, messageListMain, menuNameSaisanka, queryRunnerXHD, session);
 
@@ -399,28 +403,32 @@ public class GXHDO101A implements Serializable {
 
             //画面ID(メニュー)追加(DP2)
             addMenuDp2(strSekkeiNo, this.menuListGXHDO101, this.menuListGXHDO101Nofiltering, messageListMain, menuNameDp2, queryRunnerXHD, session);
-            
+
             //画面ID(メニュー)追加(外部電極焼成(焼成))
             addMenuGaibuDenkyokuSyosei(strSekkeiNo, this.menuListGXHDO101, this.menuListGXHDO101Nofiltering, messageListMain, menuNameGaibuDenkyokuSyosei, queryRunnerXHD, session);
-            
+
             //画面ID(メニュー)追加(外部電極塗布)
             addMenuGaibuDenkyokuTofu(this.menuListGXHDO101, this.menuListGXHDO101Nofiltering, messageListMain, menuNameGaibuDenkyokuTofu, queryRunnerXHD, queryRunnerDoc, session);
-            
+
             //画面ID(メニュー)追加(外部電極・ﾒｯｷ品質検査)
-            addMenuGaibuDenkyokuMekkiHinshitsuKensa(this.menuListGXHDO101, this.menuListGXHDO101Nofiltering, messageListMain, menuNameGaibuDenkyokuMekki,queryRunnerXHD, queryRunnerDoc);
-            
+            addMenuGaibuDenkyokuMekkiHinshitsuKensa(this.menuListGXHDO101, this.menuListGXHDO101Nofiltering, messageListMain, menuNameGaibuDenkyokuMekki, queryRunnerXHD, queryRunnerDoc);
+            //TODO
             //画面ID(メニュー)追加(電気特性・ESI)
-            addMenuDenkitokusei(menuListGXHDO101, menuListGXHDO101Nofiltering, messageListMain, menuNameDenkitokuseiEsi, queryRunnerXHD, queryRunnerDoc, FORM_ID_DENKITOKUSEI_ESI);
+            addMenuDenkitokusei(this.menuListGXHDO101, this.menuListGXHDO101Nofiltering, messageListMain, queryRunnerXHD, queryRunnerDoc, FORM_ID_DENKITOKUSEI_ESI, 0, fxhdd08Info, mapMaxJissekiNo);
 
             //画面ID(メニュー)追加(電気特性・3端子4端子)
-            addMenuDenkitokusei(menuListGXHDO101, menuListGXHDO101Nofiltering, messageListMain, menuNameDenkitokusei3Tanshi4Tanshi, queryRunnerXHD, queryRunnerDoc, FORM_ID_DENKITOKUSEI_3TANSHI_4TANSHI);
+            addMenuDenkitokusei(this.menuListGXHDO101, this.menuListGXHDO101Nofiltering, messageListMain, queryRunnerXHD, queryRunnerDoc, FORM_ID_DENKITOKUSEI_3TANSHI_4TANSHI, 0, fxhdd08Info, mapMaxJissekiNo);
 
             //画面ID(メニュー)追加(電気特性・一般品)
-            addMenuDenkitokusei(menuListGXHDO101, menuListGXHDO101Nofiltering, messageListMain, menuNameDenkitokuseiIppanhin, queryRunnerXHD, queryRunnerDoc, FORM_ID_DENKITOKUSEI_IPPANHIN);
+            addMenuDenkitokusei(this.menuListGXHDO101, this.menuListGXHDO101Nofiltering, messageListMain, queryRunnerXHD, queryRunnerDoc, FORM_ID_DENKITOKUSEI_IPPANHIN, 0, fxhdd08Info, mapMaxJissekiNo);
 
             //画面ID(メニュー)追加(検査・外観検査)
-            addMenuKensaGaikanKensa(menuListGXHDO101, menuListGXHDO101Nofiltering, messageListMain, menuNameGaikanKensa, queryRunnerXHD, queryRunnerDoc);
-            
+            long menuCntGaikanKensa = this.menuListGXHDO101Nofiltering.stream().filter(n -> FORM_ID_GAIKAN_KENSA.equals(n.getFormId())).count();
+            for(long i =0; i < menuCntGaikanKensa;i++){
+                // 外観検査は初期で複数メニューが存在する為、複数回追加処理を行う。
+                addMenuKensaGaikanKensa(this.menuListGXHDO101, this.menuListGXHDO101Nofiltering, messageListMain, queryRunnerXHD, queryRunnerDoc, 0, fxhdd08Info, mapMaxJissekiNo);
+            }
+
             // メニューに実績Noを設定
             setMenuJisekiNo(this.menuListGXHDO101);// 権限絞り込みありメニュー
             setMenuJisekiNo(this.menuListGXHDO101Nofiltering);// 権限絞り込みメニュー
@@ -459,7 +467,7 @@ public class GXHDO101A implements Serializable {
             filterGamenList.add("GXHDO101B006");
             boolean gamenExistFlg = false;
             gamenExistFlg = lotSanshouMenuListFiltering(this.menuListGXHDO101, filterGamenList);
-            
+
             //ﾛｯﾄ参照ﾎﾞﾀﾝ表示/非表示の設定
             if (gamenExistFlg && userGrpList.contains("ﾛｯﾄ参照_利用ﾕｰｻﾞｰ")) {
                 setSanshouBtnRender(true);
@@ -468,7 +476,7 @@ public class GXHDO101A implements Serializable {
             }
             //総合判定ﾎﾞﾀﾝ表示
             setSougouHanteiBtnRender(true);
-            
+
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("メニュー項目未登録", ex, LOGGER);
             menuListGXHDO101 = new ArrayList<>();
@@ -497,7 +505,7 @@ public class GXHDO101A implements Serializable {
     public void setSanshouMotoInfo(FXHDM01 sanshouMotoInfo) {
         this.sanshouMotoInfo = sanshouMotoInfo;
     }
-    
+
     /**
      * 参照元画面を開き
      *
@@ -583,15 +591,15 @@ public class GXHDO101A implements Serializable {
                     session.setAttribute("barrelgohantei", "計数のみ");
                 }
             }
-            
+
             // 外部電極塗布(三端子,4端子)、外部電極塗布の場合は総重量を取得してセットする
             if (FORM_ID_GAIBUDENKYOKU_TOFU_TANSHI.equals(rowData.getFormId()) || FORM_ID_GAIBUDENKYOKU_TOFU.equals(rowData.getFormId())) {
                 session.setAttribute("soujuryou", getSoujuryou(this.menuListGXHDO101Nofiltering));
             }
-            
+
             // 電気特性画面用の情報をｾｯｼｮﾝにセットする。
             setDenkitokuseiSessionData(rowData.getFormId(), session);
-            
+
             // 検査・外観検査用の情報をｾｯｼｮﾝにセットする。
             setGaikanKensaSessionData(rowData.getFormId(), maeKoteiMenuInfo, session);
 
@@ -603,7 +611,7 @@ public class GXHDO101A implements Serializable {
                 context.addCallbackParam("firstParam", "warning");
                 return "";
             }
-            
+
             //ﾛｯﾄ参照ﾎﾞﾀﾝ非表示にする
             setSanshouBtnRender(false);
 
@@ -621,12 +629,12 @@ public class GXHDO101A implements Serializable {
     public void searchHinshitsuData() {
         menuListGXHDO101 = getMenuListGXHDO101();
     }
-    
+
     /**
      * 品質DB画面ﾛｯﾄ参照ボタン押下時
      */
     public void getLotSanshou() {
-        
+
         try {
             QueryRunner queryRunnerDoc = new QueryRunner(dataSourceDocServer);
             QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
@@ -636,7 +644,7 @@ public class GXHDO101A implements Serializable {
             String strLotNo = "";
             String strEdaban = "";
 
-            if(!"".equals(searchLotNo) && searchLotNo != null){
+            if (!"".equals(searchLotNo) && searchLotNo != null) {
                 strKojyo = this.searchLotNo.substring(0, 3);
                 strLotNo = this.searchLotNo.substring(3, 11);
                 strEdaban = this.searchLotNo.substring(11, 14);
@@ -652,13 +660,13 @@ public class GXHDO101A implements Serializable {
             //      ・ｴﾗｰﾒｯｾｰｼﾞ:参照元のﾛｯﾄ({0})が登録済ではありません。
             //      0には、【印刷工程画面ID】をもとにした、ﾒﾆｭｰ名(ﾌｫｰﾑﾊﾟﾗﾒｰﾀ)を設定。
             Map fxhdd03JissekinoInfo = loadFxhdd03JissekinoInfo(queryRunnerDoc, strKojyo, strLotNo, strEdaban, getInsatsuKoteiGamenID());
-            if(fxhdd03JissekinoInfo == null){
-                setErrorMessage(MessageUtil.getMessage("XHD-000160",getMenuName(this.menuListGXHDO101, getInsatsuKoteiGamenID())));
+            if (fxhdd03JissekinoInfo == null) {
+                setErrorMessage(MessageUtil.getMessage("XHD-000160", getMenuName(this.menuListGXHDO101, getInsatsuKoteiGamenID())));
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, getErrorMessage(), null);
                 facesContext.addMessage(null, message);
                 return;
             }
-            
+
             //   2.取得できた場合、登録済であるか確認を行う。
             //    A.状態ﾌﾗｸﾞ == '0' の場合
             //     ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。
@@ -673,8 +681,8 @@ public class GXHDO101A implements Serializable {
             //       ・ｴﾗｰﾒｯｾｰｼﾞ:参照元のﾛｯﾄ({0})が登録済ではありません。
             //       0には、【印刷工程画面ID】をもとにした、ﾒﾆｭｰ名(ﾌｫｰﾑﾊﾟﾗﾒｰﾀ)を設定。
             String jotaiFlg = StringUtil.nullToBlank(getMapData(fxhdd03JissekinoInfo, "jotai_flg"));
-            if(!"1".equals(jotaiFlg)){
-                setErrorMessage(MessageUtil.getMessage("XHD-000160",getMenuName(this.menuListGXHDO101, getInsatsuKoteiGamenID())));
+            if (!"1".equals(jotaiFlg)) {
+                setErrorMessage(MessageUtil.getMessage("XHD-000160", getMenuName(this.menuListGXHDO101, getInsatsuKoteiGamenID())));
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, getErrorMessage(), null);
                 facesContext.addMessage(null, message);
                 return;
@@ -683,11 +691,11 @@ public class GXHDO101A implements Serializable {
             //  ②【印刷工程画面ID】をもとに、対象ﾃｰﾌﾞﾙからﾃﾞｰﾀを取得する。
             //   1.【印刷工程画面ID】 == "GXHDO101B001" の場合
             String jissekiInforev = StringUtil.nullToBlank(getMapData(fxhdd03JissekinoInfo, "rev"));
-            if("GXHDO101B001".equals(getInsatsuKoteiGamenID())){
+            if ("GXHDO101B001".equals(getInsatsuKoteiGamenID())) {
                 //    A.Ⅲ.画面表示仕様(27),(28)を発行する。
                 Map srSpsprintGraInfo = loadSrSpsprintGraInfo(queryRunnerQcdb, strKojyo, strLotNo, strEdaban, jissekiInforev);
                 Map subSrSpsprintGraInfo = loadSubSrSpsprintGraInfo(queryRunnerQcdb, strKojyo, strLotNo, strEdaban, jissekiInforev);
-                if(srSpsprintGraInfo == null || subSrSpsprintGraInfo == null){
+                if (srSpsprintGraInfo == null || subSrSpsprintGraInfo == null) {
                     //     ｱ.取得できなかった場合
                     //      ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。
                     //        ・ｴﾗｰｺｰﾄﾞ:XHD-000083
@@ -707,7 +715,7 @@ public class GXHDO101A implements Serializable {
                 //    A.Ⅲ.画面表示仕様(29),(30)を発行する。
                 Map srSpsprintInfo = loadSrSpsprintInfo(queryRunnerQcdb, strKojyo, strLotNo, strEdaban, jissekiInforev);
                 Map subSrSpsprintScrInfo = loadSubSrSpsprintScrInfo(queryRunnerQcdb, strKojyo, strLotNo, strEdaban, jissekiInforev);
-                if(srSpsprintInfo == null || subSrSpsprintScrInfo == null){
+                if (srSpsprintInfo == null || subSrSpsprintScrInfo == null) {
                     //      ｱ.取得できなかった場合
                     //       ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。
                     //         ・ｴﾗｰｺｰﾄﾞ:XHD-000083
@@ -721,13 +729,13 @@ public class GXHDO101A implements Serializable {
                 //      ｲ.取得できた場合
                 //       以降の処理を実行する。
             }
-            
+
             //   3.【印刷工程画面ID】 == "GXHDO101B006" の場合
             if ("GXHDO101B006".equals(getInsatsuKoteiGamenID())) {
                 //    A.Ⅲ.画面表示仕様(29),(30)を発行する。
                 Map srSpRhapsInfo = loadSrRhapsInfo(queryRunnerQcdb, strKojyo, strLotNo, strEdaban, jissekiInforev);
                 Map subSrSpRhapsInfo = loadSubSrRhapsInfo(queryRunnerQcdb, strKojyo, strLotNo, strEdaban, jissekiInforev);
-                if(srSpRhapsInfo == null || subSrSpRhapsInfo == null){
+                if (srSpRhapsInfo == null || subSrSpRhapsInfo == null) {
                     //      ｱ.取得できなかった場合
                     //       ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。
                     //         ・ｴﾗｰｺｰﾄﾞ:XHD-000083
@@ -741,7 +749,6 @@ public class GXHDO101A implements Serializable {
                 //      ｲ.取得できた場合
                 //       以降の処理を実行する。
             }
-            
 
             // ﾛｯﾄ参照の値をサブ画面の表示用の値に渡す
             GXHDO101C012 beanGXHDO101C012 = (GXHDO101C012) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C012);
@@ -753,7 +760,7 @@ public class GXHDO101A implements Serializable {
             beanGXHDO101C012.setSanshouSakiLotNo("");
             //参照先ﾛｯﾄNo背景色
             beanGXHDO101C012.setSanshousakiTextBackColor("#ffffffff");
-            
+
             FXHDM01 sanshouMotoData = null;
             for (FXHDM01 fxhdm01 : this.menuListGXHDO101) {
                 if (fxhdm01.getFormId().equals(getInsatsuKoteiGamenID())) {
@@ -766,7 +773,7 @@ public class GXHDO101A implements Serializable {
             beanGXHDO101C012.setSanshouMotoInfo(sanshouMotoData);
 
             Map gamenInfo = getSekkeiInfoList(queryRunnerQcdb, strKojyo, strLotNo);
-            if(gamenInfo != null){
+            if (gamenInfo != null) {
                 //設計.printfmt
                 beanGXHDO101C012.setPrintfmt(StringUtil.nullToBlank(getMapData(gamenInfo, "PrintFmt")));
                 //設計.pattern
@@ -775,15 +782,14 @@ public class GXHDO101A implements Serializable {
 
             // (2)ﾛｯﾄ参照画面【GXHDO101C012】へ遷移する。
             RequestContext context = RequestContext.getCurrentInstance();
-            context.addCallbackParam("firstParam", "gxhdo101c012"); 
+            context.addCallbackParam("firstParam", "gxhdo101c012");
 
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("ﾒﾆｭｰ名未登録", ex, LOGGER);
         }
-        
+
     }
-    
-    
+
     /**
      * 総合判定ﾎﾞﾀﾝ押下
      */
@@ -819,8 +825,6 @@ public class GXHDO101A implements Serializable {
         }
 
     }
-    
-    
 
     /**
      * [設計]から、ﾃﾞｰﾀを取得(設計.printfmt,設計.pattern)
@@ -841,7 +845,7 @@ public class GXHDO101A implements Serializable {
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
     }
-    
+
     /**
      * 一覧表示データを返却します。
      *
@@ -895,7 +899,7 @@ public class GXHDO101A implements Serializable {
     public void setInsatsuKoteiGamenID(String insatsuKoteiGamenID) {
         this.insatsuKoteiGamenID = insatsuKoteiGamenID;
     }
-    
+
     /**
      * ロットNo
      *
@@ -1042,6 +1046,7 @@ public class GXHDO101A implements Serializable {
 
     /**
      * 総合判定表示render有無
+     *
      * @return the sougouHanteiBtnRender
      */
     public boolean getSougouHanteiBtnRender() {
@@ -1050,6 +1055,7 @@ public class GXHDO101A implements Serializable {
 
     /**
      * 総合判定表示render有無
+     *
      * @param sougouHanteiBtnRender the sougouHanteiBtnRender to set
      */
     public void setSougouHanteiBtnRender(boolean sougouHanteiBtnRender) {
@@ -1290,7 +1296,7 @@ public class GXHDO101A implements Serializable {
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
     }
-    
+
     /**
      * 前工程画面ID、ﾒﾆｭｰ名取得
      *
@@ -1499,18 +1505,19 @@ public class GXHDO101A implements Serializable {
         return queryRunnerXHD.query(sql, beanHandler, params.toArray());
     }
 
-     /**
-      * 再酸化メニュー 追加処理
-      * @param strSekkeiNo 設計No
-      * @param menuListGXHDO101 メニューリスト(絞込有り)
-      * @param menuListGXHDO101Nofiltering メニューリスト(絞込無し)
-      * @param messageList メッセージリスト
-      * @param menuNameSaisanka メニュー名(再酸化)
-      * @param queryRunnerXHD データオブジェクト
-      * @param session セッション
-      * @throws SQLException 例外エラー
-      * @throws CloneNotSupportedException 例外エラー 
-      */
+    /**
+     * 再酸化メニュー 追加処理
+     *
+     * @param strSekkeiNo 設計No
+     * @param menuListGXHDO101 メニューリスト(絞込有り)
+     * @param menuListGXHDO101Nofiltering メニューリスト(絞込無し)
+     * @param messageList メッセージリスト
+     * @param menuNameSaisanka メニュー名(再酸化)
+     * @param queryRunnerXHD データオブジェクト
+     * @param session セッション
+     * @throws SQLException 例外エラー
+     * @throws CloneNotSupportedException 例外エラー
+     */
     private void addMenuSaisanka(String strSekkeiNo, List<FXHDM01> menuListGXHDO101, List<FXHDM01> menuListGXHDO101Nofiltering, List<String> messageList,
             String menuNameSaisanka, QueryRunner queryRunnerXHD, HttpSession session) throws SQLException, CloneNotSupportedException {
         // 再酸化IDが存在しない場合
@@ -1554,7 +1561,6 @@ public class GXHDO101A implements Serializable {
         addMenuKaisu(menuListGXHDO101, saisankaKaisu, menuNameSaisanka, FORM_ID_SAISANKA);// 権限絞り込みありメニュー
         addMenuKaisu(menuListGXHDO101Nofiltering, saisankaKaisu, menuNameSaisanka, FORM_ID_SAISANKA);// 権限絞り込みメニュー
     }
-    
 
     /**
      * 磁器QCメニュー 追加処理
@@ -1704,7 +1710,7 @@ public class GXHDO101A implements Serializable {
      * @return 規格値
      * @throws SQLException 例外エラー
      */
-    private String getKikakuchi(QueryRunner queryRunnerXHD, String sekkeiNo, String kouteimei, 
+    private String getKikakuchi(QueryRunner queryRunnerXHD, String sekkeiNo, String kouteimei,
             String koumokumei, String kanrikoumoku) throws SQLException {
 
         // 条件ﾃｰﾌﾞﾙを検索
@@ -1766,7 +1772,7 @@ public class GXHDO101A implements Serializable {
 
         return fxhdd03InfoList;
     }
-    
+
     /**
      * [品質DB登録実績]から、状態ﾌﾗｸﾞ,実績No,ﾘﾋﾞｼﾞｮﾝを取得
      *
@@ -1805,8 +1811,7 @@ public class GXHDO101A implements Serializable {
 
         return fxhdd03InfoList;
     }
-    
-    
+
     /**
      * [品質DB登録実績]から登録済状態の、実績No,ﾘﾋﾞｼﾞｮﾝを取得
      *
@@ -1846,8 +1851,6 @@ public class GXHDO101A implements Serializable {
 
         return fxhdd03InfoList;
     }
-    
- 
 
     /**
      * [磁器QC]から、ﾃﾞｰﾀ(合否判定)を取得(値が無い場合はNULLを返却)
@@ -1923,6 +1926,10 @@ public class GXHDO101A implements Serializable {
     private void setMenuJisekiNo(List<FXHDM01> menuListGXHDO101) {
         Map mapJissekiNo = new HashMap<>();
         for (FXHDM01 fxhdm01 : menuListGXHDO101) {
+            //番号が割り振られていないもののみ
+            if (1 <= fxhdm01.getJissekiNo()) {
+                continue;
+            }
             fxhdm01.setJissekiNo(getJissekino(mapJissekiNo, menuListGXHDO101, fxhdm01.getFormId()));
         }
     }
@@ -2058,7 +2065,7 @@ public class GXHDO101A implements Serializable {
         }
     }
 
-     /**
+    /**
      * 画面IDがメニュー存在しているか確認(1項目でも存在すればtrue)
      *
      * @param menuList
@@ -2076,7 +2083,7 @@ public class GXHDO101A implements Serializable {
 
         return false;
     }
-        
+
     /**
      * メニューリスト取得(権限絞りこみあり)
      *
@@ -2188,8 +2195,8 @@ public class GXHDO101A implements Serializable {
             }
         }
     }
-    
-     /**
+
+    /**
      * メニュー 追加処理(回数指定)
      *
      * @param menuListGXHDO101 メニューリスト
@@ -2230,6 +2237,83 @@ public class GXHDO101A implements Serializable {
             // メニューリストの名称と実績Noを設定
             menuListGXHDO101.get(i + saisankaIdx).setMenuName(menuName + "(" + (i + 1) + "回目)");
         }
+    }
+
+    
+    /**
+     * メニュー 追加処理(回数指定)
+     *
+     * @param menuListGXHDO101 メニューリスト
+     * @param kaisu 回数
+     * @param menuName メニュー名
+     * @throws SQLException 例外エラー
+     * @throws CloneNotSupportedException 例外エラー
+     */
+    private void addMenuKaisu(List<FXHDM01> menuListGXHDO101, int kaisu, String targetFormId, int startJissekiNo, Map mapJissekiNo, List<Map<String, Object>> fxhdd08Info) throws CloneNotSupportedException {
+
+        
+
+        String menuName = "";
+
+        boolean existData = false;
+        int saisankaIdx = -1;
+        // 対象の画面IDが存在するかと、メニュー位置を取得
+        for (FXHDM01 fxhdm01 : menuListGXHDO101) {
+            saisankaIdx++;
+            if (targetFormId.equals(fxhdm01.getFormId()) && startJissekiNo == fxhdm01.getJissekiNo()) {
+                existData = true;
+                menuName = fxhdm01.getMenuName();
+                break;
+            }
+        }
+
+        // 画面IDが存在しない場合
+        if (!existData) {
+            return;
+        }
+
+        // 初回は実績Noが0で来るため、1をセット
+        int jissekiNo = 1;
+        if (startJissekiNo == 0) {
+            if (mapJissekiNo.containsKey(targetFormId)) {
+                jissekiNo = (int) mapJissekiNo.get(targetFormId) + 1;
+            }
+
+        } else {
+            jissekiNo = startJissekiNo;
+        }
+
+        // メニュに回数分のメニューを追加
+        String setMenuName = menuName;
+        for (int i = 0; i < kaisu; i++) {
+            if (0 < i) {
+                FXHDM01 addData = menuListGXHDO101.get(saisankaIdx).clone();
+                menuListGXHDO101.add(i + saisankaIdx, addData);
+                jissekiNo++;
+            }
+            
+            if(1 < kaisu){
+                setMenuName = menuName + "(" + (i + 1) + "回目)";
+            }
+
+            // メニューリストの名称と実績Noを設定
+            menuListGXHDO101.get(i + saisankaIdx).setMenuName(setMenuName);
+
+            while (existJisekiNo(fxhdd08Info, targetFormId, jissekiNo)) {
+                jissekiNo++;
+            }
+            menuListGXHDO101.get(i + saisankaIdx).setJissekiNo(jissekiNo);           
+        }
+
+        // 最大の実績Noを保持
+        if (!mapJissekiNo.containsKey(targetFormId) || jissekiNo < (int) mapJissekiNo.get(targetFormId)) {
+            mapJissekiNo.put(targetFormId, jissekiNo);
+        }
+
+    }
+
+    private boolean existJisekiNo(List<Map<String, Object>> fxhdd08Info, String targetFormId, int jissekino) {
+        return 0 < fxhdd08Info.stream().filter(n -> targetFormId.equals(String.valueOf(n.get("gamen_id")))).filter(n -> jissekino == (int) n.get("jissekino")).count();
     }
 
     /**
@@ -2601,9 +2685,10 @@ public class GXHDO101A implements Serializable {
 
         return StringUtil.nullToBlank(resultMap.get("gaikankensakekka"));
     }
-    
+
     /**
      * 総重量の取得処理(研磨計測より総重量を取得する。)
+     *
      * @param menuListAll メニューデータ(権限でのフィルタリング無し)
      * @return 総重量
      */
@@ -2627,8 +2712,8 @@ public class GXHDO101A implements Serializable {
 
         return getSrSyoseikeisuuSojuryo(queryRunnerXHD, strKojyo, strLotNo, strEdaban, fxhdd03List.get(0)[1], fxhdd03List.get(0)[2]);
     }
-    
-     /**
+
+    /**
      * [品質DB登録実績]から、状態ﾌﾗｸﾞ,実績No,ﾘﾋﾞｼﾞｮﾝを取得
      *
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
@@ -2665,7 +2750,7 @@ public class GXHDO101A implements Serializable {
 
         return fxhdd03InfoList;
     }
-    
+
     /**
      * [計数]から、総重量を取得(値が無い場合は0を返却)
      *
@@ -2701,7 +2786,7 @@ public class GXHDO101A implements Serializable {
 
         return soujuryou;
     }
-    
+
     /**
      * 仕掛データ検索
      *
@@ -2727,7 +2812,7 @@ public class GXHDO101A implements Serializable {
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerWip.query(sql, new MapHandler(), params.toArray());
     }
-    
+
     /**
      * ﾛｯﾄ参照【画面IDﾘｽﾄ】に画面IDが存在すること
      *
@@ -2737,7 +2822,7 @@ public class GXHDO101A implements Serializable {
     private boolean lotSanshouMenuListFiltering(List<FXHDM01> menuList, List<String> filterGamenIdList) {
         if (!menuList.isEmpty()) {
             for (String formId : filterGamenIdList) {
-                if(0 < menuList.stream().filter(n -> formId.equals(n.getFormId())).count()){
+                if (0 < menuList.stream().filter(n -> formId.equals(n.getFormId())).count()) {
                     setInsatsuKoteiGamenID(formId);
                     return true;
                 }
@@ -2745,7 +2830,7 @@ public class GXHDO101A implements Serializable {
         }
         return false;
     }
-    
+
     /**
      * ﾒﾆｭｰ名を取得する
      *
@@ -2762,27 +2847,27 @@ public class GXHDO101A implements Serializable {
         }
         return "";
     }
-    
-    
-     /**
-      * 電気特性画面に必要な情報をセッションにセットする。
-      * @param formId 画面ID
-      * @param session セッション情報
-      * @throws SQLException 例外エラー
-      */
+
+    /**
+     * 電気特性画面に必要な情報をセッションにセットする。
+     *
+     * @param formId 画面ID
+     * @param session セッション情報
+     * @throws SQLException 例外エラー
+     */
     private void setDenkitokuseiSessionData(String formId, HttpSession session) throws SQLException {
-        
-        if(!FORM_ID_DENKITOKUSEI_ESI.equals(formId) && !FORM_ID_DENKITOKUSEI_3TANSHI_4TANSHI.equals(formId) && !FORM_ID_DENKITOKUSEI_IPPANHIN.equals(formId)){
+
+        if (!FORM_ID_DENKITOKUSEI_ESI.equals(formId) && !FORM_ID_DENKITOKUSEI_3TANSHI_4TANSHI.equals(formId) && !FORM_ID_DENKITOKUSEI_IPPANHIN.equals(formId)) {
             // 電気特性の画面ID以外は処理なし
             return;
         }
-        
+
         QueryRunner queryRunnerDoc = new QueryRunner(dataSourceDocServer);
         QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
         String strKojyo = this.searchLotNo.substring(0, 3);
         String strLotNo = this.searchLotNo.substring(3, 11);
         String strEdaban = this.searchLotNo.substring(11, 14);
-        
+
         // ﾒｯｷ品質検査(登録済みのデータが存在すれば値を取得する。)
         Map srMekkiInfo = null;
         List<String[]> Fxhdd03InfoListB038 = loadFxhdd03InfoListJisekiNoDesc(queryRunnerDoc, strKojyo, strLotNo, strEdaban, "GXHDO101B038");
@@ -2806,7 +2891,7 @@ public class GXHDO101A implements Serializable {
             srJikiqcInfo = CommonUtil.getSrJikiqcData(queryRunnerQcdb, strKojyo, strLotNo, strEdaban, Fxhdd03InfoListB022.get(0)[2], Integer.parseInt(Fxhdd03InfoListB022.get(0)[1]));
         }
         session.setAttribute("SrJikiqcInfo", srJikiqcInfo);
-        
+
         //熱処理
         Map srShinkuukansou = null;
         List<String[]> Fxhdd03InfoListB043 = loadFxhdd03InfoListJisekiNoDesc(queryRunnerDoc, strKojyo, strLotNo, strEdaban, "GXHDO101B043");
@@ -2814,17 +2899,17 @@ public class GXHDO101A implements Serializable {
             srShinkuukansou = CommonUtil.getSrShinkuukansouData(queryRunnerQcdb, strKojyo, strLotNo, strEdaban, Fxhdd03InfoListB043.get(0)[2], Integer.parseInt(Fxhdd03InfoListB043.get(0)[1]));
         }
         session.setAttribute("SrShinkuukansou", srShinkuukansou);
-        
+
     }
-    
-    
+
     /**
-      * 検査・外観検査画面に必要な情報をセッションにセットする。
-      * @param formId 画面ID
-      * @param maeKoteiMenuInfo 前工程メニュー情報
-      * @param session セッション情報
-      * @throws SQLException 例外エラー
-      */
+     * 検査・外観検査画面に必要な情報をセッションにセットする。
+     *
+     * @param formId 画面ID
+     * @param maeKoteiMenuInfo 前工程メニュー情報
+     * @param session セッション情報
+     * @throws SQLException 例外エラー
+     */
     private void setGaikanKensaSessionData(String formId, FXHDM01 maeKoteiMenuInfo, HttpSession session) throws SQLException {
 
         if (!FORM_ID_GAIKAN_KENSA.equals(formId)) {
@@ -2868,25 +2953,41 @@ public class GXHDO101A implements Serializable {
         session.setAttribute("SrJikiqcInfo", srJikiqcInfo);
 
     }
-    
+
     /**
      * 電気特性メニュー 追加処理
-     *
+     *TODO
      * @param menuListGXHDO101 メニューリスト(絞込有り)
      * @param menuListGXHDO101Nofiltering メニューリスト(絞込無し)
      * @param messageList メッセージリスト
      * @param menuName メニュー名
      * @param queryRunnerXHD データオブジェクト
      * @param formId 画面ID
+     * @param startJisskeino 開始実績No
      * @throws SQLException 例外エラー
      * @throws CloneNotSupportedException 例外エラー
      */
     private void addMenuDenkitokusei(List<FXHDM01> menuListGXHDO101, List<FXHDM01> menuListGXHDO101Nofiltering, List<String> messageList,
-            String menuName, QueryRunner queryRunnerXHD, QueryRunner queryRunnerDoc, String formId) throws SQLException, CloneNotSupportedException {
-        // 電気特性のメニューがが存在しない場合
-        if (!existFormIds(menuListGXHDO101Nofiltering, formId)) {
+            QueryRunner queryRunnerXHD, QueryRunner queryRunnerDoc, String formId, int startJisskeino, List<Map<String, Object>> fxhdd08Info, Map mapMaxJissekiNo) throws SQLException, CloneNotSupportedException {
+
+        // 対象のメニューが存在しない場合
+        if (0 == menuListGXHDO101Nofiltering.stream().filter(n -> formId.equals(n.getFormId())).filter(n -> startJisskeino == n.getJissekiNo()).count()) {
             return;
         }
+        
+        
+        // 初回は実績Noが0で来るため、1か最大値+1をセット
+        int jissekiNo = 1;
+        if (startJisskeino == 0) {
+            if (mapMaxJissekiNo.containsKey(formId)) {
+                jissekiNo = (int) mapMaxJissekiNo.get(formId) + 1;
+            }
+
+        } else {
+            jissekiNo = startJisskeino;
+        }
+        
+        
         // ﾛｯﾄNoを分割(チェック処理が実行されている前提の為、桁数の不足などは考慮しない)
         String strKojyo = this.lotNo.substring(0, 3);
         String strLotNo = this.lotNo.substring(3, 11);
@@ -2894,11 +2995,24 @@ public class GXHDO101A implements Serializable {
 
         // 品質DB登録実績情報(登録済)取得
         List<String[]> fxhdd03InfoList = loadFxhdd03InfoList(queryRunnerDoc, strKojyo, strLotNo, strEdaban, formId);
-        int jissekiNo = 1;
+        int jissekiNoCnt = 1;
         for (String[] info : fxhdd03InfoList) {
+
+            // 処理開始の実績Noまでは処理をしない
+            if (Integer.parseInt(info[1]) < jissekiNo) {
+                continue;
+            }
+
+            // 1回目の処理が対象の実績Noの処理で無かった場合ブレイク
+            if (jissekiNoCnt == 1 && Integer.parseInt(info[1]) != jissekiNo) {
+                break;
+            }
+
+            // 実績Noが連続で無くなったタイミングでブレイク
+            if (jissekiNoCnt != Integer.parseInt(info[1]) - jissekiNo + 1) {
+                break;
+            }
             
-            // 実績Noをセット
-            jissekiNo = Integer.parseInt(info[1]);
             // 状態ﾌﾗｸﾞが"1"(登録済)以外の場合ブレイク
             if (!"1".equals(info[0])) {
                 break;
@@ -2917,15 +3031,15 @@ public class GXHDO101A implements Serializable {
                 break;
             }
 
-            jissekiNo++;
+            jissekiNoCnt++;
         }
 
         // メニューを回数(実績No)分追加
-        addMenuKaisu(menuListGXHDO101, jissekiNo, menuName, formId);// 権限絞り込みありメニュー
-        addMenuKaisu(menuListGXHDO101Nofiltering, jissekiNo, menuName, formId);// 権限絞り込みなしメニュー
+        addMenuKaisu(menuListGXHDO101, jissekiNoCnt, formId, startJisskeino, mapMaxJissekiNo, fxhdd08Info);// 権限絞り込みありメニュー
+        addMenuKaisu(menuListGXHDO101Nofiltering, jissekiNoCnt, formId, startJisskeino, mapMaxJissekiNo, fxhdd08Info);// 権限絞り込みなしメニュー
+
     }
-    
-    
+
     /**
      * [電気特性]から、電気特性再検を取得(値が無い場合はNULLを返却)
      *
@@ -2960,8 +3074,11 @@ public class GXHDO101A implements Serializable {
 
         return StringUtil.nullToBlank(resultMap.get("saiken"));
     }
+
     
+
     /**
+     * //TODO
      * 検査・外観検査メニュー 追加処理
      *
      * @param menuListGXHDO101 メニューリスト(絞込有り)
@@ -2973,27 +3090,55 @@ public class GXHDO101A implements Serializable {
      * @throws CloneNotSupportedException 例外エラー
      */
     private void addMenuKensaGaikanKensa(List<FXHDM01> menuListGXHDO101, List<FXHDM01> menuListGXHDO101Nofiltering, List<String> messageList,
-            String menuName, QueryRunner queryRunnerXHD, QueryRunner queryRunnerDoc) throws SQLException, CloneNotSupportedException {
-        // 検査・外観検査IDが存在しない場合
-        if (!existFormIds(menuListGXHDO101Nofiltering, FORM_ID_GAIKAN_KENSA)) {
+            QueryRunner queryRunnerXHD, QueryRunner queryRunnerDoc, int startJisskeino, List<Map<String, Object>> fxhdd08Info, Map mapMaxJissekiNo) throws SQLException, CloneNotSupportedException {
+        
+
+        // 対象の検査・外観検査のメニューが存在しない場合
+        if (0 == menuListGXHDO101Nofiltering.stream().filter(n -> FORM_ID_GAIKAN_KENSA.equals(n.getFormId())).filter(n -> startJisskeino == n.getJissekiNo()).count()) {
             return;
         }
+        
+        // 初回は実績Noが0で来るため、1か最大値+1をセット
+        int jissekiNo = 1;
+        if (startJisskeino == 0) {
+            if (mapMaxJissekiNo.containsKey(FORM_ID_GAIKAN_KENSA)) {
+                jissekiNo = (int) mapMaxJissekiNo.get(FORM_ID_GAIKAN_KENSA) + 1;
+            }
+        } else {
+            jissekiNo = startJisskeino;
+        }
+        
         // ﾛｯﾄNoを分割(チェック処理が実行されている前提の為、桁数の不足などは考慮しない)
         String strKojyo = this.lotNo.substring(0, 3);
         String strLotNo = this.lotNo.substring(3, 11);
         String strEdaban = this.lotNo.substring(11, 14);
 
         // 品質DB登録実績情報(登録済)取得
-        List<String[]> fxhdd03InfoList = loadFxhdd03InfoRegisteredList(queryRunnerDoc, strKojyo, strLotNo, strEdaban, FORM_ID_GAIKAN_KENSA);
-        int jissekiNo = 1;
+        List<String[]> fxhdd03InfoList = loadFxhdd03InfoList(queryRunnerDoc, strKojyo, strLotNo, strEdaban, FORM_ID_GAIKAN_KENSA);
+        int jissekiNoCnt = 1;
         for (String[] info : fxhdd03InfoList) {
-            // 実績Noを1から順番にチェック、一致しなくなったタイミングでループを抜ける
-            if (!String.valueOf(jissekiNo).equals(info[0])) {
+            // 処理開始の実績Noまでは処理をしない
+            if (Integer.parseInt(info[1]) < jissekiNo) {
+                continue;
+            }
+
+            // 1回目の処理が対象の実績Noの処理で無かった場合ブレイク
+            if (jissekiNoCnt == 1 && Integer.parseInt(info[1]) != jissekiNo) {
+                break;
+            }
+            
+            // 実績Noが連続で無くなったタイミングでブレイク
+            if (jissekiNoCnt != Integer.parseInt(info[1]) - jissekiNo + 1) {
+                break;
+            }
+
+            // 状態ﾌﾗｸﾞが"1"(登録済)以外の場合ブレイク
+            if (!"1".equals(info[0])) {
                 break;
             }
 
             // QA外観抜き取り検査を取得
-            String gaikan = getSrGaikankensaQAGaikan(queryRunnerXHD, strKojyo, strLotNo, strEdaban, info[0], info[1]);
+            String gaikan = getSrGaikankensaQAGaikan(queryRunnerXHD, strKojyo, strLotNo, strEdaban, info[1], info[2]);
             // データが存在しない場合、エラー
             if (gaikan == null) {
                 messageList.add(MessageUtil.getMessage("XHD-000184", "検査・外観検査"));
@@ -3005,12 +3150,14 @@ public class GXHDO101A implements Serializable {
                 break;
             }
 
-            jissekiNo++;
+            jissekiNoCnt++;
         }
 
+        
         // メニューを回数(実績No)分追加
-        addMenuKaisu(menuListGXHDO101, jissekiNo, menuName, FORM_ID_GAIKAN_KENSA);// 権限絞り込みありメニュー
-        addMenuKaisu(menuListGXHDO101Nofiltering, jissekiNo, menuName, FORM_ID_GAIKAN_KENSA);// 権限絞り込みなしメニュー
+        addMenuKaisu(menuListGXHDO101, jissekiNoCnt, FORM_ID_GAIKAN_KENSA, startJisskeino, mapMaxJissekiNo, fxhdd08Info);// 権限絞り込みありメニュー
+        addMenuKaisu(menuListGXHDO101Nofiltering, jissekiNoCnt, FORM_ID_GAIKAN_KENSA, startJisskeino, mapMaxJissekiNo, fxhdd08Info);// 権限絞り込みなしメニュー
+        
 
     }
 
@@ -3049,7 +3196,6 @@ public class GXHDO101A implements Serializable {
         return StringUtil.nullToBlank(resultMap.get("QAgaikannukitorikensa"));
     }
 
- 
     /**
      * [出荷検査判定]から総合判定を取得
      *
@@ -3082,6 +3228,33 @@ public class GXHDO101A implements Serializable {
         return "";
     }
 
+    /**
+     * [画面制御]から情報を取得
+     *
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private List<Map<String, Object>> loadFxhdd08Info(QueryRunner queryRunnerDoc, String kojyo, String lotNo,
+            String edaban) throws SQLException {
 
-    
+        // 品質DB登録実績情報の取得
+        String sql = "SELECT gamen_id,jissekino,"
+                + "maekoutei_gamen_id,maekoutei_jissekino,deleteflag "
+                + "FROM fxhdd08 "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? "
+                + "ORDER BY gamen_id, jissekino";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerDoc.query(sql, new MapListHandler(), params.toArray());
+
+    }
+
 }
