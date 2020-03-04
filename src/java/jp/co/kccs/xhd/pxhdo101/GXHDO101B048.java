@@ -2224,7 +2224,7 @@ public class GXHDO101B048 implements IFormLogic {
     }
 
     /**
-     * 確保数計算押下処理
+     * 良品数計算押下処理
      *
      * @param processData 処理制御データ
      * @return 処理制御データ
@@ -3601,10 +3601,10 @@ public class GXHDO101B048 implements IFormLogic {
             BigDecimal makisu2 = new BigDecimal(StringUtil.emptyToZero(itemMakisu2.getValue()));
             BigDecimal honsu2 = new BigDecimal(StringUtil.emptyToZero(itemHonsu2.getValue()));
 
-            //「良品TPﾘｰﾙ巻数①」 × 「良品TPﾘｰﾙ本数①」 を算出する。
-            BigDecimal ryohinsu1 = makisu1.multiply(honsu1);
-            //「良品TPﾘｰﾙ巻数②」 × 「良品TPﾘｰﾙ本数②」 を算出する。
-            BigDecimal ryohinsu2 = makisu2.multiply(honsu2);
+            //「良品TPﾘｰﾙ巻数①」 × 1000 ×「良品TPﾘｰﾙ本数①」 を算出する。
+            BigDecimal ryohinsu1 = makisu1.multiply(BigDecimal.valueOf(1000)).multiply(honsu1);
+            //「良品TPﾘｰﾙ巻数②」 × 1000 ×「良品TPﾘｰﾙ本数②」 を算出する。
+            BigDecimal ryohinsu2 = makisu2.multiply(BigDecimal.valueOf(1000)).multiply(honsu2);
             // 計算結果を加算する。
             BigDecimal ryohinsu = ryohinsu1.add(ryohinsu2);
 
