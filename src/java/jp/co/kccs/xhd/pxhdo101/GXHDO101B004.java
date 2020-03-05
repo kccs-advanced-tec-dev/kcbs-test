@@ -1215,9 +1215,39 @@ public class GXHDO101B004 implements IFormLogic {
             processData.setInitMessageList(errorMessageList);
             return processData;
         }
-
+        
         // 設計情報チェック(対象のデータが取得出来ていない場合エラー)
         errorMessageList.addAll(ValidateUtil.checkSekkeiUnsetItems(sekkeiData, getMapSekkeiAssociation()));
+        
+        //上ｶﾊﾞｰﾃｰﾌﾟ
+        String ueCoverTape1DataValue = "";
+        //下ｶﾊﾞｰﾃｰﾌﾟ
+        String shitaCoverTape1DataValue = "";
+        
+        //上ｶﾊﾞｰﾃｰﾌﾟ1対象項目の決定
+        List<String> checkListDataVal = checkYoutoItems(processData,sekkeiData, getMapYoutoAssociation(),"CT",getMapSekkeiYotoAssociation());
+        for(int i=0; i<=checkListDataVal.size()-1; i++){
+            if(i > 0){
+                if("ERROR".equals(checkListDataVal.get(0))){
+                    errorMessageList.add(checkListDataVal.get(i));
+                }else if("OK".equals(checkListDataVal.get(0))){
+                    ueCoverTape1DataValue = checkListDataVal.get(i);
+                }
+            }
+        }
+
+        //下ｶﾊﾞｰﾃｰﾌﾟ1対象項目の決定
+        checkListDataVal.clear();
+        checkListDataVal = checkYoutoItems(processData,sekkeiData, getMapYoutoAssociation(),"CB",getMapSekkeiYotoAssociation());
+        for(int i=0; i<=checkListDataVal.size()-1; i++){
+            if(i > 0){
+                if("ERROR".equals(checkListDataVal.get(0))){
+                    errorMessageList.add(checkListDataVal.get(i));
+                }else if("OK".equals(checkListDataVal.get(0))){
+                    shitaCoverTape1DataValue = checkListDataVal.get(i);
+                }
+            }
+        }
 
         // 製版ﾏｽﾀ情報取得
         String pattern = StringUtil.nullToBlank(sekkeiData.get("PATTERN")); //電極製版名 
@@ -1255,7 +1285,8 @@ public class GXHDO101B004 implements IFormLogic {
         }
 
         // 画面に取得した情報をセットする。(入力項目以外)
-        setViewItemData(processData, sekkeiData, lotKbnMasData, ownerMasData, daPatternMasData, shikakariData, lotNo);
+        setViewItemData(processData, sekkeiData, lotKbnMasData, ownerMasData, daPatternMasData, shikakariData, lotNo,
+                ueCoverTape1DataValue, shitaCoverTape1DataValue);
 
         processData.setInitMessageList(errorMessageList);
         return processData;
@@ -1272,8 +1303,11 @@ public class GXHDO101B004 implements IFormLogic {
      * @param daPatternMasData 製版ﾏｽﾀデータ
      * @param shikakariData 仕掛データ
      * @param lotNo ﾛｯﾄNo
+     * @param ueCoverTape1 上カバーテープ１
+     * @param shitaCoverTape1DataValue 下カバーテープ１
      */
-    private void setViewItemData(ProcessData processData, Map sekkeiData, Map lotKbnMasData, Map ownerMasData, Map daPatternMasData, Map shikakariData, String lotNo) {
+    private void setViewItemData(ProcessData processData, Map sekkeiData, Map lotKbnMasData, Map ownerMasData, Map daPatternMasData, Map shikakariData, 
+            String lotNo, String ueCoverTape1, String shitaCoverTape1) {
 
         // ロットNo
         this.setItemData(processData, GXHDO101B004Const.LOTNO, lotNo);
@@ -1325,23 +1359,10 @@ public class GXHDO101B004 implements IFormLogic {
                 + "枚");
 
         // 上カバーテープ１
-        this.setItemData(processData, GXHDO101B004Const.UE_COVER_TAPE1,  
-                StringUtil.nullToBlank(sekkeiData.get("SYURUI2"))
-                + "  "
-                + StringUtil.nullToBlank(sekkeiData.get("ATUMI2"))
-                + "μm×"
-                + StringUtil.nullToBlank(sekkeiData.get("MAISUU2"))
-                + "枚"
-        );
+        this.setItemData(processData, GXHDO101B004Const.UE_COVER_TAPE1, ueCoverTape1);
 
         // 下カバーテープ１
-        this.setItemData(processData, GXHDO101B004Const.SHITA_COVER_TAPE1, 
-                StringUtil.nullToBlank(sekkeiData.get("SYURUI3"))
-                + "  "
-                + StringUtil.nullToBlank(sekkeiData.get("ATUMI3"))
-                + "μm×"
-                + StringUtil.nullToBlank(sekkeiData.get("MAISUU3"))
-                + "枚");
+        this.setItemData(processData, GXHDO101B004Const.SHITA_COVER_TAPE1, shitaCoverTape1);
 
         // 列 × 行
         String lRetsu = StringUtil.nullToBlank(getMapData(daPatternMasData, "LRETU")); //列
@@ -1760,8 +1781,12 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         String lotNo2 = lotNo.substring(3, 11);
         // 設計データの取得
         String sql = "SELECT SEKKEINO,"
-                + "GENRYOU,ETAPE,EATUMI,SOUSUU,EMAISUU,SYURUI2,ATUMI2,"
-                + "MAISUU2,SYURUI3,ATUMI3,MAISUU3,PATTERN "
+                + "GENRYOU,ETAPE,EATUMI,SOUSUU,EMAISUU,"
+                + "YOUTO1,YOUTO2,YOUTO3,YOUTO4,YOUTO5,YOUTO6,YOUTO7,YOUTO8,"
+                + "SYURUI1,SYURUI2,SYURUI3,SYURUI4,SYURUI5,SYURUI6,SYURUI7,SYURUI8,"
+                + "ATUMI1,ATUMI2,ATUMI3,ATUMI4,ATUMI5,ATUMI6,ATUMI7,ATUMI8,"
+                + "MAISUU1,MAISUU2,MAISUU3,MAISUU4,MAISUU5,MAISUU6,MAISUU7,MAISUU8,"
+                + "PATTERN "
                 + "FROM da_sekkei "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = '001'";
 
@@ -1786,12 +1811,6 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 put("EATUMI", "積層数");
                 put("SOUSUU", "積層数");
                 put("EMAISUU", "積層数");
-                put("SYURUI2", "上カバーテープ１");
-                put("ATUMI2", "上カバーテープ１");
-                put("MAISUU2", "上カバーテープ１");
-                put("SYURUI3", "下カバーテープ１");
-                put("ATUMI3", "下カバーテープ１");
-                put("MAISUU3", "下カバーテープ１");
                 put("PATTERN", "電極製版名");
             }
         };
@@ -4109,5 +4128,189 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
     }
+    
+    /**
+     * 設計データ関連付けマップ取得(用途関連)
+     *
+     * @return 設計データ関連付けマップ
+     */
+    private Map getMapSekkeiYotoAssociation() {
+        Map<String, String> map = new LinkedHashMap<String, String>() {
+            {
+                put("YOUTO1", "用途1");
+                put("YOUTO2", "用途2");
+                put("YOUTO3", "用途3");
+                put("YOUTO4", "用途4");
+                put("YOUTO5", "用途5");
+                put("YOUTO6", "用途6");
+                put("YOUTO7", "用途7");
+                put("YOUTO8", "用途8");
+                put("SYURUI1", "種類1");
+                put("SYURUI2", "種類2");
+                put("SYURUI3", "種類3");
+                put("SYURUI4", "種類4");
+                put("SYURUI5", "種類5");
+                put("SYURUI6", "種類6");
+                put("SYURUI7", "種類7");
+                put("SYURUI8", "種類8");
+                put("ATUMI1", "厚み1");
+                put("ATUMI2", "厚み2");
+                put("ATUMI3", "厚み3");
+                put("ATUMI4", "厚み4");
+                put("ATUMI5", "厚み5");
+                put("ATUMI6", "厚み6");
+                put("ATUMI7", "厚み7");
+                put("ATUMI8", "厚み8");
+                put("MAISUU1", "枚数1");
+                put("MAISUU2", "枚数2");
+                put("MAISUU3", "枚数3");
+                put("MAISUU4", "枚数4");
+                put("MAISUU5", "枚数5");
+                put("MAISUU6", "枚数6");
+                put("MAISUU7", "枚数7");
+                put("MAISUU8", "枚数8");
+                put("ROLLNO1", "ﾛｰﾙNo1");
+                put("ROLLNO2", "ﾛｰﾙNo2");
+                put("ROLLNO3", "ﾛｰﾙNo3");
+                put("ROLLNO4", "ﾛｰﾙNo4");
+                put("ROLLNO5", "ﾛｰﾙNo5");
+                put("ROLLNO6", "ﾛｰﾙNo6");
+                put("ROLLNO7", "ﾛｰﾙNo7");
+                put("ROLLNO8", "ﾛｰﾙNo8");
+            }
+        };
+
+        return map;
+    }
+
+    /**
+     * 用途関連付けマップ取得
+     *
+     * @return 設計データ関連付けマップ
+     */
+    private Map getMapYoutoAssociation() {
+        Map<String, String> map = new LinkedHashMap<String, String>() {
+            {
+                put("YOUTO1", "用途1");
+                put("YOUTO2", "用途2");
+                put("YOUTO3", "用途3");
+                put("YOUTO4", "用途4");
+                put("YOUTO5", "用途5");
+                put("YOUTO6", "用途6");
+                put("YOUTO7", "用途7");
+                put("YOUTO8", "用途8");
+            }
+        };
+
+        return map;
+    }
+    
+    /**
+     * 関連付けMapに定義されている項目が用途データで['CT','CB']が存在しない場合エラーとしエラー情報を返す
+     * ※関連付けMapには設計データに持っている項目IDが設定されていること
+     *
+     * @param processData 処理制御データ
+     * @param sekkeiData 設計データ
+     * @param mapYoutoAssociation 用途関連付けMap
+     * @param youtoType 用途データ型
+     * @param mapSekkeiAssociation 設計データ関連付けMap
+     * @return エラーメッセージリスト
+     */
+    public List<String> checkYoutoItems(ProcessData processData, Map<String, String> sekkeiData,
+            Map<String, String> mapYoutoAssociation, String youtoType, Map<String, String> mapSekkeiAssociation) {
+
+        List<String> retListData = new ArrayList<>();
+        boolean checkExistFlag = false;
+        boolean checkCTCBExistFlag = false;
+        String sekkeiDataKey = "";
+
+        for (Map.Entry<String, String> entry : mapYoutoAssociation.entrySet()) {
+            String checkData = "";
+            if (sekkeiData.get(entry.getKey()) != null) {
+                checkData = String.valueOf(sekkeiData.get(entry.getKey()));
+            }
+
+            if (youtoType.equals(checkData)) {
+                checkExistFlag = true;
+                sekkeiDataKey = entry.getKey();
+                break;
+            }
+        }
+
+        if (!checkExistFlag) {
+            retListData.add("ERROR");
+            if (null != youtoType) {
+                switch (youtoType) {
+                    case "CT":
+                        retListData.add(MessageUtil.getMessage("XHD-000100"));
+                        break;
+                    case "CB":
+                        retListData.add(MessageUtil.getMessage("XHD-000101"));
+                        break;
+                    default:
+                        break;
+                }
+            }
+            return retListData;
+        }
+
+        String sekkeiDataRowNo = sekkeiDataKey.substring(5);
+        String syuruiDataKey = "SYURUI" + sekkeiDataRowNo;
+        String atumiDataKey = "ATUMI" + sekkeiDataRowNo;
+        String maisuuDataKey = "MAISUU" + sekkeiDataRowNo;
+
+        String checkSyuruiData = StringUtil.nullToBlank(sekkeiData.get(syuruiDataKey));
+        String checkAtumiData = StringUtil.nullToBlank(String.valueOf(sekkeiData.get(atumiDataKey)));
+        String checkMaisuuData = StringUtil.nullToBlank(String.valueOf(sekkeiData.get(maisuuDataKey)));
+
+        if ("CT".equals(youtoType) || "CB".equals(youtoType)) {
+            if ("".equals(checkSyuruiData) || "null".equals(checkSyuruiData)) {
+                checkCTCBExistFlag = true;
+                retListData.add("ERROR");
+                for (Map.Entry<String, String> entry : mapSekkeiAssociation.entrySet()) {
+                    if (syuruiDataKey.equals(entry.getKey())) {
+                        retListData.add(MessageUtil.getMessage("XHD-000021", entry.getKey(), entry.getValue()));
+                        break;
+                    }
+                }
+            }
+
+            if ("".equals(checkAtumiData) || "null".equals(checkAtumiData)) {
+                if (!checkCTCBExistFlag) {
+                    retListData.add("ERROR");
+                    checkCTCBExistFlag = true;
+                }
+                for (Map.Entry<String, String> entry : mapSekkeiAssociation.entrySet()) {
+                    if (atumiDataKey.equals(entry.getKey())) {
+                        retListData.add(MessageUtil.getMessage("XHD-000021", entry.getKey(), entry.getValue()));
+                        break;
+                    }
+                }
+            }
+
+            if ("".equals(checkMaisuuData) || "null".equals(checkMaisuuData)) {
+                if (!checkCTCBExistFlag) {
+                    retListData.add("ERROR");
+                    checkCTCBExistFlag = true;
+                }
+                for (Map.Entry<String, String> entry : mapSekkeiAssociation.entrySet()) {
+                    if (maisuuDataKey.equals(entry.getKey())) {
+                        retListData.add(MessageUtil.getMessage("XHD-000021", entry.getKey(), entry.getValue()));
+                        break;
+                    }
+                }
+            }
+
+            if (!checkCTCBExistFlag) {
+                retListData.add("OK");
+                String retCTCBValue = checkSyuruiData + "  " + checkAtumiData + "μm×" + checkMaisuuData + "枚";
+                retListData.add(retCTCBValue);
+            }
+            return retListData;
+        }
+
+        return retListData;
+    }
+
 
 }
