@@ -51,10 +51,20 @@ public class SrTapingCheck {
     private String kcpno;
 
     /**
+     * 得意先
+     */
+    private String tokuisaki;
+    
+    /**
+     * ロット区分
+     */
+    private String lotkubuncode;
+
+    /**
      * オーナー
      */
     private String ownercode;
-
+    
     /**
      * 良品TPﾘｰﾙ巻数①
      */
@@ -291,6 +301,38 @@ public class SrTapingCheck {
      */
     public void setKcpno(String kcpno) {
         this.kcpno = kcpno;
+    }
+
+    /**
+     * 得意先
+     * @return the tokuisaki
+     */
+    public String getTokuisaki() {
+        return tokuisaki;
+    }
+
+    /**
+     * 得意先
+     * @param tokuisaki the tokuisaki to set
+     */
+    public void setTokuisaki(String tokuisaki) {
+        this.tokuisaki = tokuisaki;
+    }
+
+    /**
+     * ロット区分
+     * @return the lotkubuncode
+     */
+    public String getLotkubuncode() {
+        return lotkubuncode;
+    }
+
+    /**
+     * ロット区分
+     * @param lotkubuncode the lotkubuncode to set
+     */
+    public void setLotkubuncode(String lotkubuncode) {
+        this.lotkubuncode = lotkubuncode;
     }
 
     /**

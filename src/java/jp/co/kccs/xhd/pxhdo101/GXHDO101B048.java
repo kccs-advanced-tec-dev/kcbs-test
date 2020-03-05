@@ -43,6 +43,7 @@ import org.apache.commons.dbutils.RowProcessor;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
+import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import org.apache.commons.dbutils.DbUtils;
 
@@ -1337,7 +1338,7 @@ public class GXHDO101B048 implements IFormLogic {
                 FXHDD01 itemOkuriRyohinsu = getItemRow(processData.getItemList(), GXHDO101B048Const.OKURI_RYOHINSU);
                 FXHDD01 itemUkeireTanijuryo = getItemRow(processData.getItemList(), GXHDO101B048Const.UKEIRE_TANNIJURYO);
                 itemOkuriRyohinsu.setValue(okuriRyohinsu);//送り良品数
-                itemUkeireTanijuryo.setValue(tanijuryo);//受入単位重量
+                itemUkeireTanijuryo.setValue(NumberUtil.getTruncatData(tanijuryo, itemUkeireTanijuryo.getInputLength(), itemUkeireTanijuryo.getInputLengthDec()));//受入単位重量
                 if (checkUkeireSojuryo(itemUkeireSojuryo, itemOkuriRyohinsu, itemUkeireTanijuryo)) {
                     // ﾁｪｯｸに問題なければ値をセット
                     calcUkeireSojuryo(itemUkeireSojuryo, itemOkuriRyohinsu, itemUkeireTanijuryo);
@@ -3741,6 +3742,7 @@ public class GXHDO101B048 implements IFormLogic {
      */
     private void calcUkeireSojuryo(FXHDD01 itemUkeireSojuryo, FXHDD01 itemOkuriRyohinsu, FXHDD01 itemUkeireTanijuryo) {
         try {
+            
             BigDecimal taniJuryo = new BigDecimal(itemUkeireTanijuryo.getValue());
             BigDecimal okuriRyohinsu = new BigDecimal(itemOkuriRyohinsu.getValue());
 
