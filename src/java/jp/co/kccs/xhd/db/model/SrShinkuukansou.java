@@ -159,7 +159,12 @@ public class SrShinkuukansou {
      * 終了担当者
      */
     private String endtantou;
-
+    
+    /**
+     * 検査場所
+     */
+    private String kensabasyo;
+    
     /**
      * 登録日時
      */
@@ -556,6 +561,22 @@ public class SrShinkuukansou {
      */
     public void setEndtantou(String endtantou) {
         this.endtantou = endtantou;
+    }
+
+    /**
+     * 検査場所
+     * @return the kensabasyo
+     */
+    public String getKensabasyo() {
+        return kensabasyo;
+    }
+
+    /**
+     * 検査場所
+     * @param kensabasyo the kensabasyo to set
+     */
+    public void setKensabasyo(String kensabasyo) {
+        this.kensabasyo = kensabasyo;
     }
 
     /**
