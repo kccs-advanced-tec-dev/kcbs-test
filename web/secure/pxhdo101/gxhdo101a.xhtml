@@ -175,9 +175,26 @@
                         </p:commandLink>
                     </p:column>
                     </div>
-                    <p:column id="mComment" width="50%" headerText="#{myMsg.status}" style="font-size: 17px;">
-                        <p:outputLabel value="#{item.menuComment}" style="font-size: 17px;"/>
+                    <p:column id="mComment" width="50%" headerText="#{myMsg.status}"  style="font-size: 17px; ">
+                        <p:outputLabel value="#{item.menuComment}" style="float:left;font-size: 17px;"/>
+                        <p:outputLabel value="#{item.jissekiNo}" style="float:left;font-size: 17px;"/>
+                        <div style="text-align: right;">
+                            <p:commandButton id="sougouHanteiBtn"  class="button" rendered="#{item.deleteBtnRender}"  styleClass="ui-conf-commandbtn-def1" style="width: 74px; height: 32px; font-size: 17px; "
+                                         value="削除"
+                                         actionListener="#{gXHDO101A.doSougouHantei()}"
+                                         process="@this"
+                                         update="@form"
+                                         onstart="PF('cd').hide();$('#loadinggif').show();"
+                                         oncomplete="$('#loadinggif').hide();cmdButtonOncomplete(args);"/>
+                            <p:commandLink value="画面追加" rendered="#{gXHDO101A.addLinkRender}" style="color:Indigo;font-size: 17px;"
+                                       action="#{gXHDO101A.openXhdForm(item)}" oncomplete="cmdButtonOncomplete(args);" 
+                                       update="@form">
+                        </p:commandLink>
+                        </div>
+                        
+                                      
                     </p:column>
+                 
                 </p:dataTable>
             </div>
             </tr>

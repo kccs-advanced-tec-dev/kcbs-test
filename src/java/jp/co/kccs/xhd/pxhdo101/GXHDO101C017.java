@@ -44,7 +44,7 @@ import org.primefaces.context.RequestContext;
  * @since 2020/03/01
  */
 @SessionScoped
-@Named("beanGXHDO101C012")
+@Named("beanGXHDO101C017")
 public class GXHDO101C017 implements Serializable {
     private static final Logger LOGGER = Logger.getLogger(GXHDO101C017.class.getName());
 

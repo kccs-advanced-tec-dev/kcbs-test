@@ -82,6 +82,11 @@ public class FXHDM01 implements Serializable, Cloneable {
      * 実績No
      */
     private int jissekiNo;
+    
+    /**
+     * 削除ボタンrender有無
+     */
+    private boolean deleteBtnRender;
 
     /**
      * クローン実装
@@ -307,4 +312,22 @@ public class FXHDM01 implements Serializable, Cloneable {
     public void setJissekiNo(int jissekiNo) {
         this.jissekiNo = jissekiNo;
     }
+
+    /**
+     * 削除ボタンrender有無
+     * @return the deleteBtnRender
+     */
+    public boolean isDeleteBtnRender() {
+        return deleteBtnRender;
+    }
+
+    /**
+     * 削除ボタンrender有無
+     * @param deleteBtnRender the deleteBtnRender to set
+     */
+    public void setDeleteBtnRender(boolean deleteBtnRender) {
+        this.deleteBtnRender = deleteBtnRender;
+    }
+
+    
 }
