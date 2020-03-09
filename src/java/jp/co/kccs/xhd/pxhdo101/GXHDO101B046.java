@@ -2931,7 +2931,7 @@ public class GXHDO101B046 implements IFormLogic {
             }
 
             //総重量 / 単位重量(小数1以下を四捨五入)
-            BigDecimal gokeiRyohikosu = sojuryo.divide(taniJuryo, 0, RoundingMode.HALF_UP);
+            BigDecimal gokeiRyohikosu = sojuryo.multiply(BigDecimal.valueOf(100)).divide(taniJuryo, 0, RoundingMode.HALF_UP);
 
             //計算結果を誤差率にセット
             itemKosu.setValue(gokeiRyohikosu.toPlainString());
