@@ -3,11 +3,8 @@
  */
 package jp.co.kccs.xhd.db.model;
 
-import java.io.Closeable;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import jp.co.kccs.xhd.model.GXHDO101C001Model;
+import java.sql.Timestamp;
 
 /**
  * ===============================================================================<br>
@@ -78,6 +75,7 @@ public class FXHDM01 implements Serializable, Cloneable {
      * 画面ID(前工程)
      */
     private String maeKoteiFormId;
+    
     /**
      * 実績No
      */
@@ -87,6 +85,16 @@ public class FXHDM01 implements Serializable, Cloneable {
      * 削除ボタンrender有無
      */
     private boolean deleteBtnRender;
+    
+    /**
+     * 状態ﾌﾗｸﾞ
+     */
+    private String jotaiFlg;
+    
+    /**
+     * 更新日時(fxhdd08)
+     */
+    private Timestamp koshinDateFxhdd08;
 
     /**
      * クローン実装
@@ -327,6 +335,38 @@ public class FXHDM01 implements Serializable, Cloneable {
      */
     public void setDeleteBtnRender(boolean deleteBtnRender) {
         this.deleteBtnRender = deleteBtnRender;
+    }
+
+    /**
+     * 状態ﾌﾗｸﾞ
+     * @return the jotaiFlg
+     */
+    public String getJotaiFlg() {
+        return jotaiFlg;
+    }
+
+    /**
+     * 状態ﾌﾗｸﾞ
+     * @param jotaiFlg the jotaiFlg to set
+     */
+    public void setJotaiFlg(String jotaiFlg) {
+        this.jotaiFlg = jotaiFlg;
+    }
+
+    /**
+     * 更新日時(fxhdd08)
+     * @return the koshinDateFxhdd08
+     */
+    public Timestamp getKoshinDateFxhdd08() {
+        return koshinDateFxhdd08;
+    }
+
+    /**
+     * 更新日時(fxhdd08)
+     * @param koshinDateFxhdd08 the koshinDateFxhdd08 to set
+     */
+    public void setKoshinDateFxhdd08(Timestamp koshinDateFxhdd08) {
+        this.koshinDateFxhdd08 = koshinDateFxhdd08;
     }
 
     

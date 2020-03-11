@@ -4,8 +4,12 @@
 package jp.co.kccs.xhd.pxhdo101;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Logger;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +24,7 @@ import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
 import jp.co.kccs.xhd.util.StringUtil;
-import jp.co.kccs.xhd.util.ValidateUtil;
+import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import org.primefaces.context.RequestContext;
@@ -38,7 +42,7 @@ import org.primefaces.context.RequestContext;
  * ===============================================================================<br>
  */
 /**
- * GXHDO101C017_画面追加
+ * GXHDO101C017_画面制御
  *
  * @author SYSNAVI K.Hisanaga
  * @since 2020/03/01
@@ -46,6 +50,15 @@ import org.primefaces.context.RequestContext;
 @SessionScoped
 @Named("beanGXHDO101C017")
 public class GXHDO101C017 implements Serializable {
+
+    /**
+     * @return the LOGGER
+     */
+    public static Logger getLOGGER() {
+        return LOGGER;
+    }
+
+    
     private static final Logger LOGGER = Logger.getLogger(GXHDO101C017.class.getName());
 
     /**
@@ -66,39 +79,40 @@ public class GXHDO101C017 implements Serializable {
     private transient DataSource dataSourceXHD;
     
     /**
-     * 参照元ﾛｯﾄNo
+     * メニューリスト
      */
-    private String sanshouMotoLotNo;
+     private List<FXHDM01> menuListGXHDO101;
     
-    /**
-     * 参照元画面ID
+     /**
+     * メニューリスト表示用
      */
-    private String sanshouGamenID;
-
-    /**
-     * 参照先ﾛｯﾄNo
-     */
-    private String sanshouSakiLotNo;
+     private List<String> menuList;
     
-    /**
-     * 参照先ﾛｯﾄNo背景色
+     /**
+     * 選択メニュー
      */
-    private String sanshousakiTextBackColor;
+     private String selectMenu;
     
-    /**
-     * 参照元ﾃﾞｰﾀ
+     /**
+     * 選択メニュー
      */
-    private FXHDM01 sanshouMotoInfo = null;
-
+     private FXHDM01 atoKoteiMenu;
+     
     /**
-     * 設計.printfmt
+     * 追加位置ﾃﾞｰﾀ
      */
-    private String printfmt;
-
+    private FXHDM01 insPositionInfoMenu;
+   
     /**
-     * 設計.pattern
+     * ﾛｯﾄNo
      */
-    private String pattern;
+    private String lotno;
+    
+  /**
+     * 担当者ｺｰﾄﾞ
+     */
+    private String tantoushaCd;
+    
 
     /**
      * フォームエラー判定
@@ -110,132 +124,122 @@ public class GXHDO101C017 implements Serializable {
      */
     public GXHDO101C017() {
     }
+    
+    
+
+     /**
+     * メニューリスト
+     * @return the menuListGXHDO101
+     */
+    public List<FXHDM01> getMenuListGXHDO101() {
+        return menuListGXHDO101;
+    }
 
     /**
-     * 参照元ﾛｯﾄNo
-     *
-     * @return the sanshouMotoLotNo
+     * メニューリスト
+     * @param menuListGXHDO101 the menuListGXHDO101 to set
      */
-    public String getSanshouMotoLotNo() {
-        return sanshouMotoLotNo;
+    public void setMenuListGXHDO101(List<FXHDM01> menuListGXHDO101) {
+        this.menuListGXHDO101 = menuListGXHDO101;
+    }
+
+    /**
+     * メニューリスト表示用
+     * @return the menuList
+     */
+    public List<String> getMenuList() {
+        return menuList;
+    }
+
+    /**
+     * メニューリスト表示用
+     * @param menuList the menuList to set
+     */
+    public void setMenuList(List<String> menuList) {
+        this.menuList = menuList;
+    }
+
+    /**
+     * 選択メニュー
+     * @return the selectMenu
+     */
+    public String getSelectMenu() {
+        return selectMenu;
+    }
+
+    /**
+     * 選択メニュー
+     * @param selectMenu the selectMenu to set
+     */
+    public void setSelectMenu(String selectMenu) {
+        this.selectMenu = selectMenu;
+    }
+
+    /**
+     * 後工程メニュー
+     * @return the atoKoteiMenu
+     */
+    public FXHDM01 getAtoKoteiMenu() {
+        return atoKoteiMenu;
+    }
+
+    /**
+     * 後工程メニュー
+     * @param atoKoteiMenu the atoKoteiMenu to set
+     */
+    public void setAtoKoteiMenu(FXHDM01 atoKoteiMenu) {
+        this.atoKoteiMenu = atoKoteiMenu;
+    }
+
+    /**
+     * 追加位置ﾃﾞｰﾀ
+     * @return the insPositionInfoMenu
+     */
+    public FXHDM01 getInsPositionInfoMenu() {
+        return insPositionInfoMenu;
+    }
+
+    /**
+     * 追加位置ﾃﾞｰﾀ
+     * @param insPositionInfoMenu the insPositionInfoMenu to set
+     */
+    public void setInsPositionInfoMenu(FXHDM01 insPositionInfoMenu) {
+        this.insPositionInfoMenu = insPositionInfoMenu;
+    }
+
+    /**
+     * ﾛｯﾄNo
+     * @return the lotno
+     */
+    public String getLotno() {
+        return lotno;
+    }
+
+    /**
+     * ﾛｯﾄNo
+     * @param lotno the lotno to set
+     */
+    public void setLotno(String lotno) {
+        this.lotno = lotno;
+    }
+
+    /**
+     * 担当者ｺｰﾄﾞ
+     * @return the tantoushaCd
+     */
+    public String getTantoushaCd() {
+        return tantoushaCd;
+    }
+
+    /**
+     * 担当者ｺｰﾄﾞ
+     * @param tantoushaCd the tantoushaCd to set
+     */
+    public void setTantoushaCd(String tantoushaCd) {
+        this.tantoushaCd = tantoushaCd;
     }
     
-    /**
-     * 参照元ﾛｯﾄNo
-     *
-     * @param sanshouMotoLotNo the sanshouMotoLotNo to set
-     */
-    public void setSanshouMotoLotNo(String sanshouMotoLotNo) {
-        this.sanshouMotoLotNo = sanshouMotoLotNo;
-    }
-
-    /**
-     * 参照元画面ID
-     *
-     * @return the sanshouGamenID
-     */
-    public String getSanshouGamenID() {
-        return sanshouGamenID;
-    }
     
-    /**
-     * 参照元画面ID
-     *
-     * @param sanshouGamenID the sanshouGamenID to set
-     */
-    public void setSanshouGamenID(String sanshouGamenID) {
-        this.sanshouGamenID = sanshouGamenID;
-    }
-    
-    /**
-     * 参照先ﾛｯﾄNo
-     *
-     * @return the sanshouSakiLotNo
-     */
-    public String getSanshouSakiLotNo() {
-        return sanshouSakiLotNo;
-    }
-    
-    /**
-     * 参照先ﾛｯﾄNo
-     *
-     * @param sanshouSakiLotNo the sanshouSakiLotNo to set
-     */
-    public void setSanshouSakiLotNo(String sanshouSakiLotNo) {
-        this.sanshouSakiLotNo = sanshouSakiLotNo;
-    }
-
-    /**
-     * 参照先ﾛｯﾄNo背景色
-     *
-     * @return the sanshousakiTextBackColor
-     */
-    public String getSanshousakiTextBackColor() {
-        return sanshousakiTextBackColor;
-    }
-
-    /**
-     * 参照先ﾛｯﾄNo背景色
-     *
-     * @param sanshousakiTextBackColor the sanshousakiTextBackColor to set
-     */
-    public void setSanshousakiTextBackColor(String sanshousakiTextBackColor) {
-        this.sanshousakiTextBackColor = sanshousakiTextBackColor;
-    }
-
-    /**
-     * 参照元ﾃﾞｰﾀ
-     *
-     * @return the sanshouMotoInfo
-     */
-    public FXHDM01 getSanshouMotoInfo() {
-        return sanshouMotoInfo;
-    }
-
-    /**
-     * 参照元ﾃﾞｰﾀ
-     *
-     * @param sanshouMotoInfo the sanshouMotoInfo to set
-     */
-    public void setSanshouMotoInfo(FXHDM01 sanshouMotoInfo) {
-        this.sanshouMotoInfo = sanshouMotoInfo;
-    }
-    
-    /**
-     * 設計.printfmt
-     *
-     * @return the printfmt
-     */
-    public String getPrintfmt() {
-        return printfmt;
-    }
-    
-    /**
-     * 設計.printfmt
-     *
-     * @param printfmt the printfmt to set
-     */
-    public void setPrintfmt(String printfmt) {
-        this.printfmt = printfmt;
-    }
-
-    /**
-     * 設計.pattern
-     *
-     * @return the pattern
-     */
-    public String getPattern() {
-        return pattern;
-    }
-
-    /**
-     * 設計.pattern
-     *
-     * @param pattern the pattern to set
-     */
-    public void setPattern(String pattern) {
-        this.pattern = pattern;
-    }
 
     /**
      * フォームエラー判定
@@ -259,14 +263,19 @@ public class GXHDO101C017 implements Serializable {
      * OKボタン押下時のチェック処理を行う。
      */
     public void doOk() {
-        if (!checkOK()) {
-            setIsFormError(true);
+        String selectMenuId = this.menuListGXHDO101.stream().filter(n -> n.getFormTitle().equals(this.selectMenu)).findFirst().map(f -> f.getFormId()).orElse("");
+        if (!checkOK(selectMenuId, this.selectMenu)) {
+            
+             setIsFormError(true);
             // エラーの場合はコールバック変数に"error"をセット
             RequestContext context = RequestContext.getCurrentInstance();
             context.addCallbackParam("firstParam", "error");
-        }else{            
-            setIsFormError(false);
+            return;
         }
+        
+        updateFormData(selectMenuId);
+        
+        setIsFormError(false);
     }
 
     /**
@@ -274,18 +283,78 @@ public class GXHDO101C017 implements Serializable {
      *
      * @return 正常:true、異常:fasle
      */
-    private boolean checkOK() {
+    private boolean checkOK(String selectMenuId, String selectMenu) {
 
-        // 背景色をクリア
-        clearBackColor();
-        
-        // 参照先ﾛｯﾄNoチェック処理
-        if(!checkSanshouSakiLotNo()){
+        if(this.atoKoteiMenu != null && selectMenuId.equals(this.atoKoteiMenu.getFormId())){
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            FacesMessage message
+                    = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000193",selectMenu), null);
+            facesContext.addMessage(null, message);
             return false;
         }
-
+      
         return true;
     }
+    
+    private void updateFormData(String selectMenuId){
+        QueryRunner queryRunnerDoc = new QueryRunner(dataSourceDocServer);
+
+        Connection conDoc = null;
+
+        String strKojyo = this.lotno.substring(0, 3);
+        String strLotNo = this.lotno.substring(3, 11);
+        String strEdaban = this.lotno.substring(11, 14);
+
+        try {
+            // トランザクション開始
+            conDoc = DBUtil.transactionStart(queryRunnerDoc.getDataSource().getConnection());
+
+            Timestamp systemTime = new Timestamp(System.currentTimeMillis());
+
+            int jissekino = getMaxJissekiNo(queryRunnerDoc, conDoc, strKojyo, strLotNo, strEdaban, selectMenuId)+1;
+            
+            Map<String, Object> fxhdd08InfoAto = loadFxhdd08Info(queryRunnerDoc, conDoc, strKojyo, strLotNo, strEdaban, this.insPositionInfoMenu.getFormId(), this.insPositionInfoMenu.getJissekiNo(), 0);
+            if (fxhdd08InfoAto != null && !fxhdd08InfoAto.isEmpty()) {
+
+                if(this.atoKoteiMenu.getKoshinDateFxhdd08() == null || this.atoKoteiMenu.getKoshinDateFxhdd08().before((Timestamp)fxhdd08InfoAto.get("koshin_date"))){
+                    FacesMessage message
+                    = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000195"), null);
+                FacesContext.getCurrentInstance().addMessage(null, message);
+                
+                // ロールバックしてリターン
+                DBUtil.rollbackConnection(conDoc, LOGGER);
+                return;
+                }
+                
+                updateFxhdd08AtoKotei(queryRunnerDoc, conDoc, strKojyo, strLotNo, strEdaban,
+                        selectMenuId, jissekino,
+                        this.insPositionInfoMenu.getFormId(), this.insPositionInfoMenu.getJissekiNo(), this.tantoushaCd, systemTime);
+
+            }
+           
+            
+            insertFxhdd08(queryRunnerDoc, conDoc, this.tantoushaCd, strKojyo, strLotNo, strEdaban, selectMenuId, jissekino, this.insPositionInfoMenu.getFormId(), this.insPositionInfoMenu.getJissekiNo(), systemTime);
+            
+            
+            DbUtils.commitAndCloseQuietly(conDoc);
+            
+           
+        } catch (SQLException e) {
+
+            DBUtil.rollbackConnection(conDoc, LOGGER);
+            ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
+
+        } catch (Exception e) {
+            DBUtil.rollbackConnection(conDoc, LOGGER);
+            ErrUtil.outputErrorLog("Exception発生", e, LOGGER);
+        }
+
+        
+        
+        
+        
+    }
+    
 
     /**
      * エラーチェック：
@@ -303,202 +372,82 @@ public class GXHDO101C017 implements Serializable {
         return true;
     }
     
-    /**
-     * ﾛｯﾄ参照チェック処理
-     *
-     * @param lotSanshouData ﾛｯﾄ参照データ
-     * @param itemName 項目名
-     * @return チェック結果
-     */
-    private boolean checkSanshouSakiLotNo() {
-
-        QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);        
-        QueryRunner queryRunnerDoc = new QueryRunner(dataSourceDocServer);
-            
-        // 入力チェック処理
-        ValidateUtil validateUtil = new ValidateUtil();
-        // ロットNo
-        if(StringUtil.isEmpty(sanshouSakiLotNo) ||  StringUtil.getLength(sanshouSakiLotNo) != 14){
-
-            FacesContext facesContext = FacesContext.getCurrentInstance();
-            FacesMessage message
-                    = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000004","ロットNo","14"), null);
-            facesContext.addMessage(null, message);
-            setSanshousakiTextBackColor(ErrUtil.ERR_BACK_COLOR);
-            return false;
+    private int getMaxJissekiNo(QueryRunner queryRunnerDoc,Connection conDoc, String kojyo, String lotno, String edaban, String formId) throws SQLException{
+        int maxJissekiNo;
+        int jissekiNo08 = getMaxJisekiNoFxhdd08(queryRunnerDoc,conDoc, kojyo, lotno, edaban, formId);
+        int jissekiNo03 = getMaxJisekiNoFxhdd03(queryRunnerDoc,conDoc, kojyo, lotno, edaban, formId);
+        if(jissekiNo08 < jissekiNo03){
+            maxJissekiNo = jissekiNo03;
+        }else{
+            maxJissekiNo = jissekiNo08;
         }
-        if (!StringUtil.isEmpty(sanshouSakiLotNo) && existError(validateUtil.checkValueE001(sanshouSakiLotNo))) {
-            setSanshousakiTextBackColor(ErrUtil.ERR_BACK_COLOR);
-            return false;
-        }
-        
-        String strKojyo = "";
-        String strLotNo = "";
-
-        if(!StringUtil.isEmpty(sanshouSakiLotNo)){
-            strKojyo = this.sanshouSakiLotNo.substring(0, 3);
-            strLotNo = this.sanshouSakiLotNo.substring(3, 11);
-        }
-
-        try {
-            //②ﾌﾟﾛｾｽ判定情報ﾁｪｯｸ
-            // 設計.printfmt及び、設計.patternが同一であるかﾁｪｯｸする。
-            // 1.Ⅲ.画面表示仕様(3)を発行する。
-            Map gamenInfo = getSekkeiInfoList(queryRunnerQcdb, strKojyo, strLotNo);            
-            if(gamenInfo == null){
-                //  A.ﾚｺｰﾄﾞが取得出来なかった場合
-                //   ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。
-                //     ・ｴﾗｰｺｰﾄﾞ:XHD-000162
-                //     ・ｴﾗｰﾒｯｾｰｼﾞ:このﾛｯﾄは参照できません。ﾌﾟﾛｾｽ判定情報不一致。
-                //     0には、【印刷工程画面ID】をもとにした、ﾒﾆｭｰ名(ﾌｫｰﾑﾊﾟﾗﾒｰﾀ)を設定。
-                FacesContext facesContext = FacesContext.getCurrentInstance();
-                FacesMessage message
-                        = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000162"), null);
-                facesContext.addMessage(null, message);
-                return false;
-            }else{
-                //  B.ﾚｺｰﾄﾞが取得できた場合
-                //   ｱ.参照元の設計.printfmtとⅢ.画面表示仕様(3).printfmtが一致するかﾁｪｯｸする。
-                //    α.一致した場合 
-                //     以降の処理を続行する。
-                //    β.一致しなかった場合 
-                //     ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。
-                //       ・ｴﾗｰｺｰﾄﾞ:XHD-000162
-                //       ・ｴﾗｰﾒｯｾｰｼﾞ:このﾛｯﾄは参照できません。ﾌﾟﾛｾｽ判定情報不一致。
-                String printFmt = StringUtil.nullToBlank(getMapData(gamenInfo, "PrintFmt"));
-                if(!getPrintfmt().equals(printFmt)){
-                    FacesContext facesContext = FacesContext.getCurrentInstance();
-                    FacesMessage message
-                            = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000162"), null);
-                    facesContext.addMessage(null, message);
-                    return false;
-                }
-            
-                //   ｲ.参照元の設計.patternとⅢ.画面表示仕様(3).patternが一致するかﾁｪｯｸする。
-                //    α.一致した場合 
-                //     以降の処理を続行する。
-                //    β.一致しなかった場合 
-                //     ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。
-                //       ・ｴﾗｰｺｰﾄﾞ:XHD-000163
-                //       ・ｴﾗｰﾒｯｾｰｼﾞ:このﾛｯﾄは参照できません。電極製版名不一致。
-                String patternValue = StringUtil.nullToBlank(getMapData(gamenInfo, "PATTERN"));
-                if(!getPattern().equals(patternValue)){
-                    FacesContext facesContext = FacesContext.getCurrentInstance();
-                    FacesMessage message
-                            = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000163"), null);
-                    facesContext.addMessage(null, message);
-                    return false;
-                }
-            }
-            
-            //参照先のﾃﾞｰﾀ
-            String strSakiKojyo = "";
-            String strSakiLotNo = "";
-            String strSakiEdaban = "";
-
-            if(!"".equals(sanshouSakiLotNo) && sanshouSakiLotNo != null){
-                strSakiKojyo = this.sanshouSakiLotNo.substring(0, 3);
-                strSakiLotNo = this.sanshouSakiLotNo.substring(3, 11);
-                strSakiEdaban = this.sanshouSakiLotNo.substring(11, 14);
-            }
-            //②ﾃﾞｰﾀﾁｪｯｸ
-            // ﾃﾞｰﾀを引き渡す際に、参照先のﾃﾞｰﾀが登録(仮登録も含む)されていないことを確認する。
-            // 1.Ⅲ.画面表示仕様(2)を発行する。
-            Map fxhdd03JissekinoInfo = loadFxhdd03JissekinoInfo(queryRunnerDoc, strSakiKojyo, strSakiLotNo, strSakiEdaban, sanshouGamenID);
-            if(fxhdd03JissekinoInfo != null){
-                //  A.取得できなかった場合
-                //   以降の処理を続行する。
-                //  B.取得できた場合、登録済(仮登録も含む)であるか確認を行う。
-                //   ｱ.状態ﾌﾗｸﾞ == '0' の場合
-                //    ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。 
-                //      ・ｴﾗｰｺｰﾄﾞ:XHD-000161 
-                //      ・ｴﾗｰﾒｯｾｰｼﾞ:参照先のﾛｯﾄ({0})が未登録ではありません。 
-                //      0には、【印刷工程画面ID】をもとにした、ﾒﾆｭｰ名(ﾌｫｰﾑﾊﾟﾗﾒｰﾀ)を設定。 
-                //   ｲ.状態ﾌﾗｸﾞ == '1' の場合
-                //    ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。
-                //      ・ｴﾗｰｺｰﾄﾞ:XHD-000161 
-                //      ・ｴﾗｰﾒｯｾｰｼﾞ:参照先のﾛｯﾄ({0})が未登録ではありません。 
-                //      0には、【印刷工程画面ID】をもとにした、ﾒﾆｭｰ名(ﾌｫｰﾑﾊﾟﾗﾒｰﾀ)を設定。 
-                //   ｳ.上記以外の場合
-                //    以降の処理を実行する。 
-                String jotaiFlg = StringUtil.nullToBlank(getMapData(fxhdd03JissekinoInfo, "jotai_flg"));
-                if("0".equals(jotaiFlg) || "1".equals(jotaiFlg)){
-                    FacesContext facesContext = FacesContext.getCurrentInstance();
-                    FacesMessage message
-                            = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000161",sanshouMotoInfo.getMenuName()), null);
-                    facesContext.addMessage(null, message);
-                    setSanshousakiTextBackColor(ErrUtil.ERR_BACK_COLOR);
-                    return false;
-                }
-            }
-
-        } catch (SQLException ex) {
-            ErrUtil.outputErrorLog("ﾌﾟﾛｾｽ判定情報ﾁｪｯｸエラー", ex, LOGGER);
-        }
-            
-        return true;
-    }
-
-    /**
-     * Mapから値を取得する(マップがNULLまたは空の場合はNULLを返却)
-     *
-     * @param map マップ
-     * @param mapId ID
-     * @return マップから取得した値
-     */
-    private Object getMapData(Map map, String mapId) {
-        if (map == null || map.isEmpty()) {
-            return null;
-        }
-        return map.get(mapId);
+        return maxJissekiNo;
     }
     
+   
     /**
-     * 背景色のクリア処理
-     */
-    private void clearBackColor() {
-        //項目の色をリセット
-        this.setSanshousakiTextBackColor(DEFAULT_BACK_COLOR);
-    }
-    
-    /**
-     * [設計]から、ﾃﾞｰﾀを取得(設計.printfmt,設計.pattern)
+     * 画面制御更新処理
      *
-     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
-     * @param lotNo ﾛｯﾄNo(検索キー)
-     * @return 取得データ
+     * @param queryRunnerDoc QueryRunnerオブジェクト(DocmentServer)
+     * @param conDoc コネクション(DocmentServer)
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param newMaekouteiGamenId 画面ID
+     * @param newMaekouteiJissekino 実績No
+     * @param maekouteiGamenId 画面ID(前工程)
+     * @param maekouteiJissekino 実績No(前工程)
+     * @param tantoshaCd 担当者ｺｰﾄﾞ
+     * @param systemTime システム日付
      * @throws SQLException 例外エラー
      */
-    private Map getSekkeiInfoList(QueryRunner queryRunnerQcdb, String kojyo, String lotNo) throws SQLException {
+    private void updateFxhdd08AtoKotei(QueryRunner queryRunnerDoc, Connection conDoc, String kojyo, String lotNo, String edaban,
+            String newMaekouteiGamenId, int newMaekouteiJissekino, String maekouteiGamenId, int maekouteiJissekino,
+            String tantoshaCd, Timestamp systemTime) throws SQLException {
+        String sql = "UPDATE fxhdd08 SET "
+                + "maekoutei_gamen_id = ?, maekoutei_jissekino = ?, "
+                + "koshin_id = ?, koshin_date = ? "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? "
+                + "  AND maekoutei_gamen_id = ? AND  maekoutei_jissekino = ? "
+                + "  AND deleteflag = 0 ";
 
-        String sql = "SELECT PrintFmt,PATTERN FROM da_sekkei WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
         List<Object> params = new ArrayList<>();
-        params.add(kojyo);
-        params.add(lotNo);
-        params.add("001");
+        // 更新内容
+        params.add(newMaekouteiGamenId); //前工程画面ID(NEW)
+        params.add(newMaekouteiJissekino); //前工程実績No(NEW)
+        params.add(tantoshaCd); //更新者
+        params.add(systemTime); //更新日
+
+        // 検索条件
+        params.add(kojyo); //工場ｺｰﾄﾞ
+        params.add(lotNo); //ﾛｯﾄNo
+        params.add(edaban); //枝番
+        params.add(maekouteiGamenId); //前工程画面ID
+        params.add(maekouteiJissekino); //前工程実績No
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+        queryRunnerDoc.update(conDoc, sql, params.toArray());
     }
-
-    /**
-     * [品質DB登録実績]から、ﾃﾞｰﾀを取得(印刷工程入力ﾃﾞｰﾀ取得)
+    
+     /**
+     * [画面制御]から実績No(最大)を取得
      *
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @param edaban 枝番(検索キー)
      * @param formId 画面ID(検索キー)
+     * @param jissekino 実績No(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private Map loadFxhdd03JissekinoInfo(QueryRunner queryRunnerDoc, String kojyo, String lotNo,
+    private int getMaxJisekiNoFxhdd08(QueryRunner queryRunnerDoc, Connection conDoc,String kojyo, String lotNo,
             String edaban, String formId) throws SQLException {
 
         // 品質DB登録実績情報の取得
-        String sql = "SELECT jissekino,rev, jotai_flg "
-                + "FROM fxhdd03 "
-                + "WHERE kojyo = ? AND lotno = ? "
-                + "AND edaban = ? AND gamen_id = ? ";
+        String sql = "SELECT MAX(jissekino) AS jissekino "
+                + "FROM fxhdd08 "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? "
+                + "AND gamen_id = ?  ";
 
         List<Object> params = new ArrayList<>();
         params.add(kojyo);
@@ -507,7 +456,132 @@ public class GXHDO101C017 implements Serializable {
         params.add(formId);
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
+        Map<String, Object> map = queryRunnerDoc.query(conDoc, sql, new MapHandler(), params.toArray());
+
+        int jissekino = 0;
+        if (map != null && !map.isEmpty() && map.get("jissekino") != null) {
+            jissekino = (int) map.get("jissekino");
+        }
+
+        return jissekino;
+
     }
+
+    /**
+     * [画面制御]から実績No(最大)を取得
+     *
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param formId 画面ID(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private int getMaxJisekiNoFxhdd03(QueryRunner queryRunnerDoc, Connection conDoc, String kojyo, String lotNo,
+            String edaban, String formId) throws SQLException {
+
+        // 品質DB登録実績情報の取得
+        String sql = "SELECT MAX(jissekino) AS jissekino "
+                + "FROM fxhdd03 "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? "
+                + "AND gamen_id = ?  ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(formId);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        Map<String, Object> map = queryRunnerDoc.query(conDoc, sql, new MapHandler(), params.toArray());
+
+        int jissekino = 0;
+        if (map != null && !map.isEmpty() && map.get("jissekino") != null) {
+            jissekino = (int) map.get("jissekino");
+        }
+
+        return jissekino;
+
+    }
+    
+     /**
+    *  [画面制御]から情報を取得
+    * @param queryRunnerDoc queryRunnerオブジェクト
+    * @param conDoc コネクション
+    * @param kojyo 工場ｺｰﾄﾞ
+    * @param lotNo ﾛｯﾄNo
+    * @param edaban 枝番
+    * @param formId 画面ID
+    * @param jissekino 実績No
+    * @param deleteflag 削除ﾌﾗｸﾞ
+    * @return 画面制御情報
+    * @throws SQLException 例外エラー 
+    */
+    private Map<String, Object> loadFxhdd08Info(QueryRunner queryRunnerDoc,Connection conDoc,  String kojyo, String lotNo,
+            String edaban, String formId, int jissekino, int deleteflag) throws SQLException {
+
+        // 品質DB登録実績情報の取得
+        String sql = "SELECT koshin_date "
+                + "FROM fxhdd08 "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? "
+                + "AND maekoutei_gamen_id = ?  AND maekoutei_jissekino = ? AND deleteflag = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(formId);
+        params.add(jissekino);
+        params.add(deleteflag);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerDoc.query(conDoc,sql, new MapHandler(), params.toArray());
+
+    }
+
+
+    /**
+     * 画面制御(fxhdd08)登録処理
+     *
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param conDoc コネクション
+     * @param tantoshaCd 担当者ｺｰﾄﾞ
+     * @param formId 画面ID
+     * @param rev revision
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param jissekino 実績No
+     * @param jotaiFlg 状態ﾌﾗｸﾞ
+     * @param systemTime システム日付
+     * @throws SQLException 例外エラー
+     */
+    private void insertFxhdd08(QueryRunner queryRunnerDoc, Connection conDoc, String tantoshaCd, 
+            String kojyo, String lotNo, String edaban,String gamenId, int jissekino, String maekoteiGamenId, int maekoteiJissekino,  Timestamp systemTime) throws SQLException {
+        String sql = "INSERT INTO fxhdd08 ("
+                + "kojyo,lotno,edaban,gamen_id,jissekino,maekoutei_gamen_id,maekoutei_jissekino,toroku_id,toroku_date,koshin_id,koshin_date,deleteflag"
+                + ") VALUES ("
+                + "?,?,?,?,?,?,?,?,?,?,?,?) ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo); //工場ｺｰﾄﾞ
+        params.add(lotNo); //ﾛｯﾄNo
+        params.add(edaban); //枝番
+        params.add(gamenId); //画面ID
+        params.add(jissekino); //実績No
+        params.add(maekoteiGamenId); //画面ID(前工程)
+        params.add(maekoteiJissekino); //実績No(前工程)
+        params.add(tantoshaCd); //登録者
+        params.add(systemTime); //登録日
+        params.add(tantoshaCd); //更新者
+        params.add(systemTime); //更新日
+        params.add(0); //削除ﾌﾗｸﾞ
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerDoc.update(conDoc, sql, params.toArray());
+    }
+    
+    
+   
 
 }

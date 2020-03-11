@@ -39,7 +39,11 @@
                     PF('W_dlg_gxhdo101c012').show();
                 } else if('gxhdo101c017'===args.firstParam){
                     PF('W_dlg_gxhdo101c017').show();
+                } else if('deleteConf'===args.firstParam){
+                    PF('deleteCd').show();
                 }
+                
+                
             }
             var pointY;
             function subFormOpen() {
@@ -94,7 +98,7 @@
         <h2>#{myMsg.hinshitsuDB}</h2>
         <h:form id="form" onkeypress="if (event.keyCode === 13) { return false; }">
             <div id="mainForm">
-            <p:growl id="growlMessage" showDetail="false" sticky="true"/>
+                <p:growl id="growlMessage" showDetail="false" sticky="true" escape="false"/>
             <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
                 <f:facet name="message">
                     <h:outputText value="#{gXHDO101A.getWarnMessage()}" escape="false"/>
@@ -104,6 +108,17 @@
                                  process="@this"
                                  update="@this"
                                  oncomplete="PF('cd').hide();"/>
+            </p:confirmDialog>
+            <p:confirmDialog id="deleteConfDialog" class="ui-confdialog" severity="alert" widgetVar="deleteCd">
+                <f:facet name="message">
+                    <h:outputText value="#{gXHDO101A.getWarnMessage()}" escape="false"/>
+                </f:facet>
+                <p:commandButton id="delOk" value="OK" styleClass="ui-conf-commandbtn-def1"
+                                 actionListener="#{gXHDO101A.deleteMenu()}"
+                                 process="@this"
+                                 update="@form"
+                                 oncomplete="PF('deleteCd').hide();"/>
+                <p:commandButton id="delCancel" value="Cancel" class="ui-conf-commandbtn-cancel" onclick="PF('deleteCd').hide();" type="button" />
             </p:confirmDialog>
             <div id="loadinggif">
                 <img src="#{request.contextPath}/resources/gif/gif-load.gif"/>
@@ -179,22 +194,19 @@
                         <p:outputLabel value="#{item.menuComment}" style="float:left;font-size: 17px;"/>
                         <p:outputLabel value="#{item.jissekiNo}" style="float:left;font-size: 17px;"/>
                         <div style="text-align: right;">
-                            <p:commandButton id="sougouHanteiBtn"  class="button" rendered="#{item.deleteBtnRender}"  styleClass="ui-conf-commandbtn-def1" style="width: 74px; height: 32px; font-size: 17px; "
+                            <p:commandButton class="button" rendered="#{item.deleteBtnRender}"  styleClass="ui-conf-commandbtn-def1" style="width: 74px; height: 32px; font-size: 17px; "
                                          value="削除"
-                                         actionListener="#{gXHDO101A.doSougouHantei()}"
+                                         actionListener="#{gXHDO101A.checkDeleteMenu(item)}"
                                          process="@this"
                                          update="@form"
                                          onstart="PF('cd').hide();$('#loadinggif').show();"
                                          oncomplete="$('#loadinggif').hide();cmdButtonOncomplete(args);"/>
                             <p:commandLink value="画面追加" rendered="#{gXHDO101A.addLinkRender}" style="color:Indigo;font-size: 17px;"
-                                       action="#{gXHDO101A.openXhdForm(item)}" oncomplete="cmdButtonOncomplete(args);" 
+                                       actionListener="#{gXHDO101A.checkAddMenu(item)}" oncomplete="cmdButtonOncomplete(args);" 
                                        update="@form">
                         </p:commandLink>
                         </div>
-                        
-                                      
                     </p:column>
-                 
                 </p:dataTable>
             </div>
             </tr>
@@ -210,6 +222,7 @@
             <div>
                 <ui:include src="/secure/common/initMessage.xhtml"/>
                 <ui:include src="/secure/pxhdo101/gxhdo101c012.xhtml"/>
+                <ui:include src="/secure/pxhdo101/gxhdo101c017.xhtml"/>
             </div>
         </h:form>
         </div>

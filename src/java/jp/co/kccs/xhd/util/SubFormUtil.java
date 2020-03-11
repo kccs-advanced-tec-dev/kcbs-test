@@ -69,6 +69,10 @@ public class SubFormUtil {
      * ﾛｯﾄ参照画面ID
      */
     public static final String FORM_ID_GXHDO101C012 = "GXHDO101C012";
+    /**
+     * 画面追加
+     */
+    public static final String FORM_ID_GXHDO101C017 = "GXHDO101C017";
             
     /**
      * 初期表示メッセージ
@@ -176,6 +180,13 @@ public class SubFormUtil {
                 returnBean = FacesContext.getCurrentInstance().
                         getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
                                 getELContext(), null, "beanGXHDO101C012");
+                break;
+
+            // 画面追加
+            case "GXHDO101C017":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO101C017");
                 break;
                 
             // 初期表示メッセージ
