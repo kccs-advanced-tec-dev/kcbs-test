@@ -15,6 +15,11 @@ import javax.faces.context.FacesContext;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/03/02<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	K.Hisanaga<br>
+ * 変更理由	画面制御の子画面を追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**

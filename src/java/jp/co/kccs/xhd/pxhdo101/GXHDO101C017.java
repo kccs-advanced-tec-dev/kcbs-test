@@ -1,15 +1,13 @@
 /*
- * Copyright 2019 Kyocera Communication Systems Co., Ltd All rights reserved.
+ * Copyright 2020 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.pxhdo101;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.logging.Logger;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +21,6 @@ import jp.co.kccs.xhd.db.model.FXHDM01;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
-import jp.co.kccs.xhd.util.StringUtil;
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.MapHandler;
@@ -45,7 +42,7 @@ import org.primefaces.context.RequestContext;
  * GXHDO101C017_画面制御
  *
  * @author SYSNAVI K.Hisanaga
- * @since 2020/03/01
+ * @since 2020/03/02
  */
 @SessionScoped
 @Named("beanGXHDO101C017")
@@ -58,109 +55,99 @@ public class GXHDO101C017 implements Serializable {
         return LOGGER;
     }
 
-    
     private static final Logger LOGGER = Logger.getLogger(GXHDO101C017.class.getName());
 
-    /**
-     * 通常カラーコード(テキスト)
-     */
-    private static final String DEFAULT_BACK_COLOR = "#ffffffff";
-    
     /**
      * DataSource(DocumentServer)
      */
     @Resource(mappedName = "jdbc/DocumentServer")
     private transient DataSource dataSourceDocServer;
-    
-    /**
-     * DataSource(QCDB)
-     */
-    @Resource(mappedName = "jdbc/qcdb")
-    private transient DataSource dataSourceXHD;
-    
+
     /**
      * メニューリスト
      */
-     private List<FXHDM01> menuListGXHDO101;
-    
-     /**
+    private List<FXHDM01> menuList;
+
+    /**
      * メニューリスト表示用
      */
-     private List<String> menuList;
-    
-     /**
+    private List<String> menuListName;
+
+    /**
      * 選択メニュー
      */
-     private String selectMenu;
-    
-     /**
+    private String selectMenu;
+
+    /**
      * 選択メニュー
      */
-     private FXHDM01 atoKoteiMenu;
-     
+    private FXHDM01 atoKoteiMenu;
+
     /**
      * 追加位置ﾃﾞｰﾀ
      */
     private FXHDM01 insPositionInfoMenu;
-   
+
     /**
      * ﾛｯﾄNo
      */
     private String lotno;
-    
-  /**
+
+    /**
      * 担当者ｺｰﾄﾞ
      */
     private String tantoushaCd;
-    
 
     /**
      * フォームエラー判定
      */
     private boolean isFormError;
-    
+
     /**
      * コンストラクタ
      */
     public GXHDO101C017() {
     }
-    
-    
-
-     /**
-     * メニューリスト
-     * @return the menuListGXHDO101
-     */
-    public List<FXHDM01> getMenuListGXHDO101() {
-        return menuListGXHDO101;
-    }
 
     /**
      * メニューリスト
-     * @param menuListGXHDO101 the menuListGXHDO101 to set
-     */
-    public void setMenuListGXHDO101(List<FXHDM01> menuListGXHDO101) {
-        this.menuListGXHDO101 = menuListGXHDO101;
-    }
-
-    /**
-     * メニューリスト表示用
+     *
      * @return the menuList
      */
-    public List<String> getMenuList() {
+    public List<FXHDM01> getMenuList() {
         return menuList;
     }
 
     /**
-     * メニューリスト表示用
+     * メニューリスト
+     *
      * @param menuList the menuList to set
      */
-    public void setMenuList(List<String> menuList) {
+    public void setMenuList(List<FXHDM01> menuList) {
         this.menuList = menuList;
     }
 
     /**
+     * メニューリスト表示用
+     *
+     * @return the menuListName
+     */
+    public List<String> getMenuListName() {
+        return menuListName;
+    }
+
+    /**
+     * メニューリスト表示用
+     *
+     * @param menuListName the menuListName to set
+     */
+    public void setMenuListName(List<String> menuListName) {
+        this.menuListName = menuListName;
+    }
+
+    /**
      * 選択メニュー
+     *
      * @return the selectMenu
      */
     public String getSelectMenu() {
@@ -169,6 +156,7 @@ public class GXHDO101C017 implements Serializable {
 
     /**
      * 選択メニュー
+     *
      * @param selectMenu the selectMenu to set
      */
     public void setSelectMenu(String selectMenu) {
@@ -177,6 +165,7 @@ public class GXHDO101C017 implements Serializable {
 
     /**
      * 後工程メニュー
+     *
      * @return the atoKoteiMenu
      */
     public FXHDM01 getAtoKoteiMenu() {
@@ -185,6 +174,7 @@ public class GXHDO101C017 implements Serializable {
 
     /**
      * 後工程メニュー
+     *
      * @param atoKoteiMenu the atoKoteiMenu to set
      */
     public void setAtoKoteiMenu(FXHDM01 atoKoteiMenu) {
@@ -192,7 +182,8 @@ public class GXHDO101C017 implements Serializable {
     }
 
     /**
-     * 追加位置ﾃﾞｰﾀ
+     * 追加位置メニュー
+     *
      * @return the insPositionInfoMenu
      */
     public FXHDM01 getInsPositionInfoMenu() {
@@ -200,7 +191,8 @@ public class GXHDO101C017 implements Serializable {
     }
 
     /**
-     * 追加位置ﾃﾞｰﾀ
+     * 追加位置メニュー
+     *
      * @param insPositionInfoMenu the insPositionInfoMenu to set
      */
     public void setInsPositionInfoMenu(FXHDM01 insPositionInfoMenu) {
@@ -209,6 +201,7 @@ public class GXHDO101C017 implements Serializable {
 
     /**
      * ﾛｯﾄNo
+     *
      * @return the lotno
      */
     public String getLotno() {
@@ -217,6 +210,7 @@ public class GXHDO101C017 implements Serializable {
 
     /**
      * ﾛｯﾄNo
+     *
      * @param lotno the lotno to set
      */
     public void setLotno(String lotno) {
@@ -225,6 +219,7 @@ public class GXHDO101C017 implements Serializable {
 
     /**
      * 担当者ｺｰﾄﾞ
+     *
      * @return the tantoushaCd
      */
     public String getTantoushaCd() {
@@ -233,13 +228,12 @@ public class GXHDO101C017 implements Serializable {
 
     /**
      * 担当者ｺｰﾄﾞ
+     *
      * @param tantoushaCd the tantoushaCd to set
      */
     public void setTantoushaCd(String tantoushaCd) {
         this.tantoushaCd = tantoushaCd;
     }
-    
-    
 
     /**
      * フォームエラー判定
@@ -258,49 +252,56 @@ public class GXHDO101C017 implements Serializable {
     public void setIsFormError(boolean isFormError) {
         this.isFormError = isFormError;
     }
-    
+
     /**
      * OKボタン押下時のチェック処理を行う。
      */
     public void doOk() {
-        String selectMenuId = this.menuListGXHDO101.stream().filter(n -> n.getFormTitle().equals(this.selectMenu)).findFirst().map(f -> f.getFormId()).orElse("");
+        String selectMenuId = this.menuList.stream().filter(n -> n.getFormTitle().equals(this.selectMenu)).findFirst().map(f -> f.getFormId()).orElse("");
         if (!checkOK(selectMenuId, this.selectMenu)) {
-            
-             setIsFormError(true);
+            setIsFormError(true);
             // エラーの場合はコールバック変数に"error"をセット
             RequestContext context = RequestContext.getCurrentInstance();
             context.addCallbackParam("firstParam", "error");
             return;
         }
-        
+
         updateFormData(selectMenuId);
-        
+
         setIsFormError(false);
     }
 
     /**
      * OKボタンチェック処理
      *
+     * @param selectMenuId 選択メニュー(ID)
+     * @param selectMenu 選択メニュー(名称)
      * @return 正常:true、異常:fasle
      */
     private boolean checkOK(String selectMenuId, String selectMenu) {
 
-        if(this.atoKoteiMenu != null && selectMenuId.equals(this.atoKoteiMenu.getFormId())){
+        // 次の工程が同じ工程だった場合エラー
+        if (this.atoKoteiMenu != null && selectMenuId.equals(this.atoKoteiMenu.getFormId())) {
             FacesContext facesContext = FacesContext.getCurrentInstance();
             FacesMessage message
-                    = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000193",selectMenu), null);
+                    = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000193", selectMenu), null);
             facesContext.addMessage(null, message);
             return false;
         }
-      
+
         return true;
     }
-    
-    private void updateFormData(String selectMenuId){
+
+    /**
+     * 更新処理
+     * @param selectMenuId 選択メニュー(ID)
+     */
+    private void updateFormData(String selectMenuId) {
         QueryRunner queryRunnerDoc = new QueryRunner(dataSourceDocServer);
 
         Connection conDoc = null;
 
+        // ﾛｯﾄNoを分割
         String strKojyo = this.lotno.substring(0, 3);
         String strLotNo = this.lotno.substring(3, 11);
         String strEdaban = this.lotno.substring(11, 14);
@@ -311,34 +312,36 @@ public class GXHDO101C017 implements Serializable {
 
             Timestamp systemTime = new Timestamp(System.currentTimeMillis());
 
-            int jissekino = getMaxJissekiNo(queryRunnerDoc, conDoc, strKojyo, strLotNo, strEdaban, selectMenuId)+1;
-            
+            // 最大の実績Noを取得
+            int jissekino = getMaxJissekiNo(queryRunnerDoc, conDoc, strKojyo, strLotNo, strEdaban, selectMenuId) + 1;
+
+            // 挿入位置の工程に紐づいているデータを取得する。
             Map<String, Object> fxhdd08InfoAto = loadFxhdd08Info(queryRunnerDoc, conDoc, strKojyo, strLotNo, strEdaban, this.insPositionInfoMenu.getFormId(), this.insPositionInfoMenu.getJissekiNo(), 0);
             if (fxhdd08InfoAto != null && !fxhdd08InfoAto.isEmpty()) {
-
-                if(this.atoKoteiMenu.getKoshinDateFxhdd08() == null || this.atoKoteiMenu.getKoshinDateFxhdd08().before((Timestamp)fxhdd08InfoAto.get("koshin_date"))){
+                
+                // 紐づいているデータがありその日付が起動時と異なっていた場合、排他エラーとする。
+                if (this.atoKoteiMenu.getKoshinDateFxhdd08() == null || this.atoKoteiMenu.getKoshinDateFxhdd08().before((Timestamp) fxhdd08InfoAto.get("koshin_date"))) {
                     FacesMessage message
-                    = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000195"), null);
-                FacesContext.getCurrentInstance().addMessage(null, message);
-                
-                // ロールバックしてリターン
-                DBUtil.rollbackConnection(conDoc, LOGGER);
-                return;
+                            = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000195"), null);
+                    FacesContext.getCurrentInstance().addMessage(null, message);
+
+                    // ロールバックしてリターン
+                    DBUtil.rollbackConnection(conDoc, LOGGER);
+                    return;
                 }
-                
+
+                // 挿入するデータに関連づける。
                 updateFxhdd08AtoKotei(queryRunnerDoc, conDoc, strKojyo, strLotNo, strEdaban,
                         selectMenuId, jissekino,
                         this.insPositionInfoMenu.getFormId(), this.insPositionInfoMenu.getJissekiNo(), this.tantoushaCd, systemTime);
 
             }
-           
-            
+
+            // 指定位置に選択したメニューのデータを追加する。
             insertFxhdd08(queryRunnerDoc, conDoc, this.tantoushaCd, strKojyo, strLotNo, strEdaban, selectMenuId, jissekino, this.insPositionInfoMenu.getFormId(), this.insPositionInfoMenu.getJissekiNo(), systemTime);
-            
-            
+
             DbUtils.commitAndCloseQuietly(conDoc);
-            
-           
+
         } catch (SQLException e) {
 
             DBUtil.rollbackConnection(conDoc, LOGGER);
@@ -349,42 +352,32 @@ public class GXHDO101C017 implements Serializable {
             ErrUtil.outputErrorLog("Exception発生", e, LOGGER);
         }
 
-        
-        
-        
-        
     }
-    
 
+ 
     /**
-     * エラーチェック：
-     * エラーが存在する場合ポップアップ用メッセージをセットする
-     * @param errorMessage エラーメッセージ
-     * @return エラーが存在する場合true
+     * 
+     * @param queryRunnerDoc queryRunnerオブジェクト(DocServer)
+     * @param conDoc コネクション
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotno ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param formId 画面ID
+     * @return 実績No最大値
+     * @throws SQLException 例外エラー
      */
-    private boolean existError(String errorMessage) {
-        if (StringUtil.isEmpty(errorMessage)) {
-            return false;
-        }
-        
-        FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, errorMessage, null);
-        FacesContext.getCurrentInstance().addMessage(null, message);
-        return true;
-    }
-    
-    private int getMaxJissekiNo(QueryRunner queryRunnerDoc,Connection conDoc, String kojyo, String lotno, String edaban, String formId) throws SQLException{
+    private int getMaxJissekiNo(QueryRunner queryRunnerDoc, Connection conDoc, String kojyo, String lotno, String edaban, String formId) throws SQLException {
         int maxJissekiNo;
-        int jissekiNo08 = getMaxJisekiNoFxhdd08(queryRunnerDoc,conDoc, kojyo, lotno, edaban, formId);
-        int jissekiNo03 = getMaxJisekiNoFxhdd03(queryRunnerDoc,conDoc, kojyo, lotno, edaban, formId);
-        if(jissekiNo08 < jissekiNo03){
+        int jissekiNo08 = getMaxJisekiNoFxhdd08(queryRunnerDoc, conDoc, kojyo, lotno, edaban, formId);
+        int jissekiNo03 = getMaxJisekiNoFxhdd03(queryRunnerDoc, conDoc, kojyo, lotno, edaban, formId);
+        if (jissekiNo08 < jissekiNo03) {
             maxJissekiNo = jissekiNo03;
-        }else{
+        } else {
             maxJissekiNo = jissekiNo08;
         }
         return maxJissekiNo;
     }
-    
-   
+
     /**
      * 画面制御更新処理
      *
@@ -428,10 +421,12 @@ public class GXHDO101C017 implements Serializable {
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerDoc.update(conDoc, sql, params.toArray());
     }
-    
-     /**
+
+    /**
      * [画面制御]から実績No(最大)を取得
      *
+     * @param queryRunnerDoc QueryRunnerオブジェクト(DocmentServer)
+     * @param conDoc コネクション(DocmentServer)
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @param edaban 枝番(検索キー)
@@ -440,7 +435,7 @@ public class GXHDO101C017 implements Serializable {
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private int getMaxJisekiNoFxhdd08(QueryRunner queryRunnerDoc, Connection conDoc,String kojyo, String lotNo,
+    private int getMaxJisekiNoFxhdd08(QueryRunner queryRunnerDoc, Connection conDoc, String kojyo, String lotNo,
             String edaban, String formId) throws SQLException {
 
         // 品質DB登録実績情報の取得
@@ -468,8 +463,10 @@ public class GXHDO101C017 implements Serializable {
     }
 
     /**
-     * [画面制御]から実績No(最大)を取得
+     * [品質DB登録実績]から実績No(最大)を取得
      *
+     * @param queryRunnerDoc QueryRunnerオブジェクト(DocmentServer)
+     * @param conDoc コネクション(DocmentServer)
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @param edaban 枝番(検索キー)
@@ -504,21 +501,22 @@ public class GXHDO101C017 implements Serializable {
         return jissekino;
 
     }
-    
-     /**
-    *  [画面制御]から情報を取得
-    * @param queryRunnerDoc queryRunnerオブジェクト
-    * @param conDoc コネクション
-    * @param kojyo 工場ｺｰﾄﾞ
-    * @param lotNo ﾛｯﾄNo
-    * @param edaban 枝番
-    * @param formId 画面ID
-    * @param jissekino 実績No
-    * @param deleteflag 削除ﾌﾗｸﾞ
-    * @return 画面制御情報
-    * @throws SQLException 例外エラー 
-    */
-    private Map<String, Object> loadFxhdd08Info(QueryRunner queryRunnerDoc,Connection conDoc,  String kojyo, String lotNo,
+
+    /**
+     * [画面制御]から情報を取得
+     *
+     * @param queryRunnerDoc queryRunnerオブジェクト
+     * @param conDoc コネクション
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param formId 画面ID
+     * @param jissekino 実績No
+     * @param deleteflag 削除ﾌﾗｸﾞ
+     * @return 画面制御情報
+     * @throws SQLException 例外エラー
+     */
+    private Map<String, Object> loadFxhdd08Info(QueryRunner queryRunnerDoc, Connection conDoc, String kojyo, String lotNo,
             String edaban, String formId, int jissekino, int deleteflag) throws SQLException {
 
         // 品質DB登録実績情報の取得
@@ -535,10 +533,9 @@ public class GXHDO101C017 implements Serializable {
         params.add(jissekino);
         params.add(deleteflag);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerDoc.query(conDoc,sql, new MapHandler(), params.toArray());
+        return queryRunnerDoc.query(conDoc, sql, new MapHandler(), params.toArray());
 
     }
-
 
     /**
      * 画面制御(fxhdd08)登録処理
@@ -556,8 +553,8 @@ public class GXHDO101C017 implements Serializable {
      * @param systemTime システム日付
      * @throws SQLException 例外エラー
      */
-    private void insertFxhdd08(QueryRunner queryRunnerDoc, Connection conDoc, String tantoshaCd, 
-            String kojyo, String lotNo, String edaban,String gamenId, int jissekino, String maekoteiGamenId, int maekoteiJissekino,  Timestamp systemTime) throws SQLException {
+    private void insertFxhdd08(QueryRunner queryRunnerDoc, Connection conDoc, String tantoshaCd,
+            String kojyo, String lotNo, String edaban, String gamenId, int jissekino, String maekoteiGamenId, int maekoteiJissekino, Timestamp systemTime) throws SQLException {
         String sql = "INSERT INTO fxhdd08 ("
                 + "kojyo,lotno,edaban,gamen_id,jissekino,maekoutei_gamen_id,maekoutei_jissekino,toroku_id,toroku_date,koshin_id,koshin_date,deleteflag"
                 + ") VALUES ("
@@ -580,8 +577,5 @@ public class GXHDO101C017 implements Serializable {
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerDoc.update(conDoc, sql, params.toArray());
     }
-    
-    
-   
 
 }
