@@ -116,7 +116,7 @@
                 <p:commandButton id="delOk" value="OK" styleClass="ui-conf-commandbtn-def1"
                                  actionListener="#{gXHDO101A.deleteMenu()}"
                                  process="@this"
-                                 update="@form"
+                                 update="menuTable growlMessage"
                                  oncomplete="PF('deleteCd').hide();"/>
                 <p:commandButton id="delCancel" value="Cancel" class="ui-conf-commandbtn-cancel" onclick="PF('deleteCd').hide();" type="button" />
             </p:confirmDialog>
@@ -198,7 +198,7 @@
                                          value="削除"
                                          actionListener="#{gXHDO101A.checkDeleteMenu(item)}"
                                          process="@this"
-                                         update="@form"
+                                         update="form:menuTable form:deleteConfDialog form:growlMessage"
                                          onstart="PF('cd').hide();$('#loadinggif').show();"
                                          oncomplete="$('#loadinggif').hide();cmdButtonOncomplete(args);"/>
                             <p:commandLink value="画面追加" rendered="#{gXHDO101A.addLinkRender}" style="color:Indigo;font-size: 17px;"

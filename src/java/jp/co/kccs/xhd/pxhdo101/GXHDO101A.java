@@ -233,7 +233,7 @@ public class GXHDO101A implements Serializable {
         session.setAttribute("tantoshaCd", "");
         if (!StringUtil.isEmpty(sLotNo)) {
             this.lotNo = sLotNo;
-            getMenuListGXHDO101(this.lotNo, this.tantoshaCd);
+            getMenuListGXHDO101(this.lotNo, this.tantoshaCd, false);
         }
     }
 
@@ -242,9 +242,10 @@ public class GXHDO101A implements Serializable {
      *
      * @param strGamenLotNo 画面ﾛｯﾄNo
      * @param gamenTantoshaCd 画面担当者
+     * @param onInitCheck 初期チェック有無
      * @return 一覧データ
      */
-    public List<FXHDM01> getMenuListGXHDO101(String strGamenLotNo, String gamenTantoshaCd) {
+    public List<FXHDM01> getMenuListGXHDO101(String strGamenLotNo, String gamenTantoshaCd, boolean onInitCheck) {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
         List<String> userGrpList = (List<String>) session.getAttribute("login_user_group");
@@ -448,7 +449,7 @@ public class GXHDO101A implements Serializable {
             checkMenuFormId(messageListMain, this.menuListGXHDO101Nofiltering);
 
             // チェックメッセージの表示
-            if (!messageListMain.isEmpty()) {
+            if (onInitCheck && !messageListMain.isEmpty()) {
 
                 messageListMain.add("　");
                 messageListMain.add("　技術に連絡してください");
@@ -635,18 +636,19 @@ public class GXHDO101A implements Serializable {
      * 品質DB画面データ検索
      */
     public void searchHinshitsuData() {
-        getMenuListGXHDO101(this.lotNo, this.tantoshaCd);
+        getMenuListGXHDO101(this.lotNo, this.tantoshaCd, true);
     }
 
     /**
      * 品質DB画面データ再検索
+     * @param isError エラー有無(サブ画面からの戻り)
      */
     public void reSearchHinshitsuData(boolean isError) {
         if (isError) {
             return;
         }
         menuListGXHDO101 = new ArrayList<>();
-        getMenuListGXHDO101(this.searchLotNo, this.searchTantoshaCd);
+        getMenuListGXHDO101(this.searchLotNo, this.searchTantoshaCd, false);
     }
 
     /**
