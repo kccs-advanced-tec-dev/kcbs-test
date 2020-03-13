@@ -1992,7 +1992,7 @@ public class GXHDO101A implements Serializable {
             }
             // 実績が無かった場合
             if (!existJiseki) {
-                fxhdm01.setJotaiFlg("0");
+                fxhdm01.setJotaiFlg("");
                 fxhdm01.setMenuComment("未登録");
             }
         }
@@ -3547,7 +3547,9 @@ public class GXHDO101A implements Serializable {
         String sql = "SELECT sogohantei "
                 + "FROM sr_sqchantei "
                 + "WHERE kojyo = ? AND lotno = ? "
-                + "AND edaban = ? ";
+                + "AND edaban = ? "
+                + "ORDER BY jissekino desc"
+                ;
 
         List<Object> params = new ArrayList<>();
         params.add(kojyo);
@@ -3980,7 +3982,7 @@ public class GXHDO101A implements Serializable {
             }
         }
 
-        if (atoKoteiMenuInfo != null && "1".equals(atoKoteiMenuInfo.getJotaiFlg())) {
+        if (atoKoteiMenuInfo != null && ("0".equals(atoKoteiMenuInfo.getJotaiFlg()) ||  "1".equals(atoKoteiMenuInfo.getJotaiFlg())) ) {
             FacesMessage message
                     = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000190"), null);
             FacesContext.getCurrentInstance().addMessage(null, message);
