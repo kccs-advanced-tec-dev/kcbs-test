@@ -1,0 +1,52 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <p:dialog header="#{myMsg.GXHDO101C017_GamenTitle}" id="dlg_gxhdo101c017" widgetVar="W_dlg_gxhdo101c017"
+              width="440" modal="true" height="200" 
+              dynamic="true" closable="true" closeOnEscape="false" 
+              onShow="subFormOpen();"
+              onHide="subFormClose(); document.getElementById('form:gxhdo101c017Form:cancelBtn').click();" position="center top">
+
+        <h:form id="gxhdo101c017Form">
+            <p:growl id="growlMessage" showDetail="false" sticky="true"/>
+            
+            <table style="border-style:none;">
+                <tr style="height: 50px;">
+                    <td>
+                        <p:outputLabel value="追加画面" style="font-size: 22px; font-weight:bold;"  />
+                    </td>
+                </tr>
+                <tr style="vertical-align: middle; height: 80px;">
+                    <td>
+                        <p:outputLabel value="画面名" />
+                <p:selectOneMenu id="comboBoxValue" value="#{beanGXHDO101C017.selectMenu}" styleClass="selectMenu" style="margin-left: 10px;">
+                    <f:selectItems value="#{beanGXHDO101C017.menuListName}" />
+                </p:selectOneMenu>
+                    </td>
+                </tr>
+            </table>
+            
+            <p:commandButton value="戻る" id="cancelBtn"
+                             style="position:relative;top:23px;left:60px;width:110px;height:35px;"
+                             process="@this" 
+                             update="form:growlMessage"
+                             oncomplete="PF('W_dlg_gxhdo101c017').hide();"/>
+            <p:commandButton value="追加" id="okBtn"
+                             style="position:relative;left:135px;top:23px;width:110px;height:35px;"
+                             action="#{gXHDO101A.reSearchHinshitsuData(beanGXHDO101C017.isFormError)}"
+                             async="false"
+                             process="@this"
+                             update="form" >
+                <p:ajax event="click"
+                        async="false"
+                        listener="#{beanGXHDO101C017.doOk()}"
+                        process="gxhdo101c017Form" 
+                        update="gxhdo101c017Form form:growlMessage"
+                        oncomplete="if('error'!=args.firstParam){PF('W_dlg_gxhdo101c017').hide();} "/>
+            </p:commandButton>
+            
+        </h:form>
+    </p:dialog>
+</ui:composition>

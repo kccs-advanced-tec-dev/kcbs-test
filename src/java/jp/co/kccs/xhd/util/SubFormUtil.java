@@ -15,6 +15,11 @@ import javax.faces.context.FacesContext;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/03/02<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	K.Hisanaga<br>
+ * 変更理由	画面制御の子画面を追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -69,6 +74,10 @@ public class SubFormUtil {
      * ﾛｯﾄ参照画面ID
      */
     public static final String FORM_ID_GXHDO101C012 = "GXHDO101C012";
+    /**
+     * 画面追加
+     */
+    public static final String FORM_ID_GXHDO101C017 = "GXHDO101C017";
             
     /**
      * 初期表示メッセージ
@@ -176,6 +185,13 @@ public class SubFormUtil {
                 returnBean = FacesContext.getCurrentInstance().
                         getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
                                 getELContext(), null, "beanGXHDO101C012");
+                break;
+
+            // 画面追加
+            case "GXHDO101C017":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO101C017");
                 break;
                 
             // 初期表示メッセージ
