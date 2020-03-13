@@ -44,6 +44,7 @@ import org.apache.commons.dbutils.RowProcessor;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
+import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import org.apache.commons.dbutils.DbUtils;
 
@@ -1051,7 +1052,8 @@ public class GXHDO101B046 implements IFormLogic {
                 FXHDD01 itemUkeireTanijuryo = getItemRow(processData.getItemList(), GXHDO101B046Const.UKEIRE_TANNIJURYO);
 
                 itemOkuriRyohinsu.setValue(syorisuu);//送り良品数
-                itemUkeireTanijuryo.setValue(tanijuryo);//受入単位重量
+                itemUkeireTanijuryo.setValue(NumberUtil.getTruncatData(tanijuryo, itemUkeireTanijuryo.getInputLength(), itemUkeireTanijuryo.getInputLengthDec()));//受入単位重量
+                
                 if (checkUkeireSojuryo(itemUkeireSojuryo, itemOkuriRyohinsu, itemUkeireTanijuryo)) {
                     // ﾁｪｯｸに問題なければ値をセット
                     calcUkeireSojuryo(itemUkeireSojuryo, itemOkuriRyohinsu, itemUkeireTanijuryo);
@@ -2929,7 +2931,7 @@ public class GXHDO101B046 implements IFormLogic {
             }
 
             //総重量 / 単位重量(小数1以下を四捨五入)
-            BigDecimal gokeiRyohikosu = sojuryo.divide(taniJuryo, 0, RoundingMode.HALF_UP);
+            BigDecimal gokeiRyohikosu = sojuryo.multiply(BigDecimal.valueOf(100)).divide(taniJuryo, 0, RoundingMode.HALF_UP);
 
             //計算結果を誤差率にセット
             itemKosu.setValue(gokeiRyohikosu.toPlainString());

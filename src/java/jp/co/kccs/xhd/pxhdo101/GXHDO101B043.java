@@ -44,6 +44,7 @@ import org.apache.commons.dbutils.RowProcessor;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
+import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import org.apache.commons.dbutils.DbUtils;
 
@@ -1007,8 +1008,9 @@ public class GXHDO101B043 implements IFormLogic {
             this.setItemData(processData, GXHDO101B043Const.SUURYO, suuryo);
 
             //受入れ単位重量
-            this.setItemData(processData, GXHDO101B043Const.UKEIRETANNIJYURYO, tanijuryo);
-
+            FXHDD01 itemUkeireTanijuryo = getItemRow(processData.getItemList(), GXHDO101B043Const.UKEIRETANNIJYURYO);
+            itemUkeireTanijuryo.setValue(NumberUtil.getTruncatData(tanijuryo, itemUkeireTanijuryo.getInputLength(), itemUkeireTanijuryo.getInputLengthDec()));//受入単位重量
+                
             //受入れ総重量
             // Ⅳ.画面項目ｲﾍﾞﾝﾄ詳細.(8)【受入れ総重量計算】ﾎﾞﾀﾝ押下時 の処理実行
             calculatUkeiresojuryo(processData);
@@ -1122,6 +1124,8 @@ public class GXHDO101B043 implements IFormLogic {
         this.setItemData(processData, GXHDO101B043Const.SHURYOU_TIME, getSrShinkuukansouItemData(GXHDO101B043Const.SHURYOU_TIME, srShinkuukansouData));
         //終了担当者
         this.setItemData(processData, GXHDO101B043Const.ENDTANTOU, getSrShinkuukansouItemData(GXHDO101B043Const.ENDTANTOU, srShinkuukansouData));
+        //検査場所
+        this.setItemData(processData, GXHDO101B043Const.KENSABASYO, getSrShinkuukansouItemData(GXHDO101B043Const.KENSABASYO, srShinkuukansouData));
         //備考1
         this.setItemData(processData, GXHDO101B043Const.BIKOU1, getSrShinkuukansouItemData(GXHDO101B043Const.BIKOU1, srShinkuukansouData));
         //備考2
@@ -1436,7 +1440,7 @@ public class GXHDO101B043 implements IFormLogic {
         String sql = "SELECT "
                 + " kojyo,lotno,edaban,lotpre,kcpno,syoribi,kaishijikan,syuuryoujikan,sagyosya,koutei,gouki,setteiondo,setteijikan,"
                 + " kaisuu,suuryo,bikou1,bikou2,bikou3,tokuisaki,lotkubuncode,ownercode,ukeiretannijyuryo,ukeiresoujyuryou,syurui,"
-                + " startkakunin,syuryonichiji,endtantou,torokunichiji,kosinnichiji,revision,'0' AS deleteflag "
+                + " startkakunin,syuryonichiji,endtantou,kensabasyo,torokunichiji,kosinnichiji,revision,'0' AS deleteflag "
                 + "FROM sr_shinkuukansou "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND kaisuu = ? ";
 
@@ -1484,6 +1488,7 @@ public class GXHDO101B043 implements IFormLogic {
         mapping.put("startkakunin", "startkakunin"); //開始確認者
         mapping.put("syuryonichiji", "syuryonichiji"); //終了日時
         mapping.put("endtantou", "endtantou"); //終了担当者
+        mapping.put("kensabasyo", "kensabasyo"); //検査場所
         mapping.put("torokunichiji", "torokunichiji"); //登録日時
         mapping.put("kosinnichiji", "kosinnichiji"); //更新日時
         mapping.put("revision", "revision"); //revision
@@ -1515,7 +1520,7 @@ public class GXHDO101B043 implements IFormLogic {
         String sql = "SELECT "
                 + " kojyo,lotno,edaban,lotpre,kcpno,syoribi,kaishijikan,syuuryoujikan,sagyosya,koutei,gouki,setteiondo,setteijikan,"
                 + " kaisuu,suuryo,bikou1,bikou2,bikou3,tokuisaki,lotkubuncode,ownercode,ukeiretannijyuryo,ukeiresoujyuryou,syurui,"
-                + " startkakunin,syuryonichiji,endtantou,torokunichiji,kosinnichiji,revision,deleteflag "
+                + " startkakunin,syuryonichiji,endtantou,kensabasyo,torokunichiji,kosinnichiji,revision,deleteflag "
                 + "FROM tmp_sr_shinkuukansou "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND kaisuu = ? AND deleteflag = ? ";
 
@@ -1564,6 +1569,7 @@ public class GXHDO101B043 implements IFormLogic {
         mapping.put("startkakunin", "startkakunin"); //開始確認者
         mapping.put("syuryonichiji", "syuryonichiji"); //終了日時
         mapping.put("endtantou", "endtantou"); //終了担当者
+        mapping.put("kensabasyo", "kensabasyo"); //検査場所
         mapping.put("torokunichiji", "torokunichiji"); //登録日時
         mapping.put("kosinnichiji", "kosinnichiji"); //更新日時
         mapping.put("revision", "revision"); //revision
@@ -1844,9 +1850,9 @@ public class GXHDO101B043 implements IFormLogic {
         String sql = "INSERT INTO tmp_sr_shinkuukansou ("
                 + " kojyo,lotno,edaban,lotpre,kcpno,syoribi,kaishijikan,syuuryoujikan,sagyosya,koutei,gouki,setteiondo,setteijikan,"
                 + " kaisuu,suuryo,bikou1,bikou2,bikou3,tokuisaki,lotkubuncode,ownercode,ukeiretannijyuryo,ukeiresoujyuryou,syurui,"
-                + " startkakunin,syuryonichiji,endtantou,torokunichiji,kosinnichiji,revision,deleteflag "
+                + " startkakunin,syuryonichiji,endtantou,kensabasyo,torokunichiji,kosinnichiji,revision,deleteflag "
                 + ") VALUES ("
-                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterTmpSrShinkuukansou(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null, processData);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -1875,7 +1881,7 @@ public class GXHDO101B043 implements IFormLogic {
         String sql = "UPDATE tmp_sr_shinkuukansou SET "
                 + " lotpre = ?,kcpno = ?,syoribi = ?,sagyosya = ?,koutei = ?,gouki = ?,setteiondo = ?,setteijikan = ?,kaisuu = ?,suuryo = ?, "
                 + " bikou1 = ?,bikou2 = ?,tokuisaki = ?,lotkubuncode = ?,ownercode = ?,ukeiretannijyuryo = ?,ukeiresoujyuryou = ?,syurui = ?,"
-                + " startkakunin = ?,syuryonichiji = ?,endtantou = ?,kosinnichiji = ?,revision = ?,deleteflag = ? "
+                + " startkakunin = ?,syuryonichiji = ?,endtantou = ?,kensabasyo = ?,kosinnichiji = ?,revision = ?,deleteflag = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ? ";
 
         // 更新前の値を取得
@@ -1984,7 +1990,8 @@ public class GXHDO101B043 implements IFormLogic {
         params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B043Const.SHURYOU_DAY, srShinkuukansouData),
                 getItemData(itemList, GXHDO101B043Const.SHURYOU_TIME, srShinkuukansouData))); // 終了日時
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B043Const.ENDTANTOU, srShinkuukansouData))); // 終了担当者
-
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B043Const.KENSABASYO, srShinkuukansouData))); // 検査場所
+        
         if (isInsert) {
             params.add(systemTime); //登録日時
             params.add(systemTime); //更新日時
@@ -2020,9 +2027,9 @@ public class GXHDO101B043 implements IFormLogic {
         String sql = "INSERT INTO sr_shinkuukansou ("
                 + " kojyo,lotno,edaban,lotpre,kcpno,syoribi,kaishijikan,syuuryoujikan,sagyosya,koutei,gouki,setteiondo,setteijikan,"
                 + " kaisuu,suuryo,bikou1,bikou2,bikou3,tokuisaki,lotkubuncode,ownercode,ukeiretannijyuryo,ukeiresoujyuryou,syurui,"
-                + " startkakunin,syuryonichiji,endtantou,torokunichiji,kosinnichiji,revision "
+                + " startkakunin,syuryonichiji,endtantou,kensabasyo,torokunichiji,kosinnichiji,revision "
                 + ") VALUES ("
-                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterSrShinkuukansou(true, newRev, kojyo, lotNo, edaban, jissekino, systemTime, itemList, tmpSrShinkuukansou, processData);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -2051,7 +2058,7 @@ public class GXHDO101B043 implements IFormLogic {
         String sql = "UPDATE sr_shinkuukansou SET "
                 + " lotpre = ?,kcpno = ?,syoribi = ?,sagyosya = ?,gouki = ?,setteiondo = ?,setteijikan = ?,kaisuu = ?,suuryo = ?, "
                 + " bikou1 = ?,bikou2 = ?,tokuisaki = ?,lotkubuncode = ?,ownercode = ?,ukeiretannijyuryo = ?,ukeiresoujyuryou = ?,syurui = ?,"
-                + " startkakunin = ?,syuryonichiji = ?,endtantou = ?,kosinnichiji = ?,revision = ? "
+                + " startkakunin = ?,syuryonichiji = ?,endtantou = ?,kensabasyo = ?,kosinnichiji = ?,revision = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ? ";
 
         // 更新前の値を取得
@@ -2132,6 +2139,8 @@ public class GXHDO101B043 implements IFormLogic {
         params.add(DBUtil.stringToDateObject(getItemData(itemList, GXHDO101B043Const.SHURYOU_DAY, srShinkuukansouData),
                 getItemData(itemList, GXHDO101B043Const.SHURYOU_TIME, srShinkuukansouData))); // 終了日時
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B043Const.ENDTANTOU, srShinkuukansouData))); // 終了担当者
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B043Const.KENSABASYO, srShinkuukansouData))); // 検査場所
+        
 
         if (isInsert) {
             params.add(systemTime); //登録日時
@@ -2347,6 +2356,9 @@ public class GXHDO101B043 implements IFormLogic {
             //終了担当者
             case GXHDO101B043Const.ENDTANTOU:
                 return StringUtil.nullToBlank(srShinkuukansouData.getEndtantou());
+            //検査場所
+            case GXHDO101B043Const.KENSABASYO:
+                return StringUtil.nullToBlank(srShinkuukansouData.getKensabasyo());
             // 備考1
             case GXHDO101B043Const.BIKOU1:
                 return StringUtil.nullToBlank(srShinkuukansouData.getBikou1());
@@ -2378,11 +2390,11 @@ public class GXHDO101B043 implements IFormLogic {
         String sql = "INSERT INTO tmp_sr_shinkuukansou ("
                 + " kojyo,lotno,edaban,lotpre,kcpno,syoribi,kaishijikan,syuuryoujikan,sagyosya,koutei,gouki,setteiondo,setteijikan,"
                 + " kaisuu,suuryo,bikou1,bikou2,bikou3,tokuisaki,lotkubuncode,ownercode,ukeiretannijyuryo,ukeiresoujyuryou,syurui,"
-                + " startkakunin,syuryonichiji,endtantou,torokunichiji,kosinnichiji,revision,deleteflag"
+                + " startkakunin,syuryonichiji,endtantou,kensabasyo,torokunichiji,kosinnichiji,revision,deleteflag"
                 + ") SELECT "
                 + " kojyo,lotno,edaban,lotpre,kcpno,syoribi,kaishijikan,syuuryoujikan,sagyosya,koutei,gouki,setteiondo,setteijikan,"
                 + " kaisuu,suuryo,bikou1,bikou2,bikou3,tokuisaki,lotkubuncode,ownercode,ukeiretannijyuryo,ukeiresoujyuryou,syurui,"
-                + " startkakunin,syuryonichiji,endtantou,? ,? ,? ,?"
+                + " startkakunin,syuryonichiji,endtantou,kensabasyo,? ,? ,? ,?"
                 + " FROM sr_shinkuukansou "
                 + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? ";
 

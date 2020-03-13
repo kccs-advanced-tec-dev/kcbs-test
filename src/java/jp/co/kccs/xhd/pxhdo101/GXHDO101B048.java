@@ -43,6 +43,7 @@ import org.apache.commons.dbutils.RowProcessor;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
+import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import org.apache.commons.dbutils.DbUtils;
 
@@ -1337,7 +1338,7 @@ public class GXHDO101B048 implements IFormLogic {
                 FXHDD01 itemOkuriRyohinsu = getItemRow(processData.getItemList(), GXHDO101B048Const.OKURI_RYOHINSU);
                 FXHDD01 itemUkeireTanijuryo = getItemRow(processData.getItemList(), GXHDO101B048Const.UKEIRE_TANNIJURYO);
                 itemOkuriRyohinsu.setValue(okuriRyohinsu);//送り良品数
-                itemUkeireTanijuryo.setValue(tanijuryo);//受入単位重量
+                itemUkeireTanijuryo.setValue(NumberUtil.getTruncatData(tanijuryo, itemUkeireTanijuryo.getInputLength(), itemUkeireTanijuryo.getInputLengthDec()));//受入単位重量
                 if (checkUkeireSojuryo(itemUkeireSojuryo, itemOkuriRyohinsu, itemUkeireTanijuryo)) {
                     // ﾁｪｯｸに問題なければ値をセット
                     calcUkeireSojuryo(itemUkeireSojuryo, itemOkuriRyohinsu, itemUkeireTanijuryo);
@@ -2224,7 +2225,7 @@ public class GXHDO101B048 implements IFormLogic {
     }
 
     /**
-     * 確保数計算押下処理
+     * 良品数計算押下処理
      *
      * @param processData 処理制御データ
      * @return 処理制御データ
@@ -3601,10 +3602,10 @@ public class GXHDO101B048 implements IFormLogic {
             BigDecimal makisu2 = new BigDecimal(StringUtil.emptyToZero(itemMakisu2.getValue()));
             BigDecimal honsu2 = new BigDecimal(StringUtil.emptyToZero(itemHonsu2.getValue()));
 
-            //「良品TPﾘｰﾙ巻数①」 × 「良品TPﾘｰﾙ本数①」 を算出する。
-            BigDecimal ryohinsu1 = makisu1.multiply(honsu1);
-            //「良品TPﾘｰﾙ巻数②」 × 「良品TPﾘｰﾙ本数②」 を算出する。
-            BigDecimal ryohinsu2 = makisu2.multiply(honsu2);
+            //「良品TPﾘｰﾙ巻数①」 × 1000 ×「良品TPﾘｰﾙ本数①」 を算出する。
+            BigDecimal ryohinsu1 = makisu1.multiply(BigDecimal.valueOf(1000)).multiply(honsu1);
+            //「良品TPﾘｰﾙ巻数②」 × 1000 ×「良品TPﾘｰﾙ本数②」 を算出する。
+            BigDecimal ryohinsu2 = makisu2.multiply(BigDecimal.valueOf(1000)).multiply(honsu2);
             // 計算結果を加算する。
             BigDecimal ryohinsu = ryohinsu1.add(ryohinsu2);
 
@@ -3741,6 +3742,7 @@ public class GXHDO101B048 implements IFormLogic {
      */
     private void calcUkeireSojuryo(FXHDD01 itemUkeireSojuryo, FXHDD01 itemOkuriRyohinsu, FXHDD01 itemUkeireTanijuryo) {
         try {
+            
             BigDecimal taniJuryo = new BigDecimal(itemUkeireTanijuryo.getValue());
             BigDecimal okuriRyohinsu = new BigDecimal(itemOkuriRyohinsu.getValue());
 

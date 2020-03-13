@@ -126,7 +126,12 @@ public class GXHDO101B043Const {
      * 終了担当者
      */
     public static final String ENDTANTOU = "sr_shinkuukansou_endtantou";
-
+    
+    /**
+     * 検査場所
+     */
+    public static final String KENSABASYO = "sr_shinkuukansou_kensabasyo";
+    
     /**
      * 備考1
      */

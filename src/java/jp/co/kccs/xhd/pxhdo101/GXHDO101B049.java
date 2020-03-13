@@ -1359,7 +1359,7 @@ public class GXHDO101B049 implements IFormLogic {
      */
     private Map loadFxhdd03RevInfo(QueryRunner queryRunnerDoc, String kojyo, String lotNo,
             String edaban, int jissekino, String formId) throws SQLException {
-        // 設計データの取得
+        // 実績データの取得
         String sql = "SELECT rev, jotai_flg "
                 + "FROM fxhdd03 "
                 + "WHERE kojyo = ? AND lotno = ? "
@@ -1390,7 +1390,7 @@ public class GXHDO101B049 implements IFormLogic {
      */
     private Map loadFxhdd03RevInfoWithLock(QueryRunner queryRunnerDoc, Connection conDoc, String kojyo, String lotNo,
             String edaban, int jissekino, String formId) throws SQLException {
-        // 設計データの取得
+        // 実績データの取得
         String sql = "SELECT rev, jotai_flg "
                 + "FROM fxhdd03 "
                 + "WHERE kojyo = ? AND lotno = ? "
@@ -1460,8 +1460,9 @@ public class GXHDO101B049 implements IFormLogic {
     private List<SrTapingCheck> loadSrTapingCheck(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, int jissekino, String rev) throws SQLException {
 
+        
         String sql = "SELECT "
-                + "kojyo,lotno,edaban,kaisuu,kcpno,ownercode,ryouhintopreelmaki1,ryouhintopreelhonsu1,ryouhintopreelmaki2,ryouhintopreelhonsu2,"
+                + "kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,ryouhintopreelmaki1,ryouhintopreelhonsu1,ryouhintopreelmaki2,ryouhintopreelhonsu2,"
                 + "tapinggouki,kensabasyo,reelchecksu,kensakaisinichiji,kensakaisitantou,monotati,hakuri,hanuke,rabure,kakeng,dipfuryo,"
                 + "sonota,tapeijyo,reelcheckkekka,kensasyuryonichiji,kensasyuryotantou,tapeng1,tapeng2,denkitokuseisaikensa,gaikansaikensa,"
                 + "bikou1,bikou2,torokunichiji,kosinnichiji,revision,'0' AS deleteflag "
@@ -1489,6 +1490,8 @@ public class GXHDO101B049 implements IFormLogic {
         mapping.put("edaban", "edaban"); //枝番
         mapping.put("kaisuu", "kaisuu"); //検査回数
         mapping.put("kcpno", "kcpno"); //KCPNO
+        mapping.put("tokuisaki", "tokuisaki"); //得意先
+        mapping.put("lotkubuncode", "lotkubuncode"); //ﾛｯﾄ区分
         mapping.put("ownercode", "ownercode"); //オーナー
         mapping.put("ryouhintopreelmaki1", "ryouhintopreelmaki1"); //良品TPﾘｰﾙ巻数①
         mapping.put("ryouhintopreelhonsu1", "ryouhintopreelhonsu1"); //良品TPﾘｰﾙ本数①
@@ -1544,7 +1547,7 @@ public class GXHDO101B049 implements IFormLogic {
     private List<SrTapingCheck> loadTmpSrTapingCheck(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, int jissekino, String rev) throws SQLException {
         String sql = "SELECT "
-                + "kojyo,lotno,edaban,kaisuu,kcpno,ownercode,ryouhintopreelmaki1,ryouhintopreelhonsu1,ryouhintopreelmaki2,ryouhintopreelhonsu2,"
+                + "kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,ryouhintopreelmaki1,ryouhintopreelhonsu1,ryouhintopreelmaki2,ryouhintopreelhonsu2,"
                 + "tapinggouki,kensabasyo,reelchecksu,kensakaisinichiji,kensakaisitantou,monotati,hakuri,hanuke,rabure,kakeng,dipfuryo,"
                 + "sonota,tapeijyo,reelcheckkekka,kensasyuryonichiji,kensasyuryotantou,tapeng1,tapeng2,denkitokuseisaikensa,gaikansaikensa,"
                 + "bikou1,bikou2,torokunichiji,kosinnichiji,revision,deleteflag "
@@ -1573,6 +1576,8 @@ public class GXHDO101B049 implements IFormLogic {
         mapping.put("edaban", "edaban"); //枝番
         mapping.put("kaisuu", "kaisuu"); //検査回数
         mapping.put("kcpno", "kcpno"); //KCPNO
+        mapping.put("tokuisaki", "tokuisaki"); //得意先
+        mapping.put("lotkubuncode", "lotkubuncode"); //ﾛｯﾄ区分
         mapping.put("ownercode", "ownercode"); //オーナー
         mapping.put("ryouhintopreelmaki1", "ryouhintopreelmaki1"); //良品TPﾘｰﾙ巻数①
         mapping.put("ryouhintopreelhonsu1", "ryouhintopreelhonsu1"); //良品TPﾘｰﾙ本数①
@@ -1859,12 +1864,12 @@ public class GXHDO101B049 implements IFormLogic {
             String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, List<FXHDD01> itemList, Map hiddenDataMap) throws SQLException {
 
         String sql = "INSERT INTO tmp_sr_taping_check ("
-                + "kojyo,lotno,edaban,kaisuu,kcpno,ownercode,ryouhintopreelmaki1,ryouhintopreelhonsu1,ryouhintopreelmaki2,ryouhintopreelhonsu2,"
+                + "kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,ryouhintopreelmaki1,ryouhintopreelhonsu1,ryouhintopreelmaki2,ryouhintopreelhonsu2,"
                 + "tapinggouki,kensabasyo,reelchecksu,kensakaisinichiji,kensakaisitantou,monotati,hakuri,hanuke,rabure,kakeng,dipfuryo,"
                 + "sonota,tapeijyo,reelcheckkekka,kensasyuryonichiji,kensasyuryotantou,tapeng1,tapeng2,denkitokuseisaikensa,gaikansaikensa,"
                 + "bikou1,bikou2,torokunichiji,kosinnichiji,revision,deleteflag "
                 + ") VALUES ("
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
                 + ") ";
 
         List<Object> params = setUpdateParameterTmpSrTapingCheck(true, newRev, deleteflag, kojyo, lotNo, edaban, jissekino, systemTime, itemList, null, hiddenDataMap);
@@ -1893,7 +1898,7 @@ public class GXHDO101B049 implements IFormLogic {
             String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, List<FXHDD01> itemList, Map hiddenDataMap) throws SQLException {
 
         String sql = "UPDATE tmp_sr_taping_check SET "
-                + "kcpno = ?,ownercode = ?,ryouhintopreelmaki1 = ?,ryouhintopreelhonsu1 = ?,ryouhintopreelmaki2 = ?,ryouhintopreelhonsu2 = ?,tapinggouki = ?,"
+                + "kcpno = ?,tokuisaki = ?,lotkubuncode = ?,ownercode = ?,ryouhintopreelmaki1 = ?,ryouhintopreelhonsu1 = ?,ryouhintopreelmaki2 = ?,ryouhintopreelhonsu2 = ?,tapinggouki = ?,"
                 + "kensabasyo = ?,reelchecksu = ?,kensakaisinichiji = ?,kensakaisitantou = ?,monotati = ?,hakuri = ?,hanuke = ?,rabure = ?,kakeng = ?,"
                 + "dipfuryo = ?,sonota = ?,tapeijyo = ?,reelcheckkekka = ?,kensasyuryonichiji = ?,kensasyuryotantou = ?,tapeng1 = ?,tapeng2 = ?,"
                 + "denkitokuseisaikensa = ?,gaikansaikensa = ?,bikou1 = ?,bikou2 = ?,kosinnichiji = ?,revision = ?,deleteflag = ? "
@@ -1977,6 +1982,8 @@ public class GXHDO101B049 implements IFormLogic {
             params.add(jissekino); //実績No
         }
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.KCPNO, srTapingCheckData))); //KCPNO
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.TOKUISAKI, srTapingCheckData))); //得意先
+        params.add(DBUtil.stringToStringObjectDefaultNull(StringUtil.nullToBlank(hiddenDataMap.get("lotkubuncode")))); //ﾛｯﾄ区分
         params.add(DBUtil.stringToStringObjectDefaultNull(StringUtil.nullToBlank(hiddenDataMap.get("ownercode")))); //ｵｰﾅｰ
 
         String maekoteiNoDataMsg = MessageUtil.getMessage("XHD-000051");
@@ -2075,12 +2082,12 @@ public class GXHDO101B049 implements IFormLogic {
             String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, List<FXHDD01> itemList, SrTapingCheck tmpSrTapingCheck, Map hiddenDataMap) throws SQLException {
 
         String sql = "INSERT INTO sr_taping_check ("
-                + "kojyo,lotno,edaban,kaisuu,kcpno,ownercode,ryouhintopreelmaki1,ryouhintopreelhonsu1,ryouhintopreelmaki2,ryouhintopreelhonsu2,"
+                + "kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,ryouhintopreelmaki1,ryouhintopreelhonsu1,ryouhintopreelmaki2,ryouhintopreelhonsu2,"
                 + "tapinggouki,kensabasyo,reelchecksu,kensakaisinichiji,kensakaisitantou,monotati,hakuri,hanuke,rabure,kakeng,dipfuryo,"
                 + "sonota,tapeijyo,reelcheckkekka,kensasyuryonichiji,kensasyuryotantou,tapeng1,tapeng2,denkitokuseisaikensa,gaikansaikensa,"
                 + "bikou1,bikou2,torokunichiji,kosinnichiji,revision "
                 + ") VALUES ("
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
                 + ") ";
 
         List<Object> params = setUpdateParameterSrTapingCheck(true, newRev, kojyo, lotNo, edaban, jissekino, systemTime, itemList, tmpSrTapingCheck, hiddenDataMap);
@@ -2108,7 +2115,7 @@ public class GXHDO101B049 implements IFormLogic {
     private void updateSrTapingCheck(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, String jotaiFlg, BigDecimal newRev,
             String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, List<FXHDD01> itemList, Map hiddenDataMap) throws SQLException {
         String sql = "UPDATE sr_taping_check SET "
-                + "kcpno = ?,ownercode = ?,ryouhintopreelmaki1 = ?,ryouhintopreelhonsu1 = ?,ryouhintopreelmaki2 = ?,ryouhintopreelhonsu2 = ?,tapinggouki = ?,"
+                + "kcpno = ?,tokuisaki = ?,lotkubuncode = ?,ownercode = ?,ryouhintopreelmaki1 = ?,ryouhintopreelhonsu1 = ?,ryouhintopreelmaki2 = ?,ryouhintopreelhonsu2 = ?,tapinggouki = ?,"
                 + "kensabasyo = ?,reelchecksu = ?,kensakaisinichiji = ?,kensakaisitantou = ?,monotati = ?,hakuri = ?,hanuke = ?,rabure = ?,kakeng = ?,"
                 + "dipfuryo = ?,sonota = ?,tapeijyo = ?,reelcheckkekka = ?,kensasyuryonichiji = ?,kensasyuryotantou = ?,tapeng1 = ?,tapeng2 = ?,"
                 + "denkitokuseisaikensa = ?,gaikansaikensa = ?,bikou1 = ?,bikou2 = ?,kosinnichiji = ?,revision = ? "
@@ -2160,6 +2167,8 @@ public class GXHDO101B049 implements IFormLogic {
             params.add(jissekino); //検査回数
         }
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B049Const.KCPNO, srTapingCheckData))); //KCPNO
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B049Const.TOKUISAKI, srTapingCheckData))); //得意先
+        params.add(DBUtil.stringToStringObject(StringUtil.nullToBlank(hiddenDataMap.get("lotkubuncode")))); //ﾛｯﾄ区分
         params.add(DBUtil.stringToStringObject(StringUtil.nullToBlank(hiddenDataMap.get("ownercode")))); //ｵｰﾅｰ
 
         String maekoteiNoDataMsg = MessageUtil.getMessage("XHD-000051");
@@ -2359,6 +2368,12 @@ public class GXHDO101B049 implements IFormLogic {
             //KCPNO
             case GXHDO101B049Const.KCPNO:
                 return StringUtil.nullToBlank(srTapingCheckData.getKcpno());
+            //得意先
+            case GXHDO101B049Const.TOKUISAKI:
+                return StringUtil.nullToBlank(srTapingCheckData.getTokuisaki());
+            //ﾛｯﾄ区分
+            case GXHDO101B049Const.LOT_KUBUN:
+                return StringUtil.nullToBlank(srTapingCheckData.getLotkubuncode());
             //ｵｰﾅｰ
             case GXHDO101B049Const.OWNER:
                 return StringUtil.nullToBlank(srTapingCheckData.getOwnercode());
@@ -2474,12 +2489,12 @@ public class GXHDO101B049 implements IFormLogic {
             String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime) throws SQLException {
 
         String sql = "INSERT INTO tmp_sr_taping_check ("
-                + "kojyo,lotno,edaban,kaisuu,kcpno,ownercode,ryouhintopreelmaki1,ryouhintopreelhonsu1,ryouhintopreelmaki2,ryouhintopreelhonsu2,"
+                + "kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,ryouhintopreelmaki1,ryouhintopreelhonsu1,ryouhintopreelmaki2,ryouhintopreelhonsu2,"
                 + "tapinggouki,kensabasyo,reelchecksu,kensakaisinichiji,kensakaisitantou,monotati,hakuri,hanuke,rabure,kakeng,dipfuryo,"
                 + "sonota,tapeijyo,reelcheckkekka,kensasyuryonichiji,kensasyuryotantou,tapeng1,tapeng2,denkitokuseisaikensa,gaikansaikensa,"
                 + "bikou1,bikou2,torokunichiji,kosinnichiji,revision,deleteflag "
                 + ") SELECT "
-                + "kojyo,lotno,edaban,kaisuu,kcpno,ownercode,ryouhintopreelmaki1,ryouhintopreelhonsu1,ryouhintopreelmaki2,ryouhintopreelhonsu2,"
+                + "kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,ryouhintopreelmaki1,ryouhintopreelhonsu1,ryouhintopreelmaki2,ryouhintopreelhonsu2,"
                 + "tapinggouki,kensabasyo,reelchecksu,kensakaisinichiji,kensakaisitantou,monotati,hakuri,hanuke,rabure,kakeng,dipfuryo,"
                 + "sonota,tapeijyo,reelcheckkekka,kensasyuryonichiji,kensasyuryotantou,tapeng1,tapeng2,denkitokuseisaikensa,gaikansaikensa,"
                 + "bikou1,bikou2,?,?,?,? "
