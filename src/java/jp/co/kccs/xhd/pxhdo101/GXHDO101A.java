@@ -413,7 +413,7 @@ public class GXHDO101A implements Serializable {
                     new String[]{FORM_ID_DENKITOKUSEI_ESI, FORM_ID_DENKITOKUSEI_3TANSHI_4TANSHI, FORM_ID_DENKITOKUSEI_IPPANHIN,
                         FORM_ID_DENKITOKUSEI_NETSUSHORI, FORM_ID_GAIKAN_KENSA, FORM_ID_TP_SAGYO, FORM_ID_TP_CHECK});
 
-            //ﾛｯﾄ参照ﾎﾞﾀﾝ表示/非表示の設定
+            //画面追加リンク表示/非表示の設定
             if (insertUseFlg && userGrpList.contains("画面制御_利用ﾕｰｻﾞｰ")) {
                 setAddLinkRender(true);
             } else {
@@ -1641,10 +1641,7 @@ public class GXHDO101A implements Serializable {
                     fxhdm01JikiQC = fxhdm01;
                     break;
                 case FORM_ID_GAIKAN_KENSA:
-                    // 外観検査に関しては
-                    if (fxhdm01GaikanKensa == null) {
-                        fxhdm01GaikanKensa = fxhdm01;
-                    }
+                    fxhdm01GaikanKensa = fxhdm01;
                     break;
             }
 
@@ -1717,7 +1714,7 @@ public class GXHDO101A implements Serializable {
      * @param addIdx 追加位置
      * @param fxhdm01 メニュー情報
      * @param setName 設定メニュー名
-     * @return 処理結果(true：メニュー追加、false：メニュー追加無し)
+     * @return 処理結果(true：メニュー追加あり、false：メニュー追加なし)
      * @throws CloneNotSupportedException
      */
     private boolean addMenu(List<FXHDM01> menuListGXHDO101, Map addCountMap, int addIdx, FXHDM01 fxhdm01, String setName) throws CloneNotSupportedException {
@@ -1931,10 +1928,12 @@ public class GXHDO101A implements Serializable {
     }
 
     /**
-     * 画面ID別の実績No取得
-     *
+     * 画面ID別の最大実績No取得
+     * 
+     * @param mapJissekiNo 実績Noマップ
+     * @param menuListGXHDO101 メニューリスト
      * @param gamenId 画面ID
-     * @param gamenIdList 画面IDリスト
+     * @param fxhdd08Info 画面制御情報
      * @return 実績No
      */
     private int getJissekino(Map mapJissekiNo, List<FXHDM01> menuListGXHDO101, String gamenId, List<Map<String, Object>> fxhdd08Info) {
@@ -2298,7 +2297,7 @@ public class GXHDO101A implements Serializable {
             return;
         }
 
-        // 初回は実績Noが0で来るため、1をセット
+        // 実績Noの指定が無い場合最大の実績Noを設定
         int jissekiNo;
         if (startJissekiNo == 0) {
             jissekiNo = getMaxJissekiNo(mapJissekiNo, targetFormId, fxhdd08Info);
@@ -3001,7 +3000,7 @@ public class GXHDO101A implements Serializable {
      * @param fxhdd08InfoList 画面制御情報リスト
      * @param mapMaxJissekiNo 最大実績NoMap
      * @param queryRunnerXHD queryRunner オブジェクト
-     * @return true：追加あり、false：追加無し
+     * @return true：追加あり、false：追加なし
      * @throws SQLException 例外エラー
      * @throws CloneNotSupportedException 例外エラー
      */
@@ -3119,7 +3118,7 @@ public class GXHDO101A implements Serializable {
      * @param fxhdd08InfoList 画面制御情報リスト
      * @param mapMaxJissekiNo 最大実績NoMap
      * @param queryRunnerXHD queryRunnerオブジェクト(XHD)
-     * @return true:追加あり、false：追加無し
+     * @return true:追加あり、false：追加なし
      * @throws SQLException 例外エラー
      * @throws CloneNotSupportedException 例外エラー
      */
@@ -3290,7 +3289,7 @@ public class GXHDO101A implements Serializable {
      * @param mapFxhdd03Info 実績情報Map
      * @param queryRunnerXHD queryRunnerオブジェクト(XHD)
      * @param addCountMap 追加回数Map
-     * @return true：追加あり、false:追加無し
+     * @return true：追加あり、false:追加なし
      * @throws CloneNotSupportedException 例外エラー
      * @throws SQLException 例外エラー
      */
@@ -3490,7 +3489,7 @@ public class GXHDO101A implements Serializable {
      * @param jissekino 実績No
      * @param mapMenuName メニュー名Map
      * @param addCount 追加回数
-     * @return true:追加 fasle：追加無し
+     * @return true:追加あり fasle：追加なし
      * @throws CloneNotSupportedException
      */
     private boolean addMenuTpCheckInsMenu(List<FXHDM01> menuListGXHDO101, String formId, int addIdx, int jissekino, Map<String, String> mapMenuName, int addCount) throws CloneNotSupportedException {
