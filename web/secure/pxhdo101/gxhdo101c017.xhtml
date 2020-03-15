@@ -38,12 +38,12 @@
                              action="#{gXHDO101A.reSearchHinshitsuData(beanGXHDO101C017.isFormError)}"
                              async="false"
                              process="@this"
-                             update="form" >
+                             update="form:menuTable" >
                 <p:ajax event="click"
                         async="false"
                         listener="#{beanGXHDO101C017.doOk()}"
                         process="gxhdo101c017Form" 
-                        update="gxhdo101c017Form form:growlMessage"
+                        update="gxhdo101c017Form:growlMessage"
                         oncomplete="if('error'!=args.firstParam){PF('W_dlg_gxhdo101c017').hide();} "/>
             </p:commandButton>
             

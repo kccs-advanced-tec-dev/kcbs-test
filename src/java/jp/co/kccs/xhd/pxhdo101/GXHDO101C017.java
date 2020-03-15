@@ -266,7 +266,13 @@ public class GXHDO101C017 implements Serializable {
             return;
         }
 
-        updateFormData(selectMenuId);
+        // 更新処理
+        if(!updateFormData(selectMenuId)){
+            setIsFormError(true);
+            // エラーの場合はコールバック変数に"error"をセット
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.addCallbackParam("firstParam", "error");
+        }
 
         setIsFormError(false);
     }
@@ -296,7 +302,7 @@ public class GXHDO101C017 implements Serializable {
      * 更新処理
      * @param selectMenuId 選択メニュー(ID)
      */
-    private void updateFormData(String selectMenuId) {
+    private boolean updateFormData(String selectMenuId) {
         QueryRunner queryRunnerDoc = new QueryRunner(dataSourceDocServer);
 
         Connection conDoc = null;
@@ -327,7 +333,7 @@ public class GXHDO101C017 implements Serializable {
 
                     // ロールバックしてリターン
                     DBUtil.rollbackConnection(conDoc, LOGGER);
-                    return;
+                    return false;
                 }
 
                 // 挿入するデータに関連づける。
@@ -341,7 +347,8 @@ public class GXHDO101C017 implements Serializable {
             insertFxhdd08(queryRunnerDoc, conDoc, this.tantoushaCd, strKojyo, strLotNo, strEdaban, selectMenuId, jissekino, this.insPositionInfoMenu.getFormId(), this.insPositionInfoMenu.getJissekiNo(), systemTime);
 
             DbUtils.commitAndCloseQuietly(conDoc);
-
+            
+            return true;
         } catch (SQLException e) {
 
             DBUtil.rollbackConnection(conDoc, LOGGER);
@@ -352,6 +359,10 @@ public class GXHDO101C017 implements Serializable {
             ErrUtil.outputErrorLog("Exception発生", e, LOGGER);
         }
 
+        FacesMessage message = new FacesMessage("実行エラー", null);
+        FacesContext.getCurrentInstance().addMessage(null, message);
+
+        return false;
     }
 
  
