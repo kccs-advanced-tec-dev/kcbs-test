@@ -102,6 +102,11 @@ public class FXHDM01 implements Serializable, Cloneable {
     private Timestamp koshinDateFxhdd08;
 
     /**
+     * 外観検査種類(外観検査画面呼出用)
+     */
+    private String gaikankensasyurui;
+    
+    /**
      * クローン実装
      *
      * @return クローン
@@ -372,6 +377,22 @@ public class FXHDM01 implements Serializable, Cloneable {
      */
     public void setKoshinDateFxhdd08(Timestamp koshinDateFxhdd08) {
         this.koshinDateFxhdd08 = koshinDateFxhdd08;
+    }
+
+    /**
+     * 外観検査種類(外観検査画面呼出用)
+     * @return the gaikankensasyurui
+     */
+    public String getGaikankensasyurui() {
+        return gaikankensasyurui;
+    }
+
+    /**
+     * 外観検査種類(外観検査画面呼出用)
+     * @param gaikankensasyurui the gaikankensasyurui to set
+     */
+    public void setGaikankensasyurui(String gaikankensasyurui) {
+        this.gaikankensasyurui = gaikankensasyurui;
     }
 
     
