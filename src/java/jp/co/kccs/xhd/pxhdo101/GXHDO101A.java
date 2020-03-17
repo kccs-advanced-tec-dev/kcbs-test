@@ -1734,6 +1734,7 @@ public class GXHDO101A implements Serializable {
         } else if (FORM_ID_GAIKAN_KENSA.equals(fxhdm01.getFormId())) {
             //外観検査の場合名前固定
             menuListGXHDO101.get(addIdx).setMenuName("検査(外観検査2次)");
+            menuListGXHDO101.get(addIdx).setGaikankensasyurui("2");
         }
 
         return true;
@@ -2955,22 +2956,24 @@ public class GXHDO101A implements Serializable {
         }
 
         // 前工程の画面により検査種類をセッションにセット
-        switch (maekoteiFormId) {
-            // 磁器QC
-            case FORM_ID_JIKI_QC:
-                session.setAttribute("kensashuri46", "2");
-                break;
-            // 外部電極・ﾒｯｷ真空乾燥
-            case FORM_ID_GAIBUDENKYOKU_MEKKI_SHINKU_KANSO:
-                session.setAttribute("kensashuri46", "3");
-                break;
-            default:
-                if (StringUtil.isEmpty(menuInfo.getGaikankensasyurui())) {
+        if (StringUtil.isEmpty(menuInfo.getGaikankensasyurui())) {
+            switch (maekoteiFormId) {
+                // 磁器QC
+                case FORM_ID_JIKI_QC:
+                    session.setAttribute("kensashuri46", "2");
+                    break;
+                // 外部電極・ﾒｯｷ真空乾燥
+                case FORM_ID_GAIBUDENKYOKU_MEKKI_SHINKU_KANSO:
+                    session.setAttribute("kensashuri46", "3");
+                    break;
+                default:
+
                     session.setAttribute("kensashuri46", "4");
-                } else {
-                    session.setAttribute("kensashuri46", menuInfo.getGaikankensasyurui());
-                }
-                break;
+
+                    break;
+            }
+        } else {
+            session.setAttribute("kensashuri46", menuInfo.getGaikankensasyurui());
         }
 
         QueryRunner queryRunnerDoc = new QueryRunner(dataSourceDocServer);
@@ -3329,6 +3332,13 @@ public class GXHDO101A implements Serializable {
         if (fxhdd08Info.get("koshin_date") != null) {
             addMenu.setKoshinDateFxhdd08((Timestamp) fxhdd08Info.get("koshin_date"));
         }
+        
+        // 外観検査の場合
+        if(FORM_ID_GAIKAN_KENSA.equals(addMenu.getFormId())){
+            addMenu.setMenuName("検査(外観検査4次)");
+            addMenu.setGaikankensasyurui("4");
+        }
+        
         menuListGXHDO101.add(menuIdx + 1, addMenu);
 
         // 最大の実績Noを保持
@@ -4028,8 +4038,7 @@ public class GXHDO101A implements Serializable {
         List<String> menuList = new ArrayList<>();
         for (FXHDM01 fxhdm01 : selectMenuList) {
             if(FORM_ID_GAIKAN_KENSA.equals(fxhdm01.getFormId())){
-                menuList.add("検査(外観検査4次)");
-                continue;
+                fxhdm01.setFormTitle("検査(外観検査4次)");
             }
             menuList.add(fxhdm01.getFormTitle());
         }
