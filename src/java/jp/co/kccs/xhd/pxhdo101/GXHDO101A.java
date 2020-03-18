@@ -392,7 +392,8 @@ public class GXHDO101A implements Serializable {
 
             
             // 画面IDﾌｨﾙﾀﾘﾝｸﾞ
-            List<String> filterGamenIdList = getFilterGamenIdList(queryRunnerDoc, queryRunnerXHD, strSekkeiNo);
+            //TODO
+            List<String[]> filterGamenIdList = getFilterGamenIdList(queryRunnerDoc, queryRunnerXHD, strSekkeiNo);
             menuListFiltering(this.menuListGXHDO101, filterGamenIdList);// 権限絞り込みありメニュー
             menuListFiltering(this.menuListGXHDO101Nofiltering, filterGamenIdList);// 権限絞り込みなしメニュー
             
@@ -1471,12 +1472,12 @@ public class GXHDO101A implements Serializable {
      * @return フィルタリングデータ
      * @throws SQLException 例外エラー
      */
-    private List<String> getFilterGamenIdList(QueryRunner queryRunnerDoc, QueryRunner queryRunnerXHD, String sekkeiNo) throws SQLException {
+    private List<String[]> getFilterGamenIdList(QueryRunner queryRunnerDoc, QueryRunner queryRunnerXHD, String sekkeiNo) throws SQLException {
 
-        List<String> filterGamenIdList = new ArrayList<>();
+        List<String[]> filterGamenIdList = new ArrayList<>();
 
         // プロセスマスターを検索する
-        String sqlsearchGamenID = "SELECT gamen_id,kouteimei,koumokumei,kanrikoumoku,kikakuchi FROM fxhdm03 WHERE kotei_process_kubun = ? ";
+        String sqlsearchGamenID = "SELECT gamen_id,kouteimei,koumokumei,kanrikoumoku,kikakuch,kotei_jun FROM fxhdm03 WHERE kotei_process_kubun = ? ";
         List<Object> paramsM03 = new ArrayList<>();
         paramsM03.add("joken_connect");
 
@@ -1497,8 +1498,10 @@ public class GXHDO101A implements Serializable {
         }
 
         boolean existData;
+        String koteijun;
         for (Iterator i = listFxhdm03.iterator(); i.hasNext();) {
             existData = false;
+            koteijun = "";
             HashMap m = (HashMap) i.next();
             for (DaJoken dajoken : listDaJoken) {
                 //工程名,項目名,管理項目,規格値が一致する画面IDを表示対象としてリストに追加する。
@@ -1509,10 +1512,17 @@ public class GXHDO101A implements Serializable {
 
                     existData = true;
                     break;
+                } else if (StringUtil.nullToBlank(dajoken.getKouteiMei()).equals(StringUtil.nullToBlank(m.get("kouteimei")))
+                        && StringUtil.nullToBlank(dajoken.getKoumokuMei()).equals(StringUtil.nullToBlank(m.get("koumokumei")))
+                        && StringUtil.nullToBlank(dajoken.getKanriKoumoku()).equals(StringUtil.nullToBlank(m.get("kanrikoumoku")))) {
+
+                    // 工程順をセット
+                    koteijun = StringUtil.nullToBlank(m.get("kotei_jun"));
+                    break;
                 }
             }
             if (!existData) {
-                filterGamenIdList.add(StringUtil.nullToBlank(m.get("gamen_id")));
+                filterGamenIdList.add(new String[] {StringUtil.nullToBlank(m.get("gamen_id")), koteijun});
             }
         }
 
@@ -2225,11 +2235,14 @@ public class GXHDO101A implements Serializable {
      * @param menuList メニューリスト
      * @param filterGamenIdList フィルタリングID
      */
-    private void menuListFiltering(List<FXHDM01> menuList, List<String> filterGamenIdList) {
+    private void menuListFiltering(List<FXHDM01> menuList, List<String[]> filterGamenIdList) {
         if (!menuList.isEmpty()) {
 
             // データが取得できた場合、フィルターしたデータのみ表示
             List<FXHDM01> removeMenuList = new ArrayList();
+            String filterGamenId;
+            String koteijun;
+            Map<String, Integer> countMap = new HashMap();
             for (FXHDM01 data : menuList) {
                 if (filterGamenIdList.contains(data.getFormId())) {
                     removeMenuList.add(data);
