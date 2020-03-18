@@ -2240,11 +2240,17 @@ public class GXHDO101A implements Serializable {
 
             // データが取得できた場合、フィルターしたデータのみ表示
             List<FXHDM01> removeMenuList = new ArrayList();
-            String filterGamenId;
-            String koteijun;
-            Map<String, Integer> countMap = new HashMap();
+            Map<String, Object> countMap = new HashMap();
             for (FXHDM01 data : menuList) {
-                if (filterGamenIdList.contains(data.getFormId())) {
+                int menuCount = 1;
+                if(countMap.containsKey(data.getFormId())){
+                    menuCount = (int)countMap.get(data.getFormId()) + 1;
+                }
+                countMap.put(data.getFormId(), menuCount);
+                
+                String[] filterGamenIdInfo = filterGamenIdList.stream().filter(n -> n[0].equals(data.getFormId())).findFirst().orElse(null);
+                
+                if (filterGamenIdInfo != null && (StringUtil.isEmpty(filterGamenIdInfo[1]) || filterGamenIdInfo[1].equals(String.valueOf(menuCount)))) {
                     removeMenuList.add(data);
                 }
             }
