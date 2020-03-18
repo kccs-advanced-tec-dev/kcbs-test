@@ -2226,7 +2226,7 @@ public class GXHDO201B049Model implements Serializable{
      * @return the tpng1kensabi3
      */
     public Timestamp getTpng1kensabi3() {
-        return tpng1kensabi;
+        return tpng1kensabi3;
     }
 
     /**
