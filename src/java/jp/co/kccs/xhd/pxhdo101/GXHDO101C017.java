@@ -8,6 +8,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.logging.Logger;
 import java.util.List;
 import java.util.Map;
@@ -56,6 +57,8 @@ public class GXHDO101C017 implements Serializable {
     }
 
     private static final Logger LOGGER = Logger.getLogger(GXHDO101C017.class.getName());
+
+    private static final List<String> FORM_ID_DENKITOKUSEI = Arrays.asList("GXHDO101B040", "GXHDO101B041", "GXHDO101B042");
 
     /**
      * DataSource(DocumentServer)
@@ -272,6 +275,7 @@ public class GXHDO101C017 implements Serializable {
             // エラーの場合はコールバック変数に"error"をセット
             RequestContext context = RequestContext.getCurrentInstance();
             context.addCallbackParam("firstParam", "error");
+            return;
         }
 
         setIsFormError(false);
@@ -452,13 +456,23 @@ public class GXHDO101C017 implements Serializable {
         String sql = "SELECT MAX(jissekino) AS jissekino "
                 + "FROM fxhdd08 "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? "
-                + "AND gamen_id = ?  ";
+                + "AND ";
+        // 電気特性の場合、複数機能で実績Noを管理する。
+        if (FORM_ID_DENKITOKUSEI.contains(formId)) {
+            sql += DBUtil.getInConditionPreparedStatement("gamen_id", FORM_ID_DENKITOKUSEI.size());
+        } else {
+            sql += "gamen_id = ? ";
+        }
 
         List<Object> params = new ArrayList<>();
         params.add(kojyo);
         params.add(lotNo);
         params.add(edaban);
-        params.add(formId);
+        if (FORM_ID_DENKITOKUSEI.contains(formId)) {
+            params.addAll(FORM_ID_DENKITOKUSEI);
+        } else {
+            params.add(formId);
+        }
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         Map<String, Object> map = queryRunnerDoc.query(conDoc, sql, new MapHandler(), params.toArray());
@@ -491,13 +505,23 @@ public class GXHDO101C017 implements Serializable {
         String sql = "SELECT MAX(jissekino) AS jissekino "
                 + "FROM fxhdd03 "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? "
-                + "AND gamen_id = ?  ";
+                + "AND ";
+        // 電気特性の場合、複数機能で実績Noを管理する。
+        if (FORM_ID_DENKITOKUSEI.contains(formId)) {
+            sql += DBUtil.getInConditionPreparedStatement("gamen_id", FORM_ID_DENKITOKUSEI.size());
+        } else {
+            sql += "gamen_id = ? ";
+        }
 
         List<Object> params = new ArrayList<>();
         params.add(kojyo);
         params.add(lotNo);
         params.add(edaban);
-        params.add(formId);
+        if (FORM_ID_DENKITOKUSEI.contains(formId)) {
+            params.addAll(FORM_ID_DENKITOKUSEI);
+        } else {
+            params.add(formId);
+        }
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         Map<String, Object> map = queryRunnerDoc.query(conDoc, sql, new MapHandler(), params.toArray());
