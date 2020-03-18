@@ -3034,88 +3034,6 @@ public class GXHDO101A implements Serializable {
 
     }
 
-    /**
-     * 電気特性メニュー 追加処理
-     *
-     * @param menuListGXHDO101 メニューリスト
-     * @param messageList メッセージリスト
-     * @param fxhdd03InfoList 実績リスト
-     * @param formId 画面ID
-     * @param startJisskeino 開始実績No
-     * @param fxhdd08InfoList 画面制御情報リスト
-     * @param mapMaxJissekiNo 最大実績NoMap
-     * @param queryRunnerXHD queryRunner オブジェクト
-     * @return true：追加あり、false：追加なし
-     * @throws SQLException 例外エラー
-     * @throws CloneNotSupportedException 例外エラー
-     */
-    private boolean addMenuDenkitokusei(List<FXHDM01> menuListGXHDO101, List<String> messageList, List<String[]> fxhdd03InfoList,
-            String formId, int startJisskeino, List<Map<String, Object>> fxhdd08InfoList, Map mapMaxJissekiNo, QueryRunner queryRunnerXHD) throws SQLException, CloneNotSupportedException {
-
-        FXHDM01 targetMenu = menuListGXHDO101.stream().filter(n -> formId.equals(n.getFormId())).filter(n -> startJisskeino == n.getJissekiNo()).findFirst().orElse(null);
-        // 対象のメニューが存在しない場合
-        if (targetMenu == null) {
-            return false;
-        }
-
-        int jissekiNo;
-        if (startJisskeino == 0) {
-            // 初回は実績Noが0で来るため、1か最大値+1をセット
-            jissekiNo = getMaxJissekiNo(mapMaxJissekiNo, formId, fxhdd08InfoList);
-        } else {
-            jissekiNo = startJisskeino;
-        }
-
-        // ﾛｯﾄNoを分割(チェック処理が実行されている前提の為、桁数の不足などは考慮しない)
-        String strKojyo = this.lotNo.substring(0, 3);
-        String strLotNo = this.lotNo.substring(3, 11);
-        String strEdaban = this.lotNo.substring(11, 14);
-
-        // 品質DB登録実績情報(登録済)取得
-        int jissekiNoCnt = 1;
-        for (String[] info : fxhdd03InfoList) {
-
-            // 処理開始の実績Noまでは処理をしない
-            if (Integer.parseInt(info[1]) < jissekiNo) {
-                continue;
-            }
-
-            // 1回目の処理が対象の実績Noの処理で無かった場合ブレイク
-            if (jissekiNoCnt == 1 && Integer.parseInt(info[1]) != jissekiNo) {
-                break;
-            }
-
-            // 実績Noが連続で無くなったタイミングでブレイク
-            if (jissekiNoCnt != Integer.parseInt(info[1]) - jissekiNo + 1) {
-                break;
-            }
-
-            // 状態ﾌﾗｸﾞが"1"(登録済)以外の場合ブレイク
-            if (!"1".equals(info[0])) {
-                break;
-            }
-
-            // 電気特性から電気特性再検を取得
-            String saiken = getSrDenkitokuseiesi(queryRunnerXHD, strKojyo, strLotNo, strEdaban, info[1], info[2], formId);
-            // データが存在しない場合、エラー
-            if (saiken == null) {
-                messageList.add(MessageUtil.getMessage("XHD-000170"));
-                return false;
-            }
-
-            // 再検査以外ループを抜ける
-            if (!"再検査".equals(saiken)) {
-                break;
-            }
-
-            jissekiNoCnt++;
-        }
-
-        // メニューを回数(実績No)分追加
-        addMenuKaisu(menuListGXHDO101, jissekiNoCnt, formId, startJisskeino, mapMaxJissekiNo, fxhdd08InfoList, new ArrayList<>());
-
-        return true;
-    }
 
     /**
      * [電気特性]から、電気特性再検を取得(値が無い場合はNULLを返却)
@@ -3288,13 +3206,6 @@ public class GXHDO101A implements Serializable {
                 }
             }
 
-//            // 電気特性によるメニュー追加
-//            if (fxhdm01.getJissekiNo() == 0 && (FORM_ID_DENKITOKUSEI_ESI.equals(fxhdm01.getFormId()) || FORM_ID_DENKITOKUSEI_3TANSHI_4TANSHI.equals(fxhdm01.getFormId()) || FORM_ID_DENKITOKUSEI_IPPANHIN.equals(fxhdm01.getFormId()))) {
-//                if (addMenuDenkitokusei(menuListGXHDO101, messageList, mapFxhdd03Info.get(fxhdm01.getFormId()), fxhdm01.getFormId(), fxhdm01.getJissekiNo(), fxhdd08Info, mapMaxJissekiNo, queryRunnerXHD)) {
-//                    continue;
-//                }
-//            }
-
             // TPﾁｪｯｸによるメニュー追加
             if (fxhdm01.getJissekiNo() == 0 && FORM_ID_TP_CHECK.equals(fxhdm01.getFormId())) {
                 addMenuTpCheck(menuListGXHDO101, idx, fxhdm01.getJissekiNo(), messageList, queryRunnerXHD, mapFxhdd03Info.get(fxhdm01.getFormId()), mapMaxJissekiNo, addCountMap, fxhdd08Info, addMenuList);
@@ -3402,11 +3313,6 @@ public class GXHDO101A implements Serializable {
      */
     private void addDynamicMenu(FXHDM01 addMenu, List<FXHDM01> menuListGXHDO101, List<String> messageList, Map<String, List<String[]>> mapFxhdd03Info, List<Map<String, Object>> fxhdd08InfoList, Map mapMaxJissekiNo, QueryRunner queryRunnerXHD, int menuIdx, Map addCountMap, List<FXHDM01> addMenuList) throws SQLException, CloneNotSupportedException {
         switch (addMenu.getFormId()) {
-//            case FORM_ID_DENKITOKUSEI_ESI:             // 電気特性・ESI
-//            case FORM_ID_DENKITOKUSEI_3TANSHI_4TANSHI: // 電気特性・3端子・4端子
-//            case FORM_ID_DENKITOKUSEI_IPPANHIN:        // 電気特性・一般品
-//                addMenuDenkitokusei(menuListGXHDO101, messageList, mapFxhdd03Info.get(addMenu.getFormId()), addMenu.getFormId(), addMenu.getJissekiNo(), fxhdd08InfoList, mapMaxJissekiNo, queryRunnerXHD);
-//                break;
             case FORM_ID_GAIKAN_KENSA: //外観検査
                 addMenuKensaGaikanKensa(menuListGXHDO101, messageList, mapFxhdd03Info.get(addMenu.getFormId()), addMenu.getJissekiNo(), fxhdd08InfoList, mapMaxJissekiNo, queryRunnerXHD);
                 break;
@@ -3485,21 +3391,6 @@ public class GXHDO101A implements Serializable {
         addCount++;
 
         int menuAddIdx = menuIdx;
-//        // 電気特性再検査ありの場合
-//        if ("あり".equals(kensaKekka[0])) {
-//            if (!addMenuTpCheckInsMenu(menuListGXHDO101, FORM_ID_DENKITOKUSEI_ESI, ++menuAddIdx, 0, addCount, addMenuList)) {
-//                menuAddIdx--;
-//            }
-//
-//            if (!addMenuTpCheckInsMenu(menuListGXHDO101, FORM_ID_DENKITOKUSEI_3TANSHI_4TANSHI, ++menuAddIdx, 0, addCount, addMenuList)) {
-//                menuAddIdx--;
-//            }
-//
-//            if (!addMenuTpCheckInsMenu(menuListGXHDO101, FORM_ID_DENKITOKUSEI_IPPANHIN, ++menuAddIdx, 0, addCount, addMenuList)) {
-//                menuAddIdx--;
-//            }
-//        }
-
         // 外観検査再検査ありの場合
         if ("あり".equals(kensaKekka[1])) {
             if (!addMenuTpCheckInsMenu(menuListGXHDO101, FORM_ID_GAIKAN_KENSA, ++menuAddIdx, 0, addCount, addMenuList)) {
