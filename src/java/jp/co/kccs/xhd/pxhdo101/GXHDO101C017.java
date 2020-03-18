@@ -272,6 +272,7 @@ public class GXHDO101C017 implements Serializable {
             // エラーの場合はコールバック変数に"error"をセット
             RequestContext context = RequestContext.getCurrentInstance();
             context.addCallbackParam("firstParam", "error");
+            return;
         }
 
         setIsFormError(false);
