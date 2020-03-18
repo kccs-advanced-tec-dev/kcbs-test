@@ -824,6 +824,15 @@ public class GXHDO901A implements Serializable {
     }
 
     /**
+     * リンククリック時処理
+     * 
+     * @param linkButtonId ボタンID 
+     */
+    public void cmdLinkAction(String linkButtonId) {
+        btnClick(linkButtonId);
+    }
+    
+    /**
      * ボタン押下時処理
      *
      * @param buttonId ボタンID
@@ -1254,12 +1263,14 @@ public class GXHDO901A implements Serializable {
                     + "hdd01.input_list, hdd01.input_default, hdd01.input_length, hdd01.input_length_dec, "
                     + "hdm02_1.font_size AS font_size_1, hdm02_1.font_color AS font_color_1, hdm02_1.bg_color AS bg_color_1, "
                     + "hcm02_4.font_size AS font_size_3, hcm02_4.font_color AS font_color_3, hcm02_4.bg_color AS bg_color_3, "
-                    + "CASE WHEN hdd01.label1_setting IS NULL THEN 'false' ELSE 'true' END AS render_1, "
+                    + "CASE WHEN hdd01.label1_setting IS NULL OR hdd01.link_button_id IS NOT NULL THEN 'false' ELSE 'true' END AS render_1, "
                     + "hdm02_2.font_size AS font_size_2, hdm02_2.font_color AS font_color_2, hdm02_2.bg_color AS bg_color_2, "
                     + "CASE WHEN hdd01.label2_setting IS NULL THEN 'false' ELSE 'true' END AS render_2, "
+                    + "CASE WHEN hdd01.link_button_id IS NULL THEN 'false' ELSE 'true' END AS render_link_button, "
                     + "hdm02_3.font_size AS font_size_input, "
                     + inputItemInfo
                     + "hdd01.joken_kotei_mei,hdd01.joken_komoku_mei,hdd01.joken_kanri_komoku,hdd01.standard_pattern, "
+                    + "hdd01.link_button_id, "
                     + "hdm02_3.bg_color AS bg_color_input_default "
                     + "FROM fxhdd01 hdd01 "
                     + "LEFT JOIN fxhdm02 hdm02_1 ON (hdd01.label1_setting = hdm02_1.setting_id) "
@@ -1294,6 +1305,7 @@ public class GXHDO901A implements Serializable {
             mapping.put("font_color_2", "fontColor2");
             mapping.put("bg_color_2", "backColor2");
             mapping.put("render_2", "render2");
+            mapping.put("render_link_button", "renderLinkButton");
             mapping.put("font_size_input", "fontSizeInput");
             mapping.put("font_color_input", "fontColorInput");
             mapping.put("bg_color_input", "backColorInput");
@@ -1312,6 +1324,7 @@ public class GXHDO901A implements Serializable {
             mapping.put("joken_komoku_mei", "jokenKomokuMei");
             mapping.put("joken_kanri_komoku", "jokenKanriKomoku");
             mapping.put("standard_pattern", "standardPattern");
+            mapping.put("link_button_id", "linkButtonId");
             mapping.put("bg_color_input_default", "backColorInputDefault");
             mapping.put("item_index", "itemIndex");
 
