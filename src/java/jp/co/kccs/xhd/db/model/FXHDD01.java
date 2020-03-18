@@ -114,6 +114,10 @@ public class FXHDD01 {
      */
     private boolean render2;
     /**
+     * 表示ﾗﾍﾞﾙリンクrender有無
+     */
+    private boolean renderLinkButton;
+    /**
      * 入力項目文字ｻｲｽﾞ
      */
     private int fontSizeInput;
@@ -189,6 +193,12 @@ public class FXHDD01 {
      * 規格情報ﾊﾟﾀｰﾝ
      */
     private String standardPattern;
+
+    /**
+     * ﾎﾞﾀﾝID
+     */
+    private String linkButtonId;
+    
     /**
      * 規格値
      */
@@ -538,6 +548,24 @@ public class FXHDD01 {
     }
 
     /**
+     * 表示ﾗﾍﾞﾙリンクrender有無
+     *
+     * @return the renderLinkButton
+     */
+    public boolean isRenderLinkButton() {
+        return renderLinkButton;
+    }
+
+    /**
+     * 表示ﾗﾍﾞﾙリンクrender有無
+     *
+     * @param renderLinkButton the renderLinkButton to set
+     */
+    public void setRenderLinkButton(boolean renderLinkButton) {
+        this.renderLinkButton = renderLinkButton;
+    }
+    
+    /**
      * 入力項目文字ｻｲｽﾞ
      *
      * @return the fontSizeInput
@@ -876,6 +904,24 @@ public class FXHDD01 {
     }
 
     /**
+     * ﾎﾞﾀﾝID
+     *
+     * @return the linkButtonId
+     */
+    public String getLinkButtonId() {
+        return linkButtonId;
+    }
+
+    /**
+     * ﾎﾞﾀﾝID
+     *
+     * @param linkButtonId the linkButtonId to set
+     */
+    public void setLinkButtonId(String linkButtonId) {
+        this.linkButtonId = linkButtonId;
+    }
+    
+    /**
      * 規格値
      *
      * @return the kikakuChi
@@ -1038,5 +1084,7 @@ public class FXHDD01 {
     public void checkByte() {
         // 切り捨て処理
         this.value = StringUtil.left(this.value, Integer.parseInt(this.getDisplayMaxLength()));
+        // 小文字を大文字に変換(StringUtil.leftでnullは返却されない)
+        this.value = this.value.toUpperCase();
     }
 }

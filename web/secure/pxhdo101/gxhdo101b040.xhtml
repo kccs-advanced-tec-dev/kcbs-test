@@ -124,6 +124,11 @@
                                 <p:dataList id="itemDataList" value="#{gXHDO101B040A.itemList}" var="item" type="none"  itemType="none" paginator="true" rows="#{gXHDO101B040A.hyojiKensu}" styleClass="repeated-form;ui-paginator">
                                     <ui:fragment rendered="#{gXHDO101B040A.itemRendered}">
                                         <p:panel id="itemPanel" style="background:#{item.backColor1}; min-height:48px;">
+                                            <p:commandLink id="cmdLink" rendered="#{item.renderLinkButton}" action="#{gXHDO101B040A.cmdLinkAction(item.linkButtonId)}" 
+                                                           process="@form" update="@form" async="false" oncomplete="cmdButtonOncomplete(args);"
+                                                           style="margin-left:8px;font-size:#{item.fontSize1}px;color:#{item.fontColor1};vertical-align: middle;">
+                                                    <h:outputText value="#{item.label1}" />
+                                            </p:commandLink>
                                             <h:outputText id="label1" rendered="#{item.render1}" value="#{item.label1}"
                                                           style="margin-left:8px;font-size:#{item.fontSize1}px;color:#{item.fontColor1};vertical-align: middle;"/>
                                             <h:outputText id="kikakuChi" rendered="#{item.render1}" value="#{item.kikakuChi}"
