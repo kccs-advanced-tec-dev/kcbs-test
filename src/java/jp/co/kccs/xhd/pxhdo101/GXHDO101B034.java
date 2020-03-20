@@ -2508,7 +2508,8 @@ public class GXHDO101B034 implements IFormLogic {
             FXHDD01 itemChargeroyu = getItemRow(processData.getItemList(), GXHDO101B034Const.CHARGEROYU);
             //3.「ﾁｬｰｼﾞ量」の規格値
             String valChargeroyu = itemChargeroyu.getKikakuChi().replace("【", "");
-            valChargeroyu = valChargeroyu.replace("】", "");          
+            valChargeroyu = valChargeroyu.replace("】", "");
+            valChargeroyu = valChargeroyu.replace(",", "");
             String updChargeroyu = getStringToDecValue(StringUtil.nullToBlank(valChargeroyu));
             
             // 処理数を数値変換
