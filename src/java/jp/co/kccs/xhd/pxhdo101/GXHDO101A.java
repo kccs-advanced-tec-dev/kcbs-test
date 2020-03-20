@@ -2245,10 +2245,11 @@ public class GXHDO101A implements Serializable {
                 }
                 countMap.put(data.getFormId(), menuCount);
 
-                String[] filterGamenIdInfo = filterGamenIdList.stream().filter(n -> n[0].equals(data.getFormId())).findFirst().orElse(null);
-
-                if (filterGamenIdInfo != null && (StringUtil.isEmpty(filterGamenIdInfo[1]) || filterGamenIdInfo[1].equals(String.valueOf(menuCount)))) {
-                    removeMenuList.add(data);
+                List<String[]> filterGamenIdInfoList = filterGamenIdList.stream().filter(n -> n[0].equals(data.getFormId())).collect(Collectors.toList());
+                for (String[] filterGamenIdInfo : filterGamenIdInfoList) {
+                    if (filterGamenIdInfo != null && (StringUtil.isEmpty(filterGamenIdInfo[1]) || filterGamenIdInfo[1].equals(String.valueOf(menuCount)))) {
+                        removeMenuList.add(data);
+                    }
                 }
             }
             for (FXHDM01 removeData : removeMenuList) {
