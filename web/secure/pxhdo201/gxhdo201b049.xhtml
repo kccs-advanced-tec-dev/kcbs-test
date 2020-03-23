@@ -1,0 +1,750 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Pragma" content="no-cache"/>
+        <meta http-equiv="Cache-Control" content="no-cache"/>
+        <meta http-equiv="Expires" content="0"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link href="#{request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/growl.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/loading.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/gxhdo201common.css" rel="stylesheet" type="text/css"/>
+        <script src="#{request.contextPath}/resources/bootstrap/js/bootstrap.min.js" />
+        <h:outputScript library="primefaces" name="jquery/jquery.js" />
+        <script src="#{request.contextPath}/resources/js/growl.js"></script>
+        <script type="text/javascript">
+            //<![CDATA[
+            var pointY;
+            function subFormOpen() {
+                pointY = $(window).scrollTop();
+                document.getElementById("mainForm").style.setProperty("display", "none");
+                document.getElementById("mainForm").style.setProperty("position", "fixed");
+                document.getElementById("mainForm").style.setProperty("Top", -(pointY) + 54 + "px");
+                document.getElementById("mainForm").style.removeProperty("display");
+            }
+            function subFormClose() {
+                document.getElementById("mainForm").style.setProperty("display", "none");
+                document.getElementById("mainForm").style.removeProperty("position");
+                document.getElementById("mainForm").style.removeProperty("Top");
+                document.getElementById("mainForm").style.removeProperty("display");
+                $(window).scrollTop(pointY);
+            }
+            //]]>
+        </script>
+    </h:head>
+    <h:body style="padding-top:30px;">
+        <f:metadata>
+            <f:viewAction action="#{gXHDO201B049.init()}"/>
+        </f:metadata>
+        <nav class="navbar  navbar-expand fixed-top navbar-dark" style="background-color:#0E6A89;height: 50px;z-index: 999;">
+            <span class="navbar-brand mb-0" style="font-size:18px;font-weight:bold;">#{myMsg.GXHDO201B049_GamenTitle}</span>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#Navber" aria-controls="Navber" aria-expanded="false" aria-label="ナビゲーションの切替">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <span class="navbar-text ml-auto">
+                <div class="collapse navbar-collapse" id="Navber">
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <h:link class="nav-link" outcome="/secure/pxhdo201/gxhdo201a.xhtml?faces-redirect=true" value="戻る"/>
+                    </li>
+                  </ul>
+                </div>
+            </span>
+        </nav>
+        <br/>
+        <h:form id="form" onkeypress="if (event.keyCode === 13) {
+                    return false;
+                }">
+            <div id="mainForm" style="width: 100%;">
+            <p:growl id="growlMessage" showDetail="false" sticky="true"  escape="false"/>
+            <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
+                <f:facet name="message">
+                    <h:outputText value="#{gXHDO201B049.getWarnMessage()}" escape="false"/>
+                </f:facet>
+                <p:commandButton id="warnOk" value="OK" styleClass="ui-conf-commandbtn-def1" style="width:100px;margin-left:50px;"
+                                 actionListener="#{gXHDO201B049.processWarnOk()}"
+                                 process="@this searchpanel"
+                                 update="@form growlMessage idDataTable btnExcel"
+                                 onstart="PF('cd').hide();$('#loadinggif').show();"
+                                 oncomplete="$('#loadinggif').hide();"/>
+                <p:commandButton id="warnCancel" value="Cancel" class="ui-conf-commandbtn-cancel" style="width:100px;" onclick="PF('cd').hide();" type="button" />
+            </p:confirmDialog>
+            <div id="loadinggif">
+                <img src="#{request.contextPath}/resources/gif/gif-load.gif"/>
+            </div>
+            <p:panel id="searchpanel" style="border:none;font-size:0.8em;#{gXHDO201B049.displayStyle}">
+                <table>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblLotNo" value="ﾛｯﾄNo" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pLotNo" value="#{gXHDO201B049.lotNo}" maxlength="14" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B049.checkByte('lotNo', 14)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblKcpNo" value="KCPNO" style="width:100px;"/>
+                        </td>
+                        <td colspan="3">
+                            <p:inputText id="pKcpNo" value="#{gXHDO201B049.kcpNo}" maxlength="25" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B049.checkByte('kcpNo', 25)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr style="">
+                        <td>
+                            <h:outputText id="lblKensaBasyo" value="検査場所" style="width:100px;"/>
+                        </td>
+                        <td colspan="3">
+                            <p:selectOneMenu id="pKensabasyo" style="margin-left:20px; width:190px;" styleClass="selectMenu" value="#{gXHDO201B049.kensaBasyo}">
+                                <f:selectItem itemValue="" itemLabel=""/>
+                                <f:selectItems value="#{gXHDO201B049.kensabasyoData}" />
+                            </p:selectOneMenu>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblKensaStartDate" value="検査開始日" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pKensaStartDateF" value="#{gXHDO201B049.kensaStartDateF}" maxlength="6" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B049.checkByte('kensaStartDateF', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pKensaStartDateT" value="#{gXHDO201B049.kensaStartDateT}" maxlength="6" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B049.checkByte('kensaStartDateT', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblKensaStartTime" value="検査開始時刻" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pKensaStartTimeF" value="#{gXHDO201B049.kensaStartTimeF}" maxlength="4" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B049.checkByte('kensaStartTimeF', 4)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pKensaStartTimeT" value="#{gXHDO201B049.kensaStartTimeT}" maxlength="4" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B049.checkByte('kensaStartTimeT', 4)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblKensaEndDate" value="検査終了日" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pKensaEndDateF" value="#{gXHDO201B049.kensaEndDateF}" maxlength="6" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B049.checkByte('kensaEndDateF', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pKensaEndDateT" value="#{gXHDO201B049.kensaEndDateT}" maxlength="6" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B049.checkByte('kensaEndDateT', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblKensaEndTime" value="検査終了時刻" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pKensaEndTimeF" value="#{gXHDO201B049.kensaEndTimeF}" maxlength="4" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B049.checkByte('kensaEndTimeF', 4)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pKensaEndTimeT" value="#{gXHDO201B049.kensaEndTimeT}" maxlength="4" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B049.checkByte('kensaEndTimeT', 4)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                </table>
+            </p:panel>
+            <p:panel id="buttonpanel" style="border:none;margin-top:-10px;#{gXHDO201B049.displayStyle}">
+                <p:commandButton id="btnSearch" style="width:100px;height:25px;font-size:0.7em;margin-left:0px;text-align:center;"
+                                value="検索" 
+                                actionListener="#{gXHDO201B049.checkInputAndSearch()}"
+                                process="@this searchpanel"
+                                update="growlMessage idDataTable btnExcel confDialog"
+                                onstart="$('#loadinggif').show();"
+                                oncomplete="$('#loadinggif').hide();if('warning'!=args.param1){PF('cd').hide();} else {PF('cd').show();}"/>
+                <p:commandButton id="bthClear" style="width:100px;height:25px;font-size:0.7em;margin-left:10px;text-align:center;" 
+                                value="クリア" 
+                                action="#{gXHDO201B049.clear()}"
+                                process="@this"
+                                update="searchpanel idDataTable btnExcel"/>
+                <p:commandButton id="btnExcel" style="width:100px;height:25px;font-size:0.7em;margin-left:10px;text-align:center;"
+                                disabled="#{gXHDO201B049.excelButtonDisable}"
+                                value="Excel保存"
+                                actionListener="#{gXHDO201B049.downloadExcel()}"
+                                process="@this"
+                                ajax="false"/>
+            </p:panel>
+            <div style="margin-top:-15px;#{gXHDO201B049.displayStyle}">
+                <p:dataTable id="idDataTable" var="item" style="font-size:0.8em;margin-top:20px;" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap"
+                             value="#{gXHDO201B049.listData}" emptyMessage="" paginator="true" paginatorPosition="top" rows="#{gXHDO201B049.getPagenatorCount()}">
+                    <p:column id="lotno" headerText="ﾛｯﾄNo.">
+                        <p:outputLabel value="#{item.lotno}"/>
+                    </p:column>
+                    <p:column id="kcpno" headerText="KCPNO">
+                        <p:outputLabel value="#{item.kcpno}"/>
+                    </p:column>
+                    <p:column id="tokuisaki" headerText="客先">
+                        <p:outputLabel value="#{item.tokuisaki}"/>
+                    </p:column>
+                    <p:column id="lotkubuncode" headerText="ﾛｯﾄ区分">
+                        <p:outputLabel value="#{item.lotkubuncode}"/>
+                    </p:column>
+                    <p:column id="ownercode" headerText="ｵｰﾅｰ">
+                        <p:outputLabel value="#{item.ownercode}"/>
+                    </p:column>
+                    <p:column id="ryouhintopreelmaki1" headerText="良品TPﾘｰﾙ巻数①" styleClass="number">
+                        <p:outputLabel value="#{item.ryouhintopreelmaki1}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ryouhintopreelhonsu1" headerText="良品TPﾘｰﾙ本数①" styleClass="number">
+                        <p:outputLabel value="#{item.ryouhintopreelhonsu1}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ryouhintopreelmaki2" headerText="良品TPﾘｰﾙ巻数②" styleClass="number">
+                        <p:outputLabel value="#{item.ryouhintopreelmaki2}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ryouhintopreelhonsu2" headerText="良品TPﾘｰﾙ本数②" styleClass="number">
+                        <p:outputLabel value="#{item.ryouhintopreelhonsu2}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tapinggouki" headerText="ﾃｰﾋﾟﾝｸﾞ号機">
+                        <p:outputLabel value="#{item.tapinggouki}"/>
+                    </p:column>
+                    <p:column id="kaisuu" headerText="検査回数" styleClass="number">
+                        <p:outputLabel value="#{item.kaisuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kensabasyo" headerText="検査場所">
+                        <p:outputLabel value="#{item.kensabasyo}"/>
+                    </p:column>
+                    <p:column id="reelchecksu" headerText="ﾘｰﾙﾁｪｯｸ数" styleClass="number">
+                        <p:outputLabel value="#{item.reelchecksu}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kensakaisinichiji" headerText="検査開始日時">
+                        <p:outputLabel value="#{item.kensakaisinichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kensakaisitantou" headerText="検査開始担当者">
+                        <p:outputLabel value="#{item.kensakaisitantou}"/>
+                    </p:column>
+                    <p:column id="monotati" headerText="物立ち" styleClass="number">
+                        <p:outputLabel value="#{item.monotati}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="hakuri" headerText="剥離" styleClass="number">
+                        <p:outputLabel value="#{item.hakuri}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="hanuke" headerText="歯抜け" styleClass="number">
+                        <p:outputLabel value="#{item.hanuke}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="rabure" headerText="破れ" styleClass="number">
+                        <p:outputLabel value="#{item.rabure}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kakeng" headerText="ｶｹNG" styleClass="number">
+                        <p:outputLabel value="#{item.kakeng}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="dipfuryo" headerText="DIP不良" styleClass="number">
+                        <p:outputLabel value="#{item.dipfuryo}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="sonota" headerText="その他" styleClass="number">
+                        <p:outputLabel value="#{item.sonota}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tapeijyo" headerText="ﾄｯﾌﾟﾃｰﾌﾟ、ｷｬﾘｱﾃｰﾌﾟ、ﾎﾞﾄﾑﾃｰﾌﾟ異常" styleClass="number">
+                        <p:outputLabel value="#{item.tapeijyo}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="reelcheckkekka" headerText="ﾘｰﾙﾁｪｯｸ結果">
+                        <p:outputLabel value="#{item.reelcheckkekka}"/>
+                    </p:column>
+                    <p:column id="kensasyuryonichiji" headerText="検査終了日時">
+                        <p:outputLabel value="#{item.kensasyuryonichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kensasyuryotantou" headerText="検査終了担当者">
+                        <p:outputLabel value="#{item.kensasyuryotantou}"/>
+                    </p:column>
+                    <p:column id="tapeng1" headerText="TPNG1">
+                        <p:outputLabel value="#{item.tapeng1}"/>
+                    </p:column>
+                    <p:column id="tapeng2" headerText="TPNG2">
+                        <p:outputLabel value="#{item.tapeng2}"/>
+                    </p:column>
+                    <p:column id="denkitokuseisaikensa" headerText="電気特性再検査">
+                        <p:outputLabel value="#{item.denkitokuseisaikensa}"/>
+                    </p:column>
+                    <p:column id="gaikansaikensa" headerText="外観再検査">
+                        <p:outputLabel value="#{item.gaikansaikensa}"/>
+                    </p:column>
+                    <p:column id="bikou1" headerText="備考1">
+                        <p:outputLabel value="#{item.bikou1}"/>
+                    </p:column>
+                    <p:column id="bikou2" headerText="備考2">
+                        <p:outputLabel value="#{item.bikou2}"/>
+                    </p:column>
+                    <p:column id="tpng1jissekino" headerText="TPNG1:何回目(1回目)">
+                        <p:outputLabel value="#{item.tpng1jissekino}"/>
+                    </p:column>
+                    <p:column id="tpng1kensabi" headerText="TPNG1:検査日(1回目)">
+                        <p:outputLabel value="#{item.tpng1kensabi}">
+                            <f:convertDateTime pattern="yyyy/MM/dd" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng1kensakubun" headerText="TPNG1:検査区分(1回目)">
+                        <p:outputLabel value="#{item.tpng1kensakubun}"/>
+                    </p:column>
+                    <p:column id="tpng1kensasya" headerText="TPNG1:検査者(1回目)">
+                        <p:outputLabel value="#{item.tpng1kensasya}"/>
+                    </p:column>
+                    <p:column id="tpng1tpkosuu" headerText="TPNG1:TP個数(1回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng1tpkosuu}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng1ng1kosuu" headerText="TPNG1:NG1個数(1回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng1ng1kosuu}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng1nukitorikosuu" headerText="TPNG1:抜き取り個数(1回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng1nukitorikosuu}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng1cap_ir_ngkosuu" headerText="TPNG1:容量/絶縁抵抗NG個数(1回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng1cap_ir_ngkosuu}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng1shortkosuu" headerText="TPNG1:ｼｮｰﾄ個数(1回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng1shortkosuu}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng1etckosuu" headerText="TPNG1:その他個数(1回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng1etckosuu}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng1biko1" headerText="TPNG1:備考1(1回目)">
+                        <p:outputLabel value="#{item.tpng1biko1}"/>
+                    </p:column>
+                    <p:column id="tpng1biko2" headerText="TPNG1:備考2(1回目)">
+                        <p:outputLabel value="#{item.tpng1biko2}"/>
+                    </p:column>
+                    <p:column id="tpng1hantei" headerText="TPNG1:判定(1回目)">
+                        <p:outputLabel value="#{item.tpng1hantei}"/>
+                    </p:column>
+                    <p:column id="tpng2jissekino" headerText="TPNG2:何回目(1回目)">
+                        <p:outputLabel value="#{item.tpng2jissekino}"/>
+                    </p:column>
+                    <p:column id="tpng2kensabi" headerText="TPNG2:検査日(1回目)">
+                        <p:outputLabel value="#{item.tpng2kensabi}">
+                            <f:convertDateTime pattern="yyyy/MM/dd" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2kensakubun" headerText="TPNG2:検査区分(1回目)">
+                        <p:outputLabel value="#{item.tpng2kensakubun}"/>
+                    </p:column>
+                    <p:column id="tpng2kensasya" headerText="TPNG2:検査者(1回目)">
+                        <p:outputLabel value="#{item.tpng2kensasya}"/>
+                    </p:column>
+                    <p:column id="tpng2tpkosuu" headerText="TPNG2:TP個数(1回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2tpkosuu}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2ng2kosuu" headerText="TPNG2:NG2個数(1回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2ng2kosuu}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2nukitorikosuu" headerText="TPNG2:抜き取り個数(1回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2nukitorikosuu}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2a_modekosuu" headerText="TPNG2:Aﾓｰﾄﾞ個数(1回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2a_modekosuu}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2c_modekosuu" headerText="TPNG2:Cﾓｰﾄﾞ個数(1回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2c_modekosuu}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2d_modekosuu" headerText="TPNG2:Dﾓｰﾄﾞ個数(1回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2d_modekosuu}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2etckosuu" headerText="TPNG2:その他個数(1回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2etckosuu}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2dhagarekosuu" headerText="TPNG2:端子電極ﾊｶﾞﾚ個数(1回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2dhagarekosuu}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2dkizukosuu" headerText="TPNG2:端子電極ｷｽﾞ個数(1回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2dkizukosuu}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2jcrackkosuu" headerText="TPNG2:磁器ｸﾗｯｸ個数(1回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2jcrackkosuu}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2mekkinasikosuu" headerText="TPNG2:めっきなし個数(1回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2mekkinasikosuu}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2mekkiukikosuu" headerText="TPNG2:めっき浮き個数(1回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2mekkiukikosuu}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2biko1" headerText="TPNG2:備考1(1回目)">
+                        <p:outputLabel value="#{item.tpng2biko1}"/>
+                    </p:column>
+                    <p:column id="tpng2biko2" headerText="TPNG2:備考2(1回目)">
+                        <p:outputLabel value="#{item.tpng2biko2}"/>
+                    </p:column>
+                    <p:column id="tpng2hantei" headerText="TPNG2:判定(1回目)">
+                        <p:outputLabel value="#{item.tpng2hantei}"/>
+                    </p:column>
+                    <p:column id="tpng1jissekino2" headerText="TPNG1:何回目(2回目)">
+                        <p:outputLabel value="#{item.tpng1jissekino2}"/>
+                    </p:column>
+                    <p:column id="tpng1kensabi2" headerText="TPNG1:検査日(2回目)">
+                        <p:outputLabel value="#{item.tpng1kensabi2}">
+                            <f:convertDateTime pattern="yyyy/MM/dd" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng1kensakubun2" headerText="TPNG1:検査区分(2回目)">
+                        <p:outputLabel value="#{item.tpng1kensakubun2}"/>
+                    </p:column>
+                    <p:column id="tpng1kensasya2" headerText="TPNG1:検査者(2回目)">
+                        <p:outputLabel value="#{item.tpng1kensasya2}"/>
+                    </p:column>
+                    <p:column id="tpng1tpkosuu2" headerText="TPNG1:TP個数(2回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng1tpkosuu2}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng1ng1kosuu2" headerText="TPNG1:NG1個数(2回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng1ng1kosuu2}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng1nukitorikosuu2" headerText="TPNG1:抜き取り個数(2回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng1nukitorikosuu2}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng1cap_ir_ngkosuu2" headerText="TPNG1:容量/絶縁抵抗NG個数(2回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng1cap_ir_ngkosuu2}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng1shortkosuu2" headerText="TPNG1:ｼｮｰﾄ個数(2回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng1shortkosuu2}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng1etckosuu2" headerText="TPNG1:その他個数(2回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng1etckosuu2}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng1biko1_2" headerText="TPNG1:備考1(2回目)">
+                        <p:outputLabel value="#{item.tpng1biko1_2}"/>
+                    </p:column>
+                    <p:column id="tpng1biko2_2" headerText="TPNG1:備考2(2回目)">
+                        <p:outputLabel value="#{item.tpng1biko2_2}"/>
+                    </p:column>
+                    <p:column id="tpng1hantei2" headerText="TPNG1:判定(2回目)">
+                        <p:outputLabel value="#{item.tpng1hantei2}"/>
+                    </p:column>
+                    <p:column id="tpng2jissekino2" headerText="TPNG2:何回目(2回目)">
+                        <p:outputLabel value="#{item.tpng2jissekino2}"/>
+                    </p:column>
+                    <p:column id="tpng2kensabi2" headerText="TPNG2:検査日(2回目)">
+                        <p:outputLabel value="#{item.tpng2kensabi2}">
+                            <f:convertDateTime pattern="yyyy/MM/dd" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2kensakubun2" headerText="TPNG2:検査区分(2回目)">
+                        <p:outputLabel value="#{item.tpng2kensakubun2}"/>
+                    </p:column>
+                    <p:column id="tpng2kensasya2" headerText="TPNG2:検査者(2回目)">
+                        <p:outputLabel value="#{item.tpng2kensasya2}"/>
+                    </p:column>
+                    <p:column id="tpng2tpkosuu2" headerText="TPNG2:TP個数(2回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2tpkosuu2}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2ng2kosuu2" headerText="TPNG2:NG2個数(2回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2ng2kosuu2}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2nukitorikosuu2" headerText="TPNG2:抜き取り個数(2回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2nukitorikosuu2}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2a_modekosuu2" headerText="TPNG2:Aﾓｰﾄﾞ個数(2回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2a_modekosuu2}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2c_modekosuu2" headerText="TPNG2:Cﾓｰﾄﾞ個数(2回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2c_modekosuu2}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2d_modekosuu2" headerText="TPNG2:Dﾓｰﾄﾞ個数(2回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2d_modekosuu2}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2etckosuu2" headerText="TPNG2:その他個数(2回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2etckosuu2}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2dhagarekosuu2" headerText="TPNG2:端子電極ﾊｶﾞﾚ個数(2回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2dhagarekosuu2}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2dkizukosuu2" headerText="TPNG2:端子電極ｷｽﾞ個数(2回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2dkizukosuu2}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2jcrackkosuu2" headerText="TPNG2:磁器ｸﾗｯｸ個数(2回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2jcrackkosuu2}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2mekkinasikosuu2" headerText="TPNG2:めっきなし個数(2回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2mekkinasikosuu2}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2mekkiukikosuu2" headerText="TPNG2:めっき浮き個数(2回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2mekkiukikosuu2}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2biko1_2" headerText="TPNG2:備考1(2回目)">
+                        <p:outputLabel value="#{item.tpng2biko1_2}"/>
+                    </p:column>
+                    <p:column id="tpng2biko2_2" headerText="TPNG2:備考2(2回目)">
+                        <p:outputLabel value="#{item.tpng2biko2_2}"/>
+                    </p:column>
+                    <p:column id="tpng2hantei2" headerText="TPNG2:判定(2回目)">
+                        <p:outputLabel value="#{item.tpng2hantei2}"/>
+                    </p:column>
+                    <p:column id="tpng1jissekino3" headerText="TPNG1:何回目(3回目)">
+                        <p:outputLabel value="#{item.tpng1jissekino3}"/>
+                    </p:column>
+                    <p:column id="tpng1kensabi3" headerText="TPNG1:検査日(3回目)">
+                        <p:outputLabel value="#{item.tpng1kensabi3}">
+                            <f:convertDateTime pattern="yyyy/MM/dd" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng1kensakubun3" headerText="TPNG1:検査区分(3回目)">
+                        <p:outputLabel value="#{item.tpng1kensakubun3}"/>
+                    </p:column>
+                    <p:column id="tpng1kensasya3" headerText="TPNG1:検査者(3回目)">
+                        <p:outputLabel value="#{item.tpng1kensasya3}"/>
+                    </p:column>
+                    <p:column id="tpng1tpkosuu3" headerText="TPNG1:TP個数(3回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng1tpkosuu3}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng1ng1kosuu3" headerText="TPNG1:NG1個数(3回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng1ng1kosuu3}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng1nukitorikosuu3" headerText="TPNG1:抜き取り個数(3回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng1nukitorikosuu3}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng1cap_ir_ngkosuu3" headerText="TPNG1:容量/絶縁抵抗NG個数(3回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng1cap_ir_ngkosuu3}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng1shortkosuu3" headerText="TPNG1:ｼｮｰﾄ個数(3回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng1shortkosuu3}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng1etckosuu3" headerText="TPNG1:その他個数(3回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng1etckosuu3}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng1biko1_3" headerText="TPNG1:備考1(3回目)">
+                        <p:outputLabel value="#{item.tpng1biko1_3}"/>
+                    </p:column>
+                    <p:column id="tpng1biko2_3" headerText="TPNG1:備考2(3回目)">
+                        <p:outputLabel value="#{item.tpng1biko2_3}"/>
+                    </p:column>
+                    <p:column id="tpng1hantei3" headerText="TPNG1:判定(3回目)">
+                        <p:outputLabel value="#{item.tpng1hantei3}"/>
+                    </p:column>
+                    <p:column id="tpng2jissekino3" headerText="TPNG2:何回目(3回目)">
+                        <p:outputLabel value="#{item.tpng2jissekino3}"/>
+                    </p:column>
+                    <p:column id="tpng2kensabi3" headerText="TPNG2:検査日(3回目)">
+                        <p:outputLabel value="#{item.tpng2kensabi3}">
+                            <f:convertDateTime pattern="yyyy/MM/dd" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2kensakubun3" headerText="TPNG2:検査区分(3回目)">
+                        <p:outputLabel value="#{item.tpng2kensakubun3}"/>
+                    </p:column>
+                    <p:column id="tpng2kensasya3" headerText="TPNG2:検査者(3回目)">
+                        <p:outputLabel value="#{item.tpng2kensasya3}"/>
+                    </p:column>
+                    <p:column id="tpng2tpkosuu3" headerText="TPNG2:TP個数(3回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2tpkosuu3}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2ng2kosuu3" headerText="TPNG2:NG2個数(3回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2ng2kosuu3}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2nukitorikosuu3" headerText="TPNG2:抜き取り個数(3回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2nukitorikosuu3}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2a_modekosuu3" headerText="TPNG2:Aﾓｰﾄﾞ個数(3回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2a_modekosuu3}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2c_modekosuu3" headerText="TPNG2:Cﾓｰﾄﾞ個数(3回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2c_modekosuu3}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2d_modekosuu3" headerText="TPNG2:Dﾓｰﾄﾞ個数(3回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2d_modekosuu3}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2etckosuu3" headerText="TPNG2:その他個数(3回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2etckosuu3}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2dhagarekosuu3" headerText="TPNG2:端子電極ﾊｶﾞﾚ個数(3回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2dhagarekosuu3}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2dkizukosuu3" headerText="TPNG2:端子電極ｷｽﾞ個数(3回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2dkizukosuu3}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2jcrackkosuu3" headerText="TPNG2:磁器ｸﾗｯｸ個数(3回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2jcrackkosuu3}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2mekkinasikosuu3" headerText="TPNG2:めっきなし個数(3回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2mekkinasikosuu3}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2mekkiukikosuu3" headerText="TPNG2:めっき浮き個数(3回目)" styleClass="number">
+                        <p:outputLabel value="#{item.tpng2mekkiukikosuu3}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tpng2biko1_3" headerText="TPNG2:備考1(3回目)">
+                        <p:outputLabel value="#{item.tpng2biko1_3}"/>
+                    </p:column>
+                    <p:column id="tpng2biko2_3" headerText="TPNG2:備考2(3回目)">
+                        <p:outputLabel value="#{item.tpng2biko2_3}"/>
+                    </p:column>
+                    <p:column id="tpng2hantei3" headerText="TPNG2:判定(3回目)">
+                        <p:outputLabel value="#{item.tpng2hantei3}"/>
+                    </p:column>
+
+
+                </p:dataTable>
+            </div>            
+            </div>
+            <div>
+                <ui:include src="/secure/common/initMessage.xhtml"/>
+            </div>
+        </h:form>
+    </h:body>
+</html>
