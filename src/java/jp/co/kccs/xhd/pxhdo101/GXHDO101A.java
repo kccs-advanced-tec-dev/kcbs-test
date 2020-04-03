@@ -3910,13 +3910,6 @@ public class GXHDO101A implements Serializable {
      */
     public void checkAddMenu(FXHDM01 itemInfo) {
 
-        if (!"1".equals(itemInfo.getJotaiFlg())) {
-            FacesMessage message
-                    = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000189"), null);
-            FacesContext.getCurrentInstance().addMessage(null, message);
-            return;
-        }
-
         FXHDM01 atoKoteiMenuInfo = null; // 後工程情報
         boolean existKotei = false;
         for (FXHDM01 fxhdm01 : this.menuListGXHDO101Nofiltering) {
