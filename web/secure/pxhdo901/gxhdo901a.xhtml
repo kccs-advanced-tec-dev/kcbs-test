@@ -199,7 +199,7 @@
                             </p:commandLink>
                             <h:outputText id="label1" rendered="#{item.render1}" value="#{item.label1}"
                                           style="margin-left:8px;font-size:#{item.fontSize1}px;color:#{item.fontColor1};vertical-align: middle;"/>
-                            <h:outputText id="kikakuChi" rendered="#{item.render1}" value="#{item.kikakuChi}"
+                            <h:outputText id="kikakuChi" rendered="#{item.render1 || item.renderLinkButton}" value="#{item.kikakuChi}"
                                           style="margin-left:8px;font-size:#{item.fontSize3}px;color:#{item.fontColor3};vertical-align: middle;"/>
 
                             <h:outputText id="lblValue" rendered="#{item.renderOutputLabel}" value="#{item.value}"
