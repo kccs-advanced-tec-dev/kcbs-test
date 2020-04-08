@@ -3060,7 +3060,7 @@ public class GXHDO101B041 implements IFormLogic {
         params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(pItemList, GXHDO101B041Const.SEIHIN_SENBETSU_SHURYO_DAY, srDenkitokuseiesi),
                 getItemData(pItemList, GXHDO101B041Const.SEIHIN_SENBETSU_SHURYO_TIME, srDenkitokuseiesi))); //選別終了日時
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B041Const.SEIHIN_KENSA_GOKI, srDenkitokuseiesi))); //検査号機
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO101B041Const.SEIHIN_BUNRUI_AIR_ATSU, srDenkitokuseiesi))); //分類ｴｱｰ圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B041Const.SEIHIN_BUNRUI_AIR_ATSU, srDenkitokuseiesi))); //分類ｴｱｰ圧
         if (isInsert) {
             params.add(null); //CDｺﾝﾀｸﾄ圧
             params.add(null); //IRｺﾝﾀｸﾄ圧
@@ -3439,7 +3439,7 @@ public class GXHDO101B041 implements IFormLogic {
         params.add(DBUtil.stringToDateObject(getItemData(pItemList, GXHDO101B041Const.SEIHIN_SENBETSU_SHURYO_DAY, srDenkitokuseiesi),
                 getItemData(pItemList, GXHDO101B041Const.SEIHIN_SENBETSU_SHURYO_TIME, srDenkitokuseiesi))); //選別終了日時
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B041Const.SEIHIN_KENSA_GOKI, srDenkitokuseiesi))); //検査号機
-        params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO101B041Const.SEIHIN_BUNRUI_AIR_ATSU, srDenkitokuseiesi))); //分類ｴｱｰ圧
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B041Const.SEIHIN_BUNRUI_AIR_ATSU, srDenkitokuseiesi))); //分類ｴｱｰ圧
         if (isInsert) {
             params.add(0); //CDｺﾝﾀｸﾄ圧
             params.add(0); //IRｺﾝﾀｸﾄ圧
@@ -4090,17 +4090,17 @@ public class GXHDO101B041 implements IFormLogic {
      */
     private void calcShinFuryoritsu(ProcessData processData) {
         //BIN1 真の不良率計算
-        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B041Const.SET_BIN1_SHIN_FURYORITSU, GXHDO101B041Const.SET_BIN1_MACHINE_FURYORITSU, GXHDO101B041Const.SET_BIN1_NUKITORIKEKKA_S);
+        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B041Const.SET_BIN1_SHIN_FURYORITSU, GXHDO101B041Const.SET_BIN1_MACHINE_FURYORITSU, GXHDO101B041Const.SET_BIN1_NUKITORIKEKKA_T);
         //BIN2 真の不良率計算
-        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B041Const.SET_BIN2_SHIN_FURYORITSU, GXHDO101B041Const.SET_BIN2_MACHINE_FURYORITSU, GXHDO101B041Const.SET_BIN2_NUKITORIKEKKA_S);
+        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B041Const.SET_BIN2_SHIN_FURYORITSU, GXHDO101B041Const.SET_BIN2_MACHINE_FURYORITSU, GXHDO101B041Const.SET_BIN2_NUKITORIKEKKA_T);
         //BIN3 真の不良率計算
-        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B041Const.SET_BIN3_SHIN_FURYORITSU, GXHDO101B041Const.SET_BIN3_MACHINE_FURYORITSU, GXHDO101B041Const.SET_BIN3_NUKITORIKEKKA_S);
+        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B041Const.SET_BIN3_SHIN_FURYORITSU, GXHDO101B041Const.SET_BIN3_MACHINE_FURYORITSU, GXHDO101B041Const.SET_BIN3_NUKITORIKEKKA_T);
         //BIN4 真の不良率計算
-        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B041Const.SET_BIN4_SHIN_FURYORITSU, GXHDO101B041Const.SET_BIN4_MACHINE_FURYORITSU, GXHDO101B041Const.SET_BIN4_NUKITORIKEKKA_S);
+        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B041Const.SET_BIN4_SHIN_FURYORITSU, GXHDO101B041Const.SET_BIN4_MACHINE_FURYORITSU, GXHDO101B041Const.SET_BIN4_NUKITORIKEKKA_T);
         //BIN5 真の不良率計算
-        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B041Const.SET_BIN5_SHIN_FURYORITSU, GXHDO101B041Const.SET_BIN5_MACHINE_FURYORITSU, GXHDO101B041Const.SET_BIN5_NUKITORIKEKKA_S);
+        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B041Const.SET_BIN5_SHIN_FURYORITSU, GXHDO101B041Const.SET_BIN5_MACHINE_FURYORITSU, GXHDO101B041Const.SET_BIN5_NUKITORIKEKKA_T);
         //BIN6 真の不良率計算
-        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B041Const.SET_BIN6_SHIN_FURYORITSU, GXHDO101B041Const.SET_BIN6_MACHINE_FURYORITSU, GXHDO101B041Const.SET_BIN6_NUKITORIKEKKA_S);
+        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B041Const.SET_BIN6_SHIN_FURYORITSU, GXHDO101B041Const.SET_BIN6_MACHINE_FURYORITSU, GXHDO101B041Const.SET_BIN6_NUKITORIKEKKA_T);
 
     }
 
