@@ -115,7 +115,7 @@ public class GXHDO201B040Model implements Serializable{
     /**
      * 分類ｴｱｰ圧
      */
-    private Integer bunruiairatu = null;
+    private BigDecimal bunruiairatu = null;
 
     /**
      * CDｺﾝﾀｸﾄ圧
@@ -1384,7 +1384,7 @@ public class GXHDO201B040Model implements Serializable{
      * 分類ｴｱｰ圧
      * @return the bunruiairatu
      */
-    public Integer getBunruiairatu() {
+    public BigDecimal getBunruiairatu() {
         return bunruiairatu;
     }
 
@@ -1392,7 +1392,7 @@ public class GXHDO201B040Model implements Serializable{
      * 分類ｴｱｰ圧
      * @param bunruiairatu the bunruiairatu to set
      */
-    public void setBunruiairatu(Integer bunruiairatu) {
+    public void setBunruiairatu(BigDecimal bunruiairatu) {
         this.bunruiairatu = bunruiairatu;
     }
 
