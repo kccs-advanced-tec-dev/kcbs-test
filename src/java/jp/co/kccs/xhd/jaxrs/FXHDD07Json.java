@@ -3,7 +3,6 @@
  */
 package jp.co.kccs.xhd.jaxrs;
 
-import java.math.BigDecimal;
 
 /**
  * ===============================================================================<br>
@@ -14,6 +13,11 @@ import java.math.BigDecimal;
  * 計画書No	K1811-DS001<br>
  * 変更者	KCCS D.Yanagida<br>
  * 変更理由	新規作成<br>
+ * <br>
+ * 変更日	2020/04/09<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	項目追加対応<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -88,6 +92,21 @@ public class FXHDD07Json {
     private String bin6setteiti;
     private String bin7setteiti;
     private String bin8setteiti;
+    private String drop13pc;
+    private String drop13ps;
+    private String drop13msdc;
+    private String drop24pc;
+    private String drop24ps;
+    private String drop24msdc;
+    private String bin1senbetsukbn;
+    private String bin2senbetsukbn;
+    private String bin3senbetsukbn;
+    private String bin4senbetsukbn;
+    private String bin5senbetsukbn;
+    private String bin6senbetsukbn;
+    private String bin7senbetsukbn;
+    private String bin8senbetsukbn;
+
 
     /**
      * @return the maker
@@ -1025,5 +1044,201 @@ public class FXHDD07Json {
      */
     public void setBin8setteiti(String bin8setteiti) {
         this.bin8setteiti = bin8setteiti;
+    }
+
+    /**
+     * @return the drop13pc
+     */
+    public String getDrop13pc() {
+        return drop13pc;
+    }
+
+    /**
+     * @param drop13pc the drop13pc to set
+     */
+    public void setDrop13pc(String drop13pc) {
+        this.drop13pc = drop13pc;
+    }
+
+    /**
+     * @return the drop13ps
+     */
+    public String getDrop13ps() {
+        return drop13ps;
+    }
+
+    /**
+     * @param drop13ps the drop13ps to set
+     */
+    public void setDrop13ps(String drop13ps) {
+        this.drop13ps = drop13ps;
+    }
+
+    /**
+     * @return the drop13msdc
+     */
+    public String getDrop13msdc() {
+        return drop13msdc;
+    }
+
+    /**
+     * @param drop13msdc the drop13msdc to set
+     */
+    public void setDrop13msdc(String drop13msdc) {
+        this.drop13msdc = drop13msdc;
+    }
+
+    /**
+     * @return the drop24pc
+     */
+    public String getDrop24pc() {
+        return drop24pc;
+    }
+
+    /**
+     * @param drop24pc the drop24pc to set
+     */
+    public void setDrop24pc(String drop24pc) {
+        this.drop24pc = drop24pc;
+    }
+
+    /**
+     * @return the drop24ps
+     */
+    public String getDrop24ps() {
+        return drop24ps;
+    }
+
+    /**
+     * @param drop24ps the drop24ps to set
+     */
+    public void setDrop24ps(String drop24ps) {
+        this.drop24ps = drop24ps;
+    }
+
+    /**
+     * @return the drop24msdc
+     */
+    public String getDrop24msdc() {
+        return drop24msdc;
+    }
+
+    /**
+     * @param drop24msdc the drop24msdc to set
+     */
+    public void setDrop24msdc(String drop24msdc) {
+        this.drop24msdc = drop24msdc;
+    }
+
+    /**
+     * @return the bin1senbetsukbn
+     */
+    public String getBin1senbetsukbn() {
+        return bin1senbetsukbn;
+    }
+
+    /**
+     * @param bin1senbetsukbn the bin1senbetsukbn to set
+     */
+    public void setBin1senbetsukbn(String bin1senbetsukbn) {
+        this.bin1senbetsukbn = bin1senbetsukbn;
+    }
+
+    /**
+     * @return the bin2senbetsukbn
+     */
+    public String getBin2senbetsukbn() {
+        return bin2senbetsukbn;
+    }
+
+    /**
+     * @param bin2senbetsukbn the bin2senbetsukbn to set
+     */
+    public void setBin2senbetsukbn(String bin2senbetsukbn) {
+        this.bin2senbetsukbn = bin2senbetsukbn;
+    }
+
+    /**
+     * @return the bin3senbetsukbn
+     */
+    public String getBin3senbetsukbn() {
+        return bin3senbetsukbn;
+    }
+
+    /**
+     * @param bin3senbetsukbn the bin3senbetsukbn to set
+     */
+    public void setBin3senbetsukbn(String bin3senbetsukbn) {
+        this.bin3senbetsukbn = bin3senbetsukbn;
+    }
+
+    /**
+     * @return the bin4senbetsukbn
+     */
+    public String getBin4senbetsukbn() {
+        return bin4senbetsukbn;
+    }
+
+    /**
+     * @param bin4senbetsukbn the bin4senbetsukbn to set
+     */
+    public void setBin4senbetsukbn(String bin4senbetsukbn) {
+        this.bin4senbetsukbn = bin4senbetsukbn;
+    }
+
+    /**
+     * @return the bin5senbetsukbn
+     */
+    public String getBin5senbetsukbn() {
+        return bin5senbetsukbn;
+    }
+
+    /**
+     * @param bin5senbetsukbn the bin5senbetsukbn to set
+     */
+    public void setBin5senbetsukbn(String bin5senbetsukbn) {
+        this.bin5senbetsukbn = bin5senbetsukbn;
+    }
+
+    /**
+     * @return the bin6senbetsukbn
+     */
+    public String getBin6senbetsukbn() {
+        return bin6senbetsukbn;
+    }
+
+    /**
+     * @param bin6senbetsukbn the bin6senbetsukbn to set
+     */
+    public void setBin6senbetsukbn(String bin6senbetsukbn) {
+        this.bin6senbetsukbn = bin6senbetsukbn;
+    }
+
+    /**
+     * @return the bin7senbetsukbn
+     */
+    public String getBin7senbetsukbn() {
+        return bin7senbetsukbn;
+    }
+
+    /**
+     * @param bin7senbetsukbn the bin7senbetsukbn to set
+     */
+    public void setBin7senbetsukbn(String bin7senbetsukbn) {
+        this.bin7senbetsukbn = bin7senbetsukbn;
+    }
+
+    /**
+     * @return the bin8senbetsukbn
+     */
+    public String getBin8senbetsukbn() {
+        return bin8senbetsukbn;
+    }
+
+    /**
+     * @param bin8senbetsukbn the bin8senbetsukbn to set
+     */
+    public void setBin8senbetsukbn(String bin8senbetsukbn) {
+        this.bin8senbetsukbn = bin8senbetsukbn;
     }
 }
