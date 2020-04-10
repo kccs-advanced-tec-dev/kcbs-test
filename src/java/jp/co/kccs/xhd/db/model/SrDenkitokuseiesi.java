@@ -16,6 +16,11 @@ import java.sql.Timestamp;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/04/10<br>
+ * 計画書No	K1803-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	分類ｴﾗｰ圧型変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -124,7 +129,7 @@ public class SrDenkitokuseiesi {
     /**
      * 分類ｴｱｰ圧
      */
-    private Integer bunruiairatu;
+    private BigDecimal bunruiairatu;
 
     /**
      * CDｺﾝﾀｸﾄ圧
@@ -1445,7 +1450,7 @@ public class SrDenkitokuseiesi {
      * 分類ｴｱｰ圧
      * @return the bunruiairatu
      */
-    public Integer getBunruiairatu() {
+    public BigDecimal getBunruiairatu() {
         return bunruiairatu;
     }
 
@@ -1453,7 +1458,7 @@ public class SrDenkitokuseiesi {
      * 分類ｴｱｰ圧
      * @param bunruiairatu the bunruiairatu to set
      */
-    public void setBunruiairatu(Integer bunruiairatu) {
+    public void setBunruiairatu(BigDecimal bunruiairatu) {
         this.bunruiairatu = bunruiairatu;
     }
 

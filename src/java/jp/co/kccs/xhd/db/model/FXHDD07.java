@@ -16,6 +16,11 @@ import java.sql.Timestamp;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/04/10<br>
+ * 計画書No	K1803-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	項目追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -367,7 +372,69 @@ public class FXHDD07 {
      */
     private Integer deleteflag;
     
+    /**
+     * DROP1,3 PC
+     */
+    private BigDecimal drop13pc;
     
+    /**
+     * DROP1,3 PS
+     */
+    private BigDecimal drop13ps;
+    
+    /**
+     * DROP1,3 MS･DC
+     */
+    private BigDecimal drop13msdc;
+    
+    /**
+     * DROP2,4 PC
+     */
+    private BigDecimal drop24pc;
+    
+    /**
+     * DROP2,4 PS
+     */
+    private BigDecimal drop24ps;
+    
+    /**
+     * DROP2,4 MS･DC
+     */
+    private BigDecimal drop24msdc;
+
+    /**
+     * BIN1 選別区分
+     */
+    private String bin1senbetsukbn;
+    /**
+     * BIN2 選別区分
+     */
+    private String bin2senbetsukbn;
+    /**
+     * BIN3 選別区分
+     */
+    private String bin3senbetsukbn;
+    /**
+     * BIN4 選別区分
+     */
+    private String bin4senbetsukbn;
+    /**
+     * BIN5 選別区分
+     */
+    private String bin5senbetsukbn;
+    /**
+     * BIN6 選別区分
+     */
+    private String bin6senbetsukbn;
+    /**
+     * BIN7 選別区分
+     */
+    private String bin7senbetsukbn;
+    /**
+     * BIN8 選別区分
+     */
+    private String bin8senbetsukbn;
+
     /**
      * 工場ｺｰﾄﾞ
      * @return the kojyo
@@ -1454,6 +1521,230 @@ public class FXHDD07 {
      */
     public void setDeleteflag(Integer deleteflag) {
         this.deleteflag = deleteflag;
+    }
+
+    /**
+     * DROP1,3 PC
+     * @return the drop13pc
+     */
+    public BigDecimal getDrop13pc() {
+        return drop13pc;
+    }
+
+    /**
+     * DROP1,3 PC
+     * @param drop13pc the drop13pc to set
+     */
+    public void setDrop13pc(BigDecimal drop13pc) {
+        this.drop13pc = drop13pc;
+    }
+
+    /**
+     * DROP1,3 PS
+     * @return the drop13ps
+     */
+    public BigDecimal getDrop13ps() {
+        return drop13ps;
+    }
+
+    /**
+     * DROP1,3 PS
+     * @param drop13ps the drop13ps to set
+     */
+    public void setDrop13ps(BigDecimal drop13ps) {
+        this.drop13ps = drop13ps;
+    }
+
+    /**
+     * DROP1,3 MS･DC
+     * @return the drop13msdc
+     */
+    public BigDecimal getDrop13msdc() {
+        return drop13msdc;
+    }
+
+    /**
+     * DROP1,3 MS･DC
+     * @param drop13msdc the drop13msdc to set
+     */
+    public void setDrop13msdc(BigDecimal drop13msdc) {
+        this.drop13msdc = drop13msdc;
+    }
+
+    /**
+     * DROP2,4 PC
+     * @return the drop24pc
+     */
+    public BigDecimal getDrop24pc() {
+        return drop24pc;
+    }
+
+    /**
+     * DROP2,4 PC
+     * @param drop24pc the drop24pc to set
+     */
+    public void setDrop24pc(BigDecimal drop24pc) {
+        this.drop24pc = drop24pc;
+    }
+
+    /**
+     * DROP2,4 PS
+     * @return the drop24ps
+     */
+    public BigDecimal getDrop24ps() {
+        return drop24ps;
+    }
+
+    /**
+     * DROP2,4 PS
+     * @param drop24ps the drop24ps to set
+     */
+    public void setDrop24ps(BigDecimal drop24ps) {
+        this.drop24ps = drop24ps;
+    }
+
+    /**
+     * DROP2,4 MS･DC
+     * @return the drop24msdc
+     */
+    public BigDecimal getDrop24msdc() {
+        return drop24msdc;
+    }
+
+    /**
+     * DROP2,4 MS･DC
+     * @param drop24msdc the drop24msdc to set
+     */
+    public void setDrop24msdc(BigDecimal drop24msdc) {
+        this.drop24msdc = drop24msdc;
+    }
+
+    /**
+     * BIN1 選別区分
+     * @return the bin1senbetsukbn
+     */
+    public String getBin1senbetsukbn() {
+        return bin1senbetsukbn;
+    }
+
+    /**
+     * BIN1 選別区分
+     * @param bin1senbetsukbn the bin1senbetsukbn to set
+     */
+    public void setBin1senbetsukbn(String bin1senbetsukbn) {
+        this.bin1senbetsukbn = bin1senbetsukbn;
+    }
+
+    /**
+     * BIN2 選別区分
+     * @return the bin2senbetsukbn
+     */
+    public String getBin2senbetsukbn() {
+        return bin2senbetsukbn;
+    }
+
+    /**
+     * BIN2 選別区分
+     * @param bin2senbetsukbn the bin2senbetsukbn to set
+     */
+    public void setBin2senbetsukbn(String bin2senbetsukbn) {
+        this.bin2senbetsukbn = bin2senbetsukbn;
+    }
+
+    /**
+     * BIN3 選別区分
+     * @return the bin3senbetsukbn
+     */
+    public String getBin3senbetsukbn() {
+        return bin3senbetsukbn;
+    }
+
+    /**
+     * BIN3 選別区分
+     * @param bin3senbetsukbn the bin3senbetsukbn to set
+     */
+    public void setBin3senbetsukbn(String bin3senbetsukbn) {
+        this.bin3senbetsukbn = bin3senbetsukbn;
+    }
+
+    /**
+     * BIN4 選別区分
+     * @return the bin4senbetsukbn
+     */
+    public String getBin4senbetsukbn() {
+        return bin4senbetsukbn;
+    }
+
+    /**
+     * BIN4 選別区分
+     * @param bin4senbetsukbn the bin4senbetsukbn to set
+     */
+    public void setBin4senbetsukbn(String bin4senbetsukbn) {
+        this.bin4senbetsukbn = bin4senbetsukbn;
+    }
+
+    /**
+     * BIN5 選別区分
+     * @return the bin5senbetsukbn
+     */
+    public String getBin5senbetsukbn() {
+        return bin5senbetsukbn;
+    }
+
+    /**
+     * BIN5 選別区分
+     * @param bin5senbetsukbn the bin5senbetsukbn to set
+     */
+    public void setBin5senbetsukbn(String bin5senbetsukbn) {
+        this.bin5senbetsukbn = bin5senbetsukbn;
+    }
+
+    /**
+     * BIN6 選別区分
+     * @return the bin6senbetsukbn
+     */
+    public String getBin6senbetsukbn() {
+        return bin6senbetsukbn;
+    }
+
+    /**
+     * BIN6 選別区分
+     * @param bin6senbetsukbn the bin6senbetsukbn to set
+     */
+    public void setBin6senbetsukbn(String bin6senbetsukbn) {
+        this.bin6senbetsukbn = bin6senbetsukbn;
+    }
+
+    /**
+     * BIN7 選別区分
+     * @return the bin7senbetsukbn
+     */
+    public String getBin7senbetsukbn() {
+        return bin7senbetsukbn;
+    }
+
+    /**
+     * BIN7 選別区分
+     * @param bin7senbetsukbn the bin7senbetsukbn to set
+     */
+    public void setBin7senbetsukbn(String bin7senbetsukbn) {
+        this.bin7senbetsukbn = bin7senbetsukbn;
+    }
+
+    /**
+     * BIN8 選別区分
+     * @return the bin8senbetsukbn
+     */
+    public String getBin8senbetsukbn() {
+        return bin8senbetsukbn;
+    }
+
+    /**
+     * BIN8 選別区分
+     * @param bin8senbetsukbn the bin8senbetsukbn to set
+     */
+    public void setBin8senbetsukbn(String bin8senbetsukbn) {
+        this.bin8senbetsukbn = bin8senbetsukbn;
     }
 
 }
