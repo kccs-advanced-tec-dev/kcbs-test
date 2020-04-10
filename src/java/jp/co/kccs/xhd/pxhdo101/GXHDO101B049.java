@@ -57,6 +57,11 @@ import org.apache.commons.dbutils.handlers.MapListHandler;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/04/09<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	ﾄｯﾌﾟﾃｰﾌﾟ、ｷｬﾘｱﾃｰﾌﾟ、ﾎﾞﾄﾑﾃｰﾌﾟ異常 型変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -2040,8 +2045,8 @@ public class GXHDO101B049 implements IFormLogic {
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.KAKE_NG, srTapingCheckData))); //ｶｹNG
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.DIP_FURYO, srTapingCheckData))); //DIP不良
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.SONOTA, srTapingCheckData))); //その他
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.TOP_CARRIER_BOTTOM_TAPE_IJOU, srTapingCheckData))); //ﾄｯﾌﾟﾃｰﾌﾟ、ｷｬﾘｱﾃｰﾌﾟ、ﾎﾞﾄﾑﾃｰﾌﾟ異常
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.REEL_CHECK_KEKKA, srTapingCheckData))); //ﾘｰﾙﾁｪｯｸ結果 //TODO
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.TOP_CARRIER_BOTTOM_TAPE_IJOU, srTapingCheckData))); //ﾄｯﾌﾟﾃｰﾌﾟ、ｷｬﾘｱﾃｰﾌﾟ、ﾎﾞﾄﾑﾃｰﾌﾟ異常
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.REEL_CHECK_KEKKA, srTapingCheckData))); //ﾘｰﾙﾁｪｯｸ結果 
         params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.KENSA_SHURYOU_DAY, srTapingCheckData),
                 getItemData(itemList, GXHDO101B049Const.KENSA_SHURYOU_TIME, srTapingCheckData))); //検査終了日時
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B049Const.KENSA_SHURYOU_TANTOUSYA, srTapingCheckData))); //検査終了担当者
@@ -2225,7 +2230,7 @@ public class GXHDO101B049 implements IFormLogic {
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B049Const.KAKE_NG, srTapingCheckData))); //ｶｹNG
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B049Const.DIP_FURYO, srTapingCheckData))); //DIP不良
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B049Const.SONOTA, srTapingCheckData))); //その他
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B049Const.TOP_CARRIER_BOTTOM_TAPE_IJOU, srTapingCheckData))); //ﾄｯﾌﾟﾃｰﾌﾟ、ｷｬﾘｱﾃｰﾌﾟ、ﾎﾞﾄﾑﾃｰﾌﾟ異常
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B049Const.TOP_CARRIER_BOTTOM_TAPE_IJOU, srTapingCheckData))); //ﾄｯﾌﾟﾃｰﾌﾟ、ｷｬﾘｱﾃｰﾌﾟ、ﾎﾞﾄﾑﾃｰﾌﾟ異常
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B049Const.REEL_CHECK_KEKKA, srTapingCheckData))); //ﾘｰﾙﾁｪｯｸ結果
         params.add(DBUtil.stringToDateObject(getItemData(itemList, GXHDO101B049Const.KENSA_SHURYOU_DAY, srTapingCheckData),
                 getItemData(itemList, GXHDO101B049Const.KENSA_SHURYOU_TIME, srTapingCheckData))); //検査終了日時

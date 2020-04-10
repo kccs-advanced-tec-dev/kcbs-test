@@ -16,6 +16,11 @@ import java.sql.Timestamp;
  * 変更者	863 K.Zhang<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/04/09<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	ﾄｯﾌﾟﾃｰﾌﾟ、ｷｬﾘｱﾃｰﾌﾟ、ﾎﾞﾄﾑﾃｰﾌﾟ異常 型変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -139,7 +144,7 @@ public class GXHDO201B049Model implements Serializable{
     /**
      * ﾄｯﾌﾟﾃｰﾌﾟ、ｷｬﾘｱﾃｰﾌﾟ、ﾎﾞﾄﾑﾃｰﾌﾟ異常
      */
-    private Integer tapeijyo = null;
+    private String tapeijyo = null;
 
     /**
      * ﾘｰﾙﾁｪｯｸ結果
@@ -1025,7 +1030,7 @@ public class GXHDO201B049Model implements Serializable{
      * ﾄｯﾌﾟﾃｰﾌﾟ、ｷｬﾘｱﾃｰﾌﾟ、ﾎﾞﾄﾑﾃｰﾌﾟ異常
      * @return the tapeijyo
      */
-    public Integer getTapeijyo() {
+    public String getTapeijyo() {
         return tapeijyo;
     }
 
@@ -1033,7 +1038,7 @@ public class GXHDO201B049Model implements Serializable{
      * ﾄｯﾌﾟﾃｰﾌﾟ、ｷｬﾘｱﾃｰﾌﾟ、ﾎﾞﾄﾑﾃｰﾌﾟ異常
      * @param tapeijyo the tapeijyo to set
      */
-    public void setTapeijyo(Integer tapeijyo) {
+    public void setTapeijyo(String tapeijyo) {
         this.tapeijyo = tapeijyo;
     }
 

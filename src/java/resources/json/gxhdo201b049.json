@@ -21,7 +21,7 @@
     {"no":"20","id":"kakeng","columnname":"ｶｹNG","type":"Integer","format":"11,0"},
     {"no":"21","id":"dipfuryo","columnname":"DIP不良","type":"Integer","format":"11,0"},
     {"no":"22","id":"sonota","columnname":"その他","type":"Integer","format":"11,0"},
-    {"no":"23","id":"tapeijyo","columnname":"ﾄｯﾌﾟﾃｰﾌﾟ、ｷｬﾘｱﾃｰﾌﾟ、ﾎﾞﾄﾑﾃｰﾌﾟ異常","type":"Integer","format":"11,0"},
+    {"no":"23","id":"tapeijyo","columnname":"ﾄｯﾌﾟﾃｰﾌﾟ、ｷｬﾘｱﾃｰﾌﾟ、ﾎﾞﾄﾑﾃｰﾌﾟ異常","type":"String","format":""},
     {"no":"24","id":"reelcheckkekka","columnname":"ﾘｰﾙﾁｪｯｸ結果","type":"String","format":""},
     {"no":"25","id":"kensasyuryonichiji","columnname":"検査終了日時","type":"timestamp","format":"yyyy/mm/dd hh:mm:ss"},
     {"no":"26","id":"kensasyuryotantou","columnname":"検査終了担当者","type":"String","format":""},
