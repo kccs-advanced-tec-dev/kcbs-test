@@ -708,17 +708,20 @@ public class GXHDO211C implements Serializable {
             // 指示温度よりデータを取得
             List<Map<String, Object>> fxhdd06Data = getFxhdd06Data(queryRunnerDoc, mainData);
 
-            // 積層SPSよりデータを取得
-            List<Map<String, Object>> srSpssekisouData = getSrSpssekisouData(queryRunnerQcdb, mainData);
-
             // 積層RSUSよりデータを取得
             List<Map<String, Object>> srRsussekData = getSrRsussekData(queryRunnerQcdb, mainData);
 
             // 印刷積層RHAPSよりデータを取得
             List<Map<String, Object>> srRhapsData = getSrRhapsData(queryRunnerQcdb, mainData);
-
+            
+            // 印刷ｸﾞﾗﾋﾞｱよりデータを取得
+            List<Map<String, Object>> srSpsprintGraData = getSrSpsprintGraData(queryRunnerQcdb, mainData);
+            
+            // 印刷ｽｸﾘｰﾝよりデータを取得
+            List<Map<String, Object>> srSpsprintData = getSrSpsprintData(queryRunnerQcdb, mainData);
+            
             // 取得した全データを結合する。
-            this.listData = getMergeData(mainData, sekkeiData, jokenDataSuisonoudo, jokenDataPeakondo, jokenDataSyoseiPeakondo, jokenDataTissonoudo, fxhdd06Data, srSpssekisouData, srRsussekData, srRhapsData);
+            this.listData = getMergeData(mainData, sekkeiData, jokenDataSuisonoudo, jokenDataPeakondo, jokenDataSyoseiPeakondo, jokenDataTissonoudo, fxhdd06Data, srRsussekData, srRhapsData, srSpsprintGraData, srSpsprintData);
 
         } catch (SQLException ex) {
             listData = new ArrayList<>();
@@ -1693,6 +1696,58 @@ public class GXHDO211C implements Serializable {
     }
 
     /**
+     * 印刷ｸﾞﾗﾋﾞｱデータ取得
+     *
+     * @param queryRunnerQcdb queryRunner(Qcdb)オブジェクト
+     * @param mainData 面ﾃﾞｰﾀ
+     * @return 設計データ
+     * @throws SQLException 例外エラー
+     */
+    private List<Map<String, Object>> getSrSpsprintGraData(QueryRunner queryRunnerQcdb, List<GXHDO211CModel> mainData) throws SQLException {
+        BigDecimal size = BigDecimal.valueOf(mainData.size());
+        BigDecimal limit = BigDecimal.valueOf(SEARCH_LIMIT);
+        long loopCount = size.divide(limit, 0, RoundingMode.UP).longValue();
+        List<Map<String, Object>> dataList = new ArrayList<>();
+        for (int i = 0; i < loopCount; i++) {
+            int startIdx = i * SEARCH_LIMIT;
+            int endIdx = (i + 1) * SEARCH_LIMIT;
+            if (mainData.size() < endIdx) {
+                endIdx = mainData.size();
+            }
+            dataList.addAll(loadSrSpsprintGraData(queryRunnerQcdb, mainData.subList(startIdx, endIdx)));
+        }
+
+        return dataList;
+    }
+    
+    /**
+     * 印刷ｽｸﾘｰﾝデータ取得
+     *
+     * @param queryRunnerQcdb queryRunner(Qcdb)オブジェクト
+     * @param mainData 面ﾃﾞｰﾀ
+     * @return 設計データ
+     * @throws SQLException 例外エラー
+     */
+    private List<Map<String, Object>> getSrSpsprintData(QueryRunner queryRunnerQcdb, List<GXHDO211CModel> mainData) throws SQLException {
+        BigDecimal size = BigDecimal.valueOf(mainData.size());
+        BigDecimal limit = BigDecimal.valueOf(SEARCH_LIMIT);
+        long loopCount = size.divide(limit, 0, RoundingMode.UP).longValue();
+        List<Map<String, Object>> dataList = new ArrayList<>();
+        for (int i = 0; i < loopCount; i++) {
+            int startIdx = i * SEARCH_LIMIT;
+            int endIdx = (i + 1) * SEARCH_LIMIT;
+            if (mainData.size() < endIdx) {
+                endIdx = mainData.size();
+            }
+            dataList.addAll(loadSrSpsprintData(queryRunnerQcdb, mainData.subList(startIdx, endIdx)));
+        }
+
+        return dataList;
+    }
+    
+    
+    
+    /**
      * [印刷積層RHPS]から、ﾃﾞｰﾀを取得
      *
      * @param queryRunnerQcdb オブジェクト
@@ -1732,6 +1787,89 @@ public class GXHDO211C implements Serializable {
         DBUtil.outputSQLLog(sbSql.toString(), params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sbSql.toString(), new MapListHandler(), params.toArray());
     }
+    
+    /**
+     * [印刷ｸﾞﾗﾋﾞｱ]から、ﾃﾞｰﾀを取得
+     *
+     * @param queryRunnerQcdb オブジェクト
+     * @param mainData メインデータ
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private List<Map<String, Object>> loadSrSpsprintGraData(QueryRunner queryRunnerQcdb, List<GXHDO211CModel> mainData) throws SQLException {
+
+        List<Object> params = new ArrayList<>();
+        StringBuilder sbSql = new StringBuilder();
+        sbSql.append(" SELECT kojyo,lotno,edaban,tapelotno");
+        sbSql.append(" FROM sr_spsprint_gra");
+        sbSql.append(" WHERE (");
+        boolean notFirst = false;
+        for (GXHDO211CModel model : mainData) {
+            if (notFirst) {
+                sbSql.append(" OR ");
+            } else {
+                notFirst = true;
+            }
+            sbSql.append("(");
+            sbSql.append(" kojyo = ?");
+            sbSql.append(" AND ");
+            sbSql.append(" lotno = ?");
+            sbSql.append(" AND ");
+            sbSql.append(" edaban = ?");
+            sbSql.append(")");
+            // パラメータセット
+            params.add(model.getKojyo());
+            params.add(model.getLotno());
+            params.add(model.getEdaban());
+
+        }
+        sbSql.append(" )");
+
+        DBUtil.outputSQLLog(sbSql.toString(), params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sbSql.toString(), new MapListHandler(), params.toArray());
+    }
+    
+    /**
+     * [印刷ｽｸﾘｰﾝ]から、ﾃﾞｰﾀを取得
+     *
+     * @param queryRunnerQcdb オブジェクト
+     * @param mainData メインデータ
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private List<Map<String, Object>> loadSrSpsprintData(QueryRunner queryRunnerQcdb, List<GXHDO211CModel> mainData) throws SQLException {
+
+        List<Object> params = new ArrayList<>();
+        StringBuilder sbSql = new StringBuilder();
+        sbSql.append(" SELECT kojyo,lotno,edaban,tapelotno");
+        sbSql.append(" FROM sr_spsprint");
+        sbSql.append(" WHERE (");
+        boolean notFirst = false;
+        for (GXHDO211CModel model : mainData) {
+            if (notFirst) {
+                sbSql.append(" OR ");
+            } else {
+                notFirst = true;
+            }
+            sbSql.append("(");
+            sbSql.append(" kojyo = ?");
+            sbSql.append(" AND ");
+            sbSql.append(" lotno = ?");
+            sbSql.append(" AND ");
+            sbSql.append(" edaban = ?");
+            sbSql.append(")");
+            // パラメータセット
+            params.add(model.getKojyo());
+            params.add(model.getLotno());
+            params.add(model.getEdaban());
+
+        }
+        sbSql.append(" )");
+
+        DBUtil.outputSQLLog(sbSql.toString(), params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sbSql.toString(), new MapListHandler(), params.toArray());
+    }
+
 
     /**
      * 取得した全データをまとめて表示用データとして取得する。
@@ -1743,14 +1881,16 @@ public class GXHDO211C implements Serializable {
      * @param jokenDataSyoseiPeakondo 条件データ(焼成ﾋﾟｰｸ温度)
      * @param jokenDataTissonoudo 条件データ窒素温度
      * @param fxhdd06Data 指示温度データ
-     * @param srSpssekisouData 積層SPSデータ
      * @param srRsussekData 積層RSUSデータ
      * @param srRhapsData 印刷積層RHAPS
+     * @param srSpsprintGraData 印刷ｸﾞﾗﾋﾞｱデータ
+     * @param srSpsprintData 印刷ｽｸﾘｰﾝデータ
      * @return 表示用データ
      */
     private List<GXHDO211CModel> getMergeData(List<GXHDO211CModel> mainData, List<Map<String, Object>> sekkeiData, List<Map<String, Object>> jokenDataSuisonoudo,
             List<Map<String, Object>> jokenDataPeakondo, List<Map<String, Object>>  jokenDataSyoseiPeakondo, List<Map<String, Object>> jokenDataTissonoudo, 
-            List<Map<String, Object>> fxhdd06Data, List<Map<String, Object>> srSpssekisouData, List<Map<String, Object>> srRsussekData, List<Map<String, Object>> srRhapsData) {
+            List<Map<String, Object>> fxhdd06Data, List<Map<String, Object>> srRsussekData, List<Map<String, Object>> srRhapsData, List<Map<String, Object>> srSpsprintGraData,
+            List<Map<String, Object>> srSpsprintData) {
 
         List<GXHDO211CModel> resultData = new ArrayList<>();
 
@@ -1857,12 +1997,7 @@ public class GXHDO211C implements Serializable {
                 }
 
             }
-
-            // 積層SPSデータ取得
-            Map<String, Object> srSpssekisouMap = srSpssekisouData.stream().filter(n -> kojyo.equals(StringUtil.nullToBlank(n.get("kojyo")))).
-                    filter(n -> lotno.equals(StringUtil.nullToBlank(n.get("lotno")))).
-                    filter(n -> edaban.equals(StringUtil.nullToBlank(n.get("edaban")))).findFirst().orElse(null);
-
+            
             // 積層RSUSデータ取得
             Map<String, Object> srRsussekMap = srRsussekData.stream().filter(n -> kojyo.equals(StringUtil.nullToBlank(n.get("KOJYO")))).
                     filter(n -> lotno.equals(StringUtil.nullToBlank(n.get("LOTNO")))).
@@ -1872,16 +2007,28 @@ public class GXHDO211C implements Serializable {
             Map<String, Object> srRhapsMap = srRhapsData.stream().filter(n -> kojyo.equals(StringUtil.nullToBlank(n.get("KOJYO")))).
                     filter(n -> lotno.equals(StringUtil.nullToBlank(n.get("LOTNO")))).
                     filter(n -> edaban.equals(StringUtil.nullToBlank(n.get("EDABAN")))).findFirst().orElse(null);
+            
+            // 印刷ｸﾞﾗﾋﾞｱデータ取得
+            Map<String, Object> srSpsprintGraMap = srSpsprintGraData.stream().filter(n -> kojyo.equals(StringUtil.nullToBlank(n.get("kojyo")))).
+                    filter(n -> lotno.equals(StringUtil.nullToBlank(n.get("lotno")))).
+                    filter(n -> edaban.equals(StringUtil.nullToBlank(n.get("edaban")))).findFirst().orElse(null);
+
+            // 印刷ｽｸﾘｰﾝデータ取得
+            Map<String, Object> srSpsprintMap = srSpsprintData.stream().filter(n -> kojyo.equals(StringUtil.nullToBlank(n.get("kojyo")))).
+                    filter(n -> lotno.equals(StringUtil.nullToBlank(n.get("lotno")))).
+                    filter(n -> edaban.equals(StringUtil.nullToBlank(n.get("edaban")))).findFirst().orElse(null);
 
             // ﾃｰﾌﾟﾛｯﾄNo
-            if (srSpssekisouMap != null) {
-                model.setTapelotNo(StringUtil.nullToBlank(srSpssekisouMap.get("tapelotno")));
-            } else if (srRsussekMap != null) {
+            if (srRsussekMap != null) {
                 model.setTapelotNo(StringUtil.nullToBlank(srRsussekMap.get("tapelotno")));
             } else if (srRhapsMap != null) {
                 model.setTapelotNo(StringUtil.nullToBlank(srRhapsMap.get("ETAPELOT")));
+            } else if (srSpsprintGraMap != null) {
+                model.setTapelotNo(StringUtil.nullToBlank(srSpsprintGraMap.get("tapelotno")));
+            } else if (srSpsprintMap != null) {
+                model.setTapelotNo(StringUtil.nullToBlank(srSpsprintMap.get("tapelotno")));
             }
-
+            
             // 特殊品の場合は品種をV8としてセットする。
             if (model.getKcpno().matches(TOKUSHU_HIN_KCPNO1) || model.getKcpno().matches(TOKUSHU_HIN_KCPNO2)) {
                 model.setHinsyu("V8");

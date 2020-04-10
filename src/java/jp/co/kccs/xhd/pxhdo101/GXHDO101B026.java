@@ -57,6 +57,11 @@ import org.apache.commons.dbutils.DbUtils;
  * 変更者      KCSS K.Jo<br>
  * 変更理由    新規作成<br>
  * <br>
+ * 変更日      2020/04/08<br>
+ * 計画書No    K1803-DS001<br>
+ * 変更者      SYSNAVI K.Hisanaga<br>
+ * 変更理由    課題対応<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -72,8 +77,6 @@ public class GXHDO101B026 implements IFormLogic {
     private static final String JOTAI_FLG_TOROKUZUMI = "1";
     private static final String JOTAI_FLG_SAKUJO = "9";
     private static final String SQL_STATE_RECORD_LOCK_ERR = "55P03";
-    private static final String TANSISU_THREE = "三端子";
-    private static final String TANSISU_FOUR = "4端子";
     
     /**
      * 初期化処理
@@ -546,49 +549,36 @@ public class GXHDO101B026 implements IFormLogic {
                     ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000081", true, true, errFxhdd01List, itemSetubisyurui.getLabel1(),"ADM",itemDipjigumaisuu.getLabel1());
                     return errorMessageInfo;                    
                 }
-            }else if ("N-ADM".equals(itemSetubisyurui.getValue())) {
+            } else if ("N-ADM".equals(itemSetubisyurui.getValue())) {
                 //塗布ｼﾞｸﾞ取り個数
-                if(NumberUtil.isZeroOrEmpty(itemTofujigutorikosuu.getValue())){
+                if (NumberUtil.isZeroOrEmpty(itemTofujigutorikosuu.getValue())) {
                     // ｴﾗｰ項目をﾘｽﾄに追加
-                    List<FXHDD01> errFxhdd01List = Arrays.asList(itemSetubisyurui,itemTofujigutorikosuu);
-                    ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000081", true, true, errFxhdd01List, itemSetubisyurui.getLabel1(),"N-ADM",itemTofujigutorikosuu.getLabel1());
-                    return errorMessageInfo;                    
+                    List<FXHDD01> errFxhdd01List = Arrays.asList(itemSetubisyurui, itemTofujigutorikosuu);
+                    ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000081", true, true, errFxhdd01List, itemSetubisyurui.getLabel1(), "N-ADM", itemTofujigutorikosuu.getLabel1());
+                    return errorMessageInfo;
                 }
-                //塗布ｼﾞｸﾞ枚数
-                if(NumberUtil.isZeroOrEmpty(itemDipjigumaisuu.getValue())){
-                    // ｴﾗｰ項目をﾘｽﾄに追加
-                    List<FXHDD01> errFxhdd01List = Arrays.asList(itemSetubisyurui,itemDipjigumaisuu);
-                    ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000081", true, true, errFxhdd01List, itemSetubisyurui.getLabel1(),"N-ADM",itemDipjigumaisuu.getLabel1());
-                    return errorMessageInfo;                    
-                }
-            }else if ("MDS".equals(itemSetubisyurui.getValue())) {
+
+            } else if ("MDS".equals(itemSetubisyurui.getValue())) {
                 //粘着ｼｰﾄﾛｯﾄ  1次側
-                if(NumberUtil.isZeroOrEmpty(itemNentyakusheetlot1.getValue())){
+                if (NumberUtil.isZeroOrEmpty(itemNentyakusheetlot1.getValue())) {
                     // ｴﾗｰ項目をﾘｽﾄに追加
-                    List<FXHDD01> errFxhdd01List = Arrays.asList(itemSetubisyurui,itemNentyakusheetlot1);
-                    ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000081", true, true, errFxhdd01List, itemSetubisyurui.getLabel1(),"MDS",itemNentyakusheetlot1.getLabel1());
-                    return errorMessageInfo;                    
+                    List<FXHDD01> errFxhdd01List = Arrays.asList(itemSetubisyurui, itemNentyakusheetlot1);
+                    ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000081", true, true, errFxhdd01List, itemSetubisyurui.getLabel1(), "MDS", itemNentyakusheetlot1.getLabel1());
+                    return errorMessageInfo;
                 }
                 //粘着ｼｰﾄﾛｯﾄ  2次側
-                if(NumberUtil.isZeroOrEmpty(itemNentyakusheetlot2.getValue())){
+                if (NumberUtil.isZeroOrEmpty(itemNentyakusheetlot2.getValue())) {
                     // ｴﾗｰ項目をﾘｽﾄに追加
-                    List<FXHDD01> errFxhdd01List = Arrays.asList(itemSetubisyurui,itemNentyakusheetlot2);
-                    ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000081", true, true, errFxhdd01List, itemSetubisyurui.getLabel1(),"MDS",itemNentyakusheetlot2.getLabel1());
-                    return errorMessageInfo;                    
+                    List<FXHDD01> errFxhdd01List = Arrays.asList(itemSetubisyurui, itemNentyakusheetlot2);
+                    ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000081", true, true, errFxhdd01List, itemSetubisyurui.getLabel1(), "MDS", itemNentyakusheetlot2.getLabel1());
+                    return errorMessageInfo;
                 }
                 //塗布ｼﾞｸﾞ取り個数
-                if(NumberUtil.isZeroOrEmpty(itemTofujigutorikosuu.getValue())){
+                if (NumberUtil.isZeroOrEmpty(itemTofujigutorikosuu.getValue())) {
                     // ｴﾗｰ項目をﾘｽﾄに追加
-                    List<FXHDD01> errFxhdd01List = Arrays.asList(itemSetubisyurui,itemTofujigutorikosuu);
-                    ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000081", true, true, errFxhdd01List, itemSetubisyurui.getLabel1(),"MDS",itemTofujigutorikosuu.getLabel1());
-                    return errorMessageInfo;                    
-                }
-                //塗布ｼﾞｸﾞ枚数
-                if(NumberUtil.isZeroOrEmpty(itemDipjigumaisuu.getValue())){
-                    // ｴﾗｰ項目をﾘｽﾄに追加
-                    List<FXHDD01> errFxhdd01List = Arrays.asList(itemSetubisyurui,itemDipjigumaisuu);
-                    ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000081", true, true, errFxhdd01List, itemSetubisyurui.getLabel1(),"MDS",itemDipjigumaisuu.getLabel1());
-                    return errorMessageInfo;                    
+                    List<FXHDD01> errFxhdd01List = Arrays.asList(itemSetubisyurui, itemTofujigutorikosuu);
+                    ErrorMessageInfo errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000081", true, true, errFxhdd01List, itemSetubisyurui.getLabel1(), "MDS", itemTofujigutorikosuu.getLabel1());
+                    return errorMessageInfo;
                 }
             }
         }
@@ -1287,7 +1277,6 @@ public class GXHDO101B026 implements IFormLogic {
             errorMessageList.add(MessageUtil.getMessage("XHD-000029"));
         }
         
-        String kcpno = StringUtil.nullToBlank(getMapData(shikakariData, "kcpno")); //KCPNO
         String lotkubuncode = StringUtil.nullToBlank(getMapData(shikakariData, "lotkubuncode")); //ﾛｯﾄ区分ｺｰﾄﾞ
         String ownercode = StringUtil.nullToBlank(getMapData(shikakariData, "ownercode"));// ｵｰﾅｰｺｰﾄﾞ
 
@@ -1322,60 +1311,6 @@ public class GXHDO101B026 implements IFormLogic {
                     shorisuu = String.valueOf(dbShorisu);
                 }
             }
-        }
-
-        // 端子数判定
-        String tansiStr =  "";
-        if (!StringUtil.isEmpty(kcpno) && kcpno.length() >= 4) {
-            tansiStr =  kcpno.substring(3, 4);
-        }
-        // 三端子('xhd_gaibudenkyoku_tofu_3tanshi')のﾊﾟﾗﾒｰﾀﾃﾞｰﾀが取得
-        Map fxhbm03Data213 = loadFxhbm03Data(queryRunnerDoc, 213);
-        // 4端子('xhd_gaibudenkyoku_tofu_4tanshi')のﾊﾟﾗﾒｰﾀﾃﾞｰﾀが取得
-        Map fxhbm03Data214 = loadFxhbm03Data(queryRunnerDoc, 214);
-        
-        // 三端子('xhd_gaibudenkyoku_tofu_3tanshi')のﾊﾟﾗﾒｰﾀﾃﾞｰﾀが取得できなかった場合
-        if (fxhbm03Data213 == null || fxhbm03Data213.isEmpty()) {
-            errorMessageList.add(MessageUtil.getMessage("XHD-000074", "外部電極塗布、三端子数判定文字"));
-        }
-       
-        // 4端子('xhd_gaibudenkyoku_tofu_4tanshi')のﾊﾟﾗﾒｰﾀﾃﾞｰﾀが取得できなかった場合
-        if (fxhbm03Data214 == null || fxhbm03Data214.isEmpty()) {
-            errorMessageList.add(MessageUtil.getMessage("XHD-000074", "外部電極塗布、4端子数判定文字"));
-        }
-        // (Hidden)端子数取得処理
-        Map hiddenMap = processData.getHiddenDataMap();
-        // ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ
-        String fxhbm03data[] = null;
-
-        // 三端子('xhd_gaibudenkyoku_tofu_3tanshi')のﾊﾟﾗﾒｰﾀﾃﾞｰﾀが取得できた場合
-        fxhbm03data = StringUtil.nullToBlank(getMapData(fxhbm03Data213, "data")).split(",");
-        boolean hanteiFlg = false;
-        for(int i = 0; i < fxhbm03data.length; i++){
-           if (!StringUtil.isEmpty(tansiStr) && tansiStr.equals(fxhbm03data[i])){
-               hiddenMap.put("hiddenTansisu", TANSISU_THREE);
-               hanteiFlg = true;
-               break;
-           }
-        }
-        
-        if(!hanteiFlg){
-            // 4端子('xhd_gaibudenkyoku_tofu_4tanshi')のﾊﾟﾗﾒｰﾀﾃﾞｰﾀが取得できた場合
-            fxhbm03data = StringUtil.nullToBlank(getMapData(fxhbm03Data214, "data")).split(",");
-            for(int i = 0; i < fxhbm03data.length; i++){
-                if (tansiStr.equals(fxhbm03data[i])){
-                    hiddenMap.put("hiddenTansisu", TANSISU_FOUR);
-                    hanteiFlg = true;
-                    break;
-                }
-            }
-        }
-        
-        
-
-        // 上記処理にて端子数が判定できなかった場合、ｴﾗｰﾒｯｾｰｼﾞを表示する。処理は続行。
-        if(!hanteiFlg){
-            errorMessageList.add(MessageUtil.getMessage("XHD-000075"));
         }
         
         // 入力項目の情報を画面にセットする。

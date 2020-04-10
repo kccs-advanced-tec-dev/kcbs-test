@@ -57,13 +57,18 @@ import org.apache.commons.dbutils.handlers.MapListHandler;
  * 変更者       KCSS K.Jo<br>
  * 変更理由     新規作成<br>
  * <br>
+ * 変更日	2020/04/09<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	設備データ取込項目追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
  * GXHDO101B041(電気特性・3端子4端子)
  *
  * @author KCSS K.Jo
- * @since  2019/12/28
+ * @since 2019/12/28
  */
 public class GXHDO101B041 implements IFormLogic {
 
@@ -102,7 +107,7 @@ public class GXHDO101B041 implements IFormLogic {
 
             //「耐電圧」初期設定
             initGXHDO101B041B(processData);
-            
+
             //「電圧DROP設定条件」初期設定
             initGXHDO101B041C(processData);
 
@@ -862,6 +867,7 @@ public class GXHDO101B041 implements IFormLogic {
         calcHoseiritsu(processData);
         return processData;
     }
+
     /**
      * 設備データ取込(確認メッセージ表示)
      *
@@ -1318,10 +1324,10 @@ public class GXHDO101B041 implements IFormLogic {
                     // 外部電極焼付時間←外部電極焼成[終了日時]のHHMM部分
                     setItemData(processData, GXHDO101B041Const.SEIHIN_G_YAKITSUKE_TIME, DateUtil.formattedTimestamp((Timestamp) srGdyakitukeInfo.get("enddatetime"), "HHmm"));
                 }
-                
+
                 Map srShinkuukansou = (Map) session.getAttribute("SrShinkuukansou");
                 if (srShinkuukansou != null && !srShinkuukansou.isEmpty()) {
-                    
+
                     // 熱処理日 ← 熱処理[熱処理終了日時]のYYMMDD部分
                     setItemData(processData, GXHDO101B041Const.SEIHIN_NETSUSYORI_DAY, DateUtil.formattedTimestamp((Timestamp) srShinkuukansou.get("syuryonichiji"), "yyMMdd"));
 
@@ -3060,7 +3066,7 @@ public class GXHDO101B041 implements IFormLogic {
         params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(pItemList, GXHDO101B041Const.SEIHIN_SENBETSU_SHURYO_DAY, srDenkitokuseiesi),
                 getItemData(pItemList, GXHDO101B041Const.SEIHIN_SENBETSU_SHURYO_TIME, srDenkitokuseiesi))); //選別終了日時
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B041Const.SEIHIN_KENSA_GOKI, srDenkitokuseiesi))); //検査号機
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO101B041Const.SEIHIN_BUNRUI_AIR_ATSU, srDenkitokuseiesi))); //分類ｴｱｰ圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B041Const.SEIHIN_BUNRUI_AIR_ATSU, srDenkitokuseiesi))); //分類ｴｱｰ圧
         if (isInsert) {
             params.add(null); //CDｺﾝﾀｸﾄ圧
             params.add(null); //IRｺﾝﾀｸﾄ圧
@@ -3439,7 +3445,7 @@ public class GXHDO101B041 implements IFormLogic {
         params.add(DBUtil.stringToDateObject(getItemData(pItemList, GXHDO101B041Const.SEIHIN_SENBETSU_SHURYO_DAY, srDenkitokuseiesi),
                 getItemData(pItemList, GXHDO101B041Const.SEIHIN_SENBETSU_SHURYO_TIME, srDenkitokuseiesi))); //選別終了日時
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B041Const.SEIHIN_KENSA_GOKI, srDenkitokuseiesi))); //検査号機
-        params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO101B041Const.SEIHIN_BUNRUI_AIR_ATSU, srDenkitokuseiesi))); //分類ｴｱｰ圧
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B041Const.SEIHIN_BUNRUI_AIR_ATSU, srDenkitokuseiesi))); //分類ｴｱｰ圧
         if (isInsert) {
             params.add(0); //CDｺﾝﾀｸﾄ圧
             params.add(0); //IRｺﾝﾀｸﾄ圧
@@ -3515,7 +3521,7 @@ public class GXHDO101B041 implements IFormLogic {
         params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B041Const.TAIDEN_DENATSU2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 電圧
         params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B041Const.TAIDEN_HANTEICHI2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 判定値
         params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B041Const.TAIDEN_JUDEN_TIME2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 充電時間
-        if (isInsert) {        
+        if (isInsert) {
             params.add(0); //耐電圧設定条件 IR③ 電圧
             params.add(0); //耐電圧設定条件 IR③ 判定値
             params.add(0); //耐電圧設定条件 IR③ 充電時間
@@ -3781,7 +3787,6 @@ public class GXHDO101B041 implements IFormLogic {
 
             //補正後 / 補正前 * 100(小数点第三位を四捨五入) → 式を変換して先に100を乗算
             BigDecimal hoseiritsu = hoseiato.multiply(BigDecimal.valueOf(100)).divide(hoseimae, 2, RoundingMode.HALF_UP);
-
 
             // 100 - 計算結果
             hoseiritsu = BigDecimal.valueOf(100).subtract(hoseiritsu).abs();
@@ -4090,17 +4095,17 @@ public class GXHDO101B041 implements IFormLogic {
      */
     private void calcShinFuryoritsu(ProcessData processData) {
         //BIN1 真の不良率計算
-        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B041Const.SET_BIN1_SHIN_FURYORITSU, GXHDO101B041Const.SET_BIN1_MACHINE_FURYORITSU, GXHDO101B041Const.SET_BIN1_NUKITORIKEKKA_S);
+        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B041Const.SET_BIN1_SHIN_FURYORITSU, GXHDO101B041Const.SET_BIN1_MACHINE_FURYORITSU, GXHDO101B041Const.SET_BIN1_NUKITORIKEKKA_T);
         //BIN2 真の不良率計算
-        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B041Const.SET_BIN2_SHIN_FURYORITSU, GXHDO101B041Const.SET_BIN2_MACHINE_FURYORITSU, GXHDO101B041Const.SET_BIN2_NUKITORIKEKKA_S);
+        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B041Const.SET_BIN2_SHIN_FURYORITSU, GXHDO101B041Const.SET_BIN2_MACHINE_FURYORITSU, GXHDO101B041Const.SET_BIN2_NUKITORIKEKKA_T);
         //BIN3 真の不良率計算
-        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B041Const.SET_BIN3_SHIN_FURYORITSU, GXHDO101B041Const.SET_BIN3_MACHINE_FURYORITSU, GXHDO101B041Const.SET_BIN3_NUKITORIKEKKA_S);
+        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B041Const.SET_BIN3_SHIN_FURYORITSU, GXHDO101B041Const.SET_BIN3_MACHINE_FURYORITSU, GXHDO101B041Const.SET_BIN3_NUKITORIKEKKA_T);
         //BIN4 真の不良率計算
-        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B041Const.SET_BIN4_SHIN_FURYORITSU, GXHDO101B041Const.SET_BIN4_MACHINE_FURYORITSU, GXHDO101B041Const.SET_BIN4_NUKITORIKEKKA_S);
+        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B041Const.SET_BIN4_SHIN_FURYORITSU, GXHDO101B041Const.SET_BIN4_MACHINE_FURYORITSU, GXHDO101B041Const.SET_BIN4_NUKITORIKEKKA_T);
         //BIN5 真の不良率計算
-        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B041Const.SET_BIN5_SHIN_FURYORITSU, GXHDO101B041Const.SET_BIN5_MACHINE_FURYORITSU, GXHDO101B041Const.SET_BIN5_NUKITORIKEKKA_S);
+        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B041Const.SET_BIN5_SHIN_FURYORITSU, GXHDO101B041Const.SET_BIN5_MACHINE_FURYORITSU, GXHDO101B041Const.SET_BIN5_NUKITORIKEKKA_T);
         //BIN6 真の不良率計算
-        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B041Const.SET_BIN6_SHIN_FURYORITSU, GXHDO101B041Const.SET_BIN6_MACHINE_FURYORITSU, GXHDO101B041Const.SET_BIN6_NUKITORIKEKKA_S);
+        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B041Const.SET_BIN6_SHIN_FURYORITSU, GXHDO101B041Const.SET_BIN6_MACHINE_FURYORITSU, GXHDO101B041Const.SET_BIN6_NUKITORIKEKKA_T);
 
     }
 
@@ -5074,7 +5079,7 @@ public class GXHDO101B041 implements IFormLogic {
         bean.setRdc2renji(getItemRow(processData.getItemListEx(), GXHDO101B041Const.TAIDEN_RDC2_RENJI));
         bean.setRdc2hanteichi(getItemRow(processData.getItemListEx(), GXHDO101B041Const.TAIDEN_RDC2HANTEICHI));
     }
-    
+
     /**
      * 電圧DROP設定条件 画面データ設定処理
      *
@@ -5227,7 +5232,7 @@ public class GXHDO101B041 implements IFormLogic {
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B041Const.DENATSU_DROP_1_3_MS_DC, "・DROP1,3 MS･DC");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B041Const.DENATSU_DROP_2_4_PC, "・DROP2,4 PC");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B041Const.DENATSU_DROP_2_4_PS, "・DROP2,4 PS");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B041Const.DENATSU_DROP_2_4_MS_DC, "・DROP2,4 MS･DC");        
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B041Const.DENATSU_DROP_2_4_MS_DC, "・DROP2,4 MS･DC");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B041Const.SET_BIN1_PERCENT_KBN, "・BIN1 %区分(設定値)");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B041Const.SET_BIN1_SENBETSU_KBN, "・BIN1 選別区分");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B041Const.SET_BIN1_KEIRYOGO_SURYO, "・BIN1 計量後数量");
@@ -5524,7 +5529,7 @@ public class GXHDO101B041 implements IFormLogic {
         return returnValue;
 
     }
-    
+
     /**
      * [電気特性設備]から、ﾃﾞｰﾀを取得
      *
@@ -5536,7 +5541,11 @@ public class GXHDO101B041 implements IFormLogic {
     private List<FXHDD07> loadFXHDD07(QueryRunner queryRunnerDoc, String lotNo) throws SQLException {
 
         String sql = "SELECT kojyo,lotno,edaban,gouki,irdenatu1,irhanteiti1,irjudenjikan1,irdenatu2,irhanteiti2,"
-                + "irjudenjikan2,rdcrange1,rdchantei1,rdcrange2,rdchantei2,toroku_date,deleteflag "
+                + "irjudenjikan2,rdcrange1,rdchantei1,rdcrange2,rdchantei2,toroku_date,deleteflag,"
+                + "drop13pc,drop13ps,drop13msdc,drop24pc,drop24ps,drop24msdc,bin1countersuu,bin2countersuu,"
+                + "bin3countersuu,bin4countersuu,bin5countersuu,bin6countersuu,bin7countersuu,bin8countersuu,"
+                + "bin1senbetsukbn,bin2senbetsukbn,bin3senbetsukbn,bin4senbetsukbn,bin5senbetsukbn,bin6senbetsukbn,"
+                + "bin7senbetsukbn,bin8senbetsukbn "
                 + "FROM fxhdd07 "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND deleteflag = ? ";
         List<Object> params = new ArrayList<>();
@@ -5562,6 +5571,28 @@ public class GXHDO101B041 implements IFormLogic {
         mapping.put("rdchantei2", "rdchantei2"); //RDC2 判定値
         mapping.put("toroku_date", "torokuDate"); //登録日時
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
+        mapping.put("drop13pc", "drop13pc"); //DROP1,3 PC
+        mapping.put("drop13ps", "drop13ps"); //DROP1,3 PS
+        mapping.put("drop13msdc", "drop13msdc"); //DROP1,3 MS･DC
+        mapping.put("drop24pc", "drop24pc"); //DROP2,4 PC
+        mapping.put("drop24ps", "drop24ps"); //DROP2,4 PS
+        mapping.put("drop24msdc", "drop24msdc"); //DROP2,4 MS･DC
+        mapping.put("bin1countersuu", "bin1countersuu"); //BIN1 ｶｳﾝﾀｰ数
+        mapping.put("bin2countersuu", "bin2countersuu"); //BIN2 ｶｳﾝﾀｰ数
+        mapping.put("bin3countersuu", "bin3countersuu"); //BIN3 ｶｳﾝﾀｰ数
+        mapping.put("bin4countersuu", "bin4countersuu"); //BIN4 ｶｳﾝﾀｰ数
+        mapping.put("bin5countersuu", "bin5countersuu"); //BIN5 ｶｳﾝﾀｰ数
+        mapping.put("bin6countersuu", "bin6countersuu"); //BIN6 ｶｳﾝﾀｰ数
+        mapping.put("bin7countersuu", "bin7countersuu"); //BIN7 ｶｳﾝﾀｰ数
+        mapping.put("bin8countersuu", "bin8countersuu"); //BIN8 ｶｳﾝﾀｰ数
+        mapping.put("bin1senbetsukbn", "bin1senbetsukbn"); //BIN1 選別区分
+        mapping.put("bin2senbetsukbn", "bin2senbetsukbn"); //BIN2 選別区分
+        mapping.put("bin3senbetsukbn", "bin3senbetsukbn"); //BIN3 選別区分
+        mapping.put("bin4senbetsukbn", "bin4senbetsukbn"); //BIN4 選別区分
+        mapping.put("bin5senbetsukbn", "bin5senbetsukbn"); //BIN5 選別区分
+        mapping.put("bin6senbetsukbn", "bin6senbetsukbn"); //BIN6 選別区分
+        mapping.put("bin7senbetsukbn", "bin7senbetsukbn"); //BIN7 選別区分
+        mapping.put("bin8senbetsukbn", "bin8senbetsukbn"); //BIN8 選別区分
 
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
@@ -5589,7 +5620,29 @@ public class GXHDO101B041 implements IFormLogic {
         setItemDataEx(processData, GXHDO101B041Const.TAIDEN_RDC1HANTEICHI, StringUtil.nullToBlank(fxhdd07.getRdchantei1())); //RDC1 判定値
         setItemDataEx(processData, GXHDO101B041Const.TAIDEN_RDC2_RENJI, StringUtil.nullToBlank(fxhdd07.getRdcrange2())); //RDC2 ﾚﾝｼﾞ
         setItemDataEx(processData, GXHDO101B041Const.TAIDEN_RDC2HANTEICHI, StringUtil.nullToBlank(fxhdd07.getRdchantei2())); //RDC2 判定値
-
-
+        //電圧DROP設定条件
+        setItemDataEx(processData, GXHDO101B041Const.DENATSU_DROP_1_3_PC, StringUtil.nullToBlank(fxhdd07.getDrop13pc())); //DROP1,3 PC
+        setItemDataEx(processData, GXHDO101B041Const.DENATSU_DROP_1_3_PS, StringUtil.nullToBlank(fxhdd07.getDrop13ps())); //DROP1,3 PS
+        setItemDataEx(processData, GXHDO101B041Const.DENATSU_DROP_1_3_MS_DC, StringUtil.nullToBlank(fxhdd07.getDrop13msdc())); //DROP1,3 MS･DC
+        setItemDataEx(processData, GXHDO101B041Const.DENATSU_DROP_2_4_PC, StringUtil.nullToBlank(fxhdd07.getDrop24pc())); //DROP2,4 PC
+        setItemDataEx(processData, GXHDO101B041Const.DENATSU_DROP_2_4_PS, StringUtil.nullToBlank(fxhdd07.getDrop24ps())); //DROP2,4 PS
+        setItemDataEx(processData, GXHDO101B041Const.DENATSU_DROP_2_4_MS_DC, StringUtil.nullToBlank(fxhdd07.getDrop24msdc())); //DROP2,4 MS･DC
+        //設定条件及び処理結果
+        setItemDataEx(processData, GXHDO101B041Const.SET_BIN1_SENBETSU_KBN, StringUtil.nullToBlank(fxhdd07.getBin1senbetsukbn())); //BIN1 選別区分
+        setItemDataEx(processData, GXHDO101B041Const.SET_BIN1_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin1countersuu())); //BIN1 ｶｳﾝﾀｰ数
+        setItemDataEx(processData, GXHDO101B041Const.SET_BIN2_SENBETSU_KBN, StringUtil.nullToBlank(fxhdd07.getBin2senbetsukbn())); //BIN2 選別区分
+        setItemDataEx(processData, GXHDO101B041Const.SET_BIN2_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin2countersuu())); //BIN2 ｶｳﾝﾀｰ数
+        setItemDataEx(processData, GXHDO101B041Const.SET_BIN3_SENBETSU_KBN, StringUtil.nullToBlank(fxhdd07.getBin3senbetsukbn())); //BIN3 選別区分
+        setItemDataEx(processData, GXHDO101B041Const.SET_BIN3_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin3countersuu())); //BIN3 ｶｳﾝﾀｰ数
+        setItemDataEx(processData, GXHDO101B041Const.SET_BIN4_SENBETSU_KBN, StringUtil.nullToBlank(fxhdd07.getBin4senbetsukbn())); //BIN4 選別区分
+        setItemDataEx(processData, GXHDO101B041Const.SET_BIN4_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin4countersuu())); //BIN4 ｶｳﾝﾀｰ数
+        setItemDataEx(processData, GXHDO101B041Const.SET_BIN5_SENBETSU_KBN, StringUtil.nullToBlank(fxhdd07.getBin5senbetsukbn())); //BIN5 選別区分
+        setItemDataEx(processData, GXHDO101B041Const.SET_BIN5_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin5countersuu())); //BIN5 ｶｳﾝﾀｰ数
+        setItemDataEx(processData, GXHDO101B041Const.SET_BIN6_SENBETSU_KBN, StringUtil.nullToBlank(fxhdd07.getBin6senbetsukbn())); //BIN6 選別区分
+        setItemDataEx(processData, GXHDO101B041Const.SET_BIN6_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin6countersuu())); //BIN6 ｶｳﾝﾀｰ数
+        setItemDataEx(processData, GXHDO101B041Const.SET_BIN7_SENBETSU_KBN, StringUtil.nullToBlank(fxhdd07.getBin7senbetsukbn())); //BIN7 選別区分
+        setItemDataEx(processData, GXHDO101B041Const.SET_BIN7_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin7countersuu())); //BIN7 ｶｳﾝﾀｰ数
+        setItemDataEx(processData, GXHDO101B041Const.SET_BIN8_SENBETSU_KBN, StringUtil.nullToBlank(fxhdd07.getBin8senbetsukbn())); //BIN8 選別区分
+        setItemDataEx(processData, GXHDO101B041Const.SET_BIN8_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin8countersuu())); //BIN8 ｶｳﾝﾀｰ数
     }
 }

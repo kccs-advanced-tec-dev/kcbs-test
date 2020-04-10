@@ -16,7 +16,7 @@
     {"no":"15","id":"senbetukaisinitiji","columnname":"選別開始日時","type":"timestamp","format":"yyyy/MM/dd HH:mm:ss"},
     {"no":"16","id":"senbetusyuryounitiji","columnname":"選別終了日時","type":"timestamp","format":"yyyy/MM/dd HH:mm:ss"},
     {"no":"17","id":"kensagouki","columnname":"検査号機","type":"String","format":""},
-    {"no":"18","id":"bunruiairatu","columnname":"分類ｴｱｰ圧","type":"Integer","format":"9,0"},
+    {"no":"18","id":"bunruiairatu","columnname":"分類ｴｱｰ圧","type":"BigDecimal","format":"5,2"},
     {"no":"19","id":"cdcontactatu","columnname":"CDｺﾝﾀｸﾄ圧","type":"Integer","format":"9,0"},
     {"no":"20","id":"ircontactatu","columnname":"IRｺﾝﾀｸﾄ圧","type":"Integer","format":"9,0"},
     {"no":"21","id":"stationcd1","columnname":"使用後ｽﾃｰｼｮﾝ確認CD1","type":"Integer","format":"9,0"},

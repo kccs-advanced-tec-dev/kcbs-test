@@ -15,6 +15,11 @@ import java.sql.Timestamp;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/04/09<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	ﾄｯﾌﾟﾃｰﾌﾟ、ｷｬﾘｱﾃｰﾌﾟ、ﾎﾞﾄﾑﾃｰﾌﾟ異常型変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -148,7 +153,7 @@ public class SrTapingCheck {
     /**
      * ﾄｯﾌﾟﾃｰﾌﾟ、ｷｬﾘｱﾃｰﾌﾟ、ﾎﾞﾄﾑﾃｰﾌﾟ異常
      */
-    private Integer tapeijyo;
+    private String tapeijyo;
 
     /**
      * ﾘｰﾙﾁｪｯｸ結果
@@ -646,7 +651,7 @@ public class SrTapingCheck {
      *
      * @return the tapeijyo
      */
-    public Integer getTapeijyo() {
+    public String getTapeijyo() {
         return tapeijyo;
     }
 
@@ -655,7 +660,7 @@ public class SrTapingCheck {
      *
      * @param tapeijyo the tapeijyo to set
      */
-    public void setTapeijyo(Integer tapeijyo) {
+    public void setTapeijyo(String tapeijyo) {
         this.tapeijyo = tapeijyo;
     }
 

@@ -54,6 +54,11 @@ import org.apache.commons.dbutils.handlers.MapHandler;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	ﾛｯﾄｶｰﾄﾞ電子化対応<br>
  * <br>
+ * 変更日	2020/04/09<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	設備データ取込項目追加対応<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -237,9 +242,12 @@ public class PublicResource {
                     + "irdenatu6, irhanteiti6_low, irhanteiti6, irjudenjikan6, irdenatu7, irhanteiti7_low, irhanteiti7, irjudenjikan7, "
                     + "irdenatu8, irhanteiti8_low, irhanteiti8, irjudenjikan8, rdcrange1, rdchantei1, rdcrange2, rdchantei2, "
                     + "bin1countersuu, bin2countersuu, bin3countersuu, bin4countersuu, bin5countersuu, bin6countersuu, bin7countersuu, "
-                    + "bin8countersuu, bin5setteiti, bin6setteiti, bin7setteiti, bin8setteiti, toroku_date, koshin_date, deleteflag"
+                    + "bin8countersuu, bin5setteiti, bin6setteiti, bin7setteiti, bin8setteiti, toroku_date, koshin_date, deleteflag, "
+                    + "drop13pc, drop13ps, drop13msdc, drop24pc, drop24ps, drop24msdc, bin1senbetsukbn, bin2senbetsukbn, bin3senbetsukbn, "
+                    + "bin4senbetsukbn, bin5senbetsukbn, bin6senbetsukbn, bin7senbetsukbn, bin8senbetsukbn"
                     + ") VALUES ("
-                    + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+                    + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
+                    + "?,?,?,?,?,?,?,?,?,?,?,?,?,?"
                     + ")";
 
             // 計算処理
@@ -337,7 +345,21 @@ public class PublicResource {
                              getBinXsetteiti(param.getBin8setteiti()),
                              registDate,
                              null,
-                             0
+                             0,
+                             getFormatData(param.getDrop13pc(), "4", "1", "BigDecimal"),
+                             getFormatData(param.getDrop13ps(), "4", "1", "BigDecimal"),
+                             getFormatData(param.getDrop13msdc(), "4", "1", "BigDecimal"),
+                             getFormatData(param.getDrop24pc(), "4", "1", "BigDecimal"),
+                             getFormatData(param.getDrop24ps(), "4", "1", "BigDecimal"),
+                             getFormatData(param.getDrop24msdc(), "4", "1", "BigDecimal"),
+                             getFormatData(param.getBin1senbetsukbn(), "20", "", "String"),
+                             getFormatData(param.getBin2senbetsukbn(), "20", "", "String"),
+                             getFormatData(param.getBin3senbetsukbn(), "20", "", "String"),
+                             getFormatData(param.getBin4senbetsukbn(), "20", "", "String"),
+                             getFormatData(param.getBin5senbetsukbn(), "20", "", "String"),
+                             getFormatData(param.getBin6senbetsukbn(), "20", "", "String"),
+                             getFormatData(param.getBin7senbetsukbn(), "20", "", "String"),
+                             getFormatData(param.getBin8senbetsukbn(), "20", "", "String")
                     ));
 
             DBUtil.outputSQLLog(sqlIns, paramIns.toArray(), LOGGER);
