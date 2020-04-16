@@ -25,6 +25,7 @@ import jp.co.kccs.xhd.common.CompMessage;
 import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.db.model.FXHDD07;
+import jp.co.kccs.xhd.db.model.Jisseki;
 import jp.co.kccs.xhd.db.model.SrDenkitokuseiesi;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.IFormLogic;
@@ -1034,6 +1035,7 @@ public class GXHDO101B040 implements IFormLogic {
         }
         String lotkubuncode = StringUtil.nullToBlank(getMapData(shikakariData, "lotkubuncode")); //ﾛｯﾄ区分ｺｰﾄﾞ
         String ownercode = StringUtil.nullToBlank(getMapData(shikakariData, "ownercode"));// ｵｰﾅｰｺｰﾄﾞ
+        String tanijuryo = StringUtil.nullToBlank(getMapData(shikakariData, "tanijuryo"));// 単位重量
         Map hiddenMap = processData.getHiddenDataMap();
         hiddenMap.put("lotkubuncode", lotkubuncode);
         hiddenMap.put("ownercode", ownercode);
@@ -1058,8 +1060,29 @@ public class GXHDO101B040 implements IFormLogic {
             return processData;
         }
 
+        // 処理数の取得
+         String syorisuu = null;
+         
+        //ﾃﾞｰﾀの取得
+         String strfxhbm03List = "";
+         
+        Map fxhbm03Data = loadFxhbm03Data(queryRunnerDoc);
+        if (fxhbm03Data != null && !fxhbm03Data.isEmpty()) {
+             strfxhbm03List = StringUtil.nullToBlank(getMapData(fxhbm03Data, "data"));
+             String fxhbm03DataArr []= strfxhbm03List.split(",");
+             
+            // 実績情報の取得
+            List<Jisseki> jissekiData = loadJissekiData(queryRunnerWip, lotNo, fxhbm03DataArr);
+            if(jissekiData != null && jissekiData.size() > 0){
+                int dbShorisu = jissekiData.get(0).getSyorisuu(); //処理数               
+                if(dbShorisu > 0){
+                    syorisuu = String.valueOf(dbShorisu);                
+                }
+            }
+        }
+        
         // 入力項目の情報を画面にセットする。
-        if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId, paramJissekino)) {
+        if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId, paramJissekino, syorisuu, tanijuryo)) {
             // エラー発生時は処理を中断
             processData.setFatalError(true);
             processData.setInitMessageList(Arrays.asList(MessageUtil.getMessage("XHD-000038")));
@@ -1260,7 +1283,7 @@ public class GXHDO101B040 implements IFormLogic {
      * @throws SQLException 例外エラー
      */
     private boolean setInputItemData(ProcessData processData, QueryRunner queryRunnerDoc, QueryRunner queryRunnerQcdb,
-            String lotNo, String formId, int jissekino) throws SQLException {
+            String lotNo, String formId, int jissekino, String syorisuu, String tanijuryo) throws SQLException {
 
         List<SrDenkitokuseiesi> srDenkitokuseiesiList = new ArrayList<>();
         String rev = "";
@@ -1292,17 +1315,25 @@ public class GXHDO101B040 implements IFormLogic {
                 ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
                 HttpSession session = (HttpSession) externalContext.getSession(false);
 
+                //受入総重量計算処理
+                FXHDD01 itemUkeireSojuryo = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_UKEIRE_SOUJURYO);
+                FXHDD01 itemOkuriRyohinsu = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_OKURI_RYOHINSU);
+                FXHDD01 itemUkeireTanijuryo = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_UKEIRE_TANNIJURYO);
+
+                // 送り良品数←初期表示時、「送り良品数の取得」参照
+                itemOkuriRyohinsu.setValue(syorisuu);
+                
+                // 受入れ単位重量←Ⅲ.画面表示仕様(18).単位重量
+                itemUkeireTanijuryo.setValue(NumberUtil.getTruncatData(tanijuryo, itemUkeireTanijuryo.getInputLength(), itemUkeireTanijuryo.getInputLengthDec()));
+                
+                // 受入れ総重量←【受入れ総重量計算】参照
+                if (checkUkeireSojuryo(itemUkeireSojuryo, itemOkuriRyohinsu, itemUkeireTanijuryo)) {
+                    // ﾁｪｯｸに問題なければ値をセット
+                    calcUkeireSojuryo(itemUkeireSojuryo, itemOkuriRyohinsu, itemUkeireTanijuryo);
+                }
+
                 Map srMekkiInfo = (Map) session.getAttribute("SrMekkiInfo");
                 if (srMekkiInfo != null && !srMekkiInfo.isEmpty()) {
-                    // 送り良品数←ﾒｯｷ品質検査[良品数]
-                    setItemData(processData, GXHDO101B040Const.SEIHIN_OKURI_RYOHINSU, StringUtil.nullToBlank(srMekkiInfo.get("shukkakosuu")));
-
-                    // 受入れ単位重量←ﾒｯｷ品質検査[検査単位重量]
-                    setItemData(processData, GXHDO101B040Const.SEIHIN_UKEIRE_TANNIJURYO, StringUtil.nullToBlank((BigDecimal) srMekkiInfo.get("kensatannijyuryo")));
-
-                    // 受入れ総重量←ﾒｯｷ品質検査[検査総重量]
-                    setItemData(processData, GXHDO101B040Const.SEIHIN_UKEIRE_SOUJURYO, StringUtil.nullToBlank((BigDecimal) srMekkiInfo.get("kensasoujyuryou")));
-
                     // ﾒｯｷ日←ﾒｯｷ品質検査[終了日時のYYMMMDD部分] 
                     setItemData(processData, GXHDO101B040Const.SEIHIN_MEKKI_DAY, DateUtil.formattedTimestamp((Timestamp) srMekkiInfo.get("mekkisyuryounichiji"), "yyMMdd"));
 
@@ -2107,6 +2138,70 @@ public class GXHDO101B040 implements IFormLogic {
         return queryRunnerWip.query(sql, new MapHandler(), params.toArray());
     }
 
+     /**
+     * [実績]から、ﾃﾞｰﾀを取得
+     * @param queryRunnerWip オブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param date ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ(検索キー)
+     * @return 取得データ
+     * @throws SQLException 
+     */
+     private List<Jisseki> loadJissekiData(QueryRunner queryRunnerWip, String lotNo, String[] data) throws SQLException {
+         
+
+        String lotNo1 = lotNo.substring(0, 3);
+        String lotNo2 = lotNo.substring(3, 11);
+        String lotNo3 = lotNo.substring(11, 14);
+        
+        List<String> dataList= new ArrayList<>(Arrays.asList(data));
+        
+        // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+        String sql = "SELECT syorisuu "
+                + "FROM jisseki "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND ";
+        
+        sql += DBUtil.getInConditionPreparedStatement("koteicode", dataList.size());
+        
+        sql += " ORDER BY syoribi DESC, syorijikoku DESC";
+        
+        Map mapping = new HashMap<>();
+        mapping.put("syorisuu", "syorisuu");
+        
+        BeanProcessor beanProcessor = new BeanProcessor(mapping);
+        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+        ResultSetHandler<List<Jisseki>> beanHandler = new BeanListHandler<>(Jisseki.class, rowProcessor);
+
+        List<Object> params = new ArrayList<>();
+        params.add(lotNo1);
+        params.add(lotNo2);
+        params.add(lotNo3);                
+        params.addAll(dataList);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerWip.query(sql, beanHandler, params.toArray());
+    }
+
+    /**
+     * [ﾊﾟﾗﾒｰﾀﾏｽﾀ]から、ﾃﾞｰﾀを取得
+     * @param queryRunnerDoc オブジェクト
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadFxhbm03Data(QueryRunner queryRunnerDoc) {
+        try {
+
+            // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+             String sql = "SELECT data "
+                        + " FROM fxhbm03 "
+                        + " WHERE user_name = 'common_user' AND key = '電気特性検査_前工程' ";
+            return queryRunnerDoc.query(sql, new MapHandler());
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+        }
+        return null;
+                
+    }
+    
     /**
      * 仕掛データ検索
      *
@@ -2121,7 +2216,7 @@ public class GXHDO101B040 implements IFormLogic {
         String lotNo3 = lotNo.substring(11, 14);
 
         // 仕掛情報データの取得
-        String sql = "SELECT kcpno, tokuisaki, lotkubuncode, ownercode "
+        String sql = "SELECT kcpno, tokuisaki, lotkubuncode, ownercode, tanijuryo "
                 + " FROM sikakari WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
 
         List<Object> params = new ArrayList<>();
@@ -3993,12 +4088,6 @@ public class GXHDO101B040 implements IFormLogic {
             BigDecimal juryo3 = new BigDecimal(StringUtil.emptyToZero(getItemData(processData.getItemListEx(), GXHDO101B040Const.SET_JURYO3, null))); //重量3
             BigDecimal juryo4 = new BigDecimal(StringUtil.emptyToZero(getItemData(processData.getItemListEx(), GXHDO101B040Const.SET_JURYO4, null))); //重量4
 
-            // 重量の値のいずれかが0以下の場合リターン
-            if (0 <= BigDecimal.ZERO.compareTo(juryo1) || 0 <= BigDecimal.ZERO.compareTo(juryo2)
-                    || 0 <= BigDecimal.ZERO.compareTo(juryo3) || 0 <= BigDecimal.ZERO.compareTo(juryo4)) {
-                return;
-            }
-
             BigDecimal ryohinJuryo = juryo1.add(juryo2).add(juryo3).add(juryo4);
             //計算結果を良品重量にセット
             itemRyohinJuryo.setValue(ryohinJuryo.toPlainString());
@@ -4026,12 +4115,6 @@ public class GXHDO101B040 implements IFormLogic {
             BigDecimal kosu2 = new BigDecimal(StringUtil.emptyToZero(getItemData(processData.getItemListEx(), GXHDO101B040Const.SET_KOSU2, null))); //個数2
             BigDecimal kosu3 = new BigDecimal(StringUtil.emptyToZero(getItemData(processData.getItemListEx(), GXHDO101B040Const.SET_KOSU3, null))); //個数3
             BigDecimal kosu4 = new BigDecimal(StringUtil.emptyToZero(getItemData(processData.getItemListEx(), GXHDO101B040Const.SET_KOSU4, null))); //個数4
-
-            // 個数の値のいずれかが0以下の場合リターン
-            if (0 <= BigDecimal.ZERO.compareTo(kosu1) || 0 <= BigDecimal.ZERO.compareTo(kosu2)
-                    || 0 <= BigDecimal.ZERO.compareTo(kosu3) || 0 <= BigDecimal.ZERO.compareTo(kosu4)) {
-                return;
-            }
 
             BigDecimal ryohinKosu = kosu1.add(kosu2).add(kosu3).add(kosu4);
             //計算結果を良品個数にセット
@@ -4182,17 +4265,17 @@ public class GXHDO101B040 implements IFormLogic {
      */
     private void calcShinFuryoritsu(ProcessData processData) {
         //BIN1 真の不良率計算
-        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_SHIN_FURYORITSU, GXHDO101B040Const.SET_BIN1_MACHINE_FURYORITSU, GXHDO101B040Const.SET_BIN1_NUKITORIKEKKA_T);
+        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN1_SHIN_FURYORITSU, GXHDO101B040Const.SET_BIN1_MACHINE_FURYORITSU, GXHDO101B040Const.SET_BIN1_NUKITORIKEKKA_S,GXHDO101B040Const.SET_BIN1_NUKITORIKEKKA_T);
         //BIN2 真の不良率計算
-        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_SHIN_FURYORITSU, GXHDO101B040Const.SET_BIN2_MACHINE_FURYORITSU, GXHDO101B040Const.SET_BIN2_NUKITORIKEKKA_T);
+        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN2_SHIN_FURYORITSU, GXHDO101B040Const.SET_BIN2_MACHINE_FURYORITSU, GXHDO101B040Const.SET_BIN2_NUKITORIKEKKA_S,GXHDO101B040Const.SET_BIN2_NUKITORIKEKKA_T);
         //BIN3 真の不良率計算
-        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_SHIN_FURYORITSU, GXHDO101B040Const.SET_BIN3_MACHINE_FURYORITSU, GXHDO101B040Const.SET_BIN3_NUKITORIKEKKA_T);
+        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN3_SHIN_FURYORITSU, GXHDO101B040Const.SET_BIN3_MACHINE_FURYORITSU, GXHDO101B040Const.SET_BIN3_NUKITORIKEKKA_S,GXHDO101B040Const.SET_BIN3_NUKITORIKEKKA_T);
         //BIN4 真の不良率計算
-        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_SHIN_FURYORITSU, GXHDO101B040Const.SET_BIN4_MACHINE_FURYORITSU, GXHDO101B040Const.SET_BIN4_NUKITORIKEKKA_T);
+        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN4_SHIN_FURYORITSU, GXHDO101B040Const.SET_BIN4_MACHINE_FURYORITSU, GXHDO101B040Const.SET_BIN4_NUKITORIKEKKA_S,GXHDO101B040Const.SET_BIN4_NUKITORIKEKKA_T);
         //BIN5 真の不良率計算
-        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_SHIN_FURYORITSU, GXHDO101B040Const.SET_BIN5_MACHINE_FURYORITSU, GXHDO101B040Const.SET_BIN5_NUKITORIKEKKA_T);
+        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN5_SHIN_FURYORITSU, GXHDO101B040Const.SET_BIN5_MACHINE_FURYORITSU, GXHDO101B040Const.SET_BIN5_NUKITORIKEKKA_S,GXHDO101B040Const.SET_BIN5_NUKITORIKEKKA_T);
         //BIN6 真の不良率計算
-        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_SHIN_FURYORITSU, GXHDO101B040Const.SET_BIN6_MACHINE_FURYORITSU, GXHDO101B040Const.SET_BIN6_NUKITORIKEKKA_T);
+        calcShinFuryoritsuMain(processData.getItemListEx(), GXHDO101B040Const.SET_BIN6_SHIN_FURYORITSU, GXHDO101B040Const.SET_BIN6_MACHINE_FURYORITSU, GXHDO101B040Const.SET_BIN6_NUKITORIKEKKA_S,GXHDO101B040Const.SET_BIN6_NUKITORIKEKKA_T);
 
     }
 
@@ -4204,11 +4287,12 @@ public class GXHDO101B040 implements IFormLogic {
      * @param mcnFuryoritsuId マシン不良率
      * @param nukitorikekkaId 抜き取り結果(SelectOneMenu)
      */
-    private void calcShinFuryoritsuMain(List<FXHDD01> itemListEx, String shinFuryoritsuId, String mcnFuryoritsuId, String nukitorikekkaId) {
+    private void calcShinFuryoritsuMain(List<FXHDD01> itemListEx, String shinFuryoritsuId, String mcnFuryoritsuId, String nukitorikekkaSId, String nukitorikekkaTId) {
         try {
             FXHDD01 itemShinFuryoritsu = getItemRow(itemListEx, shinFuryoritsuId); //真の不良率
             FXHDD01 itemMcnFuryoritsu = getItemRow(itemListEx, mcnFuryoritsuId); //マシン不良率
-            FXHDD01 itemNukitorikekka = getItemRow(itemListEx, nukitorikekkaId); //抜き取り結果(SelectOneMenu)
+            FXHDD01 itemNukitorikekkaS = getItemRow(itemListEx, nukitorikekkaSId); //抜き取り結果
+            FXHDD01 itemNukitorikekkaT = getItemRow(itemListEx, nukitorikekkaTId); //抜き取り結果(SelectOneMenu)
 
             // 真の不良率に値が入力されている場合、リターン
             if (!StringUtil.isEmpty(itemShinFuryoritsu.getValue())) {
@@ -4216,16 +4300,17 @@ public class GXHDO101B040 implements IFormLogic {
             }
 
             BigDecimal mcnFuryoritsu = new BigDecimal(itemMcnFuryoritsu.getValue());
-            BigDecimal nukitorikekka = new BigDecimal(itemNukitorikekka.getValue());
+            BigDecimal nukitorikekkaS = new BigDecimal(itemNukitorikekkaS.getValue());
+            BigDecimal nukitorikekkaT = new BigDecimal(itemNukitorikekkaT.getValue());
 
             // マシン不良率、抜き取り結果の値のいずれかが0以下の場合"0"をセットしてリターン
-            if (0 <= BigDecimal.ZERO.compareTo(mcnFuryoritsu) || 0 <= BigDecimal.ZERO.compareTo(nukitorikekka)) {
+            if (0 <= BigDecimal.ZERO.compareTo(mcnFuryoritsu) || 0 <= BigDecimal.ZERO.compareTo(nukitorikekkaS) || 0 <= BigDecimal.ZERO.compareTo(nukitorikekkaT)) {
                 itemShinFuryoritsu.setValue("0");
                 return;
             }
 
-            //BINX マシン不良率(%) × BINX 抜き取り結果(SelectOneMenu)
-            BigDecimal shinFuryoritsu = mcnFuryoritsu.multiply(nukitorikekka).setScale(4, RoundingMode.HALF_UP);
+            // BINX マシン不良率(%) * ( BINX 抜き取り結果(子数) / BINX 抜き取り結果(母数) )
+            BigDecimal shinFuryoritsu = (mcnFuryoritsu.multiply(nukitorikekkaS)).divide(nukitorikekkaT,4,RoundingMode.HALF_UP);
 
             //計算結果を真の不良率にセット
             itemShinFuryoritsu.setValue(shinFuryoritsu.toPlainString());
@@ -5936,4 +6021,104 @@ public class GXHDO101B040 implements IFormLogic {
         setItemDataEx(processData, GXHDO101B040Const.SET_BIN8_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin8countersuu())); //BIN8 ｶｳﾝﾀｰ数
 
     }
+    
+    /**
+     * 受入れ総重量計算(データチェック処理)
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData confUkeireSojuryoKeisan(ProcessData processData) {
+
+        processData.setMethod("");
+        // チェック処理で計算対象外の場合はそのままリターン
+        if (!checkUkeireSojuryo(getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_UKEIRE_SOUJURYO),
+                getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_OKURI_RYOHINSU),
+                getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_UKEIRE_TANNIJURYO))) {
+            return processData;
+        }
+
+        // 受入総重量が入力されている場合は警告メッセージを表示
+        if (!StringUtil.isEmpty(getItemData(processData.getItemList(), GXHDO101B040Const.SEIHIN_UKEIRE_SOUJURYO, null))) {
+            // 警告メッセージの設定
+            processData.setWarnMessage(MessageUtil.getMessage("XHD-000180"));
+        }
+
+        // 後続処理メソッド設定
+        processData.setMethod("doUkeireSojuryoKeisan");
+
+        return processData;
+
+    }
+
+    /**
+     * 受入れ総重量計算処理
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData doUkeireSojuryoKeisan(ProcessData processData) {
+
+        processData.setMethod("");
+
+        //受入総重量計算処理
+        calcUkeireSojuryo(getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_UKEIRE_SOUJURYO),
+                getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_OKURI_RYOHINSU),
+                getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_UKEIRE_TANNIJURYO));
+
+        return processData;
+    }
+
+    /**
+     * 受入れ総重量の計算前ﾁｪｯｸ
+     *
+     * @param itemUkeireSojuryo 受入れ総重量
+     * @param itemOkuriRyohinsu 送り良品数
+     * @param itemUkeireTanijuryo 受入れ単位重量
+     */
+    private boolean checkUkeireSojuryo(FXHDD01 itemUkeireSojuryo, FXHDD01 itemOkuriRyohinsu, FXHDD01 itemUkeireTanijuryo) {
+        try {
+            // 項目が存在しない場合、リターン
+            if (itemUkeireSojuryo == null || itemUkeireTanijuryo == null || itemOkuriRyohinsu == null) {
+                return false;
+            }
+
+            BigDecimal taniJuryo = new BigDecimal(itemUkeireTanijuryo.getValue());
+            BigDecimal okuriRyohinsu = new BigDecimal(itemOkuriRyohinsu.getValue());
+
+            // 受入れ単位重量、送り良品数の値のいずれかが0以下の場合、リターン
+            if (0 <= BigDecimal.ZERO.compareTo(taniJuryo) || 0 <= BigDecimal.ZERO.compareTo(okuriRyohinsu)) {
+                return false;
+            }
+
+        } catch (NullPointerException | NumberFormatException ex) {
+            return false;
+        }
+        return true;
+
+    }
+
+    /**
+     * 受入れ総重量を計算してセットする。 ※事前にcheckUkeireSojuryoを呼び出してﾁｪｯｸ処理を行うこと
+     *
+     * @param itemUkeireSojuryo 受入れ総重量
+     * @param itemOkuriRyohinsu 送り良品数
+     * @param itemUkeireTanijuryo 受入れ単位重量
+     */
+    private void calcUkeireSojuryo(FXHDD01 itemUkeireSojuryo, FXHDD01 itemOkuriRyohinsu, FXHDD01 itemUkeireTanijuryo) {
+        try {
+            BigDecimal taniJuryo = new BigDecimal(itemUkeireTanijuryo.getValue());
+            BigDecimal okuriRyohinsu = new BigDecimal(itemOkuriRyohinsu.getValue());
+
+            //「送り良品数」　÷　100　×　「受入れ単位重量」 → 式を変換して先に「受入れ単位重量」を乗算
+            BigDecimal calcResult = okuriRyohinsu.multiply(taniJuryo).divide(BigDecimal.valueOf(100), 2, RoundingMode.HALF_UP);
+
+            //計算結果をセット
+            itemUkeireSojuryo.setValue(calcResult.toPlainString());
+
+        } catch (NullPointerException | NumberFormatException ex) {
+            //処理なし
+        }
+    }
+
 }
