@@ -16,11 +16,6 @@ import java.sql.Timestamp;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
- * 変更日	2020/04/10<br>
- * 計画書No	K1803-DS001<br>
- * 変更者	SYSNAVI K.Hisanaga<br>
- * 変更理由	分類ｴﾗｰ圧型変更<br>
- * <br>
  * ===============================================================================<br>
  */
 /**
@@ -129,7 +124,7 @@ public class SrDenkitokuseiesi {
     /**
      * 分類ｴｱｰ圧
      */
-    private BigDecimal bunruiairatu;
+    private Integer bunruiairatu;
 
     /**
      * CDｺﾝﾀｸﾄ圧
@@ -652,6 +647,11 @@ public class SrDenkitokuseiesi {
     private String bin1kekkacheck;
 
     /**
+     * BIN1 袋ﾁｪｯｸ
+     */
+    private Integer bin1fukurocheck;
+
+    /**
      * BIN2 %区分(設定値)
      */
     private String bin2setteiti;
@@ -700,6 +700,11 @@ public class SrDenkitokuseiesi {
      * BIN2 結果ﾁｪｯｸ
      */
     private String bin2kekkacheck;
+
+    /**
+     * BIN2 袋ﾁｪｯｸ
+     */
+    private Integer bin2fukurocheck;
 
     /**
      * BIN3 %区分(設定値)
@@ -752,6 +757,11 @@ public class SrDenkitokuseiesi {
     private String bin3kekkacheck;
 
     /**
+     * BIN3 袋ﾁｪｯｸ
+     */
+    private Integer bin3fukurocheck;
+
+    /**
      * BIN4 %区分(設定値)
      */
     private String bin4setteiti;
@@ -799,7 +809,12 @@ public class SrDenkitokuseiesi {
     /**
      * BIN4 結果ﾁｪｯｸ
      */
-    private String bin4kekkacheck;
+    private Integer bin4kekkacheck;
+
+    /**
+     * BIN4 袋ﾁｪｯｸ
+     */
+    private String bin4fukurocheck;
 
     /**
      * BIN5 %区分(設定値)
@@ -942,6 +957,26 @@ public class SrDenkitokuseiesi {
     private BigDecimal bin7masinfuryouritu;
 
     /**
+     * BIN7 抜き取り結果
+     */
+    private Integer bin7nukitorikekkabosuu;
+
+    /**
+     * BIN7 抜き取り結果
+     */
+    private Integer bin7nukitorikekka;
+
+    /**
+     * BIN7 真の不良率(%)
+     */
+    private BigDecimal bin7sinnofuryouritu;
+
+    /**
+     * BIN7 結果ﾁｪｯｸ
+     */
+    private String bin7kekkacheck;
+
+    /**
      * BIN7 袋ﾁｪｯｸ
      */
     private Integer bin7fukurocheck;
@@ -977,6 +1012,26 @@ public class SrDenkitokuseiesi {
     private BigDecimal bin8masinfuryouritu;
 
     /**
+     * BIN8 抜き取り結果
+     */
+    private Integer bin8nukitorikekkabosuu;
+
+    /**
+     * BIN8 抜き取り結果
+     */
+    private Integer bin8nukitorikekka;
+
+    /**
+     * BIN8 真の不良率(%)
+     */
+    private BigDecimal bin8sinnofuryouritu;
+
+    /**
+     * BIN8 結果ﾁｪｯｸ
+     */
+    private String bin8kekkacheck;
+
+    /**
      * BIN8 袋ﾁｪｯｸ
      */
     private Integer bin8fukurocheck;
@@ -1010,6 +1065,11 @@ public class SrDenkitokuseiesi {
      * 信頼性ｻﾝﾌﾟﾙ
      */
     private String sinraiseisample;
+
+    /**
+     * SATｻﾝﾌﾟﾙ
+     */
+    private String satsample;
 
     /**
      * 真不良判定者
@@ -1140,8 +1200,7 @@ public class SrDenkitokuseiesi {
      * 削除ﾌﾗｸﾞ
      */
     private Integer deleteflag;
-    
-    
+
     /**
      * 工場ｺｰﾄﾞ
      * @return the kojyo
@@ -1450,7 +1509,7 @@ public class SrDenkitokuseiesi {
      * 分類ｴｱｰ圧
      * @return the bunruiairatu
      */
-    public BigDecimal getBunruiairatu() {
+    public Integer getBunruiairatu() {
         return bunruiairatu;
     }
 
@@ -1458,7 +1517,7 @@ public class SrDenkitokuseiesi {
      * 分類ｴｱｰ圧
      * @param bunruiairatu the bunruiairatu to set
      */
-    public void setBunruiairatu(BigDecimal bunruiairatu) {
+    public void setBunruiairatu(Integer bunruiairatu) {
         this.bunruiairatu = bunruiairatu;
     }
 
@@ -3127,6 +3186,22 @@ public class SrDenkitokuseiesi {
     }
 
     /**
+     * BIN1 袋ﾁｪｯｸ
+     * @return the bin1fukurocheck
+     */
+    public Integer getBin1fukurocheck() {
+        return bin1fukurocheck;
+    }
+
+    /**
+     * BIN1 袋ﾁｪｯｸ
+     * @param bin1fukurocheck the bin1fukurocheck to set
+     */
+    public void setBin1fukurocheck(Integer bin1fukurocheck) {
+        this.bin1fukurocheck = bin1fukurocheck;
+    }
+
+    /**
      * BIN2 %区分(設定値)
      * @return the bin2setteiti
      */
@@ -3284,6 +3359,22 @@ public class SrDenkitokuseiesi {
      */
     public void setBin2kekkacheck(String bin2kekkacheck) {
         this.bin2kekkacheck = bin2kekkacheck;
+    }
+
+    /**
+     * BIN2 袋ﾁｪｯｸ
+     * @return the bin2fukurocheck
+     */
+    public Integer getBin2fukurocheck() {
+        return bin2fukurocheck;
+    }
+
+    /**
+     * BIN2 袋ﾁｪｯｸ
+     * @param bin2fukurocheck the bin2fukurocheck to set
+     */
+    public void setBin2fukurocheck(Integer bin2fukurocheck) {
+        this.bin2fukurocheck = bin2fukurocheck;
     }
 
     /**
@@ -3447,6 +3538,22 @@ public class SrDenkitokuseiesi {
     }
 
     /**
+     * BIN3 袋ﾁｪｯｸ
+     * @return the bin3fukurocheck
+     */
+    public Integer getBin3fukurocheck() {
+        return bin3fukurocheck;
+    }
+
+    /**
+     * BIN3 袋ﾁｪｯｸ
+     * @param bin3fukurocheck the bin3fukurocheck to set
+     */
+    public void setBin3fukurocheck(Integer bin3fukurocheck) {
+        this.bin3fukurocheck = bin3fukurocheck;
+    }
+
+    /**
      * BIN4 %区分(設定値)
      * @return the bin4setteiti
      */
@@ -3594,7 +3701,7 @@ public class SrDenkitokuseiesi {
      * BIN4 結果ﾁｪｯｸ
      * @return the bin4kekkacheck
      */
-    public String getBin4kekkacheck() {
+    public Integer getBin4kekkacheck() {
         return bin4kekkacheck;
     }
 
@@ -3602,8 +3709,24 @@ public class SrDenkitokuseiesi {
      * BIN4 結果ﾁｪｯｸ
      * @param bin4kekkacheck the bin4kekkacheck to set
      */
-    public void setBin4kekkacheck(String bin4kekkacheck) {
+    public void setBin4kekkacheck(Integer bin4kekkacheck) {
         this.bin4kekkacheck = bin4kekkacheck;
+    }
+
+    /**
+     * BIN4 袋ﾁｪｯｸ
+     * @return the bin4fukurocheck
+     */
+    public String getBin4fukurocheck() {
+        return bin4fukurocheck;
+    }
+
+    /**
+     * BIN4 袋ﾁｪｯｸ
+     * @param bin4fukurocheck the bin4fukurocheck to set
+     */
+    public void setBin4fukurocheck(String bin4fukurocheck) {
+        this.bin4fukurocheck = bin4fukurocheck;
     }
 
     /**
@@ -4055,6 +4178,70 @@ public class SrDenkitokuseiesi {
     }
 
     /**
+     * BIN7 抜き取り結果
+     * @return the bin7nukitorikekkabosuu
+     */
+    public Integer getBin7nukitorikekkabosuu() {
+        return bin7nukitorikekkabosuu;
+    }
+
+    /**
+     * BIN7 抜き取り結果
+     * @param bin7nukitorikekkabosuu the bin7nukitorikekkabosuu to set
+     */
+    public void setBin7nukitorikekkabosuu(Integer bin7nukitorikekkabosuu) {
+        this.bin7nukitorikekkabosuu = bin7nukitorikekkabosuu;
+    }
+
+    /**
+     * BIN7 抜き取り結果
+     * @return the bin7nukitorikekka
+     */
+    public Integer getBin7nukitorikekka() {
+        return bin7nukitorikekka;
+    }
+
+    /**
+     * BIN7 抜き取り結果
+     * @param bin7nukitorikekka the bin7nukitorikekka to set
+     */
+    public void setBin7nukitorikekka(Integer bin7nukitorikekka) {
+        this.bin7nukitorikekka = bin7nukitorikekka;
+    }
+
+    /**
+     * BIN7 真の不良率(%)
+     * @return the bin7sinnofuryouritu
+     */
+    public BigDecimal getBin7sinnofuryouritu() {
+        return bin7sinnofuryouritu;
+    }
+
+    /**
+     * BIN7 真の不良率(%)
+     * @param bin7sinnofuryouritu the bin7sinnofuryouritu to set
+     */
+    public void setBin7sinnofuryouritu(BigDecimal bin7sinnofuryouritu) {
+        this.bin7sinnofuryouritu = bin7sinnofuryouritu;
+    }
+
+    /**
+     * BIN7 結果ﾁｪｯｸ
+     * @return the bin7kekkacheck
+     */
+    public String getBin7kekkacheck() {
+        return bin7kekkacheck;
+    }
+
+    /**
+     * BIN7 結果ﾁｪｯｸ
+     * @param bin7kekkacheck the bin7kekkacheck to set
+     */
+    public void setBin7kekkacheck(String bin7kekkacheck) {
+        this.bin7kekkacheck = bin7kekkacheck;
+    }
+
+    /**
      * BIN7 袋ﾁｪｯｸ
      * @return the bin7fukurocheck
      */
@@ -4167,6 +4354,70 @@ public class SrDenkitokuseiesi {
     }
 
     /**
+     * BIN8 抜き取り結果
+     * @return the bin8nukitorikekkabosuu
+     */
+    public Integer getBin8nukitorikekkabosuu() {
+        return bin8nukitorikekkabosuu;
+    }
+
+    /**
+     * BIN8 抜き取り結果
+     * @param bin8nukitorikekkabosuu the bin8nukitorikekkabosuu to set
+     */
+    public void setBin8nukitorikekkabosuu(Integer bin8nukitorikekkabosuu) {
+        this.bin8nukitorikekkabosuu = bin8nukitorikekkabosuu;
+    }
+
+    /**
+     * BIN8 抜き取り結果
+     * @return the bin8nukitorikekka
+     */
+    public Integer getBin8nukitorikekka() {
+        return bin8nukitorikekka;
+    }
+
+    /**
+     * BIN8 抜き取り結果
+     * @param bin8nukitorikekka the bin8nukitorikekka to set
+     */
+    public void setBin8nukitorikekka(Integer bin8nukitorikekka) {
+        this.bin8nukitorikekka = bin8nukitorikekka;
+    }
+
+    /**
+     * BIN8 真の不良率(%)
+     * @return the bin8sinnofuryouritu
+     */
+    public BigDecimal getBin8sinnofuryouritu() {
+        return bin8sinnofuryouritu;
+    }
+
+    /**
+     * BIN8 真の不良率(%)
+     * @param bin8sinnofuryouritu the bin8sinnofuryouritu to set
+     */
+    public void setBin8sinnofuryouritu(BigDecimal bin8sinnofuryouritu) {
+        this.bin8sinnofuryouritu = bin8sinnofuryouritu;
+    }
+
+    /**
+     * BIN8 結果ﾁｪｯｸ
+     * @return the bin8kekkacheck
+     */
+    public String getBin8kekkacheck() {
+        return bin8kekkacheck;
+    }
+
+    /**
+     * BIN8 結果ﾁｪｯｸ
+     * @param bin8kekkacheck the bin8kekkacheck to set
+     */
+    public void setBin8kekkacheck(String bin8kekkacheck) {
+        this.bin8kekkacheck = bin8kekkacheck;
+    }
+
+    /**
      * BIN8 袋ﾁｪｯｸ
      * @return the bin8fukurocheck
      */
@@ -4276,6 +4527,22 @@ public class SrDenkitokuseiesi {
      */
     public void setSinraiseisample(String sinraiseisample) {
         this.sinraiseisample = sinraiseisample;
+    }
+
+    /**
+     * SATｻﾝﾌﾟﾙ
+     * @return the satsample
+     */
+    public String getSatsample() {
+        return satsample;
+    }
+
+    /**
+     * SATｻﾝﾌﾟﾙ
+     * @param satsample the satsample to set
+     */
+    public void setSatsample(String satsample) {
+        this.satsample = satsample;
     }
 
     /**

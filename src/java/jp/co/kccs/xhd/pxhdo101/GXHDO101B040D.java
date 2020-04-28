@@ -81,6 +81,11 @@ public class GXHDO101B040D implements Serializable {
     private FXHDD01 bin1KekkaCheck;
 
     /**
+     * BIN1 袋ﾁｪｯｸ
+     */
+    private FXHDD01 bin1FukuroCheck;
+
+    /**
      * BIN2 %区分(設定値)
      */
     private FXHDD01 bin2PercentKbn;
@@ -129,6 +134,11 @@ public class GXHDO101B040D implements Serializable {
      * BIN2 結果ﾁｪｯｸ
      */
     private FXHDD01 bin2KekkaCheck;
+
+    /**
+     * BIN2 袋ﾁｪｯｸ
+     */
+    private FXHDD01 bin2FukuroCheck;
 
     /**
      * BIN3 %区分(設定値)
@@ -181,6 +191,11 @@ public class GXHDO101B040D implements Serializable {
     private FXHDD01 bin3KekkaCheck;
 
     /**
+     * BIN3 袋ﾁｪｯｸ
+     */
+    private FXHDD01 bin3FukuroCheck;
+
+    /**
      * BIN4 %区分(設定値)
      */
     private FXHDD01 bin4PercentKbn;
@@ -229,6 +244,11 @@ public class GXHDO101B040D implements Serializable {
      * BIN4 結果ﾁｪｯｸ
      */
     private FXHDD01 bin4KekkaCheck;
+
+    /**
+     * BIN4 袋ﾁｪｯｸ
+     */
+    private FXHDD01 bin4FukuroCheck;
 
     /**
      * BIN5 %区分(設定値)
@@ -371,6 +391,26 @@ public class GXHDO101B040D implements Serializable {
     private FXHDD01 bin7MachineFuryoritsu;
 
     /**
+     * BIN7 抜き取り結果
+     */
+    private FXHDD01 bin7NukitorikekkaS;
+
+    /**
+     * BIN7 抜き取り結果
+     */
+    private FXHDD01 bin7NukitorikekkaT;
+
+    /**
+     * BIN7 真の不良率(%)
+     */
+    private FXHDD01 bin7ShinFuryoritsu;
+
+    /**
+     * BIN7 結果ﾁｪｯｸ
+     */
+    private FXHDD01 bin7KekkaCheck;
+
+    /**
      * BIN7 袋ﾁｪｯｸ
      */
     private FXHDD01 bin7FukuroCheck;
@@ -406,6 +446,26 @@ public class GXHDO101B040D implements Serializable {
     private FXHDD01 bin8MachineFuryoritsu;
 
     /**
+     * BIN8 抜き取り結果
+     */
+    private FXHDD01 bin8NukitorikekkaS;
+
+    /**
+     * BIN8 抜き取り結果
+     */
+    private FXHDD01 bin8NukitorikekkaT;
+
+    /**
+     * BIN8 真の不良率(%)
+     */
+    private FXHDD01 bin8ShinFuryoritsu;
+
+    /**
+     * BIN8 結果ﾁｪｯｸ
+     */
+    private FXHDD01 bin8KekkaCheck;
+
+    /**
      * BIN8 袋ﾁｪｯｸ
      */
     private FXHDD01 bin8FukuroCheck;
@@ -439,6 +499,11 @@ public class GXHDO101B040D implements Serializable {
      * 信頼性ｻﾝﾌﾟﾙ
      */
     private FXHDD01 shinraiseiSample;
+
+    /**
+     * SATｻﾝﾌﾟﾙ
+     */
+    private FXHDD01 satSample;
 
     /**
      * 真不良判定者
@@ -707,6 +772,22 @@ public class GXHDO101B040D implements Serializable {
     }
 
     /**
+     * BIN1 袋ﾁｪｯｸ
+     * @return the bin1FukuroCheck
+     */
+    public FXHDD01 getBin1FukuroCheck() {
+        return bin1FukuroCheck;
+    }
+
+    /**
+     * BIN1 袋ﾁｪｯｸ
+     * @param bin1FukuroCheck the bin1FukuroCheck to set
+     */
+    public void setBin1FukuroCheck(FXHDD01 bin1FukuroCheck) {
+        this.bin1FukuroCheck = bin1FukuroCheck;
+    }
+
+    /**
      * BIN2 %区分(設定値)
      * @return the bin2PercentKbn
      */
@@ -864,6 +945,22 @@ public class GXHDO101B040D implements Serializable {
      */
     public void setBin2KekkaCheck(FXHDD01 bin2KekkaCheck) {
         this.bin2KekkaCheck = bin2KekkaCheck;
+    }
+
+    /**
+     * BIN2 袋ﾁｪｯｸ
+     * @return the bin2FukuroCheck
+     */
+    public FXHDD01 getBin2FukuroCheck() {
+        return bin2FukuroCheck;
+    }
+
+    /**
+     * BIN2 袋ﾁｪｯｸ
+     * @param bin2FukuroCheck the bin2FukuroCheck to set
+     */
+    public void setBin2FukuroCheck(FXHDD01 bin2FukuroCheck) {
+        this.bin2FukuroCheck = bin2FukuroCheck;
     }
 
     /**
@@ -1027,6 +1124,22 @@ public class GXHDO101B040D implements Serializable {
     }
 
     /**
+     * BIN3 袋ﾁｪｯｸ
+     * @return the bin3FukuroCheck
+     */
+    public FXHDD01 getBin3FukuroCheck() {
+        return bin3FukuroCheck;
+    }
+
+    /**
+     * BIN3 袋ﾁｪｯｸ
+     * @param bin3FukuroCheck the bin3FukuroCheck to set
+     */
+    public void setBin3FukuroCheck(FXHDD01 bin3FukuroCheck) {
+        this.bin3FukuroCheck = bin3FukuroCheck;
+    }
+
+    /**
      * BIN4 %区分(設定値)
      * @return the bin4PercentKbn
      */
@@ -1184,6 +1297,22 @@ public class GXHDO101B040D implements Serializable {
      */
     public void setBin4KekkaCheck(FXHDD01 bin4KekkaCheck) {
         this.bin4KekkaCheck = bin4KekkaCheck;
+    }
+
+    /**
+     * BIN4 袋ﾁｪｯｸ
+     * @return the bin4FukuroCheck
+     */
+    public FXHDD01 getBin4FukuroCheck() {
+        return bin4FukuroCheck;
+    }
+
+    /**
+     * BIN4 袋ﾁｪｯｸ
+     * @param bin4FukuroCheck the bin4FukuroCheck to set
+     */
+    public void setBin4FukuroCheck(FXHDD01 bin4FukuroCheck) {
+        this.bin4FukuroCheck = bin4FukuroCheck;
     }
 
     /**
@@ -1635,6 +1764,70 @@ public class GXHDO101B040D implements Serializable {
     }
 
     /**
+     * BIN7 抜き取り結果
+     * @return the bin7NukitorikekkaS
+     */
+    public FXHDD01 getBin7NukitorikekkaS() {
+        return bin7NukitorikekkaS;
+    }
+
+    /**
+     * BIN7 抜き取り結果
+     * @param bin7NukitorikekkaS the bin7NukitorikekkaS to set
+     */
+    public void setBin7NukitorikekkaS(FXHDD01 bin7NukitorikekkaS) {
+        this.bin7NukitorikekkaS = bin7NukitorikekkaS;
+    }
+
+    /**
+     * BIN7 抜き取り結果
+     * @return the bin7NukitorikekkaT
+     */
+    public FXHDD01 getBin7NukitorikekkaT() {
+        return bin7NukitorikekkaT;
+    }
+
+    /**
+     * BIN7 抜き取り結果
+     * @param bin7NukitorikekkaT the bin7NukitorikekkaT to set
+     */
+    public void setBin7NukitorikekkaT(FXHDD01 bin7NukitorikekkaT) {
+        this.bin7NukitorikekkaT = bin7NukitorikekkaT;
+    }
+
+    /**
+     * BIN7 真の不良率(%)
+     * @return the bin7ShinFuryoritsu
+     */
+    public FXHDD01 getBin7ShinFuryoritsu() {
+        return bin7ShinFuryoritsu;
+    }
+
+    /**
+     * BIN7 真の不良率(%)
+     * @param bin7ShinFuryoritsu the bin7ShinFuryoritsu to set
+     */
+    public void setBin7ShinFuryoritsu(FXHDD01 bin7ShinFuryoritsu) {
+        this.bin7ShinFuryoritsu = bin7ShinFuryoritsu;
+    }
+
+    /**
+     * BIN7 結果ﾁｪｯｸ
+     * @return the bin7KekkaCheck
+     */
+    public FXHDD01 getBin7KekkaCheck() {
+        return bin7KekkaCheck;
+    }
+
+    /**
+     * BIN7 結果ﾁｪｯｸ
+     * @param bin7KekkaCheck the bin7KekkaCheck to set
+     */
+    public void setBin7KekkaCheck(FXHDD01 bin7KekkaCheck) {
+        this.bin7KekkaCheck = bin7KekkaCheck;
+    }
+
+    /**
      * BIN7 袋ﾁｪｯｸ
      * @return the bin7FukuroCheck
      */
@@ -1747,6 +1940,70 @@ public class GXHDO101B040D implements Serializable {
     }
 
     /**
+     * BIN8 抜き取り結果
+     * @return the bin8NukitorikekkaS
+     */
+    public FXHDD01 getBin8NukitorikekkaS() {
+        return bin8NukitorikekkaS;
+    }
+
+    /**
+     * BIN8 抜き取り結果
+     * @param bin8NukitorikekkaS the bin8NukitorikekkaS to set
+     */
+    public void setBin8NukitorikekkaS(FXHDD01 bin8NukitorikekkaS) {
+        this.bin8NukitorikekkaS = bin8NukitorikekkaS;
+    }
+
+    /**
+     * BIN8 抜き取り結果
+     * @return the bin8NukitorikekkaT
+     */
+    public FXHDD01 getBin8NukitorikekkaT() {
+        return bin8NukitorikekkaT;
+    }
+
+    /**
+     * BIN8 抜き取り結果
+     * @param bin8NukitorikekkaT the bin8NukitorikekkaT to set
+     */
+    public void setBin8NukitorikekkaT(FXHDD01 bin8NukitorikekkaT) {
+        this.bin8NukitorikekkaT = bin8NukitorikekkaT;
+    }
+
+    /**
+     * BIN8 真の不良率(%)
+     * @return the bin8ShinFuryoritsu
+     */
+    public FXHDD01 getBin8ShinFuryoritsu() {
+        return bin8ShinFuryoritsu;
+    }
+
+    /**
+     * BIN8 真の不良率(%)
+     * @param bin8ShinFuryoritsu the bin8ShinFuryoritsu to set
+     */
+    public void setBin8ShinFuryoritsu(FXHDD01 bin8ShinFuryoritsu) {
+        this.bin8ShinFuryoritsu = bin8ShinFuryoritsu;
+    }
+
+    /**
+     * BIN8 結果ﾁｪｯｸ
+     * @return the bin8KekkaCheck
+     */
+    public FXHDD01 getBin8KekkaCheck() {
+        return bin8KekkaCheck;
+    }
+
+    /**
+     * BIN8 結果ﾁｪｯｸ
+     * @param bin8KekkaCheck the bin8KekkaCheck to set
+     */
+    public void setBin8KekkaCheck(FXHDD01 bin8KekkaCheck) {
+        this.bin8KekkaCheck = bin8KekkaCheck;
+    }
+
+    /**
      * BIN8 袋ﾁｪｯｸ
      * @return the bin8FukuroCheck
      */
@@ -1856,6 +2113,22 @@ public class GXHDO101B040D implements Serializable {
      */
     public void setShinraiseiSample(FXHDD01 shinraiseiSample) {
         this.shinraiseiSample = shinraiseiSample;
+    }
+
+    /**
+     * SATｻﾝﾌﾟﾙ
+     * @return the satSample
+     */
+    public FXHDD01 getSatSample() {
+        return satSample;
+    }
+
+    /**
+     * SATｻﾝﾌﾟﾙ
+     * @param satSample the satSample to set
+     */
+    public void setSatSample(FXHDD01 satSample) {
+        this.satSample = satSample;
     }
 
     /**

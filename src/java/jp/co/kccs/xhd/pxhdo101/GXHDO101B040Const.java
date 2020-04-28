@@ -594,6 +594,11 @@ public class GXHDO101B040Const {
     public static final String SET_BIN1_KEKKA_CHECK = "sr_denkitokuseiesi_set_bin1_kekka_check";
 
     /**
+     * 設定条件及び処理結果:BIN1 袋ﾁｪｯｸ
+     */
+    public static final String SET_BIN1_FUKURO_CHECK = "sr_denkitokuseiesi_set_bin1_fukuro_check";
+
+    /**
      * 設定条件及び処理結果:BIN2 %区分(設定値)
      */
     public static final String SET_BIN2_PERCENT_KBN = "sr_denkitokuseiesi_set_bin2_percent_kbn";
@@ -642,6 +647,11 @@ public class GXHDO101B040Const {
      * 設定条件及び処理結果:BIN2 結果ﾁｪｯｸ
      */
     public static final String SET_BIN2_KEKKA_CHECK = "sr_denkitokuseiesi_set_bin2_kekka_check";
+
+    /**
+     * 設定条件及び処理結果:BIN2 袋ﾁｪｯｸ
+     */
+    public static final String SET_BIN2_FUKURO_CHECK = "sr_denkitokuseiesi_set_bin2_fukuro_check";
 
     /**
      * 設定条件及び処理結果:BIN3 %区分(設定値)
@@ -694,6 +704,11 @@ public class GXHDO101B040Const {
     public static final String SET_BIN3_KEKKA_CHECK = "sr_denkitokuseiesi_set_bin3_kekka_check";
 
     /**
+     * 設定条件及び処理結果:BIN3 袋ﾁｪｯｸ
+     */
+    public static final String SET_BIN3_FUKURO_CHECK = "sr_denkitokuseiesi_set_bin3_fukuro_check";
+
+    /**
      * 設定条件及び処理結果:BIN4 %区分(設定値)
      */
     public static final String SET_BIN4_PERCENT_KBN = "sr_denkitokuseiesi_set_bin4_percent_kbn";
@@ -742,6 +757,11 @@ public class GXHDO101B040Const {
      * 設定条件及び処理結果:BIN4 結果ﾁｪｯｸ
      */
     public static final String SET_BIN4_KEKKA_CHECK = "sr_denkitokuseiesi_set_bin4_kekka_check";
+
+    /**
+     * 設定条件及び処理結果:BIN4 袋ﾁｪｯｸ
+     */
+    public static final String SET_BIN4_FUKURO_CHECK = "sr_denkitokuseiesi_set_bin4_fukuro_check";
 
     /**
      * 設定条件及び処理結果:BIN5 %区分(設定値)
@@ -884,6 +904,26 @@ public class GXHDO101B040Const {
     public static final String SET_BIN7_MACHINE_FURYORITSU = "sr_denkitokuseiesi_set_bin7_machine_furyoritsu";
 
     /**
+     * 設定条件及び処理結果:BIN7 抜き取り結果
+     */
+    public static final String SET_BIN7_NUKITORIKEKKA_S = "sr_denkitokuseiesi_set_bin7_nukitorikekka_s";
+
+    /**
+     * 設定条件及び処理結果:BIN7 抜き取り結果
+     */
+    public static final String SET_BIN7_NUKITORIKEKKA_T = "sr_denkitokuseiesi_set_bin7_nukitorikekka_t";
+
+    /**
+     * 設定条件及び処理結果:BIN7 真の不良率(%)
+     */
+    public static final String SET_BIN7_SHIN_FURYORITSU = "sr_denkitokuseiesi_set_bin7_shin_furyoritsu";
+
+    /**
+     * 設定条件及び処理結果:BIN7 結果ﾁｪｯｸ
+     */
+    public static final String SET_BIN7_KEKKA_CHECK = "sr_denkitokuseiesi_set_bin7_kekka_check";
+
+    /**
      * 設定条件及び処理結果:BIN7 袋ﾁｪｯｸ
      */
     public static final String SET_BIN7_FUKURO_CHECK = "sr_denkitokuseiesi_set_bin7_fukuro_check";
@@ -919,6 +959,26 @@ public class GXHDO101B040Const {
     public static final String SET_BIN8_MACHINE_FURYORITSU = "sr_denkitokuseiesi_set_bin8_machine_furyoritsu";
 
     /**
+     * 設定条件及び処理結果:BIN8 抜き取り結果
+     */
+    public static final String SET_BIN8_NUKITORIKEKKA_S = "sr_denkitokuseiesi_set_bin8_nukitorikekka_s";
+
+    /**
+     * 設定条件及び処理結果:BIN8 抜き取り結果
+     */
+    public static final String SET_BIN8_NUKITORIKEKKA_T = "sr_denkitokuseiesi_set_bin8_nukitorikekka_t";
+
+    /**
+     * 設定条件及び処理結果:BIN8 真の不良率(%)
+     */
+    public static final String SET_BIN8_SHIN_FURYORITSU = "sr_denkitokuseiesi_set_bin8_shin_furyoritsu";
+
+    /**
+     * 設定条件及び処理結果:BIN8 結果ﾁｪｯｸ
+     */
+    public static final String SET_BIN8_KEKKA_CHECK = "sr_denkitokuseiesi_set_bin8_kekka_check";
+
+    /**
      * 設定条件及び処理結果:BIN8 袋ﾁｪｯｸ
      */
     public static final String SET_BIN8_FUKURO_CHECK = "sr_denkitokuseiesi_set_bin8_fukuro_check";
@@ -952,6 +1012,11 @@ public class GXHDO101B040Const {
      * 設定条件及び処理結果:信頼性ｻﾝﾌﾟﾙ
      */
     public static final String SET_SHINRAISEI_SAMPLE = "sr_denkitokuseiesi_set_shinraisei_sample";
+
+    /**
+     * 設定条件及び処理結果:SATｻﾝﾌﾟﾙ
+     */
+    public static final String SET_SAT_SAMPLE = "sr_denkitokuseiesi_set_sat_sample";
 
     /**
      * 設定条件及び処理結果:真不良判定者

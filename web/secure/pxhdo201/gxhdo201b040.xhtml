@@ -259,7 +259,7 @@
                     </p:column>
                     <p:column id="bunruiairatu" headerText="分類ｴｱｰ圧" styleClass="number">
                         <p:outputLabel value="#{item.bunruiairatu}">
-                            <f:convertNumber pattern="##0.00"/>
+                            <f:convertNumber pattern="###,###,##0"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="cdcontactatu" headerText="CDｺﾝﾀｸﾄ圧" styleClass="number">
@@ -702,12 +702,12 @@
                             <f:convertNumber pattern="##0.0000"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="bin1nukitorikekkabosuu" headerText="BIN1 抜き取り結果" styleClass="number">
+                    <p:column id="bin1nukitorikekkabosuu" headerText="BIN1 抜き取り結果(子数)" styleClass="number">
                         <p:outputLabel value="#{item.bin1nukitorikekkabosuu}">
                             <f:convertNumber pattern="###,###,##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="bin1nukitorikekka" headerText="BIN1 抜き取り結果" styleClass="number">
+                    <p:column id="bin1nukitorikekka" headerText="BIN1 抜き取り結果(母数)" styleClass="number">
                         <p:outputLabel value="#{item.bin1nukitorikekka}">
                             <f:convertNumber pattern="###,###,##0"/>
                         </p:outputLabel>
@@ -719,6 +719,11 @@
                     </p:column>
                     <p:column id="bin1kekkacheck" headerText="BIN1 結果ﾁｪｯｸ">
                         <p:outputLabel value="#{item.bin1kekkacheck}"/>
+                    </p:column>
+                    <p:column id="bin1fukurocheck" headerText="BIN1 袋ﾁｪｯｸ" styleClass="number">
+                        <p:outputLabel value="#{item.bin1fukurocheck}">
+                        <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
                     </p:column>
                     <p:column id="bin2setteiti" headerText="BIN2 %区分(設定値)">
                         <p:outputLabel value="#{item.bin2setteiti}"/>
@@ -746,12 +751,12 @@
                             <f:convertNumber pattern="##0.0000"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="bin2nukitorikekkabosuu" headerText="BIN2 抜き取り結果" styleClass="number">
+                    <p:column id="bin2nukitorikekkabosuu" headerText="BIN2 抜き取り結果(子数)" styleClass="number">
                         <p:outputLabel value="#{item.bin2nukitorikekkabosuu}">
                             <f:convertNumber pattern="###,###,##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="bin2nukitorikekka" headerText="BIN2 抜き取り結果" styleClass="number">
+                    <p:column id="bin2nukitorikekka" headerText="BIN2 抜き取り結果(母数)" styleClass="number">
                         <p:outputLabel value="#{item.bin2nukitorikekka}">
                             <f:convertNumber pattern="###,###,##0"/>
                         </p:outputLabel>
@@ -763,6 +768,11 @@
                     </p:column>
                     <p:column id="bin2kekkacheck" headerText="BIN2 結果ﾁｪｯｸ">
                         <p:outputLabel value="#{item.bin2kekkacheck}"/>
+                    </p:column>
+                    <p:column id="bin2fukurocheck" headerText="BIN2 袋ﾁｪｯｸ" styleClass="number">
+                        <p:outputLabel value="#{item.bin2fukurocheck}">
+                        <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
                     </p:column>
                     <p:column id="bin3setteiti" headerText="BIN3 %区分(設定値)">
                         <p:outputLabel value="#{item.bin3setteiti}"/>
@@ -790,12 +800,12 @@
                             <f:convertNumber pattern="##0.0000"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="bin3nukitorikekkabosuu" headerText="BIN3 抜き取り結果" styleClass="number">
+                    <p:column id="bin3nukitorikekkabosuu" headerText="BIN3 抜き取り結果(子数)" styleClass="number">
                         <p:outputLabel value="#{item.bin3nukitorikekkabosuu}">
                             <f:convertNumber pattern="###,###,##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="bin3nukitorikekka" headerText="BIN3 抜き取り結果" styleClass="number">
+                    <p:column id="bin3nukitorikekka" headerText="BIN3 抜き取り結果(母数)" styleClass="number">
                         <p:outputLabel value="#{item.bin3nukitorikekka}">
                             <f:convertNumber pattern="###,###,##0"/>
                         </p:outputLabel>
@@ -807,6 +817,11 @@
                     </p:column>
                     <p:column id="bin3kekkacheck" headerText="BIN3 結果ﾁｪｯｸ">
                         <p:outputLabel value="#{item.bin3kekkacheck}"/>
+                    </p:column>
+                    <p:column id="bin3fukurocheck" headerText="BIN3 袋ﾁｪｯｸ" styleClass="number">
+                        <p:outputLabel value="#{item.bin3fukurocheck}">
+                        <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
                     </p:column>
                     <p:column id="bin4setteiti" headerText="BIN4 %区分(設定値)">
                         <p:outputLabel value="#{item.bin4setteiti}"/>
@@ -834,12 +849,12 @@
                             <f:convertNumber pattern="##0.0000"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="bin4nukitorikekkabosuu" headerText="BIN4 抜き取り結果" styleClass="number">
+                    <p:column id="bin4nukitorikekkabosuu" headerText="BIN4 抜き取り結果(子数)" styleClass="number">
                         <p:outputLabel value="#{item.bin4nukitorikekkabosuu}">
                             <f:convertNumber pattern="###,###,##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="bin4nukitorikekka" headerText="BIN4 抜き取り結果" styleClass="number">
+                    <p:column id="bin4nukitorikekka" headerText="BIN4 抜き取り結果(母数)" styleClass="number">
                         <p:outputLabel value="#{item.bin4nukitorikekka}">
                             <f:convertNumber pattern="###,###,##0"/>
                         </p:outputLabel>
@@ -851,6 +866,11 @@
                     </p:column>
                     <p:column id="bin4kekkacheck" headerText="BIN4 結果ﾁｪｯｸ">
                         <p:outputLabel value="#{item.bin4kekkacheck}"/>
+                    </p:column>
+                    <p:column id="bin4fukurocheck" headerText="BIN4 袋ﾁｪｯｸ" styleClass="number">
+                        <p:outputLabel value="#{item.bin4fukurocheck}">
+                        <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
                     </p:column>
                     <p:column id="bin5setteiti" headerText="BIN5 %区分(設定値)">
                         <p:outputLabel value="#{item.bin5setteiti}"/>
@@ -878,12 +898,12 @@
                             <f:convertNumber pattern="##0.0000"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="bin5nukitorikekkabosuu" headerText="BIN5 抜き取り結果" styleClass="number">
+                    <p:column id="bin5nukitorikekkabosuu" headerText="BIN5 抜き取り結果(子数)" styleClass="number">
                         <p:outputLabel value="#{item.bin5nukitorikekkabosuu}">
                             <f:convertNumber pattern="###,###,##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="bin5nukitorikekka" headerText="BIN5 抜き取り結果" styleClass="number">
+                    <p:column id="bin5nukitorikekka" headerText="BIN5 抜き取り結果(母数)" styleClass="number">
                         <p:outputLabel value="#{item.bin5nukitorikekka}">
                             <f:convertNumber pattern="###,###,##0"/>
                         </p:outputLabel>
@@ -927,12 +947,12 @@
                             <f:convertNumber pattern="##0.0000"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="bin6nukitorikekkabosuu" headerText="BIN6 抜き取り結果" styleClass="number">
+                    <p:column id="bin6nukitorikekkabosuu" headerText="BIN6 抜き取り結果(子数)" styleClass="number">
                         <p:outputLabel value="#{item.bin6nukitorikekkabosuu}">
                             <f:convertNumber pattern="###,###,##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="bin6nukitorikekka" headerText="BIN6 抜き取り結果" styleClass="number">
+                    <p:column id="bin6nukitorikekka" headerText="BIN6 抜き取り結果(母数)" styleClass="number">
                         <p:outputLabel value="#{item.bin6nukitorikekka}">
                             <f:convertNumber pattern="###,###,##0"/>
                         </p:outputLabel>
@@ -976,6 +996,24 @@
                             <f:convertNumber pattern="##0.0000"/>
                         </p:outputLabel>
                     </p:column>
+                    <p:column id="bin7nukitorikekkabosuu" headerText="BIN7 抜き取り結果(子数)" styleClass="number">
+                        <p:outputLabel value="#{item.bin7nukitorikekkabosuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin7nukitorikekka" headerText="BIN7 抜き取り結果(母数)" styleClass="number">
+                        <p:outputLabel value="#{item.bin7nukitorikekka}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin7sinnofuryouritu" headerText="BIN7 真の不良率(%)" styleClass="number">
+                        <p:outputLabel value="#{item.bin7sinnofuryouritu}">
+                            <f:convertNumber pattern="##0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin7kekkacheck" headerText="BIN7 結果ﾁｪｯｸ">
+                        <p:outputLabel value="#{item.bin7kekkacheck}"/>
+                    </p:column>
                     <p:column id="bin7fukurocheck" headerText="BIN7 袋ﾁｪｯｸ" styleClass="number">
                         <p:outputLabel value="#{item.bin7fukurocheck}">
                             <f:convertNumber pattern="###,###,##0"/>
@@ -1007,6 +1045,24 @@
                             <f:convertNumber pattern="##0.0000"/>
                         </p:outputLabel>
                     </p:column>
+                    <p:column id="bin8nukitorikekkabosuu" headerText="BIN8 抜き取り結果(子数)" styleClass="number">
+                        <p:outputLabel value="#{item.bin8nukitorikekkabosuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin8nukitorikekka" headerText="BIN8 抜き取り結果(母数)" styleClass="number">
+                        <p:outputLabel value="#{item.bin8nukitorikekka}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin8sinnofuryouritu" headerText="BIN8 真の不良率(%)" styleClass="number">
+                        <p:outputLabel value="#{item.bin8sinnofuryouritu}">
+                            <f:convertNumber pattern="##0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin8kekkacheck" headerText="BIN8 結果ﾁｪｯｸ">
+                        <p:outputLabel value="#{item.bin8kekkacheck}"/>
+                    </p:column>
                     <p:column id="bin8fukurocheck" headerText="BIN8 袋ﾁｪｯｸ" styleClass="number">
                         <p:outputLabel value="#{item.bin8fukurocheck}">
                             <f:convertNumber pattern="###,###,##0"/>
@@ -1037,6 +1093,9 @@
                     </p:column>
                     <p:column id="sinraiseisample" headerText="信頼性ｻﾝﾌﾟﾙ">
                         <p:outputLabel value="#{item.sinraiseisample}"/>
+                    </p:column>
+                    <p:column id="satsample" headerText="SATｻﾝﾌﾟﾙ">
+                        <p:outputLabel value="#{item.satsample}"/>
                     </p:column>
                     <p:column id="sinfuryouhanteisya" headerText="真不良判定者">
                         <p:outputLabel value="#{item.sinfuryouhanteisya}"/>

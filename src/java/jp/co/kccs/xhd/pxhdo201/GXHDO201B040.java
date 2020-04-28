@@ -783,6 +783,7 @@ public class GXHDO201B040 implements Serializable {
                     + ", bin1nukitorikekka "
                     + ", bin1sinnofuryouritu "
                     + ", bin1kekkacheck "
+                    + ", bin1fukurocheck "
                     + ", bin2setteiti "
                     + ", bin2senbetukubun "
                     + ", bin2keiryougosuryou "
@@ -793,6 +794,7 @@ public class GXHDO201B040 implements Serializable {
                     + ", bin2nukitorikekka "
                     + ", bin2sinnofuryouritu "
                     + ", bin2kekkacheck "
+                    + ", bin2fukurocheck "
                     + ", bin3setteiti "
                     + ", bin3senbetukubun "
                     + ", bin3keiryougosuryou "
@@ -803,6 +805,7 @@ public class GXHDO201B040 implements Serializable {
                     + ", bin3nukitorikekka "
                     + ", bin3sinnofuryouritu "
                     + ", bin3kekkacheck "
+                    + ", bin3fukurocheck "
                     + ", bin4setteiti "
                     + ", bin4senbetukubun "
                     + ", bin4keiryougosuryou "
@@ -813,6 +816,7 @@ public class GXHDO201B040 implements Serializable {
                     + ", bin4nukitorikekka "
                     + ", bin4sinnofuryouritu "
                     + ", bin4kekkacheck "
+                    + ", bin4fukurocheck "
                     + ", bin5setteiti "
                     + ", bin5senbetukubun "
                     + ", bin5keiryougosuryou "
@@ -841,6 +845,10 @@ public class GXHDO201B040 implements Serializable {
                     + ", bin7countersuu "
                     + ", bin7gosaritu "
                     + ", bin7masinfuryouritu "
+                    + ", bin7nukitorikekkabosuu "
+                    + ", bin7nukitorikekka "
+                    + ", bin7sinnofuryouritu "
+                    + ", bin7kekkacheck "
                     + ", bin7fukurocheck "
                     + ", bin8setteiti "
                     + ", bin8senbetukubun "
@@ -848,6 +856,10 @@ public class GXHDO201B040 implements Serializable {
                     + ", bin8countersuu "
                     + ", bin8gosaritu "
                     + ", bin8masinfuryouritu "
+                    + ", bin8nukitorikekkabosuu "
+                    + ", bin8nukitorikekka "
+                    + ", bin8sinnofuryouritu "
+                    + ", bin8kekkacheck "
                     + ", bin8fukurocheck "
                     + ", bin9keiryougosuryou "
                     + ", bin9masinfuryouritu "
@@ -855,6 +867,7 @@ public class GXHDO201B040 implements Serializable {
                     + ", rakkamasinfuryouritu "
                     + ", handasample "
                     + ", sinraiseisample "
+                    + ", satsample "
                     + ", sinfuryouhanteisya "
                     + ", hanteinyuuryokusya "
                     + ", toridasisya "
@@ -1021,6 +1034,7 @@ public class GXHDO201B040 implements Serializable {
             mapping.put("bin1nukitorikekka", "bin1nukitorikekka");// BIN1抜き取り結果
             mapping.put("bin1sinnofuryouritu", "bin1sinnofuryouritu");// BIN1真の不良率(%)
             mapping.put("bin1kekkacheck", "bin1kekkacheck");// BIN1結果ﾁｪｯｸ
+            mapping.put("bin1fukurocheck", "bin1fukurocheck"); //BIN1 袋ﾁｪｯｸ
             mapping.put("bin2setteiti", "bin2setteiti");// BIN2%区分(設定値)
             mapping.put("bin2senbetukubun", "bin2senbetukubun");// BIN2選別区分
             mapping.put("bin2keiryougosuryou", "bin2keiryougosuryou");// BIN2計量後数量
@@ -1031,6 +1045,7 @@ public class GXHDO201B040 implements Serializable {
             mapping.put("bin2nukitorikekka", "bin2nukitorikekka");// BIN2抜き取り結果
             mapping.put("bin2sinnofuryouritu", "bin2sinnofuryouritu");// BIN2真の不良率(%)
             mapping.put("bin2kekkacheck", "bin2kekkacheck");// BIN2結果ﾁｪｯｸ
+            mapping.put("bin2fukurocheck", "bin2fukurocheck"); //BIN2 袋ﾁｪｯｸ
             mapping.put("bin3setteiti", "bin3setteiti");// BIN3%区分(設定値)
             mapping.put("bin3senbetukubun", "bin3senbetukubun");// BIN3選別区分
             mapping.put("bin3keiryougosuryou", "bin3keiryougosuryou");// BIN3計量後数量
@@ -1041,6 +1056,7 @@ public class GXHDO201B040 implements Serializable {
             mapping.put("bin3nukitorikekka", "bin3nukitorikekka");// BIN3抜き取り結果
             mapping.put("bin3sinnofuryouritu", "bin3sinnofuryouritu");// BIN3真の不良率(%)
             mapping.put("bin3kekkacheck", "bin3kekkacheck");// BIN3結果ﾁｪｯｸ
+            mapping.put("bin3fukurocheck", "bin3fukurocheck"); //BIN3 袋ﾁｪｯｸ
             mapping.put("bin4setteiti", "bin4setteiti");// BIN4%区分(設定値)
             mapping.put("bin4senbetukubun", "bin4senbetukubun");// BIN4選別区分
             mapping.put("bin4keiryougosuryou", "bin4keiryougosuryou");// BIN4計量後数量
@@ -1051,6 +1067,7 @@ public class GXHDO201B040 implements Serializable {
             mapping.put("bin4nukitorikekka", "bin4nukitorikekka");// BIN4抜き取り結果
             mapping.put("bin4sinnofuryouritu", "bin4sinnofuryouritu");// BIN4真の不良率(%)
             mapping.put("bin4kekkacheck", "bin4kekkacheck");// BIN4結果ﾁｪｯｸ
+            mapping.put("bin4fukurocheck", "bin4fukurocheck"); //BIN4 袋ﾁｪｯｸ
             mapping.put("bin5setteiti", "bin5setteiti");// BIN5%区分(設定値)
             mapping.put("bin5senbetukubun", "bin5senbetukubun");// BIN5選別区分
             mapping.put("bin5keiryougosuryou", "bin5keiryougosuryou");// BIN5計量後数量
@@ -1079,6 +1096,10 @@ public class GXHDO201B040 implements Serializable {
             mapping.put("bin7countersuu", "bin7countersuu");// BIN7ｶｳﾝﾀｰ数
             mapping.put("bin7gosaritu", "bin7gosaritu");// BIN7誤差率(%)
             mapping.put("bin7masinfuryouritu", "bin7masinfuryouritu");// BIN7ﾏｼﾝ不良率(%)
+            mapping.put("bin7nukitorikekkabosuu", "bin7nukitorikekkabosuu"); //BIN7 抜き取り結果
+            mapping.put("bin7nukitorikekka", "bin7nukitorikekka"); //BIN7 抜き取り結果
+            mapping.put("bin7sinnofuryouritu", "bin7sinnofuryouritu"); //BIN7 真の不良率(%)
+            mapping.put("bin7kekkacheck", "bin7kekkacheck"); //BIN7 結果ﾁｪｯｸ
             mapping.put("bin7fukurocheck", "bin7fukurocheck");// BIN7袋ﾁｪｯｸ
             mapping.put("bin8setteiti", "bin8setteiti");// BIN8%区分(設定値)
             mapping.put("bin8senbetukubun", "bin8senbetukubun");// BIN8選別区分
@@ -1086,6 +1107,10 @@ public class GXHDO201B040 implements Serializable {
             mapping.put("bin8countersuu", "bin8countersuu");// BIN8ｶｳﾝﾀｰ数
             mapping.put("bin8gosaritu", "bin8gosaritu");// BIN8誤差率(%)
             mapping.put("bin8masinfuryouritu", "bin8masinfuryouritu");// BIN8ﾏｼﾝ不良率(%)
+            mapping.put("bin8nukitorikekkabosuu", "bin8nukitorikekkabosuu"); //BIN8 抜き取り結果
+            mapping.put("bin8nukitorikekka", "bin8nukitorikekka"); //BIN8 抜き取り結果
+            mapping.put("bin8sinnofuryouritu", "bin8sinnofuryouritu"); //BIN8 真の不良率(%)
+            mapping.put("bin8kekkacheck", "bin8kekkacheck"); //BIN8 結果ﾁｪｯｸ
             mapping.put("bin8fukurocheck", "bin8fukurocheck");// BIN8袋ﾁｪｯｸ
             mapping.put("bin9keiryougosuryou", "bin9keiryougosuryou");// BIN9強制排出計量後数量
             mapping.put("bin9masinfuryouritu", "bin9masinfuryouritu");// BIN9強制排出ﾏｼﾝ不良率
@@ -1093,6 +1118,7 @@ public class GXHDO201B040 implements Serializable {
             mapping.put("rakkamasinfuryouritu", "rakkamasinfuryouritu");// 落下ﾏｼﾝ不良率
             mapping.put("handasample", "handasample");// 半田ｻﾝﾌﾟﾙ
             mapping.put("sinraiseisample", "sinraiseisample");// 信頼性ｻﾝﾌﾟﾙ
+            mapping.put("satsample", "satsample"); //SATｻﾝﾌﾟﾙ
             mapping.put("sinfuryouhanteisya", "sinfuryouhanteisya");// 真不良判定者
             mapping.put("hanteinyuuryokusya", "hanteinyuuryokusya");// 判定入力者
             mapping.put("toridasisya", "toridasisya");// 取出者
