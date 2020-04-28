@@ -406,35 +406,47 @@ public class FXHDD07 {
      * BIN1 選別区分
      */
     private String bin1senbetsukbn;
+    
     /**
      * BIN2 選別区分
      */
     private String bin2senbetsukbn;
+    
     /**
      * BIN3 選別区分
      */
     private String bin3senbetsukbn;
+    
     /**
      * BIN4 選別区分
      */
     private String bin4senbetsukbn;
+    
     /**
      * BIN5 選別区分
      */
     private String bin5senbetsukbn;
+    
     /**
      * BIN6 選別区分
      */
     private String bin6senbetsukbn;
+    
     /**
      * BIN7 選別区分
      */
     private String bin7senbetsukbn;
+    
     /**
      * BIN8 選別区分
      */
     private String bin8senbetsukbn;
-
+    
+    /**
+     * ﾃｽﾄﾌﾟﾚｰﾄ管理No
+     */
+    private String testplatekanrino;
+    
     /**
      * 工場ｺｰﾄﾞ
      * @return the kojyo
@@ -1747,4 +1759,19 @@ public class FXHDD07 {
         this.bin8senbetsukbn = bin8senbetsukbn;
     }
 
+    /**
+     * ﾃｽﾄﾌﾟﾚｰﾄ管理No
+     * @return the testplatekanrino
+     */
+    public String getTestplatekanrino() {
+        return testplatekanrino;
+    }
+
+    /**
+     * ﾃｽﾄﾌﾟﾚｰﾄ管理No
+     * @param testplatekanrino the testplatekanrino to set
+     */
+    public void setTestplatekanrino(String testplatekanrino) {
+        this.testplatekanrino = testplatekanrino;
+    }
 }
