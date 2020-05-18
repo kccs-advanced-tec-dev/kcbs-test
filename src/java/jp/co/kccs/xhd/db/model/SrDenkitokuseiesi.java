@@ -809,7 +809,7 @@ public class SrDenkitokuseiesi {
     /**
      * BIN4 結果ﾁｪｯｸ
      */
-    private Integer bin4kekkacheck;
+    private String bin4kekkacheck;
 
     /**
      * BIN4 袋ﾁｪｯｸ
@@ -3701,7 +3701,7 @@ public class SrDenkitokuseiesi {
      * BIN4 結果ﾁｪｯｸ
      * @return the bin4kekkacheck
      */
-    public Integer getBin4kekkacheck() {
+    public String getBin4kekkacheck() {
         return bin4kekkacheck;
     }
 
@@ -3709,7 +3709,7 @@ public class SrDenkitokuseiesi {
      * BIN4 結果ﾁｪｯｸ
      * @param bin4kekkacheck the bin4kekkacheck to set
      */
-    public void setBin4kekkacheck(Integer bin4kekkacheck) {
+    public void setBin4kekkacheck(String bin4kekkacheck) {
         this.bin4kekkacheck = bin4kekkacheck;
     }
 
