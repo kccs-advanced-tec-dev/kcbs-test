@@ -1138,10 +1138,11 @@ public class GXHDO101B040 implements IFormLogic {
 
         FXHDD01 siteikousaBudomari1 = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI1);
         FXHDD01 siteikousaBudomari2 = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI2);
+        FXHDD01 siteikousaBudomari3 = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI3);
         // QA履歴データ取得
         List<Map<String, Object>> qaRirekiDataList = loadQaRirekiData(queryRunnerWip, lotNo);
         if (qaRirekiDataList.isEmpty()) {
-            errorMessageList.add(MessageUtil.getMessage("XHD-000167", siteikousaBudomari1.getLabel1() + " " + siteikousaBudomari2.getLabel1()));
+            errorMessageList.add(MessageUtil.getMessage("XHD-000167", siteikousaBudomari1.getLabel1() + " " + siteikousaBudomari2.getLabel1() + " " + siteikousaBudomari3.getLabel1()));
             return null;
         }
 
@@ -1159,6 +1160,15 @@ public class GXHDO101B040 implements IFormLogic {
                 errorItemNames += " ";
             }
             errorItemNames += siteikousaBudomari2.getLabel1();
+        }
+
+        // 公差歩留まり3
+        if (!NumberUtil.isNumeric(StringUtil.nullToBlank(qaRirekiData.get("budomari3")))) {
+            if (!StringUtil.isEmpty(errorItemNames)) {
+                // 項目間の間のスペースをセットする。
+                errorItemNames += " ";
+            }
+            errorItemNames += siteikousaBudomari3.getLabel1();
         }
         if (!StringUtil.isEmpty(errorItemNames)) {
             errorMessageList.add(MessageUtil.getMessage("XHD-000168", errorItemNames));
@@ -1266,6 +1276,13 @@ public class GXHDO101B040 implements IFormLogic {
             kousaBudomari2.append(StringUtil.nullToBlank(siteiKousaBudomariInfo.get("budomari2")));
             kousaBudomari2.append(" %");
             this.setItemData(processData, GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI2, kousaBudomari2.toString());
+
+            StringBuilder kousaBudomari3 = new StringBuilder();
+            kousaBudomari3.append(StringUtil.nullToBlank(siteiKousaBudomariInfo.get("kousa3")));
+            kousaBudomari3.append(" = ");
+            kousaBudomari3.append(StringUtil.nullToBlank(siteiKousaBudomariInfo.get("budomari3")));
+            kousaBudomari3.append(" %");
+            this.setItemData(processData, GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI3, kousaBudomari3.toString());
         }
 
     }
@@ -2386,7 +2403,7 @@ public class GXHDO101B040 implements IFormLogic {
                 + "kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,ownercode,lotkubuncode,siteikousa,atokouteisijinaiyou,okuriryouhinsuu,ukeiretannijyuryo,ukeiresoujyuryou,"
                 + "gdyakitukenitiji,mekkinitiji,kensabasyo,senbetukaisinitiji,senbetusyuryounitiji,kensagouki,bunruiairatu,cdcontactatu,ircontactatu,stationcd1,stationpc1,stationpc2,"
                 + "stationpc3,stationpc4,stationir1,stationir2,stationir3,stationir4,stationir5,stationir6,stationir7,stationir8,koteidenkyoku,torakkugaido,testplatekeijo,bunruifukidasi,"
-                + "testplatekakunin,denkyokuseisou,senbetujunjo,setteikakunin,haisenkakunin,seihintounyuujotai,binboxseisoucheck,setsya,kakuninsya,siteikousabudomari1,siteikousabudomari2,"
+                + "testplatekakunin,denkyokuseisou,senbetujunjo,setteikakunin,haisenkakunin,seihintounyuujotai,binboxseisoucheck,setsya,kakuninsya,siteikousabudomari1,siteikousabudomari2,siteikousabudomari3,"
                 + "testplatekanrino,tan,sokuteisyuhasuu,sokuteidenatu,hoseiyoutippuyoryou,hoseiyoutipputan,hoseimae,hoseigo,hoseiritu,Standard,bunruikakunin,gaikankakunin,netsusyorinitiji,"
                 + "agingjikan,jutenritu,mc,kyoseihaisyutu,rakka,syoninsha,furimukesya,bikou1,bikou2,pcdenatu1,pcjudenjikan1,pcdenatu2,pcjudenjikan2,pcdenatu3,pcjudenjikan3,pcdenatu4,"
                 + "pcjudenjikan4,irdenatu1,irhanteiti1,irjudenjikan1,irdenatu2,irhanteiti2,irjudenjikan2,irdenatu3,irhanteiti3,irjudenjikan3,irdenatu4,irhanteiti4,irjudenjikan4,irdenatu5,"
@@ -2474,6 +2491,7 @@ public class GXHDO101B040 implements IFormLogic {
         mapping.put("kakuninsya", "kakuninsya"); //確認者
         mapping.put("siteikousabudomari1", "siteikousabudomari1"); //指定公差歩留まり1
         mapping.put("siteikousabudomari2", "siteikousabudomari2"); //指定公差歩留まり2
+        mapping.put("siteikousabudomari3", "siteikousabudomari3"); //指定公差歩留まり3
         mapping.put("testplatekanrino", "testplatekanrino"); //ﾃｽﾄﾌﾟﾚｰﾄ管理No
         mapping.put("tan", "tan"); //Tanδ
         mapping.put("sokuteisyuhasuu", "sokuteisyuhasuu"); //測定周波数
@@ -2687,7 +2705,7 @@ public class GXHDO101B040 implements IFormLogic {
                 + "kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,ownercode,lotkubuncode,siteikousa,atokouteisijinaiyou,okuriryouhinsuu,ukeiretannijyuryo,ukeiresoujyuryou,"
                 + "gdyakitukenitiji,mekkinitiji,kensabasyo,senbetukaisinitiji,senbetusyuryounitiji,kensagouki,bunruiairatu,cdcontactatu,ircontactatu,stationcd1,stationpc1,stationpc2,"
                 + "stationpc3,stationpc4,stationir1,stationir2,stationir3,stationir4,stationir5,stationir6,stationir7,stationir8,koteidenkyoku,torakkugaido,testplatekeijo,bunruifukidasi,"
-                + "testplatekakunin,denkyokuseisou,senbetujunjo,setteikakunin,haisenkakunin,seihintounyuujotai,binboxseisoucheck,setsya,kakuninsya,siteikousabudomari1,siteikousabudomari2,"
+                + "testplatekakunin,denkyokuseisou,senbetujunjo,setteikakunin,haisenkakunin,seihintounyuujotai,binboxseisoucheck,setsya,kakuninsya,siteikousabudomari1,siteikousabudomari2,siteikousabudomari3,"
                 + "testplatekanrino,tan,sokuteisyuhasuu,sokuteidenatu,hoseiyoutippuyoryou,hoseiyoutipputan,hoseimae,hoseigo,hoseiritu,Standard,bunruikakunin,gaikankakunin,netsusyorinitiji,"
                 + "agingjikan,jutenritu,mc,kyoseihaisyutu,rakka,syoninsha,furimukesya,bikou1,bikou2,pcdenatu1,pcjudenjikan1,pcdenatu2,pcjudenjikan2,pcdenatu3,pcjudenjikan3,pcdenatu4,"
                 + "pcjudenjikan4,irdenatu1,irhanteiti1,irjudenjikan1,irdenatu2,irhanteiti2,irjudenjikan2,irdenatu3,irhanteiti3,irjudenjikan3,irdenatu4,irhanteiti4,irjudenjikan4,irdenatu5,"
@@ -2776,6 +2794,7 @@ public class GXHDO101B040 implements IFormLogic {
         mapping.put("kakuninsya", "kakuninsya"); //確認者
         mapping.put("siteikousabudomari1", "siteikousabudomari1"); //指定公差歩留まり1
         mapping.put("siteikousabudomari2", "siteikousabudomari2"); //指定公差歩留まり2
+        mapping.put("siteikousabudomari3", "siteikousabudomari3"); //指定公差歩留まり3
         mapping.put("testplatekanrino", "testplatekanrino"); //ﾃｽﾄﾌﾟﾚｰﾄ管理No
         mapping.put("tan", "tan"); //Tanδ
         mapping.put("sokuteisyuhasuu", "sokuteisyuhasuu"); //測定周波数
@@ -3155,7 +3174,7 @@ public class GXHDO101B040 implements IFormLogic {
                 + "kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,ownercode,lotkubuncode,siteikousa,atokouteisijinaiyou,okuriryouhinsuu,ukeiretannijyuryo,ukeiresoujyuryou,"
                 + "gdyakitukenitiji,mekkinitiji,kensabasyo,senbetukaisinitiji,senbetusyuryounitiji,kensagouki,bunruiairatu,cdcontactatu,ircontactatu,stationcd1,stationpc1,stationpc2,"
                 + "stationpc3,stationpc4,stationir1,stationir2,stationir3,stationir4,stationir5,stationir6,stationir7,stationir8,koteidenkyoku,torakkugaido,testplatekeijo,bunruifukidasi,"
-                + "testplatekakunin,denkyokuseisou,senbetujunjo,setteikakunin,haisenkakunin,seihintounyuujotai,binboxseisoucheck,setsya,kakuninsya,siteikousabudomari1,siteikousabudomari2,"
+                + "testplatekakunin,denkyokuseisou,senbetujunjo,setteikakunin,haisenkakunin,seihintounyuujotai,binboxseisoucheck,setsya,kakuninsya,siteikousabudomari1,siteikousabudomari2,siteikousabudomari3,"
                 + "testplatekanrino,tan,sokuteisyuhasuu,sokuteidenatu,hoseiyoutippuyoryou,hoseiyoutipputan,hoseimae,hoseigo,hoseiritu,Standard,bunruikakunin,gaikankakunin,netsusyorinitiji,"
                 + "agingjikan,jutenritu,mc,kyoseihaisyutu,rakka,syoninsha,furimukesya,bikou1,bikou2,pcdenatu1,pcjudenjikan1,pcdenatu2,pcjudenjikan2,pcdenatu3,pcjudenjikan3,pcdenatu4,"
                 + "pcjudenjikan4,irdenatu1,irhanteiti1,irjudenjikan1,irdenatu2,irhanteiti2,irjudenjikan2,irdenatu3,irhanteiti3,irjudenjikan3,irdenatu4,irhanteiti4,irjudenjikan4,irdenatu5,"
@@ -3176,7 +3195,7 @@ public class GXHDO101B040 implements IFormLogic {
                 + ") VALUES ("
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterTmpSrDenkitokuseiesi(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, processData, null, jissekino, formId);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -3207,7 +3226,7 @@ public class GXHDO101B040 implements IFormLogic {
                 + "mekkinitiji = ?,kensabasyo = ?,senbetukaisinitiji = ?,senbetusyuryounitiji = ?,kensagouki = ?,bunruiairatu = ?,cdcontactatu = ?,ircontactatu = ?,stationcd1 = ?,stationpc1 = ?,"
                 + "stationpc2 = ?,stationpc3 = ?,stationpc4 = ?,stationir1 = ?,stationir2 = ?,stationir3 = ?,stationir4 = ?,stationir5 = ?,stationir6 = ?,stationir7 = ?,stationir8 = ?,koteidenkyoku = ?,"
                 + "torakkugaido = ?,testplatekeijo = ?,bunruifukidasi = ?,testplatekakunin = ?,denkyokuseisou = ?,seihintounyuujotai = ?,binboxseisoucheck = ?,setsya = ?,kakuninsya = ?,"
-                + "siteikousabudomari1 = ?,siteikousabudomari2 = ?,testplatekanrino = ?,tan = ?,sokuteisyuhasuu = ?,sokuteidenatu = ?,hoseiyoutippuyoryou = ?,hoseiyoutipputan = ?,hoseimae = ?,"
+                + "siteikousabudomari1 = ?,siteikousabudomari2 = ?,siteikousabudomari3 = ?,testplatekanrino = ?,tan = ?,sokuteisyuhasuu = ?,sokuteidenatu = ?,hoseiyoutippuyoryou = ?,hoseiyoutipputan = ?,hoseimae = ?,"
                 + "hoseigo = ?,hoseiritu = ?,Standard = ?,bunruikakunin = ?,gaikankakunin = ?,netsusyorinitiji = ?,agingjikan = ?,jutenritu = ?,mc = ?,kyoseihaisyutu = ?,rakka = ?,syoninsha = ?,"
                 + "furimukesya = ?,bikou1 = ?,bikou2 = ?,pcdenatu1 = ?,pcjudenjikan1 = ?,pcdenatu2 = ?,pcjudenjikan2 = ?,pcdenatu3 = ?,pcjudenjikan3 = ?,pcdenatu4 = ?,pcjudenjikan4 = ?,irdenatu1 = ?,"
                 + "irhanteiti1 = ?,irjudenjikan1 = ?,irdenatu2 = ?,irhanteiti2 = ?,irjudenjikan2 = ?,irdenatu3 = ?,irhanteiti3 = ?,irjudenjikan3 = ?,irdenatu4 = ?,irhanteiti4 = ?,irjudenjikan4 = ?,"
@@ -3363,6 +3382,7 @@ public class GXHDO101B040 implements IFormLogic {
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_KAKUNINSHA, srDenkitokuseiesi))); //確認者
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI1, srDenkitokuseiesi))); //指定公差歩留まり1
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI2, srDenkitokuseiesi))); //指定公差歩留まり2
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI3, srDenkitokuseiesi))); //指定公差歩留まり3
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_TEST_PLATE_KANRINO, srDenkitokuseiesi))); //ﾃｽﾄﾌﾟﾚｰﾄ管理No
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_TAN_DELTA, srDenkitokuseiesi))); //Tanδ
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SOKUTEI_SHUHASU, srDenkitokuseiesi))); //測定周波数
@@ -3581,7 +3601,7 @@ public class GXHDO101B040 implements IFormLogic {
                 + "kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,ownercode,lotkubuncode,siteikousa,atokouteisijinaiyou,okuriryouhinsuu,ukeiretannijyuryo,ukeiresoujyuryou,"
                 + "gdyakitukenitiji,mekkinitiji,kensabasyo,senbetukaisinitiji,senbetusyuryounitiji,kensagouki,bunruiairatu,cdcontactatu,ircontactatu,stationcd1,stationpc1,stationpc2,"
                 + "stationpc3,stationpc4,stationir1,stationir2,stationir3,stationir4,stationir5,stationir6,stationir7,stationir8,koteidenkyoku,torakkugaido,testplatekeijo,bunruifukidasi,"
-                + "testplatekakunin,denkyokuseisou,senbetujunjo,setteikakunin,haisenkakunin,seihintounyuujotai,binboxseisoucheck,setsya,kakuninsya,siteikousabudomari1,siteikousabudomari2,"
+                + "testplatekakunin,denkyokuseisou,senbetujunjo,setteikakunin,haisenkakunin,seihintounyuujotai,binboxseisoucheck,setsya,kakuninsya,siteikousabudomari1,siteikousabudomari2,siteikousabudomari3,"
                 + "testplatekanrino,tan,sokuteisyuhasuu,sokuteidenatu,hoseiyoutippuyoryou,hoseiyoutipputan,hoseimae,hoseigo,hoseiritu,Standard,bunruikakunin,gaikankakunin,netsusyorinitiji,"
                 + "agingjikan,jutenritu,mc,kyoseihaisyutu,rakka,syoninsha,furimukesya,bikou1,bikou2,pcdenatu1,pcjudenjikan1,pcdenatu2,pcjudenjikan2,pcdenatu3,pcjudenjikan3,pcdenatu4,"
                 + "pcjudenjikan4,irdenatu1,irhanteiti1,irjudenjikan1,irdenatu2,irhanteiti2,irjudenjikan2,irdenatu3,irhanteiti3,irjudenjikan3,irdenatu4,irhanteiti4,irjudenjikan4,irdenatu5,"
@@ -3602,7 +3622,7 @@ public class GXHDO101B040 implements IFormLogic {
                 + ") VALUES ("
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterSrDenkitokuseiesi(true, newRev, kojyo, lotNo, edaban, jissekino, systemTime, processData, tmpSrDenkitokuseiesi, formId);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -3633,7 +3653,7 @@ public class GXHDO101B040 implements IFormLogic {
                 + "mekkinitiji = ?,kensabasyo = ?,senbetukaisinitiji = ?,senbetusyuryounitiji = ?,kensagouki = ?,bunruiairatu = ?,cdcontactatu = ?,ircontactatu = ?,stationcd1 = ?,stationpc1 = ?,"
                 + "stationpc2 = ?,stationpc3 = ?,stationpc4 = ?,stationir1 = ?,stationir2 = ?,stationir3 = ?,stationir4 = ?,stationir5 = ?,stationir6 = ?,stationir7 = ?,stationir8 = ?,koteidenkyoku = ?,"
                 + "torakkugaido = ?,testplatekeijo = ?,bunruifukidasi = ?,testplatekakunin = ?,denkyokuseisou = ?,seihintounyuujotai = ?,binboxseisoucheck = ?,setsya = ?,kakuninsya = ?,"
-                + "siteikousabudomari1 = ?,siteikousabudomari2 = ?,testplatekanrino = ?,tan = ?,sokuteisyuhasuu = ?,sokuteidenatu = ?,hoseiyoutippuyoryou = ?,hoseiyoutipputan = ?,hoseimae = ?,"
+                + "siteikousabudomari1 = ?,siteikousabudomari2 = ?,siteikousabudomari3 = ?,testplatekanrino = ?,tan = ?,sokuteisyuhasuu = ?,sokuteidenatu = ?,hoseiyoutippuyoryou = ?,hoseiyoutipputan = ?,hoseimae = ?,"
                 + "hoseigo = ?,hoseiritu = ?,Standard = ?,bunruikakunin = ?,gaikankakunin = ?,netsusyorinitiji = ?,agingjikan = ?,jutenritu = ?,mc = ?,kyoseihaisyutu = ?,rakka = ?,syoninsha = ?,"
                 + "furimukesya = ?,bikou1 = ?,bikou2 = ?,pcdenatu1 = ?,pcjudenjikan1 = ?,pcdenatu2 = ?,pcjudenjikan2 = ?,pcdenatu3 = ?,pcjudenjikan3 = ?,pcdenatu4 = ?,pcjudenjikan4 = ?,irdenatu1 = ?,"
                 + "irhanteiti1 = ?,irjudenjikan1 = ?,irdenatu2 = ?,irhanteiti2 = ?,irjudenjikan2 = ?,irdenatu3 = ?,irhanteiti3 = ?,irjudenjikan3 = ?,irdenatu4 = ?,irhanteiti4 = ?,irjudenjikan4 = ?,"
@@ -3756,6 +3776,7 @@ public class GXHDO101B040 implements IFormLogic {
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_KAKUNINSHA, srDenkitokuseiesi))); //確認者
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI1, srDenkitokuseiesi))); //指定公差歩留まり1
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI2, srDenkitokuseiesi))); //指定公差歩留まり2
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI3, srDenkitokuseiesi))); //指定公差歩留まり3
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_TEST_PLATE_KANRINO, srDenkitokuseiesi))); //ﾃｽﾄﾌﾟﾚｰﾄ管理No
         params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_TAN_DELTA, srDenkitokuseiesi))); //Tanδ
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B040Const.SEIHIN_SOKUTEI_SHUHASU, srDenkitokuseiesi))); //測定周波数
@@ -4636,6 +4657,10 @@ public class GXHDO101B040 implements IFormLogic {
             case GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI2:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getSiteikousabudomari2());
 
+            //製品情報:指定公差歩留まり3
+            case GXHDO101B040Const.SEIHIN_SHITEI_KOUSA_BUDOMARI3:
+                return StringUtil.nullToBlank(srDenkitokuseiesi.getSiteikousabudomari3());
+
             //製品情報:ﾃｽﾄﾌﾟﾚｰﾄ管理No
             case GXHDO101B040Const.SEIHIN_TEST_PLATE_KANRINO:
                 return StringUtil.nullToBlank(srDenkitokuseiesi.getTestplatekanrino());
@@ -5346,7 +5371,7 @@ public class GXHDO101B040 implements IFormLogic {
                 + "kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,ownercode,lotkubuncode,siteikousa,atokouteisijinaiyou,okuriryouhinsuu,ukeiretannijyuryo,ukeiresoujyuryou,"
                 + "gdyakitukenitiji,mekkinitiji,kensabasyo,senbetukaisinitiji,senbetusyuryounitiji,kensagouki,bunruiairatu,cdcontactatu,ircontactatu,stationcd1,stationpc1,stationpc2,"
                 + "stationpc3,stationpc4,stationir1,stationir2,stationir3,stationir4,stationir5,stationir6,stationir7,stationir8,koteidenkyoku,torakkugaido,testplatekeijo,bunruifukidasi,"
-                + "testplatekakunin,denkyokuseisou,senbetujunjo,setteikakunin,haisenkakunin,seihintounyuujotai,binboxseisoucheck,setsya,kakuninsya,siteikousabudomari1,siteikousabudomari2,"
+                + "testplatekakunin,denkyokuseisou,senbetujunjo,setteikakunin,haisenkakunin,seihintounyuujotai,binboxseisoucheck,setsya,kakuninsya,siteikousabudomari1,siteikousabudomari2,siteikousabudomari3,"
                 + "testplatekanrino,tan,sokuteisyuhasuu,sokuteidenatu,hoseiyoutippuyoryou,hoseiyoutipputan,hoseimae,hoseigo,hoseiritu,Standard,bunruikakunin,gaikankakunin,netsusyorinitiji,"
                 + "agingjikan,jutenritu,mc,kyoseihaisyutu,rakka,syoninsha,furimukesya,bikou1,bikou2,pcdenatu1,pcjudenjikan1,pcdenatu2,pcjudenjikan2,pcdenatu3,pcjudenjikan3,pcdenatu4,"
                 + "pcjudenjikan4,irdenatu1,irhanteiti1,irjudenjikan1,irdenatu2,irhanteiti2,irjudenjikan2,irdenatu3,irhanteiti3,irjudenjikan3,irdenatu4,irhanteiti4,irjudenjikan4,irdenatu5,"
@@ -5368,7 +5393,7 @@ public class GXHDO101B040 implements IFormLogic {
                 + "kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,ownercode,lotkubuncode,siteikousa,atokouteisijinaiyou,okuriryouhinsuu,ukeiretannijyuryo,ukeiresoujyuryou,"
                 + "gdyakitukenitiji,mekkinitiji,kensabasyo,senbetukaisinitiji,senbetusyuryounitiji,kensagouki,bunruiairatu,cdcontactatu,ircontactatu,stationcd1,stationpc1,stationpc2,"
                 + "stationpc3,stationpc4,stationir1,stationir2,stationir3,stationir4,stationir5,stationir6,stationir7,stationir8,koteidenkyoku,torakkugaido,testplatekeijo,bunruifukidasi,"
-                + "testplatekakunin,denkyokuseisou,senbetujunjo,setteikakunin,haisenkakunin,seihintounyuujotai,binboxseisoucheck,setsya,kakuninsya,siteikousabudomari1,siteikousabudomari2,"
+                + "testplatekakunin,denkyokuseisou,senbetujunjo,setteikakunin,haisenkakunin,seihintounyuujotai,binboxseisoucheck,setsya,kakuninsya,siteikousabudomari1,siteikousabudomari2,siteikousabudomari3,"
                 + "testplatekanrino,tan,sokuteisyuhasuu,sokuteidenatu,hoseiyoutippuyoryou,hoseiyoutipputan,hoseimae,hoseigo,hoseiritu,Standard,bunruikakunin,gaikankakunin,netsusyorinitiji,"
                 + "agingjikan,jutenritu,mc,kyoseihaisyutu,rakka,syoninsha,furimukesya,bikou1,bikou2,pcdenatu1,pcjudenjikan1,pcdenatu2,pcjudenjikan2,pcdenatu3,pcjudenjikan3,pcdenatu4,"
                 + "pcjudenjikan4,irdenatu1,irhanteiti1,irjudenjikan1,irdenatu2,irhanteiti2,irjudenjikan2,irdenatu3,irhanteiti3,irjudenjikan3,irdenatu4,irhanteiti4,irjudenjikan4,irdenatu5,"
@@ -5508,7 +5533,7 @@ public class GXHDO101B040 implements IFormLogic {
             String lotNo3 = lotNo.substring(11, 14);
 
             // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
-            String sql = "SELECT kousa1,kousa2,budomari1,budomari2 "
+            String sql = "SELECT kousa1,kousa2,kousa3,budomari1,budomari2,budomari3 "
                     + " FROM qarireki "
                     + " WHERE kojyo = ? AND lotno = ? AND edaban = ? "
                     + " ORDER BY sokuteino desc";

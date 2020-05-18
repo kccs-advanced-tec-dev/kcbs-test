@@ -268,6 +268,11 @@ public class GXHDO201B040Model implements Serializable{
     private String siteikousabudomari2 = "";
 
     /**
+     * 指定公差歩留まり3
+     */
+    private String siteikousabudomari3 = "";
+
+    /**
      * ﾃｽﾄﾌﾟﾚｰﾄ管理No
      */
     private String testplatekanrino = "";
@@ -1939,6 +1944,22 @@ public class GXHDO201B040Model implements Serializable{
      */
     public void setSiteikousabudomari2(String siteikousabudomari2) {
         this.siteikousabudomari2 = siteikousabudomari2;
+    }
+
+    /**
+     * 指定公差歩留まり3
+     * @return the siteikousabudomari3
+     */
+    public String getSiteikousabudomari3() {
+        return siteikousabudomari3;
+    }
+
+    /**
+     * 指定公差歩留まり3
+     * @param siteikousabudomari3 the siteikousabudomari3 to set
+     */
+    public void setSiteikousabudomari3(String siteikousabudomari3) {
+        this.siteikousabudomari3 = siteikousabudomari3;
     }
 
     /**

@@ -709,6 +709,7 @@ public class GXHDO201B040 implements Serializable {
                     + ", kakuninsya "
                     + ", siteikousabudomari1 "
                     + ", siteikousabudomari2 "
+                    + ", siteikousabudomari3 "
                     + ", testplatekanrino "
                     + ", tan "
                     + ", sokuteisyuhasuu "
@@ -960,6 +961,7 @@ public class GXHDO201B040 implements Serializable {
             mapping.put("kakuninsya", "kakuninsya");// 確認者
             mapping.put("siteikousabudomari1", "siteikousabudomari1");// 指定公差歩留まり1
             mapping.put("siteikousabudomari2", "siteikousabudomari2");// 指定公差歩留まり2
+            mapping.put("siteikousabudomari3", "siteikousabudomari3");// 指定公差歩留まり3
             mapping.put("testplatekanrino", "testplatekanrino");// ﾃｽﾄﾌﾟﾚｰﾄ管理No
             mapping.put("tan", "tan");// Tanδ
             mapping.put("sokuteisyuhasuu", "sokuteisyuhasuu");// 測定周波数

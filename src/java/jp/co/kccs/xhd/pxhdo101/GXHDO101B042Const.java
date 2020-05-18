@@ -204,6 +204,11 @@ public class GXHDO101B042Const {
     public static final String SEIHIN_SHITEI_KOUSA_BUDOMARI2 = "sr_denkitokuseiesi_seihin_kousa_budomari2_42";
 
     /**
+     * 製品情報:指定公差歩留まり3
+     */
+    public static final String SEIHIN_SHITEI_KOUSA_BUDOMARI3 = "sr_denkitokuseiesi_seihin_kousa_budomari3_42";
+
+    /**
      * 製品情報:ﾃｽﾄﾌﾟﾚｰﾄ管理No
      */
     public static final String SEIHIN_TEST_PLATE_KANRINO = "sr_denkitokuseiesi_seihin_test_plate_kanrino_42";
