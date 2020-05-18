@@ -103,6 +103,16 @@
                             </p:inputText>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblGouki" value="号機" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pGouki" value="#{gXHDO201B044.gouki}" maxlength="4" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B044.checkByte('gouki', 4)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
                 </table>
             </p:panel>
             <p:panel id="buttonpanel" style="border:none;margin-top:-10px;">
@@ -142,93 +152,8 @@
                             <f:convertNumber pattern="#,##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="bunkatuSuu" headerText="個数" styleClass="number">
-                        <p:outputLabel value="#{item.bunkatuSuu}">
-                            <f:convertNumber pattern="#,##0"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="mediaName1" headerText="ﾒﾃﾞｨｱ" >
-                        <p:outputLabel value="#{item.mediaName1}"/>
-                    </p:column>
-                    <p:column id="mediacc1" headerText="ﾒﾃﾞｨｱ量1(cc)" styleClass="number">
-                        <p:outputLabel value="#{item.mediacc1}">
-                            <f:convertNumber pattern="#,##0"/>
-                        </p:outputLabel>
-                    </p:column>
-
-                    <p:column id="mediaName2" headerText="ﾒﾃﾞｨｱ2" >
-                        <p:outputLabel value="#{item.mediaName2}"/>
-                    </p:column>
-                    <p:column id="mediacc2" headerText="ﾒﾃﾞｨｱ量2(cc)" styleClass="number">
-                        <p:outputLabel value="#{item.mediacc2}">
-                            <f:convertNumber pattern="#,##0"/>
-                        </p:outputLabel>
-                    </p:column>
-
-                    <p:column id="niA" headerText="条件NIﾒｯｷ(電力)" styleClass="number">
-                        <p:outputLabel value="#{item.niA}">
-                            <f:convertNumber pattern="#,##0"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="niAM" headerText="条件NIﾒｯｷ(積算)" styleClass="number">
-                        <p:outputLabel value="#{item.niAM}">
-                            <f:convertNumber pattern="#,##0"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="snA" headerText="条件SNﾒｯｷ(電力)" styleClass="number">
-                        <p:outputLabel value="#{item.snA}">
-                            <f:convertNumber pattern="#,##0"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="snAM" headerText="条件SNﾒｯｷ(積算)" styleClass="number">
-                        <p:outputLabel value="#{item.snAM}">
-                            <f:convertNumber pattern="#,##0"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="jokenNo" headerText="ﾌﾟﾛｸﾞﾗﾑNo">
-                        <p:outputLabel value="#{item.jokenNo}" />
-                    </p:column>
-                    <p:column id="torokuNichiji" headerText="登録日時">
-                        <p:outputLabel value="#{item.torokuNichiji}">
-                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="torokuSyaCode" headerText="登録者">
-                        <p:outputLabel value="#{item.torokuSyaCode}"/>
-                    </p:column>
-                    <p:column id="startNichiji" headerText="投入日時">
-                        <p:outputLabel value="#{item.startNichiji}">
-                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="tonyuSyaCode" headerText="投入者">
-                        <p:outputLabel value="#{item.tonyuSyaCode}"/>
-                    </p:column>
-                    <p:column id="domeZanChk" headerText="ﾄﾞｰﾑ製品残" styleClass="number">
-                        <p:outputLabel value="#{item.domeZanChk}">
-                            <f:convertNumber pattern="#,##0"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="domeNo" headerText="ﾄﾞｰﾑ番号" >
-                        <p:outputLabel value="#{item.domeNo}" />
-                    </p:column>
-                    <p:column id="niSou" headerText="槽NI" styleClass="number">
-                        <p:outputLabel value="#{item.niSou}">
-                            <f:convertNumber pattern="#,##0"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="snSou" headerText="槽SN" styleClass="number">
-                        <p:outputLabel value="#{item.snSou}">
-                            <f:convertNumber pattern="#,##0"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="endNichiji" headerText="回収日時">
-                        <p:outputLabel value="#{item.endNichiji}">
-                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="kaisyuSyaCode" headerText="回収者">
-                        <p:outputLabel value="#{item.kaisyuSyaCode}"/>
+                    <p:column id="gouki" headerText="号機">
+                        <p:outputLabel value="#{item.gouki}" />
                     </p:column>
                     <p:column id="makuatsuni01" headerText="Ni膜厚01" styleClass="number">
                         <p:outputLabel value="#{item.makuatsuni01}">

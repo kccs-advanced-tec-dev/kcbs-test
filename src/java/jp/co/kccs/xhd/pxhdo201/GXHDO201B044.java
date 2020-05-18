@@ -37,7 +37,7 @@ import jp.co.kccs.xhd.SelectParam;
 import jp.co.kccs.xhd.common.ColumnInfoParser;
 import jp.co.kccs.xhd.common.ColumnInformation;
 import jp.co.kccs.xhd.common.excel.ExcelExporter;
-import jp.co.kccs.xhd.db.model.MekkiRireki;
+import jp.co.kccs.xhd.db.model.SrMekki;
 import jp.co.kccs.xhd.model.GXHDO201B044Model;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.DateUtil;
@@ -145,6 +145,10 @@ public class GXHDO201B044 implements Serializable {
      * 検索条件：ﾒｯｷ開始時刻(TO)
      */
     private String startMekkiTimeT = "";
+    /**
+     * 検索条件：号機
+     */
+    private String gouki = "";
 
     /**
      * コンストラクタ
@@ -270,6 +274,24 @@ public class GXHDO201B044 implements Serializable {
         this.startMekkiTimeT = startMekkiTimeT;
     }
 
+    /**
+     * 検索条件：号機
+     *
+     * @return the gouki
+     */
+    public String getGouki() {
+        return gouki;
+    }
+
+    /**
+     * 検索条件：号機
+     *
+     * @param gouki the gouki to set
+     */
+    public void setGouki(String gouki) {
+        this.gouki = gouki;
+    }
+
 //</editor-fold>
     /**
      * ページング用の件数を返却
@@ -337,6 +359,7 @@ public class GXHDO201B044 implements Serializable {
         startMekkiDateT = "";
         startMekkiTimeF = "";
         startMekkiTimeT = "";
+        gouki = "";
 
         listData = new ArrayList<>();
     }
@@ -391,7 +414,7 @@ public class GXHDO201B044 implements Serializable {
             }
 
             // 一覧表示件数を取得
-            long count = loadMekkiRirekiDataCount();
+            long count = loadMekkiDataCount();
 
             if (count == 0) {
                 // 検索結果が0件の場合エラー終了
@@ -449,17 +472,17 @@ public class GXHDO201B044 implements Serializable {
      */
     private void selectListData() throws SQLException {
         // 入力チェックでエラーが存在しない場合検索処理を実行する
-        List<MekkiRireki> mekkiRirkiList = loadMekkiRirekiData();
+        List<SrMekki> mekkiList = loadMekkiData();
 
         // ﾛｯﾄNoのリストを取得
-        List<Map<String, String>> lotnoList = getLotNoList(mekkiRirkiList);
+        List<Map<String, String>> lotnoList = getLotNoList(mekkiList);
 
         // 取得ﾛｯﾄを対象に検索を行う。
         BigDecimal mekkiListSize = BigDecimal.valueOf(lotnoList.size());
         BigDecimal limit = BigDecimal.valueOf(SEARCH_LIMIT);
         long loopCount = mekkiListSize.divide(limit, 0, RoundingMode.UP).longValue();
         List<GXHDO201B044Model> makuatsuDataList = new ArrayList<>();
-        //ﾒｯｷ履歴情報取得
+        //外部電極ﾒｯｷ情報取得
         for (int i = 0; i < loopCount; i++) {
             int startIdx = i * SEARCH_LIMIT;
             int endIdx = ((i + 1) * SEARCH_LIMIT);
@@ -470,39 +493,39 @@ public class GXHDO201B044 implements Serializable {
         }
 
         // マージしたデータを一覧にセットする。
-        this.listData = mergeData(mekkiRirkiList, makuatsuDataList);
+        this.listData = mergeData(mekkiList, makuatsuDataList);
     }
 
     /**
-     * ﾒｯｷ履歴と外部電極ﾒｯｷ膜厚の取得データをマージして取得
+     * 外部電極ﾒｯｷと外部電極ﾒｯｷ膜厚の取得データをマージして取得
      *
-     * @param mekkiRirkiList ﾒｯｷ履歴リスト
+     * @param mekkiList 外部電極ﾒｯｷリスト
      * @param makuatsuDataList 外部電極ﾒｯｷ膜厚リスト
      * @return
      */
-    private List<GXHDO201B044Model> mergeData(List<MekkiRireki> mekkiRirkiList, List<GXHDO201B044Model> makuatsuDataList) {
+    private List<GXHDO201B044Model> mergeData(List<SrMekki> mekkiList, List<GXHDO201B044Model> makuatsuDataList) {
 
         List<GXHDO201B044Model> mergeDataList = new ArrayList<>();
-        for (MekkiRireki mekkirireki : mekkiRirkiList) {
+        for (SrMekki mekki : mekkiList) {
 
             // ﾛｯﾄ、分割No単位でデータを取得
             List<GXHDO201B044Model> makuatsuDataListFil = makuatsuDataList.stream()
-                    .filter(n -> mekkirireki.getKojyo().equals(n.getKojyo()))
-                    .filter(n -> mekkirireki.getLotNo().equals(n.getLotno()))
-                    .filter(n -> mekkirireki.getEdaBan().equals(n.getEdaban()))
-                    .filter(n -> mekkirireki.getBunkatuNo().equals(n.getBunkatuno()))
+                    .filter(n -> mekki.getKojyo().equals(n.getKojyo()))
+                    .filter(n -> mekki.getLotno().equals(n.getLotno()))
+                    .filter(n -> mekki.getEdaban().equals(n.getEdaban()))
+//                    .filter(n -> mekkirireki.getBunkatuNo().equals(n.getBunkatuno()))
                     .collect(Collectors.toList());
 
-            // ﾒｯｷ履歴にだけﾃﾞｰﾀが存在する場合
+            // 外部電極ﾒｯｷにだけﾃﾞｰﾀが存在する場合
             if (makuatsuDataListFil.isEmpty()) {
                 GXHDO201B044Model model = new GXHDO201B044Model();
-                mergeDataList.add(setModelData(model, mekkirireki));
+                mergeDataList.add(setModelData(model, mekki));
                 continue;
             }
 
             // 外部電極ﾒｯｷ膜厚が存在する場合
             for (GXHDO201B044Model model : makuatsuDataListFil) {
-                mergeDataList.add(setModelData(model, mekkirireki));
+                mergeDataList.add(setModelData(model, mekki));
             }
         }
         // マージ結果をリターン
@@ -513,34 +536,14 @@ public class GXHDO201B044 implements Serializable {
      * 表示用のmodelに履歴データをセット
      *
      * @param model model
-     * @param mekkirireki ﾒｯｷ履歴ﾃﾞｰﾀ
+     * @param srMekki 外部電極ﾒｯｷﾃﾞｰﾀ
      * @return 編集したモデルデータ
      */
-    private GXHDO201B044Model setModelData(GXHDO201B044Model model, MekkiRireki mekkirireki) {
+    private GXHDO201B044Model setModelData(GXHDO201B044Model model, SrMekki srMekki) {
 
-        model.setLotnoView(mekkirireki.getKojyo() + mekkirireki.getLotNo() + mekkirireki.getEdaBan());//ﾛｯﾄNo
-        model.setBunkatuno(mekkirireki.getBunkatuNo());//分割No
-        model.setKcpno(mekkirireki.getKcpno());//KCPNO
-        model.setBunkatuSuu(mekkirireki.getBunkatuSuu());//個数
-        model.setMediaName1(mekkirireki.getMediaName1());//ﾒﾃﾞｨｱ
-        model.setMediacc1(mekkirireki.getMediacc1());//ﾒﾃﾞｨｱ量1(cc)
-        model.setMediaName2(mekkirireki.getMediaName2());//ﾒﾃﾞｨｱ2
-        model.setMediacc2(mekkirireki.getMediacc2());//ﾒﾃﾞｨｱ量2(cc)
-        model.setNiA(mekkirireki.getNiA());//条件NIﾒｯｷ(電力)
-        model.setNiAM(mekkirireki.getNiAM());//条件NIﾒｯｷ(積算)
-        model.setSnA(mekkirireki.getSnA());//条件SNﾒｯｷ(電力)
-        model.setSnAM(mekkirireki.getSnAM());//条件SNﾒｯｷ(積算)
-        model.setJokenNo(mekkirireki.getJokenNo());//ﾌﾟﾛｸﾞﾗﾑNo
-        model.setTorokuNichiji(mekkirireki.getTorokuNichiji());//登録日時
-        model.setTorokuSyaCode(mekkirireki.getTorokuSyaCode());//登録者
-        model.setStartNichiji(mekkirireki.getStartNichiji());//投入日時
-        model.setTonyuSyaCode(mekkirireki.getTonyuSyaCode());//投入者
-        model.setDomeZanChk(mekkirireki.getDomeZanChk());//ﾄﾞｰﾑ製品残
-        model.setDomeNo(mekkirireki.getDomeNo());//ﾄﾞｰﾑ番号
-        model.setNiSou(mekkirireki.getNiSou());//槽NI
-        model.setSnSou(mekkirireki.getSnSou());//槽SN
-        model.setEndNichiji(mekkirireki.getEndNichiji());//回収日時
-        model.setKaisyuSyaCode(mekkirireki.getKaisyuSyaCode());//回収者
+        model.setLotnoView(srMekki.getKojyo() + srMekki.getLotno() + srMekki.getEdaban());//ﾛｯﾄNo
+        model.setKcpno(srMekki.getKcpno());//KCPNO
+        model.setGouki(srMekki.getGouki());//号機
 
         return model;
     }
@@ -551,19 +554,20 @@ public class GXHDO201B044 implements Serializable {
      * @return 検索結果件数
      * @throws SQLException 例外エラー
      */
-    private long loadMekkiRirekiDataCount() throws SQLException {
+    private long loadMekkiDataCount() throws SQLException {
 
         QueryRunner queryRunner = new QueryRunner(dataSourceEquipment);
-        String sql = "SELECT COUNT(*) AS CNT "
-                + "FROM mekki_rireki "
+        String sql = "SELECT COUNT(LotNo) AS CNT "
+                + "FROM sr_mekki "
                 + "WHERE (? IS NULL OR Kojyo = ?) "
                 + "AND   (? IS NULL OR LotNo = ?) "
                 + "AND   (? IS NULL OR EdaBan = ?) "
-                + "AND   (? IS NULL OR StartNichiji >= ?) "
-                + "AND   (? IS NULL OR StartNichiji <= ?) ";
+                + "AND   (? IS NULL OR Mekkikaishinichiji >= ?) "
+                + "AND   (? IS NULL OR Mekkikaishinichiji <= ?) "
+                + "AND   (? IS NULL OR Gouki = ?) ";
 
         // パラメータ設定
-        List<Object> params = createSearchParamMekkiRirekiList();
+        List<Object> params = createSearchParamMekkiList();
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         Map result = queryRunner.query(sql, new MapHandler(), params.toArray());
@@ -572,71 +576,39 @@ public class GXHDO201B044 implements Serializable {
     }
 
     /**
-     * mekki_rireki_ﾒｯｷ履歴ﾃﾞｰﾀ検索
+     * sr_mekki:外部電極ﾒｯｷﾃﾞｰﾀ検索
      *
-     * @return ﾒｯｷ履歴データリスト
+     * @return 外部電極ﾒｯｷデータリスト
      * @throws SQLException 例外エラー
      */
-    private List<MekkiRireki> loadMekkiRirekiData() throws SQLException {
+    private List<SrMekki> loadMekkiData() throws SQLException {
 
         QueryRunner queryRunner = new QueryRunner(dataSourceEquipment);
-        String sql = "SELECT Kojyo,LotNo,EdaBan,BunkatuNo,GoukiCode,KCPNO,BunkatuSuu,MediaName1,Mediacc1,"
-                + "MediaName2,Mediacc2,NiA,NiAM,SnA,SnAM,JokenNo,TorokuSyaCode,TonyuSyaCode,DomeZanChk,DomeNo,"
-                + "NiSou,SnSou,TorokuNichiji,StartNichiji,EndNichiji,KaisyuSyaCode,ContainerNo,NiTime,SnTime,"
-                + "StartNichiji_Sn,EndNichiji_Ni,Nurekensakekka,Tainetsukensakekka,Gaikankensakekka "
-                + "FROM mekki_rireki "
-                + "WHERE (? IS NULL OR Kojyo = ?) "
-                + "AND   (? IS NULL OR LotNo = ?) "
-                + "AND   (? IS NULL OR EdaBan = ?) "
-                + "AND   (? IS NULL OR StartNichiji >= ?) "
-                + "AND   (? IS NULL OR StartNichiji <= ?) "
+        String sql = "SELECT kojyo,lotno,edaban,kcpno,gouki "
+                + "FROM sr_mekki "
+                + "WHERE (? IS NULL OR kojyo = ?) "
+                + "AND   (? IS NULL OR lotno = ?) "
+                + "AND   (? IS NULL OR edaban = ?) "
+                + "AND   (? IS NULL OR mekkikaishinichiji >= ?) "
+                + "AND   (? IS NULL OR mekkikaishinichiji <= ?) "
+                + "AND   (? IS NULL OR gouki = ?) "
                 + "ORDER BY "
-                + "   Kojyo "
-                + "  ,LotNo "
-                + "  ,EdaBan "
-                + "  ,BunkatuNo desc ";
+                + "   kojyo "
+                + "  ,lotno "
+                + "  ,edaban ";
 
         Map mapping = new HashMap<>();
-        mapping.put("Kojyo", "kojyo");
-        mapping.put("LotNo", "lotNo");
-        mapping.put("EdaBan", "edaBan");
-        mapping.put("BunkatuNo", "bunkatuNo");
-        mapping.put("GoukiCode", "goukiCode");
-        mapping.put("KCPNO", "kcpno");
-        mapping.put("BunkatuSuu", "bunkatuSuu");
-        mapping.put("MediaName1", "mediaName1");
-        mapping.put("Mediacc1", "mediacc1");
-        mapping.put("MediaName2", "mediaName2");
-        mapping.put("Mediacc2", "mediacc2");
-        mapping.put("NiA", "niA");
-        mapping.put("NiAM", "niAM");
-        mapping.put("SnA", "snA");
-        mapping.put("SnAM", "snAM");
-        mapping.put("JokenNo", "jokenNo");
-        mapping.put("TorokuSyaCode", "torokuSyaCode");
-        mapping.put("TonyuSyaCode", "tonyuSyaCode");
-        mapping.put("DomeZanChk", "domeZanChk");
-        mapping.put("DomeNo", "domeNo");
-        mapping.put("NiSou", "niSou");
-        mapping.put("SnSou", "snSou");
-        mapping.put("TorokuNichiji", "torokuNichiji");
-        mapping.put("StartNichiji", "startNichiji");
-        mapping.put("EndNichiji", "endNichiji");
-        mapping.put("KaisyuSyaCode", "kaisyuSyaCode");
-        mapping.put("ContainerNo", "containerNo");
-        mapping.put("NiTime", "niTime");
-        mapping.put("SnTime", "snTime");
-        mapping.put("StartNichiji_Sn", "startNichiji_Sn");
-        mapping.put("EndNichiji_Ni", "endNichiji_Ni");
-        mapping.put("Nurekensakekka", "nurekensakekka");
-        mapping.put("Tainetsukensakekka", "tainetsukensakekka");
-        mapping.put("Gaikankensakekka", "gaikankensakekka");
+        mapping.put("kojyo", "kojyo");
+        mapping.put("lotno", "lotno");
+        mapping.put("edaban", "edaban");
+        mapping.put("kcpno", "kcpno");
+        mapping.put("gouki", "gouki");
 
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
-        ResultSetHandler<List<MekkiRireki>> beanHandler = new BeanListHandler<>(MekkiRireki.class, rowProcessor);
+        ResultSetHandler<List<SrMekki>> beanHandler = new BeanListHandler<>(SrMekki.class, rowProcessor);
 
-        List<Object> params = createSearchParamMekkiRirekiList();
+        List<Object> params = createSearchParamMekkiList();
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunner.query(sql, beanHandler, params.toArray());
 
@@ -887,7 +859,7 @@ public class GXHDO201B044 implements Serializable {
      *
      * @return パラメータ
      */
-    private List<Object> createSearchParamMekkiRirekiList() {
+    private List<Object> createSearchParamMekkiList() {
         // パラメータ設定
         String paramKojo = null;
         String paramLotNo = null;
@@ -905,6 +877,10 @@ public class GXHDO201B044 implements Serializable {
         if (!StringUtil.isEmpty(startMekkiDateT)) {
             paramStartDateT = DateUtil.convertStringToDateInSeconds(getStartMekkiDateT(), StringUtil.isEmpty(getStartMekkiTimeT()) ? "235959" : getStartMekkiTimeT() + "59");
         }
+        String paramGouki = null;
+        if (!StringUtil.isEmpty(gouki)) {
+            paramGouki = gouki;
+        }
 
         List<Object> params = new ArrayList<>();
         params.addAll(Arrays.asList(paramKojo, paramKojo));
@@ -912,6 +888,7 @@ public class GXHDO201B044 implements Serializable {
         params.addAll(Arrays.asList(paramEdaban, paramEdaban));
         params.addAll(Arrays.asList(paramStartDateF, paramStartDateF));
         params.addAll(Arrays.asList(paramStartDateT, paramStartDateT));
+        params.addAll(Arrays.asList(paramGouki, paramGouki));
 
         return params;
     }
@@ -968,14 +945,14 @@ public class GXHDO201B044 implements Serializable {
      * @param mainData メインデータ
      * @return ﾛｯﾄNoリスト
      */
-    private List<Map<String, String>> getLotNoList(List<MekkiRireki> mainData) {
+    private List<Map<String, String>> getLotNoList(List<SrMekki> mainData) {
         // 工場ｺｰﾄﾞとﾛｯﾄNoだけのリストを作成
         List<Map<String, String>> list = new ArrayList<>();
-        for (MekkiRireki mekkirireki : mainData) {
+        for (SrMekki mekki : mainData) {
             Map<String, String> map = new HashMap<>();
-            map.put("kojyo", mekkirireki.getKojyo());
-            map.put("lotno", mekkirireki.getLotNo());
-            map.put("edaban", mekkirireki.getEdaBan());
+            map.put("kojyo", mekki.getKojyo());
+            map.put("lotno", mekki.getLotno());
+            map.put("edaban", mekki.getEdaban());
             list.add(map);
         }
         // 重複を排除してリターン
