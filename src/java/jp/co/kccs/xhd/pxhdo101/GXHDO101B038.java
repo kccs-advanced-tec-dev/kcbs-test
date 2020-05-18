@@ -3274,9 +3274,9 @@ public class GXHDO101B038 implements IFormLogic {
     public ProcessData checkWipTorikomi(ProcessData processData) {
         
         // ﾁｪｯｸ処理
-        FXHDD01 kensaTannijyuryoItem = getItemRow(processData.getItemList(), GXHDO101B038Const.KENSA_TANNIJYURYO);
-        FXHDD01 shukkakosuuItem = getItemRow(processData.getItemList(), GXHDO101B038Const.SHUKKAKOSUU);
-        if(!StringUtil.isEmpty(kensaTannijyuryoItem.getValue()) || !StringUtil.isEmpty(shukkakosuuItem.getValue())){
+        FXHDD01 ukeireTannijyuryoItem = getItemRow(processData.getItemList(), GXHDO101B038Const.UKEIRE_TANNIJYURYO);
+        FXHDD01 syorisuuItem = getItemRow(processData.getItemList(), GXHDO101B038Const.SYORISUU);
+        if(!StringUtil.isEmpty(ukeireTannijyuryoItem.getValue()) || !StringUtil.isEmpty(syorisuuItem.getValue())){
            // 警告メッセージの設定
             processData.setWarnMessage(MessageUtil.getMessage("XHD-000127")); 
         }
@@ -3311,7 +3311,7 @@ public class GXHDO101B038 implements IFormLogic {
         HttpSession session = (HttpSession) externalContext.getSession(false);
         String lotNo = (String) session.getAttribute("lotNo");
         
-        // 検査単位重量(単位重量)の取得
+        //受入れ単位重量(単位重量)の取得
         //仕掛情報の単位重量取得
         Map shikakariData = loadShikakariTanijuryoData(queryRunnerWip, lotNo);
         if (shikakariData == null || shikakariData.isEmpty()) {
@@ -3324,8 +3324,8 @@ public class GXHDO101B038 implements IFormLogic {
         }
         String tanijuryo = StringUtil.nullToBlank(getMapData(shikakariData, "tanijuryo")); //単位重量
         
-        //良品数(処理数)の取得
-        String shukkakosuu = null;
+        //処理数の取得
+        String syorisuu = null;
         Map shukkakosuuData = loadFxhbm03Data(queryRunnerDoc, 26);
         if (shukkakosuuData == null || shukkakosuuData.isEmpty()) {
             if(syoriKubun == 0){
@@ -3342,17 +3342,17 @@ public class GXHDO101B038 implements IFormLogic {
         if(jissekiData != null && jissekiData.size() > 0){
             int dbShorisu = jissekiData.get(0).getSyorisuu(); //処理数               
             if(dbShorisu > 0){
-                shukkakosuu = String.valueOf(dbShorisu);
+                syorisuu = String.valueOf(dbShorisu);
             }
         }
         
         // 画面表示設定
-        // 検査単位重量(単位重量)
-        FXHDD01 itemKensaTanniJuryo = getItemRow(processData.getItemList(), GXHDO101B038Const.KENSA_TANNIJYURYO);
-        itemKensaTanniJuryo.setValue(NumberUtil.getTruncatData(tanijuryo, itemKensaTanniJuryo.getInputLength(),itemKensaTanniJuryo.getInputLengthDec()));
+        // 受入れ単位重量
+        FXHDD01 itemUkeireTanniJuryo = getItemRow(processData.getItemList(), GXHDO101B038Const.UKEIRE_TANNIJYURYO);
+        itemUkeireTanniJuryo.setValue(NumberUtil.getTruncatData(tanijuryo, itemUkeireTanniJuryo.getInputLength(),itemUkeireTanniJuryo.getInputLengthDec()));
         
-        //良品数
-        this.setItemData(processData, GXHDO101B038Const.SHUKKAKOSUU, shukkakosuu);
+        //処理数
+        this.setItemData(processData, GXHDO101B038Const.SYORISUU, syorisuu);
         if (syoriKubun == 1) {
             processData.setMethod("");
         }
