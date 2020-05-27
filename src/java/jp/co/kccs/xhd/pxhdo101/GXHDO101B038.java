@@ -1388,6 +1388,12 @@ public class GXHDO101B038 implements IFormLogic {
         //使用ﾄﾞｰﾑ明細
         this.setItemData(processData, GXHDO101B038Const.DOMEMEISAI, getSrMekkiItemData(GXHDO101B038Const.DOMEMEISAI, srMekkiData));        
         hiddenMap.put("domemeisai", getSrMekkiItemData(GXHDO101B038Const.DOMEMEISAI, srMekkiData));
+        //測定日
+        this.setItemData(processData, GXHDO101B038Const.SOKUTEI_DAY, getSrMekkiItemData(GXHDO101B038Const.SOKUTEI_DAY, srMekkiData));
+        //測定時刻
+        this.setItemData(processData, GXHDO101B038Const.SOKUTEI_TIME, getSrMekkiItemData(GXHDO101B038Const.SOKUTEI_TIME, srMekkiData));
+        //膜厚担当者
+        this.setItemData(processData, GXHDO101B038Const.MAKUATSU_TANTOSHA, getSrMekkiItemData(GXHDO101B038Const.MAKUATSU_TANTOSHA, srMekkiData));
         //条件NI(A)
         this.setItemData(processData, GXHDO101B038Const.JYOUKENNI_A, getSrMekkiItemData(GXHDO101B038Const.JYOUKENNI_A, srMekkiData));
         //条件NI(AM)
@@ -2407,7 +2413,7 @@ public class GXHDO101B038 implements IFormLogic {
                 + " budomari = ?, makuatsunimin = ?, makuatsunimax = ?, makuatsuniave = ?, "
                 + " makuatsusnmin = ?, makuatsusnmax = ?, makuatsusnave = ?, nurekensakekka = ?, "
                 + " tainetsukensakekka = ?, gaikankensakekka = ?, bikou1 = ?, bikou2 = ?, "
-                + " koushinnichiji = ?, domemeisai = ?, kensanichiji = ?, kensatantousya = ?, "
+                + " koushinnichiji = ?, domemeisai = ?, sokuteinichiji = ?, kensanichiji = ?, kensatantousya = ?, makuatsutantosya = ?,"
                 + " tokuisaki = ?, lotkubuncode = ?, ownercode = ?, ukeiretannijyuryo = ?, "
                 + " ukeiresoujyuryou = ?, mekkibasyo = ?, mekkibasyosetubi = ?, "
                 + " mekkisyuryounichiji = ?, syuryousya = ?, kensatannijyuryo = ?, "
@@ -2551,19 +2557,24 @@ public class GXHDO101B038 implements IFormLogic {
             params.add(null); // ﾊﾞﾚﾙNo
             params.add(null); // Ni膜厚(CPL)
             params.add(null); // Sn膜厚(CPL)
-            params.add(null); // 測定日時
+            params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.SOKUTEI_DAY, srMekkiData),
+                getItemData(itemList, GXHDO101B038Const.SOKUTEI_TIME, srMekkiData))); // 測定日時
             params.add(null); // Ni膜厚(CV)
             params.add(null); // Sn膜厚(CV)
         } else {
             params.add(systemTime); //更新日時
             params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B038Const.DOMEMEISAI, srMekkiData))); //使用ﾄﾞｰﾑ明細
+            params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.SOKUTEI_DAY, srMekkiData),
+                getItemData(itemList, GXHDO101B038Const.SOKUTEI_TIME, srMekkiData))); // 測定日時
         }
         
         params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.KENSA_DAY, srMekkiData),
             getItemData(itemList, GXHDO101B038Const.KENSA_TIME, srMekkiData))); //検査日時
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.KENSA_TANTOUSYA, srMekkiData))); //検査・外観担当者
+        
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.MAKUATSU_TANTOSHA, srMekkiData))); //膜厚担当者
+        
         if (isInsert) {
-            params.add(null); // 膜厚担当者
             params.add(null); // Sn開始日時
         }
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.KYAKUSAKI, srMekkiData))); //客先 
@@ -2675,7 +2686,7 @@ public class GXHDO101B038 implements IFormLogic {
                 + " budomari = ?, makuatsunimin = ?, makuatsunimax = ?, makuatsuniave = ?, "
                 + " makuatsusnmin = ?, makuatsusnmax = ?, makuatsusnave = ?, nurekensakekka = ?, "
                 + " tainetsukensakekka = ?, gaikankensakekka = ?, bikou1 = ?, bikou2 = ?, "
-                + " koushinnichiji = ?, domemeisai = ?, kensanichiji = ?, kensatantousya = ?, "
+                + " koushinnichiji = ?, domemeisai = ?, sokuteinichiji = ?, kensanichiji = ?, kensatantousya = ?, makuatsutantosya = ?,　"
                 + " tokuisaki = ?, lotkubuncode = ?, ownercode = ?, ukeiretannijyuryo = ?, "
                 + " ukeiresoujyuryou = ?, mekkibasyo = ?, mekkibasyosetubi = ?, "
                 + " mekkisyuryounichiji = ?, syuryousya = ?, kensatannijyuryo = ?, "
@@ -2787,19 +2798,25 @@ public class GXHDO101B038 implements IFormLogic {
             params.add(0); // ﾊﾞﾚﾙNo
             params.add(BigDecimal.ZERO); // Ni膜厚(CPL)
             params.add(BigDecimal.ZERO); // Sn膜厚(CPL)
-            params.add("0000-00-00 00:00:00"); // 測定日時
+            //params.add("0000-00-00 00:00:00"); // 測定日時
+            params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.SOKUTEI_DAY, srMekkiData),
+                getItemData(itemList, GXHDO101B038Const.SOKUTEI_TIME, srMekkiData))); // 測定日時
             params.add(BigDecimal.ZERO); // Ni膜厚(CV)
             params.add(BigDecimal.ZERO); // Sn膜厚(CV)
         } else {
             params.add(systemTime); //更新日時
             params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B038Const.DOMEMEISAI, srMekkiData))); //使用ﾄﾞｰﾑ明細
+            params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.SOKUTEI_DAY, srMekkiData),
+                getItemData(itemList, GXHDO101B038Const.SOKUTEI_TIME, srMekkiData))); // 測定日時
         }
         
         params.add(DBUtil.stringToDateObject(getItemData(itemList, GXHDO101B038Const.KENSA_DAY, srMekkiData),
             getItemData(itemList, GXHDO101B038Const.KENSA_TIME, srMekkiData))); //検査日時
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B038Const.KENSA_TANTOUSYA, srMekkiData))); //検査・外観担当者
+        
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.MAKUATSU_TANTOSHA, srMekkiData))); //膜厚担当者
+
         if (isInsert) {
-            params.add(""); // 膜厚担当者
             params.add("0000-00-00 00:00:00"); // Sn開始日時
         }
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B038Const.KYAKUSAKI, srMekkiData))); //客先 
@@ -3183,6 +3200,15 @@ public class GXHDO101B038 implements IFormLogic {
             // ﾃｽﾄ品
             case GXHDO101B038Const.TESTHIN:
                 return StringUtil.nullToBlank(srMekkiData.getTesthin());
+            // 測定日
+            case GXHDO101B038Const.SOKUTEI_DAY:
+                return DateUtil.formattedTimestamp(srMekkiData.getSokuteinichiji(), "yyMMdd");
+            // 測定時刻
+            case GXHDO101B038Const.SOKUTEI_TIME:
+                return DateUtil.formattedTimestamp(srMekkiData.getSokuteinichiji(), "HHmm");
+            // 膜厚担当者
+            case GXHDO101B038Const.MAKUATSU_TANTOSHA:
+                return StringUtil.nullToBlank(srMekkiData.getMakuatsutantosya());
             // 備考1
             case GXHDO101B038Const.BIKO1:
                 return StringUtil.nullToBlank(srMekkiData.getBiko1());

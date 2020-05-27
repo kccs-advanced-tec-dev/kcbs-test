@@ -276,6 +276,21 @@ public class GXHDO101B038Const {
      * ﾃｽﾄ品
      */
     public static final String TESTHIN = "sr_mekki_testhin";
+    
+    /**
+     * 測定日
+     */
+    public static final String SOKUTEI_DAY = "sr_mekki_sokutei_day";
+    
+    /**
+     * 測定時刻
+     */
+    public static final String SOKUTEI_TIME = "sr_mekki_sokutei_time";
+
+    /**
+     * 膜厚担当者
+     */
+    public static final String MAKUATSU_TANTOSHA = "sr_makuatsutantosya";    
 
     /**
      * 備考1
