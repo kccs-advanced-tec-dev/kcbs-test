@@ -2686,7 +2686,7 @@ public class GXHDO101B038 implements IFormLogic {
                 + " budomari = ?, makuatsunimin = ?, makuatsunimax = ?, makuatsuniave = ?, "
                 + " makuatsusnmin = ?, makuatsusnmax = ?, makuatsusnave = ?, nurekensakekka = ?, "
                 + " tainetsukensakekka = ?, gaikankensakekka = ?, bikou1 = ?, bikou2 = ?, "
-                + " koushinnichiji = ?, domemeisai = ?, sokuteinichiji = ?, kensanichiji = ?, kensatantousya = ?, makuatsutantosya = ?,　"
+                + " koushinnichiji = ?, domemeisai = ?, sokuteinichiji = ?, kensanichiji = ?, kensatantousya = ?, makuatsutantosya = ?, "
                 + " tokuisaki = ?, lotkubuncode = ?, ownercode = ?, ukeiretannijyuryo = ?, "
                 + " ukeiresoujyuryou = ?, mekkibasyo = ?, mekkibasyosetubi = ?, "
                 + " mekkisyuryounichiji = ?, syuryousya = ?, kensatannijyuryo = ?, "
