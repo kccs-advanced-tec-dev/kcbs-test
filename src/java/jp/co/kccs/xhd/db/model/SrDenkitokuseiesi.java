@@ -124,7 +124,7 @@ public class SrDenkitokuseiesi {
     /**
      * 分類ｴｱｰ圧
      */
-    private Integer bunruiairatu;
+    private BigDecimal bunruiairatu;
 
     /**
      * CDｺﾝﾀｸﾄ圧
@@ -1514,7 +1514,7 @@ public class SrDenkitokuseiesi {
      * 分類ｴｱｰ圧
      * @return the bunruiairatu
      */
-    public Integer getBunruiairatu() {
+    public BigDecimal getBunruiairatu() {
         return bunruiairatu;
     }
 
@@ -1522,7 +1522,7 @@ public class SrDenkitokuseiesi {
      * 分類ｴｱｰ圧
      * @param bunruiairatu the bunruiairatu to set
      */
-    public void setBunruiairatu(Integer bunruiairatu) {
+    public void setBunruiairatu(BigDecimal bunruiairatu) {
         this.bunruiairatu = bunruiairatu;
     }
 
