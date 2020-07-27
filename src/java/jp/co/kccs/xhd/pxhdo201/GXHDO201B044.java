@@ -556,7 +556,7 @@ public class GXHDO201B044 implements Serializable {
      */
     private long loadMekkiDataCount() throws SQLException {
 
-        QueryRunner queryRunner = new QueryRunner(dataSourceEquipment);
+        QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
         String sql = "SELECT COUNT(LotNo) AS CNT "
                 + "FROM sr_mekki "
                 + "WHERE (? IS NULL OR Kojyo = ?) "
@@ -583,7 +583,7 @@ public class GXHDO201B044 implements Serializable {
      */
     private List<SrMekki> loadMekkiData() throws SQLException {
 
-        QueryRunner queryRunner = new QueryRunner(dataSourceEquipment);
+        QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
         String sql = "SELECT kojyo,lotno,edaban,kcpno,gouki "
                 + "FROM sr_mekki "
                 + "WHERE (? IS NULL OR kojyo = ?) "
