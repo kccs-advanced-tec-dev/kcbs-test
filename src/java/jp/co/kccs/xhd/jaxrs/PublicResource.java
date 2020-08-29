@@ -75,8 +75,12 @@ public class PublicResource {
     @Context
     private UriInfo context;
     @Resource(mappedName = "jdbc/DocumentServer")
-    DataSource dataSource;
-
+    protected transient DataSource dataSource;
+    @Resource(mappedName = "jdbc/qcdb")
+    protected transient DataSource dataSourceQcdb;
+    @Resource(mappedName = "jdbc/wip")
+    protected transient DataSource dataSourceWip;
+    
     /**
      * コンストラクタ
      *
@@ -189,6 +193,117 @@ public class PublicResource {
         }
 
         return termNo + " ok";
+    }
+    
+    /**
+     * healthcheck WIP
+     * @return 
+     */
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("healthcheck/wip")
+    public Response healthCheckWip() {
+        QueryRunner queryRunner = new QueryRunner(dataSourceWip);
+        Connection con = null;
+
+        try {
+            String sql = "SELECT COUNT(*) FROM tantomas ";
+            Map countMap = queryRunner.query(sql, new MapHandler());
+            DbUtils.close(con);
+            return Response.ok().build();
+        } catch (SQLException e) {
+            ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
+            DBUtil.rollbackConnection(con, LOGGER);
+            return Response.serverError().build();
+        } catch (Exception e) {
+            ErrUtil.outputErrorLog("Exception発生", e, LOGGER);
+            DBUtil.rollbackConnection(con, LOGGER);
+            return Response.serverError().build();
+        }
+    }
+    
+    /**
+     * healthcheck WIP
+     * @return 
+     */
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("healthcheck/wip2")
+    public Response healthCheckWip2() {
+        QueryRunner queryRunner = new QueryRunner(dataSourceWip);
+        Connection con = null;
+
+        try {
+            String sql = "SELECT COUNT(*) FROM tantomas ";
+            Map countMap = queryRunner.query(sql, new MapHandler());
+            
+            Thread.sleep(1000 * 60 * 10);
+            
+            DbUtils.close(con);
+            return Response.ok().build();
+        } catch (SQLException e) {
+            ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
+            DBUtil.rollbackConnection(con, LOGGER);
+            return Response.serverError().build();
+        } catch (Exception e) {
+            ErrUtil.outputErrorLog("Exception発生", e, LOGGER);
+            DBUtil.rollbackConnection(con, LOGGER);
+            return Response.serverError().build();
+        }
+    }
+    
+    /**
+     * healthcheck DocumentServer
+     * @return 
+     */
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("healthcheck/docserver")
+    public Response healthCheckDocServer() {
+        QueryRunner queryRunner = new QueryRunner(dataSource);
+        Connection con = null;
+
+        try {
+            String sql = "SELECT COUNT(*) FROM fxhbm01 ";
+            Map countMap = queryRunner.query(sql, new MapHandler());
+            DbUtils.close(con);
+            return Response.ok().build();
+        } catch (SQLException e) {
+            ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
+            DBUtil.rollbackConnection(con, LOGGER);
+            return Response.serverError().build();
+        } catch (Exception e) {
+            ErrUtil.outputErrorLog("Exception発生", e, LOGGER);
+            DBUtil.rollbackConnection(con, LOGGER);
+            return Response.serverError().build();
+        }
+    }
+    
+    /**
+     * healthcheck QCDB
+     * @return 
+     */
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("healthcheck/qcdb")
+    public Response healthCheckQcdb() {
+        QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
+        Connection con = null;
+
+        try {
+            String sql = "SELECT COUNT(*) FROM da_sekkei ";
+            Map countMap = queryRunner.query(sql, new MapHandler());
+            DbUtils.close(con);
+            return Response.ok().build();
+        } catch (SQLException e) {
+            ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
+            DBUtil.rollbackConnection(con, LOGGER);
+            return Response.serverError().build();
+        } catch (Exception e) {
+            ErrUtil.outputErrorLog("Exception発生", e, LOGGER);
+            DBUtil.rollbackConnection(con, LOGGER);
+            return Response.serverError().build();
+        }
     }
 
     /**
