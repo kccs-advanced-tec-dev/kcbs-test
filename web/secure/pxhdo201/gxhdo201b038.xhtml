@@ -101,6 +101,16 @@
                             </p:inputText>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblgouki" value="号機" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pGouki" value="#{gXHDO201B038.gouki}" maxlength="4" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B038.checkByte('gouki', 4)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
                 </table>
             </p:panel>
             <p:panel id="buttonpanel" style="border:none;margin-top:-10px;">
