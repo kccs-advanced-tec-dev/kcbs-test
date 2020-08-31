@@ -1,0 +1,228 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Pragma" content="no-cache"/>
+        <meta http-equiv="Cache-Control" content="no-cache"/>
+        <meta http-equiv="Expires" content="0"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link href="#{request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/growl.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/loading.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/gxhdo201common.css" rel="stylesheet" type="text/css"/>
+        <script src="#{request.contextPath}/resources/bootstrap/js/bootstrap.min.js" />
+        <h:outputScript library="primefaces" name="jquery/jquery.js" />
+        <script src="#{request.contextPath}/resources/js/growl.js"></script>
+        <script type="text/javascript">
+            //<![CDATA[
+            var pointY;
+            function subFormOpen() {
+                pointY = $(window).scrollTop();
+                document.getElementById("mainForm").style.setProperty("display", "none");
+                document.getElementById("mainForm").style.setProperty("position", "fixed");
+                document.getElementById("mainForm").style.setProperty("Top", -(pointY) + 54 + "px");
+                document.getElementById("mainForm").style.removeProperty("display");
+            }
+            function subFormClose() {
+                document.getElementById("mainForm").style.setProperty("display", "none");
+                document.getElementById("mainForm").style.removeProperty("position");
+                document.getElementById("mainForm").style.removeProperty("Top");
+                document.getElementById("mainForm").style.removeProperty("display");
+                $(window).scrollTop(pointY);
+            }
+            //]]>
+        </script>
+        <style type="text/css">
+dl,
+dt,
+dd {
+  box-sizing: border-box;
+}
+dl {
+  background: #eee;
+  border-right: 1px solid #ccc;
+  border-bottom: 1px solid #ccc;
+  border-left: 1px solid #ccc;
+}
+dt,
+dd {
+  padding: 10px 10px 0 10px;
+  border-top: 1px solid #ccc;
+}
+dt {
+  width: 280px;
+  float: left;
+}
+dd {
+  background: #fff;
+  margin-left: 280px;
+  margin-bottom: 0;
+  padding-bottom: 10px;
+  border-left: 1px solid #ccc;
+}
+dd:after {
+  content: '';
+  display: block;
+  clear: both;
+}
+        </style>
+    </h:head>
+    <h:body style="padding-top:30px;">
+        <f:metadata>
+            <f:viewAction action="#{gXHDO201B100.init()}"/>
+        </f:metadata>
+        <nav class="navbar  navbar-expand fixed-top navbar-dark" style="background-color:#0E6A89;height: 50px;z-index: 999;">
+            <span class="navbar-brand mb-0" style="font-size:18px;font-weight:bold;">#{myMsg.GXHDO201B100_GamenTitle}</span>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#Navber" aria-controls="Navber" aria-expanded="false" aria-label="ナビゲーションの切替">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <span class="navbar-text ml-auto">
+                <div class="collapse navbar-collapse" id="Navber">
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <h:link class="nav-link" outcome="/secure/pxhdo201/gxhdo201a.xhtml?faces-redirect=true" value="戻る"/>
+                    </li>
+                  </ul>
+                </div>
+            </span>
+        </nav>
+        <br/>
+        <h:form id="form" onkeypress="if (event.keyCode === 13) {
+                    return false;
+                }">
+            <div id="mainForm" style="width: 100%;">
+            <p:growl id="growlMessage" showDetail="false" sticky="true"  escape="false"/>
+            <div id="loadinggif">
+                <img src="#{request.contextPath}/resources/gif/gif-load.gif"/>
+            </div>
+            <p:panel id="searchpanel" style="border:none;">
+                <table>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblLotNo" value="ﾛｯﾄNo" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pLotNo" value="#{gXHDO201B100.lotNo}" maxlength="14" style="margin-left:20px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B100.checkByte('lotNo', 14)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                </table>
+            </p:panel>
+            <p:panel id="buttonpanel" style="border:none; margin-top:-10px;}">
+                <p:defaultCommand target="btnSearch" />
+                <p:commandButton id="btnSearch" style="width:100px;text-align:center;"
+                                value="検索" 
+                                actionListener="#{gXHDO201B100.checkInputAndSearch()}"
+                                process="@this searchpanel"
+                                update="growlMessage searchResultPanel"
+                                onstart="$('#loadinggif').show();"
+                                oncomplete="$('#loadinggif').hide();"/>
+            </p:panel>
+            <p:panel  id="searchResultPanel"> 
+                <ui:param name="item" value="#{gXHDO201B100.searchItem}"/>
+                <dl>
+                    <dt>KCPNO</dt>
+                    <dd>#{item.kcpno}</dd>
+
+                    <dt>客先</dt>
+                    <dd>#{item.tokuisaki}</dd>
+
+                    <dt>工程</dt>
+                    <dd>
+                        #{item.kotei_code}
+                        #{empty item.kotei_name ? "" : "(" += item.kotei_name += ")"}
+                        #{item.opencloseflag eq "0" ? "[Closed]" : ""}
+                    </dd>
+
+                    <dt>仕掛数量</dt>
+                    <dd>
+                        <h:outputText value="#{item.suuryo}">
+                            <f:convertNumber/>
+                        </h:outputText>
+                    </dd>
+
+                    <dt>備考1</dt>
+                    <dd>#{item.bikou1}</dd>
+
+                    <dt>備考3</dt>
+                    <dd>#{item.bikou3}</dd>
+
+                    <dt>QA外観 検査日</dt>
+                    <dd>
+                        <h:outputText value="#{item.qagaikan_nichiji}">
+                            <f:convertDateTime timeZone="#{gXHDO201B100.timeZome}" pattern="yy/MM/dd"/>
+                        </h:outputText>
+                    </dd>
+                    
+                    <dt>QA外観 検査品種類<br/>(NO外観=1 検査品=2)</dt>
+                    <dd>#{item.qagaikan_kensahinsyurui}</dd>
+
+                    <dt>QA外観 検査者</dt>
+                    <dd>
+                        #{item.qagaikan_kensasya_code}
+                        #{empty item.qagaikan_kensasya_name ? "" : "(" += item.qagaikan_kensasya_name += ")"}
+                    </dd>
+
+                    <dt>QA外観 判定(OK=1 NG=2)</dt>
+                    <dd>#{item.qagaikan_hantei}</dd>
+
+                    <dt>特性→外観 送り数量 (L→P)</dt>
+                    <dd>
+                        <h:outputText value="#{item.to_gaikan_okurisuu}">
+                            <f:convertNumber/>
+                        </h:outputText>
+                    </dd>
+
+                    <dt>4次外観 開始日時</dt>
+                    <dd>
+                        <h:outputText value="#{item.gaikan_kaishinichiji}">
+                            <f:convertDateTime timeZone="#{gXHDO201B100.timeZome}" pattern="yy/MM/dd HH:mm"/>
+                        </h:outputText>
+                    </dd>
+
+                    <dt>4次外観 終了日時</dt>
+                    <dd>
+                        <h:outputText value="#{item.gaikan_syuuryounichiji}">
+                            <f:convertDateTime timeZone="#{gXHDO201B100.timeZome}" pattern="yy/MM/dd HH:mm"/>
+                        </h:outputText>
+                    </dd>
+
+                    <dt>4次外観 検査面</dt>
+                    <dd>#{item.gaikan_kensamen}</dd>
+
+                    <dt>4次外観 検査回数</dt>
+                    <dd>#{item.gaikan_kaisuu}</dd>
+
+                    <dt>4次外観 検査号機</dt>
+                    <dd>#{item.gaikan_kensagouki}</dd>
+                    
+                    <dt>4次外観 合計良品個数</dt>
+                    <dd>
+                        <h:outputText value="#{item.gaikan_goukeiryouhinkosuu}">
+                            <f:convertNumber/>
+                        </h:outputText>
+                    </dd>
+                    
+                    <dt>熱処理 終了日時</dt>
+                    <dd>
+                        <h:outputText value="#{item.netsusyori_syoribi}">
+                            <f:convertDateTime timeZone="#{gXHDO201B100.timeZome}" pattern="yy/MM/dd"/>
+                        </h:outputText>
+                        #{item.netsusyori_syuuryoujikan}
+                    </dd>
+                </dl>
+            </p:panel>
+            </div>
+            <div>
+                <ui:include src="/secure/common/initMessage.xhtml"/>
+            </div>
+        </h:form>
+    </h:body>
+</html>
