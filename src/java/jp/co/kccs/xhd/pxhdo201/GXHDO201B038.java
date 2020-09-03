@@ -267,7 +267,7 @@ public class GXHDO201B038 implements Serializable {
         this.startMekkiTimeT = startMekkiTimeT;
     }
     
-    /**
+        /**
      * 検索条件：号機
      *
      * @return the gouki
@@ -397,7 +397,7 @@ public class GXHDO201B038 implements Serializable {
             return;
         }
         // ﾒｯｷ開始時刻(TO)
-        if (existError(validateUtil.checkC101(getStartMekkiTimeT(), "ﾒｯｷ開始時刻(to)", 4))
+        if (existError(validateUtil.checkC101(getGouki(), "ﾒｯｷ開始時刻(to)", 4))
                 || existError(validateUtil.checkC201ForDate(getStartMekkiTimeT(), "ﾒｯｷ開始時刻(to)"))
                 || existError(validateUtil.checkC502(getStartMekkiTimeT(), "ﾒｯｷ開始時刻(to)"))) {
             return;
@@ -941,27 +941,40 @@ public class GXHDO201B038 implements Serializable {
             for (GXHDO201B038Model data : listData) {
                 
                 // パラメータ設定
-                List<Object> paramsMk = createMakuatsuSearchParam(data.getLotno());
+                List<Object> paramsMkKaisu = createMakuatsuSearchParam(data.getLotno());
 
-                // 膜厚データの取得
+                // 最後に測定した膜厚データの測定回数を取得する
+                String sqlMkKaisu = "SELECT "
+                        + "  MAX(sokuteikaisuu) AS KAISU"
+                        + " FROM  sr_mkmakuatsu "
+                        + " WHERE Kojyo = ?"
+                        + " AND   LotNo = ?"
+                        + " AND   Edaban = ?"
+                        + " AND   Barelno = 1";
+                                
+                DBUtil.outputSQLLog(sqlMkKaisu, paramsMkKaisu.toArray(), LOGGER);
+                Map resultKiasu = queryRunner.query(sqlMkKaisu, new MapHandler(), paramsMkKaisu.toArray());
+                
+                if (resultKiasu.get("KAISU") == null) {
+                    continue;
+                }
+                
+                Integer kaisu = (Integer) resultKiasu.get("KAISU");
+            
+                // パラメータ設定
+                List<Object> paramsMk = createMakuatsuKaisuSearchParam(data.getLotno(), kaisu);
+
+                // 最後に測定した膜厚データを取得する
                 String sqlMk = "SELECT "
-                        + "  SRMK_BMIN.SokuteiNo"
-                        + " ,SRMK_BMIN.NiMakuatsu"
-                        + " ,SRMK_BMIN.SnMakuatsu"
-                        + " FROM  sr_mkmakuatsu SRMK_BMIN"
-                        + " WHERE SRMK_BMIN.Kojyo = ?"
-                        + " AND   SRMK_BMIN.LotNo = ?"
-                        + " AND   SRMK_BMIN.Edaban = ?"
-                        + " AND   SRMK_BMIN.Barelno = 1"
-                        + " AND   SRMK_BMIN.SokuteiKaisuu = ( SELECT MAX(SRMK_SMAX.sokuteikaisuu) "
-                        + "                  FROM   sr_mkmakuatsu SRMK_SMAX "
-                        + "                  WHERE  SRMK_SMAX.kojyo = SRMK_BMIN.kojyo "
-                        + "                  AND    SRMK_SMAX.lotno = SRMK_BMIN.lotno "
-                        + "                  AND    SRMK_SMAX.edaban = SRMK_BMIN.edaban "
-                        + "                  GROUP BY "
-                        + "                         SRMK_SMAX.kojyo "
-                        + "                         , SRMK_SMAX.lotno "
-                        + "                         , SRMK_SMAX.edaban )"
+                        + "  SokuteiNo"
+                        + " ,NiMakuatsu"
+                        + " ,SnMakuatsu"
+                        + " FROM  sr_mkmakuatsu"
+                        + " WHERE Kojyo = ?"
+                        + " AND   LotNo = ?"
+                        + " AND   Edaban = ?"
+                        + " AND   Barelno = 1"
+                        + " AND   SokuteiKaisuu = ? "
                         + " ORDER BY SokuteiNo";
 
                 DBUtil.outputSQLLog(sqlMk, paramsMk.toArray(), LOGGER);
@@ -976,63 +989,83 @@ public class GXHDO201B038 implements Serializable {
                         case 1:
                             data.setMakuatsuni01((BigDecimal)mkData.get("NiMakuatsu"));
                             data.setMakuatsusn01((BigDecimal)mkData.get("SnMakuatsu"));
+                            break;
                         case 2:
                             data.setMakuatsuni02((BigDecimal)mkData.get("NiMakuatsu"));
                             data.setMakuatsusn02((BigDecimal)mkData.get("SnMakuatsu"));
+                            break;
                         case 3:
                             data.setMakuatsuni03((BigDecimal)mkData.get("NiMakuatsu"));
                             data.setMakuatsusn03((BigDecimal)mkData.get("SnMakuatsu"));
+                            break;
                         case 4:
                             data.setMakuatsuni04((BigDecimal)mkData.get("NiMakuatsu"));
                             data.setMakuatsusn04((BigDecimal)mkData.get("SnMakuatsu"));
+                            break;
                         case 5:
                             data.setMakuatsuni05((BigDecimal)mkData.get("NiMakuatsu"));
                             data.setMakuatsusn05((BigDecimal)mkData.get("SnMakuatsu"));
+                            break;
                         case 6:
                             data.setMakuatsuni06((BigDecimal)mkData.get("NiMakuatsu"));
                             data.setMakuatsusn06((BigDecimal)mkData.get("SnMakuatsu"));
+                            break;
                         case 7:
                             data.setMakuatsuni07((BigDecimal)mkData.get("NiMakuatsu"));
                             data.setMakuatsusn07((BigDecimal)mkData.get("SnMakuatsu"));
+                            break;
                         case 8:
                             data.setMakuatsuni08((BigDecimal)mkData.get("NiMakuatsu"));
                             data.setMakuatsusn08((BigDecimal)mkData.get("SnMakuatsu"));
+                            break;
                         case 9:
                             data.setMakuatsuni09((BigDecimal)mkData.get("NiMakuatsu"));
                             data.setMakuatsusn09((BigDecimal)mkData.get("SnMakuatsu"));
+                            break;
                         case 10:
                             data.setMakuatsuni10((BigDecimal)mkData.get("NiMakuatsu"));
                             data.setMakuatsusn10((BigDecimal)mkData.get("SnMakuatsu"));
+                            break;
                         case 11:
                             data.setMakuatsuni11((BigDecimal)mkData.get("NiMakuatsu"));
                             data.setMakuatsusn11((BigDecimal)mkData.get("SnMakuatsu"));
+                            break;
                         case 12:
                             data.setMakuatsuni12((BigDecimal)mkData.get("NiMakuatsu"));
                             data.setMakuatsusn12((BigDecimal)mkData.get("SnMakuatsu"));
+                            break;
                         case 13:
                             data.setMakuatsuni13((BigDecimal)mkData.get("NiMakuatsu"));
                             data.setMakuatsusn13((BigDecimal)mkData.get("SnMakuatsu"));
+                            break;
                         case 14:
                             data.setMakuatsuni14((BigDecimal)mkData.get("NiMakuatsu"));
                             data.setMakuatsusn14((BigDecimal)mkData.get("SnMakuatsu"));
+                            break;
                         case 15:
                             data.setMakuatsuni15((BigDecimal)mkData.get("NiMakuatsu"));
                             data.setMakuatsusn15((BigDecimal)mkData.get("SnMakuatsu"));
+                            break;
                         case 16:
                             data.setMakuatsuni16((BigDecimal)mkData.get("NiMakuatsu"));
                             data.setMakuatsusn16((BigDecimal)mkData.get("SnMakuatsu"));
+                            break;
                         case 17:
                             data.setMakuatsuni17((BigDecimal)mkData.get("NiMakuatsu"));
                             data.setMakuatsusn17((BigDecimal)mkData.get("SnMakuatsu"));
+                            break;
                         case 18:
                             data.setMakuatsuni18((BigDecimal)mkData.get("NiMakuatsu"));
                             data.setMakuatsusn18((BigDecimal)mkData.get("SnMakuatsu"));
+                            break;
                         case 19:
                             data.setMakuatsuni19((BigDecimal)mkData.get("NiMakuatsu"));
                             data.setMakuatsusn19((BigDecimal)mkData.get("SnMakuatsu"));
+                            break;
                         case 20:
                             data.setMakuatsuni20((BigDecimal)mkData.get("NiMakuatsu"));
                             data.setMakuatsusn20((BigDecimal)mkData.get("SnMakuatsu"));
+                            break;
                     }
                 }
             }
@@ -1165,7 +1198,7 @@ public class GXHDO201B038 implements Serializable {
         return params;
     }
 
-    /**
+     /**
      * 膜厚用検索パラメータ生成
      *
      * @return パラメータ
@@ -1184,6 +1217,27 @@ public class GXHDO201B038 implements Serializable {
         return params;
     }
 
+         /**
+     * 膜厚回数取得用検索パラメータ生成
+     *
+     * @return パラメータ
+     */
+    private List<Object> createMakuatsuKaisuSearchParam(String mklotNo, Integer kaisuu) {
+        // パラメータ設定
+        String paramKojo = StringUtils.substring(mklotNo, 0, 3);
+        String paramLotNo = StringUtils.substring(mklotNo, 3, 11);
+        String paramEdaban = StringUtil.blankToNull(StringUtils.substring(mklotNo, 11, 14));
+        
+        List<Object> params = new ArrayList<>();
+        params.add(paramKojo);
+        params.add(paramLotNo);
+        params.add(paramEdaban);
+        params.add(kaisuu);
+
+        return params;
+    }
+
+    
     /**
      * エラーチェック： エラーが存在する場合ポップアップ用メッセージをセットする
      *
