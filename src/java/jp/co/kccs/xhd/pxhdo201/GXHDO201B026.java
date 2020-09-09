@@ -61,6 +61,12 @@ import org.primefaces.context.RequestContext;
  * 変更者	863 F.Zhang<br>
  * 変更理由	新規作成<br>
  * <br>
+ * <br>
+ * 変更日	2020/09/03<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -671,7 +677,7 @@ public class GXHDO201B026 implements Serializable {
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
             String sql = "SELECT COUNT(lotno) AS CNT "
-                    + "FROM sr_gdterm "
+                    + "FROM sr_term "
                     + "WHERE (? IS NULL OR kojyo = ?) "
                     + "AND   (? IS NULL OR lotno = ?) "
                     + "AND   (? IS NULL OR edaban = ?) "
@@ -709,6 +715,14 @@ public class GXHDO201B026 implements Serializable {
                     + ", lotpre"
                     + ", kcpno"
                     + ", suuryou"
+                    + ", ukeiretannijyuryo"
+                    + ", ukeiresoujyuryou"
+                    + ", jikilsunpoumax"
+                    + ", jikilsunpoumin"
+                    + ", jikiwsunpoumax"
+                    + ", jikiwsunpoumin"
+                    + ", jikitsunpoumax"
+                    + ", jikitsunpoumin"
                     + ", kyakusaki"
                     + ", sagyobasyo"
                     + ", gouki1"
@@ -926,7 +940,7 @@ public class GXHDO201B026 implements Serializable {
                     + ", atsumiinkua"
                     + ", atsumiinkub"
                     + ", kaisuu "
-                    + "FROM sr_gdterm "
+                    + "FROM sr_term "
                     + "WHERE (? IS NULL OR kojyo = ?) "
                     + "AND   (? IS NULL OR lotno = ?) "
                     + "AND   (? IS NULL OR edaban = ?) "
@@ -947,7 +961,15 @@ public class GXHDO201B026 implements Serializable {
             mapping.put("LOTNO", "lotno"); // ﾛｯﾄNo
             mapping.put("lotpre", "lotpre"); // ﾛｯﾄﾌﾟﾚ
             mapping.put("kcpno", "kcpno"); // KCPNO
-            mapping.put("suuryou", "suuryou"); // 数量
+            mapping.put("suuryou", "suuryou"); // 受入れ良品数
+            mapping.put("ukeiretannijyuryo", "ukeiretannijyuryo"); // 受入れ単位重量
+            mapping.put("ukeiresoujyuryou", "ukeiresoujyuryou"); // 受入れ総重量
+            mapping.put("jikilsunpoumax", "jikilsunpoumax"); // 磁器L寸法(MAX)
+            mapping.put("jikilsunpoumin", "jikilsunpoumin"); // 磁器L寸法(MIN)
+            mapping.put("jikiwsunpoumax", "jikiwsunpoumax"); // 磁器W寸法(MAX)
+            mapping.put("jikiwsunpoumin", "jikiwsunpoumin"); // 磁器W寸法(MIN)
+            mapping.put("jikitsunpoumax", "jikitsunpoumax"); // 磁器T寸法(MAX)
+            mapping.put("jikitsunpoumin", "jikitsunpoumin"); // 磁器T寸法(MIN)
             mapping.put("kyakusaki", "kyakusaki"); // 客先
             mapping.put("sagyobasyo", "sagyobasyo"); // 作業場所
             mapping.put("gouki1", "gouki1"); // 号機1

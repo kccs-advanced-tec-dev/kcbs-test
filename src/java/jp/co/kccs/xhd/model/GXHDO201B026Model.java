@@ -17,6 +17,12 @@ import java.sql.Timestamp;
  * 変更者	863 K.Zhang<br>
  * 変更理由	新規作成<br>
  * <br>
+ * <br>
+ * 変更日	2020/09/03<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -41,9 +47,49 @@ public class GXHDO201B026Model implements Serializable{
     private String kcpno = "";
 
     /**
-     * 数量
+     * 受入れ良品数
      */
     private Integer suuryou;
+
+    /**
+     * 受入れ単位重量
+     */
+    private BigDecimal ukeiretannijyuryo;
+
+    /**
+     * 受入れ総重量
+     */
+    private BigDecimal ukeiresoujyuryou;
+
+    /**
+     * 磁器L寸法(MAX)
+     */
+    private BigDecimal jikilsunpoumax;
+
+    /**
+     * 磁器L寸法(MIN)
+     */
+    private BigDecimal jikilsunpoumin;
+
+    /**
+     * 磁器W寸法(MAX)
+     */
+    private BigDecimal jikiwsunpoumax;
+
+    /**
+     * 磁器W寸法(MIN)
+     */
+    private BigDecimal jikiwsunpoumin;
+
+    /**
+     * 磁器T寸法(MAX)
+     */
+    private BigDecimal jikitsunpoumax;
+
+    /**
+     * 磁器T寸法(MIN)
+     */
+    private BigDecimal jikitsunpoumin;
 
     /**
      * 客先
@@ -1178,7 +1224,7 @@ public class GXHDO201B026Model implements Serializable{
     }
 
     /**
-     * 数量
+     * 受入れ良品数
      * @return suuryou
      */
     public Integer getSuuryou() {
@@ -1186,11 +1232,139 @@ public class GXHDO201B026Model implements Serializable{
     }
 
     /**
-     * 数量
+     * 受入れ良品数
      * @param suuryou セットする suuryou
      */
     public void setSuuryou(Integer suuryou) {
         this.suuryou = suuryou;
+    }
+
+    /**
+     * 受入れ単位重量
+     * @return ukeiretannijyuryo
+     */
+    public BigDecimal getUkeiretannijyuryo() {
+        return ukeiretannijyuryo;
+    }
+
+    /**
+     * 受入れ単位重量
+     * @param ukeiretannijyuryo 
+     */
+    public void setUkeiretannijyuryo(BigDecimal ukeiretannijyuryo) {
+        this.ukeiretannijyuryo = ukeiretannijyuryo;
+    }
+
+    /**
+     * 受入れ総重量
+     * @return ukeiresoujyuryou
+     */
+    public BigDecimal getUkeiresoujyuryou() {
+        return ukeiresoujyuryou;
+    }
+
+    /**
+     * 受入れ総重量
+     * @param ukeiresoujyuryou 
+     */
+    public void setUkeiresoujyuryou(BigDecimal ukeiresoujyuryou) {
+        this.ukeiresoujyuryou = ukeiresoujyuryou;
+    }
+
+    /**
+     * 磁器L寸法(MAX)
+     * @return jikilsunpoumax
+     */
+    public BigDecimal getJikilsunpoumax() {
+        return jikilsunpoumax;
+    }
+
+    /**
+     * 磁器L寸法(MAX)
+     * @param jikilsunpoumax 
+     */
+    public void setJikilsunpoumax(BigDecimal jikilsunpoumax) {
+        this.jikilsunpoumax = jikilsunpoumax;
+    }
+
+    /**
+     * 磁器L寸法(MIN)
+     * @return jikilsunpoumin
+     */
+    public BigDecimal getJikilsunpoumin() {
+        return jikilsunpoumin;
+    }
+
+    /**
+     * 磁器L寸法(MIN)
+     * @param jikilsunpoumin 
+     */
+    public void setJikilsunpoumin(BigDecimal jikilsunpoumin) {
+        this.jikilsunpoumin = jikilsunpoumin;
+    }
+
+    /**
+     * 磁器W寸法(MAX)
+     * @return jikiwsunpoumax
+     */
+    public BigDecimal getJikiwsunpoumax() {
+        return jikiwsunpoumax;
+    }
+
+    /**
+     * 磁器W寸法(MAX)
+     * @param jikiwsunpoumax 
+     */
+    public void setJikiwsunpoumax(BigDecimal jikiwsunpoumax) {
+        this.jikiwsunpoumax = jikiwsunpoumax;
+    }
+
+    /**
+     * 磁器W寸法(MIN)
+     * @return jikiwsunpoumin
+     */
+    public BigDecimal getJikiwsunpoumin() {
+        return jikiwsunpoumin;
+    }
+
+    /**
+     * 磁器W寸法(MIN)
+     * @param jikiwsunpoumin 
+     */
+    public void setJikiwsunpoumin(BigDecimal jikiwsunpoumin) {
+        this.jikiwsunpoumin = jikiwsunpoumin;
+    }
+
+    /**
+     * 磁器T寸法(MAX)
+     * @return jikitsunpoumax
+     */
+    public BigDecimal getJikitsunpoumax() {
+        return jikitsunpoumax;
+    }
+
+    /**
+     * 磁器T寸法(MAX)
+     * @param jikitsunpoumax 
+     */
+    public void setJikitsunpoumax(BigDecimal jikitsunpoumax) {
+        this.jikitsunpoumax = jikitsunpoumax;
+    }
+
+    /**
+     * 磁器T寸法(MIN)
+     * @return jikitsunpoumin
+     */
+    public BigDecimal getJikitsunpoumin() {
+        return jikitsunpoumin;
+    }
+
+    /**
+     * 磁器T寸法(MIN)
+     * @param jikitsunpoumin 
+     */
+    public void setJikitsunpoumin(BigDecimal jikitsunpoumin) {
+        this.jikitsunpoumin = jikitsunpoumin;
     }
 
     /**
