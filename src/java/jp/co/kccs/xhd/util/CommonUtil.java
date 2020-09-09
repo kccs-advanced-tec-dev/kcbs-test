@@ -34,6 +34,12 @@ import org.apache.commons.dbutils.handlers.MapHandler;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	熱処理・ﾃｰﾋﾟﾝｸﾞ関連データ取得処理追加<br>
  * <br>
+ * <br>
+ * 変更日	2020/09/08<br>
+ * 計画書No	K2008-DS002<br>
+ * 変更者	863 zhangjinyan<br>
+ * 変更理由	sr_gdtermをsr_termに変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -135,7 +141,7 @@ public class CommonUtil {
                 return getSrGdtermtData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
             // 外部電極・外部電極塗布
             case "GXHDO101B026":
-                return getSrGdtermData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);                
+                return getSrTermData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);                
             // 外部電極・外部電極焼成(ｻﾔ詰め)
             case "GXHDO101B027":
                 return getSrGdsayadumeData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
@@ -1036,7 +1042,7 @@ public class CommonUtil {
      * @return 工程データ
      * @throws SQLException 例外エラー
      */
-    public static Map getSrGdtermData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    public static Map getSrTermData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev, int jissekino) throws SQLException {
         String sql = "SELECT kojyo,lotno,edaban,lotpre,kcpno,suuryou,kyakusaki,sagyobasyo,gouki1,setteisya1,gouki2,setteisya2,pastehinmei,"
                 + "pastelotno,pastesaiseikaisuu,pastekoukanjikan,pastenendo,pasteondo,pastekansannendo,pastekigen,startdatetime,enddatetime,"
@@ -1057,8 +1063,9 @@ public class CommonUtil {
                 + "wtsunpou2aa,wtsunpou2ab,wtsunpou2ac,wtsunpou2ad,wtsunpou2ae,wtsunpou2af,wtsunpou2ag,wtsunpou2ah,wtsunpou2ai,wtsunpou2aj,wtsunpou2ak,"
                 + "wtsunpou2al,wtsunpou2am,wtsunpou2an,wtsunpouave2,wtsunpourange2,wtsunpoumin2,wtsunpoumax2,psunpoumin2,psunpoumax2,setubisyurui,tofukaisuu,"
                 + "hojijigu,nentyakusheetlot1,nentyakusheetlot2,tofujigutorikosuu,StartTantosyacode,StartKakuninsyacode,juryou,syorikosuu,EndTantosyacode,"
-                + "pasteatsumi1ji,pasteatsumi2ji,atsumiinkua,atsumiinkub,kaisuu,torokunichiji,kosinnichiji,revision "
-                + "FROM sr_gdterm "
+                + "pasteatsumi1ji,pasteatsumi2ji,atsumiinkua,atsumiinkub,kaisuu,torokunichiji,kosinnichiji,revision,ukeiretannijyuryo,ukeiresoujyuryou,"
+                + "jikilsunpoumax,jikilsunpoumin,jikiwsunpoumax,jikiwsunpoumin,jikitsunpoumax,jikitsunpoumin "
+                + "FROM sr_term "
                 + "WHERE kojyo = ? AND lotno = ? "
                 + "AND edaban = ? AND revision = ? "
                 + "AND kaisuu = ? ";

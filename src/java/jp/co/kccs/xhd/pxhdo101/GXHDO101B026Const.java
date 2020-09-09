@@ -13,6 +13,12 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者KCSS K.Jo<br>
  * 変更理由新規作成<br>
  * <br>
+ * <br>
+ * 変更日2020/09/08<br>
+ * 計画書NoK2008-DS002<br>
+ * 変更者863 zhangjinyan<br>
+ * 変更理由仕様変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -53,10 +59,50 @@ public class GXHDO101B026Const {
     public static final String LOTPRE = "sr_term_lotpre";
 
     /**
-     * 処理数
+     * 受入れ良品数
      */
-    public static final String SHORISU = "sr_term_shorisu";
+    public static final String SUURYOU = "sr_term_suuryou";
 
+    /**
+     * 受入れ単位重量
+     */
+    public static final String UKEIRETANNIJYURYO = "sr_term_ukeiretannijyuryo";
+    
+    /**
+     * 受入れ総重量
+     */
+    public static final String UKEIRESOUJYURYOU = "sr_term_ukeiresoujyuryou";
+    
+    /**
+     * 磁器L寸法(MAX)
+     */
+    public static final String JIKILSUNPOUMAX = "sr_term_jikilsunpoumax";
+    
+        /**
+     * 磁器L寸法(MIN)
+     */
+    public static final String JIKILSUNPOUMIN = "sr_term_jikilsunpoumin";
+
+    /**
+     * 磁器W寸法(MAX)
+     */
+    public static final String JIKIWSUNPOUMAX = "sr_term_jikiwsunpoumax";
+
+    /**
+     * 磁器W寸法(MIN)
+     */
+    public static final String JIKIWSUNPOUMIN = "sr_term_jikiwsunpoumin";
+
+    /**
+     * 磁器T寸法(MAX)
+     */
+    public static final String JIKITSUNPOUMAX = "sr_term_jikitsunpoumax";
+
+    /**
+     * 磁器T寸法(MIN)
+     */
+    public static final String JIKITSUNPOUMIN = "sr_term_jikitsunpoumin";
+    
     /**
      * 設備種類
      */
@@ -166,6 +212,11 @@ public class GXHDO101B026Const {
      * ｲﾝｸ厚みB
      */
     public static final String ATSUMIINKUB = "sr_term_atsumiinkub";
+
+    /**
+     * 端面厚み
+     */
+    public static final String TANMENATSUMI2 = "sr_term_tanmenatsumi2";
 
     /**
      * P寸法 AVE
