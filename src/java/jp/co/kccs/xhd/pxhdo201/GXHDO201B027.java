@@ -61,6 +61,12 @@ import org.primefaces.context.RequestContext;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
+ * <br>
+ * 変更日	2020/09/11<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -565,15 +571,15 @@ public class GXHDO201B027 implements Serializable {
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
             String sql = "SELECT COUNT(LOTNO) AS CNT "
-                    + "FROM sr_gdsayadume "
+                    + "FROM sr_douyaki "
                     + "WHERE (? IS NULL OR KOJYO = ?) "
                     + "AND   (? IS NULL OR LOTNO = ?) "
                     + "AND   (? IS NULL OR EDABAN = ?) "
-                    + "AND   (? IS NULL OR STARTDATETIME >= ?) "
-                    + "AND   (? IS NULL OR STARTDATETIME <= ?) "
-                    + "AND   (? IS NULL OR ENDDATETIME >= ?) "
-                    + "AND   (? IS NULL OR ENDDATETIME <= ?) "
-                    + "AND   (? IS NULL OR STARTTANTOSYACODE = ?)"
+                    + "AND   (? IS NULL OR SAYADUMEBI >= ?) "
+                    + "AND   (? IS NULL OR SAYADUMEBI <= ?) "
+                    + "AND   (? IS NULL OR SAYADUMEENDNICHIJI >= ?) "
+                    + "AND   (? IS NULL OR SAYADUMEENDNICHIJI <= ?) "
+                    + "AND   (? IS NULL OR SAYADUMETANTOUSYA = ?)"
                     + "AND   (? IS NULL OR KCPNO LIKE ? ESCAPE '\\\\') ";
             
             // パラメータ設定
@@ -601,14 +607,15 @@ public class GXHDO201B027 implements Serializable {
             String sql = "SELECT CONCAT(IFNULL(KOJYO, ''), IFNULL(LOTNO, ''), IFNULL(EDABAN, '')) AS LOTNO"
                     + ", kaisuu"
                     + ", kcpno"
-                    + ", tokuisaki"
+                    + ", kyakusaki"
                     + ", lotkubuncode"
                     + ", ownercode"
                     + ", lotpre"
-                    + ", syorisuu"
+                    + ", suuryou"
                     + ", sayadumehouhou"
                     + ", konamabushi"
-                    + ", juryou"
+                    + ", dipjuryou"
+                    + ", SouJyuuRyou"
                     + ", bnfunmaturyou"
                     + ", bnfunmaturyoukakunin"
                     + ", sayasussyurui"
@@ -617,58 +624,107 @@ public class GXHDO201B027 implements Serializable {
                     + ", SJyuuryouRangeMax"
                     + ", sayajyuuryou"
                     + ", sayamaisuu"
-                    + ", saysusacharge"
-                    + ", startdatetime"
-                    + ", StartTantosyacode"
-                    + ", StartKakuninsyacode"
-                    + ", enddatetime"
-                    + ", EndTantosyacode"
-                    + ", biko1 "
-                    + ", biko2 "
-                    + "  FROM sr_gdsayadume "
+                    + ", sayachargeryou"
+                    + ", sayadumebi"
+                    + ", sayadumetantousya"
+                    + ", sayadumekakuninsya"
+                    + ", sayadumeendnichiji"
+                    + ", sayadumesyuryosya"
+                    + ", datsubaigouki"
+                    + ", datsubaiondo"
+                    + ", datsubaijikan"
+                    + ", datsubaiptnno"
+                    + ", datsubaisayamaisuu"
+                    + ", datsubaistartdatetime"
+                    + ", datsubaistarttantosyacode"
+                    + ", datsubaistartkakuninsyacode"
+                    + ", datsubaienddatetime"
+                    + ", datsubaiendtantosyacode"
+                    + ", gouro1"
+                    + ", peakondo"
+                    + ", okurispeed"
+                    + ", nyuuronichiji1"
+                    + ", tantousya1"
+                    + ", syoseistartkakuninsyacode"
+                    + ", syutsuronichiji1"
+                    + ", syoseiendtantosyacode"
+                    + ", gaikan"
+                    + ", abeggryohinjyuryo"
+                    + ", abeggfuryojyuryo"
+                    + ", abeggfuryoritu"
+                    + ", gaikankakuninnichiji"
+                    + ", gaikantantosya"
+                    + ", bikou1 "
+                    + ", bikou2 "
+                    + "  FROM sr_douyaki "
                     + " WHERE (? IS NULL OR KOJYO = ?) "
                     + " AND   (? IS NULL OR LOTNO = ?) "
                     + " AND   (? IS NULL OR EDABAN = ?) "
-                    + " AND   (? IS NULL OR STARTDATETIME >= ?) "
-                    + " AND   (? IS NULL OR STARTDATETIME <= ?) "
-                    + " AND   (? IS NULL OR ENDDATETIME >= ?) "
-                    + " AND   (? IS NULL OR ENDDATETIME <= ?) "
-                    + " AND   (? IS NULL OR STARTTANTOSYACODE = ?) "
+                    + " AND   (? IS NULL OR SAYADUMEBI >= ?) "
+                    + " AND   (? IS NULL OR SAYADUMEBI <= ?) "
+                    + " AND   (? IS NULL OR SAYADUMEENDNICHIJI >= ?) "
+                    + " AND   (? IS NULL OR SAYADUMEENDNICHIJI <= ?) "
+                    + " AND   (? IS NULL OR SAYADUMETANTOUSYA = ?) "
                     + " AND   (? IS NULL OR KCPNO LIKE ? ESCAPE '\\\\') "
-                    + " ORDER BY STARTDATETIME ";
+                    + " ORDER BY SAYADUMEBI ";
             
             // パラメータ設定
             List<Object> params = createSearchParam();
             
             // モデルクラスとのマッピング定義
             Map<String, String> mapping = new HashMap<>();
-            mapping.put("LOTNO", "lotno");                                 // ﾛｯﾄNo.
-            mapping.put("kaisuu", "kaisuu");                               // 作業回数
-            mapping.put("kcpno", "kcpno");                                 // KCPNO
-            mapping.put("tokuisaki", "tokuisaki");                         // 客先
-            mapping.put("lotkubuncode", "lotkubuncode");                   // ﾛｯﾄ区分
-            mapping.put("ownercode", "ownercode");                         // ｵｰﾅｰ
-            mapping.put("lotpre", "lotpre");                               // ﾛｯﾄﾌﾟﾚ
-            mapping.put("syorisuu", "syorisuu");                           // 処理数
-            mapping.put("sayadumehouhou", "sayadumehouhou");               // ｻﾔ詰め方法
-            mapping.put("konamabushi", "konamabushi");                     // 粉まぶし
-            mapping.put("juryou", "juryou");                               // 製品重量
-            mapping.put("bnfunmaturyou", "bnfunmaturyou");                 // BN粉末量
-            mapping.put("bnfunmaturyoukakunin", "bnfunmaturyoukakunin");   // BN粉末量確認
-            mapping.put("sayasussyurui", "sayasussyurui");                 // ｻﾔ/SUS板種類
-            mapping.put("sayamaisuukeisan", "sayamaisuukeisan");           // ｻﾔ/SUS板枚数 計算値
-            mapping.put("SJyuuryouRangeMin", "sjyuuryourangemin");         // ｻﾔ重量範囲(g)MIN
-            mapping.put("SJyuuryouRangeMax", "sjyuuryourangemax");         // ｻﾔ重量範囲(g)MAX
-            mapping.put("sayajyuuryou", "sayajyuuryou");                   // ｻﾔ重量(g/枚)
-            mapping.put("sayamaisuu", "sayamaisuu");                       // ｻﾔ/SUS板枚数
-            mapping.put("saysusacharge", "saysusacharge");                 // ｻﾔ/SUS板ﾁｬｰｼﾞ量
-            mapping.put("startdatetime", "startdatetime");                 // ｻﾔ/SUS板詰め開始日時
-            mapping.put("StartTantosyacode", "starttantosyacode");         // ｻﾔ/SUS板詰め開始担当者
-            mapping.put("StartKakuninsyacode", "startkakuninsyacode");     // ｻﾔ/SUS板詰め開始確認者
-            mapping.put("enddatetime", "enddatetime");                     // ｻﾔ/SUS板詰め終了日時
-            mapping.put("EndTantosyacode", "endtantosyacode");             // ｻﾔ/SUS板詰め終了担当者
-            mapping.put("biko1", "biko1");                                 // 備考1
-            mapping.put("biko2", "biko2");                                 // 備考2
+            mapping.put("LOTNO", "lotno");                                               // ﾛｯﾄNo.
+            mapping.put("kaisuu", "kaisuu");                                             // 作業回数
+            mapping.put("kcpno", "kcpno");                                               // KCPNO
+            mapping.put("kyakusaki", "kyakusaki");                                       // 客先
+            mapping.put("lotkubuncode", "lotkubuncode");                                 // ﾛｯﾄ区分
+            mapping.put("ownercode", "ownercode");                                       // ｵｰﾅｰ
+            mapping.put("lotpre", "lotpre");                                             // ﾛｯﾄﾌﾟﾚ
+            mapping.put("suuryou", "suuryou");                                           // 処理数
+            mapping.put("sayadumehouhou", "sayadumehouhou");                             // ｻﾔ詰め方法
+            mapping.put("konamabushi", "konamabushi");                                   // 粉まぶし
+            mapping.put("dipjuryou", "dipjuryou");                                       // 塗布重量
+            mapping.put("SouJyuuRyou", "soujyuuryou");                                   // 製品重量
+            mapping.put("bnfunmaturyou", "bnfunmaturyou");                               // BN粉末量
+            mapping.put("bnfunmaturyoukakunin", "bnfunmaturyoukakunin");                 // BN粉末量確認
+            mapping.put("sayasussyurui", "sayasussyurui");                               // ｻﾔ/SUS板種類
+            mapping.put("sayamaisuukeisan", "sayamaisuukeisan");                         // ｻﾔ/SUS板枚数 計算値
+            mapping.put("SJyuuryouRangeMin", "sjyuuryourangemin");                       // ｻﾔ重量範囲(g)MIN
+            mapping.put("SJyuuryouRangeMax", "sjyuuryourangemax");                       // ｻﾔ重量範囲(g)MAX
+            mapping.put("sayajyuuryou", "sayajyuuryou");                                 // ｻﾔ重量(g/枚)
+            mapping.put("sayamaisuu", "sayamaisuu");                                     // ｻﾔ/SUS板枚数
+            mapping.put("sayachargeryou", "sayachargeryou");                             // ｻﾔ/SUS板ﾁｬｰｼﾞ量
+            mapping.put("sayadumebi", "sayadumebi");                                     // ｻﾔ/SUS板詰め開始日時
+            mapping.put("sayadumetantousya", "sayadumetantousya");                       // ｻﾔ/SUS板詰め開始担当者
+            mapping.put("sayadumekakuninsya", "sayadumekakuninsya");                     // ｻﾔ/SUS板詰め開始確認者
+            mapping.put("sayadumeendnichiji", "sayadumeendnichiji");                     // ｻﾔ/SUS板詰め終了日時
+            mapping.put("sayadumesyuryosya", "sayadumesyuryosya");                       // ｻﾔ/SUS板詰め終了担当者
+            mapping.put("datsubaigouki", "datsubaigouki");                               // 脱ﾊﾞｲ号機
+            mapping.put("datsubaiondo", "datsubaiondo");                                 // 脱ﾊﾞｲ温度
+            mapping.put("datsubaijikan", "datsubaijikan");                               // 脱ﾊﾞｲ時間
+            mapping.put("datsubaiptnno", "datsubaiptnno");                               // 脱ﾊﾞｲPTNNO
+            mapping.put("datsubaisayamaisuu", "datsubaisayamaisuu");                     // 脱ﾊﾞｲｻﾔ枚数
+            mapping.put("datsubaistartdatetime", "datsubaistartdatetime");               // 脱ﾊﾞｲ開始日時
+            mapping.put("datsubaistarttantosyacode", "datsubaistarttantosyacode");       // 脱ﾊﾞｲ開始担当者
+            mapping.put("datsubaistartkakuninsyacode", "datsubaistartkakuninsyacode");   // 脱ﾊﾞｲ開始確認者
+            mapping.put("datsubaienddatetime", "datsubaienddatetime");                   // 脱ﾊﾞｲ終了日時
+            mapping.put("datsubaiendtantosyacode", "datsubaiendtantosyacode");           // 脱ﾊﾞｲ終了担当者
+            mapping.put("gouro1", "gouro1");                                             // 焼成号機
+            mapping.put("peakondo", "peakondo");                                         // 焼成温度
+            mapping.put("okurispeed", "okurispeed");                                     // 焼成送りｽﾋﾟｰﾄﾞ
+            mapping.put("nyuuronichiji1", "nyuuronichiji1");                             // 焼成開始日時
+            mapping.put("tantousya1", "tantousya1");                                     // 焼成開始担当者
+            mapping.put("syoseistartkakuninsyacode", "syoseistartkakuninsyacode");       // 焼成開始確認者
+            mapping.put("syutsuronichiji1", "syutsuronichiji1");                         // 焼成終了日時
+            mapping.put("syoseiendtantosyacode", "syoseiendtantosyacode");               // 焼成終了担当者
+            mapping.put("gaikan", "gaikan");                                             // 外観
+            mapping.put("abeggryohinjyuryo", "abeggryohinjyuryo");                       // 良品重量
+            mapping.put("abeggfuryojyuryo", "abeggfuryojyuryo");                         // 不良重量
+            mapping.put("abeggfuryoritu", "abeggfuryoritu");                             // 不良率
+            mapping.put("gaikankakuninnichiji", "gaikankakuninnichiji");                 // 外観確認日時
+            mapping.put("gaikantantosya", "gaikantantosya");                             // 外観確認担当者
+            mapping.put("bikou1", "bikou1");                                             // 備考1
+            mapping.put("bikou2", "bikou2");                                             // 備考2
 
             BeanProcessor beanProcessor = new BeanProcessor(mapping);
             RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);

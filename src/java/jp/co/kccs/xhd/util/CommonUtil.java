@@ -144,7 +144,7 @@ public class CommonUtil {
                 return getSrTermData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);                
             // 外部電極・外部電極焼成(ｻﾔ詰め)
             case "GXHDO101B027":
-                return getSrGdsayadumeData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
+                return getSrDouyakiData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
             // 外部電極・外部電極焼成(脱ﾊﾞｲ)
             case "GXHDO101B028":
                 return getSrGddatubaiData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
@@ -165,7 +165,7 @@ public class CommonUtil {
                 return getSrGdnijibarrelData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
             // 外部電極・外部電極洗浄(超音波)
             case "GXHDO101B034":
-                return getSrGdsenjouData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
+                return getSrBarrel2Data(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
             // 外部電極・外部電極洗浄(乾燥)
             case "GXHDO101B035":
                 return getSrGdkansouData(queryRunnerQcdb, kojyo, lotNo, edaban, rev, jissekino);
@@ -1093,13 +1093,18 @@ public class CommonUtil {
      * @return 工程データ
      * @throws SQLException 例外エラー
      */
-    public static Map getSrGdsayadumeData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    public static Map getSrDouyakiData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev, int jissekino) throws SQLException {
-        String sql = "SELECT kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,"
-                + "sayadumehouhou,konamabushi,juryou,bnfunmaturyou,bnfunmaturyoukakunin,sayasussyurui,sayamaisuukeisan,"
-                + "SJyuuryouRangeMin,SJyuuryouRangeMax,sayajyuuryou,sayamaisuu,saysusacharge,startdatetime,StartTantosyacode,"
-                + "StartKakuninsyacode,enddatetime,EndTantosyacode,biko1,biko2,torokunichiji,kosinnichiji,revision "
-                + "FROM sr_gdsayadume "
+        String sql = "SELECT "
+                + " kojyo,lotno,edaban,kaisuu,lotpre,kcpno,suuryou,dipbi,sayadumebi,sayadumehouhou,sayamaisuu,sayajyuuryou,sayachargeryou,sayadumetantousya"
+                + ",sanka,nyuuronichiji1,syutsuronichiji1,gouro1,tantousya1,nyuuronichiji2,syutsuronichiji2,gouro2,tantousya2,nyuuronichiji3,syutsuronichiji3"
+                + ",gouro3,tantousya3,nyuuronichiji4,syutsuronichiji4,gouro4,tantousya4,budomari,budomarigouhi,bikou1,bikou2,bikou3,jissekino,tourokunichiji"
+                + ",koushinnichiji,peakondo,abeggryohinjyuryo,abeggfuryojyuryo,abeggfuryoritu,SouJyuuRyou,SJyuuryouRangeMin,SJyuuryouRangeMax,kyakusaki,lotkubuncode"
+                + ",ownercode,konamabushi,dipjuryou,bnfunmaturyou,bnfunmaturyoukakunin,sayasussyurui,sayamaisuukeisan,sayadumekakuninsya,sayadumeendnichiji"
+                + ",sayadumesyuryosya,datsubaigouki,datsubaiondo,datsubaijikan,datsubaiptnno,datsubaisayamaisuu,datsubaistartdatetime,datsubaistarttantosyacode"
+                + ",datsubaistartkakuninsyacode,datsubaienddatetime,datsubaiendtantosyacode,okurispeed,syoseistartkakuninsyacode,syoseiendtantosyacode,gaikan"
+                + ",gaikankakuninnichiji,gaikantantosya,revision "
+                + "FROM sr_douyaki "
                 + "WHERE kojyo = ? AND lotno = ? "
                 + "AND edaban = ? AND revision = ? "
                 + "AND kaisuu = ? ";
@@ -1327,12 +1332,17 @@ public class CommonUtil {
      * @return 工程データ
      * @throws SQLException 例外エラー
      */
-    public static Map getSrGdsenjouData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    public static Map getSrBarrel2Data(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev, int jissekino) throws SQLException {
-        String sql = "SELECT kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,gouki,jikan,"
-                + "chargeroyu,vatsuu,methanolkoukanjikan,methanolkoukantantousya,startdatetime,StartTantosyacode,StartKakuninsyacode,"
-                + "enddatetime,EndTantosyacode,biko1,biko2,torokunichiji,kosinnichiji,revision "
-                + "FROM sr_gdsenjou "
+        String sql = "SELECT "
+                + " kojyo,lotno,edaban,lotpre,kcpno,suuryou,kyakusaki,potsuu,pottounyuujikan,potkaitentantousya,potkaitengouki,potkaitenjikan,"
+                + "potkaitenkaishinichiji,potkaitensyuuryounichiji,methanolkoukanjikan,methanolkoukantantousya,methanolkoukanpotruikeisuu,"
+                + "barashisenjyoujikan,barashisyuuryoujikan,kansougouki,kansoukaishinichiji,kansousyuuryounichiji,kansoutantousya,sample,"
+                + "tanmenpinholecheck,tanmenpastefusokucheck,tanmenbulotnashicheck,tanmendipnashicheck,tanmencrackcheck,tanmenhagarecheck,"
+                + "tanmendenkyokurosyutsucheck,hantei,patternno,bikou1,bikou2,bikou3,jissekino,tourokunichiji,koushinnichiji,lotkubuncode,"
+                + "ownercode,gouki2,gouki3,gouki4,juryou,chargeroyu,StartKakuninsyacode,EndTantosyacode,kansoStartKakuninsyacode,"
+                + "kansoEndTantosyacode,furuisenbetu,revision "
+                + "FROM sr_barrel2 "
                 + "WHERE kojyo = ? AND lotno = ? "
                 + "AND edaban = ? AND revision = ? "
                 + "AND kaisuu = ? ";

@@ -25,7 +25,7 @@ import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.db.model.Jisseki;
-import jp.co.kccs.xhd.db.model.SrGdsayadume;
+import jp.co.kccs.xhd.db.model.SrDouyaki;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.GXHDO901A;
 import jp.co.kccs.xhd.pxhdo901.IFormLogic;
@@ -112,6 +112,11 @@ public class GXHDO101B027 implements IFormLogic {
                     GXHDO101B027Const.BTN_CHARGERYOUU_KEISAN_TOP,
                     GXHDO101B027Const.BTN_IKKATSU_KEISAN_TOP,
                     GXHDO101B027Const.BTN_SAYAJUURYOUU_CLEAR_TOP,
+                    GXHDO101B027Const.BTN_DATSUBAI_STARTDATETIME_TOP,
+                    GXHDO101B027Const.BTN_DATSUBAI_ENDDATETIME_TOP,
+                    GXHDO101B027Const.BTN_NYUURO_STARTDATETIME_TOP,
+                    GXHDO101B027Const.BTN_SYUTSURO_ENDDATETIME_TOP,
+                    GXHDO101B027Const.BTN_GAIKAN_KAKUNIN_DATETIME_TOP,
                     GXHDO101B027Const.BTN_START_DATETIME_BOTTOM,
                     GXHDO101B027Const.BTN_END_DATETIME_BOTTOM,
                     GXHDO101B027Const.BTN_BNFUNMARYOUU_KEISAN_BOTTOM,
@@ -119,7 +124,12 @@ public class GXHDO101B027 implements IFormLogic {
                     GXHDO101B027Const.BTN_SAYAJUURYOU_KEISAN_BOTTOM,
                     GXHDO101B027Const.BTN_CHARGERYOUU_KEISAN_BOTTOM,
                     GXHDO101B027Const.BTN_IKKATSU_KEISAN_BOTTOM,
-                    GXHDO101B027Const.BTN_SAYAJUURYOUU_CLEAR_BOTTOM
+                    GXHDO101B027Const.BTN_SAYAJUURYOUU_CLEAR_BOTTOM,
+                    GXHDO101B027Const.BTN_DATSUBAI_STARTDATETIME_BOTTOM,
+                    GXHDO101B027Const.BTN_DATSUBAI_ENDDATETIME_BOTTOM,
+                    GXHDO101B027Const.BTN_NYUURO_STARTDATETIME_BOTTOM,
+                    GXHDO101B027Const.BTN_SYUTSURO_ENDDATETIME_BOTTOM,
+                    GXHDO101B027Const.BTN_GAIKAN_KAKUNIN_DATETIME_BOTTOM
             ));
 
             // リビジョンチェック対象のボタンを設定する。
@@ -261,12 +271,12 @@ public class GXHDO101B027 implements IFormLogic {
             if (StringUtil.isEmpty(processData.getInitJotaiFlg()) || JOTAI_FLG_SAKUJO.equals(processData.getInitJotaiFlg())) {
 
                 // 外部電極焼成(ｻﾔ詰め)_仮登録処理
-                insertTmpSrGdsayadume(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, paramJissekino, systemTime, processData.getItemList());
+                insertTmpSrDouyaki(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, paramJissekino, systemTime, processData.getItemList());
 
             } else {
 
                 // 外部電極焼成(ｻﾔ詰め)_仮登録更新処理
-                updateTmpSrGdsayadume(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo8, edaban, paramJissekino, systemTime, processData.getItemList());
+                updateTmpSrDouyaki(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo8, edaban, paramJissekino, systemTime, processData.getItemList());
 
             }
 
@@ -467,8 +477,6 @@ public class GXHDO101B027 implements IFormLogic {
         return null;
     }
     
-    
-    
     /**
      * 登録・修正項目チェック
      *
@@ -478,12 +486,12 @@ public class GXHDO101B027 implements IFormLogic {
     private ErrorMessageInfo checkItemResistCorrect(ProcessData processData) {
 
         ValidateUtil validateUtil = new ValidateUtil();
-        // 開始日時、終了日時前後チェック
-        FXHDD01 itemKaishiDay = getItemRow(processData.getItemList(), GXHDO101B027Const.KAISHI_DAY); //開始日
-        FXHDD01 itemKaishiTime = getItemRow(processData.getItemList(), GXHDO101B027Const.KAISHI_TIME); // 開始時刻
+        // ｻﾔ詰め開始日時、ｻﾔ詰め終了日時前後チェック
+        FXHDD01 itemKaishiDay = getItemRow(processData.getItemList(), GXHDO101B027Const.KAISHI_DAY); //ｻﾔ詰め開始日
+        FXHDD01 itemKaishiTime = getItemRow(processData.getItemList(), GXHDO101B027Const.KAISHI_TIME); // ｻﾔ詰め開始時刻
         Date kaishiDate = DateUtil.convertStringToDate(itemKaishiDay.getValue(), itemKaishiTime.getValue());
-        FXHDD01 itemShuryouDay = getItemRow(processData.getItemList(), GXHDO101B027Const.SHURYOU_DAY); //終了日
-        FXHDD01 itemShuryouTime = getItemRow(processData.getItemList(), GXHDO101B027Const.SHURYOU_TIME); //終了時刻
+        FXHDD01 itemShuryouDay = getItemRow(processData.getItemList(), GXHDO101B027Const.SHURYOU_DAY); //ｻﾔ詰め終了日
+        FXHDD01 itemShuryouTime = getItemRow(processData.getItemList(), GXHDO101B027Const.SHURYOU_TIME); //ｻﾔ詰め終了時刻
         Date shuryoDate = DateUtil.convertStringToDate(itemShuryouDay.getValue(), itemShuryouTime.getValue());
         //R001チェック呼出し
         String msgCheckR001 = validateUtil.checkR001(itemKaishiDay.getLabel1(), kaishiDate, itemShuryouDay.getLabel1(), shuryoDate);
@@ -492,7 +500,36 @@ public class GXHDO101B027 implements IFormLogic {
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemKaishiDay, itemKaishiTime, itemShuryouDay, itemShuryouTime);
             return MessageUtil.getErrorMessageInfo("", msgCheckR001, true, true, errFxhdd01List);
         }
-
+        
+        // 脱ﾊﾞｲ開始日時、脱ﾊﾞｲ終了日時前後チェック
+        FXHDD01 itemDatsubaiKaishiDay = getItemRow(processData.getItemList(), GXHDO101B027Const.DATSUBAI_KAISHI_DAY); //脱ﾊﾞｲ開始日
+        FXHDD01 itemDatsubaiKaishiTime = getItemRow(processData.getItemList(), GXHDO101B027Const.DATSUBAI_KAISHI_TIME); // 脱ﾊﾞｲ開始時刻
+        Date datsubaiKaishiDate = DateUtil.convertStringToDate(itemDatsubaiKaishiDay.getValue(), itemDatsubaiKaishiTime.getValue());
+        FXHDD01 itemDatsubaiShuryouDay = getItemRow(processData.getItemList(), GXHDO101B027Const.DATSUBAI_SHURYOU_DAY); //脱ﾊﾞｲ終了日
+        FXHDD01 itemDatsubaiShuryouTime = getItemRow(processData.getItemList(), GXHDO101B027Const.DATSUBAI_SHURYOU_TIME); //脱ﾊﾞｲ終了時刻
+        Date datsubaiShuryoDate = DateUtil.convertStringToDate(itemDatsubaiShuryouDay.getValue(), itemDatsubaiShuryouTime.getValue());
+        //R001チェック呼出し
+        String msgCheckR002 = validateUtil.checkR001(itemDatsubaiKaishiDay.getLabel1(), datsubaiKaishiDate, itemDatsubaiShuryouDay.getLabel1(), datsubaiShuryoDate);
+        if (!StringUtil.isEmpty(msgCheckR002)) {
+            //エラー発生時
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemDatsubaiKaishiDay, itemDatsubaiKaishiTime, itemDatsubaiShuryouDay, itemDatsubaiShuryouTime);
+            return MessageUtil.getErrorMessageInfo("", msgCheckR002, true, true, errFxhdd01List);
+        }
+        
+        // 焼成開始日時、焼成終了日時前後チェック
+        FXHDD01 itemNyuuroKaishiDay = getItemRow(processData.getItemList(), GXHDO101B027Const.NYUURO_KAISHI_DAY); //焼成開始日
+        FXHDD01 itemNyuuroKaishiTime = getItemRow(processData.getItemList(), GXHDO101B027Const.NYUURO_KAISHI_TIME); // 焼成開始時刻
+        Date nyuuroKaishiDate = DateUtil.convertStringToDate(itemNyuuroKaishiDay.getValue(), itemNyuuroKaishiTime.getValue());
+        FXHDD01 itemNyuuroShuryouDay = getItemRow(processData.getItemList(), GXHDO101B027Const.SYUTSURO_SHURYOU_DAY); //焼成終了日
+        FXHDD01 itemNyuuroShuryouTime = getItemRow(processData.getItemList(), GXHDO101B027Const.SYUTSURO_SHURYOU_TIME); //焼成終了時刻
+        Date nyuuroShuryoDate = DateUtil.convertStringToDate(itemNyuuroShuryouDay.getValue(), itemNyuuroShuryouTime.getValue());
+        //R001チェック呼出し
+        String msgCheckR003 = validateUtil.checkR001(itemNyuuroKaishiDay.getLabel1(), nyuuroKaishiDate, itemNyuuroShuryouDay.getLabel1(), nyuuroShuryoDate);
+        if (!StringUtil.isEmpty(msgCheckR003)) {
+            //エラー発生時
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemNyuuroKaishiDay, itemNyuuroKaishiTime, itemNyuuroShuryouDay, itemNyuuroShuryouTime);
+            return MessageUtil.getErrorMessageInfo("", msgCheckR003, true, true, errFxhdd01List);
+        }
         return null;
     }
     
@@ -560,20 +597,20 @@ public class GXHDO101B027 implements IFormLogic {
             }
 
             // 仮登録状態の場合、仮登録のデータを削除する。
-            SrGdsayadume tmpSrGdsayadume = null;
+            SrDouyaki tmpSrDouyaki = null;
             if (JOTAI_FLG_KARI_TOROKU.equals(processData.getInitJotaiFlg())) {
                 
                 // 更新前の値を取得
-                List<SrGdsayadume> srGdsayadumeList = getSrGdsayadumeData(queryRunnerQcdb, rev.toPlainString(), processData.getInitJotaiFlg(), kojyo, lotNo8, edaban, paramJissekino);
-                if (!srGdsayadumeList.isEmpty()) {
-                    tmpSrGdsayadume = srGdsayadumeList.get(0);
+                List<SrDouyaki> srDouyakiList = getSrDouyakiData(queryRunnerQcdb, rev.toPlainString(), processData.getInitJotaiFlg(), kojyo, lotNo8, edaban, paramJissekino);
+                if (!srDouyakiList.isEmpty()) {
+                    tmpSrDouyaki = srDouyakiList.get(0);
                 }
                 
-                deleteTmpSrGdsayadume(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban, paramJissekino);
+                deleteTmpSrDouyaki(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban, paramJissekino);
             }
 
             // 外部電極焼成(ｻﾔ詰め)_登録処理
-            insertSrGdsayadume(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, paramJissekino, systemTime, processData.getItemList(), tmpSrGdsayadume);
+            insertSrDouyaki(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, paramJissekino, systemTime, processData.getItemList(), tmpSrDouyaki);
 
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
@@ -728,7 +765,7 @@ public class GXHDO101B027 implements IFormLogic {
             updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_TOROKUZUMI, systemTime, paramJissekino);
 
             // 外部電極焼成(ｻﾔ詰め)_更新処理
-            updateSrGdsayadume(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo8, edaban, paramJissekino, systemTime, processData.getItemList());
+            updateSrDouyaki(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo8, edaban, paramJissekino, systemTime, processData.getItemList());
 
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
@@ -841,10 +878,10 @@ public class GXHDO101B027 implements IFormLogic {
 
             // 外部電極焼成(ｻﾔ詰め)_仮登録登録処理
             int newDeleteflag = getNewDeleteflag(queryRunnerQcdb, kojyo, lotNo8, edaban, paramJissekino);
-            insertDeleteDataTmpSrGdsayadume(queryRunnerQcdb, conQcdb, newRev, newDeleteflag, kojyo, lotNo8, edaban, paramJissekino, systemTime);
+            insertDeleteDataTmpSrDouyaki(queryRunnerQcdb, conQcdb, newRev, newDeleteflag, kojyo, lotNo8, edaban, paramJissekino, systemTime);
 
             // 外部電極焼成(ｻﾔ詰め)_削除処理
-            deleteSrGdsayadume(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban, paramJissekino);
+            deleteSrDouyaki(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban, paramJissekino);
 
             DbUtils.commitAndCloseQuietly(conDoc);
             DbUtils.commitAndCloseQuietly(conQcdb);
@@ -899,6 +936,11 @@ public class GXHDO101B027 implements IFormLogic {
                         GXHDO101B027Const.BTN_CHARGERYOUU_KEISAN_BOTTOM,
                         GXHDO101B027Const.BTN_IKKATSU_KEISAN_BOTTOM,
                         GXHDO101B027Const.BTN_SAYAJUURYOUU_CLEAR_BOTTOM,
+                        GXHDO101B027Const.BTN_DATSUBAI_STARTDATETIME_BOTTOM,
+                        GXHDO101B027Const.BTN_DATSUBAI_ENDDATETIME_BOTTOM,
+                        GXHDO101B027Const.BTN_NYUURO_STARTDATETIME_BOTTOM,
+                        GXHDO101B027Const.BTN_SYUTSURO_ENDDATETIME_BOTTOM,
+                        GXHDO101B027Const.BTN_GAIKAN_KAKUNIN_DATETIME_BOTTOM,                        
                         GXHDO101B027Const.BTN_EDABAN_COPY_TOP,
                         GXHDO101B027Const.BTN_DELETE_TOP,
                         GXHDO101B027Const.BTN_UPDATE_TOP,
@@ -909,7 +951,12 @@ public class GXHDO101B027 implements IFormLogic {
                         GXHDO101B027Const.BTN_SAYAJUURYOU_KEISAN_TOP,
                         GXHDO101B027Const.BTN_CHARGERYOUU_KEISAN_TOP,
                         GXHDO101B027Const.BTN_IKKATSU_KEISAN_TOP,
-                        GXHDO101B027Const.BTN_SAYAJUURYOUU_CLEAR_TOP
+                        GXHDO101B027Const.BTN_SAYAJUURYOUU_CLEAR_TOP,
+                        GXHDO101B027Const.BTN_DATSUBAI_STARTDATETIME_TOP,
+                        GXHDO101B027Const.BTN_DATSUBAI_ENDDATETIME_TOP,
+                        GXHDO101B027Const.BTN_NYUURO_STARTDATETIME_TOP,
+                        GXHDO101B027Const.BTN_SYUTSURO_ENDDATETIME_TOP,
+                        GXHDO101B027Const.BTN_GAIKAN_KAKUNIN_DATETIME_TOP
                 ));
                 inactiveIdList.addAll(Arrays.asList(
                         GXHDO101B027Const.BTN_KARI_TOUROKU_BOTTOM,
@@ -931,6 +978,11 @@ public class GXHDO101B027 implements IFormLogic {
                         GXHDO101B027Const.BTN_CHARGERYOUU_KEISAN_BOTTOM,
                         GXHDO101B027Const.BTN_IKKATSU_KEISAN_BOTTOM,
                         GXHDO101B027Const.BTN_SAYAJUURYOUU_CLEAR_BOTTOM,
+                        GXHDO101B027Const.BTN_DATSUBAI_STARTDATETIME_BOTTOM,
+                        GXHDO101B027Const.BTN_DATSUBAI_ENDDATETIME_BOTTOM,
+                        GXHDO101B027Const.BTN_NYUURO_STARTDATETIME_BOTTOM,
+                        GXHDO101B027Const.BTN_SYUTSURO_ENDDATETIME_BOTTOM,
+                        GXHDO101B027Const.BTN_GAIKAN_KAKUNIN_DATETIME_BOTTOM,
                         GXHDO101B027Const.BTN_KARI_TOUROKU_TOP,
                         GXHDO101B027Const.BTN_EDABAN_COPY_TOP,
                         GXHDO101B027Const.BTN_INSERT_TOP,
@@ -941,7 +993,12 @@ public class GXHDO101B027 implements IFormLogic {
                         GXHDO101B027Const.BTN_SAYAJUURYOU_KEISAN_TOP,
                         GXHDO101B027Const.BTN_CHARGERYOUU_KEISAN_TOP,
                         GXHDO101B027Const.BTN_IKKATSU_KEISAN_TOP,
-                        GXHDO101B027Const.BTN_SAYAJUURYOUU_CLEAR_TOP
+                        GXHDO101B027Const.BTN_SAYAJUURYOUU_CLEAR_TOP,
+                        GXHDO101B027Const.BTN_DATSUBAI_STARTDATETIME_TOP,
+                        GXHDO101B027Const.BTN_DATSUBAI_ENDDATETIME_TOP,
+                        GXHDO101B027Const.BTN_NYUURO_STARTDATETIME_TOP,
+                        GXHDO101B027Const.BTN_SYUTSURO_ENDDATETIME_TOP,
+                        GXHDO101B027Const.BTN_GAIKAN_KAKUNIN_DATETIME_TOP
                 ));
 
                 inactiveIdList.addAll(Arrays.asList(
@@ -1033,6 +1090,31 @@ public class GXHDO101B027 implements IFormLogic {
             case GXHDO101B027Const.BTN_SAYAJUURYOUU_CLEAR_BOTTOM:
                 method = "setSayajuuryouuClear";
                 break;
+            // 脱ﾊﾞｲ開始日時
+            case GXHDO101B027Const.BTN_DATSUBAI_STARTDATETIME_TOP:
+            case GXHDO101B027Const.BTN_DATSUBAI_STARTDATETIME_BOTTOM:
+                method = "setDatsubaiKaishiDateTime";
+                break;
+            // 脱ﾊﾞｲ終了日時
+            case GXHDO101B027Const.BTN_DATSUBAI_ENDDATETIME_TOP:
+            case GXHDO101B027Const.BTN_DATSUBAI_ENDDATETIME_BOTTOM:
+                method = "setDatsubaiEndDateTime";
+                break;
+            // 焼成開始日時
+            case GXHDO101B027Const.BTN_NYUURO_STARTDATETIME_TOP:
+            case GXHDO101B027Const.BTN_NYUURO_STARTDATETIME_BOTTOM:
+                method = "setNyuuroKaishiDateTime";
+                break;
+            // 焼成終了日時
+            case GXHDO101B027Const.BTN_SYUTSURO_ENDDATETIME_TOP:
+            case GXHDO101B027Const.BTN_SYUTSURO_ENDDATETIME_BOTTOM:
+                method = "setSyutsuroEndDateTime";
+                break;
+            // 外観確認日時
+            case GXHDO101B027Const.BTN_GAIKAN_KAKUNIN_DATETIME_TOP:
+            case GXHDO101B027Const.BTN_GAIKAN_KAKUNIN_DATETIME_BOTTOM:
+                method = "setGaikanKakuninDatetime";
+                break;
             default:
                 method = "error";
                 break;
@@ -1059,7 +1141,12 @@ public class GXHDO101B027 implements IFormLogic {
         String lotNo = (String) session.getAttribute("lotNo");
         int paramJissekino = (Integer) session.getAttribute("jissekino");
         String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
-
+        Map maekoteiInfo = (Map) session.getAttribute("maekoteiInfo");
+        BigDecimal dipjuryou = BigDecimal.ZERO;
+        if (maekoteiInfo != null && maekoteiInfo.get("dipjuryou") != null) {
+            dipjuryou = new BigDecimal(StringUtil.nullToBlank(maekoteiInfo.get("dipjuryou")));
+        }
+        
         // エラーメッセージリスト
         List<String> errorMessageList = processData.getInitMessageList();
 
@@ -1120,7 +1207,7 @@ public class GXHDO101B027 implements IFormLogic {
         }
         
         // 入力項目の情報を画面にセットする。
-        if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId, paramJissekino)) {
+        if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId, paramJissekino, dipjuryou)) {
             // エラー発生時は処理を中断
             processData.setFatalError(true);
             processData.setInitMessageList(Arrays.asList(MessageUtil.getMessage("XHD-000038")));
@@ -1199,9 +1286,9 @@ public class GXHDO101B027 implements IFormLogic {
      * @throws SQLException 例外エラー
      */
     private boolean setInputItemData(ProcessData processData, QueryRunner queryRunnerDoc, QueryRunner queryRunnerQcdb,
-            String lotNo, String formId, int jissekino) throws SQLException {
+            String lotNo, String formId, int jissekino, BigDecimal dipjuryou) throws SQLException {
 
-        List<SrGdsayadume> srGdsayadumeDataList = new ArrayList<>();
+        List<SrDouyaki> srDouyakiDataList = new ArrayList<>();
         String rev = "";
         String jotaiFlg = "";
         String kojyo = lotNo.substring(0, 3);
@@ -1223,12 +1310,17 @@ public class GXHDO101B027 implements IFormLogic {
                 for (FXHDD01 fxhdd001 : processData.getItemList()) {
                     this.setItemData(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
                 }
+                
+                //塗布重量
+                FXHDD01 itemDipjuryou = getItemRow(processData.getItemList(), GXHDO101B027Const.DIPJURYOU);                
+                itemDipjuryou.setValue(dipjuryou.toPlainString());
+
                 return true;
             }
             
             // 外部電極焼成(ｻﾔ詰め)データ取得
-            srGdsayadumeDataList = getSrGdsayadumeData(queryRunnerQcdb, rev, jotaiFlg, kojyo, lotNo8, edaban, jissekino);
-            if (srGdsayadumeDataList.isEmpty()) {
+            srDouyakiDataList = getSrDouyakiData(queryRunnerQcdb, rev, jotaiFlg, kojyo, lotNo8, edaban, jissekino);
+            if (srDouyakiDataList.isEmpty()) {
                 //該当データが取得できなかった場合は処理を繰り返す。
                 continue;
             }
@@ -1238,7 +1330,7 @@ public class GXHDO101B027 implements IFormLogic {
         }
 
         // 制限回数内にデータが取得できなかった場合
-        if (srGdsayadumeDataList.isEmpty()) {
+        if (srDouyakiDataList.isEmpty()) {
             return false;
         }
 
@@ -1246,7 +1338,7 @@ public class GXHDO101B027 implements IFormLogic {
         processData.setInitJotaiFlg(jotaiFlg);
 
         // メイン画面データ設定
-        setInputItemDataMainForm(processData, srGdsayadumeDataList.get(0));
+        setInputItemDataMainForm(processData, srDouyakiDataList.get(0));
 
         return true;
 
@@ -1256,51 +1348,111 @@ public class GXHDO101B027 implements IFormLogic {
      * メイン画面データ設定処理
      *
      * @param processData 処理制御データ
-     * @param srGdsayadumeData 外部電極焼成(ｻﾔ詰め)データ
+     * @param srDouyakiData 外部電極焼成(ｻﾔ詰め)データ
      */
-    private void setInputItemDataMainForm(ProcessData processData, SrGdsayadume srGdsayadumeData) {
+    private void setInputItemDataMainForm(ProcessData processData, SrDouyaki srDouyakiData) {
         //ｻﾔ詰め方法
-        this.setItemData(processData, GXHDO101B027Const.SAYADUMEHOUHOU, getSrGdsayadumeItemData(GXHDO101B027Const.SAYADUMEHOUHOU, srGdsayadumeData));
+        this.setItemData(processData, GXHDO101B027Const.SAYADUMEHOUHOU, getSrDouyakiItemData(GXHDO101B027Const.SAYADUMEHOUHOU, srDouyakiData));
         //粉まぶし
-        this.setItemData(processData, GXHDO101B027Const.KONAMABUSHI, getSrGdsayadumeItemData(GXHDO101B027Const.KONAMABUSHI, srGdsayadumeData));
+        this.setItemData(processData, GXHDO101B027Const.KONAMABUSHI, getSrDouyakiItemData(GXHDO101B027Const.KONAMABUSHI, srDouyakiData));
+        //塗布重量
+        this.setItemData(processData, GXHDO101B027Const.DIPJURYOU, getSrDouyakiItemData(GXHDO101B027Const.DIPJURYOU, srDouyakiData));
         //製品重量
-        this.setItemData(processData, GXHDO101B027Const.JURYOU, getSrGdsayadumeItemData(GXHDO101B027Const.JURYOU, srGdsayadumeData));
+        this.setItemData(processData, GXHDO101B027Const.JURYOU, getSrDouyakiItemData(GXHDO101B027Const.JURYOU, srDouyakiData));
         //BN粉末量
-        this.setItemData(processData, GXHDO101B027Const.BNFUNMATURYOU, getSrGdsayadumeItemData(GXHDO101B027Const.BNFUNMATURYOU, srGdsayadumeData));
+        this.setItemData(processData, GXHDO101B027Const.BNFUNMATURYOU, getSrDouyakiItemData(GXHDO101B027Const.BNFUNMATURYOU, srDouyakiData));
         //BN粉末量確認
-        this.setItemData(processData, GXHDO101B027Const.BNFUNMATURYOUKAKUNIN, getSrGdsayadumeItemData(GXHDO101B027Const.BNFUNMATURYOUKAKUNIN, srGdsayadumeData));
+        this.setItemData(processData, GXHDO101B027Const.BNFUNMATURYOUKAKUNIN, getSrDouyakiItemData(GXHDO101B027Const.BNFUNMATURYOUKAKUNIN, srDouyakiData));
         //ｻﾔ/SUS板種類
-        this.setItemData(processData, GXHDO101B027Const.SAYASUSSYURUI, getSrGdsayadumeItemData(GXHDO101B027Const.SAYASUSSYURUI, srGdsayadumeData));
+        this.setItemData(processData, GXHDO101B027Const.SAYASUSSYURUI, getSrDouyakiItemData(GXHDO101B027Const.SAYASUSSYURUI, srDouyakiData));
         //ｻﾔ/SUS板枚数 計算値
-        this.setItemData(processData, GXHDO101B027Const.SAYAMAISUUKEISAN, getSrGdsayadumeItemData(GXHDO101B027Const.SAYAMAISUUKEISAN, srGdsayadumeData));
+        this.setItemData(processData, GXHDO101B027Const.SAYAMAISUUKEISAN, getSrDouyakiItemData(GXHDO101B027Const.SAYAMAISUUKEISAN, srDouyakiData));
         //ｻﾔ重量範囲(g)MIN
-        this.setItemData(processData, GXHDO101B027Const.SJYUURYOURANGEMIN, getSrGdsayadumeItemData(GXHDO101B027Const.SJYUURYOURANGEMIN, srGdsayadumeData));
+        this.setItemData(processData, GXHDO101B027Const.SJYUURYOURANGEMIN, getSrDouyakiItemData(GXHDO101B027Const.SJYUURYOURANGEMIN, srDouyakiData));
         //ｻﾔ重量範囲(g)MAX
-        this.setItemData(processData, GXHDO101B027Const.SJYUURYOURANGEMAX, getSrGdsayadumeItemData(GXHDO101B027Const.SJYUURYOURANGEMAX, srGdsayadumeData));
+        this.setItemData(processData, GXHDO101B027Const.SJYUURYOURANGEMAX, getSrDouyakiItemData(GXHDO101B027Const.SJYUURYOURANGEMAX, srDouyakiData));
         //ｻﾔ重量(g/枚)
-        this.setItemData(processData, GXHDO101B027Const.SAYAJYUURYOU, getSrGdsayadumeItemData(GXHDO101B027Const.SAYAJYUURYOU, srGdsayadumeData));
+        this.setItemData(processData, GXHDO101B027Const.SAYAJYUURYOU, getSrDouyakiItemData(GXHDO101B027Const.SAYAJYUURYOU, srDouyakiData));
         //ｻﾔ/SUS板枚数
-        this.setItemData(processData, GXHDO101B027Const.SAYAMAISUU, getSrGdsayadumeItemData(GXHDO101B027Const.SAYAMAISUU, srGdsayadumeData));
+        this.setItemData(processData, GXHDO101B027Const.SAYAMAISUU, getSrDouyakiItemData(GXHDO101B027Const.SAYAMAISUU, srDouyakiData));
         //ｻﾔ/SUS板ﾁｬｰｼﾞ量
-        this.setItemData(processData, GXHDO101B027Const.SAYSUSACHARGE, getSrGdsayadumeItemData(GXHDO101B027Const.SAYSUSACHARGE, srGdsayadumeData));
+        this.setItemData(processData, GXHDO101B027Const.SAYSUSACHARGE, getSrDouyakiItemData(GXHDO101B027Const.SAYSUSACHARGE, srDouyakiData));
         //ｻﾔ/SUS板詰め開始日
-        this.setItemData(processData, GXHDO101B027Const.KAISHI_DAY, getSrGdsayadumeItemData(GXHDO101B027Const.KAISHI_DAY, srGdsayadumeData));
+        this.setItemData(processData, GXHDO101B027Const.KAISHI_DAY, getSrDouyakiItemData(GXHDO101B027Const.KAISHI_DAY, srDouyakiData));
         //ｻﾔ/SUS板詰め開始時刻
-        this.setItemData(processData, GXHDO101B027Const.KAISHI_TIME, getSrGdsayadumeItemData(GXHDO101B027Const.KAISHI_TIME, srGdsayadumeData));
+        this.setItemData(processData, GXHDO101B027Const.KAISHI_TIME, getSrDouyakiItemData(GXHDO101B027Const.KAISHI_TIME, srDouyakiData));
         //ｻﾔ/SUS板詰め開始担当者
-        this.setItemData(processData, GXHDO101B027Const.STARTTANTOSYACODE, getSrGdsayadumeItemData(GXHDO101B027Const.STARTTANTOSYACODE, srGdsayadumeData));
+        this.setItemData(processData, GXHDO101B027Const.STARTTANTOSYACODE, getSrDouyakiItemData(GXHDO101B027Const.STARTTANTOSYACODE, srDouyakiData));
         //ｻﾔ/SUS板詰め開始確認者
-        this.setItemData(processData, GXHDO101B027Const.STARTKAKUNINSYACODE, getSrGdsayadumeItemData(GXHDO101B027Const.STARTKAKUNINSYACODE, srGdsayadumeData));
+        this.setItemData(processData, GXHDO101B027Const.STARTKAKUNINSYACODE, getSrDouyakiItemData(GXHDO101B027Const.STARTKAKUNINSYACODE, srDouyakiData));
         //ｻﾔ/SUS板詰め終了日
-        this.setItemData(processData, GXHDO101B027Const.SHURYOU_DAY, getSrGdsayadumeItemData(GXHDO101B027Const.SHURYOU_DAY, srGdsayadumeData));
+        this.setItemData(processData, GXHDO101B027Const.SHURYOU_DAY, getSrDouyakiItemData(GXHDO101B027Const.SHURYOU_DAY, srDouyakiData));
         //ｻﾔ/SUS板詰め終了時刻
-        this.setItemData(processData, GXHDO101B027Const.SHURYOU_TIME, getSrGdsayadumeItemData(GXHDO101B027Const.SHURYOU_TIME, srGdsayadumeData));
+        this.setItemData(processData, GXHDO101B027Const.SHURYOU_TIME, getSrDouyakiItemData(GXHDO101B027Const.SHURYOU_TIME, srDouyakiData));
         //ｻﾔ/SUS板詰め終了担当者
-        this.setItemData(processData, GXHDO101B027Const.ENDTANTOSYACODE, getSrGdsayadumeItemData(GXHDO101B027Const.ENDTANTOSYACODE, srGdsayadumeData));
+        this.setItemData(processData, GXHDO101B027Const.ENDTANTOSYACODE, getSrDouyakiItemData(GXHDO101B027Const.ENDTANTOSYACODE, srDouyakiData));
+        //脱ﾊﾞｲ号機
+        this.setItemData(processData, GXHDO101B027Const.DATSUBAIGOUKI, getSrDouyakiItemData(GXHDO101B027Const.DATSUBAIGOUKI, srDouyakiData));
+        //脱ﾊﾞｲ温度
+        this.setItemData(processData, GXHDO101B027Const.DATSUBAIONDO, getSrDouyakiItemData(GXHDO101B027Const.DATSUBAIONDO, srDouyakiData));
+        //脱ﾊﾞｲ時間
+        this.setItemData(processData, GXHDO101B027Const.DATSUBAIJIKAN, getSrDouyakiItemData(GXHDO101B027Const.DATSUBAIJIKAN, srDouyakiData));
+        //脱ﾊﾞｲPTNNO
+        this.setItemData(processData, GXHDO101B027Const.DATSUBAIPTNNO, getSrDouyakiItemData(GXHDO101B027Const.DATSUBAIPTNNO, srDouyakiData));
+        //脱ﾊﾞｲｻﾔ枚数
+        this.setItemData(processData, GXHDO101B027Const.DATSUBAISAYAMAISUU, getSrDouyakiItemData(GXHDO101B027Const.DATSUBAISAYAMAISUU, srDouyakiData));
+        //脱ﾊﾞｲ開始日
+        this.setItemData(processData, GXHDO101B027Const.DATSUBAI_KAISHI_DAY, getSrDouyakiItemData(GXHDO101B027Const.DATSUBAI_KAISHI_DAY, srDouyakiData));
+        //脱ﾊﾞｲ開始時刻
+        this.setItemData(processData, GXHDO101B027Const.DATSUBAI_KAISHI_TIME, getSrDouyakiItemData(GXHDO101B027Const.DATSUBAI_KAISHI_TIME, srDouyakiData));
+        //脱ﾊﾞｲ開始担当者
+        this.setItemData(processData, GXHDO101B027Const.DATSUBAISTARTTANTOSYACODE, getSrDouyakiItemData(GXHDO101B027Const.DATSUBAISTARTTANTOSYACODE, srDouyakiData));
+        //脱ﾊﾞｲ開始確認者
+        this.setItemData(processData, GXHDO101B027Const.DATSUBAISTARTKAKUNINSYACODE, getSrDouyakiItemData(GXHDO101B027Const.DATSUBAISTARTKAKUNINSYACODE, srDouyakiData));
+        //脱ﾊﾞｲ終了日
+        this.setItemData(processData, GXHDO101B027Const.DATSUBAI_SHURYOU_DAY, getSrDouyakiItemData(GXHDO101B027Const.DATSUBAI_SHURYOU_DAY, srDouyakiData));
+        //脱ﾊﾞｲ終了時刻
+        this.setItemData(processData, GXHDO101B027Const.DATSUBAI_SHURYOU_TIME, getSrDouyakiItemData(GXHDO101B027Const.DATSUBAI_SHURYOU_TIME, srDouyakiData));
+        //脱ﾊﾞｲ終了担当者
+        this.setItemData(processData, GXHDO101B027Const.DATSUBAIENDTANTOSYACODE, getSrDouyakiItemData(GXHDO101B027Const.DATSUBAIENDTANTOSYACODE, srDouyakiData));
+        //焼成号機
+        this.setItemData(processData, GXHDO101B027Const.GOURO1, getSrDouyakiItemData(GXHDO101B027Const.GOURO1, srDouyakiData));
+        //焼成温度
+        this.setItemData(processData, GXHDO101B027Const.PEAKONDO, getSrDouyakiItemData(GXHDO101B027Const.PEAKONDO, srDouyakiData));
+        //焼成送りｽﾋﾟｰﾄﾞ
+        this.setItemData(processData, GXHDO101B027Const.OKURISPEED, getSrDouyakiItemData(GXHDO101B027Const.OKURISPEED, srDouyakiData));
+        //焼成開始日
+        this.setItemData(processData, GXHDO101B027Const.NYUURO_KAISHI_DAY, getSrDouyakiItemData(GXHDO101B027Const.NYUURO_KAISHI_DAY, srDouyakiData));
+        //焼成開始時刻
+        this.setItemData(processData, GXHDO101B027Const.NYUURO_KAISHI_TIME, getSrDouyakiItemData(GXHDO101B027Const.NYUURO_KAISHI_TIME, srDouyakiData));
+        //焼成開始担当者
+        this.setItemData(processData, GXHDO101B027Const.TANTOUSYA1, getSrDouyakiItemData(GXHDO101B027Const.TANTOUSYA1, srDouyakiData));
+        //焼成開始確認者
+        this.setItemData(processData, GXHDO101B027Const.SYOSEISTARTKAKUNINSYACODE, getSrDouyakiItemData(GXHDO101B027Const.SYOSEISTARTKAKUNINSYACODE, srDouyakiData));
+        //焼成終了日
+        this.setItemData(processData, GXHDO101B027Const.SYUTSURO_SHURYOU_DAY, getSrDouyakiItemData(GXHDO101B027Const.SYUTSURO_SHURYOU_DAY, srDouyakiData));
+        //焼成終了時刻
+        this.setItemData(processData, GXHDO101B027Const.SYUTSURO_SHURYOU_TIME, getSrDouyakiItemData(GXHDO101B027Const.SYUTSURO_SHURYOU_TIME, srDouyakiData));
+        //焼成終了担当者
+        this.setItemData(processData, GXHDO101B027Const.SYOSEIENDTANTOSYACODE, getSrDouyakiItemData(GXHDO101B027Const.SYOSEIENDTANTOSYACODE, srDouyakiData));
+        //外観
+        this.setItemData(processData, GXHDO101B027Const.GAIKAN, getSrDouyakiItemData(GXHDO101B027Const.GAIKAN, srDouyakiData));
+        //良品重量
+        this.setItemData(processData, GXHDO101B027Const.ABEGGRYOHINJYURYO, getSrDouyakiItemData(GXHDO101B027Const.ABEGGRYOHINJYURYO, srDouyakiData));
+        //不良重量
+        this.setItemData(processData, GXHDO101B027Const.ABEGGFURYOJYURYO, getSrDouyakiItemData(GXHDO101B027Const.ABEGGFURYOJYURYO, srDouyakiData));
+        //不良率
+        this.setItemData(processData, GXHDO101B027Const.ABEGGFURYORITU, getSrDouyakiItemData(GXHDO101B027Const.ABEGGFURYORITU, srDouyakiData));
+        //外観確認日
+        this.setItemData(processData, GXHDO101B027Const.GAIKAN_KAKUNIN_DAY, getSrDouyakiItemData(GXHDO101B027Const.GAIKAN_KAKUNIN_DAY, srDouyakiData));
+        //外観確認時刻
+        this.setItemData(processData, GXHDO101B027Const.GAIKAN_KAKUNIN_TIME, getSrDouyakiItemData(GXHDO101B027Const.GAIKAN_KAKUNIN_TIME, srDouyakiData));
+        //外観確認担当者
+        this.setItemData(processData, GXHDO101B027Const.GAIKANTANTOSYA, getSrDouyakiItemData(GXHDO101B027Const.GAIKANTANTOSYA, srDouyakiData));
         //備考1
-        this.setItemData(processData, GXHDO101B027Const.BIKO1, getSrGdsayadumeItemData(GXHDO101B027Const.BIKO1, srGdsayadumeData));
+        this.setItemData(processData, GXHDO101B027Const.BIKO1, getSrDouyakiItemData(GXHDO101B027Const.BIKO1, srDouyakiData));
         //備考2
-        this.setItemData(processData, GXHDO101B027Const.BIKO2, getSrGdsayadumeItemData(GXHDO101B027Const.BIKO2, srGdsayadumeData));
+        this.setItemData(processData, GXHDO101B027Const.BIKO2, getSrDouyakiItemData(GXHDO101B027Const.BIKO2, srDouyakiData));
     }
 
     /**
@@ -1316,13 +1468,13 @@ public class GXHDO101B027 implements IFormLogic {
      * @return 外部電極焼成(ｻﾔ詰め)登録データ
      * @throws SQLException 例外エラー
      */
-    private List<SrGdsayadume> getSrGdsayadumeData(QueryRunner queryRunnerQcdb, String rev, String jotaiFlg,
+    private List<SrDouyaki> getSrDouyakiData(QueryRunner queryRunnerQcdb, String rev, String jotaiFlg,
             String kojyo, String lotNo, String edaban, int jissekino) throws SQLException {
 
         if (JOTAI_FLG_TOROKUZUMI.equals(jotaiFlg)) {
-            return loadSrGdsayadume(queryRunnerQcdb, kojyo, lotNo, edaban, jissekino, rev);
+            return loadSrDouyaki(queryRunnerQcdb, kojyo, lotNo, edaban, jissekino, rev);
         } else {
-            return loadTmpSrGdsayadume(queryRunnerQcdb, kojyo, lotNo, edaban, jissekino, rev);
+            return loadTmpSrDouyaki(queryRunnerQcdb, kojyo, lotNo, edaban, jissekino, rev);
         }
     }
     
@@ -1540,15 +1692,19 @@ public class GXHDO101B027 implements IFormLogic {
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private List<SrGdsayadume> loadSrGdsayadume(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    private List<SrDouyaki> loadSrDouyaki(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, int jissekino, String rev) throws SQLException {
 
         String sql = "SELECT "
-                + " kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,sayadumehouhou,konamabushi,juryou"
-                + ",bnfunmaturyou,bnfunmaturyoukakunin,sayasussyurui,sayamaisuukeisan,SJyuuryouRangeMin,SJyuuryouRangeMax,sayajyuuryou"
-                + ",sayamaisuu,saysusacharge,startdatetime,StartTantosyacode,StartKakuninsyacode,enddatetime,EndTantosyacode,biko1,biko2"
-                + ",torokunichiji,kosinnichiji,revision,'0' AS deleteflag "
-                + "FROM sr_gdsayadume "
+                + " kojyo,lotno,edaban,kaisuu,lotpre,kcpno,suuryou,dipbi,sayadumebi,sayadumehouhou,sayamaisuu,sayajyuuryou,sayachargeryou,sayadumetantousya"
+                + ",sanka,nyuuronichiji1,syutsuronichiji1,gouro1,tantousya1,nyuuronichiji2,syutsuronichiji2,gouro2,tantousya2,nyuuronichiji3,syutsuronichiji3"
+                + ",gouro3,tantousya3,nyuuronichiji4,syutsuronichiji4,gouro4,tantousya4,budomari,budomarigouhi,bikou1,bikou2,bikou3,jissekino,tourokunichiji"
+                + ",koushinnichiji,peakondo,abeggryohinjyuryo,abeggfuryojyuryo,abeggfuryoritu,SouJyuuRyou,SJyuuryouRangeMin,SJyuuryouRangeMax,kyakusaki,lotkubuncode"
+                + ",ownercode,konamabushi,dipjuryou,bnfunmaturyou,bnfunmaturyoukakunin,sayasussyurui,sayamaisuukeisan,sayadumekakuninsya,sayadumeendnichiji"
+                + ",sayadumesyuryosya,datsubaigouki,datsubaiondo,datsubaijikan,datsubaiptnno,datsubaisayamaisuu,datsubaistartdatetime,datsubaistarttantosyacode"
+                + ",datsubaistartkakuninsyacode,datsubaienddatetime,datsubaiendtantosyacode,okurispeed,syoseistartkakuninsyacode,syoseiendtantosyacode,gaikan,gaikankakuninnichiji,gaikantantosya"
+                + ",revision,'0' AS deleteflag "
+                + "FROM sr_douyaki "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND kaisuu = ? ";
         // revisionが入っている場合、条件に追加
         if (!StringUtil.isEmpty(rev)) {
@@ -1567,43 +1723,86 @@ public class GXHDO101B027 implements IFormLogic {
         }
 
         Map<String, String> mapping = new HashMap<>();
-        mapping.put("kojyo", "kojyo");                                  //工場ｺｰﾄﾞ
-        mapping.put("lotno", "lotno");                                  //ﾛｯﾄNo
-        mapping.put("edaban", "edaban");                                //枝番
-        mapping.put("kaisuu", "kaisuu");                                //作業回数
-        mapping.put("kcpno", "kcpno");                                  //KCPNO
-        mapping.put("tokuisaki", "tokuisaki");                          //客先
-        mapping.put("lotkubuncode", "lotkubuncode");                    //ﾛｯﾄ区分
-        mapping.put("ownercode", "ownercode");                          //ｵｰﾅｰ
-        mapping.put("lotpre", "lotpre");                                //ﾛｯﾄﾌﾟﾚ
-        mapping.put("syorisuu", "syorisuu");                            //処理数
-        mapping.put("sayadumehouhou", "sayadumehouhou");                //ｻﾔ詰め方法
-        mapping.put("konamabushi", "konamabushi");                      //粉まぶし
-        mapping.put("juryou", "juryou");                                //製品重量
-        mapping.put("bnfunmaturyou", "bnfunmaturyou");                  //BN粉末量
-        mapping.put("bnfunmaturyoukakunin", "bnfunmaturyoukakunin");    //BN粉末量確認
-        mapping.put("sayasussyurui", "sayasussyurui");                  //ｻﾔ/SUS板種類
-        mapping.put("sayamaisuukeisan", "sayamaisuukeisan");            //ｻﾔ/SUS板枚数 計算値
-        mapping.put("SJyuuryouRangeMin", "sjyuuryourangemin");          //ｻﾔ重量範囲(g)MIN
-        mapping.put("SJyuuryouRangeMax", "sjyuuryourangemax");          //ｻﾔ重量範囲(g)MAX
-        mapping.put("sayajyuuryou", "sayajyuuryou");                    //ｻﾔ重量(g/枚)
-        mapping.put("sayamaisuu", "sayamaisuu");                        //ｻﾔ/SUS板枚数
-        mapping.put("saysusacharge", "saysusacharge");                  //ｻﾔ/SUS板ﾁｬｰｼﾞ量
-        mapping.put("startdatetime", "startdatetime");                  //ｻﾔ/SUS板詰め開始日時
-        mapping.put("StartTantosyacode", "starttantosyacode");          //ｻﾔ/SUS板詰め開始担当者
-        mapping.put("StartKakuninsyacode", "startkakuninsyacode");      //ｻﾔ/SUS板詰め開始確認者
-        mapping.put("enddatetime", "enddatetime");                      //ｻﾔ/SUS板詰め終了日時
-        mapping.put("EndTantosyacode", "endtantosyacode");              //ｻﾔ/SUS板詰め終了担当者
-        mapping.put("biko1", "biko1");                                  //備考1
-        mapping.put("biko2", "biko2");                                  //備考2
-        mapping.put("torokunichiji", "torokunichiji");                  //登録日時
-        mapping.put("kosinnichiji", "kosinnichiji");                    //更新日時
-        mapping.put("revision", "revision");                            //revision
-        mapping.put("deleteflag", "deleteflag");                        //削除ﾌﾗｸﾞ
+        mapping.put("kojyo", "kojyo");                                                 //工場ｺｰﾄﾞ
+        mapping.put("lotno", "lotno");                                                 //ﾛｯﾄNo
+        mapping.put("edaban", "edaban");                                               //枝番
+        mapping.put("kaisuu", "kaisuu");                                               //作業回数
+        mapping.put("lotpre", "lotpre");                                               //ﾛｯﾄﾌﾟﾚ
+        mapping.put("kcpno", "kcpno");                                                 //KCPNO
+        mapping.put("suuryou", "suuryou");                                             //処理数
+        mapping.put("dipbi", "dipbi");                                                 //塗布日時
+        mapping.put("sayadumebi", "sayadumebi");                                       //ｻﾔ/SUS板詰め開始日時
+        mapping.put("sayadumehouhou", "sayadumehouhou");                               //ｻﾔ詰め方法
+        mapping.put("sayamaisuu", "sayamaisuu");                                       //ｻﾔ/SUS板枚数
+        mapping.put("sayajyuuryou", "sayajyuuryou");                                   //ｻﾔ重量(g/枚)
+        mapping.put("sayachargeryou", "sayachargeryou");                               //ｻﾔ/SUS板ﾁｬｰｼﾞ量
+        mapping.put("sayadumetantousya", "sayadumetantousya");                         //ｻﾔ/SUS板詰め開始担当者
+        mapping.put("sanka", "sanka");                                                 //酸化
+        mapping.put("nyuuronichiji1", "nyuuronichiji1");                               //焼成開始日時
+        mapping.put("syutsuronichiji1", "syutsuronichiji1");                           //焼成終了日時
+        mapping.put("gouro1", "gouro1");                                               //焼成号機
+        mapping.put("tantousya1", "tantousya1");                                       //焼成開始担当者
+        mapping.put("nyuuronichiji2", "nyuuronichiji2");                               //焼成開始日時2
+        mapping.put("syutsuronichiji2", "syutsuronichiji2");                           //焼成終了日時2
+        mapping.put("gouro2", "gouro2");                                               //焼成号機2
+        mapping.put("tantousya2", "tantousya2");                                       //焼成開始担当者2
+        mapping.put("nyuuronichiji3", "nyuuronichiji3");                               //焼成開始日時3
+        mapping.put("syutsuronichiji3", "syutsuronichiji3");                           //焼成終了日時3
+        mapping.put("gouro3", "gouro3");                                               //焼成号機3
+        mapping.put("tantousya3", "tantousya3");                                       //焼成開始担当者3
+        mapping.put("nyuuronichiji4", "nyuuronichiji4");                               //焼成開始日時4
+        mapping.put("syutsuronichiji4", "syutsuronichiji4");                           //焼成終了日時4
+        mapping.put("gouro4", "gouro4");                                               //焼成号機4
+        mapping.put("tantousya4", "tantousya4");                                       //焼成開始担当者4
+        mapping.put("budomari", "budomari");                                           //歩留まり
+        mapping.put("budomarigouhi", "budomarigouhi");                                 //歩留まり合否
+        mapping.put("bikou1", "bikou1");                                               //備考1
+        mapping.put("bikou2", "bikou2");                                               //備考2
+        mapping.put("bikou3", "bikou3");                                               //備考3
+        mapping.put("jissekino", "jissekino");                                         //実績No
+        mapping.put("tourokunichiji", "tourokunichiji");                               //登録日時
+        mapping.put("koushinnichiji", "koushinnichiji");                               //更新日時
+        mapping.put("peakondo", "peakondo");                                           //焼成温度
+        mapping.put("abeggryohinjyuryo", "abeggryohinjyuryo");                         //良品重量
+        mapping.put("abeggfuryojyuryo", "abeggfuryojyuryo");                           //不良重量
+        mapping.put("abeggfuryoritu", "abeggfuryoritu");                               //不良率
+        mapping.put("SouJyuuRyou", "soujyuuryou");                                     //製品重量
+        mapping.put("SJyuuryouRangeMin", "sjyuuryourangemin");                         //ｻﾔ重量範囲(g)MIN
+        mapping.put("SJyuuryouRangeMax", "sjyuuryourangemax");                         //ｻﾔ重量範囲(g)MAX
+        mapping.put("kyakusaki", "kyakusaki");                                         //客先
+        mapping.put("lotkubuncode", "lotkubuncode");                                   //ﾛｯﾄ区分
+        mapping.put("ownercode", "ownercode");                                         //ｵｰﾅｰ
+        mapping.put("konamabushi", "konamabushi");                                     //粉まぶし
+        mapping.put("dipjuryou", "dipjuryou");                                         //塗布重量
+        mapping.put("bnfunmaturyou", "bnfunmaturyou");                                 //BN粉末量
+        mapping.put("bnfunmaturyoukakunin", "bnfunmaturyoukakunin");                   //BN粉末量確認
+        mapping.put("sayasussyurui", "sayasussyurui");                                 //ｻﾔ/SUS板種類
+        mapping.put("sayamaisuukeisan", "sayamaisuukeisan");                           //ｻﾔ/SUS板枚数 計算値
+        mapping.put("sayadumekakuninsya", "sayadumekakuninsya");                       //ｻﾔ/SUS板詰め開始確認者
+        mapping.put("sayadumeendnichiji", "sayadumeendnichiji");                       //ｻﾔ/SUS板詰め終了日時
+        mapping.put("sayadumesyuryosya", "sayadumesyuryosya");                         //ｻﾔ/SUS板詰め終了担当者
+        mapping.put("datsubaigouki", "datsubaigouki");                                 //脱ﾊﾞｲ号機
+        mapping.put("datsubaiondo", "datsubaiondo");                                   //脱ﾊﾞｲ温度
+        mapping.put("datsubaijikan", "datsubaijikan");                                 //脱ﾊﾞｲ時間
+        mapping.put("datsubaiptnno", "datsubaiptnno");                                 //脱ﾊﾞｲPTNNO
+        mapping.put("datsubaisayamaisuu", "datsubaisayamaisuu");                       //脱ﾊﾞｲｻﾔ枚数
+        mapping.put("datsubaistartdatetime", "datsubaistartdatetime");                 //脱ﾊﾞｲ開始日時
+        mapping.put("datsubaistarttantosyacode", "datsubaistarttantosyacode");         //脱ﾊﾞｲ開始担当者
+        mapping.put("datsubaistartkakuninsyacode", "datsubaistartkakuninsyacode");     //脱ﾊﾞｲ開始確認者
+        mapping.put("datsubaienddatetime", "datsubaienddatetime");                     //脱ﾊﾞｲ終了日時
+        mapping.put("datsubaiendtantosyacode", "datsubaiendtantosyacode");             //脱ﾊﾞｲ終了担当者
+        mapping.put("okurispeed", "okurispeed");                                       //焼成送りｽﾋﾟｰﾄﾞ
+        mapping.put("syoseistartkakuninsyacode", "syoseistartkakuninsyacode");         //焼成開始確認者
+        mapping.put("syoseiendtantosyacode", "syoseiendtantosyacode");                 //焼成終了担当者
+        mapping.put("gaikan", "gaikan");                                               //外観
+        mapping.put("gaikankakuninnichiji", "gaikankakuninnichiji");                   //外観確認日時
+        mapping.put("gaikantantosya", "gaikantantosya");                               //外観担当者
+        mapping.put("revision", "revision");                                           //revision
+        mapping.put("deleteflag", "deleteflag");                                       //削除ﾌﾗｸﾞ
 
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
-        ResultSetHandler<List<SrGdsayadume>> beanHandler = new BeanListHandler<>(SrGdsayadume.class, rowProcessor);
+        ResultSetHandler<List<SrDouyaki>> beanHandler = new BeanListHandler<>(SrDouyaki.class, rowProcessor);
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, beanHandler, params.toArray());
@@ -1621,15 +1820,19 @@ public class GXHDO101B027 implements IFormLogic {
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private List<SrGdsayadume> loadTmpSrGdsayadume(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    private List<SrDouyaki> loadTmpSrDouyaki(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, int jissekino, String rev) throws SQLException {
         
         String sql = "SELECT "
-                + " kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,sayadumehouhou,konamabushi,juryou"
-                + ",bnfunmaturyou,bnfunmaturyoukakunin,sayasussyurui,sayamaisuukeisan,SJyuuryouRangeMin,SJyuuryouRangeMax,sayajyuuryou"
-                + ",sayamaisuu,saysusacharge,startdatetime,StartTantosyacode,StartKakuninsyacode,enddatetime,EndTantosyacode,biko1,biko2"
-                + ",torokunichiji,kosinnichiji,revision,deleteflag "
-                + " FROM tmp_sr_gdsayadume "
+                + " kojyo,lotno,edaban,kaisuu,lotpre,kcpno,suuryou,dipbi,sayadumebi,sayadumehouhou,sayamaisuu,sayajyuuryou,sayachargeryou,sayadumetantousya"
+                + ",sanka,nyuuronichiji1,syutsuronichiji1,gouro1,tantousya1,nyuuronichiji2,syutsuronichiji2,gouro2,tantousya2,nyuuronichiji3,syutsuronichiji3"
+                + ",gouro3,tantousya3,nyuuronichiji4,syutsuronichiji4,gouro4,tantousya4,budomari,budomarigouhi,bikou1,bikou2,bikou3,jissekino,tourokunichiji"
+                + ",koushinnichiji,peakondo,abeggryohinjyuryo,abeggfuryojyuryo,abeggfuryoritu,SouJyuuRyou,SJyuuryouRangeMin,SJyuuryouRangeMax,kyakusaki,lotkubuncode"
+                + ",ownercode,konamabushi,dipjuryou,bnfunmaturyou,bnfunmaturyoukakunin,sayasussyurui,sayamaisuukeisan,sayadumekakuninsya,sayadumeendnichiji"
+                + ",sayadumesyuryosya,datsubaigouki,datsubaiondo,datsubaijikan,datsubaiptnno,datsubaisayamaisuu,datsubaistartdatetime,datsubaistarttantosyacode"
+                + ",datsubaistartkakuninsyacode,datsubaienddatetime,datsubaiendtantosyacode,okurispeed,syoseistartkakuninsyacode,syoseiendtantosyacode,gaikan"
+                + ",gaikankakuninnichiji,gaikantantosya,revision,deleteflag "
+                + " FROM tmp_sr_douyaki "
                 + " WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND kaisuu = ? AND deleteflag = ? ";
         // revisionが入っている場合、条件に追加
         if (!StringUtil.isEmpty(rev)) {
@@ -1649,43 +1852,86 @@ public class GXHDO101B027 implements IFormLogic {
         }
 
         Map<String, String> mapping = new HashMap<>();
-        mapping.put("kojyo", "kojyo");                                  //工場ｺｰﾄﾞ
-        mapping.put("lotno", "lotno");                                  //ﾛｯﾄNo
-        mapping.put("edaban", "edaban");                                //枝番
-        mapping.put("kaisuu", "kaisuu");                                //作業回数
-        mapping.put("kcpno", "kcpno");                                  //KCPNO
-        mapping.put("tokuisaki", "tokuisaki");                          //客先
-        mapping.put("lotkubuncode", "lotkubuncode");                    //ﾛｯﾄ区分
-        mapping.put("ownercode", "ownercode");                          //ｵｰﾅｰ
-        mapping.put("lotpre", "lotpre");                                //ﾛｯﾄﾌﾟﾚ
-        mapping.put("syorisuu", "syorisuu");                            //処理数
-        mapping.put("sayadumehouhou", "sayadumehouhou");                //ｻﾔ詰め方法
-        mapping.put("konamabushi", "konamabushi");                      //粉まぶし
-        mapping.put("juryou", "juryou");                                //製品重量
-        mapping.put("bnfunmaturyou", "bnfunmaturyou");                  //BN粉末量
-        mapping.put("bnfunmaturyoukakunin", "bnfunmaturyoukakunin");    //BN粉末量確認
-        mapping.put("sayasussyurui", "sayasussyurui");                  //ｻﾔ/SUS板種類
-        mapping.put("sayamaisuukeisan", "sayamaisuukeisan");            //ｻﾔ/SUS板枚数 計算値
-        mapping.put("SJyuuryouRangeMin", "sjyuuryourangemin");          //ｻﾔ重量範囲(g)MIN
-        mapping.put("SJyuuryouRangeMax", "sjyuuryourangemax");          //ｻﾔ重量範囲(g)MAX
-        mapping.put("sayajyuuryou", "sayajyuuryou");                    //ｻﾔ重量(g/枚)
-        mapping.put("sayamaisuu", "sayamaisuu");                        //ｻﾔ/SUS板枚数
-        mapping.put("saysusacharge", "saysusacharge");                  //ｻﾔ/SUS板ﾁｬｰｼﾞ量
-        mapping.put("startdatetime", "startdatetime");                  //ｻﾔ/SUS板詰め開始日時
-        mapping.put("StartTantosyacode", "starttantosyacode");          //ｻﾔ/SUS板詰め開始担当者
-        mapping.put("StartKakuninsyacode", "startkakuninsyacode");      //ｻﾔ/SUS板詰め開始確認者
-        mapping.put("enddatetime", "enddatetime");                      //ｻﾔ/SUS板詰め終了日時
-        mapping.put("EndTantosyacode", "endtantosyacode");              //ｻﾔ/SUS板詰め終了担当者
-        mapping.put("biko1", "biko1");                                  //備考1
-        mapping.put("biko2", "biko2");                                  //備考2
-        mapping.put("torokunichiji", "torokunichiji");                  //登録日時
-        mapping.put("kosinnichiji", "kosinnichiji");                    //更新日時
-        mapping.put("revision", "revision");                            //revision
-        mapping.put("deleteflag", "deleteflag");                        //削除ﾌﾗｸﾞ
+        mapping.put("kojyo", "kojyo");                                                 //工場ｺｰﾄﾞ
+        mapping.put("lotno", "lotno");                                                 //ﾛｯﾄNo
+        mapping.put("edaban", "edaban");                                               //枝番
+        mapping.put("kaisuu", "kaisuu");                                               //作業回数
+        mapping.put("lotpre", "lotpre");                                               //ﾛｯﾄﾌﾟﾚ
+        mapping.put("kcpno", "kcpno");                                                 //KCPNO
+        mapping.put("suuryou", "suuryou");                                             //処理数
+        mapping.put("dipbi", "dipbi");                                                 //塗布日時
+        mapping.put("sayadumebi", "sayadumebi");                                       //ｻﾔ/SUS板詰め開始日時
+        mapping.put("sayadumehouhou", "sayadumehouhou");                               //ｻﾔ詰め方法
+        mapping.put("sayamaisuu", "sayamaisuu");                                       //ｻﾔ/SUS板枚数
+        mapping.put("sayajyuuryou", "sayajyuuryou");                                   //ｻﾔ重量(g/枚)
+        mapping.put("sayachargeryou", "sayachargeryou");                               //ｻﾔ/SUS板ﾁｬｰｼﾞ量
+        mapping.put("sayadumetantousya", "sayadumetantousya");                         //ｻﾔ/SUS板詰め開始担当者
+        mapping.put("sanka", "sanka");                                                 //酸化
+        mapping.put("nyuuronichiji1", "nyuuronichiji1");                               //焼成開始日時
+        mapping.put("syutsuronichiji1", "syutsuronichiji1");                           //焼成終了日時
+        mapping.put("gouro1", "gouro1");                                               //焼成号機
+        mapping.put("tantousya1", "tantousya1");                                       //焼成開始担当者
+        mapping.put("nyuuronichiji2", "nyuuronichiji2");                               //焼成開始日時2
+        mapping.put("syutsuronichiji2", "syutsuronichiji2");                           //焼成終了日時2
+        mapping.put("gouro2", "gouro2");                                               //焼成号機2
+        mapping.put("tantousya2", "tantousya2");                                       //焼成開始担当者2
+        mapping.put("nyuuronichiji3", "nyuuronichiji3");                               //焼成開始日時3
+        mapping.put("syutsuronichiji3", "syutsuronichiji3");                           //焼成終了日時3
+        mapping.put("gouro3", "gouro3");                                               //焼成号機3
+        mapping.put("tantousya3", "tantousya3");                                       //焼成開始担当者3
+        mapping.put("nyuuronichiji4", "nyuuronichiji4");                               //焼成開始日時4
+        mapping.put("syutsuronichiji4", "syutsuronichiji4");                           //焼成終了日時4
+        mapping.put("gouro4", "gouro4");                                               //焼成号機4
+        mapping.put("tantousya4", "tantousya4");                                       //焼成開始担当者4
+        mapping.put("budomari", "budomari");                                           //歩留まり
+        mapping.put("budomarigouhi", "budomarigouhi");                                 //歩留まり合否
+        mapping.put("bikou1", "bikou1");                                               //備考1
+        mapping.put("bikou2", "bikou2");                                               //備考2
+        mapping.put("bikou3", "bikou3");                                               //備考3
+        mapping.put("jissekino", "jissekino");                                         //実績No
+        mapping.put("tourokunichiji", "tourokunichiji");                               //登録日時
+        mapping.put("koushinnichiji", "koushinnichiji");                               //更新日時
+        mapping.put("peakondo", "peakondo");                                           //焼成温度
+        mapping.put("abeggryohinjyuryo", "abeggryohinjyuryo");                         //良品重量
+        mapping.put("abeggfuryojyuryo", "abeggfuryojyuryo");                           //不良重量
+        mapping.put("abeggfuryoritu", "abeggfuryoritu");                               //不良率
+        mapping.put("SouJyuuRyou", "soujyuuryou");                                     //製品重量
+        mapping.put("SJyuuryouRangeMin", "sjyuuryourangemin");                         //ｻﾔ重量範囲(g)MIN
+        mapping.put("SJyuuryouRangeMax", "sjyuuryourangemax");                         //ｻﾔ重量範囲(g)MAX
+        mapping.put("kyakusaki", "kyakusaki");                                         //客先
+        mapping.put("lotkubuncode", "lotkubuncode");                                   //ﾛｯﾄ区分
+        mapping.put("ownercode", "ownercode");                                         //ｵｰﾅｰ
+        mapping.put("konamabushi", "konamabushi");                                     //粉まぶし
+        mapping.put("dipjuryou", "dipjuryou");                                         //塗布重量
+        mapping.put("bnfunmaturyou", "bnfunmaturyou");                                 //BN粉末量
+        mapping.put("bnfunmaturyoukakunin", "bnfunmaturyoukakunin");                   //BN粉末量確認
+        mapping.put("sayasussyurui", "sayasussyurui");                                 //ｻﾔ/SUS板種類
+        mapping.put("sayamaisuukeisan", "sayamaisuukeisan");                           //ｻﾔ/SUS板枚数 計算値
+        mapping.put("sayadumekakuninsya", "sayadumekakuninsya");                       //ｻﾔ/SUS板詰め開始確認者
+        mapping.put("sayadumeendnichiji", "sayadumeendnichiji");                       //ｻﾔ/SUS板詰め終了日時
+        mapping.put("sayadumesyuryosya", "sayadumesyuryosya");                         //ｻﾔ/SUS板詰め終了担当者
+        mapping.put("datsubaigouki", "datsubaigouki");                                 //脱ﾊﾞｲ号機
+        mapping.put("datsubaiondo", "datsubaiondo");                                   //脱ﾊﾞｲ温度
+        mapping.put("datsubaijikan", "datsubaijikan");                                 //脱ﾊﾞｲ時間
+        mapping.put("datsubaiptnno", "datsubaiptnno");                                 //脱ﾊﾞｲPTNNO
+        mapping.put("datsubaisayamaisuu", "datsubaisayamaisuu");                       //脱ﾊﾞｲｻﾔ枚数
+        mapping.put("datsubaistartdatetime", "datsubaistartdatetime");                 //脱ﾊﾞｲ開始日時
+        mapping.put("datsubaistarttantosyacode", "datsubaistarttantosyacode");         //脱ﾊﾞｲ開始担当者
+        mapping.put("datsubaistartkakuninsyacode", "datsubaistartkakuninsyacode");     //脱ﾊﾞｲ開始確認者
+        mapping.put("datsubaienddatetime", "datsubaienddatetime");                     //脱ﾊﾞｲ終了日時
+        mapping.put("datsubaiendtantosyacode", "datsubaiendtantosyacode");             //脱ﾊﾞｲ終了担当者
+        mapping.put("okurispeed", "okurispeed");                                       //焼成送りｽﾋﾟｰﾄﾞ
+        mapping.put("syoseistartkakuninsyacode", "syoseistartkakuninsyacode");         //焼成開始確認者
+        mapping.put("syoseiendtantosyacode", "syoseiendtantosyacode");                 //焼成終了担当者
+        mapping.put("gaikan", "gaikan");                                               //外観
+        mapping.put("gaikankakuninnichiji", "gaikankakuninnichiji");                   //外観確認日時
+        mapping.put("gaikantantosya", "gaikantantosya");                               //外観担当者
+        mapping.put("revision", "revision");                                           //revision
+        mapping.put("deleteflag", "deleteflag");                                       //削除ﾌﾗｸﾞ
 
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
-        ResultSetHandler<List<SrGdsayadume>> beanHandler = new BeanListHandler<>(SrGdsayadume.class, rowProcessor);
+        ResultSetHandler<List<SrDouyaki>> beanHandler = new BeanListHandler<>(SrDouyaki.class, rowProcessor);
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, beanHandler, params.toArray());
@@ -1744,14 +1990,14 @@ public class GXHDO101B027 implements IFormLogic {
             }
 
             // 外部電極焼成(ｻﾔ詰め)データ取得
-            List<SrGdsayadume> srGdsayadumeDataList = getSrGdsayadumeData(queryRunnerQcdb, "", jotaiFlg, kojyo, lotNo8, oyalotEdaban, paramJissekino);
-            if (srGdsayadumeDataList.isEmpty()) {
+            List<SrDouyaki> srDouyakiDataList = getSrDouyakiData(queryRunnerQcdb, "", jotaiFlg, kojyo, lotNo8, oyalotEdaban, paramJissekino);
+            if (srDouyakiDataList.isEmpty()) {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
                 return processData;
             }
 
             // メイン画面データ設定
-            setInputItemDataMainForm(processData, srGdsayadumeDataList.get(0));
+            setInputItemDataMainForm(processData, srDouyakiDataList.get(0));
 
             // 次呼出しメソッドをクリア
             processData.setMethod("");
@@ -1803,17 +2049,17 @@ public class GXHDO101B027 implements IFormLogic {
      *
      * @param listData フォームデータ
      * @param itemId 項目ID
-     * @param srGdsayadumeData 外部電極焼成(ｻﾔ詰め)
+     * @param srDouyakiData 外部電極焼成(ｻﾔ詰め)
      * @return 入力値
      */
-    private String getItemData(List<FXHDD01> listData, String itemId, SrGdsayadume srGdsayadumeData) {
+    private String getItemData(List<FXHDD01> listData, String itemId, SrDouyaki srDouyakiData) {
         List<FXHDD01> selectData
                 = listData.stream().filter(n -> itemId.equals(n.getItemId())).collect(Collectors.toList());
         if (null != selectData && 0 < selectData.size()) {
             return selectData.get(0).getValue();
-        } else if (srGdsayadumeData != null) {
+        } else if (srDouyakiData != null) {
             // 元データが存在する場合元データより取得
-            return getSrGdsayadumeItemData(itemId, srGdsayadumeData);
+            return getSrDouyakiItemData(itemId, srDouyakiData);
         } else {
             return null;
         }
@@ -1937,7 +2183,7 @@ public class GXHDO101B027 implements IFormLogic {
     }
 
     /**
-     * 外部電極焼成(ｻﾔ詰め)_仮登録(tmp_sr_gdsayadume)登録処理
+     * 外部電極焼成(ｻﾔ詰め)_仮登録(tmp_sr_douyaki)登録処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param conQcdb コネクション
@@ -1951,24 +2197,27 @@ public class GXHDO101B027 implements IFormLogic {
      * @param itemList 項目リスト
      * @throws SQLException 例外エラー
      */
-    private void insertTmpSrGdsayadume(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev, int deleteflag,
+    private void insertTmpSrDouyaki(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev, int deleteflag,
             String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
 
-        String sql = "INSERT INTO tmp_sr_gdsayadume ("
-                + " kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,sayadumehouhou,konamabushi,juryou"
-                + ",bnfunmaturyou,bnfunmaturyoukakunin,sayasussyurui,sayamaisuukeisan,SJyuuryouRangeMin,SJyuuryouRangeMax,sayajyuuryou"
-                + ",sayamaisuu,saysusacharge,startdatetime,StartTantosyacode,StartKakuninsyacode,enddatetime,EndTantosyacode,biko1,biko2"
-                + ",torokunichiji,kosinnichiji,revision,deleteflag"
+        String sql = "INSERT INTO tmp_sr_douyaki ("
+                + " kojyo,lotno,edaban,kaisuu,kcpno,kyakusaki,lotkubuncode,ownercode,lotpre,suuryou,sayadumehouhou,konamabushi,dipjuryou"
+                + ",SouJyuuRyou,bnfunmaturyou,bnfunmaturyoukakunin,sayasussyurui,sayamaisuukeisan,SJyuuryouRangeMin,SJyuuryouRangeMax,sayajyuuryou"
+                + ",sayamaisuu,sayachargeryou,sayadumebi,sayadumetantousya,sayadumekakuninsya,sayadumeendnichiji,sayadumesyuryosya,datsubaigouki"
+                + ",datsubaiondo,datsubaijikan,datsubaiptnno,datsubaisayamaisuu,datsubaistartdatetime,datsubaistarttantosyacode,datsubaistartkakuninsyacode"
+                + ",datsubaienddatetime,datsubaiendtantosyacode,gouro1,peakondo,okurispeed,nyuuronichiji1,tantousya1,syoseistartkakuninsyacode"
+                + ",syutsuronichiji1,syoseiendtantosyacode,gaikan,abeggryohinjyuryo,abeggfuryojyuryo,abeggfuryoritu,gaikankakuninnichiji"
+                + ",gaikantantosya,bikou1,bikou2,tourokunichiji,koushinnichiji,revision,deleteflag "
                 + ") VALUES ("
-                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? ) ";
 
-        List<Object> params = setUpdateParameterTmpSrGdsayadume(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null, jissekino);
+        List<Object> params = setUpdateParameterTmpSrDouyaki(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null, jissekino);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
     }
 
     /**
-     * 外部電極焼成(ｻﾔ詰め)_仮登録(tmp_sr_gdsayadume)更新処理
+     * 外部電極焼成(ｻﾔ詰め)_仮登録(tmp_sr_douyaki)更新処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param conQcdb コネクション
@@ -1983,25 +2232,29 @@ public class GXHDO101B027 implements IFormLogic {
      * @param itemList 項目リスト
      * @throws SQLException 例外エラー
      */
-    private void updateTmpSrGdsayadume(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, String jotaiFlg, BigDecimal newRev,
+    private void updateTmpSrDouyaki(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, String jotaiFlg, BigDecimal newRev,
             String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
 
-        String sql = "UPDATE tmp_sr_gdsayadume SET "
-                + " kcpno = ?,tokuisaki = ?,lotkubuncode = ?,ownercode = ?,lotpre = ?,syorisuu = ?,sayadumehouhou = ?,konamabushi = ?,juryou = ?,"
-                + "bnfunmaturyou = ?,bnfunmaturyoukakunin = ?,sayasussyurui = ?,sayamaisuukeisan = ?,SJyuuryouRangeMin = ?,SJyuuryouRangeMax = ?,"
-                + "sayajyuuryou = ?,sayamaisuu = ?,saysusacharge = ?,startdatetime = ?,StartTantosyacode = ?,StartKakuninsyacode = ?,enddatetime = ?,"
-                + "EndTantosyacode = ?,biko1 = ?,biko2 = ?,kosinnichiji = ?,revision = ?,deleteflag = ? "
+        String sql = "UPDATE tmp_sr_douyaki SET "
+                + " kcpno = ?,kyakusaki = ?,lotkubuncode = ?,ownercode = ?,lotpre = ?,suuryou = ?,sayadumehouhou = ?,konamabushi = ?,dipjuryou = ?,"
+                + "SouJyuuRyou = ?,bnfunmaturyou = ?,bnfunmaturyoukakunin = ?,sayasussyurui = ?,sayamaisuukeisan = ?,SJyuuryouRangeMin = ?,"
+                + "SJyuuryouRangeMax = ?,sayajyuuryou = ?,sayamaisuu = ?,sayachargeryou = ?,sayadumebi = ?,sayadumetantousya = ?,sayadumekakuninsya = ?,"
+                + "sayadumeendnichiji = ?,sayadumesyuryosya = ?,datsubaigouki = ?,datsubaiondo = ?,datsubaijikan = ?,datsubaiptnno = ?,datsubaisayamaisuu = ?,"
+                + "datsubaistartdatetime = ?,datsubaistarttantosyacode = ?,datsubaistartkakuninsyacode = ?,datsubaienddatetime = ?,datsubaiendtantosyacode = ?,"
+                + "gouro1 = ?,peakondo = ?,okurispeed = ?,nyuuronichiji1 = ?,tantousya1 = ?,syoseistartkakuninsyacode = ?,syutsuronichiji1 = ?,syoseiendtantosyacode = ?,"
+                + "gaikan = ?,abeggryohinjyuryo = ?,abeggfuryojyuryo = ?,abeggfuryoritu = ?,gaikankakuninnichiji = ?,gaikantantosya = ?,bikou1 = ?,bikou2 = ?,"
+                + "koushinnichiji = ?,revision = ?,deleteflag = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ? ";
 
         // 更新前の値を取得
-        List<SrGdsayadume> srGdsayadumeList = getSrGdsayadumeData(queryRunnerQcdb, rev.toPlainString(), jotaiFlg, kojyo, lotNo, edaban, jissekino);
-        SrGdsayadume srGdsayadume = null;
-        if (!srGdsayadumeList.isEmpty()) {
-            srGdsayadume = srGdsayadumeList.get(0);
+        List<SrDouyaki> srDouyakiList = getSrDouyakiData(queryRunnerQcdb, rev.toPlainString(), jotaiFlg, kojyo, lotNo, edaban, jissekino);
+        SrDouyaki srDouyaki = null;
+        if (!srDouyakiList.isEmpty()) {
+            srDouyaki = srDouyakiList.get(0);
         }
 
         //更新値設定
-        List<Object> params = setUpdateParameterTmpSrGdsayadume(false, newRev, 0, "", "", "", systemTime, itemList, srGdsayadume, jissekino);
+        List<Object> params = setUpdateParameterTmpSrDouyaki(false, newRev, 0, "", "", "", systemTime, itemList, srDouyaki, jissekino);
 
         //検索条件設定
         params.add(kojyo);
@@ -2014,7 +2267,7 @@ public class GXHDO101B027 implements IFormLogic {
     }
 
     /**
-     * 外部電極焼成(ｻﾔ詰め)_仮登録(tmp_sr_gdsayadume)削除処理
+     * 外部電極焼成(ｻﾔ詰め)_仮登録(tmp_sr_douyaki)削除処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param conQcdb コネクション
@@ -2025,10 +2278,10 @@ public class GXHDO101B027 implements IFormLogic {
      * @param jissekino 実績No
      * @throws SQLException 例外エラー
      */
-    private void deleteTmpSrGdsayadume(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev,
+    private void deleteTmpSrDouyaki(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev,
             String kojyo, String lotNo, String edaban, int jissekino) throws SQLException {
 
-        String sql = "DELETE FROM tmp_sr_gdsayadume "
+        String sql = "DELETE FROM tmp_sr_douyaki "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ?";
 
         //更新値設定
@@ -2045,7 +2298,7 @@ public class GXHDO101B027 implements IFormLogic {
     }
 
     /**
-     * 外部電極焼成(ｻﾔ詰め)_仮登録(tmp_sr_gdsayadume)更新値パラメータ設定
+     * 外部電極焼成(ｻﾔ詰め)_仮登録(tmp_sr_douyaki)更新値パラメータ設定
      *
      * @param isInsert 登録判定(true:insert、false:update)
      * @param newRev 新revision
@@ -2055,12 +2308,12 @@ public class GXHDO101B027 implements IFormLogic {
      * @param edaban 枝番
      * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
      * @param itemList 項目リスト
-     * @param srGdsayadumeData 外部電極焼成(ｻﾔ詰め)データ
+     * @param srDouyakiData 外部電極焼成(ｻﾔ詰め)データ
      * @param jissekino 実績No
      * @return 更新パラメータ
      */
-    private List<Object> setUpdateParameterTmpSrGdsayadume(boolean isInsert, BigDecimal newRev, int deleteflag, String kojyo,
-            String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList, SrGdsayadume srGdsayadumeData, int jissekino) {
+    private List<Object> setUpdateParameterTmpSrDouyaki(boolean isInsert, BigDecimal newRev, int deleteflag, String kojyo,
+            String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList, SrDouyaki srDouyakiData, int jissekino) {
         List<Object> params = new ArrayList<>();
         if (isInsert) {
             params.add(kojyo); //工場ｺｰﾄﾞ
@@ -2069,7 +2322,7 @@ public class GXHDO101B027 implements IFormLogic {
             params.add(jissekino); //作業回数
         }
         //ﾛｯﾄ区分
-        String lotKubun = getItemData(itemList, GXHDO101B027Const.LOTKUBUNCODE, srGdsayadumeData);
+        String lotKubun = getItemData(itemList, GXHDO101B027Const.LOTKUBUNCODE, srDouyakiData);
         String strLotKubuncode[] = null;
         String lotKubunCode = "";
 
@@ -2079,7 +2332,7 @@ public class GXHDO101B027 implements IFormLogic {
         }
         
         //ｵｰﾅｰ
-        String owner = getItemData(itemList, GXHDO101B027Const.OWNERCODE, srGdsayadumeData);
+        String owner = getItemData(itemList, GXHDO101B027Const.OWNERCODE, srDouyakiData);
         String strOwnerCode[] = null;
         String ownerCode = "";
 
@@ -2088,33 +2341,63 @@ public class GXHDO101B027 implements IFormLogic {
             ownerCode = strOwnerCode[0];
         }
         
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.KCPNO, srGdsayadumeData))); //KCPNO
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.TOKUISAKI, srGdsayadumeData))); //客先
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.KCPNO, srDouyakiData))); //KCPNO
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.TOKUISAKI, srDouyakiData))); //客先
         params.add(DBUtil.stringToStringObjectDefaultNull(lotKubunCode)); //ﾛｯﾄ区分
         params.add(DBUtil.stringToStringObjectDefaultNull(ownerCode)); //ｵｰﾅｰ
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.LOTPRE, srGdsayadumeData))); //ﾛｯﾄﾌﾟﾚ
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SYORISUU, srGdsayadumeData))); //処理数
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SAYADUMEHOUHOU, srGdsayadumeData))); //ｻﾔ詰め方法
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.KONAMABUSHI, srGdsayadumeData))); //粉まぶし
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.JURYOU, srGdsayadumeData)));  // 製品重量
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.BNFUNMATURYOU, srGdsayadumeData)));  // BN粉末量
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.BNFUNMATURYOUKAKUNIN, srGdsayadumeData))); //BN粉末量確認
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SAYASUSSYURUI, srGdsayadumeData))); //ｻﾔ/SUS板種類
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SAYAMAISUUKEISAN, srGdsayadumeData))); //ｻﾔ/SUS板枚数 計算値
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SJYUURYOURANGEMIN, srGdsayadumeData)));  // ｻﾔ重量範囲(g)MIN
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SJYUURYOURANGEMAX, srGdsayadumeData)));  // ｻﾔ重量範囲(g)MAX
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SAYAJYUURYOU, srGdsayadumeData)));  // ｻﾔ重量(g/枚)
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SAYAMAISUU, srGdsayadumeData))); //ｻﾔ/SUS板枚数
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SAYSUSACHARGE, srGdsayadumeData))); //ｻﾔ/SUS板ﾁｬｰｼﾞ量
-        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.KAISHI_DAY, srGdsayadumeData),
-            getItemData(itemList, GXHDO101B027Const.KAISHI_TIME, srGdsayadumeData))); // ｻﾔ/SUS板詰め開始日時
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.STARTTANTOSYACODE, srGdsayadumeData))); // ｻﾔ/SUS板詰め開始担当者
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.STARTKAKUNINSYACODE, srGdsayadumeData))); // ｻﾔ/SUS板詰め開始確認者
-        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SHURYOU_DAY, srGdsayadumeData),
-            getItemData(itemList, GXHDO101B027Const.SHURYOU_TIME, srGdsayadumeData))); // ｻﾔ/SUS板詰め終了日時
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.ENDTANTOSYACODE, srGdsayadumeData))); // ｻﾔ/SUS板詰め終了担当者
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.BIKO1, srGdsayadumeData))); // 備考1
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.BIKO2, srGdsayadumeData))); // 備考2
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.LOTPRE, srDouyakiData))); //ﾛｯﾄﾌﾟﾚ
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SYORISUU, srDouyakiData))); //処理数
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SAYADUMEHOUHOU, srDouyakiData))); //ｻﾔ詰め方法
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.KONAMABUSHI, srDouyakiData))); //粉まぶし
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.DIPJURYOU, srDouyakiData))); //塗布重量
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.JURYOU, srDouyakiData)));  // 製品重量
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.BNFUNMATURYOU, srDouyakiData)));  // BN粉末量
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.BNFUNMATURYOUKAKUNIN, srDouyakiData))); //BN粉末量確認
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SAYASUSSYURUI, srDouyakiData))); //ｻﾔ/SUS板種類
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SAYAMAISUUKEISAN, srDouyakiData))); //ｻﾔ/SUS板枚数 計算値
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SJYUURYOURANGEMIN, srDouyakiData)));  // ｻﾔ重量範囲(g)MIN
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SJYUURYOURANGEMAX, srDouyakiData)));  // ｻﾔ重量範囲(g)MAX
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SAYAJYUURYOU, srDouyakiData)));  // ｻﾔ重量(g/枚)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SAYAMAISUU, srDouyakiData))); //ｻﾔ/SUS板枚数
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SAYSUSACHARGE, srDouyakiData))); //ｻﾔ/SUS板ﾁｬｰｼﾞ量
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.KAISHI_DAY, srDouyakiData),
+            getItemData(itemList, GXHDO101B027Const.KAISHI_TIME, srDouyakiData))); // ｻﾔ/SUS板詰め開始日時
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.STARTTANTOSYACODE, srDouyakiData))); // ｻﾔ/SUS板詰め開始担当者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.STARTKAKUNINSYACODE, srDouyakiData))); // ｻﾔ/SUS板詰め開始確認者
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SHURYOU_DAY, srDouyakiData),
+            getItemData(itemList, GXHDO101B027Const.SHURYOU_TIME, srDouyakiData))); // ｻﾔ/SUS板詰め終了日時
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.ENDTANTOSYACODE, srDouyakiData))); // ｻﾔ/SUS板詰め終了担当者        
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.DATSUBAIGOUKI, srDouyakiData))); // 脱ﾊﾞｲ号機
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.DATSUBAIONDO, srDouyakiData))); // 脱ﾊﾞｲ温度
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.DATSUBAIJIKAN, srDouyakiData))); // 脱ﾊﾞｲ時間
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.DATSUBAIPTNNO, srDouyakiData))); // 脱ﾊﾞｲPTNNO
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.DATSUBAISAYAMAISUU, srDouyakiData))); // 脱ﾊﾞｲｻﾔ枚数
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.DATSUBAI_KAISHI_DAY, srDouyakiData),
+            getItemData(itemList, GXHDO101B027Const.DATSUBAI_KAISHI_TIME, srDouyakiData))); // 脱ﾊﾞｲ開始日時
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.DATSUBAISTARTTANTOSYACODE, srDouyakiData))); // 脱ﾊﾞｲ開始担当者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.DATSUBAISTARTKAKUNINSYACODE, srDouyakiData))); // 脱ﾊﾞｲ開始確認者
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.DATSUBAI_SHURYOU_DAY, srDouyakiData),
+            getItemData(itemList, GXHDO101B027Const.DATSUBAI_SHURYOU_TIME, srDouyakiData))); // 脱ﾊﾞｲ終了日時
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.DATSUBAIENDTANTOSYACODE, srDouyakiData))); // 脱ﾊﾞｲ終了担当者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.GOURO1, srDouyakiData))); // 焼成号機
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.PEAKONDO, srDouyakiData))); // 焼成温度
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.OKURISPEED, srDouyakiData))); // 焼成送りｽﾋﾟｰﾄﾞ
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.NYUURO_KAISHI_DAY, srDouyakiData),
+            getItemData(itemList, GXHDO101B027Const.NYUURO_KAISHI_TIME, srDouyakiData))); // 焼成開始日時
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.TANTOUSYA1, srDouyakiData))); // 焼成開始担当者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SYOSEISTARTKAKUNINSYACODE, srDouyakiData))); // 焼成開始確認者
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SYUTSURO_SHURYOU_DAY, srDouyakiData),
+            getItemData(itemList, GXHDO101B027Const.SYUTSURO_SHURYOU_TIME, srDouyakiData))); // 焼成終了日時
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.SYOSEIENDTANTOSYACODE, srDouyakiData))); // 焼成終了担当者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.GAIKAN, srDouyakiData))); // 外観
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.ABEGGRYOHINJYURYO, srDouyakiData)));  // 良品重量
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.ABEGGFURYOJYURYO, srDouyakiData)));  // 不良重量
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.ABEGGFURYORITU, srDouyakiData)));  // 不良率
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.GAIKAN_KAKUNIN_DAY, srDouyakiData),
+            getItemData(itemList, GXHDO101B027Const.GAIKAN_KAKUNIN_TIME, srDouyakiData))); // 外観確認日時
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.GAIKANTANTOSYA, srDouyakiData))); // 外観確認担当者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.BIKO1, srDouyakiData))); // 備考1
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B027Const.BIKO2, srDouyakiData))); // 備考2
         if (isInsert) {
             params.add(systemTime); //登録日時
             params.add(systemTime); //更新日時
@@ -2128,7 +2411,7 @@ public class GXHDO101B027 implements IFormLogic {
     }
 
     /**
-     * 外部電極焼成(ｻﾔ詰め)(sr_gdsayadume)登録処理
+     * 外部電極焼成(ｻﾔ詰め)(sr_douyaki)登録処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param conQcdb コネクション
@@ -2139,27 +2422,29 @@ public class GXHDO101B027 implements IFormLogic {
      * @param jissekino 実績No
      * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
      * @param itemList 項目リスト
-     * @param tmpSrGdsayadume 仮登録データ
+     * @param tmpSrDouyaki 仮登録データ
      * @throws SQLException 例外エラー
      */
-    private void insertSrGdsayadume(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev,
-            String kojyo, String lotNo, String edaban, int jissekino,Timestamp systemTime, List<FXHDD01> itemList, SrGdsayadume tmpSrGdsayadume) throws SQLException {
+    private void insertSrDouyaki(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev,
+            String kojyo, String lotNo, String edaban, int jissekino,Timestamp systemTime, List<FXHDD01> itemList, SrDouyaki tmpSrDouyaki) throws SQLException {
 
-        String sql = "INSERT INTO sr_gdsayadume ("
-                + " kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,sayadumehouhou,konamabushi,juryou"
-                + ",bnfunmaturyou,bnfunmaturyoukakunin,sayasussyurui,sayamaisuukeisan,SJyuuryouRangeMin,SJyuuryouRangeMax,sayajyuuryou"
-                + ",sayamaisuu,saysusacharge,startdatetime,StartTantosyacode,StartKakuninsyacode,enddatetime,EndTantosyacode,biko1,biko2"
-                + ",torokunichiji,kosinnichiji,revision"
+        String sql = "INSERT INTO sr_douyaki ("
+                + " kojyo,lotno,edaban,kaisuu,kcpno,kyakusaki,lotkubuncode,ownercode,lotpre,suuryou,sayadumehouhou,konamabushi,dipjuryou,SouJyuuRyou,bnfunmaturyou"
+                + ",bnfunmaturyoukakunin,sayasussyurui,sayamaisuukeisan,SJyuuryouRangeMin,SJyuuryouRangeMax,sayajyuuryou,sayamaisuu,sayachargeryou,sayadumebi"
+                + ",sayadumetantousya,sayadumekakuninsya,sayadumeendnichiji,sayadumesyuryosya,datsubaigouki,datsubaiondo,datsubaijikan,datsubaiptnno,datsubaisayamaisuu"
+                + ",datsubaistartdatetime,datsubaistarttantosyacode,datsubaistartkakuninsyacode,datsubaienddatetime,datsubaiendtantosyacode,gouro1,peakondo,okurispeed"
+                + ",nyuuronichiji1,tantousya1,syoseistartkakuninsyacode,syutsuronichiji1,syoseiendtantosyacode,gaikan,abeggryohinjyuryo,abeggfuryojyuryo,abeggfuryoritu"
+                + ",gaikankakuninnichiji,gaikantantosya,bikou1,bikou2,tourokunichiji,koushinnichiji,revision"
                 + ") VALUES ("
-                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
-        List<Object> params = setUpdateParameterSrGdsayadume(true, newRev, kojyo, lotNo, edaban, jissekino, systemTime, itemList, tmpSrGdsayadume);
+        List<Object> params = setUpdateParameterSrDouyaki(true, newRev, kojyo, lotNo, edaban, jissekino, systemTime, itemList, tmpSrDouyaki);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
     }
 
     /**
-     * 外部電極焼成(ｻﾔ詰め)(sr_gdsayadume)更新処理
+     * 外部電極焼成(ｻﾔ詰め)(sr_douyaki)更新処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param conQcdb コネクション
@@ -2174,24 +2459,27 @@ public class GXHDO101B027 implements IFormLogic {
      * @param itemList 項目リスト
      * @throws SQLException 例外エラー
      */
-    private void updateSrGdsayadume(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, String jotaiFlg, BigDecimal newRev,
+    private void updateSrDouyaki(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, String jotaiFlg, BigDecimal newRev,
             String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
-        String sql = "UPDATE sr_gdsayadume SET "
-                + " kcpno = ?,tokuisaki = ?,lotkubuncode = ?,ownercode = ?,lotpre = ?,syorisuu = ?,sayadumehouhou = ?,konamabushi = ?,juryou = ?,"
-                + "bnfunmaturyou = ?,bnfunmaturyoukakunin = ?,sayasussyurui = ?,sayamaisuukeisan = ?,SJyuuryouRangeMin = ?,SJyuuryouRangeMax = ?,"
-                + "sayajyuuryou = ?,sayamaisuu = ?,saysusacharge = ?,startdatetime = ?,StartTantosyacode = ?,StartKakuninsyacode = ?,enddatetime = ?,"
-                + "EndTantosyacode = ?,biko1 = ?,biko2 = ?,kosinnichiji = ?,revision = ? "
+        String sql = "UPDATE sr_douyaki SET "
+                + " kcpno = ?,kyakusaki = ?,lotkubuncode = ?,ownercode = ?,lotpre = ?,suuryou = ?,sayadumehouhou = ?,konamabushi = ?,dipjuryou = ?,"
+                + "SouJyuuRyou = ?,bnfunmaturyou = ?,bnfunmaturyoukakunin = ?,sayasussyurui = ?,sayamaisuukeisan = ?,SJyuuryouRangeMin = ?,SJyuuryouRangeMax = ?,"
+                + "sayajyuuryou = ?,sayamaisuu = ?,sayachargeryou = ?,sayadumebi = ?,sayadumetantousya = ?,sayadumekakuninsya = ?,sayadumeendnichiji = ?,"
+                + "sayadumesyuryosya = ?,datsubaigouki = ?,datsubaiondo = ?,datsubaijikan = ?,datsubaiptnno = ?,datsubaisayamaisuu = ?,datsubaistartdatetime = ?,"
+                + "datsubaistarttantosyacode = ?,datsubaistartkakuninsyacode = ?,datsubaienddatetime = ?,datsubaiendtantosyacode = ?,gouro1 = ?,peakondo = ?,"
+                + "okurispeed = ?,nyuuronichiji1 = ?,tantousya1 = ?,syoseistartkakuninsyacode = ?,syutsuronichiji1 = ?,syoseiendtantosyacode = ?,gaikan = ?,"
+                + "abeggryohinjyuryo = ?,abeggfuryojyuryo = ?,abeggfuryoritu = ?,gaikankakuninnichiji = ?,gaikantantosya = ?,bikou1 = ?,bikou2 = ?,koushinnichiji = ?,revision = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ? ";
 
         // 更新前の値を取得
-        List<SrGdsayadume> srGdsayadumeList = getSrGdsayadumeData(queryRunnerQcdb, rev.toPlainString(), jotaiFlg, kojyo, lotNo, edaban, jissekino);
-        SrGdsayadume srGdsayadume = null;
-        if (!srGdsayadumeList.isEmpty()) {
-            srGdsayadume = srGdsayadumeList.get(0);
+        List<SrDouyaki> srDouyakiList = getSrDouyakiData(queryRunnerQcdb, rev.toPlainString(), jotaiFlg, kojyo, lotNo, edaban, jissekino);
+        SrDouyaki srDouyaki = null;
+        if (!srDouyakiList.isEmpty()) {
+            srDouyaki = srDouyakiList.get(0);
         }
 
         //更新値設定
-        List<Object> params = setUpdateParameterSrGdsayadume(false, newRev, "", "", "", jissekino, systemTime, itemList, srGdsayadume);
+        List<Object> params = setUpdateParameterSrDouyaki(false, newRev, "", "", "", jissekino, systemTime, itemList, srDouyaki);
 
         //検索条件設定
         params.add(kojyo);
@@ -2204,7 +2492,7 @@ public class GXHDO101B027 implements IFormLogic {
     }
 
     /**
-     * 外部電極焼成(ｻﾔ詰め)(sr_gdsayadume)更新値パラメータ設定
+     * 外部電極焼成(ｻﾔ詰め)(sr_douyaki)更新値パラメータ設定
      *
      * @param isInsert 登録判定(true:insert、false:update)
      * @param newRev 新revision
@@ -2214,11 +2502,11 @@ public class GXHDO101B027 implements IFormLogic {
      * @param jissekino 実績No
      * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
      * @param itemList 項目リスト
-     * @param srGdsayadumeData 外部電極焼成(ｻﾔ詰め)データ
+     * @param srDouyakiData 外部電極焼成(ｻﾔ詰め)データ
      * @return 更新パラメータ
      */
-    private List<Object> setUpdateParameterSrGdsayadume(boolean isInsert, BigDecimal newRev, String kojyo, String lotNo, String edaban,
-            int jissekino, Timestamp systemTime, List<FXHDD01> itemList, SrGdsayadume srGdsayadumeData) {
+    private List<Object> setUpdateParameterSrDouyaki(boolean isInsert, BigDecimal newRev, String kojyo, String lotNo, String edaban,
+            int jissekino, Timestamp systemTime, List<FXHDD01> itemList, SrDouyaki srDouyakiData) {
         List<Object> params = new ArrayList<>();
 
         if (isInsert) {
@@ -2229,7 +2517,7 @@ public class GXHDO101B027 implements IFormLogic {
         }
 
         //ﾛｯﾄ区分
-        String lotKubun = getItemData(itemList, GXHDO101B027Const.LOTKUBUNCODE, srGdsayadumeData);
+        String lotKubun = getItemData(itemList, GXHDO101B027Const.LOTKUBUNCODE, srDouyakiData);
         String strLotKubuncode[] = null;
         String lotKubunCode = "";
 
@@ -2239,7 +2527,7 @@ public class GXHDO101B027 implements IFormLogic {
         }
         
         //ｵｰﾅｰ
-        String owner = getItemData(itemList, GXHDO101B027Const.OWNERCODE, srGdsayadumeData);
+        String owner = getItemData(itemList, GXHDO101B027Const.OWNERCODE, srDouyakiData);
         String strOwnerCode[] = null;
         String ownerCode = "";
 
@@ -2248,33 +2536,63 @@ public class GXHDO101B027 implements IFormLogic {
             ownerCode = strOwnerCode[0];
         }
         
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.KCPNO, srGdsayadumeData))); //KCPNO
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.TOKUISAKI, srGdsayadumeData))); //客先
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.KCPNO, srDouyakiData))); //KCPNO
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.TOKUISAKI, srDouyakiData))); //客先
         params.add(DBUtil.stringToStringObject(lotKubunCode)); //ﾛｯﾄ区分
         params.add(DBUtil.stringToStringObject(ownerCode)); //ｵｰﾅｰ
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.LOTPRE, srGdsayadumeData))); //ﾛｯﾄﾌﾟﾚ
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B027Const.SYORISUU, srGdsayadumeData))); //処理数
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.SAYADUMEHOUHOU, srGdsayadumeData))); //ｻﾔ詰め方法
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.KONAMABUSHI, srGdsayadumeData))); //粉まぶし
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B027Const.JURYOU, srGdsayadumeData)));  // 製品重量
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B027Const.BNFUNMATURYOU, srGdsayadumeData)));  // BN粉末量
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.BNFUNMATURYOUKAKUNIN, srGdsayadumeData))); //BN粉末量確認
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.SAYASUSSYURUI, srGdsayadumeData))); //ｻﾔ/SUS板種類
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B027Const.SAYAMAISUUKEISAN, srGdsayadumeData))); //ｻﾔ/SUS板枚数 計算値
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B027Const.SJYUURYOURANGEMIN, srGdsayadumeData)));  // ｻﾔ重量範囲(g)MIN
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B027Const.SJYUURYOURANGEMAX, srGdsayadumeData)));  // ｻﾔ重量範囲(g)MAX
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B027Const.SAYAJYUURYOU, srGdsayadumeData)));  // ｻﾔ重量(g/枚)
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B027Const.SAYAMAISUU, srGdsayadumeData))); //ｻﾔ/SUS板枚数
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B027Const.SAYSUSACHARGE, srGdsayadumeData))); //ｻﾔ/SUS板ﾁｬｰｼﾞ量
-        params.add(DBUtil.stringToDateObject(getItemData(itemList, GXHDO101B027Const.KAISHI_DAY, srGdsayadumeData),
-            getItemData(itemList, GXHDO101B027Const.KAISHI_TIME, srGdsayadumeData))); // ｻﾔ/SUS板詰め開始日時
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.STARTTANTOSYACODE, srGdsayadumeData))); // ｻﾔ/SUS板詰め開始担当者
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.STARTKAKUNINSYACODE, srGdsayadumeData))); // ｻﾔ/SUS板詰め開始確認者
-        params.add(DBUtil.stringToDateObject(getItemData(itemList, GXHDO101B027Const.SHURYOU_DAY, srGdsayadumeData),
-            getItemData(itemList, GXHDO101B027Const.SHURYOU_TIME, srGdsayadumeData))); // ｻﾔ/SUS板詰め終了日時
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.ENDTANTOSYACODE, srGdsayadumeData))); // ｻﾔ/SUS板詰め終了担当者
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.BIKO1, srGdsayadumeData))); // 備考1
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.BIKO2, srGdsayadumeData))); // 備考2
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.LOTPRE, srDouyakiData))); //ﾛｯﾄﾌﾟﾚ
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B027Const.SYORISUU, srDouyakiData))); //処理数
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.SAYADUMEHOUHOU, srDouyakiData))); //ｻﾔ詰め方法
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.KONAMABUSHI, srDouyakiData))); //粉まぶし
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B027Const.DIPJURYOU, srDouyakiData))); //塗布重量
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B027Const.JURYOU, srDouyakiData)));  // 製品重量
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B027Const.BNFUNMATURYOU, srDouyakiData)));  // BN粉末量
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.BNFUNMATURYOUKAKUNIN, srDouyakiData))); //BN粉末量確認
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.SAYASUSSYURUI, srDouyakiData))); //ｻﾔ/SUS板種類
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B027Const.SAYAMAISUUKEISAN, srDouyakiData))); //ｻﾔ/SUS板枚数 計算値
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B027Const.SJYUURYOURANGEMIN, srDouyakiData)));  // ｻﾔ重量範囲(g)MIN
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B027Const.SJYUURYOURANGEMAX, srDouyakiData)));  // ｻﾔ重量範囲(g)MAX
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B027Const.SAYAJYUURYOU, srDouyakiData)));  // ｻﾔ重量(g/枚)
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B027Const.SAYAMAISUU, srDouyakiData))); //ｻﾔ/SUS板枚数
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B027Const.SAYSUSACHARGE, srDouyakiData))); //ｻﾔ/SUS板ﾁｬｰｼﾞ量
+        params.add(DBUtil.stringToDateObject(getItemData(itemList, GXHDO101B027Const.KAISHI_DAY, srDouyakiData),
+            getItemData(itemList, GXHDO101B027Const.KAISHI_TIME, srDouyakiData))); // ｻﾔ/SUS板詰め開始日時
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.STARTTANTOSYACODE, srDouyakiData))); // ｻﾔ/SUS板詰め開始担当者
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.STARTKAKUNINSYACODE, srDouyakiData))); // ｻﾔ/SUS板詰め開始確認者
+        params.add(DBUtil.stringToDateObject(getItemData(itemList, GXHDO101B027Const.SHURYOU_DAY, srDouyakiData),
+            getItemData(itemList, GXHDO101B027Const.SHURYOU_TIME, srDouyakiData))); // ｻﾔ/SUS板詰め終了日時
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.ENDTANTOSYACODE, srDouyakiData))); // ｻﾔ/SUS板詰め終了担当者        
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.DATSUBAIGOUKI, srDouyakiData))); // 脱ﾊﾞｲ号機
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.DATSUBAIONDO, srDouyakiData))); // 脱ﾊﾞｲ温度
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B027Const.DATSUBAIJIKAN, srDouyakiData))); // 脱ﾊﾞｲ時間
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.DATSUBAIPTNNO, srDouyakiData))); // 脱ﾊﾞｲPTNNO
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B027Const.DATSUBAISAYAMAISUU, srDouyakiData))); // 脱ﾊﾞｲｻﾔ枚数
+        params.add(DBUtil.stringToDateObject(getItemData(itemList, GXHDO101B027Const.DATSUBAI_KAISHI_DAY, srDouyakiData),
+            getItemData(itemList, GXHDO101B027Const.DATSUBAI_KAISHI_TIME, srDouyakiData))); // 脱ﾊﾞｲ開始日時
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.DATSUBAISTARTTANTOSYACODE, srDouyakiData))); // 脱ﾊﾞｲ開始担当者
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.DATSUBAISTARTKAKUNINSYACODE, srDouyakiData))); // 脱ﾊﾞｲ開始確認者
+        params.add(DBUtil.stringToDateObject(getItemData(itemList, GXHDO101B027Const.DATSUBAI_SHURYOU_DAY, srDouyakiData),
+            getItemData(itemList, GXHDO101B027Const.DATSUBAI_SHURYOU_TIME, srDouyakiData))); // 脱ﾊﾞｲ終了日時
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.DATSUBAIENDTANTOSYACODE, srDouyakiData))); // 脱ﾊﾞｲ終了担当者
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.GOURO1, srDouyakiData))); // 焼成号機
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B027Const.PEAKONDO, srDouyakiData))); // 焼成温度
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.OKURISPEED, srDouyakiData))); // 焼成送りｽﾋﾟｰﾄﾞ
+        params.add(DBUtil.stringToDateObject(getItemData(itemList, GXHDO101B027Const.NYUURO_KAISHI_DAY, srDouyakiData),
+            getItemData(itemList, GXHDO101B027Const.NYUURO_KAISHI_TIME, srDouyakiData))); // 焼成開始日時
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.TANTOUSYA1, srDouyakiData))); // 焼成開始担当者
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.SYOSEISTARTKAKUNINSYACODE, srDouyakiData))); // 焼成開始確認者
+        params.add(DBUtil.stringToDateObject(getItemData(itemList, GXHDO101B027Const.SYUTSURO_SHURYOU_DAY, srDouyakiData),
+            getItemData(itemList, GXHDO101B027Const.SYUTSURO_SHURYOU_TIME, srDouyakiData))); // 焼成終了日時
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.SYOSEIENDTANTOSYACODE, srDouyakiData))); // 焼成終了担当者
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.GAIKAN, srDouyakiData))); // 外観
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B027Const.ABEGGRYOHINJYURYO, srDouyakiData)));  // 良品重量
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B027Const.ABEGGFURYOJYURYO, srDouyakiData)));  // 不良重量
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B027Const.ABEGGFURYORITU, srDouyakiData)));  // 不良率
+        params.add(DBUtil.stringToDateObject(getItemData(itemList, GXHDO101B027Const.GAIKAN_KAKUNIN_DAY, srDouyakiData),
+            getItemData(itemList, GXHDO101B027Const.GAIKAN_KAKUNIN_TIME, srDouyakiData))); // 外観確認日時
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.GAIKANTANTOSYA, srDouyakiData))); // 外観確認担当者
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.BIKO1, srDouyakiData))); // 備考1
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B027Const.BIKO2, srDouyakiData))); // 備考2
 
         if (isInsert) {
             params.add(systemTime); //登録日時
@@ -2288,7 +2606,7 @@ public class GXHDO101B027 implements IFormLogic {
     }
 
     /**
-     * 外部電極焼成(ｻﾔ詰め)(sr_gdsayadume)削除処理
+     * 外部電極焼成(ｻﾔ詰め)(sr_douyaki)削除処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param conQcdb コネクション
@@ -2299,10 +2617,10 @@ public class GXHDO101B027 implements IFormLogic {
      * @param jissekino 実績No
      * @throws SQLException 例外エラー
      */
-    private void deleteSrGdsayadume(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev,
+    private void deleteSrDouyaki(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev,
             String kojyo, String lotNo, String edaban, int jissekino) throws SQLException {
 
-        String sql = "DELETE FROM sr_gdsayadume "
+        String sql = "DELETE FROM sr_douyaki "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ?";
 
         //更新値設定
@@ -2331,7 +2649,7 @@ public class GXHDO101B027 implements IFormLogic {
      */
     private int getNewDeleteflag(QueryRunner queryRunnerQcdb, String kojyo, String lotNo, String edaban, int jissekino) throws SQLException {
         String sql = "SELECT MAX(deleteflag) AS deleteflag "
-                + "FROM tmp_sr_gdsayadume "
+                + "FROM tmp_sr_douyaki "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND KAISUU = ? ";
         List<Object> params = new ArrayList<>();
         params.add(kojyo);
@@ -2382,7 +2700,7 @@ public class GXHDO101B027 implements IFormLogic {
     }
 
     /**
-     * 開始時間設定処理
+     * ｻﾔ詰め開始時間設定処理
      *
      * @param processData 処理制御データ
      * @return 処理制御データ
@@ -2398,7 +2716,7 @@ public class GXHDO101B027 implements IFormLogic {
     }
 
     /**
-     * 終了時間設定処理
+     * ｻﾔ詰め終了時間設定処理
      *
      * @param processData 処理制御データ
      * @return 処理制御データ
@@ -2406,6 +2724,89 @@ public class GXHDO101B027 implements IFormLogic {
     public ProcessData setShuryouDateTime(ProcessData processData) {
         FXHDD01 itemDay = getItemRow(processData.getItemList(), GXHDO101B027Const.SHURYOU_DAY);
         FXHDD01 itemTime = getItemRow(processData.getItemList(), GXHDO101B027Const.SHURYOU_TIME);
+        if (StringUtil.isEmpty(itemDay.getValue()) && StringUtil.isEmpty(itemTime.getValue())) {
+            setDateTimeItem(itemDay, itemTime, new Date());
+        }
+
+        processData.setMethod("");
+        return processData;
+    }
+    
+    /**
+     * 脱ﾊﾞｲ開始日時設定処理
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData setDatsubaiKaishiDateTime(ProcessData processData) {
+        FXHDD01 itemDay = getItemRow(processData.getItemList(), GXHDO101B027Const.DATSUBAI_KAISHI_DAY);
+        FXHDD01 itemTime = getItemRow(processData.getItemList(), GXHDO101B027Const.DATSUBAI_KAISHI_TIME);
+        if (StringUtil.isEmpty(itemDay.getValue()) && StringUtil.isEmpty(itemTime.getValue())) {
+            setDateTimeItem(itemDay, itemTime, new Date());
+        }
+        processData.setMethod("");
+        return processData;
+    }
+
+    /**
+     * 脱ﾊﾞｲ終了日時設定処理
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData setDatsubaiEndDateTime(ProcessData processData) {
+        FXHDD01 itemDay = getItemRow(processData.getItemList(), GXHDO101B027Const.DATSUBAI_SHURYOU_DAY);
+        FXHDD01 itemTime = getItemRow(processData.getItemList(), GXHDO101B027Const.DATSUBAI_SHURYOU_TIME);
+        if (StringUtil.isEmpty(itemDay.getValue()) && StringUtil.isEmpty(itemTime.getValue())) {
+            setDateTimeItem(itemDay, itemTime, new Date());
+        }
+
+        processData.setMethod("");
+        return processData;
+    }
+    
+    /**
+     * 焼成開始日時設定処理
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData setNyuuroKaishiDateTime(ProcessData processData) {
+        FXHDD01 itemDay = getItemRow(processData.getItemList(), GXHDO101B027Const.NYUURO_KAISHI_DAY);
+        FXHDD01 itemTime = getItemRow(processData.getItemList(), GXHDO101B027Const.NYUURO_KAISHI_TIME);
+        if (StringUtil.isEmpty(itemDay.getValue()) && StringUtil.isEmpty(itemTime.getValue())) {
+            setDateTimeItem(itemDay, itemTime, new Date());
+        }
+        processData.setMethod("");
+        return processData;
+    }
+
+    /**
+     * 焼成終了日時設定処理
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData setSyutsuroEndDateTime(ProcessData processData) {
+        FXHDD01 itemDay = getItemRow(processData.getItemList(), GXHDO101B027Const.SYUTSURO_SHURYOU_DAY);
+        FXHDD01 itemTime = getItemRow(processData.getItemList(), GXHDO101B027Const.SYUTSURO_SHURYOU_TIME);
+        if (StringUtil.isEmpty(itemDay.getValue()) && StringUtil.isEmpty(itemTime.getValue())) {
+            setDateTimeItem(itemDay, itemTime, new Date());
+        }
+
+        processData.setMethod("");
+        return processData;
+    }
+
+    /**
+     * 外観確認日時設定処理
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData setGaikanKakuninDatetime(ProcessData processData) {
+        FXHDD01 itemDay = getItemRow(processData.getItemList(), GXHDO101B027Const.GAIKAN_KAKUNIN_DAY);
+        FXHDD01 itemTime = getItemRow(processData.getItemList(), GXHDO101B027Const.GAIKAN_KAKUNIN_TIME);
         if (StringUtil.isEmpty(itemDay.getValue()) && StringUtil.isEmpty(itemTime.getValue())) {
             setDateTimeItem(itemDay, itemTime, new Date());
         }
@@ -2430,93 +2831,183 @@ public class GXHDO101B027 implements IFormLogic {
      * 項目IDに該当するDBの値を取得する。
      *
      * @param itemId 項目ID
-     * @param srGdsayadumeData 外部電極焼成(ｻﾔ詰め)データ
+     * @param srDouyakiData 外部電極焼成(ｻﾔ詰め)データ
      * @return DB値
      */
-    private String getSrGdsayadumeItemData(String itemId, SrGdsayadume srGdsayadumeData) {
+    private String getSrDouyakiItemData(String itemId, SrDouyaki srDouyakiData) {
         switch (itemId) {
             // KCPNO
             case GXHDO101B027Const.KCPNO:
-                return StringUtil.nullToBlank(srGdsayadumeData.getKcpno());
+                return StringUtil.nullToBlank(srDouyakiData.getKcpno());
             // 客先
             case GXHDO101B027Const.TOKUISAKI:
-                return StringUtil.nullToBlank(srGdsayadumeData.getTokuisaki());
+                return StringUtil.nullToBlank(srDouyakiData.getKyakusaki());
             // ﾛｯﾄﾌﾟﾚ
             case GXHDO101B027Const.LOTPRE:
-                return StringUtil.nullToBlank(srGdsayadumeData.getLotpre());
+                return StringUtil.nullToBlank(srDouyakiData.getLotpre());
             // 処理数
             case GXHDO101B027Const.SYORISUU:
-                return StringUtil.nullToBlank(srGdsayadumeData.getSyorisuu());
+                return StringUtil.nullToBlank(srDouyakiData.getSuuryou());
             //ｻﾔ詰め方法
             case GXHDO101B027Const.SAYADUMEHOUHOU:
-                return StringUtil.nullToBlank(srGdsayadumeData.getSayadumehouhou());
+                return StringUtil.nullToBlank(srDouyakiData.getSayadumehouhou());
             //粉まぶし
             case GXHDO101B027Const.KONAMABUSHI:
-                return StringUtil.nullToBlank(srGdsayadumeData.getKonamabushi());
+                return StringUtil.nullToBlank(srDouyakiData.getKonamabushi());
+            //塗布重量
+            case GXHDO101B027Const.DIPJURYOU:
+                return StringUtil.nullToBlank(srDouyakiData.getDipjuryou());
             //製品重量
             case GXHDO101B027Const.JURYOU:
-                return StringUtil.nullToBlank(srGdsayadumeData.getJuryou());
+                return StringUtil.nullToBlank(srDouyakiData.getSoujyuuryou());
             //BN粉末量
             case GXHDO101B027Const.BNFUNMATURYOU:
-                return StringUtil.nullToBlank(srGdsayadumeData.getBnfunmaturyou());
+                return StringUtil.nullToBlank(srDouyakiData.getBnfunmaturyou());
             //BN粉末量確認
             case GXHDO101B027Const.BNFUNMATURYOUKAKUNIN:
-                return StringUtil.nullToBlank(srGdsayadumeData.getBnfunmaturyoukakunin());
+                return StringUtil.nullToBlank(srDouyakiData.getBnfunmaturyoukakunin());
             //ｻﾔ/SUS板種類
             case GXHDO101B027Const.SAYASUSSYURUI:
-                return StringUtil.nullToBlank(srGdsayadumeData.getSayasussyurui());
+                return StringUtil.nullToBlank(srDouyakiData.getSayasussyurui());
             //ｻﾔ/SUS板枚数 計算値
             case GXHDO101B027Const.SAYAMAISUUKEISAN:
-                return StringUtil.nullToBlank(srGdsayadumeData.getSayamaisuukeisan());
+                return StringUtil.nullToBlank(srDouyakiData.getSayamaisuukeisan());
             //ｻﾔ重量範囲(g)MIN
             case GXHDO101B027Const.SJYUURYOURANGEMIN:
-                return StringUtil.nullToBlank(srGdsayadumeData.getSjyuuryourangemin());
+                return StringUtil.nullToBlank(srDouyakiData.getSjyuuryourangemin());
             //ｻﾔ重量範囲(g)MAX
             case GXHDO101B027Const.SJYUURYOURANGEMAX:
-                return StringUtil.nullToBlank(srGdsayadumeData.getSjyuuryourangemax());
+                return StringUtil.nullToBlank(srDouyakiData.getSjyuuryourangemax());
             //ｻﾔ重量(g/枚)
             case GXHDO101B027Const.SAYAJYUURYOU:
-                return StringUtil.nullToBlank(srGdsayadumeData.getSayajyuuryou());
+                return StringUtil.nullToBlank(srDouyakiData.getSayajyuuryou());
             //ｻﾔ/SUS板枚数
             case GXHDO101B027Const.SAYAMAISUU:
-                return StringUtil.nullToBlank(srGdsayadumeData.getSayamaisuu());
+                return StringUtil.nullToBlank(srDouyakiData.getSayamaisuu());
             //ｻﾔ/SUS板ﾁｬｰｼﾞ量
             case GXHDO101B027Const.SAYSUSACHARGE:
-                return StringUtil.nullToBlank(srGdsayadumeData.getSaysusacharge());
+                return StringUtil.nullToBlank(srDouyakiData.getSayachargeryou());
             //ｻﾔ/SUS板詰め開始日
             case GXHDO101B027Const.KAISHI_DAY:
-                return DateUtil.formattedTimestamp(srGdsayadumeData.getStartdatetime(), "yyMMdd");
+                return DateUtil.formattedTimestamp(srDouyakiData.getSayadumebi(), "yyMMdd");
             //ｻﾔ/SUS板詰め開始時刻
             case GXHDO101B027Const.KAISHI_TIME:
-                return DateUtil.formattedTimestamp(srGdsayadumeData.getStartdatetime(), "HHmm");
+                return DateUtil.formattedTimestamp(srDouyakiData.getSayadumebi(), "HHmm");
             //ｻﾔ/SUS板詰め開始担当者
             case GXHDO101B027Const.STARTTANTOSYACODE:
-                return StringUtil.nullToBlank(srGdsayadumeData.getStarttantosyacode());
+                return StringUtil.nullToBlank(srDouyakiData.getSayadumetantousya());
             //ｻﾔ/SUS板詰め開始確認者
             case GXHDO101B027Const.STARTKAKUNINSYACODE:
-                return StringUtil.nullToBlank(srGdsayadumeData.getStartkakuninsyacode());
+                return StringUtil.nullToBlank(srDouyakiData.getSayadumekakuninsya());
             //ｻﾔ/SUS板詰め終了日
             case GXHDO101B027Const.SHURYOU_DAY:
-                return DateUtil.formattedTimestamp(srGdsayadumeData.getEnddatetime(), "yyMMdd");
+                return DateUtil.formattedTimestamp(srDouyakiData.getSayadumeendnichiji(), "yyMMdd");
             //ｻﾔ/SUS板詰め終了時刻
             case GXHDO101B027Const.SHURYOU_TIME:
-                return DateUtil.formattedTimestamp(srGdsayadumeData.getEnddatetime(), "HHmm");
+                return DateUtil.formattedTimestamp(srDouyakiData.getSayadumeendnichiji(), "HHmm");
             //ｻﾔ/SUS板詰め終了担当者
             case GXHDO101B027Const.ENDTANTOSYACODE:
-                return StringUtil.nullToBlank(srGdsayadumeData.getEndtantosyacode());
+                return StringUtil.nullToBlank(srDouyakiData.getSayadumesyuryosya());                
+            //脱ﾊﾞｲ号機
+            case GXHDO101B027Const.DATSUBAIGOUKI:
+                return StringUtil.nullToBlank(srDouyakiData.getDatsubaigouki());
+            //脱ﾊﾞｲ温度
+            case GXHDO101B027Const.DATSUBAIONDO:
+                return StringUtil.nullToBlank(srDouyakiData.getDatsubaiondo());
+            //脱ﾊﾞｲ時間
+            case GXHDO101B027Const.DATSUBAIJIKAN:
+                return StringUtil.nullToBlank(srDouyakiData.getDatsubaijikan());
+            //脱ﾊﾞｲPTNNO
+            case GXHDO101B027Const.DATSUBAIPTNNO:
+                return StringUtil.nullToBlank(srDouyakiData.getDatsubaiptnno());
+            //脱ﾊﾞｲｻﾔ枚数
+            case GXHDO101B027Const.DATSUBAISAYAMAISUU:
+                return StringUtil.nullToBlank(srDouyakiData.getDatsubaisayamaisuu());
+            //脱ﾊﾞｲ開始日
+            case GXHDO101B027Const.DATSUBAI_KAISHI_DAY:
+                return DateUtil.formattedTimestamp(srDouyakiData.getDatsubaistartdatetime(), "yyMMdd");
+            //脱ﾊﾞｲ開始時刻
+            case GXHDO101B027Const.DATSUBAI_KAISHI_TIME:
+                return DateUtil.formattedTimestamp(srDouyakiData.getDatsubaistartdatetime(), "HHmm");
+            //脱ﾊﾞｲ開始担当者
+            case GXHDO101B027Const.DATSUBAISTARTTANTOSYACODE:
+                return StringUtil.nullToBlank(srDouyakiData.getDatsubaistarttantosyacode());
+            //脱ﾊﾞｲ開始確認者
+            case GXHDO101B027Const.DATSUBAISTARTKAKUNINSYACODE:
+                return StringUtil.nullToBlank(srDouyakiData.getDatsubaistartkakuninsyacode());
+            //脱ﾊﾞｲ終了日
+            case GXHDO101B027Const.DATSUBAI_SHURYOU_DAY:
+                return DateUtil.formattedTimestamp(srDouyakiData.getDatsubaienddatetime(), "yyMMdd");
+            //脱ﾊﾞｲ終了時刻
+            case GXHDO101B027Const.DATSUBAI_SHURYOU_TIME:
+                return DateUtil.formattedTimestamp(srDouyakiData.getDatsubaienddatetime(), "HHmm");
+            //脱ﾊﾞｲ終了担当者
+            case GXHDO101B027Const.DATSUBAIENDTANTOSYACODE:
+                return StringUtil.nullToBlank(srDouyakiData.getDatsubaiendtantosyacode());
+            //焼成号機
+            case GXHDO101B027Const.GOURO1:
+                return StringUtil.nullToBlank(srDouyakiData.getGouro1());
+            //焼成温度
+            case GXHDO101B027Const.PEAKONDO:
+                return StringUtil.nullToBlank(srDouyakiData.getPeakondo());
+            //焼成送りｽﾋﾟｰﾄﾞ
+            case GXHDO101B027Const.OKURISPEED:
+                return StringUtil.nullToBlank(srDouyakiData.getOkurispeed());
+            //焼成開始日
+            case GXHDO101B027Const.NYUURO_KAISHI_DAY:
+                return DateUtil.formattedTimestamp(srDouyakiData.getNyuuronichiji1(), "yyMMdd");
+            //焼成開始時間
+            case GXHDO101B027Const.NYUURO_KAISHI_TIME:
+                return DateUtil.formattedTimestamp(srDouyakiData.getNyuuronichiji1(), "HHmm");
+            //焼成開始担当者
+            case GXHDO101B027Const.TANTOUSYA1:
+                return StringUtil.nullToBlank(srDouyakiData.getTantousya1());
+            //焼成開始確認者
+            case GXHDO101B027Const.SYOSEISTARTKAKUNINSYACODE:
+                return StringUtil.nullToBlank(srDouyakiData.getSyoseistartkakuninsyacode());
+            //焼成終了日
+            case GXHDO101B027Const.SYUTSURO_SHURYOU_DAY:
+                return DateUtil.formattedTimestamp(srDouyakiData.getSyutsuronichiji1(), "yyMMdd");
+            //焼成終了時間
+            case GXHDO101B027Const.SYUTSURO_SHURYOU_TIME:
+                return DateUtil.formattedTimestamp(srDouyakiData.getSyutsuronichiji1(), "HHmm");
+            //焼成終了担当者
+            case GXHDO101B027Const.SYOSEIENDTANTOSYACODE:
+                return StringUtil.nullToBlank(srDouyakiData.getSyoseiendtantosyacode());
+            //外観
+            case GXHDO101B027Const.GAIKAN:
+                return StringUtil.nullToBlank(srDouyakiData.getGaikan());
+            //良品重量
+            case GXHDO101B027Const.ABEGGRYOHINJYURYO:
+                return StringUtil.nullToBlank(srDouyakiData.getAbeggryohinjyuryo());
+            //不良重量
+            case GXHDO101B027Const.ABEGGFURYOJYURYO:
+                return StringUtil.nullToBlank(srDouyakiData.getAbeggfuryojyuryo());
+            //不良率
+            case GXHDO101B027Const.ABEGGFURYORITU:
+                return StringUtil.nullToBlank(srDouyakiData.getAbeggfuryoritu());
+            //外観確認日
+            case GXHDO101B027Const.GAIKAN_KAKUNIN_DAY:
+                return DateUtil.formattedTimestamp(srDouyakiData.getGaikankakuninnichiji(), "yyMMdd");
+            //外観確認時刻
+            case GXHDO101B027Const.GAIKAN_KAKUNIN_TIME:
+                return DateUtil.formattedTimestamp(srDouyakiData.getGaikankakuninnichiji(), "HHmm");
+            //外観確認担当者
+            case GXHDO101B027Const.GAIKANTANTOSYA:
+                return StringUtil.nullToBlank(srDouyakiData.getGaikantantosya());                
             //備考1
             case GXHDO101B027Const.BIKO1:
-                return StringUtil.nullToBlank(srGdsayadumeData.getBiko1());
+                return StringUtil.nullToBlank(srDouyakiData.getBikou1());
             //備考2
             case GXHDO101B027Const.BIKO2:
-                return StringUtil.nullToBlank(srGdsayadumeData.getBiko2()); 
+                return StringUtil.nullToBlank(srDouyakiData.getBikou2()); 
             default:
                 return null;            
         }
     }
 
     /**
-     * 外部電極焼成(ｻﾔ詰め)_仮登録(tmp_sr_gdsayadume)登録処理(削除時)
+     * 外部電極焼成(ｻﾔ詰め)_仮登録(tmp_sr_douyaki)登録処理(削除時)
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param conQcdb コネクション
@@ -2529,20 +3020,28 @@ public class GXHDO101B027 implements IFormLogic {
      * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
      * @throws SQLException 例外エラー
      */
-    private void insertDeleteDataTmpSrGdsayadume(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev, int deleteflag,
+    private void insertDeleteDataTmpSrDouyaki(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev, int deleteflag,
             String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime) throws SQLException {
 
-        String sql = "INSERT INTO tmp_sr_gdsayadume ("
-                + " kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,sayadumehouhou,konamabushi,juryou"
-                + ",bnfunmaturyou,bnfunmaturyoukakunin,sayasussyurui,sayamaisuukeisan,SJyuuryouRangeMin,SJyuuryouRangeMax,sayajyuuryou"
-                + ",sayamaisuu,saysusacharge,startdatetime,StartTantosyacode,StartKakuninsyacode,enddatetime,EndTantosyacode,biko1,biko2"
-                + ",torokunichiji,kosinnichiji,revision,deleteflag"
+        String sql = "INSERT INTO tmp_sr_douyaki ("
+                + " kojyo,lotno,edaban,kaisuu,lotpre,kcpno,suuryou,dipbi,sayadumebi,sayadumehouhou,sayamaisuu,sayajyuuryou,sayachargeryou,sayadumetantousya"
+                + ",sanka,nyuuronichiji1,syutsuronichiji1,gouro1,tantousya1,nyuuronichiji2,syutsuronichiji2,gouro2,tantousya2,nyuuronichiji3,syutsuronichiji3"
+                + ",gouro3,tantousya3,nyuuronichiji4,syutsuronichiji4,gouro4,tantousya4,budomari,budomarigouhi,bikou1,bikou2,bikou3,jissekino,tourokunichiji"
+                + ",koushinnichiji,peakondo,abeggryohinjyuryo,abeggfuryojyuryo,abeggfuryoritu,SouJyuuRyou,SJyuuryouRangeMin,SJyuuryouRangeMax,kyakusaki,lotkubuncode"
+                + ",ownercode,konamabushi,dipjuryou,bnfunmaturyou,bnfunmaturyoukakunin,sayasussyurui,sayamaisuukeisan,sayadumekakuninsya,sayadumeendnichiji"
+                + ",sayadumesyuryosya,datsubaigouki,datsubaiondo,datsubaijikan,datsubaiptnno,datsubaisayamaisuu,datsubaistartdatetime,datsubaistarttantosyacode"
+                + ",datsubaistartkakuninsyacode,datsubaienddatetime,datsubaiendtantosyacode,okurispeed,syoseistartkakuninsyacode,syoseiendtantosyacode,gaikan"
+                + ",gaikankakuninnichiji,gaikantantosya,revision,deleteflag "
                 + ") SELECT "
-                + " kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,sayadumehouhou,konamabushi,juryou"
-                + ",bnfunmaturyou,bnfunmaturyoukakunin,sayasussyurui,sayamaisuukeisan,SJyuuryouRangeMin,SJyuuryouRangeMax,sayajyuuryou"
-                + ",sayamaisuu,saysusacharge,startdatetime,StartTantosyacode,StartKakuninsyacode,enddatetime,EndTantosyacode,biko1,biko2"
-                + ",?,?,?,? "
-                + " FROM sr_gdsayadume "
+                + " kojyo,lotno,edaban,kaisuu,lotpre,kcpno,suuryou,dipbi,sayadumebi,sayadumehouhou,sayamaisuu,sayajyuuryou,sayachargeryou,sayadumetantousya"
+                + ",sanka,nyuuronichiji1,syutsuronichiji1,gouro1,tantousya1,nyuuronichiji2,syutsuronichiji2,gouro2,tantousya2,nyuuronichiji3,syutsuronichiji3"
+                + ",gouro3,tantousya3,nyuuronichiji4,syutsuronichiji4,gouro4,tantousya4,budomari,budomarigouhi,bikou1,bikou2,bikou3,jissekino,?"
+                + ",?,peakondo,abeggryohinjyuryo,abeggfuryojyuryo,abeggfuryoritu,SouJyuuRyou,SJyuuryouRangeMin,SJyuuryouRangeMax,kyakusaki,lotkubuncode"
+                + ",ownercode,konamabushi,dipjuryou,bnfunmaturyou,bnfunmaturyoukakunin,sayasussyurui,sayamaisuukeisan,sayadumekakuninsya,sayadumeendnichiji"
+                + ",sayadumesyuryosya,datsubaigouki,datsubaiondo,datsubaijikan,datsubaiptnno,datsubaisayamaisuu,datsubaistartdatetime,datsubaistarttantosyacode"
+                + ",datsubaistartkakuninsyacode,datsubaienddatetime,datsubaiendtantosyacode,okurispeed,syoseistartkakuninsyacode,syoseiendtantosyacode,gaikan"
+                + ",gaikankakuninnichiji,gaikantantosya,?,? "
+                + " FROM sr_douyaki "
                 + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? ";
 
         List<Object> params = new ArrayList<>();

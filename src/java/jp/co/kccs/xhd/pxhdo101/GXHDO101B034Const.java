@@ -58,69 +58,129 @@ public class GXHDO101B034Const {
     public static final String SYORISUU = "sr_gdsenjou_syorisuu";
 
     /**
-     * 号機
+     * 重量
      */
-    public static final String GOUKI = "sr_gdsenjou_gouki";
+    public static final String JURYOU = "sr_gdsenjou_juryou";
+
+    /**
+     * 洗浄号機1
+     */
+    public static final String POTKAITENGOUKI = "sr_gdsenjou_potkaitengouki";
+
+    /**
+     * 洗浄号機2
+     */
+    public static final String GOUKI2 = "sr_gdsenjou_gouki2";
+
+    /**
+     * 洗浄号機3
+     */
+    public static final String GOUKI3 = "sr_gdsenjou_gouki3";
+
+    /**
+     * 洗浄号機4
+     */
+    public static final String GOUKI4 = "sr_gdsenjou_gouki4";
     
     /**
      * 洗浄時間
      */
-    public static final String JIKAN = "sr_gdsenjou_jikan";
-    
+    public static final String JIKAN = "sr_gdsenjou_potkaitenjikan";
+
     /**
      * ﾁｬｰｼﾞ量
      */
     public static final String CHARGEROYU = "sr_gdsenjou_chargeroyu";
-    
+
     /**
      * ｽﾃﾝﾊﾞｯﾄ数
      */
-    public static final String VATSUU = "sr_gdsenjou_vatsuu";
+    public static final String POTSUU = "sr_gdsenjou_potsuu";
+
+    /**
+     * 超音波開始日
+     */
+    public static final String POTKAITEN_KAISHI_DAY = "sr_gdsenjou_potkaiten_kaishi_day";
+
+    /**
+     * 超音波開始時間
+     */
+    public static final String POTKAITEN_KAISHI_TIME = "sr_gdsenjou_potkaiten_kaishi_time";
+
+    /**
+     * 超音波開始担当者
+     */
+    public static final String POTKAITENTANTOUSYA = "sr_gdsenjou_potkaitentantousya";
+
+    /**
+     * 超音波開始確認者
+     */
+    public static final String STARTKAKUNINSYACODE = "sr_gdsenjou_startkakuninsyacode";
+
+    /**
+     * 超音波終了日
+     */
+    public static final String POTKAITEN_SHURYOU_DAY = "sr_gdsenjou_potkaiten_shuryou_day";
+
+    /**
+     * 超音波終了時間
+     */
+    public static final String POTKAITEN_SHURYOU_TIME = "sr_gdsenjou_potkaiten_shuryou_time";
+
+    /**
+     * 超音波終了担当者
+     */
+    public static final String ENDTANTOSYACODE = "sr_gdsenjou_endtantosyacode";
+
+    /**
+     * 乾燥号機
+     */
+    public static final String KANSOUGOUKI = "sr_gdsenjou_kansougouki";
+
+    /**
+     * 乾燥開始日
+     */
+    public static final String KANSOU_KAISHI_DAY = "sr_gdsenjou_kansou_kaishi_day";
+
+    /**
+     * 乾燥開始時間
+     */
+    public static final String KANSOU_KAISHI_TIME = "sr_gdsenjou_kansou_kaishi_time";
+
+    /**
+     * 乾燥開始担当者
+     */
+    public static final String KANSOUTANTOUSYA = "sr_gdsenjou_kansoutantousya";
+
+    /**
+     * 乾燥終了日
+     */
+    public static final String KANSOU_SHURYOU_DAY = "sr_gdsenjou_kansou_shuryou_day";
+
+    /**
+     * 乾燥終了時間
+     */
+    public static final String KANSOU_SHURYOU_TIME = "sr_gdsenjou_kansou_shuryou_time";
+
+    /**
+     * 乾燥開始確認者
+     */
+    public static final String KANSOSTARTKAKUNINSYACODE = "sr_gdsenjou_kansostartkakuninsyacode";
+
+    /**
+     * 乾燥終了担当者
+     */
+    public static final String KANSOENDTANTOSYACODE = "sr_gdsenjou_kansoendtantosyacode";
     
     /**
-     * ﾒﾀﾉｰﾙ交換時間
+     * 乾燥ﾌﾙｲ選別
      */
-    public static final String METHANOLKOUKANJIKAN = "sr_gdsenjou_methanolkoukanjikan";
-    
-    /**
-     * ﾒﾀﾉｰﾙ交換担当者
-     */
-    public static final String METHANOLKOUKANTANTOUSYA = "sr_gdsenjou_methanolkoukantantousya";
+    public static final String FURUISENBETU = "sr_gdsenjou_furuisenbetu";
 
     /**
-     * 開始日
+     * 乾燥外観
      */
-    public static final String KAISHI_DAY = "sr_gdsenjou_kaishi_day";
-
-    /**
-     * 開始時間
-     */
-    public static final String KAISHI_TIME = "sr_gdsenjou_kaishi_time";
-
-    /**
-     * 開始担当者
-     */
-    public static final String KAISHI_TANTOUSYA = "sr_gdsenjou_kaishi_tantosya_code";
-
-    /**
-     * 開始確認者
-     */
-    public static final String KAISHI_KAKUNINSYA = "sr_gdsenjou_kaishi_kakuninsya_code";
-
-    /**
-     * 終了日
-     */
-    public static final String SHURYOU_DAY = "sr_gdsenjou_shuryou_day";
-
-    /**
-     * 終了時間
-     */
-    public static final String SHURYOU_TIME = "sr_gdsenjou_shuryou_time";
-
-    /**
-     * 終了担当者
-     */
-    public static final String SHURYOU_TANTOUSYA = "sr_gdsenjou_shuryou_tantousya_code";
+    public static final String HANTEI = "sr_gdsenjou_hantei";
 
     /**
      * 備考1
@@ -158,12 +218,12 @@ public class GXHDO101B034Const {
     public static final String BTN_DELETE_TOP = "sr_gdsenjou_delete_Top";
 
     /**
-     * 開始日時(画面上)
+     * 超音波開始日時(画面上)
      */
     public static final String BTN_START_DATETIME_TOP = "sr_gdsenjou_startdatetime_Top";
 
     /**
-     * 終了日時(画面上)
+     * 超音波終了日時(画面上)
      */
     public static final String BTN_END_DATETIME_TOP = "sr_gdsenjou_enddatetime_Top";
     
@@ -171,6 +231,16 @@ public class GXHDO101B034Const {
      * ﾁｬｰｼﾞ量/ｽﾃﾝﾊﾞｯﾄ数計算(画面上)
      */
     public static final String BTN_CHARGEROYU_KEISAN_TOP = "sr_gdsenjou_chargeroyu_keisan_Top";
+
+    /**
+     * 乾燥開始日時(画面上)
+     */
+    public static final String BTN_KANSOU_STARTDATETIME_TOP = "sr_gdsenjou_kansou_startdatetime_Top";
+
+    /**
+     * 乾燥終了日時(画面上)
+     */
+    public static final String BTN_KANSOU_ENDDATETIME_TOP = "sr_gdsenjou_kansou_enddatetime_Top";
 
     /**
      * 仮登録(画面下)
@@ -198,12 +268,12 @@ public class GXHDO101B034Const {
     public static final String BTN_DELETE_BOTTOM = "sr_gdsenjou_delete_Bottom";
 
     /**
-     * 開始日時(画面下)
+     * 超音波開始日時(画面下)
      */
     public static final String BTN_START_DATETIME_BOTTOM = "sr_gdsenjou_startdatetime_Bottom";
 
     /**
-     * 終了日時(画面下)
+     * 超音波終了日時(画面下)
      */
     public static final String BTN_END_DATETIME_BOTTOM = "sr_gdsenjou_enddatetime_Bottom";
     
@@ -211,6 +281,16 @@ public class GXHDO101B034Const {
      * ﾁｬｰｼﾞ量/ｽﾃﾝﾊﾞｯﾄ数計算(画面下)
      */
     public static final String BTN_CHARGEROYU_KEISAN_BOTTOM = "sr_gdsenjou_chargeroyu_keisan_Bottom";
+
+    /**
+     * 乾燥開始日時(画面下)
+     */
+    public static final String BTN_KANSOU_STARTDATETIME_BOTTOM = "sr_gdsenjou_kansou_startdatetime_Bottom";
+
+    /**
+     * 乾燥終了日時(画面下)
+     */
+    public static final String BTN_KANSOU_ENDDATETIME_BOTTOM = "sr_gdsenjou_kansou_enddatetime_Bottom";
 
     /**
      * ユーザー認証パラメータ(修正)

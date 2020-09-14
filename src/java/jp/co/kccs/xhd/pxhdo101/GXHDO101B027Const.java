@@ -73,6 +73,11 @@ public class GXHDO101B027Const {
     public static final String KONAMABUSHI = "sr_gdsayadume_konamabushi";
 
     /**
+     * 塗布重量
+     */
+    public static final String DIPJURYOU = "sr_gdsayadume_dipjuryou";
+
+    /**
      * 製品重量
      */
     public static final String JURYOU = "sr_gdsayadume_juryou";
@@ -158,6 +163,151 @@ public class GXHDO101B027Const {
     public static final String ENDTANTOSYACODE = "sr_gdsayadume_endtantosyacode";
 
     /**
+     * 脱ﾊﾞｲ号機
+     */
+    public static final String DATSUBAIGOUKI = "sr_gdsayadume_datsubaigouki";
+
+    /**
+     * 脱ﾊﾞｲ温度
+     */
+    public static final String DATSUBAIONDO = "sr_gdsayadume_datsubaiondo";
+
+    /**
+     * 脱ﾊﾞｲ時間
+     */
+    public static final String DATSUBAIJIKAN = "sr_gdsayadume_datsubaijikan";
+
+    /**
+     * 脱ﾊﾞｲPTNNO
+     */
+    public static final String DATSUBAIPTNNO = "sr_gdsayadume_datsubaiptnno";
+
+    /**
+     * 脱ﾊﾞｲｻﾔ枚数
+     */
+    public static final String DATSUBAISAYAMAISUU = "sr_gdsayadume_datsubaisayamaisuu";
+
+    /**
+     * 脱ﾊﾞｲ開始日
+     */
+    public static final String DATSUBAI_KAISHI_DAY = "sr_gdsayadume_datsubai_kaishi_day";
+
+    /**
+     * 脱ﾊﾞｲ開始時刻
+     */
+    public static final String DATSUBAI_KAISHI_TIME = "sr_gdsayadume_datsubai_kaishi_time";
+
+    /**
+     * 脱ﾊﾞｲ開始担当者
+     */
+    public static final String DATSUBAISTARTTANTOSYACODE = "sr_gdsayadume_datsubaistarttantosyacode";
+
+    /**
+     * 脱ﾊﾞｲ開始確認者
+     */
+    public static final String DATSUBAISTARTKAKUNINSYACODE = "sr_gdsayadume_datsubaistartkakuninsyacode";
+
+    /**
+     * 脱ﾊﾞｲ終了日
+     */
+    public static final String DATSUBAI_SHURYOU_DAY = "sr_gdsayadume_datsubai_shuryou_day";
+
+    /**
+     * 脱ﾊﾞｲ終了時刻
+     */
+    public static final String DATSUBAI_SHURYOU_TIME = "sr_gdsayadume_datsubai_shuryou_time";
+
+    /**
+     * 脱ﾊﾞｲ終了担当者
+     */
+    public static final String DATSUBAIENDTANTOSYACODE = "sr_gdsayadume_datsubaiendtantosyacode";
+
+    /**
+     * 焼成号機
+     */
+    public static final String GOURO1 = "sr_gdsayadume_gouro1";
+
+    /**
+     * 焼成温度
+     */
+    public static final String PEAKONDO = "sr_gdsayadume_peakondo";
+
+    /**
+     * 焼成送りｽﾋﾟｰﾄﾞ
+     */
+    public static final String OKURISPEED = "sr_gdsayadume_okurispeed";
+
+    /**
+     * 焼成開始日
+     */
+    public static final String NYUURO_KAISHI_DAY = "sr_gdsayadume_nyuuro_kaishi_day";
+
+    /**
+     * 焼成開始時間
+     */
+    public static final String NYUURO_KAISHI_TIME = "sr_gdsayadume_nyuuro_kaishi_time";
+
+    /**
+     * 焼成開始担当者
+     */
+    public static final String TANTOUSYA1 = "sr_gdsayadume_tantousya1";
+
+    /**
+     * 焼成開始確認者
+     */
+    public static final String SYOSEISTARTKAKUNINSYACODE = "sr_gdsayadume_syoseistartkakuninsyacode";
+
+    /**
+     * 焼成終了日
+     */
+    public static final String SYUTSURO_SHURYOU_DAY = "sr_gdsayadume_syutsuro_shuryou_day";
+
+    /**
+     * 焼成終了時間
+     */
+    public static final String SYUTSURO_SHURYOU_TIME = "sr_gdsayadume_syutsuro_shuryou_time";
+
+    /**
+     * 焼成終了担当者
+     */
+    public static final String SYOSEIENDTANTOSYACODE = "sr_gdsayadume_syoseiendtantosyacode";
+
+    /**
+     * 外観
+     */
+    public static final String GAIKAN = "sr_gdsayadume_gaikan";
+
+    /**
+     * 良品重量
+     */
+    public static final String ABEGGRYOHINJYURYO = "sr_gdsayadume_abeggryohinjyuryo";
+
+    /**
+     * 不良重量
+     */
+    public static final String ABEGGFURYOJYURYO = "sr_gdsayadume_abeggfuryojyuryo";
+
+    /**
+     * 不良率
+     */
+    public static final String ABEGGFURYORITU = "sr_gdsayadume_abeggfuryoritu";
+
+    /**
+     * 外観確認日
+     */
+    public static final String GAIKAN_KAKUNIN_DAY = "sr_gdsayadume_gaikan_kakunin_day";
+
+    /**
+     * 外観確認時刻
+     */
+    public static final String GAIKAN_KAKUNIN_TIME = "sr_gdsayadume_gaikan_kakunin_time";
+
+    /**
+     * 外観確認担当者
+     */
+    public static final String GAIKANTANTOSYA = "sr_gdsayadume_gaikantantosya";
+
+    /**
      * 備考1
      */
     public static final String BIKO1 = "sr_gdsayadume_biko1";
@@ -193,12 +343,12 @@ public class GXHDO101B027Const {
     public static final String BTN_DELETE_TOP = "sr_gdsayadume_delete_Top";
 
     /**
-     * 開始日時(画面上)
+     * ｻﾔ詰め開始日時(画面上)
      */
     public static final String BTN_START_DATETIME_TOP = "sr_gdsayadume_startdatetime_Top";
 
     /**
-     * 終了日時(画面上)
+     * ｻﾔ詰め終了日時(画面上)
      */
     public static final String BTN_END_DATETIME_TOP = "sr_gdsayadume_enddatetime_Top";
     
@@ -233,6 +383,31 @@ public class GXHDO101B027Const {
     public static final String BTN_SAYAJUURYOUU_CLEAR_TOP = "sr_gdsayadume_sayajuuryouu_clear_Top";
 
     /**
+     * 脱ﾊﾞｲ開始日時(画面上)
+     */
+    public static final String BTN_DATSUBAI_STARTDATETIME_TOP = "sr_gdsayadume_datsubai_startdatetime_Top";
+
+    /**
+     * 脱ﾊﾞｲ終了日時(画面上)
+     */
+    public static final String BTN_DATSUBAI_ENDDATETIME_TOP = "sr_gdsayadume_datsubai_enddatetime_Top";
+
+    /**
+     * 焼成開始日時(画面上)
+     */
+    public static final String BTN_NYUURO_STARTDATETIME_TOP = "sr_gdsayadume_nyuuro_startdatetime_Top";
+
+    /**
+     * 焼成終了日時(画面上)
+     */
+    public static final String BTN_SYUTSURO_ENDDATETIME_TOP = "sr_gdsayadume_syutsuro_enddatetime_Top";
+
+    /**
+     * 外観確認日時(画面上)
+     */
+    public static final String BTN_GAIKAN_KAKUNIN_DATETIME_TOP = "sr_gdsayadume_gaikan_kakunin_datetime_Top";
+
+    /**
      * 仮登録(画面下)
      */
     public static final String BTN_KARI_TOUROKU_BOTTOM = "sr_gdsayadume_kari_touroku_Bottom";
@@ -258,12 +433,12 @@ public class GXHDO101B027Const {
     public static final String BTN_DELETE_BOTTOM = "sr_gdsayadume_delete_Bottom";
 
     /**
-     * 開始日時(画面下)
+     * ｻﾔ詰め開始日時(画面下)
      */
     public static final String BTN_START_DATETIME_BOTTOM = "sr_gdsayadume_startdatetime_Bottom";
 
     /**
-     * 終了日時(画面下)
+     * ｻﾔ詰め終了日時(画面下)
      */
     public static final String BTN_END_DATETIME_BOTTOM = "sr_gdsayadume_enddatetime_Bottom";
 
@@ -296,6 +471,31 @@ public class GXHDO101B027Const {
      * さや重量ｸﾘｱ(画面下)
      */
     public static final String BTN_SAYAJUURYOUU_CLEAR_BOTTOM = "sr_gdsayadume_sayajuuryouu_clear_Bottom";
+
+    /**
+     * 脱ﾊﾞｲ開始日時(画面下)
+     */
+    public static final String BTN_DATSUBAI_STARTDATETIME_BOTTOM = "sr_gdsayadume_datsubai_startdatetime_Bottom";
+
+    /**
+     * 脱ﾊﾞｲ終了日時(画面下)
+     */
+    public static final String BTN_DATSUBAI_ENDDATETIME_BOTTOM = "sr_gdsayadume_datsubai_enddatetime_Bottom";
+
+    /**
+     * 焼成開始日時(画面下)
+     */
+    public static final String BTN_NYUURO_STARTDATETIME_BOTTOM = "sr_gdsayadume_nyuuro_startdatetime_Bottom";
+
+    /**
+     * 焼成終了日時(画面下)
+     */
+    public static final String BTN_SYUTSURO_ENDDATETIME_BOTTOM = "sr_gdsayadume_syutsuro_enddatetime_Bottom";
+
+    /**
+     * 外観確認日時(画面下)
+     */
+    public static final String BTN_GAIKAN_KAKUNIN_DATETIME_BOTTOM = "sr_gdsayadume_gaikan_kakunin_datetime_Bottom";
 
     /**
      * ユーザー認証パラメータ(修正)

@@ -17,6 +17,12 @@ import java.sql.Timestamp;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
+ * <br>
+ * 変更日	2020/09/11<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -37,7 +43,7 @@ public class GXHDO201B027Model implements Serializable{
     private String kcpno = "";
 
     /** 客先 */
-    private String tokuisaki = "";
+    private String kyakusaki = "";
 
     /** ﾛｯﾄ区分 */
     private String lotkubuncode = "";
@@ -49,7 +55,7 @@ public class GXHDO201B027Model implements Serializable{
     private String lotpre = "";
 
     /** 処理数 */
-    private Integer syorisuu = null;
+    private Integer suuryou = null;
 
     /** ｻﾔ詰め方法 */
     private String sayadumehouhou = "";
@@ -57,8 +63,11 @@ public class GXHDO201B027Model implements Serializable{
     /** 粉まぶし */
     private String konamabushi = "";
 
+    /** 塗布重量 */
+    private BigDecimal dipjuryou = null;
+
     /** 製品重量 */
-    private BigDecimal juryou = null;
+    private BigDecimal soujyuuryou = null;
 
     /** BN粉末量 */
     private BigDecimal bnfunmaturyou = null;
@@ -85,28 +94,100 @@ public class GXHDO201B027Model implements Serializable{
     private Integer sayamaisuu = null;
 
     /** ｻﾔ/SUS板ﾁｬｰｼﾞ量 */
-    private Integer saysusacharge = null;
+    private Integer sayachargeryou = null;
 
     /** ｻﾔ/SUS板詰め開始日時 */
-    private Timestamp startdatetime = null;
+    private Timestamp sayadumebi = null;
 
     /** ｻﾔ/SUS板詰め開始担当者 */
-    private String starttantosyacode = "";
+    private String sayadumetantousya = "";
 
     /** ｻﾔ/SUS板詰め開始確認者 */
-    private String startkakuninsyacode = "";
+    private String sayadumekakuninsya = "";
 
     /** ｻﾔ/SUS板詰め終了日時 */
-    private Timestamp enddatetime = null;
+    private Timestamp sayadumeendnichiji = null;
 
     /** ｻﾔ/SUS板詰め終了担当者 */
-    private String endtantosyacode = "";
+    private String sayadumesyuryosya = "";
+
+    /** 脱ﾊﾞｲ号機 */
+    private String datsubaigouki = "";
+
+    /** 脱ﾊﾞｲ温度 */
+    private String datsubaiondo = "";
+
+    /** 脱ﾊﾞｲ時間 */
+    private Integer datsubaijikan = null;
+
+    /** 脱ﾊﾞｲPTNNO */
+    private String datsubaiptnno = "";
+
+    /** 脱ﾊﾞｲｻﾔ枚数 */
+    private Integer datsubaisayamaisuu = null;
+
+    /** 脱ﾊﾞｲ開始日時 */
+    private Timestamp datsubaistartdatetime = null;
+
+    /** 脱ﾊﾞｲ開始担当者 */
+    private String datsubaistarttantosyacode = "";
+
+    /** 脱ﾊﾞｲ開始確認者 */
+    private String datsubaistartkakuninsyacode = "";
+
+    /** 脱ﾊﾞｲ終了日時 */
+    private Timestamp datsubaienddatetime = null;
+
+    /** 脱ﾊﾞｲ終了担当者 */
+    private String datsubaiendtantosyacode = "";
+
+    /** 焼成号機 */
+    private String gouro1 = "";
+
+    /** 焼成温度 */
+    private Integer peakondo = null;
+
+    /** 焼成送りｽﾋﾟｰﾄﾞ */
+    private String okurispeed = "";
+
+    /** 焼成開始日時 */
+    private Timestamp nyuuronichiji1 = null;
+
+    /** 焼成開始担当者 */
+    private String tantousya1 = "";
+
+    /** 焼成開始確認者 */
+    private String syoseistartkakuninsyacode = "";
+
+    /** 焼成終了日時 */
+    private Timestamp syutsuronichiji1 = null;
+
+    /** 焼成終了担当者 */
+    private String syoseiendtantosyacode = "";
+
+    /** 外観 */
+    private String gaikan = "";
+
+    /** 良品重量 */
+    private BigDecimal abeggryohinjyuryo = null;
+
+    /** 不良重量 */
+    private BigDecimal abeggfuryojyuryo = null;
+
+    /** 不良率 */
+    private BigDecimal abeggfuryoritu = null;
+
+    /** 外観確認日時 */
+    private Timestamp gaikankakuninnichiji = null;
+
+    /** 外観確認担当者 */
+    private String gaikantantosya = "";
 
     /** 備考1 */
-    private String biko1 = "";
+    private String bikou1 = "";
 
     /** 備考2 */
-    private String biko2 = "";
+    private String bikou2 = "";
 
     /**
      * @return lotno
@@ -151,17 +232,17 @@ public class GXHDO201B027Model implements Serializable{
     }
 
     /**
-     * @return tokuisaki
+     * @return kyakusaki
      */
-    public String getTokuisaki() {
-        return tokuisaki;
+    public String getKyakusaki() {
+        return kyakusaki;
     }
 
     /**
-     * @param tokuisaki tokuisaki
+     * @param kyakusaki kyakusaki
      */
-    public void setTokuisaki(String tokuisaki) {
-        this.tokuisaki = tokuisaki;
+    public void setKyakusaki(String kyakusaki) {
+        this.kyakusaki = kyakusaki;
     }
 
     /**
@@ -207,17 +288,17 @@ public class GXHDO201B027Model implements Serializable{
     }
 
     /**
-     * @return syorisuu
+     * @return suuryou
      */
-    public Integer getSyorisuu() {
-        return syorisuu;
+    public Integer getSuuryou() {
+        return suuryou;
     }
 
     /**
-     * @param syorisuu syorisuu
+     * @param suuryou suuryou
      */
-    public void setSyorisuu(Integer syorisuu) {
-        this.syorisuu = syorisuu;
+    public void setSuuryou(Integer suuryou) {
+        this.suuryou = suuryou;
     }
 
     /**
@@ -249,17 +330,31 @@ public class GXHDO201B027Model implements Serializable{
     }
 
     /**
-     * @return juryou
+     * @return dipjuryou
      */
-    public BigDecimal getJuryou() {
-        return juryou;
+    public BigDecimal getDipjuryou() {
+        return dipjuryou;
     }
 
     /**
-     * @param juryou juryou
+     * @param dipjuryou 
      */
-    public void setJuryou(BigDecimal juryou) {
-        this.juryou = juryou;
+    public void setDipjuryou(BigDecimal dipjuryou) {
+        this.dipjuryou = dipjuryou;
+    }
+
+    /**
+     * @return soujyuuryou
+     */
+    public BigDecimal getSoujyuuryou() {
+        return soujyuuryou;
+    }
+
+    /**
+     * @param soujyuuryou soujyuuryou
+     */
+    public void setSoujyuuryou(BigDecimal soujyuuryou) {
+        this.soujyuuryou = soujyuuryou;
     }
 
     /**
@@ -375,115 +470,451 @@ public class GXHDO201B027Model implements Serializable{
     }
 
     /**
-     * @return saysusacharge
+     * @return sayachargeryou
      */
-    public Integer getSaysusacharge() {
-        return saysusacharge;
+    public Integer getSayachargeryou() {
+        return sayachargeryou;
     }
 
     /**
-     * @param saysusacharge saysusacharge
+     * @param sayachargeryou sayachargeryou
      */
-    public void setSaysusacharge(Integer saysusacharge) {
-        this.saysusacharge = saysusacharge;
+    public void setSayachargeryou(Integer sayachargeryou) {
+        this.sayachargeryou = sayachargeryou;
     }
 
     /**
-     * @return startdatetime
+     * @return sayadumebi
      */
-    public Timestamp getStartdatetime() {
-        return startdatetime;
+    public Timestamp getSayadumebi() {
+        return sayadumebi;
     }
 
     /**
-     * @param startdatetime startdatetime
+     * @param sayadumebi sayadumebi
      */
-    public void setStartdatetime(Timestamp startdatetime) {
-        this.startdatetime = startdatetime;
+    public void setSayadumebi(Timestamp sayadumebi) {
+        this.sayadumebi = sayadumebi;
     }
 
     /**
-     * @return starttantosyacode
+     * @return sayadumetantousya
      */
-    public String getStarttantosyacode() {
-        return starttantosyacode;
+    public String getSayadumetantousya() {
+        return sayadumetantousya;
     }
 
     /**
-     * @param starttantosyacode starttantosyacode
+     * @param sayadumetantousya sayadumetantousya
      */
-    public void setStarttantosyacode(String starttantosyacode) {
-        this.starttantosyacode = starttantosyacode;
+    public void setSayadumetantousya(String sayadumetantousya) {
+        this.sayadumetantousya = sayadumetantousya;
     }
 
     /**
-     * @return startkakuninsyacode
+     * @return sayadumekakuninsya
      */
-    public String getStartkakuninsyacode() {
-        return startkakuninsyacode;
+    public String getSayadumekakuninsya() {
+        return sayadumekakuninsya;
     }
 
     /**
-     * @param startkakuninsyacode startkakuninsyacode
+     * @param sayadumekakuninsya sayadumekakuninsya
      */
-    public void setStartkakuninsyacode(String startkakuninsyacode) {
-        this.startkakuninsyacode = startkakuninsyacode;
+    public void setSayadumekakuninsya(String sayadumekakuninsya) {
+        this.sayadumekakuninsya = sayadumekakuninsya;
     }
 
     /**
-     * @return enddatetime
+     * @return sayadumeendnichiji
      */
-    public Timestamp getEnddatetime() {
-        return enddatetime;
+    public Timestamp getSayadumeendnichiji() {
+        return sayadumeendnichiji;
     }
 
     /**
-     * @param enddatetime enddatetime
+     * @param sayadumeendnichiji sayadumeendnichiji
      */
-    public void setEnddatetime(Timestamp enddatetime) {
-        this.enddatetime = enddatetime;
+    public void setSayadumeendnichiji(Timestamp sayadumeendnichiji) {
+        this.sayadumeendnichiji = sayadumeendnichiji;
     }
 
     /**
-     * @return endtantosyacode
+     * @return sayadumesyuryosya
      */
-    public String getEndtantosyacode() {
-        return endtantosyacode;
+    public String getSayadumesyuryosya() {
+        return sayadumesyuryosya;
     }
 
     /**
-     * @param endtantosyacode endtantosyacode
+     * @param sayadumesyuryosya sayadumesyuryosya
      */
-    public void setEndtantosyacode(String endtantosyacode) {
-        this.endtantosyacode = endtantosyacode;
+    public void setSayadumesyuryosya(String sayadumesyuryosya) {
+        this.sayadumesyuryosya = sayadumesyuryosya;
     }
 
     /**
-     * @return biko1
+     * @return datsubaigouki
      */
-    public String getBiko1() {
-        return biko1;
+    public String getDatsubaigouki() {
+        return datsubaigouki;
     }
 
     /**
-     * @param biko1 biko1
+     * @param datsubaigouki 
      */
-    public void setBiko1(String biko1) {
-        this.biko1 = biko1;
+    public void setDatsubaigouki(String datsubaigouki) {
+        this.datsubaigouki = datsubaigouki;
     }
 
     /**
-     * @return biko2
+     * @return datsubaiondo
      */
-    public String getBiko2() {
-        return biko2;
+    public String getDatsubaiondo() {
+        return datsubaiondo;
     }
 
     /**
-     * @param biko2 biko2
+     * @param datsubaiondo
      */
-    public void setBiko2(String biko2) {
-        this.biko2 = biko2;
+    public void setDatsubaiondo(String datsubaiondo) {
+        this.datsubaiondo = datsubaiondo;
+    }
+
+    /**
+     * @return datsubaijikan
+     */
+    public Integer getDatsubaijikan() {
+        return datsubaijikan;
+    }
+
+    /**
+     * @param datsubaijikan
+     */
+    public void setDatsubaijikan(Integer datsubaijikan) {
+        this.datsubaijikan = datsubaijikan;
+    }
+
+    /**
+     * @return datsubaiptnno
+     */
+    public String getDatsubaiptnno() {
+        return datsubaiptnno;
+    }
+
+    /**
+     * @param datsubaiptnno
+     */
+    public void setDatsubaiptnno(String datsubaiptnno) {
+        this.datsubaiptnno = datsubaiptnno;
+    }
+
+    /**
+     * @return datsubaisayamaisuu
+     */
+    public Integer getDatsubaisayamaisuu() {
+        return datsubaisayamaisuu;
+    }
+
+    /**
+     * @param datsubaisayamaisuu
+     */
+    public void setDatsubaisayamaisuu(Integer datsubaisayamaisuu) {
+        this.datsubaisayamaisuu = datsubaisayamaisuu;
+    }
+
+    /**
+     * @return datsubaistartdatetime
+     */
+    public Timestamp getDatsubaistartdatetime() {
+        return datsubaistartdatetime;
+    }
+
+    /**
+     * @param datsubaistartdatetime
+     */
+    public void setDatsubaistartdatetime(Timestamp datsubaistartdatetime) {
+        this.datsubaistartdatetime = datsubaistartdatetime;
+    }
+
+    /**
+     * @return datsubaistarttantosyacode
+     */
+    public String getDatsubaistarttantosyacode() {
+        return datsubaistarttantosyacode;
+    }
+
+    /**
+     * @param datsubaistarttantosyacode
+     */
+    public void setDatsubaistarttantosyacode(String datsubaistarttantosyacode) {
+        this.datsubaistarttantosyacode = datsubaistarttantosyacode;
+    }
+
+    /**
+     * @return datsubaistartkakuninsyacode
+     */
+    public String getDatsubaistartkakuninsyacode() {
+        return datsubaistartkakuninsyacode;
+    }
+
+    /**
+     * @param datsubaistartkakuninsyacode
+     */
+    public void setDatsubaistartkakuninsyacode(String datsubaistartkakuninsyacode) {
+        this.datsubaistartkakuninsyacode = datsubaistartkakuninsyacode;
+    }
+
+    /**
+     * @return datsubaienddatetime
+     */
+    public Timestamp getDatsubaienddatetime() {
+        return datsubaienddatetime;
+    }
+
+    /**
+     * @param datsubaienddatetime
+     */
+    public void setDatsubaienddatetime(Timestamp datsubaienddatetime) {
+        this.datsubaienddatetime = datsubaienddatetime;
+    }
+
+    /**
+     * @return datsubaiendtantosyacode
+     */
+    public String getDatsubaiendtantosyacode() {
+        return datsubaiendtantosyacode;
+    }
+
+    /**
+     * @param datsubaiendtantosyacode
+     */
+    public void setDatsubaiendtantosyacode(String datsubaiendtantosyacode) {
+        this.datsubaiendtantosyacode = datsubaiendtantosyacode;
+    }
+
+    /**
+     * @return gouro1
+     */
+    public String getGouro1() {
+        return gouro1;
+    }
+
+    /**
+     * @param gouro1
+     */
+    public void setGouro1(String gouro1) {
+        this.gouro1 = gouro1;
+    }
+
+    /**
+     * @return peakondo
+     */
+    public Integer getPeakondo() {
+        return peakondo;
+    }
+
+    /**
+     * @param peakondo
+     */
+    public void setPeakondo(Integer peakondo) {
+        this.peakondo = peakondo;
+    }
+
+    /**
+     * @return okurispeed
+     */
+    public String getOkurispeed() {
+        return okurispeed;
+    }
+
+    /**
+     * @param okurispeed
+     */
+    public void setOkurispeed(String okurispeed) {
+        this.okurispeed = okurispeed;
+    }
+
+    /**
+     * @return nyuuronichiji1
+     */
+    public Timestamp getNyuuronichiji1() {
+        return nyuuronichiji1;
+    }
+
+    /**
+     * @param nyuuronichiji1
+     */
+    public void setNyuuronichiji1(Timestamp nyuuronichiji1) {
+        this.nyuuronichiji1 = nyuuronichiji1;
+    }
+
+    /**
+     * @return tantousya1
+     */
+    public String getTantousya1() {
+        return tantousya1;
+    }
+
+    /**
+     * @param tantousya1
+     */
+    public void setTantousya1(String tantousya1) {
+        this.tantousya1 = tantousya1;
+    }
+
+    /**
+     * @return syoseistartkakuninsyacode
+     */
+    public String getSyoseistartkakuninsyacode() {
+        return syoseistartkakuninsyacode;
+    }
+
+    /**
+     * @param syoseistartkakuninsyacode
+     */
+    public void setSyoseistartkakuninsyacode(String syoseistartkakuninsyacode) {
+        this.syoseistartkakuninsyacode = syoseistartkakuninsyacode;
+    }
+
+    /**
+     * @return syutsuronichiji1
+     */
+    public Timestamp getSyutsuronichiji1() {
+        return syutsuronichiji1;
+    }
+
+    /**
+     * @param syutsuronichiji1
+     */
+    public void setSyutsuronichiji1(Timestamp syutsuronichiji1) {
+        this.syutsuronichiji1 = syutsuronichiji1;
+    }
+
+    /**
+     * @return syoseiendtantosyacode
+     */
+    public String getSyoseiendtantosyacode() {
+        return syoseiendtantosyacode;
+    }
+
+    /**
+     * @param syoseiendtantosyacode
+     */
+    public void setSyoseiendtantosyacode(String syoseiendtantosyacode) {
+        this.syoseiendtantosyacode = syoseiendtantosyacode;
+    }
+
+    /**
+     * @return gaikan
+     */
+    public String getGaikan() {
+        return gaikan;
+    }
+
+    /**
+     * @param gaikan
+     */
+    public void setGaikan(String gaikan) {
+        this.gaikan = gaikan;
+    }
+
+    /**
+     * @return abeggryohinjyuryo
+     */
+    public BigDecimal getAbeggryohinjyuryo() {
+        return abeggryohinjyuryo;
+    }
+
+    /**
+     * @param abeggryohinjyuryo
+     */
+    public void setAbeggryohinjyuryo(BigDecimal abeggryohinjyuryo) {
+        this.abeggryohinjyuryo = abeggryohinjyuryo;
+    }
+
+    /**
+     * @return abeggfuryojyuryo
+     */
+    public BigDecimal getAbeggfuryojyuryo() {
+        return abeggfuryojyuryo;
+    }
+
+    /**
+     * @param abeggfuryojyuryo
+     */
+    public void setAbeggfuryojyuryo(BigDecimal abeggfuryojyuryo) {
+        this.abeggfuryojyuryo = abeggfuryojyuryo;
+    }
+
+    /**
+     * @return abeggfuryoritu
+     */
+    public BigDecimal getAbeggfuryoritu() {
+        return abeggfuryoritu;
+    }
+
+    /**
+     * @param abeggfuryoritu
+     */
+    public void setAbeggfuryoritu(BigDecimal abeggfuryoritu) {
+        this.abeggfuryoritu = abeggfuryoritu;
+    }
+
+    /**
+     * @return gaikankakuninnichiji
+     */
+    public Timestamp getGaikankakuninnichiji() {
+        return gaikankakuninnichiji;
+    }
+
+    /**
+     * @param gaikankakuninnichiji
+     */
+    public void setGaikankakuninnichiji(Timestamp gaikankakuninnichiji) {
+        this.gaikankakuninnichiji = gaikankakuninnichiji;
+    }
+
+    /**
+     * @return gaikantantosya
+     */
+    public String getGaikantantosya() {
+        return gaikantantosya;
+    }
+
+    /**
+     * @param gaikantantosya
+     */
+    public void setGaikantantosya(String gaikantantosya) {
+        this.gaikantantosya = gaikantantosya;
+    }
+
+    /**
+     * @return bikou1
+     */
+    public String getBikou1() {
+        return bikou1;
+    }
+
+    /**
+     * @param bikou1 bikou1
+     */
+    public void setBikou1(String bikou1) {
+        this.bikou1 = bikou1;
+    }
+
+    /**
+     * @return bikou2
+     */
+    public String getBikou2() {
+        return bikou2;
+    }
+
+    /**
+     * @param bikou2 bikou2
+     */
+    public void setBikou2(String bikou2) {
+        this.bikou2 = bikou2;
     }
 
 }

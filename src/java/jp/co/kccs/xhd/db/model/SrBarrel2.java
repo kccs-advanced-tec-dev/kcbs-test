@@ -1,296 +1,300 @@
 /*
- * Copyright 2019 Kyocera Communication Systems Co., Ltd All rights reserved.
+ * Copyright 2020 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
-package jp.co.kccs.xhd.model;
+package jp.co.kccs.xhd.db.model;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
  * ===============================================================================<br>
  * <br>
- * システム名	品質情報管理システム<br>
- * <br>
- * 変更日	2019/11/07<br>
- * 計画書No	K1811-DS001<br>
- * 変更者	KCSS K.Jo<br>
- * 変更理由	新規作成<br>
+ * システム名	品質DB(コンデンサ)<br>
  * <br>
  * 変更日	2020/09/10<br>
  * 計画書No	MB2008-DK001<br>
  * 変更者	KCSS K.Jo<br>
- * 変更理由	改修対応<br>
+ * 変更理由	新規作成<br>
  * <br>
  * ===============================================================================<br>
  */
 /**
- * 外部電極・外部電極洗浄(超音波)履歴検索画面のモデルクラスです。
+ * 外部電極洗浄(超音波)のモデルクラスです。
  *
  * @author KCSS K.Jo
- * @since  2019/11/07
+ * @since  2020/09/10
  */
-public class GXHDO201B034Model implements Serializable{
+public class SrBarrel2 {
 
     /**
      * 工場ｺｰﾄﾞ
      */
-    private String kojyo = "";
+    private String kojyo;
 
     /**
      * ﾛｯﾄNo
      */
-    private String lotno = "";
+    private String lotno;
 
     /**
      * 枝番
      */
-    private String edaban = "";
+    private String edaban;
     
     /**
      * 作業回数
      */
-    private Integer kaisuu = null;
+    private Integer kaisuu;
 
     /**
      * ﾛｯﾄﾌﾟﾚ
      */
-    private String lotpre = "";
+    private String lotpre;
 
     /**
      * KCPNO
      */
-    private String kcpno = "";
+    private String kcpno;
 
     /**
      * 処理数
      */
-    private Integer suuryou = null;
+    private Integer suuryou;
 
     /**
      * 客先
      */
-    private String kyakusaki = "";
+    private String kyakusaki;
 
     /**
      * ｽﾃﾝﾊﾞｯﾄ数
      */
-    private Integer potsuu = null;
+    private Integer potsuu;
 
     /**
      * ﾎﾟｯﾄ投入時間
      */
-    private String pottounyuujikan = "";
+    private String pottounyuujikan;
 
     /**
      * 超音波開始担当者
      */
-    private String potkaitentantousya = "";
+    private String potkaitentantousya;
 
     /**
      * 洗浄号機1
      */
-    private String potkaitengouki = "";
+    private String potkaitengouki;
 
     /**
      * 洗浄時間
      */
-    private String potkaitenjikan = "";
+    private String potkaitenjikan;
 
     /**
      * 超音波開始日時
      */
-    private Timestamp potkaitenkaishinichiji = null;
+    private Timestamp potkaitenkaishinichiji;
 
     /**
      * 超音波終了日時
      */
-    private Timestamp potkaitensyuuryounichiji = null;
+    private Timestamp potkaitensyuuryounichiji;
 
     /**
      * ﾒﾀﾉｰﾙ交換時間
      */
-    private String methanolkoukanjikan = "";
+    private String methanolkoukanjikan;
 
     /**
      * ﾒﾀﾉｰﾙ交換担当者
      */
-    private String methanolkoukantantousya = "";
+    private String methanolkoukantantousya;
 
     /**
      * ﾒﾀﾉｰﾙ交換ポット累計数
      */
-    private Integer methanolkoukanpotruikeisuu = null;
+    private Integer methanolkoukanpotruikeisuu;
 
     /**
      * ﾊﾞﾗｼ洗浄時間
      */
-    private String barashisenjyoujikan = "";
+    private String barashisenjyoujikan;
 
     /**
      * ﾊﾞﾗｼ終了時間
      */
-    private String barashisyuuryoujikan = "";
+    private String barashisyuuryoujikan;
 
     /**
      * 乾燥号機
      */
-    private String kansougouki = "";
+    private String kansougouki;
 
     /**
      * 乾燥開始日時
      */
-    private Timestamp kansoukaishinichiji = null;
+    private Timestamp kansoukaishinichiji;
 
     /**
      * 乾燥終了日時
      */
-    private Timestamp kansousyuuryounichiji = null;
+    private Timestamp kansousyuuryounichiji;
 
     /**
      * 乾燥開始担当者
      */
-    private String kansoutantousya = "";
+    private String kansoutantousya;
 
     /**
      * ｻﾝﾌﾟﾙ
      */
-    private String sample = "";
+    private String sample;
 
     /**
      * 端面外観ﾁｪｯｸ ﾋﾟﾝﾎｰﾙ
      */
-    private Integer tanmenpinholecheck = null;
+    private Integer tanmenpinholecheck;
 
     /**
      * 端面外観ﾁｪｯｸ ﾍﾟｰｽﾄ不足
      */
-    private Integer tanmenpastefusokucheck = null;
+    private Integer tanmenpastefusokucheck;
 
     /**
      * 端面外観ﾁｪｯｸ ﾌﾞﾛｯﾄ無
      */
-    private Integer tanmenbulotnashicheck = null;
+    private Integer tanmenbulotnashicheck;
 
     /**
      * 端面外観ﾁｪｯｸ DIP無	
      */
-    private Integer tanmendipnashicheck = null;
+    private Integer tanmendipnashicheck;
 
     /**
      * 端面外観ﾁｪｯｸ ｸﾗｯｸ
      */
-    private Integer tanmencrackcheck = null;
+    private Integer tanmencrackcheck;
 
     /**
      * 端面外観ﾁｪｯｸ 端面ﾊｶﾞﾚ
      */
-    private Integer tanmenhagarecheck = null;
+    private Integer tanmenhagarecheck;
 
     /**
      * 端面外観ﾁｪｯｸ 1次電極露出
      */
-    private Integer tanmendenkyokurosyutsucheck = null;
+    private Integer tanmendenkyokurosyutsucheck;
 
     /**
      * 乾燥外観
      */
-    private String hantei = "";
+    private String hantei;
 
     /**
      * ﾊﾟﾀｰﾝNo
      */
-    private String patternno = "";
+    private String patternno;
 
     /**
      * 備考1
      */
-    private String bikou1 = "";
+    private String bikou1;
 
     /**
      * 備考2
      */
-    private String bikou2 = "";
+    private String bikou2;
 
     /**
      * 備考3
      */
-    private String bikou3 = "";
+    private String bikou3;
 
     /**
      * 実績No
      */
-    private Integer jissekino = null;
+    private Integer jissekino;
 
     /**
      * 登録日時
      */
-    private Timestamp tourokunichiji = null;
+    private Timestamp tourokunichiji;
 
     /**
      * 更新日時
      */
-    private Timestamp koushinnichiji = null;
+    private Timestamp koushinnichiji;
 
     /**
      * ﾛｯﾄ区分
      */
-    private String lotkubuncode = "";
+    private String lotkubuncode;
 
     /**
      * ｵｰﾅｰ
      */
-    private String ownercode = "";
+    private String ownercode;
 
     /**
      * 洗浄号機2
      */
-    private String gouki2 = "";
+    private String gouki2;
 
     /**
      * 洗浄号機3
      */
-    private String gouki3 = "";
+    private String gouki3;
 
     /**
      * 洗浄号機4	
      */
-    private String gouki4 = "";
+    private String gouki4;
 
     /**
      * 重量
      */
-    private BigDecimal juryou = null;
+    private BigDecimal juryou;
 
     /**
      * ﾁｬｰｼﾞ量
      */
-    private Integer chargeroyu = null;
+    private Integer chargeroyu;
 
     /**
      * 超音波開始確認者
      */
-    private String startkakuninsyacode = "";
+    private String startkakuninsyacode;
 
     /**
      * 超音波終了担当者
      */
-    private String endtantosyacode = "";
+    private String endtantosyacode;
 
     /**
      * 乾燥開始確認者
      */
-    private String kansostartkakuninsyacode = "";
+    private String kansostartkakuninsyacode;
 
     /**
      * 乾燥終了担当者
      */
-    private String kansoendtantosyacode = "";
+    private String kansoendtantosyacode;
 
     /**
      * 乾燥ﾌﾙｲ選別
      */
-    private String furuisenbetu = "";
+    private String furuisenbetu;
+
+    /**
+     * revision
+     */
+    private Long revision;
+
+    /**
+     * 削除ﾌﾗｸﾞ
+     */
+    private Integer deleteflag;
 
     public String getKojyo() {
         return kojyo;
@@ -708,5 +712,20 @@ public class GXHDO201B034Model implements Serializable{
         this.furuisenbetu = furuisenbetu;
     }
 
-}
+    public Long getRevision() {
+        return revision;
+    }
 
+    public void setRevision(Long revision) {
+        this.revision = revision;
+    }
+
+    public Integer getDeleteflag() {
+        return deleteflag;
+    }
+
+    public void setDeleteflag(Integer deleteflag) {
+        this.deleteflag = deleteflag;
+    }
+
+}

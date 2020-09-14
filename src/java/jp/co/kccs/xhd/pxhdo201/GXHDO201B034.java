@@ -61,6 +61,11 @@ import org.primefaces.context.RequestContext;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/09/13<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	改修対応<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -604,17 +609,17 @@ public class GXHDO201B034 implements Serializable {
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
             String sql = "SELECT COUNT(LOTNO) AS CNT "
-                    + "FROM sr_gdsenjou "
+                    + "FROM sr_barrel2 "
                     + "WHERE (? IS NULL OR KOJYO = ?) "
                     + "AND   (? IS NULL OR LOTNO = ?) "
                     + "AND   (? IS NULL OR EDABAN = ?) "
-                    + "AND   (? IS NULL OR STARTDATETIME >= ?) "
-                    + "AND   (? IS NULL OR STARTDATETIME <= ?) "
-                    + "AND   (? IS NULL OR ENDDATETIME >= ?) "
-                    + "AND   (? IS NULL OR ENDDATETIME <= ?) "
-                    + "AND   (? IS NULL OR STARTTANTOSYACODE = ?)"
+                    + "AND   (? IS NULL OR POTKAITENKAISHINICHIJI >= ?) "
+                    + "AND   (? IS NULL OR POTKAITENKAISHINICHIJI <= ?) "
+                    + "AND   (? IS NULL OR POTKAITENSYUURYOUNICHIJI >= ?) "
+                    + "AND   (? IS NULL OR POTKAITENSYUURYOUNICHIJI <= ?) "
+                    + "AND   (? IS NULL OR POTKAITENTANTOUSYA = ?)"
                     + "AND   (? IS NULL OR KCPNO LIKE ? ESCAPE '\\\\') "
-                    + "AND   (? IS NULL OR GOUKI = ?)";
+                    + "AND   (? IS NULL OR POTKAITENGOUKI = ?)";
 
             // パラメータ設定
             List<Object> params = createSearchParam();
@@ -639,65 +644,123 @@ public class GXHDO201B034 implements Serializable {
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
             String sql = "SELECT CONCAT(IFNULL(KOJYO, ''), IFNULL(LOTNO, ''), IFNULL(EDABAN, '')) AS LOTNO"
-                    + ", kaisuu "
-                    + ", kcpno "
-                    + ", tokuisaki "
-                    + ", lotkubuncode "
-                    + ", ownercode "
                     + ", lotpre "
-                    + ", syorisuu "
-                    + ", gouki "
-                    + ", jikan "
-                    + ", chargeroyu "
-                    + ", vatsuu "
+                    + ", kcpno "
+                    + ", suuryou "
+                    + ", kyakusaki "
+                    + ", potsuu "
+                    + ", pottounyuujikan "
+                    + ", potkaitentantousya "
+                    + ", potkaitengouki "
+                    + ", potkaitenjikan "
+                    + ", potkaitenkaishinichiji "
+                    + ", potkaitensyuuryounichiji "
                     + ", methanolkoukanjikan "
                     + ", methanolkoukantantousya "
-                    + ", startdatetime "
-                    + ", StartTantosyacode "
+                    + ", methanolkoukanpotruikeisuu "
+                    + ", barashisenjyoujikan "
+                    + ", barashisyuuryoujikan "
+                    + ", kansougouki "
+                    + ", kansoukaishinichiji "
+                    + ", kansousyuuryounichiji "
+                    + ", kansoutantousya "
+                    + ", sample "
+                    + ", tanmenpinholecheck "
+                    + ", tanmenpastefusokucheck "
+                    + ", tanmenbulotnashicheck "
+                    + ", tanmendipnashicheck "
+                    + ", tanmencrackcheck "
+                    + ", tanmenhagarecheck "
+                    + ", tanmendenkyokurosyutsucheck "
+                    + ", hantei "
+                    + ", patternno "
+                    + ", bikou1 "
+                    + ", bikou2 "
+                    + ", bikou3 "
+                    + ", jissekino "
+                    + ", tourokunichiji "
+                    + ", koushinnichiji "
+                    + ", lotkubuncode "
+                    + ", ownercode "
+                    + ", gouki2 "
+                    + ", gouki3 "
+                    + ", gouki4 "
+                    + ", juryou "
+                    + ", chargeroyu "
                     + ", StartKakuninsyacode "
-                    + ", enddatetime "
                     + ", EndTantosyacode "
-                    + ", biko1 "
-                    + ", biko2 "
-                    + "  FROM sr_gdsenjou "
+                    + ", kansoStartKakuninsyacode "
+                    + ", kansoEndTantosyacode "
+                    + ", furuisenbetu "
+                    + ", kaisuu "
+                    + "  FROM sr_barrel2 "
                     + " WHERE (? IS NULL OR KOJYO = ?) "
                     + " AND   (? IS NULL OR LOTNO = ?) "
                     + " AND   (? IS NULL OR EDABAN = ?) "
-                    + " AND   (? IS NULL OR STARTDATETIME >= ?) "
-                    + " AND   (? IS NULL OR STARTDATETIME <= ?) "
-                    + " AND   (? IS NULL OR ENDDATETIME >= ?) "
-                    + " AND   (? IS NULL OR ENDDATETIME <= ?) "
-                    + " AND   (? IS NULL OR STARTTANTOSYACODE = ?) "
+                    + " AND   (? IS NULL OR POTKAITENKAISHINICHIJI >= ?) "
+                    + " AND   (? IS NULL OR POTKAITENKAISHINICHIJI <= ?) "
+                    + " AND   (? IS NULL OR POTKAITENSYUURYOUNICHIJI >= ?) "
+                    + " AND   (? IS NULL OR POTKAITENSYUURYOUNICHIJI <= ?) "
+                    + " AND   (? IS NULL OR POTKAITENTANTOUSYA = ?) "
                     + " AND   (? IS NULL OR KCPNO LIKE ? ESCAPE '\\\\') "
-                    + " AND   (? IS NULL OR GOUKI = ?) "
-                    + " ORDER BY STARTDATETIME ";
+                    + " AND   (? IS NULL OR POTKAITENGOUKI = ?) "
+                    + " ORDER BY POTKAITENKAISHINICHIJI ";
             
             // パラメータ設定
             List<Object> params = createSearchParam();
             
             // モデルクラスとのマッピング定義
             Map<String, String> mapping = new HashMap<>();
-            mapping.put("LOTNO", "lotno");                                      // ﾛｯﾄNo.
-            mapping.put("kaisuu", "kaisuu");                                    // 回数
-            mapping.put("kcpno", "kcpno");                                      // KCPNO
-            mapping.put("tokuisaki", "tokuisaki");                              // 客先
-            mapping.put("lotkubuncode", "lotkubuncode");                        // ﾛｯﾄ区分
-            mapping.put("ownercode", "ownercode");                              // ｵｰﾅｰ
-            mapping.put("lotpre", "lotpre");                                    // ﾛｯﾄﾌﾟﾚ
-            mapping.put("syorisuu", "syorisuu");                                // 処理数
-            mapping.put("gouki", "gouki");                                      // 洗浄号機
-            mapping.put("jikan", "jikan");                                      // 洗浄時間
-            mapping.put("chargeroyu", "chargeroyu");                            // ﾁｬｰｼﾞ量
-            mapping.put("vatsuu", "vatsuu");                                    // ｽﾃﾝﾊﾞｯﾄ数
-            mapping.put("methanolkoukanjikan", "methanolkoukanjikan");          // ﾒﾀﾉｰﾙ交換時間
-            mapping.put("methanolkoukantantousya", "methanolkoukantantousya");  // ﾒﾀﾉｰﾙ交換担当者
-            mapping.put("startdatetime", "startdatetime");                      // 開始日時
-            mapping.put("StartTantosyacode", "starttantosyacode");              // 開始担当者
-            mapping.put("StartKakuninsyacode", "startkakuninsyacode");          // 開始確認者
-            mapping.put("enddatetime", "enddatetime");                          // 終了日時
-            mapping.put("EndTantosyacode", "endtantosyacode");                  // 終了担当者
-            mapping.put("biko1", "biko1");                                      // 備考1
-            mapping.put("biko2", "biko2");                                      // 備考2
+            mapping.put("LOTNO", "lotno");                                              // ﾛｯﾄNo.
+            mapping.put("lotpre", "lotpre");                                            // ﾛｯﾄﾌﾟﾚ
+            mapping.put("kcpno", "kcpno");                                              // KCPNO
+            mapping.put("suuryou", "suuryou");                                          // 処理数
+            mapping.put("kyakusaki", "kyakusaki");                                      // 客先
+            mapping.put("potsuu", "potsuu");                                            // ｽﾃﾝﾊﾞｯﾄ数
+            mapping.put("pottounyuujikan", "pottounyuujikan");                          // ﾎﾟｯﾄ投入時間
+            mapping.put("potkaitentantousya", "potkaitentantousya");                    // 超音波開始担当者
+            mapping.put("potkaitengouki", "potkaitengouki");                            // 洗浄号機1
+            mapping.put("potkaitenjikan", "potkaitenjikan");                            // 洗浄時間
+            mapping.put("potkaitenkaishinichiji", "potkaitenkaishinichiji");            // 超音波開始日時
+            mapping.put("potkaitensyuuryounichiji", "potkaitensyuuryounichiji");        // 超音波終了日時
+            mapping.put("methanolkoukanjikan", "methanolkoukanjikan");                  // ﾒﾀﾉｰﾙ交換時間
+            mapping.put("methanolkoukantantousya", "methanolkoukantantousya");          // ﾒﾀﾉｰﾙ交換担当者
+            mapping.put("methanolkoukanpotruikeisuu", "methanolkoukanpotruikeisuu");    // ﾒﾀﾉｰﾙ交換ポット累計数
+            mapping.put("barashisenjyoujikan", "barashisenjyoujikan");                  // ﾊﾞﾗｼ洗浄時間
+            mapping.put("barashisyuuryoujikan", "barashisyuuryoujikan");                // ﾊﾞﾗｼ終了時間
+            mapping.put("kansougouki", "kansougouki");                                  // 乾燥号機
+            mapping.put("kansoukaishinichiji", "kansoukaishinichiji");                  // 乾燥開始日時
+            mapping.put("kansousyuuryounichiji", "kansousyuuryounichiji");              // 乾燥終了日時
+            mapping.put("kansoutantousya", "kansoutantousya");                          // 乾燥開始担当者
+            mapping.put("sample", "sample");                                            // ｻﾝﾌﾟﾙ
+            mapping.put("tanmenpinholecheck", "tanmenpinholecheck");                    // 端面外観ﾁｪｯｸ ﾋﾟﾝﾎｰﾙ
+            mapping.put("tanmenpastefusokucheck", "tanmenpastefusokucheck");            // 端面外観ﾁｪｯｸ ﾍﾟｰｽﾄ不足
+            mapping.put("tanmenbulotnashicheck", "tanmenbulotnashicheck");              // 端面外観ﾁｪｯｸ ﾌﾞﾛｯﾄ無
+            mapping.put("tanmendipnashicheck", "tanmendipnashicheck");                  // 端面外観ﾁｪｯｸ DIP無
+            mapping.put("tanmencrackcheck", "tanmencrackcheck");                        // 端面外観ﾁｪｯｸ ｸﾗｯｸ
+            mapping.put("tanmenhagarecheck", "tanmenhagarecheck");                      // 端面外観ﾁｪｯｸ 端面ﾊｶﾞﾚ
+            mapping.put("tanmendenkyokurosyutsucheck", "tanmendenkyokurosyutsucheck");  // 端面外観ﾁｪｯｸ 1次電極露出
+            mapping.put("hantei", "hantei");                                            // 乾燥外観
+            mapping.put("patternno", "patternno");                                      // ﾊﾟﾀｰﾝNo
+            mapping.put("bikou1", "bikou1");                                            // 備考1
+            mapping.put("bikou2", "bikou2");                                            // 備考2
+            mapping.put("bikou3", "bikou3");                                            // 備考3
+            mapping.put("jissekino", "jissekino");                                      // 実績No
+            mapping.put("tourokunichiji", "tourokunichiji");                            // 登録日時
+            mapping.put("koushinnichiji", "koushinnichiji");                            // 更新日時
+            mapping.put("lotkubuncode", "lotkubuncode");                                // ﾛｯﾄ区分
+            mapping.put("ownercode", "ownercode");                                      // ｵｰﾅｰ
+            mapping.put("gouki2", "gouki2");                                            // 洗浄号機2
+            mapping.put("gouki3", "gouki3");                                            // 洗浄号機3
+            mapping.put("gouki4", "gouki4");                                            // 洗浄号機4
+            mapping.put("juryou", "juryou");                                            // 重量
+            mapping.put("chargeroyu", "chargeroyu");                                    // ﾁｬｰｼﾞ量
+            mapping.put("StartKakuninsyacode", "startkakuninsyacode");                  // 超音波開始確認者
+            mapping.put("EndTantosyacode", "endtantosyacode");                          // 超音波終了担当者
+            mapping.put("kansoStartKakuninsyacode", "kansostartkakuninsyacode");        // 乾燥開始確認者
+            mapping.put("kansoEndTantosyacode", "kansoendtantosyacode");                // 乾燥終了担当者
+            mapping.put("furuisenbetu", "furuisenbetu");                                // 乾燥ﾌﾙｲ選別
+            mapping.put("kaisuu", "kaisuu");                                            // 回数
 
             BeanProcessor beanProcessor = new BeanProcessor(mapping);
             RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
