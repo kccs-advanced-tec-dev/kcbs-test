@@ -16,6 +16,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.sql.DataSource;
 import jp.co.kccs.xhd.db.model.FXHDM01;
+import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
@@ -34,6 +35,11 @@ import org.primefaces.context.RequestContext;
  * 計画書No	K1811-DS001<br>
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
+ * <br>
+ * 変更日	2020/09/21<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	KCSS D.Yanagida<br>
+ * 変更理由	ロット混合対応<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -64,6 +70,12 @@ public class GXHDO101C012 implements Serializable {
      */
     @Resource(mappedName = "jdbc/qcdb")
     private transient DataSource dataSourceXHD;
+    
+    /**
+     * DataSource(wip)
+     */
+    @Resource(mappedName = "jdbc/wip")
+    private transient DataSource dataSourceWip;
     
     /**
      * 参照元ﾛｯﾄNo
@@ -314,6 +326,7 @@ public class GXHDO101C012 implements Serializable {
 
         QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);        
         QueryRunner queryRunnerDoc = new QueryRunner(dataSourceDocServer);
+        QueryRunner queryRunnerWip = new QueryRunner(dataSourceWip);
             
         // 入力チェック処理
         ValidateUtil validateUtil = new ValidateUtil();
@@ -344,7 +357,7 @@ public class GXHDO101C012 implements Serializable {
             //②ﾌﾟﾛｾｽ判定情報ﾁｪｯｸ
             // 設計.printfmt及び、設計.patternが同一であるかﾁｪｯｸする。
             // 1.Ⅲ.画面表示仕様(3)を発行する。
-            Map gamenInfo = getSekkeiInfoList(queryRunnerQcdb, strKojyo, strLotNo);            
+            Map gamenInfo = CommonUtil.getSekkeiInfoTogoLot(queryRunnerQcdb, queryRunnerWip, strKojyo, strLotNo, "001");            
             if(gamenInfo == null){
                 //  A.ﾚｺｰﾄﾞが取得出来なかった場合
                 //   ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。
@@ -461,26 +474,6 @@ public class GXHDO101C012 implements Serializable {
         this.setSanshousakiTextBackColor(DEFAULT_BACK_COLOR);
     }
     
-    /**
-     * [設計]から、ﾃﾞｰﾀを取得(設計.printfmt,設計.pattern)
-     *
-     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
-     * @param lotNo ﾛｯﾄNo(検索キー)
-     * @return 取得データ
-     * @throws SQLException 例外エラー
-     */
-    private Map getSekkeiInfoList(QueryRunner queryRunnerQcdb, String kojyo, String lotNo) throws SQLException {
-
-        String sql = "SELECT PrintFmt,PATTERN FROM da_sekkei WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
-        List<Object> params = new ArrayList<>();
-        params.add(kojyo);
-        params.add(lotNo);
-        params.add("001");
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
-    }
-
     /**
      * [品質DB登録実績]から、ﾃﾞｰﾀを取得(印刷工程入力ﾃﾞｰﾀ取得)
      *

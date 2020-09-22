@@ -70,6 +70,11 @@ import org.primefaces.context.RequestContext;
  * 変更者 SYSNAVI K.Hisanaga<br>
  * 変更理由 新規作成<br>
  * <br>
+ * 変更日	2020/09/21<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	KCSS D.Yanagida<br>
+ * 変更理由	ロット混合対応<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -682,7 +687,7 @@ public class GXHDO211C implements Serializable {
             List<GXHDO211CModel> mainData = loadSearchMainData(queryRunnerWip);
 
             // 設計データ取得
-            List<Map<String, Object>> sekkeiData = getSekkeiData(queryRunnerQcdb, mainData);
+            List<Map<String, Object>> sekkeiData = getSekkeiData(queryRunnerQcdb, queryRunnerWip, mainData);
             // 設計データが取得出来なかった場合エラー
             if (sekkeiData.isEmpty()) {
                 FacesMessage message
@@ -1317,11 +1322,12 @@ public class GXHDO211C implements Serializable {
      * 設計データ取得
      *
      * @param queryRunnerQcdb queryRunner(Qcdb)オブジェクト
+     * @param queryRunnerWip queryRunner(Wip)オブジェクト
      * @param mainData 面ﾃﾞｰﾀ
      * @return 設計データ
      * @throws SQLException 例外エラー
      */
-    private List<Map<String, Object>> getSekkeiData(QueryRunner queryRunnerQcdb, List<GXHDO211CModel> mainData) throws SQLException {
+    private List<Map<String, Object>> getSekkeiData(QueryRunner queryRunnerQcdb, QueryRunner queryRunnerWip, List<GXHDO211CModel> mainData) throws SQLException {
         List<Map<String, String>> lotNoList = getLotNoListExcludeEdaban(mainData);
 
         BigDecimal size = BigDecimal.valueOf(lotNoList.size());
@@ -1335,7 +1341,7 @@ public class GXHDO211C implements Serializable {
             if (lotNoList.size() < endIdx) {
                 endIdx = lotNoList.size();
             }
-            sekkeiData.addAll(loadSekkeiData(queryRunnerQcdb, lotNoList.subList(startIdx, endIdx)));
+            sekkeiData.addAll(loadSekkeiData(queryRunnerQcdb, queryRunnerWip, lotNoList.subList(startIdx, endIdx)));
         }
 
         return sekkeiData;
@@ -1369,8 +1375,9 @@ public class GXHDO211C implements Serializable {
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private List<Map<String, Object>> loadSekkeiData(QueryRunner queryRunnerQcdb, List<Map<String, String>> lotnoList) throws SQLException {
+    private List<Map<String, Object>> loadSekkeiData(QueryRunner queryRunnerQcdb, QueryRunner queryRunnerWip, List<Map<String, String>> lotnoList) throws SQLException {
 
+        // 指定されたロットNoでda_sekkeiを検索する
         List<Object> params = new ArrayList<>();
         StringBuilder sbSql = new StringBuilder();
         sbSql.append(" SELECT KOJYO,LOTNO,EDABAN,SEKKEINO");
@@ -1403,7 +1410,131 @@ public class GXHDO211C implements Serializable {
         }
 
         DBUtil.outputSQLLog(sbSql.toString(), params.toArray(), LOGGER);
-        return queryRunnerQcdb.query(sbSql.toString(), new MapListHandler(), params.toArray());
+        List<Map<String, Object>> sekkeiList = queryRunnerQcdb.query(sbSql.toString(), new MapListHandler(), params.toArray());
+        
+        // 全数取得できている場合は統合前ロット番号での再検索は不要
+        if (null != sekkeiList && sekkeiList.size() == lotnoList.size()) {
+            return sekkeiList;
+        }
+        
+        // 全数取得できなかった場合、lottogoテーブルの統合前ロット番号でデータを検索する
+        List<Map<String, String>> notFoundSekkeiLot = new ArrayList<>();
+        if (null == sekkeiList) {
+            // 1件も取得できていない場合は全数再検索
+            notFoundSekkeiLot = lotnoList;
+        } else {
+            // 指定されたロットのうち検索に失敗したものを抽出する
+            for (Map<String, String> lot : lotnoList) {
+                String kojyo = lot.get("kojyo");
+                String lotno = lot.get("lotno");
+                
+                int countSekkei = sekkeiList.stream().filter(n -> n.get("KOJYO").equals(kojyo) && n.get("LOTNO").equals(lotno)).toArray().length;
+                if (0 == countSekkei) {
+                    // 設計データが取得できていないロットを追加
+                    Map<String, String> notFoundMap = new HashMap<>();
+                    notFoundMap.put("kojyo", kojyo);
+                    notFoundMap.put("lotno", lotno);
+                    notFoundSekkeiLot.add(notFoundMap);
+                }
+            }
+        }
+        
+        if (!notFoundSekkeiLot.isEmpty()) {
+            // 設計データ未取得のロットが存在する場合lottogoを参照し統合前ロットに紐付く設計データを取得する
+            // ※ここで取得する統合前ロットの設計データは統合前のロット番号となる
+            //   →後続処理では現在のロット番号をキーに処理を行うため、データ取得後にロット番号を元に戻して一覧に追加する
+            // ※設計データは枝番"001"のみ取得対象のため、この時点で統合前ロットの枝番"001"以外のデータは除外する
+            StringBuilder sqlTogo = new StringBuilder();
+            sqlTogo.append("SELECT newkojyo, newlotno, kojyo, lotno, edaban, suuryo FROM lottogo WHERE ");
+            List<Object> paramsTogo = new ArrayList<>();
+            for (Map notFound : notFoundSekkeiLot) {
+                if (paramsTogo.size() > 0) {
+                    sqlTogo.append("OR ");
+                }
+                sqlTogo.append("(newkojyo = ? AND newlotno = ? AND edaban = '001') ");
+                paramsTogo.add(notFound.get("kojyo"));
+                paramsTogo.add(notFound.get("lotno"));
+            }
+            sqlTogo.append("ORDER BY newkojyo, newlotno, jissekino DESC, lotno DESC");
+            
+            DBUtil.outputSQLLog(sqlTogo.toString(), paramsTogo.toArray(), LOGGER);
+            List<Map<String, Object>> lottogo = queryRunnerWip.query(sqlTogo.toString(), new MapListHandler(), paramsTogo.toArray());
+            
+            if (null != lottogo && !lottogo.isEmpty()) {
+                // 統合ロット情報が取得できた場合、元ロット番号で再度設計データを検索する
+                // データが取得できた場合は返却用の設計データとして追加する
+                
+                // 元々1件も取得できていない場合の対策
+                if (null == sekkeiList) {
+                    sekkeiList = new ArrayList<Map<String, Object>>();
+                }
+                
+                // 統合ロットでda_sekkeiを検索する
+                List<Object> paramsNew = new ArrayList<>();
+                StringBuilder sbNew = new StringBuilder();
+                sbNew.append("SELECT KOJYO,LOTNO,EDABAN,SEKKEINO FROM da_sekkei WHERE (");
+                String preKojyo = "";
+                String preLotNo = "";
+                for (Map togo : lottogo) {
+                    String kojyo = StringUtil.nullToBlank(togo.get("kojyo"));
+                    String lotno = StringUtil.nullToBlank(togo.get("lotno"));
+                    String newkojyo = StringUtil.nullToBlank(togo.get("newkojyo"));
+                    String newlotno = StringUtil.nullToBlank(togo.get("newlotno"));
+                    
+                    if (preKojyo.equals(newkojyo) && preLotNo.equals(newlotno)) {
+                        // 対象ロットのデータ取得済みの場合はスキップ
+                        // ※newkojyo, newlotnoが異なるが統合元ロットNoが同じパターンの場合は抽出条件として
+                        //   追加されてしまうが、同一条件が複数並ぶだけでレコードとしては1つしか取得されないので問題なし
+                        continue;
+                    }
+                    preKojyo = newkojyo;
+                    preLotNo = newlotno;
+                    
+                    if (!paramsNew.isEmpty()) {
+                        sbNew.append("OR ");
+                    }
+                    sbNew.append("(KOJYO = ? AND LOTNO = ? AND EDABAN = '001') ");
+                    paramsNew.add(kojyo);
+                    paramsNew.add(lotno);
+                }
+                sbNew.append(")");
+                
+                // プロセスが入力されている場合条件に追加
+                if (!StringUtil.isEmpty(this.process)) {
+                    sbNew.append(" AND PROCESS = ? ");
+                    paramsNew.add(this.process);
+                }
+                
+                // 検索実行(lottogoで参照した元ロット番号でのda_sekkeiデータ検索)
+                DBUtil.outputSQLLog(sbNew.toString(), paramsNew.toArray(), LOGGER);
+                List<Map<String, Object>> sekkeiListTogo = queryRunnerQcdb.query(sbNew.toString(), new MapListHandler(), paramsNew.toArray());
+                
+                // データが取得できた場合、統合ロットNoを元ロットNoに付け替えた上で設計情報を追加する
+                if (null != sekkeiListTogo && !sekkeiListTogo.isEmpty()) {
+                    for (Map<String, Object> sekkeiDataTogo : sekkeiListTogo) {
+                        // 取得できたロット番号を元のロット番号に変換するためlottogoテーブルを検索
+                        List<Map<String, Object>> motoLotList = lottogo.stream()
+                                .filter(n -> n.get("kojyo").equals(sekkeiDataTogo.get("KOJYO")) && n.get("lotno").equals(sekkeiDataTogo.get("LOTNO")))
+                                .collect(Collectors.toList());
+                        
+                        if (null != motoLotList && !motoLotList.isEmpty()) {
+                            for (Map togo : motoLotList) {
+                                Map<String, Object> addData = new HashMap<String, Object>();
+                                addData.put("KOJYO", togo.get("newkojyo"));
+                                addData.put("LOTNO", togo.get("newlotno"));
+                                addData.put("EDABAN", sekkeiDataTogo.get("EDABAN"));
+                                addData.put("SEKKEINO", sekkeiDataTogo.get("SEKKEINO"));
+                                
+                                // 返却する設計データに追加する
+                                sekkeiList.add(addData);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        return sekkeiList;
     }
 
     /**

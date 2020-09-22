@@ -25,6 +25,7 @@ import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import jp.co.kccs.xhd.db.model.FXHDD06;
+import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
@@ -55,6 +56,11 @@ import org.primefaces.context.RequestContext;
  * 計画書No	K1811-DS001<br>
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	登録実行後は次の入力が可能なように画面をクリアするように修正<br>
+ * <br>
+ * 変更日	2020/09/21<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	KCSS D.Yanagida<br>
+ * 変更理由	ロット混合対応<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -1265,7 +1271,7 @@ public class GXHDO211B implements Serializable {
             }
 
             // 設計情報の取得
-            Map sekkeiData = this.loadSekkeiData(queryRunnerQcdb, this.lotno);
+            Map sekkeiData = this.loadSekkeiData(queryRunnerQcdb, queryRunnerWip, this.lotno);
             if (sekkeiData == null || sekkeiData.isEmpty()) {
                 // 設計情報が取得できない場合エラー
                 addErrorMessage(MessageUtil.getMessage("XHD-000002"));
@@ -1667,27 +1673,19 @@ public class GXHDO211B implements Serializable {
     }
 
     /**
-     * [設計]から情報を取得
+     * [設計]から、初期表示する情報を取得
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param queryRunnerWip QueryRunnerオブジェクト
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private Map loadSekkeiData(QueryRunner queryRunnerQcdb, String lotNo) throws SQLException {
+    private Map loadSekkeiData(QueryRunner queryRunnerQcdb, QueryRunner queryRunnerWip, String lotNo) throws SQLException {
         String lotNo1 = lotNo.substring(0, 3);
         String lotNo2 = lotNo.substring(3, 11);
         // 設計データの取得
-        String sql = "SELECT SEKKEINO "
-                + "FROM da_sekkei "
-                + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = '001'";
-
-        List<Object> params = new ArrayList<>();
-        params.add(lotNo1);
-        params.add(lotNo2);
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+        return CommonUtil.getSekkeiInfoTogoLot(queryRunnerQcdb, queryRunnerWip, lotNo1, lotNo2, "001");
     }
 
     /**

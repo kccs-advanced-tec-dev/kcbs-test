@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.MapHandler;
+import org.apache.commons.dbutils.handlers.MapListHandler;
 
 /**
  * ===============================================================================<br>
@@ -34,11 +35,15 @@ import org.apache.commons.dbutils.handlers.MapHandler;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	熱処理・ﾃｰﾋﾟﾝｸﾞ関連データ取得処理追加<br>
  * <br>
- * <br>
  * 変更日	2020/09/08<br>
- * 計画書No	K2008-DS002<br>
+ * 計画書No	MB2008-DK001<br>
  * 変更者	863 zhangjinyan<br>
  * 変更理由	sr_gdtermをsr_termに変更<br>
+ * <br>
+ * 変更日	2020/09/21<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	KCCS D.Yanagida<br>
+ * 変更理由	ロット混合対応　統合前ロットの設計情報検索処理を追加<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -1636,5 +1641,195 @@ public class CommonUtil {
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
     }
-   
+    
+    /**
+     * 混合ロットを考慮した設計情報取得処理(1件取得)<br>
+     * 指定されたロットNoで設計情報を検索する。データが取得できなかった場合はlottogoテーブルを参照し
+     * 取得した統合前ロットNoで再度設計情報を検索する。
+     * 
+     * @param queryRunnerQcdb QueryRunnerオブジェクト(PostgreSQL)
+     * @param queryRunnerWip QueryRunnerオブジェクト(Pervasive/PSQL)
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @return 設計データ
+     * @throws SQLException 例外エラー
+     */
+    public static Map getSekkeiInfoTogoLot(QueryRunner queryRunnerQcdb, QueryRunner queryRunnerWip, 
+            String kojyo, String lotNo, String edaban) throws SQLException {
+        
+        String sql = "SELECT "
+                + "SEKKEINO,TOUNYUBI,LOTPRE,KOJYO,LOTNO,EDABAN,TCODE,TOKUISAKI,SEIDEN,HINMEI,SPECNO,HSCODE,"
+                + "SERIES,KATA,TOKUSEI,CAP,KOUSA,VOLT,AB,BMT,RANK,INJI,IR,PBUNRUI,OWNER,KUBUN1,KUBUN2,"
+                + "SETSUU,EATUMI,SOUSUU,EMAISUU,EATUMIT,CATUMIT,GATUMI,GENRYOU,TBUNRUI,ELOT,ETAPE,CSIYOU,"
+                + "CLOT,CTAPE,PATTERN,SCRNLOT,PASTE,KASITU,PRSJIKAN,AIR,PRSONDO,PRSATU,KANONDO,KANJIKAN,"
+                + "ZRAL,SETTER,CHARGE,SYORO,SYOONDO,MSG1,MSG2,MSG3,MSG4,MSG,MEMO,SETTEI,MAISUU,TORIKOSUU,"
+                + "SYURUI1,TBUNRUI1,ATUMI1,GLOT1,TLOT1,TLOT21,ROLLNO1,RANKA1,RANKB1,YOUTO1,MAISUU1,"
+                + "SYURUI2,TBUNRUI2,ATUMI2,GLOT2,TLOT2,TLOT22,ROLLNO2,RANKA2,RANKB2,YOUTO2,MAISUU2,"
+                + "SYURUI3,TBUNRUI3,ATUMI3,GLOT3,TLOT3,TLOT23,ROLLNO3,RANKA3,RANKB3,YOUTO3,MAISUU3,"
+                + "SYURUI4,TBUNRUI4,ATUMI4,GLOT4,TLOT4,TLOT24,ROLLNO4,RANKA4,RANKB4,YOUTO4,MAISUU4,"
+                + "SYURUI5,TBUNRUI5,ATUMI5,GLOT5,TLOT5,TLOT25,ROLLNO5,RANKA5,RANKB5,YOUTO5,MAISUU5,"
+                + "SYURUI6,TBUNRUI6,ATUMI6,GLOT6,TLOT6,TLOT26,ROLLNO6,RANKA6,RANKB6,YOUTO6,MAISUU6,"
+                + "SYURUI7,TBUNRUI7,ATUMI7,GLOT7,TLOT7,TLOT27,ROLLNO7,RANKA7,RANKB7,YOUTO7,MAISUU7,"
+                + "SYURUI8,TBUNRUI8,ATUMI8,GLOT8,TLOT8,TLOT28,ROLLNO8,RANKA8,RANKB8,YOUTO8,MAISUU8,"
+                + "MESSYU,LDASET,LDAHAN,LDBSET,LDBHAN,PNENDOL,PNENDOH,KEILAY,IN_OUT,DAKKIATU,SAMPLE,BARERU,"
+                + "BARJIKAN,TAMAISHI,POWDER,KOUSIN,TOUROKU,HYOUJUN,YOYAKU,SEKKEIBI,SEKKEIID,SEKISOUKI,"
+                + "PROCESS,SEKISOUHOUHOU,SEKISOUSYURUI,LastLayerSlideRyo,CutHoseiRyo,RenzokuKasaneN,"
+                + "PrintFmt,ABSlide,RenzokuInsatuN "
+                + "FROM da_sekkei "
+                + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        Map current = queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+        
+        // データが取得できた場合はそのまま返却
+        if (null != current && 0 < current.size()) {
+            return current;
+        }
+        
+        // データが取得できない場合はlottogoテーブルを参照し統合前ロットで再検索実行
+        String sqlTogo = "SELECT kojyo, lotno, edaban FROM lottogo " +
+            "WHERE newkojyo = ? AND newlotno = ? ORDER BY jissekino DESC, lotno DESC";
+        List<Object> paramsTogo = new ArrayList<>();
+        paramsTogo.add(kojyo);
+        paramsTogo.add(lotNo);
+        
+        DBUtil.outputSQLLog(sqlTogo, paramsTogo.toArray(), LOGGER);
+        List<Map<String, Object>> lottogo = queryRunnerWip.query(sqlTogo, new MapListHandler(), paramsTogo.toArray());
+        
+        // lottogoデータが取得できない場合は再検索実行しない
+        if (null == lottogo || 0 == lottogo.size()) {
+            return null;
+        }
+        
+        // lottogoデータが取得できた場合、元ロットNoで設計データを検索する
+        // ※レコード有無に関わらず検索結果を返却する
+        String sqlOrg = "SELECT "
+                + "SEKKEINO,TOUNYUBI,LOTPRE,KOJYO,LOTNO,EDABAN,TCODE,TOKUISAKI,SEIDEN,HINMEI,SPECNO,HSCODE,"
+                + "SERIES,KATA,TOKUSEI,CAP,KOUSA,VOLT,AB,BMT,RANK,INJI,IR,PBUNRUI,OWNER,KUBUN1,KUBUN2,"
+                + "SETSUU,EATUMI,SOUSUU,EMAISUU,EATUMIT,CATUMIT,GATUMI,GENRYOU,TBUNRUI,ELOT,ETAPE,CSIYOU,"
+                + "CLOT,CTAPE,PATTERN,SCRNLOT,PASTE,KASITU,PRSJIKAN,AIR,PRSONDO,PRSATU,KANONDO,KANJIKAN,"
+                + "ZRAL,SETTER,CHARGE,SYORO,SYOONDO,MSG1,MSG2,MSG3,MSG4,MSG,MEMO,SETTEI,MAISUU,TORIKOSUU,"
+                + "SYURUI1,TBUNRUI1,ATUMI1,GLOT1,TLOT1,TLOT21,ROLLNO1,RANKA1,RANKB1,YOUTO1,MAISUU1,"
+                + "SYURUI2,TBUNRUI2,ATUMI2,GLOT2,TLOT2,TLOT22,ROLLNO2,RANKA2,RANKB2,YOUTO2,MAISUU2,"
+                + "SYURUI3,TBUNRUI3,ATUMI3,GLOT3,TLOT3,TLOT23,ROLLNO3,RANKA3,RANKB3,YOUTO3,MAISUU3,"
+                + "SYURUI4,TBUNRUI4,ATUMI4,GLOT4,TLOT4,TLOT24,ROLLNO4,RANKA4,RANKB4,YOUTO4,MAISUU4,"
+                + "SYURUI5,TBUNRUI5,ATUMI5,GLOT5,TLOT5,TLOT25,ROLLNO5,RANKA5,RANKB5,YOUTO5,MAISUU5,"
+                + "SYURUI6,TBUNRUI6,ATUMI6,GLOT6,TLOT6,TLOT26,ROLLNO6,RANKA6,RANKB6,YOUTO6,MAISUU6,"
+                + "SYURUI7,TBUNRUI7,ATUMI7,GLOT7,TLOT7,TLOT27,ROLLNO7,RANKA7,RANKB7,YOUTO7,MAISUU7,"
+                + "SYURUI8,TBUNRUI8,ATUMI8,GLOT8,TLOT8,TLOT28,ROLLNO8,RANKA8,RANKB8,YOUTO8,MAISUU8,"
+                + "MESSYU,LDASET,LDAHAN,LDBSET,LDBHAN,PNENDOL,PNENDOH,KEILAY,IN_OUT,DAKKIATU,SAMPLE,BARERU,"
+                + "BARJIKAN,TAMAISHI,POWDER,KOUSIN,TOUROKU,HYOUJUN,YOYAKU,SEKKEIBI,SEKKEIID,SEKISOUKI,"
+                + "PROCESS,SEKISOUHOUHOU,SEKISOUSYURUI,LastLayerSlideRyo,CutHoseiRyo,RenzokuKasaneN,"
+                + "PrintFmt,ABSlide,RenzokuInsatuN "
+                + "FROM da_sekkei "
+                + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
+        List<Object> paramsOrg = new ArrayList<>();
+        paramsOrg.add(lottogo.get(0).get("kojyo"));
+        paramsOrg.add(lottogo.get(0).get("lotno"));
+        paramsOrg.add(lottogo.get(0).get("edaban"));
+        
+        DBUtil.outputSQLLog(sqlOrg, paramsOrg.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sqlOrg, new MapHandler(), paramsOrg.toArray());
+    }
+    
+    /**
+     * 混合ロットを考慮した設計情報取得処理(複数件取得)<br>
+     * 指定されたロットNoで設計情報を検索する。データが取得できなかった場合はlottogoテーブルを参照し
+     * 取得した統合前ロットNoで再度設計情報を検索する。
+     * 
+     * @param queryRunnerQcdb QueryRunnerオブジェクト(PostgreSQL)
+     * @param queryRunnerWip QueryRunnerオブジェクト(Pervasive/PSQL)
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @return 設計データ
+     * @throws SQLException 例外エラー
+     */
+    public static List getSekkeiInfoListTogoLot(QueryRunner queryRunnerQcdb, QueryRunner queryRunnerWip, 
+            String kojyo, String lotNo, String edaban) throws SQLException {
+        
+        String sql = "SELECT "
+                + "SEKKEINO,TOUNYUBI,LOTPRE,KOJYO,LOTNO,EDABAN,TCODE,TOKUISAKI,SEIDEN,HINMEI,SPECNO,HSCODE,"
+                + "SERIES,KATA,TOKUSEI,CAP,KOUSA,VOLT,AB,BMT,RANK,INJI,IR,PBUNRUI,OWNER,KUBUN1,KUBUN2,"
+                + "SETSUU,EATUMI,SOUSUU,EMAISUU,EATUMIT,CATUMIT,GATUMI,GENRYOU,TBUNRUI,ELOT,ETAPE,CSIYOU,"
+                + "CLOT,CTAPE,PATTERN,SCRNLOT,PASTE,KASITU,PRSJIKAN,AIR,PRSONDO,PRSATU,KANONDO,KANJIKAN,"
+                + "ZRAL,SETTER,CHARGE,SYORO,SYOONDO,MSG1,MSG2,MSG3,MSG4,MSG,MEMO,SETTEI,MAISUU,TORIKOSUU,"
+                + "SYURUI1,TBUNRUI1,ATUMI1,GLOT1,TLOT1,TLOT21,ROLLNO1,RANKA1,RANKB1,YOUTO1,MAISUU1,"
+                + "SYURUI2,TBUNRUI2,ATUMI2,GLOT2,TLOT2,TLOT22,ROLLNO2,RANKA2,RANKB2,YOUTO2,MAISUU2,"
+                + "SYURUI3,TBUNRUI3,ATUMI3,GLOT3,TLOT3,TLOT23,ROLLNO3,RANKA3,RANKB3,YOUTO3,MAISUU3,"
+                + "SYURUI4,TBUNRUI4,ATUMI4,GLOT4,TLOT4,TLOT24,ROLLNO4,RANKA4,RANKB4,YOUTO4,MAISUU4,"
+                + "SYURUI5,TBUNRUI5,ATUMI5,GLOT5,TLOT5,TLOT25,ROLLNO5,RANKA5,RANKB5,YOUTO5,MAISUU5,"
+                + "SYURUI6,TBUNRUI6,ATUMI6,GLOT6,TLOT6,TLOT26,ROLLNO6,RANKA6,RANKB6,YOUTO6,MAISUU6,"
+                + "SYURUI7,TBUNRUI7,ATUMI7,GLOT7,TLOT7,TLOT27,ROLLNO7,RANKA7,RANKB7,YOUTO7,MAISUU7,"
+                + "SYURUI8,TBUNRUI8,ATUMI8,GLOT8,TLOT8,TLOT28,ROLLNO8,RANKA8,RANKB8,YOUTO8,MAISUU8,"
+                + "MESSYU,LDASET,LDAHAN,LDBSET,LDBHAN,PNENDOL,PNENDOH,KEILAY,IN_OUT,DAKKIATU,SAMPLE,BARERU,"
+                + "BARJIKAN,TAMAISHI,POWDER,KOUSIN,TOUROKU,HYOUJUN,YOYAKU,SEKKEIBI,SEKKEIID,SEKISOUKI,"
+                + "PROCESS,SEKISOUHOUHOU,SEKISOUSYURUI,LastLayerSlideRyo,CutHoseiRyo,RenzokuKasaneN,"
+                + "PrintFmt,ABSlide,RenzokuInsatuN "
+                + "FROM da_sekkei "
+                + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        List<Map<String, Object>> current = queryRunnerQcdb.query(sql, new MapListHandler(), params.toArray());
+        
+        // データが取得できた場合はそのまま返却
+        if (null != current && 0 < current.size()) {
+            return current;
+        }
+        
+        // データが取得できない場合はlottogoテーブルを参照し統合前ロットで再検索実行
+        String sqlTogo = "SELECT kojyo, lotno, edaban FROM lottogo " +
+            "WHERE newkojyo = ? AND newlotno = ? ORDER BY jissekino DESC, lotno DESC";
+        List<Object> paramsTogo = new ArrayList<>();
+        paramsTogo.add(kojyo);
+        paramsTogo.add(lotNo);
+        
+        DBUtil.outputSQLLog(sqlTogo, paramsTogo.toArray(), LOGGER);
+        List<Map<String, Object>> lottogo = queryRunnerWip.query(sqlTogo, new MapListHandler(), paramsTogo.toArray());
+        
+        // lottogoデータが取得できない場合は再検索実行しない
+        if (null == lottogo || 0 == lottogo.size()) {
+            return null;
+        }
+        
+        // lottogoデータが取得できた場合、元ロットNoで設計データを検索する
+        // ※レコード有無に関わらず検索結果を返却する
+        String sqlOrg = "SELECT "
+                + "SEKKEINO,TOUNYUBI,LOTPRE,KOJYO,LOTNO,EDABAN,TCODE,TOKUISAKI,SEIDEN,HINMEI,SPECNO,HSCODE,"
+                + "SERIES,KATA,TOKUSEI,CAP,KOUSA,VOLT,AB,BMT,RANK,INJI,IR,PBUNRUI,OWNER,KUBUN1,KUBUN2,"
+                + "SETSUU,EATUMI,SOUSUU,EMAISUU,EATUMIT,CATUMIT,GATUMI,GENRYOU,TBUNRUI,ELOT,ETAPE,CSIYOU,"
+                + "CLOT,CTAPE,PATTERN,SCRNLOT,PASTE,KASITU,PRSJIKAN,AIR,PRSONDO,PRSATU,KANONDO,KANJIKAN,"
+                + "ZRAL,SETTER,CHARGE,SYORO,SYOONDO,MSG1,MSG2,MSG3,MSG4,MSG,MEMO,SETTEI,MAISUU,TORIKOSUU,"
+                + "SYURUI1,TBUNRUI1,ATUMI1,GLOT1,TLOT1,TLOT21,ROLLNO1,RANKA1,RANKB1,YOUTO1,MAISUU1,"
+                + "SYURUI2,TBUNRUI2,ATUMI2,GLOT2,TLOT2,TLOT22,ROLLNO2,RANKA2,RANKB2,YOUTO2,MAISUU2,"
+                + "SYURUI3,TBUNRUI3,ATUMI3,GLOT3,TLOT3,TLOT23,ROLLNO3,RANKA3,RANKB3,YOUTO3,MAISUU3,"
+                + "SYURUI4,TBUNRUI4,ATUMI4,GLOT4,TLOT4,TLOT24,ROLLNO4,RANKA4,RANKB4,YOUTO4,MAISUU4,"
+                + "SYURUI5,TBUNRUI5,ATUMI5,GLOT5,TLOT5,TLOT25,ROLLNO5,RANKA5,RANKB5,YOUTO5,MAISUU5,"
+                + "SYURUI6,TBUNRUI6,ATUMI6,GLOT6,TLOT6,TLOT26,ROLLNO6,RANKA6,RANKB6,YOUTO6,MAISUU6,"
+                + "SYURUI7,TBUNRUI7,ATUMI7,GLOT7,TLOT7,TLOT27,ROLLNO7,RANKA7,RANKB7,YOUTO7,MAISUU7,"
+                + "SYURUI8,TBUNRUI8,ATUMI8,GLOT8,TLOT8,TLOT28,ROLLNO8,RANKA8,RANKB8,YOUTO8,MAISUU8,"
+                + "MESSYU,LDASET,LDAHAN,LDBSET,LDBHAN,PNENDOL,PNENDOH,KEILAY,IN_OUT,DAKKIATU,SAMPLE,BARERU,"
+                + "BARJIKAN,TAMAISHI,POWDER,KOUSIN,TOUROKU,HYOUJUN,YOYAKU,SEKKEIBI,SEKKEIID,SEKISOUKI,"
+                + "PROCESS,SEKISOUHOUHOU,SEKISOUSYURUI,LastLayerSlideRyo,CutHoseiRyo,RenzokuKasaneN,"
+                + "PrintFmt,ABSlide,RenzokuInsatuN "
+                + "FROM da_sekkei "
+                + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
+
+        List<Object> paramsOrg = new ArrayList<>();
+        paramsOrg.add(lottogo.get(0).get("kojyo"));
+        paramsOrg.add(lottogo.get(0).get("lotno"));
+        paramsOrg.add(lottogo.get(0).get("edaban"));
+        
+        DBUtil.outputSQLLog(sqlOrg, paramsOrg.toArray(), LOGGER);
+        return (List) queryRunnerQcdb.query(sqlOrg, new MapListHandler(), paramsOrg.toArray());
+    }
 }

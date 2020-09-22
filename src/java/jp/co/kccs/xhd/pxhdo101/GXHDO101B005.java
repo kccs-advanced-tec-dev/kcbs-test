@@ -45,6 +45,7 @@ import org.apache.commons.dbutils.RowProcessor;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
+import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import org.apache.commons.dbutils.DbUtils;
 
@@ -62,6 +63,11 @@ import org.apache.commons.dbutils.DbUtils;
  * 計画書No     K1811-DS001<br>
  * 変更者       KCSS K.Jo<br>
  * 変更理由     項目追加・変更<br>
+ * <br>
+ * 変更日	2020/09/21<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	KCSS D.Yanagida<br>
+ * 変更理由	ロット混合対応<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -888,7 +894,7 @@ public class GXHDO101B005 implements IFormLogic {
         List<String> errorMessageList = processData.getInitMessageList();
 
         // 設計情報の取得
-        Map sekkeiData = this.loadSekkeiData(queryRunnerQcdb, lotNo);
+        Map sekkeiData = this.loadSekkeiData(queryRunnerQcdb, queryRunnerWip, lotNo);
         if (sekkeiData == null || sekkeiData.isEmpty()) {
             errorMessageList.clear();
             errorMessageList.add(MessageUtil.getMessage("XHD-000014"));
@@ -1552,27 +1558,16 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
      * [設計]から、初期表示する情報を取得
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param queryRunnerWip QueryRunnerオブジェクト
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private Map loadSekkeiData(QueryRunner queryRunnerQcdb, String lotNo) throws SQLException {
+    private Map loadSekkeiData(QueryRunner queryRunnerQcdb, QueryRunner queryRunnerWip, String lotNo) throws SQLException {
         String lotNo1 = lotNo.substring(0, 3);
         String lotNo2 = lotNo.substring(3, 11);
         // 設計データの取得
-        String sql = "SELECT SEKKEINO,GENRYOU,ETAPE,EATUMI,SOUSUU,EMAISUU,YOUTO1,YOUTO2,YOUTO3,YOUTO4,YOUTO5,YOUTO6,YOUTO7,YOUTO8,SYURUI1"
-                + ",SYURUI2,SYURUI3,SYURUI4,SYURUI5,SYURUI6,SYURUI7,SYURUI8,ATUMI1,ATUMI2,ATUMI3,ATUMI4,ATUMI5,ATUMI6,ATUMI7"
-                + ",ATUMI8,MAISUU1,MAISUU2,MAISUU3,MAISUU4,MAISUU5,MAISUU6,MAISUU7,MAISUU8,ROLLNO1,ROLLNO2,ROLLNO3,ROLLNO4"
-                + ",ROLLNO5,ROLLNO6,ROLLNO7,ROLLNO8,PATTERN,LASTLAYERSLIDERYO,TORIKOSUU,RENZOKUINSATUN,ABSlide "
-                + "FROM da_sekkei "
-                + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = '001'";
-
-        List<Object> params = new ArrayList<>();
-        params.add(lotNo1);
-        params.add(lotNo2);
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+        return CommonUtil.getSekkeiInfoTogoLot(queryRunnerQcdb, queryRunnerWip, lotNo1, lotNo2, "001");
     }
 
     /**

@@ -53,6 +53,7 @@ import jp.co.kccs.xhd.pxhdo101.GXHDO101C007;
 import jp.co.kccs.xhd.pxhdo101.GXHDO101C007Logic;
 import jp.co.kccs.xhd.pxhdo101.GXHDO101C009;
 import jp.co.kccs.xhd.pxhdo101.GXHDO101C009Logic;
+import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
@@ -96,6 +97,11 @@ import org.primefaces.context.RequestContext;
  * 計画書No	K1811-DS001<br>
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	電気特性用のロジックを追加<br>
+ * <br>
+ * 変更日	2020/09/21<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	KCSS D.Yanagida<br>
+ * 変更理由	ロット混合対応<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -1464,18 +1470,11 @@ public class GXHDO901A implements Serializable {
         String strKojyo = lotNo.substring(0, 3);
         String strLotNo = lotNo.substring(3, 11);
         try {
-            QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
-            String sql = "SELECT SEKKEINO "
-                    + "  FROM da_sekkei "
-                    + " WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
-
-            List<Object> params = new ArrayList<>();
-            params.add(strKojyo);
-            params.add(strLotNo);
-            params.add("001");
-
-            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-            Map mapSekkeiNo = queryRunner.query(sql, new MapHandler(), params.toArray());
+            QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceQcdb);
+            QueryRunner queryRunnerWip = new QueryRunner(dataSourceWip);
+            
+            Map mapSekkeiNo = CommonUtil.getSekkeiInfoTogoLot(queryRunnerQcdb, queryRunnerWip, strKojyo, strLotNo, "001");
+            
             if (null != mapSekkeiNo && !mapSekkeiNo.isEmpty()) {
                 return StringUtil.nullToBlank(NumberUtil.convertIntData(mapSekkeiNo.get("SEKKEINO")));
             }

@@ -78,6 +78,12 @@ import org.primefaces.context.RequestContext;
  * 計画書No	K1811-DS001<br>
  * 変更者	K.Hisanaga<br>
  * 変更理由	メニューの追加削除機能を実装<br>
+ * <br>
+ * 変更日	2020/09/21<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	KCSS D.Yanagida<br>
+ * 変更理由	ロット混合対応<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -331,30 +337,27 @@ public class GXHDO101A implements Serializable {
                 return null;
             }
 
+            // 設計情報の取得
             String strKojyo = strGamenLotNo.substring(0, 3);
             String strLotNo = strGamenLotNo.substring(3, 11);
             String strEdaban = strGamenLotNo.substring(11, 14);
             String strSekkeiNo = "";
 
             QueryRunner queryRunnerXHD = new QueryRunner(dataSourceXHD);
-            String sqlsearchProcess = "SELECT PrintFmt,SEKKEINO FROM da_sekkei WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
-            List<Object> params = new ArrayList<>();
-            params.add(strKojyo);
-            params.add(strLotNo);
-            params.add("001");
-            List processResult = (List) queryRunnerXHD.query(sqlsearchProcess, new MapListHandler(), params.toArray());
-            for (Iterator i = processResult.iterator(); i.hasNext();) {
-                HashMap m = (HashMap) i.next();
-                strProcess = m.get("PrintFmt").toString();
-                strSekkeiNo = m.get("SEKKEINO").toString();
-            }
+            List processResult = CommonUtil.getSekkeiInfoListTogoLot(queryRunnerXHD, queryRunnerWip, strKojyo, strLotNo, "001");
 
-            if (processResult.isEmpty()) {
+            if (null == processResult || processResult.isEmpty()) {
                 setMenuTableRender(false);
                 setInfoMessage(MessageUtil.getMessage("XHD-000031"));
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, getInfoMessage(), null);
                 facesContext.addMessage(null, message);
                 return null;
+            }
+            
+            for (Iterator i = processResult.iterator(); i.hasNext();) {
+                HashMap m = (HashMap) i.next();
+                strProcess = m.get("PrintFmt").toString();
+                strSekkeiNo = m.get("SEKKEINO").toString();
             }
 
             QueryRunner queryRunnerDoc = new QueryRunner(dataSourceDocServer);
@@ -680,6 +683,7 @@ public class GXHDO101A implements Serializable {
         try {
             QueryRunner queryRunnerDoc = new QueryRunner(dataSourceDocServer);
             QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
+            QueryRunner queryRunnerWip = new QueryRunner(dataSourceWip);
             FacesContext facesContext = FacesContext.getCurrentInstance();
 
             String strKojyo = "";
@@ -814,7 +818,7 @@ public class GXHDO101A implements Serializable {
             // 参照元ﾃﾞｰﾀ
             beanGXHDO101C012.setSanshouMotoInfo(sanshouMotoData);
 
-            Map gamenInfo = getSekkeiInfoList(queryRunnerQcdb, strKojyo, strLotNo);
+            Map gamenInfo = CommonUtil.getSekkeiInfoTogoLot(queryRunnerQcdb, queryRunnerWip, strKojyo, strLotNo, "001");
             if (gamenInfo != null) {
                 //設計.printfmt
                 beanGXHDO101C012.setPrintfmt(StringUtil.nullToBlank(getMapData(gamenInfo, "PrintFmt")));
@@ -866,26 +870,6 @@ public class GXHDO101A implements Serializable {
             ErrUtil.outputErrorLog("総合判定処理エラー", ex, LOGGER);
         }
 
-    }
-
-    /**
-     * [設計]から、ﾃﾞｰﾀを取得(設計.printfmt,設計.pattern)
-     *
-     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
-     * @param lotNo ﾛｯﾄNo(検索キー)
-     * @return 取得データ
-     * @throws SQLException 例外エラー
-     */
-    private Map getSekkeiInfoList(QueryRunner queryRunnerQcdb, String kojyo, String lotNo) throws SQLException {
-
-        String sql = "SELECT PrintFmt,PATTERN FROM da_sekkei WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
-        List<Object> params = new ArrayList<>();
-        params.add(kojyo);
-        params.add(lotNo);
-        params.add("001");
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
     }
 
     /**

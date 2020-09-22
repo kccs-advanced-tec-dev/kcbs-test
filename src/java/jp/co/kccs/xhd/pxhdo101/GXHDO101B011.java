@@ -56,6 +56,11 @@ import org.apache.commons.dbutils.DbUtils;
  * 変更者      KCSS K.Jo<br>
  * 変更理由    新規作成<br>
  * <br>
+ * 変更日	2020/09/21<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	KCSS D.Yanagida<br>
+ * 変更理由	ロット混合対応<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -843,7 +848,7 @@ public class GXHDO101B011 implements IFormLogic {
         List<String> errorMessageList = processData.getInitMessageList();
 
         // 設計情報の取得
-        Map sekkeiData = this.loadSekkeiData(queryRunnerQcdb, lotNo);
+        Map sekkeiData = this.loadSekkeiData(queryRunnerQcdb, queryRunnerWip, lotNo);
         if (sekkeiData == null || sekkeiData.isEmpty()) {
             errorMessageList.clear();
             errorMessageList.add(MessageUtil.getMessage("XHD-000014"));
@@ -1114,24 +1119,16 @@ public class GXHDO101B011 implements IFormLogic {
      * [設計]から、初期表示する情報を取得
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param queryRunnerWip QueryRunnerオブジェクト
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private Map loadSekkeiData(QueryRunner queryRunnerQcdb, String lotNo) throws SQLException {
+    private Map loadSekkeiData(QueryRunner queryRunnerQcdb, QueryRunner queryRunnerWip, String lotNo) throws SQLException {
         String lotNo1 = lotNo.substring(0, 3);
         String lotNo2 = lotNo.substring(3, 11);
         // 設計データの取得
-        String sql = "SELECT SEKKEINO, PATTERN "
-                + "FROM da_sekkei "
-                + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = '001'";
-
-        List<Object> params = new ArrayList<>();
-        params.add(lotNo1);
-        params.add(lotNo2);
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+        return CommonUtil.getSekkeiInfoTogoLot(queryRunnerQcdb, queryRunnerWip, lotNo1, lotNo2, "001");
     }
 
     /**
