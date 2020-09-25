@@ -399,13 +399,13 @@ public class GXHDO101B049 implements IFormLogic {
      */
     private ErrorMessageInfo checkItemRegistCorrect(ProcessData processData) {
 
-        ErrorMessageInfo errorMessageInfo;
-
-        // ﾘｰﾙﾁｪｯｸ結果
-        errorMessageInfo = checkComboBoxSelectNG(getItemRow(processData.getItemList(), GXHDO101B049Const.REEL_CHECK_KEKKA));
-        if (errorMessageInfo != null) {
-            return errorMessageInfo;
-        }
+//        ErrorMessageInfo errorMessageInfo;
+//
+//        // ﾘｰﾙﾁｪｯｸ結果
+//        errorMessageInfo = checkComboBoxSelectNG(getItemRow(processData.getItemList(), GXHDO101B049Const.REEL_CHECK_KEKKA));
+//        if (errorMessageInfo != null) {
+//            return errorMessageInfo;
+//        }
 
         ValidateUtil validateUtil = new ValidateUtil();
         // 開始日時、終了日時前後チェック
