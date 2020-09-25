@@ -14,7 +14,9 @@ import javax.annotation.Resource;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import jp.co.kccs.xhd.model.GXHDO101C001Model;
 import jp.co.kccs.xhd.pxhdo901.GXHDO901A;
@@ -36,6 +38,12 @@ import org.primefaces.context.RequestContext;
  * 計画書No	K1811-DS001<br>
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
+ * <br>
+ * <br>
+ * 変更日       2020/9/22<br>
+ * 計画書No     MB2008-DK001<br>
+ * 変更者       863 zhangjinyan<br>
+ * 変更理由     仕様変更<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -204,7 +212,31 @@ public class GXHDO101C001 implements Serializable {
      */
     public void doMakuatsuDataImport() {
         try {
-           List<Map<String, Object>> makuatsuDataList = getMakuatu();
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            HttpSession session = (HttpSession) externalContext.getSession(false);
+            String jissekino = StringUtil.nullToBlank(session.getAttribute("jissekino"));
+            List<Map<String, Object>> makuatsuKanriDataList = getMakuatuKanri(jissekino);
+            if (makuatsuKanriDataList.isEmpty()) {
+                // メッセージをセット
+                FacesContext facesContext = FacesContext.getCurrentInstance();
+                FacesMessage message
+                        = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000033"), null);
+                facesContext.addMessage(null, message);
+                return;
+            }
+            
+            String startKaisuu = ""; // 区分がスタートの最大回数
+            String endKaisuu = ""; // 区分がエンドの最大回数
+            for (Map<String, Object> makuatsuKanriData : makuatsuKanriDataList) {
+                String kubun = StringUtil.nullToBlank(makuatsuKanriData.get("kubun"));
+                if (kubun.endsWith("スタート")) {
+                    startKaisuu = StringUtil.nullToBlank(makuatsuKanriData.get("kaiSuu"));
+                } else if (kubun.endsWith("エンド")) {
+                    endKaisuu = StringUtil.nullToBlank(makuatsuKanriData.get("kaiSuu"));
+                }
+            }
+        
+            List<Map<String, Object>> makuatsuDataList = getMakuatu(startKaisuu, endKaisuu);
            if(makuatsuDataList.isEmpty()){
                 // メッセージをセット
                 FacesContext facesContext = FacesContext.getCurrentInstance();
@@ -236,6 +268,44 @@ public class GXHDO101C001 implements Serializable {
             ErrUtil.outputErrorLog("実行エラー", ex, LOGGER);
         }
 
+    }
+    
+    /**
+     * 膜厚管理情報取得
+     * @param jissekino 実績No
+     *
+     * @return 膜厚管理情報取得
+     */
+    private List<Map<String, Object>> getMakuatuKanri(String jissekino) throws SQLException {
+        QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
+        
+        String startKubun = "";
+        String endKubun = "";
+        String mark = "=";
+        if ("1".equals(jissekino)) {
+            startKubun = "スタート";
+            endKubun = "エンド";
+        } else {
+            startKubun = "% " + jissekino + "層目スタート"; 
+            endKubun = "% " + jissekino + "層目エンド"; 
+            mark = "like";
+        }
+        
+        String sql = "SELECT MAX(KaiSuu) kaiSuu,kubun "
+                + " FROM sr_makuatu_kanri "
+                + " WHERE kojyo = ? AND lotno = ? AND edaban = ? "
+                + " AND (Kubun " + mark + " ? OR Kubun " + mark + " ? )"
+                + " GROUP BY Kubun ORDER BY KaiSuu ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(this.kojyo);
+        params.add(this.lotno);
+        params.add(this.edaban);
+        params.add(startKubun);
+        params.add(endKubun);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return  queryRunner.query(sql, new MapListHandler(), params.toArray());
     }
     
     /**
@@ -278,17 +348,19 @@ public class GXHDO101C001 implements Serializable {
      *
      * @return 膜厚情報取得
      */
-    private List<Map<String, Object>> getMakuatu() throws SQLException {
+    private List<Map<String, Object>> getMakuatu(String startKaisuu, String endKaisuu) throws SQLException {
         QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
         String sql = "SELECT kaisuu,makuatu,sokuteiten "
                 + " FROM sr_makuatu "
-                + " WHERE kojyo = ? AND lotno = ? AND edaban = ? "
+                + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND (kaisuu = ? OR kaisuu = ?)"
                 + " ORDER BY sokuteiten, kaisuu";
 
         List<Object> params = new ArrayList<>();
         params.add(this.kojyo);
         params.add(this.lotno);
         params.add(this.edaban);
+        params.add(startKaisuu);
+        params.add(endKaisuu);
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return  queryRunner.query(sql, new MapListHandler(), params.toArray());
