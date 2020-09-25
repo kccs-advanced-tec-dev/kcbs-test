@@ -1731,7 +1731,7 @@ public class CommonUtil {
         List<Object> paramsOrg = new ArrayList<>();
         paramsOrg.add(lottogo.get(0).get("kojyo"));
         paramsOrg.add(lottogo.get(0).get("lotno"));
-        paramsOrg.add(lottogo.get(0).get("edaban"));
+        paramsOrg.add("001");
         
         DBUtil.outputSQLLog(sqlOrg, paramsOrg.toArray(), LOGGER);
         return queryRunnerQcdb.query(sqlOrg, new MapHandler(), paramsOrg.toArray());
@@ -1827,7 +1827,7 @@ public class CommonUtil {
         List<Object> paramsOrg = new ArrayList<>();
         paramsOrg.add(lottogo.get(0).get("kojyo"));
         paramsOrg.add(lottogo.get(0).get("lotno"));
-        paramsOrg.add(lottogo.get(0).get("edaban"));
+        paramsOrg.add("001");
         
         DBUtil.outputSQLLog(sqlOrg, paramsOrg.toArray(), LOGGER);
         return (List) queryRunnerQcdb.query(sqlOrg, new MapListHandler(), paramsOrg.toArray());
