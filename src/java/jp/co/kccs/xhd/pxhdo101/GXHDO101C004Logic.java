@@ -25,6 +25,12 @@ import jp.co.kccs.xhd.util.StringUtil;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * <br>
+ * 変更日	2020/09/16<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjinyan<br>
+ * 変更理由	仕様変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -127,7 +133,7 @@ public class GXHDO101C004Logic {
         // 全て値が設定されていた場合のみ算出値をセットする
         if (gXHDO101C004Model.getMakuatsuDataList().size() == startDataList.size()) {
             BigDecimal[] calcDataStart = NumberUtil.getCalculatData(startDataList);
-            setItemValue(itemStartAve, calcDataStart[3]);
+            setItemValueToHalfUp(itemStartAve, calcDataStart[3]);
             setItemValue(itemStartMax, calcDataStart[1]);
             setItemValue(itemStartMin, calcDataStart[2]);
             setItemValue(itemStartCv, calcDataStart[4]);
@@ -159,6 +165,33 @@ public class GXHDO101C004Logic {
                 }
             }
 
+            // 値をセット
+            itemData.setValue(value.toPlainString());
+        } else {
+            // 値をセット
+            itemData.setValue("");
+        }
+    }
+
+    /**
+     * 対象項目に値をセットする
+     *
+     * @param itemData 項目
+     * @param value 値
+     */
+    private static void setItemValueToHalfUp(FXHDD01 itemData, BigDecimal value) {
+        if (itemData == null) {
+            return;
+        }
+        if (value != null) {
+            // 小数指定されている場合は小数部以下は四捨五入
+            if (!StringUtil.isEmpty(itemData.getInputLengthDec())) {
+                try {
+                    value = value.setScale(Integer.parseInt(itemData.getInputLengthDec()), RoundingMode.HALF_UP);
+                } catch (NumberFormatException e) {
+                    // 処理なし
+                }
+            }
             // 値をセット
             itemData.setValue(value.toPlainString());
         } else {

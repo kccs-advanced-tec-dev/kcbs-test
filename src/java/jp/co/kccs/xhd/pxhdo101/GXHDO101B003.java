@@ -66,6 +66,11 @@ import org.apache.commons.dbutils.handlers.MapHandler;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	項目追加・変更<br>
  * <br>
+ * 変更日	2020/09/16<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjinyan<br>
+ * 変更理由	仕様変更<br>
+ * <br>
  * 変更日	2020/09/21<br>
  * 計画書No	MB2008-DK001<br>
  * 変更者	KCSS D.Yanagida<br>
@@ -508,6 +513,45 @@ public class GXHDO101B003 implements IFormLogic {
             return MessageUtil.getErrorMessageInfo("", msgCheckR001, true, true, errFxhdd01List);
         }
 
+        // 印刷ｽﾀｰﾄ膜厚AVE
+        FXHDD01 itemInsatsuStartMakuatsuAve = getItemRow(processData.getItemList(), GXHDO101B003Const.INSATSU_START_MAKUATSU_AVE);
+        if (!StringUtil.isEmpty(itemInsatsuStartMakuatsuAve.getKikakuChi()) 
+                && !"【-】".equals(itemInsatsuStartMakuatsuAve.getKikakuChi()) 
+                && StringUtil.isEmpty(itemInsatsuStartMakuatsuAve.getValue())) {
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemInsatsuStartMakuatsuAve);
+            return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, itemInsatsuStartMakuatsuAve.getLabel1());
+        }
+        
+        // 印刷ｽﾀｰﾄ膜厚MAX
+        FXHDD01 itemInsatsuStartMakuatsuMax = getItemRow(processData.getItemList(), GXHDO101B003Const.INSATSU_START_MAKUATSU_MAX);
+        if (!StringUtil.isEmpty(itemInsatsuStartMakuatsuMax.getKikakuChi()) 
+                && !"【-】".equals(itemInsatsuStartMakuatsuMax.getKikakuChi()) 
+                && StringUtil.isEmpty(itemInsatsuStartMakuatsuMax.getValue())) {
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemInsatsuStartMakuatsuMax);
+            return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, itemInsatsuStartMakuatsuMax.getLabel1());
+        }
+        
+        // 印刷ｽﾀｰﾄ膜厚MIN
+        FXHDD01 itemInsatsuStartMakuatsuMin = getItemRow(processData.getItemList(), GXHDO101B003Const.INSATSU_START_MAKUATSU_MIN);
+        if (!StringUtil.isEmpty(itemInsatsuStartMakuatsuMin.getKikakuChi()) 
+                && !"【-】".equals(itemInsatsuStartMakuatsuMin.getKikakuChi()) 
+                && StringUtil.isEmpty(itemInsatsuStartMakuatsuMin.getValue())) {
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemInsatsuStartMakuatsuMin);
+            return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, itemInsatsuStartMakuatsuMin.getLabel1());
+        }
+        
+        // 印刷ｽﾀｰﾄ膜厚CV
+        FXHDD01 itemInsatsuStartMakuatsuCv = getItemRow(processData.getItemList(), GXHDO101B003Const.INSATSU_START_MAKUATSU_CV);
+        if (!StringUtil.isEmpty(itemInsatsuStartMakuatsuCv.getKikakuChi()) 
+                && !"【-】".equals(itemInsatsuStartMakuatsuCv.getKikakuChi()) 
+                && StringUtil.isEmpty(itemInsatsuStartMakuatsuCv.getValue())) {
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemInsatsuStartMakuatsuCv);
+            return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, itemInsatsuStartMakuatsuCv.getLabel1());
+        }
         return null;
     }
 
