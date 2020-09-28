@@ -64,6 +64,11 @@ import org.apache.commons.dbutils.DbUtils;
  * 変更者       KCSS K.Jo<br>
  * 変更理由     項目追加・変更<br>
  * <br>
+ * 変更日       2020/9/18<br>
+ * 計画書No     MB2008-DK001<br>
+ * 変更者       863 zhangjinyan<br>
+ * 変更理由     項目追加・変更<br>
+ * <br>
  * 変更日	2020/09/21<br>
  * 計画書No	MB2008-DK001<br>
  * 変更者	KCSS D.Yanagida<br>
@@ -117,8 +122,16 @@ public class GXHDO101B005 implements IFormLogic {
             processData.setNoCheckButtonId(Arrays.asList(
                     GXHDO101B005Const.BTN_STARTDATETIME_TOP,
                     GXHDO101B005Const.BTN_ENDDATETIME_TOP,
+                    GXHDO101B005Const.BTN_SHITATANSHI_STARTDATETIME_TOP,
+                    GXHDO101B005Const.BTN_SHITATANSHI_ENDDATETIME_TOP,
+                    GXHDO101B005Const.BTN_UWATANSHI_STARTDATETIME_TOP,
+                    GXHDO101B005Const.BTN_UWATANSHI_ENDDATETIME_TOP,
                     GXHDO101B005Const.BTN_STARTDATETIME_BOTTOM,
-                    GXHDO101B005Const.BTN_ENDDATETIME_BOTTOM
+                    GXHDO101B005Const.BTN_ENDDATETIME_BOTTOM,
+                    GXHDO101B005Const.BTN_SHITATANSHI_STARTDATETIME_BOTTOM,
+                    GXHDO101B005Const.BTN_SHITATANSHI_ENDDATETIME_BOTTOM,
+                    GXHDO101B005Const.BTN_UWATANSHI_STARTDATETIME_BOTTOM,
+                    GXHDO101B005Const.BTN_UWATANSHI_ENDDATETIME_BOTTOM
             ));
 
             // リビジョンチェック対象のボタンを設定する。
@@ -379,7 +392,51 @@ public class GXHDO101B005 implements IFormLogic {
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemKaishiDay, itemKaishiTime, itemShuryouDay, itemShuryouTime);
             return MessageUtil.getErrorMessageInfo("", msgCheckR001, true, true, errFxhdd01List);
         }
+        
+        // 下端子開始日時、下端子終了日時前後チェック
+        FXHDD01 itemShitatanshiKaishiDay = getItemRow(processData.getItemList(), GXHDO101B005Const.SHITA_TANSHI_KAISHI_DAY); //下端子開始日
+        FXHDD01 itemShitatanshiKaishiTime = getItemRow(processData.getItemList(), GXHDO101B005Const.SHITA_TANSHI_KAISHI_TIME); // 下端子開始時刻
+        Date shitatanshiKaishiDate = DateUtil.convertStringToDate(itemShitatanshiKaishiDay.getValue(), itemShitatanshiKaishiTime.getValue());
+        FXHDD01 itemShitatanshiShuryouDay = getItemRow(processData.getItemList(), GXHDO101B005Const.SHITA_TANSHI_SHURYOU_DAY); //下端子終了日
+        FXHDD01 itemShitatanshiShuryouTime = getItemRow(processData.getItemList(), GXHDO101B005Const.SHITA_TANSHI_SHURYOU_TIME); //下端子終了時刻
+        Date shitatanshiShuryoDate = DateUtil.convertStringToDate(itemShitatanshiShuryouDay.getValue(), itemShitatanshiShuryouTime.getValue());
+        //R001チェック呼出し
+        String msgCheckR002 = validateUtil.checkR001(itemShitatanshiKaishiDay.getLabel1(), shitatanshiKaishiDate, itemShitatanshiShuryouDay.getLabel1(), shitatanshiShuryoDate);
+        if (!StringUtil.isEmpty(msgCheckR002)) {
+            //エラー発生時
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemShitatanshiKaishiDay, itemShitatanshiKaishiTime, itemShitatanshiShuryouDay, itemShitatanshiShuryouTime);
+            return MessageUtil.getErrorMessageInfo("", msgCheckR002, true, true, errFxhdd01List);
+        }
+        
+        // 上端子開始日時、上端子終了日時前後チェック
+        FXHDD01 itemUwetanshiKaishiDay = getItemRow(processData.getItemList(), GXHDO101B005Const.UWE_TANSHI_KAISHI_DAY); //上端子開始日
+        FXHDD01 itemUwetanshiKaishiTime = getItemRow(processData.getItemList(), GXHDO101B005Const.UWE_TANSHI_KAISHI_TIME); // 上端子開始時刻
+        Date uwetanshiKaishiDate = DateUtil.convertStringToDate(itemUwetanshiKaishiDay.getValue(), itemUwetanshiKaishiTime.getValue());
+        FXHDD01 itemUwetanshiShuryouDay = getItemRow(processData.getItemList(), GXHDO101B005Const.UWE_TANSHI_SHURYOU_DAY); //上端子終了日
+        FXHDD01 itemUwetanshiShuryouTime = getItemRow(processData.getItemList(), GXHDO101B005Const.UWE_TANSHI_SHURYOU_TIME); //上端子終了時刻
+        Date uwetanshiShuryoDate = DateUtil.convertStringToDate(itemUwetanshiShuryouDay.getValue(), itemUwetanshiShuryouTime.getValue());
+        //R001チェック呼出し
+        String msgCheckR003 = validateUtil.checkR001(itemUwetanshiKaishiDay.getLabel1(), uwetanshiKaishiDate, itemUwetanshiShuryouDay.getLabel1(), uwetanshiShuryoDate);
+        if (!StringUtil.isEmpty(msgCheckR003)) {
+            //エラー発生時
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemUwetanshiKaishiDay, itemUwetanshiKaishiTime, itemUwetanshiShuryouDay, itemUwetanshiShuryouTime);
+            return MessageUtil.getErrorMessageInfo("", msgCheckR003, true, true, errFxhdd01List);
+        }
 
+        // 先行ﾛｯﾄNoチェック処理
+        FXHDD01 itemSenkouLotNo = getItemRow(processData.getItemList(), GXHDO101B005Const.SENKOU_LOT_NO); //先行ﾛｯﾄNo
+        FXHDD01 itemPrintRollNo = getItemRow(processData.getItemList(), GXHDO101B005Const.PRINT_ROLLNO); //印刷ﾛｰﾙNo.
+        String senkouLotNo = StringUtil.nullToBlank(itemSenkouLotNo.getValue());
+        if (!StringUtil.isEmpty(senkouLotNo)) {
+            if (senkouLotNo.length() > 10) {
+                String printRollNo = senkouLotNo.substring(7, 11);
+                if (!printRollNo.equals(StringUtil.nullToBlank(itemPrintRollNo.getValue()))) {
+                    // エラー発生時
+                    List<FXHDD01> errFxhdd01List = Arrays.asList(itemSenkouLotNo);
+                    return MessageUtil.getErrorMessageInfo("XHD-000197", true, true, errFxhdd01List, itemSenkouLotNo.getLabel1());
+                }
+            }
+        }
         return null;
     }
     
@@ -777,11 +834,19 @@ public class GXHDO101B005 implements IFormLogic {
                         GXHDO101B005Const.BTN_UPDATE_BOTTOM,
                         GXHDO101B005Const.BTN_STARTDATETIME_BOTTOM,
                         GXHDO101B005Const.BTN_ENDDATETIME_BOTTOM,
+                        GXHDO101B005Const.BTN_SHITATANSHI_STARTDATETIME_BOTTOM,
+                        GXHDO101B005Const.BTN_SHITATANSHI_ENDDATETIME_BOTTOM,
+                        GXHDO101B005Const.BTN_UWATANSHI_STARTDATETIME_BOTTOM,
+                        GXHDO101B005Const.BTN_UWATANSHI_ENDDATETIME_BOTTOM,
                         GXHDO101B005Const.BTN_COPY_EDABAN_TOP,
                         GXHDO101B005Const.BTN_DELETE_TOP,
                         GXHDO101B005Const.BTN_UPDATE_TOP,
                         GXHDO101B005Const.BTN_STARTDATETIME_TOP,
-                        GXHDO101B005Const.BTN_ENDDATETIME_TOP
+                        GXHDO101B005Const.BTN_ENDDATETIME_TOP,
+                        GXHDO101B005Const.BTN_SHITATANSHI_STARTDATETIME_TOP,
+                        GXHDO101B005Const.BTN_SHITATANSHI_ENDDATETIME_TOP,
+                        GXHDO101B005Const.BTN_UWATANSHI_STARTDATETIME_TOP,
+                        GXHDO101B005Const.BTN_UWATANSHI_ENDDATETIME_TOP
                 ));
                 inactiveIdList.addAll(Arrays.asList(
                         GXHDO101B005Const.BTN_KARI_TOUROKU_BOTTOM,
@@ -797,11 +862,19 @@ public class GXHDO101B005 implements IFormLogic {
                         GXHDO101B005Const.BTN_INSERT_BOTTOM,
                         GXHDO101B005Const.BTN_STARTDATETIME_BOTTOM,
                         GXHDO101B005Const.BTN_ENDDATETIME_BOTTOM,
+                        GXHDO101B005Const.BTN_SHITATANSHI_STARTDATETIME_BOTTOM,
+                        GXHDO101B005Const.BTN_SHITATANSHI_ENDDATETIME_BOTTOM,
+                        GXHDO101B005Const.BTN_UWATANSHI_STARTDATETIME_BOTTOM,
+                        GXHDO101B005Const.BTN_UWATANSHI_ENDDATETIME_BOTTOM,
                         GXHDO101B005Const.BTN_KARI_TOUROKU_TOP,
                         GXHDO101B005Const.BTN_COPY_EDABAN_TOP,
                         GXHDO101B005Const.BTN_INSERT_TOP,
                         GXHDO101B005Const.BTN_STARTDATETIME_TOP,
-                        GXHDO101B005Const.BTN_ENDDATETIME_TOP
+                        GXHDO101B005Const.BTN_ENDDATETIME_TOP,
+                        GXHDO101B005Const.BTN_SHITATANSHI_STARTDATETIME_TOP,
+                        GXHDO101B005Const.BTN_SHITATANSHI_ENDDATETIME_TOP,
+                        GXHDO101B005Const.BTN_UWATANSHI_STARTDATETIME_TOP,
+                        GXHDO101B005Const.BTN_UWATANSHI_ENDDATETIME_TOP
                 ));
 
                 inactiveIdList.addAll(Arrays.asList(
@@ -862,6 +935,26 @@ public class GXHDO101B005 implements IFormLogic {
             case GXHDO101B005Const.BTN_ENDDATETIME_TOP:
             case GXHDO101B005Const.BTN_ENDDATETIME_BOTTOM:
                 method = "setShuryouDateTime";
+                break;
+            // 下端子開始日時
+            case GXHDO101B005Const.BTN_SHITATANSHI_STARTDATETIME_TOP:
+            case GXHDO101B005Const.BTN_SHITATANSHI_STARTDATETIME_BOTTOM:
+                method = "setShitatanshiKaishiDateTime";
+                break;
+            // 下端子終了日時
+            case GXHDO101B005Const.BTN_SHITATANSHI_ENDDATETIME_TOP:
+            case GXHDO101B005Const.BTN_SHITATANSHI_ENDDATETIME_BOTTOM:
+                method = "setShitatanshiShuryouDateTime";
+                break;
+            // 上端子開始日時
+            case GXHDO101B005Const.BTN_UWATANSHI_STARTDATETIME_TOP:
+            case GXHDO101B005Const.BTN_UWATANSHI_STARTDATETIME_BOTTOM:
+                method = "setUwatanshiKaishiDateTime";
+                break;
+            // 上端子終了日時
+            case GXHDO101B005Const.BTN_UWATANSHI_ENDDATETIME_TOP:
+            case GXHDO101B005Const.BTN_UWATANSHI_ENDDATETIME_BOTTOM:
+                method = "setUwatanshiShuryouDateTime";
                 break;
             default:
                 method = "error";
@@ -1347,8 +1440,36 @@ public class GXHDO101B005 implements IFormLogic {
         this.setItemData(processData, GXHDO101B005Const.SEKISOU_GOKI, getSrRsussekItemData(GXHDO101B005Const.SEKISOU_GOKI, srSrRsussekData));
         // 下端子
         this.setItemData(processData, GXHDO101B005Const.SHITA_TANSHI, getSrRsussekItemData(GXHDO101B005Const.SHITA_TANSHI, srSrRsussekData));
+        // 下端子開始日
+        this.setItemData(processData, GXHDO101B005Const.SHITA_TANSHI_KAISHI_DAY, getSrRsussekItemData(GXHDO101B005Const.SHITA_TANSHI_KAISHI_DAY, srSrRsussekData));
+        // 下端子開始時刻
+        this.setItemData(processData, GXHDO101B005Const.SHITA_TANSHI_KAISHI_TIME, getSrRsussekItemData(GXHDO101B005Const.SHITA_TANSHI_KAISHI_TIME, srSrRsussekData));
+        // 下端子終了日
+        this.setItemData(processData, GXHDO101B005Const.SHITA_TANSHI_SHURYOU_DAY, getSrRsussekItemData(GXHDO101B005Const.SHITA_TANSHI_SHURYOU_DAY, srSrRsussekData));
+        // 下端子終了時刻
+        this.setItemData(processData, GXHDO101B005Const.SHITA_TANSHI_SHURYOU_TIME, getSrRsussekItemData(GXHDO101B005Const.SHITA_TANSHI_SHURYOU_TIME, srSrRsussekData));
+        // 下端子担当者
+        this.setItemData(processData, GXHDO101B005Const.SHITA_TANSHI_TANTOSYA, getSrRsussekItemData(GXHDO101B005Const.SHITA_TANSHI_TANTOSYA, srSrRsussekData));
+        // 下端子確認者
+        this.setItemData(processData, GXHDO101B005Const.SHITA_TANSHI_KAKUNINSYA, getSrRsussekItemData(GXHDO101B005Const.SHITA_TANSHI_KAKUNINSYA, srSrRsussekData));
+        // 下端子備考
+        this.setItemData(processData, GXHDO101B005Const.SHITA_TANSHI_BIKO, getSrRsussekItemData(GXHDO101B005Const.SHITA_TANSHI_BIKO, srSrRsussekData));
         // 上端子
         this.setItemData(processData, GXHDO101B005Const.UWE_TANSHI, getSrRsussekItemData(GXHDO101B005Const.UWE_TANSHI, srSrRsussekData));
+        // 上端子開始日
+        this.setItemData(processData, GXHDO101B005Const.UWE_TANSHI_KAISHI_DAY, getSrRsussekItemData(GXHDO101B005Const.UWE_TANSHI_KAISHI_DAY, srSrRsussekData));
+        // 上端子開始時刻
+        this.setItemData(processData, GXHDO101B005Const.UWE_TANSHI_KAISHI_TIME, getSrRsussekItemData(GXHDO101B005Const.UWE_TANSHI_KAISHI_TIME, srSrRsussekData));
+        // 上端子終了日
+        this.setItemData(processData, GXHDO101B005Const.UWE_TANSHI_SHURYOU_DAY, getSrRsussekItemData(GXHDO101B005Const.UWE_TANSHI_SHURYOU_DAY, srSrRsussekData));
+        // 上端子終了時刻
+        this.setItemData(processData, GXHDO101B005Const.UWE_TANSHI_SHURYOU_TIME, getSrRsussekItemData(GXHDO101B005Const.UWE_TANSHI_SHURYOU_TIME, srSrRsussekData));
+        // 上端子担当者
+        this.setItemData(processData, GXHDO101B005Const.UWE_TANSHI_TANTOSYA, getSrRsussekItemData(GXHDO101B005Const.UWE_TANSHI_TANTOSYA, srSrRsussekData));
+        // 上端子確認者
+        this.setItemData(processData, GXHDO101B005Const.UWE_TANSHI_KAKUNINSYA, getSrRsussekItemData(GXHDO101B005Const.UWE_TANSHI_KAKUNINSYA, srSrRsussekData));
+        // 上端子備考
+        this.setItemData(processData, GXHDO101B005Const.UWE_TANSHI_BIKO, getSrRsussekItemData(GXHDO101B005Const.UWE_TANSHI_BIKO, srSrRsussekData));
         // 処理セット数
         this.setItemData(processData, GXHDO101B005Const.SYORI_SET_SU, getSrRsussekItemData(GXHDO101B005Const.SYORI_SET_SU, srSrRsussekData));
         // 良品セット数
@@ -1371,12 +1492,22 @@ public class GXHDO101B005 implements IFormLogic {
         this.setItemData(processData, GXHDO101B005Const.SHUNJI_KANETSU_TIME, getSrRsussekItemData(GXHDO101B005Const.SHUNJI_KANETSU_TIME, srSrRsussekData));
         // タクト
         this.setItemData(processData, GXHDO101B005Const.TAKT, getSrRsussekItemData(GXHDO101B005Const.TAKT, srSrRsussekData));
+        // ﾍｯﾄﾞNo
+        this.setItemData(processData, GXHDO101B005Const.HEADNO, getSrRsussekItemData(GXHDO101B005Const.HEADNO, srSrRsussekData));
+        // SUS板枚数
+        this.setItemData(processData, GXHDO101B005Const.SUSITAMAISU, getSrRsussekItemData(GXHDO101B005Const.SUSITAMAISU, srSrRsussekData));
         // 先行ロットNo
         this.setItemData(processData, GXHDO101B005Const.SENKOU_LOT_NO, getSrRsussekItemData(GXHDO101B005Const.SENKOU_LOT_NO, srSrRsussekData));
         // 備考1
         this.setItemData(processData, GXHDO101B005Const.BIKOU1, getSrRsussekItemData(GXHDO101B005Const.BIKOU1, srSrRsussekData));
         // 備考2
         this.setItemData(processData, GXHDO101B005Const.BIKOU2, getSrRsussekItemData(GXHDO101B005Const.BIKOU2, srSrRsussekData));
+        // 電極製版ﾛｯﾄNo
+        this.setItemData(processData, GXHDO101B005Const.ELOTNO, getSrRsussekItemData(GXHDO101B005Const.ELOTNO, srSrRsussekData));
+        // 最上層担当者
+        this.setItemData(processData, GXHDO101B005Const.LASTLAYERTANTOSYA, getSrRsussekItemData(GXHDO101B005Const.LASTLAYERTANTOSYA, srSrRsussekData));
+        // 最上層備考
+        this.setItemData(processData, GXHDO101B005Const.LASTLAYERBIKO, getSrRsussekItemData(GXHDO101B005Const.LASTLAYERBIKO, srSrRsussekData));
         // 製版名
         this.setItemData(processData, GXHDO101B005Const.PATERN, getSrRsussekItemData(GXHDO101B005Const.PATERN, srSrRsussekData));
         // 取り個数
@@ -1858,7 +1989,9 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + ",HNGKaisuu,HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,bikou2,setsuu,tokuisaki,lotkubuncode,ownercode"
                 + ",syurui3,atumi3,maisuu3,patern,torikosuu,etape,lretu,wretu,lsun,wsun,epaste,genryou,eatumi,sousuu"
                 + ",emaisuu,sekisouslideryo,lastlayerslideryo,renzokusekisoumaisuu,bsouhoseiryou,yjikuhoseiryou"
-                + ",syurui2,atumi2,maisuu2,revision,'0' AS deleteflag "
+                + ",syurui2,atumi2,maisuu2,ShitaTanshiKAISINICHIJI,ShitaTanshiSYURYONICHIJI,ShitaTanshiTANTOSYA,"
+                + "ShitaTanshiKAKUNINSYA,ShitaTanshiBIKO,UwaTanshiKAISINICHIJI,UwaTanshiSYURYONICHIJI,UwaTanshiTANTOSYA,"
+                + "UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,revision,'0' AS deleteflag "
                 + "FROM sr_rsussek "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
         // revisionが入っている場合、条件に追加
@@ -1954,6 +2087,21 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         mapping.put("syurui2", "syurui2"); //上ｶﾊﾞｰﾃｰﾌﾟ1種類
         mapping.put("atumi2", "atumi2"); //上ｶﾊﾞｰﾃｰﾌﾟ1厚み
         mapping.put("maisuu2", "maisuu2"); //上ｶﾊﾞｰﾃｰﾌﾟ1枚数
+        mapping.put("ShitaTanshiKAISINICHIJI", "shitatanshikaisinichiji"); //下端子開始日時
+        mapping.put("ShitaTanshiSYURYONICHIJI", "shitatanshisyuryonichiji"); //下端子終了日時
+        mapping.put("ShitaTanshiTANTOSYA", "shitatanshitantosya"); //下端子担当者
+        mapping.put("ShitaTanshiKAKUNINSYA", "shitatanshikakuninsya"); //下端子確認者
+        mapping.put("ShitaTanshiBIKO", "shitatanshibiko"); //下端子備考
+        mapping.put("UwaTanshiKAISINICHIJI", "uwatanshikaisinichiji"); //上端子開始日時
+        mapping.put("UwaTanshiSYURYONICHIJI", "uwatanshisyuryonichiji"); //上端子終了日時
+        mapping.put("UwaTanshiTANTOSYA", "uwatanshitantosya"); //上端子担当者
+        mapping.put("UwaTanshiKAKUNINSYA", "uwatanshikakuninsya"); //上端子確認者
+        mapping.put("UwaTanshiBIKO", "uwatanshibiko"); //上端子備考
+        mapping.put("HeadNo", "headno"); //ﾍｯﾄﾞNo
+        mapping.put("SUSitamaisu", "susitamaisu"); //SUS板枚数
+        mapping.put("lastlayerTANTOSYA", "lastlayertantosya"); //最上層担当者
+        mapping.put("lastlayerBIKO", "lastlayerbiko"); //最上層備考
+        mapping.put("elotno", "elotno"); //電極製版ﾛｯﾄNo
         mapping.put("revision", "revision"); //revision
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
 
@@ -2125,7 +2273,9 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + ",HNGKaisuu,HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,bikou2,setsuu,tokuisaki,lotkubuncode,ownercode"
                 + ",syurui3,atumi3,maisuu3,patern,torikosuu,etape,lretu,wretu,lsun,wsun,epaste,genryou,eatumi,sousuu"
                 + ",emaisuu,sekisouslideryo,lastlayerslideryo,renzokusekisoumaisuu,bsouhoseiryou,yjikuhoseiryou"
-                + ",syurui2,atumi2,maisuu2,revision,deleteflag "
+                + ",syurui2,atumi2,maisuu2,ShitaTanshiKAISINICHIJI,ShitaTanshiSYURYONICHIJI,ShitaTanshiTANTOSYA,"
+                + "ShitaTanshiKAKUNINSYA,ShitaTanshiBIKO,UwaTanshiKAISINICHIJI,UwaTanshiSYURYONICHIJI,UwaTanshiTANTOSYA,"
+                + "UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,revision,deleteflag "
                 + "  FROM tmp_sr_rsussek "
                 + " WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND deleteflag = ? ";
         // revisionが入っている場合、条件に追加
@@ -2222,6 +2372,21 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         mapping.put("syurui2", "syurui2"); //上ｶﾊﾞｰﾃｰﾌﾟ1種類
         mapping.put("atumi2", "atumi2"); //上ｶﾊﾞｰﾃｰﾌﾟ1厚み
         mapping.put("maisuu2", "maisuu2"); //上ｶﾊﾞｰﾃｰﾌﾟ1枚数
+        mapping.put("ShitaTanshiKAISINICHIJI", "shitatanshikaisinichiji"); //下端子開始日時
+        mapping.put("ShitaTanshiSYURYONICHIJI", "shitatanshisyuryonichiji"); //下端子終了日時
+        mapping.put("ShitaTanshiTANTOSYA", "shitatanshitantosya"); //下端子担当者
+        mapping.put("ShitaTanshiKAKUNINSYA", "shitatanshikakuninsya"); //下端子確認者
+        mapping.put("ShitaTanshiBIKO", "shitatanshibiko"); //下端子備考
+        mapping.put("UwaTanshiKAISINICHIJI", "uwatanshikaisinichiji"); //上端子開始日時
+        mapping.put("UwaTanshiSYURYONICHIJI", "uwatanshisyuryonichiji"); //上端子終了日時
+        mapping.put("UwaTanshiTANTOSYA", "uwatanshitantosya"); //上端子担当者
+        mapping.put("UwaTanshiKAKUNINSYA", "uwatanshikakuninsya"); //上端子確認者
+        mapping.put("UwaTanshiBIKO", "uwatanshibiko"); //上端子備考
+        mapping.put("HeadNo", "headno"); //ﾍｯﾄﾞNo
+        mapping.put("SUSitamaisu", "susitamaisu"); //SUS板枚数
+        mapping.put("lastlayerTANTOSYA", "lastlayertantosya"); //最上層担当者
+        mapping.put("lastlayerBIKO", "lastlayerbiko"); //最上層備考
+        mapping.put("elotno", "elotno"); //電極製版ﾛｯﾄNo
         mapping.put("revision", "revision"); //revision
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
 
@@ -2672,10 +2837,12 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + ",GaikanKakunin1,GaikanKakunin2,GaikanKakunin3,GaikanKakunin4,SyoriSetsuu,RyouhinSetsuu,EndTantousyacode,TanshiTapeSyurui"
                 + ",HNGKaisuu,HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,bikou2,setsuu,tokuisaki,lotkubuncode,ownercode,syurui3,atumi3,maisuu3"
                 + ",patern,torikosuu,etape,lretu,wretu,lsun,wsun,epaste,genryou,eatumi,sousuu,emaisuu,sekisouslideryo,lastlayerslideryo"
-                + ",renzokusekisoumaisuu,bsouhoseiryou,yjikuhoseiryou,syurui2,atumi2,maisuu2,revision,deleteflag"
+                + ",renzokusekisoumaisuu,bsouhoseiryou,yjikuhoseiryou,syurui2,atumi2,maisuu2,ShitaTanshiKAISINICHIJI,ShitaTanshiSYURYONICHIJI,"
+                + "ShitaTanshiTANTOSYA,ShitaTanshiKAKUNINSYA,ShitaTanshiBIKO,UwaTanshiKAISINICHIJI,UwaTanshiSYURYONICHIJI,UwaTanshiTANTOSYA,"
+                + "UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,revision,deleteflag"
                 + ") VALUES ("
                 + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? "
-                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterTmpSrRsussek(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -2708,7 +2875,9 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + "SyoriSetsuu = ?,RyouhinSetsuu = ?,EndTantousyacode = ?,"
                 + "bikou2 = ?,setsuu = ?,tokuisaki = ?,lotkubuncode = ?,ownercode = ?,syurui3 = ?,atumi3 = ?,maisuu3 = ?,"
                 + "patern = ?,torikosuu = ?,etape = ?,lretu = ?,wretu = ?,lsun = ?,wsun = ?,epaste = ?,genryou = ?,eatumi = ?,sousuu = ?,emaisuu = ?,sekisouslideryo = ?,"
-                + "lastlayerslideryo = ?,renzokusekisoumaisuu = ?,yjikuhoseiryou = ?,syurui2 = ?,atumi2 = ?,maisuu2 = ?,revision = ?,deleteflag = ? "
+                + "lastlayerslideryo = ?,renzokusekisoumaisuu = ?,yjikuhoseiryou = ?,syurui2 = ?,atumi2 = ?,maisuu2 = ?,ShitaTanshiKAISINICHIJI = ?,ShitaTanshiSYURYONICHIJI = ?,"
+                + "ShitaTanshiTANTOSYA = ?,ShitaTanshiKAKUNINSYA = ?,ShitaTanshiBIKO = ?,UwaTanshiKAISINICHIJI = ?,UwaTanshiSYURYONICHIJI = ?,UwaTanshiTANTOSYA = ?,"
+                + "UwaTanshiKAKUNINSYA = ?,UwaTanshiBIKO = ?,HeadNo = ?,SUSitamaisu = ?,lastlayerTANTOSYA = ?,lastlayerBIKO = ?,elotno = ?,revision = ?,deleteflag = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
         // 更新前の値を取得
@@ -2990,6 +3159,25 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         params.add(DBUtil.stringToStringObjectDefaultNull(strSyurui2));//上ｶﾊﾞｰﾃｰﾌﾟ1種類
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(strAtumi2));//上ｶﾊﾞｰﾃｰﾌﾟ1厚み
         params.add(DBUtil.stringToIntObjectDefaultNull(strMaisuu2));//上ｶﾊﾞｰﾃｰﾌﾟ1枚数
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SHITA_TANSHI_KAISHI_DAY, srRsussekData),
+            getItemData(itemList, GXHDO101B005Const.SHITA_TANSHI_KAISHI_TIME, srRsussekData))); //下端子開始日時
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SHITA_TANSHI_SHURYOU_DAY, srRsussekData),
+           getItemData(itemList, GXHDO101B005Const.SHITA_TANSHI_SHURYOU_TIME, srRsussekData))); //下端子終了日時
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SHITA_TANSHI_TANTOSYA, srRsussekData))); //下端子担当者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SHITA_TANSHI_KAKUNINSYA, srRsussekData))); //下端子確認者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SHITA_TANSHI_BIKO, srRsussekData))); //下端子備考
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.UWE_TANSHI_KAISHI_DAY, srRsussekData),
+            getItemData(itemList, GXHDO101B005Const.UWE_TANSHI_KAISHI_TIME, srRsussekData))); //上端子開始日時
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.UWE_TANSHI_SHURYOU_DAY, srRsussekData),
+           getItemData(itemList, GXHDO101B005Const.UWE_TANSHI_SHURYOU_TIME, srRsussekData))); //上端子終了日時
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.UWE_TANSHI_TANTOSYA, srRsussekData))); //上端子担当者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.UWE_TANSHI_KAKUNINSYA, srRsussekData))); //上端子確認者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.UWE_TANSHI_BIKO, srRsussekData))); //上端子備考
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.HEADNO, srRsussekData))); //ﾍｯﾄﾞNo
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SUSITAMAISU, srRsussekData))); //SUS板枚数
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.LASTLAYERTANTOSYA, srRsussekData))); //最上層担当者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.LASTLAYERBIKO, srRsussekData))); //最上層備考
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.ELOTNO, srRsussekData))); //電極製版ﾛｯﾄNo
         params.add(newRev); //revision
         params.add(deleteflag); //削除ﾌﾗｸﾞ
 
@@ -3238,10 +3426,12 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + ",GaikanKakunin1,GaikanKakunin2,GaikanKakunin3,GaikanKakunin4,SyoriSetsuu,RyouhinSetsuu,EndTantousyacode,TanshiTapeSyurui"
                 + ",HNGKaisuu,HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,bikou2,setsuu,tokuisaki,lotkubuncode,ownercode,syurui3,atumi3,maisuu3"
                 + ",patern,torikosuu,etape,lretu,wretu,lsun,wsun,epaste,genryou,eatumi,sousuu,emaisuu,sekisouslideryo,lastlayerslideryo"
-                + ",renzokusekisoumaisuu,bsouhoseiryou,yjikuhoseiryou,syurui2,atumi2,maisuu2,revision"
+                + ",renzokusekisoumaisuu,bsouhoseiryou,yjikuhoseiryou,syurui2,atumi2,maisuu2,ShitaTanshiKAISINICHIJI,ShitaTanshiSYURYONICHIJI,"
+                + "ShitaTanshiTANTOSYA,ShitaTanshiKAKUNINSYA,ShitaTanshiBIKO,UwaTanshiKAISINICHIJI,UwaTanshiSYURYONICHIJI,UwaTanshiTANTOSYA,"
+                + "UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,revision"
                 + ") VALUES ("
                 + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? "
-                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
         
         List<Object> params = setUpdateParameterSrRsussek(true, newRev, kojyo, lotNo, edaban, systemTime, itemList, tmpSrRsussek);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -3274,8 +3464,10 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + "RyouhinSetsuu = ?,EndTantousyacode = ?,"
                 + "bikou2 = ?,setsuu = ?,tokuisaki = ?,lotkubuncode = ?,ownercode = ?,syurui3 = ?,atumi3 = ?,maisuu3 = ?,patern = ?,torikosuu = ?,"
                 + "etape = ?,lretu = ?,wretu = ?,lsun = ?,wsun = ?,epaste = ?,genryou = ?,eatumi = ?,sousuu = ?,emaisuu = ?,sekisouslideryo = ?,"
-                + "lastlayerslideryo = ?,renzokusekisoumaisuu = ?,yjikuhoseiryou = ?,syurui2 = ?,atumi2 = ?,maisuu2 = ?,"
-                + "revision = ? "
+                + "lastlayerslideryo = ?,renzokusekisoumaisuu = ?,yjikuhoseiryou = ?,syurui2 = ?,atumi2 = ?,maisuu2 = ?,ShitaTanshiKAISINICHIJI = ?,"
+                + "ShitaTanshiSYURYONICHIJI = ?,ShitaTanshiTANTOSYA = ?,ShitaTanshiKAKUNINSYA = ?,ShitaTanshiBIKO = ?,UwaTanshiKAISINICHIJI = ?,"
+                + "UwaTanshiSYURYONICHIJI = ?,UwaTanshiTANTOSYA = ?,UwaTanshiKAKUNINSYA = ?,UwaTanshiBIKO = ?,HeadNo = ?,SUSitamaisu = ?,"
+                + "lastlayerTANTOSYA = ?,lastlayerBIKO = ?,elotno = ?,revision = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
         // 更新前の値を取得
@@ -3527,6 +3719,25 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         params.add(DBUtil.stringToStringObject(strSyurui2));//上ｶﾊﾞｰﾃｰﾌﾟ1種類
         params.add(DBUtil.stringToBigDecimalObject(strAtumi2));//上ｶﾊﾞｰﾃｰﾌﾟ1厚み
         params.add(DBUtil.stringToIntObject(strMaisuu2));//上ｶﾊﾞｰﾃｰﾌﾟ1枚数
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SHITA_TANSHI_KAISHI_DAY, srRsussekData),
+            getItemData(itemList, GXHDO101B005Const.SHITA_TANSHI_KAISHI_TIME, srRsussekData))); //下端子開始日時
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SHITA_TANSHI_SHURYOU_DAY, srRsussekData),
+           getItemData(itemList, GXHDO101B005Const.SHITA_TANSHI_SHURYOU_TIME, srRsussekData))); //下端子終了日時
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SHITA_TANSHI_TANTOSYA, srRsussekData))); //下端子担当者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SHITA_TANSHI_KAKUNINSYA, srRsussekData))); //下端子確認者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SHITA_TANSHI_BIKO, srRsussekData))); //下端子備考
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.UWE_TANSHI_KAISHI_DAY, srRsussekData),
+            getItemData(itemList, GXHDO101B005Const.UWE_TANSHI_KAISHI_TIME, srRsussekData))); //上端子開始日時
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.UWE_TANSHI_SHURYOU_DAY, srRsussekData),
+           getItemData(itemList, GXHDO101B005Const.UWE_TANSHI_SHURYOU_TIME, srRsussekData))); //上端子終了日時
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.UWE_TANSHI_TANTOSYA, srRsussekData))); //上端子担当者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.UWE_TANSHI_KAKUNINSYA, srRsussekData))); //上端子確認者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.UWE_TANSHI_BIKO, srRsussekData))); //上端子備考
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.HEADNO, srRsussekData))); //ﾍｯﾄﾞNo
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SUSITAMAISU, srRsussekData))); //SUS板枚数
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.LASTLAYERTANTOSYA, srRsussekData))); //最上層担当者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.LASTLAYERBIKO, srRsussekData))); //最上層備考
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.ELOTNO, srRsussekData))); //電極製版ﾛｯﾄNo
         params.add(newRev); //revision
 
         return params;
@@ -3874,6 +4085,72 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
     }
 
     /**
+     * 下端子開始時間設定処理
+     *
+     * @param processDate 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData setShitatanshiKaishiDateTime(ProcessData processDate) {
+        FXHDD01 itemDay = getItemRow(processDate.getItemList(), GXHDO101B005Const.SHITA_TANSHI_KAISHI_DAY);
+        FXHDD01 itemTime = getItemRow(processDate.getItemList(), GXHDO101B005Const.SHITA_TANSHI_KAISHI_TIME);
+        if (StringUtil.isEmpty(itemDay.getValue()) && StringUtil.isEmpty(itemTime.getValue())) {
+            setDateTimeItem(itemDay, itemTime, new Date());
+        }
+        processDate.setMethod("");
+        return processDate;
+    }
+
+    /**
+     * 下端子終了時間設定処理
+     *
+     * @param processDate 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData setShitatanshiShuryouDateTime(ProcessData processDate) {
+        FXHDD01 itemDay = getItemRow(processDate.getItemList(), GXHDO101B005Const.SHITA_TANSHI_SHURYOU_DAY);
+        FXHDD01 itemTime = getItemRow(processDate.getItemList(), GXHDO101B005Const.SHITA_TANSHI_SHURYOU_TIME);
+        if (StringUtil.isEmpty(itemDay.getValue()) && StringUtil.isEmpty(itemTime.getValue())) {
+            setDateTimeItem(itemDay, itemTime, new Date());
+        }
+
+        processDate.setMethod("");
+        return processDate;
+    }
+
+    /**
+     * 上端子開始時間設定処理
+     *
+     * @param processDate 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData setUwatanshiKaishiDateTime(ProcessData processDate) {
+        FXHDD01 itemDay = getItemRow(processDate.getItemList(), GXHDO101B005Const.UWE_TANSHI_KAISHI_DAY);
+        FXHDD01 itemTime = getItemRow(processDate.getItemList(), GXHDO101B005Const.UWE_TANSHI_KAISHI_TIME);
+        if (StringUtil.isEmpty(itemDay.getValue()) && StringUtil.isEmpty(itemTime.getValue())) {
+            setDateTimeItem(itemDay, itemTime, new Date());
+        }
+        processDate.setMethod("");
+        return processDate;
+    }
+
+    /**
+     * 上端子終了時間設定処理
+     *
+     * @param processDate 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData setUwatanshiShuryouDateTime(ProcessData processDate) {
+        FXHDD01 itemDay = getItemRow(processDate.getItemList(), GXHDO101B005Const.UWE_TANSHI_SHURYOU_DAY);
+        FXHDD01 itemTime = getItemRow(processDate.getItemList(), GXHDO101B005Const.UWE_TANSHI_SHURYOU_TIME);
+        if (StringUtil.isEmpty(itemDay.getValue()) && StringUtil.isEmpty(itemTime.getValue())) {
+            setDateTimeItem(itemDay, itemTime, new Date());
+        }
+
+        processDate.setMethod("");
+        return processDate;
+    }
+
+    /**
      * 日付(日、時間)の項目にフォーマットの日付(yyMMdd,HHmm)をセットする
      *
      * @param itemDay 項目日付(日)
@@ -3924,9 +4201,51 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
             // 下端子
             case GXHDO101B005Const.SHITA_TANSHI:
                 return StringUtil.nullToBlank(srRsussekData.getShitatanshi());
+            // 下端子開始日
+            case GXHDO101B005Const.SHITA_TANSHI_KAISHI_DAY:
+                return DateUtil.formattedTimestamp(srRsussekData.getShitatanshikaisinichiji(), "yyMMdd");
+            // 下端子開始時刻
+            case GXHDO101B005Const.SHITA_TANSHI_KAISHI_TIME:
+                return DateUtil.formattedTimestamp(srRsussekData.getShitatanshikaisinichiji(), "HHmm");
+            // 下端子開始日
+            case GXHDO101B005Const.SHITA_TANSHI_SHURYOU_DAY:
+                return DateUtil.formattedTimestamp(srRsussekData.getShitatanshisyuryonichiji(), "yyMMdd");
+            // 下端子開始時刻
+            case GXHDO101B005Const.SHITA_TANSHI_SHURYOU_TIME:
+                return DateUtil.formattedTimestamp(srRsussekData.getShitatanshisyuryonichiji(), "HHmm");
+            // 下端子担当者
+            case GXHDO101B005Const.SHITA_TANSHI_TANTOSYA:
+                return StringUtil.nullToBlank(srRsussekData.getShitatanshitantosya());
+            // 下端子確認者
+            case GXHDO101B005Const.SHITA_TANSHI_KAKUNINSYA:
+                return StringUtil.nullToBlank(srRsussekData.getShitatanshikakuninsya());
+            // 下端子備考
+            case GXHDO101B005Const.SHITA_TANSHI_BIKO:
+                return StringUtil.nullToBlank(srRsussekData.getShitatanshibiko());
             // 上端子
             case GXHDO101B005Const.UWE_TANSHI:
                 return StringUtil.nullToBlank(srRsussekData.getUwatanshi());
+            // 上端子開始日
+            case GXHDO101B005Const.UWE_TANSHI_KAISHI_DAY:
+                return DateUtil.formattedTimestamp(srRsussekData.getUwatanshikaisinichiji(), "yyMMdd");
+            // 上端子開始時刻
+            case GXHDO101B005Const.UWE_TANSHI_KAISHI_TIME:
+                return DateUtil.formattedTimestamp(srRsussekData.getUwatanshikaisinichiji(), "HHmm");
+            // 上端子開始日
+            case GXHDO101B005Const.UWE_TANSHI_SHURYOU_DAY:
+                return DateUtil.formattedTimestamp(srRsussekData.getUwatanshisyuryonichiji(), "yyMMdd");
+            // 上端子開始時刻
+            case GXHDO101B005Const.UWE_TANSHI_SHURYOU_TIME:
+                return DateUtil.formattedTimestamp(srRsussekData.getUwatanshisyuryonichiji(), "HHmm");
+            // 上端子担当者
+            case GXHDO101B005Const.UWE_TANSHI_TANTOSYA:
+                return StringUtil.nullToBlank(srRsussekData.getUwatanshitantosya());
+            // 上端子確認者
+            case GXHDO101B005Const.UWE_TANSHI_KAKUNINSYA:
+                return StringUtil.nullToBlank(srRsussekData.getUwatanshikakuninsya());
+            // 上端子備考
+            case GXHDO101B005Const.UWE_TANSHI_BIKO:
+                return StringUtil.nullToBlank(srRsussekData.getUwatanshibiko());
             // 処理セット数
             case GXHDO101B005Const.SYORI_SET_SU:
                 return StringUtil.nullToBlank(srRsussekData.getSyorisetsuu());
@@ -3960,6 +4279,12 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
             // タクト
             case GXHDO101B005Const.TAKT:
                 return StringUtil.nullToBlank(srRsussekData.getTakuto());
+            // ﾍｯﾄﾞNo
+            case GXHDO101B005Const.HEADNO:
+                return StringUtil.nullToBlank(srRsussekData.getHeadno());
+            // SUS板枚数
+            case GXHDO101B005Const.SUSITAMAISU:
+                return StringUtil.nullToBlank(srRsussekData.getSusitamaisu());
             // 先行ロットNo
             case GXHDO101B005Const.SENKOU_LOT_NO:
                 return StringUtil.nullToBlank(srRsussekData.getSkojyo()) + StringUtil.nullToBlank(srRsussekData.getSlotno()) + StringUtil.nullToBlank(srRsussekData.getSedaban());
@@ -3969,6 +4294,15 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
             // 備考2
             case GXHDO101B005Const.BIKOU2:
                 return StringUtil.nullToBlank(srRsussekData.getBikou2());
+            // 電極製版ﾛｯﾄNo
+            case GXHDO101B005Const.ELOTNO:
+                return StringUtil.nullToBlank(srRsussekData.getElotno());
+            // 最上層担当者
+            case GXHDO101B005Const.LASTLAYERTANTOSYA:
+                return StringUtil.nullToBlank(srRsussekData.getLastlayertantosya());
+            // 最上層備考
+            case GXHDO101B005Const.LASTLAYERBIKO:
+                return StringUtil.nullToBlank(srRsussekData.getLastlayerbiko());
             //KCPNo
             case GXHDO101B005Const.KCPNO:
                 return StringUtil.nullToBlank(srRsussekData.getKcpno());
@@ -4044,7 +4378,8 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + ",EndTantousyacode,TanshiTapeSyurui,HNGKaisuu,HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,bikou2"
                 + ",setsuu,tokuisaki,lotkubuncode,ownercode,syurui3,atumi3,maisuu3,patern,torikosuu,etape,lretu,wretu,lsun,wsun,epaste,genryou,eatumi,sousuu"
                 + ",emaisuu,sekisouslideryo,lastlayerslideryo,renzokusekisoumaisuu,bsouhoseiryou,yjikuhoseiryou"
-                + ",syurui2,atumi2,maisuu2,revision,deleteflag "
+                + ",syurui2,atumi2,maisuu2,ShitaTanshiKAISINICHIJI,ShitaTanshiSYURYONICHIJI,ShitaTanshiTANTOSYA,ShitaTanshiKAKUNINSYA,ShitaTanshiBIKO,UwaTanshiKAISINICHIJI"
+                + ",UwaTanshiSYURYONICHIJI,UwaTanshiTANTOSYA,UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,revision,deleteflag "
                 + ") SELECT "
                 + " KOJYO,LOTNO,EDABAN,KCPNO,TNTAPESYURUI,TNTAPENO,TNTAPEGENRYO,KAISINICHIJI,SYURYONICHIJI,GOKI,JITUATURYOKU,SEKISOZURE2"
                 + ",TANTOSYA,KAKUNINSYA,INSATUROLLNO,HAPPOSHEETNO,SKJIKAN,TAKUTO,BIKO1,?,?,SKOJYO,SLOTNO,SEDABAN,tapelotno,taperollno1"
@@ -4053,7 +4388,8 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + ",EndTantousyacode,TanshiTapeSyurui,HNGKaisuu,HNGKaisuuAve,GNGKaisuu,GNGKaisuuAve,bikou2"
                 + ",setsuu,tokuisaki,lotkubuncode,ownercode,syurui3,atumi3,maisuu3,patern,torikosuu,etape,lretu,wretu,lsun,wsun,epaste,genryou,eatumi,sousuu"
                 + ",emaisuu,sekisouslideryo,lastlayerslideryo,renzokusekisoumaisuu,bsouhoseiryou,yjikuhoseiryou"
-                + ",syurui2,atumi2,maisuu2,?,? "
+                + ",syurui2,atumi2,maisuu2,ShitaTanshiKAISINICHIJI,ShitaTanshiSYURYONICHIJI,ShitaTanshiTANTOSYA,ShitaTanshiKAKUNINSYA,ShitaTanshiBIKO,UwaTanshiKAISINICHIJI"
+                + ",UwaTanshiSYURYONICHIJI,UwaTanshiTANTOSYA,UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,?,? "
                 + " FROM sr_rsussek "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
 

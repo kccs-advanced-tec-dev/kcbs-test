@@ -13,6 +13,11 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/09/23<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -191,6 +196,26 @@ public class GXHDO101B004Const {
      * 加圧圧力
      */
     public static final String KAATU_ATURYOKU = "sr_spssekisou_kaatsu_atsuryoku";
+
+    /**
+     * 途中加圧枚数
+     */
+    public static final String CPRESS_KANKAKU_SOSUU = "sr_spssekisou_cpress_kankaku_sosuu";
+
+    /**
+     * 途中加圧圧力
+     */
+    public static final String CPRESS_ATURYOKU = "sr_spssekisou_cpress_aturyoku";
+
+    /**
+     * 途中加圧時間
+     */
+    public static final String CPRESS_KAATU_JIKAN = "sr_spssekisou_cpress_kaatu_jikan";
+
+    /**
+     * 途中加圧回数
+     */
+    public static final String CPRESS_KAISUU = "sr_spssekisou_cpress_kaisuu";
 
     /**
      * 最終加圧力

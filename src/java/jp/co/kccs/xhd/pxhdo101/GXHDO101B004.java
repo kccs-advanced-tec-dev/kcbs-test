@@ -1516,6 +1516,14 @@ public class GXHDO101B004 implements IFormLogic {
         this.setItemData(processData, GXHDO101B004Const.KAATU_JIKAN, getSrSpssekisouItemData(GXHDO101B004Const.KAATU_JIKAN, srSpssekisouData));
         // 加圧圧力
         this.setItemData(processData, GXHDO101B004Const.KAATU_ATURYOKU, getSrSpssekisouItemData(GXHDO101B004Const.KAATU_ATURYOKU, srSpssekisouData));
+        // 途中加圧枚数
+        this.setItemData(processData, GXHDO101B004Const.CPRESS_KANKAKU_SOSUU, getSrSpssekisouItemData(GXHDO101B004Const.CPRESS_KANKAKU_SOSUU, srSpssekisouData));
+        // 途中加圧圧力
+        this.setItemData(processData, GXHDO101B004Const.CPRESS_ATURYOKU, getSrSpssekisouItemData(GXHDO101B004Const.CPRESS_ATURYOKU, srSpssekisouData));
+        // 途中加圧時間
+        this.setItemData(processData, GXHDO101B004Const.CPRESS_KAATU_JIKAN, getSrSpssekisouItemData(GXHDO101B004Const.CPRESS_KAATU_JIKAN, srSpssekisouData));
+        // 途中加圧回数
+        this.setItemData(processData, GXHDO101B004Const.CPRESS_KAISUU, getSrSpssekisouItemData(GXHDO101B004Const.CPRESS_KAISUU, srSpssekisouData));
         // 最終加圧力
         this.setItemData(processData, GXHDO101B004Const.LAST_KAATURYOKU, getSrSpssekisouItemData(GXHDO101B004Const.LAST_KAATURYOKU, srSpssekisouData));
         // 最終加圧時間
@@ -2988,9 +2996,9 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         params.add(null);//金型温度
         params.add(null);//電極圧力
         params.add(null);//電極加圧時間
-        params.add(null);//中間ﾌﾟﾚｽ圧力
-        params.add(null);//中間ﾌﾟﾚｽ加圧時間
-        params.add(null);//中間ﾌﾟﾚｽ間隔総数
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.CPRESS_ATURYOKU, srSpssekisouData)));//中間ﾌﾟﾚｽ圧力
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.CPRESS_KAATU_JIKAN, srSpssekisouData)));//中間ﾌﾟﾚｽ加圧時間
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.CPRESS_KANKAKU_SOSUU, srSpssekisouData)));//中間ﾌﾟﾚｽ間隔総数
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.LAST_KAATURYOKU, srSpssekisouData))); //最終加圧力
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.LAST_KAATUJIKAN, srSpssekisouData))); //最終加圧時間
         params.add(null);//4分割担当者ｺｰﾄﾞ
@@ -3004,7 +3012,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         params.add(null);//積層後T寸法σ
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.HNG_KAISUU, srSpssekisouData))); //剥離NG回数
         params.add(null);//最終外観担当者ｺｰﾄﾞ
-        params.add(null);//中間ﾌﾟﾚｽ回数
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.CPRESS_KAISUU, srSpssekisouData)));//中間ﾌﾟﾚｽ回数
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.HNG_AVE, srSpssekisouData))); //剥離NG_AVE
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.GNG_KAISUU, srSpssekisouData))); //画処NG回数
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.GNG_KAISUUAVE, srSpssekisouData))); //画処NG_AVE
@@ -3422,9 +3430,9 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         params.add(0); //金型温度
         params.add(0); //電極圧力
         params.add(0); //電極加圧時間
-        params.add(0); //中間ﾌﾟﾚｽ圧力
-        params.add(0); //中間ﾌﾟﾚｽ加圧時間
-        params.add(0); //中間ﾌﾟﾚｽ間隔総数
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.CPRESS_ATURYOKU, srSpssekisouData))); //中間ﾌﾟﾚｽ圧力
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B004Const.CPRESS_KAATU_JIKAN, srSpssekisouData))); //中間ﾌﾟﾚｽ加圧時間
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.CPRESS_KANKAKU_SOSUU, srSpssekisouData))); //中間ﾌﾟﾚｽ間隔総数
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B004Const.LAST_KAATURYOKU, srSpssekisouData))); //最終加圧力
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B004Const.LAST_KAATUJIKAN, srSpssekisouData))); //最終加圧時間
         params.add(""); //4分割担当者ｺｰﾄﾞ
@@ -3438,7 +3446,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         params.add(0); //積層後T寸法σ
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.HNG_KAISUU, srSpssekisouData))); //剥離NG回数
         params.add(""); //最終外観担当者ｺｰﾄﾞ
-        params.add(0); //中間ﾌﾟﾚｽ回数
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.CPRESS_KAISUU, srSpssekisouData))); //中間ﾌﾟﾚｽ回数
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B004Const.HNG_AVE, srSpssekisouData))); //剥離NG_AVE
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.GNG_KAISUU, srSpssekisouData))); //画処NG回数
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B004Const.GNG_KAISUUAVE, srSpssekisouData))); //画処NG_AVE
@@ -3926,6 +3934,18 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
             // 加圧圧力
             case GXHDO101B004Const.KAATU_ATURYOKU:
                 return StringUtil.nullToBlank(srSpssekisouData.getKaatuAturyoku());
+            // 途中加圧枚数
+            case GXHDO101B004Const.CPRESS_KANKAKU_SOSUU:
+                return StringUtil.nullToBlank(srSpssekisouData.getCpressKankakuSosuu());
+            // 途中加圧圧力
+            case GXHDO101B004Const.CPRESS_ATURYOKU:
+                return StringUtil.nullToBlank(srSpssekisouData.getCpressAturyoku());
+            // 途中加圧時間
+            case GXHDO101B004Const.CPRESS_KAATU_JIKAN:
+                return StringUtil.nullToBlank(srSpssekisouData.getCpressKaatuJikan());
+            // 途中加圧回数
+            case GXHDO101B004Const.CPRESS_KAISUU:
+                return StringUtil.nullToBlank(srSpssekisouData.getCpressKaisuu());
             // 最終加圧力
             case GXHDO101B004Const.LAST_KAATURYOKU:
                 return StringUtil.nullToBlank(srSpssekisouData.getLastKaaturyoku());

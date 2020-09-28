@@ -16,6 +16,12 @@ import java.sql.Timestamp;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
+ * <br>
+ * 変更日       2020/9/18<br>
+ * 計画書No     MB2008-DK001<br>
+ * 変更者       863 zhangjinyan<br>
+ * 変更理由     項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -415,6 +421,81 @@ public class SrRsussek {
      * 上ｶﾊﾞｰﾃｰﾌﾟ1枚数
      */
     private Integer maisuu2;
+    
+    /**
+     * 下端子開始日時
+     */
+    private Timestamp shitatanshikaisinichiji;
+    
+    /**
+     * 下端子終了日時
+     */
+    private Timestamp shitatanshisyuryonichiji;
+    
+    /**
+     * 下端子担当者
+     */
+    private String shitatanshitantosya;
+    
+    /**
+     * 下端子確認者
+     */
+    private String shitatanshikakuninsya;
+    
+    /**
+     * 下端子備考
+     */
+    private String shitatanshibiko;
+    
+    /**
+     * 上端子開始日時
+     */
+    private Timestamp uwatanshikaisinichiji;
+    
+    /**
+     * 上端子終了日時
+     */
+    private Timestamp uwatanshisyuryonichiji;
+    
+    /**
+     * 上端子担当者
+     */
+    private String uwatanshitantosya;
+    
+    /**
+     * 上端子確認者
+     */
+    private String uwatanshikakuninsya;
+    
+    /**
+     * 上端子備考
+     */
+    private String uwatanshibiko;
+    
+    /**
+     * ﾍｯﾄﾞNo
+     */
+    private String headno;
+    
+    /**
+     * SUS板枚数
+     */
+    private Integer susitamaisu;
+    
+    /**
+     * 最上層担当者
+     */
+    private String lastlayertantosya;
+    
+    /**
+     * 最上層備考
+     */
+    private String lastlayerbiko;
+    
+    /**
+     * 電極製版ﾛｯﾄNo
+     */
+    private String elotno;
 
     /**
      * @return kojyo
@@ -1560,6 +1641,216 @@ public class SrRsussek {
      */
     public void setMaisuu2(Integer maisuu2) {
             this.maisuu2 = maisuu2;
+    }
+
+    /**
+     * @return 
+     */
+    public Timestamp getShitatanshikaisinichiji() {
+        return shitatanshikaisinichiji;
+    }
+
+    /**
+     * @param shitatanshikaisinichiji 
+     */
+    public void setShitatanshikaisinichiji(Timestamp shitatanshikaisinichiji) {
+        this.shitatanshikaisinichiji = shitatanshikaisinichiji;
+    }
+
+    /**
+     * @return 
+     */
+    public Timestamp getShitatanshisyuryonichiji() {
+        return shitatanshisyuryonichiji;
+    }
+
+    /**
+     * @param shitatanshisyuryonichiji 
+     */
+    public void setShitatanshisyuryonichiji(Timestamp shitatanshisyuryonichiji) {
+        this.shitatanshisyuryonichiji = shitatanshisyuryonichiji;
+    }
+
+    /**
+     * @return 
+     */
+    public String getShitatanshitantosya() {
+        return shitatanshitantosya;
+    }
+
+    /**
+     * @param shitatanshitantosya 
+     */
+    public void setShitatanshitantosya(String shitatanshitantosya) {
+        this.shitatanshitantosya = shitatanshitantosya;
+    }
+
+    /**
+     * @return 
+     */
+    public String getShitatanshikakuninsya() {
+        return shitatanshikakuninsya;
+    }
+
+    /**
+     * @param shitatanshikakuninsya 
+     */
+    public void setShitatanshikakuninsya(String shitatanshikakuninsya) {
+        this.shitatanshikakuninsya = shitatanshikakuninsya;
+    }
+
+    /**
+     * @return 
+     */
+    public String getShitatanshibiko() {
+        return shitatanshibiko;
+    }
+
+    /**
+     * @param shitatanshibiko 
+     */
+    public void setShitatanshibiko(String shitatanshibiko) {
+        this.shitatanshibiko = shitatanshibiko;
+    }
+
+    /**
+     * @return 
+     */
+    public Timestamp getUwatanshikaisinichiji() {
+        return uwatanshikaisinichiji;
+    }
+
+    /**
+     * @param uwatanshikaisinichiji 
+     */
+    public void setUwatanshikaisinichiji(Timestamp uwatanshikaisinichiji) {
+        this.uwatanshikaisinichiji = uwatanshikaisinichiji;
+    }
+
+    /**
+     * @return 
+     */
+    public Timestamp getUwatanshisyuryonichiji() {
+        return uwatanshisyuryonichiji;
+    }
+
+    /**
+     * @param uwatanshisyuryonichiji 
+     */
+    public void setUwatanshisyuryonichiji(Timestamp uwatanshisyuryonichiji) {
+        this.uwatanshisyuryonichiji = uwatanshisyuryonichiji;
+    }
+
+    /**
+     * @return 
+     */
+    public String getUwatanshitantosya() {
+        return uwatanshitantosya;
+    }
+
+    /**
+     * @param uwatanshitantosya 
+     */
+    public void setUwatanshitantosya(String uwatanshitantosya) {
+        this.uwatanshitantosya = uwatanshitantosya;
+    }
+
+    /**
+     * @return 
+     */
+    public String getUwatanshikakuninsya() {
+        return uwatanshikakuninsya;
+    }
+
+    /**
+     * @param uwatanshikakuninsya 
+     */
+    public void setUwatanshikakuninsya(String uwatanshikakuninsya) {
+        this.uwatanshikakuninsya = uwatanshikakuninsya;
+    }
+
+    /**
+     * @return 
+     */
+    public String getUwatanshibiko() {
+        return uwatanshibiko;
+    }
+
+    /**
+     * @param uwatanshibiko 
+     */
+    public void setUwatanshibiko(String uwatanshibiko) {
+        this.uwatanshibiko = uwatanshibiko;
+    }
+
+    /**
+     * @return 
+     */
+    public String getHeadno() {
+        return headno;
+    }
+
+    /**
+     * @param headno 
+     */
+    public void setHeadno(String headno) {
+        this.headno = headno;
+    }
+
+    /**
+     * @return 
+     */
+    public Integer getSusitamaisu() {
+        return susitamaisu;
+    }
+
+    /**
+     * @param susitamaisu 
+     */
+    public void setSusitamaisu(Integer susitamaisu) {
+        this.susitamaisu = susitamaisu;
+    }
+
+    /**
+     * @return 
+     */
+    public String getLastlayertantosya() {
+        return lastlayertantosya;
+    }
+
+    /**
+     * @param lastlayertantosya 
+     */
+    public void setLastlayertantosya(String lastlayertantosya) {
+        this.lastlayertantosya = lastlayertantosya;
+    }
+
+    /**
+     * @return 
+     */
+    public String getLastlayerbiko() {
+        return lastlayerbiko;
+    }
+
+    /**
+     * @param lastlayerbiko 
+     */
+    public void setLastlayerbiko(String lastlayerbiko) {
+        this.lastlayerbiko = lastlayerbiko;
+    }
+
+    /**
+     * @return 
+     */
+    public String getElotno() {
+        return elotno;
+    }
+
+    /**
+     * @param elotno 
+     */
+    public void setElotno(String elotno) {
+        this.elotno = elotno;
     }
     
 }
