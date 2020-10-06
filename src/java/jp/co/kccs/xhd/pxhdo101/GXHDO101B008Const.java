@@ -13,6 +13,12 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * <br>
+ * 変更日	2020/09/17<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjinyan<br>
+ * 変更理由	仕様変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -92,6 +98,11 @@ public class GXHDO101B008Const {
      * 静水圧ﾌﾟﾚｽ号機
      */
     public static final String SEISUIATSU_PRESS_GOKI = "sr_press_seisuiatsu_press_goki";
+
+    /**
+     * 真空時間
+     */
+    public static final String SINKUUJIKAN = "sr_press_sinkuujikan";
 
     /**
      * 予熱時間1

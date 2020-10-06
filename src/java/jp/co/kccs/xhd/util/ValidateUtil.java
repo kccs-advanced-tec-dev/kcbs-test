@@ -1391,14 +1391,14 @@ public class ValidateUtil {
         }
         return KIKAKU_CHECK_CD_NORMAL;
     }
-
+    
     /**
      * 数値抽出処理先頭から数値のデータのみ取得
      *
      * @param value 文字列
-     * @return 抽出した文字列
+     * @return 抽出した数値
      */
-    private static BigDecimal numberExtraction(String value) {
+    public static BigDecimal numberExtraction(String value) {
         BigDecimal result = null;
         try {
             // 一文字ずつ分割

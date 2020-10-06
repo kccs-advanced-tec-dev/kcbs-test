@@ -13,6 +13,11 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/09/15<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	項目追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -153,6 +158,11 @@ public class GXHDO101B020Const {
     public static final String BIKO2 = "sr_barrel1_biko2";
 
     /**
+     * 研磨時間単位
+     */
+    public static final String KENMAJIKANTANI = "sr_barrel1_kenmajikantani";
+
+    /**
      * 仮登録(画面上)
      */
     public static final String BTN_KARI_TOUROKU_TOP = "sr_barrel1_kari_touroku_Top";
@@ -188,6 +198,16 @@ public class GXHDO101B020Const {
     public static final String BTN_END_DATETIME_TOP = "sr_barrel1_enddatetime_Top";
 
     /**
+     * 終了日時計算(画面上)
+     */
+    public static final String BTN_END_DATETIME_KEISAN_TOP = "sr_barrel1_enddatetime_keisan_Top";
+
+    /**
+     * 研磨方式(画面上)
+     */
+    public static final String BTN_KENMAHOSHIKI_TOP = "sr_barrel1_kenmahoshiki_Top";
+
+    /**
      * 仮登録(画面下)
      */
     public static final String BTN_KARI_TOUROKU_BOTTOM = "sr_barrel1_kari_touroku_Bottom";
@@ -221,6 +241,16 @@ public class GXHDO101B020Const {
      * 終了日時(画面下)
      */
     public static final String BTN_END_DATETIME_BOTTOM = "sr_barrel1_enddatetime_Bottom";
+
+    /**
+     * 終了日時計算(画面下)
+     */
+    public static final String BTN_END_DATETIME_KEISAN_BOTTOM = "sr_barrel1_enddatetime_keisan_Bottom";
+
+    /**
+     * 研磨方式(画面下)
+     */
+    public static final String BTN_KENMAHOSHIKI_BOTTOM = "sr_barrel1_kenmahoshiki_Bottom";
 
     /**
      * ユーザー認証パラメータ(修正)

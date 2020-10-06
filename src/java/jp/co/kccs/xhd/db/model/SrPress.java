@@ -16,6 +16,12 @@ import java.sql.Timestamp;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * <br>
+ * 変更日	2020/09/17<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjinyan<br>
+ * 変更理由	仕様変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -240,6 +246,11 @@ public class SrPress {
      * revision
      */
     private Long revision;
+    
+    /**
+     * 真空時間
+     */
+    private Integer sinkuujikan;
 
     /**
      * 削除ﾌﾗｸﾞ
@@ -1014,6 +1025,24 @@ public class SrPress {
      */
     public void setRevision(Long revision) {
         this.revision = revision;
+    }
+
+    /**
+     * 真空時間
+     * 
+     * @return sinkuujikan
+     */
+    public Integer getSinkuujikan() {
+        return sinkuujikan;
+    }
+
+    /**
+     * 真空時間
+     * 
+     * @param sinkuujikan the sinkuujikan to set
+     */
+    public void setSinkuujikan(Integer sinkuujikan) {
+        this.sinkuujikan = sinkuujikan;
     }
 
     /**

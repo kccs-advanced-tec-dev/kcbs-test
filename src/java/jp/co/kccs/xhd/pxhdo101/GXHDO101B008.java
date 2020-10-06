@@ -55,6 +55,12 @@ import org.apache.commons.dbutils.DbUtils;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * <br>
+ * 変更日	2020/09/17<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjinyan<br>
+ * 変更理由	仕様変更<br>
+ * <br>
  * 変更日	2020/09/21<br>
  * 計画書No	MB2008-DK001<br>
  * 変更者	KCSS D.Yanagida<br>
@@ -1054,6 +1060,8 @@ public class GXHDO101B008 implements IFormLogic {
         this.setItemData(processData, GXHDO101B008Const.KASHOZAI2, getSrPressItemData(GXHDO101B008Const.KASHOZAI2, srPressData));
         //静水圧ﾌﾟﾚｽ号機
         this.setItemData(processData, GXHDO101B008Const.SEISUIATSU_PRESS_GOKI, getSrPressItemData(GXHDO101B008Const.SEISUIATSU_PRESS_GOKI, srPressData));
+        //真空時間
+        this.setItemData(processData, GXHDO101B008Const.SINKUUJIKAN , getSrPressItemData(GXHDO101B008Const.SINKUUJIKAN , srPressData));
         //予熱時間1
         this.setItemData(processData, GXHDO101B008Const.YONETSU_TIME1, getSrPressItemData(GXHDO101B008Const.YONETSU_TIME1, srPressData));
         //予熱時間2
@@ -1332,7 +1340,7 @@ public class GXHDO101B008 implements IFormLogic {
         String sql = "SELECT "
                 + "kojyo,lotno,edaban,startdatetime,enddatetime,gouki,ondo,tantousya,kakuninsya,bikou1,bikou2,bikou3,"
                 + "bikou4,bikou5,situon,situdo,aturyoku,jikan1,jikan2,atumimin,atumimax,shinkuuhojicheck,cerapeel,"
-                + "kansyouzai1,susborad,kansyouzai2,seisuiatupressgouki,yonetujikan1,yonetujikan2,yonetujikan3,aturyoku1max,"
+                + "kansyouzai1,susborad,kansyouzai2,seisuiatupressgouki,sinkuujikan,yonetujikan1,yonetujikan2,yonetujikan3,aturyoku1max,"
                 + "aturyoku2max,mizunureSetsuu,Pressgoreikyakujikan,pressmaeaging,EndTantousyacode,Setsuu,"
                 + "RyouhinSetsuu,Presskaisuu,torokunichiji,kosinnichiji,KCPNO,revision,'0' AS deleteflag "
                 + "FROM sr_press "
@@ -1380,6 +1388,7 @@ public class GXHDO101B008 implements IFormLogic {
         mapping.put("susborad", "susborad"); //SUS板
         mapping.put("kansyouzai2", "kansyouzai2"); //緩衝材2
         mapping.put("seisuiatupressgouki", "seisuiatupressgouki"); //静水圧ﾌﾟﾚｽ号機
+        mapping.put("sinkuujikan", "sinkuujikan"); //真空時間
         mapping.put("yonetujikan1", "yonetujikan1"); //予熱時間1
         mapping.put("yonetujikan2", "yonetujikan2"); //予熱時間2
         mapping.put("yonetujikan3", "yonetujikan3"); //予熱時間3
@@ -1422,7 +1431,7 @@ public class GXHDO101B008 implements IFormLogic {
         String sql = "SELECT "
                 + "kojyo,lotno,edaban,startdatetime,enddatetime,gouki,ondo,tantousya,kakuninsya,bikou1,bikou2,bikou3,"
                 + "bikou4,bikou5,situon,situdo,aturyoku,jikan1,jikan2,atumimin,atumimax,shinkuuhojicheck,cerapeel,"
-                + "kansyouzai1,susborad,kansyouzai2,seisuiatupressgouki,yonetujikan1,yonetujikan2,yonetujikan3,aturyoku1max,"
+                + "kansyouzai1,susborad,kansyouzai2,seisuiatupressgouki,sinkuujikan,yonetujikan1,yonetujikan2,yonetujikan3,aturyoku1max,"
                 + "aturyoku2max,mizunureSetsuu,Pressgoreikyakujikan,pressmaeaging,EndTantousyacode,Setsuu,"
                 + "RyouhinSetsuu,Presskaisuu,torokunichiji,kosinnichiji,KCPNO,revision,deleteflag "
                 + "FROM tmp_sr_press "
@@ -1471,6 +1480,7 @@ public class GXHDO101B008 implements IFormLogic {
         mapping.put("susborad", "susborad"); //SUS板
         mapping.put("kansyouzai2", "kansyouzai2"); //緩衝材2
         mapping.put("seisuiatupressgouki", "seisuiatupressgouki"); //静水圧ﾌﾟﾚｽ号機
+        mapping.put("sinkuujikan", "sinkuujikan"); //真空時間
         mapping.put("yonetujikan1", "yonetujikan1"); //予熱時間1
         mapping.put("yonetujikan2", "yonetujikan2"); //予熱時間2
         mapping.put("yonetujikan3", "yonetujikan3"); //予熱時間3
@@ -1759,10 +1769,10 @@ public class GXHDO101B008 implements IFormLogic {
         String sql = "INSERT INTO tmp_sr_press ("
                 + "kojyo,lotno,edaban,startdatetime,enddatetime,gouki,ondo,tantousya,kakuninsya,bikou1,bikou2,bikou3,bikou4,bikou5,"
                 + "situon,situdo,aturyoku,jikan1,jikan2,atumimin,atumimax,shinkuuhojicheck,cerapeel,kansyouzai1,susborad,kansyouzai2,"
-                + "seisuiatupressgouki,yonetujikan1,yonetujikan2,yonetujikan3,aturyoku1max,aturyoku2max,mizunureSetsuu,"
+                + "seisuiatupressgouki,sinkuujikan,yonetujikan1,yonetujikan2,yonetujikan3,aturyoku1max,aturyoku2max,mizunureSetsuu,"
                 + "Pressgoreikyakujikan,pressmaeaging,EndTantousyacode,Setsuu,RyouhinSetsuu,Presskaisuu,torokunichiji,kosinnichiji,KCPNO,revision,deleteflag"
                 + ") VALUES ("
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
                 + ") ";
 
         List<Object> params = setUpdateParameterTmpSrPress(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null);
@@ -1793,7 +1803,7 @@ public class GXHDO101B008 implements IFormLogic {
                 + "startdatetime = ?,enddatetime = ?,gouki = ?,ondo = ?,tantousya = ?,kakuninsya = ?,"
                 + "bikou1 = ?,bikou2 = ?,jikan1 = ?,jikan2 = ?,"
                 + "shinkuuhojicheck = ?,cerapeel = ?,kansyouzai1 = ?,susborad = ?,kansyouzai2 = ?,"
-                + "seisuiatupressgouki = ?,yonetujikan1 = ?,yonetujikan2 = ?,yonetujikan3 = ?,aturyoku1max = ?,aturyoku2max = ?,"
+                + "seisuiatupressgouki = ?,sinkuujikan = ?,yonetujikan1 = ?,yonetujikan2 = ?,yonetujikan3 = ?,aturyoku1max = ?,aturyoku2max = ?,"
                 + "mizunureSetsuu = ?,Pressgoreikyakujikan = ?,pressmaeaging = ?,EndTantousyacode = ?,Setsuu = ?,RyouhinSetsuu = ?,Presskaisuu = ?,"
                 + "kosinnichiji = ?,KCPNO = ?,revision = ?,deleteflag = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
@@ -1904,6 +1914,7 @@ public class GXHDO101B008 implements IFormLogic {
         params.add(getComboAriNashiValue(getItemData(itemList, GXHDO101B008Const.SUS_BAN, srPressData), null));//SUS板
         params.add(getComboAriNashiValue(getItemData(itemList, GXHDO101B008Const.KASHOZAI2, srPressData), null));//緩衝材2
         params.add(DBUtil.stringToStringObjectDefaultNull(StringUtil.nullToBlank(getItemData(itemList, GXHDO101B008Const.SEISUIATSU_PRESS_GOKI, srPressData))));  //静水圧ﾌﾟﾚｽ号機
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B008Const.SINKUUJIKAN, srPressData)));  //真空時間
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B008Const.YONETSU_TIME1, srPressData)));  //予熱時間1
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B008Const.YONETSU_TIME2, srPressData)));  //予熱時間2
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B008Const.YONETSU_TIME3, srPressData)));  //予熱時間3
@@ -1947,10 +1958,10 @@ public class GXHDO101B008 implements IFormLogic {
         String sql = "INSERT INTO sr_press ("
                 + "kojyo,lotno,edaban,startdatetime,enddatetime,gouki,ondo,tantousya,kakuninsya,bikou1,bikou2,bikou3,bikou4,bikou5,"
                 + "situon,situdo,aturyoku,jikan1,jikan2,atumimin,atumimax,shinkuuhojicheck,cerapeel,kansyouzai1,susborad,kansyouzai2,"
-                + "seisuiatupressgouki,yonetujikan1,yonetujikan2,yonetujikan3,aturyoku1max,aturyoku2max,mizunureSetsuu,"
+                + "seisuiatupressgouki,sinkuujikan,yonetujikan1,yonetujikan2,yonetujikan3,aturyoku1max,aturyoku2max,mizunureSetsuu,"
                 + "Pressgoreikyakujikan,pressmaeaging,EndTantousyacode,Setsuu,RyouhinSetsuu,Presskaisuu,torokunichiji,kosinnichiji,KCPNO,revision"
                 + ") VALUES ("
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
                 + ") ";
 
         List<Object> params = setUpdateParameterSrPress(true, newRev, kojyo, lotNo, edaban, systemTime, itemList, tmpSrPress);
@@ -1979,7 +1990,7 @@ public class GXHDO101B008 implements IFormLogic {
                 + "startdatetime = ?,enddatetime = ?,gouki = ?,ondo = ?,tantousya = ?,kakuninsya = ?,"
                 + "bikou1 = ?,bikou2 = ?,jikan1 = ?,jikan2 = ?,"
                 + "shinkuuhojicheck = ?,cerapeel = ?,kansyouzai1 = ?,susborad = ?,kansyouzai2 = ?,"
-                + "seisuiatupressgouki = ?,yonetujikan1 = ?,yonetujikan2 = ?,yonetujikan3 = ?,aturyoku1max = ?,aturyoku2max = ?,"
+                + "seisuiatupressgouki = ?,sinkuujikan = ?,yonetujikan1 = ?,yonetujikan2 = ?,yonetujikan3 = ?,aturyoku1max = ?,aturyoku2max = ?,"
                 + "mizunureSetsuu = ?,Pressgoreikyakujikan = ?,pressmaeaging = ?,EndTantousyacode = ?,Setsuu = ?,RyouhinSetsuu = ?,Presskaisuu = ?,"
                 + "kosinnichiji = ?,KCPNO = ?,revision = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
@@ -2060,6 +2071,7 @@ public class GXHDO101B008 implements IFormLogic {
         params.add(getComboAriNashiValue(getItemData(itemList, GXHDO101B008Const.SUS_BAN, srPressData), 9));//SUS板
         params.add(getComboAriNashiValue(getItemData(itemList, GXHDO101B008Const.KASHOZAI2, srPressData), 9));//緩衝材2
         params.add(DBUtil.stringToStringObject(StringUtil.nullToBlank(getItemData(itemList, GXHDO101B008Const.SEISUIATSU_PRESS_GOKI, srPressData))));  //静水圧ﾌﾟﾚｽ号機
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B008Const.SINKUUJIKAN, srPressData)));  //真空時間
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B008Const.YONETSU_TIME1, srPressData)));  //予熱時間1
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B008Const.YONETSU_TIME2, srPressData)));  //予熱時間2
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B008Const.YONETSU_TIME3, srPressData)));  //予熱時間3
@@ -2285,6 +2297,9 @@ public class GXHDO101B008 implements IFormLogic {
             //静水圧ﾌﾟﾚｽ号機
             case GXHDO101B008Const.SEISUIATSU_PRESS_GOKI:
                 return StringUtil.nullToBlank(srPressData.getSeisuiatupressgouki());
+            //真空時間
+            case GXHDO101B008Const.SINKUUJIKAN :
+                return StringUtil.nullToBlank(srPressData.getSinkuujikan());
             //予熱時間1
             case GXHDO101B008Const.YONETSU_TIME1:
                 return StringUtil.nullToBlank(srPressData.getYonetujikan1());
@@ -2347,12 +2362,12 @@ public class GXHDO101B008 implements IFormLogic {
         String sql = "INSERT INTO tmp_sr_press ("
                 + "kojyo,lotno,edaban,startdatetime,enddatetime,gouki,ondo,tantousya,kakuninsya,bikou1,bikou2,bikou3,bikou4,bikou5,"
                 + "situon,situdo,aturyoku,jikan1,jikan2,atumimin,atumimax,shinkuuhojicheck,cerapeel,kansyouzai1,susborad,kansyouzai2,"
-                + "seisuiatupressgouki,yonetujikan1,yonetujikan2,yonetujikan3,aturyoku1max,aturyoku2max,mizunureSetsuu,"
+                + "seisuiatupressgouki,sinkuujikan,yonetujikan1,yonetujikan2,yonetujikan3,aturyoku1max,aturyoku2max,mizunureSetsuu,"
                 + "Pressgoreikyakujikan,pressmaeaging,EndTantousyacode,Setsuu,RyouhinSetsuu,Presskaisuu,torokunichiji,kosinnichiji,KCPNO,revision,deleteflag"
                 + ") SELECT "
                 + "kojyo,lotno,edaban,startdatetime,enddatetime,gouki,ondo,tantousya,kakuninsya,bikou1,bikou2,bikou3,bikou4,bikou5,"
                 + "situon,situdo,aturyoku,jikan1,jikan2,atumimin,atumimax,shinkuuhojicheck,cerapeel,kansyouzai1,susborad,kansyouzai2,"
-                + "seisuiatupressgouki,yonetujikan1,yonetujikan2,yonetujikan3,aturyoku1max,aturyoku2max,mizunureSetsuu,"
+                + "seisuiatupressgouki,sinkuujikan,yonetujikan1,yonetujikan2,yonetujikan3,aturyoku1max,aturyoku2max,mizunureSetsuu,"
                 + "Pressgoreikyakujikan,pressmaeaging,EndTantousyacode,Setsuu,RyouhinSetsuu,Presskaisuu,?,?,KCPNO,?,? "
                 + "FROM sr_press "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? ";

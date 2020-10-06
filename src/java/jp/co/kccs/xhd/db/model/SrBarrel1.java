@@ -16,6 +16,11 @@ import java.sql.Timestamp;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/09/15<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	項目追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -234,6 +239,11 @@ public class SrBarrel1 {
      * revision
      */
     private Integer revision;
+
+    /**
+     * 研磨時間単位
+     */
+    private String kenmajikantani;
 
     /**
      * 削除ﾌﾗｸﾞ
@@ -826,6 +836,14 @@ public class SrBarrel1 {
      */
     public void setRevision(Integer revision) {
         this.revision = revision;
+    }
+
+    public String getKenmajikantani() {
+        return kenmajikantani;
+    }
+
+    public void setKenmajikantani(String kenmajikantani) {
+        this.kenmajikantani = kenmajikantani;
     }
 
     /**

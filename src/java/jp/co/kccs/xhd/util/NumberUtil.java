@@ -416,4 +416,18 @@ public class NumberUtil {
         return resultValue;
     }
     
+    /**
+     * 数値抽出処理先頭から数値のデータのみ取得し、文字列形式で返却する
+     * 
+     * @param value 文字列
+     * @return 抽出した文字列
+     */
+    public static String numberExtractionToString(String value) {
+        BigDecimal number = ValidateUtil.numberExtraction(value);
+        if (null != number) {
+            return number.toPlainString();
+        } else {
+            return null;
+        }
+    }
 }
