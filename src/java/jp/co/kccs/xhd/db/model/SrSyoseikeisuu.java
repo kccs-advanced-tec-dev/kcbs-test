@@ -16,6 +16,12 @@ import java.sql.Timestamp;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
+ * <br>
+ * 変更日	2020/09/18<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -114,6 +120,11 @@ public class SrSyoseikeisuu {
      * revision
      */
     private Integer revision;
+
+    /**
+     * 袋詰め担当者
+     */
+    private String fukurotantosya;
 
     /**
      * 削除ﾌﾗｸﾞ
@@ -370,6 +381,20 @@ public class SrSyoseikeisuu {
      */
     public void setRevision(Integer revision) {
         this.revision = revision;
+    }
+
+    /**
+     * @return fukurotantosya
+     */
+    public String getFukurotantosya() {
+        return fukurotantosya;
+    }
+
+    /**
+     * @param fukurotantosya 
+     */
+    public void setFukurotantosya(String fukurotantosya) {
+        this.fukurotantosya = fukurotantosya;
     }
 
     /**

@@ -18,6 +18,12 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者      SYSNAVI K.Hisanaga<br>
  * 変更理由    WIP取込ボタン追加<br>
  * <br>
+ * <br>
+ * 変更日	2020/09/18<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加・総重量計算ボタン追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -56,6 +62,11 @@ public class GXHDO101B021Const {
      * 指示
      */
     public static final String SIJI = "sr_syoseikeisuu_siji";
+
+    /**
+     * 袋詰め担当者
+     */
+    public static final String FUKUROTANTOSYA = "sr_syoseikeisuu_fukurotantosya";
 
     /**
      * 受入個数
@@ -148,6 +159,11 @@ public class GXHDO101B021Const {
     public static final String BTN_BUDOMARI_KEISAN_TOP = "sr_syoseikeisuu_budomari_keisan_Top";
 
     /**
+     * 総重量計算(画面上)
+     */
+    public static final String BTN_SOUJURYOU_KEISAN_TOP = "sr_syoseikeisuu_soujuryou_keisan_Top";
+
+    /**
      * 仮登録(画面下)
      */
     public static final String BTN_KARI_TOUROKU_BOTTOM = "sr_syoseikeisuu_kari_touroku_Bottom";
@@ -186,6 +202,11 @@ public class GXHDO101B021Const {
      * 歩留まり計算(画面下)
      */
     public static final String BTN_BUDOMARI_KEISAN_BOTTOM = "sr_syoseikeisuu_budomari_keisan_Bottom";
+
+    /**
+     * 総重量計算(画面下)
+     */
+    public static final String BTN_SOUJURYOU_KEISAN_BOTTOM = "sr_syoseikeisuu_soujuryou_keisan_Bottom";
 
     /**
      * ユーザー認証パラメータ(修正)
