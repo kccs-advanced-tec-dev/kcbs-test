@@ -3,6 +3,7 @@
  */
 package jp.co.kccs.xhd.db.model;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
@@ -24,6 +25,7 @@ import java.sql.Timestamp;
  * @since  2019/06/28
  */
 public class SrJikiqc {
+
     /**
      * 工場ｺｰﾄﾞ
      */
@@ -98,6 +100,26 @@ public class SrJikiqc {
      * 削除ﾌﾗｸﾞ
      */
     private Integer deleteflag;
+
+    /**
+     * 個数
+     */
+    private Integer syorisuu;
+
+    /**
+     * 単位重量
+     */
+    private BigDecimal tannijuryou;
+
+    /**
+     * 総重量
+     */
+    private BigDecimal soujuryou;
+
+    /**
+     * MV
+     */
+    private String mvkotei;
 
     /**
      * @return kojyo
@@ -308,4 +330,61 @@ public class SrJikiqc {
     public void setDeleteflag(Integer deleteflag) {
         this.deleteflag = deleteflag;
     }
+    
+        /**
+     * @return the syorisuu
+     */
+    public Integer getSyorisuu() {
+        return syorisuu;
+    }
+
+    /**
+     * @param syorisuu the syorisuu to set
+     */
+    public void setSyorisuu(Integer syorisuu) {
+        this.syorisuu = syorisuu;
+    }
+
+    /**
+     * @return the tannijuryou
+     */
+    public BigDecimal getTannijuryou() {
+        return tannijuryou;
+    }
+
+    /**
+     * @param tannijuryou the tannijuryou to set
+     */
+    public void setTannijuryou(BigDecimal tannijuryou) {
+        this.tannijuryou = tannijuryou;
+    }
+
+    /**
+     * @return the soujuryou
+     */
+    public BigDecimal getSoujuryou() {
+        return soujuryou;
+    }
+
+    /**
+     * @param soujuryou the soujuryou to set
+     */
+    public void setSoujuryou(BigDecimal soujuryou) {
+        this.soujuryou = soujuryou;
+    }
+
+    /**
+     * @return the mvkotei
+     */
+    public String getMvkotei() {
+        return mvkotei;
+    }
+
+    /**
+     * @param mvkotei the mvkotei to set
+     */
+    public void setMvkotei(String mvkotei) {
+        this.mvkotei = mvkotei;
+    }
+
 }
