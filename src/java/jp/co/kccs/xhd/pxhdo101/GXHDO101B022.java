@@ -868,7 +868,7 @@ public class GXHDO101B022 implements IFormLogic {
         }
 
         // 処理数の取得
-        String shorisuu = null;
+        String shorisuu = "0";
 
         // 実績用ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ情報の取得
         String strfxhbm03List = "";
