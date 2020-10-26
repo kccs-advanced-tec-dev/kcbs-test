@@ -13,6 +13,12 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * <br>
+ * 変更日	2020/10/15<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjy<br>
+ * 変更理由	前工程WIPボタンを追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -362,6 +368,11 @@ public class GXHDO101B003Const {
      * 削除(画面下)
      */
     public static final String BTN_DELETE_BUTTOM = "insatsu_rsus_delete_Bottom";
+    
+    /**
+     * 前工程WIP(画面下)
+     */
+    public static final String BTN_WIP_IMPORT_BOTTOM = "insatsu_rsus_wip_import_Bottom";
 
     /**
      * 膜厚(画面上)
@@ -412,6 +423,11 @@ public class GXHDO101B003Const {
      * 削除(画面上)
      */
     public static final String BTN_DELETE_TOP = "insatsu_rsus_delete_Top";
+    
+    /**
+     * 前工程WIP(画面上)
+     */
+    public static final String BTN_WIP_IMPORT_TOP = "insatsu_rsus_wip_import_Top";
 
     /**
      * ユーザー認証パラメータ(修正)

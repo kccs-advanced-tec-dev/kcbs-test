@@ -18,6 +18,12 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	863 sujialiang<br>
  * 変更理由	項目追加<br>
  * <br>
+ * <br>
+ * 変更日	2020/10/15<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjy<br>
+ * 変更理由	前工程WIPボタンを追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -383,6 +389,11 @@ public class GXHDO101B004Const {
     public static final String BTN_DELETE_TOP = "sr_spssekisou_delete_Top";
     
     /**
+     * 前工程WIP(画面上)
+     */
+    public static final String BTN_WIP_IMPORT_TOP = "sr_spssekisou_wip_import_Top";
+    
+    /**
      * 仮登録(画面下)
      */
     public static final String BTN_KARI_TOUROKU_BOTTOM = "sr_spssekisou_kari_touroku_Bottom";
@@ -426,6 +437,11 @@ public class GXHDO101B004Const {
      * 削除(画面下)
      */
     public static final String BTN_DELETE_BOTTOM = "sr_spssekisou_delete_Bottom";
+    
+    /**
+     * 前工程WIP(画面下)
+     */
+    public static final String BTN_WIP_IMPORT_BOTTOM = "sr_spssekisou_wip_import_Bottom";
     
     /**
      * ユーザー認証パラメータ(修正)

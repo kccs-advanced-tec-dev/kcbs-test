@@ -13,6 +13,11 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/10/15<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjy<br>
+ * 変更理由	前工程WIPボタンを追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -407,6 +412,11 @@ public class GXHDO101B023Const {
      * 終了日時(画面上ボタン)
      */
     public static final String BTN_ENDDATETIME_TOP = "sr_dpprint_enddatetime_Top";
+    
+    /**
+     * 前工程WIP(画面上)
+     */
+    public static final String BTN_WIP_IMPORT_TOP = "sr_dpprint_wip_import_Top";
 
     /**
      * 膜厚(画面下ボタン)
@@ -457,6 +467,11 @@ public class GXHDO101B023Const {
      * 終了日時(画面下ボタン)
      */
     public static final String BTN_ENDDATETIME_BOTTOM = "sr_dpprint_enddatetime_Bottom";
+    
+    /**
+     * 前工程WIP(画面下)
+     */
+    public static final String BTN_WIP_IMPORT_BOTTOM = "sr_dpprint_wip_import_Bottom";
 
     /**
      * ユーザー認証パラメータ(修正)

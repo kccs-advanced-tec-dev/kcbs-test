@@ -52,6 +52,11 @@ public class GXHDO101B022Const {
     public static final String OWNER = "sr_jikiqc_owner";
 
     /**
+     * MV
+     */
+    public static final String MV = "sr_jikiqc_mv";
+
+    /**
      * 磁器L寸
      */
     public static final String JIKI_LSUN = "sr_jikiqc_jiki_Lsun";
@@ -75,6 +80,25 @@ public class GXHDO101B022Const {
      * 合否判定
      */
     public static final String GOUHIHANTEI = "sr_jikiqc_gouhihantei";
+
+
+    /**
+     * 個数
+     */
+    public static final String SUURYOU = "sr_jikiqc_kosuu";
+
+
+    /**
+     * 単位重量
+     */
+    public static final String UKEIRETANNIJYURYO = "sr_jikiqc_tanijuryo";
+
+
+    /**
+     * 総重量
+     */
+    public static final String UKEIRESOUJYURYOU = "sr_jikiqc_soujuryo";
+
 
     /**
      * ﾁｪｯｸ日

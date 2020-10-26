@@ -18,6 +18,16 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	項目追加・変更<br>
  * <br>
+ * 変更日	2020/10/12<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
+ * 変更日	2020/10/15<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjy<br>
+ * 変更理由	前工程WIPボタンを追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -214,39 +224,74 @@ public class GXHDO101B006Const {
     public static final String SHITA_COVER_TAPE2 = "sr_rhaps_shita_cover_tape2";
 
     /**
-     * 端子テープロットNo
+     * 上端子テープロットNo
      */
     public static final String TANSHI_TAPE_LOT_NO = "sr_rhaps_tanshi_tape_lot_no";
 
     /**
-     * 端子テープスリップ記号
+     * 上端子テープスリップ記号
      */
     public static final String TANSHI_TAPE_SLIP_KIGOU = "sr_rhaps_tanshi_tape_slip_kigou";
 
     /**
-     * 端子テープロールNo 1本目
+     * 上端子テープロールNo 1本目
      */
     public static final String TANSHI_TAPE_ROLL_NO1 = "sr_rhaps_tanshi_tape_roll_no1";
 
     /**
-     * 端子テープロールNo 2本目
+     * 上端子テープロールNo 2本目
      */
     public static final String TANSHI_TAPE_ROLL_NO2 = "sr_rhaps_tanshi_tape_roll_no2";
 
     /**
-     * 端子テープロールNo 3本目
+     * 上端子テープロールNo 3本目
      */
     public static final String TANSHI_TAPE_ROLL_NO3 = "sr_rhaps_tanshi_tape_roll_no3";
 
     /**
-     * 端子テープロールNo 4本目
+     * 上端子テープロールNo 4本目
      */
     public static final String TANSHI_TAPE_ROLL_NO4 = "sr_rhaps_tanshi_tape_roll_no4";
 
     /**
-     * 端子テープロールNo 5本目
+     * 上端子テープロールNo 5本目
      */
     public static final String TANSHI_TAPE_ROLL_NO5 = "sr_rhaps_tanshi_tape_roll_no5";
+
+    /**
+     * 下端子テープロットNo
+     */
+    public static final String SITA_TANSHI_TAPE_LOT_NO = "sr_rhaps_sita_tanshi_tape_lot_no";
+
+    /**
+     * 下端子テープスリップ記号
+     */
+    public static final String SITA_TANSHI_TAPE_SLIP_KIGOU = "sr_rhaps_sita_tanshi_tape_slip_kigou";
+
+    /**
+     * 下端子テープロールNo 1本目
+     */
+    public static final String SITA_TANSHI_TAPE_ROLL_NO1 = "sr_rhaps_sita_tanshi_tape_roll_no1";
+
+    /**
+     * 下端子テープロールNo 2本目
+     */
+    public static final String SITA_TANSHI_TAPE_ROLL_NO2 = "sr_rhaps_sita_tanshi_tape_roll_no2";
+
+    /**
+     * 下端子テープロールNo 3本目
+     */
+    public static final String SITA_TANSHI_TAPE_ROLL_NO3 = "sr_rhaps_sita_tanshi_tape_roll_no3";
+
+    /**
+     * 下端子テープロールNo 4本目
+     */
+    public static final String SITA_TANSHI_TAPE_ROLL_NO4 = "sr_rhaps_sita_tanshi_tape_roll_no4";
+
+    /**
+     * 下端子テープロールNo 5本目
+     */
+    public static final String SITA_TANSHI_TAPE_ROLL_NO5 = "sr_rhaps_sita_tanshi_tape_roll_no5";
 
     /**
      * 電極ペーストロットNo
@@ -727,6 +772,11 @@ public class GXHDO101B006Const {
      * 削除(画面上ボタン)
      */
     public static final String BTN_DELETE_TOP = "sr_rhaps_delete_Top";
+    
+    /**
+     * 前工程WIP(画面上)
+     */
+    public static final String BTN_WIP_IMPORT_TOP = "sr_rhaps_wip_import_Top";
 
     /**
      * 電極膜厚(画面下ボタン)
@@ -787,6 +837,11 @@ public class GXHDO101B006Const {
      * 削除(画面下ボタン)
      */
     public static final String BTN_DELETE_BOTTOM = "sr_rhaps_delete_Bottom";
+    
+    /**
+     * 前工程WIP(画面下)
+     */
+    public static final String BTN_WIP_IMPORT_BOTTOM = "sr_rhaps_wip_import_Bottom";
 
     /**
      * ユーザー認証パラメータ(修正)

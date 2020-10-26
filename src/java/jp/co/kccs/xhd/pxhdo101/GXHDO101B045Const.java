@@ -13,6 +13,11 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/10/15<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjy<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -321,6 +326,11 @@ public class GXHDO101B045Const {
      * 印刷積層終了日時(画面上)
      */
     public static final String BTN_END_DATETIME_TOP = "sr_haps_enddatetime_Top";
+    
+    /**
+     * 前工程WIP(画面上)
+     */
+    public static final String BTN_WIP_IMPORT_TOP = "sr_haps_wip_import_Top";
 
     /**
      * 仮登録(画面下)
@@ -356,6 +366,11 @@ public class GXHDO101B045Const {
      * 印刷積層終了日時(画面下)
      */
     public static final String BTN_END_DATETIME_BOTTOM = "sr_haps_enddatetime_Bottom";
+    
+    /**
+     * 前工程WIP(画面下)
+     */
+    public static final String BTN_WIP_IMPORT_BOTTOM = "sr_haps_wip_import_Bottom";
 
     /**
      * ユーザー認証パラメータ(修正)
