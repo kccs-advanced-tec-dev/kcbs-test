@@ -26,6 +26,7 @@ import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.db.model.SrHaps;
 import jp.co.kccs.xhd.db.model.Jisseki;
+import jp.co.kccs.xhd.model.GXHDO101C020Model;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.GXHDO901A;
 import jp.co.kccs.xhd.pxhdo901.IFormLogic;
@@ -47,6 +48,7 @@ import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
 import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import org.apache.commons.dbutils.DbUtils;
+import org.apache.commons.dbutils.handlers.MapListHandler;
 
 /**
  * ===============================================================================<br>
@@ -62,6 +64,11 @@ import org.apache.commons.dbutils.DbUtils;
  * 計画書No	MB2008-DK001<br>
  * 変更者	KCSS D.Yanagida<br>
  * 変更理由	ロット混合対応<br>
+ * <br>
+ * 変更日	2020/10/15<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjy<br>
+ * 変更理由	項目追加・変更<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -242,11 +249,16 @@ public class GXHDO101B045 implements IFormLogic {
                 // 印刷積層・HAPS_仮登録登録処理
                 insertTmpSrHaps(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, paramJissekino, systemTime, processData.getItemList(), processData);
 
+                // 前工程WIP取込ｻﾌﾞ画面仮登録登録処理
+                insertTmpSrMwiplotlink(queryRunnerQcdb, conQcdb, kojyo, lotNo8, edaban, systemTime);
+
             } else {
 
                 // 印刷積層・HAPS_仮登録更新処理
                 updateTmpSrHaps(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo8, edaban, paramJissekino, systemTime, processData.getItemList(), processData);
 
+                // 前工程WIP取込_ｻﾌﾞ画面仮登録更新処理
+                updateTmpSrMwiplotlink(queryRunnerQcdb, conQcdb, kojyo, lotNo8, edaban, systemTime);
             }
 
             // 規格情報でエラーが発生している場合、エラー内容を更新
@@ -431,10 +443,14 @@ public class GXHDO101B045 implements IFormLogic {
                 }
                 
                 deleteTmpSrHaps(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban);
+                deleteTmpSrMwiplotlink(queryRunnerQcdb, conQcdb, kojyo, lotNo8, edaban);
             }
 
             // 印刷積層HAPS_登録処理
             insertSrHaps(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, systemTime, processData.getItemList(), tmpSrHaps);
+
+            // 前工程WIP取込ｻﾌﾞ画面登録処理
+            insertSrMwiplotlink(queryRunnerQcdb, conQcdb, kojyo, lotNo8, edaban, systemTime);
 
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
@@ -591,6 +607,9 @@ public class GXHDO101B045 implements IFormLogic {
             // 印刷積層HAPS_更新処理
             updateSrHaps(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo8, edaban, systemTime, processData.getItemList());
 
+            // 前工程WIP取込_ｻﾌﾞ画面更新処理
+            updateSrMwiplotlink(queryRunnerQcdb, conQcdb, kojyo, lotNo8, edaban, systemTime);
+
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
             if (kikakuError.getKikakuchiInputErrorInfoList() != null && !kikakuError.getKikakuchiInputErrorInfoList().isEmpty()) {
@@ -707,6 +726,9 @@ public class GXHDO101B045 implements IFormLogic {
 
             // 印刷積層HAPS_削除処理
             deleteSrHaps(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban);
+
+            // 前工程WIP取込_ｻﾌﾞ画面削除処理
+            deleteSrMwiplotlink(queryRunnerQcdb, conQcdb, kojyo, lotNo8, edaban, systemTime);
 
             DbUtils.commitAndCloseQuietly(conDoc);
             DbUtils.commitAndCloseQuietly(conQcdb);
@@ -840,6 +862,11 @@ public class GXHDO101B045 implements IFormLogic {
             case GXHDO101B045Const.BTN_END_DATETIME_TOP:
             case GXHDO101B045Const.BTN_END_DATETIME_BOTTOM:
                 method = "setShuryouDateTime";
+                break;
+            // 前工程WIP
+            case GXHDO101B045Const.BTN_WIP_IMPORT_TOP:
+            case GXHDO101B045Const.BTN_WIP_IMPORT_BOTTOM:
+                method = "openWipImport";
                 break;
             default:
                 method = "error";
@@ -1065,6 +1092,10 @@ public class GXHDO101B045 implements IFormLogic {
                 for (FXHDD01 fxhdd001 : processData.getItemList()) {
                     this.setItemData(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
                 }
+                
+                // 前工程WIP取込画面データ設定
+                setInputItemDataSubFormC020(queryRunnerQcdb, kojyo, lotNo8, edaban, jotaiFlg);
+                
                 return true;
             }
 
@@ -1089,6 +1120,9 @@ public class GXHDO101B045 implements IFormLogic {
 
         // メイン画面データ設定
         setInputItemDataMainForm(processData, srHapsDataList.get(0));
+        
+        // 前工程WIP取込画面データ設定
+        setInputItemDataSubFormC020(queryRunnerQcdb, kojyo, lotNo8, edaban, jotaiFlg);
 
         return true;
 
@@ -1758,6 +1792,9 @@ public class GXHDO101B045 implements IFormLogic {
 
             // メイン画面データ設定
             setInputItemDataMainForm(processData, srHapsDataList.get(0));
+            
+            // 前工程WIP取込画面データ設定
+            setInputItemDataSubFormC020(queryRunnerQcdb, kojyo, lotNo8, lotNo.substring(11, 14), jotaiFlg);
 
             // 次呼出しメソッドをクリア
             processData.setMethod("");
@@ -2687,4 +2724,498 @@ public class GXHDO101B045 implements IFormLogic {
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
     }
     
+    /**
+     * 前工程WIP取込(サブ画面Open)
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData openWipImport(ProcessData processData) {
+
+        try {
+
+            processData.setMethod("");
+            // コールバックパラメータにてサブ画面起動用の値を設定
+            processData.setCollBackParam("gxhdo101c020");
+
+            // 膜厚(SPS)の現在の値をサブ画面の表示用の値に渡す
+            GXHDO101C020 beanGXHDO101C020 = (GXHDO101C020) SubFormUtil.getSubFormBean("GXHDO101C020");
+            beanGXHDO101C020.setGxhdO101c020ModelView(beanGXHDO101C020.getGxhdO101c020Model().clone());
+
+        } catch (CloneNotSupportedException ex) {
+
+            ErrUtil.outputErrorLog("CloneNotSupportedException発生", ex, LOGGER);
+            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            return processData;
+
+        }
+
+        return processData;
+    }
+
+    /**
+     * 前工程WIP取込画面データ設定処理
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト(Qcdb)
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param jotaiFlg 状態フラグ
+     */
+    private void setInputItemDataSubFormC020(QueryRunner queryRunnerQcdb, String kojyo, String lotNo, String edaban, String jotaiFlg) throws SQLException {
+        // サブ画面の情報を取得
+        GXHDO101C020 beanGXHDO101C020 = (GXHDO101C020) SubFormUtil.getSubFormBean("GXHDO101C020");
+        List<Map<String, Object>> initDataSubFormC020 = null;
+        if (JOTAI_FLG_KARI_TOROKU.equals(jotaiFlg) || JOTAI_FLG_TOROKUZUMI.equals(jotaiFlg)) {
+            initDataSubFormC020 = getInitDataSubFormC020(queryRunnerQcdb, kojyo, lotNo, edaban, jotaiFlg);
+        }
+        
+        GXHDO101C020Model model = new GXHDO101C020Model();
+        // 登録データが無い場合空の状態で初期値をセットする。
+        // 登録データがあれば登録データをセットする。
+        model = GXHDO101C020Logic.createGXHDO101C020Model(initDataSubFormC020, "GXHDO101B045");
+
+        model.setReturnItemId_TapeLot1_Hinmei(GXHDO101B045Const.DENKYOKU_TAPE);
+        model.setReturnItemId_PasteLot1_Hinmei(GXHDO101B045Const.EPASTE);
+        model.setReturnItemId_PasteLot1_Conventionallot(GXHDO101B045Const.PASTELOTNO);
+        // サブ画面から戻ったときに値を設定する項目を指定する。
+        beanGXHDO101C020.setGxhdO101c020Model(model);
+    }
+
+    /**
+     * 前工程WIP取込画面初期表示データを取得する
+     * 
+     * @param queryRunnerQcdb QueryRunnerオブジェクト(Qcdb)
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param jotaiFlg 状態フラグ
+     * @return 前工程WIP取込画面初期表示データ
+     * @throws SQLException 
+     */
+    private List<Map<String, Object>> getInitDataSubFormC020(QueryRunner queryRunnerQcdb, 
+            String kojyo, String lotNo, String edaban, String jotaiFlg) throws SQLException {
+        
+        String tableName = " from sr_mwiplotlink ";
+        String whereSQL = " where kojyo = ? and lotno = ? and edaban = ? and gamenid = ? and deleteflag = ?";
+        if (JOTAI_FLG_KARI_TOROKU.equals(jotaiFlg)) {
+            tableName = " from tmp_sr_mwiplotlink ";
+            whereSQL = " where kojyo = ? and lotno = ? and edaban = ? and gamenid = ?";
+        }
+        
+        String sql = "select mkojyo, mlotno, medaban, mkubun, mkubunno" + tableName + whereSQL;
+        
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add("GXHDO101B045");
+        if (JOTAI_FLG_TOROKUZUMI.equals(jotaiFlg)) {
+            params.add(0);
+        }
+        
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapListHandler(), params.toArray());
+    }
+
+    /**
+     * 前工程WIP取込ｻﾌﾞ画面仮登録(tmp_sr_mwiplotlink)登録処理
+     * 
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @throws SQLException 例外エラー
+     */
+    private void insertTmpSrMwiplotlink(QueryRunner queryRunnerQcdb, Connection conQcdb, 
+            String kojyo, String lotNo, String edaban, Timestamp systemTime) throws SQLException {
+        
+        String sql = "INSERT INTO tmp_sr_mwiplotlink("
+                + "kojyo, lotno, edaban, mkojyo, mlotno, medaban, mkubun, mkubunno, "
+                + "gamenid, tourokunichiji, koushinnichiji) VALUES "
+                + "(? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? )";
+        
+        List<Object> params = new ArrayList<>();
+        
+        GXHDO101C020 beanGXHDO101C020 = (GXHDO101C020) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C020);
+        List<GXHDO101C020Model.GenryouLotData> genryouLotDataList = beanGXHDO101C020.getGxhdO101c020Model().getGenryouLotDataList();
+        
+        for (GXHDO101C020Model.GenryouLotData genryouLotData : genryouLotDataList) {
+            
+            if (StringUtil.isEmpty(genryouLotData.getValue())) {
+                continue;
+            }
+            
+            params.clear();
+            params.add(kojyo); //工場ｺｰﾄﾞ
+            params.add(lotNo); //ﾛｯﾄNo
+            params.add(edaban); //枝番
+            
+            String motoLotno = genryouLotData.getValue();
+            String motoKojyo = motoLotno.substring(0, 3);
+            String motoLotNo9 = motoLotno.substring(3, 12);
+            String motoEdaban = motoLotno.substring(12, 15);
+            params.add(motoKojyo); //前工程工場ｺｰﾄﾞ
+            params.add(motoLotNo9); //前工程ﾛｯﾄNo
+            params.add(motoEdaban); //前工程枝番
+            
+            String typeName = genryouLotData.getTypeName();
+            String mkubun = getKubun(typeName);
+            String mkubunno = getKubunNo(typeName);
+            params.add(mkubun); //前工程区分
+            params.add(mkubunno); //前工程区分No
+            params.add("GXHDO101B045"); //画面ID
+            params.add(systemTime); //登録日時
+            params.add(systemTime); //更新日時
+            
+            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+            queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+        }
+    }
+
+    /**
+     * 前工程WIP取込ｻﾌﾞ画面登録(sr_mwiplotlink)登録処理
+     * 
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @throws SQLException 例外エラー
+     */
+    private void insertSrMwiplotlink(QueryRunner queryRunnerQcdb, Connection conQcdb, 
+            String kojyo, String lotNo, String edaban, Timestamp systemTime) throws SQLException {
+        
+        String sql = "INSERT INTO sr_mwiplotlink("
+                + "kojyo, lotno, edaban, mkojyo, mlotno, medaban, mkubun, mkubunno, "
+                + "gamenid, tourokunichiji, koushinnichiji, deleteflag) VALUES "
+                + "(? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ?)";
+        
+        List<Object> params = new ArrayList<>();
+        
+        GXHDO101C020 beanGXHDO101C020 = (GXHDO101C020) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C020);
+        List<GXHDO101C020Model.GenryouLotData> genryouLotDataList = beanGXHDO101C020.getGxhdO101c020Model().getGenryouLotDataList();
+        
+        for (GXHDO101C020Model.GenryouLotData genryouLotData : genryouLotDataList) {
+            
+            if (StringUtil.isEmpty(genryouLotData.getValue())) {
+                continue;
+            }
+            
+            params.clear();
+            params.add(kojyo); //工場ｺｰﾄﾞ
+            params.add(lotNo); //ﾛｯﾄNo
+            params.add(edaban); //枝番
+            
+            String motoLotno = genryouLotData.getValue();
+            String motoKojyo = motoLotno.substring(0, 3);
+            String motoLotNo9 = motoLotno.substring(3, 12);
+            String motoEdaban = motoLotno.substring(12, 15);
+            params.add(motoKojyo); //前工程工場ｺｰﾄﾞ
+            params.add(motoLotNo9); //前工程ﾛｯﾄNo
+            params.add(motoEdaban); //前工程枝番
+            
+            String typeName = genryouLotData.getTypeName();
+            String mkubun = getKubun(typeName);
+            String mkubunno = getKubunNo(typeName);
+            params.add(mkubun); //前工程区分
+            params.add(mkubunno); //前工程区分No
+            params.add("GXHDO101B045"); //画面ID
+            params.add(systemTime); //登録日時
+            params.add(systemTime); //更新日時
+            params.add(0); //削除フラグ
+            
+            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+            queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+        }
+    }
+
+    /**
+     * 前工程WIP取込_ｻﾌﾞ画面仮登録(tmp_sr_mwiplotlink)更新処理
+     * 
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @throws SQLException 例外エラー
+     */
+    private void updateTmpSrMwiplotlink(QueryRunner queryRunnerQcdb, Connection conQcdb, 
+            String kojyo, String lotNo, String edaban, Timestamp systemTime) throws SQLException {
+        
+        deleteTmpSrMwiplotlink(queryRunnerQcdb, conQcdb, kojyo, lotNo, edaban);
+        insertTmpSrMwiplotlink(queryRunnerQcdb, conQcdb, kojyo, lotNo, edaban, systemTime);
+    }
+
+    /**
+     * 前工程WIP取込_ｻﾌﾞ画面(sr_mwiplotlink)更新処理
+     * 
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @throws SQLException 例外エラー
+     */
+    private void updateSrMwiplotlink(QueryRunner queryRunnerQcdb, Connection conQcdb, 
+            String kojyo, String lotNo, String edaban, Timestamp systemTime) throws SQLException {
+        
+        GXHDO101C020 beanGXHDO101C020 = (GXHDO101C020) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C020);
+        List<GXHDO101C020Model.GenryouLotData> genryouLotDataList = beanGXHDO101C020.getGxhdO101c020Model().getGenryouLotDataList();
+        
+        for (GXHDO101C020Model.GenryouLotData genryouLotData : genryouLotDataList) {
+            
+            String typeName = genryouLotData.getTypeName();
+            String mkubun = getKubun(typeName);
+            String mkubunno = getKubunNo(typeName);
+            
+            boolean isExist = isExistFromSrMwiplotlink(queryRunnerQcdb, kojyo, lotNo, edaban, mkubun, mkubunno);
+            if (isExist) {
+                // データが存在の場合、deleteflagを更新
+                updateSrMwiplotlinkToDelete(queryRunnerQcdb, conQcdb, kojyo, lotNo, edaban, mkubun, mkubunno, systemTime);
+            }
+            insertSrMwiplotlinkByData(queryRunnerQcdb, conQcdb, kojyo, lotNo, edaban, systemTime, genryouLotData);
+        }
+    }
+
+    /**
+     * sr_mwiplotlinkデータあり→なしの場合、deleteflagを更新
+     * 
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param mkubun 前工程区分
+     * @param mkubunno 前工程区分No
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @throws SQLException 例外エラー
+     */
+    private void updateSrMwiplotlinkToDelete(QueryRunner queryRunnerQcdb, Connection conQcdb, 
+            String kojyo, String lotNo, String edaban, String mkubun, String mkubunno, Timestamp systemTime) throws SQLException {
+        
+        String sql = "UPDATE sr_mwiplotlink "
+                + "SET deleteflag = ?, koushinnichiji = ? "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND gamenid = ? AND mkubun = ? AND mkubunno = ? AND deleteflag = '0'";
+        
+        List<Object> params = new ArrayList<>();
+        // 更新内容
+        params.add(1); //削除フラグ
+        params.add(systemTime); //更新日
+
+        // 検索条件
+        params.add(kojyo); //工場ｺｰﾄﾞ
+        params.add(lotNo); //ﾛｯﾄNo
+        params.add(edaban); //枝番
+        params.add("GXHDO101B045");
+        params.add(mkubun);
+        params.add(mkubunno);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+
+    /**
+     * 前工程WIP取込_ｻﾌﾞ画面(sr_mwiplotlink)更新処理
+     * sr_mwiplotlinkデータが存在しない場合、INSERT
+     * 
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @param genryouLotData 前工程WIP取込ｻﾌﾞ画面のbean
+     * @throws SQLException 例外エラー
+     */
+    private void insertSrMwiplotlinkByData(QueryRunner queryRunnerQcdb, Connection conQcdb, 
+            String kojyo, String lotNo, String edaban, Timestamp systemTime, 
+            GXHDO101C020Model.GenryouLotData genryouLotData) throws SQLException {
+        
+        if (StringUtil.isEmpty(genryouLotData.getValue())) {
+            return;
+        }
+        
+        String sql = "INSERT INTO sr_mwiplotlink("
+                + "kojyo, lotno, edaban, mkojyo, mlotno, medaban, mkubun, mkubunno, "
+                + "gamenid, tourokunichiji, koushinnichiji, deleteflag) VALUES "
+                + "(? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ?)";
+        
+        List<Object> params = new ArrayList<>();
+
+        params.clear();
+        params.add(kojyo); //工場ｺｰﾄﾞ
+        params.add(lotNo); //ﾛｯﾄNo
+        params.add(edaban); //枝番
+
+        String motoLotno = genryouLotData.getValue();
+        String motoKojyo = motoLotno.substring(0, 3);
+        String motoLotNo9 = motoLotno.substring(3, 12);
+        String motoEdaban = motoLotno.substring(12, 15);
+        params.add(motoKojyo); //前工程工場ｺｰﾄﾞ
+        params.add(motoLotNo9); //前工程ﾛｯﾄNo
+        params.add(motoEdaban); //前工程枝番
+
+        String typeName = genryouLotData.getTypeName();
+        String mkubun = getKubun(typeName);
+        String mkubunno = getKubunNo(typeName);
+        params.add(mkubun); //前工程区分
+        params.add(mkubunno); //前工程区分No
+        params.add("GXHDO101B045"); //画面ID
+        params.add(systemTime); //登録日時
+        params.add(systemTime); //更新日時
+        params.add(0); //削除フラグ
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+
+    /**
+     * sr_mwiplotlinkのデータが存在かの判断
+     * 
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param mkubun 前工程区分
+     * @param mkubunno 前工程区分No
+     * @return true:存在　false:存在しない
+     * @throws SQLException 例外エラー
+     */
+    private boolean isExistFromSrMwiplotlink(QueryRunner queryRunnerQcdb, 
+            String kojyo, String lotNo, String edaban, String mkubun, String mkubunno) throws SQLException {
+        
+        String sql = "select mkojyo, mlotno, medaban, mkubun, mkubunno "
+                + "from sr_mwiplotlink "
+                + "where kojyo = ? and lotno = ? and edaban = ? and gamenid = ? and mkubun = ? and mkubunno = ? and deleteflag = ? ";
+        
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add("GXHDO101B045");
+        params.add(mkubun);
+        params.add(mkubunno);
+        params.add(0);
+        
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        Map<String, Object> query = queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+        return !(query == null || query.isEmpty());
+    }
+
+    /**
+     * 前工程WIP取込_ｻﾌﾞ画面仮登録(tmp_sr_mwiplotlink)削除処理
+     * 
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @throws SQLException 例外エラー 
+     */
+    private void deleteTmpSrMwiplotlink(QueryRunner queryRunnerQcdb, Connection conQcdb, 
+            String kojyo, String lotNo, String edaban) throws SQLException {
+        
+        String sql = "DELETE FROM tmp_sr_mwiplotlink "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND gamenid = ?";
+
+        //更新値設定
+        List<Object> params = new ArrayList<>();
+
+        //検索条件設定
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add("GXHDO101B045");
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+
+    /**
+     * 前工程WIP取込_ｻﾌﾞ画面仮登録(sr_mwiplotlink)削除処理
+     * 
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @throws SQLException 例外エラー 
+     */
+    private void deleteSrMwiplotlink(QueryRunner queryRunnerQcdb, Connection conQcdb, 
+            String kojyo, String lotNo, String edaban, Timestamp systemTime) throws SQLException {
+        
+        GXHDO101C020 beanGXHDO101C020 = (GXHDO101C020) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C020);
+        List<GXHDO101C020Model.GenryouLotData> genryouLotDataList = beanGXHDO101C020.getGxhdO101c020Model().getGenryouLotDataList();
+        
+        for (GXHDO101C020Model.GenryouLotData genryouLotData : genryouLotDataList) {
+            
+            String typeName = genryouLotData.getTypeName();
+            String mkubun = getKubun(typeName);
+            String mkubunno = getKubunNo(typeName);
+            
+            if (isExistFromSrMwiplotlink(queryRunnerQcdb, kojyo, lotNo, edaban, mkubun, mkubunno)) {
+                updateSrMwiplotlinkToDelete(queryRunnerQcdb, conQcdb, kojyo, lotNo, edaban, mkubun, mkubunno, systemTime);
+            }
+        }
+    }
+
+    /**
+     * 前工程区分を取得する
+     * 
+     * @param typeName 前工程WIP取込サブ画面の種類名
+     * @return 前工程区分
+     */
+    private String getKubun(String typeName) {
+        String mkubun = "";
+        switch (typeName) {
+            case GXHDO101C020Model.TAPE_LOT_1:
+            case GXHDO101C020Model.TAPE_LOT_2:
+            case GXHDO101C020Model.TAPE_LOT_3:
+                mkubun = "電極ﾃｰﾌﾟ";
+                break;
+            case GXHDO101C020Model.PASTE_LOT_1:
+            case GXHDO101C020Model.PASTE_LOT_2:
+                mkubun = "内部電極ﾍﾟｰｽﾄ";
+                break;
+            case GXHDO101C020Model.UWA_TANSHI:
+                mkubun = "上端子ﾃｰﾌﾟ";
+                break;
+            case GXHDO101C020Model.SHITA_TANSHI:
+                mkubun = "下端子ﾃｰﾌﾟ";
+                break;
+        }
+        return mkubun;
+    }
+
+    /**
+     * 前工程区分Noを取得する
+     * 
+     * @param typeName 前工程WIP取込サブ画面の種類名
+     * @return 前工程区分No
+     */
+    private String getKubunNo(String typeName) {
+        String mkubunno = "";
+        switch (typeName) {
+            case GXHDO101C020Model.TAPE_LOT_1:
+            case GXHDO101C020Model.PASTE_LOT_1:
+            case GXHDO101C020Model.UWA_TANSHI:
+            case GXHDO101C020Model.SHITA_TANSHI:
+                mkubunno = "1";
+                break;
+            case GXHDO101C020Model.TAPE_LOT_2:
+            case GXHDO101C020Model.PASTE_LOT_2:
+                mkubunno = "2";
+                break;
+            case GXHDO101C020Model.TAPE_LOT_3:
+                mkubunno = "3";
+                break;
+        }
+        return mkubunno;
+    }
 }

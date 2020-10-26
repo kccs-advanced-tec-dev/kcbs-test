@@ -21,6 +21,11 @@ import java.sql.Timestamp;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	項目追加・変更<br>
  * <br>
+ * 変更日	2020/10/12<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -905,6 +910,41 @@ public class SrRhaps {
      * ﾀｰｹﾞｯﾄ有無
      */
     private String tumu;
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｯﾄNo
+     */
+    private String sitattapelotno;
+
+    /**
+     * 下端子ﾃｰﾌﾟｽﾘｯﾌﾟ記号
+     */
+    private String sitattapeslipkigo;
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｰﾙNo1
+     */
+    private Integer sitattaperollno1;
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｰﾙNo2
+     */
+    private Integer sitattaperollno2;
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｰﾙNo3
+     */
+    private Integer sitattaperollno3;
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｰﾙNo4
+     */
+    private Integer sitattaperollno4;
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｰﾙNo5
+     */
+    private Integer sitattaperollno5;
 
     /**
      * 工場ｺｰﾄﾞ
@@ -4050,6 +4090,118 @@ public class SrRhaps {
      */
     public void setTumu(String tumu) {
         this.tumu = tumu;
+    }
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｯﾄNo
+     * @return sitattapelotno
+     */
+    public String getSitattapelotno() {
+        return sitattapelotno;
+    }
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｯﾄNo
+     * @param sitattapelotno 
+     */
+    public void setSitattapelotno(String sitattapelotno) {
+        this.sitattapelotno = sitattapelotno;
+    }
+
+    /**
+     * 下端子ﾃｰﾌﾟｽﾘｯﾌﾟ記号
+     * @return sitattapeslipkigo
+     */
+    public String getSitattapeslipkigo() {
+        return sitattapeslipkigo;
+    }
+
+    /**
+     * 下端子ﾃｰﾌﾟｽﾘｯﾌﾟ記号
+     * @param sitattapeslipkigo
+     */
+    public void setSitattapeslipkigo(String sitattapeslipkigo) {
+        this.sitattapeslipkigo = sitattapeslipkigo;
+    }
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｰﾙNo1
+     * @return sitattaperollno1
+     */
+    public Integer getSitattaperollno1() {
+        return sitattaperollno1;
+    }
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｰﾙNo1
+     * @param sitattaperollno1
+     */
+    public void setSitattaperollno1(Integer sitattaperollno1) {
+        this.sitattaperollno1 = sitattaperollno1;
+    }
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｰﾙNo2
+     * @return sitattaperollno2
+     */
+    public Integer getSitattaperollno2() {
+        return sitattaperollno2;
+    }
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｰﾙNo2
+     * @param sitattaperollno2
+     */
+    public void setSitattaperollno2(Integer sitattaperollno2) {
+        this.sitattaperollno2 = sitattaperollno2;
+    }
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｰﾙNo3
+     * @return sitattaperollno3
+     */
+    public Integer getSitattaperollno3() {
+        return sitattaperollno3;
+    }
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｰﾙNo3
+     * @param sitattaperollno3
+     */
+    public void setSitattaperollno3(Integer sitattaperollno3) {
+        this.sitattaperollno3 = sitattaperollno3;
+    }
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｰﾙNo4
+     * @return sitattaperollno4
+     */
+    public Integer getSitattaperollno4() {
+        return sitattaperollno4;
+    }
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｰﾙNo4
+     * @param sitattaperollno4
+     */
+    public void setSitattaperollno4(Integer sitattaperollno4) {
+        this.sitattaperollno4 = sitattaperollno4;
+    }
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｰﾙNo5
+     * @return sitattaperollno5
+     */
+    public Integer getSitattaperollno5() {
+        return sitattaperollno5;
+    }
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｰﾙNo5
+     * @param sitattaperollno5
+     */
+    public void setSitattaperollno5(Integer sitattaperollno5) {
+        this.sitattaperollno5 = sitattaperollno5;
     }
 
 }

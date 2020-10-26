@@ -13,6 +13,11 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/10/15<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjy<br>
+ * 変更理由	前工程WIPボタンを追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -423,6 +428,11 @@ public class GXHDO101B001Const {
      */
     public static final String BTN_INSERT_BOTTOM = "insatsu_sps_gra_insert_Bottom";
     
+    /**
+     * 前工程WIP(画面下)
+     */
+    public static final String BTN_WIP_IMPORT_BOTTOM = "insatsu_sps_gra_wip_import_Bottom";
+    
     
 
     /**
@@ -474,6 +484,11 @@ public class GXHDO101B001Const {
      * 登録(画面上)
      */
     public static final String BTN_INSERT_TOP = "insatsu_sps_gra_insert_Top";
+
+    /**
+     * 前工程WIP(画面上)
+     */
+    public static final String BTN_WIP_IMPORT_TOP = "insatsu_sps_gra_wip_import_Top";
     
     /**
      * ユーザー認証パラメータ(修正)

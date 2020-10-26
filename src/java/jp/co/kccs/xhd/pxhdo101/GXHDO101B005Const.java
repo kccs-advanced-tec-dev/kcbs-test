@@ -13,6 +13,17 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
+ * <br>
+ * 変更日       2020/9/18<br>
+ * 計画書No     MB2008-DK001<br>
+ * 変更者       863 zhangjinyan<br>
+ * 変更理由     項目追加・変更<br>
+ * <br>
+ * 変更日	2020/10/15<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjy<br>
+ * 変更理由	前工程WIPボタンを追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -147,11 +158,81 @@ public class GXHDO101B005Const {
      * 下端子
      */
     public static final String SHITA_TANSHI = "sr_rsussek_shita_tanshi";
+
+    /**
+     * 下端子開始日
+     */
+    public static final String SHITA_TANSHI_KAISHI_DAY = "sr_rsussek_shitatanshi_kaishi_day";
+
+    /**
+     * 下端子開始時刻
+     */
+    public static final String SHITA_TANSHI_KAISHI_TIME = "sr_rsussek_shitatanshi_kaishi_time";
+
+    /**
+     * 下端子終了日
+     */
+    public static final String SHITA_TANSHI_SHURYOU_DAY = "sr_rsussek_shitatanshi_shuryou_day";
+
+    /**
+     * 下端子終了時刻
+     */
+    public static final String SHITA_TANSHI_SHURYOU_TIME = "sr_rsussek_shitatanshi_shuryou_time";
+
+    /**
+     * 下端子担当者
+     */
+    public static final String SHITA_TANSHI_TANTOSYA = "sr_rsussek_shitatanshi_tantosya";
+
+    /**
+     * 下端子確認者
+     */
+    public static final String SHITA_TANSHI_KAKUNINSYA = "sr_rsussek_shitatanshi_kakuninsya";
+
+    /**
+     * 下端子備考
+     */
+    public static final String SHITA_TANSHI_BIKO = "sr_rsussek_shitatanshi_biko";
     
     /**
      * 上端子
      */
     public static final String UWE_TANSHI = "sr_rsussek_ue_tanshi";
+    
+    /**
+     * 上端子開始日
+     */
+    public static final String UWE_TANSHI_KAISHI_DAY = "sr_rsussek_uwatanshi_kaishi_day";
+    
+    /**
+     * 上端子開始時刻
+     */
+    public static final String UWE_TANSHI_KAISHI_TIME = "sr_rsussek_uwatanshi_kaishi_time";
+    
+    /**
+     * 上端子終了日
+     */
+    public static final String UWE_TANSHI_SHURYOU_DAY = "sr_rsussek_uwatanshi_shuryou_day";
+    
+    /**
+     * 上端子終了時刻
+     */
+    public static final String UWE_TANSHI_SHURYOU_TIME = "sr_rsussek_uwatanshi_shuryou_time";
+    
+    /**
+     * 上端子担当者
+     */
+    public static final String UWE_TANSHI_TANTOSYA = "sr_rsussek_uwatanshi_tantosya";
+    
+    /**
+     * 上端子確認者
+     */
+    public static final String UWE_TANSHI_KAKUNINSYA = "sr_rsussek_uwatanshi_kakuninsya";
+    
+    /**
+     * 上端子備考
+     */
+    public static final String UWE_TANSHI_BIKO = "sr_rsussek_uwatanshi_biko";
 
     /**
      * 外観確認1
@@ -209,6 +290,16 @@ public class GXHDO101B005Const {
     public static final String TAKT = "sr_rsussek_takt";
 
     /**
+     * ﾍｯﾄﾞNo
+     */
+    public static final String HEADNO = "sr_rsussek_headno";
+
+    /**
+     * SUS板枚数
+     */
+    public static final String SUSITAMAISU = "sr_rsussek_susitamaisu";
+
+    /**
      * 先行ロットNo
      */
     public static final String SENKOU_LOT_NO = "sr_rsussek_senkou_lot_no";
@@ -222,6 +313,21 @@ public class GXHDO101B005Const {
      * 備考2
      */
     public static final String BIKOU2 = "sr_rsussek_bikou2";
+
+    /**
+     * 電極製版ﾛｯﾄNo
+     */
+    public static final String ELOTNO = "sr_rsussek_elotno";
+
+    /**
+     * 最上層担当者
+     */
+    public static final String LASTLAYERTANTOSYA = "sr_rsussek_lastlayertantosya";
+
+    /**
+     * 最上層備考
+     */
+    public static final String LASTLAYERBIKO = "sr_rsussek_lastlayerbiko";
 
     /**
      * 印刷ﾛｰﾙNo.
@@ -279,6 +385,26 @@ public class GXHDO101B005Const {
     public static final String BTN_ENDDATETIME_BOTTOM = "sr_rsussek_enddatetime_Bottom";
 
     /**
+     * 下端子開始日時(画面下)
+     */
+    public static final String BTN_SHITATANSHI_STARTDATETIME_BOTTOM = "sr_rsussek_shitatanshi_startdatetime_Bottom";
+
+    /**
+     * 下端子終了日時(画面下)
+     */
+    public static final String BTN_SHITATANSHI_ENDDATETIME_BOTTOM = "sr_rsussek_shitatanshi_enddatetime_Bottom";
+
+    /**
+     * 上端子開始日時(画面下)
+     */
+    public static final String BTN_UWATANSHI_STARTDATETIME_BOTTOM = "sr_rsussek_uwatanshi_startdatetime_Bottom";
+
+    /**
+     * 上端子終了日時(画面下)
+     */
+    public static final String BTN_UWATANSHI_ENDDATETIME_BOTTOM = "sr_rsussek_uwatanshi_enddatetime_Bottom";
+
+    /**
      * 登録(画面下)
      */
     public static final String BTN_INSERT_BOTTOM = "sr_rsussek_insert_Bottom";
@@ -292,6 +418,11 @@ public class GXHDO101B005Const {
      * 削除(画面下)
      */
     public static final String BTN_DELETE_BOTTOM = "sr_rsussek_delete_Bottom";
+    
+    /**
+     * 前工程WIP(画面下)
+     */
+    public static final String BTN_WIP_IMPORT_BOTTOM = "sr_rsussek_wip_import_Bottom";
 
     /**
      * 仮登録(画面上)
@@ -314,6 +445,26 @@ public class GXHDO101B005Const {
     public static final String BTN_ENDDATETIME_TOP = "sr_rsussek_enddatetime_Top";
 
     /**
+     * 下端子開始日時(画面上)
+     */
+    public static final String BTN_SHITATANSHI_STARTDATETIME_TOP = "sr_rsussek_shitatanshi_startdatetime_Top";
+
+    /**
+     * 下端子終了日時(画面上)
+     */
+    public static final String BTN_SHITATANSHI_ENDDATETIME_TOP = "sr_rsussek_shitatanshi_enddatetime_Top";
+
+    /**
+     * 上端子開始日時(画面上)
+     */
+    public static final String BTN_UWATANSHI_STARTDATETIME_TOP = "sr_rsussek_uwatanshi_startdatetime_Top";
+
+    /**
+     * 上端子終了日時(画面上)
+     */
+    public static final String BTN_UWATANSHI_ENDDATETIME_TOP = "sr_rsussek_uwatanshi_enddatetime_Top";
+
+    /**
      * 登録(画面上)
      */
     public static final String BTN_INSERT_TOP = "sr_rsussek_insert_Top";
@@ -327,6 +478,11 @@ public class GXHDO101B005Const {
      * 削除(画面上)
      */
     public static final String BTN_DELETE_TOP = "sr_rsussek_delete_Top";
+    
+    /**
+     * 前工程WIP(画面上)
+     */
+    public static final String BTN_WIP_IMPORT_TOP = "sr_rsussek_wip_import_Top";
     
     /**
      * ユーザー認証パラメータ(修正)

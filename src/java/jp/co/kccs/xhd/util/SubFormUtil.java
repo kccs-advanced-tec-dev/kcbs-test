@@ -20,6 +20,12 @@ import javax.faces.context.FacesContext;
  * 変更者	K.Hisanaga<br>
  * 変更理由	画面制御の子画面を追加<br>
  * <br>
+ * <br>
+ * 変更日	2020/10/14<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjy<br>
+ * 変更理由	前工程WIP取込画面のロジックを追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -78,6 +84,10 @@ public class SubFormUtil {
      * 画面追加
      */
     public static final String FORM_ID_GXHDO101C017 = "GXHDO101C017";
+    /**
+     * 前工程WIP取込
+     */
+    public static final String FORM_ID_GXHDO101C020 = "GXHDO101C020";
             
     /**
      * 初期表示メッセージ
@@ -192,6 +202,13 @@ public class SubFormUtil {
                 returnBean = FacesContext.getCurrentInstance().
                         getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
                                 getELContext(), null, "beanGXHDO101C017");
+                break;
+                
+            // 前工程WIP取込画面
+            case "GXHDO101C020":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO101C020");
                 break;
                 
             // 初期表示メッセージ

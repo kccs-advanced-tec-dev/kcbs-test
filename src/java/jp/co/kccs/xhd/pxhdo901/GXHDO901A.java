@@ -53,6 +53,8 @@ import jp.co.kccs.xhd.pxhdo101.GXHDO101C007;
 import jp.co.kccs.xhd.pxhdo101.GXHDO101C007Logic;
 import jp.co.kccs.xhd.pxhdo101.GXHDO101C009;
 import jp.co.kccs.xhd.pxhdo101.GXHDO101C009Logic;
+import jp.co.kccs.xhd.pxhdo101.GXHDO101C020;
+import jp.co.kccs.xhd.pxhdo101.GXHDO101C020Logic;
 import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
@@ -102,6 +104,11 @@ import org.primefaces.context.RequestContext;
  * 計画書No	MB2008-DK001<br>
  * 変更者	KCSS D.Yanagida<br>
  * 変更理由	ロット混合対応<br>
+ * <br>
+ * 変更日	2020/10/14<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjy<br>
+ * 変更理由	前工程WIP取込画面のロジックを追加<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -1772,6 +1779,11 @@ public class GXHDO901A implements Serializable {
             case SubFormUtil.FORM_ID_GXHDO101C009:
                 GXHDO101C009 beanGXHDO101C009 = (GXHDO101C009) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C009);
                 GXHDO101C009Logic.setReturnData(beanGXHDO101C009.getGxhdO101c009Model(), this.itemList);
+                break;
+            // 前工程WIP取込画面
+            case SubFormUtil.FORM_ID_GXHDO101C020:
+                GXHDO101C020 beanGXHDO101C020 = (GXHDO101C020) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C020);
+                GXHDO101C020Logic.setReturnData(beanGXHDO101C020.getGxhdO101c020Model(), this.itemList);
                 break;
             default:
                 break;

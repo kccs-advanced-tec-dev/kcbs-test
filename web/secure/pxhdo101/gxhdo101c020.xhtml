@@ -1,0 +1,79 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <p:dialog header="前工程WIP取込" id="dlg_gxhdo101c020" widgetVar="W_dlg_gxhdo101c020"
+              width="480" modal="true"  
+              dynamic="true" closable="true" closeOnEscape="false" 
+              onShow="subFormOpen();"
+              onHide="subFormClose(); document.getElementById('form:gxhdo101c020Form:cancelBtn').click();" position="center top">
+
+        <h:form id="gxhdo101c020Form" style="margin-bottom: 20px">
+            <p:panel style="width:435px">
+                <p:dataTable id="wipImportTable" var="item"  value="#{beanGXHDO101C020.gxhdO101c020ModelView.genryouLotDataList}"
+                            scrollable="true" style="font-size: 14px; width:400px" emptyMessage=""  >
+                    <p:column id="typeName" width="25%" headerText="種類" >
+                        <div style="text-align:right;">
+                            <p:outputLabel value="#{item.typeName}" />
+                        </div>
+                    </p:column>
+                    <p:column id="lotValue" width="70%" headerText="原料ﾛｯﾄ"  >
+                        <div style="text-align:left;">
+                            <p:inputText  value="#{item.value}" id="val" rendered="#{item.textRendered}" onkeydown="keyDownEnterSetNextControl(this)" tabindex="#{item.tabIndex}" maxlength="15" size="30" style="text-align:left; background: #{item.textBackColor};"/>
+                            <p:outputLabel value="#{item.value}" rendered="#{item.labelRendered}" />
+                        </div>
+                    </p:column>
+                </p:dataTable>
+                <p:confirmDialog class="ui-confdialog" severity="alert" widgetVar="cd1" global="true">
+                    <f:facet name="message">
+                        <h:outputText value="設計の電極ﾃｰﾌﾟと異なるﾃｰﾌﾟﾛｯﾄが指定されています。よろしいですか。" escape="false"/>
+                    </f:facet>
+                    <p:commandButton value="OK" styleClass="ui-conf-commandbtn-def1"
+                                     actionListener="#{beanGXHDO101C020.checkTapeSameHinmeiOK()}"
+                                     async="false"
+                                     process="@this" 
+                                     update="form:itemDataList"
+                                     oncomplete="if('warning'!=args.param1){PF('cd1').hide();} else {PF('cd1').show();}
+                                        if('warning'!=args.param2){PF('cd2').hide(); PF('W_dlg_gxhdo101c020').hide();} else {PF('cd2').show();}"/>
+                    <p:commandButton value="Cancel" class="ui-conf-commandbtn-cancel" onclick="PF('cd1').hide();" type="button" />
+                </p:confirmDialog>
+                <p:confirmDialog class="ui-confdialog" severity="alert" widgetVar="cd2" global="true">
+                    <f:facet name="message">
+                        <h:outputText value="設計の電極ﾍﾟｰｽﾄと異なるﾍﾟｰｽﾄﾛｯﾄが指定されています。よろしいですか。" escape="false"/>
+                    </f:facet>
+                    <p:commandButton value="OK" styleClass="ui-conf-commandbtn-def1"
+                                     actionListener="#{beanGXHDO101C020.checkPasteSameHinmeiOK()}"
+                                     async="false"
+                                     process="@this" 
+                                     update="form:itemDataList"
+                                     oncomplete="if('warning'!=args.param2){PF('cd2').hide();;PF('W_dlg_gxhdo101c020').hide();} else {PF('cd2').show();}"/>
+                    <p:commandButton value="Cancel" class="ui-conf-commandbtn-cancel" onclick="PF('cd2').hide();" type="button" />
+                </p:confirmDialog>
+            </p:panel>
+            <p:commandButton value="前工程WIP取込" id="genryouLotDataImportBtn"
+                             style="position:relative;left:10px;top:5px;width:170px;height:35px;"
+                             actionListener="#{gXHDO901A.returnSubForm('GXHDO101C020',beanGXHDO101C020.isFormError)}"
+                             async="false"
+                             process="@this" 
+                             update="form:itemDataList"
+                             oncomplete="if(document.getElementById('form:gxhdo101c020Form:isError').value=='error'){return;};if('error'==args.firstParam){alert(1);return;};if('warning'!=args.param1){PF('cd1').hide();} else {PF('cd1').show();return;};
+                                if('warning'!=args.param2){PF('cd2').hide();} else {PF('cd2').show();return;};
+                                if('error'!=args.firstParam){PF('W_dlg_gxhdo101c020').hide();};">
+                <p:ajax event="click"
+                                async="false"
+                                listener="#{beanGXHDO101C020.doTorikomi()}"
+                                process="gxhdo101c020Form" 
+                                update="gxhdo101c020Form form:growlMessage"
+                                oncomplete="if('error'==args.firstParam){document.getElementById('form:gxhdo101c020Form:isError').setAttribute('value', 'error');} else {document.getElementById('form:gxhdo101c020Form:isError').setAttribute('value', '')};"/>
+                <p:inputText type="hidden" id="isError"></p:inputText>
+            </p:commandButton>
+            <p:commandButton value="Cancel" id="cancelBtn"
+                             style="position:relative;left:150px;top:5px;width:110px;height:35px;"
+                             process="@this" 
+                             update="form:growlMessage"
+                             oncomplete="PF('W_dlg_gxhdo101c020').hide();"/>   
+            
+        </h:form>
+    </p:dialog>
+</ui:composition>

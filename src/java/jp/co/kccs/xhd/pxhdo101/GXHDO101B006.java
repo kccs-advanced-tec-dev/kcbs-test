@@ -30,6 +30,7 @@ import jp.co.kccs.xhd.model.GXHDO101C007Model;
 import jp.co.kccs.xhd.model.GXHDO101C008Model;
 import jp.co.kccs.xhd.model.GXHDO101C009Model;
 import jp.co.kccs.xhd.model.GXHDO101C010Model;
+import jp.co.kccs.xhd.model.GXHDO101C020Model;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.GXHDO901A;
 import jp.co.kccs.xhd.pxhdo901.IFormLogic;
@@ -51,6 +52,7 @@ import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
 import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import org.apache.commons.dbutils.DbUtils;
+import org.apache.commons.dbutils.handlers.MapListHandler;
 
 /**
  * ===============================================================================<br>
@@ -71,6 +73,11 @@ import org.apache.commons.dbutils.DbUtils;
  * 計画書No	MB2008-DK001<br>
  * 変更者	KCSS D.Yanagida<br>
  * 変更理由	ロット混合対応<br>
+ * <br>
+ * 変更日	2020/10/15<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjy<br>
+ * 変更理由	前工程WIPボタンロジックを追加<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -103,7 +110,7 @@ public class GXHDO101B006 implements IFormLogic {
             processData.setProcessName("initial");
 
             // 初期表示データ設定処理
-            processData = setInitDate(processData);
+            processData = setInitData(processData);
             // 中断エラー発生時
             if (processData.isFatalError()) {
                 if (!processData.getInitMessageList().isEmpty()) {
@@ -387,6 +394,9 @@ public class GXHDO101B006 implements IFormLogic {
                 // 印刷積層RHAPS_ｻﾌﾞ画面仮登録登録処理
                 insertTmpSubSrRhaps(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, systemTime);
 
+                // 前工程WIP取込ｻﾌﾞ画面仮登録登録処理
+                insertTmpSrMwiplotlink(queryRunnerQcdb, conQcdb, kojyo, lotNo8, edaban, systemTime);
+
             } else {
 
                 // 印刷積層RHAPS_仮登録更新処理
@@ -394,6 +404,9 @@ public class GXHDO101B006 implements IFormLogic {
 
                 // 印刷積層RHAPS_ｻﾌﾞ画面仮登録更新処理
                 updateTmpSubSrRhaps(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, systemTime);
+
+                // 前工程WIP取込_ｻﾌﾞ画面仮登録更新処理
+                updateTmpSrMwiplotlink(queryRunnerQcdb, conQcdb, kojyo, lotNo8, edaban, systemTime);
             }
 
             // 規格情報でエラーが発生している場合、エラー内容を更新
@@ -888,6 +901,7 @@ public class GXHDO101B006 implements IFormLogic {
 
                 deleteTmpSrRhaps(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban);
                 deleteTmpSubSrRhaps(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban);
+                deleteTmpSrMwiplotlink(queryRunnerQcdb, conQcdb, kojyo, lotNo8, edaban);
             }
 
             // 印刷積層RHAPS_登録処理
@@ -895,6 +909,9 @@ public class GXHDO101B006 implements IFormLogic {
 
             // 印刷積層RHAPS_ｻﾌﾞ画面登録処理
             insertSubSrRhaps(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, systemTime);
+
+            // 前工程WIP取込ｻﾌﾞ画面登録処理
+            insertSrMwiplotlink(queryRunnerQcdb, conQcdb, kojyo, lotNo8, edaban, systemTime);
 
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
@@ -1074,6 +1091,9 @@ public class GXHDO101B006 implements IFormLogic {
             // 印刷積層RHAPS_ｻﾌﾞ画面更新処理
             updateSubSrRhaps(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, systemTime);
 
+            // 前工程WIP取込_ｻﾌﾞ画面更新処理
+            updateSrMwiplotlink(queryRunnerQcdb, conQcdb, kojyo, lotNo8, edaban, systemTime);
+
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
             if (kikakuError.getKikakuchiInputErrorInfoList() != null && !kikakuError.getKikakuchiInputErrorInfoList().isEmpty()) {
@@ -1195,6 +1215,9 @@ public class GXHDO101B006 implements IFormLogic {
 
             // 印刷積層RHAPS_ｻﾌﾞ画面削除処理
             deleteSubSrRhaps(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban);
+
+            // 前工程WIP取込_ｻﾌﾞ画面削除処理
+            deleteSrMwiplotlink(queryRunnerQcdb, conQcdb, kojyo, lotNo8, edaban, systemTime);
 
             DbUtils.commitAndCloseQuietly(conDoc);
             DbUtils.commitAndCloseQuietly(conQcdb);
@@ -1374,6 +1397,11 @@ public class GXHDO101B006 implements IFormLogic {
             case GXHDO101B006Const.BTN_TARGET_INSATSU_ENDDAY_BOTTOM:
                 method = "setTargetInsatsuEndDateTime";
                 break;
+            // 前工程WIP
+            case GXHDO101B006Const.BTN_WIP_IMPORT_TOP:
+            case GXHDO101B006Const.BTN_WIP_IMPORT_BOTTOM:
+                method = "openWipImport";
+                break;
             default:
                 method = "error";
                 break;
@@ -1389,7 +1417,7 @@ public class GXHDO101B006 implements IFormLogic {
      * @return 処理制御データ
      * @throws SQLException 例外エラー
      */
-    private ProcessData setInitDate(ProcessData processData) throws SQLException {
+    private ProcessData setInitData(ProcessData processData) throws SQLException {
 
         QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
         QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
@@ -1705,6 +1733,9 @@ public class GXHDO101B006 implements IFormLogic {
 
                 // 被り量(µm)(データ設定
                 setInputItemDataSubFormC010(null, kojyo, lotNo8, edaban, sekkeino, queryRunnerQcdb);
+                
+                // 前工程WIP取込画面データ設定
+                setInputItemDataSubFormC020(queryRunnerQcdb, kojyo, lotNo8, edaban, jotaiFlg);
 
                 return true;
             }
@@ -1749,6 +1780,9 @@ public class GXHDO101B006 implements IFormLogic {
 
         // 被り量(µm)画面データ設定
         setInputItemDataSubFormC010(subSrRhapsDataList.get(0), kojyo, lotNo8, edaban, sekkeino, queryRunnerQcdb);
+        
+        // 前工程WIP取込画面データ設定
+        setInputItemDataSubFormC020(queryRunnerQcdb, kojyo, lotNo8, edaban, jotaiFlg);
 
         return true;
 
@@ -1780,20 +1814,34 @@ public class GXHDO101B006 implements IFormLogic {
         this.setItemData(processData, GXHDO101B006Const.DENKYOKU_TAPE_ROLL_NO5, getSrRhapsItemData(GXHDO101B006Const.DENKYOKU_TAPE_ROLL_NO5, srRhapsData));
         //電極テープ原料lot
         this.setItemData(processData, GXHDO101B006Const.DENKYOKU_TAPE_GENRYO_LOT, getSrRhapsItemData(GXHDO101B006Const.DENKYOKU_TAPE_GENRYO_LOT, srRhapsData));
-        //端子テープロットNo
+        //上端子テープロットNo
         this.setItemData(processData, GXHDO101B006Const.TANSHI_TAPE_LOT_NO, getSrRhapsItemData(GXHDO101B006Const.TANSHI_TAPE_LOT_NO, srRhapsData));
-        //端子テープスリップ記号
+        //上端子テープスリップ記号
         this.setItemData(processData, GXHDO101B006Const.TANSHI_TAPE_SLIP_KIGOU, getSrRhapsItemData(GXHDO101B006Const.TANSHI_TAPE_SLIP_KIGOU, srRhapsData));
-        //端子テープロールNo 1本目
+        //上端子テープロールNo 1本目
         this.setItemData(processData, GXHDO101B006Const.TANSHI_TAPE_ROLL_NO1, getSrRhapsItemData(GXHDO101B006Const.TANSHI_TAPE_ROLL_NO1, srRhapsData));
-        //端子テープロールNo 2本目
+        //上端子テープロールNo 2本目
         this.setItemData(processData, GXHDO101B006Const.TANSHI_TAPE_ROLL_NO2, getSrRhapsItemData(GXHDO101B006Const.TANSHI_TAPE_ROLL_NO2, srRhapsData));
-        //端子テープロールNo 3本目
+        //上端子テープロールNo 3本目
         this.setItemData(processData, GXHDO101B006Const.TANSHI_TAPE_ROLL_NO3, getSrRhapsItemData(GXHDO101B006Const.TANSHI_TAPE_ROLL_NO3, srRhapsData));
-        //端子テープロールNo 4本目
+        //上端子テープロールNo 4本目
         this.setItemData(processData, GXHDO101B006Const.TANSHI_TAPE_ROLL_NO4, getSrRhapsItemData(GXHDO101B006Const.TANSHI_TAPE_ROLL_NO4, srRhapsData));
-        //端子テープロールNo 5本目
+        //上端子テープロールNo 5本目
         this.setItemData(processData, GXHDO101B006Const.TANSHI_TAPE_ROLL_NO5, getSrRhapsItemData(GXHDO101B006Const.TANSHI_TAPE_ROLL_NO5, srRhapsData));
+        //下端子テープロットNo
+        this.setItemData(processData, GXHDO101B006Const.SITA_TANSHI_TAPE_LOT_NO, getSrRhapsItemData(GXHDO101B006Const.SITA_TANSHI_TAPE_LOT_NO, srRhapsData));
+        //下端子テープスリップ記号
+        this.setItemData(processData, GXHDO101B006Const.SITA_TANSHI_TAPE_SLIP_KIGOU, getSrRhapsItemData(GXHDO101B006Const.SITA_TANSHI_TAPE_SLIP_KIGOU, srRhapsData));
+        //下端子テープロールNo 1本目
+        this.setItemData(processData, GXHDO101B006Const.SITA_TANSHI_TAPE_ROLL_NO1, getSrRhapsItemData(GXHDO101B006Const.SITA_TANSHI_TAPE_ROLL_NO1, srRhapsData));
+        //下端子テープロールNo 2本目
+        this.setItemData(processData, GXHDO101B006Const.SITA_TANSHI_TAPE_ROLL_NO2, getSrRhapsItemData(GXHDO101B006Const.SITA_TANSHI_TAPE_ROLL_NO2, srRhapsData));
+        //下端子テープロールNo 3本目
+        this.setItemData(processData, GXHDO101B006Const.SITA_TANSHI_TAPE_ROLL_NO3, getSrRhapsItemData(GXHDO101B006Const.SITA_TANSHI_TAPE_ROLL_NO3, srRhapsData));
+        //下端子テープロールNo 4本目
+        this.setItemData(processData, GXHDO101B006Const.SITA_TANSHI_TAPE_ROLL_NO4, getSrRhapsItemData(GXHDO101B006Const.SITA_TANSHI_TAPE_ROLL_NO4, srRhapsData));
+        //下端子テープロールNo 5本目
+        this.setItemData(processData, GXHDO101B006Const.SITA_TANSHI_TAPE_ROLL_NO5, getSrRhapsItemData(GXHDO101B006Const.SITA_TANSHI_TAPE_ROLL_NO5, srRhapsData));
         //電極ペーストロットNo
         this.setItemData(processData, GXHDO101B006Const.DENKYOKU_PASTE_LOT_NO, getSrRhapsItemData(GXHDO101B006Const.DENKYOKU_PASTE_LOT_NO, srRhapsData));
         //電極ペースト粘度
@@ -2440,7 +2488,8 @@ public class GXHDO101B006 implements IFormLogic {
                 + "NIJIMISOKUTEIPTN,PRNSAMPLEGAIKAN,PRNICHIYOHAKUNAGASA,CTABLECLEARANCE,CMAKUATSUSETTEI,CSKSPEED,CNEPPUFURYOU,KABURIRYOU,"
                 + "SGAIKAN,NIJIMISOKUTEISEKISOUGO,SEKISOUHINGAIKAN,SEKISOUZURE,UWAJSSKIRIKAEICHI,SHITAKKSKIRIKAEICHI,TINKSYURYUI,TINKLOT,"
                 + "TGAIKAN,STARTTANTOU,ENDTANTOU,TENDDAY,TENDTANTOU,SYORISETSUU,RYOUHINSETSUU,HEADKOUKANTANTOU,SEKISOUJOUKENTANTOU,ESEIHANSETTANTOU,"
-                + "CSEIHANSETTANTOU,DANSASOKUTEITANTOU,revision,'0' AS deleteflag,startkakunin,TUMU "
+                + "CSEIHANSETTANTOU,DANSASOKUTEITANTOU,revision,'0' AS deleteflag,startkakunin,TUMU,SITATTAPELOTNO,SITATTapeSlipKigo,"
+                + "SITATTapeRollNo1,SITATTapeRollNo2,SITATTapeRollNo3,SITATTapeRollNo4,SITATTapeRollNo5 "
                 + "FROM sr_rhaps "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
         // revisionが入っている場合、条件に追加
@@ -2634,6 +2683,13 @@ public class GXHDO101B006 implements IFormLogic {
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
         mapping.put("startkakunin", "startkakunin"); //印刷積層開始確認者
         mapping.put("TUMU", "tumu"); //ﾀｰｹﾞｯﾄ有無
+        mapping.put("SITATTAPELOTNO", "sitattapelotno"); //下端子ﾃｰﾌﾟﾛｯﾄNo
+        mapping.put("SITATTapeSlipKigo", "sitattapeslipkigo"); //下端子ﾃｰﾌﾟｽﾘｯﾌﾟ記号
+        mapping.put("SITATTapeRollNo1", "sitattaperollno1"); //下端子ﾃｰﾌﾟﾛｰﾙNo1
+        mapping.put("SITATTapeRollNo2", "sitattaperollno2"); //下端子ﾃｰﾌﾟﾛｰﾙNo2
+        mapping.put("SITATTapeRollNo3", "sitattaperollno3"); //下端子ﾃｰﾌﾟﾛｰﾙNo3
+        mapping.put("SITATTapeRollNo4", "sitattaperollno4"); //下端子ﾃｰﾌﾟﾛｰﾙNo4
+        mapping.put("SITATTapeRollNo5", "sitattaperollno5"); //下端子ﾃｰﾌﾟﾛｰﾙNo5
 
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
@@ -2771,7 +2827,8 @@ public class GXHDO101B006 implements IFormLogic {
                 + "NIJIMISOKUTEIPTN,PRNSAMPLEGAIKAN,PRNICHIYOHAKUNAGASA,CTABLECLEARANCE,CMAKUATSUSETTEI,CSKSPEED,CNEPPUFURYOU,KABURIRYOU,"
                 + "SGAIKAN,NIJIMISOKUTEISEKISOUGO,SEKISOUHINGAIKAN,SEKISOUZURE,UWAJSSKIRIKAEICHI,SHITAKKSKIRIKAEICHI,TINKSYURYUI,TINKLOT,"
                 + "TGAIKAN,STARTTANTOU,ENDTANTOU,TENDDAY,TENDTANTOU,SYORISETSUU,RYOUHINSETSUU,HEADKOUKANTANTOU,SEKISOUJOUKENTANTOU,ESEIHANSETTANTOU,"
-                + "CSEIHANSETTANTOU,DANSASOKUTEITANTOU,revision,deleteflag,startkakunin,TUMU "
+                + "CSEIHANSETTANTOU,DANSASOKUTEITANTOU,revision,deleteflag,startkakunin,TUMU,SITATTAPELOTNO,SITATTapeSlipKigo,"
+                + "SITATTapeRollNo1,SITATTapeRollNo2,SITATTapeRollNo3,SITATTapeRollNo4,SITATTapeRollNo5 "
                 + "FROM tmp_sr_rhaps "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND deleteflag = ? ";
         // revisionが入っている場合、条件に追加
@@ -2966,6 +3023,13 @@ public class GXHDO101B006 implements IFormLogic {
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
         mapping.put("startkakunin", "startkakunin"); //印刷積層開始確認者
         mapping.put("TUMU", "tumu"); //ﾀｰｹﾞｯﾄ有無
+        mapping.put("SITATTAPELOTNO", "sitattapelotno"); //下端子ﾃｰﾌﾟﾛｯﾄNo
+        mapping.put("SITATTapeSlipKigo", "sitattapeslipkigo"); //下端子ﾃｰﾌﾟｽﾘｯﾌﾟ記号
+        mapping.put("SITATTapeRollNo1", "sitattaperollno1"); //下端子ﾃｰﾌﾟﾛｰﾙNo1
+        mapping.put("SITATTapeRollNo2", "sitattaperollno2"); //下端子ﾃｰﾌﾟﾛｰﾙNo2
+        mapping.put("SITATTapeRollNo3", "sitattaperollno3"); //下端子ﾃｰﾌﾟﾛｰﾙNo3
+        mapping.put("SITATTapeRollNo4", "sitattaperollno4"); //下端子ﾃｰﾌﾟﾛｰﾙNo4
+        mapping.put("SITATTapeRollNo5", "sitattaperollno5"); //下端子ﾃｰﾌﾟﾛｰﾙNo5
 
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
@@ -3177,6 +3241,9 @@ public class GXHDO101B006 implements IFormLogic {
 
             // 被り量(µm)画面データ設定
             setInputItemDataSubFormC010(subSrRhapsDataList.get(0), kojyo, lotNo8, edaban, null, null);
+            
+            // 前工程WIP取込画面データ設定
+            setInputItemDataSubFormC020(queryRunnerQcdb, kojyo, lotNo8, edaban, jotaiFlg);
 
             // 次呼出しメソッドをクリア
             processData.setMethod("");
@@ -3393,11 +3460,12 @@ public class GXHDO101B006 implements IFormLogic {
                 + "NIJIMISOKUTEIPTN,PRNSAMPLEGAIKAN,PRNICHIYOHAKUNAGASA,CTABLECLEARANCE,CMAKUATSUSETTEI,CSKSPEED,CNEPPUFURYOU,KABURIRYOU,"
                 + "SGAIKAN,NIJIMISOKUTEISEKISOUGO,SEKISOUHINGAIKAN,SEKISOUZURE,UWAJSSKIRIKAEICHI,SHITAKKSKIRIKAEICHI,TINKSYURYUI,TINKLOT,"
                 + "TGAIKAN,STARTTANTOU,ENDTANTOU,TENDDAY,TENDTANTOU,SYORISETSUU,RYOUHINSETSUU,HEADKOUKANTANTOU,SEKISOUJOUKENTANTOU,ESEIHANSETTANTOU,"
-                + "CSEIHANSETTANTOU,DANSASOKUTEITANTOU,revision,deleteflag,startkakunin,TUMU"
+                + "CSEIHANSETTANTOU,DANSASOKUTEITANTOU,revision,deleteflag,startkakunin,TUMU,SITATTAPELOTNO,SITATTapeSlipKigo,"
+                + "SITATTapeRollNo1,SITATTapeRollNo2,SITATTapeRollNo3,SITATTapeRollNo4,SITATTapeRollNo5"
                 + ") VALUES ("
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
                 + ") ";
 
         List<Object> params = setUpdateParameterTmpSrRhaps(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null);
@@ -3437,7 +3505,8 @@ public class GXHDO101B006 implements IFormLogic {
                 + "PRNSAMPLEGAIKAN = ?,PRNICHIYOHAKUNAGASA = ?,CTABLECLEARANCE = ?,CMAKUATSUSETTEI = ?,CSKSPEED = ?,CNEPPUFURYOU = ?,KABURIRYOU = ?,SGAIKAN = ?,"
                 + "NIJIMISOKUTEISEKISOUGO = ?,SEKISOUHINGAIKAN = ?,SEKISOUZURE = ?,UWAJSSKIRIKAEICHI = ?,SHITAKKSKIRIKAEICHI = ?,TINKSYURYUI = ?,TINKLOT = ?,"
                 + "TGAIKAN = ?,STARTTANTOU = ?,ENDTANTOU = ?,TENDDAY = ?,TENDTANTOU = ?,SYORISETSUU = ?,RYOUHINSETSUU = ?,HEADKOUKANTANTOU = ?,SEKISOUJOUKENTANTOU = ?,"
-                + "ESEIHANSETTANTOU = ?,CSEIHANSETTANTOU = ?,DANSASOKUTEITANTOU = ?,revision = ?,deleteflag = ?,startkakunin = ?,TUMU = ? "
+                + "ESEIHANSETTANTOU = ?,CSEIHANSETTANTOU = ?,DANSASOKUTEITANTOU = ?,revision = ?,deleteflag = ?,startkakunin = ?,TUMU = ?,SITATTAPELOTNO = ?,SITATTapeSlipKigo = ?,"
+                + "SITATTapeRollNo1 = ?,SITATTapeRollNo2 = ?,SITATTapeRollNo3 = ?,SITATTapeRollNo4 = ?,SITATTapeRollNo5 = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
         // 更新前の値を取得
@@ -3716,6 +3785,14 @@ public class GXHDO101B006 implements IFormLogic {
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.INSATSU_SEKISOU_KAISHI_KAKUNINSHA, srRhapsData)));  //印刷積層開始確認者
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.TARGET_UMU, srRhapsData)));  //ﾀｰｹﾞｯﾄ有無
 
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.SITA_TANSHI_TAPE_LOT_NO, srRhapsData)));  //下端子ﾃｰﾌﾟﾛｯﾄNo
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.SITA_TANSHI_TAPE_SLIP_KIGOU, srRhapsData)));  //下端子ﾃｰﾌﾟｽﾘｯﾌﾟ記号
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.SITA_TANSHI_TAPE_ROLL_NO1, srRhapsData)));  //下端子ﾃｰﾌﾟﾛｰﾙNo1
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.SITA_TANSHI_TAPE_ROLL_NO2, srRhapsData)));  //下端子ﾃｰﾌﾟﾛｰﾙNo2
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.SITA_TANSHI_TAPE_ROLL_NO3, srRhapsData)));  //下端子ﾃｰﾌﾟﾛｰﾙNo3
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.SITA_TANSHI_TAPE_ROLL_NO4, srRhapsData)));  //下端子ﾃｰﾌﾟﾛｰﾙNo4
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.SITA_TANSHI_TAPE_ROLL_NO5, srRhapsData)));  //下端子ﾃｰﾌﾟﾛｰﾙNo5
+
         return params;
     }
 
@@ -3942,11 +4019,12 @@ public class GXHDO101B006 implements IFormLogic {
                 + "NIJIMISOKUTEIPTN,PRNSAMPLEGAIKAN,PRNICHIYOHAKUNAGASA,CTABLECLEARANCE,CMAKUATSUSETTEI,CSKSPEED,CNEPPUFURYOU,KABURIRYOU,"
                 + "SGAIKAN,NIJIMISOKUTEISEKISOUGO,SEKISOUHINGAIKAN,SEKISOUZURE,UWAJSSKIRIKAEICHI,SHITAKKSKIRIKAEICHI,TINKSYURYUI,TINKLOT,"
                 + "TGAIKAN,STARTTANTOU,ENDTANTOU,TENDDAY,TENDTANTOU,SYORISETSUU,RYOUHINSETSUU,HEADKOUKANTANTOU,SEKISOUJOUKENTANTOU,ESEIHANSETTANTOU,"
-                + "CSEIHANSETTANTOU,DANSASOKUTEITANTOU,revision,startkakunin,TUMU"
+                + "CSEIHANSETTANTOU,DANSASOKUTEITANTOU,revision,startkakunin,TUMU,SITATTAPELOTNO,SITATTapeSlipKigo,"
+                + "SITATTapeRollNo1,SITATTapeRollNo2,SITATTapeRollNo3,SITATTapeRollNo4,SITATTapeRollNo5"
                 + ") VALUES ("
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
                 + ") ";
 
         List<Object> params = setUpdateParameterSrRhaps(true, newRev, kojyo, lotNo, edaban, systemTime, itemList, tmpSrRhaps);
@@ -3985,7 +4063,8 @@ public class GXHDO101B006 implements IFormLogic {
                 + "PRNSAMPLEGAIKAN = ?,PRNICHIYOHAKUNAGASA = ?,CTABLECLEARANCE = ?,CMAKUATSUSETTEI = ?,CSKSPEED = ?,CNEPPUFURYOU = ?,KABURIRYOU = ?,SGAIKAN = ?,"
                 + "NIJIMISOKUTEISEKISOUGO = ?,SEKISOUHINGAIKAN = ?,SEKISOUZURE = ?,UWAJSSKIRIKAEICHI = ?,SHITAKKSKIRIKAEICHI = ?,TINKSYURYUI = ?,TINKLOT = ?,"
                 + "TGAIKAN = ?,STARTTANTOU = ?,ENDTANTOU = ?,TENDDAY = ?,TENDTANTOU = ?,SYORISETSUU = ?,RYOUHINSETSUU = ?,HEADKOUKANTANTOU = ?,SEKISOUJOUKENTANTOU = ?,"
-                + "ESEIHANSETTANTOU = ?,CSEIHANSETTANTOU = ?,DANSASOKUTEITANTOU = ?,revision = ?,startkakunin = ?,TUMU = ? "
+                + "ESEIHANSETTANTOU = ?,CSEIHANSETTANTOU = ?,DANSASOKUTEITANTOU = ?,revision = ?,startkakunin = ?,TUMU = ?,SITATTAPELOTNO = ?,SITATTapeSlipKigo = ?,"
+                + "SITATTapeRollNo1 = ?,SITATTapeRollNo2 = ?,SITATTapeRollNo3 = ?,SITATTapeRollNo4 = ?,SITATTapeRollNo5 = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ?";
 
         // 更新前の値を取得
@@ -4232,6 +4311,14 @@ public class GXHDO101B006 implements IFormLogic {
         params.add(newRev); //revision
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B006Const.INSATSU_SEKISOU_KAISHI_KAKUNINSHA, srRhapsData)));  //印刷積層開始確認者
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B006Const.TARGET_UMU, srRhapsData)));  //ﾀｰｹﾞｯﾄ有無
+
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B006Const.SITA_TANSHI_TAPE_LOT_NO, srRhapsData)));  //下端子ﾃｰﾌﾟﾛｯﾄNo
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B006Const.SITA_TANSHI_TAPE_SLIP_KIGOU, srRhapsData)));  //下端子ﾃｰﾌﾟｽﾘｯﾌﾟ記号
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B006Const.SITA_TANSHI_TAPE_ROLL_NO1, srRhapsData)));  //下端子ﾃｰﾌﾟﾛｰﾙNo1
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B006Const.SITA_TANSHI_TAPE_ROLL_NO2, srRhapsData)));  //下端子ﾃｰﾌﾟﾛｰﾙNo2
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B006Const.SITA_TANSHI_TAPE_ROLL_NO3, srRhapsData)));  //下端子ﾃｰﾌﾟﾛｰﾙNo3
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B006Const.SITA_TANSHI_TAPE_ROLL_NO4, srRhapsData)));  //下端子ﾃｰﾌﾟﾛｰﾙNo4
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B006Const.SITA_TANSHI_TAPE_ROLL_NO5, srRhapsData)));  //下端子ﾃｰﾌﾟﾛｰﾙNo5
 
         return params;
     }
@@ -4618,27 +4705,48 @@ public class GXHDO101B006 implements IFormLogic {
             //電極テープ原料lot
             case GXHDO101B006Const.DENKYOKU_TAPE_GENRYO_LOT:
                 return StringUtil.nullToBlank(srRhapsData.getEtapeglot());
-            //端子テープロットNo
+            //上端子テープロットNo
             case GXHDO101B006Const.TANSHI_TAPE_LOT_NO:
                 return StringUtil.nullToBlank(srRhapsData.getTtapelotno());
-            //端子テープスリップ記号
+            //上端子テープスリップ記号
             case GXHDO101B006Const.TANSHI_TAPE_SLIP_KIGOU:
                 return StringUtil.nullToBlank(srRhapsData.gettTapeSlipKigo());
-            //端子テープロールNo 1本目
+            //上端子テープロールNo 1本目
             case GXHDO101B006Const.TANSHI_TAPE_ROLL_NO1:
                 return StringUtil.nullToBlank(srRhapsData.gettTapeRollNo1());
-            //端子テープロールNo 2本目
+            //上端子テープロールNo 2本目
             case GXHDO101B006Const.TANSHI_TAPE_ROLL_NO2:
                 return StringUtil.nullToBlank(srRhapsData.gettTapeRollNo2());
-            //端子テープロールNo 3本目
+            //上端子テープロールNo 3本目
             case GXHDO101B006Const.TANSHI_TAPE_ROLL_NO3:
                 return StringUtil.nullToBlank(srRhapsData.gettTapeRollNo3());
-            //端子テープロールNo 4本目
+            //上端子テープロールNo 4本目
             case GXHDO101B006Const.TANSHI_TAPE_ROLL_NO4:
                 return StringUtil.nullToBlank(srRhapsData.gettTapeRollNo4());
-            //端子テープロールNo 5本目
+            //上端子テープロールNo 5本目
             case GXHDO101B006Const.TANSHI_TAPE_ROLL_NO5:
                 return StringUtil.nullToBlank(srRhapsData.gettTapeRollNo5());
+            //下端子テープロットNo
+            case GXHDO101B006Const.SITA_TANSHI_TAPE_LOT_NO:
+                return StringUtil.nullToBlank(srRhapsData.getSitattapelotno());
+            //下端子テープスリップ記号
+            case GXHDO101B006Const.SITA_TANSHI_TAPE_SLIP_KIGOU:
+                return StringUtil.nullToBlank(srRhapsData.getSitattapeslipkigo());
+            //下端子テープロールNo 1本目
+            case GXHDO101B006Const.SITA_TANSHI_TAPE_ROLL_NO1:
+                return StringUtil.nullToBlank(srRhapsData.getSitattaperollno1());
+            //下端子テープロールNo 2本目
+            case GXHDO101B006Const.SITA_TANSHI_TAPE_ROLL_NO2:
+                return StringUtil.nullToBlank(srRhapsData.getSitattaperollno2());
+            //下端子テープロールNo 3本目
+            case GXHDO101B006Const.SITA_TANSHI_TAPE_ROLL_NO3:
+                return StringUtil.nullToBlank(srRhapsData.getSitattaperollno3());
+            //下端子テープロールNo 4本目
+            case GXHDO101B006Const.SITA_TANSHI_TAPE_ROLL_NO4:
+                return StringUtil.nullToBlank(srRhapsData.getSitattaperollno4());
+            //下端子テープロールNo 5本目
+            case GXHDO101B006Const.SITA_TANSHI_TAPE_ROLL_NO5:
+                return StringUtil.nullToBlank(srRhapsData.getSitattaperollno5());
             //電極ペーストロットNo
             case GXHDO101B006Const.DENKYOKU_PASTE_LOT_NO:
                 return StringUtil.nullToBlank(srRhapsData.getEpastelotno());
@@ -4948,7 +5056,8 @@ public class GXHDO101B006 implements IFormLogic {
                 + "NIJIMISOKUTEIPTN,PRNSAMPLEGAIKAN,PRNICHIYOHAKUNAGASA,CTABLECLEARANCE,CMAKUATSUSETTEI,CSKSPEED,CNEPPUFURYOU,KABURIRYOU,"
                 + "SGAIKAN,NIJIMISOKUTEISEKISOUGO,SEKISOUHINGAIKAN,SEKISOUZURE,UWAJSSKIRIKAEICHI,SHITAKKSKIRIKAEICHI,TINKSYURYUI,TINKLOT,"
                 + "TGAIKAN,STARTTANTOU,ENDTANTOU,TENDDAY,TENDTANTOU,SYORISETSUU,RYOUHINSETSUU,HEADKOUKANTANTOU,SEKISOUJOUKENTANTOU,ESEIHANSETTANTOU,"
-                + "CSEIHANSETTANTOU,DANSASOKUTEITANTOU,revision,deleteflag,startkakunin,TUMU"
+                + "CSEIHANSETTANTOU,DANSASOKUTEITANTOU,revision,deleteflag,startkakunin,TUMU,SITATTAPELOTNO,SITATTapeSlipKigo,"
+                + "SITATTapeRollNo1,SITATTapeRollNo2,SITATTapeRollNo3,SITATTapeRollNo4,SITATTapeRollNo5"
                 + ") SELECT "
                 + "KOJYO,LOTNO,EDABAN,KCPNO,KAISINICHIJI,SYURYONICHIJI,TTAPESYURUI,TTAPELOTNO,TTapeSlipKigo,TTapeRollNo1,TTapeRollNo2,"
                 + "TTapeRollNo3,TTapeRollNo4,TTapeRollNo5,TGENRYOKIGO,STSIYO,ESEKISOSIYO,ETAPESYURUI,ETAPEGLOT,ETAPELOT,ETapeSlipKigo,"
@@ -4966,7 +5075,8 @@ public class GXHDO101B006 implements IFormLogic {
                 + "NIJIMISOKUTEIPTN,PRNSAMPLEGAIKAN,PRNICHIYOHAKUNAGASA,CTABLECLEARANCE,CMAKUATSUSETTEI,CSKSPEED,CNEPPUFURYOU,KABURIRYOU,"
                 + "SGAIKAN,NIJIMISOKUTEISEKISOUGO,SEKISOUHINGAIKAN,SEKISOUZURE,UWAJSSKIRIKAEICHI,SHITAKKSKIRIKAEICHI,TINKSYURYUI,TINKLOT,"
                 + "TGAIKAN,STARTTANTOU,ENDTANTOU,TENDDAY,TENDTANTOU,SYORISETSUU,RYOUHINSETSUU,HEADKOUKANTANTOU,SEKISOUJOUKENTANTOU,ESEIHANSETTANTOU,"
-                + "CSEIHANSETTANTOU,DANSASOKUTEITANTOU,?,?,startkakunin,TUMU "
+                + "CSEIHANSETTANTOU,DANSASOKUTEITANTOU,?,?,startkakunin,TUMU,SITATTAPELOTNO,SITATTapeSlipKigo,"
+                + "SITATTapeRollNo1,SITATTapeRollNo2,SITATTapeRollNo3,SITATTapeRollNo4,SITATTapeRollNo5 "
                 + "FROM sr_rhaps "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
 
@@ -5131,6 +5241,9 @@ public class GXHDO101B006 implements IFormLogic {
 
         // 被り量(µm)画面データ設定
         setInputItemDataSubFormC010(subSrRhapsDataList.get(0), sakiKojyo, sakilotNo8, sakiEdaban, sekkeino, queryRunnerQcdb);
+        
+        // 前工程WIP取込画面データ設定
+        setInputItemDataSubFormC020(queryRunnerQcdb, sakiKojyo, sakilotNo8, sakiEdaban, "");
 
         return true;
     }
@@ -5325,5 +5438,505 @@ public class GXHDO101B006 implements IFormLogic {
         return retListData;
     }
 
+    /**
+     * 前工程WIP取込(サブ画面Open)
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData openWipImport(ProcessData processData) {
 
+        try {
+
+            processData.setMethod("");
+            // コールバックパラメータにてサブ画面起動用の値を設定
+            processData.setCollBackParam("gxhdo101c020");
+
+            // 膜厚(SPS)の現在の値をサブ画面の表示用の値に渡す
+            GXHDO101C020 beanGXHDO101C020 = (GXHDO101C020) SubFormUtil.getSubFormBean("GXHDO101C020");
+            beanGXHDO101C020.setGxhdO101c020ModelView(beanGXHDO101C020.getGxhdO101c020Model().clone());
+
+        } catch (CloneNotSupportedException ex) {
+
+            ErrUtil.outputErrorLog("CloneNotSupportedException発生", ex, LOGGER);
+            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            return processData;
+
+        }
+
+        return processData;
+    }
+
+    /**
+     * 前工程WIP取込画面データ設定処理
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト(Qcdb)
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param jotaiFlg 状態フラグ
+     */
+    private void setInputItemDataSubFormC020(QueryRunner queryRunnerQcdb, String kojyo, String lotNo, String edaban, String jotaiFlg) throws SQLException {
+        // サブ画面の情報を取得
+        GXHDO101C020 beanGXHDO101C020 = (GXHDO101C020) SubFormUtil.getSubFormBean("GXHDO101C020");
+        List<Map<String, Object>> initDataSubFormC020 = null;
+        if (JOTAI_FLG_KARI_TOROKU.equals(jotaiFlg) || JOTAI_FLG_TOROKUZUMI.equals(jotaiFlg)) {
+            initDataSubFormC020 = getInitDataSubFormC020(queryRunnerQcdb, kojyo, lotNo, edaban, jotaiFlg);
+        }
+        
+        GXHDO101C020Model model = new GXHDO101C020Model();
+        // 登録データが無い場合空の状態で初期値をセットする。
+        // 登録データがあれば登録データをセットする。
+        model = GXHDO101C020Logic.createGXHDO101C020Model(initDataSubFormC020, "GXHDO101B006");
+
+        model.setReturnItemId_TapeLot1_Hinmei(GXHDO101B006Const.DENKYOKU_TAPE);
+        model.setReturnItemId_PasteLot1_Hinmei(GXHDO101B006Const.DENKYOKU_PASTE);
+        model.setReturnItemId_TapeLot1_Conventionallot(GXHDO101B006Const.DENKYOKU_TAPE_LOT);
+        model.setReturnItemId_PasteLot1_Conventionallot(GXHDO101B006Const.DENKYOKU_PASTE_LOT_NO);
+        model.setReturnItemId_Uwatanshi_Conventionallot(GXHDO101B006Const.TANSHI_TAPE_LOT_NO);
+        model.setReturnItemId_Shitatanshi_Conventionallot(GXHDO101B006Const.SITA_TANSHI_TAPE_LOT_NO);
+        model.setReturnItemId_TapeLot1_Rollno(GXHDO101B006Const.DENKYOKU_TAPE_ROLL_NO1);
+        model.setReturnItemId_Uwatanshi_Rollno(GXHDO101B006Const.TANSHI_TAPE_ROLL_NO1);
+        model.setReturnItemId_Shitatanshi_Rollno(GXHDO101B006Const.SITA_TANSHI_TAPE_ROLL_NO1);
+        model.setReturnItemId_Petname(GXHDO101B006Const.PET_FILM_SHURUI);
+        // サブ画面から戻ったときに値を設定する項目を指定する。
+        beanGXHDO101C020.setGxhdO101c020Model(model);
+    }
+
+    /**
+     * 前工程WIP取込画面初期表示データを取得する
+     * 
+     * @param queryRunnerQcdb QueryRunnerオブジェクト(Qcdb)
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param jotaiFlg 状態フラグ
+     * @return 前工程WIP取込画面初期表示データ
+     * @throws SQLException 
+     */
+    private List<Map<String, Object>> getInitDataSubFormC020(QueryRunner queryRunnerQcdb, 
+            String kojyo, String lotNo, String edaban, String jotaiFlg) throws SQLException {
+        
+        String tableName = " from sr_mwiplotlink ";
+        String whereSQL = " where kojyo = ? and lotno = ? and edaban = ? and gamenid = ? and deleteflag = ?";
+        if (JOTAI_FLG_KARI_TOROKU.equals(jotaiFlg)) {
+            tableName = " from tmp_sr_mwiplotlink ";
+            whereSQL = " where kojyo = ? and lotno = ? and edaban = ? and gamenid = ?";
+        }
+        
+        String sql = "select mkojyo, mlotno, medaban, mkubun, mkubunno" + tableName + whereSQL;
+        
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add("GXHDO101B006");
+        if (JOTAI_FLG_TOROKUZUMI.equals(jotaiFlg)) {
+            params.add(0);
+        }
+        
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapListHandler(), params.toArray());
+    }
+
+    /**
+     * 前工程WIP取込ｻﾌﾞ画面仮登録(tmp_sr_mwiplotlink)登録処理
+     * 
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @throws SQLException 例外エラー
+     */
+    private void insertTmpSrMwiplotlink(QueryRunner queryRunnerQcdb, Connection conQcdb, 
+            String kojyo, String lotNo, String edaban, Timestamp systemTime) throws SQLException {
+        
+        String sql = "INSERT INTO tmp_sr_mwiplotlink("
+                + "kojyo, lotno, edaban, mkojyo, mlotno, medaban, mkubun, mkubunno, "
+                + "gamenid, tourokunichiji, koushinnichiji) VALUES "
+                + "(? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? )";
+        
+        List<Object> params = new ArrayList<>();
+        
+        GXHDO101C020 beanGXHDO101C020 = (GXHDO101C020) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C020);
+        List<GXHDO101C020Model.GenryouLotData> genryouLotDataList = beanGXHDO101C020.getGxhdO101c020Model().getGenryouLotDataList();
+        
+        for (GXHDO101C020Model.GenryouLotData genryouLotData : genryouLotDataList) {
+            
+            if (StringUtil.isEmpty(genryouLotData.getValue())) {
+                continue;
+            }
+            
+            params.clear();
+            params.add(kojyo); //工場ｺｰﾄﾞ
+            params.add(lotNo); //ﾛｯﾄNo
+            params.add(edaban); //枝番
+            
+            String motoLotno = genryouLotData.getValue();
+            String motoKojyo = motoLotno.substring(0, 3);
+            String motoLotNo9 = motoLotno.substring(3, 12);
+            String motoEdaban = motoLotno.substring(12, 15);
+            params.add(motoKojyo); //前工程工場ｺｰﾄﾞ
+            params.add(motoLotNo9); //前工程ﾛｯﾄNo
+            params.add(motoEdaban); //前工程枝番
+            
+            String typeName = genryouLotData.getTypeName();
+            String mkubun = getKubun(typeName);
+            String mkubunno = getKubunNo(typeName);
+            params.add(mkubun); //前工程区分
+            params.add(mkubunno); //前工程区分No
+            params.add("GXHDO101B006"); //画面ID
+            params.add(systemTime); //登録日時
+            params.add(systemTime); //更新日時
+            
+            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+            queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+        }
+    }
+
+    /**
+     * 前工程WIP取込ｻﾌﾞ画面登録(sr_mwiplotlink)登録処理
+     * 
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @throws SQLException 例外エラー
+     */
+    private void insertSrMwiplotlink(QueryRunner queryRunnerQcdb, Connection conQcdb, 
+            String kojyo, String lotNo, String edaban, Timestamp systemTime) throws SQLException {
+        
+        String sql = "INSERT INTO sr_mwiplotlink("
+                + "kojyo, lotno, edaban, mkojyo, mlotno, medaban, mkubun, mkubunno, "
+                + "gamenid, tourokunichiji, koushinnichiji, deleteflag) VALUES "
+                + "(? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ?)";
+        
+        List<Object> params = new ArrayList<>();
+        
+        GXHDO101C020 beanGXHDO101C020 = (GXHDO101C020) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C020);
+        List<GXHDO101C020Model.GenryouLotData> genryouLotDataList = beanGXHDO101C020.getGxhdO101c020Model().getGenryouLotDataList();
+        
+        for (GXHDO101C020Model.GenryouLotData genryouLotData : genryouLotDataList) {
+            
+            if (StringUtil.isEmpty(genryouLotData.getValue())) {
+                continue;
+            }
+            
+            params.clear();
+            params.add(kojyo); //工場ｺｰﾄﾞ
+            params.add(lotNo); //ﾛｯﾄNo
+            params.add(edaban); //枝番
+            
+            String motoLotno = genryouLotData.getValue();
+            String motoKojyo = motoLotno.substring(0, 3);
+            String motoLotNo9 = motoLotno.substring(3, 12);
+            String motoEdaban = motoLotno.substring(12, 15);
+            params.add(motoKojyo); //前工程工場ｺｰﾄﾞ
+            params.add(motoLotNo9); //前工程ﾛｯﾄNo
+            params.add(motoEdaban); //前工程枝番
+            
+            String typeName = genryouLotData.getTypeName();
+            String mkubun = getKubun(typeName);
+            String mkubunno = getKubunNo(typeName);
+            params.add(mkubun); //前工程区分
+            params.add(mkubunno); //前工程区分No
+            params.add("GXHDO101B006"); //画面ID
+            params.add(systemTime); //登録日時
+            params.add(systemTime); //更新日時
+            params.add(0); //削除フラグ
+            
+            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+            queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+        }
+    }
+
+    /**
+     * 前工程WIP取込_ｻﾌﾞ画面仮登録(tmp_sr_mwiplotlink)更新処理
+     * 
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @throws SQLException 例外エラー
+     */
+    private void updateTmpSrMwiplotlink(QueryRunner queryRunnerQcdb, Connection conQcdb, 
+            String kojyo, String lotNo, String edaban, Timestamp systemTime) throws SQLException {
+        
+        deleteTmpSrMwiplotlink(queryRunnerQcdb, conQcdb, kojyo, lotNo, edaban);
+        insertTmpSrMwiplotlink(queryRunnerQcdb, conQcdb, kojyo, lotNo, edaban, systemTime);
+    }
+
+    /**
+     * 前工程WIP取込_ｻﾌﾞ画面(sr_mwiplotlink)更新処理
+     * 
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @throws SQLException 例外エラー
+     */
+    private void updateSrMwiplotlink(QueryRunner queryRunnerQcdb, Connection conQcdb, 
+            String kojyo, String lotNo, String edaban, Timestamp systemTime) throws SQLException {
+        
+        GXHDO101C020 beanGXHDO101C020 = (GXHDO101C020) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C020);
+        List<GXHDO101C020Model.GenryouLotData> genryouLotDataList = beanGXHDO101C020.getGxhdO101c020Model().getGenryouLotDataList();
+        
+        for (GXHDO101C020Model.GenryouLotData genryouLotData : genryouLotDataList) {
+            
+            String typeName = genryouLotData.getTypeName();
+            String mkubun = getKubun(typeName);
+            String mkubunno = getKubunNo(typeName);
+            
+            boolean isExist = isExistFromSrMwiplotlink(queryRunnerQcdb, kojyo, lotNo, edaban, mkubun, mkubunno);
+            if (isExist) {
+                // データが存在の場合、deleteflagを更新
+                updateSrMwiplotlinkToDelete(queryRunnerQcdb, conQcdb, kojyo, lotNo, edaban, mkubun, mkubunno, systemTime);
+            }
+            insertSrMwiplotlinkByData(queryRunnerQcdb, conQcdb, kojyo, lotNo, edaban, systemTime, genryouLotData);
+        }
+    }
+
+    /**
+     * sr_mwiplotlinkデータあり→なしの場合、deleteflagを更新
+     * 
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param mkubun 前工程区分
+     * @param mkubunno 前工程区分No
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @throws SQLException 例外エラー
+     */
+    private void updateSrMwiplotlinkToDelete(QueryRunner queryRunnerQcdb, Connection conQcdb, 
+            String kojyo, String lotNo, String edaban, String mkubun, String mkubunno, Timestamp systemTime) throws SQLException {
+        
+        String sql = "UPDATE sr_mwiplotlink "
+                + "SET deleteflag = ?, koushinnichiji = ? "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND gamenid = ? AND mkubun = ? AND mkubunno = ? AND deleteflag = '0'";
+        
+        List<Object> params = new ArrayList<>();
+        // 更新内容
+        params.add(1); //削除フラグ
+        params.add(systemTime); //更新日
+
+        // 検索条件
+        params.add(kojyo); //工場ｺｰﾄﾞ
+        params.add(lotNo); //ﾛｯﾄNo
+        params.add(edaban); //枝番
+        params.add("GXHDO101B006");
+        params.add(mkubun);
+        params.add(mkubunno);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+
+    /**
+     * 前工程WIP取込_ｻﾌﾞ画面(sr_mwiplotlink)更新処理
+     * sr_mwiplotlinkデータが存在しない場合、INSERT
+     * 
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @param genryouLotData 前工程WIP取込ｻﾌﾞ画面のbean
+     * @throws SQLException 例外エラー
+     */
+    private void insertSrMwiplotlinkByData(QueryRunner queryRunnerQcdb, Connection conQcdb, 
+            String kojyo, String lotNo, String edaban, Timestamp systemTime, 
+            GXHDO101C020Model.GenryouLotData genryouLotData) throws SQLException {
+        
+        if (StringUtil.isEmpty(genryouLotData.getValue())) {
+            return;
+        }
+        
+        String sql = "INSERT INTO sr_mwiplotlink("
+                + "kojyo, lotno, edaban, mkojyo, mlotno, medaban, mkubun, mkubunno, "
+                + "gamenid, tourokunichiji, koushinnichiji, deleteflag) VALUES "
+                + "(? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ? , ?)";
+        
+        List<Object> params = new ArrayList<>();
+
+        params.clear();
+        params.add(kojyo); //工場ｺｰﾄﾞ
+        params.add(lotNo); //ﾛｯﾄNo
+        params.add(edaban); //枝番
+
+        String motoLotno = genryouLotData.getValue();
+        String motoKojyo = motoLotno.substring(0, 3);
+        String motoLotNo9 = motoLotno.substring(3, 12);
+        String motoEdaban = motoLotno.substring(12, 15);
+        params.add(motoKojyo); //前工程工場ｺｰﾄﾞ
+        params.add(motoLotNo9); //前工程ﾛｯﾄNo
+        params.add(motoEdaban); //前工程枝番
+
+        String typeName = genryouLotData.getTypeName();
+        String mkubun = getKubun(typeName);
+        String mkubunno = getKubunNo(typeName);
+        params.add(mkubun); //前工程区分
+        params.add(mkubunno); //前工程区分No
+        params.add("GXHDO101B006"); //画面ID
+        params.add(systemTime); //登録日時
+        params.add(systemTime); //更新日時
+        params.add(0); //削除フラグ
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+
+    /**
+     * sr_mwiplotlinkのデータが存在かの判断
+     * 
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param mkubun 前工程区分
+     * @param mkubunno 前工程区分No
+     * @return true:存在　false:存在しない
+     * @throws SQLException 例外エラー
+     */
+    private boolean isExistFromSrMwiplotlink(QueryRunner queryRunnerQcdb, 
+            String kojyo, String lotNo, String edaban, String mkubun, String mkubunno) throws SQLException {
+        
+        String sql = "select mkojyo, mlotno, medaban, mkubun, mkubunno "
+                + "from sr_mwiplotlink "
+                + "where kojyo = ? and lotno = ? and edaban = ? and gamenid = ? and mkubun = ? and mkubunno = ? and deleteflag = ? ";
+        
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add("GXHDO101B006");
+        params.add(mkubun);
+        params.add(mkubunno);
+        params.add(0);
+        
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        Map<String, Object> query = queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+        return !(query == null || query.isEmpty());
+    }
+
+    /**
+     * 前工程WIP取込_ｻﾌﾞ画面仮登録(tmp_sr_mwiplotlink)削除処理
+     * 
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @throws SQLException 例外エラー 
+     */
+    private void deleteTmpSrMwiplotlink(QueryRunner queryRunnerQcdb, Connection conQcdb, 
+            String kojyo, String lotNo, String edaban) throws SQLException {
+        
+        String sql = "DELETE FROM tmp_sr_mwiplotlink "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND gamenid = ?";
+
+        //更新値設定
+        List<Object> params = new ArrayList<>();
+
+        //検索条件設定
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add("GXHDO101B006");
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+
+    /**
+     * 前工程WIP取込_ｻﾌﾞ画面仮登録(sr_mwiplotlink)削除処理
+     * 
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @throws SQLException 例外エラー 
+     */
+    private void deleteSrMwiplotlink(QueryRunner queryRunnerQcdb, Connection conQcdb, 
+            String kojyo, String lotNo, String edaban, Timestamp systemTime) throws SQLException {
+        
+        GXHDO101C020 beanGXHDO101C020 = (GXHDO101C020) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C020);
+        List<GXHDO101C020Model.GenryouLotData> genryouLotDataList = beanGXHDO101C020.getGxhdO101c020Model().getGenryouLotDataList();
+        
+        for (GXHDO101C020Model.GenryouLotData genryouLotData : genryouLotDataList) {
+            
+            String typeName = genryouLotData.getTypeName();
+            String mkubun = getKubun(typeName);
+            String mkubunno = getKubunNo(typeName);
+            
+            if (isExistFromSrMwiplotlink(queryRunnerQcdb, kojyo, lotNo, edaban, mkubun, mkubunno)) {
+                updateSrMwiplotlinkToDelete(queryRunnerQcdb, conQcdb, kojyo, lotNo, edaban, mkubun, mkubunno, systemTime);
+            }
+        }
+    }
+
+    /**
+     * 前工程区分を取得する
+     * 
+     * @param typeName 前工程WIP取込サブ画面の種類名
+     * @return 前工程区分
+     */
+    private String getKubun(String typeName) {
+        String mkubun = "";
+        switch (typeName) {
+            case GXHDO101C020Model.TAPE_LOT_1:
+            case GXHDO101C020Model.TAPE_LOT_2:
+            case GXHDO101C020Model.TAPE_LOT_3:
+                mkubun = "電極ﾃｰﾌﾟ";
+                break;
+            case GXHDO101C020Model.PASTE_LOT_1:
+            case GXHDO101C020Model.PASTE_LOT_2:
+                mkubun = "内部電極ﾍﾟｰｽﾄ";
+                break;
+            case GXHDO101C020Model.UWA_TANSHI:
+                mkubun = "上端子ﾃｰﾌﾟ";
+                break;
+            case GXHDO101C020Model.SHITA_TANSHI:
+                mkubun = "下端子ﾃｰﾌﾟ";
+                break;
+        }
+        return mkubun;
+    }
+
+    /**
+     * 前工程区分Noを取得する
+     * 
+     * @param typeName 前工程WIP取込サブ画面の種類名
+     * @return 前工程区分No
+     */
+    private String getKubunNo(String typeName) {
+        String mkubunno = "";
+        switch (typeName) {
+            case GXHDO101C020Model.TAPE_LOT_1:
+            case GXHDO101C020Model.PASTE_LOT_1:
+            case GXHDO101C020Model.UWA_TANSHI:
+            case GXHDO101C020Model.SHITA_TANSHI:
+                mkubunno = "1";
+                break;
+            case GXHDO101C020Model.TAPE_LOT_2:
+            case GXHDO101C020Model.PASTE_LOT_2:
+                mkubunno = "2";
+                break;
+            case GXHDO101C020Model.TAPE_LOT_3:
+                mkubunno = "3";
+                break;
+        }
+        return mkubunno;
+    }
 }
