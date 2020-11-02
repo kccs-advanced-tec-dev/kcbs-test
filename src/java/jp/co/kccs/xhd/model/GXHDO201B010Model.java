@@ -17,6 +17,12 @@ import java.sql.Timestamp;
  * 変更者	863 F.Zhang<br>
  * 変更理由	新規作成<br>
  * <br>
+ * <br>
+ * 変更日	2020/09/22<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -97,12 +103,18 @@ public class GXHDO201B010Model implements Serializable{
     private BigDecimal tanijyuryo = null;
     /** ｶｯﾄ刃種類確認 */
     private String cutbashuruicheck = "";
-    /** ｶｯﾄ刃直進度(μm) */
+    /** ｶｯﾄ刃直進度左(μm) */
     private Integer cutbachiokushindo = null;
+    /** ｶｯﾄ刃直進度右(μm) */
+    private Integer cutbachokushindomigi = null;
     /** ｶｯﾄ刃使用回数ST1(回) */
     private Integer sutbasiyoukaisuust1 = null;
+    /** ｶｯﾄ刃ST1使用ロットNo */
+    private Integer station1lotno = null;
     /** ｶｯﾄ刃使用回数ST2(回) */
     private Integer sutbasiyoukaisuust2 = null;
+    /** ｶｯﾄ刃ST2使用ロットNo */
+    private Integer station2lotno = null;
     /** ﾌﾟﾛｸﾞﾗﾑ名 */
     private String programmei = "";
     /** 行×列確認 */
@@ -111,14 +123,36 @@ public class GXHDO201B010Model implements Serializable{
     private String marktorisuu = "";
     /** ｶｯﾄ補正量(μm) */
     private Integer cuthoSeiryou = null;
-    /** ﾃｰﾌﾞﾙ温度 設定(℃) */
-    private Integer tableOndoSet = null;
-    /** ﾃｰﾌﾞﾙ温度 実測(℃) */
-    private Integer tableOndoSoku = null;
+    /** ﾃｰﾌﾞﾙ温度 設定 左(℃) */
+    private BigDecimal tableondosethidari = null;
+    /** ﾃｰﾌﾞﾙ温度 設定 中(℃) */
+    private BigDecimal tableondosetnaka = null;
+    /** ﾃｰﾌﾞﾙ温度 設定 右(℃) */
+    private BigDecimal tableondosetmigi = null;
+    /** ﾃｰﾌﾞﾙ温度 実測 左(℃) */
+    private BigDecimal tableondosokuhidari = null;
+    /** ﾃｰﾌﾞﾙ温度 実測 中(℃) */
+    private BigDecimal tableondosokunaka = null;
+    /** ﾃｰﾌﾞﾙ温度 実測 右(℃) */
+    private BigDecimal tableondosokumigi = null;
+    /** 第2ﾃｰﾌﾞﾙ温度 設定 左(℃) */
+    private BigDecimal dai2tableondosethidari = null;
+    /** 第2ﾃｰﾌﾞﾙ温度 設定 中(℃) */
+    private BigDecimal dai2tableondosetnaka = null;
+    /** 第2ﾃｰﾌﾞﾙ温度 設定 右(℃) */
+    private BigDecimal dai2tableondosetmigi = null;
+    /** 第2ﾃｰﾌﾞﾙ温度 実測 左(℃) */
+    private BigDecimal dai2tableondosokuhidari = null;
+    /** 第2ﾃｰﾌﾞﾙ温度 実測 中(℃) */
+    private BigDecimal dai2tableondosokunaka = null;
+    /** 第2ﾃｰﾌﾞﾙ温度 実測 右(℃) */
+    private BigDecimal dai2tableondosokumigi = null;
     /** 外観確認 */
     private String gaikanCheck = "";
     /** 刃高さNG(SET) */
     private Integer hatakasang = null;
+    /** ｶｯﾄ後剥がし温度(℃) */
+    private BigDecimal ondo = null;
     /** 処理ｾｯﾄ数(SET) */
     private Integer syoriSetsuu = null;
     /** 良品ｾｯﾄ数(SET) */
@@ -687,7 +721,7 @@ public class GXHDO201B010Model implements Serializable{
     }
 
     /**
-     * ｶｯﾄ刃直進度(μm)
+     * ｶｯﾄ刃直進度左(μm)
      * @return the cutbachiokushindo
      */
     public Integer getCutbachiokushindo() {
@@ -695,11 +729,27 @@ public class GXHDO201B010Model implements Serializable{
     }
 
     /**
-     * ｶｯﾄ刃直進度(μm)
+     * ｶｯﾄ刃直進度左(μm)
      * @param cutbachiokushindo the cutbachiokushindo to set
      */
     public void setCutbachiokushindo(Integer cutbachiokushindo) {
         this.cutbachiokushindo = cutbachiokushindo;
+    }
+
+    /**
+     * ｶｯﾄ刃直進度右(μm)
+     * @return cutbachokushindomigi
+     */
+    public Integer getCutbachokushindomigi() {
+        return cutbachokushindomigi;
+    }
+
+    /**
+     * ｶｯﾄ刃直進度右(μm)
+     * @param cutbachokushindomigi 
+     */
+    public void setCutbachokushindomigi(Integer cutbachokushindomigi) {
+        this.cutbachokushindomigi = cutbachokushindomigi;
     }
 
     /**
@@ -719,6 +769,22 @@ public class GXHDO201B010Model implements Serializable{
     }
 
     /**
+     * ｶｯﾄ刃ST1使用ロットNo
+     * @return station1lotno
+     */
+    public Integer getStation1lotno() {
+        return station1lotno;
+    }
+
+    /**
+     * ｶｯﾄ刃ST1使用ロットNo
+     * @param station1lotno 
+     */
+    public void setStation1lotno(Integer station1lotno) {
+        this.station1lotno = station1lotno;
+    }
+
+    /**
      * ｶｯﾄ刃使用回数ST2(回)
      * @return the sutbasiyoukaisuust2
      */
@@ -732,6 +798,22 @@ public class GXHDO201B010Model implements Serializable{
      */
     public void setSutbasiyoukaisuust2(Integer sutbasiyoukaisuust2) {
         this.sutbasiyoukaisuust2 = sutbasiyoukaisuust2;
+    }
+
+    /**
+     * ｶｯﾄ刃ST2使用ロットNo
+     * @return station2lotno
+     */
+    public Integer getStation2lotno() {
+        return station2lotno;
+    }
+
+    /**
+     * ｶｯﾄ刃ST2使用ロットNo
+     * @param station2lotno 
+     */
+    public void setStation2lotno(Integer station2lotno) {
+        this.station2lotno = station2lotno;
     }
 
     /**
@@ -799,35 +881,195 @@ public class GXHDO201B010Model implements Serializable{
     }
 
     /**
-     * ﾃｰﾌﾞﾙ温度 設定(℃)
-     * @return the tableOndoSet
+     * ﾃｰﾌﾞﾙ温度 設定 左(℃)
+     * @return tableondosethidari
      */
-    public Integer getTableOndoSet() {
-        return tableOndoSet;
+    public BigDecimal getTableondosethidari() {
+        return tableondosethidari;
     }
 
     /**
-     * ﾃｰﾌﾞﾙ温度 設定(℃)
-     * @param tableOndoSet the tableOndoSet to set
+     * ﾃｰﾌﾞﾙ温度 設定 左(℃)
+     * @param tableondosethidari 
      */
-    public void setTableOndoSet(Integer tableOndoSet) {
-        this.tableOndoSet = tableOndoSet;
+    public void setTableondosethidari(BigDecimal tableondosethidari) {
+        this.tableondosethidari = tableondosethidari;
     }
 
     /**
-     * ﾃｰﾌﾞﾙ温度 実測(℃)
-     * @return the tableOndoSoku
+     * ﾃｰﾌﾞﾙ温度 設定 中(℃)
+     * @return tableondosetnaka
      */
-    public Integer getTableOndoSoku() {
-        return tableOndoSoku;
+    public BigDecimal getTableondosetnaka() {
+        return tableondosetnaka;
     }
 
     /**
-     * ﾃｰﾌﾞﾙ温度 実測(℃)
-     * @param tableOndoSoku the tableOndoSoku to set
+     * ﾃｰﾌﾞﾙ温度 設定 中(℃)
+     * @param tableondosetnaka 
      */
-    public void setTableOndoSoku(Integer tableOndoSoku) {
-        this.tableOndoSoku = tableOndoSoku;
+    public void setTableondosetnaka(BigDecimal tableondosetnaka) {
+        this.tableondosetnaka = tableondosetnaka;
+    }
+
+    /**
+     * ﾃｰﾌﾞﾙ温度 設定 右(℃)
+     * @return tableondosetmigi
+     */
+    public BigDecimal getTableondosetmigi() {
+        return tableondosetmigi;
+    }
+
+    /**
+     * ﾃｰﾌﾞﾙ温度 設定 右(℃)
+     * @param tableondosetmigi 
+     */
+    public void setTableondosetmigi(BigDecimal tableondosetmigi) {
+        this.tableondosetmigi = tableondosetmigi;
+    }
+
+    /**
+     * ﾃｰﾌﾞﾙ温度 実測 左(℃)
+     * @return tableondosokuhidari
+     */
+    public BigDecimal getTableondosokuhidari() {
+        return tableondosokuhidari;
+    }
+
+    /**
+     * ﾃｰﾌﾞﾙ温度 実測 左(℃)
+     * @param tableondosokuhidari 
+     */
+    public void setTableondosokuhidari(BigDecimal tableondosokuhidari) {
+        this.tableondosokuhidari = tableondosokuhidari;
+    }
+
+    /**
+     * ﾃｰﾌﾞﾙ温度 実測 中(℃)
+     * @return tableondosokunaka
+     */
+    public BigDecimal getTableondosokunaka() {
+        return tableondosokunaka;
+    }
+
+    /**
+     * ﾃｰﾌﾞﾙ温度 実測 中(℃)
+     * @param tableondosokunaka 
+     */
+    public void setTableondosokunaka(BigDecimal tableondosokunaka) {
+        this.tableondosokunaka = tableondosokunaka;
+    }
+
+    /**
+     * ﾃｰﾌﾞﾙ温度 実測 右(℃)
+     * @return tableondosokumigi
+     */
+    public BigDecimal getTableondosokumigi() {
+        return tableondosokumigi;
+    }
+
+    /**
+     * ﾃｰﾌﾞﾙ温度 実測 右(℃)
+     * @param tableondosokumigi 
+     */
+    public void setTableondosokumigi(BigDecimal tableondosokumigi) {
+        this.tableondosokumigi = tableondosokumigi;
+    }
+
+    /**
+     * 第2ﾃｰﾌﾞﾙ温度 設定 左(℃)
+     * @return dai2tableondosethidari
+     */
+    public BigDecimal getDai2tableondosethidari() {
+        return dai2tableondosethidari;
+    }
+
+    /**
+     * 第2ﾃｰﾌﾞﾙ温度 設定 左(℃)
+     * @param dai2tableondosethidari 
+     */
+    public void setDai2tableondosethidari(BigDecimal dai2tableondosethidari) {
+        this.dai2tableondosethidari = dai2tableondosethidari;
+    }
+
+    /**
+     * 第2ﾃｰﾌﾞﾙ温度 設定 中(℃)
+     * @return dai2tableondosetnaka
+     */
+    public BigDecimal getDai2tableondosetnaka() {
+        return dai2tableondosetnaka;
+    }
+
+    /**
+     * 第2ﾃｰﾌﾞﾙ温度 設定 中(℃)
+     * @param dai2tableondosetnaka 
+     */
+    public void setDai2tableondosetnaka(BigDecimal dai2tableondosetnaka) {
+        this.dai2tableondosetnaka = dai2tableondosetnaka;
+    }
+
+    /**
+     * 第2ﾃｰﾌﾞﾙ温度 設定 右(℃)
+     * @return dai2tableondosetmigi
+     */
+    public BigDecimal getDai2tableondosetmigi() {
+        return dai2tableondosetmigi;
+    }
+
+    /**
+     * 第2ﾃｰﾌﾞﾙ温度 設定 右(℃)
+     * @param dai2tableondosetmigi 
+     */
+    public void setDai2tableondosetmigi(BigDecimal dai2tableondosetmigi) {
+        this.dai2tableondosetmigi = dai2tableondosetmigi;
+    }
+
+    /**
+     * 第2ﾃｰﾌﾞﾙ温度 実測 左(℃)
+     * @return dai2tableondosokuhidari
+     */
+    public BigDecimal getDai2tableondosokuhidari() {
+        return dai2tableondosokuhidari;
+    }
+
+    /**
+     * 第2ﾃｰﾌﾞﾙ温度 実測 左(℃)
+     * @param dai2tableondosokuhidari 
+     */
+    public void setDai2tableondosokuhidari(BigDecimal dai2tableondosokuhidari) {
+        this.dai2tableondosokuhidari = dai2tableondosokuhidari;
+    }
+
+    /**
+     * 第2ﾃｰﾌﾞﾙ温度 実測 中(℃)
+     * @return dai2tableondosokunaka
+     */
+    public BigDecimal getDai2tableondosokunaka() {
+        return dai2tableondosokunaka;
+    }
+
+    /**
+     * 第2ﾃｰﾌﾞﾙ温度 実測 中(℃)
+     * @param dai2tableondosokunaka 
+     */
+    public void setDai2tableondosokunaka(BigDecimal dai2tableondosokunaka) {
+        this.dai2tableondosokunaka = dai2tableondosokunaka;
+    }
+
+    /**
+     * 第2ﾃｰﾌﾞﾙ温度 実測 右(℃)
+     * @return dai2tableondosokumigi
+     */
+    public BigDecimal getDai2tableondosokumigi() {
+        return dai2tableondosokumigi;
+    }
+
+    /**
+     * 第2ﾃｰﾌﾞﾙ温度 実測 右(℃)
+     * @param dai2tableondosokumigi 
+     */
+    public void setDai2tableondosokumigi(BigDecimal dai2tableondosokumigi) {
+        this.dai2tableondosokumigi = dai2tableondosokumigi;
     }
 
     /**
@@ -860,6 +1102,22 @@ public class GXHDO201B010Model implements Serializable{
      */
     public void setHatakasang(Integer hatakasang) {
         this.hatakasang = hatakasang;
+    }
+
+    /**
+     * ｶｯﾄ後剥がし温度(℃)
+     * @return ondo
+     */
+    public BigDecimal getOndo() {
+        return ondo;
+    }
+
+    /**
+     * ｶｯﾄ後剥がし温度(℃)
+     * @param ondo 
+     */
+    public void setOndo(BigDecimal ondo) {
+        this.ondo = ondo;
     }
 
     /**

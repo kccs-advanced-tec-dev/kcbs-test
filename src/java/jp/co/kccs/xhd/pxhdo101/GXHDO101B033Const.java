@@ -13,6 +13,11 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/09/11<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	新規作成<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -56,6 +61,11 @@ public class GXHDO101B033Const {
      * 処理数
      */
     public static final String SYORISUU = "sr_gdnijibarrel_syorisuu";
+    
+    /**
+     * 重量
+     */
+    public static final String JURYOU = "sr_gdnijibarrel_juryou";
 
     /**
      * 号機
@@ -76,51 +86,91 @@ public class GXHDO101B033Const {
      * ﾎﾟｯﾄ数
      */
     public static final String POTSUU = "sr_gdnijibarrel_potsuu";
-
+    
     /**
-     * ﾒﾀﾉｰﾙ交換時間
-     */
-    public static final String METHANOLKOUKANJIKAN = "sr_gdnijibarrel_methanolkoukanjikan";
-
-    /**
-     * ﾒﾀﾉｰﾙ交換担当者
-     */
-    public static final String METHANOLKOUKANTANTOUSYA = "sr_gdnijibarrel_methanolkoukantantousya";
-
-    /**
-     * 開始日
+     * ﾊﾞﾚﾙ開始日
      */
     public static final String KAISHI_DAY = "sr_gdnijibarrel_kaishi_day";
 
     /**
-     * 開始時刻
+     * ﾊﾞﾚﾙ開始時刻
      */
     public static final String KAISHI_TIME = "sr_gdnijibarrel_kaishi_time";
 
     /**
-     * 開始担当者
+     * ﾊﾞﾚﾙ開始担当者
      */
     public static final String KAISHI_TANTOUSYA = "sr_gdnijibarrel_starttantosyacode";
 
     /**
-     * 開始確認者
+     * ﾊﾞﾚﾙ開始確認者
      */
     public static final String KAISHI_KAKUNINSYA = "sr_gdnijibarrel_startkakuninsyacode";
 
     /**
-     * 終了日
+     * ﾊﾞﾚﾙ終了日
      */
     public static final String SHURYOU_DAY = "sr_gdnijibarrel_shuryou_day";
 
     /**
-     * 終了時間
+     * ﾊﾞﾚﾙ終了時間
      */
     public static final String SHURYOU_TIME = "sr_gdnijibarrel_shuryou_time";
 
     /**
-     * 終了担当者
+     * ﾊﾞﾚﾙ終了担当者
      */
     public static final String SHURYOU_TANTOUSYA = "sr_gdnijibarrel_endtantosyacode";
+
+    /**
+     * 乾燥号機
+     */
+    public static final String KANSOUGOUKI = "sr_gdnijibarrel_kansougouki";
+
+    /**
+     * 乾燥開始日
+     */
+    public static final String KANSOU_KAISHI_DAY = "sr_gdnijibarrel_kansou_kaishi_day";
+
+    /**
+     * 乾燥開始時刻
+     */
+    public static final String KANSOU_KAISHI_TIME = "sr_gdnijibarrel_kansou_kaishi_time";
+
+    /**
+     * 乾燥開始担当者
+     */
+    public static final String KANSOUTANTOUSYA = "sr_gdnijibarrel_kansoutantousya";
+
+    /**
+     * 乾燥開始確認者
+     */
+    public static final String KANSOUKAISHIKAKUNINSYA = "sr_gdnijibarrel_kansoukaishikakuninsya";
+
+    /**
+     * 乾燥終了日
+     */
+    public static final String KANSOU_SHURYOU_DAY = "sr_gdnijibarrel_kansou_shuryou_day";
+
+    /**
+     * 乾燥終了時間
+     */
+    public static final String KANSOU_SHURYOU_TIME = "sr_gdnijibarrel_kansou_shuryou_time";
+
+    /**
+     * 乾燥終了担当者
+     */
+    public static final String KANSOUSYUURYOUTANTOSYA = "sr_gdnijibarrel_kansousyuuryoutantosya";
+
+    /**
+     * 乾燥ﾌﾙｲ選別
+     */
+    public static final String FURUISENBETU = "sr_gdnijibarrel_furuisenbetu";
+
+    /**
+     * 乾燥外観
+     */
+    public static final String GAIKAN = "sr_gdnijibarrel_gaikan";
 
     /**
      * 備考1
@@ -158,14 +208,24 @@ public class GXHDO101B033Const {
     public static final String BTN_DELETE_TOP = "sr_gdnijibarrel_delete_Top";
 
     /**
-     * 開始日時(画面上)
+     * ﾊﾞﾚﾙ開始日時(画面上)
      */
     public static final String BTN_START_DATETIME_TOP = "sr_gdnijibarrel_startdatetime_Top";
 
     /**
-     * 終了日時(画面上)
+     * ﾊﾞﾚﾙ終了日時(画面上)
      */
     public static final String BTN_END_DATETIME_TOP = "sr_gdnijibarrel_enddatetime_Top";
+
+    /**
+     * 乾燥開始日時(画面上)
+     */
+    public static final String BTN_KANSOU_START_DATETIME_TOP = "sr_gdnijibarrel_kansou_startdatetime_Top";
+
+    /**
+     * 乾燥終了日時(画面上)
+     */
+    public static final String BTN_KANSOU_END_DATETIME_TOP = "sr_gdnijibarrel_kansou_enddatetime_Top";
 
     /**
      * 仮登録(画面下)
@@ -193,14 +253,24 @@ public class GXHDO101B033Const {
     public static final String BTN_DELETE_BOTTOM = "sr_gdnijibarrel_delete_Bottom";
 
     /**
-     * 開始日時(画面下)
+     * ﾊﾞﾚﾙ開始日時(画面下)
      */
     public static final String BTN_START_DATETIME_BOTTOM = "sr_gdnijibarrel_startdatetime_Bottom";
 
     /**
-     * 終了日時(画面下)
+     * ﾊﾞﾚﾙ終了日時(画面下)
      */
     public static final String BTN_END_DATETIME_BOTTOM = "sr_gdnijibarrel_enddatetime_Bottom";
+
+    /**
+     * 乾燥開始日時(画面下)
+     */
+    public static final String BTN_KANSOU_START_DATETIME_BOTTOM = "sr_gdnijibarrel_kansou_startdatetime_Bottom";
+
+    /**
+     * 乾燥終了日時(画面下)
+     */
+    public static final String BTN_KANSOU_END_DATETIME_BOTTOM = "sr_gdnijibarrel_kansou_enddatetime_Bottom";
 
     /**
      * ユーザー認証パラメータ(修正)

@@ -61,6 +61,12 @@ import org.primefaces.context.RequestContext;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
+ * <br>
+ * 変更日	2020/09/17<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -668,6 +674,7 @@ public class GXHDO201B008 implements Serializable {
                     + ", (CASE WHEN susborad = 0 THEN 'なし' WHEN susborad = 1 THEN 'あり' ELSE NULL END) AS susborad "
                     + ", (CASE WHEN kansyouzai2 = 0 THEN 'なし' WHEN kansyouzai2 = 1 THEN 'あり' ELSE NULL END) AS kansyouzai2 "
                     + ", seisuiatupressgouki "
+                    + ", sinkuujikan "
                     + ", yonetujikan1 "
                     + ", yonetujikan2 "
                     + ", yonetujikan3 "
@@ -725,6 +732,7 @@ public class GXHDO201B008 implements Serializable {
             mapping.put("susborad", "susborad");                           // SUS板
             mapping.put("kansyouzai2", "kansyouzai2");                     // 緩衝材2
             mapping.put("seisuiatupressgouki", "seisuiatupressgouki");     // 静水圧ﾌﾟﾚｽ号機
+            mapping.put("sinkuujikan", "sinkuujikan");                     // 真空時間
             mapping.put("yonetujikan1", "yonetujikan1");                   // 予熱時間1
             mapping.put("yonetujikan2", "yonetujikan2");                   // 予熱時間2
             mapping.put("yonetujikan3", "yonetujikan3");                   // 予熱時間3

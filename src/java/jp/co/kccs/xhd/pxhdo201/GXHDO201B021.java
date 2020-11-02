@@ -61,6 +61,12 @@ import org.primefaces.context.RequestContext;
  * 変更者        863 K.Zhang<br>
  * 変更理由      新規作成<br>
  * <br>
+ * <br>
+ * 変更日	2020/09/18<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 
@@ -495,6 +501,7 @@ public class GXHDO201B021 implements Serializable {
             String sql = "SELECT CONCAT(IFNULL(KOJYO, ''), IFNULL(LOTNO, ''), IFNULL(EDABAN, '')) AS LOTNO"
                     + ", JISSEKINO"
                     + ", kcpno"
+                    + ", fukurotantosya"
                     + ", ukeirekosuu"
                     + ", tanijyuryo"
                     + ", soujuryou"
@@ -527,6 +534,7 @@ public class GXHDO201B021 implements Serializable {
             mapping.put("LOTNO", "lotno");                    //ﾛｯﾄNo.            
             mapping.put("KCPNO", "kcpno");                    //KCPNO            
             mapping.put("JISSEKINO", "jissekion");            //実績No            
+            mapping.put("fukurotantosya", "fukurotantosya");  //袋詰め担当者
             mapping.put("ukeirekosuu", "ukeirekosu");         //受入個数(個)            
             mapping.put("tanijyuryo", "tanijyuryo");          //単位重量(g/100個)            
             mapping.put("soujuryou", "soujuryou");            //総重量(g)            

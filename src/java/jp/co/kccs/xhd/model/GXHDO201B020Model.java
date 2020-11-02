@@ -17,6 +17,12 @@ import java.sql.Timestamp;
  * 変更者	863 F.Zhang<br>
  * 変更理由	新規作成<br>
  * <br>
+ * <br>
+ * 変更日	2020/09/17<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -43,8 +49,10 @@ public class GXHDO201B020Model implements Serializable{
     private BigDecimal kenmakikaitensuu = null;
     /** 研磨号機 */
     private String kenmagoki = "";
-    /** 研磨時間(分) */
+    /** 研磨時間 */
     private String kenmajikan = "";
+    /** 研磨時間単位 */
+    private String kenmajikantani = "";
     /** ﾎﾟｯﾄ数(ﾎﾟｯﾄ) */
     private Integer pottosuu = null;
     /** ﾁｯﾌﾟ破片確認 */
@@ -242,6 +250,23 @@ public class GXHDO201B020Model implements Serializable{
     public void setKenmajikan(String kenmajikan) {
         this.kenmajikan = kenmajikan;
     }
+
+    /**
+     * 研磨時間単位
+     * @return kenmajikantani
+     */
+    public String getKenmajikantani() {
+        return kenmajikantani;
+    }
+
+    /**
+     * 研磨時間単位
+     * @param kenmajikantani 
+     */
+    public void setKenmajikantani(String kenmajikantani) {
+        this.kenmajikantani = kenmajikantani;
+    }
+
     /**
      * ﾎﾟｯﾄ数(ﾎﾟｯﾄ)
      * @return the pottosuu

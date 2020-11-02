@@ -211,9 +211,19 @@
                     <p:column id="kcpno" headerText="KCPNO" >
                         <p:outputLabel value="#{item.kcpno}"/>
                     </p:column>
-                    <p:column id="syorisuu" headerText="処理数(個)" styleClass="number">
+                    <p:column id="syorisuu" headerText="受入れ良品数(個)" styleClass="number">
                         <p:outputLabel value="#{item.syorisuu}">
                             <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ukeiretannijyuryo" headerText="受入れ単位重量(g)" styleClass="number">
+                        <p:outputLabel value="#{item.ukeiretannijyuryo}">
+                            <f:convertNumber pattern="#0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ukeiresoujyuryou" headerText="受入れ総重量(g)" styleClass="number">
+                        <p:outputLabel value="#{item.ukeiresoujyuryou}">
+                            <f:convertNumber pattern="###,##0.00"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="lotpre" headerText="ﾛｯﾄﾌﾟﾚ" >
@@ -254,6 +264,36 @@
                     </p:column>
                     <p:column id="carriertape" headerText="ｷｬﾘｱﾃｰﾌﾟ" >
                         <p:outputLabel value="#{item.carriertape}"/>
+                    </p:column>
+                    <p:column id="jikilsunpoumax" headerText="磁器L寸法(MAX)" styleClass="number">
+                        <p:outputLabel value="#{item.jikilsunpoumax}">
+                            <f:convertNumber pattern="##0.000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="jikilsunpoumin" headerText="磁器L寸法(MIN)" styleClass="number">
+                        <p:outputLabel value="#{item.jikilsunpoumin}">
+                            <f:convertNumber pattern="##0.000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="jikiwsunpoumax" headerText="磁器W寸法(MAX)" styleClass="number">
+                        <p:outputLabel value="#{item.jikiwsunpoumax}">
+                            <f:convertNumber pattern="##0.000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="jikiwsunpoumin" headerText="磁器W寸法(MIN)" styleClass="number">
+                        <p:outputLabel value="#{item.jikiwsunpoumin}">
+                            <f:convertNumber pattern="##0.000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="jikitsunpoumax" headerText="磁器T寸法(MAX)" styleClass="number">
+                        <p:outputLabel value="#{item.jikitsunpoumax}">
+                            <f:convertNumber pattern="##0.000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="jikitsunpoumin" headerText="磁器T寸法(MIN)" styleClass="number">
+                        <p:outputLabel value="#{item.jikitsunpoumin}">
+                            <f:convertNumber pattern="##0.000"/>
+                        </p:outputLabel>
                     </p:column>
                     <p:column id="insatsuhaba" headerText="印刷幅(μｍ)" styleClass="number">
                         <p:outputLabel value="#{item.insatsuhaba}">

@@ -66,6 +66,12 @@ import org.primefaces.context.RequestContext;
  * 変更者        KCSS K.Jo<br>
  * 変更理由      項目追加・変更<br>
  * <br>
+ * <br>
+ * 変更日	2020/09/21<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -717,6 +723,21 @@ public class GXHDO201B005 implements Serializable {
                     + ", T1.yjikuhoseiryou"
                     + ", CONCAT(IFNULL(T1.syurui2, ''), '  ', IFNULL(T1.atumi2, '')) AS uwaTanshiTape"
                     + ", T1.maisuu2"
+                    + ", T1.ShitaTanshiKAISINICHIJI"
+                    + ", T1.ShitaTanshiSYURYONICHIJI"
+                    + ", T1.ShitaTanshiTANTOSYA"
+                    + ", T1.ShitaTanshiKAKUNINSYA"
+                    + ", T1.ShitaTanshiBIKO"
+                    + ", T1.UwaTanshiKAISINICHIJI"
+                    + ", T1.UwaTanshiSYURYONICHIJI"
+                    + ", T1.UwaTanshiTANTOSYA"
+                    + ", T1.UwaTanshiKAKUNINSYA"
+                    + ", T1.UwaTanshiBIKO"
+                    + ", T1.HeadNo"
+                    + ", T1.SUSitamaisu"
+                    + ", T1.lastlayerTANTOSYA"
+                    + ", T1.lastlayerBIKO"
+                    + ", T1.elotno"
                     + " FROM sr_rsussek T1 "
                     + "WHERE (? IS NULL OR T1.KOJYO = ?) "
                     + "AND   (? IS NULL OR T1.LOTNO = ?) "
@@ -789,7 +810,22 @@ public class GXHDO201B005 implements Serializable {
             mapping.put("bsouhoseiryou", "bsouhoseiryou");//B層補正量
             mapping.put("yjikuhoseiryou", "yjikuhoseiryou");//Y軸補正量
             mapping.put("uwaTanshiTape", "uwaTanshiTape");//上端子ﾃｰﾌﾟ
-            mapping.put("maisuu2", "uwaTanshiMaisuu");//上端子積層数           
+            mapping.put("maisuu2", "uwaTanshiMaisuu");//上端子積層数
+            mapping.put("ShitaTanshiKAISINICHIJI", "shitatanshikaisinichiji");//下端子開始日時
+            mapping.put("ShitaTanshiSYURYONICHIJI", "shitatanshisyuryonichiji");//下端子終了日時
+            mapping.put("ShitaTanshiTANTOSYA", "shitatanshitantosya");//下端子担当者
+            mapping.put("ShitaTanshiKAKUNINSYA", "shitatanshikakuninsya");//下端子確認者
+            mapping.put("ShitaTanshiBIKO", "shitatanshibiko");//下端子備考
+            mapping.put("UwaTanshiKAISINICHIJI", "uwatanshikaisinichiji");//上端子開始日時
+            mapping.put("UwaTanshiSYURYONICHIJI", "uwatanshisyuryonichiji");//上端子終了日時
+            mapping.put("UwaTanshiTANTOSYA", "uwatanshitantosya");//上端子担当者
+            mapping.put("UwaTanshiKAKUNINSYA", "uwatanshikakuninsya");//上端子確認者
+            mapping.put("UwaTanshiBIKO", "uwatanshibiko");//上端子備考
+            mapping.put("HeadNo", "headno");//ﾍｯﾄﾞNo
+            mapping.put("SUSitamaisu", "susitamaisu");//SUS板枚数
+            mapping.put("lastlayerTANTOSYA", "lastlayertantosya");//最上層担当者
+            mapping.put("lastlayerBIKO", "lastlayerbiko");//最上層備考
+            mapping.put("elotno", "elotno");//電極製版ﾛｯﾄNo
 
             BeanProcessor beanProcessor = new BeanProcessor(mapping);
             RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);

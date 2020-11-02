@@ -17,6 +17,12 @@ import java.sql.Timestamp;
  * 変更者	863 K.Zhang<br>
  * 変更理由	新規作成<br>
  * <br>
+ * <br>
+ * 変更日	2020/09/18<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -32,6 +38,8 @@ public class GXHDO201B021Model implements Serializable {
     private String kcpno = "";
     /** 実績No */
     private Integer jissekion = null;
+    /** 袋詰め担当者 */
+    private String fukurotantosya = "";
     /** 受入個数 */
     private Integer ukeirekosu = null;
     /** 単位重量 */
@@ -98,6 +106,23 @@ public class GXHDO201B021Model implements Serializable {
     public void setJissekion(Integer jissekion) {
         this.jissekion = jissekion;
     }
+
+    /**
+     * 袋詰め担当者
+     * @return fukurotantosya
+     */
+    public String getFukurotantosya() {
+        return fukurotantosya;
+    }
+
+    /**
+     * 袋詰め担当者
+     * @param fukurotantosya 
+     */
+    public void setFukurotantosya(String fukurotantosya) {
+        this.fukurotantosya = fukurotantosya;
+    }
+
     /**
      * 受入個数
      * @return the ukeirekosu

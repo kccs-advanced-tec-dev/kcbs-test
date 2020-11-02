@@ -4,6 +4,7 @@
 package jp.co.kccs.xhd.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
@@ -15,6 +16,12 @@ import java.sql.Timestamp;
  * 計画書No	K1811-DS001<br>
  * 変更者	863 K.Zhang<br>
  * 変更理由	新規作成<br>
+ * <br>
+ * <br>
+ * 変更日	2020/09/04<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加・変更<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -32,8 +39,14 @@ public class GXHDO201B024Model implements Serializable{
     /** KCPNO */
     private String kcpno = "";
 
-    /** 処理数 */
+    /** 受入れ良品数 */
     private Integer syorisuu = null;
+
+    /** 受入れ単位重量 */
+    private BigDecimal ukeiretannijyuryo = null;
+
+    /** 受入れ総重量 */
+    private BigDecimal ukeiresoujyuryou = null;
 
     /** 処理号機 */
     private String syorigoki = "";
@@ -108,7 +121,7 @@ public class GXHDO201B024Model implements Serializable{
     }
     
     /**
-     * 処理数
+     * 受入れ良品数
      * @return syorisuu
      */
      public Integer getSyorisuu() {
@@ -116,11 +129,43 @@ public class GXHDO201B024Model implements Serializable{
     }
 
      /**
-      * 処理数
+      * 受入れ良品数
       * @param syorisuu セットする syorisuu
       */
     public void setSyorisuu(Integer syorisuu) {
         this.syorisuu = syorisuu;
+    }
+
+    /**
+     * 受入れ単位重量
+     * @return ukeiretannijyuryo
+     */
+    public BigDecimal getUkeiretannijyuryo() {
+        return ukeiretannijyuryo;
+    }
+
+    /**
+     * 受入れ単位重量
+     * @param ukeiretannijyuryo 
+     */
+    public void setUkeiretannijyuryo(BigDecimal ukeiretannijyuryo) {
+        this.ukeiretannijyuryo = ukeiretannijyuryo;
+    }
+
+    /**
+     * 受入れ総重量
+     * @return ukeiresoujyuryou
+     */
+    public BigDecimal getUkeiresoujyuryou() {
+        return ukeiresoujyuryou;
+    }
+
+    /**
+     * 受入れ総重量
+     * @param ukeiresoujyuryou 
+     */
+    public void setUkeiresoujyuryou(BigDecimal ukeiresoujyuryou) {
+        this.ukeiresoujyuryou = ukeiresoujyuryou;
     }
 
     /**

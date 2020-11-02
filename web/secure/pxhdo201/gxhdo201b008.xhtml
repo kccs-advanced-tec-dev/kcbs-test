@@ -296,6 +296,11 @@
                     <p:column id="seisuiatupressgouki" headerText="静水圧ﾌﾟﾚｽ号機" >
                         <p:outputLabel value="#{item.seisuiatupressgouki}"/>
                     </p:column>
+                    <p:column id="sinkuujikan" headerText="真空時間" styleClass="number">
+                        <p:outputLabel value="#{item.sinkuujikan}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
                     <p:column id="yonetujikan1" headerText="予熱時間1(s)" styleClass="number">
                         <p:outputLabel value="#{item.yonetujikan1}">
                             <f:convertNumber pattern="#,##0"/>

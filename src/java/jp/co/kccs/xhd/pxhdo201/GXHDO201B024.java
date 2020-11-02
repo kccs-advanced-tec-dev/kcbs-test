@@ -61,6 +61,12 @@ import org.primefaces.context.RequestContext;
  * 変更者	863 K.Zhang<br>
  * 変更理由	新規作成<br>
  * <br>
+ * <br>
+ * 変更日	2020/09/04<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -641,6 +647,8 @@ public class GXHDO201B024 implements Serializable {
             String sql = "SELECT CONCAT(IFNULL(KOJYO, ''), IFNULL(LOTNO, ''), IFNULL(EDABAN, '')) AS LOTNO"
                     + ", kcpno "
                     + ", syorisuu "
+                    + ", ukeiretannijyuryo "
+                    + ", ukeiresoujyuryou "
                     + ", syorigoki "
                     + ", chargeryou "
                     + ", traymaisuu "
@@ -674,7 +682,9 @@ public class GXHDO201B024 implements Serializable {
             Map<String, String> mapping = new HashMap<>();
             mapping.put("LOTNO", "lotno");                                // ﾛｯﾄNo.
             mapping.put("kcpno", "kcpno");                                // KCPNO
-            mapping.put("syorisuu", "syorisuu");                          // 処理数
+            mapping.put("syorisuu", "syorisuu");                          // 受入れ良品数
+            mapping.put("ukeiretannijyuryo", "ukeiretannijyuryo");        // 受入れ単位重量
+            mapping.put("ukeiresoujyuryou", "ukeiresoujyuryou");          // 受入れ総重量
             mapping.put("syorigoki", "syorigoki");                        // 処理号機
             mapping.put("chargeryou", "chargeryou");                      // ﾁｬｰｼﾞ量
             mapping.put("traymaisuu", "traymaisuu");                      // ﾄﾚｰ枚数

@@ -250,6 +250,25 @@
                     <p:column id="shitaTanshi" headerText="下端子" >
                         <p:outputLabel value="#{item.shitaTanshi}"/>
                     </p:column>
+                    <p:column id="shitatanshikaisinichiji" headerText="下端子開始日時" >
+                        <p:outputLabel value="#{item.shitatanshikaisinichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="shitatanshisyuryonichiji" headerText="下端子終了日時" >
+                        <p:outputLabel value="#{item.shitatanshisyuryonichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="shitatanshitantosya" headerText="下端子担当者" >
+                        <p:outputLabel value="#{item.shitatanshitantosya}"/>
+                    </p:column>
+                    <p:column id="shitatanshikakuninsya" headerText="下端子確認者" >
+                        <p:outputLabel value="#{item.shitatanshikakuninsya}"/>
+                    </p:column>
+                    <p:column id="shitatanshibiko" headerText="下端子備考" >
+                        <p:outputLabel value="#{item.shitatanshibiko}"/>
+                    </p:column>
                     <p:column id="slotno" headerText="先行ﾛｯﾄNo" >
                         <p:outputLabel value="#{item.slotno}"/>
                     </p:column>
@@ -328,6 +347,14 @@
                             <f:convertNumber pattern="#0.00"/>
                         </p:outputLabel>
                     </p:column>
+                    <p:column id="headno" headerText="ﾍｯﾄﾞNo">
+                        <p:outputLabel value="#{item.headno}"/>
+                    </p:column>
+                    <p:column id="susitamaisu" headerText="SUS板枚数" styleClass="number">
+                        <p:outputLabel value="#{item.susitamaisu}">
+                            <f:convertNumber pattern="###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
                     <p:column id="gaikanKakunin1" headerText="外観確認1">
                         <p:outputLabel value="#{item.gaikanKakunin1}"/>
                     </p:column>
@@ -361,6 +388,15 @@
                     <p:column id="bikou2" headerText="備考2" >
                         <p:outputLabel value="#{item.bikou2}"/>
                     </p:column>
+                    <p:column id="elotno" headerText="電極製版ﾛｯﾄNo" >
+                        <p:outputLabel value="#{item.elotno}"/>
+                    </p:column>
+                    <p:column id="lastlayertantosya" headerText="最上層担当者" >
+                        <p:outputLabel value="#{item.lastlayertantosya}"/>
+                    </p:column>
+                    <p:column id="lastlayerbiko" headerText="最上層備考" >
+                        <p:outputLabel value="#{item.lastlayerbiko}"/>
+                    </p:column>
                     <p:column id="uwaTanshigouki" headerText="上端子号機" >
                         <p:outputLabel value="#{item.uwaTanshigouki}"/>
                     </p:column>
@@ -374,6 +410,25 @@
                     </p:column>
                     <p:column id="uwaTanshi" headerText="上端子" >
                         <p:outputLabel value="#{item.uwaTanshi}"/>
+                    </p:column>
+                    <p:column id="uwatanshikaisinichiji" headerText="上端子開始日時" >
+                        <p:outputLabel value="#{item.uwatanshikaisinichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="uwatanshisyuryonichiji" headerText="上端子終了日時" >
+                        <p:outputLabel value="#{item.uwatanshisyuryonichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="uwatanshitantosya" headerText="上端子担当者" >
+                        <p:outputLabel value="#{item.uwatanshitantosya}"/>
+                    </p:column>
+                    <p:column id="uwatanshikakuninsya" headerText="上端子確認者" >
+                        <p:outputLabel value="#{item.uwatanshikakuninsya}"/>
+                    </p:column>
+                    <p:column id="uwatanshibiko" headerText="上端子備考" >
+                        <p:outputLabel value="#{item.uwatanshibiko}"/>
                     </p:column>
                     <p:column id="ryouhinSetsuu" headerText="良品ｾｯﾄ数(SET)"  styleClass="number">
                         <p:outputLabel value="#{item.ryouhinSetsuu}">

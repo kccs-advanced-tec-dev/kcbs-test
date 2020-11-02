@@ -48,9 +48,19 @@ public class GXHDO101B024Const {
     public static final String OWNER = "sr_sosui_owner";
 
     /**
-     * 処理数
+     * 受入れ良品数
      */
     public static final String SYORISUU = "sr_sosui_syorisuu";
+
+    /**
+     * 受入れ単位重量
+     */
+    public static final String UKEIRETANNIJYURYO = "sr_sosui_ukeiretannijyuryo";
+
+    /**
+     * 受入れ総重量
+     */
+    public static final String UKEIRESOUJYURYOU = "sr_sosui_ukeiresoujyuryou";
 
     /**
      * 処理号機

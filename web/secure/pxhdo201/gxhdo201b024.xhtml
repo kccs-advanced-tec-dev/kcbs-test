@@ -194,9 +194,19 @@
                     <p:column id="kcpno" headerText="KCPNO" >
                         <p:outputLabel value="#{item.kcpno}"/>
                     </p:column>
-                    <p:column id="syorisuu" headerText="処理数(個)" styleClass="number">
+                    <p:column id="syorisuu" headerText="受入れ良品数(個)" styleClass="number">
                         <p:outputLabel value="#{item.syorisuu}">
                             <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ukeiretannijyuryo" headerText="受入れ単位重量(g)" styleClass="number">
+                        <p:outputLabel value="#{item.ukeiretannijyuryo}">
+                            <f:convertNumber pattern="#0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ukeiresoujyuryou" headerText="受入れ総重量(g)" styleClass="number">
+                        <p:outputLabel value="#{item.ukeiresoujyuryou}">
+                            <f:convertNumber pattern="###,##0.00"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="syorigoki" headerText="処理号機(号機)" >

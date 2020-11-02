@@ -57,6 +57,11 @@ import org.apache.commons.dbutils.DbUtils;
  * 変更者      KCSS K.Jo<br>
  * 変更理由    新規作成<br>
  * <br>
+ * 変更日	2020/09/11<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	新規作成<br>
+ * <br>
  * 変更日	2020/09/21<br>
  * 計画書No	MB2008-DK001<br>
  * 変更者	KCSS D.Yanagida<br>
@@ -111,7 +116,11 @@ public class GXHDO101B033 implements IFormLogic {
                     GXHDO101B033Const.BTN_START_DATETIME_TOP,
                     GXHDO101B033Const.BTN_END_DATETIME_TOP,
                     GXHDO101B033Const.BTN_START_DATETIME_BOTTOM,
-                    GXHDO101B033Const.BTN_END_DATETIME_BOTTOM
+                    GXHDO101B033Const.BTN_END_DATETIME_BOTTOM,
+                    GXHDO101B033Const.BTN_KANSOU_START_DATETIME_TOP,
+                    GXHDO101B033Const.BTN_KANSOU_END_DATETIME_TOP,
+                    GXHDO101B033Const.BTN_KANSOU_START_DATETIME_BOTTOM,
+                    GXHDO101B033Const.BTN_KANSOU_END_DATETIME_BOTTOM
             ));
 
             // リビジョンチェック対象のボタンを設定する。
@@ -376,12 +385,12 @@ public class GXHDO101B033 implements IFormLogic {
         }
 
         ValidateUtil validateUtil = new ValidateUtil();
-        // 開始日時、終了日時前後チェック
-        FXHDD01 itemKaishiDay = getItemRow(processData.getItemList(), GXHDO101B033Const.KAISHI_DAY); //開始日
-        FXHDD01 itemKaishiTime = getItemRow(processData.getItemList(), GXHDO101B033Const.KAISHI_TIME); // 開始時刻
+        // ﾊﾞﾚﾙ開始日時、ﾊﾞﾚﾙ終了日時前後チェック
+        FXHDD01 itemKaishiDay = getItemRow(processData.getItemList(), GXHDO101B033Const.KAISHI_DAY); //ﾊﾞﾚﾙ開始日
+        FXHDD01 itemKaishiTime = getItemRow(processData.getItemList(), GXHDO101B033Const.KAISHI_TIME); // ﾊﾞﾚﾙ開始時刻
         Date kaishiDate = DateUtil.convertStringToDate(itemKaishiDay.getValue(), itemKaishiTime.getValue());
-        FXHDD01 itemShuryouDay = getItemRow(processData.getItemList(), GXHDO101B033Const.SHURYOU_DAY); //終了日
-        FXHDD01 itemShuryouTime = getItemRow(processData.getItemList(), GXHDO101B033Const.SHURYOU_TIME); //終了時刻
+        FXHDD01 itemShuryouDay = getItemRow(processData.getItemList(), GXHDO101B033Const.SHURYOU_DAY); //ﾊﾞﾚﾙ終了日
+        FXHDD01 itemShuryouTime = getItemRow(processData.getItemList(), GXHDO101B033Const.SHURYOU_TIME); //ﾊﾞﾚﾙ終了時刻
         Date shuryoDate = DateUtil.convertStringToDate(itemShuryouDay.getValue(), itemShuryouTime.getValue());
         //R001チェック呼出し
         String msgCheckR001 = validateUtil.checkR001(itemKaishiDay.getLabel1(), kaishiDate, itemShuryouDay.getLabel1(), shuryoDate);
@@ -391,6 +400,21 @@ public class GXHDO101B033 implements IFormLogic {
             return MessageUtil.getErrorMessageInfo("", msgCheckR001, true, true, errFxhdd01List);
         }
 
+        // 乾燥開始日時、乾燥終了日時前後チェック
+        FXHDD01 itemKansouKaishiDay = getItemRow(processData.getItemList(), GXHDO101B033Const.KANSOU_KAISHI_DAY); //乾燥開始日
+        FXHDD01 itemKansouKaishiTime = getItemRow(processData.getItemList(), GXHDO101B033Const.KANSOU_KAISHI_TIME); // 乾燥開始時刻
+        Date kansouKaishiDate = DateUtil.convertStringToDate(itemKansouKaishiDay.getValue(), itemKansouKaishiTime.getValue());
+        FXHDD01 itemKansouShuryouDay = getItemRow(processData.getItemList(), GXHDO101B033Const.KANSOU_SHURYOU_DAY); //乾燥終了日
+        FXHDD01 itemKansouShuryouTime = getItemRow(processData.getItemList(), GXHDO101B033Const.KANSOU_SHURYOU_TIME); //乾燥終了時刻
+        Date kansouShuryoDate = DateUtil.convertStringToDate(itemKansouShuryouDay.getValue(), itemKansouShuryouTime.getValue());
+        //R001チェック呼出し
+        String msgCheckR002 = validateUtil.checkR001(itemKansouKaishiDay.getLabel1(), kansouKaishiDate, itemKansouShuryouDay.getLabel1(), kansouShuryoDate);
+        if (!StringUtil.isEmpty(msgCheckR002)) {
+            //エラー発生時
+            errFxhdd01List = Arrays.asList(itemKansouKaishiDay, itemKansouKaishiTime, itemKansouShuryouDay, itemKansouShuryouTime);
+            return MessageUtil.getErrorMessageInfo("", msgCheckR002, true, true, errFxhdd01List);
+        }
+        
         return null;
     }
     
@@ -794,11 +818,15 @@ public class GXHDO101B033 implements IFormLogic {
                         GXHDO101B033Const.BTN_UPDATE_BOTTOM,
                         GXHDO101B033Const.BTN_START_DATETIME_BOTTOM,
                         GXHDO101B033Const.BTN_END_DATETIME_BOTTOM,
+                        GXHDO101B033Const.BTN_KANSOU_START_DATETIME_BOTTOM,
+                        GXHDO101B033Const.BTN_KANSOU_END_DATETIME_BOTTOM,
                         GXHDO101B033Const.BTN_EDABAN_COPY_TOP,
                         GXHDO101B033Const.BTN_DELETE_TOP,
                         GXHDO101B033Const.BTN_UPDATE_TOP,
                         GXHDO101B033Const.BTN_START_DATETIME_TOP,
-                        GXHDO101B033Const.BTN_END_DATETIME_TOP
+                        GXHDO101B033Const.BTN_END_DATETIME_TOP,                        
+                        GXHDO101B033Const.BTN_KANSOU_START_DATETIME_TOP,
+                        GXHDO101B033Const.BTN_KANSOU_END_DATETIME_TOP
                 ));
                 inactiveIdList.addAll(Arrays.asList(
                         GXHDO101B033Const.BTN_KARI_TOUROKU_BOTTOM,
@@ -814,11 +842,15 @@ public class GXHDO101B033 implements IFormLogic {
                         GXHDO101B033Const.BTN_INSERT_BOTTOM,
                         GXHDO101B033Const.BTN_START_DATETIME_BOTTOM,
                         GXHDO101B033Const.BTN_END_DATETIME_BOTTOM,
+                        GXHDO101B033Const.BTN_KANSOU_START_DATETIME_BOTTOM,
+                        GXHDO101B033Const.BTN_KANSOU_END_DATETIME_BOTTOM,
                         GXHDO101B033Const.BTN_KARI_TOUROKU_TOP,
                         GXHDO101B033Const.BTN_EDABAN_COPY_TOP,
                         GXHDO101B033Const.BTN_INSERT_TOP,
                         GXHDO101B033Const.BTN_START_DATETIME_TOP,
-                        GXHDO101B033Const.BTN_END_DATETIME_TOP
+                        GXHDO101B033Const.BTN_END_DATETIME_TOP,                        
+                        GXHDO101B033Const.BTN_KANSOU_START_DATETIME_TOP,
+                        GXHDO101B033Const.BTN_KANSOU_END_DATETIME_TOP
                 ));
 
                 inactiveIdList.addAll(Arrays.asList(
@@ -870,15 +902,25 @@ public class GXHDO101B033 implements IFormLogic {
             case GXHDO101B033Const.BTN_DELETE_BOTTOM:
                 method = "checkDataDelete";
                 break;
-            // 開始日時
+            // ﾊﾞﾚﾙ開始日時
             case GXHDO101B033Const.BTN_START_DATETIME_TOP:
             case GXHDO101B033Const.BTN_START_DATETIME_BOTTOM:
                 method = "setKaishiDateTime";
                 break;
-            // 終了日時
+            // ﾊﾞﾚﾙ終了日時
             case GXHDO101B033Const.BTN_END_DATETIME_TOP:
             case GXHDO101B033Const.BTN_END_DATETIME_BOTTOM:
                 method = "setShuryouDateTime";
+                break;
+            // 乾燥開始日時
+            case GXHDO101B033Const.BTN_KANSOU_START_DATETIME_TOP:
+            case GXHDO101B033Const.BTN_KANSOU_START_DATETIME_BOTTOM:
+                method = "setKansouKaishiDateTime";
+                break;
+            // 乾燥終了日時
+            case GXHDO101B033Const.BTN_KANSOU_END_DATETIME_TOP:
+            case GXHDO101B033Const.BTN_KANSOU_END_DATETIME_BOTTOM:
+                method = "setKansouShuryouDateTime";
                 break;
             default:
                 method = "error";
@@ -906,6 +948,11 @@ public class GXHDO101B033 implements IFormLogic {
         String lotNo = (String) session.getAttribute("lotNo");
         int paramJissekino = (Integer) session.getAttribute("jissekino");
         String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
+        Map maekoteiInfo = (Map) session.getAttribute("maekoteiInfo");
+        BigDecimal ryohinjyuryo = BigDecimal.ZERO;
+        if (maekoteiInfo != null && maekoteiInfo.get("abeggryohinjyuryo") != null) {
+            ryohinjyuryo = new BigDecimal(StringUtil.nullToBlank(maekoteiInfo.get("abeggryohinjyuryo")));
+        }
 
         // エラーメッセージリスト
         List<String> errorMessageList = processData.getInitMessageList();
@@ -977,7 +1024,7 @@ public class GXHDO101B033 implements IFormLogic {
         }
 
         // 画面に取得した情報をセットする。(入力項目以外)
-        setViewItemData(processData, lotKbnMasData, ownerMasData, shikakariData, lotNo, syorisuu);
+        setViewItemData(processData, lotKbnMasData, ownerMasData, shikakariData, lotNo, syorisuu,ryohinjyuryo);
 
         processData.setInitMessageList(errorMessageList);
         return processData;
@@ -994,7 +1041,7 @@ public class GXHDO101B033 implements IFormLogic {
      * @param shikakariData 仕掛データ
      * @param lotNo ﾛｯﾄNo
      */
-    private void setViewItemData(ProcessData processData, Map lotKbnMasData, Map ownerMasData, Map shikakariData, String lotNo ,String syorisuu) {
+    private void setViewItemData(ProcessData processData, Map lotKbnMasData, Map ownerMasData, Map shikakariData, String lotNo ,String syorisuu,BigDecimal ryohinjyuryo) {
         
         // ロットNo
         this.setItemData(processData, GXHDO101B033Const.LOTNO, lotNo);
@@ -1027,6 +1074,8 @@ public class GXHDO101B033 implements IFormLogic {
         //処理数
         this.setItemData(processData, GXHDO101B033Const.SYORISUU, syorisuu);   
 
+        //前工程情報.良品重量
+        this.setItemData(processData, GXHDO101B033Const.JURYOU, ryohinjyuryo.toPlainString());   
     }
 
     /**
@@ -1111,24 +1160,40 @@ public class GXHDO101B033 implements IFormLogic {
         this.setItemData(processData, GXHDO101B033Const.KAITENSUU, getSrGdnijibarrelItemData(GXHDO101B033Const.KAITENSUU, srGdnijibarrel));
         // ﾎﾟｯﾄ数
         this.setItemData(processData, GXHDO101B033Const.POTSUU, getSrGdnijibarrelItemData(GXHDO101B033Const.POTSUU, srGdnijibarrel));
-        // ﾒﾀﾉｰﾙ交換時間
-        this.setItemData(processData, GXHDO101B033Const.METHANOLKOUKANJIKAN, getSrGdnijibarrelItemData(GXHDO101B033Const.METHANOLKOUKANJIKAN, srGdnijibarrel));
-        // ﾒﾀﾉｰﾙ交換担当者
-        this.setItemData(processData, GXHDO101B033Const.METHANOLKOUKANTANTOUSYA, getSrGdnijibarrelItemData(GXHDO101B033Const.METHANOLKOUKANTANTOUSYA, srGdnijibarrel));
-        // 開始日
+        // ﾊﾞﾚﾙ開始日
         this.setItemData(processData, GXHDO101B033Const.KAISHI_DAY, getSrGdnijibarrelItemData(GXHDO101B033Const.KAISHI_DAY, srGdnijibarrel));
-        // 開始時刻
+        // ﾊﾞﾚﾙ開始時刻
         this.setItemData(processData, GXHDO101B033Const.KAISHI_TIME, getSrGdnijibarrelItemData(GXHDO101B033Const.KAISHI_TIME, srGdnijibarrel));
-        // 開始担当者
+        // ﾊﾞﾚﾙ開始担当者
         this.setItemData(processData, GXHDO101B033Const.KAISHI_TANTOUSYA, getSrGdnijibarrelItemData(GXHDO101B033Const.KAISHI_TANTOUSYA, srGdnijibarrel));
-        // 開始確認者
+        // ﾊﾞﾚﾙ開始確認者
         this.setItemData(processData, GXHDO101B033Const.KAISHI_KAKUNINSYA, getSrGdnijibarrelItemData(GXHDO101B033Const.KAISHI_KAKUNINSYA, srGdnijibarrel));
-        // 終了日
+        // ﾊﾞﾚﾙ終了日
         this.setItemData(processData, GXHDO101B033Const.SHURYOU_DAY, getSrGdnijibarrelItemData(GXHDO101B033Const.SHURYOU_DAY, srGdnijibarrel));
-        // 終了時刻
+        // ﾊﾞﾚﾙ終了時刻
         this.setItemData(processData, GXHDO101B033Const.SHURYOU_TIME, getSrGdnijibarrelItemData(GXHDO101B033Const.SHURYOU_TIME, srGdnijibarrel));
-        // 終了担当者
+        // ﾊﾞﾚﾙ終了担当者
         this.setItemData(processData, GXHDO101B033Const.SHURYOU_TANTOUSYA, getSrGdnijibarrelItemData(GXHDO101B033Const.SHURYOU_TANTOUSYA, srGdnijibarrel));
+        // 乾燥号機
+        this.setItemData(processData, GXHDO101B033Const.KANSOUGOUKI, getSrGdnijibarrelItemData(GXHDO101B033Const.KANSOUGOUKI, srGdnijibarrel));
+        // 乾燥開始日
+        this.setItemData(processData, GXHDO101B033Const.KANSOU_KAISHI_DAY, getSrGdnijibarrelItemData(GXHDO101B033Const.KANSOU_KAISHI_DAY, srGdnijibarrel));
+        // 乾燥開始時刻
+        this.setItemData(processData, GXHDO101B033Const.KANSOU_KAISHI_TIME, getSrGdnijibarrelItemData(GXHDO101B033Const.KANSOU_KAISHI_TIME, srGdnijibarrel));
+        // 乾燥開始担当者
+        this.setItemData(processData, GXHDO101B033Const.KANSOUTANTOUSYA, getSrGdnijibarrelItemData(GXHDO101B033Const.KANSOUTANTOUSYA, srGdnijibarrel));
+        // 乾燥開始確認者
+        this.setItemData(processData, GXHDO101B033Const.KANSOUKAISHIKAKUNINSYA, getSrGdnijibarrelItemData(GXHDO101B033Const.KANSOUKAISHIKAKUNINSYA, srGdnijibarrel));
+        // 乾燥終了日
+        this.setItemData(processData, GXHDO101B033Const.KANSOU_SHURYOU_DAY, getSrGdnijibarrelItemData(GXHDO101B033Const.KANSOU_SHURYOU_DAY, srGdnijibarrel));
+        // 乾燥終了時刻
+        this.setItemData(processData, GXHDO101B033Const.KANSOU_SHURYOU_TIME, getSrGdnijibarrelItemData(GXHDO101B033Const.KANSOU_SHURYOU_TIME, srGdnijibarrel));
+        // 乾燥終了担当者
+        this.setItemData(processData, GXHDO101B033Const.KANSOUSYUURYOUTANTOSYA, getSrGdnijibarrelItemData(GXHDO101B033Const.KANSOUSYUURYOUTANTOSYA, srGdnijibarrel));
+        // 乾燥ﾌﾙｲ選別
+        this.setItemData(processData, GXHDO101B033Const.FURUISENBETU, getSrGdnijibarrelItemData(GXHDO101B033Const.FURUISENBETU, srGdnijibarrel));
+        // 乾燥外観
+        this.setItemData(processData, GXHDO101B033Const.GAIKAN, getSrGdnijibarrelItemData(GXHDO101B033Const.GAIKAN, srGdnijibarrel));
         // 備考1
         this.setItemData(processData, GXHDO101B033Const.BIKO1, getSrGdnijibarrelItemData(GXHDO101B033Const.BIKO1, srGdnijibarrel));
         // 備考2
@@ -1434,7 +1499,9 @@ public class GXHDO101B033 implements IFormLogic {
         String sql = "SELECT "
                 + " kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,gouki,syorijikan,kaitensuu "
                 + " ,potsuu,methanolkoukanjikan,methanolkoukantantousya,methanolkoukanpotruikeisuu,startdatetime,StartTantosyacode "
-                + " ,StartKakuninsyacode,enddatetime,EndTantosyacode,biko1,biko2,biko3,torokunichiji,kosinnichiji,revision, '0' AS deleteflag "
+                + " ,StartKakuninsyacode,enddatetime,EndTantosyacode,biko1,biko2,biko3,torokunichiji,kosinnichiji,juryou,kansougouki"
+                + ",kansoukaishinichiji,kansoutantousya,kansoukaishikakuninsya,kansousyuuryounichiji,kansousyuuryoutantosya,furuisenbetu"
+                + ",gaikan,revision, '0' AS deleteflag "
                 + "FROM sr_gdnijibarrel "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND kaisuu = ? ";
         
@@ -1482,6 +1549,15 @@ public class GXHDO101B033 implements IFormLogic {
         mapping.put("biko3", "biko3");                                            // 備考3
         mapping.put("torokunichiji", "torokunichiji");                            // 登録日時
         mapping.put("kosinnichiji", "kosinnichiji");                              // 更新日時
+        mapping.put("juryou", "juryou");                                          // 重量
+        mapping.put("kansougouki", "kansougouki");                                // 乾燥号機
+        mapping.put("kansoukaishinichiji", "kansoukaishinichiji");                // 乾燥開始日時
+        mapping.put("kansoutantousya", "kansoutantousya");                        // 乾燥開始担当者
+        mapping.put("kansoukaishikakuninsya", "kansoukaishikakuninsya");          // 乾燥開始確認者
+        mapping.put("kansousyuuryounichiji", "kansousyuuryounichiji");            // 乾燥終了日時
+        mapping.put("kansousyuuryoutantosya", "kansousyuuryoutantosya");          // 乾燥終了担当者
+        mapping.put("furuisenbetu", "furuisenbetu");                              // 乾燥ﾌﾙｲ選別
+        mapping.put("gaikan", "gaikan");                                          // 乾燥外観
         mapping.put("revision", "revision");                                      // revision
         mapping.put("deleteflag", "deleteflag");                                  // 削除ﾌﾗｸﾞ
 
@@ -1511,7 +1587,9 @@ public class GXHDO101B033 implements IFormLogic {
         String sql = "SELECT "
                 + " kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,gouki,syorijikan,kaitensuu "
                 + " ,potsuu,methanolkoukanjikan,methanolkoukantantousya,methanolkoukanpotruikeisuu,startdatetime,StartTantosyacode"
-                + " ,StartKakuninsyacode,enddatetime,EndTantosyacode,biko1,biko2,biko3,torokunichiji,kosinnichiji,revision,deleteflag "
+                + " ,StartKakuninsyacode,enddatetime,EndTantosyacode,biko1,biko2,biko3,torokunichiji,kosinnichiji,juryou,kansougouki"
+                + ",kansoukaishinichiji,kansoutantousya,kansoukaishikakuninsya,kansousyuuryounichiji,kansousyuuryoutantosya,furuisenbetu"
+                + ",gaikan,revision,deleteflag "
                 + "FROM tmp_sr_gdnijibarrel "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND kaisuu = ? AND deleteflag = ? ";
 
@@ -1560,6 +1638,15 @@ public class GXHDO101B033 implements IFormLogic {
         mapping.put("biko3", "biko3");                                            // 備考3
         mapping.put("torokunichiji", "torokunichiji");                            // 登録日時
         mapping.put("kosinnichiji", "kosinnichiji");                              // 更新日時
+        mapping.put("juryou", "juryou");                                          // 重量
+        mapping.put("kansougouki", "kansougouki");                                // 乾燥号機
+        mapping.put("kansoukaishinichiji", "kansoukaishinichiji");                // 乾燥開始日時
+        mapping.put("kansoutantousya", "kansoutantousya");                        // 乾燥開始担当者
+        mapping.put("kansoukaishikakuninsya", "kansoukaishikakuninsya");          // 乾燥開始確認者
+        mapping.put("kansousyuuryounichiji", "kansousyuuryounichiji");            // 乾燥終了日時
+        mapping.put("kansousyuuryoutantosya", "kansousyuuryoutantosya");          // 乾燥終了担当者
+        mapping.put("furuisenbetu", "furuisenbetu");                              // 乾燥ﾌﾙｲ選別
+        mapping.put("gaikan", "gaikan");                                          // 乾燥外観
         mapping.put("revision", "revision");                                      // revision
         mapping.put("deleteflag", "deleteflag");                                  // 削除ﾌﾗｸﾞ
 
@@ -1836,11 +1923,12 @@ public class GXHDO101B033 implements IFormLogic {
             String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, List<FXHDD01> itemList,ProcessData processData) throws SQLException {
 
         String sql = "INSERT INTO tmp_sr_gdnijibarrel ("
-                + " kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,gouki,syorijikan,kaitensuu"
+                + " kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,juryou,gouki,syorijikan,kaitensuu"
                 + " ,potsuu,methanolkoukanjikan,methanolkoukantantousya,methanolkoukanpotruikeisuu,startdatetime,StartTantosyacode"
-                + " ,StartKakuninsyacode,enddatetime,EndTantosyacode,biko1,biko2,biko3,torokunichiji,kosinnichiji,revision, deleteflag "
+                + " ,StartKakuninsyacode,enddatetime,EndTantosyacode,kansougouki,kansoukaishinichiji,kansoutantousya,kansoukaishikakuninsya"
+                + ",kansousyuuryounichiji,kansousyuuryoutantosya,furuisenbetu,gaikan,biko1,biko2,biko3,torokunichiji,kosinnichiji,revision, deleteflag "
                 + ") VALUES ("
-                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterTmpSrGdnijibarrel(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null, jissekino, processData);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -1868,9 +1956,10 @@ public class GXHDO101B033 implements IFormLogic {
             String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, List<FXHDD01> itemList, ProcessData processData) throws SQLException {
 
         String sql = "UPDATE tmp_sr_gdnijibarrel SET "
-                + " kcpno = ?, tokuisaki = ?, lotkubuncode = ?, ownercode = ?, lotpre = ?, syorisuu = ?, gouki = ?, syorijikan = ?, "
-                + " kaitensuu = ?, potsuu = ?, methanolkoukanjikan = ?, methanolkoukantantousya = ?, "
-                + " startdatetime = ?, StartTantosyacode = ?, StartKakuninsyacode = ?, enddatetime = ?, EndTantosyacode = ?, biko1 = ?, "
+                + " kcpno = ?, tokuisaki = ?, lotkubuncode = ?, ownercode = ?, lotpre = ?, syorisuu = ?,juryou = ?, gouki = ?, syorijikan = ?, "
+                + " kaitensuu = ?, potsuu = ?, startdatetime = ?, StartTantosyacode = ?, "
+                + "StartKakuninsyacode = ?, enddatetime = ?, EndTantosyacode = ?,kansougouki = ?,kansoukaishinichiji = ?,kansoutantousya = ?, "
+                + "kansoukaishikakuninsya = ?,kansousyuuryounichiji = ?,kansousyuuryoutantosya = ?,furuisenbetu = ?,gaikan = ?, biko1 = ?, "
                 + " biko2 = ?, kosinnichiji = ?, revision = ?, deleteflag = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ? ";
 
@@ -1962,6 +2051,8 @@ public class GXHDO101B033 implements IFormLogic {
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B033Const.LOTPRE, srGdnijibarrelData))); //ﾛｯﾄﾌﾟﾚ
 
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B033Const.SYORISUU, srGdnijibarrelData))); // 処理数
+
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B033Const.JURYOU, srGdnijibarrelData))); // 重量
         
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B033Const.GOUKI, srGdnijibarrelData))); // 号機        
 
@@ -1970,26 +2061,42 @@ public class GXHDO101B033 implements IFormLogic {
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B033Const.KAITENSUU, srGdnijibarrelData))); // 回転数
 
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B033Const.POTSUU, srGdnijibarrelData))); // ﾎﾟｯﾄ数
-
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B033Const.METHANOLKOUKANJIKAN, srGdnijibarrelData))); // ﾒﾀﾉｰﾙ交換時間
-
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B033Const.METHANOLKOUKANTANTOUSYA, srGdnijibarrelData))); // ﾒﾀﾉｰﾙ交換担当者
         
         if (isInsert) {
+            params.add(null); // ﾒﾀﾉｰﾙ交換時間
+            params.add(null); // ﾒﾀﾉｰﾙ交換担当者
             params.add(null); // ﾒﾀﾉｰﾙ交換ポット累計数
         }
 
         params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B033Const.KAISHI_DAY, srGdnijibarrelData),
-            getItemData(itemList, GXHDO101B033Const.KAISHI_TIME, srGdnijibarrelData))); //開始日時
+            getItemData(itemList, GXHDO101B033Const.KAISHI_TIME, srGdnijibarrelData))); //ﾊﾞﾚﾙ開始日時
         
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B033Const.KAISHI_TANTOUSYA, srGdnijibarrelData))); // 開始担当者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B033Const.KAISHI_TANTOUSYA, srGdnijibarrelData))); // ﾊﾞﾚﾙ開始担当者
         
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B033Const.KAISHI_KAKUNINSYA, srGdnijibarrelData))); // 開始確認者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B033Const.KAISHI_KAKUNINSYA, srGdnijibarrelData))); // ﾊﾞﾚﾙ開始確認者
         
         params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B033Const.SHURYOU_DAY, srGdnijibarrelData),
-            getItemData(itemList, GXHDO101B033Const.SHURYOU_TIME, srGdnijibarrelData))); // 終了日時
+            getItemData(itemList, GXHDO101B033Const.SHURYOU_TIME, srGdnijibarrelData))); // ﾊﾞﾚﾙ終了日時
         
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B033Const.SHURYOU_TANTOUSYA, srGdnijibarrelData))); // 終了担当者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B033Const.SHURYOU_TANTOUSYA, srGdnijibarrelData))); // ﾊﾞﾚﾙ終了担当者
+        
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B033Const.KANSOUGOUKI, srGdnijibarrelData))); // 乾燥号機
+
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B033Const.KANSOU_KAISHI_DAY, srGdnijibarrelData),
+            getItemData(itemList, GXHDO101B033Const.KANSOU_KAISHI_TIME, srGdnijibarrelData))); //乾燥開始日時
+        
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B033Const.KANSOUTANTOUSYA, srGdnijibarrelData))); // 乾燥開始担当者
+        
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B033Const.KANSOUKAISHIKAKUNINSYA, srGdnijibarrelData))); // 乾燥開始確認者
+        
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B033Const.KANSOU_SHURYOU_DAY, srGdnijibarrelData),
+            getItemData(itemList, GXHDO101B033Const.KANSOU_SHURYOU_TIME, srGdnijibarrelData))); // 乾燥終了日時
+        
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B033Const.KANSOUSYUURYOUTANTOSYA, srGdnijibarrelData))); // 乾燥終了担当者
+        
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B033Const.FURUISENBETU, srGdnijibarrelData))); // 乾燥ﾌﾙｲ選別
+        
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B033Const.GAIKAN, srGdnijibarrelData))); // 乾燥外観
         
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B033Const.BIKO1, srGdnijibarrelData))); // 備考1
         
@@ -2029,11 +2136,12 @@ public class GXHDO101B033 implements IFormLogic {
             String kojyo, String lotNo, String edaban, int jissekino,Timestamp systemTime, List<FXHDD01> itemList, SrGdnijibarrel srGdnijibarrel, ProcessData processData) throws SQLException {
 
         String sql = "INSERT INTO sr_gdnijibarrel ("
-                + " kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,gouki,syorijikan,kaitensuu "
+                + " kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,juryou,gouki,syorijikan,kaitensuu "
                 + " ,potsuu,methanolkoukanjikan,methanolkoukantantousya,methanolkoukanpotruikeisuu,startdatetime,StartTantosyacode "
-                + " ,StartKakuninsyacode,enddatetime,EndTantosyacode,biko1,biko2,biko3,torokunichiji,kosinnichiji,revision "
+                + " ,StartKakuninsyacode,enddatetime,EndTantosyacode,kansougouki,kansoukaishinichiji,kansoutantousya,kansoukaishikakuninsya"
+                + ",kansousyuuryounichiji,kansousyuuryoutantosya,furuisenbetu,gaikan,biko1,biko2,biko3,torokunichiji,kosinnichiji,revision "
                 + ") VALUES ("
-                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterSrGdnijibarrel(true, newRev, kojyo, lotNo, edaban, jissekino, systemTime, itemList, srGdnijibarrel, processData);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -2060,9 +2168,10 @@ public class GXHDO101B033 implements IFormLogic {
     private void updateSrGdnijibarrel(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, String jotaiFlg, BigDecimal newRev,
             String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, List<FXHDD01> itemList, ProcessData processData) throws SQLException {
         String sql = "UPDATE sr_gdnijibarrel SET "
-                + " kcpno = ?, tokuisaki = ?, lotkubuncode = ?, ownercode = ?, lotpre = ?, syorisuu = ?, gouki = ?, syorijikan = ?, "
-                + " kaitensuu = ?, potsuu = ?, methanolkoukanjikan = ?, methanolkoukantantousya = ?, "
-                + " startdatetime = ?, StartTantosyacode = ?, StartKakuninsyacode = ?, enddatetime = ?, EndTantosyacode = ?, biko1 = ?, "
+                + " kcpno = ?, tokuisaki = ?, lotkubuncode = ?, ownercode = ?, lotpre = ?, syorisuu = ?, juryou = ?, gouki = ?, syorijikan = ?, "
+                + " kaitensuu = ?, potsuu = ?, startdatetime = ?, StartTantosyacode = ?, "
+                + "StartKakuninsyacode = ?, enddatetime = ?, EndTantosyacode = ?,kansougouki = ?,kansoukaishinichiji = ?,kansoutantousya = ?,"
+                + "kansoukaishikakuninsya = ?,kansousyuuryounichiji = ?,kansousyuuryoutantosya = ?,furuisenbetu = ?,gaikan = ?, biko1 = ?, "
                 + " biko2 = ?, kosinnichiji = ?, revision = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ? ";
 
@@ -2123,6 +2232,8 @@ public class GXHDO101B033 implements IFormLogic {
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B033Const.LOTPRE, srGdnijibarrelData))); //ﾛｯﾄﾌﾟﾚ
 
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B033Const.SYORISUU, srGdnijibarrelData))); // 処理数
+
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B033Const.JURYOU, srGdnijibarrelData))); // 重量
         
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B033Const.GOUKI, srGdnijibarrelData))); // 号機
 
@@ -2132,12 +2243,10 @@ public class GXHDO101B033 implements IFormLogic {
 
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B033Const.POTSUU, srGdnijibarrelData))); // ﾎﾟｯﾄ数
 
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B033Const.METHANOLKOUKANJIKAN, srGdnijibarrelData))); // ﾒﾀﾉｰﾙ交換時間
-
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B033Const.METHANOLKOUKANTANTOUSYA, srGdnijibarrelData))); // ﾒﾀﾉｰﾙ交換担当者
-
         if (isInsert) {
-            params.add(0); // ﾒﾀﾉｰﾙ交換ポット累計数
+            params.add(""); // ﾒﾀﾉｰﾙ交換時間
+            params.add(""); // ﾒﾀﾉｰﾙ交換担当者
+            params.add(0);  // ﾒﾀﾉｰﾙ交換ポット累計数
         }
 
         params.add(DBUtil.stringToDateObject(getItemData(itemList, GXHDO101B033Const.KAISHI_DAY, srGdnijibarrelData),
@@ -2151,6 +2260,24 @@ public class GXHDO101B033 implements IFormLogic {
             getItemData(itemList, GXHDO101B033Const.SHURYOU_TIME, srGdnijibarrelData))); // 終了日時
         
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B033Const.SHURYOU_TANTOUSYA, srGdnijibarrelData))); // 終了担当者
+        
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B033Const.KANSOUGOUKI, srGdnijibarrelData))); // 乾燥号機
+
+        params.add(DBUtil.stringToDateObject(getItemData(itemList, GXHDO101B033Const.KANSOU_KAISHI_DAY, srGdnijibarrelData),
+            getItemData(itemList, GXHDO101B033Const.KANSOU_KAISHI_TIME, srGdnijibarrelData))); //乾燥開始日時
+        
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B033Const.KANSOUTANTOUSYA, srGdnijibarrelData))); // 乾燥開始担当者
+        
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B033Const.KANSOUKAISHIKAKUNINSYA, srGdnijibarrelData))); // 乾燥開始確認者
+        
+        params.add(DBUtil.stringToDateObject(getItemData(itemList, GXHDO101B033Const.KANSOU_SHURYOU_DAY, srGdnijibarrelData),
+            getItemData(itemList, GXHDO101B033Const.KANSOU_SHURYOU_TIME, srGdnijibarrelData))); // 乾燥終了日時
+        
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B033Const.KANSOUSYUURYOUTANTOSYA, srGdnijibarrelData))); // 乾燥終了担当者
+        
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B033Const.FURUISENBETU, srGdnijibarrelData))); // 乾燥ﾌﾙｲ選別
+        
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B033Const.GAIKAN, srGdnijibarrelData))); // 乾燥外観
         
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B033Const.BIKO1, srGdnijibarrelData))); // 備考1
         
@@ -2264,7 +2391,7 @@ public class GXHDO101B033 implements IFormLogic {
     }
 
     /**
-     * 開始時間設定処理
+     * ﾊﾞﾚﾙ開始時間設定処理
      *
      * @param processDate 処理制御データ
      * @return 処理制御データ
@@ -2280,7 +2407,7 @@ public class GXHDO101B033 implements IFormLogic {
     }
 
     /**
-     * 終了時間設定処理
+     * ﾊﾞﾚﾙ終了時間設定処理
      *
      * @param processDate 処理制御データ
      * @return 処理制御データ
@@ -2288,6 +2415,39 @@ public class GXHDO101B033 implements IFormLogic {
     public ProcessData setShuryouDateTime(ProcessData processDate) {
         FXHDD01 itemDay = getItemRow(processDate.getItemList(), GXHDO101B033Const.SHURYOU_DAY);
         FXHDD01 itemTime = getItemRow(processDate.getItemList(), GXHDO101B033Const.SHURYOU_TIME);
+        if (StringUtil.isEmpty(itemDay.getValue()) && StringUtil.isEmpty(itemTime.getValue())) {
+            setDateTimeItem(itemDay, itemTime, new Date());
+        }
+
+        processDate.setMethod("");
+        return processDate;
+    }
+
+    /**
+     * 乾燥開始時間設定処理
+     *
+     * @param processDate 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData setKansouKaishiDateTime(ProcessData processDate) {
+        FXHDD01 itemDay = getItemRow(processDate.getItemList(), GXHDO101B033Const.KANSOU_KAISHI_DAY);
+        FXHDD01 itemTime = getItemRow(processDate.getItemList(), GXHDO101B033Const.KANSOU_KAISHI_TIME);
+        if (StringUtil.isEmpty(itemDay.getValue()) && StringUtil.isEmpty(itemTime.getValue())) {
+            setDateTimeItem(itemDay, itemTime, new Date());
+        }
+        processDate.setMethod("");
+        return processDate;
+    }
+
+    /**
+     * 乾燥終了時間設定処理
+     *
+     * @param processDate 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData setKansouShuryouDateTime(ProcessData processDate) {
+        FXHDD01 itemDay = getItemRow(processDate.getItemList(), GXHDO101B033Const.KANSOU_SHURYOU_DAY);
+        FXHDD01 itemTime = getItemRow(processDate.getItemList(), GXHDO101B033Const.KANSOU_SHURYOU_TIME);
         if (StringUtil.isEmpty(itemDay.getValue()) && StringUtil.isEmpty(itemTime.getValue())) {
             setDateTimeItem(itemDay, itemTime, new Date());
         }
@@ -2346,34 +2506,58 @@ public class GXHDO101B033 implements IFormLogic {
                 return StringUtil.nullToBlank(srGdnijibarrelData.getKaitensuu());            
             // ﾎﾟｯﾄ数
             case GXHDO101B033Const.POTSUU:
-                return StringUtil.nullToBlank(srGdnijibarrelData.getPotsuu());            
-            // ﾒﾀﾉｰﾙ交換時間
-            case GXHDO101B033Const.METHANOLKOUKANJIKAN:
-                return StringUtil.nullToBlank(srGdnijibarrelData.getMethanolkoukanjikan());            
-            // ﾒﾀﾉｰﾙ交換担当者
-            case GXHDO101B033Const.METHANOLKOUKANTANTOUSYA:
-                return StringUtil.nullToBlank(srGdnijibarrelData.getMethanolkoukantantousya());
-            // 開始日
+                return StringUtil.nullToBlank(srGdnijibarrelData.getPotsuu());
+            // ﾊﾞﾚﾙ開始日
             case GXHDO101B033Const.KAISHI_DAY:
                 return DateUtil.formattedTimestamp(srGdnijibarrelData.getStartdatetime(), "yyMMdd");
-            // 開始時間
+            // ﾊﾞﾚﾙ開始時間
             case GXHDO101B033Const.KAISHI_TIME:
                 return DateUtil.formattedTimestamp(srGdnijibarrelData.getStartdatetime(), "HHmm");
-            // 開始担当者
+            // ﾊﾞﾚﾙ開始担当者
             case GXHDO101B033Const.KAISHI_TANTOUSYA:
                 return StringUtil.nullToBlank(srGdnijibarrelData.getStarttantosyacode());
-            // 開始確認者
+            // ﾊﾞﾚﾙ開始確認者
             case GXHDO101B033Const.KAISHI_KAKUNINSYA:
                 return StringUtil.nullToBlank(srGdnijibarrelData.getStartkakuninsyacode());
-            // 終了日
+            // ﾊﾞﾚﾙ終了日
             case GXHDO101B033Const.SHURYOU_DAY:
                 return DateUtil.formattedTimestamp(srGdnijibarrelData.getEnddatetime(), "yyMMdd");
-            // 終了時間
+            // ﾊﾞﾚﾙ終了時間
             case GXHDO101B033Const.SHURYOU_TIME:
                 return DateUtil.formattedTimestamp(srGdnijibarrelData.getEnddatetime(), "HHmm");
-            // 終了担当者
+            // ﾊﾞﾚﾙ終了担当者
             case GXHDO101B033Const.SHURYOU_TANTOUSYA:
-                return StringUtil.nullToBlank(srGdnijibarrelData.getEndtantosyacode());            
+                return StringUtil.nullToBlank(srGdnijibarrelData.getEndtantosyacode());
+            // 乾燥号機
+            case GXHDO101B033Const.KANSOUGOUKI:
+                return StringUtil.nullToBlank(srGdnijibarrelData.getKansougouki());
+            // 乾燥開始日
+            case GXHDO101B033Const.KANSOU_KAISHI_DAY:
+                return DateUtil.formattedTimestamp(srGdnijibarrelData.getKansoukaishinichiji(), "yyMMdd");
+            // 乾燥開始時間
+            case GXHDO101B033Const.KANSOU_KAISHI_TIME:
+                return DateUtil.formattedTimestamp(srGdnijibarrelData.getKansoukaishinichiji(), "HHmm");
+            // 乾燥開始担当者
+            case GXHDO101B033Const.KANSOUTANTOUSYA:
+                return StringUtil.nullToBlank(srGdnijibarrelData.getKansoutantousya());
+            // 乾燥開始確認者
+            case GXHDO101B033Const.KANSOUKAISHIKAKUNINSYA:
+                return StringUtil.nullToBlank(srGdnijibarrelData.getKansoukaishikakuninsya());
+            // 乾燥終了日
+            case GXHDO101B033Const.KANSOU_SHURYOU_DAY:
+                return DateUtil.formattedTimestamp(srGdnijibarrelData.getKansousyuuryounichiji(), "yyMMdd");
+            // 乾燥終了時間
+            case GXHDO101B033Const.KANSOU_SHURYOU_TIME:
+                return DateUtil.formattedTimestamp(srGdnijibarrelData.getKansousyuuryounichiji(), "HHmm");
+            // 乾燥終了担当者
+            case GXHDO101B033Const.KANSOUSYUURYOUTANTOSYA:
+                return StringUtil.nullToBlank(srGdnijibarrelData.getKansousyuuryoutantosya());
+            // 乾燥ﾌﾙｲ選別
+            case GXHDO101B033Const.FURUISENBETU:
+                return StringUtil.nullToBlank(srGdnijibarrelData.getFuruisenbetu());
+            // 乾燥外観
+            case GXHDO101B033Const.GAIKAN:
+                return StringUtil.nullToBlank(srGdnijibarrelData.getGaikan());
             // 備考1
             case GXHDO101B033Const.BIKO1:
                 return StringUtil.nullToBlank(srGdnijibarrelData.getBiko1());
@@ -2405,11 +2589,14 @@ public class GXHDO101B033 implements IFormLogic {
         String sql = "INSERT INTO tmp_sr_gdnijibarrel ("
                 + " kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,gouki,syorijikan,kaitensuu "
                 + " ,potsuu,methanolkoukanjikan,methanolkoukantantousya,methanolkoukanpotruikeisuu,startdatetime,StartTantosyacode "
-                + " ,StartKakuninsyacode,enddatetime,EndTantosyacode,biko1,biko2,biko3,torokunichiji,kosinnichiji,revision,deleteflag "
+                + " ,StartKakuninsyacode,enddatetime,EndTantosyacode,biko1,biko2,biko3,torokunichiji,kosinnichiji,juryou,kansougouki"
+                + ",kansoukaishinichiji,kansoutantousya,kansoukaishikakuninsya,kansousyuuryounichiji,kansousyuuryoutantosya,furuisenbetu"
+                + ",gaikan,revision,deleteflag "
                 + ") SELECT "
                 + " kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,lotkubuncode,ownercode,lotpre,syorisuu,gouki,syorijikan,kaitensuu "
                 + " ,potsuu,methanolkoukanjikan,methanolkoukantantousya,methanolkoukanpotruikeisuu,startdatetime,StartTantosyacode "
-                + " ,StartKakuninsyacode,enddatetime,EndTantosyacode,biko1,biko2,biko3,?,?,?,? "
+                + " ,StartKakuninsyacode,enddatetime,EndTantosyacode,biko1,biko2,biko3,?,?,juryou,kansougouki,kansoukaishinichiji"
+                + ",kansoutantousya,kansoukaishikakuninsya,kansousyuuryounichiji,kansousyuuryoutantosya,furuisenbetu,gaikan,?,? "
                 + " FROM sr_gdnijibarrel "
                 + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? ";
 

@@ -216,6 +216,11 @@
                             <f:convertNumber pattern="###,###,##0"/>
                         </p:outputLabel>
                     </p:column>
+                    <p:column id="juryou" headerText="重量(g)" styleClass="number">
+                        <p:outputLabel value="#{item.juryou}">
+                            <f:convertNumber pattern="###,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
                     <p:column id="gouki" headerText="号機(号機)" >
                         <p:outputLabel value="#{item.gouki}"/>
                     </p:column>
@@ -243,24 +248,52 @@
                             <f:convertNumber pattern="###,###,##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="startdatetime" headerText="開始日時" >
+                    <p:column id="startdatetime" headerText="ﾊﾞﾚﾙ開始日時" >
                         <p:outputLabel value="#{item.startdatetime}">
                             <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="starttantosyacode" headerText="開始担当者" >
+                    <p:column id="starttantosyacode" headerText="ﾊﾞﾚﾙ開始担当者" >
                         <p:outputLabel value="#{item.starttantosyacode}"/>
                     </p:column>
-                    <p:column id="startkakuninsyacode" headerText="開始確認者" >
+                    <p:column id="startkakuninsyacode" headerText="ﾊﾞﾚﾙ開始確認者" >
                         <p:outputLabel value="#{item.startkakuninsyacode}"/>
                     </p:column>
-                    <p:column id="enddatetime" headerText="終了日時" >
+                    <p:column id="enddatetime" headerText="ﾊﾞﾚﾙ終了日時" >
                         <p:outputLabel value="#{item.enddatetime}">
                             <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="endtantosyacode" headerText="終了担当者" >
+                    <p:column id="endtantosyacode" headerText="ﾊﾞﾚﾙ終了担当者" >
                         <p:outputLabel value="#{item.endtantosyacode}"/>
+                    </p:column>
+                    <p:column id="kansougouki" headerText="乾燥号機" >
+                        <p:outputLabel value="#{item.kansougouki}"/>
+                    </p:column>
+                    <p:column id="kansoukaishinichiji" headerText="乾燥開始日時" >
+                        <p:outputLabel value="#{item.kansoukaishinichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kansoutantousya" headerText="乾燥開始担当者" >
+                        <p:outputLabel value="#{item.kansoutantousya}"/>
+                    </p:column>
+                    <p:column id="kansoukaishikakuninsya" headerText="乾燥開始確認者" >
+                        <p:outputLabel value="#{item.kansoukaishikakuninsya}"/>
+                    </p:column>
+                    <p:column id="kansousyuuryounichiji" headerText="乾燥終了日時" >
+                        <p:outputLabel value="#{item.kansousyuuryounichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kansousyuuryoutantosya" headerText="乾燥終了担当者" >
+                        <p:outputLabel value="#{item.kansousyuuryoutantosya}"/>
+                    </p:column>
+                    <p:column id="furuisenbetu" headerText="乾燥ﾌﾙｲ選別" >
+                        <p:outputLabel value="#{item.furuisenbetu}"/>
+                    </p:column>
+                    <p:column id="gaikan" headerText="乾燥外観" >
+                        <p:outputLabel value="#{item.gaikan}"/>
                     </p:column>
                     <p:column id="biko1" headerText="備考1" >
                         <p:outputLabel value="#{item.biko1}"/>

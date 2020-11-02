@@ -61,6 +61,12 @@ import org.primefaces.context.RequestContext;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
+ * <br>
+ * 変更日	2020/09/07<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -646,6 +652,7 @@ public class GXHDO201B033 implements Serializable {
                     + ", ownercode "
                     + ", lotpre "
                     + ", syorisuu "
+                    + ", juryou "
                     + ", gouki "
                     + ", syorijikan "
                     + ", kaitensuu "
@@ -658,6 +665,14 @@ public class GXHDO201B033 implements Serializable {
                     + ", StartKakuninsyacode "
                     + ", enddatetime "
                     + ", EndTantosyacode "
+                    + ", kansougouki "
+                    + ", kansoukaishinichiji "
+                    + ", kansoutantousya "
+                    + ", kansoukaishikakuninsya "
+                    + ", kansousyuuryounichiji "
+                    + ", kansousyuuryoutantosya "
+                    + ", furuisenbetu "
+                    + ", gaikan "
                     + ", biko1 "
                     + ", biko2 "
                     + ", biko3 "
@@ -687,6 +702,7 @@ public class GXHDO201B033 implements Serializable {
             mapping.put("ownercode", "ownercode");                                     // ｵｰﾅｰ
             mapping.put("lotpre", "lotpre");                                           // ﾛｯﾄﾌﾟﾚ
             mapping.put("syorisuu", "syorisuu");                                       // 処理数
+            mapping.put("juryou", "juryou");                                           // 重量
             mapping.put("gouki", "gouki");                                             // 号機
             mapping.put("syorijikan", "syorijikan");                                   // 処理時間
             mapping.put("kaitensuu", "kaitensuu");                                     // 回転数
@@ -694,11 +710,19 @@ public class GXHDO201B033 implements Serializable {
             mapping.put("methanolkoukanjikan", "methanolkoukanjikan");                 // ﾒﾀﾉｰﾙ交換時間
             mapping.put("methanolkoukantantousya", "methanolkoukantantousya");         // ﾒﾀﾉｰﾙ交換担当者
             mapping.put("methanolkoukanpotruikeisuu", "methanolkoukanpotruikeisuu");   // ﾒﾀﾉｰﾙ交換ポット累計数
-            mapping.put("startdatetime", "startdatetime");                             // 開始日時
-            mapping.put("StartTantosyacode", "starttantosyacode");                     // 開始担当者
-            mapping.put("StartKakuninsyacode", "startkakuninsyacode");                 // 開始確認者
-            mapping.put("enddatetime", "enddatetime");                                 // 終了日時
-            mapping.put("EndTantosyacode", "endtantosyacode");                         // 終了担当者
+            mapping.put("startdatetime", "startdatetime");                             // ﾊﾞﾚﾙ開始日時
+            mapping.put("StartTantosyacode", "starttantosyacode");                     // ﾊﾞﾚﾙ開始担当者
+            mapping.put("StartKakuninsyacode", "startkakuninsyacode");                 // ﾊﾞﾚﾙ開始確認者
+            mapping.put("enddatetime", "enddatetime");                                 // ﾊﾞﾚﾙ終了日時
+            mapping.put("EndTantosyacode", "endtantosyacode");                         // ﾊﾞﾚﾙ終了担当者
+            mapping.put("kansougouki", "kansougouki");                                 // 乾燥号機
+            mapping.put("kansoukaishinichiji", "kansoukaishinichiji");                 // 乾燥開始日時
+            mapping.put("kansoutantousya", "kansoutantousya");                         // 乾燥開始担当者
+            mapping.put("kansoukaishikakuninsya", "kansoukaishikakuninsya");           // 乾燥開始確認者
+            mapping.put("kansousyuuryounichiji", "kansousyuuryounichiji");             // 乾燥終了日時
+            mapping.put("kansousyuuryoutantosya", "kansousyuuryoutantosya");           // 乾燥終了担当者
+            mapping.put("furuisenbetu", "furuisenbetu");                               // 乾燥ﾌﾙｲ選別
+            mapping.put("gaikan", "gaikan");                                           // 乾燥外観
             mapping.put("biko1", "biko1");                                             // 備考1
             mapping.put("biko2", "biko2");                                             // 備考2
             mapping.put("biko3", "biko3");                                             // 備考3

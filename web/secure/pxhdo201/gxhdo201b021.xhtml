@@ -167,6 +167,9 @@
                             <f:convertNumber pattern="#,###,###,##0"/>
                         </p:outputLabel>
                     </p:column>
+                    <p:column id="fukurotantosya" headerText="袋詰め担当者" >
+                        <p:outputLabel value="#{item.fukurotantosya}"/>
+                    </p:column>
                     <p:column id="ukeirekosu" headerText="受入個数(個)" styleClass="number" >
                         <p:outputLabel value="#{item.ukeirekosu}">
                             <f:convertNumber pattern="###,###,##0"/>

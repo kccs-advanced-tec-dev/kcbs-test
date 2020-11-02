@@ -61,6 +61,12 @@ import org.primefaces.context.RequestContext;
  * 変更者	863 F.Zhang<br>
  * 変更理由	新規作成<br>
  * <br>
+ * <br>
+ * 変更日	2020/09/22<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -678,17 +684,31 @@ public class GXHDO201B010 implements Serializable {
                     +", Tanijyuryo"
                     + ", (CASE WHEN cutbashuruicheck = 0 THEN 'NG' WHEN cutbashuruicheck = 1 THEN 'OK' ELSE '' END) AS cutbashuruicheck"
                     +", cutbachokushindo"
+                    +", cutbachokushindomigi"
                     +", cutbasiyoukaisuuST1"
+                    +", station1lotno"
                     +", cutbasiyoukaisuuST2"
+                    +", station2lotno"
                     +", programmei"
                     + ", (CASE WHEN gyoretukakunin = 0 THEN 'NG' WHEN gyoretukakunin = 1 THEN 'OK' ELSE '' END) AS gyoretukakunin"
                     + ", (CASE WHEN marktorisuu = 0 THEN 'NG' WHEN marktorisuu = 1 THEN 'OK' ELSE '' END) AS marktorisuu"
                     +", cuthoseiryou"
-                    +", tableondoset"
-                    +", tableondosoku"
+                    +", tableondosethidari"
+                    +", tableondosetnaka"
+                    +", tableondosetmigi"
+                    +", tableondosokuhidari"
+                    +", tableondosokunaka"
+                    +", tableondosokumigi"
+                    +", dai2tableondosethidari"
+                    +", dai2tableondosetnaka"
+                    +", dai2tableondosetmigi"
+                    +", dai2tableondosokuhidari"
+                    +", dai2tableondosokunaka"
+                    +", dai2tableondosokumigi"
                     + ", (CASE WHEN gaikancheck = 0 THEN 'NG' WHEN gaikancheck = 1 THEN 'OK' ELSE '' END) AS gaikancheck"
                     +", hatakasang"
                     +", syorisetsuu"
+                    +", ondo"
                     +", RyouhinSetsuu"
                     +", sagyoubasyo "
                     + "FROM sr_hapscut "
@@ -710,55 +730,69 @@ public class GXHDO201B010 implements Serializable {
             
             // モデルクラスとのマッピング定義
             Map<String, String> mapping = new HashMap<>();
-            mapping.put("LOTNO", "lotno");                                 // ﾛｯﾄNo.
-            mapping.put("KCPNO", "kcpno");                                 // KCPNO
-            mapping.put("KAISINICHIJI", "kaisinichiji");                   // 開始日時
-            mapping.put("SYURYONICHIJI", "syuryonichiji");                 // 終了日時
-            mapping.put("CUTBAMAISUU", "cutbamaisuu");                     // ｶｯﾄ刃使用数(枚)
-            mapping.put("GOKI", "goki");                                   // 号機
-            mapping.put("CUTTABLEONDO", "cuttablenodo");                   // ｶｯﾄﾃｰﾌﾞﾙ温度
-            mapping.put("CUTTANTOSYA", "kaisiTantosya");                   // 開始担当者
-            mapping.put("KAKUNINSYA", "kaisiKakusya");                     // 開始確認者
-            mapping.put("CHKTANTOSYA", "syuryoTantosya");                  // 終了担当者
-            mapping.put("BTANTOSYA", "bTantosya");                         // B担当者
-            mapping.put("ATANTOSYA", "aTantosya");                         // A担当者
-            mapping.put("UKEIREKOSUU", "ukeirekoSuu");                     // 受入個数
-            mapping.put("RYOHINKOSUU", "ryohinKosuu");                     // 良品個数
-            mapping.put("Atumi01", "atumi01");                             // 厚み01
-            mapping.put("Atumi02", "atumi02");                             // 厚み02
-            mapping.put("Atumi03", "atumi03");                             // 厚み03
-            mapping.put("Atumi04", "atumi04");                             // 厚み04
-            mapping.put("Atumi05", "atumi05");                             // 厚み05
-            mapping.put("Atumi06", "atumi06");                             // 厚み06
-            mapping.put("Atumi07", "atumi07");                             // 厚み07
-            mapping.put("Atumi08", "atumi08");                             // 厚み08
-            mapping.put("Atumi09", "atumi09");                             // 厚み09
-            mapping.put("Atumi10", "atumi10");                             // 厚み10
-            mapping.put("ATUMIMIN", "atumiMin");                           // 厚みMIN
-            mapping.put("ATUMIMAX", "atumiMax");                           // 厚みMAX
-            mapping.put("BIKO1", "biko1");                                 // 備考1
-            mapping.put("BIKO2", "biko2");                                 // 備考2
-            mapping.put("BIKO3", "biko3");                                 // 備考3
-            mapping.put("BIKO4", "biko4");                                 // 備考4
-            mapping.put("TENSYASYA", "tensyasya");                         // 転写者
-            mapping.put("NIJIMICNT", "nijimicnt");                         // ﾆｼﾞﾐ回数
-            mapping.put("Soujyuryo", "soujyuryo");                         // 総重量
-            mapping.put("Tanijyuryo", "tanijyuryo");                       // 単位重量
-            mapping.put("cutbashuruicheck", "cutbashuruicheck");           // ｶｯﾄ刃種類確認
-            mapping.put("cutbachokushindo", "cutbachiokushindo");          // ｶｯﾄ刃直進度(μm)
-            mapping.put("cutbasiyoukaisuuST1", "sutbasiyoukaisuust1");     // ｶｯﾄ刃使用回数ST1(回)
-            mapping.put("cutbasiyoukaisuuST2", "sutbasiyoukaisuust2");     // ｶｯﾄ刃使用回数ST2(回)
-            mapping.put("programmei", "programmei");                       // ﾌﾟﾛｸﾞﾗﾑ名
-            mapping.put("gyoretukakunin", "gyoretuKakunin");               // 行×列確認
-            mapping.put("marktorisuu", "marktorisuu");                     // ﾏｰｸ外取り数
-            mapping.put("cuthoseiryou", "cuthoSeiryou");                   // ｶｯﾄ補正量(μm)
-            mapping.put("tableondoset", "tableOndoSet");                   // ﾃｰﾌﾞﾙ温度 設定(℃)
-            mapping.put("tableondosoku", "tableOndoSoku");                 // ﾃｰﾌﾞﾙ温度 実測(℃)
-            mapping.put("gaikancheck", "gaikanCheck");                     // 外観確認
-            mapping.put("hatakasang", "hatakasang");                       // 刃高さNG(SET)
-            mapping.put("syorisetsuu", "syoriSetsuu");                     // 処理ｾｯﾄ数(SET)
-            mapping.put("RyouhinSetsuu", "ryouhinSetsuu");                 // 良品ｾｯﾄ数(SET)
-            mapping.put("sagyoubasyo", "sagyouBasyo");                     // 作業場所
+            mapping.put("LOTNO", "lotno");                                       // ﾛｯﾄNo.
+            mapping.put("KCPNO", "kcpno");                                       // KCPNO
+            mapping.put("KAISINICHIJI", "kaisinichiji");                         // 開始日時
+            mapping.put("SYURYONICHIJI", "syuryonichiji");                       // 終了日時
+            mapping.put("CUTBAMAISUU", "cutbamaisuu");                           // ｶｯﾄ刃使用数(枚)
+            mapping.put("GOKI", "goki");                                         // 号機
+            mapping.put("CUTTABLEONDO", "cuttablenodo");                         // ｶｯﾄﾃｰﾌﾞﾙ温度
+            mapping.put("CUTTANTOSYA", "kaisiTantosya");                         // 開始担当者
+            mapping.put("KAKUNINSYA", "kaisiKakusya");                           // 開始確認者
+            mapping.put("CHKTANTOSYA", "syuryoTantosya");                        // 終了担当者
+            mapping.put("BTANTOSYA", "bTantosya");                               // B担当者
+            mapping.put("ATANTOSYA", "aTantosya");                               // A担当者
+            mapping.put("UKEIREKOSUU", "ukeirekoSuu");                           // 受入個数
+            mapping.put("RYOHINKOSUU", "ryohinKosuu");                           // 良品個数
+            mapping.put("Atumi01", "atumi01");                                   // 厚み01
+            mapping.put("Atumi02", "atumi02");                                   // 厚み02
+            mapping.put("Atumi03", "atumi03");                                   // 厚み03
+            mapping.put("Atumi04", "atumi04");                                   // 厚み04
+            mapping.put("Atumi05", "atumi05");                                   // 厚み05
+            mapping.put("Atumi06", "atumi06");                                   // 厚み06
+            mapping.put("Atumi07", "atumi07");                                   // 厚み07
+            mapping.put("Atumi08", "atumi08");                                   // 厚み08
+            mapping.put("Atumi09", "atumi09");                                   // 厚み09
+            mapping.put("Atumi10", "atumi10");                                   // 厚み10
+            mapping.put("ATUMIMIN", "atumiMin");                                 // 厚みMIN
+            mapping.put("ATUMIMAX", "atumiMax");                                 // 厚みMAX
+            mapping.put("BIKO1", "biko1");                                       // 備考1
+            mapping.put("BIKO2", "biko2");                                       // 備考2
+            mapping.put("BIKO3", "biko3");                                       // 備考3
+            mapping.put("BIKO4", "biko4");                                       // 備考4
+            mapping.put("TENSYASYA", "tensyasya");                               // 転写者
+            mapping.put("NIJIMICNT", "nijimicnt");                               // ﾆｼﾞﾐ回数
+            mapping.put("Soujyuryo", "soujyuryo");                               // 総重量
+            mapping.put("Tanijyuryo", "tanijyuryo");                             // 単位重量
+            mapping.put("cutbashuruicheck", "cutbashuruicheck");                 // ｶｯﾄ刃種類確認
+            mapping.put("cutbachokushindo", "cutbachiokushindo");                // ｶｯﾄ刃直進度左(μm)
+            mapping.put("cutbachokushindomigi", "cutbachokushindomigi");         // ｶｯﾄ刃直進度右(μm)
+            mapping.put("cutbasiyoukaisuuST1", "sutbasiyoukaisuust1");           // ｶｯﾄ刃使用回数ST1(回)
+            mapping.put("station1lotno", "station1lotno");                       // ｶｯﾄ刃ST1使用ロットNo
+            mapping.put("cutbasiyoukaisuuST2", "sutbasiyoukaisuust2");           // ｶｯﾄ刃使用回数ST2(回)
+            mapping.put("station2lotno", "station2lotno");                       // ｶｯﾄ刃ST2使用ロットNo
+            mapping.put("programmei", "programmei");                             // ﾌﾟﾛｸﾞﾗﾑ名
+            mapping.put("gyoretukakunin", "gyoretuKakunin");                     // 行×列確認
+            mapping.put("marktorisuu", "marktorisuu");                           // ﾏｰｸ外取り数
+            mapping.put("cuthoseiryou", "cuthoSeiryou");                         // ｶｯﾄ補正量(μm)
+            mapping.put("tableondosethidari", "tableondosethidari");             // ﾃｰﾌﾞﾙ温度 設定 左(℃)
+            mapping.put("tableondosetnaka", "tableondosetnaka");                 // ﾃｰﾌﾞﾙ温度 設定 中(℃)
+            mapping.put("tableondosetmigi", "tableondosetmigi");                 // ﾃｰﾌﾞﾙ温度 設定 右(℃)
+            mapping.put("tableondosokuhidari", "tableondosokuhidari");           // ﾃｰﾌﾞﾙ温度 実測 左(℃)
+            mapping.put("tableondosokunaka", "tableondosokunaka");               // ﾃｰﾌﾞﾙ温度 実測 中(℃)
+            mapping.put("tableondosokumigi", "tableondosokumigi");               // ﾃｰﾌﾞﾙ温度 実測 右(℃)
+            mapping.put("dai2tableondosethidari", "dai2tableondosethidari");     // 第2ﾃｰﾌﾞﾙ温度 設定 左(℃)
+            mapping.put("dai2tableondosetnaka", "dai2tableondosetnaka");         // 第2ﾃｰﾌﾞﾙ温度 設定 中(℃)
+            mapping.put("dai2tableondosetmigi", "dai2tableondosetmigi");         // 第2ﾃｰﾌﾞﾙ温度 設定 右(℃)
+            mapping.put("dai2tableondosokuhidari", "dai2tableondosokuhidari");   // 第2ﾃｰﾌﾞﾙ温度 実測 左(℃)
+            mapping.put("dai2tableondosokunaka", "dai2tableondosokunaka");       // 第2ﾃｰﾌﾞﾙ温度 実測 中(℃)
+            mapping.put("dai2tableondosokumigi", "dai2tableondosokumigi");       // 第2ﾃｰﾌﾞﾙ温度 実測 右(℃)
+            mapping.put("gaikancheck", "gaikanCheck");                           // 外観確認
+            mapping.put("hatakasang", "hatakasang");                             // 刃高さNG(SET)
+            mapping.put("ondo", "ondo");                                         // ｶｯﾄ後剥がし温度(℃)
+            mapping.put("syorisetsuu", "syoriSetsuu");                           // 処理ｾｯﾄ数(SET)
+            mapping.put("RyouhinSetsuu", "ryouhinSetsuu");                       // 良品ｾｯﾄ数(SET)
+            mapping.put("sagyoubasyo", "sagyouBasyo");                           // 作業場所
 
             BeanProcessor beanProcessor = new BeanProcessor(mapping);
             RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);

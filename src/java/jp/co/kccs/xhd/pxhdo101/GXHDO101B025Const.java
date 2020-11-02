@@ -13,6 +13,12 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	863 F.Zhang<br>
  * 変更理由	新規作成<br>
  * <br>
+ * <br>
+ * 変更日	2020/09/08<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -47,11 +53,50 @@ public class GXHDO101B025Const {
      */
     public static final String OWNER = "sr_termt_owner";
 
-    
     /**
-     * 処理数
+     * 受入れ良品数
     */
     public static final String SYORISUU = "sr_termt_syorisuu";
+
+    /**
+     * 受入れ単位重量
+     */
+    public static final String UKEIRETANNIJYURYO = "sr_termt_ukeiretannijyuryo";
+
+    /**
+     * 受入れ総重量
+     */
+    public static final String UKEIRESOUJYURYOU = "sr_termt_ukeiresoujyuryou";
+
+    /**
+     * 磁器L寸法(MAX)
+     */
+    public static final String JIKILSUNPOUMAX = "sr_termt_jikilsunpoumax";
+
+    /**
+     * 磁器L寸法(MIN)
+     */
+    public static final String JIKILSUNPOUMIN = "sr_termt_jikilsunpoumin";
+
+    /**
+     * 磁器W寸法(MAX)
+     */
+    public static final String JIKIWSUNPOUMAX = "sr_termt_jikiwsunpoumax";
+
+    /**
+     * 磁器W寸法(MIN)
+     */
+    public static final String JIKIWSUNPOUMIN = "sr_termt_jikiwsunpoumin";
+
+    /**
+     * 磁器T寸法(MAX)
+     */
+    public static final String JIKITSUNPOUMAX = "sr_termt_jikitsunpoumax";
+
+    /**
+     * 磁器T寸法(MIN)
+     */
+    public static final String JIKITSUNPOUMIN = "sr_termt_jikitsunpoumin";
 
     /**
      * ﾛｯﾄﾌﾟﾚ

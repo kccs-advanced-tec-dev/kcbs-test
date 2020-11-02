@@ -61,6 +61,12 @@ import org.primefaces.context.RequestContext;
  * 変更者	863 F.Zhang<br>
  * 変更理由	新規作成<br>
  * <br>
+ * <br>
+ * 変更日	2020/09/04<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -739,6 +745,8 @@ public class GXHDO201B025 implements Serializable {
                     + ", kaisuu"
                     + ", kcpno"
                     + ", syorisuu"
+                    + ", ukeiretannijyuryo"
+                    + ", ukeiresoujyuryou"
                     + ", lotpre"
                     + ", tofugoki"
                     + ", pastehinmei"
@@ -750,6 +758,12 @@ public class GXHDO201B025 implements Serializable {
                     + ", StartTantosyacode"
                     + ", StartKakuninsyacode"
                     + ", carriertape"
+                    + ", jikilsunpoumax"
+                    + ", jikilsunpoumin"
+                    + ", jikiwsunpoumax"
+                    + ", jikiwsunpoumin"
+                    + ", jikitsunpoumax"
+                    + ", jikitsunpoumin"
                     + ", insatsuhaba"
                     + ", mawarikomi"
                     + ", itizure"
@@ -784,7 +798,9 @@ public class GXHDO201B025 implements Serializable {
             mapping.put("LOTNO", "lotno"); // ﾛｯﾄNo.
             mapping.put("kaisuu", "kaisuu"); // 回数
             mapping.put("kcpno", "kcpno"); // KCPNO
-            mapping.put("syorisuu", "syorisuu"); // 処理数
+            mapping.put("syorisuu", "syorisuu"); // 受入れ良品数
+            mapping.put("ukeiretannijyuryo", "ukeiretannijyuryo"); // 受入れ単位重量(g)
+            mapping.put("ukeiresoujyuryou", "ukeiresoujyuryou"); // 受入れ総重量(g)
             mapping.put("lotpre", "lotpre"); // ﾛｯﾄﾌﾟﾚ
             mapping.put("tofugoki", "tofugoki"); // 塗布号機
             mapping.put("pastehinmei", "pastehinmei"); // ﾍﾟｰｽﾄ品名
@@ -796,6 +812,12 @@ public class GXHDO201B025 implements Serializable {
             mapping.put("StartTantosyacode", "starttantosyacode"); // 開始担当者
             mapping.put("StartKakuninsyacode", "startkakuninsyacode"); // 開始確認者
             mapping.put("carriertape", "carriertape"); // ｷｬﾘｱﾃｰﾌﾟ
+            mapping.put("jikilsunpoumax", "jikilsunpoumax"); // 磁器L寸法(MAX)
+            mapping.put("jikilsunpoumin", "jikilsunpoumin"); // 磁器L寸法(MIN)
+            mapping.put("jikiwsunpoumax", "jikiwsunpoumax"); // 磁器W寸法(MAX)
+            mapping.put("jikiwsunpoumin", "jikiwsunpoumin"); // 磁器W寸法(MIN)
+            mapping.put("jikitsunpoumax", "jikitsunpoumax"); // 磁器T寸法(MAX)
+            mapping.put("jikitsunpoumin", "jikitsunpoumin"); // 磁器T寸法(MIN)
             mapping.put("insatsuhaba", "insatsuhaba"); // 印刷幅
             mapping.put("mawarikomi", "mawarikomi"); // 回り込みAVE
             mapping.put("itizure", "itizure"); // 位置ｽﾞﾚMAX

@@ -17,6 +17,11 @@ import java.sql.Timestamp;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/09/11<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	新規作成<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -112,27 +117,27 @@ public class SrGdnijibarrel {
     private Integer methanolkoukanpotruikeisuu;
 
     /**
-     * 開始日時
+     * ﾊﾞﾚﾙ開始日時
      */
     private Timestamp startdatetime;
 
     /**
-     * 開始担当者
+     * ﾊﾞﾚﾙ開始担当者
      */
     private String starttantosyacode;
     
     /**
-     * 開始確認者
+     * ﾊﾞﾚﾙ開始確認者
      */
     private String startkakuninsyacode;
     
     /**
-     * 終了日時
+     * ﾊﾞﾚﾙ終了日時
      */
     private Timestamp enddatetime;
 
     /**
-     * 終了担当者
+     * ﾊﾞﾚﾙ終了担当者
      */
     private String endtantosyacode;
 
@@ -165,6 +170,51 @@ public class SrGdnijibarrel {
      * revision
      */
     private Integer revision;
+
+    /**
+     * 重量
+     */
+    private BigDecimal juryou;
+
+    /**
+     * 乾燥号機
+     */
+    private String kansougouki;
+
+    /**
+     * 乾燥開始日時
+     */
+    private Timestamp kansoukaishinichiji;
+
+    /**
+     * 乾燥開始担当者
+     */
+    private String kansoutantousya;
+
+    /**
+     * 乾燥開始確認者
+     */
+    private String kansoukaishikakuninsya;
+
+    /**
+     * 乾燥終了日時
+     */
+    private Timestamp kansousyuuryounichiji;
+
+    /**
+     * 乾燥終了担当者
+     */
+    private String kansousyuuryoutantosya;
+
+    /**
+     * 乾燥ﾌﾙｲ選別
+     */
+    private String furuisenbetu;
+
+    /**
+     * 乾燥外観
+     */
+    private String gaikan;
 
     /**
      * 削除ﾌﾗｸﾞ
@@ -401,6 +451,78 @@ public class SrGdnijibarrel {
 
     public void setDeleteflag(Integer deleteflag) {
         this.deleteflag = deleteflag;
+    }
+
+    public BigDecimal getJuryou() {
+        return juryou;
+    }
+
+    public void setJuryou(BigDecimal juryou) {
+        this.juryou = juryou;
+    }
+
+    public String getKansougouki() {
+        return kansougouki;
+    }
+
+    public void setKansougouki(String kansougouki) {
+        this.kansougouki = kansougouki;
+    }
+
+    public Timestamp getKansoukaishinichiji() {
+        return kansoukaishinichiji;
+    }
+
+    public void setKansoukaishinichiji(Timestamp kansoukaishinichiji) {
+        this.kansoukaishinichiji = kansoukaishinichiji;
+    }
+
+    public String getKansoutantousya() {
+        return kansoutantousya;
+    }
+
+    public void setKansoutantousya(String kansoutantousya) {
+        this.kansoutantousya = kansoutantousya;
+    }
+
+    public String getKansoukaishikakuninsya() {
+        return kansoukaishikakuninsya;
+    }
+
+    public void setKansoukaishikakuninsya(String kansoukaishikakuninsya) {
+        this.kansoukaishikakuninsya = kansoukaishikakuninsya;
+    }
+
+    public Timestamp getKansousyuuryounichiji() {
+        return kansousyuuryounichiji;
+    }
+
+    public void setKansousyuuryounichiji(Timestamp kansousyuuryounichiji) {
+        this.kansousyuuryounichiji = kansousyuuryounichiji;
+    }
+
+    public String getKansousyuuryoutantosya() {
+        return kansousyuuryoutantosya;
+    }
+
+    public void setKansousyuuryoutantosya(String kansousyuuryoutantosya) {
+        this.kansousyuuryoutantosya = kansousyuuryoutantosya;
+    }
+
+    public String getFuruisenbetu() {
+        return furuisenbetu;
+    }
+
+    public void setFuruisenbetu(String furuisenbetu) {
+        this.furuisenbetu = furuisenbetu;
+    }
+
+    public String getGaikan() {
+        return gaikan;
+    }
+
+    public void setGaikan(String gaikan) {
+        this.gaikan = gaikan;
     }
 
 }

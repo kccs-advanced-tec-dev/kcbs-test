@@ -17,6 +17,12 @@ import java.sql.Timestamp;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
+ * <br>
+ * 変更日	2020/09/07<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -51,6 +57,9 @@ public class GXHDO201B033Model implements Serializable{
     /** 処理数 */
     private Integer syorisuu = null;
 
+    /** 重量 */
+    private BigDecimal juryou = null;
+
     /** 号機 */
     private String gouki = "";
 
@@ -72,20 +81,44 @@ public class GXHDO201B033Model implements Serializable{
     /** ﾒﾀﾉｰﾙ交換ポット累計数 */
     private Integer methanolkoukanpotruikeisuu = null;
 
-    /** 開始日時 */
+    /** ﾊﾞﾚﾙ開始日時 */
     private Timestamp startdatetime = null;
 
-    /** 開始担当者 */
+    /** ﾊﾞﾚﾙ開始担当者 */
     private String starttantosyacode = "";
 
-    /** 開始確認者 */
+    /** ﾊﾞﾚﾙ開始確認者 */
     private String startkakuninsyacode = "";
 
-    /** 終了日時 */
+    /** ﾊﾞﾚﾙ終了日時 */
     private Timestamp enddatetime = null;
 
-    /** 終了担当者 */
+    /** ﾊﾞﾚﾙ終了担当者 */
     private String endtantosyacode = "";
+
+    /** 乾燥号機 */
+    private String kansougouki = "";
+
+    /** 乾燥開始日時 */
+    private Timestamp kansoukaishinichiji = null;
+
+    /** 乾燥開始担当者 */
+    private String kansoutantousya = "";
+
+    /** 乾燥開始確認者 */
+    private String kansoukaishikakuninsya = "";
+
+    /** 乾燥終了日時 */
+    private Timestamp kansousyuuryounichiji = null;
+
+    /** 乾燥終了担当者 */
+    private String kansousyuuryoutantosya = "";
+
+    /** 乾燥ﾌﾙｲ選別 */
+    private String furuisenbetu = "";
+
+    /** 乾燥外観 */
+    private String gaikan = "";
 
     /** 備考1 */
     private String biko1 = "";
@@ -206,6 +239,20 @@ public class GXHDO201B033Model implements Serializable{
      */
     public void setSyorisuu(Integer syorisuu) {
         this.syorisuu = syorisuu;
+    }
+
+    /**
+     * @return juryou
+     */
+    public BigDecimal getJuryou() {
+        return juryou;
+    }
+
+    /**
+     * @param juryou 
+     */
+    public void setJuryou(BigDecimal juryou) {
+        this.juryou = juryou;
     }
 
     /**
@@ -374,6 +421,118 @@ public class GXHDO201B033Model implements Serializable{
      */
     public void setEndtantosyacode(String endtantosyacode) {
         this.endtantosyacode = endtantosyacode;
+    }
+
+    /**
+     * @return kansougouki
+     */
+    public String getKansougouki() {
+        return kansougouki;
+    }
+
+    /**
+     * @param kansougouki 
+     */
+    public void setKansougouki(String kansougouki) {
+        this.kansougouki = kansougouki;
+    }
+
+    /**
+     * @return kansoukaishinichiji
+     */
+    public Timestamp getKansoukaishinichiji() {
+        return kansoukaishinichiji;
+    }
+
+    /**
+     * @param kansoukaishinichiji 
+     */
+    public void setKansoukaishinichiji(Timestamp kansoukaishinichiji) {
+        this.kansoukaishinichiji = kansoukaishinichiji;
+    }
+
+    /**
+     * @return kansoutantousya
+     */
+    public String getKansoutantousya() {
+        return kansoutantousya;
+    }
+
+    /**
+     * @param kansoutantousya 
+     */
+    public void setKansoutantousya(String kansoutantousya) {
+        this.kansoutantousya = kansoutantousya;
+    }
+
+    /**
+     * @return kansoukaishikakuninsya
+     */
+    public String getKansoukaishikakuninsya() {
+        return kansoukaishikakuninsya;
+    }
+
+    /**
+     * @param kansoukaishikakuninsya 
+     */
+    public void setKansoukaishikakuninsya(String kansoukaishikakuninsya) {
+        this.kansoukaishikakuninsya = kansoukaishikakuninsya;
+    }
+
+    /**
+     * @return kansousyuuryounichiji
+     */
+    public Timestamp getKansousyuuryounichiji() {
+        return kansousyuuryounichiji;
+    }
+
+    /**
+     * @param kansousyuuryounichiji 
+     */
+    public void setKansousyuuryounichiji(Timestamp kansousyuuryounichiji) {
+        this.kansousyuuryounichiji = kansousyuuryounichiji;
+    }
+
+    /**
+     * @return kansousyuuryoutantosya
+     */
+    public String getKansousyuuryoutantosya() {
+        return kansousyuuryoutantosya;
+    }
+
+    /**
+     * @param kansousyuuryoutantosya 
+     */
+    public void setKansousyuuryoutantosya(String kansousyuuryoutantosya) {
+        this.kansousyuuryoutantosya = kansousyuuryoutantosya;
+    }
+
+    /**
+     * @return furuisenbetu
+     */
+    public String getFuruisenbetu() {
+        return furuisenbetu;
+    }
+
+    /**
+     * @param furuisenbetu 
+     */
+    public void setFuruisenbetu(String furuisenbetu) {
+        this.furuisenbetu = furuisenbetu;
+    }
+
+    /**
+     * @return gaikan
+     */
+    public String getGaikan() {
+        return gaikan;
+    }
+
+    /**
+     * @param gaikan 
+     */
+    public void setGaikan(String gaikan) {
+        this.gaikan = gaikan;
     }
 
     /**

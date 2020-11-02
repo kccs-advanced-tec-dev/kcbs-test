@@ -4,6 +4,7 @@
 package jp.co.kccs.xhd.pxhdo101;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
@@ -25,6 +26,7 @@ import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.db.model.Jisseki;
 import jp.co.kccs.xhd.db.model.MekkiRireki;
+import jp.co.kccs.xhd.db.model.SrCknsunpou2;
 import jp.co.kccs.xhd.db.model.SrMekki;
 import jp.co.kccs.xhd.db.model.SrQasunpou1;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
@@ -60,10 +62,15 @@ import org.apache.commons.dbutils.DbUtils;
  * 変更者      863 F.Zhang<br>
  * 変更理由    新規作成<br>
  * <br>
- * 変更日	2020/09/21<br>
- * 計画書No	MB2008-DK001<br>
- * 変更者	KCSS D.Yanagida<br>
- * 変更理由	ロット混合対応<br>
+ * 変更日      2020/09/13<br>
+ * 計画書No    MB2008-DK001<br>
+ * 変更者      KCSS K.Jo<br>
+ * 変更理由    改修対応<br>
+ * <br>
+ * 変更日	   2020/09/21<br>
+ * 計画書No	   MB2008-DK001<br>
+ * 変更者	   KCSS D.Yanagida<br>
+ * 変更理由	   ロット混合対応<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -1065,6 +1072,11 @@ public class GXHDO101B038 implements IFormLogic {
         String lotNo = (String) session.getAttribute("lotNo");
         int paramJissekino = (Integer) session.getAttribute("jissekino");
         String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
+        Map maekoteiInfo = (Map) session.getAttribute("maekoteiInfo");
+        String pastehinmei = "";
+        if (maekoteiInfo != null && maekoteiInfo.get("pastehinmei") != null) {
+            pastehinmei = StringUtil.nullToBlank(maekoteiInfo.get("pastehinmei"));
+        }
 
         // エラーメッセージリスト
         List<String> errorMessageList = processData.getInitMessageList();
@@ -1132,13 +1144,11 @@ public class GXHDO101B038 implements IFormLogic {
         hiddenMap.put("syorisuu", syorisuu); //処理数
         
         // T寸法の取得
-        String tsunpouave = null;
-        List<SrQasunpou1> srQasunpou1Data = loadSrQasunpou1Data(queryRunnerQcdb, lotNo);
-        if (srQasunpou1Data != null && srQasunpou1Data.size() > 0) {
-            BigDecimal dbTsunpouave = srQasunpou1Data.get(0).getTsunave(); //T寸法(AVE)
-            if (dbTsunpouave.compareTo(BigDecimal.ZERO) > 0) {
-                tsunpouave = String.valueOf(dbTsunpouave);
-            }
+        String tsunpou = null;
+        List<SrCknsunpou2> srCknsunpou2Data = loadSrCknsunpou2Data(queryRunnerQcdb, lotNo);
+        if (srCknsunpou2Data != null && srCknsunpou2Data.size() > 0) {
+            BigDecimal dbTsunpou = srCknsunpou2Data.get(0).getT(); //T寸法
+            tsunpou = StringUtil.nullToBlank(dbTsunpou);
         }
         
         // 入力項目の情報を画面にセットする。
@@ -1150,7 +1160,7 @@ public class GXHDO101B038 implements IFormLogic {
         }
 
         // 画面に取得した情報をセットする。(入力項目以外)
-        setViewItemData(processData, lotKbnMasData, ownerMasData, shikakariData, lotNo, syorisuu, tsunpouave);
+        setViewItemData(processData, lotKbnMasData, ownerMasData, shikakariData, lotNo, syorisuu, tsunpou, pastehinmei);
         
         // ﾒｯｷ判定(項目名変更)
         String kcpno = StringUtil.nullToBlank(getMapData(shikakariData, "kcpno"));
@@ -1254,7 +1264,8 @@ public class GXHDO101B038 implements IFormLogic {
      * @param shikakariData 仕掛データ
      * @param lotNo ﾛｯﾄNo
      */
-    private void setViewItemData(ProcessData processData, Map lotKbnMasData, Map ownerMasData, Map shikakariData, String lotNo ,String syorisuu, String tsunpouave) {
+    private void setViewItemData(ProcessData processData, Map lotKbnMasData, Map ownerMasData, Map shikakariData, String lotNo ,
+            String syorisuu, String tsunpouave,String pastehinmei) {
         
         // ロットNo
         this.setItemData(processData, GXHDO101B038Const.LOTNO, lotNo);
@@ -1287,6 +1298,8 @@ public class GXHDO101B038 implements IFormLogic {
         //T寸法
         this.setItemData(processData, GXHDO101B038Const.TSUNPOU, tsunpouave);
 
+        //ﾍﾟｰｽﾄ品名
+        this.setItemData(processData, GXHDO101B038Const.PASTEHINMEI, pastehinmei);
     }
 
     /**
@@ -1426,12 +1439,20 @@ public class GXHDO101B038 implements IFormLogic {
         this.setItemData(processData, GXHDO101B038Const.MAKUATSUNI_MAX, getSrMekkiItemData(GXHDO101B038Const.MAKUATSUNI_MAX, srMekkiData));
         //Ni膜厚(MIN)
         this.setItemData(processData, GXHDO101B038Const.MAKUATSUNI_MIN, getSrMekkiItemData(GXHDO101B038Const.MAKUATSUNI_MIN, srMekkiData));
+        //Ni膜厚(STD)
+        this.setItemData(processData, GXHDO101B038Const.MAKUATSUNI_STD, getSrMekkiItemData(GXHDO101B038Const.MAKUATSUNI_STD, srMekkiData));
+        //Ni膜厚(CV)
+        this.setItemData(processData, GXHDO101B038Const.MAKUATSUNI_CV, getSrMekkiItemData(GXHDO101B038Const.MAKUATSUNI_CV, srMekkiData));
         //Sn膜厚(AVE)
         this.setItemData(processData, GXHDO101B038Const.MAKUATSUSN_AVE, getSrMekkiItemData(GXHDO101B038Const.MAKUATSUSN_AVE, srMekkiData));
         //Sn膜厚(MAX)
         this.setItemData(processData, GXHDO101B038Const.MAKUATSUSN_MAX, getSrMekkiItemData(GXHDO101B038Const.MAKUATSUSN_MAX, srMekkiData));
         //Sn膜厚(MIN)
         this.setItemData(processData, GXHDO101B038Const.MAKUATSUSN_MIN, getSrMekkiItemData(GXHDO101B038Const.MAKUATSUSN_MIN, srMekkiData));
+        //Sn膜厚(STD)
+        this.setItemData(processData, GXHDO101B038Const.MAKUATSUSN_STD, getSrMekkiItemData(GXHDO101B038Const.MAKUATSUSN_STD, srMekkiData));
+        //Sn膜厚(CV)
+        this.setItemData(processData, GXHDO101B038Const.MAKUATSUSN_CV, getSrMekkiItemData(GXHDO101B038Const.MAKUATSUSN_CV, srMekkiData));
         //半田ﾇﾚ性
         this.setItemData(processData, GXHDO101B038Const.NUREKENSAKEKKA, getSrMekkiItemData(GXHDO101B038Const.NUREKENSAKEKKA, srMekkiData));
         //半田耐熱性
@@ -2408,10 +2429,11 @@ public class GXHDO101B038 implements IFormLogic {
                 + " kcpno = ?, ukeiresuu = ?, domekosuu = ?, gouki = ?, tantousya = ?, "
                 + " mekkikaishinichiji = ?, mekkijyoukennia = ?, mekkijyoukenniam = ?, "
                 + " mekkijyoukensna = ?, mekkijyoukensnam = ?, shukkakosuu = ?, "
-                + " budomari = ?, makuatsunimin = ?, makuatsunimax = ?, makuatsuniave = ?, "
-                + " makuatsusnmin = ?, makuatsusnmax = ?, makuatsusnave = ?, nurekensakekka = ?, "
+                + " budomari = ?, makuatsunimin = ?, makuatsunimax = ?, makuatsuniave = ?, makuatsunistd = ?,"
+                + " makuatsusnmin = ?, makuatsusnmax = ?, makuatsusnave = ?, makuatsusnstd = ?,nurekensakekka = ?, "
                 + " tainetsukensakekka = ?, gaikankensakekka = ?, bikou1 = ?, bikou2 = ?, "
-                + " koushinnichiji = ?, domemeisai = ?, sokuteinichiji = ?, kensanichiji = ?, kensatantousya = ?, makuatsutantosya = ?,"
+                + " koushinnichiji = ?, domemeisai = ?, sokuteinichiji = ?,makuatsunicv = ?,makuatsusncv = ?,"
+                + " kensanichiji = ?, kensatantousya = ?, makuatsutantosya = ?,"
                 + " tokuisaki = ?, lotkubuncode = ?, ownercode = ?, ukeiretannijyuryo = ?, "
                 + " ukeiresoujyuryou = ?, mekkibasyo = ?, mekkibasyosetubi = ?, "
                 + " mekkisyuryounichiji = ?, syuryousya = ?, kensatannijyuryo = ?, "
@@ -2521,16 +2543,11 @@ public class GXHDO101B038 implements IFormLogic {
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.MAKUATSUNI_MIN, srMekkiData))); // Ni膜厚(MIN)
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.MAKUATSUNI_MAX, srMekkiData))); // Ni膜厚(MAX)
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.MAKUATSUNI_AVE, srMekkiData))); // Ni膜厚(AVE)
-        if (isInsert) {
-            params.add(null); // Ni膜厚(STD)
-        }
-
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.MAKUATSUNI_STD, srMekkiData))); // Ni膜厚(STD)
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.MAKUATSUSN_MIN, srMekkiData))); // Sn膜厚(MIN)
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.MAKUATSUSN_MAX, srMekkiData))); // Sn膜厚(MAX)
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.MAKUATSUSN_AVE, srMekkiData))); // Sn膜厚(AVE)
-        if (isInsert) {
-            params.add(null); // Sn膜厚(STD)
-        }
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.MAKUATSUSN_STD, srMekkiData))); // Sn膜厚(STD)
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.NUREKENSAKEKKA, srMekkiData))); // 半田ﾇﾚ性
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.TAINETSUKENSAKEKKA, srMekkiData))); // 半田耐熱性
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.GAIKAN, srMekkiData))); // 外観
@@ -2557,15 +2574,15 @@ public class GXHDO101B038 implements IFormLogic {
             params.add(null); // Sn膜厚(CPL)
             params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.SOKUTEI_DAY, srMekkiData),
                 getItemData(itemList, GXHDO101B038Const.SOKUTEI_TIME, srMekkiData))); // 測定日時
-            params.add(null); // Ni膜厚(CV)
-            params.add(null); // Sn膜厚(CV)
         } else {
             params.add(systemTime); //更新日時
             params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B038Const.DOMEMEISAI, srMekkiData))); //使用ﾄﾞｰﾑ明細
             params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.SOKUTEI_DAY, srMekkiData),
                 getItemData(itemList, GXHDO101B038Const.SOKUTEI_TIME, srMekkiData))); // 測定日時
         }
-        
+
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.MAKUATSUNI_CV, srMekkiData))); // Ni膜厚(CV)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.MAKUATSUSN_CV, srMekkiData))); // Sn膜厚(CV)
         params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.KENSA_DAY, srMekkiData),
             getItemData(itemList, GXHDO101B038Const.KENSA_TIME, srMekkiData))); //検査日時
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.KENSA_TANTOUSYA, srMekkiData))); //検査・外観担当者
@@ -2681,10 +2698,11 @@ public class GXHDO101B038 implements IFormLogic {
                 + " kcpno = ?, ukeiresuu = ?, domekosuu = ?, gouki = ?, tantousya = ?, "
                 + " mekkikaishinichiji = ?, mekkijyoukennia = ?, mekkijyoukenniam = ?, "
                 + " mekkijyoukensna = ?, mekkijyoukensnam = ?, shukkakosuu = ?, "
-                + " budomari = ?, makuatsunimin = ?, makuatsunimax = ?, makuatsuniave = ?, "
-                + " makuatsusnmin = ?, makuatsusnmax = ?, makuatsusnave = ?, nurekensakekka = ?, "
+                + " budomari = ?, makuatsunimin = ?, makuatsunimax = ?, makuatsuniave = ?, makuatsunistd = ?, "
+                + " makuatsusnmin = ?, makuatsusnmax = ?, makuatsusnave = ?, makuatsusnstd = ?, nurekensakekka = ?, "
                 + " tainetsukensakekka = ?, gaikankensakekka = ?, bikou1 = ?, bikou2 = ?, "
-                + " koushinnichiji = ?, domemeisai = ?, sokuteinichiji = ?, kensanichiji = ?, kensatantousya = ?, makuatsutantosya = ?, "
+                + " koushinnichiji = ?, domemeisai = ?, sokuteinichiji = ?, makuatsunicv = ?, makuatsusncv = ?,"
+                + " kensanichiji = ?, kensatantousya = ?, makuatsutantosya = ?, "
                 + " tokuisaki = ?, lotkubuncode = ?, ownercode = ?, ukeiretannijyuryo = ?, "
                 + " ukeiresoujyuryou = ?, mekkibasyo = ?, mekkibasyosetubi = ?, "
                 + " mekkisyuryounichiji = ?, syuryousya = ?, kensatannijyuryo = ?, "
@@ -2762,16 +2780,11 @@ public class GXHDO101B038 implements IFormLogic {
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B038Const.MAKUATSUNI_MIN, srMekkiData))); // Ni膜厚(MIN)
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B038Const.MAKUATSUNI_MAX, srMekkiData))); // Ni膜厚(MAX)
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B038Const.MAKUATSUNI_AVE, srMekkiData))); // Ni膜厚(AVE)
-        if (isInsert) {
-            params.add(BigDecimal.ZERO); // Ni膜厚(STD)
-        }
-
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B038Const.MAKUATSUNI_STD, srMekkiData))); // Ni膜厚(STD)
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B038Const.MAKUATSUSN_MIN, srMekkiData))); // Sn膜厚(MIN)
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B038Const.MAKUATSUSN_MAX, srMekkiData))); // Sn膜厚(MAX)
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B038Const.MAKUATSUSN_AVE, srMekkiData))); // Sn膜厚(AVE)
-        if (isInsert) {
-            params.add(BigDecimal.ZERO); // Sn膜厚(STD)
-        }
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B038Const.MAKUATSUSN_STD, srMekkiData))); // Sn膜厚(STD)
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B038Const.NUREKENSAKEKKA, srMekkiData))); // 半田ﾇﾚ性
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B038Const.TAINETSUKENSAKEKKA, srMekkiData))); // 半田耐熱性
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B038Const.GAIKAN, srMekkiData))); // 外観
@@ -2799,8 +2812,6 @@ public class GXHDO101B038 implements IFormLogic {
             //params.add("0000-00-00 00:00:00"); // 測定日時
             params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B038Const.SOKUTEI_DAY, srMekkiData),
                 getItemData(itemList, GXHDO101B038Const.SOKUTEI_TIME, srMekkiData))); // 測定日時
-            params.add(BigDecimal.ZERO); // Ni膜厚(CV)
-            params.add(BigDecimal.ZERO); // Sn膜厚(CV)
         } else {
             params.add(systemTime); //更新日時
             params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B038Const.DOMEMEISAI, srMekkiData))); //使用ﾄﾞｰﾑ明細
@@ -2808,6 +2819,8 @@ public class GXHDO101B038 implements IFormLogic {
                 getItemData(itemList, GXHDO101B038Const.SOKUTEI_TIME, srMekkiData))); // 測定日時
         }
         
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B038Const.MAKUATSUNI_CV, srMekkiData))); // Ni膜厚(CV)
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B038Const.MAKUATSUSN_CV, srMekkiData))); // Sn膜厚(CV)
         params.add(DBUtil.stringToDateObject(getItemData(itemList, GXHDO101B038Const.KENSA_DAY, srMekkiData),
             getItemData(itemList, GXHDO101B038Const.KENSA_TIME, srMekkiData))); //検査日時
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B038Const.KENSA_TANTOUSYA, srMekkiData))); //検査・外観担当者
@@ -3126,6 +3139,12 @@ public class GXHDO101B038 implements IFormLogic {
             // Ni膜厚(MIN)
             case GXHDO101B038Const.MAKUATSUNI_MIN:
                 return StringUtil.nullToBlank(srMekkiData.getMakuatsunimin());
+            // Ni膜厚(STD)
+            case GXHDO101B038Const.MAKUATSUNI_STD:
+                return StringUtil.nullToBlank(srMekkiData.getMakuatsunistd());
+            // Ni膜厚(CV)
+            case GXHDO101B038Const.MAKUATSUNI_CV:
+                return StringUtil.nullToBlank(srMekkiData.getMakuatsunicv());
             // Sn膜厚(AVE)
             case GXHDO101B038Const.MAKUATSUSN_AVE:
                 return StringUtil.nullToBlank(srMekkiData.getMakuatsusnave());
@@ -3135,6 +3154,12 @@ public class GXHDO101B038 implements IFormLogic {
             // Sn膜厚(MIN)
             case GXHDO101B038Const.MAKUATSUSN_MIN:
                 return StringUtil.nullToBlank(srMekkiData.getMakuatsusnmin());
+            // Sn膜厚(STD)
+            case GXHDO101B038Const.MAKUATSUSN_STD:
+                return StringUtil.nullToBlank(srMekkiData.getMakuatsusnstd());
+            // Sn膜厚(CV)
+            case GXHDO101B038Const.MAKUATSUSN_CV:
+                return StringUtil.nullToBlank(srMekkiData.getMakuatsusncv());
             // 半田ﾇﾚ性
             case GXHDO101B038Const.NUREKENSAKEKKA:
                 return StringUtil.nullToBlank(srMekkiData.getNurekensakekka());
@@ -3431,33 +3456,97 @@ public class GXHDO101B038 implements IFormLogic {
      */
     private ProcessData checkBudomariKeisan(ProcessData processData, int syoriKubun) {
         
-        List<FXHDD01> errFxhdd01List = new ArrayList<>();        
+        List<FXHDD01> errFxhdd01List = new ArrayList<>();
+        // 背景色をクリア
+        for (FXHDD01 fxhdd01 : processData.getItemList()) {
+            fxhdd01.setBackColorInput(fxhdd01.getBackColorInputDefault());
+        }
         // ﾁｪｯｸ処理
-        FXHDD01 shukkakosuuItem = getItemRow(processData.getItemList(), GXHDO101B038Const.SHUKKAKOSUU);
-        // 「良品数」ﾁｪｯｸ
-        // 入力されていない場合
-        if(StringUtil.isEmpty(shukkakosuuItem.getValue())){
-            // ｴﾗｰﾒｯｾｰｼﾞを表示し、当処理(歩留まり計算)を終了する。
+//        FXHDD01 shukkakosuuItem = getItemRow(processData.getItemList(), GXHDO101B038Const.SHUKKAKOSUU);
+//        // 「良品数」ﾁｪｯｸ        
+//        //数値ではない場合
+//        if(!NumberUtil.isNumeric(shukkakosuuItem.getValue())){
+//            // ｴﾗｰﾒｯｾｰｼﾞを表示し、当処理(歩留まり計算)を終了する。
+//            if(syoriKubun == 0) {
+//                processData.getInitMessageList().add(MessageUtil.getMessage("XHD-000159"));
+//            } else {
+//                errFxhdd01List = Arrays.asList(shukkakosuuItem);
+//                processData.getErrorMessageInfoList().add(MessageUtil.getErrorMessageInfo("XHD-000159", true, true, errFxhdd01List));
+//            }
+//            return processData;            
+//        }
+        
+        //ｱ.「検査単位重量」のﾁｪｯｸを行う。
+        //    α.「検査単位重量」が0以下もしくは未入力(Null)の場合
+        //        ｴﾗｰﾒｯｾｰｼﾞを表示する。(引数0：画面項目名 「検査単位重量」) 以降の処理を中止。
+        //          ・ｴﾗｰｺｰﾄﾞ:XHD-000037
+        //          ・ｴﾗ-ﾒｯｾｰｼﾞ:{0}が入力されていません。
+        //    β.上記以外の場合
+        //      以降の処理を続行する。
+        //検査単位重量
+        FXHDD01 kensaTannijyuryoItem = getItemRow(processData.getItemList(), GXHDO101B038Const.KENSA_TANNIJYURYO);
+        if(StringUtil.isEmpty(kensaTannijyuryoItem.getValue())){
+            // ｴﾗｰﾒｯｾｰｼﾞを表示する。(引数0：画面項目名 「検査単位重量」) 以降の処理を中止。
             if(syoriKubun == 0) {
-                processData.getInitMessageList().add(MessageUtil.getMessage("XHD-000158"));
+                processData.getInitMessageList().add(MessageUtil.getMessage("XHD-000037",kensaTannijyuryoItem.getLabel1()));
             } else {
-                errFxhdd01List = Arrays.asList(shukkakosuuItem);
-                processData.getErrorMessageInfoList().add(MessageUtil.getErrorMessageInfo("XHD-000158", true, true, errFxhdd01List));
+                errFxhdd01List = Arrays.asList(kensaTannijyuryoItem);
+                processData.getErrorMessageInfoList().add(MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List,kensaTannijyuryoItem.getLabel1()));
             }
             return processData;
         }
-        //数値ではない場合
-        if(!NumberUtil.isNumeric(shukkakosuuItem.getValue())){
-            // ｴﾗｰﾒｯｾｰｼﾞを表示し、当処理(歩留まり計算)を終了する。
+        // 検査単位重量を数値変換
+        BigDecimal kensaTannijyuryo = new BigDecimal(StringUtil.nullToBlank(kensaTannijyuryoItem.getValue()));
+        if((kensaTannijyuryo.compareTo(BigDecimal.ZERO) <= 0 )){
+            // ｴﾗｰﾒｯｾｰｼﾞを表示する。(引数0：画面項目名 「検査単位重量」) 以降の処理を中止。
             if(syoriKubun == 0) {
-                processData.getInitMessageList().add(MessageUtil.getMessage("XHD-000159"));
+                processData.getInitMessageList().add(MessageUtil.getMessage("XHD-000037",kensaTannijyuryoItem.getLabel1()));
             } else {
-                errFxhdd01List = Arrays.asList(shukkakosuuItem);
-                processData.getErrorMessageInfoList().add(MessageUtil.getErrorMessageInfo("XHD-000159", true, true, errFxhdd01List));
+                errFxhdd01List = Arrays.asList(kensaTannijyuryoItem);
+                processData.getErrorMessageInfoList().add(MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List,kensaTannijyuryoItem.getLabel1()));
             }
             return processData;
-            
         }
+        
+        //ｲ.「検査総重量」のﾁｪｯｸを行う
+        //    α.「検査単位重量」が0以下もしくは未入力(Null)の場合
+        //        ｴﾗｰﾒｯｾｰｼﾞを表示する。(引数0：画面項目名 「検査総重量」) 以降の処理を中止。
+        //          ・ｴﾗｰｺｰﾄﾞ:XHD-000037
+        //          ・ｴﾗ-ﾒｯｾｰｼﾞ:{0}が入力されていません。
+        //    β.上記以外の場合
+        //      以降の処理を続行する。
+        
+        // 検査総重量
+        FXHDD01 kensaSoujyuryouItem = getItemRow(processData.getItemList(), GXHDO101B038Const.KENSA_SOUJYURYOU);
+        if(StringUtil.isEmpty(kensaSoujyuryouItem.getValue())){
+            // ｴﾗｰﾒｯｾｰｼﾞを表示する。(引数0：画面項目名 「検査総重量」) 以降の処理を中止。
+            if(syoriKubun == 0) {
+                processData.getInitMessageList().add(MessageUtil.getMessage("XHD-000037",kensaSoujyuryouItem.getLabel1()));
+            } else {
+                errFxhdd01List = Arrays.asList(kensaSoujyuryouItem);
+                processData.getErrorMessageInfoList().add(MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List,kensaSoujyuryouItem.getLabel1()));
+            }
+            return processData;            
+        }
+        // 検査総重量を数値変換
+        BigDecimal kensaSoujyuryou = new BigDecimal(StringUtil.nullToBlank(kensaSoujyuryouItem.getValue()));
+        if((kensaSoujyuryou.compareTo(BigDecimal.ZERO) <= 0 )){
+            // ｴﾗｰﾒｯｾｰｼﾞを表示する。(引数0：画面項目名 「検査総重量」) 以降の処理を中止。
+            if(syoriKubun == 0) {
+                processData.getInitMessageList().add(MessageUtil.getMessage("XHD-000037",kensaSoujyuryouItem.getLabel1()));
+            } else {
+                errFxhdd01List = Arrays.asList(kensaSoujyuryouItem);
+                processData.getErrorMessageInfoList().add(MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List,kensaSoujyuryouItem.getLabel1()));
+            }
+            return processData;            
+        }
+        
+        //ｳ.「良品数」の計算を行う。※良品数が入力されていても上書きする。
+        //  1.　「検査総重量」　÷　「検査単位重量」　×　100
+        //  2.　1の計算結果の小数点を切り捨てする。
+        // 良品数
+        BigDecimal ryouhinsuu = kensaSoujyuryou.divide(kensaTannijyuryo, 2, RoundingMode.DOWN).multiply(new BigDecimal(100));
+        
         //「処理数」ﾁｪｯｸ
         String syorisuuValue = null;
         FXHDD01 itemSyorisuu = getItemRow(processData.getItemList(), GXHDO101B038Const.SYORISUU);
@@ -3490,7 +3579,7 @@ public class GXHDO101B038 implements IFormLogic {
         }
         
         // 「歩留まり」計算処理
-        doBudomariKeisan(processData, syorisuuValue, syoriKubun);
+        doBudomariKeisan(processData, ryouhinsuu , syorisuuValue, syoriKubun);
         return processData;
     }
     
@@ -3498,19 +3587,21 @@ public class GXHDO101B038 implements IFormLogic {
      * 歩留まり計算処理
      *
      * @param processData 処理制御データ
+     * @param ryouhinsuu 良品数
      * @param syorisuu 処理数
      * @param syoriKubun 処理区分:0 画面初期処理、1 歩留まり計算ボタン押下処理
      * @return 処理制御データ
      */
-    private ProcessData doBudomariKeisan(ProcessData processData, String syorisuu, int syoriKubun) {
-        // 良品数
-        String shukkakosuu = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B038Const.SHUKKAKOSUU, null));
+    private ProcessData doBudomariKeisan(ProcessData processData,BigDecimal ryouhinsuu, String syorisuu, int syoriKubun) {               
+        
         // 処理数を数値変換
         BigDecimal decSyorisuu = new BigDecimal(syorisuu);
-        //良品数を数値変換
-        BigDecimal decShukkakosuu = new BigDecimal(shukkakosuu);
-        BigDecimal budomari = decShukkakosuu.divide(decSyorisuu, 4, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)).setScale(2);
+        BigDecimal budomari = ryouhinsuu.divide(decSyorisuu, 4, BigDecimal.ROUND_HALF_UP).multiply(new BigDecimal(100)).setScale(2);
        
+        // 良品数
+        FXHDD01 shukkakosuuItem = getItemRow(processData.getItemList(), GXHDO101B038Const.SHUKKAKOSUU);
+        shukkakosuuItem.setValue(ryouhinsuu.toPlainString());
+        
         String budomariValue = budomari.toPlainString();
         FXHDD01 itemBudomari = getItemRow(processData.getItemList(), GXHDO101B038Const.BUDOMARI);
         itemBudomari.setValue(budomariValue);
@@ -3644,20 +3735,20 @@ public class GXHDO101B038 implements IFormLogic {
         String lotNo3 = lotNo.substring(11, 14);
         
         // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
-        String sql = "SELECT BunkatuNo, GoukiCode, DomeNo, NiA, NiAM, SnA, "
-                + "SnAM, StartNichiji, TonyuSyaCode "
+        String sql = "SELECT MAX(BunkatuNo) AS BunkatuNo, GoukiCode, DomeNo, NiA, NiAM, SnA, "
+                + "SnAM, MIN(StartNichiji) AS StartNichiji, TonyuSyaCode "
                 + "FROM mekki_rireki "
                 + "WHERE Kojyo = ? AND LotNo = ? AND EdaBan = ? "
-                + " ORDER BY BunkatuNo DESC";
+                + " GROUP BY Kojyo, LotNo, EdaBan";
         
         Map mapping = new HashMap<>();
-        mapping.put("BunkatuNo", "bunkatuNo"); // ﾄﾞｰﾑ個数
-        mapping.put("GoukiCode", "goukiCode"); // 号機ｺｰﾄﾞ
-        mapping.put("DomeNo", "domeNo"); // 使用ﾄﾞｰﾑ明細
-        mapping.put("NiA", "niA"); // 条件NI(A)
-        mapping.put("NiAM", "niAM"); // 条件NI(AM)
-        mapping.put("SnA", "snA"); // 条件SN(A)
-        mapping.put("SnAM", "snAM"); // 条件SN(AM)
+        mapping.put("BunkatuNo", "bunkatuNo");       // ﾄﾞｰﾑ個数
+        mapping.put("GoukiCode", "goukiCode");       // 号機ｺｰﾄﾞ
+        mapping.put("DomeNo", "domeNo");             // 使用ﾄﾞｰﾑ明細
+        mapping.put("NiA", "niA");                   // 条件NI(A)
+        mapping.put("NiAM", "niAM");                 // 条件NI(AM)
+        mapping.put("SnA", "snA");                   // 条件SN(A)
+        mapping.put("SnAM", "snAM");                 // 条件SN(AM)
         mapping.put("StartNichiji", "startNichiji"); // ﾒｯｷ開始日時
         mapping.put("TonyuSyaCode", "tonyuSyaCode"); // 開始担当者
         
@@ -3668,10 +3759,44 @@ public class GXHDO101B038 implements IFormLogic {
         List<Object> params = new ArrayList<>();
         params.add(lotNo1);
         params.add(lotNo2);
-        params.add(lotNo3);                
+        params.add(lotNo3);
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerEquipment.query(sql, beanHandler, params.toArray());
     }
     
+    /**
+     * [磁器寸法2]から、ﾃﾞｰﾀを取得
+     * @param queryRunnerEquipment オブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 取得データ
+     * @throws SQLException 
+     */
+     private List<SrCknsunpou2> loadSrCknsunpou2Data(QueryRunner queryRunnerEquipment, String lotNo) throws SQLException {
+         
+        String lotNo1 = lotNo.substring(0, 3);
+        String lotNo2 = lotNo.substring(3, 11);
+        String lotNo3 = lotNo.substring(11, 14);
+        
+        // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+        String sql = "SELECT MAX(t) t "
+                + "FROM sr_cknsunpou2 "
+                + "WHERE Kojyo = ? AND LotNo = ? AND EdaBan = ? ";
+        
+        Map mapping = new HashMap<>();
+        mapping.put("t", "t"); // T寸法
+        
+        BeanProcessor beanProcessor = new BeanProcessor(mapping);
+        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+        ResultSetHandler<List<SrCknsunpou2>> beanHandler = new BeanListHandler<>(SrCknsunpou2.class, rowProcessor);
+
+        List<Object> params = new ArrayList<>();
+        params.add(lotNo1);
+        params.add(lotNo2);
+        params.add(lotNo3);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerEquipment.query(sql, beanHandler, params.toArray());
+    }
 }

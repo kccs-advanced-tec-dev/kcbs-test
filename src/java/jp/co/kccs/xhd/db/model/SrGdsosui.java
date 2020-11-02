@@ -3,6 +3,7 @@
  */
 package jp.co.kccs.xhd.db.model;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
@@ -14,6 +15,12 @@ import java.sql.Timestamp;
  * 計画書No	K1811-DS001<br>
  * 変更者	863 K.Zhang<br>
  * 変更理由	新規作成<br>
+ * <br>
+ * <br>
+ * 変更日	2020/09/08<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjinyan<br>
+ * 変更理由	仕様変更<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -45,7 +52,7 @@ public class SrGdsosui {
     private String kcpno;
 
     /**
-     * 処理数
+     * 受入れ良品数
      */
     private Integer syorisuu;
 
@@ -129,6 +136,16 @@ public class SrGdsosui {
      */
     private Integer revision;
 
+    /** 
+     * 受入れ単位重量 
+     */ 
+    private BigDecimal ukeiretannijyuryo; 
+ 		    
+    /** 
+     * 受入れ総重量 
+     */ 
+    private BigDecimal ukeiresoujyuryou; 
+                   
     /**
      * 削除ﾌﾗｸﾞ
      */
@@ -426,6 +443,34 @@ public class SrGdsosui {
      */
     public void setRevision(Integer revision) {
         this.revision = revision;
+    }
+
+    /**
+     * @return ukeiretannijyuryo
+     */
+    public BigDecimal getUkeiretannijyuryo() {
+        return ukeiretannijyuryo;
+    }
+
+    /**
+     * @param ukeiretannijyuryo セットする ukeiretannijyuryo
+     */
+    public void setUkeiretannijyuryo(BigDecimal ukeiretannijyuryo) {
+        this.ukeiretannijyuryo = ukeiretannijyuryo;
+    }
+
+    /**
+     * @return ukeiretannijyuryo
+     */
+    public BigDecimal getUkeiresoujyuryou() {
+        return ukeiresoujyuryou;
+    }
+
+    /**
+     * @param ukeiresoujyuryou セットする ukeiresoujyuryou
+     */
+    public void setUkeiresoujyuryou(BigDecimal ukeiresoujyuryou) {
+        this.ukeiresoujyuryou = ukeiresoujyuryou;
     }
 
     /**

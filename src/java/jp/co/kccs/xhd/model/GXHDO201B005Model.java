@@ -21,6 +21,12 @@ import java.sql.Timestamp;
  * 変更者        KCSS K.Jo<br>
  * 変更理由      項目追加・変更<br>
  * <br>
+ * <br>
+ * 変更日	2020/09/21<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -135,7 +141,37 @@ public class GXHDO201B005Model {
     /** B層補正量 */
     private BigDecimal bsouhoseiryou = null;
     /** Y軸補正量 */
-    private Long yjikuhoseiryou = null;    
+    private Long yjikuhoseiryou = null;
+    /** 下端子開始日時 */
+    private Timestamp shitatanshikaisinichiji = null;
+    /** 下端子終了日時 */
+    private Timestamp shitatanshisyuryonichiji = null;
+    /** 下端子担当者 */
+    private String shitatanshitantosya = "";
+    /** 下端子確認者 */
+    private String shitatanshikakuninsya = "";
+    /** 下端子備考 */
+    private String shitatanshibiko = "";
+    /** 上端子開始日時 */
+    private Timestamp uwatanshikaisinichiji = null;
+    /** 上端子終了日時 */
+    private Timestamp uwatanshisyuryonichiji = null;
+    /** 上端子担当者 */
+    private String uwatanshitantosya = "";
+    /** 上端子確認者 */
+    private String uwatanshikakuninsya = "";
+    /** 上端子備考 */
+    private String uwatanshibiko = "";
+    /** ﾍｯﾄﾞNo */
+    private String headno = "";
+    /** SUS板枚数 */
+    private Long susitamaisu = null;
+    /** 最上層担当者 */
+    private String lastlayertantosya = "";
+    /** 最上層備考 */
+    private String lastlayerbiko = "";
+    /** 電極製版ﾛｯﾄNo */
+    private String elotno = "";
 
     /**
      * ﾛｯﾄNo.
@@ -983,6 +1019,246 @@ public class GXHDO201B005Model {
      */
     public void setYjikuhoseiryou(Long yjikuhoseiryou) {
         this.yjikuhoseiryou = yjikuhoseiryou;
+    }
+
+    /**
+     * 下端子開始日時
+     * @return shitatanshikaisinichiji
+     */
+    public Timestamp getShitatanshikaisinichiji() {
+        return shitatanshikaisinichiji;
+    }
+
+    /**
+     * 下端子開始日時
+     * @param shitatanshikaisinichiji 
+     */
+    public void setShitatanshikaisinichiji(Timestamp shitatanshikaisinichiji) {
+        this.shitatanshikaisinichiji = shitatanshikaisinichiji;
+    }
+
+    /**
+     * 下端子終了日時
+     * @return shitatanshisyuryonichiji
+     */
+    public Timestamp getShitatanshisyuryonichiji() {
+        return shitatanshisyuryonichiji;
+    }
+
+    /**
+     * 下端子終了日時
+     * @param shitatanshisyuryonichiji 
+     */
+    public void setShitatanshisyuryonichiji(Timestamp shitatanshisyuryonichiji) {
+        this.shitatanshisyuryonichiji = shitatanshisyuryonichiji;
+    }
+
+    /**
+     * 下端子担当者
+     * @return shitatanshitantosya
+     */
+    public String getShitatanshitantosya() {
+        return shitatanshitantosya;
+    }
+
+    /**
+     * 下端子担当者
+     * @param shitatanshitantosya 
+     */
+    public void setShitatanshitantosya(String shitatanshitantosya) {
+        this.shitatanshitantosya = shitatanshitantosya;
+    }
+
+    /**
+     * 下端子確認者
+     * @return shitatanshikakuninsya
+     */
+    public String getShitatanshikakuninsya() {
+        return shitatanshikakuninsya;
+    }
+
+    /**
+     * 下端子確認者
+     * @param shitatanshikakuninsya 
+     */
+    public void setShitatanshikakuninsya(String shitatanshikakuninsya) {
+        this.shitatanshikakuninsya = shitatanshikakuninsya;
+    }
+
+    /**
+     * 下端子備考
+     * @return shitatanshibiko
+     */
+    public String getShitatanshibiko() {
+        return shitatanshibiko;
+    }
+
+    /**
+     * 下端子備考
+     * @param shitatanshibiko 
+     */
+    public void setShitatanshibiko(String shitatanshibiko) {
+        this.shitatanshibiko = shitatanshibiko;
+    }
+
+    /**
+     * 上端子開始日時
+     * @return uwatanshikaisinichiji
+     */
+    public Timestamp getUwatanshikaisinichiji() {
+        return uwatanshikaisinichiji;
+    }
+
+    /**
+     * 上端子開始日時
+     * @param uwatanshikaisinichiji 
+     */
+    public void setUwatanshikaisinichiji(Timestamp uwatanshikaisinichiji) {
+        this.uwatanshikaisinichiji = uwatanshikaisinichiji;
+    }
+
+    /**
+     * 上端子終了日時
+     * @return uwatanshisyuryonichiji
+     */
+    public Timestamp getUwatanshisyuryonichiji() {
+        return uwatanshisyuryonichiji;
+    }
+
+    /**
+     * 上端子終了日時
+     * @param uwatanshisyuryonichiji 
+     */
+    public void setUwatanshisyuryonichiji(Timestamp uwatanshisyuryonichiji) {
+        this.uwatanshisyuryonichiji = uwatanshisyuryonichiji;
+    }
+
+    /**
+     * 上端子担当者
+     * @return uwatanshitantosya
+     */
+    public String getUwatanshitantosya() {
+        return uwatanshitantosya;
+    }
+
+    /**
+     * 上端子担当者
+     * @param uwatanshitantosya 
+     */
+    public void setUwatanshitantosya(String uwatanshitantosya) {
+        this.uwatanshitantosya = uwatanshitantosya;
+    }
+
+    /**
+     * 上端子確認者
+     * @return uwatanshikakuninsya
+     */
+    public String getUwatanshikakuninsya() {
+        return uwatanshikakuninsya;
+    }
+
+    /**
+     * 上端子確認者
+     * @param uwatanshikakuninsya 
+     */
+    public void setUwatanshikakuninsya(String uwatanshikakuninsya) {
+        this.uwatanshikakuninsya = uwatanshikakuninsya;
+    }
+
+    /**
+     * 上端子備考
+     * @return uwatanshibiko
+     */
+    public String getUwatanshibiko() {
+        return uwatanshibiko;
+    }
+
+    /**
+     * 上端子備考
+     * @param uwatanshibiko 
+     */
+    public void setUwatanshibiko(String uwatanshibiko) {
+        this.uwatanshibiko = uwatanshibiko;
+    }
+
+    /**
+     * ﾍｯﾄﾞNo
+     * @return headno
+     */
+    public String getHeadno() {
+        return headno;
+    }
+
+    /**
+     * ﾍｯﾄﾞNo
+     * @param headno 
+     */
+    public void setHeadno(String headno) {
+        this.headno = headno;
+    }
+
+    /**
+     * SUS板枚数
+     * @return susitamaisu
+     */
+    public Long getSusitamaisu() {
+        return susitamaisu;
+    }
+
+    /**
+     * SUS板枚数
+     * @param susitamaisu 
+     */
+    public void setSusitamaisu(Long susitamaisu) {
+        this.susitamaisu = susitamaisu;
+    }
+
+    /**
+     * 最上層担当者
+     * @return lastlayertantosya
+     */
+    public String getLastlayertantosya() {
+        return lastlayertantosya;
+    }
+
+    /**
+     * 最上層担当者
+     * @param lastlayertantosya 
+     */
+    public void setLastlayertantosya(String lastlayertantosya) {
+        this.lastlayertantosya = lastlayertantosya;
+    }
+
+    /**
+     * 最上層備考
+     * @return lastlayerbiko
+     */
+    public String getLastlayerbiko() {
+        return lastlayerbiko;
+    }
+
+    /**
+     * 最上層備考
+     * @param lastlayerbiko 
+     */
+    public void setLastlayerbiko(String lastlayerbiko) {
+        this.lastlayerbiko = lastlayerbiko;
+    }
+
+    /**
+     * 電極製版ﾛｯﾄNo
+     * @return elotno
+     */
+    public String getElotno() {
+        return elotno;
+    }
+
+    /**
+     * 電極製版ﾛｯﾄNo
+     * @param elotno 
+     */
+    public void setElotno(String elotno) {
+        this.elotno = elotno;
     }
 
 }

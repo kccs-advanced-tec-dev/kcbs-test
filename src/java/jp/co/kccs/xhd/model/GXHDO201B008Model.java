@@ -17,6 +17,12 @@ import java.sql.Timestamp;
  * 変更者       KCSS K.Jo<br>
  * 変更理由     新規作成<br>
  * <br>
+ * <br>
+ * 変更日	2020/09/17<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -156,6 +162,11 @@ public class GXHDO201B008Model implements Serializable {
      * 静水圧ﾌﾟﾚｽ号機
      */
     private String seisuiatupressgouki = "";
+
+    /**
+     * 真空時間
+     */
+    private Integer sinkuujikan = null;
 
     /**
      * 予熱時間1
@@ -579,6 +590,20 @@ public class GXHDO201B008Model implements Serializable {
      */
     public void setSeisuiatupressgouki(String seisuiatupressgouki) {
         this.seisuiatupressgouki = seisuiatupressgouki;
+    }
+
+    /**
+     * @return sinkuujikan
+     */
+    public Integer getSinkuujikan() {
+        return sinkuujikan;
+    }
+
+    /**
+     * @param sinkuujikan セットする sinkuujikan
+     */
+    public void setSinkuujikan(Integer sinkuujikan) {
+        this.sinkuujikan = sinkuujikan;
     }
 
     /**

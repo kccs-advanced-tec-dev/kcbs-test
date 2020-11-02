@@ -13,6 +13,11 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	863 F.Zhang<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/09/13<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	改修対応<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -66,6 +71,11 @@ public class GXHDO101B038Const {
      * T寸法
      */
     public static final String TSUNPOU = "sr_mekki_tsunpou";
+    
+    /**
+     * ﾍﾟｰｽﾄ品名
+     */
+    public static final String PASTEHINMEI = "sr_mekki_pastehinmei";
     
     /**
      * ﾒｯｷ場所
@@ -158,6 +168,16 @@ public class GXHDO101B038Const {
     public static final String MAKUATSUNI_MIN = "sr_mekki_makuatsuni_min";
     
     /**
+     * Ni膜厚(STD)
+     */
+    public static final String MAKUATSUNI_STD = "sr_mekki_makuatsuni_std";
+    
+    /**
+     * Ni膜厚(CV)
+     */
+    public static final String MAKUATSUNI_CV = "sr_mekki_makuatsuni_cv";
+    
+    /**
      * Sn膜厚(AVE)
      */
     public static final String MAKUATSUSN_AVE = "sr_mekki_makuatsusn_ave";
@@ -171,6 +191,16 @@ public class GXHDO101B038Const {
      * Sn膜厚(MIN)
      */
     public static final String MAKUATSUSN_MIN = "sr_mekki_makuatsusn_min";
+    
+    /**
+     * Sn膜厚(STD)
+     */
+    public static final String MAKUATSUSN_STD = "sr_mekki_makuatsusn_std";
+    
+    /**
+     * Sn膜厚(CV)
+     */
+    public static final String MAKUATSUSN_CV = "sr_mekki_makuatsusn_cv";
     
     /**
      * 半田ﾇﾚ性
@@ -290,7 +320,7 @@ public class GXHDO101B038Const {
     /**
      * 膜厚担当者
      */
-    public static final String MAKUATSU_TANTOSHA = "sr_makuatsutantosya";    
+    public static final String MAKUATSU_TANTOSHA = "sr_mekki_makuatsutantosya";    
 
     /**
      * 備考1

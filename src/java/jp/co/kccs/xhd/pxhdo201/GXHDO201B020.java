@@ -61,6 +61,12 @@ import org.primefaces.context.RequestContext;
  * 変更者	863 F.Zhang<br>
  * 変更理由	新規作成<br>
  * <br>
+ * <br>
+ * 変更日	2020/09/17<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -651,6 +657,7 @@ public class GXHDO201B020 implements Serializable {
                     + ", bjyokensyusokudo"
                     + ", bgoki"
                     + ", bjikan"
+                    + ", kenmajikantani"
                     + ", potsuu"
                     + ", chiphahenkakunin"
                     + ", potkakunin"
@@ -706,7 +713,8 @@ public class GXHDO201B020 implements Serializable {
             mapping.put("bjyokensetteimode", "bjyokensetteimode");       // ﾊﾞﾚﾙ条件設定ﾓｰﾄﾞ
             mapping.put("bjyokensyusokudo", "kenmakikaitensuu");         // 研磨機回転数(rpm)
             mapping.put("bgoki", "kenmagoki");                           // 研磨号機
-            mapping.put("bjikan", "kenmajikan");                         // 研磨時間(分)
+            mapping.put("bjikan", "kenmajikan");                         // 研磨時間
+            mapping.put("kenmajikantani", "kenmajikantani");             // 研磨時間単位
             mapping.put("potsuu", "pottosuu");                           // ﾎﾟｯﾄ数(ﾎﾟｯﾄ)
             mapping.put("chiphahenkakunin", "chepuhaenkakunin");         // ﾁｯﾌﾟ破片確認
             mapping.put("potkakunin", "pottonaikakunin");                // ﾎﾟｯﾄ内確認
