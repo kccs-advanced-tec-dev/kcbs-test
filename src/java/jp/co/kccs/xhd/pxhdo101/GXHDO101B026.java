@@ -70,10 +70,10 @@ import org.apache.commons.dbutils.DbUtils;
  * 変更者      863 zhangjinyan<br>
  * 変更理由    仕様変更<br>
  * <br>
- * 変更日	2020/09/21<br>
- * 計画書No	MB2008-DK001<br>
- * 変更者	KCSS D.Yanagida<br>
- * 変更理由	ロット混合対応<br>
+ * 変更日	   2020/09/21<br>
+ * 計画書No	   MB2008-DK001<br>
+ * 変更者	   KCSS D.Yanagida<br>
+ * 変更理由	   ロット混合対応<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -745,8 +745,8 @@ public class GXHDO101B026 implements IFormLogic {
                 // 品質DB登録実績更新処理
                 updateFxhdd03(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_TOROKUZUMI, systemTime, paramJissekino);
             }
-
-            // 仮登録状態の場合、仮登録のデータを削除する。
+            
+            // 仮登録状態の場合、寸法データを取得して仮登録のデータを削除する。
             SrTerm tmpSrTerm = null;
             if (JOTAI_FLG_KARI_TOROKU.equals(processData.getInitJotaiFlg())) {
                 
@@ -2033,7 +2033,21 @@ public class GXHDO101B026 implements IFormLogic {
                 + ",startdatetime,enddatetime,psunpouave2,dipjigusize,dipjigumaisuu,dipgogaikankekka,bikou1,bikou2,lsunpouave2,lsunpoumin2,lsunpoumax2"
                 + ",psunpoumin2,psunpoumax2,setubisyurui,tofukaisuu,hojijigu,nentyakusheetlot1,nentyakusheetlot2,tofujigutorikosuu,StartTantosyacode"
                 + ",StartKakuninsyacode,juryou,syorikosuu,EndTantosyacode,pasteatsumi1ji,pasteatsumi2ji,atsumiinkua,atsumiinkub,tanmenatsumi2,kaisuu,torokunichiji"
-                + ",kosinnichiji,revision,deleteflag "
+                + ",kosinnichiji,revision,deleteflag,"
+                + "psunpou2a,psunpou2b,psunpou2c,psunpou2d,psunpou2e,lsunpou2a,lsunpou2b,lsunpou2c,lsunpou2d,"
+                + "lsunpou2e,psunpou2f,psunpou2g,psunpou2h,psunpou2i,psunpou2j,lsunpou2f,lsunpou2g,lsunpou2h,"
+                + "lsunpou2i,lsunpou2j,psunpou2k,psunpou2l,psunpou2m,psunpou2n,psunpou2o,psunpou2p,psunpou2q,"
+                + "psunpou2r,psunpou2s,psunpou2t,psunpou2u,psunpou2v,psunpou2w,psunpou2x,psunpou2y,psunpou2z,"
+                + "psunpou2aa,psunpou2ab,psunpou2ac,psunpou2ad,psunpou2ae,psunpou2af,psunpou2ag,psunpou2ah,"
+                + "psunpou2ai,psunpou2aj,psunpou2ak,psunpou2al,psunpou2am,psunpou2an,lsunpou2k,lsunpou2l,"
+                + "lsunpou2m,lsunpou2n,lsunpou2o,lsunpou2p,lsunpou2q,lsunpou2r,lsunpou2s,lsunpou2t,lsunpou2u,"
+                + "lsunpou2v,lsunpou2w,lsunpou2x,lsunpou2y,lsunpou2z,lsunpou2aa,lsunpou2ab,lsunpou2ac,lsunpou2ad,"
+                + "lsunpou2ae,lsunpou2af,lsunpou2ag,lsunpou2ah,lsunpou2ai,lsunpou2aj,lsunpou2ak,lsunpou2al,"
+                + "lsunpou2am,lsunpou2an,wtsunpou2a,wtsunpou2b,wtsunpou2c,wtsunpou2d,wtsunpou2e,wtsunpou2f,"
+                + "wtsunpou2g,wtsunpou2h,wtsunpou2i,wtsunpou2j,wtsunpou2k,wtsunpou2l,wtsunpou2m,wtsunpou2n,"
+                + "wtsunpou2o,wtsunpou2p,wtsunpou2q,wtsunpou2r,wtsunpou2s,wtsunpou2t,wtsunpou2u,wtsunpou2v,"
+                + "wtsunpou2w,wtsunpou2x,wtsunpou2y,wtsunpou2z,wtsunpou2aa,wtsunpou2ab,wtsunpou2ac,wtsunpou2ad,"
+                + "wtsunpou2ae,wtsunpou2af,wtsunpou2ag,wtsunpou2ah,wtsunpou2ai,wtsunpou2aj,wtsunpou2ak,wtsunpou2al,wtsunpou2am,wtsunpou2an "
                 + " FROM tmp_sr_term "
                 + " WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND kaisuu = ? AND deleteflag = ? ";
         // revisionが入っている場合、条件に追加
@@ -2110,6 +2124,126 @@ public class GXHDO101B026 implements IFormLogic {
         mapping.put("kosinnichiji", "kosinnichiji");                   //更新日時
         mapping.put("revision", "revision");                           //revision
         mapping.put("deleteflag", "deleteflag");                       //削除ﾌﾗｸﾞ
+        mapping.put("psunpou2a","psunpou2a");
+        mapping.put("psunpou2b","psunpou2b");
+        mapping.put("psunpou2c","psunpou2c");
+        mapping.put("psunpou2d","psunpou2d");
+        mapping.put("psunpou2e","psunpou2e");
+        mapping.put("lsunpou2a","lsunpou2a");
+        mapping.put("lsunpou2b","lsunpou2b");
+        mapping.put("lsunpou2c","lsunpou2c");
+        mapping.put("lsunpou2d","lsunpou2d");
+        mapping.put("lsunpou2e","lsunpou2e");
+        mapping.put("psunpou2f","psunpou2f");
+        mapping.put("psunpou2g","psunpou2g");
+        mapping.put("psunpou2h","psunpou2h");
+        mapping.put("psunpou2i","psunpou2i");
+        mapping.put("psunpou2j","psunpou2j");
+        mapping.put("lsunpou2f","lsunpou2f");
+        mapping.put("lsunpou2g","lsunpou2g");
+        mapping.put("lsunpou2h","lsunpou2h");
+        mapping.put("lsunpou2i","lsunpou2i");
+        mapping.put("lsunpou2j","lsunpou2j");
+        mapping.put("psunpou2k","psunpou2k");
+        mapping.put("psunpou2l","psunpou2l");
+        mapping.put("psunpou2m","psunpou2m");
+        mapping.put("psunpou2n","psunpou2n");
+        mapping.put("psunpou2o","psunpou2o");
+        mapping.put("psunpou2p","psunpou2p");
+        mapping.put("psunpou2q","psunpou2q");
+        mapping.put("psunpou2r","psunpou2r");
+        mapping.put("psunpou2s","psunpou2s");
+        mapping.put("psunpou2t","psunpou2t");
+        mapping.put("psunpou2u","psunpou2u");
+        mapping.put("psunpou2v","psunpou2v");
+        mapping.put("psunpou2w","psunpou2w");
+        mapping.put("psunpou2x","psunpou2x");
+        mapping.put("psunpou2y","psunpou2y");
+        mapping.put("psunpou2z","psunpou2z");
+        mapping.put("psunpou2aa","psunpou2aa");
+        mapping.put("psunpou2ab","psunpou2ab");
+        mapping.put("psunpou2ac","psunpou2ac");
+        mapping.put("psunpou2ad","psunpou2ad");
+        mapping.put("psunpou2ae","psunpou2ae");
+        mapping.put("psunpou2af","psunpou2af");
+        mapping.put("psunpou2ag","psunpou2ag");
+        mapping.put("psunpou2ah","psunpou2ah");
+        mapping.put("psunpou2ai","psunpou2ai");
+        mapping.put("psunpou2aj","psunpou2aj");
+        mapping.put("psunpou2ak","psunpou2ak");
+        mapping.put("psunpou2al","psunpou2al");
+        mapping.put("psunpou2am","psunpou2am");
+        mapping.put("psunpou2an","psunpou2an");
+        mapping.put("lsunpou2k","lsunpou2k");
+        mapping.put("lsunpou2l","lsunpou2l");
+        mapping.put("lsunpou2m","lsunpou2m");
+        mapping.put("lsunpou2n","lsunpou2n");
+        mapping.put("lsunpou2o","lsunpou2o");
+        mapping.put("lsunpou2p","lsunpou2p");
+        mapping.put("lsunpou2q","lsunpou2q");
+        mapping.put("lsunpou2r","lsunpou2r");
+        mapping.put("lsunpou2s","lsunpou2s");
+        mapping.put("lsunpou2t","lsunpou2t");
+        mapping.put("lsunpou2u","lsunpou2u");
+        mapping.put("lsunpou2v","lsunpou2v");
+        mapping.put("lsunpou2w","lsunpou2w");
+        mapping.put("lsunpou2x","lsunpou2x");
+        mapping.put("lsunpou2y","lsunpou2y");
+        mapping.put("lsunpou2z","lsunpou2z");
+        mapping.put("lsunpou2aa","lsunpou2aa");
+        mapping.put("lsunpou2ab","lsunpou2ab");
+        mapping.put("lsunpou2ac","lsunpou2ac");
+        mapping.put("lsunpou2ad","lsunpou2ad");
+        mapping.put("lsunpou2ae","lsunpou2ae");
+        mapping.put("lsunpou2af","lsunpou2af");
+        mapping.put("lsunpou2ag","lsunpou2ag");
+        mapping.put("lsunpou2ah","lsunpou2ah");
+        mapping.put("lsunpou2ai","lsunpou2ai");
+        mapping.put("lsunpou2aj","lsunpou2aj");
+        mapping.put("lsunpou2ak","lsunpou2ak");
+        mapping.put("lsunpou2al","lsunpou2al");
+        mapping.put("lsunpou2am","lsunpou2am");
+        mapping.put("lsunpou2an","lsunpou2an");
+        mapping.put("wtsunpou2a","wtsunpou2a");
+        mapping.put("wtsunpou2b","wtsunpou2b");
+        mapping.put("wtsunpou2c","wtsunpou2c");
+        mapping.put("wtsunpou2d","wtsunpou2d");
+        mapping.put("wtsunpou2e","wtsunpou2e");
+        mapping.put("wtsunpou2f","wtsunpou2f");
+        mapping.put("wtsunpou2g","wtsunpou2g");
+        mapping.put("wtsunpou2h","wtsunpou2h");
+        mapping.put("wtsunpou2i","wtsunpou2i");
+        mapping.put("wtsunpou2j","wtsunpou2j");
+        mapping.put("wtsunpou2k","wtsunpou2k");
+        mapping.put("wtsunpou2l","wtsunpou2l");
+        mapping.put("wtsunpou2m","wtsunpou2m");
+        mapping.put("wtsunpou2n","wtsunpou2n");
+        mapping.put("wtsunpou2o","wtsunpou2o");
+        mapping.put("wtsunpou2p","wtsunpou2p");
+        mapping.put("wtsunpou2q","wtsunpou2q");
+        mapping.put("wtsunpou2r","wtsunpou2r");
+        mapping.put("wtsunpou2s","wtsunpou2s");
+        mapping.put("wtsunpou2t","wtsunpou2t");
+        mapping.put("wtsunpou2u","wtsunpou2u");
+        mapping.put("wtsunpou2v","wtsunpou2v");
+        mapping.put("wtsunpou2w","wtsunpou2w");
+        mapping.put("wtsunpou2x","wtsunpou2x");
+        mapping.put("wtsunpou2y","wtsunpou2y");
+        mapping.put("wtsunpou2z","wtsunpou2z");
+        mapping.put("wtsunpou2aa","wtsunpou2aa");
+        mapping.put("wtsunpou2ab","wtsunpou2ab");
+        mapping.put("wtsunpou2ac","wtsunpou2ac");
+        mapping.put("wtsunpou2ad","wtsunpou2ad");
+        mapping.put("wtsunpou2ae","wtsunpou2ae");
+        mapping.put("wtsunpou2af","wtsunpou2af");
+        mapping.put("wtsunpou2ag","wtsunpou2ag");
+        mapping.put("wtsunpou2ah","wtsunpou2ah");
+        mapping.put("wtsunpou2ai","wtsunpou2ai");
+        mapping.put("wtsunpou2aj","wtsunpou2aj");
+        mapping.put("wtsunpou2ak","wtsunpou2ak");
+        mapping.put("wtsunpou2al","wtsunpou2al");
+        mapping.put("wtsunpou2am","wtsunpou2am");
+        mapping.put("wtsunpou2an","wtsunpou2an");
 
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
@@ -2739,20 +2873,36 @@ public class GXHDO101B026 implements IFormLogic {
             params.add(0);  // L寸法5OLD
             params.add(0);  // 端面厚みOLD
             params.add("");  // 判定OLD
-            params.add(0);  // P寸法1
-            params.add(0);  // P寸法2
-            params.add(0);  // P寸法3
-            params.add(0);  // P寸法4
-            params.add(0);  // P寸法5
+            if (srTermData != null) {
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2a())));  // P寸法1
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2b())));  // P寸法2
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2c())));  // P寸法3
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2d())));  // P寸法4
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2e())));  // P寸法5
+            } else {
+                params.add(0);  // P寸法1
+                params.add(0);  // P寸法2
+                params.add(0);  // P寸法3
+                params.add(0);  // P寸法4
+                params.add(0);  // P寸法5
+            }
         }
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B026Const.PSUNPOUAVE2, srTermData)));  // P寸法AVE
         if (isInsert) {
             params.add(0);  // P寸法RANGE
-            params.add(0);  // L寸法1
-            params.add(0);  // L寸法2
-            params.add(0);  // L寸法3
-            params.add(0);  // L寸法4
-            params.add(0);  // L寸法5
+            if (srTermData != null) {
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2a())));  // L寸法1
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2b())));  // L寸法2
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2c())));  // L寸法3
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2d())));  // L寸法4
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2e())));  // L寸法5
+            } else {
+                params.add(0);  // L寸法1
+                params.add(0);  // L寸法2
+                params.add(0);  // L寸法3
+                params.add(0);  // L寸法4
+                params.add(0);  // L寸法5
+            }
             //params.add(0);  // 端面厚み
             params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B026Const.TANMENATSUMI2, srTermData)));  // 端面厚み
             params.add("");  // 判定
@@ -2782,16 +2932,29 @@ public class GXHDO101B026 implements IFormLogic {
             params.add(0);  // L寸法8OLD
             params.add(0);  // L寸法9OLD
             params.add(0);  // L寸法10OLD
-            params.add(0);  // P寸法6
-            params.add(0);  // P寸法7
-            params.add(0);  // P寸法8
-            params.add(0);  // P寸法9
-            params.add(0);  // P寸法10
-            params.add(0);  // L寸法6
-            params.add(0);  // L寸法7
-            params.add(0);  // L寸法8
-            params.add(0);  // L寸法9
-            params.add(0);  // L寸法10
+            if (srTermData != null) {
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2f())));  // P寸法6
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2g())));  // P寸法7
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2h())));  // P寸法8
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2i())));  // P寸法9
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2j())));  // P寸法10
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2f())));  // L寸法6
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2g())));  // L寸法7
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2h())));  // L寸法8
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2i())));  // L寸法9
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2j())));  // L寸法10
+            } else {
+                params.add(0);  // P寸法6
+                params.add(0);  // P寸法7
+                params.add(0);  // P寸法8
+                params.add(0);  // P寸法9
+                params.add(0);  // P寸法10
+                params.add(0);  // L寸法6
+                params.add(0);  // L寸法7
+                params.add(0);  // L寸法8
+                params.add(0);  // L寸法9
+                params.add(0);  // L寸法10
+            }
             params.add(0);  // L寸法AVEOLD
         }
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B026Const.LSUNPOUAVE2, srTermData)));  // L寸法AVE
@@ -2807,111 +2970,217 @@ public class GXHDO101B026 implements IFormLogic {
             params.add(0);  // 2次DIPｽｷｰｼﾞ設定
             params.add(0);  // 2次ﾌﾞﾛｯﾄｸﾘｱﾗﾝｽ設定
             params.add(0);  // 2次ﾚﾍﾞﾗｰ設定
-            params.add(0);  // P寸法11
-            params.add(0);  // P寸法12
-            params.add(0);  // P寸法13
-            params.add(0);  // P寸法14
-            params.add(0);  // P寸法15
-            params.add(0);  // P寸法16
-            params.add(0);  // P寸法17
-            params.add(0);  // P寸法18
-            params.add(0);  // P寸法19
-            params.add(0);  // P寸法20
-            params.add(0);  // P寸法21
-            params.add(0);  // P寸法22
-            params.add(0);  // P寸法23
-            params.add(0);  // P寸法24
-            params.add(0);  // P寸法25
-            params.add(0);  // P寸法26
-            params.add(0);  // P寸法27
-            params.add(0);  // P寸法28
-            params.add(0);  // P寸法29
-            params.add(0);  // P寸法30
-            params.add(0);  // P寸法31
-            params.add(0);  // P寸法32
-            params.add(0);  // P寸法33
-            params.add(0);  // P寸法34
-            params.add(0);  // P寸法35
-            params.add(0);  // P寸法36
-            params.add(0);  // P寸法37
-            params.add(0);  // P寸法38
-            params.add(0);  // P寸法39
-            params.add(0);  // P寸法40
-            params.add(0);  // L寸法11
-            params.add(0);  // L寸法12
-            params.add(0);  // L寸法13
-            params.add(0);  // L寸法14
-            params.add(0);  // L寸法15
-            params.add(0);  // L寸法16
-            params.add(0);  // L寸法17
-            params.add(0);  // L寸法18
-            params.add(0);  // L寸法19
-            params.add(0);  // L寸法20
-            params.add(0);  // L寸法21
-            params.add(0);  // L寸法22
-            params.add(0);  // L寸法23
-            params.add(0);  // L寸法24
-            params.add(0);  // L寸法25
-            params.add(0);  // L寸法26
-            params.add(0);  // L寸法27
-            params.add(0);  // L寸法28
-            params.add(0);  // L寸法29
-            params.add(0);  // L寸法30
-            params.add(0);  // L寸法31
-            params.add(0);  // L寸法32
-            params.add(0);  // L寸法33
-            params.add(0);  // L寸法34
-            params.add(0);  // L寸法35
-            params.add(0);  // L寸法36
-            params.add(0);  // L寸法37
-            params.add(0);  // L寸法38
-            params.add(0);  // L寸法39
-            params.add(0);  // L寸法40
+            if (srTermData != null) {
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2k())));  // P寸法11
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2l())));  // P寸法12
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2m())));  // P寸法13
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2n())));  // P寸法14
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2o())));  // P寸法15
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2p())));  // P寸法16
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2q())));  // P寸法17
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2r())));  // P寸法18
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2s())));  // P寸法19
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2t())));  // P寸法20
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2u())));  // P寸法21
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2v())));  // P寸法22
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2w())));  // P寸法23
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2x())));  // P寸法24
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2y())));  // P寸法25
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2z())));  // P寸法26
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2aa())));  // P寸法27
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2ab())));  // P寸法28
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2ac())));  // P寸法29
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2ad())));  // P寸法30
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2ae())));  // P寸法31
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2af())));  // P寸法32
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2ag())));  // P寸法33
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2ah())));  // P寸法34
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2ai())));  // P寸法35
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2aj())));  // P寸法36
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2ak())));  // P寸法37
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2al())));  // P寸法38
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2am())));  // P寸法39
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getPsunpou2an())));  // P寸法40
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2k())));  // L寸法11
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2l())));  // L寸法12
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2m())));  // L寸法13
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2n())));  // L寸法14
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2o())));  // L寸法15
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2p())));  // L寸法16
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2q())));  // L寸法17
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2r())));  // L寸法18
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2s())));  // L寸法19
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2t())));  // L寸法20
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2u())));  // L寸法21
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2v())));  // L寸法22
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2w())));  // L寸法23
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2x())));  // L寸法24
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2y())));  // L寸法25
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2z())));  // L寸法26
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2aa())));  // L寸法27
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2ab())));  // L寸法28
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2ac())));  // L寸法29
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2ad())));  // L寸法30
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2ae())));  // L寸法31
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2af())));  // L寸法32
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2ag())));  // L寸法33
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2ah())));  // L寸法34
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2ai())));  // L寸法35
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2aj())));  // L寸法36
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2ak())));  // L寸法37
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2al())));  // L寸法38
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2am())));  // L寸法39
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getLsunpou2an())));  // L寸法40
+            } else {
+                params.add(0);  // P寸法11
+                params.add(0);  // P寸法12
+                params.add(0);  // P寸法13
+                params.add(0);  // P寸法14
+                params.add(0);  // P寸法15
+                params.add(0);  // P寸法16
+                params.add(0);  // P寸法17
+                params.add(0);  // P寸法18
+                params.add(0);  // P寸法19
+                params.add(0);  // P寸法20
+                params.add(0);  // P寸法21
+                params.add(0);  // P寸法22
+                params.add(0);  // P寸法23
+                params.add(0);  // P寸法24
+                params.add(0);  // P寸法25
+                params.add(0);  // P寸法26
+                params.add(0);  // P寸法27
+                params.add(0);  // P寸法28
+                params.add(0);  // P寸法29
+                params.add(0);  // P寸法30
+                params.add(0);  // P寸法31
+                params.add(0);  // P寸法32
+                params.add(0);  // P寸法33
+                params.add(0);  // P寸法34
+                params.add(0);  // P寸法35
+                params.add(0);  // P寸法36
+                params.add(0);  // P寸法37
+                params.add(0);  // P寸法38
+                params.add(0);  // P寸法39
+                params.add(0);  // P寸法40
+                params.add(0);  // L寸法11
+                params.add(0);  // L寸法12
+                params.add(0);  // L寸法13
+                params.add(0);  // L寸法14
+                params.add(0);  // L寸法15
+                params.add(0);  // L寸法16
+                params.add(0);  // L寸法17
+                params.add(0);  // L寸法18
+                params.add(0);  // L寸法19
+                params.add(0);  // L寸法20
+                params.add(0);  // L寸法21
+                params.add(0);  // L寸法22
+                params.add(0);  // L寸法23
+                params.add(0);  // L寸法24
+                params.add(0);  // L寸法25
+                params.add(0);  // L寸法26
+                params.add(0);  // L寸法27
+                params.add(0);  // L寸法28
+                params.add(0);  // L寸法29
+                params.add(0);  // L寸法30
+                params.add(0);  // L寸法31
+                params.add(0);  // L寸法32
+                params.add(0);  // L寸法33
+                params.add(0);  // L寸法34
+                params.add(0);  // L寸法35
+                params.add(0);  // L寸法36
+                params.add(0);  // L寸法37
+                params.add(0);  // L寸法38
+                params.add(0);  // L寸法39
+                params.add(0);  // L寸法40
+            }
             params.add(0);  // L寸法RANGE
         }
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B026Const.LSUNPOUMIN2, srTermData)));  // L寸法MIN
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B026Const.LSUNPOUMAX2, srTermData)));  // L寸法MAX
         if (isInsert) {
-            params.add(0);  // WT寸法1
-            params.add(0);  // WT寸法2
-            params.add(0);  // WT寸法3
-            params.add(0);  // WT寸法4
-            params.add(0);  // WT寸法5
-            params.add(0);  // WT寸法6
-            params.add(0);  // WT寸法7
-            params.add(0);  // WT寸法8
-            params.add(0);  // WT寸法9
-            params.add(0);  // WT寸法10
-            params.add(0);  // WT寸法11
-            params.add(0);  // WT寸法12
-            params.add(0);  // WT寸法13
-            params.add(0);  // WT寸法14
-            params.add(0);  // WT寸法15
-            params.add(0);  // WT寸法16
-            params.add(0);  // WT寸法17
-            params.add(0);  // WT寸法18
-            params.add(0);  // WT寸法19
-            params.add(0);  // WT寸法20
-            params.add(0);  // WT寸法21
-            params.add(0);  // WT寸法22
-            params.add(0);  // WT寸法23
-            params.add(0);  // WT寸法24
-            params.add(0);  // WT寸法25
-            params.add(0);  // WT寸法26
-            params.add(0);  // WT寸法27
-            params.add(0);  // WT寸法28
-            params.add(0);  // WT寸法29
-            params.add(0);  // WT寸法30
-            params.add(0);  // WT寸法31
-            params.add(0);  // WT寸法32
-            params.add(0);  // WT寸法33
-            params.add(0);  // WT寸法34
-            params.add(0);  // WT寸法35
-            params.add(0);  // WT寸法36
-            params.add(0);  // WT寸法37
-            params.add(0);  // WT寸法38
-            params.add(0);  // WT寸法39
-            params.add(0);  // WT寸法40
+            if (srTermData != null) {
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2a())));  // WT寸法1
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2b())));  // WT寸法2
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2c())));  // WT寸法3
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2d())));  // WT寸法4
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2e())));  // WT寸法5
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2f())));  // WT寸法6
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2g())));  // WT寸法7
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2h())));  // WT寸法8
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2i())));  // WT寸法9
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2j())));  // WT寸法10
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2k())));  // WT寸法11
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2l())));  // WT寸法12
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2m())));  // WT寸法13
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2n())));  // WT寸法14
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2o())));  // WT寸法15
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2p())));  // WT寸法16
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2q())));  // WT寸法17
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2r())));  // WT寸法18
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2s())));  // WT寸法19
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2t())));  // WT寸法20
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2u())));  // WT寸法21
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2v())));  // WT寸法22
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2w())));  // WT寸法23
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2x())));  // WT寸法24
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2y())));  // WT寸法25
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2z())));  // WT寸法26
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2aa())));  // WT寸法27
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2ab())));  // WT寸法28
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2ac())));  // WT寸法29
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2ad())));  // WT寸法30
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2ae())));  // WT寸法31
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2af())));  // WT寸法32
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2ag())));  // WT寸法33
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2ah())));  // WT寸法34
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2ai())));  // WT寸法35
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2aj())));  // WT寸法36
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2ak())));  // WT寸法37
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2al())));  // WT寸法38
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2am())));  // WT寸法39
+                params.add(DBUtil.stringToIntObject(StringUtil.nullToBlank(srTermData.getWtsunpou2an())));  // WT寸法40
+            } else {
+                params.add(0);  // WT寸法1
+                params.add(0);  // WT寸法2
+                params.add(0);  // WT寸法3
+                params.add(0);  // WT寸法4
+                params.add(0);  // WT寸法5
+                params.add(0);  // WT寸法6
+                params.add(0);  // WT寸法7
+                params.add(0);  // WT寸法8
+                params.add(0);  // WT寸法9
+                params.add(0);  // WT寸法10
+                params.add(0);  // WT寸法11
+                params.add(0);  // WT寸法12
+                params.add(0);  // WT寸法13
+                params.add(0);  // WT寸法14
+                params.add(0);  // WT寸法15
+                params.add(0);  // WT寸法16
+                params.add(0);  // WT寸法17
+                params.add(0);  // WT寸法18
+                params.add(0);  // WT寸法19
+                params.add(0);  // WT寸法20
+                params.add(0);  // WT寸法21
+                params.add(0);  // WT寸法22
+                params.add(0);  // WT寸法23
+                params.add(0);  // WT寸法24
+                params.add(0);  // WT寸法25
+                params.add(0);  // WT寸法26
+                params.add(0);  // WT寸法27
+                params.add(0);  // WT寸法28
+                params.add(0);  // WT寸法29
+                params.add(0);  // WT寸法30
+                params.add(0);  // WT寸法31
+                params.add(0);  // WT寸法32
+                params.add(0);  // WT寸法33
+                params.add(0);  // WT寸法34
+                params.add(0);  // WT寸法35
+                params.add(0);  // WT寸法36
+                params.add(0);  // WT寸法37
+                params.add(0);  // WT寸法38
+                params.add(0);  // WT寸法39
+                params.add(0);  // WT寸法40
+            }
             params.add(0);  // WT寸法AVE
             params.add(0);  // WT寸法RANGE
             params.add(0);  // WT寸法MIN
@@ -3440,4 +3709,173 @@ public class GXHDO101B026 implements IFormLogic {
 
         return processDate;
     }
+    /**
+     * [外部電極塗布_仮登録]から、寸法ﾃﾞｰﾀを取得
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private List<SrTerm> loadTmpSrTermSun(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, int jissekino) throws SQLException {
+        
+        String sql = "SELECT "
+                + " psunpou2a,psunpou2b,psunpou2c,psunpou2d,psunpou2e,lsunpou2a,lsunpou2b,lsunpou2c,lsunpou2d,"
+                + "lsunpou2e,psunpou2f,psunpou2g,psunpou2h,psunpou2i,psunpou2j,lsunpou2f,lsunpou2g,lsunpou2h,"
+                + "lsunpou2i,lsunpou2j,psunpou2k,psunpou2l,psunpou2m,psunpou2n,psunpou2o,psunpou2p,psunpou2q,"
+                + "psunpou2r,psunpou2s,psunpou2t,psunpou2u,psunpou2v,psunpou2w,psunpou2x,psunpou2y,psunpou2z,"
+                + "psunpou2aa,psunpou2ab,psunpou2ac,psunpou2ad,psunpou2ae,psunpou2af,psunpou2ag,psunpou2ah,"
+                + "psunpou2ai,psunpou2aj,psunpou2ak,psunpou2al,psunpou2am,psunpou2an,lsunpou2k,lsunpou2l,"
+                + "lsunpou2m,lsunpou2n,lsunpou2o,lsunpou2p,lsunpou2q,lsunpou2r,lsunpou2s,lsunpou2t,lsunpou2u,"
+                + "lsunpou2v,lsunpou2w,lsunpou2x,lsunpou2y,lsunpou2z,lsunpou2aa,lsunpou2ab,lsunpou2ac,lsunpou2ad,"
+                + "lsunpou2ae,lsunpou2af,lsunpou2ag,lsunpou2ah,lsunpou2ai,lsunpou2aj,lsunpou2ak,lsunpou2al,"
+                + "lsunpou2am,lsunpou2an,wtsunpou2a,wtsunpou2b,wtsunpou2c,wtsunpou2d,wtsunpou2e,wtsunpou2f,"
+                + "wtsunpou2g,wtsunpou2h,wtsunpou2i,wtsunpou2j,wtsunpou2k,wtsunpou2l,wtsunpou2m,wtsunpou2n,"
+                + "wtsunpou2o,wtsunpou2p,wtsunpou2q,wtsunpou2r,wtsunpou2s,wtsunpou2t,wtsunpou2u,wtsunpou2v,"
+                + "wtsunpou2w,wtsunpou2x,wtsunpou2y,wtsunpou2z,wtsunpou2aa,wtsunpou2ab,wtsunpou2ac,wtsunpou2ad,"
+                + "wtsunpou2ae,wtsunpou2af,wtsunpou2ag,wtsunpou2ah,wtsunpou2ai,wtsunpou2aj,wtsunpou2ak,wtsunpou2al,wtsunpou2am,wtsunpou2an "
+                + " FROM tmp_sr_term "
+                + " WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND kaisuu = ? AND deleteflag = ? ";
+    
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(jissekino);
+        params.add(0);
+
+        Map<String, String> mapping = new HashMap<>();
+        mapping.put("psunpou2a","psunpou2a");
+        mapping.put("psunpou2b","psunpou2b");
+        mapping.put("psunpou2c","psunpou2c");
+        mapping.put("psunpou2d","psunpou2d");
+        mapping.put("psunpou2e","psunpou2e");
+        mapping.put("lsunpou2a","lsunpou2a");
+        mapping.put("lsunpou2b","lsunpou2b");
+        mapping.put("lsunpou2c","lsunpou2c");
+        mapping.put("lsunpou2d","lsunpou2d");
+        mapping.put("lsunpou2e","lsunpou2e");
+        mapping.put("psunpou2f","psunpou2f");
+        mapping.put("psunpou2g","psunpou2g");
+        mapping.put("psunpou2h","psunpou2h");
+        mapping.put("psunpou2i","psunpou2i");
+        mapping.put("psunpou2j","psunpou2j");
+        mapping.put("lsunpou2f","lsunpou2f");
+        mapping.put("lsunpou2g","lsunpou2g");
+        mapping.put("lsunpou2h","lsunpou2h");
+        mapping.put("lsunpou2i","lsunpou2i");
+        mapping.put("lsunpou2j","lsunpou2j");
+        mapping.put("psunpou2k","psunpou2k");
+        mapping.put("psunpou2l","psunpou2l");
+        mapping.put("psunpou2m","psunpou2m");
+        mapping.put("psunpou2n","psunpou2n");
+        mapping.put("psunpou2o","psunpou2o");
+        mapping.put("psunpou2p","psunpou2p");
+        mapping.put("psunpou2q","psunpou2q");
+        mapping.put("psunpou2r","psunpou2r");
+        mapping.put("psunpou2s","psunpou2s");
+        mapping.put("psunpou2t","psunpou2t");
+        mapping.put("psunpou2u","psunpou2u");
+        mapping.put("psunpou2v","psunpou2v");
+        mapping.put("psunpou2w","psunpou2w");
+        mapping.put("psunpou2x","psunpou2x");
+        mapping.put("psunpou2y","psunpou2y");
+        mapping.put("psunpou2z","psunpou2z");
+        mapping.put("psunpou2aa","psunpou2aa");
+        mapping.put("psunpou2ab","psunpou2ab");
+        mapping.put("psunpou2ac","psunpou2ac");
+        mapping.put("psunpou2ad","psunpou2ad");
+        mapping.put("psunpou2ae","psunpou2ae");
+        mapping.put("psunpou2af","psunpou2af");
+        mapping.put("psunpou2ag","psunpou2ag");
+        mapping.put("psunpou2ah","psunpou2ah");
+        mapping.put("psunpou2ai","psunpou2ai");
+        mapping.put("psunpou2aj","psunpou2aj");
+        mapping.put("psunpou2ak","psunpou2ak");
+        mapping.put("psunpou2al","psunpou2al");
+        mapping.put("psunpou2am","psunpou2am");
+        mapping.put("psunpou2an","psunpou2an");
+        mapping.put("lsunpou2k","lsunpou2k");
+        mapping.put("lsunpou2l","lsunpou2l");
+        mapping.put("lsunpou2m","lsunpou2m");
+        mapping.put("lsunpou2n","lsunpou2n");
+        mapping.put("lsunpou2o","lsunpou2o");
+        mapping.put("lsunpou2p","lsunpou2p");
+        mapping.put("lsunpou2q","lsunpou2q");
+        mapping.put("lsunpou2r","lsunpou2r");
+        mapping.put("lsunpou2s","lsunpou2s");
+        mapping.put("lsunpou2t","lsunpou2t");
+        mapping.put("lsunpou2u","lsunpou2u");
+        mapping.put("lsunpou2v","lsunpou2v");
+        mapping.put("lsunpou2w","lsunpou2w");
+        mapping.put("lsunpou2x","lsunpou2x");
+        mapping.put("lsunpou2y","lsunpou2y");
+        mapping.put("lsunpou2z","lsunpou2z");
+        mapping.put("lsunpou2aa","lsunpou2aa");
+        mapping.put("lsunpou2ab","lsunpou2ab");
+        mapping.put("lsunpou2ac","lsunpou2ac");
+        mapping.put("lsunpou2ad","lsunpou2ad");
+        mapping.put("lsunpou2ae","lsunpou2ae");
+        mapping.put("lsunpou2af","lsunpou2af");
+        mapping.put("lsunpou2ag","lsunpou2ag");
+        mapping.put("lsunpou2ah","lsunpou2ah");
+        mapping.put("lsunpou2ai","lsunpou2ai");
+        mapping.put("lsunpou2aj","lsunpou2aj");
+        mapping.put("lsunpou2ak","lsunpou2ak");
+        mapping.put("lsunpou2al","lsunpou2al");
+        mapping.put("lsunpou2am","lsunpou2am");
+        mapping.put("lsunpou2an","lsunpou2an");
+        mapping.put("wtsunpou2a","wtsunpou2a");
+        mapping.put("wtsunpou2b","wtsunpou2b");
+        mapping.put("wtsunpou2c","wtsunpou2c");
+        mapping.put("wtsunpou2d","wtsunpou2d");
+        mapping.put("wtsunpou2e","wtsunpou2e");
+        mapping.put("wtsunpou2f","wtsunpou2f");
+        mapping.put("wtsunpou2g","wtsunpou2g");
+        mapping.put("wtsunpou2h","wtsunpou2h");
+        mapping.put("wtsunpou2i","wtsunpou2i");
+        mapping.put("wtsunpou2j","wtsunpou2j");
+        mapping.put("wtsunpou2k","wtsunpou2k");
+        mapping.put("wtsunpou2l","wtsunpou2l");
+        mapping.put("wtsunpou2m","wtsunpou2m");
+        mapping.put("wtsunpou2n","wtsunpou2n");
+        mapping.put("wtsunpou2o","wtsunpou2o");
+        mapping.put("wtsunpou2p","wtsunpou2p");
+        mapping.put("wtsunpou2q","wtsunpou2q");
+        mapping.put("wtsunpou2r","wtsunpou2r");
+        mapping.put("wtsunpou2s","wtsunpou2s");
+        mapping.put("wtsunpou2t","wtsunpou2t");
+        mapping.put("wtsunpou2u","wtsunpou2u");
+        mapping.put("wtsunpou2v","wtsunpou2v");
+        mapping.put("wtsunpou2w","wtsunpou2w");
+        mapping.put("wtsunpou2x","wtsunpou2x");
+        mapping.put("wtsunpou2y","wtsunpou2y");
+        mapping.put("wtsunpou2z","wtsunpou2z");
+        mapping.put("wtsunpou2aa","wtsunpou2aa");
+        mapping.put("wtsunpou2ab","wtsunpou2ab");
+        mapping.put("wtsunpou2ac","wtsunpou2ac");
+        mapping.put("wtsunpou2ad","wtsunpou2ad");
+        mapping.put("wtsunpou2ae","wtsunpou2ae");
+        mapping.put("wtsunpou2af","wtsunpou2af");
+        mapping.put("wtsunpou2ag","wtsunpou2ag");
+        mapping.put("wtsunpou2ah","wtsunpou2ah");
+        mapping.put("wtsunpou2ai","wtsunpou2ai");
+        mapping.put("wtsunpou2aj","wtsunpou2aj");
+        mapping.put("wtsunpou2ak","wtsunpou2ak");
+        mapping.put("wtsunpou2al","wtsunpou2al");
+        mapping.put("wtsunpou2am","wtsunpou2am");
+        mapping.put("wtsunpou2an","wtsunpou2an");
+
+        BeanProcessor beanProcessor = new BeanProcessor(mapping);
+        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+        ResultSetHandler<List<SrTerm>> beanHandler = new BeanListHandler<>(SrTerm.class, rowProcessor);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, beanHandler, params.toArray());
+    }
+
 }

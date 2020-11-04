@@ -1712,6 +1712,11 @@ public class GXHDO101A implements Serializable {
                         addIdx--; //メニューが追加できない場合はデクリメント
                     }
                     break;
+                case "ﾌﾙｲ選別":
+                    if (!addMenu(menuListGXHDO101, addCountMap, ++addIdx, fxhdm01JikiQC, "")) {
+                        addIdx--; //メニューが追加できない場合はデクリメント
+                    }
+                    break;
             }
         }
 
