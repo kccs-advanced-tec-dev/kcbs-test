@@ -166,7 +166,7 @@
                             </div>
                         </p:tab>
                         <p:tab title="耐電圧設定条件" titleStyle="font-size:0.9em;" id="tab2">   
-                            <div class="tab_div">
+                            <div class="tab_div" style="overflow: auto;">
                                 <p:panelGrid style="width: 100%;border: 1px;">
                                     <p:row class="taidenatsu_table_header_tr" style="border-bottom-style: hidden;">
                                         <p:column style="text-align: center;" colspan="8" >
@@ -182,6 +182,12 @@
                                         </p:column>
                                         <p:column style="border-right-style: hidden; ">
                                             <h:outputText value="判定値" />
+                                        </p:column>
+                                        <p:column style="border-right-style: hidden; ">
+                                            <h:outputText value="判定値(低)" />
+                                        </p:column>
+                                        <p:column style="border-right-style: hidden; white-space: nowrap; ">
+                                            <h:outputText value="判定値 単位" />
                                         </p:column>
                                         <p:column>
                                             <h:outputText value="充電時間" />
@@ -221,7 +227,36 @@
                                                            inputStyle="font-size:#{beanGXHDO101C042B.hanteichi1.fontSizeInput}px;
                                                            color:#{beanGXHDO101C042B.hanteichi1.fontColorInput}; background:#{beanGXHDO101C042B.hanteichi1.backColorInput};#{beanGXHDO101C042B.hanteichi1.customStyleInput}">
                                             </p:inputNumber>
-                                            <h:outputText value="A" styleClass="taidenatsu_table_label"/>
+                                        </p:column>
+                                        <p:column style="border-right-style: hidden; ">
+                                            <p:inputText id="taidenatsuHanteichilowT1" styleClass="taidenatsu_table_text"
+                                                         rendered="#{beanGXHDO101C042B.hanteichi1low.renderInputText}" value="#{beanGXHDO101C042B.hanteichi1low.value}" 
+                                                         maxlength="#{beanGXHDO101C042B.hanteichi1low.displayMaxLength}" 
+                                                         style="width:#{beanGXHDO101C042B.hanteichi1low.displayMaxLength}em; font-size:#{beanGXHDO101C042B.hanteichi1low.fontSizeInput}px;
+                                                         color:#{beanGXHDO101C042B.hanteichi1low.fontColorInput};background:#{beanGXHDO101C042B.hanteichi1low.backColorInput};#{beanGXHDO101C042B.hanteichi1low.customStyleInput}">
+                                            </p:inputText>
+                                            <p:inputNumber id="taidenatsuHanteichilowN1" inputStyleClass="taidenatsu_table_number_text"
+                                                           rendered="#{beanGXHDO101C042B.hanteichi1low.renderInputNumber}" value="#{beanGXHDO101C042B.hanteichi1low.value}" 
+                                                           decimalPlaces="#{beanGXHDO101C042B.hanteichi1low.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042B.hanteichi1low.numberMaxValue}" minValue="#{beanGXHDO101C042B.hanteichi1low.numberMinValue}" 
+                                                           thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042B.hanteichi1low.displayMaxLength}"
+                                                           inputStyle="font-size:#{beanGXHDO101C042B.hanteichi1low.fontSizeInput}px;
+                                                           color:#{beanGXHDO101C042B.hanteichi1low.fontColorInput}; background:#{beanGXHDO101C042B.hanteichi1low.backColorInput};#{beanGXHDO101C042B.hanteichi1low.customStyleInput}">
+                                            </p:inputNumber>
+                                        </p:column>
+                                        <p:column style="border-right-style: hidden; ">
+                                            <p:inputText id="taidenatsuHanteichitaniT1" styleClass="taidenatsu_table_text"
+                                                         rendered="#{beanGXHDO101C042B.hanteichi1tani.renderInputText}" value="#{beanGXHDO101C042B.hanteichi1tani.value}" 
+                                                         maxlength="#{beanGXHDO101C042B.hanteichi1tani.displayMaxLength}" 
+                                                         style="width:#{beanGXHDO101C042B.hanteichi1tani.displayMaxLength}em; font-size:#{beanGXHDO101C042B.hanteichi1tani.fontSizeInput}px;
+                                                         color:#{beanGXHDO101C042B.hanteichi1tani.fontColorInput};background:#{beanGXHDO101C042B.hanteichi1tani.backColorInput};#{beanGXHDO101C042B.hanteichi1tani.customStyleInput}">
+                                            </p:inputText>
+                                            <p:inputNumber id="taidenatsuHanteichitaniN1" inputStyleClass="taidenatsu_table_number_text"
+                                                           rendered="#{beanGXHDO101C042B.hanteichi1tani.renderInputNumber}" value="#{beanGXHDO101C042B.hanteichi1tani.value}" 
+                                                           decimalPlaces="#{beanGXHDO101C042B.hanteichi1tani.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042B.hanteichi1tani.numberMaxValue}" minValue="#{beanGXHDO101C042B.hanteichi1tani.numberMinValue}" 
+                                                           thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042B.hanteichi1tani.displayMaxLength}"
+                                                           inputStyle="font-size:#{beanGXHDO101C042B.hanteichi1tani.fontSizeInput}px;
+                                                           color:#{beanGXHDO101C042B.hanteichi1tani.fontColorInput}; background:#{beanGXHDO101C042B.hanteichi1tani.backColorInput};#{beanGXHDO101C042B.hanteichi1tani.customStyleInput}">
+                                            </p:inputNumber>
                                         </p:column>
                                         <p:column>
                                             <p:inputText id="taidenatsuJudenTimeT1" styleClass="taidenatsu_table_text"
@@ -275,7 +310,36 @@
                                                            inputStyle="font-size:#{beanGXHDO101C042B.hanteichi2.fontSizeInput}px;
                                                            color:#{beanGXHDO101C042B.hanteichi2.fontColorInput}; background:#{beanGXHDO101C042B.hanteichi2.backColorInput};#{beanGXHDO101C042B.hanteichi2.customStyleInput}">
                                             </p:inputNumber>
-                                            <h:outputText value="A" styleClass="taidenatsu_table_label"/>
+                                        </p:column>
+                                        <p:column style="border-right-style: hidden; ">
+                                            <p:inputText id="taidenatsuHanteichilowT2" styleClass="taidenatsu_table_text"
+                                                         rendered="#{beanGXHDO101C042B.hanteichi2low.renderInputText}" value="#{beanGXHDO101C042B.hanteichi2low.value}" 
+                                                         maxlength="#{beanGXHDO101C042B.hanteichi2low.displayMaxLength}" 
+                                                         style="width:#{beanGXHDO101C042B.hanteichi2low.displayMaxLength}em; font-size:#{beanGXHDO101C042B.hanteichi2low.fontSizeInput}px;
+                                                         color:#{beanGXHDO101C042B.hanteichi2low.fontColorInput};background:#{beanGXHDO101C042B.hanteichi2low.backColorInput};#{beanGXHDO101C042B.hanteichi2low.customStyleInput}">
+                                            </p:inputText>
+                                            <p:inputNumber id="taidenatsuHanteichilowN2" inputStyleClass="taidenatsu_table_number_text"
+                                                           rendered="#{beanGXHDO101C042B.hanteichi2low.renderInputNumber}" value="#{beanGXHDO101C042B.hanteichi2low.value}" 
+                                                           decimalPlaces="#{beanGXHDO101C042B.hanteichi2low.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042B.hanteichi2low.numberMaxValue}" minValue="#{beanGXHDO101C042B.hanteichi2low.numberMinValue}" 
+                                                           thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042B.hanteichi2low.displayMaxLength}"
+                                                           inputStyle="font-size:#{beanGXHDO101C042B.hanteichi2low.fontSizeInput}px;
+                                                           color:#{beanGXHDO101C042B.hanteichi2low.fontColorInput}; background:#{beanGXHDO101C042B.hanteichi2low.backColorInput};#{beanGXHDO101C042B.hanteichi2low.customStyleInput}">
+                                            </p:inputNumber>
+                                        </p:column>
+                                        <p:column style="border-right-style: hidden; ">
+                                            <p:inputText id="taidenatsuHanteichitaniT2" styleClass="taidenatsu_table_text"
+                                                         rendered="#{beanGXHDO101C042B.hanteichi2tani.renderInputText}" value="#{beanGXHDO101C042B.hanteichi2tani.value}" 
+                                                         maxlength="#{beanGXHDO101C042B.hanteichi2tani.displayMaxLength}" 
+                                                         style="width:#{beanGXHDO101C042B.hanteichi2tani.displayMaxLength}em; font-size:#{beanGXHDO101C042B.hanteichi2tani.fontSizeInput}px;
+                                                         color:#{beanGXHDO101C042B.hanteichi2tani.fontColorInput};background:#{beanGXHDO101C042B.hanteichi2tani.backColorInput};#{beanGXHDO101C042B.hanteichi2tani.customStyleInput}">
+                                            </p:inputText>
+                                            <p:inputNumber id="taidenatsuHanteichitaniN2" inputStyleClass="taidenatsu_table_number_text"
+                                                           rendered="#{beanGXHDO101C042B.hanteichi2tani.renderInputNumber}" value="#{beanGXHDO101C042B.hanteichi2tani.value}" 
+                                                           decimalPlaces="#{beanGXHDO101C042B.hanteichi2tani.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042B.hanteichi2tani.numberMaxValue}" minValue="#{beanGXHDO101C042B.hanteichi2tani.numberMinValue}" 
+                                                           thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042B.hanteichi2tani.displayMaxLength}"
+                                                           inputStyle="font-size:#{beanGXHDO101C042B.hanteichi2tani.fontSizeInput}px;
+                                                           color:#{beanGXHDO101C042B.hanteichi2tani.fontColorInput}; background:#{beanGXHDO101C042B.hanteichi2tani.backColorInput};#{beanGXHDO101C042B.hanteichi2tani.customStyleInput}">
+                                            </p:inputNumber>
                                         </p:column>
                                         <p:column>
                                             <p:inputText id="taidenatsuJudenTimeT2" styleClass="taidenatsu_table_text"
@@ -328,7 +392,36 @@
                                                            inputStyle="font-size:#{beanGXHDO101C042B.hanteichi3.fontSizeInput}px;
                                                            color:#{beanGXHDO101C042B.hanteichi3.fontColorInput}; background:#{beanGXHDO101C042B.hanteichi3.backColorInput};#{beanGXHDO101C042B.hanteichi3.customStyleInput}">
                                             </p:inputNumber>
-                                            <h:outputText value="A" styleClass="taidenatsu_table_label"/>
+                                        </p:column>
+                                        <p:column style="border-right-style: hidden; ">
+                                            <p:inputText id="taidenatsuHanteichilowT3" styleClass="taidenatsu_table_text"
+                                                         rendered="#{beanGXHDO101C042B.hanteichi3low.renderInputText}" value="#{beanGXHDO101C042B.hanteichi3low.value}" 
+                                                         maxlength="#{beanGXHDO101C042B.hanteichi3low.displayMaxLength}" 
+                                                         style="width:#{beanGXHDO101C042B.hanteichi3low.displayMaxLength}em; font-size:#{beanGXHDO101C042B.hanteichi3low.fontSizeInput}px;
+                                                         color:#{beanGXHDO101C042B.hanteichi3low.fontColorInput};background:#{beanGXHDO101C042B.hanteichi3low.backColorInput};#{beanGXHDO101C042B.hanteichi3low.customStyleInput}">
+                                            </p:inputText>
+                                            <p:inputNumber id="taidenatsuHanteichilowN3" inputStyleClass="taidenatsu_table_number_text"
+                                                           rendered="#{beanGXHDO101C042B.hanteichi3low.renderInputNumber}" value="#{beanGXHDO101C042B.hanteichi3low.value}" 
+                                                           decimalPlaces="#{beanGXHDO101C042B.hanteichi3low.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042B.hanteichi3low.numberMaxValue}" minValue="#{beanGXHDO101C042B.hanteichi3low.numberMinValue}" 
+                                                           thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042B.hanteichi3low.displayMaxLength}"
+                                                           inputStyle="font-size:#{beanGXHDO101C042B.hanteichi3low.fontSizeInput}px;
+                                                           color:#{beanGXHDO101C042B.hanteichi3low.fontColorInput}; background:#{beanGXHDO101C042B.hanteichi3low.backColorInput};#{beanGXHDO101C042B.hanteichi3low.customStyleInput}">
+                                            </p:inputNumber>
+                                        </p:column>
+                                        <p:column style="border-right-style: hidden; ">
+                                            <p:inputText id="taidenatsuHanteichitaniT3" styleClass="taidenatsu_table_text"
+                                                         rendered="#{beanGXHDO101C042B.hanteichi3tani.renderInputText}" value="#{beanGXHDO101C042B.hanteichi3tani.value}" 
+                                                         maxlength="#{beanGXHDO101C042B.hanteichi3tani.displayMaxLength}" 
+                                                         style="width:#{beanGXHDO101C042B.hanteichi3tani.displayMaxLength}em; font-size:#{beanGXHDO101C042B.hanteichi3tani.fontSizeInput}px;
+                                                         color:#{beanGXHDO101C042B.hanteichi3tani.fontColorInput};background:#{beanGXHDO101C042B.hanteichi3tani.backColorInput};#{beanGXHDO101C042B.hanteichi3tani.customStyleInput}">
+                                            </p:inputText>
+                                            <p:inputNumber id="taidenatsuHanteichitaniN3" inputStyleClass="taidenatsu_table_number_text"
+                                                           rendered="#{beanGXHDO101C042B.hanteichi3tani.renderInputNumber}" value="#{beanGXHDO101C042B.hanteichi3tani.value}" 
+                                                           decimalPlaces="#{beanGXHDO101C042B.hanteichi3tani.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042B.hanteichi3tani.numberMaxValue}" minValue="#{beanGXHDO101C042B.hanteichi3tani.numberMinValue}" 
+                                                           thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042B.hanteichi3tani.displayMaxLength}"
+                                                           inputStyle="font-size:#{beanGXHDO101C042B.hanteichi3tani.fontSizeInput}px;
+                                                           color:#{beanGXHDO101C042B.hanteichi3tani.fontColorInput}; background:#{beanGXHDO101C042B.hanteichi3tani.backColorInput};#{beanGXHDO101C042B.hanteichi3tani.customStyleInput}">
+                                            </p:inputNumber>
                                         </p:column>
                                         <p:column>
                                             <p:inputText id="taidenatsuJudenTimeT3" styleClass="taidenatsu_table_text"
@@ -381,7 +474,36 @@
                                                            inputStyle="font-size:#{beanGXHDO101C042B.hanteichi4.fontSizeInput}px;
                                                            color:#{beanGXHDO101C042B.hanteichi4.fontColorInput}; background:#{beanGXHDO101C042B.hanteichi4.backColorInput};#{beanGXHDO101C042B.hanteichi4.customStyleInput}">
                                             </p:inputNumber>
-                                            <h:outputText value="A" styleClass="taidenatsu_table_label"/>
+                                        </p:column>
+                                        <p:column style="border-right-style: hidden; ">
+                                            <p:inputText id="taidenatsuHanteichilowT4" styleClass="taidenatsu_table_text"
+                                                         rendered="#{beanGXHDO101C042B.hanteichi4low.renderInputText}" value="#{beanGXHDO101C042B.hanteichi4low.value}" 
+                                                         maxlength="#{beanGXHDO101C042B.hanteichi4low.displayMaxLength}" 
+                                                         style="width:#{beanGXHDO101C042B.hanteichi4low.displayMaxLength}em; font-size:#{beanGXHDO101C042B.hanteichi4low.fontSizeInput}px;
+                                                         color:#{beanGXHDO101C042B.hanteichi4low.fontColorInput};background:#{beanGXHDO101C042B.hanteichi4low.backColorInput};#{beanGXHDO101C042B.hanteichi4low.customStyleInput}">
+                                            </p:inputText>
+                                            <p:inputNumber id="taidenatsuHanteichilowN4" inputStyleClass="taidenatsu_table_number_text"
+                                                           rendered="#{beanGXHDO101C042B.hanteichi4low.renderInputNumber}" value="#{beanGXHDO101C042B.hanteichi4low.value}" 
+                                                           decimalPlaces="#{beanGXHDO101C042B.hanteichi4low.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042B.hanteichi4low.numberMaxValue}" minValue="#{beanGXHDO101C042B.hanteichi4low.numberMinValue}" 
+                                                           thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042B.hanteichi4low.displayMaxLength}"
+                                                           inputStyle="font-size:#{beanGXHDO101C042B.hanteichi4low.fontSizeInput}px;
+                                                           color:#{beanGXHDO101C042B.hanteichi4low.fontColorInput}; background:#{beanGXHDO101C042B.hanteichi4low.backColorInput};#{beanGXHDO101C042B.hanteichi4low.customStyleInput}">
+                                            </p:inputNumber>
+                                        </p:column>
+                                        <p:column style="border-right-style: hidden; ">
+                                            <p:inputText id="taidenatsuHanteichitaniT4" styleClass="taidenatsu_table_text"
+                                                         rendered="#{beanGXHDO101C042B.hanteichi4tani.renderInputText}" value="#{beanGXHDO101C042B.hanteichi4tani.value}" 
+                                                         maxlength="#{beanGXHDO101C042B.hanteichi4tani.displayMaxLength}" 
+                                                         style="width:#{beanGXHDO101C042B.hanteichi4tani.displayMaxLength}em; font-size:#{beanGXHDO101C042B.hanteichi4tani.fontSizeInput}px;
+                                                         color:#{beanGXHDO101C042B.hanteichi4tani.fontColorInput};background:#{beanGXHDO101C042B.hanteichi4tani.backColorInput};#{beanGXHDO101C042B.hanteichi4tani.customStyleInput}">
+                                            </p:inputText>
+                                            <p:inputNumber id="taidenatsuHanteichitaniN4" inputStyleClass="taidenatsu_table_number_text"
+                                                           rendered="#{beanGXHDO101C042B.hanteichi4tani.renderInputNumber}" value="#{beanGXHDO101C042B.hanteichi4tani.value}" 
+                                                           decimalPlaces="#{beanGXHDO101C042B.hanteichi4tani.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042B.hanteichi4tani.numberMaxValue}" minValue="#{beanGXHDO101C042B.hanteichi4tani.numberMinValue}" 
+                                                           thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042B.hanteichi4tani.displayMaxLength}"
+                                                           inputStyle="font-size:#{beanGXHDO101C042B.hanteichi4tani.fontSizeInput}px;
+                                                           color:#{beanGXHDO101C042B.hanteichi4tani.fontColorInput}; background:#{beanGXHDO101C042B.hanteichi4tani.backColorInput};#{beanGXHDO101C042B.hanteichi4tani.customStyleInput}">
+                                            </p:inputNumber>
                                         </p:column>
                                         <p:column>
                                             <p:inputText id="taidenatsuJudenTimeT4" styleClass="taidenatsu_table_text"
@@ -1227,6 +1349,262 @@
                                                         <h:outputText value="個"/>
                                                     </div>
                                                 </td>
+                                            </tr>
+                                            <tr style="text-align: center;">
+                                                <th style="text-align: center;">
+                                                    <h:outputText value="カウンター数2"/>
+                                                </th>
+                                                <td class="counter_su_td">
+                                                    <p:inputText id="bin1CounterSu2T" styleClass="counter_su_input_text"
+                                                                 rendered="#{beanGXHDO101C042D.bin1CounterSu2.renderInputText}" value="#{beanGXHDO101C042D.bin1CounterSu2.value}" 
+                                                                 maxlength="#{beanGXHDO101C042D.bin1CounterSu2.displayMaxLength}" 
+                                                                 style="width:#{beanGXHDO101C042D.bin1CounterSu2.displayMaxLength}em; font-size:#{beanGXHDO101C042D.bin1CounterSu2.fontSizeInput}px;
+                                                                 color:#{beanGXHDO101C042D.bin1CounterSu2.fontColorInput};background:#{beanGXHDO101C042D.bin1CounterSu2.backColorInput};#{beanGXHDO101C042D.bin1CounterSu2.customStyleInput}">
+                                                    </p:inputText>
+                                                    <p:inputNumber id="bin1CounterSu2N" inputStyleClass="counter_su_input_number" 
+                                                                   rendered="#{beanGXHDO101C042D.bin1CounterSu2.renderInputNumber}" value="#{beanGXHDO101C042D.bin1CounterSu2.value}" 
+                                                                   decimalPlaces="#{beanGXHDO101C042D.bin1CounterSu2.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042D.bin1CounterSu2.numberMaxValue}" minValue="#{beanGXHDO101C042D.bin1CounterSu2.numberMinValue}" 
+                                                                   thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042D.bin1CounterSu2.displayMaxLength}"
+                                                                   inputStyle="font-size:#{beanGXHDO101C042D.bin1CounterSu2.fontSizeInput}px;
+                                                                   color:#{beanGXHDO101C042D.bin1CounterSu2.fontColorInput}; background:#{beanGXHDO101C042D.bin1CounterSu2.backColorInput};#{beanGXHDO101C042D.bin1CounterSu2.customStyleInput}">
+                                                    </p:inputNumber>
+                                                </td>
+                                                <td class="counter_su_td">
+                                                    <p:inputText id="bin2CounterSu2T" styleClass="counter_su_input_text"
+                                                                 rendered="#{beanGXHDO101C042D.bin2CounterSu2.renderInputText}" value="#{beanGXHDO101C042D.bin2CounterSu2.value}" 
+                                                                 maxlength="#{beanGXHDO101C042D.bin2CounterSu2.displayMaxLength}" 
+                                                                 style="width:#{beanGXHDO101C042D.bin2CounterSu2.displayMaxLength}em; font-size:#{beanGXHDO101C042D.bin2CounterSu2.fontSizeInput}px;
+                                                                 color:#{beanGXHDO101C042D.bin2CounterSu2.fontColorInput};background:#{beanGXHDO101C042D.bin2CounterSu2.backColorInput};#{beanGXHDO101C042D.bin2CounterSu2.customStyleInput}">
+                                                    </p:inputText>
+                                                    <p:inputNumber id="bin2CounterSu2N" inputStyleClass="counter_su_input_number" 
+                                                                   rendered="#{beanGXHDO101C042D.bin2CounterSu2.renderInputNumber}" value="#{beanGXHDO101C042D.bin2CounterSu2.value}" 
+                                                                   decimalPlaces="#{beanGXHDO101C042D.bin2CounterSu2.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042D.bin2CounterSu2.numberMaxValue}" minValue="#{beanGXHDO101C042D.bin2CounterSu2.numberMinValue}" 
+                                                                   thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042D.bin2CounterSu2.displayMaxLength}"
+                                                                   inputStyle="font-size:#{beanGXHDO101C042D.bin2CounterSu2.fontSizeInput}px;
+                                                                   color:#{beanGXHDO101C042D.bin2CounterSu2.fontColorInput}; background:#{beanGXHDO101C042D.bin2CounterSu2.backColorInput};#{beanGXHDO101C042D.bin2CounterSu2.customStyleInput}">
+                                                    </p:inputNumber>
+                                                </td>
+                                                <td class="counter_su_td">
+                                                    <p:inputText id="bin3CounterSu2T" styleClass="counter_su_input_text"
+                                                                 rendered="#{beanGXHDO101C042D.bin3CounterSu2.renderInputText}" value="#{beanGXHDO101C042D.bin3CounterSu2.value}" 
+                                                                 maxlength="#{beanGXHDO101C042D.bin3CounterSu2.displayMaxLength}" 
+                                                                 style="width:#{beanGXHDO101C042D.bin3CounterSu2.displayMaxLength}em; font-size:#{beanGXHDO101C042D.bin3CounterSu2.fontSizeInput}px;
+                                                                 color:#{beanGXHDO101C042D.bin3CounterSu2.fontColorInput};background:#{beanGXHDO101C042D.bin3CounterSu2.backColorInput};#{beanGXHDO101C042D.bin3CounterSu2.customStyleInput}">
+                                                    </p:inputText>
+                                                    <p:inputNumber id="bin3CounterSu2N" inputStyleClass="counter_su_input_number" 
+                                                                   rendered="#{beanGXHDO101C042D.bin3CounterSu2.renderInputNumber}" value="#{beanGXHDO101C042D.bin3CounterSu2.value}" 
+                                                                   decimalPlaces="#{beanGXHDO101C042D.bin3CounterSu2.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042D.bin3CounterSu2.numberMaxValue}" minValue="#{beanGXHDO101C042D.bin3CounterSu2.numberMinValue}" 
+                                                                   thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042D.bin3CounterSu2.displayMaxLength}"
+                                                                   inputStyle="font-size:#{beanGXHDO101C042D.bin3CounterSu2.fontSizeInput}px;
+                                                                   color:#{beanGXHDO101C042D.bin3CounterSu2.fontColorInput}; background:#{beanGXHDO101C042D.bin3CounterSu2.backColorInput};#{beanGXHDO101C042D.bin3CounterSu2.customStyleInput}">
+                                                    </p:inputNumber>
+                                                </td>
+                                                <td class="counter_su_td">
+                                                    <p:inputText id="bin4CounterSu2T" styleClass="counter_su_input_text"
+                                                                 rendered="#{beanGXHDO101C042D.bin4CounterSu2.renderInputText}" value="#{beanGXHDO101C042D.bin4CounterSu2.value}" 
+                                                                 maxlength="#{beanGXHDO101C042D.bin4CounterSu2.displayMaxLength}" 
+                                                                 style="width:#{beanGXHDO101C042D.bin4CounterSu2.displayMaxLength}em; font-size:#{beanGXHDO101C042D.bin4CounterSu2.fontSizeInput}px;
+                                                                 color:#{beanGXHDO101C042D.bin4CounterSu2.fontColorInput};background:#{beanGXHDO101C042D.bin4CounterSu2.backColorInput};#{beanGXHDO101C042D.bin4CounterSu2.customStyleInput}">
+                                                    </p:inputText>
+                                                    <p:inputNumber id="bin4CounterSu2N" inputStyleClass="counter_su_input_number" 
+                                                                   rendered="#{beanGXHDO101C042D.bin4CounterSu2.renderInputNumber}" value="#{beanGXHDO101C042D.bin4CounterSu2.value}" 
+                                                                   decimalPlaces="#{beanGXHDO101C042D.bin4CounterSu2.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042D.bin4CounterSu2.numberMaxValue}" minValue="#{beanGXHDO101C042D.bin4CounterSu2.numberMinValue}" 
+                                                                   thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042D.bin4CounterSu2.displayMaxLength}"
+                                                                   inputStyle="font-size:#{beanGXHDO101C042D.bin4CounterSu2.fontSizeInput}px;
+                                                                   color:#{beanGXHDO101C042D.bin4CounterSu2.fontColorInput}; background:#{beanGXHDO101C042D.bin4CounterSu2.backColorInput};#{beanGXHDO101C042D.bin4CounterSu2.customStyleInput}">
+                                                    </p:inputNumber>
+                                                </td>
+                                                <td class="counter_su_td">
+                                                    <p:inputText id="bin5CounterSu2T" styleClass="counter_su_input_text"
+                                                                 rendered="#{beanGXHDO101C042D.bin5CounterSu2.renderInputText}" value="#{beanGXHDO101C042D.bin5CounterSu2.value}" 
+                                                                 maxlength="#{beanGXHDO101C042D.bin5CounterSu2.displayMaxLength}" 
+                                                                 style="width:#{beanGXHDO101C042D.bin5CounterSu2.displayMaxLength}em; font-size:#{beanGXHDO101C042D.bin5CounterSu2.fontSizeInput}px;
+                                                                 color:#{beanGXHDO101C042D.bin5CounterSu2.fontColorInput};background:#{beanGXHDO101C042D.bin5CounterSu2.backColorInput};#{beanGXHDO101C042D.bin5CounterSu2.customStyleInput}">
+                                                    </p:inputText>
+                                                    <p:inputNumber id="bin5CounterSu2N" inputStyleClass="counter_su_input_number" 
+                                                                   rendered="#{beanGXHDO101C042D.bin5CounterSu2.renderInputNumber}" value="#{beanGXHDO101C042D.bin5CounterSu2.value}" 
+                                                                   decimalPlaces="#{beanGXHDO101C042D.bin5CounterSu2.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042D.bin5CounterSu2.numberMaxValue}" minValue="#{beanGXHDO101C042D.bin5CounterSu2.numberMinValue}" 
+                                                                   thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042D.bin5CounterSu2.displayMaxLength}"
+                                                                   inputStyle="font-size:#{beanGXHDO101C042D.bin5CounterSu2.fontSizeInput}px;
+                                                                   color:#{beanGXHDO101C042D.bin5CounterSu2.fontColorInput}; background:#{beanGXHDO101C042D.bin5CounterSu2.backColorInput};#{beanGXHDO101C042D.bin5CounterSu2.customStyleInput}">
+                                                    </p:inputNumber>
+                                                </td>
+                                                <td class="counter_su_td">
+                                                    <p:inputText id="bin6CounterSu2T" styleClass="counter_su_input_text"
+                                                                 rendered="#{beanGXHDO101C042D.bin6CounterSu2.renderInputText}" value="#{beanGXHDO101C042D.bin6CounterSu2.value}" 
+                                                                 maxlength="#{beanGXHDO101C042D.bin6CounterSu2.displayMaxLength}" 
+                                                                 style="width:#{beanGXHDO101C042D.bin6CounterSu2.displayMaxLength}em; font-size:#{beanGXHDO101C042D.bin6CounterSu2.fontSizeInput}px;
+                                                                 color:#{beanGXHDO101C042D.bin6CounterSu2.fontColorInput};background:#{beanGXHDO101C042D.bin6CounterSu2.backColorInput};#{beanGXHDO101C042D.bin6CounterSu2.customStyleInput}">
+                                                    </p:inputText>
+                                                    <p:inputNumber id="bin6CounterSu2N" inputStyleClass="counter_su_input_number" 
+                                                                   rendered="#{beanGXHDO101C042D.bin6CounterSu2.renderInputNumber}" value="#{beanGXHDO101C042D.bin6CounterSu2.value}" 
+                                                                   decimalPlaces="#{beanGXHDO101C042D.bin6CounterSu2.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042D.bin6CounterSu2.numberMaxValue}" minValue="#{beanGXHDO101C042D.bin6CounterSu2.numberMinValue}" 
+                                                                   thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042D.bin6CounterSu2.displayMaxLength}"
+                                                                   inputStyle="font-size:#{beanGXHDO101C042D.bin6CounterSu2.fontSizeInput}px;
+                                                                   color:#{beanGXHDO101C042D.bin6CounterSu2.fontColorInput}; background:#{beanGXHDO101C042D.bin6CounterSu2.backColorInput};#{beanGXHDO101C042D.bin6CounterSu2.customStyleInput}">
+                                                    </p:inputNumber>
+                                                </td>
+                                                <td class="counter_su_td">
+                                                    <p:inputText id="bin7CounterSu2T" styleClass="counter_su_input_text"
+                                                                 rendered="#{beanGXHDO101C042D.bin7CounterSu2.renderInputText}" value="#{beanGXHDO101C042D.bin7CounterSu2.value}" 
+                                                                 maxlength="#{beanGXHDO101C042D.bin7CounterSu2.displayMaxLength}" 
+                                                                 style="width:#{beanGXHDO101C042D.bin7CounterSu2.displayMaxLength}em; font-size:#{beanGXHDO101C042D.bin7CounterSu2.fontSizeInput}px;
+                                                                 color:#{beanGXHDO101C042D.bin7CounterSu2.fontColorInput};background:#{beanGXHDO101C042D.bin7CounterSu2.backColorInput};#{beanGXHDO101C042D.bin7CounterSu2.customStyleInput}">
+                                                    </p:inputText>
+                                                    <p:inputNumber id="bin7CounterSu2N" inputStyleClass="counter_su_input_number" 
+                                                                   rendered="#{beanGXHDO101C042D.bin7CounterSu2.renderInputNumber}" value="#{beanGXHDO101C042D.bin7CounterSu2.value}" 
+                                                                   decimalPlaces="#{beanGXHDO101C042D.bin7CounterSu2.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042D.bin7CounterSu2.numberMaxValue}" minValue="#{beanGXHDO101C042D.bin7CounterSu2.numberMinValue}" 
+                                                                   thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042D.bin7CounterSu2.displayMaxLength}"
+                                                                   inputStyle="font-size:#{beanGXHDO101C042D.bin7CounterSu2.fontSizeInput}px;
+                                                                   color:#{beanGXHDO101C042D.bin7CounterSu2.fontColorInput}; background:#{beanGXHDO101C042D.bin7CounterSu2.backColorInput};#{beanGXHDO101C042D.bin7CounterSu2.customStyleInput}">
+                                                    </p:inputNumber>
+                                                </td>
+                                                <td class="counter_su_td">
+                                                    <p:inputText id="bin8CounterSu2T" styleClass="counter_su_input_text"
+                                                                 rendered="#{beanGXHDO101C042D.bin8CounterSu2.renderInputText}" value="#{beanGXHDO101C042D.bin8CounterSu2.value}" 
+                                                                 maxlength="#{beanGXHDO101C042D.bin8CounterSu2.displayMaxLength}" 
+                                                                 style="width:#{beanGXHDO101C042D.bin8CounterSu2.displayMaxLength}em; font-size:#{beanGXHDO101C042D.bin8CounterSu2.fontSizeInput}px;
+                                                                 color:#{beanGXHDO101C042D.bin8CounterSu2.fontColorInput};background:#{beanGXHDO101C042D.bin8CounterSu2.backColorInput};#{beanGXHDO101C042D.bin8CounterSu2.customStyleInput}">
+                                                    </p:inputText>
+                                                    <p:inputNumber id="bin8CounterSu2N" inputStyleClass="counter_su_input_number" 
+                                                                   rendered="#{beanGXHDO101C042D.bin8CounterSu2.renderInputNumber}" value="#{beanGXHDO101C042D.bin8CounterSu2.value}" 
+                                                                   decimalPlaces="#{beanGXHDO101C042D.bin8CounterSu2.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042D.bin8CounterSu2.numberMaxValue}" minValue="#{beanGXHDO101C042D.bin8CounterSu2.numberMinValue}" 
+                                                                   thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042D.bin8CounterSu2.displayMaxLength}"
+                                                                   inputStyle="font-size:#{beanGXHDO101C042D.bin8CounterSu2.fontSizeInput}px;
+                                                                   color:#{beanGXHDO101C042D.bin8CounterSu2.fontColorInput}; background:#{beanGXHDO101C042D.bin8CounterSu2.backColorInput};#{beanGXHDO101C042D.bin8CounterSu2.customStyleInput}">
+                                                    </p:inputNumber>
+                                                </td>
+                                                <td class="background-diagonal-line" />
+                                                <td class="background-diagonal-line" />
+                                                <td class="background-diagonal-line" />
+                                            </tr>
+                                            <tr style="text-align: center;">
+                                                <th style="text-align: center;">
+                                                    <h:outputText value="カウンター数3"/>
+                                                </th>
+                                                <td class="counter_su_td">
+                                                    <p:inputText id="bin1CounterSu3T" styleClass="counter_su_input_text"
+                                                                 rendered="#{beanGXHDO101C042D.bin1CounterSu3.renderInputText}" value="#{beanGXHDO101C042D.bin1CounterSu3.value}" 
+                                                                 maxlength="#{beanGXHDO101C042D.bin1CounterSu3.displayMaxLength}" 
+                                                                 style="width:#{beanGXHDO101C042D.bin1CounterSu3.displayMaxLength}em; font-size:#{beanGXHDO101C042D.bin1CounterSu3.fontSizeInput}px;
+                                                                 color:#{beanGXHDO101C042D.bin1CounterSu3.fontColorInput};background:#{beanGXHDO101C042D.bin1CounterSu3.backColorInput};#{beanGXHDO101C042D.bin1CounterSu3.customStyleInput}">
+                                                    </p:inputText>
+                                                    <p:inputNumber id="bin1CounterSu3N" inputStyleClass="counter_su_input_number" 
+                                                                   rendered="#{beanGXHDO101C042D.bin1CounterSu3.renderInputNumber}" value="#{beanGXHDO101C042D.bin1CounterSu3.value}" 
+                                                                   decimalPlaces="#{beanGXHDO101C042D.bin1CounterSu3.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042D.bin1CounterSu3.numberMaxValue}" minValue="#{beanGXHDO101C042D.bin1CounterSu3.numberMinValue}" 
+                                                                   thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042D.bin1CounterSu3.displayMaxLength}"
+                                                                   inputStyle="font-size:#{beanGXHDO101C042D.bin1CounterSu3.fontSizeInput}px;
+                                                                   color:#{beanGXHDO101C042D.bin1CounterSu3.fontColorInput}; background:#{beanGXHDO101C042D.bin1CounterSu3.backColorInput};#{beanGXHDO101C042D.bin1CounterSu3.customStyleInput}">
+                                                    </p:inputNumber>
+                                                </td>
+                                                <td class="counter_su_td">
+                                                    <p:inputText id="bin2CounterSu3T" styleClass="counter_su_input_text"
+                                                                 rendered="#{beanGXHDO101C042D.bin2CounterSu3.renderInputText}" value="#{beanGXHDO101C042D.bin2CounterSu3.value}" 
+                                                                 maxlength="#{beanGXHDO101C042D.bin2CounterSu3.displayMaxLength}" 
+                                                                 style="width:#{beanGXHDO101C042D.bin2CounterSu3.displayMaxLength}em; font-size:#{beanGXHDO101C042D.bin2CounterSu3.fontSizeInput}px;
+                                                                 color:#{beanGXHDO101C042D.bin2CounterSu3.fontColorInput};background:#{beanGXHDO101C042D.bin2CounterSu3.backColorInput};#{beanGXHDO101C042D.bin2CounterSu3.customStyleInput}">
+                                                    </p:inputText>
+                                                    <p:inputNumber id="bin2CounterSu3N" inputStyleClass="counter_su_input_number" 
+                                                                   rendered="#{beanGXHDO101C042D.bin2CounterSu3.renderInputNumber}" value="#{beanGXHDO101C042D.bin2CounterSu3.value}" 
+                                                                   decimalPlaces="#{beanGXHDO101C042D.bin2CounterSu3.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042D.bin2CounterSu3.numberMaxValue}" minValue="#{beanGXHDO101C042D.bin2CounterSu3.numberMinValue}" 
+                                                                   thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042D.bin2CounterSu3.displayMaxLength}"
+                                                                   inputStyle="font-size:#{beanGXHDO101C042D.bin2CounterSu3.fontSizeInput}px;
+                                                                   color:#{beanGXHDO101C042D.bin2CounterSu3.fontColorInput}; background:#{beanGXHDO101C042D.bin2CounterSu3.backColorInput};#{beanGXHDO101C042D.bin2CounterSu3.customStyleInput}">
+                                                    </p:inputNumber>
+                                                </td>
+                                                <td class="counter_su_td">
+                                                    <p:inputText id="bin3CounterSu3T" styleClass="counter_su_input_text"
+                                                                 rendered="#{beanGXHDO101C042D.bin3CounterSu3.renderInputText}" value="#{beanGXHDO101C042D.bin3CounterSu3.value}" 
+                                                                 maxlength="#{beanGXHDO101C042D.bin3CounterSu3.displayMaxLength}" 
+                                                                 style="width:#{beanGXHDO101C042D.bin3CounterSu3.displayMaxLength}em; font-size:#{beanGXHDO101C042D.bin3CounterSu3.fontSizeInput}px;
+                                                                 color:#{beanGXHDO101C042D.bin3CounterSu3.fontColorInput};background:#{beanGXHDO101C042D.bin3CounterSu3.backColorInput};#{beanGXHDO101C042D.bin3CounterSu3.customStyleInput}">
+                                                    </p:inputText>
+                                                    <p:inputNumber id="bin3CounterSu3N" inputStyleClass="counter_su_input_number" 
+                                                                   rendered="#{beanGXHDO101C042D.bin3CounterSu3.renderInputNumber}" value="#{beanGXHDO101C042D.bin3CounterSu3.value}" 
+                                                                   decimalPlaces="#{beanGXHDO101C042D.bin3CounterSu3.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042D.bin3CounterSu3.numberMaxValue}" minValue="#{beanGXHDO101C042D.bin3CounterSu3.numberMinValue}" 
+                                                                   thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042D.bin3CounterSu3.displayMaxLength}"
+                                                                   inputStyle="font-size:#{beanGXHDO101C042D.bin3CounterSu3.fontSizeInput}px;
+                                                                   color:#{beanGXHDO101C042D.bin3CounterSu3.fontColorInput}; background:#{beanGXHDO101C042D.bin3CounterSu3.backColorInput};#{beanGXHDO101C042D.bin3CounterSu3.customStyleInput}">
+                                                    </p:inputNumber>
+                                                </td>
+                                                <td class="counter_su_td">
+                                                    <p:inputText id="bin4CounterSu3T" styleClass="counter_su_input_text"
+                                                                 rendered="#{beanGXHDO101C042D.bin4CounterSu3.renderInputText}" value="#{beanGXHDO101C042D.bin4CounterSu3.value}" 
+                                                                 maxlength="#{beanGXHDO101C042D.bin4CounterSu3.displayMaxLength}" 
+                                                                 style="width:#{beanGXHDO101C042D.bin4CounterSu3.displayMaxLength}em; font-size:#{beanGXHDO101C042D.bin4CounterSu3.fontSizeInput}px;
+                                                                 color:#{beanGXHDO101C042D.bin4CounterSu3.fontColorInput};background:#{beanGXHDO101C042D.bin4CounterSu3.backColorInput};#{beanGXHDO101C042D.bin4CounterSu3.customStyleInput}">
+                                                    </p:inputText>
+                                                    <p:inputNumber id="bin4CounterSu3N" inputStyleClass="counter_su_input_number" 
+                                                                   rendered="#{beanGXHDO101C042D.bin4CounterSu3.renderInputNumber}" value="#{beanGXHDO101C042D.bin4CounterSu3.value}" 
+                                                                   decimalPlaces="#{beanGXHDO101C042D.bin4CounterSu3.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042D.bin4CounterSu3.numberMaxValue}" minValue="#{beanGXHDO101C042D.bin4CounterSu3.numberMinValue}" 
+                                                                   thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042D.bin4CounterSu3.displayMaxLength}"
+                                                                   inputStyle="font-size:#{beanGXHDO101C042D.bin4CounterSu3.fontSizeInput}px;
+                                                                   color:#{beanGXHDO101C042D.bin4CounterSu3.fontColorInput}; background:#{beanGXHDO101C042D.bin4CounterSu3.backColorInput};#{beanGXHDO101C042D.bin4CounterSu3.customStyleInput}">
+                                                    </p:inputNumber>
+                                                </td>
+                                                <td class="counter_su_td">
+                                                    <p:inputText id="bin5CounterSu3T" styleClass="counter_su_input_text"
+                                                                 rendered="#{beanGXHDO101C042D.bin5CounterSu3.renderInputText}" value="#{beanGXHDO101C042D.bin5CounterSu3.value}" 
+                                                                 maxlength="#{beanGXHDO101C042D.bin5CounterSu3.displayMaxLength}" 
+                                                                 style="width:#{beanGXHDO101C042D.bin5CounterSu3.displayMaxLength}em; font-size:#{beanGXHDO101C042D.bin5CounterSu3.fontSizeInput}px;
+                                                                 color:#{beanGXHDO101C042D.bin5CounterSu3.fontColorInput};background:#{beanGXHDO101C042D.bin5CounterSu3.backColorInput};#{beanGXHDO101C042D.bin5CounterSu3.customStyleInput}">
+                                                    </p:inputText>
+                                                    <p:inputNumber id="bin5CounterSu3N" inputStyleClass="counter_su_input_number" 
+                                                                   rendered="#{beanGXHDO101C042D.bin5CounterSu3.renderInputNumber}" value="#{beanGXHDO101C042D.bin5CounterSu3.value}" 
+                                                                   decimalPlaces="#{beanGXHDO101C042D.bin5CounterSu3.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042D.bin5CounterSu3.numberMaxValue}" minValue="#{beanGXHDO101C042D.bin5CounterSu3.numberMinValue}" 
+                                                                   thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042D.bin5CounterSu3.displayMaxLength}"
+                                                                   inputStyle="font-size:#{beanGXHDO101C042D.bin5CounterSu3.fontSizeInput}px;
+                                                                   color:#{beanGXHDO101C042D.bin5CounterSu3.fontColorInput}; background:#{beanGXHDO101C042D.bin5CounterSu3.backColorInput};#{beanGXHDO101C042D.bin5CounterSu3.customStyleInput}">
+                                                    </p:inputNumber>
+                                                </td>
+                                                <td class="counter_su_td">
+                                                    <p:inputText id="bin6CounterSu3T" styleClass="counter_su_input_text"
+                                                                 rendered="#{beanGXHDO101C042D.bin6CounterSu3.renderInputText}" value="#{beanGXHDO101C042D.bin6CounterSu3.value}" 
+                                                                 maxlength="#{beanGXHDO101C042D.bin6CounterSu3.displayMaxLength}" 
+                                                                 style="width:#{beanGXHDO101C042D.bin6CounterSu3.displayMaxLength}em; font-size:#{beanGXHDO101C042D.bin6CounterSu3.fontSizeInput}px;
+                                                                 color:#{beanGXHDO101C042D.bin6CounterSu3.fontColorInput};background:#{beanGXHDO101C042D.bin6CounterSu3.backColorInput};#{beanGXHDO101C042D.bin6CounterSu3.customStyleInput}">
+                                                    </p:inputText>
+                                                    <p:inputNumber id="bin6CounterSu3N" inputStyleClass="counter_su_input_number" 
+                                                                   rendered="#{beanGXHDO101C042D.bin6CounterSu3.renderInputNumber}" value="#{beanGXHDO101C042D.bin6CounterSu3.value}" 
+                                                                   decimalPlaces="#{beanGXHDO101C042D.bin6CounterSu3.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042D.bin6CounterSu3.numberMaxValue}" minValue="#{beanGXHDO101C042D.bin6CounterSu3.numberMinValue}" 
+                                                                   thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042D.bin6CounterSu3.displayMaxLength}"
+                                                                   inputStyle="font-size:#{beanGXHDO101C042D.bin6CounterSu3.fontSizeInput}px;
+                                                                   color:#{beanGXHDO101C042D.bin6CounterSu3.fontColorInput}; background:#{beanGXHDO101C042D.bin6CounterSu3.backColorInput};#{beanGXHDO101C042D.bin6CounterSu3.customStyleInput}">
+                                                    </p:inputNumber>
+                                                </td>
+                                                <td class="counter_su_td">
+                                                    <p:inputText id="bin7CounterSu3T" styleClass="counter_su_input_text"
+                                                                 rendered="#{beanGXHDO101C042D.bin7CounterSu3.renderInputText}" value="#{beanGXHDO101C042D.bin7CounterSu3.value}" 
+                                                                 maxlength="#{beanGXHDO101C042D.bin7CounterSu3.displayMaxLength}" 
+                                                                 style="width:#{beanGXHDO101C042D.bin7CounterSu3.displayMaxLength}em; font-size:#{beanGXHDO101C042D.bin7CounterSu3.fontSizeInput}px;
+                                                                 color:#{beanGXHDO101C042D.bin7CounterSu3.fontColorInput};background:#{beanGXHDO101C042D.bin7CounterSu3.backColorInput};#{beanGXHDO101C042D.bin7CounterSu3.customStyleInput}">
+                                                    </p:inputText>
+                                                    <p:inputNumber id="bin7CounterSu3N" inputStyleClass="counter_su_input_number" 
+                                                                   rendered="#{beanGXHDO101C042D.bin7CounterSu3.renderInputNumber}" value="#{beanGXHDO101C042D.bin7CounterSu3.value}" 
+                                                                   decimalPlaces="#{beanGXHDO101C042D.bin7CounterSu3.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042D.bin7CounterSu3.numberMaxValue}" minValue="#{beanGXHDO101C042D.bin7CounterSu3.numberMinValue}" 
+                                                                   thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042D.bin7CounterSu3.displayMaxLength}"
+                                                                   inputStyle="font-size:#{beanGXHDO101C042D.bin7CounterSu3.fontSizeInput}px;
+                                                                   color:#{beanGXHDO101C042D.bin7CounterSu3.fontColorInput}; background:#{beanGXHDO101C042D.bin7CounterSu3.backColorInput};#{beanGXHDO101C042D.bin7CounterSu3.customStyleInput}">
+                                                    </p:inputNumber>
+                                                </td>
+                                                <td class="counter_su_td">
+                                                    <p:inputText id="bin8CounterSu3T" styleClass="counter_su_input_text"
+                                                                 rendered="#{beanGXHDO101C042D.bin8CounterSu3.renderInputText}" value="#{beanGXHDO101C042D.bin8CounterSu3.value}" 
+                                                                 maxlength="#{beanGXHDO101C042D.bin8CounterSu3.displayMaxLength}" 
+                                                                 style="width:#{beanGXHDO101C042D.bin8CounterSu3.displayMaxLength}em; font-size:#{beanGXHDO101C042D.bin8CounterSu3.fontSizeInput}px;
+                                                                 color:#{beanGXHDO101C042D.bin8CounterSu3.fontColorInput};background:#{beanGXHDO101C042D.bin8CounterSu3.backColorInput};#{beanGXHDO101C042D.bin8CounterSu3.customStyleInput}">
+                                                    </p:inputText>
+                                                    <p:inputNumber id="bin8CounterSu3N" inputStyleClass="counter_su_input_number" 
+                                                                   rendered="#{beanGXHDO101C042D.bin8CounterSu3.renderInputNumber}" value="#{beanGXHDO101C042D.bin8CounterSu3.value}" 
+                                                                   decimalPlaces="#{beanGXHDO101C042D.bin8CounterSu3.numberDecimalPlaces}" maxValue="#{beanGXHDO101C042D.bin8CounterSu3.numberMaxValue}" minValue="#{beanGXHDO101C042D.bin8CounterSu3.numberMinValue}" 
+                                                                   thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C042D.bin8CounterSu3.displayMaxLength}"
+                                                                   inputStyle="font-size:#{beanGXHDO101C042D.bin8CounterSu3.fontSizeInput}px;
+                                                                   color:#{beanGXHDO101C042D.bin8CounterSu3.fontColorInput}; background:#{beanGXHDO101C042D.bin8CounterSu3.backColorInput};#{beanGXHDO101C042D.bin8CounterSu3.customStyleInput}">
+                                                    </p:inputNumber>
+                                                </td>
+                                                <td class="background-diagonal-line" />
+                                                <td class="background-diagonal-line" />
+                                                <td class="background-diagonal-line" />
                                             </tr>
                                             <tr style="text-align: center;">
                                                 <th style="text-align: center;">
@@ -2279,7 +2657,7 @@
                                                 <th style="min-width:150px;"><h:outputText value="公  差"/></th>
                                                 <th style="min-width:250px; background-color: lightgrey;" colspan="2"><h:outputText value="重量"/></th>
                                                 <th style="min-width:250px; background-color: lightgrey;" colspan="2"><h:outputText value="個数"/></th>
-                                                <th style="min-width:250px; background-color: lightgrey;" colspan="2"><h:outputText value="カウンター総数"/></th>
+                                                <th style="min-width:250px; background-color: lightgrey;" colspan="2"><h:outputText value="計量総数"/></th>
                                                 <th style="min-width:250px; background-color: lightgrey;" colspan="2"><h:outputText value="良品重量"/></th>
                                                 <th style="min-width:250px; background-color: lightgrey;" colspan="2"><h:outputText value="歩留まり"/></th>
                                                 <td style="width:100%;border-top: hidden;border-right: hidden;border-bottom: hidden;"/>

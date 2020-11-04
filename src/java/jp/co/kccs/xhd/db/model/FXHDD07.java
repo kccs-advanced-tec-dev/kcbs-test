@@ -21,6 +21,11 @@ import java.sql.Timestamp;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	項目追加<br>
  * <br>
+ * 変更日	2020/10/14<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -368,6 +373,11 @@ public class FXHDD07 {
     private Timestamp torokuDate;
 
     /**
+     * 更新日時
+     */
+    private Timestamp koshinDate;
+
+    /**
      * 削除ﾌﾗｸﾞ
      */
     private Integer deleteflag;
@@ -446,6 +456,216 @@ public class FXHDD07 {
      * ﾃｽﾄﾌﾟﾚｰﾄ管理No
      */
     private String testplatekanrino;
+
+    /**
+     * 耐電圧設定条件 ＩＲ① 判定値 単位
+     */
+    private String irhanteiti1tani;
+
+    /**
+     * 耐電圧設定条件 ＩＲ② 判定値 単位
+     */
+    private String irhanteiti2tani;
+
+    /**
+     * 耐電圧設定条件 ＩＲ③ 判定値 単位
+     */
+    private String irhanteiti3tani;
+
+    /**
+     * 耐電圧設定条件 ＩＲ④ 判定値 単位
+     */
+    private String irhanteiti4tani;
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑤ 判定値 単位
+     */
+    private String irhanteiti5tani;
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑥ 判定値 単位
+     */
+    private String irhanteiti6tani;
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑦ 判定値 単位
+     */
+    private String irhanteiti7tani;
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑧ 判定値 単位
+     */
+    private String irhanteiti8tani;
+
+    /**
+     * 半田サンプル
+     */
+    private String handasample;
+
+    /**
+     * 信頼性サンプル
+     */
+    private String sinraiseisample;
+
+    /**
+     * 検査場所
+     */
+    private String kensabasyo;
+
+    /**
+     * 選別順序変更
+     */
+    private String senbetujunjo;
+
+    /**
+     * 設定ﾓｰﾄﾞ確認
+     */
+    private String setteikakunin;
+
+    /**
+     * 配線確認
+     */
+    private String haisenkakunin;
+
+    /**
+     * 固定電極 外観・段差
+     */
+    private String koteidenkyoku;
+
+    /**
+     * ﾃｽﾄﾌﾟﾚｰﾄ　形状・清掃
+     */
+    private String testplatekeijo;
+
+    /**
+     * 分類吹き出し穴
+     */
+    private String bunruifukidasi;
+
+    /**
+     * ﾃｽﾄﾌﾟﾚｰﾄ位置確認(穴位置)
+     */
+    private String testplatekakunin;
+
+    /**
+     * 製品投入状態
+     */
+    private String seihintounyuujotai;
+
+    /**
+     * 分類確認
+     */
+    private String bunruikakunin;
+
+    /**
+     * 外観確認
+     */
+    private String gaikankakunin;
+
+    /**
+     * 選別開始日時
+     */
+    private Timestamp senbetukaisinitiji;
+
+    /**
+     * 選別終了日時
+     */
+    private Timestamp senbetusyuryounitiji;
+
+    /**
+     * 設定値BIN1low
+     */
+    private String setteiti1low;
+
+    /**
+     * 設定値BIN1up
+     */
+    private String setteiti1up;
+
+    /**
+     * 設定値BIN2low
+     */
+    private String setteiti2low;
+
+    /**
+     * 設定値BIN2up
+     */
+    private String setteiti2up;
+
+    /**
+     * 設定値BIN3low
+     */
+    private String setteiti3low;
+
+    /**
+     * 設定値BIN3up
+     */
+    private String setteiti3up;
+
+    /**
+     * TTNG1
+     */
+    private Integer ttng1;
+
+    /**
+     * TTNG2
+     */
+    private Integer ttng2;
+
+    /**
+     * MC
+     */
+    private Integer mc;
+
+    /**
+     * RI
+     */
+    private Integer ri;
+
+    /**
+     * DNG
+     */
+    private Integer dng;
+
+    /**
+     * RNG
+     */
+    private Integer rng;
+
+    /**
+     * DropNG
+     */
+    private Integer dropng;
+
+    /**
+     * DropNG1
+     */
+    private Integer dropng1;
+
+    /**
+     * DropNG2
+     */
+    private Integer dropng2;
+
+    /**
+     * ﾛｯﾄ終了区分
+     */
+    private String lotkbn;
+
+    /**
+     * 設定値cap1
+     */
+    private Integer setteicap1;
+
+    /**
+     * 設定値cap2
+     */
+    private Integer setteicap2;
+
+    /**
+     * 設定値cap3
+     */
+    private Integer setteicap3;
     
     /**
      * 工場ｺｰﾄﾞ
@@ -1520,6 +1740,22 @@ public class FXHDD07 {
     }
 
     /**
+     * 更新日時
+     * @return the koshinDate
+     */
+    public Timestamp getKoshinDate() {
+        return koshinDate;
+    }
+
+    /**
+     * 更新日時
+     * @param koshinDate the koshinDate to set
+     */
+    public void setKoshinDate(Timestamp koshinDate) {
+        this.koshinDate = koshinDate;
+    }
+
+    /**
      * 削除ﾌﾗｸﾞ
      * @return the deleteflag
      */
@@ -1773,5 +2009,677 @@ public class FXHDD07 {
      */
     public void setTestplatekanrino(String testplatekanrino) {
         this.testplatekanrino = testplatekanrino;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ① 判定値 単位
+     * @return irhanteiti1tani
+     */
+    public String getIrhanteiti1tani() {
+        return irhanteiti1tani;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ① 判定値 単位
+     * @param irhanteiti1tani 
+     */
+    public void setIrhanteiti1tani(String irhanteiti1tani) {
+        this.irhanteiti1tani = irhanteiti1tani;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ② 判定値 単位
+     * @return irhanteiti2tani
+     */
+    public String getIrhanteiti2tani() {
+        return irhanteiti2tani;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ② 判定値 単位
+     * @param irhanteiti2tani
+     */
+    public void setIrhanteiti2tani(String irhanteiti2tani) {
+        this.irhanteiti2tani = irhanteiti2tani;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ③ 判定値 単位
+     * @return irhanteiti3tani
+     */
+    public String getIrhanteiti3tani() {
+        return irhanteiti3tani;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ③ 判定値 単位
+     * @param irhanteiti3tani
+     */
+    public void setIrhanteiti3tani(String irhanteiti3tani) {
+        this.irhanteiti3tani = irhanteiti3tani;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ④ 判定値 単位
+     * @return irhanteiti4tani
+     */
+    public String getIrhanteiti4tani() {
+        return irhanteiti4tani;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ④ 判定値 単位
+     * @param irhanteiti4tani
+     */
+    public void setIrhanteiti4tani(String irhanteiti4tani) {
+        this.irhanteiti4tani = irhanteiti4tani;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑤ 判定値 単位
+     * @return irhanteiti5tani
+     */
+    public String getIrhanteiti5tani() {
+        return irhanteiti5tani;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑤ 判定値 単位
+     * @param irhanteiti5tani
+     */
+    public void setIrhanteiti5tani(String irhanteiti5tani) {
+        this.irhanteiti5tani = irhanteiti5tani;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑥ 判定値 単位
+     * @return irhanteiti6tani
+     */
+    public String getIrhanteiti6tani() {
+        return irhanteiti6tani;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑥ 判定値 単位
+     * @param irhanteiti6tani
+     */
+    public void setIrhanteiti6tani(String irhanteiti6tani) {
+        this.irhanteiti6tani = irhanteiti6tani;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑦ 判定値 単位
+     * @return irhanteiti7tani
+     */
+    public String getIrhanteiti7tani() {
+        return irhanteiti7tani;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑦ 判定値 単位
+     * @param irhanteiti7tani
+     */
+    public void setIrhanteiti7tani(String irhanteiti7tani) {
+        this.irhanteiti7tani = irhanteiti7tani;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑧ 判定値 単位
+     * @return irhanteiti8tani
+     */
+    public String getIrhanteiti8tani() {
+        return irhanteiti8tani;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑧ 判定値 単位
+     * @param irhanteiti8tani
+     */
+    public void setIrhanteiti8tani(String irhanteiti8tani) {
+        this.irhanteiti8tani = irhanteiti8tani;
+    }
+
+    /**
+     * 半田サンプル
+     * @return handasample
+     */
+    public String getHandasample() {
+        return handasample;
+    }
+
+    /**
+     * 半田サンプル
+     * @param handasample
+     */
+    public void setHandasample(String handasample) {
+        this.handasample = handasample;
+    }
+
+    /**
+     * 信頼性サンプル
+     * @return sinraiseisample
+     */
+    public String getSinraiseisample() {
+        return sinraiseisample;
+    }
+
+    /**
+     * 信頼性サンプル
+     * @param sinraiseisample
+     */
+    public void setSinraiseisample(String sinraiseisample) {
+        this.sinraiseisample = sinraiseisample;
+    }
+
+    /**
+     * 検査場所
+     * @return kensabasyo
+     */
+    public String getKensabasyo() {
+        return kensabasyo;
+    }
+
+    /**
+     * 検査場所
+     * @param kensabasyo
+     */
+    public void setKensabasyo(String kensabasyo) {
+        this.kensabasyo = kensabasyo;
+    }
+
+    /**
+     * 選別順序変更
+     * @return senbetujunjo
+     */
+    public String getSenbetujunjo() {
+        return senbetujunjo;
+    }
+
+    /**
+     * 選別順序変更
+     * @param senbetujunjo
+     */
+    public void setSenbetujunjo(String senbetujunjo) {
+        this.senbetujunjo = senbetujunjo;
+    }
+
+    /**
+     * 設定ﾓｰﾄﾞ確認
+     * @return setteikakunin
+     */
+    public String getSetteikakunin() {
+        return setteikakunin;
+    }
+
+    /**
+     * 設定ﾓｰﾄﾞ確認
+     * @param setteikakunin
+     */
+    public void setSetteikakunin(String setteikakunin) {
+        this.setteikakunin = setteikakunin;
+    }
+
+    /**
+     * 配線確認
+     * @return haisenkakunin
+     */
+    public String getHaisenkakunin() {
+        return haisenkakunin;
+    }
+
+    /**
+     * 配線確認
+     * @param haisenkakunin
+     */
+    public void setHaisenkakunin(String haisenkakunin) {
+        this.haisenkakunin = haisenkakunin;
+    }
+
+    /**
+     * 固定電極 外観・段差
+     * @return koteidenkyoku
+     */
+    public String getKoteidenkyoku() {
+        return koteidenkyoku;
+    }
+
+    /**
+     * 固定電極 外観・段差
+     * @param koteidenkyoku
+     */
+    public void setKoteidenkyoku(String koteidenkyoku) {
+        this.koteidenkyoku = koteidenkyoku;
+    }
+
+    /**
+     * ﾃｽﾄﾌﾟﾚｰﾄ　形状・清掃
+     * @return testplatekeijo
+     */
+    public String getTestplatekeijo() {
+        return testplatekeijo;
+    }
+
+    /**
+     * ﾃｽﾄﾌﾟﾚｰﾄ　形状・清掃
+     * @param testplatekeijo
+     */
+    public void setTestplatekeijo(String testplatekeijo) {
+        this.testplatekeijo = testplatekeijo;
+    }
+
+    /**
+     * 分類吹き出し穴
+     * @return bunruifukidasi
+     */
+    public String getBunruifukidasi() {
+        return bunruifukidasi;
+    }
+
+    /**
+     * 分類吹き出し穴
+     * @param bunruifukidasi
+     */
+    public void setBunruifukidasi(String bunruifukidasi) {
+        this.bunruifukidasi = bunruifukidasi;
+    }
+
+    /**
+     * ﾃｽﾄﾌﾟﾚｰﾄ位置確認(穴位置)
+     * @return testplatekakunin
+     */
+    public String getTestplatekakunin() {
+        return testplatekakunin;
+    }
+
+    /**
+     * ﾃｽﾄﾌﾟﾚｰﾄ位置確認(穴位置)
+     * @param testplatekakunin
+     */
+    public void setTestplatekakunin(String testplatekakunin) {
+        this.testplatekakunin = testplatekakunin;
+    }
+
+    /**
+     * 製品投入状態
+     * @return seihintounyuujotai
+     */
+    public String getSeihintounyuujotai() {
+        return seihintounyuujotai;
+    }
+
+    /**
+     * 製品投入状態
+     * @param seihintounyuujotai
+     */
+    public void setSeihintounyuujotai(String seihintounyuujotai) {
+        this.seihintounyuujotai = seihintounyuujotai;
+    }
+
+    /**
+     * 分類確認
+     * @return bunruikakunin
+     */
+    public String getBunruikakunin() {
+        return bunruikakunin;
+    }
+
+    /**
+     * 分類確認
+     * @param bunruikakunin
+     */
+    public void setBunruikakunin(String bunruikakunin) {
+        this.bunruikakunin = bunruikakunin;
+    }
+
+    /**
+     * 外観確認
+     * @return gaikankakunin
+     */
+    public String getGaikankakunin() {
+        return gaikankakunin;
+    }
+
+    /**
+     * 外観確認
+     * @param gaikankakunin
+     */
+    public void setGaikankakunin(String gaikankakunin) {
+        this.gaikankakunin = gaikankakunin;
+    }
+
+    /**
+     * 選別開始日時
+     * @return senbetukaisinitiji
+     */
+    public Timestamp getSenbetukaisinitiji() {
+        return senbetukaisinitiji;
+    }
+
+    /**
+     * 選別開始日時
+     * @param senbetukaisinitiji
+     */
+    public void setSenbetukaisinitiji(Timestamp senbetukaisinitiji) {
+        this.senbetukaisinitiji = senbetukaisinitiji;
+    }
+
+    /**
+     * 選別終了日時
+     * @return senbetusyuryounitiji
+     */
+    public Timestamp getSenbetusyuryounitiji() {
+        return senbetusyuryounitiji;
+    }
+
+    /**
+     * 選別終了日時
+     * @param senbetusyuryounitiji
+     */
+    public void setSenbetusyuryounitiji(Timestamp senbetusyuryounitiji) {
+        this.senbetusyuryounitiji = senbetusyuryounitiji;
+    }
+
+    /**
+     * 設定値BIN1low
+     * @return setteiti1low
+     */
+    public String getSetteiti1low() {
+        return setteiti1low;
+    }
+
+    /**
+     * 設定値BIN1low
+     * @param setteiti1low
+     */
+    public void setSetteiti1low(String setteiti1low) {
+        this.setteiti1low = setteiti1low;
+    }
+
+    /**
+     * 設定値BIN1up
+     * @return setteiti1up
+     */
+    public String getSetteiti1up() {
+        return setteiti1up;
+    }
+
+    /**
+     * 設定値BIN1up
+     * @param setteiti1up
+     */
+    public void setSetteiti1up(String setteiti1up) {
+        this.setteiti1up = setteiti1up;
+    }
+
+    /**
+     * 設定値BIN2low
+     * @return setteiti2low
+     */
+    public String getSetteiti2low() {
+        return setteiti2low;
+    }
+
+    /**
+     * 設定値BIN2low
+     * @param setteiti2low
+     */
+    public void setSetteiti2low(String setteiti2low) {
+        this.setteiti2low = setteiti2low;
+    }
+
+    /**
+     * 設定値BIN2up
+     * @return setteiti2up
+     */
+    public String getSetteiti2up() {
+        return setteiti2up;
+    }
+
+    /**
+     * 設定値BIN2up
+     * @param setteiti2up
+     */
+    public void setSetteiti2up(String setteiti2up) {
+        this.setteiti2up = setteiti2up;
+    }
+
+    /**
+     * 設定値BIN3low
+     * @return setteiti3low
+     */
+    public String getSetteiti3low() {
+        return setteiti3low;
+    }
+
+    /**
+     * 設定値BIN3low
+     * @param setteiti3low
+     */
+    public void setSetteiti3low(String setteiti3low) {
+        this.setteiti3low = setteiti3low;
+    }
+
+    /**
+     * 設定値BIN3up
+     * @return setteiti3up
+     */
+    public String getSetteiti3up() {
+        return setteiti3up;
+    }
+
+    /**
+     * 設定値BIN3up
+     * @param setteiti3up
+     */
+    public void setSetteiti3up(String setteiti3up) {
+        this.setteiti3up = setteiti3up;
+    }
+
+    /**
+     * TTNG1
+     * @return ttng1
+     */
+    public Integer getTtng1() {
+        return ttng1;
+    }
+
+    /**
+     * TTNG1
+     * @param ttng1
+     */
+    public void setTtng1(Integer ttng1) {
+        this.ttng1 = ttng1;
+    }
+
+    /**
+     * TTNG2
+     * @return ttng2
+     */
+    public Integer getTtng2() {
+        return ttng2;
+    }
+
+    /**
+     * TTNG2
+     * @param ttng2
+     */
+    public void setTtng2(Integer ttng2) {
+        this.ttng2 = ttng2;
+    }
+
+    /**
+     * MC
+     * @return mc
+     */
+    public Integer getMc() {
+        return mc;
+    }
+
+    /**
+     * MC
+     * @param mc
+     */
+    public void setMc(Integer mc) {
+        this.mc = mc;
+    }
+
+    /**
+     * RI
+     * @return ri
+     */
+    public Integer getRi() {
+        return ri;
+    }
+
+    /**
+     * RI
+     * @param ri
+     */
+    public void setRi(Integer ri) {
+        this.ri = ri;
+    }
+
+    /**
+     * DNG
+     * @return dng
+     */
+    public Integer getDng() {
+        return dng;
+    }
+
+    /**
+     * DNG
+     * @param dng
+     */
+    public void setDng(Integer dng) {
+        this.dng = dng;
+    }
+
+    /**
+     * RNG
+     * @return rng
+     */
+    public Integer getRng() {
+        return rng;
+    }
+
+    /**
+     * RNG
+     * @param rng
+     */
+    public void setRng(Integer rng) {
+        this.rng = rng;
+    }
+
+    /**
+     * DropNG
+     * @return dropng
+     */
+    public Integer getDropng() {
+        return dropng;
+    }
+
+    /**
+     * DropNG
+     * @param dropng
+     */
+    public void setDropng(Integer dropng) {
+        this.dropng = dropng;
+    }
+
+    /**
+     * DropNG1
+     * @return dropng1
+     */
+    public Integer getDropng1() {
+        return dropng1;
+    }
+
+    /**
+     * DropNG1
+     * @param dropng1
+     */
+    public void setDropng1(Integer dropng1) {
+        this.dropng1 = dropng1;
+    }
+
+    /**
+     * DropNG2
+     * @return dropng2
+     */
+    public Integer getDropng2() {
+        return dropng2;
+    }
+
+    /**
+     * DropNG2
+     * @param dropng2
+     */
+    public void setDropng2(Integer dropng2) {
+        this.dropng2 = dropng2;
+    }
+
+    /**
+     * ﾛｯﾄ終了区分
+     * @return lotkbn
+     */
+    public String getLotkbn() {
+        return lotkbn;
+    }
+
+    /**
+     * ﾛｯﾄ終了区分
+     * @param lotkbn
+     */
+    public void setLotkbn(String lotkbn) {
+        this.lotkbn = lotkbn;
+    }
+
+    /**
+     * 設定値cap1
+     * @return setteicap1
+     */
+    public Integer getSetteicap1() {
+        return setteicap1;
+    }
+
+    /**
+     * 設定値cap1
+     * @param setteicap1
+     */
+    public void setSetteicap1(Integer setteicap1) {
+        this.setteicap1 = setteicap1;
+    }
+
+    /**
+     * 設定値cap2
+     * @return setteicap2
+     */
+    public Integer getSetteicap2() {
+        return setteicap2;
+    }
+
+    /**
+     * 設定値cap2
+     * @param setteicap2
+     */
+    public void setSetteicap2(Integer setteicap2) {
+        this.setteicap2 = setteicap2;
+    }
+
+    /**
+     * 設定値cap3
+     * @return setteicap3
+     */
+    public Integer getSetteicap3() {
+        return setteicap3;
+    }
+
+    /**
+     * 設定値cap3
+     * @param setteicap3
+     */
+    public void setSetteicap3(Integer setteicap3) {
+        this.setteicap3 = setteicap3;
     }
 }

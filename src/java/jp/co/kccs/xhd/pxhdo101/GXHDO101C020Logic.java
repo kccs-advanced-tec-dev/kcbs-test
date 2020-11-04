@@ -45,7 +45,7 @@ public class GXHDO101C020Logic {
      */
     public static GXHDO101C020Model createGXHDO101C020Model(List<Map<String, Object>> initData, String gamenID) {
         GXHDO101C020Model gxhdo101C020Model = new GXHDO101C020Model();
-        String[] typeName = setShowItem(gxhdo101C020Model, gamenID);
+        String[] typeName = setShowItem(gamenID);
         List<GXHDO101C020Model.GenryouLotData> genryouLotDataList = new ArrayList<>();
         String tabIndex;
         // 画面内のリストの一覧を作成する。
@@ -243,15 +243,14 @@ public class GXHDO101C020Logic {
                 continue;
             }
             
-            setItemValue(itemPetname, resultMap.get("petname"));
-            
             switch(typeName) {
                 
                 case GXHDO101C020Model.TAPE_LOT_1:
-                    setItemValue(itemTapeLot1Hinmei, resultMap.get("hinmei"));
+                    setItemTapeLot1Hinmei(itemTapeLot1Hinmei, resultMap.get("hinmei"));
                     setItemValue(itemTapeLot1Conventionallot, resultMap.get("conventionallot"));
                     setItemValue(itemTapeLot1Lotkigo, resultMap.get("lotkigo"));
                     setItemValue(itemTapeLot1Rollno, resultMap.get("rollno"));
+                    setItemValue(itemPetname, resultMap.get("petname"));
                     break;
                 case GXHDO101C020Model.TAPE_LOT_2:
                     setItemValue(itemTapeLot2Rollno, resultMap.get("rollno"));
@@ -295,6 +294,9 @@ public class GXHDO101C020Logic {
         }
         String mValue = StringUtil.nullToBlank(itemRow.getValue());
         String[] splitVal = mValue.split("  ", 2);
+        if (splitVal.length < 2) {
+            return true;
+        }
         List<GXHDO101C020Model.GenryouLotData> genryouLotDataList = gXHDO101C020Model.getGenryouLotDataList();
         for (GXHDO101C020Model.GenryouLotData genryouLotData : genryouLotDataList) {
             String typeName = genryouLotData.getTypeName();
@@ -333,6 +335,7 @@ public class GXHDO101C020Logic {
             if (resultMap == null) {
                 continue;
             }
+            mKikakuChi = mKikakuChi.replace("【", "").replace("】", "");
             // 元画面の電極ﾍﾟｰｽﾄの規格値とﾍﾟｰｽﾄﾛｯﾄ①のhinmeiが一致していること
             if (GXHDO101C020Model.PASTE_LOT_1.equals(typeName) && !mKikakuChi.equals(StringUtil.nullToBlank(resultMap.get("hinmei")))) {
                 return false;
@@ -341,7 +344,13 @@ public class GXHDO101C020Logic {
         return true;
     }
 
-    private static String[] setShowItem(GXHDO101C020Model gxhdo101C020Model, String gamenID) {
+    /**
+     * サブ画面の表示項目を取得する
+     * 
+     * @param gamenID 前画面ID
+     * @return サブ画面の表示項目
+     */
+    private static String[] setShowItem(String gamenID) {
         String[] itemName = null;
         switch (gamenID) {
             case "GXHDO101B001":
@@ -362,9 +371,10 @@ public class GXHDO101C020Logic {
                 break;
             case "GXHDO101B004":
             case "GXHDO101B005":
-                itemName = new String[2];
-                itemName[0] = GXHDO101C020Model.UWA_TANSHI;
-                itemName[1] = GXHDO101C020Model.SHITA_TANSHI;
+                itemName = new String[3];
+                itemName[0] = GXHDO101C020Model.TAPE_LOT_1;
+                itemName[1] = GXHDO101C020Model.UWA_TANSHI;
+                itemName[2] = GXHDO101C020Model.SHITA_TANSHI;
                 break;
             case "GXHDO101B006":
                 itemName = new String[4];
@@ -380,5 +390,21 @@ public class GXHDO101C020Logic {
                 break;
         }
         return itemName;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟを戻る
+     * 
+     * @param itemTapeLot1Hinmei ﾃｰﾌﾟﾛｯﾄ①のHinmei戻り項目
+     * @param hinmei 品名
+     */
+    private static void setItemTapeLot1Hinmei(FXHDD01 itemTapeLot1Hinmei, String hinmei) {
+        if (itemTapeLot1Hinmei == null) {
+            return;
+        }
+        String mValue = StringUtil.nullToBlank(itemTapeLot1Hinmei.getValue());
+        String[] splitVal = mValue.split("  ", 2);
+        hinmei = splitVal[0] + "  " + hinmei;
+        itemTapeLot1Hinmei.setValue(hinmei);
     }
 }

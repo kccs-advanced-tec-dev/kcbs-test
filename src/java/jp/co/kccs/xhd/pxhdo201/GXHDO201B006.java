@@ -613,6 +613,13 @@ public class GXHDO201B006 implements Serializable {
                     + ", T1.TTapeRollNo3"
                     + ", T1.TTapeRollNo4"
                     + ", T1.TTapeRollNo5"
+                    + ", T1.SITATTAPELOTNO"
+                    + ", T1.SITATTapeSlipKigo"
+                    + ", T1.SITATTapeRollNo1"
+                    + ", T1.SITATTapeRollNo2"
+                    + ", T1.SITATTapeRollNo3"
+                    + ", T1.SITATTapeRollNo4"
+                    + ", T1.SITATTapeRollNo5"
                     + ", T1.TGENRYOKIGO"
                     + ", T1.STSIYO"
                     + ", T1.ESEKISOSIYO"
@@ -844,6 +851,13 @@ public class GXHDO201B006 implements Serializable {
             mapping.put("TTapeRollNo3", "ttaperollno3");
             mapping.put("TTapeRollNo4", "ttaperollno4");
             mapping.put("TTapeRollNo5", "ttaperollno5");
+            mapping.put("SITATTAPELOTNO", "sitattapelotno");
+            mapping.put("SITATTapeSlipKigo", "sitattapeslipkigo");
+            mapping.put("SITATTapeRollNo1", "sitattaperollno1");
+            mapping.put("SITATTapeRollNo2", "sitattaperollno2");
+            mapping.put("SITATTapeRollNo3", "sitattaperollno3");
+            mapping.put("SITATTapeRollNo4", "sitattaperollno4");
+            mapping.put("SITATTapeRollNo5", "sitattaperollno5");
             mapping.put("TGENRYOKIGO", "tgenryokigo");
             mapping.put("STSIYO", "stsiyo");
             mapping.put("ESEKISOSIYO", "esekisosiyo");

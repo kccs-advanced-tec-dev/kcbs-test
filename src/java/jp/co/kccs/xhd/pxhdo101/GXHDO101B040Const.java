@@ -13,6 +13,11 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/10/14<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -289,6 +294,11 @@ public class GXHDO101B040Const {
     public static final String SEIHIN_SOKUTEI_DENATSU = "sr_denkitokuseiesi_seihin_sokutei_denatsu";
 
     /**
+     * 製品情報:同品種
+     */
+    public static final String SEIHIN_DOUHINSYU = "sr_denkitokuseiesi_seihin_douhinsyu";
+
+    /**
      * 製品情報:補正用ﾁｯﾌﾟ容量
      */
     public static final String SEIHIN_HOSEIYOU_CHIP_YORYO = "sr_denkitokuseiesi_seihin_hoseiyou_chip_yoryo";
@@ -439,6 +449,16 @@ public class GXHDO101B040Const {
     public static final String TAIDEN_HANTEICHI1 = "sr_denkitokuseiesi_taiden_hanteichi1";
 
     /**
+     * 耐電圧設定条件:IR① 判定値(低)
+     */
+    public static final String TAIDEN_HANTEICHI1LOW = "sr_denkitokuseiesi_taiden_hanteichi1low";
+
+    /**
+     * 耐電圧設定条件:IR① 判定値 単位
+     */
+    public static final String TAIDEN_HANTEICHI1TANI = "sr_denkitokuseiesi_taiden_hanteichi1tani";
+
+    /**
      * 耐電圧設定条件:IR① 充電時間
      */
     public static final String TAIDEN_JUDEN_TIME1 = "sr_denkitokuseiesi_taiden_juden_time1";
@@ -452,6 +472,16 @@ public class GXHDO101B040Const {
      * 耐電圧設定条件:IR② 判定値
      */
     public static final String TAIDEN_HANTEICHI2 = "sr_denkitokuseiesi_taiden_hanteichi2";
+
+    /**
+     * 耐電圧設定条件:IR② 判定値(低)
+     */
+    public static final String TAIDEN_HANTEICHI2LOW = "sr_denkitokuseiesi_taiden_hanteichi2low";
+
+    /**
+     * 耐電圧設定条件:IR② 判定値 単位
+     */
+    public static final String TAIDEN_HANTEICHI2TANI = "sr_denkitokuseiesi_taiden_hanteichi2tani";
 
     /**
      * 耐電圧設定条件:IR② 充電時間
@@ -469,6 +499,16 @@ public class GXHDO101B040Const {
     public static final String TAIDEN_HANTEICHI3 = "sr_denkitokuseiesi_taiden_hanteichi3";
 
     /**
+     * 耐電圧設定条件:IR③ 判定値(低)
+     */
+    public static final String TAIDEN_HANTEICHI3LOW = "sr_denkitokuseiesi_taiden_hanteichi3low";
+
+    /**
+     * 耐電圧設定条件:IR③ 判定値 単位
+     */
+    public static final String TAIDEN_HANTEICHI3TANI = "sr_denkitokuseiesi_taiden_hanteichi3tani";
+
+    /**
      * 耐電圧設定条件:IR③ 充電時間
      */
     public static final String TAIDEN_JUDEN_TIME3 = "sr_denkitokuseiesi_taiden_juden_time3";
@@ -482,6 +522,16 @@ public class GXHDO101B040Const {
      * 耐電圧設定条件:IR④ 判定値
      */
     public static final String TAIDEN_HANTEICHI4 = "sr_denkitokuseiesi_taiden_hanteichi4";
+
+    /**
+     * 耐電圧設定条件:IR④ 判定値(低)
+     */
+    public static final String TAIDEN_HANTEICHI4LOW = "sr_denkitokuseiesi_taiden_hanteichi4low";
+
+    /**
+     * 耐電圧設定条件:IR④ 判定値 単位
+     */
+    public static final String TAIDEN_HANTEICHI4TANI = "sr_denkitokuseiesi_taiden_hanteichi4tani";
 
     /**
      * 耐電圧設定条件:IR④ 充電時間
@@ -499,6 +549,16 @@ public class GXHDO101B040Const {
     public static final String TAIDEN_HANTEICHI5 = "sr_denkitokuseiesi_taiden_hanteichi5";
 
     /**
+     * 耐電圧設定条件:IR⑤ 判定値(低)
+     */
+    public static final String TAIDEN_HANTEICHI5LOW = "sr_denkitokuseiesi_taiden_hanteichi5low";
+
+    /**
+     * 耐電圧設定条件:IR⑤ 判定値 単位
+     */
+    public static final String TAIDEN_HANTEICHI5TANI = "sr_denkitokuseiesi_taiden_hanteichi5tani";
+
+    /**
      * 耐電圧設定条件:IR⑤ 充電時間
      */
     public static final String TAIDEN_JUDEN_TIME5 = "sr_denkitokuseiesi_taiden_juden_time5";
@@ -512,6 +572,16 @@ public class GXHDO101B040Const {
      * 耐電圧設定条件:IR⑥ 判定値
      */
     public static final String TAIDEN_HANTEICHI6 = "sr_denkitokuseiesi_taiden_hanteichi6";
+
+    /**
+     * 耐電圧設定条件:IR⑥ 判定値(低)
+     */
+    public static final String TAIDEN_HANTEICHI6LOW = "sr_denkitokuseiesi_taiden_hanteichi6low";
+
+    /**
+     * 耐電圧設定条件:IR⑥ 判定値 単位
+     */
+    public static final String TAIDEN_HANTEICHI6TANI = "sr_denkitokuseiesi_taiden_hanteichi6tani";
 
     /**
      * 耐電圧設定条件:IR⑥ 充電時間
@@ -529,6 +599,16 @@ public class GXHDO101B040Const {
     public static final String TAIDEN_HANTEICHI7 = "sr_denkitokuseiesi_taiden_hanteichi7";
 
     /**
+     * 耐電圧設定条件:IR⑦ 判定値(低)
+     */
+    public static final String TAIDEN_HANTEICHI7LOW = "sr_denkitokuseiesi_taiden_hanteichi7low";
+
+    /**
+     * 耐電圧設定条件:IR⑦ 判定値 単位
+     */
+    public static final String TAIDEN_HANTEICHI7TANI = "sr_denkitokuseiesi_taiden_hanteichi7tani";
+
+    /**
      * 耐電圧設定条件:IR⑦ 充電時間
      */
     public static final String TAIDEN_JUDEN_TIME7 = "sr_denkitokuseiesi_taiden_juden_time7";
@@ -542,6 +622,16 @@ public class GXHDO101B040Const {
      * 耐電圧設定条件:IR⑧ 判定値
      */
     public static final String TAIDEN_HANTEICHI8 = "sr_denkitokuseiesi_taiden_hanteichi8";
+
+    /**
+     * 耐電圧設定条件:IR⑧ 判定値(低)
+     */
+    public static final String TAIDEN_HANTEICHI8LOW = "sr_denkitokuseiesi_taiden_hanteichi8low";
+
+    /**
+     * 耐電圧設定条件:IR⑧ 判定値 単位
+     */
+    public static final String TAIDEN_HANTEICHI8TANI = "sr_denkitokuseiesi_taiden_hanteichi8tani";
 
     /**
      * 耐電圧設定条件:IR⑧ 充電時間
@@ -1099,7 +1189,7 @@ public class GXHDO101B040Const {
     public static final String SET_KOSU4 = "sr_denkitokuseiesi_set_kosu4";
 
     /**
-     * 設定条件及び処理結果:ｶｳﾝﾀｰ総数
+     * 設定条件及び処理結果:計量総数
      */
     public static final String SET_COUNTER_SOSU = "sr_denkitokuseiesi_set_counter_sosu";
 

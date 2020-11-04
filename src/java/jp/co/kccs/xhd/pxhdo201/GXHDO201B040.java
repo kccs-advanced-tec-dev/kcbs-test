@@ -891,6 +891,39 @@ public class GXHDO201B040 implements Serializable {
                     + ", binkakuninsya "
                     + ", saiken "
                     + ", setubikubun "
+                    + ", irhanteiti1low "
+                    + ", irhanteiti1tani "
+                    + ", irhanteiti2low "
+                    + ", irhanteiti2tani "
+                    + ", irhanteiti3low "
+                    + ", irhanteiti3tani "
+                    + ", irhanteiti4low "
+                    + ", irhanteiti4tani "
+                    + ", irhanteiti5low "
+                    + ", irhanteiti5tani "
+                    + ", irhanteiti6low "
+                    + ", irhanteiti6tani "
+                    + ", irhanteiti7low "
+                    + ", irhanteiti7tani "
+                    + ", irhanteiti8low "
+                    + ", irhanteiti8tani "
+                    + ", bin1countersuu2 "
+                    + ", bin1countersuu3 "
+                    + ", bin2countersuu2 "
+                    + ", bin2countersuu3 "
+                    + ", bin3countersuu2 "
+                    + ", bin3countersuu3 "
+                    + ", bin4countersuu2 "
+                    + ", bin4countersuu3 "
+                    + ", bin5countersuu2 "
+                    + ", bin5countersuu3 "
+                    + ", bin6countersuu2 "
+                    + ", bin6countersuu3 "
+                    + ", bin7countersuu2 "
+                    + ", bin7countersuu3 "
+                    + ", bin8countersuu2 "
+                    + ", bin8countersuu3 "
+                    + ", douhinsyu "
                     + "  FROM sr_denkitokuseiesi "
                     + " WHERE (? IS NULL OR KOJYO = ?) "
                     + " AND   (? IS NULL OR LOTNO = ?) "
@@ -1143,7 +1176,40 @@ public class GXHDO201B040 implements Serializable {
             mapping.put("binkakuninsya", "binkakuninsya");// BIN確認者
             mapping.put("saiken", "saiken");// 電気特性再検
             mapping.put("setubikubun", "setubikubun");// 設備区分
-
+            mapping.put("irhanteiti1low", "irhanteiti1low");// 耐電圧設定条件 IR① 判定値(低)
+            mapping.put("irhanteiti1tani", "irhanteiti1tani");// 耐電圧設定条件 IR① 判定値 単位
+            mapping.put("irhanteiti2low", "irhanteiti2low");// 耐電圧設定条件 IR② 判定値(低)
+            mapping.put("irhanteiti2tani", "irhanteiti2tani");// 耐電圧設定条件 IR② 判定値 単位
+            mapping.put("irhanteiti3low", "irhanteiti3low");// 耐電圧設定条件 IR③ 判定値(低)
+            mapping.put("irhanteiti3tani", "irhanteiti3tani");// 耐電圧設定条件 IR③ 判定値 単位
+            mapping.put("irhanteiti4low", "irhanteiti4low");// 耐電圧設定条件 IR④ 判定値(低)
+            mapping.put("irhanteiti4tani", "irhanteiti4tani");// 耐電圧設定条件 IR④ 判定値 単位
+            mapping.put("irhanteiti5low", "irhanteiti5low");// 耐電圧設定条件 IR⑤ 判定値(低)
+            mapping.put("irhanteiti5tani", "irhanteiti5tani");// 耐電圧設定条件 IR⑤ 判定値 単位
+            mapping.put("irhanteiti6low", "irhanteiti6low");// 耐電圧設定条件 IR⑥ 判定値(低)
+            mapping.put("irhanteiti6tani", "irhanteiti6tani");// 耐電圧設定条件 IR⑥ 判定値 単位
+            mapping.put("irhanteiti7low", "irhanteiti7low");// 耐電圧設定条件 IR⑦ 判定値(低)
+            mapping.put("irhanteiti7tani", "irhanteiti7tani");// 耐電圧設定条件 IR⑦ 判定値 単位
+            mapping.put("irhanteiti8low", "irhanteiti8low");// 耐電圧設定条件 IR⑧ 判定値(低)
+            mapping.put("irhanteiti8tani", "irhanteiti8tani");// 耐電圧設定条件 IR⑧ 判定値 単位
+            mapping.put("bin1countersuu2", "bin1countersuu2");// BIN1 ｶｳﾝﾀｰ数2
+            mapping.put("bin1countersuu3", "bin1countersuu3");// BIN1 ｶｳﾝﾀｰ数3
+            mapping.put("bin2countersuu2", "bin2countersuu2");// BIN2 ｶｳﾝﾀｰ数2
+            mapping.put("bin2countersuu3", "bin2countersuu3");// BIN2 ｶｳﾝﾀｰ数3
+            mapping.put("bin3countersuu2", "bin3countersuu2");// BIN3 ｶｳﾝﾀｰ数2
+            mapping.put("bin3countersuu3", "bin3countersuu3");// BIN3 ｶｳﾝﾀｰ数3
+            mapping.put("bin4countersuu2", "bin4countersuu2");// BIN4 ｶｳﾝﾀｰ数2
+            mapping.put("bin4countersuu3", "bin4countersuu3");// BIN4 ｶｳﾝﾀｰ数3
+            mapping.put("bin5countersuu2", "bin5countersuu2");// BIN5 ｶｳﾝﾀｰ数2
+            mapping.put("bin5countersuu3", "bin5countersuu3");// BIN5 ｶｳﾝﾀｰ数3
+            mapping.put("bin6countersuu2", "bin6countersuu2");// BIN6 ｶｳﾝﾀｰ数2
+            mapping.put("bin6countersuu3", "bin6countersuu3");// BIN6 ｶｳﾝﾀｰ数3
+            mapping.put("bin7countersuu2", "bin7countersuu2");// BIN7 ｶｳﾝﾀｰ数2
+            mapping.put("bin7countersuu3", "bin7countersuu3");// BIN7 ｶｳﾝﾀｰ数3
+            mapping.put("bin8countersuu2", "bin8countersuu2");// BIN8 ｶｳﾝﾀｰ数2
+            mapping.put("bin8countersuu3", "bin8countersuu3");// BIN8 ｶｳﾝﾀｰ数3
+            mapping.put("douhinsyu", "douhinsyu");// 同品種
+            
             BeanProcessor beanProcessor = new BeanProcessor(mapping);
             RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
             ResultSetHandler<List<GXHDO201B040Model>> beanHandler = 

@@ -1794,7 +1794,8 @@ public class GXHDO101B045 implements IFormLogic {
             setInputItemDataMainForm(processData, srHapsDataList.get(0));
             
             // 前工程WIP取込画面データ設定
-            setInputItemDataSubFormC020(queryRunnerQcdb, kojyo, lotNo8, lotNo.substring(11, 14), jotaiFlg);
+            // ※下記メソッド内で親データの検索実行と値設定を実施
+            setInputItemDataSubFormC020(queryRunnerQcdb, kojyo, lotNo8, oyalotEdaban, jotaiFlg);
 
             // 次呼出しメソッドをクリア
             processData.setMethod("");

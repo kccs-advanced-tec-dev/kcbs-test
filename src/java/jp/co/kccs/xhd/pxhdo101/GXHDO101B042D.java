@@ -18,6 +18,11 @@ import jp.co.kccs.xhd.db.model.FXHDD01;
  * 変更者	863 F.Zhang<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/10/20<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -49,6 +54,16 @@ public class GXHDO101B042D implements Serializable {
      * BIN1 ｶｳﾝﾀｰ数
      */
     private FXHDD01 bin1CounterSu;
+
+    /**
+     * BIN1 ｶｳﾝﾀｰ数2
+     */
+    private FXHDD01 bin1CounterSu2;
+
+    /**
+     * BIN1 ｶｳﾝﾀｰ数3
+     */
+    private FXHDD01 bin1CounterSu3;
 
     /**
      * BIN1 誤差率(%)
@@ -106,6 +121,16 @@ public class GXHDO101B042D implements Serializable {
     private FXHDD01 bin2CounterSu;
 
     /**
+     * BIN2 ｶｳﾝﾀｰ数2
+     */
+    private FXHDD01 bin2CounterSu2;
+
+    /**
+     * BIN2 ｶｳﾝﾀｰ数3
+     */
+    private FXHDD01 bin2CounterSu3;
+
+    /**
      * BIN2 誤差率(%)
      */
     private FXHDD01 bin2Gosaritsu;
@@ -159,6 +184,16 @@ public class GXHDO101B042D implements Serializable {
      * BIN3 ｶｳﾝﾀｰ数
      */
     private FXHDD01 bin3CounterSu;
+
+    /**
+     * BIN3 ｶｳﾝﾀｰ数2
+     */
+    private FXHDD01 bin3CounterSu2;
+
+    /**
+     * BIN3 ｶｳﾝﾀｰ数3
+     */
+    private FXHDD01 bin3CounterSu3;
 
     /**
      * BIN3 誤差率(%)
@@ -216,6 +251,16 @@ public class GXHDO101B042D implements Serializable {
     private FXHDD01 bin4CounterSu;
 
     /**
+     * BIN4 ｶｳﾝﾀｰ数2
+     */
+    private FXHDD01 bin4CounterSu2;
+
+    /**
+     * BIN4 ｶｳﾝﾀｰ数3
+     */
+    private FXHDD01 bin4CounterSu3;
+
+    /**
      * BIN4 誤差率(%)
      */
     private FXHDD01 bin4Gosaritsu;
@@ -269,6 +314,16 @@ public class GXHDO101B042D implements Serializable {
      * BIN5 ｶｳﾝﾀｰ数
      */
     private FXHDD01 bin5CounterSu;
+
+    /**
+     * BIN5 ｶｳﾝﾀｰ数2
+     */
+    private FXHDD01 bin5CounterSu2;
+
+    /**
+     * BIN5 ｶｳﾝﾀｰ数3
+     */
+    private FXHDD01 bin5CounterSu3;
 
     /**
      * BIN5 誤差率(%)
@@ -326,6 +381,16 @@ public class GXHDO101B042D implements Serializable {
     private FXHDD01 bin6CounterSu;
 
     /**
+     * BIN6 ｶｳﾝﾀｰ数2
+     */
+    private FXHDD01 bin6CounterSu2;
+
+    /**
+     * BIN6 ｶｳﾝﾀｰ数3
+     */
+    private FXHDD01 bin6CounterSu3;
+
+    /**
      * BIN6 誤差率(%)
      */
     private FXHDD01 bin6Gosaritsu;
@@ -381,6 +446,16 @@ public class GXHDO101B042D implements Serializable {
     private FXHDD01 bin7CounterSu;
 
     /**
+     * BIN7 ｶｳﾝﾀｰ数2
+     */
+    private FXHDD01 bin7CounterSu2;
+
+    /**
+     * BIN7 ｶｳﾝﾀｰ数3
+     */
+    private FXHDD01 bin7CounterSu3;
+
+    /**
      * BIN7 誤差率(%)
      */
     private FXHDD01 bin7Gosaritsu;
@@ -388,7 +463,7 @@ public class GXHDO101B042D implements Serializable {
     /**
      * BIN7 ﾏｼﾝ不良率(%)
      */
-    private FXHDD01 bin7MachineFuryoritsu;;
+    private FXHDD01 bin7MachineFuryoritsu;
 
     /**
      * BIN7 抜き取り結果
@@ -436,6 +511,16 @@ public class GXHDO101B042D implements Serializable {
     private FXHDD01 bin8CounterSu;
 
     /**
+     * BIN8 ｶｳﾝﾀｰ数2
+     */
+    private FXHDD01 bin8CounterSu2;
+
+    /**
+     * BIN8 ｶｳﾝﾀｰ数3
+     */
+    private FXHDD01 bin8CounterSu3;
+
+    /**
      * BIN8 誤差率(%)
      */
     private FXHDD01 bin8Gosaritsu;
@@ -443,7 +528,7 @@ public class GXHDO101B042D implements Serializable {
     /**
      * BIN8 ﾏｼﾝ不良率(%)
      */
-    private FXHDD01 bin8MachineFuryoritsu;;
+    private FXHDD01 bin8MachineFuryoritsu;
 
     /**
      * BIN8 抜き取り結果
@@ -581,7 +666,7 @@ public class GXHDO101B042D implements Serializable {
     private FXHDD01 kosu4;
 
     /**
-     * ｶｳﾝﾀｰ総数
+     * 計量総数
      */
     private FXHDD01 counterSosu;
 
@@ -673,6 +758,38 @@ public class GXHDO101B042D implements Serializable {
      */
     public void setBin1CounterSu(FXHDD01 bin1CounterSu) {
         this.bin1CounterSu = bin1CounterSu;
+    }
+
+    /**
+     * BIN1 ｶｳﾝﾀｰ数2
+     * @return the bin1CounterSu2
+     */
+    public FXHDD01 getBin1CounterSu2() {
+        return bin1CounterSu2;
+    }
+
+    /**
+     * BIN1 ｶｳﾝﾀｰ数2
+     * @param bin1CounterSu2 the bin1CounterSu2 to set
+     */
+    public void setBin1CounterSu2(FXHDD01 bin1CounterSu2) {
+        this.bin1CounterSu2 = bin1CounterSu2;
+    }
+
+    /**
+     * BIN1 ｶｳﾝﾀｰ数3
+     * @return the bin1CounterSu3
+     */
+    public FXHDD01 getBin1CounterSu3() {
+        return bin1CounterSu3;
+    }
+
+    /**
+     * BIN1 ｶｳﾝﾀｰ数3
+     * @param bin1CounterSu3 the bin1CounterSu3 to set
+     */
+    public void setBin1CounterSu3(FXHDD01 bin1CounterSu3) {
+        this.bin1CounterSu3 = bin1CounterSu3;
     }
 
     /**
@@ -852,6 +969,38 @@ public class GXHDO101B042D implements Serializable {
     }
 
     /**
+     * BIN2 ｶｳﾝﾀｰ数2
+     * @return the bin2CounterSu2
+     */
+    public FXHDD01 getBin2CounterSu2() {
+        return bin2CounterSu2;
+    }
+
+    /**
+     * BIN2 ｶｳﾝﾀｰ数2
+     * @param bin2CounterSu2 the bin2CounterSu2 to set
+     */
+    public void setBin2CounterSu2(FXHDD01 bin2CounterSu2) {
+        this.bin2CounterSu2 = bin2CounterSu2;
+    }
+
+    /**
+     * BIN2 ｶｳﾝﾀｰ数3
+     * @return the bin2CounterSu3
+     */
+    public FXHDD01 getBin2CounterSu3() {
+        return bin2CounterSu3;
+    }
+
+    /**
+     * BIN2 ｶｳﾝﾀｰ数3
+     * @param bin2CounterSu3 the bin2CounterSu3 to set
+     */
+    public void setBin2CounterSu3(FXHDD01 bin2CounterSu3) {
+        this.bin2CounterSu3 = bin2CounterSu3;
+    }
+
+    /**
      * BIN2 誤差率(%)
      * @return the bin2Gosaritsu
      */
@@ -1025,6 +1174,38 @@ public class GXHDO101B042D implements Serializable {
      */
     public void setBin3CounterSu(FXHDD01 bin3CounterSu) {
         this.bin3CounterSu = bin3CounterSu;
+    }
+
+    /**
+     * BIN3 ｶｳﾝﾀｰ数2
+     * @return the bin3CounterSu2
+     */
+    public FXHDD01 getBin3CounterSu2() {
+        return bin3CounterSu2;
+    }
+
+    /**
+     * BIN3 ｶｳﾝﾀｰ数2
+     * @param bin3CounterSu2 the bin3CounterSu2 to set
+     */
+    public void setBin3CounterSu2(FXHDD01 bin3CounterSu2) {
+        this.bin3CounterSu2 = bin3CounterSu2;
+    }
+
+    /**
+     * BIN3 ｶｳﾝﾀｰ数3
+     * @return the bin3CounterSu3
+     */
+    public FXHDD01 getBin3CounterSu3() {
+        return bin3CounterSu3;
+    }
+
+    /**
+     * BIN3 ｶｳﾝﾀｰ数3
+     * @param bin3CounterSu3 the bin3CounterSu3 to set
+     */
+    public void setBin3CounterSu3(FXHDD01 bin3CounterSu3) {
+        this.bin3CounterSu3 = bin3CounterSu3;
     }
 
     /**
@@ -1204,6 +1385,38 @@ public class GXHDO101B042D implements Serializable {
     }
 
     /**
+     * BIN4 ｶｳﾝﾀｰ数2
+     * @return the bin4CounterSu2
+     */
+    public FXHDD01 getBin4CounterSu2() {
+        return bin4CounterSu2;
+    }
+
+    /**
+     * BIN4 ｶｳﾝﾀｰ数2
+     * @param bin4CounterSu2 the bin4CounterSu2 to set
+     */
+    public void setBin4CounterSu2(FXHDD01 bin4CounterSu2) {
+        this.bin4CounterSu2 = bin4CounterSu2;
+    }
+
+    /**
+     * BIN4 ｶｳﾝﾀｰ数3
+     * @return the bin4CounterSu3
+     */
+    public FXHDD01 getBin4CounterSu3() {
+        return bin4CounterSu3;
+    }
+
+    /**
+     * BIN4 ｶｳﾝﾀｰ数3
+     * @param bin4CounterSu3 the bin4CounterSu3 to set
+     */
+    public void setBin4CounterSu3(FXHDD01 bin4CounterSu3) {
+        this.bin4CounterSu3 = bin4CounterSu3;
+    }
+
+    /**
      * BIN4 誤差率(%)
      * @return the bin4Gosaritsu
      */
@@ -1377,6 +1590,38 @@ public class GXHDO101B042D implements Serializable {
      */
     public void setBin5CounterSu(FXHDD01 bin5CounterSu) {
         this.bin5CounterSu = bin5CounterSu;
+    }
+
+    /**
+     * BIN5 ｶｳﾝﾀｰ数2
+     * @return the bin5CounterSu2
+     */
+    public FXHDD01 getBin5CounterSu2() {
+        return bin5CounterSu2;
+    }
+
+    /**
+     * BIN5 ｶｳﾝﾀｰ数2
+     * @param bin5CounterSu2 the bin5CounterSu2 to set
+     */
+    public void setBin5CounterSu2(FXHDD01 bin5CounterSu2) {
+        this.bin5CounterSu2 = bin5CounterSu2;
+    }
+
+    /**
+     * BIN5 ｶｳﾝﾀｰ数3
+     * @return the bin5CounterSu3
+     */
+    public FXHDD01 getBin5CounterSu3() {
+        return bin5CounterSu3;
+    }
+
+    /**
+     * BIN5 ｶｳﾝﾀｰ数3
+     * @param bin5CounterSu3 the bin5CounterSu3 to set
+     */
+    public void setBin5CounterSu3(FXHDD01 bin5CounterSu3) {
+        this.bin5CounterSu3 = bin5CounterSu3;
     }
 
     /**
@@ -1556,6 +1801,38 @@ public class GXHDO101B042D implements Serializable {
     }
 
     /**
+     * BIN6 ｶｳﾝﾀｰ数2
+     * @return the bin6CounterSu2
+     */
+    public FXHDD01 getBin6CounterSu2() {
+        return bin6CounterSu2;
+    }
+
+    /**
+     * BIN6 ｶｳﾝﾀｰ数2
+     * @param bin6CounterSu2 the bin6CounterSu2 to set
+     */
+    public void setBin6CounterSu2(FXHDD01 bin6CounterSu2) {
+        this.bin6CounterSu2 = bin6CounterSu2;
+    }
+
+    /**
+     * BIN6 ｶｳﾝﾀｰ数3
+     * @return the bin6CounterSu3
+     */
+    public FXHDD01 getBin6CounterSu3() {
+        return bin6CounterSu3;
+    }
+
+    /**
+     * BIN6 ｶｳﾝﾀｰ数3
+     * @param bin6CounterSu3 the bin6CounterSu3 to set
+     */
+    public void setBin6CounterSu3(FXHDD01 bin6CounterSu3) {
+        this.bin6CounterSu3 = bin6CounterSu3;
+    }
+
+    /**
      * BIN6 誤差率(%)
      * @return the bin6Gosaritsu
      */
@@ -1732,6 +2009,38 @@ public class GXHDO101B042D implements Serializable {
     }
 
     /**
+     * BIN7 ｶｳﾝﾀｰ数2
+     * @return the bin7CounterSu2
+     */
+    public FXHDD01 getBin7CounterSu2() {
+        return bin7CounterSu2;
+    }
+
+    /**
+     * BIN7 ｶｳﾝﾀｰ数2
+     * @param bin7CounterSu2 the bin7CounterSu2 to set
+     */
+    public void setBin7CounterSu2(FXHDD01 bin7CounterSu2) {
+        this.bin7CounterSu2 = bin7CounterSu2;
+    }
+
+    /**
+     * BIN7 ｶｳﾝﾀｰ数3
+     * @return the bin7CounterSu3
+     */
+    public FXHDD01 getBin7CounterSu3() {
+        return bin7CounterSu3;
+    }
+
+    /**
+     * BIN7 ｶｳﾝﾀｰ数3
+     * @param bin7CounterSu3 the bin7CounterSu3 to set
+     */
+    public void setBin7CounterSu3(FXHDD01 bin7CounterSu3) {
+        this.bin7CounterSu3 = bin7CounterSu3;
+    }
+
+    /**
      * BIN7 誤差率(%)
      * @return the bin7Gosaritsu
      */
@@ -1905,6 +2214,38 @@ public class GXHDO101B042D implements Serializable {
      */
     public void setBin8CounterSu(FXHDD01 bin8CounterSu) {
         this.bin8CounterSu = bin8CounterSu;
+    }
+
+    /**
+     * BIN8 ｶｳﾝﾀｰ数2
+     * @return the bin8CounterSu2
+     */
+    public FXHDD01 getBin8CounterSu2() {
+        return bin8CounterSu2;
+    }
+
+    /**
+     * BIN8 ｶｳﾝﾀｰ数2
+     * @param bin8CounterSu2 the bin8CounterSu2 to set
+     */
+    public void setBin8CounterSu2(FXHDD01 bin8CounterSu2) {
+        this.bin8CounterSu2 = bin8CounterSu2;
+    }
+
+    /**
+     * BIN8 ｶｳﾝﾀｰ数3
+     * @return the bin8CounterSu3
+     */
+    public FXHDD01 getBin8CounterSu3() {
+        return bin8CounterSu3;
+    }
+
+    /**
+     * BIN8 ｶｳﾝﾀｰ数3
+     * @param bin8CounterSu3 the bin8CounterSu3 to set
+     */
+    public void setBin8CounterSu3(FXHDD01 bin8CounterSu3) {
+        this.bin8CounterSu3 = bin8CounterSu3;
     }
 
     /**
@@ -2372,7 +2713,7 @@ public class GXHDO101B042D implements Serializable {
     }
 
     /**
-     * ｶｳﾝﾀｰ総数
+     * 計量総数
      * @return the counterSosu
      */
     public FXHDD01 getCounterSosu() {
@@ -2380,7 +2721,7 @@ public class GXHDO101B042D implements Serializable {
     }
 
     /**
-     * ｶｳﾝﾀｰ総数
+     * 計量総数
      * @param counterSosu the counterSosu to set
      */
     public void setCounterSosu(FXHDD01 counterSosu) {

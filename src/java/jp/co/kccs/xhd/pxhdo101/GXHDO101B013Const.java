@@ -13,6 +13,11 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/10/19<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjy<br>
+ * 変更理由	仕様変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -52,6 +57,16 @@ public class GXHDO101B013Const {
      * 処理数
      */
     public static final String SHORISU = "sr_sayadume_shorisu";
+
+    /**
+     * 単位重量
+     */
+    public static final String UKEIRETANNIJYURYO = "sr_sayadume_ukeiretannijyuryo";
+
+    /**
+     * 総重量
+     */
+    public static final String UKEIRESOUJYURYOU = "sr_sayadume_ukeiresoujyuryou";
 
     /**
      * 指示

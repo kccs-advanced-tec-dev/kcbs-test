@@ -454,7 +454,20 @@ public class GXHDO201B006Model {
     private Long kaburimigisitay1 = null;
     /** 被り量右下Y2 */
     private Long kaburimigisitay2 = null;
-    
+    /** 下端子ﾃｰﾌﾟﾛｯﾄNo */
+    private String sitattapelotno = "";
+    /** 下端子ﾃｰﾌﾟｽﾘｯﾌﾟ記号 */
+    private String sitattapeslipkigo = "";
+    /** 下端子ﾃｰﾌﾟﾛｰﾙNo1 */
+    private Long sitattaperollno1 = null;
+    /** 下端子ﾃｰﾌﾟﾛｰﾙNo2 */
+    private Long sitattaperollno2 = null;
+    /** 下端子ﾃｰﾌﾟﾛｰﾙNo3 */
+    private Long sitattaperollno3 = null;
+    /** 下端子ﾃｰﾌﾟﾛｰﾙNo4 */
+    private Long sitattaperollno4 = null;
+    /** 下端子ﾃｰﾌﾟﾛｰﾙNo5 */
+    private Long sitattaperollno5 = null;
     /**
      * ﾛｯﾄNo.
      * @return the lotno
@@ -3846,4 +3859,117 @@ public class GXHDO201B006Model {
     public void setKaburimigisitay2(Long kaburimigisitay2) {
         this.kaburimigisitay2 = kaburimigisitay2;
     }
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｯﾄNo
+     * @return the sitattapelotno
+     */
+    public String getSitattapelotno() {
+        return sitattapelotno;
+    }
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｯﾄNo
+     * @param sitattapelotno the sitattapelotno to set
+     */
+    public void setSitattapelotno(String sitattapelotno) {
+        this.sitattapelotno = sitattapelotno;
+    }
+
+    /**
+     * 下端子ﾃｰﾌﾟｽﾘｯﾌﾟ記号
+     * @return the sitattapeslipkigo
+     */
+    public String getSitattapeslipkigo() {
+        return sitattapeslipkigo;
+    }
+
+    /**
+     * 下端子ﾃｰﾌﾟｽﾘｯﾌﾟ記号
+     * @param sitattapeslipkigo the sitattapeslipkigo to set
+     */
+    public void setSitattapeslipkigo(String sitattapeslipkigo) {
+        this.sitattapeslipkigo = sitattapeslipkigo;
+    }
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｰﾙNo1
+     * @return the sitattaperollno1
+     */
+    public Long getSitattaperollno1() {
+        return sitattaperollno1;
+    }
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｰﾙNo1
+     * @param sitattaperollno1 the sitattaperollno1 to set
+     */
+    public void setSitattaperollno1(Long sitattaperollno1) {
+        this.sitattaperollno1 = sitattaperollno1;
+    }
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｰﾙNo2
+     * @return the sitattaperollno2
+     */
+    public Long getSitattaperollno2() {
+        return sitattaperollno2;
+    }
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｰﾙNo2
+     * @param sitattaperollno2 the sitattaperollno2 to set
+     */
+    public void setSitattaperollno2(Long sitattaperollno2) {
+        this.sitattaperollno2 = sitattaperollno2;
+    }
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｰﾙNo3
+     * @return the sitattaperollno3
+     */
+    public Long getSitattaperollno3() {
+        return sitattaperollno3;
+    }
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｰﾙNo3
+     * @param sitattaperollno3 the sitattaperollno3 to set
+     */
+    public void setSitattaperollno3(Long sitattaperollno3) {
+        this.sitattaperollno3 = sitattaperollno3;
+    }
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｰﾙNo4
+     * @return the sitattaperollno4
+     */
+    public Long getSitattaperollno4() {
+        return sitattaperollno4;
+    }
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｰﾙNo4
+     * @param sitattaperollno4 the sitattaperollno4 to set
+     */
+    public void setSitattaperollno4(Long sitattaperollno4) {
+        this.sitattaperollno4 = sitattaperollno4;
+    }
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｰﾙNo5
+     * @return the sitattaperollno5
+     */
+    public Long getSitattaperollno5() {
+        return sitattaperollno5;
+    }
+
+    /**
+     * 下端子ﾃｰﾌﾟﾛｰﾙNo5
+     * @param sitattaperollno5 the sitattaperollno5 to set
+     */
+    public void setSitattaperollno5(Long sitattaperollno5) {
+        this.sitattaperollno5 = sitattaperollno5;
+    }   
+    
 }

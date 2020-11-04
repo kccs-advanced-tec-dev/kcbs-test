@@ -18,6 +18,11 @@ import jp.co.kccs.xhd.db.model.FXHDD01;
  * 変更者        KCSS K.Jo<br>
  * 変更理由      新規作成<br>
  * <br>
+ * 変更日	2020/10/19<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -41,6 +46,16 @@ public class GXHDO101B041B implements Serializable {
     private FXHDD01 hanteichi1;
 
     /**
+     * 耐電圧 判定値1(低)
+     */
+    private FXHDD01 hanteichi1low;
+
+    /**
+     * 耐電圧 判定値1 単位
+     */
+    private FXHDD01 hanteichi1tani;
+
+    /**
      * 耐電圧 充電時間1
      */
     private FXHDD01 judenTime1;
@@ -54,6 +69,16 @@ public class GXHDO101B041B implements Serializable {
      * 耐電圧 判定値2
      */
     private FXHDD01 hanteichi2;
+
+    /**
+     * 耐電圧 判定値2(低)
+     */
+    private FXHDD01 hanteichi2low;
+
+    /**
+     * 耐電圧 判定値2 単位
+     */
+    private FXHDD01 hanteichi2tani;
 
     /**
      * 耐電圧 充電時間2
@@ -119,6 +144,38 @@ public class GXHDO101B041B implements Serializable {
     }
 
     /**
+     * 耐電圧 判定値1(低)
+     * @return hanteichi1low
+     */
+    public FXHDD01 getHanteichi1low() {
+        return hanteichi1low;
+    }
+
+    /**
+     * 耐電圧 判定値1(低)
+     * @param hanteichi1low 
+     */
+    public void setHanteichi1low(FXHDD01 hanteichi1low) {
+        this.hanteichi1low = hanteichi1low;
+    }
+
+    /**
+     * 耐電圧 判定値1 単位
+     * @return hanteichi1tani
+     */
+    public FXHDD01 getHanteichi1tani() {
+        return hanteichi1tani;
+    }
+
+    /**
+     * 耐電圧 判定値1 単位
+     * @param hanteichi1tani 
+     */
+    public void setHanteichi1tani(FXHDD01 hanteichi1tani) {
+        this.hanteichi1tani = hanteichi1tani;
+    }
+
+    /**
      * 耐電圧 充電時間1
      * @return the judenTime1
      */
@@ -164,6 +221,38 @@ public class GXHDO101B041B implements Serializable {
      */
     public void setHanteichi2(FXHDD01 hanteichi2) {
         this.hanteichi2 = hanteichi2;
+    }
+
+    /**
+     * 耐電圧 判定値2(低)
+     * @return hanteichi2low
+     */
+    public FXHDD01 getHanteichi2low() {
+        return hanteichi2low;
+    }
+
+    /**
+     * 耐電圧 判定値2(低)
+     * @param hanteichi2low 
+     */
+    public void setHanteichi2low(FXHDD01 hanteichi2low) {
+        this.hanteichi2low = hanteichi2low;
+    }
+
+    /**
+     * 耐電圧 判定値2 単位
+     * @return hanteichi2tani
+     */
+    public FXHDD01 getHanteichi2tani() {
+        return hanteichi2tani;
+    }
+
+    /**
+     * 耐電圧 判定値2 単位
+     * @param hanteichi2tani 
+     */
+    public void setHanteichi2tani(FXHDD01 hanteichi2tani) {
+        this.hanteichi2tani = hanteichi2tani;
     }
 
     /**

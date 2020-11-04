@@ -662,6 +662,8 @@ public class GXHDO201B013 implements Serializable {
                     + ", (CASE WHEN konamabushi = 0 THEN 'なし' WHEN konamabushi = 1 THEN 'あり' ELSE NULL END) AS konamabushi "
                     + ", StartKakuninsyacode "
                     + ", EndTantousyacode "
+                    + ", ukeiretannijyuryo "
+                    + ", ukeiresoujyuryou "
                     + "FROM sr_sayadume "
                     + "WHERE (? IS NULL OR KOJYO = ?) "
                     + "AND   (? IS NULL OR LOTNO = ?) "
@@ -701,6 +703,8 @@ public class GXHDO201B013 implements Serializable {
             mapping.put("konamabushi", "konamabushi");                 // 粉まぶし
             mapping.put("StartKakuninsyacode", "startkakuninsyacode"); // 開始確認者
             mapping.put("EndTantousyacode", "endtantousyacode");       // 終了担当者
+            mapping.put("ukeiretannijyuryo", "ukeiretannijyuryo");     // 単位重量
+            mapping.put("ukeiresoujyuryou", "ukeiresoujyuryou");       // 総重量
 
             BeanProcessor beanProcessor = new BeanProcessor(mapping);
             RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);

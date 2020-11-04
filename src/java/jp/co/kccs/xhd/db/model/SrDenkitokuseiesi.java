@@ -16,6 +16,11 @@ import java.sql.Timestamp;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/10/14<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -1200,6 +1205,171 @@ public class SrDenkitokuseiesi {
      * revision
      */
     private Long revision;
+
+    /**
+     * 耐電圧設定条件 IR① 判定値(低)
+     */
+    private BigDecimal irhanteiti1low;
+
+    /**
+     * 耐電圧設定条件 IR① 判定値 単位
+     */
+    private String irhanteiti1tani;
+
+    /**
+     * 耐電圧設定条件 IR② 判定値(低)
+     */
+    private BigDecimal irhanteiti2low;
+
+    /**
+     * 耐電圧設定条件 IR② 判定値 単位
+     */
+    private String irhanteiti2tani;
+
+    /**
+     * 耐電圧設定条件 IR③ 判定値(低)
+     */
+    private BigDecimal irhanteiti3low;
+
+    /**
+     * 耐電圧設定条件 IR③ 判定値 単位
+     */
+    private String irhanteiti3tani;
+
+    /**
+     * 耐電圧設定条件 IR④ 判定値(低)
+     */
+    private BigDecimal irhanteiti4low;
+
+    /**
+     * 耐電圧設定条件 IR④ 判定値 単位
+     */
+    private String irhanteiti4tani;
+
+    /**
+     * 耐電圧設定条件 IR⑤ 判定値(低)
+     */
+    private BigDecimal irhanteiti5low;
+
+    /**
+     * 耐電圧設定条件 IR⑤ 判定値 単位
+     */
+    private String irhanteiti5tani;
+
+    /**
+     * 耐電圧設定条件 IR⑥ 判定値(低)
+     */
+    private BigDecimal irhanteiti6low;
+
+    /**
+     * 耐電圧設定条件 IR⑥ 判定値 単位
+     */
+    private String irhanteiti6tani;
+
+    /**
+     * 耐電圧設定条件 IR⑦ 判定値(低)
+     */
+    private BigDecimal irhanteiti7low;
+
+    /**
+     * 耐電圧設定条件 IR⑦ 判定値 単位
+     */
+    private String irhanteiti7tani;
+
+    /**
+     * 耐電圧設定条件 IR⑧ 判定値(低)
+     */
+    private BigDecimal irhanteiti8low;
+
+    /**
+     * 耐電圧設定条件 IR⑧ 判定値 単位
+     */
+    private String irhanteiti8tani;
+
+    /**
+     * BIN1 ｶｳﾝﾀｰ数2
+     */
+    private Integer bin1countersuu2;
+
+    /**
+     * BIN1 ｶｳﾝﾀｰ数3
+     */
+    private Integer bin1countersuu3;
+
+    /**
+     * BIN2 ｶｳﾝﾀｰ数2
+     */
+    private Integer bin2countersuu2;
+
+    /**
+     * BIN2 ｶｳﾝﾀｰ数3
+     */
+    private Integer bin2countersuu3;
+
+    /**
+     * BIN3 ｶｳﾝﾀｰ数2
+     */
+    private Integer bin3countersuu2;
+
+    /**
+     * BIN3 ｶｳﾝﾀｰ数3
+     */
+    private Integer bin3countersuu3;
+
+    /**
+     * BIN4 ｶｳﾝﾀｰ数2
+     */
+    private Integer bin4countersuu2;
+
+    /**
+     * BIN4 ｶｳﾝﾀｰ数3
+     */
+    private Integer bin4countersuu3;
+
+    /**
+     * BIN5 ｶｳﾝﾀｰ数2
+     */
+    private Integer bin5countersuu2;
+
+    /**
+     * BIN5 ｶｳﾝﾀｰ数3
+     */
+    private Integer bin5countersuu3;
+
+    /**
+     * BIN6 ｶｳﾝﾀｰ数2
+     */
+    private Integer bin6countersuu2;
+
+    /**
+     * BIN6 ｶｳﾝﾀｰ数3
+     */
+    private Integer bin6countersuu3;
+
+    /**
+     * BIN7 ｶｳﾝﾀｰ数2
+     */
+    private Integer bin7countersuu2;
+
+    /**
+     * BIN7 ｶｳﾝﾀｰ数3
+     */
+    private Integer bin7countersuu3;
+
+    /**
+     * BIN8 ｶｳﾝﾀｰ数2
+     */
+    private Integer bin8countersuu2;
+
+    /**
+     * BIN8 ｶｳﾝﾀｰ数3
+     */
+    private Integer bin8countersuu3;
+
+    /**
+     * 同品種
+     */
+    private Integer douhinsyu;
 
     /**
      * 削除ﾌﾗｸﾞ
@@ -4964,6 +5134,534 @@ public class SrDenkitokuseiesi {
      */
     public void setRevision(Long revision) {
         this.revision = revision;
+    }
+
+    /**
+     * 耐電圧設定条件 IR① 判定値(低)
+     * @return irhanteiti1low
+     */
+    public BigDecimal getIrhanteiti1low() {
+        return irhanteiti1low;
+    }
+
+    /**
+     * 耐電圧設定条件 IR① 判定値(低)
+     * @param irhanteiti1low 
+     */
+    public void setIrhanteiti1low(BigDecimal irhanteiti1low) {
+        this.irhanteiti1low = irhanteiti1low;
+    }
+
+    /**
+     * 耐電圧設定条件 IR① 判定値 単位
+     * @return irhanteiti1tani
+     */
+    public String getIrhanteiti1tani() {
+        return irhanteiti1tani;
+    }
+
+    /**
+     * 耐電圧設定条件 IR① 判定値 単位
+     * @param irhanteiti1tani 
+     */
+    public void setIrhanteiti1tani(String irhanteiti1tani) {
+        this.irhanteiti1tani = irhanteiti1tani;
+    }
+
+    /**
+     * 耐電圧設定条件 IR② 判定値(低)
+     * @return irhanteiti2low
+     */
+    public BigDecimal getIrhanteiti2low() {
+        return irhanteiti2low;
+    }
+
+    /**
+     * 耐電圧設定条件 IR② 判定値(低)
+     * @param irhanteiti2low 
+     */
+    public void setIrhanteiti2low(BigDecimal irhanteiti2low) {
+        this.irhanteiti2low = irhanteiti2low;
+    }
+
+    /**
+     * 耐電圧設定条件 IR② 判定値 単位
+     * @return irhanteiti2tani
+     */
+    public String getIrhanteiti2tani() {
+        return irhanteiti2tani;
+    }
+
+    /**
+     * 耐電圧設定条件 IR② 判定値 単位
+     * @param irhanteiti2tani 
+     */
+    public void setIrhanteiti2tani(String irhanteiti2tani) {
+        this.irhanteiti2tani = irhanteiti2tani;
+    }
+
+    /**
+     * 耐電圧設定条件 IR③ 判定値(低)
+     * @return irhanteiti3low
+     */
+    public BigDecimal getIrhanteiti3low() {
+        return irhanteiti3low;
+    }
+
+    /**
+     * 耐電圧設定条件 IR③ 判定値(低)
+     * @param irhanteiti3low 
+     */
+    public void setIrhanteiti3low(BigDecimal irhanteiti3low) {
+        this.irhanteiti3low = irhanteiti3low;
+    }
+
+    /**
+     * 耐電圧設定条件 IR③ 判定値 単位
+     * @return irhanteiti3tani
+     */
+    public String getIrhanteiti3tani() {
+        return irhanteiti3tani;
+    }
+
+    /**
+     * 耐電圧設定条件 IR③ 判定値 単位
+     * @param irhanteiti3tani 
+     */
+    public void setIrhanteiti3tani(String irhanteiti3tani) {
+        this.irhanteiti3tani = irhanteiti3tani;
+    }
+
+    /**
+     * 耐電圧設定条件 IR④ 判定値(低)
+     * @return irhanteiti4low
+     */
+    public BigDecimal getIrhanteiti4low() {
+        return irhanteiti4low;
+    }
+
+    /**
+     * 耐電圧設定条件 IR④ 判定値(低)
+     * @param irhanteiti4low 
+     */
+    public void setIrhanteiti4low(BigDecimal irhanteiti4low) {
+        this.irhanteiti4low = irhanteiti4low;
+    }
+
+    /**
+     * 耐電圧設定条件 IR④ 判定値 単位
+     * @return irhanteiti4tani
+     */
+    public String getIrhanteiti4tani() {
+        return irhanteiti4tani;
+    }
+
+    /**
+     * 耐電圧設定条件 IR④ 判定値 単位
+     * @param irhanteiti4tani 
+     */
+    public void setIrhanteiti4tani(String irhanteiti4tani) {
+        this.irhanteiti4tani = irhanteiti4tani;
+    }
+
+    /**
+     * 耐電圧設定条件 IR⑤ 判定値(低)
+     * @return irhanteiti5low
+     */
+    public BigDecimal getIrhanteiti5low() {
+        return irhanteiti5low;
+    }
+
+    /**
+     * 耐電圧設定条件 IR⑤ 判定値(低)
+     * @param irhanteiti5low 
+     */
+    public void setIrhanteiti5low(BigDecimal irhanteiti5low) {
+        this.irhanteiti5low = irhanteiti5low;
+    }
+
+    /**
+     * 耐電圧設定条件 IR⑤ 判定値 単位
+     * @return irhanteiti5tani
+     */
+    public String getIrhanteiti5tani() {
+        return irhanteiti5tani;
+    }
+
+    /**
+     * 耐電圧設定条件 IR⑤ 判定値 単位
+     * @param irhanteiti5tani 
+     */
+    public void setIrhanteiti5tani(String irhanteiti5tani) {
+        this.irhanteiti5tani = irhanteiti5tani;
+    }
+
+    /**
+     * 耐電圧設定条件 IR⑥ 判定値(低)
+     * @return irhanteiti6low
+     */
+    public BigDecimal getIrhanteiti6low() {
+        return irhanteiti6low;
+    }
+
+    /**
+     * 耐電圧設定条件 IR⑥ 判定値(低)
+     * @param irhanteiti6low 
+     */
+    public void setIrhanteiti6low(BigDecimal irhanteiti6low) {
+        this.irhanteiti6low = irhanteiti6low;
+    }
+
+    /**
+     * 耐電圧設定条件 IR⑥ 判定値 単位
+     * @return irhanteiti6tani
+     */
+    public String getIrhanteiti6tani() {
+        return irhanteiti6tani;
+    }
+
+    /**
+     * 耐電圧設定条件 IR⑥ 判定値 単位
+     * @param irhanteiti6tani 
+     */
+    public void setIrhanteiti6tani(String irhanteiti6tani) {
+        this.irhanteiti6tani = irhanteiti6tani;
+    }
+
+    /**
+     * 耐電圧設定条件 IR⑦ 判定値(低)
+     * @return irhanteiti7low
+     */
+    public BigDecimal getIrhanteiti7low() {
+        return irhanteiti7low;
+    }
+
+    /**
+     * 耐電圧設定条件 IR⑦ 判定値(低)
+     * @param irhanteiti7low 
+     */
+    public void setIrhanteiti7low(BigDecimal irhanteiti7low) {
+        this.irhanteiti7low = irhanteiti7low;
+    }
+
+    /**
+     * 耐電圧設定条件 IR⑦ 判定値 単位
+     * @return irhanteiti7tani
+     */
+    public String getIrhanteiti7tani() {
+        return irhanteiti7tani;
+    }
+
+    /**
+     * 耐電圧設定条件 IR⑦ 判定値 単位
+     * @param irhanteiti7tani 
+     */
+    public void setIrhanteiti7tani(String irhanteiti7tani) {
+        this.irhanteiti7tani = irhanteiti7tani;
+    }
+
+    /**
+     * 耐電圧設定条件 IR⑧ 判定値(低)
+     * @return irhanteiti8low
+     */
+    public BigDecimal getIrhanteiti8low() {
+        return irhanteiti8low;
+    }
+
+    /**
+     * 耐電圧設定条件 IR⑧ 判定値(低)
+     * @param irhanteiti8low 
+     */
+    public void setIrhanteiti8low(BigDecimal irhanteiti8low) {
+        this.irhanteiti8low = irhanteiti8low;
+    }
+
+    /**
+     * 耐電圧設定条件 IR⑧ 判定値 単位
+     * @return irhanteiti8tani
+     */
+    public String getIrhanteiti8tani() {
+        return irhanteiti8tani;
+    }
+
+    /**
+     * 耐電圧設定条件 IR⑧ 判定値 単位
+     * @param irhanteiti8tani 
+     */
+    public void setIrhanteiti8tani(String irhanteiti8tani) {
+        this.irhanteiti8tani = irhanteiti8tani;
+    }
+
+    /**
+     * BIN1 ｶｳﾝﾀｰ数2
+     * @return bin1countersuu2
+     */
+    public Integer getBin1countersuu2() {
+        return bin1countersuu2;
+    }
+
+    /**
+     * BIN1 ｶｳﾝﾀｰ数2
+     * @param bin1countersuu2
+     */
+    public void setBin1countersuu2(Integer bin1countersuu2) {
+        this.bin1countersuu2 = bin1countersuu2;
+    }
+
+    /**
+     * BIN1 ｶｳﾝﾀｰ数3
+     * @return bin1countersuu3
+     */
+    public Integer getBin1countersuu3() {
+        return bin1countersuu3;
+    }
+
+    /**
+     * BIN1 ｶｳﾝﾀｰ数3
+     * @param bin1countersuu3
+     */
+    public void setBin1countersuu3(Integer bin1countersuu3) {
+        this.bin1countersuu3 = bin1countersuu3;
+    }
+
+    /**
+     * BIN2 ｶｳﾝﾀｰ数2
+     * @return bin2countersuu2
+     */
+    public Integer getBin2countersuu2() {
+        return bin2countersuu2;
+    }
+
+    /**
+     * BIN2 ｶｳﾝﾀｰ数2
+     * @param bin2countersuu2
+     */
+    public void setBin2countersuu2(Integer bin2countersuu2) {
+        this.bin2countersuu2 = bin2countersuu2;
+    }
+
+    /**
+     * BIN2 ｶｳﾝﾀｰ数3
+     * @return bin2countersuu3
+     */
+    public Integer getBin2countersuu3() {
+        return bin2countersuu3;
+    }
+
+    /**
+     * BIN2 ｶｳﾝﾀｰ数3
+     * @param bin2countersuu3
+     */
+    public void setBin2countersuu3(Integer bin2countersuu3) {
+        this.bin2countersuu3 = bin2countersuu3;
+    }
+
+    /**
+     * BIN3 ｶｳﾝﾀｰ数2
+     * @return bin3countersuu2
+     */
+    public Integer getBin3countersuu2() {
+        return bin3countersuu2;
+    }
+
+    /**
+     * BIN3 ｶｳﾝﾀｰ数2
+     * @param bin3countersuu2
+     */
+    public void setBin3countersuu2(Integer bin3countersuu2) {
+        this.bin3countersuu2 = bin3countersuu2;
+    }
+
+    /**
+     * BIN3 ｶｳﾝﾀｰ数3
+     * @return bin3countersuu3
+     */
+    public Integer getBin3countersuu3() {
+        return bin3countersuu3;
+    }
+
+    /**
+     * BIN3 ｶｳﾝﾀｰ数3
+     * @param bin3countersuu3
+     */
+    public void setBin3countersuu3(Integer bin3countersuu3) {
+        this.bin3countersuu3 = bin3countersuu3;
+    }
+
+    /**
+     * BIN4 ｶｳﾝﾀｰ数2
+     * @return bin4countersuu2
+     */
+    public Integer getBin4countersuu2() {
+        return bin4countersuu2;
+    }
+
+    /**
+     * BIN4 ｶｳﾝﾀｰ数2
+     * @param bin4countersuu2
+     */
+    public void setBin4countersuu2(Integer bin4countersuu2) {
+        this.bin4countersuu2 = bin4countersuu2;
+    }
+
+    /**
+     * BIN4 ｶｳﾝﾀｰ数3
+     * @return bin4countersuu3
+     */
+    public Integer getBin4countersuu3() {
+        return bin4countersuu3;
+    }
+
+    /**
+     * BIN4 ｶｳﾝﾀｰ数3
+     * @param bin4countersuu3
+     */
+    public void setBin4countersuu3(Integer bin4countersuu3) {
+        this.bin4countersuu3 = bin4countersuu3;
+    }
+
+    /**
+     * BIN5 ｶｳﾝﾀｰ数2
+     * @return bin5countersuu2
+     */
+    public Integer getBin5countersuu2() {
+        return bin5countersuu2;
+    }
+
+    /**
+     * BIN5 ｶｳﾝﾀｰ数2
+     * @param bin5countersuu2
+     */
+    public void setBin5countersuu2(Integer bin5countersuu2) {
+        this.bin5countersuu2 = bin5countersuu2;
+    }
+
+    /**
+     * BIN5 ｶｳﾝﾀｰ数3
+     * @return bin5countersuu3
+     */
+    public Integer getBin5countersuu3() {
+        return bin5countersuu3;
+    }
+
+    /**
+     * BIN5 ｶｳﾝﾀｰ数3
+     * @param bin5countersuu3
+     */
+    public void setBin5countersuu3(Integer bin5countersuu3) {
+        this.bin5countersuu3 = bin5countersuu3;
+    }
+
+    /**
+     * BIN6 ｶｳﾝﾀｰ数2
+     * @return bin6countersuu2
+     */
+    public Integer getBin6countersuu2() {
+        return bin6countersuu2;
+    }
+
+    /**
+     * BIN6 ｶｳﾝﾀｰ数2
+     * @param bin6countersuu2
+     */
+    public void setBin6countersuu2(Integer bin6countersuu2) {
+        this.bin6countersuu2 = bin6countersuu2;
+    }
+
+    /**
+     * BIN6 ｶｳﾝﾀｰ数3
+     * @return bin6countersuu3
+     */
+    public Integer getBin6countersuu3() {
+        return bin6countersuu3;
+    }
+
+    /**
+     * BIN6 ｶｳﾝﾀｰ数3
+     * @param bin6countersuu3
+     */
+    public void setBin6countersuu3(Integer bin6countersuu3) {
+        this.bin6countersuu3 = bin6countersuu3;
+    }
+
+    /**
+     * BIN7 ｶｳﾝﾀｰ数2
+     * @return bin7countersuu2
+     */
+    public Integer getBin7countersuu2() {
+        return bin7countersuu2;
+    }
+
+    /**
+     * BIN7 ｶｳﾝﾀｰ数2
+     * @param bin7countersuu2
+     */
+    public void setBin7countersuu2(Integer bin7countersuu2) {
+        this.bin7countersuu2 = bin7countersuu2;
+    }
+
+    /**
+     * BIN7 ｶｳﾝﾀｰ数3
+     * @return bin7countersuu3
+     */
+    public Integer getBin7countersuu3() {
+        return bin7countersuu3;
+    }
+
+    /**
+     * BIN7 ｶｳﾝﾀｰ数3
+     * @param bin7countersuu3
+     */
+    public void setBin7countersuu3(Integer bin7countersuu3) {
+        this.bin7countersuu3 = bin7countersuu3;
+    }
+
+    /**
+     * BIN8 ｶｳﾝﾀｰ数2
+     * @return bin8countersuu2
+     */
+    public Integer getBin8countersuu2() {
+        return bin8countersuu2;
+    }
+
+    /**
+     * BIN8 ｶｳﾝﾀｰ数2
+     * @param bin8countersuu2
+     */
+    public void setBin8countersuu2(Integer bin8countersuu2) {
+        this.bin8countersuu2 = bin8countersuu2;
+    }
+
+    /**
+     * BIN8 ｶｳﾝﾀｰ数3
+     * @return bin8countersuu3
+     */
+    public Integer getBin8countersuu3() {
+        return bin8countersuu3;
+    }
+
+    /**
+     * BIN8 ｶｳﾝﾀｰ数3
+     * @param bin8countersuu3 
+     */
+    public void setBin8countersuu3(Integer bin8countersuu3) {
+        this.bin8countersuu3 = bin8countersuu3;
+    }
+
+    /**
+     * 同品種
+     * @return douhinsyu
+     */
+    public Integer getDouhinsyu() {
+        return douhinsyu;
+    }
+
+    /**
+     * 同品種
+     * @param douhinsyu 
+     */
+    public void setDouhinsyu(Integer douhinsyu) {
+        this.douhinsyu = douhinsyu;
     }
 
     /**

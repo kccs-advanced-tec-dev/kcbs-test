@@ -18,6 +18,11 @@ import jp.co.kccs.xhd.db.model.FXHDD01;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/10/14<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -581,7 +586,7 @@ public class GXHDO101B040D implements Serializable {
     private FXHDD01 kosu4;
 
     /**
-     * ｶｳﾝﾀｰ総数
+     * 計量総数
      */
     private FXHDD01 counterSosu;
 
@@ -2372,7 +2377,7 @@ public class GXHDO101B040D implements Serializable {
     }
 
     /**
-     * ｶｳﾝﾀｰ総数
+     * 計量総数
      * @return the counterSosu
      */
     public FXHDD01 getCounterSosu() {
@@ -2380,7 +2385,7 @@ public class GXHDO101B040D implements Serializable {
     }
 
     /**
-     * ｶｳﾝﾀｰ総数
+     * 計量総数
      * @param counterSosu the counterSosu to set
      */
     public void setCounterSosu(FXHDD01 counterSosu) {

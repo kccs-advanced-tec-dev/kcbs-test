@@ -13,6 +13,11 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/10/19<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjy<br>
+ * 変更理由	号機ボタン追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -227,6 +232,11 @@ public class GXHDO101B018Const {
      * 削除(画面上ボタン)
      */
     public static final String BTN_DELETE_TOP = "sr_syosei_rhk_delete_Top";
+    
+    /**
+     * 号機(画面上ボタン)
+     */
+    public static final String BTN_GOUKI_TOP = "sr_syosei_rhk_gouki_Top";
 
     /**
      * 枝番ｺﾋﾟｰ(画面下ボタン)
@@ -262,6 +272,11 @@ public class GXHDO101B018Const {
      * 削除(画面下ボタン)
      */
     public static final String BTN_DELETE_BOTTOM = "sr_syosei_rhk_delete_Bottom";
+
+    /**
+     * 号機(画面下ボタン)
+     */
+    public static final String BTN_GOUKI_BOTTOM = "sr_syosei_rhk_gouki_Bottom";
 
     /**
      * ユーザー認証パラメータ(修正)

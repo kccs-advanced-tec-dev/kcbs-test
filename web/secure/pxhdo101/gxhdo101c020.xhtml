@@ -27,7 +27,7 @@
                 </p:dataTable>
                 <p:confirmDialog class="ui-confdialog" severity="alert" widgetVar="cd1" global="true">
                     <f:facet name="message">
-                        <h:outputText value="設計の電極ﾃｰﾌﾟと異なるﾃｰﾌﾟﾛｯﾄが指定されています。よろしいですか。" escape="false"/>
+                        <h:outputText value="#{beanGXHDO101C020.getTapeWarnMessage()}" escape="false"/>
                     </f:facet>
                     <p:commandButton value="OK" styleClass="ui-conf-commandbtn-def1"
                                      actionListener="#{beanGXHDO101C020.checkTapeSameHinmeiOK()}"
@@ -40,7 +40,7 @@
                 </p:confirmDialog>
                 <p:confirmDialog class="ui-confdialog" severity="alert" widgetVar="cd2" global="true">
                     <f:facet name="message">
-                        <h:outputText value="設計の電極ﾍﾟｰｽﾄと異なるﾍﾟｰｽﾄﾛｯﾄが指定されています。よろしいですか。" escape="false"/>
+                        <h:outputText value="#{beanGXHDO101C020.getPasteWarnMessage()}" escape="false"/>
                     </f:facet>
                     <p:commandButton value="OK" styleClass="ui-conf-commandbtn-def1"
                                      actionListener="#{beanGXHDO101C020.checkPasteSameHinmeiOK()}"

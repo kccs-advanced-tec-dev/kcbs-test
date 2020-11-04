@@ -259,7 +259,7 @@
                     </p:column>
                     <p:column id="bunruiairatu" headerText="分類ｴｱｰ圧" styleClass="number">
                         <p:outputLabel value="#{item.bunruiairatu}">
-                            <f:convertNumber pattern="###,###,##0"/>
+                            <f:convertNumber pattern="##0.00"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="cdcontactatu" headerText="CDｺﾝﾀｸﾄ圧" styleClass="number">
@@ -401,6 +401,9 @@
                             <f:convertNumber pattern="0.0"/>
                         </p:outputLabel>
                     </p:column>
+                    <p:column id="douhinsyu" headerText="同品種">
+                        <p:outputLabel value="#{item.douhinsyu}"/>
+                    </p:column>
                     <p:column id="hoseiyoutippuyoryou" headerText="補正用ﾁｯﾌﾟ容量" styleClass="number">
                         <p:outputLabel value="#{item.hoseiyoutippuyoryou}">
                             <f:convertNumber pattern="#,##0.00000"/>
@@ -514,10 +517,18 @@
                             <f:convertNumber pattern="#,##0.0"/>
                         </p:outputLabel>
                     </p:column>
+                    <p:column id="irhanteiti1low" headerText="耐電圧設定条件 IR① 判定値(低)" styleClass="number">
+                        <p:outputLabel value="#{item.irhanteiti1low}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
                     <p:column id="irhanteiti1" headerText="耐電圧設定条件 IR① 判定値" styleClass="number">
                         <p:outputLabel value="#{item.irhanteiti1}">
                             <f:convertNumber pattern="#0.000000000000"/>
                         </p:outputLabel>
+                    </p:column>
+                    <p:column id="irhanteiti1tani" headerText="耐電圧設定条件 IR① 判定値 単位">
+                        <p:outputLabel value="#{item.irhanteiti1tani}"/>
                     </p:column>
                     <p:column id="irjudenjikan1" headerText="耐電圧設定条件 IR① 充電時間" styleClass="number">
                         <p:outputLabel value="#{item.irjudenjikan1}">
@@ -529,10 +540,18 @@
                             <f:convertNumber pattern="#,##0.0"/>
                         </p:outputLabel>
                     </p:column>
+                    <p:column id="irhanteiti2low" headerText="耐電圧設定条件 IR② 判定値(低)" styleClass="number">
+                        <p:outputLabel value="#{item.irhanteiti2low}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
                     <p:column id="irhanteiti2" headerText="耐電圧設定条件 IR② 判定値" styleClass="number">
                         <p:outputLabel value="#{item.irhanteiti2}">
                             <f:convertNumber pattern="#0.000000000000"/>
                         </p:outputLabel>
+                    </p:column>
+                    <p:column id="irhanteiti2tani" headerText="耐電圧設定条件 IR② 判定値 単位">
+                        <p:outputLabel value="#{item.irhanteiti2tani}"/>
                     </p:column>
                     <p:column id="irjudenjikan2" headerText="耐電圧設定条件 IR② 充電時間" styleClass="number">
                         <p:outputLabel value="#{item.irjudenjikan2}">
@@ -544,10 +563,18 @@
                             <f:convertNumber pattern="#,##0.0"/>
                         </p:outputLabel>
                     </p:column>
+                    <p:column id="irhanteiti3low" headerText="耐電圧設定条件 IR③ 判定値(低)" styleClass="number">
+                        <p:outputLabel value="#{item.irhanteiti3low}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
                     <p:column id="irhanteiti3" headerText="耐電圧設定条件 IR③ 判定値" styleClass="number">
                         <p:outputLabel value="#{item.irhanteiti3}">
                             <f:convertNumber pattern="#0.000000000000"/>
                         </p:outputLabel>
+                    </p:column>
+                    <p:column id="irhanteiti3tani" headerText="耐電圧設定条件 IR③ 判定値 単位">
+                        <p:outputLabel value="#{item.irhanteiti3tani}"/>
                     </p:column>
                     <p:column id="irjudenjikan3" headerText="耐電圧設定条件 IR③ 充電時間" styleClass="number">
                         <p:outputLabel value="#{item.irjudenjikan3}">
@@ -559,10 +586,18 @@
                             <f:convertNumber pattern="#,##0.0"/>
                         </p:outputLabel>
                     </p:column>
+                    <p:column id="irhanteiti4low" headerText="耐電圧設定条件 IR④ 判定値(低)" styleClass="number">
+                        <p:outputLabel value="#{item.irhanteiti4low}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
                     <p:column id="irhanteiti4" headerText="耐電圧設定条件 IR④ 判定値" styleClass="number">
                         <p:outputLabel value="#{item.irhanteiti4}">
                             <f:convertNumber pattern="#0.000000000000"/>
                         </p:outputLabel>
+                    </p:column>
+                    <p:column id="irhanteiti4tani" headerText="耐電圧設定条件 IR④ 判定値 単位">
+                        <p:outputLabel value="#{item.irhanteiti4tani}"/>
                     </p:column>
                     <p:column id="irjudenjikan4" headerText="耐電圧設定条件 IR④ 充電時間" styleClass="number">
                         <p:outputLabel value="#{item.irjudenjikan4}">
@@ -574,10 +609,18 @@
                             <f:convertNumber pattern="#,##0.0"/>
                         </p:outputLabel>
                     </p:column>
+                    <p:column id="irhanteiti5low" headerText="耐電圧設定条件 IR⑤ 判定値(低)" styleClass="number">
+                        <p:outputLabel value="#{item.irhanteiti5low}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
                     <p:column id="irhanteiti5" headerText="耐電圧設定条件 IR⑤ 判定値" styleClass="number">
                         <p:outputLabel value="#{item.irhanteiti5}">
                             <f:convertNumber pattern="#0.000000000000"/>
                         </p:outputLabel>
+                    </p:column>
+                    <p:column id="irhanteiti5tani" headerText="耐電圧設定条件 IR⑤ 判定値 単位">
+                        <p:outputLabel value="#{item.irhanteiti5tani}"/>
                     </p:column>
                     <p:column id="irjudenjikan5" headerText="耐電圧設定条件 IR⑤ 充電時間" styleClass="number">
                         <p:outputLabel value="#{item.irjudenjikan5}">
@@ -589,10 +632,18 @@
                             <f:convertNumber pattern="#,##0.0"/>
                         </p:outputLabel>
                     </p:column>
+                    <p:column id="irhanteiti6low" headerText="耐電圧設定条件 IR⑥ 判定値(低)" styleClass="number">
+                        <p:outputLabel value="#{item.irhanteiti6low}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
                     <p:column id="irhanteiti6" headerText="耐電圧設定条件 IR⑥ 判定値" styleClass="number">
                         <p:outputLabel value="#{item.irhanteiti6}">
                             <f:convertNumber pattern="#0.000000000000"/>
                         </p:outputLabel>
+                    </p:column>
+                    <p:column id="irhanteiti6tani" headerText="耐電圧設定条件 IR⑥ 判定値 単位">
+                        <p:outputLabel value="#{item.irhanteiti6tani}"/>
                     </p:column>
                     <p:column id="irjudenjikan6" headerText="耐電圧設定条件 IR⑥ 充電時間" styleClass="number">
                         <p:outputLabel value="#{item.irjudenjikan6}">
@@ -604,10 +655,18 @@
                             <f:convertNumber pattern="#,##0.0"/>
                         </p:outputLabel>
                     </p:column>
+                    <p:column id="irhanteiti7low" headerText="耐電圧設定条件 IR⑦ 判定値(低)" styleClass="number">
+                        <p:outputLabel value="#{item.irhanteiti7low}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
                     <p:column id="irhanteiti7" headerText="耐電圧設定条件 IR⑦ 判定値" styleClass="number">
                         <p:outputLabel value="#{item.irhanteiti7}">
                             <f:convertNumber pattern="#0.000000000000"/>
                         </p:outputLabel>
+                    </p:column>
+                    <p:column id="irhanteiti7tani" headerText="耐電圧設定条件 IR⑦ 判定値 単位">
+                        <p:outputLabel value="#{item.irhanteiti7tani}"/>
                     </p:column>
                     <p:column id="irjudenjikan7" headerText="耐電圧設定条件 IR⑦ 充電時間" styleClass="number">
                         <p:outputLabel value="#{item.irjudenjikan7}">
@@ -619,10 +678,18 @@
                             <f:convertNumber pattern="#,##0.0"/>
                         </p:outputLabel>
                     </p:column>
+                    <p:column id="irhanteiti8low" headerText="耐電圧設定条件 IR⑧ 判定値(低)" styleClass="number">
+                        <p:outputLabel value="#{item.irhanteiti8low}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
                     <p:column id="irhanteiti8" headerText="耐電圧設定条件 IR⑧ 判定値" styleClass="number">
                         <p:outputLabel value="#{item.irhanteiti8}">
                             <f:convertNumber pattern="#0.000000000000"/>
                         </p:outputLabel>
+                    </p:column>
+                    <p:column id="irhanteiti8tani" headerText="耐電圧設定条件 IR⑧ 判定値 単位">
+                        <p:outputLabel value="#{item.irhanteiti8tani}"/>
                     </p:column>
                     <p:column id="irjudenjikan8" headerText="耐電圧設定条件 IR⑧ 充電時間" styleClass="number">
                         <p:outputLabel value="#{item.irjudenjikan8}">
@@ -1161,7 +1228,7 @@
                             <f:convertNumber pattern="###,###,##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="countersousuu" headerText="ｶｳﾝﾀｰ総数" styleClass="number">
+                    <p:column id="countersousuu" headerText="計量総数" styleClass="number">
                         <p:outputLabel value="#{item.countersousuu}">
                             <f:convertNumber pattern="###,###,##0"/>
                         </p:outputLabel>

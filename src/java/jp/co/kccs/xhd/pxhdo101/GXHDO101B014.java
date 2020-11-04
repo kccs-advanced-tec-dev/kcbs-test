@@ -44,6 +44,7 @@ import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
 import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import org.apache.commons.dbutils.DbUtils;
+import org.apache.commons.lang.math.NumberUtils;
 
 /**
  * ===============================================================================<br>
@@ -59,6 +60,11 @@ import org.apache.commons.dbutils.DbUtils;
  * 計画書No	MB2008-DK001<br>
  * 変更者	KCSS D.Yanagida<br>
  * 変更理由	ロット混合対応<br>
+ * <br>
+ * 変更日	2020/10/19<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjy<br>
+ * 変更理由	仕様変更<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -1050,6 +1056,12 @@ public class GXHDO101B014 implements IFormLogic {
                     }
                 }
 
+                FXHDD01 itemMaxOndo = this.getItemRow(processData.getItemList(), itemIdInfo.getMaxOndo());
+                setKikakuChiToValue(itemMaxOndo);
+                FXHDD01 itemKeepTime = this.getItemRow(processData.getItemList(), itemIdInfo.getKeepTime());
+                setKikakuChiToValue(itemKeepTime);
+                FXHDD01 itemTotalTime = this.getItemRow(processData.getItemList(), itemIdInfo.getTotalTime());
+                setKikakuChiToValue(itemTotalTime);
                 return true;
             }
 
@@ -2379,4 +2391,21 @@ public class GXHDO101B014 implements IFormLogic {
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
     }
 
+    /**
+     * 規格値を項目の初期値にセットする
+     * 
+     * @param item 項目データ
+     */
+    private void setKikakuChiToValue(FXHDD01 item) {
+        if (item != null) {
+            String kikakuChi = item.getKikakuChi();
+            String label2 = item.getLabel2();
+            if (!StringUtil.isEmpty(kikakuChi) && !StringUtil.isEmpty(label2)) {
+                String value = kikakuChi.replace("【", "").replace("】", "").replace(label2, "");
+                if (NumberUtils.isNumber(value)) {
+                    item.setValue(value);
+                }
+            }
+        }
+    }
 }

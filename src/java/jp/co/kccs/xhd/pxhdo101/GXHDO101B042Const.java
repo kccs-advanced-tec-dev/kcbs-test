@@ -13,6 +13,11 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	863 F.Zhang<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/10/20<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -229,6 +234,11 @@ public class GXHDO101B042Const {
     public static final String SEIHIN_SOKUTEI_DENATSU = "sr_denkitokuseiesi_seihin_sokutei_denatsu_42";
 
     /**
+     * 製品情報:同品種
+     */
+    public static final String SEIHIN_DOUHINSYU = "sr_denkitokuseiesi_seihin_douhinsyu_42";
+
+    /**
      * 製品情報:補正用ﾁｯﾌﾟ容量
      */
     public static final String SEIHIN_HOSEIYOU_CHIP_YORYO = "sr_denkitokuseiesi_seihin_hoseiyou_chip_yoryo_42";
@@ -314,6 +324,16 @@ public class GXHDO101B042Const {
     public static final String TAIDEN_HANTEICHI1 = "sr_denkitokuseiesi_taiden_hanteichi1_42";
 
     /**
+     * 耐電圧設定条件:IR① 判定値(低)
+     */
+    public static final String TAIDEN_HANTEICHI1LOW = "sr_denkitokuseiesi_taiden_hanteichi1low_42";
+
+    /**
+     * 耐電圧設定条件:IR① 判定値 単位
+     */
+    public static final String TAIDEN_HANTEICHI1TANI = "sr_denkitokuseiesi_taiden_hanteichi1tani_42";
+
+    /**
      * 耐電圧設定条件:IR① 充電時間
      */
     public static final String TAIDEN_JUDEN_TIME1 = "sr_denkitokuseiesi_taiden_juden_time1_42";
@@ -327,6 +347,16 @@ public class GXHDO101B042Const {
      * 耐電圧設定条件:IR② 判定値
      */
     public static final String TAIDEN_HANTEICHI2 = "sr_denkitokuseiesi_taiden_hanteichi2_42";
+
+    /**
+     * 耐電圧設定条件:IR② 判定値(低)
+     */
+    public static final String TAIDEN_HANTEICHI2LOW = "sr_denkitokuseiesi_taiden_hanteichi2low_42";
+
+    /**
+     * 耐電圧設定条件:IR② 判定値 単位
+     */
+    public static final String TAIDEN_HANTEICHI2TANI = "sr_denkitokuseiesi_taiden_hanteichi2tani_42";
 
     /**
      * 耐電圧設定条件:IR② 充電時間
@@ -344,6 +374,16 @@ public class GXHDO101B042Const {
     public static final String TAIDEN_HANTEICHI3 = "sr_denkitokuseiesi_taiden_hanteichi3_42";
 
     /**
+     * 耐電圧設定条件:IR③ 判定値(低)
+     */
+    public static final String TAIDEN_HANTEICHI3LOW = "sr_denkitokuseiesi_taiden_hanteichi3low_42";
+
+    /**
+     * 耐電圧設定条件:IR③ 判定値 単位
+     */
+    public static final String TAIDEN_HANTEICHI3TANI = "sr_denkitokuseiesi_taiden_hanteichi3tani_42";
+
+    /**
      * 耐電圧設定条件:IR③ 充電時間
      */
     public static final String TAIDEN_JUDEN_TIME3 = "sr_denkitokuseiesi_taiden_juden_time3_42";
@@ -357,6 +397,16 @@ public class GXHDO101B042Const {
      * 耐電圧設定条件:IR④ 判定値
      */
     public static final String TAIDEN_HANTEICHI4 = "sr_denkitokuseiesi_taiden_hanteichi4_42";
+
+    /**
+     * 耐電圧設定条件:IR④ 判定値(低)
+     */
+    public static final String TAIDEN_HANTEICHI4LOW = "sr_denkitokuseiesi_taiden_hanteichi4low_42";
+
+    /**
+     * 耐電圧設定条件:IR④ 判定値 単位
+     */
+    public static final String TAIDEN_HANTEICHI4TANI = "sr_denkitokuseiesi_taiden_hanteichi4tani_42";
 
     /**
      * 耐電圧設定条件:IR④ 充電時間
@@ -414,6 +464,16 @@ public class GXHDO101B042Const {
     public static final String SET_BIN1_COUNTER_SU = "sr_denkitokuseiesi_set_bin1_counter_su_42";
 
     /**
+     * 設定条件及び処理結果:BIN1 ｶｳﾝﾀｰ数2
+     */
+    public static final String SET_BIN1_COUNTER_SU2 = "sr_denkitokuseiesi_set_bin1_counter_su2_42";
+
+    /**
+     * 設定条件及び処理結果:BIN1 ｶｳﾝﾀｰ数3
+     */
+    public static final String SET_BIN1_COUNTER_SU3 = "sr_denkitokuseiesi_set_bin1_counter_su3_42";
+
+    /**
      * 設定条件及び処理結果:BIN1 誤差率(%)
      */
     public static final String SET_BIN1_GOSARITSU = "sr_denkitokuseiesi_set_bin1_gosaritsu_42";
@@ -467,6 +527,16 @@ public class GXHDO101B042Const {
      * 設定条件及び処理結果:BIN2 ｶｳﾝﾀｰ数
      */
     public static final String SET_BIN2_COUNTER_SU = "sr_denkitokuseiesi_set_bin2_counter_su_42";
+
+    /**
+     * 設定条件及び処理結果:BIN2 ｶｳﾝﾀｰ数2
+     */
+    public static final String SET_BIN2_COUNTER_SU2 = "sr_denkitokuseiesi_set_bin2_counter_su2_42";
+
+    /**
+     * 設定条件及び処理結果:BIN2 ｶｳﾝﾀｰ数3
+     */
+    public static final String SET_BIN2_COUNTER_SU3 = "sr_denkitokuseiesi_set_bin2_counter_su3_42";
 
     /**
      * 設定条件及び処理結果:BIN2 誤差率(%)
@@ -524,6 +594,16 @@ public class GXHDO101B042Const {
     public static final String SET_BIN3_COUNTER_SU = "sr_denkitokuseiesi_set_bin3_counter_su_42";
 
     /**
+     * 設定条件及び処理結果:BIN3 ｶｳﾝﾀｰ数2
+     */
+    public static final String SET_BIN3_COUNTER_SU2 = "sr_denkitokuseiesi_set_bin3_counter_su2_42";
+
+    /**
+     * 設定条件及び処理結果:BIN3 ｶｳﾝﾀｰ数3
+     */
+    public static final String SET_BIN3_COUNTER_SU3 = "sr_denkitokuseiesi_set_bin3_counter_su3_42";
+
+    /**
      * 設定条件及び処理結果:BIN3 誤差率(%)
      */
     public static final String SET_BIN3_GOSARITSU = "sr_denkitokuseiesi_set_bin3_gosaritsu_42";
@@ -577,6 +657,16 @@ public class GXHDO101B042Const {
      * 設定条件及び処理結果:BIN4 ｶｳﾝﾀｰ数
      */
     public static final String SET_BIN4_COUNTER_SU = "sr_denkitokuseiesi_set_bin4_counter_su_42";
+
+    /**
+     * 設定条件及び処理結果:BIN4 ｶｳﾝﾀｰ数2
+     */
+    public static final String SET_BIN4_COUNTER_SU2 = "sr_denkitokuseiesi_set_bin4_counter_su2_42";
+
+    /**
+     * 設定条件及び処理結果:BIN4 ｶｳﾝﾀｰ数3
+     */
+    public static final String SET_BIN4_COUNTER_SU3 = "sr_denkitokuseiesi_set_bin4_counter_su3_42";
 
     /**
      * 設定条件及び処理結果:BIN4 誤差率(%)
@@ -634,6 +724,16 @@ public class GXHDO101B042Const {
     public static final String SET_BIN5_COUNTER_SU = "sr_denkitokuseiesi_set_bin5_counter_su_42";
 
     /**
+     * 設定条件及び処理結果:BIN5 ｶｳﾝﾀｰ数2
+     */
+    public static final String SET_BIN5_COUNTER_SU2 = "sr_denkitokuseiesi_set_bin5_counter_su2_42";
+
+    /**
+     * 設定条件及び処理結果:BIN5 ｶｳﾝﾀｰ数3
+     */
+    public static final String SET_BIN5_COUNTER_SU3 = "sr_denkitokuseiesi_set_bin5_counter_su3_42";
+
+    /**
      * 設定条件及び処理結果:BIN5 誤差率(%)
      */
     public static final String SET_BIN5_GOSARITSU = "sr_denkitokuseiesi_set_bin5_gosaritsu_42";
@@ -687,6 +787,16 @@ public class GXHDO101B042Const {
      * 設定条件及び処理結果:BIN6 ｶｳﾝﾀｰ数
      */
     public static final String SET_BIN6_COUNTER_SU = "sr_denkitokuseiesi_set_bin6_counter_su_42";
+
+    /**
+     * 設定条件及び処理結果:BIN6 ｶｳﾝﾀｰ数2
+     */
+    public static final String SET_BIN6_COUNTER_SU2 = "sr_denkitokuseiesi_set_bin6_counter_su2_42";
+
+    /**
+     * 設定条件及び処理結果:BIN6 ｶｳﾝﾀｰ数3
+     */
+    public static final String SET_BIN6_COUNTER_SU3 = "sr_denkitokuseiesi_set_bin6_counter_su3_42";
 
     /**
      * 設定条件及び処理結果:BIN6 誤差率(%)
@@ -744,6 +854,16 @@ public class GXHDO101B042Const {
     public static final String SET_BIN7_COUNTER_SU = "sr_denkitokuseiesi_set_bin7_counter_su_42";
 
     /**
+     * 設定条件及び処理結果:BIN7 ｶｳﾝﾀｰ数2
+     */
+    public static final String SET_BIN7_COUNTER_SU2 = "sr_denkitokuseiesi_set_bin7_counter_su2_42";
+
+    /**
+     * 設定条件及び処理結果:BIN7 ｶｳﾝﾀｰ数3
+     */
+    public static final String SET_BIN7_COUNTER_SU3 = "sr_denkitokuseiesi_set_bin7_counter_su3_42";
+
+    /**
      * 設定条件及び処理結果:BIN7 誤差率(%)
      */
     public static final String SET_BIN7_GOSARITSU = "sr_denkitokuseiesi_set_bin7_gosaritsu_42";
@@ -797,6 +917,16 @@ public class GXHDO101B042Const {
      * 設定条件及び処理結果:BIN8 ｶｳﾝﾀｰ数
      */
     public static final String SET_BIN8_COUNTER_SU = "sr_denkitokuseiesi_set_bin8_counter_su_42";
+
+    /**
+     * 設定条件及び処理結果:BIN8 ｶｳﾝﾀｰ数2
+     */
+    public static final String SET_BIN8_COUNTER_SU2 = "sr_denkitokuseiesi_set_bin8_counter_su2_42";
+
+    /**
+     * 設定条件及び処理結果:BIN8 ｶｳﾝﾀｰ数3
+     */
+    public static final String SET_BIN8_COUNTER_SU3 = "sr_denkitokuseiesi_set_bin8_counter_su3_42";
 
     /**
      * 設定条件及び処理結果:BIN8 誤差率(%)
@@ -1028,7 +1158,7 @@ public class GXHDO101B042Const {
      */
     public static final String BTN_SETSUBI_DATA_TORIKOMI_TOP = "sr_denkitokuseiesi_setsubi_data_torikomi_42_Top";
     
-        /**
+    /**
      * 仮登録(画面下ボタン)
      */
     public static final String BTN_KARI_TOUROKU_BOTTOM = "sr_denkitokuseiesi_kari_touroku_42_Bottom";

@@ -2225,13 +2225,16 @@ public class GXHDO101B003 implements IFormLogic {
             setInputItemDataMainForm(processData, srRsusprnDataList.get(0));
 
             // 膜厚入力画面データ設定 ※工場ｺｰﾄﾞ、ﾛｯﾄNo、枝番は親ではなく自身の値を渡す。
+            //   →子画面側処理で自身の枝番を保持しておく必要がある。データ自体は親データの枝番で検索済みのものを引き渡す。
             setInputItemDataSubFormC004(subSrRsusprnDataList.get(0));
 
             // 印刷幅入力画面データ設定
             setInputItemDataSubFormC005(subSrRsusprnDataList.get(0));
             
             // 前工程WIP取込画面データ設定
-            setInputItemDataSubFormC020(queryRunnerQcdb, kojyo, lotNo8, lotNo.substring(11, 14), jotaiFlg);
+            // ※膜厚入力画面とは異なり、下記メソッド内で親データの検索を実行しているため親データの枝番、状態フラグを引き渡す。
+            //   また前工程WIP取込画面自体で自身の枝番は参照不要
+            setInputItemDataSubFormC020(queryRunnerQcdb, kojyo, lotNo8, oyalotEdaban, jotaiFlg);
 
             // 次呼出しメソッドをクリア
             processData.setMethod("");

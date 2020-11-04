@@ -64,6 +64,11 @@ import org.apache.commons.lang.StringUtils;
  * 変更者	KCSS D.Yanagida<br>
  * 変更理由	ロット混合対応<br>
  * <br>
+ * 変更日	2020/10/19<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjy<br>
+ * 変更理由	仕様変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -360,8 +365,6 @@ public class GXHDO101B018 implements IFormLogic {
             return errorMessageInfo;
         }
 
-        // 前工程関連チェック
-        errorMessageInfo = checkMaekotei(processData);
         // エラーがある場合リターン
         if (errorMessageInfo != null) {
             return errorMessageInfo;
@@ -410,6 +413,9 @@ public class GXHDO101B018 implements IFormLogic {
         for (String checkItemId : checkItemList) {
             // 項目の取得
             FXHDD01 itemRow = getItemRow(processData.getItemList(), checkItemId);
+            if (itemRow == null) {
+                continue;
+            }
             if (isNonInputItem(itemRow)) {
                 // 値が入力されていない場合
                 if (nonInputitemRow == null) {
@@ -425,41 +431,6 @@ public class GXHDO101B018 implements IFormLogic {
             if (existInputData && nonInputitemRow != null) {
                 List<FXHDD01> errFxhdd01List = Arrays.asList(nonInputitemRow);
                 return MessageUtil.getErrorMessageInfo("XHD-000003", true, true, errFxhdd01List, nonInputitemRow.getLabel1());
-            }
-        }
-        return null;
-    }
-
-    /**
-     * 前工程関連ﾁｪｯｸ、前工程が特定の工程以外の場合、必須チェックを行う。
-     *
-     * @param processData 処理データ
-     * @return エラーメッセージ情報
-     */
-    private ErrorMessageInfo checkMaekotei(ProcessData processData) {
-
-        // 前工程の画面IDを取得
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        HttpSession session = (HttpSession) externalContext.getSession(false);
-        String maekoteiFormId = StringUtil.nullToBlank(session.getAttribute("maekoteiFormId"));
-
-        //前工程が焼成・2次脱脂(ﾍﾞﾙﾄ)、焼成・窒素脱脂の場合チェック不要
-        if ("GXHDO101B016".equals(maekoteiFormId) || "GXHDO101B015".equals(maekoteiFormId)) {
-            return null;
-        }
-
-        List<String> checkItemList = new ArrayList<>();
-        checkItemList.add(GXHDO101B018Const.NIJIDASSHI_GOUKI); //2次脱脂号機
-        checkItemList.add(GXHDO101B018Const.NIJIDASSHI_SETTEI_PATTERN); //2次脱脂設定ﾊﾟﾀｰﾝ
-        checkItemList.add(GXHDO101B018Const.NIJIDASSHI_KEEPONDO);//2次脱脂ｷｰﾌﾟ温度
-        checkItemList.add(GXHDO101B018Const.NIJIDASSHI_CONVEYER_SPEED);//2次脱脂ｺﾝﾍﾞｱ速度
-
-        for (String checkItemId : checkItemList) {
-            // 項目の取得
-            FXHDD01 itemRow = getItemRow(processData.getItemList(), checkItemId);
-            if (isNonInputItem(itemRow)) {
-                // 未入力項目がある場合、リターン
-                return MessageUtil.getErrorMessageInfo("XHD-000003", true, true, Arrays.asList(itemRow), itemRow.getLabel1());
             }
         }
         return null;
@@ -962,6 +933,11 @@ public class GXHDO101B018 implements IFormLogic {
             case GXHDO101B018Const.BTN_ENDDATETIME_BOTTOM:
                 method = "setEndDateTime";
                 break;
+            // 号機
+            case GXHDO101B018Const.BTN_GOUKI_TOP:
+            case GXHDO101B018Const.BTN_GOUKI_BOTTOM:
+                method = "setGouki";
+                break;
             default:
                 method = "error";
                 break;
@@ -1048,6 +1024,8 @@ public class GXHDO101B018 implements IFormLogic {
         } else {
             ondoShiji = (String)ondoShijiInfo.get("peakShijiOndo");
         }
+        
+        setItemNotShow(processData, queryRunnerDoc, queryRunnerQcdb, sekkeiNo);
 
         // 入力項目の情報を画面にセットする。
         if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId, jissekino)) {
@@ -2948,4 +2926,88 @@ public class GXHDO101B018 implements IFormLogic {
         return false;
     }
 
+    /**
+     * 規格値により、画面項目を非表示にする。
+     * 
+     * @param processData 処理制御データ
+     * @param queryRunnerDoc QueryRunnerオブジェクト(DocServer)
+     * @param queryRunnerQcdb QueryRunnerオブジェクト(Qcdb)
+     * @param sekkeiNo 設計No
+     * @throws SQLException 例外エラー
+     */
+    private void setItemNotShow(ProcessData processData, QueryRunner queryRunnerDoc, QueryRunner queryRunnerQcdb, String sekkeiNo) throws SQLException {
+        
+        List<FXHDD01> itemList = processData.getItemList();
+        
+        Map fxhbm03Data1 = loadFxhbm03Data(queryRunnerDoc, "RHK焼成_2次脱脂");
+        String data1 = StringUtil.nullToBlank(getMapData(fxhbm03Data1, "data"));
+        String[] joken1 = data1.split(",");
+        if (joken1.length == 3) {
+            Map daJokenData = loadDaJokenData(queryRunnerQcdb, sekkeiNo, joken1[0], joken1[1], joken1[2]);
+            String kikakuchi1 = StringUtil.nullToBlank(getMapData(daJokenData, "KIKAKUCHI"));
+            // 以下の項目を画面非表示にする。
+            if (NumberUtil.isZero(kikakuchi1)) {
+                itemList.remove(getItemRow(itemList, GXHDO101B018Const.NIJIDASSHI_GOUKI)); // 2次脱脂号機
+                itemList.remove(getItemRow(itemList, GXHDO101B018Const.NIJIDASSHI_SETTEI_PATTERN)); // 2次脱脂設定ﾊﾟﾀｰﾝ
+                itemList.remove(getItemRow(itemList, GXHDO101B018Const.NIJIDASSHI_KEEPONDO)); // 2次脱脂ｷｰﾌﾟ温度
+                itemList.remove(getItemRow(itemList, GXHDO101B018Const.NIJIDASSHI_CONVEYER_SPEED)); // 2次脱脂ｺﾝﾍﾞｱ速度
+            }
+        }
+        
+        Map fxhbm03Data2 = loadFxhbm03Data(queryRunnerDoc, "RHK焼成_再酸化");
+        String data2 = StringUtil.nullToBlank(getMapData(fxhbm03Data2, "data"));
+        String[] joken2 = data2.split(",");
+        if (joken2.length == 3) {
+            Map daJokenData = loadDaJokenData(queryRunnerQcdb, sekkeiNo, joken2[0], joken2[1], joken2[2]);
+            String kikakuchi1 = StringUtil.nullToBlank(getMapData(daJokenData, "KIKAKUCHI"));
+            // 以下の項目を画面非表示にする。
+            if (NumberUtil.isZero(kikakuchi1)) {
+                itemList.remove(getItemRow(itemList, GXHDO101B018Const.FIRST_SAISANKA_GOUKI1)); // 1回目再酸化号機1
+                itemList.remove(getItemRow(itemList, GXHDO101B018Const.FIRST_SAISANKA_GOUKI2)); // 1回目再酸化号機2
+                itemList.remove(getItemRow(itemList, GXHDO101B018Const.FIRST_SAISANKA_SETTEI_PTN)); // 1回目再酸化設定ﾊﾟﾀｰﾝ
+                itemList.remove(getItemRow(itemList, GXHDO101B018Const.FIRST_SAISANKA_KEEP_ONDO)); // 1回目再酸化ｷｰﾌﾟ温度
+                itemList.remove(getItemRow(itemList, GXHDO101B018Const.FIRST_SAISANKA_CONVEYER_SPEED)); // 1回目再酸化ｺﾝﾍﾞｱ速度
+                itemList.remove(getItemRow(itemList, GXHDO101B018Const.FIRST_SAISANKA_ATO_GAIKAN)); // 1回目再酸化後外観
+            }
+        }
+    }
+
+    /**
+     * [ﾊﾟﾗﾒｰﾀﾏｽﾀ]から、ﾃﾞｰﾀを取得
+     * @param queryRunnerDoc オブジェクト
+     * @param key キー
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadFxhbm03Data(QueryRunner queryRunnerDoc, String key) {
+        try {
+
+            // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+             String sql = "SELECT data "
+                        + " FROM fxhbm03 "
+                        + " WHERE user_name = 'common_user' AND key = ? ";
+            List<Object> params = new ArrayList<>();
+            params.add(key);
+            return queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+        }
+        return null;
+    }
+    
+    /**
+     * 号機設定処理
+     *
+     * @param processDate 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData setGouki(ProcessData processDate) {
+        FXHDD01 itemSyoseiGouki = getItemRow(processDate.getItemList(), GXHDO101B018Const.SYOSEI_GOUKI);
+        if (!StringUtil.isEmpty(itemSyoseiGouki.getValue())) {
+            setItemData(processDate, GXHDO101B018Const.NIJIDASSHI_GOUKI, itemSyoseiGouki.getValue());
+            setItemData(processDate, GXHDO101B018Const.FIRST_SAISANKA_GOUKI1, itemSyoseiGouki.getValue());
+        }
+        processDate.setMethod("");
+        return processDate;
+    }
 }

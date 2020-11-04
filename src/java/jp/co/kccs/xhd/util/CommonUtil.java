@@ -590,7 +590,7 @@ public class CommonUtil {
         String sql = "SELECT KOJYO,LOTNO,EDABAN,KCPNO,KAISINICHIJI,SYURYONICHIJI,CUTBAMAISUU,GOKI,CUTTABLEONDO,CUTTANTOSYA,KAKUNINSYA,CHKTANTOSYA,"
                 + "BTANTOSYA,ATANTOSYA,UKEIREKOSUU,RYOHINKOSUU,Atumi01,Atumi02,Atumi03,Atumi04,Atumi05,Atumi06,Atumi07,Atumi08,Atumi09,Atumi10,"
                 + "ATUMIMIN,ATUMIMAX,BIKO1,BIKO2,BIKO3,BIKO4,TOROKUNICHIJI,KOSINNICHIJI,TENSYASYA,NIJIMICNT,Soujyuryo,Tanijyuryo,cutbashuruicheck,"
-                + "cutbachokushindo,cutbasiyoukaisuuST1,cutbasiyoukaisuuST2,programmei,gyoretukakunin,marktorisuu,cuthoseiryou,tableondoset,tableondosoku,"
+                + "cutbachokushindo,cutbasiyoukaisuuST1,cutbasiyoukaisuuST2,programmei,gyoretukakunin,marktorisuu,cuthoseiryou,tableondosethidari as tableondoset,tableondosokuhidari as tableondosoku,"
                 + "gaikancheck,hatakasang,syorisetsuu,RyouhinSetsuu,sagyoubasyo,revision "
                 + "FROM sr_hapscut "
                 + "WHERE KOJYO = ? AND LOTNO = ? "

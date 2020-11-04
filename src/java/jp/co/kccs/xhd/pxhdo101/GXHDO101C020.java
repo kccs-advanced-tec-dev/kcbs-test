@@ -296,6 +296,7 @@ public class GXHDO101C020 implements Serializable {
             genryouLotData.setTextBackColor(ErrUtil.ERR_BACK_COLOR);
         }
     }
+    
     /**
      * エラーセット
      *
@@ -466,14 +467,14 @@ public class GXHDO101C020 implements Serializable {
                 case GXHDO101C020Model.UWA_TANSHI:
                 case GXHDO101C020Model.SHITA_TANSHI:
                     if (!"S".equals(category)) {
-                        setErrorMessage(genryouLotData, true, "ﾃｰﾌﾟﾛｯﾄにﾃｰﾌﾟ以外が指定されています。");
+                        setError(genryouLotData, true, "XHD-000200", "");
                         return false;
                     }
                     break;
                 case GXHDO101C020Model.PASTE_LOT_1:
                 case GXHDO101C020Model.PASTE_LOT_2:
                     if (!"P".equals(category)) {
-                        setErrorMessage(genryouLotData, true, "ﾍﾟｰｽﾄﾛｯﾄにﾍﾟｰｽﾄ以外が指定されています。");
+                        setError(genryouLotData, true, "XHD-000201", "");
                         return false;
                     }
                     break;
@@ -504,22 +505,21 @@ public class GXHDO101C020 implements Serializable {
             }
         }
         
-        String tapelotMsg = "ﾃｰﾌﾟﾛｯﾄに異なるﾃｰﾌﾟが指定されています。";
         if (hasTapelot1 && hasTapelot2 && !tapelot1hinmei.equals(tapelot2hinmei)) {
-            setErrorMessage(null, false, tapelotMsg);
+            setError(null, false, "XHD-000202", "");
             return false;
         }
         if (hasTapelot2 && hasTapelot3 && !tapelot2hinmei.equals(tapelot3hinmei)) {
-            setErrorMessage(null, false, tapelotMsg);
+            setError(null, false, "XHD-000202", "");
             return false;
         }
         if (hasTapelot1 && hasTapelot3 && !tapelot1hinmei.equals(tapelot3hinmei)) {
-            setErrorMessage(null, false, tapelotMsg);
+            setError(null, false, "XHD-000202", "");
             return false;
         }
         
         if (hasPastelot1 && hasPastelot2 && !pastelot1hinmei.equals(pastelot2hinmei)) {
-            setErrorMessage(null, false, "ﾍﾟｰｽﾄﾛｯﾄに異なるﾃｰﾌﾟが指定されています。");
+            setError(null, false, "XHD-000203", "");
             return false;
         }
         
@@ -541,6 +541,24 @@ public class GXHDO101C020 implements Serializable {
             arraylist.add(genryouLotData.getValue());
         }
         return arraylist.toArray(new String[arraylist.size()]);
+    }
+    
+    /**
+     * 電極ﾃｰﾌﾟ警告メッセージ 
+     * 
+     * @return tapeWarnMessage the tapeWarnMessage
+     */
+    public String getTapeWarnMessage() {
+        return MessageUtil.getMessage("XHD-000204", "");
+    }
+
+    /**
+     * 電極ペースト警告メッセージ 
+     * 
+     * @return pasteWarnMessage the pasteWarnMessage
+     */
+    public String getPasteWarnMessage() {
+        return MessageUtil.getMessage("XHD-000205", "");
     }
 
     /**

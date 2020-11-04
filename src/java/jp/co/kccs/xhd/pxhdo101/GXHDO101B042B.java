@@ -18,6 +18,11 @@ import jp.co.kccs.xhd.db.model.FXHDD01;
  * 変更者	863 F.Zhang<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/10/20<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -41,6 +46,16 @@ public class GXHDO101B042B implements Serializable {
     private FXHDD01 hanteichi1;
 
     /**
+     * 耐電圧 判定値1(低)
+     */
+    private FXHDD01 hanteichi1low;
+
+    /**
+     * 耐電圧 判定値1 単位
+     */
+    private FXHDD01 hanteichi1tani;
+
+    /**
      * 耐電圧 充電時間1
      */
     private FXHDD01 judenTime1;
@@ -54,6 +69,16 @@ public class GXHDO101B042B implements Serializable {
      * 耐電圧 判定値2
      */
     private FXHDD01 hanteichi2;
+
+    /**
+     * 耐電圧 判定値2(低)
+     */
+    private FXHDD01 hanteichi2low;
+
+    /**
+     * 耐電圧 判定値2 単位
+     */
+    private FXHDD01 hanteichi2tani;
 
     /**
      * 耐電圧 充電時間2
@@ -71,6 +96,16 @@ public class GXHDO101B042B implements Serializable {
     private FXHDD01 hanteichi3;
 
     /**
+     * 耐電圧 判定値3(低)
+     */
+    private FXHDD01 hanteichi3low;
+
+    /**
+     * 耐電圧 判定値3 単位
+     */
+    private FXHDD01 hanteichi3tani;
+
+    /**
      * 耐電圧 充電時間3
      */
     private FXHDD01 judenTime3;
@@ -84,6 +119,16 @@ public class GXHDO101B042B implements Serializable {
      * 耐電圧 判定値4
      */
     private FXHDD01 hanteichi4;
+
+    /**
+     * 耐電圧 判定値4(低)
+     */
+    private FXHDD01 hanteichi4low;
+
+    /**
+     * 耐電圧 判定値4 単位
+     */
+    private FXHDD01 hanteichi4tani;
 
     /**
      * 耐電圧 充電時間4
@@ -101,6 +146,16 @@ public class GXHDO101B042B implements Serializable {
     private FXHDD01 hanteichi5;
 
     /**
+     * 耐電圧 判定値5(低)
+     */
+    private FXHDD01 hanteichi5low;
+
+    /**
+     * 耐電圧 判定値5 単位
+     */
+    private FXHDD01 hanteichi5tani;
+
+    /**
      * 耐電圧 充電時間5
      */
     private FXHDD01 judenTime5;
@@ -114,6 +169,16 @@ public class GXHDO101B042B implements Serializable {
      * 耐電圧 判定値6
      */
     private FXHDD01 hanteichi6;
+
+    /**
+     * 耐電圧 判定値6(低)
+     */
+    private FXHDD01 hanteichi6low;
+
+    /**
+     * 耐電圧 判定値6 単位
+     */
+    private FXHDD01 hanteichi6tani;
 
     /**
      * 耐電圧 充電時間6
@@ -131,6 +196,16 @@ public class GXHDO101B042B implements Serializable {
     private FXHDD01 hanteichi7;
 
     /**
+     * 耐電圧 判定値7(低)
+     */
+    private FXHDD01 hanteichi7low;
+
+    /**
+     * 耐電圧 判定値7 単位
+     */
+    private FXHDD01 hanteichi7tani;
+
+    /**
      * 耐電圧 充電時間7
      */
     private FXHDD01 judenTime7;
@@ -144,6 +219,16 @@ public class GXHDO101B042B implements Serializable {
      * 耐電圧 判定値8
      */
     private FXHDD01 hanteichi8;
+
+    /**
+     * 耐電圧 判定値8(低)
+     */
+    private FXHDD01 hanteichi8low;
+
+    /**
+     * 耐電圧 判定値8 単位
+     */
+    private FXHDD01 hanteichi8tani;
 
     /**
      * 耐電圧 充電時間8
@@ -190,6 +275,42 @@ public class GXHDO101B042B implements Serializable {
      */
     public void setHanteichi1(FXHDD01 hanteichi1) {
         this.hanteichi1 = hanteichi1;
+    }
+
+    /**
+     * 耐電圧 判定値1(低)
+     * 
+     * @return hanteichi1low
+     */
+    public FXHDD01 getHanteichi1low() {
+        return hanteichi1low;
+    }
+
+    /**
+     * 耐電圧 判定値1(低)
+     * 
+     * @param hanteichi1low
+     */
+    public void setHanteichi1low(FXHDD01 hanteichi1low) {
+        this.hanteichi1low = hanteichi1low;
+    }
+
+    /**
+     * 耐電圧 判定値1 単位
+     * 
+     * @return hanteichi1tani
+     */
+    public FXHDD01 getHanteichi1tani() {
+        return hanteichi1tani;
+    }
+
+    /**
+     * 耐電圧 判定値1 単位
+     * 
+     * @param hanteichi1tani
+     */
+    public void setHanteichi1tani(FXHDD01 hanteichi1tani) {
+        this.hanteichi1tani = hanteichi1tani;
     }
 
     /**
@@ -247,6 +368,42 @@ public class GXHDO101B042B implements Serializable {
     }
 
     /**
+     * 耐電圧 判定値2(低)
+     * 
+     * @return hanteichi2low
+     */
+    public FXHDD01 getHanteichi2low() {
+        return hanteichi2low;
+    }
+
+    /**
+     * 耐電圧 判定値2(低)
+     * 
+     * @param hanteichi2low
+     */
+    public void setHanteichi2low(FXHDD01 hanteichi2low) {
+        this.hanteichi2low = hanteichi2low;
+    }
+
+    /**
+     * 耐電圧 判定値2 単位
+     * 
+     * @return hanteichi2tani
+     */
+    public FXHDD01 getHanteichi2tani() {
+        return hanteichi2tani;
+    }
+
+    /**
+     * 耐電圧 判定値2 単位
+     * 
+     * @param hanteichi2tani
+     */
+    public void setHanteichi2tani(FXHDD01 hanteichi2tani) {
+        this.hanteichi2tani = hanteichi2tani;
+    }
+
+    /**
      * 耐電圧 充電時間2
      *
      * @return the judenTime2
@@ -298,6 +455,42 @@ public class GXHDO101B042B implements Serializable {
      */
     public void setHanteichi3(FXHDD01 hanteichi3) {
         this.hanteichi3 = hanteichi3;
+    }
+
+    /**
+     * 耐電圧 判定値3(低)
+     * 
+     * @return hanteichi3low
+     */
+    public FXHDD01 getHanteichi3low() {
+        return hanteichi3low;
+    }
+
+    /**
+     * 耐電圧 判定値3(低)
+     * 
+     * @param hanteichi3low
+     */
+    public void setHanteichi3low(FXHDD01 hanteichi3low) {
+        this.hanteichi3low = hanteichi3low;
+    }
+
+    /**
+     * 耐電圧 判定値3 単位
+     * 
+     * @return hanteichi3tani
+     */
+    public FXHDD01 getHanteichi3tani() {
+        return hanteichi3tani;
+    }
+
+    /**
+     * 耐電圧 判定値3 単位
+     * 
+     * @param hanteichi3tani
+     */
+    public void setHanteichi3tani(FXHDD01 hanteichi3tani) {
+        this.hanteichi3tani = hanteichi3tani;
     }
 
     /**
@@ -355,6 +548,42 @@ public class GXHDO101B042B implements Serializable {
     }
 
     /**
+     * 耐電圧 判定値4(低)
+     * 
+     * @return hanteichi4low
+     */
+    public FXHDD01 getHanteichi4low() {
+        return hanteichi4low;
+    }
+
+    /**
+     * 耐電圧 判定値4(低)
+     * 
+     * @param hanteichi4low
+     */
+    public void setHanteichi4low(FXHDD01 hanteichi4low) {
+        this.hanteichi4low = hanteichi4low;
+    }
+
+    /**
+     * 耐電圧 判定値4 単位
+     * 
+     * @return hanteichi4tani
+     */
+    public FXHDD01 getHanteichi4tani() {
+        return hanteichi4tani;
+    }
+
+    /**
+     * 耐電圧 判定値4 単位
+     * 
+     * @param hanteichi4tani
+     */
+    public void setHanteichi4tani(FXHDD01 hanteichi4tani) {
+        this.hanteichi4tani = hanteichi4tani;
+    }
+
+    /**
      * 耐電圧 充電時間4
      *
      * @return the judenTime4
@@ -406,6 +635,42 @@ public class GXHDO101B042B implements Serializable {
      */
     public void setHanteichi5(FXHDD01 hanteichi5) {
         this.hanteichi5 = hanteichi5;
+    }
+
+    /**
+     * 耐電圧 判定値5(低)
+     * 
+     * @return hanteichi5low
+     */
+    public FXHDD01 getHanteichi5low() {
+        return hanteichi5low;
+    }
+
+    /**
+     * 耐電圧 判定値5(低)
+     * 
+     * @param hanteichi5low
+     */
+    public void setHanteichi5low(FXHDD01 hanteichi5low) {
+        this.hanteichi5low = hanteichi5low;
+    }
+
+    /**
+     * 耐電圧 判定値5 単位
+     * 
+     * @return hanteichi5tani
+     */
+    public FXHDD01 getHanteichi5tani() {
+        return hanteichi5tani;
+    }
+
+    /**
+     * 耐電圧 判定値5 単位
+     * 
+     * @param hanteichi5tani
+     */
+    public void setHanteichi5tani(FXHDD01 hanteichi5tani) {
+        this.hanteichi5tani = hanteichi5tani;
     }
 
     /**
@@ -463,6 +728,42 @@ public class GXHDO101B042B implements Serializable {
     }
 
     /**
+     * 耐電圧 判定値6(低)
+     * 
+     * @return hanteichi6low
+     */
+    public FXHDD01 getHanteichi6low() {
+        return hanteichi6low;
+    }
+
+    /**
+     * 耐電圧 判定値6(低)
+     * 
+     * @param hanteichi6low
+     */
+    public void setHanteichi6low(FXHDD01 hanteichi6low) {
+        this.hanteichi6low = hanteichi6low;
+    }
+
+    /**
+     * 耐電圧 判定値6 単位
+     * 
+     * @return hanteichi6tani
+     */
+    public FXHDD01 getHanteichi6tani() {
+        return hanteichi6tani;
+    }
+
+    /**
+     * 耐電圧 判定値6 単位
+     * 
+     * @param hanteichi6tani
+     */
+    public void setHanteichi6tani(FXHDD01 hanteichi6tani) {
+        this.hanteichi6tani = hanteichi6tani;
+    }
+
+    /**
      * 耐電圧 充電時間6
      *
      * @return the judenTime6
@@ -517,6 +818,42 @@ public class GXHDO101B042B implements Serializable {
     }
 
     /**
+     * 耐電圧 判定値7(低)
+     * 
+     * @return hanteichi7low
+     */
+    public FXHDD01 getHanteichi7low() {
+        return hanteichi7low;
+    }
+
+    /**
+     * 耐電圧 判定値7(低)
+     * 
+     * @param hanteichi7low
+     */
+    public void setHanteichi7low(FXHDD01 hanteichi7low) {
+        this.hanteichi7low = hanteichi7low;
+    }
+
+    /**
+     * 耐電圧 判定値7 単位
+     * 
+     * @return hanteichi7tani
+     */
+    public FXHDD01 getHanteichi7tani() {
+        return hanteichi7tani;
+    }
+
+    /**
+     * 耐電圧 判定値7 単位
+     * 
+     * @param hanteichi7tani
+     */
+    public void setHanteichi7tani(FXHDD01 hanteichi7tani) {
+        this.hanteichi7tani = hanteichi7tani;
+    }
+
+    /**
      * 耐電圧 充電時間7
      *
      * @return the judenTime7
@@ -568,6 +905,42 @@ public class GXHDO101B042B implements Serializable {
      */
     public void setHanteichi8(FXHDD01 hanteichi8) {
         this.hanteichi8 = hanteichi8;
+    }
+
+    /**
+     * 耐電圧 判定値8(低)
+     * 
+     * @return hanteichi8low
+     */
+    public FXHDD01 getHanteichi8low() {
+        return hanteichi8low;
+    }
+
+    /**
+     * 耐電圧 判定値8(低)
+     * 
+     * @param hanteichi8low
+     */
+    public void setHanteichi8low(FXHDD01 hanteichi8low) {
+        this.hanteichi8low = hanteichi8low;
+    }
+
+    /**
+     * 耐電圧 判定値8 単位
+     * 
+     * @return hanteichi8tani
+     */
+    public FXHDD01 getHanteichi8tani() {
+        return hanteichi8tani;
+    }
+
+    /**
+     * 耐電圧 判定値8 単位
+     * 
+     * @param hanteichi8tani
+     */
+    public void setHanteichi8tani(FXHDD01 hanteichi8tani) {
+        this.hanteichi8tani = hanteichi8tani;
     }
 
     /**

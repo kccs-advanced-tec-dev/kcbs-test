@@ -3,6 +3,7 @@
  */
 package jp.co.kccs.xhd.db.model;
 
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
@@ -14,6 +15,11 @@ import java.sql.Timestamp;
  * 計画書No	K1811-DS001<br>
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
+ * <br>
+ * 変更日	2020/10/19<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjy<br>
+ * 変更理由	項目追加<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -149,6 +155,16 @@ public class SrSayadume {
      * revision
      */
     private Long revision;
+
+    /**
+     * 単位重量
+     */
+    private BigDecimal ukeiretannijyuryo;
+
+    /**
+     * 総重量
+     */
+    private BigDecimal ukeiresoujyuryou;
 
     /**
      * 削除ﾌﾗｸﾞ
@@ -603,6 +619,42 @@ public class SrSayadume {
      */
     public void setRevision(Long revision) {
         this.revision = revision;
+    }
+
+    /**
+     * 単位重量
+     * 
+     * @return the ukeiretannijyuryo
+     */
+    public BigDecimal getUkeiretannijyuryo() {
+        return ukeiretannijyuryo;
+    }
+
+    /**
+     * 単位重量
+     * 
+     * @param ukeiretannijyuryo the ukeiretannijyuryo to set
+     */
+    public void setUkeiretannijyuryo(BigDecimal ukeiretannijyuryo) {
+        this.ukeiretannijyuryo = ukeiretannijyuryo;
+    }
+
+    /**
+     * 総重量
+     * 
+     * @return the ukeiresoujyuryou
+     */
+    public BigDecimal getUkeiresoujyuryou() {
+        return ukeiresoujyuryou;
+    }
+
+    /**
+     * 総重量
+     * 
+     * @param ukeiresoujyuryou the ukeiresoujyuryou to set
+     */
+    public void setUkeiresoujyuryou(BigDecimal ukeiresoujyuryou) {
+        this.ukeiresoujyuryou = ukeiresoujyuryou;
     }
 
     /**

@@ -227,6 +227,16 @@
                             <f:convertNumber pattern="#,###,##0"/>
                         </p:outputLabel>
                     </p:column>
+                    <p:column id="ukeiretannijyuryo" headerText="単位重量" styleClass="number">
+                        <p:outputLabel value="#{item.ukeiretannijyuryo}">
+                            <f:convertNumber pattern="#0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ukeiresoujyuryou" headerText="総重量" styleClass="number">
+                        <p:outputLabel value="#{item.ukeiresoujyuryou}">
+                            <f:convertNumber pattern="###,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
                     <p:column id="tantousya" headerText="開始担当者" >
                         <p:outputLabel value="#{item.tantousya}"/>
                     </p:column>

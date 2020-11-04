@@ -62,6 +62,16 @@ public class GXHDO201B013Model implements Serializable {
      */
     private Integer kosuu = null;
 
+    /** 
+     * 単位重量 
+    */
+    private BigDecimal ukeiretannijyuryo = null;
+    
+    /** 
+     * 総重量 
+    */
+    private BigDecimal ukeiresoujyuryou = null;
+    
     /**
      * 担当者ｺｰﾄﾞ
      */
@@ -249,6 +259,38 @@ public class GXHDO201B013Model implements Serializable {
      */
     public void setKosuu(Integer kosuu) {
         this.kosuu = kosuu;
+    }
+
+    /**
+     * 単位重量
+     * @return the ukeiretannijyuryo
+     */
+    public BigDecimal getUkeiretannijyuryo() {
+        return ukeiretannijyuryo;
+    }
+
+    /**
+     * 単位重量
+     * @param ukeiretannijyuryo the ukeiretannijyuryo to set
+     */
+    public void setUkeiretannijyuryo(BigDecimal ukeiretannijyuryo) {
+        this.ukeiretannijyuryo = ukeiretannijyuryo;
+    }
+
+    /**
+     * 総重量
+     * @return the ukeiresoujyuryou
+     */
+    public BigDecimal getUkeiresoujyuryou() {
+        return ukeiresoujyuryou;
+    }
+
+    /**
+     * 総重量
+     * @param ukeiresoujyuryou the ukeiresoujyuryou to set
+     */
+    public void setUkeiresoujyuryou(BigDecimal ukeiresoujyuryou) {
+        this.ukeiresoujyuryou = ukeiresoujyuryou;
     }
 
     /**
