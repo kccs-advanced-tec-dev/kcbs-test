@@ -10,7 +10,9 @@
         <meta http-equiv="Cache-Control" content="no-cache"/>
         <meta http-equiv="Expires" content="0"/>
         <title>#{myParam.application_id} #{myMsg.mainMenu}</title>
+        <link href="#{request.contextPath}/resources/css/growllarge.css" rel="stylesheet" type="text/css"/>
         <h:outputScript library="primefaces" name="jquery/jquery.js" />
+        <script src="#{request.contextPath}/resources/js/growl.js"></script>
         <script src="#{request.contextPath}/resources/js/locUpload.js"></script>
         <script type="text/javascript">
             //<![CDATA[
@@ -39,6 +41,7 @@
         <div style="margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;">
         <br/>
         <h:form id="form" onkeypress="if (event.keyCode === 13) { return false; }">
+            <p:growl id="growlMessage" showDetail="false" sticky="true"  escape="false" />
             <p:dataTable id="menuTable" var="item" value="#{gXHDO012A.menuList}"
                          style="margin-top: 20px;margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;font-size:#{adjustModels.menuFontSize}px;"
                          scrollable="true"
@@ -53,6 +56,33 @@
                     <p:outputLabel value="#{item.menuComment}"/>
                 </p:column>
             </p:dataTable>
+            <div style="display:#{gXHDO012A.display}">
+                <table border="3" width="100%" style="border:none;">
+                    <tr>
+                        <td rowspan="2" style="border:none;">
+                            <h:outputText id="lblLotNo" value="ƒƒbƒgNo" style="margin-top: 40px;font-size:18px;"/>
+                        </td>
+                        <td rowspan="2" style="border:none;">
+                            <h:inputText id="lotNo" value="#{gXHDO012A.lotNo}" class="txt" maxlength="14" style="border-style: groove; font-size: 22px; width: 300px; margin-left: 40px;"/>
+                        </td>
+                        <td style="border:none;">
+                            <p:commandButton id="searchScrBtn" class="button"  styleClass="ui-conf-commandbtn-def1" style="float:right;width: 94px; height: 32px; font-size: 13px;"
+                                  value="ˆóüŒŸõ"
+                                  action="#{gXHDO012A.sekkeiSerchPrint()}"
+                                  update="@form"/>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:none;">
+                            <p:commandButton id="searchSekiBtn" class="button"  styleClass="ui-conf-commandbtn-def1" style="float:right;width: 94px; height: 32px; font-size: 13px;"
+                                  value="Ï‘wŒŸõ"
+                                  action="#{gXHDO012A.sekkeiSerchSekiso()}"
+                                  update="@form"/>
+                        </td>
+
+                    </tr>
+                </table>
+            </div>
             <p:commandButton id="logOut" style="margin-top:50px;font-size:#{adjustModels.menuFontSize}px;"
                   value="#{myMsg.logout}"
                   action="#{gXHDO012A.logOut()}"
