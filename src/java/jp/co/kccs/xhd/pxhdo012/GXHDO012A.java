@@ -285,7 +285,7 @@ public class GXHDO012A implements Serializable {
         
         // SQL生成
         String sql = "SELECT PRINTFMT AS printfmt"
-                + " FROM DA_SEKKEI "
+                + " FROM da_sekkei "
                 + "WHERE KOJYO = ? "
                 + "AND LOTNO = ? "
                 + "AND EDABAN = '001';";
