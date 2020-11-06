@@ -616,37 +616,7 @@ public class PublicResource {
     private BigDecimal getHanteichi(String value) {
         // 値の中から数値部、単位を取得する。
         String[] hanteichi = getNumberData(value, "", "");
-        // 数値部をBigDecimalに変換(小数点3位以下切り捨て)
-        BigDecimal decHanteichi = new BigDecimal(hanteichi[0]).setScale(2, RoundingMode.DOWN);
-        BigDecimal devValue = null;
-        switch (hanteichi[1]) {
-            case "mA":
-                devValue = new BigDecimal("1000");
-                break;
-            case "μA":
-                devValue = new BigDecimal("1000000");
-                break;
-            case "µA":
-                devValue = new BigDecimal("1000000");
-                break;
-            case "uA":
-                devValue = new BigDecimal("1000000");
-                break;
-            case "nA":
-                devValue = new BigDecimal("1000000000");
-                break;
-            case "pA":
-                devValue = new BigDecimal("1000000000000");
-                // 元の小数部は全て切り捨て
-                decHanteichi = decHanteichi.setScale(0, RoundingMode.DOWN);
-                break;
-            default:
-                break;
-        }
-
-        if (devValue != null) {
-            decHanteichi = decHanteichi.divide(devValue, 12, RoundingMode.DOWN);
-        }
+        BigDecimal decHanteichi = new BigDecimal(hanteichi[0]);
 
         return new BigDecimal(NumberUtil.getTruncatData(decHanteichi.toPlainString(), "2", "12"));
     }
