@@ -3416,7 +3416,7 @@ public class GXHDO101B042 implements IFormLogic {
         params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_SENBETSU_SHURYO_DAY, srDenkitokuseiesi),
                 getItemData(pItemList, GXHDO101B042Const.SEIHIN_SENBETSU_SHURYO_TIME, srDenkitokuseiesi))); //選別終了日時
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_KENSA_GOKI, srDenkitokuseiesi))); //検査号機
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_BUNRUI_AIR_ATSU, srDenkitokuseiesi))); //分類ｴｱｰ圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B042Const.SEIHIN_BUNRUI_AIR_ATSU, srDenkitokuseiesi))); //分類ｴｱｰ圧
         if (isInsert) {
             params.add(null); //CDｺﾝﾀｸﾄ圧
             params.add(null); //IRｺﾝﾀｸﾄ圧
@@ -3855,7 +3855,7 @@ public class GXHDO101B042 implements IFormLogic {
         params.add(DBUtil.stringToDateObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_SENBETSU_SHURYO_DAY, srDenkitokuseiesi),
                 getItemData(pItemList, GXHDO101B042Const.SEIHIN_SENBETSU_SHURYO_TIME, srDenkitokuseiesi))); //選別終了日時
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_KENSA_GOKI, srDenkitokuseiesi))); //検査号機
-        params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_BUNRUI_AIR_ATSU, srDenkitokuseiesi))); //分類ｴｱｰ圧
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B042Const.SEIHIN_BUNRUI_AIR_ATSU, srDenkitokuseiesi))); //分類ｴｱｰ圧
         if (isInsert) {
             params.add(0); //CDｺﾝﾀｸﾄ圧
             params.add(0); //IRｺﾝﾀｸﾄ圧
@@ -6250,12 +6250,12 @@ public class GXHDO101B042 implements IFormLogic {
         String sql = "SELECT kojyo,lotno,edaban,gouki,bunruiairatu,cdcontactatu,ircontactatu,tan,"
                 + "sokuteisyuhasuu,sokuteidenatu,pcdenatu1,pcjudenjikan1,pcdenatu2,pcjudenjikan2,"
                 + "pcdenatu3,pcjudenjikan3,pcdenatu4,pcjudenjikan4,irdenatu1,irhanteiti1_low,irhanteiti1,"
-                + "irhanteiti1tani,irjudenjikan1,irdenatu2,irhanteiti2_low,irhanteiti2,irhanteiti2tani,"
-                + "irjudenjikan2,irdenatu3,irhanteiti3_low,irhanteiti3,irhanteiti3tani,irjudenjikan3,"
-                + "irdenatu4,irhanteiti4_low,irhanteiti4,irhanteiti4tani,irjudenjikan4,irdenatu5,"
-                + "irhanteiti5_low,irhanteiti5,irhanteiti5tani,irjudenjikan5,irdenatu6,irhanteiti6_low,"
-                + "irhanteiti6,irhanteiti6tani,irjudenjikan6,irdenatu7,irhanteiti7_low,irhanteiti7,"
-                + "irhanteiti7tani,irjudenjikan7,irdenatu8,irhanteiti8_low,irhanteiti8,irhanteiti8tani,"
+                + "irhantei1tani,irjudenjikan1,irdenatu2,irhanteiti2_low,irhanteiti2,irhantei2tani,"
+                + "irjudenjikan2,irdenatu3,irhanteiti3_low,irhanteiti3,irhantei3tani,irjudenjikan3,"
+                + "irdenatu4,irhanteiti4_low,irhanteiti4,irhantei4tani,irjudenjikan4,irdenatu5,"
+                + "irhanteiti5_low,irhanteiti5,irhantei5tani,irjudenjikan5,irdenatu6,irhanteiti6_low,"
+                + "irhanteiti6,irhantei6tani,irjudenjikan6,irdenatu7,irhanteiti7_low,irhanteiti7,"
+                + "irhantei7tani,irjudenjikan7,irdenatu8,irhanteiti8_low,irhanteiti8,irhantei8tani,"
                 + "irjudenjikan8,rdcrange1,rdchantei1,rdcrange2,rdchantei2,bin1countersuu,"
                 + "bin2countersuu,bin3countersuu,bin4countersuu,bin5countersuu,bin6countersuu,"
                 + "bin7countersuu,bin8countersuu,bin5setteiti,bin6setteiti,bin7setteiti,bin8setteiti,"
@@ -6298,42 +6298,42 @@ public class GXHDO101B042 implements IFormLogic {
         mapping.put("irdenatu1", "irdenatu1"); //耐電圧設定条件　ＩＲ①　電圧
         mapping.put("irhanteiti1_low", "irhanteiti1Low"); //耐電圧設定条件　ＩＲ①　判定値(低)
         mapping.put("irhanteiti1", "irhanteiti1"); //耐電圧設定条件　ＩＲ①　判定値
-        mapping.put("irhanteiti1tani", "irhanteiti1tani"); //耐電圧設定条件　ＩＲ①　判定値 単位
+        mapping.put("irhantei1tani", "irhantei1tani"); //耐電圧設定条件　ＩＲ①　判定値 単位
         mapping.put("irjudenjikan1", "irjudenjikan1"); //耐電圧設定条件　ＩＲ①　充電時間
         mapping.put("irdenatu2", "irdenatu2"); //耐電圧設定条件　ＩＲ②　電圧
         mapping.put("irhanteiti2_low", "irhanteiti2Low"); //耐電圧設定条件　ＩＲ②　判定値(低)
         mapping.put("irhanteiti2", "irhanteiti2"); //耐電圧設定条件　ＩＲ②　判定値
-        mapping.put("irhanteiti2tani", "irhanteiti2tani"); //耐電圧設定条件　ＩＲ②　判定値 単位
+        mapping.put("irhantei2tani", "irhantei2tani"); //耐電圧設定条件　ＩＲ②　判定値 単位
         mapping.put("irjudenjikan2", "irjudenjikan2"); //耐電圧設定条件　ＩＲ②　充電時間
         mapping.put("irdenatu3", "irdenatu3"); //耐電圧設定条件　ＩＲ③　電圧
         mapping.put("irhanteiti3_low", "irhanteiti3Low"); //耐電圧設定条件　ＩＲ③　判定値(低)
         mapping.put("irhanteiti3", "irhanteiti3"); //耐電圧設定条件　ＩＲ③　判定値
-        mapping.put("irhanteiti3tani", "irhanteiti3tani"); //耐電圧設定条件　ＩＲ③　判定値 単位
+        mapping.put("irhantei3tani", "irhantei3tani"); //耐電圧設定条件　ＩＲ③　判定値 単位
         mapping.put("irjudenjikan3", "irjudenjikan3"); //耐電圧設定条件　ＩＲ③　充電時間
         mapping.put("irdenatu4", "irdenatu4"); //耐電圧設定条件　ＩＲ④　電圧
         mapping.put("irhanteiti4_low", "irhanteiti4Low"); //耐電圧設定条件　ＩＲ④　判定値(低)
         mapping.put("irhanteiti4", "irhanteiti4"); //耐電圧設定条件　ＩＲ④　判定値
-        mapping.put("irhanteiti4tani", "irhanteiti4tani"); //耐電圧設定条件　ＩＲ④　判定値 単位
+        mapping.put("irhantei4tani", "irhantei4tani"); //耐電圧設定条件　ＩＲ④　判定値 単位
         mapping.put("irjudenjikan4", "irjudenjikan4"); //耐電圧設定条件　ＩＲ④　充電時間
         mapping.put("irdenatu5", "irdenatu5"); //耐電圧設定条件　ＩＲ⑤　電圧
         mapping.put("irhanteiti5_low", "irhanteiti5Low"); //耐電圧設定条件　ＩＲ⑤　判定値(低)
         mapping.put("irhanteiti5", "irhanteiti5"); //耐電圧設定条件　ＩＲ⑤　判定値
-        mapping.put("irhanteiti5tani", "irhanteiti5tani"); //耐電圧設定条件　ＩＲ⑤　判定値 単位
+        mapping.put("irhantei5tani", "irhantei5tani"); //耐電圧設定条件　ＩＲ⑤　判定値 単位
         mapping.put("irjudenjikan5", "irjudenjikan5"); //耐電圧設定条件　ＩＲ⑤　充電時間
         mapping.put("irdenatu6", "irdenatu6"); //耐電圧設定条件　ＩＲ⑥　電圧
         mapping.put("irhanteiti6_low", "irhanteiti6Low"); //耐電圧設定条件　ＩＲ⑥　判定値(低)
         mapping.put("irhanteiti6", "irhanteiti6"); //耐電圧設定条件　ＩＲ⑥　判定値
-        mapping.put("irhanteiti6tani", "irhanteiti6tani"); //耐電圧設定条件　ＩＲ⑥　判定値 単位
+        mapping.put("irhantei6tani", "irhantei6tani"); //耐電圧設定条件　ＩＲ⑥　判定値 単位
         mapping.put("irjudenjikan6", "irjudenjikan6"); //耐電圧設定条件　ＩＲ⑥　充電時間
         mapping.put("irdenatu7", "irdenatu7"); //耐電圧設定条件　ＩＲ⑦　電圧
         mapping.put("irhanteiti7_low", "irhanteiti7Low"); //耐電圧設定条件　ＩＲ⑦　判定値(低)
         mapping.put("irhanteiti7", "irhanteiti7"); //耐電圧設定条件　ＩＲ⑦　判定値
-        mapping.put("irhanteiti7tani", "irhanteiti7tani"); //耐電圧設定条件　ＩＲ⑦　判定値 単位
+        mapping.put("irhantei7tani", "irhantei7tani"); //耐電圧設定条件　ＩＲ⑦　判定値 単位
         mapping.put("irjudenjikan7", "irjudenjikan7"); //耐電圧設定条件　ＩＲ⑦　充電時間
         mapping.put("irdenatu8", "irdenatu8"); //耐電圧設定条件　ＩＲ⑧　電圧
         mapping.put("irhanteiti8_low", "irhanteiti8Low"); //耐電圧設定条件　ＩＲ⑧　判定値(低)
         mapping.put("irhanteiti8", "irhanteiti8"); //耐電圧設定条件　ＩＲ⑧　判定値
-        mapping.put("irhanteiti8tani", "irhanteiti8tani"); //耐電圧設定条件　ＩＲ⑧　判定値 単位
+        mapping.put("irhantei8tani", "irhantei8tani"); //耐電圧設定条件　ＩＲ⑧　判定値 単位
         mapping.put("irjudenjikan8", "irjudenjikan8"); //耐電圧設定条件　ＩＲ⑧　充電時間
         mapping.put("rdcrange1", "rdcrange1"); //RDC1 ﾚﾝｼﾞ
         mapping.put("rdchantei1", "rdchantei1"); //RDC1 判定値
@@ -6442,22 +6442,22 @@ public class GXHDO101B042 implements IFormLogic {
         setItemDataEx(processData, GXHDO101B042Const.TAIDEN_DENATSU1, StringUtil.nullToBlank(fxhdd07.getIrdenatu1())); //耐電圧設定条件 IR① 電圧
         setItemDataEx(processData, GXHDO101B042Const.TAIDEN_HANTEICHI1, StringUtil.nullToBlank(fxhdd07.getIrhanteiti1())); //耐電圧設定条件 IR① 判定値
         setItemDataEx(processData, GXHDO101B042Const.TAIDEN_HANTEICHI1LOW, StringUtil.nullToBlank(fxhdd07.getIrhanteiti1Low())); //耐電圧設定条件 IR① 判定値(低)
-        setItemDataEx(processData, GXHDO101B042Const.TAIDEN_HANTEICHI1TANI, StringUtil.nullToBlank(fxhdd07.getIrhanteiti1tani())); //耐電圧設定条件 IR① 判定値 単位
+        setItemDataEx(processData, GXHDO101B042Const.TAIDEN_HANTEICHI1TANI, StringUtil.nullToBlank(fxhdd07.getIrhantei1tani())); //耐電圧設定条件 IR① 判定値 単位
         setItemDataEx(processData, GXHDO101B042Const.TAIDEN_JUDEN_TIME1, StringUtil.nullToBlank(fxhdd07.getIrjudenjikan1())); //耐電圧設定条件 IR① 充電時間
         setItemDataEx(processData, GXHDO101B042Const.TAIDEN_DENATSU2, StringUtil.nullToBlank(fxhdd07.getIrdenatu2())); //耐電圧設定条件 IR② 電圧
         setItemDataEx(processData, GXHDO101B042Const.TAIDEN_HANTEICHI2, StringUtil.nullToBlank(fxhdd07.getIrhanteiti2())); //耐電圧設定条件 IR② 判定値
         setItemDataEx(processData, GXHDO101B042Const.TAIDEN_HANTEICHI2LOW, StringUtil.nullToBlank(fxhdd07.getIrhanteiti2Low())); //耐電圧設定条件 IR② 判定値(低)
-        setItemDataEx(processData, GXHDO101B042Const.TAIDEN_HANTEICHI2TANI, StringUtil.nullToBlank(fxhdd07.getIrhanteiti2tani())); //耐電圧設定条件 IR② 判定値 単位
+        setItemDataEx(processData, GXHDO101B042Const.TAIDEN_HANTEICHI2TANI, StringUtil.nullToBlank(fxhdd07.getIrhantei2tani())); //耐電圧設定条件 IR② 判定値 単位
         setItemDataEx(processData, GXHDO101B042Const.TAIDEN_JUDEN_TIME2, StringUtil.nullToBlank(fxhdd07.getIrjudenjikan2())); //耐電圧設定条件 IR② 充電時間
         setItemDataEx(processData, GXHDO101B042Const.TAIDEN_DENATSU3, StringUtil.nullToBlank(fxhdd07.getIrdenatu3())); //耐電圧設定条件 IR③ 電圧
         setItemDataEx(processData, GXHDO101B042Const.TAIDEN_HANTEICHI3, StringUtil.nullToBlank(fxhdd07.getIrhanteiti3())); //耐電圧設定条件 IR③ 判定値
         setItemDataEx(processData, GXHDO101B042Const.TAIDEN_HANTEICHI3LOW, StringUtil.nullToBlank(fxhdd07.getIrhanteiti3Low())); //耐電圧設定条件 IR③ 判定値(低)
-        setItemDataEx(processData, GXHDO101B042Const.TAIDEN_HANTEICHI3TANI, StringUtil.nullToBlank(fxhdd07.getIrhanteiti3tani())); //耐電圧設定条件 IR③ 判定値 単位
+        setItemDataEx(processData, GXHDO101B042Const.TAIDEN_HANTEICHI3TANI, StringUtil.nullToBlank(fxhdd07.getIrhantei3tani())); //耐電圧設定条件 IR③ 判定値 単位
         setItemDataEx(processData, GXHDO101B042Const.TAIDEN_JUDEN_TIME3, StringUtil.nullToBlank(fxhdd07.getIrjudenjikan3())); //耐電圧設定条件 IR③ 充電時間        
         setItemDataEx(processData, GXHDO101B042Const.TAIDEN_DENATSU4, StringUtil.nullToBlank(fxhdd07.getIrdenatu4())); //耐電圧設定条件 IR④ 電圧
         setItemDataEx(processData, GXHDO101B042Const.TAIDEN_HANTEICHI4, StringUtil.nullToBlank(fxhdd07.getIrhanteiti4())); //耐電圧設定条件 IR④ 判定値
         setItemDataEx(processData, GXHDO101B042Const.TAIDEN_HANTEICHI4LOW, StringUtil.nullToBlank(fxhdd07.getIrhanteiti4Low())); //耐電圧設定条件 IR④ 判定値(低)
-        setItemDataEx(processData, GXHDO101B042Const.TAIDEN_HANTEICHI4TANI, StringUtil.nullToBlank(fxhdd07.getIrhanteiti4tani())); //耐電圧設定条件 IR④ 判定値 単位
+        setItemDataEx(processData, GXHDO101B042Const.TAIDEN_HANTEICHI4TANI, StringUtil.nullToBlank(fxhdd07.getIrhantei4tani())); //耐電圧設定条件 IR④ 判定値 単位
         setItemDataEx(processData, GXHDO101B042Const.TAIDEN_JUDEN_TIME4, StringUtil.nullToBlank(fxhdd07.getIrjudenjikan4())); //耐電圧設定条件 IR④ 充電時間
 
         //電圧DROP設定条件

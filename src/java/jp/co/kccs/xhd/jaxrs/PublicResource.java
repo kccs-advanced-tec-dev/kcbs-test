@@ -325,6 +325,20 @@ public class PublicResource {
             // トランザクション開始
             con = DBUtil.transactionStart(queryRunner.getDataSource().getConnection());
 
+            String sqlSelect = "SELECT lotkbn FROM fxhdd07 WHERE kojyo = ? AND "
+                    + "lotno = ? AND edaban = ? AND deleteflag = 0 AND lotkbn = 'LOTEND'";
+            List<Object> paramsSelect = new ArrayList<>(Arrays.asList(param.getKojyo(), param.getLotno(), param.getEdaban()));
+            
+            DBUtil.outputSQLLog(sqlSelect, paramsSelect.toArray(), LOGGER);
+            Map result = queryRunner.query(sqlSelect, new MapHandler(), paramsSelect.toArray());
+            
+            if (result != null && result.get("lotkbn") != null) {
+                String lotkbn = StringUtil.nullToBlank(param.getLotkbn());
+                if (!lotkbn.contains("LOTEND")) {
+                    return Response.ok().build();
+                }
+            }
+            
             // データ検索
             String sql = "SELECT MAX(deleteflag) AS deleteflag FROM FXHDD07 "
                     + "WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
@@ -350,19 +364,21 @@ public class PublicResource {
 
             // データ登録
             String sqlIns = "INSERT INTO FXHDD07 ("
-                    + "kojyo, lotno, edaban, gouki, bunruiairatu, cdcontactatu, ircontactatu, tan, sokuteisyuhasuu, sokuteidenatu, pcdenatu1, pcjudenjikan1, "
-                    + "pcdenatu2, pcjudenjikan2, pcdenatu3, pcjudenjikan3, pcdenatu4, pcjudenjikan4, irdenatu1, irhanteiti1_low, irhanteiti1, irjudenjikan1, "
-                    + "irdenatu2, irhanteiti2_low, irhanteiti2, irjudenjikan2, irdenatu3, irhanteiti3_low, irhanteiti3, irjudenjikan3, "
-                    + "irdenatu4, irhanteiti4_low, irhanteiti4, irjudenjikan4, irdenatu5, irhanteiti5_low, irhanteiti5, irjudenjikan5, "
-                    + "irdenatu6, irhanteiti6_low, irhanteiti6, irjudenjikan6, irdenatu7, irhanteiti7_low, irhanteiti7, irjudenjikan7, "
-                    + "irdenatu8, irhanteiti8_low, irhanteiti8, irjudenjikan8, rdcrange1, rdchantei1, rdcrange2, rdchantei2, "
-                    + "bin1countersuu, bin2countersuu, bin3countersuu, bin4countersuu, bin5countersuu, bin6countersuu, bin7countersuu, "
-                    + "bin8countersuu, bin5setteiti, bin6setteiti, bin7setteiti, bin8setteiti, toroku_date, koshin_date, deleteflag, "
-                    + "drop13pc, drop13ps, drop13msdc, drop24pc, drop24ps, drop24msdc, bin1senbetsukbn, bin2senbetsukbn, bin3senbetsukbn, "
-                    + "bin4senbetsukbn, bin5senbetsukbn, bin6senbetsukbn, bin7senbetsukbn, bin8senbetsukbn"
+                    + "kojyo,lotno,edaban,gouki,bunruiairatu,cdcontactatu,ircontactatu,tan,sokuteisyuhasuu,sokuteidenatu,pcdenatu1,pcjudenjikan1,pcdenatu2,"
+                    + "pcjudenjikan2,pcdenatu3,pcjudenjikan3,pcdenatu4,pcjudenjikan4,irdenatu1,irhanteiti1_low,irhanteiti1,irhantei1tani,irjudenjikan1,"
+                    + "irdenatu2,irhanteiti2_low,irhanteiti2,irhantei2tani,irjudenjikan2,irdenatu3,irhanteiti3_low,irhanteiti3,irhantei3tani,irjudenjikan3,"
+                    + "irdenatu4,irhanteiti4_low,irhanteiti4,irhantei4tani,irjudenjikan4,irdenatu5,irhanteiti5_low,irhanteiti5,irhantei5tani,irjudenjikan5,"
+                    + "irdenatu6,irhanteiti6_low,irhanteiti6,irhantei6tani,irjudenjikan6,irdenatu7,irhanteiti7_low,irhanteiti7,irhantei7tani,irjudenjikan7,"
+                    + "irdenatu8,irhanteiti8_low,irhanteiti8,irhantei8tani,irjudenjikan8,rdcrange1,rdchantei1,rdcrange2,rdchantei2,bin1countersuu,"
+                    + "bin2countersuu,bin3countersuu,bin4countersuu,bin5countersuu,bin6countersuu,bin7countersuu,bin8countersuu,bin5setteiti,bin6setteiti,"
+                    + "bin7setteiti,bin8setteiti,toroku_date,koshin_date,deleteflag,drop13pc,drop13ps,drop13msdc,drop24pc,drop24ps,drop24msdc,bin1senbetsukbn,"
+                    + "bin2senbetsukbn,bin3senbetsukbn,bin4senbetsukbn,bin5senbetsukbn,bin6senbetsukbn,bin7senbetsukbn,bin8senbetsukbn,testplatekanrino,handasample,"
+                    + "sinraiseisample,kensabasyo,senbetujunjo,setteikakunin,haisenkakunin,koteidenkyoku,testplatekeijo,bunruifukidasi,testplatekakunin,"
+                    + "seihintounyuujotai,bunruikakunin,gaikankakunin,senbetukaisinitiji,senbetusyuryounitiji,setteiti1low,setteiti1up,setteiti2low,setteiti2up,"
+                    + "setteiti3low,setteiti3up,ttng1,ttng2,mc,ri,dng,rng,dropng,dropng1,dropng2,lotkbn,setteicap1,setteicap2,setteicap3"
                     + ") VALUES ("
                     + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
-                    + "?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+                    + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
                     + ")";
 
             // 計算処理
@@ -384,10 +400,35 @@ public class PublicResource {
             BigDecimal irHanteiti8Low = getHanteichi(param.getIrhanteiti8_low()); // 耐電圧設定条件 IR⑧ 判定値(低)
             BigDecimal irHanteiti8 = getHanteichi(param.getIrhanteiti8()); // 耐電圧設定条件 IR⑧ 判定値
 
+            Integer setteicap1 = null; // setteicap1
+            Integer setteicap2 = null; // setteicap2
+            Integer setteicap3 = null; // setteicap3
+            Integer ttng1 =null;       // Ttng1
+            Integer ttng2 =null;       // Ttng2
+            Integer mc =null;          // Mc
+            Integer ri =null;          // Ri
+            Integer dng =null;         // Dng
+            Integer rng =null;         // Rng
+            Integer dropng =null;      // Dropng
+            Integer dropng1 =null;     // Dropng1
+            Integer dropng2 =null;     // Dropng2
+
             if ("ESI".equals(param.getMaker())) {
                 tan = getCalcTan(param.getTan());
             } else {
                 tan = (BigDecimal) getFormatData(param.getTan(), "3", "1", "BigDecimal");
+                ttng1 = (Integer)getFormatData(param.getTtng1(), "8", "", "Integer");       // Ttng1
+                ttng2 = (Integer)getFormatData(param.getTtng2(), "8", "", "Integer");       // Ttng2
+                mc = (Integer)getFormatData(param.getMc(), "8", "", "Integer");             // Mc
+                ri = (Integer)getFormatData(param.getRi(), "8", "", "Integer");             // Ri
+                dng = (Integer)getFormatData(param.getDng(), "8", "", "Integer");           // Dng
+                rng = (Integer)getFormatData(param.getRng(), "8", "", "Integer");           // Rng
+                dropng = (Integer)getFormatData(param.getDropng(), "8", "", "Integer");     // Dropng
+                dropng1 = (Integer)getFormatData(param.getDropng1(), "8", "", "Integer");   // Dropng1
+                dropng2 = (Integer)getFormatData(param.getDropng2(), "8", "", "Integer");   // Dropng2
+                setteicap1 = ((Integer)getFormatData(param.getSetteicap1(), "8", "", "Integer"))+1; // setteicap1
+                setteicap2 = ((Integer)getFormatData(param.getSetteicap2(), "8", "", "Integer"))+1; // setteicap2
+                setteicap3 = ((Integer)getFormatData(param.getSetteicap3(), "8", "", "Integer"))+1; // setteicap3   
             }
 
             List<Object> paramIns
@@ -396,7 +437,7 @@ public class PublicResource {
                              getFormatData(param.getLotno(), "8", "", "String"),
                              getFormatData(param.getEdaban(), "3", "", "String"),
                              getFormatData(param.getGouki(), "4", "", "String"),
-                             getFormatData(param.getBunruiairatu(), "3", "", "Integer"),
+                             getFormatData(param.getBunruiairatu(), "3", "2", "BigDecimal"),
                              getFormatData(param.getCdcontactatu(), "3", "", "Integer"),
                              getFormatData(param.getIrcontactatu(), "3", "", "Integer"),
                              tan,
@@ -413,34 +454,42 @@ public class PublicResource {
                              getFormatData(param.getIrdenatu1(), "4", "1", "BigDecimal"),
                              irHanteiti1Low,
                              irHanteiti1,
+                             getFormatData(param.getIrhantei1tani(), "20", "", "String"),
                              getFormatData(param.getIrjudenjikan1(), "3", "", "Integer"),
                              getFormatData(param.getIrdenatu2(), "4", "1", "BigDecimal"),
                              irHanteiti2Low,
                              irHanteiti2,
+                             getFormatData(param.getIrhantei2tani(), "20", "", "String"),
                              getFormatData(param.getIrjudenjikan2(), "3", "", "Integer"),
                              getFormatData(param.getIrdenatu3(), "4", "1", "BigDecimal"),
                              irHanteiti3Low,
                              irHanteiti3,
+                             getFormatData(param.getIrhantei3tani(), "20", "", "String"),
                              getFormatData(param.getIrjudenjikan3(), "3", "", "Integer"),
                              getFormatData(param.getIrdenatu4(), "4", "1", "BigDecimal"),
                              irHanteiti4Low,
                              irHanteiti4,
+                             getFormatData(param.getIrhantei4tani(), "20", "", "String"),
                              getFormatData(param.getIrjudenjikan4(), "3", "", "Integer"),
                              getFormatData(param.getIrdenatu5(), "4", "1", "BigDecimal"),
                              irHanteiti5Low,
                              irHanteiti5,
+                             getFormatData(param.getIrhantei5tani(), "20", "", "String"),
                              getFormatData(param.getIrjudenjikan5(), "3", "", "Integer"),
                              getFormatData(param.getIrdenatu6(), "4", "1", "BigDecimal"),
                              irHanteiti6Low,
                              irHanteiti6,
+                             getFormatData(param.getIrhantei6tani(), "20", "", "String"),
                              getFormatData(param.getIrjudenjikan6(), "3", "", "Integer"),
                              getFormatData(param.getIrdenatu7(), "4", "1", "BigDecimal"),
                              irHanteiti7Low,
                              irHanteiti7,
+                             getFormatData(param.getIrhantei7tani(), "20", "", "String"),
                              getFormatData(param.getIrjudenjikan7(), "3", "", "Integer"),
                              getFormatData(param.getIrdenatu8(), "4", "1", "BigDecimal"),
                              irHanteiti8Low,
                              irHanteiti8,
+                             getFormatData(param.getIrhantei8tani(), "20", "", "String"),
                              getFormatData(param.getIrjudenjikan8(), "3", "", "Integer"),
                              getFormatData(param.getRdcrange1(), "4", "1", "BigDecimal"),
                              getFormatData(param.getRdchantei1(), "4", "1", "BigDecimal"),
@@ -474,7 +523,42 @@ public class PublicResource {
                              getFormatData(param.getBin5senbetsukbn(), "20", "", "String"),
                              getFormatData(param.getBin6senbetsukbn(), "20", "", "String"),
                              getFormatData(param.getBin7senbetsukbn(), "20", "", "String"),
-                             getFormatData(param.getBin8senbetsukbn(), "20", "", "String")
+                             getFormatData(param.getBin8senbetsukbn(), "20", "", "String"),
+                             getFormatData(param.getTestplatekanrino(), "20", "", "String"),
+                             getFormatData(param.getHandasample(), "10", "", "String"),
+                             getFormatData(param.getSinraiseisample(), "10", "", "String"),
+                             getFormatData(param.getKensabasyo(), "10", "", "String"),
+                             getFormatData(param.getSenbetujunjo(), "10", "", "String"),
+                             getFormatData(param.getSetteikakunin(), "10", "", "String"),
+                             getFormatData(param.getHaisenkakunin(), "10", "", "String"),
+                             getFormatData(param.getKoteidenkyoku(), "10", "", "String"),
+                             getFormatData(param.getTestplatekeijo(), "10", "", "String"),
+                             getFormatData(param.getBunruifukidasi(), "10", "", "String"),
+                             getFormatData(param.getTestplatekakunin(), "10", "", "String"),
+                             getFormatData(param.getSeihintounyuujotai(), "10", "", "String"),
+                             getFormatData(param.getBunruikakunin(), "10", "", "String"),
+                             getFormatData(param.getGaikankakunin(), "10", "", "String"),
+                             getFormatData(param.getSenbetukaisinitiji(), "20", "", "Date"),
+                             getFormatData(param.getSenbetusyuryounitiji(), "20", "", "Date"),
+                             getFormatData(param.getSetteiti1low(), "20", "", "String"),
+                             getFormatData(param.getSetteiti1up(), "20", "", "String"),
+                             getFormatData(param.getSetteiti2low(), "20", "", "String"),
+                             getFormatData(param.getSetteiti2up(), "20", "", "String"),
+                             getFormatData(param.getSetteiti3low(), "20", "", "String"),
+                             getFormatData(param.getSetteiti3up(), "20", "", "String"),
+                             ttng1,
+                             ttng2,
+                             mc,
+                             ri,
+                             dng,
+                             rng,
+                             dropng,
+                             dropng1,
+                             dropng2,
+                             getFormatData(param.getLotkbn(), "20", "", "String"),
+                             setteicap1,
+                             setteicap2,
+                             setteicap3
                     ));
 
             DBUtil.outputSQLLog(sqlIns, paramIns.toArray(), LOGGER);
@@ -585,12 +669,37 @@ public class PublicResource {
 
             case "BigDecimal":
                 return new BigDecimal(getNumberData(value, length, decLength)[0]);
+                
+            case "Date":
+                return stringToDateObject(value);
 
             default:
                 return StringUtil.left(StringUtil.trimAll(value), Integer.parseInt(length));
         }
     }
 
+    /**
+     * 日付文字列⇒Dateオブジェクト変換<br>
+     *
+     * @param dateValue 年月日時分
+     * @return 変換後のデータ
+     */
+    public static Timestamp stringToDateObject(String dateValue) {
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date resultDate = null;
+        try {
+            if(dateValue != null){
+                format.setLenient(false);
+                resultDate = format.parse(dateValue);                
+                Timestamp result = new Timestamp(resultDate.getTime());
+                return result;
+            }
+        } catch (Exception e) {
+            return null;
+        }
+        return null;
+    }
+    
     /**
      * 数値ﾃﾞｰﾀ取得(数値部,単位をそれぞれ取得)
      * @param value 値

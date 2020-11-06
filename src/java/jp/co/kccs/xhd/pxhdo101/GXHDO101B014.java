@@ -2399,11 +2399,19 @@ public class GXHDO101B014 implements IFormLogic {
     private void setKikakuChiToValue(FXHDD01 item) {
         if (item != null) {
             String kikakuChi = item.getKikakuChi();
-            String label2 = item.getLabel2();
-            if (!StringUtil.isEmpty(kikakuChi) && !StringUtil.isEmpty(label2)) {
-                String value = kikakuChi.replace("【", "").replace("】", "").replace(label2, "");
-                if (NumberUtils.isNumber(value)) {
-                    item.setValue(value);
+            if (!StringUtil.isEmpty(kikakuChi)) {
+                String value = kikakuChi.replace("【", "").replace("】", "");
+                char[] charArray = value.toCharArray();
+                String result = "";
+                for (char data : charArray) {
+                    if (NumberUtils.isNumber(String.valueOf(data)) || ".".equals(String.valueOf(data))) {
+                        result = result + data;
+                    } else {
+                        break;
+                    }
+                }
+                if (NumberUtils.isNumber(result)) {
+                    item.setValue(result);
                 }
             }
         }

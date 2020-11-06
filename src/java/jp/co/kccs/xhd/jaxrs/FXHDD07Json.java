@@ -106,6 +106,49 @@ public class FXHDD07Json {
     private String bin6senbetsukbn;
     private String bin7senbetsukbn;
     private String bin8senbetsukbn;
+    private String testplatekanrino;
+    private String irhantei1tani;
+    private String irhantei2tani;
+    private String irhantei3tani;
+    private String irhantei4tani;
+    private String irhantei5tani;
+    private String irhantei6tani;
+    private String irhantei7tani;
+    private String irhantei8tani;
+    private String handasample;
+    private String sinraiseisample;
+    private String kensabasyo;
+    private String senbetujunjo;
+    private String setteikakunin;
+    private String haisenkakunin;
+    private String koteidenkyoku;
+    private String testplatekeijo;
+    private String bunruifukidasi;
+    private String testplatekakunin;
+    private String seihintounyuujotai;
+    private String bunruikakunin;
+    private String gaikankakunin;
+    private String senbetukaisinitiji;
+    private String senbetusyuryounitiji;
+    private String setteiti1low;
+    private String setteiti1up;
+    private String setteiti2low;
+    private String setteiti2up;
+    private String setteiti3low;
+    private String setteiti3up;
+    private String ttng1;
+    private String ttng2;
+    private String mc;
+    private String ri;
+    private String dng;
+    private String rng;
+    private String dropng;
+    private String dropng1;
+    private String dropng2;
+    private String lotkbn;
+    private String setteicap1;
+    private String setteicap2;
+    private String setteicap3;
 
 
     /**
@@ -1240,5 +1283,607 @@ public class FXHDD07Json {
      */
     public void setBin8senbetsukbn(String bin8senbetsukbn) {
         this.bin8senbetsukbn = bin8senbetsukbn;
+    }
+
+    /**
+     * @return testplatekanrino
+     */
+    public String getTestplatekanrino() {
+        return testplatekanrino;
+    }
+
+    /**
+     * @param testplatekanrino 
+     */
+    public void setTestplatekanrino(String testplatekanrino) {
+        this.testplatekanrino = testplatekanrino;
+    }
+
+    /**
+     * @return irhantei1tani
+     */
+    public String getIrhantei1tani() {
+        return irhantei1tani;
+    }
+
+    /**
+     * @param irhantei1tani 
+     */
+    public void setIrhantei1tani(String irhantei1tani) {
+        this.irhantei1tani = irhantei1tani;
+    }
+
+    /**
+     * @return irhantei2tani
+     */
+    public String getIrhantei2tani() {
+        return irhantei2tani;
+    }
+
+    /**
+     * @param irhantei2tani 
+     */
+    public void setIrhantei2tani(String irhantei2tani) {
+        this.irhantei2tani = irhantei2tani;
+    }
+    
+    /**
+     * @return irhantei3tani
+     */
+    public String getIrhantei3tani() {
+        return irhantei3tani;
+    }
+
+    /**
+     * @param irhantei3tani 
+     */
+    public void setIrhantei3tani(String irhantei3tani) {
+        this.irhantei3tani = irhantei3tani;
+    }
+
+    /**
+     * @return irhantei4tani
+     */
+    public String getIrhantei4tani() {
+        return irhantei4tani;
+    }
+
+    /**
+     * @param irhantei4tani 
+     */
+    public void setIrhantei4tani(String irhantei4tani) {
+        this.irhantei4tani = irhantei4tani;
+    }
+
+    /**
+     * @return irhantei5tani
+     */
+    public String getIrhantei5tani() {
+        return irhantei5tani;
+    }
+
+    /**
+     * @param irhantei5tani 
+     */
+    public void setIrhantei5tani(String irhantei5tani) {
+        this.irhantei5tani = irhantei5tani;
+    }
+
+    /**
+     * @return irhantei6tani
+     */
+    public String getIrhantei6tani() {
+        return irhantei6tani;
+    }
+
+    /**
+     * @param irhantei6tani 
+     */
+    public void setIrhantei6tani(String irhantei6tani) {
+        this.irhantei6tani = irhantei6tani;
+    }
+
+    /**
+     * @return irhantei7tani
+     */
+    public String getIrhantei7tani() {
+        return irhantei7tani;
+    }
+
+    /**
+     * @param irhantei7tani 
+     */
+    public void setIrhantei7tani(String irhantei7tani) {
+        this.irhantei7tani = irhantei7tani;
+    }
+
+    /**
+     * @return irhantei8tani
+     */
+    public String getIrhantei8tani() {
+        return irhantei8tani;
+    }
+
+    /**
+     * @param irhantei8tani 
+     */
+    public void setIrhantei8tani(String irhantei8tani) {
+        this.irhantei8tani = irhantei8tani;
+    }
+
+    /**
+     * @return handasample
+     */
+    public String getHandasample() {
+        return handasample;
+    }
+
+    /**
+     * @param handasample 
+     */
+    public void setHandasample(String handasample) {
+        this.handasample = handasample;
+    }
+
+    /**
+     * @return sinraiseisample
+     */
+    public String getSinraiseisample() {
+        return sinraiseisample;
+    }
+
+    /**
+     * @param sinraiseisample 
+     */
+    public void setSinraiseisample(String sinraiseisample) {
+        this.sinraiseisample = sinraiseisample;
+    }
+
+    /**
+     * @return kensabasyo
+     */
+    public String getKensabasyo() {
+        return kensabasyo;
+    }
+
+    /**
+     * @param kensabasyo 
+     */
+    public void setKensabasyo(String kensabasyo) {
+        this.kensabasyo = kensabasyo;
+    }
+
+    /**
+     * @return senbetujunjo
+     */
+    public String getSenbetujunjo() {
+        return senbetujunjo;
+    }
+
+    /**
+     * @param senbetujunjo 
+     */
+    public void setSenbetujunjo(String senbetujunjo) {
+        this.senbetujunjo = senbetujunjo;
+    }
+
+    /**
+     * @return setteikakunin
+     */
+    public String getSetteikakunin() {
+        return setteikakunin;
+    }
+
+    /**
+     * @param setteikakunin 
+     */
+    public void setSetteikakunin(String setteikakunin) {
+        this.setteikakunin = setteikakunin;
+    }
+
+    /**
+     * @return haisenkakunin
+     */
+    public String getHaisenkakunin() {
+        return haisenkakunin;
+    }
+
+    /**
+     * @param haisenkakunin 
+     */
+    public void setHaisenkakunin(String haisenkakunin) {
+        this.haisenkakunin = haisenkakunin;
+    }
+
+    /**
+     * @return koteidenkyoku
+     */
+    public String getKoteidenkyoku() {
+        return koteidenkyoku;
+    }
+
+    /**
+     * @param koteidenkyoku 
+     */
+    public void setKoteidenkyoku(String koteidenkyoku) {
+        this.koteidenkyoku = koteidenkyoku;
+    }
+
+    /**
+     * @return testplatekeijo
+     */
+    public String getTestplatekeijo() {
+        return testplatekeijo;
+    }
+
+    /**
+     * @param testplatekeijo 
+     */
+    public void setTestplatekeijo(String testplatekeijo) {
+        this.testplatekeijo = testplatekeijo;
+    }
+
+    /**
+     * @return bunruifukidasi
+     */
+    public String getBunruifukidasi() {
+        return bunruifukidasi;
+    }
+
+    /**
+     * @param bunruifukidasi 
+     */
+    public void setBunruifukidasi(String bunruifukidasi) {
+        this.bunruifukidasi = bunruifukidasi;
+    }
+
+    /**
+     * @return testplatekakunin
+     */
+    public String getTestplatekakunin() {
+        return testplatekakunin;
+    }
+
+    /**
+     * @param testplatekakunin 
+     */
+    public void setTestplatekakunin(String testplatekakunin) {
+        this.testplatekakunin = testplatekakunin;
+    }
+
+    /**
+     * @return seihintounyuujotai
+     */
+    public String getSeihintounyuujotai() {
+        return seihintounyuujotai;
+    }
+
+    /**
+     * @param seihintounyuujotai 
+     */
+    public void setSeihintounyuujotai(String seihintounyuujotai) {
+        this.seihintounyuujotai = seihintounyuujotai;
+    }
+
+    /**
+     * @return bunruikakunin
+     */
+    public String getBunruikakunin() {
+        return bunruikakunin;
+    }
+
+    /**
+     * @param bunruikakunin 
+     */
+    public void setBunruikakunin(String bunruikakunin) {
+        this.bunruikakunin = bunruikakunin;
+    }
+
+    /**
+     * @return gaikankakunin
+     */
+    public String getGaikankakunin() {
+        return gaikankakunin;
+    }
+
+    /**
+     * @param gaikankakunin 
+     */
+    public void setGaikankakunin(String gaikankakunin) {
+        this.gaikankakunin = gaikankakunin;
+    }
+
+    /**
+     * @return senbetukaisinitiji
+     */
+    public String getSenbetukaisinitiji() {
+        return senbetukaisinitiji;
+    }
+
+    /**
+     * @param senbetukaisinitiji 
+     */
+    public void setSenbetukaisinitiji(String senbetukaisinitiji) {
+        this.senbetukaisinitiji = senbetukaisinitiji;
+    }
+
+    /**
+     * @return senbetusyuryounitiji
+     */
+    public String getSenbetusyuryounitiji() {
+        return senbetusyuryounitiji;
+    }
+
+    /**
+     * @param senbetusyuryounitiji 
+     */
+    public void setSenbetusyuryounitiji(String senbetusyuryounitiji) {
+        this.senbetusyuryounitiji = senbetusyuryounitiji;
+    }
+
+    /**
+     * @return setteiti1low
+     */
+    public String getSetteiti1low() {
+        return setteiti1low;
+    }
+
+    /**
+     * @param setteiti1low 
+     */
+    public void setSetteiti1low(String setteiti1low) {
+        this.setteiti1low = setteiti1low;
+    }
+
+    /**
+     * @return setteiti1up
+     */
+    public String getSetteiti1up() {
+        return setteiti1up;
+    }
+
+    /**
+     * @param setteiti1up 
+     */
+    public void setSetteiti1up(String setteiti1up) {
+        this.setteiti1up = setteiti1up;
+    }
+
+    /**
+     * @return setteiti2low
+     */
+    public String getSetteiti2low() {
+        return setteiti2low;
+    }
+
+    /**
+     * @param setteiti2low 
+     */
+    public void setSetteiti2low(String setteiti2low) {
+        this.setteiti2low = setteiti2low;
+    }
+
+    /**
+     * @return setteiti2up
+     */
+    public String getSetteiti2up() {
+        return setteiti2up;
+    }
+
+    /**
+     * @param setteiti2up 
+     */
+    public void setSetteiti2up(String setteiti2up) {
+        this.setteiti2up = setteiti2up;
+    }
+
+    /**
+     * @return setteiti3low
+     */
+    public String getSetteiti3low() {
+        return setteiti3low;
+    }
+
+    /**
+     * @param setteiti3low 
+     */
+    public void setSetteiti3low(String setteiti3low) {
+        this.setteiti3low = setteiti3low;
+    }
+
+    /**
+     * @return setteiti3up
+     */
+    public String getSetteiti3up() {
+        return setteiti3up;
+    }
+
+    /**
+     * @param setteiti3up 
+     */
+    public void setSetteiti3up(String setteiti3up) {
+        this.setteiti3up = setteiti3up;
+    }
+
+    /**
+     * @return ttng1
+     */
+    public String getTtng1() {
+        return ttng1;
+    }
+
+    /**
+     * @param ttng1 
+     */
+    public void setTtng1(String ttng1) {
+        this.ttng1 = ttng1;
+    }
+
+    /**
+     * @return ttng2
+     */
+    public String getTtng2() {
+        return ttng2;
+    }
+
+    /**
+     * @param ttng2 
+     */
+    public void setTtng2(String ttng2) {
+        this.ttng2 = ttng2;
+    }
+
+    /**
+     * @return mc
+     */
+    public String getMc() {
+        return mc;
+    }
+
+    /**
+     * @param mc 
+     */
+    public void setMc(String mc) {
+        this.mc = mc;
+    }
+
+    /**
+     * @return ri
+     */
+    public String getRi() {
+        return ri;
+    }
+
+    /**
+     * @param ri 
+     */
+    public void setRi(String ri) {
+        this.ri = ri;
+    }
+
+    /**
+     * @return dng
+     */
+    public String getDng() {
+        return dng;
+    }
+
+    /**
+     * @param dng 
+     */
+    public void setDng(String dng) {
+        this.dng = dng;
+    }
+
+    /**
+     * @return rng
+     */
+    public String getRng() {
+        return rng;
+    }
+
+    /**
+     * @param rng 
+     */
+    public void setRng(String rng) {
+        this.rng = rng;
+    }
+
+    /**
+     * @return dropng
+     */
+    public String getDropng() {
+        return dropng;
+    }
+
+    /**
+     * @param dropng 
+     */
+    public void setDropng(String dropng) {
+        this.dropng = dropng;
+    }
+
+    /**
+     * @return dropng1
+     */
+    public String getDropng1() {
+        return dropng1;
+    }
+
+    /**
+     * @param dropng1 
+     */
+    public void setDropng1(String dropng1) {
+        this.dropng1 = dropng1;
+    }
+
+    /**
+     * @return dropng2
+     */
+    public String getDropng2() {
+        return dropng2;
+    }
+
+    /**
+     * @param dropng2 
+     */
+    public void setDropng2(String dropng2) {
+        this.dropng2 = dropng2;
+    }
+
+    /**
+     * @return lotkbn
+     */
+    public String getLotkbn() {
+        return lotkbn;
+    }
+
+    /**
+     * @param lotkbn 
+     */
+    public void setLotkbn(String lotkbn) {
+        this.lotkbn = lotkbn;
+    }
+
+    /**
+     * @return setteicap1
+     */
+    public String getSetteicap1() {
+        return setteicap1;
+    }
+
+    /**
+     * @param setteicap1 
+     */
+    public void setSetteicap1(String setteicap1) {
+        this.setteicap1 = setteicap1;
+    }
+
+    /**
+     * @return setteicap2
+     */
+    public String getSetteicap2() {
+        return setteicap2;
+    }
+
+    /**
+     * @param setteicap2 
+     */
+    public void setSetteicap2(String setteicap2) {
+        this.setteicap2 = setteicap2;
+    }
+
+    /**
+     * @return setteicap3
+     */
+    public String getSetteicap3() {
+        return setteicap3;
+    }
+
+    /**
+     * @param setteicap3 
+     */
+    public void setSetteicap3(String setteicap3) {
+        this.setteicap3 = setteicap3;
     }
 }

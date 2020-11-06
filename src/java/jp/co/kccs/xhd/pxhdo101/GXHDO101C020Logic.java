@@ -371,10 +371,9 @@ public class GXHDO101C020Logic {
                 break;
             case "GXHDO101B004":
             case "GXHDO101B005":
-                itemName = new String[3];
-                itemName[0] = GXHDO101C020Model.TAPE_LOT_1;
-                itemName[1] = GXHDO101C020Model.UWA_TANSHI;
-                itemName[2] = GXHDO101C020Model.SHITA_TANSHI;
+                itemName = new String[2];
+                itemName[0] = GXHDO101C020Model.UWA_TANSHI;
+                itemName[1] = GXHDO101C020Model.SHITA_TANSHI;
                 break;
             case "GXHDO101B006":
                 itemName = new String[4];

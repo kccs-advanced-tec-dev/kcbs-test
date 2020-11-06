@@ -61,7 +61,7 @@ public class FXHDD07 {
     /**
      * 分類ｴｱｰ圧
      */
-    private Integer bunruiairatu;
+    private BigDecimal bunruiairatu;
 
     /**
      * CDｺﾝﾀｸﾄ圧
@@ -144,6 +144,11 @@ public class FXHDD07 {
     private BigDecimal irhanteiti1;
 
     /**
+     * 耐電圧設定条件 ＩＲ① 判定値 単位
+     */
+    private String irhantei1tani;
+
+    /**
      * 耐電圧設定条件 ＩＲ① 充電時間
      */
     private Integer irjudenjikan1;
@@ -162,6 +167,11 @@ public class FXHDD07 {
      * 耐電圧設定条件 ＩＲ② 判定値
      */
     private BigDecimal irhanteiti2;
+
+    /**
+     * 耐電圧設定条件 ＩＲ② 判定値 単位
+     */
+    private String irhantei2tani;
 
     /**
      * 耐電圧設定条件 ＩＲ② 充電時間
@@ -184,6 +194,11 @@ public class FXHDD07 {
     private BigDecimal irhanteiti3;
 
     /**
+     * 耐電圧設定条件 ＩＲ③ 判定値 単位
+     */
+    private String irhantei3tani;
+
+    /**
      * 耐電圧設定条件 ＩＲ③ 充電時間
      */
     private Integer irjudenjikan3;
@@ -202,6 +217,11 @@ public class FXHDD07 {
      * 耐電圧設定条件 ＩＲ④ 判定値
      */
     private BigDecimal irhanteiti4;
+
+    /**
+     * 耐電圧設定条件 ＩＲ④ 判定値 単位
+     */
+    private String irhantei4tani;
 
     /**
      * 耐電圧設定条件 ＩＲ④ 充電時間
@@ -224,6 +244,11 @@ public class FXHDD07 {
     private BigDecimal irhanteiti5;
 
     /**
+     * 耐電圧設定条件 ＩＲ⑤ 判定値 単位
+     */
+    private String irhantei5tani;
+
+    /**
      * 耐電圧設定条件 ＩＲ⑤ 充電時間
      */
     private Integer irjudenjikan5;
@@ -242,6 +267,11 @@ public class FXHDD07 {
      * 耐電圧設定条件 ＩＲ⑥ 判定値
      */
     private BigDecimal irhanteiti6;
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑥ 判定値 単位
+     */
+    private String irhantei6tani;
 
     /**
      * 耐電圧設定条件 ＩＲ⑥ 充電時間
@@ -264,6 +294,11 @@ public class FXHDD07 {
     private BigDecimal irhanteiti7;
 
     /**
+     * 耐電圧設定条件 ＩＲ⑦ 判定値 単位
+     */
+    private String irhantei7tani;
+
+    /**
      * 耐電圧設定条件 ＩＲ⑦ 充電時間
      */
     private Integer irjudenjikan7;
@@ -282,6 +317,11 @@ public class FXHDD07 {
      * 耐電圧設定条件 ＩＲ⑧ 判定値
      */
     private BigDecimal irhanteiti8;
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑧ 判定値 単位
+     */
+    private String irhantei8tani;
 
     /**
      * 耐電圧設定条件 ＩＲ⑧ 充電時間
@@ -456,46 +496,6 @@ public class FXHDD07 {
      * ﾃｽﾄﾌﾟﾚｰﾄ管理No
      */
     private String testplatekanrino;
-
-    /**
-     * 耐電圧設定条件 ＩＲ① 判定値 単位
-     */
-    private String irhanteiti1tani;
-
-    /**
-     * 耐電圧設定条件 ＩＲ② 判定値 単位
-     */
-    private String irhanteiti2tani;
-
-    /**
-     * 耐電圧設定条件 ＩＲ③ 判定値 単位
-     */
-    private String irhanteiti3tani;
-
-    /**
-     * 耐電圧設定条件 ＩＲ④ 判定値 単位
-     */
-    private String irhanteiti4tani;
-
-    /**
-     * 耐電圧設定条件 ＩＲ⑤ 判定値 単位
-     */
-    private String irhanteiti5tani;
-
-    /**
-     * 耐電圧設定条件 ＩＲ⑥ 判定値 単位
-     */
-    private String irhanteiti6tani;
-
-    /**
-     * 耐電圧設定条件 ＩＲ⑦ 判定値 単位
-     */
-    private String irhanteiti7tani;
-
-    /**
-     * 耐電圧設定条件 ＩＲ⑧ 判定値 単位
-     */
-    private String irhanteiti8tani;
 
     /**
      * 半田サンプル
@@ -735,7 +735,7 @@ public class FXHDD07 {
      * 分類ｴｱｰ圧
      * @return the bunruiairatu
      */
-    public Integer getBunruiairatu() {
+    public BigDecimal getBunruiairatu() {
         return bunruiairatu;
     }
 
@@ -743,7 +743,7 @@ public class FXHDD07 {
      * 分類ｴｱｰ圧
      * @param bunruiairatu the bunruiairatu to set
      */
-    public void setBunruiairatu(Integer bunruiairatu) {
+    public void setBunruiairatu(BigDecimal bunruiairatu) {
         this.bunruiairatu = bunruiairatu;
     }
 
@@ -1004,6 +1004,22 @@ public class FXHDD07 {
     }
 
     /**
+     * 耐電圧設定条件 ＩＲ① 判定値 単位
+     * @return irhantei1tani
+     */
+    public String getIrhantei1tani() {
+        return irhantei1tani;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ① 判定値 単位
+     * @param irhantei1tani 
+     */
+    public void setIrhantei1tani(String irhantei1tani) {
+        this.irhantei1tani = irhantei1tani;
+    }
+
+    /**
      * 耐電圧設定条件 ＩＲ① 充電時間
      * @return the irjudenjikan1
      */
@@ -1065,6 +1081,22 @@ public class FXHDD07 {
      */
     public void setIrhanteiti2(BigDecimal irhanteiti2) {
         this.irhanteiti2 = irhanteiti2;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ② 判定値 単位
+     * @return irhantei2tani
+     */
+    public String getIrhantei2tani() {
+        return irhantei2tani;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ② 判定値 単位
+     * @param irhantei2tani
+     */
+    public void setIrhantei2tani(String irhantei2tani) {
+        this.irhantei2tani = irhantei2tani;
     }
 
     /**
@@ -1132,6 +1164,22 @@ public class FXHDD07 {
     }
 
     /**
+     * 耐電圧設定条件 ＩＲ③ 判定値 単位
+     * @return irhantei3tani
+     */
+    public String getIrhantei3tani() {
+        return irhantei3tani;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ③ 判定値 単位
+     * @param irhantei3tani
+     */
+    public void setIrhantei3tani(String irhantei3tani) {
+        this.irhantei3tani = irhantei3tani;
+    }
+
+    /**
      * 耐電圧設定条件 ＩＲ③ 充電時間
      * @return the irjudenjikan3
      */
@@ -1193,6 +1241,22 @@ public class FXHDD07 {
      */
     public void setIrhanteiti4(BigDecimal irhanteiti4) {
         this.irhanteiti4 = irhanteiti4;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ④ 判定値 単位
+     * @return irhantei4tani
+     */
+    public String getIrhantei4tani() {
+        return irhantei4tani;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ④ 判定値 単位
+     * @param irhantei4tani
+     */
+    public void setIrhantei4tani(String irhantei4tani) {
+        this.irhantei4tani = irhantei4tani;
     }
 
     /**
@@ -1260,6 +1324,22 @@ public class FXHDD07 {
     }
 
     /**
+     * 耐電圧設定条件 ＩＲ⑤ 判定値 単位
+     * @return irhantei5tani
+     */
+    public String getIrhantei5tani() {
+        return irhantei5tani;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑤ 判定値 単位
+     * @param irhantei5tani
+     */
+    public void setIrhantei5tani(String irhantei5tani) {
+        this.irhantei5tani = irhantei5tani;
+    }
+
+    /**
      * 耐電圧設定条件 ＩＲ⑤ 充電時間
      * @return the irjudenjikan5
      */
@@ -1321,6 +1401,22 @@ public class FXHDD07 {
      */
     public void setIrhanteiti6(BigDecimal irhanteiti6) {
         this.irhanteiti6 = irhanteiti6;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑥ 判定値 単位
+     * @return irhantei6tani
+     */
+    public String getIrhantei6tani() {
+        return irhantei6tani;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑥ 判定値 単位
+     * @param irhantei6tani
+     */
+    public void setIrhantei6tani(String irhantei6tani) {
+        this.irhantei6tani = irhantei6tani;
     }
 
     /**
@@ -1388,6 +1484,22 @@ public class FXHDD07 {
     }
 
     /**
+     * 耐電圧設定条件 ＩＲ⑦ 判定値 単位
+     * @return irhantei7tani
+     */
+    public String getIrhantei7tani() {
+        return irhantei7tani;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑦ 判定値 単位
+     * @param irhantei7tani
+     */
+    public void setIrhantei7tani(String irhantei7tani) {
+        this.irhantei7tani = irhantei7tani;
+    }
+
+    /**
      * 耐電圧設定条件 ＩＲ⑦ 充電時間
      * @return the irjudenjikan7
      */
@@ -1449,6 +1561,22 @@ public class FXHDD07 {
      */
     public void setIrhanteiti8(BigDecimal irhanteiti8) {
         this.irhanteiti8 = irhanteiti8;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑧ 判定値 単位
+     * @return irhantei8tani
+     */
+    public String getIrhantei8tani() {
+        return irhantei8tani;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑧ 判定値 単位
+     * @param irhantei8tani
+     */
+    public void setIrhantei8tani(String irhantei8tani) {
+        this.irhantei8tani = irhantei8tani;
     }
 
     /**
@@ -2009,134 +2137,6 @@ public class FXHDD07 {
      */
     public void setTestplatekanrino(String testplatekanrino) {
         this.testplatekanrino = testplatekanrino;
-    }
-
-    /**
-     * 耐電圧設定条件 ＩＲ① 判定値 単位
-     * @return irhanteiti1tani
-     */
-    public String getIrhanteiti1tani() {
-        return irhanteiti1tani;
-    }
-
-    /**
-     * 耐電圧設定条件 ＩＲ① 判定値 単位
-     * @param irhanteiti1tani 
-     */
-    public void setIrhanteiti1tani(String irhanteiti1tani) {
-        this.irhanteiti1tani = irhanteiti1tani;
-    }
-
-    /**
-     * 耐電圧設定条件 ＩＲ② 判定値 単位
-     * @return irhanteiti2tani
-     */
-    public String getIrhanteiti2tani() {
-        return irhanteiti2tani;
-    }
-
-    /**
-     * 耐電圧設定条件 ＩＲ② 判定値 単位
-     * @param irhanteiti2tani
-     */
-    public void setIrhanteiti2tani(String irhanteiti2tani) {
-        this.irhanteiti2tani = irhanteiti2tani;
-    }
-
-    /**
-     * 耐電圧設定条件 ＩＲ③ 判定値 単位
-     * @return irhanteiti3tani
-     */
-    public String getIrhanteiti3tani() {
-        return irhanteiti3tani;
-    }
-
-    /**
-     * 耐電圧設定条件 ＩＲ③ 判定値 単位
-     * @param irhanteiti3tani
-     */
-    public void setIrhanteiti3tani(String irhanteiti3tani) {
-        this.irhanteiti3tani = irhanteiti3tani;
-    }
-
-    /**
-     * 耐電圧設定条件 ＩＲ④ 判定値 単位
-     * @return irhanteiti4tani
-     */
-    public String getIrhanteiti4tani() {
-        return irhanteiti4tani;
-    }
-
-    /**
-     * 耐電圧設定条件 ＩＲ④ 判定値 単位
-     * @param irhanteiti4tani
-     */
-    public void setIrhanteiti4tani(String irhanteiti4tani) {
-        this.irhanteiti4tani = irhanteiti4tani;
-    }
-
-    /**
-     * 耐電圧設定条件 ＩＲ⑤ 判定値 単位
-     * @return irhanteiti5tani
-     */
-    public String getIrhanteiti5tani() {
-        return irhanteiti5tani;
-    }
-
-    /**
-     * 耐電圧設定条件 ＩＲ⑤ 判定値 単位
-     * @param irhanteiti5tani
-     */
-    public void setIrhanteiti5tani(String irhanteiti5tani) {
-        this.irhanteiti5tani = irhanteiti5tani;
-    }
-
-    /**
-     * 耐電圧設定条件 ＩＲ⑥ 判定値 単位
-     * @return irhanteiti6tani
-     */
-    public String getIrhanteiti6tani() {
-        return irhanteiti6tani;
-    }
-
-    /**
-     * 耐電圧設定条件 ＩＲ⑥ 判定値 単位
-     * @param irhanteiti6tani
-     */
-    public void setIrhanteiti6tani(String irhanteiti6tani) {
-        this.irhanteiti6tani = irhanteiti6tani;
-    }
-
-    /**
-     * 耐電圧設定条件 ＩＲ⑦ 判定値 単位
-     * @return irhanteiti7tani
-     */
-    public String getIrhanteiti7tani() {
-        return irhanteiti7tani;
-    }
-
-    /**
-     * 耐電圧設定条件 ＩＲ⑦ 判定値 単位
-     * @param irhanteiti7tani
-     */
-    public void setIrhanteiti7tani(String irhanteiti7tani) {
-        this.irhanteiti7tani = irhanteiti7tani;
-    }
-
-    /**
-     * 耐電圧設定条件 ＩＲ⑧ 判定値 単位
-     * @return irhanteiti8tani
-     */
-    public String getIrhanteiti8tani() {
-        return irhanteiti8tani;
-    }
-
-    /**
-     * 耐電圧設定条件 ＩＲ⑧ 判定値 単位
-     * @param irhanteiti8tani
-     */
-    public void setIrhanteiti8tani(String irhanteiti8tani) {
-        this.irhanteiti8tani = irhanteiti8tani;
     }
 
     /**

@@ -4581,7 +4581,6 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
 
         model.setReturnItemId_Uwatanshi_Conventionallot(GXHDO101B005Const.UWE_TANSHI);
         model.setReturnItemId_Shitatanshi_Conventionallot(GXHDO101B005Const.SHITA_TANSHI);
-        model.setReturnItemId_Petname(GXHDO101B005Const.PET_FILM_SHURUI);
         // サブ画面から戻ったときに値を設定する項目を指定する。
         beanGXHDO101C020.setGxhdO101c020Model(model);
     }
