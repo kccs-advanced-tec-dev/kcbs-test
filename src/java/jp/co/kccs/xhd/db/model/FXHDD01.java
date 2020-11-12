@@ -31,6 +31,11 @@ import org.apache.commons.lang3.StringUtils;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	項目追加<br>
  * <br>
+ * 変更日	2020/11/11<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjy<br>
+ * 変更理由	FXHDD01の入力項目型[9]の追加対応<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -165,6 +170,10 @@ public class FXHDD01 {
      * ラベル表示render有無
      */
     private boolean renderOutputLabel;
+    /**
+     * 入力項目(入力可能ドロップダウンリスト)render有無
+     */
+    private boolean renderInputSelectAvailable;
     /**
      * 表示ﾗﾍﾞﾙ3文字ｻｲｽﾞ
      */
@@ -775,6 +784,24 @@ public class FXHDD01 {
      */
     public void setRenderOutputLabel(boolean renderOutputLabel) {
         this.renderOutputLabel = renderOutputLabel;
+    }
+
+    /**
+     * 入力項目(入力可能ドロップダウンリスト)render有無
+     * 
+     * @return the isRenderInputSelectAvailable
+     */
+    public boolean isRenderInputSelectAvailable() {
+        return renderInputSelectAvailable;
+    }
+
+    /**
+     * 入力項目(入力可能ドロップダウンリスト)render有無
+     * 
+     * @param renderInputSelectAvailable the renderInputSelectAvailable to set
+     */
+    public void setRenderInputSelectAvailable(boolean renderInputSelectAvailable) {
+        this.renderInputSelectAvailable = renderInputSelectAvailable;
     }
 
     /**

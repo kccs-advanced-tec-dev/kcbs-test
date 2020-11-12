@@ -224,6 +224,10 @@
                                           style="margin-left:8px;width:#{item.inputLength}em;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901A.maxWidthInputCol}px;#{item.customStyleInput}">
                                 <f:selectItems value="#{item.selectMenuItem}"/>
                             </p:selectOneMenu>
+                            <p:selectOneMenu id="availableComboBoxValue" rendered="#{item.renderInputSelectAvailable}" value="#{item.value}" styleClass="selectMenu" editable="true" maxlength="#{item.displayMaxLength}"
+                                          style="margin-left:8px;width:#{item.inputLength}em;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901A.maxWidthInputCol}px;#{item.customStyleInput}">
+                                <f:selectItems value="#{item.selectMenuItem}"/>
+                            </p:selectOneMenu>
                             <p:selectOneRadio id="radioValue" rendered="#{item.renderInputRadio}" value="#{item.value}" styleClass="selectRadio"
                                           style="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};vertical-align: middle;background: #{item.backColorInput};#{item.customStyleInput}">
                                 <f:selectItems value="#{item.selectMenuItem}"/>

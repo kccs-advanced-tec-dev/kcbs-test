@@ -352,12 +352,6 @@
                                         <p:column style="border-right-style: hidden; ">
                                             <h:outputText value="判定値" />
                                         </p:column>
-                                        <p:column style="border-right-style: hidden; ">
-                                            <h:outputText value="判定値(低)" />
-                                        </p:column>
-                                        <p:column style="border-right-style: hidden; white-space: nowrap; ">
-                                            <h:outputText value="判定値 単位" />
-                                        </p:column>
                                         <p:column>
                                             <h:outputText value="充電時間" />
                                         </p:column>
@@ -383,21 +377,6 @@
                                             <h:outputText value="V" styleClass="taidenatsu_table_label"/>
                                         </p:column>
                                         <p:column style="border-right-style: hidden; ">
-                                            <p:inputText id="taidenatsuHanteichiT1" styleClass="taidenatsu_table_text"
-                                                         rendered="#{beanGXHDO101C040C.hanteichi1.renderInputText}" value="#{beanGXHDO101C040C.hanteichi1.value}" 
-                                                         maxlength="#{beanGXHDO101C040C.hanteichi1.displayMaxLength}" 
-                                                         style="width:#{beanGXHDO101C040C.hanteichi1.displayMaxLength}em; font-size:#{beanGXHDO101C040C.hanteichi1.fontSizeInput}px;
-                                                         color:#{beanGXHDO101C040C.hanteichi1.fontColorInput};background:#{beanGXHDO101C040C.hanteichi1.backColorInput};#{beanGXHDO101C040C.hanteichi1.customStyleInput}">
-                                            </p:inputText>
-                                            <p:inputNumber id="taidenatsuHanteichiN1" inputStyleClass="taidenatsu_table_number_text"
-                                                           rendered="#{beanGXHDO101C040C.hanteichi1.renderInputNumber}" value="#{beanGXHDO101C040C.hanteichi1.value}" 
-                                                           decimalPlaces="#{beanGXHDO101C040C.hanteichi1.numberDecimalPlaces}" maxValue="#{beanGXHDO101C040C.hanteichi1.numberMaxValue}" minValue="#{beanGXHDO101C040C.hanteichi1.numberMinValue}" 
-                                                           thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C040C.hanteichi1.displayMaxLength}"
-                                                           inputStyle="font-size:#{beanGXHDO101C040C.hanteichi1.fontSizeInput}px;
-                                                           color:#{beanGXHDO101C040C.hanteichi1.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi1.backColorInput};#{beanGXHDO101C040C.hanteichi1.customStyleInput}">
-                                            </p:inputNumber>
-                                        </p:column>
-                                        <p:column style="border-right-style: hidden; ">
                                             <p:inputText id="taidenatsuHanteichilowT1" styleClass="taidenatsu_table_text"
                                                          rendered="#{beanGXHDO101C040C.hanteichi1low.renderInputText}" value="#{beanGXHDO101C040C.hanteichi1low.value}" 
                                                          maxlength="#{beanGXHDO101C040C.hanteichi1low.displayMaxLength}" 
@@ -411,8 +390,20 @@
                                                            inputStyle="font-size:#{beanGXHDO101C040C.hanteichi1low.fontSizeInput}px;
                                                            color:#{beanGXHDO101C040C.hanteichi1low.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi1low.backColorInput};#{beanGXHDO101C040C.hanteichi1low.customStyleInput}">
                                             </p:inputNumber>
-                                        </p:column>
-                                        <p:column style="border-right-style: hidden; ">
+                                            <h:outputText value="～" style="font-size:16px;vertical-align:middle;margin-right:3px"/>
+                                            <p:inputText id="taidenatsuHanteichiT1" styleClass="taidenatsu_table_text"
+                                                         rendered="#{beanGXHDO101C040C.hanteichi1.renderInputText}" value="#{beanGXHDO101C040C.hanteichi1.value}" 
+                                                         maxlength="#{beanGXHDO101C040C.hanteichi1.displayMaxLength}" 
+                                                         style="width:#{beanGXHDO101C040C.hanteichi1.displayMaxLength}em; font-size:#{beanGXHDO101C040C.hanteichi1.fontSizeInput}px;
+                                                         color:#{beanGXHDO101C040C.hanteichi1.fontColorInput};background:#{beanGXHDO101C040C.hanteichi1.backColorInput};#{beanGXHDO101C040C.hanteichi1.customStyleInput}">
+                                            </p:inputText>
+                                            <p:inputNumber id="taidenatsuHanteichiN1" inputStyleClass="taidenatsu_table_number_text"
+                                                           rendered="#{beanGXHDO101C040C.hanteichi1.renderInputNumber}" value="#{beanGXHDO101C040C.hanteichi1.value}" 
+                                                           decimalPlaces="#{beanGXHDO101C040C.hanteichi1.numberDecimalPlaces}" maxValue="#{beanGXHDO101C040C.hanteichi1.numberMaxValue}" minValue="#{beanGXHDO101C040C.hanteichi1.numberMinValue}" 
+                                                           thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C040C.hanteichi1.displayMaxLength}"
+                                                           inputStyle="font-size:#{beanGXHDO101C040C.hanteichi1.fontSizeInput}px;
+                                                           color:#{beanGXHDO101C040C.hanteichi1.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi1.backColorInput};#{beanGXHDO101C040C.hanteichi1.customStyleInput}">
+                                            </p:inputNumber>
                                             <p:inputText id="taidenatsuHanteichitaniT1" styleClass="taidenatsu_table_text"
                                                          rendered="#{beanGXHDO101C040C.hanteichi1tani.renderInputText}" value="#{beanGXHDO101C040C.hanteichi1tani.value}" 
                                                          maxlength="#{beanGXHDO101C040C.hanteichi1tani.displayMaxLength}" 
@@ -466,21 +457,6 @@
                                             <h:outputText value="V" styleClass="taidenatsu_table_label"/>
                                         </p:column>
                                         <p:column style="border-right-style: hidden; ">
-                                            <p:inputText id="taidenatsuHanteichiT2" styleClass="taidenatsu_table_text"
-                                                         rendered="#{beanGXHDO101C040C.hanteichi2.renderInputText}" value="#{beanGXHDO101C040C.hanteichi2.value}" 
-                                                         maxlength="#{beanGXHDO101C040C.hanteichi2.displayMaxLength}" 
-                                                         style="width:#{beanGXHDO101C040C.hanteichi2.displayMaxLength}em; font-size:#{beanGXHDO101C040C.hanteichi2.fontSizeInput}px;
-                                                         color:#{beanGXHDO101C040C.hanteichi2.fontColorInput};background:#{beanGXHDO101C040C.hanteichi2.backColorInput};#{beanGXHDO101C040C.hanteichi2.customStyleInput}">
-                                            </p:inputText>
-                                            <p:inputNumber id="taidenatsuHanteichiN2" inputStyleClass="taidenatsu_table_number_text"
-                                                           rendered="#{beanGXHDO101C040C.hanteichi2.renderInputNumber}" value="#{beanGXHDO101C040C.hanteichi2.value}" 
-                                                           decimalPlaces="#{beanGXHDO101C040C.hanteichi2.numberDecimalPlaces}" maxValue="#{beanGXHDO101C040C.hanteichi2.numberMaxValue}" minValue="#{beanGXHDO101C040C.hanteichi2.numberMinValue}" 
-                                                           thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C040C.hanteichi2.displayMaxLength}"
-                                                           inputStyle="font-size:#{beanGXHDO101C040C.hanteichi2.fontSizeInput}px;
-                                                           color:#{beanGXHDO101C040C.hanteichi2.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi2.backColorInput};#{beanGXHDO101C040C.hanteichi2.customStyleInput}">
-                                            </p:inputNumber>
-                                        </p:column>
-                                        <p:column style="border-right-style: hidden; ">
                                             <p:inputText id="taidenatsuHanteichilowT2" styleClass="taidenatsu_table_text"
                                                          rendered="#{beanGXHDO101C040C.hanteichi2low.renderInputText}" value="#{beanGXHDO101C040C.hanteichi2low.value}" 
                                                          maxlength="#{beanGXHDO101C040C.hanteichi2low.displayMaxLength}" 
@@ -494,8 +470,20 @@
                                                            inputStyle="font-size:#{beanGXHDO101C040C.hanteichi2low.fontSizeInput}px;
                                                            color:#{beanGXHDO101C040C.hanteichi2low.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi2low.backColorInput};#{beanGXHDO101C040C.hanteichi2low.customStyleInput}">
                                             </p:inputNumber>
-                                        </p:column>
-                                        <p:column style="border-right-style: hidden; ">
+                                            <h:outputText value="～" style="font-size:16px;vertical-align:middle;margin-right:3px"/>
+                                            <p:inputText id="taidenatsuHanteichiT2" styleClass="taidenatsu_table_text"
+                                                         rendered="#{beanGXHDO101C040C.hanteichi2.renderInputText}" value="#{beanGXHDO101C040C.hanteichi2.value}" 
+                                                         maxlength="#{beanGXHDO101C040C.hanteichi2.displayMaxLength}" 
+                                                         style="width:#{beanGXHDO101C040C.hanteichi2.displayMaxLength}em; font-size:#{beanGXHDO101C040C.hanteichi2.fontSizeInput}px;
+                                                         color:#{beanGXHDO101C040C.hanteichi2.fontColorInput};background:#{beanGXHDO101C040C.hanteichi2.backColorInput};#{beanGXHDO101C040C.hanteichi2.customStyleInput}">
+                                            </p:inputText>
+                                            <p:inputNumber id="taidenatsuHanteichiN2" inputStyleClass="taidenatsu_table_number_text"
+                                                           rendered="#{beanGXHDO101C040C.hanteichi2.renderInputNumber}" value="#{beanGXHDO101C040C.hanteichi2.value}" 
+                                                           decimalPlaces="#{beanGXHDO101C040C.hanteichi2.numberDecimalPlaces}" maxValue="#{beanGXHDO101C040C.hanteichi2.numberMaxValue}" minValue="#{beanGXHDO101C040C.hanteichi2.numberMinValue}" 
+                                                           thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C040C.hanteichi2.displayMaxLength}"
+                                                           inputStyle="font-size:#{beanGXHDO101C040C.hanteichi2.fontSizeInput}px;
+                                                           color:#{beanGXHDO101C040C.hanteichi2.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi2.backColorInput};#{beanGXHDO101C040C.hanteichi2.customStyleInput}">
+                                            </p:inputNumber>
                                             <p:inputText id="taidenatsuHanteichitaniT2" styleClass="taidenatsu_table_text"
                                                          rendered="#{beanGXHDO101C040C.hanteichi2tani.renderInputText}" value="#{beanGXHDO101C040C.hanteichi2tani.value}" 
                                                          maxlength="#{beanGXHDO101C040C.hanteichi2tani.displayMaxLength}" 
@@ -548,21 +536,6 @@
                                             <h:outputText value="V" styleClass="taidenatsu_table_label"/>
                                         </p:column>
                                         <p:column style="border-right-style: hidden; ">
-                                            <p:inputText id="taidenatsuHanteichiT3" styleClass="taidenatsu_table_text"
-                                                         rendered="#{beanGXHDO101C040C.hanteichi3.renderInputText}" value="#{beanGXHDO101C040C.hanteichi3.value}" 
-                                                         maxlength="#{beanGXHDO101C040C.hanteichi3.displayMaxLength}" 
-                                                         style="width:#{beanGXHDO101C040C.hanteichi3.displayMaxLength}em; font-size:#{beanGXHDO101C040C.hanteichi3.fontSizeInput}px;
-                                                         color:#{beanGXHDO101C040C.hanteichi3.fontColorInput};background:#{beanGXHDO101C040C.hanteichi3.backColorInput};#{beanGXHDO101C040C.hanteichi3.customStyleInput}">
-                                            </p:inputText>
-                                            <p:inputNumber id="taidenatsuHanteichiN3" inputStyleClass="taidenatsu_table_number_text"
-                                                           rendered="#{beanGXHDO101C040C.hanteichi3.renderInputNumber}" value="#{beanGXHDO101C040C.hanteichi3.value}" 
-                                                           decimalPlaces="#{beanGXHDO101C040C.hanteichi3.numberDecimalPlaces}" maxValue="#{beanGXHDO101C040C.hanteichi3.numberMaxValue}" minValue="#{beanGXHDO101C040C.hanteichi3.numberMinValue}" 
-                                                           thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C040C.hanteichi3.displayMaxLength}"
-                                                           inputStyle="font-size:#{beanGXHDO101C040C.hanteichi3.fontSizeInput}px;
-                                                           color:#{beanGXHDO101C040C.hanteichi3.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi3.backColorInput};#{beanGXHDO101C040C.hanteichi3.customStyleInput}">
-                                            </p:inputNumber>
-                                        </p:column>
-                                        <p:column style="border-right-style: hidden; ">
                                             <p:inputText id="taidenatsuHanteichilowT3" styleClass="taidenatsu_table_text"
                                                          rendered="#{beanGXHDO101C040C.hanteichi3low.renderInputText}" value="#{beanGXHDO101C040C.hanteichi3low.value}" 
                                                          maxlength="#{beanGXHDO101C040C.hanteichi3low.displayMaxLength}" 
@@ -576,8 +549,20 @@
                                                            inputStyle="font-size:#{beanGXHDO101C040C.hanteichi3low.fontSizeInput}px;
                                                            color:#{beanGXHDO101C040C.hanteichi3low.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi3low.backColorInput};#{beanGXHDO101C040C.hanteichi3low.customStyleInput}">
                                             </p:inputNumber>
-                                        </p:column>
-                                        <p:column style="border-right-style: hidden; ">
+                                            <h:outputText value="～" style="font-size:16px;vertical-align:middle;margin-right:3px"/>
+                                            <p:inputText id="taidenatsuHanteichiT3" styleClass="taidenatsu_table_text"
+                                                         rendered="#{beanGXHDO101C040C.hanteichi3.renderInputText}" value="#{beanGXHDO101C040C.hanteichi3.value}" 
+                                                         maxlength="#{beanGXHDO101C040C.hanteichi3.displayMaxLength}" 
+                                                         style="width:#{beanGXHDO101C040C.hanteichi3.displayMaxLength}em; font-size:#{beanGXHDO101C040C.hanteichi3.fontSizeInput}px;
+                                                         color:#{beanGXHDO101C040C.hanteichi3.fontColorInput};background:#{beanGXHDO101C040C.hanteichi3.backColorInput};#{beanGXHDO101C040C.hanteichi3.customStyleInput}">
+                                            </p:inputText>
+                                            <p:inputNumber id="taidenatsuHanteichiN3" inputStyleClass="taidenatsu_table_number_text"
+                                                           rendered="#{beanGXHDO101C040C.hanteichi3.renderInputNumber}" value="#{beanGXHDO101C040C.hanteichi3.value}" 
+                                                           decimalPlaces="#{beanGXHDO101C040C.hanteichi3.numberDecimalPlaces}" maxValue="#{beanGXHDO101C040C.hanteichi3.numberMaxValue}" minValue="#{beanGXHDO101C040C.hanteichi3.numberMinValue}" 
+                                                           thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C040C.hanteichi3.displayMaxLength}"
+                                                           inputStyle="font-size:#{beanGXHDO101C040C.hanteichi3.fontSizeInput}px;
+                                                           color:#{beanGXHDO101C040C.hanteichi3.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi3.backColorInput};#{beanGXHDO101C040C.hanteichi3.customStyleInput}">
+                                            </p:inputNumber>
                                             <p:inputText id="taidenatsuHanteichitaniT3" styleClass="taidenatsu_table_text"
                                                          rendered="#{beanGXHDO101C040C.hanteichi3tani.renderInputText}" value="#{beanGXHDO101C040C.hanteichi3tani.value}" 
                                                          maxlength="#{beanGXHDO101C040C.hanteichi3tani.displayMaxLength}" 
@@ -630,21 +615,6 @@
                                             <h:outputText value="V" styleClass="taidenatsu_table_label"/>
                                         </p:column>
                                         <p:column style="border-right-style: hidden; ">
-                                            <p:inputText id="taidenatsuHanteichiT4" styleClass="taidenatsu_table_text"
-                                                         rendered="#{beanGXHDO101C040C.hanteichi4.renderInputText}" value="#{beanGXHDO101C040C.hanteichi4.value}" 
-                                                         maxlength="#{beanGXHDO101C040C.hanteichi4.displayMaxLength}" 
-                                                         style="width:#{beanGXHDO101C040C.hanteichi4.displayMaxLength}em; font-size:#{beanGXHDO101C040C.hanteichi4.fontSizeInput}px;
-                                                         color:#{beanGXHDO101C040C.hanteichi4.fontColorInput};background:#{beanGXHDO101C040C.hanteichi4.backColorInput};#{beanGXHDO101C040C.hanteichi4.customStyleInput}">
-                                            </p:inputText>
-                                            <p:inputNumber id="taidenatsuHanteichiN4" inputStyleClass="taidenatsu_table_number_text"
-                                                           rendered="#{beanGXHDO101C040C.hanteichi4.renderInputNumber}" value="#{beanGXHDO101C040C.hanteichi4.value}" 
-                                                           decimalPlaces="#{beanGXHDO101C040C.hanteichi4.numberDecimalPlaces}" maxValue="#{beanGXHDO101C040C.hanteichi4.numberMaxValue}" minValue="#{beanGXHDO101C040C.hanteichi4.numberMinValue}" 
-                                                           thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C040C.hanteichi4.displayMaxLength}"
-                                                           inputStyle="font-size:#{beanGXHDO101C040C.hanteichi4.fontSizeInput}px;
-                                                           color:#{beanGXHDO101C040C.hanteichi4.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi4.backColorInput};#{beanGXHDO101C040C.hanteichi4.customStyleInput}">
-                                            </p:inputNumber>
-                                        </p:column>
-                                        <p:column style="border-right-style: hidden; ">
                                             <p:inputText id="taidenatsuHanteichilowT4" styleClass="taidenatsu_table_text"
                                                          rendered="#{beanGXHDO101C040C.hanteichi4low.renderInputText}" value="#{beanGXHDO101C040C.hanteichi4low.value}" 
                                                          maxlength="#{beanGXHDO101C040C.hanteichi4low.displayMaxLength}" 
@@ -658,8 +628,20 @@
                                                            inputStyle="font-size:#{beanGXHDO101C040C.hanteichi4low.fontSizeInput}px;
                                                            color:#{beanGXHDO101C040C.hanteichi4low.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi4low.backColorInput};#{beanGXHDO101C040C.hanteichi4low.customStyleInput}">
                                             </p:inputNumber>
-                                        </p:column>
-                                        <p:column style="border-right-style: hidden; ">
+                                            <h:outputText value="～" style="font-size:16px;vertical-align:middle;margin-right:3px"/>
+                                            <p:inputText id="taidenatsuHanteichiT4" styleClass="taidenatsu_table_text"
+                                                         rendered="#{beanGXHDO101C040C.hanteichi4.renderInputText}" value="#{beanGXHDO101C040C.hanteichi4.value}" 
+                                                         maxlength="#{beanGXHDO101C040C.hanteichi4.displayMaxLength}" 
+                                                         style="width:#{beanGXHDO101C040C.hanteichi4.displayMaxLength}em; font-size:#{beanGXHDO101C040C.hanteichi4.fontSizeInput}px;
+                                                         color:#{beanGXHDO101C040C.hanteichi4.fontColorInput};background:#{beanGXHDO101C040C.hanteichi4.backColorInput};#{beanGXHDO101C040C.hanteichi4.customStyleInput}">
+                                            </p:inputText>
+                                            <p:inputNumber id="taidenatsuHanteichiN4" inputStyleClass="taidenatsu_table_number_text"
+                                                           rendered="#{beanGXHDO101C040C.hanteichi4.renderInputNumber}" value="#{beanGXHDO101C040C.hanteichi4.value}" 
+                                                           decimalPlaces="#{beanGXHDO101C040C.hanteichi4.numberDecimalPlaces}" maxValue="#{beanGXHDO101C040C.hanteichi4.numberMaxValue}" minValue="#{beanGXHDO101C040C.hanteichi4.numberMinValue}" 
+                                                           thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C040C.hanteichi4.displayMaxLength}"
+                                                           inputStyle="font-size:#{beanGXHDO101C040C.hanteichi4.fontSizeInput}px;
+                                                           color:#{beanGXHDO101C040C.hanteichi4.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi4.backColorInput};#{beanGXHDO101C040C.hanteichi4.customStyleInput}">
+                                            </p:inputNumber>
                                             <p:inputText id="taidenatsuHanteichitaniT4" styleClass="taidenatsu_table_text"
                                                          rendered="#{beanGXHDO101C040C.hanteichi4tani.renderInputText}" value="#{beanGXHDO101C040C.hanteichi4tani.value}" 
                                                          maxlength="#{beanGXHDO101C040C.hanteichi4tani.displayMaxLength}" 
@@ -712,21 +694,6 @@
                                             <h:outputText value="V" styleClass="taidenatsu_table_label"/>
                                         </p:column>
                                         <p:column style="border-right-style: hidden; ">
-                                            <p:inputText id="taidenatsuHanteichiT5" styleClass="taidenatsu_table_text"
-                                                         rendered="#{beanGXHDO101C040C.hanteichi5.renderInputText}" value="#{beanGXHDO101C040C.hanteichi5.value}" 
-                                                         maxlength="#{beanGXHDO101C040C.hanteichi5.displayMaxLength}" 
-                                                         style="width:#{beanGXHDO101C040C.hanteichi5.displayMaxLength}em; font-size:#{beanGXHDO101C040C.hanteichi5.fontSizeInput}px;
-                                                         color:#{beanGXHDO101C040C.hanteichi5.fontColorInput};background:#{beanGXHDO101C040C.hanteichi5.backColorInput};#{beanGXHDO101C040C.hanteichi5.customStyleInput}">
-                                            </p:inputText>
-                                            <p:inputNumber id="taidenatsuHanteichiN5" inputStyleClass="taidenatsu_table_number_text"
-                                                           rendered="#{beanGXHDO101C040C.hanteichi5.renderInputNumber}" value="#{beanGXHDO101C040C.hanteichi5.value}" 
-                                                           decimalPlaces="#{beanGXHDO101C040C.hanteichi5.numberDecimalPlaces}" maxValue="#{beanGXHDO101C040C.hanteichi5.numberMaxValue}" minValue="#{beanGXHDO101C040C.hanteichi5.numberMinValue}" 
-                                                           thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C040C.hanteichi5.displayMaxLength}"
-                                                           inputStyle="font-size:#{beanGXHDO101C040C.hanteichi5.fontSizeInput}px;
-                                                           color:#{beanGXHDO101C040C.hanteichi5.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi5.backColorInput};#{beanGXHDO101C040C.hanteichi5.customStyleInput}">
-                                            </p:inputNumber>
-                                        </p:column>
-                                        <p:column style="border-right-style: hidden; ">
                                             <p:inputText id="taidenatsuHanteichilowT5" styleClass="taidenatsu_table_text"
                                                          rendered="#{beanGXHDO101C040C.hanteichi5low.renderInputText}" value="#{beanGXHDO101C040C.hanteichi5low.value}" 
                                                          maxlength="#{beanGXHDO101C040C.hanteichi5low.displayMaxLength}" 
@@ -740,8 +707,20 @@
                                                            inputStyle="font-size:#{beanGXHDO101C040C.hanteichi5low.fontSizeInput}px;
                                                            color:#{beanGXHDO101C040C.hanteichi5low.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi5low.backColorInput};#{beanGXHDO101C040C.hanteichi5low.customStyleInput}">
                                             </p:inputNumber>
-                                        </p:column>
-                                        <p:column style="border-right-style: hidden; ">
+                                            <h:outputText value="～" style="font-size:16px;vertical-align:middle;margin-right:3px"/>
+                                            <p:inputText id="taidenatsuHanteichiT5" styleClass="taidenatsu_table_text"
+                                                         rendered="#{beanGXHDO101C040C.hanteichi5.renderInputText}" value="#{beanGXHDO101C040C.hanteichi5.value}" 
+                                                         maxlength="#{beanGXHDO101C040C.hanteichi5.displayMaxLength}" 
+                                                         style="width:#{beanGXHDO101C040C.hanteichi5.displayMaxLength}em; font-size:#{beanGXHDO101C040C.hanteichi5.fontSizeInput}px;
+                                                         color:#{beanGXHDO101C040C.hanteichi5.fontColorInput};background:#{beanGXHDO101C040C.hanteichi5.backColorInput};#{beanGXHDO101C040C.hanteichi5.customStyleInput}">
+                                            </p:inputText>
+                                            <p:inputNumber id="taidenatsuHanteichiN5" inputStyleClass="taidenatsu_table_number_text"
+                                                           rendered="#{beanGXHDO101C040C.hanteichi5.renderInputNumber}" value="#{beanGXHDO101C040C.hanteichi5.value}" 
+                                                           decimalPlaces="#{beanGXHDO101C040C.hanteichi5.numberDecimalPlaces}" maxValue="#{beanGXHDO101C040C.hanteichi5.numberMaxValue}" minValue="#{beanGXHDO101C040C.hanteichi5.numberMinValue}" 
+                                                           thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C040C.hanteichi5.displayMaxLength}"
+                                                           inputStyle="font-size:#{beanGXHDO101C040C.hanteichi5.fontSizeInput}px;
+                                                           color:#{beanGXHDO101C040C.hanteichi5.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi5.backColorInput};#{beanGXHDO101C040C.hanteichi5.customStyleInput}">
+                                            </p:inputNumber>
                                             <p:inputText id="taidenatsuHanteichitaniT5" styleClass="taidenatsu_table_text"
                                                          rendered="#{beanGXHDO101C040C.hanteichi5tani.renderInputText}" value="#{beanGXHDO101C040C.hanteichi5tani.value}" 
                                                          maxlength="#{beanGXHDO101C040C.hanteichi5tani.displayMaxLength}" 
@@ -794,21 +773,6 @@
                                             <h:outputText value="V" styleClass="taidenatsu_table_label"/>
                                         </p:column>
                                         <p:column style="border-right-style: hidden; ">
-                                            <p:inputText id="taidenatsuHanteichiT6" styleClass="taidenatsu_table_text"
-                                                         rendered="#{beanGXHDO101C040C.hanteichi6.renderInputText}" value="#{beanGXHDO101C040C.hanteichi6.value}" 
-                                                         maxlength="#{beanGXHDO101C040C.hanteichi6.displayMaxLength}" 
-                                                         style="width:#{beanGXHDO101C040C.hanteichi6.displayMaxLength}em; font-size:#{beanGXHDO101C040C.hanteichi6.fontSizeInput}px;
-                                                         color:#{beanGXHDO101C040C.hanteichi6.fontColorInput};background:#{beanGXHDO101C040C.hanteichi6.backColorInput};#{beanGXHDO101C040C.hanteichi6.customStyleInput}">
-                                            </p:inputText>
-                                            <p:inputNumber id="taidenatsuHanteichiN6" inputStyleClass="taidenatsu_table_number_text"
-                                                           rendered="#{beanGXHDO101C040C.hanteichi6.renderInputNumber}" value="#{beanGXHDO101C040C.hanteichi6.value}" 
-                                                           decimalPlaces="#{beanGXHDO101C040C.hanteichi6.numberDecimalPlaces}" maxValue="#{beanGXHDO101C040C.hanteichi6.numberMaxValue}" minValue="#{beanGXHDO101C040C.hanteichi6.numberMinValue}" 
-                                                           thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C040C.hanteichi6.displayMaxLength}"
-                                                           inputStyle="font-size:#{beanGXHDO101C040C.hanteichi6.fontSizeInput}px;
-                                                           color:#{beanGXHDO101C040C.hanteichi6.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi6.backColorInput};#{beanGXHDO101C040C.hanteichi6.customStyleInput}">
-                                            </p:inputNumber>
-                                        </p:column>
-                                        <p:column style="border-right-style: hidden; ">
                                             <p:inputText id="taidenatsuHanteichilowT6" styleClass="taidenatsu_table_text"
                                                          rendered="#{beanGXHDO101C040C.hanteichi6low.renderInputText}" value="#{beanGXHDO101C040C.hanteichi6low.value}" 
                                                          maxlength="#{beanGXHDO101C040C.hanteichi6low.displayMaxLength}" 
@@ -822,8 +786,20 @@
                                                            inputStyle="font-size:#{beanGXHDO101C040C.hanteichi6low.fontSizeInput}px;
                                                            color:#{beanGXHDO101C040C.hanteichi6low.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi6low.backColorInput};#{beanGXHDO101C040C.hanteichi6low.customStyleInput}">
                                             </p:inputNumber>
-                                        </p:column>
-                                        <p:column style="border-right-style: hidden; ">
+                                            <h:outputText value="～" style="font-size:16px;vertical-align:middle;margin-right:3px"/>
+                                            <p:inputText id="taidenatsuHanteichiT6" styleClass="taidenatsu_table_text"
+                                                         rendered="#{beanGXHDO101C040C.hanteichi6.renderInputText}" value="#{beanGXHDO101C040C.hanteichi6.value}" 
+                                                         maxlength="#{beanGXHDO101C040C.hanteichi6.displayMaxLength}" 
+                                                         style="width:#{beanGXHDO101C040C.hanteichi6.displayMaxLength}em; font-size:#{beanGXHDO101C040C.hanteichi6.fontSizeInput}px;
+                                                         color:#{beanGXHDO101C040C.hanteichi6.fontColorInput};background:#{beanGXHDO101C040C.hanteichi6.backColorInput};#{beanGXHDO101C040C.hanteichi6.customStyleInput}">
+                                            </p:inputText>
+                                            <p:inputNumber id="taidenatsuHanteichiN6" inputStyleClass="taidenatsu_table_number_text"
+                                                           rendered="#{beanGXHDO101C040C.hanteichi6.renderInputNumber}" value="#{beanGXHDO101C040C.hanteichi6.value}" 
+                                                           decimalPlaces="#{beanGXHDO101C040C.hanteichi6.numberDecimalPlaces}" maxValue="#{beanGXHDO101C040C.hanteichi6.numberMaxValue}" minValue="#{beanGXHDO101C040C.hanteichi6.numberMinValue}" 
+                                                           thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C040C.hanteichi6.displayMaxLength}"
+                                                           inputStyle="font-size:#{beanGXHDO101C040C.hanteichi6.fontSizeInput}px;
+                                                           color:#{beanGXHDO101C040C.hanteichi6.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi6.backColorInput};#{beanGXHDO101C040C.hanteichi6.customStyleInput}">
+                                            </p:inputNumber>
                                             <p:inputText id="taidenatsuHanteichitaniT6" styleClass="taidenatsu_table_text"
                                                          rendered="#{beanGXHDO101C040C.hanteichi6tani.renderInputText}" value="#{beanGXHDO101C040C.hanteichi6tani.value}" 
                                                          maxlength="#{beanGXHDO101C040C.hanteichi6tani.displayMaxLength}" 
@@ -876,21 +852,6 @@
                                             <h:outputText value="V" styleClass="taidenatsu_table_label"/>
                                         </p:column>
                                         <p:column style="border-right-style: hidden; ">
-                                            <p:inputText id="taidenatsuHanteichiT7" styleClass="taidenatsu_table_text"
-                                                         rendered="#{beanGXHDO101C040C.hanteichi7.renderInputText}" value="#{beanGXHDO101C040C.hanteichi7.value}" 
-                                                         maxlength="#{beanGXHDO101C040C.hanteichi7.displayMaxLength}" 
-                                                         style="width:#{beanGXHDO101C040C.hanteichi7.displayMaxLength}em; font-size:#{beanGXHDO101C040C.hanteichi7.fontSizeInput}px;
-                                                         color:#{beanGXHDO101C040C.hanteichi7.fontColorInput};background:#{beanGXHDO101C040C.hanteichi7.backColorInput};#{beanGXHDO101C040C.hanteichi7.customStyleInput}">
-                                            </p:inputText>
-                                            <p:inputNumber id="taidenatsuHanteichiN7" inputStyleClass="taidenatsu_table_number_text"
-                                                           rendered="#{beanGXHDO101C040C.hanteichi7.renderInputNumber}" value="#{beanGXHDO101C040C.hanteichi7.value}" 
-                                                           decimalPlaces="#{beanGXHDO101C040C.hanteichi7.numberDecimalPlaces}" maxValue="#{beanGXHDO101C040C.hanteichi7.numberMaxValue}" minValue="#{beanGXHDO101C040C.hanteichi7.numberMinValue}" 
-                                                           thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C040C.hanteichi7.displayMaxLength}"
-                                                           inputStyle="font-size:#{beanGXHDO101C040C.hanteichi7.fontSizeInput}px;
-                                                           color:#{beanGXHDO101C040C.hanteichi7.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi7.backColorInput};#{beanGXHDO101C040C.hanteichi7.customStyleInput}">
-                                            </p:inputNumber>
-                                        </p:column>
-                                        <p:column style="border-right-style: hidden; ">
                                             <p:inputText id="taidenatsuHanteichilowT7" styleClass="taidenatsu_table_text"
                                                          rendered="#{beanGXHDO101C040C.hanteichi7low.renderInputText}" value="#{beanGXHDO101C040C.hanteichi7low.value}" 
                                                          maxlength="#{beanGXHDO101C040C.hanteichi7low.displayMaxLength}" 
@@ -904,8 +865,20 @@
                                                            inputStyle="font-size:#{beanGXHDO101C040C.hanteichi7low.fontSizeInput}px;
                                                            color:#{beanGXHDO101C040C.hanteichi7low.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi7low.backColorInput};#{beanGXHDO101C040C.hanteichi7low.customStyleInput}">
                                             </p:inputNumber>
-                                        </p:column>
-                                        <p:column style="border-right-style: hidden; ">
+                                            <h:outputText value="～" style="font-size:16px;vertical-align:middle;margin-right:3px"/>
+                                            <p:inputText id="taidenatsuHanteichiT7" styleClass="taidenatsu_table_text"
+                                                         rendered="#{beanGXHDO101C040C.hanteichi7.renderInputText}" value="#{beanGXHDO101C040C.hanteichi7.value}" 
+                                                         maxlength="#{beanGXHDO101C040C.hanteichi7.displayMaxLength}" 
+                                                         style="width:#{beanGXHDO101C040C.hanteichi7.displayMaxLength}em; font-size:#{beanGXHDO101C040C.hanteichi7.fontSizeInput}px;
+                                                         color:#{beanGXHDO101C040C.hanteichi7.fontColorInput};background:#{beanGXHDO101C040C.hanteichi7.backColorInput};#{beanGXHDO101C040C.hanteichi7.customStyleInput}">
+                                            </p:inputText>
+                                            <p:inputNumber id="taidenatsuHanteichiN7" inputStyleClass="taidenatsu_table_number_text"
+                                                           rendered="#{beanGXHDO101C040C.hanteichi7.renderInputNumber}" value="#{beanGXHDO101C040C.hanteichi7.value}" 
+                                                           decimalPlaces="#{beanGXHDO101C040C.hanteichi7.numberDecimalPlaces}" maxValue="#{beanGXHDO101C040C.hanteichi7.numberMaxValue}" minValue="#{beanGXHDO101C040C.hanteichi7.numberMinValue}" 
+                                                           thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C040C.hanteichi7.displayMaxLength}"
+                                                           inputStyle="font-size:#{beanGXHDO101C040C.hanteichi7.fontSizeInput}px;
+                                                           color:#{beanGXHDO101C040C.hanteichi7.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi7.backColorInput};#{beanGXHDO101C040C.hanteichi7.customStyleInput}">
+                                            </p:inputNumber>
                                             <p:inputText id="taidenatsuHanteichitaniT7" styleClass="taidenatsu_table_text"
                                                          rendered="#{beanGXHDO101C040C.hanteichi7tani.renderInputText}" value="#{beanGXHDO101C040C.hanteichi7tani.value}" 
                                                          maxlength="#{beanGXHDO101C040C.hanteichi7tani.displayMaxLength}" 
@@ -958,21 +931,6 @@
                                             <h:outputText value="V" styleClass="taidenatsu_table_label"/>
                                         </p:column>
                                         <p:column style="border-right-style: hidden; ">
-                                            <p:inputText id="taidenatsuHanteichiT8" styleClass="taidenatsu_table_text"
-                                                         rendered="#{beanGXHDO101C040C.hanteichi8.renderInputText}" value="#{beanGXHDO101C040C.hanteichi8.value}" 
-                                                         maxlength="#{beanGXHDO101C040C.hanteichi8.displayMaxLength}" 
-                                                         style="width:#{beanGXHDO101C040C.hanteichi8.displayMaxLength}em; font-size:#{beanGXHDO101C040C.hanteichi8.fontSizeInput}px;
-                                                         color:#{beanGXHDO101C040C.hanteichi8.fontColorInput};background:#{beanGXHDO101C040C.hanteichi8.backColorInput};#{beanGXHDO101C040C.hanteichi8.customStyleInput}">
-                                            </p:inputText>
-                                            <p:inputNumber id="taidenatsuHanteichiN8" inputStyleClass="taidenatsu_table_number_text"
-                                                           rendered="#{beanGXHDO101C040C.hanteichi8.renderInputNumber}" value="#{beanGXHDO101C040C.hanteichi8.value}" 
-                                                           decimalPlaces="#{beanGXHDO101C040C.hanteichi8.numberDecimalPlaces}" maxValue="#{beanGXHDO101C040C.hanteichi8.numberMaxValue}" minValue="#{beanGXHDO101C040C.hanteichi8.numberMinValue}" 
-                                                           thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C040C.hanteichi8.displayMaxLength}"
-                                                           inputStyle="font-size:#{beanGXHDO101C040C.hanteichi8.fontSizeInput}px;
-                                                           color:#{beanGXHDO101C040C.hanteichi8.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi8.backColorInput};#{beanGXHDO101C040C.hanteichi8.customStyleInput}">
-                                            </p:inputNumber>
-                                        </p:column>
-                                        <p:column style="border-right-style: hidden; ">
                                             <p:inputText id="taidenatsuHanteichilowT8" styleClass="taidenatsu_table_text"
                                                          rendered="#{beanGXHDO101C040C.hanteichi8low.renderInputText}" value="#{beanGXHDO101C040C.hanteichi8low.value}" 
                                                          maxlength="#{beanGXHDO101C040C.hanteichi8low.displayMaxLength}" 
@@ -986,8 +944,20 @@
                                                            inputStyle="font-size:#{beanGXHDO101C040C.hanteichi8low.fontSizeInput}px;
                                                            color:#{beanGXHDO101C040C.hanteichi8low.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi8low.backColorInput};#{beanGXHDO101C040C.hanteichi8low.customStyleInput}">
                                             </p:inputNumber>
-                                        </p:column>
-                                        <p:column style="border-right-style: hidden; ">
+                                            <h:outputText value="～" style="font-size:16px;vertical-align:middle;margin-right:3px"/>
+                                            <p:inputText id="taidenatsuHanteichiT8" styleClass="taidenatsu_table_text"
+                                                         rendered="#{beanGXHDO101C040C.hanteichi8.renderInputText}" value="#{beanGXHDO101C040C.hanteichi8.value}" 
+                                                         maxlength="#{beanGXHDO101C040C.hanteichi8.displayMaxLength}" 
+                                                         style="width:#{beanGXHDO101C040C.hanteichi8.displayMaxLength}em; font-size:#{beanGXHDO101C040C.hanteichi8.fontSizeInput}px;
+                                                         color:#{beanGXHDO101C040C.hanteichi8.fontColorInput};background:#{beanGXHDO101C040C.hanteichi8.backColorInput};#{beanGXHDO101C040C.hanteichi8.customStyleInput}">
+                                            </p:inputText>
+                                            <p:inputNumber id="taidenatsuHanteichiN8" inputStyleClass="taidenatsu_table_number_text"
+                                                           rendered="#{beanGXHDO101C040C.hanteichi8.renderInputNumber}" value="#{beanGXHDO101C040C.hanteichi8.value}" 
+                                                           decimalPlaces="#{beanGXHDO101C040C.hanteichi8.numberDecimalPlaces}" maxValue="#{beanGXHDO101C040C.hanteichi8.numberMaxValue}" minValue="#{beanGXHDO101C040C.hanteichi8.numberMinValue}" 
+                                                           thousandSeparator="" roundMethod="D" size="#{beanGXHDO101C040C.hanteichi8.displayMaxLength}"
+                                                           inputStyle="font-size:#{beanGXHDO101C040C.hanteichi8.fontSizeInput}px;
+                                                           color:#{beanGXHDO101C040C.hanteichi8.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi8.backColorInput};#{beanGXHDO101C040C.hanteichi8.customStyleInput}">
+                                            </p:inputNumber>
                                             <p:inputText id="taidenatsuHanteichitaniT8" styleClass="taidenatsu_table_text"
                                                          rendered="#{beanGXHDO101C040C.hanteichi8tani.renderInputText}" value="#{beanGXHDO101C040C.hanteichi8tani.value}" 
                                                          maxlength="#{beanGXHDO101C040C.hanteichi8tani.displayMaxLength}" 

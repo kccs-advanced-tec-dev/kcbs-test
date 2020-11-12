@@ -39,6 +39,11 @@ import org.primefaces.component.datalist.DataList;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/11/11<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjy<br>
+ * 変更理由	FXHDD01の入力項目型[9]の追加対応<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -237,7 +242,8 @@ public class GXHDO901AEX extends GXHDO901A {
                         + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '5' THEN 'false' ELSE 'true' END AS render_iput_radio, "
                         + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '6' THEN 'false' ELSE 'true' END AS render_iput_time, "
                         + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '8' THEN 'false' ELSE 'true' END AS render_iput_checkbox, "
-                        + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '7' THEN 'false' ELSE 'true' END AS render_output_label, ";
+                        + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '7' THEN 'false' ELSE 'true' END AS render_output_label, "
+                        + "CASE WHEN hdd01.input_setting IS NULL OR hdd01.input_item_mold != '9' THEN 'false' ELSE 'true' END AS render_iput_select_available, ";
             }
 
             String sql = "SELECT A.*, row_number() over() AS item_index FROM ("
@@ -301,6 +307,7 @@ public class GXHDO901AEX extends GXHDO901A {
             mapping.put("render_iput_time", "renderInputTime");
             mapping.put("render_iput_checkbox", "renderInputCheckBox");
             mapping.put("render_output_label", "renderOutputLabel");
+            mapping.put("render_iput_select_available", "renderInputSelectAvailable");
             mapping.put("font_size_3", "fontSize3");
             mapping.put("font_color_3", "fontColor3");
             mapping.put("bg_color_3", "backColor3");
