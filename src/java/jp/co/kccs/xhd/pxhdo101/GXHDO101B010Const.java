@@ -13,6 +13,12 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	KCCS D.Yanagida<br>
  * 変更理由	新規作成<br>
  * <br>
+ * <br>
+ * 変更日       2020/9/18<br>
+ * 計画書No     MB2008-DK001<br>
+ * 変更者       863 zhangjinyan<br>
+ * 変更理由     項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -93,9 +99,14 @@ public class GXHDO101B010Const {
     public static final String CUTBA_SHURUI_CHECK = "sr_hapscut_cutba_shurui_check";
 
     /**
-     * ｶｯﾄ刃直進度
+     * ｶｯﾄ刃直進度(+)
      */
     public static final String CUTBA_CHOKUSHINDO = "sr_hapscut_cutba_chokushindo";
+
+    /**
+     * ｶｯﾄ刃直進度(－)
+     */
+    public static final String CUTBA_CHOKUSHINDO_MIGI = "sr_hapscut_cutbachokushindomigi";
 
     /**
      * ｶｯﾄ刃使用回数ST1
@@ -103,9 +114,19 @@ public class GXHDO101B010Const {
     public static final String CUTBA_SIYOUKAISUU_ST1 = "sr_hapscut_cutba_siyoukaisuu_ST1";
 
     /**
+     * ｶｯﾄ刃ST1使用ロットNo
+     */
+    public static final String STATION1_LOTNO = "sr_hapscut_station1lotno";
+
+    /**
      * ｶｯﾄ刃使用回数ST2
      */
     public static final String CUTBA_SIYOUKAISUU_ST2 = "sr_hapscut_cutba_siyoukaisuu_ST2";
+
+    /**
+     * ｶｯﾄ刃ST2使用ロットNo
+     */
+    public static final String STATION2_LOTNO = "sr_hapscut_station2lotno";
 
     /**
      * ｶｯﾄ刃使用数
@@ -133,14 +154,64 @@ public class GXHDO101B010Const {
     public static final String CUT_HOSEI_RYOU = "sr_hapscut_cut_hosei_ryou";
 
     /**
-     * ﾃｰﾌﾞﾙ温度 設定
+     * ﾃｰﾌﾞﾙ温度 設定 左
      */
-    public static final String TABLEONDO_SET = "sr_hapscut_tableondo_set";
+    public static final String TABLEONDO_SET = "sr_hapscut_tableondosethidari";
 
     /**
-     * ﾃｰﾌﾞﾙ温度 実測
+     * ﾃｰﾌﾞﾙ温度 設定 中
      */
-    public static final String TABLEONDO_SOKU = "sr_hapscut_tableondo_soku";
+    public static final String TABLEONDO_SET_NAKA = "sr_hapscut_tableondosetnaka";
+
+    /**
+     * ﾃｰﾌﾞﾙ温度 設定 右
+     */
+    public static final String TABLEONDO_SET_MIGI = "sr_hapscut_tableondosetmigi";
+
+    /**
+     * ﾃｰﾌﾞﾙ温度 実測 左
+     */
+    public static final String TABLEONDO_SOKU = "sr_hapscut_tableondosokuhidari";
+
+    /**
+     * ﾃｰﾌﾞﾙ温度 実測 中
+     */
+    public static final String TABLEONDO_SOKU_NAKA = "sr_hapscut_tableondosokunaka";
+
+    /**
+     * ﾃｰﾌﾞﾙ温度 実測 右
+     */
+    public static final String TABLEONDO_SOKU_MIGI = "sr_hapscut_tableondosokumigi";
+
+    /**
+     * 第2ﾃｰﾌﾞﾙ温度 設定 左
+     */
+    public static final String DAI2TABLEONDOSETHIDARI = "sr_hapscut_dai2tableondosethidari";
+
+    /**
+     * 第2ﾃｰﾌﾞﾙ温度 設定 中
+     */
+    public static final String DAI2TABLEONDOSETNAKA = "sr_hapscut_dai2tableondosetnaka";
+
+    /**
+     * 第2ﾃｰﾌﾞﾙ温度 設定 右
+     */
+    public static final String DAI2TABLEONDOSETMIGI = "sr_hapscut_dai2tableondosetmigi";
+
+    /**
+     * 第2ﾃｰﾌﾞﾙ温度 実測 左
+     */
+    public static final String DAI2TABLEONDOSOKUHIDARI = "sr_hapscut_dai2tableondosokuhidari";
+
+    /**
+     * 第2ﾃｰﾌﾞﾙ温度 実測 中
+     */
+    public static final String DAI2TABLEONDOSOKUNAKA = "sr_hapscut_dai2tableondosokunaka";
+
+    /**
+     * 第2ﾃｰﾌﾞﾙ温度 実測 右
+     */
+    public static final String DAI2TABLEONDOSOKUMIGI = "sr_hapscut_dai2tableondosokumigi";
 
     /**
      * 外観確認
@@ -151,6 +222,11 @@ public class GXHDO101B010Const {
      * 刃高さNG
      */
     public static final String HATAKASA_NG = "sr_hapscut_hatakasa_ng";
+
+    /**
+     * ｶｯﾄ後剥がし温度
+     */
+    public static final String ONDO = "sr_hapscut_ondo";
 
     /**
      * 開始日

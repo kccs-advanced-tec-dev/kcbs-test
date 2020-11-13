@@ -55,6 +55,12 @@ import org.apache.commons.dbutils.handlers.MapHandler;
  * 変更者	KCCS D.Yanagida<br>
  * 変更理由	新規作成<br>
  * <br>
+ * <br>
+ * 変更日       2020/9/18<br>
+ * 計画書No     MB2008-DK001<br>
+ * 変更者       863 zhangjinyan<br>
+ * 変更理由     項目追加・変更<br>
+ * <br>
  * 変更日	2020/09/21<br>
  * 計画書No	MB2008-DK001<br>
  * 変更者	KCSS D.Yanagida<br>
@@ -209,7 +215,7 @@ public class GXHDO101B010 implements IFormLogic {
         }
         
         // 入力項目の情報を画面にセットする。
-        if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId)) {
+        if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId, sekkeiData)) {
             // エラー発生時は処理を中断
             processData.setFatalError(true);
             processData.setInitMessageList(Arrays.asList(MessageUtil.getMessage("XHD-000038")));
@@ -300,10 +306,11 @@ public class GXHDO101B010 implements IFormLogic {
      * @param daPatternMasData 製版ﾏｽﾀデータ
      * @param shikakariData 仕掛データ
      * @param lotNo ﾛｯﾄNo
+     * @param sekkeiData 設計データ
      * @return 設定結果(失敗時false)
      */
     private boolean setInputItemData(ProcessData processData, QueryRunner queryRunnerDoc, QueryRunner queryRunnerQcdb,
-            String lotNo, String formId) throws SQLException {
+            String lotNo, String formId, Map sekkeiData) throws SQLException {
         
         List<SrHapscut> srHapscutDataList = new ArrayList<>();
         
@@ -336,6 +343,9 @@ public class GXHDO101B010 implements IFormLogic {
                 // 処理セット数(前工程情報がある場合は前工程情報の値をセットする。)
                 FXHDD01 itemSyoriSetsu = this.getItemRow(processData.getItemList(), GXHDO101B010Const.SHORI_SETSU);
                 CommonUtil.setMaekoteiInfo(itemSyoriSetsu, maekoteiInfo, "RyouhinSetsuu", false, true);
+        
+                // ﾌﾟﾛｸﾞﾗﾑ名
+                this.setItemData(processData, GXHDO101B010Const.PROGRAM_MEI, StringUtil.nullToBlank(getMapData(sekkeiData, "PATTERN")));
         
                 // 新規登録時は設定OKとしてReturn
                 return true;
@@ -487,12 +497,18 @@ public class GXHDO101B010 implements IFormLogic {
         this.setItemData(processData, GXHDO101B010Const.GOKI, getHapscutItemData(GXHDO101B010Const.GOKI, srHapscut));
         // ｶｯﾄ刃種類確認
         this.setItemData(processData, GXHDO101B010Const.CUTBA_SHURUI_CHECK, getHapscutItemData(GXHDO101B010Const.CUTBA_SHURUI_CHECK, srHapscut));
-        // ｶｯﾄ刃直進度
+        // ｶｯﾄ刃直進度(+)
         this.setItemData(processData, GXHDO101B010Const.CUTBA_CHOKUSHINDO, getHapscutItemData(GXHDO101B010Const.CUTBA_CHOKUSHINDO, srHapscut));
+        // ｶｯﾄ刃直進度(-)
+        this.setItemData(processData, GXHDO101B010Const.CUTBA_CHOKUSHINDO_MIGI, getHapscutItemData(GXHDO101B010Const.CUTBA_CHOKUSHINDO_MIGI, srHapscut));
         // ｶｯﾄ刃使用回数ST1
         this.setItemData(processData, GXHDO101B010Const.CUTBA_SIYOUKAISUU_ST1, getHapscutItemData(GXHDO101B010Const.CUTBA_SIYOUKAISUU_ST1, srHapscut));
+        // ｶｯﾄ刃ST1使用ロットNo
+        this.setItemData(processData, GXHDO101B010Const.STATION1_LOTNO, getHapscutItemData(GXHDO101B010Const.STATION1_LOTNO, srHapscut));
         // ｶｯﾄ刃使用回数ST2
         this.setItemData(processData, GXHDO101B010Const.CUTBA_SIYOUKAISUU_ST2, getHapscutItemData(GXHDO101B010Const.CUTBA_SIYOUKAISUU_ST2, srHapscut));
+        // ｶｯﾄ刃ST2使用ロットNo
+        this.setItemData(processData, GXHDO101B010Const.STATION2_LOTNO, getHapscutItemData(GXHDO101B010Const.STATION2_LOTNO, srHapscut));
         // ｶｯﾄ刃使用数
         this.setItemData(processData, GXHDO101B010Const.CUTBA_MAISUU, getHapscutItemData(GXHDO101B010Const.CUTBA_MAISUU, srHapscut));
         // ﾌﾟﾛｸﾞﾗﾑ名
@@ -503,14 +519,36 @@ public class GXHDO101B010 implements IFormLogic {
         this.setItemData(processData, GXHDO101B010Const.MARKTORISU, getHapscutItemData(GXHDO101B010Const.MARKTORISU, srHapscut));
 //        // ｶｯﾄ補正量
 //        this.setItemData(processData, GXHDO101B010Const.CUT_HOSEI_RYOU, getHapscutItemData(GXHDO101B010Const.CUT_HOSEI_RYOU, srHapscut));
-        // ﾃｰﾌﾞﾙ温度 設定
+        // ﾃｰﾌﾞﾙ温度 設定 左
         this.setItemData(processData, GXHDO101B010Const.TABLEONDO_SET, getHapscutItemData(GXHDO101B010Const.TABLEONDO_SET, srHapscut));
-        // ﾃｰﾌﾞﾙ温度 実測
+        // ﾃｰﾌﾞﾙ温度 設定 中
+        this.setItemData(processData, GXHDO101B010Const.TABLEONDO_SET_NAKA, getHapscutItemData(GXHDO101B010Const.TABLEONDO_SET_NAKA, srHapscut));
+        // ﾃｰﾌﾞﾙ温度 設定 右
+        this.setItemData(processData, GXHDO101B010Const.TABLEONDO_SET_MIGI, getHapscutItemData(GXHDO101B010Const.TABLEONDO_SET_MIGI, srHapscut));
+        // ﾃｰﾌﾞﾙ温度 実測 左
         this.setItemData(processData, GXHDO101B010Const.TABLEONDO_SOKU, getHapscutItemData(GXHDO101B010Const.TABLEONDO_SOKU, srHapscut));
+        // ﾃｰﾌﾞﾙ温度 実測 中
+        this.setItemData(processData, GXHDO101B010Const.TABLEONDO_SOKU_NAKA, getHapscutItemData(GXHDO101B010Const.TABLEONDO_SOKU_NAKA, srHapscut));
+        // ﾃｰﾌﾞﾙ温度 実測 右
+        this.setItemData(processData, GXHDO101B010Const.TABLEONDO_SOKU_MIGI, getHapscutItemData(GXHDO101B010Const.TABLEONDO_SOKU_MIGI, srHapscut));
+        // 第2ﾃｰﾌﾞﾙ温度 設定 左
+        this.setItemData(processData, GXHDO101B010Const.DAI2TABLEONDOSETHIDARI, getHapscutItemData(GXHDO101B010Const.DAI2TABLEONDOSETHIDARI, srHapscut));
+        // 第2ﾃｰﾌﾞﾙ温度 設定 中
+        this.setItemData(processData, GXHDO101B010Const.DAI2TABLEONDOSETNAKA, getHapscutItemData(GXHDO101B010Const.DAI2TABLEONDOSETNAKA, srHapscut));
+        // 第2ﾃｰﾌﾞﾙ温度 設定 右
+        this.setItemData(processData, GXHDO101B010Const.DAI2TABLEONDOSETMIGI, getHapscutItemData(GXHDO101B010Const.DAI2TABLEONDOSETMIGI, srHapscut));
+        // 第2ﾃｰﾌﾞﾙ温度 実測 左
+        this.setItemData(processData, GXHDO101B010Const.DAI2TABLEONDOSOKUHIDARI, getHapscutItemData(GXHDO101B010Const.DAI2TABLEONDOSOKUHIDARI, srHapscut));
+        // 第2ﾃｰﾌﾞﾙ温度 実測 中
+        this.setItemData(processData, GXHDO101B010Const.DAI2TABLEONDOSOKUNAKA, getHapscutItemData(GXHDO101B010Const.DAI2TABLEONDOSOKUNAKA, srHapscut));
+        // 第2ﾃｰﾌﾞﾙ温度 実測 右
+        this.setItemData(processData, GXHDO101B010Const.DAI2TABLEONDOSOKUMIGI, getHapscutItemData(GXHDO101B010Const.DAI2TABLEONDOSOKUMIGI, srHapscut));
         // 外観確認
         this.setItemData(processData, GXHDO101B010Const.GAIKAN_CHECK, getHapscutItemData(GXHDO101B010Const.GAIKAN_CHECK, srHapscut));
         // 刃高さNG
         this.setItemData(processData, GXHDO101B010Const.HATAKASA_NG, getHapscutItemData(GXHDO101B010Const.HATAKASA_NG, srHapscut));
+        // ｶｯﾄ後剥がし温度
+        this.setItemData(processData, GXHDO101B010Const.ONDO, getHapscutItemData(GXHDO101B010Const.ONDO, srHapscut));
         // 開始日
         this.setItemData(processData, GXHDO101B010Const.KAISHI_DAY, getHapscutItemData(GXHDO101B010Const.KAISHI_DAY, srHapscut));
         // 開始時間
@@ -555,15 +593,24 @@ public class GXHDO101B010 implements IFormLogic {
             // ｶｯﾄ刃種類確認
             case GXHDO101B010Const.CUTBA_SHURUI_CHECK:
                 return getNgOkBlank(data.getCutbashuruicheck());
-            // ｶｯﾄ刃直進度
+            // ｶｯﾄ刃直進度(+)
             case GXHDO101B010Const.CUTBA_CHOKUSHINDO:
                 return StringUtil.nullToBlank(data.getCutbachokushindo());
+            // ｶｯﾄ刃直進度(-)
+            case GXHDO101B010Const.CUTBA_CHOKUSHINDO_MIGI:
+                return StringUtil.nullToBlank(data.getCutbachokushindomigi());
             // ｶｯﾄ刃使用回数ST1
             case GXHDO101B010Const.CUTBA_SIYOUKAISUU_ST1:
                 return StringUtil.nullToBlank(data.getCutbasiyoukaisuust1());
+            // ｶｯﾄ刃ST1使用ロットNo
+            case GXHDO101B010Const.STATION1_LOTNO:
+                return StringUtil.nullToBlank(data.getStation1lotno());
             // ｶｯﾄ刃使用回数ST2
             case GXHDO101B010Const.CUTBA_SIYOUKAISUU_ST2:
                 return StringUtil.nullToBlank(data.getCutbasiyoukaisuust2());
+            // ｶｯﾄ刃ST2使用ロットNo
+            case GXHDO101B010Const.STATION2_LOTNO:
+                return StringUtil.nullToBlank(data.getStation2lotno());
             // ｶｯﾄ刃使用数
             case GXHDO101B010Const.CUTBA_MAISUU:
                 return StringUtil.nullToBlank(data.getCutbamaisuu());
@@ -579,18 +626,51 @@ public class GXHDO101B010 implements IFormLogic {
             // ｶｯﾄ補正量
             case GXHDO101B010Const.CUT_HOSEI_RYOU:
                 return StringUtil.nullToBlank(data.getCuthoseiryou());
-            // ﾃｰﾌﾞﾙ温度 設定
+            // ﾃｰﾌﾞﾙ温度 設定 左
             case GXHDO101B010Const.TABLEONDO_SET:
-                return StringUtil.nullToBlank(data.getTableondoset());
-            // ﾃｰﾌﾞﾙ温度 実測
+                return StringUtil.nullToBlank(data.getTableondosethidari());
+            // ﾃｰﾌﾞﾙ温度 設定 中
+            case GXHDO101B010Const.TABLEONDO_SET_NAKA:
+                return StringUtil.nullToBlank(data.getTableondosetnaka());
+            // ﾃｰﾌﾞﾙ温度 設定 右
+            case GXHDO101B010Const.TABLEONDO_SET_MIGI:
+                return StringUtil.nullToBlank(data.getTableondosetmigi());
+            // ﾃｰﾌﾞﾙ温度 実測 左
             case GXHDO101B010Const.TABLEONDO_SOKU:
-                return StringUtil.nullToBlank(data.getTableondosoku());
+                return StringUtil.nullToBlank(data.getTableondosokuhidari());
+            // ﾃｰﾌﾞﾙ温度 実測 中
+            case GXHDO101B010Const.TABLEONDO_SOKU_NAKA:
+                return StringUtil.nullToBlank(data.getTableondosokunaka());
+            // ﾃｰﾌﾞﾙ温度 実測 右
+            case GXHDO101B010Const.TABLEONDO_SOKU_MIGI:
+                return StringUtil.nullToBlank(data.getTableondosokumigi());
+            // 第2ﾃｰﾌﾞﾙ温度 設定 左
+            case GXHDO101B010Const.DAI2TABLEONDOSETHIDARI:
+                return StringUtil.nullToBlank(data.getDai2tableondosethidari());
+            // 第2ﾃｰﾌﾞﾙ温度 設定 中
+            case GXHDO101B010Const.DAI2TABLEONDOSETNAKA:
+                return StringUtil.nullToBlank(data.getDai2tableondosetnaka());
+            // 第2ﾃｰﾌﾞﾙ温度 設定 右
+            case GXHDO101B010Const.DAI2TABLEONDOSETMIGI:
+                return StringUtil.nullToBlank(data.getDai2tableondosetmigi());
+            // 第2ﾃｰﾌﾞﾙ温度 実測 左
+            case GXHDO101B010Const.DAI2TABLEONDOSOKUHIDARI:
+                return StringUtil.nullToBlank(data.getDai2tableondosokuhidari());
+            // 第2ﾃｰﾌﾞﾙ温度 実測 中
+            case GXHDO101B010Const.DAI2TABLEONDOSOKUNAKA:
+                return StringUtil.nullToBlank(data.getDai2tableondosokunaka());
+            // 第2ﾃｰﾌﾞﾙ温度 実測 右
+            case GXHDO101B010Const.DAI2TABLEONDOSOKUMIGI:
+                return StringUtil.nullToBlank(data.getDai2tableondosokumigi());
             // 外観確認
             case GXHDO101B010Const.GAIKAN_CHECK:
                 return getNgOkBlank(data.getGaikancheck());
             // 刃高さNG
             case GXHDO101B010Const.HATAKASA_NG:
                 return StringUtil.nullToBlank(data.getHatakasang());
+            // ｶｯﾄ後剥がし温度
+            case GXHDO101B010Const.ONDO:
+                return StringUtil.nullToBlank(data.getOndo());
             // 開始日
             case GXHDO101B010Const.KAISHI_DAY:
                 return DateUtil.formattedTimestamp(data.getKaisinichiji(), "yyMMdd");
@@ -1198,8 +1278,10 @@ public class GXHDO101B010 implements IFormLogic {
                 + "Atumi01,Atumi02,Atumi03,Atumi04,Atumi05,Atumi06,Atumi07,Atumi08,Atumi09,Atumi10,ATUMIMIN,ATUMIMAX," 
                 + "BIKO1,BIKO2,BIKO3,BIKO4,TOROKUNICHIJI,KOSINNICHIJI,TENSYASYA,NIJIMICNT,Soujyuryo,Tanijyuryo," 
                 + "cutbashuruicheck,cutbachokushindo,cutbasiyoukaisuuST1,cutbasiyoukaisuuST2,programmei,gyoretukakunin," 
-                + "marktorisuu,cuthoseiryou,tableondoset,tableondosoku,gaikancheck,hatakasang,syorisetsuu,ryouhinsetsuu," 
-                + "sagyoubasyo,revision," + sql_deleteFlag
+                + "marktorisuu,cuthoseiryou,tableondosethidari,tableondosokuhidari,gaikancheck,hatakasang,syorisetsuu,ryouhinsetsuu," 
+                + "sagyoubasyo,revision,cutbachokushindomigi,tableondosetnaka,tableondosetmigi,tableondosokunaka,tableondosokumigi,"
+                + "dai2tableondosethidari,dai2tableondosetnaka,dai2tableondosetmigi,dai2tableondosokuhidari,dai2tableondosokunaka,"
+                + "dai2tableondosokumigi,station1lotno,station2lotno,ondo," + sql_deleteFlag
                 + "FROM " + sql_tableName
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
         if (!StringUtil.isEmpty(rev)) {
@@ -1265,14 +1347,28 @@ public class GXHDO101B010 implements IFormLogic {
                 put("gyoretukakunin", "gyoretukakunin");
                 put("marktorisuu", "marktorisuu");
                 put("cuthoseiryou", "cuthoseiryou");
-                put("tableondoset", "tableondoset");
-                put("tableondosoku", "tableondosoku");
+                put("tableondosethidari", "tableondosethidari");
+                put("tableondosokuhidari", "tableondosokuhidari");
                 put("gaikancheck", "gaikancheck");
                 put("hatakasang", "hatakasang");
                 put("syorisetsuu", "syorisetsuu");
                 put("ryouhinsetsuu", "ryouhinsetsuu");
                 put("sagyoubasyo", "sagyoubasyo");
                 put("revision", "revision");
+                put("cutbachokushindomigi", "cutbachokushindomigi");
+                put("tableondosetnaka", "tableondosetnaka");
+                put("tableondosetmigi", "tableondosetmigi");
+                put("tableondosokunaka", "tableondosokunaka");
+                put("tableondosokumigi", "tableondosokumigi");
+                put("dai2tableondosethidari", "dai2tableondosethidari");
+                put("dai2tableondosetnaka", "dai2tableondosetnaka");
+                put("dai2tableondosetmigi", "dai2tableondosetmigi");
+                put("dai2tableondosokuhidari", "dai2tableondosokuhidari");
+                put("dai2tableondosokunaka", "dai2tableondosokunaka");
+                put("dai2tableondosokumigi", "dai2tableondosokumigi");
+                put("station1lotno", "station1lotno");
+                put("station2lotno", "station2lotno");
+                put("ondo", "ondo");
                 put("deleteflag", "deleteflag");
             }  
         };
@@ -1835,10 +1931,12 @@ public class GXHDO101B010 implements IFormLogic {
                 + "KOJYO,LOTNO,EDABAN,KCPNO,KAISINICHIJI,SYURYONICHIJI,CUTBAMAISUU,GOKI,CUTTABLEONDO,CUTTANTOSYA,KAKUNINSYA,CHKTANTOSYA,BTANTOSYA,"
                 + "ATANTOSYA,UKEIREKOSUU,RYOHINKOSUU,Atumi01,Atumi02,Atumi03,Atumi04,Atumi05,Atumi06,Atumi07,Atumi08,Atumi09,Atumi10,ATUMIMIN,ATUMIMAX," 
                 + "BIKO1,BIKO2,BIKO3,BIKO4,TOROKUNICHIJI,KOSINNICHIJI,TENSYASYA,NIJIMICNT,Soujyuryo,Tanijyuryo,cutbashuruicheck,cutbachokushindo," 
-                + "cutbasiyoukaisuuST1,cutbasiyoukaisuuST2,programmei,gyoretukakunin,marktorisuu,cuthoseiryou,tableondoset,tableondosoku," 
-                + "gaikancheck,hatakasang,syorisetsuu,ryouhinsetsuu,sagyoubasyo,revision,deleteflag"
+                + "cutbasiyoukaisuuST1,cutbasiyoukaisuuST2,programmei,gyoretukakunin,marktorisuu,cuthoseiryou,tableondosethidari,tableondosokuhidari," 
+                + "gaikancheck,hatakasang,syorisetsuu,ryouhinsetsuu,sagyoubasyo,revision,cutbachokushindomigi,tableondosetnaka,tableondosetmigi,tableondosokunaka,"
+                + "tableondosokumigi,dai2tableondosethidari,dai2tableondosetnaka,dai2tableondosetmigi,dai2tableondosokuhidari,dai2tableondosokunaka,"
+                + "dai2tableondosokumigi,station1lotno,station2lotno,ondo,deleteflag"
                 + ") VALUES ("
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         List<Object> params = setUpdateParametersTmpHapscut(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -1865,8 +1963,11 @@ public class GXHDO101B010 implements IFormLogic {
         String sql = "UPDATE tmp_sr_hapscut SET "
                 + "KCPNO = ?,KAISINICHIJI = ?,SYURYONICHIJI = ?,CUTBAMAISUU = ?,GOKI = ?,CUTTANTOSYA = ?,KAKUNINSYA = ?,CHKTANTOSYA = ?,"
                 + "BIKO1 = ?,BIKO2 = ?,KOSINNICHIJI = ?,cutbashuruicheck = ?,cutbachokushindo = ?,cutbasiyoukaisuuST1 = ?,cutbasiyoukaisuuST2 = ?," 
-                + "programmei = ?,gyoretukakunin = ?,marktorisuu = ?,cuthoseiryou = ?,tableondoset = ?,tableondosoku = ?,gaikancheck = ?," 
-                + "hatakasang = ?,syorisetsuu = ?,ryouhinsetsuu = ?,sagyoubasyo = ?,revision = ?,deleteflag = ? "
+                + "programmei = ?,gyoretukakunin = ?,marktorisuu = ?,cuthoseiryou = ?,tableondosethidari = ?,tableondosokuhidari = ?,gaikancheck = ?," 
+                + "hatakasang = ?,syorisetsuu = ?,ryouhinsetsuu = ?,sagyoubasyo = ?,revision = ?,cutbachokushindomigi = ?,tableondosetnaka = ?,"
+                + "tableondosetmigi = ?,tableondosokunaka = ?,tableondosokumigi = ?,dai2tableondosethidari = ?,dai2tableondosetnaka = ?,"
+                + "dai2tableondosetmigi = ?,dai2tableondosokuhidari = ?,dai2tableondosokunaka = ?,dai2tableondosokumigi = ?,station1lotno = ?,"
+                + "station2lotno = ?,ondo = ?,deleteflag = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
         // 更新前の値を取得
@@ -1960,7 +2061,7 @@ public class GXHDO101B010 implements IFormLogic {
         }
         params.add(getNgOkBlankToIntForTemp(
                 StringUtil.nullToBlank(getItemData(itemList, GXHDO101B010Const.CUTBA_SHURUI_CHECK, data)))); // ｶｯﾄ刃種類確認
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B010Const.CUTBA_CHOKUSHINDO, data))); // ｶｯﾄ刃直進度
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B010Const.CUTBA_CHOKUSHINDO, data))); // ｶｯﾄ刃直進度左
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B010Const.CUTBA_SIYOUKAISUU_ST1, data))); // ｶｯﾄ刃使用回数ST1
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B010Const.CUTBA_SIYOUKAISUU_ST2, data))); // ｶｯﾄ刃使用回数ST2
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B010Const.PROGRAM_MEI, data))); // ﾌﾟﾛｸﾞﾗﾑ名
@@ -1969,8 +2070,8 @@ public class GXHDO101B010 implements IFormLogic {
         params.add(getNgOkBlankToIntForTemp(
                 StringUtil.nullToBlank(getItemData(itemList, GXHDO101B010Const.MARKTORISU, data)))); // ﾏｰｸ外取り数
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B010Const.CUT_HOSEI_RYOU, data))); // ｶｯﾄ補正量
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B010Const.TABLEONDO_SET, data))); // ﾃｰﾌﾞﾙ温度 設定
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B010Const.TABLEONDO_SOKU, data))); // ﾃｰﾌﾞﾙ温度 実測
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B010Const.TABLEONDO_SET, data))); // ﾃｰﾌﾞﾙ温度 設定 左
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B010Const.TABLEONDO_SOKU, data))); // ﾃｰﾌﾞﾙ温度 実測 左
         params.add(getNgOkBlankToIntForTemp(
                 StringUtil.nullToBlank(getItemData(itemList, GXHDO101B010Const.GAIKAN_CHECK, data)))); // 外観確認
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B010Const.HATAKASA_NG, data))); // 刃高さNG
@@ -1978,6 +2079,20 @@ public class GXHDO101B010 implements IFormLogic {
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B010Const.RYOHIN_SETSU, data))); // 良品ｾｯﾄ数
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B010Const.SAGYOU_BASYO, data))); // 作業場所
         params.add(newRev); // revision
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.CUTBA_CHOKUSHINDO_MIGI, data))); // ｶｯﾄ刃直進度右
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.TABLEONDO_SET_NAKA, data))); // ﾃｰﾌﾞﾙ温度 設定 中
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.TABLEONDO_SET_MIGI, data))); // ﾃｰﾌﾞﾙ温度 設定 右
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.TABLEONDO_SOKU_NAKA, data))); // ﾃｰﾌﾞﾙ温度 設定 中
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.TABLEONDO_SOKU_MIGI, data))); // ﾃｰﾌﾞﾙ温度 設定 右
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.DAI2TABLEONDOSETHIDARI, data))); // 第2ﾃｰﾌﾞﾙ温度 設定 左
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.DAI2TABLEONDOSETNAKA, data))); // 第2ﾃｰﾌﾞﾙ温度 設定 中
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.DAI2TABLEONDOSETMIGI, data))); // 第2ﾃｰﾌﾞﾙ温度 設定 右
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.DAI2TABLEONDOSOKUHIDARI, data))); // 第2ﾃｰﾌﾞﾙ温度 実測 左
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.DAI2TABLEONDOSOKUNAKA, data))); // 第2ﾃｰﾌﾞﾙ温度 実測 中
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.DAI2TABLEONDOSOKUMIGI, data))); // 第2ﾃｰﾌﾞﾙ温度 実測 右
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.STATION1_LOTNO, data))); // ｶｯﾄ刃ST1使用ロットNo
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.STATION2_LOTNO, data))); // ｶｯﾄ刃ST2使用ロットNo
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.ONDO, data))); // ｶｯﾄ後剥がし温度
         params.add(deleteflag); //削除ﾌﾗｸﾞ
         
         return params;
@@ -2002,14 +2117,18 @@ public class GXHDO101B010 implements IFormLogic {
                 + "KOJYO,LOTNO,EDABAN,KCPNO,KAISINICHIJI,SYURYONICHIJI,CUTBAMAISUU,GOKI,CUTTABLEONDO,CUTTANTOSYA,KAKUNINSYA,CHKTANTOSYA,BTANTOSYA,"
                 + "ATANTOSYA,UKEIREKOSUU,RYOHINKOSUU,Atumi01,Atumi02,Atumi03,Atumi04,Atumi05,Atumi06,Atumi07,Atumi08,Atumi09,Atumi10,ATUMIMIN,ATUMIMAX," 
                 + "BIKO1,BIKO2,BIKO3,BIKO4,TOROKUNICHIJI,KOSINNICHIJI,TENSYASYA,NIJIMICNT,Soujyuryo,Tanijyuryo,cutbashuruicheck,cutbachokushindo," 
-                + "cutbasiyoukaisuuST1,cutbasiyoukaisuuST2,programmei,gyoretukakunin,marktorisuu,cuthoseiryou,tableondoset,tableondosoku," 
-                + "gaikancheck,hatakasang,syorisetsuu,ryouhinsetsuu,sagyoubasyo,revision,deleteflag"
+                + "cutbasiyoukaisuuST1,cutbasiyoukaisuuST2,programmei,gyoretukakunin,marktorisuu,cuthoseiryou,tableondosethidari,tableondosokuhidari," 
+                + "gaikancheck,hatakasang,syorisetsuu,ryouhinsetsuu,sagyoubasyo,revision,cutbachokushindomigi,tableondosetnaka,tableondosetmigi,"
+                + "tableondosokunaka,tableondosokumigi,dai2tableondosethidari,dai2tableondosetnaka,dai2tableondosetmigi,dai2tableondosokuhidari,"
+                + "dai2tableondosokunaka,dai2tableondosokumigi,station1lotno,station2lotno,ondo,deleteflag"
                 + ") SELECT "
                 + "KOJYO,LOTNO,EDABAN,KCPNO,KAISINICHIJI,SYURYONICHIJI,CUTBAMAISUU,GOKI,CUTTABLEONDO,CUTTANTOSYA,KAKUNINSYA,CHKTANTOSYA,BTANTOSYA,"
                 + "ATANTOSYA,UKEIREKOSUU,RYOHINKOSUU,Atumi01,Atumi02,Atumi03,Atumi04,Atumi05,Atumi06,Atumi07,Atumi08,Atumi09,Atumi10,ATUMIMIN,ATUMIMAX," 
                 + "BIKO1,BIKO2,BIKO3,BIKO4,?,?,TENSYASYA,NIJIMICNT,Soujyuryo,Tanijyuryo,cutbashuruicheck,cutbachokushindo," 
-                + "cutbasiyoukaisuuST1,cutbasiyoukaisuuST2,programmei,gyoretukakunin,marktorisuu,cuthoseiryou,tableondoset,tableondosoku," 
-                + "gaikancheck,hatakasang,syorisetsuu,ryouhinsetsuu,sagyoubasyo,?,? "
+                + "cutbasiyoukaisuuST1,cutbasiyoukaisuuST2,programmei,gyoretukakunin,marktorisuu,cuthoseiryou,tableondosethidari,tableondosokuhidari," 
+                + "gaikancheck,hatakasang,syorisetsuu,ryouhinsetsuu,sagyoubasyo,?,cutbachokushindomigi,tableondosetnaka,tableondosetmigi,tableondosokunaka,"
+                + "tableondosokumigi,dai2tableondosethidari,dai2tableondosetnaka,dai2tableondosetmigi,dai2tableondosokuhidari,dai2tableondosokunaka,"
+                + "dai2tableondosokumigi,station1lotno,station2lotno,ondo,? "
                 + "FROM sr_hapscut "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
 
@@ -2079,11 +2198,12 @@ public class GXHDO101B010 implements IFormLogic {
                 + "KOJYO, LOTNO, EDABAN, KCPNO, KAISINICHIJI, SYURYONICHIJI, CUTBAMAISUU, GOKI, CUTTABLEONDO, CUTTANTOSYA, KAKUNINSYA, CHKTANTOSYA,"
                 + "BTANTOSYA, ATANTOSYA, UKEIREKOSUU, RYOHINKOSUU, Atumi01, Atumi02, Atumi03, Atumi04, Atumi05, Atumi06, Atumi07, Atumi08, Atumi09, Atumi10," 
                 + "ATUMIMIN, ATUMIMAX, BIKO1, BIKO2, BIKO3, BIKO4, TOROKUNICHIJI, KOSINNICHIJI, TENSYASYA, NIJIMICNT, Soujyuryo, Tanijyuryo, cutbashuruicheck," 
-                + "cutbachokushindo, cutbasiyoukaisuuST1, cutbasiyoukaisuuST2, programmei, gyoretukakunin, marktorisuu, cuthoseiryou, tableondoset, tableondosoku," 
-                + "gaikancheck, hatakasang, syorisetsuu, ryouhinsetsuu, sagyoubasyo, revision"
+                + "cutbachokushindo, cutbasiyoukaisuuST1, cutbasiyoukaisuuST2, programmei, gyoretukakunin, marktorisuu, cuthoseiryou, tableondosethidari, tableondosokuhidari," 
+                + "gaikancheck, hatakasang, syorisetsuu, ryouhinsetsuu, sagyoubasyo, revision, cutbachokushindomigi, tableondosetnaka, tableondosetmigi, tableondosokunaka, "
+                + "tableondosokumigi, dai2tableondosethidari, dai2tableondosetnaka, dai2tableondosetmigi, dai2tableondosokuhidari, dai2tableondosokunaka, dai2tableondosokumigi, station1lotno, station2lotno, ondo"
                 + ") VALUES ("
                 + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?," 
-                + "?, ?, ?, ?, ?, ?, ?)";
+                + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         
         List<Object> params = setUpdateParametersHapscut(true, newRev, kojyo, lotNo, edaban, systemTime, itemList, hapscut);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -2110,8 +2230,10 @@ public class GXHDO101B010 implements IFormLogic {
         String sql = "UPDATE sr_hapscut SET "
                 + "KCPNO = ?,KAISINICHIJI = ?,SYURYONICHIJI = ?,CUTBAMAISUU = ?,GOKI = ?,CUTTANTOSYA = ?,KAKUNINSYA = ?,CHKTANTOSYA = ?,"
                 + "BIKO1 = ?,BIKO2 = ?,KOSINNICHIJI = ?,cutbashuruicheck = ?,cutbachokushindo = ?,cutbasiyoukaisuuST1 = ?,cutbasiyoukaisuuST2 = ?," 
-                + "programmei = ?,gyoretukakunin = ?,marktorisuu = ?,cuthoseiryou = ?,tableondoset = ?,tableondosoku = ?,gaikancheck = ?," 
-                + "hatakasang = ?,syorisetsuu = ?,ryouhinsetsuu = ?,sagyoubasyo = ?,revision = ? "
+                + "programmei = ?,gyoretukakunin = ?,marktorisuu = ?,cuthoseiryou = ?,tableondosethidari = ?,tableondosokuhidari = ?,gaikancheck = ?," 
+                + "hatakasang = ?,syorisetsuu = ?,ryouhinsetsuu = ?,sagyoubasyo = ?,revision = ?,cutbachokushindomigi = ?,tableondosetnaka = ?,"
+                + "tableondosetmigi = ?,tableondosokunaka = ?,tableondosokumigi = ?,dai2tableondosethidari = ?,dai2tableondosetnaka = ?,"
+                + "dai2tableondosetmigi = ?,dai2tableondosokuhidari = ?,dai2tableondosokunaka = ?,dai2tableondosokumigi = ?,station1lotno = ?, station2lotno = ?,ondo = ?"
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ?";
 
         // 更新前の値を取得
@@ -2204,7 +2326,7 @@ public class GXHDO101B010 implements IFormLogic {
         }
         params.add(getNgOkBlankToInt(
                 StringUtil.nullToBlank(getItemData(itemList, GXHDO101B010Const.CUTBA_SHURUI_CHECK, data)))); // ｶｯﾄ刃種類確認
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.CUTBA_CHOKUSHINDO, data))); // ｶｯﾄ刃直進度
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.CUTBA_CHOKUSHINDO, data))); // ｶｯﾄ刃直進度左
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.CUTBA_SIYOUKAISUU_ST1, data))); // ｶｯﾄ刃使用回数ST1
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.CUTBA_SIYOUKAISUU_ST2, data))); // ｶｯﾄ刃使用回数ST2
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B010Const.PROGRAM_MEI, data))); // ﾌﾟﾛｸﾞﾗﾑ名
@@ -2213,8 +2335,8 @@ public class GXHDO101B010 implements IFormLogic {
         params.add(getNgOkBlankToInt(
                 StringUtil.nullToBlank(getItemData(itemList, GXHDO101B010Const.MARKTORISU, data)))); // ﾏｰｸ外取り数
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.CUT_HOSEI_RYOU, data))); // ｶｯﾄ補正量
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.TABLEONDO_SET, data))); // ﾃｰﾌﾞﾙ温度 設定
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.TABLEONDO_SOKU, data))); // ﾃｰﾌﾞﾙ温度 実測
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.TABLEONDO_SET, data))); // ﾃｰﾌﾞﾙ温度 設定 左
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.TABLEONDO_SOKU, data))); // ﾃｰﾌﾞﾙ温度 実測 左
         params.add(getNgOkBlankToInt(
                 StringUtil.nullToBlank(getItemData(itemList, GXHDO101B010Const.GAIKAN_CHECK, data)))); // 外観確認
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.HATAKASA_NG, data))); // 刃高さNG
@@ -2222,6 +2344,20 @@ public class GXHDO101B010 implements IFormLogic {
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.RYOHIN_SETSU, data))); // 良品ｾｯﾄ数
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B010Const.SAGYOU_BASYO, data))); // 作業場所
         params.add(newRev); // revision
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.CUTBA_CHOKUSHINDO_MIGI, data))); // ｶｯﾄ刃直進度右
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.TABLEONDO_SET_NAKA, data))); // ﾃｰﾌﾞﾙ温度 設定 中
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.TABLEONDO_SET_MIGI, data))); // ﾃｰﾌﾞﾙ温度 設定 右
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.TABLEONDO_SOKU_NAKA, data))); // ﾃｰﾌﾞﾙ温度 設定 中
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.TABLEONDO_SOKU_MIGI, data))); // ﾃｰﾌﾞﾙ温度 設定 右
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.DAI2TABLEONDOSETHIDARI, data))); // 第2ﾃｰﾌﾞﾙ温度 設定 左
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.DAI2TABLEONDOSETNAKA, data))); // 第2ﾃｰﾌﾞﾙ温度 設定 中
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.DAI2TABLEONDOSETMIGI, data))); // 第2ﾃｰﾌﾞﾙ温度 設定 右
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.DAI2TABLEONDOSOKUHIDARI, data))); // 第2ﾃｰﾌﾞﾙ温度 実測 左
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.DAI2TABLEONDOSOKUNAKA, data))); // 第2ﾃｰﾌﾞﾙ温度 実測 中
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.DAI2TABLEONDOSOKUMIGI, data))); // 第2ﾃｰﾌﾞﾙ温度 実測 右
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.STATION1_LOTNO, data))); // ｶｯﾄ刃ST1使用ロットNo
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.STATION2_LOTNO, data))); // ｶｯﾄ刃ST2使用ロットNo
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B010Const.ONDO, data))); // ｶｯﾄ後剥がし温度
         
         return params;
     }

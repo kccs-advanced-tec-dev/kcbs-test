@@ -16,6 +16,12 @@ import java.sql.Timestamp;
  * 変更者	KCCS D.Yanagida<br>
  * 変更理由	新規作成<br>
  * <br>
+ * <br>
+ * 変更日       2020/9/18<br>
+ * 計画書No     MB2008-DK001<br>
+ * 変更者       863 zhangjinyan<br>
+ * 変更理由     項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -221,7 +227,7 @@ public class SrHapscut {
     private Integer cutbashuruicheck;
 
     /**
-     * ｶｯﾄ刃直進度
+     * ｶｯﾄ刃直進度左
      */
     private Integer cutbachokushindo;
 
@@ -256,14 +262,14 @@ public class SrHapscut {
     private Integer cuthoseiryou;
 
     /**
-     * ﾃｰﾌﾞﾙ温度 設定
+     * ﾃｰﾌﾞﾙ温度 設定 左
      */
-    private Integer tableondoset;
+    private BigDecimal tableondosethidari;
 
     /**
-     * ﾃｰﾌﾞﾙ温度 実測
+     * ﾃｰﾌﾞﾙ温度 実測 左
      */
-    private Integer tableondosoku;
+    private BigDecimal tableondosokuhidari;
 
     /**
      * 外観確認
@@ -294,6 +300,76 @@ public class SrHapscut {
      * revision
      */
     private Long revision;
+    
+    /**
+     * ｶｯﾄ刃直進度右
+     */
+    private Integer cutbachokushindomigi;
+    
+    /**
+     * ﾃｰﾌﾞﾙ温度 設定 中
+     */
+    private BigDecimal tableondosetnaka;
+    
+    /**
+     * ﾃｰﾌﾞﾙ温度 設定 右
+     */
+    private BigDecimal tableondosetmigi;
+    
+    /**
+     * ﾃｰﾌﾞﾙ温度 実測 中
+     */
+    private BigDecimal tableondosokunaka;
+    
+    /**
+     * ﾃｰﾌﾞﾙ温度 実測 右
+     */
+    private BigDecimal tableondosokumigi;
+    
+    /**
+     * 第2ﾃｰﾌﾞﾙ温度 設定 左
+     */
+    private BigDecimal dai2tableondosethidari;
+    
+    /**
+     * 第2ﾃｰﾌﾞﾙ温度 設定 中
+     */
+    private BigDecimal dai2tableondosetnaka;
+    
+    /**
+     * 第2ﾃｰﾌﾞﾙ温度 設定 右
+     */
+    private BigDecimal dai2tableondosetmigi;
+    
+    /**
+     * 第2ﾃｰﾌﾞﾙ温度 実測 左
+     */
+    private BigDecimal dai2tableondosokuhidari;
+    
+    /**
+     * 第2ﾃｰﾌﾞﾙ温度 実測 中
+     */
+    private BigDecimal dai2tableondosokunaka;
+    
+    /**
+     * 第2ﾃｰﾌﾞﾙ温度 実測 右
+     */
+    private BigDecimal dai2tableondosokumigi;
+        
+    /**
+     * ｶｯﾄ刃ST1使用ロットNo
+     */
+    private Integer station1lotno;
+        
+    /**
+     * ｶｯﾄ刃ST2使用ロットNo
+     */
+    private Integer station2lotno;
+    
+    /**
+     * ｶｯﾄ後剥がし温度
+     */
+    private BigDecimal ondo;
     
     /**
      * 削除ﾌﾗｸﾞ
@@ -925,7 +1001,7 @@ public class SrHapscut {
     }
 
     /**
-     * ｶｯﾄ刃直進度
+     * ｶｯﾄ刃直進度左
      * @return the cutbachokushindo
      */
     public Integer getCutbachokushindo() {
@@ -933,7 +1009,7 @@ public class SrHapscut {
     }
 
     /**
-     * ｶｯﾄ刃直進度
+     * ｶｯﾄ刃直進度左
      * @param cutbachokushindo the cutbachokushindo to set
      */
     public void setCutbachokushindo(Integer cutbachokushindo) {
@@ -1037,35 +1113,35 @@ public class SrHapscut {
     }
 
     /**
-     * ﾃｰﾌﾞﾙ温度 設定
-     * @return the tableondoset
+     * ﾃｰﾌﾞﾙ温度 設定 左
+     * @return the tableondosethidari
      */
-    public Integer getTableondoset() {
-        return tableondoset;
+    public BigDecimal getTableondosethidari() {
+        return tableondosethidari;
     }
 
     /**
-     * ﾃｰﾌﾞﾙ温度 設定
-     * @param tableondoset the tableondoset to set
+     * ﾃｰﾌﾞﾙ温度 設定 左
+     * @param tableondosethidari the tableondosethidari to set
      */
-    public void setTableondoset(Integer tableondoset) {
-        this.tableondoset = tableondoset;
+    public void setTableondosethidari(BigDecimal tableondosethidari) {
+        this.tableondosethidari = tableondosethidari;
     }
 
     /**
-     * ﾃｰﾌﾞﾙ温度 実測
-     * @return the tableondosoku
+     * ﾃｰﾌﾞﾙ温度 実測 左
+     * @return the tableondosokuhidari
      */
-    public Integer getTableondosoku() {
-        return tableondosoku;
+    public BigDecimal getTableondosokuhidari() {
+        return tableondosokuhidari;
     }
 
     /**
-     * ﾃｰﾌﾞﾙ温度 実測
-     * @param tableondosoku the tableondosoku to set
+     * ﾃｰﾌﾞﾙ温度 実測 左
+     * @param tableondosokuhidari the tableondosokuhidari to set
      */
-    public void setTableondosoku(Integer tableondosoku) {
-        this.tableondosoku = tableondosoku;
+    public void setTableondosokuhidari(BigDecimal tableondosokuhidari) {
+        this.tableondosokuhidari = tableondosokuhidari;
     }
 
     /**
@@ -1162,6 +1238,230 @@ public class SrHapscut {
      */
     public void setRevision(Long revision) {
         this.revision = revision;
+    }
+
+    /**
+     * 
+     * @return cutbachokushindomigi
+     */
+    public Integer getCutbachokushindomigi() {
+        return cutbachokushindomigi;
+    }
+
+    /**
+     * 
+     * @param cutbachokushindomigi 
+     */
+    public void setCutbachokushindomigi(Integer cutbachokushindomigi) {
+        this.cutbachokushindomigi = cutbachokushindomigi;
+    }
+
+    /**
+     * 
+     * @return tableondosetnaka
+     */
+    public BigDecimal getTableondosetnaka() {
+        return tableondosetnaka;
+    }
+
+    /**
+     * 
+     * @param tableondosetnaka 
+     */
+    public void setTableondosetnaka(BigDecimal tableondosetnaka) {
+        this.tableondosetnaka = tableondosetnaka;
+    }
+
+    /**
+     * 
+     * @return tableondosetmigi
+     */
+    public BigDecimal getTableondosetmigi() {
+        return tableondosetmigi;
+    }
+
+    /**
+     * 
+     * @param tableondosetmigi 
+     */
+    public void setTableondosetmigi(BigDecimal tableondosetmigi) {
+        this.tableondosetmigi = tableondosetmigi;
+    }
+
+    /**
+     * 
+     * @return tableondosokunaka
+     */
+    public BigDecimal getTableondosokunaka() {
+        return tableondosokunaka;
+    }
+
+    /**
+     * 
+     * @param tableondosokunaka 
+     */
+    public void setTableondosokunaka(BigDecimal tableondosokunaka) {
+        this.tableondosokunaka = tableondosokunaka;
+    }
+
+    /**
+     * 
+     * @return tableondosokumigi
+     */
+    public BigDecimal getTableondosokumigi() {
+        return tableondosokumigi;
+    }
+
+    /**
+     * 
+     * @param tableondosokumigi 
+     */
+    public void setTableondosokumigi(BigDecimal tableondosokumigi) {
+        this.tableondosokumigi = tableondosokumigi;
+    }
+
+    /**
+     * 
+     * @return dai2tableondosethidari
+     */
+    public BigDecimal getDai2tableondosethidari() {
+        return dai2tableondosethidari;
+    }
+
+    /**
+     * 
+     * @param dai2tableondosethidari 
+     */
+    public void setDai2tableondosethidari(BigDecimal dai2tableondosethidari) {
+        this.dai2tableondosethidari = dai2tableondosethidari;
+    }
+
+    /**
+     * 
+     * @return dai2tableondosetnaka
+     */
+    public BigDecimal getDai2tableondosetnaka() {
+        return dai2tableondosetnaka;
+    }
+
+    /**
+     * 
+     * @param dai2tableondosetnaka 
+     */
+    public void setDai2tableondosetnaka(BigDecimal dai2tableondosetnaka) {
+        this.dai2tableondosetnaka = dai2tableondosetnaka;
+    }
+
+    /**
+     * 
+     * @return dai2tableondosetmigi
+     */
+    public BigDecimal getDai2tableondosetmigi() {
+        return dai2tableondosetmigi;
+    }
+
+    /**
+     * 
+     * @param dai2tableondosetmigi 
+     */
+    public void setDai2tableondosetmigi(BigDecimal dai2tableondosetmigi) {
+        this.dai2tableondosetmigi = dai2tableondosetmigi;
+    }
+
+    /**
+     * 
+     * @return dai2tableondosokuhidari
+     */
+    public BigDecimal getDai2tableondosokuhidari() {
+        return dai2tableondosokuhidari;
+    }
+
+    /**
+     * 
+     * @param dai2tableondosokuhidari 
+     */
+    public void setDai2tableondosokuhidari(BigDecimal dai2tableondosokuhidari) {
+        this.dai2tableondosokuhidari = dai2tableondosokuhidari;
+    }
+
+    /**
+     * 
+     * @return dai2tableondosokunaka
+     */
+    public BigDecimal getDai2tableondosokunaka() {
+        return dai2tableondosokunaka;
+    }
+
+    /**
+     * 
+     * @param dai2tableondosokunaka 
+     */
+    public void setDai2tableondosokunaka(BigDecimal dai2tableondosokunaka) {
+        this.dai2tableondosokunaka = dai2tableondosokunaka;
+    }
+
+    /**
+     * 
+     * @return dai2tableondosokumigi
+     */
+    public BigDecimal getDai2tableondosokumigi() {
+        return dai2tableondosokumigi;
+    }
+
+    /**
+     * 
+     * @param dai2tableondosokumigi 
+     */
+    public void setDai2tableondosokumigi(BigDecimal dai2tableondosokumigi) {
+        this.dai2tableondosokumigi = dai2tableondosokumigi;
+    }
+
+    /**
+     * 
+     * @return station1lotno
+     */
+    public Integer getStation1lotno() {
+        return station1lotno;
+    }
+
+    /**
+     * 
+     * @param station1lotno 
+     */
+    public void setStation1lotno(Integer station1lotno) {
+        this.station1lotno = station1lotno;
+    }
+
+    /**
+     * 
+     * @return station2lotno
+     */
+    public Integer getStation2lotno() {
+        return station2lotno;
+    }
+
+    /**
+     * 
+     * @param station2lotno 
+     */
+    public void setStation2lotno(Integer station2lotno) {
+        this.station2lotno = station2lotno;
+    }
+
+    /**
+     * 
+     * @return ondo
+     */
+    public BigDecimal getOndo() {
+        return ondo;
+    }
+
+    /**
+     * 
+     * @param ondo 
+     */
+    public void setOndo(BigDecimal ondo) {
+        this.ondo = ondo;
     }
 
     /**
