@@ -1022,6 +1022,10 @@ public class GXHDO101B005 implements IFormLogic {
         // 設計情報チェック(対象のデータが取得出来ていない場合エラー)
         errorMessageList.addAll(ValidateUtil.checkSekkeiUnsetItems(sekkeiData, getMapSekkeiAssociation()));
 
+        // 製造条件ﾏｽﾀを取得する
+        String kochaku = loadJoken(sekkeiData.get("SEKKEINO").toString(), "設計仕様", "固着ｼｰﾄ", "固着ｼｰﾄ", queryRunnerQcdb);
+        String petfilem = loadJoken(sekkeiData.get("SEKKEINO").toString(), "設計仕様", "PETﾌｨﾙﾑ種類", "PETﾌｨﾙﾑ種類", queryRunnerQcdb);
+
         //上ｶﾊﾞｰﾃｰﾌﾟ
         String ueCoverTape1DataValue = "";
         //下ｶﾊﾞｰﾃｰﾌﾟ
@@ -1097,7 +1101,7 @@ public class GXHDO101B005 implements IFormLogic {
         }
 
         // 入力項目の情報を画面にセットする。
-        if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId)) {
+        if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId, kochaku, sekkeiData, petfilem)) {
             // エラー発生時は処理を中断
             processData.setFatalError(true);
             processData.setInitMessageList(Arrays.asList(MessageUtil.getMessage("XHD-000038")));
@@ -1135,6 +1139,7 @@ public class GXHDO101B005 implements IFormLogic {
         String checkAtumiData = "";
         String checkMaisuuData = "";
         String checkRollnoData = "";
+        String checkTlotData = "";
 
         for (Map.Entry<String, String> entry : mapYoutoAssociation.entrySet()) {
             String checkData = "";
@@ -1172,11 +1177,13 @@ public class GXHDO101B005 implements IFormLogic {
         String atumiDataKey = "ATUMI" + sekkeiDataRowNo;
         String maisuuDataKey = "MAISUU" + sekkeiDataRowNo;
         String rollnoDataKey = "ROLLNO" + sekkeiDataRowNo;
+        String tlotDataKey = "TLOT" + sekkeiDataRowNo;
 
         checkSyuruiData = StringUtil.nullToBlank(sekkeiData.get(syuruiDataKey));
         checkAtumiData = StringUtil.nullToBlank(String.valueOf(sekkeiData.get(atumiDataKey)));
         checkMaisuuData = StringUtil.nullToBlank(String.valueOf(sekkeiData.get(maisuuDataKey)));
         checkRollnoData = StringUtil.nullToBlank(sekkeiData.get(rollnoDataKey));
+        checkTlotData = StringUtil.nullToBlank(sekkeiData.get(tlotDataKey));
 
         if("CT".equals(youtoType) || "CB".equals(youtoType)){
             if ("".equals(checkSyuruiData) || "null".equals(checkSyuruiData)) {
@@ -1218,7 +1225,7 @@ public class GXHDO101B005 implements IFormLogic {
 
             if(!checkCTCBExistFlag){
                 retListData.add("OK");
-                String retCTCBValue = checkSyuruiData + "  " + checkAtumiData + "μm×" + checkMaisuuData + "枚";
+                String retCTCBValue = checkSyuruiData + "  " + checkTlotData + "  " + checkAtumiData + "μm×" + checkMaisuuData + "枚";
                 retListData.add(retCTCBValue);
             }
             return retListData;
@@ -1298,7 +1305,7 @@ public class GXHDO101B005 implements IFormLogic {
 
         // 電極テープ
         this.setItemData(processData, GXHDO101B005Const.DENKYOKU_TAPE, StringUtil.nullToBlank(sekkeiData.get("GENRYOU"))
-                + "  " + StringUtil.nullToBlank(sekkeiData.get("ETAPE")));
+                + "  " + StringUtil.nullToBlank(sekkeiData.get("ETAPE")) + "  " + StringUtil.nullToBlank(sekkeiData.get("ELOT")));
 
         // 積層数
         this.setItemData(processData, GXHDO101B005Const.SEKISOU_SU, StringUtil.nullToBlank(sekkeiData.get("EATUMI"))
@@ -1367,7 +1374,7 @@ public class GXHDO101B005 implements IFormLogic {
      * @throws SQLException 例外エラー
      */
     private boolean setInputItemData(ProcessData processData, QueryRunner queryRunnerDoc, QueryRunner queryRunnerQcdb,
-            String lotNo, String formId) throws SQLException {
+            String lotNo, String formId, String kochaku, Map sekkeiData, String petfilem) throws SQLException {
 
         List<SrRsussek> srSrRsussekDataList = new ArrayList<>();
         List<SubSrRsussek> subSubSrRsussekDataList = new ArrayList<>();
@@ -1399,6 +1406,25 @@ public class GXHDO101B005 implements IFormLogic {
                 
                 // 前工程WIP取込画面データ設定
                 setInputItemDataSubFormC020(queryRunnerQcdb, kojyo, lotNo8, edaban, jotaiFlg);
+
+                // 固着ｼｰﾄ
+                this.setItemData(processData, GXHDO101B005Const.KOTYAKU_SHEET, kochaku);
+
+                // PETﾌｨﾙﾑ種類
+                this.setItemData(processData, GXHDO101B005Const.PET_FILM_SHURUI, petfilem);
+                // ﾃｰﾌﾟ取得
+                String eaTape = StringUtil.nullToBlank(sekkeiData.get("ETAPE"));
+                if (eaTape != null && !eaTape.equals("")) {
+                    String eaTapeValue[] = eaTape.split("-", 2);
+                    if (eaTapeValue.length == 2) {
+                        // ｽﾘｯﾌﾟﾛｯﾄ
+                        this.setItemData(processData, GXHDO101B005Const.SLIP_LOTNO, StringUtil.nullToBlank(eaTapeValue[0]));
+                        // ﾛｰﾙNo
+                        this.setItemData(processData, GXHDO101B005Const.ROLL_NO1, StringUtil.nullToBlank(eaTapeValue[1]));                    
+                    }
+                }
+                // 原料記号
+                this.setItemData(processData, GXHDO101B005Const.GENRYO_KIGOU, StringUtil.nullToBlank(sekkeiData.get("ELOT")));
 
                 return true;
             }
@@ -1547,6 +1573,9 @@ public class GXHDO101B005 implements IFormLogic {
         this.setItemData(processData, GXHDO101B005Const.YJIKUHOSEIRYOU, getSrRsussekItemData(GXHDO101B005Const.YJIKUHOSEIRYOU, srSrRsussekData));
         // 電極ｽﾀｰﾄ確認者
         this.setItemData(processData, GXHDO101B005Const.KAKUNINSYA, getSrRsussekItemData(GXHDO101B005Const.KAKUNINSYA, srSrRsussekData));
+        // 積層圧力
+        this.setItemData(processData, GXHDO101B005Const.SEKISOATURYOKU, getSrRsussekItemData(GXHDO101B005Const.SEKISOATURYOKU, srSrRsussekData));
+
     }
 
     /**
@@ -2020,7 +2049,7 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + ",emaisuu,sekisouslideryo,lastlayerslideryo,renzokusekisoumaisuu,bsouhoseiryou,yjikuhoseiryou"
                 + ",syurui2,atumi2,maisuu2,ShitaTanshiKAISINICHIJI,ShitaTanshiSYURYONICHIJI,ShitaTanshiTANTOSYA,"
                 + "ShitaTanshiKAKUNINSYA,ShitaTanshiBIKO,UwaTanshiKAISINICHIJI,UwaTanshiSYURYONICHIJI,UwaTanshiTANTOSYA,"
-                + "UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,revision,'0' AS deleteflag "
+                + "UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,revision,'0' AS deleteflag, sekiatsu "
                 + "FROM sr_rsussek "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
         // revisionが入っている場合、条件に追加
@@ -2133,6 +2162,7 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         mapping.put("elotno", "elotno"); //電極製版ﾛｯﾄNo
         mapping.put("revision", "revision"); //revision
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
+        mapping.put("sekiatsu", "sekiatsu"); //削除ﾌﾗｸﾞ
 
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
@@ -2304,7 +2334,7 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + ",emaisuu,sekisouslideryo,lastlayerslideryo,renzokusekisoumaisuu,bsouhoseiryou,yjikuhoseiryou"
                 + ",syurui2,atumi2,maisuu2,ShitaTanshiKAISINICHIJI,ShitaTanshiSYURYONICHIJI,ShitaTanshiTANTOSYA,"
                 + "ShitaTanshiKAKUNINSYA,ShitaTanshiBIKO,UwaTanshiKAISINICHIJI,UwaTanshiSYURYONICHIJI,UwaTanshiTANTOSYA,"
-                + "UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,revision,deleteflag "
+                + "UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,revision,deleteflag,sekiatsu "
                 + "  FROM tmp_sr_rsussek "
                 + " WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND deleteflag = ? ";
         // revisionが入っている場合、条件に追加
@@ -2418,6 +2448,7 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         mapping.put("elotno", "elotno"); //電極製版ﾛｯﾄNo
         mapping.put("revision", "revision"); //revision
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
+        mapping.put("sekiatsu", "sekiatsu"); //削除ﾌﾗｸﾞ
 
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
@@ -2872,10 +2903,10 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + ",patern,torikosuu,etape,lretu,wretu,lsun,wsun,epaste,genryou,eatumi,sousuu,emaisuu,sekisouslideryo,lastlayerslideryo"
                 + ",renzokusekisoumaisuu,bsouhoseiryou,yjikuhoseiryou,syurui2,atumi2,maisuu2,ShitaTanshiKAISINICHIJI,ShitaTanshiSYURYONICHIJI,"
                 + "ShitaTanshiTANTOSYA,ShitaTanshiKAKUNINSYA,ShitaTanshiBIKO,UwaTanshiKAISINICHIJI,UwaTanshiSYURYONICHIJI,UwaTanshiTANTOSYA,"
-                + "UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,revision,deleteflag"
+                + "UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,revision,deleteflag,sekiatsu"
                 + ") VALUES ("
                 + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? "
-                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterTmpSrRsussek(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -2910,7 +2941,7 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + "patern = ?,torikosuu = ?,etape = ?,lretu = ?,wretu = ?,lsun = ?,wsun = ?,epaste = ?,genryou = ?,eatumi = ?,sousuu = ?,emaisuu = ?,sekisouslideryo = ?,"
                 + "lastlayerslideryo = ?,renzokusekisoumaisuu = ?,yjikuhoseiryou = ?,syurui2 = ?,atumi2 = ?,maisuu2 = ?,ShitaTanshiKAISINICHIJI = ?,ShitaTanshiSYURYONICHIJI = ?,"
                 + "ShitaTanshiTANTOSYA = ?,ShitaTanshiKAKUNINSYA = ?,ShitaTanshiBIKO = ?,UwaTanshiKAISINICHIJI = ?,UwaTanshiSYURYONICHIJI = ?,UwaTanshiTANTOSYA = ?,"
-                + "UwaTanshiKAKUNINSYA = ?,UwaTanshiBIKO = ?,HeadNo = ?,SUSitamaisu = ?,lastlayerTANTOSYA = ?,lastlayerBIKO = ?,elotno = ?,revision = ?,deleteflag = ? "
+                + "UwaTanshiKAKUNINSYA = ?,UwaTanshiBIKO = ?,HeadNo = ?,SUSitamaisu = ?,lastlayerTANTOSYA = ?,lastlayerBIKO = ?,elotno = ?,revision = ?,deleteflag = ?,sekiatsu = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
         // 更新前の値を取得
@@ -3213,6 +3244,7 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.ELOTNO, srRsussekData))); //電極製版ﾛｯﾄNo
         params.add(newRev); //revision
         params.add(deleteflag); //削除ﾌﾗｸﾞ
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SEKISOATURYOKU, srRsussekData)));//積層圧力
 
         return params;
     }
@@ -3461,10 +3493,10 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + ",patern,torikosuu,etape,lretu,wretu,lsun,wsun,epaste,genryou,eatumi,sousuu,emaisuu,sekisouslideryo,lastlayerslideryo"
                 + ",renzokusekisoumaisuu,bsouhoseiryou,yjikuhoseiryou,syurui2,atumi2,maisuu2,ShitaTanshiKAISINICHIJI,ShitaTanshiSYURYONICHIJI,"
                 + "ShitaTanshiTANTOSYA,ShitaTanshiKAKUNINSYA,ShitaTanshiBIKO,UwaTanshiKAISINICHIJI,UwaTanshiSYURYONICHIJI,UwaTanshiTANTOSYA,"
-                + "UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,revision"
+                + "UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,revision,sekiatsu"
                 + ") VALUES ("
                 + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? "
-                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
         
         List<Object> params = setUpdateParameterSrRsussek(true, newRev, kojyo, lotNo, edaban, systemTime, itemList, tmpSrRsussek);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -3500,7 +3532,7 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + "lastlayerslideryo = ?,renzokusekisoumaisuu = ?,yjikuhoseiryou = ?,syurui2 = ?,atumi2 = ?,maisuu2 = ?,ShitaTanshiKAISINICHIJI = ?,"
                 + "ShitaTanshiSYURYONICHIJI = ?,ShitaTanshiTANTOSYA = ?,ShitaTanshiKAKUNINSYA = ?,ShitaTanshiBIKO = ?,UwaTanshiKAISINICHIJI = ?,"
                 + "UwaTanshiSYURYONICHIJI = ?,UwaTanshiTANTOSYA = ?,UwaTanshiKAKUNINSYA = ?,UwaTanshiBIKO = ?,HeadNo = ?,SUSitamaisu = ?,"
-                + "lastlayerTANTOSYA = ?,lastlayerBIKO = ?,elotno = ?,revision = ? "
+                + "lastlayerTANTOSYA = ?,lastlayerBIKO = ?,elotno = ?,revision = ?,sekiatsu = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
         // 更新前の値を取得
@@ -3772,6 +3804,7 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.LASTLAYERBIKO, srRsussekData))); //最上層備考
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.ELOTNO, srRsussekData))); //電極製版ﾛｯﾄNo
         params.add(newRev); //revision
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B005Const.SEKISOATURYOKU, srRsussekData)));//積層圧力
 
         return params;
     }
@@ -4381,6 +4414,8 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
             // ｵｰﾅｰ
             case GXHDO101B005Const.OWNER:
                 return StringUtil.nullToBlank(srRsussekData.getOwnercode());
+            case GXHDO101B005Const.SEKISOATURYOKU:
+                return StringUtil.nullToBlank(srRsussekData.getSekiatsu());
             default:
                 return null;
 
@@ -4412,7 +4447,7 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + ",setsuu,tokuisaki,lotkubuncode,ownercode,syurui3,atumi3,maisuu3,patern,torikosuu,etape,lretu,wretu,lsun,wsun,epaste,genryou,eatumi,sousuu"
                 + ",emaisuu,sekisouslideryo,lastlayerslideryo,renzokusekisoumaisuu,bsouhoseiryou,yjikuhoseiryou"
                 + ",syurui2,atumi2,maisuu2,ShitaTanshiKAISINICHIJI,ShitaTanshiSYURYONICHIJI,ShitaTanshiTANTOSYA,ShitaTanshiKAKUNINSYA,ShitaTanshiBIKO,UwaTanshiKAISINICHIJI"
-                + ",UwaTanshiSYURYONICHIJI,UwaTanshiTANTOSYA,UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,revision,deleteflag "
+                + ",UwaTanshiSYURYONICHIJI,UwaTanshiTANTOSYA,UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,revision,deleteflag,sekiatsu "
                 + ") SELECT "
                 + " KOJYO,LOTNO,EDABAN,KCPNO,TNTAPESYURUI,TNTAPENO,TNTAPEGENRYO,KAISINICHIJI,SYURYONICHIJI,GOKI,JITUATURYOKU,SEKISOZURE2"
                 + ",TANTOSYA,KAKUNINSYA,INSATUROLLNO,HAPPOSHEETNO,SKJIKAN,TAKUTO,BIKO1,?,?,SKOJYO,SLOTNO,SEDABAN,tapelotno,taperollno1"
@@ -4422,7 +4457,7 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + ",setsuu,tokuisaki,lotkubuncode,ownercode,syurui3,atumi3,maisuu3,patern,torikosuu,etape,lretu,wretu,lsun,wsun,epaste,genryou,eatumi,sousuu"
                 + ",emaisuu,sekisouslideryo,lastlayerslideryo,renzokusekisoumaisuu,bsouhoseiryou,yjikuhoseiryou"
                 + ",syurui2,atumi2,maisuu2,ShitaTanshiKAISINICHIJI,ShitaTanshiSYURYONICHIJI,ShitaTanshiTANTOSYA,ShitaTanshiKAKUNINSYA,ShitaTanshiBIKO,UwaTanshiKAISINICHIJI"
-                + ",UwaTanshiSYURYONICHIJI,UwaTanshiTANTOSYA,UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,?,? "
+                + ",UwaTanshiSYURYONICHIJI,UwaTanshiTANTOSYA,UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,?,?,sekiatsu "
                 + " FROM sr_rsussek "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
 
@@ -5021,4 +5056,45 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         }
         return mkubunno;
     }
+    /**
+     * 製造条件マスタ
+     * 
+     * @param sekkeino
+     * @param koteimei
+     * @param koumokumei
+     * @param kanrikoumoku
+     * @param queryRunnerQcdb
+     * @return 遷移先URL文字列
+     * @throws java.sql.SQLException
+     */
+    public String loadJoken(String sekkeino, String koteimei, String koumokumei, String kanrikoumoku, QueryRunner queryRunnerQcdb) throws SQLException {
+        
+        // 検索用ロットNo
+        
+        // SQL生成
+        String sql = "SELECT KIKAKUCHI AS kikakuchi"
+                + " FROM DA_JOKEN "
+                + "WHERE SEKKEINO = ? "
+                + "AND KOUTEIMEI = ? "
+                + "AND KOUMOKUMEI = ? "
+                + "AND KANRIKOUMOKU = ?;";
+        
+        // パラメータの設定
+        List<Object> params = new ArrayList<>();
+        params.add(sekkeino);
+        params.add(koteimei);
+        params.add(koumokumei);
+        params.add(kanrikoumoku);
+        
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        Map sekkeiData = queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+
+        if (sekkeiData == null || sekkeiData.isEmpty()) {
+            return "";
+        }
+        String kikakuchi = StringUtil.nullToBlank(sekkeiData.get("kikakuchi"));
+        
+        return StringUtil.blankToNull(kikakuchi);
+    }
+
 }

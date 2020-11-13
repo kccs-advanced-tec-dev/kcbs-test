@@ -498,6 +498,11 @@ public class SrRsussek {
     private String elotno;
 
     /**
+     * 電極製版ﾛｯﾄNo
+     */
+    private String sekiatsu;
+
+    /**
      * @return kojyo
      */
     public String getKojyo() {
@@ -1851,6 +1856,22 @@ public class SrRsussek {
      */
     public void setElotno(String elotno) {
         this.elotno = elotno;
+    }
+
+    /**
+     * 電極製版ﾛｯﾄNo
+     * @return the sekiatsu
+     */
+    public String getSekiatsu() {
+        return sekiatsu;
+    }
+
+    /**
+     * 電極製版ﾛｯﾄNo
+     * @param sekiatsu the sekiatsu to set
+     */
+    public void setSekiatsu(String sekiatsu) {
+        this.sekiatsu = sekiatsu;
     }
     
 }

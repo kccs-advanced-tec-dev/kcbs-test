@@ -455,6 +455,11 @@
                     <p:column id="happosheetno" headerText="発砲ｼｰﾄNo" >
                         <p:outputLabel value="#{item.happosheetno}"/>
                     </p:column>
+                    <p:column id="sekiatsu" headerText="積層圧力" styleClass="number">
+                        <p:outputLabel value="#{item.sekiatsu}">
+                            <f:convertNumber pattern="#00.0"/>
+                        </p:outputLabel>
+                    </p:column>
                 </p:dataTable>
             </div>
         </h:form>

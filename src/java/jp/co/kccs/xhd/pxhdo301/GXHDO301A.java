@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.faces.application.FacesMessage;
@@ -71,7 +72,8 @@ public class GXHDO301A implements Serializable {
     private static final String EA_PASTE_KANRIKOMOKU = "ﾍﾟｰｽﾄ";
     private static final String EA_SEIHAN_KOTEIMEI = "設計仕様";
     private static final String EA_SEIHAN_KOMOKUMEI = "電極";
-    private static final String EA_SEIHAN_KANRIKOMOKU = "電極製版仕様";
+    private static final String EA_SEIHAN_KANRIKOMOKU = "製版仕様";
+    private static final String EA_SEIHAN_KANRIKOMOKU_RHAPS = "電極製版仕様";
     private static final String SEKI_SLIDE_KOTEIMEI = "設計仕様";
     private static final String SEKI_SLIDE_KOMOKUMEI = "積層ｽﾗｲﾄﾞ量";
     private static final String SEKI_SLIDE_KANRIKOMOKU = "積層ｽﾗｲﾄﾞ量";
@@ -84,6 +86,9 @@ public class GXHDO301A implements Serializable {
     private static final String KOCHAKU_SITE_KOTEIMEI = "設計仕様";
     private static final String KOCHAKU_SITE_KOMOKUMEI = "固着ｼｰﾄ";
     private static final String KOCHAKU_SITE_KANRIKOMOKU = "固着ｼｰﾄ";
+    private static final String SEKISO_GOKI_KOTEIMEI = "積層";
+    private static final String SEKISO_GOKI_KOMOKUMEI = "設備";
+    private static final String SEKISO_GOKI_KANRIKOMOKU = "指定号機";
 
     /**
      * DataSource(QCDB)
@@ -233,6 +238,10 @@ public class GXHDO301A implements Serializable {
             String eaPaste = loadJoken(sekkeiData.get("SEKKEINO").toString(), EA_PASTE_KOTEIMEI, EA_PASTE_KOMOKUMEI, EA_PASTE_KANRIKOMOKU, queryRunnerQcdb);
             // 電極製版仕様
             String eaSeihan = loadJoken(sekkeiData.get("SEKKEINO").toString(), EA_SEIHAN_KOTEIMEI, EA_SEIHAN_KOMOKUMEI, EA_SEIHAN_KANRIKOMOKU, queryRunnerQcdb);
+            // 電極製版仕様
+            if (eaSeihan == null || eaSeihan.equals("")) {
+                eaSeihan = loadJoken(sekkeiData.get("SEKKEINO").toString(), EA_SEIHAN_KOTEIMEI, EA_SEIHAN_KOMOKUMEI, EA_SEIHAN_KANRIKOMOKU_RHAPS, queryRunnerQcdb);
+            }
             // 積層ｽﾗｲﾄﾞ量
             String sekiSlide = loadJoken(sekkeiData.get("SEKKEINO").toString(), SEKI_SLIDE_KOTEIMEI, SEKI_SLIDE_KOMOKUMEI, SEKI_SLIDE_KANRIKOMOKU, queryRunnerQcdb);
             // 誘電体製版名
@@ -241,19 +250,12 @@ public class GXHDO301A implements Serializable {
             String yuSeihan = loadJoken(sekkeiData.get("SEKKEINO").toString(), YUDENTAI_SEIHAN_KOTEIMEI, YUDENTAI_SEIHAN_KOMOKUMEI, YUDENTAI_SEIHAN_KANRIKOMOKU, queryRunnerQcdb);
             // 固着ｼｰﾄ
             String kochakuSite = loadJoken(sekkeiData.get("SEKKEINO").toString(), KOCHAKU_SITE_KOTEIMEI, KOCHAKU_SITE_KOMOKUMEI, KOCHAKU_SITE_KANRIKOMOKU, queryRunnerQcdb);
+            // 号機
+            String goki = loadJoken(sekkeiData.get("SEKKEINO").toString(), SEKISO_GOKI_KOTEIMEI, SEKISO_GOKI_KOMOKUMEI, SEKISO_GOKI_KANRIKOMOKU, queryRunnerQcdb);
 
             // 取得した項目を画面にｾｯﾄする
-            setViewItemData(sekkeiData, lotKbnMasData, ownerMasData, yuPaste, petFilem, eaPaste, eaSeihan, sekiSlide, yuSeihanmei, yuSeihan, kochakuSite, ueCoverTape1, ueCoverTape2, shitaCoverTape1, shitaCoverTape2, rollno);
-            
-            // 表示する画面をプロセスと画面表示フラグから判断する
-            // RHAPSの場合
-            String printFmt = StringUtil.nullToBlank(getMapData(sekkeiData, "printFmt"));
-            if (printFmt.equals("LotCardForm_HAPS_OLD.xlsm") || printFmt.equals("LotCardForm_RHAPS.xlsm")) {
-
-            }
-
+            setViewItemData(sekkeiData, lotKbnMasData, ownerMasData, yuPaste, petFilem, eaPaste, eaSeihan, sekiSlide, yuSeihanmei, yuSeihan, kochakuSite, ueCoverTape1, ueCoverTape2, shitaCoverTape1, shitaCoverTape2, rollno, goki);
         } catch(SQLException ex) {
-            
         }
         
     }
@@ -276,7 +278,7 @@ public class GXHDO301A implements Serializable {
                 + "SYURUI1,SYURUI2,SYURUI3,SYURUI4,SYURUI5,SYURUI6,SYURUI7,SYURUI8,"
                 + "ATUMI1,ATUMI2,ATUMI3,ATUMI4,ATUMI5,ATUMI6,ATUMI7,ATUMI8,"
                 + "MAISUU1,MAISUU2,MAISUU3,MAISUU4,MAISUU5,MAISUU6,MAISUU7,MAISUU8,"
-                + "PATTERN,ROLLNO1,ROLLNO2,ROLLNO3,ROLLNO4,ROLLNO5,ROLLNO6,ROLLNO7,ROLLNO8,CSIYOU "
+                + "PATTERN,ROLLNO1,ROLLNO2,ROLLNO3,ROLLNO4,ROLLNO5,ROLLNO6,ROLLNO7,ROLLNO8,CSIYOU,LASTLAYERSLIDERYO,ELOT "
                 + "FROM da_sekkei "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = '001'";
 
@@ -500,7 +502,7 @@ public class GXHDO301A implements Serializable {
     private Map loadOwnerMas(QueryRunner queryRunnerWip, String ownerCode) throws SQLException {
 
         // オーナーデータの取得
-        String sql = "SELECT owner AS ownername "
+        String sql = "SELECT \"owner\" AS ownername "
                 + "FROM ownermas "
                 + "WHERE ownercode = ?";
 
@@ -519,7 +521,7 @@ public class GXHDO301A implements Serializable {
      * @param ownerMasData ｵｰﾅｰﾏｽﾀデータ
      */
     private void setViewItemData(Map sekkeiData, Map lotKbnMasData, Map ownerMasData, String yuPaste, String petFilem, String eaPaste, 
-            String eaSeihan, String sekiSlide, String yuSeihanmei, String yuSeihan, String kochakuSite, String ueCoverTape1, String ueCoverTape2, String shitaCoverTape1, String shitaCoverTape2, String rollno) {
+            String eaSeihan, String sekiSlide, String yuSeihanmei, String yuSeihan, String kochakuSite, String ueCoverTape1, String ueCoverTape2, String shitaCoverTape1, String shitaCoverTape2, String rollno, String goki) {
 
         // ﾛｯﾄNo
         getData().setLotno(lotNo);
@@ -534,7 +536,7 @@ public class GXHDO301A implements Serializable {
                 + ":" + StringUtil.nullToBlank(getMapData(lotKbnMasData, "lotkubun")));
         // 電極ﾃｰﾌﾟ上段
         getData().setEtapetop(StringUtil.nullToBlank(getMapData(sekkeiData, "GENRYOU"))
-                + " " + StringUtil.nullToBlank(getMapData(sekkeiData, "ETAPE")));
+                + " " + StringUtil.nullToBlank(getMapData(sekkeiData, "ETAPE")) + " " + StringUtil.nullToBlank(getMapData(sekkeiData, "ELOT")));
         // 電極ﾃｰﾌﾟ下段
         getData().setEtapebuttom(StringUtil.nullToBlank(sekkeiData.get("EATUMI"))
                 + "μm×"
@@ -543,7 +545,7 @@ public class GXHDO301A implements Serializable {
                 + StringUtil.nullToBlank(sekkeiData.get("EMAISUU"))
                 + "枚");
         // 最上層
-        getData().setAbslide(StringUtil.nullToBlank(getMapData(sekkeiData, "Abslide")));
+        getData().setAbslide(StringUtil.nullToBlank(getMapData(sekkeiData, "LASTLAYERSLIDERYO")));
         // 印刷ﾛｰﾙNo
         getData().setRollno(rollno);
         // ｶﾊﾞｰﾃｰﾌﾟ仕様
@@ -574,7 +576,11 @@ public class GXHDO301A implements Serializable {
         // 電極製版仕様
         getData().setEseihan(eaSeihan);
         // 積層ｽﾗｲﾄﾞ量
+        if ("0.0".equals(StringUtil.nullToBlank(getMapData(sekkeiData, "Abslide")))) {
         getData().setSekislide(sekiSlide);
+        } else {
+            getData().setSekislide(StringUtil.nullToBlank(getMapData(sekkeiData, "Abslide")));
+        }
         // 誘電体製版名
         getData().setYseihanmei(yuSeihanmei);
         // 誘電体製版仕様
@@ -596,6 +602,8 @@ public class GXHDO301A implements Serializable {
             getData().setKosuu(kosuu.toPlainString());
 
         }
+        //号機
+        getData().setGoki(goki);
     }
         /**
      * 設計データ関連付けマップ取得(用途関連)

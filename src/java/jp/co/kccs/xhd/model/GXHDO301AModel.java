@@ -83,6 +83,8 @@ public class GXHDO301AModel implements Serializable {
     private String torikosuu = "";
     /** 個数 */
     private String kosuu = "";
+    /** 個数 */
+    private String goki = "";
         
     /**
      * @return the lotno
@@ -474,6 +476,22 @@ public class GXHDO301AModel implements Serializable {
      */
     public void setKosuu(String kosuu) {
         this.kosuu = kosuu;
+    }
+
+    /**
+     * 個数
+     * @return the goki
+     */
+    public String getGoki() {
+        return goki;
+    }
+
+    /**
+     * 個数
+     * @param goki the goki to set
+     */
+    public void setGoki(String goki) {
+        this.goki = goki;
     }
     
  

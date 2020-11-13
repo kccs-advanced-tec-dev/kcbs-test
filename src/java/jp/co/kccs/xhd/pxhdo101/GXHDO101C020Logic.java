@@ -123,7 +123,7 @@ public class GXHDO101C020Logic {
         model = gXHDO101C020Model;
         item_List = itemList;
         
-        setReturnDataChild(gXHDO101C020Model, itemList, true, true);
+        setReturnDataChild(gXHDO101C020Model, itemList, true, true, true, true);
     }
     
     /**
@@ -169,14 +169,28 @@ public class GXHDO101C020Logic {
      * 電極ﾍﾟｰｽﾄﾁｪｯｸ警告メッセージokボタン押下後の処理
      */
     public static void notCheckTapeSameHinmei() {
-        setReturnDataChild(model, item_List, false, true);
+        setReturnDataChild(model, item_List, false, true, true, true);
     }
     
     /**
      * 電極ﾃｰﾌﾟﾁｪｯｸ警告メッセージokボタン押下後の処理
      */
     public static void notCheckPasteSameHinmei() {
-        setReturnDataChild(model, item_List, false, false);
+        setReturnDataChild(model, item_List, false, false, true, true);
+    }
+
+    /**
+     * 上端子ﾁｪｯｸ警告メッセージokボタン押下後の処理
+     */
+    public static void notCheckUwaTanshiSameHinmei() {
+        setReturnDataChild(model, item_List, false, false, false, true);
+    }
+
+    /**
+     * 下端子ﾃｰﾌﾟﾁｪｯｸ警告メッセージokボタン押下後の処理
+     */
+    public static void notCheckShitaTanshiSameHinmei() {
+        setReturnDataChild(model, item_List, false, false, false, false);
     }
 
     /**
@@ -187,7 +201,7 @@ public class GXHDO101C020Logic {
      * @param isCheckTape 電極ﾃｰﾌﾟﾁｪｯｸか
      * @param isCheckPaste 電極ﾍﾟｰｽﾄﾁｪｯｸか
      */
-    private static void setReturnDataChild(GXHDO101C020Model gXHDO101C020Model, List<FXHDD01> itemList, boolean isCheckTape, boolean isCheckPaste) {
+    private static void setReturnDataChild(GXHDO101C020Model gXHDO101C020Model, List<FXHDD01> itemList, boolean isCheckTape, boolean isCheckPaste, boolean isCheckUwaT, boolean isCheckShitaT) {
         
         if (isCheckTape && !checkTapeSameHinmei(gXHDO101C020Model, itemList)) {
             // エラーの場合はコールバック変数に"warning"をセット
@@ -201,11 +215,24 @@ public class GXHDO101C020Logic {
             context.addCallbackParam("param2", "warning");
             return;
         }
+        if (isCheckUwaT && !checkTanshiSameHinmei(gXHDO101C020Model, itemList, "T")) {
+            // エラーの場合はコールバック変数に"warning"をセット
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.addCallbackParam("param3", "warning");
+            return;
+        }
+        if (isCheckShitaT && !checkTanshiSameHinmei(gXHDO101C020Model, itemList, "B")) {
+            // エラーの場合はコールバック変数に"warning"をセット
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.addCallbackParam("param4", "warning");
+            return;
+        }
         // ﾃｰﾌﾟﾛｯﾄ①の戻り項目
         FXHDD01 itemTapeLot1Hinmei = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot1_Hinmei());
         FXHDD01 itemTapeLot1Conventionallot = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot1_Conventionallot());
         FXHDD01 itemTapeLot1Lotkigo = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot1_Lotkigo());
         FXHDD01 itemTapeLot1Rollno = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot1_Rollno());
+        FXHDD01 itemTapeLot1Length = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot1_Tapelength());
         
         // ﾃｰﾌﾟﾛｯﾄ②の戻り項目
         FXHDD01 itemTapeLot2Rollno = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot2_Rollno());
@@ -246,11 +273,12 @@ public class GXHDO101C020Logic {
             switch(typeName) {
                 
                 case GXHDO101C020Model.TAPE_LOT_1:
-                    setItemTapeLot1Hinmei(itemTapeLot1Hinmei, resultMap.get("hinmei"));
+                    //setItemTapeLot1Hinmei(itemTapeLot1Hinmei, resultMap.get("hinmei"));
                     setItemValue(itemTapeLot1Conventionallot, resultMap.get("conventionallot"));
                     setItemValue(itemTapeLot1Lotkigo, resultMap.get("lotkigo"));
                     setItemValue(itemTapeLot1Rollno, resultMap.get("rollno"));
                     setItemValue(itemPetname, resultMap.get("petname"));
+                    setItemValue(itemTapeLot1Length, resultMap.get("tapelength_m"));
                     break;
                 case GXHDO101C020Model.TAPE_LOT_2:
                     setItemValue(itemTapeLot2Rollno, resultMap.get("rollno"));
@@ -297,6 +325,35 @@ public class GXHDO101C020Logic {
         if (splitVal.length < 2) {
             return true;
         }
+        String[] splitEaVal = null;
+        String[] splitSekiVal = null;
+        String[] splitSpVal = null;
+        if ("GXHDO101B003".equals(itemRow.getGamenId())) {
+            // 設計ﾃﾞｰﾀの電極ﾃｰﾌﾟを取得する
+            FXHDD01 itemTape = getItemRow(itemList, "insatsu_rsus_denkyoku_tape");
+            if (itemTape == null) {
+                return true;
+            }
+            String eaTapeValue = itemTape.getValue();
+            splitEaVal = eaTapeValue.split("  ", 3);
+            if (splitEaVal.length < 3) {
+                return true;
+            }
+            splitSpVal = splitEaVal[1].split("-", 2);
+            if (splitSpVal.length < 2) {
+                return true;
+            }
+            // 設計ﾃﾞｰﾀの積層数を取得する
+            FXHDD01 itemSeki = getItemRow(itemList, "insatsu_rsus_sekisou_su");
+            if (itemSeki == null) {
+                return true;
+            }
+            String sekiValue = itemSeki.getValue();
+            splitSekiVal = sekiValue.split("μm", 2);
+            if (splitSekiVal.length < 2) {
+                return true;
+            }
+        }
         List<GXHDO101C020Model.GenryouLotData> genryouLotDataList = gXHDO101C020Model.getGenryouLotDataList();
         for (GXHDO101C020Model.GenryouLotData genryouLotData : genryouLotDataList) {
             String typeName = genryouLotData.getTypeName();
@@ -305,10 +362,25 @@ public class GXHDO101C020Logic {
             if (resultMap == null) {
                 continue;
             }
+
+            // 印刷RSUSの場合のﾁｪｯｸ
+            if ("GXHDO101B003".equals(itemRow.getGamenId())) {
+                if (GXHDO101C020Model.TAPE_LOT_1.equals(typeName)) {
+                    if (!splitEaVal[0].equals(StringUtil.nullToBlank(resultMap.get("hinmei"))) ||
+                            !splitEaVal[2].equals(StringUtil.nullToBlank(resultMap.get("lotkigo"))) ||
+                            !splitSpVal[0].equals(StringUtil.nullToBlank(resultMap.get("conventionallot"))) ||
+                            !splitSpVal[1].equals(StringUtil.nullToBlank(resultMap.get("rollno"))) ||
+                            !splitSekiVal[0].equals(StringUtil.nullToBlank(resultMap.get("thickness_um")))) {
+                        return false;                        
+                    }
+                }
+            } else {
             // 元画面の電極ﾃｰﾌﾟの原料部分とﾃｰﾌﾟﾛｯﾄ①のhinmeiが一致していること
             if (GXHDO101C020Model.TAPE_LOT_1.equals(typeName) && !splitVal[1].equals(StringUtil.nullToBlank(resultMap.get("hinmei")))) {
                 return false;
             }
+        }
+            
         }
         return true;
     }
@@ -372,8 +444,8 @@ public class GXHDO101C020Logic {
             case "GXHDO101B004":
             case "GXHDO101B005":
                 itemName = new String[2];
-                itemName[0] = GXHDO101C020Model.UWA_TANSHI;
-                itemName[1] = GXHDO101C020Model.SHITA_TANSHI;
+                itemName[1] = GXHDO101C020Model.UWA_TANSHI;
+                itemName[2] = GXHDO101C020Model.SHITA_TANSHI;
                 break;
             case "GXHDO101B006":
                 itemName = new String[4];
@@ -406,4 +478,69 @@ public class GXHDO101C020Logic {
         hinmei = splitVal[0] + "  " + hinmei;
         itemTapeLot1Hinmei.setValue(hinmei);
     }
+    
+    /**
+     * 元画面の電極ﾃｰﾌﾟとﾃｰﾌﾟﾛｯﾄ①のhinmeiが一致かのチェック
+     * 
+     * @param gXHDO101C020Model 前工程WIP取込サブ画面用ﾓﾃﾞﾙ
+     * @param itemList 項目リスト
+     * @return 
+     */
+    private static boolean checkTanshiSameHinmei(GXHDO101C020Model gXHDO101C020Model, List<FXHDD01> itemList, String tanshi) {
+        Map<String, Map<String, String>> resultMaps = gXHDO101C020Model.getResultMap();
+        // 設計ﾃﾞｰﾀの電極ﾃｰﾌﾟを取得する
+        FXHDD01 itemShitaTape = getItemRow(itemList, "sr_rsussek_shita_cover_tape1");
+        if (itemShitaTape == null) {
+            return true;
+        }
+        String shitaValue = itemShitaTape.getValue();
+        String[] splitShitaVal = shitaValue.split(" ", 3);
+        if (splitShitaVal.length < 3) {
+            return true;
+        }
+        String[] splitShitaAVal = splitShitaVal[2].split("μm", 2);
+        if (splitShitaAVal.length < 2) {
+            return true;
+        }
+        FXHDD01 itemUwaTape = getItemRow(itemList, "sr_rsussek_ue_cover_tape1");
+        if (itemUwaTape == null) {
+            return true;
+        }
+        String uwaValue = itemUwaTape.getValue();
+        String[] splitUwaVal = uwaValue.split(" ", 3);
+        if (splitUwaVal.length < 3) {
+            return true;
+        }
+        String[] splitUwaAVal = splitUwaVal[2].split("μm", 2);
+        if (splitUwaAVal.length < 2) {
+            return true;
+        }
+        List<GXHDO101C020Model.GenryouLotData> genryouLotDataList = gXHDO101C020Model.getGenryouLotDataList();
+        for (GXHDO101C020Model.GenryouLotData genryouLotData : genryouLotDataList) {
+            String typeName = genryouLotData.getTypeName();
+            String value = genryouLotData.getValue();
+            Map<String, String> resultMap = resultMaps.get(value);
+            if (resultMap == null) {
+                continue;
+            }
+
+            // 印刷RSUSの場合のﾁｪｯｸ
+            if ("GXHDO101B005".equals(itemShitaTape.getGamenId())) {
+                if (GXHDO101C020Model.UWA_TANSHI.equals(typeName) && tanshi.equals("T")) {
+                    if (!splitUwaVal[0].equals(StringUtil.nullToBlank(resultMap.get("hinmei"))) ||
+                            !splitUwaAVal[2].equals(StringUtil.nullToBlank(resultMap.get("thickness_um")))) {
+                        return false;                        
+                    }
+                } else if (GXHDO101C020Model.SHITA_TANSHI.equals(typeName) && tanshi.equals("B")) {
+                    if (!splitShitaVal[0].equals(StringUtil.nullToBlank(resultMap.get("hinmei"))) ||
+                            !splitShitaAVal[2].equals(StringUtil.nullToBlank(resultMap.get("thickness_um")))) {
+                        return false;                        
+                    }
+                }
+            }
+            
+        }
+        return true;
+    }
+
 }

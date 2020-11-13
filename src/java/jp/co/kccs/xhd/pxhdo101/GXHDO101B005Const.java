@@ -365,6 +365,11 @@ public class GXHDO101B005Const {
     public static final String KAKUNINSYA = "sr_rsussek_kakuninsya";
 
     /**
+     * 積層圧力
+     */
+    public static final String SEKISOATURYOKU = "sr_rsussek_atsuryoku";
+
+    /**
      * 仮登録(画面下)
      */
     public static final String BTN_KARI_TOUROKU_BOTTOM = "sr_rsussek_kari_touroku_Bottom";

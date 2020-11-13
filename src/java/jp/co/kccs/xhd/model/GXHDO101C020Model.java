@@ -154,6 +154,12 @@ public class GXHDO101C020Model implements Cloneable {
     private String returnItemId_Shitatanshi_Rollno;
     
     /**
+     * (ﾃｰﾌﾟﾛｯﾄ①)hinmeiの設定項目ID
+     */
+    private String returnItemId_TapeLot1_Tapelength;
+
+    
+    /**
      * petnameの設定項目ID
      */
     private String returnItemId_Petname;
@@ -480,6 +486,22 @@ public class GXHDO101C020Model implements Cloneable {
      */
     public void setReturnItemId_Petname(String returnItemId_Petname) {
         this.returnItemId_Petname = returnItemId_Petname;
+    }
+
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ①)hinmeiの設定項目ID
+     * @return the returnItemId_TapeLot1_Tapelength
+     */
+    public String getReturnItemId_TapeLot1_Tapelength() {
+        return returnItemId_TapeLot1_Tapelength;
+    }
+
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ①)hinmeiの設定項目ID
+     * @param returnItemId_TapeLot1_Tapelength the returnItemId_TapeLot1_Tapelength to set
+     */
+    public void setReturnItemId_TapeLot1_Tapelength(String returnItemId_TapeLot1_Tapelength) {
+        this.returnItemId_TapeLot1_Tapelength = returnItemId_TapeLot1_Tapelength;
     }
     
     /**

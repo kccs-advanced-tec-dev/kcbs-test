@@ -172,6 +172,8 @@ public class GXHDO201B005Model {
     private String lastlayerbiko = "";
     /** 電極製版ﾛｯﾄNo */
     private String elotno = "";
+    /** 積層圧力 */
+    private BigDecimal sekiatsu = null;
 
     /**
      * ﾛｯﾄNo.
@@ -1259,6 +1261,22 @@ public class GXHDO201B005Model {
      */
     public void setElotno(String elotno) {
         this.elotno = elotno;
+    }
+
+    /**
+     * 積層圧力
+     * @return the sekiatsu
+     */
+    public BigDecimal getSekiatsu() {
+        return sekiatsu;
+    }
+
+    /**
+     * 積層圧力
+     * @param sekiatsu the sekiatsu to set
+     */
+    public void setSekiatsu(BigDecimal sekiatsu) {
+        this.sekiatsu = sekiatsu;
     }
 
 }

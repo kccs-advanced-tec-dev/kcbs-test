@@ -1253,7 +1253,7 @@ public class GXHDO101B003 implements IFormLogic {
 
         // 電極テープ
         this.setItemData(processData, GXHDO101B003Const.DENKYOKU_TAPE, StringUtil.nullToBlank(sekkeiData.get("GENRYOU"))
-                + "  " + StringUtil.nullToBlank(sekkeiData.get("ETAPE")));
+                + "  " + StringUtil.nullToBlank(sekkeiData.get("ETAPE")) + "  " + StringUtil.nullToBlank(sekkeiData.get("ELOT")));
 
         // 積層数
         this.setItemData(processData, GXHDO101B003Const.SEKISOU_SU, StringUtil.nullToBlank(sekkeiData.get("EATUMI"))
@@ -3682,6 +3682,7 @@ public class GXHDO101B003 implements IFormLogic {
         model = GXHDO101C020Logic.createGXHDO101C020Model(initDataSubFormC020, "GXHDO101B003");
 
         model.setReturnItemId_TapeLot1_Hinmei(GXHDO101B003Const.DENKYOKU_TAPE);
+        model.setReturnItemId_TapeLot1_Tapelength(GXHDO101B003Const.SEIKEINAGASA);
         model.setReturnItemId_TapeLot1_Conventionallot(GXHDO101B003Const.SLIP_LOTNO);
         model.setReturnItemId_TapeLot1_Lotkigo(GXHDO101B003Const.GENRYO_KIGOU);
         model.setReturnItemId_TapeLot1_Rollno(GXHDO101B003Const.ROLL_NO1);

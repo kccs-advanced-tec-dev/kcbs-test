@@ -562,6 +562,24 @@ public class GXHDO101C020 implements Serializable {
     }
 
     /**
+     * 上端子警告メッセージ 
+     * 
+     * @return uwaTWarnMessage the uwaTWarnMessage
+     */
+    public String getUwaTWarnMessage() {
+        return MessageUtil.getMessage("XHD-000206", "");
+    }
+
+    /**
+     * 下端子警告メッセージ 
+     * 
+     * @return shitaTWarnMessage the shitaTWarnMessage
+     */
+    public String getShitaTWarnMessage() {
+        return MessageUtil.getMessage("XHD-000207", "");
+    }
+
+    /**
      * 電極ﾍﾟｰｽﾄﾁｪｯｸ警告メッセージokボタン押下後の処理
      */
     public void checkTapeSameHinmeiOK() {
@@ -573,5 +591,19 @@ public class GXHDO101C020 implements Serializable {
      */
     public void checkPasteSameHinmeiOK() {
         GXHDO101C020Logic.notCheckPasteSameHinmei();
+    }
+
+    /**
+     * 上端子ﾁｪｯｸ警告メッセージokボタン押下後の処理
+     */
+    public void checkUwaTanshiSameHinmeiOK() {
+        GXHDO101C020Logic.notCheckUwaTanshiSameHinmei();
+    }
+
+    /**
+     * 下端子ﾁｪｯｸ警告メッセージokボタン押下後の処理
+     */
+    public void checkShitaTanshiSameHinmeiOK() {
+        GXHDO101C020Logic.notCheckShitaTanshiSameHinmei();
     }
 }

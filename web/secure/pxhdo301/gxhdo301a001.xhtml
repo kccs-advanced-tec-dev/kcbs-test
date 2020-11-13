@@ -63,7 +63,7 @@
                         <h:outputText value="ﾛｯﾄNO" style="text-align: left;" />
                     </p:column>
                     <p:column colspan="3">
-                        <p:outputLabel id="lotno" value="#{gXHDO301A.data.lotnoView}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                        <p:outputLabel id="lotno" value="#{gXHDO301A.data.lotno}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -71,7 +71,7 @@
                         <h:outputText value="KCPNO" style="text-align: left;" />
                     </p:column>
                     <p:column colspan="3">
-                        <p:outputLabel id="kcpno" value="#{gXHDO301A.data.kcpno}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                        <p:outputLabel id="kcpno" value="#{gXHDO301A.data.hinmei}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -79,7 +79,7 @@
                         <h:outputText value="ｾｯﾄ数" style="text-align: left;" />
                     </p:column>
                     <p:column>
-                        <p:outputLabel id="setsu" value="#{gXHDO301A.data.setsu}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                        <p:outputLabel id="setsu" value="#{gXHDO301A.data.setsuu}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
                     </p:column>
                     <p:column style="width: 110px;">
                         <h:outputText value="客先" style="text-align: left;" />
@@ -93,21 +93,26 @@
                         <h:outputText value="ﾛｯﾄ区分" style="text-align: left;" />
                     </p:column>
                     <p:column>
-                        <p:outputLabel id="lotkubuncode" value="#{gXHDO301A.data.lotkubuncode}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                        <p:outputLabel id="lotkubuncode" value="#{gXHDO301A.data.kubun1}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
                     </p:column>
                     <p:column style="width: 110px;">
                         <h:outputText value="ｵｰﾅｰ" style="text-align: left;" />
                     </p:column>
                     <p:column>
-                        <p:outputLabel id="ownercode" value="#{gXHDO301A.data.ownercode}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                        <p:outputLabel id="ownercode" value="#{gXHDO301A.data.owner}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
                     </p:column>
                 </p:row>
                 <p:row>
-                    <p:column style="width: 110px;">
+                    <p:column  rowspan="2" style="width: 110px;">
                         <h:outputText value="電極ﾃｰﾌﾟ" style="text-align: left;" />
                     </p:column>
-                    <p:column colspan="3">
-                        <p:outputLabel id="dentape" value="#{gXHDO301A.data.dentape}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                    <p:column colspan="3" style="height: 20px">
+                        <p:outputLabel id="etapetop" value="#{gXHDO301A.data.etapetop}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column colspan="3"  style="height: 20px">
+                        <p:outputLabel id="etapebuttom" value="#{gXHDO301A.data.etapebuttom}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -115,13 +120,13 @@
                         <h:outputText value="電極ﾍﾟｰｽﾄﾟ" style="text-align: left;" />
                     </p:column>
                     <p:column>
-                        <p:outputLabel id="denpaste" value="#{gXHDO301A.data.denpaste}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                        <p:outputLabel id="denpaste" value="#{gXHDO301A.data.epaste}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
                     </p:column>
                     <p:column style="width: 110px;">
                         <h:outputText value="電極製版名" style="text-align: left;" />
                     </p:column>
                     <p:column>
-                        <p:outputLabel id="denseihan" value="#{gXHDO301A.data.denseihan}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                        <p:outputLabel id="denseihan" value="#{gXHDO301A.data.eseihanmei}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -129,13 +134,13 @@
                         <h:outputText value="ｶﾊﾞｰﾃｰﾌﾟ仕様" style="text-align: left; float: left;" />
                     </p:column>
                     <p:column>
-                        <p:outputLabel id="cvtapesiyo" value="#{gXHDO301A.data.cvtapesiyo}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                        <p:outputLabel id="cvtapesiyo" value="#{gXHDO301A.data.covertape}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
                     </p:column>
                     <p:column style="width: 110px;">
                         <h:outputText value="電極製版ﾛｯﾄ" style="text-align: left;" />
                     </p:column>
                     <p:column>
-                        <p:outputLabel id="denlotno" value="#{gXHDO301A.data.denlotno}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                        <p:outputLabel id="denlotno" value="#{gXHDO301A.data.scrnlot}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -143,13 +148,13 @@
                         <h:outputText value="上ｶﾊﾞｰﾃｰﾌﾟ1" style="text-align: left;" />
                     </p:column>
                     <p:column>
-                        <p:outputLabel id="cvtapetop1" value="#{gXHDO301A.data.cvtapetop1}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                        <p:outputLabel id="cvtapetop1" value="#{gXHDO301A.data.ctcovertape1}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
                     </p:column>
                     <p:column style="width: 110px;">
                         <h:outputText value="電極製版仕様" style="text-align: left;" />
                     </p:column>
                     <p:column>
-                        <p:outputLabel id="densiyo" value="#{gXHDO301A.data.densiyo}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                        <p:outputLabel id="densiyo" value="#{gXHDO301A.data.eseihan}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -157,13 +162,13 @@
                         <h:outputText value="上ｶﾊﾞｰﾃｰﾌﾟ2" style="text-align: left;" />
                     </p:column>
                     <p:column>
-                        <p:outputLabel id="cvtapetop2" value="#{gXHDO301A.data.cvtapetop2}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                        <p:outputLabel id="cvtapetop2" value="#{gXHDO301A.data.stcovertape2}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
                     </p:column>
                     <p:column style="width: 110px;">
                         <h:outputText value="積層ｽﾗｲﾄﾞ量" style="text-align: left;" />
                     </p:column>
                     <p:column>
-                        <p:outputLabel id="eslideryo" value="#{gXHDO301A.data.eslideryo}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                        <p:outputLabel id="eslideryo" value="#{gXHDO301A.data.sekislide}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -171,13 +176,13 @@
                         <h:outputText value="下ｶﾊﾞｰﾃｰﾌﾟ1" style="text-align: left;" />
                     </p:column>
                     <p:column>
-                        <p:outputLabel id="cvtapebottom1" value="#{gXHDO301A.data.cvtapebottom1}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                        <p:outputLabel id="cvtapebottom1" value="#{gXHDO301A.data.cbcovertape1}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
                     </p:column>
                     <p:column style="width: 110px;">
                         <h:outputText value="誘電体製版名" style="text-align: left;" />
                     </p:column>
                     <p:column>
-                        <p:outputLabel id="yudenseihan" value="#{gXHDO301A.data.yudenseihan}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                        <p:outputLabel id="yudenseihan" value="#{gXHDO301A.data.yseihanmei}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -185,13 +190,13 @@
                         <h:outputText value="下ｶﾊﾞｰﾃｰﾌﾟ2" style="text-align: left;" />
                     </p:column>
                     <p:column>
-                        <p:outputLabel id="cvtapebottom2" value="#{gXHDO301A.data.cvtapebottom2}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                        <p:outputLabel id="cvtapebottom2" value="#{gXHDO301A.data.sbcovertape2}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
                     </p:column>
                     <p:column style="width: 110px;">
                         <h:outputText value="誘電体製版仕様" style="text-align: left;" />
                     </p:column>
                     <p:column>
-                        <p:outputLabel id="yudenseihansiyo" value="#{gXHDO301A.data.yudenseihansiyo}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                        <p:outputLabel id="yudenseihansiyo" value="#{gXHDO301A.data.yseihan}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -199,13 +204,13 @@
                         <h:outputText value="誘電体ﾍﾟｰｽﾄ" style="text-align: left;" />
                     </p:column>
                     <p:column>
-                        <p:outputLabel id="yudenpaste" value="#{gXHDO301A.data.yudenpaste}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                        <p:outputLabel id="yudenpaste" value="#{gXHDO301A.data.ypaste}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
                     </p:column>
                     <p:column style="width: 110px;">
                         <h:outputText value="指定公差" style="text-align: left;" />
                     </p:column>
                     <p:column>
-                        <p:outputLabel id="siteikosa" value="#{gXHDO301A.data.siteikosa}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                        <p:outputLabel id="siteikosa" value="#{gXHDO301A.data.kousa}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -213,13 +218,13 @@
                         <h:outputText value="PETﾌｨﾙﾑ種類" style="text-align: left;" />
                     </p:column>
                     <p:column>
-                        <p:outputLabel id="petfilmsyurui" value="#{gXHDO301A.data.petfilmsyurui}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                        <p:outputLabel id="petfilmsyurui" value="#{gXHDO301A.data.petfilm}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
                     </p:column>
                     <p:column style="width: 110px;">
                         <h:outputText value="取り個数" style="text-align: left;" />
                     </p:column>
                     <p:column>
-                        <p:outputLabel id="torikosu" value="#{gXHDO301A.data.torikosu}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                        <p:outputLabel id="torikosu" value="#{gXHDO301A.data.torikosuu}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -227,7 +232,7 @@
                         <h:outputText value="個数" style="text-align: left;" />
                     </p:column>
                     <p:column colspan="3">
-                        <p:outputLabel id="kosu" value="#{gXHDO301A.data.kosu}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                        <p:outputLabel id="kosu" value="#{gXHDO301A.data.kosuu}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
                     </p:column>
                 </p:row>
             </p:panelGrid>
