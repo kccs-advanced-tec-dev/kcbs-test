@@ -525,8 +525,8 @@ public class PublicResource {
                              getFormatData(param.getBin7senbetsukbn(), "20", "", "String"),
                              getFormatData(param.getBin8senbetsukbn(), "20", "", "String"),
                              getFormatData(param.getTestplatekanrino(), "20", "", "String"),
-                             getFormatData(param.getHandasample(), "10", "", "String"),
-                             getFormatData(param.getSinraiseisample(), "10", "", "String"),
+                             getFormatData(getTrimString(param.getHandasample(), "個"), "10", "", "String"),
+                             getFormatData(getTrimString(param.getSinraiseisample(), "個"), "10", "", "String"),
                              getFormatData(param.getKensabasyo(), "10", "", "String"),
                              getFormatData(param.getSenbetujunjo(), "10", "", "String"),
                              getFormatData(param.getSetteikakunin(), "10", "", "String"),
@@ -618,7 +618,7 @@ public class PublicResource {
         String[] hanteichi = getNumberData(value, "", "");
         BigDecimal decHanteichi = new BigDecimal(hanteichi[0]);
 
-        return new BigDecimal(NumberUtil.getTruncatData(decHanteichi.toPlainString(), "2", "12"));
+        return new BigDecimal(NumberUtil.getTruncatData(decHanteichi.toPlainString(), "3", "10"));
     }
 
     /**
@@ -646,6 +646,20 @@ public class PublicResource {
             default:
                 return StringUtil.left(StringUtil.trimAll(value), Integer.parseInt(length));
         }
+    }
+    
+    /**
+     * 対象文字列のトリム処理
+     * @param value 値
+     * @param trimChar トリム対象文字列
+     * @return トリム後文字列
+     */
+    private String getTrimString(String value, String trimChar) {
+        if (StringUtil.isEmpty(value)) {
+            return value;
+        }
+        
+        return value.replaceAll(trimChar, "");
     }
 
     /**
