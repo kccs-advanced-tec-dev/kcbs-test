@@ -2233,7 +2233,7 @@ public class GXHDO101B010 implements IFormLogic {
                 + "programmei = ?,gyoretukakunin = ?,marktorisuu = ?,cuthoseiryou = ?,tableondosethidari = ?,tableondosokuhidari = ?,gaikancheck = ?," 
                 + "hatakasang = ?,syorisetsuu = ?,ryouhinsetsuu = ?,sagyoubasyo = ?,revision = ?,cutbachokushindomigi = ?,tableondosetnaka = ?,"
                 + "tableondosetmigi = ?,tableondosokunaka = ?,tableondosokumigi = ?,dai2tableondosethidari = ?,dai2tableondosetnaka = ?,"
-                + "dai2tableondosetmigi = ?,dai2tableondosokuhidari = ?,dai2tableondosokunaka = ?,dai2tableondosokumigi = ?,station1lotno = ?, station2lotno = ?,ondo = ?"
+                + "dai2tableondosetmigi = ?,dai2tableondosokuhidari = ?,dai2tableondosokunaka = ?,dai2tableondosokumigi = ?,station1lotno = ?, station2lotno = ?,ondo = ?　"
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ?";
 
         // 更新前の値を取得
