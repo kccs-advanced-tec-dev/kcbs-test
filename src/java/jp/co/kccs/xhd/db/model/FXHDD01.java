@@ -36,6 +36,11 @@ import org.apache.commons.lang3.StringUtils;
  * 変更者	863 zhangjy<br>
  * 変更理由	FXHDD01の入力項目型[9]の追加対応<br>
  * <br>
+ * 変更日	2020/11/13<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjy<br>
+ * 変更理由	フロー用仮登録項目チェックボックス、ボタンの追加対応<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -224,6 +229,14 @@ public class FXHDD01 {
      * 項目ｲﾝﾃﾞｯｸｽ
      */
     private int itemIndex;
+    /**
+     * 仮登録時入力項目(チェックボックス)render有無
+     */
+    private boolean renderTempItemCheckBox;
+    /**
+     * 仮登録時入力項目の値(チェックボックス)
+     */
+    private String tempItemCheckBoxValue;
 
     public FXHDD01() {
 
@@ -1019,6 +1032,42 @@ public class FXHDD01 {
      */
     public void setItemIndex(int itemIndex) {
         this.itemIndex = itemIndex;
+    }
+
+    /**
+     * 仮登録時入力項目(チェックボックス)render有無
+     * 
+     * @return the renderTempItemCheckBox
+     */
+    public boolean isRenderTempItemCheckBox() {
+        return renderTempItemCheckBox;
+    }
+
+    /**
+     * 仮登録時入力項目(チェックボックス)render有無
+     * 
+     * @param renderTempItemCheckBox the renderTempItemCheckBox to set
+     */
+    public void setRenderTempItemCheckBox(boolean renderTempItemCheckBox) {
+        this.renderTempItemCheckBox = renderTempItemCheckBox;
+    }
+
+    /**
+     * 仮登録時入力項目の値(チェックボックス)
+     * 
+     * @return the tempItemCheckBoxValue
+     */
+    public String getTempItemCheckBoxValue() {
+        return tempItemCheckBoxValue;
+    }
+
+    /**
+     * 仮登録時入力項目の値(チェックボックス)
+     * 
+     * @param tempItemCheckBoxValue the tempItemCheckBoxValue to set
+     */
+    public void setTempItemCheckBoxValue(String tempItemCheckBoxValue) {
+        this.tempItemCheckBoxValue = tempItemCheckBoxValue;
     }
 
     /**

@@ -26,6 +26,11 @@ import javax.faces.context.FacesContext;
  * 変更者	863 zhangjy<br>
  * 変更理由	前工程WIP取込画面のロジックを追加<br>
  * <br>
+ * 変更日	2020/11/23<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjy<br>
+ * 変更理由	電気特性・熱処理_サブ画面のロジックを追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -84,6 +89,10 @@ public class SubFormUtil {
      * 画面追加
      */
     public static final String FORM_ID_GXHDO101C017 = "GXHDO101C017";
+    /**
+     * 電気特性・熱処理_サブ画面
+     */
+    public static final String FORM_ID_GXHDO101C018 = "GXHDO101C018";
     /**
      * 前工程WIP取込
      */
@@ -202,6 +211,13 @@ public class SubFormUtil {
                 returnBean = FacesContext.getCurrentInstance().
                         getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
                                 getELContext(), null, "beanGXHDO101C017");
+                break;
+
+            // 電気特性・熱処理_サブ画面
+            case "GXHDO101C018":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO101C018");
                 break;
                 
             // 前工程WIP取込画面

@@ -13,6 +13,11 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/11/23<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjy<br>
+ * 変更理由	サヤnoボタン追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -183,6 +188,11 @@ public class GXHDO101B043Const {
     public static final String BTN_UKEIRESOJURYO_KEISAN_TOP = "sr_shinkuukansou_ukeiresojuryo_keisan_Top";
 
     /**
+     * サヤNo(画面上)
+     */
+    public static final String BTN_UKEIRESOJURYO_SAYANO_TOP = "sr_shinkuukansou_sayano_Top";
+
+    /**
      * 仮登録(画面下)
      */
     public static final String BTN_KARI_TOUROKU_BOTTOM = "sr_shinkuukansou_kari_touroku_Bottom";
@@ -221,6 +231,11 @@ public class GXHDO101B043Const {
      * 受入れ総重量計算(画面下)
      */
     public static final String BTN_UKEIRESOJURYO_KEISAN_BOTTOM = "sr_shinkuukansou_ukeiresojuryo_keisan_Bottom";
+
+    /**
+     * サヤNo(画面下)
+     */
+    public static final String BTN_UKEIRESOJURYO_SAYANO_BOTTOM = "sr_shinkuukansou_sayano_Bottom";
 
     /**
      * ユーザー認証パラメータ(修正)

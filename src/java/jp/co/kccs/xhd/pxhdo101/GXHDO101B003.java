@@ -83,6 +83,11 @@ import org.apache.commons.dbutils.handlers.MapListHandler;
  * 変更者	863 zhangjy<br>
  * 変更理由	前工程WIPボタンロジックを追加<br>
  * <br>
+ * 変更日	2020/11/20<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjy<br>
+ * 変更理由	フロー用仮登録の関連処理を追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -2356,9 +2361,9 @@ public class GXHDO101B003 implements IFormLogic {
             String kojyo, String lotNo, String edaban, int jissekino, String jotaiFlg, Timestamp systemTime) throws SQLException {
         String sql = "INSERT INTO fxhdd03 ("
                 + "torokusha,toroku_date,koshinsha,koshin_date,gamen_id,rev,kojyo,lotno,"
-                + "edaban,jissekino,jotai_flg,tsuika_kotei_flg"
+                + "edaban,jissekino,jotai_flg,tsuika_kotei_flg,tmp_kbn"
                 + ") VALUES ("
-                + "?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+                + "?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?) ";
 
         List<Object> params = new ArrayList<>();
         params.add(tantoshaCd); //登録者
@@ -2373,6 +2378,11 @@ public class GXHDO101B003 implements IFormLogic {
         params.add(jissekino); //実績No
         params.add(jotaiFlg); //状態ﾌﾗｸﾞ
         params.add("0"); //追加工程ﾌﾗｸﾞ
+        if (JOTAI_FLG_KARI_TOROKU.equals(jotaiFlg)) {
+            params.add(null); //仮登録区分
+        } else {
+            params.add(99); //仮登録区分
+        }
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerDoc.update(conDoc, sql, params.toArray());
@@ -2395,12 +2405,24 @@ public class GXHDO101B003 implements IFormLogic {
     private void updateFxhdd03(QueryRunner queryRunnerDoc, Connection conDoc, String tantoshaCd, String formId, BigDecimal rev,
             String kojyo, String lotNo, String edaban, String jotaiFlg, Timestamp systemTime) throws SQLException {
 
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+        boolean isFlowButtonClik = Boolean.parseBoolean(StringUtil.nullToBlank(session.getAttribute("isFlowButtonClik")));
+        
         String sql = "UPDATE fxhdd03 SET "
                 + "koshinsha = ?, koshin_date = ?,"
                 + "rev = ?, jotai_flg = ? "
                 + "WHERE gamen_id = ? AND kojyo = ? "
                 + "  AND lotno = ? AND edaban = ? "
                 + "  AND jissekino = 1  ";
+        if (!JOTAI_FLG_KARI_TOROKU.equals(jotaiFlg) || isFlowButtonClik) {
+            sql = "UPDATE fxhdd03 SET "
+                + "koshinsha = ?, koshin_date = ?,"
+                + "rev = ?, jotai_flg = ?, tmp_kbn = ? " 
+                + "WHERE gamen_id = ? AND kojyo = ? "
+                + "  AND lotno = ? AND edaban = ? "
+                + "  AND jissekino = 1  ";
+        }
 
         List<Object> params = new ArrayList<>();
         // 更新内容
@@ -2408,6 +2430,15 @@ public class GXHDO101B003 implements IFormLogic {
         params.add(systemTime); //更新日
         params.add(rev); //revision
         params.add(jotaiFlg); //状態ﾌﾗｸﾞ
+        if (JOTAI_FLG_TOROKUZUMI.equals(jotaiFlg)) {
+            params.add(99); //仮登録区分
+        } else if (JOTAI_FLG_SAKUJO.equals(jotaiFlg)) {
+            params.add(0); //仮登録区分
+        } else {
+            if (isFlowButtonClik) {
+                params.add(getTmpKbn(queryRunnerDoc)); //仮登録区分
+            }
+        }
 
         // 検索条件
         params.add(formId); //画面ID
@@ -4131,5 +4162,20 @@ public class GXHDO101B003 implements IFormLogic {
                 break;
         }
         return mkubunno;
+    }
+
+    private int getTmpKbn(QueryRunner queryRunnerDoc) throws SQLException {
+        int tmpKbn = 0;
+        String sql = "SELECT tmp_kbn FROM fxhdm08 WHERE gamen_id = ?";
+        
+        List<Object> params = new ArrayList<>();
+        params.add("GXHDO101B003");
+        
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        Map<String, Object> result = queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
+        if (result != null && !result.isEmpty()) {
+            tmpKbn = Integer.valueOf(StringUtil.nullToBlank(result.get("tmp_kbn")));
+        }
+        return tmpKbn;
     }
 }

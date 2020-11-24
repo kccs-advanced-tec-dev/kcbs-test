@@ -62,6 +62,11 @@ import org.primefaces.context.RequestContext;
  * 変更者	KCSS D.Yanagida<br>
  * 変更理由	ロット混合対応<br>
  * <br>
+ * 変更日	2020/11/20<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	画面上に「登録用」のロットNo入力項目を追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -107,6 +112,151 @@ public class GXHDO211B implements Serializable {
      * ロットNo
      */
     private String lotno;
+
+    /**
+     * ロットNo2
+     */
+    private String lotno2;
+
+    /**
+     * ロットNo3
+     */
+    private String lotno3;
+
+    /**
+     * ロットNo4
+     */
+    private String lotno4;
+
+    /**
+     * ロットNo5
+     */
+    private String lotno5;
+
+    /**
+     * ロットNo6
+     */
+    private String lotno6;
+
+    /**
+     * ロットNo7
+     */
+    private String lotno7;
+
+    /**
+     * ロットNo8
+     */
+    private String lotno8;
+
+    /**
+     * ロットNo9
+     */
+    private String lotno9;
+
+    /**
+     * ロットNo10
+     */
+    private String lotno10;
+
+    /**
+     * ロットNo11
+     */
+    private String lotno11;
+
+    /**
+     * ロットNo12
+     */
+    private String lotno12;
+
+    /**
+     * ロットNo13
+     */
+    private String lotno13;
+
+    /**
+     * ロットNo14
+     */
+    private String lotno14;
+
+    /**
+     * ロットNo15
+     */
+    private String lotno15;
+
+    /**
+     * ロットNo16
+     */
+    private String lotno16;
+
+    /**
+     * ロットNo17
+     */
+    private String lotno17;
+
+    /**
+     * ロットNo18
+     */
+    private String lotno18;
+
+    /**
+     * ロットNo19
+     */
+    private String lotno19;
+
+    /**
+     * ロットNo20
+     */
+    private String lotno20;
+
+    /**
+     * ロットNo21
+     */
+    private String lotno21;
+
+    /**
+     * ロットNo22
+     */
+    private String lotno22;
+
+    /**
+     * ロットNo23
+     */
+    private String lotno23;
+
+    /**
+     * ロットNo24
+     */
+    private String lotno24;
+
+    /**
+     * ロットNo25
+     */
+    private String lotno25;
+
+    /**
+     * ロットNo26
+     */
+    private String lotno26;
+
+    /**
+     * ロットNo27
+     */
+    private String lotno27;
+
+    /**
+     * ロットNo28
+     */
+    private String lotno28;
+
+    /**
+     * ロットNo29
+     */
+    private String lotno29;
+
+    /**
+     * ロットNo30
+     */
+    private String lotno30;
 
     /**
      * 指示者
@@ -192,6 +342,151 @@ public class GXHDO211B implements Serializable {
      * ロットNo(BackGround)
      */
     private String lotnoBackGround;
+
+    /**
+     * ロットNo2(BackGround)
+     */
+    private String lotno2BackGround;
+
+    /**
+     * ロットNo3(BackGround)
+     */
+    private String lotno3BackGround;
+
+    /**
+     * ロットNo4(BackGround)
+     */
+    private String lotno4BackGround;
+
+    /**
+     * ロットNo5(BackGround)
+     */
+    private String lotno5BackGround;
+
+    /**
+     * ロットNo6(BackGround)
+     */
+    private String lotno6BackGround;
+
+    /**
+     * ロットNo7(BackGround)
+     */
+    private String lotno7BackGround;
+
+    /**
+     * ロットNo8(BackGround)
+     */
+    private String lotno8BackGround;
+
+    /**
+     * ロットNo9(BackGround)
+     */
+    private String lotno9BackGround;
+
+    /**
+     * ロットNo10(BackGround)
+     */
+    private String lotno10BackGround;
+
+    /**
+     * ロットNo11(BackGround)
+     */
+    private String lotno11BackGround;
+
+    /**
+     * ロットNo12(BackGround)
+     */
+    private String lotno12BackGround;
+
+    /**
+     * ロットNo13(BackGround)
+     */
+    private String lotno13BackGround;
+
+    /**
+     * ロットNo14(BackGround)
+     */
+    private String lotno14BackGround;
+
+    /**
+     * ロットNo15(BackGround)
+     */
+    private String lotno15BackGround;
+
+    /**
+     * ロットNo16(BackGround)
+     */
+    private String lotno16BackGround;
+
+    /**
+     * ロットNo17(BackGround)
+     */
+    private String lotno17BackGround;
+
+    /**
+     * ロットNo18(BackGround)
+     */
+    private String lotno18BackGround;
+
+    /**
+     * ロットNo19(BackGround)
+     */
+    private String lotno19BackGround;
+
+    /**
+     * ロットNo20(BackGround)
+     */
+    private String lotno20BackGround;
+
+    /**
+     * ロットNo21(BackGround)
+     */
+    private String lotno21BackGround;
+
+    /**
+     * ロットNo22(BackGround)
+     */
+    private String lotno22BackGround;
+
+    /**
+     * ロットNo23(BackGround)
+     */
+    private String lotno23BackGround;
+
+    /**
+     * ロットNo24(BackGround)
+     */
+    private String lotno24BackGround;
+
+    /**
+     * ロットNo25(BackGround)
+     */
+    private String lotno25BackGround;
+
+    /**
+     * ロットNo26(BackGround)
+     */
+    private String lotno26BackGround;
+
+    /**
+     * ロットNo27(BackGround)
+     */
+    private String lotno27BackGround;
+
+    /**
+     * ロットNo28(BackGround)
+     */
+    private String lotno28BackGround;
+
+    /**
+     * ロットNo29(BackGround)
+     */
+    private String lotno29BackGround;
+
+    /**
+     * ロットNo30(BackGround)
+     */
+    private String lotno30BackGround;
 
     /**
      * 指示者(BackGround)
@@ -380,6 +675,528 @@ public class GXHDO211B implements Serializable {
      */
     public void setLotno(String lotno) {
         this.lotno = StringUtil.trimAll(lotno);
+    }
+
+    /**
+     * ロットNo2
+     *
+     * @return the lotno2
+     */
+    public String getLotno2() {
+        return lotno2;
+    }
+
+    /**
+     * ロットNo2
+     *
+     * @param lotno2 the lotno2 to set
+     */
+    public void setLotno2(String lotno2) {
+        this.lotno2 = StringUtil.trimAll(lotno2);
+    }
+
+    /**
+     * ロットNo3
+     *
+     * @return the lotno3
+     */
+    public String getLotno3() {
+        return lotno3;
+    }
+
+    /**
+     * ロットNo3
+     *
+     * @param lotno3 the lotno3 to set
+     */
+    public void setLotno3(String lotno3) {
+        this.lotno3 = StringUtil.trimAll(lotno3);
+    }
+
+    /**
+     * ロットNo4
+     *
+     * @return the lotno4
+     */
+    public String getLotno4() {
+        return lotno4;
+    }
+
+    /**
+     * ロットNo4
+     *
+     * @param lotno4 the lotno4 to set
+     */
+    public void setLotno4(String lotno4) {
+        this.lotno4 = StringUtil.trimAll(lotno4);
+    }
+
+    /**
+     * ロットNo5
+     *
+     * @return the lotno5
+     */
+    public String getLotno5() {
+        return lotno5;
+    }
+
+    /**
+     * ロットNo5
+     *
+     * @param lotno5 the lotno5 to set
+     */
+    public void setLotno5(String lotno5) {
+        this.lotno5 = StringUtil.trimAll(lotno5);
+    }
+
+    /**
+     * ロットNo6
+     *
+     * @return the lotno6
+     */
+    public String getLotno6() {
+        return lotno6;
+    }
+
+    /**
+     * ロットNo6
+     *
+     * @param lotno6 the lotno6 to set
+     */
+    public void setLotno6(String lotno6) {
+        this.lotno6 = StringUtil.trimAll(lotno6);
+    }
+
+    /**
+     * ロットNo7
+     *
+     * @return the lotno7
+     */
+    public String getLotno7() {
+        return lotno7;
+    }
+
+    /**
+     * ロットNo7
+     *
+     * @param lotno7 the lotno7 to set
+     */
+    public void setLotno7(String lotno7) {
+        this.lotno7 = StringUtil.trimAll(lotno7);
+    }
+
+    /**
+     * ロットNo8
+     *
+     * @return the lotno8
+     */
+    public String getLotno8() {
+        return lotno8;
+    }
+
+    /**
+     * ロットNo8
+     *
+     * @param lotno8 the lotno8 to set
+     */
+    public void setLotno8(String lotno8) {
+        this.lotno8 = StringUtil.trimAll(lotno8);
+    }
+
+    /**
+     * ロットNo9
+     *
+     * @return the lotno9
+     */
+    public String getLotno9() {
+        return lotno9;
+    }
+
+    /**
+     * ロットNo9
+     *
+     * @param lotno9 the lotno9 to set
+     */
+    public void setLotno9(String lotno9) {
+        this.lotno9 = StringUtil.trimAll(lotno9);
+    }
+
+    /**
+     * ロットNo10
+     *
+     * @return the lotno10
+     */
+    public String getLotno10() {
+        return lotno10;
+    }
+
+    /**
+     * ロットNo10
+     *
+     * @param lotno10 the lotno10 to set
+     */
+    public void setLotno10(String lotno10) {
+        this.lotno10 = StringUtil.trimAll(lotno10);
+    }
+
+    /**
+     * ロットNo11
+     *
+     * @return the lotno11
+     */
+    public String getLotno11() {
+        return lotno11;
+    }
+
+    /**
+     * ロットNo11
+     *
+     * @param lotno11 the lotno11 to set
+     */
+    public void setLotno11(String lotno11) {
+        this.lotno11 = StringUtil.trimAll(lotno11);
+    }
+
+    /**
+     * ロットNo12
+     *
+     * @return the lotno12
+     */
+    public String getLotno12() {
+        return lotno12;
+    }
+
+    /**
+     * ロットNo12
+     *
+     * @param lotno12 the lotno12 to set
+     */
+    public void setLotno12(String lotno12) {
+        this.lotno12 = StringUtil.trimAll(lotno12);
+    }
+
+    /**
+     * ロットNo13
+     *
+     * @return the lotno13
+     */
+    public String getLotno13() {
+        return lotno13;
+    }
+
+    /**
+     * ロットNo13
+     *
+     * @param lotno13 the lotno13 to set
+     */
+    public void setLotno13(String lotno13) {
+        this.lotno13 = StringUtil.trimAll(lotno13);
+    }
+
+    /**
+     * ロットNo14
+     *
+     * @return the lotno14
+     */
+    public String getLotno14() {
+        return lotno14;
+    }
+
+    /**
+     * ロットNo14
+     *
+     * @param lotno14 the lotno14 to set
+     */
+    public void setLotno14(String lotno14) {
+        this.lotno14 = StringUtil.trimAll(lotno14);
+    }
+
+    /**
+     * ロットNo15
+     *
+     * @return the lotno15
+     */
+    public String getLotno15() {
+        return lotno15;
+    }
+
+    /**
+     * ロットNo15
+     *
+     * @param lotno15 the lotno15 to set
+     */
+    public void setLotno15(String lotno15) {
+        this.lotno15 = StringUtil.trimAll(lotno15);
+    }
+
+    /**
+     * ロットNo16
+     *
+     * @return the lotno16
+     */
+    public String getLotno16() {
+        return lotno16;
+    }
+
+    /**
+     * ロットNo16
+     *
+     * @param lotno16 the lotno16 to set
+     */
+    public void setLotno16(String lotno16) {
+        this.lotno16 = StringUtil.trimAll(lotno16);
+    }
+
+    /**
+     * ロットNo17
+     *
+     * @return the lotno17
+     */
+    public String getLotno17() {
+        return lotno17;
+    }
+
+    /**
+     * ロットNo17
+     *
+     * @param lotno17 the lotno17 to set
+     */
+    public void setLotno17(String lotno17) {
+        this.lotno17 = StringUtil.trimAll(lotno17);
+    }
+
+    /**
+     * ロットNo18
+     *
+     * @return the lotno18
+     */
+    public String getLotno18() {
+        return lotno18;
+    }
+
+    /**
+     * ロットNo18
+     *
+     * @param lotno18 the lotno18 to set
+     */
+    public void setLotno18(String lotno18) {
+        this.lotno18 = StringUtil.trimAll(lotno18);
+    }
+
+    /**
+     * ロットNo19
+     *
+     * @return the lotno19
+     */
+    public String getLotno19() {
+        return lotno19;
+    }
+
+    /**
+     * ロットNo19
+     *
+     * @param lotno19 the lotno19 to set
+     */
+    public void setLotno19(String lotno19) {
+        this.lotno19 = StringUtil.trimAll(lotno19);
+    }
+
+    /**
+     * ロットNo20
+     *
+     * @return the lotno20
+     */
+    public String getLotno20() {
+        return lotno20;
+    }
+
+    /**
+     * ロットNo20
+     *
+     * @param lotno20 the lotno20 to set
+     */
+    public void setLotno20(String lotno20) {
+        this.lotno20 = StringUtil.trimAll(lotno20);
+    }
+
+    /**
+     * ロットNo21
+     *
+     * @return the lotno21
+     */
+    public String getLotno21() {
+        return lotno21;
+    }
+
+    /**
+     * ロットNo21
+     *
+     * @param lotno21 the lotno21 to set
+     */
+    public void setLotno21(String lotno21) {
+        this.lotno21 = StringUtil.trimAll(lotno21);
+    }
+
+    /**
+     * ロットNo22
+     *
+     * @return the lotno22
+     */
+    public String getLotno22() {
+        return lotno22;
+    }
+
+    /**
+     * ロットNo22
+     *
+     * @param lotno22 the lotno22 to set
+     */
+    public void setLotno22(String lotno22) {
+        this.lotno22 = StringUtil.trimAll(lotno22);
+    }
+
+    /**
+     * ロットNo23
+     *
+     * @return the lotno23
+     */
+    public String getLotno23() {
+        return lotno23;
+    }
+
+    /**
+     * ロットNo23
+     *
+     * @param lotno23 the lotno23 to set
+     */
+    public void setLotno23(String lotno23) {
+        this.lotno23 = StringUtil.trimAll(lotno23);
+    }
+
+    /**
+     * ロットNo24
+     *
+     * @return the lotno24
+     */
+    public String getLotno24() {
+        return lotno24;
+    }
+
+    /**
+     * ロットNo24
+     *
+     * @param lotno24 the lotno24 to set
+     */
+    public void setLotno24(String lotno24) {
+        this.lotno24 = StringUtil.trimAll(lotno24);
+    }
+
+    /**
+     * ロットNo25
+     *
+     * @return the lotno25
+     */
+    public String getLotno25() {
+        return lotno25;
+    }
+
+    /**
+     * ロットNo25
+     *
+     * @param lotno25 the lotno25 to set
+     */
+    public void setLotno25(String lotno25) {
+        this.lotno25 = StringUtil.trimAll(lotno25);
+    }
+
+    /**
+     * ロットNo26
+     *
+     * @return the lotno26
+     */
+    public String getLotno26() {
+        return lotno26;
+    }
+
+    /**
+     * ロットNo26
+     *
+     * @param lotno26 the lotno26 to set
+     */
+    public void setLotno26(String lotno26) {
+        this.lotno26 = StringUtil.trimAll(lotno26);
+    }
+
+    /**
+     * ロットNo27
+     *
+     * @return the lotno27
+     */
+    public String getLotno27() {
+        return lotno27;
+    }
+
+    /**
+     * ロットNo27
+     *
+     * @param lotno27 the lotno27 to set
+     */
+    public void setLotno27(String lotno27) {
+        this.lotno27 = StringUtil.trimAll(lotno27);
+    }
+
+    /**
+     * ロットNo28
+     *
+     * @return the lotno28
+     */
+    public String getLotno28() {
+        return lotno28;
+    }
+
+    /**
+     * ロットNo28
+     *
+     * @param lotno28 the lotno28 to set
+     */
+    public void setLotno28(String lotno28) {
+        this.lotno28 = StringUtil.trimAll(lotno28);
+    }
+
+    /**
+     * ロットNo29
+     *
+     * @return the lotno29
+     */
+    public String getLotno29() {
+        return lotno29;
+    }
+
+    /**
+     * ロットNo29
+     *
+     * @param lotno29 the lotno29 to set
+     */
+    public void setLotno29(String lotno29) {
+        this.lotno29 = StringUtil.trimAll(lotno29);
+    }
+
+    /**
+     * ロットNo30
+     *
+     * @return the lotno30
+     */
+    public String getLotno30() {
+        return lotno30;
+    }
+
+    /**
+     * ロットNo30
+     *
+     * @param lotno30 the lotno30 to set
+     */
+    public void setLotno30(String lotno30) {
+        this.lotno30 = StringUtil.trimAll(lotno30);
     }
 
     /**
@@ -686,6 +1503,528 @@ public class GXHDO211B implements Serializable {
      */
     public void setLotnoBackGround(String lotnoBackGround) {
         this.lotnoBackGround = lotnoBackGround;
+    }
+
+    /**
+     * ロットNo2(BackGround)
+     *
+     * @return the lotno2BackGround
+     */
+    public String getLotno2BackGround() {
+        return lotno2BackGround;
+    }
+
+    /**
+     * ロットNo2(BackGround)
+     *
+     * @param lotno2BackGround the lotno2BackGround to set
+     */
+    public void setLotno2BackGround(String lotno2BackGround) {
+        this.lotno2BackGround = lotno2BackGround;
+    }
+
+    /**
+     * ロットNo3(BackGround)
+     *
+     * @return the lotno3BackGround
+     */
+    public String getLotno3BackGround() {
+        return lotno3BackGround;
+    }
+
+    /**
+     * ロットNo3(BackGround)
+     *
+     * @param lotno3BackGround the lotno3BackGround to set
+     */
+    public void setLotno3BackGround(String lotno3BackGround) {
+        this.lotno3BackGround = lotno3BackGround;
+    }
+
+    /**
+     * ロットNo4(BackGround)
+     *
+     * @return the lotno4BackGround
+     */
+    public String getLotno4BackGround() {
+        return lotno4BackGround;
+    }
+
+    /**
+     * ロットNo4(BackGround)
+     *
+     * @param lotno4BackGround the lotno4BackGround to set
+     */
+    public void setLotno4BackGround(String lotno4BackGround) {
+        this.lotno4BackGround = lotno4BackGround;
+    }
+
+    /**
+     * ロットNo5(BackGround)
+     *
+     * @return the lotno5BackGround
+     */
+    public String getLotno5BackGround() {
+        return lotno5BackGround;
+    }
+
+    /**
+     * ロットNo5(BackGround)
+     *
+     * @param lotno5BackGround the lotno5BackGround to set
+     */
+    public void setLotno5BackGround(String lotno5BackGround) {
+        this.lotno5BackGround = lotno5BackGround;
+    }
+
+    /**
+     * ロットNo6(BackGround)
+     *
+     * @return the lotno6BackGround
+     */
+    public String getLotno6BackGround() {
+        return lotno6BackGround;
+    }
+
+    /**
+     * ロットNo6(BackGround)
+     *
+     * @param lotno6BackGround the lotno6BackGround to set
+     */
+    public void setLotno6BackGround(String lotno6BackGround) {
+        this.lotno6BackGround = lotno6BackGround;
+    }
+
+    /**
+     * ロットNo7(BackGround)
+     *
+     * @return the lotno7BackGround
+     */
+    public String getLotno7BackGround() {
+        return lotno7BackGround;
+    }
+
+    /**
+     * ロットNo7(BackGround)
+     *
+     * @param lotno7BackGround the lotno7BackGround to set
+     */
+    public void setLotno7BackGround(String lotno7BackGround) {
+        this.lotno7BackGround = lotno7BackGround;
+    }
+
+    /**
+     * ロットNo8(BackGround)
+     *
+     * @return the lotno8BackGround
+     */
+    public String getLotno8BackGround() {
+        return lotno8BackGround;
+    }
+
+    /**
+     * ロットNo8(BackGround)
+     *
+     * @param lotno8BackGround the lotno8BackGround to set
+     */
+    public void setLotno8BackGround(String lotno8BackGround) {
+        this.lotno8BackGround = lotno8BackGround;
+    }
+
+    /**
+     * ロットNo9(BackGround)
+     *
+     * @return the lotno9BackGround
+     */
+    public String getLotno9BackGround() {
+        return lotno9BackGround;
+    }
+
+    /**
+     * ロットNo9(BackGround)
+     *
+     * @param lotno9BackGround the lotno9BackGround to set
+     */
+    public void setLotno9BackGround(String lotno9BackGround) {
+        this.lotno9BackGround = lotno9BackGround;
+    }
+
+    /**
+     * ロットNo10(BackGround)
+     *
+     * @return the lotno10BackGround
+     */
+    public String getLotno10BackGround() {
+        return lotno10BackGround;
+    }
+
+    /**
+     * ロットNo10(BackGround)
+     *
+     * @param lotno10BackGround the lotno10BackGround to set
+     */
+    public void setLotno10BackGround(String lotno10BackGround) {
+        this.lotno10BackGround = lotno10BackGround;
+    }
+
+    /**
+     * ロットNo11(BackGround)
+     *
+     * @return the lotno11BackGround
+     */
+    public String getLotno11BackGround() {
+        return lotno11BackGround;
+    }
+
+    /**
+     * ロットNo11(BackGround)
+     *
+     * @param lotno11BackGround the lotno11BackGround to set
+     */
+    public void setLotno11BackGround(String lotno11BackGround) {
+        this.lotno11BackGround = lotno11BackGround;
+    }
+
+    /**
+     * ロットNo12(BackGround)
+     *
+     * @return the lotno12BackGround
+     */
+    public String getLotno12BackGround() {
+        return lotno12BackGround;
+    }
+
+    /**
+     * ロットNo12(BackGround)
+     *
+     * @param lotno12BackGround the lotno12BackGround to set
+     */
+    public void setLotno12BackGround(String lotno12BackGround) {
+        this.lotno12BackGround = lotno12BackGround;
+    }
+
+    /**
+     * ロットNo13(BackGround)
+     *
+     * @return the lotno13BackGround
+     */
+    public String getLotno13BackGround() {
+        return lotno13BackGround;
+    }
+
+    /**
+     * ロットNo13(BackGround)
+     *
+     * @param lotno13BackGround the lotno13BackGround to set
+     */
+    public void setLotno13BackGround(String lotno13BackGround) {
+        this.lotno13BackGround = lotno13BackGround;
+    }
+
+    /**
+     * ロットNo14(BackGround)
+     *
+     * @return the lotno14BackGround
+     */
+    public String getLotno14BackGround() {
+        return lotno14BackGround;
+    }
+
+    /**
+     * ロットNo14(BackGround)
+     *
+     * @param lotno14BackGround the lotno14BackGround to set
+     */
+    public void setLotno14BackGround(String lotno14BackGround) {
+        this.lotno14BackGround = lotno14BackGround;
+    }
+
+    /**
+     * ロットNo15(BackGround)
+     *
+     * @return the lotno15BackGround
+     */
+    public String getLotno15BackGround() {
+        return lotno15BackGround;
+    }
+
+    /**
+     * ロットNo15(BackGround)
+     *
+     * @param lotno15BackGround the lotno15BackGround to set
+     */
+    public void setLotno15BackGround(String lotno15BackGround) {
+        this.lotno15BackGround = lotno15BackGround;
+    }
+
+    /**
+     * ロットNo16(BackGround)
+     *
+     * @return the lotno16BackGround
+     */
+    public String getLotno16BackGround() {
+        return lotno16BackGround;
+    }
+
+    /**
+     * ロットNo16(BackGround)
+     *
+     * @param lotno16BackGround the lotno16BackGround to set
+     */
+    public void setLotno16BackGround(String lotno16BackGround) {
+        this.lotno16BackGround = lotno16BackGround;
+    }
+
+    /**
+     * ロットNo17(BackGround)
+     *
+     * @return the lotno17BackGround
+     */
+    public String getLotno17BackGround() {
+        return lotno17BackGround;
+    }
+
+    /**
+     * ロットNo17(BackGround)
+     *
+     * @param lotno17BackGround the lotno17BackGround to set
+     */
+    public void setLotno17BackGround(String lotno17BackGround) {
+        this.lotno17BackGround = lotno17BackGround;
+    }
+
+    /**
+     * ロットNo18(BackGround)
+     *
+     * @return the lotno18BackGround
+     */
+    public String getLotno18BackGround() {
+        return lotno18BackGround;
+    }
+
+    /**
+     * ロットNo18(BackGround)
+     *
+     * @param lotno18BackGround the lotno18BackGround to set
+     */
+    public void setLotno18BackGround(String lotno18BackGround) {
+        this.lotno18BackGround = lotno18BackGround;
+    }
+
+    /**
+     * ロットNo19(BackGround)
+     *
+     * @return the lotno19BackGround
+     */
+    public String getLotno19BackGround() {
+        return lotno19BackGround;
+    }
+
+    /**
+     * ロットNo19(BackGround)
+     *
+     * @param lotno19BackGround the lotno19BackGround to set
+     */
+    public void setLotno19BackGround(String lotno19BackGround) {
+        this.lotno19BackGround = lotno19BackGround;
+    }
+
+    /**
+     * ロットNo20(BackGround)
+     *
+     * @return the lotno20BackGround
+     */
+    public String getLotno20BackGround() {
+        return lotno20BackGround;
+    }
+
+    /**
+     * ロットNo20(BackGround)
+     *
+     * @param lotno20BackGround the lotno20BackGround to set
+     */
+    public void setLotno20BackGround(String lotno20BackGround) {
+        this.lotno20BackGround = lotno20BackGround;
+    }
+
+    /**
+     * ロットNo21(BackGround)
+     *
+     * @return the lotno21BackGround
+     */
+    public String getLotno21BackGround() {
+        return lotno21BackGround;
+    }
+
+    /**
+     * ロットNo21(BackGround)
+     *
+     * @param lotno21BackGround the lotno21BackGround to set
+     */
+    public void setLotno21BackGround(String lotno21BackGround) {
+        this.lotno21BackGround = lotno21BackGround;
+    }
+
+    /**
+     * ロットNo22(BackGround)
+     *
+     * @return the lotno22BackGround
+     */
+    public String getLotno22BackGround() {
+        return lotno22BackGround;
+    }
+
+    /**
+     * ロットNo22(BackGround)
+     *
+     * @param lotno22BackGround the lotno22BackGround to set
+     */
+    public void setLotno22BackGround(String lotno22BackGround) {
+        this.lotno22BackGround = lotno22BackGround;
+    }
+
+    /**
+     * ロットNo23(BackGround)
+     *
+     * @return the lotno23BackGround
+     */
+    public String getLotno23BackGround() {
+        return lotno23BackGround;
+    }
+
+    /**
+     * ロットNo23(BackGround)
+     *
+     * @param lotno23BackGround the lotno23BackGround to set
+     */
+    public void setLotno23BackGround(String lotno23BackGround) {
+        this.lotno23BackGround = lotno23BackGround;
+    }
+
+    /**
+     * ロットNo24(BackGround)
+     *
+     * @return the lotno24BackGround
+     */
+    public String getLotno24BackGround() {
+        return lotno24BackGround;
+    }
+
+    /**
+     * ロットNo24(BackGround)
+     *
+     * @param lotno24BackGround the lotno24BackGround to set
+     */
+    public void setLotno24BackGround(String lotno24BackGround) {
+        this.lotno24BackGround = lotno24BackGround;
+    }
+
+    /**
+     * ロットNo25(BackGround)
+     *
+     * @return the lotno25BackGround
+     */
+    public String getLotno25BackGround() {
+        return lotno25BackGround;
+    }
+
+    /**
+     * ロットNo25(BackGround)
+     *
+     * @param lotno25BackGround the lotno25BackGround to set
+     */
+    public void setLotno25BackGround(String lotno25BackGround) {
+        this.lotno25BackGround = lotno25BackGround;
+    }
+
+    /**
+     * ロットNo26(BackGround)
+     *
+     * @return the lotno26BackGround
+     */
+    public String getLotno26BackGround() {
+        return lotno26BackGround;
+    }
+
+    /**
+     * ロットNo26(BackGround)
+     *
+     * @param lotno26BackGround the lotno26BackGround to set
+     */
+    public void setLotno26BackGround(String lotno26BackGround) {
+        this.lotno26BackGround = lotno26BackGround;
+    }
+
+    /**
+     * ロットNo27(BackGround)
+     *
+     * @return the lotno27BackGround
+     */
+    public String getLotno27BackGround() {
+        return lotno27BackGround;
+    }
+
+    /**
+     * ロットNo27(BackGround)
+     *
+     * @param lotno27BackGround the lotno27BackGround to set
+     */
+    public void setLotno27BackGround(String lotno27BackGround) {
+        this.lotno27BackGround = lotno27BackGround;
+    }
+
+    /**
+     * ロットNo28(BackGround)
+     *
+     * @return the lotno28BackGround
+     */
+    public String getLotno28BackGround() {
+        return lotno28BackGround;
+    }
+
+    /**
+     * ロットNo28(BackGround)
+     *
+     * @param lotno28BackGround the lotno28BackGround to set
+     */
+    public void setLotno28BackGround(String lotno28BackGround) {
+        this.lotno28BackGround = lotno28BackGround;
+    }
+
+    /**
+     * ロットNo29(BackGround)
+     *
+     * @return the lotno29BackGround
+     */
+    public String getLotno29BackGround() {
+        return lotno29BackGround;
+    }
+
+    /**
+     * ロットNo29(BackGround)
+     *
+     * @param lotno29BackGround the lotno29BackGround to set
+     */
+    public void setLotno29BackGround(String lotno29BackGround) {
+        this.lotno29BackGround = lotno29BackGround;
+    }
+
+    /**
+     * ロットNo30(BackGround)
+     *
+     * @return the lotno30BackGround
+     */
+    public String getLotno30BackGround() {
+        return lotno30BackGround;
+    }
+
+    /**
+     * ロットNo30(BackGround)
+     *
+     * @param lotno30BackGround the lotno30BackGround to set
+     */
+    public void setLotno30BackGround(String lotno30BackGround) {
+        this.lotno30BackGround = lotno30BackGround;
     }
 
     /**
@@ -1417,7 +2756,9 @@ public class GXHDO211B implements Serializable {
             }
 
             // クリア処理
-            this.lotno = "";
+            for (int i = 1; i <= 30; i++) {
+                setLotnoByIdx("", Integer.toString(i));
+            }
             this.shijisya = "";
             formClear();
             
@@ -1563,16 +2904,21 @@ public class GXHDO211B implements Serializable {
         ValidateUtil validateUtil = new ValidateUtil();
 
         // ロットNo
-        if (StringUtil.isEmpty(this.lotno)) {
-            addErrorMessage(MessageUtil.getMessage("XHD-000003", "ﾛｯﾄNo"));
-            this.lotnoBackGround = ErrUtil.ERR_BACK_COLOR;
-            return false;
-        } else if (existError(validateUtil.checkC101(this.lotno, "ﾛｯﾄNo", 14))) {
-            this.lotnoBackGround = ErrUtil.ERR_BACK_COLOR;
-            return false;
-        } else if (existError(validateUtil.checkValueE001(this.lotno))) {
-            this.lotnoBackGround = ErrUtil.ERR_BACK_COLOR;
-            return false;
+        for (int i = 1; i <= 30; i++) {
+            if (StringUtil.isEmpty(getLotnoByIdx(Integer.toString(i)))) {
+                // ﾛｯﾄNo1のみ入力必須とする
+                if (i == 1) {
+                    addErrorMessage(MessageUtil.getMessage("XHD-000003", "ﾛｯﾄNo"));
+                    setLotnoBackGroundByIdx(ErrUtil.ERR_BACK_COLOR, Integer.toString(i));
+                    return false;
+                }
+            } else if (existError(validateUtil.checkC101(getLotnoByIdx(Integer.toString(i)), "ﾛｯﾄNo", 14))) {
+                setLotnoBackGroundByIdx(ErrUtil.ERR_BACK_COLOR, Integer.toString(i));
+                return false;
+            } else if (existError(validateUtil.checkValueE001(getLotnoByIdx(Integer.toString(i))))) {
+                setLotnoBackGroundByIdx(ErrUtil.ERR_BACK_COLOR, Integer.toString(i));
+                return false;
+            }
         }
 
         // 指示者
@@ -2388,6 +3734,93 @@ public class GXHDO211B implements Serializable {
                 case "lotno":
                     this.lotnoBackGround = ErrUtil.ERR_BACK_COLOR;
                     break;
+                case "lotno2":
+                    this.lotno2BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
+                case "lotno3":
+                    this.lotno3BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
+                case "lotno4":
+                    this.lotno4BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
+                case "lotno5":
+                    this.lotno5BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
+                case "lotno6":
+                    this.lotno6BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
+                case "lotno7":
+                    this.lotno7BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
+                case "lotno8":
+                    this.lotno8BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
+                case "lotno9":
+                    this.lotno9BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
+                case "lotno10":
+                    this.lotno10BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
+                case "lotno11":
+                    this.lotno11BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
+                case "lotno12":
+                    this.lotno12BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
+                case "lotno13":
+                    this.lotno13BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
+                case "lotno14":
+                    this.lotno14BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
+                case "lotno15":
+                    this.lotno15BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
+                case "lotno16":
+                    this.lotno16BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
+                case "lotno17":
+                    this.lotno17BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
+                case "lotno18":
+                    this.lotno18BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
+                case "lotno19":
+                    this.lotno19BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
+                case "lotno20":
+                    this.lotno20BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
+                case "lotno21":
+                    this.lotno21BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
+                case "lotno22":
+                    this.lotno22BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
+                case "lotno23":
+                    this.lotno23BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
+                case "lotno24":
+                    this.lotno24BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
+                case "lotno25":
+                    this.lotno25BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
+                case "lotno26":
+                    this.lotno26BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
+                case "lotno27":
+                    this.lotno27BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
+                case "lotno28":
+                    this.lotno28BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
+                case "lotno29":
+                    this.lotno29BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
+                case "lotno30":
+                    this.lotno30BackGround = ErrUtil.ERR_BACK_COLOR;
+                    break;
                 case "shijisya":
                     this.shijisyaBackGround = ErrUtil.ERR_BACK_COLOR;
                     break;
@@ -2488,8 +3921,7 @@ public class GXHDO211B implements Serializable {
     /**
      * 削除処理
      *
-     * @param processData 処理制御データ
-     * @return 処理制御データ
+     * @return boolean
      */
     private boolean deleteData() throws SQLException {
 
@@ -2500,10 +3932,6 @@ public class GXHDO211B implements Serializable {
             // トランザクション開始
             //DocServer 
             conDoc = DBUtil.transactionStart(queryRunnerDoc.getDataSource().getConnection());
-
-            String kojyo = this.lotno.substring(0, 3); //工場ｺｰﾄﾞ
-            String lotNo8 = this.lotno.substring(3, 11); //ﾛｯﾄNo(8桁)
-            String edaban = this.lotno.substring(11, 14); //枝番
 
             String checkId = checkRev(queryRunnerDoc);
             // 正常値以外の場合
@@ -2524,22 +3952,14 @@ public class GXHDO211B implements Serializable {
                 }
                 return false;
             }
-            Timestamp systemTime = new Timestamp(System.currentTimeMillis());
 
-            // 削除フラグの最大値を取得
-            int deleteflag = getMaxDeleteFlag(queryRunnerDoc, kojyo, lotNo8, edaban);
-            // 削除フラグが取得できなかった場合は想定外としてシステムエラー
-            if (-1 == deleteflag) {
-                // コネクションロールバック処理
-                DBUtil.rollbackConnection(conDoc, LOGGER);
-
-                // システムエラーをセットしてリターン
-                addErrorMessage(MessageUtil.getMessage("XHD-000083", "ｴﾗｰ内容ｺｰﾄﾞ:EXHD-000003"));
-                return false;
+            // 画面に入力されているﾛｯﾄNo～ﾛｯﾄNo30の数だけ削除処理
+            for (int i = 1; i <= 30; i++) {
+                String lotno = getLotnoByIdx(Integer.toString(i));
+                if (!StringUtil.isEmpty(lotno) && !deleteDataLoop(queryRunnerDoc, conDoc, lotno)) {
+                    return false;
+                }
             }
-
-            // データ論理削除
-            logicalDeleteFxhdd06(queryRunnerDoc, conDoc, this.shijisya, kojyo, lotNo8, edaban, this.searchedRev, deleteflag + 1, systemTime);
 
             DbUtils.commitAndCloseQuietly(conDoc);
             
@@ -2557,10 +3977,55 @@ public class GXHDO211B implements Serializable {
     }
 
     /**
+     * 削除処理
+     *
+     * @param queryRunnerDoc
+     * @param conDoc
+     * @param lotno
+     * @return boolean
+     */
+    private boolean deleteDataLoop(QueryRunner queryRunnerDoc, Connection conDoc, String lotno) throws SQLException {
+
+        String kojyo = lotno.substring(0, 3); //工場ｺｰﾄﾞ
+        String lotNo8 = lotno.substring(3, 11); //ﾛｯﾄNo(8桁)
+        String edaban = lotno.substring(11, 14); //枝番
+
+        Timestamp systemTime = new Timestamp(System.currentTimeMillis());
+
+        // revisionの最大値を取得
+        int rev = 0;
+        List<FXHDD06> fxhdd06ListSearch = loadFxhdd06(queryRunnerDoc, lotno);
+        if (fxhdd06ListSearch.isEmpty()) {
+            rev = getMaxRev(queryRunnerDoc, lotno);
+        } else {
+            rev = fxhdd06ListSearch.get(0).getRev();
+        }
+
+        if (!fxhdd06ListSearch.isEmpty()) {
+
+            // 削除フラグの最大値を取得
+            int deleteflag = getMaxDeleteFlag(queryRunnerDoc, kojyo, lotNo8, edaban);
+            // 削除フラグが取得できなかった場合は想定外としてシステムエラー
+            if (-1 == deleteflag) {
+                // コネクションロールバック処理
+                DBUtil.rollbackConnection(conDoc, LOGGER);
+
+                // システムエラーをセットしてリターン
+                addErrorMessage(MessageUtil.getMessage("XHD-000083", "ｴﾗｰ内容ｺｰﾄﾞ:EXHD-000003"));
+                return false;
+            }
+
+            // データ論理削除
+            logicalDeleteFxhdd06(queryRunnerDoc, conDoc, this.shijisya, kojyo, lotNo8, edaban, rev, deleteflag + 1, systemTime);
+        }
+        return true;
+    }
+
+    /**
      * 登録処理
      *
-     * @param processData 処理制御データ
-     * @return 処理制御データ
+     * @param fxhdd06List
+     * @return boolean
      */
     private boolean registData(List<FXHDD06> fxhdd06List) throws SQLException {
 
@@ -2571,10 +4036,6 @@ public class GXHDO211B implements Serializable {
             // トランザクション開始
             //DocServer 
             conDoc = DBUtil.transactionStart(queryRunnerDoc.getDataSource().getConnection());
-
-            String kojyo = this.lotno.substring(0, 3); //工場ｺｰﾄﾞ
-            String lotNo8 = this.lotno.substring(3, 11); //ﾛｯﾄNo(8桁)
-            String edaban = this.lotno.substring(11, 14); //枝番
 
             String checkId = checkRev(queryRunnerDoc);
             // 正常値以外の場合
@@ -2596,30 +4057,13 @@ public class GXHDO211B implements Serializable {
                 return false;
             }
 
-            Timestamp systemTime = new Timestamp(System.currentTimeMillis());
-
-            // 既存データが存在する場合は論理削除
-            if (!this.btnDeleteDisabled) {
-
-                // 削除フラグの最大値を取得
-                int deleteflag = getMaxDeleteFlag(queryRunnerDoc, kojyo, lotNo8, edaban);
-                // 削除フラグが取得できなかった場合は想定外としてシステムエラー
-                if (-1 == deleteflag) {
-                    // コネクションロールバック処理
-                    DBUtil.rollbackConnection(conDoc, LOGGER);
-
-                    // システムエラーをセットしてリターン
-                    addErrorMessage(MessageUtil.getMessage("XHD-000083", "ｴﾗｰ内容ｺｰﾄﾞ:EXHD-000003"));
+            // 画面に入力されているﾛｯﾄNo～ﾛｯﾄNo30の数だけ登録処理
+            for (int i = 1; i <= 30; i++) {
+                String lotno = getLotnoByIdx(Integer.toString(i));
+                if (!StringUtil.isEmpty(lotno) && !registDataLoop(queryRunnerDoc, conDoc, fxhdd06List, lotno)) {
                     return false;
                 }
-
-                // データ論理削除
-                logicalDeleteFxhdd06(queryRunnerDoc, conDoc, this.shijisya, kojyo, lotNo8, edaban, this.searchedRev, deleteflag + 1, systemTime);
-                
             }
-
-            // データ登録処理
-            insertFxhdd06(queryRunnerDoc, conDoc, this.shijisya, kojyo, lotNo8, edaban, this.searchedRev + 1, systemTime, fxhdd06List);
 
             DbUtils.commitAndCloseQuietly(conDoc);
 
@@ -2634,6 +4078,56 @@ public class GXHDO211B implements Serializable {
         }
         return true;
 
+    }
+
+    /**
+     * 登録処理
+     *
+     * @param queryRunnerDoc
+     * @param conDoc
+     * @param fxhdd06List
+     * @param lotno
+     * @return boolean
+     */
+    private boolean registDataLoop(QueryRunner queryRunnerDoc, Connection conDoc, List<FXHDD06> fxhdd06List, String lotno) throws SQLException {
+
+        String kojyo = lotno.substring(0, 3); //工場ｺｰﾄﾞ
+        String lotNo8 = lotno.substring(3, 11); //ﾛｯﾄNo(8桁)
+        String edaban = lotno.substring(11, 14); //枝番
+
+        Timestamp systemTime = new Timestamp(System.currentTimeMillis());
+
+        // revisionの最大値を取得
+        int rev = 0;
+        List<FXHDD06> fxhdd06ListSearch = loadFxhdd06(queryRunnerDoc, lotno);
+        if (fxhdd06ListSearch.isEmpty()) {
+            rev = getMaxRev(queryRunnerDoc, lotno);
+        } else {
+            rev = fxhdd06ListSearch.get(0).getRev();
+        }
+
+        // 既存データが存在する場合は論理削除
+        if (!fxhdd06ListSearch.isEmpty()) {
+
+            // 削除フラグの最大値を取得
+            int deleteflag = getMaxDeleteFlag(queryRunnerDoc, kojyo, lotNo8, edaban);
+            // 削除フラグが取得できなかった場合は想定外としてシステムエラー
+            if (-1 == deleteflag) {
+                // コネクションロールバック処理
+                DBUtil.rollbackConnection(conDoc, LOGGER);
+
+                // システムエラーをセットしてリターン
+                addErrorMessage(MessageUtil.getMessage("XHD-000083", "ｴﾗｰ内容ｺｰﾄﾞ:EXHD-000003"));
+                return false;
+            }
+
+            // データ論理削除
+            logicalDeleteFxhdd06(queryRunnerDoc, conDoc, this.shijisya, kojyo, lotNo8, edaban, rev, deleteflag + 1, systemTime);
+        }
+
+        // データ登録処理
+        insertFxhdd06(queryRunnerDoc, conDoc, this.shijisya, kojyo, lotNo8, edaban, rev + 1, systemTime, fxhdd06List);
+        return true;
     }
 
     /**
@@ -2846,7 +4340,9 @@ public class GXHDO211B implements Serializable {
      * 入力項目のバックグランド値をクリア
      */
     private void clearInputBackGround() {
-        this.lotnoBackGround = "";
+        for (int i = 1; i <= 30; i++) {
+            setLotnoBackGroundByIdx("", Integer.toString(i));
+        }
         this.shijisyaBackGround = "";
         this.gouki1BackGround = "";
         this.peakOndo1BackGround = "";
@@ -2863,6 +4359,285 @@ public class GXHDO211B implements Serializable {
         this.gouki5BackGround = "";
         this.peakOndo5BackGround = "";
         this.suisoNoudo5BackGround = "";
+    }
+
+    /**
+     * ﾛｯﾄNo1～ﾛｯﾄNo30の値を取得
+     *
+     * @param idx ﾛｯﾄNoのインデックス
+     * @return the lotno
+     */
+    private String getLotnoByIdx(String idx) {
+        switch (idx) {
+            case "1":
+                return this.lotno;
+            case "2":
+                return this.lotno2;
+            case "3":
+                return this.lotno3;
+            case "4":
+                return this.lotno4;
+            case "5":
+                return this.lotno5;
+            case "6":
+                return this.lotno6;
+            case "7":
+                return this.lotno7;
+            case "8":
+                return this.lotno8;
+            case "9":
+                return this.lotno9;
+            case "10":
+                return this.lotno10;
+            case "11":
+                return this.lotno11;
+            case "12":
+                return this.lotno12;
+            case "13":
+                return this.lotno13;
+            case "14":
+                return this.lotno14;
+            case "15":
+                return this.lotno15;
+            case "16":
+                return this.lotno16;
+            case "17":
+                return this.lotno17;
+            case "18":
+                return this.lotno18;
+            case "19":
+                return this.lotno19;
+            case "20":
+                return this.lotno20;
+            case "21":
+                return this.lotno21;
+            case "22":
+                return this.lotno22;
+            case "23":
+                return this.lotno23;
+            case "24":
+                return this.lotno24;
+            case "25":
+                return this.lotno25;
+            case "26":
+                return this.lotno26;
+            case "27":
+                return this.lotno27;
+            case "28":
+                return this.lotno28;
+            case "29":
+                return this.lotno29;
+            case "30":
+                return this.lotno30;
+            default:
+                return null;
+        }
+    }
+
+    /**
+     * ﾛｯﾄNo1～ﾛｯﾄNo30の値をセット
+     *
+     * @param lotno the lotno to set
+     * @param idx ﾛｯﾄNoのインデックス
+     */
+    private void setLotnoByIdx(String lotno, String idx) {
+        switch (idx) {
+            case "1":
+                this.lotno = StringUtil.trimAll(lotno);
+                break;
+            case "2":
+                this.lotno2 = StringUtil.trimAll(lotno);
+                break;
+            case "3":
+                this.lotno3 = StringUtil.trimAll(lotno);
+                break;
+            case "4":
+                this.lotno4 = StringUtil.trimAll(lotno);
+                break;
+            case "5":
+                this.lotno5 = StringUtil.trimAll(lotno);
+                break;
+            case "6":
+                this.lotno6 = StringUtil.trimAll(lotno);
+                break;
+            case "7":
+                this.lotno7 = StringUtil.trimAll(lotno);
+                break;
+            case "8":
+                this.lotno8 = StringUtil.trimAll(lotno);
+                break;
+            case "9":
+                this.lotno9 = StringUtil.trimAll(lotno);
+                break;
+            case "10":
+                this.lotno10 = StringUtil.trimAll(lotno);
+                break;
+            case "11":
+                this.lotno11 = StringUtil.trimAll(lotno);
+                break;
+            case "12":
+                this.lotno12 = StringUtil.trimAll(lotno);
+                break;
+            case "13":
+                this.lotno13 = StringUtil.trimAll(lotno);
+                break;
+            case "14":
+                this.lotno14 = StringUtil.trimAll(lotno);
+                break;
+            case "15":
+                this.lotno15 = StringUtil.trimAll(lotno);
+                break;
+            case "16":
+                this.lotno16 = StringUtil.trimAll(lotno);
+                break;
+            case "17":
+                this.lotno17 = StringUtil.trimAll(lotno);
+                break;
+            case "18":
+                this.lotno18 = StringUtil.trimAll(lotno);
+                break;
+            case "19":
+                this.lotno19 = StringUtil.trimAll(lotno);
+                break;
+            case "20":
+                this.lotno20 = StringUtil.trimAll(lotno);
+                break;
+            case "21":
+                this.lotno21 = StringUtil.trimAll(lotno);
+                break;
+            case "22":
+                this.lotno22 = StringUtil.trimAll(lotno);
+                break;
+            case "23":
+                this.lotno23 = StringUtil.trimAll(lotno);
+                break;
+            case "24":
+                this.lotno24 = StringUtil.trimAll(lotno);
+                break;
+            case "25":
+                this.lotno25 = StringUtil.trimAll(lotno);
+                break;
+            case "26":
+                this.lotno26 = StringUtil.trimAll(lotno);
+                break;
+            case "27":
+                this.lotno27 = StringUtil.trimAll(lotno);
+                break;
+            case "28":
+                this.lotno28 = StringUtil.trimAll(lotno);
+                break;
+            case "29":
+                this.lotno29 = StringUtil.trimAll(lotno);
+                break;
+            case "30":
+                this.lotno30 = StringUtil.trimAll(lotno);
+                break;
+            default:
+                break;
+        }
+    }
+
+    /**
+     * ﾛｯﾄNo1～ﾛｯﾄNo30(BackGround)の値をセット
+     *
+     * @param lotnoBackGround the lotnoBackGround to set
+     * @param idx ﾛｯﾄNoのインデックス
+     */
+    private void setLotnoBackGroundByIdx(String lotnoBackGround, String idx) {
+        switch (idx) {
+            case "1":
+                this.lotnoBackGround = lotnoBackGround;
+                break;
+            case "2":
+                this.lotno2BackGround = lotnoBackGround;
+                break;
+            case "3":
+                this.lotno3BackGround = lotnoBackGround;
+                break;
+            case "4":
+                this.lotno4BackGround = lotnoBackGround;
+                break;
+            case "5":
+                this.lotno5BackGround = lotnoBackGround;
+                break;
+            case "6":
+                this.lotno6BackGround = lotnoBackGround;
+                break;
+            case "7":
+                this.lotno7BackGround = lotnoBackGround;
+                break;
+            case "8":
+                this.lotno8BackGround = lotnoBackGround;
+                break;
+            case "9":
+                this.lotno9BackGround = lotnoBackGround;
+                break;
+            case "10":
+                this.lotno10BackGround = lotnoBackGround;
+                break;
+            case "11":
+                this.lotno11BackGround = lotnoBackGround;
+                break;
+            case "12":
+                this.lotno12BackGround = lotnoBackGround;
+                break;
+            case "13":
+                this.lotno13BackGround = lotnoBackGround;
+                break;
+            case "14":
+                this.lotno14BackGround = lotnoBackGround;
+                break;
+            case "15":
+                this.lotno15BackGround = lotnoBackGround;
+                break;
+            case "16":
+                this.lotno16BackGround = lotnoBackGround;
+                break;
+            case "17":
+                this.lotno17BackGround = lotnoBackGround;
+                break;
+            case "18":
+                this.lotno18BackGround = lotnoBackGround;
+                break;
+            case "19":
+                this.lotno19BackGround = lotnoBackGround;
+                break;
+            case "20":
+                this.lotno20BackGround = lotnoBackGround;
+                break;
+            case "21":
+                this.lotno21BackGround = lotnoBackGround;
+                break;
+            case "22":
+                this.lotno22BackGround = lotnoBackGround;
+                break;
+            case "23":
+                this.lotno23BackGround = lotnoBackGround;
+                break;
+            case "24":
+                this.lotno24BackGround = lotnoBackGround;
+                break;
+            case "25":
+                this.lotno25BackGround = lotnoBackGround;
+                break;
+            case "26":
+                this.lotno26BackGround = lotnoBackGround;
+                break;
+            case "27":
+                this.lotno27BackGround = lotnoBackGround;
+                break;
+            case "28":
+                this.lotno28BackGround = lotnoBackGround;
+                break;
+            case "29":
+                this.lotno29BackGround = lotnoBackGround;
+                break;
+            case "30":
+                this.lotno30BackGround = lotnoBackGround;
+                break;
+            default:
+                break;
+        }
     }
 
 }

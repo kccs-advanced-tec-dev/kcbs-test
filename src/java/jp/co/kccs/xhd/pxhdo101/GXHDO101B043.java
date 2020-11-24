@@ -26,6 +26,8 @@ import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.db.model.SrShinkuukansou;
 import jp.co.kccs.xhd.db.model.Jisseki;
+import jp.co.kccs.xhd.db.model.SubSrShinkuukansou;
+import jp.co.kccs.xhd.model.GXHDO101C018Model;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.GXHDO901A;
 import jp.co.kccs.xhd.pxhdo901.IFormLogic;
@@ -63,6 +65,11 @@ import org.apache.commons.dbutils.DbUtils;
  * 計画書No	MB2008-DK001<br>
  * 変更者	KCSS D.Yanagida<br>
  * 変更理由	ロット混合対応<br>
+ * <br>
+ * 変更日	2020/11/23<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 zhangjy<br>
+ * 変更理由	サヤnoサブ画面追加<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -115,7 +122,9 @@ public class GXHDO101B043 implements IFormLogic {
                     GXHDO101B043Const.BTN_START_DATETIME_BOTTOM,
                     GXHDO101B043Const.BTN_END_DATETIME_BOTTOM,
                     GXHDO101B043Const.BTN_UKEIRESOJURYO_KEISAN_TOP,
-                    GXHDO101B043Const.BTN_UKEIRESOJURYO_KEISAN_BOTTOM
+                    GXHDO101B043Const.BTN_UKEIRESOJURYO_KEISAN_BOTTOM,
+                    GXHDO101B043Const.BTN_UKEIRESOJURYO_SAYANO_TOP,
+                    GXHDO101B043Const.BTN_UKEIRESOJURYO_SAYANO_BOTTOM
             ));
 
             // リビジョンチェック対象のボタンを設定する。
@@ -245,10 +254,16 @@ public class GXHDO101B043 implements IFormLogic {
                 // 熱処理_仮登録登録処理
                 insertTmpSrShinkuukansou(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, systemTime, processData.getItemList(), processData);
 
+                // 熱処理_ｻﾌﾞ画面_仮登録登録処理
+                insertTmpSubSrShinkuukansou(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, systemTime, processData.getItemList());
+
             } else {
 
                 // 熱処理_仮登録更新処理
                 updateTmpSrShinkuukansou(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo8, edaban, paramJissekino, systemTime, processData.getItemList(), processData);
+
+                // 熱処理_ｻﾌﾞ画面_仮登録更新処理
+                updateTmpSubSrShinkuukansou(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, paramJissekino, systemTime);
 
             }
 
@@ -434,10 +449,13 @@ public class GXHDO101B043 implements IFormLogic {
                 }
 
                 deleteTmpSrShinkuukansou(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban, paramJissekino);
+                deleteTmpSubSrShinkuukansou(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban, paramJissekino);
             }
 
             // 熱処理_登録処理
             insertSrShinkuukansou(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, paramJissekino, systemTime, processData.getItemList(), tmpSrShinkuukansou, processData);
+            // 熱処理_ｻﾌﾞ画面_登録処理
+            insertSubSrShinkuukansou(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, systemTime, processData.getItemList());
 
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
@@ -594,6 +612,9 @@ public class GXHDO101B043 implements IFormLogic {
             // 熱処理_更新処理
             updateSrShinkuukansou(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo8, edaban, paramJissekino, systemTime, processData.getItemList(), processData);
 
+            // 熱処理_ｻﾌﾞ画面_更新処理
+            updateSubSrShinkuukansou(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, paramJissekino, systemTime);
+
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
             if (kikakuError.getKikakuchiInputErrorInfoList() != null && !kikakuError.getKikakuchiInputErrorInfoList().isEmpty()) {
@@ -707,9 +728,13 @@ public class GXHDO101B043 implements IFormLogic {
             // 熱処理_仮登録登録処理
             int newDeleteflag = getNewDeleteflag(queryRunnerQcdb, kojyo, lotNo8, edaban, paramJissekino);
             insertDeleteDataTmpSrShinkuukansou(queryRunnerQcdb, conQcdb, newRev, newDeleteflag, kojyo, lotNo8, edaban, paramJissekino, systemTime);
+            // 熱処理_ｻﾌﾞ画面_仮登録登録処理
+            insertDeleteDataTmpSubSrShinkuukansou(queryRunnerQcdb, conQcdb, newRev, newDeleteflag, kojyo, lotNo8, edaban, paramJissekino, systemTime);
 
             // 熱処理_削除処理
             deleteSrShinkuukansou(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban, paramJissekino);
+            // 熱処理_ｻﾌﾞ画面_削除処理
+            deleteSubSrShinkuukansou(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban, paramJissekino);
 
             DbUtils.commitAndCloseQuietly(conDoc);
             DbUtils.commitAndCloseQuietly(conQcdb);
@@ -764,7 +789,9 @@ public class GXHDO101B043 implements IFormLogic {
                         GXHDO101B043Const.BTN_UPDATE_TOP,
                         GXHDO101B043Const.BTN_START_DATETIME_TOP,
                         GXHDO101B043Const.BTN_END_DATETIME_TOP,
-                        GXHDO101B043Const.BTN_UKEIRESOJURYO_KEISAN_TOP
+                        GXHDO101B043Const.BTN_UKEIRESOJURYO_KEISAN_TOP,
+                        GXHDO101B043Const.BTN_UKEIRESOJURYO_SAYANO_TOP,
+                        GXHDO101B043Const.BTN_UKEIRESOJURYO_SAYANO_BOTTOM
                 ));
                 inactiveIdList.addAll(Arrays.asList(
                         GXHDO101B043Const.BTN_KARI_TOUROKU_BOTTOM,
@@ -786,7 +813,9 @@ public class GXHDO101B043 implements IFormLogic {
                         GXHDO101B043Const.BTN_INSERT_TOP,
                         GXHDO101B043Const.BTN_START_DATETIME_TOP,
                         GXHDO101B043Const.BTN_END_DATETIME_TOP,
-                        GXHDO101B043Const.BTN_UKEIRESOJURYO_KEISAN_TOP
+                        GXHDO101B043Const.BTN_UKEIRESOJURYO_KEISAN_TOP,
+                        GXHDO101B043Const.BTN_UKEIRESOJURYO_SAYANO_TOP,
+                        GXHDO101B043Const.BTN_UKEIRESOJURYO_SAYANO_BOTTOM
                 ));
 
                 inactiveIdList.addAll(Arrays.asList(
@@ -852,6 +881,11 @@ public class GXHDO101B043 implements IFormLogic {
             case GXHDO101B043Const.BTN_UKEIRESOJURYO_KEISAN_TOP:
             case GXHDO101B043Const.BTN_UKEIRESOJURYO_KEISAN_BOTTOM:
                 method = "calculatUkeiresojuryo";
+                break;
+            // サヤNo
+            case GXHDO101B043Const.BTN_UKEIRESOJURYO_SAYANO_TOP:
+            case GXHDO101B043Const.BTN_UKEIRESOJURYO_SAYANO_BOTTOM:
+                method = "openSayaNo";
                 break;
             default:
                 method = "error";
@@ -1043,6 +1077,7 @@ public class GXHDO101B043 implements IFormLogic {
             String lotNo, String formId, int jissekino) throws SQLException {
 
         List<SrShinkuukansou> srShinkuukansouDataList = new ArrayList<>();
+        List<SubSrShinkuukansou> subSrShinkuukansouDataList = new ArrayList<>();
         String rev = "";
         String jotaiFlg = "";
         String kojyo = lotNo.substring(0, 3);
@@ -1064,6 +1099,9 @@ public class GXHDO101B043 implements IFormLogic {
                 for (FXHDD01 fxhdd001 : processData.getItemList()) {
                     this.setItemData(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
                 }
+                
+                // 熱処理_ｻﾌﾞ画面データ設定
+                setInputItemDataSubFormC018(null);
                 return true;
             }
 
@@ -1074,12 +1112,19 @@ public class GXHDO101B043 implements IFormLogic {
                 continue;
             }
 
+            // 熱処理_サブ画面データ取得
+            subSrShinkuukansouDataList = getSubSrShinkuukansouData(queryRunnerQcdb, rev, jotaiFlg, kojyo, lotNo8, edaban, jissekino);
+            if (subSrShinkuukansouDataList.isEmpty()) {
+                //該当データが取得できなかった場合は処理を繰り返す。
+                continue;
+            }
+
             // データが全て取得出来た場合、ループを抜ける。
             break;
         }
 
         // 制限回数内にデータが取得できなかった場合
-        if (srShinkuukansouDataList.isEmpty()) {
+        if (srShinkuukansouDataList.isEmpty() || subSrShinkuukansouDataList.isEmpty()) {
             return false;
         }
 
@@ -1088,6 +1133,8 @@ public class GXHDO101B043 implements IFormLogic {
 
         // メイン画面データ設定
         setInputItemDataMainForm(processData, srShinkuukansouDataList.get(0));
+        // 熱処理_ｻﾌﾞ画面データ設定
+        setInputItemDataSubFormC018(subSrShinkuukansouDataList.get(0));
 
         return true;
 
@@ -1640,8 +1687,17 @@ public class GXHDO101B043 implements IFormLogic {
                 return processData;
             }
 
+            // 熱処理_ｻﾌﾞ画面データ取得
+            List<SubSrShinkuukansou> subSrShinkuukansouDataList = getSubSrShinkuukansouData(queryRunnerQcdb, "", jotaiFlg, kojyo, lotNo8, oyalotEdaban, paramJissekino);
+            if (subSrShinkuukansouDataList.isEmpty()) {
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
+                return processData;
+            }
+
             // メイン画面データ設定
             setInputItemDataMainForm(processData, srShinkuukansouDataList.get(0));
+            // 熱処理_ｻﾌﾞ画面データ設定
+            setInputItemDataSubFormC018(subSrShinkuukansouDataList.get(0));
 
             // 次呼出しメソッドをクリア
             processData.setMethod("");
@@ -2463,5 +2519,1122 @@ public class GXHDO101B043 implements IFormLogic {
         }
         return processData;
 
+    }
+    
+    /**
+     * 熱処理_サブ画面Open
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData openSayaNo(ProcessData processData) {
+
+        try {
+
+            processData.setMethod("");
+            // コールバックパラメータにてサブ画面起動用の値を設定
+            processData.setCollBackParam("gxhdo101c018");
+
+            // 膜厚(SPS)の現在の値をサブ画面の表示用の値に渡す
+            GXHDO101C018 beanGXHDO101C018 = (GXHDO101C018) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C018);
+            beanGXHDO101C018.setGxhdO101c018ModelView(beanGXHDO101C018.getGxhdO101c018Model().clone());
+
+        } catch (CloneNotSupportedException ex) {
+
+            ErrUtil.outputErrorLog("CloneNotSupportedException発生", ex, LOGGER);
+            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            return processData;
+
+        }
+
+        return processData;
+    }
+    
+    /**
+     * 熱処理_サブ画面データ設定処理
+     * 
+     * @param subSrShinkuukansou 熱処理_サブ画面のデータ
+     */
+    private void setInputItemDataSubFormC018(SubSrShinkuukansou subSrShinkuukansou) {
+        // サブ画面の情報を取得
+        GXHDO101C018 beanGXHDO101C018 = (GXHDO101C018) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C018);
+
+        GXHDO101C018Model model;
+        List<String[]> initGouki1DataList = new ArrayList<>();
+        List<String[]> initGouki2DataList = new ArrayList<>();
+        List<String[]> initGouki3DataList = new ArrayList<>();
+        List<String[]> initGouki4DataList = new ArrayList<>();
+        String[] gouki1ItemValues;
+        String[] gouki1CheckBoxValues;
+        String[] gouki2ItemValues;
+        String[] gouki2CheckBoxValues;
+        String[] gouki3ItemValues;
+        String[] gouki3CheckBoxValues;
+        String[] gouki4ItemValues;
+        String[] gouki4CheckBoxValues;
+        if (subSrShinkuukansou == null) {
+            gouki1ItemValues = new String[]{"", "", "", "", "", "", "", "", "", ""};
+            gouki1CheckBoxValues = new String[]{"", "", "", "", "", "", "", "", "", ""};
+            initGouki1DataList.add(gouki1ItemValues);
+            initGouki1DataList.add(gouki1CheckBoxValues);
+            gouki2ItemValues = new String[]{"", "", "", "", "", "", "", "", "", ""};
+            gouki2CheckBoxValues = new String[]{"", "", "", "", "", "", "", "", "", ""};
+            initGouki2DataList.add(gouki2ItemValues);
+            initGouki2DataList.add(gouki2CheckBoxValues);
+            gouki3ItemValues = new String[]{"", "", "", "", "", "", "", "", "", ""};
+            gouki3CheckBoxValues = new String[]{"", "", "", "", "", "", "", "", "", ""};
+            initGouki3DataList.add(gouki3ItemValues);
+            initGouki3DataList.add(gouki3CheckBoxValues);
+            gouki4ItemValues = new String[]{"", "", "", "", "", "", "", "", "", ""};
+            gouki4CheckBoxValues = new String[]{"", "", "", "", "", "", "", "", "", ""};
+            initGouki4DataList.add(gouki4ItemValues);
+            initGouki4DataList.add(gouki4CheckBoxValues);
+        } else {
+            // 号機①
+            gouki1ItemValues = new String[]{
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki1saya1()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki1saya2()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki1saya3()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki1saya4()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki1saya5()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki1saya6()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki1saya7()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki1saya8()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki1saya9()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki1saya10())
+            };
+            gouki1CheckBoxValues = new String[]{
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki1check1())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki1check2())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki1check3())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki1check4())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki1check5())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki1check6())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki1check7())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki1check8())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki1check9())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki1check10()))
+            };
+            initGouki1DataList.add(gouki1ItemValues);
+            initGouki1DataList.add(gouki1CheckBoxValues);
+
+            //号機②
+            gouki2ItemValues = new String[]{
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki2saya1()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki2saya2()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki2saya3()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki2saya4()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki2saya5()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki2saya6()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki2saya7()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki2saya8()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki2saya9()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki2saya10())
+            };
+            gouki2CheckBoxValues = new String[]{
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki2check1())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki2check2())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki2check3())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki2check4())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki2check5())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki2check6())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki2check7())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki2check8())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki2check9())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki2check10()))
+            };
+            initGouki2DataList.add(gouki2ItemValues);
+            initGouki2DataList.add(gouki2CheckBoxValues);
+
+            //号機③
+            gouki3ItemValues = new String[]{
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki3saya1()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki3saya2()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki3saya3()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki3saya4()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki3saya5()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki3saya6()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki3saya7()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki3saya8()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki3saya9()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki3saya10())
+            };
+            gouki3CheckBoxValues = new String[]{
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki3check1())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki3check2())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki3check3())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki3check4())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki3check5())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki3check6())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki3check7())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki3check8())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki3check9())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki3check10()))
+            };
+            initGouki3DataList.add(gouki3ItemValues);
+            initGouki3DataList.add(gouki3CheckBoxValues);
+
+            //号機④
+            gouki4ItemValues = new String[]{
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki4saya1()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki4saya2()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki4saya3()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki4saya4()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki4saya5()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki4saya6()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki4saya7()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki4saya8()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki4saya9()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki4saya10())
+            };
+            gouki4CheckBoxValues = new String[]{
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki4check1())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki4check2())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki4check3())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki4check4())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki4check5())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki4check6())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki4check7())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki4check8())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki4check9())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki4check10()))
+            };
+            initGouki4DataList.add(gouki4ItemValues);
+            initGouki4DataList.add(gouki4CheckBoxValues);
+        }
+        
+        model = GXHDO101C018Logic.createGXHDO101C018Model(initGouki1DataList, initGouki2DataList, initGouki3DataList, initGouki4DataList);
+        
+        beanGXHDO101C018.setGxhdO101c018Model(model);
+    }
+
+    /**
+     * 熱処理_ｻﾌﾞ画面の入力項目の登録データ(仮登録時は仮登録データ)を取得
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param rev revision
+     * @param jotaiFlg 状態ﾌﾗｸﾞ
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo.
+     * @param edaban 枝番
+     * @param jissekino 実績No
+     * @return 熱処理_ｻﾌﾞ画面登録データ
+     * @throws SQLException 例外エラー
+     */
+    private List<SubSrShinkuukansou> getSubSrShinkuukansouData(QueryRunner queryRunnerQcdb, 
+            String rev, String jotaiFlg, String kojyo, String lotNo, String edaban, int jissekino) throws SQLException {
+        if (JOTAI_FLG_TOROKUZUMI.equals(jotaiFlg)) {
+            return loadSubSrShinkuukansou(queryRunnerQcdb, kojyo, lotNo, edaban, jissekino, rev);
+        } else {
+            return loadTmpSubSrShinkuukansou(queryRunnerQcdb, kojyo, lotNo, edaban, jissekino, rev);
+        }
+    }
+
+    /**
+     * [熱処理_ｻﾌﾞ画面]から、ﾃﾞｰﾀを取得
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @param rev revision(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private List<SubSrShinkuukansou> loadSubSrShinkuukansou(QueryRunner queryRunnerQcdb, 
+            String kojyo, String lotNo, String edaban, int jissekino, String rev) throws SQLException {
+        
+        String sql = "SELECT kojyo, lotno, edaban, kaisuu, gouki1saya1, gouki1saya2, "
+                + "gouki1saya3, gouki1saya4, gouki1saya5, gouki1saya6, gouki1saya7, "
+                + "gouki1saya8, gouki1saya9, gouki1saya10, gouki1check1, gouki1check2, "
+                + "gouki1check3, gouki1check4, gouki1check5, gouki1check6, gouki1check7, "
+                + "gouki1check8, gouki1check9, gouki1check10, gouki2saya1, gouki2saya2, "
+                + "gouki2saya3, gouki2saya4, gouki2saya5, gouki2saya6, gouki2saya7, "
+                + "gouki2saya8, gouki2saya9, gouki2saya10, gouki2check1, gouki2check2, "
+                + "gouki2check3, gouki2check4, gouki2check5, gouki2check6, gouki2check7, "
+                + "gouki2check8, gouki2check9, gouki2check10, gouki3saya1, gouki3saya2, "
+                + "gouki3saya3, gouki3saya4, gouki3saya5, gouki3saya6, gouki3saya7, "
+                + "gouki3saya8, gouki3saya9, gouki3saya10, gouki3check1, gouki3check2, "
+                + "gouki3check3, gouki3check4, gouki3check5, gouki3check6, gouki3check7, "
+                + "gouki3check8, gouki3check9, gouki3check10, gouki4saya1, gouki4saya2, "
+                + "gouki4saya3, gouki4saya4, gouki4saya5, gouki4saya6, gouki4saya7, "
+                + "gouki4saya8, gouki4saya9, gouki4saya10, gouki4check1, gouki4check2, "
+                + "gouki4check3, gouki4check4, gouki4check5, gouki4check6, gouki4check7, "
+                + "gouki4check8, gouki4check9, gouki4check10, torokunichiji, kosinnichiji, revision, '0' AS deleteflag "
+                + "FROM sub_sr_shinkuukansou "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? ";
+
+        // revisionが入っている場合、条件に追加
+        if (!StringUtil.isEmpty(rev)) {
+            sql += "AND revision = ? ";
+        }
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(jissekino);
+
+        // revisionが入っている場合、条件に追加
+        if (!StringUtil.isEmpty(rev)) {
+            params.add(rev);
+        }
+
+        Map<String, String> mapping = new HashMap<>();
+        mapping.put("kojyo", "kojyo"); // 工場ｺｰﾄﾞ
+        mapping.put("lotno", "lotno"); // ﾛｯﾄNo
+        mapping.put("edaban", "edaban"); // 枝番
+        mapping.put("kaisuu", "kaisuu"); // 回数
+        mapping.put("gouki1saya1", "gouki1saya1"); // 号機①ｻﾔNo1
+        mapping.put("gouki1saya2", "gouki1saya2"); // 号機①ｻﾔNo2
+        mapping.put("gouki1saya3", "gouki1saya3"); // 号機①ｻﾔNo3
+        mapping.put("gouki1saya4", "gouki1saya4"); // 号機①ｻﾔNo4
+        mapping.put("gouki1saya5", "gouki1saya5"); // 号機①ｻﾔNo5
+        mapping.put("gouki1saya6", "gouki1saya6"); // 号機①ｻﾔNo6
+        mapping.put("gouki1saya7", "gouki1saya7"); // 号機①ｻﾔNo7
+        mapping.put("gouki1saya8", "gouki1saya8"); // 号機①ｻﾔNo8
+        mapping.put("gouki1saya9", "gouki1saya9"); // 号機①ｻﾔNo9
+        mapping.put("gouki1saya10", "gouki1saya10"); // 号機①ｻﾔNo10
+        mapping.put("gouki1check1", "gouki1check1"); // 号機①ﾁｪｯｸ1
+        mapping.put("gouki1check2", "gouki1check2"); // 号機①ﾁｪｯｸ2
+        mapping.put("gouki1check3", "gouki1check3"); // 号機①ﾁｪｯｸ3
+        mapping.put("gouki1check4", "gouki1check4"); // 号機①ﾁｪｯｸ4
+        mapping.put("gouki1check5", "gouki1check5"); // 号機①ﾁｪｯｸ5
+        mapping.put("gouki1check6", "gouki1check6"); // 号機①ﾁｪｯｸ6
+        mapping.put("gouki1check7", "gouki1check7"); // 号機①ﾁｪｯｸ7
+        mapping.put("gouki1check8", "gouki1check8"); // 号機①ﾁｪｯｸ8
+        mapping.put("gouki1check9", "gouki1check9"); // 号機①ﾁｪｯｸ9
+        mapping.put("gouki1check10", "gouki1check10"); // 号機①ﾁｪｯｸ10
+        mapping.put("gouki2saya1", "gouki2saya1"); // 号機②ｻﾔNo1
+        mapping.put("gouki2saya2", "gouki2saya2"); // 号機②ｻﾔNo2
+        mapping.put("gouki2saya3", "gouki2saya3"); // 号機②ｻﾔNo3
+        mapping.put("gouki2saya4", "gouki2saya4"); // 号機②ｻﾔNo4
+        mapping.put("gouki2saya5", "gouki2saya5"); // 号機②ｻﾔNo5
+        mapping.put("gouki2saya6", "gouki2saya6"); // 号機②ｻﾔNo6
+        mapping.put("gouki2saya7", "gouki2saya7"); // 号機②ｻﾔNo7
+        mapping.put("gouki2saya8", "gouki2saya8"); // 号機②ｻﾔNo8
+        mapping.put("gouki2saya9", "gouki2saya9"); // 号機②ｻﾔNo9
+        mapping.put("gouki2saya10", "gouki2saya10"); // 号機②ｻﾔNo10
+        mapping.put("gouki2check1", "gouki2check1"); // 号機②ﾁｪｯｸ1
+        mapping.put("gouki2check2", "gouki2check2"); // 号機②ﾁｪｯｸ2
+        mapping.put("gouki2check3", "gouki2check3"); // 号機②ﾁｪｯｸ3
+        mapping.put("gouki2check4", "gouki2check4"); // 号機②ﾁｪｯｸ4
+        mapping.put("gouki2check5", "gouki2check5"); // 号機②ﾁｪｯｸ5
+        mapping.put("gouki2check6", "gouki2check6"); // 号機②ﾁｪｯｸ6
+        mapping.put("gouki2check7", "gouki2check7"); // 号機②ﾁｪｯｸ7
+        mapping.put("gouki2check8", "gouki2check8"); // 号機②ﾁｪｯｸ8
+        mapping.put("gouki2check9", "gouki2check9"); // 号機②ﾁｪｯｸ9
+        mapping.put("gouki2check10", "gouki2check10"); // 号機②ﾁｪｯｸ10
+        mapping.put("gouki3saya1", "gouki3saya1"); // 号機③ｻﾔNo1
+        mapping.put("gouki3saya2", "gouki3saya2"); // 号機③ｻﾔNo2
+        mapping.put("gouki3saya3", "gouki3saya3"); // 号機③ｻﾔNo3
+        mapping.put("gouki3saya4", "gouki3saya4"); // 号機③ｻﾔNo4
+        mapping.put("gouki3saya5", "gouki3saya5"); // 号機③ｻﾔNo5
+        mapping.put("gouki3saya6", "gouki3saya6"); // 号機③ｻﾔNo6
+        mapping.put("gouki3saya7", "gouki3saya7"); // 号機③ｻﾔNo7
+        mapping.put("gouki3saya8", "gouki3saya8"); // 号機③ｻﾔNo8
+        mapping.put("gouki3saya9", "gouki3saya9"); // 号機③ｻﾔNo9
+        mapping.put("gouki3saya10", "gouki3saya10"); // 号機③ｻﾔNo10
+        mapping.put("gouki3check1", "gouki3check1"); // 号機③ﾁｪｯｸ1
+        mapping.put("gouki3check2", "gouki3check2"); // 号機③ﾁｪｯｸ2
+        mapping.put("gouki3check3", "gouki3check3"); // 号機③ﾁｪｯｸ3
+        mapping.put("gouki3check4", "gouki3check4"); // 号機③ﾁｪｯｸ4
+        mapping.put("gouki3check5", "gouki3check5"); // 号機③ﾁｪｯｸ5
+        mapping.put("gouki3check6", "gouki3check6"); // 号機③ﾁｪｯｸ6
+        mapping.put("gouki3check7", "gouki3check7"); // 号機③ﾁｪｯｸ7
+        mapping.put("gouki3check8", "gouki3check8"); // 号機③ﾁｪｯｸ8
+        mapping.put("gouki3check9", "gouki3check9"); // 号機③ﾁｪｯｸ9
+        mapping.put("gouki3check10", "gouki3check10"); // 号機③ﾁｪｯｸ10
+        mapping.put("gouki4saya1", "gouki4saya1"); // 号機④ｻﾔNo1
+        mapping.put("gouki4saya2", "gouki4saya2"); // 号機④ｻﾔNo2
+        mapping.put("gouki4saya3", "gouki4saya3"); // 号機④ｻﾔNo3
+        mapping.put("gouki4saya4", "gouki4saya4"); // 号機④ｻﾔNo4
+        mapping.put("gouki4saya5", "gouki4saya5"); // 号機④ｻﾔNo5
+        mapping.put("gouki4saya6", "gouki4saya6"); // 号機④ｻﾔNo6
+        mapping.put("gouki4saya7", "gouki4saya7"); // 号機④ｻﾔNo7
+        mapping.put("gouki4saya8", "gouki4saya8"); // 号機④ｻﾔNo8
+        mapping.put("gouki4saya9", "gouki4saya9"); // 号機④ｻﾔNo9
+        mapping.put("gouki4saya10", "gouki4saya10"); // 号機④ｻﾔNo10
+        mapping.put("gouki4check1", "gouki4check1"); // 号機④ﾁｪｯｸ1
+        mapping.put("gouki4check2", "gouki4check2"); // 号機④ﾁｪｯｸ2
+        mapping.put("gouki4check3", "gouki4check3"); // 号機④ﾁｪｯｸ3
+        mapping.put("gouki4check4", "gouki4check4"); // 号機④ﾁｪｯｸ4
+        mapping.put("gouki4check5", "gouki4check5"); // 号機④ﾁｪｯｸ5
+        mapping.put("gouki4check6", "gouki4check6"); // 号機④ﾁｪｯｸ6
+        mapping.put("gouki4check7", "gouki4check7"); // 号機④ﾁｪｯｸ7
+        mapping.put("gouki4check8", "gouki4check8"); // 号機④ﾁｪｯｸ8
+        mapping.put("gouki4check9", "gouki4check9"); // 号機④ﾁｪｯｸ9
+        mapping.put("gouki4check10", "gouki4check10"); // 号機④ﾁｪｯｸ10
+        mapping.put("torokunichiji", "torokunichiji"); // 登録日時
+        mapping.put("kosinnichiji", "kosinnichiji"); // 更新日時
+        mapping.put("revision", "revision"); // revision
+        mapping.put("deleteflag", "deleteflag"); // 削除フラグ
+
+        BeanProcessor beanProcessor = new BeanProcessor(mapping);
+        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+        ResultSetHandler<List<SubSrShinkuukansou>> beanHandler = new BeanListHandler<>(SubSrShinkuukansou.class, rowProcessor);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, beanHandler, params.toArray());
+    }
+
+    /**
+     * [熱処理_ｻﾌﾞ画面_仮登録]から、ﾃﾞｰﾀを取得
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @param rev revision(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private List<SubSrShinkuukansou> loadTmpSubSrShinkuukansou(QueryRunner queryRunnerQcdb, 
+            String kojyo, String lotNo, String edaban, int jissekino, String rev) throws SQLException {
+        
+        String sql = "SELECT kojyo, lotno, edaban, kaisuu, gouki1saya1, gouki1saya2, "
+                + "gouki1saya3, gouki1saya4, gouki1saya5, gouki1saya6, gouki1saya7, "
+                + "gouki1saya8, gouki1saya9, gouki1saya10, gouki1check1, gouki1check2, "
+                + "gouki1check3, gouki1check4, gouki1check5, gouki1check6, gouki1check7, "
+                + "gouki1check8, gouki1check9, gouki1check10, gouki2saya1, gouki2saya2, "
+                + "gouki2saya3, gouki2saya4, gouki2saya5, gouki2saya6, gouki2saya7, "
+                + "gouki2saya8, gouki2saya9, gouki2saya10, gouki2check1, gouki2check2, "
+                + "gouki2check3, gouki2check4, gouki2check5, gouki2check6, gouki2check7, "
+                + "gouki2check8, gouki2check9, gouki2check10, gouki3saya1, gouki3saya2, "
+                + "gouki3saya3, gouki3saya4, gouki3saya5, gouki3saya6, gouki3saya7, "
+                + "gouki3saya8, gouki3saya9, gouki3saya10, gouki3check1, gouki3check2, "
+                + "gouki3check3, gouki3check4, gouki3check5, gouki3check6, gouki3check7, "
+                + "gouki3check8, gouki3check9, gouki3check10, gouki4saya1, gouki4saya2, "
+                + "gouki4saya3, gouki4saya4, gouki4saya5, gouki4saya6, gouki4saya7, "
+                + "gouki4saya8, gouki4saya9, gouki4saya10, gouki4check1, gouki4check2, "
+                + "gouki4check3, gouki4check4, gouki4check5, gouki4check6, gouki4check7, "
+                + "gouki4check8, gouki4check9, gouki4check10, torokunichiji, kosinnichiji, revision, deleteflag "
+                + "FROM tmp_sub_sr_shinkuukansou "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND deleteflag = ? ";
+
+        // revisionが入っている場合、条件に追加
+        if (!StringUtil.isEmpty(rev)) {
+            sql += "AND revision = ? ";
+        }
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(jissekino);
+        params.add(0);
+
+        // revisionが入っている場合、条件に追加
+        if (!StringUtil.isEmpty(rev)) {
+            params.add(rev);
+        }
+
+        Map<String, String> mapping = new HashMap<>();
+        mapping.put("kojyo", "kojyo"); // 工場ｺｰﾄﾞ
+        mapping.put("lotno", "lotno"); // ﾛｯﾄNo
+        mapping.put("edaban", "edaban"); // 枝番
+        mapping.put("kaisuu", "kaisuu"); // 回数
+        mapping.put("gouki1saya1", "gouki1saya1"); // 号機①ｻﾔNo1
+        mapping.put("gouki1saya2", "gouki1saya2"); // 号機①ｻﾔNo2
+        mapping.put("gouki1saya3", "gouki1saya3"); // 号機①ｻﾔNo3
+        mapping.put("gouki1saya4", "gouki1saya4"); // 号機①ｻﾔNo4
+        mapping.put("gouki1saya5", "gouki1saya5"); // 号機①ｻﾔNo5
+        mapping.put("gouki1saya6", "gouki1saya6"); // 号機①ｻﾔNo6
+        mapping.put("gouki1saya7", "gouki1saya7"); // 号機①ｻﾔNo7
+        mapping.put("gouki1saya8", "gouki1saya8"); // 号機①ｻﾔNo8
+        mapping.put("gouki1saya9", "gouki1saya9"); // 号機①ｻﾔNo9
+        mapping.put("gouki1saya10", "gouki1saya10"); // 号機①ｻﾔNo10
+        mapping.put("gouki1check1", "gouki1check1"); // 号機①ﾁｪｯｸ1
+        mapping.put("gouki1check2", "gouki1check2"); // 号機①ﾁｪｯｸ2
+        mapping.put("gouki1check3", "gouki1check3"); // 号機①ﾁｪｯｸ3
+        mapping.put("gouki1check4", "gouki1check4"); // 号機①ﾁｪｯｸ4
+        mapping.put("gouki1check5", "gouki1check5"); // 号機①ﾁｪｯｸ5
+        mapping.put("gouki1check6", "gouki1check6"); // 号機①ﾁｪｯｸ6
+        mapping.put("gouki1check7", "gouki1check7"); // 号機①ﾁｪｯｸ7
+        mapping.put("gouki1check8", "gouki1check8"); // 号機①ﾁｪｯｸ8
+        mapping.put("gouki1check9", "gouki1check9"); // 号機①ﾁｪｯｸ9
+        mapping.put("gouki1check10", "gouki1check10"); // 号機①ﾁｪｯｸ10
+        mapping.put("gouki2saya1", "gouki2saya1"); // 号機②ｻﾔNo1
+        mapping.put("gouki2saya2", "gouki2saya2"); // 号機②ｻﾔNo2
+        mapping.put("gouki2saya3", "gouki2saya3"); // 号機②ｻﾔNo3
+        mapping.put("gouki2saya4", "gouki2saya4"); // 号機②ｻﾔNo4
+        mapping.put("gouki2saya5", "gouki2saya5"); // 号機②ｻﾔNo5
+        mapping.put("gouki2saya6", "gouki2saya6"); // 号機②ｻﾔNo6
+        mapping.put("gouki2saya7", "gouki2saya7"); // 号機②ｻﾔNo7
+        mapping.put("gouki2saya8", "gouki2saya8"); // 号機②ｻﾔNo8
+        mapping.put("gouki2saya9", "gouki2saya9"); // 号機②ｻﾔNo9
+        mapping.put("gouki2saya10", "gouki2saya10"); // 号機②ｻﾔNo10
+        mapping.put("gouki2check1", "gouki2check1"); // 号機②ﾁｪｯｸ1
+        mapping.put("gouki2check2", "gouki2check2"); // 号機②ﾁｪｯｸ2
+        mapping.put("gouki2check3", "gouki2check3"); // 号機②ﾁｪｯｸ3
+        mapping.put("gouki2check4", "gouki2check4"); // 号機②ﾁｪｯｸ4
+        mapping.put("gouki2check5", "gouki2check5"); // 号機②ﾁｪｯｸ5
+        mapping.put("gouki2check6", "gouki2check6"); // 号機②ﾁｪｯｸ6
+        mapping.put("gouki2check7", "gouki2check7"); // 号機②ﾁｪｯｸ7
+        mapping.put("gouki2check8", "gouki2check8"); // 号機②ﾁｪｯｸ8
+        mapping.put("gouki2check9", "gouki2check9"); // 号機②ﾁｪｯｸ9
+        mapping.put("gouki2check10", "gouki2check10"); // 号機②ﾁｪｯｸ10
+        mapping.put("gouki3saya1", "gouki3saya1"); // 号機③ｻﾔNo1
+        mapping.put("gouki3saya2", "gouki3saya2"); // 号機③ｻﾔNo2
+        mapping.put("gouki3saya3", "gouki3saya3"); // 号機③ｻﾔNo3
+        mapping.put("gouki3saya4", "gouki3saya4"); // 号機③ｻﾔNo4
+        mapping.put("gouki3saya5", "gouki3saya5"); // 号機③ｻﾔNo5
+        mapping.put("gouki3saya6", "gouki3saya6"); // 号機③ｻﾔNo6
+        mapping.put("gouki3saya7", "gouki3saya7"); // 号機③ｻﾔNo7
+        mapping.put("gouki3saya8", "gouki3saya8"); // 号機③ｻﾔNo8
+        mapping.put("gouki3saya9", "gouki3saya9"); // 号機③ｻﾔNo9
+        mapping.put("gouki3saya10", "gouki3saya10"); // 号機③ｻﾔNo10
+        mapping.put("gouki3check1", "gouki3check1"); // 号機③ﾁｪｯｸ1
+        mapping.put("gouki3check2", "gouki3check2"); // 号機③ﾁｪｯｸ2
+        mapping.put("gouki3check3", "gouki3check3"); // 号機③ﾁｪｯｸ3
+        mapping.put("gouki3check4", "gouki3check4"); // 号機③ﾁｪｯｸ4
+        mapping.put("gouki3check5", "gouki3check5"); // 号機③ﾁｪｯｸ5
+        mapping.put("gouki3check6", "gouki3check6"); // 号機③ﾁｪｯｸ6
+        mapping.put("gouki3check7", "gouki3check7"); // 号機③ﾁｪｯｸ7
+        mapping.put("gouki3check8", "gouki3check8"); // 号機③ﾁｪｯｸ8
+        mapping.put("gouki3check9", "gouki3check9"); // 号機③ﾁｪｯｸ9
+        mapping.put("gouki3check10", "gouki3check10"); // 号機③ﾁｪｯｸ10
+        mapping.put("gouki4saya1", "gouki4saya1"); // 号機④ｻﾔNo1
+        mapping.put("gouki4saya2", "gouki4saya2"); // 号機④ｻﾔNo2
+        mapping.put("gouki4saya3", "gouki4saya3"); // 号機④ｻﾔNo3
+        mapping.put("gouki4saya4", "gouki4saya4"); // 号機④ｻﾔNo4
+        mapping.put("gouki4saya5", "gouki4saya5"); // 号機④ｻﾔNo5
+        mapping.put("gouki4saya6", "gouki4saya6"); // 号機④ｻﾔNo6
+        mapping.put("gouki4saya7", "gouki4saya7"); // 号機④ｻﾔNo7
+        mapping.put("gouki4saya8", "gouki4saya8"); // 号機④ｻﾔNo8
+        mapping.put("gouki4saya9", "gouki4saya9"); // 号機④ｻﾔNo9
+        mapping.put("gouki4saya10", "gouki4saya10"); // 号機④ｻﾔNo10
+        mapping.put("gouki4check1", "gouki4check1"); // 号機④ﾁｪｯｸ1
+        mapping.put("gouki4check2", "gouki4check2"); // 号機④ﾁｪｯｸ2
+        mapping.put("gouki4check3", "gouki4check3"); // 号機④ﾁｪｯｸ3
+        mapping.put("gouki4check4", "gouki4check4"); // 号機④ﾁｪｯｸ4
+        mapping.put("gouki4check5", "gouki4check5"); // 号機④ﾁｪｯｸ5
+        mapping.put("gouki4check6", "gouki4check6"); // 号機④ﾁｪｯｸ6
+        mapping.put("gouki4check7", "gouki4check7"); // 号機④ﾁｪｯｸ7
+        mapping.put("gouki4check8", "gouki4check8"); // 号機④ﾁｪｯｸ8
+        mapping.put("gouki4check9", "gouki4check9"); // 号機④ﾁｪｯｸ9
+        mapping.put("gouki4check10", "gouki4check10"); // 号機④ﾁｪｯｸ10
+        mapping.put("torokunichiji", "torokunichiji"); // 登録日時
+        mapping.put("kosinnichiji", "kosinnichiji"); // 更新日時
+        mapping.put("revision", "revision"); // revision
+        mapping.put("deleteflag", "deleteflag"); // 削除フラグ
+
+        BeanProcessor beanProcessor = new BeanProcessor(mapping);
+        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+        ResultSetHandler<List<SubSrShinkuukansou>> beanHandler = new BeanListHandler<>(SubSrShinkuukansou.class, rowProcessor);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, beanHandler, params.toArray());
+    }
+
+    /**
+     * 熱処理_サブ画面_仮登録(tmp_sub_sr_shinkuukansou)登録処理
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param newRev 新Revision
+     * @param deleteflag 削除ﾌﾗｸﾞ
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @param itemList 項目リスト
+     * @throws SQLException 例外エラー
+     */
+    private void insertTmpSubSrShinkuukansou(QueryRunner queryRunnerQcdb, Connection conQcdb, 
+            BigDecimal newRev, int deleteflag, String kojyo, String lotNo, String edaban, 
+            Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
+        
+        String sql = "INSERT INTO tmp_sub_sr_shinkuukansou ("
+                + "kojyo, lotno, edaban, kaisuu, gouki1saya1, gouki1saya2, gouki1saya3, "
+                + "gouki1saya4, gouki1saya5, gouki1saya6, gouki1saya7, gouki1saya8, gouki1saya9, "
+                + "gouki1saya10, gouki1check1, gouki1check2, gouki1check3, gouki1check4, "
+                + "gouki1check5, gouki1check6, gouki1check7, gouki1check8, gouki1check9, "
+                + "gouki1check10, gouki2saya1, gouki2saya2, gouki2saya3, gouki2saya4, gouki2saya5, "
+                + "gouki2saya6, gouki2saya7, gouki2saya8, gouki2saya9, gouki2saya10, gouki2check1, "
+                + "gouki2check2, gouki2check3, gouki2check4, gouki2check5, gouki2check6, "
+                + "gouki2check7, gouki2check8, gouki2check9, gouki2check10, gouki3saya1, "
+                + "gouki3saya2, gouki3saya3, gouki3saya4, gouki3saya5, gouki3saya6, gouki3saya7, "
+                + "gouki3saya8, gouki3saya9, gouki3saya10, gouki3check1, gouki3check2, "
+                + "gouki3check3, gouki3check4, gouki3check5, gouki3check6, gouki3check7, "
+                + "gouki3check8, gouki3check9, gouki3check10, gouki4saya1, gouki4saya2, "
+                + "gouki4saya3, gouki4saya4, gouki4saya5, gouki4saya6, gouki4saya7, gouki4saya8, "
+                + "gouki4saya9, gouki4saya10, gouki4check1, gouki4check2, gouki4check3, "
+                + "gouki4check4, gouki4check5, gouki4check6, gouki4check7, gouki4check8, "
+                + "gouki4check9, gouki4check10, torokunichiji, kosinnichiji, revision, deleteflag"
+                + ") VALUES ("
+                + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+                + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+                + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+                + "?, ?, ?, ?, ?, ?, ?)";
+
+        List<Object> params = setUpdateParameterTmpSubSrSrShinkuukansou(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+
+    /**
+     * 熱処理_仮登録(tmp_sr_shinkuukansou)更新処理
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param rev revision
+     * @param newRev 新revision
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param jissekino 実績No
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @throws SQLException 例外エラー
+     */
+    private void updateTmpSubSrShinkuukansou(QueryRunner queryRunnerQcdb, Connection conQcdb, 
+            BigDecimal rev, BigDecimal newRev, String kojyo, String lotNo, 
+            String edaban, int jissekino, Timestamp systemTime) throws SQLException {
+        
+        String sql = "UPDATE tmp_sub_sr_shinkuukansou SET "
+                + "gouki1saya1 = ?, gouki1saya2 = ?, gouki1saya3 = ?, gouki1saya4 = ?, gouki1saya5 = ?, "
+                + "gouki1saya6 = ?, gouki1saya7 = ?, gouki1saya8 = ?, gouki1saya9 = ?, gouki1saya10 = ?, "
+                + "gouki1check1 = ?, gouki1check2 = ?, gouki1check3 = ?, gouki1check4 = ?, gouki1check5 = ?, "
+                + "gouki1check6 = ?, gouki1check7 = ?, gouki1check8 = ?, gouki1check9 = ?, gouki1check10 = ?, "
+                + "gouki2saya1 = ?, gouki2saya2 = ?, gouki2saya3 = ?, gouki2saya4 = ?, gouki2saya5 = ?, "
+                + "gouki2saya6 = ?, gouki2saya7 = ?, gouki2saya8 = ?, gouki2saya9 = ?, gouki2saya10 = ?, "
+                + "gouki2check1 = ?, gouki2check2 = ?, gouki2check3 = ?, gouki2check4 = ?, gouki2check5 = ?, "
+                + "gouki2check6 = ?, gouki2check7 = ?, gouki2check8 = ?, gouki2check9 = ?, gouki2check10 = ?, "
+                + "gouki3saya1 = ?, gouki3saya2 = ?, gouki3saya3 = ?, gouki3saya4 = ?, gouki3saya5 = ?, "
+                + "gouki3saya6 = ?, gouki3saya7 = ?, gouki3saya8 = ?, gouki3saya9 = ?, gouki3saya10 = ?, "
+                + "gouki3check1 = ?, gouki3check2 = ?, gouki3check3 = ?, gouki3check4 = ?, gouki3check5 = ?, "
+                + "gouki3check6 = ?, gouki3check7 = ?, gouki3check8 = ?, gouki3check9 = ?, gouki3check10 = ?, "
+                + "gouki4saya1 = ?, gouki4saya2 = ?, gouki4saya3 = ?, gouki4saya4 = ?, gouki4saya5 = ?, "
+                + "gouki4saya6 = ?, gouki4saya7 = ?, gouki4saya8 = ?, gouki4saya9 = ?, gouki4saya10 = ?, "
+                + "gouki4check1 = ?, gouki4check2 = ?, gouki4check3 = ?, gouki4check4 = ?, gouki4check5 = ?, "
+                + "gouki4check6 = ?, gouki4check7 = ?, gouki4check8 = ?, gouki4check9 = ?, gouki4check10 = ?, "
+                + "kosinnichiji = ?, revision = ?, deleteflag = ? "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ? ";
+        
+        List<Object> params = setUpdateParameterTmpSubSrSrShinkuukansou(false, newRev, 0, kojyo, lotNo, edaban, systemTime, null);
+
+        // 検索条件
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(jissekino);
+        params.add(rev);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+    
+    /**
+     * 熱処理_サブ画面仮登録(tmp_sub_sr_shinkuukansou)更新値パラメータ設定
+     *
+     * @param isInsert 登録判定(true:insert、false:update)
+     * @param newRev 新revision
+     * @param deleteflag 削除ﾌﾗｸﾞ
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @param itemList 項目リスト
+     * @return 更新パラメータ
+     */
+    private List<Object> setUpdateParameterTmpSubSrSrShinkuukansou(boolean isInsert, BigDecimal newRev, 
+            int deleteflag, String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList) {
+        
+        List<Object> params = new ArrayList<>();
+
+        // 子画面情報を取得
+        GXHDO101C018 beanGXHDO101C018 = (GXHDO101C018) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C018);
+        List<GXHDO101C018Model.GoukiData> gouki1DataList = beanGXHDO101C018.getGxhdO101c018Model().getGouki1DataList();
+        List<GXHDO101C018Model.GoukiData> gouki2DataList = beanGXHDO101C018.getGxhdO101c018Model().getGouki2DataList();
+        List<GXHDO101C018Model.GoukiData> gouki3DataList = beanGXHDO101C018.getGxhdO101c018Model().getGouki3DataList();
+        List<GXHDO101C018Model.GoukiData> gouki4DataList = beanGXHDO101C018.getGxhdO101c018Model().getGouki4DataList();
+        
+        if (isInsert) {
+            params.add(kojyo); //工場ｺｰﾄﾞ
+            params.add(lotNo); //ﾛｯﾄNo
+            params.add(edaban); //枝番
+            params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B043Const.KAISUU, null))); // 回数
+        }
+        
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki1DataList.get(0).getItemValue())); //号機①ｻﾔNo1
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki1DataList.get(1).getItemValue())); //号機①ｻﾔNo2
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki1DataList.get(2).getItemValue())); //号機①ｻﾔNo3
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki1DataList.get(3).getItemValue())); //号機①ｻﾔNo4
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki1DataList.get(4).getItemValue())); //号機①ｻﾔNo5
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki1DataList.get(5).getItemValue())); //号機①ｻﾔNo6
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki1DataList.get(6).getItemValue())); //号機①ｻﾔNo7
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki1DataList.get(7).getItemValue())); //号機①ｻﾔNo8
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki1DataList.get(8).getItemValue())); //号機①ｻﾔNo9
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki1DataList.get(9).getItemValue())); //号機①ｻﾔNo10
+        params.add(getCheckBoxDbValue(gouki1DataList.get(0).getCheckBoxValue(), null)); //号機①ﾁｪｯｸ1
+        params.add(getCheckBoxDbValue(gouki1DataList.get(1).getCheckBoxValue(), null)); //号機①ﾁｪｯｸ2
+        params.add(getCheckBoxDbValue(gouki1DataList.get(2).getCheckBoxValue(), null)); //号機①ﾁｪｯｸ3
+        params.add(getCheckBoxDbValue(gouki1DataList.get(3).getCheckBoxValue(), null)); //号機①ﾁｪｯｸ4
+        params.add(getCheckBoxDbValue(gouki1DataList.get(4).getCheckBoxValue(), null)); //号機①ﾁｪｯｸ5
+        params.add(getCheckBoxDbValue(gouki1DataList.get(5).getCheckBoxValue(), null)); //号機①ﾁｪｯｸ6
+        params.add(getCheckBoxDbValue(gouki1DataList.get(6).getCheckBoxValue(), null)); //号機①ﾁｪｯｸ7
+        params.add(getCheckBoxDbValue(gouki1DataList.get(7).getCheckBoxValue(), null)); //号機①ﾁｪｯｸ8
+        params.add(getCheckBoxDbValue(gouki1DataList.get(8).getCheckBoxValue(), null)); //号機①ﾁｪｯｸ9
+        params.add(getCheckBoxDbValue(gouki1DataList.get(9).getCheckBoxValue(), null)); //号機①ﾁｪｯｸ10
+        
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki2DataList.get(0).getItemValue())); //号機②ｻﾔNo1
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki2DataList.get(1).getItemValue())); //号機②ｻﾔNo2
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki2DataList.get(2).getItemValue())); //号機②ｻﾔNo3
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki2DataList.get(3).getItemValue())); //号機②ｻﾔNo4
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki2DataList.get(4).getItemValue())); //号機②ｻﾔNo5
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki2DataList.get(5).getItemValue())); //号機②ｻﾔNo6
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki2DataList.get(6).getItemValue())); //号機②ｻﾔNo7
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki2DataList.get(7).getItemValue())); //号機②ｻﾔNo8
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki2DataList.get(8).getItemValue())); //号機②ｻﾔNo9
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki2DataList.get(9).getItemValue())); //号機②ｻﾔNo10
+        params.add(getCheckBoxDbValue(gouki2DataList.get(0).getCheckBoxValue(), null)); //号機②ﾁｪｯｸ1
+        params.add(getCheckBoxDbValue(gouki2DataList.get(1).getCheckBoxValue(), null)); //号機②ﾁｪｯｸ2
+        params.add(getCheckBoxDbValue(gouki2DataList.get(2).getCheckBoxValue(), null)); //号機②ﾁｪｯｸ3
+        params.add(getCheckBoxDbValue(gouki2DataList.get(3).getCheckBoxValue(), null)); //号機②ﾁｪｯｸ4
+        params.add(getCheckBoxDbValue(gouki2DataList.get(4).getCheckBoxValue(), null)); //号機②ﾁｪｯｸ5
+        params.add(getCheckBoxDbValue(gouki2DataList.get(5).getCheckBoxValue(), null)); //号機②ﾁｪｯｸ6
+        params.add(getCheckBoxDbValue(gouki2DataList.get(6).getCheckBoxValue(), null)); //号機②ﾁｪｯｸ7
+        params.add(getCheckBoxDbValue(gouki2DataList.get(7).getCheckBoxValue(), null)); //号機②ﾁｪｯｸ8
+        params.add(getCheckBoxDbValue(gouki2DataList.get(8).getCheckBoxValue(), null)); //号機②ﾁｪｯｸ9
+        params.add(getCheckBoxDbValue(gouki2DataList.get(9).getCheckBoxValue(), null)); //号機②ﾁｪｯｸ10
+
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki3DataList.get(0).getItemValue())); //号機③ｻﾔNo1
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki3DataList.get(1).getItemValue())); //号機③ｻﾔNo2
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki3DataList.get(2).getItemValue())); //号機③ｻﾔNo3
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki3DataList.get(3).getItemValue())); //号機③ｻﾔNo4
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki3DataList.get(4).getItemValue())); //号機③ｻﾔNo5
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki3DataList.get(5).getItemValue())); //号機③ｻﾔNo6
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki3DataList.get(6).getItemValue())); //号機③ｻﾔNo7
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki3DataList.get(7).getItemValue())); //号機③ｻﾔNo8
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki3DataList.get(8).getItemValue())); //号機③ｻﾔNo9
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki3DataList.get(9).getItemValue())); //号機③ｻﾔNo10
+        params.add(getCheckBoxDbValue(gouki3DataList.get(0).getCheckBoxValue(), null)); //号機③ﾁｪｯｸ1
+        params.add(getCheckBoxDbValue(gouki3DataList.get(1).getCheckBoxValue(), null)); //号機③ﾁｪｯｸ2
+        params.add(getCheckBoxDbValue(gouki3DataList.get(2).getCheckBoxValue(), null)); //号機③ﾁｪｯｸ3
+        params.add(getCheckBoxDbValue(gouki3DataList.get(3).getCheckBoxValue(), null)); //号機③ﾁｪｯｸ4
+        params.add(getCheckBoxDbValue(gouki3DataList.get(4).getCheckBoxValue(), null)); //号機③ﾁｪｯｸ5
+        params.add(getCheckBoxDbValue(gouki3DataList.get(5).getCheckBoxValue(), null)); //号機③ﾁｪｯｸ6
+        params.add(getCheckBoxDbValue(gouki3DataList.get(6).getCheckBoxValue(), null)); //号機③ﾁｪｯｸ7
+        params.add(getCheckBoxDbValue(gouki3DataList.get(7).getCheckBoxValue(), null)); //号機③ﾁｪｯｸ8
+        params.add(getCheckBoxDbValue(gouki3DataList.get(8).getCheckBoxValue(), null)); //号機③ﾁｪｯｸ9
+        params.add(getCheckBoxDbValue(gouki3DataList.get(9).getCheckBoxValue(), null)); //号機③ﾁｪｯｸ10
+
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki4DataList.get(0).getItemValue())); //号機④ｻﾔNo1
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki4DataList.get(1).getItemValue())); //号機④ｻﾔNo2
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki4DataList.get(2).getItemValue())); //号機④ｻﾔNo3
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki4DataList.get(3).getItemValue())); //号機④ｻﾔNo4
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki4DataList.get(4).getItemValue())); //号機④ｻﾔNo5
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki4DataList.get(5).getItemValue())); //号機④ｻﾔNo6
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki4DataList.get(6).getItemValue())); //号機④ｻﾔNo7
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki4DataList.get(7).getItemValue())); //号機④ｻﾔNo8
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki4DataList.get(8).getItemValue())); //号機④ｻﾔNo9
+        params.add(DBUtil.stringToIntObjectDefaultNull(gouki4DataList.get(9).getItemValue())); //号機④ｻﾔNo10
+        params.add(getCheckBoxDbValue(gouki4DataList.get(0).getCheckBoxValue(), null)); //号機④ﾁｪｯｸ1
+        params.add(getCheckBoxDbValue(gouki4DataList.get(1).getCheckBoxValue(), null)); //号機④ﾁｪｯｸ2
+        params.add(getCheckBoxDbValue(gouki4DataList.get(2).getCheckBoxValue(), null)); //号機④ﾁｪｯｸ3
+        params.add(getCheckBoxDbValue(gouki4DataList.get(3).getCheckBoxValue(), null)); //号機④ﾁｪｯｸ4
+        params.add(getCheckBoxDbValue(gouki4DataList.get(4).getCheckBoxValue(), null)); //号機④ﾁｪｯｸ5
+        params.add(getCheckBoxDbValue(gouki4DataList.get(5).getCheckBoxValue(), null)); //号機④ﾁｪｯｸ6
+        params.add(getCheckBoxDbValue(gouki4DataList.get(6).getCheckBoxValue(), null)); //号機④ﾁｪｯｸ7
+        params.add(getCheckBoxDbValue(gouki4DataList.get(7).getCheckBoxValue(), null)); //号機④ﾁｪｯｸ8
+        params.add(getCheckBoxDbValue(gouki4DataList.get(8).getCheckBoxValue(), null)); //号機④ﾁｪｯｸ9
+        params.add(getCheckBoxDbValue(gouki4DataList.get(9).getCheckBoxValue(), null)); //号機④ﾁｪｯｸ10
+        
+        if (isInsert) {
+            params.add(systemTime); //登録日時
+            params.add(systemTime); //更新日時
+        } else {
+            params.add(systemTime); //更新日時
+        }
+        params.add(newRev); //revision
+        params.add(deleteflag); //削除ﾌﾗｸﾞ
+        
+        return params;
+    }
+    
+    /**
+     * チェックボックス値(DB内のValue値)取得
+     *
+     * @param checkBoxValue コンボボックスValue値
+     * @param defaultValue チェックがついていない場合のデフォルト値
+     * @return コンボボックステキスト値
+     */
+    private Integer getCheckBoxDbValue(String checkBoxValue, Integer defaultValue) {
+        if ("true".equals(StringUtil.nullToBlank(checkBoxValue).toLowerCase())) {
+            return 1;
+        }
+        return defaultValue;
+    }
+    
+    /**
+     * チェックボックス値(チェックボックス内のValue値)取得
+     *
+     * @param dbValue コンボボックス(DB内)Value値
+     * @return コンボボックステキスト値
+     */
+    private String getCheckBoxCheckValue(String dbValue) {
+        if ("1".equals(dbValue)) {
+            return "true";
+        }
+        return "false";
+    }
+
+    /**
+     * 熱処理_サブ画面仮登録(tmp_sub_sr_shinkuukansou)削除処理
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param rev revision
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param jissekino 実績No
+     * @throws SQLException 例外エラー
+     */
+    private void deleteTmpSubSrShinkuukansou(QueryRunner queryRunnerQcdb, Connection conQcdb, 
+            BigDecimal rev, String kojyo, String lotNo, String edaban, int jissekino) throws SQLException {
+        
+        String sql = "DELETE FROM tmp_sub_sr_shinkuukansou "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ?";
+
+        //更新値設定
+        List<Object> params = new ArrayList<>();
+
+        //検索条件設定
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(jissekino);
+        params.add(rev);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+
+    /**
+     * 熱処理_サブ画面(sub_sr_shinkuukansou)登録処理
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param newRev 新revision
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @param itemList 項目リスト
+     * @throws SQLException 例外エラー
+     */
+    private void insertSubSrShinkuukansou(QueryRunner queryRunnerQcdb, Connection conQcdb, 
+            BigDecimal newRev, String kojyo, String lotNo, String edaban, 
+            Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
+        
+        String sql = "INSERT INTO sub_sr_shinkuukansou ("
+                + "kojyo, lotno, edaban, kaisuu, gouki1saya1, gouki1saya2, gouki1saya3, "
+                + "gouki1saya4, gouki1saya5, gouki1saya6, gouki1saya7, gouki1saya8, gouki1saya9, "
+                + "gouki1saya10, gouki1check1, gouki1check2, gouki1check3, gouki1check4, "
+                + "gouki1check5, gouki1check6, gouki1check7, gouki1check8, gouki1check9, "
+                + "gouki1check10, gouki2saya1, gouki2saya2, gouki2saya3, gouki2saya4, gouki2saya5, "
+                + "gouki2saya6, gouki2saya7, gouki2saya8, gouki2saya9, gouki2saya10, gouki2check1, "
+                + "gouki2check2, gouki2check3, gouki2check4, gouki2check5, gouki2check6, "
+                + "gouki2check7, gouki2check8, gouki2check9, gouki2check10, gouki3saya1, "
+                + "gouki3saya2, gouki3saya3, gouki3saya4, gouki3saya5, gouki3saya6, gouki3saya7, "
+                + "gouki3saya8, gouki3saya9, gouki3saya10, gouki3check1, gouki3check2, "
+                + "gouki3check3, gouki3check4, gouki3check5, gouki3check6, gouki3check7, "
+                + "gouki3check8, gouki3check9, gouki3check10, gouki4saya1, gouki4saya2, "
+                + "gouki4saya3, gouki4saya4, gouki4saya5, gouki4saya6, gouki4saya7, gouki4saya8, "
+                + "gouki4saya9, gouki4saya10, gouki4check1, gouki4check2, gouki4check3, "
+                + "gouki4check4, gouki4check5, gouki4check6, gouki4check7, gouki4check8, "
+                + "gouki4check9, gouki4check10, torokunichiji, kosinnichiji, revision"
+                + ") VALUES ("
+                + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+                + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+                + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+                + "?, ?, ?, ?, ?, ?)";
+
+        List<Object> params = setUpdateParameterSubSrSrShinkuukansou(true, newRev, kojyo, lotNo, edaban, systemTime, itemList);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+
+    /**
+     * 印刷SPSｸﾞﾗﾋﾞｱ_ｻﾌﾞ画面(sub_sr_shinkuukansou)更新処理
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param rev revision
+     * @param newRev 新revision
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param paramJissekino 実績No
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @throws SQLException 例外エラー
+     */
+    private void updateSubSrShinkuukansou(QueryRunner queryRunnerQcdb, Connection conQcdb, 
+            BigDecimal rev, BigDecimal newRev, String kojyo, String lotNo, String edaban, 
+            int paramJissekino, Timestamp systemTime) throws SQLException {
+        
+        String sql = "UPDATE sub_sr_shinkuukansou SET "
+                + "gouki1saya1 = ?, gouki1saya2 = ?, gouki1saya3 = ?, gouki1saya4 = ?, gouki1saya5 = ?, "
+                + "gouki1saya6 = ?, gouki1saya7 = ?, gouki1saya8 = ?, gouki1saya9 = ?, gouki1saya10 = ?, "
+                + "gouki1check1 = ?, gouki1check2 = ?, gouki1check3 = ?, gouki1check4 = ?, gouki1check5 = ?, "
+                + "gouki1check6 = ?, gouki1check7 = ?, gouki1check8 = ?, gouki1check9 = ?, gouki1check10 = ?, "
+                + "gouki2saya1 = ?, gouki2saya2 = ?, gouki2saya3 = ?, gouki2saya4 = ?, gouki2saya5 = ?, "
+                + "gouki2saya6 = ?, gouki2saya7 = ?, gouki2saya8 = ?, gouki2saya9 = ?, gouki2saya10 = ?, "
+                + "gouki2check1 = ?, gouki2check2 = ?, gouki2check3 = ?, gouki2check4 = ?, gouki2check5 = ?, "
+                + "gouki2check6 = ?, gouki2check7 = ?, gouki2check8 = ?, gouki2check9 = ?, gouki2check10 = ?, "
+                + "gouki3saya1 = ?, gouki3saya2 = ?, gouki3saya3 = ?, gouki3saya4 = ?, gouki3saya5 = ?, "
+                + "gouki3saya6 = ?, gouki3saya7 = ?, gouki3saya8 = ?, gouki3saya9 = ?, gouki3saya10 = ?, "
+                + "gouki3check1 = ?, gouki3check2 = ?, gouki3check3 = ?, gouki3check4 = ?, gouki3check5 = ?, "
+                + "gouki3check6 = ?, gouki3check7 = ?, gouki3check8 = ?, gouki3check9 = ?, gouki3check10 = ?, "
+                + "gouki4saya1 = ?, gouki4saya2 = ?, gouki4saya3 = ?, gouki4saya4 = ?, gouki4saya5 = ?, "
+                + "gouki4saya6 = ?, gouki4saya7 = ?, gouki4saya8 = ?, gouki4saya9 = ?, gouki4saya10 = ?, "
+                + "gouki4check1 = ?, gouki4check2 = ?, gouki4check3 = ?, gouki4check4 = ?, gouki4check5 = ?, "
+                + "gouki4check6 = ?, gouki4check7 = ?, gouki4check8 = ?, gouki4check9 = ?, gouki4check10 = ?, "
+                + "kosinnichiji = ?, revision = ? "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ? ";
+        
+        List<Object> params = setUpdateParameterSubSrSrShinkuukansou(false, newRev, kojyo, lotNo, edaban, systemTime, null);
+
+        // 検索条件
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(paramJissekino);
+        params.add(rev);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+    
+    /**
+     * 熱処理_サブ画面登録(tmp_sub_sr_shinkuukansou)更新値パラメータ設定
+     *
+     * @param isInsert 登録判定(true:insert、false:update)
+     * @param newRev 新revision
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @param itemList 項目リスト
+     * @return 更新パラメータ
+     */
+    private List<Object> setUpdateParameterSubSrSrShinkuukansou(boolean isInsert, BigDecimal newRev, 
+            String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList) {
+        
+        List<Object> params = new ArrayList<>();
+
+        // 子画面情報を取得
+        GXHDO101C018 beanGXHDO101C018 = (GXHDO101C018) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C018);
+        List<GXHDO101C018Model.GoukiData> gouki1DataList = beanGXHDO101C018.getGxhdO101c018Model().getGouki1DataList();
+        List<GXHDO101C018Model.GoukiData> gouki2DataList = beanGXHDO101C018.getGxhdO101c018Model().getGouki2DataList();
+        List<GXHDO101C018Model.GoukiData> gouki3DataList = beanGXHDO101C018.getGxhdO101c018Model().getGouki3DataList();
+        List<GXHDO101C018Model.GoukiData> gouki4DataList = beanGXHDO101C018.getGxhdO101c018Model().getGouki4DataList();
+        
+        if (isInsert) {
+            params.add(kojyo); //工場ｺｰﾄﾞ
+            params.add(lotNo); //ﾛｯﾄNo
+            params.add(edaban); //枝番
+            params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B043Const.KAISUU, null))); // 回数
+        }
+        
+        params.add(DBUtil.stringToIntObject(gouki1DataList.get(0).getItemValue())); //号機①ｻﾔNo1
+        params.add(DBUtil.stringToIntObject(gouki1DataList.get(1).getItemValue())); //号機①ｻﾔNo2
+        params.add(DBUtil.stringToIntObject(gouki1DataList.get(2).getItemValue())); //号機①ｻﾔNo3
+        params.add(DBUtil.stringToIntObject(gouki1DataList.get(3).getItemValue())); //号機①ｻﾔNo4
+        params.add(DBUtil.stringToIntObject(gouki1DataList.get(4).getItemValue())); //号機①ｻﾔNo5
+        params.add(DBUtil.stringToIntObject(gouki1DataList.get(5).getItemValue())); //号機①ｻﾔNo6
+        params.add(DBUtil.stringToIntObject(gouki1DataList.get(6).getItemValue())); //号機①ｻﾔNo7
+        params.add(DBUtil.stringToIntObject(gouki1DataList.get(7).getItemValue())); //号機①ｻﾔNo8
+        params.add(DBUtil.stringToIntObject(gouki1DataList.get(8).getItemValue())); //号機①ｻﾔNo9
+        params.add(DBUtil.stringToIntObject(gouki1DataList.get(9).getItemValue())); //号機①ｻﾔNo10
+        params.add(getCheckBoxDbValue(gouki1DataList.get(0).getCheckBoxValue(), 0)); //号機①ﾁｪｯｸ1
+        params.add(getCheckBoxDbValue(gouki1DataList.get(1).getCheckBoxValue(), 0)); //号機①ﾁｪｯｸ2
+        params.add(getCheckBoxDbValue(gouki1DataList.get(2).getCheckBoxValue(), 0)); //号機①ﾁｪｯｸ3
+        params.add(getCheckBoxDbValue(gouki1DataList.get(3).getCheckBoxValue(), 0)); //号機①ﾁｪｯｸ4
+        params.add(getCheckBoxDbValue(gouki1DataList.get(4).getCheckBoxValue(), 0)); //号機①ﾁｪｯｸ5
+        params.add(getCheckBoxDbValue(gouki1DataList.get(5).getCheckBoxValue(), 0)); //号機①ﾁｪｯｸ6
+        params.add(getCheckBoxDbValue(gouki1DataList.get(6).getCheckBoxValue(), 0)); //号機①ﾁｪｯｸ7
+        params.add(getCheckBoxDbValue(gouki1DataList.get(7).getCheckBoxValue(), 0)); //号機①ﾁｪｯｸ8
+        params.add(getCheckBoxDbValue(gouki1DataList.get(8).getCheckBoxValue(), 0)); //号機①ﾁｪｯｸ9
+        params.add(getCheckBoxDbValue(gouki1DataList.get(9).getCheckBoxValue(), 0)); //号機①ﾁｪｯｸ10
+        
+        params.add(DBUtil.stringToIntObject(gouki2DataList.get(0).getItemValue())); //号機②ｻﾔNo1
+        params.add(DBUtil.stringToIntObject(gouki2DataList.get(1).getItemValue())); //号機②ｻﾔNo2
+        params.add(DBUtil.stringToIntObject(gouki2DataList.get(2).getItemValue())); //号機②ｻﾔNo3
+        params.add(DBUtil.stringToIntObject(gouki2DataList.get(3).getItemValue())); //号機②ｻﾔNo4
+        params.add(DBUtil.stringToIntObject(gouki2DataList.get(4).getItemValue())); //号機②ｻﾔNo5
+        params.add(DBUtil.stringToIntObject(gouki2DataList.get(5).getItemValue())); //号機②ｻﾔNo6
+        params.add(DBUtil.stringToIntObject(gouki2DataList.get(6).getItemValue())); //号機②ｻﾔNo7
+        params.add(DBUtil.stringToIntObject(gouki2DataList.get(7).getItemValue())); //号機②ｻﾔNo8
+        params.add(DBUtil.stringToIntObject(gouki2DataList.get(8).getItemValue())); //号機②ｻﾔNo9
+        params.add(DBUtil.stringToIntObject(gouki2DataList.get(9).getItemValue())); //号機②ｻﾔNo10
+        params.add(getCheckBoxDbValue(gouki2DataList.get(0).getCheckBoxValue(), 0)); //号機②ﾁｪｯｸ1
+        params.add(getCheckBoxDbValue(gouki2DataList.get(1).getCheckBoxValue(), 0)); //号機②ﾁｪｯｸ2
+        params.add(getCheckBoxDbValue(gouki2DataList.get(2).getCheckBoxValue(), 0)); //号機②ﾁｪｯｸ3
+        params.add(getCheckBoxDbValue(gouki2DataList.get(3).getCheckBoxValue(), 0)); //号機②ﾁｪｯｸ4
+        params.add(getCheckBoxDbValue(gouki2DataList.get(4).getCheckBoxValue(), 0)); //号機②ﾁｪｯｸ5
+        params.add(getCheckBoxDbValue(gouki2DataList.get(5).getCheckBoxValue(), 0)); //号機②ﾁｪｯｸ6
+        params.add(getCheckBoxDbValue(gouki2DataList.get(6).getCheckBoxValue(), 0)); //号機②ﾁｪｯｸ7
+        params.add(getCheckBoxDbValue(gouki2DataList.get(7).getCheckBoxValue(), 0)); //号機②ﾁｪｯｸ8
+        params.add(getCheckBoxDbValue(gouki2DataList.get(8).getCheckBoxValue(), 0)); //号機②ﾁｪｯｸ9
+        params.add(getCheckBoxDbValue(gouki2DataList.get(9).getCheckBoxValue(), 0)); //号機②ﾁｪｯｸ10
+
+        params.add(DBUtil.stringToIntObject(gouki3DataList.get(0).getItemValue())); //号機③ｻﾔNo1
+        params.add(DBUtil.stringToIntObject(gouki3DataList.get(1).getItemValue())); //号機③ｻﾔNo2
+        params.add(DBUtil.stringToIntObject(gouki3DataList.get(2).getItemValue())); //号機③ｻﾔNo3
+        params.add(DBUtil.stringToIntObject(gouki3DataList.get(3).getItemValue())); //号機③ｻﾔNo4
+        params.add(DBUtil.stringToIntObject(gouki3DataList.get(4).getItemValue())); //号機③ｻﾔNo5
+        params.add(DBUtil.stringToIntObject(gouki3DataList.get(5).getItemValue())); //号機③ｻﾔNo6
+        params.add(DBUtil.stringToIntObject(gouki3DataList.get(6).getItemValue())); //号機③ｻﾔNo7
+        params.add(DBUtil.stringToIntObject(gouki3DataList.get(7).getItemValue())); //号機③ｻﾔNo8
+        params.add(DBUtil.stringToIntObject(gouki3DataList.get(8).getItemValue())); //号機③ｻﾔNo9
+        params.add(DBUtil.stringToIntObject(gouki3DataList.get(9).getItemValue())); //号機③ｻﾔNo10
+        params.add(getCheckBoxDbValue(gouki3DataList.get(0).getCheckBoxValue(), 0)); //号機③ﾁｪｯｸ1
+        params.add(getCheckBoxDbValue(gouki3DataList.get(1).getCheckBoxValue(), 0)); //号機③ﾁｪｯｸ2
+        params.add(getCheckBoxDbValue(gouki3DataList.get(2).getCheckBoxValue(), 0)); //号機③ﾁｪｯｸ3
+        params.add(getCheckBoxDbValue(gouki3DataList.get(3).getCheckBoxValue(), 0)); //号機③ﾁｪｯｸ4
+        params.add(getCheckBoxDbValue(gouki3DataList.get(4).getCheckBoxValue(), 0)); //号機③ﾁｪｯｸ5
+        params.add(getCheckBoxDbValue(gouki3DataList.get(5).getCheckBoxValue(), 0)); //号機③ﾁｪｯｸ6
+        params.add(getCheckBoxDbValue(gouki3DataList.get(6).getCheckBoxValue(), 0)); //号機③ﾁｪｯｸ7
+        params.add(getCheckBoxDbValue(gouki3DataList.get(7).getCheckBoxValue(), 0)); //号機③ﾁｪｯｸ8
+        params.add(getCheckBoxDbValue(gouki3DataList.get(8).getCheckBoxValue(), 0)); //号機③ﾁｪｯｸ9
+        params.add(getCheckBoxDbValue(gouki3DataList.get(9).getCheckBoxValue(), 0)); //号機③ﾁｪｯｸ10
+
+        params.add(DBUtil.stringToIntObject(gouki4DataList.get(0).getItemValue())); //号機④ｻﾔNo1
+        params.add(DBUtil.stringToIntObject(gouki4DataList.get(1).getItemValue())); //号機④ｻﾔNo2
+        params.add(DBUtil.stringToIntObject(gouki4DataList.get(2).getItemValue())); //号機④ｻﾔNo3
+        params.add(DBUtil.stringToIntObject(gouki4DataList.get(3).getItemValue())); //号機④ｻﾔNo4
+        params.add(DBUtil.stringToIntObject(gouki4DataList.get(4).getItemValue())); //号機④ｻﾔNo5
+        params.add(DBUtil.stringToIntObject(gouki4DataList.get(5).getItemValue())); //号機④ｻﾔNo6
+        params.add(DBUtil.stringToIntObject(gouki4DataList.get(6).getItemValue())); //号機④ｻﾔNo7
+        params.add(DBUtil.stringToIntObject(gouki4DataList.get(7).getItemValue())); //号機④ｻﾔNo8
+        params.add(DBUtil.stringToIntObject(gouki4DataList.get(8).getItemValue())); //号機④ｻﾔNo9
+        params.add(DBUtil.stringToIntObject(gouki4DataList.get(9).getItemValue())); //号機④ｻﾔNo10
+        params.add(getCheckBoxDbValue(gouki4DataList.get(0).getCheckBoxValue(), 0)); //号機④ﾁｪｯｸ1
+        params.add(getCheckBoxDbValue(gouki4DataList.get(1).getCheckBoxValue(), 0)); //号機④ﾁｪｯｸ2
+        params.add(getCheckBoxDbValue(gouki4DataList.get(2).getCheckBoxValue(), 0)); //号機④ﾁｪｯｸ3
+        params.add(getCheckBoxDbValue(gouki4DataList.get(3).getCheckBoxValue(), 0)); //号機④ﾁｪｯｸ4
+        params.add(getCheckBoxDbValue(gouki4DataList.get(4).getCheckBoxValue(), 0)); //号機④ﾁｪｯｸ5
+        params.add(getCheckBoxDbValue(gouki4DataList.get(5).getCheckBoxValue(), 0)); //号機④ﾁｪｯｸ6
+        params.add(getCheckBoxDbValue(gouki4DataList.get(6).getCheckBoxValue(), 0)); //号機④ﾁｪｯｸ7
+        params.add(getCheckBoxDbValue(gouki4DataList.get(7).getCheckBoxValue(), 0)); //号機④ﾁｪｯｸ8
+        params.add(getCheckBoxDbValue(gouki4DataList.get(8).getCheckBoxValue(), 0)); //号機④ﾁｪｯｸ9
+        params.add(getCheckBoxDbValue(gouki4DataList.get(9).getCheckBoxValue(), 0)); //号機④ﾁｪｯｸ10
+        
+        if (isInsert) {
+            params.add(systemTime); //登録日時
+            params.add(systemTime); //更新日時
+        } else {
+            params.add(systemTime); //更新日時
+        }
+        params.add(newRev); //revision
+        
+        return params;
+    }
+
+    /**
+     * 熱処理_サブ画面仮登録(tmp_sub_sr_shinkuukansou)登録処理(削除時)
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param newRev 新revision
+     * @param deleteflag 削除ﾌﾗｸﾞ
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param jissekino 実績No
+     * @param systemTime システム日付(品質DB登録実績に更新した値と同値)
+     * @throws SQLException 例外エラー
+     */
+    private void insertDeleteDataTmpSubSrShinkuukansou(QueryRunner queryRunnerQcdb, 
+            Connection conQcdb, BigDecimal newRev, int deleteflag, String kojyo, 
+            String lotNo, String edaban, int jissekino, Timestamp systemTime) throws SQLException {
+        
+        String sql = "INSERT INTO tmp_sub_sr_shinkuukansou( kojyo, lotno, edaban, kaisuu, "
+                + "gouki1saya1, gouki1saya2, gouki1saya3, gouki1saya4, gouki1saya5, "
+                + "gouki1saya6, gouki1saya7, gouki1saya8, gouki1saya9, gouki1saya10, "
+                + "gouki1check1, gouki1check2, gouki1check3, gouki1check4, gouki1check5, "
+                + "gouki1check6, gouki1check7, gouki1check8, gouki1check9, gouki1check10, "
+                + "gouki2saya1, gouki2saya2, gouki2saya3, gouki2saya4, gouki2saya5, "
+                + "gouki2saya6, gouki2saya7, gouki2saya8, gouki2saya9, gouki2saya10, "
+                + "gouki2check1, gouki2check2, gouki2check3, gouki2check4, gouki2check5, "
+                + "gouki2check6, gouki2check7, gouki2check8, gouki2check9, gouki2check10, "
+                + "gouki3saya1, gouki3saya2, gouki3saya3, gouki3saya4, gouki3saya5, "
+                + "gouki3saya6, gouki3saya7, gouki3saya8, gouki3saya9, gouki3saya10, "
+                + "gouki3check1, gouki3check2, gouki3check3, gouki3check4, gouki3check5, "
+                + "gouki3check6, gouki3check7, gouki3check8, gouki3check9, gouki3check10, "
+                + "gouki4saya1, gouki4saya2, gouki4saya3, gouki4saya4, gouki4saya5, "
+                + "gouki4saya6, gouki4saya7, gouki4saya8, gouki4saya9, gouki4saya10, "
+                + "gouki4check1, gouki4check2, gouki4check3, gouki4check4, gouki4check5, "
+                + "gouki4check6, gouki4check7, gouki4check8, gouki4check9, gouki4check10, "
+                + "torokunichiji, kosinnichiji, revision, deleteflag"
+                + ") SELECT kojyo, lotno, edaban, kaisuu, "
+                + "gouki1saya1, gouki1saya2, gouki1saya3, gouki1saya4, gouki1saya5, "
+                + "gouki1saya6, gouki1saya7, gouki1saya8, gouki1saya9, gouki1saya10, "
+                + "gouki1check1, gouki1check2, gouki1check3, gouki1check4, gouki1check5, "
+                + "gouki1check6, gouki1check7, gouki1check8, gouki1check9, gouki1check10, "
+                + "gouki2saya1, gouki2saya2, gouki2saya3, gouki2saya4, gouki2saya5, "
+                + "gouki2saya6, gouki2saya7, gouki2saya8, gouki2saya9, gouki2saya10, "
+                + "gouki2check1, gouki2check2, gouki2check3, gouki2check4, gouki2check5, "
+                + "gouki2check6, gouki2check7, gouki2check8, gouki2check9, gouki2check10, "
+                + "gouki3saya1, gouki3saya2, gouki3saya3, gouki3saya4, gouki3saya5, "
+                + "gouki3saya6, gouki3saya7, gouki3saya8, gouki3saya9, gouki3saya10, "
+                + "gouki3check1, gouki3check2, gouki3check3, gouki3check4, gouki3check5, "
+                + "gouki3check6, gouki3check7, gouki3check8, gouki3check9, gouki3check10, "
+                + "gouki4saya1, gouki4saya2, gouki4saya3, gouki4saya4, gouki4saya5, "
+                + "gouki4saya6, gouki4saya7, gouki4saya8, gouki4saya9, gouki4saya10, "
+                + "gouki4check1, gouki4check2, gouki4check3, gouki4check4, gouki4check5, "
+                + "gouki4check6, gouki4check7, gouki4check8, gouki4check9, gouki4check10, "
+                + "?, ?, ?, ? FROM sub_sr_shinkuukansou "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ?";
+
+        List<Object> params = new ArrayList<>();
+        // 更新値
+        params.add(systemTime); //登録日時
+        params.add(systemTime); //更新日時
+        params.add(newRev); //revision
+        params.add(deleteflag); //削除ﾌﾗｸﾞ
+
+        // 検索値
+        params.add(kojyo); //工場ｺｰﾄﾞ
+        params.add(lotNo); //ﾛｯﾄNo
+        params.add(edaban); //枝番
+        params.add(jissekino); //回数
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+
+    /**
+     * 熱処理_サブ画面仮登録(sub_sr_shinkuukansou)削除処理
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param rev revision
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param jissekino 実績No
+     * @throws SQLException 例外エラー
+     */
+    private void deleteSubSrShinkuukansou(QueryRunner queryRunnerQcdb, Connection conQcdb, 
+            BigDecimal rev, String kojyo, String lotNo, String edaban, int jissekino) throws SQLException {
+        
+        String sql = "DELETE FROM sub_sr_shinkuukansou "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ?";
+
+        //更新値設定
+        List<Object> params = new ArrayList<>();
+
+        //検索条件設定
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(jissekino);
+        params.add(rev);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerQcdb.update(conQcdb, sql, params.toArray());
     }
 }
