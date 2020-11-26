@@ -63,6 +63,11 @@ import org.primefaces.context.RequestContext;
  * 変更者	863 F.Zhang<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2020/11/26<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	863 sujialiang<br>
+ * 変更理由	項目追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -782,46 +787,131 @@ public class GXHDO201B043 implements Serializable {
             List<String> kensaBasyoDataList = new ArrayList<>(Arrays.asList(possibleData));
 
             String sql = "SELECT "
-                    + "  CONCAT(IFNULL(kojyo, ''), IFNULL(lotno, ''), IFNULL(edaban, '')) AS LOTNO "
-                    + ", lotpre"
-                    + ", kcpno"
-                    + ", syoribi"
-                    + ", kaishijikan"
-                    + ", syuuryoujikan"
-                    + ", sagyosya"
-                    + ", koutei"
-                    + ", gouki"
-                    + ", setteiondo"
-                    + ", setteijikan"
-                    + ", kaisuu"
-                    + ", suuryo"
-                    + ", bikou1"
-                    + ", bikou2"
-                    + ", bikou3"
-                    + ", tokuisaki"
-                    + ", lotkubuncode"
-                    + ", ownercode"
-                    + ", ukeiretannijyuryo"
-                    + ", ukeiresoujyuryou"
-                    + ", syurui"
-                    + ", startkakunin"
-                    + ", syuryonichiji"
-                    + ", endtantou"
-                    + ", kensabasyo"
-                    + ", torokunichiji"
-                    + ", kosinnichiji"
-                    + ", revision "
-                    + "FROM sr_shinkuukansou "
-                    + "WHERE (? IS NULL OR kojyo = ?) "
-                    + "AND   (? IS NULL OR lotno = ?) "
-                    + "AND   (? IS NULL OR edaban = ?) "
-                    + "AND   (? IS NULL OR kcpno LIKE ? ESCAPE '\\\\') "
-                    + "AND   (? IS NULL OR SUBSTR(kcpno, 6, 2) = ?) "
-                    + "AND   (? IS NULL OR SUBSTR(kcpno, 10, 4) = ?) "
-                    + "AND   (? IS NULL OR syoribi >= ?) "
-                    + "AND   (? IS NULL OR syoribi <= ?) "
-                    + "AND   (? IS NULL OR syuryonichiji >= ?) "
-                    + "AND   (? IS NULL OR syuryonichiji <= ?) ";
+                    + "  CONCAT(IFNULL(T1.kojyo, ''), IFNULL(T1.lotno, ''), IFNULL(T1.edaban, '')) AS LOTNO "
+                    + ", T1.lotpre"
+                    + ", T1.kcpno"
+                    + ", T1.syoribi"
+                    + ", T1.kaishijikan"
+                    + ", T1.syuuryoujikan"
+                    + ", T1.sagyosya"
+                    + ", T1.koutei"
+                    + ", T1.gouki"
+                    + ", T1.setteiondo"
+                    + ", T1.setteijikan"
+                    + ", T1.kaisuu"
+                    + ", T1.suuryo"
+                    + ", T1.bikou1"
+                    + ", T1.bikou2"
+                    + ", T1.bikou3"
+                    + ", T1.tokuisaki"
+                    + ", T1.lotkubuncode"
+                    + ", T1.ownercode"
+                    + ", T1.ukeiretannijyuryo"
+                    + ", T1.ukeiresoujyuryou"
+                    + ", T1.syurui"
+                    + ", T1.startkakunin"
+                    + ", T1.syuryonichiji"
+                    + ", T1.endtantou"
+                    + ", T1.kensabasyo"
+                    + ", T2.gouki1saya1"
+                    + ", T2.gouki1saya2"
+                    + ", T2.gouki1saya3"
+                    + ", T2.gouki1saya4"
+                    + ", T2.gouki1saya5"
+                    + ", T2.gouki1saya6"
+                    + ", T2.gouki1saya7"
+                    + ", T2.gouki1saya8"
+                    + ", T2.gouki1saya9"
+                    + ", T2.gouki1saya10"
+                    + ", T2.gouki1check1"
+                    + ", T2.gouki1check2"
+                    + ", T2.gouki1check3"
+                    + ", T2.gouki1check4"
+                    + ", T2.gouki1check5"
+                    + ", T2.gouki1check6"
+                    + ", T2.gouki1check7"
+                    + ", T2.gouki1check8"
+                    + ", T2.gouki1check9"
+                    + ", T2.gouki1check10"
+                    + ", T2.gouki2saya1"
+                    + ", T2.gouki2saya2"
+                    + ", T2.gouki2saya3"
+                    + ", T2.gouki2saya4"
+                    + ", T2.gouki2saya5"
+                    + ", T2.gouki2saya6"
+                    + ", T2.gouki2saya7"
+                    + ", T2.gouki2saya8"
+                    + ", T2.gouki2saya9"
+                    + ", T2.gouki2saya10"
+                    + ", T2.gouki2check1"
+                    + ", T2.gouki2check2"
+                    + ", T2.gouki2check3"
+                    + ", T2.gouki2check4"
+                    + ", T2.gouki2check5"
+                    + ", T2.gouki2check6"
+                    + ", T2.gouki2check7"
+                    + ", T2.gouki2check8"
+                    + ", T2.gouki2check9"
+                    + ", T2.gouki2check10"
+                    + ", T2.gouki3saya1"
+                    + ", T2.gouki3saya2"
+                    + ", T2.gouki3saya3"
+                    + ", T2.gouki3saya4"
+                    + ", T2.gouki3saya5"
+                    + ", T2.gouki3saya6"
+                    + ", T2.gouki3saya7"
+                    + ", T2.gouki3saya8"
+                    + ", T2.gouki3saya9"
+                    + ", T2.gouki3saya10"
+                    + ", T2.gouki3check1"
+                    + ", T2.gouki3check2"
+                    + ", T2.gouki3check3"
+                    + ", T2.gouki3check4"
+                    + ", T2.gouki3check5"
+                    + ", T2.gouki3check6"
+                    + ", T2.gouki3check7"
+                    + ", T2.gouki3check8"
+                    + ", T2.gouki3check9"
+                    + ", T2.gouki3check10"
+                    + ", T2.gouki4saya1"
+                    + ", T2.gouki4saya2"
+                    + ", T2.gouki4saya3"
+                    + ", T2.gouki4saya4"
+                    + ", T2.gouki4saya5"
+                    + ", T2.gouki4saya6"
+                    + ", T2.gouki4saya7"
+                    + ", T2.gouki4saya8"
+                    + ", T2.gouki4saya9"
+                    + ", T2.gouki4saya10"
+                    + ", T2.gouki4check1"
+                    + ", T2.gouki4check2"
+                    + ", T2.gouki4check3"
+                    + ", T2.gouki4check4"
+                    + ", T2.gouki4check5"
+                    + ", T2.gouki4check6"
+                    + ", T2.gouki4check7"
+                    + ", T2.gouki4check8"
+                    + ", T2.gouki4check9"
+                    + ", T2.gouki4check10"
+                    + ", T1.torokunichiji"
+                    + ", T1.kosinnichiji"
+                    + ", T1.revision "
+                    + "FROM sr_shinkuukansou T1 "
+                    + "LEFT JOIN sub_sr_shinkuukansou T2 "
+                    + "ON (T1.kojyo = T2.kojyo "
+                    + "AND T1.lotno = T2.lotno "
+                    + "AND T1.edaban = T2.edaban "
+                    + "AND T1.kaisuu = T2.kaisuu) "
+                    + "WHERE (? IS NULL OR T1.kojyo = ?) "
+                    + "AND   (? IS NULL OR T1.lotno = ?) "
+                    + "AND   (? IS NULL OR T1.edaban = ?) "
+                    + "AND   (? IS NULL OR T1.kcpno LIKE ? ESCAPE '\\\\') "
+                    + "AND   (? IS NULL OR SUBSTR(T1.kcpno, 6, 2) = ?) "
+                    + "AND   (? IS NULL OR SUBSTR(T1.kcpno, 10, 4) = ?) "
+                    + "AND   (? IS NULL OR T1.syoribi >= ?) "
+                    + "AND   (? IS NULL OR T1.syoribi <= ?) "
+                    + "AND   (? IS NULL OR T1.syuryonichiji >= ?) "
+                    + "AND   (? IS NULL OR T1.syuryonichiji <= ?) ";
 
             boolean jyokenAdd = false;
             for (String data : kensaBasyoDataList) {
@@ -941,6 +1031,86 @@ public class GXHDO201B043 implements Serializable {
             mapping.put("saisyukakuninn", "saisyukakuninn"); // 最終確認担当者
             mapping.put("bikou1", "bikou1"); // 備考1
             mapping.put("bikou2", "bikou2"); // 備考2
+            mapping.put("gouki1saya1", "gouki1saya1"); // 号機①ｻﾔNo1
+            mapping.put("gouki1saya2", "gouki1saya2"); // 号機①ｻﾔNo2
+            mapping.put("gouki1saya3", "gouki1saya3"); // 号機①ｻﾔNo3
+            mapping.put("gouki1saya4", "gouki1saya4"); // 号機①ｻﾔNo4
+            mapping.put("gouki1saya5", "gouki1saya5"); // 号機①ｻﾔNo5
+            mapping.put("gouki1saya6", "gouki1saya6"); // 号機①ｻﾔNo6
+            mapping.put("gouki1saya7", "gouki1saya7"); // 号機①ｻﾔNo7
+            mapping.put("gouki1saya8", "gouki1saya8"); // 号機①ｻﾔNo8
+            mapping.put("gouki1saya9", "gouki1saya9"); // 号機①ｻﾔNo9
+            mapping.put("gouki1saya10", "gouki1saya10"); // 号機①ｻﾔNo10
+            mapping.put("gouki1check1", "gouki1check1"); // 号機①ﾁｪｯｸ1
+            mapping.put("gouki1check2", "gouki1check2"); // 号機①ﾁｪｯｸ2
+            mapping.put("gouki1check3", "gouki1check3"); // 号機①ﾁｪｯｸ3
+            mapping.put("gouki1check4", "gouki1check4"); // 号機①ﾁｪｯｸ4
+            mapping.put("gouki1check5", "gouki1check5"); // 号機①ﾁｪｯｸ5
+            mapping.put("gouki1check6", "gouki1check6"); // 号機①ﾁｪｯｸ6
+            mapping.put("gouki1check7", "gouki1check7"); // 号機①ﾁｪｯｸ7
+            mapping.put("gouki1check8", "gouki1check8"); // 号機①ﾁｪｯｸ8
+            mapping.put("gouki1check9", "gouki1check9"); // 号機①ﾁｪｯｸ9
+            mapping.put("gouki1check10", "gouki1check10"); // 号機①ﾁｪｯｸ10
+            mapping.put("gouki2saya1", "gouki2saya1"); // 号機②ｻﾔNo1
+            mapping.put("gouki2saya2", "gouki2saya2"); // 号機②ｻﾔNo2
+            mapping.put("gouki2saya3", "gouki2saya3"); // 号機②ｻﾔNo3
+            mapping.put("gouki2saya4", "gouki2saya4"); // 号機②ｻﾔNo4
+            mapping.put("gouki2saya5", "gouki2saya5"); // 号機②ｻﾔNo5
+            mapping.put("gouki2saya6", "gouki2saya6"); // 号機②ｻﾔNo6
+            mapping.put("gouki2saya7", "gouki2saya7"); // 号機②ｻﾔNo7
+            mapping.put("gouki2saya8", "gouki2saya8"); // 号機②ｻﾔNo8
+            mapping.put("gouki2saya9", "gouki2saya9"); // 号機②ｻﾔNo9
+            mapping.put("gouki2saya10", "gouki2saya10"); // 号機②ｻﾔNo10
+            mapping.put("gouki2check1", "gouki2check1"); // 号機②ﾁｪｯｸ1
+            mapping.put("gouki2check2", "gouki2check2"); // 号機②ﾁｪｯｸ2
+            mapping.put("gouki2check3", "gouki2check3"); // 号機②ﾁｪｯｸ3
+            mapping.put("gouki2check4", "gouki2check4"); // 号機②ﾁｪｯｸ4
+            mapping.put("gouki2check5", "gouki2check5"); // 号機②ﾁｪｯｸ5
+            mapping.put("gouki2check6", "gouki2check6"); // 号機②ﾁｪｯｸ6
+            mapping.put("gouki2check7", "gouki2check7"); // 号機②ﾁｪｯｸ7
+            mapping.put("gouki2check8", "gouki2check8"); // 号機②ﾁｪｯｸ8
+            mapping.put("gouki2check9", "gouki2check9"); // 号機②ﾁｪｯｸ9
+            mapping.put("gouki2check10", "gouki2check10"); // 号機②ﾁｪｯｸ10
+            mapping.put("gouki3saya1", "gouki3saya1"); // 号機③ｻﾔNo1
+            mapping.put("gouki3saya2", "gouki3saya2"); // 号機③ｻﾔNo2
+            mapping.put("gouki3saya3", "gouki3saya3"); // 号機③ｻﾔNo3
+            mapping.put("gouki3saya4", "gouki3saya4"); // 号機③ｻﾔNo4
+            mapping.put("gouki3saya5", "gouki3saya5"); // 号機③ｻﾔNo5
+            mapping.put("gouki3saya6", "gouki3saya6"); // 号機③ｻﾔNo6
+            mapping.put("gouki3saya7", "gouki3saya7"); // 号機③ｻﾔNo7
+            mapping.put("gouki3saya8", "gouki3saya8"); // 号機③ｻﾔNo8
+            mapping.put("gouki3saya9", "gouki3saya9"); // 号機③ｻﾔNo9
+            mapping.put("gouki3saya10", "gouki3saya10"); // 号機③ｻﾔNo10
+            mapping.put("gouki3check1", "gouki3check1"); // 号機③ﾁｪｯｸ1
+            mapping.put("gouki3check2", "gouki3check2"); // 号機③ﾁｪｯｸ2
+            mapping.put("gouki3check3", "gouki3check3"); // 号機③ﾁｪｯｸ3
+            mapping.put("gouki3check4", "gouki3check4"); // 号機③ﾁｪｯｸ4
+            mapping.put("gouki3check5", "gouki3check5"); // 号機③ﾁｪｯｸ5
+            mapping.put("gouki3check6", "gouki3check6"); // 号機③ﾁｪｯｸ6
+            mapping.put("gouki3check7", "gouki3check7"); // 号機③ﾁｪｯｸ7
+            mapping.put("gouki3check8", "gouki3check8"); // 号機③ﾁｪｯｸ8
+            mapping.put("gouki3check9", "gouki3check9"); // 号機③ﾁｪｯｸ9
+            mapping.put("gouki3check10", "gouki3check10"); // 号機③ﾁｪｯｸ10
+            mapping.put("gouki4saya1", "gouki4saya1"); // 号機④ｻﾔNo1
+            mapping.put("gouki4saya2", "gouki4saya2"); // 号機④ｻﾔNo2
+            mapping.put("gouki4saya3", "gouki4saya3"); // 号機④ｻﾔNo3
+            mapping.put("gouki4saya4", "gouki4saya4"); // 号機④ｻﾔNo4
+            mapping.put("gouki4saya5", "gouki4saya5"); // 号機④ｻﾔNo5
+            mapping.put("gouki4saya6", "gouki4saya6"); // 号機④ｻﾔNo6
+            mapping.put("gouki4saya7", "gouki4saya7"); // 号機④ｻﾔNo7
+            mapping.put("gouki4saya8", "gouki4saya8"); // 号機④ｻﾔNo8
+            mapping.put("gouki4saya9", "gouki4saya9"); // 号機④ｻﾔNo9
+            mapping.put("gouki4saya10", "gouki4saya10"); // 号機④ｻﾔNo10
+            mapping.put("gouki4check1", "gouki4check1"); // 号機④ﾁｪｯｸ1
+            mapping.put("gouki4check2", "gouki4check2"); // 号機④ﾁｪｯｸ2
+            mapping.put("gouki4check3", "gouki4check3"); // 号機④ﾁｪｯｸ3
+            mapping.put("gouki4check4", "gouki4check4"); // 号機④ﾁｪｯｸ4
+            mapping.put("gouki4check5", "gouki4check5"); // 号機④ﾁｪｯｸ5
+            mapping.put("gouki4check6", "gouki4check6"); // 号機④ﾁｪｯｸ6
+            mapping.put("gouki4check7", "gouki4check7"); // 号機④ﾁｪｯｸ7
+            mapping.put("gouki4check8", "gouki4check8"); // 号機④ﾁｪｯｸ8
+            mapping.put("gouki4check9", "gouki4check9"); // 号機④ﾁｪｯｸ9
+            mapping.put("gouki4check10", "gouki4check10"); // 号機④ﾁｪｯｸ10
 
             BeanProcessor beanProcessor = new BeanProcessor(mapping);
             RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
