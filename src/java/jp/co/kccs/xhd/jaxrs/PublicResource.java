@@ -375,10 +375,11 @@ public class PublicResource {
                     + "bin2senbetsukbn,bin3senbetsukbn,bin4senbetsukbn,bin5senbetsukbn,bin6senbetsukbn,bin7senbetsukbn,bin8senbetsukbn,testplatekanrino,handasample,"
                     + "sinraiseisample,kensabasyo,senbetujunjo,setteikakunin,haisenkakunin,koteidenkyoku,testplatekeijo,bunruifukidasi,testplatekakunin,"
                     + "seihintounyuujotai,bunruikakunin,gaikankakunin,senbetukaisinitiji,senbetusyuryounitiji,setteiti1low,setteiti1up,setteiti2low,setteiti2up,"
-                    + "setteiti3low,setteiti3up,ttng1,ttng2,mc,ri,dng,rng,dropng,dropng1,dropng2,lotkbn,setteicap1,setteicap2,setteicap3"
+                    + "setteiti3low,setteiti3up,ttng1,ttng2,mc,ri,dng,rng,dropng,dropng1,dropng2,lotkbn,setteicap1,setteicap2,setteicap3,irhantei1tani_low,irhantei2tani_low,irhantei3tani_low,"
+                    + "irhantei4tani_low,irhantei5tani_low,irhantei6tani_low,irhantei7tani_low,irhantei8tani_low,denkyokuseisou,setteicap4,setteiti4low,setteiti4up,bin1setteiti,bin2setteiti,bin3setteiti,bin4setteiti"
                     + ") VALUES ("
                     + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
-                    + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+                    + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
                     + ")";
 
             // 計算処理
@@ -403,6 +404,7 @@ public class PublicResource {
             Integer setteicap1 = null; // setteicap1
             Integer setteicap2 = null; // setteicap2
             Integer setteicap3 = null; // setteicap3
+            Integer setteicap4 = null; // setteicap4
             Integer ttng1 =null;       // Ttng1
             Integer ttng2 =null;       // Ttng2
             Integer mc =null;          // Mc
@@ -416,7 +418,7 @@ public class PublicResource {
             if ("ESI".equals(param.getMaker())) {
                 tan = getCalcTan(param.getTan());
             } else {
-                tan = (BigDecimal) getFormatData(param.getTan(), "3", "1", "BigDecimal");
+                tan = (BigDecimal) getFormatData(param.getTan(), "3", "2", "BigDecimal");
                 ttng1 = (Integer)getFormatData(param.getTtng1(), "8", "", "Integer");       // Ttng1
                 ttng2 = (Integer)getFormatData(param.getTtng2(), "8", "", "Integer");       // Ttng2
                 mc = (Integer)getFormatData(param.getMc(), "8", "", "Integer");             // Mc
@@ -427,8 +429,24 @@ public class PublicResource {
                 dropng1 = (Integer)getFormatData(param.getDropng1(), "8", "", "Integer");   // Dropng1
                 dropng2 = (Integer)getFormatData(param.getDropng2(), "8", "", "Integer");   // Dropng2
                 setteicap1 = ((Integer)getFormatData(param.getSetteicap1(), "8", "", "Integer"))+1; // setteicap1
-                setteicap2 = ((Integer)getFormatData(param.getSetteicap2(), "8", "", "Integer"))+1; // setteicap2
-                setteicap3 = ((Integer)getFormatData(param.getSetteicap3(), "8", "", "Integer"))+1; // setteicap3   
+                setteicap2 = ((Integer)getFormatData(param.getSetteicap2(), "8", "", "Integer")); // setteicap2
+                if (setteicap2 == 0) {
+                    setteicap2 = null;
+                } else {
+                    setteicap2 = setteicap2+1;
+                }
+                setteicap3 = ((Integer)getFormatData(param.getSetteicap3(), "8", "", "Integer")); // setteicap3   
+                if (setteicap3 == 0) {
+                    setteicap3 = null;
+                } else {
+                    setteicap3 = setteicap3+1;
+                }
+                setteicap4 = ((Integer)getFormatData(param.getSetteicap4(), "8", "", "Integer")); // setteicap4   
+                if (setteicap4 == 0) {
+                    setteicap4 = null;
+                } else {
+                    setteicap4 = setteicap4+1;
+                }
             }
 
             List<Object> paramIns
@@ -558,7 +576,23 @@ public class PublicResource {
                              getFormatData(param.getLotkbn(), "20", "", "String"),
                              setteicap1,
                              setteicap2,
-                             setteicap3
+                             setteicap3,
+                             getFormatData(param.getIrhantei1tani_low(), "20", "", "String"),
+                             getFormatData(param.getIrhantei2tani_low(), "20", "", "String"),
+                             getFormatData(param.getIrhantei3tani_low(), "20", "", "String"),
+                             getFormatData(param.getIrhantei4tani_low(), "20", "", "String"),
+                             getFormatData(param.getIrhantei5tani_low(), "20", "", "String"),
+                             getFormatData(param.getIrhantei6tani_low(), "20", "", "String"),
+                             getFormatData(param.getIrhantei7tani_low(), "20", "", "String"),
+                             getFormatData(param.getIrhantei8tani_low(), "20", "", "String"),
+                             getFormatData(param.getDenkyokuseisou(), "10", "", "String"),
+                             setteicap4,
+                             getFormatData(param.getSetteiti4low(), "20", "", "String"),
+                             getFormatData(param.getSetteiti4up(), "20", "", "String"),
+                             getBinXsetteiti(param.getBin1setteiti()),
+                             getBinXsetteiti(param.getBin2setteiti()),
+                             getBinXsetteiti(param.getBin3setteiti()),
+                             getBinXsetteiti(param.getBin4setteiti())
                     ));
 
             DBUtil.outputSQLLog(sqlIns, paramIns.toArray(), LOGGER);
@@ -618,7 +652,7 @@ public class PublicResource {
         String[] hanteichi = getNumberData(value, "", "");
         BigDecimal decHanteichi = new BigDecimal(hanteichi[0]);
 
-        return new BigDecimal(NumberUtil.getTruncatData(decHanteichi.toPlainString(), "3", "10"));
+        return new BigDecimal(NumberUtil.getTruncatData(decHanteichi.toPlainString(), "4", "10"));
     }
 
     /**
