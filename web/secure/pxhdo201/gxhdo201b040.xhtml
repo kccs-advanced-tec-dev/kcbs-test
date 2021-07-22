@@ -43,6 +43,14 @@
                 document.getElementById("mainForm").style.removeProperty("display");
                 $(window).scrollTop(pointY);
             }
+            $(window).resize(function() {
+                if ($('#mainForm').css('position') === 'fixed') {
+                    $('.ui-dialog-content').each(function(i, o) {
+                        $(o).css('height', '90%');
+                        $(o).css('width', '100%');
+                    });
+                }
+            });
             //]]>
         </script>
     </h:head>
