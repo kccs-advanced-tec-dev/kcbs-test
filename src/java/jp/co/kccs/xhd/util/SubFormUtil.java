@@ -31,6 +31,11 @@ import javax.faces.context.FacesContext;
  * 変更者	863 zhangjy<br>
  * 変更理由	電気特性・熱処理_サブ画面のロジックを追加<br>
  * <br>
+ * 変更日	2021/07/09<br>
+ * 計画書No	MB2106-DS017<br>
+ * 変更者	kcss.gc<br>
+ * 変更理由	履歴情報画面サブ画面追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -111,6 +116,11 @@ public class SubFormUtil {
      */
     public static final String FORM_ID_INFO_MESSAGE = "InfoMessage";
 
+    /**
+     * 電気特性・履歴_サブ画面
+     */
+    public static final String FORM_ID_GXHDO201B040A = "GXHDO201B040A";
+    
     /**
      * コンストラクタ
      *
@@ -246,7 +256,12 @@ public class SubFormUtil {
                         getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
                                 getELContext(), null, "beanInfoMessage");
                 break;
-
+            // 電気特性・履歴_サブ画面
+            case "GXHDO201B040A":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO201B040A");
+                break;
             default:
                 break;
         }

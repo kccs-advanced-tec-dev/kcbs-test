@@ -63,6 +63,10 @@ import org.primefaces.context.RequestContext;
  * 変更者	863 K.Zhang<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2021/07/09<br>
+ * 計画書No	MB2106-DS017<br>
+ * 変更者	kcss.gc<br>
+ * 変更理由	履歴情報画面サブ画面追加<br>
  * ===============================================================================<br>
  */
 /**
@@ -1444,5 +1448,27 @@ public class GXHDO201B040 implements Serializable {
             return null;
         }
         return map.get(mapId);
+    }
+    
+    /**
+     * サブ画面を呼び出し
+     *
+     * @param lotNo マップ
+     */ 
+    public void getGXHDOB040A(String lotNo){
+            // 照会画面【GXHDO201B040A】へ遷移する。
+            GXHDO201B040A beanGXHDO201B040A = (GXHDO201B040A) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO201B040A);
+            beanGXHDO201B040A.setLotno(lotNo);
+            if(beanGXHDO201B040A.selectListDataCount()<=0){
+                List<String> messageListMain = new ArrayList<>();
+                messageListMain.add(MessageUtil.getMessage("XHD-000172"));
+                InitMessage beanInitMessage = (InitMessage) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_INIT_MESSAGE);
+                beanInitMessage.setInitMessageList(messageListMain);
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.addCallbackParam("firstParam", "initMessage");
+            }else{
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.addCallbackParam("firstParam", "gxhdo201b040a");
+             }
     }
 }

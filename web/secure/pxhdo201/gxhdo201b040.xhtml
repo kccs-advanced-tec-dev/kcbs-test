@@ -20,6 +20,13 @@
         <h:outputScript library="primefaces" name="jquery/jquery.js" />
         <script src="#{request.contextPath}/resources/js/growl.js"></script>
         <script type="text/javascript">
+            function cmdButtonOncompletes(args) {
+                if('gxhdo201b040a'===args.firstParam){
+                    PF('W_dlg_gxhdo201b040a').show();
+                } else if('initMessage'===args.firstParam){
+                    PF('W_dlg_initMessage').show();
+                }
+            }
             //<![CDATA[
             var pointY;
             function subFormOpen() {
@@ -191,7 +198,9 @@
                 <p:dataTable id="idDataTable" var="item" style="font-size:0.8em;margin-top:20px;" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap"
                              value="#{gXHDO201B040.listData}" emptyMessage="" paginator="true" paginatorPosition="top" rows="#{gXHDO201B040.getPagenatorCount()}">
                     <p:column id="lotno" headerText="ﾛｯﾄNo">
-                        <p:outputLabel value="#{item.lotno}"/>
+                    <p:outputLabel rendered="#{item.setubikubun == 'GXHDO101B040'}" value="#{item.lotno}"/>
+                    <p:commandLink rendered="#{item.setubikubun != 'GXHDO101B040'}" id="warnOk" style="color:Indigo;"  value="#{item.lotno}"  actionListener="#{gXHDO201B040.getGXHDOB040A(item.lotno)}"
+                                       oncomplete="cmdButtonOncompletes(args); " update="@form"></p:commandLink>
                     </p:column>
                     <p:column id="kaisuu" headerText="回数" styleClass="number">
                         <p:outputLabel value="#{item.kaisuu}">
@@ -1262,6 +1271,7 @@
             </div>
             <div>
                 <ui:include src="/secure/common/initMessage.xhtml"/>
+                <ui:include src="/secure/pxhdo201/gxhdo201b040a.xhtml"/>
             </div>
         </h:form>
     </h:body>
