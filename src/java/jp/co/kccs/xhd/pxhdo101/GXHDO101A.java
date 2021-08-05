@@ -201,6 +201,11 @@ public class GXHDO101A implements Serializable {
     private boolean sanshouBtnRender;
 
     /**
+     * B･Cﾗﾝｸ連絡書一覧render有無
+     */
+    private boolean rankBCRenrakuBtnRender;
+
+    /**
      * 総合判定表示render有無
      */
     private boolean sougouHanteiBtnRender;
@@ -508,6 +513,9 @@ public class GXHDO101A implements Serializable {
             }
             //総合判定ﾎﾞﾀﾝ表示
             setSougouHanteiBtnRender(true);
+            
+            //TODO: 仮置きなので移動させる
+            setRankBCRenrakuBtnRender(true);
 
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("メニュー項目未登録", ex, LOGGER);
@@ -826,7 +834,7 @@ public class GXHDO101A implements Serializable {
                 beanGXHDO101C012.setPattern(StringUtil.nullToBlank(getMapData(gamenInfo, "PATTERN")));
             }
 
-            // (2)ﾛｯﾄ参照画面【GXHDO101C012】へ遷移する。
+        // (2)ﾛｯﾄ参照画面【GXHDO101C012】へ遷移する。
             RequestContext context = RequestContext.getCurrentInstance();
             context.addCallbackParam("firstParam", "gxhdo101c012");
 
@@ -834,6 +842,18 @@ public class GXHDO101A implements Serializable {
             ErrUtil.outputErrorLog("ﾒﾆｭｰ名未登録", ex, LOGGER);
         }
 
+    }
+    
+    /**
+     * B･Cﾗﾝｸ連絡書一覧ﾎﾞﾀﾝ押下
+     */
+    public void doRankBCRenraku() {
+        
+        // TODO: ダイアログが表示されない
+        // B･Cﾗﾝｸ連絡書一覧画面【GXHDO101C021】へ遷移する。
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.addCallbackParam("firstParam", "gxhdo101c021");
+        
     }
 
     /**
@@ -1068,6 +1088,24 @@ public class GXHDO101A implements Serializable {
      */
     public boolean getSanshouBtnRender() {
         return sanshouBtnRender;
+    }
+
+    /**
+     * B･Cﾗﾝｸ連絡書ﾎﾞﾀﾝ表示render有無
+     *
+     * @return the rankBCRenrakuBtnRender
+     */
+    public boolean getRankBCRenrakuBtnRender() {
+        return rankBCRenrakuBtnRender;
+    }
+    
+    /**
+     * B･Cﾗﾝｸ連絡書ﾎﾞﾀﾝ表示render有無
+     *
+     * @param rankBCRenrakuBtnRender the rankBCRenrakuBtnRender to set
+     */
+    public void setRankBCRenrakuBtnRender(boolean rankBCRenrakuBtnRender) {
+        this.rankBCRenrakuBtnRender = rankBCRenrakuBtnRender;
     }
 
     /**
