@@ -36,6 +36,10 @@ import javax.faces.context.FacesContext;
  * 変更者	kcss.gc<br>
  * 変更理由	履歴情報画面サブ画面追加<br>
  * <br>
+ * 変更日	2021/07/22<br>
+ * 計画書No	MB2101-DK002<br>
+ * 変更者	kcss.gc<br>
+ * 変更理由	情報表示メッセージ画面追加<br>
  * ===============================================================================<br>
  */
 /**
@@ -120,6 +124,11 @@ public class SubFormUtil {
      * 電気特性・履歴_サブ画面
      */
     public static final String FORM_ID_GXHDO201B040A = "GXHDO201B040A";
+    
+    /**
+     * 情報表示メッセージ
+     */
+    public static final String FORM_ID_RESULT_MESSAGE = "ResultMessage";
     
     /**
      * コンストラクタ
@@ -261,6 +270,12 @@ public class SubFormUtil {
                 returnBean = FacesContext.getCurrentInstance().
                         getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
                                 getELContext(), null, "beanGXHDO201B040A");
+                break;
+             // 電気特性・履歴_サブ画面
+            case "ResultMessage":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanResultMessage");
                 break;
             default:
                 break;

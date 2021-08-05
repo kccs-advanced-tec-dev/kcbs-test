@@ -35,6 +35,11 @@ import jp.co.kccs.xhd.db.model.FXHDD01;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	拡張用項目の追加<br>
  * <br>
+ * 変更日	2021/07/22<br>
+ * 計画書No	MB2101-DK002<br>
+ * 変更者	KCSS.GC<br>
+ * 変更理由	情報表示項目の追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -81,6 +86,10 @@ public class ProcessData {
      * 情報メッセージ
      */
     private String infoMessage;
+    /**
+     * 情報メッセージ(一覧)
+     */
+    private String resultMessage;
     /**
      * 警告メッセージ
      */
@@ -143,6 +152,10 @@ public class ProcessData {
      */
     private List<String> infoMessageList;
     /**
+     * 情報メッセージ表示時メッセージリスト
+     */
+    private List<String> resultMessageList;
+    /**
      * 実行スクリプト
      */
     private String executeScript;
@@ -193,6 +206,7 @@ public class ProcessData {
         this.kikakuchiInputErrorInfoList = new ArrayList<>();
         this.checkRevisionButtonId = new ArrayList<>();
         this.infoMessageList = new ArrayList<>();
+        this.resultMessageList = new ArrayList<>();
         this.hiddenDataMap = new HashMap<>();
     }
 
@@ -355,7 +369,23 @@ public class ProcessData {
     public void setInfoMessage(String infoMessage) {
         this.infoMessage = infoMessage;
     }
+    /**
+     * 情報メッセージ(一覧)
+     *
+     * @return the resultMessage
+     */
+    public String getResultMessage() {
+        return resultMessage;
+    }
 
+    /**
+     * 情報メッセージ(一覧)
+     *
+     * @param resultMessage the resultMessage to set
+     */
+    public void setResultMessage(String resultMessage) {
+        this.resultMessage = resultMessage;
+    }
     /**
      * 警告メッセージ
      *
@@ -618,6 +648,22 @@ public class ProcessData {
      */
     public void setInfoMessageList(List<String> infoMessageList) {
         this.infoMessageList = infoMessageList;
+    }
+    
+    /**
+     * 情報メッセージ表示時メッセージリスト
+     * @return the resultMessageList
+     */
+    public List<String> getResultMessageList() {
+        return resultMessageList;
+    }
+
+    /**
+     * 情報メッセージ表示時メッセージリスト
+     * @param resultMessageList the resultMessageList to set
+     */
+    public void setResultMessageList(List<String> resultMessageList) {
+        this.resultMessageList = resultMessageList;
     }
 
     /**

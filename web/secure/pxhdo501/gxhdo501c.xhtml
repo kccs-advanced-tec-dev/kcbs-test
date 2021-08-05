@@ -1,0 +1,191 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Pragma" content="no-cache"/>
+        <meta http-equiv="Cache-Control" content="no-cache"/>
+        <meta http-equiv="Expires" content="0"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link href="#{request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/growl.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/loading.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/gxhdo201common.css" rel="stylesheet" type="text/css"/>
+        <script src="#{request.contextPath}/resources/bootstrap/js/bootstrap.min.js" />
+        <h:outputScript library="primefaces" name="jquery/jquery.js" />
+        <script src="#{request.contextPath}/resources/js/growl.js"></script>
+        <script type="text/javascript">
+            var pointY;
+
+            function subFormOpen() {
+                pointY = $(window).scrollTop();
+                document.getElementById("mainForm").style.setProperty("display", "none");
+                document.getElementById("mainForm").style.setProperty("position", "fixed");
+                document.getElementById("mainForm").style.setProperty("Top", -(pointY) + 54 + "px");
+                document.getElementById("mainForm").style.removeProperty("display");
+            }
+
+            function subFormClose() {
+                document.getElementById("mainForm").style.setProperty("display", "none");
+                document.getElementById("mainForm").style.removeProperty("position");
+                document.getElementById("mainForm").style.removeProperty("Top");
+                document.getElementById("mainForm").style.removeProperty("display");
+                $(window).scrollTop(pointY);
+            }
+
+            function cmdButtonOncomplete(args) {
+                if ('initMessage' === args.firstParam) {
+                    PF('W_dlg_initMessage').show();
+                } 
+            }
+            
+        </script>
+    </h:head>
+    <h:body style="padding-top:30px;">
+        <f:metadata>
+            <f:viewAction action="#{gXHDO501C.init()}" />
+        </f:metadata>
+        <nav class="navbar  navbar-expand fixed-top navbar-dark" style="background-color:#0E6A89;height: 50px;z-index: 999;">
+            <span class="navbar-brand mb-0" style="font-size:18px;font-weight:bold;">#{myMsg.GXHDO501C_GamenTitle}</span>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#Navber" aria-controls="Navber"
+                    aria-expanded="false" aria-label="ナビゲーションの切替">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <span class="navbar-text ml-auto">
+                <div class="collapse navbar-collapse" id="Navber">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <h:link class="nav-link" outcome="/secure/pxhdo501/gxhdo501.xhtml?faces-redirect=true" value="戻る" />
+                        </li>
+                    </ul>
+                </div>
+            </span>
+        </nav>
+        <br/>
+        <h:form id="form" onkeypress="if (event.keyCode === 13) {
+                    return false;
+                }">
+            <div id="mainForm" style="width: 100%;">
+                <p:growl id="growlMessage" showDetail="false" sticky="true" escape="false" />
+                <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
+                    <f:facet name="message">
+                        <h:outputText value="#{gXHDO501C.getWarnMessage()}" escape="false" />
+                    </f:facet>
+                    <p:commandButton id="warnOk" value="OK" styleClass="ui-conf-commandbtn-def1" style="width:100px;margin-left:50px;"
+                                     actionListener="#{gXHDO501C.processWarnOk()}" 
+                                     process="@this searchpanel" 
+                                     update="@form growlMessage idDataTable "
+                                     onstart="PF('cd').hide();$('#loadinggif').show();" 
+                                     oncomplete="$('#loadinggif').hide();if('warning'!=args.param1){PF('cd').hide();} else {PF('cd').show();}"/>
+                    <p:commandButton id="warnCancel" value="Cancel" class="ui-conf-commandbtn-cancel" style="width:100px;" onclick="PF('cd').hide();"
+                                     type="button" />
+                </p:confirmDialog>
+                <div id="loadinggif">
+                    <img src="#{request.contextPath}/resources/gif/gif-load.gif" />
+                </div>
+                <p:panel id="searchpanel" style="border:none;font-size:0.8em;#{gXHDO501C.displayStyle} ">
+                    <table>
+                        <tr>
+                            <td>
+                                <h:outputText id="lblSekkeiDate" value="設計日" style="width:100px;" />
+                            </td>
+                            <td>
+                                <p:inputText id="pSekkeiDateF" value="#{gXHDO501C.sekkeiDateF}" maxlength="6" style="margin-left:20px; height:26px;background-color:#{gXHDO501C.sekkeiDateFbgcolor}">
+                                    <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO501C.checkByte('sekkeiDateF', 6)}" async="false" />
+                                </p:inputText>
+                            </td>
+                            <td>～</td>
+                            <td>
+                                <p:inputText id="pSekkeiDateT" value="#{gXHDO501C.sekkeiDateT}" maxlength="6" style="height:26px;background-color:#{gXHDO501C.sekkeTimeTbgcolor}">
+                                    <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO501C.checkByte('sekkeiDateT', 6)}" async="false" />
+                                </p:inputText>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h:outputText id="lblLotNo" value="LotNo" style="width:100px;" />
+                            </td>
+                            <td>
+                                <p:inputText id="pLotNo" value="#{gXHDO501C.lotNo}" maxlength="14" style="margin-left:20px; height:26px;background-color:#{gXHDO501C.lotNobgcolor}">
+                                    <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO501C.checkByte('lotNo', 14)}" async="false" />
+                                </p:inputText>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h:outputText id="lblHinmei" value="品名" style="width:100px;" />
+                            </td>
+                            <td>
+                                <p:inputText id="pHinmei" value="#{gXHDO501C.hinmei}" maxlength="25" style="margin-left:20px; height:26px;">
+                                    <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO501C.checkByte('hinmei', 8)}" async="false" />
+                                </p:inputText>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h:outputText id="lblCmbSyurui" value="種類" style="width:100px;"/>
+                            </td>
+                            <td colspan="3">                            
+                                <p:selectOneMenu id="pCmbSyurui"  value="#{gXHDO501C.cmbSyurui}" styleClass="selectMenu" editable="false"  style="margin-left:20px; height:30px;width:190px">
+                                    <f:selectItem itemValue="" itemLabel=""/>
+                                    <f:selectItems value="#{gXHDO501C.cmbSyuruiData}" />
+                                </p:selectOneMenu>
+                            </td>
+                        </tr>
+                    </table>
+                </p:panel>
+                <p:panel id="buttonpanel" style="border:none;margin-top:-5px;#{gXHDO501C.displayStyle}">
+                    <p:commandButton id="btnSearch" style="width:100px;height:25px;font-size:0.7em;margin-left:0px;text-align:center;"
+                                     value="検索" 
+                                     actionListener="#{gXHDO501C.checkInputAndSearch()}"
+                                     process="@this searchpanel" 
+                                     update="growlMessage idDataTable confDialog searchpanel"
+                                     onstart="$('#loadinggif').show();" 
+                                     oncomplete="$('#loadinggif').hide();if('warning'!=args.param1){PF('cd').hide();} else {PF('cd').show();}"/>
+                    <p:commandButton id="btnClear" style="width:100px;height:25px;font-size:0.7em;margin-left:10px;text-align:center;"
+                                     value="クリア" 
+                                     action="#{gXHDO501C.confirmClear()}" 
+                                     process="@this  searchpanel" 
+                                     update="@form searchpanel" 
+                                     oncomplete="if('warning'!=args.param1){PF('cd').hide();} else {PF('cd').show();}"/>                 
+                </p:panel>
+                <div style="margin-top:-15px;#{gXHDO501C.displayStyle}">
+                    <p:dataTable id="idDataTable" var="item" style="font-size:0.8em;margin-top:20px;" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap"
+                                 value="#{gXHDO501C.listData}" emptyMessage="">
+                        <p:column id="LotNo" headerText="LotNo">
+                            <p:commandLink   
+                                style="color:Indigo;"  value="#{item.lotno}"   action="#{gXHDO501C.openXhdForm(item)}"  update="@form">
+                            </p:commandLink>
+                        </p:column>
+                        <p:column id="hinmei" headerText="品名">
+                            <p:outputLabel value="#{item.hinmei}" />
+                        </p:column>
+                        <p:column id="genryokigo" headerText="原料記号">
+                            <p:outputLabel value="" />
+                        </p:column>
+                        <p:column id="syurui" headerText="種類">
+                            <p:outputLabel value="#{item.syurui}"  />
+                        </p:column>
+                        <p:column id="sekkeiDate" headerText="設計日">
+                            <p:outputLabel   value="#{item.sekkeiDate}"  >
+                                <f:convertDateTime pattern="yyyy/MM/dd HH:mm" timeZone="JST" />
+                            </p:outputLabel>
+                        </p:column>
+                        <p:column id="tantousya" headerText="担当者">
+                            <p:outputLabel value="#{item.tantousya}" />
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </div>
+            <div>
+                <ui:include src="/secure/common/initMessage.xhtml" />
+            </div>
+        </h:form>
+    </h:body>
+</html>
+
