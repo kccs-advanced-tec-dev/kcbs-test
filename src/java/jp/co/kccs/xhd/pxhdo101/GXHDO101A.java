@@ -845,11 +845,25 @@ public class GXHDO101A implements Serializable {
     }
     
     /**
-     * B･Cﾗﾝｸ連絡書一覧ﾎﾞﾀﾝ押下
+     * B･Cﾗﾝｸ連絡書ﾎﾞﾀﾝ押下
      */
     public void doRankBCRenraku() {
         
-        // TODO: ダイアログが表示されない
+        // 登録Noを取得する
+        // 画面表示仕様(52)を発行する
+        
+        // sampleFlgIsOK: 「画面表示仕様(52)を発行する」までの仮置きフラグ(MR時までに削除)
+        boolean sampleFlgIsOK = false;
+        if (!sampleFlgIsOK) {
+            // 取得できなかった場合
+            // ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。 ｴﾗｰｺｰﾄﾞ:XHD-000083
+            setErrorMessage(MessageUtil.getMessage("XHD-000083", "異常連絡書ﾃﾞｰﾀｴﾗｰ"));
+            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, getErrorMessage(), null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return;
+        }
+        
+        // TODO: ダイアログが表示されない        
         // B･Cﾗﾝｸ連絡書一覧画面【GXHDO101C021】へ遷移する。
         RequestContext context = RequestContext.getCurrentInstance();
         context.addCallbackParam("firstParam", "gxhdo101c021");
