@@ -153,26 +153,17 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>
-                                <!-- 本来はこちらに置くと思う(rankBCRenrakuBtn) -->
-<!--                               <p:commandButton id="rankBCRenrakuBtn" class="button" rendered="#{gXHDO101A.rankBCRenrakuBtnRender}"  styleClass="ui-conf-commandbtn-def1" style="position:relative; left: 3px; margin-top: 3px; width: 124px; height: 32px; font-size: 13px; "
-                                      value="B･Cﾗﾝｸ連絡書"
-                                      actionListener="#{gXHDO101A.doRankBCRenraku()}"
-                                      process="@this"
-                                      update="growlMessage"
-                                      onstart="PF('cd').hide();$('#loadinggif').show();"
-                                      oncomplete="$('#loadinggif').hide();"/> -->
+                            <td>                                
                             </td>
                             <td>
-                                <h:outputText id="outText" value="" style="width: 300px; margin-left: 40px;"/>
-                                
-                               <p:commandButton id="rankBCRenrakuBtn" class="button" rendered="#{gXHDO101A.rankBCRenrakuBtnRender}"  styleClass="ui-conf-commandbtn-def1" style="position:relative; left: 3px; margin-top: 3px; width: 124px; height: 32px; font-size: 13px; "
+                                <p:commandButton id="rankBCRenrakuBtn" class="button" rendered="#{gXHDO101A.rankBCRenrakuBtnRender}"  styleClass="ui-conf-commandbtn-def1" style="float:left; left: 3px; margin-top: 3px; width: 124px; height: 32px; font-size: 13px; "
                                       value="B･Cﾗﾝｸ連絡書"
                                       actionListener="#{gXHDO101A.doRankBCRenraku()}"
                                       process="@this"
                                       update="@form"
                                       onstart="PF('cd').hide();$('#loadinggif').show();"
                                       oncomplete="$('#loadinggif').hide();cmdButtonOncomplete(args);"/> 
+                                <h:outputText id="outText" value="" style="width: 300px; margin-left: 40px;"/>
                                 <p:commandButton id="sougouHanteiBtn" class="button" rendered="#{gXHDO101A.sougouHanteiBtnRender}"  styleClass="ui-conf-commandbtn-def1" style="position:relative; left: 213px; margin-top: 3px; width: 94px; height: 32px; font-size: 13px; "
                                       value="総合判定"
                                       actionListener="#{gXHDO101A.doSougouHantei()}"
