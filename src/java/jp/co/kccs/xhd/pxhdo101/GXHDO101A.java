@@ -850,7 +850,7 @@ public class GXHDO101A implements Serializable {
     public void doRankBCRenraku() {
         
         // 登録Noを取得する
-        // 画面表示仕様(52)を発行する
+        // TODO: 画面表示仕様(52)を発行する
         
         // sampleFlgIsOK: 「画面表示仕様(52)を発行する」までの仮置きフラグ(MR時までに削除)
         boolean sampleFlgIsOK = true;
@@ -863,7 +863,7 @@ public class GXHDO101A implements Serializable {
             return;
         }
 
-        // 【要検証】bean初期化
+        // TODO: 【要検証】bean初期化
         GXHDO101C021 beanGXHDO101C021 = (GXHDO101C021) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C021);
         beanGXHDO101C021.setIsFormError(false);
         
