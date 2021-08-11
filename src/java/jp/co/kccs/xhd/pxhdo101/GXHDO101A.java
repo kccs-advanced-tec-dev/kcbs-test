@@ -853,7 +853,7 @@ public class GXHDO101A implements Serializable {
         // 画面表示仕様(52)を発行する
         
         // sampleFlgIsOK: 「画面表示仕様(52)を発行する」までの仮置きフラグ(MR時までに削除)
-        boolean sampleFlgIsOK = false;
+        boolean sampleFlgIsOK = true;
         if (!sampleFlgIsOK) {
             // 取得できなかった場合
             // ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。 ｴﾗｰｺｰﾄﾞ:XHD-000083
@@ -862,6 +862,10 @@ public class GXHDO101A implements Serializable {
             FacesContext.getCurrentInstance().addMessage(null, message);
             return;
         }
+
+        // 【要検証】bean初期化
+        GXHDO101C021 beanGXHDO101C021 = (GXHDO101C021) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C021);
+        beanGXHDO101C021.setIsFormError(false);
         
         // TODO: ダイアログが表示されない        
         // B･Cﾗﾝｸ連絡書一覧画面【GXHDO101C021】へ遷移する。

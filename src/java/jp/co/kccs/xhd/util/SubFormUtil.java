@@ -102,6 +102,10 @@ public class SubFormUtil {
      * 前工程WIP取込
      */
     public static final String FORM_ID_GXHDO101C020 = "GXHDO101C020";
+    /**
+     * B･Cﾗﾝｸ連絡書一覧画面
+     */
+    public static final String FORM_ID_GXHDO101C021 = "GXHDO101C021";
             
     /**
      * 初期表示メッセージ

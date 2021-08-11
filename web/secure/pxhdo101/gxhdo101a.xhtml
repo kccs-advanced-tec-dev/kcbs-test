@@ -172,7 +172,7 @@
                                       process="@this"
                                       update="@form"
                                       onstart="PF('cd').hide();$('#loadinggif').show();"
-                                      oncomplete="$('#loadinggif').hide();"/> 
+                                      oncomplete="$('#loadinggif').hide();cmdButtonOncomplete(args);"/> 
                                 <p:commandButton id="sougouHanteiBtn" class="button" rendered="#{gXHDO101A.sougouHanteiBtnRender}"  styleClass="ui-conf-commandbtn-def1" style="position:relative; left: 213px; margin-top: 3px; width: 94px; height: 32px; font-size: 13px; "
                                       value="総合判定"
                                       actionListener="#{gXHDO101A.doSougouHantei()}"
