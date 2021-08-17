@@ -858,28 +858,46 @@ public class GXHDO101A implements Serializable {
      */
     public void doRankBCRenraku() {
         
-        // 登録Noを取得する
-        // TODO: 画面表示仕様(52)を発行する
-        
-        // sampleFlgIsOK: 「画面表示仕様(52)を発行する」までの仮置きフラグ(MR時までに削除)
-        boolean sampleFlgIsOK = true;
-        if (!sampleFlgIsOK) {
-            // 取得できなかった場合
-            // ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。 ｴﾗｰｺｰﾄﾞ:XHD-000083
-            setErrorMessage(MessageUtil.getMessage("XHD-000083", "異常連絡書ﾃﾞｰﾀｴﾗｰ"));
-            FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, getErrorMessage(), null);
-            FacesContext.getCurrentInstance().addMessage(null, message);
-            return;
+        try {
+                    
+            QueryRunner queryRunnerDoc = new QueryRunner(dataSourceDocServer);
+            QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
+            QueryRunner queryRunnerWip = new QueryRunner(dataSourceWip);
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+
+            String strKojyo = "";
+            String strLotNo = "";
+            String strEdaban = "";
+
+            if (!"".equals(searchLotNo) && searchLotNo != null) {
+                strKojyo = this.searchLotNo.substring(0, 3);
+                strLotNo = this.searchLotNo.substring(3, 11);
+                strEdaban = this.searchLotNo.substring(11, 14);
+            }
+
+            // 登録Noを取得する
+            String[] torokuNoList = getSrKoteifuryoTorokuNoList(queryRunnerQcdb, strKojyo, strLotNo, strEdaban);
+
+            if (torokuNoList == null) {
+                // 取得できなかった場合
+                // ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。 ｴﾗｰｺｰﾄﾞ:XHD-000083
+                setErrorMessage(MessageUtil.getMessage("XHD-000083", "異常連絡書ﾃﾞｰﾀｴﾗｰ"));
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, getErrorMessage(), null);
+                FacesContext.getCurrentInstance().addMessage(null, message);
+                return;
+            }
+
+    //        // TODO: 【要検証】bean初期化
+    //        GXHDO101C021 beanGXHDO101C021 = (GXHDO101C021) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C021);
+    //        beanGXHDO101C021.setIsFormError(false);
+    //        
+            // B･Cﾗﾝｸ連絡書一覧画面【GXHDO101C021】へ遷移する。
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.addCallbackParam("firstParam", "gxhdo101c021");
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("登録No0件", ex, LOGGER);
         }
 
-//        // TODO: 【要検証】bean初期化
-//        GXHDO101C021 beanGXHDO101C021 = (GXHDO101C021) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C021);
-//        beanGXHDO101C021.setIsFormError(false);
-//        
-        // TODO: ダイアログが表示されない        
-        // B･Cﾗﾝｸ連絡書一覧画面【GXHDO101C021】へ遷移する。
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.addCallbackParam("firstParam", "gxhdo101c021");
         
     }
 
