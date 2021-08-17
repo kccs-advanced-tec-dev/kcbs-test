@@ -229,7 +229,7 @@ public class GXHDO101A implements Serializable {
      * 参照元ﾃﾞｰﾀ
      */
     private FXHDM01 deleteMenuInfo = null;
-
+    
     /**
      * コンストラクタ
      */
@@ -514,8 +514,17 @@ public class GXHDO101A implements Serializable {
             //総合判定ﾎﾞﾀﾝ表示
             setSougouHanteiBtnRender(true);
             
-            //TODO: 仮置きなので移動させる
-            setRankBCRenrakuBtnRender(true);
+            //⑳B･Cﾗﾝｸ発行ﾎﾞﾀﾝ表示/非表示
+            boolean torokuNoExistFlg = false;
+            String[] torokuNoList = getTorokuNoList(queryRunnerXHD, strKojyo, strLotNo, strEdaban);
+            if (torokuNoList != null) {
+                torokuNoExistFlg = true;
+            }
+            if (torokuNoExistFlg) {
+                setRankBCRenrakuBtnRender(true);
+            } else {
+                setRankBCRenrakuBtnRender(false);
+            }
 
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("メニュー項目未登録", ex, LOGGER);
@@ -863,10 +872,10 @@ public class GXHDO101A implements Serializable {
             return;
         }
 
-        // TODO: 【要検証】bean初期化
-        GXHDO101C021 beanGXHDO101C021 = (GXHDO101C021) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C021);
-        beanGXHDO101C021.setIsFormError(false);
-        
+//        // TODO: 【要検証】bean初期化
+//        GXHDO101C021 beanGXHDO101C021 = (GXHDO101C021) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C021);
+//        beanGXHDO101C021.setIsFormError(false);
+//        
         // TODO: ダイアログが表示されない        
         // B･Cﾗﾝｸ連絡書一覧画面【GXHDO101C021】へ遷移する。
         RequestContext context = RequestContext.getCurrentInstance();
@@ -1161,7 +1170,7 @@ public class GXHDO101A implements Serializable {
     public void setAddLinkRender(boolean addLinkRender) {
         this.addLinkRender = addLinkRender;
     }
-
+    
     /**
      * [品質DB登録実績]から、ﾘﾋﾞｼﾞｮﾝ,状態ﾌﾗｸﾞを取得
      *
@@ -4128,4 +4137,33 @@ public class GXHDO101A implements Serializable {
         return addMenuList;
     }
 
+    /**
+     * [工程不良]から、登録Noを取得(値が無い場合はNULLを返却)
+     * 
+     * @param queryRunnerXHD QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @return 登録No
+     * @throws SQLException 例外エラー
+     */
+    private String[] getTorokuNoList(QueryRunner queryRunnerXHD, String kojyo, String lotNo, String edaban) throws SQLException {
+        String sql = "SELECT torokuno "
+                + "FROM sr_koteifuryo "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? "
+                + "ORDER BY torokuno ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        Map resultMap = queryRunnerXHD.query(sql, new MapHandler(), params.toArray());
+        if (resultMap == null) {
+            return null;
+        }
+
+        return new String[]{StringUtil.nullToBlank(resultMap.get("torokuno"))};
+    }
 }
