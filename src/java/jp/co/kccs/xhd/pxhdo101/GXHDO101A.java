@@ -516,7 +516,7 @@ public class GXHDO101A implements Serializable {
             
             //⑳B･Cﾗﾝｸ発行ﾎﾞﾀﾝ表示/非表示
             boolean torokuNoExistFlg = false;
-            String[] torokuNoList = getTorokuNoList(queryRunnerXHD, strKojyo, strLotNo, strEdaban);
+            String[] torokuNoList = getSrKoteifuryoTorokuNoList(queryRunnerXHD, strKojyo, strLotNo, strEdaban);
             if (torokuNoList != null) {
                 torokuNoExistFlg = true;
             }
@@ -4147,7 +4147,7 @@ public class GXHDO101A implements Serializable {
      * @return 登録No
      * @throws SQLException 例外エラー
      */
-    private String[] getTorokuNoList(QueryRunner queryRunnerXHD, String kojyo, String lotNo, String edaban) throws SQLException {
+    private String[] getSrKoteifuryoTorokuNoList(QueryRunner queryRunnerXHD, String kojyo, String lotNo, String edaban) throws SQLException {
         String sql = "SELECT torokuno "
                 + "FROM sr_koteifuryo "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? "
