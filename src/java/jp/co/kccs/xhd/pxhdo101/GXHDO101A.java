@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -887,9 +888,11 @@ public class GXHDO101A implements Serializable {
                 return;
             }
 
-    //        // TODO: 【要検証】bean初期化
-    //        GXHDO101C021 beanGXHDO101C021 = (GXHDO101C021) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C021);
-    //        beanGXHDO101C021.setIsFormError(false);
+            // TODO: 【要検証】bean初期化
+            GXHDO101C021 beanGXHDO101C021 = (GXHDO101C021) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C021);
+            beanGXHDO101C021.setSanshouMotoLotNo(this.searchLotNo);
+
+            beanGXHDO101C021.setIsFormError(false);
     //        
             // B･Cﾗﾝｸ連絡書一覧画面【GXHDO101C021】へ遷移する。
             RequestContext context = RequestContext.getCurrentInstance();

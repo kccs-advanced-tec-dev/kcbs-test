@@ -241,6 +241,13 @@ public class SubFormUtil {
                                 getELContext(), null, "beanGXHDO101C020");
                 break;
                 
+            // B･Cﾗﾝｸ連絡書一覧画面
+            case "GXHDO101C021":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO101C021");
+                break;
+                
             // 初期表示メッセージ
             case "InitMessage":
                 returnBean = FacesContext.getCurrentInstance().
