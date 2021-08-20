@@ -32,6 +32,7 @@ import jp.co.kccs.xhd.SelectParam;
 import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.db.model.DaJoken;
 import jp.co.kccs.xhd.db.model.FXHDM01;
+import jp.co.kccs.xhd.db.model.SrKoteifuryo;
 import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
@@ -230,7 +231,7 @@ public class GXHDO101A implements Serializable {
      * 参照元ﾃﾞｰﾀ
      */
     private FXHDM01 deleteMenuInfo = null;
-    
+
     /**
      * コンストラクタ
      */
@@ -359,7 +360,7 @@ public class GXHDO101A implements Serializable {
                 facesContext.addMessage(null, message);
                 return null;
             }
-            
+
             for (Iterator i = processResult.iterator(); i.hasNext();) {
                 HashMap m = (HashMap) i.next();
                 strProcess = m.get("PrintFmt").toString();
@@ -514,17 +515,25 @@ public class GXHDO101A implements Serializable {
             }
             //総合判定ﾎﾞﾀﾝ表示
             setSougouHanteiBtnRender(true);
-            
+
             //⑳B･Cﾗﾝｸ発行ﾎﾞﾀﾝ表示/非表示
-            boolean torokuNoExistFlg = false;
-            String[] torokuNoList = getSrKoteifuryoTorokuNoList(queryRunnerXHD, strKojyo, strLotNo, strEdaban);
-            if (torokuNoList != null) {
-                torokuNoExistFlg = true;
-            }
-            if (torokuNoExistFlg) {
-                setRankBCRenrakuBtnRender(true);
-            } else {
+//            boolean torokuNoExistFlg = false;
+//            String[] torokuNoList = getSrKoteifuryoTorokuNoList(queryRunnerXHD, strKojyo, strLotNo, strEdaban);
+//            
+//            if (torokuNoList != null) {
+//                torokuNoExistFlg = true;
+//            }
+//            if (torokuNoExistFlg) {
+//                setRankBCRenrakuBtnRender(true);
+//            } else {
+//                setRankBCRenrakuBtnRender(false);
+//            }
+            List<SrKoteifuryo> listSrKoteifuryo = getSrKoteifuryoList(queryRunnerXHD, strKojyo, strLotNo, strEdaban);
+
+            if (listSrKoteifuryo.isEmpty()) {
                 setRankBCRenrakuBtnRender(false);
+            } else {
+                setRankBCRenrakuBtnRender(true);
             }
 
         } catch (SQLException ex) {
@@ -844,7 +853,7 @@ public class GXHDO101A implements Serializable {
                 beanGXHDO101C012.setPattern(StringUtil.nullToBlank(getMapData(gamenInfo, "PATTERN")));
             }
 
-        // (2)ﾛｯﾄ参照画面【GXHDO101C012】へ遷移する。
+            // (2)ﾛｯﾄ参照画面【GXHDO101C012】へ遷移する。
             RequestContext context = RequestContext.getCurrentInstance();
             context.addCallbackParam("firstParam", "gxhdo101c012");
 
@@ -853,14 +862,14 @@ public class GXHDO101A implements Serializable {
         }
 
     }
-    
+
     /**
      * B･Cﾗﾝｸ連絡書ﾎﾞﾀﾝ押下
      */
     public void doRankBCRenraku() {
-        
+
         try {
-                    
+
             QueryRunner queryRunnerDoc = new QueryRunner(dataSourceDocServer);
             QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
             QueryRunner queryRunnerWip = new QueryRunner(dataSourceWip);
@@ -877,9 +886,19 @@ public class GXHDO101A implements Serializable {
             }
 
             // 登録Noを取得する
-            String[] torokuNoList = getSrKoteifuryoTorokuNoList(queryRunnerQcdb, strKojyo, strLotNo, strEdaban);
+//            String[] torokuNoList = getSrKoteifuryoTorokuNoList(queryRunnerQcdb, strKojyo, strLotNo, strEdaban);
+//
+//            if (torokuNoList == null) {
+//                // 取得できなかった場合
+//                // ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。 ｴﾗｰｺｰﾄﾞ:XHD-000083
+//                setErrorMessage(MessageUtil.getMessage("XHD-000083", "異常連絡書ﾃﾞｰﾀｴﾗｰ"));
+//                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, getErrorMessage(), null);
+//                FacesContext.getCurrentInstance().addMessage(null, message);
+//                return;
+//            }
 
-            if (torokuNoList == null) {
+            List<SrKoteifuryo> listSrKoteifuryo = getSrKoteifuryoList(queryRunnerQcdb, strKojyo, strLotNo, strEdaban);
+            if (listSrKoteifuryo.isEmpty()) {
                 // 取得できなかった場合
                 // ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。 ｴﾗｰｺｰﾄﾞ:XHD-000083
                 setErrorMessage(MessageUtil.getMessage("XHD-000083", "異常連絡書ﾃﾞｰﾀｴﾗｰ"));
@@ -893,7 +912,7 @@ public class GXHDO101A implements Serializable {
             beanGXHDO101C021.setSanshouMotoLotNo(this.searchLotNo);
 
             beanGXHDO101C021.setIsFormError(false);
-    //        
+            //        
             // B･Cﾗﾝｸ連絡書一覧画面【GXHDO101C021】へ遷移する。
             RequestContext context = RequestContext.getCurrentInstance();
             context.addCallbackParam("firstParam", "gxhdo101c021");
@@ -901,7 +920,6 @@ public class GXHDO101A implements Serializable {
             ErrUtil.outputErrorLog("登録No0件", ex, LOGGER);
         }
 
-        
     }
 
     /**
@@ -1146,7 +1164,7 @@ public class GXHDO101A implements Serializable {
     public boolean getRankBCRenrakuBtnRender() {
         return rankBCRenrakuBtnRender;
     }
-    
+
     /**
      * B･Cﾗﾝｸ連絡書ﾎﾞﾀﾝ表示render有無
      *
@@ -1191,7 +1209,7 @@ public class GXHDO101A implements Serializable {
     public void setAddLinkRender(boolean addLinkRender) {
         this.addLinkRender = addLinkRender;
     }
-    
+
     /**
      * [品質DB登録実績]から、ﾘﾋﾞｼﾞｮﾝ,状態ﾌﾗｸﾞを取得
      *
@@ -3110,7 +3128,6 @@ public class GXHDO101A implements Serializable {
 
     }
 
-
     /**
      * [電気特性]から、電気特性再検を取得(値が無い場合はNULLを返却)
      *
@@ -4160,7 +4177,7 @@ public class GXHDO101A implements Serializable {
 
     /**
      * [工程不良]から、登録Noを取得(値が無い場合はNULLを返却)
-     * 
+     *
      * @param queryRunnerXHD QueryRunnerオブジェクト
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
      * @param lotNo ﾛｯﾄNo(検索キー)
@@ -4186,5 +4203,35 @@ public class GXHDO101A implements Serializable {
         }
 
         return new String[]{StringUtil.nullToBlank(resultMap.get("torokuno"))};
+    }
+
+    /**
+     * 工程不良データ取得
+     *
+     * @param queryRunnerXHD データオブジェクト
+     * @param kojyo
+     * @param lotNo
+     * @param edaban
+     * @return
+     * @throws SQLException
+     */
+    private List<SrKoteifuryo> getSrKoteifuryoList(QueryRunner queryRunnerXHD, String kojyo, String lotNo, String edaban) throws SQLException {
+        String sql = "SELECT torokuno "
+                + "FROM sr_koteifuryo "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? "
+                + "ORDER BY torokuno ";
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+
+        Map<String, String> mapping = new HashMap<>();
+        mapping.put("torokuno", "torokuno");
+        BeanProcessor beanProcessor = new BeanProcessor(mapping);
+        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+        ResultSetHandler<List<SrKoteifuryo>> beanHandler = new BeanListHandler<>(SrKoteifuryo.class, rowProcessor);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerXHD.query(sql, beanHandler, params.toArray());
+
     }
 }
