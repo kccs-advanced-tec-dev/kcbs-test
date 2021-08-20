@@ -3,6 +3,10 @@
  */
 package jp.co.kccs.xhd.model;
 
+import java.util.ArrayList;
+import java.util.List;
+import jp.co.kccs.xhd.db.model.SrKoteifuryo;
+
 /**
  * ===============================================================================<br>
  * <br>
@@ -32,12 +36,35 @@ public class GXHDO101C021Model implements Cloneable {
     @Override
     public GXHDO101C021Model clone() throws CloneNotSupportedException {
         GXHDO101C021Model cloneModel = (GXHDO101C021Model) super.clone();
+        List<SrKoteifuryo> newList = new ArrayList<>();
+        for (SrKoteifuryo data : this.getSrKoteifuryoList()) {
+            SrKoteifuryo newData = new SrKoteifuryo();
+            newData.setTorokuno(data.getTorokuno());
+            newList.add(newData);
+        }
         
-        // todo
-        
+        cloneModel.setSrKoteifuryoList(newList);
         return cloneModel;
     }
     
-    //todo
+    private List<SrKoteifuryo> srKoteifuryoList;
     
+    public GXHDO101C021Model(){
+//        this.srKoteifuryoList = new ArrayList<>();
+    }
+    
+    /**
+     * @return the srKoteifuryoList
+     */
+    public List<SrKoteifuryo> getSrKoteifuryoList() {
+        return srKoteifuryoList;
+    }
+    
+    /**
+     * @param srKoteifuryoList the srKoteifuryoList to set
+     */
+    public void setSrKoteifuryoList(List<SrKoteifuryo> srKoteifuryoList) {
+        this.srKoteifuryoList = srKoteifuryoList;
+    }
+
 }

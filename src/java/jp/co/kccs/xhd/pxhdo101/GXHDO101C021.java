@@ -6,11 +6,14 @@
 package jp.co.kccs.xhd.pxhdo101;
 
 import java.io.Serializable;
+import java.util.List;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 import javax.sql.DataSource;
+import jp.co.kccs.xhd.db.model.SrKoteifuryo;
+import jp.co.kccs.xhd.model.GXHDO101C021Model;
 import jp.co.kccs.xhd.pxhdo901.GXHDO901A;
 
 /**
@@ -33,6 +36,16 @@ public class GXHDO101C021 implements Serializable {
      * 参照元ﾛｯﾄNo
      */
     private String sanshouMotoLotNo;
+
+    /**
+     * 登録No表示用データ
+     */
+    private GXHDO101C021Model gxhdO101c021Model;
+
+    /**
+     * 登録No表示用データ(表示制御用)
+     */
+    private GXHDO101C021Model gxhdO101c021ModelView;
 
     /**
      * フォームエラー判定
@@ -76,5 +89,34 @@ public class GXHDO101C021 implements Serializable {
     public void setSanshouMotoLotNo(String sanshouMotoLotNo) {
         this.sanshouMotoLotNo = sanshouMotoLotNo;
     }
+
+    /**
+     * @return the gxhdO101c021Model
+     */
+    public GXHDO101C021Model getGxhdO101c021Model() {
+        return gxhdO101c021Model;
+    }
+
+    /**
+     * @param gxhdO101c021Model the gxhdO101c021Model to set
+     */
+    public void setGxhdO101c021Model(GXHDO101C021Model gxhdO101c021Model) {
+        this.gxhdO101c021Model = gxhdO101c021Model;
+    }
+
+    /**
+     * @return the gxhdO101c021ModelView
+     */
+    public GXHDO101C021Model getGxhdO101c021ModelView() {
+        return gxhdO101c021ModelView;
+    }
+
+    /**
+     * @param gxhdO101c021ModelView the gxhdO101c021ModelView to set
+     */
+    public void setGxhdO101c021ModelView(GXHDO101C021Model gxhdO101c021ModelView) {
+        this.gxhdO101c021ModelView = gxhdO101c021ModelView;
+    }
+
 
 }
