@@ -517,17 +517,6 @@ public class GXHDO101A implements Serializable {
             setSougouHanteiBtnRender(true);
 
             //⑳B･Cﾗﾝｸ発行ﾎﾞﾀﾝ表示/非表示
-//            boolean torokuNoExistFlg = false;
-//            String[] torokuNoList = getSrKoteifuryoTorokuNoList(queryRunnerXHD, strKojyo, strLotNo, strEdaban);
-//            
-//            if (torokuNoList != null) {
-//                torokuNoExistFlg = true;
-//            }
-//            if (torokuNoExistFlg) {
-//                setRankBCRenrakuBtnRender(true);
-//            } else {
-//                setRankBCRenrakuBtnRender(false);
-//            }
             List<SrKoteifuryo> listSrKoteifuryo = getSrKoteifuryoList(queryRunnerXHD, strKojyo, strLotNo, strEdaban);
 
             if (listSrKoteifuryo.isEmpty()) {
@@ -886,17 +875,6 @@ public class GXHDO101A implements Serializable {
             }
 
             // 登録Noを取得する
-//            String[] torokuNoList = getSrKoteifuryoTorokuNoList(queryRunnerQcdb, strKojyo, strLotNo, strEdaban);
-//
-//            if (torokuNoList == null) {
-//                // 取得できなかった場合
-//                // ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。 ｴﾗｰｺｰﾄﾞ:XHD-000083
-//                setErrorMessage(MessageUtil.getMessage("XHD-000083", "異常連絡書ﾃﾞｰﾀｴﾗｰ"));
-//                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, getErrorMessage(), null);
-//                FacesContext.getCurrentInstance().addMessage(null, message);
-//                return;
-//            }
-
             List<SrKoteifuryo> listSrKoteifuryo = getSrKoteifuryoList(queryRunnerQcdb, strKojyo, strLotNo, strEdaban);
             if (listSrKoteifuryo.isEmpty()) {
                 // 取得できなかった場合
@@ -4173,36 +4151,6 @@ public class GXHDO101A implements Serializable {
             }
         }
         return addMenuList;
-    }
-
-    /**
-     * [工程不良]から、登録Noを取得(値が無い場合はNULLを返却)
-     *
-     * @param queryRunnerXHD QueryRunnerオブジェクト
-     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
-     * @param lotNo ﾛｯﾄNo(検索キー)
-     * @param edaban 枝番(検索キー)
-     * @return 登録No
-     * @throws SQLException 例外エラー
-     */
-    private String[] getSrKoteifuryoTorokuNoList(QueryRunner queryRunnerXHD, String kojyo, String lotNo, String edaban) throws SQLException {
-        String sql = "SELECT torokuno "
-                + "FROM sr_koteifuryo "
-                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? "
-                + "ORDER BY torokuno ";
-
-        List<Object> params = new ArrayList<>();
-        params.add(kojyo);
-        params.add(lotNo);
-        params.add(edaban);
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        Map resultMap = queryRunnerXHD.query(sql, new MapHandler(), params.toArray());
-        if (resultMap == null) {
-            return null;
-        }
-
-        return new String[]{StringUtil.nullToBlank(resultMap.get("torokuno"))};
     }
 
     /**
