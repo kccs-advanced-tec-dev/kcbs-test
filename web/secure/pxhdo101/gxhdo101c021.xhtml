@@ -9,22 +9,21 @@
               onShow="subFormOpen();"
               onHide="subFormClose(); document.getElementById('form:gxhdo101c021Form:cancelBtn').click();" position="center top">
         <h:form id="gxhdo101c021Form">
-
-            <!--<p:outputLabel value="#{beanGXHDO101C021.sanshouMotoLotNo}" style="font-size: 18px;"  />-->
-
             <p:commandButton value="戻る" id="cancelBtn"
                              style="position:relative;top:23px;left:60px;width:110px;height:35px;"
                              process="@this" 
                              update="form:growlMessage"
                              oncomplete="PF('W_dlg_gxhdo101c021').hide();"/>
-            <p:dataTable id="tourokuNoTable" var="item" value="#{beanGXHDO101C021.gxhdO101c021ModelView.torokuNoDataList}" style="margin-top: 20px;margin-left:auto;margin-right:auto;font-size: 17px;"
-                             scrollable="true"
-                             emptyMessage="">
-                <div style="text-align:center">
-                    <p:column id="torokuNo" headerText="登録No">
-                        <p:outputLabel value="#{item.torokuNo}" style="font-size: 17px;"/>
-                    </p:column>
-                </div>
+            <p:dataTable id="tourokuNoTable" var="item" 
+                         rendered="#{beanGXHDO101C021.tourokuNoTableRender}"
+                         value="#{beanGXHDO101C021.gxhdO101c021ModelView.torokuNoDataList}" 
+                         style="padding:20px;margin-top:20px;margin-left:auto;margin-right:auto;font-size:17px;width:200px;"
+                         scrollable="true"
+                         emptyMessage="">
+                <p:column id="torokuNo" style="text-align:center" headerText="登録No">
+                    <p:commandLink value="#{item.torokuNo}" style="color:Indigo;font-size: 17px;">
+                    </p:commandLink>
+                </p:column>
             </p:dataTable>
 
         </h:form>

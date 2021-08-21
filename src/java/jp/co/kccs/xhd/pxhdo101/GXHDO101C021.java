@@ -62,6 +62,11 @@ public class GXHDO101C021 implements Serializable {
     private GXHDO101C021Model gxhdO101c021ModelView;
 
     /**
+     * 表示render有無
+     */
+    private boolean tourokuNoTableRender;
+
+    /**
      * フォームエラー判定
      */
     private boolean isFormError;
@@ -132,5 +137,18 @@ public class GXHDO101C021 implements Serializable {
         this.gxhdO101c021ModelView = gxhdO101c021ModelView;
     }
 
+    /**
+     * @return the tourokuNoTableRender
+     */
+    public boolean isTourokuNoTableRender() {
+        return tourokuNoTableRender;
+    }
+
+    /**
+     * @param tourokuNoTableRender the tourokuNoTableRender to set
+     */
+    public void setTourokuNoTableRender(boolean tourokuNoTableRender) {
+        this.tourokuNoTableRender = tourokuNoTableRender;
+    }
 
 }
