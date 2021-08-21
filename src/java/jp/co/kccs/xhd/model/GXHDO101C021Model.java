@@ -1,11 +1,10 @@
 /*
- * Copyright 2020 Kyocera Communication Systems Co., Ltd All rights reserved.
+ * Copyright 2021 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import jp.co.kccs.xhd.db.model.SrKoteifuryo;
 
 /**
  * ===============================================================================<br>
@@ -26,7 +25,7 @@ import jp.co.kccs.xhd.db.model.SrKoteifuryo;
  * @since 2021/08/10
  */
 public class GXHDO101C021Model implements Cloneable {
-    
+
     /**
      * クローン実装
      *
@@ -36,35 +35,59 @@ public class GXHDO101C021Model implements Cloneable {
     @Override
     public GXHDO101C021Model clone() throws CloneNotSupportedException {
         GXHDO101C021Model cloneModel = (GXHDO101C021Model) super.clone();
-        List<SrKoteifuryo> newList = new ArrayList<>();
-        for (SrKoteifuryo data : this.getSrKoteifuryoList()) {
-            SrKoteifuryo newData = new SrKoteifuryo();
-            newData.setTorokuno(data.getTorokuno());
+        List<TorokuNoData> newList = new ArrayList<>();
+        for (TorokuNoData data : this.getTorokuNoDataList()) {
+            TorokuNoData newData = new TorokuNoData();
+            newData.setTorokuNo(data.getTorokuNo());
             newList.add(newData);
         }
-        
-        cloneModel.setSrKoteifuryoList(newList);
+
+        cloneModel.setTorokuNoDataList(newList);
         return cloneModel;
     }
-    
-    private List<SrKoteifuryo> srKoteifuryoList;
-    
-    public GXHDO101C021Model(){
-//        this.srKoteifuryoList = new ArrayList<>();
+
+    private List<TorokuNoData> torokuNoDataList = new ArrayList<>();
+
+    public GXHDO101C021Model() {
     }
-    
+
     /**
-     * @return the srKoteifuryoList
+     * @return the torokuNoDataList
      */
-    public List<SrKoteifuryo> getSrKoteifuryoList() {
-        return srKoteifuryoList;
+    public List<TorokuNoData> getTorokuNoDataList() {
+        return torokuNoDataList;
     }
-    
+
     /**
-     * @param srKoteifuryoList the srKoteifuryoList to set
+     * @param torokuNoDataList the torokuNoDataList to set
      */
-    public void setSrKoteifuryoList(List<SrKoteifuryo> srKoteifuryoList) {
-        this.srKoteifuryoList = srKoteifuryoList;
+    public void setTorokuNoDataList(List<TorokuNoData> torokuNoDataList) {
+        this.torokuNoDataList = torokuNoDataList;
+    }
+
+    /**
+     * 登録Noデータ
+     */
+    public class TorokuNoData {
+
+        /**
+         * 登録No
+         */
+        private String torokuNo;
+
+        /**
+         * @return the torokuNo
+         */
+        public String getTorokuNo() {
+            return torokuNo;
+        }
+
+        /**
+         * @param torokuNo the torokuNo to set
+         */
+        public void setTorokuNo(String torokuNo) {
+            this.torokuNo = torokuNo;
+        }
     }
 
 }

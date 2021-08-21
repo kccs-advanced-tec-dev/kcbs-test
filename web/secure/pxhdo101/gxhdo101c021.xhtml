@@ -17,12 +17,12 @@
                              process="@this" 
                              update="form:growlMessage"
                              oncomplete="PF('W_dlg_gxhdo101c021').hide();"/>
-            <p:dataTable id="tourokuNoTable" var="item" value="#{beanGXHDO101C021.gxhdO101c021ModelView.srKoteifuryoList}" style="margin-top: 20px;margin-left:auto;margin-right:auto;font-size: 17px;"
+            <p:dataTable id="tourokuNoTable" var="item" value="#{beanGXHDO101C021.gxhdO101c021ModelView.torokuNoDataList}" style="margin-top: 20px;margin-left:auto;margin-right:auto;font-size: 17px;"
                              scrollable="true"
                              emptyMessage="">
                 <div style="text-align:center">
                     <p:column id="torokuNo" headerText="登録No">
-                        <p:outputLabel value="#{item.torokuno}" style="font-size: 17px;"/>
+                        <p:outputLabel value="#{item.torokuNo}" style="font-size: 17px;"/>
                     </p:column>
                 </div>
             </p:dataTable>

@@ -33,6 +33,8 @@ import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.db.model.DaJoken;
 import jp.co.kccs.xhd.db.model.FXHDM01;
 import jp.co.kccs.xhd.db.model.SrKoteifuryo;
+import jp.co.kccs.xhd.model.GXHDO101C021Model;
+import jp.co.kccs.xhd.model.GXHDO101C021Model.TorokuNoData;
 import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
@@ -874,7 +876,7 @@ public class GXHDO101A implements Serializable {
                 strEdaban = this.searchLotNo.substring(11, 14);
             }
 
-            // 登録Noを取得する
+            // 工程不良テーブルから登録Noを取得する
             List<SrKoteifuryo> listSrKoteifuryo = getSrKoteifuryoList(queryRunnerQcdb, strKojyo, strLotNo, strEdaban);
             if (listSrKoteifuryo.isEmpty()) {
                 // 取得できなかった場合
@@ -885,12 +887,14 @@ public class GXHDO101A implements Serializable {
                 return;
             }
 
-            // TODO: 【要検証】bean初期化
+            // GXHDO101C021 bean初期化
             GXHDO101C021 beanGXHDO101C021 = (GXHDO101C021) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C021);
             beanGXHDO101C021.setSanshouMotoLotNo(this.searchLotNo);
 
-            beanGXHDO101C021.setIsFormError(false);
-            //        
+            // GXHDO101C021 初回表示用Model作成
+            GXHDO101C021Model newModel = GXHDO101C021Logic.createGXHDO101C021Model(listSrKoteifuryo);
+            beanGXHDO101C021.setGxhdO101c021ModelView(newModel);
+
             // B･Cﾗﾝｸ連絡書一覧画面【GXHDO101C021】へ遷移する。
             RequestContext context = RequestContext.getCurrentInstance();
             context.addCallbackParam("firstParam", "gxhdo101c021");
