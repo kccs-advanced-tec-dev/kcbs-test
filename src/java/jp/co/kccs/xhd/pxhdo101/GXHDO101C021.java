@@ -17,7 +17,6 @@ import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import jp.co.kccs.xhd.model.GXHDO101C021Model;
 import jp.co.kccs.xhd.model.GXHDO101C021Model.TorokuNoData;
-import jp.co.kccs.xhd.pxhdo901.GXHDO901A;
 
 /**
  *
