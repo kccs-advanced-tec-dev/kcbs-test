@@ -21,13 +21,26 @@
                          scrollable="true"
                          emptyMessage="">
                 <p:column id="torokuNo" style="text-align:center" headerText="登録No">
-                    <h:commandLink value="#{item.torokuNo}" style="color:Indigo;font-size: 17px;"
-                                   action="#{beanGXHDO101C021.openXhdForm()}"
+                    <p:commandLink id="cmdLink" value="#{item.torokuNo}" style="color:Indigo;font-size: 17px;" 
+                                   process="@this" 
+                                   action="#{beanGXHDO101C021.openXhdFormHinsitsu()}" 
                                    >
-                    </h:commandLink>
+                    </p:commandLink>
+<!--                    <p:commandLink id="cmdLink" value="#{item.torokuNo}" style="color:Indigo;font-size: 17px;" 
+                                   actionListener="#{beanGXHDO101C021.openXhdFormHinsitsu()}" 
+                                   onstart="PF('cd').hide();$('#loadinggif').show();"
+                                   oncomplete="$('#loadinggif').hide();"
+                                   >
+                    </p:commandLink>-->
+<!--                    <p:commandLink id="cmdLink" value="#{item.torokuNo}" style="color:Indigo;font-size: 17px;" 
+                    action="/secure/pxhdo101/gxhdo101d001.xhtml?faces-redirect=true"  
+                    >
+</p:commandLink>-->
                 </p:column>
             </p:dataTable>
-
+            <!--            <div>
+                            <ui:include src="/secure/pxhdo101/gxhdo101d001.xhtml"/>
+                        </div>-->
         </h:form>
 
     </p:dialog>

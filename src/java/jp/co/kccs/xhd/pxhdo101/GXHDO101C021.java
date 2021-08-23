@@ -4,12 +4,19 @@
 package jp.co.kccs.xhd.pxhdo101;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import jp.co.kccs.xhd.model.GXHDO101C021Model;
+import jp.co.kccs.xhd.model.GXHDO101C021Model.TorokuNoData;
 import jp.co.kccs.xhd.pxhdo901.GXHDO901A;
 
 /**
@@ -38,7 +45,7 @@ import jp.co.kccs.xhd.pxhdo901.GXHDO901A;
 @Named("beanGXHDO101C021")
 public class GXHDO101C021 implements Serializable {
 
-    private static final Logger LOGGER = Logger.getLogger(GXHDO901A.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GXHDO101C021.class.getName());
 
     /**
      * DataSource(wip)
@@ -150,17 +157,43 @@ public class GXHDO101C021 implements Serializable {
     public void setTourokuNoTableRender(boolean tourokuNoTableRender) {
         this.tourokuNoTableRender = tourokuNoTableRender;
     }
-    
+
     /**
      * 品質確認連絡書の画面を表示する
-     * 
-     * @return 
+     *
+     * @return
      */
-    public String openXhdForm() {
-        // ①登録Noに表示している一覧表を配列形式で変数化する。
-        // ②ｸﾘｯｸした行数を変数化する。
+    public String openXhdFormHinsitsu() {
+
+        // セッション情報
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+        session.setAttribute("lotNo", "");
+
+        // args: String torokuNo
+//        // ①登録Noに表示している一覧表を配列形式で変数化する
+//        String[] tourokuNoArray = createTorokuNoListToArray(this.gxhdO101c021ModelView.getTorokuNoDataList());
+//        // ②ｸﾘｯｸした行数を変数化する。
+//        int getIndex = Arrays.asList(tourokuNoArray).indexOf(torokuNo);
+//        //TODO index見つからなかった場合
+//        System.out.println(getIndex);
+//        LOGGER.log(Level.INFO, "torokuNo index: %d", getIndex);
+
+        // 品質確認連絡書bean初期化。必要な設定を追加する。
+
         // ③変数化した上記二項目を引数にして品質確認連絡書の画面を表示する。
-        return "gxhdo101d001.xhtml?faces-redirect=true";
+        return "/secure/pxhdo101/gxhdo101d001.xhtml?faces-redirect=true";
+    }
+
+    /**
+     * 登録Noに表示している一覧表を配列形式で変数化する
+     *
+     * @param torokuNoList
+     * @return
+     */
+    private String[] createTorokuNoListToArray(List<TorokuNoData> torokuNoList) {
+        String[] torokuNoArray = torokuNoList.toArray(new String[torokuNoList.size()]);
+        return torokuNoArray;
     }
 
 }

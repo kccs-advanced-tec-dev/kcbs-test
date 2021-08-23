@@ -123,6 +123,7 @@ public class GXHDO101A implements Serializable {
     private static final String FORM_ID_GAIKAN_KENSA = "GXHDO101B046";
     private static final String FORM_ID_TP_SAGYO = "GXHDO101B048";
     private static final String FORM_ID_TP_CHECK = "GXHDO101B049";
+//    private static final String FORM_ID_BC_RENRAKU = "GXHDO101D001";
     private static final String[] ADD_FORM_IDS = new String[]{"GXHDO101B019", "GXHDO101B020", "GXHDO101B021", "GXHDO101B022", "GXHDO101B026", "GXHDO101B029", "GXHDO101B030", "GXHDO101B038", "GXHDO101B040", "GXHDO101B041", "GXHDO101B042", "GXHDO101B043", "GXHDO101B046", "GXHDO101B047", "GXHDO101B048", "GXHDO101B049"};
 
     /**

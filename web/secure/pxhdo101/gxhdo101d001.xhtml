@@ -12,8 +12,8 @@
         <meta http-equiv="Cache-Control" content="no-cache"/>
         <meta http-equiv="Expires" content="0"/>
         <link href="#{request.contextPath}/resources/css/growllarge.css" rel="stylesheet" type="text/css"/>
-        <link href="#{request.contextPath}/resources/css/gxhdo101b040.css" rel="stylesheet" type="text/css"/>
-        <link href="#{request.contextPath}/resources/css/gxhco901a.css" rel="stylesheet" type="text/css"/>
+<!--        <link href="#{request.contextPath}/resources/css/gxhdo101b040.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/gxhco901a.css" rel="stylesheet" type="text/css"/>-->
         <link href="#{request.contextPath}/resources/css/errordialog.css" rel="stylesheet" type="text/css"/>
         <h:outputScript library="primefaces" name="jquery/jquery.js" />
         <script src="#{request.contextPath}/resources/js/locUpload.js"></script>
@@ -78,7 +78,7 @@
         <f:metadata>
             <f:viewParam id="macAddr" name="macAddr" value="#{sessionManager.macAddr}"/>
             <f:viewAction action="#{sessionManager.validateUser()}"/>
-            <f:viewAction action="#{gXHDO101D001.init()}"/>
+            <f:viewAction action="#{beanGXHDO101D001.init()}"/>
         </f:metadata>
         <div>TODO write content</div>
     </h:body>
