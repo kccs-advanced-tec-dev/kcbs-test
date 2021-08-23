@@ -150,5 +150,17 @@ public class GXHDO101C021 implements Serializable {
     public void setTourokuNoTableRender(boolean tourokuNoTableRender) {
         this.tourokuNoTableRender = tourokuNoTableRender;
     }
+    
+    /**
+     * 品質確認連絡書の画面を表示する
+     * 
+     * @return 
+     */
+    public String openXhdForm() {
+        // ①登録Noに表示している一覧表を配列形式で変数化する。
+        // ②ｸﾘｯｸした行数を変数化する。
+        // ③変数化した上記二項目を引数にして品質確認連絡書の画面を表示する。
+        return "gxhdo101d001.xhtml?faces-redirect=true";
+    }
 
 }

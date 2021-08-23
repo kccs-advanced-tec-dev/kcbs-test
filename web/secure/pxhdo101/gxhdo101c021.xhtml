@@ -21,8 +21,10 @@
                          scrollable="true"
                          emptyMessage="">
                 <p:column id="torokuNo" style="text-align:center" headerText="登録No">
-                    <p:commandLink value="#{item.torokuNo}" style="color:Indigo;font-size: 17px;">
-                    </p:commandLink>
+                    <h:commandLink value="#{item.torokuNo}" style="color:Indigo;font-size: 17px;"
+                                   action="#{beanGXHDO101C021.openXhdForm()}"
+                                   >
+                    </h:commandLink>
                 </p:column>
             </p:dataTable>
 
