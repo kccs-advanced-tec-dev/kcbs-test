@@ -4,6 +4,7 @@
 package jp.co.kccs.xhd.pxhdo101;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
@@ -162,21 +163,19 @@ public class GXHDO101C021 implements Serializable {
      *
      * @return
      */
-    public String openXhdFormHinsitsu() {
+    public String openXhdFormHinsitsu(String torokuNo) {
 
         // セッション情報
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
         session.setAttribute("lotNo", "");
 
-        // args: String torokuNo
-//        // ①登録Noに表示している一覧表を配列形式で変数化する
-//        String[] tourokuNoArray = createTorokuNoListToArray(this.gxhdO101c021ModelView.getTorokuNoDataList());
-//        // ②ｸﾘｯｸした行数を変数化する。
-//        int getIndex = Arrays.asList(tourokuNoArray).indexOf(torokuNo);
-//        //TODO index見つからなかった場合
-//        System.out.println(getIndex);
-//        LOGGER.log(Level.INFO, "torokuNo index: %d", getIndex);
+        // ①登録Noに表示している一覧表を配列形式で変数化する
+        String[] tourokuNoArray = createTorokuNoListToArray(this.gxhdO101c021ModelView.getTorokuNoDataList());
+
+        // ②ｸﾘｯｸした行数を変数化する。
+        // 選択した登録Noの配列Index
+        int torokuNoIndex = Arrays.asList(tourokuNoArray).indexOf(torokuNo);
 
         // 品質確認連絡書bean初期化。必要な設定を追加する。
 
@@ -191,7 +190,13 @@ public class GXHDO101C021 implements Serializable {
      * @return
      */
     private String[] createTorokuNoListToArray(List<TorokuNoData> torokuNoList) {
-        String[] torokuNoArray = torokuNoList.toArray(new String[torokuNoList.size()]);
+
+        // 登録NoのみのArrayListを作成する
+        List<String> torokuList = new ArrayList<>();
+        for(TorokuNoData data: torokuNoList){
+            torokuList.add(data.getTorokuNo());
+        }
+        String[] torokuNoArray = torokuList.toArray(new String[torokuList.size()]);
         return torokuNoArray;
     }
 

@@ -23,7 +23,7 @@
                 <p:column id="torokuNo" style="text-align:center" headerText="登録No">
                     <p:commandLink id="cmdLink" value="#{item.torokuNo}" style="color:Indigo;font-size: 17px;" 
                                    process="@this" 
-                                   action="#{beanGXHDO101C021.openXhdFormHinsitsu()}" 
+                                   action="#{beanGXHDO101C021.openXhdFormHinsitsu(item.torokuNo)}" 
                                    >
                     </p:commandLink>
                 </p:column>
