@@ -5,6 +5,7 @@ package jp.co.kccs.xhd.pxhdo101;
 
 import java.io.Serializable;
 import java.util.logging.Logger;
+import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -34,6 +35,18 @@ import javax.servlet.http.HttpSession;
 public class GXHDO101D001 implements Serializable {
 
     private static final Logger LOGGER = Logger.getLogger(GXHDO101D001.class.getName());
+    
+    /**
+     * 登録No配列のIndex
+     */
+    private String torokuNoIndex;
+    
+    /**
+     * 登録No配列
+     */
+    private String[] torokuNoArray;
+    
+    
 
     /**
      * コンストラクタ
@@ -45,8 +58,43 @@ public class GXHDO101D001 implements Serializable {
     /**
      * 初期化処理
      */
+    @PostConstruct
     public void init() {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
+        
+        // 登録NoIndex
+        setTorokuNoIndex((String) session.getAttribute("torokuNoIndex"));
+        // 登録No配列 String → String[] に変換
+        String[] tmpTorokuNoArray = ((String) session.getAttribute("torokuNoArrayStr")).split(",");
+        setTorokuNoArray(tmpTorokuNoArray);
+    }
+
+    /**
+     * @return the torokuNoIndex
+     */
+    public String getTorokuNoIndex() {
+        return torokuNoIndex;
+    }
+
+    /**
+     * @param torokuNoIndex the torokuNoIndex to set
+     */
+    public void setTorokuNoIndex(String torokuNoIndex) {
+        this.torokuNoIndex = torokuNoIndex;
+    }
+
+    /**
+     * @return the tmpTorokuNoArray
+     */
+    public String[] getTorokuNoArray() {
+        return torokuNoArray;
+    }
+
+    /**
+     * @param torokuNoArray the tmpTorokuNoArray to set
+     */
+    public void setTorokuNoArray(String[] torokuNoArray) {
+        this.torokuNoArray = torokuNoArray;
     }
 }

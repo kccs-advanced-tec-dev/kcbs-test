@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import jp.co.kccs.xhd.model.GXHDO101C021Model;
 import jp.co.kccs.xhd.model.GXHDO101C021Model.TorokuNoData;
+import jp.co.kccs.xhd.util.StringUtil;
 
 /**
  *
@@ -168,16 +169,20 @@ public class GXHDO101C021 implements Serializable {
         // セッション情報
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
-        session.setAttribute("lotNo", "");
 
         // ①登録Noに表示している一覧表を配列形式で変数化する
-        String[] tourokuNoArray = createTorokuNoListToArray(this.gxhdO101c021ModelView.getTorokuNoDataList());
+        String[] torokuNoArray = createTorokuNoListToArray(this.gxhdO101c021ModelView.getTorokuNoDataList());
 
         // ②ｸﾘｯｸした行数を変数化する。
-        // 選択した登録Noの配列Index
-        int torokuNoIndex = Arrays.asList(tourokuNoArray).indexOf(torokuNo);
+        // 選択した登録Noの配列Indexを取得
+        String torokuNoIndex = Integer.valueOf(Arrays.asList(torokuNoArray).indexOf(torokuNo)).toString();
 
-        // 品質確認連絡書bean初期化。必要な設定を追加する。
+        // 品質確認連絡書への値の受渡し
+        // 登録No配列Index
+        session.setAttribute("torokuNoIndex", StringUtil.blankToNull(torokuNoIndex));
+        // 登録No配列：sessionに格納するためString[]→Stringにカンマ「,」区切りで変換している
+        String torokuNoArrayStr = String.join(",", torokuNoArray);
+        session.setAttribute("torokuNoArrayStr", torokuNoArrayStr);
 
         // ③変数化した上記二項目を引数にして品質確認連絡書の画面を表示する。
         return "/secure/pxhdo101/gxhdo101d001.xhtml?faces-redirect=true";

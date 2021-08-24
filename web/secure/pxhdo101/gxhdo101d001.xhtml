@@ -81,5 +81,22 @@
             <f:viewAction action="#{beanGXHDO101D001.init()}"/>
         </f:metadata>
         <div>TODO write content</div>
+        <p>パラメータ確認</p>
+        <tr>
+            <td>
+                <h:outputText id="lblTorokuNoIndex" value="登録NoIndex"></h:outputText>
+            </td>
+            <td>
+                <h:outputText id="torokuNoIndex" value="#{beanGXHDO101D001.torokuNoIndex}"></h:outputText>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <h:outputText id="lblTorokuNoArray" value="登録No配列"></h:outputText>
+            </td>
+            <td>
+                <h:outputText id="torokuNoArray" value="#{beanGXHDO101D001.torokuNoArray}"></h:outputText>
+            </td>
+        </tr>
     </h:body>
 </html>
