@@ -12,8 +12,8 @@
         <meta http-equiv="Cache-Control" content="no-cache"/>
         <meta http-equiv="Expires" content="0"/>
         <link href="#{request.contextPath}/resources/css/growllarge.css" rel="stylesheet" type="text/css"/>
-<!--        <link href="#{request.contextPath}/resources/css/gxhdo101b040.css" rel="stylesheet" type="text/css"/>
-        <link href="#{request.contextPath}/resources/css/gxhco901a.css" rel="stylesheet" type="text/css"/>-->
+        <link href="#{request.contextPath}/resources/css/gxhdo101b040.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/gxhco901a.css" rel="stylesheet" type="text/css"/>
         <link href="#{request.contextPath}/resources/css/errordialog.css" rel="stylesheet" type="text/css"/>
         <h:outputScript library="primefaces" name="jquery/jquery.js" />
         <script src="#{request.contextPath}/resources/js/locUpload.js"></script>
@@ -82,21 +82,58 @@
         </f:metadata>
         <div>TODO write content</div>
         <p>パラメータ確認</p>
-        <tr>
-            <td>
-                <h:outputText id="lblTorokuNoIndex" value="登録NoIndex"></h:outputText>
-            </td>
-            <td>
-                <h:outputText id="torokuNoIndex" value="#{beanGXHDO101D001.torokuNoIndex}"></h:outputText>
-            </td>
-        </tr>
-        <tr>
-            <td>
-                <h:outputText id="lblTorokuNoArray" value="登録No配列"></h:outputText>
-            </td>
-            <td>
-                <h:outputText id="torokuNoArray" value="#{beanGXHDO101D001.torokuNoArray}"></h:outputText>
-            </td>
-        </tr>
+        <table>
+            <tr>
+                <td>
+                    <h:outputText id="lblTorokuNoIndex" value="登録NoIndex"></h:outputText>
+                </td>
+                <td>
+                    <h:outputText id="torokuNoIndex" value="#{beanGXHDO101D001.torokuNoIndex}"></h:outputText>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h:outputText id="lblTorokuNoArray" value="登録No配列"></h:outputText>
+                </td>
+                <td>
+                    <h:outputText id="torokuNoArray" value="#{beanGXHDO101D001.torokuNoArray}"></h:outputText>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h:outputText id="lblKFRank" value="KF.ﾗﾝｸ"></h:outputText>
+                </td>
+                <td>
+                    <h:outputText id="kfRank" value="#{beanGXHDO101D001.gxhdo101d001Model.rank}"></h:outputText>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <h:outputText id="lblKFHakkobi" value="KF.発行日"></h:outputText>
+                </td>
+                <td>
+                    <h:outputText id="kfHakkobi" value="#{beanGXHDO101D001.gxhdo101d001Model.hakkobi}"></h:outputText>
+                </td>
+            </tr>
+        </table>
+        <!-- 工程不良指示テーブル -->
+        <p:dataTable id="koteiFuryoSijiTable" var="item"
+                     value="#{beanGXHDO101D001.gxhdo101d001Model.sijiList}">
+            <p:column id="ksFuryoNoHeader" headerText="KS.不良No" >
+                <h:outputText id="ksFuryoNo" value="#{item.furyono}"></h:outputText>
+            </p:column>
+            <p:column id="ksSijisyacodeHeader" headerText="KS.指示者ｺｰﾄﾞ" >
+                <h:outputText id="ksSijisyacode" value="#{item.sijisyacode}"></h:outputText>
+            </p:column>
+            <p:column id="ksShijibiHeader" headerText="KS.指示日" >
+                <h:outputText id="ksShijibi" value="#{item.sijibi}"></h:outputText>
+            </p:column>
+            <p:column id="ksSyotikoteicodeHeader" headerText="KS.処置工程ｺｰﾄﾞ" >
+                <h:outputText id="ksSyotikoteicode" value="#{item.syochikotei}"></h:outputText>
+            </p:column>
+            <p:column id="ksSijinaiyoHeader" headerText="KS.指示内容" >
+                <h:outputText id="ksSijinaiyo" value="#{item.sijinaiyo}"></h:outputText>
+            </p:column>
+        </p:dataTable>
     </h:body>
 </html>
