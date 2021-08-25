@@ -526,7 +526,7 @@ public class GXHDO101D001 implements Serializable {
     /**
      * 「前へ」ボタン押下時
      */
-    private void doPrev() {
+    public void doPrev() {
 
         // 現在の登録No配列のIndex
         int currentIndex = Integer.parseInt(getTorokuNoIndex());
@@ -546,7 +546,7 @@ public class GXHDO101D001 implements Serializable {
     /**
      * 「次へ」ボタン押下時
      */
-    private void doNext() {
+    public void doNext() {
         // 登録No配列のサイズ
         int torokuNoArrayLength = getTorokuNoArray().length;
 

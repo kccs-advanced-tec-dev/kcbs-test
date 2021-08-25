@@ -86,9 +86,9 @@
             </p:commandButton>
             <p:commandButton id="btnBackList" value="一覧へ戻る" action="#{beanGXHDO101D001.init()}" >
             </p:commandButton>
-            <p:commandButton id="doPrev" value="前へ" action="#{beanGXHDO101D001.init()}" >
+            <p:commandButton id="doPrev" value="前へ" rendered="#{beanGXHDO101D001.btnPrevRender}" action="#{beanGXHDO101D001.doPrev()}" >
             </p:commandButton>
-            <p:commandButton id="btnNext" value="次へ" action="#{beanGXHDO101D001.init()}" >
+            <p:commandButton id="btnNext" value="次へ" rendered="#{beanGXHDO101D001.btnNextRender}" action="#{beanGXHDO101D001.doNext()}" >
             </p:commandButton>
         </h:form>    
 
