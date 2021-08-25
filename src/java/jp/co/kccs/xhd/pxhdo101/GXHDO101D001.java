@@ -96,10 +96,28 @@ public class GXHDO101D001 implements Serializable {
     private GXHDO101D001Model gxhdo101d001Model;
 
     /**
+     * 登録No配列Indexの画面内更新フラグ<br>
+     * 「前へ」「次へ」押下時: true<br>
+     * それ以外: false<br>
+     */
+    private boolean flgUpdateTorokuNoToPrevOrNext;
+
+    /**
+     * 表示Render
+     */
+    private boolean btnPrevRender;
+
+    /**
+     * 表示Render
+     */
+    private boolean btnNextRender;
+
+    /**
      * コンストラクタ
      */
     public GXHDO101D001() {
-
+        // Index画面内更新フラグ初期値は「false」
+        this.flgUpdateTorokuNoToPrevOrNext = false;
     }
 
     /**
@@ -110,14 +128,37 @@ public class GXHDO101D001 implements Serializable {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
 
-        // sessionで渡されたB･Cﾗﾝｸ連絡書一覧画面からの引数をbeanに格納する
-        // 登録NoIndex
-        setTorokuNoIndex((String) session.getAttribute("torokuNoIndex"));
-        // 登録No配列 String → String[] に変換
-        String[] tmpTorokuNoArray = ((String) session.getAttribute("torokuNoArrayStr")).split(",");
-        setTorokuNoArray(tmpTorokuNoArray);
+        // B･Cﾗﾝｸ連絡書一覧から遷移した場合はsession受取処理を行う
+        if (isFlgUpdateTorokuNoToPrevOrNext()) {
+            // 「前へ」「次へ」ボタンから遷移時はsession値取得処理を行わない
+
+            // Index更新フラグを無効化
+            setFlgUpdateTorokuNoToPrevOrNext(false);
+        } else {
+            // sessionで渡されたB･Cﾗﾝｸ連絡書一覧画面からの引数をbeanに格納する
+            // 登録NoIndex
+            setTorokuNoIndex((String) session.getAttribute("torokuNoIndex"));
+            // 登録No配列 String → String[] に変換
+            String[] tmpTorokuNoArray = ((String) session.getAttribute("torokuNoArrayStr")).split(",");
+            setTorokuNoArray(tmpTorokuNoArray);
+        }
+        
+        // 登録NoIndexが「0」の場合は「前へ」ボタンを表示しない
+        if (Integer.valueOf(getTorokuNoIndex()) == 0) {
+            setBtnPrevRender(false);
+        } else {
+            setBtnPrevRender(true);
+        }
+        // 登録NoIndexが配列終端の場合は「次へ」ボタンを表示しない
+        if (Integer.valueOf(getTorokuNoIndex()) == getTorokuNoArray().length - 1) {
+            setBtnNextRender(false);
+        } else {
+            setBtnNextRender(true);
+        }
+
         // 現在の登録Noを取得
         setCurrentTorokuNoValue(findTorokuNoFromIndex(getTorokuNoIndex()));
+
         // Model初期化
         GXHDO101D001Model model = new GXHDO101D001Model();
         setGxhdo101d001Model(model);
@@ -483,6 +524,47 @@ public class GXHDO101D001 implements Serializable {
     }
 
     /**
+     * 「前へ」ボタン押下時
+     */
+    private void doPrev() {
+
+        // 現在の登録No配列のIndex
+        int currentIndex = Integer.parseInt(getTorokuNoIndex());
+
+        if (currentIndex > 0) {
+            // 登録No配列Indexをデクリメントしてbeanにセット
+            currentIndex--;
+            setTorokuNoIndex(Integer.toString(currentIndex));
+            // Index更新フラグを有効化
+            setFlgUpdateTorokuNoToPrevOrNext(true);
+            // 初期化実行
+            init();
+        }
+
+    }
+
+    /**
+     * 「次へ」ボタン押下時
+     */
+    private void doNext() {
+        // 登録No配列のサイズ
+        int torokuNoArrayLength = getTorokuNoArray().length;
+
+        // 現在の登録No配列のIndex
+        int currentIndex = Integer.parseInt(getTorokuNoIndex());
+
+        if (currentIndex < torokuNoArrayLength) {
+            // 登録No配列Indexをインクリメントしてbeanにセット
+            currentIndex++;
+            setTorokuNoIndex(Integer.toString(currentIndex));
+            // Index更新フラグを有効化
+            setFlgUpdateTorokuNoToPrevOrNext(true);
+            // 初期化実行
+            init();
+        }
+    }
+
+    /**
      * @return the currentTorokuNoValue
      */
     public String getCurrentTorokuNoValue() {
@@ -536,5 +618,48 @@ public class GXHDO101D001 implements Serializable {
      */
     public void setMaxJissekiNoKK(String maxJissekiNoKK) {
         this.maxJissekiNoKK = maxJissekiNoKK;
+    }
+
+    /**
+     * @return the flgUpdateTorokuNoToPrevOrNext
+     */
+    public boolean isFlgUpdateTorokuNoToPrevOrNext() {
+        return flgUpdateTorokuNoToPrevOrNext;
+    }
+
+    /**
+     * @param flgUpdateTorokuNoToPrevOrNext the flgUpdateTorokuNoToPrevOrNext to
+     * set
+     */
+    public void setFlgUpdateTorokuNoToPrevOrNext(boolean flgUpdateTorokuNoToPrevOrNext) {
+        this.flgUpdateTorokuNoToPrevOrNext = flgUpdateTorokuNoToPrevOrNext;
+    }
+
+    /**
+     * @return the btnPrevRender
+     */
+    public boolean isBtnPrevRender() {
+        return btnPrevRender;
+    }
+
+    /**
+     * @param btnPrevRender the btnPrevRender to set
+     */
+    public void setBtnPrevRender(boolean btnPrevRender) {
+        this.btnPrevRender = btnPrevRender;
+    }
+
+    /**
+     * @return the btnNextRender
+     */
+    public boolean isBtnNextRender() {
+        return btnNextRender;
+    }
+
+    /**
+     * @param btnNextRender the btnNextRender to set
+     */
+    public void setBtnNextRender(boolean btnNextRender) {
+        this.btnNextRender = btnNextRender;
     }
 }
