@@ -80,7 +80,7 @@
             <f:viewAction action="#{sessionManager.validateUser()}"/>
             <f:viewAction action="#{beanGXHDO101D001.init()}"/>
         </f:metadata>
-        <div>品質確認連絡書 UI確認中</div>
+        <!--<div>品質確認連絡書 UI確認中</div>-->
         <h:form id="gxhdo101d001Form">
             <p:commandButton id="btnBackInput" value="入力画面へ戻る" action="#{beanGXHDO101D001.init()}" >
             </p:commandButton>
@@ -386,7 +386,7 @@
             </tbody>
 
         </table>
-        <div>品質確認連絡書 出力値確認用</div>
+<!--        <div>品質確認連絡書 出力値確認用</div>
         <p>パラメータ確認</p>
         <table>
             <tr>
@@ -406,7 +406,7 @@
                 </td>
             </tr>
         </table>
-        <!-- 工程不良テーブル -->
+         工程不良テーブル 
         <p>工程不良テーブル</p>
         <table>
             <tr>
@@ -914,7 +914,7 @@
                 </td>
             </tr>
         </table>
-        <!-- 工程不良指示テーブル -->
+         工程不良指示テーブル 
         <p>[工程不良指示]から取得した実績Noの最大値</p>
         <table>
             <tr>
@@ -945,7 +945,7 @@
                 <h:outputText id="ksSijinaiyo" value="#{item.sijinaiyo}"></h:outputText>
             </p:column>
         </p:dataTable>
-        <!-- 工程不良結果テーブル -->
+         工程不良結果テーブル 
         <p>[工程不良結果]から取得した実績Noの最大値</p>
         <table>
             <tr>
@@ -975,6 +975,6 @@
             <p:column id="kkHanteiHeader" headerText="KK.判定" >
                 <h:outputText id="kkHantei" value="#{item.hantei}"></h:outputText>
             </p:column>
-        </p:dataTable>
+        </p:dataTable>-->
     </h:body>
 </html>
