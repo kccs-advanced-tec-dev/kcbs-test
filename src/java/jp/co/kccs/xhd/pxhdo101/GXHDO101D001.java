@@ -15,6 +15,7 @@ import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
@@ -114,6 +115,11 @@ public class GXHDO101D001 implements Serializable {
     private boolean btnNextRender;
 
     /**
+     * エラーメッセージ
+     */
+    private String errorMessage;
+
+    /**
      * コンストラクタ
      */
     public GXHDO101D001() {
@@ -143,7 +149,7 @@ public class GXHDO101D001 implements Serializable {
             String[] tmpTorokuNoArray = ((String) session.getAttribute("torokuNoArrayStr")).split(",");
             setTorokuNoArray(tmpTorokuNoArray);
         }
-        
+
         // 登録NoIndexが「0」の場合は「前へ」ボタンを表示しない
         if (Integer.valueOf(getTorokuNoIndex()) == 0) {
             setBtnPrevRender(false);
@@ -183,14 +189,14 @@ public class GXHDO101D001 implements Serializable {
         try {
             // 工程不良テーブルを取得する
             List<SrKoteifuryo> listSrKoteifuryo = getSrKoteifuryoList(queryRunnerQcdb, findTorokuNoFromIndex(torokuNoIndex));
-            
+
             // チェック処理：レコードが取得出来なかった場合
             if (listSrKoteifuryo.isEmpty()) {
-                // TODO: エラーメッセージ出力方法確認
-//                setErrorMessage(MessageUtil.getMessage("XHD-XXXX", torokuNoArray));
-                // A.値が取得できなかった場合、エラーメッセージを表示し、以降の処理を中止する。
-                // ・ｴﾗｰｺｰﾄﾞ:XHD-XXXX
-                // ・ｴﾗｰﾒｯｾｰｼﾞ:品質確認連絡書のﾃﾞｰﾀが取得できません。ｼｽﾃﾑに連絡してください。
+                // TODO: エラーコード確認
+                setErrorMessage(MessageUtil.getMessage("XHD-XXXX", "品質確認連絡書のﾃﾞｰﾀが取得できません。ｼｽﾃﾑに連絡してください。"));
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, getErrorMessage(), null);
+                FacesContext.getCurrentInstance().addMessage(null, message);
+                return;
             }
 
             // 取得したテーブル情報を画面表示モデルに設定する
@@ -671,5 +677,19 @@ public class GXHDO101D001 implements Serializable {
      */
     public void setBtnNextRender(boolean btnNextRender) {
         this.btnNextRender = btnNextRender;
+    }
+
+    /**
+     * @return the errorMessage
+     */
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    /**
+     * @param errorMessage the errorMessage to set
+     */
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
     }
 }
