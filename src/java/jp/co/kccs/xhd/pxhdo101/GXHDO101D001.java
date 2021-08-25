@@ -481,7 +481,7 @@ public class GXHDO101D001 implements Serializable {
         String sql = "SELECT * "
                 + "FROM sr_koteifuryo_siji "
                 + "WHERE torokuno = ? AND jissekino = ? "
-                + "ORDER BY torokuno ";
+                + "ORDER BY sijino ";
         List<Object> params = new ArrayList<>();
         params.add(torokuNo);
         params.add(maxJissekiNo);
@@ -524,7 +524,7 @@ public class GXHDO101D001 implements Serializable {
         String sql = "SELECT * "
                 + "FROM sr_koteifuryo_kekka "
                 + "WHERE torokuno = ? AND jissekino = ? "
-                + "ORDER BY torokuno ";
+                + "ORDER BY sijino ";
         List<Object> params = new ArrayList<>();
         params.add(torokuNo);
         params.add(maxJissekiNo);
