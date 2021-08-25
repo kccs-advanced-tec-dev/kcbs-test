@@ -27,6 +27,7 @@ import jp.co.kccs.xhd.model.GXHDO101D001Model;
 import jp.co.kccs.xhd.model.GXHDO101D001Model.KoteifuryoSiji;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
+import jp.co.kccs.xhd.util.MessageUtil;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.dbutils.QueryRunner;
@@ -182,6 +183,15 @@ public class GXHDO101D001 implements Serializable {
         try {
             // 工程不良テーブルを取得する
             List<SrKoteifuryo> listSrKoteifuryo = getSrKoteifuryoList(queryRunnerQcdb, findTorokuNoFromIndex(torokuNoIndex));
+            
+            // チェック処理：レコードが取得出来なかった場合
+            if (listSrKoteifuryo.isEmpty()) {
+                // TODO: エラーメッセージ出力方法確認
+//                setErrorMessage(MessageUtil.getMessage("XHD-XXXX", torokuNoArray));
+                // A.値が取得できなかった場合、エラーメッセージを表示し、以降の処理を中止する。
+                // ・ｴﾗｰｺｰﾄﾞ:XHD-XXXX
+                // ・ｴﾗｰﾒｯｾｰｼﾞ:品質確認連絡書のﾃﾞｰﾀが取得できません。ｼｽﾃﾑに連絡してください。
+            }
 
             // 取得したテーブル情報を画面表示モデルに設定する
             GXHDO101D001Model model = getGxhdo101d001Model();
