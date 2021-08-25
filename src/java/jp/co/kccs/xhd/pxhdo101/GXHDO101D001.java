@@ -110,8 +110,6 @@ public class GXHDO101D001 implements Serializable {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
 
-        QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
-
         // sessionで渡されたB･Cﾗﾝｸ連絡書一覧画面からの引数をbeanに格納する
         // 登録NoIndex
         setTorokuNoIndex((String) session.getAttribute("torokuNoIndex"));
@@ -329,19 +327,6 @@ public class GXHDO101D001 implements Serializable {
      */
     public void setTorokuNoArray(String[] torokuNoArray) {
         this.torokuNoArray = torokuNoArray;
-    }
-
-    private void createKoteifuryoTable(String torokuNo) {
-        try {
-
-            QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
-
-            // 工程不良テーブルを取得する
-            List<SrKoteifuryo> listSrKoteifuryo = getSrKoteifuryoList(queryRunnerQcdb, findTorokuNoFromIndex(torokuNoIndex));
-
-        } catch (SQLException ex) {
-            ErrUtil.outputErrorLog("工程不良テーブル取得エラー", ex, LOGGER);
-        }
     }
 
     /**
