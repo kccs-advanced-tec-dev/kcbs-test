@@ -601,6 +601,17 @@
             </tr>
         </table>
         <!-- 工程不良指示テーブル -->
+        <p>[工程不良指示]から取得した実績Noの最大値</p>
+        <table>
+            <tr>
+                <td>
+                    <h:outputText id="lblmaxJissekiNoKS" value="MAX(KS.実績No)"></h:outputText>
+                </td>
+                <td>
+                    <h:outputText id="maxJissekiNoKS" value="#{beanGXHDO101D001.maxJissekiNoKS}"></h:outputText>
+                </td>
+            </tr>
+        </table>
         <p>工程不良指示テーブル</p>
         <p:dataTable id="koteiFuryoSijiTable" var="item"
                      value="#{beanGXHDO101D001.gxhdo101d001Model.sijiList}">
@@ -621,6 +632,17 @@
             </p:column>
         </p:dataTable>
         <!-- 工程不良結果テーブル -->
+        <p>[工程不良結果]から取得した実績Noの最大値</p>
+        <table>
+            <tr>
+                <td>
+                    <h:outputText id="lblmaxJissekiNoKK" value="MAX(KS.実績No)"></h:outputText>
+                </td>
+                <td>
+                    <h:outputText id="maxJissekiNoKK" value="#{beanGXHDO101D001.maxJissekiNoKK}"></h:outputText>
+                </td>
+            </tr>
+        </table>
         <p>工程不良結果テーブル</p>
         <p:dataTable id="koteiFuryoKekkaTable" var="item"
                      value="#{beanGXHDO101D001.gxhdo101d001Model.kekkaList}">
