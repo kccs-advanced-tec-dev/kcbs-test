@@ -168,6 +168,20 @@ public class GXHDO101D001Model implements Serializable {
     }
 
     /**
+     * @return the goukicode
+     */
+    public String getGoukicode() {
+        return goukicode;
+    }
+
+    /**
+     * @param goukicode the goukicode to set
+     */
+    public void setGoukicode(String goukicode) {
+        this.goukicode = goukicode;
+    }
+
+    /**
      * @return the furyocode1
      */
     public String getFuryocode1() {
@@ -728,6 +742,174 @@ public class GXHDO101D001Model implements Serializable {
     }
 
     /**
+     * @return the zaikono1
+     */
+    public String getZaikono1() {
+        return zaikono1;
+    }
+
+    /**
+     * @param zaikono1 the zaikono1 to set
+     */
+    public void setZaikono1(String zaikono1) {
+        this.zaikono1 = zaikono1;
+    }
+
+    /**
+     * @return the zaikono2
+     */
+    public String getZaikono2() {
+        return zaikono2;
+    }
+
+    /**
+     * @param zaikono2 the zaikono2 to set
+     */
+    public void setZaikono2(String zaikono2) {
+        this.zaikono2 = zaikono2;
+    }
+
+    /**
+     * @return the zaikono3
+     */
+    public String getZaikono3() {
+        return zaikono3;
+    }
+
+    /**
+     * @param zaikono3 the zaikono3 to set
+     */
+    public void setZaikono3(String zaikono3) {
+        this.zaikono3 = zaikono3;
+    }
+
+    /**
+     * @return the zaikono4
+     */
+    public String getZaikono4() {
+        return zaikono4;
+    }
+
+    /**
+     * @param zaikono4 the zaikono4 to set
+     */
+    public void setZaikono4(String zaikono4) {
+        this.zaikono4 = zaikono4;
+    }
+
+    /**
+     * @return the zaikono5
+     */
+    public String getZaikono5() {
+        return zaikono5;
+    }
+
+    /**
+     * @param zaikono5 the zaikono5 to set
+     */
+    public void setZaikono5(String zaikono5) {
+        this.zaikono5 = zaikono5;
+    }
+
+    /**
+     * @return the zaikono6
+     */
+    public String getZaikono6() {
+        return zaikono6;
+    }
+
+    /**
+     * @param zaikono6 the zaikono6 to set
+     */
+    public void setZaikono6(String zaikono6) {
+        this.zaikono6 = zaikono6;
+    }
+
+    /**
+     * @return the zaikono7
+     */
+    public String getZaikono7() {
+        return zaikono7;
+    }
+
+    /**
+     * @param zaikono7 the zaikono7 to set
+     */
+    public void setZaikono7(String zaikono7) {
+        this.zaikono7 = zaikono7;
+    }
+
+    /**
+     * @return the zaikono8
+     */
+    public String getZaikono8() {
+        return zaikono8;
+    }
+
+    /**
+     * @param zaikono8 the zaikono8 to set
+     */
+    public void setZaikono8(String zaikono8) {
+        this.zaikono8 = zaikono8;
+    }
+
+    /**
+     * @return the zaikono9
+     */
+    public String getZaikono9() {
+        return zaikono9;
+    }
+
+    /**
+     * @param zaikono9 the zaikono9 to set
+     */
+    public void setZaikono9(String zaikono9) {
+        this.zaikono9 = zaikono9;
+    }
+
+    /**
+     * @return the zaikono10
+     */
+    public String getZaikono10() {
+        return zaikono10;
+    }
+
+    /**
+     * @param zaikono10 the zaikono10 to set
+     */
+    public void setZaikono10(String zaikono10) {
+        this.zaikono10 = zaikono10;
+    }
+
+    /**
+     * @return the qakakuninsya
+     */
+    public String getQakakuninsya() {
+        return qakakuninsya;
+    }
+
+    /**
+     * @param qakakuninsya the qakakuninsya to set
+     */
+    public void setQakakuninsya(String qakakuninsya) {
+        this.qakakuninsya = qakakuninsya;
+    }
+
+    /**
+     * @return the qakakuninnichiji
+     */
+    public String getQakakuninnichiji() {
+        return qakakuninnichiji;
+    }
+
+    /**
+     * @param qakakuninnichiji the qakakuninnichiji to set
+     */
+    public void setQakakuninnichiji(String qakakuninnichiji) {
+        this.qakakuninnichiji = qakakuninnichiji;
+    }
+
+    /**
      * @return the sijiList
      */
     public List<KoteifuryoSiji> getSijiList() {
@@ -744,14 +926,14 @@ public class GXHDO101D001Model implements Serializable {
     /**
      * @return the kekkaList
      */
-    public List<KoteifuryoSiji> getKekkaList() {
+    public List<KoteifuryoKekka> getKekkaList() {
         return kekkaList;
     }
 
     /**
      * @param kekkaList the kekkaList to set
      */
-    public void setKekkaList(List<KoteifuryoSiji> kekkaList) {
+    public void setKekkaList(List<KoteifuryoKekka> kekkaList) {
         this.kekkaList = kekkaList;
     }
 
@@ -804,6 +986,11 @@ public class GXHDO101D001Model implements Serializable {
      * 製造LotNo
      */
     private String lotno;
+
+    /**
+     * 号機ｺｰﾄﾞ
+     */
+    private String goukicode;
 
     /**
      * 不良ｺｰﾄﾞ1
@@ -1006,6 +1193,66 @@ public class GXHDO101D001Model implements Serializable {
     private String furyobunrui10;
 
     /**
+     * 在庫No1
+     */
+    private String zaikono1;
+
+    /**
+     * 在庫No2
+     */
+    private String zaikono2;
+
+    /**
+     * 在庫No3
+     */
+    private String zaikono3;
+
+    /**
+     * 在庫No4
+     */
+    private String zaikono4;
+
+    /**
+     * 在庫No5
+     */
+    private String zaikono5;
+
+    /**
+     * 在庫No6
+     */
+    private String zaikono6;
+
+    /**
+     * 在庫No7
+     */
+    private String zaikono7;
+
+    /**
+     * 在庫No8
+     */
+    private String zaikono8;
+
+    /**
+     * 在庫No9
+     */
+    private String zaikono9;
+
+    /**
+     * 在庫No10
+     */
+    private String zaikono10;
+
+    /**
+     * 確認者
+     */
+    private String qakakuninsya;
+
+    /**
+     * 日付
+     */
+    private String qakakuninnichiji;
+
+    /**
      * 工程不良指示一覧
      */
     private List<KoteifuryoSiji> sijiList;
@@ -1013,7 +1260,7 @@ public class GXHDO101D001Model implements Serializable {
     /**
      * 工程不良結果一覧
      */
-    private List<KoteifuryoSiji> kekkaList;
+    private List<KoteifuryoKekka> kekkaList;
 
     /**
      * 工程不良指示一覧1行分

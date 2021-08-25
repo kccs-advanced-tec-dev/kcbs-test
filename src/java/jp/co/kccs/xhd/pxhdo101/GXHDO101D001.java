@@ -79,7 +79,7 @@ public class GXHDO101D001 implements Serializable {
      * 現在の登録Noの値
      */
     private String currentTorokuNoValue;
-
+    
     /**
      * 品質確認連絡書も出る
      */
@@ -119,42 +119,14 @@ public class GXHDO101D001 implements Serializable {
         // 工程不良指示テーブル作成
         createKoteifuryosijiTable();
         // 工程不良結果テーブル作成
-
-        /**
-         * 以下はBean化前の処理 *
-         */
-        // (1)初期表示
-        // 工程不良から取得する項目
-        // 登録Noの値
-        String torokuNoValue = findTorokuNoFromIndex(torokuNoIndex);
-        createKoteifuryoTable(torokuNoValue);
-        // 実績Noの最大値
-        String maxJissekiNo = findMaxJissekiNoFromKoteifuryoSiji(torokuNoValue);
-        // (4)[工程不良指示]から、初期表示する情報を取得
-        List<SrKoteifuryoSiji> koteifuryosijiList = new ArrayList<>();
-        try {
-            koteifuryosijiList = getSrKoteifuryoSiji(queryRunnerQcdb, torokuNoValue, maxJissekiNo);
-            for (SrKoteifuryoSiji koteifuryo : koteifuryosijiList) {
-                LOGGER.info(koteifuryo.toString());
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(GXHDO101D001.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        try {
-            String maxJissekiNoFromKekka = getMaxJissekiNoFromSrKoteifuryoKekka(queryRunnerQcdb, torokuNoValue).toString();
-            LOGGER.info(maxJissekiNoFromKekka);
-        } catch (SQLException ex) {
-            Logger.getLogger(GXHDO101D001.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        List<SrKoteifuryoKekka> koteifuryokekkaList = createKoteifuryoKekkaTable(torokuNoValue, maxJissekiNo);
-        for (SrKoteifuryoKekka koteifuryokekka : koteifuryokekkaList) {
-            LOGGER.info(koteifuryokekka.toString());
-        }
+        createKoteifuryokekkaTable();
 
     }
 
     /**
-     * 初期表示 ①工程不良から取得する項目 画面表示仕様(1)～(2)を発行する
+     * 初期表示
+     * <br>
+     * ①工程不良から取得する項目 画面表示仕様(1)～(2)を発行する
      */
     private void createKoteifuryoTable() {
         QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
@@ -172,8 +144,72 @@ public class GXHDO101D001 implements Serializable {
             model.setRank(rowKoteifuryo.getRank()); // KF.ﾗﾝｸ
             model.setHakkobi(rowKoteifuryo.getHakkobi().toString()); // KF.発行日
             model.setHakkenkotei(rowKoteifuryo.getHakkenkotei()); // KF.発見工程ID
+            model.setTorokuno(rowKoteifuryo.getTorokuno()); // KF.登録No
+            model.setKcpno(rowKoteifuryo.getKcpno()); // KF.KCPNO
+            model.setSikasuuryo(Integer.toString(rowKoteifuryo.getSikasuuryo())); // KF.仕掛数 // ★TODO: 型確認
+            model.setOwnercode(rowKoteifuryo.getOwnercode()); // KF.OWNERｺｰﾄﾞ
+            model.setLotkubuncode(rowKoteifuryo.getLotkubuncode()); // KF.Lot区分
+            model.setLotno(rowKoteifuryo.getLotno()); // KF.製造LotNo
+            model.setGoukicode(rowKoteifuryo.getGoukicode()); // KF.号機ｺｰﾄﾞ
 
-            //TODO: 残りの画面項目を設定
+            model.setFuryocode1(rowKoteifuryo.getFuryocode1()); // KF.不良ｺｰﾄﾞ1
+            model.setFuryocode2(rowKoteifuryo.getFuryocode2()); // KF.不良ｺｰﾄﾞ2
+            model.setFuryocode3(rowKoteifuryo.getFuryocode3()); // KF.不良ｺｰﾄﾞ3
+            model.setFuryocode4(rowKoteifuryo.getFuryocode4()); // KF.不良ｺｰﾄﾞ4
+            model.setFuryocode5(rowKoteifuryo.getFuryocode5()); // KF.不良ｺｰﾄﾞ5
+            model.setFuryocode6(rowKoteifuryo.getFuryocode6()); // KF.不良ｺｰﾄﾞ6
+            model.setFuryocode7(rowKoteifuryo.getFuryocode7()); // KF.不良ｺｰﾄﾞ7
+            model.setFuryocode8(rowKoteifuryo.getFuryocode8()); // KF.不良ｺｰﾄﾞ8
+            model.setFuryocode9(rowKoteifuryo.getFuryocode9()); // KF.不良ｺｰﾄﾞ9
+            model.setFuryocode10(rowKoteifuryo.getFuryocode10()); // KF.不良ｺｰﾄﾞ10
+
+            model.setFuryomeisai1(rowKoteifuryo.getFuryomeisai1()); // KF.不良名1
+            model.setFuryomeisai2(rowKoteifuryo.getFuryomeisai2()); // KF.不良名2
+            model.setFuryomeisai3(rowKoteifuryo.getFuryomeisai3()); // KF.不良名3
+            model.setFuryomeisai4(rowKoteifuryo.getFuryomeisai4()); // KF.不良名4
+            model.setFuryomeisai5(rowKoteifuryo.getFuryomeisai5()); // KF.不良名5
+            model.setFuryomeisai6(rowKoteifuryo.getFuryomeisai6()); // KF.不良名6
+            model.setFuryomeisai7(rowKoteifuryo.getFuryomeisai7()); // KF.不良名7
+            model.setFuryomeisai8(rowKoteifuryo.getFuryomeisai8()); // KF.不良名8
+            model.setFuryomeisai9(rowKoteifuryo.getFuryomeisai9()); // KF.不良名9
+            model.setFuryomeisai10(rowKoteifuryo.getFuryomeisai10()); // KF.不良名10
+
+            model.setFuryoritiu1(rowKoteifuryo.getFuryoritiu1()); // KF.不良率1
+            model.setFuryoritiu2(rowKoteifuryo.getFuryoritiu2()); // KF.不良率2
+            model.setFuryoritiu3(rowKoteifuryo.getFuryoritiu3()); // KF.不良率3
+            model.setFuryoritiu4(rowKoteifuryo.getFuryoritiu4()); // KF.不良率4
+            model.setFuryoritiu5(rowKoteifuryo.getFuryoritiu5()); // KF.不良率5
+            model.setFuryoritiu6(rowKoteifuryo.getFuryoritiu6()); // KF.不良率6
+            model.setFuryoritiu7(rowKoteifuryo.getFuryoritiu7()); // KF.不良率7
+            model.setFuryoritiu8(rowKoteifuryo.getFuryoritiu8()); // KF.不良率8
+            model.setFuryoritiu9(rowKoteifuryo.getFuryoritiu9()); // KF.不良率9
+            model.setFuryoritiu10(rowKoteifuryo.getFuryoritiu10()); // KF.不良率10
+
+            model.setFuryobunrui1(rowKoteifuryo.getFuryobunrui1()); // KF.詳細内容1
+            model.setFuryobunrui2(rowKoteifuryo.getFuryobunrui2()); // KF.詳細内容2
+            model.setFuryobunrui3(rowKoteifuryo.getFuryobunrui3()); // KF.詳細内容3
+            model.setFuryobunrui4(rowKoteifuryo.getFuryobunrui4()); // KF.詳細内容4
+            model.setFuryobunrui5(rowKoteifuryo.getFuryobunrui5()); // KF.詳細内容5
+            model.setFuryobunrui6(rowKoteifuryo.getFuryobunrui6()); // KF.詳細内容6
+            model.setFuryobunrui7(rowKoteifuryo.getFuryobunrui7()); // KF.詳細内容7
+            model.setFuryobunrui8(rowKoteifuryo.getFuryobunrui8()); // KF.詳細内容8
+            model.setFuryobunrui9(rowKoteifuryo.getFuryobunrui9()); // KF.詳細内容9
+            model.setFuryobunrui10(rowKoteifuryo.getFuryobunrui10()); // KF.詳細内容10
+
+            model.setZaikono1(rowKoteifuryo.getZaikono1()); // KF.在庫No1
+            model.setZaikono2(rowKoteifuryo.getZaikono2()); // KF.在庫No2
+            model.setZaikono3(rowKoteifuryo.getZaikono3()); // KF.在庫No3
+            model.setZaikono4(rowKoteifuryo.getZaikono4()); // KF.在庫No4
+            model.setZaikono5(rowKoteifuryo.getZaikono5()); // KF.在庫No5
+            model.setZaikono6(rowKoteifuryo.getZaikono6()); // KF.在庫No6
+            model.setZaikono7(rowKoteifuryo.getZaikono7()); // KF.在庫No7
+            model.setZaikono8(rowKoteifuryo.getZaikono8()); // KF.在庫No8
+            model.setZaikono9(rowKoteifuryo.getZaikono9()); // KF.在庫No9
+            model.setZaikono10(rowKoteifuryo.getZaikono10()); // KF.在庫No10
+
+            model.setQakakuninsya(rowKoteifuryo.getQakakuninsya()); // KF.確認者
+            model.setQakakuninnichiji(rowKoteifuryo.getQakakuninnichiji().toString()); // KF.日付 //TODO:対応カラム確認 (torokunitiji, koshinnichijiのどちらか？)
+
             // 取得結果を保存
             setGxhdo101d001Model(model);
 
@@ -184,7 +220,9 @@ public class GXHDO101D001 implements Serializable {
     }
 
     /**
-     * 初期表示 ②工程不良指示から取得する項目 画面表示仕様(3)～(4)を発行する。
+     * 初期表示
+     * <br>
+     * ②工程不良指示から取得する項目 画面表示仕様(3)～(4)を発行する。
      *
      */
     private void createKoteifuryosijiTable() {
@@ -212,6 +250,42 @@ public class GXHDO101D001 implements Serializable {
 
             // 画面表示モデルにセット
             model.setSijiList(sijiList);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(GXHDO101D001.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    /**
+     * 初期表示
+     * <br>
+     * ③工程不良結果から取得する項目 画面表示仕様(5)～(6)を発行する。
+     */
+    public void createKoteifuryokekkaTable() {
+        try {
+            QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
+            // 実績Noの最大値
+            String maxJissekiNo = getMaxJissekiNoFromSrKoteifuryoKekka(queryRunnerQcdb, getCurrentTorokuNoValue()).toString();
+            // (6)[工程不良結果]から、初期表示する情報を取得
+            List<SrKoteifuryoKekka> koteifuryokekkaList = createKoteifuryoKekkaTable(getCurrentTorokuNoValue(), maxJissekiNo);
+
+            // 取得したテーブル情報を画面表示モデルに設定する
+            GXHDO101D001Model model = getGxhdo101d001Model();
+
+            // 必要な値を設定する
+            List<GXHDO101D001Model.KoteifuryoKekka> kekkaList = new ArrayList<>();
+            for (SrKoteifuryoKekka row : koteifuryokekkaList) {
+                GXHDO101D001Model.KoteifuryoKekka item = (new GXHDO101D001Model()).new KoteifuryoKekka();
+                item.setFuryono(row.getFuryono());
+                item.setSyotisyacode(row.getSyotisyacode());
+                item.setSyotibi(row.getSyotibi());
+                item.setSyotinaiyo(row.getSyotinaiyo());
+                item.setHantei(row.getHantei());
+                kekkaList.add(item);
+            }
+
+            // 画面表示モデルにセット
+            model.setKekkaList(kekkaList);
 
         } catch (SQLException ex) {
             Logger.getLogger(GXHDO101D001.class.getName()).log(Level.SEVERE, null, ex);
