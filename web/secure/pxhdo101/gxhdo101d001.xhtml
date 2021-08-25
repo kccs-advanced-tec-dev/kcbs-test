@@ -80,6 +80,312 @@
             <f:viewAction action="#{sessionManager.validateUser()}"/>
             <f:viewAction action="#{beanGXHDO101D001.init()}"/>
         </f:metadata>
+        <div>品質確認連絡書 UI確認中</div>
+        <h:form id="gxhdo101d001Form">
+            <p:commandButton id="btnBackInput" value="入力画面へ戻る" action="#{beanGXHDO101D001.init()}" >
+            </p:commandButton>
+            <p:commandButton id="btnBackList" value="一覧へ戻る" action="#{beanGXHDO101D001.init()}" >
+            </p:commandButton>
+            <p:commandButton id="doPrev" value="前へ" action="#{beanGXHDO101D001.init()}" >
+            </p:commandButton>
+            <p:commandButton id="btnNext" value="次へ" action="#{beanGXHDO101D001.init()}" >
+            </p:commandButton>
+        </h:form>    
+
+        <table border="1" style="border: 1px solid black; border-collapse: collapse;">
+
+            <tbody>
+
+                <tr>
+                    <td colspan="2">品質確認連絡書</td>
+                    <td colspan="2">
+                        <h:outputText value="ランク：" />
+                        <h:outputText value="&lt;br/&gt;" escape="false"/>
+                        <h:outputText id="rank" value="#{beanGXHDO101D001.gxhdo101d001Model.rank}"/>
+                    </td>
+                    <td>
+                        <h:outputText value="発行日：" />
+                        <h:outputText value="&lt;br/&gt;" escape="false"/>
+                        <h:outputText id="hakkobi" value="#{beanGXHDO101D001.gxhdo101d001Model.hakkobi}" />
+                    </td>
+                    <td colspan="2">
+                        <h:outputText value="客先：" />
+                        <h:outputText value="&lt;br/&gt;" escape="false"/>
+                        <h:outputText id="tokuisaki" value="#{beanGXHDO101D001.gxhdo101d001Model.tokuisaki}" />
+                    </td>
+                    <td colspan="2">
+                        <h:outputText value="発見工程：" />
+                        <h:outputText value="&lt;br/&gt;" escape="false"/>
+                        <h:outputText id="hakkenkotei" value="#{beanGXHDO101D001.gxhdo101d001Model.hakkenkotei}" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <h:outputText value="NO：" />
+                        <h:outputText value="&lt;br/&gt;" escape="false"/>
+                        <h:outputText id="torokuno" value="#{beanGXHDO101D001.gxhdo101d001Model.torokuno}" />
+                    </td>
+                    <td colspan="2">
+                        <h:outputText value="KCPNO：" />
+                        <h:outputText value="&lt;br/&gt;" escape="false"/>
+                        <h:outputText id="kcpno" value="#{beanGXHDO101D001.gxhdo101d001Model.kcpno}" />
+                    </td>
+                    <td colspan="2">
+                        <h:outputText value="仕掛数：" />
+                        <h:outputText value="&lt;br/&gt;" escape="false"/>
+                        <h:outputText id="sikasuuryo" value="#{beanGXHDO101D001.gxhdo101d001Model.sikasuuryo}" />
+                    </td>
+                    <td>
+                        <h:outputText value="OWNER：" />
+                        <h:outputText value="&lt;br/&gt;" escape="false"/>
+                        <h:outputText id="ownercode" value="#{beanGXHDO101D001.gxhdo101d001Model.ownercode}" />
+                    </td>
+                    <td>
+                        <h:outputText value="Lot区分：" />
+                        <h:outputText value="&lt;br/&gt;" escape="false"/>
+                        <h:outputText id="lotkubuncode" value="#{beanGXHDO101D001.gxhdo101d001Model.lotkubuncode}" />
+                    </td>
+                    <td>
+                        <h:outputText value="製造LotNo：" />
+                        <h:outputText value="&lt;br/&gt;" escape="false"/>
+                        <h:outputText id="lotno" value="#{beanGXHDO101D001.gxhdo101d001Model.lotno}" />
+                    </td>
+                </tr>
+
+                <tr>
+                    <td colspan="2">【不良内容】</td>
+                    <td colspan="2"></td>
+                    <td>号機ｺｰﾄﾞ：</td>
+                    <td><h:outputText id="goukicode" value="#{beanGXHDO101D001.gxhdo101d001Model.goukicode}" /></td>
+                    <td>担当</td>
+                    <td></td>
+                    <td></td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+        <table border="1" style="border: 1px solid black; border-collapse: collapse;">
+
+            <tbody>
+
+                <tr>
+                    <td rowspan="11">不<br/>良<br/>内<br/>容</td>
+                    <td>不良No</td>
+                    <td>不良コード</td>
+                    <td>不良名</td>
+                    <td>不良率(%)</td>
+                    <td>詳細内容</td>
+                    <td>在庫No</td>
+                </tr>
+
+                <tr>
+                    <td style="text-align:center">1</td>
+                    <td><h:outputText id="furyocode1" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode1}" /></td>
+                    <td><h:outputText id="furyomeisai1" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai1}" /></td>
+                    <td><h:outputText id="furyoritiu1" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu1}" /></td>
+                    <td><h:outputText id="furyobunrui1" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui1}" /></td>
+                    <td><h:outputText id="zaikono1" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono1}" /></td>
+                </tr>
+
+                <tr>
+                    <td style="text-align:center">2</td>
+                    <td><h:outputText id="furyocode2" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode2}" /></td>
+                    <td><h:outputText id="furyomeisai2" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai2}" /></td>
+                    <td><h:outputText id="furyoritiu2" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu2}" /></td>
+                    <td><h:outputText id="furyobunrui2" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui2}" /></td>
+                    <td><h:outputText id="zaikono2" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono2}" /></td>
+                </tr>
+
+                <tr>
+                    <td style="text-align:center">3</td>
+                    <td><h:outputText id="furyocode3" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode3}" /></td>
+                    <td><h:outputText id="furyomeisai3" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai3}" /></td>
+                    <td><h:outputText id="furyoritiu3" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu3}" /></td>
+                    <td><h:outputText id="furyobunrui3" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui3}" /></td>
+                    <td><h:outputText id="zaikono3" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono3}" /></td>
+                </tr>
+
+                <tr>
+                    <td style="text-align:center">4</td>
+                    <td><h:outputText id="furyocode4" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode4}" /></td>
+                    <td><h:outputText id="furyomeisai4" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai4}" /></td>
+                    <td><h:outputText id="furyoritiu4" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu4}" /></td>
+                    <td><h:outputText id="furyobunrui4" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui4}" /></td>
+                    <td><h:outputText id="zaikono4" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono4}" /></td>
+                </tr>
+
+                <tr>
+                    <td style="text-align:center">5</td>
+                    <td><h:outputText id="furyocode5" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode5}" /></td>
+                    <td><h:outputText id="furyomeisai5" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai5}" /></td>
+                    <td><h:outputText id="furyoritiu5" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu5}" /></td>
+                    <td><h:outputText id="furyobunrui5" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui5}" /></td>
+                    <td><h:outputText id="zaikono5" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono5}" /></td>
+                </tr>
+
+                <tr>
+                    <td style="text-align:center">6</td>
+                    <td><h:outputText id="furyocode6" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode6}" /></td>
+                    <td><h:outputText id="furyomeisai6" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai6}" /></td>
+                    <td><h:outputText id="furyoritiu6" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu6}" /></td>
+                    <td><h:outputText id="furyobunrui6" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui6}" /></td>
+                    <td><h:outputText id="zaikono6" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono6}" /></td>
+                </tr>
+
+                <tr>
+                    <td style="text-align:center">7</td>
+                    <td><h:outputText id="furyocode7" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode7}" /></td>
+                    <td><h:outputText id="furyomeisai7" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai7}" /></td>
+                    <td><h:outputText id="furyoritiu7" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu7}" /></td>
+                    <td><h:outputText id="furyobunrui7" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui7}" /></td>
+                    <td><h:outputText id="zaikono7" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono7}" /></td>
+                </tr>
+
+                <tr>
+                    <td style="text-align:center">8</td>
+                    <td><h:outputText id="furyocode8" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode8}" /></td>
+                    <td><h:outputText id="furyomeisai8" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai8}" /></td>
+                    <td><h:outputText id="furyoritiu8" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu8}" /></td>
+                    <td><h:outputText id="furyobunrui8" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui8}" /></td>
+                    <td><h:outputText id="zaikono8" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono8}" /></td>
+                </tr>
+
+                <tr>
+                    <td style="text-align:center">9</td>
+                    <td><h:outputText id="furyocode9" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode9}" /></td>
+                    <td><h:outputText id="furyomeisai9" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai9}" /></td>
+                    <td><h:outputText id="furyoritiu9" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu9}" /></td>
+                    <td><h:outputText id="furyobunrui9" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui9}" /></td>
+                    <td><h:outputText id="zaikono9" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono9}" /></td>
+                </tr>
+
+                <tr>
+                    <td style="text-align:center">10</td>
+                    <td><h:outputText id="furyocode10" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode10}" /></td>
+                    <td><h:outputText id="furyomeisai10" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai10}" /></td>
+                    <td><h:outputText id="furyoritiu10" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu10}" /></td>
+                    <td><h:outputText id="furyobunrui10" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui10}" /></td>
+                    <td><h:outputText id="zaikono10" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono10}" /></td>
+                </tr>
+
+            </tbody>
+
+        </table>
+
+        <table border="1" style="border: 1px solid black; border-collapse: collapse;">
+
+            <tbody>
+
+                <tr>
+                    <td colspan="7">【処置指示】</td>
+                </tr>
+                <tr><td>
+                        <h:dataTable id="sijiList" value="#{beanGXHDO101D001.gxhdo101d001Model.sijiList}" var="koteifuryo_siji" >
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="不良No" />
+                                </f:facet>
+                                <h:outputText id="furyono" value="#{koteifuryo_siji.furyono}" />
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="指示者" />
+                                </f:facet>
+                                <h:outputText id="sijisyacode" value="#{koteifuryo_siji.sijisyacode}" />
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="指示日" />
+                                </f:facet>
+                                <h:outputText id="sijibi" value="#{koteifuryo_siji.sijibi}" />
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="処置工程" />
+                                </f:facet>
+                                <h:outputText id="syochikotei" value="#{koteifuryo_siji.syochikotei}" />
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="指示内容" />
+                                </f:facet>
+                                <h:outputText id="sijinaiyo" value="#{koteifuryo_siji.sijinaiyo}" />
+                            </h:column>
+                        </h:dataTable>
+                    </td></tr>
+            </tbody>
+
+        </table>
+
+        <table border="1" style="border: 1px solid black; border-collapse: collapse;">
+
+            <tbody>
+
+                <tr>
+                    <td colspan="6">【処置結果】</td>
+                </tr>
+                <tr><td>
+                        <h:dataTable id="kekkaList" value="#{beanGXHDO101D001.gxhdo101d001Model.kekkaList}" var="koteifuryo_kekka" >
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="不良No" />
+                                </f:facet>
+                                <h:outputText id="furyono" value="#{koteifuryo_kekka.furyono}" />
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="担当者" />
+                                </f:facet>
+                                <h:outputText id="syotisyacode" value="#{koteifuryo_kekka.syotisyacode}" />
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="日付" />
+                                </f:facet>
+                                <h:outputText id="syotibi" value="#{koteifuryo_kekka.syotibi}" />
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="処置結果" />
+                                </f:facet>
+                                <h:outputText id="syotinaiyo" value="#{koteifuryo_kekka.syotinaiyo}" />
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="判定" />
+                                </f:facet>
+                                <h:outputText id="hantei" value="#{koteifuryo_kekka.hantei}" />
+                            </h:column>
+                        </h:dataTable>
+                    </td></tr>
+
+            </tbody>
+
+        </table>
+
+        <table border="1" style="border: 1px solid black; border-collapse: collapse;">
+
+            <tbody>
+
+                <tr>
+                    <td colspan="5">【処置確認】</td>
+                    <td rowspan="2"></td>
+                </tr>
+
+                <tr>
+                    <td>承認者</td>
+                    <td><h:outputText id="qakakuninsya" value="#{beanGXHDO101D001.gxhdo101d001Model.qakakuninsya}" /></td>
+                    <td></td>
+                    <td>日付</td>
+                    <td><h:outputText id="qakakuninnichiji" value="#{beanGXHDO101D001.gxhdo101d001Model.qakakuninnichiji}" /></td>
+                </tr>
+
+            </tbody>
+
+        </table>
         <div>品質確認連絡書 出力値確認用</div>
         <p>パラメータ確認</p>
         <table>
