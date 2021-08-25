@@ -79,7 +79,17 @@ public class GXHDO101D001 implements Serializable {
      * 現在の登録Noの値
      */
     private String currentTorokuNoValue;
-    
+
+    /**
+     * [工程不良指示]から取得した実績Noの最大値
+     */
+    private String maxJissekiNoKS;
+
+    /**
+     * [工程不良結果]から取得した実績Noの最大値
+     */
+    private String maxJissekiNoKK;
+
     /**
      * 品質確認連絡書も出る
      */
@@ -228,10 +238,10 @@ public class GXHDO101D001 implements Serializable {
     private void createKoteifuryosijiTable() {
         try {
             QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
-            // 実績Noの最大値
-            String maxJissekiNo = findMaxJissekiNoFromKoteifuryoSiji(getCurrentTorokuNoValue());
+            // (3)[工程不良指示]から取得した実績Noの最大値
+            setMaxJissekiNoKS(findMaxJissekiNoFromKoteifuryoSiji(getCurrentTorokuNoValue()));
             // (4)[工程不良指示]から、初期表示する情報を取得
-            List<SrKoteifuryoSiji> koteifuryosijiList = getSrKoteifuryoSiji(queryRunnerQcdb, getCurrentTorokuNoValue(), maxJissekiNo);
+            List<SrKoteifuryoSiji> koteifuryosijiList = getSrKoteifuryoSiji(queryRunnerQcdb, getCurrentTorokuNoValue(), getMaxJissekiNoKS());
 
             // 取得したテーブル情報を画面表示モデルに設定する
             GXHDO101D001Model model = getGxhdo101d001Model();
@@ -264,10 +274,10 @@ public class GXHDO101D001 implements Serializable {
     public void createKoteifuryokekkaTable() {
         try {
             QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
-            // 実績Noの最大値
-            String maxJissekiNo = getMaxJissekiNoFromSrKoteifuryoKekka(queryRunnerQcdb, getCurrentTorokuNoValue()).toString();
+            // (5)[工程不良結果]から取得した実績Noの最大値
+            setMaxJissekiNoKK(getMaxJissekiNoFromSrKoteifuryoKekka(queryRunnerQcdb, getCurrentTorokuNoValue()).toString());
             // (6)[工程不良結果]から、初期表示する情報を取得
-            List<SrKoteifuryoKekka> koteifuryokekkaList = createKoteifuryoKekkaTable(getCurrentTorokuNoValue(), maxJissekiNo);
+            List<SrKoteifuryoKekka> koteifuryokekkaList = createKoteifuryoKekkaTable(getCurrentTorokuNoValue(), getMaxJissekiNoKK());
 
             // 取得したテーブル情報を画面表示モデルに設定する
             GXHDO101D001Model model = getGxhdo101d001Model();
@@ -512,5 +522,33 @@ public class GXHDO101D001 implements Serializable {
      */
     public void setGxhdo101d001Model(GXHDO101D001Model gxhdo101d001Model) {
         this.gxhdo101d001Model = gxhdo101d001Model;
+    }
+
+    /**
+     * @return the maxJissekiNoKS
+     */
+    public String getMaxJissekiNoKS() {
+        return maxJissekiNoKS;
+    }
+
+    /**
+     * @param maxJissekiNoKS the maxJissekiNoKS to set
+     */
+    public void setMaxJissekiNoKS(String maxJissekiNoKS) {
+        this.maxJissekiNoKS = maxJissekiNoKS;
+    }
+
+    /**
+     * @return the maxJissekiNoKK
+     */
+    public String getMaxJissekiNoKK() {
+        return maxJissekiNoKK;
+    }
+
+    /**
+     * @param maxJissekiNoKK the maxJissekiNoKK to set
+     */
+    public void setMaxJissekiNoKK(String maxJissekiNoKK) {
+        this.maxJissekiNoKK = maxJissekiNoKK;
     }
 }
