@@ -891,7 +891,7 @@ public class GXHDO101A implements Serializable {
             // GXHDO101C021 bean初期化
             GXHDO101C021 beanGXHDO101C021 = (GXHDO101C021) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C021);
             beanGXHDO101C021.setSanshouMotoLotNo(this.searchLotNo);
-
+            
             // GXHDO101C021 初回表示用Model作成
             GXHDO101C021Model newModel = GXHDO101C021Logic.createGXHDO101C021Model(listSrKoteifuryo);
             beanGXHDO101C021.setGxhdO101c021ModelView(newModel);

@@ -198,7 +198,7 @@ public class GXHDO101C021 implements Serializable {
 
         // 登録NoのみのArrayListを作成する
         List<String> torokuList = new ArrayList<>();
-        for(TorokuNoData data: torokuNoList){
+        for(TorokuNoData data : torokuNoList) {
             torokuList.add(data.getTorokuNo());
         }
         String[] torokuNoArray = torokuList.toArray(new String[torokuList.size()]);

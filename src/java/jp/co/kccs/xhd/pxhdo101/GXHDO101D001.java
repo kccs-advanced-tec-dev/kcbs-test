@@ -118,7 +118,7 @@ public class GXHDO101D001 implements Serializable {
      * エラーメッセージ
      */
     private String errorMessage;
-
+    
     /**
      * コンストラクタ
      */
@@ -134,7 +134,7 @@ public class GXHDO101D001 implements Serializable {
     public void init() {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
-
+        
         // B･Cﾗﾝｸ連絡書一覧から遷移した場合はsession受取処理を行う
         if (isFlgUpdateTorokuNoToPrevOrNext()) {
             // 「前へ」「次へ」ボタンから遷移時はsession値取得処理を行わない
@@ -333,7 +333,7 @@ public class GXHDO101D001 implements Serializable {
             // (5)[工程不良結果]から取得した実績Noの最大値
             setMaxJissekiNoKK(getMaxJissekiNoFromSrKoteifuryoKekka(queryRunnerQcdb, getCurrentTorokuNoValue()).toString());
             // (6)[工程不良結果]から、初期表示する情報を取得
-            List<SrKoteifuryoKekka> koteifuryokekkaList = createKoteifuryoKekkaTable(getCurrentTorokuNoValue(), getMaxJissekiNoKK());
+            List<SrKoteifuryoKekka> koteifuryokekkaList = getSrKoteifuryoKekka(queryRunnerQcdb, getCurrentTorokuNoValue(), getMaxJissekiNoKK());
 
             // 取得したテーブル情報を画面表示モデルに設定する
             GXHDO101D001Model model = getGxhdo101d001Model();
@@ -403,22 +403,6 @@ public class GXHDO101D001 implements Serializable {
         return "";
     }
 
-    private List<SrKoteifuryoKekka> createKoteifuryoKekkaTable(String torokuNo, String maxJissekiNo) {
-        try {
-
-            QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
-
-            // 工程不良テーブルを取得する
-            List<SrKoteifuryoKekka> listSrKoteifuryo = getSrKoteifuryoKekka(queryRunnerQcdb, torokuNo, maxJissekiNo);
-
-            return listSrKoteifuryo;
-
-        } catch (SQLException ex) {
-            ErrUtil.outputErrorLog("工程不良テーブル取得エラー", ex, LOGGER);
-        }
-        return null;
-    }
-
     /**
      * 登録No配列のIndexから登録Noの値を取得する
      *
@@ -477,6 +461,15 @@ public class GXHDO101D001 implements Serializable {
         return maxJissekiNo;
     }
 
+    /**
+     * [工程不良指示]テーブルから初期表示する情報を取得
+     * 
+     * @param queryRunnerXHD
+     * @param torokuNo
+     * @param maxJissekiNo
+     * @return
+     * @throws SQLException 
+     */
     private List<SrKoteifuryoSiji> getSrKoteifuryoSiji(QueryRunner queryRunnerXHD, String torokuNo, String maxJissekiNo) throws SQLException {
         String sql = "SELECT * "
                 + "FROM sr_koteifuryo_siji "
@@ -520,6 +513,15 @@ public class GXHDO101D001 implements Serializable {
         return maxJissekiNo;
     }
 
+    /**
+     * [工程不良結果]テーブルから初期表示する情報を取得
+     * 
+     * @param queryRunnerXHD
+     * @param torokuNo
+     * @param maxJissekiNo
+     * @return
+     * @throws SQLException 
+     */
     private List<SrKoteifuryoKekka> getSrKoteifuryoKekka(QueryRunner queryRunnerXHD, String torokuNo, String maxJissekiNo) throws SQLException {
         String sql = "SELECT * "
                 + "FROM sr_koteifuryo_kekka "
