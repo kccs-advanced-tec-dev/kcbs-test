@@ -44,12 +44,12 @@
                     </td>    
                     <td width="15%">
                         <p:commandButton id="returnBtnInput" styleClass="ui-conf-commandbtn-def1" class="button"  style="width: 120px; height: 32px; font-size: 13px;"
-                                         value="入力画面へ戻る" action="/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true"
+                                         value="入力画面へ戻る" action="#{beanGXHDO101D001.doReturnInput()}"
                                          process="@this" update="@this"/>    
                     </td>
                     <td width="15%">
                         <p:commandButton id="returnBtnList" styleClass="ui-conf-commandbtn-def1" class="button"  style="width: 95px; height: 32px; font-size: 13px;"
-                                         value="一覧へ戻る" action="/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true"
+                                         value="一覧へ戻る" action="#{beanGXHDO101D001.doReturnList()}"
                                          process="@this" update="@this"/> 
                     </td>
                     <td width="15%">

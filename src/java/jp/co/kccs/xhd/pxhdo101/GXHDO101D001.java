@@ -58,6 +58,34 @@ import org.apache.commons.dbutils.handlers.MapHandler;
 @Named("beanGXHDO101D001")
 public class GXHDO101D001 implements Serializable {
 
+    /**
+     * @return the searchLotNo
+     */
+    public String getSearchLotNo() {
+        return searchLotNo;
+    }
+
+    /**
+     * @param searchLotNo the searchLotNo to set
+     */
+    public void setSearchLotNo(String searchLotNo) {
+        this.searchLotNo = searchLotNo;
+    }
+
+    /**
+     * @return the searchTantoshaCd
+     */
+    public String getSearchTantoshaCd() {
+        return searchTantoshaCd;
+    }
+
+    /**
+     * @param searchTantoshaCd the searchTantoshaCd to set
+     */
+    public void setSearchTantoshaCd(String searchTantoshaCd) {
+        this.searchTantoshaCd = searchTantoshaCd;
+    }
+
     private static final Logger LOGGER = Logger.getLogger(GXHDO101D001.class.getName());
 
     /**
@@ -92,6 +120,16 @@ public class GXHDO101D001 implements Serializable {
     private String maxJissekiNoKK;
 
     /**
+     * ロットNo(検索値)
+     */
+    private String searchLotNo;
+
+    /**
+     * 担当者ｺｰﾄﾞ(検索値)
+     */
+    private String searchTantoshaCd;
+
+    /**
      * 品質確認連絡書も出る
      */
     private GXHDO101D001Model gxhdo101d001Model;
@@ -117,7 +155,7 @@ public class GXHDO101D001 implements Serializable {
      * エラーメッセージ
      */
     private String errorMessage;
-    
+
     /**
      * コンストラクタ
      */
@@ -133,7 +171,7 @@ public class GXHDO101D001 implements Serializable {
     public void init() {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
-        
+
         // B･Cﾗﾝｸ連絡書一覧から遷移した場合はsession受取処理を行う
         if (isFlgUpdateTorokuNoToPrevOrNext()) {
             // 「前へ」「次へ」ボタンから遷移時はsession値取得処理を行わない
@@ -147,6 +185,12 @@ public class GXHDO101D001 implements Serializable {
             // 登録No配列 String → String[] に変換
             String[] tmpTorokuNoArray = ((String) session.getAttribute("torokuNoArrayStr")).split(",");
             setTorokuNoArray(tmpTorokuNoArray);
+            // ロットNo(検索値)
+            String sLotNo = (String) session.getAttribute("searchLotNo");
+            setSearchLotNo(sLotNo);
+            // 担当者ｺｰﾄﾞ(検索値)
+            String sTantoshaCd = (String) session.getAttribute("searchTantoshaCd");
+            setSearchTantoshaCd(sTantoshaCd);
         }
 
         // 登録NoIndexが「0」の場合は「前へ」ボタンを表示しない
@@ -462,12 +506,12 @@ public class GXHDO101D001 implements Serializable {
 
     /**
      * [工程不良指示]テーブルから初期表示する情報を取得
-     * 
+     *
      * @param queryRunnerXHD
      * @param torokuNo
      * @param maxJissekiNo
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
     private List<SrKoteifuryoSiji> getSrKoteifuryoSiji(QueryRunner queryRunnerXHD, String torokuNo, String maxJissekiNo) throws SQLException {
         String sql = "SELECT * "
@@ -514,12 +558,12 @@ public class GXHDO101D001 implements Serializable {
 
     /**
      * [工程不良結果]テーブルから初期表示する情報を取得
-     * 
+     *
      * @param queryRunnerXHD
      * @param torokuNo
      * @param maxJissekiNo
      * @return
-     * @throws SQLException 
+     * @throws SQLException
      */
     private List<SrKoteifuryoKekka> getSrKoteifuryoKekka(QueryRunner queryRunnerXHD, String torokuNo, String maxJissekiNo) throws SQLException {
         String sql = "SELECT * "
@@ -538,6 +582,35 @@ public class GXHDO101D001 implements Serializable {
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerXHD.query(sql, beanHandler, params.toArray());
 
+    }
+
+    /**
+     * 「入力画面へ戻る」押下時
+     *
+     * @return 遷移先URL
+     */
+    public String doReturnInput() {
+        return "/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true";
+    }
+
+    /**
+     * 「一覧へ戻る」押下時
+     *
+     * @return 遷移先URL
+     */
+    public String doReturnList() {
+        // セッション情報
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+                // ロットNo(検索値)を保持
+        String sLotNo = this.searchLotNo;
+        session.setAttribute("searchLotNo", sLotNo);
+        // 担当者ｺｰﾄﾞ(検索値)を保持
+        String sTantoshaCd = this.searchTantoshaCd;
+        session.setAttribute("searchTantoshaCd", sTantoshaCd);
+
+
+        return "/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true";
     }
 
     /**

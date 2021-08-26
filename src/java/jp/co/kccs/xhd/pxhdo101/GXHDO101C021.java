@@ -69,6 +69,16 @@ public class GXHDO101C021 implements Serializable {
     private GXHDO101C021Model gxhdO101c021ModelView;
 
     /**
+     * ロットNo(検索値)
+     */
+    private String searchLotNo;
+
+    /**
+     * 担当者ｺｰﾄﾞ(検索値)
+     */
+    private String searchTantoshaCd;
+
+    /**
      * 表示render有無
      */
     private boolean tourokuNoTableRender;
@@ -169,6 +179,9 @@ public class GXHDO101C021 implements Serializable {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
 
+        // TODO: sanshouMotoLotNoの内容を確認
+//        String sLotNo = this.sanshouMotoLotNo;
+
         // ①登録Noに表示している一覧表を配列形式で変数化する
         String[] torokuNoArray = createTorokuNoListToArray(this.gxhdO101c021ModelView.getTorokuNoDataList());
 
@@ -182,6 +195,12 @@ public class GXHDO101C021 implements Serializable {
         // 登録No配列：sessionに格納するためString[]→Stringにカンマ「,」区切りで変換している
         String torokuNoArrayStr = String.join(",", torokuNoArray);
         session.setAttribute("torokuNoArrayStr", torokuNoArrayStr);
+        // ロットNo(検索値)を保持
+        String sLotNo = this.searchLotNo;
+        session.setAttribute("searchLotNo", sLotNo);
+        // 担当者ｺｰﾄﾞ(検索値)を保持
+        String sTantoshaCd = this.searchTantoshaCd;
+        session.setAttribute("searchTantoshaCd", sTantoshaCd);
 
         // ③変数化した上記二項目を引数にして品質確認連絡書の画面を表示する。
         return "/secure/pxhdo101/gxhdo101d001.xhtml?faces-redirect=true";
@@ -197,11 +216,39 @@ public class GXHDO101C021 implements Serializable {
 
         // 登録NoのみのArrayListを作成する
         List<String> torokuList = new ArrayList<>();
-        for(TorokuNoData data : torokuNoList) {
+        for (TorokuNoData data : torokuNoList) {
             torokuList.add(data.getTorokuNo());
         }
         String[] torokuNoArray = torokuList.toArray(new String[torokuList.size()]);
         return torokuNoArray;
+    }
+
+    /**
+     * @return the searchLotNo
+     */
+    public String getSearchLotNo() {
+        return searchLotNo;
+    }
+
+    /**
+     * @param searchLotNo the searchLotNo to set
+     */
+    public void setSearchLotNo(String searchLotNo) {
+        this.searchLotNo = searchLotNo;
+    }
+
+    /**
+     * @return the searchTantoshaCd
+     */
+    public String getSearchTantoshaCd() {
+        return searchTantoshaCd;
+    }
+
+    /**
+     * @param searchTantoshaCd the searchTantoshaCd to set
+     */
+    public void setSearchTantoshaCd(String searchTantoshaCd) {
+        this.searchTantoshaCd = searchTantoshaCd;
     }
 
 }
