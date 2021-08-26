@@ -103,6 +103,11 @@ public class GXHDO101D001 implements Serializable {
      * B･Cﾗﾝｸ連絡書一覧画面からの引数: 登録No配列
      */
     private String[] torokuNoArray;
+    
+    /**
+     * 登録No配列のLength
+     */
+    private int torokuNoArrayLength;
 
     /**
      * 現在の登録Noの値
@@ -185,6 +190,8 @@ public class GXHDO101D001 implements Serializable {
             // 登録No配列 String → String[] に変換
             String[] tmpTorokuNoArray = ((String) session.getAttribute("torokuNoArrayStr")).split(",");
             setTorokuNoArray(tmpTorokuNoArray);
+            // 登録No配列String[]のLength (JSF表示用にセット)
+            setTorokuNoArrayLength(tmpTorokuNoArray.length);
             // ロットNo(検索値)
             String sLotNo = (String) session.getAttribute("searchLotNo");
             setSearchLotNo(sLotNo);
@@ -766,5 +773,19 @@ public class GXHDO101D001 implements Serializable {
      */
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
+    }
+
+    /**
+     * @return the torokuNoArrayLength
+     */
+    public int getTorokuNoArrayLength() {
+        return torokuNoArrayLength;
+    }
+
+    /**
+     * @param torokuNoArrayLength the torokuNoArrayLength to set
+     */
+    public void setTorokuNoArrayLength(int torokuNoArrayLength) {
+        this.torokuNoArrayLength = torokuNoArrayLength;
     }
 }
