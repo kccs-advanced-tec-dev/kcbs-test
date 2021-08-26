@@ -207,7 +207,7 @@ public class GXHDO101D001 implements Serializable {
 
             // 必要な値を設定する
             model.setRank(rowKoteifuryo.getRank()); // KF.ﾗﾝｸ
-            model.setHakkobi(rowKoteifuryo.getHakkobi().toString()); // KF.発行日
+            model.setHakkobi(rowKoteifuryo.getHakkobi()); // KF.発行日
             model.setTokuisaki(rowKoteifuryo.getTokuisaki()); // TODO: 基本設計書修正 (客先項目に表示)
             model.setHakkenkotei(rowKoteifuryo.getHakkenkotei()); // KF.発見工程ID
             model.setTorokuno(rowKoteifuryo.getTorokuno()); // KF.登録No
@@ -274,7 +274,7 @@ public class GXHDO101D001 implements Serializable {
             model.setZaikono10(rowKoteifuryo.getZaikono10()); // KF.在庫No10
 
             model.setQakakuninsya(rowKoteifuryo.getQakakuninsya()); // KF.確認者
-            model.setQakakuninnichiji(rowKoteifuryo.getQakakuninnichiji().toString()); // KF.日付 //TODO:対応カラム確認 (torokunitiji, koshinnichijiのどちらか？)
+            model.setQakakuninnichiji(rowKoteifuryo.getQakakuninnichiji()); // KF.日付 //TODO:対応カラム確認 (torokunitiji, koshinnichijiのどちらか？)
 
             // 取得結果を保存
             setGxhdo101d001Model(model);

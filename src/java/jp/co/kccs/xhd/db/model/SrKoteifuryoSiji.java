@@ -44,7 +44,7 @@ public class SrKoteifuryoSiji {
     /**
      * 指示日
      */
-    private Date sijibi;
+    private java.sql.Date sijibi;
     /**
      * 処置工程
      */
@@ -121,14 +121,14 @@ public class SrKoteifuryoSiji {
     /**
      * @return the sijibi
      */
-    public Date getSijibi() {
+    public java.sql.Date getSijibi() {
         return sijibi;
     }
 
     /**
      * @param sijibi the sijibi to set
      */
-    public void setSijibi(Date sijibi) {
+    public void setSijibi(java.sql.Date sijibi) {
         this.sijibi = sijibi;
     }
 

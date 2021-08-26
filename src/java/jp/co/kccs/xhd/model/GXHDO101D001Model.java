@@ -4,7 +4,6 @@
 package jp.co.kccs.xhd.model;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -44,14 +43,14 @@ public class GXHDO101D001Model implements Serializable {
     /**
      * @return the hakkobi
      */
-    public String getHakkobi() {
+    public java.sql.Date getHakkobi() {
         return hakkobi;
     }
 
     /**
      * @param hakkobi the hakkobi to set
      */
-    public void setHakkobi(String hakkobi) {
+    public void setHakkobi(java.sql.Date hakkobi) {
         this.hakkobi = hakkobi;
     }
 
@@ -898,14 +897,14 @@ public class GXHDO101D001Model implements Serializable {
     /**
      * @return the qakakuninnichiji
      */
-    public String getQakakuninnichiji() {
+    public java.sql.Date getQakakuninnichiji() {
         return qakakuninnichiji;
     }
 
     /**
      * @param qakakuninnichiji the qakakuninnichiji to set
      */
-    public void setQakakuninnichiji(String qakakuninnichiji) {
+    public void setQakakuninnichiji(java.sql.Date qakakuninnichiji) {
         this.qakakuninnichiji = qakakuninnichiji;
     }
 
@@ -945,7 +944,7 @@ public class GXHDO101D001Model implements Serializable {
     /**
      * 発行日
      */
-    private String hakkobi;
+    private java.sql.Date hakkobi;
 
     /**
      * 得意先
@@ -1250,8 +1249,7 @@ public class GXHDO101D001Model implements Serializable {
     /**
      * 日付
      */
-    private String qakakuninnichiji;
-
+    private java.sql.Date qakakuninnichiji;
     /**
      * 工程不良指示一覧
      */
@@ -1298,14 +1296,14 @@ public class GXHDO101D001Model implements Serializable {
         /**
          * @return the sijibi
          */
-        public Date getSijibi() {
+        public java.sql.Date getSijibi() {
             return sijibi;
         }
 
         /**
          * @param sijibi the sijibi to set
          */
-        public void setSijibi(Date sijibi) {
+        public void setSijibi(java.sql.Date sijibi) {
             this.sijibi = sijibi;
         }
 
@@ -1350,8 +1348,8 @@ public class GXHDO101D001Model implements Serializable {
         /**
          * 工程不良指示.指示日
          */
-        private Date sijibi;
-
+        private java.sql.Date sijibi;
+        
         /**
          * 工程不良指示.処置工程ｺｰﾄﾞ
          */
@@ -1400,14 +1398,14 @@ public class GXHDO101D001Model implements Serializable {
         /**
          * @return the syotibi
          */
-        public Date getSyotibi() {
+        public java.sql.Date getSyotibi() {
             return syotibi;
         }
 
         /**
          * @param syotibi the syotibi to set
          */
-        public void setSyotibi(Date syotibi) {
+        public void setSyotibi(java.sql.Date syotibi) {        
             this.syotibi = syotibi;
         }
 
@@ -1452,7 +1450,7 @@ public class GXHDO101D001Model implements Serializable {
         /**
          * 工程不良結果.処置日
          */
-        private Date syotibi;
+	private java.sql.Date syotibi;
 
         /**
          * 工程不良結果.処置内容

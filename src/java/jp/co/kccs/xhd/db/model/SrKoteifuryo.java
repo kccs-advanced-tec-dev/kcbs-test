@@ -54,7 +54,7 @@ public class SrKoteifuryo {
     /**
      * 発行日
      */
-    private Timestamp hakkobi;
+    private java.sql.Date hakkobi;
     /**
      * 発行者
      */
@@ -156,7 +156,7 @@ public class SrKoteifuryo {
      * 不良率5
      */
     private String furyoritiu5;
-    private Timestamp qakakuninnichiji;
+    private java.sql.Date qakakuninnichiji;
     private String pretorokuno;
     private String opencloseflag;
     private String furyobunrui6;
@@ -340,14 +340,14 @@ public class SrKoteifuryo {
     /**
      * @return the hakkobi
      */
-    public Timestamp getHakkobi() {
+    public java.sql.Date getHakkobi() {
         return hakkobi;
     }
 
     /**
      * @param hakkobi the hakkobi to set
      */
-    public void setHakkobi(Timestamp hakkobi) {
+    public void setHakkobi(java.sql.Date hakkobi) {
         this.hakkobi = hakkobi;
     }
 
@@ -802,14 +802,14 @@ public class SrKoteifuryo {
     /**
      * @return the qakakuninnichiji
      */
-    public Timestamp getQakakuninnichiji() {
+    public java.sql.Date getQakakuninnichiji() {
         return qakakuninnichiji;
     }
 
     /**
      * @param qakakuninnichiji the qakakuninnichiji to set
      */
-    public void setQakakuninnichiji(Timestamp qakakuninnichiji) {
+    public void setQakakuninnichiji(java.sql.Date qakakuninnichiji) {
         this.qakakuninnichiji = qakakuninnichiji;
     }
 

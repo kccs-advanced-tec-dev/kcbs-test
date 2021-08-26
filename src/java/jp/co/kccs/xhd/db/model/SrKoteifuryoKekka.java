@@ -44,7 +44,7 @@ public class SrKoteifuryoKekka {
     /**
      * 処置日
      */
-    private Date syotibi;
+    private java.sql.Date syotibi;
     /**
      * 処置内容
      */
@@ -121,14 +121,14 @@ public class SrKoteifuryoKekka {
     /**
      * @return the syotibi
      */
-    public Date getSyotibi() {
+    public java.sql.Date getSyotibi() {
         return syotibi;
     }
 
     /**
      * @param syotibi the syotibi to set
      */
-    public void setSyotibi(Date syotibi) {
+    public void setSyotibi(java.sql.Date syotibi) {
         this.syotibi = syotibi;
     }
 
