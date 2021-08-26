@@ -53,12 +53,12 @@
                                          process="@this" update="@this"/> 
                     </td>
                     <td width="15%">
-                        <ui:fragment rendered="#{beanGXHDO101D001.torokuNoIndex != 0}">
+                        <ui:fragment rendered="#{beanGXHDO101D001.btnPrevRender}">
                             <p:commandButton id="btnPrev" value="前へ" action="#{beanGXHDO101D001.doPrev()}" class="button"  style="width: 95px; height: 32px; font-size: 13px;"></p:commandButton>
                         </ui:fragment>
                     </td>
                     <td width="15%">
-                        <ui:fragment rendered="#{beanGXHDO101D001.torokuNoIndex != 2}">
+                        <ui:fragment rendered="#{beanGXHDO101D001.btnNextRender}">
                             <p:commandButton id="btnNext" value="次へ" action="#{beanGXHDO101D001.doNext()}" class="button"  style="width: 95px; height: 32px; font-size: 13px;"></p:commandButton>
                         </ui:fragment>
                     </td>
