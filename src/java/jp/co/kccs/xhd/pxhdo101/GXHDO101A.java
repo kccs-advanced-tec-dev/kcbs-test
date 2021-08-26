@@ -11,7 +11,6 @@ import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -34,7 +33,6 @@ import jp.co.kccs.xhd.db.model.DaJoken;
 import jp.co.kccs.xhd.db.model.FXHDM01;
 import jp.co.kccs.xhd.db.model.SrKoteifuryo;
 import jp.co.kccs.xhd.model.GXHDO101C021Model;
-import jp.co.kccs.xhd.model.GXHDO101C021Model.TorokuNoData;
 import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
@@ -862,10 +860,7 @@ public class GXHDO101A implements Serializable {
 
         try {
 
-            QueryRunner queryRunnerDoc = new QueryRunner(dataSourceDocServer);
             QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
-            QueryRunner queryRunnerWip = new QueryRunner(dataSourceWip);
-            FacesContext facesContext = FacesContext.getCurrentInstance();
 
             String strKojyo = "";
             String strLotNo = "";

@@ -4,7 +4,6 @@
 package jp.co.kccs.xhd.pxhdo101;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
