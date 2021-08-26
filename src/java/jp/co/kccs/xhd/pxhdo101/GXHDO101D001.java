@@ -331,7 +331,7 @@ public class GXHDO101D001 implements Serializable {
         try {
             QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
             // (5)[工程不良結果]から取得した実績Noの最大値
-            setMaxJissekiNoKK(getMaxJissekiNoFromSrKoteifuryoKekka(queryRunnerQcdb, getCurrentTorokuNoValue()).toString());
+            setMaxJissekiNoKK(getMaxJissekiNoFromSrKoteifuryoKekka(queryRunnerQcdb, getCurrentTorokuNoValue()));
             // (6)[工程不良結果]から、初期表示する情報を取得
             List<SrKoteifuryoKekka> koteifuryokekkaList = getSrKoteifuryoKekka(queryRunnerQcdb, getCurrentTorokuNoValue(), getMaxJissekiNoKK());
 
@@ -395,8 +395,8 @@ public class GXHDO101D001 implements Serializable {
     private String findMaxJissekiNoFromKoteifuryoSiji(String torokuNo) {
         try {
             QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
-            BigDecimal maxNo = getMaxJissekiNoFromSrKoteifuryoSiji(queryRunnerQcdb, torokuNo);
-            return maxNo.toString();
+            String maxNo = getMaxJissekiNoFromSrKoteifuryoSiji(queryRunnerQcdb, torokuNo);
+            return maxNo;
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("実績No最大値取得エラー", ex, LOGGER);
         }
@@ -445,8 +445,8 @@ public class GXHDO101D001 implements Serializable {
      * @return
      * @throws SQLException
      */
-    private BigDecimal getMaxJissekiNoFromSrKoteifuryoSiji(QueryRunner queryRunnerXHD, String torokuNo) throws SQLException {
-        BigDecimal maxJissekiNo = BigDecimal.ZERO;
+    private String getMaxJissekiNoFromSrKoteifuryoSiji(QueryRunner queryRunnerXHD, String torokuNo) throws SQLException {
+        String maxJissekiNo = "";
         String sql = "SELECT MAX(jissekino) AS jissekino "
                 + "FROM sr_koteifuryo_siji "
                 + "WHERE torokuno = ? ";
@@ -455,7 +455,7 @@ public class GXHDO101D001 implements Serializable {
 
         Map map = queryRunnerXHD.query(sql, new MapHandler(), params.toArray());
         if (map != null && !map.isEmpty()) {
-            maxJissekiNo = new BigDecimal(String.valueOf(map.get("jissekino")));
+            maxJissekiNo = String.valueOf(map.get("jissekino"));
         }
 
         return maxJissekiNo;
@@ -497,8 +497,8 @@ public class GXHDO101D001 implements Serializable {
      * @return
      * @throws SQLException
      */
-    private BigDecimal getMaxJissekiNoFromSrKoteifuryoKekka(QueryRunner queryRunnerXHD, String torokuNo) throws SQLException {
-        BigDecimal maxJissekiNo = BigDecimal.ZERO;
+    private String getMaxJissekiNoFromSrKoteifuryoKekka(QueryRunner queryRunnerXHD, String torokuNo) throws SQLException {
+        String maxJissekiNo = "";
         String sql = "SELECT MAX(jissekino) AS jissekino "
                 + "FROM sr_koteifuryo_kekka "
                 + "WHERE torokuno = ? ";
@@ -507,7 +507,7 @@ public class GXHDO101D001 implements Serializable {
 
         Map map = queryRunnerXHD.query(sql, new MapHandler(), params.toArray());
         if (map != null && !map.isEmpty()) {
-            maxJissekiNo = new BigDecimal(String.valueOf(map.get("jissekino")));
+            maxJissekiNo = String.valueOf(map.get("jissekino"));
         }
 
         return maxJissekiNo;
