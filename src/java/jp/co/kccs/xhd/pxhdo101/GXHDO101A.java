@@ -234,6 +234,11 @@ public class GXHDO101A implements Serializable {
     private FXHDM01 deleteMenuInfo = null;
 
     /**
+     * B･Cﾗﾝｸ連絡書一覧再表示フラグ
+     */
+    private boolean flgReOpenGXHDOC021 = false;
+
+    /**
      * コンストラクタ
      */
     public GXHDO101A() {
@@ -255,6 +260,42 @@ public class GXHDO101A implements Serializable {
             this.lotNo = sLotNo;
             getMenuListGXHDO101(this.lotNo, this.tantoshaCd, false);
         }
+
+        // 品質確認連絡書から「一覧へ戻る」で戻ってきた場合はB･Cﾗﾝｸ連絡書一覧を再表示する
+        String strFlgReOpenGXHDOC021 = StringUtil.nullToBlank(session.getAttribute("flgReOpenGXHDOC021"));
+        if (strFlgReOpenGXHDOC021 == "true") {
+            this.flgReOpenGXHDOC021 = true;
+        }
+        session.setAttribute("flgReOpenGXHDOC021", "");
+        if (isFlgReOpenGXHDOC021()) {
+            reOpenGXHDO101C021();
+        }
+
+    }
+
+    /**
+     * 再検索後にB･Cﾗﾝｸ連絡書一覧を再表示
+     */
+    private void reOpenGXHDO101C021() {
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+
+        // ロットNo(検索値)
+        String searchLotNo = (String) session.getAttribute("searchLotNo");
+        this.searchLotNo = searchLotNo;
+        // 担当者ｺｰﾄﾞ(検索値)
+        String searchTantoshaCd = (String) session.getAttribute("searchTantoshaCd");
+        this.searchTantoshaCd = searchTantoshaCd;
+        // ロットNo, 担当者コードを再設定
+        this.lotNo = searchLotNo;
+        this.tantoshaCd = searchTantoshaCd;
+        // ロット検索を再実行
+        if (!StringUtil.isEmpty(this.searchLotNo) && !StringUtil.isEmpty(this.searchTantoshaCd)) {
+            reSearchHinshitsuData(false);
+        }
+        // B･Cﾗﾝｸ連絡書一覧を再表示
+        doRankBCRenraku();
+
     }
 
     /**
@@ -4190,5 +4231,19 @@ public class GXHDO101A implements Serializable {
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerXHD.query(sql, beanHandler, params.toArray());
 
+    }
+
+    /**
+     * @return the flgReOpenGXHDOC021
+     */
+    public boolean isFlgReOpenGXHDOC021() {
+        return flgReOpenGXHDOC021;
+    }
+
+    /**
+     * @param flgReOpenGXHDOC021 the flgReOpenGXHDOC021 to set
+     */
+    public void setFlgReOpenGXHDOC021(boolean flgReOpenGXHDOC021) {
+        this.flgReOpenGXHDOC021 = flgReOpenGXHDOC021;
     }
 }

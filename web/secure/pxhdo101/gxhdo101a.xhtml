@@ -153,14 +153,16 @@
                             </td>
                         </tr>
                         <tr>
-                            <td>                                
+                            <td>
+                                <p:remoteCommand oncomplete="if(#{gXHDO101A.flgReOpenGXHDOC021}){PF('W_dlg_gxhdo101c021').show();} " autoRun="true"/>
                                 <p:commandButton id="rankBCRenrakuBtn" class="button" rendered="#{gXHDO101A.rankBCRenrakuBtnRender}"  styleClass="ui-conf-commandbtn-def1" style="margin-top: 3px; width: 94px; height: 32px; font-size: 10px; "
                                                  value="B･Cﾗﾝｸ連絡書"
                                                  actionListener="#{gXHDO101A.doRankBCRenraku()}"
                                                  process="@this"
                                                  update="@form"
                                                  onstart="PF('cd').hide();$('#loadinggif').show();"
-                                                 oncomplete="$('#loadinggif').hide();cmdButtonOncomplete(args);"/> 
+                                                 oncomplete="$('#loadinggif').hide();cmdButtonOncomplete(args);">
+                                </p:commandButton> 
                             </td>
                             <td>
                                 <h:outputText id="outText" value="" style="width: 300px; margin-left: 40px;"/>

@@ -602,13 +602,14 @@ public class GXHDO101D001 implements Serializable {
         // セッション情報
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
-                // ロットNo(検索値)を保持
+        // ロットNo(検索値)を保持
         String sLotNo = this.searchLotNo;
         session.setAttribute("searchLotNo", sLotNo);
         // 担当者ｺｰﾄﾞ(検索値)を保持
         String sTantoshaCd = this.searchTantoshaCd;
         session.setAttribute("searchTantoshaCd", sTantoshaCd);
-
+        // 入力画面選択の画面にB･Cﾗﾝｸ連絡書一覧再表示フラグを渡す
+        session.setAttribute("flgReOpenGXHDOC021", "true");
 
         return "/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true";
     }
