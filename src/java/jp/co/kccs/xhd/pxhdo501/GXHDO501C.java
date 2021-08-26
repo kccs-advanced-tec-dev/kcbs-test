@@ -6,10 +6,8 @@ package jp.co.kccs.xhd.pxhdo501;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -82,7 +80,10 @@ public class GXHDO501C implements Serializable {
      * 一覧表示データ
      */
     private List<GXHDO501CModel> listData = null;
-
+    /** 一覧表示最大件数 */
+    private int listCountMax = -1;
+    /** 一覧表示警告件数 */
+    private int listCountWarn = -1;
     /**
      * 原材料規格ﾒﾝﾃﾅﾝｽ機能画面URL
      */
@@ -437,7 +438,8 @@ public class GXHDO501C implements Serializable {
 
         // 種類コンボボックス設定
         setCmbSyuruiData(new String[]{"ｶﾞﾗｽ作製", "ｶﾞﾗｽｽﾗﾘｰ作製", "添加剤ｽﾗﾘｰ作製", "誘電体ｽﾗﾘｰ作製", "ﾊﾞｲﾝﾀﾞｰ溶液作製", "ｽﾘｯﾌﾟ作製"});
-
+        listCountMax = session.getAttribute("menuParam") != null ? Integer.parseInt(session.getAttribute("menuParam").toString()) : -1;
+        listCountWarn = session.getAttribute("hyojiKensu") != null ? Integer.parseInt(session.getAttribute("hyojiKensu").toString()) : -1;
         // 画面クリア
         doClear();
     }
@@ -475,6 +477,9 @@ public class GXHDO501C implements Serializable {
         switch (this.warnProcess) {
             case "clear":
                 doClear();
+                break;
+            case "OK":
+                selectListData();
                 break;
         }
 
@@ -529,6 +534,24 @@ public class GXHDO501C implements Serializable {
             return;
         }
 
+        if (listCountMax > 0 && count > listCountMax) {
+            // 検索結果が上限件数以上の場合エラー終了
+            FacesMessage message = 
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000046", listCountMax), null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return;
+        } 
+        
+        if (listCountWarn > 0 && count > listCountWarn) {
+            // 検索結果が警告件数以上の場合、警告ダイアログを表示する
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.addCallbackParam("param1", "warning");
+            
+            this.warnMessage = String.format("検索結果が%d件を超えています。<br/>継続しますか?<br/>%d件", listCountWarn, count);
+            this.warnProcess = "OK";
+            return;
+        }
+        
         // 入力チェックでエラーが存在しない場合検索処理を実行する
         selectListData();
     }

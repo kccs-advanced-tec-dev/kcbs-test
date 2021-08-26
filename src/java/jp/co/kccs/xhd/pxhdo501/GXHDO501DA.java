@@ -3,8 +3,11 @@
  */
 package jp.co.kccs.xhd.pxhdo501;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,8 +15,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
@@ -34,6 +35,7 @@ import org.apache.commons.dbutils.handlers.BeanListHandler;
 import jp.co.kccs.xhd.GetModel;
 import jp.co.kccs.xhd.common.ResultMessage;
 import jp.co.kccs.xhd.db.Parameter;
+import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.model.GXHDO501DModel;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
@@ -84,6 +86,8 @@ public class GXHDO501DA extends GXHDO901AEX {
     private String displayStyle = "";
     /** 設計No */
     private String paramSekkeino = "";
+    /** 排他制御用MAX(登録日) */
+    private Timestamp tourokunichijiInit = null;
     /** LotNo */
     private String paramLotno = "";
     /** 種類 */
@@ -98,6 +102,14 @@ public class GXHDO501DA extends GXHDO901AEX {
     private static final String ERROR_COLOR = "#FFB6C1";
     /** * ｴﾗｰがない項目の背景色 */
     private static final String NORMAL_COLOR ="#FFFFFF";
+    /**
+     * ユーザー認証：ユーザー
+     */
+    private String authUser;
+    /**
+     * ユーザー認証：パスワード
+     */
+    private String authPassword;
 
     /**
      * コンストラクタ
@@ -208,6 +220,46 @@ public class GXHDO501DA extends GXHDO901AEX {
         this.cmbTyekkupatternData = cmbTyekkupatternData;
     }
     
+    /**
+     * ユーザー認証：ユーザー
+     *
+     * @return the authUser
+     */
+    @Override
+    public String getAuthUser() {
+        return authUser;
+    }
+
+    /**
+     * ユーザー認証：ユーザー
+     *
+     * @param authUser the authUser to set
+     */
+    @Override
+    public void setAuthUser(String authUser) {
+        this.authUser = authUser;
+    }
+
+    /**
+     * ユーザー認証：パスワード
+     *
+     * @return the authPassword
+     */
+    @Override
+    public String getAuthPassword() {
+        return authPassword;
+    }
+
+    /**
+     * ユーザー認証：パスワード
+     *
+     * @param authPassword the authPassword to set
+     */
+    @Override
+    public void setAuthPassword(String authPassword) {
+        this.authPassword = authPassword;
+    }
+    
     //</editor-fold>
     /**
      * 画面起動時処理
@@ -300,7 +352,8 @@ public class GXHDO501DA extends GXHDO901AEX {
             
             //親の初期処理呼び出し
             super.init();
-
+            // 初期表示する時、[前工程規格情報]から、最大登録日を取得して【排他制御用MAX(登録日)】に設置
+            tourokunichijiInit = getDamkjokenTourokunichiji(paramSekkeino);
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("メニュー項目未登録", ex, LOGGER);
         }
@@ -397,16 +450,6 @@ public class GXHDO501DA extends GXHDO901AEX {
      * 追加処理
      */
     public void addDataRow(){
-        selectListData(paramSekkeino,paramSyurui,paramHinmei,paramPattern);
-        
-        if(listData.isEmpty()) {
-            // 検索結果が0件の場合エラー終了
-            FacesMessage message = 
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000210","規格情報"), null);
-            FacesContext.getCurrentInstance().addMessage(null, message);
-            displayStyle = "display:none;";
-            return;
-        }
         GXHDO501DModel model = new GXHDO501DModel();
         model.setKouteimei("");
         model.setKoumokumei("");
@@ -553,7 +596,7 @@ public class GXHDO501DA extends GXHDO901AEX {
             }
             
             // 規格値 チェック
-            if(!chkTyekkupatternError(listData.get(i).getKikakuti(),listData.get(i).getTyekkupattern())){
+            if("-1".equals(chkTyekkupatternError(listData.get(i).getKikakuti(),listData.get(i).getTyekkupattern()))){
                 listData.get(i).setKikakutibgcolor(ERROR_COLOR);
                 FacesMessage message = 
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000213","規格値",listData.get(i).getTyekkupattern()), null);
@@ -566,8 +609,10 @@ public class GXHDO501DA extends GXHDO901AEX {
             return;
         }
 
-        //ユーザ認証処理
-        checkUserAuth();
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.addCallbackParam("firstParam", "warning");
+        this.warnMessage = "修正します。よろしいですか？";
+        this.warnProcess = "checkUserAuth";
     }
     
     /**
@@ -579,14 +624,26 @@ public class GXHDO501DA extends GXHDO901AEX {
             case "update":
                 doUpdate();
                 break;
+            case "checkUserAuth":
+                checkUserAuth();
+                break;
         }
     }
     
     /**
-     * 正常な場合検修正理を実行する
+     * 正常な場合実行する
      * @throws java.sql.SQLException
      */
     public void doUpdate() throws SQLException{
+        // 修正する時、[前工程規格情報]から、最大登録日を取得
+        Timestamp tourokunichijiUpdate = getDamkjokenTourokunichiji(paramSekkeino);
+        // 【排他制御用MAX(登録日)】と修正する時取得した登録日が異なる場合
+        if (tourokunichijiUpdate != null && tourokunichijiInit != null && !tourokunichijiInit.equals(tourokunichijiUpdate)) {
+            FacesMessage message
+                    = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000025"), null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return;
+        }
         // 削除件数取得
         long delCount = selectDelDataCount(paramSekkeino);
         
@@ -606,10 +663,10 @@ public class GXHDO501DA extends GXHDO901AEX {
             ResultMessage beanResultMessage = (ResultMessage) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_RESULT_MESSAGE);
             beanResultMessage.setResultMessageList(messageList);
             RequestContext.getCurrentInstance().execute("PF('W_dlg_resultMessage').show();");
-
-            selectListData(paramSekkeino,paramSyurui,paramHinmei,paramPattern);
         
             DbUtils.commitAndCloseQuietly(conDoc);
+
+            selectListData(paramSekkeino,paramSyurui,paramHinmei,paramPattern);
             
         } catch (SQLException e) {
              // コネクションロールバック処理
@@ -618,7 +675,9 @@ public class GXHDO501DA extends GXHDO901AEX {
             FacesMessage message =
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, "実行時エラー", null);
             FacesContext.getCurrentInstance().addMessage(null, message);
-        } 
+        }
+        // 修正した後、[前工程規格情報]から、最大登録日を取得して【排他制御用MAX(登録日)】に設置
+        tourokunichijiInit = getDamkjokenTourokunichiji(paramSekkeino);
     }
     
     /**
@@ -716,118 +775,44 @@ public class GXHDO501DA extends GXHDO901AEX {
     }
 
     /**
-     * Numﾁｪｯｸ
-     * @param kikakutiStr1 規格値前半部分
-     * @param kikakutiStr2 規格値後半部分
-     * 
-    */
-    private boolean chkNumTypeError(String kikakutiStr1, String kikakutiStr2) {
-        Pattern patternChk = Pattern.compile("[0-9]*\\.?[0-9]+");
-        Matcher isNum = patternChk.matcher(kikakutiStr1);
-        if( !isNum.matches() ){
-            return false;
-        }else{
-            Matcher isNum1 = patternChk.matcher(kikakutiStr2);
-            return isNum1.matches();
-        }
-    }
-    
-    /**
-     * Numﾁｪｯｸ [≧],[≦]
-     * @param tmpStr [≧],[≦]
-     * @param str 規格値
-     * @param arrKikakuti 規格値array
-     * 
-    */
-    private boolean chkKikakuchiError(String tmpStr,String str,String [] arrKikakuti){
-        Pattern patternChk = Pattern.compile("[0-9]*\\.?[0-9]+");
-         if((tmpStr.equals(str.substring(0, 1)))){
-            if(!"".equals(arrKikakuti[1])){
-                Matcher isNum0 = patternChk.matcher(arrKikakuti[1]);
-                return isNum0.matches();
-            }else{
-                 return false;
-            }
-        }else{
-            if((tmpStr.equals(str.substring(str.length()-1)))){
-                if(!"".equals(arrKikakuti[0])){
-                    Matcher isNum0 = patternChk.matcher(arrKikakuti[0]);
-                    return isNum0.matches();
-                }else{
-                    return false;
-                }
-            }else{
-                    return false;
-                }
-            }
-    }
-
-    
-    /**
      * 規格値 チェック
      * @param kikakuti 規格値
      * @param tyekkupattern ﾁｪｯｸﾊﾟﾀｰﾝ
      * 
     */
-    private boolean chkTyekkupatternError(String strKikakuti, String strTyekkupattern) {
-       
-        Pattern patternChk = Pattern.compile("[0-9]*\\.?[0-9]+");
-        
-        if(!strKikakuti.contains(strTyekkupattern)){
-            return false;
-        }
+    private String chkTyekkupatternError(String strKikakuti, String strTyekkupattern) {
         //半角・全角ｽﾍﾟｰｽを削除
-        String str=strKikakuti.replace((char)12288, ' ');
-        String  arrKikakuti []= str.trim().split(strTyekkupattern);
-        if(arrKikakuti.length>2 || arrKikakuti.length==0){
-            return false;
-        }
-        
-        //"±","～","≧","≦","MAX","MIN","="
-        switch (strTyekkupattern) { 
+        strKikakuti =strKikakuti.replace((char)12288, ' ').trim();
+        FXHDD01 fxhdd01 = new FXHDD01();
+        fxhdd01.setKikakuChi(strKikakuti);
+        String resultFlg = "0";
+        switch (strTyekkupattern) {
             case "±":
+                resultFlg = ValidateUtil.checkKikakuST001(fxhdd01, "0");
+                break;
             case "～":
-                //[±],[～]の前後に数字が入っていない場合ｴﾗｰ
-                if(arrKikakuti.length!=2){
-                    return false;
-                }else{
-                    if(("".equals(arrKikakuti[0])) || ("".contains(arrKikakuti[1]))){
-                        return false;
-                    }else{
-                        return chkNumTypeError(arrKikakuti[0],arrKikakuti[1]);
-                    }
-                }
-            case "≧":   
-               return chkKikakuchiError("≧",str.trim(),arrKikakuti) ;
+                resultFlg = ValidateUtil.checkKikakuST002(fxhdd01, "0");
+                break;
             case "≦":
-                return chkKikakuchiError("≦",str.trim(),arrKikakuti) ;
+                resultFlg = ValidateUtil.checkKikakuST005(fxhdd01, "0");
+                break;
+            case "≧":
+                resultFlg = ValidateUtil.checkKikakuST006(fxhdd01, "0");
+                break;
             case "MAX":
-                //[MAX]の後に数字が入っていない場合
-                if( ("MAX".equals(str.trim().substring(0, 3)))){
-                    Matcher isNum0 = patternChk.matcher(arrKikakuti[1]);
-                    return isNum0.matches();
-                }else{
-                    return false;
-                }         
+                resultFlg = ValidateUtil.checkKikakuST009(fxhdd01, "0");
+                break;
             case "MIN":
-                //[MIN]の後に数字が入っていない場合
-                if(("MIN".equals(str.trim().substring(0, 3)))){
-                    Matcher isNum0 = patternChk.matcher(arrKikakuti[1]);
-                    return isNum0.matches();
-                }else{
-                    return false;
-                }            
-            case "=":   
-                //[=]の後に数字が入っていない場合
-                if(("=".equals(str.trim().substring(0, 1)))){
-                    Matcher isNum0 = patternChk.matcher(arrKikakuti[1]);
-                    return isNum0.matches();
-                }else{
-                    return false;
-                }
+                resultFlg = ValidateUtil.checkKikakuST010(fxhdd01, "0");
+                break;
+            case "=":
+                resultFlg = ValidateUtil.checkKikakuST011(fxhdd01, "0");
+                break;
             default:
-                return false;
+                resultFlg = "-1";
+                break;
         }
+        return resultFlg;
     }
     
     /**
@@ -844,10 +829,11 @@ public class GXHDO501DA extends GXHDO901AEX {
             RequestContext context = RequestContext.getCurrentInstance();
             context.addCallbackParam("firstParam", "auth");
         }else{
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.addCallbackParam("firstParam", "warning");
-            this.warnMessage = "修正します。よろしいですか？";
-            this.warnProcess = "update";
+            try{
+                doUpdate();
+            }catch (SQLException ex) {
+                ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+            }
         }
     }
     
@@ -903,6 +889,134 @@ public class GXHDO501DA extends GXHDO901AEX {
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
             return new ArrayList<>();
+        }
+    }
+    
+    /**
+     * ユーザー認証チェック
+     */
+    @Override
+    public void userAuth() {
+        FacesContext facesContext = FacesContext.getCurrentInstance();
+
+        String authParam = this.processData.getUserAuthParam();
+        String passWord = selectFxhbm01(this.authUser);
+
+        if (StringUtil.isEmpty(passWord)
+                || !passWord.toUpperCase().equals(this.getSha256(this.authPassword).toUpperCase())) {
+            // ユーザーが存在しない場合またはパスワード不一致の場合エラー終了
+            FacesMessage message
+                    = new FacesMessage(FacesMessage.SEVERITY_ERROR, "権限が有りません。", null);
+            facesContext.addMessage(null, message);
+            return;
+        }
+
+        List<String> loginUserGroup = this.selectFxhbm02(this.authUser);
+        List<Parameter> paramListUser = parameterEJB.findParameter(this.authUser, authParam);
+        List<Parameter> paramListUserGroup = new ArrayList<>();
+        for (String group : loginUserGroup) {
+            paramListUserGroup.addAll(parameterEJB.findParameter(group, authParam));
+        }
+
+        if (paramListUser.isEmpty() && paramListUserGroup.isEmpty()) {
+            // 権限がない場合エラー終了
+            FacesMessage message
+                    = new FacesMessage(FacesMessage.SEVERITY_ERROR, "権限が有りません。", null);
+            facesContext.addMessage(null, message);
+            return;
+        }
+        
+        try{
+            doUpdate();
+        }catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+        }
+
+    }
+    
+    /**
+     * ユーザーマスタ検索
+     *
+     * @param user 担当者コード
+     * @return パスワード
+     */
+    private String selectFxhbm01(String user) {
+        try {
+            QueryRunner queryRunner = new QueryRunner(dataSourceDocServer);
+            String sql = "SELECT password "
+                    + "FROM fxhbm01 WHERE user_name = ? ";
+
+            List<Object> params = new ArrayList<>();
+            params.add(user);
+
+            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+            Map fxhbm01 = queryRunner.query(sql, new MapHandler(), params.toArray());
+            if (null == fxhbm01 || fxhbm01.isEmpty()) {
+                return "";
+            }
+            return StringUtil.nullToBlank(fxhbm01.get("password"));
+
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+            return "";
+        }
+    }
+    
+    /**
+     * SHA-256変換
+     *
+     * @param text 文字列
+     * @return SHA-256変換後の文字列
+     */
+    private String getSha256(String text) {
+        try {
+            if (StringUtil.isEmpty(text)) {
+                return "";
+            }
+
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            md.update(text.getBytes());
+            byte[] cipher_byte = md.digest();
+            StringBuilder sb = new StringBuilder(2 * cipher_byte.length);
+            for (byte b : cipher_byte) {
+                sb.append(String.format("%02x", b & 0xff));
+            }
+            return sb.toString();
+        } catch (NoSuchAlgorithmException ex) {
+            ErrUtil.outputErrorLog("SHA-256変換失敗", ex, LOGGER);
+            return "";
+        }
+    }
+    
+    /**
+     * [前工程規格情報]から、最大登録日を取得
+     *
+     * @param jissekino 実績No(検索キー)
+     * @return 最大登録日
+     * @throws SQLException 例外エラー
+     */
+    private Timestamp getDamkjokenTourokunichiji(String sekkeino) throws SQLException {
+        try {
+            QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
+            String sql = "SELECT MAX(tourokunichiji) tourokunichiji FROM da_mkjoken ";
+            if (!"".equals(StringUtil.blankToNull(sekkeino))) {
+                sql += "WHERE sekkeino = ? ";
+            }
+
+            List<Object> params = new ArrayList<>();
+            params.add(sekkeino);
+
+            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+
+            Map damkjokenData = queryRunner.query(sql, new MapHandler(), params.toArray());
+            if (null == damkjokenData || damkjokenData.isEmpty()) {
+                return null;
+            }
+            return (Timestamp)damkjokenData.get("tourokunichiji");
+
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+            return null;
         }
     }
 }

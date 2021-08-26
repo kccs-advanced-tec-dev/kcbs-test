@@ -533,27 +533,25 @@ public class GXHDO501B implements Serializable {
             List<Object> params = createSearchParam();
             List<Object> tempParams = new ArrayList<>();
             String sql = "SELECT COUNT(torikomino) AS CNT "
-                    + " FROM fxhdd10 WHERE 1=1" ;
-                     if(params.get(0)!=null){
-                        sql+= " AND (kikaku = ? ) ";
-                        tempParams.add(params.get(0));
-                    }
-                    if(params.get(1)!=null){
-                        sql+="AND (syurui = ?)";
-                        tempParams.add(params.get(1));
-                    }
-                    if(params.get(2)!=null){
-                        sql+="AND (tantousya = ? )";        
-                        tempParams.add(params.get(2));
-                    }
-                    if(params.get(3)!=null){
-                        sql+="AND (tourokunichiji >= CAST( ? AS TIMESTAMP))";
-                        tempParams.add(params.get(3));
-                    }
-                    if(params.get(4)!=null){
-                        sql+="AND (tourokunichiji <= CAST( ? AS TIMESTAMP))";
-                        tempParams.add(params.get(4));
-                    }
+                    + " FROM fxhdd10 WHERE " ;
+              sql += " (kikaku = ? ) ";
+              tempParams.add(params.get(0));
+              if (params.get(1) != null) {
+                  sql += " AND (syurui = ?) ";
+                  tempParams.add(params.get(1));
+              }
+              if (params.get(2) != null) {
+                  sql += " AND (tantousya = ? ) ";
+                  tempParams.add(params.get(2));
+              }
+              if (params.get(3) != null) {
+                  sql += " AND (tourokunichiji >= CAST( ? AS TIMESTAMP)) ";
+                  tempParams.add(params.get(3));
+              }
+              if (params.get(4) != null) {
+                  sql += " AND (tourokunichiji <= CAST( ? AS TIMESTAMP)) ";
+                  tempParams.add(params.get(4));
+              }
             DBUtil.outputSQLLog(sql, tempParams.toArray(), LOGGER);
             Map result = queryRunner.query(sql, new MapHandler(), tempParams.toArray());
             count = (long) result.get("CNT");
@@ -581,28 +579,26 @@ public class GXHDO501B implements Serializable {
                     + ", syurui "
                     + ", tantousya "
                     + ", ngsuu "
-                    + " FROM fxhdd10 WHERE 1=1";
-                    if(params.get(0)!=null){
-                        sql+= " AND (kikaku = ? ) ";
-                        tempParams.add(params.get(0));
-                    }
-                    if(params.get(1)!=null){
-                        sql+="AND (syurui = ?)";
-                        tempParams.add(params.get(1));
-                    }
-                    if(params.get(2)!=null){
-                        sql+="AND (tantousya = ? )";        
-                        tempParams.add(params.get(2));
-                    }
-                    if(params.get(3)!=null){
-                        sql+="AND (tourokunichiji >= CAST( ? AS TIMESTAMP))";
-                        tempParams.add(params.get(3));
-                    }
-                    if(params.get(4)!=null){
-                        sql+="AND (tourokunichiji <= CAST( ? AS TIMESTAMP))";
-                        tempParams.add(params.get(4));
-                    }
-                    sql+= "ORDER BY tourokunichiji DESC,kikaku,syurui,tantousya ASC";   
+                    + " FROM fxhdd10 WHERE ";
+            sql += " (kikaku = ? ) ";
+            tempParams.add(params.get(0));
+            if (params.get(1) != null) {
+                sql += " AND (syurui = ?) ";
+                tempParams.add(params.get(1));
+            }
+            if (params.get(2) != null) {
+                sql += " AND (tantousya = ? ) ";
+                tempParams.add(params.get(2));
+            }
+            if (params.get(3) != null) {
+                sql += " AND (tourokunichiji >= CAST( ? AS TIMESTAMP)) ";
+                tempParams.add(params.get(3));
+            }
+            if (params.get(4) != null) {
+                sql += " AND (tourokunichiji <= CAST( ? AS TIMESTAMP)) ";
+                tempParams.add(params.get(4));
+            }
+            sql += " ORDER BY tourokunichiji DESC,kikaku,syurui,tantousya ASC";
                     
             // モデルクラスとのマッピング定義
             Map<String, String> mapping = new HashMap<>();

@@ -62,6 +62,7 @@ import java.sql.Connection;
 import java.sql.Timestamp;
 import jp.co.kccs.xhd.common.ResultMessage;
 import jp.co.kccs.xhd.db.model.DaMkhyojunjoken;
+import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -145,13 +146,17 @@ public class GXHDO501A implements Serializable {
      */
     private String cmbSyuruibgcolor = "";
     /**
-     * ﾌｧｲﾙ拡張子
+     * 検索条件：担当者の背景色
      */
-    private static final String EXCEL_XLS = "xls";
+    private String txtTantousyabgcolor = "";
     /**
      * ﾌｧｲﾙ拡張子
      */
     private static final String EXCEL_XLSX = "xlsx";
+    /**
+     * ﾌｧｲﾙ拡張子
+     */
+    private static final String EXCEL_XLSM = "xlsm";
     /**
      * 格納できる値の上限
      */
@@ -292,6 +297,24 @@ public class GXHDO501A implements Serializable {
     public void setCmbSyuruibgcolor(String cmbSyuruibgcolor) {
         this.cmbSyuruibgcolor = cmbSyuruibgcolor;
     }
+    
+     /**
+      * 検索条件：担当者の背景色
+      * 
+     * @return the txtTantousyabgcolor
+     */
+    public String getTxtTantousyabgcolor() {
+        return txtTantousyabgcolor;
+    }
+
+    /**
+     * 検索条件：担当者の背景色
+     * 
+     * @param txtTantousyabgcolor the txtTantousyabgcolor to set
+     */
+    public void setTxtTantousyabgcolor(String txtTantousyabgcolor) {
+        this.txtTantousyabgcolor = txtTantousyabgcolor;
+    }
 
     /**
      * 取込ファイル名称
@@ -380,7 +403,7 @@ public class GXHDO501A implements Serializable {
             return;
         } else {
             // ﾌｧｲﾙ拡張子が正しくありません。
-            if (!fileName.endsWith(EXCEL_XLS) && !fileName.endsWith(EXCEL_XLSX)) {
+            if (!fileName.endsWith(EXCEL_XLSX) && !fileName.endsWith(EXCEL_XLSM)) {
                 FacesContext facesContext = FacesContext.getCurrentInstance();
                 FacesMessage message
                         = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000208"), null);
@@ -403,8 +426,10 @@ public class GXHDO501A implements Serializable {
         }
         // Excel対象を取得 
         Sheet sheet = workbook.getSheetAt(0);
+        setTxtTantousyabgcolor(NORMAL_COLOR) ;
         // 担当者桁数チェック
         if (existError(validateUtil.checkC103(getTxtTantousya(), "担当者", 6))) {
+            setTxtTantousyabgcolor(ERROR_COLOR);
             return;
         }
         String paramTxtTantousya = StringUtil.nullToBlank(getTxtTantousya());
@@ -413,6 +438,7 @@ public class GXHDO501A implements Serializable {
             FacesMessage message
                     = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000011", "担当者"), null);
             FacesContext.getCurrentInstance().addMessage(null, message);
+            setTxtTantousyabgcolor(ERROR_COLOR);
             return;
         }
 
@@ -424,7 +450,7 @@ public class GXHDO501A implements Serializable {
         }
         HashMap<String, Integer> resultMap = new HashMap<>();
         List<String> resultMessageList = new ArrayList<>();
-        setDownLoadFileName(fileName.substring(0, fileName.lastIndexOf(".")));
+        setDownLoadFileName(fileName);
         // A.NG数(変数)を初期化する
         resultMap.put("ngCount", 0);
         List<GXHDO501AModel> loadDataList;
@@ -808,7 +834,7 @@ public class GXHDO501A implements Serializable {
             insertFxhdd10(queryRunnerDoc, conDoc, maxTorikomiNo, ngCount, fvsyurui);
 
             // (C).Excel格納
-            setDownLoadFileName(String.valueOf(maxTorikomiNo));
+            setDownLoadFileName(String.valueOf(maxTorikomiNo) + getDownLoadFileName().substring(getDownLoadFileName().indexOf(".")));
             return "T";
         }
         return stepFlg;
@@ -830,7 +856,7 @@ public class GXHDO501A implements Serializable {
                 filePath += File.separator;
             }
             doMkdir(filePath);
-            filePath += getDownLoadFileName() + ".xlsx";
+            filePath += getDownLoadFileName();
             File outputFile = new File(filePath);
             Workbook workbookCp = WorkbookFactory.create(file.getInputstream());
 
@@ -872,9 +898,12 @@ public class GXHDO501A implements Serializable {
             if (!filePath.endsWith(File.separator)) {
                 filePath += File.separator;
             }
-            outputFile = new File(filePath + downLoadFileName + ".xlsx");
+            String downLoadFileNamePreffix = downLoadFileName.substring(0, downLoadFileName.indexOf("."));
+            // 取り込んだExcelファイルの拡張子を取得
+            String downLoadFileNameSuffix = downLoadFileName.substring(downLoadFileName.indexOf("."));
+            outputFile = new File(filePath + downLoadFileName);
             // ダウンロードファイル名
-            String downloadFileName = downLoadFileName + "_" + ((new java.text.SimpleDateFormat("yyyyMMddHHmmss")).format(new Date())) + ".xlsx";
+            String downloadFileName = downLoadFileNamePreffix + "_" + ((new java.text.SimpleDateFormat("yyyyMMddHHmmss")).format(new Date())) + downLoadFileNameSuffix;
 
             // outputstreamにファイルを転送
             ec.responseReset();
@@ -934,7 +963,7 @@ public class GXHDO501A implements Serializable {
         // D.[工程]ﾁｪｯｸ処理
         String kouteimei = StringUtil.nullToBlank(gxhdo501aModel.getKouteimei());
         // ﾁｪｯｸ処理
-        if (check003And006(gxhdo501aModel, kouteimei, "工程", 20, resultMap)) {
+        if (check003And006(gxhdo501aModel, kouteimei, "工程", 6, resultMap)) {
             rtnStep = "C";
             return rtnStep;
         }
@@ -949,7 +978,7 @@ public class GXHDO501A implements Serializable {
         // F.[重量]ﾁｪｯｸ処理
         String jyuuryou = StringUtil.nullToBlank(gxhdo501aModel.getJyuuryou());
         // ﾁｪｯｸ処理
-        if (check003And006(gxhdo501aModel, jyuuryou, "重量", 8, resultMap, "1")) {
+        if (check003And006(gxhdo501aModel, jyuuryou, "重量", 10, resultMap, "1")) {
             rtnStep = "C";
             return rtnStep;
         }
@@ -965,7 +994,7 @@ public class GXHDO501A implements Serializable {
         // H.[ｵｰﾅｰ]ﾁｪｯｸ処理
         String owner = StringUtil.nullToBlank(gxhdo501aModel.getOwner());
         // ﾁｪｯｸ処理
-        if (check003And006(gxhdo501aModel, owner, "ｵｰﾅｰ", 8, resultMap)) {
+        if (check003And006(gxhdo501aModel, owner, "ｵｰﾅｰ", 4, resultMap)) {
             rtnStep = "C";
             return rtnStep;
         }
@@ -1032,7 +1061,7 @@ public class GXHDO501A implements Serializable {
                 }
 
                 // 規格値 チェック：ﾌｫｰﾏｯﾄがﾁｪｯｸﾊﾟﾀｰﾝと一致しない場合ｴﾗｰ。
-                if (!chkTyekkupatternError(dkikakuti, dtyekkupattern)) {
+                if ("-1".equals(chkTyekkupatternError(dkikakuti, dtyekkupattern))) {
                     // NG数+1
                     resultMap.put("ngCount", resultMap.get("ngCount") + 1);
                     gxhdo501aModel.setResulta("NG");
@@ -1257,116 +1286,39 @@ public class GXHDO501A implements Serializable {
      * @param tyekkupattern ﾁｪｯｸﾊﾟﾀｰﾝ
      * @return エラーが存在する場合false
      */
-    private boolean chkTyekkupatternError(String strKikakuti, String strTyekkupattern) {
-
-        Pattern patternChk = Pattern.compile("[0-9]*\\.?[0-9]+");
-
-        if (!strKikakuti.contains(strTyekkupattern)) {
-            return false;
-        }
+    private String chkTyekkupatternError(String strKikakuti, String strTyekkupattern) {
         //半角・全角ｽﾍﾟｰｽを削除
-        String str = strKikakuti.replace((char) 12288, ' ');
-        String arrKikakuti[] = str.trim().split(strTyekkupattern);
-
-        if (arrKikakuti.length > 2 || arrKikakuti.length == 0) {
-            return false;
-        }
-
-        //"±","～","≧","≦","MAX","MIN","="
+        strKikakuti =strKikakuti.replace((char)12288, ' ').trim();
+        FXHDD01 fxhdd01 = new FXHDD01();
+        fxhdd01.setKikakuChi(strKikakuti);
+        String resultFlg = "0";
         switch (strTyekkupattern) {
             case "±":
+                resultFlg = ValidateUtil.checkKikakuST001(fxhdd01, "0");
+                break;
             case "～":
-                //[±],[～]の前後に数字が入っていない場合ｴﾗｰ
-                if (arrKikakuti.length != 2) {
-                    return false;
-                } else {
-                    if (("".equals(arrKikakuti[0])) || ("".contains(arrKikakuti[1]))) {
-                        return false;
-                    } else {
-                        return chkNumTypeError(arrKikakuti[0], arrKikakuti[1]);
-                    }
-                }
-            case "≧":
-                return chkKikakuchiError("≧", str.trim(), arrKikakuti);
+                resultFlg = ValidateUtil.checkKikakuST002(fxhdd01, "0");
+                break;
             case "≦":
-                return chkKikakuchiError("≦", str.trim(), arrKikakuti);
+                resultFlg = ValidateUtil.checkKikakuST005(fxhdd01, "0");
+                break;
+            case "≧":
+                resultFlg = ValidateUtil.checkKikakuST006(fxhdd01, "0");
+                break;
             case "MAX":
-                //[MAX]の後に数字が入っていない場合
-                if (("MAX".equals(str.trim().substring(0, 3)))) {
-                    Matcher isNum0 = patternChk.matcher(arrKikakuti[1]);
-                    return isNum0.matches();
-                } else {
-                    return false;
-                }
+                resultFlg = ValidateUtil.checkKikakuST009(fxhdd01, "0");
+                break;
             case "MIN":
-                //[MIN]の後に数字が入っていない場合
-                if (("MIN".equals(str.trim().substring(0, 3)))) {
-                    Matcher isNum0 = patternChk.matcher(arrKikakuti[1]);
-                    return isNum0.matches();
-                } else {
-                    return false;
-                }
+                resultFlg = ValidateUtil.checkKikakuST010(fxhdd01, "0");
+                break;
             case "=":
-                //[=]の後に数字が入っていない場合
-                if (("=".equals(str.trim().substring(0, 1)))) {
-                    Matcher isNum0 = patternChk.matcher(arrKikakuti[1]);
-                    return isNum0.matches();
-                } else {
-                    return false;
-                }
+                resultFlg = ValidateUtil.checkKikakuST011(fxhdd01, "0");
+                break;
             default:
-                return false;
+                resultFlg = "-1";
+                break;
         }
-
-    }
-
-    /**
-     * Numﾁｪｯｸ
-     *
-     * @param kikakutiStr1 規格値前半部分
-     * @param kikakutiStr2 規格値後半部分
-     * @return エラーが存在する場合false
-     */
-    private boolean chkNumTypeError(String kikakutiStr1, String kikakutiStr2) {
-        Pattern patternChk = Pattern.compile("[0-9]*\\.?[0-9]+");
-        Matcher isNum = patternChk.matcher(kikakutiStr1);
-        if (!isNum.matches()) {
-            return false;
-        } else {
-            Matcher isNum1 = patternChk.matcher(kikakutiStr2);
-            return isNum1.matches();
-        }
-    }
-
-    /**
-     * Numﾁｪｯｸ [≧],[≦]
-     *
-     * @param tmpStr [≧],[≦]
-     * @param str 規格値
-     * @param arrKikakuti 規格値array
-     * @return エラーが存在する場合false
-     */
-    private boolean chkKikakuchiError(String tmpStr, String str, String[] arrKikakuti) {
-        Pattern patternChk = Pattern.compile("[0-9]*\\.?[0-9]+");
-        if ((tmpStr.equals(str.substring(0, 1)))) {
-            if (!"".equals(arrKikakuti[1])) {
-                Matcher isNum0 = patternChk.matcher(arrKikakuti[1]);
-                return isNum0.matches();
-            } else {
-                return false;
-            }
-        } else {
-            if ((tmpStr.equals(str.substring(str.length() - 1)))) {
-                if (!"".equals(arrKikakuti[0])) {
-                    Matcher isNum0 = patternChk.matcher(arrKikakuti[0]);
-                    return isNum0.matches();
-                } else {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        }
+        return resultFlg;
     }
 
     /**
@@ -1654,6 +1606,7 @@ public class GXHDO501A implements Serializable {
         // 入力チェック処理
         ValidateUtil validateUtil = new ValidateUtil();
         setCmbSyuruibgcolor(NORMAL_COLOR);
+        setTxtTantousyabgcolor(NORMAL_COLOR);
         RequestContext.getCurrentInstance().execute("downloadOncomplete('" + NORMAL_COLOR + "')");
         String paramSyurui = StringUtil.nullToBlank(getCmbSyurui());
         // ﾁｪｯｸﾊﾟﾀｰﾝ入力チェック
@@ -1737,7 +1690,8 @@ public class GXHDO501A implements Serializable {
         int rowIdx = 1;
         // スタイル
         CellStyle cellStyleWt = createHeaderCellStyle(workbook, IndexedColors.WHITE.getIndex());
-        CellStyle cellStyleYl = createHeaderCellStyle(workbook, IndexedColors.YELLOW.getIndex());
+        // ヘッダの背景色が水色を設置
+        CellStyle cellStyleYl = createHeaderCellStyle(workbook, IndexedColors.PALE_BLUE.getIndex());
         CellStyle cellStyleNm = createNumericCellStyle(workbook, 0);
 
         // ヘッダーの「種類」列
@@ -2002,11 +1956,14 @@ public class GXHDO501A implements Serializable {
      * @param conDoc コネクション
      * @param gxhdo501aModel 取込データ
      * @param data 取込データ
+     * @return 規格値='-'場合false
      * @throws SQLException 例外エラー
      */
-    private void insertDaMkhyojunjoken(QueryRunner queryRunnerDoc, Connection conDoc,
+    private boolean insertDaMkhyojunjoken(QueryRunner queryRunnerDoc, Connection conDoc,
             GXHDO501AModel gxhdo501aModel, DaMkhyojunjoken data) throws SQLException {
-
+        if ("-".equals(data.getKikakuti())) {
+            return false;
+        }
         String sql = " INSERT INTO da_mkhyojunjoken ( "
                 + " hinmei, pattern, syurui, kouteimei, koumokumei, kikakuti, "
                 + " kanrikoumokumei, tyekkupattern, tantousya, tourokunichiji "
@@ -2027,6 +1984,7 @@ public class GXHDO501A implements Serializable {
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerDoc.update(conDoc, sql, params.toArray());
+        return true;
     }
 
     /**
@@ -2320,7 +2278,7 @@ public class GXHDO501A implements Serializable {
                 }
 
                 // 規格値 チェック：ﾌｫｰﾏｯﾄがﾁｪｯｸﾊﾟﾀｰﾝと一致しない場合ｴﾗｰ。
-                if (!chkTyekkupatternError(dkikakuti, dtyekkupattern)) {
+                if ("-1".equals(chkTyekkupatternError(dkikakuti, dtyekkupattern))) {
                     // NG数+1
                     resultMap.put("ngCount", resultMap.get("ngCount") + 1);
                     gxhdo501aModel.setResulta("NG");
@@ -2371,15 +2329,17 @@ public class GXHDO501A implements Serializable {
                         int delNum = deleteDaMkhyojunjoken(queryRunnerQcdb, conQcdb, gxhdo501aModel);
                         delCount += delNum;
                         // 標準規格情報にﾃﾞｰﾀ登録
-                        insertDaMkhyojunjoken(queryRunnerQcdb, conQcdb, gxhdo501aModel, data);
-                        addCount++;
+                        if (insertDaMkhyojunjoken(queryRunnerQcdb, conQcdb, gxhdo501aModel, data)) {
+                            addCount++;
+                        }
                     } catch (SQLException ex) {
                         ErrUtil.outputErrorLog("IOException発生", ex, LOGGER);
                     }
                 } else {
                     // 標準規格情報にﾃﾞｰﾀ登録
-                    insertDaMkhyojunjoken(queryRunnerQcdb, conQcdb, gxhdo501aModel, data);
-                    addCount++;
+                    if (insertDaMkhyojunjoken(queryRunnerQcdb, conQcdb, gxhdo501aModel, data)) {
+                        addCount++;
+                    }
                 }
             }
         }
