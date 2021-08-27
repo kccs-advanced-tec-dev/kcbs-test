@@ -113,14 +113,14 @@ public class GXHDO101D001Model implements Serializable {
     /**
      * @return the sikasuuryo
      */
-    public String getSikasuuryo() {
+    public Long getSikasuuryo() {
         return sikasuuryo;
     }
 
     /**
      * @param sikasuuryo the sikasuuryo to set
      */
-    public void setSikasuuryo(String sikasuuryo) {
+    public void setSikasuuryo(Long sikasuuryo) {
         this.sikasuuryo = sikasuuryo;
     }
 
@@ -969,7 +969,7 @@ public class GXHDO101D001Model implements Serializable {
     /**
      * 仕掛数
      */
-    private String sikasuuryo;
+    private Long sikasuuryo;
 
     /**
      * OWNERｺｰﾄﾞ
@@ -1349,7 +1349,7 @@ public class GXHDO101D001Model implements Serializable {
          * 工程不良指示.指示日
          */
         private java.sql.Date sijibi;
-        
+
         /**
          * 工程不良指示.処置工程ｺｰﾄﾞ
          */
@@ -1405,7 +1405,7 @@ public class GXHDO101D001Model implements Serializable {
         /**
          * @param syotibi the syotibi to set
          */
-        public void setSyotibi(java.sql.Date syotibi) {        
+        public void setSyotibi(java.sql.Date syotibi) {
             this.syotibi = syotibi;
         }
 
@@ -1450,7 +1450,7 @@ public class GXHDO101D001Model implements Serializable {
         /**
          * 工程不良結果.処置日
          */
-	private java.sql.Date syotibi;
+        private java.sql.Date syotibi;
 
         /**
          * 工程不良結果.処置内容

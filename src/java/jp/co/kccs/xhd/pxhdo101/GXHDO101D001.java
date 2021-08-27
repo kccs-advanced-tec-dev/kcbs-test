@@ -338,7 +338,7 @@ public class GXHDO101D001 implements Serializable {
             model.setHakkenkotei(rowKoteifuryo.getHakkenkotei()); // KF.発見工程ID
             model.setTorokuno(rowKoteifuryo.getTorokuno()); // KF.登録No
             model.setKcpno(rowKoteifuryo.getKcpno()); // KF.KCPNO
-            model.setSikasuuryo(Integer.toString(rowKoteifuryo.getSikasuuryo())); // KF.仕掛数 // ★TODO: 型確認
+            model.setSikasuuryo(rowKoteifuryo.getSikasuuryo()); // KF.仕掛数
             model.setOwnercode(rowKoteifuryo.getOwnercode()); // KF.OWNERｺｰﾄﾞ
             model.setLotkubuncode(rowKoteifuryo.getLotkubuncode()); // KF.Lot区分
             model.setLotno(rowKoteifuryo.getLotno()); // KF.製造LotNo

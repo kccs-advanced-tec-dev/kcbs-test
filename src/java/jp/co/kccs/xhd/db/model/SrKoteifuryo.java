@@ -24,9 +24,8 @@ import java.sql.Timestamp;
  * @since 2021/08/20
  */
 public class SrKoteifuryo {
-    
-    //TODO: 物理名確認
 
+    //TODO: 物理名確認
     /**
      * 登録No
      */
@@ -135,7 +134,7 @@ public class SrKoteifuryo {
     /**
      * しか借り数
      */
-    private int sikasuuryo;
+    private Long sikasuuryo;
     /**
      * 不良率1
      */
@@ -718,14 +717,14 @@ public class SrKoteifuryo {
     /**
      * @return the sikasuuryo
      */
-    public int getSikasuuryo() {
+    public Long getSikasuuryo() {
         return sikasuuryo;
     }
 
     /**
      * @param sikasuuryo the sikasuuryo to set
      */
-    public void setSikasuuryo(int sikasuuryo) {
+    public void setSikasuuryo(Long sikasuuryo) {
         this.sikasuuryo = sikasuuryo;
     }
 
