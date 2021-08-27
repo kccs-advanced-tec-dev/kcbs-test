@@ -192,16 +192,15 @@ public class GXHDO101C021 implements Serializable {
         // 品質確認連絡書への値の受渡し
         // 登録No配列Index
         session.setAttribute("torokuNoIndex", StringUtil.blankToNull(torokuNoIndex));
-        // 登録No配列：sessionに格納するためString[]→Stringにカンマ「,」区切りで変換している
-        String torokuNoArrayStr = String.join(",", torokuNoArray);
-        session.setAttribute("torokuNoArrayStr", torokuNoArrayStr);
+        // 登録No配列: session送受信時はObject型として処理されるので受取時に元の型への復元処理を行うこと
+        session.setAttribute("torokuNoArray", torokuNoArray);
         // ロットNo(検索値)を保持
         String sLotNo = this.searchLotNo;
         session.setAttribute("searchLotNo", sLotNo);
         // 担当者ｺｰﾄﾞ(検索値)を保持
         String sTantoshaCd = this.searchTantoshaCd;
         session.setAttribute("searchTantoshaCd", sTantoshaCd);
-
+        
         // ③変数化した上記二項目を引数にして品質確認連絡書の画面を表示する。
         return "/secure/pxhdo101/gxhdo101d001.xhtml?faces-redirect=true";
     }

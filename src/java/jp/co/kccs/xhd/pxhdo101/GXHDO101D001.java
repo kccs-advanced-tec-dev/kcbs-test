@@ -4,6 +4,7 @@
 package jp.co.kccs.xhd.pxhdo101;
 
 import java.io.Serializable;
+import java.lang.reflect.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -103,7 +104,7 @@ public class GXHDO101D001 implements Serializable {
      * B･Cﾗﾝｸ連絡書一覧画面からの引数: 登録No配列
      */
     private String[] torokuNoArray;
-    
+
     /**
      * 登録No配列のLength
      */
@@ -187,11 +188,12 @@ public class GXHDO101D001 implements Serializable {
             // sessionで渡されたB･Cﾗﾝｸ連絡書一覧画面からの引数をbeanに格納する
             // 登録NoIndex
             setTorokuNoIndex((String) session.getAttribute("torokuNoIndex"));
-            // 登録No配列 String → String[] に変換
-            String[] tmpTorokuNoArray = ((String) session.getAttribute("torokuNoArrayStr")).split(",");
-            setTorokuNoArray(tmpTorokuNoArray);
+            // 登録No配列を受け取る
+            Object torokuNoArrayObjSession = session.getAttribute("torokuNoArray");
+            String[] torokuNoArray = convertFromSessionToStringArray(torokuNoArrayObjSession);
+            setTorokuNoArray(torokuNoArray);
             // 登録No配列String[]のLength (JSF表示用にセット)
-            setTorokuNoArrayLength(tmpTorokuNoArray.length);
+            setTorokuNoArrayLength(torokuNoArray.length);
             // ロットNo(検索値)
             String sLotNo = (String) session.getAttribute("searchLotNo");
             setSearchLotNo(sLotNo);
@@ -227,6 +229,54 @@ public class GXHDO101D001 implements Serializable {
         // 工程不良結果テーブル作成
         createKoteifuryokekkaTable();
 
+    }
+    
+    /**
+     * sessionで受信したObjectを送信時のString[]配列に変換する
+     * 
+     * @param obj
+     * @return 
+     */
+    private String[] convertFromSessionToStringArray(Object obj){
+        Object[] objArr = convertToObjectArray(obj);
+        String[] strArr = convertToStringArray(objArr);
+        return strArr;
+    }
+
+    /**
+     * Objectを配列Object[] に変換
+     *
+     * @param array セッションから受け取ったObject
+     * @return
+     */
+    private Object[] convertToObjectArray(Object array) {
+        Class ofArray = array.getClass().getComponentType();
+        if (ofArray.isPrimitive()) {
+            List ar = new ArrayList();
+            int length = Array.getLength(array);
+            for (int i = 0; i < length; i++) {
+                ar.add(Array.get(array, i));
+            }
+            return ar.toArray();
+        } else {
+            return (Object[]) array;
+        }
+    }
+
+    /**
+     * Object[]配列をString[]配列に変換する
+     * 
+     * @param objArray
+     * @return 
+     */
+    private String[] convertToStringArray(Object[] objArray) {
+        
+        List<String> strList = new ArrayList<>();
+        for (Object obj : objArray) {
+            strList.add((String) obj);
+        }
+        String[] strArray = new String[strList.size()];
+        return strList.toArray(strArray);
     }
 
     /**
@@ -609,7 +659,7 @@ public class GXHDO101D001 implements Serializable {
         session.setAttribute("flgReOpenMenutable", "true");
         // 入力画面選択の画面にB･Cﾗﾝｸ連絡書一覧再表示フラグ「false」を渡す
         session.setAttribute("flgReOpenGXHDOC021", "false");
-        
+
         return "/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true";
     }
 
