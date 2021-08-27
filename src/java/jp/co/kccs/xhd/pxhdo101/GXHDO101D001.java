@@ -242,8 +242,7 @@ public class GXHDO101D001 implements Serializable {
 
             // チェック処理：レコードが取得出来なかった場合
             if (listSrKoteifuryo.isEmpty()) {
-                // TODO: エラーコード確認
-                setErrorMessage(MessageUtil.getMessage("XHD-XXXX", "品質確認連絡書のﾃﾞｰﾀが取得できません。ｼｽﾃﾑに連絡してください。"));
+                setErrorMessage(MessageUtil.getMessage("XHD-000218"));
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, getErrorMessage(), null);
                 FacesContext.getCurrentInstance().addMessage(null, message);
                 return;
