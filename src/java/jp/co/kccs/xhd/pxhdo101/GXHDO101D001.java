@@ -21,6 +21,7 @@ import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
+import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.db.model.SrKoteifuryo;
 import jp.co.kccs.xhd.db.model.SrKoteifuryoKekka;
 import jp.co.kccs.xhd.db.model.SrKoteifuryoSiji;
@@ -29,6 +30,7 @@ import jp.co.kccs.xhd.model.GXHDO101D001Model.KoteifuryoSiji;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
+import jp.co.kccs.xhd.util.SubFormUtil;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.BeanProcessor;
 import org.apache.commons.dbutils.QueryRunner;
@@ -36,6 +38,7 @@ import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.RowProcessor;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
+import org.primefaces.context.RequestContext;
 
 /**
  * ===============================================================================<br>
@@ -163,6 +166,11 @@ public class GXHDO101D001 implements Serializable {
     private String errorMessage;
 
     /**
+     * メッセージリスト
+     */
+    private List<String> messageListGXHDO101D001 = new ArrayList<>();
+
+    /**
      * コンストラクタ
      */
     public GXHDO101D001() {
@@ -224,20 +232,32 @@ public class GXHDO101D001 implements Serializable {
 
         // 工程不良テーブル作成
         createKoteifuryoTable();
+
+        // 工程不良テーブル取得に失敗した場合はエラーダイアログを表示させて後続処理を中断
+        if (!this.messageListGXHDO101D001.isEmpty()) {
+            // メッセージを画面に渡す
+            InitMessage beanInitMessage = (InitMessage) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_INIT_MESSAGE);
+            beanInitMessage.setInitMessageList(this.getMessageListGXHDO101D001());
+
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.addCallbackParam("firstParam", "initMessage");
+            return;
+        }
+
         // 工程不良指示テーブル作成
         createKoteifuryosijiTable();
         // 工程不良結果テーブル作成
         createKoteifuryokekkaTable();
 
     }
-    
+
     /**
      * sessionで受信したObjectを送信時のString[]配列に変換する
-     * 
+     *
      * @param obj
-     * @return 
+     * @return
      */
-    private String[] convertFromSessionToStringArray(Object obj){
+    private String[] convertFromSessionToStringArray(Object obj) {
         Object[] objArr = convertToObjectArray(obj);
         String[] strArr = convertToStringArray(objArr);
         return strArr;
@@ -265,12 +285,12 @@ public class GXHDO101D001 implements Serializable {
 
     /**
      * Object[]配列をString[]配列に変換する
-     * 
+     *
      * @param objArray
-     * @return 
+     * @return
      */
     private String[] convertToStringArray(Object[] objArray) {
-        
+
         List<String> strList = new ArrayList<>();
         for (Object obj : objArray) {
             strList.add((String) obj);
@@ -290,11 +310,18 @@ public class GXHDO101D001 implements Serializable {
             // 工程不良テーブルを取得する
             List<SrKoteifuryo> listSrKoteifuryo = getSrKoteifuryoList(queryRunnerQcdb, findTorokuNoFromIndex(torokuNoIndex));
 
+            // メッセージリスト
+            this.setMessageListGXHDO101D001(new ArrayList<>());
+
             // チェック処理：レコードが取得出来なかった場合
             if (listSrKoteifuryo.isEmpty()) {
                 setErrorMessage(MessageUtil.getMessage("XHD-000218"));
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, getErrorMessage(), null);
                 FacesContext.getCurrentInstance().addMessage(null, message);
+                
+                List<String> messagelist = new ArrayList<>();
+                messagelist.add(getErrorMessage());
+                setMessageListGXHDO101D001(messagelist);
                 return;
             }
 
@@ -852,5 +879,19 @@ public class GXHDO101D001 implements Serializable {
      */
     public void setTorokuNoArrayLength(int torokuNoArrayLength) {
         this.torokuNoArrayLength = torokuNoArrayLength;
+    }
+
+    /**
+     * @return the messageListGXHDO101D001
+     */
+    public List<String> getMessageListGXHDO101D001() {
+        return messageListGXHDO101D001;
+    }
+
+    /**
+     * @param messageListGXHDO101D001 the messageListGXHDO101D001 to set
+     */
+    public void setMessageListGXHDO101D001(List<String> messageListGXHDO101D001) {
+        this.messageListGXHDO101D001 = messageListGXHDO101D001;
     }
 }
