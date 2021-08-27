@@ -597,6 +597,20 @@ public class GXHDO101D001 implements Serializable {
      * @return 遷移先URL
      */
     public String doReturnInput() {
+        // セッション情報
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+        // ロットNo(検索値)を保持
+        String sLotNo = this.searchLotNo;
+        session.setAttribute("searchLotNo", sLotNo);
+        // 担当者ｺｰﾄﾞ(検索値)を保持
+        String sTantoshaCd = this.searchTantoshaCd;
+        session.setAttribute("searchTantoshaCd", sTantoshaCd);
+        // 入力画面選択の画面にmenuTable再表示フラグを渡す
+        session.setAttribute("flgReOpenMenutable", "true");
+        // 入力画面選択の画面にB･Cﾗﾝｸ連絡書一覧再表示フラグ「false」を渡す
+        session.setAttribute("flgReOpenGXHDOC021", "false");
+        
         return "/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true";
     }
 
@@ -615,7 +629,9 @@ public class GXHDO101D001 implements Serializable {
         // 担当者ｺｰﾄﾞ(検索値)を保持
         String sTantoshaCd = this.searchTantoshaCd;
         session.setAttribute("searchTantoshaCd", sTantoshaCd);
-        // 入力画面選択の画面にB･Cﾗﾝｸ連絡書一覧再表示フラグを渡す
+        // 入力画面選択の画面にmenuTable再表示フラグを渡す
+        session.setAttribute("flgReOpenMenutable", "true");
+        // 入力画面選択の画面にB･Cﾗﾝｸ連絡書一覧再表示フラグ「true」を渡す
         session.setAttribute("flgReOpenGXHDOC021", "true");
 
         return "/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true";

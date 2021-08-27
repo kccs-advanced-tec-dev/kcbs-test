@@ -232,12 +232,18 @@ public class GXHDO101A implements Serializable {
      * 参照元ﾃﾞｰﾀ
      */
     private FXHDM01 deleteMenuInfo = null;
+    
+    /**
+     * menuTable再表示フラグ(GXHDO101D001から遷移時に使用)
+     */
+    private boolean flgReOpenMenutable = false;
 
     /**
-     * B･Cﾗﾝｸ連絡書一覧再表示フラグ
+     * B･Cﾗﾝｸ連絡書一覧再表示フラグ(GXHDO101D001から遷移時に使用)
      */
     private boolean flgReOpenGXHDOC021 = false;
 
+    
     /**
      * コンストラクタ
      */
@@ -262,21 +268,21 @@ public class GXHDO101A implements Serializable {
         }
 
         // 品質確認連絡書から「一覧へ戻る」で戻ってきた場合はB･Cﾗﾝｸ連絡書一覧を再表示する
-        String strFlgReOpenGXHDOC021 = StringUtil.nullToBlank(session.getAttribute("flgReOpenGXHDOC021"));
-        if (strFlgReOpenGXHDOC021 == "true") {
-            this.flgReOpenGXHDOC021 = true;
+        String strFlgReOpenMenutable = StringUtil.nullToBlank(session.getAttribute("flgReOpenMenutable"));
+        if (strFlgReOpenMenutable == "true") {
+            this.flgReOpenMenutable = true;
         }
-        session.setAttribute("flgReOpenGXHDOC021", "");
-        if (isFlgReOpenGXHDOC021()) {
-            reOpenGXHDO101C021();
+        session.setAttribute("flgReOpenMenutable", "");
+        if (isFlgReOpenMenutable()) {
+            reOpenMenutableFromGXHDO101D001();
         }
 
     }
 
     /**
-     * 再検索後にB･Cﾗﾝｸ連絡書一覧を再表示
+     * GXHDO101D001から遷移時、再検索後にMenuTableを再表示させる
      */
-    private void reOpenGXHDO101C021() {
+    private void reOpenMenutableFromGXHDO101D001() {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
 
@@ -286,6 +292,13 @@ public class GXHDO101A implements Serializable {
         // 担当者ｺｰﾄﾞ(検索値)
         String searchTantoshaCd = (String) session.getAttribute("searchTantoshaCd");
         this.searchTantoshaCd = searchTantoshaCd;
+        // B･Cﾗﾝｸ連絡書一覧再表示フラグ
+        String strFlgReOpenGXHDOC021 = (String) session.getAttribute("flgReOpenGXHDOC021");
+        if (strFlgReOpenGXHDOC021 == "true") {
+            this.flgReOpenGXHDOC021 = true;
+        } else {
+            this.flgReOpenGXHDOC021 = false;
+        }
         // ロットNo, 担当者コードを再設定
         this.lotNo = searchLotNo;
         this.tantoshaCd = searchTantoshaCd;
@@ -4231,6 +4244,20 @@ public class GXHDO101A implements Serializable {
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerXHD.query(sql, beanHandler, params.toArray());
 
+    }
+
+    /**
+     * @return the flgReOpenMenutable
+     */
+    public boolean isFlgReOpenMenutable() {
+        return flgReOpenMenutable;
+    }
+
+    /**
+     * @param flgReOpenMenutable the flgReOpenMenutable to set
+     */
+    public void setFlgReOpenMenutable(boolean flgReOpenMenutable) {
+        this.flgReOpenMenutable = flgReOpenMenutable;
     }
 
     /**
