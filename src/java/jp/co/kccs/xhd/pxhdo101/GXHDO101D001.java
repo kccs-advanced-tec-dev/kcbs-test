@@ -181,7 +181,6 @@ public class GXHDO101D001 implements Serializable {
     /**
      * 初期化処理
      */
-    @PostConstruct
     public void init() {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
