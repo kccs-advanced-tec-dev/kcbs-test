@@ -189,163 +189,161 @@
         <tbody>
 
             <tr>
-                <td width="7%" style="text-align:center" rowspan="11">不<br/>良<br/>内<br/>容</td>
                 <td width="7%">不良No</td>
                 <td width="7%">不良ｺｰﾄﾞ</td>
                 <td width="14%">不良名</td>
                 <td width="9%">不良率(%)</td>
-                <td width="49%">詳細内容</td>
+                <td width="56%">詳細内容</td>
                 <td width="7%">在庫No</td>
             </tr>
             <!-- 明細1 -->
-            <tr>
-                <td style="text-align:center">1</td>
-                <td bgcolor="powderblue"><h:outputText id="furyocode1" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode1}" /></td>
-                <td>
-                    <input type="text" readonly="true" style="border:none; width:100%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui1}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui1}"></input>
-                </td>
-                <td bgcolor="powderblue"><h:outputText id="furyoritiu1" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu1}" /></td>
-                <td bgcolor="powderblue" style="text-align:left">
-                    <input type="text" readonly="true" style="border:none; width:100%;text-align:left;font-size:16px;background-color:powderblue;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai1}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai1}"></input>
-                </td>
-                <td bgcolor="powderblue"><h:outputText id="zaikono1" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono1}" /></td>
-            </tr>
+            <ui:fragment rendered="#{beanGXHDO101D001.gxhdo101d001Model.isHuryoDisp(1)}">
+                <tr>
+                    <td style="text-align:center">1</td>
+                    <td bgcolor="powderblue"><h:outputText id="furyocode1" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode1}" /></td>
+                    <td>
+                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui1}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui1}"></input>
+                    </td>
+                    <td bgcolor="powderblue"><h:outputText id="furyoritiu1" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu1}" /></td>
+                    <td bgcolor="powderblue" style="text-align:left">
+                        <input type="text" readonly="true" style="border:none; width:100%;text-align:left;font-size:16px;background-color:powderblue;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai1}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai1}"></input>
+                    </td>
+                    <td bgcolor="powderblue"><h:outputText id="zaikono1" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono1}" /></td>
+                </tr>
+            </ui:fragment> 
             <!-- 明細2 -->
-            <tr>
-                <td style="text-align:center">2</td>
-                <td bgcolor="powderblue"><h:outputText id="furyocode2" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode2}" /></td>
-                <td>
-                    <input type="text" readonly="true" style="border:none; width:100%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui2}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui2}"></input>
-                </td>
-                <td bgcolor="powderblue"><h:outputText id="furyoritiu2" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu2}" /></td>
-                <td bgcolor="powderblue" style="text-align:left">
-                    <input type="text" readonly="true" style="border:none; width:100%;text-align:left;font-size:16px;background-color:powderblue;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai2}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai2}"></input>
-                </td>
-                <td bgcolor="powderblue"><h:outputText id="zaikono2" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono2}" /></td>
-            </tr>
+            <ui:fragment rendered="#{beanGXHDO101D001.gxhdo101d001Model.isHuryoDisp(2)}">
+                <tr>
+                    <td style="text-align:center">2</td>
+                    <td bgcolor="powderblue"><h:outputText id="furyocode2" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode2}" /></td>
+                    <td>
+                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui2}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui2}"></input>
+                    </td>
+                    <td bgcolor="powderblue"><h:outputText id="furyoritiu2" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu2}" /></td>
+                    <td bgcolor="powderblue" style="text-align:left">
+                        <input type="text" readonly="true" style="border:none; width:100%;text-align:left;font-size:16px;background-color:powderblue;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai2}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai2}"></input>
+                    </td>
+                    <td bgcolor="powderblue"><h:outputText id="zaikono2" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono2}" /></td>
+                </tr>
+            </ui:fragment>             
             <!-- 明細3 -->
-            <!--<ui:fragment rendered="#{beanGXHDO101D001.gxhdo101d001Model.isFuryo3Out}">-->
-            <tr>
-                <td style="text-align:center">3</td>
-                <td bgcolor="powderblue"><h:outputText id="furyocode3" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode3}" /></td>
-                <td>
-                    <input type="text" readonly="true" style="border:none; width:100%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui3}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui3}"></input>
-                </td>
-                <td bgcolor="powderblue"><h:outputText id="furyoritiu3" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu3}" /></td>
-                <td bgcolor="powderblue" style="text-align:left">
-                    <input type="text" readonly="true" style="border:none; width:100%;text-align:left;font-size:16px;background-color:powderblue;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai3}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai3}"></input>
-                </td>
-                <td bgcolor="powderblue"><h:outputText id="zaikono3" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono3}" /></td>
-            </tr>
-            <!--</ui:fragment>-->
+            <ui:fragment rendered="#{beanGXHDO101D001.gxhdo101d001Model.isHuryoDisp(3)}">
+                <tr>
+                    <td style="text-align:center">3</td>
+                    <td bgcolor="powderblue"><h:outputText id="furyocode3" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode3}" /></td>
+                    <td>
+                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui3}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui3}"></input>
+                    </td>
+                    <td bgcolor="powderblue"><h:outputText id="furyoritiu3" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu3}" /></td>
+                    <td bgcolor="powderblue" style="text-align:left">
+                        <input type="text" readonly="true" style="border:none; width:100%;text-align:left;font-size:16px;background-color:powderblue;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai3}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai3}"></input>
+                    </td>
+                    <td bgcolor="powderblue"><h:outputText id="zaikono3" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono3}" /></td>
+                </tr>
+            </ui:fragment>
             <!-- 明細4 -->
-            <!--<ui:fragment rendered="#{beanGXHDO101D001.gxhdo101d001Model.isFuryo4Out}">-->
-            <!--<ui:fragment rendered="#{!empty beanGXHDO101D001.gxhdo101d001Model.furyocode4}">-->
-            <tr>
-                <td style="text-align:center">4</td>
-                <td bgcolor="powderblue"><h:outputText id="furyocode4" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode4}" /></td>
-                <td>
-                    <input type="text" readonly="true" style="border:none; width:100%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui4}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui4}"></input>
-                </td>
-                <td bgcolor="powderblue"><h:outputText id="furyoritiu4" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu4}" /></td>
-                <td bgcolor="powderblue" style="text-align:left">
-                    <input type="text" readonly="true" style="border:none; width:100%;text-align:left;font-size:16px;background-color:powderblue;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai4}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai4}"></input>
-                </td>
-                <td bgcolor="powderblue"><h:outputText id="zaikono4" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono4}" /></td>
-            </tr>
-            <!--</ui:fragment>-->
+            <ui:fragment rendered="#{beanGXHDO101D001.gxhdo101d001Model.isHuryoDisp(4)}">
+                <tr>
+                    <td style="text-align:center">4</td>
+                    <td bgcolor="powderblue"><h:outputText id="furyocode4" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode4}" /></td>
+                    <td>
+                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui4}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui4}"></input>
+                    </td>
+                    <td bgcolor="powderblue"><h:outputText id="furyoritiu4" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu4}" /></td>
+                    <td bgcolor="powderblue" style="text-align:left">
+                        <input type="text" readonly="true" style="border:none; width:100%;text-align:left;font-size:16px;background-color:powderblue;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai4}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai4}"></input>
+                    </td>
+                    <td bgcolor="powderblue"><h:outputText id="zaikono4" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono4}" /></td>
+                </tr>
+            </ui:fragment>
             <!-- 明細5 -->
-<!--<ui:fragment rendered="#{beanGXHDO101D001.gxhdo101d001Model.isFuryo5Out}">-->
-            <tr>
-                <td style="text-align:center">5</td>
-                <td bgcolor="powderblue"><h:outputText id="furyocode5" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode5}" /></td>
-                <td>
-                    <input type="text" readonly="true" style="border:none; width:100%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui5}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui5}"></input>
-                </td>
-                <td bgcolor="powderblue"><h:outputText id="furyoritiu5" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu5}" /></td>
-                <td bgcolor="powderblue" style="text-align:left">
-                    <input type="text" readonly="true" style="border:none; width:100%;text-align:left;font-size:16px;background-color:powderblue;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai5}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai5}"></input>
-                </td>
-                <td bgcolor="powderblue"><h:outputText id="zaikono5" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono5}" /></td>
-            </tr>
-            <!--</ui:fragment>-->
+            <ui:fragment rendered="#{beanGXHDO101D001.gxhdo101d001Model.isHuryoDisp(5)}">
+                <tr>
+                    <td style="text-align:center">5</td>
+                    <td bgcolor="powderblue"><h:outputText id="furyocode5" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode5}" /></td>
+                    <td>
+                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui5}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui5}"></input>
+                    </td>
+                    <td bgcolor="powderblue"><h:outputText id="furyoritiu5" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu5}" /></td>
+                    <td bgcolor="powderblue" style="text-align:left">
+                        <input type="text" readonly="true" style="border:none; width:100%;text-align:left;font-size:16px;background-color:powderblue;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai5}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai5}"></input>
+                    </td>
+                    <td bgcolor="powderblue"><h:outputText id="zaikono5" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono5}" /></td>
+                </tr>
+            </ui:fragment>
             <!-- 明細6 -->
-            <!--<ui:fragment rendered="#{beanGXHDO101D001.gxhdo101d001Model.isFuryo6Out}">-->
-            <tr>
-                <td style="text-align:center">6</td>
-                <td bgcolor="powderblue"><h:outputText id="furyocode6" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode6}" /></td>
-                <td>
-                    <input type="text" readonly="true" style="border:none; width:100%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui6}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui6}"></input>
-                </td>
-                <td bgcolor="powderblue"><h:outputText id="furyoritiu6" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu6}" /></td>
-                <td bgcolor="powderblue" style="text-align:left">
-                    <input type="text" readonly="true" style="border:none; width:100%;text-align:left;font-size:16px;background-color:powderblue;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai6}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai6}"></input>
-                </td>
-                <td bgcolor="powderblue"><h:outputText id="zaikono6" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono6}" /></td>
-            </tr>
-            <!--</ui:fragment>-->
-
+            <ui:fragment rendered="#{beanGXHDO101D001.gxhdo101d001Model.isHuryoDisp(6)}">
+                <tr>
+                    <td style="text-align:center">6</td>
+                    <td bgcolor="powderblue"><h:outputText id="furyocode6" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode6}" /></td>
+                    <td>
+                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui6}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui6}"></input>
+                    </td>
+                    <td bgcolor="powderblue"><h:outputText id="furyoritiu6" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu6}" /></td>
+                    <td bgcolor="powderblue" style="text-align:left">
+                        <input type="text" readonly="true" style="border:none; width:100%;text-align:left;font-size:16px;background-color:powderblue;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai6}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai6}"></input>
+                    </td>
+                    <td bgcolor="powderblue"><h:outputText id="zaikono6" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono6}" /></td>
+                </tr>
+            </ui:fragment>
             <!-- 明細7 -->
-            <!--<ui:fragment rendered="#{beanGXHDO101D001.gxhdo101d001Model.isFuryo7Out}">-->
-            <tr>
-                <td style="text-align:center">7</td>
-                <td bgcolor="powderblue"><h:outputText id="furyocode7" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode7}" /></td>
-                <td>
-                    <input type="text" readonly="true" style="border:none; width:100%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui7}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui7}"></input>
-                </td>
-                <td bgcolor="powderblue"><h:outputText id="furyoritiu7" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu7}" /></td>
-                <td bgcolor="powderblue" style="text-align:left">
-                    <input type="text" readonly="true" style="border:none; width:100%;text-align:left;font-size:16px;background-color:powderblue;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai7}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai7}"></input>
-                </td>
-                <td bgcolor="powderblue"><h:outputText id="zaikono7" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono7}" /></td>
-            </tr>
-            <!--</ui:fragment>-->
-
+            <ui:fragment rendered="#{beanGXHDO101D001.gxhdo101d001Model.isHuryoDisp(7)}">
+                <tr>
+                    <td style="text-align:center">7</td>
+                    <td bgcolor="powderblue"><h:outputText id="furyocode7" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode7}" /></td>
+                    <td>
+                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui7}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui7}"></input>
+                    </td>
+                    <td bgcolor="powderblue"><h:outputText id="furyoritiu7" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu7}" /></td>
+                    <td bgcolor="powderblue" style="text-align:left">
+                        <input type="text" readonly="true" style="border:none; width:100%;text-align:left;font-size:16px;background-color:powderblue;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai7}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai7}"></input>
+                    </td>
+                    <td bgcolor="powderblue"><h:outputText id="zaikono7" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono7}" /></td>
+                </tr>
+            </ui:fragment>
             <!-- 明細8 -->
-            <!--<ui:fragment rendered="#{beanGXHDO101D001.gxhdo101d001Model.isFuryo8Out}">-->
-            <tr>
-                <td style="text-align:center">8</td>
-                <td bgcolor="powderblue"><h:outputText id="furyocode8" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode8}" /></td>
-                <td>
-                    <input type="text" readonly="true" style="border:none; width:100%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui8}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui8}"></input>
-                </td>
-                <td bgcolor="powderblue"><h:outputText id="furyoritiu8" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu8}" /></td>
-                <td bgcolor="powderblue" style="text-align:left">
-                    <input type="text" readonly="true" style="border:none; width:100%;text-align:left;font-size:16px;background-color:powderblue;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai8}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai8}"></input>
-                </td>
-                <td bgcolor="powderblue"><h:outputText id="zaikono8" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono8}" /></td>
-            </tr>
-            <!--</ui:fragment>-->
-
+            <ui:fragment rendered="#{beanGXHDO101D001.gxhdo101d001Model.isHuryoDisp(8)}">
+                <tr>
+                    <td style="text-align:center">8</td>
+                    <td bgcolor="powderblue"><h:outputText id="furyocode8" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode8}" /></td>
+                    <td>
+                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui8}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui8}"></input>
+                    </td>
+                    <td bgcolor="powderblue"><h:outputText id="furyoritiu8" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu8}" /></td>
+                    <td bgcolor="powderblue" style="text-align:left">
+                        <input type="text" readonly="true" style="border:none; width:100%;text-align:left;font-size:16px;background-color:powderblue;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai8}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai8}"></input>
+                    </td>
+                    <td bgcolor="powderblue"><h:outputText id="zaikono8" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono8}" /></td>
+                </tr>
+            </ui:fragment>
             <!-- 明細9 -->
-            <!--<ui:fragment rendered="#{beanGXHDO101D001.gxhdo101d001Model.isFuryo9Out}">-->
-            <tr>
-                <td style="text-align:center">9</td>
-                <td bgcolor="powderblue"><h:outputText id="furyocode9" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode9}" /></td>
-                <td>
-                    <input type="text" readonly="true" style="border:none; width:100%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui9}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui9}"></input>
-                </td>
-                <td bgcolor="powderblue"><h:outputText id="furyoritiu9" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu9}" /></td>
-                <td bgcolor="powderblue" style="text-align:left">
-                    <input type="text" readonly="true" style="border:none; width:100%;text-align:left;font-size:16px;background-color:powderblue;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai9}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai9}"></input>
-                </td><td bgcolor="powderblue"><h:outputText id="zaikono9" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono9}" /></td>
-            </tr>
-            <!--</ui:fragment>-->
-
+            <ui:fragment rendered="#{beanGXHDO101D001.gxhdo101d001Model.isHuryoDisp(9)}">
+                <tr>
+                    <td style="text-align:center">9</td>
+                    <td bgcolor="powderblue"><h:outputText id="furyocode9" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode9}" /></td>
+                    <td>
+                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui9}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui9}"></input>
+                    </td>
+                    <td bgcolor="powderblue"><h:outputText id="furyoritiu9" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu9}" /></td>
+                    <td bgcolor="powderblue" style="text-align:left">
+                        <input type="text" readonly="true" style="border:none; width:100%;text-align:left;font-size:16px;background-color:powderblue;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai9}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai9}"></input>
+                    </td><td bgcolor="powderblue"><h:outputText id="zaikono9" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono9}" /></td>
+                </tr>
+            </ui:fragment>
             <!-- 明細10 -->
-            <!--<ui:fragment rendered="#{beanGXHDO101D001.gxhdo101d001Model.isFuryo9Out}">-->
-            <tr>
-                <td style="text-align:center">10</td>
-                <td bgcolor="powderblue"><h:outputText id="furyocode10" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode10}" /></td>
-                <td>
-                    <input type="text" readonly="true" style="border:none; width:100%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui10}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui10}"></input>
-                </td>
-                <td bgcolor="powderblue"><h:outputText id="furyoritiu10" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu10}" /></td>
-                <td bgcolor="powderblue" style="text-align:left">
-                    <input type="text" readonly="true" style="border:none; width:100%;text-align:left;font-size:16px;background-color:powderblue;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai10}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai10}"></input>
-                </td><td bgcolor="powderblue"><h:outputText id="zaikono10" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono10}" /></td>
-            </tr>
-            <!--</ui:fragment>-->
+            <ui:fragment rendered="#{beanGXHDO101D001.gxhdo101d001Model.isHuryoDisp(10)}">
+                <tr>
+                    <td style="text-align:center">10</td>
+                    <td bgcolor="powderblue"><h:outputText id="furyocode10" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode10}" /></td>
+                    <td>
+                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui10}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui10}"></input>
+                    </td>
+                    <td bgcolor="powderblue"><h:outputText id="furyoritiu10" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu10}" /></td>
+                    <td bgcolor="powderblue" style="text-align:left">
+                        <input type="text" readonly="true" style="border:none; width:100%;text-align:left;font-size:16px;background-color:powderblue;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai10}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyomeisai10}"></input>
+                    </td><td bgcolor="powderblue"><h:outputText id="zaikono10" value="#{beanGXHDO101D001.gxhdo101d001Model.zaikono10}" /></td>
+                </tr>
+            </ui:fragment>
 
         </tbody>
     </table>
