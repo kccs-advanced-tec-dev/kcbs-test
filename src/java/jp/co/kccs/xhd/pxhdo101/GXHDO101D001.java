@@ -407,9 +407,6 @@ public class GXHDO101D001 implements Serializable {
 
             // 取得結果を保存
             setGxhdo101d001Model(model);
-            
-            // 不良判定の設定
-            model.setHuryoDisp();            
 
         } catch (SQLException ex) {
             Logger.getLogger(GXHDO101D001.class.getName()).log(Level.SEVERE, null, ex);
