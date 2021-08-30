@@ -234,13 +234,11 @@ public class GXHDO101D001 implements Serializable {
         createKoteifuryoTable();
 
         // 工程不良テーブル取得に失敗した場合はエラーダイアログを表示させて後続処理を中断
-//        if (true) {   // TODO: debug
         if (!this.messageListGXHDO101D001.isEmpty()) {
             LOGGER.warning("GXHDO101D001 工程不良テーブル取得失敗");
             // メッセージを画面に渡す
             InitMessage beanInitMessage = (InitMessage) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_INIT_MESSAGE);
             beanInitMessage.setInitMessageList(this.getMessageListGXHDO101D001());
-
             RequestContext context = RequestContext.getCurrentInstance();
             context.addCallbackParam("firstParam", "initMessage");
             return;
@@ -316,11 +314,12 @@ public class GXHDO101D001 implements Serializable {
             this.setMessageListGXHDO101D001(new ArrayList<>());
 
             // チェック処理：レコードが取得出来なかった場合
-            if (listSrKoteifuryo.isEmpty()) {
+            if (listSrKoteifuryo.isEmpty()) { // TODO: debug
+//            if (true) {
                 setErrorMessage(MessageUtil.getMessage("XHD-000218"));
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, getErrorMessage(), null);
                 FacesContext.getCurrentInstance().addMessage(null, message);
-                
+
                 List<String> messagelist = new ArrayList<>();
                 messagelist.add(getErrorMessage());
                 setMessageListGXHDO101D001(messagelist);

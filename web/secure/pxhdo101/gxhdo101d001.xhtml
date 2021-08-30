@@ -9,7 +9,7 @@
  * 変更日・変更者	： 2021/08/23	SRC)山形
  * 変更内容			： 新規作成
 -->
-<ui:composition
+<html
     xmlns="http://www.w3.org/1999/xhtml"
     xmlns:h="http://xmlns.jcp.org/jsf/html"
     xmlns:p="http://primefaces.org/ui"
@@ -17,22 +17,25 @@
     xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
     xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">  
 
+    <!--<ui:composition>-->
     <h:head>
         <link href="#{request.contextPath}/resources/css/growl.css" rel="stylesheet" type="text/css"/>
-
-    </h:head>
-
-    <style>
+        <h:outputScript library="primefaces" name="jquery/jquery.js" />
+        <style type='text/css'>
         .parent {
             display: flex;
             flex-wrap: nowrap;
         }
-    </style>
+        </style>
+    </h:head>
+
+    <ui:composition>
+    <h:body>
 
     <f:metadata>
         <f:viewAction action="#{beanGXHDO101D001.init()}"/>
     </f:metadata>
-
+    
     <h:form id="gxhdo101d001Form">
         <table width="1000">
             <tbody>
@@ -468,5 +471,8 @@
     <div>
         <ui:include src="/secure/common/initMessage.xhtml"/>
     </div>
+    
+    </h:body>
+    </ui:composition>
 
-</ui:composition>
+</html>
