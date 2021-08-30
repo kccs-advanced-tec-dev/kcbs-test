@@ -182,6 +182,7 @@ public class GXHDO101D001 implements Serializable {
      * 初期化処理
      */
     public void init() {
+        LOGGER.info("GXHDO101D001 init() called.");
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
 
@@ -233,7 +234,9 @@ public class GXHDO101D001 implements Serializable {
         createKoteifuryoTable();
 
         // 工程不良テーブル取得に失敗した場合はエラーダイアログを表示させて後続処理を中断
+//        if (true) {   // TODO: debug
         if (!this.messageListGXHDO101D001.isEmpty()) {
+            LOGGER.warning("GXHDO101D001 工程不良テーブル取得失敗");
             // メッセージを画面に渡す
             InitMessage beanInitMessage = (InitMessage) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_INIT_MESSAGE);
             beanInitMessage.setInitMessageList(this.getMessageListGXHDO101D001());
@@ -716,6 +719,7 @@ public class GXHDO101D001 implements Serializable {
      * 「前へ」ボタン押下時
      */
     public void doPrev() {
+        LOGGER.info("GXHDO101D001 doPrev() called.");
 
         // 現在の登録No配列のIndex
         int currentIndex = Integer.parseInt(getTorokuNoIndex());
@@ -736,6 +740,8 @@ public class GXHDO101D001 implements Serializable {
      * 「次へ」ボタン押下時
      */
     public void doNext() {
+        LOGGER.info("GXHDO101D001 doNext() called.");
+
         // 登録No配列のサイズ
         int torokuNoArrayLength = getTorokuNoArray().length;
 
