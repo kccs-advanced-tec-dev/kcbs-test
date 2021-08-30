@@ -30,6 +30,7 @@ import jp.co.kccs.xhd.model.GXHDO101D001Model.KoteifuryoSiji;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
+import jp.co.kccs.xhd.util.StringUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.BeanProcessor;
@@ -722,7 +723,7 @@ public class GXHDO101D001 implements Serializable {
     /**
      * 「前へ」ボタン押下時
      */
-    public void doPrev() {
+    public String doPrev() {
         LOGGER.info("GXHDO101D001 doPrev() called.");
 
         // 現在の登録No配列のIndex
@@ -731,19 +732,25 @@ public class GXHDO101D001 implements Serializable {
         if (currentIndex > 0) {
             // 登録No配列Indexをデクリメントしてbeanにセット
             currentIndex--;
-            setTorokuNoIndex(Integer.toString(currentIndex));
-            // Index更新フラグを有効化
-            setFlgUpdateTorokuNoToPrevOrNext(true);
-            // 初期化実行
-            init();
+            // セッション情報
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            HttpSession session = (HttpSession) externalContext.getSession(false);
+            // 登録No配列Index
+            session.setAttribute("torokuNoIndex", Integer.toString(currentIndex));
+//            setTorokuNoIndex(Integer.toString(currentIndex));
+//            // Index更新フラグを有効化
+//            setFlgUpdateTorokuNoToPrevOrNext(true);
+//            // 初期化実行
+//            init();
         }
+        return "/secure/pxhdo101/gxhdo101d001.xhtml?faces-redirect=true";
 
     }
 
     /**
      * 「次へ」ボタン押下時
      */
-    public void doNext() {
+    public String doNext() {
         LOGGER.info("GXHDO101D001 doNext() called.");
 
         // 登録No配列のサイズ
@@ -755,12 +762,18 @@ public class GXHDO101D001 implements Serializable {
         if (currentIndex < torokuNoArrayLength) {
             // 登録No配列Indexをインクリメントしてbeanにセット
             currentIndex++;
-            setTorokuNoIndex(Integer.toString(currentIndex));
-            // Index更新フラグを有効化
-            setFlgUpdateTorokuNoToPrevOrNext(true);
-            // 初期化実行
-            init();
+            // セッション情報
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            HttpSession session = (HttpSession) externalContext.getSession(false);
+            // 登録No配列Index
+            session.setAttribute("torokuNoIndex", Integer.toString(currentIndex));
+//            setTorokuNoIndex(Integer.toString(currentIndex));
+//            // Index更新フラグを有効化
+//            setFlgUpdateTorokuNoToPrevOrNext(true);
+//            // 初期化実行
+//            init();
         }
+        return "/secure/pxhdo101/gxhdo101d001.xhtml?faces-redirect=true";
     }
 
     /**
