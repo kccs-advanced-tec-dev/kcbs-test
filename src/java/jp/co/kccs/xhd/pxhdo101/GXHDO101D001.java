@@ -239,8 +239,10 @@ public class GXHDO101D001 implements Serializable {
             // メッセージを画面に渡す
             InitMessage beanInitMessage = (InitMessage) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_INIT_MESSAGE);
             beanInitMessage.setInitMessageList(this.getMessageListGXHDO101D001());
+//            RequestContext.getCurrentInstance().execute("PF('W_dlg_initMessage').show();");
             RequestContext context = RequestContext.getCurrentInstance();
-            context.addCallbackParam("firstParam", "initMessage");
+//            context.addCallbackParam("firstParam", "initMessage");
+            context.addCallbackParam("firstParam", "error");
             return;
         }
 
@@ -314,7 +316,7 @@ public class GXHDO101D001 implements Serializable {
             this.setMessageListGXHDO101D001(new ArrayList<>());
 
             // チェック処理：レコードが取得出来なかった場合
-            if (listSrKoteifuryo.isEmpty()) { // TODO: debug
+            if (listSrKoteifuryo.isEmpty() || Integer.parseInt(this.torokuNoIndex) == 3) { // TODO: debug
 //            if (true) {
                 setErrorMessage(MessageUtil.getMessage("XHD-000218"));
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, getErrorMessage(), null);
