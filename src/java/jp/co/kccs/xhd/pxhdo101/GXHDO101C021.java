@@ -179,9 +179,6 @@ public class GXHDO101C021 implements Serializable {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
 
-        // TODO: sanshouMotoLotNoの内容を確認
-//        String sLotNo = this.sanshouMotoLotNo;
-
         // ①登録Noに表示している一覧表を配列形式で変数化する
         String[] torokuNoArray = createTorokuNoListToArray(this.gxhdO101c021ModelView.getTorokuNoDataList());
 

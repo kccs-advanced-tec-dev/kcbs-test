@@ -25,7 +25,6 @@ import java.sql.Timestamp;
  */
 public class SrKoteifuryo {
 
-    //TODO: 物理名確認
     /**
      * 登録No
      */

@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -110,11 +111,6 @@ public class GXHDO101D001 implements Serializable {
     private String[] torokuNoArray;
 
     /**
-     * 登録No配列のLength
-     */
-    private int torokuNoArrayLength;
-
-    /**
      * 現在の登録Noの値
      */
     private String currentTorokuNoValue;
@@ -145,13 +141,6 @@ public class GXHDO101D001 implements Serializable {
     private GXHDO101D001Model gxhdo101d001Model;
 
     /**
-     * 登録No配列Indexの画面内更新フラグ<br>
-     * 「前へ」「次へ」押下時: true<br>
-     * それ以外: false<br>
-     */
-    private boolean flgUpdateTorokuNoToPrevOrNext;
-
-    /**
      * 表示Render
      */
     private boolean btnPrevRender;
@@ -175,8 +164,6 @@ public class GXHDO101D001 implements Serializable {
      * コンストラクタ
      */
     public GXHDO101D001() {
-        // Index画面内更新フラグ初期値は「false」
-        this.flgUpdateTorokuNoToPrevOrNext = false;
     }
 
     /**
@@ -187,29 +174,25 @@ public class GXHDO101D001 implements Serializable {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
 
-        // B･Cﾗﾝｸ連絡書一覧から遷移した場合はsession受取処理を行う
-        if (isFlgUpdateTorokuNoToPrevOrNext()) {
-            // 「前へ」「次へ」ボタンから遷移時はsession値取得処理を行わない
-
-            // Index更新フラグを無効化
-            setFlgUpdateTorokuNoToPrevOrNext(false);
-        } else {
-            // sessionで渡されたB･Cﾗﾝｸ連絡書一覧画面からの引数をbeanに格納する
-            // 登録NoIndex
-            setTorokuNoIndex((String) session.getAttribute("torokuNoIndex"));
-            // 登録No配列を受け取る
-            Object torokuNoArrayObjSession = session.getAttribute("torokuNoArray");
-            String[] torokuNoArray = convertFromSessionToStringArray(torokuNoArrayObjSession);
-            setTorokuNoArray(torokuNoArray);
-            // 登録No配列String[]のLength (JSF表示用にセット)
-            setTorokuNoArrayLength(torokuNoArray.length);
-            // ロットNo(検索値)
-            String sLotNo = (String) session.getAttribute("searchLotNo");
-            setSearchLotNo(sLotNo);
-            // 担当者ｺｰﾄﾞ(検索値)
-            String sTantoshaCd = (String) session.getAttribute("searchTantoshaCd");
-            setSearchTantoshaCd(sTantoshaCd);
-        }
+        // session値をbeanに格納する
+        // TODO: 確認 doPrev(),doNext()から遷移時の(torokuNoArray,searchLotNo,searchTantoshaCd)
+        // 登録NoIndex
+        setTorokuNoIndex((String) session.getAttribute("torokuNoIndex"));
+        String torokuNoIndex = StringUtil.nullToBlank(session.getAttribute("torokuNoIndex"));
+        LOGGER.info(String.format("登録NoIndex: %s", torokuNoIndex));
+        // 登録No配列
+        Object torokuNoArrayObjSession = session.getAttribute("torokuNoArray");
+        String[] torokuNoArray = convertFromSessionToStringArray(torokuNoArrayObjSession);
+        setTorokuNoArray(torokuNoArray);
+        LOGGER.info(String.format("登録No配列: %s", Arrays.toString(torokuNoArray)));
+        // ロットNo(検索値)
+        String sLotNo = (String) session.getAttribute("searchLotNo");
+        setSearchLotNo(sLotNo);
+        LOGGER.info(String.format("ロットNo(検索値): %s", sLotNo));
+        // 担当者ｺｰﾄﾞ(検索値)
+        String sTantoshaCd = (String) session.getAttribute("searchTantoshaCd");
+        setSearchTantoshaCd(sTantoshaCd);
+        LOGGER.info(String.format("担当者ｺｰﾄﾞ(検索値): %s", sTantoshaCd));
 
         // 登録NoIndexが「0」の場合は「前へ」ボタンを表示しない
         if (Integer.valueOf(getTorokuNoIndex()) == 0) {
@@ -225,7 +208,7 @@ public class GXHDO101D001 implements Serializable {
         }
 
         // 現在の登録Noを取得
-        setCurrentTorokuNoValue(findTorokuNoFromIndex(getTorokuNoIndex()));
+        setCurrentTorokuNoValue(findTorokuNoFromIndex(getTorokuNoIndex())); //TODO:整理
 
         // Model初期化
         GXHDO101D001Model model = new GXHDO101D001Model();
@@ -318,7 +301,6 @@ public class GXHDO101D001 implements Serializable {
 
             // チェック処理：レコードが取得出来なかった場合
             if (listSrKoteifuryo.isEmpty() || Integer.parseInt(this.torokuNoIndex) == 3) { // TODO: debug
-//            if (true) {
                 setErrorMessage(MessageUtil.getMessage("XHD-000218"));
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, getErrorMessage(), null);
                 FacesContext.getCurrentInstance().addMessage(null, message);
@@ -338,7 +320,7 @@ public class GXHDO101D001 implements Serializable {
             // 必要な値を設定する
             model.setRank(rowKoteifuryo.getRank()); // KF.ﾗﾝｸ
             model.setHakkobi(rowKoteifuryo.getHakkobi()); // KF.発行日
-            model.setTokuisaki(rowKoteifuryo.getTokuisaki()); // TODO: 基本設計書修正 (客先項目に表示)
+            model.setTokuisaki(rowKoteifuryo.getTokuisaki()); // KF.tokuisaki (「客先：」の項目で使用) //TODO:基本設計書確認
             model.setHakkenkotei(rowKoteifuryo.getHakkenkotei()); // KF.発見工程ID
             model.setTorokuno(rowKoteifuryo.getTorokuno()); // KF.登録No
             model.setKcpno(rowKoteifuryo.getKcpno()); // KF.KCPNO
@@ -404,13 +386,13 @@ public class GXHDO101D001 implements Serializable {
             model.setZaikono10(rowKoteifuryo.getZaikono10()); // KF.在庫No10
 
             model.setQakakuninsya(rowKoteifuryo.getQakakuninsya()); // KF.確認者
-            model.setQakakuninnichiji(rowKoteifuryo.getQakakuninnichiji()); // KF.日付 //TODO:対応カラム確認 (torokunitiji, koshinnichijiのどちらか？)
+            model.setQakakuninnichiji(rowKoteifuryo.getQakakuninnichiji()); // KF.日付
 
             // 取得結果を保存
             setGxhdo101d001Model(model);
-            
+
             // 不良判定の設定
-            model.setHuryoDisp();            
+            model.setHuryoDisp();
 
         } catch (SQLException ex) {
             Logger.getLogger(GXHDO101D001.class.getName()).log(Level.SEVERE, null, ex);
@@ -586,6 +568,7 @@ public class GXHDO101D001 implements Serializable {
         List<Object> params = new ArrayList<>();
         params.add(torokuNo);
 
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         Map map = queryRunnerXHD.query(sql, new MapHandler(), params.toArray());
         if (map != null && !map.isEmpty()) {
             maxJissekiNo = String.valueOf(map.get("jissekino"));
@@ -638,6 +621,7 @@ public class GXHDO101D001 implements Serializable {
         List<Object> params = new ArrayList<>();
         params.add(torokuNo);
 
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         Map map = queryRunnerXHD.query(sql, new MapHandler(), params.toArray());
         if (map != null && !map.isEmpty()) {
             maxJissekiNo = String.valueOf(map.get("jissekino"));
@@ -721,7 +705,9 @@ public class GXHDO101D001 implements Serializable {
     }
 
     /**
-     * 「前へ」ボタン押下時
+     * 【前へ】ﾎﾞﾀﾝ押下時
+     *
+     * @return 画面URL
      */
     public String doPrev() {
         LOGGER.info("GXHDO101D001 doPrev() called.");
@@ -730,25 +716,24 @@ public class GXHDO101D001 implements Serializable {
         int currentIndex = Integer.parseInt(getTorokuNoIndex());
 
         if (currentIndex > 0) {
-            // 登録No配列Indexをデクリメントしてbeanにセット
-            currentIndex--;
+            // ①B･Cﾗﾝｸ連絡書一覧画面から引き継いだ引数の行数に1減算する。
+            int prevIndex = currentIndex - 1;
+            LOGGER.info(String.format("doPrev() prevIndex: %d", prevIndex));
             // セッション情報
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             HttpSession session = (HttpSession) externalContext.getSession(false);
             // 登録No配列Index
-            session.setAttribute("torokuNoIndex", Integer.toString(currentIndex));
-//            setTorokuNoIndex(Integer.toString(currentIndex));
-//            // Index更新フラグを有効化
-//            setFlgUpdateTorokuNoToPrevOrNext(true);
-//            // 初期化実行
-//            init();
+            session.setAttribute("torokuNoIndex", Integer.toString(prevIndex));
         }
+        // ②画面を初期化し、再度初期表示処理を実施する。
         return "/secure/pxhdo101/gxhdo101d001.xhtml?faces-redirect=true";
 
     }
 
     /**
-     * 「次へ」ボタン押下時
+     * 【次へ】ﾎﾞﾀﾝ押下時
+     *
+     * @return 画面URL
      */
     public String doNext() {
         LOGGER.info("GXHDO101D001 doNext() called.");
@@ -759,20 +744,18 @@ public class GXHDO101D001 implements Serializable {
         // 現在の登録No配列のIndex
         int currentIndex = Integer.parseInt(getTorokuNoIndex());
 
-        if (currentIndex < torokuNoArrayLength) {
-            // 登録No配列Indexをインクリメントしてbeanにセット
-            currentIndex++;
+        // 配列終端チェック
+        if (currentIndex < torokuNoArrayLength - 1) {
+            // ①B･Cﾗﾝｸ連絡書一覧画面から引き継いだ引数の行数に1加算する。
+            int nextIndex = currentIndex + 1;
+            LOGGER.info(String.format("doPrev() nextIndex: %d", nextIndex));
             // セッション情報
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             HttpSession session = (HttpSession) externalContext.getSession(false);
             // 登録No配列Index
-            session.setAttribute("torokuNoIndex", Integer.toString(currentIndex));
-//            setTorokuNoIndex(Integer.toString(currentIndex));
-//            // Index更新フラグを有効化
-//            setFlgUpdateTorokuNoToPrevOrNext(true);
-//            // 初期化実行
-//            init();
+            session.setAttribute("torokuNoIndex", Integer.toString(nextIndex));
         }
+        // ②画面を初期化し、再度初期表示処理を実施する。
         return "/secure/pxhdo101/gxhdo101d001.xhtml?faces-redirect=true";
     }
 
@@ -833,21 +816,6 @@ public class GXHDO101D001 implements Serializable {
     }
 
     /**
-     * @return the flgUpdateTorokuNoToPrevOrNext
-     */
-    public boolean isFlgUpdateTorokuNoToPrevOrNext() {
-        return flgUpdateTorokuNoToPrevOrNext;
-    }
-
-    /**
-     * @param flgUpdateTorokuNoToPrevOrNext the flgUpdateTorokuNoToPrevOrNext to
-     * set
-     */
-    public void setFlgUpdateTorokuNoToPrevOrNext(boolean flgUpdateTorokuNoToPrevOrNext) {
-        this.flgUpdateTorokuNoToPrevOrNext = flgUpdateTorokuNoToPrevOrNext;
-    }
-
-    /**
      * @return the btnPrevRender
      */
     public boolean isBtnPrevRender() {
@@ -887,20 +855,6 @@ public class GXHDO101D001 implements Serializable {
      */
     public void setErrorMessage(String errorMessage) {
         this.errorMessage = errorMessage;
-    }
-
-    /**
-     * @return the torokuNoArrayLength
-     */
-    public int getTorokuNoArrayLength() {
-        return torokuNoArrayLength;
-    }
-
-    /**
-     * @param torokuNoArrayLength the torokuNoArrayLength to set
-     */
-    public void setTorokuNoArrayLength(int torokuNoArrayLength) {
-        this.torokuNoArrayLength = torokuNoArrayLength;
     }
 
     /**
