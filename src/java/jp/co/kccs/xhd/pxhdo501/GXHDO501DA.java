@@ -437,7 +437,7 @@ public class GXHDO501DA extends GXHDO901AEX {
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
             listData = queryRunner.query(sql, beanHandler, params.toArray());
             // ﾁｪｯｸﾊﾟﾀｰﾝコンボボックス設定
-            cmbTyekkupatternData = new String[]{"±","～","≧","≦","MAX","MIN","="};
+            cmbTyekkupatternData = new String[]{"±","～","≧","≦","MAX","MIN","=", "-"};
             
         } catch (SQLException ex) {
             listData = new ArrayList<>();
@@ -591,6 +591,17 @@ public class GXHDO501DA extends GXHDO901AEX {
             // ﾁｪｯｸﾊﾟﾀｰﾝ入力チェック
             if (existError(validateUtil.checkC001(StringUtil.nullToBlank(listData.get(i).getTyekkupattern()), "ﾁｪｯｸﾊﾟﾀｰﾝ"))) {
                 listData.get(i).setTyekkupatternbgcolor(ERROR_COLOR);
+                chkFlg = false;
+                break;
+            }
+            
+            // ﾁｪｯｸﾊﾟﾀｰﾝが正しいこと
+            List<String> chkPatternList = Arrays.asList("±", "～", "≧", "≦", "MAX", "MIN", "=", "-");
+            if (!chkPatternList.contains(listData.get(i).getTyekkupattern())) {
+                listData.get(i).setTyekkupatternbgcolor(ERROR_COLOR);
+                FacesMessage message
+                        = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000011", "ﾁｪｯｸﾊﾟﾀｰﾝ"), null);
+                FacesContext.getCurrentInstance().addMessage(null, message);
                 chkFlg = false;
                 break;
             }
@@ -807,9 +818,6 @@ public class GXHDO501DA extends GXHDO901AEX {
                 break;
             case "=":
                 resultFlg = ValidateUtil.checkKikakuST011(fxhdd01, "0");
-                break;
-            default:
-                resultFlg = "-1";
                 break;
         }
         return resultFlg;

@@ -1052,6 +1052,11 @@ public class GXHDO501A implements Serializable {
                 rtnStep = "C";
                 break;
             }
+            // ﾁｪｯｸﾊﾟﾀｰﾝが「±、～、≧、≦、MAX、MIN、＝、-」の内容以外の場合ｴﾗｰ
+            if (checkChkPattern(gxhdo501aModel, dtyekkupattern, "ﾁｪｯｸﾊﾟﾀｰﾝ", resultMap)) {
+                rtnStep = "C";
+                break;
+            }
             if (!"-".equals(dkikakuti)) {
                 // (A).取込件数(変数) + 1　を行う
                 resultMap.put("rowDataCount", resultMap.get("rowDataCount") + 1);
@@ -1100,6 +1105,28 @@ public class GXHDO501A implements Serializable {
         return false;
     }
 
+    /**
+     * ﾁｪｯｸﾊﾟﾀｰﾝが「±、～、≧、≦、MAX、MIN、＝、-」の内容以外の場合ｴﾗｰ
+     *
+     * @param gxhdo501aModel 取込データ
+     * @param checkVal 項目値
+     * @param itemName 項目名称
+     * @param resultMap チェック結果
+     * @return エラーが存在する場合true
+     */
+    private boolean checkChkPattern(GXHDO501AModel gxhdo501aModel, String checkVal, String itemName, HashMap<String, Integer> resultMap) {
+        // ﾁｪｯｸﾊﾟﾀｰﾝが「±、～、≧、≦、MAX、MIN、＝、-」の内容以外の場合ｴﾗｰ
+        List<String> chkPatternList = Arrays.asList("±", "～", "≧", "≦", "MAX", "MIN", "=", "-");
+        if (!chkPatternList.contains(checkVal)) {
+            gxhdo501aModel.setResulta("NG");
+            gxhdo501aModel.setResultb(MessageUtil.getMessage("XHD-000011", itemName));
+            resultMap.put("ngCount", resultMap.get("ngCount") + 1);
+            return true;
+        }
+        
+        return false;
+    }
+    
     /**
      * 取込ﾌｧｲﾙから項目を取得
      *
@@ -1313,9 +1340,6 @@ public class GXHDO501A implements Serializable {
                 break;
             case "=":
                 resultFlg = ValidateUtil.checkKikakuST011(fxhdd01, "0");
-                break;
-            default:
-                resultFlg = "-1";
                 break;
         }
         return resultFlg;
@@ -2266,6 +2290,11 @@ public class GXHDO501A implements Serializable {
                 break;
             }
             if (check003And006(gxhdo501aModel, dtyekkupattern, "ﾁｪｯｸﾊﾟﾀｰﾝ", 3, resultMap)) {
+                rtnStep = "C";
+                break;
+            }
+            // ﾁｪｯｸﾊﾟﾀｰﾝが「±、～、≧、≦、MAX、MIN、＝、-」の内容以外の場合ｴﾗｰ
+            if (checkChkPattern(gxhdo501aModel, dtyekkupattern, "ﾁｪｯｸﾊﾟﾀｰﾝ", resultMap)) {
                 rtnStep = "C";
                 break;
             }

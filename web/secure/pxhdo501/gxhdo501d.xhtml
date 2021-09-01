@@ -57,7 +57,7 @@
                 if ('warning' === args.firstParam) {
                     PF('cd').show();
                 } else if ('auth' === args.firstParam) {
-                    PF('W_dlg_userAuth').show();
+                    PF('W_dialog_userAuth').show();
                 } else if ('kikakuError' === args.firstParam) {
                     PF('W_dlg_kikakuError').show();
                 } else if ('infoMessage' === args.firstParam) {
@@ -188,7 +188,7 @@
             <div>
                 <ui:include src="/secure/common/initMessage.xhtml"/>
                 <t:aliasBean alias="#{gXHDO901ACommon}" value="#{gXHDO501DA}">
-                    <ui:include src="/secure/pxhdo901/gxhdo901b.xhtml"/>
+                    <ui:include src="/secure/pxhdo901/gxhdo901c.xhtml"/>
                 </t:aliasBean>
                 <t:aliasBean alias="#{gXHDO101Common}" value="#{gXHDO501DA}">
                     <ui:include src="/secure/common/compMessage.xhtml"/>
