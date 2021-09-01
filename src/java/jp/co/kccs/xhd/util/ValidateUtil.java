@@ -966,9 +966,10 @@ public class ValidateUtil {
      * 規格チェック(1:〇±△)
      *
      * @param fxhdd01 項目データ
+     * @param checkValFlg 入力値チェックフラグ
      * @return エラーコード(0:正常、1:規格エラー、-1:規格値不正)
      */
-    private static String checkKikakuST001(FXHDD01 fxhdd01) {
+    public static String checkKikakuST001(FXHDD01 fxhdd01, String... checkValFlg) {
 
         // 項目データを取得
         String strKikakuchi = StringUtil.nullToBlank(fxhdd01.getKikakuChi()).replace("【", "");
@@ -988,7 +989,9 @@ public class ValidateUtil {
             // 規格値不正
             return KIKAKU_CHECK_CD_SETTING_ERR;
         }
-
+        if (checkValFlg != null && checkValFlg.length > 0 && "0".equals(checkValFlg[0])) {
+            return KIKAKU_CHECK_CD_NORMAL;
+        }
         // 上限値取得
         BigDecimal maxValue = value1.add(value2);
         // 下限値取得
@@ -1017,9 +1020,10 @@ public class ValidateUtil {
      * 規格チェック(2:〇～△)
      *
      * @param fxhdd01 項目データ
+     * @param checkValFlg 入力値チェックフラグ
      * @return エラーコード(0:正常、1:規格エラー、-1:規格値不正)
      */
-    private static String checkKikakuST002(FXHDD01 fxhdd01) {
+    public static String checkKikakuST002(FXHDD01 fxhdd01, String... checkValFlg) {
 
         // 項目データを取得
         String strKikakuchi = StringUtil.nullToBlank(fxhdd01.getKikakuChi()).replace("【", "");
@@ -1039,7 +1043,9 @@ public class ValidateUtil {
             // 規格値不正
             return KIKAKU_CHECK_CD_SETTING_ERR;
         }
-        
+        if (checkValFlg != null && checkValFlg.length > 0 && "0".equals(checkValFlg[0])) {
+            return KIKAKU_CHECK_CD_NORMAL;
+        }
         // 数値の大小が反転している場合、値を入れ替える
         if(maxValue.compareTo(minValue) < 0){
             BigDecimal tempValue = maxValue;
@@ -1070,9 +1076,10 @@ public class ValidateUtil {
      * 規格チェック(3:〇以上)
      *
      * @param fxhdd01 項目データ
+     * @param checkValFlg 入力値チェックフラグ
      * @return エラーコード(0:正常、1:規格エラー、-1:規格値不正)
      */
-    private static String checkKikakuST003(FXHDD01 fxhdd01) {
+    public static String checkKikakuST003(FXHDD01 fxhdd01, String... checkValFlg) {
 
         String strKikakuchi = StringUtil.nullToBlank(fxhdd01.getKikakuChi()).replace("【", "");
         strKikakuchi = strKikakuchi.replace("】", "");
@@ -1088,7 +1095,9 @@ public class ValidateUtil {
             // 規格値不正
             return KIKAKU_CHECK_CD_SETTING_ERR;
         }
-
+        if (checkValFlg != null && checkValFlg.length > 0 && "0".equals(checkValFlg[0])) {
+            return KIKAKU_CHECK_CD_NORMAL;
+        }
         // 入力値取得
         BigDecimal inputValue;
         try {
@@ -1110,9 +1119,10 @@ public class ValidateUtil {
      * 規格チェック(4:〇以下)
      *
      * @param fxhdd01 項目データ
+     * @param checkValFlg 入力値チェックフラグ
      * @return エラーコード(0:正常、1:規格エラー、-1:規格値不正)
      */
-    private static String checkKikakuST004(FXHDD01 fxhdd01) {
+    public static String checkKikakuST004(FXHDD01 fxhdd01, String... checkValFlg) {
 
         String strKikakuchi = StringUtil.nullToBlank(fxhdd01.getKikakuChi()).replace("【", "");
         strKikakuchi = strKikakuchi.replace("】", "");
@@ -1128,7 +1138,9 @@ public class ValidateUtil {
             // 規格値不正
             return KIKAKU_CHECK_CD_SETTING_ERR;
         }
-
+        if (checkValFlg != null && checkValFlg.length > 0 && "0".equals(checkValFlg[0])) {
+            return KIKAKU_CHECK_CD_NORMAL;
+        }
         // 入力値取得
         BigDecimal inputValue;
         try {
@@ -1150,9 +1162,10 @@ public class ValidateUtil {
      * 規格チェック(5:≦〇)
      *
      * @param fxhdd01 項目データ
+     * @param checkValFlg 入力値チェックフラグ
      * @return エラーコード(0:正常、1:規格エラー、-1:規格値不正)
      */
-    private static String checkKikakuST005(FXHDD01 fxhdd01) {
+    public static String checkKikakuST005(FXHDD01 fxhdd01, String... checkValFlg) {
 
         String strKikakuchi = StringUtil.nullToBlank(fxhdd01.getKikakuChi()).replace("【", "");
         strKikakuchi = strKikakuchi.replace("】", "");
@@ -1169,7 +1182,9 @@ public class ValidateUtil {
             // 規格値不正
             return KIKAKU_CHECK_CD_SETTING_ERR;
         }
-
+        if (checkValFlg != null && checkValFlg.length > 0 && "0".equals(checkValFlg[0])) {
+            return KIKAKU_CHECK_CD_NORMAL;
+        }
         // 入力値取得
         BigDecimal inputValue;
         try {
@@ -1191,9 +1206,10 @@ public class ValidateUtil {
      * 規格チェック(6:≧〇)
      *
      * @param fxhdd01 項目データ
+     * @param checkValFlg 入力値チェックフラグ
      * @return エラーコード(0:正常、1:規格エラー、-1:規格値不正)
      */
-    private static String checkKikakuST006(FXHDD01 fxhdd01) {
+    public static String checkKikakuST006(FXHDD01 fxhdd01, String... checkValFlg) {
 
         String strKikakuchi = StringUtil.nullToBlank(fxhdd01.getKikakuChi()).replace("【", "");
         strKikakuchi = strKikakuchi.replace("】", "");
@@ -1210,7 +1226,9 @@ public class ValidateUtil {
             // 規格値不正
             return KIKAKU_CHECK_CD_SETTING_ERR;
         }
-
+        if (checkValFlg != null && checkValFlg.length > 0 && "0".equals(checkValFlg[0])) {
+            return KIKAKU_CHECK_CD_NORMAL;
+        }
         // 入力値取得
         BigDecimal inputValue;
         try {
@@ -1232,9 +1250,10 @@ public class ValidateUtil {
      * 規格チェック(7:<〇)
      *
      * @param fxhdd01 項目データ
+     * @param checkValFlg 入力値チェックフラグ
      * @return エラーコード(0:正常、1:規格エラー、-1:規格値不正)
      */
-    private static String checkKikakuST007(FXHDD01 fxhdd01) {
+    public static String checkKikakuST007(FXHDD01 fxhdd01, String... checkValFlg) {
 
         String strKikakuchi = StringUtil.nullToBlank(fxhdd01.getKikakuChi()).replace("【", "");
         strKikakuchi = strKikakuchi.replace("】", "");
@@ -1251,7 +1270,9 @@ public class ValidateUtil {
             // 規格値不正
             return KIKAKU_CHECK_CD_SETTING_ERR;
         }
-
+        if (checkValFlg != null && checkValFlg.length > 0 && "0".equals(checkValFlg[0])) {
+            return KIKAKU_CHECK_CD_NORMAL;
+        }
         // 入力値取得
         BigDecimal inputValue;
         try {
@@ -1273,9 +1294,10 @@ public class ValidateUtil {
      * 規格チェック(8:>〇)
      *
      * @param fxhdd01 項目データ
+     * @param checkValFlg 入力値チェックフラグ
      * @return エラーコード(0:正常、1:規格エラー、-1:規格値不正)
      */
-    private static String checkKikakuST008(FXHDD01 fxhdd01) {
+    public static String checkKikakuST008(FXHDD01 fxhdd01, String... checkValFlg) {
 
         String strKikakuchi = StringUtil.nullToBlank(fxhdd01.getKikakuChi()).replace("【", "");
         strKikakuchi = strKikakuchi.replace("】", "");
@@ -1292,7 +1314,9 @@ public class ValidateUtil {
             // 規格値不正
             return KIKAKU_CHECK_CD_SETTING_ERR;
         }
-
+        if (checkValFlg != null && checkValFlg.length > 0 && "0".equals(checkValFlg[0])) {
+            return KIKAKU_CHECK_CD_NORMAL;
+        }
         // 入力値取得
         BigDecimal inputValue;
         try {
@@ -1314,9 +1338,10 @@ public class ValidateUtil {
      * 規格チェック(9:MAX〇)
      *
      * @param fxhdd01 項目データ
+     * @param checkValFlg 入力値チェックフラグ
      * @return エラーコード(0:正常、1:規格エラー、-1:規格値不正)
      */
-    private static String checkKikakuST009(FXHDD01 fxhdd01) {
+    public static String checkKikakuST009(FXHDD01 fxhdd01, String... checkValFlg) {
 
         String strKikakuchi = StringUtil.nullToBlank(fxhdd01.getKikakuChi()).replace("【", "");
         strKikakuchi = strKikakuchi.replace("】", "");
@@ -1333,7 +1358,9 @@ public class ValidateUtil {
             // 規格値不正
             return KIKAKU_CHECK_CD_SETTING_ERR;
         }
-
+        if (checkValFlg != null && checkValFlg.length > 0 && "0".equals(checkValFlg[0])) {
+            return KIKAKU_CHECK_CD_NORMAL;
+        }
         // 入力値取得
         BigDecimal inputValue;
         try {
@@ -1355,9 +1382,10 @@ public class ValidateUtil {
      * 規格チェック(10:MIN〇)
      *
      * @param fxhdd01 項目データ
+     * @param checkValFlg 入力値チェックフラグ
      * @return エラーコード(0:正常、1:規格エラー、-1:規格値不正)
      */
-    private static String checkKikakuST010(FXHDD01 fxhdd01) {
+    public static String checkKikakuST010(FXHDD01 fxhdd01, String... checkValFlg) {
 
         String strKikakuchi = StringUtil.nullToBlank(fxhdd01.getKikakuChi()).replace("【", "");
         strKikakuchi = strKikakuchi.replace("】", "");
@@ -1374,7 +1402,9 @@ public class ValidateUtil {
             // 規格値不正
             return KIKAKU_CHECK_CD_SETTING_ERR;
         }
-
+        if (checkValFlg != null && checkValFlg.length > 0 && "0".equals(checkValFlg[0])) {
+            return KIKAKU_CHECK_CD_NORMAL;
+        }
         // 入力値取得
         BigDecimal inputValue;
         try {
@@ -1386,6 +1416,44 @@ public class ValidateUtil {
 
         // 下限値外か判定
         if (inputValue.compareTo(minValue) == -1) {
+            // 規格チェックエラー
+            return KIKAKU_CHECK_CD_ERR;
+        }
+        return KIKAKU_CHECK_CD_NORMAL;
+    }
+    
+     /**
+     * 規格チェック(11:=〇)
+     *
+     * @param fxhdd01 項目データ
+     * @param checkValFlg 入力値チェックフラグ
+     * @return エラーコード(0:正常、1:規格エラー、-1:規格値不正)
+     */
+    public static String checkKikakuST011(FXHDD01 fxhdd01, String... checkValFlg) {
+
+        String strKikakuchi = StringUtil.nullToBlank(fxhdd01.getKikakuChi()).replace("【", "");
+        strKikakuchi = strKikakuchi.replace("】", "");
+
+        // 比較値取得
+        BigDecimal equalValue = numberExtraction(strKikakuchi);
+        if (equalValue == null) {
+            // 規格値不正
+            return KIKAKU_CHECK_CD_SETTING_ERR;
+        }
+        if (checkValFlg != null && checkValFlg.length > 0 && "0".equals(checkValFlg[0])) {
+            return KIKAKU_CHECK_CD_NORMAL;
+        }
+        // 入力値取得
+        BigDecimal inputValue;
+        try {
+            inputValue = new BigDecimal(fxhdd01.getValue());
+        } catch (NumberFormatException e) {
+            // 規格チェックエラー
+            return KIKAKU_CHECK_CD_ERR;
+        }
+
+        // 比較値外か判定
+        if (inputValue.compareTo(equalValue) != 0) {
             // 規格チェックエラー
             return KIKAKU_CHECK_CD_ERR;
         }

@@ -1,0 +1,7 @@
+[
+    {"no":"1","id":"tourokunichiji","columnname":"取込日","type":"String","format":""},
+    {"no":"2","id":"kikaku","columnname":"規格","type":"String","format":""},
+    {"no":"3","id":"syurui","columnname":"種類","type":"String","format":""},
+    {"no":"4","id":"tantousya","columnname":"担当者","type":"String","format":""},
+    {"no":"5","id":"ngsuu","columnname":"NG数","type":"Integer","format":"4,0"}
+]
