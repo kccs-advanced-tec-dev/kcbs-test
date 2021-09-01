@@ -127,6 +127,9 @@ public class SrKoteifuryo {
      * 詳細内容5
      */
     private String furyomeisai5;
+    /**
+     * 確認者
+     */
     private String qakakuninsya;
     private int jyotaifulag;
     private String lotkubuncode;
@@ -154,10 +157,19 @@ public class SrKoteifuryo {
      * 不良率5
      */
     private String furyoritiu5;
+    /**
+     * 日付
+     */
     private java.sql.Date qakakuninnichiji;
     private String pretorokuno;
     private String opencloseflag;
+    /**
+     * 不良名6
+     */
     private String furyobunrui6;
+    /**
+     * 不良ｺｰﾄﾞ6
+     */
     private String furyocode6;
     /**
      * 詳細内容6
@@ -167,7 +179,13 @@ public class SrKoteifuryo {
      * 不良率6
      */
     private String furyoritiu6;
+    /**
+     * 不良名7
+     */
     private String furyobunrui7;
+    /**
+     * 不良ｺｰﾄﾞ7
+     */
     private String furyocode7;
     /**
      * 詳細内容7
@@ -177,7 +195,14 @@ public class SrKoteifuryo {
      * 不良率7
      */
     private String furyoritiu7;
+    /**
+     * 不良名8
+     */
+
     private String furyobunrui8;
+    /**
+     * 不良ｺｰﾄﾞ8
+     */
     private String furyocode8;
     /**
      * 詳細内容8
@@ -187,7 +212,13 @@ public class SrKoteifuryo {
      * 不良率8
      */
     private String furyoritiu8;
+    /**
+     * 不良名9
+     */
     private String furyobunrui9;
+    /**
+     * 不良ｺｰﾄﾞ9
+     */
     private String furyocode9;
     /**
      * 詳細内容9
@@ -197,7 +228,13 @@ public class SrKoteifuryo {
      * 不良率9
      */
     private String furyoritiu9;
+    /**
+     * 不良名10
+     */
     private String furyobunrui10;
+    /**
+     * 不良ｺｰﾄﾞ10
+     */
     private String furyocode10;
     /**
      * 詳細内容10
@@ -247,6 +284,9 @@ public class SrKoteifuryo {
      * 在庫No10
      */
     private String zaikono10;
+    /**
+     * 号機ｺｰﾄﾞ
+     */
     private String goukicode;
     private String tmp_data;
     private String tokuisaki;
