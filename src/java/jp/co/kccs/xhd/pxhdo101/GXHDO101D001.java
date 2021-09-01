@@ -64,34 +64,6 @@ import org.primefaces.context.RequestContext;
 @Named("beanGXHDO101D001")
 public class GXHDO101D001 implements Serializable {
 
-    /**
-     * @return the searchLotNo
-     */
-    public String getSearchLotNo() {
-        return searchLotNo;
-    }
-
-    /**
-     * @param searchLotNo the searchLotNo to set
-     */
-    public void setSearchLotNo(String searchLotNo) {
-        this.searchLotNo = searchLotNo;
-    }
-
-    /**
-     * @return the searchTantoshaCd
-     */
-    public String getSearchTantoshaCd() {
-        return searchTantoshaCd;
-    }
-
-    /**
-     * @param searchTantoshaCd the searchTantoshaCd to set
-     */
-    public void setSearchTantoshaCd(String searchTantoshaCd) {
-        this.searchTantoshaCd = searchTantoshaCd;
-    }
-
     private static final Logger LOGGER = Logger.getLogger(GXHDO101D001.class.getName());
 
     /**
@@ -474,34 +446,6 @@ public class GXHDO101D001 implements Serializable {
     }
 
     /**
-     * @return the torokuNoIndex
-     */
-    public String getTorokuNoIndex() {
-        return torokuNoIndex;
-    }
-
-    /**
-     * @param torokuNoIndex the torokuNoIndex to set
-     */
-    public void setTorokuNoIndex(String torokuNoIndex) {
-        this.torokuNoIndex = torokuNoIndex;
-    }
-
-    /**
-     * @return the tmpTorokuNoArray
-     */
-    public String[] getTorokuNoArray() {
-        return torokuNoArray;
-    }
-
-    /**
-     * @param torokuNoArray the tmpTorokuNoArray to set
-     */
-    public void setTorokuNoArray(String[] torokuNoArray) {
-        this.torokuNoArray = torokuNoArray;
-    }
-
-    /**
      * 実績Noの最大値を取得する
      *
      * @param torokuNo
@@ -757,6 +701,62 @@ public class GXHDO101D001 implements Serializable {
         }
         // ②画面を初期化し、再度初期表示処理を実施する。
         return "/secure/pxhdo101/gxhdo101d001.xhtml?faces-redirect=true";
+    }
+
+    /**
+     * @return the searchLotNo
+     */
+    public String getSearchLotNo() {
+        return searchLotNo;
+    }
+
+    /**
+     * @param searchLotNo the searchLotNo to set
+     */
+    public void setSearchLotNo(String searchLotNo) {
+        this.searchLotNo = searchLotNo;
+    }
+
+    /**
+     * @return the searchTantoshaCd
+     */
+    public String getSearchTantoshaCd() {
+        return searchTantoshaCd;
+    }
+
+    /**
+     * @param searchTantoshaCd the searchTantoshaCd to set
+     */
+    public void setSearchTantoshaCd(String searchTantoshaCd) {
+        this.searchTantoshaCd = searchTantoshaCd;
+    }
+
+    /**
+     * @return the torokuNoIndex
+     */
+    public String getTorokuNoIndex() {
+        return torokuNoIndex;
+    }
+
+    /**
+     * @param torokuNoIndex the torokuNoIndex to set
+     */
+    public void setTorokuNoIndex(String torokuNoIndex) {
+        this.torokuNoIndex = torokuNoIndex;
+    }
+
+    /**
+     * @return the tmpTorokuNoArray
+     */
+    public String[] getTorokuNoArray() {
+        return torokuNoArray;
+    }
+
+    /**
+     * @param torokuNoArray the tmpTorokuNoArray to set
+     */
+    public void setTorokuNoArray(String[] torokuNoArray) {
+        this.torokuNoArray = torokuNoArray;
     }
 
     /**
