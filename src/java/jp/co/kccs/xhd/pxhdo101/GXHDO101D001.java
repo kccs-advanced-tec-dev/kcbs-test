@@ -7,13 +7,11 @@ import java.io.Serializable;
 import java.lang.reflect.Array;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
@@ -150,20 +148,16 @@ public class GXHDO101D001 implements Serializable {
         // 登録NoIndex
         String tNoIndex = StringUtil.nullToBlank(session.getAttribute("torokuNoIndex"));
         this.torokuNoIndex = tNoIndex;
-        LOGGER.info(String.format("登録NoIndex: %s", tNoIndex));
         // 登録No配列
         Object torokuNoArrayObjSession = session.getAttribute("torokuNoArray");
-        String[] torokuNoArray = convertFromSessionToStringArray(torokuNoArrayObjSession);
-        setTorokuNoArray(torokuNoArray);
-        LOGGER.info(String.format("登録No配列: %s", Arrays.toString(torokuNoArray)));
+        String[] tNoArray = convertFromSessionToStringArray(torokuNoArrayObjSession);
+        this.torokuNoArray = tNoArray;
         // ロットNo(検索値)
         String sLotNo = StringUtil.nullToBlank(session.getAttribute("searchLotNo"));
         this.searchLotNo = sLotNo;
-        LOGGER.info(String.format("ロットNo(検索値): %s", sLotNo));
         // 担当者ｺｰﾄﾞ(検索値)
         String sTantoshaCd = StringUtil.nullToBlank(session.getAttribute("searchTantoshaCd"));
         this.searchTantoshaCd = sTantoshaCd;
-        LOGGER.info(String.format("担当者ｺｰﾄﾞ(検索値): %s", sTantoshaCd));
 
         // 登録NoIndexが「0」の場合は「前へ」ボタンを表示しない
         if (Integer.valueOf(this.torokuNoIndex) == 0) {
@@ -194,9 +188,7 @@ public class GXHDO101D001 implements Serializable {
             // メッセージを画面に渡す
             InitMessage beanInitMessage = (InitMessage) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_INIT_MESSAGE);
             beanInitMessage.setInitMessageList(this.getMessageListGXHDO101D001());
-//            RequestContext.getCurrentInstance().execute("PF('W_dlg_initMessage').show();");
             RequestContext context = RequestContext.getCurrentInstance();
-//            context.addCallbackParam("firstParam", "initMessage");
             context.addCallbackParam("firstParam", "error");
             return;
         }
@@ -419,7 +411,7 @@ public class GXHDO101D001 implements Serializable {
             // (5)[工程不良結果]から取得した実績Noの最大値
             setMaxJissekiNoKK(getMaxJissekiNoFromSrKoteifuryoKekka(queryRunnerQcdb, this.currentTorokuNoValue));
             // (6)[工程不良結果]から、初期表示する情報を取得
-            List<SrKoteifuryoKekka> koteifuryokekkaList = loadSrKoteifuryoKekka(queryRunnerQcdb, this.currentTorokuNoValue, getMaxJissekiNoKK());
+            List<SrKoteifuryoKekka> koteifuryokekkaList = loadSrKoteifuryoKekka(queryRunnerQcdb, this.currentTorokuNoValue, this.maxJissekiNoKK);
 
             // 取得したテーブル情報を画面表示モデルに設定する
             GXHDO101D001Model model = getGxhdo101d001Model();
