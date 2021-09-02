@@ -1254,42 +1254,42 @@ public class GXHDO101D001Model implements Serializable {
     /**
      * 不良内容表示判定
      */
-    private Boolean[] huryoDisp = new Boolean[10];
+    private Boolean[] furyoDisp = new Boolean[10];
 
     /**
      * 不良内容表示判定設定
      */
     public void setHuryoDisp() {
         // 不良1
-        if (!furyocode1.isEmpty() ||  !furyobunrui1.isEmpty() || !furyoritiu1.isEmpty() || !furyomeisai1.isEmpty()) {huryoDisp[0] = true;}
-        else {huryoDisp[0] = false;}
+        if (!furyocode1.isEmpty() ||  !furyobunrui1.isEmpty() || !furyoritiu1.isEmpty() || !furyomeisai1.isEmpty()) {furyoDisp[0] = true;}
+        else {furyoDisp[0] = false;}
         // 不良2
-        if (!furyocode2.isEmpty() ||  !furyobunrui2.isEmpty() || !furyoritiu2.isEmpty() || !furyomeisai2.isEmpty()) {huryoDisp[1] = true;}
-        else {huryoDisp[1] = false;}
+        if (!furyocode2.isEmpty() ||  !furyobunrui2.isEmpty() || !furyoritiu2.isEmpty() || !furyomeisai2.isEmpty()) {furyoDisp[1] = true;}
+        else {furyoDisp[1] = false;}
         // 不良3
-        if (!furyocode3.isEmpty() ||  !furyobunrui3.isEmpty() || !furyoritiu3.isEmpty() || !furyomeisai3.isEmpty()) {huryoDisp[2] = true;}
-        else {huryoDisp[2] = false;}
+        if (!furyocode3.isEmpty() ||  !furyobunrui3.isEmpty() || !furyoritiu3.isEmpty() || !furyomeisai3.isEmpty()) {furyoDisp[2] = true;}
+        else {furyoDisp[2] = false;}
          // 不良4
-        if (!furyocode4.isEmpty() ||  !furyobunrui4.isEmpty() || !furyoritiu4.isEmpty() || !furyomeisai4.isEmpty()) {huryoDisp[3] = true;}
-        else {huryoDisp[3] = false;}
+        if (!furyocode4.isEmpty() ||  !furyobunrui4.isEmpty() || !furyoritiu4.isEmpty() || !furyomeisai4.isEmpty()) {furyoDisp[3] = true;}
+        else {furyoDisp[3] = false;}
         // 不良5
-        if (!furyocode5.isEmpty() ||  !furyobunrui5.isEmpty() || !furyoritiu5.isEmpty() || !furyomeisai5.isEmpty()) {huryoDisp[4] = true;}
-        else {huryoDisp[4] = false;}
+        if (!furyocode5.isEmpty() ||  !furyobunrui5.isEmpty() || !furyoritiu5.isEmpty() || !furyomeisai5.isEmpty()) {furyoDisp[4] = true;}
+        else {furyoDisp[4] = false;}
         // 不良6
-        if (!furyocode6.isEmpty() ||  !furyobunrui6.isEmpty() || !furyoritiu6.isEmpty() || !furyomeisai6.isEmpty()) {huryoDisp[5] = true;}
-        else {huryoDisp[5] = false;}
+        if (!furyocode6.isEmpty() ||  !furyobunrui6.isEmpty() || !furyoritiu6.isEmpty() || !furyomeisai6.isEmpty()) {furyoDisp[5] = true;}
+        else {furyoDisp[5] = false;}
         // 不良7
-        if (!furyocode7.isEmpty() ||  !furyobunrui7.isEmpty() || !furyoritiu7.isEmpty() || !furyomeisai7.isEmpty()) {huryoDisp[6] = true;}
-        else {huryoDisp[6] = false;}
+        if (!furyocode7.isEmpty() ||  !furyobunrui7.isEmpty() || !furyoritiu7.isEmpty() || !furyomeisai7.isEmpty()) {furyoDisp[6] = true;}
+        else {furyoDisp[6] = false;}
         // 不良8
-        if (!furyocode8.isEmpty() ||  !furyobunrui8.isEmpty() || !furyoritiu8.isEmpty() || !furyomeisai8.isEmpty()) {huryoDisp[7] = true;}
-        else {huryoDisp[7] = false;}
+        if (!furyocode8.isEmpty() ||  !furyobunrui8.isEmpty() || !furyoritiu8.isEmpty() || !furyomeisai8.isEmpty()) {furyoDisp[7] = true;}
+        else {furyoDisp[7] = false;}
         // 不良9
-        if (!furyocode9.isEmpty() ||  !furyobunrui9.isEmpty() || !furyoritiu9.isEmpty() || !furyomeisai9.isEmpty()) {huryoDisp[8] = true;}
-        else {huryoDisp[8] = false;}
+        if (!furyocode9.isEmpty() ||  !furyobunrui9.isEmpty() || !furyoritiu9.isEmpty() || !furyomeisai9.isEmpty()) {furyoDisp[8] = true;}
+        else {furyoDisp[8] = false;}
         // 不良10
-        if (!furyocode10.isEmpty() ||  !furyobunrui10.isEmpty() || !furyoritiu10.isEmpty() || !furyomeisai10.isEmpty()) {huryoDisp[9] = true;}
-        else {huryoDisp[9] = false;}        
+        if (!furyocode10.isEmpty() ||  !furyobunrui10.isEmpty() || !furyoritiu10.isEmpty() || !furyomeisai10.isEmpty()) {furyoDisp[9] = true;}
+        else {furyoDisp[9] = false;}        
     }
 
     /**
@@ -1297,8 +1297,8 @@ public class GXHDO101D001Model implements Serializable {
      * @param idx(1～10)
      * @return True：表示、False：非表示
      */
-    public Boolean isHuryoDisp(int idx) {
-        return huryoDisp[idx - 1];
+    public Boolean isFuryoDisp(int idx) {
+        return furyoDisp[idx - 1];
     }    
   
     /**
