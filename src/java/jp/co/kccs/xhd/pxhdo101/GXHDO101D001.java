@@ -147,7 +147,6 @@ public class GXHDO101D001 implements Serializable {
         HttpSession session = (HttpSession) externalContext.getSession(false);
 
         // session値をbeanに格納する
-        // TODO: 確認 doPrev(),doNext()から遷移時の(torokuNoArray,searchLotNo,searchTantoshaCd)
         // 登録NoIndex
         setTorokuNoIndex((String) session.getAttribute("torokuNoIndex"));
         String torokuNoIndex = StringUtil.nullToBlank(session.getAttribute("torokuNoIndex"));
@@ -180,7 +179,7 @@ public class GXHDO101D001 implements Serializable {
         }
 
         // 現在の登録Noを取得
-        setCurrentTorokuNoValue(findTorokuNoFromIndex(getTorokuNoIndex())); //TODO:整理
+        setCurrentTorokuNoValue(findTorokuNoFromIndex(getTorokuNoIndex()));
 
         // Model初期化
         GXHDO101D001Model model = new GXHDO101D001Model();
@@ -272,7 +271,7 @@ public class GXHDO101D001 implements Serializable {
             this.setMessageListGXHDO101D001(new ArrayList<>());
 
             // チェック処理：レコードが取得出来なかった場合
-            if (listSrKoteifuryo.isEmpty() || Integer.parseInt(this.torokuNoIndex) == 3) { // TODO: debug
+            if (listSrKoteifuryo.isEmpty()) {
                 setErrorMessage(MessageUtil.getMessage("XHD-000218"));
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, getErrorMessage(), null);
                 FacesContext.getCurrentInstance().addMessage(null, message);
@@ -292,7 +291,7 @@ public class GXHDO101D001 implements Serializable {
             // 必要な値を設定する
             model.setRank(rowKoteifuryo.getRank()); // KF.ﾗﾝｸ
             model.setHakkobi(rowKoteifuryo.getHakkobi()); // KF.発行日
-            model.setTokuisaki(rowKoteifuryo.getTokuisaki()); // KF.tokuisaki (「客先：」の項目で使用) //TODO:基本設計書確認
+            model.setTokuisaki(rowKoteifuryo.getTokuisaki()); // KF.tokuisaki
             model.setHakkenkotei(rowKoteifuryo.getHakkenkotei()); // KF.発見工程ID
             model.setTorokuno(rowKoteifuryo.getTorokuno()); // KF.登録No
             model.setKcpno(rowKoteifuryo.getKcpno()); // KF.KCPNO

@@ -48,12 +48,6 @@ public class GXHDO101C021 implements Serializable {
     private static final Logger LOGGER = Logger.getLogger(GXHDO101C021.class.getName());
 
     /**
-     * DataSource(wip)
-     */
-    @Resource(mappedName = "jdbc/DocumentServer")
-    private transient DataSource dataSourceDocServer;
-
-    /**
      * 参照元ﾛｯﾄNo
      */
     private String sanshouMotoLotNo;
