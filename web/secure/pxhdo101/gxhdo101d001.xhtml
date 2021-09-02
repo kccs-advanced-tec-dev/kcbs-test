@@ -15,7 +15,7 @@
         xmlns:p="http://primefaces.org/ui"
         xmlns:f="http://xmlns.jcp.org/jsf/core"
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core"> <!-- 表示場所確認中 【画面遷移は行われない：メッセージ表示は行われる】 -->
+        xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
     <h:head>
         <link href="#{request.contextPath}/resources/css/growl.css" rel="stylesheet" type="text/css"/>
         <h:outputScript library="primefaces" name="jquery/jquery.js" />
@@ -27,7 +27,6 @@
         </style>
     </h:head>
 
-<!--    <ui:composition>  表示場所確認中 【画面遷移は正常：メッセージ表示が正しくない】 -->
     <h:body>
 
     <f:metadata>
@@ -464,10 +463,6 @@
         </tbody>
     </table>
 
-    <div>
-        <!--<ui:include src="/secure/common/initMessage.xhtml"/>-->
-    </div>
-    
     </h:body>
 
 </html>
