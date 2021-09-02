@@ -287,14 +287,14 @@ public class GXHDO101A implements Serializable {
         HttpSession session = (HttpSession) externalContext.getSession(false);
 
         // ロットNo(検索値)
-        String searchLotNo = (String) session.getAttribute("searchLotNo");
+        String searchLotNo = StringUtil.nullToBlank(session.getAttribute("searchLotNo"));
         this.searchLotNo = searchLotNo;
         // 担当者ｺｰﾄﾞ(検索値)
-        String searchTantoshaCd = (String) session.getAttribute("searchTantoshaCd");
+        String searchTantoshaCd = StringUtil.nullToBlank(session.getAttribute("searchTantoshaCd"));
         this.searchTantoshaCd = searchTantoshaCd;
         // B･Cﾗﾝｸ連絡書一覧再表示フラグ
-        String strFlgReOpenGXHDOC021 = (String) session.getAttribute("flgReOpenGXHDOC021");
-        if (strFlgReOpenGXHDOC021 == "true") {
+        String strFlgReOpenGXHDOC021 = StringUtil.nullToBlank(session.getAttribute("flgReOpenGXHDOC021"));
+        if (strFlgReOpenGXHDOC021.equals("true")) {
             this.flgReOpenGXHDOC021 = true;
         } else {
             this.flgReOpenGXHDOC021 = false;

@@ -148,38 +148,38 @@ public class GXHDO101D001 implements Serializable {
 
         // session値をbeanに格納する
         // 登録NoIndex
-        setTorokuNoIndex((String) session.getAttribute("torokuNoIndex"));
-        String torokuNoIndex = StringUtil.nullToBlank(session.getAttribute("torokuNoIndex"));
-        LOGGER.info(String.format("登録NoIndex: %s", torokuNoIndex));
+        String tNoIndex = StringUtil.nullToBlank(session.getAttribute("torokuNoIndex"));
+        this.torokuNoIndex = tNoIndex;
+        LOGGER.info(String.format("登録NoIndex: %s", tNoIndex));
         // 登録No配列
         Object torokuNoArrayObjSession = session.getAttribute("torokuNoArray");
         String[] torokuNoArray = convertFromSessionToStringArray(torokuNoArrayObjSession);
         setTorokuNoArray(torokuNoArray);
         LOGGER.info(String.format("登録No配列: %s", Arrays.toString(torokuNoArray)));
         // ロットNo(検索値)
-        String sLotNo = (String) session.getAttribute("searchLotNo");
-        setSearchLotNo(sLotNo);
+        String sLotNo = StringUtil.nullToBlank(session.getAttribute("searchLotNo"));
+        this.searchLotNo = sLotNo;
         LOGGER.info(String.format("ロットNo(検索値): %s", sLotNo));
         // 担当者ｺｰﾄﾞ(検索値)
-        String sTantoshaCd = (String) session.getAttribute("searchTantoshaCd");
-        setSearchTantoshaCd(sTantoshaCd);
+        String sTantoshaCd = StringUtil.nullToBlank(session.getAttribute("searchTantoshaCd"));
+        this.searchTantoshaCd = sTantoshaCd;
         LOGGER.info(String.format("担当者ｺｰﾄﾞ(検索値): %s", sTantoshaCd));
 
         // 登録NoIndexが「0」の場合は「前へ」ボタンを表示しない
-        if (Integer.valueOf(getTorokuNoIndex()) == 0) {
+        if (Integer.valueOf(this.torokuNoIndex) == 0) {
             setBtnPrevRender(false);
         } else {
             setBtnPrevRender(true);
         }
         // 登録NoIndexが配列終端の場合は「次へ」ボタンを表示しない
-        if (Integer.valueOf(getTorokuNoIndex()) == getTorokuNoArray().length - 1) {
+        if (Integer.valueOf(this.torokuNoIndex) == this.torokuNoArray.length - 1) {
             setBtnNextRender(false);
         } else {
             setBtnNextRender(true);
         }
 
         // 現在の登録Noを取得
-        setCurrentTorokuNoValue(findTorokuNoFromIndex(getTorokuNoIndex()));
+        this.currentTorokuNoValue = this.torokuNoArray[Integer.parseInt(torokuNoIndex)];
 
         // Model初期化
         GXHDO101D001Model model = new GXHDO101D001Model();
@@ -265,7 +265,7 @@ public class GXHDO101D001 implements Serializable {
         QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
         try {
             // 工程不良テーブルを取得する
-            List<SrKoteifuryo> listSrKoteifuryo = getSrKoteifuryoList(queryRunnerQcdb, findTorokuNoFromIndex(torokuNoIndex));
+            List<SrKoteifuryo> listSrKoteifuryo = getSrKoteifuryoList(queryRunnerQcdb, this.torokuNoArray[Integer.parseInt(torokuNoIndex)]);
 
             // メッセージリスト
             this.setMessageListGXHDO101D001(new ArrayList<>());
@@ -417,9 +417,9 @@ public class GXHDO101D001 implements Serializable {
         try {
             QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
             // (5)[工程不良結果]から取得した実績Noの最大値
-            setMaxJissekiNoKK(getMaxJissekiNoFromSrKoteifuryoKekka(queryRunnerQcdb, getCurrentTorokuNoValue()));
+            setMaxJissekiNoKK(getMaxJissekiNoFromSrKoteifuryoKekka(queryRunnerQcdb, this.currentTorokuNoValue));
             // (6)[工程不良結果]から、初期表示する情報を取得
-            List<SrKoteifuryoKekka> koteifuryokekkaList = getSrKoteifuryoKekka(queryRunnerQcdb, getCurrentTorokuNoValue(), getMaxJissekiNoKK());
+            List<SrKoteifuryoKekka> koteifuryokekkaList = getSrKoteifuryoKekka(queryRunnerQcdb, this.currentTorokuNoValue, getMaxJissekiNoKK());
 
             // 取得したテーブル情報を画面表示モデルに設定する
             GXHDO101D001Model model = getGxhdo101d001Model();
@@ -459,16 +459,6 @@ public class GXHDO101D001 implements Serializable {
             ErrUtil.outputErrorLog("実績No最大値取得エラー", ex, LOGGER);
         }
         return "";
-    }
-
-    /**
-     * 登録No配列のIndexから登録Noの値を取得する
-     *
-     * @param torokuNoIndex
-     * @return
-     */
-    private String findTorokuNoFromIndex(String torokuNoIndex) {
-        return this.torokuNoArray[Integer.parseInt(torokuNoIndex)];
     }
 
     /**
