@@ -20,10 +20,6 @@ import jp.co.kccs.xhd.model.GXHDO101C021Model.TorokuNoData;
 import jp.co.kccs.xhd.util.StringUtil;
 
 /**
- *
- * @author kokskgp10_nw
- */
-/**
  * ===============================================================================<br>
  * <br>
  * システム名	品質情報管理システム<br>

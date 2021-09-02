@@ -86,6 +86,11 @@ import org.primefaces.context.RequestContext;
  * 変更者	KCSS D.Yanagida<br>
  * 変更理由	ロット混合対応<br>
  * <br>
+ * 変更日	2021/08/21<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	SRC K.Ijuin<br>
+ * 変更理由	B･Cランク連絡書一覧・品質確認連絡書対応を追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
