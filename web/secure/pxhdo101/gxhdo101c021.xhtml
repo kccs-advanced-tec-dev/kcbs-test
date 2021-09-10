@@ -1,0 +1,34 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <p:dialog header="B･Cﾗﾝｸ連絡書一覧" id="dlg_gxhdo101c021" widgetVar="W_dlg_gxhdo101c021"
+              width="480" modal="true"  
+              dynamic="true" closable="true" closeOnEscape="false" 
+              onShow="subFormOpen();"
+              onHide="subFormClose(); document.getElementById('form:gxhdo101c021Form:cancelBtn').click();" position="center top">
+        <h:form id="gxhdo101c021Form">
+            <p:commandButton value="戻る" id="cancelBtn"
+                             style="position:relative;top:23px;left:60px;width:110px;height:35px;"
+                             process="@this" 
+                             update="form:growlMessage"
+                             oncomplete="PF('W_dlg_gxhdo101c021').hide();"/>
+            <p:dataTable id="tourokuNoTable" var="item" 
+                         rendered="#{beanGXHDO101C021.tourokuNoTableRender}"
+                         value="#{beanGXHDO101C021.gxhdO101c021ModelView.torokuNoDataList}" 
+                         style="padding:20px;margin-top:20px;margin-left:auto;margin-right:auto;font-size:17px;width:200px;"
+                         scrollable="true"
+                         emptyMessage="">
+                <p:column id="torokuNo" style="text-align:center" headerText="登録No">
+                    <p:commandLink id="cmdLink" value="#{item.torokuNo}" style="color:Indigo;font-size: 17px;" 
+                                   process="@this" 
+                                   action="#{beanGXHDO101C021.openXhdFormHinsitsu(item.torokuNo)}" 
+                                   >
+                    </p:commandLink>
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+    </p:dialog>
+</ui:composition>

@@ -31,6 +31,8 @@ import jp.co.kccs.xhd.SelectParam;
 import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.db.model.DaJoken;
 import jp.co.kccs.xhd.db.model.FXHDM01;
+import jp.co.kccs.xhd.db.model.SrKoteifuryo;
+import jp.co.kccs.xhd.model.GXHDO101C021Model;
 import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
@@ -83,6 +85,11 @@ import org.primefaces.context.RequestContext;
  * 計画書No	MB2008-DK001<br>
  * 変更者	KCSS D.Yanagida<br>
  * 変更理由	ロット混合対応<br>
+ * <br>
+ * 変更日	2021/08/21<br>
+ * 計画書No	MB2008-DK001<br>
+ * 変更者	SRC K.Ijuin<br>
+ * 変更理由	B･Cランク連絡書一覧・品質確認連絡書対応を追加<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -201,6 +208,11 @@ public class GXHDO101A implements Serializable {
     private boolean sanshouBtnRender;
 
     /**
+     * B･Cﾗﾝｸ連絡書一覧render有無
+     */
+    private boolean rankBCRenrakuBtnRender;
+
+    /**
      * 総合判定表示render有無
      */
     private boolean sougouHanteiBtnRender;
@@ -224,7 +236,18 @@ public class GXHDO101A implements Serializable {
      * 参照元ﾃﾞｰﾀ
      */
     private FXHDM01 deleteMenuInfo = null;
+    
+    /**
+     * menuTable再表示フラグ(GXHDO101D001から遷移時に使用)
+     */
+    private boolean flgReOpenMenutable = false;
 
+    /**
+     * B･Cﾗﾝｸ連絡書一覧再表示フラグ(GXHDO101D001から遷移時に使用)
+     */
+    private boolean flgReOpenGXHDOC021 = false;
+
+    
     /**
      * コンストラクタ
      */
@@ -247,6 +270,49 @@ public class GXHDO101A implements Serializable {
             this.lotNo = sLotNo;
             getMenuListGXHDO101(this.lotNo, this.tantoshaCd, false);
         }
+
+        // 品質確認連絡書から「一覧へ戻る」で戻ってきた場合はB･Cﾗﾝｸ連絡書一覧を再表示する
+        String strFlgReOpenMenutable = StringUtil.nullToBlank(session.getAttribute("flgReOpenMenutable"));
+        if (strFlgReOpenMenutable == "true") {
+            this.flgReOpenMenutable = true;
+        }
+        session.setAttribute("flgReOpenMenutable", "");
+        if (isFlgReOpenMenutable()) {
+            reOpenMenutableFromGXHDO101D001();
+        }
+
+    }
+
+    /**
+     * GXHDO101D001から遷移時、再検索後にMenuTableを再表示させる
+     */
+    private void reOpenMenutableFromGXHDO101D001() {
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+
+        // ロットNo(検索値)
+        String searchLotNo = StringUtil.nullToBlank(session.getAttribute("searchLotNo"));
+        this.searchLotNo = searchLotNo;
+        // 担当者ｺｰﾄﾞ(検索値)
+        String searchTantoshaCd = StringUtil.nullToBlank(session.getAttribute("searchTantoshaCd"));
+        this.searchTantoshaCd = searchTantoshaCd;
+        // B･Cﾗﾝｸ連絡書一覧再表示フラグ
+        String strFlgReOpenGXHDOC021 = StringUtil.nullToBlank(session.getAttribute("flgReOpenGXHDOC021"));
+        if (strFlgReOpenGXHDOC021.equals("true")) {
+            this.flgReOpenGXHDOC021 = true;
+        } else {
+            this.flgReOpenGXHDOC021 = false;
+        }
+        // ロットNo, 担当者コードを再設定
+        this.lotNo = searchLotNo;
+        this.tantoshaCd = searchTantoshaCd;
+        // ロット検索を再実行
+        if (!StringUtil.isEmpty(this.searchLotNo) && !StringUtil.isEmpty(this.searchTantoshaCd)) {
+            reSearchHinshitsuData(false);
+        }
+        // B･Cﾗﾝｸ連絡書一覧を再表示
+        doRankBCRenraku();
+
     }
 
     /**
@@ -353,7 +419,7 @@ public class GXHDO101A implements Serializable {
                 facesContext.addMessage(null, message);
                 return null;
             }
-            
+
             for (Iterator i = processResult.iterator(); i.hasNext();) {
                 HashMap m = (HashMap) i.next();
                 strProcess = m.get("PrintFmt").toString();
@@ -508,6 +574,15 @@ public class GXHDO101A implements Serializable {
             }
             //総合判定ﾎﾞﾀﾝ表示
             setSougouHanteiBtnRender(true);
+
+            //⑳B･Cﾗﾝｸ発行ﾎﾞﾀﾝ表示/非表示
+            List<SrKoteifuryo> listSrKoteifuryo = getSrKoteifuryoList(queryRunnerXHD, strKojyo, strLotNo, strEdaban);
+
+            if (listSrKoteifuryo.isEmpty()) {
+                setRankBCRenrakuBtnRender(false);
+            } else {
+                setRankBCRenrakuBtnRender(true);
+            }
 
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("メニュー項目未登録", ex, LOGGER);
@@ -837,6 +912,62 @@ public class GXHDO101A implements Serializable {
     }
 
     /**
+     * B･Cﾗﾝｸ連絡書ﾎﾞﾀﾝ押下
+     */
+    public void doRankBCRenraku() {
+
+        try {
+
+            QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
+
+            String strKojyo = "";
+            String strLotNo = "";
+            String strEdaban = "";
+
+            if (!"".equals(searchLotNo) && searchLotNo != null) {
+                strKojyo = this.searchLotNo.substring(0, 3);
+                strLotNo = this.searchLotNo.substring(3, 11);
+                strEdaban = this.searchLotNo.substring(11, 14);
+            }
+
+            // 工程不良テーブルから登録Noを取得する
+            List<SrKoteifuryo> listSrKoteifuryo = getSrKoteifuryoList(queryRunnerQcdb, strKojyo, strLotNo, strEdaban);
+            if (listSrKoteifuryo.isEmpty()) {
+                // 取得できなかった場合
+                // ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。 ｴﾗｰｺｰﾄﾞ:XHD-000083
+                setErrorMessage(MessageUtil.getMessage("XHD-000083", "異常連絡書ﾃﾞｰﾀｴﾗｰ"));
+                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, getErrorMessage(), null);
+                FacesContext.getCurrentInstance().addMessage(null, message);
+                return;
+            }
+
+            // GXHDO101C021 bean初期化
+            GXHDO101C021 beanGXHDO101C021 = (GXHDO101C021) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C021);
+            beanGXHDO101C021.setSanshouMotoLotNo(this.searchLotNo);
+
+            // GXHDO101C021 初回表示用Model作成
+            GXHDO101C021Model newModel = GXHDO101C021Logic.createGXHDO101C021Model(listSrKoteifuryo);
+            beanGXHDO101C021.setGxhdO101c021ModelView(newModel);
+
+            beanGXHDO101C021.setTourokuNoTableRender(true);
+
+            // ロットNo(検索値)を保持
+            String sLotNo = this.searchLotNo;
+            beanGXHDO101C021.setSearchLotNo(sLotNo);
+            // 担当者ｺｰﾄﾞ(検索値)を保持
+            String sTantoshaCd = this.searchTantoshaCd;
+            beanGXHDO101C021.setSearchTantoshaCd(sTantoshaCd);
+
+            // B･Cﾗﾝｸ連絡書一覧画面【GXHDO101C021】へ遷移する。
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.addCallbackParam("firstParam", "gxhdo101c021");
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("登録No0件", ex, LOGGER);
+        }
+
+    }
+
+    /**
      * 総合判定ﾎﾞﾀﾝ押下
      */
     public void doSougouHantei() {
@@ -1068,6 +1199,24 @@ public class GXHDO101A implements Serializable {
      */
     public boolean getSanshouBtnRender() {
         return sanshouBtnRender;
+    }
+
+    /**
+     * B･Cﾗﾝｸ連絡書ﾎﾞﾀﾝ表示render有無
+     *
+     * @return the rankBCRenrakuBtnRender
+     */
+    public boolean getRankBCRenrakuBtnRender() {
+        return rankBCRenrakuBtnRender;
+    }
+
+    /**
+     * B･Cﾗﾝｸ連絡書ﾎﾞﾀﾝ表示render有無
+     *
+     * @param rankBCRenrakuBtnRender the rankBCRenrakuBtnRender to set
+     */
+    public void setRankBCRenrakuBtnRender(boolean rankBCRenrakuBtnRender) {
+        this.rankBCRenrakuBtnRender = rankBCRenrakuBtnRender;
     }
 
     /**
@@ -3024,7 +3173,6 @@ public class GXHDO101A implements Serializable {
 
     }
 
-
     /**
      * [電気特性]から、電気特性再検を取得(値が無い場合はNULLを返却)
      *
@@ -4072,4 +4220,61 @@ public class GXHDO101A implements Serializable {
         return addMenuList;
     }
 
+    /**
+     * 工程不良データ取得
+     *
+     * @param queryRunnerXHD データオブジェクト
+     * @param kojyo
+     * @param lotNo
+     * @param edaban
+     * @return
+     * @throws SQLException
+     */
+    private List<SrKoteifuryo> getSrKoteifuryoList(QueryRunner queryRunnerXHD, String kojyo, String lotNo, String edaban) throws SQLException {
+        String sql = "SELECT torokuno "
+                + "FROM sr_koteifuryo "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? "
+                + "ORDER BY torokuno ";
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+
+        Map<String, String> mapping = new HashMap<>();
+        mapping.put("torokuno", "torokuno");
+        BeanProcessor beanProcessor = new BeanProcessor(mapping);
+        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+        ResultSetHandler<List<SrKoteifuryo>> beanHandler = new BeanListHandler<>(SrKoteifuryo.class, rowProcessor);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerXHD.query(sql, beanHandler, params.toArray());
+
+    }
+
+    /**
+     * @return the flgReOpenMenutable
+     */
+    public boolean isFlgReOpenMenutable() {
+        return flgReOpenMenutable;
+    }
+
+    /**
+     * @param flgReOpenMenutable the flgReOpenMenutable to set
+     */
+    public void setFlgReOpenMenutable(boolean flgReOpenMenutable) {
+        this.flgReOpenMenutable = flgReOpenMenutable;
+    }
+
+    /**
+     * @return the flgReOpenGXHDOC021
+     */
+    public boolean isFlgReOpenGXHDOC021() {
+        return flgReOpenGXHDOC021;
+    }
+
+    /**
+     * @param flgReOpenGXHDOC021 the flgReOpenGXHDOC021 to set
+     */
+    public void setFlgReOpenGXHDOC021(boolean flgReOpenGXHDOC021) {
+        this.flgReOpenGXHDOC021 = flgReOpenGXHDOC021;
+    }
 }

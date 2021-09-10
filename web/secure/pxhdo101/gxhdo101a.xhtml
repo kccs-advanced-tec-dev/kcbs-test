@@ -39,6 +39,8 @@
                     PF('W_dlg_gxhdo101c012').show();
                 } else if('gxhdo101c017'===args.firstParam){
                     PF('W_dlg_gxhdo101c017').show();
+                } else if('gxhdo101c021'===args.firstParam){
+                    PF('W_dlg_gxhdo101c021').show();
                 } else if('deleteConf'===args.firstParam){
                     PF('deleteCd').show();
                 }
@@ -151,25 +153,35 @@
                             </td>
                         </tr>
                         <tr>
-                            <td></td>
+                            <td>
+                                <!-- p:remoteCommand【GXHDO101D001】から「一覧へ戻る」押下時の再表示用 -->
+                                <p:remoteCommand oncomplete="if(#{gXHDO101A.flgReOpenGXHDOC021}){#{gXHDO101A.setFlgReOpenGXHDOC021(false)};PF('W_dlg_gxhdo101c021').show();} " autoRun="true"/>
+                                <p:commandButton id="rankBCRenrakuBtn" class="button" rendered="#{gXHDO101A.rankBCRenrakuBtnRender}"  styleClass="ui-conf-commandbtn-def1" style="margin-top: 3px; width: 94px; height: 32px; font-size: 10px; "
+                                                 value="B･Cﾗﾝｸ連絡書"
+                                                 actionListener="#{gXHDO101A.doRankBCRenraku()}"
+                                                 process="@this"
+                                                 update="@form"
+                                                 onstart="PF('cd').hide();$('#loadinggif').show();"
+                                                 oncomplete="$('#loadinggif').hide();cmdButtonOncomplete(args);">
+                                </p:commandButton> 
+                            </td>
                             <td>
                                 <h:outputText id="outText" value="" style="width: 300px; margin-left: 40px;"/>
-                                
-                                <p:commandButton id="sougouHanteiBtn" class="button" rendered="#{gXHDO101A.sougouHanteiBtnRender}"  styleClass="ui-conf-commandbtn-def1" style="position:relative; left: 213px; margin-top: 3px; width: 94px; height: 32px; font-size: 13px; "
-                                      value="総合判定"
-                                      actionListener="#{gXHDO101A.doSougouHantei()}"
-                                      process="@this"
-                                      update="growlMessage"
-                                      onstart="PF('cd').hide();$('#loadinggif').show();"
-                                      oncomplete="$('#loadinggif').hide();"/>
-                                
+                                <p:commandButton id="sougouHanteiBtn" class="button" rendered="#{gXHDO101A.sougouHanteiBtnRender}"  styleClass="ui-conf-commandbtn-def1" style="position:relative; left: 213px; margin-top: 3px; width: 94px; height: 32px; font-size: 13px;"
+                                                 value="総合判定"
+                                                 actionListener="#{gXHDO101A.doSougouHantei()}"
+                                                 process="@this"
+                                                 update="growlMessage"
+                                                 onstart="PF('cd').hide();$('#loadinggif').show();"
+                                                 oncomplete="$('#loadinggif').hide();"/>
+
                                 <p:commandButton id="sanshouBtn" class="button" rendered="#{gXHDO101A.sanshouBtnRender}"  styleClass="ui-conf-commandbtn-def1" style="float:right; margin-top: 3px; margin-left: 40px;width: 94px; height: 32px; font-size: 13px;"
-                                      value="ロット参照"
-                                      actionListener="#{gXHDO101A.getLotSanshou()}"
-                                      process="@this lotNo tantoshaCd"
-                                      update="@form"
-                                      onstart="PF('cd').hide();$('#loadinggif').show();$('#dataTableDiv').hide();"
-                                      oncomplete="$('#loadinggif').hide();$('#dataTableDiv').show();cmdButtonOncomplete(args);"/>
+                                                 value="ロット参照"
+                                                 actionListener="#{gXHDO101A.getLotSanshou()}"
+                                                 process="@this lotNo tantoshaCd"
+                                                 update="@form"
+                                                 onstart="PF('cd').hide();$('#loadinggif').show();$('#dataTableDiv').hide();"
+                                                 oncomplete="$('#loadinggif').hide();$('#dataTableDiv').show();cmdButtonOncomplete(args);"/>
                             </td>
                         </tr>
                     </table>
@@ -222,6 +234,7 @@
                 <ui:include src="/secure/common/initMessage.xhtml"/>
                 <ui:include src="/secure/pxhdo101/gxhdo101c012.xhtml"/>
                 <ui:include src="/secure/pxhdo101/gxhdo101c017.xhtml"/>
+                <ui:include src="/secure/pxhdo101/gxhdo101c021.xhtml"/>
             </div>
         </h:form>
         </div>
