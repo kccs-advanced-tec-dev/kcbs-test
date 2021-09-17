@@ -49,7 +49,7 @@ import org.apache.commons.lang3.StringUtils;
  * @author KCCS D.Yanagida
  * @since 2018/05/06
  */
-public class FXHDD01 {
+public class FXHDD01 implements Cloneable {
 
     /**
      * 画面ID
@@ -1162,5 +1162,18 @@ public class FXHDD01 {
         this.value = StringUtil.left(this.value, Integer.parseInt(this.getDisplayMaxLength()));
         // 小文字を大文字に変換(StringUtil.leftでnullは返却されない)
         this.value = this.value.toUpperCase();
+    }
+    
+    
+    /**
+     * クローン実装
+     *
+     * @return クローン
+     * @throws java.lang.CloneNotSupportedException
+     */
+    @Override
+    public FXHDD01 clone() throws CloneNotSupportedException {
+       
+        return (FXHDD01) super.clone();
     }
 }

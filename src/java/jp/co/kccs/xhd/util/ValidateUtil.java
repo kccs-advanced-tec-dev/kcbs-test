@@ -928,6 +928,9 @@ public class ValidateUtil {
                 case "10":
                     resultCd = checkKikakuST010(fxhdd01);
                     break;
+                case "11":
+                    resultCd = checkKikakuST011(fxhdd01);
+                    break;
                 default:
                     break;
             }
@@ -953,7 +956,7 @@ public class ValidateUtil {
      * @param fxhdd01 項目データ
      * @return true:入力項目、false:入力項目以外
      */
-    private static boolean isInputColumn(FXHDD01 fxhdd01) {
+    public static boolean isInputColumn(FXHDD01 fxhdd01) {
         if (fxhdd01.isRenderInputDate() || fxhdd01.isRenderInputNumber() || fxhdd01.isRenderInputRadio()
                 || fxhdd01.isRenderInputSelect() || fxhdd01.isRenderInputText() || fxhdd01.isRenderInputTime()
                 || fxhdd01.isRenderOutputLabel()) {

@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
+<html lang="ja"
+      xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
@@ -12,7 +13,7 @@
         <meta http-equiv="Pragma" content="no-cache"/>
         <meta http-equiv="Cache-Control" content="no-cache"/>
         <meta http-equiv="Expires" content="0"/>
-        <title>#{myParam.application_id} #{gXHDO901A.titleInfo.formName}</title>
+        <title>#{myParam.application_id} #{gXHDO901B.titleInfo.formName}</title>
         <link href="#{request.contextPath}/resources/css/growllarge.css" rel="stylesheet" type="text/css"/>
         <link href="#{request.contextPath}/resources/css/gxhco901a.css" rel="stylesheet" type="text/css"/>
         <link href="#{request.contextPath}/resources/css/errordialog.css" rel="stylesheet" type="text/css"/>
@@ -31,7 +32,7 @@
                 g_macAddr = '#{sessionInfo.macAddr}';
                 //location
                 g_location = '#{myMsg.NotAvailable}';
-                g_prgname = 'gxhdo901a.xhtml(#{gXHDO901A.formId})';
+                g_prgname = 'gxhdo901d.xhtml(#{gXHDO901B.formId})';
                 
                 var interval_id = setInterval(getLocation, #{myParam.sendLocInterval});
             });
@@ -40,36 +41,6 @@
                     PF('cd').show();
                 } else if('auth'===args.firstParam){
                     PF('W_dlg_userAuth').show();
-                } else if('gxhdo101c001'===args.firstParam){
-                    PF('W_dlg_gxhdo101c001').show();
-                } else if('gxhdo101c002'===args.firstParam){
-                    PF('W_dlg_gxhdo101c002').show();
-                } else if('gxhdo101c003'===args.firstParam){
-                    PF('W_dlg_gxhdo101c003').show();
-                } else if('gxhdo101c004'===args.firstParam){
-                    PF('W_dlg_gxhdo101c004').show();
-                } else if('gxhdo101c005'===args.firstParam){
-                    PF('W_dlg_gxhdo101c005').show();
-                } else if('gxhdo101c006'===args.firstParam){
-                    PF('W_dlg_gxhdo101c006').show();
-                } else if('gxhdo101c007'===args.firstParam){
-                    PF('W_dlg_gxhdo101c007').show();
-                } else if('gxhdo101c008'===args.firstParam){
-                    PF('W_dlg_gxhdo101c008').show();
-                } else if('gxhdo101c009'===args.firstParam){
-                    PF('W_dlg_gxhdo101c009').show();
-                } else if('gxhdo101c010'===args.firstParam){
-                    PF('W_dlg_gxhdo101c010').show();
-                } else if('gxhdo101c013'===args.firstParam){
-                    PF('W_dlg_gxhdo101c013').show();
-                } else if('gxhdo101c014'===args.firstParam){
-                    PF('W_dlg_gxhdo101c014').show();
-                } else if('gxhdo101c015'===args.firstParam){
-                    PF('W_dlg_gxhdo101c015').show();
-                } else if('gxhdo101c018'===args.firstParam){
-                    PF('W_dlg_gxhdo101c018').show();
-                } else if('gxhdo101c020'===args.firstParam){
-                    PF('W_dlg_gxhdo101c020').show();
                 } else if('kikakuError'===args.firstParam){
                     PF('W_dlg_kikakuError').show();
                 } else if('infoMessage'===args.firstParam){
@@ -151,54 +122,54 @@
             }
         </style>
     </h:head>
-    <h:body id="inputbody" onload="inputRelease(); #{gXHDO901A.onLoadProcess}" style="pointer-events: none;" >
+    <h:body id="inputbody" onload="inputRelease(); #{gXHDO901B.onLoadProcess}" style="pointer-events: none;" >
         <f:metadata>
-            <f:viewAction action="#{gXHDO901A.init()}"/>
+            <f:viewAction action="#{gXHDO901B.init()}"/>
         </f:metadata>
         
         <div style="margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;">
-        <h:outputText style="background:#{gXHDO901A.titleInfo.bgColor};color: #{gXHDO901A.titleInfo.fontColor}; 
-            font-size:#{gXHDO901A.titleInfo.fontSize}px;" value="#{gXHDO901A.titleInfo.formName}"/>
+        <h:outputText style="background:#{gXHDO901B.titleInfo.bgColor};color: #{gXHDO901B.titleInfo.fontColor}; 
+            font-size:#{gXHDO901B.titleInfo.fontSize}px;" value="#{gXHDO901B.titleInfo.formName}"/>
         </div>
         <h:form id="form" onkeypress="if (event.keyCode === 13) { return false; }" >
             <div  style="margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;">
             <div id="mainForm" style="width:#{adjustModels.menuWidth}px;">
             <div style="text-align:right">
-                <h:outputText style="font-size:#{gXHDO901A.titleInfo.fontSize}px;  #{gXHDO901A.styleDisplayNone}" value="#{gXHDO901A.jotaiDisplay}"/>        
+                <h:outputText style="font-size:#{gXHDO901B.titleInfo.fontSize}px;  #{gXHDO901B.styleDisplayNone}" value="#{gXHDO901B.jotaiDisplay}"/>        
             </div>
             <p:growl id="growlMessage" showDetail="false" sticky="true" escape="false" />
             <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
                 <f:facet name="message">
-                    <h:outputText value="#{gXHDO901A.processData.getWarnMessage()}" escape="false"/>
+                    <h:outputText value="#{gXHDO901B.processData.getWarnMessage()}" escape="false"/>
                 </f:facet>
                 <p:commandButton id="warnOk" value="OK" styleClass="ui-conf-commandbtn-def1"
-                                 actionListener="#{gXHDO901A.processWarnOk()}"
+                                 actionListener="#{gXHDO901B.processWarnOk()}"
                                  process="@form"
                                  update="@form"
                                  oncomplete="if('warning'!=args.firstParam){PF('cd').hide(); cmdButtonOncomplete(args);} else {PF('cd').show();}"/>
                 <p:commandButton id="warnCancel" value="Cancel" class="ui-conf-commandbtn-cancel" onclick="PF('cd').hide();" type="button" />
             </p:confirmDialog>
-            <p:commandButton id="returnBtnTop" style="margin-left:26px;margin-bottom:5px;margin-top:0px;#{gXHDO901A.styleDisplayNone}"
-                 value="#{myMsg.return}"  action="/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true"
+            <p:commandButton id="returnBtnTop" style="margin-left:26px;margin-bottom:5px;margin-top:0px;#{gXHDO901B.styleDisplayNone}"
+                 value="#{myMsg.return}"  action="/secure/pxhdo102/gxhdo102a.xhtml?faces-redirect=true"
                  process="@this" update="@this">
                 <f:param name="returnVal" value="return"/>
                 <f:attribute name="returnVal" value="return"/>
             </p:commandButton>
-            <p:panel id="headerPanel" style="margin-bottom:4px; #{gXHDO901A.styleDisplayNone}">
-                <ui:repeat value="#{gXHDO901A.buttonListTop}" var="item" varStatus="stat">
+            <p:panel id="headerPanel" style="margin-bottom:4px; #{gXHDO901B.styleDisplayNone}">
+                <ui:repeat value="#{gXHDO901B.buttonListTop}" var="item" varStatus="stat">
                     <p:commandButton id="buttonId" value="#{item.buttonName}" rendered="#{item.render}" disabled="#{!item.enabled}"
                                  style="margin-left:4px;margin-bottom:2px;font-size:#{item.fontSize}px;color:#{item.fontColor};background:#{item.backColor};"
-                                 actionListener="#{gXHDO901A.btnClick(item.buttonId)}" process="@form" update="@form" async="false"
+                                 actionListener="#{gXHDO901B.btnClick(item.buttonId)}" process="@form" update="@form" async="false"
                                  oncomplete="cmdButtonOncomplete(args);" />                    
                 </ui:repeat>
             </p:panel>
-            <p:panel id="entryPanel" style="margin-bottom:4px; #{gXHDO901A.styleDisplayNone}">
-                <p:dataList id="itemDataList" value="#{gXHDO901A.itemList}" var="item" type="none" itemType="none" paginator="true" rows="#{gXHDO901A.hyojiKensu}" styleClass="repeated-form;ui-paginator">
-                    <ui:fragment rendered="#{gXHDO901A.itemRendered}">
+            <p:panel id="entryPanel" style="margin-bottom:4px; #{gXHDO901B.styleDisplayNone}">
+                <p:dataList id="itemDataList" value="#{gXHDO901B.itemList}" var="item" type="none" itemType="none" paginator="true" rows="#{gXHDO901B.hyojiKensu}" styleClass="repeated-form;ui-paginator">
+                    <ui:fragment rendered="#{gXHDO901B.itemRendered}">
                         <p:panel id="itemPanel" style="background:#{item.backColor1}; min-height:48px;">
                             <p:selectBooleanCheckbox id="selectItem" rendered="#{item.renderTempItemCheckBox}" value="#{item.tempItemCheckBoxValue}" 
                                           style="margin-left:8px;vertical-align: middle;"/>
-                            <p:commandLink id="cmdLink" rendered="#{item.renderLinkButton}" action="#{gXHDO901A.cmdLinkAction(item.linkButtonId)}" 
+                            <p:commandLink id="cmdLink" rendered="#{item.renderLinkButton}" action="#{gXHDO901B.cmdLinkAction(item.linkButtonId)}" 
                                            process="@form" update="@form" async="false" oncomplete="cmdButtonOncomplete(args);"
                                            style="margin-left:8px;font-size:#{item.fontSize1}px;color:#{item.fontColor1};vertical-align: middle;">
                                     <h:outputText value="#{item.label1}" />
@@ -206,30 +177,30 @@
                             <h:outputText id="label1" rendered="#{item.render1}" value="#{item.label1}"
                                           style="margin-left:8px;font-size:#{item.fontSize1}px;color:#{item.fontColor1};vertical-align: middle;"/>
                             <h:outputText id="kikakuChi" rendered="#{item.render1 || item.renderLinkButton}" value="#{item.kikakuChi}"
-                                          style="margin-left:8px;font-size:#{item.fontSize3}px;color:#{item.fontColor3};vertical-align: middle;"/>
+                                          style="margin-left:8px;font-size:#{item.fontSize3}px;color:#{item.fontColor3};background:#{item.backColor3};vertical-align: middle;"/>
 
                             <h:outputText id="lblValue" rendered="#{item.renderOutputLabel}" value="#{item.value}"
                                           style="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;#{item.customStyleInput}"/>
 
                             <p:inputText id="textValue" rendered="#{(item.renderInputText) and (!item.renderOutputLabel)}" value="#{item.value}" maxlength="#{item.displayMaxLength}"
-                                          style="margin-left:8px;width:#{item.displayMaxLength}em; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901A.maxWidthInputCol}px;#{item.customStyleInput}">
+                                          style="margin-left:8px;width:#{item.displayMaxLength}em; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{item.customStyleInput}">
 								<p:ajax event="blur" process="@this" update="@this" listener="#{item.checkByte()}"  async="false"/>
                             </p:inputText>
                             
                             <p:calendar id="calendarDate" rendered="#{item.renderInputDate}" pattern="yyMMdd" value="#{item.value}" maxlength="#{item.displayMaxLength}" class="calendarDate"
-                                        style="margin-left:8px; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901A.maxWidthInputCol}px;#{item.customStyleInput}" />
+                                        style="margin-left:8px; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{item.customStyleInput}" />
                             <p:calendar id="calendarTime" rendered="#{item.renderInputTime}" value="#{item.value}" pattern="HHmm" timeOnly="true" class="calendarTime" 
-                                        style="margin-left:8px; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901A.maxWidthInputCol}px;#{item.customStyleInput}" />
+                                        style="margin-left:8px; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{item.customStyleInput}" />
                             <p:inputNumber id="numberValue" rendered="#{item.renderInputNumber}" value="#{item.value}" thousandSeparator="" roundMethod="D"
                                            decimalPlaces="#{item.numberDecimalPlaces}" maxValue="#{item.numberMaxValue}" minValue="#{item.numberMinValue}" size="#{item.displayMaxLength}"
-                                          inputStyle="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901A.maxWidthInputCol}px;#{item.customStyleInput}">
+                                          inputStyle="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{item.customStyleInput}">
                             </p:inputNumber>
                             <p:selectOneMenu id="comboBoxValue" rendered="#{item.renderInputSelect}" value="#{item.value}" styleClass="selectMenu"
-                                          style="margin-left:8px;width:#{item.inputLength}em;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901A.maxWidthInputCol}px;#{item.customStyleInput}">
+                                          style="margin-left:8px;width:#{item.inputLength}em;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{item.customStyleInput}">
                                 <f:selectItems value="#{item.selectMenuItem}"/>
                             </p:selectOneMenu>
                             <p:selectOneMenu id="availableComboBoxValue" rendered="#{item.renderInputSelectAvailable}" value="#{item.value}" styleClass="selectMenu" editable="true" maxlength="#{item.displayMaxLength}"
-                                          style="margin-left:8px;width:#{item.inputLength}em;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901A.maxWidthInputCol}px;#{item.customStyleInput}">
+                                          style="margin-left:8px;width:#{item.inputLength}em;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{item.customStyleInput}">
                                 <f:selectItems value="#{item.selectMenuItem}"/>
                             </p:selectOneMenu>
                             <p:selectOneRadio id="radioValue" rendered="#{item.renderInputRadio}" value="#{item.value}" styleClass="selectRadio"
@@ -244,17 +215,17 @@
                     </ui:fragment>
                 </p:dataList>
             </p:panel>
-            <p:panel id="footerPanel" style="margin-bottom:4px; #{gXHDO901A.styleDisplayNone}">
-                <ui:repeat value="#{gXHDO901A.buttonListBottom}" var="item" varStatus="stat">
+            <p:panel id="footerPanel" style="margin-bottom:4px; #{gXHDO901B.styleDisplayNone}">
+                <ui:repeat value="#{gXHDO901B.buttonListBottom}" var="item" varStatus="stat">
                     <p:commandButton id="buttonId" value="#{item.buttonName}" rendered="#{item.render}" disabled="#{!item.enabled}"
                                  style="margin-left:4px;margin-bottom:2px;font-size:#{item.fontSize}px;color:#{item.fontColor};background:#{item.backColor};"
-                                 actionListener="#{gXHDO901A.btnClick(item.buttonId)}" process="@form" update="@form" async="false"
+                                 actionListener="#{gXHDO901B.btnClick(item.buttonId)}" process="@form" update="@form" async="false"
                                  oncomplete="cmdButtonOncomplete(args);" />
                 </ui:repeat>
             </p:panel>
             
             <p:commandButton id="returnBtn" style="margin-left:26px;"
-                 value="#{myMsg.return}"  action="/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true"
+                 value="#{myMsg.return}"  action="/secure/pxhdo102/gxhdo102a.xhtml?faces-redirect=true"
                  process="@this" update="@this">
                 <f:param name="returnVal" value="return"/>
                 <f:attribute name="returnVal" value="return"/>
@@ -262,33 +233,18 @@
             </div>
             </div> 
             <div>
-                <t:aliasBean alias="#{gXHDO901ACommon}" value="#{gXHDO901A}">
+                <t:aliasBean alias="#{gXHDO901ACommon}" value="#{gXHDO901B}">
                     <ui:include src="/secure/pxhdo901/gxhdo901b.xhtml"/>
                 </t:aliasBean>
-                <ui:include src="compMessage.xhtml"/>
-                <ui:include src="/secure/pxhdo101/gxhdo101c001.xhtml"/>
-                <ui:include src="/secure/pxhdo101/gxhdo101c002.xhtml"/>
-                <ui:include src="/secure/pxhdo101/gxhdo101c003.xhtml"/>
-                <ui:include src="/secure/pxhdo101/gxhdo101c004.xhtml"/>
-                <ui:include src="/secure/pxhdo101/gxhdo101c005.xhtml"/>
-                <ui:include src="/secure/pxhdo101/gxhdo101c006.xhtml"/>
-                <ui:include src="/secure/pxhdo101/gxhdo101c007.xhtml"/>
-                <ui:include src="/secure/pxhdo101/gxhdo101c008.xhtml"/>
-                <ui:include src="/secure/pxhdo101/gxhdo101c009.xhtml"/>
-                <ui:include src="/secure/pxhdo101/gxhdo101c010.xhtml"/>
-                <ui:include src="/secure/pxhdo101/gxhdo101c013.xhtml"/>
-                <ui:include src="/secure/pxhdo101/gxhdo101c014.xhtml"/>
-                <ui:include src="/secure/pxhdo101/gxhdo101c015.xhtml"/>
-                <ui:include src="/secure/pxhdo101/gxhdo101c018.xhtml"/>
-                <ui:include src="/secure/pxhdo101/gxhdo101c020.xhtml"/>
                 <ui:include src="/secure/common/initMessage.xhtml"/>
-                <t:aliasBean alias="#{gXHDO901Common}" value="#{gXHDO901A}">
+                <t:aliasBean alias="#{gXHDO901Common}" value="#{gXHDO901B}">
                     <ui:include src="/secure/common/kikakuError.xhtml"/>
                 </t:aliasBean>
                 <ui:include src="/secure/common/infoMessage.xhtml"/>
+                <t:aliasBean alias="#{gXHDO101Common}" value="#{gXHDO901B}">
+                    <ui:include src="/secure/common/compMessage.xhtml"/>
+                </t:aliasBean>
             </div>
         </h:form>
-        
-        
     </h:body>
 </html>
