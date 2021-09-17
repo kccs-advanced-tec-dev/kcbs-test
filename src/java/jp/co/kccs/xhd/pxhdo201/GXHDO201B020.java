@@ -683,6 +683,21 @@ public class GXHDO201B020 implements Serializable {
                     + ", kenmazaisyurui"
                     + ", tamaishisyurui"
                     + ", tamaishiryou"
+                    + ", potsyurui"
+                    + ", charge"
+                    + ", bjikan2"
+                    + ", bkaiten2"
+                    + ", bjikan3"
+                    + ", bkaiten3"
+                    + ", bjikan4"
+                    + ", bkaiten4"
+                    + ", bjikan5"
+                    + ", bkaiten5"
+                    + ", bjikan6"
+                    + ", bkaiten6"
+                    + ", bjikantotal"
+                    + ", kenmazairyo2"
+                    + ", kenmazaisyurui2"
                     + ", (CASE WHEN gaikancheck = 0 THEN 'NG' WHEN gaikancheck = 1 THEN 'OK' ELSE NULL END) AS gaikancheck"
                     + ", StartKakuninsyacode"
                     + ", EndTantosyacode "
@@ -713,7 +728,7 @@ public class GXHDO201B020 implements Serializable {
             mapping.put("bjyokensetteimode", "bjyokensetteimode");       // ﾊﾞﾚﾙ条件設定ﾓｰﾄﾞ
             mapping.put("bjyokensyusokudo", "kenmakikaitensuu");         // 研磨機回転数(rpm)
             mapping.put("bgoki", "kenmagoki");                           // 研磨号機
-            mapping.put("bjikan", "kenmajikan");                         // 研磨時間
+            mapping.put("bjikan", "kenmajikan");                         // 研磨時間①
             mapping.put("kenmajikantani", "kenmajikantani");             // 研磨時間単位
             mapping.put("potsuu", "pottosuu");                           // ﾎﾟｯﾄ数(ﾎﾟｯﾄ)
             mapping.put("chiphahenkakunin", "chepuhaenkakunin");         // ﾁｯﾌﾟ破片確認
@@ -736,13 +751,28 @@ public class GXHDO201B020 implements Serializable {
             mapping.put("biko1", "biko1");                               // 備考1
             mapping.put("biko2", "biko2");                               // 備考2
             mapping.put("kenma", "kenmahosiki");                         // 研磨方式
-            mapping.put("kenmazairyo", "kenmazairyo");                   // 研磨材量(cc)
-            mapping.put("kenmazaisyurui", "kenmazaisyurui");             // 研磨材種類
+            mapping.put("kenmazairyo", "kenmazairyo");                   // 研磨材量①(cc)
+            mapping.put("kenmazaisyurui", "kenmazaisyurui");             // 研磨材種類①
             mapping.put("tamaishisyurui", "tamaisisyurui");              // 玉石種類
             mapping.put("tamaishiryou", "tamaisiryo");                   // 玉石量(cc)
             mapping.put("gaikancheck", "gaikankakunin");                 // 外観確認
             mapping.put("StartKakuninsyacode", "kaisikakusya");          // 開始確認者
             mapping.put("EndTantosyacode", "syuryotantosya");            // 終了担当者
+            mapping.put("potsyurui", "potsyurui");                       // ﾎﾟｯﾄ種類
+            mapping.put("charge", "charge");                             // ﾁｬｰｼﾞ量
+            mapping.put("kenmajikan2", "bjikan2");                       // 研磨時間②
+            mapping.put("kenmakikaitensuu2", "bkaiten2");                // 研磨機回転数②
+            mapping.put("kenmajikan3", "bjikan3");                       // 研磨時間③
+            mapping.put("kenmakikaitensuu3", "bkaiten3");                // 研磨機回転数③
+            mapping.put("kenmajikan4", "bjikan4");                       // 研磨時間④
+            mapping.put("kenmakikaitensuu4", "bkaiten4");                // 研磨機回転数④
+            mapping.put("kenmajikan5", "bjikan5");                       // 研磨時間⑤
+            mapping.put("kenmakikaitensuu5", "bkaiten5");                // 研磨機回転数⑤
+            mapping.put("kenmajikan6", "bjikan6");                       // 研磨時間⑥
+            mapping.put("kenmakikaitensuu6", "bkaiten6");                // 研磨機回転数⑥
+            mapping.put("kenmajikantotal", "bjikantotal");               // 研磨時間合計
+            mapping.put("kenmazairyo2", "kenmazairyo2");                 // 研磨材量②(cc)
+            mapping.put("kenmazaisyurui2", "kenmazaisyurui2");           // 研磨材種類②
 
             BeanProcessor beanProcessor = new BeanProcessor(mapping);
             RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
