@@ -1669,7 +1669,7 @@ public class GXHDO102B003 implements IFormLogic {
         List<FXHDD01> selectData
                 = listData.stream().filter(n -> itemId.equals(n.getItemId())).collect(Collectors.toList());
         if (null != selectData && 0 < selectData.size()) {
-            return selectData.get(0).getKikakuChi();
+            return StringUtil.nullToBlank(selectData.get(0).getKikakuChi()).replace("【", "").replace("】", "");
         } else if (srGlasskanso != null) {
             // 元データが存在する場合元データより取得
             return getSrGlasskansoItemData(itemId, srGlasskanso);
