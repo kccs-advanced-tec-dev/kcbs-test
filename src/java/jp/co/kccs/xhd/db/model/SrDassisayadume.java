@@ -11,25 +11,20 @@ import java.sql.Timestamp;
  * <br>
  * システム名	品質DB(コンデンサ)<br>
  * <br>
- * 変更日	2019/06/11<br>
- * 計画書No	K1811-DS001<br>
- * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更日	2021/09/20<br>
+ * 計画書No	MB2108-DK001<br>
+ * 変更者	SRC Y.Kuroumi<br>
  * 変更理由	新規作成<br>
- * <br>
- * 変更日	2020/10/19<br>
- * 計画書No	MB2008-DK001<br>
- * 変更者	863 zhangjy<br>
- * 変更理由	項目追加<br>
  * <br>
  * ===============================================================================<br>
  */
 /**
- * ｾｯﾀ詰めのモデルクラスです。
+ * 脱脂ｻﾔ詰めのモデルクラスです。
  *
- * @author SYSNAVI K.Hisanaga
- * @since 2019/06/11
+ * @author SRC Y.Kurozumi
+ * @since 2021/09/20
  */
-public class SrSayadume {
+public class SrDassisayadume {
 
     /**
      * 工場ｺｰﾄﾞ
@@ -52,24 +47,19 @@ public class SrSayadume {
     private String kcpno;
 
     /**
-     * 開始日時
+     * 客先
      */
-    private Timestamp kaishinichiji;
+    private String tokuisaki;
 
     /**
-     * 終了日時
+     * ﾛｯﾄ区分
      */
-    private Timestamp syuuryounichiji;
+    private String lotkubuncode;
 
     /**
-     * 号機ｺｰﾄﾞ
+     * ｵｰﾅｰ
      */
-    private String sayadumegouki;
-
-    /**
-     * ｾｯﾀ枚数
-     */
-    private Integer sayasuu;
+    private String ownercode;
 
     /**
      * 処理数
@@ -77,14 +67,69 @@ public class SrSayadume {
     private Integer kosuu;
 
     /**
-     * 担当者ｺｰﾄﾞ
+     * 単位重量
+     */
+    private BigDecimal ukeiretannijyuryo;
+
+    /**
+     * 総重量
+     */
+    private BigDecimal ukeiresoujyuryou;
+
+    /**
+     * 号機
+     */
+    private String sayadumegouki;
+
+    /**
+     * ｻﾔ詰め方法
+     */
+    private String sayadumehouhou;
+
+    /**
+     * ｻﾔ種類
+     */
+    private Integer sayasyurui;
+
+    /**
+     * 粉まぶし
+     */
+    private Integer konamabushi;
+
+    /**
+     * ｻﾔ詰め量
+     */
+    private Integer sayatumeryou;
+
+    /**
+     * ｻﾔ枚数
+     */
+    private Integer sayasuu;
+
+    /**
+     * 開始日時
+     */
+    private Timestamp kaishinichiji;
+
+    /**
+     * 担当者
      */
     private String tantousya;
 
     /**
-     * 実績No
+     * 開始確認者
      */
-    private Integer jissekino;
+    private String startkakuninsyacode;
+    
+    /**
+     * 終了日時
+     */
+    private Timestamp syuuryounichiji;
+
+    /**
+     * 終了担当者
+     */
+    private String endtantousyacode;
 
     /**
      * 備考1
@@ -107,11 +152,6 @@ public class SrSayadume {
     private String bikou4;
 
     /**
-     * 備考5
-     */
-    private String bikou5;
-
-    /**
      * 登録日時
      */
     private Timestamp tourokunichiji;
@@ -122,54 +162,9 @@ public class SrSayadume {
     private Timestamp koushinnichiji;
 
     /**
-     * ｾｯﾀ詰め量
-     */
-    private Integer settertumeryou;
-
-    /**
-     * ｾｯﾀ詰め方法
-     */
-    private String settertumehouhou;
-
-    /**
-     * ｾｯﾀ種類
-     */
-    private Integer settersyurui;
-
-    /**
-     * 粉まぶし
-     */
-    private Integer konamabushi;
-
-    /**
-     * 開始確認者
-     */
-    private String startkakuninsyacode;
-
-    /**
-     * 終了担当者
-     */
-    private String endtantousyacode;
-
-    /**
      * revision
      */
     private Long revision;
-
-    /**
-     * 単位重量
-     */
-    private BigDecimal ukeiretannijyuryo;
-
-    /**
-     * 総重量
-     */
-    private BigDecimal ukeiresoujyuryou;
-
-    /**
-     * 削除ﾌﾗｸﾞ
-     */
-    private Integer deleteflag;
 
     /**
      * 工場ｺｰﾄﾞ
@@ -352,24 +347,6 @@ public class SrSayadume {
     }
 
     /**
-     * 実績No
-     *
-     * @return the jissekino
-     */
-    public Integer getJissekino() {
-        return jissekino;
-    }
-
-    /**
-     * 実績No
-     *
-     * @param jissekino the jissekino to set
-     */
-    public void setJissekino(Integer jissekino) {
-        this.jissekino = jissekino;
-    }
-
-    /**
      * 備考1
      *
      * @return the bikou1
@@ -442,24 +419,6 @@ public class SrSayadume {
     }
 
     /**
-     * 備考5
-     *
-     * @return the bikou5
-     */
-    public String getBikou5() {
-        return bikou5;
-    }
-
-    /**
-     * 備考5
-     *
-     * @param bikou5 the bikou5 to set
-     */
-    public void setBikou5(String bikou5) {
-        this.bikou5 = bikou5;
-    }
-
-    /**
      * 登録日時
      *
      * @return the tourokunichiji
@@ -496,57 +455,57 @@ public class SrSayadume {
     }
 
     /**
-     * ｾｯﾀ詰め量
+     * ｻﾔ詰め量
      *
      * @return the settertumeryou
      */
-    public Integer getSettertumeryou() {
-        return settertumeryou;
+    public Integer getSayatumeryou() {
+        return sayatumeryou;
     }
 
     /**
-     * ｾｯﾀ詰め量
+     * ｻﾔ詰め量
      *
-     * @param settertumeryou the settertumeryou to set
+     * @param sayatumeryou the settertumeryou to set
      */
-    public void setSettertumeryou(Integer settertumeryou) {
-        this.settertumeryou = settertumeryou;
+    public void setSayatumeryou(Integer sayatumeryou) {
+        this.sayatumeryou = sayatumeryou;
     }
 
     /**
-     * ｾｯﾀ詰め方法
+     * ｻﾔ詰め方法
      *
-     * @return the settertumehouhou
+     * @return the sayadumehouhou
      */
-    public String getSettertumehouhou() {
-        return settertumehouhou;
+    public String getSayadumehouhou() {
+        return sayadumehouhou;
     }
 
     /**
-     * ｾｯﾀ詰め方法
+     * ｻﾔ詰め方法
      *
-     * @param settertumehouhou the settertumehouhou to set
+     * @param sayadumehouhou the sayadumehouhou to set
      */
-    public void setSettertumehouhou(String settertumehouhou) {
-        this.settertumehouhou = settertumehouhou;
+    public void setSettertumehouhou(String sayadumehouhou) {
+        this.sayadumehouhou = sayadumehouhou;
     }
 
     /**
-     * ｾｯﾀ種類
+     * ｻﾔ種類
      *
-     * @return the settersyurui
+     * @return the sayasyurui
      */
-    public Integer getSettersyurui() {
-        return settersyurui;
+    public Integer getSayasyurui() {
+        return sayasyurui;
     }
 
     /**
-     * ｾｯﾀ種類
+     * ｻﾔ種類
      *
-     * @param settersyurui the settersyurui to set
+     * @param sayasyurui the sayasyurui to set
      */
-    public void setSettersyurui(Integer settersyurui) {
-        this.settersyurui = settersyurui;
+    public void setSayasyurui(Integer sayasyurui) {
+        this.sayasyurui = sayasyurui;
     }
 
     /**
@@ -658,21 +617,57 @@ public class SrSayadume {
     }
 
     /**
-     * 削除ﾌﾗｸﾞ
-     *
-     * @return the deleteflag
+     * 客先
+     * 
+     * @return the tokuisaki
      */
-    public Integer getDeleteflag() {
-        return deleteflag;
+    public String getTokuisaki() {
+        return tokuisaki;
     }
 
     /**
-     * 削除ﾌﾗｸﾞ
-     *
-     * @param deleteflag the deleteflag to set
+     * 客先
+     * 
+     * @param tokuisaki the tokuisaki to set
      */
-    public void setDeleteflag(Integer deleteflag) {
-        this.deleteflag = deleteflag;
+    public void setTokuisaki(String tokuisaki) {
+        this.tokuisaki = tokuisaki;
+    }
+
+    /**
+     * ﾛｯﾄ区分
+     * 
+     * @return the lotkubuncode
+     */
+    public String getLotkubuncode() {
+        return lotkubuncode;
+    }
+
+    /**
+     * ﾛｯﾄ区分
+     * 
+     * @param lotkubuncode the lotkubuncode to set
+     */
+    public void setLotkubuncode(String lotkubuncode) {
+        this.lotkubuncode = lotkubuncode;
+    }
+
+    /**
+     * ｵｰﾅｰ
+     * 
+     * @return the ownercode
+     */
+    public String getOwnercode() {
+        return ownercode;
+    }
+
+    /**
+     * ｵｰﾅｰ
+     * 
+     * @param ownercode the ownercode to set
+     */
+    public void setOwnercode(String ownercode) {
+        this.ownercode = ownercode;
     }
 
 }

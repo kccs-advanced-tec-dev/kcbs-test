@@ -124,7 +124,7 @@ public class GXHDO201B050 implements Serializable {
     /** 検索条件：終了時刻(TO) */
     private String endTimeT = "";
     /** 検索条件：号機 */
-    private String guoki = "";
+    private String gouki = "";
     
     /**
      * コンストラクタ
@@ -319,18 +319,18 @@ public class GXHDO201B050 implements Serializable {
 
     /**
      * 検索条件：号機
-     * @return the guoki
+     * @return the gouki
      */
     public String getGouki() {
-        return guoki;
+        return gouki;
     }
 
     /**
      * 検索条件：号機
-     * @param gouki the guoki to set
+     * @param gouki the gouki to set
      */
     public void setGouki(String gouki) {
-        this.guoki = gouki;
+        this.gouki = gouki;
     }
 //</editor-fold>
     
@@ -403,7 +403,7 @@ public class GXHDO201B050 implements Serializable {
         endDateT = "";
         endTimeF = "";
         endTimeT = "";
-        guoki = "";
+        gouki = "";
         
         listData = new ArrayList<>();
     }
