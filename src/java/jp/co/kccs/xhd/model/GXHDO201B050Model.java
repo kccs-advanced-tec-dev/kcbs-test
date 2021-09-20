@@ -12,24 +12,18 @@ import java.sql.Timestamp;
  * <br>
  * システム名	品質情報管理システム<br>
  * <br>
- * 変更日	2019/08/01<br>
- * 計画書No	K1811-DS001<br>
- * 変更者	863 F.Zhang<br>
+ * 変更日	2021/09/20<br>
+ * 計画書No	MB2108-DK001<br>
+ * 変更者	SRC Y.Kurozumi<br>
  * 変更理由	新規作成<br>
- * <br>
- * <br>
- * 変更日	2020/09/17<br>
- * 計画書No	MB2008-DK001<br>
- * 変更者	863 sujialiang<br>
- * 変更理由	項目追加・変更<br>
  * <br>
  * ===============================================================================<br>
  */
 /**
  * 研磨・ﾊﾞﾚﾙ履歴検索画面のモデルクラスです。
  *
- * @author 863 F.Zhang
- * @since 2019/08/01
+ * @author SRC Y.Kurozumi
+ * @since 2021/09/20
  */
 public class GXHDO201B050Model implements Serializable{
     
