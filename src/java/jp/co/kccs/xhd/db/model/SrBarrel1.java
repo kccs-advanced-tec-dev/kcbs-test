@@ -21,6 +21,11 @@ import java.sql.Timestamp;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	項目追加<br>
  * <br>
+ * 変更日	2021/09/15<br>
+ * 計画書No	MB2108-DK001<br>
+ * 変更者	SRC T.Takenouchi<br>
+ * 変更理由	項目追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -71,19 +76,19 @@ public class SrBarrel1 {
     private String bjyokensetteimode;
 
     /**
-     * ﾊﾞﾚﾙ条件周速度
+     * ﾊﾞﾚﾙ条件周速度(研磨機回転数①)
      */
     private BigDecimal bjyokensyusokudo;
 
     /**
-     * ﾊﾞﾚﾙ号機
+     * ﾊﾞﾚﾙ号機(研磨号機)
      */
     private String bgoki;
 
     /**
-     * ﾊﾞﾚﾙ時間
+     * ﾊﾞﾚﾙ時間(研磨時間①)
      */
-    private String bjikan;
+    private Integer bjikan;
 
     /**
      * ﾎﾟｯﾄ数
@@ -249,7 +254,83 @@ public class SrBarrel1 {
      * 削除ﾌﾗｸﾞ
      */
     private Integer deleteflag;
+    
+    /**
+     * ﾎﾟｯﾄ種類
+     */
+    private String potsyurui;
 
+    /**
+     * ﾁｬｰｼﾞ量
+     */
+    private Integer chargeryou;
+
+    /**
+     * 研磨時間②
+     */
+    private Integer bjikan2;
+
+    /**
+     * 研磨機回転数②
+     */
+    private BigDecimal bjyokensyusokudo2;
+
+    /**
+     * 研磨時間③
+     */
+    private Integer bjikan3;
+
+    /**
+     * 研磨機回転数③
+     */
+    private BigDecimal bjyokensyusokudo3;
+
+    /**
+     * 研磨時間④
+     */
+    private Integer bjikan4;
+
+    /**
+     * 研磨機回転数④
+     */
+    private BigDecimal bjyokensyusokudo4;
+
+    /**
+     * 研磨時間⑤
+     */
+    private Integer bjikan5;
+
+    /**
+     * 研磨機回転数⑤
+     */
+    private BigDecimal bjyokensyusokudo5;
+
+    /**
+     * 研磨時間⑥
+     */
+    private Integer bjikan6;
+
+    /**
+     * 研磨機回転数⑥
+     */
+    private BigDecimal bjyokensyusokudo6;
+
+    /**
+     * 研磨時間合計
+     */
+    private Integer bjikantotal;
+
+    /**
+     * 研磨材量②
+     */
+    private Integer kenmazairyo2;
+
+    /**
+     * 研磨材種類②
+     */
+    private String kenmazaisyurui2;
+
+//<editor-fold defaultstate="collapsed" desc="#Getter・Setter">
     /**
      * @return kojyo
      */
@@ -393,14 +474,14 @@ public class SrBarrel1 {
     /**
      * @return bjikan
      */
-    public String getBjikan() {
+    public Integer getBjikan() {
         return bjikan;
     }
 
     /**
      * @param bjikan セットする bjikan
      */
-    public void setBjikan(String bjikan) {
+    public void setBjikan(Integer bjikan) {
         this.bjikan = bjikan;
     }
 
@@ -860,4 +941,261 @@ public class SrBarrel1 {
         this.deleteflag = deleteflag;
     }
 
+        /**
+     * ﾎﾟｯﾄ種類
+     *
+     * @return the potsyurui
+     */
+    public String getPotsyurui() {
+        return potsyurui;
+    }
+    /**
+     * ﾎﾟｯﾄ種類
+     *
+     * @param potsyurui the potsyurui to set
+     */
+    public void setPotsyurui(String potsyurui) {
+        this.potsyurui = potsyurui;
+    }
+
+    /**
+     * ﾁｬｰｼﾞ量
+     *
+     * @return the chargeryou
+     */
+    public Integer getChargeryou() {
+        return chargeryou;
+    }
+    /**
+     * ﾁｬｰｼﾞ量
+     *
+     * @param chargeryou the chargeryou to set
+     */
+    public void setChargeryou(Integer chargeryou) {
+        this.chargeryou = chargeryou;
+    }
+
+    /**
+     * 研磨時間②
+     *
+     * @return the bjikan2
+     */
+    public Integer getBjikan2() {
+        return bjikan2;
+    }
+    /**
+     * 研磨時間②
+     *
+     * @param bjikan2 the bjikan2 to set
+     */
+    public void setBjikan2(Integer bjikan2) {
+        this.bjikan2 = bjikan2;
+    }
+
+    /**
+     * 研磨機回転数②
+     *
+     * @return the bjyokensyusokudo2
+     */
+    public BigDecimal getBjyokensyusokudo2() {
+        return bjyokensyusokudo2;
+    }
+    /**
+     * 研磨機回転数②
+     *
+     * @param bjyokensyusokudo2 the bjyokensyusokudo2 to set
+     */
+    public void setBjyokensyusokudo2(BigDecimal bjyokensyusokudo2) {
+        this.bjyokensyusokudo2 = bjyokensyusokudo2;
+    }
+
+    /**
+     * 研磨時間③
+     *
+     * @return the bjikan3
+     */
+    public Integer getBjikan3() {
+        return bjikan3;
+    }
+    /**
+     * 研磨時間③
+     *
+     * @param bjikan3 the bjikan3 to set
+     */
+    public void setBjikan3(Integer bjikan3) {
+        this.bjikan3 = bjikan3;
+    }
+
+    /**
+     * 研磨機回転数③
+     *
+     * @return the bjyokensyusokudo3
+     */
+    public BigDecimal getBjyokensyusokudo3() {
+        return bjyokensyusokudo3;
+    }
+    /**
+     * 研磨機回転数③
+     *
+     * @param bjyokensyusokudo3 the bjyokensyusokudo3 to set
+     */
+    public void setBjyokensyusokudo3(BigDecimal bjyokensyusokudo3) {
+        this.bjyokensyusokudo3 = bjyokensyusokudo3;
+    }
+
+    /**
+     * 研磨時間④
+     *
+     * @return the bjikan4
+     */
+    public Integer getBjikan4() {
+        return bjikan4;
+    }
+    /**
+     * 研磨時間④
+     *
+     * @param bjikan4 the bjikan4 to set
+     */
+    public void setBjikan4(Integer bjikan4) {
+        this.bjikan4 = bjikan4;
+    }
+
+    /**
+     * 研磨機回転数④
+     *
+     * @return the bjyokensyusokudo4
+     */
+    public BigDecimal getBjyokensyusokudo4() {
+        return bjyokensyusokudo4;
+    }
+    /**
+     * 研磨機回転数④
+     *
+     * @param bjyokensyusokudo4 the bjyokensyusokudo4 to set
+     */
+    public void setBjyokensyusokudo4(BigDecimal bjyokensyusokudo4) {
+        this.bjyokensyusokudo4 = bjyokensyusokudo4;
+    }
+
+    /**
+     * 研磨時間⑤
+     *
+     * @return the bjikan5
+     */
+    public Integer getBjikan5() {
+        return bjikan5;
+    }
+    /**
+     * 研磨時間⑤
+     *
+     * @param bjikan5 the bjikan5 to set
+     */
+    public void setBjikan5(Integer bjikan5) {
+        this.bjikan5 = bjikan5;
+    }
+
+    /**
+     * 研磨機回転数⑤
+     *
+     * @return the bjyokensyusokudo5
+     */
+    public BigDecimal getBjyokensyusokudo5() {
+        return bjyokensyusokudo5;
+    }
+    /**
+     * 研磨機回転数⑤
+     *
+     * @param bjyokensyusokudo5 the bjyokensyusokudo5 to set
+     */
+    public void setBjyokensyusokudo5(BigDecimal bjyokensyusokudo5) {
+        this.bjyokensyusokudo5 = bjyokensyusokudo5;
+    }
+
+    /**
+     * 研磨時間⑥
+     *
+     * @return the bjikan6
+     */
+    public Integer getBjikan6() {
+        return bjikan6;
+    }
+    /**
+     * 研磨時間⑥
+     *
+     * @param bjikan6 the bjikan6 to set
+     */
+    public void setBjikan6(Integer bjikan6) {
+        this.bjikan6 = bjikan6;
+    }
+
+    /**
+     * 研磨機回転数⑥
+     *
+     * @return the bjyokensyusokudo6
+     */
+    public BigDecimal getBjyokensyusokudo6() {
+        return bjyokensyusokudo6;
+    }
+    /**
+     * 研磨機回転数⑥
+     *
+     * @param bjyokensyusokudo6 the bjyokensyusokudo6 to set
+     */
+    public void setBjyokensyusokudo6(BigDecimal bjyokensyusokudo6) {
+        this.bjyokensyusokudo6 = bjyokensyusokudo6;
+    }
+
+    /**
+     * 研磨時間合計
+     *
+     * @return the bjikansum
+     */
+    public Integer getBjikantotal() {
+        return bjikantotal;
+    }
+    /**
+     * 研磨時間合計
+     *
+     * @param bjikantotal the bjikantotal to set
+     */
+    public void setBjikantotal(Integer bjikantotal) {
+        this.bjikantotal = bjikantotal;
+    }
+
+    /**
+     * 研磨材量②
+     *
+     * @return the kenmazairyo2
+     */
+    public Integer getKenmazairyo2() {
+        return kenmazairyo2;
+    }
+    /**
+     * 研磨材量②
+     *
+     * @param kenmazairyo2 the kenmazairyo2 to set
+     */
+    public void setKenmazairyo2(Integer kenmazairyo2) {
+        this.kenmazairyo2 = kenmazairyo2;
+    }
+
+    /**
+     * 研磨材種類②
+     *
+     * @return the kenmazaisyurui2
+     */
+    public String getKenmazaisyurui2() {
+        return kenmazaisyurui2;
+    }
+    /**
+     * 研磨材種類②
+     *
+     * @param kenmazaisyurui2 the kenmazaisyurui2 to set
+     */
+    public void setKenmazaisyurui2(String kenmazaisyurui2) {
+        this.kenmazaisyurui2 = kenmazaisyurui2;
+    }
+
+//</editor-fold>
+    
 }

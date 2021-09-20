@@ -18,6 +18,11 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	項目追加<br>
  * <br>
+ * 変更日	2021/09/20<br>
+ * 計画書No	MB2108-DK001<br>
+ * 変更者	SRC T.Takenouchi<br>
+ * 変更理由	新規追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -68,9 +73,19 @@ public class GXHDO101B020Const {
     public static final String KENMA = "sr_barrel1_kenma";
 
     /**
+     * ﾎﾟｯﾄ種類
+     */
+    public static final String POTSYURUI = "sr_barrel1_potsyurui";
+
+    /**
      * 研磨号機
      */
     public static final String BGOKI = "sr_barrel1_bgoki";
+
+    /**
+     * ﾁｬｰｼﾞ量
+     */
+    public static final String CHARGERYOU = "sr_barrel1_chargeryou";
 
     /**
      * ﾎﾟｯﾄ数
@@ -78,24 +93,89 @@ public class GXHDO101B020Const {
     public static final String POTSUU = "sr_barrel1_potsuu";
 
     /**
-     * 研磨時間
+     * 研磨時間①
      */
     public static final String BJIKAN = "sr_barrel1_bjikan";
 
     /**
-     * 研磨機回転数
+     * 研磨時間②
+     */
+    public static final String BJIKAN2 = "sr_barrel1_bjikan2";
+
+    /**
+     * 研磨時間③
+     */
+    public static final String BJIKAN3 = "sr_barrel1_bjikan3";
+
+    /**
+     * 研磨時間④
+     */
+    public static final String BJIKAN4 = "sr_barrel1_bjikan4";
+
+    /**
+     * 研磨時間⑤
+     */
+    public static final String BJIKAN5 = "sr_barrel1_bjikan5";
+
+    /**
+     * 研磨時間⑥
+     */
+    public static final String BJIKAN6 = "sr_barrel1_bjikan6";
+
+    /**
+     * 研磨時間合計
+     */
+    public static final String BJIKANTOTAL = "sr_barrel1_bjikantotal";
+
+    /**
+     * 研磨機回転数①
      */
     public static final String BJYOKENSYUSOKUDO = "sr_barrel1_bjyokensyusokudo";
 
     /**
-     * 研磨材量
+     * 研磨機回転数②
+     */
+    public static final String BJYOKENSYUSOKUDO2 = "sr_barrel1_bjyokensyusokudo2";
+
+    /**
+     * 研磨機回転数③
+     */
+    public static final String BJYOKENSYUSOKUDO3 = "sr_barrel1_bjyokensyusokudo3";
+
+    /**
+     * 研磨機回転数④
+     */
+    public static final String BJYOKENSYUSOKUDO4 = "sr_barrel1_bjyokensyusokudo4";
+
+    /**
+     * 研磨機回転数⑤
+     */
+    public static final String BJYOKENSYUSOKUDO5 = "sr_barrel1_bjyokensyusokudo5";
+
+    /**
+     * 研磨機回転数⑥
+     */
+    public static final String BJYOKENSYUSOKUDO6 = "sr_barrel1_bjyokensyusokudo6";
+
+    /**
+     * 研磨材量①
      */
     public static final String KENMAZAIRYO = "sr_barrel1_kenmazairyo";
 
     /**
-     * 研磨材種類
+     * 研磨材量②
+     */
+    public static final String KENMAZAIRYO2 = "sr_barrel1_kenmazairyo2";
+
+    /**
+     * 研磨材種類①
      */
     public static final String KENMAZAISYURUI = "sr_barrel1_kenmazaisyurui";
+
+    /**
+     * 研磨材種類②
+     */
+    public static final String KENMAZAISYURUI2 = "sr_barrel1_kenmazaisyurui2";
 
     /**
      * 玉石種類
@@ -157,10 +237,10 @@ public class GXHDO101B020Const {
      */
     public static final String BIKO2 = "sr_barrel1_biko2";
 
-    /**
-     * 研磨時間単位
-     */
-    public static final String KENMAJIKANTANI = "sr_barrel1_kenmajikantani";
+//    /**
+//     * 研磨時間単位
+//     */
+//    public static final String KENMAJIKANTANI = "sr_barrel1_kenmajikantani";
 
     /**
      * 仮登録(画面上)
@@ -208,6 +288,11 @@ public class GXHDO101B020Const {
     public static final String BTN_KENMAHOSHIKI_TOP = "sr_barrel1_kenmahoshiki_Top";
 
     /**
+     * 研磨時間合計(画面上)
+     */
+    public static final String BTN_KENMADATETIMESUM_TOP = "sr_barrel1_kenmadatetimesum_Top";
+
+    /**
      * 仮登録(画面下)
      */
     public static final String BTN_KARI_TOUROKU_BOTTOM = "sr_barrel1_kari_touroku_Bottom";
@@ -251,6 +336,11 @@ public class GXHDO101B020Const {
      * 研磨方式(画面下)
      */
     public static final String BTN_KENMAHOSHIKI_BOTTOM = "sr_barrel1_kenmahoshiki_Bottom";
+
+    /**
+     * 研磨時間合計(画面下)
+     */
+    public static final String BTN_KENMADATETIMESUM_BOTTOM = "sr_barrel1_kenmadatetimesum_Bottom";
 
     /**
      * ユーザー認証パラメータ(修正)
