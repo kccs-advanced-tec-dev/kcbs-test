@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.faces.context.ExternalContext;
@@ -51,6 +52,7 @@ import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import org.apache.commons.dbutils.DbUtils;
+import org.apache.commons.dbutils.handlers.ScalarHandler;
 
 /**
  * ===============================================================================<br>
@@ -1194,9 +1196,9 @@ public class GXHDO101B051 implements IFormLogic {
 //                    }                     
                     
                 }
-                
+                  
                 // 受入個数初期値設定
-                this.setItemData(processData, GXHDO101B051Const.UDASSI_UKEIRE_SAYA_MAISU, getUkeireSayaMaisu(queryRunnerDoc, queryRunnerWip, lotNo));
+                this.setItemData(processData, GXHDO101B051Const.UDASSI_UKEIRE_SAYA_MAISU, getSayaMaisu(queryRunnerQcdb, kojyo, lotNo8, edaban).orElse(""));
                 
                 return true;
             }
@@ -1522,7 +1524,7 @@ public class GXHDO101B051 implements IFormLogic {
                 + " syuryonichiji, syuryotantosya, kaisyusettersuu, bikou1, bikou2, bikou3, bikou4, revision,"
                 + " '0' AS deleteflag"
                 + "FROM sr_shinkuudassi "
-                + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND JISSEKINO = ? ";
+                + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ?";
         // revisionが入っている場合、条件に追加
         if (!StringUtil.isEmpty(rev)) {
             sql += "AND revision = ? ";
@@ -1566,7 +1568,7 @@ public class GXHDO101B051 implements IFormLogic {
                 + " syuryonichiji, syuryotantosya, kaisyusettersuu, bikou1, bikou2, bikou3, bikou4, revision,"
                 + " '0' AS deleteflag"
                 + "FROM tmp_sr_shinkuudassi "
-                + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND JISSEKINO = ? ";
+                + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ?";
 
         // revisionが入っている場合、条件に追加
         if (!StringUtil.isEmpty(rev)) {
@@ -1590,6 +1592,32 @@ public class GXHDO101B051 implements IFormLogic {
         return queryRunnerQcdb.query(sql, beanHandler, params.toArray());
     }
 
+    /**
+     * [真空脱脂ｻﾔ詰め]から、ﾃﾞｰﾀを取得
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Optional<String> getSayaMaisu(QueryRunner queryRunnerQcdb, String kojyo, String lotNo, String edaban) throws SQLException {
+        
+        String sql = "select sayasuu from sr_dassisayadume"
+                + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ?";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+
+        ScalarHandler<Optional<String>> beanHandler = new ScalarHandler<>();
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return (Optional<String>)queryRunnerQcdb.query(sql, beanHandler, params.toArray());
+    }
+    
     /**
      * 枝番コピー確認メッセージ表示
      *
@@ -1837,7 +1865,7 @@ public class GXHDO101B051 implements IFormLogic {
     }
 
     /**
-     * 真空脱脂_仮登録(tmp_sr_barrel1)登録処理
+     * 真空脱脂_仮登録(tmp_sr_shinkuudassi)登録処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param conQcdb コネクション
@@ -2174,7 +2202,7 @@ public class GXHDO101B051 implements IFormLogic {
 //        }
 
         params.add(newRev); //revision
-        params.add(deleteflag); //削除ﾌﾗｸﾞ
+        //params.add(deleteflag); //削除ﾌﾗｸﾞ
 
         return params;
     }
@@ -2412,7 +2440,7 @@ public class GXHDO101B051 implements IFormLogic {
                 return StringUtil.nullToBlank(srShinkuudassiData.getProgramno());
             // 最高温度
             case GXHDO101B051Const.UDASSI_MAX_ONDO:
-                return StringUtil.nullToBlank(srShinkuudassiData.getjyokensyusokudo());
+                return StringUtil.nullToBlank(srShinkuudassiData.getOndo());
             // ｷｰﾌﾟ時間
             case GXHDO101B051Const.UDASSI_KEEP_TIME:
                 return StringUtil.nullToBlank(srShinkuudassiData.getKeepjikan());
