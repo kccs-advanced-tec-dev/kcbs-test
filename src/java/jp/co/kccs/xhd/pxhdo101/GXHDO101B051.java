@@ -975,77 +975,6 @@ public class GXHDO101B051 implements IFormLogic {
         String lotNo8 = lotNo.substring(3, 11);
         String edaban = lotNo.substring(11, 14);
 
-        //工場ｺｰﾄﾞの規格値
-        String kojyoKikakuChi = "";
-        //ﾛｯﾄNo.の規格値
-        String lotnoKikakuChi = "";
-        //KCPNOの規格値
-        String kcpnoKikakuChi = "";
-        //客先の規格値
-        String kyakusakiKikakuChi = "";
-        //ﾛｯﾄ区分の規格値
-        String lot_kubunKikakuChi = "";     
-        //ｵｰﾅｰの規格値
-        String ownerKikakuChi = "";      
-        //受入ｻﾔ枚数の規格値
-        String ukeire_saya_maisuKikakuChi = "";
-        //受入ｻﾔ枚数の規格情報ﾊﾟﾀｰﾝ
-        String ukeire_saya_maisuStandardPattern = "";        
-        //号機の規格値
-        String gokiKikakuChi = "";  
-        //ﾌﾟﾛｸﾞﾗﾑNo．の規格値
-        String program_noKikakuChi = "";
-        //最高温度の規格値
-        String max_ondoKikakuChi = "";
-        //最高温度の規格情報ﾊﾟﾀｰﾝ
-        String max_ondoStandardPattern = "";        
-        //ｷｰﾌﾟ時間の規格値
-        String keep_timeKikakuChi = "";
-        //ｷｰﾌﾟ時間の規格情報ﾊﾟﾀｰﾝ
-        String keep_timeStandardPattern = "";       
-        //総時間の規格値
-        String total_timeKikakuChi = "";
-        //総時間の規格情報ﾊﾟﾀｰﾝ
-        String total_timeStandardPattern = "";        
-        //投入ｻﾔ枚数の規格値
-        String tounyu_saya_maisuKikakuChi = "";
-        //投入ｻﾔ枚数の規格情報ﾊﾟﾀｰﾝ
-        String tounyu_saya_maisuStandardPattern = "";        
-        //開始日の規格値
-        String kaishi_dayKikakuChi = "";
-        //開始日の規格情報ﾊﾟﾀｰﾝ
-        String kaishi_dayStandardPattern = "";        
-        //開始時間の規格値
-        String kaishi_timeKikakuChi = "";
-        //開始時間の規格情報ﾊﾟﾀｰﾝ
-        String kaishi_timeStandardPattern = "";        
-        //開始担当者の規格値
-        String kaishi_tantousyaKikakuChi = "";       
-        //開始確認者の規格値
-        String kakuninsyaKikakuChi = "";
-        //終了日の規格値
-        String shuryou_dayKikakuChi = "";
-        //終了日の規格情報ﾊﾟﾀｰﾝ
-        String shuryou_dayStandardPattern = "";        
-        //終了時間の規格値
-        String shuryou_timeKikakuChi = "";
-        //終了時間の規格情報ﾊﾟﾀｰﾝ
-        String shuryou_timeStandardPattern = "";        
-        //終了担当者の規格値
-        String shuryou_tantousyaKikakuChi = "";
-        //回収ｻﾔ枚数の規格値
-        String kaishu_saya_maisuKikakuChi = "";
-        //回収ｻﾔ枚数の規格情報ﾊﾟﾀｰﾝ
-        String kaishu_saya_maisuStandardPattern = "";
-        //備考1の規格値
-        String biko1KikakuChi = "";
-        //備考1の規格情報ﾊﾟﾀｰﾝ
-        String biko1StandardPattern = "";
-        //備考2の規格値
-        String biko2KikakuChi = "";
-        //備考2の規格情報ﾊﾟﾀｰﾝ
-        String biko2StandardPattern = "";
-
         for (int i = 0; i < 5; i++) {
             // 品質DB実績登録Revision情報取得
             Map fxhdd03RevInfo = loadFxhdd03RevInfo(queryRunnerDoc, kojyo, lotNo8, edaban, jissekino, formId);
@@ -1198,7 +1127,7 @@ public class GXHDO101B051 implements IFormLogic {
                 }
                   
                 // 受入個数初期値設定
-                this.setItemData(processData, GXHDO101B051Const.UDASSI_UKEIRE_SAYA_MAISU, getSayaMaisu(queryRunnerQcdb, kojyo, lotNo8, edaban).orElse(""));
+                this.setItemData(processData, GXHDO101B051Const.UDASSI_UKEIRE_SAYA_MAISU, getSayaMaisu(queryRunnerQcdb, kojyo, lotNo8, edaban));
                 
                 return true;
             }
@@ -1602,20 +1531,26 @@ public class GXHDO101B051 implements IFormLogic {
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private Optional<String> getSayaMaisu(QueryRunner queryRunnerQcdb, String kojyo, String lotNo, String edaban) throws SQLException {
+    private String getSayaMaisu(QueryRunner queryRunnerQcdb, String kojyo, String lotNo, String edaban) throws SQLException {
         
         String sql = "select sayasuu from sr_dassisayadume"
-                + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ?";
+                + " WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ?";
 
         List<Object> params = new ArrayList<>();
         params.add(kojyo);
         params.add(lotNo);
         params.add(edaban);
 
-        ScalarHandler<Optional<String>> beanHandler = new ScalarHandler<>();
+        ScalarHandler<Integer> beanHandler = new ScalarHandler<>();
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return (Optional<String>)queryRunnerQcdb.query(sql, beanHandler, params.toArray());
+        //Optional<Integer> result  = (Optional<Integer>)queryRunnerQcdb.query(sql, beanHandler, params.toArray());
+        Integer result = queryRunnerQcdb.query(sql, beanHandler, params.toArray());
+        if ( result == null) {
+            return "";
+        } else {
+            return NumberUtil.convertIntData(result);
+        }
     }
     
     /**
