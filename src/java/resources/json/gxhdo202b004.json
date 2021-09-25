@@ -1,0 +1,10 @@
+[
+    {"no":"1","id":"lotno","columnname":"WIPﾛｯﾄNo","type":"String","format":""},
+    {"no":"2","id":"glasshinmei","columnname":"ｶﾞﾗｽ品名","type":"String","format":""},
+    {"no":"3","id":"glasslotno","columnname":"ｶﾞﾗｽLotNo","type":"String","format":""},
+    {"no":"4","id":"lotkubun","columnname":"ﾛｯﾄ区分","type":"String","format":""},
+    {"no":"5","id":"bet","columnname":"BET測定値","type":"BigDecimal","format":"2,1"},
+    {"no":"6","id":"tantosya","columnname":"担当者","type":"String","format":""},
+    {"no":"7","id":"bikou1","columnname":"備考1","type":"String","format":""},
+    {"no":"8","id":"bikou2","columnname":"備考2","type":"String","format":""}
+]
