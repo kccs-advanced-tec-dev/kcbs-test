@@ -260,24 +260,8 @@ public class GXHDO102A implements Serializable {
             String strKojyo = strGamenLotNo.substring(0, 3);
             String strLotNo = strGamenLotNo.substring(3, 11);
             String strEdaban = strGamenLotNo.substring(11, 14);
-            //String strSekkeiNo = "";
 
             QueryRunner queryRunnerXHD = new QueryRunner(dataSourceXHD);
-//            List processResult = CommonUtil.getSekkeiInfoListTogoLot(queryRunnerXHD, queryRunnerWip, strKojyo, strLotNo, "001");
-//
-//            if (null == processResult || processResult.isEmpty()) {
-//                setMenuTableRender(false);
-//                setInfoMessage(MessageUtil.getMessage("XHD-000031"));
-//                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, getInfoMessage(), null);
-//                facesContext.addMessage(null, message);
-//                return null;
-//            }
-//            
-//            for (Iterator i = processResult.iterator(); i.hasNext();) {
-//                HashMap m = (HashMap) i.next();
-//                strProcess = m.get("PrintFmt").toString();
-//                strSekkeiNo = m.get("SEKKEINO").toString();
-//            }
 
             Map processResult = CommonUtil.getMkSekkeiInfo(queryRunnerXHD, queryRunnerWip, strKojyo, strLotNo, "001");
 
@@ -304,7 +288,7 @@ public class GXHDO102A implements Serializable {
                 listGamenID.add(m.get("gamen_id").toString());
             }
 
-                if (sqlsearchResult.isEmpty()) {
+            if (sqlsearchResult.isEmpty()) {
                 setMenuTableRender(false);
                 setInfoMessage(MessageUtil.getMessage("XHD-000031"));
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_INFO, getInfoMessage(), null);
@@ -328,13 +312,13 @@ public class GXHDO102A implements Serializable {
 
             // メッセージリスト
             List<String> messageListMain = new ArrayList<>();  // 権限絞り込みなしメニューの処理で使用するリスト(メイン)
-            
+
             //画面ID(動的メニュー)追加
             addRecurringMenu(this.menuListGXHDO102, queryRunnerDoc, strKojyo, strLotNo, strEdaban);
             addRecurringMenu(this.menuListGXHDO102Nofiltering, queryRunnerDoc, strKojyo, strLotNo, strEdaban);
 
             // 実績状態を表示(権限絞り込みありメニューのみ)
-            List<String[]> fxhdd11List = loadFxhdd11LotNoTaniInfoList(queryRunnerDoc, strKojyo, strLotNo, strEdaban);
+            List<String[]> fxhdd11List = loadFxhdd11LotNoTaniInfoList(queryRunnerDoc, strGamenLotNo,listGamenID);
             setJissekiJotai(this.menuListGXHDO102, fxhdd11List);
             setJissekiJotai(this.menuListGXHDO102Nofiltering, fxhdd11List);
 
@@ -397,7 +381,7 @@ public class GXHDO102A implements Serializable {
             // 権限の絞り込み無しのメニューをもとに前工程自身の一つ前のメニュー情報を取得する。
             FXHDM01 maeKoteiMenuInfo = null; // 前工程情報
             for (FXHDM01 fxhdm01 : this.menuListGXHDO102Nofiltering) {
-                if (fxhdm01.getFormId().equals(rowData.getFormId()) && fxhdm01.getJissekiNo() == rowData.getJissekiNo()) {
+                if (fxhdm01.getFormId().equals(rowData.getFormId())) {
                     break;
                 }
                 // 一つ前の情報を前工程情報として保持
@@ -841,21 +825,39 @@ public class GXHDO102A implements Serializable {
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private List<String[]> loadFxhdd11LotNoTaniInfoList(QueryRunner queryRunnerDoc, String kojyo, String lotNo,
-            String edaban) throws SQLException {
+    private List<String[]> loadFxhdd11LotNoTaniInfoList(QueryRunner queryRunnerDoc,String gamenLotNo, List<Object> listGamenID) throws SQLException {
 
         // 品質DB登録実績情報の取得
-        String sql = " SELECT gamen_id, jissekino, jotai_flg "
-                + " FROM fxhdd11 "
-                + " WHERE kojyo = ? AND lotno = ? "
-                + " AND edaban = ? ";
+        String sql = " SELECT "
+                + "     QJ.gamen_id "
+                + "    ,QJ.jissekino "
+                + "    ,QJ.jotai_flg "
+                + "    ,QJ.kojyo "
+                + "    ,QJ.lotno "
+                + "    ,QJ.edaban "
+                + "  FROM fxhdd11 QJ "
+                + "  JOIN( "
+                + "    SELECT "
+                + "      MAX(CONCAT( kojyo,lotno,edaban)) AS queryLotno "
+                + "      ,gamen_id AS queryGamenID "
+                + "     FROM fxhdd11 "
+                + "    WHERE CONCAT( kojyo,lotno,edaban) IN (?) ";
+                if (!listGamenID.isEmpty()) {
+                    sql += " AND ";
+                    sql += DBUtil.getInConditionPreparedStatement("gamen_id", listGamenID.size());
+                }
+            sql += "    AND jotai_flg <> '9' "
+                + " GROUP BY gamen_id "
+                + "  ) DD11 "
+                + "  ON  CONCAT( QJ.kojyo,QJ.lotno,QJ.edaban ) = DD11.queryLotno "
+                + "  AND QJ.gamen_id = DD11.queryGamenID ";
 
         List<Object> params = new ArrayList<>();
-        params.add(kojyo);
-        params.add(lotNo);
-        params.add(edaban);
+        params.add(gamenLotNo);
+        params.addAll(listGamenID);
+        
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        List processResult = (List) queryRunnerDoc.query(sql, new MapListHandler(), params.toArray());
+        List processResult = (List) queryRunnerDoc.query(sql, new MapListHandler() ,params.toArray());
 
         List<String[]> fxhdd11InfoList = new ArrayList<>();
         for (Iterator i = processResult.iterator(); i.hasNext();) {
@@ -890,7 +892,7 @@ public class GXHDO102A implements Serializable {
             sql += " AND pc_flg = '0' ";
         }
 
-        sql += " ORDER BY menu_no ASC ";
+        sql += " ORDER BY gamen_id ASC, menu_no ASC ";
 
         Map<String, String> mapping = new HashMap<>();
         mapping.put("gamen_id", "formId");

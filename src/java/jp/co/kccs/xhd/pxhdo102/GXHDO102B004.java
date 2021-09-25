@@ -242,7 +242,13 @@ public class GXHDO102B004 implements IFormLogic {
             String lotNo8 = lotNo.substring(3, 11);
 
             //仕掛情報の取得
-            Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
+            //Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
+            //1.前工程WIPから仕掛情報を取得する。 
+            //  仮データ
+            Map<String, String> shikakariData = new HashMap<>();
+            shikakariData.put("oyalotedaban", "006");
+            
+            //Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
             if (shikakariData == null || shikakariData.isEmpty() || !shikakariData.containsKey("oyalotedaban")) {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
                 return processData;
@@ -257,7 +263,6 @@ public class GXHDO102B004 implements IFormLogic {
             }
 
             String jotaiFlg = StringUtil.nullToBlank(getMapData(fxhdd11RevInfo, "jotai_flg"));
-            String rev = StringUtil.nullToBlank(getMapData(fxhdd11RevInfo, "rev"));
 
             if (!(JOTAI_FLG_KARI_TOROKU.equals(jotaiFlg) || JOTAI_FLG_TOROKUZUMI.equals(jotaiFlg))) {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
@@ -265,7 +270,7 @@ public class GXHDO102B004 implements IFormLogic {
             }
 
             // ｶﾞﾗｽ作製・測定の入力項目の登録データ(仮登録時は仮登録データ)を取得
-            List<SrGlasssokutei> srGlasssokuteiDataList = getSrGlasssokuteiData(queryRunnerQcdb, rev, jotaiFlg, kojyo, lotNo8, oyalotEdaban);
+            List<SrGlasssokutei> srGlasssokuteiDataList = getSrGlasssokuteiData(queryRunnerQcdb, "", jotaiFlg, kojyo, lotNo8, oyalotEdaban);
             if (srGlasssokuteiDataList.isEmpty()) {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
                 return processData;
@@ -910,9 +915,16 @@ public class GXHDO102B004 implements IFormLogic {
             processData.setInitMessageList(errorMessageList);
             return processData;
         }
-        
+
         // ②仕掛情報取得処理
-        Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
+        //Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
+        //1.前工程WIPから仕掛情報を取得する。 
+        //  仮データ
+        Map<String, String> shikakariData = new HashMap<>();
+        shikakariData.put("hinmei", "品名123");
+        shikakariData.put("lotkubuncode", "2002");
+        shikakariData.put("lotno", "82001240");
+        shikakariData.put("oyalotedaban", "006");
 
         if (shikakariData == null || shikakariData.isEmpty()) {
             errorMessageList.add(MessageUtil.getMessage("XHD-000029"));
@@ -1656,11 +1668,6 @@ public class GXHDO102B004 implements IFormLogic {
         // ﾛｯﾄ区分
         String glasslotno;
         FXHDD01 glasslotnoFXHDD01 = getItemRow(processData.getItemList(), GXHDO102B004Const.LOTKUBUN);
-        if (glasslotnoFXHDD01 != null) {
-            glasslotno = StringUtil.nullToBlank(processData.getHiddenDataMap().get("lotkubuncode"));
-        } else {
-            glasslotno = getItemData(pItemList, GXHDO102B004Const.LOTKUBUN, srGlasssokutei);
-        }
         if (isInsert) {
             params.add(kojyo); //工場ｺｰﾄﾞ
             params.add(lotNo); //ﾛｯﾄNo
@@ -1668,7 +1675,7 @@ public class GXHDO102B004 implements IFormLogic {
         }
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B004Const.GLASSHINMEI, srGlasssokutei))); // ｶﾞﾗｽ品名
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B004Const.GLASSLOTNO, srGlasssokutei))); // ｶﾞﾗｽLotNo
-        params.add(DBUtil.stringToStringObjectDefaultNull(glasslotno)); // ﾛｯﾄ区分
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B004Const.LOTKUBUN, srGlasssokutei))); // ﾛｯﾄ区分
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO102B004Const.BETSOKUTEICHI, srGlasssokutei))); // BET測定値
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B004Const.TANTOSYA, srGlasssokutei))); // 担当者
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B004Const.BIKOU1, srGlasssokutei))); // 備考1
@@ -1776,11 +1783,6 @@ public class GXHDO102B004 implements IFormLogic {
         // ﾛｯﾄ区分
         String glasslotno;
         FXHDD01 glasslotnoFXHDD01 = getItemRow(processData.getItemList(), GXHDO102B004Const.LOTKUBUN);
-        if (glasslotnoFXHDD01 != null) {
-            glasslotno = StringUtil.nullToBlank(processData.getHiddenDataMap().get("lotkubuncode"));
-        } else {
-            glasslotno = getItemData(pItemList, GXHDO102B004Const.LOTKUBUN, srGlasssokutei);
-        }
         if (isInsert) {
             params.add(kojyo); //工場ｺｰﾄﾞ
             params.add(lotNo); //ﾛｯﾄNo
@@ -1788,7 +1790,7 @@ public class GXHDO102B004 implements IFormLogic {
         }
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B004Const.GLASSHINMEI, srGlasssokutei))); // ｶﾞﾗｽ品名
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B004Const.GLASSLOTNO, srGlasssokutei))); // ｶﾞﾗｽLotNo
-        params.add(DBUtil.stringToStringObjectDefaultNull(glasslotno)); // ﾛｯﾄ区分
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B004Const.LOTKUBUN, srGlasssokutei))); // ﾛｯﾄ区分
         params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO102B004Const.BETSOKUTEICHI, srGlasssokutei))); // BET測定値
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B004Const.TANTOSYA, srGlasssokutei))); // 担当者
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B004Const.BIKOU1, srGlasssokutei))); // 備考1

@@ -115,11 +115,9 @@ public class GXHDO102B003 implements IFormLogic {
                     GXHDO102B003Const.BTN_EDABAN_COPY_TOP,
                     GXHDO102B003Const.BTN_KANSOUKAISINICHIJI_TOP,
                     GXHDO102B003Const.BTN_KANSOUSYUURYOUNICHIJI_TOP,
-                    GXHDO102B003Const.BTN_BUDOMARI_KEISAN_TOP,
                     GXHDO102B003Const.BTN_EDABAN_COPY_BOTTOM,
                     GXHDO102B003Const.BTN_KANSOUKAISINICHIJI_BOTTOM,
-                    GXHDO102B003Const.BTN_KANSOUSYUURYOUNICHIJI_BOTTOM,
-                    GXHDO102B003Const.BTN_BUDOMARI_KEISAN_BOTTOM
+                    GXHDO102B003Const.BTN_KANSOUSYUURYOUNICHIJI_BOTTOM
             ));
 
             // リビジョンチェック対象のボタンを設定する。
@@ -267,7 +265,13 @@ public class GXHDO102B003 implements IFormLogic {
             String lotNo8 = lotNo.substring(3, 11);
 
             //仕掛情報の取得
-            Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
+            //Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
+            //1.前工程WIPから仕掛情報を取得する。 
+            //  仮データ
+            Map<String, String> shikakariData = new HashMap<>();
+            shikakariData.put("oyalotedaban", "006");
+        
+            //Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
             if (shikakariData == null || shikakariData.isEmpty() || !shikakariData.containsKey("oyalotedaban")) {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
                 return processData;
@@ -282,7 +286,6 @@ public class GXHDO102B003 implements IFormLogic {
             }
 
             String jotaiFlg = StringUtil.nullToBlank(getMapData(fxhdd11RevInfo, "jotai_flg"));
-            String rev = StringUtil.nullToBlank(getMapData(fxhdd11RevInfo, "rev"));
 
             if (!(JOTAI_FLG_KARI_TOROKU.equals(jotaiFlg) || JOTAI_FLG_TOROKUZUMI.equals(jotaiFlg))) {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
@@ -290,7 +293,7 @@ public class GXHDO102B003 implements IFormLogic {
             }
 
             // ｶﾞﾗｽ作製・乾燥の入力項目の登録データ(仮登録時は仮登録データ)を取得
-            List<SrGlasskanso> srShinkuukansouDataList = getSrGlasskansoData(queryRunnerQcdb, rev, jotaiFlg, kojyo, lotNo8, oyalotEdaban);
+            List<SrGlasskanso> srShinkuukansouDataList = getSrGlasskansoData(queryRunnerQcdb, "", jotaiFlg, kojyo, lotNo8, oyalotEdaban);
             if (srShinkuukansouDataList.isEmpty()) {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
                 return processData;
@@ -1053,7 +1056,14 @@ public class GXHDO102B003 implements IFormLogic {
         }
 
         // ②仕掛情報取得処理
-        Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
+        //Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
+        //1.前工程WIPから仕掛情報を取得する。 
+        //  仮データ
+        Map<String, String> shikakariData = new HashMap<>();
+        shikakariData.put("hinmei", "品名123");
+        shikakariData.put("lotkubuncode", "2002");
+        shikakariData.put("lotno", "82001240");
+        shikakariData.put("oyalotedaban", "006");
 
         if (shikakariData == null || shikakariData.isEmpty()) {
             errorMessageList.add(MessageUtil.getMessage("XHD-000029"));
@@ -1906,15 +1916,6 @@ public class GXHDO102B003 implements IFormLogic {
         String kansoukaisinichijiTime = StringUtil.nullToBlank(getItemData(pItemList, GXHDO102B003Const.KANSOUKAISINICHIJI_TIME, srGlasskanso));
         // 乾燥終了時間
         String kansousyuuryounichijiTime = StringUtil.nullToBlank(getItemData(pItemList, GXHDO102B003Const.KANSOUSYUURYOUNICHIJI_TIME, srGlasskanso));
-        // ﾛｯﾄ区分
-        String glasslotno = "";
-        FXHDD01 glasslotnoFXHDD01 = getItemRow(processData.getItemList(), GXHDO102B003Const.LOTKUBUN);
-        if (glasslotnoFXHDD01 != null) {
-            glasslotno = StringUtil.nullToBlank(processData.getHiddenDataMap().get("lotkubuncode"));
-        } else {
-            glasslotno = getItemData(pItemList, GXHDO102B003Const.LOTKUBUN, srGlasskanso);
-        }
-        
         if (isInsert) {
             params.add(kojyo); //工場ｺｰﾄﾞ
             params.add(lotNo); //ﾛｯﾄNo
@@ -1922,7 +1923,7 @@ public class GXHDO102B003 implements IFormLogic {
         }
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B003Const.GLASSHINMEI, srGlasskanso))); // ｶﾞﾗｽ品名
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B003Const.GLASSLOTNO, srGlasskanso))); // ｶﾞﾗｽLotNo
-        params.add(DBUtil.stringToStringObjectDefaultNull(glasslotno)); // ﾛｯﾄ区分
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B003Const.LOTKUBUN, srGlasskanso))); // ﾛｯﾄ区分
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemKikakuchi(pItemList, GXHDO102B003Const.KANSOUKI, srGlasskanso))); // 乾燥機
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemKikakuchi(pItemList, GXHDO102B003Const.KANSOUJOUKEN, srGlasskanso))); // 乾燥条件
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemKikakuchi(pItemList, GXHDO102B003Const.SHINDOUSUU, srGlasskanso))); // 振動数
@@ -2060,15 +2061,6 @@ public class GXHDO102B003 implements IFormLogic {
         String kansoukaisinichijiTime = StringUtil.nullToBlank(getItemData(pItemList, GXHDO102B003Const.KANSOUKAISINICHIJI_TIME, srGlasskanso));
         // 乾燥終了時間
         String kansousyuuryounichijiTime = StringUtil.nullToBlank(getItemData(pItemList, GXHDO102B003Const.KANSOUSYUURYOUNICHIJI_TIME, srGlasskanso));
-        // ﾛｯﾄ区分
-        String glasslotno = "";
-        FXHDD01 glasslotnoFXHDD01 = getItemRow(processData.getItemList(), GXHDO102B003Const.LOTKUBUN);
-        if (glasslotnoFXHDD01 != null) {
-            glasslotno = StringUtil.nullToBlank(processData.getHiddenDataMap().get("lotkubuncode"));
-        } else {
-            glasslotno = getItemData(pItemList, GXHDO102B003Const.LOTKUBUN, srGlasskanso);
-        }
-        
         if (isInsert) {
             params.add(kojyo); //工場ｺｰﾄﾞ
             params.add(lotNo); //ﾛｯﾄNo
@@ -2076,7 +2068,7 @@ public class GXHDO102B003 implements IFormLogic {
         }
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B003Const.GLASSHINMEI, srGlasskanso))); // ｶﾞﾗｽ品名
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B003Const.GLASSLOTNO, srGlasskanso))); // ｶﾞﾗｽLotNo
-        params.add(DBUtil.stringToStringObject(glasslotno)); // ﾛｯﾄ区分
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B003Const.LOTKUBUN, srGlasskanso))); // ﾛｯﾄ区分
         params.add(DBUtil.stringToStringObject(getItemKikakuchi(pItemList, GXHDO102B003Const.KANSOUKI, srGlasskanso))); // 乾燥機
         params.add(DBUtil.stringToStringObject(getItemKikakuchi(pItemList, GXHDO102B003Const.KANSOUJOUKEN, srGlasskanso))); // 乾燥条件
         params.add(DBUtil.stringToStringObject(getItemKikakuchi(pItemList, GXHDO102B003Const.SHINDOUSUU, srGlasskanso))); // 振動数

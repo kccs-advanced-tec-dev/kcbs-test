@@ -260,7 +260,12 @@ public class GXHDO102B002 implements IFormLogic {
             String lotNo8 = lotNo.substring(3, 11);
 
             //仕掛情報の取得
-            Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
+            //Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
+            //1.前工程WIPから仕掛情報を取得する。 
+            //  仮データ
+            Map<String, String> shikakariData = new HashMap<>();
+            shikakariData.put("oyalotedaban", "006");
+            
             if (shikakariData == null || shikakariData.isEmpty() || !shikakariData.containsKey("oyalotedaban")) {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
                 return processData;
@@ -275,7 +280,6 @@ public class GXHDO102B002 implements IFormLogic {
             }
 
             String jotaiFlg = StringUtil.nullToBlank(getMapData(fxhdd11RevInfo, "jotai_flg"));
-            String rev = StringUtil.nullToBlank(getMapData(fxhdd11RevInfo, "rev"));
 
             if (!(JOTAI_FLG_KARI_TOROKU.equals(jotaiFlg) || JOTAI_FLG_TOROKUZUMI.equals(jotaiFlg))) {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
@@ -283,7 +287,7 @@ public class GXHDO102B002 implements IFormLogic {
             }
 
             // ｶﾞﾗｽ作製・SC粉砕の入力項目の登録データ(仮登録時は仮登録データ)を取得
-            List<SrGlassscfunsai> srGlassscfunsaiDataList = getSrGlassscfunsaiData(queryRunnerQcdb, rev, jotaiFlg, kojyo, lotNo8, oyalotEdaban);
+            List<SrGlassscfunsai> srGlassscfunsaiDataList = getSrGlassscfunsaiData(queryRunnerQcdb, "", jotaiFlg, kojyo, lotNo8, oyalotEdaban);
             if (srGlassscfunsaiDataList.isEmpty()) {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
                 return processData;
@@ -998,9 +1002,16 @@ public class GXHDO102B002 implements IFormLogic {
             processData.setInitMessageList(errorMessageList);
             return processData;
         }
-
+        
         // ②仕掛情報取得処理
-        Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
+        //Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
+        //1.前工程WIPから仕掛情報を取得する。 
+        //  仮データ
+        Map<String, String> shikakariData = new HashMap<>();
+        shikakariData.put("hinmei", "品名123");
+        shikakariData.put("lotkubuncode", "2002");
+        shikakariData.put("lotno", "82001240");
+        shikakariData.put("oyalotedaban", "006");
 
         if (shikakariData == null || shikakariData.isEmpty()) {
             errorMessageList.add(MessageUtil.getMessage("XHD-000029"));
@@ -1844,7 +1855,7 @@ public class GXHDO102B002 implements IFormLogic {
         
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B002Const.GLASSHINMEI, srGlassscfunsai))); // ｶﾞﾗｽ品名
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B002Const.GLASSLOTNO, srGlassscfunsai))); // ｶﾞﾗｽLotNo
-        params.add(DBUtil.stringToStringObjectDefaultNull(StringUtil.nullToBlank(processData.getHiddenDataMap().get("lotkubuncode")))); // ﾛｯﾄ区分
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B002Const.LOTKUBUN, srGlassscfunsai))); // ﾛｯﾄ区分
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemKikakuchi(pItemList, GXHDO102B002Const.FUNSAIKI, srGlassscfunsai))); // 粉砕機
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemKikakuchi(pItemList, GXHDO102B002Const.TAMAISHIKEI, srGlassscfunsai))); // 玉石径
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemKikakuchi(pItemList, GXHDO102B002Const.TAMAISHIJURYO, srGlassscfunsai))); // 玉石重量
@@ -2001,7 +2012,7 @@ public class GXHDO102B002 implements IFormLogic {
         
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B002Const.GLASSHINMEI, srGlassscfunsai))); // ｶﾞﾗｽ品名
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B002Const.GLASSLOTNO, srGlassscfunsai))); // ｶﾞﾗｽLotNo
-        params.add(DBUtil.stringToStringObject(StringUtil.nullToBlank(processData.getHiddenDataMap().get("lotkubuncode")))); // ﾛｯﾄ区分
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B002Const.LOTKUBUN, srGlassscfunsai))); // ﾛｯﾄ区分
         params.add(DBUtil.stringToStringObject(getItemKikakuchi(pItemList, GXHDO102B002Const.FUNSAIKI, srGlassscfunsai))); // 粉砕機
         params.add(DBUtil.stringToStringObject(getItemKikakuchi(pItemList, GXHDO102B002Const.TAMAISHIKEI, srGlassscfunsai))); // 玉石径
         params.add(DBUtil.stringToStringObject(getItemKikakuchi(pItemList, GXHDO102B002Const.TAMAISHIJURYO, srGlassscfunsai))); // 玉石重量

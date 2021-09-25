@@ -39,6 +39,10 @@ import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.db.model.FXHDD02;
 import jp.co.kccs.xhd.db.model.FXHDM02;
 import jp.co.kccs.xhd.db.model.FXHDM05;
+import jp.co.kccs.xhd.pxhdo102.GXHDO102C001;
+import jp.co.kccs.xhd.pxhdo102.GXHDO102C001Logic;
+import jp.co.kccs.xhd.pxhdo102.GXHDO102C002;
+import jp.co.kccs.xhd.pxhdo102.GXHDO102C002Logic;
 import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
@@ -554,62 +558,10 @@ public class GXHDO901B implements Serializable {
             // Mkhyojunjoken情報取得 (8)前工程標準規格情報より、情報の取得を行う
             getMkhyojunjoken(strHinmei,strPattern);
         }
-
-        boolean isExist;
         List<String> initMessageList = new ArrayList<>();
-        for (int i = 0; i <= itemList.size() - 1; i++) {
-
-            // 条件ﾃｰﾌﾞﾙ工程名が空の場合は規格値は設定しない
-            if (StringUtil.isEmpty(itemList.get(i).getJokenKoteiMei())) {
-                continue;
-            }
-
-            isExist = false;
-            //(6)前工程規格情報より、情報がある場合
-            if(null != listDaMkJoken && !listDaMkJoken.isEmpty()){
-                for (int j = 0; j <= listDaMkJoken.size() - 1; j++) {
-                    if (StringUtil.nullToBlank(itemList.get(i).getJokenKoteiMei()).equals(StringUtil.nullToBlank(listDaMkJoken.get(j).getKouteimei()))
-                            && StringUtil.nullToBlank(itemList.get(i).getJokenKomokuMei()).equals(StringUtil.nullToBlank(listDaMkJoken.get(j).getKoumokumei()))
-                            && StringUtil.nullToBlank(itemList.get(i).getJokenKanriKomoku()).equals(StringUtil.nullToBlank(listDaMkJoken.get(j).getKanrikoumokumei()))) {
-
-                        // 規格値が空またはNULLだった場合
-                        if (StringUtil.isEmpty(listDaMkJoken.get(j).getKikakuti())) {
-                            this.itemList.get(i).setKikakuChi("【】");
-                            break;
-                        }
-                        this.itemList.get(i).setKikakuChi("【" + listDaMkJoken.get(j).getKikakuti() + "】");
-                        isExist = true;
-                        break;
-                    }
-                }
-            }
-
-            if(!isExist){
-                //(8)前工程標準規格情報より、情報がある場合
-                if(null != listDaMkhyojunjoken && !listDaMkhyojunjoken.isEmpty()){
-                    for (int k = 0; k <= listDaMkhyojunjoken.size() - 1; k++) {
-                        if (StringUtil.nullToBlank(itemList.get(i).getJokenKoteiMei()).equals(StringUtil.nullToBlank(listDaMkhyojunjoken.get(k).getKouteimei()))
-                                && StringUtil.nullToBlank(itemList.get(i).getJokenKomokuMei()).equals(StringUtil.nullToBlank(listDaMkhyojunjoken.get(k).getKoumokumei()))
-                                && StringUtil.nullToBlank(itemList.get(i).getJokenKanriKomoku()).equals(StringUtil.nullToBlank(listDaMkhyojunjoken.get(k).getKanrikoumokumei()))) {
-
-                            // 規格値が空またはNULLだった場合
-                            if (StringUtil.isEmpty(listDaMkhyojunjoken.get(k).getKikakuti())) {
-                                this.itemList.get(i).setKikakuChi("【】");
-                                break;    
-                            }
-
-                            this.itemList.get(i).setKikakuChi("【" + listDaMkhyojunjoken.get(k).getKikakuti() + "】");
-                            isExist = true;
-                            break;
-                        }
-                    }
-                }
-            }                
-
-            if (!isExist) {
-                initMessageList.add(MessageUtil.getMessage("XHD-000019", "【" + this.itemList.get(i).getLabel1() + "】"));
-            }
-        }
+        // 前工程規格情報、前工程標準規格情報から規格値を取得して、項目データに設定処理
+        setItemListKikakuChi(itemList, initMessageList);
+        setItemListKikakuChi(itemListEx, initMessageList);
 
         // 初期表示処理を実行する
         // 画面クラス名を取得
@@ -659,6 +611,73 @@ public class GXHDO901B implements Serializable {
         setTempRegistButton();
     }
 
+    /**
+     * 前工程規格情報、前工程標準規格情報から規格値を取得して、項目データに設定処理
+     *
+     * @param itemDataList 項目データ
+     * @param initMessageList エラーリスト
+     */
+    private void setItemListKikakuChi(List<FXHDD01> itemDataList, List<String> initMessageList) {
+        if (itemDataList == null) {
+            return;
+        }
+        boolean isExist;
+        //(8)前工程標準規格情報より、情報がある場合
+        for (int i = 0; i <= itemDataList.size() - 1; i++) {
+
+            // 条件ﾃｰﾌﾞﾙ工程名が空の場合は規格値は設定しない
+            if (StringUtil.isEmpty(itemDataList.get(i).getJokenKoteiMei())) {
+                continue;
+            }
+
+            isExist = false;
+            //(6)前工程規格情報より、情報がある場合
+            if(null != listDaMkJoken && !listDaMkJoken.isEmpty()){
+                for (int j = 0; j <= listDaMkJoken.size() - 1; j++) {
+                    if (StringUtil.nullToBlank(itemDataList.get(i).getJokenKoteiMei()).equals(StringUtil.nullToBlank(listDaMkJoken.get(j).getKouteimei()))
+                            && StringUtil.nullToBlank(itemDataList.get(i).getJokenKomokuMei()).equals(StringUtil.nullToBlank(listDaMkJoken.get(j).getKoumokumei()))
+                            && StringUtil.nullToBlank(itemDataList.get(i).getJokenKanriKomoku()).equals(StringUtil.nullToBlank(listDaMkJoken.get(j).getKanrikoumokumei()))) {
+
+                        // 規格値が空またはNULLだった場合
+                        if (StringUtil.isEmpty(listDaMkJoken.get(j).getKikakuti())) {
+                            itemDataList.get(i).setKikakuChi("【】");
+                            break;
+                        }
+                        itemDataList.get(i).setKikakuChi("【" + listDaMkJoken.get(j).getKikakuti() + "】");
+                        isExist = true;
+                        break;
+                    }
+                }
+            }
+
+            if(!isExist){
+                //(8)前工程標準規格情報より、情報がある場合
+                if(null != listDaMkhyojunjoken && !listDaMkhyojunjoken.isEmpty()){
+                    for (int k = 0; k <= listDaMkhyojunjoken.size() - 1; k++) {
+                        if (StringUtil.nullToBlank(itemDataList.get(i).getJokenKoteiMei()).equals(StringUtil.nullToBlank(listDaMkhyojunjoken.get(k).getKouteimei()))
+                                && StringUtil.nullToBlank(itemDataList.get(i).getJokenKomokuMei()).equals(StringUtil.nullToBlank(listDaMkhyojunjoken.get(k).getKoumokumei()))
+                                && StringUtil.nullToBlank(itemDataList.get(i).getJokenKanriKomoku()).equals(StringUtil.nullToBlank(listDaMkhyojunjoken.get(k).getKanrikoumokumei()))) {
+
+                            // 規格値が空またはNULLだった場合
+                            if (StringUtil.isEmpty(listDaMkhyojunjoken.get(k).getKikakuti())) {
+                                itemDataList.get(i).setKikakuChi("【】");
+                                break;    
+                            }
+
+                            itemDataList.get(i).setKikakuChi("【" + listDaMkhyojunjoken.get(k).getKikakuti() + "】");
+                            isExist = true;
+                            break;
+                        }
+                    }
+                }
+            }                
+
+            if (!isExist) {
+                initMessageList.add(MessageUtil.getMessage("XHD-000019", "【" + this.itemList.get(i).getLabel1() + "】"));
+            }
+        }
+    }
+    
     /**
      * ログアウトします。
      *
@@ -1807,6 +1826,16 @@ public class GXHDO901B implements Serializable {
         }
 
         switch (subFormId) {
+            // ｶﾞﾗｽ作製・秤量入力
+            case SubFormUtil.FORM_ID_GXHDO102C001:
+                GXHDO102C001 beanGXHDO102C001 = (GXHDO102C001) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO102C001);
+                GXHDO102C001Logic.setReturnData(beanGXHDO102C001.getGxhdO102c001Model(), this.itemList);
+                break;
+            // ｶﾞﾗｽｽﾗﾘｰ作製・秤量入力
+            case SubFormUtil.FORM_ID_GXHDO102C002:
+                GXHDO102C002 beanGXHDO102C002 = (GXHDO102C002) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO102C002);
+                GXHDO102C002Logic.setReturnData(beanGXHDO102C002.getGxhdO102c002Model(), this.itemList);
+                break;
             default:
                 break;
         }
