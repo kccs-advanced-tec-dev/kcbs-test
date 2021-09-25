@@ -348,6 +348,7 @@ public class GXHDO101A implements Serializable {
         try {
             setSanshouBtnRender(false);
             setSougouHanteiBtnRender(false);
+            setRankBCRenrakuBtnRender(false);
 
             String strProcess = "";
 
