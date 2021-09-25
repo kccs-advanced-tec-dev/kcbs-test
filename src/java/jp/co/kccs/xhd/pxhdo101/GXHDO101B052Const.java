@@ -8,347 +8,299 @@ package jp.co.kccs.xhd.pxhdo101;
  * <br>
  * システム名	品質DB(コンデンサ)<br>
  * <br>
- * 変更日	2019/07/15<br>
- * 計画書No	K1803-DS001<br>
- * 変更者	KCSS K.Jo<br>
- * 変更理由	新規作成<br>
- * <br>
- * 変更日	2020/09/15<br>
- * 計画書No	MB2008-DK001<br>
- * 変更者	KCSS K.Jo<br>
- * 変更理由	項目追加<br>
- * <br>
- * 変更日	2021/09/20<br>
- * 計画書No	MB2108-DK001<br>
- * 変更者	SRC T.Takenouchi<br>
- * 変更理由	新規追加<br>
+ * 変更日      2021/09/22<br>
+ * 計画書No    MB2108-DK001<br>
+ * 変更者      SRC T.Ushiyama<br>
+ * 変更理由    新規作成<br>
  * <br>
  * ===============================================================================<br>
  */
 /**
- * GXHDO101B020Const(研磨・ﾊﾞﾚﾙ)定数
+ * GXHDO101B052Const(焼成・焼成前ﾊﾞﾚﾙ)定数
  *
  * @author KCSS K.Jo
  * @since  2019/07/15
  */
-public class GXHDO101B020Const {
+public class GXHDO101B052Const {
+
     /**
      * ﾛｯﾄNo.
-     */
-    public static final String LOTNO = "sr_barrel1_lotno";
+    */
+    public static final String LOTNO = "sr_maebarrel_lotno";
 
     /**
      * KCPNO
-     */
-    public static final String KCPNO = "sr_barrel1_kcpno";
+    */
+    public static final String KCPNO = "sr_maebarrel_kcpno";
 
     /**
      * 客先
-     */
-    public static final String KYAKUSAKI = "sr_barrel1_kyakusaki";
+    */
+    public static final String KYAKUSAKI = "sr_maebarrel_kyakusaki";
 
     /**
      * ﾛｯﾄ区分
-     */
-    public static final String LOT_KUBUN = "sr_barrel1_lot_kubun";
+    */
+    public static final String LOT_KUBUN = "sr_maebarrel_lot_kubun";
 
     /**
      * ｵｰﾅｰ
-     */
-    public static final String OWNER = "sr_barrel1_owner";
-
-    /**
-     * 指示
-     */
-    public static final String SIJI = "sr_barrel1_siji";
+    */
+    public static final String OWNER = "sr_maebarrel_owner";
 
     /**
      * 受入個数
-     */
-    public static final String UKEIREKOSUU = "sr_barrel1_ukeirekosuu";
+    */
+    public static final String UKEIREKOSUU = "sr_maebarrel_ukeirekosuu";
 
     /**
      * 研磨方式
-     */
-    public static final String KENMA = "sr_barrel1_kenma";
-
-    /**
-     * ﾎﾟｯﾄ種類
-     */
-    public static final String POTSYURUI = "sr_barrel1_potsyurui";
+    */
+    public static final String KENMA = "sr_maebarrel_kenma";
 
     /**
      * 研磨号機
-     */
-    public static final String BGOKI = "sr_barrel1_bgoki";
-
-    /**
-     * ﾁｬｰｼﾞ量
-     */
-    public static final String CHARGERYOU = "sr_barrel1_chargeryou";
+    */
+    public static final String BGOKI = "sr_maebarrel_bgoki";
 
     /**
      * ﾎﾟｯﾄ数
-     */
-    public static final String POTSUU = "sr_barrel1_potsuu";
+    */
+    public static final String POTSUU = "sr_maebarrel_potsuu";
+
+    /**
+     * ﾎﾟｯﾄﾁｬｰｼﾞ量
+    */
+    public static final String POT_CHARGERYOU = "sr_maebarrel_pot_chargeryou";
+
+    /**
+     * 片栗粉量
+    */
+    public static final String KATAKURI_FUNRYOU = "sr_maebarrel_katakuri_funryou";
+
+    /**
+     * ﾒﾃﾞｨｱ種類
+    */
+    public static final String MEDIA_SYURUI = "sr_maebarrel_media_syurui";
+
+    /**
+     * ﾒﾃﾞｨｱ量
+    */
+    public static final String MEDIA_RYOU = "sr_maebarrel_media_ryou";
 
     /**
      * 研磨時間①
-     */
-    public static final String BJIKAN = "sr_barrel1_bjikan";
-
-    /**
-     * 研磨時間②
-     */
-    public static final String BJIKAN2 = "sr_barrel1_bjikan2";
-
-    /**
-     * 研磨時間③
-     */
-    public static final String BJIKAN3 = "sr_barrel1_bjikan3";
-
-    /**
-     * 研磨時間④
-     */
-    public static final String BJIKAN4 = "sr_barrel1_bjikan4";
-
-    /**
-     * 研磨時間⑤
-     */
-    public static final String BJIKAN5 = "sr_barrel1_bjikan5";
-
-    /**
-     * 研磨時間⑥
-     */
-    public static final String BJIKAN6 = "sr_barrel1_bjikan6";
-
-    /**
-     * 研磨時間合計
-     */
-    public static final String BJIKANTOTAL = "sr_barrel1_bjikantotal";
+    */
+    public static final String BJIKAN = "sr_maebarrel_bjikan";
 
     /**
      * 研磨機回転数①
-     */
-    public static final String BJYOKENSYUSOKUDO = "sr_barrel1_bjyokensyusokudo";
+    */
+    public static final String BJYOKENSYUSOKUDO = "sr_maebarrel_bjyokensyusokudo";
+
+    /**
+     * 研磨時間②
+    */
+    public static final String BJIKAN2 = "sr_maebarrel_bjikan2";
 
     /**
      * 研磨機回転数②
-     */
-    public static final String BJYOKENSYUSOKUDO2 = "sr_barrel1_bjyokensyusokudo2";
+    */
+    public static final String BJYOKENSYUSOKUDO2 = "sr_maebarrel_bjyokensyusokudo2";
+
+    /**
+     * 研磨時間③
+    */
+    public static final String BJIKAN3 = "sr_maebarrel_bjikan3";
 
     /**
      * 研磨機回転数③
-     */
-    public static final String BJYOKENSYUSOKUDO3 = "sr_barrel1_bjyokensyusokudo3";
+    */
+    public static final String BJYOKENSYUSOKUDO3 = "sr_maebarrel_bjyokensyusokudo3";
+
+    /**
+     * 研磨時間④
+    */
+    public static final String BJIKAN4 = "sr_maebarrel_bjikan4";
 
     /**
      * 研磨機回転数④
-     */
-    public static final String BJYOKENSYUSOKUDO4 = "sr_barrel1_bjyokensyusokudo4";
+    */
+    public static final String BJYOKENSYUSOKUDO4 = "sr_maebarrel_bjyokensyusokudo4";
+
+    /**
+     * 研磨時間⑤
+    */
+    public static final String BJIKAN5 = "sr_maebarrel_bjikan5";
 
     /**
      * 研磨機回転数⑤
-     */
-    public static final String BJYOKENSYUSOKUDO5 = "sr_barrel1_bjyokensyusokudo5";
+    */
+    public static final String BJYOKENSYUSOKUDO5 = "sr_maebarrel_bjyokensyusokudo5";
+
+    /**
+     * 研磨時間⑥
+    */
+    public static final String BJIKAN6 = "sr_maebarrel_bjikan6";
 
     /**
      * 研磨機回転数⑥
-     */
-    public static final String BJYOKENSYUSOKUDO6 = "sr_barrel1_bjyokensyusokudo6";
-
-    /**
-     * 研磨材量①
-     */
-    public static final String KENMAZAIRYO = "sr_barrel1_kenmazairyo";
-
-    /**
-     * 研磨材量②
-     */
-    public static final String KENMAZAIRYO2 = "sr_barrel1_kenmazairyo2";
-
-    /**
-     * 研磨材種類①
-     */
-    public static final String KENMAZAISYURUI = "sr_barrel1_kenmazaisyurui";
-
-    /**
-     * 研磨材種類②
-     */
-    public static final String KENMAZAISYURUI2 = "sr_barrel1_kenmazaisyurui2";
-
-    /**
-     * 玉石種類
-     */
-    public static final String TAMAISHISYURUI = "sr_barrel1_tamaishisyurui";
-
-    /**
-     * 玉石量
-     */
-    public static final String TAMAISHIRYOU = "sr_barrel1_tamaishiryou";
-
-    /**
-     * 外観確認
-     */
-    public static final String GAIKANCHECK = "sr_barrel1_gaikancheck";
+    */
+    public static final String BJYOKENSYUSOKUDO6 = "sr_maebarrel_bjyokensyusokudo6";
 
     /**
      * 開始日
-     */
-    public static final String KAISHI_DAY = "sr_barrel1_kaishi_day";
+    */
+    public static final String KAISHI_DAY = "sr_maebarrel_kaishi_day";
 
     /**
      * 開始時刻
-     */
-    public static final String KAISHI_TIME = "sr_barrel1_kaishi_time";
+    */
+    public static final String KAISHI_TIME = "sr_maebarrel_kaishi_time";
 
     /**
      * 開始担当者
-     */
-    public static final String KAISHI_TANTOUSYA = "sr_barrel1_kaishi_tantousya";
+    */
+    public static final String KAISHI_TANTOUSYA = "sr_maebarrel_kaishi_tantousya";
 
     /**
      * 開始確認者
-     */
-    public static final String KAISHI_KAKUNINSYA = "sr_barrel1_kaishi_kakuninsya";
+    */
+    public static final String KAKUNINSYA = "sr_maebarrel_kakuninsya";
 
     /**
      * 終了日
-     */
-    public static final String SHURYOU_DAY = "sr_barrel1_shuryou_day";
+    */
+    public static final String SHURYOU_DAY = "sr_maebarrel_shuryou_day";
 
     /**
      * 終了時刻
-     */
-    public static final String SHURYOU_TIME = "sr_barrel1_shuryou_time";
+    */
+    public static final String SHURYOU_TIME = "sr_maebarrel_shuryou_time";
 
     /**
      * 終了担当者
-     */
-    public static final String SHURYOU_TANTOUSYA = "sr_barrel1_shuryou_tantousya";
+    */
+    public static final String SHURYOU_TANTOUSYA = "sr_maebarrel_shuryou_tantousya";
 
     /**
      * 備考1
-     */
-    public static final String BIKO1 = "sr_barrel1_biko1";
+    */
+    public static final String BIKO1 = "sr_maebarrel_biko1";
 
     /**
      * 備考2
-     */
-    public static final String BIKO2 = "sr_barrel1_biko2";
+    */
+    public static final String BIKO2 = "sr_maebarrel_biko2";
 
-//    /**
-//     * 研磨時間単位
-//     */
-//    public static final String KENMAJIKANTANI = "sr_barrel1_kenmajikantani";
+    /**
+     * 備考3
+    */
+    public static final String BIKO3 = "sr_maebarrel_biko3";
+
+    /**
+     * 備考4
+    */
+    public static final String BIKO4 = "sr_maebarrel_biko4";
+
+    /**
+     * 枝番ｺﾋﾟｰ(画面上)
+    */
+    public static final String BTN_COPY_EDABAN_TOP = "sr_maebarrel_copy_edaban_Top";
 
     /**
      * 仮登録(画面上)
-     */
-    public static final String BTN_KARI_TOUROKU_TOP = "sr_barrel1_kari_touroku_Top";
-
-    /**
-     * 枝番コピー(画面上)
-     */
-    public static final String BTN_EDABAN_COPY_TOP = "sr_barrel1_copy_edaban_Top";
+    */
+    public static final String BTN_KARI_TOUROKU_TOP = "sr_maebarrel_kari_touroku_Top";
 
     /**
      * 登録(画面上)
-     */
-    public static final String BTN_INSERT_TOP = "sr_barrel1_insert_Top";
+    */
+    public static final String BTN_INSERT_TOP = "sr_maebarrel_insert_Top";
 
     /**
      * 修正(画面上)
-     */
-    public static final String BTN_UPDATE_TOP = "sr_barrel1_update_Top";
+    */
+    public static final String BTN_UPDATE_TOP = "sr_maebarrel_update_Top";
 
     /**
      * 削除(画面上)
-     */
-    public static final String BTN_DELETE_TOP = "sr_barrel1_delete_Top";
+    */
+    public static final String BTN_DELETE_TOP = "sr_maebarrel_delete_Top";
 
     /**
      * 開始日時(画面上)
-     */
-    public static final String BTN_START_DATETIME_TOP = "sr_barrel1_startdatetime_Top";
+    */
+    public static final String BTN_STARTDATETIME_TOP = "sr_maebarrel_startdatetime_Top";
 
     /**
      * 終了日時(画面上)
-     */
-    public static final String BTN_END_DATETIME_TOP = "sr_barrel1_enddatetime_Top";
+    */
+    public static final String BTN_ENDDATETIME_TOP = "sr_maebarrel_enddatetime_Top";
 
     /**
      * 終了日時計算(画面上)
-     */
-    public static final String BTN_END_DATETIME_KEISAN_TOP = "sr_barrel1_enddatetime_keisan_Top";
+    */
+    public static final String BTN_ENDDATETIME_KEISAN_TOP = "sr_maebarrel_enddatetime_keisan_Top";
 
     /**
-     * 研磨方式(画面上)
-     */
-    public static final String BTN_KENMAHOSHIKI_TOP = "sr_barrel1_kenmahoshiki_Top";
+     * ﾌﾛｰ用ﾎﾞﾀﾝ(画面上)
+    */
+    public static final String BTN_FLOW_BUTTON_TOP = "sr_maebarrel_flow_button_Top";
 
     /**
-     * 研磨時間合計(画面上)
-     */
-    public static final String BTN_KENMADATETIMESUM_TOP = "sr_barrel1_kenmadatetimesum_Top";
+     * 枝番ｺﾋﾟｰ(画面下)
+    */
+    public static final String BTN_COPY_EDABAN_BOTTOM = "sr_maebarrel_copy_edaban_Bottom";
 
     /**
      * 仮登録(画面下)
-     */
-    public static final String BTN_KARI_TOUROKU_BOTTOM = "sr_barrel1_kari_touroku_Bottom";
-
-    /**
-     * 枝番コピー(画面下)
-     */
-    public static final String BTN_EDABAN_COPY_BOTTOM = "sr_barrel1_copy_edaban_Bottom";
+    */
+    public static final String BTN_KARI_TOUROKU_BOTTOM = "sr_maebarrel_kari_touroku_Bottom";
 
     /**
      * 登録(画面下)
-     */
-    public static final String BTN_INSERT_BOTTOM = "sr_barrel1_insert_Bottom";
+    */
+    public static final String BTN_INSERT_BOTTOM = "sr_maebarrel_insert_Bottom";
 
     /**
      * 修正(画面下)
-     */
-    public static final String BTN_UPDATE_BOTTOM = "sr_barrel1_update_Bottom";
+    */
+    public static final String BTN_UPDATE_BOTTOM = "sr_maebarrel_update_Bottom";
 
     /**
      * 削除(画面下)
-     */
-    public static final String BTN_DELETE_BOTTOM = "sr_barrel1_delete_Bottom";
+    */
+    public static final String BTN_DELETE_BOTTOM = "sr_maebarrel_delete_Bottom";
 
     /**
      * 開始日時(画面下)
-     */
-    public static final String BTN_START_DATETIME_BOTTOM = "sr_barrel1_startdatetime_Bottom";
+    */
+    public static final String BTN_STARTDATETIME_BOTTOM = "sr_maebarrel_startdatetime_Bottom";
 
     /**
      * 終了日時(画面下)
-     */
-    public static final String BTN_END_DATETIME_BOTTOM = "sr_barrel1_enddatetime_Bottom";
+    */
+    public static final String BTN_ENDDATETIME_BOTTOM = "sr_maebarrel_enddatetime_Bottom";
 
     /**
      * 終了日時計算(画面下)
-     */
-    public static final String BTN_END_DATETIME_KEISAN_BOTTOM = "sr_barrel1_enddatetime_keisan_Bottom";
+    */
+    public static final String BTN_ENDDATETIME_KEISAN_BOTTOM = "sr_maebarrel_enddatetime_keisan_Bottom";
 
     /**
-     * 研磨方式(画面下)
-     */
-    public static final String BTN_KENMAHOSHIKI_BOTTOM = "sr_barrel1_kenmahoshiki_Bottom";
-
-    /**
-     * 研磨時間合計(画面下)
-     */
-    public static final String BTN_KENMADATETIMESUM_BOTTOM = "sr_barrel1_kenmadatetimesum_Bottom";
+     * ﾌﾛｰ用ﾎﾞﾀﾝ(画面下)
+    */
+    public static final String BTN_FLOW_BUTTON_BOTTOM = "sr_maebarrel_flow_button_Bottom";
 
     /**
      * ユーザー認証パラメータ(修正)
      */
-    public static final String USER_AUTH_UPDATE_PARAM = "sr_barrel1_update_button";
+    public static final String USER_AUTH_UPDATE_PARAM = "sr_dassisayadume_update_button";
 
     /**
      * ユーザー認証パラメータ(削除)
      */
-    public static final String USER_AUTH_DELETE_PARAM = "sr_barrel1_delete_button";
+    public static final String USER_AUTH_DELETE_PARAM = "sr_dassisayadume_delete_button";
+
 }

@@ -11,324 +11,216 @@ import java.sql.Timestamp;
  * <br>
  * システム名	品質DB(コンデンサ)<br>
  * <br>
- * 変更日	2019/07/15<br>
- * 計画書No	K1803-DS001<br>
- * 変更者	KCSS K.Jo<br>
- * 変更理由	新規作成<br>
- * <br>
- * 変更日	2020/09/15<br>
- * 計画書No	MB2008-DK001<br>
- * 変更者	KCSS K.Jo<br>
- * 変更理由	項目追加<br>
- * <br>
- * 変更日	2021/09/15<br>
+ * 変更日	2021/09/22<br>
  * 計画書No	MB2108-DK001<br>
- * 変更者	SRC T.Takenouchi<br>
- * 変更理由	項目追加<br>
+ * 変更者	SRC T.Ushiyama<br>
+ * 変更理由	新規作成<br>
  * <br>
  * ===============================================================================<br>
  */
 /**
- * SR_BARREL1(バレル)のモデルクラスです。
+ * SR_MAEBARREL(焼成前バレル)のモデルクラスです。
  *
- * @author KCSS K.Jo
- * @since  2019/07/15
+ * @author SRC T.Ushiyama
+ * @since  2021/09/22
  */
-public class SrBarrel1 {
-    /**
-     * 工場ｺｰﾄﾞ
-     */
-    private String kojyo;
+public class SrMaebarrel {
+   /**
+    * 工場ｺｰﾄﾞ
+    */
+   private String kojyo;
 
-    /**
-     * ﾛｯﾄNo
-     */
-    private String lotno;
+   /**
+    * ﾛｯﾄNo
+    */
+   private String lotno;
 
-    /**
-     * 枝番
-     */
-    private String edaban;
+   /**
+    * 枝番
+    */
+   private String edaban;
 
-    /**
-     * 実績No
-     */
-    private Integer jissekino;
+   /**
+    * KCPNO
+    */
+   private String kcpno;
 
-    /**
-     * KCPNO
-     */
-    private String kcpno;
+   /**
+    * 客先
+    */
+   private String tokuisaki;
 
-    /**
-     * ﾊﾞﾚﾙ開始日時
-     */
-    private Timestamp bkaisinichiji;
+   /**
+    * ﾛｯﾄ区分
+    */
+   private String lotkubuncode;
 
-    /**
-     * ﾊﾞﾚﾙ終了日時
-     */
-    private Timestamp bsyuryonichiji;
+   /**
+    * ｵｰﾅｰ
+    */
+   private String ownercode;
 
-    /**
-     * ﾊﾞﾚﾙ条件設定ﾓｰﾄﾞ
-     */
-    private String bjyokensetteimode;
+   /**
+    * 受入個数
+    */
+   private Integer ukeirekosuu;
 
-    /**
-     * ﾊﾞﾚﾙ条件周速度(研磨機回転数①)
-     */
-    private BigDecimal bjyokensyusokudo;
+   /**
+    * 研磨方法
+    */
+   private String kenma;
 
-    /**
-     * ﾊﾞﾚﾙ号機(研磨号機)
-     */
-    private String bgoki;
+   /**
+    * 研磨号機
+    */
+   private String bgoki;
 
-    /**
-     * ﾊﾞﾚﾙ時間(研磨時間①)
-     */
-    private Integer bjikan;
+   /**
+    * ﾎﾟｯﾄ数
+    */
+   private Integer potsuu;
 
-    /**
-     * ﾎﾟｯﾄ数
-     */
-    private Integer potsuu;
+   /**
+    * ﾎﾟｯﾄﾁｬｰｼﾞ量
+    */
+   private Integer potcsuu;
 
-    /**
-     * ﾁｯﾌﾟ破片確認
-     */
-    private String chiphahenkakunin;
+   /**
+    * 片栗粉量
+    */
+   private Integer katakuriko;
 
-    /**
-     * ﾎﾟｯﾄ内確認
-     */
-    private String potkakunin;
+   /**
+    * ﾒﾃﾞｨｱ種類
+    */
+   private Integer mediasyurui;
 
-    /**
-     * ﾊﾞﾚﾙ担当者
-     */
-    private String btantosya;
+   /**
+    * ﾒﾃﾞｨｱ量
+    */
+   private Integer mediasenbetu;
 
-    /**
-     * ﾎﾟｯﾄ取り出し担当者
-     */
-    private String ptantosya;
+   /**
+    * 研磨時間①
+    */
+   private Integer bjikan1;
 
-    /**
-     * ﾊﾞﾚﾙﾎﾟｯﾄNO1
-     */
-    private String bpotno1;
+   /**
+    * 研磨機回転数①
+    */
+   private Integer bkaiten1;
 
-    /**
-     * 乾燥開始日時
-     */
-    private Timestamp kankaisinichiji;
+   /**
+    * 研磨時間②
+    */
+   private Integer bjikan2;
 
-    /**
-     * 乾燥終了日時
-     */
-    private Timestamp kansyuryonichiji;
+   /**
+    * 研磨機回転数②
+    */
+   private Integer bkaiten2;
 
-    /**
-     * 乾燥担当者
-     */
-    private String kantantosya;
+   /**
+    * 研磨時間③
+    */
+   private Integer bjikan3;
 
-    /**
-     * ﾒﾃﾞｨｱ選別
-     */
-    private String mediasenbetu;
+   /**
+    * 研磨機回転数③
+    */
+   private Integer bkaiten3;
 
-    /**
-     * ﾊﾞﾚﾙﾎﾟｯﾄNO2
-     */
-    private String bpotno2;
+   /**
+    * 研磨時間④
+    */
+   private Integer bjikan4;
 
-    /**
-     * 計数日時
-     */
-    private Timestamp keinichiji;
+   /**
+    * 研磨機回転数④
+    */
+   private Integer bkaiten4;
 
-    /**
-     * 受入個数
-     */
-    private Integer ukeirekosuu;
+   /**
+    * 研磨時間⑤
+    */
+   private Integer bjikan5;
 
-    /**
-     * 単位重量
-     */
-    private BigDecimal tanijyuryo;
+   /**
+    * 研磨機回転数⑤
+    */
+   private Integer bkaiten5;
 
-    /**
-     * 良品個数
-     */
-    private Integer ryohinkosuu;
+   /**
+    * 研磨時間⑥
+    */
+   private Integer bjikan6;
 
-    /**
-     * 不良数
-     */
-    private Integer furyosuu;
+   /**
+    * 研磨機回転数⑥
+    */
+   private Integer bkaiten6;
 
-    /**
-     * 歩留まり
-     */
-    private BigDecimal budomari;
+   /**
+    * 開始日時
+    */
+   private Timestamp kaisinichiji;
 
-    /**
-     * 計数担当者
-     */
-    private String keitantosya;
+   /**
+    * 担当者
+    */
+   private String kaisitantosya;
 
-    /**
-     * 備考1
-     */
-    private String biko1;
+   /**
+    * 開始確認者
+    */
+   private String kaisikakuninsya;
 
-    /**
-     * 備考2
-     */
-    private String biko2;
+   /**
+    * 終了日時
+    */
+   private Timestamp syuryonichiji;
 
-    /**
-     * 登録日時
-     */
-    private Timestamp torokunichiji;
+   /**
+    * 終了担当者
+    */
+   private String syuryotantosya;
 
-    /**
-     * 更新日時
-     */
-    private Timestamp kosinNichiji;
+   /**
+    * 備考1
+    */
+   private String biko1;
 
-    /**
-     * 研磨方式
-     */
-    private String kenma;
+   /**
+    * 備考2
+    */
+   private String biko2;
 
-    /**
-     * 研磨材量
-     */
-    private Integer kenmazairyo;
+   /**
+    * 備考3
+    */
+   private String biko3;
 
-    /**
-     * 研磨材種類
-     */
-    private String kenmazaisyurui;
+   /**
+    * 備考4
+    */
+   private String biko4;
 
-    /**
-     * 玉石種類
-     */
-    private String tamaishisyurui;
+   /**
+    * 登録日時
+    */
+   private Timestamp torokunichiji;
 
-    /**
-     * 玉石量
-     */
-    private Integer tamaishiryou;
+   /**
+    * 更新日時
+    */
+   private Timestamp kosinnichiji;
 
-    /**
-     * 外観確認
-     */
-    private Integer gaikancheck;
+   /**
+    * revision
+    */
+   private Integer revision;
 
-    /**
-     * 開始確認者
-     */
-    private String startkakuninsyacode;
 
-    /**
-     * 終了担当者
-     */
-    private String endtantosyacode;
-
-    /**
-     * revision
-     */
-    private Integer revision;
-
-    /**
-     * 研磨時間単位
-     */
-    private String kenmajikantani;
-
-    /**
-     * 削除ﾌﾗｸﾞ
-     */
-    private Integer deleteflag;
-    
-    /**
-     * ﾎﾟｯﾄ種類
-     */
-    private String potsyurui;
-
-    /**
-     * ﾁｬｰｼﾞ量
-     */
-    private Integer chargeryou;
-
-    /**
-     * 研磨時間②
-     */
-    private Integer bjikan2;
-
-    /**
-     * 研磨機回転数②
-     */
-    private BigDecimal bjyokensyusokudo2;
-
-    /**
-     * 研磨時間③
-     */
-    private Integer bjikan3;
-
-    /**
-     * 研磨機回転数③
-     */
-    private BigDecimal bjyokensyusokudo3;
-
-    /**
-     * 研磨時間④
-     */
-    private Integer bjikan4;
-
-    /**
-     * 研磨機回転数④
-     */
-    private BigDecimal bjyokensyusokudo4;
-
-    /**
-     * 研磨時間⑤
-     */
-    private Integer bjikan5;
-
-    /**
-     * 研磨機回転数⑤
-     */
-    private BigDecimal bjyokensyusokudo5;
-
-    /**
-     * 研磨時間⑥
-     */
-    private Integer bjikan6;
-
-    /**
-     * 研磨機回転数⑥
-     */
-    private BigDecimal bjyokensyusokudo6;
-
-    /**
-     * 研磨時間合計
-     */
-    private Integer bjikantotal;
-
-    /**
-     * 研磨材量②
-     */
-    private Integer kenmazairyo2;
-
-    /**
-     * 研磨材種類②
-     */
-    private String kenmazaisyurui2;
 
 //<editor-fold defaultstate="collapsed" desc="#Getter・Setter">
     /**
@@ -374,20 +266,6 @@ public class SrBarrel1 {
     }
 
     /**
-     * @return jissekino
-     */
-    public Integer getJissekino() {
-        return jissekino;
-    }
-
-    /**
-     * @param jissekino セットする jissekino
-     */
-    public void setJissekino(Integer jissekino) {
-        this.jissekino = jissekino;
-    }
-
-    /**
      * @return kcpno
      */
     public String getKcpno() {
@@ -402,255 +280,45 @@ public class SrBarrel1 {
     }
 
     /**
-     * @return bkaisinichiji
+     * @return tokuisaki
      */
-    public Timestamp getBkaisinichiji() {
-        return bkaisinichiji;
+    public String getTokuisaki() {
+        return tokuisaki;
     }
 
     /**
-     * @param bkaisinichiji セットする bkaisinichiji
+     * @param tokuisaki セットする tokuisaki
      */
-    public void setBkaisinichiji(Timestamp bkaisinichiji) {
-        this.bkaisinichiji = bkaisinichiji;
+    public void setTokuisaki(String tokuisaki) {
+        this.tokuisaki = tokuisaki;
     }
 
     /**
-     * @return bsyuryonichiji
+     * @return lotkubuncode
      */
-    public Timestamp getBsyuryonichiji() {
-        return bsyuryonichiji;
+    public String getLotkubuncode() {
+        return lotkubuncode;
     }
 
     /**
-     * @param bsyuryonichiji セットする bsyuryonichiji
+     * @param lotkubuncode セットする lotkubuncode
      */
-    public void setBsyuryonichiji(Timestamp bsyuryonichiji) {
-        this.bsyuryonichiji = bsyuryonichiji;
+    public void setLotkubuncode(String lotkubuncode) {
+        this.lotkubuncode = lotkubuncode;
     }
 
     /**
-     * @return bjyokensetteimode
+     * @return ownercode
      */
-    public String getBjyokensetteimode() {
-        return bjyokensetteimode;
+    public String getOwnercode() {
+        return ownercode;
     }
 
     /**
-     * @param bjyokensetteimode セットする bjyokensetteimode
+     * @param ownercode セットする ownercode
      */
-    public void setBjyokensetteimode(String bjyokensetteimode) {
-        this.bjyokensetteimode = bjyokensetteimode;
-    }
-
-    /**
-     * @return bjyokensyusokudo
-     */
-    public BigDecimal getBjyokensyusokudo() {
-        return bjyokensyusokudo;
-    }
-
-    /**
-     * @param bjyokensyusokudo セットする bjyokensyusokudo
-     */
-    public void setBjyokensyusokudo(BigDecimal bjyokensyusokudo) {
-        this.bjyokensyusokudo = bjyokensyusokudo;
-    }
-
-    /**
-     * @return bgoki
-     */
-    public String getBgoki() {
-        return bgoki;
-    }
-
-    /**
-     * @param bgoki セットする bgoki
-     */
-    public void setBgoki(String bgoki) {
-        this.bgoki = bgoki;
-    }
-
-    /**
-     * @return bjikan
-     */
-    public Integer getBjikan() {
-        return bjikan;
-    }
-
-    /**
-     * @param bjikan セットする bjikan
-     */
-    public void setBjikan(Integer bjikan) {
-        this.bjikan = bjikan;
-    }
-
-    /**
-     * @return potsuu
-     */
-    public Integer getPotsuu() {
-        return potsuu;
-    }
-
-    /**
-     * @param potsuu セットする potsuu
-     */
-    public void setPotsuu(Integer potsuu) {
-        this.potsuu = potsuu;
-    }
-
-    /**
-     * @return chiphahenkakunin
-     */
-    public String getChiphahenkakunin() {
-        return chiphahenkakunin;
-    }
-
-    /**
-     * @param chiphahenkakunin セットする chiphahenkakunin
-     */
-    public void setChiphahenkakunin(String chiphahenkakunin) {
-        this.chiphahenkakunin = chiphahenkakunin;
-    }
-
-    /**
-     * @return potkakunin
-     */
-    public String getPotkakunin() {
-        return potkakunin;
-    }
-
-    /**
-     * @param potkakunin セットする potkakunin
-     */
-    public void setPotkakunin(String potkakunin) {
-        this.potkakunin = potkakunin;
-    }
-
-    /**
-     * @return btantosya
-     */
-    public String getBtantosya() {
-        return btantosya;
-    }
-
-    /**
-     * @param btantosya セットする btantosya
-     */
-    public void setBtantosya(String btantosya) {
-        this.btantosya = btantosya;
-    }
-
-    /**
-     * @return ptantosya
-     */
-    public String getPtantosya() {
-        return ptantosya;
-    }
-
-    /**
-     * @param ptantosya セットする ptantosya
-     */
-    public void setPtantosya(String ptantosya) {
-        this.ptantosya = ptantosya;
-    }
-
-    /**
-     * @return bpotno1
-     */
-    public String getBpotno1() {
-        return bpotno1;
-    }
-
-    /**
-     * @param bpotno1 セットする bpotno1
-     */
-    public void setBpotno1(String bpotno1) {
-        this.bpotno1 = bpotno1;
-    }
-
-    /**
-     * @return kankaisinichiji
-     */
-    public Timestamp getKankaisinichiji() {
-        return kankaisinichiji;
-    }
-
-    /**
-     * @param kankaisinichiji セットする kankaisinichiji
-     */
-    public void setKankaisinichiji(Timestamp kankaisinichiji) {
-        this.kankaisinichiji = kankaisinichiji;
-    }
-
-    /**
-     * @return kansyuryonichiji
-     */
-    public Timestamp getKansyuryonichiji() {
-        return kansyuryonichiji;
-    }
-
-    /**
-     * @param kansyuryonichiji セットする kansyuryonichiji
-     */
-    public void setKansyuryonichiji(Timestamp kansyuryonichiji) {
-        this.kansyuryonichiji = kansyuryonichiji;
-    }
-
-    /**
-     * @return kantantosya
-     */
-    public String getKantantosya() {
-        return kantantosya;
-    }
-
-    /**
-     * @param kantantosya セットする kantantosya
-     */
-    public void setKantantosya(String kantantosya) {
-        this.kantantosya = kantantosya;
-    }
-
-    /**
-     * @return mediasenbetu
-     */
-    public String getMediasenbetu() {
-        return mediasenbetu;
-    }
-
-    /**
-     * @param mediasenbetu セットする mediasenbetu
-     */
-    public void setMediasenbetu(String mediasenbetu) {
-        this.mediasenbetu = mediasenbetu;
-    }
-
-    /**
-     * @return bpotno2
-     */
-    public String getBpotno2() {
-        return bpotno2;
-    }
-
-    /**
-     * @param bpotno2 セットする bpotno2
-     */
-    public void setBpotno2(String bpotno2) {
-        this.bpotno2 = bpotno2;
-    }
-
-    /**
-     * @return keinichiji
-     */
-    public Timestamp getKeinichiji() {
-        return keinichiji;
-    }
-
-    /**
-     * @param keinichiji セットする keinichiji
-     */
-    public void setKeinichiji(Timestamp keinichiji) {
-        this.keinichiji = keinichiji;
+    public void setOwnercodee(String ownercode) {
+        this.ownercode = ownercode;
     }
 
     /**
@@ -668,73 +336,375 @@ public class SrBarrel1 {
     }
 
     /**
-     * @return tanijyuryo
+     * @return kenma
      */
-    public BigDecimal getTanijyuryo() {
-        return tanijyuryo;
+    public String getKenma() {
+        return kenma;
     }
 
     /**
-     * @param tanijyuryo セットする tanijyuryo
+     * @param kenma セットする kenma
      */
-    public void setTanijyuryo(BigDecimal tanijyuryo) {
-        this.tanijyuryo = tanijyuryo;
+    public void setKenma(String kenma) {
+        this.kenma = kenma;
     }
 
     /**
-     * @return ryohinkosuu
+     * @return bgoki
      */
-    public Integer getRyohinkosuu() {
-        return ryohinkosuu;
+    public String getBgoki() {
+        return bgoki;
     }
 
     /**
-     * @param ryohinkosuu セットする ryohinkosuu
+     * @param bgoki セットする bgoki
      */
-    public void setRyohinkosuu(Integer ryohinkosuu) {
-        this.ryohinkosuu = ryohinkosuu;
+    public void setBgoki(String bgoki) {
+        this.bgoki = bgoki;
     }
 
     /**
-     * @return furyosuu
+     * @return potsuu
      */
-    public Integer getFuryosuu() {
-        return furyosuu;
+    public Integer getPotsuu() {
+        return potsuu;
     }
 
     /**
-     * @param furyosuu セットする furyosuu
+     * @param potsuu セットする potsuu
      */
-    public void setFuryosuu(Integer furyosuu) {
-        this.furyosuu = furyosuu;
+    public void setPotsuu(Integer potsuu) {
+        this.potsuu = potsuu;
     }
 
     /**
-     * @return budomari
+     * @return potcsuu
      */
-    public BigDecimal getBudomari() {
-        return budomari;
+    public Integer getPotcsuu() {
+        return potcsuu;
     }
 
     /**
-     * @param budomari セットする budomari
+     * @param potcsuu セットする potcsuu
      */
-    public void setBudomari(BigDecimal budomari) {
-        this.budomari = budomari;
+    public void setPotcsuu(Integer potcsuu) {
+        this.potcsuu = potcsuu;
     }
 
     /**
-     * @return keitantosya
+     * @return katakuriko
      */
-    public String getKeitantosya() {
-        return keitantosya;
+    public Integer getKatakuriko() {
+        return katakuriko;
     }
 
     /**
-     * @param keitantosya セットする keitantosya
+     * @param katakuriko セットする katakuriko
      */
-    public void setKeitantosya(String keitantosya) {
-        this.keitantosya = keitantosya;
+    public void setKatakuriko(Integer katakuriko) {
+        this.katakuriko = katakuriko;
+    }
+
+    /**
+     * @return mediasyurui
+     */
+    public Integer getMediasyurui() {
+        return mediasyurui;
+    }
+
+    /**
+     * @param mediasyurui セットする mediasyurui
+     */
+    public void setMediasyurui(Integer mediasyurui) {
+        this.mediasyurui = mediasyurui;
+    }
+
+    /**
+     * @return mediasenbetu
+     */
+    public Integer getMediasenbetu() {
+        return mediasenbetu;
+    }
+
+    /**
+     * @param mediasenbetu セットする mediasenbetu
+     */
+    public void setMediasenbetu(Integer mediasenbetu) {
+        this.mediasenbetu = mediasenbetu;
+    }
+
+    /**
+     * 研磨時間①
+     *
+     * @return the bjikan1
+     */
+    public Integer getBjikan1() {
+        return bjikan1;
+    }
+    /**
+     * 研磨時間①
+     *
+     * @param bjikan1 the bjikan1 to set
+     */
+    public void setBjikan1(Integer bjikan1) {
+        this.bjikan1 = bjikan1;
+    }
+
+    /**
+     * 研磨機回転数①
+     *
+     * @return the bkaiten1
+     */
+    public Integer getBkaiten1() {
+        return bkaiten1;
+    }
+    /**
+     * 研磨機回転数①
+     *
+     * @param bkaiten1 the bkaiten1 to set
+     */
+    public void setBkaiten1(Integer bkaiten1) {
+        this.bkaiten1 = bkaiten1;
+    }
+
+    /**
+     * 研磨時間②
+     *
+     * @return the bjikan2
+     */
+    public Integer getBjikan2() {
+        return bjikan2;
+    }
+    /**
+     * 研磨時間②
+     *
+     * @param bjikan2 the bjikan2 to set
+     */
+    public void setBjikan2(Integer bjikan2) {
+        this.bjikan2 = bjikan2;
+    }
+
+    /**
+     * 研磨機回転数②
+     *
+     * @return the bkaiten2
+     */
+    public Integer getBkaiten2() {
+        return bkaiten2;
+    }
+    /**
+     * 研磨機回転数②
+     *
+     * @param bkaiten2 the bkaiten2 to set
+     */
+    public void setBkaiten2(Integer bkaiten2) {
+        this.bkaiten2 = bkaiten2;
+    }
+
+    /**
+     * 研磨時間③
+     *
+     * @return the bjikan3
+     */
+    public Integer getBjikan3() {
+        return bjikan3;
+    }
+    /**
+     * 研磨時間③
+     *
+     * @param bjikan3 the bjikan3 to set
+     */
+    public void setBjikan3(Integer bjikan3) {
+        this.bjikan3 = bjikan3;
+    }
+
+    /**
+     * 研磨機回転数③
+     *
+     * @return the bkaiten3
+     */
+    public Integer getBkaiten3() {
+        return bkaiten3;
+    }
+    /**
+     * 研磨機回転数③
+     *
+     * @param bkaiten3 the bkaiten3 to set
+     */
+    public void setBkaiten3(Integer bkaiten3) {
+        this.bkaiten3 = bkaiten3;
+    }
+
+    /**
+     * 研磨時間④
+     *
+     * @return the bjikan4
+     */
+    public Integer getBjikan4() {
+        return bjikan4;
+    }
+    /**
+     * 研磨時間④
+     *
+     * @param bjikan4 the bjikan4 to set
+     */
+    public void setBjikan4(Integer bjikan4) {
+        this.bjikan4 = bjikan4;
+    }
+
+    /**
+     * 研磨機回転数④
+     *
+     * @return the bkaiten4
+     */
+    public Integer getBkaiten4() {
+        return bkaiten4;
+    }
+    /**
+     * 研磨機回転数④
+     *
+     * @param bkaiten4 the bkaiten4 to set
+     */
+    public void setBkaiten4(Integer bkaiten4) {
+        this.bkaiten4 = bkaiten4;
+    }
+
+    /**
+     * 研磨時間⑤
+     *
+     * @return the bjikan5
+     */
+    public Integer getBjikan5() {
+        return bjikan5;
+    }
+    /**
+     * 研磨時間⑤
+     *
+     * @param bjikan5 the bjikan5 to set
+     */
+    public void setBjikan5(Integer bjikan5) {
+        this.bjikan5 = bjikan5;
+    }
+
+    /**
+     * 研磨機回転数⑤
+     *
+     * @return the bkaiten5
+     */
+    public Integer getBkaiten5() {
+        return bkaiten5;
+    }
+    /**
+     * 研磨機回転数⑤
+     *
+     * @param bkaiten5 the bkaiten5 to set
+     */
+    public void setBkaiten5(Integer bkaiten5) {
+        this.bkaiten5 = bkaiten5;
+    }
+
+    /**
+     * 研磨時間⑥
+     *
+     * @return the bjikan6
+     */
+    public Integer getBjikan6() {
+        return bjikan6;
+    }
+    /**
+     * 研磨時間⑥
+     *
+     * @param bjikan6 the bjikan6 to set
+     */
+    public void setBjikan6(Integer bjikan6) {
+        this.bjikan6 = bjikan6;
+    }
+
+    /**
+     * 研磨機回転数⑥
+     *
+     * @return the bkaiten6
+     */
+    public Integer getBkaiten6() {
+        return bkaiten6;
+    }
+    /**
+     * 研磨機回転数⑥
+     *
+     * @param bkaiten6 the bkaiten6 to set
+     */
+    public void setBkaiten6(Integer bkaiten6) {
+        this.bkaiten6 = bkaiten6;
+    }
+
+    /**
+     * @return kaisinichiji
+     */
+    public Timestamp getKaisinichiji() {
+        return kaisinichiji;
+    }
+
+    /**
+     * @param kaisinichiji セットする kaisinichiji
+     */
+    public void setKaisinichiji(Timestamp kaisinichiji) {
+        this.kaisinichiji = kaisinichiji;
+    }
+
+    /**
+     * @return kaisitantosya
+     */
+    public String getKaisitantosya() {
+        return kaisitantosya;
+    }
+
+    /**
+     * @param kaisitantosya セットする kaisitantosya
+     */
+    public void setKaisitantosya(String kaisitantosya) {
+        this.kaisitantosya = kaisitantosya;
+    }
+
+    /**
+     * @return kaisikakuninsya
+     */
+    public String getKaisikakuninsya() {
+        return kaisikakuninsya;
+    }
+
+    /**
+     * @param kaisikakuninsya セットする kaisikakuninsya
+     */
+    public void setKaisikakuninsya(String kaisikakuninsya) {
+        this.kaisikakuninsya = kaisikakuninsya;
+    }
+
+    /**
+     * @return syuryonichiji
+     */
+    public Timestamp getSyuryonichiji() {
+        return syuryonichiji;
+    }
+
+    /**
+     * @param syuryonichiji セットする syuryonichiji
+     */
+    public void setSyuryonichiji(Timestamp syuryonichiji) {
+        this.syuryonichiji = syuryonichiji;
+    }
+
+    /**
+     * @return syuryotantosya
+     */
+    public String getSyuryotantosya() {
+        return syuryotantosya;
+    }
+
+    /**
+     * @param syuryotantosya セットする syuryotantosya
+     */
+    public void setSyuryotantosya(String syuryotantosya) {
+        this.syuryotantosya = syuryotantosya;
     }
 
     /**
@@ -766,6 +736,34 @@ public class SrBarrel1 {
     }
 
     /**
+     * @return biko3
+     */
+    public String getBiko3() {
+        return biko3;
+    }
+
+    /**
+     * @param biko3 セットする biko3
+     */
+    public void setBiko3(String biko3) {
+        this.biko3 = biko3;
+    }
+
+    /**
+     * @return biko4
+     */
+    public String getBiko4() {
+        return biko4;
+    }
+
+    /**
+     * @param biko4 セットする biko4
+     */
+    public void setBiko4(String biko4) {
+        this.biko4 = biko4;
+    }
+
+    /**
      * @return torokunichiji
      */
     public Timestamp getTorokunichiji() {
@@ -780,129 +778,17 @@ public class SrBarrel1 {
     }
 
     /**
-     * @return kosinNichiji
+     * @return kosinnichiji
      */
-    public Timestamp getKosinNichiji() {
-        return kosinNichiji;
+    public Timestamp getKosinnichiji() {
+        return kosinnichiji;
     }
 
     /**
-     * @param kosinNichiji セットする kosinNichiji
+     * @param kosinnichiji セットする kosinnichiji
      */
-    public void setKosinNichiji(Timestamp kosinNichiji) {
-        this.kosinNichiji = kosinNichiji;
-    }
-
-    /**
-     * @return kenma
-     */
-    public String getKenma() {
-        return kenma;
-    }
-
-    /**
-     * @param kenma セットする kenma
-     */
-    public void setKenma(String kenma) {
-        this.kenma = kenma;
-    }
-
-    /**
-     * @return kenmazairyo
-     */
-    public Integer getKenmazairyo() {
-        return kenmazairyo;
-    }
-
-    /**
-     * @param kenmazairyo セットする kenmazairyo
-     */
-    public void setKenmazairyo(Integer kenmazairyo) {
-        this.kenmazairyo = kenmazairyo;
-    }
-
-    /**
-     * @return kenmazaisyurui
-     */
-    public String getKenmazaisyurui() {
-        return kenmazaisyurui;
-    }
-
-    /**
-     * @param kenmazaisyurui セットする kenmazaisyurui
-     */
-    public void setKenmazaisyurui(String kenmazaisyurui) {
-        this.kenmazaisyurui = kenmazaisyurui;
-    }
-
-    /**
-     * @return tamaishisyurui
-     */
-    public String getTamaishisyurui() {
-        return tamaishisyurui;
-    }
-
-    /**
-     * @param tamaishisyurui セットする tamaishisyurui
-     */
-    public void setTamaishisyurui(String tamaishisyurui) {
-        this.tamaishisyurui = tamaishisyurui;
-    }
-
-    /**
-     * @return tamaishiryou
-     */
-    public Integer getTamaishiryou() {
-        return tamaishiryou;
-    }
-
-    /**
-     * @param tamaishiryou セットする tamaishiryou
-     */
-    public void setTamaishiryou(Integer tamaishiryou) {
-        this.tamaishiryou = tamaishiryou;
-    }
-
-    /**
-     * @return gaikancheck
-     */
-    public Integer getGaikancheck() {
-        return gaikancheck;
-    }
-
-    /**
-     * @param gaikancheck セットする gaikancheck
-     */
-    public void setGaikancheck(Integer gaikancheck) {
-        this.gaikancheck = gaikancheck;
-    }
-
-    /**
-     * @return startkakuninsyacode
-     */
-    public String getStartkakuninsyacode() {
-        return startkakuninsyacode;
-    }
-
-    /**
-     * @param startkakuninsyacode セットする startkakuninsyacode
-     */
-    public void setStartkakuninsyacode(String startkakuninsyacode) {
-        this.startkakuninsyacode = startkakuninsyacode;
-    }
-
-    /**
-     * @return endtantosyacode
-     */
-    public String getEndtantosyacode() {
-        return endtantosyacode;
-    }
-
-    /**
-     * @param endtantosyacode セットする endtantosyacode
-     */
-    public void setEndtantosyacode(String endtantosyacode) {
-        this.endtantosyacode = endtantosyacode;
+    public void setKosinnichiji(Timestamp kosinnichiji) {
+        this.kosinnichiji = kosinnichiji;
     }
 
     /**
@@ -917,283 +803,6 @@ public class SrBarrel1 {
      */
     public void setRevision(Integer revision) {
         this.revision = revision;
-    }
-
-    public String getKenmajikantani() {
-        return kenmajikantani;
-    }
-
-    public void setKenmajikantani(String kenmajikantani) {
-        this.kenmajikantani = kenmajikantani;
-    }
-
-    /**
-     * @return deleteflag
-     */
-    public Integer getDeleteflag() {
-        return deleteflag;
-    }
-
-    /**
-     * @param deleteflag セットする deleteflag
-     */
-    public void setDeleteflag(Integer deleteflag) {
-        this.deleteflag = deleteflag;
-    }
-
-        /**
-     * ﾎﾟｯﾄ種類
-     *
-     * @return the potsyurui
-     */
-    public String getPotsyurui() {
-        return potsyurui;
-    }
-    /**
-     * ﾎﾟｯﾄ種類
-     *
-     * @param potsyurui the potsyurui to set
-     */
-    public void setPotsyurui(String potsyurui) {
-        this.potsyurui = potsyurui;
-    }
-
-    /**
-     * ﾁｬｰｼﾞ量
-     *
-     * @return the chargeryou
-     */
-    public Integer getChargeryou() {
-        return chargeryou;
-    }
-    /**
-     * ﾁｬｰｼﾞ量
-     *
-     * @param chargeryou the chargeryou to set
-     */
-    public void setChargeryou(Integer chargeryou) {
-        this.chargeryou = chargeryou;
-    }
-
-    /**
-     * 研磨時間②
-     *
-     * @return the bjikan2
-     */
-    public Integer getBjikan2() {
-        return bjikan2;
-    }
-    /**
-     * 研磨時間②
-     *
-     * @param bjikan2 the bjikan2 to set
-     */
-    public void setBjikan2(Integer bjikan2) {
-        this.bjikan2 = bjikan2;
-    }
-
-    /**
-     * 研磨機回転数②
-     *
-     * @return the bjyokensyusokudo2
-     */
-    public BigDecimal getBjyokensyusokudo2() {
-        return bjyokensyusokudo2;
-    }
-    /**
-     * 研磨機回転数②
-     *
-     * @param bjyokensyusokudo2 the bjyokensyusokudo2 to set
-     */
-    public void setBjyokensyusokudo2(BigDecimal bjyokensyusokudo2) {
-        this.bjyokensyusokudo2 = bjyokensyusokudo2;
-    }
-
-    /**
-     * 研磨時間③
-     *
-     * @return the bjikan3
-     */
-    public Integer getBjikan3() {
-        return bjikan3;
-    }
-    /**
-     * 研磨時間③
-     *
-     * @param bjikan3 the bjikan3 to set
-     */
-    public void setBjikan3(Integer bjikan3) {
-        this.bjikan3 = bjikan3;
-    }
-
-    /**
-     * 研磨機回転数③
-     *
-     * @return the bjyokensyusokudo3
-     */
-    public BigDecimal getBjyokensyusokudo3() {
-        return bjyokensyusokudo3;
-    }
-    /**
-     * 研磨機回転数③
-     *
-     * @param bjyokensyusokudo3 the bjyokensyusokudo3 to set
-     */
-    public void setBjyokensyusokudo3(BigDecimal bjyokensyusokudo3) {
-        this.bjyokensyusokudo3 = bjyokensyusokudo3;
-    }
-
-    /**
-     * 研磨時間④
-     *
-     * @return the bjikan4
-     */
-    public Integer getBjikan4() {
-        return bjikan4;
-    }
-    /**
-     * 研磨時間④
-     *
-     * @param bjikan4 the bjikan4 to set
-     */
-    public void setBjikan4(Integer bjikan4) {
-        this.bjikan4 = bjikan4;
-    }
-
-    /**
-     * 研磨機回転数④
-     *
-     * @return the bjyokensyusokudo4
-     */
-    public BigDecimal getBjyokensyusokudo4() {
-        return bjyokensyusokudo4;
-    }
-    /**
-     * 研磨機回転数④
-     *
-     * @param bjyokensyusokudo4 the bjyokensyusokudo4 to set
-     */
-    public void setBjyokensyusokudo4(BigDecimal bjyokensyusokudo4) {
-        this.bjyokensyusokudo4 = bjyokensyusokudo4;
-    }
-
-    /**
-     * 研磨時間⑤
-     *
-     * @return the bjikan5
-     */
-    public Integer getBjikan5() {
-        return bjikan5;
-    }
-    /**
-     * 研磨時間⑤
-     *
-     * @param bjikan5 the bjikan5 to set
-     */
-    public void setBjikan5(Integer bjikan5) {
-        this.bjikan5 = bjikan5;
-    }
-
-    /**
-     * 研磨機回転数⑤
-     *
-     * @return the bjyokensyusokudo5
-     */
-    public BigDecimal getBjyokensyusokudo5() {
-        return bjyokensyusokudo5;
-    }
-    /**
-     * 研磨機回転数⑤
-     *
-     * @param bjyokensyusokudo5 the bjyokensyusokudo5 to set
-     */
-    public void setBjyokensyusokudo5(BigDecimal bjyokensyusokudo5) {
-        this.bjyokensyusokudo5 = bjyokensyusokudo5;
-    }
-
-    /**
-     * 研磨時間⑥
-     *
-     * @return the bjikan6
-     */
-    public Integer getBjikan6() {
-        return bjikan6;
-    }
-    /**
-     * 研磨時間⑥
-     *
-     * @param bjikan6 the bjikan6 to set
-     */
-    public void setBjikan6(Integer bjikan6) {
-        this.bjikan6 = bjikan6;
-    }
-
-    /**
-     * 研磨機回転数⑥
-     *
-     * @return the bjyokensyusokudo6
-     */
-    public BigDecimal getBjyokensyusokudo6() {
-        return bjyokensyusokudo6;
-    }
-    /**
-     * 研磨機回転数⑥
-     *
-     * @param bjyokensyusokudo6 the bjyokensyusokudo6 to set
-     */
-    public void setBjyokensyusokudo6(BigDecimal bjyokensyusokudo6) {
-        this.bjyokensyusokudo6 = bjyokensyusokudo6;
-    }
-
-    /**
-     * 研磨時間合計
-     *
-     * @return the bjikansum
-     */
-    public Integer getBjikantotal() {
-        return bjikantotal;
-    }
-    /**
-     * 研磨時間合計
-     *
-     * @param bjikantotal the bjikantotal to set
-     */
-    public void setBjikantotal(Integer bjikantotal) {
-        this.bjikantotal = bjikantotal;
-    }
-
-    /**
-     * 研磨材量②
-     *
-     * @return the kenmazairyo2
-     */
-    public Integer getKenmazairyo2() {
-        return kenmazairyo2;
-    }
-    /**
-     * 研磨材量②
-     *
-     * @param kenmazairyo2 the kenmazairyo2 to set
-     */
-    public void setKenmazairyo2(Integer kenmazairyo2) {
-        this.kenmazairyo2 = kenmazairyo2;
-    }
-
-    /**
-     * 研磨材種類②
-     *
-     * @return the kenmazaisyurui2
-     */
-    public String getKenmazaisyurui2() {
-        return kenmazaisyurui2;
-    }
-    /**
-     * 研磨材種類②
-     *
-     * @param kenmazaisyurui2 the kenmazaisyurui2 to set
-     */
-    public void setKenmazaisyurui2(String kenmazaisyurui2) {
-        this.kenmazaisyurui2 = kenmazaisyurui2;
     }
 
 //</editor-fold>
