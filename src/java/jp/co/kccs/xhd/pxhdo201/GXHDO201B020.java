@@ -760,17 +760,17 @@ public class GXHDO201B020 implements Serializable {
             mapping.put("EndTantosyacode", "syuryotantosya");            // 終了担当者
             mapping.put("potsyurui", "potsyurui");                       // ﾎﾟｯﾄ種類
             mapping.put("charge", "charge");                             // ﾁｬｰｼﾞ量
-            mapping.put("kenmajikan2", "bjikan2");                       // 研磨時間②
-            mapping.put("kenmakikaitensuu2", "bkaiten2");                // 研磨機回転数②
-            mapping.put("kenmajikan3", "bjikan3");                       // 研磨時間③
-            mapping.put("kenmakikaitensuu3", "bkaiten3");                // 研磨機回転数③
-            mapping.put("kenmajikan4", "bjikan4");                       // 研磨時間④
-            mapping.put("kenmakikaitensuu4", "bkaiten4");                // 研磨機回転数④
-            mapping.put("kenmajikan5", "bjikan5");                       // 研磨時間⑤
-            mapping.put("kenmakikaitensuu5", "bkaiten5");                // 研磨機回転数⑤
-            mapping.put("kenmajikan6", "bjikan6");                       // 研磨時間⑥
-            mapping.put("kenmakikaitensuu6", "bkaiten6");                // 研磨機回転数⑥
-            mapping.put("kenmajikantotal", "bjikantotal");               // 研磨時間合計
+            mapping.put("bjikan2", "kenmajikan2");                       // 研磨時間②
+            mapping.put("bkaiten2", "kenmakikaitensuu2");                // 研磨機回転数②
+            mapping.put("bjikan3", "kenmajikan3");                       // 研磨時間③
+            mapping.put("bkaiten3", "kenmakikaitensuu3");                // 研磨機回転数③
+            mapping.put("bjikan4", "kenmajikan4");                       // 研磨時間④
+            mapping.put("bkaiten4", "kenmakikaitensuu4");                // 研磨機回転数④
+            mapping.put("bjikan5", "kenmajikan5");                       // 研磨時間⑤
+            mapping.put("bkaiten5", "kenmakikaitensuu5");                // 研磨機回転数⑤
+            mapping.put("bjikan6", "kenmajikan6");                       // 研磨時間⑥
+            mapping.put("bkaiten6", "kenmakikaitensuu6");                // 研磨機回転数⑥
+            mapping.put("bjikantotal", "kenmajikantotal");               // 研磨時間合計
             mapping.put("kenmazairyo2", "kenmazairyo2");                 // 研磨材量②(cc)
             mapping.put("kenmazaisyurui2", "kenmazaisyurui2");           // 研磨材種類②
 

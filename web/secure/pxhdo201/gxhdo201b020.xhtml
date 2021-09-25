@@ -345,44 +345,70 @@
                     <p:column id="potsyurui" headerText="ﾎﾟｯﾄ種類" >
                         <p:outputLabel value="#{item.potsyurui}"/>
                     </p:column>
-                    <p:column id="charge" headerText="ﾁｬｰｼﾞ量" >
-                        <p:outputLabel value="#{item.charge}"/>
+                    <p:column id="charge" headerText="ﾁｬｰｼﾞ量" styleClass="number" >
+                        <p:outputLabel value="#{item.charge}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
                     </p:column>
-                    <p:column id="kenmajikan2" headerText="研磨時間②" >
-                        <p:outputLabel value="#{item.kenmajikan2}"/>
+                    <p:column id="kenmajikan2" headerText="研磨時間②" styleClass="number">
+                        <p:outputLabel value="#{item.kenmajikan2}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
                     </p:column>
-                    <p:column id="kenmakikaitensuu2" headerText="研磨機回転数②(rpm)" >
-                        <p:outputLabel value="#{item.kenmakikaitensuu2}"/>
+                    <p:column id="kenmakikaitensuu2" headerText="研磨機回転数②(rpm)" styleClass="number">
+                        <p:outputLabel value="#{item.kenmakikaitensuu2}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
                     </p:column>
-                    <p:column id="kenmajikan3" headerText="研磨時間③" >
-                        <p:outputLabel value="#{item.kenmajikan3}"/>
+                    <p:column id="kenmajikan3" headerText="研磨時間③" styleClass="number">
+                        <p:outputLabel value="#{item.kenmajikan3}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
                     </p:column>
-                    <p:column id="kenmakikaitensuu3" headerText="研磨機回転数③(rpm)" >
-                        <p:outputLabel value="#{item.kenmakikaitensuu3}"/>
+                    <p:column id="kenmakikaitensuu3" headerText="研磨機回転数③(rpm)" styleClass="number">
+                        <p:outputLabel value="#{item.kenmakikaitensuu3}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
                     </p:column>
-                    <p:column id="kenmajikan4" headerText="研磨時間④" >
-                        <p:outputLabel value="#{item.kenmajikan4}"/>
+                    <p:column id="kenmajikan4" headerText="研磨時間④" styleClass="number">
+                        <p:outputLabel value="#{item.kenmajikan4}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
                     </p:column>
-                    <p:column id="kenmakikaitensuu4" headerText="研磨機回転数④(rpm)" >
-                        <p:outputLabel value="#{item.kenmakikaitensuu4}"/>
+                    <p:column id="kenmakikaitensuu4" headerText="研磨機回転数④(rpm)" styleClass="number">
+                        <p:outputLabel value="#{item.kenmakikaitensuu4}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
                     </p:column>
-                    <p:column id="kenmajikan5" headerText="研磨時間⑤" >
-                        <p:outputLabel value="#{item.kenmajikan5}"/>
+                    <p:column id="kenmajikan5" headerText="研磨時間⑤" styleClass="number">
+                        <p:outputLabel value="#{item.kenmajikan5}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
                     </p:column>
-                    <p:column id="kenmakikaitensuu5" headerText="研磨機回転数⑤(rpm)" >
-                        <p:outputLabel value="#{item.kenmakikaitensuu5}"/>
+                    <p:column id="kenmakikaitensuu5" headerText="研磨機回転数⑤(rpm)" styleClass="number">
+                        <p:outputLabel value="#{item.kenmakikaitensuu5}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
                     </p:column>
-                    <p:column id="kenmajikan6" headerText="研磨時間⑥" >
-                        <p:outputLabel value="#{item.kenmajikan6}"/>
+                    <p:column id="kenmajikan6" headerText="研磨時間⑥" styleClass="number">
+                        <p:outputLabel value="#{item.kenmajikan6}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
                     </p:column>
-                    <p:column id="kenmakikaitensuu6" headerText="研磨機回転数⑥(rpm)" >
-                        <p:outputLabel value="#{item.kenmakikaitensuu6}"/>
+                    <p:column id="kenmakikaitensuu6" headerText="研磨機回転数⑥(rpm)" styleClass="number">
+                        <p:outputLabel value="#{item.kenmakikaitensuu6}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
                     </p:column>
-                    <p:column id="kenmajikantotal" headerText="研磨時間合計" >
-                        <p:outputLabel value="#{item.kenmajikantotal}"/>
+                    <p:column id="kenmajikantotal" headerText="研磨時間合計" styleClass="number">
+                        <p:outputLabel value="#{item.kenmajikantotal}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
                     </p:column>
-                    <p:column id="kenmazairyo2" headerText="研磨材量②(cc)" >
-                        <p:outputLabel value="#{item.kenmazairyo2}"/>
+                    <p:column id="kenmazairyo2" headerText="研磨材量②(cc)" styleClass="number">
+                        <p:outputLabel value="#{item.kenmazairyo2}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
                     </p:column>
                     <p:column id="kenmazaisyurui2" headerText="研磨材種類②" >
                         <p:outputLabel value="#{item.kenmazaisyurui2}"/>

@@ -13,7 +13,7 @@ import java.sql.Timestamp;
  * <br>
  * 変更日	2021/09/20<br>
  * 計画書No	MB2108-DK001<br>
- * 変更者	SRC Y.Kuroumi<br>
+ * 変更者	SRC Y.Kurozumi<br>
  * 変更理由	新規作成<br>
  * <br>
  * ===============================================================================<br>
@@ -167,6 +167,12 @@ public class SrDassisayadume {
     private Long revision;
 
     /**
+     * 削除ﾌﾗｸﾞ
+     */
+    private Integer deleteflag;
+
+//<editor-fold defaultstate="collapsed" desc="#Getter・Setter">
+    /**
      * 工場ｺｰﾄﾞ
      *
      * @return the kojyo
@@ -293,7 +299,7 @@ public class SrDassisayadume {
     }
 
     /**
-     * ｾｯﾀ枚数
+     * ｻﾔ枚数
      *
      * @return the sayasuu
      */
@@ -302,7 +308,7 @@ public class SrDassisayadume {
     }
 
     /**
-     * ｾｯﾀ枚数
+     * ｻﾔ枚数
      *
      * @param sayasuu the sayasuu to set
      */
@@ -670,4 +676,24 @@ public class SrDassisayadume {
         this.ownercode = ownercode;
     }
 
+    /**
+     * 削除ﾌﾗｸﾞ
+     * 
+     * @return deleteflag
+     */
+    public Integer getDeleteflag() {
+        return deleteflag;
+    }
+
+    /**
+     * 削除ﾌﾗｸﾞ
+     * 
+     * @param deleteflag セットする deleteflag
+     */
+    public void setDeleteflag(Integer deleteflag) {
+        this.deleteflag = deleteflag;
+    }
+    
+//</editor-fold>
+    
 }

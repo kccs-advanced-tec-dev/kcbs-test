@@ -941,7 +941,7 @@ public class SrBarrel1 {
         this.deleteflag = deleteflag;
     }
 
-        /**
+    /**
      * ﾎﾟｯﾄ種類
      *
      * @return the potsyurui
