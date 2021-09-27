@@ -8,12 +8,9 @@ import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -28,7 +25,6 @@ import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.db.model.Jisseki;
-import jp.co.kccs.xhd.db.model.Seisan;
 import jp.co.kccs.xhd.db.model.SrDassisayadume;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.GXHDO901A;
@@ -991,42 +987,28 @@ public class GXHDO101B050 implements IFormLogic {
 
                 // 処理数初期値設定
                 String strShorisu = getSyorisu(queryRunnerDoc, queryRunnerWip, lotNo);
+                if (!StringUtil.isEmpty(strShorisu)){
+                    FXHDD01 itemShorisu = getItemRow(processData.getItemList(), GXHDO101B050Const.SHORISU);
+                    strShorisu = NumberUtil.getTruncatData(strShorisu, itemShorisu.getInputLength(), itemShorisu.getInputLengthDec());
+                }
                 this.setItemData(processData, GXHDO101B050Const.SHORISU, strShorisu);
                 
                 // 単位重量初期値設定
                 String strTanijuryo = getTanijuryo(queryRunnerDoc, queryRunnerWip, lotNo);
-                FXHDD01 itemTanijuryo = getItemRow(processData.getItemList(), GXHDO101B050Const.TANIJURYO);
-                String strTanijuryof = NumberUtil.getTruncatData(strTanijuryo, itemTanijuryo.getInputLength(), itemTanijuryo.getInputLengthDec());
-                this.setItemData(processData, GXHDO101B050Const.TANIJURYO, strTanijuryof);
+                if (!StringUtil.isEmpty(strTanijuryo)){
+                    FXHDD01 itemTanijuryo = getItemRow(processData.getItemList(), GXHDO101B050Const.TANIJURYO);
+                    strTanijuryo = NumberUtil.getTruncatData(strTanijuryo, itemTanijuryo.getInputLength(), itemTanijuryo.getInputLengthDec());
+                }                
+                this.setItemData(processData, GXHDO101B050Const.TANIJURYO, strTanijuryo);
                 
                 // 総重量の計算・設定
-                this.setItemData(processData, GXHDO101B050Const.SOJURYO, getSojuryo(strShorisu, strTanijuryof));
+                String strSojuryo = getSojuryo(strShorisu, strTanijuryo);
+                if (!StringUtil.isEmpty(strSojuryo)){                
+                    FXHDD01 itemSojuryo = getItemRow(processData.getItemList(), GXHDO101B050Const.SOJURYO);
+                    strSojuryo = NumberUtil.getTruncatData(strSojuryo, itemSojuryo.getInputLength(), itemSojuryo.getInputLengthDec());
+                }
+                this.setItemData(processData, GXHDO101B050Const.SOJURYO, strSojuryo);
 
-//                // メイン画面にデータを設定する(デフォルト値)
-//                for (FXHDD01 fxhdd001 : processData.getItemList()) {
-//                    this.setItemData(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
-//                    if(GXHDO101B050Const.BJIKAN.equals(fxhdd001.getItemId())){
-//                        //研磨時間の規格値を取得
-//                        bjikanKikakuChi = fxhdd001.getKikakuChi();
-//                        //研磨時間の規格情報ﾊﾟﾀｰﾝを取得
-//                        bjikanStandardPattern = fxhdd001.getStandardPattern();
-//                    }
-//                }
-                
-//                // 研磨号機初期値設定
-//                this.setItemData(processData, GXHDO101B050Const.BGOKI, getGokiCode(queryRunnerDoc, queryRunnerWip, lotNo));
-
-//                // 研磨時間①初期値設定
-//                if(!StringUtil.isEmpty(bjikanKikakuChi) && ("1".equals(bjikanStandardPattern))){
-//                    bjikanKikakuChi = bjikanKikakuChi.replace("【", "");
-//                    bjikanKikakuChi = bjikanKikakuChi.replace("】", "");
-//                    // カンマで分割
-//                    String spBjikan[] = bjikanKikakuChi.split("±");
-//                    if(spBjikan.length > 0){
-//                        this.setItemData(processData, GXHDO101B050Const.BJIKAN, NumberUtil.numberExtractionToString(spBjikan[0]));
-//                    }
-//                }
-                
                 return true;
             }
 
@@ -2402,34 +2384,6 @@ public class GXHDO101B050 implements IFormLogic {
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
     }
 
-//    /**
-//     * [生産実績]から、ﾃﾞｰﾀを取得
-//     * @param queryRunnerWip オブジェクト
-//     * @param lotNo ﾛｯﾄNo(検索キー)
-//     * @param date ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ(検索キー)
-//     * @return 取得データ
-//     * @throws SQLException 
-//     */
-//     private List<Seisan> loadSeisanData(QueryRunner queryRunnerWip, int jissekiNo) throws SQLException {
-//        // 生産実績データの取得
-//        String sql = "SELECT goukicode "
-//                + "FROM seisan "
-//                + "WHERE jissekino = ? ";
-//
-//        Map mapping = new HashMap<>();
-//        mapping.put("goukicode", "goukicode");
-//        
-//        BeanProcessor beanProcessor = new BeanProcessor(mapping);
-//        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
-//        ResultSetHandler<List<Seisan>> beanHandler = new BeanListHandler<>(Seisan.class, rowProcessor);
-//
-//        List<Object> params = new ArrayList<>();
-//        params.add(jissekiNo);
-//
-//        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-//        return queryRunnerWip.query(sql, beanHandler, params.toArray());
-//    }
-
     /**
      * [実績]から、ﾃﾞｰﾀを取得
      * @param queryRunnerWip オブジェクト
@@ -2492,27 +2446,6 @@ public class GXHDO101B050 implements IFormLogic {
         return null;
                 
     }
-    
-//    /**
-//     * [ﾊﾟﾗﾒｰﾀﾏｽﾀ]から、工程ｺｰﾄﾞを取得
-//     * @param queryRunnerDoc オブジェクト
-//     * @return 取得データ
-//     * @throws SQLException 例外エラー
-//     */
-//    private Map loadFxhbm03DataKoteCode(QueryRunner queryRunnerDoc) {
-//        try {
-//
-//            // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
-//             String sql = "SELECT data "
-//                        + " FROM fxhbm03 "
-//                        + " WHERE user_name = 'common_user' AND key = 'xhd_研磨ﾊﾞﾚﾙ工程' ";
-//            return queryRunnerDoc.query(sql, new MapHandler());
-//        } catch (SQLException ex) {
-//            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-//        }
-//        return null;
-//                
-//    }
 
     /**
      * 処理数取得処理
@@ -2573,8 +2506,6 @@ public class GXHDO101B050 implements IFormLogic {
         String sojuryo = null;
 
         try {
-            
-            
             // 処理数の数値変換(数値以外、0以下の場合、Nullを返して処理終了)
             if (StringUtil.isEmpty(strShorisu)){
                 return sojuryo;
@@ -2601,38 +2532,5 @@ public class GXHDO101B050 implements IFormLogic {
         }
         return sojuryo;
     }
-
-//    /**
-//     * 研磨号機取得処理
-//     * @param queryRunnerDoc queryRunner(Doc)オブジェクト
-//     * @param queryRunnerWip queryRunner(Wip)オブジェクト
-//     * @param lotNo ﾛｯﾄNo
-//     * @return 研磨号機
-//     */
-//    private String getGokiCode(QueryRunner queryRunnerDoc, QueryRunner queryRunnerWip, String lotNo) throws SQLException{
-//        // 研磨号機の取得
-//        String gokiCode = null;
-//
-//        //パラメータマスタから工程コード取得
-//        Map fxhbm03Data = loadFxhbm03DataKoteCode(queryRunnerDoc);
-//        if (fxhbm03Data != null && !fxhbm03Data.isEmpty()) {
-//            String strfxhbm03List = StringUtil.nullToBlank(getMapData(fxhbm03Data, "data"));
-//            String fxhbm03DataArr[] = strfxhbm03List.split(",");
-//
-//            // 実績情報の取得
-//            List<Jisseki> jissekiData = loadJissekiData(queryRunnerWip, lotNo, fxhbm03DataArr);
-//            if (jissekiData != null && jissekiData.size() > 0) {
-//                int dbJissekino = jissekiData.get(0).getJissekino(); //実績No
-//                if (0 < dbJissekino) {
-//                    // 生産実績情報の取得
-//                    List<Seisan> seisanData = loadSeisanData(queryRunnerWip, dbJissekino);
-//                    if (seisanData != null && seisanData.size() > 0) {
-//                        gokiCode = seisanData.get(0).getGoukicode(); //号機コード
-//                    }
-//                }
-//            }
-//        }
-//        return gokiCode;
-//    }
 
 }
