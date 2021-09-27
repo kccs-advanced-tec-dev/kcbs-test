@@ -93,7 +93,7 @@ public class SrMaebarrel {
    /**
     * ﾒﾃﾞｨｱ種類
     */
-   private Integer mediasyurui;
+   private String mediasyurui;
 
    /**
     * ﾒﾃﾞｨｱ量
@@ -408,14 +408,14 @@ public class SrMaebarrel {
     /**
      * @return mediasyurui
      */
-    public Integer getMediasyurui() {
+    public String getMediasyurui() {
         return mediasyurui;
     }
 
     /**
      * @param mediasyurui セットする mediasyurui
      */
-    public void setMediasyurui(Integer mediasyurui) {
+    public void setMediasyurui(String mediasyurui) {
         this.mediasyurui = mediasyurui;
     }
 
