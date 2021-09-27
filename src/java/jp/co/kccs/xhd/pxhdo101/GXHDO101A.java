@@ -579,6 +579,18 @@ public class GXHDO101A implements Serializable {
             //⑳B･Cﾗﾝｸ発行ﾎﾞﾀﾝ表示/非表示
             List<SrKoteifuryo> listSrKoteifuryo = getSrKoteifuryoList(queryRunnerXHD, strKojyo, strLotNo, strEdaban);
 
+            // 親ﾛｯﾄすべてのﾘｽﾄを取得
+            String oyalotedaban = StringUtil.nullToBlank(shikakariData.get("oyalotedaban"));
+            while (!oyalotedaban.isEmpty() && !oyalotedaban.equals("000")) {
+                // 親ﾛｯﾄの不良ﾘｽﾄを取得
+                List<SrKoteifuryo> oyalistSrKoteifuryo = getSrKoteifuryoList(queryRunnerXHD, strKojyo, strLotNo, oyalotedaban);
+                if (!oyalistSrKoteifuryo.isEmpty()) {
+                    listSrKoteifuryo.addAll(0, oyalistSrKoteifuryo);
+                }
+                //次の親ﾛｯﾄを取得
+                oyalotedaban = getOyaLotEdaban(queryRunnerWip, strKojyo, strLotNo, oyalotedaban);
+            }
+
             if (listSrKoteifuryo.isEmpty()) {
                 setRankBCRenrakuBtnRender(false);
             } else {
@@ -920,6 +932,7 @@ public class GXHDO101A implements Serializable {
         try {
 
             QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
+            QueryRunner queryRunnerWip = new QueryRunner(dataSourceWip);
 
             String strKojyo = "";
             String strLotNo = "";
@@ -933,6 +946,18 @@ public class GXHDO101A implements Serializable {
 
             // 工程不良テーブルから登録Noを取得する
             List<SrKoteifuryo> listSrKoteifuryo = getSrKoteifuryoList(queryRunnerQcdb, strKojyo, strLotNo, strEdaban);
+            // 親ﾛｯﾄ枝番の取得
+            String oyalotedaban = getOyaLotEdaban(queryRunnerWip, strKojyo, strLotNo, strEdaban);
+            while (!oyalotedaban.isEmpty() && !oyalotedaban.equals("000")) {
+                // 親ﾛｯﾄの不良ﾘｽﾄを取得
+                List<SrKoteifuryo> oyalistSrKoteifuryo = getSrKoteifuryoList(queryRunnerQcdb, strKojyo, strLotNo, oyalotedaban);
+                if (!oyalistSrKoteifuryo.isEmpty()) {
+                    listSrKoteifuryo.addAll(0, oyalistSrKoteifuryo);
+                }
+                //次の親ﾛｯﾄを取得
+                oyalotedaban = getOyaLotEdaban(queryRunnerWip, strKojyo, strLotNo, oyalotedaban);
+            }
+
             if (listSrKoteifuryo.isEmpty()) {
                 // 取得できなかった場合
                 // ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。 ｴﾗｰｺｰﾄﾞ:XHD-000083
