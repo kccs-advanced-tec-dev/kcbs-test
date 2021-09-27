@@ -987,142 +987,9 @@ public class GXHDO101B051 implements IFormLogic {
                 processData.setInitJotaiFlg(jotaiFlg);           
                 
                 // メイン画面にデータを設定する(デフォルト値)
-                  for (FXHDD01 fxhdd001 : processData.getItemList()) {
+                for (FXHDD01 fxhdd001 : processData.getItemList()) {
                       this.setItemData(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
-//                    if(GXHDO101B051Const.UDASSI_KOJYO.equals(fxhdd001.getItemId())){
-//                        //工場ｺｰﾄﾞの規格値を取得
-//                        kojyoKikakuChi = fxhdd001.getKikakuChi();
-//                    }
-//
-//                    if(GXHDO101B051Const.UDASSI_LOTNO.equals(fxhdd001.getItemId())){
-//                        //ﾛｯﾄNo.の規格値を取得
-//                        lotnoKikakuChi = fxhdd001.getKikakuChi();
-//                    }                    
-//                    
-//                    if(GXHDO101B051Const.UDASSI_KCPNO.equals(fxhdd001.getItemId())){
-//                        //KCPNOの規格値を取得
-//                        kcpnoKikakuChi = fxhdd001.getKikakuChi();
-//                    }                    
-//
-//                    if(GXHDO101B051Const.UDASSI_KYAKUSAKI.equals(fxhdd001.getItemId())){
-//                        //客先の規格値を取得
-//                        kyakusakiKikakuChi = fxhdd001.getKikakuChi();
-//                    }   
-//
-//                    if(GXHDO101B051Const.UDASSI_LOT_KUBUN.equals(fxhdd001.getItemId())){
-//                        //ﾛｯﾄ区分の規格値を取得
-//                        lot_kubunKikakuChi = fxhdd001.getKikakuChi();
-//                    }   
-//
-//                    if(GXHDO101B051Const.UDASSI_OWNER.equals(fxhdd001.getItemId())){
-//                        //ｵｰﾅｰの規格値を取得
-//                        ownerKikakuChi = fxhdd001.getKikakuChi();
-//                    }   
-//
-//                    if(GXHDO101B051Const.UDASSI_UKEIRE_SAYA_MAISU.equals(fxhdd001.getItemId())){
-//                        //受入ｻﾔ枚数の規格値を取得
-//                        ukeire_saya_maisuKikakuChi = fxhdd001.getKikakuChi();
-//                        //受入ｻﾔ枚数の規格情報ﾊﾟﾀｰﾝを取得							
-//                        ukeire_saya_maisuStandardPattern = fxhdd001.getStandardPattern();							
-//                    }   
-//
-//                    if(GXHDO101B051Const.UDASSI_GOKI.equals(fxhdd001.getItemId())){
-//                        //号機の規格値を取得
-//                        gokiKikakuChi = fxhdd001.getKikakuChi();
-//                    }                       
-//
-//                    if(GXHDO101B051Const.UDASSI_PROGRAM_NO.equals(fxhdd001.getItemId())){
-//                        //ﾌﾟﾛｸﾞﾗﾑNoの規格値を取得
-//                        program_noKikakuChi = fxhdd001.getKikakuChi();
-//                    } 
-//
-//                    if(GXHDO101B051Const.UDASSI_MAX_ONDO.equals(fxhdd001.getItemId())){
-//                        //最高温度の規格値を取得
-//                        max_ondoKikakuChi = fxhdd001.getKikakuChi();
-//                        //最高温度の規格情報ﾊﾟﾀｰﾝを取得							
-//                        max_ondoStandardPattern = fxhdd001.getStandardPattern();							
-//                    }                      
-//                    
-//                    if(GXHDO101B051Const.UDASSI_KEEP_TIME.equals(fxhdd001.getItemId())){
-//                        //ｷｰﾌﾟ時間の規格値を取得
-//                        keep_timeKikakuChi = fxhdd001.getKikakuChi();
-//                        //の規格情報ﾊﾟﾀｰﾝを取得							
-//                        keep_timeStandardPattern = fxhdd001.getStandardPattern();							
-//                    }                     
-//                    
-//                    if(GXHDO101B051Const.UDASSI_TOTAL_TIME.equals(fxhdd001.getItemId())){
-//                        //総時間の規格値を取得
-//                        total_timeKikakuChi = fxhdd001.getKikakuChi();
-//                        //総時間の規格情報ﾊﾟﾀｰﾝを取得							
-//                        total_timeStandardPattern = fxhdd001.getStandardPattern();							
-//                    }                     
-//                    
-//                    if(GXHDO101B051Const.UDASSI_TOUNYU_SAYA_MAISU.equals(fxhdd001.getItemId())){
-//                        //投入ｻﾔ枚数の規格値を取得
-//                        total_timeKikakuChi = fxhdd001.getKikakuChi();
-//                        //投入ｻﾔ枚数の規格情報ﾊﾟﾀｰﾝを取得							
-//                        total_timeStandardPattern = fxhdd001.getStandardPattern();							
-//                    }   
-//
-//                    if(GXHDO101B051Const.UDASSI_KAISHI_DAY.equals(fxhdd001.getItemId())){
-//                        //開始日の規格値を取得
-//                        kaishi_dayKikakuChi = fxhdd001.getKikakuChi();
-//                        //開始日の規格情報ﾊﾟﾀｰﾝを取得							
-//                        kaishi_dayStandardPattern = fxhdd001.getStandardPattern();							
-//                    }                     
-//
-//                    if(GXHDO101B051Const.UDASSI_KAISHI_TIME.equals(fxhdd001.getItemId())){
-//                        //開始時間の規格値を取得
-//                        kaishi_timeKikakuChi = fxhdd001.getKikakuChi();
-//                        //開始時間の規格情報ﾊﾟﾀｰﾝを取得							
-//                        kaishi_timeStandardPattern = fxhdd001.getStandardPattern();							
-//                    }  
-//
-//                    if(GXHDO101B051Const.UDASSI_KAISHI_TANTOUSYA.equals(fxhdd001.getItemId())){
-//                        //開始担当者の規格値を取得
-//                        kaishi_tantousyaKikakuChi = fxhdd001.getKikakuChi();							
-//                    }  
-//
-//                    if(GXHDO101B051Const.UDASSI_KAKUNINSYA.equals(fxhdd001.getItemId())){
-//                        //開始確認者の規格値を取得
-//                        kakuninsyaKikakuChi = fxhdd001.getKikakuChi();							
-//                    }  
-//
-//                    if(GXHDO101B051Const.UDASSI_SHURYOU_DAY.equals(fxhdd001.getItemId())){
-//                        //終了日の規格値を取得
-//                        shuryou_dayKikakuChi = fxhdd001.getKikakuChi();
-//                        //終了日の規格情報ﾊﾟﾀｰﾝを取得							
-//                        shuryou_dayStandardPattern = fxhdd001.getStandardPattern();							
-//                    }  
-//
-//                    if(GXHDO101B051Const.UDASSI_SHURYOU_TIME.equals(fxhdd001.getItemId())){
-//                        //終了時間の規格値を取得
-//                        shuryou_timeKikakuChi = fxhdd001.getKikakuChi();
-//                        //終了時間の規格情報ﾊﾟﾀｰﾝを取得							
-//                        shuryou_timeStandardPattern = fxhdd001.getStandardPattern();							
-//                    }  
-//
-//                    if(GXHDO101B051Const.UDASSI_SHURYOU_TANTOUSYA.equals(fxhdd001.getItemId())){
-//                        //終了担当者の規格値を取得
-//                        shuryou_tantousyaKikakuChi = fxhdd001.getKikakuChi();							
-//                    }  
-//
-//                    if(GXHDO101B051Const.UDASSI_KAISHU_SAYA_MAISU.equals(fxhdd001.getItemId())){
-//                        //回収ｻﾔ枚数の規格値を取得
-//                        kaishu_saya_maisuKikakuChi = fxhdd001.getKikakuChi();
-//                        //回収ｻﾔ枚数の規格情報ﾊﾟﾀｰﾝを取得							
-//                        kaishu_saya_maisuStandardPattern = fxhdd001.getStandardPattern();							
-//                    } 
-//                    
-//                    if(GXHDO101B051Const.UDASSI_BIKO1.equals(fxhdd001.getItemId())){
-//                        //備考1の規格値を取得
-//                        biko1KikakuChi = fxhdd001.getKikakuChi();			
-//                    }                     
-//                    
-//                    if(GXHDO101B051Const.UDASSI_BIKO2.equals(fxhdd001.getItemId())){
-//                        //備考2の規格値を取得
-//                        biko2KikakuChi = fxhdd001.getKikakuChi();							
-//                    }                     
+
                     
                 }
                   
@@ -1452,11 +1319,11 @@ public class GXHDO101B051 implements IFormLogic {
                 + " goki, programno, ondo, keepjikan, totaljikan, tounyusettersuu, kaisinichiji, kaisitantosya, kaisikakuninsya,"
                 + " syuryonichiji, syuryotantosya, kaisyusettersuu, bikou1, bikou2, bikou3, bikou4, revision,"
                 + " '0' AS deleteflag"
-                + "FROM sr_shinkuudassi "
-                + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ?";
+                + " FROM sr_shinkuudassi"
+                + " WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ?";
         // revisionが入っている場合、条件に追加
         if (!StringUtil.isEmpty(rev)) {
-            sql += "AND revision = ? ";
+            sql += " AND revision = ? ";
         }
 
         List<Object> params = new ArrayList<>();
@@ -1496,19 +1363,18 @@ public class GXHDO101B051 implements IFormLogic {
                 + " goki, programno, ondo, keepjikan, totaljikan, tounyusettersuu, kaisinichiji, kaisitantosya, kaisikakuninsya,"
                 + " syuryonichiji, syuryotantosya, kaisyusettersuu, bikou1, bikou2, bikou3, bikou4, revision,"
                 + " '0' AS deleteflag"
-                + "FROM tmp_sr_shinkuudassi "
-                + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ?";
+                + " FROM tmp_sr_shinkuudassi"
+                + " WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ?";
 
         // revisionが入っている場合、条件に追加
         if (!StringUtil.isEmpty(rev)) {
-            sql += "AND revision = ? ";
+            sql += " AND revision = ? ";
         }
 
         List<Object> params = new ArrayList<>();
         params.add(kojyo);
         params.add(lotNo);
         params.add(edaban);
-        params.add(0);
 
         // revisionが入っている場合、条件に追加
         if (!StringUtil.isEmpty(rev)) {
@@ -1850,9 +1716,6 @@ public class GXHDO101B051 implements IFormLogic {
             String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
 
         String sql = "UPDATE tmp_sr_shinkuudassi SET "
-                + "  kojyo = ?"
-                + " ,lotno = ?"
-                + " ,edaban = ?"
                 + " ,kcpno = ?"
                 + " ,tokuisaki = ?"
                 + " ,lotkubuncode = ?"
@@ -1876,7 +1739,7 @@ public class GXHDO101B051 implements IFormLogic {
                 + " ,bikou4 = ?"
                 + " ,revision = ?"
                 + " ,deleteflag = ?"
-                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND jissekino = ? AND revision = ? ";
+                + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
         // 更新前の値を取得
         List<SrShinkuudassi> srSrShinkuudassiList = getSrShinkuudassiData(queryRunnerQcdb, rev.toPlainString(), jotaiFlg, kojyo, lotNo, edaban);
@@ -1951,8 +1814,16 @@ public class GXHDO101B051 implements IFormLogic {
 
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B051Const.UDASSI_KCPNO, srShinkuudassiData))); //KCPNO        
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B051Const.UDASSI_KYAKUSAKI, srShinkuudassiData))); //客先
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B051Const.UDASSI_LOT_KUBUN, srShinkuudassiData))); //ﾛｯﾄ区分
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B051Const.UDASSI_OWNER, srShinkuudassiData))); //ｵｰﾅｰ       
+        //params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B051Const.UDASSI_LOT_KUBUN, srShinkuudassiData))); //ﾛｯﾄ区分
+        //ﾛｯﾄ区分
+        String lotKbn = StringUtil.nullToBlank(getItemData(itemList, GXHDO101B051Const.UDASSI_LOT_KUBUN, srShinkuudassiData));
+        String[] spLotKbn = lotKbn.split(":", -1);
+        params.add(DBUtil.stringToStringObjectDefaultNull(spLotKbn[0]));
+        //params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B051Const.UDASSI_OWNER, srShinkuudassiData))); //ｵｰﾅｰ   
+        //ｵｰﾅｰ
+        String owner = StringUtil.nullToBlank(getItemData(itemList, GXHDO101B051Const.UDASSI_OWNER, srShinkuudassiData));
+        String[] spOwner = owner.split(":", -1);
+        params.add(DBUtil.stringToStringObjectDefaultNull(spOwner[0]));        
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B051Const.UDASSI_UKEIRE_SAYA_MAISU, srShinkuudassiData))); //受入ｻﾔ枚数        
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B051Const.UDASSI_GOKI, srShinkuudassiData))); //号機           
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B051Const.UDASSI_PROGRAM_NO, srShinkuudassiData))); //ﾌﾟﾛｸﾞﾗﾑNo．   
@@ -2036,9 +1907,6 @@ public class GXHDO101B051 implements IFormLogic {
     private void updateSrShinkuudassi(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, String jotaiFlg, BigDecimal newRev,
             String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
         String sql = "UPDATE sr_shinkuudassi SET "
-                + "  kojyo = ?"
-                + " ,lotno = ?"
-                + " ,edaban = ?"
                 + " ,kcpno = ?"
                 + " ,tokuisaki = ?"
                 + " ,lotkubuncode = ?"
@@ -2061,7 +1929,7 @@ public class GXHDO101B051 implements IFormLogic {
                 + " ,bikou3 = ?"
                 + " ,bikou4 = ?"
                 + " ,revision = ?"
-                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND jissekino = ? AND revision = ? ";
+                + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND jissekino = ? AND revision = ? ";
 
         // 更新前の値を取得
         List<SrShinkuudassi> srShinkuudassiList = getSrShinkuudassiData(queryRunnerQcdb, rev.toPlainString(), jotaiFlg, kojyo, lotNo, edaban);
