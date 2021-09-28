@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Kyocera Communication Systems Co., Ltd All rights reserved.
+ * Copyright 2021 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.db.model;
 
@@ -155,6 +155,16 @@ public class SrShinkuudassi {
      * 削除ﾌﾗｸﾞ
      */
     private Integer deleteflag;
+
+    /**
+     * 終了日時
+     */
+    private Timestamp tourokunichiji;
+
+    /**
+     * 終了日時
+     */
+    private Timestamp koushinnichiji;
 
     /**
      * @return the kojyo
@@ -518,6 +528,34 @@ public class SrShinkuudassi {
      */
     public void setDeleteflag(Integer deleteflag) {
         this.deleteflag = deleteflag;
+    }
+
+    /**
+     * @return the tourokunichiji
+     */
+    public Timestamp getTourokunichiji() {
+        return tourokunichiji;
+    }
+
+    /**
+     * @param tourokunichiji the tourokunichiji to set
+     */
+    public void setTourokunichiji(Timestamp tourokunichiji) {
+        this.tourokunichiji = tourokunichiji;
+    }
+
+    /**
+     * @return the koushinnichiji
+     */
+    public Timestamp getKoushinnichiji() {
+        return koushinnichiji;
+    }
+
+    /**
+     * @param koushinnichiji the koushinnichiji to set
+     */
+    public void setKoushinnichiji(Timestamp koushinnichiji) {
+        this.koushinnichiji = koushinnichiji;
     }
 
 }

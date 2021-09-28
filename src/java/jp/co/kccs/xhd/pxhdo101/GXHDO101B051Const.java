@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Kyocera Communication Systems Co., Ltd All rights reserved.
+ * Copyright 2021 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.pxhdo101;
 
@@ -121,7 +121,7 @@ public class GXHDO101B051Const {
     /**
      * 備考4
     */
-    public static final String UDASSI_BIKO4 = "sr_shinkuudassi_biko4";  
+    public static final String UDASSI_BIKO4 = "sr_shinkuudassi_biko4";
     /**
      * 枝番ｺﾋﾟｰ(画面上ボタン)
     */
