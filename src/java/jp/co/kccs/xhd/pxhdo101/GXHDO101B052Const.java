@@ -18,8 +18,8 @@ package jp.co.kccs.xhd.pxhdo101;
 /**
  * GXHDO101B052Const(焼成・焼成前ﾊﾞﾚﾙ)定数
  *
- * @author KCSS K.Jo
- * @since  2019/07/15
+ * @author  SRC T.Ushiyama
+ * @since  2021/09/22
  */
 public class GXHDO101B052Const {
 
