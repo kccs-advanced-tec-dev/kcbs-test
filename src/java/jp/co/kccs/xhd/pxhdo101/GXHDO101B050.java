@@ -332,7 +332,20 @@ public class GXHDO101B050 implements IFormLogic {
      */
     private ErrorMessageInfo checkItemRegistCorrect(ProcessData processData) {
 
+        // ｻﾔ種類
+        FXHDD01 itemSayaShurui = getItemRow(processData.getItemList(), GXHDO101B050Const.SAYASHURUI);
+        if ("未選択".equals(itemSayaShurui.getValue())) {
+            return MessageUtil.getErrorMessageInfo("XHD-000032", true, true, Arrays.asList(itemSayaShurui), itemSayaShurui.getLabel1());
+        }
+
+        // 粉まぶし
+        FXHDD01 itemKonaMabushi = getItemRow(processData.getItemList(), GXHDO101B050Const.KONAMABUSHI);
+        if ("未選択".equals(itemKonaMabushi.getValue())) {
+            return MessageUtil.getErrorMessageInfo("XHD-000032", true, true, Arrays.asList(itemKonaMabushi), itemKonaMabushi.getLabel1());
+        }
+        
         ValidateUtil validateUtil = new ValidateUtil();
+        
         // 開始日時、終了日時前後チェック
         FXHDD01 itemKaishiDay = getItemRow(processData.getItemList(), GXHDO101B050Const.KAISHI_DAY); //開始日
         FXHDD01 itemKaishiTime = getItemRow(processData.getItemList(), GXHDO101B050Const.KAISHI_TIME); // 開始時刻
@@ -969,10 +982,6 @@ public class GXHDO101B050 implements IFormLogic {
         String kojyo = lotNo.substring(0, 3);
         String lotNo8 = lotNo.substring(3, 11);
         String edaban = lotNo.substring(11, 14);
-//        //研磨時間①の規格値
-//        String bjikanKikakuChi = "";
-//        //研磨時間①の規格情報ﾊﾟﾀｰﾝ
-//        String bjikanStandardPattern = "";
 
         for (int i = 0; i < 5; i++) {
             // 品質DB実績登録Revision情報取得
@@ -1347,24 +1356,24 @@ public class GXHDO101B050 implements IFormLogic {
         mapping.put("lotkubuncode","lotkubuncode"); //ﾛｯﾄ区分
         mapping.put("ownercode","ownercode"); //ｵｰﾅｰ
         mapping.put("kosuu","kosuu"); //処理数
-        mapping.put("ukeiretannijyuryo","tTapeSlipKigo"); //単位重量
-        mapping.put("ukeiresoujyuryou","tTapeRollNo1"); //総重量
-        mapping.put("sayadumegouki","tTapeRollNo2"); //号機
-        mapping.put("sayadumehouhou","tTapeRollNo3"); //ｻﾔ詰め方法
-        mapping.put("sayasyurui","tTapeRollNo4"); //ｻﾔ種類
-        mapping.put("konamabushi","tTapeRollNo5"); //粉まぶし
+        mapping.put("ukeiretannijyuryo","ukeiretannijyuryo"); //単位重量
+        mapping.put("ukeiresoujyuryou","ukeiresoujyuryou"); //総重量
+        mapping.put("sayadumegouki","sayadumegouki"); //号機
+        mapping.put("sayadumehouhou","sayadumehouhou"); //ｻﾔ詰め方法
+        mapping.put("sayasyurui","sayasyurui"); //ｻﾔ種類
+        mapping.put("konamabushi","konamabushi"); //粉まぶし
         mapping.put("sayatumeryou","sayatumeryou"); //ｻﾔ詰め量
         mapping.put("sayasuu","sayasuu"); //ｻﾔ枚数
         mapping.put("kaishinichiji","kaishinichiji"); //開始日時
         mapping.put("tantousya","tantousya"); //開始担当者
         mapping.put("startkakuninsyacode","startkakuninsyacode"); //開始確認者
         mapping.put("syuuryounichiji","syuuryounichiji"); //終了日時
-        mapping.put("endtantousyacode","eTapeSlipKigo"); //終了担当者
-        mapping.put("bikou1","eTapeRollNo1"); //備考1
-        mapping.put("bikou2","eTapeRollNo2"); //備考2
-        mapping.put("bikou3","eTapeRollNo3"); //備考3
-        mapping.put("bikou4","eTapeRollNo4"); //備考4
-        mapping.put("torokunichiji","eTapeRollNo5"); //登録日時
+        mapping.put("endtantousyacode","endtantousyacode"); //終了担当者
+        mapping.put("bikou1","bikou1"); //備考1
+        mapping.put("bikou2","bikou2"); //備考2
+        mapping.put("bikou3","bikou3"); //備考3
+        mapping.put("bikou4","bikou4"); //備考4
+        mapping.put("torokunichiji","torokunichiji"); //登録日時
         mapping.put("kosinnichiji","kosinnichiji"); //更新日時
         mapping.put("revision","revision"); //revision
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
@@ -1421,24 +1430,24 @@ public class GXHDO101B050 implements IFormLogic {
         mapping.put("lotkubuncode","lotkubuncode"); //ﾛｯﾄ区分
         mapping.put("ownercode","ownercode"); //ｵｰﾅｰ
         mapping.put("kosuu","kosuu"); //処理数
-        mapping.put("ukeiretannijyuryo","tTapeSlipKigo"); //単位重量
-        mapping.put("ukeiresoujyuryou","tTapeRollNo1"); //総重量
-        mapping.put("sayadumegouki","tTapeRollNo2"); //号機
-        mapping.put("sayadumehouhou","tTapeRollNo3"); //ｻﾔ詰め方法
-        mapping.put("sayasyurui","tTapeRollNo4"); //ｻﾔ種類
-        mapping.put("konamabushi","tTapeRollNo5"); //粉まぶし
+        mapping.put("ukeiretannijyuryo","ukeiretannijyuryo"); //単位重量
+        mapping.put("ukeiresoujyuryou","ukeiresoujyuryou"); //総重量
+        mapping.put("sayadumegouki","sayadumegouki"); //号機
+        mapping.put("sayadumehouhou","sayadumehouhou"); //ｻﾔ詰め方法
+        mapping.put("sayasyurui","sayasyurui"); //ｻﾔ種類
+        mapping.put("konamabushi","konamabushi"); //粉まぶし
         mapping.put("sayatumeryou","sayatumeryou"); //ｻﾔ詰め量
         mapping.put("sayasuu","sayasuu"); //ｻﾔ枚数
         mapping.put("kaishinichiji","kaishinichiji"); //開始日時
         mapping.put("tantousya","tantousya"); //開始担当者
         mapping.put("startkakuninsyacode","startkakuninsyacode"); //開始確認者
         mapping.put("syuuryounichiji","syuuryounichiji"); //終了日時
-        mapping.put("endtantousyacode","eTapeSlipKigo"); //終了担当者
-        mapping.put("bikou1","eTapeRollNo1"); //備考1
-        mapping.put("bikou2","eTapeRollNo2"); //備考2
-        mapping.put("bikou3","eTapeRollNo3"); //備考3
-        mapping.put("bikou4","eTapeRollNo4"); //備考4
-        mapping.put("torokunichiji","eTapeRollNo5"); //登録日時
+        mapping.put("endtantousyacode","endtantousyacode"); //終了担当者
+        mapping.put("bikou1","bikou1"); //備考1
+        mapping.put("bikou2","bikou2"); //備考2
+        mapping.put("bikou3","bikou3"); //備考3
+        mapping.put("bikou4","bikou4"); //備考4
+        mapping.put("torokunichiji","torokunichiji"); //登録日時
         mapping.put("kosinnichiji","kosinnichiji"); //更新日時
         mapping.put("revision","revision"); //revision
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
@@ -2285,7 +2294,7 @@ public class GXHDO101B050 implements IFormLogic {
                     case "1":
                         return "使用";
                     default:
-                        return "未選択";
+                        return "";
                 }
             // 粉まぶし
             case GXHDO101B050Const.KONAMABUSHI:
@@ -2295,7 +2304,7 @@ public class GXHDO101B050 implements IFormLogic {
                     case "1":
                         return "あり";
                     default:
-                        return "未選択";
+                        return "";
                 }
             // ｻﾔ詰め量
             case GXHDO101B050Const.SAYADUME_RYOU:
