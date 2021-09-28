@@ -1,9 +1,8 @@
 /*
- * Copyright 2019 Kyocera Communication Systems Co., Ltd All rights reserved.
+ * Copyright 2021 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.db.model;
 
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**

@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Kyocera Communication Systems Co., Ltd All rights reserved.
+ * Copyright 2021 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.pxhdo101;
 
@@ -296,11 +296,11 @@ public class GXHDO101B052Const {
     /**
      * ユーザー認証パラメータ(修正)
      */
-    public static final String USER_AUTH_UPDATE_PARAM = "sr_dassisayadume_update_button";
+    public static final String USER_AUTH_UPDATE_PARAM = "sr_maebarrel_update_button";
 
     /**
      * ユーザー認証パラメータ(削除)
      */
-    public static final String USER_AUTH_DELETE_PARAM = "sr_dassisayadume_delete_button";
+    public static final String USER_AUTH_DELETE_PARAM = "sr_maebarrel_delete_button";
 
 }
