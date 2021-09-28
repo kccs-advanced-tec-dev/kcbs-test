@@ -1261,34 +1261,34 @@ public class GXHDO101D001Model implements Serializable {
      */
     public void setHuryoDisp() {
         // 不良1
-        if (!furyocode1.isEmpty() ||  !furyobunrui1.isEmpty() || !furyoritiu1.isEmpty() || !furyomeisai1.isEmpty()) {furyoDisp[0] = true;}
+        if (!furyocode1.isEmpty() ||  !furyobunrui1.isEmpty() || !furyoritiu1.isEmpty() || !furyomeisai1.isEmpty() || !zaikono1.isEmpty()) {furyoDisp[0] = true;}
         else {furyoDisp[0] = false;}
         // 不良2
-        if (!furyocode2.isEmpty() ||  !furyobunrui2.isEmpty() || !furyoritiu2.isEmpty() || !furyomeisai2.isEmpty()) {furyoDisp[1] = true;}
+        if (!furyocode2.isEmpty() ||  !furyobunrui2.isEmpty() || !furyoritiu2.isEmpty() || !furyomeisai2.isEmpty() || !zaikono2.isEmpty()) {furyoDisp[1] = true;}
         else {furyoDisp[1] = false;}
         // 不良3
-        if (!furyocode3.isEmpty() ||  !furyobunrui3.isEmpty() || !furyoritiu3.isEmpty() || !furyomeisai3.isEmpty()) {furyoDisp[2] = true;}
+        if (!furyocode3.isEmpty() ||  !furyobunrui3.isEmpty() || !furyoritiu3.isEmpty() || !furyomeisai3.isEmpty() || !zaikono3.isEmpty()) {furyoDisp[2] = true;}
         else {furyoDisp[2] = false;}
          // 不良4
-        if (!furyocode4.isEmpty() ||  !furyobunrui4.isEmpty() || !furyoritiu4.isEmpty() || !furyomeisai4.isEmpty()) {furyoDisp[3] = true;}
+        if (!furyocode4.isEmpty() ||  !furyobunrui4.isEmpty() || !furyoritiu4.isEmpty() || !furyomeisai4.isEmpty() || !zaikono4.isEmpty()) {furyoDisp[3] = true;}
         else {furyoDisp[3] = false;}
         // 不良5
-        if (!furyocode5.isEmpty() ||  !furyobunrui5.isEmpty() || !furyoritiu5.isEmpty() || !furyomeisai5.isEmpty()) {furyoDisp[4] = true;}
+        if (!furyocode5.isEmpty() ||  !furyobunrui5.isEmpty() || !furyoritiu5.isEmpty() || !furyomeisai5.isEmpty() || !zaikono5.isEmpty()) {furyoDisp[4] = true;}
         else {furyoDisp[4] = false;}
         // 不良6
-        if (!furyocode6.isEmpty() ||  !furyobunrui6.isEmpty() || !furyoritiu6.isEmpty() || !furyomeisai6.isEmpty()) {furyoDisp[5] = true;}
+        if (!furyocode6.isEmpty() ||  !furyobunrui6.isEmpty() || !furyoritiu6.isEmpty() || !furyomeisai6.isEmpty() || !zaikono6.isEmpty()) {furyoDisp[5] = true;}
         else {furyoDisp[5] = false;}
         // 不良7
-        if (!furyocode7.isEmpty() ||  !furyobunrui7.isEmpty() || !furyoritiu7.isEmpty() || !furyomeisai7.isEmpty()) {furyoDisp[6] = true;}
+        if (!furyocode7.isEmpty() ||  !furyobunrui7.isEmpty() || !furyoritiu7.isEmpty() || !furyomeisai7.isEmpty() || !zaikono7.isEmpty()) {furyoDisp[6] = true;}
         else {furyoDisp[6] = false;}
         // 不良8
-        if (!furyocode8.isEmpty() ||  !furyobunrui8.isEmpty() || !furyoritiu8.isEmpty() || !furyomeisai8.isEmpty()) {furyoDisp[7] = true;}
+        if (!furyocode8.isEmpty() ||  !furyobunrui8.isEmpty() || !furyoritiu8.isEmpty() || !furyomeisai8.isEmpty() || !zaikono8.isEmpty()) {furyoDisp[7] = true;}
         else {furyoDisp[7] = false;}
         // 不良9
-        if (!furyocode9.isEmpty() ||  !furyobunrui9.isEmpty() || !furyoritiu9.isEmpty() || !furyomeisai9.isEmpty()) {furyoDisp[8] = true;}
+        if (!furyocode9.isEmpty() ||  !furyobunrui9.isEmpty() || !furyoritiu9.isEmpty() || !furyomeisai9.isEmpty() || !zaikono9.isEmpty()) {furyoDisp[8] = true;}
         else {furyoDisp[8] = false;}
         // 不良10
-        if (!furyocode10.isEmpty() ||  !furyobunrui10.isEmpty() || !furyoritiu10.isEmpty() || !furyomeisai10.isEmpty()) {furyoDisp[9] = true;}
+        if (!furyocode10.isEmpty() ||  !furyobunrui10.isEmpty() || !furyoritiu10.isEmpty() || !furyomeisai10.isEmpty() || !zaikono10.isEmpty()) {furyoDisp[9] = true;}
         else {furyoDisp[9] = false;}        
     }
 
