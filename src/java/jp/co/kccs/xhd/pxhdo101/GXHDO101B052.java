@@ -2013,11 +2013,11 @@ public class GXHDO101B052 implements IFormLogic {
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B052Const.KCPNO, srMaebarrelData))); //KCPNO
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B052Const.KYAKUSAKI, srMaebarrelData))); //客先
         //ﾛｯﾄ区分
-        String lotKbn = StringUtil.nullToBlank(getItemData(itemList, GXHDO101B050Const.LOT_KUBUN, srMaebarrelData));
+        String lotKbn = StringUtil.nullToBlank(getItemData(itemList, GXHDO101B052Const.LOT_KUBUN, srMaebarrelData));
         String[] spLotKbn = lotKbn.split(":", -1);
         params.add(DBUtil.stringToStringObjectDefaultNull(spLotKbn[0]));
         //ｵｰﾅｰ
-        String owner = StringUtil.nullToBlank(getItemData(itemList, GXHDO101B050Const.OWNER, srMaebarrelData));
+        String owner = StringUtil.nullToBlank(getItemData(itemList, GXHDO101B052Const.OWNER, srMaebarrelData));
         String[] spOwner = owner.split(":", -1);
         params.add(DBUtil.stringToStringObjectDefaultNull(spOwner[0]));
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B052Const.UKEIREKOSUU, srMaebarrelData))); //受入個数        
@@ -2041,13 +2041,13 @@ public class GXHDO101B052 implements IFormLogic {
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B052Const.BJIKAN6, srMaebarrelData))); //研磨時間⑥
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B052Const.BJYOKENSYUSOKUDO6, srMaebarrelData))); //研磨機回転数⑥
         //開始日時
-        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B050Const.KAISHI_DAY, srMaebarrelData),
-            getItemData(itemList, GXHDO101B050Const.KAISHI_TIME, srMaebarrelData)));
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B052Const.KAISHI_DAY, srMaebarrelData),
+            getItemData(itemList, GXHDO101B052Const.KAISHI_TIME, srMaebarrelData)));
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B052Const.KAISHI_TANTOUSYA, srMaebarrelData))); //開始担当者
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B052Const.KAKUNINSYA, srMaebarrelData))); //開始確認者
         //終了日時
-        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B050Const.SHURYOU_DAY, srMaebarrelData),
-            getItemData(itemList, GXHDO101B050Const.SHURYOU_TIME, srMaebarrelData)));
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(itemList, GXHDO101B052Const.SHURYOU_DAY, srMaebarrelData),
+            getItemData(itemList, GXHDO101B052Const.SHURYOU_TIME, srMaebarrelData)));
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B052Const.SHURYOU_TANTOUSYA, srMaebarrelData))); //終了担当者
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B052Const.BIKO1, srMaebarrelData))); //備考1
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B052Const.BIKO2, srMaebarrelData))); //備考2
