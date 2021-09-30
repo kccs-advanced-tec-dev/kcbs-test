@@ -156,12 +156,12 @@ public class GXHDO102C001Model implements Cloneable {
     private List<FXHDD01> sub1DataBuzaitab2;
     
     /**
-     * 【材料品名1】ﾘﾝｸ押下時、主画面からサブ画面に渡された秤量号機データ
+     * 【材料品名2】ﾘﾝｸ押下時、主画面からサブ画面に渡された秤量号機データ
      */
     private String sub2DataGoki;
     
     /**
-     * 【材料品名1】ﾘﾝｸ押下時、サブ画面の表示フラグ
+     * 【材料品名2】ﾘﾝｸ押下時、サブ画面の表示フラグ
      */
     private boolean  sub2DataRendered;
     

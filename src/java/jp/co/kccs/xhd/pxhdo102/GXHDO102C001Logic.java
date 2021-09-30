@@ -81,7 +81,7 @@ public class GXHDO102C001Logic implements Serializable {
         int index = 0;
         // 【材料品名1】ﾘﾝｸ押下時、サブ画面の調合規格
         subDataHeaderList.add(setLabelInitInfo(true, MessageUtil.getMessage("tyogouryoukikaku"), true, StringUtil.nullToBlank(subSrGlasshyoryoData.getTyogouryoukikaku()), index));
-        // 【材料品名1】ﾘﾝｸ押下時、サブ画面の調合残量 TODO
+        // 【材料品名1】ﾘﾝｸ押下時、サブ画面の調合残量
         subDataHeaderList.add(setLabelInitInfo(true, MessageUtil.getMessage("tyogouzanryou"), true, StringUtil.nullToBlank(subSrGlasshyoryoData.getTyogouzanryou()), index));
         return subDataHeaderList;
     }
@@ -257,6 +257,9 @@ public class GXHDO102C001Logic implements Serializable {
             getTyogouzanryouDataList(tyougouryouList, gxhdo102c001model.getSub1DataBuzaitab2());
             // サブ画面の調合残量の計算
             String tyogouzanryou = getTyogouzanryouKeisann(sub1DataTyogouryoukikaku, tyougouryouList);
+            if (tyogouzanryou == null) {
+                tyogouzanryou = "-";
+            }
             gxhdo102c001model.getSub1DataTyogouzanryou().setValue(tyogouzanryou);
         } else if (gxhdo102c001model.isSub2DataRendered()) {
             // サブ画面の調合規格
@@ -268,6 +271,9 @@ public class GXHDO102C001Logic implements Serializable {
             getTyogouzanryouDataList(tyougouryouList, gxhdo102c001model.getSub2DataBuzaitab2());
             // サブ画面の調合残量の計算
             String tyogouzanryou = getTyogouzanryouKeisann(sub2DataTyogouryoukikaku, tyougouryouList);
+            if (tyogouzanryou == null) {
+                tyogouzanryou = "-";
+            }
             gxhdo102c001model.getSub2DataTyogouzanryou().setValue(tyogouzanryou);
         }
     }
@@ -427,9 +433,10 @@ public class GXHDO102C001Logic implements Serializable {
                 }
             }
             return item;
-        }).filter((item) -> (item.isRenderOutputLabel())).map((item) -> {
+        }).filter((item) -> (item.isRenderOutputLabel() && !item.isRenderInputText())).map((item) -> {
             if ("".equals(StringUtil.nullToBlank(item.getBackColorInput()))) {
                 item.setBackColorInput("#EEEEEE");
+                item.setBackColorInputDefault("#EEEEEE");
             }
             return item;
         }).filter((item) -> (0 == item.getFontSizeInput())).forEachOrdered((item) -> {

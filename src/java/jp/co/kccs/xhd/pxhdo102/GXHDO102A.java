@@ -650,26 +650,23 @@ public class GXHDO102A implements Serializable {
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @param edaban 枝番(検索キー)
      * @param formId 画面ID(検索キー)
-     * @param jissekino 実績No(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
     private Map loadFxhdd11RevInfo(QueryRunner queryRunnerDoc, String kojyo, String lotNo,
-            String edaban, String formId, int jissekino) throws SQLException {
+            String edaban, String formId) throws SQLException {
 
         // 品質DB登録実績情報の取得
         String sql = " SELECT rev, jotai_flg, edaban "
                 + " FROM fxhdd11 "
                 + " WHERE kojyo = ? AND lotno = ? "
-                + " AND edaban = ? AND gamen_id = ? "
-                + " AND jissekino = ? ";
+                + " AND edaban = ? AND gamen_id = ? ";
 
         List<Object> params = new ArrayList<>();
         params.add(kojyo);
         params.add(lotNo);
         params.add(edaban);
         params.add(formId);
-        params.add(jissekino);
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
@@ -706,7 +703,7 @@ public class GXHDO102A implements Serializable {
         QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
 
         // 前工程の実績情報を取得
-        Map fxhdd11Info = getJissekiInfo(queryRunnerDoc, queryRunnerWip, strKojyo, strLotNo, strEdaban, maeKoteiGamenId, maeKoteiJissekiNo);
+        Map fxhdd11Info = getJissekiInfo(queryRunnerDoc, queryRunnerWip, strKojyo, strLotNo, strEdaban, maeKoteiGamenId);
         String jotaiFlg = StringUtil.nullToBlank(getMapData(fxhdd11Info, "jotai_flg")); //状態フラグ
 
         // 登録済み実績情報があった場合
@@ -730,10 +727,10 @@ public class GXHDO102A implements Serializable {
      * @return 実績情報
      * @throws SQLException 例外エラー
      */
-    private Map getJissekiInfo(QueryRunner queryRunnerDoc, QueryRunner queryRunnerWip, String kojyo, String lotNo, String edaban, String gamenId, int jissekino) throws SQLException {
+    private Map getJissekiInfo(QueryRunner queryRunnerDoc, QueryRunner queryRunnerWip, String kojyo, String lotNo, String edaban, String gamenId) throws SQLException {
 
         // 実績を検索
-        Map fxhdd11RevInfo = loadFxhdd11RevInfo(queryRunnerDoc, kojyo, lotNo, edaban, gamenId, jissekino);
+        Map fxhdd11RevInfo = loadFxhdd11RevInfo(queryRunnerDoc, kojyo, lotNo, edaban, gamenId);
         // 状態フラグが空(実績がない)の場合、自身の親の実績を探しに行く
         if (StringUtil.isEmpty(StringUtil.nullToBlank(getMapData(fxhdd11RevInfo, "jotai_flg")))) {
 
@@ -745,7 +742,7 @@ public class GXHDO102A implements Serializable {
             }
 
             // 親ﾛｯﾄの実績を検索
-            return getJissekiInfo(queryRunnerDoc, queryRunnerWip, kojyo, lotNo, oyalotEdaban, gamenId, jissekino);
+            return getJissekiInfo(queryRunnerDoc, queryRunnerWip, kojyo, lotNo, oyalotEdaban, gamenId);
         }
 
         return fxhdd11RevInfo;

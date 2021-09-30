@@ -1147,24 +1147,7 @@ public class GXHDO102B001 implements IFormLogic {
         // 画面に取得した情報をセットする。(入力項目以外)
         setViewItemData(processData, lotKbnMasData, shikakariData, lotNo);
         // 画面のラベル項目の値の背景色を取得できない場合、デフォルト値を設置
-        processData.getItemList().stream().map((item) -> {
-            if (item.isRender1() || item.isRenderLinkButton()) {
-                if ("".equals(StringUtil.nullToBlank(item.getBackColor3()))) {
-                    item.setBackColor3("#EEEEEE");
-                }
-                if (0 == item.getFontSize3()) {
-                    item.setFontSize3(16);
-                }
-            }
-            return item;
-        }).filter((item) -> (item.isRenderOutputLabel())).map((item) -> {
-            if ("".equals(StringUtil.nullToBlank(item.getBackColorInput()))) {
-                item.setBackColorInput("#EEEEEE");
-            }
-            return item;
-        }).filter((item) -> (0 == item.getFontSizeInput())).forEachOrdered((item) -> {
-            item.setFontSizeInput(16);
-        });
+        GXHDO102C001Logic.set102B001ItemStyle(processData.getItemList());
         processData.setInitMessageList(errorMessageList);
         return processData;
     }

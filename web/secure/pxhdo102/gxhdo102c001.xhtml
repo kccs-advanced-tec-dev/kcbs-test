@@ -227,7 +227,13 @@
                              style="position:relative;left:150px;top:5px;width:110px;height:35px;"
                              process="@this" 
                              update="form:growlMessage"
-                             oncomplete="PF('W_dlg_gxhdo102c001').hide();"/>
+                             oncomplete="PF('W_dlg_gxhdo102c001').hide();">
+                    <p:ajax event="click"
+                                    async="false"
+                                    listener="#{beanGXHDO102C001.doCancel()}"
+                                    process="gxhdo102c001Form" 
+                                    update="gxhdo102c001Form form:growlMessage"/>
+            </p:commandButton>
         </h:form>
     </p:dialog>
 </ui:composition>

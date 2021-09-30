@@ -50,7 +50,7 @@ import org.apache.commons.dbutils.handlers.MapHandler;
 @SessionScoped
 public class GXHDO102C001 implements Serializable {
 
-    private static final Logger LOGGER = Logger.getLogger(GXHDO901B.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GXHDO102C001.class.getName());
 
     /**
      * DataSource(DocumentServer)
@@ -95,6 +95,13 @@ public class GXHDO102C001 implements Serializable {
      * コンストラクタ
      */
     public GXHDO102C001() {
+    }
+
+    /**
+     * Cancelボタン押下時の処理を行う。
+     */
+    public void doCancel() {
+        this.setGxhdO102c001ModelView(this.getGxhdO102c001Model());
     }
 
     /**
@@ -187,7 +194,6 @@ public class GXHDO102C001 implements Serializable {
     public void doTyogouzanryouKeisan() {
         //サブ画面の調合残量の計算処理
         GXHDO102C001Logic.calcTyogouzanryou(this.getGxhdO102c001ModelView());
-        this.setGxhdO102c001Model(this.getGxhdO102c001ModelView());
     }
 
     /**
@@ -217,7 +223,7 @@ public class GXHDO102C001 implements Serializable {
      * @return 正常:true、異常:fasle
      */
     private boolean tyogouryouCheck(FXHDD01 item1, FXHDD01 item2) {
-        if (NumberUtil.isZeroOrEmpty(item1.getValue()) && !StringUtil.isEmpty(item2.getValue())) {
+        if ((StringUtil.isEmpty(item1.getValue()) || !NumberUtil.isZero(item1.getValue())) && !StringUtil.isEmpty(item2.getValue())) {
             setError(item1, "XHD-000222");
             return false;
         }
@@ -239,9 +245,7 @@ public class GXHDO102C001 implements Serializable {
             // エラーの場合はコールバック変数に"error"をセット
             RequestContext context = RequestContext.getCurrentInstance();
             context.addCallbackParam("firstParam", "error");
-            return;
         }
-        this.setGxhdO102c001Model(this.getGxhdO102c001ModelView());
     }
 
     /**
