@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Kyocera Communication Systems Co., Ltd All rights reserved.
+ * Copyright 2021 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.pxhdo201;
 
@@ -34,7 +34,7 @@ import jp.co.kccs.xhd.SelectParam;
 import jp.co.kccs.xhd.common.ColumnInfoParser;
 import jp.co.kccs.xhd.common.ColumnInformation;
 import jp.co.kccs.xhd.common.excel.ExcelExporter;
-import jp.co.kccs.xhd.model.GXHDO201B020Model;
+import jp.co.kccs.xhd.model.GXHDO201B051Model;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.DateUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
@@ -56,29 +56,23 @@ import org.primefaces.context.RequestContext;
  * <br>
  * システム名	品質情報管理システム<br>
  * <br>
- * 変更日	2019/08/01<br>
- * 計画書No	K1811-DS001<br>
- * 変更者	863 F.Zhang<br>
+ * 変更日	2021/09/20<br>
+ * 計画書No	MB2108-DK001<br>
+ * 変更者	SRC Y.Kurozumi<br>
  * 変更理由	新規作成<br>
- * <br>
- * <br>
- * 変更日	2020/09/17<br>
- * 計画書No	MB2008-DK001<br>
- * 変更者	863 sujialiang<br>
- * 変更理由	項目追加・変更<br>
  * <br>
  * ===============================================================================<br>
  */
 /**
- * 研磨・ﾊﾞﾚﾙ履歴検索画面
+ * 焼成・真空脱脂履歴検索画面
  *
- * @author 863 F.Zhang
- * @since 2019/08/01
+ * @author SRC Y.Kurozumi
+ * @since 2021/09/20
  */
 @Named
 @ViewScoped
-public class GXHDO201B020 implements Serializable {
-    private static final Logger LOGGER = Logger.getLogger(GXHDO201B020.class.getName());
+public class GXHDO201B051 implements Serializable {
+    private static final Logger LOGGER = Logger.getLogger(GXHDO201B051.class.getName());
     
     /**
      * DataSource(QCDB)
@@ -97,7 +91,7 @@ public class GXHDO201B020 implements Serializable {
     private SelectParam selectParam;
     
     /** 一覧表示データ */
-    private List<GXHDO201B020Model> listData = null;
+    private List<GXHDO201B051Model> listData = null;
     
     /** 一覧表示最大件数 */
     private int listCountMax = -1;
@@ -113,33 +107,29 @@ public class GXHDO201B020 implements Serializable {
     private String lotNo = "";
     /** 検索条件：KCPNo */
     private String kcpNo = "";
-    /** 検索条件：型式 */
-    private String katashiki = "";
-    /** 検索条件：容量 */
-    private String yoryo = "";
-    /** 検索条件：研磨開始日(FROM) */
+    /** 検索条件：開始日(FROM) */
     private String startDateF = "";
-    /** 検索条件：研磨開始日(TO) */
+    /** 検索条件：開始日(TO) */
     private String startDateT = "";
-    /** 検索条件：研磨開始時刻(FROM) */
+    /** 検索条件：開始時刻(FROM) */
     private String startTimeF = "";
-    /** 検索条件：研磨開始時刻(TO) */
+    /** 検索条件：開始時刻(TO) */
     private String startTimeT = "";
-    /** 検索条件：研磨終了日(FROM) */
+    /** 検索条件：終了日(FROM) */
     private String endDateF = "";
-    /** 検索条件：研磨終了日(TO) */
+    /** 検索条件：終了日(TO) */
     private String endDateT = "";
-    /** 検索条件：研磨終了時刻(FROM) */
+    /** 検索条件：終了時刻(FROM) */
     private String endTimeF = "";
-    /** 検索条件：研磨終了時刻(TO) */
+    /** 検索条件：終了時刻(TO) */
     private String endTimeT = "";
-    /** 検索条件：研磨号機 */
-    private String kenmaGoki = "";
+    /** 検索条件：号機 */
+    private String goki = "";
     
     /**
      * コンストラクタ
      */
-    public GXHDO201B020() {
+    public GXHDO201B051() {
     }
 
 //<editor-fold defaultstate="collapsed" desc="#getter setter">
@@ -163,7 +153,7 @@ public class GXHDO201B020 implements Serializable {
      * 一覧表示データ取得
      * @return 一覧表示データ
      */
-    public List<GXHDO201B020Model> getListData() {
+    public List<GXHDO201B051Model> getListData() {
         return listData;
     }
     
@@ -200,39 +190,7 @@ public class GXHDO201B020 implements Serializable {
     }
 
     /**
-     * 検索条件：型式
-     * @return the katashiki
-     */
-    public String getKatashiki() {
-        return katashiki;
-    }
-
-    /**
-     * 検索条件：型式
-     * @param katashiki the katashiki to set
-     */
-    public void setKatashiki(String katashiki) {
-        this.katashiki = katashiki;
-    }
-
-    /**
-     * 検索条件：容量
-     * @return the yoryo
-     */
-    public String getYoryo() {
-        return yoryo;
-    }
-
-    /**
-     * 検索条件：容量
-     * @param yoryo the yoryo to set
-     */
-    public void setYoryo(String yoryo) {
-        this.yoryo = yoryo;
-    }
-
-    /**
-     * 検索条件：研磨開始日(FROM)
+     * 検索条件：開始日(FROM)
      * @return the startDateF
      */
     public String getStartDateF() {
@@ -240,7 +198,7 @@ public class GXHDO201B020 implements Serializable {
     }
 
     /**
-     * 検索条件：研磨開始日(FROM)
+     * 検索条件：開始日(FROM)
      * @param startDateF the startDateF to set
      */
     public void setStartDateF(String startDateF) {
@@ -248,7 +206,7 @@ public class GXHDO201B020 implements Serializable {
     }
 
     /**
-     * 検索条件：研磨開始日(TO)
+     * 検索条件：開始日(TO)
      * @return the startDateT
      */
     public String getStartDateT() {
@@ -256,7 +214,7 @@ public class GXHDO201B020 implements Serializable {
     }
 
     /**
-     * 検索条件：研磨開始日(TO)
+     * 検索条件：開始日(TO)
      * @param startDateT the startDateT to set
      */
     public void setStartDateT(String startDateT) {
@@ -264,7 +222,7 @@ public class GXHDO201B020 implements Serializable {
     }
 
     /**
-     * 検索条件：研磨開始時刻(FROM)
+     * 検索条件：開始時刻(FROM)
      * @return the startTimeF
      */
     public String getStartTimeF() {
@@ -272,7 +230,7 @@ public class GXHDO201B020 implements Serializable {
     }
 
     /**
-     * 検索条件：研磨開始時刻(FROM)
+     * 検索条件：開始時刻(FROM)
      * @param startTimeF the startTimeF to set
      */
     public void setStartTimeF(String startTimeF) {
@@ -280,7 +238,7 @@ public class GXHDO201B020 implements Serializable {
     }
 
     /**
-     * 検索条件：研磨開始時刻(TO)
+     * 検索条件：開始時刻(TO)
      * @return the startTimeT
      */
     public String getStartTimeT() {
@@ -288,7 +246,7 @@ public class GXHDO201B020 implements Serializable {
     }
 
     /**
-     * 検索条件：研磨開始時刻(TO)
+     * 検索条件：開始時刻(TO)
      * @param startTimeT the startTimeT to set
      */
     public void setStartTimeT(String startTimeT) {
@@ -296,7 +254,7 @@ public class GXHDO201B020 implements Serializable {
     }
 
     /**
-     * 検索条件：研磨終了日(FROM)
+     * 検索条件：終了日(FROM)
      * @return the endDateF
      */
     public String getEndDateF() {
@@ -304,7 +262,7 @@ public class GXHDO201B020 implements Serializable {
     }
 
     /**
-     * 検索条件：研磨終了日(FROM)
+     * 検索条件：終了日(FROM)
      * @param endDateF the endDateF to set
      */
     public void setEndDateF(String endDateF) {
@@ -312,7 +270,7 @@ public class GXHDO201B020 implements Serializable {
     }
 
     /**
-     * 検索条件：研磨終了日(TO)
+     * 検索条件：終了日(TO)
      * @return the endDateT
      */
     public String getEndDateT() {
@@ -320,7 +278,7 @@ public class GXHDO201B020 implements Serializable {
     }
 
     /**
-     * 検索条件：研磨終了日(TO)
+     * 検索条件：終了日(TO)
      * @param endDateT the endDateT to set
      */
     public void setEndDateT(String endDateT) {
@@ -328,7 +286,7 @@ public class GXHDO201B020 implements Serializable {
     }
 
     /**
-     * 検索条件：研磨終了時刻(FROM)
+     * 検索条件：終了時刻(FROM)
      * @return the endTimeF
      */
     public String getEndTimeF() {
@@ -336,7 +294,7 @@ public class GXHDO201B020 implements Serializable {
     }
 
     /**
-     * 検索条件：研磨終了時刻(FROM)
+     * 検索条件：終了時刻(FROM)
      * @param endTimeF the endTimeF to set
      */
     public void setEndTimeF(String endTimeF) {
@@ -344,7 +302,7 @@ public class GXHDO201B020 implements Serializable {
     }
 
     /**
-     * 検索条件：研磨終了時刻(TO)
+     * 検索条件：終了時刻(TO)
      * @return the endTimeT
      */
     public String getEndTimeT() {
@@ -352,7 +310,7 @@ public class GXHDO201B020 implements Serializable {
     }
 
     /**
-     * 検索条件：研磨終了時刻(TO)
+     * 検索条件：終了時刻(TO)
      * @param endTimeT the endTimeT to set
      */
     public void setEndTimeT(String endTimeT) {
@@ -360,19 +318,19 @@ public class GXHDO201B020 implements Serializable {
     }
 
     /**
-     * 検索条件：研磨号機
-     * @return the kenmaGoki
+     * 検索条件：号機
+     * @return the goki
      */
-    public String getKenmaGoki() {
-        return kenmaGoki;
+    public String getGoki() {
+        return goki;
     }
 
     /**
-     * 検索条件：研磨号機
-     * @param kenmaGoki the kenmaGoki to set
+     * 検索条件：号機
+     * @param goki the goki to set
      */
-    public void setKenmaGoki(String kenmaGoki) {
-        this.kenmaGoki = kenmaGoki;
+    public void setGoki(String goki) {
+        this.goki = goki;
     }
 //</editor-fold>
     
@@ -408,8 +366,8 @@ public class GXHDO201B020 implements Serializable {
             return;
         }
 
-        if (!StringUtil.isEmpty(selectParam.getValue("GXHDO201B020_display_page_count", session))) {
-            listDisplayPageCount = Integer.parseInt(selectParam.getValue("GXHDO201B020_display_page_count", session));
+        if (!StringUtil.isEmpty(selectParam.getValue("GXHDO201B051_display_page_count", session))) {
+            listDisplayPageCount = Integer.parseInt(selectParam.getValue("GXHDO201B051_display_page_count", session));
         }
 
         listCountMax = session.getAttribute("menuParam") != null ? Integer.parseInt(session.getAttribute("menuParam").toString()) : -1;
@@ -437,8 +395,6 @@ public class GXHDO201B020 implements Serializable {
     public void clear() {
         lotNo = "";
         kcpNo = "";
-        katashiki = "";
-        yoryo = "";
         startDateF = "";
         startDateT = "";
         startTimeF = "";
@@ -447,7 +403,7 @@ public class GXHDO201B020 implements Serializable {
         endDateT = "";
         endTimeF = "";
         endTimeT = "";
-        kenmaGoki = "";
+        goki = "";
         
         listData = new ArrayList<>();
     }
@@ -472,14 +428,6 @@ public class GXHDO201B020 implements Serializable {
         }
         // KCPNO
         if (existError(validateUtil.checkC103(getKcpNo(), "KCPNO", 25))) {
-            return;
-        }
-        // 型式
-        if (existError(validateUtil.checkC101(getKatashiki(), "型式", 2))) {
-            return;
-        }
-        // 容量
-        if (existError(validateUtil.checkC101(getYoryo(), "容量", 4))) {
             return;
         }
         // 開始日(FROM)
@@ -543,11 +491,11 @@ public class GXHDO201B020 implements Serializable {
             return;
         }
         // 研磨号機
-        if(!StringUtil.isEmpty(getKenmaGoki())){
+        if(!StringUtil.isEmpty(getGoki())){
             boolean existGoki = false;
             try {
                 QueryRunner queryRunnerWip = new QueryRunner(dataSourceWip);
-                if(validateUtil.existGokukimas(getKenmaGoki(), queryRunnerWip)){
+                if(validateUtil.existGokukimas(getGoki(), queryRunnerWip)){
                     existGoki = true;
                 }
             } catch (SQLException ex){
@@ -557,7 +505,7 @@ public class GXHDO201B020 implements Serializable {
             if (!existGoki) {
               // 入力された研磨号機が[gokukimas.goukicode]に存在しない場合ｴﾗｰ。
             FacesMessage message = 
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000011", "研磨号機"), null);
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000011", "号機"), null);
             FacesContext.getCurrentInstance().addMessage(null, message);
             return;  
             }
@@ -613,18 +561,16 @@ public class GXHDO201B020 implements Serializable {
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
             String sql = "SELECT COUNT(LOTNO) AS CNT "
-                    + "FROM sr_barrel1 "
-                    + "WHERE (? IS NULL OR KOJYO = ?) "
-                    + "AND   (? IS NULL OR LOTNO = ?) "
-                    + "AND   (? IS NULL OR EDABAN = ?) "
-                    + "AND   (? IS NULL OR KCPNO LIKE ? ESCAPE '\\\\') "
-                    + "AND   (? IS NULL OR SUBSTR(KCPNO, 6, 2) = ?) "
-                    + "AND   (? IS NULL OR SUBSTR(KCPNO, 10, 4) = ?) "
-                    + "AND   (? IS NULL OR BKAISINICHIJI >= ?) "
-                    + "AND   (? IS NULL OR BKAISINICHIJI <= ?) "
-                    + "AND   (? IS NULL OR BSYURYONICHIJI >= ?) "
-                    + "AND   (? IS NULL OR BSYURYONICHIJI <= ?) "
-                    + "AND   (? IS NULL OR BGOKI = ?)";
+                    + "FROM sr_shinkuudassi "
+                    + "WHERE (? IS NULL OR kojyo = ?) "
+                    + "AND   (? IS NULL OR lotno = ?) "
+                    + "AND   (? IS NULL OR edaban = ?) "
+                    + "AND   (? IS NULL OR kcpno LIKE ? ESCAPE '\\\\') "
+                    + "AND   (? IS NULL OR kaisinichiji >= ?) "
+                    + "AND   (? IS NULL OR kaisinichiji <= ?) "
+                    + "AND   (? IS NULL OR syuryonichiji >= ?) "
+                    + "AND   (? IS NULL OR syuryonichiji <= ?) "
+                    + "AND   (? IS NULL OR goki = ?)";
             
             // パラメータ設定
             List<Object> params = createSearchParam();
@@ -648,136 +594,72 @@ public class GXHDO201B020 implements Serializable {
     public void selectListData() {
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
-            String sql = "SELECT CONCAT(IFNULL(KOJYO, ''), IFNULL(LOTNO, ''), IFNULL(EDABAN, '')) AS LOTNO"
-                    + ", KCPNO"
-                    + ", JISSEKINO"
-                    + ", bkaisinichiji"
-                    + ", bsyuryonichiji"
-                    + ", bjyokensetteimode"
-                    + ", bjyokensyusokudo"
-                    + ", bgoki"
-                    + ", bjikan"
-                    + ", kenmajikantani"
-                    + ", potsuu"
-                    + ", chiphahenkakunin"
-                    + ", potkakunin"
-                    + ", btantosya"
-                    + ", ptantosya"
-                    + ", bpotno1"
-                    + ", kankaisinichiji"
-                    + ", kansyuryonichiji"
-                    + ", kantantosya"
-                    + ", mediasenbetu"
-                    + ", bpotno2"
-                    + ", keinichiji"
-                    + ", ukeirekosuu"
-                    + ", tanijyuryo"
-                    + ", ryohinkosuu"
-                    + ", furyosuu"
-                    + ", budomari"
-                    + ", keitantosya"
-                    + ", biko1"
-                    + ", biko2"
-                    + ", kenma"
-                    + ", kenmazairyo"
-                    + ", kenmazaisyurui"
-                    + ", tamaishisyurui"
-                    + ", tamaishiryou"
-                    + ", potsyurui"
-                    + ", charge"
-                    + ", bjikan2"
-                    + ", bkaiten2"
-                    + ", bjikan3"
-                    + ", bkaiten3"
-                    + ", bjikan4"
-                    + ", bkaiten4"
-                    + ", bjikan5"
-                    + ", bkaiten5"
-                    + ", bjikan6"
-                    + ", bkaiten6"
-                    + ", bjikantotal"
-                    + ", kenmazairyo2"
-                    + ", kenmazaisyurui2"
-                    + ", (CASE WHEN gaikancheck = 0 THEN 'NG' WHEN gaikancheck = 1 THEN 'OK' ELSE NULL END) AS gaikancheck"
-                    + ", StartKakuninsyacode"
-                    + ", EndTantosyacode "
-                    + "FROM sr_barrel1 "
-                    + "WHERE (? IS NULL OR KOJYO = ?) "
-                    + "AND   (? IS NULL OR LOTNO = ?) "
-                    + "AND   (? IS NULL OR EDABAN = ?) "
-                    + "AND   (? IS NULL OR KCPNO LIKE ? ESCAPE '\\\\') "
-                    + "AND   (? IS NULL OR SUBSTR(KCPNO, 6, 2) = ?) "
-                    + "AND   (? IS NULL OR SUBSTR(KCPNO, 10, 4) = ?) "
-                    + "AND   (? IS NULL OR BKAISINICHIJI >= ?) "
-                    + "AND   (? IS NULL OR BKAISINICHIJI <= ?) "
-                    + "AND   (? IS NULL OR BSYURYONICHIJI >= ?) "
-                    + "AND   (? IS NULL OR BSYURYONICHIJI <= ?) "
-                    + "AND   (? IS NULL OR BGOKI = ?) "
-                    + "ORDER BY bkaisinichiji";
+            String sql = "SELECT CONCAT(IFNULL(kojyo, ''), IFNULL(lotno, ''), IFNULL(edaban, '')) AS LOTNO"
+                    + ", kcpno"
+                    + ", tokuisaki"
+                    + ", lotkubuncode"
+                    + ", ownercode"
+                    + ", ukeiresayasuu"
+                    + ", goki"
+                    + ", programno"
+                    + ", ondo"
+                    + ", keepjikan"
+                    + ", totaljikan"
+                    + ", tounyusettersuu"
+                    + ", kaisinichiji"
+                    + ", kaisitantosya"
+                    + ", kaisikakuninsya"
+                    + ", syuryonichiji"
+                    + ", syuryotantosya"
+                    + ", kaisyusettersuu"
+                    + ", bikou1"
+                    + ", bikou2"
+                    + ", bikou3"
+                    + ", bikou4 "
+                    + "FROM sr_shinkuudassi "
+                    + "WHERE (? IS NULL OR kojyo = ?) "
+                    + "AND   (? IS NULL OR lotno = ?) "
+                    + "AND   (? IS NULL OR edaban = ?) "
+                    + "AND   (? IS NULL OR kcpno LIKE ? ESCAPE '\\\\') "
+                    + "AND   (? IS NULL OR kaisinichiji >= ?) "
+                    + "AND   (? IS NULL OR kaisinichiji <= ?) "
+                    + "AND   (? IS NULL OR syuryonichiji >= ?) "
+                    + "AND   (? IS NULL OR syuryonichiji <= ?) "
+                    + "AND   (? IS NULL OR goki = ?) "
+                    + "ORDER BY kaisinichiji";
             
             // パラメータ設定
             List<Object> params = createSearchParam();
             
             // モデルクラスとのマッピング定義
             Map<String, String> mapping = new HashMap<>();
-            mapping.put("LOTNO", "lotno");                               // ﾛｯﾄNo.
-            mapping.put("KCPNO", "kcpno");                               // KCPNO
-            mapping.put("JISSEKINO", "jissekion");                       // 実績No
-            mapping.put("bkaisinichiji", "kaisinichiji");                // 開始日時
-            mapping.put("bsyuryonichiji", "syuryonichiji");              // 終了日時
-            mapping.put("bjyokensetteimode", "bjyokensetteimode");       // ﾊﾞﾚﾙ条件設定ﾓｰﾄﾞ
-            mapping.put("bjyokensyusokudo", "kenmakikaitensuu");         // 研磨機回転数(rpm)
-            mapping.put("bgoki", "kenmagoki");                           // 研磨号機
-            mapping.put("bjikan", "kenmajikan");                         // 研磨時間①
-            mapping.put("kenmajikantani", "kenmajikantani");             // 研磨時間単位
-            mapping.put("potsuu", "pottosuu");                           // ﾎﾟｯﾄ数(ﾎﾟｯﾄ)
-            mapping.put("chiphahenkakunin", "chepuhaenkakunin");         // ﾁｯﾌﾟ破片確認
-            mapping.put("potkakunin", "pottonaikakunin");                // ﾎﾟｯﾄ内確認
-            mapping.put("btantosya", "kaisitantosya");                   // 開始担当者
-            mapping.put("ptantosya", "pottotoridasitantosya");           // ﾎﾟｯﾄ取り出し担当者
-            mapping.put("bpotno1", "barerupottono1");                    // ﾊﾞﾚﾙﾎﾟｯﾄNO1
-            mapping.put("kankaisinichiji", "kansoukaisinichiji");        // 乾燥開始日時
-            mapping.put("kansyuryonichiji", "kansousyuryonichiji");      // 乾燥終了日時
-            mapping.put("kantantosya", "kansoutantosya");                // 乾燥担当者
-            mapping.put("mediasenbetu", "mediasenbetu");                 // ﾒﾃﾞｨｱ選別
-            mapping.put("bpotno2", "barerupottono2");                    // ﾊﾞﾚﾙﾎﾟｯﾄNO2
-            mapping.put("keinichiji", "keisunichiji");                   // 計数日時
-            mapping.put("ukeirekosuu", "ukeirekosu");                    // 受入個数
-            mapping.put("tanijyuryo", "tanijyuryo");                     // 単位重量
-            mapping.put("ryohinkosuu", "ryohinkosu");                    // 良品個数
-            mapping.put("furyosuu", "furyokosu");                        // 不良数
-            mapping.put("budomari", "budomari");                         // 歩留まり
-            mapping.put("keitantosya", "keisuutantosya");                // 計数担当者
-            mapping.put("biko1", "biko1");                               // 備考1
-            mapping.put("biko2", "biko2");                               // 備考2
-            mapping.put("kenma", "kenmahosiki");                         // 研磨方式
-            mapping.put("kenmazairyo", "kenmazairyo");                   // 研磨材量①(cc)
-            mapping.put("kenmazaisyurui", "kenmazaisyurui");             // 研磨材種類①
-            mapping.put("tamaishisyurui", "tamaisisyurui");              // 玉石種類
-            mapping.put("tamaishiryou", "tamaisiryo");                   // 玉石量(cc)
-            mapping.put("gaikancheck", "gaikankakunin");                 // 外観確認
-            mapping.put("StartKakuninsyacode", "kaisikakusya");          // 開始確認者
-            mapping.put("EndTantosyacode", "syuryotantosya");            // 終了担当者
-            mapping.put("potsyurui", "potsyurui");                       // ﾎﾟｯﾄ種類
-            mapping.put("charge", "charge");                             // ﾁｬｰｼﾞ量
-            mapping.put("bjikan2", "kenmajikan2");                       // 研磨時間②
-            mapping.put("bkaiten2", "kenmakikaitensuu2");                // 研磨機回転数②
-            mapping.put("bjikan3", "kenmajikan3");                       // 研磨時間③
-            mapping.put("bkaiten3", "kenmakikaitensuu3");                // 研磨機回転数③
-            mapping.put("bjikan4", "kenmajikan4");                       // 研磨時間④
-            mapping.put("bkaiten4", "kenmakikaitensuu4");                // 研磨機回転数④
-            mapping.put("bjikan5", "kenmajikan5");                       // 研磨時間⑤
-            mapping.put("bkaiten5", "kenmakikaitensuu5");                // 研磨機回転数⑤
-            mapping.put("bjikan6", "kenmajikan6");                       // 研磨時間⑥
-            mapping.put("bkaiten6", "kenmakikaitensuu6");                // 研磨機回転数⑥
-            mapping.put("bjikantotal", "kenmajikantotal");               // 研磨時間合計
-            mapping.put("kenmazairyo2", "kenmazairyo2");                 // 研磨材量②(cc)
-            mapping.put("kenmazaisyurui2", "kenmazaisyurui2");           // 研磨材種類②
+            mapping.put("lotno", "lotno");                               // ﾛｯﾄNo.
+            mapping.put("kcpno", "kcpno");                               // KCPNO
+            mapping.put("tokuisaki", "tokuisaki");                       // 客先
+            mapping.put("lotkubuncode", "lotkubuncode");                 // ﾛｯﾄ区分
+            mapping.put("ownercode", "ownercode");                       // ｵｰﾅｰ
+            mapping.put("ukeiresayasuu", "ukeiresayasuu");               // 受入ｻﾔ枚数
+            mapping.put("goki", "goki");                                 // 号機
+            mapping.put("programno", "programno");                       // ﾌﾟﾛｸﾞﾗﾑNo.
+            mapping.put("ondo", "ondo");                                 // 最高温度
+            mapping.put("keepjikan", "keepjikan");                       // ｷｰﾌﾟ時間
+            mapping.put("totaljikan", "totaljikan");                     // 総時間
+            mapping.put("tounyusettersuu", "tounyusettersuu");           // 投入ｻﾔ枚数
+            mapping.put("kaisinichiji", "kaisinichiji");                 // 開始日時
+            mapping.put("kaisitantosya", "kaisitantosya");               // 開始担当者
+            mapping.put("kaisikakuninsya", "kaisikakuninsya");           // 開始確認者
+            mapping.put("syuryonichiji", "syuryonichiji");               // 終了日時
+            mapping.put("syuryotantosya", "syuryotantosya");             // 終了担当者
+            mapping.put("kaisyusettersuu", "kaisyusettersuu");           // 回収ｻﾔ枚数
+            mapping.put("bikou1", "bikou1");                             // 備考1
+            mapping.put("bikou2", "bikou2");                             // 備考2
+            mapping.put("bikou3", "bikou3");                             // 備考3
+            mapping.put("bikou4", "bikou4");                             // 備考4
 
             BeanProcessor beanProcessor = new BeanProcessor(mapping);
             RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
-            ResultSetHandler<List<GXHDO201B020Model>> beanHandler = 
-                    new BeanListHandler<>(GXHDO201B020Model.class, rowProcessor);
+            ResultSetHandler<List<GXHDO201B051Model>> beanHandler = 
+                    new BeanListHandler<>(GXHDO201B051Model.class, rowProcessor);
             
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
             listData = queryRunner.query(sql, beanHandler, params.toArray());
@@ -828,15 +710,16 @@ public class GXHDO201B020 implements Serializable {
             
             ResourceBundle myParam = fc.getApplication().getResourceBundle(fc, "myParam");
 
+            // TODO json作る
             // Excel出力定義を取得
-            File file = new File(servletContext.getRealPath("/WEB-INF/classes/resources/json/gxhdo201b020.json")); 
+            File file = new File(servletContext.getRealPath("/WEB-INF/classes/resources/json/gxhdo201b051.json")); 
             List<ColumnInformation> list = (new ColumnInfoParser()).parseColumnJson(file);
 
             // 物理ファイルを生成
-            excel = ExcelExporter.outputExcel(listData, list, myParam.getString("download_temp"), "研磨・バレル");
+            excel = ExcelExporter.outputExcel(listData, list, myParam.getString("download_temp"), "焼成・真空脱脂");
 
             // ダウンロードファイル名
-            String downloadFileName = "研磨・バレル_" + ((new SimpleDateFormat("yyyyMMddHHmmss")).format(new Date())) + ".xlsx";
+            String downloadFileName = "焼成・真空脱脂_" + ((new SimpleDateFormat("yyyyMMddHHmmss")).format(new Date())) + ".xlsx";
             
             // outputstreamにファイルを転送
             ec.responseReset();
@@ -891,8 +774,6 @@ public class GXHDO201B020 implements Serializable {
         if (!StringUtil.isEmpty(kcpNo)) {
             paramKcpno = "%" + DBUtil.escapeString(getKcpNo()) + "%";
         }
-        String paramKatashiki = StringUtil.blankToNull(getKatashiki());
-        String paramYoryo = StringUtil.blankToNull(getYoryo());
         Date paramStartDateF = null;
         if (!StringUtil.isEmpty(startDateF)) {
             paramStartDateF = DateUtil.convertStringToDate(getStartDateF(), StringUtil.isEmpty(getStartTimeF()) ? "0000" : getStartTimeF());
@@ -909,20 +790,18 @@ public class GXHDO201B020 implements Serializable {
         if (!StringUtil.isEmpty(endDateT)) {
             paramEndDateT = DateUtil.convertStringToDate(getEndDateT(), StringUtil.isEmpty(getEndTimeT()) ? "2359" : getEndTimeT());
         }
-        String paramKenmaGoki = StringUtil.blankToNull(getKenmaGoki());
+        String paramGoki = StringUtil.blankToNull(getGoki());
 
         List<Object> params = new ArrayList<>();
         params.addAll(Arrays.asList(paramKojo, paramKojo));
         params.addAll(Arrays.asList(paramLotNo, paramLotNo));
         params.addAll(Arrays.asList(paramEdaban, paramEdaban));
         params.addAll(Arrays.asList(paramKcpno, paramKcpno));
-        params.addAll(Arrays.asList(paramKatashiki, paramKatashiki));
-        params.addAll(Arrays.asList(paramYoryo, paramYoryo));
         params.addAll(Arrays.asList(paramStartDateF, paramStartDateF));
         params.addAll(Arrays.asList(paramStartDateT, paramStartDateT));
         params.addAll(Arrays.asList(paramEndDateF, paramEndDateF));
         params.addAll(Arrays.asList(paramEndDateT, paramEndDateT));
-        params.addAll(Arrays.asList(paramKenmaGoki, paramKenmaGoki));
+        params.addAll(Arrays.asList(paramGoki, paramGoki));
 
         return params;
     }

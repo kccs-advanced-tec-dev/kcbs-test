@@ -95,9 +95,9 @@ public class GXHDO201B020Model implements Serializable{
     private String biko2 = "";
     /** 研磨方式 */
     private String kenmahosiki = "";
-    /** 研磨材量(cc) */
+    /** 研磨材量①(cc) */
     private Integer kenmazairyo = null;
-    /** 研磨材種類 */
+    /** 研磨材種類① */
     private String kenmazaisyurui = "";
     /** 玉石種類 */
     private String tamaisisyurui = "";
@@ -109,6 +109,36 @@ public class GXHDO201B020Model implements Serializable{
     private String kaisikakusya = "";
     /** 終了担当者 */
     private String syuryotantosya = "";
+    /** ﾎﾟｯﾄ種類 */
+    private String potsyurui = "";
+    /** ﾁｬｰｼﾞ量 */
+    private Integer charge = null;
+    /** 研磨時間② */
+    private Integer kenmajikan2 = null;
+    /** 研磨機回転数② */
+    private Integer kenmakikaitensuu2 = null;
+    /** 研磨時間③ */
+    private Integer kenmajikan3 = null;
+    /** 研磨機回転数③ */
+    private Integer kenmakikaitensuu3 = null;
+    /** 研磨時間④ */
+    private Integer kenmajikan4 = null;
+    /** 研磨機回転数④ */
+    private Integer kenmakikaitensuu4 = null;
+    /** 研磨時間⑤ */
+    private Integer kenmajikan5 = null;
+    /** 研磨機回転数⑤ */
+    private Integer kenmakikaitensuu5 = null;
+    /** 研磨時間⑥ */
+    private Integer kenmajikan6 = null;
+    /** 研磨機回転数⑥ */
+    private Integer kenmakikaitensuu6 = null;
+    /** 研磨時間合計 */
+    private Integer kenmajikantotal = null;
+    /** 研磨材量②(cc) */
+    private Integer kenmazairyo2 = null;
+    /** 研磨材種類② */
+    private String kenmazaisyurui2 = "";
     
     /**
      * ﾛｯﾄNo.
@@ -713,6 +743,246 @@ public class GXHDO201B020Model implements Serializable{
      */
     public void setSyuryotantosya(String syuryotantosya) {
         this.syuryotantosya = syuryotantosya;
+    }
+
+    /**
+     * ﾎﾟｯﾄ種類
+     * @return the potsyurui
+     */
+    public String getPotsyurui() {
+        return potsyurui;
+    }
+
+    /**
+     * ﾎﾟｯﾄ種類
+     * @param potsyurui the potsyurui to set
+     */
+    public void setPotsyurui(String potsyurui) {
+        this.potsyurui = potsyurui;
+    }
+
+    /**
+     * ﾁｬｰｼﾞ量
+     * @return the charge
+     */
+    public Integer getCharge() {
+        return charge;
+    }
+
+    /**
+     * ﾁｬｰｼﾞ量
+     * @param charge the charge to set
+     */
+    public void setCharge(Integer charge) {
+        this.charge = charge;
+    }
+
+    /**
+     * 研磨時間②
+     * @return the kenmajikan2
+     */
+    public Integer getKenmajikan2() {
+        return kenmajikan2;
+    }
+
+    /**
+     * 研磨時間②
+     * @param kenmajikan2 the kenmajikan2 to set
+     */
+    public void setKenmajikan2(Integer kenmajikan2) {
+        this.kenmajikan2 = kenmajikan2;
+    }
+
+    /**
+     * 研磨機回転数②
+     * @return the kenmakikaitensuu2
+     */
+    public Integer getKenmakikaitensuu2() {
+        return kenmakikaitensuu2;
+    }
+
+    /**
+     * 研磨機回転数②
+     * @param kenmakikaitensuu2 the kenmakikaitensuu2 to set
+     */
+    public void setKenmakikaitensuu2(Integer kenmakikaitensuu2) {
+        this.kenmakikaitensuu2 = kenmakikaitensuu2;
+    }
+
+    /**
+     * 研磨時間③
+     * @return the kenmajikan3
+     */
+    public Integer getKenmajikan3() {
+        return kenmajikan3;
+    }
+
+    /**
+     * 研磨時間③
+     * @param kenmajikan3 the kenmajikan3 to set
+     */
+    public void setKenmajikan3(Integer kenmajikan3) {
+        this.kenmajikan3 = kenmajikan3;
+    }
+
+    /**
+     * 研磨機回転数③
+     * @return the kenmakikaitensuu3
+     */
+    public Integer getKenmakikaitensuu3() {
+        return kenmakikaitensuu3;
+    }
+
+    /**
+     * 研磨機回転数③
+     * @param kenmakikaitensuu3 the kenmakikaitensuu3 to set
+     */
+    public void setKenmakikaitensuu3(Integer kenmakikaitensuu3) {
+        this.kenmakikaitensuu3 = kenmakikaitensuu3;
+    }
+
+    /**
+     * 研磨時間④
+     * @return the kenmajikan4
+     */
+    public Integer getKenmajikan4() {
+        return kenmajikan4;
+    }
+
+    /**
+     * 研磨時間④
+     * @param kenmajikan4 the kenmajikan4 to set
+     */
+    public void setKenmajikan4(Integer kenmajikan4) {
+        this.kenmajikan4 = kenmajikan4;
+    }
+
+    /**
+     * 研磨機回転数④
+     * @return the kenmakikaitensuu4
+     */
+    public Integer getKenmakikaitensuu4() {
+        return kenmakikaitensuu4;
+    }
+
+    /**
+     * 研磨機回転数④
+     * @param kenmakikaitensuu4 the kenmakikaitensuu4 to set
+     */
+    public void setKenmakikaitensuu4(Integer kenmakikaitensuu4) {
+        this.kenmakikaitensuu4 = kenmakikaitensuu4;
+    }
+
+    /**
+     * 研磨時間⑤
+     * @return the kenmajikan5
+     */
+    public Integer getKenmajikan5() {
+        return kenmajikan5;
+    }
+
+    /**
+     * 研磨時間⑤
+     * @param kenmajikan5 the kenmajikan5 to set
+     */
+    public void setKenmajikan5(Integer kenmajikan5) {
+        this.kenmajikan5 = kenmajikan5;
+    }
+
+    /**
+     * 研磨機回転数⑤
+     * @return the kenmakikaitensuu5
+     */
+    public Integer getKenmakikaitensuu5() {
+        return kenmakikaitensuu5;
+    }
+
+    /**
+     * 研磨機回転数⑤
+     * @param kenmakikaitensuu5 the kenmakikaitensuu5 to set
+     */
+    public void setKenmakikaitensuu5(Integer kenmakikaitensuu5) {
+        this.kenmakikaitensuu5 = kenmakikaitensuu5;
+    }
+
+    /**
+     * 研磨時間⑥
+     * @return the kenmajikan6
+     */
+    public Integer getKenmajikan6() {
+        return kenmajikan6;
+    }
+
+    /**
+     * 研磨時間⑥
+     * @param kenmajikan6 the kenmajikan6 to set
+     */
+    public void setKenmajikan6(Integer kenmajikan6) {
+        this.kenmajikan6 = kenmajikan6;
+    }
+
+    /**
+     * 研磨機回転数⑥
+     * @return the kenmakikaitensuu6
+     */
+    public Integer getKenmakikaitensuu6() {
+        return kenmakikaitensuu6;
+    }
+
+    /**
+     * 研磨機回転数⑥
+     * @param kenmakikaitensuu6 the kenmakikaitensuu6 to set
+     */
+    public void setKenmakikaitensuu6(Integer kenmakikaitensuu6) {
+        this.kenmakikaitensuu6 = kenmakikaitensuu6;
+    }
+
+    /**
+     * 研磨時間合計
+     * @return the kenmajikantotal
+     */
+    public Integer getKenmajikantotal() {
+        return kenmajikantotal;
+    }
+
+    /**
+     * 研磨時間合計
+     * @param kenmajikantotal the kenmajikantotal to set
+     */
+    public void setKenmajikantotal(Integer kenmajikantotal) {
+        this.kenmajikantotal = kenmajikantotal;
+    }
+
+    /**
+     * 研磨材量②(cc)
+     * @return the kenmazairyo2
+     */
+    public Integer getKenmazairyo2() {
+        return kenmazairyo2;
+    }
+
+    /**
+     * 研磨材量②(cc)
+     * @param kenmazairyo2 the kenmazairyo2 to set
+     */
+    public void setKenmazairyo2(Integer kenmazairyo2) {
+        this.kenmazairyo2 = kenmazairyo2;
+    }
+
+    /**
+     * 研磨材種類②
+     * @return the kenmazaisyurui2
+     */
+    public String getKenmazaisyurui2() {
+        return kenmazaisyurui2;
+    }
+
+    /**
+     * 研磨材種類②
+     * @param kenmazaisyurui2 the kenmazaisyurui2 to set
+     */
+    public void setKenmazaisyurui2(String kenmazaisyurui2) {
+        this.kenmazaisyurui2 = kenmazaisyurui2;
     }
 
     

@@ -27,6 +27,7 @@ import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.db.model.Jisseki;
+import jp.co.kccs.xhd.db.model.Seisan;
 import jp.co.kccs.xhd.db.model.SrBarrel1;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.GXHDO901A;
@@ -70,6 +71,11 @@ import org.apache.commons.dbutils.DbUtils;
  * 計画書No	MB2008-DK001<br>
  * 変更者	KCSS D.Yanagida<br>
  * 変更理由	ロット混合対応<br>
+ * <br>
+ * 変更日	2021/09/20<br>
+ * 計画書No	MB2108-DK001<br>
+ * 変更者	SRC T.Takenouchi<br>
+ * 変更理由	新規追加<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -119,8 +125,10 @@ public class GXHDO101B020 implements IFormLogic {
             processData.setNoCheckButtonId(Arrays.asList(
                     GXHDO101B020Const.BTN_START_DATETIME_TOP,
                     GXHDO101B020Const.BTN_END_DATETIME_TOP,
+                    GXHDO101B020Const.BTN_END_DATETIME_TOP,
                     GXHDO101B020Const.BTN_START_DATETIME_BOTTOM,
-                    GXHDO101B020Const.BTN_END_DATETIME_BOTTOM
+                    GXHDO101B020Const.BTN_END_DATETIME_BOTTOM,
+                    GXHDO101B020Const.BTN_KENMADATETIMESUM_BOTTOM
             ));
 
             // リビジョンチェック対象のボタンを設定する。
@@ -745,13 +753,15 @@ public class GXHDO101B020 implements IFormLogic {
                         GXHDO101B020Const.BTN_END_DATETIME_BOTTOM,
                         GXHDO101B020Const.BTN_END_DATETIME_KEISAN_BOTTOM,
                         GXHDO101B020Const.BTN_KENMAHOSHIKI_BOTTOM,
+                        GXHDO101B020Const.BTN_KENMADATETIMESUM_BOTTOM,
                         GXHDO101B020Const.BTN_EDABAN_COPY_TOP,
                         GXHDO101B020Const.BTN_DELETE_TOP,
                         GXHDO101B020Const.BTN_UPDATE_TOP,
                         GXHDO101B020Const.BTN_START_DATETIME_TOP,
                         GXHDO101B020Const.BTN_END_DATETIME_TOP,
                         GXHDO101B020Const.BTN_END_DATETIME_KEISAN_TOP,
-                        GXHDO101B020Const.BTN_KENMAHOSHIKI_TOP
+                        GXHDO101B020Const.BTN_KENMAHOSHIKI_TOP,
+                        GXHDO101B020Const.BTN_KENMADATETIMESUM_TOP
                 ));
                 inactiveIdList.addAll(Arrays.asList(
                         GXHDO101B020Const.BTN_KARI_TOUROKU_BOTTOM,
@@ -769,13 +779,15 @@ public class GXHDO101B020 implements IFormLogic {
                         GXHDO101B020Const.BTN_END_DATETIME_BOTTOM,
                         GXHDO101B020Const.BTN_END_DATETIME_KEISAN_BOTTOM,
                         GXHDO101B020Const.BTN_KENMAHOSHIKI_BOTTOM,
+                        GXHDO101B020Const.BTN_KENMADATETIMESUM_BOTTOM,
                         GXHDO101B020Const.BTN_KARI_TOUROKU_TOP,
                         GXHDO101B020Const.BTN_EDABAN_COPY_TOP,
                         GXHDO101B020Const.BTN_INSERT_TOP,
                         GXHDO101B020Const.BTN_START_DATETIME_TOP,
                         GXHDO101B020Const.BTN_END_DATETIME_TOP,
                         GXHDO101B020Const.BTN_END_DATETIME_KEISAN_TOP,
-                        GXHDO101B020Const.BTN_KENMAHOSHIKI_TOP
+                        GXHDO101B020Const.BTN_KENMAHOSHIKI_TOP,
+                        GXHDO101B020Const.BTN_KENMADATETIMESUM_TOP
                 ));
 
                 inactiveIdList.addAll(Arrays.asList(
@@ -846,6 +858,11 @@ public class GXHDO101B020 implements IFormLogic {
             case GXHDO101B020Const.BTN_KENMAHOSHIKI_TOP:
             case GXHDO101B020Const.BTN_KENMAHOSHIKI_BOTTOM:
                 method = "setKenmahoshiki";
+                break;
+            // 研磨時間合計
+            case GXHDO101B020Const.BTN_KENMADATETIMESUM_TOP:
+            case GXHDO101B020Const.BTN_KENMADATETIMESUM_BOTTOM:
+                method = "setKenmaDateTimeSum";
                 break;
             default:
                 method = "error";
@@ -989,20 +1006,46 @@ public class GXHDO101B020 implements IFormLogic {
         String kojyo = lotNo.substring(0, 3);
         String lotNo8 = lotNo.substring(3, 11);
         String edaban = lotNo.substring(11, 14);
-        //研磨時間の規格値
+        //研磨時間①の規格値
         String bjikanKikakuChi = "";
-        //研磨時間の規格情報ﾊﾟﾀｰﾝ
+        //研磨時間①の規格情報ﾊﾟﾀｰﾝ
         String bjikanStandardPattern = "";
-        //研磨材量の規格値
+        //研磨時間②の規格値
+        String bjikan2KikakuChi = "";
+        //研磨時間②の規格情報ﾊﾟﾀｰﾝ
+        String bjikan2StandardPattern = "";
+        //研磨時間③の規格値
+        String bjikan3KikakuChi = "";
+        //研磨時間③の規格情報ﾊﾟﾀｰﾝ
+        String bjikan3StandardPattern = "";
+        //研磨時間④の規格値
+        String bjikan4KikakuChi = "";
+        //研磨時間④の規格情報ﾊﾟﾀｰﾝ
+        String bjikan4StandardPattern = "";
+        //研磨時間⑤の規格値
+        String bjikan5KikakuChi = "";
+        //研磨時間⑤の規格情報ﾊﾟﾀｰﾝ
+        String bjikan5StandardPattern = "";
+        //研磨時間⑥の規格値
+        String bjikan6KikakuChi = "";
+        //研磨時間⑥の規格情報ﾊﾟﾀｰﾝ
+        String bjikan6StandardPattern = "";
+        //研磨材量①の規格値
         String kenmazairyoKikakuChi = "";
-        //研磨材量の規格情報ﾊﾟﾀｰﾝ
+        //研磨材量①の規格情報ﾊﾟﾀｰﾝ
         String kenmazairyoStandardPattern = "";
+        //研磨材量②の規格値
+        String kenmazairyo2KikakuChi = "";
+        //研磨材量②の規格情報ﾊﾟﾀｰﾝ
+        String kenmazairyo2StandardPattern = "";
         //玉石量の規格値
         String tamaishiryouKikakuChi = "";
         //玉石量の規格情報ﾊﾟﾀｰﾝ
         String tamaishiryouStandardPattern = "";        
-        //研磨材種類の規格値
-        String kenmazaisyuruiKikakuChi = "";
+        //研磨材種類①の規格値
+        String kenmazaisyuruiKikakuChi = "";      
+        //研磨材種類②の規格値
+        String kenmazaisyurui2KikakuChi = "";
         //玉石種類の規格値
         String tamaishisyuruiKikakuChi = "";
 
@@ -1026,11 +1069,47 @@ public class GXHDO101B020 implements IFormLogic {
                         //研磨時間の規格情報ﾊﾟﾀｰﾝを取得
                         bjikanStandardPattern = fxhdd001.getStandardPattern();
                     }
+                    if(GXHDO101B020Const.BJIKAN2.equals(fxhdd001.getItemId())){
+                        //研磨時間の規格値を取得
+                        bjikan2KikakuChi = fxhdd001.getKikakuChi();
+                        //研磨時間の規格情報ﾊﾟﾀｰﾝを取得
+                        bjikan2StandardPattern = fxhdd001.getStandardPattern();
+                    }
+                    if(GXHDO101B020Const.BJIKAN3.equals(fxhdd001.getItemId())){
+                        //研磨時間の規格値を取得
+                        bjikan3KikakuChi = fxhdd001.getKikakuChi();
+                        //研磨時間の規格情報ﾊﾟﾀｰﾝを取得
+                        bjikan3StandardPattern = fxhdd001.getStandardPattern();
+                    }
+                    if(GXHDO101B020Const.BJIKAN4.equals(fxhdd001.getItemId())){
+                        //研磨時間の規格値を取得
+                        bjikan4KikakuChi = fxhdd001.getKikakuChi();
+                        //研磨時間の規格情報ﾊﾟﾀｰﾝを取得
+                        bjikan4StandardPattern = fxhdd001.getStandardPattern();
+                    }
+                    if(GXHDO101B020Const.BJIKAN5.equals(fxhdd001.getItemId())){
+                        //研磨時間の規格値を取得
+                        bjikan5KikakuChi = fxhdd001.getKikakuChi();
+                        //研磨時間の規格情報ﾊﾟﾀｰﾝを取得
+                        bjikan5StandardPattern = fxhdd001.getStandardPattern();
+                    }
+                    if(GXHDO101B020Const.BJIKAN6.equals(fxhdd001.getItemId())){
+                        //研磨時間の規格値を取得
+                        bjikan6KikakuChi = fxhdd001.getKikakuChi();
+                        //研磨時間の規格情報ﾊﾟﾀｰﾝを取得
+                        bjikan6StandardPattern = fxhdd001.getStandardPattern();
+                    }
                     if(GXHDO101B020Const.KENMAZAIRYO.equals(fxhdd001.getItemId())){
-                        //研磨材量の規格値を取得
+                        //研磨材量①の規格値を取得
                         kenmazairyoKikakuChi = fxhdd001.getKikakuChi();
-                        //研磨材量の規格情報ﾊﾟﾀｰﾝを取得
+                        //研磨材量①の規格情報ﾊﾟﾀｰﾝを取得
                         kenmazairyoStandardPattern = fxhdd001.getStandardPattern();
+                    }
+                    if(GXHDO101B020Const.KENMAZAIRYO2.equals(fxhdd001.getItemId())){
+                        //研磨材量②の規格値を取得
+                        kenmazairyo2KikakuChi = fxhdd001.getKikakuChi();
+                        //研磨材量②の規格情報ﾊﾟﾀｰﾝを取得
+                        kenmazairyo2StandardPattern = fxhdd001.getStandardPattern();
                     }
                     if(GXHDO101B020Const.TAMAISHIRYOU.equals(fxhdd001.getItemId())){
                         //玉石量の規格値を取得
@@ -1040,8 +1119,12 @@ public class GXHDO101B020 implements IFormLogic {
                     }
                     
                     if(GXHDO101B020Const.KENMAZAISYURUI.equals(fxhdd001.getItemId())){
-                        //研磨材種類の規格値を取得
+                        //研磨材種類①の規格値を取得
                         kenmazaisyuruiKikakuChi = fxhdd001.getKikakuChi();
+                    }                    
+                    if(GXHDO101B020Const.KENMAZAISYURUI2.equals(fxhdd001.getItemId())){
+                        //研磨材種類②の規格値を取得
+                        kenmazaisyurui2KikakuChi = fxhdd001.getKikakuChi();
                     }
                     
                     if(GXHDO101B020Const.TAMAISHISYURUI.equals(fxhdd001.getItemId())){
@@ -1052,8 +1135,11 @@ public class GXHDO101B020 implements IFormLogic {
                 
                 // 受入個数初期値設定
                 this.setItemData(processData, GXHDO101B020Const.UKEIREKOSUU, getSyorisu(queryRunnerDoc, queryRunnerWip, lotNo));
+                
+                // 研磨号機初期値設定
+                this.setItemData(processData, GXHDO101B020Const.BGOKI, getGokiCode(queryRunnerDoc, queryRunnerWip, lotNo));
 
-                // 研磨時間初期値設定
+                // 研磨時間①初期値設定
                 if(!StringUtil.isEmpty(bjikanKikakuChi) && ("1".equals(bjikanStandardPattern))){
                     bjikanKikakuChi = bjikanKikakuChi.replace("【", "");
                     bjikanKikakuChi = bjikanKikakuChi.replace("】", "");
@@ -1063,8 +1149,58 @@ public class GXHDO101B020 implements IFormLogic {
                         this.setItemData(processData, GXHDO101B020Const.BJIKAN, NumberUtil.numberExtractionToString(spBjikan[0]));
                     }
                 }
+                // 研磨時間②初期値設定
+                if(!StringUtil.isEmpty(bjikan2KikakuChi) && ("1".equals(bjikan2StandardPattern))){
+                    bjikan2KikakuChi = bjikan2KikakuChi.replace("【", "");
+                    bjikan2KikakuChi = bjikan2KikakuChi.replace("】", "");
+                    // カンマで分割
+                    String spBjikan[] = bjikan2KikakuChi.split("±");
+                    if(spBjikan.length > 0){
+                        this.setItemData(processData, GXHDO101B020Const.BJIKAN2, NumberUtil.numberExtractionToString(spBjikan[0]));
+                    }
+                }
+                // 研磨時間③初期値設定
+                if(!StringUtil.isEmpty(bjikan3KikakuChi) && ("1".equals(bjikan3StandardPattern))){
+                    bjikan3KikakuChi = bjikan3KikakuChi.replace("【", "");
+                    bjikan3KikakuChi = bjikan3KikakuChi.replace("】", "");
+                    // カンマで分割
+                    String spBjikan[] = bjikan3KikakuChi.split("±");
+                    if(spBjikan.length > 0){
+                        this.setItemData(processData, GXHDO101B020Const.BJIKAN3, NumberUtil.numberExtractionToString(spBjikan[0]));
+                    }
+                }
+                // 研磨時間④初期値設定
+                if(!StringUtil.isEmpty(bjikan4KikakuChi) && ("1".equals(bjikan4StandardPattern))){
+                    bjikan4KikakuChi = bjikan4KikakuChi.replace("【", "");
+                    bjikan4KikakuChi = bjikan4KikakuChi.replace("】", "");
+                    // カンマで分割
+                    String spBjikan[] = bjikan4KikakuChi.split("±");
+                    if(spBjikan.length > 0){
+                        this.setItemData(processData, GXHDO101B020Const.BJIKAN4, NumberUtil.numberExtractionToString(spBjikan[0]));
+                    }
+                }
+                // 研磨時間⑤初期値設定
+                if(!StringUtil.isEmpty(bjikan5KikakuChi) && ("1".equals(bjikan5StandardPattern))){
+                    bjikan5KikakuChi = bjikan5KikakuChi.replace("【", "");
+                    bjikan5KikakuChi = bjikan5KikakuChi.replace("】", "");
+                    // カンマで分割
+                    String spBjikan[] = bjikan5KikakuChi.split("±");
+                    if(spBjikan.length > 0){
+                        this.setItemData(processData, GXHDO101B020Const.BJIKAN5, NumberUtil.numberExtractionToString(spBjikan[0]));
+                    }
+                }
+                // 研磨時間⑥初期値設定
+                if(!StringUtil.isEmpty(bjikan6KikakuChi) && ("1".equals(bjikan6StandardPattern))){
+                    bjikan6KikakuChi = bjikan6KikakuChi.replace("【", "");
+                    bjikan6KikakuChi = bjikan6KikakuChi.replace("】", "");
+                    // カンマで分割
+                    String spBjikan[] = bjikan6KikakuChi.split("±");
+                    if(spBjikan.length > 0){
+                        this.setItemData(processData, GXHDO101B020Const.BJIKAN6, NumberUtil.numberExtractionToString(spBjikan[0]));
+                    }
+                }
 
-                // 研磨材量初期値設定
+                // 研磨材量①初期値設定
                 if(!StringUtil.isEmpty(kenmazairyoKikakuChi) && ("1".equals(kenmazairyoStandardPattern))){
                     kenmazairyoKikakuChi = kenmazairyoKikakuChi.replace("【", "");
                     kenmazairyoKikakuChi = kenmazairyoKikakuChi.replace("】", "");
@@ -1072,6 +1208,16 @@ public class GXHDO101B020 implements IFormLogic {
                     String spKenmazairyo[] = kenmazairyoKikakuChi.split("±");
                     if(spKenmazairyo.length > 0){
                         this.setItemData(processData, GXHDO101B020Const.KENMAZAIRYO, NumberUtil.numberExtractionToString(spKenmazairyo[0]));
+                    }
+                }
+                // 研磨材量②初期値設定
+                if(!StringUtil.isEmpty(kenmazairyo2KikakuChi) && ("1".equals(kenmazairyo2StandardPattern))){
+                    kenmazairyo2KikakuChi = kenmazairyo2KikakuChi.replace("【", "");
+                    kenmazairyo2KikakuChi = kenmazairyo2KikakuChi.replace("】", "");
+                    // カンマで分割
+                    String spKenmazairyo[] = kenmazairyo2KikakuChi.split("±");
+                    if(spKenmazairyo.length > 0){
+                        this.setItemData(processData, GXHDO101B020Const.KENMAZAIRYO2, NumberUtil.numberExtractionToString(spKenmazairyo[0]));
                     }
                 }
 
@@ -1085,13 +1231,20 @@ public class GXHDO101B020 implements IFormLogic {
                         this.setItemData(processData, GXHDO101B020Const.TAMAISHIRYOU, NumberUtil.numberExtractionToString(spTamaishiryou[0]));
                     }
                 }
-                
-                // 研磨材種類初期値設定
+
+                // 研磨材種類①初期値設定
                 if(!StringUtil.isEmpty(kenmazaisyuruiKikakuChi)){
                     kenmazaisyuruiKikakuChi = kenmazaisyuruiKikakuChi.replace("【", "");
                     kenmazaisyuruiKikakuChi = kenmazaisyuruiKikakuChi.replace("】", "");
                     this.setItemData(processData, GXHDO101B020Const.KENMAZAISYURUI, kenmazaisyuruiKikakuChi);                
                 }
+                // 研磨材種類②初期値設定
+                if(!StringUtil.isEmpty(kenmazaisyurui2KikakuChi)){
+                    kenmazaisyurui2KikakuChi = kenmazaisyurui2KikakuChi.replace("【", "");
+                    kenmazaisyurui2KikakuChi = kenmazaisyurui2KikakuChi.replace("】", "");
+                    this.setItemData(processData, GXHDO101B020Const.KENMAZAISYURUI2, kenmazaisyurui2KikakuChi);                
+                }
+                
                 // 玉石種類初期値設定
                 if(!StringUtil.isEmpty(tamaishisyuruiKikakuChi)){
                     tamaishisyuruiKikakuChi = tamaishisyuruiKikakuChi.replace("【", "");
@@ -1140,18 +1293,48 @@ public class GXHDO101B020 implements IFormLogic {
         this.setItemData(processData, GXHDO101B020Const.UKEIREKOSUU, getSrBarrel1ItemData(GXHDO101B020Const.UKEIREKOSUU, srBarrel1Data));
         // 研磨方式
         this.setItemData(processData, GXHDO101B020Const.KENMA, getSrBarrel1ItemData(GXHDO101B020Const.KENMA, srBarrel1Data));
+        // ﾎﾟｯﾄ種類
+        this.setItemData(processData, GXHDO101B020Const.POTSYURUI, getSrBarrel1ItemData(GXHDO101B020Const.POTSYURUI, srBarrel1Data));
         // 研磨号機
         this.setItemData(processData, GXHDO101B020Const.BGOKI, getSrBarrel1ItemData(GXHDO101B020Const.BGOKI, srBarrel1Data));
+        // ﾁｬｰｼﾞ量
+        this.setItemData(processData, GXHDO101B020Const.CHARGERYOU, getSrBarrel1ItemData(GXHDO101B020Const.CHARGERYOU, srBarrel1Data));
         // ﾎﾟｯﾄ数
         this.setItemData(processData, GXHDO101B020Const.POTSUU, getSrBarrel1ItemData(GXHDO101B020Const.POTSUU, srBarrel1Data));
-        // 研磨時間
+        // 研磨時間①
         this.setItemData(processData, GXHDO101B020Const.BJIKAN, getSrBarrel1ItemData(GXHDO101B020Const.BJIKAN, srBarrel1Data));
-        // 研磨機回転数
+        // 研磨機回転数①
         this.setItemData(processData, GXHDO101B020Const.BJYOKENSYUSOKUDO, getSrBarrel1ItemData(GXHDO101B020Const.BJYOKENSYUSOKUDO, srBarrel1Data));
-        // 研磨材量
+        // 研磨時間②
+        this.setItemData(processData, GXHDO101B020Const.BJIKAN2, getSrBarrel1ItemData(GXHDO101B020Const.BJIKAN2, srBarrel1Data));
+        // 研磨機回転数②
+        this.setItemData(processData, GXHDO101B020Const.BJYOKENSYUSOKUDO2, getSrBarrel1ItemData(GXHDO101B020Const.BJYOKENSYUSOKUDO2, srBarrel1Data));
+        // 研磨時間③
+        this.setItemData(processData, GXHDO101B020Const.BJIKAN3, getSrBarrel1ItemData(GXHDO101B020Const.BJIKAN3, srBarrel1Data));
+        // 研磨機回転数③
+        this.setItemData(processData, GXHDO101B020Const.BJYOKENSYUSOKUDO3, getSrBarrel1ItemData(GXHDO101B020Const.BJYOKENSYUSOKUDO3, srBarrel1Data));
+        // 研磨時間④
+        this.setItemData(processData, GXHDO101B020Const.BJIKAN4, getSrBarrel1ItemData(GXHDO101B020Const.BJIKAN4, srBarrel1Data));
+        // 研磨機回転数④
+        this.setItemData(processData, GXHDO101B020Const.BJYOKENSYUSOKUDO4, getSrBarrel1ItemData(GXHDO101B020Const.BJYOKENSYUSOKUDO4, srBarrel1Data));
+        // 研磨時間⑤
+        this.setItemData(processData, GXHDO101B020Const.BJIKAN5, getSrBarrel1ItemData(GXHDO101B020Const.BJIKAN5, srBarrel1Data));
+        // 研磨機回転数⑤
+        this.setItemData(processData, GXHDO101B020Const.BJYOKENSYUSOKUDO5, getSrBarrel1ItemData(GXHDO101B020Const.BJYOKENSYUSOKUDO5, srBarrel1Data));
+        // 研磨時間⑥
+        this.setItemData(processData, GXHDO101B020Const.BJIKAN6, getSrBarrel1ItemData(GXHDO101B020Const.BJIKAN6, srBarrel1Data));
+        // 研磨機回転数⑥
+        this.setItemData(processData, GXHDO101B020Const.BJYOKENSYUSOKUDO6, getSrBarrel1ItemData(GXHDO101B020Const.BJYOKENSYUSOKUDO6, srBarrel1Data));
+        // 研磨時間合計
+        this.setItemData(processData, GXHDO101B020Const.BJIKANTOTAL, getSrBarrel1ItemData(GXHDO101B020Const.BJIKANTOTAL, srBarrel1Data));
+        // 研磨材量①
         this.setItemData(processData, GXHDO101B020Const.KENMAZAIRYO, getSrBarrel1ItemData(GXHDO101B020Const.KENMAZAIRYO, srBarrel1Data));
-        // 研磨材種類
+        // 研磨材種類①
         this.setItemData(processData, GXHDO101B020Const.KENMAZAISYURUI, getSrBarrel1ItemData(GXHDO101B020Const.KENMAZAISYURUI, srBarrel1Data));
+        // 研磨材量②
+        this.setItemData(processData, GXHDO101B020Const.KENMAZAIRYO2, getSrBarrel1ItemData(GXHDO101B020Const.KENMAZAIRYO2, srBarrel1Data));
+        // 研磨材種類②
+        this.setItemData(processData, GXHDO101B020Const.KENMAZAISYURUI2, getSrBarrel1ItemData(GXHDO101B020Const.KENMAZAISYURUI2, srBarrel1Data));
         // 玉石種類
         this.setItemData(processData, GXHDO101B020Const.TAMAISHISYURUI, getSrBarrel1ItemData(GXHDO101B020Const.TAMAISHISYURUI, srBarrel1Data));
         // 玉石量
@@ -1176,8 +1359,8 @@ public class GXHDO101B020 implements IFormLogic {
         this.setItemData(processData, GXHDO101B020Const.BIKO1, getSrBarrel1ItemData(GXHDO101B020Const.BIKO1, srBarrel1Data));
         // 備考2
         this.setItemData(processData, GXHDO101B020Const.BIKO2, getSrBarrel1ItemData(GXHDO101B020Const.BIKO2, srBarrel1Data));
-        // 研磨時間単位
-        this.setItemData(processData, GXHDO101B020Const.KENMAJIKANTANI, getSrBarrel1ItemData(GXHDO101B020Const.KENMAJIKANTANI, srBarrel1Data));
+//        // 研磨時間単位
+//        this.setItemData(processData, GXHDO101B020Const.KENMAJIKANTANI, getSrBarrel1ItemData(GXHDO101B020Const.KENMAJIKANTANI, srBarrel1Data));
  
     }
 
@@ -1418,7 +1601,9 @@ public class GXHDO101B020 implements IFormLogic {
                 + " kansyuryonichiji ,kantantosya ,mediasenbetu ,bpotno2 ,keinichiji ,ukeirekosuu ,tanijyuryo ,ryohinkosuu ,"
                 + " furyosuu ,budomari ,keitantosya ,biko1 ,biko2 ,torokunichiji ,kosinNichiji ,kenma ,kenmazairyo ,"
                 + " kenmazaisyurui ,tamaishisyurui ,tamaishiryou ,gaikancheck ,StartKakuninsyacode ,EndTantosyacode ,revision ,"
-                + " kenmajikantani ,'0' AS deleteflag "
+//                + " kenmajikantani ,'0' AS deleteflag "
+                + " '0' AS deleteflag ,potsyurui ,charge ,bjikan2 ,bkaiten2 ,bjikan3 ,bkaiten3 ,bjikan4 ,bkaiten4 ,"
+                + " bjikan5 ,bkaiten5 ,bjikan6 ,bkaiten6 ,bjikantotal ,kenmazairyo2 ,kenmazaisyurui2 "
                 + "FROM sr_barrel1 "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND JISSEKINO = ? ";
         // revisionが入っている場合、条件に追加
@@ -1446,9 +1631,9 @@ public class GXHDO101B020 implements IFormLogic {
         mapping.put("bkaisinichiji", "bkaisinichiji"); //ﾊﾞﾚﾙ開始日時
         mapping.put("bsyuryonichiji", "bsyuryonichiji"); //ﾊﾞﾚﾙ終了日時
         mapping.put("bjyokensetteimode", "bjyokensetteimode"); //ﾊﾞﾚﾙ条件設定ﾓｰﾄﾞ
-        mapping.put("bjyokensyusokudo", "bjyokensyusokudo"); //ﾊﾞﾚﾙ条件周速度
-        mapping.put("bgoki", "bgoki"); //ﾊﾞﾚﾙ号機
-        mapping.put("bjikan", "bjikan"); //ﾊﾞﾚﾙ時間
+        mapping.put("bjyokensyusokudo", "bjyokensyusokudo"); //ﾊﾞﾚﾙ条件周速度(研磨機回転数①)
+        mapping.put("bgoki", "bgoki"); //ﾊﾞﾚﾙ号機(研磨号機)
+        mapping.put("bjikan", "bjikan"); //ﾊﾞﾚﾙ時間(研磨時間①)
         mapping.put("potsuu", "potsuu"); //ﾎﾟｯﾄ数
         mapping.put("chiphahenkakunin", "chiphahenkakunin"); //ﾁｯﾌﾟ破片確認
         mapping.put("potkakunin", "potkakunin"); //ﾎﾟｯﾄ内確認
@@ -1480,8 +1665,23 @@ public class GXHDO101B020 implements IFormLogic {
         mapping.put("StartKakuninsyacode", "startkakuninsyacode"); //開始確認者
         mapping.put("EndTantosyacode", "endtantosyacode"); //終了担当者
         mapping.put("revision", "revision"); //revision
-        mapping.put("kenmajikantani", "kenmajikantani"); //研磨時間単位
+//        mapping.put("kenmajikantani", "kenmajikantani"); //研磨時間単位
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
+        mapping.put("potsyurui", "potsyurui"); //ﾎﾟｯﾄ種類
+        mapping.put("charge", "charge"); //ﾁｬｰｼﾞ量
+        mapping.put("bjikan2", "bjikan2"); //研磨時間②
+        mapping.put("bkaiten2", "bkaiten2"); //研磨機回転数②
+        mapping.put("bjikan3", "bjikan3"); //研磨時間③
+        mapping.put("bkaiten3", "bkaiten3"); //研磨機回転数③
+        mapping.put("bjikan4", "bjikan4"); //研磨時間④
+        mapping.put("bkaiten4", "bkaiten4"); //研磨機回転数④
+        mapping.put("bjikan5", "bjikan5"); //研磨時間⑤
+        mapping.put("bkaiten5", "bkaiten5"); //研磨機回転数⑤
+        mapping.put("bjikan6", "bjikan6"); //研磨時間⑥
+        mapping.put("bkaiten6", "bkaiten6"); //研磨機回転数⑥
+        mapping.put("bjikantotal", "bjikantotal"); //研磨時間合計
+        mapping.put("kenmazairyo2", "kenmazairyo2"); //研磨材量②
+        mapping.put("kenmazaisyurui2", "kenmazaisyurui2"); //研磨材種類②
 
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
@@ -1510,7 +1710,9 @@ public class GXHDO101B020 implements IFormLogic {
                 + " bgoki ,bjikan ,potsuu ,chiphahenkakunin ,potkakunin ,btantosya ,ptantosya ,bpotno1 ,kankaisinichiji ,"
                 + " kansyuryonichiji ,kantantosya ,mediasenbetu ,bpotno2 ,keinichiji ,ukeirekosuu ,tanijyuryo ,ryohinkosuu ,"
                 + " furyosuu ,budomari ,keitantosya ,biko1 ,biko2 ,torokunichiji ,kosinNichiji ,kenma ,kenmazairyo ,"
-                + " kenmazaisyurui ,tamaishisyurui ,tamaishiryou ,gaikancheck ,StartKakuninsyacode ,EndTantosyacode ,revision ,kenmajikantani ,deleteflag "
+//                + " kenmazaisyurui ,tamaishisyurui ,tamaishiryou ,gaikancheck ,StartKakuninsyacode ,EndTantosyacode ,revision ,kenmajikantani ,deleteflag "
+                + " kenmazaisyurui ,tamaishisyurui ,tamaishiryou ,gaikancheck ,StartKakuninsyacode ,EndTantosyacode ,revision ,deleteflag ,"
+                + " potsyurui ,charge ,bjikan2 ,bkaiten2 ,bjikan3 ,bkaiten3 ,bjikan4 ,bkaiten4 ,bjikan5 ,bkaiten5 ,bjikan6 ,bkaiten6 ,bjikantotal ,kenmazairyo2 ,kenmazaisyurui2 "
                 + "FROM tmp_sr_barrel1 "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND jissekino = ? AND deleteflag = ? ";
         // revisionが入っている場合、条件に追加
@@ -1539,9 +1741,9 @@ public class GXHDO101B020 implements IFormLogic {
         mapping.put("bkaisinichiji", "bkaisinichiji"); //ﾊﾞﾚﾙ開始日時
         mapping.put("bsyuryonichiji", "bsyuryonichiji"); //ﾊﾞﾚﾙ終了日時
         mapping.put("bjyokensetteimode", "bjyokensetteimode"); //ﾊﾞﾚﾙ条件設定ﾓｰﾄﾞ
-        mapping.put("bjyokensyusokudo", "bjyokensyusokudo"); //ﾊﾞﾚﾙ条件周速度
-        mapping.put("bgoki", "bgoki"); //ﾊﾞﾚﾙ号機
-        mapping.put("bjikan", "bjikan"); //ﾊﾞﾚﾙ時間
+        mapping.put("bjyokensyusokudo", "bjyokensyusokudo"); //ﾊﾞﾚﾙ条件周速度(研磨機回転数①)
+        mapping.put("bgoki", "bgoki"); //ﾊﾞﾚﾙ号機(研磨号機)
+        mapping.put("bjikan", "bjikan"); //ﾊﾞﾚﾙ時間(研磨時間①)
         mapping.put("potsuu", "potsuu"); //ﾎﾟｯﾄ数
         mapping.put("chiphahenkakunin", "chiphahenkakunin"); //ﾁｯﾌﾟ破片確認
         mapping.put("potkakunin", "potkakunin"); //ﾎﾟｯﾄ内確認
@@ -1573,8 +1775,23 @@ public class GXHDO101B020 implements IFormLogic {
         mapping.put("StartKakuninsyacode", "startkakuninsyacode"); //開始確認者
         mapping.put("EndTantosyacode", "endtantosyacode"); //終了担当者
         mapping.put("revision", "revision"); //revision
-        mapping.put("kenmajikantani", "kenmajikantani"); //研磨時間単位
+//        mapping.put("kenmajikantani", "kenmajikantani"); //研磨時間単位
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
+        mapping.put("potsyurui", "potsyurui"); //ﾎﾟｯﾄ種類
+        mapping.put("charge", "charge"); //ﾁｬｰｼﾞ量
+        mapping.put("bjikan2", "bjikan2"); //研磨時間②
+        mapping.put("bkaiten2", "bkaiten2"); //研磨機回転数②
+        mapping.put("bjikan3", "bjikan3"); //研磨時間③
+        mapping.put("bkaiten3", "bkaiten3"); //研磨機回転数③
+        mapping.put("bjikan4", "bjikan4"); //研磨時間④
+        mapping.put("bkaiten4", "bkaiten4"); //研磨機回転数④
+        mapping.put("bjikan5", "bjikan5"); //研磨時間⑤
+        mapping.put("bkaiten5", "bkaiten5"); //研磨機回転数⑤
+        mapping.put("bjikan6", "bjikan6"); //研磨時間⑥
+        mapping.put("bkaiten6", "bkaiten6"); //研磨機回転数⑥
+        mapping.put("bjikantotal", "bjikantotal"); //研磨時間合計
+        mapping.put("kenmazairyo2", "kenmazairyo2"); //研磨材量②
+        mapping.put("kenmazaisyurui2", "kenmazaisyurui2"); //研磨材種類②
 
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
@@ -1852,9 +2069,12 @@ public class GXHDO101B020 implements IFormLogic {
                 + "kojyo,lotno,edaban,jissekino,kcpno,bkaisinichiji,bsyuryonichiji,bjyokensetteimode,bjyokensyusokudo,bgoki,bjikan,potsuu"
                 + ",chiphahenkakunin,potkakunin,btantosya,ptantosya,bpotno1,kankaisinichiji,kansyuryonichiji,kantantosya,mediasenbetu,bpotno2"
                 + ",keinichiji,ukeirekosuu,tanijyuryo,ryohinkosuu,furyosuu,budomari,keitantosya,biko1,biko2,torokunichiji,kosinNichiji,kenma"
-                + ",kenmazairyo,kenmazaisyurui,tamaishisyurui,tamaishiryou,gaikancheck,StartKakuninsyacode,EndTantosyacode,revision,kenmajikantani,deleteflag"
+//                + ",kenmazairyo,kenmazaisyurui,tamaishisyurui,tamaishiryou,gaikancheck,StartKakuninsyacode,EndTantosyacode,revision,kenmajikantani,deleteflag"
+                + ",kenmazairyo,kenmazaisyurui,tamaishisyurui,tamaishiryou,gaikancheck,StartKakuninsyacode,EndTantosyacode,revision,deleteflag"
+                + ",potsyurui ,charge ,bjikan2 ,bkaiten2 ,bjikan3 ,bkaiten3 ,bjikan4 ,bkaiten4 ,bjikan5 ,bkaiten5 ,bjikan6 ,bkaiten6 ,bjikantotal ,kenmazairyo2 ,kenmazaisyurui2"
                 + ") VALUES ("
-                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+//                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterTmpSrBarrel1(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null, jissekino);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -1886,7 +2106,9 @@ public class GXHDO101B020 implements IFormLogic {
                 + " kansyuryonichiji = ?,kantantosya = ?,mediasenbetu = ?,bpotno2 = ?,keinichiji = ?,ukeirekosuu = ?,tanijyuryo = ?,ryohinkosuu = ?,"
                 + " furyosuu = ?,budomari = ?,keitantosya = ?,biko1 = ?,biko2 = ?,kosinNichiji = ?,kenma = ?,kenmazairyo = ?,"
                 + " kenmazaisyurui = ?,tamaishisyurui = ?,tamaishiryou = ?,gaikancheck = ?,StartKakuninsyacode = ?,EndTantosyacode = ?,"
-                + "revision = ?,kenmajikantani = ?,deleteflag = ? "
+//                + "revision = ?,kenmajikantani = ?,deleteflag = ? "
+                + " revision = ?,deleteflag = ? ,potsyurui = ? ,charge = ? ,bjikan2 = ? ,bkaiten2 = ? ,bjikan3 = ? ,bkaiten3 = ?,"
+                + " bjikan4 = ? ,bkaiten4 = ? ,bjikan5 = ? ,bkaiten5 = ? ,bjikan6 = ? ,bkaiten6 = ? ,bjikantotal = ? ,kenmazairyo2 = ? ,kenmazaisyurui2 = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND jissekino = ? AND revision = ? ";
 
         // 更新前の値を取得
@@ -1974,11 +2196,9 @@ public class GXHDO101B020 implements IFormLogic {
             getItemData(itemList, GXHDO101B020Const.SHURYOU_TIME, srBarrel1Data))); // ﾊﾞﾚﾙ終了日時
         
         params.add(null); // ﾊﾞﾚﾙ条件設定ﾓｰﾄﾞ
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.BJYOKENSYUSOKUDO, srBarrel1Data))); //ﾊﾞﾚﾙ条件周速度      
-        // ﾊﾞﾚﾙ号機
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.BGOKI, srBarrel1Data)));
-        
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.BJIKAN, srBarrel1Data))); // ﾊﾞﾚﾙ時間
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.BJYOKENSYUSOKUDO, srBarrel1Data))); //ﾊﾞﾚﾙ条件周速度(研磨機回転数①)
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.BGOKI, srBarrel1Data))); // ﾊﾞﾚﾙ号機(研磨号機)        
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.BJIKAN, srBarrel1Data))); // ﾊﾞﾚﾙ時間(研磨時間①)
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.POTSUU, srBarrel1Data))); // ﾎﾟｯﾄ数
         params.add(null); // ﾁｯﾌﾟ破片確認
         params.add(null); // ﾎﾟｯﾄ内確認
@@ -2028,9 +2248,24 @@ public class GXHDO101B020 implements IFormLogic {
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.SHURYOU_TANTOUSYA, srBarrel1Data))); // 終了担当者
 
         params.add(newRev); //revision
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.KENMAJIKANTANI, srBarrel1Data))); // 研磨時間単位
+//        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.KENMAJIKANTANI, srBarrel1Data))); // 研磨時間単位
         params.add(deleteflag); //削除ﾌﾗｸﾞ
-        
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.POTSYURUI, srBarrel1Data))); //ﾎﾟｯﾄ種類
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.CHARGERYOU, srBarrel1Data))); //ﾁｬｰｼﾞ量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.BJIKAN2, srBarrel1Data))); //研磨時間②
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.BJYOKENSYUSOKUDO2, srBarrel1Data))); //研磨機回転数②
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.BJIKAN3, srBarrel1Data))); //研磨時間③
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.BJYOKENSYUSOKUDO3, srBarrel1Data))); //研磨機回転数③
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.BJIKAN4, srBarrel1Data))); //研磨時間④
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.BJYOKENSYUSOKUDO4, srBarrel1Data))); //研磨機回転数④
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.BJIKAN5, srBarrel1Data))); //研磨時間⑤
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.BJYOKENSYUSOKUDO5, srBarrel1Data))); //研磨機回転数⑤
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.BJIKAN6, srBarrel1Data))); //研磨時間⑥
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.BJYOKENSYUSOKUDO6, srBarrel1Data))); //研磨機回転数⑥
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.BJIKANTOTAL, srBarrel1Data))); //研磨時間合計
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.KENMAZAIRYO2, srBarrel1Data))); //研磨材量②
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.KENMAZAISYURUI2, srBarrel1Data))); //研磨材種類②
+
         return params;
     }
 
@@ -2057,9 +2292,12 @@ public class GXHDO101B020 implements IFormLogic {
                 + " bgoki ,bjikan ,potsuu ,chiphahenkakunin ,potkakunin ,btantosya ,ptantosya ,bpotno1 ,kankaisinichiji ,"
                 + " kansyuryonichiji ,kantantosya ,mediasenbetu ,bpotno2 ,keinichiji ,ukeirekosuu ,tanijyuryo ,ryohinkosuu ,"
                 + " furyosuu ,budomari ,keitantosya ,biko1 ,biko2 ,torokunichiji ,kosinNichiji ,kenma ,kenmazairyo ,"
-                + " kenmazaisyurui ,tamaishisyurui ,tamaishiryou ,gaikancheck ,StartKakuninsyacode ,EndTantosyacode ,revision,kenmajikantani"
+//                + " kenmazaisyurui ,tamaishisyurui ,tamaishiryou ,gaikancheck ,StartKakuninsyacode ,EndTantosyacode ,revision,kenmajikantani"
+                + " kenmazaisyurui ,tamaishisyurui ,tamaishiryou ,gaikancheck ,StartKakuninsyacode ,EndTantosyacode ,revision ,"
+                + " potsyurui ,charge ,bjikan2 ,bkaiten2 ,bjikan3 ,bkaiten3 ,bjikan4 ,bkaiten4 ,bjikan5 ,bkaiten5 ,bjikan6 ,bkaiten6 ,bjikantotal ,kenmazairyo2 ,kenmazaisyurui2"
                 + ") VALUES ("
-                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+//                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterSrBarrel1(true, newRev, kojyo, lotNo, edaban, jissekino, systemTime, itemList, tmpSrBarrel1);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -2089,7 +2327,10 @@ public class GXHDO101B020 implements IFormLogic {
                 + " bgoki = ?,bjikan = ?,potsuu = ?,chiphahenkakunin = ?,potkakunin = ?,btantosya = ?,ptantosya = ?,bpotno1 = ?,kankaisinichiji = ?,"
                 + " kansyuryonichiji = ?,kantantosya = ?,mediasenbetu = ?,bpotno2 = ?,keinichiji = ?,ukeirekosuu = ?,tanijyuryo = ?,ryohinkosuu = ?,"
                 + " furyosuu = ?,budomari = ?,keitantosya = ?,biko1 = ?,biko2 = ?,kosinNichiji = ?,kenma = ?,kenmazairyo = ?,"
-                + " kenmazaisyurui = ?,tamaishisyurui = ?,tamaishiryou = ?,gaikancheck = ?,StartKakuninsyacode = ?,EndTantosyacode = ?,revision = ?,kenmajikantani = ? "
+//                + " kenmazaisyurui = ?,tamaishisyurui = ?,tamaishiryou = ?,gaikancheck = ?,StartKakuninsyacode = ?,EndTantosyacode = ?,revision = ?,kenmajikantani = ? "
+                + " kenmazaisyurui = ?,tamaishisyurui = ?,tamaishiryou = ?,gaikancheck = ?,StartKakuninsyacode = ?,EndTantosyacode = ?,revision = ?,"
+                + " potsyurui = ? ,charge = ? ,bjikan2 = ? ,bkaiten2 = ? ,bjikan3 = ? ,bkaiten3 = ? ,bjikan4 = ? ,bkaiten4 = ? ,bjikan5 = ? ,bkaiten5 = ?,"
+                + " bjikan6 = ? ,bkaiten6 = ? ,bjikantotal = ? ,kenmazairyo2 = ? ,kenmazaisyurui2 = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND jissekino = ? AND revision = ? ";
 
         // 更新前の値を取得
@@ -2146,9 +2387,9 @@ public class GXHDO101B020 implements IFormLogic {
                 getItemData(itemList, GXHDO101B020Const.SHURYOU_TIME, srBarrel1Data))); // ﾊﾞﾚﾙ終了日時
 
         params.add(null); // ﾊﾞﾚﾙ条件設定ﾓｰﾄﾞ
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B020Const.BJYOKENSYUSOKUDO, srBarrel1Data))); //ﾊﾞﾚﾙ条件周速度         
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B020Const.BGOKI, srBarrel1Data))); // ﾊﾞﾚﾙ号機
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B020Const.BJIKAN, srBarrel1Data))); // ﾊﾞﾚﾙ時間
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B020Const.BJYOKENSYUSOKUDO, srBarrel1Data))); //ﾊﾞﾚﾙ条件周速度(研磨機回転数①)
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B020Const.BGOKI, srBarrel1Data))); // ﾊﾞﾚﾙ号機(研磨号機)
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B020Const.BJIKAN, srBarrel1Data))); // ﾊﾞﾚﾙ時間(研磨時間①)
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B020Const.POTSUU, srBarrel1Data))); // ﾎﾟｯﾄ数
         params.add(null); // ﾁｯﾌﾟ破片確認
         params.add(null); // ﾎﾟｯﾄ内確認
@@ -2199,8 +2440,23 @@ public class GXHDO101B020 implements IFormLogic {
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B020Const.SHURYOU_TANTOUSYA, srBarrel1Data))); // 終了担当者
 
         params.add(newRev); //revision
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B020Const.KENMAJIKANTANI, srBarrel1Data))); // 研磨時間単位
-        
+//        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B020Const.KENMAJIKANTANI, srBarrel1Data))); // 研磨時間単位
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.POTSYURUI, srBarrel1Data))); //ﾎﾟｯﾄ種類
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.CHARGERYOU, srBarrel1Data))); //ﾁｬｰｼﾞ量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.BJIKAN2, srBarrel1Data))); //研磨時間②
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.BJYOKENSYUSOKUDO2, srBarrel1Data))); //研磨機回転数②
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.BJIKAN3, srBarrel1Data))); //研磨時間③
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.BJYOKENSYUSOKUDO3, srBarrel1Data))); //研磨機回転数③
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.BJIKAN4, srBarrel1Data))); //研磨時間④
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.BJYOKENSYUSOKUDO4, srBarrel1Data))); //研磨機回転数④
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.BJIKAN5, srBarrel1Data))); //研磨時間⑤
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.BJYOKENSYUSOKUDO5, srBarrel1Data))); //研磨機回転数⑤
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.BJIKAN6, srBarrel1Data))); //研磨時間⑥
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.BJYOKENSYUSOKUDO6, srBarrel1Data))); //研磨機回転数⑥
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.BJIKANTOTAL, srBarrel1Data))); //研磨時間合計
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.KENMAZAIRYO2, srBarrel1Data))); //研磨材量②
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B020Const.KENMAZAISYURUI2, srBarrel1Data))); //研磨材種類②
+
         return params;
     }
 
@@ -2357,28 +2613,28 @@ public class GXHDO101B020 implements IFormLogic {
 
                 // ②入力値ﾁｪｯｸを行う
                 //    【対象項目】
-                //     ・研磨時間
-                //     ・研磨時間単位
+                //     ・研磨時間合計
                 //     ・開始日
                 //     ・開始時刻
-                FXHDD01 itemBjikan = getItemRow(processData.getItemList(), GXHDO101B020Const.BJIKAN);
-                FXHDD01 itemKenmajikantani = getItemRow(processData.getItemList(), GXHDO101B020Const.KENMAJIKANTANI);
+                FXHDD01 itemBjikanTotal = getItemRow(processData.getItemList(), GXHDO101B020Const.BJIKANTOTAL);
+//                FXHDD01 itemKenmajikantani = getItemRow(processData.getItemList(), GXHDO101B020Const.KENMAJIKANTANI);
                 FXHDD01 itemStartDay = getItemRow(processData.getItemList(), GXHDO101B020Const.KAISHI_DAY);
                 FXHDD01 itemStartTime = getItemRow(processData.getItemList(), GXHDO101B020Const.KAISHI_TIME);
 
                 //  1.対象項目のうち、1つ以上の項目が入力されていない場合
                 //   当処理(【終了日時計算】ﾎﾞﾀﾝ押下時)を終了する。
-                if (!StringUtil.isEmpty(itemBjikan.getValue()) && !StringUtil.isEmpty(itemKenmajikantani.getValue()) && 
-                        !StringUtil.isEmpty(itemStartDay.getValue()) && !StringUtil.isEmpty(itemStartTime.getValue())) {
+//                if (!StringUtil.isEmpty(itemBjikanTotal.getValue()) && !StringUtil.isEmpty(itemKenmajikantani.getValue()) && 
+//                        !StringUtil.isEmpty(itemStartDay.getValue()) && !StringUtil.isEmpty(itemStartTime.getValue())) {
+                if (!StringUtil.isEmpty(itemBjikanTotal.getValue()) && !StringUtil.isEmpty(itemStartDay.getValue()) && !StringUtil.isEmpty(itemStartTime.getValue())) {
                     
-                     //研磨時間
-                    String kenmajikan = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B020Const.BJIKAN, null));
+                     //研磨時間合計
+                    String kenmajikantotal = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B020Const.BJIKANTOTAL, null));
 
                     //  2.【研磨時間】の入力値が数値変換できない場合。
                     //   当処理(【終了日時計算】ﾎﾞﾀﾝ押下時)を終了する。
-                    BigDecimal decKenmajikan = new BigDecimal(kenmajikan);
+                    BigDecimal decKenmajikantotal = new BigDecimal(kenmajikantotal);
                     //  3.【研磨時間】の入力値が0もしくは0以下 だった場合。
-                    if(0 <= BigDecimal.ZERO.compareTo(decKenmajikan)){
+                    if(0 <= BigDecimal.ZERO.compareTo(decKenmajikantotal)){
                         // 当処理(【終了日時計算】ﾎﾞﾀﾝ押下時)を終了する。
                         return processData;
                     }
@@ -2398,26 +2654,33 @@ public class GXHDO101B020 implements IFormLogic {
                     //  6.上記以外の場合
                     //   以降の処理を実行する。
                     
-                    //  1.【研磨時間単位】の値が「時間」の場合
-                    //   A.「開始日」と「開始時刻」を利用し日付型に変換し、「研磨時間」の値を【時間】として加算する。
+//                    //  1.【研磨時間単位】の値が「時間」の場合
+//                    //   A.「開始日」と「開始時刻」を利用し日付型に変換し、「研磨時間」の値を【時間】として加算する。
+//                    // ③計算処理を実施する。
+//                    String kenmajikantani =  StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B020Const.KENMAJIKANTANI, null));
+//                    Calendar cal = Calendar.getInstance();
+//                    Date dateStartDateTime = DateUtil.convertStringToDate(startDate, startTime);
+//                    if("時間".equals(kenmajikantani)){
+//                        cal.setTime(dateStartDateTime);
+//                        cal.add(Calendar.HOUR_OF_DAY, decKenmajikan.intValue());
+//                        dateStartDateTime = cal.getTime();
+//                    }
+//                    
+//                    //  2.【研磨時間単位】の値が「分」の場合
+//                    //   A.「開始日」と「開始時刻」を利用し日付型に変換し、「研磨時間」の値を【分】として加算する。
+//                    if("分".equals(kenmajikantani)){
+//                        cal.setTime(dateStartDateTime);
+//                        cal.add(Calendar.MINUTE, decKenmajikan.intValue());
+//                        dateStartDateTime = cal.getTime();
+//                    }
+
                     // ③計算処理を実施する。
-                    String kenmajikantani =  StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B020Const.KENMAJIKANTANI, null));
                     Calendar cal = Calendar.getInstance();
                     Date dateStartDateTime = DateUtil.convertStringToDate(startDate, startTime);
-                    if("時間".equals(kenmajikantani)){
-                        cal.setTime(dateStartDateTime);
-                        cal.add(Calendar.HOUR_OF_DAY, decKenmajikan.intValue());
-                        dateStartDateTime = cal.getTime();
-                    }
-                    
-                    //  2.【研磨時間単位】の値が「分」の場合
-                    //   A.「開始日」と「開始時刻」を利用し日付型に変換し、「研磨時間」の値を【分】として加算する。
-                    if("分".equals(kenmajikantani)){
-                        cal.setTime(dateStartDateTime);
-                        cal.add(Calendar.MINUTE, decKenmajikan.intValue());
-                        dateStartDateTime = cal.getTime();
-                    }
-                    
+                    cal.setTime(dateStartDateTime);
+                    cal.add(Calendar.MINUTE, decKenmajikantotal.intValue());
+                    dateStartDateTime = cal.getTime();
+
                     itemEndDay.setValue(new SimpleDateFormat("yyMMdd").format(dateStartDateTime));
                     itemEndTime.setValue(new SimpleDateFormat("HHmm").format(dateStartDateTime));
                 }
@@ -2455,6 +2718,57 @@ public class GXHDO101B020 implements IFormLogic {
     }
     
     /**
+     * 研磨時間合計計算処理
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData setKenmaDateTimeSum(ProcessData processData) {
+        
+        processData.setMethod("");
+        
+        try {
+            FXHDD01 itemBJikanTotal = getItemRow(processData.getItemList(), GXHDO101B020Const.BJIKANTOTAL);
+            
+            // ①入力ﾁｪｯｸ
+            //  1.「研磨時間①～⑥」に数値以外が入力されている場合　※何も入力されていないものは０とする
+            //   何もしない
+            //  2.上記以外の場合
+            //   以降の処理を実行する。
+            String kenmajikan1 = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B020Const.BJIKAN, null));
+            String kenmajikan2 = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B020Const.BJIKAN2, null));
+            String kenmajikan3 = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B020Const.BJIKAN3, null));
+            String kenmajikan4 = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B020Const.BJIKAN4, null));
+            String kenmajikan5 = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B020Const.BJIKAN5, null));
+            String kenmajikan6 = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B020Const.BJIKAN6, null));
+            
+            //未入力は0として扱う
+            if (StringUtil.isEmpty(kenmajikan1)) {kenmajikan1 = "0";}
+            if (StringUtil.isEmpty(kenmajikan2)) {kenmajikan2 = "0";}
+            if (StringUtil.isEmpty(kenmajikan3)) {kenmajikan3 = "0";}
+            if (StringUtil.isEmpty(kenmajikan4)) {kenmajikan4 = "0";}
+            if (StringUtil.isEmpty(kenmajikan5)) {kenmajikan5 = "0";}
+            if (StringUtil.isEmpty(kenmajikan6)) {kenmajikan6 = "0";}
+            
+            //数値変換
+            //数値変換できなかった場合、Exceptionに飛ばして何もしない。
+            BigDecimal decKenmajikan1 = new BigDecimal(kenmajikan1);
+            BigDecimal decKenmajikan2 = new BigDecimal(kenmajikan2);
+            BigDecimal decKenmajikan3 = new BigDecimal(kenmajikan3);
+            BigDecimal decKenmajikan4 = new BigDecimal(kenmajikan4);
+            BigDecimal decKenmajikan5 = new BigDecimal(kenmajikan5);
+            BigDecimal decKenmajikan6 = new BigDecimal(kenmajikan6);
+            //研磨時間合計の計算
+            BigDecimal decKenmajikanTotal = decKenmajikan1.add(decKenmajikan2).add(decKenmajikan3).add(decKenmajikan4).add(decKenmajikan5).add(decKenmajikan6);
+            //計算結果を反映
+            itemBJikanTotal.setValue(decKenmajikanTotal.toString());
+        } catch (NumberFormatException e) {
+            //数値型変換失敗時はそのままリターン
+        }
+        return processData;
+    }
+
+    /**
      * 日付(日、時間)の項目にフォーマットの日付(yyMMdd,HHmm)をセットする
      *
      * @param itemDay 項目日付(日)
@@ -2481,24 +2795,69 @@ public class GXHDO101B020 implements IFormLogic {
             // 研磨方式
             case GXHDO101B020Const.KENMA:
                 return StringUtil.nullToBlank(srBarrel1Data.getKenma());
+            // ﾎﾟｯﾄ種類
+            case GXHDO101B020Const.POTSYURUI:
+                return StringUtil.nullToBlank(srBarrel1Data.getPotsyurui());
             // 研磨号機
             case GXHDO101B020Const.BGOKI:
                 return StringUtil.nullToBlank(srBarrel1Data.getBgoki());
+            // ﾁｬｰｼﾞ量
+            case GXHDO101B020Const.CHARGERYOU:
+                return StringUtil.nullToBlank(srBarrel1Data.getChargeryou());
             // ﾎﾟｯﾄ数
             case GXHDO101B020Const.POTSUU:
                 return StringUtil.nullToBlank(srBarrel1Data.getPotsuu());
-            // 研磨時間
+            // 研磨時間①
             case GXHDO101B020Const.BJIKAN:
                 return StringUtil.nullToBlank(srBarrel1Data.getBjikan());
-            // 研磨機回転数
+            // 研磨機回転数①
             case GXHDO101B020Const.BJYOKENSYUSOKUDO:
                 return StringUtil.nullToBlank(srBarrel1Data.getBjyokensyusokudo());
-            // 研磨材量
+            // 研磨時間②
+            case GXHDO101B020Const.BJIKAN2:
+                return StringUtil.nullToBlank(srBarrel1Data.getBjikan2());
+            // 研磨機回転数②
+            case GXHDO101B020Const.BJYOKENSYUSOKUDO2:
+                return StringUtil.nullToBlank(srBarrel1Data.getBjyokensyusokudo2());
+            // 研磨時間③
+            case GXHDO101B020Const.BJIKAN3:
+                return StringUtil.nullToBlank(srBarrel1Data.getBjikan3());
+            // 研磨機回転数③
+            case GXHDO101B020Const.BJYOKENSYUSOKUDO3:
+                return StringUtil.nullToBlank(srBarrel1Data.getBjyokensyusokudo3());
+            // 研磨時間④
+            case GXHDO101B020Const.BJIKAN4:
+                return StringUtil.nullToBlank(srBarrel1Data.getBjikan4());
+            // 研磨機回転数④
+            case GXHDO101B020Const.BJYOKENSYUSOKUDO4:
+                return StringUtil.nullToBlank(srBarrel1Data.getBjyokensyusokudo4());
+            // 研磨時間⑤
+            case GXHDO101B020Const.BJIKAN5:
+                return StringUtil.nullToBlank(srBarrel1Data.getBjikan5());
+            // 研磨機回転数⑤
+            case GXHDO101B020Const.BJYOKENSYUSOKUDO5:
+                return StringUtil.nullToBlank(srBarrel1Data.getBjyokensyusokudo5());
+            // 研磨時間⑥
+            case GXHDO101B020Const.BJIKAN6:
+                return StringUtil.nullToBlank(srBarrel1Data.getBjikan6());
+            // 研磨機回転数⑥
+            case GXHDO101B020Const.BJYOKENSYUSOKUDO6:
+                return StringUtil.nullToBlank(srBarrel1Data.getBjyokensyusokudo6());
+            // 研磨時間合計
+            case GXHDO101B020Const.BJIKANTOTAL:
+                return StringUtil.nullToBlank(srBarrel1Data.getBjikantotal());
+            // 研磨材量①
             case GXHDO101B020Const.KENMAZAIRYO:
                 return StringUtil.nullToBlank(srBarrel1Data.getKenmazairyo());
-            // 研磨材種類
+            // 研磨材種類①
             case GXHDO101B020Const.KENMAZAISYURUI:
                 return StringUtil.nullToBlank(srBarrel1Data.getKenmazaisyurui());
+            // 研磨材量②
+            case GXHDO101B020Const.KENMAZAIRYO2:
+                return StringUtil.nullToBlank(srBarrel1Data.getKenmazairyo2());
+            // 研磨材種類②
+            case GXHDO101B020Const.KENMAZAISYURUI2:
+                return StringUtil.nullToBlank(srBarrel1Data.getKenmazaisyurui2());
             // 玉石種類
             case GXHDO101B020Const.TAMAISHISYURUI:
                 return StringUtil.nullToBlank(srBarrel1Data.getTamaishisyurui());
@@ -2542,9 +2901,9 @@ public class GXHDO101B020 implements IFormLogic {
             // 備考2
             case GXHDO101B020Const.BIKO2:
                 return StringUtil.nullToBlank(srBarrel1Data.getBiko2());
-            // 研磨時間単位
-            case GXHDO101B020Const.KENMAJIKANTANI:
-                return StringUtil.nullToBlank(srBarrel1Data.getKenmajikantani());
+//            // 研磨時間単位
+//            case GXHDO101B020Const.KENMAJIKANTANI:
+//                return StringUtil.nullToBlank(srBarrel1Data.getKenmajikantani());
             default:
                 return null;            
         }
@@ -2572,13 +2931,17 @@ public class GXHDO101B020 implements IFormLogic {
                 +  " bgoki ,bjikan ,potsuu ,chiphahenkakunin ,potkakunin ,btantosya ,ptantosya ,bpotno1 ,kankaisinichiji ,"
                 +  " kansyuryonichiji ,kantantosya ,mediasenbetu ,bpotno2 ,keinichiji ,ukeirekosuu ,tanijyuryo ,ryohinkosuu ,"
                 +  " furyosuu ,budomari ,keitantosya ,biko1 ,biko2 ,torokunichiji ,kosinNichiji ,kenma ,kenmazairyo ,"
-                +  " kenmazaisyurui ,tamaishisyurui ,tamaishiryou ,gaikancheck ,StartKakuninsyacode ,EndTantosyacode ,revision ,kenmajikantani,deleteflag"
+//                +  " kenmazaisyurui ,tamaishisyurui ,tamaishiryou ,gaikancheck ,StartKakuninsyacode ,EndTantosyacode ,revision ,kenmajikantani,deleteflag"
+                +  " kenmazaisyurui ,tamaishisyurui ,tamaishiryou ,gaikancheck ,StartKakuninsyacode ,EndTantosyacode ,revision ,deleteflag ,"
+                +  " potsyurui ,charge ,bjikan2 ,bkaiten2 ,bjikan3 ,bkaiten3 ,bjikan4 ,bkaiten4 ,bjikan5 ,bkaiten5 ,bjikan6 ,bkaiten6 ,bjikantotal ,kenmazairyo2 ,kenmazaisyurui2"
                 + ") SELECT "
                 +  " kojyo ,lotno ,edaban ,jissekino ,kcpno ,bkaisinichiji ,bsyuryonichiji ,bjyokensetteimode ,bjyokensyusokudo , "
                 +  " bgoki ,bjikan ,potsuu ,chiphahenkakunin ,potkakunin ,btantosya ,ptantosya ,bpotno1 ,kankaisinichiji ,"
                 +  " kansyuryonichiji ,kantantosya ,mediasenbetu ,bpotno2 ,keinichiji ,ukeirekosuu ,tanijyuryo ,ryohinkosuu ,"
                 +  " furyosuu ,budomari ,keitantosya ,biko1 ,biko2 ,? ,? ,kenma ,kenmazairyo ,"
-                +  " kenmazaisyurui ,tamaishisyurui ,tamaishiryou ,gaikancheck ,StartKakuninsyacode ,EndTantosyacode ,? ,kenmajikantani,? "
+//                +  " kenmazaisyurui ,tamaishisyurui ,tamaishiryou ,gaikancheck ,StartKakuninsyacode ,EndTantosyacode ,? ,kenmajikantani,? "
+                +  " kenmazaisyurui ,tamaishisyurui ,tamaishiryou ,gaikancheck ,StartKakuninsyacode ,EndTantosyacode ,? ,? ,"
+                +  " potsyurui ,charge ,bjikan2 ,bkaiten2 ,bjikan3 ,bkaiten3 ,bjikan4 ,bkaiten4 ,bjikan5 ,bkaiten5 ,bjikan6 ,bkaiten6 ,bjikantotal ,kenmazairyo2 ,kenmazaisyurui2 "
                 + " FROM sr_barrel1 "
                 + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND jissekino = ? ";
 
@@ -2598,7 +2961,35 @@ public class GXHDO101B020 implements IFormLogic {
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
     }
-    
+
+    /**
+     * [生産実績]から、ﾃﾞｰﾀを取得
+     * @param queryRunnerWip オブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param date ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ(検索キー)
+     * @return 取得データ
+     * @throws SQLException 
+     */
+     private List<Seisan> loadSeisanData(QueryRunner queryRunnerWip, int jissekiNo) throws SQLException {
+        // 生産実績データの取得
+        String sql = "SELECT goukicode "
+                + "FROM seisan "
+                + "WHERE jissekino = ? ";
+
+        Map mapping = new HashMap<>();
+        mapping.put("goukicode", "goukicode");
+        
+        BeanProcessor beanProcessor = new BeanProcessor(mapping);
+        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+        ResultSetHandler<List<Seisan>> beanHandler = new BeanListHandler<>(Seisan.class, rowProcessor);
+
+        List<Object> params = new ArrayList<>();
+        params.add(jissekiNo);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerWip.query(sql, beanHandler, params.toArray());
+    }
+
     /**
      * [実績]から、ﾃﾞｰﾀを取得
      * @param queryRunnerWip オブジェクト
@@ -2616,8 +3007,8 @@ public class GXHDO101B020 implements IFormLogic {
         
         List<String> dataList= new ArrayList<>(Arrays.asList(data));
         
-        // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
-        String sql = "SELECT syorisuu "
+        // 実績データの取得
+        String sql = "SELECT syorisuu,jissekino "
                 + "FROM jisseki "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND ";
         
@@ -2627,6 +3018,7 @@ public class GXHDO101B020 implements IFormLogic {
         
         Map mapping = new HashMap<>();
         mapping.put("syorisuu", "syorisuu");
+        mapping.put("jissekino", "jissekino");
         
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
@@ -2641,8 +3033,7 @@ public class GXHDO101B020 implements IFormLogic {
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerWip.query(sql, beanHandler, params.toArray());
     }
-     
-     
+
     /**
      * [ﾊﾟﾗﾒｰﾀﾏｽﾀ]から、ﾃﾞｰﾀを取得
      * @param queryRunnerDoc オブジェクト
@@ -2664,6 +3055,27 @@ public class GXHDO101B020 implements IFormLogic {
                 
     }
     
+    /**
+     * [ﾊﾟﾗﾒｰﾀﾏｽﾀ]から、工程ｺｰﾄﾞを取得
+     * @param queryRunnerDoc オブジェクト
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadFxhbm03DataKoteCode(QueryRunner queryRunnerDoc) {
+        try {
+
+            // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+             String sql = "SELECT data "
+                        + " FROM fxhbm03 "
+                        + " WHERE user_name = 'common_user' AND key = 'xhd_研磨ﾊﾞﾚﾙ工程' ";
+            return queryRunnerDoc.query(sql, new MapHandler());
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+        }
+        return null;
+                
+    }
+
     /**
      * 処理数取得処理
      * @param queryRunnerDoc queryRunner(Doc)オブジェクト
@@ -2691,4 +3103,38 @@ public class GXHDO101B020 implements IFormLogic {
         }
         return syorisuu;
     }
+
+    /**
+     * 研磨号機取得処理
+     * @param queryRunnerDoc queryRunner(Doc)オブジェクト
+     * @param queryRunnerWip queryRunner(Wip)オブジェクト
+     * @param lotNo ﾛｯﾄNo
+     * @return 研磨号機
+     */
+    private String getGokiCode(QueryRunner queryRunnerDoc, QueryRunner queryRunnerWip, String lotNo) throws SQLException{
+        // 研磨号機の取得
+        String gokiCode = null;
+
+        //パラメータマスタから工程コード取得
+        Map fxhbm03Data = loadFxhbm03DataKoteCode(queryRunnerDoc);
+        if (fxhbm03Data != null && !fxhbm03Data.isEmpty()) {
+            String strfxhbm03List = StringUtil.nullToBlank(getMapData(fxhbm03Data, "data"));
+            String fxhbm03DataArr[] = strfxhbm03List.split(",");
+
+            // 実績情報の取得
+            List<Jisseki> jissekiData = loadJissekiData(queryRunnerWip, lotNo, fxhbm03DataArr);
+            if (jissekiData != null && jissekiData.size() > 0) {
+                int dbJissekino = jissekiData.get(0).getJissekino(); //実績No
+                if (0 < dbJissekino) {
+                    // 生産実績情報の取得
+                    List<Seisan> seisanData = loadSeisanData(queryRunnerWip, dbJissekino);
+                    if (seisanData != null && seisanData.size() > 0) {
+                        gokiCode = seisanData.get(0).getGoukicode(); //号機コード
+                    }
+                }
+            }
+        }
+        return gokiCode;
+    }
+
 }
