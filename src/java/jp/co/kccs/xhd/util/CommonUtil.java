@@ -45,6 +45,11 @@ import org.apache.commons.dbutils.handlers.MapListHandler;
  * 変更者	KCCS D.Yanagida<br>
  * 変更理由	ロット混合対応　統合前ロットの設計情報検索処理を追加<br>
  * <br>
+ * 変更日	2021/08/16<br>
+ * 計画書No	MB2101-DK002<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	前工程設計ﾃﾞｰﾀより、情報取得を追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -1641,6 +1646,34 @@ public class CommonUtil {
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+    
+    /**
+     * (原料入力機能)前工程設計ﾃﾞｰﾀより、情報を取得する
+     * 
+     * @param queryRunnerQcdb QueryRunnerオブジェクト(PostgreSQL)
+     * @param queryRunnerWip QueryRunnerオブジェクト(Pervasive/PSQL)
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @return 設計データ
+     * @throws SQLException 例外エラー
+     */
+    public static Map getMkSekkeiInfo(QueryRunner queryRunnerQcdb, QueryRunner queryRunnerWip, 
+            String kojyo, String lotNo, String edaban) throws SQLException {
+        
+        String sql = "SELECT "
+                + " sekkeino,kojyo,lotno,edaban,syurui,hinmei,pattern,tantousya,tourokunichiji,koushinnichiji "
+                + "FROM da_mksekkei "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        Map current = queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+        return current;
     }
     
     /**

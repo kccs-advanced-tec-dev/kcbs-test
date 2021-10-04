@@ -1,0 +1,53 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Pragma" content="no-cache"/>
+        <meta http-equiv="Cache-Control" content="no-cache"/>
+        <meta http-equiv="Expires" content="0"/>
+        <title>#{myParam.application_id} #{myMsg.mainMenu}</title>
+        <h:outputScript library="primefaces" name="jquery/jquery.js" />
+        <script src="#{request.contextPath}/resources/js/locUpload.js"></script>
+    </h:head>
+    <h:body>
+        <f:metadata>
+            <f:viewParam id="macAddr" name="macAddr" value="#{sessionManager.macAddr}"/>
+            <f:viewAction action="#{gXHDO202A.selectMenuList()}"/>
+        </f:metadata>
+        <div style="margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;">
+        <br/>
+        <h2>#{myMsg.hinshitsuDB_Rireki_Kensaku}</h2>
+        <h:form id="form">
+            <tr>
+            <p:dataTable id="menuTable" var="item" value="#{gXHDO202A.menuList}"
+                         style="margin-top: 20px;margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;font-size: 17px;"
+                         scrollable="true"
+                         emptyMessage="">
+                <div style="text-align:center">
+                <p:column id="mItem" width="50%" headerText="#{myMsg.rireki_Kensaku_Gamenmei}" style="font-size: 17px;">
+                    <h:commandLink value="#{item.menuName}" style="color:Indigo;font-size: 17px;"
+                                   action="#{gXHDO202A.openXhdForm(item)}"  >
+                    </h:commandLink>
+                </p:column>
+                </div>
+                <p:column id="mComment" width="50%" headerText="#{myMsg.menuComment}" style="font-size: 17px;">
+                    <p:outputLabel value="#{item.menuComment}" style="font-size: 17px;"/>
+                </p:column>
+            </p:dataTable>
+            </tr>
+            <br/>
+            <tr>
+                <td style="position:relative;left:16px;">
+                    <p:commandButton id="returnBtn" styleClass="ui-conf-commandbtn-def1" class="button"  style="width: 95px; height: 32px; font-size: 13px;"
+                                    value="#{myMsg.return}" action="/secure/pxhdo012/gxhdo012a.xhtml?faces-redirect=true"
+                                    process="@this" update="@this"/>          
+                </td>
+            </tr>
+        </h:form>
+        </div>
+    </h:body>
+</html>

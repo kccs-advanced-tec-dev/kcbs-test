@@ -40,6 +40,11 @@ import javax.faces.context.FacesContext;
  * 計画書No	MB2101-DK002<br>
  * 変更者	kcss.gc<br>
  * 変更理由	情報表示メッセージ画面追加<br>
+ * <br>
+ * 変更日	2021/09/10<br>
+ * 計画書No	MB2101-DK002<br>
+ * 変更者	kcss.wxf<br>
+ * 変更理由	ｶﾞﾗｽ作製・秤量入力画面追加<br>
  * ===============================================================================<br>
  */
 /**
@@ -106,11 +111,7 @@ public class SubFormUtil {
      * 前工程WIP取込
      */
     public static final String FORM_ID_GXHDO101C020 = "GXHDO101C020";
-    /**
-     * B･Cﾗﾝｸ連絡書一覧画面
-     */
-    public static final String FORM_ID_GXHDO101C021 = "GXHDO101C021";
-    
+            
     /**
      * 初期表示メッセージ
      */
@@ -133,6 +134,11 @@ public class SubFormUtil {
      * 情報表示メッセージ
      */
     public static final String FORM_ID_RESULT_MESSAGE = "ResultMessage";
+    
+    /**
+     * ｶﾞﾗｽ作製・秤量入力画面ID
+     */
+    public static final String FORM_ID_GXHDO102C001 = "GXHDO102C001";
     
     /**
      * コンストラクタ
@@ -250,13 +256,6 @@ public class SubFormUtil {
                                 getELContext(), null, "beanGXHDO101C020");
                 break;
                 
-            // B･Cﾗﾝｸ連絡書一覧画面
-            case "GXHDO101C021":
-                returnBean = FacesContext.getCurrentInstance().
-                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
-                                getELContext(), null, "beanGXHDO101C021");
-                break;
-                
             // 初期表示メッセージ
             case "InitMessage":
                 returnBean = FacesContext.getCurrentInstance().
@@ -287,6 +286,12 @@ public class SubFormUtil {
                 returnBean = FacesContext.getCurrentInstance().
                         getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
                                 getELContext(), null, "beanResultMessage");
+                break;
+            // ｶﾞﾗｽ作製・秤量入力
+            case "GXHDO102C001":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO102C001");
                 break;
             default:
                 break;
