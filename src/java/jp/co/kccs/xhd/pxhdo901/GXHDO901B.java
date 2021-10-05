@@ -41,8 +41,8 @@ import jp.co.kccs.xhd.db.model.FXHDM02;
 import jp.co.kccs.xhd.db.model.FXHDM05;
 import jp.co.kccs.xhd.pxhdo102.GXHDO102C001;
 import jp.co.kccs.xhd.pxhdo102.GXHDO102C001Logic;
-//import jp.co.kccs.xhd.pxhdo102.GXHDO102C002;
-//import jp.co.kccs.xhd.pxhdo102.GXHDO102C002Logic;
+import jp.co.kccs.xhd.pxhdo102.GXHDO102C002;
+import jp.co.kccs.xhd.pxhdo102.GXHDO102C002Logic;
 import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
@@ -673,7 +673,7 @@ public class GXHDO901B implements Serializable {
             }                
 
             if (!isExist) {
-                initMessageList.add(MessageUtil.getMessage("XHD-000019", "【" + this.itemList.get(i).getLabel1() + "】"));
+                initMessageList.add(MessageUtil.getMessage("XHD-000019", "【" + itemDataList.get(i).getLabel1() + "】"));
             }
         }
     }
@@ -1057,11 +1057,14 @@ public class GXHDO901B implements Serializable {
                 context.addCallbackParam("firstParam", "kikakuError");
 
                 // エラー項目の背景色を設定
-                ErrUtil.setErrorItemBackColor(this.itemList, this.processData.getKikakuchiInputErrorInfoList());
+                boolean hasItemFlag = ErrUtil.setErrorItemBackColor(this.itemList, this.processData.getKikakuchiInputErrorInfoList());
+                ErrUtil.setErrorItemBackColor(this.itemListEx, this.processData.getKikakuchiInputErrorInfoList());
 
                 // エラー項目を表示するためページを遷移する。
                 // 表示したい項目のIndexを指定(0以下のIndexは内部的に無視)
-                setPageItemDataList(this.processData.getKikakuchiInputErrorInfoList().get(0).getItemIndex());
+                if (hasItemFlag) {
+                    setPageItemDataList(this.processData.getKikakuchiInputErrorInfoList().get(0).getItemIndex());
+                }
                 return;
             }
 
@@ -1832,10 +1835,10 @@ public class GXHDO901B implements Serializable {
                 GXHDO102C001Logic.setReturnData(beanGXHDO102C001.getGxhdO102c001Model(), this.itemList);
                 break;
             // ｶﾞﾗｽｽﾗﾘｰ作製・秤量入力
-//            case SubFormUtil.FORM_ID_GXHDO102C002:
-//                GXHDO102C002 beanGXHDO102C002 = (GXHDO102C002) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO102C002);
-//                GXHDO102C002Logic.setReturnData(beanGXHDO102C002.getGxhdO102c002Model(), this.itemList);
-//                break;
+            case SubFormUtil.FORM_ID_GXHDO102C002:
+                GXHDO102C002 beanGXHDO102C002 = (GXHDO102C002) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO102C002);
+                GXHDO102C002Logic.setReturnData(beanGXHDO102C002.getGxhdO102c002Model(), this.itemListEx);
+                break;
             default:
                 break;
         }

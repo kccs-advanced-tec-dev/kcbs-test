@@ -208,9 +208,13 @@ public class ErrUtil {
      *
      * @param itemList 項目データ
      * @param kikakuchiInputErrorInfoList 規格エラー情報
+     * @return true:規格エラー情報に項目が存在、false:規格エラー情報に項目が存在しない
      */
-    public static void setErrorItemBackColor(List<FXHDD01> itemList, List<KikakuchiInputErrorInfo> kikakuchiInputErrorInfoList) {
-        
+    public static boolean setErrorItemBackColor(List<FXHDD01> itemList, List<KikakuchiInputErrorInfo> kikakuchiInputErrorInfoList) {
+        boolean hasItemFlag = false;
+        if (itemList == null) {
+            return hasItemFlag;
+        }
         List<FXHDD01> errorItemList;
         for (KikakuchiInputErrorInfo errorItemInfo : kikakuchiInputErrorInfoList) {
 
@@ -219,8 +223,12 @@ public class ErrUtil {
 
             for (FXHDD01 fxhdd01 : errorItemList) {
                 fxhdd01.setBackColorInput(ERR_BACK_COLOR);
+                if(!hasItemFlag){
+                    hasItemFlag = true;
+                }
             }
         }
+        return hasItemFlag;
     }
     
     

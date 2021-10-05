@@ -1,0 +1,1027 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Pragma" content="no-cache"/>
+        <meta http-equiv="Cache-Control" content="no-cache"/>
+        <meta http-equiv="Expires" content="0"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title>#{myParam.application_id} #{myMsg.GXHDO202B002_GamenTitle}</title>
+        <link href="#{request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/growl.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/loading.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/gxhdo201common.css" rel="stylesheet" type="text/css"/>
+        <script src="#{request.contextPath}/resources/bootstrap/js/bootstrap.min.js" />
+        <h:outputScript library="primefaces" name="jquery/jquery.js" />
+        <script src="#{request.contextPath}/resources/js/growl.js"></script>
+    </h:head>
+    <h:body style="padding-top:30px;">
+        <f:metadata>
+            <f:viewAction action="#{gXHDO202B002.init()}"/>
+        </f:metadata>
+        <nav class="navbar  navbar-expand fixed-top navbar-dark" style="background-color:#0E6A89;height: 50px;z-index: 999;">
+            <span class="navbar-brand mb-0" style="font-size:18px;font-weight:bold;">#{myMsg.GXHDO202B002_GamenTitle}</span>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#Navber" aria-controls="Navber" aria-expanded="false" aria-label="ナビゲーションの切替">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <span class="navbar-text ml-auto">
+                <div class="collapse navbar-collapse" id="Navber">
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <h:link class="nav-link" outcome="/secure/pxhdo202/gxhdo202a.xhtml?faces-redirect=true" value="戻る"/>
+                    </li>
+                  </ul>
+                </div>
+            </span>
+        </nav>
+        <br/>
+        <h:form id="mainform" onkeypress="if (event.keyCode === 13) { return false; }">
+            <p:growl id="growlMessage" showDetail="false" sticky="true" escape="false"/>
+            <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
+                <f:facet name="message">
+                    <h:outputText value="#{gXHDO202B002.getWarnMessage()}" escape="false"/>
+                </f:facet>
+                <p:commandButton id="warnOk" value="OK" styleClass="ui-conf-commandbtn-def1" style="width:100px;margin-left:50px;"
+                                 actionListener="#{gXHDO202B002.processWarnOk()}"
+                                 process="@this searchpanel"
+                                 update="@form growlMessage idDataTable001 idDataTable002 btnExcel"
+                                 onstart="PF('cd').hide();$('#loadinggif').show();"
+                                 oncomplete="$('#loadinggif').hide();"/>
+                <p:commandButton id="warnCancel" value="Cancel" class="ui-conf-commandbtn-cancel" style="width:100px;" onclick="PF('cd').hide();" type="button" />
+            </p:confirmDialog>
+            <div id="loadinggif">
+                <img src="#{request.contextPath}/resources/gif/gif-load.gif"/>
+            </div>
+            <p:panel id="searchpanel" style="border:none;font-size:0.8em; ">
+                <table>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblCmbKotei" value="工程" style="width:100px;"/>
+                        </td>
+                        <td colspan="3">                            
+                            <p:selectOneMenu id="pCmbKotei"  value="#{gXHDO202B002.cmbKotei}" styleClass="selectMenu" editable="false"  style="margin-left:20px; height:30px;width:190px">
+                                <f:selectItem itemValue="" itemLabel=""/>
+                                <f:selectItems value="#{gXHDO202B002.cmbKoteiData}" />
+                            </p:selectOneMenu>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblLotNo" value="ﾛｯﾄNo" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pLotNo" value="#{gXHDO202B002.lotNo}" maxlength="14" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B002.checkByte('lotNo', 14)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblHinmei" value="品名" style="width:100px;" />
+                        </td>
+                        <td>
+                            <p:inputText id="pHinmei" value="#{gXHDO202B002.hinmei}" maxlength="8" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B002.checkByte('hinmei', 8)}" async="false" />
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblHyoryoDate" value="秤量日" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pHyoryoDateF" value="#{gXHDO202B002.hyoryoDateF}" maxlength="6" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B002.checkByte('hyoryoDateF', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pHyoryoDateT" value="#{gXHDO202B002.hyoryoDateT}" maxlength="6" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B002.checkByte('hyoryoDateT', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblGoki" value="秤量号機" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pGoki" value="#{gXHDO202B002.goki}" maxlength="4" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B002.checkByte('goki', 4)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblFunsaiStartDate" value="粉砕開始日" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pFunsaiStartDateF" value="#{gXHDO202B002.funsaiStartDateF}" maxlength="6" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B002.checkByte('funsaiStartDateF', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pFunsaiStartDateT" value="#{gXHDO202B002.funsaiStartDateT}" maxlength="6" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B002.checkByte('funsaiStartDateT', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblFunsaiEndDate" value="粉砕終了日" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pFunsaiEndDateF" value="#{gXHDO202B002.funsaiEndDateF}" maxlength="6" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B002.checkByte('funsaiEndDateF', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pFunsaiEndDateT" value="#{gXHDO202B002.funsaiEndDateT}" maxlength="6" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B002.checkByte('funsaiEndDateT', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                </table>
+            </p:panel>
+            <p:panel id="buttonpanel" style="border:none;margin-top:-10px;">
+                <p:commandButton id="btnSearch" style="width:100px;height:25px;font-size:0.7em;margin-left:0px;text-align:center;"
+                                value="検索" 
+                                actionListener="#{gXHDO202B002.checkInputAndSearch()}"
+                                process="@this searchpanel"
+                                update="growlMessage idDataTable001 idDataTable002 btnExcel confDialog"
+                                onstart="$('#loadinggif').show();"
+                                oncomplete="$('#loadinggif').hide();if('warning'!=args.param1){PF('cd').hide();} else {PF('cd').show();}"/>
+                <p:commandButton id="bthClear" style="width:100px;height:25px;font-size:0.7em;margin-left:10px;text-align:center;" 
+                                value="クリア" 
+                                action="#{gXHDO202B002.clear()}"
+                                process="@this"
+                                update="searchpanel idDataTable001 idDataTable002 btnExcel"/>
+                <p:commandButton id="btnExcel" style="width:100px;height:25px;font-size:0.7em;margin-left:10px;text-align:center;"
+                                disabled="#{gXHDO202B002.excelButtonDisable}"
+                                value="Excel保存"
+                                actionListener="#{gXHDO202B002.downloadExcel()}"
+                                process="@this"
+                                ajax="false"/>
+            </p:panel>
+            <div style="margin-top:-15px;">
+                <p:dataTable id="idDataTable001" var="item" style="font-size:0.8em;margin-top:20px; display: #{gXHDO202B002.b005DTdisplay}" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap"
+                             value="#{gXHDO202B002.b005ListData}" emptyMessage="" paginator="true" paginatorPosition="top" rows="#{gXHDO202B002.getPagenatorCount()}">
+                    <p:column id="lotno" headerText="WIPﾛｯﾄNo" >
+                        <p:outputLabel value="#{item.lotno}"/>
+                    </p:column>
+                    <p:column id="glassslurryhinmei" headerText="ｶﾞﾗｽｽﾗﾘｰ品名" >
+                        <p:outputLabel value="#{item.glassslurryhinmei}"/>
+                    </p:column>
+                    <p:column id="glassslurrylotno" headerText="ｶﾞﾗｽｽﾗﾘｰ品名LotNo" >
+                        <p:outputLabel value="#{item.glassslurrylotno}"/>
+                    </p:column>
+                    <p:column id="lotkubun" headerText="ﾛｯﾄ区分" >
+                        <p:outputLabel value="#{item.lotkubun}"/>
+                    </p:column>
+                    <p:column id="fusaipottosize" headerText="粉砕ﾎﾟｯﾄｻｲｽﾞ" >
+                        <p:outputLabel value="#{item.fusaipottosize}"/>
+                    </p:column>
+                    <p:column id="tamaishikei" headerText="玉石径" >
+                        <p:outputLabel value="#{item.tamaishikei}"/>
+                    </p:column>
+                    <p:column id="goki" headerText="秤量号機" >
+                        <p:outputLabel value="#{item.goki}"/>
+                    </p:column>
+                    <p:column id="hyouryounichiji" headerText="秤量日時" >
+                        <p:outputLabel value="#{item.hyouryounichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tantousya" headerText="担当者" >
+                        <p:outputLabel value="#{item.tantousya}"/>
+                    </p:column>
+                    <p:column id="kakuninsya" headerText="確認者" >
+                        <p:outputLabel value="#{item.kakuninsya}"/>
+                    </p:column>
+                    <p:column id="bikou1" headerText="備考1" >
+                        <p:outputLabel value="#{item.bikou1}"/>
+                    </p:column>
+                    <p:column id="bikou2" headerText="備考2" >
+                        <p:outputLabel value="#{item.bikou2}"/>
+                    </p:column>
+                    <p:column id="potto1_zairyohinmei1" headerText="ﾎﾟｯﾄ1_材料品名1" >
+                        <p:outputLabel value="#{item.potto1_zairyohinmei1}"/>
+                    </p:column>
+                    <p:column id="potto1_tyogouryoukikaku1" headerText="ﾎﾟｯﾄ1_調合量規格1" >
+                        <p:outputLabel value="#{item.potto1_tyogouryoukikaku1}"/>
+                    </p:column>
+                    <p:column id="potto1_sizailotno1_1" headerText="ﾎﾟｯﾄ1_部材在庫No1_1" >
+                        <p:outputLabel value="#{item.potto1_sizailotno1_1}"/>
+                    </p:column>
+                    <p:column id="potto1_tyougouryou1_1" headerText="ﾎﾟｯﾄ1_調合量1_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto1_tyougouryou1_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto1_sizailotno1_2" headerText="ﾎﾟｯﾄ1_部材在庫No1_2" >
+                        <p:outputLabel value="#{item.potto1_sizailotno1_2}"/>
+                    </p:column>
+                    <p:column id="potto1_tyougouryou1_2" headerText="ﾎﾟｯﾄ1_調合量1_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto1_tyougouryou1_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto1_zairyohinmei2" headerText="ﾎﾟｯﾄ1_材料品名2" >
+                        <p:outputLabel value="#{item.potto1_zairyohinmei2}"/>
+                    </p:column>
+                    <p:column id="potto1_tyogouryoukikaku2" headerText="ﾎﾟｯﾄ1_調合量規格2" >
+                        <p:outputLabel value="#{item.potto1_tyogouryoukikaku2}"/>
+                    </p:column>
+                    <p:column id="potto1_sizailotno2_1" headerText="ﾎﾟｯﾄ1_部材在庫No2_1" >
+                        <p:outputLabel value="#{item.potto1_sizailotno2_1}"/>
+                    </p:column>
+                    <p:column id="potto1_tyougouryou2_1" headerText="ﾎﾟｯﾄ1_調合量2_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto1_tyougouryou2_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto1_sizailotno2_2" headerText="ﾎﾟｯﾄ1_部材在庫No2_2" >
+                        <p:outputLabel value="#{item.potto1_sizailotno2_2}"/>
+                    </p:column>
+                    <p:column id="potto1_tyougouryou2_2" headerText="ﾎﾟｯﾄ1_調合量2_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto1_tyougouryou2_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto1_zairyohinmei3" headerText="ﾎﾟｯﾄ1_材料品名3" >
+                        <p:outputLabel value="#{item.potto1_zairyohinmei3}"/>
+                    </p:column>
+                    <p:column id="potto1_tyogouryoukikaku3" headerText="ﾎﾟｯﾄ1_調合量規格3" >
+                        <p:outputLabel value="#{item.potto1_tyogouryoukikaku3}"/>
+                    </p:column>
+                    <p:column id="potto1_sizailotno3_1" headerText="ﾎﾟｯﾄ1_部材在庫No3_1" >
+                        <p:outputLabel value="#{item.potto1_sizailotno3_1}"/>
+                    </p:column>
+                    <p:column id="potto1_tyougouryou3_1" headerText="ﾎﾟｯﾄ1_調合量3_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto1_tyougouryou3_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto1_sizailotno3_2" headerText="ﾎﾟｯﾄ1_部材在庫No3_2" >
+                        <p:outputLabel value="#{item.potto1_sizailotno3_2}"/>
+                    </p:column>
+                    <p:column id="potto1_tyougouryou3_2" headerText="ﾎﾟｯﾄ1_調合量3_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto1_tyougouryou3_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto1_zairyohinmei4" headerText="ﾎﾟｯﾄ1_材料品名4" >
+                        <p:outputLabel value="#{item.potto1_zairyohinmei4}"/>
+                    </p:column>
+                    <p:column id="potto1_tyogouryoukikaku4" headerText="ﾎﾟｯﾄ1_調合量規格4" >
+                        <p:outputLabel value="#{item.potto1_tyogouryoukikaku4}"/>
+                    </p:column>
+                    <p:column id="potto1_sizailotno4_1" headerText="ﾎﾟｯﾄ1_部材在庫No4_1" >
+                        <p:outputLabel value="#{item.potto1_sizailotno4_1}"/>
+                    </p:column>
+                    <p:column id="potto1_tyougouryou4_1" headerText="ﾎﾟｯﾄ1_調合量4_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto1_tyougouryou4_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto1_sizailotno4_2" headerText="ﾎﾟｯﾄ1_部材在庫No4_2" >
+                        <p:outputLabel value="#{item.potto1_sizailotno4_2}"/>
+                    </p:column>
+                    <p:column id="potto1_tyougouryou4_2" headerText="ﾎﾟｯﾄ1_調合量4_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto1_tyougouryou4_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto2_zairyohinmei1" headerText="ﾎﾟｯﾄ2_材料品名1" >
+                        <p:outputLabel value="#{item.potto2_zairyohinmei1}"/>
+                    </p:column>
+                    <p:column id="potto2_tyogouryoukikaku1" headerText="ﾎﾟｯﾄ2_調合量規格1" >
+                        <p:outputLabel value="#{item.potto2_tyogouryoukikaku1}"/>
+                    </p:column>
+                    <p:column id="potto2_sizailotno1_1" headerText="ﾎﾟｯﾄ2_部材在庫No1_1" >
+                        <p:outputLabel value="#{item.potto2_sizailotno1_1}"/>
+                    </p:column>
+                    <p:column id="potto2_tyougouryou1_1" headerText="ﾎﾟｯﾄ2_調合量1_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto2_tyougouryou1_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto2_sizailotno1_2" headerText="ﾎﾟｯﾄ2_部材在庫No1_2" >
+                        <p:outputLabel value="#{item.potto2_sizailotno1_2}"/>
+                    </p:column>
+                    <p:column id="potto2_tyougouryou1_2" headerText="ﾎﾟｯﾄ2_調合量1_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto2_tyougouryou1_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto2_zairyohinmei2" headerText="ﾎﾟｯﾄ2_材料品名2" >
+                        <p:outputLabel value="#{item.potto2_zairyohinmei2}"/>
+                    </p:column>
+                    <p:column id="potto2_tyogouryoukikaku2" headerText="ﾎﾟｯﾄ2_調合量規格2" >
+                        <p:outputLabel value="#{item.potto2_tyogouryoukikaku2}"/>
+                    </p:column>
+                    <p:column id="potto2_sizailotno2_1" headerText="ﾎﾟｯﾄ2_部材在庫No2_1" >
+                        <p:outputLabel value="#{item.potto2_sizailotno2_1}"/>
+                    </p:column>
+                    <p:column id="potto2_tyougouryou2_1" headerText="ﾎﾟｯﾄ2_調合量2_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto2_tyougouryou2_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto2_sizailotno2_2" headerText="ﾎﾟｯﾄ2_部材在庫No2_2" >
+                        <p:outputLabel value="#{item.potto2_sizailotno2_2}"/>
+                    </p:column>
+                    <p:column id="potto2_tyougouryou2_2" headerText="ﾎﾟｯﾄ2_調合量2_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto2_tyougouryou2_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto2_zairyohinmei3" headerText="ﾎﾟｯﾄ2_材料品名3" >
+                        <p:outputLabel value="#{item.potto2_zairyohinmei3}"/>
+                    </p:column>
+                    <p:column id="potto2_tyogouryoukikaku3" headerText="ﾎﾟｯﾄ2_調合量規格3" >
+                        <p:outputLabel value="#{item.potto2_tyogouryoukikaku3}"/>
+                    </p:column>
+                    <p:column id="potto2_sizailotno3_1" headerText="ﾎﾟｯﾄ2_部材在庫No3_1" >
+                        <p:outputLabel value="#{item.potto2_sizailotno3_1}"/>
+                    </p:column>
+                    <p:column id="potto2_tyougouryou3_1" headerText="ﾎﾟｯﾄ2_調合量3_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto2_tyougouryou3_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto2_sizailotno3_2" headerText="ﾎﾟｯﾄ2_部材在庫No3_2" >
+                        <p:outputLabel value="#{item.potto2_sizailotno3_2}"/>
+                    </p:column>
+                    <p:column id="potto2_tyougouryou3_2" headerText="ﾎﾟｯﾄ2_調合量3_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto2_tyougouryou3_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto2_zairyohinmei4" headerText="ﾎﾟｯﾄ2_材料品名4" >
+                        <p:outputLabel value="#{item.potto2_zairyohinmei4}"/>
+                    </p:column>
+                    <p:column id="potto2_tyogouryoukikaku4" headerText="ﾎﾟｯﾄ2_調合量規格4" >
+                        <p:outputLabel value="#{item.potto2_tyogouryoukikaku4}"/>
+                    </p:column>
+                    <p:column id="potto2_sizailotno4_1" headerText="ﾎﾟｯﾄ2_部材在庫No4_1" >
+                        <p:outputLabel value="#{item.potto2_sizailotno4_1}"/>
+                    </p:column>
+                    <p:column id="potto2_tyougouryou4_1" headerText="ﾎﾟｯﾄ2_調合量4_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto2_tyougouryou4_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto2_sizailotno4_2" headerText="ﾎﾟｯﾄ2_部材在庫No4_2" >
+                        <p:outputLabel value="#{item.potto2_sizailotno4_2}"/>
+                    </p:column>
+                    <p:column id="potto2_tyougouryou4_2" headerText="ﾎﾟｯﾄ2_調合量4_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto2_tyougouryou4_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto3_zairyohinmei1" headerText="ﾎﾟｯﾄ3_材料品名1" >
+                        <p:outputLabel value="#{item.potto3_zairyohinmei1}"/>
+                    </p:column>
+                    <p:column id="potto3_tyogouryoukikaku1" headerText="ﾎﾟｯﾄ3_調合量規格1" >
+                        <p:outputLabel value="#{item.potto3_tyogouryoukikaku1}"/>
+                    </p:column>
+                    <p:column id="potto3_sizailotno1_1" headerText="ﾎﾟｯﾄ3_部材在庫No1_1" >
+                        <p:outputLabel value="#{item.potto3_sizailotno1_1}"/>
+                    </p:column>
+                    <p:column id="potto3_tyougouryou1_1" headerText="ﾎﾟｯﾄ3_調合量1_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto3_tyougouryou1_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto3_sizailotno1_2" headerText="ﾎﾟｯﾄ3_部材在庫No1_2" >
+                        <p:outputLabel value="#{item.potto3_sizailotno1_2}"/>
+                    </p:column>
+                    <p:column id="potto3_tyougouryou1_2" headerText="ﾎﾟｯﾄ3_調合量1_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto3_tyougouryou1_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto3_zairyohinmei2" headerText="ﾎﾟｯﾄ3_材料品名2" >
+                        <p:outputLabel value="#{item.potto3_zairyohinmei2}"/>
+                    </p:column>
+                    <p:column id="potto3_tyogouryoukikaku2" headerText="ﾎﾟｯﾄ3_調合量規格2" >
+                        <p:outputLabel value="#{item.potto3_tyogouryoukikaku2}"/>
+                    </p:column>
+                    <p:column id="potto3_sizailotno2_1" headerText="ﾎﾟｯﾄ3_部材在庫No2_1" >
+                        <p:outputLabel value="#{item.potto3_sizailotno2_1}"/>
+                    </p:column>
+                    <p:column id="potto3_tyougouryou2_1" headerText="ﾎﾟｯﾄ3_調合量2_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto3_tyougouryou2_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto3_sizailotno2_2" headerText="ﾎﾟｯﾄ3_部材在庫No2_2" >
+                        <p:outputLabel value="#{item.potto3_sizailotno2_2}"/>
+                    </p:column>
+                    <p:column id="potto3_tyougouryou2_2" headerText="ﾎﾟｯﾄ3_調合量2_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto3_tyougouryou2_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto3_zairyohinmei3" headerText="ﾎﾟｯﾄ3_材料品名3" >
+                        <p:outputLabel value="#{item.potto3_zairyohinmei3}"/>
+                    </p:column>
+                    <p:column id="potto3_tyogouryoukikaku3" headerText="ﾎﾟｯﾄ3_調合量規格3" >
+                        <p:outputLabel value="#{item.potto3_tyogouryoukikaku3}"/>
+                    </p:column>
+                    <p:column id="potto3_sizailotno3_1" headerText="ﾎﾟｯﾄ3_部材在庫No3_1" >
+                        <p:outputLabel value="#{item.potto3_sizailotno3_1}"/>
+                    </p:column>
+                    <p:column id="potto3_tyougouryou3_1" headerText="ﾎﾟｯﾄ3_調合量3_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto3_tyougouryou3_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto3_sizailotno3_2" headerText="ﾎﾟｯﾄ3_部材在庫No3_2" >
+                        <p:outputLabel value="#{item.potto3_sizailotno3_2}"/>
+                    </p:column>
+                    <p:column id="potto3_tyougouryou3_2" headerText="ﾎﾟｯﾄ3_調合量3_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto3_tyougouryou3_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto3_zairyohinmei4" headerText="ﾎﾟｯﾄ3_材料品名4" >
+                        <p:outputLabel value="#{item.potto3_zairyohinmei4}"/>
+                    </p:column>
+                    <p:column id="potto3_tyogouryoukikaku4" headerText="ﾎﾟｯﾄ3_調合量規格4" >
+                        <p:outputLabel value="#{item.potto3_tyogouryoukikaku4}"/>
+                    </p:column>
+                    <p:column id="potto3_sizailotno4_1" headerText="ﾎﾟｯﾄ3_部材在庫No4_1" >
+                        <p:outputLabel value="#{item.potto3_sizailotno4_1}"/>
+                    </p:column>
+                    <p:column id="potto3_tyougouryou4_1" headerText="ﾎﾟｯﾄ3_調合量4_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto3_tyougouryou4_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto3_sizailotno4_2" headerText="ﾎﾟｯﾄ3_部材在庫No4_2" >
+                        <p:outputLabel value="#{item.potto3_sizailotno4_2}"/>
+                    </p:column>
+                    <p:column id="potto3_tyougouryou4_2" headerText="ﾎﾟｯﾄ3_調合量4_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto3_tyougouryou4_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto4_zairyohinmei1" headerText="ﾎﾟｯﾄ4_材料品名1" >
+                        <p:outputLabel value="#{item.potto4_zairyohinmei1}"/>
+                    </p:column>
+                    <p:column id="potto4_tyogouryoukikaku1" headerText="ﾎﾟｯﾄ4_調合量規格1" >
+                        <p:outputLabel value="#{item.potto4_tyogouryoukikaku1}"/>
+                    </p:column>
+                    <p:column id="potto4_sizailotno1_1" headerText="ﾎﾟｯﾄ4_部材在庫No1_1" >
+                        <p:outputLabel value="#{item.potto4_sizailotno1_1}"/>
+                    </p:column>
+                    <p:column id="potto4_tyougouryou1_1" headerText="ﾎﾟｯﾄ4_調合量1_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto4_tyougouryou1_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto4_sizailotno1_2" headerText="ﾎﾟｯﾄ4_部材在庫No1_2" >
+                        <p:outputLabel value="#{item.potto4_sizailotno1_2}"/>
+                    </p:column>
+                    <p:column id="potto4_tyougouryou1_2" headerText="ﾎﾟｯﾄ4_調合量1_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto4_tyougouryou1_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto4_zairyohinmei2" headerText="ﾎﾟｯﾄ4_材料品名2" >
+                        <p:outputLabel value="#{item.potto4_zairyohinmei2}"/>
+                    </p:column>
+                    <p:column id="potto4_tyogouryoukikaku2" headerText="ﾎﾟｯﾄ4_調合量規格2" >
+                        <p:outputLabel value="#{item.potto4_tyogouryoukikaku2}"/>
+                    </p:column>
+                    <p:column id="potto4_sizailotno2_1" headerText="ﾎﾟｯﾄ4_部材在庫No2_1" >
+                        <p:outputLabel value="#{item.potto4_sizailotno2_1}"/>
+                    </p:column>
+                    <p:column id="potto4_tyougouryou2_1" headerText="ﾎﾟｯﾄ4_調合量2_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto4_tyougouryou2_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto4_sizailotno2_2" headerText="ﾎﾟｯﾄ4_部材在庫No2_2" >
+                        <p:outputLabel value="#{item.potto4_sizailotno2_2}"/>
+                    </p:column>
+                    <p:column id="potto4_tyougouryou2_2" headerText="ﾎﾟｯﾄ4_調合量2_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto4_tyougouryou2_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto4_zairyohinmei3" headerText="ﾎﾟｯﾄ4_材料品名3" >
+                        <p:outputLabel value="#{item.potto4_zairyohinmei3}"/>
+                    </p:column>
+                    <p:column id="potto4_tyogouryoukikaku3" headerText="ﾎﾟｯﾄ4_調合量規格3" >
+                        <p:outputLabel value="#{item.potto4_tyogouryoukikaku3}"/>
+                    </p:column>
+                    <p:column id="potto4_sizailotno3_1" headerText="ﾎﾟｯﾄ4_部材在庫No3_1" >
+                        <p:outputLabel value="#{item.potto4_sizailotno3_1}"/>
+                    </p:column>
+                    <p:column id="potto4_tyougouryou3_1" headerText="ﾎﾟｯﾄ4_調合量3_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto4_tyougouryou3_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto4_sizailotno3_2" headerText="ﾎﾟｯﾄ4_部材在庫No3_2" >
+                        <p:outputLabel value="#{item.potto4_sizailotno3_2}"/>
+                    </p:column>
+                    <p:column id="potto4_tyougouryou3_2" headerText="ﾎﾟｯﾄ4_調合量3_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto4_tyougouryou3_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto4_zairyohinmei4" headerText="ﾎﾟｯﾄ4_材料品名4" >
+                        <p:outputLabel value="#{item.potto4_zairyohinmei4}"/>
+                    </p:column>
+                    <p:column id="potto4_tyogouryoukikaku4" headerText="ﾎﾟｯﾄ4_調合量規格4" >
+                        <p:outputLabel value="#{item.potto4_tyogouryoukikaku4}"/>
+                    </p:column>
+                    <p:column id="potto4_sizailotno4_1" headerText="ﾎﾟｯﾄ4_部材在庫No4_1" >
+                        <p:outputLabel value="#{item.potto4_sizailotno4_1}"/>
+                    </p:column>
+                    <p:column id="potto4_tyougouryou4_1" headerText="ﾎﾟｯﾄ4_調合量4_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto4_tyougouryou4_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto4_sizailotno4_2" headerText="ﾎﾟｯﾄ4_部材在庫No4_2" >
+                        <p:outputLabel value="#{item.potto4_sizailotno4_2}"/>
+                    </p:column>
+                    <p:column id="potto4_tyougouryou4_2" headerText="ﾎﾟｯﾄ4_調合量4_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto4_tyougouryou4_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto5_zairyohinmei1" headerText="ﾎﾟｯﾄ5_材料品名1" >
+                        <p:outputLabel value="#{item.potto5_zairyohinmei1}"/>
+                    </p:column>
+                    <p:column id="potto5_tyogouryoukikaku1" headerText="ﾎﾟｯﾄ5_調合量規格1" >
+                        <p:outputLabel value="#{item.potto5_tyogouryoukikaku1}"/>
+                    </p:column>
+                    <p:column id="potto5_sizailotno1_1" headerText="ﾎﾟｯﾄ5_部材在庫No1_1" >
+                        <p:outputLabel value="#{item.potto5_sizailotno1_1}"/>
+                    </p:column>
+                    <p:column id="potto5_tyougouryou1_1" headerText="ﾎﾟｯﾄ5_調合量1_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto5_tyougouryou1_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto5_sizailotno1_2" headerText="ﾎﾟｯﾄ5_部材在庫No1_2" >
+                        <p:outputLabel value="#{item.potto5_sizailotno1_2}"/>
+                    </p:column>
+                    <p:column id="potto5_tyougouryou1_2" headerText="ﾎﾟｯﾄ5_調合量1_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto5_tyougouryou1_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto5_zairyohinmei2" headerText="ﾎﾟｯﾄ5_材料品名2" >
+                        <p:outputLabel value="#{item.potto5_zairyohinmei2}"/>
+                    </p:column>
+                    <p:column id="potto5_tyogouryoukikaku2" headerText="ﾎﾟｯﾄ5_調合量規格2" >
+                        <p:outputLabel value="#{item.potto5_tyogouryoukikaku2}"/>
+                    </p:column>
+                    <p:column id="potto5_sizailotno2_1" headerText="ﾎﾟｯﾄ5_部材在庫No2_1" >
+                        <p:outputLabel value="#{item.potto5_sizailotno2_1}"/>
+                    </p:column>
+                    <p:column id="potto5_tyougouryou2_1" headerText="ﾎﾟｯﾄ5_調合量2_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto5_tyougouryou2_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto5_sizailotno2_2" headerText="ﾎﾟｯﾄ5_部材在庫No2_2" >
+                        <p:outputLabel value="#{item.potto5_sizailotno2_2}"/>
+                    </p:column>
+                    <p:column id="potto5_tyougouryou2_2" headerText="ﾎﾟｯﾄ5_調合量2_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto5_tyougouryou2_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto5_zairyohinmei3" headerText="ﾎﾟｯﾄ5_材料品名3" >
+                        <p:outputLabel value="#{item.potto5_zairyohinmei3}"/>
+                    </p:column>
+                    <p:column id="potto5_tyogouryoukikaku3" headerText="ﾎﾟｯﾄ5_調合量規格3" >
+                        <p:outputLabel value="#{item.potto5_tyogouryoukikaku3}"/>
+                    </p:column>
+                    <p:column id="potto5_sizailotno3_1" headerText="ﾎﾟｯﾄ5_部材在庫No3_1" >
+                        <p:outputLabel value="#{item.potto5_sizailotno3_1}"/>
+                    </p:column>
+                    <p:column id="potto5_tyougouryou3_1" headerText="ﾎﾟｯﾄ5_調合量3_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto5_tyougouryou3_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto5_sizailotno3_2" headerText="ﾎﾟｯﾄ5_部材在庫No3_2" >
+                        <p:outputLabel value="#{item.potto5_sizailotno3_2}"/>
+                    </p:column>
+                    <p:column id="potto5_tyougouryou3_2" headerText="ﾎﾟｯﾄ5_調合量3_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto5_tyougouryou3_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto5_zairyohinmei4" headerText="ﾎﾟｯﾄ5_材料品名4" >
+                        <p:outputLabel value="#{item.potto5_zairyohinmei4}"/>
+                    </p:column>
+                    <p:column id="potto5_tyogouryoukikaku4" headerText="ﾎﾟｯﾄ5_調合量規格4" >
+                        <p:outputLabel value="#{item.potto5_tyogouryoukikaku4}"/>
+                    </p:column>
+                    <p:column id="potto5_sizailotno4_1" headerText="ﾎﾟｯﾄ5_部材在庫No4_1" >
+                        <p:outputLabel value="#{item.potto5_sizailotno4_1}"/>
+                    </p:column>
+                    <p:column id="potto5_tyougouryou4_1" headerText="ﾎﾟｯﾄ5_調合量4_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto5_tyougouryou4_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto5_sizailotno4_2" headerText="ﾎﾟｯﾄ5_部材在庫No4_2" >
+                        <p:outputLabel value="#{item.potto5_sizailotno4_2}"/>
+                    </p:column>
+                    <p:column id="potto5_tyougouryou4_2" headerText="ﾎﾟｯﾄ5_調合量4_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto5_tyougouryou4_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto6_zairyohinmei1" headerText="ﾎﾟｯﾄ6_材料品名1" >
+                        <p:outputLabel value="#{item.potto6_zairyohinmei1}"/>
+                    </p:column>
+                    <p:column id="potto6_tyogouryoukikaku1" headerText="ﾎﾟｯﾄ6_調合量規格1" >
+                        <p:outputLabel value="#{item.potto6_tyogouryoukikaku1}"/>
+                    </p:column>
+                    <p:column id="potto6_sizailotno1_1" headerText="ﾎﾟｯﾄ6_部材在庫No1_1" >
+                        <p:outputLabel value="#{item.potto6_sizailotno1_1}"/>
+                    </p:column>
+                    <p:column id="potto6_tyougouryou1_1" headerText="ﾎﾟｯﾄ6_調合量1_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto6_tyougouryou1_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto6_sizailotno1_2" headerText="ﾎﾟｯﾄ6_部材在庫No1_2" >
+                        <p:outputLabel value="#{item.potto6_sizailotno1_2}"/>
+                    </p:column>
+                    <p:column id="potto6_tyougouryou1_2" headerText="ﾎﾟｯﾄ6_調合量1_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto6_tyougouryou1_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto6_zairyohinmei2" headerText="ﾎﾟｯﾄ6_材料品名2" >
+                        <p:outputLabel value="#{item.potto6_zairyohinmei2}"/>
+                    </p:column>
+                    <p:column id="potto6_tyogouryoukikaku2" headerText="ﾎﾟｯﾄ6_調合量規格2" >
+                        <p:outputLabel value="#{item.potto6_tyogouryoukikaku2}"/>
+                    </p:column>
+                    <p:column id="potto6_sizailotno2_1" headerText="ﾎﾟｯﾄ6_部材在庫No2_1" >
+                        <p:outputLabel value="#{item.potto6_sizailotno2_1}"/>
+                    </p:column>
+                    <p:column id="potto6_tyougouryou2_1" headerText="ﾎﾟｯﾄ6_調合量2_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto6_tyougouryou2_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto6_sizailotno2_2" headerText="ﾎﾟｯﾄ6_部材在庫No2_2" >
+                        <p:outputLabel value="#{item.potto6_sizailotno2_2}"/>
+                    </p:column>
+                    <p:column id="potto6_tyougouryou2_2" headerText="ﾎﾟｯﾄ6_調合量2_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto6_tyougouryou2_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto6_zairyohinmei3" headerText="ﾎﾟｯﾄ6_材料品名3" >
+                        <p:outputLabel value="#{item.potto6_zairyohinmei3}"/>
+                    </p:column>
+                    <p:column id="potto6_tyogouryoukikaku3" headerText="ﾎﾟｯﾄ6_調合量規格3" >
+                        <p:outputLabel value="#{item.potto6_tyogouryoukikaku3}"/>
+                    </p:column>
+                    <p:column id="potto6_sizailotno3_1" headerText="ﾎﾟｯﾄ6_部材在庫No3_1" >
+                        <p:outputLabel value="#{item.potto6_sizailotno3_1}"/>
+                    </p:column>
+                    <p:column id="potto6_tyougouryou3_1" headerText="ﾎﾟｯﾄ6_調合量3_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto6_tyougouryou3_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto6_sizailotno3_2" headerText="ﾎﾟｯﾄ6_部材在庫No3_2" >
+                        <p:outputLabel value="#{item.potto6_sizailotno3_2}"/>
+                    </p:column>
+                    <p:column id="potto6_tyougouryou3_2" headerText="ﾎﾟｯﾄ6_調合量3_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto6_tyougouryou3_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto6_zairyohinmei4" headerText="ﾎﾟｯﾄ6_材料品名4" >
+                        <p:outputLabel value="#{item.potto6_zairyohinmei4}"/>
+                    </p:column>
+                    <p:column id="potto6_tyogouryoukikaku4" headerText="ﾎﾟｯﾄ6_調合量規格4" >
+                        <p:outputLabel value="#{item.potto6_tyogouryoukikaku4}"/>
+                    </p:column>
+                    <p:column id="potto6_sizailotno4_1" headerText="ﾎﾟｯﾄ6_部材在庫No4_1" >
+                        <p:outputLabel value="#{item.potto6_sizailotno4_1}"/>
+                    </p:column>
+                    <p:column id="potto6_tyougouryou4_1" headerText="ﾎﾟｯﾄ6_調合量4_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto6_tyougouryou4_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto6_sizailotno4_2" headerText="ﾎﾟｯﾄ6_部材在庫No4_2" >
+                        <p:outputLabel value="#{item.potto6_sizailotno4_2}"/>
+                    </p:column>
+                    <p:column id="potto6_tyougouryou4_2" headerText="ﾎﾟｯﾄ6_調合量4_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto6_tyougouryou4_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto7_zairyohinmei1" headerText="ﾎﾟｯﾄ7_材料品名1" >
+                        <p:outputLabel value="#{item.potto7_zairyohinmei1}"/>
+                    </p:column>
+                    <p:column id="potto7_tyogouryoukikaku1" headerText="ﾎﾟｯﾄ7_調合量規格1" >
+                        <p:outputLabel value="#{item.potto7_tyogouryoukikaku1}"/>
+                    </p:column>
+                    <p:column id="potto7_sizailotno1_1" headerText="ﾎﾟｯﾄ7_部材在庫No1_1" >
+                        <p:outputLabel value="#{item.potto7_sizailotno1_1}"/>
+                    </p:column>
+                    <p:column id="potto7_tyougouryou1_1" headerText="ﾎﾟｯﾄ7_調合量1_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto7_tyougouryou1_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto7_sizailotno1_2" headerText="ﾎﾟｯﾄ7_部材在庫No1_2" >
+                        <p:outputLabel value="#{item.potto7_sizailotno1_2}"/>
+                    </p:column>
+                    <p:column id="potto7_tyougouryou1_2" headerText="ﾎﾟｯﾄ7_調合量1_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto7_tyougouryou1_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto7_zairyohinmei2" headerText="ﾎﾟｯﾄ7_材料品名2" >
+                        <p:outputLabel value="#{item.potto7_zairyohinmei2}"/>
+                    </p:column>
+                    <p:column id="potto7_tyogouryoukikaku2" headerText="ﾎﾟｯﾄ7_調合量規格2" >
+                        <p:outputLabel value="#{item.potto7_tyogouryoukikaku2}"/>
+                    </p:column>
+                    <p:column id="potto7_sizailotno2_1" headerText="ﾎﾟｯﾄ7_部材在庫No2_1" >
+                        <p:outputLabel value="#{item.potto7_sizailotno2_1}"/>
+                    </p:column>
+                    <p:column id="potto7_tyougouryou2_1" headerText="ﾎﾟｯﾄ7_調合量2_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto7_tyougouryou2_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto7_sizailotno2_2" headerText="ﾎﾟｯﾄ7_部材在庫No2_2" >
+                        <p:outputLabel value="#{item.potto7_sizailotno2_2}"/>
+                    </p:column>
+                    <p:column id="potto7_tyougouryou2_2" headerText="ﾎﾟｯﾄ7_調合量2_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto7_tyougouryou2_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto7_zairyohinmei3" headerText="ﾎﾟｯﾄ7_材料品名3" >
+                        <p:outputLabel value="#{item.potto7_zairyohinmei3}"/>
+                    </p:column>
+                    <p:column id="potto7_tyogouryoukikaku3" headerText="ﾎﾟｯﾄ7_調合量規格3" >
+                        <p:outputLabel value="#{item.potto7_tyogouryoukikaku3}"/>
+                    </p:column>
+                    <p:column id="potto7_sizailotno3_1" headerText="ﾎﾟｯﾄ7_部材在庫No3_1" >
+                        <p:outputLabel value="#{item.potto7_sizailotno3_1}"/>
+                    </p:column>
+                    <p:column id="potto7_tyougouryou3_1" headerText="ﾎﾟｯﾄ7_調合量3_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto7_tyougouryou3_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto7_sizailotno3_2" headerText="ﾎﾟｯﾄ7_部材在庫No3_2" >
+                        <p:outputLabel value="#{item.potto7_sizailotno3_2}"/>
+                    </p:column>
+                    <p:column id="potto7_tyougouryou3_2" headerText="ﾎﾟｯﾄ7_調合量3_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto7_tyougouryou3_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto7_zairyohinmei4" headerText="ﾎﾟｯﾄ7_材料品名4" >
+                        <p:outputLabel value="#{item.potto7_zairyohinmei4}"/>
+                    </p:column>
+                    <p:column id="potto7_tyogouryoukikaku4" headerText="ﾎﾟｯﾄ7_調合量規格4" >
+                        <p:outputLabel value="#{item.potto7_tyogouryoukikaku4}"/>
+                    </p:column>
+                    <p:column id="potto7_sizailotno4_1" headerText="ﾎﾟｯﾄ7_部材在庫No4_1" >
+                        <p:outputLabel value="#{item.potto7_sizailotno4_1}"/>
+                    </p:column>
+                    <p:column id="potto7_tyougouryou4_1" headerText="ﾎﾟｯﾄ7_調合量4_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto7_tyougouryou4_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto7_sizailotno4_2" headerText="ﾎﾟｯﾄ7_部材在庫No4_2" >
+                        <p:outputLabel value="#{item.potto7_sizailotno4_2}"/>
+                    </p:column>
+                    <p:column id="potto7_tyougouryou4_2" headerText="ﾎﾟｯﾄ7_調合量4_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto7_tyougouryou4_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto8_zairyohinmei1" headerText="ﾎﾟｯﾄ8_材料品名1" >
+                        <p:outputLabel value="#{item.potto8_zairyohinmei1}"/>
+                    </p:column>
+                    <p:column id="potto8_tyogouryoukikaku1" headerText="ﾎﾟｯﾄ8_調合量規格1" >
+                        <p:outputLabel value="#{item.potto8_tyogouryoukikaku1}"/>
+                    </p:column>
+                    <p:column id="potto8_sizailotno1_1" headerText="ﾎﾟｯﾄ8_部材在庫No1_1" >
+                        <p:outputLabel value="#{item.potto8_sizailotno1_1}"/>
+                    </p:column>
+                    <p:column id="potto8_tyougouryou1_1" headerText="ﾎﾟｯﾄ8_調合量1_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto8_tyougouryou1_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto8_sizailotno1_2" headerText="ﾎﾟｯﾄ8_部材在庫No1_2" >
+                        <p:outputLabel value="#{item.potto8_sizailotno1_2}"/>
+                    </p:column>
+                    <p:column id="potto8_tyougouryou1_2" headerText="ﾎﾟｯﾄ8_調合量1_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto8_tyougouryou1_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto8_zairyohinmei2" headerText="ﾎﾟｯﾄ8_材料品名2" >
+                        <p:outputLabel value="#{item.potto8_zairyohinmei2}"/>
+                    </p:column>
+                    <p:column id="potto8_tyogouryoukikaku2" headerText="ﾎﾟｯﾄ8_調合量規格2" >
+                        <p:outputLabel value="#{item.potto8_tyogouryoukikaku2}"/>
+                    </p:column>
+                    <p:column id="potto8_sizailotno2_1" headerText="ﾎﾟｯﾄ8_部材在庫No2_1" >
+                        <p:outputLabel value="#{item.potto8_sizailotno2_1}"/>
+                    </p:column>
+                    <p:column id="potto8_tyougouryou2_1" headerText="ﾎﾟｯﾄ8_調合量2_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto8_tyougouryou2_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto8_sizailotno2_2" headerText="ﾎﾟｯﾄ8_部材在庫No2_2" >
+                        <p:outputLabel value="#{item.potto8_sizailotno2_2}"/>
+                    </p:column>
+                    <p:column id="potto8_tyougouryou2_2" headerText="ﾎﾟｯﾄ8_調合量2_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto8_tyougouryou2_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto8_zairyohinmei3" headerText="ﾎﾟｯﾄ8_材料品名3" >
+                        <p:outputLabel value="#{item.potto8_zairyohinmei3}"/>
+                    </p:column>
+                    <p:column id="potto8_tyogouryoukikaku3" headerText="ﾎﾟｯﾄ8_調合量規格3" >
+                        <p:outputLabel value="#{item.potto8_tyogouryoukikaku3}"/>
+                    </p:column>
+                    <p:column id="potto8_sizailotno3_1" headerText="ﾎﾟｯﾄ8_部材在庫No3_1" >
+                        <p:outputLabel value="#{item.potto8_sizailotno3_1}"/>
+                    </p:column>
+                    <p:column id="potto8_tyougouryou3_1" headerText="ﾎﾟｯﾄ8_調合量3_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto8_tyougouryou3_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto8_sizailotno3_2" headerText="ﾎﾟｯﾄ8_部材在庫No3_2" >
+                        <p:outputLabel value="#{item.potto8_sizailotno3_2}"/>
+                    </p:column>
+                    <p:column id="potto8_tyougouryou3_2" headerText="ﾎﾟｯﾄ8_調合量3_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto8_tyougouryou3_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto8_zairyohinmei4" headerText="ﾎﾟｯﾄ8_材料品名4" >
+                        <p:outputLabel value="#{item.potto8_zairyohinmei4}"/>
+                    </p:column>
+                    <p:column id="potto8_tyogouryoukikaku4" headerText="ﾎﾟｯﾄ8_調合量規格4" >
+                        <p:outputLabel value="#{item.potto8_tyogouryoukikaku4}"/>
+                    </p:column>
+                    <p:column id="potto8_sizailotno4_1" headerText="ﾎﾟｯﾄ8_部材在庫No4_1" >
+                        <p:outputLabel value="#{item.potto8_sizailotno4_1}"/>
+                    </p:column>
+                    <p:column id="potto8_tyougouryou4_1" headerText="ﾎﾟｯﾄ8_調合量4_1" styleClass="number">
+                        <p:outputLabel value="#{item.potto8_tyougouryou4_1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="potto8_sizailotno4_2" headerText="ﾎﾟｯﾄ8_部材在庫No4_2" >
+                        <p:outputLabel value="#{item.potto8_sizailotno4_2}"/>
+                    </p:column>
+                    <p:column id="potto8_tyougouryou4_2" headerText="ﾎﾟｯﾄ8_調合量4_2" styleClass="number">
+                        <p:outputLabel value="#{item.potto8_tyougouryou4_2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                </p:dataTable>
+                <p:dataTable id="idDataTable002" var="item" style="font-size:0.8em;margin-top:20px; display: #{gXHDO202B002.b006DTdisplay}" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap"
+                             value="#{gXHDO202B002.b006ListData}"   emptyMessage="" paginator="true" paginatorPosition="top" rows="#{gXHDO202B002.getPagenatorCount()}">
+                    <p:column id="lotno" headerText="WIPﾛｯﾄNo" >
+                        <p:outputLabel value="#{item.lotno}"/>
+                    </p:column>
+                    <p:column id="glassslurryhinmei" headerText="ｶﾞﾗｽｽﾗﾘｰ品名" >
+                        <p:outputLabel value="#{item.glassslurryhinmei}"/>
+                    </p:column>
+                    <p:column id="glassslurrylotno" headerText="ｶﾞﾗｽｽﾗﾘｰ品名LotNo" >
+                        <p:outputLabel value="#{item.glassslurrylotno}"/>
+                    </p:column>
+                    <p:column id="lotkubun" headerText="ﾛｯﾄ区分" >
+                        <p:outputLabel value="#{item.lotkubun}"/>
+                    </p:column>
+                    <p:column id="syuusoku" headerText="周速" >
+                        <p:outputLabel value="#{item.syuusoku}"/>
+                    </p:column>
+                    <p:column id="kaitendaigouki" headerText="粉砕回転台号機" styleClass="number">
+                        <p:outputLabel value="#{item.kaitendaigouki}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="funsaikaisinichiji" headerText="粉砕開始日時" >
+                        <p:outputLabel value="#{item.funsaikaisinichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="funsaiyoteisyuuryounichiji" headerText="粉砕終了予定日時" >
+                        <p:outputLabel value="#{item.funsaiyoteisyuuryounichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kaisitantosya" headerText="粉砕開始担当者" >
+                        <p:outputLabel value="#{item.kaisitantosya}"/>
+                    </p:column>
+                    <p:column id="funsaisyuuryounichiji" headerText="粉砕終了日時" >
+                        <p:outputLabel value="#{item.funsaisyuuryounichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="syuryotantosya" headerText="粉砕終了担当者" >
+                        <p:outputLabel value="#{item.syuryotantosya}"/>
+                    </p:column>
+                    <p:column id="funsaijikan" headerText="粉砕時間" styleClass="number">
+                        <p:outputLabel value="#{item.funsaijikan}">
+                            <f:convertNumber pattern="#0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="zairyohinmei" headerText="材料品名" >
+                        <p:outputLabel value="#{item.zairyohinmei}"/>
+                    </p:column>
+                    <p:column id="buzaizaikono" headerText="部材在庫No" >
+                        <p:outputLabel value="#{item.buzaizaikono}"/>
+                    </p:column>
+                    <p:column id="tyougouryou" headerText="調合量" >
+                        <p:outputLabel value="#{item.tyougouryou}"/>
+                    </p:column>##0
+                    <p:column id="fuutaijyuuryou" headerText="風袋重量" styleClass="number">
+                        <p:outputLabel value="#{item.fuutaijyuuryou}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="soujyuuryou" headerText="総重量" styleClass="number">
+                        <p:outputLabel value="#{item.soujyuuryou}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="syoumijyuuryou" headerText="正味重量" styleClass="number">
+                        <p:outputLabel value="#{item.syoumijyuuryou}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="budomari" headerText="歩留まり" styleClass="number">
+                        <p:outputLabel value="#{item.budomari}">
+                            <f:convertNumber pattern="##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="haisyututantousya" headerText="排出担当者" >
+                        <p:outputLabel value="#{item.haisyututantousya}"/>
+                    </p:column>
+                    <p:column id="hokankaisinichiji" headerText="保管開始日時" >
+                        <p:outputLabel value="#{item.hokankaisinichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="hokanbasyo" headerText="保管場所" >
+                        <p:outputLabel value="#{item.hokanbasyo}"/>
+                    </p:column>
+                    <p:column id="hokankaitengouki" headerText="保管回転台号機" >
+                        <p:outputLabel value="#{item.hokankaitengouki}"/>
+                    </p:column>
+                    <p:column id="kaitensuu" headerText="回転数" >
+                        <p:outputLabel value="#{item.kaitensuu}"/>
+                    </p:column>
+                    <p:column id="hokantantosya" headerText="保管担当者" >
+                        <p:outputLabel value="#{item.hokantantosya}"/>
+                    </p:column>
+                    <p:column id="bikou1" headerText="備考1" >
+                        <p:outputLabel value="#{item.bikou1}"/>
+                    </p:column>
+                    <p:column id="bikou2" headerText="備考2" >
+                        <p:outputLabel value="#{item.bikou2}"/>
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </h:form>
+    </h:body>
+</html>

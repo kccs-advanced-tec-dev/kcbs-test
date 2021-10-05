@@ -145,6 +145,11 @@ public class SubFormUtil {
     public static final String FORM_ID_GXHDO102C001 = "GXHDO102C001";
     
     /**
+     * ｶﾞﾗｽｽﾗﾘｰ作製・秤量入力画面ID
+     */
+    public static final String FORM_ID_GXHDO102C002 = "GXHDO102C002";
+    
+    /**
      * コンストラクタ
      *
      */
@@ -303,6 +308,12 @@ public class SubFormUtil {
                 returnBean = FacesContext.getCurrentInstance().
                         getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
                                 getELContext(), null, "beanGXHDO102C001");
+                break;
+            // ｶﾞﾗｽｽﾗﾘｰ作製・秤量入力
+            case "GXHDO102C002":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO102C002");
                 break;
             default:
                 break;
