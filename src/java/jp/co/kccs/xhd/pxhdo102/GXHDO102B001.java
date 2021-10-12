@@ -3136,21 +3136,21 @@ public class GXHDO102B001 implements IFormLogic {
         params.add(DBUtil.stringToStringObject(buzaitab1DataList.get(0).getValue())); // 材料品名
         params.add(DBUtil.stringToStringObject(buzaitab1DataList.get(1).getValue())); // 部材在庫No1
         params.add(DBUtil.stringToStringObject(buzaitab1DataList.get(2).getValue())); // 部材在庫品名1
-        params.add(DBUtil.stringToIntObject(buzaitab1DataList.get(3).getValue())); // 調合量1_1
-        params.add(DBUtil.stringToIntObject(buzaitab1DataList.get(4).getValue())); // 調合量1_2
-        params.add(DBUtil.stringToIntObject(buzaitab1DataList.get(5).getValue())); // 調合量1_3
-        params.add(DBUtil.stringToIntObject(buzaitab1DataList.get(6).getValue())); // 調合量1_4
-        params.add(DBUtil.stringToIntObject(buzaitab1DataList.get(7).getValue())); // 調合量1_5
-        params.add(DBUtil.stringToIntObject(buzaitab1DataList.get(8).getValue())); // 調合量1_6
+        params.add(DBUtil.stringToIntObjectDefaultNull(buzaitab1DataList.get(3).getValue())); // 調合量1_1
+        params.add(DBUtil.stringToIntObjectDefaultNull(buzaitab1DataList.get(4).getValue())); // 調合量1_2
+        params.add(DBUtil.stringToIntObjectDefaultNull(buzaitab1DataList.get(5).getValue())); // 調合量1_3
+        params.add(DBUtil.stringToIntObjectDefaultNull(buzaitab1DataList.get(6).getValue())); // 調合量1_4
+        params.add(DBUtil.stringToIntObjectDefaultNull(buzaitab1DataList.get(7).getValue())); // 調合量1_5
+        params.add(DBUtil.stringToIntObjectDefaultNull(buzaitab1DataList.get(8).getValue())); // 調合量1_6
         
         params.add(DBUtil.stringToStringObject(buzaitab2DataList.get(1).getValue())); // 部材在庫No2
         params.add(DBUtil.stringToStringObject(buzaitab2DataList.get(2).getValue())); // 部材在庫品名2
-        params.add(DBUtil.stringToIntObject(buzaitab2DataList.get(3).getValue())); // 調合量2_1
-        params.add(DBUtil.stringToIntObject(buzaitab2DataList.get(4).getValue())); // 調合量2_2
-        params.add(DBUtil.stringToIntObject(buzaitab2DataList.get(5).getValue())); // 調合量2_3
-        params.add(DBUtil.stringToIntObject(buzaitab2DataList.get(6).getValue())); // 調合量2_4
-        params.add(DBUtil.stringToIntObject(buzaitab2DataList.get(7).getValue())); // 調合量2_5
-        params.add(DBUtil.stringToIntObject(buzaitab2DataList.get(8).getValue())); // 調合量2_6
+        params.add(DBUtil.stringToIntObjectDefaultNull(buzaitab2DataList.get(3).getValue())); // 調合量2_1
+        params.add(DBUtil.stringToIntObjectDefaultNull(buzaitab2DataList.get(4).getValue())); // 調合量2_2
+        params.add(DBUtil.stringToIntObjectDefaultNull(buzaitab2DataList.get(5).getValue())); // 調合量2_3
+        params.add(DBUtil.stringToIntObjectDefaultNull(buzaitab2DataList.get(6).getValue())); // 調合量2_4
+        params.add(DBUtil.stringToIntObjectDefaultNull(buzaitab2DataList.get(7).getValue())); // 調合量2_5
+        params.add(DBUtil.stringToIntObjectDefaultNull(buzaitab2DataList.get(8).getValue())); // 調合量2_6
         
         if (isInsert) {
             params.add(systemTime); //登録日時
