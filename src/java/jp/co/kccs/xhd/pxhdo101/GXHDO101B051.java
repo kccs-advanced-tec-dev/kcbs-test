@@ -1684,7 +1684,7 @@ public class GXHDO101B051 implements IFormLogic {
     }
 
     /**
-     * 真空脱脂_仮登録(tmp_sr_barrel1)更新処理
+     * 真空脱脂_仮登録(tmp_sr_shinkuudassi)更新処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param conQcdb コネクション
@@ -1748,7 +1748,7 @@ public class GXHDO101B051 implements IFormLogic {
     }
 
     /**
-     * 真空脱脂_仮登録(tmp_sr_barrel1)削除処理
+     * 真空脱脂_仮登録(tmp_sr_shinkuudassi)削除処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param conQcdb コネクション
@@ -1761,7 +1761,7 @@ public class GXHDO101B051 implements IFormLogic {
     private void deleteTmpSrShinkuudassi(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev,
             String kojyo, String lotNo, String edaban) throws SQLException {
 
-        String sql = "DELETE FROM tmp_sr_barrel1 "
+        String sql = "DELETE FROM tmp_sr_shinkuudassi "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ?";
 
         //更新値設定
