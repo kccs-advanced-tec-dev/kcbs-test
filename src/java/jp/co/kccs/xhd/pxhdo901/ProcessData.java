@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.sql.DataSource;
+import jp.co.kccs.xhd.common.ErrorListMessage;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 
 /**
@@ -156,6 +157,10 @@ public class ProcessData {
      */
     private List<String> resultMessageList;
     /**
+     * 情報メッセージ表示時メッセージリスト
+     */
+    private ErrorListMessage errorListMessage;
+    /**
      * 実行スクリプト
      */
     private String executeScript;
@@ -207,6 +212,7 @@ public class ProcessData {
         this.checkRevisionButtonId = new ArrayList<>();
         this.infoMessageList = new ArrayList<>();
         this.resultMessageList = new ArrayList<>();
+        this.errorListMessage = new ErrorListMessage();
         this.hiddenDataMap = new HashMap<>();
     }
 
@@ -797,5 +803,21 @@ public class ProcessData {
      */
     public void setHiddenDataMap(Map hiddenItemMap) {
         this.hiddenDataMap = hiddenItemMap;
+    }
+
+    /**
+     * 情報メッセージ表示時メッセージリスト
+     * @return the errorListMessage
+     */
+    public ErrorListMessage getErrorListMessage() {
+        return errorListMessage;
+    }
+
+    /**
+     * 情報メッセージ表示時メッセージリスト
+     * @param errorListMessage the errorListMessage to set
+     */
+    public void setErrorListMessage(ErrorListMessage errorListMessage) {
+        this.errorListMessage = errorListMessage;
     }
 }

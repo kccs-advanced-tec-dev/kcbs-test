@@ -68,6 +68,8 @@
                     PF('W_dlg_compMessage').show();
                 } else if('gxhdo102c002'===args.firstParam){
                     PF('W_dlg_gxhdo102c002').show();
+                } else if('errorListMessage'===args.firstParam){
+                    PF('W_dlg_errorListMessage').show();
                 } 
             }
             function subGamenDoOkError(args) {
@@ -205,19 +207,19 @@
                                 <p:panelGrid style="width: 100%;border: 1px;">
                                     <p:row style="height: 50px;white-space:nowrap;">
                                         <p:column style="border-right-style: hidden;">
-                                            <h:outputText rendered="#{beanGXHDO102C005B.potto1_zairyohinmei1.render1 || beanGXHDO102C005B.potto1_zairyohinmei1.renderLinkButton}" value="#{myMsg.zairyohinmei}"
+                                            <h:outputText value="#{myMsg.zairyohinmei}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005B.potto1_zairyohinmei1.fontSize1}px;color:#{beanGXHDO102C005B.potto1_zairyohinmei1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                         <p:column style="border-right-style: hidden;" >
-                                            <h:outputText rendered="#{beanGXHDO102C005B.potto1_tyogouryoukikaku1.render1}" value="#{myMsg.tyogouryoukikakuh}"
+                                            <h:outputText value="#{myMsg.tyogouryoukikakuh}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005B.potto1_tyogouryoukikaku1.fontSize1}px;color:#{beanGXHDO102C005B.potto1_tyogouryoukikaku1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                         <p:column style="border-right-style: hidden;" >
-                                            <h:outputText rendered="#{beanGXHDO102C005B.potto1_sizailotno1_1.render1}" value="#{myMsg.buzaizaikono}"
+                                            <h:outputText value="#{myMsg.buzaizaikono}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005B.potto1_sizailotno1_1.fontSize1}px;color:#{beanGXHDO102C005B.potto1_sizailotno1_1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                         <p:column>
-                                            <h:outputText rendered="#{beanGXHDO102C005B.potto1_tyougouryou1_1.render1}" value="#{myMsg.tyougouryou}"
+                                            <h:outputText value="#{myMsg.tyougouryou}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005B.potto1_tyougouryou1_1.fontSize1}px;color:#{beanGXHDO102C005B.potto1_tyougouryou1_1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                     </p:row>
@@ -693,25 +695,21 @@
                         <p:tab title="#{myMsg.potto}②" titleStyle="font-size:0.9em;" id="tab3">   
                             <div class="tab_div" style="overflow: auto;">
                                 <p:panelGrid style="width: 100%;border: 1px;">
-                                    <p:row style="height: 50px;white-space:nowrap;"
-                                        rendered="#{not (empty beanGXHDO102C005C.potto2_zairyohinmei1 and empty beanGXHDO102C005C.potto2_tyogouryoukikaku1.itemId and empty beanGXHDO102C005C.potto2_sizailotno1_1 
-                                                    and empty beanGXHDO102C005C.potto2_sizailotno1_1 and empty beanGXHDO102C005C.potto2_sizailotno1_2.itemId and empty beanGXHDO102C005C.potto2_sizailotno1_2 
-                                                    and empty beanGXHDO102C005C.potto2_zairyohinmei2 and empty beanGXHDO102C005C.potto2_tyogouryoukikaku2.itemId  and empty beanGXHDO102C005C.potto2_sizailotno2_1 
-                                                    and empty beanGXHDO102C005C.potto2_sizailotno2_1 and empty beanGXHDO102C005C.potto2_sizailotno2_2.itemId and empty beanGXHDO102C005C.potto2_sizailotno2_2)}">
+                                    <p:row style="height: 50px;white-space:nowrap;">
                                         <p:column style="border-right-style: hidden;">
-                                            <h:outputText rendered="#{beanGXHDO102C005C.potto2_zairyohinmei1.render1 || beanGXHDO102C005C.potto2_zairyohinmei1.renderLinkButton}" value="#{myMsg.zairyohinmei}"
+                                            <h:outputText value="#{myMsg.zairyohinmei}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005C.potto2_zairyohinmei1.fontSize1}px;color:#{beanGXHDO102C005C.potto2_zairyohinmei1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                         <p:column style="border-right-style: hidden;" >
-                                            <h:outputText rendered="#{beanGXHDO102C005C.potto2_tyogouryoukikaku1.render1}" value="#{myMsg.tyogouryoukikakuh}"
+                                            <h:outputText value="#{myMsg.tyogouryoukikakuh}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005C.potto2_tyogouryoukikaku1.fontSize1}px;color:#{beanGXHDO102C005C.potto2_tyogouryoukikaku1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                         <p:column style="border-right-style: hidden;" >
-                                            <h:outputText rendered="#{beanGXHDO102C005C.potto2_sizailotno1_1.render1}" value="#{myMsg.buzaizaikono}"
+                                            <h:outputText value="#{myMsg.buzaizaikono}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005C.potto2_sizailotno1_1.fontSize1}px;color:#{beanGXHDO102C005C.potto2_sizailotno1_1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                         <p:column>
-                                            <h:outputText rendered="#{beanGXHDO102C005C.potto2_tyougouryou1_1.render1}" value="#{myMsg.tyougouryou}"
+                                            <h:outputText value="#{myMsg.tyougouryou}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005C.potto2_tyougouryou1_1.fontSize1}px;color:#{beanGXHDO102C005C.potto2_tyougouryou1_1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                     </p:row>
@@ -1187,25 +1185,21 @@
                         <p:tab title="#{myMsg.potto}③" titleStyle="font-size:0.9em;" id="tab4">   
                             <div class="tab_div" style="overflow: auto;">
                                 <p:panelGrid style="width: 100%;border: 1px;">
-                                    <p:row style="height: 50px;white-space:nowrap;"
-                                        rendered="#{not (empty beanGXHDO102C005D.potto3_zairyohinmei1 and empty beanGXHDO102C005D.potto3_tyogouryoukikaku1.itemId and empty beanGXHDO102C005D.potto3_sizailotno1_1 
-                                                    and empty beanGXHDO102C005D.potto3_sizailotno1_1 and empty beanGXHDO102C005D.potto3_sizailotno1_2.itemId and empty beanGXHDO102C005D.potto3_sizailotno1_2 
-                                                    and empty beanGXHDO102C005D.potto3_zairyohinmei2 and empty beanGXHDO102C005D.potto3_tyogouryoukikaku2.itemId  and empty beanGXHDO102C005D.potto3_sizailotno2_1 
-                                                    and empty beanGXHDO102C005D.potto3_sizailotno2_1 and empty beanGXHDO102C005D.potto3_sizailotno2_2.itemId and empty beanGXHDO102C005D.potto3_sizailotno2_2)}">
+                                    <p:row style="height: 50px;white-space:nowrap;">
                                         <p:column style="border-right-style: hidden;">
-                                            <h:outputText rendered="#{beanGXHDO102C005D.potto3_zairyohinmei1.render1 || beanGXHDO102C005D.potto3_zairyohinmei1.renderLinkButton}" value="#{myMsg.zairyohinmei}"
+                                            <h:outputText value="#{myMsg.zairyohinmei}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005D.potto3_zairyohinmei1.fontSize1}px;color:#{beanGXHDO102C005D.potto3_zairyohinmei1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                         <p:column style="border-right-style: hidden;" >
-                                            <h:outputText rendered="#{beanGXHDO102C005D.potto3_tyogouryoukikaku1.render1}" value="#{myMsg.tyogouryoukikakuh}"
+                                            <h:outputText value="#{myMsg.tyogouryoukikakuh}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005D.potto3_tyogouryoukikaku1.fontSize1}px;color:#{beanGXHDO102C005D.potto3_tyogouryoukikaku1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                         <p:column style="border-right-style: hidden;" >
-                                            <h:outputText rendered="#{beanGXHDO102C005D.potto3_sizailotno1_1.render1}" value="#{myMsg.buzaizaikono}"
+                                            <h:outputText value="#{myMsg.buzaizaikono}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005D.potto3_sizailotno1_1.fontSize1}px;color:#{beanGXHDO102C005D.potto3_sizailotno1_1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                         <p:column>
-                                            <h:outputText rendered="#{beanGXHDO102C005D.potto3_tyougouryou1_1.render1}" value="#{myMsg.tyougouryou}"
+                                            <h:outputText value="#{myMsg.tyougouryou}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005D.potto3_tyougouryou1_1.fontSize1}px;color:#{beanGXHDO102C005D.potto3_tyougouryou1_1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                     </p:row>
@@ -1681,25 +1675,21 @@
                         <p:tab title="#{myMsg.potto}④" titleStyle="font-size:0.9em;" id="tab5">   
                             <div class="tab_div" style="overflow: auto;">
                                 <p:panelGrid style="width: 100%;border: 1px;">
-                                    <p:row style="height: 50px;white-space:nowrap;"
-                                        rendered="#{not (empty beanGXHDO102C005E.potto4_zairyohinmei1 and empty beanGXHDO102C005E.potto4_tyogouryoukikaku1.itemId and empty beanGXHDO102C005E.potto4_sizailotno1_1 
-                                                    and empty beanGXHDO102C005E.potto4_sizailotno1_1 and empty beanGXHDO102C005E.potto4_sizailotno1_2.itemId and empty beanGXHDO102C005E.potto4_sizailotno1_2 
-                                                    and empty beanGXHDO102C005E.potto4_zairyohinmei2 and empty beanGXHDO102C005E.potto4_tyogouryoukikaku2.itemId  and empty beanGXHDO102C005E.potto4_sizailotno2_1 
-                                                    and empty beanGXHDO102C005E.potto4_sizailotno2_1 and empty beanGXHDO102C005E.potto4_sizailotno2_2.itemId and empty beanGXHDO102C005E.potto4_sizailotno2_2)}">
+                                    <p:row style="height: 50px;white-space:nowrap;">
                                         <p:column style="border-right-style: hidden;">
-                                            <h:outputText rendered="#{beanGXHDO102C005E.potto4_zairyohinmei1.render1 || beanGXHDO102C005E.potto4_zairyohinmei1.renderLinkButton}" value="#{myMsg.zairyohinmei}"
+                                            <h:outputText value="#{myMsg.zairyohinmei}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005E.potto4_zairyohinmei1.fontSize1}px;color:#{beanGXHDO102C005E.potto4_zairyohinmei1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                         <p:column style="border-right-style: hidden;" >
-                                            <h:outputText rendered="#{beanGXHDO102C005E.potto4_tyogouryoukikaku1.render1}" value="#{myMsg.tyogouryoukikakuh}"
+                                            <h:outputText value="#{myMsg.tyogouryoukikakuh}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005E.potto4_tyogouryoukikaku1.fontSize1}px;color:#{beanGXHDO102C005E.potto4_tyogouryoukikaku1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                         <p:column style="border-right-style: hidden;" >
-                                            <h:outputText rendered="#{beanGXHDO102C005E.potto4_sizailotno1_1.render1}" value="#{myMsg.buzaizaikono}"
+                                            <h:outputText value="#{myMsg.buzaizaikono}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005E.potto4_sizailotno1_1.fontSize1}px;color:#{beanGXHDO102C005E.potto4_sizailotno1_1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                         <p:column>
-                                            <h:outputText rendered="#{beanGXHDO102C005E.potto4_tyougouryou1_1.render1}" value="#{myMsg.tyougouryou}"
+                                            <h:outputText value="#{myMsg.tyougouryou}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005E.potto4_tyougouryou1_1.fontSize1}px;color:#{beanGXHDO102C005E.potto4_tyougouryou1_1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                     </p:row>
@@ -2175,25 +2165,21 @@
                         <p:tab title="#{myMsg.potto}⑤" titleStyle="font-size:0.9em;" id="tab6">   
                             <div class="tab_div" style="overflow: auto;">
                                 <p:panelGrid style="width: 100%;border: 1px;">
-                                    <p:row style="height: 50px;white-space:nowrap;"
-                                        rendered="#{not (empty beanGXHDO102C005F.potto5_zairyohinmei1 and empty beanGXHDO102C005F.potto5_tyogouryoukikaku1.itemId and empty beanGXHDO102C005F.potto5_sizailotno1_1 
-                                                    and empty beanGXHDO102C005F.potto5_sizailotno1_1 and empty beanGXHDO102C005F.potto5_sizailotno1_2.itemId and empty beanGXHDO102C005F.potto5_sizailotno1_2 
-                                                    and empty beanGXHDO102C005F.potto5_zairyohinmei2 and empty beanGXHDO102C005F.potto5_tyogouryoukikaku2.itemId  and empty beanGXHDO102C005F.potto5_sizailotno2_1 
-                                                    and empty beanGXHDO102C005F.potto5_sizailotno2_1 and empty beanGXHDO102C005F.potto5_sizailotno2_2.itemId and empty beanGXHDO102C005F.potto5_sizailotno2_2)}">
+                                    <p:row style="height: 50px;white-space:nowrap;">
                                         <p:column style="border-right-style: hidden;">
-                                            <h:outputText rendered="#{beanGXHDO102C005F.potto5_zairyohinmei1.render1 || beanGXHDO102C005F.potto5_zairyohinmei1.renderLinkButton}" value="#{myMsg.zairyohinmei}"
+                                            <h:outputText value="#{myMsg.zairyohinmei}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005F.potto5_zairyohinmei1.fontSize1}px;color:#{beanGXHDO102C005F.potto5_zairyohinmei1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                         <p:column style="border-right-style: hidden;" >
-                                            <h:outputText rendered="#{beanGXHDO102C005F.potto5_tyogouryoukikaku1.render1}" value="#{myMsg.tyogouryoukikakuh}"
+                                            <h:outputText value="#{myMsg.tyogouryoukikakuh}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005F.potto5_tyogouryoukikaku1.fontSize1}px;color:#{beanGXHDO102C005F.potto5_tyogouryoukikaku1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                         <p:column style="border-right-style: hidden;" >
-                                            <h:outputText rendered="#{beanGXHDO102C005F.potto5_sizailotno1_1.render1}" value="#{myMsg.buzaizaikono}"
+                                            <h:outputText value="#{myMsg.buzaizaikono}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005F.potto5_sizailotno1_1.fontSize1}px;color:#{beanGXHDO102C005F.potto5_sizailotno1_1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                         <p:column>
-                                            <h:outputText rendered="#{beanGXHDO102C005F.potto5_tyougouryou1_1.render1}" value="#{myMsg.tyougouryou}"
+                                            <h:outputText value="#{myMsg.tyougouryou}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005F.potto5_tyougouryou1_1.fontSize1}px;color:#{beanGXHDO102C005F.potto5_tyougouryou1_1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                     </p:row>
@@ -2669,25 +2655,21 @@
                         <p:tab title="#{myMsg.potto}⑥" titleStyle="font-size:0.9em;" id="tab7">   
                             <div class="tab_div" style="overflow: auto;">
                                 <p:panelGrid style="width: 100%;border: 1px;">
-                                    <p:row style="height: 50px;white-space:nowrap;"
-                                        rendered="#{not (empty beanGXHDO102C005G.potto6_zairyohinmei1 and empty beanGXHDO102C005G.potto6_tyogouryoukikaku1.itemId and empty beanGXHDO102C005G.potto6_sizailotno1_1 
-                                                    and empty beanGXHDO102C005G.potto6_sizailotno1_1 and empty beanGXHDO102C005G.potto6_sizailotno1_2.itemId and empty beanGXHDO102C005G.potto6_sizailotno1_2 
-                                                    and empty beanGXHDO102C005G.potto6_zairyohinmei2 and empty beanGXHDO102C005G.potto6_tyogouryoukikaku2.itemId  and empty beanGXHDO102C005G.potto6_sizailotno2_1 
-                                                    and empty beanGXHDO102C005G.potto6_sizailotno2_1 and empty beanGXHDO102C005G.potto6_sizailotno2_2.itemId and empty beanGXHDO102C005G.potto6_sizailotno2_2)}">
+                                    <p:row style="height: 50px;white-space:nowrap;">
                                         <p:column style="border-right-style: hidden;">
-                                            <h:outputText rendered="#{beanGXHDO102C005G.potto6_zairyohinmei1.render1 || beanGXHDO102C005G.potto6_zairyohinmei1.renderLinkButton}" value="#{myMsg.zairyohinmei}"
+                                            <h:outputText value="#{myMsg.zairyohinmei}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005G.potto6_zairyohinmei1.fontSize1}px;color:#{beanGXHDO102C005G.potto6_zairyohinmei1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                         <p:column style="border-right-style: hidden;" >
-                                            <h:outputText rendered="#{beanGXHDO102C005G.potto6_tyogouryoukikaku1.render1}" value="#{myMsg.tyogouryoukikakuh}"
+                                            <h:outputText value="#{myMsg.tyogouryoukikakuh}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005G.potto6_tyogouryoukikaku1.fontSize1}px;color:#{beanGXHDO102C005G.potto6_tyogouryoukikaku1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                         <p:column style="border-right-style: hidden;" >
-                                            <h:outputText rendered="#{beanGXHDO102C005G.potto6_sizailotno1_1.render1}" value="#{myMsg.buzaizaikono}"
+                                            <h:outputText value="#{myMsg.buzaizaikono}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005G.potto6_sizailotno1_1.fontSize1}px;color:#{beanGXHDO102C005G.potto6_sizailotno1_1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                         <p:column>
-                                            <h:outputText rendered="#{beanGXHDO102C005G.potto6_tyougouryou1_1.render1}" value="#{myMsg.tyougouryou}"
+                                            <h:outputText value="#{myMsg.tyougouryou}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005G.potto6_tyougouryou1_1.fontSize1}px;color:#{beanGXHDO102C005G.potto6_tyougouryou1_1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                     </p:row>
@@ -3163,25 +3145,21 @@
                         <p:tab title="#{myMsg.potto}⑦" titleStyle="font-size:0.9em;" id="tab8">   
                             <div class="tab_div" style="overflow: auto;">
                                 <p:panelGrid style="width: 100%;border: 1px;">
-                                    <p:row style="height: 50px;white-space:nowrap;"
-                                        rendered="#{not (empty beanGXHDO102C005H.potto7_zairyohinmei1 and empty beanGXHDO102C005H.potto7_tyogouryoukikaku1.itemId and empty beanGXHDO102C005H.potto7_sizailotno1_1 
-                                                    and empty beanGXHDO102C005H.potto7_sizailotno1_1 and empty beanGXHDO102C005H.potto7_sizailotno1_2.itemId and empty beanGXHDO102C005H.potto7_sizailotno1_2 
-                                                    and empty beanGXHDO102C005H.potto7_zairyohinmei2 and empty beanGXHDO102C005H.potto7_tyogouryoukikaku2.itemId  and empty beanGXHDO102C005H.potto7_sizailotno2_1 
-                                                    and empty beanGXHDO102C005H.potto7_sizailotno2_1 and empty beanGXHDO102C005H.potto7_sizailotno2_2.itemId and empty beanGXHDO102C005H.potto7_sizailotno2_2)}">
+                                    <p:row style="height: 50px;white-space:nowrap;">
                                         <p:column style="border-right-style: hidden;">
-                                            <h:outputText rendered="#{beanGXHDO102C005H.potto7_zairyohinmei1.render1 || beanGXHDO102C005H.potto7_zairyohinmei1.renderLinkButton}" value="#{myMsg.zairyohinmei}"
+                                            <h:outputText value="#{myMsg.zairyohinmei}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005H.potto7_zairyohinmei1.fontSize1}px;color:#{beanGXHDO102C005H.potto7_zairyohinmei1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                         <p:column style="border-right-style: hidden;" >
-                                            <h:outputText rendered="#{beanGXHDO102C005H.potto7_tyogouryoukikaku1.render1}" value="#{myMsg.tyogouryoukikakuh}"
+                                            <h:outputText value="#{myMsg.tyogouryoukikakuh}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005H.potto7_tyogouryoukikaku1.fontSize1}px;color:#{beanGXHDO102C005H.potto7_tyogouryoukikaku1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                         <p:column style="border-right-style: hidden;" >
-                                            <h:outputText rendered="#{beanGXHDO102C005H.potto7_sizailotno1_1.render1}" value="#{myMsg.buzaizaikono}"
+                                            <h:outputText value="#{myMsg.buzaizaikono}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005H.potto7_sizailotno1_1.fontSize1}px;color:#{beanGXHDO102C005H.potto7_sizailotno1_1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                         <p:column>
-                                            <h:outputText rendered="#{beanGXHDO102C005H.potto7_tyougouryou1_1.render1}" value="#{myMsg.tyougouryou}"
+                                            <h:outputText value="#{myMsg.tyougouryou}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005H.potto7_tyougouryou1_1.fontSize1}px;color:#{beanGXHDO102C005H.potto7_tyougouryou1_1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                     </p:row>
@@ -3657,25 +3635,21 @@
                         <p:tab title="#{myMsg.potto}⑧" titleStyle="font-size:0.9em;" id="tab9">   
                             <div class="tab_div" style="overflow: auto;">
                                 <p:panelGrid style="width: 100%;border: 1px;">
-                                    <p:row style="height: 50px;white-space:nowrap;"
-                                        rendered="#{not (empty beanGXHDO102C005I.potto8_zairyohinmei1 and empty beanGXHDO102C005I.potto8_tyogouryoukikaku1.itemId and empty beanGXHDO102C005I.potto8_sizailotno1_1 
-                                                    and empty beanGXHDO102C005I.potto8_sizailotno1_1 and empty beanGXHDO102C005I.potto8_sizailotno1_2.itemId and empty beanGXHDO102C005I.potto8_sizailotno1_2 
-                                                    and empty beanGXHDO102C005I.potto8_zairyohinmei2 and empty beanGXHDO102C005I.potto8_tyogouryoukikaku2.itemId  and empty beanGXHDO102C005I.potto8_sizailotno2_1 
-                                                    and empty beanGXHDO102C005I.potto8_sizailotno2_1 and empty beanGXHDO102C005I.potto8_sizailotno2_2.itemId and empty beanGXHDO102C005I.potto8_sizailotno2_2)}">
+                                    <p:row style="height: 50px;white-space:nowrap;">
                                         <p:column style="border-right-style: hidden;">
-                                            <h:outputText rendered="#{beanGXHDO102C005I.potto8_zairyohinmei1.render1 || beanGXHDO102C005I.potto8_zairyohinmei1.renderLinkButton}" value="#{myMsg.zairyohinmei}"
+                                            <h:outputText value="#{myMsg.zairyohinmei}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005I.potto8_zairyohinmei1.fontSize1}px;color:#{beanGXHDO102C005I.potto8_zairyohinmei1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                         <p:column style="border-right-style: hidden;" >
-                                            <h:outputText rendered="#{beanGXHDO102C005I.potto8_tyogouryoukikaku1.render1}" value="#{myMsg.tyogouryoukikakuh}"
+                                            <h:outputText value="#{myMsg.tyogouryoukikakuh}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005I.potto8_tyogouryoukikaku1.fontSize1}px;color:#{beanGXHDO102C005I.potto8_tyogouryoukikaku1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                         <p:column style="border-right-style: hidden;" >
-                                            <h:outputText rendered="#{beanGXHDO102C005I.potto8_sizailotno1_1.render1}" value="#{myMsg.buzaizaikono}"
+                                            <h:outputText value="#{myMsg.buzaizaikono}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005I.potto8_sizailotno1_1.fontSize1}px;color:#{beanGXHDO102C005I.potto8_sizailotno1_1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                         <p:column>
-                                            <h:outputText rendered="#{beanGXHDO102C005I.potto8_tyougouryou1_1.render1}" value="#{myMsg.tyougouryou}"
+                                            <h:outputText value="#{myMsg.tyougouryou}"
                                                           style="margin-left:8px;font-size:#{beanGXHDO102C005I.potto8_tyougouryou1_1.fontSize1}px;color:#{beanGXHDO102C005I.potto8_tyougouryou1_1.fontColor1};vertical-align: middle;"/>
                                         </p:column>
                                     </p:row>
@@ -4177,6 +4151,7 @@
                         <ui:include src="/secure/common/compMessage.xhtml"/>
                     </t:aliasBean>
                     <ui:include src="/secure/pxhdo102/gxhdo102c002.xhtml"/>
+                    <ui:include src="/secure/common/errorListMessage.xhtml"/>
                 </div>
             </div>
         </h:form>

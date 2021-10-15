@@ -150,6 +150,11 @@ public class SubFormUtil {
     public static final String FORM_ID_GXHDO102C002 = "GXHDO102C002";
     
     /**
+     * エラーリスト表示メッセージ
+     */
+    public static final String FORM_ID_ERRORLIST_MESSAGE = "ErrorListMessage";
+    
+    /**
      * コンストラクタ
      *
      */
@@ -314,6 +319,12 @@ public class SubFormUtil {
                 returnBean = FacesContext.getCurrentInstance().
                         getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
                                 getELContext(), null, "beanGXHDO102C002");
+                break;
+             // エラーリストエラーダイアログ
+            case "ErrorListMessage":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanErrorListMessage");
                 break;
             default:
                 break;

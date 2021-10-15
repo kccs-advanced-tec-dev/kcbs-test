@@ -26,6 +26,7 @@ import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.db.model.SrGlassscfunsai;
+import jp.co.kccs.xhd.db.model.SikakariJson;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.IFormLogic;
 import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
@@ -249,7 +250,6 @@ public class GXHDO102B002 implements IFormLogic {
 
             QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
             QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
-            QueryRunner queryRunnerWip = new QueryRunner(processData.getDataSourceWip());
 
             ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
             HttpSession session = (HttpSession) externalContext.getSession(false);
@@ -257,14 +257,11 @@ public class GXHDO102B002 implements IFormLogic {
             String lotNo = (String) session.getAttribute("lotNo");
             int paramJissekino = (Integer) session.getAttribute("jissekino");
             String kojyo = lotNo.substring(0, 3);
-            String lotNo8 = lotNo.substring(3, 11);
+            String lotNo8 = lotNo.substring(3, 12);
+            String tantoshaCd = (String) session.getAttribute("tantoshaCd");
 
-            //仕掛情報の取得
-            //Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
             //1.前工程WIPから仕掛情報を取得する。 
-            //  仮データ
-            Map<String, String> shikakariData = new HashMap<>();
-            shikakariData.put("oyalotedaban", "006");
+            Map shikakariData = loadShikakariData(queryRunnerDoc, tantoshaCd, lotNo);
             
             if (shikakariData == null || shikakariData.isEmpty() || !shikakariData.containsKey("oyalotedaban")) {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
@@ -423,8 +420,8 @@ public class GXHDO102B002 implements IFormLogic {
             String lotNo = (String) session.getAttribute("lotNo");
             int jissekiNo = (Integer) session.getAttribute("jissekino");
             String kojyo = lotNo.substring(0, 3); //工場ｺｰﾄﾞ
-            String lotNo8 = lotNo.substring(3, 11); //ﾛｯﾄNo(8桁)
-            String edaban = lotNo.substring(11, 14); //枝番
+            String lotNo8 = lotNo.substring(3, 12); //ﾛｯﾄNo
+            String edaban = lotNo.substring(12, 15); //枝番
             String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
             String formTitle = StringUtil.nullToBlank(session.getAttribute("formTitle"));
 
@@ -565,8 +562,8 @@ public class GXHDO102B002 implements IFormLogic {
             String lotNo = (String) session.getAttribute("lotNo");
             int jissekiNo = (Integer) session.getAttribute("jissekino");
             String kojyo = lotNo.substring(0, 3); //工場ｺｰﾄﾞ
-            String lotNo8 = lotNo.substring(3, 11); //ﾛｯﾄNo(8桁)
-            String edaban = lotNo.substring(11, 14); //枝番
+            String lotNo8 = lotNo.substring(3, 12); //ﾛｯﾄNo
+            String edaban = lotNo.substring(12, 15); //枝番
             String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
             String formTitle = StringUtil.nullToBlank(session.getAttribute("formTitle"));
 
@@ -734,8 +731,8 @@ public class GXHDO102B002 implements IFormLogic {
             String lotNo = (String) session.getAttribute("lotNo");
             int jissekiNo = (Integer) session.getAttribute("jissekino");
             String kojyo = lotNo.substring(0, 3); //工場ｺｰﾄﾞ
-            String lotNo8 = lotNo.substring(3, 11); //ﾛｯﾄNo(8桁)
-            String edaban = lotNo.substring(11, 14); //枝番
+            String lotNo8 = lotNo.substring(3, 12); //ﾛｯﾄNo
+            String edaban = lotNo.substring(12, 15); //枝番
             String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
             String formTitle = StringUtil.nullToBlank(session.getAttribute("formTitle"));
 
@@ -850,8 +847,8 @@ public class GXHDO102B002 implements IFormLogic {
             String lotNo = (String) session.getAttribute("lotNo");
             int paramJissekino = (Integer) session.getAttribute("jissekino");
             String kojyo = lotNo.substring(0, 3); //工場ｺｰﾄﾞ
-            String lotNo8 = lotNo.substring(3, 11); //ﾛｯﾄNo(8桁)
-            String edaban = lotNo.substring(11, 14); //枝番
+            String lotNo8 = lotNo.substring(3, 12); //ﾛｯﾄNo
+            String edaban = lotNo.substring(12, 15); //枝番
             String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
 
             // 原材料品質DB登録実績データ取得
@@ -989,13 +986,14 @@ public class GXHDO102B002 implements IFormLogic {
         String lotNo = (String) session.getAttribute("lotNo");
         int paramJissekino = (Integer) session.getAttribute("jissekino");
         String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
+        String tantoshaCd = (String) session.getAttribute("tantoshaCd");
 
         // エラーメッセージリスト
         List<String> errorMessageList = processData.getInitMessageList();
-
+        
         // 設計情報の取得
-        Map sekkeiData = this.loadSekkeiData(queryRunnerQcdb, queryRunnerWip, lotNo);
-        if (sekkeiData == null || sekkeiData.isEmpty()) {
+        Map mkSekkeiData = this.loadMkSekkeiData(queryRunnerQcdb, queryRunnerWip, lotNo);
+        if (mkSekkeiData == null || mkSekkeiData.isEmpty()) {
             errorMessageList.clear();
             errorMessageList.add(MessageUtil.getMessage("XHD-000014"));
             processData.setFatalError(true);
@@ -1003,15 +1001,8 @@ public class GXHDO102B002 implements IFormLogic {
             return processData;
         }
         
-        // ②仕掛情報取得処理
-        //Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
-        //1.前工程WIPから仕掛情報を取得する。 
-        //  仮データ
-        Map<String, String> shikakariData = new HashMap<>();
-        shikakariData.put("hinmei", "品名123");
-        shikakariData.put("lotkubuncode", "2002");
-        shikakariData.put("lotno", "82001240");
-        shikakariData.put("oyalotedaban", "006");
+        // 前工程WIPから仕掛情報を取得する。 
+        Map shikakariData = loadShikakariData(queryRunnerDoc, tantoshaCd, lotNo);
 
         if (shikakariData == null || shikakariData.isEmpty()) {
             errorMessageList.add(MessageUtil.getMessage("XHD-000029"));
@@ -1025,13 +1016,11 @@ public class GXHDO102B002 implements IFormLogic {
         hiddenMap.put("hinmei", hinmei);
         hiddenMap.put("oyalotedaban", oyalotedaban);
         hiddenMap.put("lotno", lotno);
-
-        // ﾛｯﾄ区分ﾏｽﾀ情報の取得
-        Map lotKbnMasData = loadLotKbnMas(queryRunnerWip, lotkubuncode);
-        if (lotKbnMasData == null || lotKbnMasData.isEmpty()) {
+        // ﾛｯﾄ区分チェック
+        String lotkubun = (String) shikakariData.get("lotkubun");
+        if (StringUtil.isEmpty(lotkubun)) {
             errorMessageList.add(MessageUtil.getMessage("XHD-000015"));
         }
-
         // 入力項目の情報を画面にセットする。
         if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId, paramJissekino)) {
             // エラー発生時は処理を中断
@@ -1040,7 +1029,7 @@ public class GXHDO102B002 implements IFormLogic {
             return processData;
         }
         // 画面に取得した情報をセットする。(入力項目以外)
-        setViewItemData(processData, lotKbnMasData, shikakariData, lotNo);
+        setViewItemData(processData, shikakariData, lotNo);
         // 画面のラベル項目の値の背景色を取得できない場合、デフォルト値を設置
         processData.getItemList().stream().map((item) -> {
             if ((item.isRender1() || item.isRenderLinkButton()) && !"".equals(StringUtil.nullToBlank(item.getKikakuChi()))) {
@@ -1065,16 +1054,31 @@ public class GXHDO102B002 implements IFormLogic {
     }
 
     /**
+     * [設計]から、初期表示する情報を取得
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param queryRunnerWip QueryRunnerオブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadMkSekkeiData(QueryRunner queryRunnerQcdb, QueryRunner queryRunnerWip, String lotNo) throws SQLException {
+        String lotNo1 = lotNo.substring(0, 3);
+        String lotNo2 = lotNo.substring(3, 12);
+        // 設計データの取得
+        return CommonUtil.getMkSekkeiInfo(queryRunnerQcdb, queryRunnerWip, lotNo1, lotNo2, "001");
+    }
+
+    /**
      * 入力項目以外のデータを画面項目に設定
      *
      * @param processData 処理制御データ
      * @param sekkeiData 設計データ
-     * @param lotKbnMasData ﾛｯﾄ区分ﾏｽﾀデータ
      * @param ownerMasData ｵｰﾅｰﾏｽﾀデータ
      * @param shikakariData 仕掛データ
      * @param lotNo ﾛｯﾄNo
      */
-    private void setViewItemData(ProcessData processData, Map lotKbnMasData, Map shikakariData, String lotNo) {
+    private void setViewItemData(ProcessData processData, Map shikakariData, String lotNo) {
         // ロットNo
         this.setItemData(processData, GXHDO102B002Const.WIPLOTNO, lotNo);
         // ｶﾞﾗｽ品名
@@ -1083,11 +1087,15 @@ public class GXHDO102B002 implements IFormLogic {
         this.setItemData(processData, GXHDO102B002Const.GLASSLOTNO, StringUtil.nullToBlank(getMapData(shikakariData, "lotno")));
         // ﾛｯﾄ区分
         String lotkubuncode = StringUtil.nullToBlank(getMapData(shikakariData, "lotkubuncode"));
+        // ﾛｯﾄ区分名称
+        String lotkubun = StringUtil.nullToBlank(getMapData(shikakariData, "lotkubun"));
         if (StringUtil.isEmpty(lotkubuncode)) {
             this.setItemData(processData, GXHDO102B002Const.LOTKUBUN, "");
         } else {
-            String lotKubun = StringUtil.nullToBlank(getMapData(lotKbnMasData, "lotkubun"));
-            this.setItemData(processData, GXHDO102B002Const.LOTKUBUN, lotkubuncode + ":" + lotKubun);
+            if (!StringUtil.isEmpty(lotkubun)) {
+                lotkubuncode = lotkubuncode + ":" + lotkubun;
+            }
+            this.setItemData(processData, GXHDO102B002Const.LOTKUBUN, lotkubuncode);
         }
     }
 
@@ -1110,8 +1118,8 @@ public class GXHDO102B002 implements IFormLogic {
         String rev = "";
         String jotaiFlg = "";
         String kojyo = lotNo.substring(0, 3);
-        String lotNo8 = lotNo.substring(3, 11);
-        String edaban = lotNo.substring(11, 14);
+        String lotNo8 = lotNo.substring(3, 12);
+        String edaban = lotNo.substring(12, 15);
 
         for (int i = 0; i < 5; i++) {
             // (3)[原材料品質DB登録実績]から、ﾃﾞｰﾀを取得
@@ -1225,70 +1233,27 @@ public class GXHDO102B002 implements IFormLogic {
     }
 
     /**
-     * [設計]から、初期表示する情報を取得
-     *
-     * @param queryRunnerQcdb QueryRunnerオブジェクト
-     * @param queryRunnerWip QueryRunnerオブジェクト
-     * @param lotNo ﾛｯﾄNo(検索キー)
-     * @return 取得データ
-     * @throws SQLException 例外エラー
-     */
-    private Map loadSekkeiData(QueryRunner queryRunnerQcdb, QueryRunner queryRunnerWip, String lotNo) throws SQLException {
-        String lotNo1 = lotNo.substring(0, 3);
-        String lotNo2 = lotNo.substring(3, 11);
-        // 設計データの取得
-        return CommonUtil.getMkSekkeiInfo(queryRunnerQcdb, queryRunnerWip, lotNo1, lotNo2, "001");
-    }
-
-    /**
-     * [ﾛｯﾄ区分ﾏｽﾀｰ]から、ﾛｯﾄ区分を取得
-     *
-     * @param queryRunnerDoc QueryRunnerオブジェクト
-     * @param lotKubunCode ﾛｯﾄ区分ｺｰﾄﾞ(検索キー)
-     * @return 取得データ
-     * @throws SQLException 例外エラー
-     */
-    private Map loadLotKbnMas(QueryRunner queryRunnerDoc, String lotKubunCode) throws SQLException {
-
-        // 設計データの取得
-        String sql = "SELECT lotkubun "
-                + "FROM lotkumas "
-                + "WHERE lotkubuncode = ?";
-
-        List<Object> params = new ArrayList<>();
-        params.add(lotKubunCode);
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
-    }
-
-    /**
      * 前工程WIPから仕掛情報を取得する。
      *
-     * @param queryRunnerWip QueryRunnerオブジェクト
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param tantoshaCd 担当者コード
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private Map loadShikakariData(QueryRunner queryRunnerWip, String lotNo) throws SQLException {
-        String lotNo1 = lotNo.substring(0, 3);
-        String lotNo2 = lotNo.substring(3, 11);
-        String lotNo3 = lotNo.substring(11, 14);
-
-        // 仕掛情報データの取得
-        String sql = "SELECT kcpno, lotno, oyalotedaban, tokuisaki, lotkubuncode, ownercode, tanijuryo "
-                + " FROM sikakari WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
-
-        List<Object> params = new ArrayList<>();
-        params.add(lotNo1);
-        params.add(lotNo2);
-        params.add(lotNo3);
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        Map shikakariData = queryRunnerWip.query(sql, new MapHandler(), params.toArray());
-        // TODO
-        // 前工程WIPから取得した品名
-        shikakariData.put("hinmei", "品名123");
+    private Map loadShikakariData(QueryRunner queryRunnerDoc, String tantoshaCd, String lotNo) throws SQLException {
+        List<SikakariJson> sikakariList = CommonUtil.getMwipResult(queryRunnerDoc, tantoshaCd, lotNo);
+        SikakariJson sikakariObj = null;
+        Map shikakariData = new HashMap();
+        if (sikakariList!= null) {
+            sikakariObj = sikakariList.get(0);
+            // 前工程WIPから取得した品名
+            shikakariData.put("hinmei", sikakariObj.getHinmei());
+            shikakariData.put("oyalotedaban", sikakariObj.getOyaLotEdaBan());            
+            shikakariData.put("lotkubuncode", sikakariObj.getLotKubunCode());
+            shikakariData.put("lotkubun", sikakariObj.getLotkubun());
+            shikakariData.put("lotno", sikakariObj.getConventionalLot());
+        }
 
         return shikakariData;
     }

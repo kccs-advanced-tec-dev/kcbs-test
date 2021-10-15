@@ -20,9 +20,11 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import jp.co.kccs.xhd.common.CompMessage;
+import jp.co.kccs.xhd.common.ErrorListMessage;
 import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.db.model.FXHDD01;
+import jp.co.kccs.xhd.db.model.SikakariJson;
 import jp.co.kccs.xhd.db.model.SrGlassslurryhyoryo;
 import jp.co.kccs.xhd.db.model.SubSrGlassslurryhyoryo;
 import jp.co.kccs.xhd.model.GXHDO102C002Model;
@@ -400,11 +402,12 @@ public class GXHDO102B005 implements IFormLogic {
             String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
             String lotNo = (String) session.getAttribute("lotNo");
             int paramJissekino = (Integer) session.getAttribute("jissekino");
+            String tantoshaCd = (String) session.getAttribute("tantoshaCd");
             String kojyo = lotNo.substring(0, 3);
-            String lotNo8 = lotNo.substring(3, 11);
+            String lotNo9 = lotNo.substring(3, 12);
 
-            //前工程WIPから仕掛情報を取得する。
-            Map shikakariData = loadShikakariDataFromWip();
+            // 前工程WIPから仕掛情報を取得処理
+            Map shikakariData = loadShikakariDataFromWip(queryRunnerDoc, tantoshaCd, lotNo);
             if (shikakariData == null || shikakariData.isEmpty() || !shikakariData.containsKey("oyalotedaban")) {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
                 return processData;
@@ -412,7 +415,7 @@ public class GXHDO102B005 implements IFormLogic {
             String oyalotEdaban = StringUtil.nullToBlank(getMapData(shikakariData, "oyalotedaban")); //親ﾛｯﾄ枝番
 
             // [原材料品質DB登録実績]から、ﾃﾞｰﾀを取得
-            Map fxhdd11RevInfo = loadFxhdd11RevInfo(queryRunnerDoc, kojyo, lotNo8, oyalotEdaban, paramJissekino, formId);
+            Map fxhdd11RevInfo = loadFxhdd11RevInfo(queryRunnerDoc, kojyo, lotNo9, oyalotEdaban, paramJissekino, formId);
             if (fxhdd11RevInfo == null || fxhdd11RevInfo.isEmpty()) {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
                 return processData;
@@ -426,13 +429,13 @@ public class GXHDO102B005 implements IFormLogic {
             }
 
             // ｶﾞﾗｽｽﾗﾘｰ作製・秤量の入力項目の登録データ(仮登録時は仮登録データ)を取得
-            List<SrGlassslurryhyoryo> srGlassslurryhyoDataList = getSrGlassslurryhyoryoData(queryRunnerQcdb, "", jotaiFlg, kojyo, lotNo8, oyalotEdaban);
+            List<SrGlassslurryhyoryo> srGlassslurryhyoDataList = getSrGlassslurryhyoryoData(queryRunnerQcdb, "", jotaiFlg, kojyo, lotNo9, oyalotEdaban);
             if (srGlassslurryhyoDataList.isEmpty()) {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
                 return processData;
             }
             // ｶﾞﾗｽｽﾗﾘｰ作製・秤量入力_ｻﾌﾞ画面データ取得
-            List<SubSrGlassslurryhyoryo> subSrGlassslurryhyoryoDataList = getSubSrGlassslurryhyoryoData(queryRunnerQcdb, "", jotaiFlg, kojyo, lotNo8, oyalotEdaban);
+            List<SubSrGlassslurryhyoryo> subSrGlassslurryhyoryoDataList = getSubSrGlassslurryhyoryoData(queryRunnerQcdb, "", jotaiFlg, kojyo, lotNo9, oyalotEdaban);
             if (subSrGlassslurryhyoryoDataList.isEmpty() || subSrGlassslurryhyoryoDataList.size() != 32) {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
                 return processData;
@@ -761,13 +764,13 @@ public class GXHDO102B005 implements IFormLogic {
             String lotNo = (String) session.getAttribute("lotNo");
             int paramJissekino = (Integer) session.getAttribute("jissekino");
             String kojyo = lotNo.substring(0, 3); //工場ｺｰﾄﾞ
-            String lotNo8 = lotNo.substring(3, 11); //ﾛｯﾄNo(8桁)
-            String edaban = lotNo.substring(11, 14); //枝番
+            String lotNo9 = lotNo.substring(3, 12); //ﾛｯﾄNo
+            String edaban = lotNo.substring(12, 15); //枝番
             String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
             String formTitle = StringUtil.nullToBlank(session.getAttribute("formTitle"));
             
             // 品質DB登録実績データ取得
-            Map fxhdd11RevInfo = loadFxhdd11RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, paramJissekino, formId);
+            Map fxhdd11RevInfo = loadFxhdd11RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo9, edaban, paramJissekino, formId);
             ErrorMessageInfo checkRevMessageInfo = checkRevision(processData, fxhdd11RevInfo);
             // リビジョンエラー時はリターン
             if (checkRevMessageInfo != null) {
@@ -786,166 +789,166 @@ public class GXHDO102B005 implements IFormLogic {
             BigDecimal rev = BigDecimal.ZERO;
             if (StringUtil.isEmpty(processData.getInitJotaiFlg())) {
                 // 品質DB登録実績登録処理
-                insertFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, paramJissekino, JOTAI_FLG_KARI_TOROKU, systemTime);
+                insertFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo9, edaban, paramJissekino, JOTAI_FLG_KARI_TOROKU, systemTime);
             } else {
                 rev = new BigDecimal(processData.getInitRev());
                 // 最新のリビジョンを採番
-                newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, paramJissekino, formId);
+                newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo9, edaban, paramJissekino, formId);
 
                 // 品質DB登録実績更新処理
-                updateFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_KARI_TOROKU, systemTime, paramJissekino);
+                updateFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo9, edaban, JOTAI_FLG_KARI_TOROKU, systemTime, paramJissekino);
             }
 
             if (StringUtil.isEmpty(processData.getInitJotaiFlg()) || JOTAI_FLG_SAKUJO.equals(processData.getInitJotaiFlg())) {
 
                 // ｶﾞﾗｽｽﾗﾘｰ作製・秤量_仮登録処理
-                insertTmpSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, strSystime, processData);
+                insertTmpSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, strSystime, processData);
                 // ﾎﾟｯﾄ1タブの【材料品名1】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 1, 1, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 1, 1, strSystime);
                 // ﾎﾟｯﾄ1タブの【材料品名2】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 1, 2, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 1, 2, strSystime);
                 // ﾎﾟｯﾄ1タブの【材料品名3】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 1, 3, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 1, 3, strSystime);
                 // ﾎﾟｯﾄ1タブの【材料品名4】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 1, 4, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 1, 4, strSystime);
                 
                 // ﾎﾟｯﾄ2タブの【材料品名1】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 2, 1, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 2, 1, strSystime);
                 // ﾎﾟｯﾄ2タブの【材料品名2】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 2, 2, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 2, 2, strSystime);
                 // ﾎﾟｯﾄ2タブの【材料品名3】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 2, 3, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 2, 3, strSystime);
                 // ﾎﾟｯﾄ2タブの【材料品名4】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 2, 4, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 2, 4, strSystime);
                 
                 // ﾎﾟｯﾄ3タブの【材料品名1】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 3, 1, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 3, 1, strSystime);
                 // ﾎﾟｯﾄ3タブの【材料品名2】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 3, 2, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 3, 2, strSystime);
                 // ﾎﾟｯﾄ3タブの【材料品名3】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 3, 3, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 3, 3, strSystime);
                 // ﾎﾟｯﾄ3タブの【材料品名4】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 3, 4, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 3, 4, strSystime);
                 
                 // ﾎﾟｯﾄ4タブの【材料品名1】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 4, 1, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 4, 1, strSystime);
                 // ﾎﾟｯﾄ4タブの【材料品名2】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 4, 2, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 4, 2, strSystime);
                 // ﾎﾟｯﾄ4タブの【材料品名3】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 4, 3, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 4, 3, strSystime);
                 // ﾎﾟｯﾄ4タブの【材料品名4】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 4, 4, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 4, 4, strSystime);
                 
                 // ﾎﾟｯﾄ5タブの【材料品名1】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 5, 1, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 5, 1, strSystime);
                 // ﾎﾟｯﾄ5タブの【材料品名2】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 5, 2, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 5, 2, strSystime);
                 // ﾎﾟｯﾄ5タブの【材料品名3】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 5, 3, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 5, 3, strSystime);
                 // ﾎﾟｯﾄ5タブの【材料品名4】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 5, 4, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 5, 4, strSystime);
                 
                 // ﾎﾟｯﾄ6タブの【材料品名1】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 6, 1, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 6, 1, strSystime);
                 // ﾎﾟｯﾄ6タブの【材料品名2】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 6, 2, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 6, 2, strSystime);
                 // ﾎﾟｯﾄ6タブの【材料品名3】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 6, 3, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 6, 3, strSystime);
                 // ﾎﾟｯﾄ6タブの【材料品名4】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 6, 4, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 6, 4, strSystime);
                 
                 // ﾎﾟｯﾄ7タブの【材料品名1】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 7, 1, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 7, 1, strSystime);
                 // ﾎﾟｯﾄ7タブの【材料品名2】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 7, 2, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 7, 2, strSystime);
                 // ﾎﾟｯﾄ7タブの【材料品名3】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 7, 3, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 7, 3, strSystime);
                 // ﾎﾟｯﾄ7タブの【材料品名4】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 7, 4, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 7, 4, strSystime);
                 
                 // ﾎﾟｯﾄ8タブの【材料品名1】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 8, 1, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 8, 1, strSystime);
                 // ﾎﾟｯﾄ8タブの【材料品名2】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 8, 2, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 8, 2, strSystime);
                 // ﾎﾟｯﾄ8タブの【材料品名3】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 8, 3, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 8, 3, strSystime);
                 // ﾎﾟｯﾄ8タブの【材料品名4】のｻﾌﾞ画面の仮登録処理
-                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, 8, 4, strSystime);
+                insertTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, 8, 4, strSystime);
             } else {
 
                 // ｶﾞﾗｽｽﾗﾘｰ作製・秤量_仮登録更新処理
-                updateTmpSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo8, edaban, strSystime, processData);
+                updateTmpSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo9, edaban, strSystime, processData);
                 // ﾎﾟｯﾄ1タブの【材料品名1】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 1, 1, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 1, 1, strSystime);
                 // ﾎﾟｯﾄ1タブの【材料品名2】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 1, 2, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 1, 2, strSystime);
                 // ﾎﾟｯﾄ1タブの【材料品名3】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 1, 3, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 1, 3, strSystime);
                 // ﾎﾟｯﾄ1タブの【材料品名4】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 1, 4, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 1, 4, strSystime);
                 
                 // ﾎﾟｯﾄ2タブの【材料品名1】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 2, 1, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 2, 1, strSystime);
                 // ﾎﾟｯﾄ2タブの【材料品名2】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 2, 2, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 2, 2, strSystime);
                 // ﾎﾟｯﾄ2タブの【材料品名3】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 2, 3, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 2, 3, strSystime);
                 // ﾎﾟｯﾄ2タブの【材料品名4】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 2, 4, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 2, 4, strSystime);
                 
                 // ﾎﾟｯﾄ3タブの【材料品名1】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 3, 1, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 3, 1, strSystime);
                 // ﾎﾟｯﾄ3タブの【材料品名2】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 3, 2, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 3, 2, strSystime);
                 // ﾎﾟｯﾄ3タブの【材料品名3】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 3, 3, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 3, 3, strSystime);
                 // ﾎﾟｯﾄ3タブの【材料品名4】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 3, 4, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 3, 4, strSystime);
                 
                 // ﾎﾟｯﾄ4タブの【材料品名1】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 4, 1, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 4, 1, strSystime);
                 // ﾎﾟｯﾄ4タブの【材料品名2】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 4, 2, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 4, 2, strSystime);
                 // ﾎﾟｯﾄ4タブの【材料品名3】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 4, 3, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 4, 3, strSystime);
                 // ﾎﾟｯﾄ4タブの【材料品名4】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 4, 4, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 4, 4, strSystime);
                 
                 // ﾎﾟｯﾄ5タブの【材料品名1】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 5, 1, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 5, 1, strSystime);
                 // ﾎﾟｯﾄ5タブの【材料品名2】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 5, 2, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 5, 2, strSystime);
                 // ﾎﾟｯﾄ5タブの【材料品名3】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 5, 3, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 5, 3, strSystime);
                 // ﾎﾟｯﾄ5タブの【材料品名4】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 5, 4, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 5, 4, strSystime);
                 
                 // ﾎﾟｯﾄ6タブの【材料品名1】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 6, 1, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 6, 1, strSystime);
                 // ﾎﾟｯﾄ6タブの【材料品名2】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 6, 2, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 6, 2, strSystime);
                 // ﾎﾟｯﾄ6タブの【材料品名3】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 6, 3, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 6, 3, strSystime);
                 // ﾎﾟｯﾄ6タブの【材料品名4】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 6, 4, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 6, 4, strSystime);
                 
                 // ﾎﾟｯﾄ7タブの【材料品名1】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 7, 1, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 7, 1, strSystime);
                 // ﾎﾟｯﾄ7タブの【材料品名2】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 7, 2, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 7, 2, strSystime);
                 // ﾎﾟｯﾄ7タブの【材料品名3】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 7, 3, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 7, 3, strSystime);
                 // ﾎﾟｯﾄ7タブの【材料品名4】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 7, 4, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 7, 4, strSystime);
                 
                 // ﾎﾟｯﾄ8タブの【材料品名1】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 8, 1, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 8, 1, strSystime);
                 // ﾎﾟｯﾄ8タブの【材料品名2】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 8, 2, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 8, 2, strSystime);
                 // ﾎﾟｯﾄ8タブの【材料品名3】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 8, 3, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 8, 3, strSystime);
                 // ﾎﾟｯﾄ8タブの【材料品名4】のｻﾌﾞ画面の仮登録更新処理
-                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 8, 4, strSystime);
+                updateTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 8, 4, strSystime);
             }
 
             // 規格情報でエラーが発生している場合、エラー内容を更新
@@ -1048,14 +1051,14 @@ public class GXHDO102B005 implements IFormLogic {
             String lotNo = (String) session.getAttribute("lotNo");
             int paramJissekino = (Integer) session.getAttribute("jissekino");
             String kojyo = lotNo.substring(0, 3); //工場ｺｰﾄﾞ
-            String lotNo8 = lotNo.substring(3, 11); //ﾛｯﾄNo(8桁)
-            String edaban = lotNo.substring(11, 14); //枝番
+            String lotNo9 = lotNo.substring(3, 12); //ﾛｯﾄNo
+            String edaban = lotNo.substring(12, 15); //枝番
             String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
             String formTitle = StringUtil.nullToBlank(session.getAttribute("formTitle"));
 
             // 品質DB登録実績データ取得
             //ここでロックを掛ける
-            Map fxhdd11RevInfo = loadFxhdd11RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, paramJissekino, formId);
+            Map fxhdd11RevInfo = loadFxhdd11RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo9, edaban, paramJissekino, formId);
             ErrorMessageInfo checkRevMessageInfo = checkRevision(processData, fxhdd11RevInfo);
             // リビジョンエラー時はリターン
             if (checkRevMessageInfo != null) {
@@ -1075,14 +1078,14 @@ public class GXHDO102B005 implements IFormLogic {
 
             if (StringUtil.isEmpty(processData.getInitRev())) {
                 // 品質DB登録実績登録処理
-                insertFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, paramJissekino, JOTAI_FLG_TOROKUZUMI, systemTime);
+                insertFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo9, edaban, paramJissekino, JOTAI_FLG_TOROKUZUMI, systemTime);
             } else {
                 rev = new BigDecimal(processData.getInitRev());
                 // 最新のリビジョンを採番
-                newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, paramJissekino, formId);
+                newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo9, edaban, paramJissekino, formId);
 
                 // 品質DB登録実績更新処理
-                updateFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_TOROKUZUMI, systemTime, paramJissekino);
+                updateFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo9, edaban, JOTAI_FLG_TOROKUZUMI, systemTime, paramJissekino);
             }
 
             // 仮登録状態の場合、仮登録のデータを削除する。
@@ -1090,105 +1093,103 @@ public class GXHDO102B005 implements IFormLogic {
             if (JOTAI_FLG_KARI_TOROKU.equals(processData.getInitJotaiFlg())) {
 
                 // 更新前の値を取得
-                List<SrGlassslurryhyoryo> srGlassslurryhyoryoList = getSrGlassslurryhyoryoData(queryRunnerQcdb, rev.toPlainString(), processData.getInitJotaiFlg(), kojyo, lotNo8, edaban);
+                List<SrGlassslurryhyoryo> srGlassslurryhyoryoList = getSrGlassslurryhyoryoData(queryRunnerQcdb, rev.toPlainString(), processData.getInitJotaiFlg(), kojyo, lotNo9, edaban);
                 if (!srGlassslurryhyoryoList.isEmpty()) {
                     tmpSrGlassslurryhyoryo = srGlassslurryhyoryoList.get(0);
                 }
 
-                deleteTmpSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban);
-                deleteTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban);
+                deleteTmpSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo9, edaban);
+                deleteTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo9, edaban);
             }
 
             // ｶﾞﾗｽｽﾗﾘｰ作製・秤量_登録処理
-            insertSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, strSystime, processData, tmpSrGlassslurryhyoryo);
+            insertSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, strSystime, processData, tmpSrGlassslurryhyoryo);
             // ﾎﾟｯﾄ1タブの【材料品名1】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 1, 1, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 1, 1, strSystime);
             // ﾎﾟｯﾄ1タブの【材料品名2】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 1, 2, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 1, 2, strSystime);
             // ﾎﾟｯﾄ1タブの【材料品名3】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 1, 3, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 1, 3, strSystime);
             // ﾎﾟｯﾄ1タブの【材料品名4】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 1, 4, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 1, 4, strSystime);
             
             // ﾎﾟｯﾄ2タブの【材料品名1】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 2, 1, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 2, 1, strSystime);
             // ﾎﾟｯﾄ2タブの【材料品名2】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 2, 2, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 2, 2, strSystime);
             // ﾎﾟｯﾄ2タブの【材料品名3】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 2, 3, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 2, 3, strSystime);
             // ﾎﾟｯﾄ2タブの【材料品名4】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 2, 4, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 2, 4, strSystime);
             
             // ﾎﾟｯﾄ3タブの【材料品名1】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 3, 1, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 3, 1, strSystime);
             // ﾎﾟｯﾄ3タブの【材料品名2】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 3, 2, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 3, 2, strSystime);
             // ﾎﾟｯﾄ3タブの【材料品名3】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 3, 3, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 3, 3, strSystime);
             // ﾎﾟｯﾄ3タブの【材料品名4】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 3, 4, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 3, 4, strSystime);
             
             // ﾎﾟｯﾄ4タブの【材料品名1】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 4, 1, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 4, 1, strSystime);
             // ﾎﾟｯﾄ4タブの【材料品名2】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 4, 2, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 4, 2, strSystime);
             // ﾎﾟｯﾄ4タブの【材料品名3】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 4, 3, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 4, 3, strSystime);
             // ﾎﾟｯﾄ4タブの【材料品名4】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 4, 4, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 4, 4, strSystime);
             
             // ﾎﾟｯﾄ5タブの【材料品名1】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 5, 1, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 5, 1, strSystime);
             // ﾎﾟｯﾄ5タブの【材料品名2】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 5, 2, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 5, 2, strSystime);
             // ﾎﾟｯﾄ5タブの【材料品名3】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 5, 3, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 5, 3, strSystime);
             // ﾎﾟｯﾄ5タブの【材料品名4】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 5, 4, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 5, 4, strSystime);
             
             // ﾎﾟｯﾄ6タブの【材料品名1】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 6, 1, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 6, 1, strSystime);
             // ﾎﾟｯﾄ6タブの【材料品名2】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 6, 2, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 6, 2, strSystime);
             // ﾎﾟｯﾄ6タブの【材料品名3】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 6, 3, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 6, 3, strSystime);
             // ﾎﾟｯﾄ6タブの【材料品名4】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 6, 4, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 6, 4, strSystime);
             
             // ﾎﾟｯﾄ7タブの【材料品名1】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 7, 1, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 7, 1, strSystime);
             // ﾎﾟｯﾄ7タブの【材料品名2】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 7, 2, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 7, 2, strSystime);
             // ﾎﾟｯﾄ7タブの【材料品名3】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 7, 3, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 7, 3, strSystime);
             // ﾎﾟｯﾄ7タブの【材料品名4】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 7, 4, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 7, 4, strSystime);
             
             // ﾎﾟｯﾄ8タブの【材料品名1】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 8, 1, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 8, 1, strSystime);
             // ﾎﾟｯﾄ8タブの【材料品名2】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 8, 2, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 8, 2, strSystime);
             // ﾎﾟｯﾄ8タブの【材料品名3】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 8, 3, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 8, 3, strSystime);
             // ﾎﾟｯﾄ8タブの【材料品名4】のｻﾌﾞ画面の登録処理
-            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, 8, 4, strSystime);
+            insertSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, 8, 4, strSystime);
             
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
             if (kikakuError.getKikakuchiInputErrorInfoList() != null && !kikakuError.getKikakuchiInputErrorInfoList().isEmpty()) {
                 ValidateUtil.fxhdd04Insert(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, paramJissekino, "0", kikakuError.getKikakuchiInputErrorInfoList());
             }
+            
             // 処理後はエラーリストをクリア
             kikakuError.setKikakuchiInputErrorInfoList(new ArrayList<>());
             DbUtils.commitAndCloseQuietly(conDoc);
             DbUtils.commitAndCloseQuietly(conQcdb);
 
             // 後続処理メソッド設定
-            processData.setMethod("");
+            processData.setMethod("doPMLA0212");
 
-            // 完了メッセージとコールバックパラメータを設定
-            setCompMessage("登録しました。");
-            processData.setCollBackParam("complete");
             return processData;
         } catch (SQLException e) {
             ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
@@ -1207,7 +1208,31 @@ public class GXHDO102B005 implements IFormLogic {
 
         return processData;
     }
-
+    
+    /**
+     * 部材在庫の重量ﾃﾞｰﾀ連携
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData doPMLA0212(ProcessData processData) {
+        // セッションから情報を取得
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+        String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
+        // 部材在庫の重量ﾃﾞｰﾀ連携
+        String responseResult = doPMLA0212Save(processData, tantoshaCd);
+        if (!"ok".equals(responseResult)) {
+            return processData;
+        }
+        // 後続処理メソッド設定
+        processData.setMethod("");
+        // 完了メッセージとコールバックパラメータを設定
+        setCompMessage("登録しました。");
+        processData.setCollBackParam("complete");
+        return processData;
+    }
+    
     /**
      * 修正処理(データチェック処理)
      *
@@ -1287,14 +1312,14 @@ public class GXHDO102B005 implements IFormLogic {
             String lotNo = (String) session.getAttribute("lotNo");
             int paramJissekino = (Integer) session.getAttribute("jissekino");
             String kojyo = lotNo.substring(0, 3); //工場ｺｰﾄﾞ
-            String lotNo8 = lotNo.substring(3, 11); //ﾛｯﾄNo(8桁)
-            String edaban = lotNo.substring(11, 14); //枝番
+            String lotNo9 = lotNo.substring(3, 12); //ﾛｯﾄNo
+            String edaban = lotNo.substring(12, 15); //枝番
             String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
             String formTitle = StringUtil.nullToBlank(session.getAttribute("formTitle"));
 
             // 品質DB登録実績データ取得
             //ここでロックを掛ける
-            Map fxhdd11RevInfo = loadFxhdd11RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, paramJissekino, formId);
+            Map fxhdd11RevInfo = loadFxhdd11RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo9, edaban, paramJissekino, formId);
             ErrorMessageInfo checkRevMessageInfo = checkRevision(processData, fxhdd11RevInfo);
             // リビジョンエラー時はリターン
             if (checkRevMessageInfo != null) {
@@ -1308,86 +1333,86 @@ public class GXHDO102B005 implements IFormLogic {
 
             BigDecimal rev = new BigDecimal(processData.getInitRev());
             // 最新のリビジョンを採番
-            BigDecimal newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, paramJissekino, formId);
+            BigDecimal newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo9, edaban, paramJissekino, formId);
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Timestamp systemTime = new Timestamp(System.currentTimeMillis());
             String strSystime = sdf.format(systemTime);
             // 品質DB登録実績更新処理
-            updateFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_TOROKUZUMI, systemTime, paramJissekino);
+            updateFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo9, edaban, JOTAI_FLG_TOROKUZUMI, systemTime, paramJissekino);
 
             // ｶﾞﾗｽｽﾗﾘｰ作製・秤量_更新処理
-            updateSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo8, edaban, strSystime, processData);
+            updateSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo9, edaban, strSystime, processData);
             // ﾎﾟｯﾄ1タブの【材料品名1】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 1, 1, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 1, 1, strSystime);
             // ﾎﾟｯﾄ1タブの【材料品名2】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 1, 2, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 1, 2, strSystime);
             // ﾎﾟｯﾄ1タブの【材料品名3】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 1, 3, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 1, 3, strSystime);
             // ﾎﾟｯﾄ1タブの【材料品名4】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 1, 4, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 1, 4, strSystime);
             
             // ﾎﾟｯﾄ2タブの【材料品名1】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 2, 1, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 2, 1, strSystime);
             // ﾎﾟｯﾄ2タブの【材料品名2】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 2, 2, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 2, 2, strSystime);
             // ﾎﾟｯﾄ2タブの【材料品名3】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 2, 3, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 2, 3, strSystime);
             // ﾎﾟｯﾄ2タブの【材料品名4】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 2, 4, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 2, 4, strSystime);
 
             // ﾎﾟｯﾄ3タブの【材料品名1】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 3, 1, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 3, 1, strSystime);
             // ﾎﾟｯﾄ3タブの【材料品名2】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 3, 2, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 3, 2, strSystime);
             // ﾎﾟｯﾄ3タブの【材料品名3】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 3, 3, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 3, 3, strSystime);
             // ﾎﾟｯﾄ3タブの【材料品名4】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 3, 4, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 3, 4, strSystime);
 
             // ﾎﾟｯﾄ4タブの【材料品名1】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 4, 1, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 4, 1, strSystime);
             // ﾎﾟｯﾄ4タブの【材料品名2】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 4, 2, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 4, 2, strSystime);
             // ﾎﾟｯﾄ4タブの【材料品名3】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 4, 3, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 4, 3, strSystime);
             // ﾎﾟｯﾄ4タブの【材料品名4】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 4, 4, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 4, 4, strSystime);
 
             // ﾎﾟｯﾄ5タブの【材料品名1】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 5, 1, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 5, 1, strSystime);
             // ﾎﾟｯﾄ5タブの【材料品名2】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 5, 2, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 5, 2, strSystime);
             // ﾎﾟｯﾄ5タブの【材料品名3】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 5, 3, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 5, 3, strSystime);
             // ﾎﾟｯﾄ5タブの【材料品名4】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 5, 4, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 5, 4, strSystime);
 
             // ﾎﾟｯﾄ6タブの【材料品名1】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 6, 1, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 6, 1, strSystime);
             // ﾎﾟｯﾄ6タブの【材料品名2】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 6, 2, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 6, 2, strSystime);
             // ﾎﾟｯﾄ6タブの【材料品名3】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 6, 3, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 6, 3, strSystime);
             // ﾎﾟｯﾄ6タブの【材料品名4】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 6, 4, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 6, 4, strSystime);
 
             // ﾎﾟｯﾄ7タブの【材料品名1】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 7, 1, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 7, 1, strSystime);
             // ﾎﾟｯﾄ7タブの【材料品名2】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 7, 2, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 7, 2, strSystime);
             // ﾎﾟｯﾄ7タブの【材料品名3】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 7, 3, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 7, 3, strSystime);
             // ﾎﾟｯﾄ7タブの【材料品名4】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 7, 4, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 7, 4, strSystime);
 
             // ﾎﾟｯﾄ8タブの【材料品名1】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 8, 1, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 8, 1, strSystime);
             // ﾎﾟｯﾄ8タブの【材料品名2】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 8, 2, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 8, 2, strSystime);
             // ﾎﾟｯﾄ8タブの【材料品名3】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 8, 3, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 8, 3, strSystime);
             // ﾎﾟｯﾄ8タブの【材料品名4】のｻﾌﾞ画面の更新処理
-            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo8, edaban, 8, 4, strSystime);
+            updateSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, 8, 4, strSystime);
 
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
@@ -1472,13 +1497,13 @@ public class GXHDO102B005 implements IFormLogic {
             String lotNo = (String) session.getAttribute("lotNo");
             int paramJissekino = (Integer) session.getAttribute("jissekino");
             String kojyo = lotNo.substring(0, 3); //工場ｺｰﾄﾞ
-            String lotNo8 = lotNo.substring(3, 11); //ﾛｯﾄNo(8桁)
-            String edaban = lotNo.substring(11, 14); //枝番
+            String lotNo9 = lotNo.substring(3, 12); //ﾛｯﾄNo
+            String edaban = lotNo.substring(12, 15); //枝番
             String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
 
             // 品質DB登録実績データ取得
             //ここでロックを掛ける
-            Map fxhdd11RevInfo = loadFxhdd11RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, paramJissekino, formId);
+            Map fxhdd11RevInfo = loadFxhdd11RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo9, edaban, paramJissekino, formId);
             ErrorMessageInfo checkRevMessageInfo = checkRevision(processData, fxhdd11RevInfo);
             // リビジョンエラー時はリターン
             if (checkRevMessageInfo != null) {
@@ -1491,26 +1516,26 @@ public class GXHDO102B005 implements IFormLogic {
 
             BigDecimal rev = new BigDecimal(processData.getInitRev());
             // 最新のリビジョンを採番
-            BigDecimal newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, paramJissekino, formId);
+            BigDecimal newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo9, edaban, paramJissekino, formId);
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Timestamp systemTime = new Timestamp(System.currentTimeMillis());
             String strSystime = sdf.format(systemTime);
             // 品質DB登録実績更新処理
-            updateFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_SAKUJO, systemTime, paramJissekino);
+            updateFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo9, edaban, JOTAI_FLG_SAKUJO, systemTime, paramJissekino);
 
             // ｶﾞﾗｽｽﾗﾘｰ作製・秤量_仮登録登録処理
-            int newDeleteflag = getNewDeleteflag(queryRunnerQcdb, kojyo, lotNo8, edaban, paramJissekino);
-            insertDeleteDataTmpSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, newDeleteflag, kojyo, lotNo8, edaban, paramJissekino, strSystime);
+            int newDeleteflag = getNewDeleteflag(queryRunnerQcdb, kojyo, lotNo9, edaban, paramJissekino);
+            insertDeleteDataTmpSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, newDeleteflag, kojyo, lotNo9, edaban, paramJissekino, strSystime);
 
             // ｶﾞﾗｽｽﾗﾘｰ作製・秤量入力_ｻﾌﾞ画面仮登録登録処理
-            insertDeleteDataTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, newDeleteflag, kojyo, lotNo8, edaban, strSystime);
+            insertDeleteDataTmpSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, newRev, newDeleteflag, kojyo, lotNo9, edaban, strSystime);
             
             // ｶﾞﾗｽｽﾗﾘｰ作製・秤量_削除処理
-            deleteSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban);
+            deleteSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo9, edaban);
 
             // ｶﾞﾗｽｽﾗﾘｰ・秤量入力_ｻﾌﾞ画面削除処理
-            deleteSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban);
+            deleteSubSrGlassslurryhyoryo(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo9, edaban);
 
             DbUtils.commitAndCloseQuietly(conDoc);
             DbUtils.commitAndCloseQuietly(conQcdb);
@@ -1630,30 +1655,29 @@ public class GXHDO102B005 implements IFormLogic {
         String lotNo = (String) session.getAttribute("lotNo");
         int paramJissekino = (Integer) session.getAttribute("jissekino");
         String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
+        String tantoshaCd = (String) session.getAttribute("tantoshaCd");
 
         // エラーメッセージリスト
         List<String> errorMessageList = processData.getInitMessageList();
-
+        
         // 設計情報の取得
-        Map sekkeiData = this.loadMkSekkeiData(queryRunnerQcdb, queryRunnerWip, lotNo);
-        if (sekkeiData == null || sekkeiData.isEmpty()) {
+        Map mkSekkeiData = this.loadMkSekkeiData(queryRunnerQcdb, queryRunnerWip, lotNo);
+        if (mkSekkeiData == null || mkSekkeiData.isEmpty()) {
             errorMessageList.clear();
             errorMessageList.add(MessageUtil.getMessage("XHD-000014"));
             processData.setFatalError(true);
             processData.setInitMessageList(errorMessageList);
             return processData;
         }
-
-        // ②前工程WIPから仕掛情報を取得処理TODO
-        Map shikakariData = loadShikakariDataFromWip();
+        
+        // 前工程WIPから仕掛情報を取得処理
+        Map shikakariData = loadShikakariDataFromWip(queryRunnerDoc, tantoshaCd, lotNo);
         if (shikakariData == null || shikakariData.isEmpty()) {
             errorMessageList.add(MessageUtil.getMessage("XHD-000029"));
         }
-        String lotkubuncode = StringUtil.nullToBlank(getMapData(shikakariData, "lotkubuncode")); // ﾛｯﾄ区分ｺｰﾄﾞ
-
-        // ﾛｯﾄ区分ﾏｽﾀ情報の取得
-        Map lotKbnMasData = loadLotKbnMas(queryRunnerWip, lotkubuncode);
-        if (lotKbnMasData == null || lotKbnMasData.isEmpty()) {
+        // ﾛｯﾄ区分チェック
+        String lotkubun = (String) shikakariData.get("lotkubun");
+        if (StringUtil.isEmpty(lotkubun)) {
             errorMessageList.add(MessageUtil.getMessage("XHD-000015"));
         }
 
@@ -1666,7 +1690,7 @@ public class GXHDO102B005 implements IFormLogic {
         }
 
         // 画面に取得した情報をセットする。(入力項目以外)
-        setViewItemData(processData, lotKbnMasData, shikakariData, lotNo);
+        setViewItemData(processData, shikakariData, lotNo);
         // 画面のラベル項目の値の背景色を取得できない場合、デフォルト値を設置
         GXHDO102C002Logic.set102B005ItemStyle(processData.getItemList());
         // 画面のラベル項目の値の背景色を取得できない場合、デフォルト値を設置
@@ -1676,16 +1700,31 @@ public class GXHDO102B005 implements IFormLogic {
     }
 
     /**
+     * [設計]から、初期表示する情報を取得
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param queryRunnerWip QueryRunnerオブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadMkSekkeiData(QueryRunner queryRunnerQcdb, QueryRunner queryRunnerWip, String lotNo) throws SQLException {
+        String lotNo1 = lotNo.substring(0, 3);
+        String lotNo2 = lotNo.substring(3, 12);
+        // 設計データの取得
+        return CommonUtil.getMkSekkeiInfo(queryRunnerQcdb, queryRunnerWip, lotNo1, lotNo2, "001");
+    }
+
+    /**
      * 入力項目以外のデータを画面項目に設定
      *
      * @param processData 処理制御データ
      * @param sekkeiData 設計データ
-     * @param lotKbnMasData ﾛｯﾄ区分ﾏｽﾀデータ
      * @param ownerMasData ｵｰﾅｰﾏｽﾀデータ
      * @param shikakariData 仕掛データ
      * @param lotNo ﾛｯﾄNo
      */
-    private void setViewItemData(ProcessData processData, Map lotKbnMasData, Map shikakariData, String lotNo) {
+    private void setViewItemData(ProcessData processData, Map shikakariData, String lotNo) {
 
         // WIPﾛｯﾄNo
         this.setItemData(processData, GXHDO102B005Const.SEIHIN_WIPLOTNO, lotNo);
@@ -1695,11 +1734,16 @@ public class GXHDO102B005 implements IFormLogic {
         this.setItemData(processData, GXHDO102B005Const.SEIHIN_GLASSSLURRYLOTNO, StringUtil.nullToBlank(getMapData(shikakariData, "lotno")));
         // ﾛｯﾄ区分
         String lotkubuncode = StringUtil.nullToBlank(getMapData(shikakariData, "lotkubuncode"));
+        // ﾛｯﾄ区分名称
+        String lotkubun = StringUtil.nullToBlank(getMapData(shikakariData, "lotkubun"));
+        
         if (StringUtil.isEmpty(lotkubuncode)) {
             this.setItemData(processData, GXHDO102B005Const.SEIHIN_LOT_KUBUN, "");
         } else {
-            String lotKubun = StringUtil.nullToBlank(getMapData(lotKbnMasData, "lotkubun"));
-            this.setItemData(processData, GXHDO102B005Const.SEIHIN_LOT_KUBUN, lotkubuncode + ":" + lotKubun);
+            if (!StringUtil.isEmpty(lotkubun)) {
+                lotkubuncode = lotkubuncode + ":" + lotkubun;
+            }
+            this.setItemData(processData, GXHDO102B005Const.SEIHIN_LOT_KUBUN, lotkubuncode);
         }
     }
 
@@ -1723,12 +1767,12 @@ public class GXHDO102B005 implements IFormLogic {
         String rev = "";
         String jotaiFlg = "";
         String kojyo = lotNo.substring(0, 3);
-        String lotNo8 = lotNo.substring(3, 11);
-        String edaban = lotNo.substring(11, 14);
+        String lotNo9 = lotNo.substring(3, 12);
+        String edaban = lotNo.substring(12, 15);
 
         for (int i = 0; i < 5; i++) {
             // [原材料品質DB登録実績]から、ﾃﾞｰﾀを取得
-            Map fxhdd11RevInfo = loadFxhdd11RevInfo(queryRunnerDoc, kojyo, lotNo8, edaban, jissekino, formId);
+            Map fxhdd11RevInfo = loadFxhdd11RevInfo(queryRunnerDoc, kojyo, lotNo9, edaban, jissekino, formId);
             rev = StringUtil.nullToBlank(getMapData(fxhdd11RevInfo, "rev"));
             jotaiFlg = StringUtil.nullToBlank(getMapData(fxhdd11RevInfo, "jotai_flg"));
 
@@ -1751,14 +1795,14 @@ public class GXHDO102B005 implements IFormLogic {
             }
 
             // ｶﾞﾗｽｽﾗﾘｰ作製・秤量データ取得
-            srGlassslurryhyoryoList = getSrGlassslurryhyoryoData(queryRunnerQcdb, rev, jotaiFlg, kojyo, lotNo8, edaban);
+            srGlassslurryhyoryoList = getSrGlassslurryhyoryoData(queryRunnerQcdb, rev, jotaiFlg, kojyo, lotNo9, edaban);
             if (srGlassslurryhyoryoList.isEmpty()) {
                 //該当データが取得できなかった場合は処理を繰り返す。
                 continue;
             }
 
             // ｶﾞﾗｽｽﾗﾘｰ作製・秤量入力_サブ画面データ取得
-            subSrGlassslurryhyoryoList = getSubSrGlassslurryhyoryoData(queryRunnerQcdb, rev, jotaiFlg, kojyo, lotNo8, edaban);
+            subSrGlassslurryhyoryoList = getSubSrGlassslurryhyoryoData(queryRunnerQcdb, rev, jotaiFlg, kojyo, lotNo9, edaban);
             if (subSrGlassslurryhyoryoList.isEmpty() || subSrGlassslurryhyoryoList.size() != 32) {
                 //該当データが取得できなかった場合は処理を繰り返す。
                 continue;
@@ -2318,60 +2362,31 @@ public class GXHDO102B005 implements IFormLogic {
     }
 
     /**
-     * [設計]から、初期表示する情報を取得
+     * 前工程WIPから仕掛情報を取得する。
      *
-     * @param queryRunnerQcdb QueryRunnerオブジェクト
-     * @param queryRunnerWip QueryRunnerオブジェクト
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param tantoshaCd 担当者コード
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private Map loadMkSekkeiData(QueryRunner queryRunnerQcdb, QueryRunner queryRunnerWip, String lotNo) throws SQLException {
-        String lotNo1 = lotNo.substring(0, 3);
-        String lotNo2 = lotNo.substring(3, 11);
-        // 設計データの取得
-        return CommonUtil.getMkSekkeiInfo(queryRunnerQcdb, queryRunnerWip, lotNo1, lotNo2, "001");
-    }
-
-    /**
-     * [ﾛｯﾄ区分ﾏｽﾀｰ]から、ﾛｯﾄ区分を取得
-     *
-     * @param queryRunnerDoc QueryRunnerオブジェクト
-     * @param lotKubunCode ﾛｯﾄ区分ｺｰﾄﾞ(検索キー)
-     * @return 取得データ
-     * @throws SQLException 例外エラー
-     */
-    private Map loadLotKbnMas(QueryRunner queryRunnerDoc, String lotKubunCode) throws SQLException {
-
-        // 設計データの取得
-        String sql = "SELECT lotkubun "
-                + "FROM lotkumas "
-                + "WHERE lotkubuncode = ?";
-
-        List<Object> params = new ArrayList<>();
-        params.add(lotKubunCode);
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
-    }
-
-    /**
-     * 前工程WIPから仕掛情報を取得する。TODO
-     *
-     * @return 取得データ
-     * @throws SQLException 例外エラー
-     */
-    private Map loadShikakariDataFromWip() throws SQLException {
+    private Map loadShikakariDataFromWip(QueryRunner queryRunnerDoc, String tantoshaCd, String lotNo) throws SQLException {
+        List<SikakariJson> sikakariList = CommonUtil.getMwipResult(queryRunnerDoc, tantoshaCd, lotNo);
+        SikakariJson sikakariObj = null;
         Map shikakariData = new HashMap();
-        // TODO
-        shikakariData.put("hinmei", "品名123"); // ｶﾞﾗｽ品名
-        shikakariData.put("lotno", "00182001240001"); // ｶﾞﾗｽLotNo
-        shikakariData.put("lotkubuncode", "2002"); // ﾛｯﾄ区分ｺｰﾄﾞ
-        shikakariData.put("oyalotedaban", "006"); // 親ﾛｯﾄ枝番
+        if (sikakariList != null) {
+            sikakariObj = sikakariList.get(0);
+            // 前工程WIPから取得した品名
+            shikakariData.put("hinmei", sikakariObj.getHinmei());
+            shikakariData.put("oyalotedaban", sikakariObj.getOyaLotEdaBan());
+            shikakariData.put("lotkubuncode", sikakariObj.getLotKubunCode());
+            shikakariData.put("lotkubun", sikakariObj.getLotkubun());
+            shikakariData.put("lotno", sikakariObj.getConventionalLot());
+        }
 
         return shikakariData;
     }
-
+    
     /**
      * [品質DB登録実績]から、ﾘﾋﾞｼﾞｮﾝ,状態ﾌﾗｸﾞを取得
      *
@@ -6833,5 +6848,216 @@ public class GXHDO102B005 implements IFormLogic {
         params.add(rev);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+    
+    /**
+     * 部材在庫の重量ﾃﾞｰﾀ連携
+     *
+     * @param processData 処理制御データ
+     * @param tantoshaCd 更新者
+     * @return レスポンスデータ
+     */
+    private String doPMLA0212Save(ProcessData processData, String tantoshaCd) {
+        ArrayList<String> errorItemList = new ArrayList<>();
+        // ﾎﾟｯﾄ1_資材ﾛｯﾄNo.1_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO1_SIZAILOTNO1_1, GXHDO102B005Const.POTTO1_TYOUGOURYOU1_1, errorItemList);
+        // ﾎﾟｯﾄ1_部材在庫No1_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO1_SIZAILOTNO1_2, GXHDO102B005Const.POTTO1_TYOUGOURYOU1_2, errorItemList);
+        // ﾎﾟｯﾄ1_部材在庫No2_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO1_SIZAILOTNO2_1, GXHDO102B005Const.POTTO1_TYOUGOURYOU2_1, errorItemList);
+        // ﾎﾟｯﾄ1_部材在庫No2_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO1_SIZAILOTNO2_2, GXHDO102B005Const.POTTO1_TYOUGOURYOU2_2, errorItemList);
+        // ﾎﾟｯﾄ1_資材ﾛｯﾄNo.3_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO1_SIZAILOTNO3_1, GXHDO102B005Const.POTTO1_TYOUGOURYOU3_1, errorItemList);
+        // ﾎﾟｯﾄ1_部材在庫No3_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO1_SIZAILOTNO3_2, GXHDO102B005Const.POTTO1_TYOUGOURYOU3_2, errorItemList);
+        // ﾎﾟｯﾄ1_部材在庫No4_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO1_SIZAILOTNO4_1, GXHDO102B005Const.POTTO1_TYOUGOURYOU4_1, errorItemList);
+        // ﾎﾟｯﾄ1_部材在庫No4_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO1_SIZAILOTNO4_2, GXHDO102B005Const.POTTO1_TYOUGOURYOU4_2, errorItemList);
+        
+        // ﾎﾟｯﾄ2_資材ﾛｯﾄNo.1_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO2_SIZAILOTNO1_1, GXHDO102B005Const.POTTO2_TYOUGOURYOU1_1, errorItemList);
+        // ﾎﾟｯﾄ2_部材在庫No1_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO2_SIZAILOTNO1_2, GXHDO102B005Const.POTTO2_TYOUGOURYOU1_2, errorItemList);
+        // ﾎﾟｯﾄ2_部材在庫No2_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO2_SIZAILOTNO2_1, GXHDO102B005Const.POTTO2_TYOUGOURYOU2_1, errorItemList);
+        // ﾎﾟｯﾄ2_部材在庫No2_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO2_SIZAILOTNO2_2, GXHDO102B005Const.POTTO2_TYOUGOURYOU2_2, errorItemList);
+        // ﾎﾟｯﾄ2_資材ﾛｯﾄNo.3_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO2_SIZAILOTNO3_1, GXHDO102B005Const.POTTO2_TYOUGOURYOU3_1, errorItemList);
+        // ﾎﾟｯﾄ2_部材在庫No3_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO2_SIZAILOTNO3_2, GXHDO102B005Const.POTTO2_TYOUGOURYOU3_2, errorItemList);
+        // ﾎﾟｯﾄ2_部材在庫No4_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO2_SIZAILOTNO4_1, GXHDO102B005Const.POTTO2_TYOUGOURYOU4_1, errorItemList);
+        // ﾎﾟｯﾄ2_部材在庫No4_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO2_SIZAILOTNO4_2, GXHDO102B005Const.POTTO2_TYOUGOURYOU4_2, errorItemList);
+        
+        // ﾎﾟｯﾄ3_資材ﾛｯﾄNo.1_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO3_SIZAILOTNO1_1, GXHDO102B005Const.POTTO3_TYOUGOURYOU1_1, errorItemList);
+        // ﾎﾟｯﾄ3_部材在庫No1_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO3_SIZAILOTNO1_2, GXHDO102B005Const.POTTO3_TYOUGOURYOU1_2, errorItemList);
+        // ﾎﾟｯﾄ3_部材在庫No2_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO3_SIZAILOTNO2_1, GXHDO102B005Const.POTTO3_TYOUGOURYOU2_1, errorItemList);
+        // ﾎﾟｯﾄ3_部材在庫No2_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO3_SIZAILOTNO2_2, GXHDO102B005Const.POTTO3_TYOUGOURYOU2_2, errorItemList);
+        // ﾎﾟｯﾄ3_資材ﾛｯﾄNo.3_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO3_SIZAILOTNO3_1, GXHDO102B005Const.POTTO3_TYOUGOURYOU3_1, errorItemList);
+        // ﾎﾟｯﾄ3_部材在庫No3_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO3_SIZAILOTNO3_2, GXHDO102B005Const.POTTO3_TYOUGOURYOU3_2, errorItemList);
+        // ﾎﾟｯﾄ3_部材在庫No4_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO3_SIZAILOTNO4_1, GXHDO102B005Const.POTTO3_TYOUGOURYOU4_1, errorItemList);
+        // ﾎﾟｯﾄ3_部材在庫No4_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO3_SIZAILOTNO4_2, GXHDO102B005Const.POTTO3_TYOUGOURYOU4_2, errorItemList);
+        
+        // ﾎﾟｯﾄ4_資材ﾛｯﾄNo.1_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO4_SIZAILOTNO1_1, GXHDO102B005Const.POTTO4_TYOUGOURYOU1_1, errorItemList);
+        // ﾎﾟｯﾄ4_部材在庫No1_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO4_SIZAILOTNO1_2, GXHDO102B005Const.POTTO4_TYOUGOURYOU1_2, errorItemList);
+        // ﾎﾟｯﾄ4_部材在庫No2_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO4_SIZAILOTNO2_1, GXHDO102B005Const.POTTO4_TYOUGOURYOU2_1, errorItemList);
+        // ﾎﾟｯﾄ4_部材在庫No2_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO4_SIZAILOTNO2_2, GXHDO102B005Const.POTTO4_TYOUGOURYOU2_2, errorItemList);
+        // ﾎﾟｯﾄ4_資材ﾛｯﾄNo.3_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO4_SIZAILOTNO3_1, GXHDO102B005Const.POTTO4_TYOUGOURYOU3_1, errorItemList);
+        // ﾎﾟｯﾄ4_部材在庫No3_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO4_SIZAILOTNO3_2, GXHDO102B005Const.POTTO4_TYOUGOURYOU3_2, errorItemList);
+        // ﾎﾟｯﾄ4_部材在庫No4_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO4_SIZAILOTNO4_1, GXHDO102B005Const.POTTO4_TYOUGOURYOU4_1, errorItemList);
+        // ﾎﾟｯﾄ4_部材在庫No4_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO4_SIZAILOTNO4_2, GXHDO102B005Const.POTTO4_TYOUGOURYOU4_2, errorItemList);
+        
+        // ﾎﾟｯﾄ5_資材ﾛｯﾄNo.1_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO5_SIZAILOTNO1_1, GXHDO102B005Const.POTTO5_TYOUGOURYOU1_1, errorItemList);
+        // ﾎﾟｯﾄ5_部材在庫No1_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO5_SIZAILOTNO1_2, GXHDO102B005Const.POTTO5_TYOUGOURYOU1_2, errorItemList);
+        // ﾎﾟｯﾄ5_部材在庫No2_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO5_SIZAILOTNO2_1, GXHDO102B005Const.POTTO5_TYOUGOURYOU2_1, errorItemList);
+        // ﾎﾟｯﾄ5_部材在庫No2_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO5_SIZAILOTNO2_2, GXHDO102B005Const.POTTO5_TYOUGOURYOU2_2, errorItemList);
+        // ﾎﾟｯﾄ5_資材ﾛｯﾄNo.3_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO5_SIZAILOTNO3_1, GXHDO102B005Const.POTTO5_TYOUGOURYOU3_1, errorItemList);
+        // ﾎﾟｯﾄ5_部材在庫No3_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO5_SIZAILOTNO3_2, GXHDO102B005Const.POTTO5_TYOUGOURYOU3_2, errorItemList);
+        // ﾎﾟｯﾄ5_部材在庫No4_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO5_SIZAILOTNO4_1, GXHDO102B005Const.POTTO5_TYOUGOURYOU4_1, errorItemList);
+        // ﾎﾟｯﾄ5_部材在庫No4_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO5_SIZAILOTNO4_2, GXHDO102B005Const.POTTO5_TYOUGOURYOU4_2, errorItemList);
+        
+        // ﾎﾟｯﾄ6_資材ﾛｯﾄNo.1_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO6_SIZAILOTNO1_1, GXHDO102B005Const.POTTO6_TYOUGOURYOU1_1, errorItemList);
+        // ﾎﾟｯﾄ6_部材在庫No1_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO6_SIZAILOTNO1_2, GXHDO102B005Const.POTTO6_TYOUGOURYOU1_2, errorItemList);
+        // ﾎﾟｯﾄ6_部材在庫No2_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO6_SIZAILOTNO2_1, GXHDO102B005Const.POTTO6_TYOUGOURYOU2_1, errorItemList);
+        // ﾎﾟｯﾄ6_部材在庫No2_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO6_SIZAILOTNO2_2, GXHDO102B005Const.POTTO6_TYOUGOURYOU2_2, errorItemList);
+        // ﾎﾟｯﾄ6_資材ﾛｯﾄNo.3_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO6_SIZAILOTNO3_1, GXHDO102B005Const.POTTO6_TYOUGOURYOU3_1, errorItemList);
+        // ﾎﾟｯﾄ6_部材在庫No3_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO6_SIZAILOTNO3_2, GXHDO102B005Const.POTTO6_TYOUGOURYOU3_2, errorItemList);
+        // ﾎﾟｯﾄ6_部材在庫No4_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO6_SIZAILOTNO4_1, GXHDO102B005Const.POTTO6_TYOUGOURYOU4_1, errorItemList);
+        // ﾎﾟｯﾄ6_部材在庫No4_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO6_SIZAILOTNO4_2, GXHDO102B005Const.POTTO6_TYOUGOURYOU4_2, errorItemList);
+        
+        // ﾎﾟｯﾄ7_資材ﾛｯﾄNo.1_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO7_SIZAILOTNO1_1, GXHDO102B005Const.POTTO7_TYOUGOURYOU1_1, errorItemList);
+        // ﾎﾟｯﾄ7_部材在庫No1_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO7_SIZAILOTNO1_2, GXHDO102B005Const.POTTO7_TYOUGOURYOU1_2, errorItemList);
+        // ﾎﾟｯﾄ7_部材在庫No2_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO7_SIZAILOTNO2_1, GXHDO102B005Const.POTTO7_TYOUGOURYOU2_1, errorItemList);
+        // ﾎﾟｯﾄ7_部材在庫No2_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO7_SIZAILOTNO2_2, GXHDO102B005Const.POTTO7_TYOUGOURYOU2_2, errorItemList);
+        // ﾎﾟｯﾄ7_資材ﾛｯﾄNo.3_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO7_SIZAILOTNO3_1, GXHDO102B005Const.POTTO7_TYOUGOURYOU3_1, errorItemList);
+        // ﾎﾟｯﾄ7_部材在庫No3_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO7_SIZAILOTNO3_2, GXHDO102B005Const.POTTO7_TYOUGOURYOU3_2, errorItemList);
+        // ﾎﾟｯﾄ7_部材在庫No4_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO7_SIZAILOTNO4_1, GXHDO102B005Const.POTTO7_TYOUGOURYOU4_1, errorItemList);
+        // ﾎﾟｯﾄ7_部材在庫No4_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO7_SIZAILOTNO4_2, GXHDO102B005Const.POTTO7_TYOUGOURYOU4_2, errorItemList);
+        
+        // ﾎﾟｯﾄ8_資材ﾛｯﾄNo.1_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO8_SIZAILOTNO1_1, GXHDO102B005Const.POTTO8_TYOUGOURYOU1_1, errorItemList);
+        // ﾎﾟｯﾄ8_部材在庫No1_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO8_SIZAILOTNO1_2, GXHDO102B005Const.POTTO8_TYOUGOURYOU1_2, errorItemList);
+        // ﾎﾟｯﾄ8_部材在庫No2_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO8_SIZAILOTNO2_1, GXHDO102B005Const.POTTO8_TYOUGOURYOU2_1, errorItemList);
+        // ﾎﾟｯﾄ8_部材在庫No2_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO8_SIZAILOTNO2_2, GXHDO102B005Const.POTTO8_TYOUGOURYOU2_2, errorItemList);
+        // ﾎﾟｯﾄ8_資材ﾛｯﾄNo.3_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO8_SIZAILOTNO3_1, GXHDO102B005Const.POTTO8_TYOUGOURYOU3_1, errorItemList);
+        // ﾎﾟｯﾄ8_部材在庫No3_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO8_SIZAILOTNO3_2, GXHDO102B005Const.POTTO8_TYOUGOURYOU3_2, errorItemList);
+        // ﾎﾟｯﾄ8_部材在庫No4_1に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO8_SIZAILOTNO4_1, GXHDO102B005Const.POTTO8_TYOUGOURYOU4_1, errorItemList);
+        // ﾎﾟｯﾄ8_部材在庫No4_2に値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B005Const.POTTO8_SIZAILOTNO4_2, GXHDO102B005Const.POTTO8_TYOUGOURYOU4_2, errorItemList);
+        // 上記の処理でｴﾗｰが発生した場合、画面にエラーダイアログを出力する。
+        if (!errorItemList.isEmpty()) {
+            ErrorListMessage errorListMessageList = new ErrorListMessage();
+            errorListMessageList.setResultMessage(MessageUtil.getMessage("buzailotnoErrorList"));
+            errorListMessageList.setResultMessageList(errorItemList);
+            errorListMessageList.setTitleMessage(MessageUtil.getMessage("infoMsg"));
+            processData.setErrorListMessage(errorListMessageList);
+            return "error";
+        }
+        return "ok";
+    }
+
+    /**
+     * 部材在庫管理を参照【PMLA0212_部材在庫ﾃﾞｰﾀ更新】
+     *
+     * @param processData 処理制御データ
+     * @param tantoshaCd 更新者
+     * @param sizailotnoStr 部材在庫No
+     * @param tyougouryouStr 調合量
+     * @return レスポンスデータ
+     */
+    private void doCallPmla0212Api(ProcessData processData, String tantoshaCd, String sizailotnoStr, String tyougouryouStr, ArrayList<String> errorItemList) {
+        // 調合量X_Y
+        String tyougouryouValue = "";
+        // WIPﾛｯﾄNo
+        String wiplotnoValue = "";
+        // 部材在庫NoX_Yに値が入っている場合、以下の内容を元にAPIを呼び出す
+        FXHDD01 itemFxhdd01Sizailotno = getItemRow(processData.getItemListEx(), sizailotnoStr);
+        if (itemFxhdd01Sizailotno == null || StringUtil.isEmpty(itemFxhdd01Sizailotno.getValue())) {
+            return;
+        }
+        // 部材在庫NoX_Y
+        String sizailotnoValue = StringUtil.nullToBlank(itemFxhdd01Sizailotno.getValue());
+
+        FXHDD01 itemFxhdd01Tyougouryou = getItemRow(processData.getItemListEx(), tyougouryouStr);
+        if (itemFxhdd01Tyougouryou != null) {
+            // 調合量X_Y
+            tyougouryouValue = StringUtil.nullToBlank(itemFxhdd01Tyougouryou.getValue());
+        }
+        FXHDD01 itemFxhdd01Wiplotno = getItemRow(processData.getItemList(), GXHDO102B005Const.SEIHIN_WIPLOTNO);
+        if (itemFxhdd01Wiplotno != null) {
+            // WIPﾛｯﾄNo
+            wiplotnoValue = StringUtil.nullToBlank(itemFxhdd01Wiplotno.getValue());
+        }
+        ArrayList<String> paramsList = new ArrayList<>();
+        paramsList.add(sizailotnoValue);
+        paramsList.add(tantoshaCd);
+        paramsList.add("PXHDO102");
+        paramsList.add(tyougouryouValue);
+        paramsList.add("");
+        paramsList.add("");
+        paramsList.add("");
+        paramsList.add(wiplotnoValue);
+        
+        try {
+            QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
+            // 「/api/PMLA0212/doSave」APIを呼び出す
+            String responseResult = CommonUtil.doRequestPmla0212Save(queryRunnerDoc, paramsList);
+            if (!"ok".equals(responseResult)) {
+                errorItemList.add(itemFxhdd01Sizailotno.getLabel1());
+            }
+        } catch (Exception ex) {
+            ErrUtil.outputErrorLog(itemFxhdd01Sizailotno.getLabel1() + "の重量ﾃﾞｰﾀ連携処理エラー発生", ex, LOGGER);
+            errorItemList.add(itemFxhdd01Sizailotno.getLabel1());
+        }
     }
 }

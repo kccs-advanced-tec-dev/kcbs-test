@@ -487,14 +487,11 @@ public class GXHDO202B002 implements Serializable {
         if (existError(validateUtil.checkC001(StringUtil.nullToBlank(cmbKotei), "工程"))) {
             return;
         }
-        // ロットNo
-        if(!StringUtil.isEmpty(getLotNo()) && (StringUtil.getLength(getLotNo()) != 11 && StringUtil.getLength(getLotNo()) != 14)){
+        // ﾛｯﾄNo
+        if(!StringUtil.isEmpty(getLotNo()) && (StringUtil.getLength(getLotNo()) != 15)){
          FacesMessage message = 
-                    new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000064"), null);
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000004", "ﾛｯﾄNo", "15"), null);
             FacesContext.getCurrentInstance().addMessage(null, message);
-            return;
-        }
-        if (!StringUtil.isEmpty(getLotNo()) && existError(validateUtil.checkValueE001(getLotNo()))) {
             return;
         }
         // 秤量日(FROM)
@@ -1278,8 +1275,8 @@ public class GXHDO202B002 implements Serializable {
         String paramEdaban = null;
         if (!StringUtil.isEmpty(lotNo)) {
             paramKojo = StringUtils.substring(getLotNo(), 0, 3);
-            paramLotNo = StringUtils.substring(getLotNo(), 3, 11);
-            paramEdaban = StringUtil.blankToNull(StringUtils.substring(getLotNo(), 11, 14));
+            paramLotNo = StringUtils.substring(getLotNo(), 3, 12);
+            paramEdaban = StringUtil.blankToNull(StringUtils.substring(getLotNo(), 12, 15));
         }
         //品名
         String paramHinmei = StringUtil.blankToNull(getHinmei());       
@@ -1287,13 +1284,13 @@ public class GXHDO202B002 implements Serializable {
         //秤量日(FROM)
         Date paramHyoryoDateF = null;
         if (!StringUtil.isEmpty(hyoryoDateF)) {
-            paramHyoryoDateF = DateUtil.convertStringToDate(getHyoryoDateF(), "0000");
+            paramHyoryoDateF = DateUtil.convertStringToDateInSeconds(getHyoryoDateF(), "000000");
         }
         
         //秤量日(TO)
         Date paramHyoryoDateT = null;
         if (!StringUtil.isEmpty(hyoryoDateT)) {
-            paramHyoryoDateT = DateUtil.convertStringToDate(getHyoryoDateT(), "2359");
+            paramHyoryoDateT = DateUtil.convertStringToDateInSeconds(getHyoryoDateT(), "235959");
         }
         
         //秤量号機
@@ -1302,25 +1299,25 @@ public class GXHDO202B002 implements Serializable {
         //粉砕開始日(FROM)
         Date paramFunsaiStartDateF = null;
         if (!StringUtil.isEmpty(funsaiStartDateF)) {
-            paramFunsaiStartDateF = DateUtil.convertStringToDate(getFunsaiStartDateF(), "0000");
+            paramFunsaiStartDateF = DateUtil.convertStringToDateInSeconds(getFunsaiStartDateF(), "000000");
         }
         
         //粉砕開始日(TO)
         Date paramFunsaiStartDateT = null;
         if (!StringUtil.isEmpty(funsaiStartDateT)) {
-            paramFunsaiStartDateT = DateUtil.convertStringToDate(getFunsaiStartDateT(), "2359");
+            paramFunsaiStartDateT = DateUtil.convertStringToDateInSeconds(getFunsaiStartDateT(), "235959");
         }
         
         //粉砕終了日(FROM)
         Date paramFunsaiEndDateF = null;
         if (!StringUtil.isEmpty(funsaiEndDateF)) {
-            paramFunsaiEndDateF = DateUtil.convertStringToDate(getFunsaiEndDateF(), "0000");
+            paramFunsaiEndDateF = DateUtil.convertStringToDateInSeconds(getFunsaiEndDateF(), "000000");
         }
         
         //粉砕終了日(TO)
         Date paramFunsaiEndDateT = null;
         if (!StringUtil.isEmpty(funsaiEndDateT)) {
-            paramFunsaiEndDateT = DateUtil.convertStringToDate(getFunsaiEndDateT(), "2359");
+            paramFunsaiEndDateT = DateUtil.convertStringToDateInSeconds(getFunsaiEndDateT(), "235959");
         }
                         
         List<Object> params = new ArrayList<>();
