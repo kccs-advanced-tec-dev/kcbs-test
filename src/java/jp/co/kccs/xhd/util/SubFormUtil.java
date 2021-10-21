@@ -150,9 +150,19 @@ public class SubFormUtil {
     public static final String FORM_ID_GXHDO102C002 = "GXHDO102C002";
     
     /**
+     * 添加材ｽﾗﾘｰ作製・添加材調合入力画面ID
+     */
+    public static final String FORM_ID_GXHDO102C004 = "GXHDO102C004";
+    
+    /**
      * 添加材ｽﾗﾘｰ作製・溶剤調合入力画面ID
      */
     public static final String FORM_ID_GXHDO102C005 = "GXHDO102C005";
+    
+    /**
+     * 添加材ｽﾗﾘｰ作製・粉砕入力画面ID
+     */
+    public static final String FORM_ID_GXHDO102C006 = "GXHDO102C006";
     
     /**
      * エラーリスト表示メッセージ
@@ -325,11 +335,23 @@ public class SubFormUtil {
                         getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
                                 getELContext(), null, "beanGXHDO102C002");
                 break;
+            // 添加材ｽﾗﾘｰ作製・添加材調合入力
+            case "GXHDO102C004":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO102C004");
+                break;
             // 添加材ｽﾗﾘｰ作製・溶剤調合入力
             case "GXHDO102C005":
                 returnBean = FacesContext.getCurrentInstance().
                         getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
                                 getELContext(), null, "beanGXHDO102C005");
+                break;
+            // 添加材ｽﾗﾘｰ作製・粉砕入力
+            case "GXHDO102C006":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO102C006");
                 break;
              // エラーリストエラーダイアログ
             case "ErrorListMessage":
