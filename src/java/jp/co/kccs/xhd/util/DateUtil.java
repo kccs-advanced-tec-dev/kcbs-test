@@ -235,6 +235,26 @@ public class DateUtil {
     }
 
     /**
+     * 日付の差分分数の数取得処理
+     *
+     * @param dateFrom 開始日付
+     * @param dateTo 終了日付
+     * @return 差分分数
+     */
+    public static int diffMinutes(Date dateFrom, Date dateTo) {
+        // 日付の秒を切り捨てる
+        Date dayFrom = DateUtils.truncate(dateFrom, Calendar.MINUTE);
+        Date dayTo = DateUtils.truncate(dateTo, Calendar.MINUTE);
+
+        // 日付をlong値に変換
+        long dateTimeFrom = dayFrom.getTime();
+        long dateTimeTo = dayTo.getTime();
+
+        // 差分分数を取得
+        return (int) ((dateTimeTo - dateTimeFrom) / (1000 * 60));
+    }
+
+    /**
      * 時間⇒数値(int)変換
      *
      * @param date Date型の日付

@@ -28,8 +28,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
-import jp.co.kccs.xhd.common.CompMessage;
-import jp.co.kccs.xhd.common.ErrorListMessage;
 import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.common.InfoMessage;
@@ -68,7 +66,7 @@ import org.primefaces.context.RequestContext;
 /**
  * ===============================================================================<br>
  * <br>
- * システム名	品質DB(コンデンサ)<br>
+ * システム名	品質DB原料入力機能(コンデンサ)<br>
  * <br>
  * 変更日	2021/08/16<br>
  * 計画書No	MB2101-DK002<br>
@@ -1042,23 +1040,6 @@ public class GXHDO901B implements Serializable {
 
                 return;
             }
-            
-            // エラーリストメッセージが設定されている場合、ダイアログを表示する
-            List<String> resultMessageList = this.processData.getErrorListMessage().getResultMessageList();
-            if ((resultMessageList != null && !resultMessageList.isEmpty()) || !StringUtil.isEmpty(this.processData.getErrorListMessage().getResultMessage())) {
-
-                // メッセージを画面に渡す
-                ErrorListMessage errorListMessageError = (ErrorListMessage) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_ERRORLIST_MESSAGE);
-
-                errorListMessageError.setResultMessageList(this.processData.getErrorListMessage().getResultMessageList());
-                errorListMessageError.setResultMessage(this.processData.getErrorListMessage().getResultMessage());
-                errorListMessageError.setTitleMessage(this.processData.getErrorListMessage().getTitleMessage());
-
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.addCallbackParam("firstParam", "errorListMessage");
-
-                return;
-            }
 
             // 規格エラーメッセージが設定されている場合、ダイアログを表示する
             if (!this.processData.getKikakuchiInputErrorInfoList().isEmpty()) {
@@ -1543,7 +1524,7 @@ public class GXHDO901B implements Serializable {
      */
     private Map getSekkeiNo(String lotNo) {
         String strKojyo = lotNo.substring(0, 3);
-        String strLotNo = lotNo.substring(3, 12);
+        String strLotNo = lotNo.substring(3, 11);
         try {
             QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceQcdb);
             QueryRunner queryRunnerWip = new QueryRunner(dataSourceWip);
@@ -1744,8 +1725,8 @@ public class GXHDO901B implements Serializable {
             String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
             String lotNo = (String) session.getAttribute("lotNo");
             String kojyo = lotNo.substring(0, 3); //工場ｺｰﾄﾞ
-            String lotNo8 = lotNo.substring(3, 12); //ﾛｯﾄNo(8桁)
-            String edaban = lotNo.substring(12, 15); //枝番
+            String lotNo8 = lotNo.substring(3, 11); //ﾛｯﾄNo(8桁)
+            String edaban = lotNo.substring(11, 14); //枝番
             Integer jissekino = (Integer) session.getAttribute("jissekino"); //実績No
 
             Map fxhdd11RevInfo = loadFxhdd11RevInfo(queryRunnerDoc, kojyo, lotNo8, edaban, formId, jissekino);
@@ -1911,8 +1892,8 @@ public class GXHDO901B implements Serializable {
         
         QueryRunner queryRunnerDoc = new QueryRunner(this.dataSourceDocServer);
         String kojyo = lotNo.substring(0, 3); //工場ｺｰﾄﾞ
-        String lotNo8 = lotNo.substring(3, 12); //ﾛｯﾄNo
-        String edaban = lotNo.substring(12, 15); //枝番
+        String lotNo8 = lotNo.substring(3, 11); //ﾛｯﾄNo(8桁)
+        String edaban = lotNo.substring(11, 14); //枝番
         try {
             // 品質DB登録実績の取得
             String sql = "SELECT tmp_kbn, jotai_flg "
@@ -2085,18 +2066,5 @@ public class GXHDO901B implements Serializable {
             ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
         }
         return "";
-    }
-    
-    /**
-     * 完了メッセージ表示処理
-     */
-    public void showCompMessage() {
-        CompMessage compMessageBean;
-        compMessageBean = (CompMessage) FacesContext.getCurrentInstance().
-                getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
-                        getELContext(), null, "beanCompMessage");
-        compMessageBean.setCompMessage("登録しました。");
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.addCallbackParam("firstParam", "complete");
     }
 }

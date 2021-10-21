@@ -150,6 +150,11 @@ public class SubFormUtil {
     public static final String FORM_ID_GXHDO102C002 = "GXHDO102C002";
     
     /**
+     * 添加材ｽﾗﾘｰ作製・溶剤調合入力画面ID
+     */
+    public static final String FORM_ID_GXHDO102C005 = "GXHDO102C005";
+    
+    /**
      * エラーリスト表示メッセージ
      */
     public static final String FORM_ID_ERRORLIST_MESSAGE = "ErrorListMessage";
@@ -319,6 +324,12 @@ public class SubFormUtil {
                 returnBean = FacesContext.getCurrentInstance().
                         getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
                                 getELContext(), null, "beanGXHDO102C002");
+                break;
+            // 添加材ｽﾗﾘｰ作製・溶剤調合入力
+            case "GXHDO102C005":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO102C005");
                 break;
              // エラーリストエラーダイアログ
             case "ErrorListMessage":
