@@ -1,5 +1,5 @@
 /*
- * Copyright 2020 Kyocera Communication Systems Co., Ltd All rights reserved.
+ * Copyright 2021 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.db.model;
 
@@ -9,11 +9,11 @@ import java.sql.Timestamp;
 /**
  * ===============================================================================<br>
  * <br>
- * システム名	品質DB(コンデンサ)<br>
+ * システム名	品質情報管理システム<br>
  * <br>
- * 変更日	2020/02/03<br>
- * 計画書No	K1811-DS001<br>
- * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更日	2021/10/08<br>
+ * 計画書No	MB2109-DK002<br>
+ * 変更者	SRC T.Ushiyama<br>
  * 変更理由	新規作成<br>
  * <br>
  * ===============================================================================<br>
@@ -21,8 +21,8 @@ import java.sql.Timestamp;
 /**
  * テーピング作業のモデルクラスです。
  *
- * @author SYSNAVI K.Hisanaga
- * @since 2020/02/03
+ * @author SRC T.Ushiyama
+ * @since 2021/10/08
  */
 public class SrTapingSagyo {
 
@@ -555,6 +555,11 @@ public class SrTapingSagyo {
      * 削除ﾌﾗｸﾞ
      */
     private Integer deleteflag;
+
+    /**
+     * 番号
+     */
+    private Integer bango;
 
     /**
      * 工場ｺｰﾄﾞ
@@ -2460,6 +2465,24 @@ public class SrTapingSagyo {
      */
     public void setDeleteflag(Integer deleteflag) {
         this.deleteflag = deleteflag;
+    }
+
+    /**
+     * 番号
+     *
+     * @return the bango
+     */
+    public Integer getBango() {
+        return bango;
+    }
+
+    /**
+     * 番号
+     *
+     * @param bango the bango to set
+     */
+    public void setBango(Integer bango) {
+        this.bango = bango;
     }
 
 }

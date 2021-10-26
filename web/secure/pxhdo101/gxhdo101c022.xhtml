@@ -1,0 +1,92 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Pragma" content="no-cache"/>
+        <meta http-equiv="Cache-Control" content="no-cache"/>
+        <meta http-equiv="Expires" content="0"/>
+        <title>#{myParam.application_id} #{gXHDO901A.titleInfo.formName}</title>
+        <link href="#{request.contextPath}/resources/css/growllarge.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/gxhco901a.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/errordialog.css" rel="stylesheet" type="text/css"/>
+        <h:outputScript library="primefaces" name="jquery/jquery.js" />
+        <script src="#{request.contextPath}/resources/js/locUpload.js"></script>
+        <script src="#{request.contextPath}/resources/js/growl.js"></script>
+        <script type="text/javascript">
+            //<![CDATA[
+            function logOut() {
+                window.#{adjustModels.external}.logOut();
+            }
+            $(document).ready(function () {
+                //upload to
+                g_locationUrl = '#{myParam.locationUrl}';
+                //MAC Address
+                g_macAddr = '#{sessionInfo.macAddr}';
+                //location
+                g_location = '#{myMsg.NotAvailable}';
+                g_prgname = 'gxhdo101c022.xhtml(GXHDO101C022)';
+
+                var interval_id = setInterval(getLocation, #{myParam.sendLocInterval});
+            });
+            function inputRelease() {
+                var node = document.getElementById('inputbody');
+                node.style.removeProperty('pointer-events');
+            }
+            //]]>
+        </script>
+        <style>
+            .ui-datatable table thead tr {
+                    display: none;
+            }        
+        </style>
+    </h:head>
+    <h:body id="inputbody" onload="inputRelease(); #{gXHDO901A.onLoadProcess}" style="pointer-events: none;" >
+        <f:metadata>
+            <f:viewAction action="#{gXHDO901A.init()}"/>
+        </f:metadata>
+        
+        <div style="margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;">
+        <h:outputText style="background:#{gXHDO901A.titleInfo.bgColor};color: #{gXHDO901A.titleInfo.fontColor}; 
+            font-size:#{gXHDO901A.titleInfo.fontSize}px;" value="#{gXHDO901A.titleInfo.formName}"/>
+        </div>
+    
+        <h:form id="form" onkeypress="if (event.keyCode === 13) { return false; }" >
+            <div  style="margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;">
+            <div id="mainForm" style="width:#{adjustModels.menuWidth}px;">
+            <p:dataTable id="tourokuNoTable" var="item"
+                         rendered="#{beanGXHDO101C022.tableRender}"
+                         value="#{beanGXHDO101C022.gxhdO101c022ModelView.gokiSentakuDataList}"
+                         style="padding:20px;margin-top:20px;margin-left:auto;margin-right:auto;font-size:17px;width:300px;"
+                         scrollable="true"
+                         emptyMessage="">
+                <p:column style="text-align:center">
+                    <p:commandLink id="cmdLink" value="#{item.dispgoki}" style="color:Indigo;font-size: 17px;text-align:center;"
+                                   process="@this"
+                                   action="#{beanGXHDO101C022.openXhdFormGXHDO101B048(item.bango)}"
+                                   >
+                    </p:commandLink>
+                </p:column>
+                <p:column style="text-align:center">
+                    <p:outputLabel value="#{item.jotai}" />
+                </p:column>
+                <p:column style="text-align:center">
+                    <p:outputLabel value="#{item.goki}" />
+                </p:column>
+            </p:dataTable>
+            
+            <p:commandButton id="returnBtn" style="margin-left:26px;"
+                 value="#{myMsg.return}"  action="/secure/pxhdo101/gxhdo101a.xhtml?faces-redirect=true"
+                 process="@this" update="@this">
+                <f:param name="returnVal" value="return"/>
+                <f:attribute name="returnVal" value="return"/>
+            </p:commandButton>
+            </div>
+            </div> 
+        </h:form>
+        
+        
+    </h:body>
+</html>
