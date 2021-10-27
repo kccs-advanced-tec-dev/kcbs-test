@@ -1018,11 +1018,6 @@ public class GXHDO101B051 implements IFormLogic {
      * @param srShinkuudassiData 真空脱脂データ
      */
     private void setInputItemDataMainForm(ProcessData processData, SrShinkuudassi srShinkuudassiData) {
-
-        // 工場ｺｰﾄﾞ
-        this.setItemData(processData, GXHDO101B051Const.UDASSI_KOJYO, getSrShinkuudassiItemData(GXHDO101B051Const.UDASSI_KOJYO, srShinkuudassiData));
-        // ﾛｯﾄNo.
-        this.setItemData(processData, GXHDO101B051Const.UDASSI_LOTNO, getSrShinkuudassiItemData(GXHDO101B051Const.UDASSI_LOTNO, srShinkuudassiData));
         // KCPNO
         this.setItemData(processData, GXHDO101B051Const.UDASSI_KCPNO, getSrShinkuudassiItemData(GXHDO101B051Const.UDASSI_KCPNO, srShinkuudassiData));        
         // 客先
@@ -1684,7 +1679,7 @@ public class GXHDO101B051 implements IFormLogic {
     }
 
     /**
-     * 真空脱脂_仮登録(tmp_sr_shinkuudassi)更新処理
+     * 真空脱脂_仮登録(tmp_sr_barrel1)更新処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param conQcdb コネクション
@@ -1748,7 +1743,7 @@ public class GXHDO101B051 implements IFormLogic {
     }
 
     /**
-     * 真空脱脂_仮登録(tmp_sr_shinkuudassi)削除処理
+     * 真空脱脂_仮登録(tmp_sr_barrel1)削除処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param conQcdb コネクション
@@ -1761,7 +1756,7 @@ public class GXHDO101B051 implements IFormLogic {
     private void deleteTmpSrShinkuudassi(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev,
             String kojyo, String lotNo, String edaban) throws SQLException {
 
-        String sql = "DELETE FROM tmp_sr_shinkuudassi "
+        String sql = "DELETE FROM tmp_sr_barrel1 "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ?";
 
         //更新値設定
