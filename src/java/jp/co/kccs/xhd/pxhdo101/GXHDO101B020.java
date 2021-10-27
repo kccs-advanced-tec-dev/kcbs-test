@@ -2803,7 +2803,7 @@ public class GXHDO101B020 implements IFormLogic {
                 return StringUtil.nullToBlank(srBarrel1Data.getBgoki());
             // ﾁｬｰｼﾞ量
             case GXHDO101B020Const.CHARGERYOU:
-                return StringUtil.nullToBlank(srBarrel1Data.getCharge());
+                return StringUtil.nullToBlank(srBarrel1Data.getChargeryou());
             // ﾎﾟｯﾄ数
             case GXHDO101B020Const.POTSUU:
                 return StringUtil.nullToBlank(srBarrel1Data.getPotsuu());
@@ -2818,31 +2818,31 @@ public class GXHDO101B020 implements IFormLogic {
                 return StringUtil.nullToBlank(srBarrel1Data.getBjikan2());
             // 研磨機回転数②
             case GXHDO101B020Const.BJYOKENSYUSOKUDO2:
-                return StringUtil.nullToBlank(srBarrel1Data.getBkaiten2());
+                return StringUtil.nullToBlank(srBarrel1Data.getBjyokensyusokudo2());
             // 研磨時間③
             case GXHDO101B020Const.BJIKAN3:
                 return StringUtil.nullToBlank(srBarrel1Data.getBjikan3());
             // 研磨機回転数③
             case GXHDO101B020Const.BJYOKENSYUSOKUDO3:
-                return StringUtil.nullToBlank(srBarrel1Data.getBkaiten3());
+                return StringUtil.nullToBlank(srBarrel1Data.getBjyokensyusokudo3());
             // 研磨時間④
             case GXHDO101B020Const.BJIKAN4:
                 return StringUtil.nullToBlank(srBarrel1Data.getBjikan4());
             // 研磨機回転数④
             case GXHDO101B020Const.BJYOKENSYUSOKUDO4:
-                return StringUtil.nullToBlank(srBarrel1Data.getBkaiten4());
+                return StringUtil.nullToBlank(srBarrel1Data.getBjyokensyusokudo4());
             // 研磨時間⑤
             case GXHDO101B020Const.BJIKAN5:
                 return StringUtil.nullToBlank(srBarrel1Data.getBjikan5());
             // 研磨機回転数⑤
             case GXHDO101B020Const.BJYOKENSYUSOKUDO5:
-                return StringUtil.nullToBlank(srBarrel1Data.getBkaiten5());
+                return StringUtil.nullToBlank(srBarrel1Data.getBjyokensyusokudo5());
             // 研磨時間⑥
             case GXHDO101B020Const.BJIKAN6:
                 return StringUtil.nullToBlank(srBarrel1Data.getBjikan6());
             // 研磨機回転数⑥
             case GXHDO101B020Const.BJYOKENSYUSOKUDO6:
-                return StringUtil.nullToBlank(srBarrel1Data.getBkaiten6());
+                return StringUtil.nullToBlank(srBarrel1Data.getBjyokensyusokudo6());
             // 研磨時間合計
             case GXHDO101B020Const.BJIKANTOTAL:
                 return StringUtil.nullToBlank(srBarrel1Data.getBjikantotal());
