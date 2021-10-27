@@ -263,7 +263,7 @@ public class SrBarrel1 {
     /**
      * ﾁｬｰｼﾞ量
      */
-    private Integer chargeryou;
+    private Integer charge;
 
     /**
      * 研磨時間②
@@ -273,7 +273,7 @@ public class SrBarrel1 {
     /**
      * 研磨機回転数②
      */
-    private BigDecimal bjyokensyusokudo2;
+    private Integer bkaiten2;
 
     /**
      * 研磨時間③
@@ -283,7 +283,7 @@ public class SrBarrel1 {
     /**
      * 研磨機回転数③
      */
-    private BigDecimal bjyokensyusokudo3;
+    private Integer bkaiten3;
 
     /**
      * 研磨時間④
@@ -293,7 +293,7 @@ public class SrBarrel1 {
     /**
      * 研磨機回転数④
      */
-    private BigDecimal bjyokensyusokudo4;
+    private Integer bkaiten4;
 
     /**
      * 研磨時間⑤
@@ -303,7 +303,7 @@ public class SrBarrel1 {
     /**
      * 研磨機回転数⑤
      */
-    private BigDecimal bjyokensyusokudo5;
+    private Integer bkaiten5;
 
     /**
      * 研磨時間⑥
@@ -313,7 +313,7 @@ public class SrBarrel1 {
     /**
      * 研磨機回転数⑥
      */
-    private BigDecimal bjyokensyusokudo6;
+    private Integer bkaiten6;
 
     /**
      * 研磨時間合計
@@ -961,18 +961,18 @@ public class SrBarrel1 {
     /**
      * ﾁｬｰｼﾞ量
      *
-     * @return the chargeryou
+     * @return the charge
      */
-    public Integer getChargeryou() {
-        return chargeryou;
+    public Integer getCharge() {
+        return charge;
     }
     /**
      * ﾁｬｰｼﾞ量
      *
-     * @param chargeryou the chargeryou to set
+     * @param charge the chargeryou to set
      */
-    public void setChargeryou(Integer chargeryou) {
-        this.chargeryou = chargeryou;
+    public void setCharge(Integer charge) {
+        this.charge = charge;
     }
 
     /**
@@ -995,18 +995,18 @@ public class SrBarrel1 {
     /**
      * 研磨機回転数②
      *
-     * @return the bjyokensyusokudo2
+     * @return the bkaiten2
      */
-    public BigDecimal getBjyokensyusokudo2() {
-        return bjyokensyusokudo2;
+    public Integer getBkaiten2() {
+        return bkaiten2;
     }
     /**
      * 研磨機回転数②
      *
-     * @param bjyokensyusokudo2 the bjyokensyusokudo2 to set
+     * @param bkaiten2 the bkaiten2 to set
      */
-    public void setBjyokensyusokudo2(BigDecimal bjyokensyusokudo2) {
-        this.bjyokensyusokudo2 = bjyokensyusokudo2;
+    public void setBkaiten2(Integer bkaiten2) {
+        this.bkaiten2 = bkaiten2;
     }
 
     /**
@@ -1029,18 +1029,18 @@ public class SrBarrel1 {
     /**
      * 研磨機回転数③
      *
-     * @return the bjyokensyusokudo3
+     * @return the bkaiten3
      */
-    public BigDecimal getBjyokensyusokudo3() {
-        return bjyokensyusokudo3;
+    public Integer getBkaiten3() {
+        return bkaiten3;
     }
     /**
      * 研磨機回転数③
      *
-     * @param bjyokensyusokudo3 the bjyokensyusokudo3 to set
+     * @param bkaiten3 the bkaiten3 to set
      */
-    public void setBjyokensyusokudo3(BigDecimal bjyokensyusokudo3) {
-        this.bjyokensyusokudo3 = bjyokensyusokudo3;
+    public void setBkaiten3(Integer bkaiten3) {
+        this.bkaiten3 = bkaiten3;
     }
 
     /**
@@ -1063,18 +1063,18 @@ public class SrBarrel1 {
     /**
      * 研磨機回転数④
      *
-     * @return the bjyokensyusokudo4
+     * @return the bkaiten4
      */
-    public BigDecimal getBjyokensyusokudo4() {
-        return bjyokensyusokudo4;
+    public Integer getBkaiten4() {
+        return bkaiten4;
     }
     /**
      * 研磨機回転数④
      *
-     * @param bjyokensyusokudo4 the bjyokensyusokudo4 to set
+     * @param bkaiten4 the bkaiten4 to set
      */
-    public void setBjyokensyusokudo4(BigDecimal bjyokensyusokudo4) {
-        this.bjyokensyusokudo4 = bjyokensyusokudo4;
+    public void setBkaiten4(Integer bkaiten4) {
+        this.bkaiten4 = bkaiten4;
     }
 
     /**
@@ -1097,18 +1097,18 @@ public class SrBarrel1 {
     /**
      * 研磨機回転数⑤
      *
-     * @return the bjyokensyusokudo5
+     * @return the bkaiten5
      */
-    public BigDecimal getBjyokensyusokudo5() {
-        return bjyokensyusokudo5;
+    public Integer getBkaiten5() {
+        return bkaiten5;
     }
     /**
      * 研磨機回転数⑤
      *
-     * @param bjyokensyusokudo5 the bjyokensyusokudo5 to set
+     * @param bkaiten5 the bkaiten5 to set
      */
-    public void setBjyokensyusokudo5(BigDecimal bjyokensyusokudo5) {
-        this.bjyokensyusokudo5 = bjyokensyusokudo5;
+    public void setBkaiten5(Integer bkaiten5) {
+        this.bkaiten5 = bkaiten5;
     }
 
     /**
@@ -1131,18 +1131,18 @@ public class SrBarrel1 {
     /**
      * 研磨機回転数⑥
      *
-     * @return the bjyokensyusokudo6
+     * @return the bkaiten6
      */
-    public BigDecimal getBjyokensyusokudo6() {
-        return bjyokensyusokudo6;
+    public Integer getBkaiten6() {
+        return bkaiten6;
     }
     /**
      * 研磨機回転数⑥
      *
-     * @param bjyokensyusokudo6 the bjyokensyusokudo6 to set
+     * @param bkaiten6 the bjyokensyusokudo6 to set
      */
-    public void setBjyokensyusokudo6(BigDecimal bjyokensyusokudo6) {
-        this.bjyokensyusokudo6 = bjyokensyusokudo6;
+    public void setBkaiten6(Integer bkaiten6) {
+        this.bkaiten6 = bkaiten6;
     }
 
     /**
