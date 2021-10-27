@@ -1018,19 +1018,7 @@ public class GXHDO101B051 implements IFormLogic {
      * @param srShinkuudassiData 真空脱脂データ
      */
     private void setInputItemDataMainForm(ProcessData processData, SrShinkuudassi srShinkuudassiData) {
-
-        // 工場ｺｰﾄﾞ
-        this.setItemData(processData, GXHDO101B051Const.UDASSI_KOJYO, getSrShinkuudassiItemData(GXHDO101B051Const.UDASSI_KOJYO, srShinkuudassiData));
-        // ﾛｯﾄNo.
-        this.setItemData(processData, GXHDO101B051Const.UDASSI_LOTNO, getSrShinkuudassiItemData(GXHDO101B051Const.UDASSI_LOTNO, srShinkuudassiData));
-        // KCPNO
-        this.setItemData(processData, GXHDO101B051Const.UDASSI_KCPNO, getSrShinkuudassiItemData(GXHDO101B051Const.UDASSI_KCPNO, srShinkuudassiData));        
-        // 客先
-        this.setItemData(processData, GXHDO101B051Const.UDASSI_KYAKUSAKI, getSrShinkuudassiItemData(GXHDO101B051Const.UDASSI_KYAKUSAKI, srShinkuudassiData));        
-        // ﾛｯﾄ区分
-        this.setItemData(processData, GXHDO101B051Const.UDASSI_LOT_KUBUN, getSrShinkuudassiItemData(GXHDO101B051Const.UDASSI_LOT_KUBUN, srShinkuudassiData));        
-        // ｵｰﾅｰ
-        this.setItemData(processData, GXHDO101B051Const.UDASSI_OWNER, getSrShinkuudassiItemData(GXHDO101B051Const.UDASSI_OWNER, srShinkuudassiData));        
+        
         // 受入ｻﾔ枚数
         this.setItemData(processData, GXHDO101B051Const.UDASSI_UKEIRE_SAYA_MAISU, getSrShinkuudassiItemData(GXHDO101B051Const.UDASSI_UKEIRE_SAYA_MAISU, srShinkuudassiData));        
         // 号機
