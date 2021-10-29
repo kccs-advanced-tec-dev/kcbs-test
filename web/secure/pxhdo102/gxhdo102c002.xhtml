@@ -8,6 +8,7 @@
               dynamic="true" closable="true" closeOnEscape="false" 
               onShow="subFormOpen();"
               onHide="subFormClose(); document.getElementById('form:gxhdo102c002Form:cancelBtn').click();" position="center top">
+        <p:ajax event="close"  oncomplete="dclose()"/>
         <style>
             thead {display : none;}
             .gxhdo102c002Form .ui-tabs .ui-tabs-panel {

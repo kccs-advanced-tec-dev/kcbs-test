@@ -21,6 +21,7 @@ import java.util.logging.Logger;
 import java.util.regex.Pattern;
 import javax.annotation.Resource;
 import javax.sql.DataSource;
+import javax.websocket.Session;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
@@ -38,6 +39,7 @@ import jp.co.kccs.xhd.util.StringUtil;
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.MapHandler;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * ===============================================================================<br>
@@ -63,6 +65,11 @@ import org.apache.commons.dbutils.handlers.MapHandler;
  * 計画書No	MB2106-DS017<br>
  * 変更者	KCSS K.Jo<br>
  * 変更理由	CAP値変更履歴対応<br>
+ * <br>
+ * 変更日	2021/10/19<br>
+ * 計画書No	MB2101-DK002<br>
+ * 変更者	KCCS M.Takahashi<br>
+ * 変更理由	重量連携用RESTAPI対応<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -1219,5 +1226,52 @@ public class PublicResource {
         }
 
         return buffer.toString();
+    }
+    /**
+     * 秤量機連携API
+     *
+     * @param param
+     * @return responce
+     */
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("mkjuryo")
+    public Response postMkjuryo(MkjuryoJson param) {
+        try {
+            // 1.秤量号機,重量が入力されていない場合、以降の処理を行わない。
+            if (StringUtils.isBlank(param.getGoki()) || StringUtils.isBlank(param.getJuryo())) {
+                LOGGER.log(Level.SEVERE, "Inputs are null or empty.");
+                return Response.status(500).build();
+            }
+            // 2.以下の内容のﾁｪｯｸを行う。ｴﾗｰの場合は以降の処理を行わない。
+            // 秤量号機　4桁  重量　5桁以内、数字のみ
+            String juryo = param.getJuryo();
+            String goki = param.getGoki();
+            String splitJuryo = juryo.substring(0,juryo.indexOf("."));
+            if (!(StringUtil.getLength(goki) == 4 && StringUtil.getLength(juryo) <= 5 && StringUtils.isNumeric(splitJuryo))) {
+                // ｴﾗｰの場合、HTTPステータスコード「500」を返却する。
+                LOGGER.log(Level.SEVERE, "Inputs are incorrect.");
+                return Response.status(500).build();
+            }
+
+            // 1.WebScoketコネクションのセッション一覧を取得する。
+            List<Session> list = WebSocketEndPoint.getSessions();
+            for (Session s : list) {
+                if (s.isOpen()) {
+                    // セッションから秤量号機を取得して、引数の秤量号機と同一のセッションを取得する。	
+                    Map gokim = s.getUserProperties();
+                    String goki2 = (String) gokim.get("goki");
+                    if (goki2 != null && goki2.equals(goki)) {
+                        // 取得できた場合、対象のセッションに重量を送信する。
+                        s.getAsyncRemote().sendText(splitJuryo);
+                    }
+                }
+            }
+            return Response.ok().build();
+        } catch (Exception e) {
+            // ｴﾗｰの場合、HTTPステータスコード「500」を返却する。
+            LOGGER.log(Level.SEVERE, null, e);
+            return Response.status(500).build();
+        }
     }
 }

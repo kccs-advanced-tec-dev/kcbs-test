@@ -67,10 +67,32 @@
                 } else if ('complete' === args.firstParam) {
                     PF('W_dlg_compMessage').show();
                 } else if('gxhdo102c002'===args.firstParam){
+                    // WebSocketのセッションをはる(hostは現在の画面から取得)
+                    var host = location.host;
+                    var url = "ws://" + host + "/XHD/ws";
+                    wSocket = new WebSocket(url);
+                    wSocket.onopen = function(){
+                        // 子画面open時、秤量号機の値を取得する
+                        wSocket.send(document.getElementById("form:goki_T").value);
+                    };
+                    wSocket.onmessage = function(event)
+                    {
+                        //APIから値が渡されたときは、アクティブな項目に値を出力する
+                        var received_msg = event.data;
+                        var current = document.activeElement;
+                        current.value = received_msg;
+                    };
+                    wSocket.onerror = function()
+                    {
+                        alert("秤量機との接続に失敗しました。");
+                    };
                     PF('W_dlg_gxhdo102c002').show();
                 } else if('errorListMessage'===args.firstParam){
                     PF('W_dlg_errorListMessage').show();
                 } 
+            }
+            function dclose() {
+                wSocket.close();
             }
             function subGamenDoOkError(args) {
                 if(undefined === args || undefined === args.firstParam){
@@ -88,6 +110,11 @@
                 }
                 if('error0' === args.firstParam){
                     $("div[id='form:tabMain']").find('li[data-index="0"]').eq(0).click();
+                }
+            }
+            function setHiddenGokiVal(itemVal, itemLable1) {
+                if("秤量号機" === itemLable1){
+                    $("input[id='form:goki_T']").attr("value", itemVal.toUpperCase());
                 }
             }
             //]]>
@@ -118,7 +145,8 @@
             <div id="mainDiv" style="#{gXHDO102B005A.mainDivStyle}">
                 <div id="mainForm" >
                     <div style="text-align:right">
-                        <h:outputText style="font-size:#{gXHDO102B005A.titleInfo.fontSize}px; #{gXHDO102B005A.styleDisplayNone}" value="#{gXHDO102B005A.jotaiDisplay}"/>        
+                        <h:outputText style="font-size:#{gXHDO102B005A.titleInfo.fontSize}px; #{gXHDO102B005A.styleDisplayNone}" value="#{gXHDO102B005A.jotaiDisplay}"/>   
+                        <p:inputText id="goki_T" value="#{gXHDO102B005A.seihin_goki.value}" style="display:none;"/>   
                     </div>
                     <p:commandButton id="returnBtnTop" style="margin-left:26px;margin-bottom:5px;margin-top:0px;"
                                      value="#{myMsg.return}"  action="/secure/pxhdo102/gxhdo102a.xhtml?faces-redirect=true"
@@ -170,7 +198,7 @@
 
                                             <p:inputText id="textValue" rendered="#{(item.renderInputText) and (!item.renderOutputLabel)}" value="#{item.value}" maxlength="#{item.displayMaxLength}"
                                                           style="margin-left:8px;width:#{item.displayMaxLength}em; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO102B005A.maxWidthInputCol}px;#{item.customStyleInput}">
-                                                                                <p:ajax event="blur" process="@this" update="@this" listener="#{item.checkByte()}"  async="false"/>
+                                                                                <p:ajax event="blur" process="@this" update="@this " listener="#{item.checkByte()}"  async="false" oncomplete="setHiddenGokiVal(value, '#{item.label1}')"/>
                                             </p:inputText>
 
                                             <p:calendar id="calendarDate" rendered="#{item.renderInputDate}" pattern="yyMMdd" value="#{item.value}" maxlength="#{item.displayMaxLength}" class="calendarDate"

@@ -68,10 +68,32 @@
                 } else if ('complete' === args.firstParam) {
                     PF('W_dlg_compMessage').show();
                 } else if('gxhdo102c001'===args.firstParam){
+                    // WebSocketのセッションをはる(hostは現在の画面から取得)
+                    var host = location.host;
+                    var url = "ws://" + host + "/XHD/ws";
+                    wSocket = new WebSocket(url);
+                    wSocket.onopen = function(){
+                        // 子画面open時、秤量号機の値を取得する
+                        wSocket.send(document.getElementById("form:goki_T").value);
+                    };
+                    wSocket.onmessage = function(event)
+                    {
+                        //APIから値が渡されたときは、アクティブな項目に値を出力する
+                        var received_msg = event.data;
+                        var current = document.activeElement;
+                        current.value = received_msg;
+                    };
+                    wSocket.onerror = function()
+                    {
+                        alert("秤量機との接続に失敗しました。");
+                    };
                     PF('W_dlg_gxhdo102c001').show();
                 } else if('errorListMessage'===args.firstParam){
                     PF('W_dlg_errorListMessage').show();
-                } 
+                }
+            }
+            function dclose() {
+                wSocket.close();
             }
             function subGamenDoOkError(args) {
                 if(undefined === args || undefined === args.firstParam){
