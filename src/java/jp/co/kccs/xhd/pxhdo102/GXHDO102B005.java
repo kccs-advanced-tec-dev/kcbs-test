@@ -105,6 +105,8 @@ public class GXHDO102B005 implements IFormLogic {
                 return processData;
             }
 
+            // 「製品情報」初期設定
+            initGXHDO102B005A(processData);
             // 「ﾎﾟｯﾄ1」初期設定
             initGXHDO102B005B(processData);
             // 「ﾎﾟｯﾄ2」初期設定
@@ -1885,10 +1887,6 @@ public class GXHDO102B005 implements IFormLogic {
      */
     private void setInputItemDataFormB(ProcessData processData, SrGlassslurryhyoryo srGlassslurryhyoryo) {
 
-        // ﾎﾟｯﾄ1:ﾎﾟｯﾄ1_材料品名1
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO1_ZAIRYOHINMEI1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO1_ZAIRYOHINMEI1, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ1:ﾎﾟｯﾄ1_調合量規格1
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO1_TYOGOURYOUKIKAKU1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO1_TYOGOURYOUKIKAKU1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ1:ﾎﾟｯﾄ1_資材ﾛｯﾄNo.1_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO1_SIZAILOTNO1_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO1_SIZAILOTNO1_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ1:ﾎﾟｯﾄ1_調合量1_1
@@ -1897,10 +1895,6 @@ public class GXHDO102B005 implements IFormLogic {
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO1_SIZAILOTNO1_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO1_SIZAILOTNO1_2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ1:ﾎﾟｯﾄ1_調合量1_2
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO1_TYOUGOURYOU1_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO1_TYOUGOURYOU1_2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ1:ﾎﾟｯﾄ1_材料品名2
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO1_ZAIRYOHINMEI2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO1_ZAIRYOHINMEI2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ1:ﾎﾟｯﾄ1_調合量規格2
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO1_TYOGOURYOUKIKAKU2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO1_TYOGOURYOUKIKAKU2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ1:ﾎﾟｯﾄ1_資材ﾛｯﾄNo.2_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO1_SIZAILOTNO2_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO1_SIZAILOTNO2_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ1:ﾎﾟｯﾄ1_調合量2_1
@@ -1909,10 +1903,6 @@ public class GXHDO102B005 implements IFormLogic {
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO1_SIZAILOTNO2_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO1_SIZAILOTNO2_2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ1:ﾎﾟｯﾄ1_調合量2_2
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO1_TYOUGOURYOU2_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO1_TYOUGOURYOU2_2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ1:ﾎﾟｯﾄ1_材料品名3
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO1_ZAIRYOHINMEI3, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO1_ZAIRYOHINMEI3, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ1:ﾎﾟｯﾄ1_調合量規格3
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO1_TYOGOURYOUKIKAKU3, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO1_TYOGOURYOUKIKAKU3, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ1:ﾎﾟｯﾄ1_資材ﾛｯﾄNo.3_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO1_SIZAILOTNO3_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO1_SIZAILOTNO3_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ1:ﾎﾟｯﾄ1_調合量3_1
@@ -1921,10 +1911,6 @@ public class GXHDO102B005 implements IFormLogic {
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO1_SIZAILOTNO3_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO1_SIZAILOTNO3_2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ1:ﾎﾟｯﾄ1_調合量3_2
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO1_TYOUGOURYOU3_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO1_TYOUGOURYOU3_2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ1:ﾎﾟｯﾄ1_材料品名4
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO1_ZAIRYOHINMEI4, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO1_ZAIRYOHINMEI4, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ1:ﾎﾟｯﾄ1_調合量規格4
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO1_TYOGOURYOUKIKAKU4, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO1_TYOGOURYOUKIKAKU4, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ1:ﾎﾟｯﾄ1_資材ﾛｯﾄNo.4_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO1_SIZAILOTNO4_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO1_SIZAILOTNO4_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ1:ﾎﾟｯﾄ1_調合量4_1
@@ -1943,10 +1929,6 @@ public class GXHDO102B005 implements IFormLogic {
      * @param srGlassslurryhyoryo ｶﾞﾗｽｽﾗﾘｰ作製・秤量データ
      */
     private void setInputItemDataFormC(ProcessData processData, SrGlassslurryhyoryo srGlassslurryhyoryo) {
-        // ﾎﾟｯﾄ2:ﾎﾟｯﾄ2_材料品名1
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO2_ZAIRYOHINMEI1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO2_ZAIRYOHINMEI1, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ2:ﾎﾟｯﾄ2_調合量規格1
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO2_TYOGOURYOUKIKAKU1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO2_TYOGOURYOUKIKAKU1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ2:ﾎﾟｯﾄ2_資材ﾛｯﾄNo.1_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO2_SIZAILOTNO1_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO2_SIZAILOTNO1_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ2:ﾎﾟｯﾄ2_調合量1_1
@@ -1955,10 +1937,6 @@ public class GXHDO102B005 implements IFormLogic {
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO2_SIZAILOTNO1_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO2_SIZAILOTNO1_2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ2:ﾎﾟｯﾄ2_調合量1_2
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO2_TYOUGOURYOU1_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO2_TYOUGOURYOU1_2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ2:ﾎﾟｯﾄ2_材料品名2
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO2_ZAIRYOHINMEI2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO2_ZAIRYOHINMEI2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ2:ﾎﾟｯﾄ2_調合量規格2
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO2_TYOGOURYOUKIKAKU2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO2_TYOGOURYOUKIKAKU2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ2:ﾎﾟｯﾄ2_資材ﾛｯﾄNo.2_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO2_SIZAILOTNO2_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO2_SIZAILOTNO2_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ2:ﾎﾟｯﾄ2_調合量2_1
@@ -1967,10 +1945,6 @@ public class GXHDO102B005 implements IFormLogic {
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO2_SIZAILOTNO2_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO2_SIZAILOTNO2_2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ2:ﾎﾟｯﾄ2_調合量2_2
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO2_TYOUGOURYOU2_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO2_TYOUGOURYOU2_2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ2:ﾎﾟｯﾄ2_材料品名3
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO2_ZAIRYOHINMEI3, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO2_ZAIRYOHINMEI3, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ2:ﾎﾟｯﾄ2_調合量規格3
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO2_TYOGOURYOUKIKAKU3, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO2_TYOGOURYOUKIKAKU3, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ2:ﾎﾟｯﾄ2_資材ﾛｯﾄNo.3_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO2_SIZAILOTNO3_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO2_SIZAILOTNO3_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ2:ﾎﾟｯﾄ2_調合量3_1
@@ -1979,10 +1953,6 @@ public class GXHDO102B005 implements IFormLogic {
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO2_SIZAILOTNO3_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO2_SIZAILOTNO3_2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ2:ﾎﾟｯﾄ2_調合量3_2
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO2_TYOUGOURYOU3_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO2_TYOUGOURYOU3_2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ2:ﾎﾟｯﾄ2_材料品名4
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO2_ZAIRYOHINMEI4, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO2_ZAIRYOHINMEI4, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ2:ﾎﾟｯﾄ2_調合量規格4
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO2_TYOGOURYOUKIKAKU4, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO2_TYOGOURYOUKIKAKU4, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ2:ﾎﾟｯﾄ2_資材ﾛｯﾄNo.4_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO2_SIZAILOTNO4_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO2_SIZAILOTNO4_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ2:ﾎﾟｯﾄ2_調合量4_1
@@ -2000,10 +1970,6 @@ public class GXHDO102B005 implements IFormLogic {
      * @param srGlassslurryhyoryo ｶﾞﾗｽｽﾗﾘｰ作製・秤量データ
      */
     private void setInputItemDataFormD(ProcessData processData, SrGlassslurryhyoryo srGlassslurryhyoryo) {
-        // ﾎﾟｯﾄ3:ﾎﾟｯﾄ3_材料品名1
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO3_ZAIRYOHINMEI1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO3_ZAIRYOHINMEI1, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ3:ﾎﾟｯﾄ3_調合量規格1
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO3_TYOGOURYOUKIKAKU1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO3_TYOGOURYOUKIKAKU1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ3:ﾎﾟｯﾄ3_資材ﾛｯﾄNo.1_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO3_SIZAILOTNO1_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO3_SIZAILOTNO1_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ3:ﾎﾟｯﾄ3_調合量1_1
@@ -2012,10 +1978,6 @@ public class GXHDO102B005 implements IFormLogic {
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO3_SIZAILOTNO1_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO3_SIZAILOTNO1_2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ3:ﾎﾟｯﾄ3_調合量1_2
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO3_TYOUGOURYOU1_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO3_TYOUGOURYOU1_2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ3:ﾎﾟｯﾄ3_材料品名2
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO3_ZAIRYOHINMEI2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO3_ZAIRYOHINMEI2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ3:ﾎﾟｯﾄ3_調合量規格2
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO3_TYOGOURYOUKIKAKU2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO3_TYOGOURYOUKIKAKU2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ3:ﾎﾟｯﾄ3_資材ﾛｯﾄNo.2_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO3_SIZAILOTNO2_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO3_SIZAILOTNO2_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ3:ﾎﾟｯﾄ3_調合量2_1
@@ -2024,10 +1986,6 @@ public class GXHDO102B005 implements IFormLogic {
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO3_SIZAILOTNO2_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO3_SIZAILOTNO2_2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ3:ﾎﾟｯﾄ3_調合量2_2
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO3_TYOUGOURYOU2_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO3_TYOUGOURYOU2_2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ3:ﾎﾟｯﾄ3_材料品名3
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO3_ZAIRYOHINMEI3, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO3_ZAIRYOHINMEI3, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ3:ﾎﾟｯﾄ3_調合量規格3
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO3_TYOGOURYOUKIKAKU3, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO3_TYOGOURYOUKIKAKU3, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ3:ﾎﾟｯﾄ3_資材ﾛｯﾄNo.3_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO3_SIZAILOTNO3_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO3_SIZAILOTNO3_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ3:ﾎﾟｯﾄ3_調合量3_1
@@ -2036,10 +1994,6 @@ public class GXHDO102B005 implements IFormLogic {
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO3_SIZAILOTNO3_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO3_SIZAILOTNO3_2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ3:ﾎﾟｯﾄ3_調合量3_2
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO3_TYOUGOURYOU3_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO3_TYOUGOURYOU3_2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ3:ﾎﾟｯﾄ3_材料品名4
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO3_ZAIRYOHINMEI4, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO3_ZAIRYOHINMEI4, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ3:ﾎﾟｯﾄ3_調合量規格4
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO3_TYOGOURYOUKIKAKU4, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO3_TYOGOURYOUKIKAKU4, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ3:ﾎﾟｯﾄ3_資材ﾛｯﾄNo.4_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO3_SIZAILOTNO4_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO3_SIZAILOTNO4_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ3:ﾎﾟｯﾄ3_調合量4_1
@@ -2057,10 +2011,6 @@ public class GXHDO102B005 implements IFormLogic {
      * @param srGlassslurryhyoryo ｶﾞﾗｽｽﾗﾘｰ作製・秤量データ
      */
     private void setInputItemDataFormE(ProcessData processData, SrGlassslurryhyoryo srGlassslurryhyoryo) {
-        // ﾎﾟｯﾄ4:ﾎﾟｯﾄ4_材料品名1
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO4_ZAIRYOHINMEI1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO4_ZAIRYOHINMEI1, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ4:ﾎﾟｯﾄ4_調合量規格1
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO4_TYOGOURYOUKIKAKU1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO4_TYOGOURYOUKIKAKU1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ4:ﾎﾟｯﾄ4_資材ﾛｯﾄNo.1_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO4_SIZAILOTNO1_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO4_SIZAILOTNO1_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ4:ﾎﾟｯﾄ4_調合量1_1
@@ -2069,10 +2019,6 @@ public class GXHDO102B005 implements IFormLogic {
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO4_SIZAILOTNO1_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO4_SIZAILOTNO1_2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ4:ﾎﾟｯﾄ4_調合量1_2
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO4_TYOUGOURYOU1_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO4_TYOUGOURYOU1_2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ4:ﾎﾟｯﾄ4_材料品名2
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO4_ZAIRYOHINMEI2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO4_ZAIRYOHINMEI2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ4:ﾎﾟｯﾄ4_調合量規格2
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO4_TYOGOURYOUKIKAKU2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO4_TYOGOURYOUKIKAKU2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ4:ﾎﾟｯﾄ4_資材ﾛｯﾄNo.2_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO4_SIZAILOTNO2_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO4_SIZAILOTNO2_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ4:ﾎﾟｯﾄ4_調合量2_1
@@ -2081,10 +2027,6 @@ public class GXHDO102B005 implements IFormLogic {
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO4_SIZAILOTNO2_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO4_SIZAILOTNO2_2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ4:ﾎﾟｯﾄ4_調合量2_2
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO4_TYOUGOURYOU2_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO4_TYOUGOURYOU2_2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ4:ﾎﾟｯﾄ4_材料品名3
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO4_ZAIRYOHINMEI3, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO4_ZAIRYOHINMEI3, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ4:ﾎﾟｯﾄ4_調合量規格3
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO4_TYOGOURYOUKIKAKU3, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO4_TYOGOURYOUKIKAKU3, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ4:ﾎﾟｯﾄ4_資材ﾛｯﾄNo.3_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO4_SIZAILOTNO3_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO4_SIZAILOTNO3_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ4:ﾎﾟｯﾄ4_調合量3_1
@@ -2093,10 +2035,6 @@ public class GXHDO102B005 implements IFormLogic {
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO4_SIZAILOTNO3_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO4_SIZAILOTNO3_2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ4:ﾎﾟｯﾄ4_調合量3_2
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO4_TYOUGOURYOU3_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO4_TYOUGOURYOU3_2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ4:ﾎﾟｯﾄ4_材料品名4
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO4_ZAIRYOHINMEI4, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO4_ZAIRYOHINMEI4, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ4:ﾎﾟｯﾄ4_調合量規格4
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO4_TYOGOURYOUKIKAKU4, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO4_TYOGOURYOUKIKAKU4, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ4:ﾎﾟｯﾄ4_資材ﾛｯﾄNo.4_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO4_SIZAILOTNO4_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO4_SIZAILOTNO4_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ4:ﾎﾟｯﾄ4_調合量4_1
@@ -2114,10 +2052,6 @@ public class GXHDO102B005 implements IFormLogic {
      * @param srGlassslurryhyoryo ｶﾞﾗｽｽﾗﾘｰ作製・秤量データ
      */
     private void setInputItemDataFormF(ProcessData processData, SrGlassslurryhyoryo srGlassslurryhyoryo) {
-        // ﾎﾟｯﾄ5:ﾎﾟｯﾄ5_材料品名1
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO5_ZAIRYOHINMEI1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO5_ZAIRYOHINMEI1, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ5:ﾎﾟｯﾄ5_調合量規格1
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO5_TYOGOURYOUKIKAKU1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO5_TYOGOURYOUKIKAKU1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ5:ﾎﾟｯﾄ5_資材ﾛｯﾄNo.1_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO5_SIZAILOTNO1_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO5_SIZAILOTNO1_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ5:ﾎﾟｯﾄ5_調合量1_1
@@ -2126,10 +2060,6 @@ public class GXHDO102B005 implements IFormLogic {
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO5_SIZAILOTNO1_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO5_SIZAILOTNO1_2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ5:ﾎﾟｯﾄ5_調合量1_2
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO5_TYOUGOURYOU1_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO5_TYOUGOURYOU1_2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ5:ﾎﾟｯﾄ5_材料品名2
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO5_ZAIRYOHINMEI2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO5_ZAIRYOHINMEI2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ5:ﾎﾟｯﾄ5_調合量規格2
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO5_TYOGOURYOUKIKAKU2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO5_TYOGOURYOUKIKAKU2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ5:ﾎﾟｯﾄ5_資材ﾛｯﾄNo.2_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO5_SIZAILOTNO2_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO5_SIZAILOTNO2_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ5:ﾎﾟｯﾄ5_調合量2_1
@@ -2138,10 +2068,6 @@ public class GXHDO102B005 implements IFormLogic {
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO5_SIZAILOTNO2_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO5_SIZAILOTNO2_2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ5:ﾎﾟｯﾄ5_調合量2_2
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO5_TYOUGOURYOU2_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO5_TYOUGOURYOU2_2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ5:ﾎﾟｯﾄ5_材料品名3
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO5_ZAIRYOHINMEI3, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO5_ZAIRYOHINMEI3, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ5:ﾎﾟｯﾄ5_調合量規格3
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO5_TYOGOURYOUKIKAKU3, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO5_TYOGOURYOUKIKAKU3, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ5:ﾎﾟｯﾄ5_資材ﾛｯﾄNo.3_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO5_SIZAILOTNO3_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO5_SIZAILOTNO3_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ5:ﾎﾟｯﾄ5_調合量3_1
@@ -2150,10 +2076,6 @@ public class GXHDO102B005 implements IFormLogic {
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO5_SIZAILOTNO3_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO5_SIZAILOTNO3_2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ5:ﾎﾟｯﾄ5_調合量3_2
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO5_TYOUGOURYOU3_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO5_TYOUGOURYOU3_2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ5:ﾎﾟｯﾄ5_材料品名4
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO5_ZAIRYOHINMEI4, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO5_ZAIRYOHINMEI4, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ5:ﾎﾟｯﾄ5_調合量規格4
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO5_TYOGOURYOUKIKAKU4, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO5_TYOGOURYOUKIKAKU4, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ5:ﾎﾟｯﾄ5_資材ﾛｯﾄNo.4_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO5_SIZAILOTNO4_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO5_SIZAILOTNO4_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ5:ﾎﾟｯﾄ5_調合量4_1
@@ -2172,10 +2094,6 @@ public class GXHDO102B005 implements IFormLogic {
      * @param srGlassslurryhyoryo ｶﾞﾗｽｽﾗﾘｰ作製・秤量データ
      */
     private void setInputItemDataFormG(ProcessData processData, SrGlassslurryhyoryo srGlassslurryhyoryo) {
-        // ﾎﾟｯﾄ6:ﾎﾟｯﾄ6_材料品名1
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO6_ZAIRYOHINMEI1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO6_ZAIRYOHINMEI1, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ6:ﾎﾟｯﾄ6_調合量規格1
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO6_TYOGOURYOUKIKAKU1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO6_TYOGOURYOUKIKAKU1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ6:ﾎﾟｯﾄ6_資材ﾛｯﾄNo.1_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO6_SIZAILOTNO1_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO6_SIZAILOTNO1_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ6:ﾎﾟｯﾄ6_調合量1_1
@@ -2184,10 +2102,6 @@ public class GXHDO102B005 implements IFormLogic {
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO6_SIZAILOTNO1_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO6_SIZAILOTNO1_2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ6:ﾎﾟｯﾄ6_調合量1_2
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO6_TYOUGOURYOU1_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO6_TYOUGOURYOU1_2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ6:ﾎﾟｯﾄ6_材料品名2
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO6_ZAIRYOHINMEI2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO6_ZAIRYOHINMEI2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ6:ﾎﾟｯﾄ6_調合量規格2
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO6_TYOGOURYOUKIKAKU2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO6_TYOGOURYOUKIKAKU2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ6:ﾎﾟｯﾄ6_資材ﾛｯﾄNo.2_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO6_SIZAILOTNO2_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO6_SIZAILOTNO2_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ6:ﾎﾟｯﾄ6_調合量2_1
@@ -2196,10 +2110,6 @@ public class GXHDO102B005 implements IFormLogic {
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO6_SIZAILOTNO2_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO6_SIZAILOTNO2_2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ6:ﾎﾟｯﾄ6_調合量2_2
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO6_TYOUGOURYOU2_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO6_TYOUGOURYOU2_2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ6:ﾎﾟｯﾄ6_材料品名3
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO6_ZAIRYOHINMEI3, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO6_ZAIRYOHINMEI3, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ6:ﾎﾟｯﾄ6_調合量規格3
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO6_TYOGOURYOUKIKAKU3, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO6_TYOGOURYOUKIKAKU3, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ6:ﾎﾟｯﾄ6_資材ﾛｯﾄNo.3_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO6_SIZAILOTNO3_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO6_SIZAILOTNO3_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ6:ﾎﾟｯﾄ6_調合量3_1
@@ -2208,10 +2118,6 @@ public class GXHDO102B005 implements IFormLogic {
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO6_SIZAILOTNO3_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO6_SIZAILOTNO3_2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ6:ﾎﾟｯﾄ6_調合量3_2
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO6_TYOUGOURYOU3_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO6_TYOUGOURYOU3_2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ6:ﾎﾟｯﾄ6_材料品名4
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO6_ZAIRYOHINMEI4, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO6_ZAIRYOHINMEI4, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ6:ﾎﾟｯﾄ6_調合量規格4
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO6_TYOGOURYOUKIKAKU4, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO6_TYOGOURYOUKIKAKU4, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ6:ﾎﾟｯﾄ6_資材ﾛｯﾄNo.4_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO6_SIZAILOTNO4_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO6_SIZAILOTNO4_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ6:ﾎﾟｯﾄ6_調合量4_1
@@ -2230,10 +2136,6 @@ public class GXHDO102B005 implements IFormLogic {
      * @param srGlassslurryhyoryo ｶﾞﾗｽｽﾗﾘｰ作製・秤量データ
      */
     private void setInputItemDataFormH(ProcessData processData, SrGlassslurryhyoryo srGlassslurryhyoryo) {
-        // ﾎﾟｯﾄ7:ﾎﾟｯﾄ7_材料品名1
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO7_ZAIRYOHINMEI1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO7_ZAIRYOHINMEI1, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ7:ﾎﾟｯﾄ7_調合量規格1
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO7_TYOGOURYOUKIKAKU1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO7_TYOGOURYOUKIKAKU1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ7:ﾎﾟｯﾄ7_資材ﾛｯﾄNo.1_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO7_SIZAILOTNO1_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO7_SIZAILOTNO1_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ7:ﾎﾟｯﾄ7_調合量1_1
@@ -2242,10 +2144,6 @@ public class GXHDO102B005 implements IFormLogic {
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO7_SIZAILOTNO1_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO7_SIZAILOTNO1_2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ7:ﾎﾟｯﾄ7_調合量1_2
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO7_TYOUGOURYOU1_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO7_TYOUGOURYOU1_2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ7:ﾎﾟｯﾄ7_材料品名2
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO7_ZAIRYOHINMEI2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO7_ZAIRYOHINMEI2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ7:ﾎﾟｯﾄ7_調合量規格2
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO7_TYOGOURYOUKIKAKU2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO7_TYOGOURYOUKIKAKU2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ7:ﾎﾟｯﾄ7_資材ﾛｯﾄNo.2_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO7_SIZAILOTNO2_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO7_SIZAILOTNO2_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ7:ﾎﾟｯﾄ7_調合量2_1
@@ -2254,10 +2152,6 @@ public class GXHDO102B005 implements IFormLogic {
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO7_SIZAILOTNO2_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO7_SIZAILOTNO2_2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ7:ﾎﾟｯﾄ7_調合量2_2
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO7_TYOUGOURYOU2_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO7_TYOUGOURYOU2_2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ7:ﾎﾟｯﾄ7_材料品名3
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO7_ZAIRYOHINMEI3, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO7_ZAIRYOHINMEI3, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ7:ﾎﾟｯﾄ7_調合量規格3
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO7_TYOGOURYOUKIKAKU3, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO7_TYOGOURYOUKIKAKU3, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ7:ﾎﾟｯﾄ7_資材ﾛｯﾄNo.3_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO7_SIZAILOTNO3_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO7_SIZAILOTNO3_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ7:ﾎﾟｯﾄ7_調合量3_1
@@ -2266,10 +2160,6 @@ public class GXHDO102B005 implements IFormLogic {
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO7_SIZAILOTNO3_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO7_SIZAILOTNO3_2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ7:ﾎﾟｯﾄ7_調合量3_2
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO7_TYOUGOURYOU3_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO7_TYOUGOURYOU3_2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ7:ﾎﾟｯﾄ7_材料品名4
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO7_ZAIRYOHINMEI4, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO7_ZAIRYOHINMEI4, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ7:ﾎﾟｯﾄ7_調合量規格4
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO7_TYOGOURYOUKIKAKU4, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO7_TYOGOURYOUKIKAKU4, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ7:ﾎﾟｯﾄ7_資材ﾛｯﾄNo.4_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO7_SIZAILOTNO4_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO7_SIZAILOTNO4_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ7:ﾎﾟｯﾄ7_調合量4_1
@@ -2288,10 +2178,6 @@ public class GXHDO102B005 implements IFormLogic {
      * @param srGlassslurryhyoryo ｶﾞﾗｽｽﾗﾘｰ作製・秤量データ
      */
     private void setInputItemDataFormI(ProcessData processData, SrGlassslurryhyoryo srGlassslurryhyoryo) {
-        // ﾎﾟｯﾄ8:ﾎﾟｯﾄ8_材料品名1
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO8_ZAIRYOHINMEI1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO8_ZAIRYOHINMEI1, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ8:ﾎﾟｯﾄ8_調合量規格1
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO8_TYOGOURYOUKIKAKU1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO8_TYOGOURYOUKIKAKU1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ8:ﾎﾟｯﾄ8_資材ﾛｯﾄNo.1_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO8_SIZAILOTNO1_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO8_SIZAILOTNO1_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ8:ﾎﾟｯﾄ8_調合量1_1
@@ -2300,10 +2186,6 @@ public class GXHDO102B005 implements IFormLogic {
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO8_SIZAILOTNO1_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO8_SIZAILOTNO1_2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ8:ﾎﾟｯﾄ8_調合量1_2
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO8_TYOUGOURYOU1_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO8_TYOUGOURYOU1_2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ8:ﾎﾟｯﾄ8_材料品名2
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO8_ZAIRYOHINMEI2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO8_ZAIRYOHINMEI2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ8:ﾎﾟｯﾄ8_調合量規格2
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO8_TYOGOURYOUKIKAKU2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO8_TYOGOURYOUKIKAKU2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ8:ﾎﾟｯﾄ8_資材ﾛｯﾄNo.2_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO8_SIZAILOTNO2_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO8_SIZAILOTNO2_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ8:ﾎﾟｯﾄ8_調合量2_1
@@ -2312,10 +2194,6 @@ public class GXHDO102B005 implements IFormLogic {
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO8_SIZAILOTNO2_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO8_SIZAILOTNO2_2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ8:ﾎﾟｯﾄ8_調合量2_2
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO8_TYOUGOURYOU2_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO8_TYOUGOURYOU2_2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ8:ﾎﾟｯﾄ8_材料品名3
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO8_ZAIRYOHINMEI3, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO8_ZAIRYOHINMEI3, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ8:ﾎﾟｯﾄ8_調合量規格3
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO8_TYOGOURYOUKIKAKU3, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO8_TYOGOURYOUKIKAKU3, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ8:ﾎﾟｯﾄ8_資材ﾛｯﾄNo.3_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO8_SIZAILOTNO3_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO8_SIZAILOTNO3_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ8:ﾎﾟｯﾄ8_調合量3_1
@@ -2324,10 +2202,6 @@ public class GXHDO102B005 implements IFormLogic {
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO8_SIZAILOTNO3_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO8_SIZAILOTNO3_2, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ8:ﾎﾟｯﾄ8_調合量3_2
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO8_TYOUGOURYOU3_2, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO8_TYOUGOURYOU3_2, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ8:ﾎﾟｯﾄ8_材料品名4
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO8_ZAIRYOHINMEI4, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO8_ZAIRYOHINMEI4, srGlassslurryhyoryo));
-        // ﾎﾟｯﾄ8:ﾎﾟｯﾄ8_調合量規格4
-        this.setItemDataEx(processData, GXHDO102B005Const.POTTO8_TYOGOURYOUKIKAKU4, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO8_TYOGOURYOUKIKAKU4, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ8:ﾎﾟｯﾄ8_資材ﾛｯﾄNo.4_1
         this.setItemDataEx(processData, GXHDO102B005Const.POTTO8_SIZAILOTNO4_1, getGlassslurryhyoryoItemData(GXHDO102B005Const.POTTO8_SIZAILOTNO4_1, srGlassslurryhyoryo));
         // ﾎﾟｯﾄ8:ﾎﾟｯﾄ8_調合量4_1
@@ -5101,6 +4975,16 @@ public class GXHDO102B005 implements IFormLogic {
     }
 
     /**
+     * 製品情報 画面データ設定処理
+     *
+     * @param processData 処理制御データ
+     */
+    private void initGXHDO102B005A(ProcessData processData) {
+        GXHDO102B005A bean = (GXHDO102B005A) getFormBean("gXHDO102B005A");
+        bean.setSeihin_goki(getItemRow(processData.getItemList(), GXHDO102B005Const.SEIHIN_GOKI));
+    }
+    
+    /**
      * ﾎﾟｯﾄ1 画面データ設定処理
      *
      * @param processData 処理制御データ
@@ -7043,9 +6927,9 @@ public class GXHDO102B005 implements IFormLogic {
         paramsList.add(tantoshaCd);
         paramsList.add("PXHDO102");
         paramsList.add(tyougouryouValue);
-        paramsList.add("");
-        paramsList.add("");
-        paramsList.add("");
+        paramsList.add(null);
+        paramsList.add(null);
+        paramsList.add(null);
         paramsList.add(wiplotnoValue);
         
         try {

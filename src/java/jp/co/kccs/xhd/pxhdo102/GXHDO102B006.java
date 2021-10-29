@@ -1342,15 +1342,6 @@ public class GXHDO102B006 implements IFormLogic {
      * @param srGlassslurryfunsai ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕
      */
     private void setInputItemDataMainForm(ProcessData processData, SrGlassslurryfunsai srGlassslurryfunsai) {
-        // ｶﾞﾗｽｽﾗﾘｰ品名
-        this.setItemData(processData, GXHDO102B006Const.GLASSSLURRYHINMEI, getSrGlassslurryfunsaiItemData(GXHDO102B006Const.GLASSSLURRYHINMEI, srGlassslurryfunsai));
-
-        // ｶﾞﾗｽｽﾗﾘｰLotNo
-        this.setItemData(processData, GXHDO102B006Const.GLASSSLURRYLOTNO, getSrGlassslurryfunsaiItemData(GXHDO102B006Const.GLASSSLURRYLOTNO, srGlassslurryfunsai));
-
-        // ﾛｯﾄ区分
-        this.setItemData(processData, GXHDO102B006Const.LOTKUBUN, getSrGlassslurryfunsaiItemData(GXHDO102B006Const.LOTKUBUN, srGlassslurryfunsai));
-
         // 粉砕回転台号機
         this.setItemData(processData, GXHDO102B006Const.KAITENDAIGOUKI, getSrGlassslurryfunsaiItemData(GXHDO102B006Const.KAITENDAIGOUKI, srGlassslurryfunsai));
 
