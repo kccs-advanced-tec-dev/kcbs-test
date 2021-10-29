@@ -3,21 +3,23 @@
  */
 package jp.co.kccs.xhd.pxhdo101;
 
+import java.io.Serializable;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
+import javax.annotation.Resource;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.view.ViewScoped;
+import javax.inject.Named;
 import javax.servlet.http.HttpSession;
+import javax.sql.DataSource;
 import jp.co.kccs.xhd.db.model.FXHDD12;
 import jp.co.kccs.xhd.model.GXHDO101C022Model;
-import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
-import jp.co.kccs.xhd.pxhdo901.IFormLogic;
-import jp.co.kccs.xhd.pxhdo901.ProcessData;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.StringUtil;
@@ -47,73 +49,52 @@ import jp.co.kccs.xhd.util.SubFormUtil;
  * @author SRC T.Ushiyama
  * @since 2021/10/08
  */
-public class GXHDO101C022 implements IFormLogic {
+@Named
+@ViewScoped
+public class GXHDO101C022 implements Serializable {
 
     private static final Logger LOGGER = Logger.getLogger(GXHDO101C022.class.getName());
     
     /**
+     * DataSource(DocumentServer)
+     */
+    @Resource(mappedName = "jdbc/DocumentServer")
+    protected transient DataSource dataSourceDocServer;
+    
+    /**
      * 初期化処理
      *
-     * @param processData 処理制御データ
-     * @return 処理制御データ
      */
-    @Override
-    public ProcessData initial(ProcessData processData) {
+    public void initial() {
 
         try {
-
-            // 処理名を登録
-            processData.setProcessName("initial");
-
             // 初期表示データ設定処理
-            processData = setInitData(processData);
-            // 中断エラー発生時
-            if (processData.isFatalError()) {
-                if (!processData.getInitMessageList().isEmpty()) {
-                    // 初期表示メッセージが設定されている場合、メッセージ表示のイベントを呼ぶ
-                    processData.setMethod("openInitMessage");
-                }
-                return processData;
-            }
-
-            // エラーが発生していない場合
-            if (processData.getErrorMessageInfoList().isEmpty()) {
-                if (!processData.getInitMessageList().isEmpty()) {
-                    // 初期表示メッセージが設定されている場合、メッセージ表示のイベントを呼ぶ
-                    processData.setMethod("openInitMessage");
-                } else {
-                    // 後続処理なし
-                    processData.setMethod("");
-                }
-            }
+            setInitData();
 
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
-            return processData;
+            FacesMessage message = 
+                       new FacesMessage(FacesMessage.SEVERITY_ERROR, "実行時エラー", null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return;
         }
 
-        return processData;
+        return;
     }
 
     /**
      * 初期表示データ設定
      *
-     * @param processData 処理制御データ
-     * @return 処理制御データ
      * @throws SQLException 例外エラー
      */
-    private ProcessData setInitData(ProcessData processData) throws SQLException {
+    private void setInitData() throws SQLException {
 
-        QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
+        QueryRunner queryRunnerDoc = new QueryRunner(dataSourceDocServer);
 
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         HttpSession session = (HttpSession) externalContext.getSession(false);
         String lotNo = (String) session.getAttribute("lotNo");
         String jissekiNo = StringUtil.nullToBlank(session.getAttribute("jissekino"));
-
-        // エラーメッセージリスト
-        List<String> errorMessageList = processData.getInitMessageList();
 
         String strKojyo = "";
         String strLotNo = "";
@@ -136,9 +117,8 @@ public class GXHDO101C022 implements IFormLogic {
         beanGXHDO101C022.setGxhdO101c022ModelView(newModel);
 
         beanGXHDO101C022.setTableRender(true);
-
-        processData.setInitMessageList(errorMessageList);
-        return processData;
+        
+        return;
 
     }
 
@@ -264,18 +244,5 @@ public class GXHDO101C022 implements IFormLogic {
             }
         }
         return initGokiSentakuDataList;
-    }
-
-    /**
-     * ボタンID⇒メソッド名変換
-     *
-     * @param buttonId ボタンID
-     * @return メソッド名
-     */
-    @Override
-    public String convertButtonIdToMethod(String buttonId) {
-        String method = "";
-
-        return method;
     }
 }
