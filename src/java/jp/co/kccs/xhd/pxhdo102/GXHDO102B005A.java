@@ -5,6 +5,7 @@ package jp.co.kccs.xhd.pxhdo102;
 
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.pxhdo901.GXHDO901BEX;
 
 /**
@@ -31,6 +32,10 @@ public class GXHDO102B005A extends GXHDO901BEX {
     private String mainDefaultStyle = "";
     private String mainAutoStyle = "";
     private String mainDivStyle = "";
+    /**
+     * 秤量号機
+     */
+    private FXHDD01 seihin_goki;
     /**
      * コンストラクタ
      */
@@ -70,5 +75,21 @@ public class GXHDO102B005A extends GXHDO901BEX {
         this.mainAutoStyle = "width:auto;" + "min-width:" + mainWidth + "px;";
         this.mainDivStyle = this.mainDefaultStyle;
 
+    }
+
+    /**
+     * 秤量号機
+     * @return the seihin_goki
+     */
+    public FXHDD01 getSeihin_goki() {
+        return seihin_goki;
+    }
+
+    /**
+     * 秤量号機
+     * @param seihin_goki the seihin_goki to set
+     */
+    public void setSeihin_goki(FXHDD01 seihin_goki) {
+        this.seihin_goki = seihin_goki;
     }
 }
