@@ -3315,9 +3315,9 @@ public class GXHDO102B001 implements IFormLogic {
         paramsList.add(tantoshaCd);
         paramsList.add("PXHDO102");
         paramsList.add(tyougouryouValue);
-        paramsList.add("");
-        paramsList.add("");
-        paramsList.add("");
+        paramsList.add(null);
+        paramsList.add(null);
+        paramsList.add(null);
         paramsList.add(wiplotnoValue);
 
         try {
