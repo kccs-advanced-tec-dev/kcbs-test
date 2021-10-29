@@ -188,6 +188,13 @@ public class GXHDO102C002 implements Serializable {
      * @return 正常:true、異常:fasle
      */
     private boolean tyogouryouCheck(FXHDD01 item1, FXHDD01 item2) {
+        // 奇数行に入力されるとき、0以外が入力されていないこと。
+        if (!StringUtil.isEmpty(item1.getValue()) && !NumberUtil.isZero(item1.getValue())) {
+            setError(item1, "XHD-000222");
+            return false;
+        }
+
+        // 偶数行に調合量が入力されている場合、該当行の前の行に0が入力されていること。
         if (!NumberUtil.isZero(item1.getValue()) && !StringUtil.isEmpty(item2.getValue())) {
             setError(item1, "XHD-000222");
             return false;

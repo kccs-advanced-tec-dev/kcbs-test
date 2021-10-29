@@ -255,6 +255,43 @@ public class DateUtil {
     }
 
     /**
+     * 開始(終了)日+開始(終了)時間+時間で算出した日時を取得
+     *
+     * @param dayVal 開始(終了)日
+     * @param timeVal 開始(終了)時間
+     * @param jikan 時間
+     * @param kansantani 換算単位(Calendar.HOUR、Calendar.MINUTE、Calendar.DATE)
+     * @return 開始(終了)日+開始(終了)時間+時間で算出した日時
+     */
+    public static Date addJikan(String dayVal, String timeVal, Integer jikan, int kansantani) {
+        // Dateオブジェクト変換
+        Date dateVal = DateUtil.convertStringToDate(dayVal, timeVal);
+        if (dateVal == null) {
+            return null;
+        }
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(dateVal);
+        switch (kansantani) {
+            case Calendar.HOUR:
+                // 加算時間は時間を変換して、日付に加算
+                cal.add(Calendar.HOUR, jikan);
+                break;
+            case Calendar.MINUTE:
+                // 加算時間は分を変換して、日付に加算
+                cal.add(Calendar.MINUTE, jikan);
+                break;
+            case Calendar.DATE:
+                // 加算時間は分を変換して、日付に加算
+                cal.add(Calendar.DATE, jikan);
+                break;
+            default:
+                break;
+        }
+
+        return cal.getTime();
+    }
+
+    /**
      * 時間⇒数値(int)変換
      *
      * @param date Date型の日付
