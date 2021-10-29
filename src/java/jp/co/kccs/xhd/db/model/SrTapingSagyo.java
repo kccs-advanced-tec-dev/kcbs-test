@@ -16,6 +16,11 @@ import java.sql.Timestamp;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2021/10/08<br>
+ * 計画書No	MB2109-DK002<br>
+ * 変更者	SRC T.Ushiyama<br>
+ * 変更理由	出荷履歴表対応<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -555,6 +560,11 @@ public class SrTapingSagyo {
      * 削除ﾌﾗｸﾞ
      */
     private Integer deleteflag;
+
+    /**
+     * 番号
+     */
+    private Integer bango;
 
     /**
      * 工場ｺｰﾄﾞ
@@ -2460,6 +2470,24 @@ public class SrTapingSagyo {
      */
     public void setDeleteflag(Integer deleteflag) {
         this.deleteflag = deleteflag;
+    }
+
+    /**
+     * 番号
+     *
+     * @return the bango
+     */
+    public Integer getBango() {
+        return bango;
+    }
+
+    /**
+     * 番号
+     *
+     * @param bango the bango to set
+     */
+    public void setBango(Integer bango) {
+        this.bango = bango;
     }
 
 }
