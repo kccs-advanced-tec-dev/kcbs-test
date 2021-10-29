@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Kyocera Communication Systems Co., Ltd All rights reserved.
+ * Copyright 2020 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.db.model;
 
@@ -9,20 +9,25 @@ import java.sql.Timestamp;
 /**
  * ===============================================================================<br>
  * <br>
- * システム名	品質情報管理システム<br>
+ * システム名	品質DB(コンデンサ)<br>
+ * <br>
+ * 変更日	2020/02/03<br>
+ * 計画書No	K1811-DS001<br>
+ * 変更者	SYSNAVI K.Hisanaga<br>
+ * 変更理由	新規作成<br>
  * <br>
  * 変更日	2021/10/08<br>
  * 計画書No	MB2109-DK002<br>
  * 変更者	SRC T.Ushiyama<br>
- * 変更理由	新規作成<br>
+ * 変更理由	出荷履歴表対応<br>
  * <br>
  * ===============================================================================<br>
  */
 /**
  * テーピング作業のモデルクラスです。
  *
- * @author SRC T.Ushiyama
- * @since 2021/10/08
+ * @author SYSNAVI K.Hisanaga
+ * @since 2020/02/03
  */
 public class SrTapingSagyo {
 
