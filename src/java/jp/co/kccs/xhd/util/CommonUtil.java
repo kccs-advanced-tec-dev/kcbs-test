@@ -3,7 +3,13 @@
  */
 package jp.co.kccs.xhd.util;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.io.PrintStream;
 import java.math.BigDecimal;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,9 +17,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 import jp.co.kccs.xhd.db.model.FXHDD01;
+import jp.co.kccs.xhd.db.model.SikakariJson;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
+import org.primefaces.json.JSONArray;
+import org.primefaces.json.JSONObject;
 
 /**
  * ===============================================================================<br>
@@ -1865,5 +1874,237 @@ public class CommonUtil {
         
         DBUtil.outputSQLLog(sqlOrg, paramsOrg.toArray(), LOGGER);
         return (List) queryRunnerQcdb.query(sqlOrg, new MapListHandler(), paramsOrg.toArray());
+    }
+    
+    /**
+     * 前工程WIPデータ取得処理
+     *
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param username ユーザー名
+     * @param lotcode 製造ロットNo
+     * @return 結果
+     */
+    public static List<SikakariJson> getMwipResult(QueryRunner queryRunnerDoc, String username,String lotcode) {
+        List<SikakariJson> list = new ArrayList<SikakariJson>();
+        HttpURLConnection conn = null;
+        
+        try{
+            URL url = new URL(getUrl(queryRunnerDoc, "common_user", "前工程WIPAPI", "mwip/sikakari/"));
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("username", username);
+            jsonObject.put("lotcode", lotcode);
+            String param = jsonObject.toString();
+            
+            conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(3000);
+            conn.setInstanceFollowRedirects(false);
+            conn.setRequestProperty("Connection", "close");
+            conn.setRequestMethod("POST");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+            conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+            conn.connect();
+            PrintStream ps = new PrintStream(conn.getOutputStream());
+            ps.print(param);
+            ps.flush();
+            ps.close();
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream(), "UTF-8"));
+            StringBuilder sb = new StringBuilder();
+            String line;
+            Integer cntInput = 0;
+            Boolean errCheck = false;
+            while ((line = br.readLine()) != null) {
+                if(cntInput != 1){        
+                    sb.append(line);  
+                }else{
+                    if(!line.contains("OK")){
+                        errCheck = true;
+                    }
+                }
+                cntInput++;
+            }
+                   
+            br.close();
+            String result = sb.toString();
+
+            if(errCheck){
+                ErrUtil.outputErrorLog("前工程WIPデータ取得処理エラー発生:"+ result, null, LOGGER);
+                return null;
+            }
+
+            JSONArray jsonarray = new JSONArray(result);
+             
+            for (int i = 0; i < jsonarray.length(); i++){
+                JSONObject jsonItem = jsonarray.getJSONObject(i);
+                SikakariJson sikakari = new SikakariJson();
+                sikakari.setKojyo(jsonItem.get("Kojyo").toString());
+                sikakari.setLotNo(jsonItem.get("LotNo").toString());
+                sikakari.setEdaBan(jsonItem.get("EdaBan").toString());
+                sikakari.setOyaLotEdaBan(jsonItem.get("OyaLotEdaBan").toString());
+                sikakari.setHasseiNichiji(jsonItem.get("HasseiNichiji").toString());
+                sikakari.setHasseiSuu(jsonItem.get("HasseiSuu").toString());
+                sikakari.setJissekiNo(jsonItem.get("JissekiNo").toString());
+                sikakari.setKCPNO(jsonItem.get("KCPNO").toString());
+                sikakari.setTCode(jsonItem.get("TCode").toString());
+                sikakari.setTokuisaki(jsonItem.get("Tokuisaki").toString());
+                sikakari.setSeiden(jsonItem.get("Seiden").toString());
+                sikakari.setKiboNouki(jsonItem.get("KiboNouki").toString());
+                sikakari.setKaitoNouki(jsonItem.get("KaitoNouki").toString());
+                sikakari.setKoteiCode(jsonItem.get("KoteiCode").toString());
+                sikakari.setSuuRyo(jsonItem.get("SuuRyo").toString());
+                sikakari.setUkeireNichiji(jsonItem.get("UkeireNichiji").toString());
+                sikakari.setSaisyuKousinNichiji(jsonItem.get("SaisyuKousinNichiji").toString());
+                sikakari.setOpenCloseFlag(jsonItem.get("OpenCloseFlag").toString());
+                sikakari.setHanteiFlag(jsonItem.get("HanteiFlag").toString());
+                sikakari.setFuryoCode(jsonItem.get("FuryoCode").toString());
+                sikakari.setLockFlag(jsonItem.get("LockFlag").toString());
+                sikakari.setChokkouFlag(jsonItem.get("ChokkouFlag").toString());
+                sikakari.setSaiseiFlag(jsonItem.get("SaiseiFlag").toString());
+                sikakari.setYusenCode(jsonItem.get("YusenCode").toString());
+                sikakari.setLotKubunCode(jsonItem.get("LotKubunCode").toString());
+                sikakari.setOwnerCode(jsonItem.get("OwnerCode").toString());
+                sikakari.setKojunCode(jsonItem.get("KojunCode").toString());
+                sikakari.setKojunNo(jsonItem.get("KojunNo").toString());
+                sikakari.setShukkaLot(jsonItem.get("ShukkaLot").toString());
+                sikakari.setBikou1(jsonItem.get("Bikou1").toString());
+                sikakari.setBikou2(jsonItem.get("Bikou2").toString());
+                sikakari.setBikou3(jsonItem.get("Bikou3").toString());
+                sikakari.setBikou4(jsonItem.get("Bikou4").toString());
+                sikakari.setBikou5(jsonItem.get("Bikou5").toString());
+                sikakari.setBikou6(jsonItem.get("Bikou6").toString());
+                sikakari.setBikou7(jsonItem.get("Bikou7").toString());
+                sikakari.setBikou8(jsonItem.get("Bikou8").toString());
+                sikakari.setBikou9(jsonItem.get("Bikou9").toString());
+                sikakari.setBikou10(jsonItem.get("Bikou10").toString());
+                sikakari.setGenryo(jsonItem.get("Genryo").toString());
+                sikakari.setSeizoTanka(jsonItem.get("SeizoTanka").toString());
+                sikakari.setHinmei(jsonItem.get("Hinmei").toString());
+                sikakari.setVendorLot(jsonItem.get("VendorLot").toString());
+                sikakari.setKonyuTanka(jsonItem.get("KonyuTanka").toString());
+                sikakari.setZaikoKubun(jsonItem.get("ZaikoKubun").toString());
+                sikakari.setLotKigo(jsonItem.get("LotKigo").toString());
+                sikakari.setChumonNo(jsonItem.get("ChumonNo").toString());
+                sikakari.setMakiboNo(jsonItem.get("MakiboNo").toString());
+                sikakari.setConventionalLot(jsonItem.get("ConventionalLot").toString());
+                sikakari.setSuuRyoUnit(jsonItem.get("SuuRyoUnit").toString());
+                sikakari.setRollNo(jsonItem.get("RollNo").toString());
+                sikakari.setSlurryKanseiNichiji(jsonItem.get("SlurryKanseiNichiji").toString());
+                sikakari.setKcpnhinmei(jsonItem.get("kcpnhinmei").toString());
+                sikakari.setOwner(jsonItem.get("owner").toString());
+                sikakari.setLotkubun(jsonItem.get("lotkubun").toString());
+                sikakari.setGroupno(jsonItem.get("groupno").toString());
+                sikakari.setSubproduct_groupname(jsonItem.get("subproduct_groupname").toString());
+                sikakari.setKokeibun(jsonItem.get("kokeibun").toString());
+                list.add(sikakari);
+            }
+            return list;
+        
+        } catch (Exception ex) {
+            ErrUtil.outputErrorLog("前工程WIPデータ取得処理エラー発生", ex, LOGGER);
+        }finally{
+            if(conn != null){
+                conn.disconnect();
+            }
+        }
+        return null;
+    }
+    
+    /**
+     * 「/api/PMLA0212/doSave」APIを呼び出す
+     *
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param paramsList 引数
+     * @return レスポンスデータ
+     * @throws Exception
+     */
+    public static String doRequestPmla0212Save(QueryRunner queryRunnerDoc, ArrayList<String> paramsList) throws Exception {
+        String responseResult = "error";
+        HttpURLConnection connection = null;
+        try {
+            URL url = new URL(getUrl(queryRunnerDoc, "common_user", "部材管理API", "api/PMLA0212/doSave"));
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setConnectTimeout(3000);
+            connection.setInstanceFollowRedirects(false);
+            connection.setRequestProperty("Connection", "close");
+            connection.setRequestMethod("POST");
+            connection.setDoOutput(true);
+            connection.setDoInput(true);
+            connection.setUseCaches(false);
+            connection.setRequestProperty("content-type", "application/json");
+            connection.setRequestProperty("Charset", "UTF-8");
+            connection.connect();
+
+            try (DataOutputStream out = new DataOutputStream(connection.getOutputStream())) {
+                JSONObject obj = new JSONObject();
+                obj.put("reqZaiko_no", paramsList.get(0)); // 在庫No
+                obj.put("reqKoshinsha", paramsList.get(1)); // 更新者
+                obj.put("reqGamen_id", paramsList.get(2)); // プログラムID
+                obj.put("reqSyohi_juryo", paramsList.get(3)); // 消費重量
+                obj.put("reqSaidai_siyo_maisu", paramsList.get(4)); // 最大使用枚数
+                obj.put("reqSiyo_maisu", paramsList.get(5)); // 使用枚数
+                obj.put("reqSiyo_kosu", paramsList.get(6)); // 使用個数
+                obj.put("reqSeizo_lot_no", paramsList.get(7)); // 製造LotNo
+                out.writeBytes(obj.toString());
+                out.flush();
+            }
+
+            if (HttpURLConnection.HTTP_OK == connection.getResponseCode()) {
+                responseResult = "ok";
+            }
+        } finally {
+            if (connection != null) {
+                connection.disconnect();
+            }
+        }
+        return responseResult;
+    }
+
+    /**
+     * リクエストurlを取得
+     *
+     * @param queryRunnerDoc オブジェクト
+     * @param userName ユーザー名
+     * @param key Key
+     * @param apiUrl APIリクエスト
+     * @return url リクエストurl
+     * @throws SQLException
+     */
+    public static String getUrl(QueryRunner queryRunnerDoc, String userName, String key, String apiUrl) throws SQLException {
+        String prefixStr = "http://localhost:8080/";
+        String paramDataStr = loadParamData(queryRunnerDoc, userName, key);
+        if (!StringUtil.isEmpty(paramDataStr)) {
+            if (!paramDataStr.endsWith("/")) {
+                paramDataStr += "/";
+            }
+            prefixStr = paramDataStr;
+        }
+        return prefixStr + apiUrl;
+    }
+
+    /**
+     * [ﾊﾟﾗﾒｰﾀﾏｽﾀ]から、データを取得
+     *
+     * @param queryRunnerDoc オブジェクト
+     * @param userName ユーザー名
+     * @param key Key
+     * @return 取得データ
+     * @throws SQLException
+     */
+    public static String loadParamData(QueryRunner queryRunnerDoc, String userName, String key) throws SQLException {
+        // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+        String sql = "SELECT data "
+                + " FROM fxhbm03 "
+                + " WHERE user_name = ? AND key = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(userName);
+        params.add(key);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        Map data = queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
+        if (data != null && !data.isEmpty()) {
+            return StringUtil.nullToBlank(data.get("data"));
+        }
+        return null;
     }
 }

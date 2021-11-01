@@ -504,10 +504,6 @@ public class GXHDO501C implements Serializable {
             lotNobgcolor = ERROR_COLOR;
             return;
         }
-        if (!StringUtil.isEmpty(getLotNo()) && existError(validateUtil.checkValueE001(getLotNo()))) {
-            lotNobgcolor = ERROR_COLOR;
-            return;
-        }
         // 設計日(FROM)
         if (existError(validateUtil.checkC101(getSekkeiDateF(), "設計日(from)", 6))
                 || existError(validateUtil.checkC201ForDate(getSekkeiDateF(), "設計日(from)"))

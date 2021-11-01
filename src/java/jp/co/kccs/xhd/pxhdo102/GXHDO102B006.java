@@ -4,12 +4,16 @@
 package jp.co.kccs.xhd.pxhdo102;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,15 +27,17 @@ import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.db.model.SikakariJson;
-import jp.co.kccs.xhd.db.model.SrGlasssokutei;
+import jp.co.kccs.xhd.db.model.SrGlassslurryfunsai;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.IFormLogic;
 import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
 import jp.co.kccs.xhd.pxhdo901.ProcessData;
 import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.DBUtil;
+import jp.co.kccs.xhd.util.DateUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
+import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.StringUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import jp.co.kccs.xhd.util.ValidateUtil;
@@ -49,7 +55,7 @@ import org.apache.commons.dbutils.handlers.MapHandler;
  * <br>
  * システム名	品質DB(コンデンサ)<br>
  * <br>
- * 変更日	2021/09/01<br>
+ * 変更日	2021/09/22<br>
  * 計画書No	MB2101-DK002<br>
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
@@ -57,14 +63,14 @@ import org.apache.commons.dbutils.handlers.MapHandler;
  * ===============================================================================<br>
  */
 /**
- * GXHDO102B004(ｶﾞﾗｽ作製・測定)
+ * GXHDO102B006(ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕)
  *
  * @author KCSS K.Jo
- * @since  2021/09/01
+ * @since 2021/09/22
  */
-public class GXHDO102B004 implements IFormLogic {
+public class GXHDO102B006 implements IFormLogic {
 
-    private static final Logger LOGGER = Logger.getLogger(GXHDO102B004.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GXHDO102B006.class.getName());
     // 仮登録フラグ
     private static final String JOTAI_FLG_KARI_TOROKU = "0";
     // 登録済フラグ
@@ -77,7 +83,7 @@ public class GXHDO102B004 implements IFormLogic {
     /**
      * コンストラクタ
      */
-    public GXHDO102B004() {
+    public GXHDO102B006() {
     }
 
     /**
@@ -109,20 +115,26 @@ public class GXHDO102B004 implements IFormLogic {
 
             //処理時にエラーの背景色を戻さない機能として登録
             processData.setNoCheckButtonId(Arrays.asList(
-                    GXHDO102B004Const.BTN_EDABAN_COPY_TOP,
-                    GXHDO102B004Const.BTN_EDABAN_COPY_BOTTOM
+                    GXHDO102B006Const.BTN_EDABAN_COPY_TOP,
+                    GXHDO102B006Const.BTN_FUNSAIKAISINICHIJI_TOP,
+                    GXHDO102B006Const.BTN_FUNSAISYUURYOUNICHIJI_TOP,
+                    GXHDO102B006Const.BTN_HOKANKAISINICHIJI_TOP,
+                    GXHDO102B006Const.BTN_EDABAN_COPY_BOTTOM,
+                    GXHDO102B006Const.BTN_FUNSAIKAISINICHIJI_BOTTOM,
+                    GXHDO102B006Const.BTN_FUNSAISYUURYOUNICHIJI_BOTTOM,
+                    GXHDO102B006Const.BTN_HOKANKAISINICHIJI_BOTTOM
             ));
 
             // リビジョンチェック対象のボタンを設定する。
             processData.setCheckRevisionButtonId(Arrays.asList(
-                    GXHDO102B004Const.BTN_KARI_TOUROKU_TOP,
-                    GXHDO102B004Const.BTN_INSERT_TOP,
-                    GXHDO102B004Const.BTN_DELETE_TOP,
-                    GXHDO102B004Const.BTN_UPDATE_TOP,
-                    GXHDO102B004Const.BTN_KARI_TOUROKU_BOTTOM,
-                    GXHDO102B004Const.BTN_INSERT_BOTTOM,
-                    GXHDO102B004Const.BTN_DELETE_BOTTOM,
-                    GXHDO102B004Const.BTN_UPDATE_BOTTOM
+                    GXHDO102B006Const.BTN_KARI_TOUROKU_TOP,
+                    GXHDO102B006Const.BTN_INSERT_TOP,
+                    GXHDO102B006Const.BTN_DELETE_TOP,
+                    GXHDO102B006Const.BTN_UPDATE_TOP,
+                    GXHDO102B006Const.BTN_KARI_TOUROKU_BOTTOM,
+                    GXHDO102B006Const.BTN_INSERT_BOTTOM,
+                    GXHDO102B006Const.BTN_DELETE_BOTTOM,
+                    GXHDO102B006Const.BTN_UPDATE_BOTTOM
             ));
 
             // エラーが発生していない場合
@@ -156,28 +168,48 @@ public class GXHDO102B004 implements IFormLogic {
         String method;
         switch (buttonId) {
             // 枝番コピー
-            case GXHDO102B004Const.BTN_EDABAN_COPY_TOP:
-            case GXHDO102B004Const.BTN_EDABAN_COPY_BOTTOM:
+            case GXHDO102B006Const.BTN_EDABAN_COPY_TOP:
+            case GXHDO102B006Const.BTN_EDABAN_COPY_BOTTOM:
                 method = "confEdabanCopy";
                 break;
+            // 粉砕開始日時
+            case GXHDO102B006Const.BTN_FUNSAIKAISINICHIJI_TOP:
+            case GXHDO102B006Const.BTN_FUNSAIKAISINICHIJI_BOTTOM:
+                method = "setFunsaikaisinichiji";
+                break;
+            // 粉砕終了日時
+            case GXHDO102B006Const.BTN_FUNSAISYUURYOUNICHIJI_TOP:
+            case GXHDO102B006Const.BTN_FUNSAISYUURYOUNICHIJI_BOTTOM:
+                method = "setFunsaisyuuryounichiji";
+                break;
+            // 歩留まり計算
+            case GXHDO102B006Const.BTN_BUDOMARI_KEISAN_TOP:
+            case GXHDO102B006Const.BTN_BUDOMARI_KEISAN_BOTTOM:
+                method = "doBudomariKeisan";
+                break;
+            // 保管開始日時
+            case GXHDO102B006Const.BTN_HOKANKAISINICHIJI_TOP:
+            case GXHDO102B006Const.BTN_HOKANKAISINICHIJI_BOTTOM:
+                method = "setHokankaishinichiji";
+                break;
             // 仮登録
-            case GXHDO102B004Const.BTN_KARI_TOUROKU_TOP:
-            case GXHDO102B004Const.BTN_KARI_TOUROKU_BOTTOM:
+            case GXHDO102B006Const.BTN_KARI_TOUROKU_TOP:
+            case GXHDO102B006Const.BTN_KARI_TOUROKU_BOTTOM:
                 method = "checkDataTempRegist";
                 break;
             // 登録
-            case GXHDO102B004Const.BTN_INSERT_TOP:
-            case GXHDO102B004Const.BTN_INSERT_BOTTOM:
+            case GXHDO102B006Const.BTN_INSERT_TOP:
+            case GXHDO102B006Const.BTN_INSERT_BOTTOM:
                 method = "checkDataRegist";
                 break;
             // 修正
-            case GXHDO102B004Const.BTN_UPDATE_TOP:
-            case GXHDO102B004Const.BTN_UPDATE_BOTTOM:
+            case GXHDO102B006Const.BTN_UPDATE_TOP:
+            case GXHDO102B006Const.BTN_UPDATE_BOTTOM:
                 method = "checkDataCorrect";
                 break;
             // 削除
-            case GXHDO102B004Const.BTN_DELETE_TOP:
-            case GXHDO102B004Const.BTN_DELETE_BOTTOM:
+            case GXHDO102B006Const.BTN_DELETE_TOP:
+            case GXHDO102B006Const.BTN_DELETE_BOTTOM:
                 method = "checkDataDelete";
                 break;
             default:
@@ -243,8 +275,7 @@ public class GXHDO102B004 implements IFormLogic {
             String lotNo9 = lotNo.substring(3, 12);
         
             // 前工程WIPから仕掛情報を取得処理
-            Map shikakariData = loadShikakariDataFromWip(queryRunnerDoc, tantoshaCd,lotNo);
-            
+            Map shikakariData = loadShikakariDataFromWip(queryRunnerDoc, tantoshaCd, lotNo);
             if (shikakariData == null || shikakariData.isEmpty() || !shikakariData.containsKey("oyalotedaban")) {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
                 return processData;
@@ -265,15 +296,15 @@ public class GXHDO102B004 implements IFormLogic {
                 return processData;
             }
 
-            // ｶﾞﾗｽ作製・測定の入力項目の登録データ(仮登録時は仮登録データ)を取得
-            List<SrGlasssokutei> srGlasssokuteiDataList = getSrGlasssokuteiData(queryRunnerQcdb, "", jotaiFlg, kojyo, lotNo9, oyalotEdaban);
-            if (srGlasssokuteiDataList.isEmpty()) {
+            // ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕の入力項目の登録データ(仮登録時は仮登録データ)を取得
+            List<SrGlassslurryfunsai> srGlassslurryfunsaiDataList = getSrGlassslurryfunsaiData(queryRunnerQcdb, "", jotaiFlg, kojyo, lotNo9, oyalotEdaban);
+            if (srGlassslurryfunsaiDataList.isEmpty()) {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
                 return processData;
             }
 
             // メイン画面データ設定
-            setInputItemData(processData, srGlasssokuteiDataList.get(0));
+            setInputItemDataMainForm(processData, srGlassslurryfunsaiDataList.get(0));
 
             // 次呼出しメソッドをクリア
             processData.setMethod("");
@@ -283,6 +314,226 @@ public class GXHDO102B004 implements IFormLogic {
             ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
             processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
             return processData;
+        }
+    }
+
+    /**
+     * 粉砕開始日時設定処理
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData setFunsaikaisinichiji(ProcessData processData) {
+        // 粉砕開始日
+        FXHDD01 itemDay = getItemRow(processData.getItemList(), GXHDO102B006Const.FUNSAIKAISI_DAY);
+        // 粉砕開始時間
+        FXHDD01 itemTime = getItemRow(processData.getItemList(), GXHDO102B006Const.FUNSAIKAISI_TIME);
+        if (StringUtil.isEmpty(itemDay.getValue()) && StringUtil.isEmpty(itemTime.getValue())) {
+            setDateTimeItem(itemDay, itemTime, new Date());
+
+            //「粉砕時間」
+            FXHDD01 funsaijikan = getItemRow(processData.getItemList(), GXHDO102B006Const.FUNSAIJIKAN);
+            String strFunsaijikan = funsaijikan.getValue();
+
+            if("".equals(strFunsaijikan) || strFunsaijikan == null){
+                strFunsaijikan = "0";
+            }
+
+            // 粉砕終了予定日    粉砕開始日+粉砕開始時間+粉砕時間(YYMMDD)
+            // 粉砕終了予定時間  粉砕開始日+粉砕開始時間+粉砕時間(HHMM)
+            try {
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyMMddHHmm");
+                String strFunsaiKaishiDay = itemDay.getValue();
+                String strFunsaiKaishiTime = itemTime.getValue();
+                String strFunsaiDatetime = strFunsaiKaishiDay + strFunsaiKaishiTime;
+                Date dtFunsaiDatetime = dateFormat.parse(strFunsaiDatetime);
+                Calendar calFunsai = Calendar.getInstance();
+                calFunsai.setTime(dtFunsaiDatetime);
+                calFunsai.add(Calendar.HOUR, Integer.parseInt(strFunsaijikan));
+                Date resultDT = calFunsai.getTime();
+                String retFunsaiDateTime = dateFormat.format(resultDT);
+
+                //「粉砕終了予定日」を設定する
+                this.setItemData(processData, GXHDO102B006Const.FUNSAIYOTEISYUURYOU_DAY, retFunsaiDateTime.substring(0, 6));
+                //「粉砕終了予定時間」を設定する
+                this.setItemData(processData, GXHDO102B006Const.FUNSAIYOTEISYUURYOU_TIME, retFunsaiDateTime.substring(6, 10));
+            } catch (ParseException ex) {
+                ErrUtil.outputErrorLog("ParseException発生", ex, LOGGER);
+            }
+        }
+        processData.setMethod("");
+        return processData;
+    }
+
+    /**
+     * 粉砕終了日時設定処理
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData setFunsaisyuuryounichiji(ProcessData processData) {
+        //粉砕終了日
+        FXHDD01 itemDay = getItemRow(processData.getItemList(), GXHDO102B006Const.FUNSAISYUURYOU_DAY);
+        //粉砕終了時間
+        FXHDD01 itemTime = getItemRow(processData.getItemList(), GXHDO102B006Const.FUNSAISYUURYOU_TIME);
+        if (StringUtil.isEmpty(itemDay.getValue()) && StringUtil.isEmpty(itemTime.getValue())) {
+            setDateTimeItem(itemDay, itemTime, new Date());         
+            
+            //(粉砕終了日+粉砕終了時間)-(粉砕開始日+粉砕開始時間)(HH)
+            // 粉砕開始日
+            FXHDD01 itemFunsaikaisiDay = getItemRow(processData.getItemList(), GXHDO102B006Const.FUNSAIKAISI_DAY);
+            // 粉砕開始時間
+            FXHDD01 itemFunsaikaisiTime = getItemRow(processData.getItemList(), GXHDO102B006Const.FUNSAIKAISI_TIME);
+            if (!StringUtil.isEmpty(itemFunsaikaisiDay.getValue()) && !StringUtil.isEmpty(itemFunsaikaisiTime.getValue())) {
+                String strFunsaisyuuryouDay = itemDay.getValue();
+                String strFunsaisyuuryouTime = itemTime.getValue();
+                String strFunsaikaisiDay = itemFunsaikaisiDay.getValue();
+                String strFunsaikaisiTime = itemFunsaikaisiTime.getValue();
+                String strFunsaisyuuryouDatetime = strFunsaisyuuryouDay + strFunsaisyuuryouTime;
+                String strFunsaikaisiDatetime = strFunsaikaisiDay + strFunsaikaisiTime;
+
+                try {
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyMMddHHmm");
+                    Date dtFunsaisyuuryouDatetime = dateFormat.parse(strFunsaisyuuryouDatetime);
+                    Date dtFunsaikaisiDatetime = dateFormat.parse(strFunsaikaisiDatetime);
+
+                    long dif = dtFunsaisyuuryouDatetime.getTime() - dtFunsaikaisiDatetime.getTime();
+                    long day = dif /(24*60*60*1000);
+                    BigDecimal divideVal = new BigDecimal((60*60*1000)-day*24);
+
+                    BigDecimal funsaijikan = new BigDecimal(dif).divide(divideVal, 0, RoundingMode.HALF_UP);
+
+                    //「粉砕時間」を設定する
+                    this.setItemData(processData, GXHDO102B006Const.FUNSAIJIKAN, funsaijikan.toPlainString());
+
+                } catch (ParseException ex) {
+                    ErrUtil.outputErrorLog("ParseException発生", ex, LOGGER);
+                }
+            }
+        }
+        processData.setMethod("");
+        return processData;
+    }
+
+    /**
+     * 保管開始日時設定処理
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData setHokankaishinichiji(ProcessData processData) {
+        FXHDD01 itemDay = getItemRow(processData.getItemList(), GXHDO102B006Const.HOKANKAISI_DAY);
+        FXHDD01 itemTime = getItemRow(processData.getItemList(), GXHDO102B006Const.HOKANKAISI_TIME);
+        if (StringUtil.isEmpty(itemDay.getValue()) && StringUtil.isEmpty(itemTime.getValue())) {
+            setDateTimeItem(itemDay, itemTime, new Date());
+        }
+        processData.setMethod("");
+        return processData;
+    }
+    
+    /**
+     * 歩留まり計算処理
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData doBudomariKeisan(ProcessData processData) {
+
+        // 「総重量」
+        FXHDD01 itemSoujyuuryou = getItemRow(processData.getItemList(), GXHDO102B006Const.SOUJYUURYOU);
+        // 「風袋重量」
+        FXHDD01 itemFuutaijyuuryou = getItemRow(processData.getItemList(), GXHDO102B006Const.FUUTAIJYUURYOU);
+        // 「調合量」
+        FXHDD01 itemTyougouryou = getItemRow(processData.getItemList(), GXHDO102B006Const.TYOUGOURYOU);
+        // 歩留まり計算チェック処理
+        ErrorMessageInfo checkItemErrorInfo = checkBudomariKeisan(itemSoujyuuryou, itemFuutaijyuuryou, itemTyougouryou);
+        if (checkItemErrorInfo != null) {
+            processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
+            return processData;
+        }
+        processData.setMethod("");
+        //歩留まり計算処理
+        calcBudomari(processData, itemSoujyuuryou, itemFuutaijyuuryou, itemTyougouryou);
+        return processData;
+    }
+
+    /**
+     * 【歩留まり計算】ﾎﾞﾀﾝ押下時ﾁｪｯｸ処理
+     *
+     * @param itemSoujyuuryou 総重量
+     * @param itemFuutaijyuuryou 風袋重量
+     * @param itemTyougouryou 調合量
+     * @return エラーメッセージ情報
+     */
+    private ErrorMessageInfo checkBudomariKeisan(FXHDD01 itemSoujyuuryou, FXHDD01 itemFuutaijyuuryou, FXHDD01 itemTyougouryou) {
+        
+        //「総重量」ﾁｪｯｸ
+        if (StringUtil.isEmpty(itemSoujyuuryou.getValue())) {
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemSoujyuuryou);
+            return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, itemSoujyuuryou.getLabel1());
+        }
+        
+        //「風袋重量」ﾁｪｯｸ
+        if (StringUtil.isEmpty(itemFuutaijyuuryou.getValue())) {
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemFuutaijyuuryou);
+            return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, itemFuutaijyuuryou.getLabel1());
+        }
+        
+        // [総重量]<[風袋重量]場合
+        Integer itemSoujyuuryouIntVal = Integer.parseInt(itemSoujyuuryou.getValue());
+        Integer itemFuutaijyuuryouIntVal = Integer.parseInt(itemFuutaijyuuryou.getValue());
+        if (itemSoujyuuryouIntVal < itemFuutaijyuuryouIntVal) {
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemSoujyuuryou,itemFuutaijyuuryou);
+            return MessageUtil.getErrorMessageInfo("XHD-000023", true, true, errFxhdd01List, itemSoujyuuryou.getLabel1(), itemFuutaijyuuryou.getLabel1());
+        }
+        
+        //「調合量」ﾁｪｯｸ
+        String itemTyougouryouVal = itemTyougouryou.getValue();
+        if (StringUtil.isEmpty(itemTyougouryouVal) || !NumberUtil.isIntegerNumeric(itemTyougouryouVal) || 0 == Integer.parseInt(itemTyougouryouVal)) {
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemTyougouryou);
+            return MessageUtil.getErrorMessageInfo("XHD-000181", true, true, errFxhdd01List, itemTyougouryou.getLabel1());
+        }
+
+        return null;
+    }
+
+    /**
+     * 歩留まり計算
+     *
+     * @param processData 処理制御データ
+     * @param itemSoujyuuryou 総重量
+     * @param itemFuutaijyuuryou 風袋重量
+     * @param itemTyougouryou 調合量
+     */
+    private void calcBudomari(ProcessData processData, FXHDD01 itemSoujyuuryou, FXHDD01 itemFuutaijyuuryou, FXHDD01 itemTyougouryou) {
+        try {
+            FXHDD01 itemSyoumijyuuryou = getItemRow(processData.getItemList(), GXHDO102B006Const.SYOUMIJYUURYOU); // 正味重量
+            FXHDD01 itemBudomari = getItemRow(processData.getItemList(), GXHDO102B006Const.BUDOMARI);             // 歩留まり
+            BigDecimal itemSoujyuuryouVal = new BigDecimal(itemSoujyuuryou.getValue());                           // 総重量
+            BigDecimal itemFuutaijyuuryouVal = new BigDecimal(itemFuutaijyuuryou.getValue());                     // 風袋重量
+            BigDecimal itemTyougouryouVal = new BigDecimal(itemTyougouryou.getValue());                           // 調合量
+            
+            // ②「正味重量」計算処理  1.「総重量」 - 「風袋重量」 を算出する。
+            BigDecimal itemSyoumijyuuryouDecVal = itemSoujyuuryouVal.subtract(itemFuutaijyuuryouVal);
+            
+            // ③「歩留まり」計算処理
+            // 1.「正味重量」 ÷ 「調合量」 を算出する。
+            // 2.1の計算結果に100をかける。
+            // 3.2の計算結果の小数点第三位を四捨五入する。
+            BigDecimal budomari = itemSyoumijyuuryouDecVal.multiply(BigDecimal.valueOf(100)).divide(itemTyougouryouVal, 2, RoundingMode.HALF_UP);
+
+            //正味重量
+            itemSyoumijyuuryou.setValue(itemSyoumijyuuryouDecVal.toPlainString());
+            //計算結果を誤差率にセット
+            itemBudomari.setValue(budomari.toPlainString());
+
+        } catch (NullPointerException | NumberFormatException ex) {
+            // 数値変換できない場合はリターン
+            ErrUtil.outputErrorLog("歩留まり計算にエラー発生", ex, LOGGER);
         }
     }
 
@@ -377,12 +628,12 @@ public class GXHDO102B004 implements IFormLogic {
 
             if (StringUtil.isEmpty(processData.getInitJotaiFlg()) || JOTAI_FLG_SAKUJO.equals(processData.getInitJotaiFlg())) {
 
-                // ｶﾞﾗｽ作製・測定_仮登録登録処理
-                insertTmpSrGlasssokutei(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, jissekiNo, strSystime, processData, formId);
+                // ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕_仮登録登録処理
+                insertTmpSrGlassslurryfunsai(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, strSystime, processData);
             } else {
 
-                // ｶﾞﾗｽ作製・測定_仮登録更新処理
-                updateTmpSrGlasssokutei(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo9, edaban, strSystime, processData);
+                // ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕_仮登録更新処理
+                updateTmpSrGlassslurryfunsai(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo9, edaban, strSystime, processData);
             }
 
             // 規格情報でエラーが発生している場合、エラー内容を更新
@@ -503,11 +754,10 @@ public class GXHDO102B004 implements IFormLogic {
 
             BigDecimal rev = BigDecimal.ZERO;
             BigDecimal newRev = BigDecimal.ONE;
-
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Timestamp systemTime = new Timestamp(System.currentTimeMillis());
             String strSystime = sdf.format(systemTime);
-
+            
             if (StringUtil.isEmpty(processData.getInitRev())) {
                 // 原材料品質DB登録実績登録処理
                 insertFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo9, edaban, jissekiNo, JOTAI_FLG_TOROKUZUMI, systemTime);
@@ -521,20 +771,20 @@ public class GXHDO102B004 implements IFormLogic {
             }
 
             // 仮登録状態の場合、仮登録のデータを削除する。
-            SrGlasssokutei tmpSrGlasssokutei = null;
+            SrGlassslurryfunsai tmpSrGlassslurryfunsai = null;
             if (JOTAI_FLG_KARI_TOROKU.equals(processData.getInitJotaiFlg())) {
 
                 // 更新前の値を取得
-                List<SrGlasssokutei> srGlasssokuteiList = getSrGlasssokuteiData(queryRunnerQcdb, rev.toPlainString(), processData.getInitJotaiFlg(), kojyo, lotNo9, edaban);
-                if (!srGlasssokuteiList.isEmpty()) {
-                    tmpSrGlasssokutei = srGlasssokuteiList.get(0);
+                List<SrGlassslurryfunsai> srGlassslurryfunsaiList = getSrGlassslurryfunsaiData(queryRunnerQcdb, rev.toPlainString(), processData.getInitJotaiFlg(), kojyo, lotNo9, edaban);
+                if (!srGlassslurryfunsaiList.isEmpty()) {
+                    tmpSrGlassslurryfunsai = srGlassslurryfunsaiList.get(0);
                 }
 
-                deleteTmpSrGlasssokutei(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo9, edaban);
+                deleteTmpSrGlassslurryfunsai(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo9, edaban);
             }
 
-            // ｶﾞﾗｽ作製・測定_登録処理
-            insertSrGlasssokutei(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, strSystime, processData, tmpSrGlasssokutei, formId);
+            // ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕_登録処理
+            insertSrGlassslurryfunsai(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, strSystime, processData, tmpSrGlassslurryfunsai);
 
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
@@ -615,7 +865,7 @@ public class GXHDO102B004 implements IFormLogic {
 
         // ユーザ認証用のパラメータをセットする。
         processData.setRquireAuth(true);
-        processData.setUserAuthParam(GXHDO102B004Const.USER_AUTH_UPDATE_PARAM);
+        processData.setUserAuthParam(GXHDO102B006Const.USER_AUTH_UPDATE_PARAM);
 
         // 後続処理メソッド設定
         processData.setMethod("doCorrect");
@@ -680,8 +930,8 @@ public class GXHDO102B004 implements IFormLogic {
             // 原材料品質DB登録実績更新処理
             updateFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo9, edaban, JOTAI_FLG_TOROKUZUMI, systemTime, jissekiNo);
 
-            // ｶﾞﾗｽ作製・測定_更新処理
-            updateSrGlasssokutei(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo9, edaban, strSystime, processData);
+            // ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕_更新処理
+            updateSrGlassslurryfunsai(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo9, edaban, strSystime, processData);
 
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
@@ -732,7 +982,7 @@ public class GXHDO102B004 implements IFormLogic {
 
         // ユーザ認証用のパラメータをセットする。
         processData.setRquireAuth(true);
-        processData.setUserAuthParam(GXHDO102B004Const.USER_AUTH_DELETE_PARAM);
+        processData.setUserAuthParam(GXHDO102B006Const.USER_AUTH_DELETE_PARAM);
 
         // 後続処理メソッド設定
         processData.setMethod("doDelete");
@@ -794,12 +1044,12 @@ public class GXHDO102B004 implements IFormLogic {
             // 原材料品質DB登録実績更新処理
             updateFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo9, edaban, JOTAI_FLG_SAKUJO, systemTime, paramJissekino);
 
-            // ｶﾞﾗｽ作製・測定_仮登録登録処理
+            // ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕_仮登録登録処理
             int newDeleteflag = getNewDeleteflag(queryRunnerQcdb, kojyo, lotNo9, edaban);
-            insertDeleteDataTmpSrGlasssokutei(queryRunnerQcdb, conQcdb, newRev, newDeleteflag, kojyo, lotNo9, edaban, strSystime);
+            insertDeleteDataTmpSrGlassslurryfunsai(queryRunnerQcdb, conQcdb, newRev, newDeleteflag, kojyo, lotNo9, edaban, strSystime);
 
-            // ｶﾞﾗｽ作製・測定_削除処理
-            deleteSrGlasssokutei(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo9, edaban);
+            // ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕_削除処理
+            deleteSrGlassslurryfunsai(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo9, edaban);
 
             DbUtils.commitAndCloseQuietly(conDoc);
             DbUtils.commitAndCloseQuietly(conQcdb);
@@ -843,34 +1093,50 @@ public class GXHDO102B004 implements IFormLogic {
         switch (jotaiFlg) {
             case JOTAI_FLG_TOROKUZUMI:
                 activeIdList.addAll(Arrays.asList(
-                        GXHDO102B004Const.BTN_UPDATE_TOP,
-                        GXHDO102B004Const.BTN_DELETE_TOP,
-                        GXHDO102B004Const.BTN_EDABAN_COPY_TOP,
-                        GXHDO102B004Const.BTN_UPDATE_BOTTOM,
-                        GXHDO102B004Const.BTN_DELETE_BOTTOM,
-                        GXHDO102B004Const.BTN_EDABAN_COPY_BOTTOM
+                        GXHDO102B006Const.BTN_UPDATE_TOP,
+                        GXHDO102B006Const.BTN_DELETE_TOP,
+                        GXHDO102B006Const.BTN_EDABAN_COPY_TOP,
+                        GXHDO102B006Const.BTN_FUNSAIKAISINICHIJI_TOP,
+                        GXHDO102B006Const.BTN_FUNSAISYUURYOUNICHIJI_TOP,
+                        GXHDO102B006Const.BTN_BUDOMARI_KEISAN_TOP,
+                        GXHDO102B006Const.BTN_HOKANKAISINICHIJI_TOP,
+                        GXHDO102B006Const.BTN_UPDATE_BOTTOM,
+                        GXHDO102B006Const.BTN_DELETE_BOTTOM,
+                        GXHDO102B006Const.BTN_EDABAN_COPY_BOTTOM,
+                        GXHDO102B006Const.BTN_FUNSAIKAISINICHIJI_BOTTOM,
+                        GXHDO102B006Const.BTN_FUNSAISYUURYOUNICHIJI_BOTTOM,
+                        GXHDO102B006Const.BTN_BUDOMARI_KEISAN_BOTTOM,
+                        GXHDO102B006Const.BTN_HOKANKAISINICHIJI_BOTTOM
                 ));
                 inactiveIdList.addAll(Arrays.asList(
-                        GXHDO102B004Const.BTN_KARI_TOUROKU_TOP,
-                        GXHDO102B004Const.BTN_INSERT_TOP,
-                        GXHDO102B004Const.BTN_KARI_TOUROKU_BOTTOM,
-                        GXHDO102B004Const.BTN_INSERT_BOTTOM));
+                        GXHDO102B006Const.BTN_KARI_TOUROKU_TOP,
+                        GXHDO102B006Const.BTN_INSERT_TOP,
+                        GXHDO102B006Const.BTN_KARI_TOUROKU_BOTTOM,
+                        GXHDO102B006Const.BTN_INSERT_BOTTOM));
 
                 break;
             default:
                 activeIdList.addAll(Arrays.asList(
-                        GXHDO102B004Const.BTN_KARI_TOUROKU_TOP,
-                        GXHDO102B004Const.BTN_INSERT_TOP,
-                        GXHDO102B004Const.BTN_EDABAN_COPY_TOP,
-                        GXHDO102B004Const.BTN_KARI_TOUROKU_BOTTOM,
-                        GXHDO102B004Const.BTN_INSERT_BOTTOM,
-                        GXHDO102B004Const.BTN_EDABAN_COPY_BOTTOM
+                        GXHDO102B006Const.BTN_KARI_TOUROKU_TOP,
+                        GXHDO102B006Const.BTN_INSERT_TOP,
+                        GXHDO102B006Const.BTN_EDABAN_COPY_TOP,
+                        GXHDO102B006Const.BTN_FUNSAIKAISINICHIJI_TOP,
+                        GXHDO102B006Const.BTN_FUNSAISYUURYOUNICHIJI_TOP,
+                        GXHDO102B006Const.BTN_BUDOMARI_KEISAN_TOP,
+                        GXHDO102B006Const.BTN_HOKANKAISINICHIJI_TOP,
+                        GXHDO102B006Const.BTN_KARI_TOUROKU_BOTTOM,
+                        GXHDO102B006Const.BTN_INSERT_BOTTOM,
+                        GXHDO102B006Const.BTN_EDABAN_COPY_BOTTOM,
+                        GXHDO102B006Const.BTN_FUNSAIKAISINICHIJI_BOTTOM,
+                        GXHDO102B006Const.BTN_FUNSAISYUURYOUNICHIJI_BOTTOM,
+                        GXHDO102B006Const.BTN_BUDOMARI_KEISAN_BOTTOM,
+                        GXHDO102B006Const.BTN_HOKANKAISINICHIJI_BOTTOM
                 ));
                 inactiveIdList.addAll(Arrays.asList(
-                        GXHDO102B004Const.BTN_UPDATE_TOP,
-                        GXHDO102B004Const.BTN_DELETE_TOP,
-                        GXHDO102B004Const.BTN_UPDATE_BOTTOM,
-                        GXHDO102B004Const.BTN_DELETE_BOTTOM
+                        GXHDO102B006Const.BTN_UPDATE_TOP,
+                        GXHDO102B006Const.BTN_DELETE_TOP,
+                        GXHDO102B006Const.BTN_UPDATE_BOTTOM,
+                        GXHDO102B006Const.BTN_DELETE_BOTTOM
                 ));
 
                 break;
@@ -914,8 +1180,7 @@ public class GXHDO102B004 implements IFormLogic {
         }
 
         // 前工程WIPから仕掛情報を取得処理
-        Map shikakariData = loadShikakariDataFromWip(queryRunnerDoc, tantoshaCd,lotNo);
-        
+        Map shikakariData = loadShikakariDataFromWip(queryRunnerDoc, tantoshaCd, lotNo);
         if (shikakariData == null || shikakariData.isEmpty()) {
             errorMessageList.add(MessageUtil.getMessage("XHD-000029"));
         }
@@ -924,7 +1189,7 @@ public class GXHDO102B004 implements IFormLogic {
         if (StringUtil.isEmpty(lotkubun)) {
             errorMessageList.add(MessageUtil.getMessage("XHD-000015"));
         }
-        
+
         // 入力項目の情報を画面にセットする。
         if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId, paramJissekino)) {
             // エラー発生時は処理を中断
@@ -978,29 +1243,27 @@ public class GXHDO102B004 implements IFormLogic {
      *
      * @param processData 処理制御データ
      * @param sekkeiData 設計データ
-     * @param ownerMasData ｵｰﾅｰﾏｽﾀデータ
      * @param shikakariData 仕掛データ
      * @param lotNo ﾛｯﾄNo
      */
     private void setViewItemData(ProcessData processData, Map shikakariData, String lotNo) {
-        // ロットNo
-        this.setItemData(processData, GXHDO102B004Const.WIPLOTNO, lotNo);
-        // ｶﾞﾗｽ品名
-        this.setItemData(processData, GXHDO102B004Const.GLASSHINMEI, StringUtil.nullToBlank(getMapData(shikakariData, "hinmei")));
-        // ｶﾞﾗｽLotNo
-        this.setItemData(processData, GXHDO102B004Const.GLASSLOTNO, StringUtil.nullToBlank(getMapData(shikakariData, "lotno")));
+        // WIPﾛｯﾄNo
+        this.setItemData(processData, GXHDO102B006Const.WIPLOTNO, lotNo);
+        // ｶﾞﾗｽｽﾗﾘｰ品名
+        this.setItemData(processData, GXHDO102B006Const.GLASSSLURRYHINMEI, StringUtil.nullToBlank(getMapData(shikakariData, "hinmei")));
+        // ｶﾞﾗｽｽﾗﾘｰLotNo
+        this.setItemData(processData, GXHDO102B006Const.GLASSSLURRYLOTNO, StringUtil.nullToBlank(getMapData(shikakariData, "lotno")));
         // ﾛｯﾄ区分
         String lotkubuncode = StringUtil.nullToBlank(getMapData(shikakariData, "lotkubuncode"));
         // ﾛｯﾄ区分名称
         String lotkubun = StringUtil.nullToBlank(getMapData(shikakariData, "lotkubun"));
-        
         if (StringUtil.isEmpty(lotkubuncode)) {
-            this.setItemData(processData, GXHDO102B004Const.LOTKUBUN, "");
+            this.setItemData(processData, GXHDO102B006Const.LOTKUBUN, "");
         } else {
             if (!StringUtil.isEmpty(lotkubun)) {
                 lotkubuncode = lotkubuncode + ":" + lotkubun;
             }
-            this.setItemData(processData, GXHDO102B004Const.LOTKUBUN, lotkubuncode);
+            this.setItemData(processData, GXHDO102B006Const.LOTKUBUN, lotkubuncode);
         }
     }
 
@@ -1019,7 +1282,7 @@ public class GXHDO102B004 implements IFormLogic {
     private boolean setInputItemData(ProcessData processData, QueryRunner queryRunnerDoc, QueryRunner queryRunnerQcdb,
             String lotNo, String formId, int jissekino) throws SQLException {
 
-        List<SrGlasssokutei> srGlasssokuteiList = new ArrayList<>();
+        List<SrGlassslurryfunsai> srGlassslurryfunsaiList = new ArrayList<>();
         String rev = "";
         String jotaiFlg = "";
         String kojyo = lotNo.substring(0, 3);
@@ -1046,9 +1309,9 @@ public class GXHDO102B004 implements IFormLogic {
                 return true;
             }
 
-            // ｶﾞﾗｽ作製・測定データ取得
-            srGlasssokuteiList = getSrGlasssokuteiData(queryRunnerQcdb, rev, jotaiFlg, kojyo, lotNo9, edaban);
-            if (srGlasssokuteiList.isEmpty()) {
+            // ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕データ取得
+            srGlassslurryfunsaiList = getSrGlassslurryfunsaiData(queryRunnerQcdb, rev, jotaiFlg, kojyo, lotNo9, edaban);
+            if (srGlassslurryfunsaiList.isEmpty()) {
                 //該当データが取得できなかった場合は処理を繰り返す。
                 continue;
             }
@@ -1058,7 +1321,7 @@ public class GXHDO102B004 implements IFormLogic {
         }
 
         // 制限回数内にデータが取得できなかった場合
-        if (srGlasssokuteiList.isEmpty()) {
+        if (srGlassslurryfunsaiList.isEmpty()) {
             return false;
         }
 
@@ -1066,7 +1329,7 @@ public class GXHDO102B004 implements IFormLogic {
         processData.setInitJotaiFlg(jotaiFlg);
 
         // メイン画面データ設定
-        setInputItemData(processData, srGlasssokuteiList.get(0));
+        setInputItemDataMainForm(processData, srGlassslurryfunsaiList.get(0));
 
         return true;
 
@@ -1076,25 +1339,79 @@ public class GXHDO102B004 implements IFormLogic {
      * データ設定処理
      *
      * @param processData 処理制御データ
-     * @param srGlasssokutei ｶﾞﾗｽ作製・測定データ
+     * @param srGlassslurryfunsai ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕
      */
-    private void setInputItemData(ProcessData processData, SrGlasssokutei srGlasssokutei) {
+    private void setInputItemDataMainForm(ProcessData processData, SrGlassslurryfunsai srGlassslurryfunsai) {
+        // 粉砕回転台号機
+        this.setItemData(processData, GXHDO102B006Const.KAITENDAIGOUKI, getSrGlassslurryfunsaiItemData(GXHDO102B006Const.KAITENDAIGOUKI, srGlassslurryfunsai));
 
-        // BET測定値
-        this.setItemData(processData, GXHDO102B004Const.BETSOKUTEICHI, getSrGlasssokuteiItemData(GXHDO102B004Const.BETSOKUTEICHI, srGlasssokutei));
+        // 粉砕開始日
+        this.setItemData(processData, GXHDO102B006Const.FUNSAIKAISI_DAY, getSrGlassslurryfunsaiItemData(GXHDO102B006Const.FUNSAIKAISI_DAY, srGlassslurryfunsai));
 
-        // 担当者
-        this.setItemData(processData, GXHDO102B004Const.TANTOSYA, getSrGlasssokuteiItemData(GXHDO102B004Const.TANTOSYA, srGlasssokutei));
+        // 粉砕開始時間
+        this.setItemData(processData, GXHDO102B006Const.FUNSAIKAISI_TIME, getSrGlassslurryfunsaiItemData(GXHDO102B006Const.FUNSAIKAISI_TIME, srGlassslurryfunsai));
+
+        // 粉砕終了予定日
+        this.setItemData(processData, GXHDO102B006Const.FUNSAIYOTEISYUURYOU_DAY, getSrGlassslurryfunsaiItemData(GXHDO102B006Const.FUNSAIYOTEISYUURYOU_DAY, srGlassslurryfunsai));
+
+        // 粉砕終了予定時間
+        this.setItemData(processData, GXHDO102B006Const.FUNSAIYOTEISYUURYOU_TIME, getSrGlassslurryfunsaiItemData(GXHDO102B006Const.FUNSAIYOTEISYUURYOU_TIME, srGlassslurryfunsai));
+
+        // 粉砕開始担当者
+        this.setItemData(processData, GXHDO102B006Const.KAISITANTOSYA, getSrGlassslurryfunsaiItemData(GXHDO102B006Const.KAISITANTOSYA, srGlassslurryfunsai));
+
+        // 粉砕終了日
+        this.setItemData(processData, GXHDO102B006Const.FUNSAISYUURYOU_DAY, getSrGlassslurryfunsaiItemData(GXHDO102B006Const.FUNSAISYUURYOU_DAY, srGlassslurryfunsai));
+
+        // 粉砕終了時間
+        this.setItemData(processData, GXHDO102B006Const.FUNSAISYUURYOU_TIME, getSrGlassslurryfunsaiItemData(GXHDO102B006Const.FUNSAISYUURYOU_TIME, srGlassslurryfunsai));
+
+        // 粉砕終了担当者
+        this.setItemData(processData, GXHDO102B006Const.SYURYOTANTOSYA, getSrGlassslurryfunsaiItemData(GXHDO102B006Const.SYURYOTANTOSYA, srGlassslurryfunsai));
+
+        // 粉砕時間
+        this.setItemData(processData, GXHDO102B006Const.FUNSAIJIKAN, getSrGlassslurryfunsaiItemData(GXHDO102B006Const.FUNSAIJIKAN, srGlassslurryfunsai));
+
+        // 部材在庫No
+        this.setItemData(processData, GXHDO102B006Const.BUZAIZAIKONO, getSrGlassslurryfunsaiItemData(GXHDO102B006Const.BUZAIZAIKONO, srGlassslurryfunsai));
+
+        // 調合量
+        this.setItemData(processData, GXHDO102B006Const.TYOUGOURYOU, getSrGlassslurryfunsaiItemData(GXHDO102B006Const.TYOUGOURYOU, srGlassslurryfunsai));
+
+        // 風袋重量
+        this.setItemData(processData, GXHDO102B006Const.FUUTAIJYUURYOU, getSrGlassslurryfunsaiItemData(GXHDO102B006Const.FUUTAIJYUURYOU, srGlassslurryfunsai));
+
+        // 総重量
+        this.setItemData(processData, GXHDO102B006Const.SOUJYUURYOU, getSrGlassslurryfunsaiItemData(GXHDO102B006Const.SOUJYUURYOU, srGlassslurryfunsai));
+
+        // 正味重量
+        this.setItemData(processData, GXHDO102B006Const.SYOUMIJYUURYOU, getSrGlassslurryfunsaiItemData(GXHDO102B006Const.SYOUMIJYUURYOU, srGlassslurryfunsai));
+
+        // 歩留まり
+        this.setItemData(processData, GXHDO102B006Const.BUDOMARI, getSrGlassslurryfunsaiItemData(GXHDO102B006Const.BUDOMARI, srGlassslurryfunsai));
+
+        // 排出担当者
+        this.setItemData(processData, GXHDO102B006Const.HAISYUTUTANTOUSYA, getSrGlassslurryfunsaiItemData(GXHDO102B006Const.HAISYUTUTANTOUSYA, srGlassslurryfunsai));
+
+        // 保管開始日
+        this.setItemData(processData, GXHDO102B006Const.HOKANKAISI_DAY, getSrGlassslurryfunsaiItemData(GXHDO102B006Const.HOKANKAISI_DAY, srGlassslurryfunsai));
+
+        // 保管開始時間
+        this.setItemData(processData, GXHDO102B006Const.HOKANKAISI_TIME, getSrGlassslurryfunsaiItemData(GXHDO102B006Const.HOKANKAISI_TIME, srGlassslurryfunsai));
+
+        // 保管担当者
+        this.setItemData(processData, GXHDO102B006Const.HOKANTANTOSYA, getSrGlassslurryfunsaiItemData(GXHDO102B006Const.HOKANTANTOSYA, srGlassslurryfunsai));
 
         // 備考1
-        this.setItemData(processData, GXHDO102B004Const.BIKOU1, getSrGlasssokuteiItemData(GXHDO102B004Const.BIKOU1, srGlasssokutei));
+        this.setItemData(processData, GXHDO102B006Const.BIKOU1, getSrGlassslurryfunsaiItemData(GXHDO102B006Const.BIKOU1, srGlassslurryfunsai));
 
         // 備考2
-        this.setItemData(processData, GXHDO102B004Const.BIKOU2, getSrGlasssokuteiItemData(GXHDO102B004Const.BIKOU2, srGlasssokutei));
+        this.setItemData(processData, GXHDO102B006Const.BIKOU2, getSrGlassslurryfunsaiItemData(GXHDO102B006Const.BIKOU2, srGlassslurryfunsai));
+
     }
 
     /**
-     * ｶﾞﾗｽ作製・測定の入力項目の登録データ(仮登録時は仮登録データ)を取得
+     * ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕の入力項目の登録データ(仮登録時は仮登録データ)を取得
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param rev revision
@@ -1102,16 +1419,16 @@ public class GXHDO102B004 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo.
      * @param edaban 枝番
-     * @return ｶﾞﾗｽ作製・測定登録データ
+     * @return ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕登録データ
      * @throws SQLException 例外エラー
      */
-    private List<SrGlasssokutei> getSrGlasssokuteiData(QueryRunner queryRunnerQcdb, String rev, String jotaiFlg,
+    private List<SrGlassslurryfunsai> getSrGlassslurryfunsaiData(QueryRunner queryRunnerQcdb, String rev, String jotaiFlg,
             String kojyo, String lotNo, String edaban) throws SQLException {
 
         if (JOTAI_FLG_TOROKUZUMI.equals(jotaiFlg)) {
-            return loadSrGlasssokutei(queryRunnerQcdb, kojyo, lotNo, edaban, rev);
+            return loadSrGlassslurryfunsai(queryRunnerQcdb, kojyo, lotNo, edaban, rev);
         } else {
-            return loadTmpSrGlasssokutei(queryRunnerQcdb, kojyo, lotNo, edaban, rev);
+            return loadTmpSrGlassslurryfunsai(queryRunnerQcdb, kojyo, lotNo, edaban, rev);
         }
     }
 
@@ -1242,7 +1559,7 @@ public class GXHDO102B004 implements IFormLogic {
     }
 
     /**
-     * [ｶﾞﾗｽ作製・測定]から、ﾃﾞｰﾀを取得
+     * [ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕]から、ﾃﾞｰﾀを取得
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
@@ -1252,12 +1569,15 @@ public class GXHDO102B004 implements IFormLogic {
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private List<SrGlasssokutei> loadSrGlasssokutei(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    private List<SrGlassslurryfunsai> loadSrGlassslurryfunsai(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev) throws SQLException {
 
         String sql = " SELECT "
-                + " kojyo,lotno,edaban,glasshinmei,glasslotno,lotkubun,bet,tantosya,bikou1,bikou2,torokunichiji,kosinnichiji,revision "
-                + " FROM sr_glasssokutei "
+                + " kojyo,lotno,edaban,glassslurryhinmei,glassslurrylotno,lotkubun,syuusoku,kaitendaigouki,funsaikaisinichiji, "
+                + " funsaiyoteisyuuryounichiji,kaisitantosya,funsaisyuuryounichiji,syuryotantosya,funsaijikan,zairyohinmei, "
+                + " buzaizaikono,tyougouryou,fuutaijyuuryou,soujyuuryou,syoumijyuuryou,budomari,haisyututantousya,hokankaisinichiji, "
+                + " hokanbasyo,hokankaitengouki,kaitensuu,hokantantosya,bikou1,bikou2,torokunichiji,kosinnichiji,revision "
+                + " FROM sr_glassslurryfunsai "
                 + " WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
 
         // revisionが入っている場合、条件に追加
@@ -1276,46 +1596,67 @@ public class GXHDO102B004 implements IFormLogic {
         }
 
         Map<String, String> mapping = new HashMap<>();
-        mapping.put("kojyo", "kojyo"); // 工場ｺｰﾄﾞ
-        mapping.put("lotno", "lotno"); // ﾛｯﾄNo
-        mapping.put("edaban", "edaban"); // 枝番
-        mapping.put("glasshinmei", "glasshinmei"); // ｶﾞﾗｽ品名
-        mapping.put("glasslotno", "glasslotno"); // ｶﾞﾗｽ品名LotNo
-        mapping.put("lotkubun", "lotkubun"); // ﾛｯﾄ区分
-        mapping.put("bet", "bet"); // BET測定値
-        mapping.put("tantosya", "tantosya"); // 担当者
-        mapping.put("bikou1", "bikou1"); // 備考1
-        mapping.put("bikou2", "bikou2"); // 備考2
-        mapping.put("torokunichiji", "torokunichiji"); // 登録日時
-        mapping.put("kosinnichiji", "kosinnichiji"); // 更新日時
-        mapping.put("revision", "revision"); // revision
+        mapping.put("kojyo", "kojyo");                                             // 工場ｺｰﾄﾞ
+        mapping.put("lotno", "lotno");                                             // ﾛｯﾄNo
+        mapping.put("edaban", "edaban");                                           // 枝番
+        mapping.put("glassslurryhinmei", "glassslurryhinmei");                     // ｶﾞﾗｽｽﾗﾘｰ品名
+        mapping.put("glassslurrylotno", "glassslurrylotno");                       // ｶﾞﾗｽｽﾗﾘｰ品名LotNo
+        mapping.put("lotkubun", "lotkubun");                                       // ﾛｯﾄ区分
+        mapping.put("syuusoku", "syuusoku");                                       // 周速
+        mapping.put("kaitendaigouki", "kaitendaigouki");                           // 粉砕回転台号機
+        mapping.put("funsaikaisinichiji", "funsaikaisinichiji");                   // 粉砕開始日時
+        mapping.put("funsaiyoteisyuuryounichiji", "funsaiyoteisyuuryounichiji");   // 粉砕終了予定日時
+        mapping.put("kaisitantosya", "kaisitantosya");                             // 粉砕開始担当者
+        mapping.put("funsaisyuuryounichiji", "funsaisyuuryounichiji");             // 粉砕終了日時
+        mapping.put("syuryotantosya", "syuryotantosya");                           // 粉砕終了担当者
+        mapping.put("funsaijikan", "funsaijikan");                                 // 粉砕時間
+        mapping.put("zairyohinmei", "zairyohinmei");                               // 材料品名
+        mapping.put("buzaizaikono", "buzaizaikono");                               // 部材在庫No
+        mapping.put("tyougouryou", "tyougouryou");                                 // 調合量
+        mapping.put("fuutaijyuuryou", "fuutaijyuuryou");                           // 風袋重量
+        mapping.put("soujyuuryou", "soujyuuryou");                                 // 総重量
+        mapping.put("syoumijyuuryou", "syoumijyuuryou");                           // 正味重量
+        mapping.put("budomari", "budomari");                                       // 歩留まり
+        mapping.put("haisyututantousya", "haisyututantousya");                     // 排出担当者
+        mapping.put("hokankaisinichiji", "hokankaisinichiji");                     // 保管開始日時
+        mapping.put("hokanbasyo", "hokanbasyo");                                   // 保管場所
+        mapping.put("hokankaitengouki", "hokankaitengouki");                       // 保管回転台号機
+        mapping.put("kaitensuu", "kaitensuu");                                     // 回転数
+        mapping.put("hokantantosya", "hokantantosya");                             // 保管担当者
+        mapping.put("bikou1", "bikou1");                                           // 備考1
+        mapping.put("bikou2", "bikou2");                                           // 備考2
+        mapping.put("torokunichiji", "torokunichiji");                             // 登録日時
+        mapping.put("kosinnichiji", "kosinnichiji");                               // 更新日時
+        mapping.put("revision", "revision");                                       // revision
 
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
-        ResultSetHandler<List<SrGlasssokutei>> beanHandler = new BeanListHandler<>(SrGlasssokutei.class, rowProcessor);
+        ResultSetHandler<List<SrGlassslurryfunsai>> beanHandler = new BeanListHandler<>(SrGlassslurryfunsai.class, rowProcessor);
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, beanHandler, params.toArray());
     }
 
     /**
-     * [ｶﾞﾗｽ作製・測定_仮登録]から、ﾃﾞｰﾀを取得
+     * [ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕_仮登録]から、ﾃﾞｰﾀを取得
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param kojyo 工場ｺｰﾄﾞ(検索キー)
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @param edaban 枝番(検索キー)
-     * @param jissekino 実績No(検索キー)
      * @param rev revision(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private List<SrGlasssokutei> loadTmpSrGlasssokutei(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    private List<SrGlassslurryfunsai> loadTmpSrGlassslurryfunsai(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, String rev) throws SQLException {
 
         String sql = " SELECT "
-                + " kojyo,lotno,edaban,glasshinmei,glasslotno,lotkubun,bet,tantosya,bikou1,bikou2,torokunichiji,kosinnichiji,revision,deleteflag "
-                + " FROM tmp_sr_glasssokutei "
+                + " kojyo,lotno,edaban,glassslurryhinmei,glassslurrylotno,lotkubun,syuusoku,kaitendaigouki,funsaikaisinichiji, "
+                + " funsaiyoteisyuuryounichiji,kaisitantosya,funsaisyuuryounichiji,syuryotantosya,funsaijikan,zairyohinmei, "
+                + " buzaizaikono,tyougouryou,fuutaijyuuryou,soujyuuryou,syoumijyuuryou,budomari,haisyututantousya,hokankaisinichiji, "
+                + " hokanbasyo,hokankaitengouki,kaitensuu,hokantantosya,bikou1,bikou2,torokunichiji,kosinnichiji,revision,deleteflag "
+                + " FROM tmp_sr_glassslurryfunsai "
                 + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND deleteflag = ? ";
 
         // revisionが入っている場合、条件に追加
@@ -1335,24 +1676,43 @@ public class GXHDO102B004 implements IFormLogic {
         }
 
         Map<String, String> mapping = new HashMap<>();
-        mapping.put("kojyo", "kojyo"); // 工場ｺｰﾄﾞ
-        mapping.put("lotno", "lotno"); // ﾛｯﾄNo
-        mapping.put("edaban", "edaban"); // 枝番
-        mapping.put("glasshinmei", "glasshinmei"); // ｶﾞﾗｽ品名
-        mapping.put("glasslotno", "glasslotno"); // ｶﾞﾗｽ品名LotNo
-        mapping.put("lotkubun", "lotkubun"); // ﾛｯﾄ区分
-        mapping.put("bet", "bet"); // BET測定値
-        mapping.put("tantosya", "tantosya"); // 担当者
-        mapping.put("bikou1", "bikou1"); // 備考1
-        mapping.put("bikou2", "bikou2"); // 備考2
-        mapping.put("torokunichiji", "torokunichiji"); // 登録日時
-        mapping.put("kosinnichiji", "kosinnichiji"); // 更新日時
-        mapping.put("revision", "revision"); // revision
-        mapping.put("deleteflag", "deleteflag"); // 削除ﾌﾗｸﾞ
+        mapping.put("kojyo", "kojyo");                                             // 工場ｺｰﾄﾞ
+        mapping.put("lotno", "lotno");                                             // ﾛｯﾄNo
+        mapping.put("edaban", "edaban");                                           // 枝番
+        mapping.put("glassslurryhinmei", "glassslurryhinmei");                     // ｶﾞﾗｽｽﾗﾘｰ品名
+        mapping.put("glassslurrylotno", "glassslurrylotno");                       // ｶﾞﾗｽｽﾗﾘｰ品名LotNo
+        mapping.put("lotkubun", "lotkubun");                                       // ﾛｯﾄ区分
+        mapping.put("syuusoku", "syuusoku");                                       // 周速
+        mapping.put("kaitendaigouki", "kaitendaigouki");                           // 粉砕回転台号機
+        mapping.put("funsaikaisinichiji", "funsaikaisinichiji");                   // 粉砕開始日時
+        mapping.put("funsaiyoteisyuuryounichiji", "funsaiyoteisyuuryounichiji");   // 粉砕終了予定日時
+        mapping.put("kaisitantosya", "kaisitantosya");                             // 粉砕開始担当者
+        mapping.put("funsaisyuuryounichiji", "funsaisyuuryounichiji");             // 粉砕終了日時
+        mapping.put("syuryotantosya", "syuryotantosya");                           // 粉砕終了担当者
+        mapping.put("funsaijikan", "funsaijikan");                                 // 粉砕時間
+        mapping.put("zairyohinmei", "zairyohinmei");                               // 材料品名
+        mapping.put("buzaizaikono", "buzaizaikono");                               // 部材在庫No
+        mapping.put("tyougouryou", "tyougouryou");                                 // 調合量
+        mapping.put("fuutaijyuuryou", "fuutaijyuuryou");                           // 風袋重量
+        mapping.put("soujyuuryou", "soujyuuryou");                                 // 総重量
+        mapping.put("syoumijyuuryou", "syoumijyuuryou");                           // 正味重量
+        mapping.put("budomari", "budomari");                                       // 歩留まり
+        mapping.put("haisyututantousya", "haisyututantousya");                     // 排出担当者
+        mapping.put("hokankaisinichiji", "hokankaisinichiji");                     // 保管開始日時
+        mapping.put("hokanbasyo", "hokanbasyo");                                   // 保管場所
+        mapping.put("hokankaitengouki", "hokankaitengouki");                       // 保管回転台号機
+        mapping.put("kaitensuu", "kaitensuu");                                     // 回転数
+        mapping.put("hokantantosya", "hokantantosya");                             // 保管担当者
+        mapping.put("bikou1", "bikou1");                                           // 備考1
+        mapping.put("bikou2", "bikou2");                                           // 備考2
+        mapping.put("torokunichiji", "torokunichiji");                             // 登録日時
+        mapping.put("kosinnichiji", "kosinnichiji");                               // 更新日時
+        mapping.put("revision", "revision");                                       // revision
+        mapping.put("deleteflag", "deleteflag");                                   // 削除ﾌﾗｸﾞ
 
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
-        ResultSetHandler<List<SrGlasssokutei>> beanHandler = new BeanListHandler<>(SrGlasssokutei.class, rowProcessor);
+        ResultSetHandler<List<SrGlassslurryfunsai>> beanHandler = new BeanListHandler<>(SrGlassslurryfunsai.class, rowProcessor);
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, beanHandler, params.toArray());
@@ -1391,17 +1751,38 @@ public class GXHDO102B004 implements IFormLogic {
      *
      * @param listData フォームデータ
      * @param itemId 項目ID
-     * @param srGlasssokutei ｶﾞﾗｽ作製・測定データ
+     * @param srGlassslurryfunsai ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕データ
      * @return 入力値
      */
-    private String getItemData(List<FXHDD01> listData, String itemId, SrGlasssokutei srGlasssokutei) {
+    private String getItemData(List<FXHDD01> listData, String itemId, SrGlassslurryfunsai srGlassslurryfunsai) {
         List<FXHDD01> selectData
                 = listData.stream().filter(n -> itemId.equals(n.getItemId())).collect(Collectors.toList());
         if (null != selectData && 0 < selectData.size()) {
             return selectData.get(0).getValue();
-        } else if (srGlasssokutei != null) {
+        } else if (srGlassslurryfunsai != null) {
             // 元データが存在する場合元データより取得
-            return getSrGlasssokuteiItemData(itemId, srGlasssokutei);
+            return getSrGlassslurryfunsaiItemData(itemId, srGlassslurryfunsai);
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * 項目データ(入力値)取得
+     *
+     * @param listData フォームデータ
+     * @param itemId 項目ID
+     * @param srGlasshyoryo ｶﾞﾗｽ作製・秤量データ
+     * @return 入力値
+     */
+    private String getItemKikakuchi(List<FXHDD01> listData, String itemId, SrGlassslurryfunsai srGlassslurryfunsai) {
+        List<FXHDD01> selectData
+                = listData.stream().filter(n -> itemId.equals(n.getItemId())).collect(Collectors.toList());
+        if (null != selectData && 0 < selectData.size()) {
+            return StringUtil.nullToBlank(selectData.get(0).getKikakuChi()).replace("【", "").replace("】", "");
+        } else if (srGlassslurryfunsai != null) {
+            // 元データが存在する場合元データより取得
+            return getSrGlassslurryfunsaiItemData(itemId, srGlassslurryfunsai);
         } else {
             return null;
         }
@@ -1439,25 +1820,25 @@ public class GXHDO102B004 implements IFormLogic {
      */
     private void insertFxhdd11(QueryRunner queryRunnerDoc, Connection conDoc, String tantoshaCd, String formId, BigDecimal rev,
             String kojyo, String lotNo, String edaban, int jissekino, String jotaiFlg, Timestamp systemTime) throws SQLException {
-        String sql = "INSERT INTO fxhdd11 ( "
-                + "torokusha ,toroku_date ,koshinsha ,koshin_date ,gamen_id ,rev ,kojyo ,lotno , "
-                + "edaban ,jissekino ,jotai_flg ,tsuika_kotei_flg "
-                + ") VALUES ( "
-                + " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+        String sql = " INSERT INTO fxhdd11 ( "
+                + " torokusha ,toroku_date ,koshinsha ,koshin_date ,gamen_id ,rev ,kojyo ,lotno , "
+                + " edaban ,jissekino ,jotai_flg ,tsuika_kotei_flg "
+                + " ) VALUES ( "
+                + " ?,?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
 
         List<Object> params = new ArrayList<>();
         params.add(tantoshaCd); //登録者
         params.add(systemTime); //登録日
-        params.add(null); //更新者
-        params.add(null); //更新日
-        params.add(formId); //画面ID
-        params.add(rev); //revision
-        params.add(kojyo); //工場ｺｰﾄﾞ
-        params.add(lotNo); //ﾛｯﾄNo
-        params.add(edaban); //枝番
-        params.add(jissekino); //実績No
-        params.add(jotaiFlg); //状態ﾌﾗｸﾞ
-        params.add("0"); //追加工程ﾌﾗｸﾞ
+        params.add(null);       //更新者
+        params.add(null);       //更新日
+        params.add(formId);     //画面ID
+        params.add(rev);        //revision
+        params.add(kojyo);      //工場ｺｰﾄﾞ
+        params.add(lotNo);      //ﾛｯﾄNo
+        params.add(edaban);     //枝番
+        params.add(jissekino);  //実績No
+        params.add(jotaiFlg);   //状態ﾌﾗｸﾞ
+        params.add("0");        //追加工程ﾌﾗｸﾞ
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerDoc.update(conDoc, sql, params.toArray());
@@ -1479,33 +1860,37 @@ public class GXHDO102B004 implements IFormLogic {
      */
     private void updateFxhdd11(QueryRunner queryRunnerDoc, Connection conDoc, String tantoshaCd, String formId, BigDecimal rev,
             String kojyo, String lotNo, String edaban, String jotaiFlg, Timestamp systemTime, int jissekino) throws SQLException {
-        String sql = "UPDATE fxhdd11 SET "
-                + "koshinsha = ?, koshin_date = ?, "
-                + "rev = ?, jotai_flg = ? "
-                + "WHERE gamen_id = ? AND kojyo = ? "
-                + "  AND lotno = ? AND edaban = ? "
-                + "  AND jissekino = ?  ";
+        String sql = "UPDATE fxhdd11 "
+                + "      SET koshinsha = ? "
+                + "         ,koshin_date = ? "
+                + "         ,rev = ? "
+                + "         ,jotai_flg = ? "
+                + "    WHERE gamen_id = ? "
+                + "      AND kojyo = ? "
+                + "      AND lotno = ? "
+                + "      AND edaban = ? "
+                + "      AND jissekino = ? ";
 
         List<Object> params = new ArrayList<>();
         // 更新内容
         params.add(tantoshaCd); //更新者
         params.add(systemTime); //更新日
-        params.add(rev); //revision
-        params.add(jotaiFlg); //状態ﾌﾗｸﾞ
+        params.add(rev);        //revision
+        params.add(jotaiFlg);   //状態ﾌﾗｸﾞ
 
         // 検索条件
-        params.add(formId); //画面ID
-        params.add(kojyo); //工場ｺｰﾄﾞ
-        params.add(lotNo); //ﾛｯﾄNo
-        params.add(edaban); //枝番
-        params.add(jissekino); //実績No
+        params.add(formId);     //画面ID
+        params.add(kojyo);      //工場ｺｰﾄﾞ
+        params.add(lotNo);      //ﾛｯﾄNo
+        params.add(edaban);     //枝番
+        params.add(jissekino);  //実績No
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerDoc.update(conDoc, sql, params.toArray());
     }
 
     /**
-     * ｶﾞﾗｽ作製・測定_仮登録(tmp_sr_glasssokutei)登録処理
+     * ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕_仮登録(tmp_sr_glassslurryfunsai)登録処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param conQcdb コネクション
@@ -1514,26 +1899,28 @@ public class GXHDO102B004 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
-     * @param jissekino 実績No
      * @param systemTime システム日付(原材料品質DB登録実績に更新した値と同値)
      * @param processData 処理制御データ
      * @throws SQLException 例外エラー
      */
-    private void insertTmpSrGlasssokutei(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev, int deleteflag,
-            String kojyo, String lotNo, String edaban, int jissekino, String systemTime, ProcessData processData, String formId) throws SQLException {
+    private void insertTmpSrGlassslurryfunsai(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev, int deleteflag,
+            String kojyo, String lotNo, String edaban, String systemTime, ProcessData processData) throws SQLException {
 
-        String sql = "INSERT INTO tmp_sr_glasssokutei ("
-                + " kojyo,lotno,edaban,glasshinmei,glasslotno,lotkubun,bet,tantosya,bikou1,bikou2,torokunichiji,kosinnichiji,revision,deleteflag "
+        String sql = "INSERT INTO tmp_sr_glassslurryfunsai ( "
+                + " kojyo,lotno,edaban,glassslurryhinmei,glassslurrylotno,lotkubun,syuusoku,kaitendaigouki,funsaikaisinichiji, "
+                + " funsaiyoteisyuuryounichiji,kaisitantosya,funsaisyuuryounichiji,syuryotantosya,funsaijikan,zairyohinmei, "
+                + " buzaizaikono,tyougouryou,fuutaijyuuryou,soujyuuryou,syoumijyuuryou,budomari,haisyututantousya,hokankaisinichiji, "
+                + " hokanbasyo,hokankaitengouki,kaitensuu,hokantantosya,bikou1,bikou2,torokunichiji,kosinnichiji,revision,deleteflag "
                 + " ) VALUES ( "
-                + " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+                + " ? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?, ?) ";
 
-        List<Object> params = setUpdateParameterTmpSrGlasssokutei(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, processData, null);
+        List<Object> params = setUpdateParameterTmpSrGlassslurryfunsai(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, processData, null);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
     }
 
     /**
-     * ｶﾞﾗｽ作製・測定_仮登録(tmp_sr_glasssokutei)更新処理
+     * ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕_仮登録(tmp_sr_glassslurryfunsai)更新処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param conQcdb コネクション
@@ -1547,22 +1934,25 @@ public class GXHDO102B004 implements IFormLogic {
      * @param processData 処理制御データ
      * @throws SQLException 例外エラー
      */
-    private void updateTmpSrGlasssokutei(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, String jotaiFlg, BigDecimal newRev,
+    private void updateTmpSrGlassslurryfunsai(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, String jotaiFlg, BigDecimal newRev,
             String kojyo, String lotNo, String edaban, String systemTime, ProcessData processData) throws SQLException {
 
-        String sql = "UPDATE tmp_sr_glasssokutei SET "
-                + " glasshinmei = ?,glasslotno = ?,lotkubun = ?,bet = ?,tantosya = ?,bikou1 = ?,bikou2 = ?,kosinnichiji = ?,revision = ?,deleteflag = ? "
+        String sql = "UPDATE tmp_sr_glassslurryfunsai SET "
+                + " glassslurryhinmei = ?,glassslurrylotno = ?,lotkubun = ?,syuusoku = ?,kaitendaigouki = ?,funsaikaisinichiji = ?,funsaiyoteisyuuryounichiji = ?, "
+                + " kaisitantosya = ?,funsaisyuuryounichiji = ?,syuryotantosya = ?,funsaijikan = ?,zairyohinmei = ?,buzaizaikono = ?,tyougouryou = ?, "
+                + " fuutaijyuuryou = ?,soujyuuryou = ?,syoumijyuuryou = ?,budomari = ?,haisyututantousya = ?,hokankaisinichiji = ?,hokanbasyo = ?, "
+                + " hokankaitengouki = ?,kaitensuu = ?,hokantantosya = ?,bikou1 = ?,bikou2 = ?,kosinnichiji = ?,revision = ?,deleteflag = ? "
                 + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
         // 更新前の値を取得
-        List<SrGlasssokutei> srGlasssokuteiList = getSrGlasssokuteiData(queryRunnerQcdb, rev.toPlainString(), jotaiFlg, kojyo, lotNo, edaban);
-        SrGlasssokutei srGlasssokutei = null;
-        if (!srGlasssokuteiList.isEmpty()) {
-            srGlasssokutei = srGlasssokuteiList.get(0);
+        List<SrGlassslurryfunsai> srGlassslurryfunsaiList = getSrGlassslurryfunsaiData(queryRunnerQcdb, rev.toPlainString(), jotaiFlg, kojyo, lotNo, edaban);
+        SrGlassslurryfunsai srGlassslurryfunsai = null;
+        if (!srGlassslurryfunsaiList.isEmpty()) {
+            srGlassslurryfunsai = srGlassslurryfunsaiList.get(0);
         }
 
         //更新値設定
-        List<Object> params = setUpdateParameterTmpSrGlasssokutei(false, newRev, 0, "", "", "", systemTime, processData, srGlasssokutei);
+        List<Object> params = setUpdateParameterTmpSrGlassslurryfunsai(false, newRev, 0, "", "", "", systemTime, processData, srGlassslurryfunsai);
 
         //検索条件設定
         params.add(kojyo);
@@ -1574,7 +1964,7 @@ public class GXHDO102B004 implements IFormLogic {
     }
 
     /**
-     * ｶﾞﾗｽ作製・測定_仮登録(tmp_sr_glasssokutei)削除処理
+     * ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕_仮登録(tmp_sr_glassslurryfunsai)削除処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param conQcdb コネクション
@@ -1584,10 +1974,10 @@ public class GXHDO102B004 implements IFormLogic {
      * @param edaban 枝番
      * @throws SQLException 例外エラー
      */
-    private void deleteTmpSrGlasssokutei(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev,
+    private void deleteTmpSrGlassslurryfunsai(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev,
             String kojyo, String lotNo, String edaban) throws SQLException {
 
-        String sql = "DELETE FROM tmp_sr_glasssokutei "
+        String sql = "DELETE FROM tmp_sr_glassslurryfunsai "
                 + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
         //更新値設定
@@ -1603,7 +1993,7 @@ public class GXHDO102B004 implements IFormLogic {
     }
 
     /**
-     * ｶﾞﾗｽ作製・測定_仮登録(tmp_sr_glasssokutei)更新値パラメータ設定
+     * ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕_仮登録(tmp_sr_glassslurryfunsai)更新値パラメータ設定
      *
      * @param isInsert 登録判定(true:insert、false:update)
      * @param newRev 新revision
@@ -1612,31 +2002,60 @@ public class GXHDO102B004 implements IFormLogic {
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
      * @param systemTime システム日付(原材料品質DB登録実績に更新した値と同値)
-     * @param itemList 項目リスト
-     * @param srGlasssokutei ｶﾞﾗｽ作製・測定データ
      * @param processData 処理制御データ
+     * @param srGlassslurryfunsai ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕データ
      * @return 更新パラメータ
      */
-    private List<Object> setUpdateParameterTmpSrGlasssokutei(boolean isInsert, BigDecimal newRev, int deleteflag, String kojyo,
-            String lotNo, String edaban, String systemTime, ProcessData processData, SrGlasssokutei srGlasssokutei) {
+    private List<Object> setUpdateParameterTmpSrGlassslurryfunsai(boolean isInsert, BigDecimal newRev, int deleteflag, String kojyo,
+            String lotNo, String edaban, String systemTime, ProcessData processData, SrGlassslurryfunsai srGlassslurryfunsai) {
 
         List<FXHDD01> pItemList = processData.getItemList();
         List<Object> params = new ArrayList<>();
-        // ﾛｯﾄ区分
-        String glasslotno;
-        FXHDD01 glasslotnoFXHDD01 = getItemRow(processData.getItemList(), GXHDO102B004Const.LOTKUBUN);
+        // 粉砕開始時間
+        String funsaikaisinichijiTime = StringUtil.nullToBlank(getItemData(pItemList, GXHDO102B006Const.FUNSAIKAISI_TIME, srGlassslurryfunsai));
+        // 粉砕終了予定時間
+        String funsaiyoteisyuuryounichijiTime = StringUtil.nullToBlank(getItemData(pItemList, GXHDO102B006Const.FUNSAIYOTEISYUURYOU_TIME, srGlassslurryfunsai));
+        // 粉砕終了時間
+        String funsaisyuuryounichijiTime = StringUtil.nullToBlank(getItemData(pItemList, GXHDO102B006Const.FUNSAISYUURYOU_TIME, srGlassslurryfunsai));
+        // 保管開始時間
+        String hokankaisinichijiTime = StringUtil.nullToBlank(getItemData(pItemList, GXHDO102B006Const.HOKANKAISI_TIME, srGlassslurryfunsai));
         if (isInsert) {
             params.add(kojyo); //工場ｺｰﾄﾞ
             params.add(lotNo); //ﾛｯﾄNo
             params.add(edaban); //枝番
         }
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B004Const.GLASSHINMEI, srGlasssokutei))); // ｶﾞﾗｽ品名
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B004Const.GLASSLOTNO, srGlasssokutei))); // ｶﾞﾗｽLotNo
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B004Const.LOTKUBUN, srGlasssokutei))); // ﾛｯﾄ区分
-        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO102B004Const.BETSOKUTEICHI, srGlasssokutei))); // BET測定値
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B004Const.TANTOSYA, srGlasssokutei))); // 担当者
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B004Const.BIKOU1, srGlasssokutei))); // 備考1
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B004Const.BIKOU2, srGlasssokutei))); // 備考2
+        
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.GLASSSLURRYHINMEI, srGlassslurryfunsai))); // ｶﾞﾗｽｽﾗﾘｰ品名
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.GLASSSLURRYLOTNO, srGlassslurryfunsai))); // ｶﾞﾗｽｽﾗﾘｰ品名LotNo
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.LOTKUBUN, srGlassslurryfunsai))); // ﾛｯﾄ区分
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemKikakuchi(pItemList, GXHDO102B006Const.SYUUSOKU, srGlassslurryfunsai))); // 周速
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.KAITENDAIGOUKI, srGlassslurryfunsai))); // 粉砕回転台号機
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.FUNSAIKAISI_DAY, srGlassslurryfunsai),
+                "".equals(funsaikaisinichijiTime) ? "0000" : funsaikaisinichijiTime)); // 粉砕開始日時
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.FUNSAIYOTEISYUURYOU_DAY, srGlassslurryfunsai),
+                "".equals(funsaiyoteisyuuryounichijiTime) ? "0000" : funsaiyoteisyuuryounichijiTime)); // 粉砕終了予定日時
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.KAISITANTOSYA, srGlassslurryfunsai))); // 粉砕開始担当者
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.FUNSAISYUURYOU_DAY, srGlassslurryfunsai),
+                "".equals(funsaisyuuryounichijiTime) ? "0000" : funsaisyuuryounichijiTime)); // 粉砕終了日時
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.SYURYOTANTOSYA, srGlassslurryfunsai))); // 粉砕終了担当者
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.FUNSAIJIKAN, srGlassslurryfunsai))); // 粉砕時間
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemKikakuchi(pItemList, GXHDO102B006Const.ZAIRYOHINMEI, srGlassslurryfunsai))); // 材料品名
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.BUZAIZAIKONO, srGlassslurryfunsai))); // 部材在庫No
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.TYOUGOURYOU, srGlassslurryfunsai))); // 調合量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.FUUTAIJYUURYOU, srGlassslurryfunsai))); // 風袋重量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.SOUJYUURYOU, srGlassslurryfunsai))); // 総重量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.SYOUMIJYUURYOU, srGlassslurryfunsai))); // 正味重量
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.BUDOMARI, srGlassslurryfunsai))); // 歩留まり
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.HAISYUTUTANTOUSYA, srGlassslurryfunsai))); // 排出担当者
+        params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.HOKANKAISI_DAY, srGlassslurryfunsai),
+                "".equals(hokankaisinichijiTime) ? "0000" : hokankaisinichijiTime)); // 保管開始日時
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemKikakuchi(pItemList, GXHDO102B006Const.HOKANBASYO, srGlassslurryfunsai))); // 保管場所
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemKikakuchi(pItemList, GXHDO102B006Const.HOKANKAITENGOUKI, srGlassslurryfunsai))); // 保管回転台号機
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemKikakuchi(pItemList, GXHDO102B006Const.KAITENSUU, srGlassslurryfunsai))); // 回転数
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.HOKANTANTOSYA, srGlassslurryfunsai))); // 保管担当者
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.BIKOU1, srGlassslurryfunsai))); // 備考1
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.BIKOU2, srGlassslurryfunsai))); // 備考2
+
         if (isInsert) {
             params.add(systemTime); //登録日時
             params.add(systemTime); //更新日時
@@ -1650,7 +2069,7 @@ public class GXHDO102B004 implements IFormLogic {
     }
 
     /**
-     * ｶﾞﾗｽ作製・測定(sr_glasssokutei)登録処理
+     * ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕(sr_glassslurryfunsai)登録処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param conQcdb コネクション
@@ -1660,24 +2079,27 @@ public class GXHDO102B004 implements IFormLogic {
      * @param edaban 枝番
      * @param systemTime システム日付(原材料品質DB登録実績に更新した値と同値)
      * @param processData 処理制御データ
-     * @param tmpSrGlasssokutei 仮登録データ
+     * @param tmpSrGlassslurryfunsai 仮登録データ
      * @throws SQLException 例外エラー
      */
-    private void insertSrGlasssokutei(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev,
-            String kojyo, String lotNo, String edaban, String systemTime, ProcessData processData, SrGlasssokutei tmpSrGlasssokutei, String formId) throws SQLException {
+    private void insertSrGlassslurryfunsai(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev,
+            String kojyo, String lotNo, String edaban, String systemTime, ProcessData processData, SrGlassslurryfunsai tmpSrGlassslurryfunsai) throws SQLException {
 
-        String sql = "INSERT INTO sr_glasssokutei ("
-                + " kojyo,lotno,edaban,glasshinmei,glasslotno,lotkubun,bet,tantosya,bikou1,bikou2,torokunichiji,kosinnichiji,revision "
+        String sql = "INSERT INTO sr_glassslurryfunsai ( "
+                + " kojyo,lotno,edaban,glassslurryhinmei,glassslurrylotno,lotkubun,syuusoku,kaitendaigouki,funsaikaisinichiji, "
+                + " funsaiyoteisyuuryounichiji,kaisitantosya,funsaisyuuryounichiji,syuryotantosya,funsaijikan,zairyohinmei, "
+                + " buzaizaikono,tyougouryou,fuutaijyuuryou,soujyuuryou,syoumijyuuryou,budomari,haisyututantousya,hokankaisinichiji, "
+                + " hokanbasyo,hokankaitengouki,kaitensuu,hokantantosya,bikou1,bikou2,torokunichiji,kosinnichiji,revision "
                 + " ) VALUES ( "
-                + " ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+                + " ? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?) ";
 
-        List<Object> params = setUpdateParameterSrGlasssokutei(true, newRev, kojyo, lotNo, edaban, systemTime, processData, tmpSrGlasssokutei);
+        List<Object> params = setUpdateParameterSrGlassslurryfunsai(true, newRev, kojyo, lotNo, edaban, systemTime, processData, tmpSrGlassslurryfunsai);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
     }
 
     /**
-     * ｶﾞﾗｽ作製・測定(sr_glasssokutei)更新処理
+     * ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕(sr_glassslurryfunsai)更新処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param conQcdb コネクション
@@ -1692,22 +2114,25 @@ public class GXHDO102B004 implements IFormLogic {
      * @param processData 処理制御データ
      * @throws SQLException 例外エラー
      */
-    private void updateSrGlasssokutei(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, String jotaiFlg, BigDecimal newRev,
+    private void updateSrGlassslurryfunsai(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, String jotaiFlg, BigDecimal newRev,
             String kojyo, String lotNo, String edaban, String systemTime, ProcessData processData) throws SQLException {
 
-        String sql = "UPDATE sr_glasssokutei SET "
-                + " glasshinmei = ?,glasslotno = ?,lotkubun = ?,bet = ?,tantosya = ?,bikou1 = ?,bikou2 = ?, kosinnichiji = ?,revision = ? "
-                + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
+        String sql = "UPDATE sr_glassslurryfunsai SET "
+                + " glassslurryhinmei = ?,glassslurrylotno = ?,lotkubun = ?,syuusoku = ?,kaitendaigouki = ?,funsaikaisinichiji = ?,funsaiyoteisyuuryounichiji = ?, "
+                + " kaisitantosya = ?,funsaisyuuryounichiji = ?,syuryotantosya = ?,funsaijikan = ?,zairyohinmei = ?,buzaizaikono = ?,tyougouryou = ?, "
+                + " fuutaijyuuryou = ?,soujyuuryou = ?,syoumijyuuryou = ?,budomari = ?,haisyututantousya = ?,hokankaisinichiji = ?,hokanbasyo = ?, "
+                + " hokankaitengouki = ?,kaitensuu = ?,hokantantosya = ?,bikou1 = ?,bikou2 = ?,kosinnichiji = ?,revision = ? "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
         // 更新前の値を取得
-        List<SrGlasssokutei> srGlasssokuteiList = getSrGlasssokuteiData(queryRunnerQcdb, rev.toPlainString(), jotaiFlg, kojyo, lotNo, edaban);
-        SrGlasssokutei srGlasssokutei = null;
-        if (!srGlasssokuteiList.isEmpty()) {
-            srGlasssokutei = srGlasssokuteiList.get(0);
+        List<SrGlassslurryfunsai> srGlassslurryfunsaiList = getSrGlassslurryfunsaiData(queryRunnerQcdb, rev.toPlainString(), jotaiFlg, kojyo, lotNo, edaban);
+        SrGlassslurryfunsai srGlassslurryfunsai = null;
+        if (!srGlassslurryfunsaiList.isEmpty()) {
+            srGlassslurryfunsai = srGlassslurryfunsaiList.get(0);
         }
 
         //更新値設定
-        List<Object> params = setUpdateParameterSrGlasssokutei(false, newRev, "", "", "", systemTime, processData, srGlasssokutei);
+        List<Object> params = setUpdateParameterSrGlassslurryfunsai(false, newRev, "", "", "", systemTime, processData, srGlassslurryfunsai);
 
         //検索条件設定
         params.add(kojyo);
@@ -1719,7 +2144,7 @@ public class GXHDO102B004 implements IFormLogic {
     }
 
     /**
-     * ｶﾞﾗｽ作製・測定(sr_glasssokutei)更新値パラメータ設定
+     * ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕(sr_glassslurryfunsai)更新値パラメータ設定
      *
      * @param isInsert 登録判定(true:insert、false:update)
      * @param newRev 新revision
@@ -1728,30 +2153,60 @@ public class GXHDO102B004 implements IFormLogic {
      * @param edaban 枝番
      * @param systemTime システム日付(原材料品質DB登録実績に更新した値と同値)
      * @param processData 処理制御データ
-     * @param srGlasssokutei ｶﾞﾗｽ作製・測定データ
+     * @param srGlassslurryfunsai ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕データ
      * @return 更新パラメータ
      */
-    private List<Object> setUpdateParameterSrGlasssokutei(boolean isInsert, BigDecimal newRev, String kojyo, String lotNo, String edaban,
-            String systemTime, ProcessData processData, SrGlasssokutei srGlasssokutei) {
+    private List<Object> setUpdateParameterSrGlassslurryfunsai(boolean isInsert, BigDecimal newRev, String kojyo, String lotNo, String edaban,
+            String systemTime, ProcessData processData, SrGlassslurryfunsai srGlassslurryfunsai) {
 
         List<FXHDD01> pItemList = processData.getItemList();
 
         List<Object> params = new ArrayList<>();
-        // ﾛｯﾄ区分
-        String glasslotno;
-        FXHDD01 glasslotnoFXHDD01 = getItemRow(processData.getItemList(), GXHDO102B004Const.LOTKUBUN);
+        // 粉砕開始時間
+        String funsaikaisinichijiTime = StringUtil.nullToBlank(getItemData(pItemList, GXHDO102B006Const.FUNSAIKAISI_TIME, srGlassslurryfunsai));
+        // 粉砕終了予定時間
+        String funsaiyoteisyuuryounichijiTime = StringUtil.nullToBlank(getItemData(pItemList, GXHDO102B006Const.FUNSAIYOTEISYUURYOU_TIME, srGlassslurryfunsai));
+        // 粉砕終了時間
+        String funsaisyuuryounichijiTime = StringUtil.nullToBlank(getItemData(pItemList, GXHDO102B006Const.FUNSAISYUURYOU_TIME, srGlassslurryfunsai));
+        // 保管開始時間
+        String hokankaisinichijiTime = StringUtil.nullToBlank(getItemData(pItemList, GXHDO102B006Const.HOKANKAISI_TIME, srGlassslurryfunsai));
         if (isInsert) {
             params.add(kojyo); //工場ｺｰﾄﾞ
             params.add(lotNo); //ﾛｯﾄNo
             params.add(edaban); //枝番
         }
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B004Const.GLASSHINMEI, srGlasssokutei))); // ｶﾞﾗｽ品名
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B004Const.GLASSLOTNO, srGlasssokutei))); // ｶﾞﾗｽLotNo
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B004Const.LOTKUBUN, srGlasssokutei))); // ﾛｯﾄ区分
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO102B004Const.BETSOKUTEICHI, srGlasssokutei))); // BET測定値
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B004Const.TANTOSYA, srGlasssokutei))); // 担当者
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B004Const.BIKOU1, srGlasssokutei))); // 備考1
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B004Const.BIKOU2, srGlasssokutei))); // 備考2
+
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B006Const.GLASSSLURRYHINMEI, srGlassslurryfunsai))); // ｶﾞﾗｽｽﾗﾘｰ品名
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B006Const.GLASSSLURRYLOTNO, srGlassslurryfunsai))); // ｶﾞﾗｽｽﾗﾘｰ品名LotNo
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B006Const.LOTKUBUN, srGlassslurryfunsai))); // ﾛｯﾄ区分
+        params.add(DBUtil.stringToStringObject(getItemKikakuchi(pItemList, GXHDO102B006Const.SYUUSOKU, srGlassslurryfunsai))); // 周速
+        params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO102B006Const.KAITENDAIGOUKI, srGlassslurryfunsai))); // 粉砕回転台号機
+        params.add(DBUtil.stringToDateObject(getItemData(pItemList, GXHDO102B006Const.FUNSAIKAISI_DAY, srGlassslurryfunsai),
+                "".equals(funsaikaisinichijiTime) ? "0000" : funsaikaisinichijiTime)); // 粉砕開始日時
+        params.add(DBUtil.stringToDateObject(getItemData(pItemList, GXHDO102B006Const.FUNSAIYOTEISYUURYOU_DAY, srGlassslurryfunsai),
+                "".equals(funsaiyoteisyuuryounichijiTime) ? "0000" : funsaiyoteisyuuryounichijiTime)); // 粉砕終了予定日時
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B006Const.KAISITANTOSYA, srGlassslurryfunsai))); // 粉砕開始担当者
+        params.add(DBUtil.stringToDateObject(getItemData(pItemList, GXHDO102B006Const.FUNSAISYUURYOU_DAY, srGlassslurryfunsai),
+                "".equals(funsaisyuuryounichijiTime) ? "0000" : funsaisyuuryounichijiTime)); // 粉砕終了日時
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B006Const.SYURYOTANTOSYA, srGlassslurryfunsai))); // 粉砕終了担当者
+        params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO102B006Const.FUNSAIJIKAN, srGlassslurryfunsai))); // 粉砕時間
+        params.add(DBUtil.stringToStringObject(getItemKikakuchi(pItemList, GXHDO102B006Const.ZAIRYOHINMEI, srGlassslurryfunsai))); // 材料品名
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B006Const.BUZAIZAIKONO, srGlassslurryfunsai))); // 部材在庫No
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B006Const.TYOUGOURYOU, srGlassslurryfunsai))); // 調合量
+        params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO102B006Const.FUUTAIJYUURYOU, srGlassslurryfunsai))); // 風袋重量
+        params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO102B006Const.SOUJYUURYOU, srGlassslurryfunsai))); // 総重量
+        params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO102B006Const.SYOUMIJYUURYOU, srGlassslurryfunsai))); // 正味重量
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO102B006Const.BUDOMARI, srGlassslurryfunsai))); // 歩留まり
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B006Const.HAISYUTUTANTOUSYA, srGlassslurryfunsai))); // 排出担当者
+        params.add(DBUtil.stringToDateObject(getItemData(pItemList, GXHDO102B006Const.HOKANKAISI_DAY, srGlassslurryfunsai),
+                "".equals(hokankaisinichijiTime) ? "0000" : hokankaisinichijiTime)); // 保管開始日時
+        params.add(DBUtil.stringToStringObject(getItemKikakuchi(pItemList, GXHDO102B006Const.HOKANBASYO, srGlassslurryfunsai))); // 保管場所
+        params.add(DBUtil.stringToStringObject(getItemKikakuchi(pItemList, GXHDO102B006Const.HOKANKAITENGOUKI, srGlassslurryfunsai))); // 保管回転台号機
+        params.add(DBUtil.stringToStringObject(getItemKikakuchi(pItemList, GXHDO102B006Const.KAITENSUU, srGlassslurryfunsai))); // 回転数
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B006Const.HOKANTANTOSYA, srGlassslurryfunsai))); // 保管担当者
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B006Const.BIKOU1, srGlassslurryfunsai))); // 備考1
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B006Const.BIKOU2, srGlassslurryfunsai))); // 備考2
+
         if (isInsert) {
             params.add(systemTime); //登録日時
             params.add(systemTime); //更新日時
@@ -1763,7 +2218,7 @@ public class GXHDO102B004 implements IFormLogic {
     }
 
     /**
-     * ｶﾞﾗｽ作製・測定(sr_glasssokutei)削除処理
+     * ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕(sr_glassslurryfunsai)削除処理
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param conQcdb コネクション
@@ -1773,11 +2228,11 @@ public class GXHDO102B004 implements IFormLogic {
      * @param edaban 枝番
      * @throws SQLException 例外エラー
      */
-    private void deleteSrGlasssokutei(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev,
+    private void deleteSrGlassslurryfunsai(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev,
             String kojyo, String lotNo, String edaban) throws SQLException {
 
-        String sql = "DELETE FROM sr_glasssokutei "
-                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ?";
+        String sql = " DELETE FROM sr_glassslurryfunsai "
+                + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
         //更新値設定
         List<Object> params = new ArrayList<>();
@@ -1792,7 +2247,7 @@ public class GXHDO102B004 implements IFormLogic {
     }
 
     /**
-     * [ｶﾞﾗｽ作製・測定_仮登録]から最大値+1の削除ﾌﾗｸﾞを取得する
+     * [ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕_仮登録]から最大値+1の削除ﾌﾗｸﾞを取得する
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param kojyo 工場ｺｰﾄﾞ
@@ -1803,8 +2258,8 @@ public class GXHDO102B004 implements IFormLogic {
      */
     private int getNewDeleteflag(QueryRunner queryRunnerQcdb, String kojyo, String lotNo, String edaban) throws SQLException {
         String sql = "SELECT MAX(deleteflag) AS deleteflag "
-                + "FROM tmp_sr_glasssokutei "
-                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
+                + "     FROM tmp_sr_glassslurryfunsai "
+                + "    WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
         List<Object> params = new ArrayList<>();
         params.add(kojyo);
         params.add(lotNo);
@@ -1851,30 +2306,145 @@ public class GXHDO102B004 implements IFormLogic {
     }
 
     /**
+     * 日付(日、時間)の項目にフォーマットの日付(yyMMdd,HHmm)をセットする
+     *
+     * @param itemDay 項目日付(日)
+     * @param itemTime 項目日付(時間)
+     * @param setDateTime 設定日付
+     */
+    private void setDateTimeItem(FXHDD01 itemDay, FXHDD01 itemTime, Date setDateTime) {
+        itemDay.setValue(new SimpleDateFormat("yyMMdd").format(setDateTime));
+        itemTime.setValue(new SimpleDateFormat("HHmm").format(setDateTime));
+    }
+
+    /**
      * 項目IDに該当するDBの値を取得する。
      *
      * @param itemId 項目ID
-     * @param srGlasssokutei ｶﾞﾗｽ作製・測定データ
+     * @param srGlassslurryfunsai ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕データ
      * @return DB値
      */
-    private String getSrGlasssokuteiItemData(String itemId, SrGlasssokutei srGlasssokutei) {
+    private String getSrGlassslurryfunsaiItemData(String itemId, SrGlassslurryfunsai srGlassslurryfunsai) {
         switch (itemId) {
+            // ｶﾞﾗｽｽﾗﾘｰ品名
+            case GXHDO102B006Const.GLASSSLURRYHINMEI:
+                return StringUtil.nullToBlank(srGlassslurryfunsai.getGlassslurryhinmei());
 
-            // BET測定値
-            case GXHDO102B004Const.BETSOKUTEICHI:
-                return StringUtil.nullToBlank(srGlasssokutei.getBet());
+            // ｶﾞﾗｽｽﾗﾘｰLotNo
+            case GXHDO102B006Const.GLASSSLURRYLOTNO:
+                return StringUtil.nullToBlank(srGlassslurryfunsai.getGlassslurrylotno());
 
-            // 担当者
-            case GXHDO102B004Const.TANTOSYA:
-                return StringUtil.nullToBlank(srGlasssokutei.getTantosya());
+            // ﾛｯﾄ区分
+            case GXHDO102B006Const.LOTKUBUN:
+                return StringUtil.nullToBlank(srGlassslurryfunsai.getLotkubun());
+
+            // 周速
+            case GXHDO102B006Const.SYUUSOKU:
+                return StringUtil.nullToBlank(srGlassslurryfunsai.getSyuusoku());
+
+            // 粉砕回転台号機
+            case GXHDO102B006Const.KAITENDAIGOUKI:
+                return StringUtil.nullToBlank(srGlassslurryfunsai.getKaitendaigouki());
+
+            // 粉砕開始日
+            case GXHDO102B006Const.FUNSAIKAISI_DAY:
+                return DateUtil.formattedTimestamp(srGlassslurryfunsai.getFunsaikaisinichiji(), "yyMMdd");
+
+            // 粉砕開始時間
+            case GXHDO102B006Const.FUNSAIKAISI_TIME:
+                return DateUtil.formattedTimestamp(srGlassslurryfunsai.getFunsaikaisinichiji(), "HHmm");
+
+            // 粉砕終了予定日
+            case GXHDO102B006Const.FUNSAIYOTEISYUURYOU_DAY:
+                return DateUtil.formattedTimestamp(srGlassslurryfunsai.getFunsaiyoteisyuuryounichiji(), "yyMMdd");
+
+            // 粉砕終了予定時間
+            case GXHDO102B006Const.FUNSAIYOTEISYUURYOU_TIME:
+                return DateUtil.formattedTimestamp(srGlassslurryfunsai.getFunsaiyoteisyuuryounichiji(), "HHmm");
+
+            // 粉砕開始担当者
+            case GXHDO102B006Const.KAISITANTOSYA:
+                return StringUtil.nullToBlank(srGlassslurryfunsai.getKaisitantosya());
+
+            // 粉砕終了日
+            case GXHDO102B006Const.FUNSAISYUURYOU_DAY:
+                return DateUtil.formattedTimestamp(srGlassslurryfunsai.getFunsaisyuuryounichiji(), "yyMMdd");
+
+            // 粉砕終了時間
+            case GXHDO102B006Const.FUNSAISYUURYOU_TIME:
+                return DateUtil.formattedTimestamp(srGlassslurryfunsai.getFunsaisyuuryounichiji(), "HHmm");
+
+            // 粉砕終了担当者
+            case GXHDO102B006Const.SYURYOTANTOSYA:
+                return StringUtil.nullToBlank(srGlassslurryfunsai.getSyuryotantosya());
+
+            // 粉砕時間
+            case GXHDO102B006Const.FUNSAIJIKAN:
+                return StringUtil.nullToBlank(srGlassslurryfunsai.getFunsaijikan());
+
+            // 材料品名
+            case GXHDO102B006Const.ZAIRYOHINMEI:
+                return StringUtil.nullToBlank(srGlassslurryfunsai.getZairyohinmei());
+
+            // 部材在庫No
+            case GXHDO102B006Const.BUZAIZAIKONO:
+                return StringUtil.nullToBlank(srGlassslurryfunsai.getBuzaizaikono());
+
+            // 調合量
+            case GXHDO102B006Const.TYOUGOURYOU:
+                return StringUtil.nullToBlank(srGlassslurryfunsai.getTyougouryou());
+
+            // 風袋重量
+            case GXHDO102B006Const.FUUTAIJYUURYOU:
+                return StringUtil.nullToBlank(srGlassslurryfunsai.getFuutaijyuuryou());
+
+            // 総重量
+            case GXHDO102B006Const.SOUJYUURYOU:
+                return StringUtil.nullToBlank(srGlassslurryfunsai.getSoujyuuryou());
+
+            // 正味重量
+            case GXHDO102B006Const.SYOUMIJYUURYOU:
+                return StringUtil.nullToBlank(srGlassslurryfunsai.getSyoumijyuuryou());
+
+            // 歩留まり
+            case GXHDO102B006Const.BUDOMARI:
+                return StringUtil.nullToBlank(srGlassslurryfunsai.getBudomari());
+
+            // 排出担当者
+            case GXHDO102B006Const.HAISYUTUTANTOUSYA:
+                return StringUtil.nullToBlank(srGlassslurryfunsai.getHaisyututantousya());
+
+            // 保管場所
+            case GXHDO102B006Const.HOKANBASYO:
+                return StringUtil.nullToBlank(srGlassslurryfunsai.getHokanbasyo());
+
+            // 保管回転台号機
+            case GXHDO102B006Const.HOKANKAITENGOUKI:
+                return StringUtil.nullToBlank(srGlassslurryfunsai.getHokankaitengouki());
+
+            // 回転数
+            case GXHDO102B006Const.KAITENSUU:
+                return StringUtil.nullToBlank(srGlassslurryfunsai.getKaitensuu());
+
+            // 保管開始日
+            case GXHDO102B006Const.HOKANKAISI_DAY:
+                return DateUtil.formattedTimestamp(srGlassslurryfunsai.getHokankaisinichiji(), "yyMMdd");
+
+            // 保管開始時間
+            case GXHDO102B006Const.HOKANKAISI_TIME:
+                return DateUtil.formattedTimestamp(srGlassslurryfunsai.getHokankaisinichiji(), "HHmm");
+
+            // 保管担当者
+            case GXHDO102B006Const.HOKANTANTOSYA:
+                return StringUtil.nullToBlank(srGlassslurryfunsai.getHokantantosya());
 
             // 備考1
-            case GXHDO102B004Const.BIKOU1:
-                return StringUtil.nullToBlank(srGlasssokutei.getBikou1());
+            case GXHDO102B006Const.BIKOU1:
+                return StringUtil.nullToBlank(srGlassslurryfunsai.getBikou1());
 
             // 備考2
-            case GXHDO102B004Const.BIKOU2:
-                return StringUtil.nullToBlank(srGlasssokutei.getBikou2());
+            case GXHDO102B006Const.BIKOU2:
+                return StringUtil.nullToBlank(srGlassslurryfunsai.getBikou2());
 
             default:
                 return null;
@@ -1882,7 +2452,7 @@ public class GXHDO102B004 implements IFormLogic {
     }
 
     /**
-     * ｶﾞﾗｽ作製・測定_仮登録(tmp_sr_glasssokutei)登録処理(削除時)
+     * ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕_仮登録(tmp_sr_glassslurryfunsai)登録処理(削除時)
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param conQcdb コネクション
@@ -1894,27 +2464,33 @@ public class GXHDO102B004 implements IFormLogic {
      * @param systemTime システム日付(原材料品質DB登録実績に更新した値と同値)
      * @throws SQLException 例外エラー
      */
-    private void insertDeleteDataTmpSrGlasssokutei(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev, int deleteflag,
+    private void insertDeleteDataTmpSrGlassslurryfunsai(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev, int deleteflag,
             String kojyo, String lotNo, String edaban, String systemTime) throws SQLException {
 
-        String sql = "INSERT INTO tmp_sr_glasssokutei ( "
-                + " kojyo,lotno,edaban,glasshinmei,glasslotno,lotkubun,bet,tantosya,bikou1,bikou2,torokunichiji,kosinnichiji,revision,deleteflag "
+        String sql = " INSERT INTO tmp_sr_glassslurryfunsai ( "
+                + " kojyo,lotno,edaban,glassslurryhinmei,glassslurrylotno,lotkubun,syuusoku,kaitendaigouki,funsaikaisinichiji, "
+                + " funsaiyoteisyuuryounichiji,kaisitantosya,funsaisyuuryounichiji,syuryotantosya,funsaijikan,zairyohinmei, "
+                + " buzaizaikono,tyougouryou,fuutaijyuuryou,soujyuuryou,syoumijyuuryou,budomari,haisyututantousya,hokankaisinichiji, "
+                + " hokanbasyo,hokankaitengouki,kaitensuu,hokantantosya,bikou1,bikou2,torokunichiji,kosinnichiji,revision,deleteflag "
                 + ") SELECT "
-                + " kojyo,lotno,edaban,glasshinmei,glasslotno,lotkubun,bet,tantosya,bikou1,bikou2,?,?,?,? "
-                + " FROM sr_glasssokutei "
+                + " kojyo,lotno,edaban,glassslurryhinmei,glassslurrylotno,lotkubun,syuusoku,kaitendaigouki,funsaikaisinichiji, "
+                + " funsaiyoteisyuuryounichiji,kaisitantosya,funsaisyuuryounichiji,syuryotantosya,funsaijikan,zairyohinmei, "
+                + " buzaizaikono,tyougouryou,fuutaijyuuryou,soujyuuryou,syoumijyuuryou,budomari,haisyututantousya,hokankaisinichiji, "
+                + " hokanbasyo,hokankaitengouki,kaitensuu,hokantantosya,bikou1,bikou2,?,?,?,? "
+                + " FROM sr_glassslurryfunsai "
                 + " WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
 
         List<Object> params = new ArrayList<>();
         // 更新値
         params.add(systemTime); //登録日時
         params.add(systemTime); //更新日時
-        params.add(newRev); //revision
+        params.add(newRev);     //revision
         params.add(deleteflag); //削除ﾌﾗｸﾞ
 
         // 検索値
-        params.add(kojyo); //工場ｺｰﾄﾞ
-        params.add(lotNo); //ﾛｯﾄNo
-        params.add(edaban); //枝番
+        params.add(kojyo);      //工場ｺｰﾄﾞ
+        params.add(lotNo);      //ﾛｯﾄNo
+        params.add(edaban);     //枝番
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());

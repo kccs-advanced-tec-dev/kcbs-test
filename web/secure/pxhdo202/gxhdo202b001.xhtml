@@ -76,8 +76,8 @@
                             <h:outputText id="lblLotNo" value="ﾛｯﾄNo" style="width:100px;"/>
                         </td>
                         <td>
-                            <p:inputText id="pLotNo" value="#{gXHDO202B001.lotNo}" maxlength="14" style="margin-left:20px; height:26px;">
-                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B001.checkByte('lotNo', 14)}"  async="false"/>
+                            <p:inputText id="pLotNo" value="#{gXHDO202B001.lotNo}" maxlength="15" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B001.checkByte('lotNo', 15)}"  async="false"/>
                             </p:inputText>
                         </td>
                     </tr>

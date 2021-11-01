@@ -24,6 +24,7 @@ import jp.co.kccs.xhd.common.CompMessage;
 import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.db.model.FXHDD01;
+import jp.co.kccs.xhd.db.model.SikakariJson;
 import jp.co.kccs.xhd.db.model.SrGlasskanso;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.IFormLogic;
@@ -261,17 +262,13 @@ public class GXHDO102B003 implements IFormLogic {
             String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
             String lotNo = (String) session.getAttribute("lotNo");
             int paramJissekino = (Integer) session.getAttribute("jissekino");
+            String tantoshaCd = (String) session.getAttribute("tantoshaCd");
             String kojyo = lotNo.substring(0, 3);
-            String lotNo8 = lotNo.substring(3, 11);
-
-            //仕掛情報の取得
-            //Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
-            //1.前工程WIPから仕掛情報を取得する。 
-            //  仮データ
-            Map<String, String> shikakariData = new HashMap<>();
-            shikakariData.put("oyalotedaban", "006");
+            String lotNo9 = lotNo.substring(3, 12);
         
-            //Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
+            // ②前工程WIPから仕掛情報を取得処理
+            Map shikakariData = loadShikakariDataFromWip(queryRunnerDoc, tantoshaCd,lotNo);
+        
             if (shikakariData == null || shikakariData.isEmpty() || !shikakariData.containsKey("oyalotedaban")) {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
                 return processData;
@@ -279,7 +276,7 @@ public class GXHDO102B003 implements IFormLogic {
             String oyalotEdaban = StringUtil.nullToBlank(getMapData(shikakariData, "oyalotedaban")); //親ﾛｯﾄ枝番
 
             // (6)[原材料品質DB登録実績]から、ﾃﾞｰﾀを取得
-            Map fxhdd11RevInfo = loadFxhdd11RevInfo(queryRunnerDoc, kojyo, lotNo8, oyalotEdaban, paramJissekino, formId);
+            Map fxhdd11RevInfo = loadFxhdd11RevInfo(queryRunnerDoc, kojyo, lotNo9, oyalotEdaban, paramJissekino, formId);
             if (fxhdd11RevInfo == null || fxhdd11RevInfo.isEmpty()) {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
                 return processData;
@@ -293,7 +290,7 @@ public class GXHDO102B003 implements IFormLogic {
             }
 
             // ｶﾞﾗｽ作製・乾燥の入力項目の登録データ(仮登録時は仮登録データ)を取得
-            List<SrGlasskanso> srShinkuukansouDataList = getSrGlasskansoData(queryRunnerQcdb, "", jotaiFlg, kojyo, lotNo8, oyalotEdaban);
+            List<SrGlasskanso> srShinkuukansouDataList = getSrGlasskansoData(queryRunnerQcdb, "", jotaiFlg, kojyo, lotNo9, oyalotEdaban);
             if (srShinkuukansouDataList.isEmpty()) {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
                 return processData;
@@ -472,13 +469,13 @@ public class GXHDO102B003 implements IFormLogic {
             String lotNo = (String) session.getAttribute("lotNo");
             int jissekiNo = (Integer) session.getAttribute("jissekino");
             String kojyo = lotNo.substring(0, 3); //工場ｺｰﾄﾞ
-            String lotNo8 = lotNo.substring(3, 11); //ﾛｯﾄNo(8桁)
-            String edaban = lotNo.substring(11, 14); //枝番
+            String lotNo9 = lotNo.substring(3, 12); //ﾛｯﾄNo
+            String edaban = lotNo.substring(12, 15); //枝番
             String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
             String formTitle = StringUtil.nullToBlank(session.getAttribute("formTitle"));
 
             // 原材料品質DB登録実績データ取得
-            Map fxhdd11RevInfo = loadFxhdd11RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, jissekiNo, formId);
+            Map fxhdd11RevInfo = loadFxhdd11RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo9, edaban, jissekiNo, formId);
             ErrorMessageInfo checkRevMessageInfo = checkRevision(processData, fxhdd11RevInfo);
             // リビジョンエラー時はリターン
             if (checkRevMessageInfo != null) {
@@ -497,24 +494,24 @@ public class GXHDO102B003 implements IFormLogic {
             BigDecimal rev = BigDecimal.ZERO;
             if (StringUtil.isEmpty(processData.getInitJotaiFlg())) {
                 // 原材料品質DB登録実績登録処理
-                insertFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, jissekiNo, JOTAI_FLG_KARI_TOROKU, systemTime);
+                insertFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo9, edaban, jissekiNo, JOTAI_FLG_KARI_TOROKU, systemTime);
             } else {
                 rev = new BigDecimal(processData.getInitRev());
                 // 最新のリビジョンを採番
-                newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, jissekiNo, formId);
+                newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo9, edaban, jissekiNo, formId);
 
                 // 原材料品質DB登録実績更新処理
-                updateFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_KARI_TOROKU, systemTime, jissekiNo);
+                updateFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo9, edaban, JOTAI_FLG_KARI_TOROKU, systemTime, jissekiNo);
             }
 
             if (StringUtil.isEmpty(processData.getInitJotaiFlg()) || JOTAI_FLG_SAKUJO.equals(processData.getInitJotaiFlg())) {
 
                 // ｶﾞﾗｽ作製・乾燥_仮登録登録処理
-                insertTmpSrGlasskanso(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo8, edaban, strSystime, processData, formId);
+                insertTmpSrGlasskanso(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, strSystime, processData, formId);
             } else {
 
                 // ｶﾞﾗｽ作製・乾燥_仮登録更新処理
-                updateTmpSrGlasskanso(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo8, edaban, strSystime, processData);
+                updateTmpSrGlasskanso(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo9, edaban, strSystime, processData);
             }
 
             // 規格情報でエラーが発生している場合、エラー内容を更新
@@ -614,14 +611,14 @@ public class GXHDO102B003 implements IFormLogic {
             String lotNo = (String) session.getAttribute("lotNo");
             int jissekiNo = (Integer) session.getAttribute("jissekino");
             String kojyo = lotNo.substring(0, 3); //工場ｺｰﾄﾞ
-            String lotNo8 = lotNo.substring(3, 11); //ﾛｯﾄNo(8桁)
-            String edaban = lotNo.substring(11, 14); //枝番
+            String lotNo9 = lotNo.substring(3, 12); //ﾛｯﾄNo
+            String edaban = lotNo.substring(12, 15); //枝番
             String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
             String formTitle = StringUtil.nullToBlank(session.getAttribute("formTitle"));
 
             // 原材料品質DB登録実績データ取得
             //ここでロックを掛ける
-            Map fxhdd11RevInfo = loadFxhdd11RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, jissekiNo, formId);
+            Map fxhdd11RevInfo = loadFxhdd11RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo9, edaban, jissekiNo, formId);
             ErrorMessageInfo checkRevMessageInfo = checkRevision(processData, fxhdd11RevInfo);
             // リビジョンエラー時はリターン
             if (checkRevMessageInfo != null) {
@@ -641,14 +638,14 @@ public class GXHDO102B003 implements IFormLogic {
             
             if (StringUtil.isEmpty(processData.getInitRev())) {
                 // 原材料品質DB登録実績登録処理
-                insertFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, jissekiNo, JOTAI_FLG_TOROKUZUMI, systemTime);
+                insertFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo9, edaban, jissekiNo, JOTAI_FLG_TOROKUZUMI, systemTime);
             } else {
                 rev = new BigDecimal(processData.getInitRev());
                 // 最新のリビジョンを採番
-                newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, jissekiNo, formId);
+                newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo9, edaban, jissekiNo, formId);
 
                 // 原材料品質DB登録実績更新処理
-                updateFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_TOROKUZUMI, systemTime, jissekiNo);
+                updateFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo9, edaban, JOTAI_FLG_TOROKUZUMI, systemTime, jissekiNo);
             }
 
             // 仮登録状態の場合、仮登録のデータを削除する。
@@ -656,16 +653,16 @@ public class GXHDO102B003 implements IFormLogic {
             if (JOTAI_FLG_KARI_TOROKU.equals(processData.getInitJotaiFlg())) {
 
                 // 更新前の値を取得
-                List<SrGlasskanso> srGlasskansoList = getSrGlasskansoData(queryRunnerQcdb, rev.toPlainString(), processData.getInitJotaiFlg(), kojyo, lotNo8, edaban);
+                List<SrGlasskanso> srGlasskansoList = getSrGlasskansoData(queryRunnerQcdb, rev.toPlainString(), processData.getInitJotaiFlg(), kojyo, lotNo9, edaban);
                 if (!srGlasskansoList.isEmpty()) {
                     tmpSrGlasskanso = srGlasskansoList.get(0);
                 }
 
-                deleteTmpSrGlasskanso(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban);
+                deleteTmpSrGlasskanso(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo9, edaban);
             }
 
             // ｶﾞﾗｽ作製・乾燥_登録処理
-            insertSrGlasskanso(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo8, edaban, strSystime, processData, tmpSrGlasskanso, formId);
+            insertSrGlasskanso(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, strSystime, processData, tmpSrGlasskanso, formId);
 
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
@@ -782,14 +779,14 @@ public class GXHDO102B003 implements IFormLogic {
             String lotNo = (String) session.getAttribute("lotNo");
             int jissekiNo = (Integer) session.getAttribute("jissekino");
             String kojyo = lotNo.substring(0, 3); //工場ｺｰﾄﾞ
-            String lotNo8 = lotNo.substring(3, 11); //ﾛｯﾄNo(8桁)
-            String edaban = lotNo.substring(11, 14); //枝番
+            String lotNo9 = lotNo.substring(3, 12); //ﾛｯﾄNo
+            String edaban = lotNo.substring(12, 15); //枝番
             String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
             String formTitle = StringUtil.nullToBlank(session.getAttribute("formTitle"));
 
             // 原材料品質DB登録実績データ取得
             //ここでロックを掛ける
-            Map fxhdd11RevInfo = loadFxhdd11RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, jissekiNo, formId);
+            Map fxhdd11RevInfo = loadFxhdd11RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo9, edaban, jissekiNo, formId);
             ErrorMessageInfo checkRevMessageInfo = checkRevision(processData, fxhdd11RevInfo);
             // リビジョンエラー時はリターン
             if (checkRevMessageInfo != null) {
@@ -803,16 +800,16 @@ public class GXHDO102B003 implements IFormLogic {
 
             BigDecimal rev = new BigDecimal(processData.getInitRev());
             // 最新のリビジョンを採番
-            BigDecimal newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, jissekiNo, formId);
+            BigDecimal newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo9, edaban, jissekiNo, formId);
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Timestamp systemTime = new Timestamp(System.currentTimeMillis());
             String strSystime = sdf.format(systemTime);
             // 原材料品質DB登録実績更新処理
-            updateFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_TOROKUZUMI, systemTime, jissekiNo);
+            updateFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo9, edaban, JOTAI_FLG_TOROKUZUMI, systemTime, jissekiNo);
 
             // ｶﾞﾗｽ作製・乾燥_更新処理
-            updateSrGlasskanso(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo8, edaban, strSystime, processData);
+            updateSrGlasskanso(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo9, edaban, strSystime, processData);
 
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
@@ -898,13 +895,13 @@ public class GXHDO102B003 implements IFormLogic {
             String lotNo = (String) session.getAttribute("lotNo");
             int paramJissekino = (Integer) session.getAttribute("jissekino");
             String kojyo = lotNo.substring(0, 3); //工場ｺｰﾄﾞ
-            String lotNo8 = lotNo.substring(3, 11); //ﾛｯﾄNo(8桁)
-            String edaban = lotNo.substring(11, 14); //枝番
+            String lotNo9 = lotNo.substring(3, 12); //ﾛｯﾄNo
+            String edaban = lotNo.substring(12, 15); //枝番
             String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
 
             // 原材料品質DB登録実績データ取得
             //ここでロックを掛ける
-            Map fxhdd11RevInfo = loadFxhdd11RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, paramJissekino, formId);
+            Map fxhdd11RevInfo = loadFxhdd11RevInfoWithLock(queryRunnerDoc, conDoc, kojyo, lotNo9, edaban, paramJissekino, formId);
             ErrorMessageInfo checkRevMessageInfo = checkRevision(processData, fxhdd11RevInfo);
             // リビジョンエラー時はリターン
             if (checkRevMessageInfo != null) {
@@ -917,20 +914,20 @@ public class GXHDO102B003 implements IFormLogic {
 
             BigDecimal rev = new BigDecimal(processData.getInitRev());
             // 最新のリビジョンを採番
-            BigDecimal newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo8, edaban, paramJissekino, formId);
+            BigDecimal newRev = getNewRev(queryRunnerDoc, conDoc, kojyo, lotNo9, edaban, paramJissekino, formId);
 
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Timestamp systemTime = new Timestamp(System.currentTimeMillis());
             String strSystime = sdf.format(systemTime);
             // 原材料品質DB登録実績更新処理
-            updateFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo8, edaban, JOTAI_FLG_SAKUJO, systemTime, paramJissekino);
+            updateFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo9, edaban, JOTAI_FLG_SAKUJO, systemTime, paramJissekino);
 
             // ｶﾞﾗｽ作製・乾燥_仮登録登録処理
-            int newDeleteflag = getNewDeleteflag(queryRunnerQcdb, kojyo, lotNo8, edaban);
-            insertDeleteDataTmpSrGlasskanso(queryRunnerQcdb, conQcdb, newRev, newDeleteflag, kojyo, lotNo8, edaban, strSystime);
+            int newDeleteflag = getNewDeleteflag(queryRunnerQcdb, kojyo, lotNo9, edaban);
+            insertDeleteDataTmpSrGlasskanso(queryRunnerQcdb, conQcdb, newRev, newDeleteflag, kojyo, lotNo9, edaban, strSystime);
 
             // ｶﾞﾗｽ作製・乾燥_削除処理
-            deleteSrGlasskanso(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo8, edaban);
+            deleteSrGlasskanso(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo9, edaban);
 
             DbUtils.commitAndCloseQuietly(conDoc);
             DbUtils.commitAndCloseQuietly(conQcdb);
@@ -1041,10 +1038,11 @@ public class GXHDO102B003 implements IFormLogic {
         String lotNo = (String) session.getAttribute("lotNo");
         int paramJissekino = (Integer) session.getAttribute("jissekino");
         String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
+        String tantoshaCd = (String) session.getAttribute("tantoshaCd");
 
         // エラーメッセージリスト
         List<String> errorMessageList = processData.getInitMessageList();
-
+        
         // 設計情報の取得
         Map mkSekkeiData = this.loadMkSekkeiData(queryRunnerQcdb, queryRunnerWip, lotNo);
         if (mkSekkeiData == null || mkSekkeiData.isEmpty()) {
@@ -1054,36 +1052,18 @@ public class GXHDO102B003 implements IFormLogic {
             processData.setInitMessageList(errorMessageList);
             return processData;
         }
-
-        // ②仕掛情報取得処理
-        //Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
-        //1.前工程WIPから仕掛情報を取得する。 
-        //  仮データ
-        Map<String, String> shikakariData = new HashMap<>();
-        shikakariData.put("hinmei", "品名123");
-        shikakariData.put("lotkubuncode", "2002");
-        shikakariData.put("lotno", "82001240");
-        shikakariData.put("oyalotedaban", "006");
-
+        
+        // ②前工程WIPから仕掛情報を取得処理
+        Map shikakariData = loadShikakariDataFromWip(queryRunnerDoc, tantoshaCd,lotNo);
+        
         if (shikakariData == null || shikakariData.isEmpty()) {
             errorMessageList.add(MessageUtil.getMessage("XHD-000029"));
         }
-        String lotkubuncode = StringUtil.nullToBlank(getMapData(shikakariData, "lotkubuncode")); // ﾛｯﾄ区分ｺｰﾄﾞ
-        String hinmei = StringUtil.nullToBlank(getMapData(shikakariData, "hinmei"));// 品名
-        String oyalotedaban = StringUtil.nullToBlank(getMapData(shikakariData, "oyalotedaban"));// 親ﾛｯﾄ枝番
-        String lotno = StringUtil.nullToBlank(getMapData(shikakariData, "lotno"));// LotNo
-        Map hiddenMap = processData.getHiddenDataMap();
-        hiddenMap.put("lotkubuncode", lotkubuncode);
-        hiddenMap.put("hinmei", hinmei);
-        hiddenMap.put("oyalotedaban", oyalotedaban);
-        hiddenMap.put("lotno", lotno);
-
-        // ﾛｯﾄ区分ﾏｽﾀ情報の取得
-        Map lotKbnMasData = loadLotKbnMas(queryRunnerWip, lotkubuncode);
-        if (lotKbnMasData == null || lotKbnMasData.isEmpty()) {
+        // ﾛｯﾄ区分チェック
+        String lotkubun = (String) shikakariData.get("lotkubun");
+        if (StringUtil.isEmpty(lotkubun)) {
             errorMessageList.add(MessageUtil.getMessage("XHD-000015"));
         }
-
         // 入力項目の情報を画面にセットする。
         if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId, paramJissekino)) {
             // エラー発生時は処理を中断
@@ -1092,7 +1072,7 @@ public class GXHDO102B003 implements IFormLogic {
             return processData;
         }
         // 画面に取得した情報をセットする。(入力項目以外)
-        setViewItemData(processData, lotKbnMasData, shikakariData, lotNo);
+        setViewItemData(processData, shikakariData, lotNo);
         // 画面のラベル項目の値の背景色を取得できない場合、デフォルト値を設置
         processData.getItemList().stream().map((item) -> {
             if ((item.isRender1() || item.isRenderLinkButton()) && !"".equals(StringUtil.nullToBlank(item.getKikakuChi()))) {
@@ -1127,7 +1107,7 @@ public class GXHDO102B003 implements IFormLogic {
      */
     private Map loadMkSekkeiData(QueryRunner queryRunnerQcdb, QueryRunner queryRunnerWip, String lotNo) throws SQLException {
         String lotNo1 = lotNo.substring(0, 3);
-        String lotNo2 = lotNo.substring(3, 11);
+        String lotNo2 = lotNo.substring(3, 12);
         // 設計データの取得
         return CommonUtil.getMkSekkeiInfo(queryRunnerQcdb, queryRunnerWip, lotNo1, lotNo2, "001");
     }
@@ -1137,25 +1117,28 @@ public class GXHDO102B003 implements IFormLogic {
      *
      * @param processData 処理制御データ
      * @param sekkeiData 設計データ
-     * @param lotKbnMasData ﾛｯﾄ区分ﾏｽﾀデータ
      * @param ownerMasData ｵｰﾅｰﾏｽﾀデータ
      * @param shikakariData 仕掛データ
      * @param lotNo ﾛｯﾄNo
      */
-    private void setViewItemData(ProcessData processData, Map lotKbnMasData, Map shikakariData, String lotNo) {
+    private void setViewItemData(ProcessData processData, Map shikakariData, String lotNo) {
         // ロットNo
         this.setItemData(processData, GXHDO102B003Const.WIPLOTNO, lotNo);
         // ｶﾞﾗｽ品名
         this.setItemData(processData, GXHDO102B003Const.GLASSHINMEI, StringUtil.nullToBlank(getMapData(shikakariData, "hinmei")));
-        // ｶﾞﾗｽLotNo TODO
+        // ｶﾞﾗｽLotNo
         this.setItemData(processData, GXHDO102B003Const.GLASSLOTNO, StringUtil.nullToBlank(getMapData(shikakariData, "lotno")));
         // ﾛｯﾄ区分
         String lotkubuncode = StringUtil.nullToBlank(getMapData(shikakariData, "lotkubuncode"));
+        // ﾛｯﾄ区分名称
+        String lotkubun = StringUtil.nullToBlank(getMapData(shikakariData, "lotkubun"));
         if (StringUtil.isEmpty(lotkubuncode)) {
             this.setItemData(processData, GXHDO102B003Const.LOTKUBUN, "");
         } else {
-            String lotKubun = StringUtil.nullToBlank(getMapData(lotKbnMasData, "lotkubun"));
-            this.setItemData(processData, GXHDO102B003Const.LOTKUBUN, lotkubuncode + ":" + lotKubun);
+            if (!StringUtil.isEmpty(lotkubun)) {
+                lotkubuncode = lotkubuncode + ":" + lotkubun;
+            }
+            this.setItemData(processData, GXHDO102B003Const.LOTKUBUN, lotkubuncode);
         }
     }
 
@@ -1178,12 +1161,12 @@ public class GXHDO102B003 implements IFormLogic {
         String rev = "";
         String jotaiFlg = "";
         String kojyo = lotNo.substring(0, 3);
-        String lotNo8 = lotNo.substring(3, 11);
-        String edaban = lotNo.substring(11, 14);
+        String lotNo9 = lotNo.substring(3, 12);
+        String edaban = lotNo.substring(12, 15);
 
         for (int i = 0; i < 5; i++) {
             // (3)[原材料品質DB登録実績]から、ﾃﾞｰﾀを取得
-            Map fxhdd11RevInfo = loadFxhdd11RevInfo(queryRunnerDoc, kojyo, lotNo8, edaban, jissekino, formId);
+            Map fxhdd11RevInfo = loadFxhdd11RevInfo(queryRunnerDoc, kojyo, lotNo9, edaban, jissekino, formId);
             rev = StringUtil.nullToBlank(getMapData(fxhdd11RevInfo, "rev"));
             jotaiFlg = StringUtil.nullToBlank(getMapData(fxhdd11RevInfo, "jotai_flg"));
 
@@ -1202,7 +1185,7 @@ public class GXHDO102B003 implements IFormLogic {
             }
 
             // ｶﾞﾗｽ作製・乾燥データ取得
-            srGlasskansoList = getSrGlasskansoData(queryRunnerQcdb, rev, jotaiFlg, kojyo, lotNo8, edaban);
+            srGlasskansoList = getSrGlasskansoData(queryRunnerQcdb, rev, jotaiFlg, kojyo, lotNo9, edaban);
             if (srGlasskansoList.isEmpty()) {
                 //該当データが取得できなかった場合は処理を繰り返す。
                 continue;
@@ -1306,57 +1289,28 @@ public class GXHDO102B003 implements IFormLogic {
     }
 
     /**
-     * [ﾛｯﾄ区分ﾏｽﾀｰ]から、ﾛｯﾄ区分を取得
-     *
-     * @param queryRunnerDoc QueryRunnerオブジェクト
-     * @param lotKubunCode ﾛｯﾄ区分ｺｰﾄﾞ(検索キー)
-     * @return 取得データ
-     * @throws SQLException 例外エラー
-     */
-    private Map loadLotKbnMas(QueryRunner queryRunnerDoc, String lotKubunCode) throws SQLException {
-
-        // 設計データの取得
-        String sql = "SELECT lotkubun "
-                + "FROM lotkumas "
-                + "WHERE lotkubuncode = ?";
-
-        List<Object> params = new ArrayList<>();
-        params.add(lotKubunCode);
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
-    }
-
-    /**
      * 前工程WIPから仕掛情報を取得する。
      *
-     * @param queryRunnerWip QueryRunnerオブジェクト
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param tantoshaCd 担当者コード
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private Map loadShikakariData(QueryRunner queryRunnerWip, String lotNo) throws SQLException {
-        String lotNo1 = lotNo.substring(0, 3);
-        String lotNo2 = lotNo.substring(3, 11);
-        String lotNo3 = lotNo.substring(11, 14);
-
-        // 仕掛情報データの取得
-        String sql = "SELECT kcpno, lotno, oyalotedaban, tokuisaki, lotkubuncode, ownercode, tanijuryo "
-                + " FROM sikakari WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
-
-        List<Object> params = new ArrayList<>();
-        params.add(lotNo1);
-        params.add(lotNo2);
-        params.add(lotNo3);
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        Map shikakariData = queryRunnerWip.query(sql, new MapHandler(), params.toArray());
-        // TODO
-        // 前工程WIPから取得した品名
-        if (shikakariData != null) {
-            shikakariData.put("hinmei", "品名123");
+    private Map loadShikakariDataFromWip(QueryRunner queryRunnerDoc, String tantoshaCd, String lotNo) throws SQLException {
+        List<SikakariJson> sikakariList = CommonUtil.getMwipResult(queryRunnerDoc, tantoshaCd, lotNo);
+        SikakariJson sikakariObj = null;
+        Map shikakariData = new HashMap();
+        if (sikakariList!= null) {
+            sikakariObj = sikakariList.get(0);
+            // 前工程WIPから取得した品名
+            shikakariData.put("hinmei", sikakariObj.getHinmei());
+            shikakariData.put("oyalotedaban", sikakariObj.getOyaLotEdaBan());
+            shikakariData.put("lotkubuncode", sikakariObj.getLotKubunCode());
+            shikakariData.put("lotkubun", sikakariObj.getLotkubun());
+            shikakariData.put("lotno", sikakariObj.getConventionalLot());
         }
-
+        
         return shikakariData;
     }
 

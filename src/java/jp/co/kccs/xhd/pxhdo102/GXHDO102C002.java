@@ -17,7 +17,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.sql.DataSource;
 import jp.co.kccs.xhd.db.model.FXHDD01;
-import jp.co.kccs.xhd.model.GXHDO102C001Model;
+import jp.co.kccs.xhd.model.GXHDO102C002Model;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
 import jp.co.kccs.xhd.util.NumberUtil;
@@ -32,7 +32,7 @@ import org.apache.commons.dbutils.handlers.MapHandler;
  * <br>
  * システム名	品質DB(コンデンサ)<br>
  * <br>
- * 変更日	2021/09/10<br>
+ * 変更日	2021/09/22<br>
  * 計画書No	MB2101-DK002<br>
  * 変更者	KCSS wxf<br>
  * 変更理由	新規作成<br>
@@ -40,16 +40,16 @@ import org.apache.commons.dbutils.handlers.MapHandler;
  * ===============================================================================<br>
  */
 /**
- * GXHDO102C001(ｶﾞﾗｽ作製・秤量入力)
+ * GXHDO102C002(ｶﾞﾗｽｽﾗﾘｰ作製・秤量入力)
  *
  * @author KCSS wxf
- * @since 2021/09/10
+ * @since 2021/09/22
  */
-@ManagedBean(name = "beanGXHDO102C001")
+@ManagedBean(name = "beanGXHDO102C002")
 @SessionScoped
-public class GXHDO102C001 implements Serializable {
+public class GXHDO102C002 implements Serializable {
 
-    private static final Logger LOGGER = Logger.getLogger(GXHDO102C001.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GXHDO102C002.class.getName());
 
     /**
      * DataSource(DocumentServer)
@@ -81,26 +81,19 @@ public class GXHDO102C001 implements Serializable {
     private Integer errorTabIndex;
 
     /**
-     * ｶﾞﾗｽ作製・秤量入力サブ画面用データ
+     * ｶﾞﾗｽｽﾗﾘｰ作製・秤量入力サブ画面用データ
      */
-    private GXHDO102C001Model gxhdO102c001Model;
+    private GXHDO102C002Model gxhdO102c002Model;
 
     /**
-     * ｶﾞﾗｽ作製・秤量入力サブ画面用データ(表示制御用)
+     * ｶﾞﾗｽｽﾗﾘｰ作製・秤量入力サブ画面用データ(表示制御用)
      */
-    private GXHDO102C001Model gxhdO102c001ModelView;
+    private GXHDO102C002Model gxhdO102c002ModelView;
 
     /**
      * コンストラクタ
      */
-    public GXHDO102C001() {
-    }
-
-    /**
-     * Cancelボタン押下時の処理を行う。
-     */
-    public void doCancel() {
-        this.setGxhdO102c001ModelView(this.getGxhdO102c001Model());
+    public GXHDO102C002() {
     }
 
     /**
@@ -115,8 +108,7 @@ public class GXHDO102C001 implements Serializable {
             context.addCallbackParam("firstParam", "error" + getErrorTabIndex());
             return;
         }
-
-        this.setGxhdO102c001Model(this.getGxhdO102c001ModelView());
+        GXHDO102C002Logic.cloneViewShowsubgamendataToPotto(this.getGxhdO102c002ModelView(), this.getGxhdO102c002Model());
     }
 
     /**
@@ -126,73 +118,47 @@ public class GXHDO102C001 implements Serializable {
      */
     private boolean checkOK() {
 
+        GXHDO102C002Model.C002SubGamenData showsubgamendata = this.getGxhdO102c002ModelView().getShowsubgamendata();
         // 背景色をクリア
-        GXHDO102C001Logic.clearBackColor(this.getGxhdO102c001ModelView());
+        GXHDO102C002Logic.clearBackColor(this.getGxhdO102c002ModelView());
         setErrorTabIndex(0);
-        if (this.getGxhdO102c001ModelView().isSub1DataRendered()) {
-            // 【材料品名1】ﾘﾝｸ押下時、サブ画面の部材①タブデータリスト
-            List<FXHDD01> subDataBuzaitab1List = this.getGxhdO102c001ModelView().getSub1DataBuzaitab1();
-            // 【材料品名1】ﾘﾝｸ押下時、サブ画面の部材②タブデータリスト
-            List<FXHDD01> subDataBuzaitab2List = this.getGxhdO102c001ModelView().getSub1DataBuzaitab2();
-            // 【部材在庫No1】ﾛｽﾄﾌｫｰｶｽ時のチェック処理
-            if (!buzainoCheck(subDataBuzaitab1List.get(1), "1")) {
-                setErrorTabIndex(1);
-                return false;
-            }
-            // サブ画面の部材①の調合量のチェック処理
-            if (!checkBuzaitab(subDataBuzaitab1List)) {
-                setErrorTabIndex(1);
-                return false;
-            }
+        // 【材料品名1】ﾘﾝｸ押下時、サブ画面の部材①タブデータリスト
+        List<FXHDD01> subDataBuzaitab1List = showsubgamendata.getSubDataBuzaitab1();
+        // 【材料品名1】ﾘﾝｸ押下時、サブ画面の部材②タブデータリスト
+        List<FXHDD01> subDataBuzaitab2List = showsubgamendata.getSubDataBuzaitab2();
+        // 【部材在庫No1】ﾛｽﾄﾌｫｰｶｽ時のチェック処理
+        if (!buzainoCheck(subDataBuzaitab1List.get(1), "1")) {
+            setErrorTabIndex(1);
+            return false;
+        }
+        // サブ画面の部材①の調合量のチェック処理
+        if (!checkBuzaitab(subDataBuzaitab1List)) {
+            setErrorTabIndex(1);
+            return false;
+        }
 
-            // 【部材在庫No2】ﾛｽﾄﾌｫｰｶｽ時のチェック処理
-            if (!buzainoCheck(subDataBuzaitab2List.get(1), "2")) {
-                setErrorTabIndex(2);
-                return false;
-            }
-            // サブ画面の部材②の調合量のチェック処理
-            if (!checkBuzaitab(subDataBuzaitab2List)) {
-                setErrorTabIndex(2);
-                return false;
-            }
-        } else if (this.getGxhdO102c001ModelView().isSub2DataRendered()) {
-            // 【材料品名1】ﾘﾝｸ押下時、サブ画面の部材①タブデータリスト
-            List<FXHDD01> subDataBuzaitab1List = this.getGxhdO102c001ModelView().getSub2DataBuzaitab1();
-            // 【材料品名1】ﾘﾝｸ押下時、サブ画面の部材②タブデータリスト
-            List<FXHDD01> subDataBuzaitab2List = this.getGxhdO102c001ModelView().getSub2DataBuzaitab2();
-            // 【部材在庫No1】ﾛｽﾄﾌｫｰｶｽ時のチェック処理
-            if (!buzainoCheck(subDataBuzaitab1List.get(1), "1")) {
-                setErrorTabIndex(1);
-                return false;
-            }
-            // サブ画面の部材①の調合量のチェック処理
-            if (!checkBuzaitab(subDataBuzaitab1List)) {
-                setErrorTabIndex(1);
-                return false;
-            }
-
-            // 【部材在庫No2】ﾛｽﾄﾌｫｰｶｽ時のチェック処理
-            if (!buzainoCheck(subDataBuzaitab2List.get(1), "2")) {
-                setErrorTabIndex(2);
-                return false;
-            }
-            // サブ画面の部材②の調合量のチェック処理
-            if (!checkBuzaitab(subDataBuzaitab2List)) {
-                setErrorTabIndex(2);
-                return false;
-            }
+        // 【部材在庫No2】ﾛｽﾄﾌｫｰｶｽ時のチェック処理
+        if (!buzainoCheck(subDataBuzaitab2List.get(1), "2")) {
+            setErrorTabIndex(2);
+            return false;
+        }
+        // サブ画面の部材②の調合量のチェック処理
+        if (!checkBuzaitab(subDataBuzaitab2List)) {
+            setErrorTabIndex(2);
+            return false;
         }
 
         return true;
     }
 
     /**
-     * ｶﾞﾗｽ作製・秤量入力_サブ画面の調合残量計算処理
+     * ｶﾞﾗｽｽﾗﾘｰ作製・秤量入力_サブ画面の調合残量計算処理
      *
      */
     public void doTyogouzanryouKeisan() {
         //サブ画面の調合残量の計算処理
-        GXHDO102C001Logic.calcTyogouzanryou(this.getGxhdO102c001ModelView());
+        GXHDO102C002Logic.calcTyogouzanryou(this.getGxhdO102c002ModelView());
+        GXHDO102C002Logic.cloneViewShowsubgamendataToShow(this.getGxhdO102c002ModelView(), this.getGxhdO102c002Model());
     }
 
     /**
@@ -229,7 +195,7 @@ public class GXHDO102C001 implements Serializable {
         }
 
         // 偶数行に調合量が入力されている場合、該当行の前の行に0が入力されていること。
-        if ((StringUtil.isEmpty(item1.getValue()) || !NumberUtil.isZero(item1.getValue())) && !StringUtil.isEmpty(item2.getValue())) {
+        if (!NumberUtil.isZero(item1.getValue()) && !StringUtil.isEmpty(item2.getValue())) {
             setError(item1, "XHD-000222");
             return false;
         }
@@ -245,15 +211,17 @@ public class GXHDO102C001 implements Serializable {
     public void dobuzainoOnblur(FXHDD01 itemBuzaino, String subTabNo) {
         this.setIsFormError(false);
         // 背景色をクリア
-        GXHDO102C001Logic.clearBackColor(this.getGxhdO102c001ModelView());
+        GXHDO102C002Logic.clearBackColor(this.getGxhdO102c002ModelView());
         if (!buzainoCheck(itemBuzaino, subTabNo)) {
             this.setIsFormError(true);
             // エラーの場合はコールバック変数に"error"をセット
             RequestContext context = RequestContext.getCurrentInstance();
             context.addCallbackParam("firstParam", "error");
+            return;
         }
+        GXHDO102C002Logic.cloneViewShowsubgamendataToShow(this.getGxhdO102c002ModelView(), this.getGxhdO102c002Model());
     }
-
+    
     /**
      * 【部材在庫No】ﾛｽﾄﾌｫｰｶｽ時のチェック処理
      *
@@ -266,7 +234,7 @@ public class GXHDO102C001 implements Serializable {
             return true;
         }
         // 部材在庫品名の値をクリア
-        setBuzaihinmeiVal(this.getGxhdO102c001ModelView(), subTabNo, "");
+        setBuzaihinmeiVal(this.getGxhdO102c002ModelView(), subTabNo, "");
         // 【部材在庫No1】ﾛｽﾄﾌｫｰｶｽ時、部材在庫No1の型ﾁｪｯｸ
         if (StringUtil.getLength(itemBuzaino.getValue()) != 9) {
             setError(itemBuzaino, "XHD-000004", itemBuzaino.getLabel1(), "9");
@@ -280,22 +248,14 @@ public class GXHDO102C001 implements Serializable {
         }
         String hinmei = StringUtil.nullToBlank(fmlad01Data.get("hinmei"));
         Timestamp yukokigen = (Timestamp) fmlad01Data.get("yukokigen");
+        GXHDO102C002Model.C002SubGamenData showsubgamendata = this.getGxhdO102c002ModelView().getShowsubgamendata();
         FXHDD01 itemZairyohinmei;
         // 品名のチェック: 取得した品名と材料品名が一致していること
-        if (this.getGxhdO102c001ModelView().isSub1DataRendered()) {
-            if ("1".equals(subTabNo)) {
-                // 材料品名
-                itemZairyohinmei = this.getGxhdO102c001ModelView().getSub1DataBuzaitab1().get(0);
-            } else {
-                itemZairyohinmei = this.getGxhdO102c001ModelView().getSub1DataBuzaitab2().get(0);
-            }
+        if ("1".equals(subTabNo)) {
+            // 材料品名
+            itemZairyohinmei = showsubgamendata.getSubDataBuzaitab1().get(0);
         } else {
-            if ("1".equals(subTabNo)) {
-                // 材料品名
-                itemZairyohinmei = this.getGxhdO102c001ModelView().getSub2DataBuzaitab1().get(0);
-            } else {
-                itemZairyohinmei = this.getGxhdO102c001ModelView().getSub2DataBuzaitab2().get(0);
-            }
+            itemZairyohinmei = showsubgamendata.getSubDataBuzaitab2().get(0);
         }
         String zairyohinmei = StringUtil.nullToBlank(itemZairyohinmei.getValue());
         if (!zairyohinmei.equals(hinmei)) {
@@ -311,7 +271,7 @@ public class GXHDO102C001 implements Serializable {
             return false;
         }
         // 部材在庫ﾃﾞｰﾀから取得した品名は部材在庫品名に設定
-        setBuzaihinmeiVal(this.getGxhdO102c001ModelView(), subTabNo, hinmei);
+        setBuzaihinmeiVal(this.getGxhdO102c002ModelView(), subTabNo, hinmei);
 
         return true;
     }
@@ -319,23 +279,17 @@ public class GXHDO102C001 implements Serializable {
     /**
      * 部材在庫品名の値を設定
      *
-     * @param gxhdo102c001model モデルデータ
+     * @param gxhdo102c002model モデルデータ
      * @param subTabNo タブインデックス
+     * @param hinmei 在庫品名
      */
-    private void setBuzaihinmeiVal(GXHDO102C001Model gxhdo102c001model, String subTabNo, String hinmei) {
+    private void setBuzaihinmeiVal(GXHDO102C002Model gxhdo102c002model, String subTabNo, String hinmei) {
+        GXHDO102C002Model.C002SubGamenData showsubgamendata = gxhdo102c002model.getShowsubgamendata();
         // 部材在庫品名の値を設定
-        if (gxhdo102c001model.isSub1DataRendered()) {
-            if ("1".equals(subTabNo)) {
-                gxhdo102c001model.getSub1DataBuzaitab1().get(2).setValue(hinmei);
-            } else if ("2".equals(subTabNo)) {
-                gxhdo102c001model.getSub1DataBuzaitab2().get(2).setValue(hinmei);
-            }
-        } else if (gxhdo102c001model.isSub2DataRendered()) {
-            if ("1".equals(subTabNo)) {
-                gxhdo102c001model.getSub2DataBuzaitab1().get(2).setValue(hinmei);
-            } else if ("2".equals(subTabNo)) {
-                gxhdo102c001model.getSub2DataBuzaitab2().get(2).setValue(hinmei);
-            }
+        if ("1".equals(subTabNo)) {
+            showsubgamendata.getSubDataBuzaitab1().get(2).setValue(hinmei);
+        } else if ("2".equals(subTabNo)) {
+            showsubgamendata.getSubDataBuzaitab2().get(2).setValue(hinmei);
         }
     }
     
@@ -366,7 +320,7 @@ public class GXHDO102C001 implements Serializable {
     /**
      * エラーセット
      *
-     * @param itemData ｶﾞﾗｽ作製・秤量入力サブ画面
+     * @param itemData ｶﾞﾗｽｽﾗﾘｰ作製・秤量入力サブ画面
      * @param errorId エラーID
      * @param errParams エラーパラメータ
      */
@@ -491,38 +445,38 @@ public class GXHDO102C001 implements Serializable {
     }
 
     /**
-     * ｶﾞﾗｽ作製・秤量入力サブ画面用データ
+     * ｶﾞﾗｽｽﾗﾘｰ作製・秤量入力サブ画面用データ
      *
-     * @return the gxhdO102c001Model
+     * @return the gxhdO102c002Model
      */
-    public GXHDO102C001Model getGxhdO102c001Model() {
-        return gxhdO102c001Model;
+    public GXHDO102C002Model getGxhdO102c002Model() {
+        return gxhdO102c002Model;
     }
 
     /**
-     * ｶﾞﾗｽ作製・秤量入力サブ画面用データ
+     * ｶﾞﾗｽｽﾗﾘｰ作製・秤量入力サブ画面用データ
      *
-     * @param gxhdO102c001Model the gxhdO102c001Model to set
+     * @param gxhdO102c002Model the gxhdO102c002Model to set
      */
-    public void setGxhdO102c001Model(GXHDO102C001Model gxhdO102c001Model) {
-        this.gxhdO102c001Model = gxhdO102c001Model;
+    public void setGxhdO102c002Model(GXHDO102C002Model gxhdO102c002Model) {
+        this.gxhdO102c002Model = gxhdO102c002Model;
     }
 
     /**
-     * ｶﾞﾗｽ作製・秤量入力サブ画面用データ(表示制御用)
+     * ｶﾞﾗｽｽﾗﾘｰ作製・秤量入力サブ画面用データ(表示制御用)
      *
-     * @return the gxhdO102c001ModelView
+     * @return the gxhdO102c002ModelView
      */
-    public GXHDO102C001Model getGxhdO102c001ModelView() {
-        return gxhdO102c001ModelView;
+    public GXHDO102C002Model getGxhdO102c002ModelView() {
+        return gxhdO102c002ModelView;
     }
 
     /**
-     * ｶﾞﾗｽ作製・秤量入力サブ画面用データ(表示制御用)
+     * ｶﾞﾗｽｽﾗﾘｰ作製・秤量入力サブ画面用データ(表示制御用)
      *
-     * @param gxhdO102c001ModelView the gxhdO102c001ModelView to set
+     * @param gxhdO102c002ModelView the gxhdO102c002ModelView to set
      */
-    public void setGxhdO102c001ModelView(GXHDO102C001Model gxhdO102c001ModelView) {
-        this.gxhdO102c001ModelView = gxhdO102c001ModelView;
+    public void setGxhdO102c002ModelView(GXHDO102C002Model gxhdO102c002ModelView) {
+        this.gxhdO102c002ModelView = gxhdO102c002ModelView;
     }
 }

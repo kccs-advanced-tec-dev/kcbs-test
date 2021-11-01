@@ -24,6 +24,7 @@ import javax.sql.DataSource;
 import jp.co.kccs.xhd.GetModel;
 import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.db.model.FXHDM01;
+import jp.co.kccs.xhd.db.model.SikakariJson;
 import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
@@ -65,7 +66,7 @@ public class GXHDO102A implements Serializable {
 
     private static final Logger LOGGER = Logger.getLogger(GXHDO102A.class.getName());
     private static final String CHARSET = "MS932";
-    private static final int LOTNO_BYTE = 14;
+    private static final int LOTNO_BYTE = 15;
     private static final int TANTOSHA_CODE_BYTE = 6;
 
     /**
@@ -222,22 +223,12 @@ public class GXHDO102A implements Serializable {
                 return null;
             }
 
-            // ﾛｯﾄNoのﾁｪｯｸﾃﾞｼﾞｯﾄﾁｪｯｸ
             ValidateUtil validateUtil = new ValidateUtil();
-            String retMsg = validateUtil.checkValueE001(strGamenLotNo);
 
-            if (!StringUtil.isEmpty(retMsg)) {
-                setMenuTableRender(false);
-                setErrorMessage(retMsg);
-                FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, getErrorMessage(), null);
-                facesContext.addMessage(null, message);
-                return null;
-            }
-
-            // ﾛｯﾄNo仕掛存在ﾁｪｯｸ
             QueryRunner queryRunnerWip = new QueryRunner(dataSourceWip);
 
-            Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
+            // 前工程WIPから仕掛情報を取得する。
+            Map shikakariData = loadShikakariData(this.tantoshaCd, lotNo);
             if (shikakariData == null || shikakariData.isEmpty()) {
                 setMenuTableRender(false);
                 setErrorMessage(MessageUtil.getMessage("XHD-000039"));
@@ -247,7 +238,7 @@ public class GXHDO102A implements Serializable {
             }
 
             // 担当者ﾏｽﾀﾁｪｯｸ
-            retMsg = validateUtil.checkT002("担当者ｺｰﾄﾞ", this.tantoshaCd, queryRunnerWip);
+            String retMsg = validateUtil.checkT002("担当者ｺｰﾄﾞ", this.tantoshaCd, queryRunnerWip);
             if (!StringUtil.isEmpty(retMsg)) {
                 setMenuTableRender(false);
                 setErrorMessage(retMsg);
@@ -258,8 +249,8 @@ public class GXHDO102A implements Serializable {
 
             // 設計情報の取得
             String strKojyo = strGamenLotNo.substring(0, 3);
-            String strLotNo = strGamenLotNo.substring(3, 11);
-            String strEdaban = strGamenLotNo.substring(11, 14);
+            String strLotNo = strGamenLotNo.substring(3, 12);
+            String strEdaban = strGamenLotNo.substring(12, 15);
 
             QueryRunner queryRunnerXHD = new QueryRunner(dataSourceXHD);
 
@@ -696,8 +687,8 @@ public class GXHDO102A implements Serializable {
      */
     private Map getMaeKoteiInfo(String maeKoteiGamenId, int maeKoteiJissekiNo) throws SQLException {
         String strKojyo = this.searchLotNo.substring(0, 3);
-        String strLotNo = this.searchLotNo.substring(3, 11);
-        String strEdaban = this.searchLotNo.substring(11, 14);
+        String strLotNo = this.searchLotNo.substring(3, 12);
+        String strEdaban = this.searchLotNo.substring(12, 15);
         QueryRunner queryRunnerDoc = new QueryRunner(dataSourceDocServer);
         QueryRunner queryRunnerWip = new QueryRunner(dataSourceWip);
         QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
@@ -956,31 +947,30 @@ public class GXHDO102A implements Serializable {
     }
 
     /**
-     * 仕掛データ検索
+     * 前工程WIPから仕掛情報を取得する。
      *
-     * @param queryRunnerWip QueryRunnerオブジェクト
+     * @param tantoshaCd 担当者コード
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private Map loadShikakariData(QueryRunner queryRunnerWip, String lotNo) throws SQLException {
-        String lotNo1 = lotNo.substring(0, 3);
-        String lotNo2 = lotNo.substring(3, 11);
-        String lotNo3 = lotNo.substring(11, 14);
+    private Map loadShikakariData(String tantoshaCd, String lotNo) throws SQLException {
+        QueryRunner queryRunnerDoc = new QueryRunner(dataSourceDocServer);
+        List<SikakariJson> sikakariList = CommonUtil.getMwipResult(queryRunnerDoc, tantoshaCd, lotNo);
+        SikakariJson sikakariObj = null;
+        Map shikakariData = new HashMap();
+        if (sikakariList != null) {
+            sikakariObj = sikakariList.get(0);
+            // 前工程WIPから取得した品名
+            shikakariData.put("hinmei", sikakariObj.getHinmei());
+            shikakariData.put("oyalotedaban", sikakariObj.getOyaLotEdaBan());
+            shikakariData.put("lotkubuncode", sikakariObj.getLotKubunCode());
+            shikakariData.put("lotno", sikakariObj.getConventionalLot());
+        }
 
-        // 仕掛情報データの取得
-        String sql = " SELECT kcpno, oyalotedaban, suuryo, torikosuu, lotkubuncode, ownercode, tokuisaki "
-                + " FROM sikakari WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
-
-        List<Object> params = new ArrayList<>();
-        params.add(lotNo1);
-        params.add(lotNo2);
-        params.add(lotNo3);
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerWip.query(sql, new MapHandler(), params.toArray());
+        return shikakariData;
     }
-
+    
     /**
      * 繰り返しメニュー追加処理
      *
