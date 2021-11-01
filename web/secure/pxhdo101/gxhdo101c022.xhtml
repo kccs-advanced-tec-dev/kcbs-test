@@ -8,9 +8,8 @@
         <meta http-equiv="Pragma" content="no-cache"/>
         <meta http-equiv="Cache-Control" content="no-cache"/>
         <meta http-equiv="Expires" content="0"/>
-        <title>#{myParam.application_id} #{gXHDO901A.titleInfo.formName}</title>
+        <title>ﾃｰﾋﾟﾝｸﾞ号機選択</title>
         <link href="#{request.contextPath}/resources/css/growllarge.css" rel="stylesheet" type="text/css"/>
-        <link href="#{request.contextPath}/resources/css/gxhco901a.css" rel="stylesheet" type="text/css"/>
         <link href="#{request.contextPath}/resources/css/errordialog.css" rel="stylesheet" type="text/css"/>
         <h:outputScript library="primefaces" name="jquery/jquery.js" />
         <script src="#{request.contextPath}/resources/js/locUpload.js"></script>
@@ -43,17 +42,17 @@
             }        
         </style>
     </h:head>
-    <h:body id="inputbody" onload="inputRelease(); #{gXHDO901A.onLoadProcess}" style="pointer-events: none;" >
+    <h:body id="inputbody" style="pointer-events: none;"  onload="inputRelease();">
         <f:metadata>
-            <f:viewAction action="#{gXHDO901A.init()}"/>
+            <f:viewAction action="#{gXHDO101C022.initial()}"/>
         </f:metadata>
         
         <div style="margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;">
-        <h:outputText style="background:#{gXHDO901A.titleInfo.bgColor};color: #{gXHDO901A.titleInfo.fontColor}; 
-            font-size:#{gXHDO901A.titleInfo.fontSize}px;" value="#{gXHDO901A.titleInfo.formName}"/>
+        <h:outputText value="ﾃｰﾋﾟﾝｸﾞ号機選択"/>
         </div>
     
         <h:form id="form" onkeypress="if (event.keyCode === 13) { return false; }" >
+            <p:growl id="growlMessage" showDetail="false" sticky="true"  escape="false"/>
             <div  style="margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;">
             <div id="mainForm" style="width:#{adjustModels.menuWidth}px;">
             <p:dataTable id="tourokuNoTable" var="item"
