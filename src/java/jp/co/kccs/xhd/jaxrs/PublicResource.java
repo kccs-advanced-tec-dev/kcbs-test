@@ -1247,8 +1247,10 @@ public class PublicResource {
             // 秤量号機　4桁  重量　5桁以内、数字のみ
             String juryo = param.getJuryo();
             String goki = param.getGoki();
-            String splitJuryo = juryo.substring(0,juryo.indexOf("."));
-            if (!(StringUtil.getLength(goki) == 4 && StringUtil.getLength(juryo) <= 5 && StringUtils.isNumeric(splitJuryo))) {
+            if(juryo.contains(".")){
+                juryo = juryo.substring(0,juryo.indexOf("."));
+            }
+            if (!(StringUtil.getLength(goki) == 4 && StringUtil.getLength(juryo) <= 5 && StringUtils.isNumeric(juryo))) {
                 // ｴﾗｰの場合、HTTPステータスコード「500」を返却する。
                 LOGGER.log(Level.SEVERE, "Inputs are incorrect.");
                 return Response.status(500).build();
@@ -1263,7 +1265,7 @@ public class PublicResource {
                     String goki2 = (String) gokim.get("goki");
                     if (goki2 != null && goki2.equals(goki)) {
                         // 取得できた場合、対象のセッションに重量を送信する。
-                        s.getAsyncRemote().sendText(splitJuryo);
+                        s.getAsyncRemote().sendText(juryo);
                     }
                 }
             }
