@@ -34,7 +34,6 @@
                 g_macAddr = '#{sessionInfo.macAddr}';
                 //location
                 g_location = '#{myMsg.NotAvailable}';
-                g_prgname = 'gxhdo501d.xhtml(#{gXHDO501D.formId})';
 
                 var interval_id = setInterval(getLocation, #{myParam.sendLocInterval});
             });
@@ -71,7 +70,7 @@
     </h:head>
    <h:body style="padding-top:30px;">
         <f:metadata>
-            <f:viewAction action="#{gXHDO501DA.init()}"/>
+            <f:viewAction action="#{gXHDO501D.init()}"/>
         </f:metadata>
         <nav class="navbar  navbar-expand fixed-top navbar-dark" style="background-color:#0E6A89;height: 50px;z-index: 999;">
             <span class="navbar-brand mb-0" style="font-size:18px;font-weight:bold;">#{myMsg.GXHDO501D_GamenTitle}</span>
@@ -89,17 +88,17 @@
             </span>
         </nav>
         <br/>
-        <h:form id="form" style="#{gXHDO501DA.displayStyle}" onkeypress="if (event.keyCode === 13) {
+        <h:form id="form" style="#{gXHDO501D.displayStyle}" onkeypress="if (event.keyCode === 13) {
                     return false;
                 }">
             <div id="mainForm" style="width: 100%;">
             <p:growl id="growlMessage" showDetail="false" sticky="true"  escape="false"/>
             <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
                 <f:facet name="message">
-                    <h:outputText value="#{gXHDO501DA.getWarnMessage()}" escape="false"/>
+                    <h:outputText value="#{gXHDO501D.getWarnMessage()}" escape="false"/>
                 </f:facet>
                 <p:commandButton id="warnOk" value="OK" styleClass="ui-conf-commandbtn-def1"
-                                 actionListener="#{gXHDO501DA.processWarnOkClick()}"
+                                 actionListener="#{gXHDO501D.processWarnOkClick()}"
                                  process="@form"
                                  update="@form"
                                  onclick="PF('cd').hide();"
@@ -116,7 +115,7 @@
                             <h:outputText id="lblLotNo" value="ﾛｯﾄNo" style="width:100px;"/>
                         </td>
                         <td colspan="3">
-                            <p:inputText id="pLotNo" value="#{gXHDO501DA.lotNo}" maxlength="14" style="margin-left:20px; height:26px;" readonly="true"/>
+                            <p:inputText id="pLotNo" value="#{gXHDO501D.lotNo}" maxlength="14" style="margin-left:20px; height:26px;" readonly="true"/>
                         </td>
                     </tr>  
                     <tr>
@@ -124,7 +123,7 @@
                             <h:outputText id="lblSyurui" value="種類" style="width:100px;"/>
                         </td>
                         <td colspan="3">
-                            <p:inputText id="pSyurui" value="#{gXHDO501DA.syurui}" maxlength="20" style="margin-left:20px; height:26px;" readonly="true"/>
+                            <p:inputText id="pSyurui" value="#{gXHDO501D.syurui}" maxlength="20" style="margin-left:20px; height:26px;" readonly="true"/>
                         </td>
                     </tr>
                     <tr>
@@ -132,7 +131,7 @@
                             <h:outputText id="lblPattern" value="ﾊﾟﾀｰﾝ" style="width:100px;"/>
                         </td>
                         <td colspan="3">
-                            <p:inputText id="pPattern" value="#{gXHDO501DA.pattern}" maxlength="6" style="margin-left:20px; height:26px;" readonly="true"/>
+                            <p:inputText id="pPattern" value="#{gXHDO501D.pattern}" maxlength="6" style="margin-left:20px; height:26px;" readonly="true"/>
                         </td>
                     </tr>
                 </table>
@@ -140,21 +139,21 @@
             <p:panel id="buttonpanel" style="border:none;margin-top:-10px;">
                 <p:commandButton id="btnUpdate" style="width:100px;height:25px;font-size:0.7em;margin-left:0px;text-align:center;"
                                 value="修正" 
-                                actionListener="#{gXHDO501DA.confirmUpdate()}"
+                                actionListener="#{gXHDO501D.confirmUpdate()}"
                                 process="@this searchpanel idDataTable"
                                 update="growlMessage confDialog idDataTable"
                                 async="true"
                                 oncomplete="cmdButtonOncomplete(args);"/>
                 <p:commandButton id="btnAddr" style="width:100px;height:25px;font-size:0.7em;margin-left:10px;text-align:center;" 
                             value="追加" 
-                            action="#{gXHDO501DA.addDataRow()}"
+                            action="#{gXHDO501D.addDataRow()}"
                             process="@this idDataTable"
                             update="@form growlMessage idDataTable"
                             />
             </p:panel>
             <div style="margin-top:-15px;">
                 <p:dataTable id="idDataTable" var="item" style="font-size:0.8em;margin-top:20px;" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap"
-                             value="#{gXHDO501DA.listData}" emptyMessage="" >
+                             value="#{gXHDO501D.listData}" emptyMessage="" >
                     <p:column id="kouteimei" headerText="工程名" style=" text-align: center;" >
                         <p:inputText id="pKouteimei" value="#{item.kouteimei}" rendered="#{item.addFlg=='1'}" maxlength="20" style="height:26px;background-color:#{item.kouteimeibgcolor}" />
                         <p:outputLabel rendered="#{item.addFlg!='1'}" value="#{item.kouteimei}"/>
@@ -173,7 +172,7 @@
                     <p:column id="tyekkupattern" headerText="ﾁｪｯｸﾊﾟﾀｰﾝ" style=" text-align: center;background-color:#{item.tyekkupatternbgcolor}">
                         <p:selectOneMenu id="pCmbTyekkupattern"  value="#{item.tyekkupattern}" styleClass="selectMenu" editable="false"  style="height:26px;width:100px">
                                 <f:selectItem itemValue="" itemLabel=""/>
-                                <f:selectItems value="#{gXHDO501DA.cmbTyekkupatternData}" />
+                                <f:selectItems value="#{gXHDO501D.cmbTyekkupatternData}" />
                         </p:selectOneMenu>
                     </p:column>
                     <p:column id="hyoJunKikakuti" headerText="標準規格値" style=" text-align: center;">
@@ -187,10 +186,10 @@
             </div>
             <div>
                 <ui:include src="/secure/common/initMessage.xhtml"/>
-                <t:aliasBean alias="#{gXHDO901ACommon}" value="#{gXHDO501DA}">
+                <t:aliasBean alias="#{gXHDO901ACommon}" value="#{gXHDO501D}">
                     <ui:include src="/secure/pxhdo901/gxhdo901c.xhtml"/>
                 </t:aliasBean>
-                <t:aliasBean alias="#{gXHDO101Common}" value="#{gXHDO501DA}">
+                <t:aliasBean alias="#{gXHDO101Common}" value="#{gXHDO501D}">
                     <ui:include src="/secure/common/compMessage.xhtml"/>
                 </t:aliasBean>
                 <ui:include src="/secure/common/resultMessage.xhtml"/>
