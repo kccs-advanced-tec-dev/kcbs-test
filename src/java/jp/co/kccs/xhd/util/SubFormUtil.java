@@ -115,10 +115,6 @@ public class SubFormUtil {
      * B･Cﾗﾝｸ連絡書一覧画面
      */
     public static final String FORM_ID_GXHDO101C021 = "GXHDO101C021";
-    /**
-     * ﾃｰﾋﾟﾝｸﾞ号機選択画面
-     */
-    public static final String FORM_ID_GXHDO101C022 = "GXHDO101C022";
     
     /**
      * 初期表示メッセージ
@@ -294,13 +290,6 @@ public class SubFormUtil {
                 returnBean = FacesContext.getCurrentInstance().
                         getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
                                 getELContext(), null, "beanGXHDO101C021");
-                break;
-
-            // ﾃｰﾋﾟﾝｸﾞ号機選択
-            case "GXHDO101C022":
-                returnBean = FacesContext.getCurrentInstance().
-                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
-                                getELContext(), null, "beanGXHDO101C022");
                 break;
                 
             // 初期表示メッセージ
