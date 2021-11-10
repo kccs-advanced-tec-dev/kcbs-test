@@ -75,7 +75,7 @@ public class GXHDO102B010Const {
     /**
      * ﾃﾞｽﾊﾟ回転数
      */
-    public static final String DESUBAKAITENSUU = "sr_tenka_premixing_desubakaitensuu";
+    public static final String DESUPAKAITENSUU = "sr_tenka_premixing_desupakaitensuu";
 
     /**
      * 投入①

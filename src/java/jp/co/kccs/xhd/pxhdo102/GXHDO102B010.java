@@ -482,7 +482,7 @@ public class GXHDO102B010 implements IFormLogic {
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
             if (kikakuError.getKikakuchiInputErrorInfoList() != null && !kikakuError.getKikakuchiInputErrorInfoList().isEmpty()) {
-                ValidateUtil.fxhdd04Insert(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, jissekiNo, "0", kikakuError.getKikakuchiInputErrorInfoList());
+                ValidateUtil.fxhdd04Insert102B(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, jissekiNo, "0", kikakuError.getKikakuchiInputErrorInfoList());
             }
             // 処理後はエラーリストをクリア
             kikakuError.setKikakuchiInputErrorInfoList(new ArrayList<>());
@@ -777,7 +777,7 @@ public class GXHDO102B010 implements IFormLogic {
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
             if (kikakuError.getKikakuchiInputErrorInfoList() != null && !kikakuError.getKikakuchiInputErrorInfoList().isEmpty()) {
-                ValidateUtil.fxhdd04Insert(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, jissekiNo, "0", kikakuError.getKikakuchiInputErrorInfoList());
+                ValidateUtil.fxhdd04Insert102B(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, jissekiNo, "0", kikakuError.getKikakuchiInputErrorInfoList());
             }
             // 処理後はエラーリストをクリア
             kikakuError.setKikakuchiInputErrorInfoList(new ArrayList<>());
@@ -931,7 +931,7 @@ public class GXHDO102B010 implements IFormLogic {
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
             if (kikakuError.getKikakuchiInputErrorInfoList() != null && !kikakuError.getKikakuchiInputErrorInfoList().isEmpty()) {
-                ValidateUtil.fxhdd04Insert(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, jissekiNo, "0", kikakuError.getKikakuchiInputErrorInfoList());
+                ValidateUtil.fxhdd04Insert102B(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, jissekiNo, "0", kikakuError.getKikakuchiInputErrorInfoList());
             }
             // 処理後はエラーリストをクリア
             kikakuError.setKikakuchiInputErrorInfoList(new ArrayList<>());
@@ -1223,12 +1223,6 @@ public class GXHDO102B010 implements IFormLogic {
         Map shikakariData = loadShikakariDataFromWip(queryRunnerDoc, tantoshaCd, lotNo);
         if (shikakariData == null || shikakariData.isEmpty()) {
             errorMessageList.add(MessageUtil.getMessage("XHD-000029"));
-        } else {
-            // ﾛｯﾄ区分チェック
-            String lotkubun = (String) shikakariData.get("lotkubun");
-            if (StringUtil.isEmpty(lotkubun)) {
-                errorMessageList.add(MessageUtil.getMessage("XHD-000015"));
-            }
         }
 
         // 入力項目の情報を画面にセットする。
@@ -1579,7 +1573,7 @@ public class GXHDO102B010 implements IFormLogic {
 
         String sql = " SELECT "
                 + " kojyo,lotno,edaban,tenkazaislurryhinmei,tenkazaislurrylotno,lotkubun,kakuhanki,tanku,youzai,senjojikan,"
-                + "shujiku,ponpu,desubakaitensuu,tounyu1,tounyu2,totyukakuhanjikan,totyukakuhankaisinichiji,totyukakuhansyuryonichiji,"
+                + "shujiku,ponpu,desupakaitensuu,tounyu1,tounyu2,totyukakuhanjikan,totyukakuhankaisinichiji,totyukakuhansyuryonichiji,"
                 + "tonyu3,tonyu4,tonyu5,kakuhanjikan,kakuhankaisinichiji,kakuhansyuryonichiji,kaitentai,tantousya,kakuninsya,"
                 + "bikou1,bikou2,torokunichiji,kosinnichiji,revision "
                 + " FROM sr_tenka_premixing "
@@ -1613,7 +1607,7 @@ public class GXHDO102B010 implements IFormLogic {
         mapping.put("senjojikan", "senjojikan");                                  // 洗浄時間
         mapping.put("shujiku", "shujiku");                                        // 主軸
         mapping.put("ponpu", "ponpu");                                            // ﾎﾟﾝﾌﾟ
-        mapping.put("desubakaitensuu", "desubakaitensuu");                        // ﾃﾞｽﾊﾟ回転数
+        mapping.put("desupakaitensuu", "desupakaitensuu");                        // ﾃﾞｽﾊﾟ回転数
         mapping.put("tounyu1", "tounyu1");                                        // 投入①
         mapping.put("tounyu2", "tounyu2");                                        // 投入②
         mapping.put("totyukakuhanjikan", "totyukakuhanjikan");                    // 途中撹拌時間
@@ -1658,7 +1652,7 @@ public class GXHDO102B010 implements IFormLogic {
 
         String sql = " SELECT "
                 + " kojyo,lotno,edaban,tenkazaislurryhinmei,tenkazaislurrylotno,lotkubun,kakuhanki,tanku,youzai,senjojikan,"
-                + "shujiku,ponpu,desubakaitensuu,tounyu1,tounyu2,totyukakuhanjikan,totyukakuhankaisinichiji,totyukakuhansyuryonichiji,"
+                + "shujiku,ponpu,desupakaitensuu,tounyu1,tounyu2,totyukakuhanjikan,totyukakuhankaisinichiji,totyukakuhansyuryonichiji,"
                 + "tonyu3,tonyu4,tonyu5,kakuhanjikan,kakuhankaisinichiji,kakuhansyuryonichiji,kaitentai,tantousya,kakuninsya,"
                 + "bikou1,bikou2,torokunichiji,kosinnichiji,revision,deleteflag "
                 + " FROM tmp_sr_tenka_premixing "
@@ -1693,7 +1687,7 @@ public class GXHDO102B010 implements IFormLogic {
         mapping.put("senjojikan", "senjojikan");                                  // 洗浄時間
         mapping.put("shujiku", "shujiku");                                        // 主軸
         mapping.put("ponpu", "ponpu");                                            // ﾎﾟﾝﾌﾟ
-        mapping.put("desubakaitensuu", "desubakaitensuu");                        // ﾃﾞｽﾊﾟ回転数
+        mapping.put("desupakaitensuu", "desupakaitensuu");                        // ﾃﾞｽﾊﾟ回転数
         mapping.put("tounyu1", "tounyu1");                                        // 投入①
         mapping.put("tounyu2", "tounyu2");                                        // 投入②
         mapping.put("totyukakuhanjikan", "totyukakuhanjikan");                    // 途中撹拌時間
@@ -1909,7 +1903,7 @@ public class GXHDO102B010 implements IFormLogic {
 
         String sql = "INSERT INTO tmp_sr_tenka_premixing ("
                 + " kojyo,lotno,edaban,tenkazaislurryhinmei,tenkazaislurrylotno,lotkubun,kakuhanki,tanku,youzai,senjojikan,shujiku,ponpu,"
-                + "desubakaitensuu,tounyu1,tounyu2,totyukakuhanjikan,totyukakuhankaisinichiji,totyukakuhansyuryonichiji,tonyu3,tonyu4,"
+                + "desupakaitensuu,tounyu1,tounyu2,totyukakuhanjikan,totyukakuhankaisinichiji,totyukakuhansyuryonichiji,tonyu3,tonyu4,"
                 + "tonyu5,kakuhanjikan,kakuhankaisinichiji,kakuhansyuryonichiji,kaitentai,tantousya,kakuninsya,bikou1,bikou2,torokunichiji,"
                 + "kosinnichiji,revision,deleteflag"
                 + " ) VALUES ( "
@@ -1940,7 +1934,7 @@ public class GXHDO102B010 implements IFormLogic {
 
         String sql = "UPDATE tmp_sr_tenka_premixing SET "
                 + " tenkazaislurryhinmei = ?,tenkazaislurrylotno = ?,lotkubun = ?,kakuhanki = ?,tanku = ?,youzai = ?,senjojikan = ?,shujiku = ?,ponpu = ?,"
-                + "desubakaitensuu = ?,tounyu1 = ?,tounyu2 = ?,totyukakuhanjikan = ?,totyukakuhankaisinichiji = ?,totyukakuhansyuryonichiji = ?,tonyu3 = ?,"
+                + "desupakaitensuu = ?,tounyu1 = ?,tounyu2 = ?,totyukakuhanjikan = ?,totyukakuhankaisinichiji = ?,totyukakuhansyuryonichiji = ?,tonyu3 = ?,"
                 + "tonyu4 = ?,tonyu5 = ?,kakuhanjikan = ?,kakuhankaisinichiji = ?,kakuhansyuryonichiji = ?,kaitentai = ?,tantousya = ?,kakuninsya = ?,bikou1 = ?,"
                 + "bikou2 = ?,kosinnichiji = ?,revision = ?,deleteflag = ? "
                 + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
@@ -2034,7 +2028,7 @@ public class GXHDO102B010 implements IFormLogic {
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemKikakuchi(pItemList, GXHDO102B010Const.SENJOJIKAN, srTenkaPremixing))); // 洗浄時間
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemKikakuchi(pItemList, GXHDO102B010Const.SHUJIKU, srTenkaPremixing))); // 主軸
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemKikakuchi(pItemList, GXHDO102B010Const.PONPU, srTenkaPremixing))); // ﾎﾟﾝﾌﾟ
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemKikakuchi(pItemList, GXHDO102B010Const.DESUBAKAITENSUU, srTenkaPremixing))); // ﾃﾞｽﾊﾟ回転数
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemKikakuchi(pItemList, GXHDO102B010Const.DESUPAKAITENSUU, srTenkaPremixing))); // ﾃﾞｽﾊﾟ回転数
         params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO102B010Const.TOUNYU1, srTenkaPremixing), null)); // 投入①
         params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO102B010Const.TOUNYU2, srTenkaPremixing), null)); // 投入②
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemKikakuchi(pItemList, GXHDO102B010Const.TOTYUKAKUHANJIKAN, srTenkaPremixing))); // 途中撹拌時間
@@ -2087,7 +2081,7 @@ public class GXHDO102B010 implements IFormLogic {
 
         String sql = "INSERT INTO sr_tenka_premixing ("
                 + " kojyo,lotno,edaban,tenkazaislurryhinmei,tenkazaislurrylotno,lotkubun,kakuhanki,tanku,youzai,senjojikan,"
-                + "shujiku,ponpu,desubakaitensuu,tounyu1,tounyu2,totyukakuhanjikan,totyukakuhankaisinichiji,totyukakuhansyuryonichiji,"
+                + "shujiku,ponpu,desupakaitensuu,tounyu1,tounyu2,totyukakuhanjikan,totyukakuhankaisinichiji,totyukakuhansyuryonichiji,"
                 + "tonyu3,tonyu4,tonyu5,kakuhanjikan,kakuhankaisinichiji,kakuhansyuryonichiji,kaitentai,tantousya,kakuninsya,"
                 + "bikou1,bikou2,torokunichiji,kosinnichiji,revision "
                 + " ) VALUES ( "
@@ -2119,7 +2113,7 @@ public class GXHDO102B010 implements IFormLogic {
 
         String sql = "UPDATE sr_tenka_premixing SET "
                 + " tenkazaislurryhinmei = ?,tenkazaislurrylotno = ?,lotkubun = ?,kakuhanki = ?,tanku = ?,youzai = ?,senjojikan = ?,shujiku = ?,"
-                + "ponpu = ?,desubakaitensuu = ?,tounyu1 = ?,tounyu2 = ?,totyukakuhanjikan = ?,totyukakuhankaisinichiji = ?,totyukakuhansyuryonichiji = ?,"
+                + "ponpu = ?,desupakaitensuu = ?,tounyu1 = ?,tounyu2 = ?,totyukakuhanjikan = ?,totyukakuhankaisinichiji = ?,totyukakuhansyuryonichiji = ?,"
                 + "tonyu3 = ?,tonyu4 = ?,tonyu5 = ?,kakuhanjikan = ?,kakuhankaisinichiji = ?,kakuhansyuryonichiji = ?,kaitentai = ?,tantousya = ?,"
                 + "kakuninsya = ?,bikou1 = ?,bikou2 = ?,kosinnichiji = ?,revision = ? "
                 + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
@@ -2184,7 +2178,7 @@ public class GXHDO102B010 implements IFormLogic {
         params.add(DBUtil.stringToStringObject(getItemKikakuchi(pItemList, GXHDO102B010Const.SENJOJIKAN, srTenkaPremixing))); // 洗浄時間
         params.add(DBUtil.stringToStringObject(getItemKikakuchi(pItemList, GXHDO102B010Const.SHUJIKU, srTenkaPremixing))); // 主軸
         params.add(DBUtil.stringToStringObject(getItemKikakuchi(pItemList, GXHDO102B010Const.PONPU, srTenkaPremixing))); // ﾎﾟﾝﾌﾟ
-        params.add(DBUtil.stringToStringObject(getItemKikakuchi(pItemList, GXHDO102B010Const.DESUBAKAITENSUU, srTenkaPremixing))); // ﾃﾞｽﾊﾟ回転数
+        params.add(DBUtil.stringToStringObject(getItemKikakuchi(pItemList, GXHDO102B010Const.DESUPAKAITENSUU, srTenkaPremixing))); // ﾃﾞｽﾊﾟ回転数
         params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO102B010Const.TOUNYU1, srTenkaPremixing), 9)); // 投入①
         params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO102B010Const.TOUNYU2, srTenkaPremixing), 9)); // 投入②
         params.add(DBUtil.stringToStringObject(getItemKikakuchi(pItemList, GXHDO102B010Const.TOTYUKAKUHANJIKAN, srTenkaPremixing))); // 途中撹拌時間
@@ -2362,8 +2356,8 @@ public class GXHDO102B010 implements IFormLogic {
                 return StringUtil.nullToBlank(srTenkaPremixing.getPonpu());
 
             // ﾃﾞｽﾊﾟ回転数
-            case GXHDO102B010Const.DESUBAKAITENSUU:
-                return StringUtil.nullToBlank(srTenkaPremixing.getDesubakaitensuu());
+            case GXHDO102B010Const.DESUPAKAITENSUU:
+                return StringUtil.nullToBlank(srTenkaPremixing.getDesupakaitensuu());
 
             // 投入①
             case GXHDO102B010Const.TOUNYU1:
@@ -2468,12 +2462,12 @@ public class GXHDO102B010 implements IFormLogic {
 
         String sql = "INSERT INTO tmp_sr_tenka_premixing ( "
                 + " kojyo,lotno,edaban,tenkazaislurryhinmei,tenkazaislurrylotno,lotkubun,kakuhanki,tanku,youzai,senjojikan,"
-                + "shujiku,ponpu,desubakaitensuu,tounyu1,tounyu2,totyukakuhanjikan,totyukakuhankaisinichiji,totyukakuhansyuryonichiji,"
+                + "shujiku,ponpu,desupakaitensuu,tounyu1,tounyu2,totyukakuhanjikan,totyukakuhankaisinichiji,totyukakuhansyuryonichiji,"
                 + "tonyu3,tonyu4,tonyu5,kakuhanjikan,kakuhankaisinichiji,kakuhansyuryonichiji,kaitentai,tantousya,kakuninsya,"
                 + "bikou1,bikou2,torokunichiji,kosinnichiji,revision,deleteflag "
                 + ") SELECT "
                 + " kojyo,lotno,edaban,tenkazaislurryhinmei,tenkazaislurrylotno,lotkubun,kakuhanki,tanku,youzai,senjojikan,"
-                + "shujiku,ponpu,desubakaitensuu,tounyu1,tounyu2,totyukakuhanjikan,totyukakuhankaisinichiji,totyukakuhansyuryonichiji,"
+                + "shujiku,ponpu,desupakaitensuu,tounyu1,tounyu2,totyukakuhanjikan,totyukakuhankaisinichiji,totyukakuhansyuryonichiji,"
                 + "tonyu3,tonyu4,tonyu5,kakuhanjikan,kakuhankaisinichiji,kakuhansyuryonichiji,kaitentai,tantousya,kakuninsya,"
                 + "bikou1,bikou2,?,?,?,? "
                 + " FROM sr_tenka_premixing "

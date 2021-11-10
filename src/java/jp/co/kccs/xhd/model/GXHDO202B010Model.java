@@ -56,7 +56,7 @@ public class GXHDO202B010Model implements Serializable {
     private String ponpu = "";
 
     /** ﾃﾞｽﾊﾟ回転数 */
-    private String desubakaitensuu = "";
+    private String desupakaitensuu = "";
 
     /** 投入① */
     private Integer tounyu1 = null;
@@ -268,18 +268,18 @@ public class GXHDO202B010Model implements Serializable {
 
     /**
      * ﾃﾞｽﾊﾟ回転数
-     * @return the desubakaitensuu
+     * @return the desupakaitensuu
      */
-    public String getDesubakaitensuu() {
-        return desubakaitensuu;
+    public String getDesupakaitensuu() {
+        return desupakaitensuu;
     }
 
     /**
      * ﾃﾞｽﾊﾟ回転数
-     * @param desubakaitensuu the desubakaitensuu to set
+     * @param desupakaitensuu the desupakaitensuu to set
      */
-    public void setDesubakaitensuu(String desubakaitensuu) {
-        this.desubakaitensuu = desubakaitensuu;
+    public void setDesupakaitensuu(String desupakaitensuu) {
+        this.desupakaitensuu = desupakaitensuu;
     }
 
     /**

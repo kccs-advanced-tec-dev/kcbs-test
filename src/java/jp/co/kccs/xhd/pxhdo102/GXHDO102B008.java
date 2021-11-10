@@ -630,7 +630,7 @@ public class GXHDO102B008 implements IFormLogic {
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
             if (kikakuError.getKikakuchiInputErrorInfoList() != null && !kikakuError.getKikakuchiInputErrorInfoList().isEmpty()) {
-                ValidateUtil.fxhdd04Insert(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, paramJissekino, "0", kikakuError.getKikakuchiInputErrorInfoList());
+                ValidateUtil.fxhdd04Insert102B(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, paramJissekino, "0", kikakuError.getKikakuchiInputErrorInfoList());
             }
             // 処理後はエラーリストをクリア
             kikakuError.setKikakuchiInputErrorInfoList(new ArrayList<>());
@@ -816,7 +816,7 @@ public class GXHDO102B008 implements IFormLogic {
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
             if (kikakuError.getKikakuchiInputErrorInfoList() != null && !kikakuError.getKikakuchiInputErrorInfoList().isEmpty()) {
-                ValidateUtil.fxhdd04Insert(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, paramJissekino, "0", kikakuError.getKikakuchiInputErrorInfoList());
+                ValidateUtil.fxhdd04Insert102B(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, paramJissekino, "0", kikakuError.getKikakuchiInputErrorInfoList());
             }
 
             // 処理後はエラーリストをクリア
@@ -994,7 +994,7 @@ public class GXHDO102B008 implements IFormLogic {
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
             if (kikakuError.getKikakuchiInputErrorInfoList() != null && !kikakuError.getKikakuchiInputErrorInfoList().isEmpty()) {
-                ValidateUtil.fxhdd04Insert(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, paramJissekino, "0", kikakuError.getKikakuchiInputErrorInfoList());
+                ValidateUtil.fxhdd04Insert102B(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, paramJissekino, "0", kikakuError.getKikakuchiInputErrorInfoList());
             }
             // 処理後はエラーリストをクリア
             kikakuError.setKikakuchiInputErrorInfoList(new ArrayList<>());
@@ -1271,12 +1271,6 @@ public class GXHDO102B008 implements IFormLogic {
         Map shikakariData = loadShikakariDataFromWip(queryRunnerDoc, tantoshaCd, lotNo);
         if (shikakariData == null || shikakariData.isEmpty()) {
             errorMessageList.add(MessageUtil.getMessage("XHD-000029"));
-        } else {
-            // ﾛｯﾄ区分チェック
-            String lotkubun = (String) shikakariData.get("lotkubun");
-            if (StringUtil.isEmpty(lotkubun)) {
-                errorMessageList.add(MessageUtil.getMessage("XHD-000015"));
-            }
         }
 
         // 入力項目の情報を画面にセットする。

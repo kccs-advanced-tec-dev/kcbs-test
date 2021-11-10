@@ -1575,6 +1575,37 @@ public class ValidateUtil {
             queryRunnerDoc.update(conDoc, sql, params.toArray());
         }
     }
+    
+    /**
+     * 規格外登録履歴登録処理
+     *
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param conDoc コネクション
+     * @param tantoshaCd 担当者コード
+     * @param rev 履歴No
+     * @param lotNo ロットNo
+     * @param formId 画面ID
+     * @param gamenTitle 画面タイトル
+     * @param jissekino 実績No
+     * @param deleteFlag 削除フラグ
+     * @param kikakuchiErrorInfoList 規格値エラー情報リスト
+     * @throws SQLException 例外エラー
+     */
+    public static void fxhdd04Insert102B(QueryRunner queryRunnerDoc, Connection conDoc, String tantoshaCd, BigDecimal rev, String lotNo, String formId, String gamenTitle, int jissekino, String deleteFlag, List<KikakuchiInputErrorInfo> kikakuchiErrorInfoList) throws SQLException {
+
+        String sql = "INSERT INTO fxhdd04 ("
+                + "torokusha, toroku_date, koshinsha, koshin_date, rev, gamen_id, gamen_title, kojyo, lotno, edaban,"
+                + " jissekino, item_id, item_name, kikaku, input_value, delete_flag"
+                + ") VALUES ("
+                + "?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
+
+        List<Object> params;
+        for (KikakuchiInputErrorInfo kikakuchiInputErrorInfo : kikakuchiErrorInfoList) {
+            params = getFxhdd04UpdateParams102B(tantoshaCd, rev, lotNo, formId, gamenTitle, jissekino, deleteFlag, kikakuchiInputErrorInfo);
+            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+            queryRunnerDoc.update(conDoc, sql, params.toArray());
+        }
+    }
 
     /**
      * 規格外登録履歴更新パラメータ取得処理
@@ -1603,6 +1634,44 @@ public class ValidateUtil {
         params.add(lotNo.substring(0, 3));
         params.add(lotNo.substring(3, 11));
         params.add(lotNo.substring(11, 14));
+        params.add(jissekino);
+        params.add(kikakuchiErrorInfo.getItemId());
+        params.add(kikakuchiErrorInfo.getItemLabel());
+        params.add(kikakuchiErrorInfo.getItemKikakuchi());
+        params.add(kikakuchiErrorInfo.getItemInputValue());
+        params.add(deleteFlag);
+
+        return params;
+
+    }
+
+    /**
+     * 規格外登録履歴更新パラメータ取得処理
+     *
+     * @param tantoshaCd 担当者コード
+     * @param rev 履歴No
+     * @param lotNo ロットNo
+     * @param formId 画面ID
+     * @param gamenTitle 画面タイトル
+     * @param jissekino 実績No
+     * @param deleteFlag 削除フラグ
+     * @param kikakuchiErrorInfo
+     * @return 規格外登録履歴更新パラメータ
+     */
+    private static List<Object> getFxhdd04UpdateParams102B(String tantoshaCd, BigDecimal rev, String lotNo, String formId, String gamenTitle, int jissekino, String deleteFlag, KikakuchiInputErrorInfo kikakuchiErrorInfo) {
+        List<Object> params = new ArrayList<>();
+
+        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+        params.add(tantoshaCd);
+        params.add(timestamp);
+        params.add(null);
+        params.add(null);
+        params.add(rev);
+        params.add(formId);
+        params.add(gamenTitle);
+        params.add(lotNo.substring(0, 3));
+        params.add(lotNo.substring(3, 12));
+        params.add(lotNo.substring(12, 15));
         params.add(jissekino);
         params.add(kikakuchiErrorInfo.getItemId());
         params.add(kikakuchiErrorInfo.getItemLabel());

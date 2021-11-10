@@ -1506,7 +1506,7 @@ public class GXHDO202B003 implements Serializable {
                             + ", senjojikan"
                             + ", shujiku"
                             + ", ponpu"
-                            + ", desubakaitensuu"
+                            + ", desupakaitensuu"
                             + ", tounyu1"
                             + ", tounyu2"
                             + ", totyukakuhanjikan"
@@ -1545,7 +1545,7 @@ public class GXHDO202B003 implements Serializable {
                     mapping.put("senjojikan", "senjojikan");                               // 洗浄時間
                     mapping.put("shujiku", "shujiku");                                     // 主軸
                     mapping.put("ponpu", "ponpu");                                         // ﾎﾟﾝﾌﾟ
-                    mapping.put("desubakaitensuu", "desubakaitensuu");                     // ﾃﾞｽﾊﾟ回転数
+                    mapping.put("desupakaitensuu", "desupakaitensuu");                     // ﾃﾞｽﾊﾟ回転数
                     mapping.put("tounyu1", "tounyu1");                                     // 投入①
                     mapping.put("tounyu2", "tounyu2");                                     // 投入②
                     mapping.put("totyukakuhanjikan", "totyukakuhanjikan");                 // 途中撹拌時間

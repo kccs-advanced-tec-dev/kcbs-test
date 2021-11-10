@@ -603,7 +603,7 @@ public class GXHDO102B011 implements IFormLogic {
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
             if (kikakuError.getKikakuchiInputErrorInfoList() != null && !kikakuError.getKikakuchiInputErrorInfoList().isEmpty()) {
-                ValidateUtil.fxhdd04Insert(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, paramJissekino, "0", kikakuError.getKikakuchiInputErrorInfoList());
+                ValidateUtil.fxhdd04Insert102B(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, paramJissekino, "0", kikakuError.getKikakuchiInputErrorInfoList());
             }
             // 処理後はエラーリストをクリア
             kikakuError.setKikakuchiInputErrorInfoList(new ArrayList<>());
@@ -841,7 +841,7 @@ public class GXHDO102B011 implements IFormLogic {
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
             if (kikakuError.getKikakuchiInputErrorInfoList() != null && !kikakuError.getKikakuchiInputErrorInfoList().isEmpty()) {
-                ValidateUtil.fxhdd04Insert(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, paramJissekino, "0", kikakuError.getKikakuchiInputErrorInfoList());
+                ValidateUtil.fxhdd04Insert102B(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, paramJissekino, "0", kikakuError.getKikakuchiInputErrorInfoList());
             }
 
             // 処理後はエラーリストをクリア
@@ -1026,7 +1026,7 @@ public class GXHDO102B011 implements IFormLogic {
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
             if (kikakuError.getKikakuchiInputErrorInfoList() != null && !kikakuError.getKikakuchiInputErrorInfoList().isEmpty()) {
-                ValidateUtil.fxhdd04Insert(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, paramJissekino, "0", kikakuError.getKikakuchiInputErrorInfoList());
+                ValidateUtil.fxhdd04Insert102B(queryRunnerDoc, conDoc, tantoshaCd, newRev, lotNo, formId, formTitle, paramJissekino, "0", kikakuError.getKikakuchiInputErrorInfoList());
             }
             // 処理後はエラーリストをクリア
             kikakuError.setKikakuchiInputErrorInfoList(new ArrayList<>());
@@ -1377,12 +1377,6 @@ public class GXHDO102B011 implements IFormLogic {
         Map shikakariData = loadShikakariDataFromWip(queryRunnerDoc, tantoshaCd, lotNo);
         if (shikakariData == null || shikakariData.isEmpty()) {
             errorMessageList.add(MessageUtil.getMessage("XHD-000029"));
-        } else {
-            // ﾛｯﾄ区分チェック
-            String lotkubun = (String) shikakariData.get("lotkubun");
-            if (StringUtil.isEmpty(lotkubun)) {
-                errorMessageList.add(MessageUtil.getMessage("XHD-000015"));
-            }
         }
 
         // 入力項目の情報を画面にセットする。
@@ -1489,9 +1483,6 @@ public class GXHDO102B011 implements IFormLogic {
                 // 画面にデータを設定する(デフォルト値)
                 processData.getItemList().forEach((fxhdd001) -> {
                     this.setItemData(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
-                    if (fxhdd001.isRenderInputCheckBox()) {
-                        fxhdd001.setValue(getCheckBoxCheckValue(fxhdd001.getValue()));
-                    }
                 });
 
                 // 添加材ｽﾗﾘｰ作製・粉砕入力_ｻﾌﾞ画面データ設定
@@ -3441,10 +3432,10 @@ public class GXHDO102B011 implements IFormLogic {
         params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO102B011Const.RYUURYOU_SF2, srTenkaFunsai))); // 流量
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B011Const.BIKOU1_SF2, srTenkaFunsai))); // 備考1
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B011Const.BIKOU2_SF2, srTenkaFunsai))); // 備考2
-        params.add(null); // 温度(往)
-        params.add(null); // 温度(還)
-        params.add(null); // 圧力(往)
-        params.add(null); // 圧力(還)
+        params.add(0); // 温度(往)
+        params.add(0); // 温度(還)
+        params.add(0); // 圧力(往)
+        params.add(0); // 圧力(還)
         params.add(DBUtil.stringToDateObject(getItemData(pItemList, GXHDO102B011Const.SYUURYOU_SF2_DAY, srTenkaFunsai),
                 "".equals(syuuryouTime) ? "0000" : syuuryouTime)); // 終了日時
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B011Const.TANTOUSYA_SF2, srTenkaFunsai))); // 担当者

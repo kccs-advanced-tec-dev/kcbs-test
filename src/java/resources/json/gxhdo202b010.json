@@ -9,7 +9,7 @@
     {"no":"8","id":"senjojikan","columnname":"洗浄時間","type":"String","format":""},
     {"no":"9","id":"shujiku","columnname":"主軸","type":"String","format":""},
     {"no":"10","id":"ponpu","columnname":"ﾎﾟﾝﾌﾟ","type":"String","format":""},
-    {"no":"11","id":"desubakaitensuu","columnname":"ﾃﾞｽﾊﾟ回転数","type":"String","format":""},
+    {"no":"11","id":"desupakaitensuu","columnname":"ﾃﾞｽﾊﾟ回転数","type":"String","format":""},
     {"no":"12","id":"tounyu1","columnname":"投入①","type":"Integer","format":"1,0"},
     {"no":"13","id":"tounyu2","columnname":"投入②","type":"Integer","format":"1,0"},
     {"no":"14","id":"totyukakuhanjikan","columnname":"途中撹拌時間","type":"String","format":""},
