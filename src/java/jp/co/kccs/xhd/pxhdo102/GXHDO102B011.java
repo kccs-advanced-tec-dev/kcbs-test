@@ -3542,38 +3542,6 @@ public class GXHDO102B011 implements IFormLogic {
     }
 
     /**
-     * [添加材ｽﾗﾘｰ作製・粉砕入力_仮登録]から最大値+1の削除ﾌﾗｸﾞを取得する
-     *
-     * @param queryRunnerQcdb QueryRunnerオブジェクト
-     * @param kojyo 工場ｺｰﾄﾞ
-     * @param lotNo ﾛｯﾄNo
-     * @param edaban 枝番
-     * @param passkaisuu ﾊﾟｽ回数
-     * @return 削除ﾌﾗｸﾞ最大値 + 1
-     * @throws SQLException 例外エラー
-     */
-    private int getNewDeleteflagSub(QueryRunner queryRunnerQcdb, String kojyo, String lotNo, String edaban, Integer passkaisuu) throws SQLException {
-        String sql = "SELECT MAX(sakujyoflg) AS deleteflag "
-                + "FROM tmp_sub_sr_tenka_funsai "
-                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND passkaisuu = ? ";
-        List<Object> params = new ArrayList<>();
-        params.add(kojyo);
-        params.add(lotNo);
-        params.add(edaban);
-        params.add(passkaisuu);
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        Map resultMap = queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
-        int newDeleteFlg = 0;
-        if (!StringUtil.isEmpty(StringUtil.nullToBlank(resultMap.get("deleteflag")))) {
-            newDeleteFlg = Integer.parseInt(StringUtil.nullToBlank(resultMap.get("deleteflag")));
-        }
-        newDeleteFlg++;
-
-        return newDeleteFlg;
-    }
-
-    /**
      * リビジョンチェック
      *
      * @param processData 処理制御データ
