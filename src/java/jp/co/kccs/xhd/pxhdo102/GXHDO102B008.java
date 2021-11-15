@@ -718,7 +718,7 @@ public class GXHDO102B008 implements IFormLogic {
         FXHDD01 itemHyouryousyuuryouTime = getItemRow(processData.getItemList(), GXHDO102B008Const.HYOURYOUSYUURYOU_TIME); //秤量終了時間
         Date hyouryousyuuryouDate = DateUtil.convertStringToDate(itemHyouryousyuuryouDay.getValue(), itemHyouryousyuuryouTime.getValue());
         //R001チェック呼出し
-        String msgCheckR001 = validateUtil.checkR001(itemHyouryoukaisiDay.getLabel1(), hyouryoukaisiDate, itemHyouryousyuuryouDay.getLabel1(), hyouryousyuuryouDate);
+        String msgCheckR001 = validateUtil.checkR001("秤量開始日時", hyouryoukaisiDate, "秤量終了日時", hyouryousyuuryouDate);
         if (!StringUtil.isEmpty(msgCheckR001)) {
             //エラー発生時
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemHyouryoukaisiDay, itemHyouryoukaisiTime, itemHyouryousyuuryouDay, itemHyouryousyuuryouTime);

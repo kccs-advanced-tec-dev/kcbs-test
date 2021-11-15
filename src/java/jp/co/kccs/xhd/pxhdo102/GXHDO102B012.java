@@ -25,11 +25,9 @@ import jp.co.kccs.xhd.common.CompMessage;
 import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.db.model.FXHDD01;
-import jp.co.kccs.xhd.db.model.FXHDD02;
 import jp.co.kccs.xhd.db.model.SikakariJson;
 import jp.co.kccs.xhd.db.model.SrTenkaFp;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
-import jp.co.kccs.xhd.pxhdo901.GXHDO901B;
 import jp.co.kccs.xhd.pxhdo901.IFormLogic;
 import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
 import jp.co.kccs.xhd.pxhdo901.ProcessData;
@@ -554,7 +552,7 @@ public class GXHDO102B012 implements IFormLogic {
         FXHDD01 itemSyuuryouTime = getItemRow(processData.getItemList(), GXHDO102B012Const.FPSYUURYOU_TIME); // F/P終了時間
         Date syuuryouDate = DateUtil.convertStringToDate(itemSyuuryouDay.getValue(), itemSyuuryouTime.getValue());
         //R001チェック呼出し
-        String msgCheckR001 = validateUtil.checkR001(itemKaisiDay.getLabel1(), kaisiDate, itemSyuuryouDay.getLabel1(), syuuryouDate);
+        String msgCheckR001 = validateUtil.checkR001("F/P開始日時", kaisiDate, "F/P終了日時", syuuryouDate);
         if (!StringUtil.isEmpty(msgCheckR001)) {
             //エラー発生時
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemKaisiDay, itemKaisiTime, itemSyuuryouDay, itemSyuuryouTime);
@@ -569,7 +567,7 @@ public class GXHDO102B012 implements IFormLogic {
         itemSyuuryouTime = getItemRow(processData.getItemList(), GXHDO102B012Const.FPSAIKAI_TIME); // F/P再開時間
         syuuryouDate = DateUtil.convertStringToDate(itemSyuuryouDay.getValue(), itemSyuuryouTime.getValue());
         //R001チェック呼出し
-        msgCheckR001 = validateUtil.checkR001(itemKaisiDay.getLabel1(), kaisiDate, itemSyuuryouDay.getLabel1(), syuuryouDate);
+        msgCheckR001 = validateUtil.checkR001("F/P停止日時", kaisiDate, "F/P再開日時", syuuryouDate);
         if (!StringUtil.isEmpty(msgCheckR001)) {
             //エラー発生時
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemKaisiDay, itemKaisiTime, itemSyuuryouDay, itemSyuuryouTime);
@@ -1356,16 +1354,17 @@ public class GXHDO102B012 implements IFormLogic {
         FXHDD01 itemTenkazaislurryjyuuryougoukei = getItemRow(processData.getItemList(), GXHDO102B012Const.TENKAZAISLURRYJYUURYOUGOUKEI);
         // 投入量
         FXHDD01 itemTounyuuryou = getItemRow(processData.getItemList(), GXHDO102B012Const.TOUNYUURYOU);
-
-        // 歩留まり計算チェック処理
-        ErrorMessageInfo checkItemErrorInfo = checkBudomariKeisan(itemTenkazaislurryjyuuryougoukei, itemTounyuuryou);
-        if (checkItemErrorInfo != null) {
-            processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
-            return processData;
+        if (itemTenkazaislurryjyuuryougoukei != null && itemTounyuuryou != null) {
+            // 歩留まり計算チェック処理
+            ErrorMessageInfo checkItemErrorInfo = checkBudomariKeisan(itemTenkazaislurryjyuuryougoukei, itemTounyuuryou);
+            if (checkItemErrorInfo != null) {
+                processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
+                return processData;
+            }
+            //歩留まり計算処理
+            calcBudomari(processData, itemTenkazaislurryjyuuryougoukei, itemTounyuuryou);
         }
         processData.setMethod("");
-        //歩留まり計算処理
-        calcBudomari(processData, itemTenkazaislurryjyuuryougoukei, itemTounyuuryou);
         return processData;
     }
 
@@ -1378,7 +1377,7 @@ public class GXHDO102B012 implements IFormLogic {
      */
     private ErrorMessageInfo checkBudomariKeisan(FXHDD01 itemTenkazaislurryjyuuryougoukei, FXHDD01 itemTounyuuryou) {
         // 投入量の規格値
-        BigDecimal itemTounyuuryouVal = (BigDecimal) DBUtil.stringToBigDecimalObject(StringUtil.nullToBlank(itemTounyuuryou.getKikakuChi()).replace("【", "").replace("】", ""));
+        BigDecimal itemTounyuuryouVal = ValidateUtil.numberExtraction(StringUtil.nullToBlank(itemTounyuuryou.getKikakuChi()).replace("【", "").replace("】", ""));
         // 「添加材ｽﾗﾘｰ重量合計」ﾁｪｯｸ
         if (StringUtil.isEmpty(itemTenkazaislurryjyuuryougoukei.getValue())) {
             // ｴﾗｰ項目をﾘｽﾄに追加
@@ -1406,7 +1405,7 @@ public class GXHDO102B012 implements IFormLogic {
         try {
             FXHDD01 itemBudomari = getItemRow(processData.getItemList(), GXHDO102B012Const.BUDOMARI); // 歩留まり
             BigDecimal itemGarasukaisyuujyuuryouVal = new BigDecimal(itemTenkazaislurryjyuuryougoukei.getValue()); // 添加材ｽﾗﾘｰ重量合計
-            BigDecimal itemTounyuuryouVal = new BigDecimal(itemTounyuuryou.getKikakuChi().replace("【", "").replace("】", "")); // 投入量の規格値
+            BigDecimal itemTounyuuryouVal = ValidateUtil.numberExtraction(itemTounyuuryou.getKikakuChi().replace("【", "").replace("】", "")); // 投入量の規格値
 
             // 「添加材ｽﾗﾘｰ重量合計」 ÷ 「投入量の規格値」 * 100(小数点第三位を四捨五入) → 式を変換して先に100を乗算
             BigDecimal budomari = itemGarasukaisyuujyuuryouVal.multiply(BigDecimal.valueOf(100)).divide(itemTounyuuryouVal, 2, RoundingMode.HALF_UP);
@@ -2327,17 +2326,6 @@ public class GXHDO102B012 implements IFormLogic {
      */
     private FXHDD01 getItemRow(List<FXHDD01> listData, String itemId) {
         return listData.stream().filter(n -> itemId.equals(n.getItemId())).findFirst().orElse(null);
-    }
-
-    /**
-     * ボタンデータ取得
-     *
-     * @param listData フォームデータ
-     * @param buttonId ボタンID
-     * @return 項目データ
-     */
-    private FXHDD02 getButtonRow(List<FXHDD02> buttonList, String buttonId) {
-        return buttonList.stream().filter(n -> buttonId.equals(n.getButtonId())).findFirst().orElse(null);
     }
 
     /**
@@ -3539,7 +3527,7 @@ public class GXHDO102B012 implements IFormLogic {
      * @param processData 処理制御データ
      * @param notShowItemList 画面非表示項目リスト
      */
-    private void removeItemFromItemList(ProcessData processData, List<String> notShowItemList, List<String> notShowButtonTopList, List<String> notShowButtonButtonList) {
+    private void removeItemFromItemList(ProcessData processData, List<String> notShowItemList) {
         List<FXHDD01> itemList = processData.getItemList();
         GXHDO102B012A bean = (GXHDO102B012A) getFormBean("gXHDO102B012A");
         notShowItemList.forEach((notShowItem) -> {
@@ -3548,16 +3536,6 @@ public class GXHDO102B012 implements IFormLogic {
 
         bean.setTenkazaislurryjyuuryougoukei(null);
         bean.setBudomari(null);
-
-        GXHDO901B gxhdo901bBean = (GXHDO901B) getFormBean("gXHDO901B");
-        List<FXHDD02> buttonListTop = gxhdo901bBean.getButtonListTop();
-        List<FXHDD02> buttonListBottom = gxhdo901bBean.getButtonListBottom();
-        notShowButtonTopList.forEach((notShowButton) -> {
-            buttonListTop.remove(getButtonRow(buttonListTop, notShowButton));
-        });
-        notShowButtonButtonList.forEach((notShowButton) -> {
-            buttonListBottom.remove(getButtonRow(buttonListBottom, notShowButton));
-        });
     }
 
     /**
@@ -3579,21 +3557,16 @@ public class GXHDO102B012 implements IFormLogic {
         Map fxhbm03Data = loadFxhbm03Data(queryRunnerDoc, "添加剤ｽﾗﾘｰ_FP排出_重量_表示制御");
         // 画面非表示項目リスト: 添加材ｽﾗﾘｰ重量合計、歩留まり計算
         List<String> notShowItemList = Arrays.asList(GXHDO102B012Const.TENKAZAISLURRYJYUURYOUGOUKEI, GXHDO102B012Const.BUDOMARI);
-        // 画面非表示上部ﾎﾞﾀﾝリスト: 歩留まり計算
-        List<String> notShowButtonTopList = Arrays.asList(GXHDO102B012Const.BTN_BUDOMARI_TOP);
-        // 画面非表示下部ﾎﾞﾀﾝリスト: 歩留まり計算
-        List<String> notShowButtonButtonList = Arrays.asList(GXHDO102B012Const.BTN_BUDOMARI_BOTTOM);
         if (fxhbm03Data == null) {
             // 取得できなかった場合、以下の項目を非表示にして処理を終了する。
-            removeItemFromItemList(processData, notShowItemList, notShowButtonTopList, notShowButtonButtonList);
+            removeItemFromItemList(processData, notShowItemList);
             return;
         }
-
         // [前工程設計]から、ﾃﾞｰﾀを取得
         Map daMkSekKeiData = loadDaMkSekKeiData(queryRunnerQcdb, kojyo, lotNo9, edaban, syurui);
         if (daMkSekKeiData == null || daMkSekKeiData.isEmpty()) {
             // 取得できなかった場合、以下の項目を非表示にして処理を終了する。
-            removeItemFromItemList(processData, notShowItemList, notShowButtonTopList, notShowButtonButtonList);
+            removeItemFromItemList(processData, notShowItemList);
             return;
         }
 
@@ -3611,21 +3584,21 @@ public class GXHDO102B012 implements IFormLogic {
             Map daMkhYoJunJokenData = loadDaMkhYoJunJokenData(queryRunnerQcdb, (String) shikakariData.get("hinmei"), pattern, syurui);
             if (daMkhYoJunJokenData == null || daMkhYoJunJokenData.isEmpty()) {
                 // 取得できなかった場合、以下の項目を非表示にして処理を終了する。
-                removeItemFromItemList(processData, notShowItemList, notShowButtonTopList, notShowButtonButtonList);
+                removeItemFromItemList(processData, notShowItemList);
                 return;
             }
             // 前工程規格情報の規格値
             String kikakuti = StringUtil.nullToBlank(getMapData(daMkhYoJunJokenData, "kikakuti"));
             if (!"1".equals(kikakuti)) {
                 // 取得できなかった場合、以下の項目を非表示にして処理を終了する。
-                removeItemFromItemList(processData, notShowItemList, notShowButtonTopList, notShowButtonButtonList);
+                removeItemFromItemList(processData, notShowItemList);
             }
         } else {
             // 前工程規格情報の規格値
             String kikakuti = StringUtil.nullToBlank(getMapData(daMkJokenData, "kikakuti"));
             if (!"1".equals(kikakuti)) {
                 // 取得できなかった場合、以下の項目を非表示にして処理を終了する。
-                removeItemFromItemList(processData, notShowItemList, notShowButtonTopList, notShowButtonButtonList);
+                removeItemFromItemList(processData, notShowItemList);
             }
         }
     }

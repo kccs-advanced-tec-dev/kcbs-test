@@ -1097,7 +1097,7 @@ public class GXHDO102B013 implements IFormLogic {
         // 画面.乾燥終了日 + 画面.乾燥終了時間
         Date kansousyuuryouDate = DateUtil.convertStringToDate(itemKansousyuuryouDay.getValue(), itemKansousyuuryouTime.getValue());
         // R001チェック呼出し
-        String msgKansoukaisiCheckR001 = validateUtil.checkR001(itemKansoukaisiDay.getLabel1(), kansoukaisiDate, itemKansousyuuryouDay.getLabel1(), kansousyuuryouDate);
+        String msgKansoukaisiCheckR001 = validateUtil.checkR001("乾燥開始日時", kansoukaisiDate, "乾燥終了日時", kansousyuuryouDate);
         if (!StringUtil.isEmpty(msgKansoukaisiCheckR001)) {
             // エラー発生時
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemKansoukaisiDay, itemKansoukaisiTime, itemKansousyuuryouDay, itemKansousyuuryouTime);
@@ -1113,7 +1113,7 @@ public class GXHDO102B013 implements IFormLogic {
         // 画面.脱脂終了日 + 画面.脱脂終了時間
         Date dassisyuuryouDate = DateUtil.convertStringToDate(itemDassisyuuryouDay.getValue(), itemDassisyuuryouTime.getValue());
         // R001チェック呼出し
-        String msgDassikaisiDateCheckR001 = validateUtil.checkR001(itemDassikaisiDay.getLabel1(), dassikaisiDate, itemDassisyuuryouDay.getLabel1(), dassisyuuryouDate);
+        String msgDassikaisiDateCheckR001 = validateUtil.checkR001("脱脂開始日時", dassikaisiDate, "脱脂終了日時", dassisyuuryouDate);
         if (!StringUtil.isEmpty(msgDassikaisiDateCheckR001)) {
             // エラー発生時
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemDassikaisiDay, itemDassikaisiTime, itemDassisyuuryouDay, itemDassisyuuryouTime);
@@ -1130,7 +1130,7 @@ public class GXHDO102B013 implements IFormLogic {
         // 画面.前処理終了日 + 画面.前処理終了時間
         Date maesyorisyuuryouDate = DateUtil.convertStringToDate(itemMaesyorisyuuryouDay.getValue(), itemMaesyorisyuuryouTime.getValue());
         // R001チェック呼出し
-        String msgMaesyorisyuuryouCheckR001 = validateUtil.checkR001(itemMaesyorikaisiDay.getLabel1(), maesyorikaisiDate, itemMaesyorisyuuryouDay.getLabel1(), maesyorisyuuryouDate);
+        String msgMaesyorisyuuryouCheckR001 = validateUtil.checkR001("前処理開始日時", maesyorikaisiDate, "前処理終了日時", maesyorisyuuryouDate);
         if (!StringUtil.isEmpty(msgMaesyorisyuuryouCheckR001)) {
             // エラー発生時
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemMaesyorikaisiDay, itemMaesyorikaisiTime, itemMaesyorisyuuryouDay, itemMaesyorisyuuryouTime);
@@ -1148,7 +1148,7 @@ public class GXHDO102B013 implements IFormLogic {
         // 画面.比表面積測定終了日 + 画面.比表面積測定終了時間
         Date hihyoumensekisokuteisyuuryouDate = DateUtil.convertStringToDate(itemhiHyoumensekisokuteisyuuryouDay.getValue(), itemHihyoumensekisokuteisyuuryouTime.getValue());
         // R001チェック呼出し
-        String msgHihyoumensekisokuteikaisiCheckR001 = validateUtil.checkR001(itemHihyoumensekisokuteikaisiDay.getLabel1(), hihyoumensekisokuteikaisiDate, itemhiHyoumensekisokuteisyuuryouDay.getLabel1(),
+        String msgHihyoumensekisokuteikaisiCheckR001 = validateUtil.checkR001("比表面積測定開始日時", hihyoumensekisokuteikaisiDate, "比表面積測定終了日時",
                 hihyoumensekisokuteisyuuryouDate);
         if (!StringUtil.isEmpty(msgHihyoumensekisokuteikaisiCheckR001)) {
             // エラー発生時
@@ -1412,12 +1412,6 @@ public class GXHDO102B013 implements IFormLogic {
         Map shikakariData = loadShikakariDataFromWip(queryRunnerDoc, tantoshaCd, lotNo);
         if (shikakariData == null || shikakariData.isEmpty()) {
             errorMessageList.add(MessageUtil.getMessage("XHD-000029"));
-        } else {
-            // ﾛｯﾄ区分チェック
-            String lotkubun = (String) shikakariData.get("lotkubun");
-            if (StringUtil.isEmpty(lotkubun)) {
-                errorMessageList.add(MessageUtil.getMessage("XHD-000015"));
-            }
         }
 
         // 入力項目の情報を画面にセットする。

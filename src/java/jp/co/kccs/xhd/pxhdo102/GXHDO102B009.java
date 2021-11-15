@@ -24,13 +24,11 @@ import jp.co.kccs.xhd.common.ErrorListMessage;
 import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.db.model.FXHDD01;
-import jp.co.kccs.xhd.db.model.FXHDD02;
 import jp.co.kccs.xhd.db.model.SikakariJson;
 import jp.co.kccs.xhd.db.model.SrTenkaYouzai;
 import jp.co.kccs.xhd.db.model.SubSrTenkaYouzai;
 import jp.co.kccs.xhd.model.GXHDO102C005Model;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
-import jp.co.kccs.xhd.pxhdo901.GXHDO901B;
 import jp.co.kccs.xhd.pxhdo901.IFormLogic;
 import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
 import jp.co.kccs.xhd.pxhdo901.ProcessData;
@@ -719,7 +717,7 @@ public class GXHDO102B009 implements IFormLogic {
         FXHDD01 itemHyouryousyuuryouTime = getItemRow(processData.getItemList(), GXHDO102B009Const.HYOURYOUSYUURYOU_TIME); //秤量終了時間
         Date hyouryousyuuryouDate = DateUtil.convertStringToDate(itemHyouryousyuuryouDay.getValue(), itemHyouryousyuuryouTime.getValue());
         //R001チェック呼出し
-        String msgCheckR001 = validateUtil.checkR001(itemHyouryoukaisiDay.getLabel1(), hyouryoukaisiDate, itemHyouryousyuuryouDay.getLabel1(), hyouryousyuuryouDate);
+        String msgCheckR001 = validateUtil.checkR001("秤量開始日時", hyouryoukaisiDate, "秤量終了日時", hyouryousyuuryouDate);
         if (!StringUtil.isEmpty(msgCheckR001)) {
             //エラー発生時
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemHyouryoukaisiDay, itemHyouryoukaisiTime, itemHyouryousyuuryouDay, itemHyouryousyuuryouTime);
@@ -737,7 +735,7 @@ public class GXHDO102B009 implements IFormLogic {
         Date kakuhankaisiDate = DateUtil.convertStringToDate(itemKakuhankaisiDay.getValue(), itemKakuhankaisiTime.getValue());
         Date kakuhansyuuryouDate = DateUtil.convertStringToDate(itemKakuhansyuuryouDay.getValue(), itemKakuhansyuuryouTime.getValue());
         //R001チェック呼出し
-        msgCheckR001 = validateUtil.checkR001(itemKakuhankaisiDay.getLabel1(), kakuhankaisiDate, itemKakuhansyuuryouDay.getLabel1(), kakuhansyuuryouDate);
+        msgCheckR001 = validateUtil.checkR001("撹拌開始日時", kakuhankaisiDate, "撹拌終了日時", kakuhansyuuryouDate);
         if (!StringUtil.isEmpty(msgCheckR001)) {
             //エラー発生時
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemKakuhankaisiDay, itemKakuhankaisiTime, itemKakuhansyuuryouDay, itemKakuhansyuuryouTime);
@@ -1202,7 +1200,7 @@ public class GXHDO102B009 implements IFormLogic {
     public ProcessData setKakuhankaisinichijiDateTime(ProcessData processData) {
         FXHDD01 itemDay = getItemRow(processData.getItemList(), GXHDO102B009Const.KAKUHANKAISI_DAY);
         FXHDD01 itemTime = getItemRow(processData.getItemList(), GXHDO102B009Const.KAKUHANKAISI_TIME);
-        if (StringUtil.isEmpty(itemDay.getValue()) && StringUtil.isEmpty(itemTime.getValue())) {
+        if (itemDay != null && itemTime != null && StringUtil.isEmpty(itemDay.getValue()) && StringUtil.isEmpty(itemTime.getValue())) {
             setDateTimeItem(itemDay, itemTime, new Date());
         }
         processData.setMethod("");
@@ -1210,7 +1208,7 @@ public class GXHDO102B009 implements IFormLogic {
     }
 
     /**
-     * 撹拌開始日時設定処理
+     * 撹拌終了日時設定処理
      *
      * @param processData 処理制御データ
      * @return 処理制御データ
@@ -1218,7 +1216,7 @@ public class GXHDO102B009 implements IFormLogic {
     public ProcessData setKakuhansyuuryounichijiDateTime(ProcessData processData) {
         FXHDD01 itemDay = getItemRow(processData.getItemList(), GXHDO102B009Const.KAKUHANSYUURYOU_DAY);
         FXHDD01 itemTime = getItemRow(processData.getItemList(), GXHDO102B009Const.KAKUHANSYUURYOU_TIME);
-        if (StringUtil.isEmpty(itemDay.getValue()) && StringUtil.isEmpty(itemTime.getValue())) {
+        if (itemDay != null && itemTime != null && StringUtil.isEmpty(itemDay.getValue()) && StringUtil.isEmpty(itemTime.getValue())) {
             setDateTimeItem(itemDay, itemTime, new Date());
         }
         processData.setMethod("");
@@ -1965,17 +1963,6 @@ public class GXHDO102B009 implements IFormLogic {
      */
     private FXHDD01 getItemRow(List<FXHDD01> listData, String itemId) {
         return listData.stream().filter(n -> itemId.equals(n.getItemId())).findFirst().orElse(null);
-    }
-
-    /**
-     * ボタンデータ取得
-     *
-     * @param listData フォームデータ
-     * @param buttonId ボタンID
-     * @return 項目データ
-     */
-    private FXHDD02 getButtonRow(List<FXHDD02> buttonList, String buttonId) {
-        return buttonList.stream().filter(n -> buttonId.equals(n.getButtonId())).findFirst().orElse(null);
     }
 
     /**
@@ -4126,7 +4113,7 @@ public class GXHDO102B009 implements IFormLogic {
      * @param processData 処理制御データ
      * @param notShowItemList 画面非表示項目リスト
      */
-    private void removeItemFromItemList(ProcessData processData, List<String> notShowItemList, List<String> notShowButtonTopList, List<String> notShowButtonButtonList) {
+    private void removeItemFromItemList(ProcessData processData, List<String> notShowItemList) {
         List<FXHDD01> itemList = processData.getItemList();
         GXHDO102B009A bean = (GXHDO102B009A) getFormBean("gXHDO102B009A");
         notShowItemList.forEach((notShowItem) -> {
@@ -4140,15 +4127,6 @@ public class GXHDO102B009 implements IFormLogic {
         bean.setKakuhansyuuryou_day(null);
         bean.setKakuhansyuuryou_time(null);
         
-        GXHDO901B gxhdo901bBean = (GXHDO901B) getFormBean("gXHDO901B");
-        List<FXHDD02> buttonListTop = gxhdo901bBean.getButtonListTop();
-        List<FXHDD02> buttonListBottom = gxhdo901bBean.getButtonListBottom();
-        notShowButtonTopList.forEach((notShowButton) -> {
-            buttonListTop.remove(getButtonRow(buttonListTop, notShowButton));
-        });
-        notShowButtonButtonList.forEach((notShowButton) -> {
-            buttonListBottom.remove(getButtonRow(buttonListBottom, notShowButton));
-        });
     }
     
     /**
@@ -4171,13 +4149,9 @@ public class GXHDO102B009 implements IFormLogic {
         // 画面非表示項目リスト: 撹拌機、攪拌時間、撹拌開始日、攪拌開始時間、撹拌終了日、攪拌終了時間
         List<String> notShowItemList = Arrays.asList(GXHDO102B009Const.KAKUHANKI, GXHDO102B009Const.KAKUHANJIKAN, GXHDO102B009Const.KAKUHANKAISI_DAY, 
                 GXHDO102B009Const.KAKUHANKAISI_TIME, GXHDO102B009Const.KAKUHANSYUURYOU_DAY, GXHDO102B009Const.KAKUHANSYUURYOU_TIME);
-        // 画面非表示上部ﾎﾞﾀﾝリスト: 攪拌開始日時、攪拌終了日時
-        List<String> notShowButtonTopList = Arrays.asList(GXHDO102B009Const.BTN_KAKUHANKAISINICHIJI_TOP, GXHDO102B009Const.BTN_KAKUHANSYUURYOUNICHIJI_TOP);
-        // 画面非表示下部ﾎﾞﾀﾝリスト: 攪拌開始日時、攪拌終了日時
-        List<String> notShowButtonButtonList = Arrays.asList(GXHDO102B009Const.BTN_KAKUHANKAISINICHIJI_BOTTOM, GXHDO102B009Const.BTN_KAKUHANSYUURYOUNICHIJI_BOTTOM);
         if (fxhbm03Data == null) {
             // 取得できなかった場合、以下の項目を非表示にして処理を終了する。
-            removeItemFromItemList(processData, notShowItemList, notShowButtonTopList, notShowButtonButtonList);
+            removeItemFromItemList(processData, notShowItemList);
             return;
         }
         
@@ -4185,7 +4159,7 @@ public class GXHDO102B009 implements IFormLogic {
         Map daMkSekKeiData = loadDaMkSekKeiData(queryRunnerQcdb, kojyo, lotNo9, edaban, syurui);
         if (daMkSekKeiData == null || daMkSekKeiData.isEmpty()) {
             // 取得できなかった場合、以下の項目を非表示にして処理を終了する。
-            removeItemFromItemList(processData, notShowItemList, notShowButtonTopList, notShowButtonButtonList);
+            removeItemFromItemList(processData, notShowItemList);
             return;
         }
         
@@ -4203,21 +4177,21 @@ public class GXHDO102B009 implements IFormLogic {
             Map daMkhYoJunJokenData = loadDaMkhYoJunJokenData(queryRunnerQcdb, (String)shikakariData.get("hinmei"), pattern, syurui);
             if (daMkhYoJunJokenData == null || daMkhYoJunJokenData.isEmpty()) {
                 // 取得できなかった場合、以下の項目を非表示にして処理を終了する。
-                removeItemFromItemList(processData, notShowItemList, notShowButtonTopList, notShowButtonButtonList);
+                removeItemFromItemList(processData, notShowItemList);
                 return;
             }
             // 前工程規格情報の規格値
             String kikakuti = StringUtil.nullToBlank(getMapData(daMkhYoJunJokenData, "kikakuti"));
             if (!"1".equals(kikakuti)) {
                 // 取得できなかった場合、以下の項目を非表示にして処理を終了する。
-                removeItemFromItemList(processData, notShowItemList, notShowButtonTopList, notShowButtonButtonList);
+                removeItemFromItemList(processData, notShowItemList);
             }
         } else {
             // 前工程規格情報の規格値
             String kikakuti = StringUtil.nullToBlank(getMapData(daMkJokenData, "kikakuti"));
             if (!"1".equals(kikakuti)) {
                 // 取得できなかった場合、以下の項目を非表示にして処理を終了する。
-                removeItemFromItemList(processData, notShowItemList, notShowButtonTopList, notShowButtonButtonList);
+                removeItemFromItemList(processData, notShowItemList);
             }
         }
     }
