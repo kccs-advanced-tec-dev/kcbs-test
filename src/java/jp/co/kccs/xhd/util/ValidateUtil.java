@@ -1752,4 +1752,72 @@ public class ValidateUtil {
 
     }
 
+    /**
+     * 項目の規格値を取得(例:〇〇±△△の場合「〇〇」部分を取得、>〇〇の場合も「〇〇」部分を取得)
+     *
+     * @param item 項目データ
+     * @return 項目の規格値
+     */
+    public static BigDecimal getItemKikakuChiCheckVal(FXHDD01 item) {
+        // 項目データを取得
+        String strKikakuchi = StringUtil.nullToBlank(item.getKikakuChi()).replace("【", "").replace("】", "");
+        String strStandardPattern = StringUtil.nullToBlank(item.getStandardPattern());
+        int startIndex;
+        BigDecimal kikakuChiCheckVal = null;
+        switch (strStandardPattern) {
+            case "":
+            case "1": // 〇±△
+            case "2": // 〇～△
+            case "3": // 〇以上
+            case "4": // 〇以下
+            case "11": // 〇
+                kikakuChiCheckVal = ValidateUtil.numberExtraction(strKikakuchi);
+                break;
+            case "5": // ≦〇
+                startIndex = strKikakuchi.indexOf("≦");
+                if (startIndex >= 0 && strKikakuchi.length() > (startIndex + 1)) {
+                    // 上限値取得
+                    kikakuChiCheckVal = ValidateUtil.numberExtraction(strKikakuchi.substring(startIndex + 1));
+                }
+                break;
+            case "6": // ≧〇
+                startIndex = strKikakuchi.indexOf("≧");
+                if (startIndex >= 0 && strKikakuchi.length() > (startIndex + 1)) {
+                    // 上限値取得
+                    kikakuChiCheckVal = ValidateUtil.numberExtraction(strKikakuchi.substring(startIndex + 1));
+                }
+                break;
+            case "7": // <〇
+                startIndex = strKikakuchi.indexOf("<");
+                if (startIndex >= 0 && strKikakuchi.length() > (startIndex + 1)) {
+                    // 上限値取得
+                    kikakuChiCheckVal = ValidateUtil.numberExtraction(strKikakuchi.substring(startIndex + 1));
+                }
+                break;
+            case "8": // >〇
+                startIndex = strKikakuchi.indexOf(">");
+                if (startIndex >= 0 && strKikakuchi.length() > (startIndex + 1)) {
+                    // 上限値取得
+                    kikakuChiCheckVal = ValidateUtil.numberExtraction(strKikakuchi.substring(startIndex + 1));
+                }
+                break;
+            case "9": // MAX〇
+                startIndex = strKikakuchi.indexOf("MAX");
+                if (startIndex >= 0 && strKikakuchi.length() > (startIndex + 3)) {
+                    // 上限値取得
+                    kikakuChiCheckVal = ValidateUtil.numberExtraction(strKikakuchi.substring(startIndex + 3));
+                }
+                break;
+            case "10": // MIN〇
+                startIndex = strKikakuchi.indexOf("MIN");
+                if (startIndex >= 0 && strKikakuchi.length() > (startIndex + 3)) {
+                    // 上限値取得
+                    kikakuChiCheckVal = ValidateUtil.numberExtraction(strKikakuchi.substring(startIndex + 3));
+                }
+                break;
+            default:
+                break;
+        }
+        return kikakuChiCheckVal;
+    }
 }

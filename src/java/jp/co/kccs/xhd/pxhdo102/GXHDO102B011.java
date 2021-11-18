@@ -3585,8 +3585,13 @@ public class GXHDO102B011 implements IFormLogic {
             FXHDD01 itemPasskaisuu_sf1 = getItemRow(processData.getItemList(), GXHDO102B011Const.PASSKAISUU_SF1); // ﾊﾟｽ回数
             FXHDD01 itemSyuuryouyotei_sf1_day = getItemRow(processData.getItemList(), GXHDO102B011Const.SYUURYOUYOTEI_SF1_DAY); // 終了予定日
             FXHDD01 itemSyuuryouyotei_sf1_time = getItemRow(processData.getItemList(), GXHDO102B011Const.SYUURYOUYOTEI_SF1_TIME); // 終了予定時間
-            int jikan_passkaisuuVal = Integer.parseInt(itemJikan_passkaisuu.getKikakuChi().replace("【", "").replace("】", ""));
-            int passkaisuu_sf1Val = Integer.parseInt(itemPasskaisuu_sf1.getKikakuChi().replace("【", "").replace("】", ""));
+            BigDecimal jikan_passkaisuuBdVal = ValidateUtil.getItemKikakuChiCheckVal(itemJikan_passkaisuu); // 時間/ﾊﾟｽ回数の規格値
+            BigDecimal passkaisuu_sf1BdVal = ValidateUtil.getItemKikakuChiCheckVal(itemPasskaisuu_sf1); // ﾊﾟｽ回数の規格値
+            if (jikan_passkaisuuBdVal == null || passkaisuu_sf1BdVal == null) {
+                return;
+            }
+            int jikan_passkaisuuVal = jikan_passkaisuuBdVal.intValue();
+            int passkaisuu_sf1Val = passkaisuu_sf1BdVal.intValue();
             Date dateTime = DateUtil.addJikan(itemDay.getValue(), itemTime.getValue(), jikan_passkaisuuVal * passkaisuu_sf1Val, Calendar.MINUTE);
             if (dateTime != null) {
                 setDateTimeItem(itemSyuuryouyotei_sf1_day, itemSyuuryouyotei_sf1_time, dateTime);

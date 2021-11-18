@@ -1377,7 +1377,7 @@ public class GXHDO102B012 implements IFormLogic {
      */
     private ErrorMessageInfo checkBudomariKeisan(FXHDD01 itemTenkazaislurryjyuuryougoukei, FXHDD01 itemTounyuuryou) {
         // 投入量の規格値
-        BigDecimal itemTounyuuryouVal = ValidateUtil.numberExtraction(StringUtil.nullToBlank(itemTounyuuryou.getKikakuChi()).replace("【", "").replace("】", ""));
+        BigDecimal itemTounyuuryouVal = ValidateUtil.getItemKikakuChiCheckVal(itemTounyuuryou);
         // 「添加材ｽﾗﾘｰ重量合計」ﾁｪｯｸ
         if (StringUtil.isEmpty(itemTenkazaislurryjyuuryougoukei.getValue())) {
             // ｴﾗｰ項目をﾘｽﾄに追加
@@ -1405,7 +1405,7 @@ public class GXHDO102B012 implements IFormLogic {
         try {
             FXHDD01 itemBudomari = getItemRow(processData.getItemList(), GXHDO102B012Const.BUDOMARI); // 歩留まり
             BigDecimal itemGarasukaisyuujyuuryouVal = new BigDecimal(itemTenkazaislurryjyuuryougoukei.getValue()); // 添加材ｽﾗﾘｰ重量合計
-            BigDecimal itemTounyuuryouVal = ValidateUtil.numberExtraction(itemTounyuuryou.getKikakuChi().replace("【", "").replace("】", "")); // 投入量の規格値
+            BigDecimal itemTounyuuryouVal = ValidateUtil.getItemKikakuChiCheckVal(itemTounyuuryou);// 投入量の規格値
 
             // 「添加材ｽﾗﾘｰ重量合計」 ÷ 「投入量の規格値」 * 100(小数点第三位を四捨五入) → 式を変換して先に100を乗算
             BigDecimal budomari = itemGarasukaisyuujyuuryouVal.multiply(BigDecimal.valueOf(100)).divide(itemTounyuuryouVal, 2, RoundingMode.HALF_UP);
@@ -1637,7 +1637,25 @@ public class GXHDO102B012 implements IFormLogic {
         // 画面に取得した情報をセットする。(入力項目以外)
         setViewItemData(processData, shikakariData, lotNo);
         // 画面のラベル項目の値の背景色を取得できない場合、デフォルト値を設置
-        GXHDO102C005Logic.setItemStyle(processData.getItemList());
+        processData.getItemList().stream().map((item) -> {
+            if (item.isRender1() || item.isRenderLinkButton()) {
+                if ("".equals(StringUtil.nullToBlank(item.getBackColor3()))) {
+                    item.setBackColor3("#EEEEEE");
+                }
+                if (0 == item.getFontSize3()) {
+                    item.setFontSize3(16);
+                }
+            }
+            return item;
+        }).filter((item) -> (item.isRenderOutputLabel() && !item.isRenderInputText())).map((item) -> {
+            if ("".equals(StringUtil.nullToBlank(item.getBackColorInput()))) {
+                item.setBackColorInput("#EEEEEE");
+                item.setBackColorInputDefault("#EEEEEE");
+            }
+            return item;
+        }).filter((item) -> (0 == item.getFontSizeInput())).forEachOrdered((item) -> {
+            item.setFontSizeInput(16);
+        });
         processData.setInitMessageList(errorMessageList);
         return processData;
     }
