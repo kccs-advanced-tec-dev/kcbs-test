@@ -1632,7 +1632,7 @@ public class GXHDO102B012 implements IFormLogic {
             processData.setInitMessageList(Arrays.asList(MessageUtil.getMessage("XHD-000038")));
             return processData;
         }
-        // 撹拌機項目の表示制御
+        // 添加材ｽﾗﾘｰ重量合計と歩留り計算項目の表示制御
         setItemRendered(processData, queryRunnerDoc, queryRunnerQcdb, shikakariData, lotNo);
         // 画面に取得した情報をセットする。(入力項目以外)
         setViewItemData(processData, shikakariData, lotNo);
@@ -3540,7 +3540,7 @@ public class GXHDO102B012 implements IFormLogic {
     }
 
     /**
-     * 撹拌機項目の表示制御
+     * 添加材ｽﾗﾘｰ重量合計と歩留り計算項目の表示制御
      *
      * @param processData 処理制御データ
      * @param notShowItemList 画面非表示項目リスト
