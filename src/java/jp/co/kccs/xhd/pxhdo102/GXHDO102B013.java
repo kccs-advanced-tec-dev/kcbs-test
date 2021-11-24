@@ -562,7 +562,7 @@ public class GXHDO102B013 implements IFormLogic {
             if (StringUtil.isEmpty(processData.getInitJotaiFlg()) || JOTAI_FLG_SAKUJO.equals(processData.getInitJotaiFlg())) {
 
                 // 添加材ｽﾗﾘｰ作製・BET_仮登録登録処理
-                insertTmpSrTenkaBet(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, strSystime, processData, formId);
+                insertTmpSrTenkaBet(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, strSystime, processData);
             } else {
 
                 // 添加材ｽﾗﾘｰ作製・BET_仮登録更新処理
@@ -713,10 +713,12 @@ public class GXHDO102B013 implements IFormLogic {
         ErrorMessageInfo errorMessageInfo = ValidateUtil.checkInputKikakuchi(itemList, kikakuchiInputErrorInfoList);
 
         // エラー項目の背景色を設定
-        setItemBackColor(processData, kansoukaisiList, kansousyuuryouList, kansoukaisi, kikakuchiInputErrorInfoList);
-        setItemBackColor(processData, dassikaisiList, dassisyuuryouList, dassikaisi, kikakuchiInputErrorInfoList);
-        setItemBackColor(processData, maesyorikaisiList, maesyorisyuuryouList, maesyorikaisi, kikakuchiInputErrorInfoList);
-        setItemBackColor(processData, hihyoumensekisokuteikaisiList, hihyoumensekisokuteisyuuryouList, hihyoumensekisokuteikaisi, kikakuchiInputErrorInfoList);
+        if(errorMessageInfo == null){
+            setItemBackColor(processData, kansoukaisiList, kansousyuuryouList, kansoukaisi, kikakuchiInputErrorInfoList);
+            setItemBackColor(processData, dassikaisiList, dassisyuuryouList, dassikaisi, kikakuchiInputErrorInfoList);
+            setItemBackColor(processData, maesyorikaisiList, maesyorisyuuryouList, maesyorikaisi, kikakuchiInputErrorInfoList);
+            setItemBackColor(processData, hihyoumensekisokuteikaisiList, hihyoumensekisokuteisyuuryouList, hihyoumensekisokuteikaisi, kikakuchiInputErrorInfoList);
+        }
 
         return errorMessageInfo;
     }
@@ -886,7 +888,7 @@ public class GXHDO102B013 implements IFormLogic {
             }
 
             // 添加材ｽﾗﾘｰ作製・BET_登録処理
-            insertSrTenkaBet(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, strSystime, processData, tmpSrTenkaBet, formId);
+            insertSrTenkaBet(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, strSystime, processData, tmpSrTenkaBet);
 
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
@@ -2116,7 +2118,7 @@ public class GXHDO102B013 implements IFormLogic {
      * @throws SQLException 例外エラー
      */
     private void insertTmpSrTenkaBet(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev, int deleteflag,
-            String kojyo, String lotNo, String edaban, String systemTime, ProcessData processData, String formId) throws SQLException {
+            String kojyo, String lotNo, String edaban, String systemTime, ProcessData processData) throws SQLException {
 
         String sql = "INSERT INTO tmp_sr_tenka_bet ("
                 + " kojyo,lotno,edaban,tenkazaislurryhinmei,tenkazaislurrylotno,lotkubun,kansouzaranosyurui,slurryjyuuryou,"
@@ -2312,7 +2314,7 @@ public class GXHDO102B013 implements IFormLogic {
      * @throws SQLException 例外エラー
      */
     private void insertSrTenkaBet(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev,
-            String kojyo, String lotNo, String edaban, String systemTime, ProcessData processData, SrTenkaBet tmpSrTenkaBet, String formId) throws SQLException {
+            String kojyo, String lotNo, String edaban, String systemTime, ProcessData processData, SrTenkaBet tmpSrTenkaBet) throws SQLException {
 
         String sql = "INSERT INTO sr_tenka_bet ("
                 + " kojyo,lotno,edaban,tenkazaislurryhinmei,tenkazaislurrylotno,lotkubun,kansouzaranosyurui,"

@@ -599,8 +599,10 @@ public class GXHDO102B010 implements IFormLogic {
         ErrorMessageInfo errorMessageInfo = ValidateUtil.checkInputKikakuchi(itemList, kikakuchiInputErrorInfoList);
 
         // エラー項目の背景色を設定
-        setItemBackColor(processData, totyukakuhankaisiList, totyukakuhansyuryoList, totyukakuhanjikan, kikakuchiInputErrorInfoList);
-        setItemBackColor(processData, kakuhankaisiList, kakuhansyuryo1List, kakuhanjikan, kikakuchiInputErrorInfoList);
+        if(errorMessageInfo == null){
+            setItemBackColor(processData, totyukakuhankaisiList, totyukakuhansyuryoList, totyukakuhanjikan, kikakuchiInputErrorInfoList);
+            setItemBackColor(processData, kakuhankaisiList, kakuhansyuryo1List, kakuhanjikan, kikakuchiInputErrorInfoList);
+        }
 
         return errorMessageInfo;
     }
