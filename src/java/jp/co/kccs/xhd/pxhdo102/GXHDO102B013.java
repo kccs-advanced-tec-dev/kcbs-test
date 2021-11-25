@@ -680,12 +680,12 @@ public class GXHDO102B013 implements IFormLogic {
         // 前処理時間の時間差数
         FXHDD01 maesyorikaisidiffHours = getDiffMinutes(processData, GXHDO102B013Const.MAESYORIJIKAN, maesyorikaisiList, maesyorisyuuryouList);
         // 比表面積測定規格の時間差数
-        FXHDD01 hihyoumensekisokuteikaisidiffHours = getDiffMinutes(processData, GXHDO102B013Const.HIHYOUMENSEKISOKUTEIKEKKA, hihyoumensekisokuteikaisiList, hihyoumensekisokuteisyuuryouList);
+        FXHDD01 hihyoumensekisokuteikaisidiffHours = getDiffMinutes(processData, GXHDO102B013Const.HIHYOUMENSEKISOKUTEISYUURYOU_TIME, hihyoumensekisokuteikaisiList, hihyoumensekisokuteisyuuryouList);
 
         String kansoukaisi = "乾燥時間";
         String dassikaisi = "脱脂時間";
         String maesyorikaisi = "前処理時間";
-        String hihyoumensekisokuteikaisi = "比表面積測定規格";
+        String hihyoumensekisokuteikaisi = "比表面積測定時間";
         // 項目の項目名を設置
         if (kansoukaisiDiffHours != null) {
             kansoukaisiDiffHours.setLabel1(kansoukaisi);
@@ -704,7 +704,8 @@ public class GXHDO102B013 implements IFormLogic {
             itemList.add(hihyoumensekisokuteikaisidiffHours);
         }
         processData.getItemList().stream().filter(
-                (fxhdd01) -> !(StringUtil.isEmpty(fxhdd01.getStandardPattern()) || "【-】".equals(fxhdd01.getKikakuChi()))).filter(
+                (fxhdd01) -> !(StringUtil.isEmpty(fxhdd01.getStandardPattern()) || "【-】".equals(fxhdd01.getKikakuChi()) ||
+                        GXHDO102B013Const.HIHYOUMENSEKISOKUTEISYUURYOU_TIME.equals(fxhdd01.getItemId()))).filter(
                         (fxhdd01) -> !(!ValidateUtil.isInputColumn(fxhdd01) || StringUtil.isEmpty(fxhdd01.getValue()))).forEachOrdered(
                         (fxhdd01) -> {
                             // 規格チェックの対象項目である、かつ入力項目かつ入力値がある項目はリストに追加
@@ -713,12 +714,10 @@ public class GXHDO102B013 implements IFormLogic {
         ErrorMessageInfo errorMessageInfo = ValidateUtil.checkInputKikakuchi(itemList, kikakuchiInputErrorInfoList);
 
         // エラー項目の背景色を設定
-        if(errorMessageInfo == null){
-            setItemBackColor(processData, kansoukaisiList, kansousyuuryouList, kansoukaisi, kikakuchiInputErrorInfoList);
-            setItemBackColor(processData, dassikaisiList, dassisyuuryouList, dassikaisi, kikakuchiInputErrorInfoList);
-            setItemBackColor(processData, maesyorikaisiList, maesyorisyuuryouList, maesyorikaisi, kikakuchiInputErrorInfoList);
-            setItemBackColor(processData, hihyoumensekisokuteikaisiList, hihyoumensekisokuteisyuuryouList, hihyoumensekisokuteikaisi, kikakuchiInputErrorInfoList);
-        }
+        setItemBackColor(processData, kansoukaisiList, kansousyuuryouList, kansoukaisi, kikakuchiInputErrorInfoList, errorMessageInfo);
+        setItemBackColor(processData, dassikaisiList, dassisyuuryouList, dassikaisi, kikakuchiInputErrorInfoList, errorMessageInfo);
+        setItemBackColor(processData, maesyorikaisiList, maesyorisyuuryouList, maesyorikaisi, kikakuchiInputErrorInfoList, errorMessageInfo);
+        setItemBackColor(processData, hihyoumensekisokuteikaisiList, hihyoumensekisokuteisyuuryouList, hihyoumensekisokuteikaisi, kikakuchiInputErrorInfoList, errorMessageInfo);
 
         return errorMessageInfo;
     }
@@ -761,7 +760,7 @@ public class GXHDO102B013 implements IFormLogic {
             }
             // 時間を利用するため、該当項目をCloneする
             if (itemFxhdd01Clone == null) {
-                itemFxhdd01Clone = kikakuFxhdd01.clone();
+                itemFxhdd01Clone = itemKakuhankaisiDay.clone();
             }
             // 日付の差分分数の数取得処理
             diffHours = DateUtil.diffMinutes(kaishijikan, syuuryoujikan);
@@ -785,8 +784,10 @@ public class GXHDO102B013 implements IFormLogic {
      * @param kakuhansyuuryouList 終了時間項目リスト
      * @param label 項目の項目名
      * @param kikakuchiInputErrorInfoList 規格値入力エラー情報リスト
+     * @param errorMessageInfo エラーメッセージ情報
      */
-    private void setItemBackColor(ProcessData processData, List<String> kakuhankaisiList, List<String> kakuhansyuuryouList, String label, List<KikakuchiInputErrorInfo> kikakuchiInputErrorInfoList) {
+    private void setItemBackColor(ProcessData processData, List<String> kakuhankaisiList, List<String> kakuhansyuuryouList, String label, List<KikakuchiInputErrorInfo> kikakuchiInputErrorInfoList,
+            ErrorMessageInfo errorMessageInfo) {
 
         List<String> errorTyougouryouList = new ArrayList<>();
         // エラー項目の背景色を設定
@@ -797,7 +798,10 @@ public class GXHDO102B013 implements IFormLogic {
         kikakuchiInputErrorInfoList.stream().forEachOrdered((errorInfo) -> {
             errorTyougouryouList.add(errorInfo.getItemLabel());
         });
-        if (errorTyougouryouList.contains(label)) {
+        if (errorMessageInfo != null && !errorMessageInfo.getErrorMessage().contains(label)) {
+            return;
+        }
+        if (errorTyougouryouList.contains(label) || (errorMessageInfo != null && errorMessageInfo.getErrorMessage().contains(label))) {
             FXHDD01 item1Fxhdd01 = getItemRow(processData.getItemList(), allTyougouryouList.get(0));
             FXHDD01 item2Fxhdd01 = getItemRow(processData.getItemList(), allTyougouryouList.get(1));
             FXHDD01 item3Fxhdd01 = getItemRow(processData.getItemList(), allTyougouryouList.get(2));
