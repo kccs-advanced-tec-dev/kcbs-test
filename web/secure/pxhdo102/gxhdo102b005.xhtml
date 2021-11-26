@@ -83,7 +83,7 @@
                             var received_msg = event.data;
                             var current = document.activeElement;
                             current.value = received_msg;
-                            // 値表示後、次のテキストボックスにフォーカスを移動(最後の項目の場合はロストフォーカス)
+                            // 値表示後、次のテキストボックスにフォーカスを移動(最後の項目の場合はOKボタン)
                             if(current !== null){
                                 var currentId = current.id;
                                 currentId = (currentId).split(":");
