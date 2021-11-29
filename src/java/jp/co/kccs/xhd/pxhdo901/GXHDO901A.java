@@ -906,12 +906,12 @@ public class GXHDO901A implements Serializable {
 
         boolean isCheck = false;
         try {
-        	FXHDD02 fxhdd02 = (FXHDD02)externalContext.getRequestMap().get("item");
+            FXHDD02 fxhdd02 = (FXHDD02)externalContext.getRequestMap().get("item");
             if (null != fxhdd02) {
-        		String buttonName = fxhdd02.getButtonName();
-        		if ("登録".equals(buttonName) || "修正".equals(buttonName)) {
-            		isCheck = true;
-        		}
+        	String buttonName = fxhdd02.getButtonName();
+        	if ("登録".equals(buttonName) || "修正".equals(buttonName)) {
+                    isCheck = true;
+        	}
             }
         } catch (ClassCastException e) {
             ErrUtil.outputErrorLog("ClassCastException発生", e, LOGGER);
