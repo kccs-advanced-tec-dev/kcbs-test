@@ -44,7 +44,25 @@ import javax.faces.context.FacesContext;
  * 変更日	2021/09/10<br>
  * 計画書No	MB2101-DK002<br>
  * 変更者	kcss.wxf<br>
- * 変更理由	ｶﾞﾗｽ作製・秤量入力画面追加<br>
+ * 変更理由	ｶﾞﾗｽ作製・秤量入力画面追加、<br>
+ *              ｶﾞﾗｽｽﾗﾘｰ作製・秤量入力画面追加<br>
+ * <br>
+ * 変更日	2021/10/18<br>
+ * 計画書No	MB2101-DK002<br>
+ * 変更者	kcss.wxf<br>
+ * 変更理由	添加材ｽﾗﾘｰ作製・添加材調合入力画面、<br>
+ *              添加材ｽﾗﾘｰ作製・溶剤調合入力画面、<br>
+ *              添加材ｽﾗﾘｰ作製・粉砕入力画面、<br>
+ *              エラーリスト表示メッセージ追加<br>
+ * <br>
+ * 変更日	2021/11/02<br>
+ * 計画書No	MB2101-DK002<br>
+ * 変更者	kcss.wxf<br>
+ * 変更理由	ﾊﾞｲﾝﾀﾞｰ溶液作製・溶剤秤量入力画面、<br>
+ *              ﾊﾞｲﾝﾀﾞｰ溶液作製・ﾊﾞｲﾝﾀﾞｰ粉秤量入力画面、
+ *              誘電体ｽﾗﾘｰ作製・溶剤・添加材ｽﾗﾘｰ秤量入力画面、
+ *              誘電体ｽﾗﾘｰ作製・添加材・ｿﾞﾙ秤量入力画面、
+ *              誘電体ｽﾗﾘｰ作製・主原料秤量入力画面追加<br>
  * ===============================================================================<br>
  */
 /**
@@ -167,6 +185,31 @@ public class SubFormUtil {
      * 添加材ｽﾗﾘｰ作製・粉砕入力画面ID
      */
     public static final String FORM_ID_GXHDO102C006 = "GXHDO102C006";
+    
+    /**
+     * ﾊﾞｲﾝﾀﾞｰ溶液作製・溶剤秤量入力画面ID
+     */
+    public static final String FORM_ID_GXHDO102C007 = "GXHDO102C007";
+    
+    /**
+     * ﾊﾞｲﾝﾀﾞｰ溶液作製・ﾊﾞｲﾝﾀﾞｰ粉秤量入力画面ID
+     */
+    public static final String FORM_ID_GXHDO102C008 = "GXHDO102C008";
+    
+    /**
+     * 誘電体ｽﾗﾘｰ作製・溶剤・添加材ｽﾗﾘｰ秤量入力画面ID
+     */
+    public static final String FORM_ID_GXHDO102C009 = "GXHDO102C009";
+    
+    /**
+     * 誘電体ｽﾗﾘｰ作製・添加材・ｿﾞﾙ秤量入力画面ID
+     */
+    public static final String FORM_ID_GXHDO102C010 = "GXHDO102C010";
+    
+    /**
+     * 誘電体ｽﾗﾘｰ作製・主原料秤量入力画面ID
+     */
+    public static final String FORM_ID_GXHDO102C011 = "GXHDO102C011";
     
     /**
      * エラーリスト表示メッセージ
@@ -363,6 +406,36 @@ public class SubFormUtil {
                 returnBean = FacesContext.getCurrentInstance().
                         getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
                                 getELContext(), null, "beanGXHDO102C006");
+                break;
+            // ﾊﾞｲﾝﾀﾞｰ溶液作製・溶剤秤量入力
+            case "GXHDO102C007":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO102C007");
+                break;
+            // ﾊﾞｲﾝﾀﾞｰ溶液作製・ﾊﾞｲﾝﾀﾞｰ粉秤量入力
+            case "GXHDO102C008":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO102C008");
+                break;
+            // 誘電体ｽﾗﾘｰ作製・溶剤・添加材ｽﾗﾘｰ秤量入力
+            case "GXHDO102C009":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO102C009");
+                break;
+            // 誘電体ｽﾗﾘｰ作製・添加材・ｿﾞﾙ秤量入力
+            case "GXHDO102C010":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO102C010");
+                break;
+            // 誘電体ｽﾗﾘｰ作製・主原料秤量入力
+            case "GXHDO102C011":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO102C011");
                 break;
              // エラーリストエラーダイアログ
             case "ErrorListMessage":
