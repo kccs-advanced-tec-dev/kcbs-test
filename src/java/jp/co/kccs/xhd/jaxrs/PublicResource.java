@@ -40,6 +40,7 @@ import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
 
 /**
  * ===============================================================================<br>
@@ -1247,10 +1248,11 @@ public class PublicResource {
             // 秤量号機　4桁  重量　5桁以内、数字のみ
             String juryo = param.getJuryo();
             String goki = param.getGoki();
+            String splitJuryo = juryo;
             if(juryo.contains(".")){
-                juryo = juryo.substring(0,juryo.indexOf("."));
+                splitJuryo = juryo.substring(0,juryo.indexOf("."));
             }
-            if (!(StringUtil.getLength(goki) == 4 && StringUtil.getLength(juryo) <= 5 && StringUtils.isNumeric(juryo))) {
+            if (!(StringUtil.getLength(goki) == 4 && StringUtil.getLength(splitJuryo) <= 5 && NumberUtils.isNumber(juryo))) {
                 // ｴﾗｰの場合、HTTPステータスコード「500」を返却する。
                 LOGGER.log(Level.SEVERE, "Inputs are incorrect.");
                 return Response.status(500).build();

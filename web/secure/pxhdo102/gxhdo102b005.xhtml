@@ -77,10 +77,25 @@
                     };
                     wSocket.onmessage = function(event)
                     {
-                        //APIから値が渡されたときは、アクティブな項目に値を出力する
-                        var received_msg = event.data;
-                        var current = document.activeElement;
-                        current.value = received_msg;
+                        // 画面が非アクティブの場合、処理を行わない。
+                        if (document.hasFocus()) {
+                            //APIから値が渡されたときは、アクティブな項目に値を出力する
+                            var received_msg = event.data;
+                            var current = document.activeElement;
+                            current.value = received_msg;
+                            // 値表示後、次のテキストボックスにフォーカスを移動(最後の項目の場合はOKボタン)
+                            if(current !== null){
+                                var currentId = current.id;
+                                currentId = (currentId).split(":");
+                                var currentIdBefore = currentId[0] + ":" + currentId[1] + ":" + currentId[2] + ":" + currentId[3] + ":";
+                                var currentIdAfter = ":" + currentId[5];
+                                if(currentId[4] >= 3 && currentId[4] < 8){
+                                    document.getElementById(currentIdBefore + (Number(currentId[4]) + 1) + currentIdAfter).focus();
+                                } else if(currentId[4] === "8"){
+                                    document.getElementById(currentId[0] + ":" +  currentId[1] + ":okBtn").focus();
+                                }
+                            }
+                        }
                     };
                     wSocket.onerror = function()
                     {

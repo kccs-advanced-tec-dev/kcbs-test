@@ -17,7 +17,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.sql.DataSource;
 import jp.co.kccs.xhd.db.model.FXHDD01;
-import jp.co.kccs.xhd.model.GXHDO102C002Model;
+import jp.co.kccs.xhd.model.GXHDO102C005Model;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
 import jp.co.kccs.xhd.util.NumberUtil;
@@ -32,7 +32,7 @@ import org.apache.commons.dbutils.handlers.MapHandler;
  * <br>
  * システム名	品質DB(コンデンサ)<br>
  * <br>
- * 変更日	2021/09/22<br>
+ * 変更日	2021/10/15<br>
  * 計画書No	MB2101-DK002<br>
  * 変更者	KCSS wxf<br>
  * 変更理由	新規作成<br>
@@ -40,16 +40,16 @@ import org.apache.commons.dbutils.handlers.MapHandler;
  * ===============================================================================<br>
  */
 /**
- * GXHDO102C002(ｶﾞﾗｽｽﾗﾘｰ作製・秤量入力)
+ * GXHDO102C005(添加材ｽﾗﾘｰ作製・溶剤調合入力)
  *
  * @author KCSS wxf
- * @since 2021/09/22
+ * @since 2021/10/15
  */
-@ManagedBean(name = "beanGXHDO102C002")
+@ManagedBean(name = "beanGXHDO102C005")
 @SessionScoped
-public class GXHDO102C002 implements Serializable {
+public class GXHDO102C005 implements Serializable {
 
-    private static final Logger LOGGER = Logger.getLogger(GXHDO102C002.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GXHDO102C005.class.getName());
 
     /**
      * DataSource(MLAServer)
@@ -81,19 +81,19 @@ public class GXHDO102C002 implements Serializable {
     private Integer errorTabIndex;
 
     /**
-     * ｶﾞﾗｽｽﾗﾘｰ作製・秤量入力サブ画面用データ
+     * 添加材ｽﾗﾘｰ作製・溶剤調合入力サブ画面用データ
      */
-    private GXHDO102C002Model gxhdO102c002Model;
+    private GXHDO102C005Model gxhdO102c005Model;
 
     /**
-     * ｶﾞﾗｽｽﾗﾘｰ作製・秤量入力サブ画面用データ(表示制御用)
+     * 添加材ｽﾗﾘｰ作製・溶剤調合入力サブ画面用データ(表示制御用)
      */
-    private GXHDO102C002Model gxhdO102c002ModelView;
+    private GXHDO102C005Model gxhdO102c005ModelView;
 
     /**
      * コンストラクタ
      */
-    public GXHDO102C002() {
+    public GXHDO102C005() {
     }
 
     /**
@@ -108,7 +108,7 @@ public class GXHDO102C002 implements Serializable {
             context.addCallbackParam("firstParam", "error" + getErrorTabIndex());
             return;
         }
-        GXHDO102C002Logic.cloneViewShowsubgamendataToPotto(this.getGxhdO102c002ModelView(), this.getGxhdO102c002Model());
+        GXHDO102C005Logic.setSubgamenDataFromView(this.getGxhdO102c005ModelView(), this.getGxhdO102c005Model());
     }
 
     /**
@@ -118,9 +118,9 @@ public class GXHDO102C002 implements Serializable {
      */
     private boolean checkOK() {
 
-        GXHDO102C002Model.C002SubGamenData showsubgamendata = this.getGxhdO102c002ModelView().getShowsubgamendata();
+        GXHDO102C005Model.SubGamenData showsubgamendata = this.getGxhdO102c005ModelView().getShowsubgamendata();
         // 背景色をクリア
-        GXHDO102C002Logic.clearBackColor(this.getGxhdO102c002ModelView());
+        GXHDO102C005Logic.clearBackColor(this.getGxhdO102c005ModelView());
         setErrorTabIndex(0);
         // 【材料品名1】ﾘﾝｸ押下時、サブ画面の部材①タブデータリスト
         List<FXHDD01> subDataBuzaitab1List = showsubgamendata.getSubDataBuzaitab1();
@@ -137,6 +137,9 @@ public class GXHDO102C002 implements Serializable {
             return false;
         }
 
+        if (showsubgamendata.getSubDataZairyokubun() == 7) {
+            return true;
+        }
         // 【部材在庫No2】ﾛｽﾄﾌｫｰｶｽ時のチェック処理
         if (!buzainoCheck(subDataBuzaitab2List.get(1), "2")) {
             setErrorTabIndex(2);
@@ -152,13 +155,13 @@ public class GXHDO102C002 implements Serializable {
     }
 
     /**
-     * ｶﾞﾗｽｽﾗﾘｰ作製・秤量入力_サブ画面の調合残量計算処理
+     * 添加材ｽﾗﾘｰ作製・溶剤調合入力_サブ画面の調合残量計算処理
      *
      */
     public void doTyogouzanryouKeisan() {
         //サブ画面の調合残量の計算処理
-        GXHDO102C002Logic.calcTyogouzanryou(this.getGxhdO102c002ModelView());
-        GXHDO102C002Logic.cloneViewShowsubgamendataToShow(this.getGxhdO102c002ModelView(), this.getGxhdO102c002Model());
+        GXHDO102C005Logic.calcTyogouzanryou(this.getGxhdO102c005ModelView());
+        GXHDO102C005Logic.setShowsubgamendataFromView(this.getGxhdO102c005ModelView(), this.getGxhdO102c005Model());
     }
 
     /**
@@ -193,7 +196,7 @@ public class GXHDO102C002 implements Serializable {
             setError(item1, "XHD-000222");
             return false;
         }
-
+        
         // 偶数行に調合量が入力されている場合、該当行の前の行に0が入力されていること。
         if (!NumberUtil.isZero(item1.getValue()) && !StringUtil.isEmpty(item2.getValue())) {
             setError(item1, "XHD-000222");
@@ -201,7 +204,7 @@ public class GXHDO102C002 implements Serializable {
         }
         return true;
     }
-
+    
     /**
      * 【部材在庫No】ﾛｽﾄﾌｫｰｶｽ時の処理
      *
@@ -211,7 +214,7 @@ public class GXHDO102C002 implements Serializable {
     public void dobuzainoOnblur(FXHDD01 itemBuzaino, String subTabNo) {
         this.setIsFormError(false);
         // 背景色をクリア
-        GXHDO102C002Logic.clearBackColor(this.getGxhdO102c002ModelView());
+        GXHDO102C005Logic.clearBackColor(this.getGxhdO102c005ModelView());
         if (!buzainoCheck(itemBuzaino, subTabNo)) {
             this.setIsFormError(true);
             // エラーの場合はコールバック変数に"error"をセット
@@ -219,7 +222,7 @@ public class GXHDO102C002 implements Serializable {
             context.addCallbackParam("firstParam", "error");
             return;
         }
-        GXHDO102C002Logic.cloneViewShowsubgamendataToShow(this.getGxhdO102c002ModelView(), this.getGxhdO102c002Model());
+        GXHDO102C005Logic.setShowsubgamendataFromView(this.getGxhdO102c005ModelView(), this.getGxhdO102c005Model());
     }
     
     /**
@@ -234,7 +237,7 @@ public class GXHDO102C002 implements Serializable {
             return true;
         }
         // 部材在庫品名の値をクリア
-        setBuzaihinmeiVal(this.getGxhdO102c002ModelView(), subTabNo, "");
+        setBuzaihinmeiVal(this.getGxhdO102c005ModelView(), subTabNo, "");
         // 【部材在庫No1】ﾛｽﾄﾌｫｰｶｽ時、部材在庫No1の型ﾁｪｯｸ
         if (StringUtil.getLength(itemBuzaino.getValue()) != 9) {
             setError(itemBuzaino, "XHD-000004", itemBuzaino.getLabel1(), "9");
@@ -248,7 +251,7 @@ public class GXHDO102C002 implements Serializable {
         }
         String hinmei = StringUtil.nullToBlank(fmlad01Data.get("hinmei"));
         Timestamp yukokigen = (Timestamp) fmlad01Data.get("yukokigen");
-        GXHDO102C002Model.C002SubGamenData showsubgamendata = this.getGxhdO102c002ModelView().getShowsubgamendata();
+        GXHDO102C005Model.SubGamenData showsubgamendata = this.getGxhdO102c005ModelView().getShowsubgamendata();
         FXHDD01 itemZairyohinmei;
         // 品名のチェック: 取得した品名と材料品名が一致していること
         if ("1".equals(subTabNo)) {
@@ -271,7 +274,7 @@ public class GXHDO102C002 implements Serializable {
             return false;
         }
         // 部材在庫ﾃﾞｰﾀから取得した品名は部材在庫品名に設定
-        setBuzaihinmeiVal(this.getGxhdO102c002ModelView(), subTabNo, hinmei);
+        setBuzaihinmeiVal(this.getGxhdO102c005ModelView(), subTabNo, hinmei);
 
         return true;
     }
@@ -279,12 +282,12 @@ public class GXHDO102C002 implements Serializable {
     /**
      * 部材在庫品名の値を設定
      *
-     * @param gxhdo102c002model モデルデータ
+     * @param gxhdo102c005model モデルデータ
      * @param subTabNo タブインデックス
      * @param hinmei 在庫品名
      */
-    private void setBuzaihinmeiVal(GXHDO102C002Model gxhdo102c002model, String subTabNo, String hinmei) {
-        GXHDO102C002Model.C002SubGamenData showsubgamendata = gxhdo102c002model.getShowsubgamendata();
+    private void setBuzaihinmeiVal(GXHDO102C005Model gxhdo102c005model, String subTabNo, String hinmei) {
+        GXHDO102C005Model.SubGamenData showsubgamendata = gxhdo102c005model.getShowsubgamendata();
         // 部材在庫品名の値を設定
         if ("1".equals(subTabNo)) {
             showsubgamendata.getSubDataBuzaitab1().get(2).setValue(hinmei);
@@ -320,7 +323,7 @@ public class GXHDO102C002 implements Serializable {
     /**
      * エラーセット
      *
-     * @param itemData ｶﾞﾗｽｽﾗﾘｰ作製・秤量入力サブ画面
+     * @param itemData 添加材ｽﾗﾘｰ作製・溶剤調合入力サブ画面
      * @param errorId エラーID
      * @param errParams エラーパラメータ
      */
@@ -445,38 +448,38 @@ public class GXHDO102C002 implements Serializable {
     }
 
     /**
-     * ｶﾞﾗｽｽﾗﾘｰ作製・秤量入力サブ画面用データ
+     * 添加材ｽﾗﾘｰ作製・溶剤調合入力サブ画面用データ
      *
-     * @return the gxhdO102c002Model
+     * @return the gxhdO102c005Model
      */
-    public GXHDO102C002Model getGxhdO102c002Model() {
-        return gxhdO102c002Model;
+    public GXHDO102C005Model getGxhdO102c005Model() {
+        return gxhdO102c005Model;
     }
 
     /**
-     * ｶﾞﾗｽｽﾗﾘｰ作製・秤量入力サブ画面用データ
+     * 添加材ｽﾗﾘｰ作製・溶剤調合入力サブ画面用データ
      *
-     * @param gxhdO102c002Model the gxhdO102c002Model to set
+     * @param gxhdO102c005Model the gxhdO102c005Model to set
      */
-    public void setGxhdO102c002Model(GXHDO102C002Model gxhdO102c002Model) {
-        this.gxhdO102c002Model = gxhdO102c002Model;
+    public void setGxhdO102c005Model(GXHDO102C005Model gxhdO102c005Model) {
+        this.gxhdO102c005Model = gxhdO102c005Model;
     }
 
     /**
-     * ｶﾞﾗｽｽﾗﾘｰ作製・秤量入力サブ画面用データ(表示制御用)
+     * 添加材ｽﾗﾘｰ作製・溶剤調合入力サブ画面用データ(表示制御用)
      *
-     * @return the gxhdO102c002ModelView
+     * @return the gxhdO102c005ModelView
      */
-    public GXHDO102C002Model getGxhdO102c002ModelView() {
-        return gxhdO102c002ModelView;
+    public GXHDO102C005Model getGxhdO102c005ModelView() {
+        return gxhdO102c005ModelView;
     }
 
     /**
-     * ｶﾞﾗｽｽﾗﾘｰ作製・秤量入力サブ画面用データ(表示制御用)
+     * 添加材ｽﾗﾘｰ作製・溶剤調合入力サブ画面用データ(表示制御用)
      *
-     * @param gxhdO102c002ModelView the gxhdO102c002ModelView to set
+     * @param gxhdO102c005ModelView the gxhdO102c005ModelView to set
      */
-    public void setGxhdO102c002ModelView(GXHDO102C002Model gxhdO102c002ModelView) {
-        this.gxhdO102c002ModelView = gxhdO102c002ModelView;
+    public void setGxhdO102c005ModelView(GXHDO102C005Model gxhdO102c005ModelView) {
+        this.gxhdO102c005ModelView = gxhdO102c005ModelView;
     }
 }

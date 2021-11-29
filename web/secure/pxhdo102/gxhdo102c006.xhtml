@@ -1,0 +1,144 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <p:dialog header="#{myMsg.subsrtenkafunsaihyoryoTitle}" id="dlg_gxhdo102c006" widgetVar="W_dlg_gxhdo102c006"
+              width="480" modal="true"  
+              dynamic="true" closable="true" closeOnEscape="false" 
+              onShow="subFormOpen();"
+              onHide="subFormClose(); document.getElementById('form:gxhdo102c006Form:cancelBtn').click();" position="center top">
+        <p:ajax event="close"  oncomplete="dclose()"/>
+        <style>
+            thead {display : none;}
+            .gxhdo102c006Form .ui-tabs .ui-tabs-panel {
+                border-width: 0;
+                padding: 5px 0px;
+                background: 0;
+            }
+            .ui-tabs .ui-tabs-panel tr{
+                height: 48px;
+            }
+            .ui-datatable .ui-datatable-odd{
+                background: 0;
+            }
+            .tab_div2{
+                margin-left: 13px;
+                margin-right: 13px;
+            }
+        </style>
+        <h:form id="gxhdo102c006Form" class="gxhdo102c006Form">
+            <p:panel style="width:435px; padding-top: 0; padding-bottom: 0;padding-left: 0;margin-left: -25px;border: 0px;" id="subtabHeader">
+                <p:panelGrid style="width: 100%;border: 0px;font-size: 18px;">
+                    <p:row style="height:30px;white-space:nowrap;">
+                        <p:column style="width: 60px;border-style: hidden;">
+                            <h:outputText rendered="true" value="#{beanGXHDO102C006.gxhdO102c006ModelView.showsubgamendata.subDataTyogouryoukikaku.label1}"
+                                          style="vertical-align: middle;"/>
+                        </p:column>
+                        <p:column style="border-style: hidden;">
+                            <h:outputText id="subDataTyogouryoukikaku" rendered="true" value="#{beanGXHDO102C006.gxhdO102c006ModelView.showsubgamendata.subDataTyogouryoukikaku.value}"
+                                          style="vertical-align: middle;"/>
+                            <h:outputText rendered="true" value="#{beanGXHDO102C006.gxhdO102c006ModelView.showsubgamendata.subDataTani}" style="margin-left:4px;vertical-align: middle;"/>
+                        </p:column>
+                    </p:row> 
+                    <p:row style="height:30px;white-space:nowrap;" >
+                        <p:column style="border-style: hidden;">
+                            <h:outputText rendered="true" value="#{beanGXHDO102C006.gxhdO102c006ModelView.showsubgamendata.subDataTyogouzanryou.label1}"
+                                          style="vertical-align: middle;"/>
+                        </p:column>
+                        <p:column style="border-style: hidden;">
+                            <h:outputText rendered="true" value="#{beanGXHDO102C006.gxhdO102c006ModelView.showsubgamendata.subDataTyogouzanryou.value}"
+                                          style="vertical-align: middle;"/>
+                            <h:outputText rendered="true" value="#{beanGXHDO102C006.gxhdO102c006ModelView.showsubgamendata.subDataTani}" style="margin-left:4px;vertical-align: middle;"/>
+                        </p:column>
+                    </p:row>
+                </p:panelGrid>
+            </p:panel>
+            <p:panel style="width:435px;padding-top: 0; padding-bottom: 0;" id="subtabDetai">
+                <p:tabView id="subtabMain" orientation="top" scrollable="false" class="tab_view tab_div" style="text-align: left; border: 1px;padding: 0;">
+                    <p:tab title="#{myMsg.buzaitab1}" titleStyle="font-size:0.9em; width:80px;padding: 0;" id="tab1">
+                        <div class="tab_div2">
+                            <p:dataTable id="subtab1Table" var="itemSub"  value="#{beanGXHDO102C006.gxhdO102c006ModelView.showsubgamendata.subDataBuzaitab1}"
+                                         scrollable="true" style="font-size: 14px;background: #FFFFFF;padding:0px;" emptyMessage="">
+                                <p:column style="width:100px;">
+                                    <h:outputText rendered="#{itemSub.render1}" value="#{itemSub.label1}" style="vertical-align: middle;"/>
+                                </p:column>
+                                <p:column  style="text-align: left;border-left-style: hidden;padding-left: 0px;" rendered="#{itemSub.renderOutputLabel}">
+                                    <h:outputText rendered="#{itemSub.renderOutputLabel}" value="#{itemSub.value}"
+                                                  style="margin-left:8px;vertical-align: middle;background:#{itemSub.backColorInput};"/>
+                                </p:column>
+                                <p:column style="text-align: left;border-left-style: hidden;" rendered="#{itemSub.renderInputText}">   
+                                    <p:inputText id="textValue" 
+                                                 rendered="#{itemSub.renderInputText}" value="#{itemSub.value}" 
+                                                 maxlength="#{itemSub.displayMaxLength}" 
+                                                 style="width:#{itemSub.displayMaxLength}em; background:#{itemSub.backColorInput};
+                                                 vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{itemSub.customStyleInput}">
+                                        <p:ajax event="blur" process="@this" update="form:gxhdo102c006Form:subtabMain:subtab1Table form:growlMessage" listener="#{beanGXHDO102C006.dobuzainoOnblur(itemSub,'1')}"  async="false" />
+                                    </p:inputText>
+                                </p:column>
+                                <p:column style="text-align: right;border-left-style: hidden; padding-right: 7%;" rendered="#{itemSub.renderInputNumber}">   
+                                    <p:inputNumber id="numberValue" rendered="#{itemSub.renderInputNumber}" value="#{itemSub.value}" thousandSeparator="" roundMethod="D"
+                                                   decimalPlaces="#{itemSub.numberDecimalPlaces}" maxValue="#{itemSub.numberMaxValue}" minValue="#{itemSub.numberMinValue}" size="#{itemSub.displayMaxLength}"
+                                                   inputStyle="background:#{itemSub.backColorInput};vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{itemSub.customStyleInput}">
+                                        <p:ajax event="blur" process="@this" update="form:gxhdo102c006Form:subtabHeader" listener="#{beanGXHDO102C006.doTyogouzanryouKeisan()}"  async="false"/>
+                                    </p:inputNumber>
+                                    <h:outputText rendered="true" value="#{beanGXHDO102C006.gxhdO102c006ModelView.showsubgamendata.subDataTani}" style="margin-left:8px;vertical-align: middle;"/>
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                    </p:tab>
+                    <p:tab title="#{myMsg.buzaitab2}" titleStyle="font-size:0.9em; width:80px;padding:0px;" id="tab2">
+                        <div class="tab_div2">
+                            <p:dataTable id="subtab2Table" var="itemSub"  value="#{beanGXHDO102C006.gxhdO102c006ModelView.showsubgamendata.subDataBuzaitab2}"
+                                         scrollable="true" style="font-size: 14px;background: #FFFFFF;padding:0px;" emptyMessage="">
+                                <p:column  style="width:100px;">
+                                    <h:outputText rendered="#{itemSub.render1}" value="#{itemSub.label1}" style="vertical-align: middle;"/>
+                                </p:column>
+                                <p:column  style="text-align: left;border-left-style: hidden;padding-left: 0px;" rendered="#{itemSub.renderOutputLabel}">
+                                    <h:outputText rendered="#{itemSub.renderOutputLabel}" value="#{itemSub.value}"
+                                                  style="margin-left:8px;vertical-align: middle;background:#{itemSub.backColorInput};"/>
+                                </p:column>
+                                <p:column style="text-align: left;border-left-style: hidden;" rendered="#{itemSub.renderInputText}">   
+                                    <p:inputText id="textValue" 
+                                                 rendered="#{itemSub.renderInputText}" value="#{itemSub.value}" 
+                                                 maxlength="#{itemSub.displayMaxLength}" 
+                                                 style="width:#{itemSub.displayMaxLength}em; background:#{itemSub.backColorInput};
+                                                 vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{itemSub.customStyleInput}">
+                                        <p:ajax event="blur" process="@this" update="form:gxhdo102c006Form:subtabMain:subtab2Table form:growlMessage" listener="#{beanGXHDO102C006.dobuzainoOnblur(itemSub,'2')}"  async="false" />
+                                    </p:inputText>
+                                </p:column>
+                                <p:column style="text-align: right;border-left-style: hidden; padding-right: 7%;" rendered="#{itemSub.renderInputNumber}">   
+                                    <p:inputNumber id="numberValue" rendered="#{itemSub.renderInputNumber}" value="#{itemSub.value}" thousandSeparator="" roundMethod="D"
+                                                   decimalPlaces="#{itemSub.numberDecimalPlaces}" maxValue="#{itemSub.numberMaxValue}" minValue="#{itemSub.numberMinValue}" size="#{itemSub.displayMaxLength}"
+                                                   inputStyle="background:#{itemSub.backColorInput};vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{itemSub.customStyleInput}">
+                                        <p:ajax event="blur" process="@this" update="form:gxhdo102c006Form:subtabHeader" listener="#{beanGXHDO102C006.doTyogouzanryouKeisan()}"  async="false" />
+                                    </p:inputNumber>
+                                    <h:outputText rendered="true" value="#{beanGXHDO102C006.gxhdO102c006ModelView.showsubgamendata.subDataTani}" style="margin-left:8px;vertical-align: middle;"/>
+                                </p:column>
+                            </p:dataTable>
+                        </div>
+                    </p:tab>
+                </p:tabView>
+            </p:panel>
+            
+            <p:commandButton value="OK" id="okBtn"
+                                 style="position:relative;left:80px;top:5px;width:110px;height:35px;"
+                                 actionListener="#{gXHDO901B.returnSubForm('GXHDO102C006',beanGXHDO102C006.isFormError)}"
+                                 async="false"
+                                 process="@this" 
+                                 update="form:entryPanel" >   
+                    <p:ajax event="click"
+                                    async="false"
+                                    listener="#{beanGXHDO102C006.doOk()}"
+                                    process="gxhdo102c006Form" 
+                                    update="form:gxhdo102c006Form:subtabMain form:growlMessage"
+                                    oncomplete="subGamenDoOkError(args);"/>
+                </p:commandButton>
+            <p:commandButton value="Cancel" id="cancelBtn"
+                             style="position:relative;left:150px;top:5px;width:110px;height:35px;"
+                             process="@this" 
+                             update="form:growlMessage"
+                             oncomplete="PF('W_dlg_gxhdo102c006').hide();"/>
+        </h:form>
+    </p:dialog>
+</ui:composition>
