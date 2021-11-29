@@ -924,11 +924,9 @@ public class GXHDO102B007 implements IFormLogic {
         ErrorMessageInfo errorMessageInfo = ValidateUtil.checkInputKikakuchi(itemList, kikakuchiInputErrorInfoList);
 
         // エラー項目の背景色を設定
-        if(errorMessageInfo == null){
-            setItemBackColor(processData, kakuhankaisiList, kakuhansyuuryouList, kakuhajikan, kikakuchiInputErrorInfoList);
-            setItemBackColor(processData, kansoukaisi1List, kansousyuuryou1List, kansoujikan1, kikakuchiInputErrorInfoList);
-            setItemBackColor(processData, kansoukaisi2List, kansousyuuryou2List, kansoujikan2, kikakuchiInputErrorInfoList);
-        }
+        setItemBackColor(processData, kakuhankaisiList, kakuhansyuuryouList, kakuhajikan, kikakuchiInputErrorInfoList, errorMessageInfo);
+        setItemBackColor(processData, kansoukaisi1List, kansousyuuryou1List, kansoujikan1, kikakuchiInputErrorInfoList, errorMessageInfo);
+        setItemBackColor(processData, kansoukaisi2List, kansousyuuryou2List, kansoujikan2, kikakuchiInputErrorInfoList, errorMessageInfo);
 
         return errorMessageInfo;
     }
@@ -995,9 +993,10 @@ public class GXHDO102B007 implements IFormLogic {
      * @param kakuhansyuuryouList 終了時間項目リスト
      * @param label 項目の項目名
      * @param kikakuchiInputErrorInfoList 規格値入力エラー情報リスト
+     * @param errorMessageInfo エラーメッセージ情報
      */
-    private void setItemBackColor(ProcessData processData, List<String> kakuhankaisiList, List<String> kakuhansyuuryouList, String label, List<KikakuchiInputErrorInfo> kikakuchiInputErrorInfoList) {
-
+    private void setItemBackColor(ProcessData processData, List<String> kakuhankaisiList, List<String> kakuhansyuuryouList, String label, List<KikakuchiInputErrorInfo> kikakuchiInputErrorInfoList,
+            ErrorMessageInfo errorMessageInfo) {
         List<String> errorTyougouryouList = new ArrayList<>();
         // エラー項目の背景色を設定
         List<String> allTyougouryouList = new ArrayList<>();
@@ -1007,7 +1006,10 @@ public class GXHDO102B007 implements IFormLogic {
         kikakuchiInputErrorInfoList.stream().forEachOrdered((errorInfo) -> {
             errorTyougouryouList.add(errorInfo.getItemLabel());
         });
-        if (errorTyougouryouList.contains(label)) {
+        if (errorMessageInfo != null && !errorMessageInfo.getErrorMessage().contains(label)) {
+            return;
+        }
+        if (errorTyougouryouList.contains(label) || (errorMessageInfo != null && errorMessageInfo.getErrorMessage().contains(label))) {
             FXHDD01 item1Fxhdd01 = getItemRow(processData.getItemList(), allTyougouryouList.get(0));
             FXHDD01 item2Fxhdd01 = getItemRow(processData.getItemList(), allTyougouryouList.get(1));
             FXHDD01 item3Fxhdd01 = getItemRow(processData.getItemList(), allTyougouryouList.get(2));
