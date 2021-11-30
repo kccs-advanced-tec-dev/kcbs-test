@@ -300,14 +300,14 @@ public class GXHDO102B018 implements IFormLogic {
             }
 
             // ﾊﾞｲﾝﾀﾞｰ溶液作製・ﾊﾞｲﾝﾀﾞｰﾌｨﾙﾀｰﾊﾟｽの入力項目の登録データ(仮登録時は仮登録データ)を取得
-            List<SrBinderBfp> srTenkaGlassDataList = getSrBinderBfpData(queryRunnerQcdb, "", jotaiFlg, kojyo, lotNo9, oyalotEdaban);
-            if (srTenkaGlassDataList.isEmpty()) {
+            List<SrBinderBfp> SrBinderBfpDataList = getSrBinderBfpData(queryRunnerQcdb, "", jotaiFlg, kojyo, lotNo9, oyalotEdaban);
+            if (SrBinderBfpDataList.isEmpty()) {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
                 return processData;
             }
 
             // メイン画面データ設定
-            setInputItemDataMainForm(processData, srTenkaGlassDataList.get(0));
+            setInputItemDataMainForm(processData, SrBinderBfpDataList.get(0));
 
             // 次呼出しメソッドをクリア
             processData.setMethod("");
@@ -1753,7 +1753,7 @@ public class GXHDO102B018 implements IFormLogic {
      *
      * @param listData フォームデータ
      * @param itemId 項目ID
-     * @param srGlasshyoryo ｶﾞﾗｽ作製・秤量データ
+     * @param srBinderBfp ﾊﾞｲﾝﾀﾞｰ溶液作製・ﾊﾞｲﾝﾀﾞｰﾌｨﾙﾀｰﾊﾟｽデータ
      * @return 入力値
      */
     private String getItemKikakuchi(List<FXHDD01> listData, String itemId, SrBinderBfp srBinderBfp) {
