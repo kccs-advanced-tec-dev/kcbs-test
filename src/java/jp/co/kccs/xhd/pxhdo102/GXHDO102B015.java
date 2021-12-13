@@ -288,13 +288,13 @@ public class GXHDO102B015 implements IFormLogic {
             }
 
             // ﾊﾞｲﾝﾀﾞｰ溶液作製・ﾌｨﾙﾀｰﾊﾟｽの入力項目の登録データ(仮登録時は仮登録データ)を取得
-            List<SrBinderFp> srTenkaYouzaiDataList = getSrBinderFpData(queryRunnerQcdb, "", jotaiFlg, kojyo, lotNo9, oyalotEdaban);
-            if (srTenkaYouzaiDataList.isEmpty()) {
+            List<SrBinderFp> srBinderFpDataList = getSrBinderFpData(queryRunnerQcdb, "", jotaiFlg, kojyo, lotNo9, oyalotEdaban);
+            if (srBinderFpDataList.isEmpty()) {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
                 return processData;
             }
             // メイン画面データ設定
-            setInputItemDataMainForm(processData, srTenkaYouzaiDataList.get(0));
+            setInputItemDataMainForm(processData, srBinderFpDataList.get(0));
 
             // 次呼出しメソッドをクリア
             processData.setMethod("");

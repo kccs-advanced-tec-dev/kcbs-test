@@ -24,7 +24,6 @@ import jp.co.kccs.xhd.common.ErrorListMessage;
 import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.db.model.FXHDD01;
-import jp.co.kccs.xhd.db.model.FXHDD02;
 import jp.co.kccs.xhd.db.model.SikakariJson;
 import jp.co.kccs.xhd.db.model.SrBinderPowder;
 import jp.co.kccs.xhd.db.model.SubSrBinderPowder;
@@ -316,8 +315,8 @@ public class GXHDO102B016 implements IFormLogic {
             }
 
             // ﾊﾞｲﾝﾀﾞｰ溶液作製・ﾊﾞｲﾝﾀﾞｰ粉秤量の入力項目の登録データ(仮登録時は仮登録データ)を取得
-            List<SrBinderPowder> srTenkaYouzaiDataList = getSrBinderPowderData(queryRunnerQcdb, "", jotaiFlg, kojyo, lotNo9, oyalotEdaban);
-            if (srTenkaYouzaiDataList.isEmpty()) {
+            List<SrBinderPowder> srBinderPowderDataList = getSrBinderPowderData(queryRunnerQcdb, "", jotaiFlg, kojyo, lotNo9, oyalotEdaban);
+            if (srBinderPowderDataList.isEmpty()) {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
                 return processData;
             }
@@ -328,7 +327,7 @@ public class GXHDO102B016 implements IFormLogic {
                 return processData;
             }
             // メイン画面データ設定
-            setInputItemDataMainForm(processData, srTenkaYouzaiDataList.get(0));
+            setInputItemDataMainForm(processData, srBinderPowderDataList.get(0));
             // ﾊﾞｲﾝﾀﾞｰ溶液作製・ﾊﾞｲﾝﾀﾞｰ粉秤量入力_ｻﾌﾞ画面データ設定
             setInputItemDataSubFormC008(processData, subSrBinderPowderDataList);
 
@@ -765,9 +764,9 @@ public class GXHDO102B016 implements IFormLogic {
             if (JOTAI_FLG_KARI_TOROKU.equals(processData.getInitJotaiFlg())) {
 
                 // 更新前の値を取得
-                List<SrBinderPowder> srTenkaYouzaiList = getSrBinderPowderData(queryRunnerQcdb, rev.toPlainString(), processData.getInitJotaiFlg(), kojyo, lotNo9, edaban);
-                if (!srTenkaYouzaiList.isEmpty()) {
-                    tmpSrBinderPowder = srTenkaYouzaiList.get(0);
+                List<SrBinderPowder> srBinderPowderDataList = getSrBinderPowderData(queryRunnerQcdb, rev.toPlainString(), processData.getInitJotaiFlg(), kojyo, lotNo9, edaban);
+                if (!srBinderPowderDataList.isEmpty()) {
+                    tmpSrBinderPowder = srBinderPowderDataList.get(0);
                 }
 
                 deleteTmpSrBinderPowder(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo9, edaban);
@@ -1847,17 +1846,6 @@ public class GXHDO102B016 implements IFormLogic {
     }
 
     /**
-     * ボタンデータ取得
-     *
-     * @param listData フォームデータ
-     * @param buttonId ボタンID
-     * @return 項目データ
-     */
-    private FXHDD02 getButtonRow(List<FXHDD02> buttonList, String buttonId) {
-        return buttonList.stream().filter(n -> buttonId.equals(n.getButtonId())).findFirst().orElse(null);
-    }
-
-    /**
      * 項目データ(入力値)取得
      *
      * @param listData フォームデータ
@@ -2750,34 +2738,6 @@ public class GXHDO102B016 implements IFormLogic {
         bean.setBikou1(getItemRow(processData.getItemList(), GXHDO102B016Const.BIKOU1));
         bean.setBikou2(getItemRow(processData.getItemList(), GXHDO102B016Const.BIKOU2));
 
-    }
-
-    /**
-     * 項目IDリスト取得
-     *
-     * @param processData 処理制御データ
-     * @param formIdList 項目定義情報
-     * @return 項目IDリスト
-     */
-    private List<String> getItemIdList(ProcessData processData, List<String> formIdList) {
-        try {
-            QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
-            String sql = "SELECT item_id itemId "
-                    + " FROM fxhdd01 "
-                    + " WHERE "
-                    + DBUtil.getInConditionPreparedStatement("gamen_id", formIdList.size())
-                    + " ORDER BY gamen_id, item_no ";
-
-            List<Object> params = new ArrayList<>();
-            params.addAll(formIdList);
-
-            List<Map<String, Object>> mapList = queryRunnerDoc.query(sql, new MapListHandler(), params.toArray());
-            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-            return mapList.stream().map(n -> n.get("itemId").toString()).collect(Collectors.toList());
-        } catch (SQLException ex) {
-            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-        }
-        return null;
     }
 
     /**

@@ -23,7 +23,6 @@ import jp.co.kccs.xhd.common.CompMessage;
 import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.db.model.FXHDD01;
-import jp.co.kccs.xhd.db.model.FXHDD02;
 import jp.co.kccs.xhd.db.model.SikakariJson;
 import jp.co.kccs.xhd.db.model.SrBinderKakuhan;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
@@ -35,7 +34,6 @@ import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.DateUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
-import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.StringUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import jp.co.kccs.xhd.util.ValidateUtil;
@@ -361,73 +359,6 @@ public class GXHDO102B017 implements IFormLogic {
         // 後続処理メソッド設定
         processData.setMethod("doTempRegist");
         return processData;
-    }
-
-    /**
-     * 項目の規格値を設置して、調合量X_1と調合量X_2の合計値を計算して入力値に設置
-     *
-     * @param processData 処理データ
-     * @param kikakuItem 規格値項目名
-     * @param tyougouryouItemList 項目リスト
-     * @return 項目データ
-     */
-    private FXHDD01 setKikakuValue(ProcessData processData, String kikakuItem, List<String> tyougouryouItemList) {
-        FXHDD01 kikakuFxhdd01 = getItemRow(processData.getItemList(), kikakuItem);
-        if (kikakuFxhdd01 == null) {
-            return null;
-        }
-        int tyougouryouTotalVal = 0;
-        FXHDD01 itemFxhdd01Clone = null;
-        try {
-            for (String tyougouryouItem : tyougouryouItemList) {
-                FXHDD01 itemFxhdd01 = getItemRow(processData.getItemList(), tyougouryouItem);
-                if (itemFxhdd01 == null) {
-                    continue;
-                }
-                // 未入力項目に対しては規格値ﾁｪｯｸしない
-                if (!StringUtil.isEmpty(itemFxhdd01.getValue())) {
-                    if (!NumberUtil.isIntegerNumeric(itemFxhdd01.getValue())) {
-                        return null;
-                    }
-                    // 規格値ﾁｪｯｸに調合量X_1と調合量X_2の合計値を利用するため、該当項目をCloneする
-                    if (itemFxhdd01Clone == null) {
-                        itemFxhdd01Clone = itemFxhdd01.clone();
-                    }
-                    tyougouryouTotalVal += Integer.parseInt(itemFxhdd01.getValue());
-                }
-            }
-        } catch (CloneNotSupportedException ex) {
-            ErrUtil.outputErrorLog("CloneNotSupportedException発生", ex, LOGGER);
-            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
-            return null;
-        }
-        if (itemFxhdd01Clone != null) {
-
-            // 項目の規格値を設置
-            itemFxhdd01Clone.setKikakuChi(kikakuFxhdd01.getKikakuChi());
-            itemFxhdd01Clone.setStandardPattern(kikakuFxhdd01.getStandardPattern());
-            itemFxhdd01Clone.setValue(String.valueOf(tyougouryouTotalVal));
-        }
-        return itemFxhdd01Clone;
-    }
-
-    /**
-     * 項目の規格値と表示ﾗﾍﾞﾙ1を設置
-     *
-     * @param processData 処理データ
-     * @param itemList 規格値の入力値チェック必要の項目リスト
-     * @param tyougouryouList 調合量リスト
-     * @param tyogouryoukikaku 調合量規格
-     * @param label1 表示ﾗﾍﾞﾙ1
-     */
-    private void setKikakuValueAndLabel1(ProcessData processData, List<FXHDD01> itemList, List<String> tyougouryouList, String tyogouryoukikaku, String label1) {
-        // 調合量規格Xの規格は調合量X_1と調合量X_2に設置
-        FXHDD01 tyougouryouKikakuItemFxhdd01 = setKikakuValue(processData, tyogouryoukikaku, tyougouryouList);
-        // 項目の項目名を設置
-        if (tyougouryouKikakuItemFxhdd01 != null) {
-            tyougouryouKikakuItemFxhdd01.setLabel1(label1);
-            itemList.add(tyougouryouKikakuItemFxhdd01);
-        }
     }
 
     /**
@@ -795,19 +726,6 @@ public class GXHDO102B017 implements IFormLogic {
         }
 
         return null;
-    }
-
-    /**
-     * ﾁｪｯｸﾎﾞｯｸｽがﾁｪｯｸされているかﾁｪｯｸ。
-     *
-     * @param itemFxhdd01 項目データ
-     * @return チェック結果(true:エラーなし、false:エラー有り)
-     */
-    private boolean hasCheck(FXHDD01 itemFxhdd01) {
-        if (itemFxhdd01 == null) {
-            return true;
-        }
-        return "true".equals(StringUtil.nullToBlank(itemFxhdd01.getValue()).toLowerCase());
     }
 
     /**
@@ -1932,17 +1850,6 @@ public class GXHDO102B017 implements IFormLogic {
      */
     private FXHDD01 getItemRow(List<FXHDD01> listData, String itemId) {
         return listData.stream().filter(n -> itemId.equals(n.getItemId())).findFirst().orElse(null);
-    }
-
-    /**
-     * ボタンデータ取得
-     *
-     * @param listData フォームデータ
-     * @param buttonId ボタンID
-     * @return 項目データ
-     */
-    private FXHDD02 getButtonRow(List<FXHDD02> buttonList, String buttonId) {
-        return buttonList.stream().filter(n -> buttonId.equals(n.getButtonId())).findFirst().orElse(null);
     }
 
     /**

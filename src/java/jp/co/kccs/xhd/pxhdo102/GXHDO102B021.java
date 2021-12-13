@@ -24,7 +24,6 @@ import jp.co.kccs.xhd.common.ErrorListMessage;
 import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.db.model.FXHDD01;
-import jp.co.kccs.xhd.db.model.FXHDD02;
 import jp.co.kccs.xhd.db.model.SikakariJson;
 import jp.co.kccs.xhd.db.model.SrYuudentaiSol;
 import jp.co.kccs.xhd.db.model.SubSrYuudentaiSol;
@@ -73,7 +72,7 @@ import org.primefaces.context.RequestContext;
  */
 public class GXHDO102B021 implements IFormLogic {
 
-    private static final Logger LOGGER = Logger.getLogger(GXHDO102B014.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(GXHDO102B021.class.getName());
     private static final String JOTAI_FLG_KARI_TOROKU = "0";
     private static final String JOTAI_FLG_TOROKUZUMI = "1";
     private static final String JOTAI_FLG_SAKUJO = "9";
@@ -1997,17 +1996,6 @@ public class GXHDO102B021 implements IFormLogic {
     }
 
     /**
-     * ボタンデータ取得
-     *
-     * @param listData フォームデータ
-     * @param buttonId ボタンID
-     * @return 項目データ
-     */
-    private FXHDD02 getButtonRow(List<FXHDD02> buttonList, String buttonId) {
-        return buttonList.stream().filter(n -> buttonId.equals(n.getButtonId())).findFirst().orElse(null);
-    }
-
-    /**
      * 項目データ(入力値)取得
      *
      * @param listData フォームデータ
@@ -3136,34 +3124,6 @@ public class GXHDO102B021 implements IFormLogic {
         bean.setBikou1(getItemRow(processData.getItemList(), GXHDO102B021Const.BIKOU1));
         bean.setBikou2(getItemRow(processData.getItemList(), GXHDO102B021Const.BIKOU2));
 
-    }
-
-    /**
-     * 項目IDリスト取得
-     *
-     * @param processData 処理制御データ
-     * @param formIdList 項目定義情報
-     * @return 項目IDリスト
-     */
-    private List<String> getItemIdList(ProcessData processData, List<String> formIdList) {
-        try {
-            QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
-            String sql = "SELECT item_id itemId "
-                    + " FROM fxhdd01 "
-                    + " WHERE "
-                    + DBUtil.getInConditionPreparedStatement("gamen_id", formIdList.size())
-                    + " ORDER BY gamen_id, item_no ";
-
-            List<Object> params = new ArrayList<>();
-            params.addAll(formIdList);
-
-            List<Map<String, Object>> mapList = queryRunnerDoc.query(sql, new MapListHandler(), params.toArray());
-            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-            return mapList.stream().map(n -> n.get("itemId").toString()).collect(Collectors.toList());
-        } catch (SQLException ex) {
-            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-        }
-        return null;
     }
 
     /**
