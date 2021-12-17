@@ -459,6 +459,7 @@ public class GXHDO102B018 implements IFormLogic {
      *
      * @param processData 処理制御データ
      * @return 処理制御データ
+     * @throws ParseException 変換エラー
      */
     public ProcessData setBinderyuukoukigenKeisan(ProcessData processData) throws ParseException {
 

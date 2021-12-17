@@ -398,24 +398,26 @@ public class GXHDO102B019 implements IFormLogic {
             FXHDD01 itemSoujyuuryou3, FXHDD01 itemFuutaijyuuryou3) {
 
         //「総重量①」ﾁｪｯｸ
-        if (StringUtil.isEmpty(itemSoujyuuryou1.getValue())) {
+        if (itemSoujyuuryou1 != null && StringUtil.isEmpty(itemSoujyuuryou1.getValue())) {
             // ｴﾗｰ項目をﾘｽﾄに追加
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemSoujyuuryou1);
             return MessageUtil.getErrorMessageInfo("XHD-000037", true, false, errFxhdd01List, itemSoujyuuryou1.getLabel1());
         }
         // 「風袋重量①」ﾁｪｯｸ
-        if (StringUtil.isEmpty(itemFuutaijyuuryou1.getValue())) {
+        if (itemFuutaijyuuryou1 != null && StringUtil.isEmpty(itemFuutaijyuuryou1.getValue())) {
             // ｴﾗｰ項目をﾘｽﾄに追加
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemFuutaijyuuryou1);
             return MessageUtil.getErrorMessageInfo("XHD-000037", true, false, errFxhdd01List, itemFuutaijyuuryou1.getLabel1());
         }
-        // [総重量①]<[風袋重量①]場合エラー
-        BigDecimal soujyuuryou1 = new BigDecimal(itemSoujyuuryou1.getValue());
-        BigDecimal fuutaijyuuryou1 = new BigDecimal(itemFuutaijyuuryou1.getValue());
-        if (soujyuuryou1.compareTo(fuutaijyuuryou1) < 0) {
-            // ｴﾗｰ項目をﾘｽﾄに追加
-            List<FXHDD01> errFxhdd01List = Arrays.asList(itemSoujyuuryou1, itemFuutaijyuuryou1);
-            return MessageUtil.getErrorMessageInfo("XHD-000023", true, false, errFxhdd01List, itemSoujyuuryou1.getLabel1(), itemFuutaijyuuryou1.getLabel1());
+        if (itemSoujyuuryou1 != null && itemFuutaijyuuryou1 != null) {
+            // [総重量①]<[風袋重量①]場合エラー
+            BigDecimal soujyuuryou1 = new BigDecimal(itemSoujyuuryou1.getValue());
+            BigDecimal fuutaijyuuryou1 = new BigDecimal(itemFuutaijyuuryou1.getValue());
+            if (soujyuuryou1.compareTo(fuutaijyuuryou1) < 0) {
+                // ｴﾗｰ項目をﾘｽﾄに追加
+                List<FXHDD01> errFxhdd01List = Arrays.asList(itemSoujyuuryou1, itemFuutaijyuuryou1);
+                return MessageUtil.getErrorMessageInfo("XHD-000023", true, false, errFxhdd01List, itemSoujyuuryou1.getLabel1(), itemFuutaijyuuryou1.getLabel1());
+            }
         }
 
         if (itemSoujyuuryou2 != null && itemFuutaijyuuryou2 != null) {
@@ -432,6 +434,7 @@ public class GXHDO102B019 implements IFormLogic {
                 List<FXHDD01> errFxhdd01List = Arrays.asList(itemFuutaijyuuryou2);
                 return MessageUtil.getErrorMessageInfo("XHD-000037", true, false, errFxhdd01List, itemFuutaijyuuryou2.getLabel1());
             }
+
             // [総重量②]<[風袋重量②]場合エラー
             if (!(StringUtil.isEmpty(itemSoujyuuryou2.getValue()) && StringUtil.isEmpty(itemFuutaijyuuryou2.getValue()))) {
                 BigDecimal soujyuuryou2 = new BigDecimal(itemSoujyuuryou2.getValue());
@@ -441,32 +444,33 @@ public class GXHDO102B019 implements IFormLogic {
                     List<FXHDD01> errFxhdd01List = Arrays.asList(itemSoujyuuryou2, itemFuutaijyuuryou2);
                     return MessageUtil.getErrorMessageInfo("XHD-000023", true, false, errFxhdd01List, itemSoujyuuryou2.getLabel1(), itemFuutaijyuuryou2.getLabel1());
                 }
-            } else if (itemSoujyuuryou3 != null && itemFuutaijyuuryou3 != null) {
-                //「総重量③」ﾁｪｯｸ
-                if (StringUtil.isEmpty(itemSoujyuuryou3.getValue()) && !StringUtil.isEmpty(itemFuutaijyuuryou3.getValue())) {
-                    // ｴﾗｰ項目をﾘｽﾄに追加
-                    List<FXHDD01> errFxhdd01List = Arrays.asList(itemSoujyuuryou3);
-                    return MessageUtil.getErrorMessageInfo("XHD-000037", true, false, errFxhdd01List, itemSoujyuuryou3.getLabel1());
+            }
+        }
 
-                }
-                // 「風袋重量③」ﾁｪｯｸ
-                if (StringUtil.isEmpty(itemFuutaijyuuryou3.getValue()) && !StringUtil.isEmpty(itemSoujyuuryou3.getValue())) {
+        if (itemSoujyuuryou3 != null && itemFuutaijyuuryou3 != null) {
+            //「総重量③」ﾁｪｯｸ
+            if (StringUtil.isEmpty(itemSoujyuuryou3.getValue()) && !StringUtil.isEmpty(itemFuutaijyuuryou3.getValue())) {
+                // ｴﾗｰ項目をﾘｽﾄに追加
+                List<FXHDD01> errFxhdd01List = Arrays.asList(itemSoujyuuryou3);
+                return MessageUtil.getErrorMessageInfo("XHD-000037", true, false, errFxhdd01List, itemSoujyuuryou3.getLabel1());
+
+            }
+            // 「風袋重量③」ﾁｪｯｸ
+            if (StringUtil.isEmpty(itemFuutaijyuuryou3.getValue()) && !StringUtil.isEmpty(itemSoujyuuryou3.getValue())) {
+                // ｴﾗｰ項目をﾘｽﾄに追加
+                List<FXHDD01> errFxhdd01List = Arrays.asList(itemFuutaijyuuryou3);
+                return MessageUtil.getErrorMessageInfo("XHD-000037", true, false, errFxhdd01List, itemFuutaijyuuryou3.getLabel1());
+            }
+            // [総重量③]<[風袋重量③]場合エラー
+            if (!(StringUtil.isEmpty(itemSoujyuuryou3.getValue()) && StringUtil.isEmpty(itemFuutaijyuuryou3.getValue()))) {
+                BigDecimal soujyuuryou3 = new BigDecimal(itemSoujyuuryou3.getValue());
+                BigDecimal fuutaijyuuryou3 = new BigDecimal(itemFuutaijyuuryou3.getValue());
+                if (soujyuuryou3.compareTo(fuutaijyuuryou3) < 0) {
                     // ｴﾗｰ項目をﾘｽﾄに追加
-                    List<FXHDD01> errFxhdd01List = Arrays.asList(itemFuutaijyuuryou3);
-                    return MessageUtil.getErrorMessageInfo("XHD-000037", true, false, errFxhdd01List, itemFuutaijyuuryou3.getLabel1());
-                }
-                // [総重量③]<[風袋重量③]場合エラー
-                if (!(StringUtil.isEmpty(itemSoujyuuryou3.getValue()) && StringUtil.isEmpty(itemFuutaijyuuryou3.getValue()))) {
-                    BigDecimal soujyuuryou3 = new BigDecimal(itemSoujyuuryou3.getValue());
-                    BigDecimal fuutaijyuuryou3 = new BigDecimal(itemFuutaijyuuryou3.getValue());
-                    if (soujyuuryou3.compareTo(fuutaijyuuryou3) < 0) {
-                        // ｴﾗｰ項目をﾘｽﾄに追加
-                        List<FXHDD01> errFxhdd01List = Arrays.asList(itemSoujyuuryou3, itemFuutaijyuuryou3);
-                        return MessageUtil.getErrorMessageInfo("XHD-000023", true, false, errFxhdd01List, itemSoujyuuryou3.getLabel1(), itemFuutaijyuuryou3.getLabel1());
-                    }
+                    List<FXHDD01> errFxhdd01List = Arrays.asList(itemSoujyuuryou3, itemFuutaijyuuryou3);
+                    return MessageUtil.getErrorMessageInfo("XHD-000023", true, false, errFxhdd01List, itemSoujyuuryou3.getLabel1(), itemFuutaijyuuryou3.getLabel1());
                 }
             }
-
         }
 
         return null;
@@ -882,13 +886,13 @@ public class GXHDO102B019 implements IFormLogic {
         FXHDD01 itemKokeibunhiritu1 = getItemRow(processData.getItemList(), GXHDO102B019Const.KOKEIBUNHIRITU1);// 固形分比率①
         FXHDD01 itemKokeibunhiritu2 = getItemRow(processData.getItemList(), GXHDO102B019Const.KOKEIBUNHIRITU2);// 固形分比率②
         FXHDD01 itemKokeibunhiritu3 = getItemRow(processData.getItemList(), GXHDO102B019Const.KOKEIBUNHIRITU3);// 固形分比率③
-        if (itemKokeibunhiritu1 != null && itemKokeibunhiritu2 != null && itemKokeibunhiritu1.getValue() != null && itemKokeibunhiritu2.getValue() != null) {
-            BigDecimal itemKokeibunhiritu1Val = new BigDecimal(itemKokeibunhiritu1.getValue());
-            BigDecimal itemKokeibunhiritu2Val = new BigDecimal(itemKokeibunhiritu2.getValue());
+        if (itemKokeibunhiritu1 != null && itemKokeibunhiritu2 != null) {
+            BigDecimal itemKokeibunhiritu1Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemKokeibunhiritu1.getValue());
+            BigDecimal itemKokeibunhiritu2Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemKokeibunhiritu2.getValue());
             BigDecimal compareValue = new BigDecimal(0.05).setScale(2, BigDecimal.ROUND_DOWN);
-            String kokeibunhirituDiffVal1 = (itemKokeibunhiritu1Val.subtract(itemKokeibunhiritu2Val)).toString().replace("-", "");
             // [固形分比率①]と[固形分比率②]の差が0.05％以上ある場合ｴﾗｰ。
-            if (!(StringUtil.isEmpty(itemKokeibunhiritu1.getValue()) && StringUtil.isEmpty(itemKokeibunhiritu2.getValue()))) {
+            if (!StringUtil.isEmpty(itemKokeibunhiritu1.getValue()) && !StringUtil.isEmpty(itemKokeibunhiritu2.getValue())) {
+                String kokeibunhirituDiffVal1 = (itemKokeibunhiritu1Val.subtract(itemKokeibunhiritu2Val)).toString().replace("-", "");
                 if (new BigDecimal(kokeibunhirituDiffVal1).compareTo(compareValue) > -1) {
                     // ｴﾗｰ項目をﾘｽﾄに追加
                     List<FXHDD01> errFxhdd01List = Arrays.asList(itemKokeibunhiritu2);
@@ -896,13 +900,21 @@ public class GXHDO102B019 implements IFormLogic {
                 }
             }
 
-            if (itemKokeibunhiritu3 != null && itemKokeibunhiritu3.getValue() != null) {
-                BigDecimal itemKokeibunhiritu3Val = new BigDecimal(itemKokeibunhiritu3.getValue());
+            if (itemKokeibunhiritu3 != null) {
+                BigDecimal itemKokeibunhiritu3Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemKokeibunhiritu3.getValue());
                 String kokeibunhirituDiffVal2 = (itemKokeibunhiritu1Val.subtract(itemKokeibunhiritu3Val)).toString().replace("-", "");
                 String kokeibunhirituDiffVal3 = (itemKokeibunhiritu2Val.subtract(itemKokeibunhiritu3Val)).toString().replace("-", "");
                 // [固形分比率①]と[固形分比率②]と[固形分比率③]の差が0.05％以上ある場合ｴﾗｰ。
-                if (!(StringUtil.isEmpty(itemKokeibunhiritu1.getValue()) && StringUtil.isEmpty(itemKokeibunhiritu2.getValue()) && StringUtil.isEmpty(itemKokeibunhiritu3.getValue()))) {
-                    if (new BigDecimal(kokeibunhirituDiffVal2).compareTo(compareValue) > -1 || new BigDecimal(kokeibunhirituDiffVal3).compareTo(compareValue) > -1) {
+                if (!StringUtil.isEmpty(itemKokeibunhiritu1.getValue()) && !StringUtil.isEmpty(itemKokeibunhiritu3.getValue())) {
+
+                    if (new BigDecimal(kokeibunhirituDiffVal2).compareTo(compareValue) > -1) {
+                        // ｴﾗｰ項目をﾘｽﾄに追加
+                        List<FXHDD01> errFxhdd01List = Arrays.asList(itemKokeibunhiritu3);
+                        return MessageUtil.getErrorMessageInfo("", "差が0.05％以上あります。再測定を実施してください。", true, false, errFxhdd01List);
+                    }
+                }
+                if (!StringUtil.isEmpty(itemKokeibunhiritu2.getValue()) && !StringUtil.isEmpty(itemKokeibunhiritu3.getValue())) {
+                    if (new BigDecimal(kokeibunhirituDiffVal3).compareTo(compareValue) > -1) {
                         // ｴﾗｰ項目をﾘｽﾄに追加
                         List<FXHDD01> errFxhdd01List = Arrays.asList(itemKokeibunhiritu3);
                         return MessageUtil.getErrorMessageInfo("", "差が0.05％以上あります。再測定を実施してください。", true, false, errFxhdd01List);

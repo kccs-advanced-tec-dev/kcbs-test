@@ -1080,6 +1080,13 @@ public class GXHDO102B012 implements IFormLogic {
         FXHDD01 itemFpteisiTime = getItemRow(processData.getItemList(), GXHDO102B012Const.FPTEISI_TIME); // F/P停止時間
         FXHDD01 itemFpsaikaiDay = getItemRow(processData.getItemList(), GXHDO102B012Const.FPSAIKAI_DAY); // F/P再開日
         FXHDD01 itemFpsaikaiTime = getItemRow(processData.getItemList(), GXHDO102B012Const.FPSAIKAI_TIME); // F/P再開時間
+        if (itemFpteisiDay == null || itemFpteisiTime == null || itemFpsaikaiDay == null || itemFpsaikaiTime == null) {
+            return null;
+        }
+        if (StringUtil.isEmpty(itemFpteisiDay.getValue()) && StringUtil.isEmpty(itemFpteisiTime.getValue()) && StringUtil.isEmpty(itemFpsaikaiDay.getValue()) 
+                && StringUtil.isEmpty(itemFpsaikaiTime.getValue())) {
+            return null;
+        }
         List<FXHDD01> itemList = Arrays.asList(itemFpteisiDay, itemFpteisiTime, itemFpsaikaiDay, itemFpsaikaiTime);
         ArrayList<FXHDD01> errorItemList = new ArrayList<>();
         // 「F/P停止日、F/P停止時間、F/P再開日、F/P再開時間」がすべて入力されているかﾁｪｯｸ
@@ -1114,18 +1121,35 @@ public class GXHDO102B012 implements IFormLogic {
      */
     private void setFpjikanItem(ProcessData processData) {
         FXHDD01 itemFpjikan = getItemRow(processData.getItemList(), GXHDO102B012Const.FPJIKAN); // F/P時間
+        FXHDD01 itemFpteisiDay = getItemRow(processData.getItemList(), GXHDO102B012Const.FPTEISI_DAY); // F/P停止日
+        FXHDD01 itemFpteisiTime = getItemRow(processData.getItemList(), GXHDO102B012Const.FPTEISI_TIME); // F/P停止時間
+        FXHDD01 itemFpsaikaiDay = getItemRow(processData.getItemList(), GXHDO102B012Const.FPSAIKAI_DAY); // F/P再開日
+        FXHDD01 itemFpsaikaiTime = getItemRow(processData.getItemList(), GXHDO102B012Const.FPSAIKAI_TIME); // F/P再開時間
+        if (itemFpjikan == null) {
+            return;
+        }
         // Dateオブジェクト変換
         Date fpsyuuryouDate = getDateTimeItem(processData, GXHDO102B012Const.FPSYUURYOU_DAY, GXHDO102B012Const.FPSYUURYOU_TIME); // F/P終了日時
         Date fpkaisiDate = getDateTimeItem(processData, GXHDO102B012Const.FPKAISI_DAY, GXHDO102B012Const.FPKAISI_TIME); // F/P開始日時
         Date fpteisiDate = getDateTimeItem(processData, GXHDO102B012Const.FPTEISI_DAY, GXHDO102B012Const.FPTEISI_TIME); // F/P停止日時
         Date fpsaikaiDate = getDateTimeItem(processData, GXHDO102B012Const.FPSAIKAI_DAY, GXHDO102B012Const.FPSAIKAI_TIME); // F/P再開日時
-        if (fpsyuuryouDate == null || fpkaisiDate == null || fpteisiDate == null || fpsaikaiDate == null) {
-            itemFpjikan.setValue("");
-            return;
+        itemFpjikan.setValue("");
+        if (StringUtil.isEmpty(itemFpteisiDay.getValue()) && StringUtil.isEmpty(itemFpteisiTime.getValue()) && StringUtil.isEmpty(itemFpsaikaiDay.getValue()) 
+                && StringUtil.isEmpty(itemFpsaikaiTime.getValue())) {
+            if (fpsyuuryouDate == null || fpkaisiDate == null) {
+                return;
+            }
+            // 「F/P終了日+F/P終了時間」 - 「F/P開始日+F/P開始時間」(　時間　分)
+            BigDecimal diffMinutes = BigDecimal.valueOf(DateUtil.diffMinutes(fpkaisiDate, fpsyuuryouDate));
+            itemFpjikan.setValue(diffMinutes.toPlainString());
+        } else {
+            if (fpsyuuryouDate == null || fpkaisiDate == null || fpteisiDate == null || fpsaikaiDate == null) {
+                return;
+            }
+            // (「F/P終了日+F/P終了時間」 - 「F/P開始日+F/P開始時間」) - (「F/P再開日+F/P再開時間」 - 「F/P停止日+F/P停止時間」)(　時間　分)
+            BigDecimal diffMinutes = BigDecimal.valueOf(DateUtil.diffMinutes(fpkaisiDate, fpsyuuryouDate)).subtract(BigDecimal.valueOf(DateUtil.diffMinutes(fpteisiDate, fpsaikaiDate)));
+            itemFpjikan.setValue(diffMinutes.toPlainString());
         }
-        // (「F/P終了日+F/P終了時間」 - 「F/P開始日+F/P開始時間」) - (「F/P再開日+F/P再開時間」 - 「F/P停止日+F/P停止時間」)(　時間　分)
-        BigDecimal diffMinutes = BigDecimal.valueOf(DateUtil.diffMinutes(fpkaisiDate, fpsyuuryouDate)).subtract(BigDecimal.valueOf(DateUtil.diffMinutes(fpteisiDate, fpsaikaiDate)));
-        itemFpjikan.setValue(diffMinutes.toPlainString());
     }
 
     /**

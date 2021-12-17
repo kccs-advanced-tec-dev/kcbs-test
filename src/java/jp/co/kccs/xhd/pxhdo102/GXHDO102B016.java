@@ -2989,7 +2989,7 @@ public class GXHDO102B016 implements IFormLogic {
         mapping.put("lotno", "lotno");                           // ﾛｯﾄNo
         mapping.put("edaban", "edaban");                         // 枝番
         mapping.put("zairyokubun", "zairyokubun");               // 材料区分
-        mapping.put("tyogouryoukikaku", "tyogouryoukikaku");     // 調合量規格
+        mapping.put("tyogouryoukikaku", "tyogouryoukikaku");     // 調合規格
         mapping.put("tyogouzanryou", "tyogouzanryou");           // 調合残量
         mapping.put("zairyohinmei", "zairyohinmei");             // 材料品名
         mapping.put("buzailotno1", "buzailotno1");               // 部材在庫No1
@@ -3000,14 +3000,14 @@ public class GXHDO102B016 implements IFormLogic {
         mapping.put("tyougouryou1_4", "tyougouryou1_4");         // 調合量1_4
         mapping.put("tyougouryou1_5", "tyougouryou1_5");         // 調合量1_5
         mapping.put("tyougouryou1_6", "tyougouryou1_6");         // 調合量1_6
-        mapping.put("buzailotno2", "buzailotno2");               // 部材在庫No1
-        mapping.put("buzaihinmei2", "buzaihinmei2");             // 部材在庫品名1
-        mapping.put("tyougouryou2_1", "tyougouryou2_1");         // 調合量1_1
-        mapping.put("tyougouryou2_2", "tyougouryou2_2");         // 調合量1_2
-        mapping.put("tyougouryou2_3", "tyougouryou2_3");         // 調合量1_3
-        mapping.put("tyougouryou2_4", "tyougouryou2_4");         // 調合量1_4
-        mapping.put("tyougouryou2_5", "tyougouryou2_5");         // 調合量1_5
-        mapping.put("tyougouryou2_6", "tyougouryou2_6");         // 調合量1_6
+        mapping.put("buzailotno2", "buzailotno2");               // 部材在庫No2
+        mapping.put("buzaihinmei2", "buzaihinmei2");             // 部材在庫品名2
+        mapping.put("tyougouryou2_1", "tyougouryou2_1");         // 調合量2_1
+        mapping.put("tyougouryou2_2", "tyougouryou2_2");         // 調合量2_2
+        mapping.put("tyougouryou2_3", "tyougouryou2_3");         // 調合量2_3
+        mapping.put("tyougouryou2_4", "tyougouryou2_4");         // 調合量2_4
+        mapping.put("tyougouryou2_5", "tyougouryou2_5");         // 調合量2_5
+        mapping.put("tyougouryou2_6", "tyougouryou2_6");         // 調合量2_6
         mapping.put("torokunichiji", "torokunichiji");           // 登録日時
         mapping.put("kosinnichiji", "kosinnichiji");             // 更新日時
         mapping.put("revision", "revision");                     // revision
@@ -3066,7 +3066,7 @@ public class GXHDO102B016 implements IFormLogic {
         mapping.put("lotno", "lotno");                           // ﾛｯﾄNo
         mapping.put("edaban", "edaban");                         // 枝番
         mapping.put("zairyokubun", "zairyokubun");               // 材料区分
-        mapping.put("tyogouryoukikaku", "tyogouryoukikaku");     // 調合量規格
+        mapping.put("tyogouryoukikaku", "tyogouryoukikaku");     // 調合規格
         mapping.put("tyogouzanryou", "tyogouzanryou");           // 調合残量
         mapping.put("zairyohinmei", "zairyohinmei");             // 材料品名
         mapping.put("buzailotno1", "buzailotno1");               // 部材在庫No1
@@ -3077,14 +3077,14 @@ public class GXHDO102B016 implements IFormLogic {
         mapping.put("tyougouryou1_4", "tyougouryou1_4");         // 調合量1_4
         mapping.put("tyougouryou1_5", "tyougouryou1_5");         // 調合量1_5
         mapping.put("tyougouryou1_6", "tyougouryou1_6");         // 調合量1_6
-        mapping.put("buzailotno2", "buzailotno2");               // 部材在庫No1
-        mapping.put("buzaihinmei2", "buzaihinmei2");             // 部材在庫品名1
-        mapping.put("tyougouryou2_1", "tyougouryou2_1");         // 調合量1_1
-        mapping.put("tyougouryou2_2", "tyougouryou2_2");         // 調合量1_2
-        mapping.put("tyougouryou2_3", "tyougouryou2_3");         // 調合量1_3
-        mapping.put("tyougouryou2_4", "tyougouryou2_4");         // 調合量1_4
-        mapping.put("tyougouryou2_5", "tyougouryou2_5");         // 調合量1_5
-        mapping.put("tyougouryou2_6", "tyougouryou2_6");         // 調合量1_6
+        mapping.put("buzailotno2", "buzailotno2");               // 部材在庫No2
+        mapping.put("buzaihinmei2", "buzaihinmei2");             // 部材在庫品名2
+        mapping.put("tyougouryou2_1", "tyougouryou2_1");         // 調合量2_1
+        mapping.put("tyougouryou2_2", "tyougouryou2_2");         // 調合量2_2
+        mapping.put("tyougouryou2_3", "tyougouryou2_3");         // 調合量2_3
+        mapping.put("tyougouryou2_4", "tyougouryou2_4");         // 調合量2_4
+        mapping.put("tyougouryou2_5", "tyougouryou2_5");         // 調合量2_5
+        mapping.put("tyougouryou2_6", "tyougouryou2_6");         // 調合量2_6
         mapping.put("torokunichiji", "torokunichiji");           // 登録日時
         mapping.put("kosinnichiji", "kosinnichiji");             // 更新日時
         mapping.put("revision", "revision");                     // revision
