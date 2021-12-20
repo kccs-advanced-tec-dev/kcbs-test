@@ -811,9 +811,10 @@ public class GXHDO501A implements Serializable {
      */
     private String doMwiptonyuRequest(QueryRunner queryRunnerDoc, String jsonParamStr) {
         StringBuilder sb = new StringBuilder();
+        HttpURLConnection conn = null;
         try {
             URL url = new URL(CommonUtil.getUrl(queryRunnerDoc, "common_user", "前工程WIPAPI", "mwip/tonyu/"));
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn = (HttpURLConnection) url.openConnection();
             conn.setConnectTimeout(3000);
             conn.setInstanceFollowRedirects(false);
             conn.setRequestProperty("Connection", "close");
@@ -836,13 +837,16 @@ public class GXHDO501A implements Serializable {
                     }
                 }
             }
-            conn.disconnect();
         } catch (MalformedURLException e) {
             // HTTPリクエストが異常の場合、エラーメッセージを表示
             return "error";
         } catch (IOException | SQLException e) {
             // HTTPリクエストが異常の場合、エラーメッセージを表示
             return "error";
+        } finally {
+            if (conn != null) {
+                conn.disconnect();
+            }
         }
         return sb.toString();
     }
