@@ -3,13 +3,20 @@
  */
 package jp.co.kccs.xhd.pxhdo501;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.Serializable;
 import java.lang.reflect.Field;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.net.URLEncoder;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -63,9 +70,12 @@ import java.sql.Timestamp;
 import jp.co.kccs.xhd.common.ResultMessage;
 import jp.co.kccs.xhd.db.model.DaMkhyojunjoken;
 import jp.co.kccs.xhd.db.model.FXHDD01;
+import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.primefaces.json.JSONArray;
+import org.primefaces.json.JSONObject;
 
 /**
  * ===============================================================================<br>
@@ -297,10 +307,10 @@ public class GXHDO501A implements Serializable {
     public void setCmbSyuruibgcolor(String cmbSyuruibgcolor) {
         this.cmbSyuruibgcolor = cmbSyuruibgcolor;
     }
-    
-     /**
-      * 検索条件：担当者の背景色
-      * 
+
+    /**
+     * 検索条件：担当者の背景色
+     *
      * @return the txtTantousyabgcolor
      */
     public String getTxtTantousyabgcolor() {
@@ -309,7 +319,7 @@ public class GXHDO501A implements Serializable {
 
     /**
      * 検索条件：担当者の背景色
-     * 
+     *
      * @param txtTantousyabgcolor the txtTantousyabgcolor to set
      */
     public void setTxtTantousyabgcolor(String txtTantousyabgcolor) {
@@ -426,7 +436,7 @@ public class GXHDO501A implements Serializable {
         }
         // Excel対象を取得 
         Sheet sheet = workbook.getSheetAt(0);
-        setTxtTantousyabgcolor(NORMAL_COLOR) ;
+        setTxtTantousyabgcolor(NORMAL_COLOR);
         // 担当者桁数チェック
         if (existError(validateUtil.checkC103(getTxtTantousya(), "担当者", 6))) {
             setTxtTantousyabgcolor(ERROR_COLOR);
@@ -612,11 +622,11 @@ public class GXHDO501A implements Serializable {
                 return loadLotDataList;
             }
             // O.品名採番
-            doHinnmeiSaibann(conDoc, queryRunnerDoc, loadLotDataList);
+            doHinnmeiSaibannList(conDoc, queryRunnerDoc, loadLotDataList);
             // P.前工程WIPへの引数作成
-            doStepP(loadLotDataList);
-            // Q.[製造LotNo]を作成:API[前工程WIP]を呼び出す TODO QA24
-
+            ArrayList<String> paramList = getMwiptonyuParamList(loadLotDataList, fvsyurui);
+            // Q.[製造LotNo]を作成:API[前工程WIP]を呼び出す
+            doLotnoSakusei(conDoc, queryRunnerDoc, paramList, loadLotDataList);
             // R.ﾛｯﾄ規格情報登録処理
             stepFlg = doLotKikakuInfoTorokuSyori(resultMap, resultMessageList, fvsyurui, conQcdb, queryRunnerQcdb, loadLotDataList);
             if ("U".equals(stepFlg)) {
@@ -682,10 +692,16 @@ public class GXHDO501A implements Serializable {
         int kikakuCount = 0;
         // (ｱ).設計Noを取得
         long maxSekkeino = getMaxSekkeino();
+        resultMap.put("sekkeiCount", 0);
+        resultMap.put("kikakuCount", 0);
         // 規格値
         String dkikakuti;
         for (GXHDO501AModel gxhdo501aModel : loadLotDataList) {
-            String lotNo = StringUtil.blankToNull(gxhdo501aModel.getLotno());
+            String resulta = StringUtil.nullToBlank(gxhdo501aModel.getResulta());
+            if ("NG".equals(resulta)) {
+                continue;
+            }
+            String lotNo = StringUtil.nullToBlank(gxhdo501aModel.getLotno());
             List<DaMkhyojunjoken> rowDataList = gxhdo501aModel.getRowdata();
             for (DaMkhyojunjoken data : rowDataList) {
                 // 規格値
@@ -730,31 +746,179 @@ public class GXHDO501A implements Serializable {
      * P.前工程WIPへの引数作成
      *
      * @param loadLotDataList 取込データ
+     * @param fvsyurui 種類
      * @return 前工程WIPへのJSON引数
      */
-    private String doStepP(List<GXHDO501AModel> loadLotDataList) throws SQLException, IOException {
-        String jsonStr = "[";
-        int index = 0;
-        for (GXHDO501AModel gxhdo501aModel : loadLotDataList) {
-            jsonStr += "{";
-            String kouteimei = StringUtil.blankToNull(gxhdo501aModel.getKouteimei());
-            jsonStr += "\"kouteimei\":" + "\"" + kouteimei + "\", ";
-            String hinmei = StringUtil.blankToNull(gxhdo501aModel.getHinmei());
-            jsonStr += "\"hinmei\":" + "\"" + hinmei + "\", ";
-            String jyuuryou = StringUtil.blankToNull(gxhdo501aModel.getJyuuryou());
-            jsonStr += "\"jyuuryou\":" + jyuuryou+ ", ";
-            String lotNo = StringUtil.blankToNull(gxhdo501aModel.getLotno());
-            jsonStr += "\"lotNo\":" + "\"" + lotNo + "\", ";
-            String owner = StringUtil.blankToNull(gxhdo501aModel.getOwner());
-            jsonStr += "\"owner\":" + "\"" + owner + "\"";
-            jsonStr += "}";
-            if (index != loadLotDataList.size() - 1) {
-                jsonStr += ",";
-            }
-            index++;
+    private ArrayList<String> getMwiptonyuParamList(List<GXHDO501AModel> loadLotDataList, String fvsyurui) {
+        ArrayList<String> paramList = new ArrayList<>();
+        String lot_syurui = "";
+        switch (fvsyurui) {
+            // ｶﾞﾗｽ作製の場合：GLASS
+            case "ｶﾞﾗｽ作製":
+                lot_syurui = "GLASS";
+                break;
+            // ｶﾞﾗｽｽﾗｰ作製の場合：GLASSSLURRY
+            case "ｶﾞﾗｽｽﾗｰ作製":
+                lot_syurui = "GLASSSLURRY";
+                break;
+            // 添加材ｽﾗﾘｰ作製の場合：ADDITIVE
+            case "添加材ｽﾗﾘｰ作製":
+                lot_syurui = "ADDITIVE";
+                break;
+            // 誘電体ｽﾗﾘｰ作製の場合：SLURRY
+            case "誘電体ｽﾗﾘｰ作製":
+                lot_syurui = "SLURRY";
+                break;
+            // ﾊﾞｲﾝﾀﾞｰ溶液作製の場合：BINDER
+            case "ﾊﾞｲﾝﾀﾞｰ溶液作製":
+                lot_syurui = "BINDER";
+                break;
+            // ｽﾘｯﾌﾟ作製の場合：SLIP
+            case "ｽﾘｯﾌﾟ作製":
+                lot_syurui = "SLIP";
+                break;
+            default:
+                break;
         }
-        jsonStr += "]";
-        return jsonStr;
+        for (GXHDO501AModel gxhdo501aModel : loadLotDataList) {
+            String hinmeiStr = gxhdo501aModel.getHinmei(); // 採番前の[品名]
+            String hinmeisaibanStr = gxhdo501aModel.getHinmeisaiban(); // 採番した[品名]
+            JSONObject paramObj = new JSONObject();
+            paramObj.put("username", getTxtTantousya()); // (画面)担当者ｺｰﾄﾞ
+            paramObj.put("hinmei", gxhdo501aModel.getHinmei()); // [品名](E9ｾﾙ)　※連番以外の部分
+            paramObj.put("lot_syurui", lot_syurui); // 種類によって以下の内容を設定する
+            paramObj.put("kokeibuncode", "");
+            paramObj.put("saisei_kaisuu", "");
+            JSONObject skrecObj = new JSONObject();
+            skrecObj.put("HasseiSuu", gxhdo501aModel.getJyuuryou()); // [重量](F9ｾﾙ)
+            skrecObj.put("KoteiCode", gxhdo501aModel.getKouteimei()); // [工程](D9ｾﾙ)
+            skrecObj.put("LotKubunCode", gxhdo501aModel.getLotkubunn()); // [ﾛｯﾄ区分](G9ｾﾙ)
+            skrecObj.put("OwnerCode", gxhdo501aModel.getOwner()); // [ｵｰﾅｰ](H9ｾﾙ)
+            skrecObj.put("ConventionalLot", hinmeisaibanStr.substring(hinmeiStr.length())); // [品名](E9ｾﾙ) ※連番の部分
+            paramObj.put("skrec", skrecObj);
+            paramList.add(paramObj.toString());
+        }
+
+        return paramList;
+    }
+
+    /**
+     * API[前工程WIP]のHTTPリクエストを送信する
+     *
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param jsonParamStr リクエストパラメータ文字列
+     * @return レスポンスデータ
+     */
+    private String doMwiptonyuRequest(QueryRunner queryRunnerDoc, String jsonParamStr) {
+        StringBuilder sb = new StringBuilder();
+        try {
+            URL url = new URL(CommonUtil.getUrl(queryRunnerDoc, "common_user", "前工程WIPAPI", "mwip/tonyu/"));
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setConnectTimeout(3000);
+            conn.setInstanceFollowRedirects(false);
+            conn.setRequestProperty("Connection", "close");
+            conn.setRequestMethod("POST");
+            conn.setDoInput(true);
+            conn.setDoOutput(true);
+            conn.setRequestProperty("Content-Type", "application/json;charset=UTF-8");
+            conn.connect();
+            try (DataOutputStream out = new DataOutputStream(conn.getOutputStream())) {
+                out.writeBytes(jsonParamStr);
+                out.flush();
+            }
+
+            if (HttpURLConnection.HTTP_OK == conn.getResponseCode()) {
+                InputStream in1 = conn.getInputStream();
+                String readLine;
+                try (BufferedReader responseReader = new BufferedReader(new InputStreamReader(in1, "UTF-8"))) {
+                    while ((readLine = responseReader.readLine()) != null) {
+                        sb.append(readLine);
+                    }
+                }
+            }
+            conn.disconnect();
+        } catch (MalformedURLException e) {
+            // HTTPリクエストが異常の場合、エラーメッセージを表示
+            return "error";
+        } catch (IOException | SQLException e) {
+            // HTTPリクエストが異常の場合、エラーメッセージを表示
+            return "error";
+        }
+        return sb.toString();
+    }
+
+    /**
+     * API[前工程WIP]を呼び出す
+     *
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param jsonParamStr リクエストパラメータ文字列
+     * @param loadLotData 取込データ
+     * @return リトライフラグ
+     */
+    public boolean doMwiptonyu(QueryRunner queryRunnerDoc, String jsonParamStr, GXHDO501AModel loadLotData) {
+        boolean ritoraiFlag = false;
+        String data = doMwiptonyuRequest(queryRunnerDoc, jsonParamStr); // API[前工程WIP]のHTTPリクエストを送信する
+        if ("error".equals(StringUtil.nullToBlank(data))) {
+            loadLotData.setResulta("NG");
+            loadLotData.setResultb("前工程WIP接続ｴﾗｰ");
+            return ritoraiFlag;
+        }
+
+        if (!StringUtil.isEmpty(data)) {
+            JSONArray jsonArray = new JSONArray(data);
+            String status = StringUtil.nullToBlank(jsonArray.get(0));
+            if ("ERR".equals(status)) {
+                // レスポンスデータのstatusが「ERR」の場合、レスポンスのエラーメッセージをセット
+                String errormessage = StringUtil.nullToBlank(jsonArray.get(1));
+                if (errormessage.contains("ロット重複エラー")) {
+                    return true;
+                }
+                loadLotData.setResulta("NG");
+                loadLotData.setResultb(errormessage);
+                return ritoraiFlag;
+            }
+            JSONObject jsonObjectData = jsonArray.getJSONObject(1);
+            if (jsonObjectData != null) {
+                JSONObject jsonObjectSkrec = jsonObjectData.getJSONObject("skrec");
+                if (jsonObjectSkrec != null) {
+                    String kojyoStr = StringUtil.nullToBlank(jsonObjectSkrec.get("Kojyo")); // 工場ｺｰﾄﾞ
+                    String lotNoStr = StringUtil.nullToBlank(jsonObjectSkrec.get("LotNo")); // ﾛｯﾄNo
+                    String edaBanStr = StringUtil.nullToBlank(jsonObjectSkrec.get("EdaBan")); // 枝番
+                    loadLotData.setLotno(kojyoStr + lotNoStr + edaBanStr);
+                }
+            }
+        }
+        return ritoraiFlag;
+    }
+
+    /**
+     * [製造LotNo]を作成
+     *
+     * @param conDoc コネクション
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param paramList リクエストパラメータデータ
+     * @param loadLotDataList 取込データ
+     */
+    private void doLotnoSakusei(Connection conDoc, QueryRunner queryRunnerDoc, ArrayList<String> paramList, List<GXHDO501AModel> loadLotDataList) throws SQLException, IOException {
+        for (int i = 0; i < loadLotDataList.size(); i++) {
+            GXHDO501AModel gxhdo501aModel = loadLotDataList.get(i);
+            String jsonParamStr = paramList.get(i);
+            boolean ritoraiFlag = false;
+            for (int j = 1; j <= 3; j++) {
+                if (j != 1 && ritoraiFlag) {
+                    // ｴﾗｰﾒｯｾｰｼﾞに「ロット重複エラー」が含まれている場合,「O.品名採番」の処理を再度行い
+                    doHinnmeiSaiSaibannList(conDoc, queryRunnerDoc, loadLotDataList, i);
+                }
+                ritoraiFlag = doMwiptonyu(queryRunnerDoc, jsonParamStr, gxhdo501aModel);
+                if (!ritoraiFlag) {
+                    break;
+                }
+            }
+            if (ritoraiFlag) {
+                gxhdo501aModel.setResulta("NG");
+                gxhdo501aModel.setResultb("前工程WIPｴﾗｰ。ｼｽﾃﾑに連絡してください。");
+            }
+        }
     }
 
     /**
@@ -764,42 +928,73 @@ public class GXHDO501A implements Serializable {
      * @param queryRunnerDoc QueryRunnerオブジェクト
      * @param loadLotDataList 取込データ
      */
-    private void doHinnmeiSaibann(Connection conDoc, QueryRunner queryRunnerDoc, List<GXHDO501AModel> loadLotDataList) throws SQLException, IOException {
-        String hinmei;
-        HashMap<String, Integer> resultMap;
+    private void doHinnmeiSaibannList(Connection conDoc, QueryRunner queryRunnerDoc, List<GXHDO501AModel> loadLotDataList) throws SQLException, IOException {
+        HashMap<String, Integer> hinmeiSaibannoMap = new HashMap<>();
+        // 取込データが品名採番の処理を繰り返す。
+        for (GXHDO501AModel gxhdo501aModel : loadLotDataList) {
+            // O.品名採番
+            doHinnmeiSaibann(conDoc, queryRunnerDoc, gxhdo501aModel, hinmeiSaibannoMap);
+        }
+    }
+
+    /**
+     * Q処理の品名採番の再採番:「ロット重複エラー」行以降再採番
+     *
+     * @param conDoc コネクション
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param loadLotDataList 取込データ
+     * @param kaishisaibangyo 再採番必要であるデータリストの開始行
+     */
+    private void doHinnmeiSaiSaibannList(Connection conDoc, QueryRunner queryRunnerDoc, List<GXHDO501AModel> loadLotDataList, int kaishisaibangyo) throws SQLException, IOException {
+        HashMap<String, Integer> hinmeiSaibannoMap = new HashMap<>();
+        // 取込データが品名採番の処理を繰り返す。
+        for (int i = kaishisaibangyo; i < loadLotDataList.size(); i++) {
+            GXHDO501AModel gxhdo501aModel = loadLotDataList.get(i);
+            // O.品名採番
+            doHinnmeiSaibann(conDoc, queryRunnerDoc, gxhdo501aModel, hinmeiSaibannoMap);
+        }
+    }
+
+    /**
+     * O.品名採番
+     *
+     * @param conDoc コネクション
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param loadLotData 取込データ
+     * @param hinmeiSaibannoMap 採番した品名データ情報
+     */
+    private void doHinnmeiSaibann(Connection conDoc, QueryRunner queryRunnerDoc, GXHDO501AModel gxhdo501aModel, HashMap<String, Integer> hinmeiSaibannoMap) throws SQLException, IOException {
         int saibanno;
         int hasRecordFlg;
-        HashMap<String, Integer> hinmeiSaibannoMap = new HashMap<>();
-        for (GXHDO501AModel gxhdo501aModel : loadLotDataList) {
-            hinmei = StringUtil.blankToNull(gxhdo501aModel.getHinmei());
-            // (3)[採番ﾏｽﾀ]から、ﾃﾞｰﾀを取得
-            if (!hinmeiSaibannoMap.containsKey(hinmei)) {
-                resultMap = getSaibanno(hinmei);
-                saibanno = resultMap.get("saibanno");
-                if (saibanno >= MAX_VALUE_99999) {
-                    saibanno = 0;
-                }
-                hasRecordFlg = resultMap.get("hasRecordFlg");
-                hinmeiSaibannoMap.put(hinmei, saibanno + 1);
-            }else{
-                saibanno = hinmeiSaibannoMap.get(hinmei);
-                if (saibanno >= MAX_VALUE_99999) {
-                    saibanno = 0;
-                }
-                hinmeiSaibannoMap.put(hinmei, saibanno + 1);
-                hasRecordFlg = 1;
+        String hinmei = StringUtil.nullToBlank(gxhdo501aModel.getHinmei());
+        // (3)[採番ﾏｽﾀ]から、ﾃﾞｰﾀを取得
+        if (!hinmeiSaibannoMap.containsKey(hinmei)) {
+            HashMap<String, Integer> resultMap = getSaibanno(hinmei);
+            saibanno = resultMap.get("saibanno");
+            if (saibanno >= MAX_VALUE_99999) {
+                saibanno = 0;
             }
+            hasRecordFlg = resultMap.get("hasRecordFlg");
+            hinmeiSaibannoMap.put(hinmei, saibanno + 1);
+        } else {
+            saibanno = hinmeiSaibannoMap.get(hinmei);
+            if (saibanno >= MAX_VALUE_99999) {
+                saibanno = 0;
+            }
+            hinmeiSaibannoMap.put(hinmei, saibanno + 1);
+            hasRecordFlg = 1;
+        }
 
-            saibanno++;
-            hinmei = hinmei + String.format("%05d", saibanno);
-            // (ｴ).(ｳ)で採番した[品名]でExcelの[品名]を更新する
-            gxhdo501aModel.setHinmeisaiban(hinmei);
-            // (ｵ).採番マスタにﾃﾞｰﾀ登録を行う
-            if (hasRecordFlg == 0) {
-                insertfxhdm10(conDoc, queryRunnerDoc, saibanno, gxhdo501aModel);
-            } else {
-                updatefxhdm10(conDoc, queryRunnerDoc, saibanno, gxhdo501aModel);
-            }
+        saibanno++;
+        gxhdo501aModel.setHinmei(hinmei);
+        hinmei = hinmei + String.format("%05d", saibanno);
+        // (ｴ).(ｳ)で採番した[品名]でExcelの[品名]を更新する
+        gxhdo501aModel.setHinmeisaiban(hinmei);
+        // (ｵ).採番マスタにﾃﾞｰﾀ登録を行う
+        if (hasRecordFlg == 0) {
+            insertfxhdm10(conDoc, queryRunnerDoc, saibanno, gxhdo501aModel);
+        } else {
+            updatefxhdm10(conDoc, queryRunnerDoc, saibanno, gxhdo501aModel);
         }
     }
 
@@ -871,6 +1066,7 @@ public class GXHDO501A implements Serializable {
                 row.getCell(0).setCellValue(gxhdo501aModel.getResulta());
                 row.getCell(1).setCellValue(gxhdo501aModel.getResultb());
                 if ("1".equals(fileType)) {
+                    row.getCell(2).setCellValue(gxhdo501aModel.getLotno());
                     row.getCell(4).setCellValue(gxhdo501aModel.getHinmeisaiban());
                 }
             }
@@ -1123,10 +1319,10 @@ public class GXHDO501A implements Serializable {
             resultMap.put("ngCount", resultMap.get("ngCount") + 1);
             return true;
         }
-        
+
         return false;
     }
-    
+
     /**
      * 取込ﾌｧｲﾙから項目を取得
      *
@@ -1246,7 +1442,7 @@ public class GXHDO501A implements Serializable {
         Row row7 = sheet.getRow(7);
         List<Row> headerRowList = Arrays.asList(row4, row5, row6, row7);
         int cellIndex;
-        
+
         // データを取込開始
         for (int i = 1; i <= detailRowCount; i++) {
             Row row = sheet.getRow(headRowLen + i);
@@ -1315,7 +1511,7 @@ public class GXHDO501A implements Serializable {
      */
     private String chkTyekkupatternError(String strKikakuti, String strTyekkupattern) {
         //半角・全角ｽﾍﾟｰｽを削除
-        strKikakuti =strKikakuti.replace((char)12288, ' ').trim();
+        strKikakuti = strKikakuti.replace((char) 12288, ' ').trim();
         FXHDD01 fxhdd01 = new FXHDD01();
         fxhdd01.setKikakuChi(strKikakuti);
         String resultFlg = "0";
@@ -2052,13 +2248,13 @@ public class GXHDO501A implements Serializable {
                 + " ) VALUES ( "
                 + " ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
 
-        String lotNo = StringUtil.blankToNull(gxhdo501aModel.getLotno());
+        String lotNo = StringUtil.nullToBlank(gxhdo501aModel.getLotno());
         List<Object> params = new ArrayList<>();
 
         params.add(paramSekkeino); //設計No
-        params.add(StringUtils.substring(lotNo, 0, 3)); //工場ｺｰﾄﾞ
-        params.add(StringUtils.substring(lotNo, 3, 11)); //LotNo
-        params.add(StringUtil.blankToNull(StringUtils.substring(lotNo, 11, 14))); //枝番
+        params.add(StringUtil.nullToBlank(StringUtils.substring(lotNo, 0, 3))); //工場ｺｰﾄﾞ
+        params.add(StringUtil.nullToBlank(StringUtils.substring(lotNo, 3, 12))); //LotNo
+        params.add(StringUtil.nullToBlank(StringUtils.substring(lotNo, 12, 15))); //枝番
         params.add(fvsyurui); //Excel.種類
         params.add(StringUtil.blankToNull(gxhdo501aModel.getHinmei())); //Excel.品名
         params.add(StringUtil.blankToNull(gxhdo501aModel.getPatterns())); //Excel.ﾊﾟﾀｰﾝ
