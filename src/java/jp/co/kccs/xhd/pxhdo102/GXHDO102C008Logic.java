@@ -43,10 +43,10 @@ public class GXHDO102C008Logic implements Serializable {
     /**
      * ﾊﾞｲﾝﾀﾞｰ溶液作製・ﾊﾞｲﾝﾀﾞｰ粉秤量入力画面のモデルデータを作成する
      *
-     * @param subSrBinderYouzaiList ﾊﾞｲﾝﾀﾞｰ溶液作製・ﾊﾞｲﾝﾀﾞｰ粉秤量入力_ｻﾌﾞ画面データリスト
+     * @param srBinderPowderList ﾊﾞｲﾝﾀﾞｰ溶液作製・ﾊﾞｲﾝﾀﾞｰ粉秤量入力_ｻﾌﾞ画面データリスト
      * @return モデルデータ
      */
-    public static GXHDO102C008Model createGXHDO102C008Model(List<SubSrBinderPowder> subSrBinderYouzaiList) {
+    public static GXHDO102C008Model createGXHDO102C008Model(List<SubSrBinderPowder> srBinderPowderList) {
 
         GXHDO102C008Model gxhdo102C008Model = new GXHDO102C008Model();
         gxhdo102C008Model.setShowsubgamendata(gxhdo102C008Model.new SubGamenData());
@@ -56,13 +56,13 @@ public class GXHDO102C008Logic implements Serializable {
         gxhdo102C008Model.setSubgamen4(gxhdo102C008Model.new SubGamenData());
 
         // ﾊﾞｲﾝﾀﾞｰ樹脂1_材料品名のﾘﾝｸから遷移したｻﾌﾞ画面の初期データ設定
-        setSubGamenInitData(gxhdo102C008Model.getSubgamen1(), subSrBinderYouzaiList.get(0));
+        setSubGamenInitData(gxhdo102C008Model.getSubgamen1(), srBinderPowderList.get(0));
         // ﾊﾞｲﾝﾀﾞｰ樹脂2_材料品名のﾘﾝｸから遷移したｻﾌﾞ画面の初期データ設定
-        setSubGamenInitData(gxhdo102C008Model.getSubgamen2(), subSrBinderYouzaiList.get(1));
+        setSubGamenInitData(gxhdo102C008Model.getSubgamen2(), srBinderPowderList.get(1));
         // 溶剤1_材料品名のﾘﾝｸから遷移したｻﾌﾞ画面の初期データ設定
-        setSubGamenInitData(gxhdo102C008Model.getSubgamen3(), subSrBinderYouzaiList.get(2));
+        setSubGamenInitData(gxhdo102C008Model.getSubgamen3(), srBinderPowderList.get(2));
         // 溶剤2_材料品名のﾘﾝｸから遷移したｻﾌﾞ画面の初期データ設定
-        setSubGamenInitData(gxhdo102C008Model.getSubgamen4(), subSrBinderYouzaiList.get(3));
+        setSubGamenInitData(gxhdo102C008Model.getSubgamen4(), srBinderPowderList.get(3));
         return gxhdo102C008Model;
     }
 
