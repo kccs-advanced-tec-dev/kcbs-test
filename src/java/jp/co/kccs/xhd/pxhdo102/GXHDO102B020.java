@@ -25,7 +25,6 @@ import jp.co.kccs.xhd.common.ErrorListMessage;
 import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.db.model.FXHDD01;
-import jp.co.kccs.xhd.db.model.FXHDD02;
 import jp.co.kccs.xhd.db.model.SikakariJson;
 import jp.co.kccs.xhd.db.model.SrYuudentaiYouzai;
 import jp.co.kccs.xhd.db.model.SubSrYuudentaiYouzai;
@@ -2764,17 +2763,6 @@ public class GXHDO102B020 implements IFormLogic {
      */
     private FXHDD01 getItemRow(List<FXHDD01> listData, String itemId) {
         return listData.stream().filter(n -> itemId.equals(n.getItemId())).findFirst().orElse(null);
-    }
-
-    /**
-     * ボタンデータ取得
-     *
-     * @param listData フォームデータ
-     * @param buttonId ボタンID
-     * @return 項目データ
-     */
-    private FXHDD02 getButtonRow(List<FXHDD02> buttonList, String buttonId) {
-        return buttonList.stream().filter(n -> buttonId.equals(n.getButtonId())).findFirst().orElse(null);
     }
 
     /**
