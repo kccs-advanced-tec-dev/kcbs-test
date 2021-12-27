@@ -59,8 +59,8 @@ import jp.co.kccs.xhd.pxhdo102.GXHDO102C009;
 import jp.co.kccs.xhd.pxhdo102.GXHDO102C009Logic;
 import jp.co.kccs.xhd.pxhdo102.GXHDO102C010;
 import jp.co.kccs.xhd.pxhdo102.GXHDO102C010Logic;
-//import jp.co.kccs.xhd.pxhdo102.GXHDO102C011;
-//import jp.co.kccs.xhd.pxhdo102.GXHDO102C011Logic;
+import jp.co.kccs.xhd.pxhdo102.GXHDO102C011;
+import jp.co.kccs.xhd.pxhdo102.GXHDO102C011Logic;
 import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
@@ -1910,10 +1910,10 @@ public class GXHDO901B implements Serializable {
                 GXHDO102C010Logic.setReturnData(beanGXHDO102C010.getGxhdO102c010Model(), this.itemList);
                 break;
              // 誘電体ｽﾗﾘｰ作製・主原料秤量入力
-//            case SubFormUtil.FORM_ID_GXHDO102C011:
-//                GXHDO102C011 beanGXHDO102C011 = (GXHDO102C011) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO102C011);
-//                GXHDO102C011Logic.setReturnData(beanGXHDO102C011.getGxhdO102c011Model(), this.itemList);
-//                break;
+            case SubFormUtil.FORM_ID_GXHDO102C011:
+                GXHDO102C011 beanGXHDO102C011 = (GXHDO102C011) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO102C011);
+                GXHDO102C011Logic.setReturnData(beanGXHDO102C011.getGxhdO102c011Model(), this.itemList);
+                break;
             default:
                 break;
         }
