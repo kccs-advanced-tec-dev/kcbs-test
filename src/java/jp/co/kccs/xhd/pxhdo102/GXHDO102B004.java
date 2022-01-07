@@ -1121,7 +1121,7 @@ public class GXHDO102B004 implements IFormLogic {
      */
     private Map loadShikakariDataFromWip(QueryRunner queryRunnerDoc, String tantoshaCd, String lotNo) throws SQLException {
         List<SikakariJson> sikakariList = CommonUtil.getMwipResult(queryRunnerDoc, tantoshaCd, lotNo);
-        SikakariJson sikakariObj = null;
+        SikakariJson sikakariObj;
         Map shikakariData = new HashMap();
         if (sikakariList!= null) {
             sikakariObj = sikakariList.get(0);
@@ -1371,17 +1371,6 @@ public class GXHDO102B004 implements IFormLogic {
     }
 
     /**
-     * 項目データ取得
-     *
-     * @param listData フォームデータ
-     * @param itemId 項目ID
-     * @return 項目データ
-     */
-    private FXHDD01 getItemRow(List<FXHDD01> listData, String itemId) {
-        return listData.stream().filter(n -> itemId.equals(n.getItemId())).findFirst().orElse(null);
-    }
-
-    /**
      * 項目データ(入力値)取得
      *
      * @param listData フォームデータ
@@ -1617,9 +1606,6 @@ public class GXHDO102B004 implements IFormLogic {
 
         List<FXHDD01> pItemList = processData.getItemList();
         List<Object> params = new ArrayList<>();
-        // ﾛｯﾄ区分
-        String glasslotno;
-        FXHDD01 glasslotnoFXHDD01 = getItemRow(processData.getItemList(), GXHDO102B004Const.LOTKUBUN);
         if (isInsert) {
             params.add(kojyo); //工場ｺｰﾄﾞ
             params.add(lotNo); //ﾛｯﾄNo
@@ -1732,9 +1718,6 @@ public class GXHDO102B004 implements IFormLogic {
         List<FXHDD01> pItemList = processData.getItemList();
 
         List<Object> params = new ArrayList<>();
-        // ﾛｯﾄ区分
-        String glasslotno;
-        FXHDD01 glasslotnoFXHDD01 = getItemRow(processData.getItemList(), GXHDO102B004Const.LOTKUBUN);
         if (isInsert) {
             params.add(kojyo); //工場ｺｰﾄﾞ
             params.add(lotNo); //ﾛｯﾄNo

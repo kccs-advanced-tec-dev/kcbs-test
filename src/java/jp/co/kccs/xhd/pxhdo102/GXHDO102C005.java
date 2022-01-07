@@ -233,11 +233,11 @@ public class GXHDO102C005 implements Serializable {
      * @return 正常:true、異常:fasle
      */
     private boolean buzainoCheck(FXHDD01 itemBuzaino, String subTabNo) {
+        // 部材在庫品名の値をクリア
+        setBuzaihinmeiVal(this.getGxhdO102c005ModelView(), subTabNo, "");
         if (StringUtil.isEmpty(itemBuzaino.getValue())) {
             return true;
         }
-        // 部材在庫品名の値をクリア
-        setBuzaihinmeiVal(this.getGxhdO102c005ModelView(), subTabNo, "");
         // 【部材在庫No1】ﾛｽﾄﾌｫｰｶｽ時、部材在庫No1の型ﾁｪｯｸ
         if (StringUtil.getLength(itemBuzaino.getValue()) != 9) {
             setError(itemBuzaino, "XHD-000004", itemBuzaino.getLabel1(), "9");

@@ -32,7 +32,7 @@
                 g_macAddr = '#{sessionInfo.macAddr}';
                 //location
                 g_location = '#{myMsg.NotAvailable}';
-                g_prgname = 'gxhdo102b001.xhtml(#{gXHDO102B001.formId})';
+                g_prgname = 'gxhdo102b001.xhtml(#{gXHDO901B.formId})';
 
                 setInterval(getLocation, #{myParam.sendLocInterval});
             });
@@ -237,9 +237,9 @@
                             </p:row>
                             <p:row style="height: 50px;white-space:nowrap;"
                                 rendered="#{not (empty gXHDO102B001A.zairyohinmei1 and empty gXHDO102B001A.tyogouryoukikaku1.itemId and empty gXHDO102B001A.sizailotno1_1 
-                                            and empty gXHDO102B001A.sizailotno1_1 and empty gXHDO102B001A.sizailotno1_2.itemId and empty gXHDO102B001A.sizailotno1_2 
+                                            and empty gXHDO102B001A.tyougouryou1_1 and empty gXHDO102B001A.sizailotno1_2.itemId and empty gXHDO102B001A.tyougouryou1_2 
                                             and empty gXHDO102B001A.zairyohinmei2 and empty gXHDO102B001A.tyogouryoukikaku2.itemId  and empty gXHDO102B001A.sizailotno2_1 
-                                            and empty gXHDO102B001A.sizailotno2_1 and empty gXHDO102B001A.sizailotno2_2.itemId and empty gXHDO102B001A.sizailotno2_2)}">
+                                            and empty gXHDO102B001A.tyougouryou2_1 and empty gXHDO102B001A.sizailotno2_2.itemId and empty gXHDO102B001A.tyougouryou2_2)}">
                                 <p:column style="border-right-style: hidden;">
                                     <h:outputText rendered="#{gXHDO102B001A.zairyohinmei1.render1 || gXHDO102B001A.zairyohinmei1.renderLinkButton}" value="#{fn:replace(gXHDO102B001A.zairyohinmei1.label1, '1', '')}"
                                                   style="margin-left:8px;font-size:#{gXHDO102B001A.zairyohinmei1.fontSize1}px;color:#{gXHDO102B001A.zairyohinmei1.fontColor1};vertical-align: middle;"/>
@@ -259,7 +259,7 @@
                             </p:row>
                             <p:row style="height: 50px;white-space:nowrap;"
                                    rendered="#{not (empty gXHDO102B001A.zairyohinmei1 and empty gXHDO102B001A.tyogouryoukikaku1 and empty gXHDO102B001A.sizailotno1_1 
-                                               and empty gXHDO102B001A.sizailotno1_1)}">
+                                               and empty gXHDO102B001A.tyougouryou1_1)}">
                                 <p:column style="border-right-style: hidden;" >
                                     <p:commandLink id="zairyohinmei1_cmdLink" rendered="#{gXHDO102B001A.zairyohinmei1.render1 || gXHDO102B001A.zairyohinmei1.renderLinkButton}"
                                                    action="#{gXHDO901B.cmdLinkAction(gXHDO102B001A.zairyohinmei1.linkButtonId)}" 

@@ -2241,7 +2241,7 @@ public class GXHDO102B005 implements IFormLogic {
      */
     private Map loadShikakariDataFromWip(QueryRunner queryRunnerDoc, String tantoshaCd, String lotNo) throws SQLException {
         List<SikakariJson> sikakariList = CommonUtil.getMwipResult(queryRunnerDoc, tantoshaCd, lotNo);
-        SikakariJson sikakariObj = null;
+        SikakariJson sikakariObj;
         Map shikakariData = new HashMap();
         if (sikakariList != null) {
             sikakariObj = sikakariList.get(0);
@@ -5251,8 +5251,6 @@ public class GXHDO102B005 implements IFormLogic {
      */
     private List<String> checkExistFormItem(ProcessData processData) {
         List<String> errorItemNameList = new ArrayList<>();
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        HttpSession session = (HttpSession) externalContext.getSession(false);
         List<String> formIdList = Arrays.asList("GXHDO102B005B", "GXHDO102B005C", "GXHDO102B005D", "GXHDO102B005E", "GXHDO102B005F", "GXHDO102B005G", "GXHDO102B005H", "GXHDO102B005I");
         // 項目IDリスト取得
         List<String> itemIdList = getItemIdList(processData, formIdList);
