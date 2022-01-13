@@ -2005,7 +2005,8 @@ public class GXHDO102B026 implements IFormLogic {
             String edaban = lotNo.substring(12, 15); //枝番
             // [誘電体ｽﾗﾘｰ作製・粉砕]から、ﾃﾞｰﾀの取得
             Map sryuudentaifunsaiMap = loadSryuudentaifunsaiData(queryRunnerQcdb, kojyo, lotNo9, edaban);
-            if (sryuudentaifunsaiMap == null || sryuudentaifunsaiMap.isEmpty() || !sryuudentaifunsaiMap.containsKey("syuuryounichiji")) {
+            if (sryuudentaifunsaiMap == null || sryuudentaifunsaiMap.isEmpty() || !sryuudentaifunsaiMap.containsKey("syuuryounichiji")
+                    || ((Timestamp) sryuudentaifunsaiMap.get("syuuryounichiji")) == null) {
                 // ｴﾗｰ項目をﾘｽﾄに追加
                 return MessageUtil.getErrorMessageInfo("XHD-000181", true, true, null, "粉砕終了日取得");
             } else {
