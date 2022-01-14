@@ -1,0 +1,23 @@
+[
+    {"no":"1","id":"lotno","columnname":"WIPﾛｯﾄNo","type":"String","format":""},
+    {"no":"2","id":"binderyouekihinmei","columnname":"ﾊﾞｲﾝﾀﾞｰ溶液品名","type":"String","format":""},
+    {"no":"3","id":"binderyouekilotno","columnname":"ﾊﾞｲﾝﾀﾞｰ溶液LotNo","type":"String","format":""},
+    {"no":"4","id":"lotkubun","columnname":"ﾛｯﾄ区分","type":"String","format":""},
+    {"no":"5","id":"dispagouki","columnname":"ﾃﾞｨｽﾊﾟ号機","type":"String","format":""},
+    {"no":"6","id":"fuutaijyuuryou","columnname":"風袋重量","type":"Integer","format":""},
+    {"no":"7","id":"funmatutounyuu_kaisinichiji","columnname":"粉末投入_開始日時","type":"timestamp","format":"yyyy/mm/dd hh:mm:ss"},
+    {"no":"8","id":"funmatutounyuu_syuuryounichiji","columnname":"粉末投入_終了日時","type":"timestamp","format":"yyyy/mm/dd hh:mm:ss"},
+    {"no":"9","id":"hanenosyurui","columnname":"羽根の種類","type":"String","format":""},
+    {"no":"10","id":"kakuhan_kaisinichiji","columnname":"撹拌_開始日時","type":"timestamp","format":"yyyy/mm/dd hh:mm:ss"},
+    {"no":"11","id":"kakuhan_syuuryounichiji","columnname":"撹拌_終了日時","type":"timestamp","format":"yyyy/mm/dd hh:mm:ss"},
+    {"no":"12","id":"kakuhanjikan","columnname":"撹拌時間","type":"String","format":""},
+    {"no":"13","id":"setteikaitensuu","columnname":"設定回転数","type":"String","format":""},
+    {"no":"14","id":"kaitensuu","columnname":"回転数","type":"Integer","format":""},
+    {"no":"15","id":"agingjikankitei","columnname":"ｴｰｼﾞﾝｸﾞ時間規定","type":"String","format":""},
+    {"no":"16","id":"aging_kaisinichiji","columnname":"ｴｰｼﾞﾝｸﾞ_開始日時","type":"timestamp","format":"yyyy/mm/dd hh:mm:ss"},
+    {"no":"17","id":"aging_syuuryounichiji","columnname":"ｴｰｼﾞﾝｸﾞ_終了日時","type":"timestamp","format":"yyyy/mm/dd hh:mm:ss"},
+    {"no":"18","id":"tantousya","columnname":"担当者","type":"String","format":""},
+    {"no":"19","id":"kakuninsya","columnname":"確認者","type":"String","format":""},
+    {"no":"20","id":"bikou1","columnname":"備考1","type":"String","format":""},
+    {"no":"21","id":"bikou2","columnname":"備考2","type":"String","format":""}
+]
