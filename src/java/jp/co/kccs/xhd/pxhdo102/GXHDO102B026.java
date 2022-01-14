@@ -1957,7 +1957,7 @@ public class GXHDO102B026 implements IFormLogic {
             // 「誘電体ｽﾗﾘｰ重量合計」 ÷ 「投入量の規格値」 * 100(小数点第三位を四捨五入) → 式を変換して先に100を乗算
             BigDecimal budomari = itemGarasukaisyuujyuuryouVal.multiply(BigDecimal.valueOf(100)).divide(itemTounyuuryouVal, 2, RoundingMode.HALF_UP);
 
-            //計算結果を誤差率にセット
+            //計算結果を歩留まりにセット
             itemBudomarikeisan.setValue(budomari.toPlainString());
 
         } catch (NullPointerException | NumberFormatException ex) {
