@@ -1,0 +1,310 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="ja"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pe="http://primefaces.org/ui/extensions"
+      xmlns:fn="http://java.sun.com/jsp/jstl/functions"
+      xmlns:t="http://myfaces.apache.org/tomahawk">
+    <h:head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Pragma" content="no-cache"/>
+        <meta http-equiv="Cache-Control" content="no-cache"/>
+        <meta http-equiv="Expires" content="0"/>
+        <title>#{myParam.application_id} #{gXHDO901B.titleInfo.formName}</title>
+        <link href="#{request.contextPath}/resources/css/growllarge.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/gxhco901a.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/errordialog.css" rel="stylesheet" type="text/css"/>
+        <h:outputScript library="primefaces" name="jquery/jquery.js" />
+        <script src="#{request.contextPath}/resources/js/locUpload.js"></script>
+        <script src="#{request.contextPath}/resources/js/growl.js"></script>
+        <script type="text/javascript">
+            //<![CDATA[
+            function logOut() {
+                window.#{adjustModels.external}.logOut();
+            }
+            $(document).ready(function () {
+                //upload to
+                g_locationUrl = '#{myParam.locationUrl}';
+                //MAC Address
+                g_macAddr = '#{sessionInfo.macAddr}';
+                //location
+                g_location = '#{myMsg.NotAvailable}';
+                g_prgname = 'gxhdo901d.xhtml(#{gXHDO901B.formId})';
+
+                var interval_id = setInterval(getLocation, #{myParam.sendLocInterval});
+            });
+            function cmdButtonOncomplete(args) {
+                if ('warning' === args.firstParam) {
+                    PF('cd').show();
+                } else if ('auth' === args.firstParam) {
+                    PF('W_dlg_userAuth').show();
+                } else if ('kikakuError' === args.firstParam) {
+                    PF('W_dlg_kikakuError').show();
+                } else if ('infoMessage' === args.firstParam) {
+                    PF('W_dlg_infoMessage').show();
+                } else if ('complete' === args.firstParam) {
+                    PF('W_dlg_compMessage').show();
+                } else if ('gxhdo102c003' === args.firstParam) {
+                    // WebSocketのセッションをはる(hostは現在の画面から取得)
+                    var host = location.host;
+                    var url = "ws://" + host + "/XHD/ws";
+                    wSocket = new WebSocket(url);
+                    wSocket.onopen = function () {
+                        // 子画面open時、秤量号機の値を取得する
+                        wSocket.send($("input[id$='goki_T']").val());
+                    };
+                    wSocket.onmessage = function (event)
+                    {
+                        // 画面が非アクティブの場合、処理を行わない。
+                        if (document.hasFocus()) {
+                            //APIから値が渡されたときは、アクティブな項目に値を出力する
+                            var received_msg = event.data;
+                            var current = document.activeElement;
+                            current.value = received_msg;
+                            // 値表示後、次のテキストボックスにフォーカスを移動(最後の項目の場合はOKボタン)
+                            if (current !== null) {
+                                var currentId = current.id;
+                                currentId = (currentId).split(":");
+                                var currentIdBefore = currentId[0] + ":" + currentId[1] + ":" + currentId[2] + ":" + currentId[3] + ":";
+                                var currentIdAfter = ":" + currentId[5];
+                                if (currentId[4] >= 3 && currentId[4] < 8) {
+                                    document.getElementById(currentIdBefore + (Number(currentId[4]) + 1) + currentIdAfter).focus();
+                                } else if (currentId[4] === "8") {
+                                    document.getElementById(currentId[0] + ":" + currentId[1] + ":okBtn").focus();
+                                }
+                            }
+                        }
+                    };
+                    wSocket.onerror = function ()
+                    {
+                        alert("秤量機との接続に失敗しました。");
+                    };
+                    PF('W_dlg_gxhdo102c003').show();
+                } else if ('errorListMessage' === args.firstParam) {
+                    PF('W_dlg_errorListMessage').show();
+                }
+            }
+            function dclose() {
+                wSocket.close();
+            }
+            function subGamenDoOkError(args) {
+                if (undefined === args || undefined === args.firstParam) {
+                    PF('W_dlg_gxhdo102c003').hide();
+                    return;
+                }
+            }
+            function keyDownEnterSetNextControl(obj) {
+                if (window.event.keyCode === 13) {
+                    var index = obj.tabIndex + 1;
+                    $('[tabindex=' + index + ']').focus();
+                }
+            }
+            function sliceMaxLength(elem, maxLength) {
+                elem.value = elem.value.slice(0, maxLength);
+            }
+            var pointY;
+            function subFormOpen() {
+                pointY = $(window).scrollTop();
+                document.getElementById("mainForm").style.setProperty("display", "none");
+                document.getElementById("mainForm").style.setProperty("position", "fixed");
+                document.getElementById("mainForm").style.setProperty("Top", -(pointY) + 34 + "px");
+                document.getElementById("mainForm").style.removeProperty("display");
+            }
+            function subFormClose() {
+                document.getElementById("mainForm").style.setProperty("display", "none");
+                document.getElementById("mainForm").style.removeProperty("position");
+                document.getElementById("mainForm").style.removeProperty("Top");
+                document.getElementById("mainForm").style.removeProperty("display");
+                $(window).scrollTop(pointY);
+            }
+
+            function setInputModeForTableColumn(imputmode, listId, itemIds) {
+                var rowsLength = document.getElementById(listId + '_data').rows.length;
+                var spItemId = itemIds.split(',');
+                var itemLength = spItemId.length;
+                for (var i = 0; i < rowsLength; i++) {
+                    for (var j = 0; j < itemLength; j++) {
+                        var inputCol = document.getElementById(listId + ":" + i + ":" + spItemId[j] + "_input");
+                        if (inputCol !== null) {
+                            inputCol.setAttribute("inputmode", imputmode);
+                        }
+                    }
+                }
+            }
+            function setInputModeForSequenceItems(imputmode, sequenceCount, itemId) {
+                for (var i = 1; i <= sequenceCount; i++) {
+                    var inputCol = document.getElementById(itemId + i + "_input");
+                    if (inputCol !== null) {
+                        inputCol.setAttribute("inputmode", imputmode);
+                    }
+                }
+            }
+            function setFocus(itemId) {
+                var inputCol = document.getElementById(itemId);
+                if (inputCol !== null) {
+                    inputCol.focus();
+                }
+            }
+            function inputRelease() {
+                var node = document.getElementById('inputbody');
+                node.style.removeProperty('pointer-events');
+            }
+            //]]>
+        </script>
+        <style>
+            .repeated-form .ui-datalist-content.ui-widget-content {
+                border: none;
+            }
+            .ui-inputfield, .ui-widget-content .ui-inputfield {
+                background: inherit;
+                color: inherit;
+            }
+            @media(max-width:720px){
+                .ui-paginator .ui-paginator-pages{
+                    display:inline-block;
+                }
+            }
+        </style>
+    </h:head>
+    <h:body id="inputbody" onload="inputRelease();
+            #{gXHDO901B.onLoadProcess}" style="pointer-events: none;" >
+        <f:metadata>
+            <f:viewAction action="#{gXHDO901B.init()}"/>
+        </f:metadata>
+
+        <div style="margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;">
+            <h:outputText style="background:#{gXHDO901B.titleInfo.bgColor};color: #{gXHDO901B.titleInfo.fontColor}; 
+                          font-size:#{gXHDO901B.titleInfo.fontSize}px;" value="#{gXHDO901B.titleInfo.formName}"/>
+        </div>
+        <h:form id="form" onkeypress="if (event.keyCode === 13) {
+                return false;
+            }" >
+            <div  style="margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;">
+                <div id="mainForm" style="width:#{adjustModels.menuWidth}px;">
+                    <div style="text-align:right">
+                        <h:outputText style="font-size:#{gXHDO901B.titleInfo.fontSize}px;  #{gXHDO901B.styleDisplayNone}" value="#{gXHDO901B.jotaiDisplay}"/>        
+                    </div>
+                    <p:growl id="growlMessage" showDetail="false" sticky="true" escape="false" />
+                    <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
+                        <f:facet name="message">
+                            <h:outputText value="#{gXHDO901B.processData.getWarnMessage()}" escape="false"/>
+                        </f:facet>
+                        <p:commandButton id="warnOk" value="OK" styleClass="ui-conf-commandbtn-def1"
+                                         actionListener="#{gXHDO901B.processWarnOk()}"
+                                         process="@form"
+                                         update="@form"
+                                         oncomplete="if('warning'!=args.firstParam){PF('cd').hide(); cmdButtonOncomplete(args);} else {PF('cd').show();}"/>
+                        <p:commandButton id="warnCancel" value="Cancel" class="ui-conf-commandbtn-cancel" onclick="PF('cd').hide();" type="button" />
+                    </p:confirmDialog>
+                    <p:commandButton id="returnBtnTop" style="margin-left:26px;margin-bottom:5px;margin-top:0px;#{gXHDO901B.styleDisplayNone}"
+                                     value="#{myMsg.return}"  action="/secure/pxhdo102/gxhdo102a.xhtml?faces-redirect=true"
+                                     process="@this" update="@this">
+                        <f:param name="returnVal" value="return"/>
+                        <f:attribute name="returnVal" value="return"/>
+                    </p:commandButton>
+                    <p:panel id="headerPanel" style="margin-bottom:4px; #{gXHDO901B.styleDisplayNone}">
+                        <ui:repeat value="#{gXHDO901B.buttonListTop}" var="item" varStatus="stat">
+                            <p:commandButton id="buttonId" value="#{item.buttonName}" rendered="#{item.render}" disabled="#{!item.enabled}"
+                                             style="margin-left:4px;margin-bottom:2px;font-size:#{item.fontSize}px;color:#{item.fontColor};background:#{item.backColor};"
+                                             actionListener="#{gXHDO901B.btnClick(item.buttonId)}" process="@form" update="@form" async="false"
+                                             oncomplete="cmdButtonOncomplete(args);" />                    
+                        </ui:repeat>
+                    </p:panel>
+                    <p:panel id="entryPanel" style="margin-bottom:4px; #{gXHDO901B.styleDisplayNone}">
+                        <p:dataList id="itemDataList" value="#{gXHDO901B.itemList}" var="item" type="none" itemType="none" paginator="true" rows="#{gXHDO901B.hyojiKensu}" styleClass="repeated-form;ui-paginator">
+                            <ui:fragment rendered="#{gXHDO901B.itemRendered}">
+                                <p:panel id="itemPanel" style="background:#{item.backColor1}; min-height:48px;">
+                                    <p:selectBooleanCheckbox id="selectItem" rendered="#{item.renderTempItemCheckBox}" value="#{item.tempItemCheckBoxValue}" 
+                                                             style="margin-left:8px;vertical-align: middle;"/>
+                                    <p:commandLink id="cmdLink" rendered="#{item.renderLinkButton}" action="#{gXHDO901B.cmdLinkAction(item.linkButtonId)}" 
+                                                   process="@form" update="@form" async="false" oncomplete="cmdButtonOncomplete(args);"
+                                                   style="margin-left:8px;font-size:#{item.fontSize1}px;color:#{item.fontColor1};vertical-align: middle;">
+                                        <h:outputText value="#{item.label1}" />
+                                    </p:commandLink>
+                                    <h:outputText id="label1" rendered="#{item.render1}" value="#{item.label1}"
+                                                  style="margin-left:8px;font-size:#{item.fontSize1}px;color:#{item.fontColor1};vertical-align: middle;"/>
+                                    <h:outputText id="kikakuChi" rendered="#{item.render1 || item.renderLinkButton}" value="#{item.kikakuChi}"
+                                                  style="margin-left:8px;font-size:#{item.fontSize3}px;color:#{item.fontColor3};background:#{item.backColor3};vertical-align: middle;"/>
+
+                                    <h:outputText id="lblValue" rendered="#{item.renderOutputLabel}" value="#{item.value}"
+                                                  style="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;#{item.customStyleInput}"/>
+                                    <p:inputText id="textValue" rendered="#{(item.renderInputText) and (!item.renderOutputLabel) and (item.itemId ne 'sr_glassslurryfunsai_goki')}" value="#{item.value}" maxlength="#{item.displayMaxLength}"
+                                                 style="margin-left:8px;width:#{item.displayMaxLength}em; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{item.customStyleInput}">
+                                        <p:ajax event="blur" process="@this" update="@this" listener="#{item.checkByte()}"  async="false"/>
+                                    </p:inputText>
+                                    <p:inputText id="goki_T" 
+                                                 rendered="#{item.renderInputText and (!item.renderOutputLabel) and (item.itemId eq 'sr_glassslurryfunsai_goki')}"
+                                                 value="#{item.value}" 
+                                                 maxlength="#{item.displayMaxLength}" 
+                                                 style="margin-left:8px;width:#{item.displayMaxLength}em; font-size:#{item.fontSizeInput}px;
+                                                 color:#{item.fontColorInput};background:#{item.backColorInput};
+                                                 vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{item.customStyleInput}">
+                                        <p:ajax event="blur" process="@this" update="@this" listener="#{item.checkByte()}"  async="false"/>
+                                    </p:inputText>
+                                    <p:calendar id="calendarDate" rendered="#{item.renderInputDate}" pattern="yyMMdd" value="#{item.value}" maxlength="#{item.displayMaxLength}" class="calendarDate"
+                                                style="margin-left:8px; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{item.customStyleInput}" />
+                                    <p:calendar id="calendarTime" rendered="#{item.renderInputTime}" value="#{item.value}" pattern="HHmm" timeOnly="true" class="calendarTime" 
+                                                style="margin-left:8px; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{item.customStyleInput}" />
+                                    <p:inputNumber id="numberValue" rendered="#{item.renderInputNumber}" value="#{item.value}" thousandSeparator="" roundMethod="D"
+                                                   decimalPlaces="#{item.numberDecimalPlaces}" maxValue="#{item.numberMaxValue}" minValue="#{item.numberMinValue}" size="#{item.displayMaxLength}"
+                                                   inputStyle="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{item.customStyleInput}">
+                                    </p:inputNumber>
+                                    <p:selectOneMenu id="comboBoxValue" rendered="#{item.renderInputSelect}" value="#{item.value}" styleClass="selectMenu"
+                                                     style="margin-left:8px;width:#{item.inputLength}em;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{item.customStyleInput}">
+                                        <f:selectItems value="#{item.selectMenuItem}"/>
+                                    </p:selectOneMenu>
+                                    <p:selectOneMenu id="availableComboBoxValue" rendered="#{item.renderInputSelectAvailable}" value="#{item.value}" styleClass="selectMenu" editable="true" maxlength="#{item.displayMaxLength}"
+                                                     style="margin-left:8px;width:#{item.inputLength}em;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{item.customStyleInput}">
+                                        <f:selectItems value="#{item.selectMenuItem}"/>
+                                    </p:selectOneMenu>
+                                    <p:selectOneRadio id="radioValue" rendered="#{item.renderInputRadio}" value="#{item.value}" styleClass="selectRadio"
+                                                      style="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};vertical-align: middle;background: #{item.backColorInput};#{item.customStyleInput}">
+                                        <f:selectItems value="#{item.selectMenuItem}"/>
+                                    </p:selectOneRadio>
+                                    <p:selectBooleanCheckbox id="checkValue" rendered="#{item.renderInputCheckBox}" value="#{item.value}" 
+                                                             style="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};vertical-align: middle;background: #{item.backColorInput};#{item.customStyleInput}"/>
+                                    <h:outputText id="label2" rendered="#{item.render2}" value="#{item.label2}"
+                                                  style="margin-left:8px;font-size:#{item.fontSize2}px;color:#{item.fontColor2};background:#{item.backColor2};vertical-align: middle;"/>
+                                </p:panel>
+                            </ui:fragment>
+                        </p:dataList>
+                    </p:panel>
+                    <p:panel id="footerPanel" style="margin-bottom:4px; #{gXHDO901B.styleDisplayNone}">
+                        <ui:repeat value="#{gXHDO901B.buttonListBottom}" var="item" varStatus="stat">
+                            <p:commandButton id="buttonId" value="#{item.buttonName}" rendered="#{item.render}" disabled="#{!item.enabled}"
+                                             style="margin-left:4px;margin-bottom:2px;font-size:#{item.fontSize}px;color:#{item.fontColor};background:#{item.backColor};"
+                                             actionListener="#{gXHDO901B.btnClick(item.buttonId)}" process="@form" update="@form" async="false"
+                                             oncomplete="cmdButtonOncomplete(args);" />
+                        </ui:repeat>
+                    </p:panel>
+
+                    <p:commandButton id="returnBtn" style="margin-left:26px;"
+                                     value="#{myMsg.return}"  action="/secure/pxhdo102/gxhdo102a.xhtml?faces-redirect=true"
+                                     process="@this" update="@this">
+                        <f:param name="returnVal" value="return"/>
+                        <f:attribute name="returnVal" value="return"/>
+                    </p:commandButton>
+                </div>
+            </div> 
+            <div>
+                <t:aliasBean alias="#{gXHDO901ACommon}" value="#{gXHDO901B}">
+                    <ui:include src="/secure/pxhdo901/gxhdo901b.xhtml"/>
+                </t:aliasBean>
+                <ui:include src="/secure/common/initMessage.xhtml"/>
+                <t:aliasBean alias="#{gXHDO901Common}" value="#{gXHDO901B}">
+                    <ui:include src="/secure/common/kikakuError.xhtml"/>
+                </t:aliasBean>
+                <ui:include src="/secure/common/infoMessage.xhtml"/>
+                <t:aliasBean alias="#{gXHDO101Common}" value="#{gXHDO901B}">
+                    <ui:include src="/secure/common/compMessage.xhtml"/>
+                </t:aliasBean>
+                <ui:include src="/secure/pxhdo102/gxhdo102c003.xhtml"/>
+                <ui:include src="/secure/common/errorListMessage.xhtml"/>
+            </div>
+        </h:form>
+    </h:body>
+</html>
