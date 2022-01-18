@@ -59,10 +59,22 @@ import javax.faces.context.FacesContext;
  * 計画書No	MB2101-DK002<br>
  * 変更者	kcss.wxf<br>
  * 変更理由	ﾊﾞｲﾝﾀﾞｰ溶液作製・溶剤秤量入力画面、<br>
- *              ﾊﾞｲﾝﾀﾞｰ溶液作製・ﾊﾞｲﾝﾀﾞｰ粉秤量入力画面、
- *              誘電体ｽﾗﾘｰ作製・溶剤・添加材ｽﾗﾘｰ秤量入力画面、
- *              誘電体ｽﾗﾘｰ作製・添加材・ｿﾞﾙ秤量入力画面、
+ *              ﾊﾞｲﾝﾀﾞｰ溶液作製・ﾊﾞｲﾝﾀﾞｰ粉秤量入力画面、<br>
+ *              誘電体ｽﾗﾘｰ作製・溶剤・添加材ｽﾗﾘｰ秤量入力画面、<br>
+ *              誘電体ｽﾗﾘｰ作製・添加材・ｿﾞﾙ秤量入力画面、<br>
  *              誘電体ｽﾗﾘｰ作製・主原料秤量入力画面追加<br>
+ * <br>
+ * 変更日	2021/12/06<br>
+ * 計画書No	MB2101-DK002<br>
+ * 変更者	kcss.wxf<br>
+ * 変更理由	ｽﾘｯﾌﾟ作製・ｽﾗﾘｰ固形分調整(ｽﾃﾝ容器)入力画面、<br>
+ *              ｽﾘｯﾌﾟ作製・溶剤秤量・投入(白ﾎﾟﾘ)入力画面、<br>
+ *              ｽﾘｯﾌﾟ作製・溶剤秤量・投入(ｽﾃﾝ容器)入力画面追加<br>
+ * <br>
+ * 変更日	2022/01/10<br>
+ * 計画書No	MB2101-DK002<br>
+ * 変更者	kcss.wxf<br>
+ * 変更理由	ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力画面追加<br>
  * ===============================================================================<br>
  */
 /**
@@ -170,6 +182,11 @@ public class SubFormUtil {
      * ｶﾞﾗｽｽﾗﾘｰ作製・秤量入力画面ID
      */
     public static final String FORM_ID_GXHDO102C002 = "GXHDO102C002";
+    
+    /**
+     * ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力画面ID
+     */
+    public static final String FORM_ID_GXHDO102C003 = "GXHDO102C003";
     
     /**
      * 添加材ｽﾗﾘｰ作製・添加材調合入力画面ID
@@ -388,6 +405,12 @@ public class SubFormUtil {
                 returnBean = FacesContext.getCurrentInstance().
                         getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
                                 getELContext(), null, "beanGXHDO102C002");
+                break;
+            // ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力
+            case "GXHDO102C003":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO102C003");
                 break;
             // 添加材ｽﾗﾘｰ作製・添加材調合入力
             case "GXHDO102C004":

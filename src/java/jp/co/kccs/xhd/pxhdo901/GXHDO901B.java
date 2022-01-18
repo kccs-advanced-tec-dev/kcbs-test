@@ -45,6 +45,8 @@ import jp.co.kccs.xhd.pxhdo102.GXHDO102C001;
 import jp.co.kccs.xhd.pxhdo102.GXHDO102C001Logic;
 import jp.co.kccs.xhd.pxhdo102.GXHDO102C002;
 import jp.co.kccs.xhd.pxhdo102.GXHDO102C002Logic;
+import jp.co.kccs.xhd.pxhdo102.GXHDO102C003;
+import jp.co.kccs.xhd.pxhdo102.GXHDO102C003Logic;
 import jp.co.kccs.xhd.pxhdo102.GXHDO102C004;
 import jp.co.kccs.xhd.pxhdo102.GXHDO102C004Logic;
 import jp.co.kccs.xhd.pxhdo102.GXHDO102C005;
@@ -1873,6 +1875,11 @@ public class GXHDO901B implements Serializable {
             case SubFormUtil.FORM_ID_GXHDO102C002:
                 GXHDO102C002 beanGXHDO102C002 = (GXHDO102C002) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO102C002);
                 GXHDO102C002Logic.setReturnData(beanGXHDO102C002.getGxhdO102c002Model(), this.itemListEx);
+                break;
+            // ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力
+            case SubFormUtil.FORM_ID_GXHDO102C003:
+                GXHDO102C003 beanGXHDO102C003 = (GXHDO102C003) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO102C003);
+                GXHDO102C003Logic.setReturnData(beanGXHDO102C003.getGxhdO102c003Model(), this.itemList);
                 break;
             // 添加材ｽﾗﾘｰ作製・添加材調合入力
             case SubFormUtil.FORM_ID_GXHDO102C004:
