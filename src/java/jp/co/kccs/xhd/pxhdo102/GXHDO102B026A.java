@@ -497,7 +497,7 @@ public class GXHDO102B026A implements Serializable {
     /**
      * 誘電体ｽﾗﾘｰ有効期限
      */
-    private FXHDD01 uudentaislurryyuukoukigen;
+    private FXHDD01 yuudentaislurryyuukoukigen;
 
     /**
      * 粉砕判定
@@ -2100,18 +2100,18 @@ public class GXHDO102B026A implements Serializable {
 
     /**
      * 誘電体ｽﾗﾘｰ有効期限
-     * @return the uudentaislurryyuukoukigen
+     * @return the yuudentaislurryyuukoukigen
      */
-    public FXHDD01 getUudentaislurryyuukoukigen() {
-        return uudentaislurryyuukoukigen;
+    public FXHDD01 getYuudentaislurryyuukoukigen() {
+        return yuudentaislurryyuukoukigen;
     }
 
     /**
      * 誘電体ｽﾗﾘｰ有効期限
-     * @param uudentaislurryyuukoukigen the uudentaislurryyuukoukigen to set
+     * @param yuudentaislurryyuukoukigen the yuudentaislurryyuukoukigen to set
      */
-    public void setUudentaislurryyuukoukigen(FXHDD01 uudentaislurryyuukoukigen) {
-        this.uudentaislurryyuukoukigen = uudentaislurryyuukoukigen;
+    public void setYuudentaislurryyuukoukigen(FXHDD01 yuudentaislurryyuukoukigen) {
+        this.yuudentaislurryyuukoukigen = yuudentaislurryyuukoukigen;
     }
 
     /**

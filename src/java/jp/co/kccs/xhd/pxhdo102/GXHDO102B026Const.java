@@ -490,7 +490,7 @@ public class GXHDO102B026Const {
     /**
      * 誘電体ｽﾗﾘｰ有効期限
      */
-    public static final String UUDENTAISLURRYYUUKOUKIGEN = "sr_yuudentai_fp_uudentaislurryyuukoukigen";
+    public static final String YUUDENTAISLURRYYUUKOUKIGEN = "sr_yuudentai_fp_yuudentaislurryyuukoukigen";
 
     /**
      * 粉砕判定
@@ -705,7 +705,7 @@ public class GXHDO102B026Const {
     /**
      * 誘電体ｽﾗﾘｰ有効期限計算(画面上ボタン)
      */
-    public static final String BTN_UUDENTAISLURRYYUUKOUKIGEN_TOP = "sr_yuudentai_fp_uudentaislurryyuukoukigen_Top";
+    public static final String BTN_YUUDENTAISLURRYYUUKOUKIGEN_TOP = "sr_yuudentai_fp_yuudentaislurryyuukoukigen_Top";
 
     /**
      * 乾燥開始日時(画面上ボタン)
@@ -850,7 +850,7 @@ public class GXHDO102B026Const {
     /**
      * 誘電体ｽﾗﾘｰ有効期限計算(画面下ボタン)
      */
-    public static final String BTN_UUDENTAISLURRYYUUKOUKIGEN_BOTTOM = "sr_yuudentai_fp_uudentaislurryyuukoukigen_Bottom";
+    public static final String BTN_YUUDENTAISLURRYYUUKOUKIGEN_BOTTOM = "sr_yuudentai_fp_yuudentaislurryyuukoukigen_Bottom";
 
     /**
      * 乾燥開始日時(画面下ボタン)

@@ -312,9 +312,9 @@ public class GXHDO102B026 implements IFormLogic {
                 method = "setBudomarikeisan";
                 break;
             // 誘電体ｽﾗﾘｰ有効期限計算
-            case GXHDO102B026Const.BTN_UUDENTAISLURRYYUUKOUKIGEN_TOP:
-            case GXHDO102B026Const.BTN_UUDENTAISLURRYYUUKOUKIGEN_BOTTOM:
-                method = "setUudentaislurryyuukoukigen";
+            case GXHDO102B026Const.BTN_YUUDENTAISLURRYYUUKOUKIGEN_TOP:
+            case GXHDO102B026Const.BTN_YUUDENTAISLURRYYUUKOUKIGEN_BOTTOM:
+                method = "setYuudentaislurryyuukoukigen";
                 break;
             // 乾燥後正味重量計算
             case GXHDO102B026Const.BTN_KANSOUGOSYOUMIJYUURYOU_TOP:
@@ -1972,17 +1972,17 @@ public class GXHDO102B026 implements IFormLogic {
      * @param processData 処理制御データ
      * @return 処理制御データ
      */
-    public ProcessData setUudentaislurryyuukoukigen(ProcessData processData) {
+    public ProcessData setYuudentaislurryyuukoukigen(ProcessData processData) {
         Map sryuudentaifunsaiData = new HashMap<>();
         // 誘電体ｽﾗﾘｰ有効期限計算ﾁｪｯｸ処理
-        ErrorMessageInfo checkItemErrorInfo = checkUudentaislurryyuukoukigenKeisan(processData, sryuudentaifunsaiData);
+        ErrorMessageInfo checkItemErrorInfo = checkYuudentaislurryyuukoukigenKeisan(processData, sryuudentaifunsaiData);
         if (checkItemErrorInfo != null) {
             processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
             return processData;
         }
         processData.setMethod("");
         // 誘電体ｽﾗﾘｰ有効期限計算処理
-        calcUudentaislurryyuukoukigen(processData, sryuudentaifunsaiData);
+        calcYuudentaislurryyuukoukigen(processData, sryuudentaifunsaiData);
         return processData;
     }
 
@@ -1993,7 +1993,7 @@ public class GXHDO102B026 implements IFormLogic {
      * @param sryuudentaifunsaiData 粉砕終了日
      * @return エラーメッセージ情報
      */
-    private ErrorMessageInfo checkUudentaislurryyuukoukigenKeisan(ProcessData processData, Map sryuudentaifunsaiData) {
+    private ErrorMessageInfo checkYuudentaislurryyuukoukigenKeisan(ProcessData processData, Map sryuudentaifunsaiData) {
         QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
         try {
             // セッションから情報を取得
@@ -2025,15 +2025,15 @@ public class GXHDO102B026 implements IFormLogic {
      * @param processData 処理制御データ
      * @param sryuudentaifunsaiData 粉砕終了日
      */
-    private void calcUudentaislurryyuukoukigen(ProcessData processData, Map sryuudentaifunsaiData) {
+    private void calcYuudentaislurryyuukoukigen(ProcessData processData, Map sryuudentaifunsaiData) {
         try {
-            FXHDD01 itemUudentaislurryyuukoukigen = getItemRow(processData.getItemList(), GXHDO102B026Const.UUDENTAISLURRYYUUKOUKIGEN); // 誘電体ｽﾗﾘｰ有効期限
-            BigDecimal itemUudentaislurryyuukoukigenKikakuChi = ValidateUtil.numberExtraction(StringUtil.nullToBlank(itemUudentaislurryyuukoukigen.getKikakuChi()).replace("【", "").replace("】", ""));
+            FXHDD01 itemYuudentaislurryyuukoukigen = getItemRow(processData.getItemList(), GXHDO102B026Const.YUUDENTAISLURRYYUUKOUKIGEN); // 誘電体ｽﾗﾘｰ有効期限
+            BigDecimal itemYuudentaislurryyuukoukigenKikakuChi = ValidateUtil.numberExtraction(StringUtil.nullToBlank(itemYuudentaislurryyuukoukigen.getKikakuChi()).replace("【", "").replace("】", ""));
             String syuuryounichijiVal = DateUtil.formattedTimestamp((Timestamp) sryuudentaifunsaiData.get("syuuryounichiji"), "yyMMdd");
             // 粉砕終了日 ＋ 規格値
-            Date dateTime = DateUtil.addJikan(syuuryounichijiVal, "0000", itemUudentaislurryyuukoukigenKikakuChi.intValue(), Calendar.DATE);
+            Date dateTime = DateUtil.addJikan(syuuryounichijiVal, "0000", itemYuudentaislurryyuukoukigenKikakuChi.intValue(), Calendar.DATE);
             if (dateTime != null) {
-                itemUudentaislurryyuukoukigen.setValue(new SimpleDateFormat("yyMMdd").format(dateTime));
+                itemYuudentaislurryyuukoukigen.setValue(new SimpleDateFormat("yyMMdd").format(dateTime));
             }
         } catch (NullPointerException | NumberFormatException ex) {
             // 数値変換できない場合はリターン
@@ -2173,7 +2173,7 @@ public class GXHDO102B026 implements IFormLogic {
                         GXHDO102B026Const.BTN_YUUDENTAISLURRYJYUUROU11_TOP,
                         GXHDO102B026Const.BTN_YUUDENTAISLURRYJYUUROU12_TOP,
                         GXHDO102B026Const.BTN_BUDOMARIKEISAN_TOP,
-                        GXHDO102B026Const.BTN_UUDENTAISLURRYYUUKOUKIGEN_TOP,
+                        GXHDO102B026Const.BTN_YUUDENTAISLURRYYUUKOUKIGEN_TOP,
                         GXHDO102B026Const.BTN_KANSOUKAISI_TOP,
                         GXHDO102B026Const.BTN_KANSOUSYUURYOU_TOP,
                         GXHDO102B026Const.BTN_KANSOUGOSYOUMIJYUURYOU_TOP,
@@ -2200,7 +2200,7 @@ public class GXHDO102B026 implements IFormLogic {
                         GXHDO102B026Const.BTN_YUUDENTAISLURRYJYUUROU11_BOTTOM,
                         GXHDO102B026Const.BTN_YUUDENTAISLURRYJYUUROU12_BOTTOM,
                         GXHDO102B026Const.BTN_BUDOMARIKEISAN_BOTTOM,
-                        GXHDO102B026Const.BTN_UUDENTAISLURRYYUUKOUKIGEN_BOTTOM,
+                        GXHDO102B026Const.BTN_YUUDENTAISLURRYYUUKOUKIGEN_BOTTOM,
                         GXHDO102B026Const.BTN_KANSOUKAISI_BOTTOM,
                         GXHDO102B026Const.BTN_KANSOUSYUURYOU_BOTTOM,
                         GXHDO102B026Const.BTN_KANSOUGOSYOUMIJYUURYOU_BOTTOM,
@@ -2236,7 +2236,7 @@ public class GXHDO102B026 implements IFormLogic {
                         GXHDO102B026Const.BTN_YUUDENTAISLURRYJYUUROU11_TOP,
                         GXHDO102B026Const.BTN_YUUDENTAISLURRYJYUUROU12_TOP,
                         GXHDO102B026Const.BTN_BUDOMARIKEISAN_TOP,
-                        GXHDO102B026Const.BTN_UUDENTAISLURRYYUUKOUKIGEN_TOP,
+                        GXHDO102B026Const.BTN_YUUDENTAISLURRYYUUKOUKIGEN_TOP,
                         GXHDO102B026Const.BTN_KANSOUKAISI_TOP,
                         GXHDO102B026Const.BTN_KANSOUSYUURYOU_TOP,
                         GXHDO102B026Const.BTN_KANSOUGOSYOUMIJYUURYOU_TOP,
@@ -2263,7 +2263,7 @@ public class GXHDO102B026 implements IFormLogic {
                         GXHDO102B026Const.BTN_YUUDENTAISLURRYJYUUROU11_BOTTOM,
                         GXHDO102B026Const.BTN_YUUDENTAISLURRYJYUUROU12_BOTTOM,
                         GXHDO102B026Const.BTN_BUDOMARIKEISAN_BOTTOM,
-                        GXHDO102B026Const.BTN_UUDENTAISLURRYYUUKOUKIGEN_BOTTOM,
+                        GXHDO102B026Const.BTN_YUUDENTAISLURRYYUUKOUKIGEN_BOTTOM,
                         GXHDO102B026Const.BTN_KANSOUKAISI_BOTTOM,
                         GXHDO102B026Const.BTN_KANSOUSYUURYOU_BOTTOM,
                         GXHDO102B026Const.BTN_KANSOUGOSYOUMIJYUURYOU_BOTTOM,
@@ -2714,7 +2714,7 @@ public class GXHDO102B026 implements IFormLogic {
         this.setItemData(processData, GXHDO102B026Const.BUDOMARIKEISAN, getSrYuudentaiFpItemData(GXHDO102B026Const.BUDOMARIKEISAN, srYuudentaiFp));
 
         // 誘電体ｽﾗﾘｰ有効期限
-        this.setItemData(processData, GXHDO102B026Const.UUDENTAISLURRYYUUKOUKIGEN, getSrYuudentaiFpItemData(GXHDO102B026Const.UUDENTAISLURRYYUUKOUKIGEN, srYuudentaiFp));
+        this.setItemData(processData, GXHDO102B026Const.YUUDENTAISLURRYYUUKOUKIGEN, getSrYuudentaiFpItemData(GXHDO102B026Const.YUUDENTAISLURRYYUUKOUKIGEN, srYuudentaiFp));
 
         // 粉砕判定
         this.setItemData(processData, GXHDO102B026Const.FUNSAIHANTEI, getSrYuudentaiFpItemData(GXHDO102B026Const.FUNSAIHANTEI, srYuudentaiFp));
@@ -2947,7 +2947,7 @@ public class GXHDO102B026 implements IFormLogic {
                 + "soujyuurousokutei9,soujyuurousokutei10,soujyuurousokutei11,soujyuurousokutei12,yuudentaislurryjyuurou1,yuudentaislurryjyuurou2,"
                 + "yuudentaislurryjyuurou3,yuudentaislurryjyuurou4,yuudentaislurryjyuurou5,yuudentaislurryjyuurou6,yuudentaislurryjyuurou7,"
                 + "yuudentaislurryjyuurou8,yuudentaislurryjyuurou9,yuudentaislurryjyuurou10,yuudentaislurryjyuurou11,yuudentaislurryjyuurou12,"
-                + "yuudentaislurryjyuurougoukei,tounyuuryou,budomarikeisan,uudentaislurryyuukoukigen,funsaihantei,seihinjyuuryoukakunin_tantousya,"
+                + "yuudentaislurryjyuurougoukei,tounyuuryou,budomarikeisan,yuudentaislurryyuukoukigen,funsaihantei,seihinjyuuryoukakunin_tantousya,"
                 + "hozonyousamplekaisyu,zunsekiyousamplekaisyu,kansouzara,arumizarafuutaijyuuryou,slurrysamplejyuuryoukikaku,kansoumaeslurryjyuuryou,"
                 + "kansouki,kansouondokikaku,kansoujikankikaku,kansoukaisinichiji,kansousyuuryounichiji,kansoujikantotal,kansougosoujyuuryou,"
                 + "kansougosyoumijyuuryou,kokeibunhiritu,bikou1,bikou2,torokunichiji,kosinnichiji,revision "
@@ -3061,7 +3061,7 @@ public class GXHDO102B026 implements IFormLogic {
         mapping.put("yuudentaislurryjyuurougoukei", "yuudentaislurryjyuurougoukei");             // 誘電体ｽﾗﾘｰ重量合計
         mapping.put("tounyuuryou", "tounyuuryou");                                               // 投入量
         mapping.put("budomarikeisan", "budomarikeisan");                                         // 歩留まり計算
-        mapping.put("uudentaislurryyuukoukigen", "uudentaislurryyuukoukigen");                   // 誘電体ｽﾗﾘｰ有効期限
+        mapping.put("yuudentaislurryyuukoukigen", "yuudentaislurryyuukoukigen");                 // 誘電体ｽﾗﾘｰ有効期限
         mapping.put("funsaihantei", "funsaihantei");                                             // 粉砕判定
         mapping.put("seihinjyuuryoukakunin_tantousya", "seihinjyuuryoukakunin_tantousya");       // 製品重量確認_担当者
         mapping.put("hozonyousamplekaisyu", "hozonyousamplekaisyu");                             // 保存用ｻﾝﾌﾟﾙ回収
@@ -3126,7 +3126,7 @@ public class GXHDO102B026 implements IFormLogic {
                 + "soujyuurousokutei9,soujyuurousokutei10,soujyuurousokutei11,soujyuurousokutei12,yuudentaislurryjyuurou1,yuudentaislurryjyuurou2,"
                 + "yuudentaislurryjyuurou3,yuudentaislurryjyuurou4,yuudentaislurryjyuurou5,yuudentaislurryjyuurou6,yuudentaislurryjyuurou7,"
                 + "yuudentaislurryjyuurou8,yuudentaislurryjyuurou9,yuudentaislurryjyuurou10,yuudentaislurryjyuurou11,yuudentaislurryjyuurou12,"
-                + "yuudentaislurryjyuurougoukei,tounyuuryou,budomarikeisan,uudentaislurryyuukoukigen,funsaihantei,seihinjyuuryoukakunin_tantousya,"
+                + "yuudentaislurryjyuurougoukei,tounyuuryou,budomarikeisan,yuudentaislurryyuukoukigen,funsaihantei,seihinjyuuryoukakunin_tantousya,"
                 + "hozonyousamplekaisyu,zunsekiyousamplekaisyu,kansouzara,arumizarafuutaijyuuryou,slurrysamplejyuuryoukikaku,kansoumaeslurryjyuuryou,"
                 + "kansouki,kansouondokikaku,kansoujikankikaku,kansoukaisinichiji,kansousyuuryounichiji,kansoujikantotal,kansougosoujyuuryou,"
                 + "kansougosyoumijyuuryou,kokeibunhiritu,bikou1,bikou2,torokunichiji,kosinnichiji,revision,deleteflag "
@@ -3241,7 +3241,7 @@ public class GXHDO102B026 implements IFormLogic {
         mapping.put("yuudentaislurryjyuurougoukei", "yuudentaislurryjyuurougoukei");             // 誘電体ｽﾗﾘｰ重量合計
         mapping.put("tounyuuryou", "tounyuuryou");                                               // 投入量
         mapping.put("budomarikeisan", "budomarikeisan");                                         // 歩留まり計算
-        mapping.put("uudentaislurryyuukoukigen", "uudentaislurryyuukoukigen");                   // 誘電体ｽﾗﾘｰ有効期限
+        mapping.put("yuudentaislurryyuukoukigen", "yuudentaislurryyuukoukigen");                 // 誘電体ｽﾗﾘｰ有効期限
         mapping.put("funsaihantei", "funsaihantei");                                             // 粉砕判定
         mapping.put("seihinjyuuryoukakunin_tantousya", "seihinjyuuryoukakunin_tantousya");       // 製品重量確認_担当者
         mapping.put("hozonyousamplekaisyu", "hozonyousamplekaisyu");                             // 保存用ｻﾝﾌﾟﾙ回収
@@ -3477,7 +3477,7 @@ public class GXHDO102B026 implements IFormLogic {
                 + "soujyuurousokutei9,soujyuurousokutei10,soujyuurousokutei11,soujyuurousokutei12,yuudentaislurryjyuurou1,yuudentaislurryjyuurou2,"
                 + "yuudentaislurryjyuurou3,yuudentaislurryjyuurou4,yuudentaislurryjyuurou5,yuudentaislurryjyuurou6,yuudentaislurryjyuurou7,"
                 + "yuudentaislurryjyuurou8,yuudentaislurryjyuurou9,yuudentaislurryjyuurou10,yuudentaislurryjyuurou11,yuudentaislurryjyuurou12,"
-                + "yuudentaislurryjyuurougoukei,tounyuuryou,budomarikeisan,uudentaislurryyuukoukigen,funsaihantei,seihinjyuuryoukakunin_tantousya,"
+                + "yuudentaislurryjyuurougoukei,tounyuuryou,budomarikeisan,yuudentaislurryyuukoukigen,funsaihantei,seihinjyuuryoukakunin_tantousya,"
                 + "hozonyousamplekaisyu,zunsekiyousamplekaisyu,kansouzara,arumizarafuutaijyuuryou,slurrysamplejyuuryoukikaku,kansoumaeslurryjyuuryou,"
                 + "kansouki,kansouondokikaku,kansoujikankikaku,kansoukaisinichiji,kansousyuuryounichiji,kansoujikantotal,kansougosoujyuuryou,"
                 + "kansougosyoumijyuuryou,kokeibunhiritu,bikou1,bikou2,torokunichiji,kosinnichiji,revision,deleteflag "
@@ -3527,7 +3527,7 @@ public class GXHDO102B026 implements IFormLogic {
                 + "soujyuurousokutei8 = ?,soujyuurousokutei9 = ?,soujyuurousokutei10 = ?,soujyuurousokutei11 = ?,soujyuurousokutei12 = ?,yuudentaislurryjyuurou1 = ?,"
                 + "yuudentaislurryjyuurou2 = ?,yuudentaislurryjyuurou3 = ?,yuudentaislurryjyuurou4 = ?,yuudentaislurryjyuurou5 = ?,yuudentaislurryjyuurou6 = ?,"
                 + "yuudentaislurryjyuurou7 = ?,yuudentaislurryjyuurou8 = ?,yuudentaislurryjyuurou9 = ?,yuudentaislurryjyuurou10 = ?,yuudentaislurryjyuurou11 = ?,"
-                + "yuudentaislurryjyuurou12 = ?,yuudentaislurryjyuurougoukei = ?,tounyuuryou = ?,budomarikeisan = ?,uudentaislurryyuukoukigen = ?,funsaihantei = ?,"
+                + "yuudentaislurryjyuurou12 = ?,yuudentaislurryjyuurougoukei = ?,tounyuuryou = ?,budomarikeisan = ?,yuudentaislurryyuukoukigen = ?,funsaihantei = ?,"
                 + "seihinjyuuryoukakunin_tantousya = ?,hozonyousamplekaisyu = ?,zunsekiyousamplekaisyu = ?,kansouzara = ?,arumizarafuutaijyuuryou = ?,"
                 + "slurrysamplejyuuryoukikaku = ?,kansoumaeslurryjyuuryou = ?,kansouki = ?,kansouondokikaku = ?,kansoujikankikaku = ?,kansoukaisinichiji = ?,"
                 + "kansousyuuryounichiji = ?,kansoujikantotal = ?,kansougosoujyuuryou = ?,kansougosyoumijyuuryou = ?,kokeibunhiritu = ?,bikou1 = ?,bikou2 = ?,"
@@ -3712,7 +3712,7 @@ public class GXHDO102B026 implements IFormLogic {
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO102B026Const.YUUDENTAISLURRYJYUUROUGOUKEI, srYuudentaiFp)));                // 誘電体ｽﾗﾘｰ重量合計
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemKikakuchi(pItemList, GXHDO102B026Const.TOUNYUURYOU, srYuudentaiFp)));                         // 投入量
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO102B026Const.BUDOMARIKEISAN, srYuudentaiFp)));                       // 歩留まり計算
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B026Const.UUDENTAISLURRYYUUKOUKIGEN, srYuudentaiFp)));                // 誘電体ｽﾗﾘｰ有効期限
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B026Const.YUUDENTAISLURRYYUUKOUKIGEN, srYuudentaiFp)));               // 誘電体ｽﾗﾘｰ有効期限
         params.add(getComboBoxDbValue(getItemData(pItemList, GXHDO102B026Const.FUNSAIHANTEI, srYuudentaiFp), null));                                           // 粉砕判定
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B026Const.SEIHINJYUURYOUKAKUNIN_TANTOUSYA, srYuudentaiFp)));          // 製品重量確認_担当者
         params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO102B026Const.HOZONYOUSAMPLEKAISYU, srYuudentaiFp), null));                                   // 保存用ｻﾝﾌﾟﾙ回収
@@ -3783,7 +3783,7 @@ public class GXHDO102B026 implements IFormLogic {
                 + "soujyuurousokutei9,soujyuurousokutei10,soujyuurousokutei11,soujyuurousokutei12,yuudentaislurryjyuurou1,yuudentaislurryjyuurou2,"
                 + "yuudentaislurryjyuurou3,yuudentaislurryjyuurou4,yuudentaislurryjyuurou5,yuudentaislurryjyuurou6,yuudentaislurryjyuurou7,"
                 + "yuudentaislurryjyuurou8,yuudentaislurryjyuurou9,yuudentaislurryjyuurou10,yuudentaislurryjyuurou11,yuudentaislurryjyuurou12,"
-                + "yuudentaislurryjyuurougoukei,tounyuuryou,budomarikeisan,uudentaislurryyuukoukigen,funsaihantei,seihinjyuuryoukakunin_tantousya,"
+                + "yuudentaislurryjyuurougoukei,tounyuuryou,budomarikeisan,yuudentaislurryyuukoukigen,funsaihantei,seihinjyuuryoukakunin_tantousya,"
                 + "hozonyousamplekaisyu,zunsekiyousamplekaisyu,kansouzara,arumizarafuutaijyuuryou,slurrysamplejyuuryoukikaku,kansoumaeslurryjyuuryou,"
                 + "kansouki,kansouondokikaku,kansoujikankikaku,kansoukaisinichiji,kansousyuuryounichiji,kansoujikantotal,kansougosoujyuuryou,"
                 + "kansougosyoumijyuuryou,kokeibunhiritu,bikou1,bikou2,torokunichiji,kosinnichiji,revision "
@@ -3833,7 +3833,7 @@ public class GXHDO102B026 implements IFormLogic {
                 + "soujyuurousokutei8 = ?,soujyuurousokutei9 = ?,soujyuurousokutei10 = ?,soujyuurousokutei11 = ?,soujyuurousokutei12 = ?,yuudentaislurryjyuurou1 = ?,"
                 + "yuudentaislurryjyuurou2 = ?,yuudentaislurryjyuurou3 = ?,yuudentaislurryjyuurou4 = ?,yuudentaislurryjyuurou5 = ?,yuudentaislurryjyuurou6 = ?,"
                 + "yuudentaislurryjyuurou7 = ?,yuudentaislurryjyuurou8 = ?,yuudentaislurryjyuurou9 = ?,yuudentaislurryjyuurou10 = ?,yuudentaislurryjyuurou11 = ?,"
-                + "yuudentaislurryjyuurou12 = ?,yuudentaislurryjyuurougoukei = ?,tounyuuryou = ?,budomarikeisan = ?,uudentaislurryyuukoukigen = ?,funsaihantei = ?,"
+                + "yuudentaislurryjyuurou12 = ?,yuudentaislurryjyuurougoukei = ?,tounyuuryou = ?,budomarikeisan = ?,yuudentaislurryyuukoukigen = ?,funsaihantei = ?,"
                 + "seihinjyuuryoukakunin_tantousya = ?,hozonyousamplekaisyu = ?,zunsekiyousamplekaisyu = ?,kansouzara = ?,arumizarafuutaijyuuryou = ?,"
                 + "slurrysamplejyuuryoukikaku = ?,kansoumaeslurryjyuuryou = ?,kansouki = ?,kansouondokikaku = ?,kansoujikankikaku = ?,kansoukaisinichiji = ?,"
                 + "kansousyuuryounichiji = ?,kansoujikantotal = ?,kansougosoujyuuryou = ?,kansougosyoumijyuuryou = ?,kokeibunhiritu = ?,bikou1 = ?,bikou2 = ?,"
@@ -3986,9 +3986,9 @@ public class GXHDO102B026 implements IFormLogic {
         params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO102B026Const.YUUDENTAISLURRYJYUUROU11, srYuudentaiFp)));                    // 誘電体ｽﾗﾘｰ重量11
         params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO102B026Const.YUUDENTAISLURRYJYUUROU12, srYuudentaiFp)));                    // 誘電体ｽﾗﾘｰ重量12
         params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO102B026Const.YUUDENTAISLURRYJYUUROUGOUKEI, srYuudentaiFp)));                // 誘電体ｽﾗﾘｰ重量合計
-        params.add(DBUtil.stringToStringObject(getItemKikakuchi(pItemList, GXHDO102B026Const.TOUNYUURYOU, srYuudentaiFp)));                            // 投入量
+        params.add(DBUtil.stringToStringObject(getItemKikakuchi(pItemList, GXHDO102B026Const.TOUNYUURYOU, srYuudentaiFp)));                         // 投入量
         params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO102B026Const.BUDOMARIKEISAN, srYuudentaiFp)));                       // 歩留まり計算
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B026Const.UUDENTAISLURRYYUUKOUKIGEN, srYuudentaiFp)));                // 誘電体ｽﾗﾘｰ有効期限
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B026Const.YUUDENTAISLURRYYUUKOUKIGEN, srYuudentaiFp)));               // 誘電体ｽﾗﾘｰ有効期限
         params.add(getComboBoxDbValue(getItemData(pItemList, GXHDO102B026Const.FUNSAIHANTEI, srYuudentaiFp), 9));                                   // 粉砕判定
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B026Const.SEIHINJYUURYOUKAKUNIN_TANTOUSYA, srYuudentaiFp)));          // 製品重量確認_担当者
         params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO102B026Const.HOZONYOUSAMPLEKAISYU, srYuudentaiFp), 9));                           // 保存用ｻﾝﾌﾟﾙ回収
@@ -4503,8 +4503,8 @@ public class GXHDO102B026 implements IFormLogic {
                 return StringUtil.nullToBlank(srYuudentaiFp.getBudomarikeisan());
 
             // 誘電体ｽﾗﾘｰ有効期限
-            case GXHDO102B026Const.UUDENTAISLURRYYUUKOUKIGEN:
-                return StringUtil.nullToBlank(srYuudentaiFp.getUudentaislurryyuukoukigen());
+            case GXHDO102B026Const.YUUDENTAISLURRYYUUKOUKIGEN:
+                return StringUtil.nullToBlank(srYuudentaiFp.getYuudentaislurryyuukoukigen());
 
             // 粉砕判定
             case GXHDO102B026Const.FUNSAIHANTEI:
@@ -4630,7 +4630,7 @@ public class GXHDO102B026 implements IFormLogic {
                 + "soujyuurousokutei9,soujyuurousokutei10,soujyuurousokutei11,soujyuurousokutei12,yuudentaislurryjyuurou1,yuudentaislurryjyuurou2,"
                 + "yuudentaislurryjyuurou3,yuudentaislurryjyuurou4,yuudentaislurryjyuurou5,yuudentaislurryjyuurou6,yuudentaislurryjyuurou7,"
                 + "yuudentaislurryjyuurou8,yuudentaislurryjyuurou9,yuudentaislurryjyuurou10,yuudentaislurryjyuurou11,yuudentaislurryjyuurou12,"
-                + "yuudentaislurryjyuurougoukei,tounyuuryou,budomarikeisan,uudentaislurryyuukoukigen,funsaihantei,seihinjyuuryoukakunin_tantousya,"
+                + "yuudentaislurryjyuurougoukei,tounyuuryou,budomarikeisan,yuudentaislurryyuukoukigen,funsaihantei,seihinjyuuryoukakunin_tantousya,"
                 + "hozonyousamplekaisyu,zunsekiyousamplekaisyu,kansouzara,arumizarafuutaijyuuryou,slurrysamplejyuuryoukikaku,kansoumaeslurryjyuuryou,"
                 + "kansouki,kansouondokikaku,kansoujikankikaku,kansoukaisinichiji,kansousyuuryounichiji,kansoujikantotal,kansougosoujyuuryou,"
                 + "kansougosyoumijyuuryou,kokeibunhiritu,bikou1,bikou2,torokunichiji,kosinnichiji,revision,deleteflag "
@@ -4653,7 +4653,7 @@ public class GXHDO102B026 implements IFormLogic {
                 + "soujyuurousokutei9,soujyuurousokutei10,soujyuurousokutei11,soujyuurousokutei12,yuudentaislurryjyuurou1,yuudentaislurryjyuurou2,"
                 + "yuudentaislurryjyuurou3,yuudentaislurryjyuurou4,yuudentaislurryjyuurou5,yuudentaislurryjyuurou6,yuudentaislurryjyuurou7,"
                 + "yuudentaislurryjyuurou8,yuudentaislurryjyuurou9,yuudentaislurryjyuurou10,yuudentaislurryjyuurou11,yuudentaislurryjyuurou12,"
-                + "yuudentaislurryjyuurougoukei,tounyuuryou,budomarikeisan,uudentaislurryyuukoukigen,funsaihantei,seihinjyuuryoukakunin_tantousya,"
+                + "yuudentaislurryjyuurougoukei,tounyuuryou,budomarikeisan,yuudentaislurryyuukoukigen,funsaihantei,seihinjyuuryoukakunin_tantousya,"
                 + "hozonyousamplekaisyu,zunsekiyousamplekaisyu,kansouzara,arumizarafuutaijyuuryou,slurrysamplejyuuryoukikaku,kansoumaeslurryjyuuryou,"
                 + "kansouki,kansouondokikaku,kansoujikankikaku,kansoukaisinichiji,kansousyuuryounichiji,kansoujikantotal,kansougosoujyuuryou,"
                 + "kansougosyoumijyuuryou,kokeibunhiritu,bikou1,bikou2,?,?,?,? "
@@ -4798,7 +4798,7 @@ public class GXHDO102B026 implements IFormLogic {
         bean.setYuudentaislurryjyuurougoukei(getItemRow(processData.getItemList(), GXHDO102B026Const.YUUDENTAISLURRYJYUUROUGOUKEI));
         bean.setTounyuuryou(getItemRow(processData.getItemList(), GXHDO102B026Const.TOUNYUURYOU));
         bean.setBudomarikeisan(getItemRow(processData.getItemList(), GXHDO102B026Const.BUDOMARIKEISAN));
-        bean.setUudentaislurryyuukoukigen(getItemRow(processData.getItemList(), GXHDO102B026Const.UUDENTAISLURRYYUUKOUKIGEN));
+        bean.setYuudentaislurryyuukoukigen(getItemRow(processData.getItemList(), GXHDO102B026Const.YUUDENTAISLURRYYUUKOUKIGEN));
         bean.setFunsaihantei(getItemRow(processData.getItemList(), GXHDO102B026Const.FUNSAIHANTEI));
         bean.setSeihinjyuuryoukakunin_tantousya(getItemRow(processData.getItemList(), GXHDO102B026Const.SEIHINJYUURYOUKAKUNIN_TANTOUSYA));
         bean.setHozonyousamplekaisyu(getItemRow(processData.getItemList(), GXHDO102B026Const.HOZONYOUSAMPLEKAISYU));
@@ -4930,7 +4930,7 @@ public class GXHDO102B026 implements IFormLogic {
         allItemIdMap.put(GXHDO102B026Const.YUUDENTAISLURRYJYUUROUGOUKEI, "誘電体ｽﾗﾘｰ重量合計");
         allItemIdMap.put(GXHDO102B026Const.TOUNYUURYOU, "投入量");
         allItemIdMap.put(GXHDO102B026Const.BUDOMARIKEISAN, "歩留まり計算");
-        allItemIdMap.put(GXHDO102B026Const.UUDENTAISLURRYYUUKOUKIGEN, "誘電体ｽﾗﾘｰ有効期限");
+        allItemIdMap.put(GXHDO102B026Const.YUUDENTAISLURRYYUUKOUKIGEN, "誘電体ｽﾗﾘｰ有効期限");
         allItemIdMap.put(GXHDO102B026Const.FUNSAIHANTEI, "粉砕判定");
         allItemIdMap.put(GXHDO102B026Const.SEIHINJYUURYOUKAKUNIN_TANTOUSYA, "製品重量確認_担当者");
         allItemIdMap.put(GXHDO102B026Const.HOZONYOUSAMPLEKAISYU, "保存用ｻﾝﾌﾟﾙ回収");

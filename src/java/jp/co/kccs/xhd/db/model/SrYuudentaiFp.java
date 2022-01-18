@@ -483,7 +483,7 @@ public class SrYuudentaiFp {
     /**
      * 誘電体ｽﾗﾘｰ有効期限
      */
-    private String uudentaislurryyuukoukigen;
+    private String yuudentaislurryyuukoukigen;
 
     /**
      * 粉砕判定
@@ -2058,18 +2058,18 @@ public class SrYuudentaiFp {
 
     /**
      * 誘電体ｽﾗﾘｰ有効期限
-     * @return the uudentaislurryyuukoukigen
+     * @return the yuudentaislurryyuukoukigen
      */
-    public String getUudentaislurryyuukoukigen() {
-        return uudentaislurryyuukoukigen;
+    public String getYuudentaislurryyuukoukigen() {
+        return yuudentaislurryyuukoukigen;
     }
 
     /**
      * 誘電体ｽﾗﾘｰ有効期限
-     * @param uudentaislurryyuukoukigen the uudentaislurryyuukoukigen to set
+     * @param yuudentaislurryyuukoukigen the yuudentaislurryyuukoukigen to set
      */
-    public void setUudentaislurryyuukoukigen(String uudentaislurryyuukoukigen) {
-        this.uudentaislurryyuukoukigen = uudentaislurryyuukoukigen;
+    public void setYuudentaislurryyuukoukigen(String yuudentaislurryyuukoukigen) {
+        this.yuudentaislurryyuukoukigen = yuudentaislurryyuukoukigen;
     }
 
     /**

@@ -1942,7 +1942,7 @@
                                                    and empty gXHDO102B026A.yuudentaislurryjyuurou6 and empty gXHDO102B026A.yuudentaislurryjyuurou7 and empty gXHDO102B026A.yuudentaislurryjyuurou8
                                                    and empty gXHDO102B026A.yuudentaislurryjyuurou9 and empty gXHDO102B026A.yuudentaislurryjyuurou10 and empty gXHDO102B026A.yuudentaislurryjyuurou11
                                                    and empty gXHDO102B026A.yuudentaislurryjyuurou12 and empty gXHDO102B026A.yuudentaislurryjyuurougoukei and empty gXHDO102B026A.tounyuuryou
-                                                   and empty gXHDO102B026A.budomarikeisan and empty gXHDO102B026A.uudentaislurryyuukoukigen and empty gXHDO102B026A.funsaihantei and empty gXHDO102B026A.seihinjyuuryoukakunin_tantousya
+                                                   and empty gXHDO102B026A.budomarikeisan and empty gXHDO102B026A.yuudentaislurryyuukoukigen and empty gXHDO102B026A.funsaihantei and empty gXHDO102B026A.seihinjyuuryoukakunin_tantousya
                                                    )}">
                                     <p:column colspan="3">
                                         <h:outputText value="#{myMsg.seihinjyuuroukakunin}"
@@ -2846,41 +2846,41 @@
                                                       background:#{gXHDO102B026A.budomarikeisan.backColor2};vertical-align: middle;"/>
                                     </p:column>
                                 </p:row>
-                                <p:row style="height: 50px;white-space:nowrap;border-top-style: hidden;" rendered="#{not empty gXHDO102B026A.uudentaislurryyuukoukigen}">
+                                <p:row style="height: 50px;white-space:nowrap;border-top-style: hidden;" rendered="#{not empty gXHDO102B026A.yuudentaislurryyuukoukigen}">
                                     <p:column colspan="3" style="padding-left: 155px;">
-                                        <h:outputText rendered="#{gXHDO102B026A.uudentaislurryyuukoukigen.render1}" value="#{gXHDO102B026A.uudentaislurryyuukoukigen.label1}"
-                                                      style="margin-left:8px;font-size:#{gXHDO102B026A.uudentaislurryyuukoukigen.fontSize1}px;color:#{gXHDO102B026A.uudentaislurryyuukoukigen.fontColor1};vertical-align: middle;"/>
-                                        <p:commandLink id="uudentaislurryyuukoukigen_cmdLink" rendered="#{gXHDO102B026A.uudentaislurryyuukoukigen.renderLinkButton}"
-                                                       action="#{gXHDO901B.cmdLinkAction(gXHDO102B026A.uudentaislurryyuukoukigen.linkButtonId)}" 
+                                        <h:outputText rendered="#{gXHDO102B026A.yuudentaislurryyuukoukigen.render1}" value="#{gXHDO102B026A.yuudentaislurryyuukoukigen.label1}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B026A.yuudentaislurryyuukoukigen.fontSize1}px;color:#{gXHDO102B026A.yuudentaislurryyuukoukigen.fontColor1};vertical-align: middle;"/>
+                                        <p:commandLink id="yuudentaislurryyuukoukigen_cmdLink" rendered="#{gXHDO102B026A.yuudentaislurryyuukoukigen.renderLinkButton}"
+                                                       action="#{gXHDO901B.cmdLinkAction(gXHDO102B026A.yuudentaislurryyuukoukigen.linkButtonId)}" 
                                                        process="@form" update="@form" async="false" oncomplete="cmdButtonOncomplete(args);"
-                                                       style="margin-left:8px;font-size:#{gXHDO102B026A.uudentaislurryyuukoukigen.fontSize1}px;color:#{gXHDO102B026A.uudentaislurryyuukoukigen.fontColor1};vertical-align: middle;">
-                                            <h:outputText value="#{gXHDO102B026A.uudentaislurryyuukoukigen.label1}" />
+                                                       style="margin-left:8px;font-size:#{gXHDO102B026A.yuudentaislurryyuukoukigen.fontSize1}px;color:#{gXHDO102B026A.yuudentaislurryyuukoukigen.fontColor1};vertical-align: middle;">
+                                            <h:outputText value="#{gXHDO102B026A.yuudentaislurryyuukoukigen.label1}" />
                                         </p:commandLink>
-                                        <h:outputText id="uudentaislurryyuukoukigen_kikakuChi" rendered="#{gXHDO102B026A.uudentaislurryyuukoukigen.render1 || gXHDO102B026A.uudentaislurryyuukoukigen.renderLinkButton}"
-                                                      value="#{gXHDO102B026A.uudentaislurryyuukoukigen.kikakuChi}"
-                                                      style="margin-left:8px;font-size:#{gXHDO102B026A.uudentaislurryyuukoukigen.fontSize3}px;color:#{gXHDO102B026A.uudentaislurryyuukoukigen.fontColor3};
-                                                      background:#{gXHDO102B026A.uudentaislurryyuukoukigen.backColor3};vertical-align: middle;"/>
-                                        <p:inputText id="uudentaislurryyuukoukigen_T" 
-                                                     rendered="#{gXHDO102B026A.uudentaislurryyuukoukigen.renderInputText and (!gXHDO102B026A.uudentaislurryyuukoukigen.renderOutputLabel)}"
-                                                     value="#{gXHDO102B026A.uudentaislurryyuukoukigen.value}" 
-                                                     maxlength="#{gXHDO102B026A.uudentaislurryyuukoukigen.displayMaxLength}" 
-                                                     style="margin-left:8px;width:#{gXHDO102B026A.uudentaislurryyuukoukigen.displayMaxLength}em; font-size:#{gXHDO102B026A.uudentaislurryyuukoukigen.fontSizeInput}px;
-                                                     color:#{gXHDO102B026A.uudentaislurryyuukoukigen.fontColorInput};background:#{gXHDO102B026A.uudentaislurryyuukoukigen.backColorInput};
-                                                     vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B026A.uudentaislurryyuukoukigen.customStyleInput}">
-                                            <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO102B026A.uudentaislurryyuukoukigen.checkByte()}"  async="false"/>
+                                        <h:outputText id="yuudentaislurryyuukoukigen_kikakuChi" rendered="#{gXHDO102B026A.yuudentaislurryyuukoukigen.render1 || gXHDO102B026A.yuudentaislurryyuukoukigen.renderLinkButton}"
+                                                      value="#{gXHDO102B026A.yuudentaislurryyuukoukigen.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B026A.yuudentaislurryyuukoukigen.fontSize3}px;color:#{gXHDO102B026A.yuudentaislurryyuukoukigen.fontColor3};
+                                                      background:#{gXHDO102B026A.yuudentaislurryyuukoukigen.backColor3};vertical-align: middle;"/>
+                                        <p:inputText id="yuudentaislurryyuukoukigen_T" 
+                                                     rendered="#{gXHDO102B026A.yuudentaislurryyuukoukigen.renderInputText and (!gXHDO102B026A.yuudentaislurryyuukoukigen.renderOutputLabel)}"
+                                                     value="#{gXHDO102B026A.yuudentaislurryyuukoukigen.value}" 
+                                                     maxlength="#{gXHDO102B026A.yuudentaislurryyuukoukigen.displayMaxLength}" 
+                                                     style="margin-left:8px;width:#{gXHDO102B026A.yuudentaislurryyuukoukigen.displayMaxLength}em; font-size:#{gXHDO102B026A.yuudentaislurryyuukoukigen.fontSizeInput}px;
+                                                     color:#{gXHDO102B026A.yuudentaislurryyuukoukigen.fontColorInput};background:#{gXHDO102B026A.yuudentaislurryyuukoukigen.backColorInput};
+                                                     vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B026A.yuudentaislurryyuukoukigen.customStyleInput}">
+                                            <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO102B026A.yuudentaislurryyuukoukigen.checkByte()}"  async="false"/>
                                         </p:inputText>
-                                        <p:inputNumber id="uudentaislurryyuukoukigen_N"
-                                                       rendered="#{gXHDO102B026A.uudentaislurryyuukoukigen.renderInputNumber}" value="#{gXHDO102B026A.uudentaislurryyuukoukigen.value}" 
-                                                       decimalPlaces="#{gXHDO102B026A.uudentaislurryyuukoukigen.numberDecimalPlaces}" maxValue="#{gXHDO102B026A.uudentaislurryyuukoukigen.numberMaxValue}"
-                                                       minValue="#{gXHDO102B026A.uudentaislurryyuukoukigen.numberMinValue}" 
-                                                       thousandSeparator="" roundMethod="D" size="#{gXHDO102B026A.uudentaislurryyuukoukigen.displayMaxLength}"
-                                                       inputStyle="margin-left:8px;font-size:#{gXHDO102B026A.uudentaislurryyuukoukigen.fontSizeInput}px;
-                                                       color:#{gXHDO102B026A.uudentaislurryyuukoukigen.fontColorInput}; background:#{gXHDO102B026A.uudentaislurryyuukoukigen.backColorInput};
-                                                       vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B026A.uudentaislurryyuukoukigen.customStyleInput}">
+                                        <p:inputNumber id="yuudentaislurryyuukoukigen_N"
+                                                       rendered="#{gXHDO102B026A.yuudentaislurryyuukoukigen.renderInputNumber}" value="#{gXHDO102B026A.yuudentaislurryyuukoukigen.value}" 
+                                                       decimalPlaces="#{gXHDO102B026A.yuudentaislurryyuukoukigen.numberDecimalPlaces}" maxValue="#{gXHDO102B026A.yuudentaislurryyuukoukigen.numberMaxValue}"
+                                                       minValue="#{gXHDO102B026A.yuudentaislurryyuukoukigen.numberMinValue}" 
+                                                       thousandSeparator="" roundMethod="D" size="#{gXHDO102B026A.yuudentaislurryyuukoukigen.displayMaxLength}"
+                                                       inputStyle="margin-left:8px;font-size:#{gXHDO102B026A.yuudentaislurryyuukoukigen.fontSizeInput}px;
+                                                       color:#{gXHDO102B026A.yuudentaislurryyuukoukigen.fontColorInput}; background:#{gXHDO102B026A.yuudentaislurryyuukoukigen.backColorInput};
+                                                       vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B026A.yuudentaislurryyuukoukigen.customStyleInput}">
                                         </p:inputNumber>
-                                        <h:outputText id="uudentaislurryyuukoukigen_tani" rendered="#{gXHDO102B026A.uudentaislurryyuukoukigen.render2}" value="#{gXHDO102B026A.uudentaislurryyuukoukigen.label2}"
-                                                      style="margin-left:8px;font-size:#{gXHDO102B026A.uudentaislurryyuukoukigen.fontSize2}px;color:#{gXHDO102B026A.uudentaislurryyuukoukigen.fontColor2};
-                                                      background:#{gXHDO102B026A.uudentaislurryyuukoukigen.backColor2};vertical-align: middle;"/>
+                                        <h:outputText id="yuudentaislurryyuukoukigen_tani" rendered="#{gXHDO102B026A.yuudentaislurryyuukoukigen.render2}" value="#{gXHDO102B026A.yuudentaislurryyuukoukigen.label2}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B026A.yuudentaislurryyuukoukigen.fontSize2}px;color:#{gXHDO102B026A.yuudentaislurryyuukoukigen.fontColor2};
+                                                      background:#{gXHDO102B026A.yuudentaislurryyuukoukigen.backColor2};vertical-align: middle;"/>
                                     </p:column>
                                 </p:row>
                                 <p:row style="height: 50px;white-space:nowrap;border-top-style: hidden;" rendered="#{not empty gXHDO102B026A.funsaihantei}">
