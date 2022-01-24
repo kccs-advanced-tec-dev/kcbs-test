@@ -22,7 +22,7 @@ import jp.co.kccs.xhd.db.model.FXHDD01;
  * @author KCSS Jo
  * @since  2021/12/26
  */
-public class GXHDO102B024Model {
+public class GXHDO102B024Model{
 
     /**
      * 行削除チェックボックス
@@ -45,9 +45,14 @@ public class GXHDO102B024Model {
     private FXHDD01 kaishi_time;
 
     /**
-     * 停止予定時刻
+     * 停止予定日時
      */
-    private FXHDD01 teishiyotei_time;
+    private FXHDD01 teishiyoteinichiji;
+
+    /**
+     * 停止日
+     */
+    private FXHDD01 teishi_day;
 
     /**
      * 停止時刻
@@ -199,19 +204,35 @@ public class GXHDO102B024Model {
     }
 
     /**
-     * 停止予定時刻
-     * @return the teishiyotei_time
+     * 停止予定日時
+     * @return the teishiyoteinichiji
      */
-    public FXHDD01 getTeishiyotei_time() {
-        return teishiyotei_time;
+    public FXHDD01 getTeishiyoteinichiji() {
+        return teishiyoteinichiji;
     }
 
     /**
-     * 停止予定時刻
-     * @param teishiyotei_time the teishiyotei_time to set
+     * 停止予定日時
+     * @param teishiyoteinichiji the teishiyoteinichiji to set
      */
-    public void setTeishiyotei_time(FXHDD01 teishiyotei_time) {
-        this.teishiyotei_time = teishiyotei_time;
+    public void setTeishiyoteinichiji(FXHDD01 teishiyoteinichiji) {
+        this.teishiyoteinichiji = teishiyoteinichiji;
+    }
+
+    /**
+     * 停止日
+     * @return the teishi_day
+     */
+    public FXHDD01 getTeishi_day() {
+        return teishi_day;
+    }
+
+    /**
+     * 停止日
+     * @param teishi_day the teishi_day to set
+     */
+    public void setTeishi_day(FXHDD01 teishi_day) {
+        this.teishi_day = teishi_day;
     }
 
     /**

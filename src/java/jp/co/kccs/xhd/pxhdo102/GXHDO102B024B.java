@@ -53,9 +53,14 @@ public class GXHDO102B024B implements Serializable {
     private FXHDD01 kaishi_time;
 
     /**
-     * 停止予定時刻
+     * 停止予定日時
      */
-    private FXHDD01 teishiyotei_time;
+    private FXHDD01 teishiyoteinichiji;
+
+    /**
+     * 停止日
+     */
+    private FXHDD01 teishi_day;
 
     /**
      * 停止時刻
@@ -149,6 +154,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * 一覧表示データ
+     *
      * @return the listdata
      */
     public List<GXHDO102B024Model> getListdata() {
@@ -157,6 +163,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * 一覧表示データ
+     *
      * @param listdata the listdata to set
      */
     public void setListdata(List<GXHDO102B024Model> listdata) {
@@ -165,6 +172,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * 行削除チェックボックス
+     *
      * @return the deleterow_checkbox
      */
     public FXHDD01 getDeleterow_checkbox() {
@@ -173,6 +181,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * 行削除チェックボックス
+     *
      * @param deleterow_checkbox the deleterow_checkbox to set
      */
     public void setDeleterow_checkbox(FXHDD01 deleterow_checkbox) {
@@ -181,6 +190,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * 日付
+     *
      * @return the kaishi_day
      */
     public FXHDD01 getKaishi_day() {
@@ -189,6 +199,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * 日付
+     *
      * @param kaishi_day the kaishi_day to set
      */
     public void setKaishi_day(FXHDD01 kaishi_day) {
@@ -197,6 +208,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * 開始時刻
+     *
      * @return the kaishi_time
      */
     public FXHDD01 getKaishi_time() {
@@ -205,6 +217,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * 開始時刻
+     *
      * @param kaishi_time the kaishi_time to set
      */
     public void setKaishi_time(FXHDD01 kaishi_time) {
@@ -213,22 +226,43 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * 停止予定日時
-     * @return the teishiyotei_time
+     *
+     * @return the teishiyoteinichiji
      */
-    public FXHDD01 getTeishiyotei_time() {
-        return teishiyotei_time;
+    public FXHDD01 getTeishiyoteinichiji() {
+        return teishiyoteinichiji;
     }
 
     /**
      * 停止予定日時
-     * @param teishiyotei_time the teishiyotei_time to set
+     *
+     * @param teishiyoteinichiji the teishiyoteinichiji to set
      */
-    public void setTeishiyotei_time(FXHDD01 teishiyotei_time) {
-        this.teishiyotei_time = teishiyotei_time;
+    public void setTeishiyoteinichiji(FXHDD01 teishiyoteinichiji) {
+        this.teishiyoteinichiji = teishiyoteinichiji;
+    }
+
+    /**
+     * 停止日
+     *
+     * @return the teishi_day
+     */
+    public FXHDD01 getTeishi_day() {
+        return teishi_day;
+    }
+
+    /**
+     * 停止日
+     *
+     * @param teishi_day the teishi_day to set
+     */
+    public void setTeishi_day(FXHDD01 teishi_day) {
+        this.teishi_day = teishi_day;
     }
 
     /**
      * 停止日時
+     *
      * @return the teishi_time
      */
     public FXHDD01 getTeishi_time() {
@@ -237,6 +271,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * 停止日時
+     *
      * @param teishi_time the teishi_time to set
      */
     public void setTeishi_time(FXHDD01 teishi_time) {
@@ -245,6 +280,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * 主軸電流
+     *
      * @return the syujikudenryuu
      */
     public FXHDD01 getSyujikudenryuu() {
@@ -253,6 +289,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * 主軸電流
+     *
      * @param syujikudenryuu the syujikudenryuu to set
      */
     public void setSyujikudenryuu(FXHDD01 syujikudenryuu) {
@@ -261,6 +298,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * 出口温度
+     *
      * @return the deguchiondo
      */
     public FXHDD01 getDeguchiondo() {
@@ -269,6 +307,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * 出口温度
+     *
      * @param deguchiondo the deguchiondo to set
      */
     public void setDeguchiondo(FXHDD01 deguchiondo) {
@@ -277,6 +316,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * ｼｰﾙ温度
+     *
      * @return the sealondo
      */
     public FXHDD01 getSealondo() {
@@ -285,6 +325,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * ｼｰﾙ温度
+     *
      * @param sealondo the sealondo to set
      */
     public void setSealondo(FXHDD01 sealondo) {
@@ -293,6 +334,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * ﾎﾟﾝﾌﾟ目盛
+     *
      * @return the pumpmemori
      */
     public FXHDD01 getPumpmemori() {
@@ -301,6 +343,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * ﾎﾟﾝﾌﾟ目盛
+     *
      * @param pumpmemori the pumpmemori to set
      */
     public void setPumpmemori(FXHDD01 pumpmemori) {
@@ -309,6 +352,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * ﾎﾟﾝﾌﾟ圧
+     *
      * @return the pumpatsu
      */
     public FXHDD01 getPumpatsu() {
@@ -317,6 +361,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * ﾎﾟﾝﾌﾟ圧
+     *
      * @param pumpatsu the pumpatsu to set
      */
     public void setPumpatsu(FXHDD01 pumpatsu) {
@@ -325,6 +370,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * D50規格
+     *
      * @return the d50kikaku
      */
     public FXHDD01 getD50kikaku() {
@@ -333,6 +379,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * D50規格
+     *
      * @param d50kikaku the d50kikaku to set
      */
     public void setD50kikaku(FXHDD01 d50kikaku) {
@@ -341,6 +388,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * D50
+     *
      * @return the d50
      */
     public FXHDD01 getD50() {
@@ -349,6 +397,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * D50
+     *
      * @param d50 the d50 to set
      */
     public void setD50(FXHDD01 d50) {
@@ -357,6 +406,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * BET規格
+     *
      * @return the betkikaku
      */
     public FXHDD01 getBetkikaku() {
@@ -365,6 +415,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * BET規格
+     *
      * @param betkikaku the betkikaku to set
      */
     public void setBetkikaku(FXHDD01 betkikaku) {
@@ -373,6 +424,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * BET
+     *
      * @return the bet
      */
     public FXHDD01 getBet() {
@@ -381,6 +433,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * BET
+     *
      * @param bet the bet to set
      */
     public void setBet(FXHDD01 bet) {
@@ -389,6 +442,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * 流量規格
+     *
      * @return the ryuuryoukikaku
      */
     public FXHDD01 getRyuuryoukikaku() {
@@ -397,6 +451,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * 流量規格
+     *
      * @param ryuuryoukikaku the ryuuryoukikaku to set
      */
     public void setRyuuryoukikaku(FXHDD01 ryuuryoukikaku) {
@@ -405,6 +460,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * 流量
+     *
      * @return the ryuuryou
      */
     public FXHDD01 getRyuuryou() {
@@ -413,6 +469,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * 流量
+     *
      * @param ryuuryou the ryuuryou to set
      */
     public void setRyuuryou(FXHDD01 ryuuryou) {
@@ -421,6 +478,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * ﾊﾟｽ規格
+     *
      * @return the passkikaku
      */
     public FXHDD01 getPasskikaku() {
@@ -429,6 +487,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * ﾊﾟｽ規格
+     *
      * @param passkikaku the passkikaku to set
      */
     public void setPasskikaku(FXHDD01 passkikaku) {
@@ -437,6 +496,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * 開始ﾊﾟｽ
+     *
      * @return the kaishipass
      */
     public FXHDD01 getKaishipass() {
@@ -445,6 +505,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * 開始ﾊﾟｽ
+     *
      * @param kaishipass the kaishipass to set
      */
     public void setKaishipass(FXHDD01 kaishipass) {
@@ -453,6 +514,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * 停止ﾊﾟｽ
+     *
      * @return the teishipass
      */
     public FXHDD01 getTeishipass() {
@@ -461,6 +523,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * 停止ﾊﾟｽ
+     *
      * @param teishipass the teishipass to set
      */
     public void setTeishipass(FXHDD01 teishipass) {
@@ -469,6 +532,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * 備考1
+     *
      * @return the bikou1
      */
     public FXHDD01 getBikou1() {
@@ -477,6 +541,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * 備考1
+     *
      * @param bikou1 the bikou1 to set
      */
     public void setBikou1(FXHDD01 bikou1) {
@@ -485,6 +550,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * 備考2
+     *
      * @return the bikou2
      */
     public FXHDD01 getBikou2() {
@@ -493,6 +559,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * 備考2
+     *
      * @param bikou2 the bikou2 to set
      */
     public void setBikou2(FXHDD01 bikou2) {
@@ -501,6 +568,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * 担当者
+     *
      * @return the tantousya
      */
     public FXHDD01 getTantousya() {
@@ -509,6 +577,7 @@ public class GXHDO102B024B implements Serializable {
 
     /**
      * 担当者
+     *
      * @param tantousya the tantousya to set
      */
     public void setTantousya(FXHDD01 tantousya) {

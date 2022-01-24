@@ -133,7 +133,7 @@ public class GXHDO102B024Const {
     public static final String PASSKAISUU = "sr_yuudentai_funsai_passkaisuu";
 
     /**
-     * 日付
+     * 開始日付
      */
     public static final String KAISHI_DAY = "sr_yuudentai_funsai_kaishi_day";
 
@@ -145,7 +145,12 @@ public class GXHDO102B024Const {
     /**
      * 停止予定時刻
      */
-    public static final String TEISHIYOTEI_TIME = "sr_yuudentai_funsai_teishiyotei_time";
+    public static final String TEISHIYOTEINICHIJI = "sr_yuudentai_funsai_teishiyoteinichiji";
+
+    /**
+     * 停止日付
+     */
+    public static final String TEISHI_DAY = "sr_yuudentai_funsai_teishi_day";
 
     /**
      * 停止時刻

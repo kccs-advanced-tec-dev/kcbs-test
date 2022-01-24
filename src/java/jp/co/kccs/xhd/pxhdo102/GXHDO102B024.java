@@ -612,32 +612,37 @@ public class GXHDO102B024 implements IFormLogic {
         List<GXHDO102B024Model> listdata = bean.getListdata();
         for (GXHDO102B024Model gxhdo102b024model : listdata) {
             // 時刻前後ﾁｪｯｸ
-            FXHDD01 itemDay = gxhdo102b024model.getKaishi_day(); // 日付
-            FXHDD01 itemKaisiTime = gxhdo102b024model.getKaishi_time(); // 開始時刻
-            FXHDD01 itemSyuuryouTime = gxhdo102b024model.getTeishiyotei_time(); // 停止予定時刻
-            Date kaisiDate = DateUtil.convertStringToDate(itemDay.getValue(), itemKaisiTime.getValue());
-            Date syuuryouDate = DateUtil.convertStringToDate(itemDay.getValue(), itemSyuuryouTime.getValue());
+            FXHDD01 itemKaishiDay = gxhdo102b024model.getKaishi_day(); // 開始日付
+            FXHDD01 itemKaishiTime = gxhdo102b024model.getKaishi_time(); // 開始時刻
+            FXHDD01 itemSyuuryouNichiji = gxhdo102b024model.getTeishiyoteinichiji(); // 停止予定日時
+            Date kaisiDate = DateUtil.convertStringToDate(itemKaishiDay.getValue(), itemKaishiTime.getValue());
+            String syuuryouDateStr = StringUtil.nullToBlank(itemSyuuryouNichiji.getValue()).substring(2).replaceAll("/", "").replaceAll(" ", "").replaceAll(":", "");
+            Date syuuryouDate = DateUtil.convertStringToDate(syuuryouDateStr.substring(0, 6), syuuryouDateStr.substring(6, 10));
+
             //R001チェック呼出し
-            String msgCheckR001 = validateUtil.checkR001(itemKaisiTime.getLabel1(), kaisiDate, itemSyuuryouTime.getLabel1(), syuuryouDate);
+            String msgCheckR001 = validateUtil.checkR001(itemKaishiDay.getLabel1().substring(0, itemKaishiDay.getLabel1().length() - 1) + "時", kaisiDate, itemSyuuryouNichiji.getLabel1(), syuuryouDate);
             if (!StringUtil.isEmpty(msgCheckR001)) {
                 //エラー発生時
-                List<FXHDD01> errFxhdd01List = Arrays.asList(itemKaisiTime, itemSyuuryouTime);
-                itemKaisiTime.setBackColorInput(ErrUtil.ERR_BACK_COLOR);
-                itemSyuuryouTime.setBackColorInput(ErrUtil.ERR_BACK_COLOR);
-                return MessageUtil.getErrorMessageInfo("", msgCheckR001, true, false, errFxhdd01List);
+                itemKaishiDay.setBackColorInput(ErrUtil.ERR_BACK_COLOR);
+                itemKaishiTime.setBackColorInput(ErrUtil.ERR_BACK_COLOR);
+                itemSyuuryouNichiji.setBackColorInput(ErrUtil.ERR_BACK_COLOR);
+                return MessageUtil.getErrorMessageInfo("", msgCheckR001, true, false, null);
             }
 
             // 時刻前後ﾁｪｯｸ
-            itemSyuuryouTime = gxhdo102b024model.getTeishi_time(); // 停止時刻
-            syuuryouDate = DateUtil.convertStringToDate(itemDay.getValue(), itemSyuuryouTime.getValue());
+            FXHDD01 itemSyuuryouDay = gxhdo102b024model.getTeishi_day(); // 停止日付
+            FXHDD01 itemSyuuryouTime = gxhdo102b024model.getTeishi_time(); // 停止時刻
+            syuuryouDate = DateUtil.convertStringToDate(itemSyuuryouDay.getValue(), itemSyuuryouTime.getValue());
             //R001チェック呼出し
-            msgCheckR001 = validateUtil.checkR001(itemKaisiTime.getLabel1(), kaisiDate, itemSyuuryouTime.getLabel1(), syuuryouDate);
+            msgCheckR001 = validateUtil.checkR001(itemKaishiDay.getLabel1().substring(0, itemKaishiDay.getLabel1().length() - 1) + "時", kaisiDate,
+                    itemSyuuryouDay.getLabel1().substring(0, itemSyuuryouDay.getLabel1().length() - 1) + "時", syuuryouDate);
             if (!StringUtil.isEmpty(msgCheckR001)) {
                 //エラー発生時
-                List<FXHDD01> errFxhdd01List = Arrays.asList(itemKaisiTime, itemSyuuryouTime);
-                itemKaisiTime.setBackColorInput(ErrUtil.ERR_BACK_COLOR);
+                itemKaishiDay.setBackColorInput(ErrUtil.ERR_BACK_COLOR);
+                itemKaishiTime.setBackColorInput(ErrUtil.ERR_BACK_COLOR);
+                itemSyuuryouDay.setBackColorInput(ErrUtil.ERR_BACK_COLOR);
                 itemSyuuryouTime.setBackColorInput(ErrUtil.ERR_BACK_COLOR);
-                return MessageUtil.getErrorMessageInfo("", msgCheckR001, true, false, errFxhdd01List);
+                return MessageUtil.getErrorMessageInfo("", msgCheckR001, true, false, null);
             }
         }
 
@@ -1078,7 +1083,7 @@ public class GXHDO102B024 implements IFormLogic {
             String checkboxValue = gxhdo102b024model.getDeleterow_checkbox().getValue();
             if ("true".equals(checkboxValue)) {
                 if (StringUtil.isEmpty(gxhdo102b024model.getKaishi_day().getValue()) && StringUtil.isEmpty(gxhdo102b024model.getKaishi_time().getValue())
-                        && StringUtil.isEmpty(gxhdo102b024model.getTeishiyotei_time().getValue()) && StringUtil.isEmpty(gxhdo102b024model.getTeishi_time().getValue())
+                        && StringUtil.isEmpty(gxhdo102b024model.getTeishi_day().getValue()) && StringUtil.isEmpty(gxhdo102b024model.getTeishi_time().getValue())
                         && StringUtil.isEmpty(gxhdo102b024model.getSyujikudenryuu().getValue()) && StringUtil.isEmpty(gxhdo102b024model.getDeguchiondo().getValue())
                         && StringUtil.isEmpty(gxhdo102b024model.getSealondo().getValue()) && StringUtil.isEmpty(gxhdo102b024model.getPumpmemori().getValue())
                         && StringUtil.isEmpty(gxhdo102b024model.getPumpatsu().getValue()) && StringUtil.isEmpty(gxhdo102b024model.getD50().getValue())
@@ -1473,12 +1478,14 @@ public class GXHDO102B024 implements IFormLogic {
 
         // 回数
         gxhdo102b024model.setKaisuu(Integer.parseInt(StringUtil.nullToBlank(subSrYuudentaiFunsai.getKaisuu())));
-        //日付
+        // 開始日付
         this.setGXHDO102B024ModelData(gxhdo102b024model, GXHDO102B024Const.KAISHI_DAY, getSubSrYuudentaiFunsaiItemData(GXHDO102B024Const.KAISHI_DAY, subSrYuudentaiFunsai));
         // 開始時刻      
         this.setGXHDO102B024ModelData(gxhdo102b024model, GXHDO102B024Const.KAISHI_TIME, getSubSrYuudentaiFunsaiItemData(GXHDO102B024Const.KAISHI_TIME, subSrYuudentaiFunsai));
-        // 停止予定時刻           
-        this.setGXHDO102B024ModelData(gxhdo102b024model, GXHDO102B024Const.TEISHIYOTEI_TIME, getSubSrYuudentaiFunsaiItemData(GXHDO102B024Const.TEISHIYOTEI_TIME, subSrYuudentaiFunsai));
+        // 停止予定日時           
+        this.setGXHDO102B024ModelData(gxhdo102b024model, GXHDO102B024Const.TEISHIYOTEINICHIJI, getSubSrYuudentaiFunsaiItemData(GXHDO102B024Const.TEISHIYOTEINICHIJI, subSrYuudentaiFunsai));
+        // 停止日付
+        this.setGXHDO102B024ModelData(gxhdo102b024model, GXHDO102B024Const.TEISHI_DAY, getSubSrYuudentaiFunsaiItemData(GXHDO102B024Const.TEISHI_DAY, subSrYuudentaiFunsai));
         // 停止時刻           
         this.setGXHDO102B024ModelData(gxhdo102b024model, GXHDO102B024Const.TEISHI_TIME, getSubSrYuudentaiFunsaiItemData(GXHDO102B024Const.TEISHI_TIME, subSrYuudentaiFunsai));
         // 主軸電流（A）           
@@ -1836,7 +1843,7 @@ public class GXHDO102B024 implements IFormLogic {
      */
     private void setGXHDO102B024ModelData(GXHDO102B024Model gxhdo102b024model, String itemId, String value) {
         switch (itemId) {
-            //日付
+            // 開始日付
             case GXHDO102B024Const.KAISHI_DAY:
                 gxhdo102b024model.getKaishi_day().setValue(value);
                 break;
@@ -1844,9 +1851,13 @@ public class GXHDO102B024 implements IFormLogic {
             case GXHDO102B024Const.KAISHI_TIME:
                 gxhdo102b024model.getKaishi_time().setValue(value);
                 break;
-            // 停止予定時刻           
-            case GXHDO102B024Const.TEISHIYOTEI_TIME:
-                gxhdo102b024model.getTeishiyotei_time().setValue(value);
+            // 停止予定日時           
+            case GXHDO102B024Const.TEISHIYOTEINICHIJI:
+                gxhdo102b024model.getTeishiyoteinichiji().setValue(value);
+                break;
+            // 停止日付
+            case GXHDO102B024Const.TEISHI_DAY:
+                gxhdo102b024model.getTeishi_day().setValue(value);
                 break;
             // 停止時刻           
             case GXHDO102B024Const.TEISHI_TIME:
@@ -2240,9 +2251,10 @@ public class GXHDO102B024 implements IFormLogic {
         listdata.forEach((gxhdo102b024model) -> {
             String kaishiDayStr = StringUtil.nullToBlank(gxhdo102b024model.getKaishi_day().getValue()); // 開始日
             String kaishiTimeStr = StringUtil.nullToBlank(gxhdo102b024model.getKaishi_time().getValue()); // 開始時刻
+            String teishiDayStr = StringUtil.nullToBlank(gxhdo102b024model.getTeishi_day().getValue()); // 停止日
             String teishiTimeStr = StringUtil.nullToBlank(gxhdo102b024model.getTeishi_time().getValue()); // 停止時刻
             Date kaishiDate = DateUtil.convertStringToDate(kaishiDayStr, kaishiTimeStr); // 開始日時
-            Date teishiDate = DateUtil.convertStringToDate(kaishiDayStr, teishiTimeStr); // 停止日時
+            Date teishiDate = DateUtil.convertStringToDate(teishiDayStr, teishiTimeStr); // 停止日時
             if (kaishiDate != null) {
                 kaishiDateList.add(kaishiDate);
             }
@@ -2600,7 +2612,7 @@ public class GXHDO102B024 implements IFormLogic {
      */
     private String getSubSrYuudentaiFunsaiItemData(String itemId, SubSrYuudentaiFunsai subSrYuudentaiFunsai) {
         switch (itemId) {
-            // 日付
+            // 開始日付
             case GXHDO102B024Const.KAISHI_DAY:
                 return DateUtil.formattedTimestamp(subSrYuudentaiFunsai.getKaishinichiji(), "yyMMdd");
 
@@ -2608,9 +2620,13 @@ public class GXHDO102B024 implements IFormLogic {
             case GXHDO102B024Const.KAISHI_TIME:
                 return DateUtil.formattedTimestamp(subSrYuudentaiFunsai.getKaishinichiji(), "HHmm");
 
-            // 停止予定時刻
-            case GXHDO102B024Const.TEISHIYOTEI_TIME:
-                return DateUtil.formattedTimestamp(subSrYuudentaiFunsai.getTeishiyoteinichiji(), "HHmm");
+            // 停止予定日時
+            case GXHDO102B024Const.TEISHIYOTEINICHIJI:
+                return DateUtil.formattedTimestamp(subSrYuudentaiFunsai.getTeishiyoteinichiji(), "yyyy/MM/dd HH:mm");
+
+            // 停止日付
+            case GXHDO102B024Const.TEISHI_DAY:
+                return DateUtil.formattedTimestamp(subSrYuudentaiFunsai.getTeishinichiji(), "yyMMdd");
 
             // 停止時刻
             case GXHDO102B024Const.TEISHI_TIME:
@@ -2785,12 +2801,14 @@ public class GXHDO102B024 implements IFormLogic {
         GXHDO102B024B bean = (GXHDO102B024B) getFormBean("beanGXHDO102B024B");
         // 行削除チェックボックス	
         bean.setDeleterow_checkbox(new FXHDD01());
-        // 日付	
+        // 開始日付	
         bean.setKaishi_day(getItemRow(processData.getItemListEx(), GXHDO102B024Const.KAISHI_DAY).clone());
         // 開始時刻	
         bean.setKaishi_time(getItemRow(processData.getItemListEx(), GXHDO102B024Const.KAISHI_TIME).clone());
-        // 停止予定時刻	
-        bean.setTeishiyotei_time(getItemRow(processData.getItemListEx(), GXHDO102B024Const.TEISHIYOTEI_TIME).clone());
+        // 停止予定日時	
+        bean.setTeishiyoteinichiji(getItemRow(processData.getItemListEx(), GXHDO102B024Const.TEISHIYOTEINICHIJI).clone());
+        // 停止日付	
+        bean.setTeishi_day(getItemRow(processData.getItemListEx(), GXHDO102B024Const.TEISHI_DAY).clone());
         // 停止時刻	
         bean.setTeishi_time(getItemRow(processData.getItemListEx(), GXHDO102B024Const.TEISHI_TIME).clone());
         // 主軸電流（A）	
@@ -2859,12 +2877,14 @@ public class GXHDO102B024 implements IFormLogic {
         gxhdo102b024model.setKaisuu(kaisuu);
         // 行削除チェックボックス	
         gxhdo102b024model.setDeleterow_checkbox(new FXHDD01());
-        // 日付	
+        // 開始日付	
         gxhdo102b024model.setKaishi_day(getItemRow(processData.getItemListEx(), GXHDO102B024Const.KAISHI_DAY).clone());
         // 開始時刻	
         gxhdo102b024model.setKaishi_time(getItemRow(processData.getItemListEx(), GXHDO102B024Const.KAISHI_TIME).clone());
-        // 停止予定時刻	
-        gxhdo102b024model.setTeishiyotei_time(getItemRow(processData.getItemListEx(), GXHDO102B024Const.TEISHIYOTEI_TIME).clone());
+        // 停止予定日時	
+        gxhdo102b024model.setTeishiyoteinichiji(getItemRow(processData.getItemListEx(), GXHDO102B024Const.TEISHIYOTEINICHIJI).clone());
+        // 停止日付	
+        gxhdo102b024model.setTeishi_day(getItemRow(processData.getItemListEx(), GXHDO102B024Const.TEISHI_DAY).clone());
         // 停止時刻	
         gxhdo102b024model.setTeishi_time(getItemRow(processData.getItemListEx(), GXHDO102B024Const.TEISHI_TIME).clone());
         // 主軸電流（A）	
@@ -3188,8 +3208,13 @@ public class GXHDO102B024 implements IFormLogic {
         String kaishi_day = StringUtil.nullToBlank(gxhdo102b024model.getKaishi_day().getValue());
         // 開始時間
         String kaishi_time = StringUtil.nullToBlank(gxhdo102b024model.getKaishi_time().getValue());
-        // 停止予定時刻
-        String teishiyotei_time = StringUtil.nullToBlank(gxhdo102b024model.getTeishiyotei_time().getValue());
+        String syuuryouDateStr = StringUtil.nullToBlank(gxhdo102b024model.getTeishiyoteinichiji().getValue()).substring(2).replaceAll("/", "").replaceAll(" ", "").replaceAll(":", "");
+        // 停止予定日
+        String teishiyotei_day = syuuryouDateStr.substring(0, 6);
+        // 停止予定時間
+        String teishiyotei_time = syuuryouDateStr.substring(6, 10);
+        // 停止日
+        String teishi_day = StringUtil.nullToBlank(gxhdo102b024model.getTeishi_day().getValue());
         // 停止時刻
         String teishi_time = StringUtil.nullToBlank(gxhdo102b024model.getTeishi_time().getValue());
 
@@ -3198,8 +3223,8 @@ public class GXHDO102B024 implements IFormLogic {
         params.add(edaban); // 枝番
         params.add(DBUtil.stringToIntObjectDefaultNull(gxhdo102b024model.getKaisuu().toString())); // 回数
         params.add(DBUtil.stringToDateObjectDefaultNull(kaishi_day, "".equals(kaishi_time) ? "0000" : kaishi_time)); // 開始日時
-        params.add(DBUtil.stringToDateObjectDefaultNull(kaishi_day, "".equals(teishiyotei_time) ? "0000" : teishiyotei_time)); // 停止予定日時
-        params.add(DBUtil.stringToDateObjectDefaultNull(kaishi_day, "".equals(teishi_time) ? "0000" : teishi_time)); // 停止日時
+        params.add(DBUtil.stringToDateObjectDefaultNull(teishiyotei_day, "".equals(teishiyotei_time) ? "0000" : teishiyotei_time)); // 停止予定日時
+        params.add(DBUtil.stringToDateObjectDefaultNull(teishi_day, "".equals(teishi_time) ? "0000" : teishi_time)); // 停止日時
         params.add(DBUtil.stringToIntObjectDefaultNull(gxhdo102b024model.getSyujikudenryuu().getValue())); // 主軸電流
         params.add(DBUtil.stringToIntObjectDefaultNull(gxhdo102b024model.getDeguchiondo().getValue())); // 出口温度
         params.add(DBUtil.stringToIntObjectDefaultNull(gxhdo102b024model.getSealondo().getValue())); // ｼｰﾙ温度
@@ -3343,8 +3368,13 @@ public class GXHDO102B024 implements IFormLogic {
         String kaishi_day = StringUtil.nullToBlank(gxhdo102b024model.getKaishi_day().getValue());
         // 開始時間
         String kaishi_time = StringUtil.nullToBlank(gxhdo102b024model.getKaishi_time().getValue());
-        // 停止予定時刻
-        String teishiyotei_time = StringUtil.nullToBlank(gxhdo102b024model.getTeishiyotei_time().getValue());
+        String syuuryouDateStr = StringUtil.nullToBlank(gxhdo102b024model.getTeishiyoteinichiji().getValue()).substring(2).replaceAll("/", "").replaceAll(" ", "").replaceAll(":", "");
+        // 停止予定日
+        String teishiyotei_day = syuuryouDateStr.substring(0, 6);
+        // 停止予定時間
+        String teishiyotei_time = syuuryouDateStr.substring(6, 10);
+        // 停止日
+        String teishi_day = StringUtil.nullToBlank(gxhdo102b024model.getTeishi_day().getValue());
         // 停止時刻
         String teishi_time = StringUtil.nullToBlank(gxhdo102b024model.getTeishi_time().getValue());
 
@@ -3353,8 +3383,8 @@ public class GXHDO102B024 implements IFormLogic {
         params.add(edaban); // 枝番
         params.add(DBUtil.stringToIntObject(gxhdo102b024model.getKaisuu().toString())); // 回数
         params.add(DBUtil.stringToDateObject(kaishi_day, "".equals(kaishi_time) ? "0000" : kaishi_time)); // 開始日時
-        params.add(DBUtil.stringToDateObject(kaishi_day, "".equals(teishiyotei_time) ? "0000" : teishiyotei_time)); // 停止予定日時
-        params.add(DBUtil.stringToDateObject(kaishi_day, "".equals(teishi_time) ? "0000" : teishi_time)); // 停止日時
+        params.add(DBUtil.stringToDateObject(teishiyotei_day, "".equals(teishiyotei_time) ? "0000" : teishiyotei_time)); // 停止予定日時
+        params.add(DBUtil.stringToDateObject(teishi_day, "".equals(teishi_time) ? "0000" : teishi_time)); // 停止日時
         params.add(DBUtil.stringToIntObject(gxhdo102b024model.getSyujikudenryuu().getValue())); // 主軸電流
         params.add(DBUtil.stringToIntObject(gxhdo102b024model.getDeguchiondo().getValue())); // 出口温度
         params.add(DBUtil.stringToIntObject(gxhdo102b024model.getSealondo().getValue())); // ｼｰﾙ温度
@@ -3480,9 +3510,10 @@ public class GXHDO102B024 implements IFormLogic {
         checkExistItem(errorItemNameList, processData.getItemList(), GXHDO102B024Const.RYUURYOU, "流量");
         checkExistItem(errorItemNameList, processData.getItemList(), GXHDO102B024Const.PASSKAISUU, "ﾊﾟｽ回数");
 
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO102B024Const.KAISHI_DAY, "日付");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO102B024Const.KAISHI_DAY, "開始日付");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO102B024Const.KAISHI_TIME, "開始時刻");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO102B024Const.TEISHIYOTEI_TIME, "停止予定時刻");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO102B024Const.TEISHIYOTEINICHIJI, "停止予定日時");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO102B024Const.TEISHI_DAY, "停止日付");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO102B024Const.TEISHI_TIME, "停止時刻");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO102B024Const.SYUJIKUDENRYUU, "主軸電流（A）");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO102B024Const.DEGUCHIONDO, "出口温度（℃）");
@@ -3621,7 +3652,7 @@ public class GXHDO102B024 implements IFormLogic {
     }
 
     /**
-     * 【停止予定時刻】自動入力処理用[前工程規格情報]から、ﾃﾞｰﾀを取得
+     * 【停止予定日時】自動入力処理用[前工程規格情報]から、ﾃﾞｰﾀを取得
      *
      * @param queryRunnerQcdb オブジェクト
      * @param sekkeiNo 設計No
@@ -3678,7 +3709,7 @@ public class GXHDO102B024 implements IFormLogic {
     }
 
     /**
-     * 【停止予定時刻】自動入力処理用[前工程標準規格情報]から、ﾃﾞｰﾀを取得
+     * 【停止予定日時】自動入力処理用[前工程標準規格情報]から、ﾃﾞｰﾀを取得
      *
      * @param queryRunnerQcdb オブジェクト
      * @param hinmei 品名

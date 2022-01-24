@@ -685,17 +685,6 @@ public class GXHDO102B024A extends GXHDO901BEX {
     }
 
     /**
-     * 背景色のクリア処理
-     *
-     * @param listdata 一覧表示データ
-     */
-    private void clearBackColor(List<GXHDO102B024Model> listdata) {
-        listdata.stream().map((gxhdo102b024model) -> gxhdo102b024model.getKaishi_time()).forEachOrdered((kaishi_time) -> {
-            kaishi_time.setBackColorInput(kaishi_time.getBackColorInputDefault());
-        });
-    }
-
-    /**
      * エラーセット
      *
      * @param kaishi_timeItem 開始時刻
@@ -723,7 +712,7 @@ public class GXHDO102B024A extends GXHDO901BEX {
         GXHDO102B024B bean = (GXHDO102B024B) getFormBean("beanGXHDO102B024B");
         List<GXHDO102B024Model> listdata = bean.getListdata();
         // 背景色のクリア処理
-        clearBackColor(listdata);
+        clearListDataBackColor();
         if (StringUtil.isEmpty(kaishitimeValue)) {
             return;
         }
@@ -831,7 +820,8 @@ public class GXHDO102B024A extends GXHDO901BEX {
             }
             String teishiyotei_dayValue = new SimpleDateFormat("yyMMdd").format(dateTime);
             String teishiyotei_timeValue = new SimpleDateFormat("HHmm").format(dateTime);
-            gxhdo102b024model.getTeishiyotei_time().setValue(teishiyotei_timeValue);
+            String teishiyoteinichijiValue = new SimpleDateFormat("yyyy/MM/dd HH:mm").format(dateTime);
+            gxhdo102b024model.getTeishiyoteinichiji().setValue(teishiyoteinichijiValue);
             if (gxhdo102b024modelTugi != null) {
                 // 開始時刻(次の行)に値がある場合、処理を終了する
                 String kaishi_timeTugiValue = gxhdo102b024modelTugi.getKaishi_time().getValue();
@@ -919,7 +909,7 @@ public class GXHDO102B024A extends GXHDO901BEX {
     private void addItemListFromGXHDO102B024Model(GXHDO102B024Model gxhdo102b024model, List<FXHDD01> itemsList) {
         itemsList.add(gxhdo102b024model.getKaishi_day());
         itemsList.add(gxhdo102b024model.getKaishi_time());
-        itemsList.add(gxhdo102b024model.getTeishiyotei_time());
+        itemsList.add(gxhdo102b024model.getTeishi_day());
         itemsList.add(gxhdo102b024model.getTeishi_time());
         itemsList.add(gxhdo102b024model.getSyujikudenryuu());
         itemsList.add(gxhdo102b024model.getDeguchiondo());
@@ -948,7 +938,8 @@ public class GXHDO102B024A extends GXHDO901BEX {
         if (!Kaishi_dayLabel1.contains("行目: ")) {
             gxhdo102b024model.getKaishi_day().setLabel1(rowIndx + "行目: " + Kaishi_dayLabel1);
             gxhdo102b024model.getKaishi_time().setLabel1(rowIndx + "行目: " + gxhdo102b024model.getKaishi_time().getLabel1());
-            gxhdo102b024model.getTeishiyotei_time().setLabel1(rowIndx + "行目: " + gxhdo102b024model.getTeishiyotei_time().getLabel1());
+            gxhdo102b024model.getTeishiyoteinichiji().setLabel1(rowIndx + "行目: " + gxhdo102b024model.getTeishiyoteinichiji().getLabel1());
+            gxhdo102b024model.getTeishi_day().setLabel1(rowIndx + "行目: " + gxhdo102b024model.getTeishi_day().getLabel1());
             gxhdo102b024model.getTeishi_time().setLabel1(rowIndx + "行目: " + gxhdo102b024model.getTeishi_time().getLabel1());
             gxhdo102b024model.getSyujikudenryuu().setLabel1(rowIndx + "行目: " + gxhdo102b024model.getSyujikudenryuu().getLabel1());
             gxhdo102b024model.getDeguchiondo().setLabel1(rowIndx + "行目: " + gxhdo102b024model.getDeguchiondo().getLabel1());
@@ -975,15 +966,18 @@ public class GXHDO102B024A extends GXHDO901BEX {
      */
     private FXHDD01 getGXHDO102B024ModelItem(String itemId, GXHDO102B024Model gxhdo102b024model) {
         switch (itemId) {
-            // 日付
+            // 開始日付
             case GXHDO102B024Const.KAISHI_DAY:
                 return gxhdo102b024model.getKaishi_day();
             // 開始時刻
             case GXHDO102B024Const.KAISHI_TIME:
                 return gxhdo102b024model.getKaishi_time();
             // 停止予定時刻
-            case GXHDO102B024Const.TEISHIYOTEI_TIME:
-                return gxhdo102b024model.getTeishiyotei_time();
+            case GXHDO102B024Const.TEISHIYOTEINICHIJI:
+                return gxhdo102b024model.getTeishiyoteinichiji();
+            // 停止日付
+            case GXHDO102B024Const.TEISHI_DAY:
+                return gxhdo102b024model.getTeishi_day();
             // 停止時刻
             case GXHDO102B024Const.TEISHI_TIME:
                 return gxhdo102b024model.getTeishi_time();
@@ -1100,7 +1094,8 @@ public class GXHDO102B024A extends GXHDO901BEX {
         listdata.stream().forEach(gxhdo102b024model -> {
             gxhdo102b024model.getKaishi_day().setBackColorInput(gxhdo102b024model.getKaishi_day().getBackColorInputDefault());
             gxhdo102b024model.getKaishi_time().setBackColorInput(gxhdo102b024model.getKaishi_time().getBackColorInputDefault());
-            gxhdo102b024model.getTeishiyotei_time().setBackColorInput(gxhdo102b024model.getTeishiyotei_time().getBackColorInputDefault());
+            gxhdo102b024model.getTeishiyoteinichiji().setBackColorInput(gxhdo102b024model.getTeishiyoteinichiji().getBackColorInputDefault());
+            gxhdo102b024model.getTeishi_day().setBackColorInput(gxhdo102b024model.getTeishi_day().getBackColorInputDefault());
             gxhdo102b024model.getTeishi_time().setBackColorInput(gxhdo102b024model.getTeishi_time().getBackColorInputDefault());
             gxhdo102b024model.getSyujikudenryuu().setBackColorInput(gxhdo102b024model.getSyujikudenryuu().getBackColorInputDefault());
             gxhdo102b024model.getDeguchiondo().setBackColorInput(gxhdo102b024model.getDeguchiondo().getBackColorInputDefault());
