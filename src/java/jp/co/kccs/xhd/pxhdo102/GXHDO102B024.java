@@ -540,10 +540,6 @@ public class GXHDO102B024 implements IFormLogic {
             processData.getItemList().forEach((fxhdd01) -> {
                 fxhdd01.setBackColorInput(fxhdd01.getBackColorInputDefault());
             });
-            // 背景色をクリア
-            processData.getItemList().forEach((fxhdd01) -> {
-                fxhdd01.setBackColorInput(fxhdd01.getBackColorInputDefault());
-            });
             GXHDO102B024A.clearListDataBackColor();
             // 状態ﾌﾗｸﾞ、revisionを設定する。
             processData.setInitJotaiFlg(JOTAI_FLG_KARI_TOROKU);
