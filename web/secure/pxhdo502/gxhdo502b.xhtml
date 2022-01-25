@@ -36,10 +36,6 @@
                 g_location = '#{myMsg.NotAvailable}';
 
                 //var interval_id = setInterval(getLocation, #{myParam.sendLocInterval});
-//                $("input[id='form:idDataTable:headercheckValue_input']").click(function(){
-//
-//                    $("tbody input[id$='checkValue_input']").prop("checked",this.checked);
-//                });
             });
             var pointY;
             function subFormOpen() {
@@ -104,6 +100,10 @@
         <style>
             .ui-chkbox-box{
                 vertical-align: middle;
+            }
+
+            tbody[id$='kikakuErrorForm:table_data'] td{
+                word-break: break-word!important;
             }
         </style> 
     </h:head>

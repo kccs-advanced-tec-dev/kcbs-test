@@ -801,7 +801,35 @@ public class GXHDO502B implements Serializable {
      * 削除処理確認
      */
     public void confirmDelete() {
-
+        List<GXHDO502BModel> deleteListData = this.getListData().stream().filter(gxhdo502bmodel -> "true".equals(gxhdo502bmodel.getChkboxvalue())).collect(Collectors.toList());
+        // 「sr_hihyoumensekisokuteikiroku:比表面積測定記録」から情報取得
+        List<GXHDO502BModel> srHihyoumensekisokuteikirokuListData = getSrHihyoumensekisokuteikirokuListData(deleteListData);
+        boolean errorFlg = false;
+        // 削除の場合、キーのデータがない、あるいは更新日時が表示時と変わっている場合、排他エラーとする。
+        for (GXHDO502BModel gxhdo502bmodel : deleteListData) {
+            List<GXHDO502BModel> collect = srHihyoumensekisokuteikirokuListData.stream().filter(o
+                    -> StringUtil.nullToBlank(gxhdo502bmodel.getHinmei()).equals(StringUtil.nullToBlank(o.getHinmei()))
+                    && StringUtil.nullToBlank(gxhdo502bmodel.getLot()).equals(StringUtil.nullToBlank(o.getLot()))
+                    && gxhdo502bmodel.getPasskaisuu().equals(o.getPasskaisuu())
+                    && gxhdo502bmodel.getSokuteikaisuu().equals(o.getSokuteikaisuu())
+            ).collect(Collectors.toList());
+            if (collect.isEmpty()) {
+                errorFlg = true;
+                break;
+            }
+            GXHDO502BModel gxhdo502bmodelTableData = collect.get(0);
+            Timestamp gamenKosinnichiji = (Timestamp) gxhdo502bmodel.getKosinnichiji();
+            Timestamp tableKosinnichiji = (Timestamp) gxhdo502bmodelTableData.getKosinnichiji();
+            if (gamenKosinnichiji == null || gamenKosinnichiji.compareTo(tableKosinnichiji) != 0) {
+                errorFlg = true;
+                break;
+            }
+        }
+        if (errorFlg) {
+            showError(MessageUtil.getMessage("XHD-000025"));
+            return;
+        }
+        
         // チェック処理
         long count = this.getListData().stream().filter(gxhdo502bmodel -> "true".equals(gxhdo502bmodel.getChkboxvalue())).count();
         if (count == 0) {
@@ -838,34 +866,6 @@ public class GXHDO502B implements Serializable {
         QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
         Connection conDoc = null;
         List<GXHDO502BModel> deleteListData = this.getListData().stream().filter(gxhdo502bmodel -> "true".equals(gxhdo502bmodel.getChkboxvalue())).collect(Collectors.toList());
-        // 「sr_hihyoumensekisokuteikiroku:比表面積測定記録」から情報取得
-        List<GXHDO502BModel> srHihyoumensekisokuteikirokuListData = getSrHihyoumensekisokuteikirokuListData(deleteListData);
-        boolean errorFlg = false;
-        // 削除の場合、キーのデータがない、あるいは更新日時が表示時と変わっている場合、排他エラーとする。
-        for (GXHDO502BModel gxhdo502bmodel : deleteListData) {
-            List<GXHDO502BModel> collect = srHihyoumensekisokuteikirokuListData.stream().filter(o
-                    -> StringUtil.nullToBlank(gxhdo502bmodel.getHinmei()).equals(StringUtil.nullToBlank(o.getHinmei()))
-                    && StringUtil.nullToBlank(gxhdo502bmodel.getLot()).equals(StringUtil.nullToBlank(o.getLot()))
-                    && gxhdo502bmodel.getPasskaisuu().equals(o.getPasskaisuu())
-                    && gxhdo502bmodel.getSokuteikaisuu().equals(o.getSokuteikaisuu())
-            ).collect(Collectors.toList());
-            if (collect.isEmpty()) {
-                errorFlg = true;
-                break;
-            }
-            GXHDO502BModel gxhdo502bmodelTableData = collect.get(0);
-            Timestamp gamenKosinnichiji = (Timestamp) gxhdo502bmodel.getKosinnichiji();
-            Timestamp tableKosinnichiji = (Timestamp) gxhdo502bmodelTableData.getKosinnichiji();
-            if (gamenKosinnichiji == null || gamenKosinnichiji.compareTo(tableKosinnichiji) != 0) {
-                errorFlg = true;
-                break;
-            }
-        }
-        if (errorFlg) {
-            showError(MessageUtil.getMessage("XHD-000025"));
-            return;
-        }
-
         try {
             conDoc = DBUtil.transactionStart(queryRunner.getDataSource().getConnection());
 
@@ -972,12 +972,60 @@ public class GXHDO502B implements Serializable {
 
         // 入力値があるデータを取得
         List<GXHDO502BModel> hasValueListdata = getHasValueListdata();
-        // 「sr_hihyoumensekisokuteikiroku:比表面積測定記録」から情報取得
-        List<GXHDO502BModel> srHihyoumensekisokuteikirokuListData = getSrHihyoumensekisokuteikirokuListData(hasValueListdata);
-        // 一覧表示部に表示されているﾃﾞｰﾀにPKが重複している場合、エラーを出る
+        // PKが入力しているデータを取得
         List<GXHDO502BModel> hasKeyValueListdata = hasValueListdata.stream().filter(
                 o -> !StringUtil.isEmpty(o.getHinmei()) && !StringUtil.isEmpty(o.getLot()) && o.getPasskaisuu() != null && !StringUtil.isEmpty(o.getSokuteikaisuu())
         ).collect(Collectors.toList());
+        // 「sr_hihyoumensekisokuteikiroku:比表面積測定記録」から情報取得
+        List<GXHDO502BModel> srHihyoumensekisokuteikirokuListData = getSrHihyoumensekisokuteikirokuListData(hasKeyValueListdata);
+        // 状態が 0:登録 のﾃﾞｰﾀを取得する
+        List<GXHDO502BModel> insertListData = getInsertListData(hasKeyValueListdata);
+        // 状態が 1:更新 のﾃﾞｰﾀを取得する
+        List<GXHDO502BModel> updateListData = getUpdateListData(hasKeyValueListdata);
+        boolean errorFlg = false;
+        // 登録の場合、キーのデータがすでにある場合、排他エラーとする。
+        for (GXHDO502BModel gxhdo502bmodel : insertListData) {
+            List<GXHDO502BModel> collect = srHihyoumensekisokuteikirokuListData.stream().filter(o
+                    -> StringUtil.nullToBlank(gxhdo502bmodel.getHinmei()).equals(StringUtil.nullToBlank(o.getHinmei()))
+                    && StringUtil.nullToBlank(gxhdo502bmodel.getLot()).equals(StringUtil.nullToBlank(o.getLot()))
+                    && gxhdo502bmodel.getPasskaisuu().equals(o.getPasskaisuu())
+                    && gxhdo502bmodel.getSokuteikaisuu().equals(o.getSokuteikaisuu())
+            ).collect(Collectors.toList());
+            if (collect.size() > 0) {
+                errorFlg = true;
+                break;
+            }
+        }
+        if (errorFlg) {
+            showError(MessageUtil.getMessage("XHD-000026"));
+            return;
+        }
+        // 更新の場合、キーのデータがない、あるいは更新日時が表示時と変わっている場合場合、排他エラーとする。
+        for (GXHDO502BModel gxhdo502bmodel : updateListData) {
+            List<GXHDO502BModel> collect = srHihyoumensekisokuteikirokuListData.stream().filter(o
+                    -> StringUtil.nullToBlank(gxhdo502bmodel.getHinmei()).equals(StringUtil.nullToBlank(o.getHinmei()))
+                    && StringUtil.nullToBlank(gxhdo502bmodel.getLot()).equals(StringUtil.nullToBlank(o.getLot()))
+                    && gxhdo502bmodel.getPasskaisuu().equals(o.getPasskaisuu())
+                    && gxhdo502bmodel.getSokuteikaisuu().equals(o.getSokuteikaisuu())
+            ).collect(Collectors.toList());
+            if (collect.isEmpty()) {
+                errorFlg = true;
+                break;
+            }
+            GXHDO502BModel gxhdo502bmodelTableData = collect.get(0);
+            Timestamp gamenKosinnichiji = (Timestamp) gxhdo502bmodel.getKosinnichiji();
+            Timestamp tableKosinnichiji = (Timestamp) gxhdo502bmodelTableData.getKosinnichiji();
+            if (gamenKosinnichiji == null || gamenKosinnichiji.compareTo(tableKosinnichiji) != 0) {
+                errorFlg = true;
+                break;
+            }
+        }
+        if (errorFlg) {
+            showError(MessageUtil.getMessage("XHD-000025"));
+            return;
+        }
+        
+        // 一覧表示部に表示されているﾃﾞｰﾀにPKが重複している場合、エラーを出る
         Map<String, Long> groupCollect = hasKeyValueListdata.stream().collect(Collectors.groupingBy(o
                 -> o.getHinmei() + "_" + o.getLot() + "_" + o.getPasskaisuu() + "_" + o.getSokuteikaisuu(), Collectors.counting()));
         // 重複ﾁｪｯｸ
@@ -986,31 +1034,8 @@ public class GXHDO502B implements Serializable {
             showError(MessageUtil.getMessage("XHD-000225"));
             return;
         }
-        // 一覧表示部に表示されているﾃﾞｰﾀのPKがテーブルに存在している場合、エラーを出る
-        boolean errorFlg = false;
-        for (GXHDO502BModel gxhdo502bmodel : hasKeyValueListdata) {
-            List<GXHDO502BModel> collect = srHihyoumensekisokuteikirokuListData.stream().filter(o
-                    -> StringUtil.nullToBlank(gxhdo502bmodel.getHinmei()).equals(StringUtil.nullToBlank(o.getHinmei()))
-                    && StringUtil.nullToBlank(gxhdo502bmodel.getLot()).equals(StringUtil.nullToBlank(o.getLot()))
-                    && gxhdo502bmodel.getPasskaisuu().equals(o.getPasskaisuu())
-                    && StringUtil.nullToBlank(gxhdo502bmodel.getSokuteikaisuu()).equals(StringUtil.nullToBlank(o.getSokuteikaisuu()))
-                    && "0".equals(gxhdo502bmodel.getJyoutaiFlg())
-            ).collect(Collectors.toList());
-            if (collect.size() > 0) {
-                errorFlg = true;
-                break;
-            }
-        }
-        if (errorFlg) {
-            showError(MessageUtil.getMessage("XHD-000225"));
-            return;
-        }
 
-        // 状態が 0:登録 のﾃﾞｰﾀを取得する
-        List<GXHDO502BModel> insertListData = getInsertListData(hasValueListdata);
-        // 状態が 1:更新 のﾃﾞｰﾀを取得する
-        List<GXHDO502BModel> updateListData = getUpdateListData(hasValueListdata);
-        if (insertListData.isEmpty() && updateListData.isEmpty()) {
+        if (hasValueListdata.isEmpty()) {
             showError(MessageUtil.getMessage("XHD-000226"));
             return;
         }
@@ -1025,7 +1050,6 @@ public class GXHDO502B implements Serializable {
         if (errorItemList.size() > 0) {
             List<String> errorMassageList = new ArrayList<>();
             errorMassageList.add(String.format("NGは%d件です。", errorItemList.size()));
-            errorMassageList.add("【ｴﾗｰ情報】");
             errorMassageList.addAll(errorItemList);
             // 画面に以下のﾎﾟｯﾌﾟｱｯﾌﾟﾒｯｾｰｼﾞを表示する。
             showResultMsg(errorMassageList);
@@ -1079,51 +1103,6 @@ public class GXHDO502B implements Serializable {
         // 状態が 1:更新 のﾃﾞｰﾀを取得する
         List<GXHDO502BModel> updateListData = getUpdateListData(hasValueListdata);
         QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
-
-        // 「sr_hihyoumensekisokuteikiroku:比表面積測定記録」から情報取得
-        List<GXHDO502BModel> srHihyoumensekisokuteikirokuListData = getSrHihyoumensekisokuteikirokuListData(hasValueListdata);
-        boolean errorFlg = false;
-        // 登録の場合、キーのデータがすでにある場合、排他エラーとする。
-        for (GXHDO502BModel gxhdo502bmodel : insertListData) {
-            List<GXHDO502BModel> collect = srHihyoumensekisokuteikirokuListData.stream().filter(o
-                    -> StringUtil.nullToBlank(gxhdo502bmodel.getHinmei()).equals(StringUtil.nullToBlank(o.getHinmei()))
-                    && StringUtil.nullToBlank(gxhdo502bmodel.getLot()).equals(StringUtil.nullToBlank(o.getLot()))
-                    && gxhdo502bmodel.getPasskaisuu().equals(o.getPasskaisuu())
-                    && gxhdo502bmodel.getSokuteikaisuu().equals(o.getSokuteikaisuu())
-            ).collect(Collectors.toList());
-            if (collect.size() > 0) {
-                errorFlg = true;
-                break;
-            }
-        }
-        if (errorFlg) {
-            showError(MessageUtil.getMessage("XHD-000025"));
-            return;
-        }
-        // 更新の場合、キーのデータがない、あるいは更新日時が表示時と変わっている場合場合、排他エラーとする。
-        for (GXHDO502BModel gxhdo502bmodel : updateListData) {
-            List<GXHDO502BModel> collect = srHihyoumensekisokuteikirokuListData.stream().filter(o
-                    -> StringUtil.nullToBlank(gxhdo502bmodel.getHinmei()).equals(StringUtil.nullToBlank(o.getHinmei()))
-                    && StringUtil.nullToBlank(gxhdo502bmodel.getLot()).equals(StringUtil.nullToBlank(o.getLot()))
-                    && gxhdo502bmodel.getPasskaisuu().equals(o.getPasskaisuu())
-                    && gxhdo502bmodel.getSokuteikaisuu().equals(o.getSokuteikaisuu())
-            ).collect(Collectors.toList());
-            if (collect.isEmpty()) {
-                errorFlg = true;
-                break;
-            }
-            GXHDO502BModel gxhdo502bmodelTableData = collect.get(0);
-            Timestamp gamenKosinnichiji = (Timestamp) gxhdo502bmodel.getKosinnichiji();
-            Timestamp tableKosinnichiji = (Timestamp) gxhdo502bmodelTableData.getKosinnichiji();
-            if (gamenKosinnichiji == null || gamenKosinnichiji.compareTo(tableKosinnichiji) != 0) {
-                errorFlg = true;
-                break;
-            }
-        }
-        if (errorFlg) {
-            showError(MessageUtil.getMessage("XHD-000025"));
-            return;
-        }
         Connection conDoc = null;
         try {
             conDoc = DBUtil.transactionStart(queryRunner.getDataSource().getConnection());
@@ -2393,13 +2372,13 @@ public class GXHDO502B implements Serializable {
     /**
      * 「sr_hihyoumensekisokuteikiroku:比表面積測定記録」から情報取得
      *
-     * @param hasValueListdata データリスト
+     * @param listdata データリスト
      * @return 比表面積測定記録情報
      */
-    private List<GXHDO502BModel> getSrHihyoumensekisokuteikirokuListData(List<GXHDO502BModel> hasValueListdata) {
+    private List<GXHDO502BModel> getSrHihyoumensekisokuteikirokuListData(List<GXHDO502BModel> listdata) {
         ArrayList<String> hinmeiList = new ArrayList<>();
         ArrayList<String> lotList = new ArrayList<>();
-        hasValueListdata.forEach((GXHDO502BModel) -> {
+        listdata.forEach((GXHDO502BModel) -> {
             if (!hinmeiList.contains(StringUtil.nullToBlank(GXHDO502BModel.getHinmei()))) {
                 hinmeiList.add(StringUtil.nullToBlank(GXHDO502BModel.getHinmei()));
             }
@@ -2413,7 +2392,8 @@ public class GXHDO502B implements Serializable {
                     + " FROM sr_hihyoumensekisokuteikiroku "
                     + "WHERE "
                     + DBUtil.getInConditionPreparedStatement("hinmei", hinmeiList.size())
-                    + " AND " + DBUtil.getInConditionPreparedStatement("lot", lotList.size());
+                    + " AND " + DBUtil.getInConditionPreparedStatement("lot", lotList.size())
+                    + " ORDER BY kansoukaisinichij ASC";
 
             // モデルクラスとのマッピング定義
             Map<String, String> mapping = new HashMap<>();
