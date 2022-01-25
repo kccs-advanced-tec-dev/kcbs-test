@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Kyocera Communication Systems Co., Ltd All rights reserved.
+ * Copyright 2022 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.db.model;
 
@@ -114,7 +114,7 @@ public class SrGlassslurryfunsai {
     /**
      * 調合量
      */
-    private String tyougouryou;
+    private Integer tyougouryou;
 
     /**
      * 風袋重量
@@ -507,7 +507,7 @@ public class SrGlassslurryfunsai {
      *
      * @return the tyougouryou
      */
-    public String getTyougouryou() {
+    public Integer getTyougouryou() {
         return tyougouryou;
     }
 
@@ -516,7 +516,7 @@ public class SrGlassslurryfunsai {
      *
      * @param tyougouryou the tyougouryou to set
      */
-    public void setTyougouryou(String tyougouryou) {
+    public void setTyougouryou(Integer tyougouryou) {
         this.tyougouryou = tyougouryou;
     }
 

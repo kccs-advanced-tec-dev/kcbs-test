@@ -48,6 +48,7 @@ import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.RowProcessor;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * ===============================================================================<br>
@@ -612,25 +613,26 @@ public class GXHDO102B024 implements IFormLogic {
             FXHDD01 itemKaishiTime = gxhdo102b024model.getKaishi_time(); // 開始時刻
             FXHDD01 itemSyuuryouNichiji = gxhdo102b024model.getTeishiyoteinichiji(); // 停止予定日時
             Date kaisiDate = DateUtil.convertStringToDate(itemKaishiDay.getValue(), itemKaishiTime.getValue());
-            String syuuryouDateStr = StringUtil.nullToBlank(itemSyuuryouNichiji.getValue()).substring(2).replaceAll("/", "").replaceAll(" ", "").replaceAll(":", "");
-            Date syuuryouDate = DateUtil.convertStringToDate(syuuryouDateStr.substring(0, 6), syuuryouDateStr.substring(6, 10));
-
-            //R001チェック呼出し
-            String msgCheckR001 = validateUtil.checkR001(itemKaishiDay.getLabel1().substring(0, itemKaishiDay.getLabel1().length() - 1) + "時", kaisiDate, itemSyuuryouNichiji.getLabel1(), syuuryouDate);
-            if (!StringUtil.isEmpty(msgCheckR001)) {
-                //エラー発生時
-                itemKaishiDay.setBackColorInput(ErrUtil.ERR_BACK_COLOR);
-                itemKaishiTime.setBackColorInput(ErrUtil.ERR_BACK_COLOR);
-                itemSyuuryouNichiji.setBackColorInput(ErrUtil.ERR_BACK_COLOR);
-                return MessageUtil.getErrorMessageInfo("", msgCheckR001, true, false, null);
+            String syuuryouDateStr = StringUtils.substring(StringUtil.nullToBlank(itemSyuuryouNichiji.getValue()), 2).replaceAll("/", "").replaceAll(" ", "").replaceAll(":", "");
+            if (syuuryouDateStr.length() == 10) {
+                Date syuuryouDate = DateUtil.convertStringToDate(syuuryouDateStr.substring(0, 6), syuuryouDateStr.substring(6, 10));
+                //R001チェック呼出し
+                String msgCheckR001 = validateUtil.checkR001(itemKaishiDay.getLabel1().substring(0, itemKaishiDay.getLabel1().length() - 1) + "時", kaisiDate, itemSyuuryouNichiji.getLabel1(), syuuryouDate);
+                if (!StringUtil.isEmpty(msgCheckR001)) {
+                    //エラー発生時
+                    itemKaishiDay.setBackColorInput(ErrUtil.ERR_BACK_COLOR);
+                    itemKaishiTime.setBackColorInput(ErrUtil.ERR_BACK_COLOR);
+                    itemSyuuryouNichiji.setBackColorInput(ErrUtil.ERR_BACK_COLOR);
+                    return MessageUtil.getErrorMessageInfo("", msgCheckR001, true, false, null);
+                }
             }
 
             // 時刻前後ﾁｪｯｸ
             FXHDD01 itemSyuuryouDay = gxhdo102b024model.getTeishi_day(); // 停止日付
             FXHDD01 itemSyuuryouTime = gxhdo102b024model.getTeishi_time(); // 停止時刻
-            syuuryouDate = DateUtil.convertStringToDate(itemSyuuryouDay.getValue(), itemSyuuryouTime.getValue());
+            Date syuuryouDate = DateUtil.convertStringToDate(itemSyuuryouDay.getValue(), itemSyuuryouTime.getValue());
             //R001チェック呼出し
-            msgCheckR001 = validateUtil.checkR001(itemKaishiDay.getLabel1().substring(0, itemKaishiDay.getLabel1().length() - 1) + "時", kaisiDate,
+            String msgCheckR001 = validateUtil.checkR001(itemKaishiDay.getLabel1().substring(0, itemKaishiDay.getLabel1().length() - 1) + "時", kaisiDate,
                     itemSyuuryouDay.getLabel1().substring(0, itemSyuuryouDay.getLabel1().length() - 1) + "時", syuuryouDate);
             if (!StringUtil.isEmpty(msgCheckR001)) {
                 //エラー発生時
@@ -3204,11 +3206,12 @@ public class GXHDO102B024 implements IFormLogic {
         String kaishi_day = StringUtil.nullToBlank(gxhdo102b024model.getKaishi_day().getValue());
         // 開始時間
         String kaishi_time = StringUtil.nullToBlank(gxhdo102b024model.getKaishi_time().getValue());
-        String syuuryouDateStr = StringUtil.nullToBlank(gxhdo102b024model.getTeishiyoteinichiji().getValue()).substring(2).replaceAll("/", "").replaceAll(" ", "").replaceAll(":", "");
+        // 停止予定日時
+        String syuuryouDateStr = StringUtils.substring(StringUtil.nullToBlank(gxhdo102b024model.getTeishiyoteinichiji().getValue()), 2).replaceAll("/", "").replaceAll(" ", "").replaceAll(":", "");
         // 停止予定日
-        String teishiyotei_day = syuuryouDateStr.substring(0, 6);
+        String teishiyotei_day = StringUtils.substring(syuuryouDateStr, 0, 6);
         // 停止予定時間
-        String teishiyotei_time = syuuryouDateStr.substring(6, 10);
+        String teishiyotei_time = StringUtils.substring(syuuryouDateStr, 6, 10);
         // 停止日
         String teishi_day = StringUtil.nullToBlank(gxhdo102b024model.getTeishi_day().getValue());
         // 停止時刻
@@ -3364,11 +3367,12 @@ public class GXHDO102B024 implements IFormLogic {
         String kaishi_day = StringUtil.nullToBlank(gxhdo102b024model.getKaishi_day().getValue());
         // 開始時間
         String kaishi_time = StringUtil.nullToBlank(gxhdo102b024model.getKaishi_time().getValue());
-        String syuuryouDateStr = StringUtil.nullToBlank(gxhdo102b024model.getTeishiyoteinichiji().getValue()).substring(2).replaceAll("/", "").replaceAll(" ", "").replaceAll(":", "");
+        // 停止予定日時
+        String syuuryouDateStr = StringUtils.substring(StringUtil.nullToBlank(gxhdo102b024model.getTeishiyoteinichiji().getValue()), 2).replaceAll("/", "").replaceAll(" ", "").replaceAll(":", "");
         // 停止予定日
-        String teishiyotei_day = syuuryouDateStr.substring(0, 6);
+        String teishiyotei_day = StringUtils.substring(syuuryouDateStr, 0, 6);
         // 停止予定時間
-        String teishiyotei_time = syuuryouDateStr.substring(6, 10);
+        String teishiyotei_time = StringUtils.substring(syuuryouDateStr, 6, 10);
         // 停止日
         String teishi_day = StringUtil.nullToBlank(gxhdo102b024model.getTeishi_day().getValue());
         // 停止時刻

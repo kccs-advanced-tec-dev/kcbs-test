@@ -73,12 +73,12 @@
             //]]>
         </script>
         <style>
-            .kouatsubunsanTable{
+            .yuudentaifunsaiTable{
                 width: 100%;
                 border: 1px;
                 text-align:center;
             }
-            thead[id='form:kouatsubunsanSubDataTable_head'] th, tbody[id='form:kouatsubunsanSubDataTable_data'] td{
+            thead[id='form:yuudentaifunsaiSubDataTable_head'] th, tbody[id='form:yuudentaifunsaiSubDataTable_data'] td{
                 word-wrap: break-word;
             }
             .tab_div{
@@ -135,16 +135,16 @@
                                              oncomplete="cmdButtonOncomplete(args);" />    
                         </ui:repeat>
                     </p:panel>
-                    <p:panel id="kouatsubunsanHeader" style="border-radius: 4px 4px 0 0; background: #5B9BD5!important;#{gXHDO102B024A.styleDisplayNone}">
+                    <p:panel id="yuudentaifunsaiHeader" style="border-radius: 4px 4px 0 0; background: #5B9BD5!important;#{gXHDO102B024A.styleDisplayNone}">
                         <p:commandLink id="cmdLink" action="#{gXHDO102B024A.setKouatsubunsanTableDisplayStyle()}" 
                                        process="@form" update="@form" async="false" 
                                        style="font-size:18px;color: white;vertical-align: middle;text-decoration:none;">
                             <h:outputText value="#{myMsg.shitajyohou}" />
                         </p:commandLink>
                     </p:panel>
-                    <p:panel id="kouatsubunsanTable" style="border-radius: 0; border-top-style: hidden;#{gXHDO102B024A.styleDisplayNone};display: #{gXHDO102B024A.displayStyle};">
+                    <p:panel id="yuudentaifunsaiTable" style="border-radius: 0; border-top-style: hidden;#{gXHDO102B024A.styleDisplayNone};display: #{gXHDO102B024A.displayStyle};">
                         <div class="tab_div" style="overflow: auto;">
-                            <p:panelGrid style="" class="kouatsubunsanTable">
+                            <p:panelGrid style="" class="yuudentaifunsaiTable">
                                 <p:row style="height: 50px;white-space:nowrap;">
                                     <p:column colspan="1">
                                         <div style="text-align:left;">
@@ -439,57 +439,77 @@
                             </p:panelGrid>
                         </div>
                     </p:panel>
-                    <p:panel id="kouatsubunsanSubTable" style="border-radius: 0; margin-top:15px;#{gXHDO102B024A.styleDisplayNone}">
+                    <p:panel id="yuudentaifunsaiSubTable" style="border-radius: 0; margin-top:15px;#{gXHDO102B024A.styleDisplayNone}">
                         <div class="tab_div" style="overflow: auto;">
-                            <p:dataTable id="kouatsubunsanSubDataTable" var="item" rowIndexVar="rowIndex" style="font-size:0.8em;border: 1px solid #aaaaaa;" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap" 
+                            <p:dataTable id="yuudentaifunsaiSubDataTable" var="item" rowIndexVar="rowIndex" style="font-size:0.8em;border: 1px solid #aaaaaa;" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap" 
                                          value="#{beanGXHDO102B024B.listdata}" emptyMessage="" >
                                 <p:columnGroup type="header" >
                                     <p:row style="text-align: center;">
                                         <p:column headerText="#{beanGXHDO102B024B.deleterow_checkbox.getLabel1()}" style="width: 20px;font-size:#{beanGXHDO102B024B.kaishi_day.fontSize1}px;color:#{beanGXHDO102B024B.kaishi_day.fontColor1};vertical-align: middle;">
                                         </p:column>
-                                        <p:column headerText="#{beanGXHDO102B024B.kaishi_day.getLabel1()}" style="width: 110px;font-size:#{beanGXHDO102B024B.kaishi_day.fontSize1}px;color:#{beanGXHDO102B024B.kaishi_day.fontColor1};vertical-align: middle;">
+                                        <p:column headerText="#{beanGXHDO102B024B.kaishi_day.getLabel1()}" style="width:#{beanGXHDO102B024B.kaishi_day.displayMaxLength + 0.5}em;font-size:#{beanGXHDO102B024B.kaishi_day.fontSize1}px;color:#{beanGXHDO102B024B.kaishi_day.fontColor1};vertical-align: middle;">
                                         </p:column>
-                                        <p:column headerText="#{beanGXHDO102B024B.kaishi_time.getLabel1()}" style="width: 80px;font-size:#{beanGXHDO102B024B.kaishi_time.fontSize1}px;color:#{beanGXHDO102B024B.kaishi_time.fontColor1};vertical-align: middle;">
+                                        <p:column headerText="#{beanGXHDO102B024B.kaishi_time.getLabel1()}" style="width:#{beanGXHDO102B024B.kaishi_time.displayMaxLength + 0.5}em;font-size:#{beanGXHDO102B024B.kaishi_time.fontSize1}px;color:#{beanGXHDO102B024B.kaishi_time.fontColor1};vertical-align: middle;">
                                         </p:column>
-                                        <p:column headerText="#{beanGXHDO102B024B.teishiyoteinichiji.getLabel1()}" style="width: 175px;font-size:#{beanGXHDO102B024B.teishiyoteinichiji.fontSize1}px;color:#{beanGXHDO102B024B.teishiyoteinichiji.fontColor1};vertical-align: middle;">
+                                        <p:column headerText="#{beanGXHDO102B024B.teishiyoteinichiji.getLabel1()}" style="width: 159px;font-size:#{beanGXHDO102B024B.teishiyoteinichiji.fontSize1}px;color:#{beanGXHDO102B024B.teishiyoteinichiji.fontColor1};vertical-align: middle;">
                                         </p:column>
-                                        <p:column headerText="#{beanGXHDO102B024B.teishi_day.getLabel1()}" style="width: 110px;font-size:#{beanGXHDO102B024B.teishi_day.fontSize1}px;color:#{beanGXHDO102B024B.teishi_day.fontColor1};vertical-align: middle;">
+                                        <p:column headerText="#{beanGXHDO102B024B.teishi_day.getLabel1()}" style="width:#{beanGXHDO102B024B.teishi_day.displayMaxLength + 0.5}em;font-size:#{beanGXHDO102B024B.teishi_day.fontSize1}px;color:#{beanGXHDO102B024B.teishi_day.fontColor1};vertical-align: middle;">
                                         </p:column>
-                                        <p:column headerText="#{beanGXHDO102B024B.teishi_time.getLabel1()}" style="width: 80px;font-size:#{beanGXHDO102B024B.teishi_time.fontSize1}px;color:#{beanGXHDO102B024B.teishi_time.fontColor1};vertical-align: middle;">
+                                        <p:column headerText="#{beanGXHDO102B024B.teishi_time.getLabel1()}" style="width:#{beanGXHDO102B024B.teishi_time.displayMaxLength + 0.5}em;font-size:#{beanGXHDO102B024B.teishi_time.fontSize1}px;color:#{beanGXHDO102B024B.teishi_time.fontColor1};vertical-align: middle;">
                                         </p:column>
-                                        <p:column headerText="#{beanGXHDO102B024B.syujikudenryuu.getLabel1()}" style="width: 115px;font-size:#{beanGXHDO102B024B.syujikudenryuu.fontSize1}px;color:#{beanGXHDO102B024B.syujikudenryuu.fontColor1};vertical-align: middle;">
+                                        <p:column headerText="#{beanGXHDO102B024B.syujikudenryuu.getLabel1()}" style="width: 114px;font-size:#{beanGXHDO102B024B.syujikudenryuu.fontSize1}px;color:#{beanGXHDO102B024B.syujikudenryuu.fontColor1};vertical-align: middle;">
                                         </p:column>
-                                        <p:column headerText="#{beanGXHDO102B024B.deguchiondo.getLabel1()}" style="width: 120px;font-size:#{beanGXHDO102B024B.deguchiondo.fontSize1}px;color:#{beanGXHDO102B024B.deguchiondo.fontColor1};vertical-align: middle;">
+                                        <p:column headerText="#{beanGXHDO102B024B.deguchiondo.getLabel1()}" style="width: 119px;font-size:#{beanGXHDO102B024B.deguchiondo.fontSize1}px;color:#{beanGXHDO102B024B.deguchiondo.fontColor1};vertical-align: middle;">
                                         </p:column>
-                                        <p:column headerText="#{beanGXHDO102B024B.sealondo.getLabel1()}" style="width: 120px;font-size:#{beanGXHDO102B024B.sealondo.fontSize1}px;color:#{beanGXHDO102B024B.sealondo.fontColor1};vertical-align: middle;">
+                                        <p:column headerText="#{beanGXHDO102B024B.sealondo.getLabel1()}" style="width: 111px;font-size:#{beanGXHDO102B024B.sealondo.fontSize1}px;color:#{beanGXHDO102B024B.sealondo.fontColor1};vertical-align: middle;">
                                         </p:column>
                                         <p:column headerText="#{beanGXHDO102B024B.pumpmemori.getLabel1()}" style="width: 145px;font-size:#{beanGXHDO102B024B.pumpmemori.fontSize1}px;color:#{beanGXHDO102B024B.pumpmemori.fontColor1};vertical-align: middle;">
                                         </p:column>
-                                        <p:column headerText="#{beanGXHDO102B024B.pumpatsu.getLabel1()}" style="width: 130px;font-size:#{beanGXHDO102B024B.pumpatsu.fontSize1}px;color:#{beanGXHDO102B024B.pumpatsu.fontColor1};vertical-align: middle;">
+                                        <p:column headerText="#{beanGXHDO102B024B.pumpatsu.getLabel1()}" style="width: 129px;font-size:#{beanGXHDO102B024B.pumpatsu.fontSize1}px;color:#{beanGXHDO102B024B.pumpatsu.fontColor1};vertical-align: middle;">
                                         </p:column>
-                                        <p:column headerText="#{beanGXHDO102B024B.d50.getLabel1()}" style="width: 255px;font-size:#{beanGXHDO102B024B.d50.fontSize1}px;color:#{beanGXHDO102B024B.d50.fontColor1};vertical-align: middle;">
+                                        <c:set var="d50Length" value="#{beanGXHDO102B024B.d50.displayMaxLength}"/>
+                                        <c:if test="${fn:length(beanGXHDO102B024B.d50.label1) > d50Length}">
+                                            <c:set var="d50Length" value="${fn:length(beanGXHDO102B024B.d50.label1)}"/>
+                                        </c:if>
+                                        <c:if test="${fn:length(beanGXHDO102B024B.d50.kikakuChi) > d50Length}">
+                                            <c:set var="d50Length" value="${fn:length(beanGXHDO102B024B.d50.kikakuChi)*0.8}"/>
+                                        </c:if>
+                                        <p:column headerText="#{beanGXHDO102B024B.d50.getLabel1()}" style="width:#{d50Length}em;font-size:#{beanGXHDO102B024B.d50.fontSize1}px;color:#{beanGXHDO102B024B.d50.fontColor1};vertical-align: middle;">
                                         </p:column>
-                                        <p:column headerText="#{beanGXHDO102B024B.bet.getLabel1()}" style="width: 255px;font-size:#{beanGXHDO102B024B.bet.fontSize1}px;color:#{beanGXHDO102B024B.bet.fontColor1};vertical-align: middle;">
+                                        <c:set var="betLength" value="#{beanGXHDO102B024B.bet.displayMaxLength}"/>
+                                        <c:if test="${fn:length(beanGXHDO102B024B.bet.label1) > betLength}">
+                                            <c:set var="betLength" value="${fn:length(beanGXHDO102B024B.bet.label1)}"/>
+                                        </c:if>
+                                        <c:if test="${fn:length(beanGXHDO102B024B.bet.kikakuChi) > betLength}">
+                                            <c:set var="betLength" value="${fn:length(beanGXHDO102B024B.bet.kikakuChi)*0.8}"/>
+                                        </c:if>
+                                        <p:column headerText="#{beanGXHDO102B024B.bet.getLabel1()}" style="width:#{betLength}em;font-size:#{beanGXHDO102B024B.bet.fontSize1}px;color:#{beanGXHDO102B024B.bet.fontColor1};vertical-align: middle;">
                                         </p:column>
-                                        <p:column headerText="#{beanGXHDO102B024B.ryuuryou.getLabel1()}" colspan="7"   style="width: 365px;font-size:#{beanGXHDO102B024B.ryuuryou.fontSize1}px;color:#{beanGXHDO102B024B.ryuuryou.fontColor1};vertical-align: middle;">
+                                        <c:set var="ryuuryouLength" value="${beanGXHDO102B024B.ryuuryou.displayMaxLength * 3 + 3}"/>
+                                        <p:column headerText="#{beanGXHDO102B024B.ryuuryou.getLabel1()}" colspan="3"   style="width:#{ryuuryouLength}em;font-size:#{beanGXHDO102B024B.ryuuryou.fontSize1}px;color:#{beanGXHDO102B024B.ryuuryou.fontColor1};vertical-align: middle;">
                                         </p:column>
-                                        <p:column headerText="#{beanGXHDO102B024B.kaishipass.getLabel1()}" style="width: 60px;font-size:#{beanGXHDO102B024B.kaishipass.fontSize1}px;color:#{beanGXHDO102B024B.kaishipass.fontColor1};vertical-align: middle;">
+                                        <p:column headerText="#{beanGXHDO102B024B.kaishipass.getLabel1()}" style="width: 65px;font-size:#{beanGXHDO102B024B.kaishipass.fontSize1}px;color:#{beanGXHDO102B024B.kaishipass.fontColor1};vertical-align: middle;">
                                         </p:column>
                                         <p:column headerText="" style="width: 20px;font-size:#{beanGXHDO102B024B.kaishipass.fontSize1}px;color:#{beanGXHDO102B024B.kaishipass.fontColor1};vertical-align: middle;">
                                         </p:column>
-                                        <p:column headerText="#{beanGXHDO102B024B.teishipass.getLabel1()}" style="width: 255px;font-size:#{beanGXHDO102B024B.teishipass.fontSize1}px;color:#{beanGXHDO102B024B.teishipass.fontColor1};vertical-align: middle;">
+                                        <c:set var="teishipassLength" value="#{beanGXHDO102B024B.teishipass.displayMaxLength}"/>
+                                        <c:if test="${fn:length(beanGXHDO102B024B.teishipass.label1) > teishipassLength}">
+                                            <c:set var="teishipassLength" value="${fn:length(beanGXHDO102B024B.teishipass.label1)}"/>
+                                        </c:if>
+                                        <c:if test="${fn:length(beanGXHDO102B024B.teishipass.kikakuChi) > teishipassLength}">
+                                            <c:set var="teishipassLength" value="${fn:length(beanGXHDO102B024B.teishipass.kikakuChi)*0.8}"/>
+                                        </c:if>
+                                        <p:column headerText="#{beanGXHDO102B024B.teishipass.getLabel1()}" style="width:#{teishipassLength}em;font-size:#{beanGXHDO102B024B.teishipass.fontSize1}px;color:#{beanGXHDO102B024B.teishipass.fontColor1};vertical-align: middle;">
                                         </p:column>
-                                        <p:column headerText="#{beanGXHDO102B024B.bikou1.getLabel1()}" style="width: 350px;font-size:#{beanGXHDO102B024B.bikou1.fontSize1}px;color:#{beanGXHDO102B024B.bikou1.fontColor1};vertical-align: middle;">
+                                        <p:column headerText="#{beanGXHDO102B024B.bikou1.getLabel1()}" style="width:#{beanGXHDO102B024B.bikou1.displayMaxLength +0.5}em;font-size:#{beanGXHDO102B024B.bikou1.fontSize1}px;color:#{beanGXHDO102B024B.bikou1.fontColor1};vertical-align: middle;">
                                         </p:column>
-                                        <p:column headerText="#{beanGXHDO102B024B.bikou2.getLabel1()}" style="width: 350px;font-size:#{beanGXHDO102B024B.bikou2.fontSize1}px;color:#{beanGXHDO102B024B.bikou2.fontColor1};vertical-align: middle;">
+                                        <p:column headerText="#{beanGXHDO102B024B.bikou2.getLabel1()}" style="width:#{beanGXHDO102B024B.bikou2.displayMaxLength +0.5}em;font-size:#{beanGXHDO102B024B.bikou2.fontSize1}px;color:#{beanGXHDO102B024B.bikou2.fontColor1};vertical-align: middle;">
                                         </p:column>
                                     </p:row>
                                     <p:row style="text-align: center;">
-                                        <p:column headerText="" style="width: 20px;vertical-align: middle;">
+                                        <p:column headerText="" style="vertical-align: middle;">
                                         </p:column>
-                                        <p:column headerText="#{myMsg.kikakuChi}" colspan="4"  style="text-align: left;font-size:#{beanGXHDO102B024B.kaishi_day.fontSize1}px;color:#{beanGXHDO102B024B.kaishi_day.fontColor1};vertical-align: middle;">
-                                        </p:column>
-                                        <p:column headerText="-" style="vertical-align: middle;">
+                                        <p:column headerText="#{myMsg.kikakuChi}" colspan="5"   style="text-align: left;font-size:#{beanGXHDO102B024B.kaishi_day.fontSize1}px;color:#{beanGXHDO102B024B.kaishi_day.fontColor1};vertical-align: middle;">
                                         </p:column>
                                         <p:column headerText="-" style="vertical-align: middle;">
                                         </p:column>
@@ -501,15 +521,15 @@
                                         </p:column>
                                         <p:column headerText="-" style="vertical-align: middle;">
                                         </p:column>
-                                        <p:column headerText="#{beanGXHDO102B024B.d50.getKikakuChi()}" style="width: 130px;font-size:#{beanGXHDO102B024B.d50.fontSize3}px;color:#{beanGXHDO102B024B.d50.fontColor3};vertical-align: middle;">
+                                        <p:column headerText="#{beanGXHDO102B024B.d50.getKikakuChi()}" style="font-size:#{beanGXHDO102B024B.d50.fontSize3}px;color:#{beanGXHDO102B024B.d50.fontColor3};vertical-align: middle;">
                                         </p:column>
-                                        <p:column headerText="#{beanGXHDO102B024B.bet.getKikakuChi()}" style="width: 138px;font-size:#{beanGXHDO102B024B.bet.fontSize3}px;color:#{beanGXHDO102B024B.bet.fontColor3};vertical-align: middle;">
+                                        <p:column headerText="#{beanGXHDO102B024B.bet.getKikakuChi()}" style="font-size:#{beanGXHDO102B024B.bet.fontSize3}px;color:#{beanGXHDO102B024B.bet.fontColor3};vertical-align: middle;">
                                         </p:column>
-                                        <p:column headerText="-" colspan="7"  style="vertical-align: middle;">
+                                        <p:column headerText="-" colspan="3"  style="vertical-align: middle;">
                                         </p:column>
                                         <p:column headerText="-" style="vertical-align: middle;">
                                         </p:column>
-                                        <p:column headerText="～" style="width: 20px;vertical-align: middle;">
+                                        <p:column headerText="～" style="vertical-align: middle;">
                                         </p:column>
                                         <p:column headerText="#{beanGXHDO102B024B.teishipass.getKikakuChi()}" style="font-size:#{beanGXHDO102B024B.teishipass.fontSize3}px;color:#{beanGXHDO102B024B.teishipass.fontColor3};vertical-align: middle;">
                                         </p:column>
@@ -532,7 +552,7 @@
                                 <p:column id="kaishi_time" style=" text-align: center;vertical-align: middle;width: 120px;" >
                                     <p:inputText id="kaishi_timetextValue" rendered="#{(item.kaishi_time.renderInputText) and (!item.kaishi_time.renderOutputLabel)}" value="#{item.kaishi_time.value}" maxlength="#{item.kaishi_time.displayMaxLength}"
                                                  styleClass="myClass" style="width:#{item.kaishi_time.displayMaxLength}em; font-size:#{item.kaishi_time.fontSizeInput}px;color:#{item.kaishi_time.fontColorInput};background:#{item.kaishi_time.backColorInput};vertical-align: middle;max-width:#{gXHDO102B034A.maxWidthInputCol}px;#{item.kaishi_time.customStyleInput}">
-                                        <p:ajax event="change" process="@form"  update="form:kouatsubunsanSubTable form:growlMessage"  listener="#{gXHDO102B024A.doTeishiyoteitimejidounyuuryouku(item.kaishi_time.value, rowIndex)}" async="false"/>
+                                        <p:ajax event="change" process="@form"  update="form:yuudentaifunsaiSubTable form:growlMessage"  listener="#{gXHDO102B024A.doTeishiyoteitimejidounyuuryouku(item.kaishi_time.value, rowIndex)}" async="false"/>
                                     </p:inputText>
                                 </p:column>
                                 <p:column id="teishiyoteinichiji" style=" text-align: center;vertical-align: middle;width: 120px;" >
@@ -593,13 +613,13 @@
                                                    inputStyle="font-size:#{item.bet.fontSizeInput}px;color:#{item.bet.fontColorInput};background:#{item.bet.backColorInput};vertical-align: middle;max-width:#{beanGXHDO102C034B.maxWidthInputCol}px;#{item.bet.customStyleInput}">
                                     </p:inputNumber>
                                 </p:column>
-                                <p:column id="ryuuryoukikaku" style=" text-align: center;vertical-align: middle;width: 150px;" colspan="5">
+                                <p:column id="ryuuryoukikaku" style=" text-align: center;vertical-align: middle;" colspan="2">
                                     <div style="text-align:center;">
                                         <h:outputText id="ryuuryoukikakuChi" value="#{item.ryuuryoukikaku.getKikakuChi()}"
                                                       style="font-size:#{item.ryuuryoukikaku.fontSize3}px;color:#{item.ryuuryoukikaku.fontColor3};background:#{item.ryuuryoukikaku.backColor3};vertical-align: middle;"/>
                                     </div>
                                 </p:column>
-                                <p:column id="ryuuryou" style=" text-align: center;vertical-align: middle;width: 100px;" colspan="2">
+                                <p:column id="ryuuryou" style=" text-align: center;vertical-align: middle;">
                                     <p:inputNumber id="ryuuryounumberValue" rendered="#{item.ryuuryou.renderInputNumber}" value="#{item.ryuuryou.value}" thousandSeparator="" roundMethod="D"
                                                    decimalPlaces="#{item.ryuuryou.numberDecimalPlaces}" maxValue="#{item.ryuuryou.numberMaxValue}" minValue="#{item.ryuuryou.numberMinValue}" size="#{item.ryuuryou.displayMaxLength}"
                                                    inputStyle="font-size:#{item.ryuuryou.fontSizeInput}px;color:#{item.ryuuryou.fontColorInput};background:#{item.ryuuryou.backColorInput};vertical-align: middle;max-width:#{beanGXHDO102C034B.maxWidthInputCol}px;#{item.ryuuryou.customStyleInput}">
@@ -613,7 +633,7 @@
                                 </p:column>
                                 <p:column style=" text-align: center;vertical-align: middle;width: 10px;" >
                                     <div style="text-align:center;">
-                                        <h:outputText value="～" rendered="#{(item.kaishipass.renderInputText) and (!item.kaishipass.renderOutputLabel)}" style="vertical-align: middle;"/>
+                                        <h:outputText value="～"  style="vertical-align: middle;"/>
                                     </div>
                                 </p:column>
                                 <p:column id="teishipass" style=" text-align: center;vertical-align: middle;width: 120px;" >

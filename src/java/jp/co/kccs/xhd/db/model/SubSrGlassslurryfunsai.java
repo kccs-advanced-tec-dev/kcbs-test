@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Kyocera Communication Systems Co., Ltd All rights reserved.
+ * Copyright 2022 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.db.model;
 

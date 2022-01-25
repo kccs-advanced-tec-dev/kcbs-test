@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Kyocera Communication Systems Co., Ltd All rights reserved.
+ * Copyright 2022 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.pxhdo102;
 
@@ -2085,7 +2085,7 @@ public class GXHDO102B006 implements IFormLogic {
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.FUNSAIJIKAN, srGlassslurryfunsai))); // 粉砕時間
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemKikakuchi(pItemList, GXHDO102B006Const.ZAIRYOHINMEI, srGlassslurryfunsai))); // 材料品名
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.BUZAIZAIKONO, srGlassslurryfunsai))); // 部材在庫No
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.TYOUGOURYOU, srGlassslurryfunsai))); // 調合量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.TYOUGOURYOU, srGlassslurryfunsai))); // 調合量
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.FUUTAIJYUURYOU, srGlassslurryfunsai))); // 風袋重量
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.SOUJYUURYOU, srGlassslurryfunsai))); // 総重量
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.SYOUMIJYUURYOU, srGlassslurryfunsai))); // 正味重量
@@ -2237,7 +2237,7 @@ public class GXHDO102B006 implements IFormLogic {
         params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO102B006Const.FUNSAIJIKAN, srGlassslurryfunsai))); // 粉砕時間
         params.add(DBUtil.stringToStringObject(getItemKikakuchi(pItemList, GXHDO102B006Const.ZAIRYOHINMEI, srGlassslurryfunsai))); // 材料品名
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B006Const.BUZAIZAIKONO, srGlassslurryfunsai))); // 部材在庫No
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B006Const.TYOUGOURYOU, srGlassslurryfunsai))); // 調合量
+        params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO102B006Const.TYOUGOURYOU, srGlassslurryfunsai))); // 調合量
         params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO102B006Const.FUUTAIJYUURYOU, srGlassslurryfunsai))); // 風袋重量
         params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO102B006Const.SOUJYUURYOU, srGlassslurryfunsai))); // 総重量
         params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO102B006Const.SYOUMIJYUURYOU, srGlassslurryfunsai))); // 正味重量
