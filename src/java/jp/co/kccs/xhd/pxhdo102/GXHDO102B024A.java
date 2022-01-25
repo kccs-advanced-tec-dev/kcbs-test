@@ -934,9 +934,9 @@ public class GXHDO102B024A extends GXHDO901BEX {
      */
     private void setGXHDO102B024ModelItemLabel1(GXHDO102B024Model gxhdo102b024model, int rowIndx) {
 
-        String Kaishi_dayLabel1 = StringUtil.nullToBlank(gxhdo102b024model.getKaishi_day().getLabel1());
-        if (!Kaishi_dayLabel1.contains("行目: ")) {
-            gxhdo102b024model.getKaishi_day().setLabel1(rowIndx + "行目: " + Kaishi_dayLabel1);
+        String kaishi_dayLabel1 = StringUtil.nullToBlank(gxhdo102b024model.getKaishi_day().getLabel1());
+        if (!kaishi_dayLabel1.contains("行目: ")) {
+            gxhdo102b024model.getKaishi_day().setLabel1(rowIndx + "行目: " + kaishi_dayLabel1);
             gxhdo102b024model.getKaishi_time().setLabel1(rowIndx + "行目: " + gxhdo102b024model.getKaishi_time().getLabel1());
             gxhdo102b024model.getTeishiyoteinichiji().setLabel1(rowIndx + "行目: " + gxhdo102b024model.getTeishiyoteinichiji().getLabel1());
             gxhdo102b024model.getTeishi_day().setLabel1(rowIndx + "行目: " + gxhdo102b024model.getTeishi_day().getLabel1());
