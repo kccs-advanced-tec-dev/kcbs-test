@@ -1,0 +1,329 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="ja"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:t="http://myfaces.apache.org/tomahawk">
+    <h:head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Pragma" content="no-cache"/>
+        <meta http-equiv="Cache-Control" content="no-cache"/>
+        <meta http-equiv="Expires" content="0"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link href="#{request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/growl.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/loading.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/gxhdo201common.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/gxhco901a.css" rel="stylesheet" type="text/css"/>
+        <script src="#{request.contextPath}/resources/bootstrap/js/bootstrap.min.js" />
+        <h:outputScript library="primefaces" name="jquery/jquery.js" />
+        <script src="#{request.contextPath}/resources/js/locUpload.js"></script>
+        <script src="#{request.contextPath}/resources/js/growl.js"></script>        
+        <script type="text/javascript">
+            //<![CDATA[
+            function logOut() {
+                window.#{adjustModels.external}.logOut();
+            }
+            $(document).ready(function () {
+                //upload to
+                g_locationUrl = '#{myParam.locationUrl}';
+                //MAC Address
+                g_macAddr = '#{sessionInfo.macAddr}';
+                //location
+                g_location = '#{myMsg.NotAvailable}';
+
+                //var interval_id = setInterval(getLocation, #{myParam.sendLocInterval});
+            });
+            var pointY;
+            function subFormOpen() {
+                pointY = $(window).scrollTop();
+                document.getElementById("mainForm").style.setProperty("display", "none");
+                document.getElementById("mainForm").style.setProperty("position", "fixed");
+                document.getElementById("mainForm").style.setProperty("Top", -(pointY) + 54 + "px");
+                document.getElementById("mainForm").style.removeProperty("display");
+            }
+            function subFormClose() {
+                document.getElementById("mainForm").style.setProperty("display", "none");
+                document.getElementById("mainForm").style.removeProperty("position");
+                document.getElementById("mainForm").style.removeProperty("Top");
+                document.getElementById("mainForm").style.removeProperty("display");
+                $(window).scrollTop(pointY);
+            }
+            function cmdButtonOncomplete(args) {
+                if (undefined === args) {
+                } else if ('warning' === args.firstParam) {
+                    PF('cd').show();
+                } else if ('auth' === args.firstParam) {
+                    PF('W_dialog_userAuth').show();
+                } else if ('kikakuError' === args.firstParam) {
+                    PF('W_dlg_kikakuError').show();
+                } else if ('infoMessage' === args.firstParam) {
+                    PF('W_dlg_infoMessage').show();
+                } else if ('complete' === args.firstParam) {
+                    PF('W_dlg_compMessage').show();
+                } else if ('resultMessage' === args.firstParam) {
+                    PF('W_dlg_resultMessage').show();
+                } else if ('deleteResultMessage' === args.firstParam) {
+                    PF('W_dlg_resultMessage').show();
+                }
+                checkHeader();
+            }
+
+            function checkAll(obj) {
+                if (obj.checked) {
+                    $("tbody input[id$='checkValue_input']").attr("checked", true);
+                    $("tbody div[id$=':checkValue'] div").addClass("ui-state-active");
+                    $("tbody div[id$=':checkValue'] span").removeClass("ui-icon-blank").addClass("ui-icon-check");
+                } else {
+                    $("tbody input[id$='checkValue_input']").attr("checked", false);
+                    $("tbody div[id$=':checkValue'] div").removeClass("ui-state-active");
+                    $("tbody div[id$=':checkValue'] span").removeClass("ui-icon-check").addClass("ui-icon-blank");
+                }
+            }
+            function checkHeader() {
+                var checkFlg = ($("tbody input[id$='checkValue_input']").length === $("tbody input[id$='checkValue_input']:checked").length && $("tbody input[id$='checkValue_input']").length !== 0) ? true : false;
+                if (checkFlg) {
+                    $("input[id$='form:idDataTable:headercheckValue_input']").attr("checked", true);
+                    $("thead div[id$='form:idDataTable:headercheckValue'] div").addClass("ui-state-active");
+                    $("thead div[id$='form:idDataTable:headercheckValue'] span").removeClass("ui-icon-blank").addClass("ui-icon-check");
+                } else {
+                    $("input[id$='form:idDataTable:headercheckValue_input']").attr("checked", false);
+                    $("thead div[id$='form:idDataTable:headercheckValue'] div").removeClass("ui-state-active");
+                    $("thead div[id$='form:idDataTable:headercheckValue'] span").removeClass("ui-icon-check").addClass("ui-icon-blank");
+                }
+            }
+            //]]>
+        </script>
+        <style>
+            .ui-chkbox-box{
+                vertical-align: middle;
+            }
+        </style> 
+    </h:head>
+    <h:body style="padding-top:30px;">
+        <f:metadata>
+            <f:viewAction action="#{gXHDO502A.init()}"/>
+        </f:metadata>
+        <nav class="navbar  navbar-expand fixed-top navbar-dark" style="background-color:#0E6A89;height: 50px;z-index: 999;">
+            <span class="navbar-brand mb-0" style="font-size:18px;font-weight:bold;">#{myMsg.GXHDO502A_GamenTitle}</span>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#Navber" aria-controls="Navber" aria-expanded="false" aria-label="ナビゲーションの切替">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <span class="navbar-text ml-auto">
+                <div class="collapse navbar-collapse" id="Navber">
+                    <ul class="navbar-nav mr-auto">
+                        <li class="nav-item">
+                            <h:link class="nav-link" outcome="/secure/pxhdo012/gxhdo012a.xhtml?faces-redirect=true" value="戻る"/>
+                        </li>
+                    </ul>
+                </div>
+            </span>
+        </nav>
+        <br/>
+        <h:form id="form" style="#{gXHDO502A.displayStyle}" onkeypress="if (event.keyCode === 13) {
+                    return false;
+                }">
+            <div id="mainForm" style="width: 100%;">
+                <p:growl id="growlMessage" showDetail="false" sticky="true"  escape="false"/>
+                <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
+                    <f:facet name="message">
+                        <h:outputText value="#{gXHDO502A.getWarnMessage()}" escape="false"/>
+                    </f:facet>
+                    <p:commandButton id="warnOk" value="OK" styleClass="ui-conf-commandbtn-def1"
+                                     actionListener="#{gXHDO502A.processWarnOkClick()}"
+                                     process="@form"
+                                     update="@form"
+                                     onclick="PF('cd').hide();"
+                                     oncomplete="if('warning'!=args.firstParam){PF('cd').hide(); cmdButtonOncomplete(args);} else {PF('cd').show();}"/>
+                    <p:commandButton id="warnCancel" value="Cancel" class="ui-conf-commandbtn-cancel" onclick="PF('cd').hide();" type="button" />
+                </p:confirmDialog>
+                <div id="loadinggif">
+                    <img src="#{request.contextPath}/resources/gif/gif-load.gif"/>
+                </div>
+                <p:panel id="searchpanel" style="border:none;font-size:0.8em;">
+                    <table>
+                        <tr>
+                            <td>
+                                <h:outputText id="lblLotNo" value="WIPLotNo" style="width:100px;"/>
+                            </td>
+                            <td colspan="3">
+                                <p:inputText id="pLotNo" value="#{gXHDO502A.lotNo}" maxlength="15" style="margin-left:20px; height:30px;"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <h:outputText id="lblHinmei" value="品名" style="width:100px;"/>
+                            </td>
+                            <td colspan="3">
+                                <p:inputText id="pHinmei" value="#{gXHDO502A.hinmei}" maxlength="20" style="margin-left:20px; height:30px;"/>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="4">
+                                <p:selectOneRadio id="rNagarehin" styleClass="selectRadio" value="#{gXHDO502A.nagarehin}">
+                                    <f:selectItem itemLabel="流れ品" itemValue="流れ品" />
+                                    <f:selectItem itemLabel="その他" itemValue="その他" />
+                                </p:selectOneRadio>
+                            </td>
+                        </tr>
+                    </table>
+                </p:panel>
+                <p:panel id="buttonpanel" style="border:none;margin-top:-10px;">
+                    <p:commandButton id="btnSearch" style="width:100px;height:25px;font-size:0.7em;margin-left:0px;text-align:center;"
+                                     value="検索" 
+                                     actionListener="#{gXHDO502A.checkInputAndSearch()}"
+                                     process="@this searchpanel"
+                                     update="growlMessage idDataTable buttonpanel confDialog resultMessageForm"
+                                     onstart="$('#loadinggif').show();"
+                                     oncomplete="$('#loadinggif').hide();if('warning'!=args.param1){PF('cd').hide();cmdButtonOncomplete(args);} else {PF('cd').show();}"/>
+                    <p:commandButton id="bthClear" style="width:100px;height:25px;font-size:0.7em;margin-left:10px;text-align:center;" 
+                                     value="クリア" 
+                                     action="#{gXHDO502A.clear()}"
+                                     process="@this"
+                                     update="searchpanel tantoshaCdpanel idDataTable buttonpanel confDialog"
+                                     oncomplete="cmdButtonOncomplete(args);"/>
+                    <p:commandButton id="btnAdd" style="width:100px;height:25px;font-size:0.7em;margin-left:10px;text-align:center;" 
+                                     value="追加" 
+                                     action="#{gXHDO502A.addDataRow()}"
+                                     process="@this idDataTable"
+                                     update="growlMessage buttonpanel idDataTable"
+                                     oncomplete="cmdButtonOncomplete(args);"/>
+                    <p:commandButton id="btnExcel" style="width:100px;height:25px;font-size:0.7em;margin-left:10px;text-align:center;"
+                                     disabled="#{gXHDO502A.btnExceldisabled}"
+                                     value="Excel保存"
+                                     actionListener="#{gXHDO502A.downloadExcel()}"
+                                     process="@this"
+                                     ajax="false"/>
+                    <p:commandButton id="btnUpdate" style="width:100px;height:25px;font-size:0.7em;margin-left:80px;text-align:center;"
+                                     value="登録" 
+                                     actionListener="#{gXHDO502A.confirmToroku()}"
+                                     process="@this searchpanel idDataTable "
+                                     update="growlMessage confDialog buttonpanel idDataTable resultMessageForm kikakuErrorForm"
+                                     async="true"
+                                     oncomplete="cmdButtonOncomplete(args);"/>
+                    <p:commandButton id="btnDelete" style="width:100px;height:25px;font-size:0.7em;margin-left:10px;text-align:center;"
+                                     disabled="#{gXHDO502A.btnDeletedisabled}"
+                                     value="削除" 
+                                     actionListener="#{gXHDO502A.confirmDelete()}"
+                                     process="@this searchpanel idDataTable"
+                                     update="growlMessage confDialog idDataTable"
+                                     async="true"
+                                     oncomplete="cmdButtonOncomplete(args);"/>
+                </p:panel>
+                <p:panel id="tantoshaCdpanel" style="border:none;font-size:0.8em;">
+                    <table>
+                        <tr>
+                            <td>
+                                <h:outputText id="lbltantoshaCd" value="担当者ｺｰﾄﾞ" style="width:100px;"/>
+                            </td>
+                            <td colspan="3">
+                                <p:inputText id="ptantoshaCd" value="#{gXHDO502A.tantoshaCd}" maxlength="20" style="margin-left:20px; height:30px;width:265px;"/>
+                            </td>
+                        </tr>
+                    </table>
+                </p:panel>
+                <div style="margin-top:-15px;">
+                    <p:dataTable id="idDataTable" var="item" rowIndexVar="rowIndex" style="font-size:0.8em;margin-top:20px;" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap"
+                                 value="#{gXHDO502A.listData}" emptyMessage="">
+                        <p:column id="checkBox" style=" text-align: center; vertical-align: middle;" >
+                            <f:facet name="header" >
+                                <p:selectBooleanCheckbox id="headercheckValue" rendered="true" onchange="checkAll(this);"  />
+                            </f:facet>
+                            <p:selectBooleanCheckbox id="checkValue" rendered="#{item.chkboxrender}" onchange="checkHeader();" value="#{item.chkboxvalue}"/>
+                        </p:column>
+                        <p:column id="hinmei" headerText="品名" style=" text-align: center;" >
+                            <p:inputText id="pHinmei" value="#{item.hinmei}" maxlength="4" styleClass="wiplotnoClass" disabled="#{item.hinmeidisabled}"  style="height:30px;background-color:#{item.hinmeibgcolor};width:80px;" />
+                        </p:column>
+                        <p:column id="lot" headerText="ﾛｯﾄ" style=" text-align: center;">
+                            <p:inputText id="pLot" value="#{item.lot}" maxlength="3" styleClass="wiplotnoClass" disabled="#{item.lotdisabled}"  style="height:30px;background-color:#{item.lotbgcolor};width:70px;" />
+                        </p:column>
+                        <p:column id="passkaisuu" headerText="ﾊﾟｽ回数(PASS)" style=" text-align: center;" >
+                            <p:inputNumber id="pPasskaisuu"  value="#{item.passkaisuu}" thousandSeparator="" disabled="#{item.passkaisuudisabled}"  
+                                           decimalPlaces="0" maxValue="999" minValue="-999" size="3" inputStyle="margin-left:10px; background-color:#{item.passkaisuubgcolor};" />
+                        </p:column>
+                        <p:column id="wiplotno" headerText="WIPLotNo" style=" text-align: center;" >
+                            <p:inputText id="pWiplotno" value="#{item.wiplotno}" styleClass="wiplotnoClass" maxlength="15" style="height:30px;background-color:#{item.wiplotnobgcolor};width:200px;">
+                                <p:ajax event="change" process="@form"  update="form:idDataTable form:growlMessage"  listener="#{gXHDO502A.doWIPLotNoFocusblur(item.wiplotno, rowIndex+1)}" async="false"/>
+                            </p:inputText>  
+                        </p:column>
+                        <p:column id="sokuteikaisuu" headerText="測定回数" style=" text-align: center; background-color:#{item.sokuteikaisuubgcolor}">
+                            <p:selectOneMenu id="pSokuteikaisuu"  value="#{item.sokuteikaisuu}" disabled="#{item.sokuteikaisuudisabled}" styleClass="selectMenu" editable="false"  style="height:30px;width:150px">
+                                <f:selectItem itemValue="" itemLabel=""/>
+                                <f:selectItems value="#{gXHDO502A.cmbSokuteikaisuuData}" />
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column id="no" headerText="No" style=" text-align: center;" >
+                            <p:inputNumber id="noValue"  value="#{item.no}" thousandSeparator=""   
+                                           decimalPlaces="0" maxValue="99" minValue="-99" size="2" inputStyle="background-color:#{item.nobgcolor};" />
+                        </p:column>
+                        <p:column id="koutei" headerText="工程" style=" text-align: center; background-color:#{item.kouteibgcolor}" >
+                            <p:selectOneMenu id="pKoutei"  value="#{item.koutei}" styleClass="selectMenu" editable="false"  style="height:30px;width:100px">
+                                <f:selectItem itemValue="" itemLabel=""/>
+                                <f:selectItems value="#{gXHDO502A.cmbKouteiData}" />
+                            </p:selectOneMenu>
+                        </p:column>
+                        <p:column id="sokuteisya" headerText="測定者" style=" text-align: center;" >
+                            <p:inputText id="pSokuteisya" value="#{item.sokuteisya}" maxlength="6" style="height:30px;background-color:#{item.sokuteisyabgcolor};width:100px;" />
+                        </p:column>
+                        <p:column id="jyunsuiryou" headerText="純水量" style=" text-align: center;">
+                            <p:inputText id="pJyunsuiryou" value="#{item.jyunsuiryou}" maxlength="20" disabled="#{item.jyunsuiryoudisabled}" styleClass="wiplotnoClass" style="height:30px;background-color:#{item.jyunsuiryoubgcolor};width:270px;" />
+                        </p:column>
+                        <p:column id="sampleryou" headerText="ｻﾝﾌﾟﾙ量" style=" text-align: center;">
+                            <p:inputText id="pSampleryoui" value="#{item.sampleryou}" maxlength="20" disabled="#{item.sampleryoudisabled}" styleClass="wiplotnoClass" style="height:30px;background-color:#{item.sampleryoubgcolor};width:270px;"  />
+                        </p:column>
+                        <p:column id="maetyouonpajikan" headerText="前超音波時間" style=" text-align: center;">
+                            <p:inputText id="pMaetyouonpajikan" value="#{item.maetyouonpajikan}" maxlength="20" disabled="#{item.maetyouonpajikandisabled}" styleClass="wiplotnoClass" style="height:30px;background-color:#{item.maetyouonpajikanbgcolor};width:270px;" />
+                        </p:column>
+                        <p:column id="sokuteigoki" headerText="測定号機(号機)" style=" text-align: center;" >
+                            <p:inputNumber id="pSokuteigoki"  value="#{item.sokuteigoki}" thousandSeparator=""  
+                                           decimalPlaces="0" maxValue="9" minValue="-9" size="1" inputStyle="background-color:#{item.sokuteigokibgcolor};" />
+                        </p:column>
+                        <p:column id="toukaritukikaku" headerText="透過率規格" style=" text-align: center;">
+                            <p:inputText id="pToukaritukikaku" value="#{item.toukaritukikaku}" maxlength="20" disabled="#{item.toukaritukikakudisabled}" styleClass="wiplotnoClass" style="height:30px;background-color:#{item.toukaritukikakubgcolor};width:270px;" />
+                        </p:column>
+                        <p:column id="d50ryuudokikaku" headerText="D50粒度規格" style=" text-align: center;">
+                            <p:inputText id="pD50ryuudokikaku" value="#{item.d50ryuudokikaku}" maxlength="20" disabled="#{item.d50ryuudokikakudisabled}" styleClass="wiplotnoClass" style="height:30px;background-color:#{item.d50ryuudokikakubgcolor};width:270px;" />
+                        </p:column>
+                        <p:column id="d50neraiti" headerText="D50狙い値" style=" text-align: center;">
+                            <p:inputText id="pD50neraiti" value="#{item.d50neraiti}" maxlength="20" disabled="#{item.d50neraitidisabled}" styleClass="wiplotnoClass" style="height:30px;background-color:#{item.d50neraitibgcolor};width:270px;" />
+                        </p:column>
+                        <p:column id="d50ryuudosokuteiti" headerText="D50粒度測定値(μm)" style=" text-align: center;">
+                            <p:inputNumber id="pD50ryuudosokuteiti"  value="#{item.d50ryuudosokuteiti}" thousandSeparator=""  
+                                           decimalPlaces="5" maxValue="99.99999" minValue="-99.99999" size="8" inputStyle="background-color:#{item.d50ryuudosokuteitibgcolor};" />
+                        </p:column>
+                        <p:column id="d90ryuudokikaku" headerText="D90粒度規格" style=" text-align: center;">
+                            <p:inputText id="pD90ryuudokikaku" value="#{item.d90ryuudokikaku}" maxlength="20" disabled="#{item.d90ryuudokikakudisabled}" styleClass="wiplotnoClass" style="height:30px;background-color:#{item.d90ryuudokikakubgcolor};width:270px;" />
+                        </p:column>
+                        <p:column id="d90ryuudosokuteiti" headerText="D90粒度測定値(μm)" style=" text-align: center;">
+                            <p:inputNumber id="pD90ryuudosokuteiti"  value="#{item.d90ryuudosokuteiti}" thousandSeparator=""  
+                                           decimalPlaces="5" maxValue="99.99999" minValue="-99.99999" size="8" inputStyle="background-color:#{item.d90ryuudosokuteitibgcolor};" />
+                        </p:column>
+                        <p:column id="toukaritu" headerText="透過率(%)" style=" text-align: center;">
+                            <p:inputNumber id="pToukaritu"  value="#{item.toukaritu}" thousandSeparator=""  
+                                           decimalPlaces="2" maxValue="999.99" minValue="-999.99" size="6" inputStyle="background-color:#{item.toukaritubgcolor};" />
+                        </p:column>
+                        <p:column id="bikou" headerText="備考" style=" text-align: center;">
+                            <p:inputText id="pBikou" value="#{item.bikou}" maxlength="20" style="height:30px;background-color:#{item.bikoubgcolor};width:270px;" />
+                        </p:column>
+                    </p:dataTable>
+                </div>
+            </div>
+            <div>
+                <ui:include src="/secure/common/initMessage.xhtml"/>
+                <t:aliasBean alias="#{gXHDO901ACommon}" value="#{gXHDO502A}">
+                    <ui:include src="/secure/pxhdo901/gxhdo901c.xhtml"/>
+                </t:aliasBean>
+                <t:aliasBean alias="#{gXHDO101Common}" value="#{gXHDO502A}">
+                    <ui:include src="/secure/common/compMessage.xhtml"/>
+                </t:aliasBean>
+                <ui:include src="/secure/common/resultMessage.xhtml"/>
+                <t:aliasBean alias="#{gXHDO901Common}" value="#{gXHDO502A}">
+                    <ui:include src="/secure/common/kikakuError.xhtml"/>
+                </t:aliasBean>
+            </div>
+        </h:form>
+    </h:body>
+</html>
