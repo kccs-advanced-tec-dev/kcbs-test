@@ -772,7 +772,7 @@ public class GXHDO502A implements Serializable {
         List<GXHDO502AModel> hasKeyValueListdata = hasValueListdata.stream().filter(
                 o -> !StringUtil.isEmpty(o.getHinmei()) && !StringUtil.isEmpty(o.getLot()) && o.getPasskaisuu() != null && !StringUtil.isEmpty(o.getSokuteikaisuu())).collect(Collectors.toList());
         // 「sr_ryuudokiroku:粒度記録」から情報取得
-        List<GXHDO502AModel> srHihyoumensekisokuteikirokuListData = getSrRyuudokirokuListData(hasKeyValueListdata);
+        List<GXHDO502AModel> srRyuudokirokuListData = getSrRyuudokirokuListData(hasKeyValueListdata);
         // 状態が 0:登録 のﾃﾞｰﾀを取得する
         List<GXHDO502AModel> insertListData = getInsertListData(hasKeyValueListdata);
         // 状態が 1:更新 のﾃﾞｰﾀを取得する
@@ -781,7 +781,7 @@ public class GXHDO502A implements Serializable {
         boolean errorFlg = false;
         // 登録の場合、キーのデータがすでにある場合、排他エラーとする。
         for (GXHDO502AModel gxhdo502amodel : insertListData) {
-            List<GXHDO502AModel> collect = srHihyoumensekisokuteikirokuListData.stream().filter(o
+            List<GXHDO502AModel> collect = srRyuudokirokuListData.stream().filter(o
                     -> StringUtil.nullToBlank(gxhdo502amodel.getHinmei()).equals(StringUtil.nullToBlank(o.getHinmei()))
                     && StringUtil.nullToBlank(gxhdo502amodel.getLot()).equals(StringUtil.nullToBlank(o.getLot()))
                     && gxhdo502amodel.getPasskaisuu().equals(o.getPasskaisuu())
@@ -798,7 +798,7 @@ public class GXHDO502A implements Serializable {
         }
         // 更新の場合、キーのデータがない、あるいは更新日時が表示時と変わっている場合場合、排他エラーとする。
         for (GXHDO502AModel gxhdo502amodel : updateListData) {
-            List<GXHDO502AModel> collect = srHihyoumensekisokuteikirokuListData.stream().filter(o
+            List<GXHDO502AModel> collect = srRyuudokirokuListData.stream().filter(o
                     -> StringUtil.nullToBlank(gxhdo502amodel.getHinmei()).equals(StringUtil.nullToBlank(o.getHinmei()))
                     && StringUtil.nullToBlank(gxhdo502amodel.getLot()).equals(StringUtil.nullToBlank(o.getLot()))
                     && gxhdo502amodel.getPasskaisuu().equals(o.getPasskaisuu())
@@ -1837,11 +1837,11 @@ public class GXHDO502A implements Serializable {
                 = this.getListData().stream().filter(gxhdo502amodel -> "true".equals(gxhdo502amodel.getChkboxvalue())).collect(Collectors.toList());
 
         // 「sr_ryuudokiroku:粒度記録」から情報取得
-        List<GXHDO502AModel> srHihyoumensekisokuteikirokuListData = getSrRyuudokirokuListData(deleteListData);
+        List<GXHDO502AModel> srRyuudokirokuListData = getSrRyuudokirokuListData(deleteListData);
         boolean errorFlg = false;
         // 削除の場合、キーのデータがない、あるいは更新日時が表示時と変わっている場合、排他エラーとする。
         for (GXHDO502AModel gxhdo502amodel : deleteListData) {
-            List<GXHDO502AModel> collect = srHihyoumensekisokuteikirokuListData.stream().filter(o
+            List<GXHDO502AModel> collect = srRyuudokirokuListData.stream().filter(o
                     -> StringUtil.nullToBlank(gxhdo502amodel.getHinmei()).equals(StringUtil.nullToBlank(o.getHinmei()))
                     && StringUtil.nullToBlank(gxhdo502amodel.getLot()).equals(StringUtil.nullToBlank(o.getLot()))
                     && gxhdo502amodel.getPasskaisuu().equals(o.getPasskaisuu())

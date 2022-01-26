@@ -80,7 +80,7 @@ import org.primefaces.context.RequestContext;
  * <br>
  * 変更日	2022/01/11<br>
  * 計画書No	MB2101-DK002<br>
- * 変更者	KCSS K.Jo<br>
+ * 変更者	KCSS wxf<br>
  * 変更理由	新規作成<br>
  * <br>
  * ===============================================================================<br>
@@ -88,7 +88,7 @@ import org.primefaces.context.RequestContext;
 /**
  * GXHDO502B(比表面積測定記録機能)
  *
- * @author KCSS K.Jo
+ * @author KCSS wxf
  * @since 2022/01/11
  */
 @Named
@@ -204,7 +204,7 @@ public class GXHDO502B implements Serializable {
     private List<DaMkhyojunjoken> listDaMkhyojunjoken;
     //エクセル出力ファイルパス 比表面積測定記録
     private static final String JSON_FILE_PATH_502B = "/WEB-INF/classes/resources/json/gxhdo502b.json";
-    //画面名称 502A
+    //画面名称
     private static final String GAMEN_NAME_502B = "比表面積測定記録";
 
     /**
@@ -1190,32 +1190,6 @@ public class GXHDO502B implements Serializable {
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
             queryRunnerDoc.update(conDoc, sql, params.toArray());
         }
-    }
-
-    /**
-     * 数値の場合、Integerに変換する。その他の場合0を返却する。
-     *
-     * @param value 文字列
-     * @return 数値変換後のオブジェクト
-     */
-    private Object IntToIntObject(Integer value, int defaultValue) {
-        if (value == null) {
-            return defaultValue;
-        }
-        return value;
-    }
-
-    /**
-     * 数値の場合、BigDecimalに変換する。その他の場合0を返却する。
-     *
-     * @param value 文字列
-     * @return 数値変換後のオブジェクト
-     */
-    private Object BigDecimalToBigDecimalObject(BigDecimal value) {
-        if (value == null) {
-            return 0;
-        }
-        return value;
     }
 
     /**
