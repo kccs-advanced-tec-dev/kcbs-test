@@ -10,7 +10,7 @@ package jp.co.kccs.xhd.pxhdo502;
  * <br>
  * 変更日	2022/01/14<br>
  * 計画書No	MB2101-DK002<br>
- * 変更者	KCSS K.Jo<br>
+ * 変更者	KCSS zjh<br>
  * 変更理由	新規作成<br>
  * <br>
  * ===============================================================================<br>
@@ -18,7 +18,7 @@ package jp.co.kccs.xhd.pxhdo502;
 /**
  * GXHDO502A(粒度記録機能)
  *
- * @author KCSS K.Jo
+ * @author KCSS zjh
  * @since 2022/01/14
  */
 public class GXHDO502AConst {
