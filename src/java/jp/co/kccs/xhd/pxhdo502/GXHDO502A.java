@@ -536,7 +536,7 @@ public class GXHDO502A implements Serializable {
         long count;
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
-            String sql = "SELECT COUNT(1) AS CNT"
+            String sql = "SELECT COUNT(lotno) AS CNT"
                     + " FROM sr_ryuudokiroku WHERE (? IS NULL OR kojyo = ?) "
                     + " AND (? IS NULL OR lotno = ?) "
                     + " AND (? IS NULL OR edaban = ?) "

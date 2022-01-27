@@ -32,6 +32,7 @@ import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.StringUtil;
 import jp.co.kccs.xhd.util.ValidateUtil;
 import org.apache.commons.dbutils.QueryRunner;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * ===============================================================================<br>
@@ -954,6 +955,42 @@ public class GXHDO102B024A extends GXHDO901BEX {
             gxhdo102b024model.getTeishipass().setLabel1(rowIndx + "行目: " + gxhdo102b024model.getTeishipass().getLabel1());
             gxhdo102b024model.getBikou1().setLabel1(rowIndx + "行目: " + gxhdo102b024model.getBikou1().getLabel1());
             gxhdo102b024model.getBikou2().setLabel1(rowIndx + "行目: " + gxhdo102b024model.getBikou2().getLabel1());
+        } else {
+            gxhdo102b024model.getKaishi_day().setLabel1(rowIndx + StringUtils.substring(kaishi_dayLabel1, StringUtils.indexOf(kaishi_dayLabel1, "行目: ")));
+            String label1 = StringUtil.nullToBlank(gxhdo102b024model.getKaishi_time().getLabel1());
+            gxhdo102b024model.getKaishi_time().setLabel1(rowIndx + StringUtils.substring(label1, StringUtils.indexOf(label1, "行目: ")));
+            label1 = StringUtil.nullToBlank(gxhdo102b024model.getTeishiyoteinichiji().getLabel1());
+            gxhdo102b024model.getTeishiyoteinichiji().setLabel1(rowIndx + StringUtils.substring(label1, StringUtils.indexOf(label1, "行目: ")));
+            label1 = StringUtil.nullToBlank(gxhdo102b024model.getTeishi_day().getLabel1());
+            gxhdo102b024model.getTeishi_day().setLabel1(rowIndx + StringUtils.substring(label1, StringUtils.indexOf(label1, "行目: ")));
+            label1 = StringUtil.nullToBlank(gxhdo102b024model.getTeishi_time().getLabel1());
+            gxhdo102b024model.getTeishi_time().setLabel1(rowIndx + StringUtils.substring(label1, StringUtils.indexOf(label1, "行目: ")));
+            label1 = StringUtil.nullToBlank(gxhdo102b024model.getSyujikudenryuu().getLabel1());
+            gxhdo102b024model.getSyujikudenryuu().setLabel1(rowIndx + StringUtils.substring(label1, StringUtils.indexOf(label1, "行目: ")));
+            label1 = StringUtil.nullToBlank(gxhdo102b024model.getDeguchiondo().getLabel1());
+            gxhdo102b024model.getDeguchiondo().setLabel1(rowIndx + StringUtils.substring(label1, StringUtils.indexOf(label1, "行目: ")));
+            label1 = StringUtil.nullToBlank(gxhdo102b024model.getSealondo().getLabel1());
+            gxhdo102b024model.getSealondo().setLabel1(rowIndx + StringUtils.substring(label1, StringUtils.indexOf(label1, "行目: ")));
+            label1 = StringUtil.nullToBlank(gxhdo102b024model.getPumpmemori().getLabel1());
+            gxhdo102b024model.getPumpmemori().setLabel1(rowIndx + StringUtils.substring(label1, StringUtils.indexOf(label1, "行目: ")));
+            label1 = StringUtil.nullToBlank(gxhdo102b024model.getPumpatsu().getLabel1());
+            gxhdo102b024model.getPumpatsu().setLabel1(rowIndx + StringUtils.substring(label1, StringUtils.indexOf(label1, "行目: ")));
+            label1 = StringUtil.nullToBlank(gxhdo102b024model.getD50().getLabel1());
+            gxhdo102b024model.getD50().setLabel1(rowIndx + StringUtils.substring(label1, StringUtils.indexOf(label1, "行目: ")));
+            label1 = StringUtil.nullToBlank(gxhdo102b024model.getBet().getLabel1());
+            gxhdo102b024model.getBet().setLabel1(rowIndx + StringUtils.substring(label1, StringUtils.indexOf(label1, "行目: ")));
+            label1 = StringUtil.nullToBlank(gxhdo102b024model.getRyuuryoukikaku().getLabel1());
+            gxhdo102b024model.getRyuuryoukikaku().setLabel1(rowIndx + StringUtils.substring(label1, StringUtils.indexOf(label1, "行目: ")));
+            label1 = StringUtil.nullToBlank(gxhdo102b024model.getRyuuryou().getLabel1());
+            gxhdo102b024model.getRyuuryou().setLabel1(rowIndx + StringUtils.substring(label1, StringUtils.indexOf(label1, "行目: ")));
+            label1 = StringUtil.nullToBlank(gxhdo102b024model.getKaishipass().getLabel1());
+            gxhdo102b024model.getKaishipass().setLabel1(rowIndx + StringUtils.substring(label1, StringUtils.indexOf(label1, "行目: ")));
+            label1 = StringUtil.nullToBlank(gxhdo102b024model.getTeishipass().getLabel1());
+            gxhdo102b024model.getTeishipass().setLabel1(rowIndx + StringUtils.substring(label1, StringUtils.indexOf(label1, "行目: ")));
+            label1 = StringUtil.nullToBlank(gxhdo102b024model.getBikou1().getLabel1());
+            gxhdo102b024model.getBikou1().setLabel1(rowIndx + StringUtils.substring(label1, StringUtils.indexOf(label1, "行目: ")));
+            label1 = StringUtil.nullToBlank(gxhdo102b024model.getBikou2().getLabel1());
+            gxhdo102b024model.getBikou2().setLabel1(rowIndx + StringUtils.substring(label1, StringUtils.indexOf(label1, "行目: ")));
         }
     }
 

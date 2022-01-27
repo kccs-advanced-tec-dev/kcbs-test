@@ -596,7 +596,7 @@ public class GXHDO502B implements Serializable {
 
             // パラメータ設定
             List<Object> params = createSearchParam();
-            String sql = "SELECT count(1) AS CNT "
+            String sql = "SELECT COUNT(lotno) AS CNT "
                     + " FROM sr_hihyoumensekisokuteikiroku "
                     + "WHERE (? IS NULL OR kojyo = ?) "
                     + "AND   (? IS NULL OR lotno = ?) "

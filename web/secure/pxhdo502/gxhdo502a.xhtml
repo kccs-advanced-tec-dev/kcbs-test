@@ -105,6 +105,9 @@
             tbody[id$='kikakuErrorForm:table_data'] td{
                 word-break: break-word!important;
             }
+            span[class^='ui-inputnumber'] input{
+                text-align: right;
+            }
         </style> 
     </h:head>
     <h:body style="padding-top:30px;">
@@ -278,7 +281,7 @@
                         <p:column id="sampleryou" headerText="ｻﾝﾌﾟﾙ量" style=" text-align: center;">
                             <p:inputText id="pSampleryoui" value="#{item.sampleryou}" maxlength="20" disabled="#{item.sampleryoudisabled}" styleClass="wiplotnoClass" style="height:30px;background-color:#{item.sampleryoubgcolor};width:270px;"  />
                         </p:column>
-                        <p:column id="maetyouonpajikan" headerText="前超音波時間" style=" text-align: center;">
+                        <p:column id="maetyouonpajikan" headerText="前超音波時間(分)" style=" text-align: center;">
                             <p:inputText id="pMaetyouonpajikan" value="#{item.maetyouonpajikan}" maxlength="20" disabled="#{item.maetyouonpajikandisabled}" styleClass="wiplotnoClass" style="height:30px;background-color:#{item.maetyouonpajikanbgcolor};width:270px;" />
                         </p:column>
                         <p:column id="sokuteigoki" headerText="測定号機(号機)" style=" text-align: center;" >

@@ -10,10 +10,12 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.faces.context.ExternalContext;
@@ -321,6 +323,19 @@ public class GXHDO102B024 implements IFormLogic {
     }
 
     /**
+     * 文字列が数値に転換する
+     *
+     * @param strValue 文字列
+     * @return 数値
+     */
+    private int getIntValue(String strValue) {
+        if (StringUtil.isEmpty(strValue)) {
+            return 0;
+        }
+        return Integer.parseInt(strValue);
+    }
+
+    /**
      * 規格値の入力値チェックを行う。
      * 規格値のエラー対象は引数のリスト(kikakuchiInputErrorInfoList)に項目情報を詰めて返される。
      *
@@ -333,6 +348,13 @@ public class GXHDO102B024 implements IFormLogic {
         List<FXHDD01> itemList = new ArrayList<>();
         GXHDO102B024B bean = (GXHDO102B024B) getFormBean("beanGXHDO102B024B");
         List<GXHDO102B024Model> listdata = bean.getListdata();
+        if(listdata == null || listdata.isEmpty()){
+            return null;
+        }
+        //最大の停止パスの項目を取得
+        GXHDO102B024Model maxTeishipassGXHDO102B024Model = listdata.stream().collect(Collectors.collectingAndThen(Collectors.maxBy((a, b)
+                    -> getIntValue(a.getTeishipass().getValue()) - getIntValue(b.getTeishipass().getValue())
+            ), Optional::get));
         for (int i = 0; i < listdata.size(); i++) {
             GXHDO102B024Model gxhdo102b024model = listdata.get(i);
             // D50（μm）
@@ -360,13 +382,13 @@ public class GXHDO102B024 implements IFormLogic {
             }
             // 停止ﾊﾟｽ
             FXHDD01 teishipassItem = gxhdo102b024model.getTeishipass();
+
             if (!teishipassItem.getLabel1().contains("行目: ")) {
                 teishipassItem.setLabel1((i + 1) + "行目: " + teishipassItem.getLabel1());
             }
-            if (i != (listdata.size() - 1)) {
-                teishipassItem.setStandardPattern("");
+            if (maxTeishipassGXHDO102B024Model != null && gxhdo102b024model.getKaisuu() == maxTeishipassGXHDO102B024Model.getKaisuu()) {
+                itemList.add(teishipassItem);
             }
-            itemList.add(teishipassItem);
         }
         ErrorMessageInfo errorMessageInfo = ValidateUtil.checkInputKikakuchi(itemList, kikakuchiInputErrorInfoList);
 
@@ -541,10 +563,28 @@ public class GXHDO102B024 implements IFormLogic {
             processData.getItemList().forEach((fxhdd01) -> {
                 fxhdd01.setBackColorInput(fxhdd01.getBackColorInputDefault());
             });
+            processData.getItemListEx().forEach((fxhdd01) -> {
+                fxhdd01.setBackColorInput(fxhdd01.getBackColorInputDefault());
+            });
             GXHDO102B024A.clearListDataBackColor();
             // 状態ﾌﾗｸﾞ、revisionを設定する。
             processData.setInitJotaiFlg(JOTAI_FLG_KARI_TOROKU);
             processData.setInitRev(newRev.toPlainString());
+            // 誘電体ｽﾗﾘｰ作製・粉砕入力_サブ画面データ取得
+            List<SubSrYuudentaiFunsai> subSrYuudentaiFunsaiList = getSubSrYuudentaiFunsaiData(queryRunnerQcdb, newRev.toPlainString(), JOTAI_FLG_KARI_TOROKU, kojyo, lotNo9, edaban);
+
+            // 流量規格値取得ﾃﾞｰﾀ
+            List<DaMkJoken> ryuuryoukikakuListData = new ArrayList<>();
+            // ﾊﾟｽ規格値取得ﾃﾞｰﾀ
+            List<DaMkJoken> passkikakuListData = new ArrayList<>();
+            String hinmei = (String) session.getAttribute("hinmei");
+            // 規格値(回数)取得
+            getKaisuuValue(queryRunnerQcdb, hinmei, lotNo, ryuuryoukikakuListData, passkikakuListData);
+
+            // 誘電体ｽﾗﾘｰ作製・粉砕ｻﾌﾞ画面テーブルデータ初期設定
+            initGXHDO102B024BData(processData, subSrYuudentaiFunsaiList, ryuuryoukikakuListData, passkikakuListData);
+            // 誘電体ｽﾗﾘｰ作製・粉砕ｻﾌﾞ画面データ設定
+            setInputItemPassListDataMainForm(subSrYuudentaiFunsaiList);
             return processData;
         } catch (SQLException e) {
             ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
@@ -558,6 +598,9 @@ public class GXHDO102B024 implements IFormLogic {
             } else {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
             }
+        } catch (CloneNotSupportedException ex) {
+            ErrUtil.outputErrorLog("CloneNotSupportedException発生", ex, LOGGER);
+            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
         }
 
         return processData;
@@ -607,7 +650,9 @@ public class GXHDO102B024 implements IFormLogic {
         ValidateUtil validateUtil = new ValidateUtil();
         GXHDO102B024B bean = (GXHDO102B024B) getFormBean("beanGXHDO102B024B");
         List<GXHDO102B024Model> listdata = bean.getListdata();
-        for (GXHDO102B024Model gxhdo102b024model : listdata) {
+        // 入力値があるデータを取得
+        List<GXHDO102B024Model> hasValueListdata = getHasValueListdata(listdata);
+        for (GXHDO102B024Model gxhdo102b024model : hasValueListdata) {
             // 時刻前後ﾁｪｯｸ
             FXHDD01 itemKaishiDay = gxhdo102b024model.getKaishi_day(); // 開始日付
             FXHDD01 itemKaishiTime = gxhdo102b024model.getKaishi_time(); // 開始時刻
@@ -1042,6 +1087,9 @@ public class GXHDO102B024 implements IFormLogic {
      * @return 処理制御データ
      */
     public ProcessData doGyoutuyika(ProcessData processData) {
+        processData.getItemListEx().forEach((fxhdd01) -> {
+            fxhdd01.setBackColorInput(fxhdd01.getBackColorInputDefault());
+        });
         GXHDO102B024B bean = (GXHDO102B024B) getFormBean("beanGXHDO102B024B");
         List<GXHDO102B024Model> listdata = bean.getListdata();
         int tuyikaRowNo = listdata.size() + 1;
@@ -3152,9 +3200,37 @@ public class GXHDO102B024 implements IFormLogic {
             String systemTime) throws SQLException {
         GXHDO102B024B bean = (GXHDO102B024B) getFormBean("beanGXHDO102B024B");
         List<GXHDO102B024Model> listdata = bean.getListdata();
-        for (GXHDO102B024Model gxhdo102b024model : listdata) {
+        // 入力値があるデータを取得
+        List<GXHDO102B024Model> hasValueListdata = getHasValueListdata(listdata);
+        for (int i = 0; i < hasValueListdata.size(); i++) {
+            GXHDO102B024Model gxhdo102b024model = hasValueListdata.get(i);
+            gxhdo102b024model.setKaisuu(i + 1);
             insertTmpSubSrYuudentaiFunsai(queryRunnerQcdb, conQcdb, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, gxhdo102b024model);
         }
+    }
+
+    /**
+     * 入力値があるデータを取得
+     *
+     * @param listdata データリスト
+     * @return 入力値があるデータリスト
+     */
+    public List<GXHDO102B024Model> getHasValueListdata(List<GXHDO102B024Model> listdata) {
+        if (listdata == null || listdata.isEmpty()) {
+            return new ArrayList<>();
+        }
+        List<GXHDO102B024Model> hasValueListdata = listdata.stream().filter(gxhdo102b024model
+                -> !(StringUtil.isEmpty(gxhdo102b024model.getKaishi_day().getValue()) && StringUtil.isEmpty(gxhdo102b024model.getKaishi_time().getValue())
+                && StringUtil.isEmpty(gxhdo102b024model.getTeishi_day().getValue()) && StringUtil.isEmpty(gxhdo102b024model.getTeishi_time().getValue())
+                && StringUtil.isEmpty(gxhdo102b024model.getSyujikudenryuu().getValue()) && StringUtil.isEmpty(gxhdo102b024model.getDeguchiondo().getValue())
+                && StringUtil.isEmpty(gxhdo102b024model.getSealondo().getValue()) && StringUtil.isEmpty(gxhdo102b024model.getPumpmemori().getValue())
+                && StringUtil.isEmpty(gxhdo102b024model.getPumpatsu().getValue()) && StringUtil.isEmpty(gxhdo102b024model.getD50().getValue())
+                && StringUtil.isEmpty(gxhdo102b024model.getBet().getValue()) && StringUtil.isEmpty(gxhdo102b024model.getRyuuryou().getValue())
+                && StringUtil.isEmpty(gxhdo102b024model.getKaishipass().getValue()) && StringUtil.isEmpty(gxhdo102b024model.getTeishipass().getValue())
+                && StringUtil.isEmpty(gxhdo102b024model.getBikou1().getValue()) && StringUtil.isEmpty(gxhdo102b024model.getBikou2().getValue()))
+        ).collect(Collectors.toList());
+        hasValueListdata.sort(Comparator.comparing(GXHDO102B024Model::getKaisuu));
+        return hasValueListdata;
     }
 
     /**
@@ -3315,7 +3391,11 @@ public class GXHDO102B024 implements IFormLogic {
             String systemTime) throws SQLException {
         GXHDO102B024B bean = (GXHDO102B024B) getFormBean("beanGXHDO102B024B");
         List<GXHDO102B024Model> listdata = bean.getListdata();
-        for (GXHDO102B024Model gxhdo102b024model : listdata) {
+        // 入力値があるデータを取得
+        List<GXHDO102B024Model> hasValueListdata = getHasValueListdata(listdata);
+        for (int i = 0; i < hasValueListdata.size(); i++) {
+            GXHDO102B024Model gxhdo102b024model = hasValueListdata.get(i);
+            gxhdo102b024model.setKaisuu(i + 1);
             insertSubSrYuudentaiFunsai(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo, edaban, systemTime, gxhdo102b024model);
         }
     }
