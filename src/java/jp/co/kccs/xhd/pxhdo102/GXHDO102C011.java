@@ -52,10 +52,10 @@ public class GXHDO102C011 implements Serializable {
     private static final Logger LOGGER = Logger.getLogger(GXHDO102C011.class.getName());
 
     /**
-     * DataSource(DocumentServer)
+     * DataSource(MLAServer)
      */
-    @Resource(mappedName = "jdbc/DocumentServer")
-    private transient DataSource dataSourceDocServer;
+    @Resource(mappedName = "jdbc/MLA")
+    private transient DataSource dataSourceMLAServer;
 
     /**
      * 工場ｺｰﾄﾞ
@@ -306,7 +306,7 @@ public class GXHDO102C011 implements Serializable {
      */
     private Map<String, Object> getFmlad01Data(String zaikono) {
         try {
-            QueryRunner queryRunner = new QueryRunner(getDataSourceDocServer());
+            QueryRunner queryRunner = new QueryRunner(getDataSourceMLAServer());
             String sql = "SELECT hinmei, yuko_kigen as yukokigen"
                     + " FROM fmlad01 "
                     + " WHERE zaiko_no = ? ";
@@ -342,21 +342,21 @@ public class GXHDO102C011 implements Serializable {
     }
 
     /**
-     * DataSource(DocumentServer)
+     * DataSource(MLAServer)
      *
-     * @return the dataSourceDocServer
+     * @return the dataSourceMLAServer
      */
-    public DataSource getDataSourceDocServer() {
-        return dataSourceDocServer;
+    public DataSource getDataSourceMLAServer() {
+        return dataSourceMLAServer;
     }
 
     /**
-     * DataSource(DocumentServer)
+     * DataSource(MLAServer)
      *
-     * @param dataSourceDocServer the dataSourceDocServer to set
+     * @param dataSourceMLAServer the dataSourceMLAServer to set
      */
-    public void setDataSourceDocServer(DataSource dataSourceDocServer) {
-        this.dataSourceDocServer = dataSourceDocServer;
+    public void setDataSourceMLAServer(DataSource dataSourceMLAServer) {
+        this.dataSourceMLAServer = dataSourceMLAServer;
     }
 
     /**
