@@ -78,22 +78,34 @@
                     $("tbody div[id$=':checkValue'] div").addClass("ui-state-active");
                     $("tbody div[id$=':checkValue'] span").removeClass("ui-icon-blank").addClass("ui-icon-check");
                 } else {
-                    $("tbody input[id$='checkValue_input']").attr("checked", false);
+                    $("tbody input[id$='checkValue_input']").removeAttr("checked");
                     $("tbody div[id$=':checkValue'] div").removeClass("ui-state-active");
                     $("tbody div[id$=':checkValue'] span").removeClass("ui-icon-check").addClass("ui-icon-blank");
                 }
             }
             function checkHeader() {
-                var checkFlg = ($("tbody input[id$='checkValue_input']").length === $("tbody input[id$='checkValue_input']:checked").length && $("tbody input[id$='checkValue_input']").length !== 0) ? true : false;
+                var checkFlg = ($("tbody input[id$='checkValue_input']").length === $("tbody input[id$='checkValue_input'][checked='checked']").length && $("tbody input[id$='checkValue_input']").length !== 0) ? true : false;
+
                 if (checkFlg) {
                     $("input[id$='form:idDataTable:headercheckValue_input']").attr("checked", true);
                     $("thead div[id$='form:idDataTable:headercheckValue'] div").addClass("ui-state-active");
                     $("thead div[id$='form:idDataTable:headercheckValue'] span").removeClass("ui-icon-blank").addClass("ui-icon-check");
                 } else {
-                    $("input[id$='form:idDataTable:headercheckValue_input']").attr("checked", false);
+                    $("input[id$='form:idDataTable:headercheckValue_input']").removeAttr("checked");
                     $("thead div[id$='form:idDataTable:headercheckValue'] div").removeClass("ui-state-active");
                     $("thead div[id$='form:idDataTable:headercheckValue'] span").removeClass("ui-icon-check").addClass("ui-icon-blank");
                 }
+            }
+            function checkData(obj) {
+                if (obj.checked) {
+                    $(obj).attr("checked", true);
+                } else {
+                    $(obj).removeAttr("checked");
+                    $("input[id$='form:idDataTable:headercheckValue_input']").removeAttr("checked");
+                    $("thead div[id$='form:idDataTable:headercheckValue'] div").removeClass("ui-state-active");
+                    $("thead div[id$='form:idDataTable:headercheckValue'] span").removeClass("ui-icon-check").addClass("ui-icon-blank");
+                }
+                checkHeader();
             }
             //]]>
         </script>
@@ -239,7 +251,7 @@
                             <f:facet name="header" >
                                 <p:selectBooleanCheckbox id="headercheckValue" rendered="true" onchange="checkAll(this);"  />
                             </f:facet>
-                            <p:selectBooleanCheckbox id="checkValue" rendered="#{item.chkboxrender}" onchange="checkHeader();" value="#{item.chkboxvalue}"/>
+                            <p:selectBooleanCheckbox id="checkValue" rendered="#{item.chkboxrender}" onchange="checkData(this);" value="#{item.chkboxvalue}"/>
                         </p:column>
                         <p:column id="hinmei" headerText="品名" style=" text-align: center;" >
                             <p:inputText id="pHinmei" value="#{item.hinmei}" maxlength="4" styleClass="wiplotnoClass" disabled="#{item.hinmeidisabled}"  style="height:30px;background-color:#{item.hinmeibgcolor};width:80px;" />
