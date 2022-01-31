@@ -386,7 +386,7 @@ public class GXHDO102B024 implements IFormLogic {
             if (!teishipassItem.getLabel1().contains("行目: ")) {
                 teishipassItem.setLabel1((i + 1) + "行目: " + teishipassItem.getLabel1());
             }
-            if (maxTeishipassGXHDO102B024Model != null && gxhdo102b024model.getKaisuu() == maxTeishipassGXHDO102B024Model.getKaisuu()) {
+            if (maxTeishipassGXHDO102B024Model != null && gxhdo102b024model.getKaisuu().equals(maxTeishipassGXHDO102B024Model.getKaisuu())) {
                 itemList.add(teishipassItem);
             }
         }
@@ -1134,6 +1134,7 @@ public class GXHDO102B024 implements IFormLogic {
                         && StringUtil.isEmpty(gxhdo102b024model.getSealondo().getValue()) && StringUtil.isEmpty(gxhdo102b024model.getPumpmemori().getValue())
                         && StringUtil.isEmpty(gxhdo102b024model.getPumpatsu().getValue()) && StringUtil.isEmpty(gxhdo102b024model.getD50().getValue())
                         && StringUtil.isEmpty(gxhdo102b024model.getBet().getValue()) && StringUtil.isEmpty(gxhdo102b024model.getRyuuryou().getValue())
+                        && StringUtil.isEmpty(gxhdo102b024model.getRyuuryoukikaku().getKikakuChi())
                         && StringUtil.isEmpty(gxhdo102b024model.getKaishipass().getValue()) && StringUtil.isEmpty(gxhdo102b024model.getTeishipass().getValue())
                         && StringUtil.isEmpty(gxhdo102b024model.getBikou1().getValue()) && StringUtil.isEmpty(gxhdo102b024model.getBikou2().getValue())) {
                     removeListdata.add(gxhdo102b024model);
@@ -1399,7 +1400,7 @@ public class GXHDO102B024 implements IFormLogic {
         }
 
         // 制限回数内にデータが取得できなかった場合
-        if (srYuudentaiFunsaiList.isEmpty() || subSrYuudentaiFunsaiList.isEmpty()) {
+        if (srYuudentaiFunsaiList.isEmpty()) {
             return false;
         }
         processData.setInitRev(rev);
@@ -3226,6 +3227,7 @@ public class GXHDO102B024 implements IFormLogic {
                 && StringUtil.isEmpty(gxhdo102b024model.getSealondo().getValue()) && StringUtil.isEmpty(gxhdo102b024model.getPumpmemori().getValue())
                 && StringUtil.isEmpty(gxhdo102b024model.getPumpatsu().getValue()) && StringUtil.isEmpty(gxhdo102b024model.getD50().getValue())
                 && StringUtil.isEmpty(gxhdo102b024model.getBet().getValue()) && StringUtil.isEmpty(gxhdo102b024model.getRyuuryou().getValue())
+                && StringUtil.isEmpty(gxhdo102b024model.getRyuuryoukikaku().getKikakuChi())
                 && StringUtil.isEmpty(gxhdo102b024model.getKaishipass().getValue()) && StringUtil.isEmpty(gxhdo102b024model.getTeishipass().getValue())
                 && StringUtil.isEmpty(gxhdo102b024model.getBikou1().getValue()) && StringUtil.isEmpty(gxhdo102b024model.getBikou2().getValue()))
         ).collect(Collectors.toList());

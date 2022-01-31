@@ -22,7 +22,6 @@ import javax.servlet.http.HttpSession;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.db.model.FXHDM05;
 import jp.co.kccs.xhd.model.GXHDO102B024Model;
-import static jp.co.kccs.xhd.pxhdo102.GXHDO102B024.getFormBean;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.GXHDO901BEX;
 import jp.co.kccs.xhd.util.DateUtil;
@@ -1067,6 +1066,7 @@ public class GXHDO102B024A extends GXHDO901BEX {
      * @param buttonId ボタンID
      * @return エラーメッセージ
      */
+    @Override
     protected ErrorMessageInfo getCheckResult(String buttonId) {
         // リビジョンチェック
         ErrorMessageInfo checkRevErrorMessage = checkRevision(buttonId);
@@ -1110,6 +1110,7 @@ public class GXHDO102B024A extends GXHDO901BEX {
      *
      * @param buttonId ボタンID
      */
+    @Override
     public void clearItemListBackColor(String buttonId) {
         // 背景色を戻さない特定の処理を除き背景色をデフォルトの背景色に戻す。
         if (this.noCheckButtonId == null || !this.noCheckButtonId.contains(buttonId)) {
