@@ -386,7 +386,7 @@ public class GXHDO501A implements Serializable {
         // 規格ラジオボタン設定
         rKikaku = "標準規格";
         // 種類コンボボックス設定
-        cmbSyuruiData = new String[]{"ｶﾞﾗｽ作製", "ｶﾞﾗｽｽﾗﾘｰ作製", "添加剤ｽﾗﾘｰ作製", "誘電体ｽﾗﾘｰ作製", "ﾊﾞｲﾝﾀﾞｰ溶液作製", "ｽﾘｯﾌﾟ作製"};
+        cmbSyuruiData = new String[]{"ｶﾞﾗｽ作製", "ｶﾞﾗｽｽﾗﾘｰ作製", "添加材ｽﾗﾘｰ作製", "誘電体ｽﾗﾘｰ作製", "ﾊﾞｲﾝﾀﾞｰ溶液作製", "ｽﾘｯﾌﾟ作製"};
     }
 
     /**
@@ -532,6 +532,8 @@ public class GXHDO501A implements Serializable {
             String stepFlg = doTorikomiRirekiSyori(resultMap, resultMessageList, fvsyurui, conDoc, queryRunnerDoc);
 
             if ("U".equals(stepFlg)) {
+                DBUtil.rollbackConnection(conDoc, LOGGER);
+                DBUtil.rollbackConnection(conQcdb, LOGGER);
                 return loadHyoJunDataList;
             } else if ("T".equals(stepFlg)) {
                 // T.画面に以下のﾎﾟｯﾌﾟｱｯﾌﾟﾒｯｾｰｼﾞを表示する。
@@ -612,6 +614,8 @@ public class GXHDO501A implements Serializable {
             // N.規格取込履歴登録処理
             String stepFlg = doTorikomiRirekiSyori(resultMap, resultMessageList, fvsyurui, conDoc, queryRunnerDoc);
             if ("U".equals(stepFlg)) {
+                DBUtil.rollbackConnection(conDoc, LOGGER);
+                DBUtil.rollbackConnection(conQcdb, LOGGER);
                 return loadLotDataList;
             } else if ("T".equals(stepFlg)) {
                 // T.画面に以下のﾎﾟｯﾌﾟｱｯﾌﾟﾒｯｾｰｼﾞを表示する。
@@ -630,6 +634,8 @@ public class GXHDO501A implements Serializable {
             // R.ﾛｯﾄ規格情報登録処理
             stepFlg = doLotKikakuInfoTorokuSyori(resultMap, resultMessageList, fvsyurui, conQcdb, queryRunnerQcdb, loadLotDataList);
             if ("U".equals(stepFlg)) {
+                DBUtil.rollbackConnection(conDoc, LOGGER);
+                DBUtil.rollbackConnection(conQcdb, LOGGER);
                 return loadLotDataList;
             }
             // S.登録件数ﾁｪｯｸ

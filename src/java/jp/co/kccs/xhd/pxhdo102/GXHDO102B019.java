@@ -11,6 +11,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -401,13 +402,13 @@ public class GXHDO102B019 implements IFormLogic {
         if (itemSoujyuuryou1 != null && StringUtil.isEmpty(itemSoujyuuryou1.getValue())) {
             // ｴﾗｰ項目をﾘｽﾄに追加
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemSoujyuuryou1);
-            return MessageUtil.getErrorMessageInfo("XHD-000037", true, false, errFxhdd01List, itemSoujyuuryou1.getLabel1());
+            return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, itemSoujyuuryou1.getLabel1());
         }
         // 「風袋重量①」ﾁｪｯｸ
         if (itemFuutaijyuuryou1 != null && StringUtil.isEmpty(itemFuutaijyuuryou1.getValue())) {
             // ｴﾗｰ項目をﾘｽﾄに追加
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemFuutaijyuuryou1);
-            return MessageUtil.getErrorMessageInfo("XHD-000037", true, false, errFxhdd01List, itemFuutaijyuuryou1.getLabel1());
+            return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, itemFuutaijyuuryou1.getLabel1());
         }
         if (itemSoujyuuryou1 != null && itemFuutaijyuuryou1 != null) {
             // [総重量①]<[風袋重量①]場合エラー
@@ -416,7 +417,7 @@ public class GXHDO102B019 implements IFormLogic {
             if (soujyuuryou1.compareTo(fuutaijyuuryou1) < 0) {
                 // ｴﾗｰ項目をﾘｽﾄに追加
                 List<FXHDD01> errFxhdd01List = Arrays.asList(itemSoujyuuryou1, itemFuutaijyuuryou1);
-                return MessageUtil.getErrorMessageInfo("XHD-000023", true, false, errFxhdd01List, itemSoujyuuryou1.getLabel1(), itemFuutaijyuuryou1.getLabel1());
+                return MessageUtil.getErrorMessageInfo("XHD-000023", true, true, errFxhdd01List, itemSoujyuuryou1.getLabel1(), itemFuutaijyuuryou1.getLabel1());
             }
         }
 
@@ -425,14 +426,14 @@ public class GXHDO102B019 implements IFormLogic {
             if (StringUtil.isEmpty(itemSoujyuuryou2.getValue()) && !StringUtil.isEmpty(itemFuutaijyuuryou2.getValue())) {
                 // ｴﾗｰ項目をﾘｽﾄに追加
                 List<FXHDD01> errFxhdd01List = Arrays.asList(itemSoujyuuryou2);
-                return MessageUtil.getErrorMessageInfo("XHD-000037", true, false, errFxhdd01List, itemSoujyuuryou2.getLabel1());
-
+                return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, itemSoujyuuryou2.getLabel1());
+                
             }
             // 「風袋重量②」ﾁｪｯｸ
             if (StringUtil.isEmpty(itemFuutaijyuuryou2.getValue()) && !StringUtil.isEmpty(itemSoujyuuryou2.getValue())) {
                 // ｴﾗｰ項目をﾘｽﾄに追加
                 List<FXHDD01> errFxhdd01List = Arrays.asList(itemFuutaijyuuryou2);
-                return MessageUtil.getErrorMessageInfo("XHD-000037", true, false, errFxhdd01List, itemFuutaijyuuryou2.getLabel1());
+                return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, itemFuutaijyuuryou2.getLabel1());
             }
 
             // [総重量②]<[風袋重量②]場合エラー
@@ -442,7 +443,7 @@ public class GXHDO102B019 implements IFormLogic {
                 if (soujyuuryou2.compareTo(fuutaijyuuryou2) < 0) {
                     // ｴﾗｰ項目をﾘｽﾄに追加
                     List<FXHDD01> errFxhdd01List = Arrays.asList(itemSoujyuuryou2, itemFuutaijyuuryou2);
-                    return MessageUtil.getErrorMessageInfo("XHD-000023", true, false, errFxhdd01List, itemSoujyuuryou2.getLabel1(), itemFuutaijyuuryou2.getLabel1());
+                    return MessageUtil.getErrorMessageInfo("XHD-000023", true, true, errFxhdd01List, itemSoujyuuryou2.getLabel1(), itemFuutaijyuuryou2.getLabel1());
                 }
             }
         }
@@ -452,14 +453,14 @@ public class GXHDO102B019 implements IFormLogic {
             if (StringUtil.isEmpty(itemSoujyuuryou3.getValue()) && !StringUtil.isEmpty(itemFuutaijyuuryou3.getValue())) {
                 // ｴﾗｰ項目をﾘｽﾄに追加
                 List<FXHDD01> errFxhdd01List = Arrays.asList(itemSoujyuuryou3);
-                return MessageUtil.getErrorMessageInfo("XHD-000037", true, false, errFxhdd01List, itemSoujyuuryou3.getLabel1());
-
+                return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, itemSoujyuuryou3.getLabel1());
+                
             }
             // 「風袋重量③」ﾁｪｯｸ
             if (StringUtil.isEmpty(itemFuutaijyuuryou3.getValue()) && !StringUtil.isEmpty(itemSoujyuuryou3.getValue())) {
                 // ｴﾗｰ項目をﾘｽﾄに追加
                 List<FXHDD01> errFxhdd01List = Arrays.asList(itemFuutaijyuuryou3);
-                return MessageUtil.getErrorMessageInfo("XHD-000037", true, false, errFxhdd01List, itemFuutaijyuuryou3.getLabel1());
+                return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, itemFuutaijyuuryou3.getLabel1());
             }
             // [総重量③]<[風袋重量③]場合エラー
             if (!(StringUtil.isEmpty(itemSoujyuuryou3.getValue()) && StringUtil.isEmpty(itemFuutaijyuuryou3.getValue()))) {
@@ -468,7 +469,7 @@ public class GXHDO102B019 implements IFormLogic {
                 if (soujyuuryou3.compareTo(fuutaijyuuryou3) < 0) {
                     // ｴﾗｰ項目をﾘｽﾄに追加
                     List<FXHDD01> errFxhdd01List = Arrays.asList(itemSoujyuuryou3, itemFuutaijyuuryou3);
-                    return MessageUtil.getErrorMessageInfo("XHD-000023", true, false, errFxhdd01List, itemSoujyuuryou3.getLabel1(), itemFuutaijyuuryou3.getLabel1());
+                    return MessageUtil.getErrorMessageInfo("XHD-000023", true, true, errFxhdd01List, itemSoujyuuryou3.getLabel1(), itemFuutaijyuuryou3.getLabel1());
                 }
             }
         }
@@ -685,7 +686,6 @@ public class GXHDO102B019 implements IFormLogic {
             ErrorMessageInfo checkItemErrorInfo = checkKansougosyoumi(itemKansougosoujyuuryou3, itemArumizarafuutaijyuuryou3, itemKansoumaeslurryjyuuryou3);
             if (checkItemErrorInfo != null) {
                 processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
-                processData.setMethod("");
                 return processData;
             }
             // 「乾燥後正味重量③」計算処理
@@ -709,13 +709,13 @@ public class GXHDO102B019 implements IFormLogic {
         if (StringUtil.isEmpty(itemKansougosoujyuuryou.getValue())) {
             // ｴﾗｰ項目をﾘｽﾄに追加
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemKansougosoujyuuryou);
-            return MessageUtil.getErrorMessageInfo("XHD-000037", true, false, errFxhdd01List, itemKansougosoujyuuryou.getLabel1());
+            return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, itemKansougosoujyuuryou.getLabel1());
         }
         // 「ｱﾙﾐ皿風袋重量」ﾁｪｯｸ
         if (StringUtil.isEmpty(itemArumizarafuutaijyuuryou.getValue())) {
             // ｴﾗｰ項目をﾘｽﾄに追加
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemArumizarafuutaijyuuryou);
-            return MessageUtil.getErrorMessageInfo("XHD-000037", true, false, errFxhdd01List, itemArumizarafuutaijyuuryou.getLabel1());
+            return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, itemArumizarafuutaijyuuryou.getLabel1());
         }
         // [乾燥後総重量]<[ｱﾙﾐ皿風袋重量]場合エラー
         BigDecimal kansougosoujyuuryou = new BigDecimal(itemKansougosoujyuuryou.getValue());
@@ -723,7 +723,7 @@ public class GXHDO102B019 implements IFormLogic {
         if (kansougosoujyuuryou.compareTo(arumizarafuutaijyuuryou) < 0) {
             // ｴﾗｰ項目をﾘｽﾄに追加
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemKansougosoujyuuryou, itemArumizarafuutaijyuuryou);
-            return MessageUtil.getErrorMessageInfo("XHD-000023", true, false, errFxhdd01List, itemKansougosoujyuuryou.getLabel1(), itemArumizarafuutaijyuuryou.getLabel1());
+            return MessageUtil.getErrorMessageInfo("XHD-000023", true, true, errFxhdd01List, itemKansougosoujyuuryou.getLabel1(), itemArumizarafuutaijyuuryou.getLabel1());
         }
 
         if (itemKansoumaeslurryjyuuryou.getValue() == null || new BigDecimal(itemKansoumaeslurryjyuuryou.getValue()).compareTo(BigDecimal.ZERO) == 0) {
@@ -801,13 +801,13 @@ public class GXHDO102B019 implements IFormLogic {
         if (StringUtil.isEmpty(itemKokeibunhiritu1.getValue())) {
             // ｴﾗｰ項目をﾘｽﾄに追加
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemKokeibunhiritu1);
-            return MessageUtil.getErrorMessageInfo("XHD-000037", true, false, errFxhdd01List, itemKokeibunhiritu1.getLabel1());
+            return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, itemKokeibunhiritu1.getLabel1());
         }
         // 「固形分比率②」ﾁｪｯｸ
         if (StringUtil.isEmpty(itemKokeibunhiritu2.getValue())) {
             // ｴﾗｰ項目をﾘｽﾄに追加
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemKokeibunhiritu2);
-            return MessageUtil.getErrorMessageInfo("XHD-000037", true, false, errFxhdd01List, itemKokeibunhiritu2.getLabel1());
+            return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, itemKokeibunhiritu2.getLabel1());
         }
         return null;
     }
@@ -896,7 +896,7 @@ public class GXHDO102B019 implements IFormLogic {
                 if (new BigDecimal(kokeibunhirituDiffVal1).compareTo(compareValue) > -1) {
                     // ｴﾗｰ項目をﾘｽﾄに追加
                     List<FXHDD01> errFxhdd01List = Arrays.asList(itemKokeibunhiritu2);
-                    return MessageUtil.getErrorMessageInfo("", "差が0.05％以上あります。再測定を実施してください。", true, false, errFxhdd01List);
+                    return MessageUtil.getErrorMessageInfo("", "差が0.05％以上あります。再測定を実施してください。", true, true, errFxhdd01List);
                 }
             }
 
@@ -910,14 +910,14 @@ public class GXHDO102B019 implements IFormLogic {
                     if (new BigDecimal(kokeibunhirituDiffVal2).compareTo(compareValue) > -1) {
                         // ｴﾗｰ項目をﾘｽﾄに追加
                         List<FXHDD01> errFxhdd01List = Arrays.asList(itemKokeibunhiritu3);
-                        return MessageUtil.getErrorMessageInfo("", "差が0.05％以上あります。再測定を実施してください。", true, false, errFxhdd01List);
+                        return MessageUtil.getErrorMessageInfo("", "差が0.05％以上あります。再測定を実施してください。", true, true, errFxhdd01List);
                     }
                 }
                 if (!StringUtil.isEmpty(itemKokeibunhiritu2.getValue()) && !StringUtil.isEmpty(itemKokeibunhiritu3.getValue())) {
                     if (new BigDecimal(kokeibunhirituDiffVal3).compareTo(compareValue) > -1) {
                         // ｴﾗｰ項目をﾘｽﾄに追加
                         List<FXHDD01> errFxhdd01List = Arrays.asList(itemKokeibunhiritu3);
-                        return MessageUtil.getErrorMessageInfo("", "差が0.05％以上あります。再測定を実施してください。", true, false, errFxhdd01List);
+                        return MessageUtil.getErrorMessageInfo("", "差が0.05％以上あります。再測定を実施してください。", true, true, errFxhdd01List);
                     }
                 }
             }
@@ -3520,6 +3520,11 @@ public class GXHDO102B019 implements IFormLogic {
         notShowItemList.forEach((notShowItem) -> {
             itemList.remove(getItemRow(itemList, notShowItem));
         });
+        itemList.sort(Comparator.comparing(FXHDD01::getItemNo));
+        for (int i = 0; i < itemList.size(); i++) {
+            FXHDD01 item = itemList.get(i);
+            item.setItemIndex(i + 1);
+        }
     }
 
     /**
