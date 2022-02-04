@@ -2,6 +2,11 @@
                 xmlns:h="http://xmlns.jcp.org/jsf/html"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <style>
+        tbody[id$='kikakuErrorForm:table_data'] td{
+            word-wrap: break-word;
+        }
+    </style> 
     <p:dialog header="規格外エラー" id="dlg_kikakuError" widgetVar="W_dlg_kikakuError"
               width="550" modal="true" height="390" style="color: #ff0000;"
               dynamic="false" closable="true" closeOnEscape="false" class="error-dialog-title"

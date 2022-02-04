@@ -61,6 +61,14 @@ import jp.co.kccs.xhd.pxhdo102.GXHDO102C010;
 import jp.co.kccs.xhd.pxhdo102.GXHDO102C010Logic;
 //import jp.co.kccs.xhd.pxhdo102.GXHDO102C011;
 //import jp.co.kccs.xhd.pxhdo102.GXHDO102C011Logic;
+import jp.co.kccs.xhd.pxhdo102.GXHDO102C013;
+import jp.co.kccs.xhd.pxhdo102.GXHDO102C013Logic;
+import jp.co.kccs.xhd.pxhdo102.GXHDO102C014;
+import jp.co.kccs.xhd.pxhdo102.GXHDO102C014Logic;
+//import jp.co.kccs.xhd.pxhdo102.GXHDO102C015;
+//import jp.co.kccs.xhd.pxhdo102.GXHDO102C015Logic;
+//import jp.co.kccs.xhd.pxhdo102.GXHDO102C016;
+//import jp.co.kccs.xhd.pxhdo102.GXHDO102C016Logic;
 import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
@@ -1909,10 +1917,30 @@ public class GXHDO901B implements Serializable {
                 GXHDO102C010 beanGXHDO102C010 = (GXHDO102C010) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO102C010);
                 GXHDO102C010Logic.setReturnData(beanGXHDO102C010.getGxhdO102c010Model(), this.itemList);
                 break;
-             // 誘電体ｽﾗﾘｰ作製・主原料秤量入力
+//             // 誘電体ｽﾗﾘｰ作製・主原料秤量入力
 //            case SubFormUtil.FORM_ID_GXHDO102C011:
 //                GXHDO102C011 beanGXHDO102C011 = (GXHDO102C011) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO102C011);
 //                GXHDO102C011Logic.setReturnData(beanGXHDO102C011.getGxhdO102c011Model(), this.itemList);
+//                break;
+            // ｽﾘｯﾌﾟ作製・ｽﾗﾘｰ固形分調整(ｽﾃﾝ容器)入力
+            case SubFormUtil.FORM_ID_GXHDO102C013:
+                GXHDO102C013 beanGXHDO102C013 = (GXHDO102C013) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO102C013);
+                GXHDO102C013Logic.setReturnData(beanGXHDO102C013.getGxhdO102c013Model(), this.itemList);
+                break;
+            // ｽﾘｯﾌﾟ作製・溶剤秤量・投入(白ﾎﾟﾘ)入力
+            case SubFormUtil.FORM_ID_GXHDO102C014:
+                GXHDO102C014 beanGXHDO102C014 = (GXHDO102C014) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO102C014);
+                GXHDO102C014Logic.setReturnData(beanGXHDO102C014.getGxhdO102c014Model(), this.itemList);
+                break;
+//            // ｽﾘｯﾌﾟ作製・溶剤秤量・投入(ｽﾃﾝ容器)入力
+//            case SubFormUtil.FORM_ID_GXHDO102C015:
+//                GXHDO102C015 beanGXHDO102C015 = (GXHDO102C015) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO102C015);
+//                GXHDO102C015Logic.setReturnData(beanGXHDO102C015.getGxhdO102c015Model(), this.itemList);
+//                break;
+//            // ｽﾘｯﾌﾟ作製・ｽﾘｯﾌﾟ固形分測定入力
+//            case SubFormUtil.FORM_ID_GXHDO102C016:
+//                GXHDO102C016 beanGXHDO102C016 = (GXHDO102C016) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO102C016);
+//                GXHDO102C016Logic.setReturnData(beanGXHDO102C016.getGxhdO102c016Model(), this.itemList);
 //                break;
             default:
                 break;

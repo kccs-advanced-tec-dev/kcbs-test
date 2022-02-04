@@ -1,0 +1,927 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="ja"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk">
+    <h:head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Pragma" content="no-cache"/>
+        <meta http-equiv="Cache-Control" content="no-cache"/>
+        <meta http-equiv="Expires" content="0"/>
+        <title>#{myParam.application_id} #{gXHDO901B.titleInfo.formName}</title>
+        <link href="#{request.contextPath}/resources/css/growllarge.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/gxhco901a.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/errordialog.css" rel="stylesheet" type="text/css"/>
+        <h:outputScript library="primefaces" name="jquery/jquery.js" />
+        <script src="#{request.contextPath}/resources/js/locUpload.js"></script>
+        <script src="#{request.contextPath}/resources/js/growl.js"></script>
+        <script type="text/javascript">
+            //<![CDATA[
+            function logOut() {
+                window.#{adjustModels.external}.logOut();
+            }
+            $(document).ready(function () {
+                //upload to
+                g_locationUrl = '#{myParam.locationUrl}';
+                //MAC Address
+                g_macAddr = '#{sessionInfo.macAddr}';
+                //location
+                g_location = '#{myMsg.NotAvailable}';
+                g_prgname = 'gxhdo102b027.xhtml(#{gXHDO901B.formId})';
+
+                setInterval(getLocation, #{myParam.sendLocInterval});
+            });
+            var pointY;
+            function subFormOpen() {
+                pointY = $(window).scrollTop();
+                document.getElementById("mainForm").style.setProperty("display", "none");
+                document.getElementById("mainForm").style.setProperty("position", "fixed");
+                document.getElementById("mainForm").style.setProperty("width", #{adjustModels.menuWidth} + "px");
+                document.getElementById("mainForm").style.setProperty("Top", -(pointY) + 37 + "px");
+                document.getElementById("mainForm").style.removeProperty("display");
+            }
+            function subFormClose() {
+                document.getElementById("mainForm").style.setProperty("display", "none");
+                document.getElementById("mainForm").style.removeProperty("position");
+                document.getElementById("mainForm").style.removeProperty("width");
+                document.getElementById("mainForm").style.removeProperty("Top");
+                document.getElementById("mainForm").style.removeProperty("display");
+                $(window).scrollTop(pointY);
+            }
+            function cmdButtonOncomplete(args) {
+                if (undefined === args) {
+                } else if ('warning' === args.firstParam) {
+                    PF('cd').show();
+                } else if ('auth' === args.firstParam) {
+                    PF('W_dlg_userAuth').show();
+                } else if ('kikakuError' === args.firstParam) {
+                    PF('W_dlg_kikakuError').show();
+                } else if ('infoMessage' === args.firstParam) {
+                    PF('W_dlg_infoMessage').show();
+                } else if ('complete' === args.firstParam) {
+                    PF('W_dlg_compMessage').show();
+                }
+            }
+            //]]>
+        </script>
+    </h:head>
+    <h:body>
+        <f:metadata>
+            <f:viewAction action="#{gXHDO901B.init()}"/>
+        </f:metadata>
+        <div style="margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;">
+            <h:outputText style="background:#{gXHDO901B.titleInfo.bgColor};color: #{gXHDO901B.titleInfo.fontColor}; 
+                          font-size:#{gXHDO901B.titleInfo.fontSize}px;" value="#{gXHDO901B.titleInfo.formName}"/>
+        </div>
+        <h:form id="form" style="" onkeypress="if (event.keyCode === 13) {
+                    return false;
+                }">
+            <div  style="margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;">
+                <div id="mainForm" style="width:#{adjustModels.menuWidth}px;">
+                    <div style="text-align:right">
+                        <h:outputText style="font-size:#{gXHDO901B.titleInfo.fontSize}px; #{gXHDO901B.styleDisplayNone}" value="#{gXHDO901B.jotaiDisplay}"/>        
+                    </div>
+                    <p:growl id="growlMessage" showDetail="false" sticky="true" escape="false" />
+                    <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
+                        <f:facet name="message">
+                            <h:outputText value="#{gXHDO901B.processData.getWarnMessage()}" escape="false"/>
+                        </f:facet>
+                        <p:commandButton id="warnOk" value="OK" styleClass="ui-conf-commandbtn-def1"
+                                         actionListener="#{gXHDO901B.processWarnOk()}"
+                                         process="@form"
+                                         update="@form"
+                                         oncomplete="if('warning'!=args.firstParam){PF('cd').hide(); cmdButtonOncomplete(args);} else {PF('cd').show();}"/>
+                        <p:commandButton id="warnCancel" value="Cancel" class="ui-conf-commandbtn-cancel" onclick="PF('cd').hide();" type="button" />
+                    </p:confirmDialog>
+                    <p:commandButton id="returnBtnTop" style="margin-left:26px;margin-bottom:5px;margin-top:1px;#{gXHDO901B.styleDisplayNone}"
+                                     value="#{myMsg.return}"  action="/secure/pxhdo102/gxhdo102a.xhtml?faces-redirect=true"
+                                     process="@this" update="@this">
+                        <f:param name="returnVal" value="return"/>
+                        <f:attribute name="returnVal" value="return"/>
+                    </p:commandButton>
+
+                    <br/>
+                    <p:panel id="headerPanel" style="margin-bottom:4px; #{gXHDO901B.styleDisplayNone}">
+                        <ui:repeat value="#{gXHDO901B.buttonListTop}" var="item" varStatus="stat">
+                            <p:commandButton id="buttonId" value="#{item.buttonName}" rendered="#{item.render}" disabled="#{!item.enabled}"
+                                             style="margin-left:4px;margin-bottom:2px;font-size:#{item.fontSize}px;color:#{item.fontColor};background:#{item.backColor};"
+                                             actionListener="#{gXHDO901B.btnClick(item.buttonId)}" process="@form" update="@form" async="false"
+                                             oncomplete="cmdButtonOncomplete(args);" />       
+                        </ui:repeat>
+                    </p:panel>
+                    <p:panel id="entryPanel" style="margin-bottom:4px; #{gXHDO901B.styleDisplayNone}">
+                        <div class="tab_div" style="overflow: auto;">
+                            <p:panelGrid style="width: 100%;border: 1px; #{gXHDO901B.styleDisplayNone}">
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.wiplotno}">
+                                    <p:column colspan="2">
+                                        <h:outputText rendered="#{gXHDO102B027A.wiplotno.render1}" value="#{gXHDO102B027A.wiplotno.label1}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.wiplotno.fontSize1}px;color:#{gXHDO102B027A.wiplotno.fontColor1};vertical-align: middle;"/>
+                                        <h:outputText id="wiplotno" rendered="#{gXHDO102B027A.wiplotno.renderOutputLabel}" value="#{gXHDO102B027A.wiplotno.value}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.wiplotno.fontSizeInput}px;color:#{gXHDO102B027A.wiplotno.fontColorInput};
+                                                      background:#{gXHDO102B027A.wiplotno.backColorInput};vertical-align: middle;#{gXHDO102B027A.wiplotno.customStyleInput}"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.sliphinmei}">
+                                    <p:column colspan="2">
+                                        <h:outputText rendered="#{gXHDO102B027A.sliphinmei.render1}" value="#{gXHDO102B027A.sliphinmei.label1}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.sliphinmei.fontSize1}px;color:#{gXHDO102B027A.sliphinmei.fontColor1};vertical-align: middle;"/>
+                                        <h:outputText id="sliphinmei" rendered="#{gXHDO102B027A.sliphinmei.renderOutputLabel}" value="#{gXHDO102B027A.sliphinmei.value}" 
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.sliphinmei.fontSizeInput}px;color:#{gXHDO102B027A.sliphinmei.fontColorInput};
+                                                      background:#{gXHDO102B027A.sliphinmei.backColorInput};vertical-align: middle;#{gXHDO102B027A.sliphinmei.customStyleInput}"/>
+                                    </p:column>
+                                </p:row> 
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.sliplotno}">
+                                    <p:column colspan="2">
+                                        <h:outputText rendered="#{gXHDO102B027A.sliplotno.render1}" value="#{gXHDO102B027A.sliplotno.label1}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.sliplotno.fontSize1}px;color:#{gXHDO102B027A.sliplotno.fontColor1};vertical-align: middle;"/>
+                                        <h:outputText id="sliplotno" rendered="#{gXHDO102B027A.sliplotno.renderOutputLabel}" value="#{gXHDO102B027A.sliplotno.value}" 
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.sliplotno.fontSizeInput}px;color:#{gXHDO102B027A.sliplotno.fontColorInput};
+                                                      background:#{gXHDO102B027A.sliplotno.backColorInput};vertical-align: middle;#{gXHDO102B027A.sliplotno.customStyleInput}"/>
+                                    </p:column>
+                                </p:row> 
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.lotkubun}">
+                                    <p:column colspan="2">
+                                        <h:outputText rendered="#{gXHDO102B027A.lotkubun.render1}" value="#{gXHDO102B027A.lotkubun.label1}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.lotkubun.fontSize1}px;color:#{gXHDO102B027A.lotkubun.fontColor1};vertical-align: middle;"/>
+                                        <h:outputText id="lotkubun" rendered="#{gXHDO102B027A.lotkubun.renderOutputLabel}" value="#{gXHDO102B027A.lotkubun.value}" 
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.lotkubun.fontSizeInput}px;color:#{gXHDO102B027A.lotkubun.fontColorInput};
+                                                      background:#{gXHDO102B027A.lotkubun.backColorInput};vertical-align: middle;#{gXHDO102B027A.lotkubun.customStyleInput}"/>
+                                    </p:column>
+                                </p:row> 
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.genryoukigou}">
+                                    <p:column colspan="2">
+                                        <h:outputText rendered="#{gXHDO102B027A.genryoukigou.render1}" value="#{gXHDO102B027A.genryoukigou.label1}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.genryoukigou.fontSize1}px;color:#{gXHDO102B027A.genryoukigou.fontColor1};vertical-align: middle;"/>
+                                        <h:outputText id="genryoukigou_kikakuChi" rendered="#{gXHDO102B027A.genryoukigou.render1 || gXHDO102B027A.genryoukigou.renderLinkButton}"
+                                                      value="#{gXHDO102B027A.genryoukigou.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.genryoukigou.fontSize3}px;color:#{gXHDO102B027A.genryoukigou.fontColor3};
+                                                      background:#{gXHDO102B027A.genryoukigou.backColor3};vertical-align: middle;"/>
+                                        <h:outputText id="genryoukigou_tani" rendered="#{gXHDO102B027A.genryoukigou.render2}" value="#{gXHDO102B027A.genryoukigou.label2}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.genryoukigou.fontSize2}px;color:#{gXHDO102B027A.genryoukigou.fontColor2};
+                                                      background:#{gXHDO102B027A.genryoukigou.backColor2};vertical-align: middle;"/>
+                                    </p:column>
+                                </p:row>  
+                                <p:row style="height: 50px;white-space:nowrap;border-top-style: solid;"
+                                       rendered="#{not (empty gXHDO102B027A.slurryhinmei and empty gXHDO102B027A.slurrylotno1
+                                                   and empty gXHDO102B027A.slurrylotno2 and empty gXHDO102B027A.slurrylotno3
+                                                   and empty gXHDO102B027A.slurryyuukoukigen and empty gXHDO102B027A.kansoukokeibun
+                                                   and empty gXHDO102B027A.dassikokeibun and empty gXHDO102B027A.funsaisyuuryou_day
+                                                   and empty gXHDO102B027A.funsaisyuuryou_time and empty gXHDO102B027A.binderkongou_day
+                                                   and empty gXHDO102B027A.binderkongou_time and empty gXHDO102B027A.slurrykeikanisuu
+                                                   )}">
+                                    <p:column colspan="2">
+                                        <h:outputText value="#{myMsg.slipjyohou}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurryhinmei.fontSize1}px;color:#{gXHDO102B027A.slurryhinmei.fontColor1};vertical-align: middle;"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.slurryhinmei}">
+                                    <p:column colspan="2" style="padding-left: 125px; border-top-style: hidden;">
+                                        <h:outputText rendered="#{gXHDO102B027A.slurryhinmei.render1}" value="#{gXHDO102B027A.slurryhinmei.label1}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurryhinmei.fontSize1}px;color:#{gXHDO102B027A.slurryhinmei.fontColor1};vertical-align: middle;"/>
+                                        <h:outputText id="slurryhinmei_kikakuChi" rendered="#{gXHDO102B027A.slurryhinmei.render1 || gXHDO102B027A.slurryhinmei.renderLinkButton}"
+                                                      value="#{gXHDO102B027A.slurryhinmei.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurryhinmei.fontSize3}px;color:#{gXHDO102B027A.slurryhinmei.fontColor3};
+                                                      background:#{gXHDO102B027A.slurryhinmei.backColor3};vertical-align: middle;"/>
+                                        <h:outputText id="slurryhinmei_tani" rendered="#{gXHDO102B027A.slurryhinmei.render2}" value="#{gXHDO102B027A.slurryhinmei.label2}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurryhinmei.fontSize2}px;color:#{gXHDO102B027A.slurryhinmei.fontColor2};
+                                                      background:#{gXHDO102B027A.slurryhinmei.backColor2};vertical-align: middle;"/>
+                                    </p:column>
+                                </p:row>  
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.slurrylotno1}">
+                                    <p:column colspan="2" style="padding-left: 125px; border-top-style: hidden;">
+                                        <h:outputText rendered="#{gXHDO102B027A.slurrylotno1.render1}" value="#{gXHDO102B027A.slurrylotno1.label1}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurrylotno1.fontSize1}px;color:#{gXHDO102B027A.slurrylotno1.fontColor1};vertical-align: middle;"/>
+                                        <h:outputText id="slurrylotno1_kikakuChi" rendered="#{gXHDO102B027A.slurrylotno1.render1 || gXHDO102B027A.slurrylotno1.renderLinkButton}"
+                                                      value="#{gXHDO102B027A.slurrylotno1.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurrylotno1.fontSize3}px;color:#{gXHDO102B027A.slurrylotno1.fontColor3};
+                                                      background:#{gXHDO102B027A.slurrylotno1.backColor3};vertical-align: middle;"/>
+                                        <h:outputText id="slurrylotno1_tani" rendered="#{gXHDO102B027A.slurrylotno1.render2}" value="#{gXHDO102B027A.slurrylotno1.label2}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurrylotno1.fontSize2}px;color:#{gXHDO102B027A.slurrylotno1.fontColor2};
+                                                      background:#{gXHDO102B027A.slurrylotno1.backColor2};vertical-align: middle;"/>
+                                    </p:column>
+                                </p:row>  
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.slurrylotno2}">
+                                    <p:column colspan="2" style="padding-left: 125px; border-top-style: hidden;">
+                                        <h:outputText rendered="#{gXHDO102B027A.slurrylotno2.render1}" value="#{gXHDO102B027A.slurrylotno2.label1}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurrylotno2.fontSize1}px;color:#{gXHDO102B027A.slurrylotno2.fontColor1};vertical-align: middle;"/>
+                                        <h:outputText id="slurrylotno2_kikakuChi" rendered="#{gXHDO102B027A.slurrylotno2.render1 || gXHDO102B027A.slurrylotno2.renderLinkButton}"
+                                                      value="#{gXHDO102B027A.slurrylotno2.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurrylotno2.fontSize3}px;color:#{gXHDO102B027A.slurrylotno2.fontColor3};
+                                                      background:#{gXHDO102B027A.slurrylotno2.backColor3};vertical-align: middle;"/>
+                                        <h:outputText id="slurrylotno2_tani" rendered="#{gXHDO102B027A.slurrylotno2.render2}" value="#{gXHDO102B027A.slurrylotno2.label2}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurrylotno2.fontSize2}px;color:#{gXHDO102B027A.slurrylotno2.fontColor2};
+                                                      background:#{gXHDO102B027A.slurrylotno2.backColor2};vertical-align: middle;"/>
+                                    </p:column>
+                                </p:row>  
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.slurrylotno3}">
+                                    <p:column colspan="2" style="padding-left: 125px; border-top-style: hidden;">
+                                        <h:outputText rendered="#{gXHDO102B027A.slurrylotno3.render1}" value="#{gXHDO102B027A.slurrylotno3.label1}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurrylotno3.fontSize1}px;color:#{gXHDO102B027A.slurrylotno3.fontColor1};vertical-align: middle;"/>
+                                        <h:outputText id="slurrylotno3_kikakuChi" rendered="#{gXHDO102B027A.slurrylotno3.render1 || gXHDO102B027A.slurrylotno3.renderLinkButton}"
+                                                      value="#{gXHDO102B027A.slurrylotno3.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurrylotno3.fontSize3}px;color:#{gXHDO102B027A.slurrylotno3.fontColor3};
+                                                      background:#{gXHDO102B027A.slurrylotno3.backColor3};vertical-align: middle;"/>
+                                        <h:outputText id="slurrylotno3_tani" rendered="#{gXHDO102B027A.slurrylotno3.render2}" value="#{gXHDO102B027A.slurrylotno3.label2}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurrylotno3.fontSize2}px;color:#{gXHDO102B027A.slurrylotno3.fontColor2};
+                                                      background:#{gXHDO102B027A.slurrylotno3.backColor2};vertical-align: middle;"/>
+                                    </p:column>
+                                </p:row>  
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.slurryyuukoukigen}">
+                                    <p:column colspan="2" style="padding-left: 125px; border-top-style: hidden;">
+                                        <h:outputText rendered="#{gXHDO102B027A.slurryyuukoukigen.render1}" value="#{gXHDO102B027A.slurryyuukoukigen.label1}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurryyuukoukigen.fontSize1}px;color:#{gXHDO102B027A.slurryyuukoukigen.fontColor1};vertical-align: middle;"/>
+                                        <h:outputText id="slurryyuukoukigen_kikakuChi" rendered="#{gXHDO102B027A.slurryyuukoukigen.render1 || gXHDO102B027A.slurryyuukoukigen.renderLinkButton}" value="#{gXHDO102B027A.slurryyuukoukigen.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurryyuukoukigen.fontSize3}px;color:#{gXHDO102B027A.slurryyuukoukigen.fontColor3};
+                                                      background:#{gXHDO102B027A.slurryyuukoukigen.backColor3};vertical-align: middle;"/>
+                                        <p:inputText id="slurryyuukoukigen_T" 
+                                                     rendered="#{gXHDO102B027A.slurryyuukoukigen.renderInputText and (!gXHDO102B027A.slurryyuukoukigen.renderOutputLabel)}" value="#{gXHDO102B027A.slurryyuukoukigen.value}" 
+                                                     maxlength="#{gXHDO102B027A.slurryyuukoukigen.displayMaxLength}" 
+                                                     style="margin-left:8px;width:#{gXHDO102B027A.slurryyuukoukigen.displayMaxLength}em; font-size:#{gXHDO102B027A.slurryyuukoukigen.fontSizeInput}px;
+                                                     color:#{gXHDO102B027A.slurryyuukoukigen.fontColorInput};background:#{gXHDO102B027A.slurryyuukoukigen.backColorInput};
+                                                     vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.slurryyuukoukigen.customStyleInput}">
+                                            <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO102B027A.slurryyuukoukigen.checkByte()}"  async="false"/>
+                                        </p:inputText>
+                                    </p:column>
+                                </p:row> 
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.kansoukokeibun}">
+                                    <p:column colspan="2" style="padding-left: 125px; border-top-style: hidden;">
+                                        <h:outputText rendered="#{gXHDO102B027A.kansoukokeibun.render1}" value="#{gXHDO102B027A.kansoukokeibun.label1}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.kansoukokeibun.fontSize1}px;color:#{gXHDO102B027A.kansoukokeibun.fontColor1};vertical-align: middle;"/>
+                                        <h:outputText id="kansoukokeibun_kikakuChi" rendered="#{gXHDO102B027A.kansoukokeibun.render1 || gXHDO102B027A.kansoukokeibun.renderLinkButton}"
+                                                      value="#{gXHDO102B027A.kansoukokeibun.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.kansoukokeibun.fontSize3}px;color:#{gXHDO102B027A.kansoukokeibun.fontColor3};
+                                                      background:#{gXHDO102B027A.kansoukokeibun.backColor3};vertical-align: middle;"/>
+                                        <h:outputText id="kansoukokeibun_tani" rendered="#{gXHDO102B027A.kansoukokeibun.render2}" value="#{gXHDO102B027A.kansoukokeibun.label2}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.kansoukokeibun.fontSize2}px;color:#{gXHDO102B027A.kansoukokeibun.fontColor2};
+                                                      background:#{gXHDO102B027A.kansoukokeibun.backColor2};vertical-align: middle;"/>
+                                    </p:column>
+                                </p:row>      
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.dassikokeibun}">
+                                    <p:column colspan="2" style="padding-left: 125px; border-top-style: hidden;">
+                                        <h:outputText rendered="#{gXHDO102B027A.dassikokeibun.render1}" value="#{gXHDO102B027A.dassikokeibun.label1}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.dassikokeibun.fontSize1}px;color:#{gXHDO102B027A.dassikokeibun.fontColor1};vertical-align: middle;"/>
+                                        <h:outputText id="dassikokeibun_kikakuChi" rendered="#{gXHDO102B027A.dassikokeibun.render1 || gXHDO102B027A.dassikokeibun.renderLinkButton}"
+                                                      value="#{gXHDO102B027A.dassikokeibun.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.dassikokeibun.fontSize3}px;color:#{gXHDO102B027A.dassikokeibun.fontColor3};
+                                                      background:#{gXHDO102B027A.dassikokeibun.backColor3};vertical-align: middle;"/>
+                                        <h:outputText id="dassikokeibun_tani" rendered="#{gXHDO102B027A.dassikokeibun.render2}" value="#{gXHDO102B027A.dassikokeibun.label2}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.dassikokeibun.fontSize2}px;color:#{gXHDO102B027A.dassikokeibun.fontColor2};
+                                                      background:#{gXHDO102B027A.dassikokeibun.backColor2};vertical-align: middle;"/>
+                                    </p:column>
+                                </p:row>   
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.funsaisyuuryou_day}">
+                                    <p:column colspan="2" style="padding-left: 125px; border-top-style: hidden;">
+                                        <h:outputText rendered="#{gXHDO102B027A.funsaisyuuryou_day.render1}" value="#{gXHDO102B027A.funsaisyuuryou_day.label1}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.funsaisyuuryou_day.fontSize1}px;color:#{gXHDO102B027A.funsaisyuuryou_day.fontColor1};vertical-align: middle;"/>
+                                        <p:commandLink id="funsaisyuuryou_day_cmdLink" rendered="#{gXHDO102B027A.funsaisyuuryou_day.renderLinkButton}"
+                                                       action="#{gXHDO901B.cmdLinkAction(gXHDO102B027A.funsaisyuuryou_day.linkButtonId)}" 
+                                                       process="@form" update="@form" async="false" oncomplete="cmdButtonOncomplete(args);"
+                                                       style="margin-left:8px;font-size:#{gXHDO102B027A.funsaisyuuryou_day.fontSize1}px;color:#{gXHDO102B027A.funsaisyuuryou_day.fontColor1};vertical-align: middle;">
+                                            <h:outputText value="#{gXHDO102B027A.funsaisyuuryou_day.label1}" />
+                                        </p:commandLink>
+                                        <h:outputText id="funsaisyuuryou_day_kikakuChi" rendered="#{gXHDO102B027A.funsaisyuuryou_day.render1 || gXHDO102B027A.funsaisyuuryou_day.renderLinkButton}"
+                                                      value="#{gXHDO102B027A.funsaisyuuryou_day.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.funsaisyuuryou_day.fontSize3}px;color:#{gXHDO102B027A.funsaisyuuryou_day.fontColor3};
+                                                      background:#{gXHDO102B027A.funsaisyuuryou_day.backColor3};vertical-align: middle;"/>
+                                        <p:inputText id="funsaisyuuryou_day_T" 
+                                                     rendered="#{gXHDO102B027A.funsaisyuuryou_day.renderInputText and (!gXHDO102B027A.funsaisyuuryou_day.renderOutputLabel)}"
+                                                     value="#{gXHDO102B027A.funsaisyuuryou_day.value}" 
+                                                     maxlength="#{gXHDO102B027A.funsaisyuuryou_day.displayMaxLength}" 
+                                                     style="margin-left:8px;width:#{gXHDO102B027A.funsaisyuuryou_day.displayMaxLength}em; font-size:#{gXHDO102B027A.funsaisyuuryou_day.fontSizeInput}px;
+                                                     color:#{gXHDO102B027A.funsaisyuuryou_day.fontColorInput};background:#{gXHDO102B027A.funsaisyuuryou_day.backColorInput};
+                                                     vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.funsaisyuuryou_day.customStyleInput}">
+                                            <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO102B027A.funsaisyuuryou_day.checkByte()}"  async="false"/>
+                                        </p:inputText>
+                                        <p:inputNumber id="funsaisyuuryou_day_N"
+                                                       rendered="#{gXHDO102B027A.funsaisyuuryou_day.renderInputNumber}" value="#{gXHDO102B027A.funsaisyuuryou_day.value}" 
+                                                       decimalPlaces="#{gXHDO102B027A.funsaisyuuryou_day.numberDecimalPlaces}" maxValue="#{gXHDO102B027A.funsaisyuuryou_day.numberMaxValue}"
+                                                       minValue="#{gXHDO102B027A.funsaisyuuryou_day.numberMinValue}" 
+                                                       thousandSeparator="" roundMethod="D" size="#{gXHDO102B027A.funsaisyuuryou_day.displayMaxLength}"
+                                                       inputStyle="margin-left:8px;font-size:#{gXHDO102B027A.funsaisyuuryou_day.fontSizeInput}px;
+                                                       color:#{gXHDO102B027A.funsaisyuuryou_day.fontColorInput}; background:#{gXHDO102B027A.funsaisyuuryou_day.backColorInput};
+                                                       vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.funsaisyuuryou_day.customStyleInput}">
+                                        </p:inputNumber>
+                                    </p:column>
+                                </p:row>
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.funsaisyuuryou_time}">
+                                    <p:column colspan="2" style="padding-left: 125px; border-top-style: hidden;">
+                                        <h:outputText rendered="#{gXHDO102B027A.funsaisyuuryou_time.render1}" value="#{gXHDO102B027A.funsaisyuuryou_time.label1}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.funsaisyuuryou_time.fontSize1}px;color:#{gXHDO102B027A.funsaisyuuryou_time.fontColor1};vertical-align: middle;"/>
+                                        <p:commandLink id="funsaisyuuryou_time_cmdLink" rendered="#{gXHDO102B027A.funsaisyuuryou_time.renderLinkButton}"
+                                                       action="#{gXHDO901B.cmdLinkAction(gXHDO102B027A.funsaisyuuryou_time.linkButtonId)}" 
+                                                       process="@form" update="@form" async="false" oncomplete="cmdButtonOncomplete(args);"
+                                                       style="margin-left:8px;font-size:#{gXHDO102B027A.funsaisyuuryou_time.fontSize1}px;color:#{gXHDO102B027A.funsaisyuuryou_time.fontColor1};vertical-align: middle;">
+                                            <h:outputText value="#{gXHDO102B027A.funsaisyuuryou_time.label1}" />
+                                        </p:commandLink>
+                                        <h:outputText id="funsaisyuuryou_time_kikakuChi" rendered="#{gXHDO102B027A.funsaisyuuryou_time.render1 || gXHDO102B027A.funsaisyuuryou_time.renderLinkButton}"
+                                                      value="#{gXHDO102B027A.funsaisyuuryou_time.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.funsaisyuuryou_time.fontSize3}px;color:#{gXHDO102B027A.funsaisyuuryou_time.fontColor3};
+                                                      background:#{gXHDO102B027A.funsaisyuuryou_time.backColor3};vertical-align: middle;"/>
+                                        <p:inputText id="funsaisyuuryou_time_T" 
+                                                     rendered="#{gXHDO102B027A.funsaisyuuryou_time.renderInputText and (!gXHDO102B027A.funsaisyuuryou_time.renderOutputLabel)}"
+                                                     value="#{gXHDO102B027A.funsaisyuuryou_time.value}" 
+                                                     maxlength="#{gXHDO102B027A.funsaisyuuryou_time.displayMaxLength}" 
+                                                     style="margin-left:8px;width:#{gXHDO102B027A.funsaisyuuryou_time.displayMaxLength}em; font-size:#{gXHDO102B027A.funsaisyuuryou_time.fontSizeInput}px;
+                                                     color:#{gXHDO102B027A.funsaisyuuryou_time.fontColorInput};background:#{gXHDO102B027A.funsaisyuuryou_time.backColorInput};
+                                                     vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.funsaisyuuryou_time.customStyleInput}">
+                                            <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO102B027A.funsaisyuuryou_time.checkByte()}"  async="false"/>
+                                        </p:inputText>
+                                        <p:inputNumber id="funsaisyuuryou_time_N"
+                                                       rendered="#{gXHDO102B027A.funsaisyuuryou_time.renderInputNumber}" value="#{gXHDO102B027A.funsaisyuuryou_time.value}" 
+                                                       decimalPlaces="#{gXHDO102B027A.funsaisyuuryou_time.numberDecimalPlaces}" maxValue="#{gXHDO102B027A.funsaisyuuryou_time.numberMaxValue}"
+                                                       minValue="#{gXHDO102B027A.funsaisyuuryou_time.numberMinValue}" 
+                                                       thousandSeparator="" roundMethod="D" size="#{gXHDO102B027A.funsaisyuuryou_time.displayMaxLength}"
+                                                       inputStyle="margin-left:8px;font-size:#{gXHDO102B027A.funsaisyuuryou_time.fontSizeInput}px;
+                                                       color:#{gXHDO102B027A.funsaisyuuryou_time.fontColorInput}; background:#{gXHDO102B027A.funsaisyuuryou_time.backColorInput};
+                                                       vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.funsaisyuuryou_time.customStyleInput}">
+                                        </p:inputNumber>
+                                    </p:column>
+                                </p:row>
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.binderkongou_day}">
+                                    <p:column colspan="2" style="padding-left: 125px; border-top-style: hidden;">
+                                        <h:outputText rendered="#{gXHDO102B027A.binderkongou_day.render1}" value="#{gXHDO102B027A.binderkongou_day.label1}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.binderkongou_day.fontSize1}px;color:#{gXHDO102B027A.binderkongou_day.fontColor1};vertical-align: middle;"/>
+                                        <p:commandLink id="binderkongou_day_cmdLink" rendered="#{gXHDO102B027A.binderkongou_day.renderLinkButton}"
+                                                       action="#{gXHDO901B.cmdLinkAction(gXHDO102B027A.binderkongou_day.linkButtonId)}" 
+                                                       process="@form" update="@form" async="false" oncomplete="cmdButtonOncomplete(args);"
+                                                       style="margin-left:8px;font-size:#{gXHDO102B027A.binderkongou_day.fontSize1}px;color:#{gXHDO102B027A.binderkongou_day.fontColor1};vertical-align: middle;">
+                                            <h:outputText value="#{gXHDO102B027A.binderkongou_day.label1}" />
+                                        </p:commandLink>
+                                        <h:outputText id="binderkongou_day_kikakuChi" rendered="#{gXHDO102B027A.binderkongou_day.render1 || gXHDO102B027A.binderkongou_day.renderLinkButton}"
+                                                      value="#{gXHDO102B027A.binderkongou_day.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.binderkongou_day.fontSize3}px;color:#{gXHDO102B027A.binderkongou_day.fontColor3};
+                                                      background:#{gXHDO102B027A.binderkongou_day.backColor3};vertical-align: middle;"/>
+                                        <p:inputText id="binderkongou_day_T" 
+                                                     rendered="#{gXHDO102B027A.binderkongou_day.renderInputText and (!gXHDO102B027A.binderkongou_day.renderOutputLabel)}"
+                                                     value="#{gXHDO102B027A.binderkongou_day.value}" 
+                                                     maxlength="#{gXHDO102B027A.binderkongou_day.displayMaxLength}" 
+                                                     style="margin-left:8px;width:#{gXHDO102B027A.binderkongou_day.displayMaxLength}em; font-size:#{gXHDO102B027A.binderkongou_day.fontSizeInput}px;
+                                                     color:#{gXHDO102B027A.binderkongou_day.fontColorInput};background:#{gXHDO102B027A.binderkongou_day.backColorInput};
+                                                     vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.binderkongou_day.customStyleInput}">
+                                            <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO102B027A.binderkongou_day.checkByte()}"  async="false"/>
+                                        </p:inputText>
+                                        <p:inputNumber id="binderkongou_day_N"
+                                                       rendered="#{gXHDO102B027A.binderkongou_day.renderInputNumber}" value="#{gXHDO102B027A.binderkongou_day.value}" 
+                                                       decimalPlaces="#{gXHDO102B027A.binderkongou_day.numberDecimalPlaces}" maxValue="#{gXHDO102B027A.binderkongou_day.numberMaxValue}"
+                                                       minValue="#{gXHDO102B027A.binderkongou_day.numberMinValue}" 
+                                                       thousandSeparator="" roundMethod="D" size="#{gXHDO102B027A.binderkongou_day.displayMaxLength}"
+                                                       inputStyle="margin-left:8px;font-size:#{gXHDO102B027A.binderkongou_day.fontSizeInput}px;
+                                                       color:#{gXHDO102B027A.binderkongou_day.fontColorInput}; background:#{gXHDO102B027A.binderkongou_day.backColorInput};
+                                                       vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.binderkongou_day.customStyleInput}">
+                                        </p:inputNumber>
+                                    </p:column>
+                                </p:row>
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.binderkongou_time}">
+                                    <p:column colspan="2" style="padding-left: 125px; border-top-style: hidden;">
+                                        <h:outputText rendered="#{gXHDO102B027A.binderkongou_time.render1}" value="#{gXHDO102B027A.binderkongou_time.label1}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.binderkongou_time.fontSize1}px;color:#{gXHDO102B027A.binderkongou_time.fontColor1};vertical-align: middle;"/>
+                                        <p:commandLink id="binderkongou_time_cmdLink" rendered="#{gXHDO102B027A.binderkongou_time.renderLinkButton}"
+                                                       action="#{gXHDO901B.cmdLinkAction(gXHDO102B027A.binderkongou_time.linkButtonId)}" 
+                                                       process="@form" update="@form" async="false" oncomplete="cmdButtonOncomplete(args);"
+                                                       style="margin-left:8px;font-size:#{gXHDO102B027A.binderkongou_time.fontSize1}px;color:#{gXHDO102B027A.binderkongou_time.fontColor1};vertical-align: middle;">
+                                            <h:outputText value="#{gXHDO102B027A.binderkongou_time.label1}" />
+                                        </p:commandLink>
+                                        <h:outputText id="binderkongou_time_kikakuChi" rendered="#{gXHDO102B027A.binderkongou_time.render1 || gXHDO102B027A.binderkongou_time.renderLinkButton}"
+                                                      value="#{gXHDO102B027A.binderkongou_time.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.binderkongou_time.fontSize3}px;color:#{gXHDO102B027A.binderkongou_time.fontColor3};
+                                                      background:#{gXHDO102B027A.binderkongou_time.backColor3};vertical-align: middle;"/>
+                                        <p:inputText id="binderkongou_time_T" 
+                                                     rendered="#{gXHDO102B027A.binderkongou_time.renderInputText and (!gXHDO102B027A.binderkongou_time.renderOutputLabel)}"
+                                                     value="#{gXHDO102B027A.binderkongou_time.value}" 
+                                                     maxlength="#{gXHDO102B027A.binderkongou_time.displayMaxLength}" 
+                                                     style="margin-left:8px;width:#{gXHDO102B027A.binderkongou_time.displayMaxLength}em; font-size:#{gXHDO102B027A.binderkongou_time.fontSizeInput}px;
+                                                     color:#{gXHDO102B027A.binderkongou_time.fontColorInput};background:#{gXHDO102B027A.binderkongou_time.backColorInput};
+                                                     vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.binderkongou_time.customStyleInput}">
+                                            <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO102B027A.binderkongou_time.checkByte()}"  async="false"/>
+                                        </p:inputText>
+                                        <p:inputNumber id="binderkongou_time_N"
+                                                       rendered="#{gXHDO102B027A.binderkongou_time.renderInputNumber}" value="#{gXHDO102B027A.binderkongou_time.value}" 
+                                                       decimalPlaces="#{gXHDO102B027A.binderkongou_time.numberDecimalPlaces}" maxValue="#{gXHDO102B027A.binderkongou_time.numberMaxValue}"
+                                                       minValue="#{gXHDO102B027A.binderkongou_time.numberMinValue}" 
+                                                       thousandSeparator="" roundMethod="D" size="#{gXHDO102B027A.binderkongou_time.displayMaxLength}"
+                                                       inputStyle="margin-left:8px;font-size:#{gXHDO102B027A.binderkongou_time.fontSizeInput}px;
+                                                       color:#{gXHDO102B027A.binderkongou_time.fontColorInput}; background:#{gXHDO102B027A.binderkongou_time.backColorInput};
+                                                       vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.binderkongou_time.customStyleInput}">
+                                        </p:inputNumber>
+                                    </p:column>
+                                </p:row>
+                                <p:row style="height: 50px;white-space:nowrap;border-top-style: hidden;" rendered="#{not empty gXHDO102B027A.slurrykeikanisuu}">
+                                    <p:column colspan="2" style="padding-left: 125px; border-top-style: hidden;">
+                                        <h:outputText rendered="#{gXHDO102B027A.slurrykeikanisuu.render1}" value="#{gXHDO102B027A.slurrykeikanisuu.label1}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurrykeikanisuu.fontSize1}px;color:#{gXHDO102B027A.slurrykeikanisuu.fontColor1};vertical-align: middle;"/>
+                                        <h:outputText id="slurrykeikanisuu_kikakuChi" rendered="#{gXHDO102B027A.slurrykeikanisuu.render1 || gXHDO102B027A.slurrykeikanisuu.renderLinkButton}"
+                                                      value="#{gXHDO102B027A.slurrykeikanisuu.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurrykeikanisuu.fontSize3}px;color:#{gXHDO102B027A.slurrykeikanisuu.fontColor3};
+                                                      background:#{gXHDO102B027A.slurrykeikanisuu.backColor3};vertical-align: middle;"/>
+                                        <p:inputText id="slurrykeikanisuu_T" 
+                                                     rendered="#{gXHDO102B027A.slurrykeikanisuu.renderInputText and (!gXHDO102B027A.slurrykeikanisuu.renderOutputLabel)}"
+                                                     value="#{gXHDO102B027A.slurrykeikanisuu.value}" 
+                                                     maxlength="#{gXHDO102B027A.slurrykeikanisuu.displayMaxLength}" 
+                                                     style="margin-left:8px;width:#{gXHDO102B027A.slurrykeikanisuu.displayMaxLength}em; font-size:#{gXHDO102B027A.slurrykeikanisuu.fontSizeInput}px;
+                                                     color:#{gXHDO102B027A.slurrykeikanisuu.fontColorInput};background:#{gXHDO102B027A.slurrykeikanisuu.backColorInput};
+                                                     vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.slurrykeikanisuu.customStyleInput}">
+                                            <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO102B027A.slurrykeikanisuu.checkByte()}"  async="false"/>
+                                        </p:inputText>
+                                        <p:inputNumber id="slurrykeikanisuu_N"
+                                                       rendered="#{gXHDO102B027A.slurrykeikanisuu.renderInputNumber}" value="#{gXHDO102B027A.slurrykeikanisuu.value}" 
+                                                       decimalPlaces="#{gXHDO102B027A.slurrykeikanisuu.numberDecimalPlaces}" maxValue="#{gXHDO102B027A.slurrykeikanisuu.numberMaxValue}"
+                                                       minValue="#{gXHDO102B027A.slurrykeikanisuu.numberMinValue}" 
+                                                       thousandSeparator="" roundMethod="D" size="#{gXHDO102B027A.slurrykeikanisuu.displayMaxLength}"
+                                                       inputStyle="margin-left:8px;font-size:#{gXHDO102B027A.slurrykeikanisuu.fontSizeInput}px;
+                                                       color:#{gXHDO102B027A.slurrykeikanisuu.fontColorInput}; background:#{gXHDO102B027A.slurrykeikanisuu.backColorInput};
+                                                       vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.slurrykeikanisuu.customStyleInput}">
+                                        </p:inputNumber>
+                                        <h:outputText id="slurrykeikanisuu_tani" rendered="#{gXHDO102B027A.slurrykeikanisuu.render2}" value="#{gXHDO102B027A.slurrykeikanisuu.label2}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurrykeikanisuu.fontSize2}px;color:#{gXHDO102B027A.slurrykeikanisuu.fontColor2};
+                                                      background:#{gXHDO102B027A.slurrykeikanisuu.backColor2};vertical-align: middle;"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row style="height: 50px;white-space:nowrap;border-top-style: solid;"
+                                       rendered="#{not (empty gXHDO102B027A.slurryjyuuryou1 and empty gXHDO102B027A.slurryjyuuryou2
+                                                   and empty gXHDO102B027A.slurryjyuuryou3 and empty gXHDO102B027A.slurryjyuuryou4
+                                                   and empty gXHDO102B027A.slurryjyuuryou5 and empty gXHDO102B027A.slurryjyuuryou6
+                                                   and empty gXHDO102B027A.slurrygoukeijyuuryou 
+                                                   )}">
+                                    <p:column colspan="2">
+                                        <h:outputText value="#{myMsg.yuudentaislurry}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurryjyuuryou1.fontSize1}px;color:#{gXHDO102B027A.slurryjyuuryou1.fontColor1};vertical-align: middle;"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row style="height: 50px;white-space:nowrap;border-top-style: solid;"
+                                       rendered="#{not (empty gXHDO102B027A.slurryjyuuryou1 and empty gXHDO102B027A.slurryjyuuryou2
+                                                   and empty gXHDO102B027A.slurryjyuuryou3 and empty gXHDO102B027A.slurryjyuuryou4
+                                                   and empty gXHDO102B027A.slurryjyuuryou5 and empty gXHDO102B027A.slurryjyuuryou6
+                                                   and empty gXHDO102B027A.slurrygoukeijyuuryou 
+                                                   )}">
+                                    <p:column style="border-right-style: hidden; border-top-style: hidden; padding-left: 125px;">
+                                        <h:outputText value="#{myMsg.slurrylot}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurryjyuuryou1.fontSize1}px;color:#{gXHDO102B027A.slurryjyuuryou1.fontColor1};vertical-align: middle;"/>
+                                    </p:column>
+                                    <p:column style="border-top-style: hidden;">
+                                        <h:outputText value="#{myMsg.slurryjyuuryou}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurryjyuuryou1.fontSize1}px;color:#{gXHDO102B027A.slurryjyuuryou1.fontColor1};vertical-align: middle;"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.slurryjyuuryou1}">
+                                    <p:column style="padding-left: 125px; border-top-style: hidden; border-right-style: hidden;">
+                                        <h:outputText id="slurryjyuuryou1_kikakuChi" rendered="#{gXHDO102B027A.slurryjyuuryou1.render1 || gXHDO102B027A.slurryjyuuryou1.renderLinkButton}"
+                                                      value="#{gXHDO102B027A.slurryjyuuryou1.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurryjyuuryou1.fontSize3}px;color:#{gXHDO102B027A.slurryjyuuryou1.fontColor3};
+                                                      background:#{gXHDO102B027A.slurryjyuuryou1.backColor3};vertical-align: middle;"/>
+                                    </p:column>
+                                    <p:column style="border-top-style: hidden; ">
+                                        <p:inputText id="slurryjyuuryou1_T"
+                                                     rendered="#{gXHDO102B027A.slurryjyuuryou1.renderInputText and (!gXHDO102B027A.slurryjyuuryou1.renderOutputLabel)}"
+                                                     value="#{gXHDO102B027A.slurryjyuuryou1.value}" 
+                                                     maxlength="#{gXHDO102B027A.slurryjyuuryou1.displayMaxLength}" 
+                                                     style="margin-left:8px;width:#{gXHDO102B027A.slurryjyuuryou1.displayMaxLength}em; font-size:#{gXHDO102B027A.slurryjyuuryou1.fontSizeInput}px;
+                                                     color:#{gXHDO102B027A.slurryjyuuryou1.fontColorInput};background:#{gXHDO102B027A.slurryjyuuryou1.backColorInput};
+                                                     vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.slurryjyuuryou1.customStyleInput}">
+                                            <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO102B027A.slurryjyuuryou1.checkByte()}"  async="false"/>
+                                        </p:inputText>
+                                        <p:inputNumber id="slurryjyuuryou1_N"
+                                                       rendered="#{gXHDO102B027A.slurryjyuuryou1.renderInputNumber}" value="#{gXHDO102B027A.slurryjyuuryou1.value}" 
+                                                       decimalPlaces="#{gXHDO102B027A.slurryjyuuryou1.numberDecimalPlaces}" maxValue="#{gXHDO102B027A.slurryjyuuryou1.numberMaxValue}"
+                                                       minValue="#{gXHDO102B027A.slurryjyuuryou1.numberMinValue}" 
+                                                       thousandSeparator="" roundMethod="D" size="#{gXHDO102B027A.slurryjyuuryou1.displayMaxLength}"
+                                                       inputStyle="margin-left:8px;font-size:#{gXHDO102B027A.slurryjyuuryou1.fontSizeInput}px;
+                                                       color:#{gXHDO102B027A.slurryjyuuryou1.fontColorInput}; background:#{gXHDO102B027A.slurryjyuuryou1.backColorInput};
+                                                       vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.slurryjyuuryou1.customStyleInput}">
+                                        </p:inputNumber>
+                                        <h:outputText id="slurryjyuuryou1_tani" rendered="#{gXHDO102B027A.slurryjyuuryou1.render2}" value="#{gXHDO102B027A.slurryjyuuryou1.label2}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurryjyuuryou1.fontSize2}px;color:#{gXHDO102B027A.slurryjyuuryou1.fontColor2};
+                                                      background:#{gXHDO102B027A.slurryjyuuryou1.backColor2};vertical-align: middle;"/>
+                                    </p:column>
+                                </p:row>    
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.slurryjyuuryou2}">
+                                    <p:column style="padding-left: 125px; border-top-style: hidden; border-right-style: hidden;">
+                                        <h:outputText id="slurryjyuuryou2_kikakuChi" rendered="#{gXHDO102B027A.slurryjyuuryou2.render1 || gXHDO102B027A.slurryjyuuryou2.renderLinkButton}"
+                                                      value="#{gXHDO102B027A.slurryjyuuryou2.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurryjyuuryou2.fontSize3}px;color:#{gXHDO102B027A.slurryjyuuryou2.fontColor3};
+                                                      background:#{gXHDO102B027A.slurryjyuuryou2.backColor3};vertical-align: middle;"/>
+                                    </p:column>
+                                    <p:column style="border-top-style: hidden;">
+                                        <p:inputText id="slurryjyuuryou2_T" 
+                                                     rendered="#{gXHDO102B027A.slurryjyuuryou2.renderInputText and (!gXHDO102B027A.slurryjyuuryou2.renderOutputLabel)}"
+                                                     value="#{gXHDO102B027A.slurryjyuuryou2.value}" 
+                                                     maxlength="#{gXHDO102B027A.slurryjyuuryou2.displayMaxLength}" 
+                                                     style="margin-left:8px;width:#{gXHDO102B027A.slurryjyuuryou2.displayMaxLength}em; font-size:#{gXHDO102B027A.slurryjyuuryou2.fontSizeInput}px;
+                                                     color:#{gXHDO102B027A.slurryjyuuryou2.fontColorInput};background:#{gXHDO102B027A.slurryjyuuryou2.backColorInput};
+                                                     vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.slurryjyuuryou2.customStyleInput}">
+                                            <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO102B027A.slurryjyuuryou2.checkByte()}"  async="false"/>
+                                        </p:inputText>
+                                        <p:inputNumber id="slurryjyuuryou2_N"
+                                                       rendered="#{gXHDO102B027A.slurryjyuuryou2.renderInputNumber}" value="#{gXHDO102B027A.slurryjyuuryou2.value}" 
+                                                       decimalPlaces="#{gXHDO102B027A.slurryjyuuryou2.numberDecimalPlaces}" maxValue="#{gXHDO102B027A.slurryjyuuryou2.numberMaxValue}"
+                                                       minValue="#{gXHDO102B027A.slurryjyuuryou2.numberMinValue}" 
+                                                       thousandSeparator="" roundMethod="D" size="#{gXHDO102B027A.slurryjyuuryou2.displayMaxLength}"
+                                                       inputStyle="margin-left:8px;font-size:#{gXHDO102B027A.slurryjyuuryou2.fontSizeInput}px;
+                                                       color:#{gXHDO102B027A.slurryjyuuryou2.fontColorInput}; background:#{gXHDO102B027A.slurryjyuuryou2.backColorInput};
+                                                       vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.slurryjyuuryou2.customStyleInput}">
+                                        </p:inputNumber>
+                                        <h:outputText id="slurryjyuuryou2_tani" rendered="#{gXHDO102B027A.slurryjyuuryou2.render2}" value="#{gXHDO102B027A.slurryjyuuryou2.label2}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurryjyuuryou2.fontSize2}px;color:#{gXHDO102B027A.slurryjyuuryou2.fontColor2};
+                                                      background:#{gXHDO102B027A.slurryjyuuryou2.backColor2};vertical-align: middle;"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.slurryjyuuryou3}">
+                                    <p:column style="padding-left: 125px; border-top-style: hidden; border-right-style: hidden;">
+                                        <h:outputText id="slurryjyuuryou3_kikakuChi" rendered="#{gXHDO102B027A.slurryjyuuryou3.render1 || gXHDO102B027A.slurryjyuuryou3.renderLinkButton}"
+                                                      value="#{gXHDO102B027A.slurryjyuuryou3.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurryjyuuryou3.fontSize3}px;color:#{gXHDO102B027A.slurryjyuuryou3.fontColor3};
+                                                      background:#{gXHDO102B027A.slurryjyuuryou3.backColor3};vertical-align: middle;"/>
+                                    </p:column>
+                                    <p:column style="border-top-style: hidden; ">
+                                        <p:inputText id="slurryjyuuryou3_T" 
+                                                     rendered="#{gXHDO102B027A.slurryjyuuryou3.renderInputText and (!gXHDO102B027A.slurryjyuuryou3.renderOutputLabel)}"
+                                                     value="#{gXHDO102B027A.slurryjyuuryou3.value}" 
+                                                     maxlength="#{gXHDO102B027A.slurryjyuuryou3.displayMaxLength}" 
+                                                     style="margin-left:8px;width:#{gXHDO102B027A.slurryjyuuryou3.displayMaxLength}em; font-size:#{gXHDO102B027A.slurryjyuuryou3.fontSizeInput}px;
+                                                     color:#{gXHDO102B027A.slurryjyuuryou3.fontColorInput};background:#{gXHDO102B027A.slurryjyuuryou3.backColorInput};
+                                                     vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.slurryjyuuryou3.customStyleInput}">
+                                            <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO102B027A.slurryjyuuryou3.checkByte()}"  async="false"/>
+                                        </p:inputText>
+                                        <p:inputNumber id="slurryjyuuryou3_N"
+                                                       rendered="#{gXHDO102B027A.slurryjyuuryou3.renderInputNumber}" value="#{gXHDO102B027A.slurryjyuuryou3.value}" 
+                                                       decimalPlaces="#{gXHDO102B027A.slurryjyuuryou3.numberDecimalPlaces}" maxValue="#{gXHDO102B027A.slurryjyuuryou3.numberMaxValue}"
+                                                       minValue="#{gXHDO102B027A.slurryjyuuryou3.numberMinValue}" 
+                                                       thousandSeparator="" roundMethod="D" size="#{gXHDO102B027A.slurryjyuuryou3.displayMaxLength}"
+                                                       inputStyle="margin-left:8px;font-size:#{gXHDO102B027A.slurryjyuuryou3.fontSizeInput}px;
+                                                       color:#{gXHDO102B027A.slurryjyuuryou3.fontColorInput}; background:#{gXHDO102B027A.slurryjyuuryou3.backColorInput};
+                                                       vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.slurryjyuuryou3.customStyleInput}">
+                                        </p:inputNumber>
+                                        <h:outputText id="slurryjyuuryou3_tani" rendered="#{gXHDO102B027A.slurryjyuuryou3.render2}" value="#{gXHDO102B027A.slurryjyuuryou3.label2}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurryjyuuryou3.fontSize2}px;color:#{gXHDO102B027A.slurryjyuuryou3.fontColor2};
+                                                      background:#{gXHDO102B027A.slurryjyuuryou3.backColor2};vertical-align: middle;"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.slurryjyuuryou4}">
+                                    <p:column style="padding-left: 125px; border-top-style: hidden; border-right-style: hidden;">
+                                        <h:outputText id="slurryjyuuryou4_kikakuChi" rendered="#{gXHDO102B027A.slurryjyuuryou4.render1 || gXHDO102B027A.slurryjyuuryou4.renderLinkButton}"
+                                                      value="#{gXHDO102B027A.slurryjyuuryou4.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurryjyuuryou4.fontSize3}px;color:#{gXHDO102B027A.slurryjyuuryou4.fontColor3};
+                                                      background:#{gXHDO102B027A.slurryjyuuryou4.backColor3};vertical-align: middle;"/>
+                                    </p:column>
+                                    <p:column style="border-top-style: hidden;">
+                                        <p:inputText id="slurryjyuuryou4_T" 
+                                                     rendered="#{gXHDO102B027A.slurryjyuuryou4.renderInputText and (!gXHDO102B027A.slurryjyuuryou4.renderOutputLabel)}"
+                                                     value="#{gXHDO102B027A.slurryjyuuryou4.value}" 
+                                                     maxlength="#{gXHDO102B027A.slurryjyuuryou4.displayMaxLength}" 
+                                                     style="margin-left:8px;width:#{gXHDO102B027A.slurryjyuuryou4.displayMaxLength}em; font-size:#{gXHDO102B027A.slurryjyuuryou4.fontSizeInput}px;
+                                                     color:#{gXHDO102B027A.slurryjyuuryou4.fontColorInput};background:#{gXHDO102B027A.slurryjyuuryou4.backColorInput};
+                                                     vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.slurryjyuuryou4.customStyleInput}">
+                                            <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO102B027A.slurryjyuuryou4.checkByte()}"  async="false"/>
+                                        </p:inputText>
+                                        <p:inputNumber id="slurryjyuuryou4_N"
+                                                       rendered="#{gXHDO102B027A.slurryjyuuryou4.renderInputNumber}" value="#{gXHDO102B027A.slurryjyuuryou4.value}" 
+                                                       decimalPlaces="#{gXHDO102B027A.slurryjyuuryou4.numberDecimalPlaces}" maxValue="#{gXHDO102B027A.slurryjyuuryou4.numberMaxValue}"
+                                                       minValue="#{gXHDO102B027A.slurryjyuuryou4.numberMinValue}" 
+                                                       thousandSeparator="" roundMethod="D" size="#{gXHDO102B027A.slurryjyuuryou4.displayMaxLength}"
+                                                       inputStyle="margin-left:8px;font-size:#{gXHDO102B027A.slurryjyuuryou4.fontSizeInput}px;
+                                                       color:#{gXHDO102B027A.slurryjyuuryou4.fontColorInput}; background:#{gXHDO102B027A.slurryjyuuryou4.backColorInput};
+                                                       vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.slurryjyuuryou4.customStyleInput}">
+                                        </p:inputNumber>
+                                        <h:outputText id="slurryjyuuryou4_tani" rendered="#{gXHDO102B027A.slurryjyuuryou4.render2}" value="#{gXHDO102B027A.slurryjyuuryou4.label2}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurryjyuuryou4.fontSize2}px;color:#{gXHDO102B027A.slurryjyuuryou4.fontColor2};
+                                                      background:#{gXHDO102B027A.slurryjyuuryou4.backColor2};vertical-align: middle;"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.slurryjyuuryou5}">
+                                    <p:column style="padding-left: 125px; border-top-style: hidden;border-right-style: hidden;">
+                                        <h:outputText id="slurryjyuuryou5_kikakuChi" rendered="#{gXHDO102B027A.slurryjyuuryou5.render1 || gXHDO102B027A.slurryjyuuryou5.renderLinkButton}"
+                                                      value="#{gXHDO102B027A.slurryjyuuryou5.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurryjyuuryou5.fontSize3}px;color:#{gXHDO102B027A.slurryjyuuryou5.fontColor3};
+                                                      background:#{gXHDO102B027A.slurryjyuuryou5.backColor3};vertical-align: middle;"/>
+                                    </p:column>
+                                    <p:column style="border-top-style: hidden;">
+                                        <p:inputText id="slurryjyuuryou5_T" 
+                                                     rendered="#{gXHDO102B027A.slurryjyuuryou5.renderInputText and (!gXHDO102B027A.slurryjyuuryou5.renderOutputLabel)}"
+                                                     value="#{gXHDO102B027A.slurryjyuuryou5.value}" 
+                                                     maxlength="#{gXHDO102B027A.slurryjyuuryou5.displayMaxLength}" 
+                                                     style="margin-left:8px;width:#{gXHDO102B027A.slurryjyuuryou5.displayMaxLength}em; font-size:#{gXHDO102B027A.slurryjyuuryou5.fontSizeInput}px;
+                                                     color:#{gXHDO102B027A.slurryjyuuryou5.fontColorInput};background:#{gXHDO102B027A.slurryjyuuryou5.backColorInput};
+                                                     vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.slurryjyuuryou5.customStyleInput}">
+                                            <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO102B027A.slurryjyuuryou5.checkByte()}"  async="false"/>
+                                        </p:inputText>
+                                        <p:inputNumber id="slurryjyuuryou5_N"
+                                                       rendered="#{gXHDO102B027A.slurryjyuuryou5.renderInputNumber}" value="#{gXHDO102B027A.slurryjyuuryou5.value}" 
+                                                       decimalPlaces="#{gXHDO102B027A.slurryjyuuryou5.numberDecimalPlaces}" maxValue="#{gXHDO102B027A.slurryjyuuryou5.numberMaxValue}"
+                                                       minValue="#{gXHDO102B027A.slurryjyuuryou5.numberMinValue}" 
+                                                       thousandSeparator="" roundMethod="D" size="#{gXHDO102B027A.slurryjyuuryou5.displayMaxLength}"
+                                                       inputStyle="margin-left:8px;font-size:#{gXHDO102B027A.slurryjyuuryou5.fontSizeInput}px;
+                                                       color:#{gXHDO102B027A.slurryjyuuryou5.fontColorInput}; background:#{gXHDO102B027A.slurryjyuuryou5.backColorInput};
+                                                       vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.slurryjyuuryou5.customStyleInput}">
+                                        </p:inputNumber>
+                                        <h:outputText id="slurryjyuuryou5_tani" rendered="#{gXHDO102B027A.slurryjyuuryou5.render2}" value="#{gXHDO102B027A.slurryjyuuryou5.label2}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurryjyuuryou5.fontSize2}px;color:#{gXHDO102B027A.slurryjyuuryou5.fontColor2};
+                                                      background:#{gXHDO102B027A.slurryjyuuryou5.backColor2};vertical-align: middle;"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.slurryjyuuryou6}">
+                                    <p:column style="padding-left: 125px; border-top-style: hidden; border-right-style: hidden;">
+                                        <h:outputText id="slurryjyuuryou6_kikakuChi" rendered="#{gXHDO102B027A.slurryjyuuryou6.render1 || gXHDO102B027A.slurryjyuuryou6.renderLinkButton}"
+                                                      value="#{gXHDO102B027A.slurryjyuuryou6.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurryjyuuryou6.fontSize3}px;color:#{gXHDO102B027A.slurryjyuuryou6.fontColor3};
+                                                      background:#{gXHDO102B027A.slurryjyuuryou6.backColor3};vertical-align: middle;"/>
+                                    </p:column>
+                                    <p:column style="border-top-style: hidden;border-bottom-style: hidden;">
+                                        <p:inputText id="slurryjyuuryou6_T" 
+                                                     rendered="#{gXHDO102B027A.slurryjyuuryou6.renderInputText and (!gXHDO102B027A.slurryjyuuryou6.renderOutputLabel)}"
+                                                     value="#{gXHDO102B027A.slurryjyuuryou6.value}" 
+                                                     maxlength="#{gXHDO102B027A.slurryjyuuryou6.displayMaxLength}" 
+                                                     style="margin-left:8px;width:#{gXHDO102B027A.slurryjyuuryou6.displayMaxLength}em; font-size:#{gXHDO102B027A.slurryjyuuryou6.fontSizeInput}px;
+                                                     color:#{gXHDO102B027A.slurryjyuuryou6.fontColorInput};background:#{gXHDO102B027A.slurryjyuuryou6.backColorInput};
+                                                     vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.slurryjyuuryou6.customStyleInput}">
+                                            <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO102B027A.slurryjyuuryou6.checkByte()}"  async="false"/>
+                                        </p:inputText>
+                                        <p:inputNumber id="slurryjyuuryou6_N"
+                                                       rendered="#{gXHDO102B027A.slurryjyuuryou6.renderInputNumber}" value="#{gXHDO102B027A.slurryjyuuryou6.value}" 
+                                                       decimalPlaces="#{gXHDO102B027A.slurryjyuuryou6.numberDecimalPlaces}" maxValue="#{gXHDO102B027A.slurryjyuuryou6.numberMaxValue}"
+                                                       minValue="#{gXHDO102B027A.slurryjyuuryou6.numberMinValue}" 
+                                                       thousandSeparator="" roundMethod="D" size="#{gXHDO102B027A.slurryjyuuryou6.displayMaxLength}"
+                                                       inputStyle="margin-left:8px;font-size:#{gXHDO102B027A.slurryjyuuryou6.fontSizeInput}px;
+                                                       color:#{gXHDO102B027A.slurryjyuuryou6.fontColorInput}; background:#{gXHDO102B027A.slurryjyuuryou6.backColorInput};
+                                                       vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.slurryjyuuryou6.customStyleInput}">
+                                        </p:inputNumber>
+                                        <h:outputText id="slurryjyuuryou6_tani" rendered="#{gXHDO102B027A.slurryjyuuryou6.render2}" value="#{gXHDO102B027A.slurryjyuuryou6.label2}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurryjyuuryou6.fontSize2}px;color:#{gXHDO102B027A.slurryjyuuryou6.fontColor2};
+                                                      background:#{gXHDO102B027A.slurryjyuuryou6.backColor2};vertical-align: middle;"/>
+                                    </p:column>
+                                </p:row>       
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.slurrygoukeijyuuryou}">
+                                    <p:column style=" padding-left: 125px; border-top-style: hidden;" colspan="2">
+                                        <h:outputText rendered="#{gXHDO102B027A.slurrygoukeijyuuryou.render1}" value="#{gXHDO102B027A.slurrygoukeijyuuryou.label1}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurrygoukeijyuuryou.fontSize1}px;color:#{gXHDO102B027A.slurrygoukeijyuuryou.fontColor1};vertical-align: middle;"/>
+                                        <p:commandLink id="slurrygoukeijyuuryou_cmdLink" rendered="#{gXHDO102B027A.slurrygoukeijyuuryou.renderLinkButton}"
+                                                       action="#{gXHDO901B.cmdLinkAction(gXHDO102B027A.slurrygoukeijyuuryou.linkButtonId)}" 
+                                                       process="@form" update="@form" async="false" oncomplete="cmdButtonOncomplete(args);"
+                                                       style="margin-left:8px;font-size:#{gXHDO102B027A.slurrygoukeijyuuryou.fontSize1}px;color:#{gXHDO102B027A.slurrygoukeijyuuryou.fontColor1};vertical-align: middle;">
+                                            <h:outputText value="#{gXHDO102B027A.slurrygoukeijyuuryou.label1}" />
+                                        </p:commandLink>
+                                        <h:outputText id="slurrygoukeijyuuryou_kikakuChi" rendered="#{gXHDO102B027A.slurrygoukeijyuuryou.render1 || gXHDO102B027A.slurrygoukeijyuuryou.renderLinkButton}"
+                                                      value="#{gXHDO102B027A.slurrygoukeijyuuryou.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurrygoukeijyuuryou.fontSize3}px;color:#{gXHDO102B027A.slurrygoukeijyuuryou.fontColor3};
+                                                      background:#{gXHDO102B027A.slurrygoukeijyuuryou.backColor3};vertical-align: middle;"/>
+                                        <p:inputText id="slurrygoukeijyuuryou_T" 
+                                                     rendered="#{gXHDO102B027A.slurrygoukeijyuuryou.renderInputText and (!gXHDO102B027A.slurrygoukeijyuuryou.renderOutputLabel)}"
+                                                     value="#{gXHDO102B027A.slurrygoukeijyuuryou.value}" 
+                                                     maxlength="#{gXHDO102B027A.slurrygoukeijyuuryou.displayMaxLength}" 
+                                                     style="margin-left:8px;width:#{gXHDO102B027A.slurrygoukeijyuuryou.displayMaxLength}em; font-size:#{gXHDO102B027A.slurrygoukeijyuuryou.fontSizeInput}px;
+                                                     color:#{gXHDO102B027A.slurrygoukeijyuuryou.fontColorInput};background:#{gXHDO102B027A.slurrygoukeijyuuryou.backColorInput};
+                                                     vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.slurrygoukeijyuuryou.customStyleInput}">
+                                            <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO102B027A.slurrygoukeijyuuryou.checkByte()}"  async="false"/>
+                                        </p:inputText>
+                                        <p:inputNumber id="slurrygoukeijyuuryou_N"
+                                                       rendered="#{gXHDO102B027A.slurrygoukeijyuuryou.renderInputNumber}" value="#{gXHDO102B027A.slurrygoukeijyuuryou.value}" 
+                                                       decimalPlaces="#{gXHDO102B027A.slurrygoukeijyuuryou.numberDecimalPlaces}" maxValue="#{gXHDO102B027A.slurrygoukeijyuuryou.numberMaxValue}"
+                                                       minValue="#{gXHDO102B027A.slurrygoukeijyuuryou.numberMinValue}" 
+                                                       thousandSeparator="" roundMethod="D" size="#{gXHDO102B027A.slurrygoukeijyuuryou.displayMaxLength}"
+                                                       inputStyle="margin-left:8px;font-size:#{gXHDO102B027A.slurrygoukeijyuuryou.fontSizeInput}px;
+                                                       color:#{gXHDO102B027A.slurrygoukeijyuuryou.fontColorInput}; background:#{gXHDO102B027A.slurrygoukeijyuuryou.backColorInput};
+                                                       vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.slurrygoukeijyuuryou.customStyleInput}">
+                                        </p:inputNumber>
+
+                                        <h:outputText id="slurrygoukeijyuuryou_tani" rendered="#{gXHDO102B027A.slurrygoukeijyuuryou.render2}" value="#{gXHDO102B027A.slurrygoukeijyuuryou.label2}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.slurrygoukeijyuuryou.fontSize2}px;color:#{gXHDO102B027A.slurrygoukeijyuuryou.fontColor2};
+                                                      background:#{gXHDO102B027A.slurrygoukeijyuuryou.backColor2};vertical-align: middle;"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row style="height: 50px;white-space:nowrap;border-top-style: solid;"
+                                       rendered="#{not (empty gXHDO102B027A.kokeibunhiritu and empty gXHDO102B027A.kokeibuntyouseiryou1
+                                                   and empty gXHDO102B027A.kokeibuntyouseiryou2 and empty gXHDO102B027A.kokeibuntyouseiryou
+                                                   and empty gXHDO102B027A.toluenetenkaryou and empty gXHDO102B027A.solmixtenkaryou
+                                                   and empty gXHDO102B027A.tantousya 
+                                                   )}">
+                                    <p:column colspan="2">
+                                        <h:outputText value="#{myMsg.slurrykokeibuntyouseiryou}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.kokeibunhiritu.fontSize1}px;color:#{gXHDO102B027A.kokeibunhiritu.fontColor1};vertical-align: middle;"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.kokeibunhiritu}">
+                                    <p:column colspan="2" style="padding-left: 125px; border-top-style: hidden;">
+                                        <h:outputText rendered="#{gXHDO102B027A.kokeibunhiritu.render1}" value="#{gXHDO102B027A.kokeibunhiritu.label1}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.kokeibunhiritu.fontSize1}px;color:#{gXHDO102B027A.kokeibunhiritu.fontColor1};vertical-align: middle;"/>
+                                        <h:outputText id="kokeibunhiritu_kikakuChi" rendered="#{gXHDO102B027A.kokeibunhiritu.render1 || gXHDO102B027A.kokeibunhiritu.renderLinkButton}"
+                                                      value="#{gXHDO102B027A.kokeibunhiritu.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.kokeibunhiritu.fontSize3}px;color:#{gXHDO102B027A.kokeibunhiritu.fontColor3};
+                                                      background:#{gXHDO102B027A.kokeibunhiritu.backColor3};vertical-align: middle;"/>
+                                        <h:outputText id="kokeibunhiritu_tani" rendered="#{gXHDO102B027A.kokeibunhiritu.render2}" value="#{gXHDO102B027A.kokeibunhiritu.label2}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.kokeibunhiritu.fontSize2}px;color:#{gXHDO102B027A.kokeibunhiritu.fontColor2};
+                                                      background:#{gXHDO102B027A.kokeibunhiritu.backColor2};vertical-align: middle;"/>
+                                    </p:column>
+                                </p:row>  
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.kokeibuntyouseiryou1}">
+                                    <p:column colspan="2" style="padding-left: 125px; border-top-style: hidden;">
+                                        <h:outputText rendered="#{gXHDO102B027A.kokeibuntyouseiryou1.render1}" value="#{gXHDO102B027A.kokeibuntyouseiryou1.label1}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.kokeibuntyouseiryou1.fontSize1}px;color:#{gXHDO102B027A.kokeibuntyouseiryou1.fontColor1};vertical-align: middle;"/>
+                                        <h:outputText id="kokeibuntyouseiryou1_kikakuChi" rendered="#{gXHDO102B027A.kokeibuntyouseiryou1.render1 || gXHDO102B027A.kokeibuntyouseiryou1.renderLinkButton}"
+                                                      value="#{gXHDO102B027A.kokeibuntyouseiryou1.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.kokeibuntyouseiryou1.fontSize3}px;color:#{gXHDO102B027A.kokeibuntyouseiryou1.fontColor3};
+                                                      background:#{gXHDO102B027A.kokeibuntyouseiryou1.backColor3};vertical-align: middle;"/>
+                                        <h:outputText id="kokeibuntyouseiryou1_tani" rendered="#{gXHDO102B027A.kokeibuntyouseiryou1.render2}" value="#{gXHDO102B027A.kokeibuntyouseiryou1.label2}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.kokeibuntyouseiryou1.fontSize2}px;color:#{gXHDO102B027A.kokeibuntyouseiryou1.fontColor2};
+                                                      background:#{gXHDO102B027A.kokeibuntyouseiryou1.backColor2};vertical-align: middle;"/>
+                                    </p:column>
+                                </p:row>  
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.kokeibuntyouseiryou2}">
+                                    <p:column colspan="2" style="padding-left: 125px; border-top-style: hidden;">
+                                        <h:outputText rendered="#{gXHDO102B027A.kokeibuntyouseiryou2.render1}" value="#{gXHDO102B027A.kokeibuntyouseiryou2.label1}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.kokeibuntyouseiryou2.fontSize1}px;color:#{gXHDO102B027A.kokeibuntyouseiryou2.fontColor1};vertical-align: middle;"/>
+                                        <h:outputText id="kokeibuntyouseiryou2_kikakuChi" rendered="#{gXHDO102B027A.kokeibuntyouseiryou2.render1 || gXHDO102B027A.kokeibuntyouseiryou2.renderLinkButton}"
+                                                      value="#{gXHDO102B027A.kokeibuntyouseiryou2.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.kokeibuntyouseiryou2.fontSize3}px;color:#{gXHDO102B027A.kokeibuntyouseiryou2.fontColor3};
+                                                      background:#{gXHDO102B027A.kokeibuntyouseiryou2.backColor3};vertical-align: middle;"/>
+                                        <h:outputText id="kokeibuntyouseiryou2_tani" rendered="#{gXHDO102B027A.kokeibuntyouseiryou2.render2}" value="#{gXHDO102B027A.kokeibuntyouseiryou2.label2}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.kokeibuntyouseiryou2.fontSize2}px;color:#{gXHDO102B027A.kokeibuntyouseiryou2.fontColor2};
+                                                      background:#{gXHDO102B027A.kokeibuntyouseiryou2.backColor2};vertical-align: middle;"/>
+                                    </p:column>
+                                </p:row>  
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.kokeibuntyouseiryou}">
+                                    <p:column colspan="2" style="padding-left: 125px; border-top-style: hidden;">
+                                        <h:outputText rendered="#{gXHDO102B027A.kokeibuntyouseiryou.render1}" value="#{gXHDO102B027A.kokeibuntyouseiryou.label1}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.kokeibuntyouseiryou.fontSize1}px;color:#{gXHDO102B027A.kokeibuntyouseiryou.fontColor1};vertical-align: middle;"/>
+                                        <p:commandLink id="kokeibuntyouseiryou_cmdLink" rendered="#{gXHDO102B027A.kokeibuntyouseiryou.renderLinkButton}"
+                                                       action="#{gXHDO901B.cmdLinkAction(gXHDO102B027A.kokeibuntyouseiryou.linkButtonId)}" 
+                                                       process="@form" update="@form" async="false" oncomplete="cmdButtonOncomplete(args);"
+                                                       style="margin-left:8px;font-size:#{gXHDO102B027A.kokeibuntyouseiryou.fontSize1}px;color:#{gXHDO102B027A.kokeibuntyouseiryou.fontColor1};vertical-align: middle;">
+                                            <h:outputText value="#{gXHDO102B027A.kokeibuntyouseiryou.label1}" />
+                                        </p:commandLink>
+                                        <h:outputText id="kokeibuntyouseiryou_kikakuChi" rendered="#{gXHDO102B027A.kokeibuntyouseiryou.render1 || gXHDO102B027A.kokeibuntyouseiryou.renderLinkButton}"
+                                                      value="#{gXHDO102B027A.kokeibuntyouseiryou.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.kokeibuntyouseiryou.fontSize3}px;color:#{gXHDO102B027A.kokeibuntyouseiryou.fontColor3};
+                                                      background:#{gXHDO102B027A.kokeibuntyouseiryou.backColor3};vertical-align: middle;"/>
+                                        <p:inputText id="kokeibuntyouseiryou_T" 
+                                                     rendered="#{gXHDO102B027A.kokeibuntyouseiryou.renderInputText and (!gXHDO102B027A.kokeibuntyouseiryou.renderOutputLabel)}"
+                                                     value="#{gXHDO102B027A.kokeibuntyouseiryou.value}" 
+                                                     maxlength="#{gXHDO102B027A.kokeibuntyouseiryou.displayMaxLength}" 
+                                                     style="margin-left:8px;width:#{gXHDO102B027A.kokeibuntyouseiryou.displayMaxLength}em; font-size:#{gXHDO102B027A.kokeibuntyouseiryou.fontSizeInput}px;
+                                                     color:#{gXHDO102B027A.kokeibuntyouseiryou.fontColorInput};background:#{gXHDO102B027A.kokeibuntyouseiryou.backColorInput};
+                                                     vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.kokeibuntyouseiryou.customStyleInput}">
+                                            <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO102B027A.kokeibuntyouseiryou.checkByte()}"  async="false"/>
+                                        </p:inputText>
+                                        <p:inputNumber id="kokeibuntyouseiryou_N"
+                                                       rendered="#{gXHDO102B027A.kokeibuntyouseiryou.renderInputNumber}" value="#{gXHDO102B027A.kokeibuntyouseiryou.value}" 
+                                                       decimalPlaces="#{gXHDO102B027A.kokeibuntyouseiryou.numberDecimalPlaces}" maxValue="#{gXHDO102B027A.kokeibuntyouseiryou.numberMaxValue}"
+                                                       minValue="#{gXHDO102B027A.kokeibuntyouseiryou.numberMinValue}" 
+                                                       thousandSeparator="" roundMethod="D" size="#{gXHDO102B027A.kokeibuntyouseiryou.displayMaxLength}"
+                                                       inputStyle="margin-left:8px;font-size:#{gXHDO102B027A.kokeibuntyouseiryou.fontSizeInput}px;
+                                                       color:#{gXHDO102B027A.kokeibuntyouseiryou.fontColorInput}; background:#{gXHDO102B027A.kokeibuntyouseiryou.backColorInput};
+                                                       vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.kokeibuntyouseiryou.customStyleInput}">
+                                        </p:inputNumber>
+                                        <h:outputText id="kokeibuntyouseiryou_tani" rendered="#{gXHDO102B027A.kokeibuntyouseiryou.render2}" value="#{gXHDO102B027A.kokeibuntyouseiryou.label2}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.kokeibuntyouseiryou.fontSize2}px;color:#{gXHDO102B027A.kokeibuntyouseiryou.fontColor2};
+                                                      background:#{gXHDO102B027A.kokeibuntyouseiryou.backColor2};vertical-align: middle;"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.toluenetenkaryou}">
+                                    <p:column colspan="2" style="padding-left: 125px; border-top-style: hidden;">
+                                        <h:outputText rendered="#{gXHDO102B027A.toluenetenkaryou.render1}" value="#{gXHDO102B027A.toluenetenkaryou.label1}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.toluenetenkaryou.fontSize1}px;color:#{gXHDO102B027A.toluenetenkaryou.fontColor1};vertical-align: middle;"/>
+                                        <h:outputText id="toluenetenkaryou_kikakuChi" rendered="#{gXHDO102B027A.toluenetenkaryou.render1 || gXHDO102B027A.toluenetenkaryou.renderLinkButton}"
+                                                      value="#{gXHDO102B027A.toluenetenkaryou.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.toluenetenkaryou.fontSize3}px;color:#{gXHDO102B027A.toluenetenkaryou.fontColor3};
+                                                      background:#{gXHDO102B027A.toluenetenkaryou.backColor3};vertical-align: middle;"/>
+                                        <p:inputText id="toluenetenkaryou_T" 
+                                                     rendered="#{gXHDO102B027A.toluenetenkaryou.renderInputText and (!gXHDO102B027A.toluenetenkaryou.renderOutputLabel)}"
+                                                     value="#{gXHDO102B027A.toluenetenkaryou.value}" 
+                                                     maxlength="#{gXHDO102B027A.toluenetenkaryou.displayMaxLength}" 
+                                                     style="margin-left:8px;width:#{gXHDO102B027A.toluenetenkaryou.displayMaxLength}em; font-size:#{gXHDO102B027A.toluenetenkaryou.fontSizeInput}px;
+                                                     color:#{gXHDO102B027A.toluenetenkaryou.fontColorInput};background:#{gXHDO102B027A.toluenetenkaryou.backColorInput};
+                                                     vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.toluenetenkaryou.customStyleInput}">
+                                            <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO102B027A.toluenetenkaryou.checkByte()}"  async="false"/>
+                                        </p:inputText>
+                                        <p:inputNumber id="toluenetenkaryou_N"
+                                                       rendered="#{gXHDO102B027A.toluenetenkaryou.renderInputNumber}" value="#{gXHDO102B027A.toluenetenkaryou.value}" 
+                                                       decimalPlaces="#{gXHDO102B027A.toluenetenkaryou.numberDecimalPlaces}" maxValue="#{gXHDO102B027A.toluenetenkaryou.numberMaxValue}"
+                                                       minValue="#{gXHDO102B027A.toluenetenkaryou.numberMinValue}" 
+                                                       thousandSeparator="" roundMethod="D" size="#{gXHDO102B027A.toluenetenkaryou.displayMaxLength}"
+                                                       inputStyle="margin-left:8px;font-size:#{gXHDO102B027A.toluenetenkaryou.fontSizeInput}px;
+                                                       color:#{gXHDO102B027A.toluenetenkaryou.fontColorInput}; background:#{gXHDO102B027A.toluenetenkaryou.backColorInput};
+                                                       vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.toluenetenkaryou.customStyleInput}">
+                                        </p:inputNumber>
+                                        <h:outputText id="toluenetenkaryou_tani" rendered="#{gXHDO102B027A.toluenetenkaryou.render2}" value="#{gXHDO102B027A.toluenetenkaryou.label2}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.toluenetenkaryou.fontSize2}px;color:#{gXHDO102B027A.toluenetenkaryou.fontColor2};
+                                                      background:#{gXHDO102B027A.toluenetenkaryou.backColor2};vertical-align: middle;"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.solmixtenkaryou}">
+                                    <p:column colspan="2" style="padding-left: 125px; border-top-style: hidden;">
+                                        <h:outputText rendered="#{gXHDO102B027A.solmixtenkaryou.render1}" value="#{gXHDO102B027A.solmixtenkaryou.label1}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.solmixtenkaryou.fontSize1}px;color:#{gXHDO102B027A.solmixtenkaryou.fontColor1};vertical-align: middle;"/>
+                                        <h:outputText id="solmixtenkaryou_kikakuChi" rendered="#{gXHDO102B027A.solmixtenkaryou.render1 || gXHDO102B027A.solmixtenkaryou.renderLinkButton}"
+                                                      value="#{gXHDO102B027A.solmixtenkaryou.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.solmixtenkaryou.fontSize3}px;color:#{gXHDO102B027A.solmixtenkaryou.fontColor3};
+                                                      background:#{gXHDO102B027A.solmixtenkaryou.backColor3};vertical-align: middle;"/>
+                                        <p:inputText id="solmixtenkaryou_T" 
+                                                     rendered="#{gXHDO102B027A.solmixtenkaryou.renderInputText and (!gXHDO102B027A.solmixtenkaryou.renderOutputLabel)}"
+                                                     value="#{gXHDO102B027A.solmixtenkaryou.value}" 
+                                                     maxlength="#{gXHDO102B027A.solmixtenkaryou.displayMaxLength}" 
+                                                     style="margin-left:8px;width:#{gXHDO102B027A.solmixtenkaryou.displayMaxLength}em; font-size:#{gXHDO102B027A.solmixtenkaryou.fontSizeInput}px;
+                                                     color:#{gXHDO102B027A.solmixtenkaryou.fontColorInput};background:#{gXHDO102B027A.solmixtenkaryou.backColorInput};
+                                                     vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.solmixtenkaryou.customStyleInput}">
+                                            <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO102B027A.solmixtenkaryou.checkByte()}"  async="false"/>
+                                        </p:inputText>
+                                        <p:inputNumber id="solmixtenkaryou_N"
+                                                       rendered="#{gXHDO102B027A.solmixtenkaryou.renderInputNumber}" value="#{gXHDO102B027A.solmixtenkaryou.value}" 
+                                                       decimalPlaces="#{gXHDO102B027A.solmixtenkaryou.numberDecimalPlaces}" maxValue="#{gXHDO102B027A.solmixtenkaryou.numberMaxValue}"
+                                                       minValue="#{gXHDO102B027A.solmixtenkaryou.numberMinValue}" 
+                                                       thousandSeparator="" roundMethod="D" size="#{gXHDO102B027A.solmixtenkaryou.displayMaxLength}"
+                                                       inputStyle="margin-left:8px;font-size:#{gXHDO102B027A.solmixtenkaryou.fontSizeInput}px;
+                                                       color:#{gXHDO102B027A.solmixtenkaryou.fontColorInput}; background:#{gXHDO102B027A.solmixtenkaryou.backColorInput};
+                                                       vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.solmixtenkaryou.customStyleInput}">
+                                        </p:inputNumber>
+                                        <h:outputText id="solmixtenkaryou_tani" rendered="#{gXHDO102B027A.solmixtenkaryou.render2}" value="#{gXHDO102B027A.solmixtenkaryou.label2}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.solmixtenkaryou.fontSize2}px;color:#{gXHDO102B027A.solmixtenkaryou.fontColor2};
+                                                      background:#{gXHDO102B027A.solmixtenkaryou.backColor2};vertical-align: middle;"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.tantousya}">
+                                    <p:column colspan="2" style="padding-left: 125px; border-top-style: hidden;">
+                                        <h:outputText rendered="#{gXHDO102B027A.tantousya.render1}" value="#{gXHDO102B027A.tantousya.label1}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.tantousya.fontSize1}px;color:#{gXHDO102B027A.tantousya.fontColor1};vertical-align: middle;"/>
+                                        <h:outputText id="tantousya_kikakuChi" rendered="#{gXHDO102B027A.tantousya.render1 || gXHDO102B027A.tantousya.renderLinkButton}" value="#{gXHDO102B027A.tantousya.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.tantousya.fontSize3}px;color:#{gXHDO102B027A.tantousya.fontColor3};
+                                                      background:#{gXHDO102B027A.tantousya.backColor3};vertical-align: middle;"/>
+                                        <p:inputText id="tantousya_T" 
+                                                     rendered="#{gXHDO102B027A.tantousya.renderInputText and (!gXHDO102B027A.tantousya.renderOutputLabel)}" value="#{gXHDO102B027A.tantousya.value}" 
+                                                     maxlength="#{gXHDO102B027A.tantousya.displayMaxLength}" 
+                                                     style="margin-left:8px;width:#{gXHDO102B027A.tantousya.displayMaxLength}em; font-size:#{gXHDO102B027A.tantousya.fontSizeInput}px;
+                                                     color:#{gXHDO102B027A.tantousya.fontColorInput};background:#{gXHDO102B027A.tantousya.backColorInput};
+                                                     vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.tantousya.customStyleInput}">
+                                            <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO102B027A.tantousya.checkByte()}"  async="false"/>
+                                        </p:inputText>
+                                    </p:column>
+                                </p:row> 
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.bikou1}">
+                                    <p:column colspan="2">
+                                        <h:outputText rendered="#{gXHDO102B027A.bikou1.render1}" value="#{gXHDO102B027A.bikou1.label1}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.bikou1.fontSize1}px;color:#{gXHDO102B027A.bikou1.fontColor1};vertical-align: middle;"/>
+                                        <h:outputText id="bikou1_kikakuChi" rendered="#{gXHDO102B027A.bikou1.render1 || gXHDO102B027A.bikou1.renderLinkButton}" value="#{gXHDO102B027A.bikou1.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.bikou1.fontSize3}px;color:#{gXHDO102B027A.bikou1.fontColor3};
+                                                      background:#{gXHDO102B027A.bikou1.backColor3};vertical-align: middle;"/>
+                                        <p:inputText id="bikou1_T" 
+                                                     rendered="#{gXHDO102B027A.bikou1.renderInputText and (!gXHDO102B027A.bikou1.renderOutputLabel)}" value="#{gXHDO102B027A.bikou1.value}" 
+                                                     maxlength="#{gXHDO102B027A.bikou1.displayMaxLength}" 
+                                                     style="margin-left:8px;width:#{gXHDO102B027A.bikou1.displayMaxLength}em; font-size:#{gXHDO102B027A.bikou1.fontSizeInput}px;
+                                                     color:#{gXHDO102B027A.bikou1.fontColorInput};background:#{gXHDO102B027A.bikou1.backColorInput};
+                                                     vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.bikou1.customStyleInput}">
+                                            <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO102B027A.bikou1.checkByte()}"  async="false"/>
+                                        </p:inputText>
+                                    </p:column>
+                                </p:row> 			
+                                <p:row style="height: 50px;white-space:nowrap;" rendered="#{not empty gXHDO102B027A.bikou2}">
+                                    <p:column colspan="2">
+                                        <h:outputText rendered="#{gXHDO102B027A.bikou2.render1}" value="#{gXHDO102B027A.bikou2.label1}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.bikou2.fontSize1}px;color:#{gXHDO102B027A.bikou2.fontColor1};vertical-align: middle;"/>
+                                        <h:outputText id="bikou2_kikakuChi" rendered="#{gXHDO102B027A.bikou2.render1 || gXHDO102B027A.bikou2.renderLinkButton}" value="#{gXHDO102B027A.bikou2.kikakuChi}"
+                                                      style="margin-left:8px;font-size:#{gXHDO102B027A.bikou2.fontSize3}px;color:#{gXHDO102B027A.bikou2.fontColor3};
+                                                      background:#{gXHDO102B027A.bikou2.backColor3};vertical-align: middle;"/>
+                                        <p:inputText id="bikou2_T" 
+                                                     rendered="#{gXHDO102B027A.bikou2.renderInputText and (!gXHDO102B027A.bikou2.renderOutputLabel)}" value="#{gXHDO102B027A.bikou2.value}" 
+                                                     maxlength="#{gXHDO102B027A.bikou2.displayMaxLength}" 
+                                                     style="margin-left:8px;width:#{gXHDO102B027A.bikou2.displayMaxLength}em; font-size:#{gXHDO102B027A.bikou2.fontSizeInput}px;
+                                                     color:#{gXHDO102B027A.bikou2.fontColorInput};background:#{gXHDO102B027A.bikou2.backColorInput};
+                                                     vertical-align: middle;max-width:#{gXHDO901B.maxWidthInputCol}px;#{gXHDO102B027A.bikou2.customStyleInput}">
+                                            <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO102B027A.bikou2.checkByte()}"  async="false"/>
+                                        </p:inputText>
+                                    </p:column>
+                                </p:row> 			
+                            </p:panelGrid>
+                        </div>
+                    </p:panel>
+                    <p:panel id="bottomPanel" style="margin-top:4px; #{gXHDO901B.styleDisplayNone}">
+                        <ui:repeat value="#{gXHDO901B.buttonListBottom}" var="item" varStatus="stat">
+                            <p:commandButton id="buttonId" value="#{item.buttonName}" rendered="#{item.render}" disabled="#{!item.enabled}"
+                                             style="margin-left:4px;margin-bottom:2px;font-size:#{item.fontSize}px;color:#{item.fontColor};background:#{item.backColor};"
+                                             actionListener="#{gXHDO901B.btnClick(item.buttonId)}" process="@form" update="@form" async="false"
+                                             oncomplete="cmdButtonOncomplete(args);" />       
+                        </ui:repeat>
+                    </p:panel>
+                    <p:commandButton id="returnBtnBottom" style="margin-left:26px;margin-bottom:0px;margin-top:5px;"
+                                     value="#{myMsg.return}"  action="/secure/pxhdo102/gxhdo102a.xhtml?faces-redirect=true"
+                                     process="@this" update="@this">
+                        <f:param name="returnVal" value="return"/>
+                        <f:attribute name="returnVal" value="return"/>
+                    </p:commandButton>
+                </div>
+                <div>
+                    <ui:include src="/secure/common/initMessage.xhtml"/>
+                    <t:aliasBean alias="#{gXHDO901Common}" value="#{gXHDO901B}">
+                        <ui:include src="/secure/common/kikakuError.xhtml"/>
+                    </t:aliasBean>
+                    <t:aliasBean alias="#{gXHDO901ACommon}" value="#{gXHDO901B}">
+                        <ui:include src="/secure/pxhdo901/gxhdo901b.xhtml"/>
+                    </t:aliasBean>
+                    <t:aliasBean alias="#{gXHDO101Common}" value="#{gXHDO901B}">
+                        <ui:include src="/secure/common/compMessage.xhtml"/>
+                    </t:aliasBean>
+                    <ui:include src="/secure/common/errorListMessage.xhtml"/>
+                </div>
+            </div>
+        </h:form>
+    </h:body>
+</html>
