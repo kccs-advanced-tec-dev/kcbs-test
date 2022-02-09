@@ -100,7 +100,7 @@ public class GXHDO502BModel implements Cloneable {
     /**
      * 乾燥開始日時
      */
-    private String kansoukaisinichij = null;
+    private String kansoukaisinichiji = null;
     /**
      * 乾燥終了日時
      */
@@ -233,7 +233,7 @@ public class GXHDO502BModel implements Cloneable {
     /**
      * 乾燥開始日時の背景色
      */
-    private String kansoukaisinichijbgcolor = "";
+    private String kansoukaisinichijibgcolor = "";
     /**
      * 乾燥終了日時の背景色
      */
@@ -687,19 +687,19 @@ public class GXHDO502BModel implements Cloneable {
     /**
      * 乾燥開始日時
      *
-     * @return the kansoukaisinichij
+     * @return the kansoukaisinichiji
      */
-    public String getKansoukaisinichij() {
-        return kansoukaisinichij;
+    public String getKansoukaisinichiji() {
+        return kansoukaisinichiji;
     }
 
     /**
      * 乾燥開始日時
      *
-     * @param kansoukaisinichij the kansoukaisinichij to set
+     * @param kansoukaisinichiji the kansoukaisinichiji to set
      */
-    public void setKansoukaisinichij(String kansoukaisinichij) {
-        this.kansoukaisinichij = kansoukaisinichij;
+    public void setKansoukaisinichiji(String kansoukaisinichiji) {
+        this.kansoukaisinichiji = kansoukaisinichiji;
     }
 
     /**
@@ -1282,19 +1282,19 @@ public class GXHDO502BModel implements Cloneable {
     /**
      * 乾燥開始日時の背景色
      *
-     * @return the kansoukaisinichijbgcolor
+     * @return the kansoukaisinichijibgcolor
      */
-    public String getKansoukaisinichijbgcolor() {
-        return kansoukaisinichijbgcolor;
+    public String getKansoukaisinichijibgcolor() {
+        return kansoukaisinichijibgcolor;
     }
 
     /**
      * 乾燥開始日時の背景色
      *
-     * @param kansoukaisinichijbgcolor the kansoukaisinichijbgcolor to set
+     * @param kansoukaisinichijibgcolor the kansoukaisinichijibgcolor to set
      */
-    public void setKansoukaisinichijbgcolor(String kansoukaisinichijbgcolor) {
-        this.kansoukaisinichijbgcolor = kansoukaisinichijbgcolor;
+    public void setKansoukaisinichijibgcolor(String kansoukaisinichijibgcolor) {
+        this.kansoukaisinichijibgcolor = kansoukaisinichijibgcolor;
     }
 
     /**

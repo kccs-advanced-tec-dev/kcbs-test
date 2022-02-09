@@ -13,6 +13,7 @@
         <meta http-equiv="Cache-Control" content="no-cache"/>
         <meta http-equiv="Expires" content="0"/>
         <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title>#{myParam.application_id} #{myMsg.GXHDO502B_GamenTitle}</title>
         <link href="#{request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
         <link href="#{request.contextPath}/resources/css/growl.css" rel="stylesheet" type="text/css"/>
         <link href="#{request.contextPath}/resources/css/loading.css" rel="stylesheet" type="text/css"/>
@@ -327,13 +328,13 @@
                         <p:column id="kansoujikankikaku" headerText="乾燥時間規格" style=" text-align: center;" >
                             <p:inputText id="kansoujikankikakuValue" value="#{item.kansoujikankikaku}" styleClass="wiplotnoClass" disabled="#{item.kansoujikankikakudisabled}" maxlength="20" style="height:30px;background-color:#{item.kansoujikankikakubgcolor};width:265px;" />
                         </p:column>
-                        <p:column id="kansoukaisinichij" headerText="乾燥開始日時" style=" text-align: center;width:250px;" >
-                            <p:inputText id="kansoukaisinichijValue" value="#{item.kansoukaisinichij}" styleClass="kansoukaisinichijClass"  maxlength="10" style="float:left;height:30px;background-color:#{item.kansoukaisinichijbgcolor};width:100px;" />
+                        <p:column id="kansoukaisinichiji" headerText="乾燥開始日時" style=" text-align: center;width:250px;" >
+                            <p:inputText id="kansoukaisinichijiValue" value="#{item.kansoukaisinichiji}" styleClass="kansoukaisinichijiClass"  maxlength="10" style="float:left;height:30px;background-color:#{item.kansoukaisinichijibgcolor};width:100px;" />
                             <div style="text-align: right;width:170px;vertical-align:middle;">
                                 <p:commandButton style="width:60px;height:30px;font-size:12px;margin-left:5px;margin-right:2px;text-align:center;" 
                                                  value="日時" 
-                                                 action="#{gXHDO502B.setKansoukaisinichij(rowIndex)}"
-                                                 update="@(.kansoukaisinichijClass)"
+                                                 action="#{gXHDO502B.setKansoukaisinichiji(rowIndex)}"
+                                                 update="@(.kansoukaisinichijiClass)"
                                                  />
                             </div>
                         </p:column>

@@ -339,11 +339,11 @@ public class GXHDO502B implements Serializable {
      *
      * @param rowIndex 行番号
      */
-    public void setKansoukaisinichij(int rowIndex) {
+    public void setKansoukaisinichiji(int rowIndex) {
         // ｼｽﾃﾑ日時(YYMMDDHHMM)で項目に設定
         GXHDO502BModel gxhdo502bmodel = listData.get(rowIndex);
-        if (StringUtil.isEmpty(gxhdo502bmodel.getKansoukaisinichij())) {
-            setDateTimeItem(listData.get(rowIndex), "kansoukaisinichij");
+        if (StringUtil.isEmpty(gxhdo502bmodel.getKansoukaisinichiji())) {
+            setDateTimeItem(listData.get(rowIndex), "kansoukaisinichiji");
         }
     }
 
@@ -422,9 +422,9 @@ public class GXHDO502B implements Serializable {
         Date date = new Date();
         String dateValue = new SimpleDateFormat("yyMMddHHmm").format(date);
         switch (focusItemId) {
-            case "kansoukaisinichij":
+            case "kansoukaisinichiji":
                 // 乾燥開始日時
-                gxhdo502bmodel.setKansoukaisinichij(dateValue);
+                gxhdo502bmodel.setKansoukaisinichiji(dateValue);
                 break;
             case "kansousyuuryounichiji":
                 // 乾燥終了日時
@@ -506,9 +506,9 @@ public class GXHDO502B implements Serializable {
         // 入力チェック処理
         ValidateUtil validateUtil = new ValidateUtil();
         ArrayList<String> errorItemList = new ArrayList<>();
-        // ロットNo
+        // WIPLotNo
         addError(validateUtil.checkC101(getWipLotNo(), "WIPLotNo", 15), errorItemList);
-        // 取込日(FROM)
+        // 乾燥開始日時(from)
         boolean errorFlg = addError(validateUtil.checkC101(getKansoukaisiDateF(), "乾燥開始日時(from)", 10), errorItemList);
         if (!errorFlg) {
             errorFlg = addError(validateUtil.checkC201ForDate(getKansoukaisiDateF(), "乾燥開始日時(from)"), errorItemList);
@@ -520,7 +520,7 @@ public class GXHDO502B implements Serializable {
             }
         }
 
-        // 取込日(TO)
+        // 乾燥開始日時(to)
         errorFlg = addError(validateUtil.checkC101(getKansoukaisiDateT(), "乾燥開始日時(to)", 10), errorItemList);
         if (!errorFlg) {
             errorFlg = addError(validateUtil.checkC201ForDate(getKansoukaisiDateT(), "乾燥開始日時(to)"), errorItemList);
@@ -602,8 +602,8 @@ public class GXHDO502B implements Serializable {
                     + "AND   (? IS NULL OR lotno = ?) "
                     + "AND   (? IS NULL OR edaban = ?) "
                     + "AND   (? IS NULL OR hinmei LIKE ? ESCAPE '\\\\') "
-                    + "AND   (? IS NULL OR kansoukaisinichij >= ?) "
-                    + "AND   (? IS NULL OR kansoukaisinichij <= ?) "
+                    + "AND   (? IS NULL OR kansoukaisinichiji >= ?) "
+                    + "AND   (? IS NULL OR kansoukaisinichiji <= ?) "
                     + "AND   (? IS NULL OR nagarehin = ?) ";
 
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -676,7 +676,7 @@ public class GXHDO502B implements Serializable {
 
             String sql = "select hinmei, lot, passkaisuu, sokuteikaisuu, nagarehin, CONCAT(kojyo,lotno, edaban) wiplotno, sokuteibutu, no, koutei, "
                     + "sokuteisya, kansouzaranosyurui, rutubono, sokuteijyuuryoukikaku, sokuteijyuuryou, kansouondo, kansoujikankikaku,  "
-                    + "DATE_FORMAT(kansoukaisinichij, '%y%m%d%H%i') kansoukaisinichij, DATE_FORMAT(kansousyuuryounichiji, '%y%m%d%H%i') kansousyuuryounichiji, "
+                    + "DATE_FORMAT(kansoukaisinichiji, '%y%m%d%H%i') kansoukaisinichiji, DATE_FORMAT(kansousyuuryounichiji, '%y%m%d%H%i') kansousyuuryounichiji, "
                     + "dassirogouki, dassiondo, dassijikankikaku,DATE_FORMAT(dassikaisinichiji, '%y%m%d%H%i') dassikaisinichiji, "
                     + "DATE_FORMAT(dassisyuuryounichiji, '%y%m%d%H%i') dassisyuuryounichiji, kansoutantousya, maesyoriondo, maesyorijikan, "
                     + "DATE_FORMAT(maesyorikaisinichiji, '%y%m%d%H%i') maesyorikaisinichiji, DATE_FORMAT(maesyorisyuuryounichiji, '%y%m%d%H%i') maesyorisyuuryounichiji, "
@@ -686,10 +686,10 @@ public class GXHDO502B implements Serializable {
                     + "AND   (? IS NULL OR lotno = ?) "
                     + "AND   (? IS NULL OR edaban = ?) "
                     + "AND   (? IS NULL OR hinmei LIKE ? ESCAPE '\\\\') "
-                    + "AND   (? IS NULL OR kansoukaisinichij >= ?) "
-                    + "AND   (? IS NULL OR kansoukaisinichij <= ?) "
+                    + "AND   (? IS NULL OR kansoukaisinichiji >= ?) "
+                    + "AND   (? IS NULL OR kansoukaisinichiji <= ?) "
                     + "AND   (? IS NULL OR nagarehin = ?) "
-                    + " ORDER BY kansoukaisinichij ASC";
+                    + " ORDER BY kansoukaisinichiji ASC";
 
             // モデルクラスとのマッピング定義
             Map<String, String> mapping = new HashMap<>();
@@ -709,7 +709,7 @@ public class GXHDO502B implements Serializable {
             mapping.put("sokuteijyuuryou", "sokuteijyuuryou");                           // 測定重量(g)
             mapping.put("kansouondo", "kansouondo");                                     // 乾燥温度(℃)
             mapping.put("kansoujikankikaku", "kansoujikankikaku");                       // 乾燥時間規格
-            mapping.put("kansoukaisinichij", "kansoukaisinichij");                       // 乾燥開始日時
+            mapping.put("kansoukaisinichiji", "kansoukaisinichiji");                       // 乾燥開始日時
             mapping.put("kansousyuuryounichiji", "kansousyuuryounichiji");               // 乾燥終了日時
             mapping.put("dassirogouki", "dassirogouki");                                 // 脱脂炉号機(号機)
             mapping.put("dassiondo", "dassiondo");                                       // 脱脂温度(℃)
@@ -829,7 +829,7 @@ public class GXHDO502B implements Serializable {
             showError(MessageUtil.getMessage("XHD-000025"));
             return;
         }
-        
+
         // チェック処理
         long count = this.getListData().stream().filter(gxhdo502bmodel -> "true".equals(gxhdo502bmodel.getChkboxvalue())).count();
         if (count == 0) {
@@ -928,7 +928,7 @@ public class GXHDO502B implements Serializable {
         return getListData().stream().filter(o -> !(StringUtil.isEmpty(o.getHinmei()) && StringUtil.isEmpty(o.getLot()) && o.getPasskaisuu() == null
                 && StringUtil.isEmpty(o.getWiplotno()) && StringUtil.isEmpty(o.getSokuteibutu()) && StringUtil.isEmpty(o.getSokuteikaisuu()) && o.getNo() == null && StringUtil.isEmpty(o.getKoutei())
                 && StringUtil.isEmpty(o.getSokuteisya()) && StringUtil.isEmpty(o.getKansouzaranosyurui()) && o.getRutubono() == null && StringUtil.isEmpty(o.getSokuteijyuuryoukikaku())
-                && o.getSokuteijyuuryou() == null && o.getKansouondo() == null && StringUtil.isEmpty(o.getKansoujikankikaku()) && StringUtil.isEmpty(o.getKansoukaisinichij())
+                && o.getSokuteijyuuryou() == null && o.getKansouondo() == null && StringUtil.isEmpty(o.getKansoujikankikaku()) && StringUtil.isEmpty(o.getKansoukaisinichiji())
                 && StringUtil.isEmpty(o.getKansousyuuryounichiji()) && o.getDassirogouki() == null && o.getDassiondo() == null && StringUtil.isEmpty(o.getDassijikankikaku())
                 && StringUtil.isEmpty(o.getDassikaisinichiji()) && StringUtil.isEmpty(o.getDassisyuuryounichiji()) && StringUtil.isEmpty(o.getKansoutantousya())
                 && o.getMaesyoriondo() == null && StringUtil.isEmpty(o.getMaesyorijikan()) && StringUtil.isEmpty(o.getMaesyorikaisinichiji()) && StringUtil.isEmpty(o.getMaesyorisyuuryounichiji())
@@ -1024,7 +1024,7 @@ public class GXHDO502B implements Serializable {
             showError(MessageUtil.getMessage("XHD-000025"));
             return;
         }
-        
+
         // 一覧表示部に表示されているﾃﾞｰﾀにPKが重複している場合、エラーを出る
         Map<String, Long> groupCollect = hasKeyValueListdata.stream().collect(Collectors.groupingBy(o
                 -> o.getHinmei() + "_" + o.getLot() + "_" + o.getPasskaisuu() + "_" + o.getSokuteikaisuu(), Collectors.counting()));
@@ -1147,7 +1147,7 @@ public class GXHDO502B implements Serializable {
             GXHDO502BModel gxhdo502bmodel = insertListData.get(i);
             String sql = "INSERT INTO sr_hihyoumensekisokuteikiroku ("
                     + "hinmei,lot,passkaisuu,sokuteikaisuu,nagarehin,kojyo,lotno,edaban,sokuteibutu,No,koutei,sokuteisya,kansouzaranosyurui,rutubono,sokuteijyuuryoukikaku,"
-                    + "sokuteijyuuryou,kansouondo,kansoujikankikaku,kansoukaisinichij,kansousyuuryounichiji,dassirogouki,dassiondo,dassijikankikaku,dassikaisinichiji,"
+                    + "sokuteijyuuryou,kansouondo,kansoujikankikaku,kansoukaisinichiji,kansousyuuryounichiji,dassirogouki,dassiondo,dassijikankikaku,dassikaisinichiji,"
                     + "dassisyuuryounichiji,kansoutantousya,maesyoriondo,maesyorijikan,maesyorikaisinichiji,maesyorisyuuryounichiji,maesyoritantousya,sokuteigosoujyuuryou,"
                     + "hihyoumensekisokuteiti,sokuteitantousya,bikou,torokunichiji,kosinnichiji"
                     + ") VALUES ("
@@ -1174,7 +1174,7 @@ public class GXHDO502B implements Serializable {
             GXHDO502BModel gxhdo502bmodel = updateListData.get(i);
             String sql = "UPDATE sr_hihyoumensekisokuteikiroku SET "
                     + " nagarehin = ?,kojyo = ?,lotno = ?,edaban = ?,sokuteibutu = ?,No = ?,koutei = ?,sokuteisya = ?,kansouzaranosyurui = ?,rutubono = ?,"
-                    + " sokuteijyuuryoukikaku = ?,sokuteijyuuryou = ?,kansouondo = ?,kansoujikankikaku = ?,kansoukaisinichij = ?,kansousyuuryounichiji = ?,"
+                    + " sokuteijyuuryoukikaku = ?,sokuteijyuuryou = ?,kansouondo = ?,kansoujikankikaku = ?,kansoukaisinichiji = ?,kansousyuuryounichiji = ?,"
                     + " dassirogouki = ?,dassiondo = ?,dassijikankikaku = ?,dassikaisinichiji = ?,dassisyuuryounichiji = ?,kansoutantousya = ?,maesyoriondo = ?,"
                     + " maesyorijikan = ?,maesyorikaisinichiji = ?,maesyorisyuuryounichiji = ?,maesyoritantousya = ?,sokuteigosoujyuuryou = ?,hihyoumensekisokuteiti = ?,"
                     + " sokuteitantousya = ?,bikou = ?,kosinnichiji = ?"
@@ -1235,8 +1235,8 @@ public class GXHDO502B implements Serializable {
         params.add(gxhdo502bmodel.getSokuteijyuuryou()); // 測定重量(g)
         params.add(gxhdo502bmodel.getKansouondo()); // 乾燥温度(℃)
         params.add(DBUtil.stringToStringObjectDefaultNull(gxhdo502bmodel.getKansoujikankikaku())); // 乾燥時間規格
-        String day = StringUtil.isEmpty(gxhdo502bmodel.getKansoukaisinichij()) ? "" : gxhdo502bmodel.getKansoukaisinichij().substring(0, 6);
-        String time = StringUtil.isEmpty(gxhdo502bmodel.getKansoukaisinichij()) ? "" : gxhdo502bmodel.getKansoukaisinichij().substring(6, 10);
+        String day = StringUtil.isEmpty(gxhdo502bmodel.getKansoukaisinichiji()) ? "" : gxhdo502bmodel.getKansoukaisinichiji().substring(0, 6);
+        String time = StringUtil.isEmpty(gxhdo502bmodel.getKansoukaisinichiji()) ? "" : gxhdo502bmodel.getKansoukaisinichiji().substring(6, 10);
         params.add(DBUtil.stringToDateObjectDefaultNull(day, "".equals(time) ? "0000" : time)); // 乾燥開始日時
         day = StringUtil.isEmpty(gxhdo502bmodel.getKansousyuuryounichiji()) ? "" : gxhdo502bmodel.getKansousyuuryounichiji().substring(0, 6);
         time = StringUtil.isEmpty(gxhdo502bmodel.getKansousyuuryounichiji()) ? "" : gxhdo502bmodel.getKansousyuuryounichiji().substring(6, 10);
@@ -1293,22 +1293,6 @@ public class GXHDO502B implements Serializable {
     }
 
     /**
-     * 桁数チェック
-     *
-     * @param value 入力値
-     * @param itemName 項目名
-     * @param length 桁数
-     * @return エラー時はエラーメッセージを返却
-     */
-    public String checkC101(String value, String itemName, int length) {
-        // エラー対象をリストに追加
-        if (StringUtil.isEmpty(value) || length != StringUtil.getLength(value)) {
-            return MessageUtil.getMessage("XHD-000004", itemName, length);
-        }
-        return null;
-    }
-
-    /**
      * 対象のIDの項目データがあるか判定(無ければエラー項目名リストに項目名を追加)
      *
      * @param errorItemNameList エラー項目名リスト
@@ -1358,7 +1342,7 @@ public class GXHDO502B implements Serializable {
     public void doWIPLotNoFocusblur(String wipLotNoStr, int rowIndex) throws SQLException {
 
         GXHDO502BModel gxhdo502bmodelItem = getListData().stream().filter(gxhdo502bmodel -> gxhdo502bmodel.getRowIndx() == rowIndex).findFirst().orElse(null);
-        if (gxhdo502bmodelItem == null) {
+        if (gxhdo502bmodelItem == null || StringUtil.isEmpty(wipLotNoStr)) {
             return;
         }
         if (StringUtil.isEmpty(gxhdo502bmodelItem.getSokuteibutu()) || !"0".equals(gxhdo502bmodelItem.getSokuteibutu())) {
@@ -1367,8 +1351,9 @@ public class GXHDO502B implements Serializable {
 
         // 背景色をクリア
         clearListDataBgcolor();
+        ValidateUtil validateUtil = new ValidateUtil();
         // WIPLotNo
-        if (showError(checkC101(wipLotNoStr, "WIPLotNo", 15))) {
+        if (showError(validateUtil.checkC101(wipLotNoStr, "WIPLotNo", 15))) {
             gxhdo502bmodelItem.setWiplotnobgcolor(GXHDO502BConst.ERROR_COLOR);
             return;
         }
@@ -1604,29 +1589,29 @@ public class GXHDO502B implements Serializable {
         if (addError(validateUtil.checkC001(StringUtil.nullToBlank(gxhdo502bmodel.getSokuteikaisuu()), "測定回数"), errorItemList, rowIndexInfo)) {
             gxhdo502bmodel.setSokuteikaisuubgcolor(GXHDO502BConst.ERROR_COLOR);
         };
-        boolean errorFlgKansoukaisinichij = false;
+        boolean errorFlgKansoukaisinichiji = false;
         boolean errorFlgKansousyuuryounichiji = false;
         boolean errorFlgDassikaisinichiji = false;
         boolean errorFlgDassisyuuryounichiji = false;
         boolean errorFlgMaesyorikaisinichiji = false;
         boolean errorFlgMaesyorisyuuryounichiji = false;
         // 乾燥開始日時
-        boolean errorFlgC101 = addError(validateUtil.checkC101(gxhdo502bmodel.getKansoukaisinichij(), "乾燥開始日時", 10), errorItemList, rowIndexInfo);
+        boolean errorFlgC101 = addError(validateUtil.checkC101(gxhdo502bmodel.getKansoukaisinichiji(), "乾燥開始日時", 10), errorItemList, rowIndexInfo);
         boolean errorFlgC201 = false;
         boolean errorFlgC501 = false;
         boolean errorFlgC502 = false;
         if (!errorFlgC101) {
-            errorFlgC201 = addError(validateUtil.checkC201ForDate(gxhdo502bmodel.getKansoukaisinichij(), "乾燥開始日時"), errorItemList, rowIndexInfo);
-            if (!errorFlgC201 && !StringUtil.isEmpty(gxhdo502bmodel.getKansoukaisinichij())) {
-                errorFlgC501 = addError(validateUtil.checkC501(gxhdo502bmodel.getKansoukaisinichij().substring(0, 6), "乾燥開始日時"), errorItemList, rowIndexInfo);
+            errorFlgC201 = addError(validateUtil.checkC201ForDate(gxhdo502bmodel.getKansoukaisinichiji(), "乾燥開始日時"), errorItemList, rowIndexInfo);
+            if (!errorFlgC201 && !StringUtil.isEmpty(gxhdo502bmodel.getKansoukaisinichiji())) {
+                errorFlgC501 = addError(validateUtil.checkC501(gxhdo502bmodel.getKansoukaisinichiji().substring(0, 6), "乾燥開始日時"), errorItemList, rowIndexInfo);
                 if (!errorFlgC501) {
-                    errorFlgC502 = addError(validateUtil.checkC502(gxhdo502bmodel.getKansoukaisinichij().substring(6, 10), "乾燥開始日時"), errorItemList, rowIndexInfo);
+                    errorFlgC502 = addError(validateUtil.checkC502(gxhdo502bmodel.getKansoukaisinichiji().substring(6, 10), "乾燥開始日時"), errorItemList, rowIndexInfo);
                 }
             }
         }
         if (errorFlgC101 || errorFlgC201 || errorFlgC501 || errorFlgC502) {
-            gxhdo502bmodel.setKansoukaisinichijbgcolor(GXHDO502BConst.ERROR_COLOR);
-            errorFlgKansoukaisinichij = true;
+            gxhdo502bmodel.setKansoukaisinichijibgcolor(GXHDO502BConst.ERROR_COLOR);
+            errorFlgKansoukaisinichiji = true;
         }
 
         // 乾燥終了日時
@@ -1725,14 +1710,14 @@ public class GXHDO502B implements Serializable {
         }
 
         // 乾燥開始日時、乾燥終了日時、共に入力されている場合、時刻前後ﾁｪｯｸ(①.R-001参照)
-        if (!errorFlgKansoukaisinichij && !errorFlgKansousyuuryounichiji && !StringUtil.isEmpty(gxhdo502bmodel.getKansoukaisinichij())
+        if (!errorFlgKansoukaisinichiji && !errorFlgKansousyuuryounichiji && !StringUtil.isEmpty(gxhdo502bmodel.getKansoukaisinichiji())
                 && !StringUtil.isEmpty(gxhdo502bmodel.getKansousyuuryounichiji())) {
-            Date kaisiDate = DateUtil.convertStringToDate(gxhdo502bmodel.getKansoukaisinichij().substring(0, 6), gxhdo502bmodel.getKansoukaisinichij().substring(6, 10));
+            Date kaisiDate = DateUtil.convertStringToDate(gxhdo502bmodel.getKansoukaisinichiji().substring(0, 6), gxhdo502bmodel.getKansoukaisinichiji().substring(6, 10));
             Date syuuryouDate = DateUtil.convertStringToDate(gxhdo502bmodel.getKansousyuuryounichiji().substring(0, 6), gxhdo502bmodel.getKansousyuuryounichiji().substring(6, 10));
             //R001チェック呼出し
             String msgCheckR001 = validateUtil.checkR001("乾燥開始日時", kaisiDate, "乾燥終了日時", syuuryouDate);
             if (addError(msgCheckR001, errorItemList, rowIndexInfo)) {
-                gxhdo502bmodel.setKansoukaisinichijbgcolor(GXHDO502BConst.ERROR_COLOR);
+                gxhdo502bmodel.setKansoukaisinichijibgcolor(GXHDO502BConst.ERROR_COLOR);
                 gxhdo502bmodel.setKansousyuuryounichijibgcolor(GXHDO502BConst.ERROR_COLOR);
             };
         }
@@ -1843,7 +1828,7 @@ public class GXHDO502B implements Serializable {
                 break;
             // 乾燥時間規格
             case GXHDO502BConst.KANSOUJIKANKIKAKU:
-                gxhdo502bmodel.setKansoukaisinichijbgcolor(GXHDO502BConst.ERROR_COLOR);
+                gxhdo502bmodel.setKansoukaisinichijibgcolor(GXHDO502BConst.ERROR_COLOR);
                 gxhdo502bmodel.setKansousyuuryounichijibgcolor(GXHDO502BConst.ERROR_COLOR);
                 break;
             // 脱脂時間規格
@@ -1878,7 +1863,7 @@ public class GXHDO502B implements Serializable {
         switch (itemId) {
             // 乾燥時間規格
             case GXHDO502BConst.KANSOUJIKANKIKAKU:
-                kaisinichij = gxhdo502bmodel.getKansoukaisinichij();
+                kaisinichij = gxhdo502bmodel.getKansoukaisinichiji();
                 syuuryounichiji = gxhdo502bmodel.getKansousyuuryounichiji();
                 jikankikaku = gxhdo502bmodel.getKansoujikankikaku();
                 itemJikankikaku = getItemRow(GXHDO502BConst.KANSOUJIKANKIKAKU);
@@ -2000,7 +1985,7 @@ public class GXHDO502B implements Serializable {
             listData.get(i).setSokuteijyuuryoubgcolor(GXHDO502BConst.NORMAL_COLOR);
             listData.get(i).setKansouondobgcolor(GXHDO502BConst.NORMAL_COLOR);
             listData.get(i).setKansoujikankikakubgcolor(GXHDO502BConst.NORMAL_COLOR);
-            listData.get(i).setKansoukaisinichijbgcolor(GXHDO502BConst.NORMAL_COLOR);
+            listData.get(i).setKansoukaisinichijibgcolor(GXHDO502BConst.NORMAL_COLOR);
             listData.get(i).setKansousyuuryounichijibgcolor(GXHDO502BConst.NORMAL_COLOR);
             listData.get(i).setDassirogoukibgcolor(GXHDO502BConst.NORMAL_COLOR);
             listData.get(i).setDassiondobgcolor(GXHDO502BConst.NORMAL_COLOR);
@@ -2350,6 +2335,9 @@ public class GXHDO502B implements Serializable {
      * @return 比表面積測定記録情報
      */
     private List<GXHDO502BModel> getSrHihyoumensekisokuteikirokuListData(List<GXHDO502BModel> listdata) {
+        if (listdata == null || listdata.isEmpty()) {
+            return null;
+        }
         ArrayList<String> hinmeiList = new ArrayList<>();
         ArrayList<String> lotList = new ArrayList<>();
         listdata.forEach((GXHDO502BModel) -> {
@@ -2367,7 +2355,7 @@ public class GXHDO502B implements Serializable {
                     + "WHERE "
                     + DBUtil.getInConditionPreparedStatement("hinmei", hinmeiList.size())
                     + " AND " + DBUtil.getInConditionPreparedStatement("lot", lotList.size())
-                    + " ORDER BY kansoukaisinichij ASC";
+                    + " ORDER BY kansoukaisinichiji ASC";
 
             // モデルクラスとのマッピング定義
             Map<String, String> mapping = new HashMap<>();

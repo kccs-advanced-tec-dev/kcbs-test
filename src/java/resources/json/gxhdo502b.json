@@ -14,7 +14,7 @@
     {"no":"13","id":"sokuteijyuuryou","columnname":"測定重量(g)","type":"BigDecimal","format":"2,4"},
     {"no":"14","id":"kansouondo","columnname":"乾燥温度(℃)","type":"Integer","format":""},
     {"no":"15","id":"kansoujikankikaku","columnname":"乾燥時間規格","type":"String","format":""},
-    {"no":"16","id":"kansoukaisinichij","columnname":"乾燥開始日時","type":"String","format":""},
+    {"no":"16","id":"kansoukaisinichiji","columnname":"乾燥開始日時","type":"String","format":""},
     {"no":"17","id":"kansousyuuryounichiji","columnname":"乾燥終了日時","type":"String","format":""},
     {"no":"18","id":"dassirogouki","columnname":"脱脂炉号機(号機)","type":"Integer","format":""},
     {"no":"19","id":"dassiondo","columnname":"脱脂温度(℃)","type":"Integer","format":""},

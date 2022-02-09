@@ -1381,22 +1381,6 @@ public class GXHDO502A implements Serializable {
     }
 
     /**
-     * 桁数チェック
-     *
-     * @param value 入力値
-     * @param itemName 項目名
-     * @param length 桁数
-     * @return エラー時はエラーメッセージを返却
-     */
-    public String checkC101(String value, String itemName, int length) {
-        // エラー対象をリストに追加
-        if (StringUtil.isEmpty(value) || length != StringUtil.getLength(value)) {
-            return MessageUtil.getMessage("XHD-000004", itemName, length);
-        }
-        return null;
-    }
-
-    /**
      * 【一覧表示部.WIPLotNo】ﾛｽﾄﾌｫｰｶｽ時処理
      *
      * @param wipLotNoStr 入力されたWIPLotNoの値
@@ -1406,13 +1390,14 @@ public class GXHDO502A implements Serializable {
     public void doWIPLotNoFocusblur(String wipLotNoStr, int rowIndex) throws SQLException {
 
         GXHDO502AModel gxhdo502amodelItem = getListData().stream().filter(gxhdo502amodel -> gxhdo502amodel.getRowIndx() == rowIndex).findFirst().orElse(null);
-        if (gxhdo502amodelItem == null) {
+        if (gxhdo502amodelItem == null || StringUtil.isEmpty(wipLotNoStr)) {
             return;
         }
         // 背景色をクリア
         clearListDataBgcolor();
+        ValidateUtil validateUtil = new ValidateUtil();
         // WIPLotNo
-        if (showError(checkC101(wipLotNoStr, "WIPLotNo", 15))) {
+        if (showError(validateUtil.checkC101(wipLotNoStr, "WIPLotNo", 15))) {
             gxhdo502amodelItem.setWiplotnobgcolor(GXHDO502AConst.ERROR_COLOR);
             return;
         }
@@ -1863,7 +1848,7 @@ public class GXHDO502A implements Serializable {
             showError(MessageUtil.getMessage("XHD-000025"));
             return;
         }
-        
+
         // チェック処理
         long count = this.getListData().stream().filter(gxhdo502amodel -> "true".equals(gxhdo502amodel.getChkboxvalue())).count();
         if (count == 0) {
@@ -2077,6 +2062,9 @@ public class GXHDO502A implements Serializable {
      * @return 粒度記録情報
      */
     private List<GXHDO502AModel> getSrRyuudokirokuListData(List<GXHDO502AModel> listdata) {
+        if (listdata == null || listdata.isEmpty()) {
+            return null;
+        }
         ArrayList<String> hinmeiList = new ArrayList<>();
         ArrayList<String> lotList = new ArrayList<>();
         listdata.forEach((GXHDO502AModel) -> {
