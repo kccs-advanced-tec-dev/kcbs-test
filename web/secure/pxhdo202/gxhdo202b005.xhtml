@@ -1,0 +1,2218 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Pragma" content="no-cache"/>
+        <meta http-equiv="Cache-Control" content="no-cache"/>
+        <meta http-equiv="Expires" content="0"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <title>#{myParam.application_id} #{myMsg.GXHDO202B005_GamenTitle}</title>
+        <link href="#{request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/growl.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/loading.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/gxhdo201common.css" rel="stylesheet" type="text/css"/>
+        <script src="#{request.contextPath}/resources/bootstrap/js/bootstrap.min.js" />
+        <h:outputScript library="primefaces" name="jquery/jquery.js" />
+        <script src="#{request.contextPath}/resources/js/growl.js"></script>
+    </h:head>
+    <h:body style="padding-top:30px;">
+        <f:metadata>
+            <f:viewAction action="#{gXHDO202B005.init()}"/>
+        </f:metadata>
+        <nav class="navbar  navbar-expand fixed-top navbar-dark" style="background-color:#0E6A89;height: 50px;z-index: 999;">
+            <span class="navbar-brand mb-0" style="font-size:18px;font-weight:bold;">#{myMsg.GXHDO202B005_GamenTitle}</span>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#Navber" aria-controls="Navber" aria-expanded="false" aria-label="ナビゲーションの切替">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <span class="navbar-text ml-auto">
+                <div class="collapse navbar-collapse" id="Navber">
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <h:link class="nav-link" outcome="/secure/pxhdo202/gxhdo202a.xhtml?faces-redirect=true" value="戻る"/>
+                    </li>
+                  </ul>
+                </div>
+            </span>
+        </nav>
+        <br/>
+        <h:form id="mainform" onkeypress="if (event.keyCode === 13) { return false; }">
+            <p:growl id="growlMessage" showDetail="false" sticky="true" escape="false"/>
+            <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
+                <f:facet name="message">
+                    <h:outputText value="#{gXHDO202B005.getWarnMessage()}" escape="false"/>
+                </f:facet>
+                <p:commandButton id="warnOk" value="OK" styleClass="ui-conf-commandbtn-def1" style="width:100px;margin-left:50px;"
+                                 actionListener="#{gXHDO202B005.processWarnOk()}"
+                                 process="@this searchpanel"
+                                 update="@form growlMessage idDataTable019 idDataTable020 idDataTable021 idDataTable022 idDataTable023 idDataTable024 idDataTable025 idDataTable026 btnExcel"
+                                 onstart="PF('cd').hide();$('#loadinggif').show();"
+                                 oncomplete="$('#loadinggif').hide();"/>
+                <p:commandButton id="warnCancel" value="Cancel" class="ui-conf-commandbtn-cancel" style="width:100px;" onclick="PF('cd').hide();" type="button" />
+            </p:confirmDialog>
+            <div id="loadinggif">
+                <img src="#{request.contextPath}/resources/gif/gif-load.gif"/>
+            </div>
+            <p:panel id="searchpanel" style="border:none;font-size:0.8em; ">
+                <table>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblCmbKotei" value="工程" style="width:100px;"/>
+                        </td>
+                        <td colspan="3">                            
+                            <p:selectOneMenu id="pCmbKotei"  value="#{gXHDO202B005.cmbKotei}" styleClass="selectMenu" editable="false"  style="margin-left:20px; height:30px;width:190px">
+                                <f:selectItem itemValue="" itemLabel=""/>
+                                <f:selectItems value="#{gXHDO202B005.cmbKoteiData}" />
+                            </p:selectOneMenu>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblLotNo" value="ﾛｯﾄNo" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pLotNo" value="#{gXHDO202B005.lotNo}" maxlength="15" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B005.checkByte('lotNo', 15)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblHinmei" value="品名" style="width:100px;" />
+                        </td>
+                        <td>
+                            <p:inputText id="pHinmei" value="#{gXHDO202B005.hinmei}" maxlength="8" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B005.checkByte('hinmei', 8)}" async="false" />
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblGoki" value="秤量号機" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pGoki" value="#{gXHDO202B005.goki}" maxlength="4" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B005.checkByte('goki', 4)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblKakuhankaisiDate" value="撹拌開始日" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pKakuhankaisiDateF" value="#{gXHDO202B005.kakuhankaisiDateF}" maxlength="6" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B005.checkByte('kakuhankaisiDateF', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pKakuhankaisiDateT" value="#{gXHDO202B005.kakuhankaisiDateT}" maxlength="6" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B005.checkByte('kakuhankaisiDateT', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblYouzaihyouryoukaisiDate" value="溶剤秤量開始日" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pYouzaihyouryoukaisiDateF" value="#{gXHDO202B005.youzaihyouryoukaisiDateF}" maxlength="6" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B005.checkByte('youzaihyouryoukaisiDateF', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pYouzaihyouryoukaisiDateT" value="#{gXHDO202B005.youzaihyouryoukaisiDateT}" maxlength="6" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B005.checkByte('youzaihyouryoukaisiDateT', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblHyoryoDate" value="秤量開始日" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pHyoryoDateF" value="#{gXHDO202B005.hyoryoDateF}" maxlength="6" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B005.checkByte('hyoryoDateF', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pHyoryoDateT" value="#{gXHDO202B005.hyoryoDateT}" maxlength="6" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B005.checkByte('hyoryoDateT', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblSyugenryouhyouryoukaisiDate" value="主原料秤量開始日" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pSyugenryouhyouryoukaisiDateF" value="#{gXHDO202B005.syugenryouhyouryoukaisiDateF}" maxlength="6" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B005.checkByte('syugenryouhyouryoukaisiDateF', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pSyugenryouhyouryoukaisiDateT" value="#{gXHDO202B005.syugenryouhyouryoukaisiDateT}" maxlength="6" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B005.checkByte('syugenryouhyouryoukaisiDateT', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblTounyuukaisiDate" value="投入開始日" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pTounyuukaisiDateF" value="#{gXHDO202B005.tounyuukaisiDateF}" maxlength="6" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B005.checkByte('tounyuukaisiDateF', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pTounyuukaisiDateT" value="#{gXHDO202B005.tounyuukaisiDateT}" maxlength="6" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B005.checkByte('tounyuukaisiDateT', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblFunsaikaisiDate" value="粉砕開始日" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pFunsaikaisiDateF" value="#{gXHDO202B005.funsaikaisiDateF}" maxlength="6" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B005.checkByte('funsaikaisiDateF', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pFunsaikaisiDateT" value="#{gXHDO202B005.funsaikaisiDateT}" maxlength="6" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B005.checkByte('funsaikaisiDateT', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblKansoukaisiDate" value="乾燥開始日" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pKansoukaisiDateF" value="#{gXHDO202B005.kansoukaisiDateF}" maxlength="6" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B005.checkByte('kansoukaisiDateF', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pKansoukaisiDateT" value="#{gXHDO202B005.kansoukaisiDateT}" maxlength="6" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B005.checkByte('kansoukaisiDateT', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblFpkaisiDate" value="F/P開始日" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pFpkaisiDateF" value="#{gXHDO202B005.fpkaisiDateF}" maxlength="6" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B005.checkByte('fpkaisiDateF', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pFpkaisiDateT" value="#{gXHDO202B005.fpkaisiDateT}" maxlength="6" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO202B005.checkByte('fpkaisiDateT', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                </table>
+            </p:panel>
+            <p:panel id="buttonpanel" style="border:none;margin-top:-10px;">
+                <p:commandButton id="btnSearch" style="width:100px;height:25px;font-size:0.7em;margin-left:0px;text-align:center;"
+                                value="検索" 
+                                actionListener="#{gXHDO202B005.checkInputAndSearch()}"
+                                process="@this searchpanel"
+                                update="growlMessage idDataTable019 idDataTable020 idDataTable021 idDataTable022 idDataTable023 idDataTable024 idDataTable025 idDataTable026 btnExcel confDialog"
+                                onstart="$('#loadinggif').show();"
+                                oncomplete="$('#loadinggif').hide();if('warning'!=args.param1){PF('cd').hide();} else {PF('cd').show();}"/>
+                <p:commandButton id="bthClear" style="width:100px;height:25px;font-size:0.7em;margin-left:10px;text-align:center;" 
+                                value="クリア" 
+                                action="#{gXHDO202B005.clear()}"
+                                process="@this"
+                                update="searchpanel idDataTable019 idDataTable020 idDataTable021 idDataTable022 idDataTable023 idDataTable024 idDataTable025 idDataTable026 btnExcel"/>
+                <p:commandButton id="btnExcel" style="width:100px;height:25px;font-size:0.7em;margin-left:10px;text-align:center;"
+                                disabled="#{gXHDO202B005.excelButtonDisable}"
+                                value="Excel保存"
+                                actionListener="#{gXHDO202B005.downloadExcel()}"
+                                process="@this"
+                                ajax="false"/>
+            </p:panel>
+            <div style="margin-top:-15px;">
+                <p:dataTable id="idDataTable019" var="item" style="font-size:0.8em;margin-top:20px; display: #{gXHDO202B005.b019DTdisplay}" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap"
+                             value="#{gXHDO202B005.b019ListData}" emptyMessage="" paginator="true" paginatorPosition="top" rows="#{gXHDO202B005.getPagenatorCount()}">
+                    <p:column id="lotno" headerText="WIPﾛｯﾄNo" >
+                        <p:outputLabel value="#{item.lotno}"/>
+                    </p:column>
+                    <p:column id="yuudentaislurryhinmei" headerText="誘電体ｽﾗﾘｰ品名" >
+                        <p:outputLabel value="#{item.yuudentaislurryhinmei}"/>
+                    </p:column>
+                    <p:column id="yuudentaislurrylotno" headerText="誘電体ｽﾗﾘｰLotNo" >
+                        <p:outputLabel value="#{item.yuudentaislurrylotno}"/>
+                    </p:column>
+                    <p:column id="lotkubun" headerText="ﾛｯﾄ区分" >
+                        <p:outputLabel value="#{item.lotkubun}"/>
+                    </p:column>
+                    <p:column id="genryoulotno" headerText="原料LotNo" >
+                        <p:outputLabel value="#{item.genryoulotno}"/>
+                    </p:column>
+                    <p:column id="genryoukigou" headerText="原料記号" >
+                        <p:outputLabel value="#{item.genryoukigou}"/>
+                    </p:column>
+                    <p:column id="tenkazaislurryhinmei" headerText="添加材ｽﾗﾘｰ品名" >
+                        <p:outputLabel value="#{item.tenkazaislurryhinmei}"/>
+                    </p:column>
+                    <p:column id="tenkazaislurrylotno" headerText="添加材ｽﾗﾘｰLotNo" >
+                        <p:outputLabel value="#{item.tenkazaislurrylotno}"/>
+                    </p:column>
+                    <p:column id="fuutaijyuuryou1" headerText="風袋重量①" styleClass="number">
+                        <p:outputLabel value="#{item.fuutaijyuuryou1}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="fuutaijyuuryou2" headerText="風袋重量②" styleClass="number">
+                        <p:outputLabel value="#{item.fuutaijyuuryou2}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="fuutaijyuuryou3" headerText="風袋重量③" styleClass="number">
+                        <p:outputLabel value="#{item.fuutaijyuuryou3}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="soujyuuryou1" headerText="総重量①" styleClass="number">
+                        <p:outputLabel value="#{item.soujyuuryou1}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="soujyuuryou2" headerText="総重量②" styleClass="number">
+                        <p:outputLabel value="#{item.soujyuuryou2}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="soujyuuryou3" headerText="総重量③" styleClass="number">
+                        <p:outputLabel value="#{item.soujyuuryou3}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tenkazaislurryjyuuryou" headerText="添加材ｽﾗﾘｰ重量" styleClass="number">
+                        <p:outputLabel value="#{item.tenkazaislurryjyuuryou}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kakuhanki" headerText="撹拌機" >
+                        <p:outputLabel value="#{item.kakuhanki}"/>
+                    </p:column>
+                    <p:column id="kaitensuu" headerText="回転数" >
+                        <p:outputLabel value="#{item.kaitensuu}"/>
+                    </p:column>
+                    <p:column id="kakuhanjikan" headerText="撹拌時間" >
+                        <p:outputLabel value="#{item.kakuhanjikan}"/>
+                    </p:column>
+                    <p:column id="kakuhankaisinichiji" headerText="撹拌開始日時" >
+                        <p:outputLabel value="#{item.kakuhankaisinichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kakuhansyuuryounichiji" headerText="撹拌終了日時" >
+                        <p:outputLabel value="#{item.kakuhansyuuryounichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kansouzarasyurui" headerText="乾燥皿種類" >
+                        <p:outputLabel value="#{item.kansouzarasyurui}"/>
+                    </p:column>
+                    <p:column id="arumizarafuutaijyuuryou1" headerText="ｱﾙﾐ皿風袋重量①" styleClass="number">
+                        <p:outputLabel value="#{item.arumizarafuutaijyuuryou1}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kansoumaeslurryjyuuryou1" headerText="乾燥前ｽﾗﾘｰ重量①" styleClass="number">
+                        <p:outputLabel value="#{item.kansoumaeslurryjyuuryou1}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="arumizarafuutaijyuuryou2" headerText="ｱﾙﾐ皿風袋重量②" styleClass="number">
+                        <p:outputLabel value="#{item.arumizarafuutaijyuuryou2}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kansoumaeslurryjyuuryou2" headerText="乾燥前ｽﾗﾘｰ重量②" styleClass="number">
+                        <p:outputLabel value="#{item.kansoumaeslurryjyuuryou2}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="arumizarafuutaijyuuryou3" headerText="ｱﾙﾐ皿風袋重量③" styleClass="number">
+                        <p:outputLabel value="#{item.arumizarafuutaijyuuryou3}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kansoumaeslurryjyuuryou3" headerText="乾燥前ｽﾗﾘｰ重量③" styleClass="number">
+                        <p:outputLabel value="#{item.kansoumaeslurryjyuuryou3}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kansouki1" headerText="乾燥機①" >
+                        <p:outputLabel value="#{item.kansouki1}"/>
+                    </p:column>
+                    <p:column id="kansouondo1" headerText="乾燥温度①" >
+                        <p:outputLabel value="#{item.kansouondo1}"/>
+                    </p:column>
+                    <p:column id="kansoujikan1" headerText="乾燥時間①" >
+                        <p:outputLabel value="#{item.kansoujikan1}"/>
+                    </p:column>
+                    <p:column id="kansoukaisinichiji1" headerText="乾燥開始日時①" >
+                        <p:outputLabel value="#{item.kansoukaisinichiji1}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kansousyuuryounichiji1" headerText="乾燥終了日時①" >
+                        <p:outputLabel value="#{item.kansousyuuryounichiji1}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kansouki2" headerText="乾燥機②" >
+                        <p:outputLabel value="#{item.kansouki2}"/>
+                    </p:column>
+                    <p:column id="kansouondo2" headerText="乾燥温度②" >
+                        <p:outputLabel value="#{item.kansouondo2}"/>
+                    </p:column>
+                    <p:column id="kansoujikan2" headerText="乾燥時間②" >
+                        <p:outputLabel value="#{item.kansoujikan2}"/>
+                    </p:column>
+                    <p:column id="kansoukaisinichiji2" headerText="乾燥開始日時②" >
+                        <p:outputLabel value="#{item.kansoukaisinichiji2}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kansousyuuryounichiji2" headerText="乾燥終了日時②" >
+                        <p:outputLabel value="#{item.kansousyuuryounichiji2}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="reikyakujikan" headerText="冷却時間" >
+                        <p:outputLabel value="#{item.reikyakujikan}"/>
+                    </p:column>
+                    <p:column id="kansougosoujyuuryou1" headerText="乾燥後総重量①" styleClass="number">
+                        <p:outputLabel value="#{item.kansougosoujyuuryou1}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kansougosoujyuuryou2" headerText="乾燥後総重量②" styleClass="number">
+                        <p:outputLabel value="#{item.kansougosoujyuuryou2}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kansougosoujyuuryou3" headerText="乾燥後総重量③" styleClass="number">
+                        <p:outputLabel value="#{item.kansougosoujyuuryou3}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kansougosyoumijyuuryou1" headerText="乾燥後正味重量①" styleClass="number">
+                        <p:outputLabel value="#{item.kansougosyoumijyuuryou1}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kansougosyoumijyuuryou2" headerText="乾燥後正味重量②" styleClass="number">
+                        <p:outputLabel value="#{item.kansougosyoumijyuuryou2}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kansougosyoumijyuuryou3" headerText="乾燥後正味重量③" styleClass="number">
+                        <p:outputLabel value="#{item.kansougosyoumijyuuryou3}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kokeibunhiritu1" headerText="固形分比率①" styleClass="number">
+                        <p:outputLabel value="#{item.kokeibunhiritu1}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kokeibunhiritu2" headerText="固形分比率②" styleClass="number">
+                        <p:outputLabel value="#{item.kokeibunhiritu2}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kokeibunhiritu3" headerText="固形分比率③" styleClass="number">
+                        <p:outputLabel value="#{item.kokeibunhiritu3}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kokeibunhirituheikin" headerText="固形分比率平均" styleClass="number">
+                        <p:outputLabel value="#{item.kokeibunhirituheikin}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kokeibunsokuteitantousya" headerText="固形分測定担当者" >
+                        <p:outputLabel value="#{item.kokeibunsokuteitantousya}"/>
+                    </p:column>
+                    <p:column id="bikou1" headerText="備考1" >
+                        <p:outputLabel value="#{item.bikou1}"/>
+                    </p:column>
+                    <p:column id="bikou2" headerText="備考2" >
+                        <p:outputLabel value="#{item.bikou2}"/>
+                    </p:column>
+                </p:dataTable>
+                <p:dataTable id="idDataTable020" var="item" style="font-size:0.8em;margin-top:20px; display: #{gXHDO202B005.b020DTdisplay}" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap"
+                             value="#{gXHDO202B005.b020ListData}"   emptyMessage="" paginator="true" paginatorPosition="top" rows="#{gXHDO202B005.getPagenatorCount()}">
+                    <p:column id="lotno" headerText="WIPﾛｯﾄNo" >
+                        <p:outputLabel value="#{item.lotno}"/>
+                    </p:column>
+                    <p:column id="yuudentaislurryhinmei" headerText="誘電体ｽﾗﾘｰ品名" >
+                        <p:outputLabel value="#{item.yuudentaislurryhinmei}"/>
+                    </p:column>
+                    <p:column id="yuudentaislurrylotno" headerText="誘電体ｽﾗﾘｰLotNo" >
+                        <p:outputLabel value="#{item.yuudentaislurrylotno}"/>
+                    </p:column>
+                    <p:column id="lotkubun" headerText="ﾛｯﾄ区分" >
+                        <p:outputLabel value="#{item.lotkubun}"/>
+                    </p:column>
+                    <p:column id="genryoulotno" headerText="原料LotNo" >
+                        <p:outputLabel value="#{item.genryoulotno}"/>
+                    </p:column>
+                    <p:column id="genryoukigou" headerText="原料記号" >
+                        <p:outputLabel value="#{item.genryoukigou}"/>
+                    </p:column>
+                    <p:column id="goki" headerText="秤量号機" >
+                        <p:outputLabel value="#{item.goki}"/>
+                    </p:column>
+                    <p:column id="youzaihyouryoukaisinichiji" headerText="溶剤秤量開始日時" >
+                        <p:outputLabel value="#{item.youzaihyouryoukaisinichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="zunsanzai1_zairyouhinmei" headerText="分散材①_材料品名" >
+                        <p:outputLabel value="#{item.zunsanzai1_zairyouhinmei}"/>
+                    </p:column>
+                    <p:column id="zunsanzai1_tyougouryoukikaku" headerText="分散材①_調合量規格" >
+                        <p:outputLabel value="#{item.zunsanzai1_tyougouryoukikaku}"/>
+                    </p:column>
+                    <p:column id="zunsanzai1_buzaizaikolotno1" headerText="分散材①_部材在庫No1" >
+                        <p:outputLabel value="#{item.zunsanzai1_buzaizaikolotno1}"/>
+                    </p:column>
+                    <p:column id="zunsanzai1_tyougouryou1" headerText="分散材①_調合量1" styleClass="number">
+                        <p:outputLabel value="#{item.zunsanzai1_tyougouryou1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="zunsanzai1_buzaizaikolotno2" headerText="分散材①_部材在庫No2" >
+                        <p:outputLabel value="#{item.zunsanzai1_buzaizaikolotno2}"/>
+                    </p:column>
+                    <p:column id="zunsanzai1_tyougouryou2" headerText="分散材①_調合量2" styleClass="number">
+                        <p:outputLabel value="#{item.zunsanzai1_tyougouryou2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="zunsanzai2_zairyouhinmei" headerText="分散材②_材料品名" >
+                        <p:outputLabel value="#{item.zunsanzai2_zairyouhinmei}"/>
+                    </p:column>
+                    <p:column id="zunsanzai2_tyougouryoukikaku" headerText="分散材②_調合量規格" >
+                        <p:outputLabel value="#{item.zunsanzai2_tyougouryoukikaku}"/>
+                    </p:column>
+                    <p:column id="zunsanzai2_buzaizaikolotno1" headerText="分散材②_部材在庫No1" >
+                        <p:outputLabel value="#{item.zunsanzai2_buzaizaikolotno1}"/>
+                    </p:column>
+                    <p:column id="zunsanzai2_tyougouryou1" headerText="分散材②_調合量1" styleClass="number">
+                        <p:outputLabel value="#{item.zunsanzai2_tyougouryou1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="zunsanzai2_buzaizaikolotno2" headerText="分散材②_部材在庫No2" >
+                        <p:outputLabel value="#{item.zunsanzai2_buzaizaikolotno2}"/>
+                    </p:column>
+                    <p:column id="zunsanzai2_tyougouryou2" headerText="分散材②_調合量2" styleClass="number">
+                        <p:outputLabel value="#{item.zunsanzai2_tyougouryou2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="youzai1_zairyouhinmei" headerText="溶剤①_材料品名" >
+                        <p:outputLabel value="#{item.youzai1_zairyouhinmei}"/>
+                    </p:column>
+                    <p:column id="youzai1_tyougouryoukikaku" headerText="溶剤①_調合量規格" >
+                        <p:outputLabel value="#{item.youzai1_tyougouryoukikaku}"/>
+                    </p:column>
+                    <p:column id="youzai1_buzaizaikolotno1" headerText="溶剤①_部材在庫No1" >
+                        <p:outputLabel value="#{item.youzai1_buzaizaikolotno1}"/>
+                    </p:column>
+                    <p:column id="youzai1_tyougouryou1" headerText="溶剤①_調合量1" styleClass="number">
+                        <p:outputLabel value="#{item.youzai1_tyougouryou1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="youzai1_buzaizaikolotno2" headerText="溶剤①_部材在庫No2" >
+                        <p:outputLabel value="#{item.youzai1_buzaizaikolotno2}"/>
+                    </p:column>
+                    <p:column id="youzai1_tyougouryou2" headerText="溶剤①_調合量2" styleClass="number">
+                        <p:outputLabel value="#{item.youzai1_tyougouryou2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="youzai2_zairyouhinmei" headerText="溶剤②_材料品名" >
+                        <p:outputLabel value="#{item.youzai2_zairyouhinmei}"/>
+                    </p:column>
+                    <p:column id="youzai2_tyougouryoukikaku" headerText="溶剤②_調合量規格" >
+                        <p:outputLabel value="#{item.youzai2_tyougouryoukikaku}"/>
+                    </p:column>
+                    <p:column id="youzai2_buzaizaikolotno1" headerText="溶剤②_部材在庫No1" >
+                        <p:outputLabel value="#{item.youzai2_buzaizaikolotno1}"/>
+                    </p:column>
+                    <p:column id="youzai2_tyougouryou1" headerText="溶剤②_調合量1" styleClass="number">
+                        <p:outputLabel value="#{item.youzai2_tyougouryou1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="youzai2_buzaizaikolotno2" headerText="溶剤②_部材在庫No2" >
+                        <p:outputLabel value="#{item.youzai2_buzaizaikolotno2}"/>
+                    </p:column>
+                    <p:column id="youzai2_tyougouryou2" headerText="溶剤②_調合量2" styleClass="number">
+                        <p:outputLabel value="#{item.youzai2_tyougouryou2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="youzai3_zairyouhinmei" headerText="溶剤③_材料品名" >
+                        <p:outputLabel value="#{item.youzai3_zairyouhinmei}"/>
+                    </p:column>
+                    <p:column id="youzai3_tyougouryoukikaku" headerText="溶剤③_調合量規格" >
+                        <p:outputLabel value="#{item.youzai3_tyougouryoukikaku}"/>
+                    </p:column>
+                    <p:column id="youzai3_buzaizaikolotno1" headerText="溶剤③_部材在庫No1" >
+                        <p:outputLabel value="#{item.youzai3_buzaizaikolotno1}"/>
+                    </p:column>
+                    <p:column id="youzai3_tyougouryou1" headerText="溶剤③_調合量1" styleClass="number">
+                        <p:outputLabel value="#{item.youzai3_tyougouryou1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="youzai3_buzaizaikolotno2" headerText="溶剤③_部材在庫No2" >
+                        <p:outputLabel value="#{item.youzai3_buzaizaikolotno2}"/>
+                    </p:column>
+                    <p:column id="youzai3_tyougouryou2" headerText="溶剤③_調合量2" styleClass="number">
+                        <p:outputLabel value="#{item.youzai3_tyougouryou2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="youzai4_zairyouhinmei" headerText="溶剤④_材料品名" >
+                        <p:outputLabel value="#{item.youzai4_zairyouhinmei}"/>
+                    </p:column>
+                    <p:column id="youzai4_tyougouryoukikaku" headerText="溶剤④_調合量規格" >
+                        <p:outputLabel value="#{item.youzai4_tyougouryoukikaku}"/>
+                    </p:column>
+                    <p:column id="youzai4_buzaizaikolotno1" headerText="溶剤④_部材在庫No1" >
+                        <p:outputLabel value="#{item.youzai4_buzaizaikolotno1}"/>
+                    </p:column>
+                    <p:column id="youzai4_tyougouryou1" headerText="溶剤④_調合量1" styleClass="number">
+                        <p:outputLabel value="#{item.youzai4_tyougouryou1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="youzai4_buzaizaikolotno2" headerText="溶剤④_部材在庫No2" >
+                        <p:outputLabel value="#{item.youzai4_buzaizaikolotno2}"/>
+                    </p:column>
+                    <p:column id="youzai4_tyougouryou2" headerText="溶剤④_調合量2" styleClass="number">
+                        <p:outputLabel value="#{item.youzai4_tyougouryou2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="youzai5_zairyouhinmei" headerText="溶剤⑤_材料品名" >
+                        <p:outputLabel value="#{item.youzai5_zairyouhinmei}"/>
+                    </p:column>
+                    <p:column id="youzai5_tyougouryoukikaku" headerText="溶剤⑤_調合量規格" >
+                        <p:outputLabel value="#{item.youzai5_tyougouryoukikaku}"/>
+                    </p:column>
+                    <p:column id="youzai5_buzaizaikolotno1" headerText="溶剤⑤_部材在庫No1" >
+                        <p:outputLabel value="#{item.youzai5_buzaizaikolotno1}"/>
+                    </p:column>
+                    <p:column id="youzai5_tyougouryou1" headerText="溶剤⑤_調合量1" styleClass="number">
+                        <p:outputLabel value="#{item.youzai5_tyougouryou1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="youzai5_buzaizaikolotno2" headerText="溶剤⑤_部材在庫No2" >
+                        <p:outputLabel value="#{item.youzai5_buzaizaikolotno2}"/>
+                    </p:column>
+                    <p:column id="youzai5_tyougouryou2" headerText="溶剤⑤_調合量2" styleClass="number">
+                        <p:outputLabel value="#{item.youzai5_tyougouryou2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="youzai6_zairyouhinmei" headerText="溶剤⑥_材料品名" >
+                        <p:outputLabel value="#{item.youzai6_zairyouhinmei}"/>
+                    </p:column>
+                    <p:column id="youzai6_tyougouryoukikaku" headerText="溶剤⑥_調合量規格" >
+                        <p:outputLabel value="#{item.youzai6_tyougouryoukikaku}"/>
+                    </p:column>
+                    <p:column id="youzai6_buzaizaikolotno1" headerText="溶剤⑥_部材在庫No1" >
+                        <p:outputLabel value="#{item.youzai6_buzaizaikolotno1}"/>
+                    </p:column>
+                    <p:column id="youzai6_tyougouryou1" headerText="溶剤⑥_調合量1" styleClass="number">
+                        <p:outputLabel value="#{item.youzai6_tyougouryou1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="youzai6_buzaizaikolotno2" headerText="溶剤⑥_部材在庫No2" >
+                        <p:outputLabel value="#{item.youzai6_buzaizaikolotno2}"/>
+                    </p:column>
+                    <p:column id="youzai6_tyougouryou2" headerText="溶剤⑥_調合量2" styleClass="number">
+                        <p:outputLabel value="#{item.youzai6_tyougouryou2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="youzai7_zairyouhinmei" headerText="溶剤⑦_材料品名" >
+                        <p:outputLabel value="#{item.youzai7_zairyouhinmei}"/>
+                    </p:column>
+                    <p:column id="youzai7_tyougouryoukikaku" headerText="溶剤⑦_調合量規格" >
+                        <p:outputLabel value="#{item.youzai7_tyougouryoukikaku}"/>
+                    </p:column>
+                    <p:column id="youzai7_buzaizaikolotno1" headerText="溶剤⑦_部材在庫No1" >
+                        <p:outputLabel value="#{item.youzai7_buzaizaikolotno1}"/>
+                    </p:column>
+                    <p:column id="youzai7_tyougouryou1" headerText="溶剤⑦_調合量1" styleClass="number">
+                        <p:outputLabel value="#{item.youzai7_tyougouryou1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="youzai7_buzaizaikolotno2" headerText="溶剤⑦_部材在庫No2" >
+                        <p:outputLabel value="#{item.youzai7_buzaizaikolotno2}"/>
+                    </p:column>
+                    <p:column id="youzai7_tyougouryou2" headerText="溶剤⑦_調合量2" styleClass="number">
+                        <p:outputLabel value="#{item.youzai7_tyougouryou2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="youzai8_zairyouhinmei" headerText="溶剤⑧_材料品名" >
+                        <p:outputLabel value="#{item.youzai8_zairyouhinmei}"/>
+                    </p:column>
+                    <p:column id="youzai8_tyougouryoukikaku" headerText="溶剤⑧_調合量規格" >
+                        <p:outputLabel value="#{item.youzai8_tyougouryoukikaku}"/>
+                    </p:column>
+                    <p:column id="youzai8_buzaizaikolotno1" headerText="溶剤⑧_部材在庫No1" >
+                        <p:outputLabel value="#{item.youzai8_buzaizaikolotno1}"/>
+                    </p:column>
+                    <p:column id="youzai8_tyougouryou1" headerText="溶剤⑧_調合量1" styleClass="number">
+                        <p:outputLabel value="#{item.youzai8_tyougouryou1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="youzai8_buzaizaikolotno2" headerText="溶剤⑧_部材在庫No2" >
+                        <p:outputLabel value="#{item.youzai8_buzaizaikolotno2}"/>
+                    </p:column>
+                    <p:column id="youzai8_tyougouryou2" headerText="溶剤⑧_調合量2" styleClass="number">
+                        <p:outputLabel value="#{item.youzai8_tyougouryou2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="youzai9_zairyouhinmei" headerText="溶剤⑨_材料品名" >
+                        <p:outputLabel value="#{item.youzai9_zairyouhinmei}"/>
+                    </p:column>
+                    <p:column id="youzai9_tyougouryoukikaku" headerText="溶剤⑨_調合量規格" >
+                        <p:outputLabel value="#{item.youzai9_tyougouryoukikaku}"/>
+                    </p:column>
+                    <p:column id="youzai9_buzaizaikolotno1" headerText="溶剤⑨_部材在庫No1" >
+                        <p:outputLabel value="#{item.youzai9_buzaizaikolotno1}"/>
+                    </p:column>
+                    <p:column id="youzai9_tyougouryou1" headerText="溶剤⑨_調合量1" styleClass="number">
+                        <p:outputLabel value="#{item.youzai9_tyougouryou1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="youzai9_buzaizaikolotno2" headerText="溶剤⑨_部材在庫No2" >
+                        <p:outputLabel value="#{item.youzai9_buzaizaikolotno2}"/>
+                    </p:column>
+                    <p:column id="youzai9_tyougouryou2" headerText="溶剤⑨_調合量2" styleClass="number">
+                        <p:outputLabel value="#{item.youzai9_tyougouryou2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="youzaihyouryousyuuryounichiji" headerText="溶剤秤量終了日時" >
+                        <p:outputLabel value="#{item.youzaihyouryousyuuryounichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kakuhanki" headerText="撹拌機" >
+                        <p:outputLabel value="#{item.kakuhanki}"/>
+                    </p:column>
+                    <p:column id="kaitensuu" headerText="回転数" >
+                        <p:outputLabel value="#{item.kaitensuu}"/>
+                    </p:column>
+                    <p:column id="kakuhanjikan" headerText="撹拌時間" >
+                        <p:outputLabel value="#{item.kakuhanjikan}"/>
+                    </p:column>
+                    <p:column id="kakuhankaisinichiji" headerText="撹拌開始日時" >
+                        <p:outputLabel value="#{item.kakuhankaisinichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kakuhansyuuryounichiji" headerText="撹拌終了日時" >
+                        <p:outputLabel value="#{item.kakuhansyuuryounichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tenkazaislurryhyouryoukaisinichiji" headerText="添加材ｽﾗﾘｰ秤量開始日時" >
+                        <p:outputLabel value="#{item.tenkazaislurryhyouryoukaisinichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tenkazaislurry_zairyouhinmei" headerText="添加材ｽﾗﾘｰ_材料品名" >
+                        <p:outputLabel value="#{item.tenkazaislurry_zairyouhinmei}"/>
+                    </p:column>
+                    <p:column id="tenkazaislurry_WIPlotno" headerText="添加材ｽﾗﾘｰ_WIPﾛｯﾄNo" >
+                        <p:outputLabel value="#{item.tenkazaislurry_WIPlotno}"/>
+                    </p:column>
+                    <p:column id="tenkazaislurry_tyougouryoukikaku" headerText="添加材ｽﾗﾘｰ_調合量規格" >
+                        <p:outputLabel value="#{item.tenkazaislurry_tyougouryoukikaku}"/>
+                    </p:column>
+                    <p:column id="tenkazaislurry_fuutaijyuuryou1" headerText="添加材ｽﾗﾘｰ_風袋重量1" styleClass="number">
+                        <p:outputLabel value="#{item.tenkazaislurry_fuutaijyuuryou1}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tenkazaislurry_tyougouryou1" headerText="添加材ｽﾗﾘｰ_調合量1" styleClass="number">
+                        <p:outputLabel value="#{item.tenkazaislurry_tyougouryou1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tenkazaislurry_fuutaijyuuryou2" headerText="添加材ｽﾗﾘｰ_風袋重量2" styleClass="number">
+                        <p:outputLabel value="#{item.tenkazaislurry_fuutaijyuuryou2}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tenkazaislurry_tyougouryou2" headerText="添加材ｽﾗﾘｰ_調合量2" styleClass="number">
+                        <p:outputLabel value="#{item.tenkazaislurry_tyougouryou2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tenkazaislurryhyouryousyuuryounichiji" headerText="添加材ｽﾗﾘｰ秤量終了日時" >
+                        <p:outputLabel value="#{item.tenkazaislurryhyouryousyuuryounichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kokeibunsokuteitantousya" headerText="固形分測定担当者" >
+                        <p:outputLabel value="#{item.kokeibunsokuteitantousya}"/>
+                    </p:column>
+                    <p:column id="bikou1" headerText="備考1" >
+                        <p:outputLabel value="#{item.bikou1}"/>
+                    </p:column>
+                    <p:column id="bikou2" headerText="備考2" >
+                        <p:outputLabel value="#{item.bikou2}"/>
+                    </p:column>
+                </p:dataTable>
+                <p:dataTable id="idDataTable021" var="item" style="font-size:0.8em;margin-top:20px; display: #{gXHDO202B005.b021DTdisplay}" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap"
+                             value="#{gXHDO202B005.b021ListData}" emptyMessage="" paginator="true" paginatorPosition="top" rows="#{gXHDO202B005.getPagenatorCount()}">
+                    <p:column id="lotno" headerText="WIPﾛｯﾄNo" >
+                        <p:outputLabel value="#{item.lotno}"/>
+                    </p:column>
+                    <p:column id="yuudentaislurryhinmei" headerText="誘電体ｽﾗﾘｰ品名" >
+                        <p:outputLabel value="#{item.yuudentaislurryhinmei}"/>
+                    </p:column>
+                    <p:column id="yuudentaislurrylotno" headerText="誘電体ｽﾗﾘｰLotNo" >
+                        <p:outputLabel value="#{item.yuudentaislurrylotno}"/>
+                    </p:column>
+                    <p:column id="lotkubun" headerText="ﾛｯﾄ区分" >
+                        <p:outputLabel value="#{item.lotkubun}"/>
+                    </p:column>
+                    <p:column id="genryoulotno" headerText="原料LotNo" >
+                        <p:outputLabel value="#{item.genryoulotno}"/>
+                    </p:column>
+                    <p:column id="genryoukigou" headerText="原料記号" >
+                        <p:outputLabel value="#{item.genryoukigou}"/>
+                    </p:column>
+                    <p:column id="goki" headerText="秤量号機" >
+                        <p:outputLabel value="#{item.goki}"/>
+                    </p:column>
+                    <p:column id="hyouryoukaisinichiji" headerText="秤量開始日時" >
+                        <p:outputLabel value="#{item.hyouryoukaisinichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tenkazai1_zairyouhinmei" headerText="添加材①_材料品名" >
+                        <p:outputLabel value="#{item.tenkazai1_zairyouhinmei}"/>
+                    </p:column>
+                    <p:column id="tenkazai1_tyougouryoukikaku" headerText="添加材①_調合量規格" >
+                        <p:outputLabel value="#{item.tenkazai1_tyougouryoukikaku}"/>
+                    </p:column>
+                    <p:column id="tenkazai1_buzaizaikolotno1" headerText="添加材①_部材在庫No1" >
+                        <p:outputLabel value="#{item.tenkazai1_buzaizaikolotno1}"/>
+                    </p:column>
+                    <p:column id="tenkazai1_tyougouryou1" headerText="添加材①_調合量1" styleClass="number">
+                        <p:outputLabel value="#{item.tenkazai1_tyougouryou1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tenkazai1_buzaizaikolotno2" headerText="添加材①_部材在庫No2" >
+                        <p:outputLabel value="#{item.tenkazai1_buzaizaikolotno2}"/>
+                    </p:column>
+                    <p:column id="tenkazai1_tyougouryou2" headerText="添加材①_調合量2" styleClass="number">
+                        <p:outputLabel value="#{item.tenkazai1_tyougouryou2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tenkazai2_zairyouhinmei" headerText="添加材②_材料品名" >
+                        <p:outputLabel value="#{item.tenkazai2_zairyouhinmei}"/>
+                    </p:column>
+                    <p:column id="tenkazai2_tyougouryoukikaku" headerText="添加材②_調合量規格" >
+                        <p:outputLabel value="#{item.tenkazai2_tyougouryoukikaku}"/>
+                    </p:column>
+                    <p:column id="tenkazai2_buzaizaikolotno1" headerText="添加材②_部材在庫No1" >
+                        <p:outputLabel value="#{item.tenkazai2_buzaizaikolotno1}"/>
+                    </p:column>
+                    <p:column id="tenkazai2_tyougouryou1" headerText="添加材②_調合量1" styleClass="number">
+                        <p:outputLabel value="#{item.tenkazai2_tyougouryou1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tenkazai2_buzaizaikolotno2" headerText="添加材②_部材在庫No2" >
+                        <p:outputLabel value="#{item.tenkazai2_buzaizaikolotno2}"/>
+                    </p:column>
+                    <p:column id="tenkazai2_tyougouryou2" headerText="添加材②_調合量2" styleClass="number">
+                        <p:outputLabel value="#{item.tenkazai2_tyougouryou2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tenkazai3_zairyouhinmei" headerText="添加材③_材料品名" >
+                        <p:outputLabel value="#{item.tenkazai3_zairyouhinmei}"/>
+                    </p:column>
+                    <p:column id="tenkazai3_tyougouryoukikaku" headerText="添加材③_調合量規格" >
+                        <p:outputLabel value="#{item.tenkazai3_tyougouryoukikaku}"/>
+                    </p:column>
+                    <p:column id="tenkazai3_buzaizaikolotno1" headerText="添加材③_部材在庫No1" >
+                        <p:outputLabel value="#{item.tenkazai3_buzaizaikolotno1}"/>
+                    </p:column>
+                    <p:column id="tenkazai3_tyougouryou1" headerText="添加材③_調合量1" styleClass="number">
+                        <p:outputLabel value="#{item.tenkazai3_tyougouryou1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tenkazai3_buzaizaikolotno2" headerText="添加材③_部材在庫No2" >
+                        <p:outputLabel value="#{item.tenkazai3_buzaizaikolotno2}"/>
+                    </p:column>
+                    <p:column id="tenkazai3_tyougouryou2" headerText="添加材③_調合量2" styleClass="number">
+                        <p:outputLabel value="#{item.tenkazai3_tyougouryou2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tenkazai4_zairyouhinmei" headerText="添加材④_材料品名" >
+                        <p:outputLabel value="#{item.tenkazai4_zairyouhinmei}"/>
+                    </p:column>
+                    <p:column id="tenkazai4_tyougouryoukikaku" headerText="添加材④_調合量規格" >
+                        <p:outputLabel value="#{item.tenkazai4_tyougouryoukikaku}"/>
+                    </p:column>
+                    <p:column id="tenkazai4_buzaizaikolotno1" headerText="添加材④_部材在庫No1" >
+                        <p:outputLabel value="#{item.tenkazai4_buzaizaikolotno1}"/>
+                    </p:column>
+                    <p:column id="tenkazai4_tyougouryou1" headerText="添加材④_調合量1" styleClass="number">
+                        <p:outputLabel value="#{item.tenkazai4_tyougouryou1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tenkazai4_buzaizaikolotno2" headerText="添加材④_部材在庫No2" >
+                        <p:outputLabel value="#{item.tenkazai4_buzaizaikolotno2}"/>
+                    </p:column>
+                    <p:column id="tenkazai4_tyougouryou2" headerText="添加材④_調合量2" styleClass="number">
+                        <p:outputLabel value="#{item.tenkazai4_tyougouryou2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tenkazai5_zairyouhinmei" headerText="添加材⑤_材料品名" >
+                        <p:outputLabel value="#{item.tenkazai5_zairyouhinmei}"/>
+                    </p:column>
+                    <p:column id="tenkazai5_tyougouryoukikaku" headerText="添加材⑤_調合量規格" >
+                        <p:outputLabel value="#{item.tenkazai5_tyougouryoukikaku}"/>
+                    </p:column>
+                    <p:column id="tenkazai5_buzaizaikolotno1" headerText="添加材⑤_部材在庫No1" >
+                        <p:outputLabel value="#{item.tenkazai5_buzaizaikolotno1}"/>
+                    </p:column>
+                    <p:column id="tenkazai5_tyougouryou1" headerText="添加材⑤_調合量1" styleClass="number">
+                        <p:outputLabel value="#{item.tenkazai5_tyougouryou1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tenkazai5_buzaizaikolotno2" headerText="添加材⑤_部材在庫No2" >
+                        <p:outputLabel value="#{item.tenkazai5_buzaizaikolotno2}"/>
+                    </p:column>
+                    <p:column id="tenkazai5_tyougouryou2" headerText="添加材⑤_調合量2" styleClass="number">
+                        <p:outputLabel value="#{item.tenkazai5_tyougouryou2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="sol1_zairyouhinmei" headerText="ｿﾞﾙ①_材料品名" >
+                        <p:outputLabel value="#{item.sol1_zairyouhinmei}"/>
+                    </p:column>
+                    <p:column id="sol1_tyougouryoukikaku" headerText="ｿﾞﾙ①_調合量規格" >
+                        <p:outputLabel value="#{item.sol1_tyougouryoukikaku}"/>
+                    </p:column>
+                    <p:column id="sol1_buzaizaikolotno1" headerText="ｿﾞﾙ①_部材在庫No1" >
+                        <p:outputLabel value="#{item.sol1_buzaizaikolotno1}"/>
+                    </p:column>
+                    <p:column id="sol1_tyougouryou1" headerText="ｿﾞﾙ①_調合量1" styleClass="number">
+                        <p:outputLabel value="#{item.sol1_tyougouryou1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="sol1_buzaizaikolotno2" headerText="ｿﾞﾙ①_部材在庫No2" >
+                        <p:outputLabel value="#{item.sol1_buzaizaikolotno2}"/>
+                    </p:column>
+                    <p:column id="sol1_tyougouryou2" headerText="ｿﾞﾙ①_調合量2" styleClass="number">
+                        <p:outputLabel value="#{item.sol1_tyougouryou2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="sol2_zairyouhinmei" headerText="ｿﾞﾙ②_材料品名" >
+                        <p:outputLabel value="#{item.sol2_zairyouhinmei}"/>
+                    </p:column>
+                    <p:column id="sol2_tyougouryoukikaku" headerText="ｿﾞﾙ②_調合量規格" >
+                        <p:outputLabel value="#{item.sol2_tyougouryoukikaku}"/>
+                    </p:column>
+                    <p:column id="sol2_buzaizaikolotno1" headerText="ｿﾞﾙ②_部材在庫No1" >
+                        <p:outputLabel value="#{item.sol2_buzaizaikolotno1}"/>
+                    </p:column>
+                    <p:column id="sol2_tyougouryou1" headerText="ｿﾞﾙ②_調合量1" styleClass="number">
+                        <p:outputLabel value="#{item.sol2_tyougouryou1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="sol2_buzaizaikolotno2" headerText="ｿﾞﾙ②_部材在庫No2" >
+                        <p:outputLabel value="#{item.sol2_buzaizaikolotno2}"/>
+                    </p:column>
+                    <p:column id="sol2_tyougouryou2" headerText="ｿﾞﾙ②_調合量2" styleClass="number">
+                        <p:outputLabel value="#{item.sol2_tyougouryou2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="sol3_zairyouhinmei" headerText="ｿﾞﾙ③_材料品名" >
+                        <p:outputLabel value="#{item.sol3_zairyouhinmei}"/>
+                    </p:column>
+                    <p:column id="sol3_tyougouryoukikaku" headerText="ｿﾞﾙ③_調合量規格" >
+                        <p:outputLabel value="#{item.sol3_tyougouryoukikaku}"/>
+                    </p:column>
+                    <p:column id="sol3_buzaizaikolotno1" headerText="ｿﾞﾙ③_部材在庫No1" >
+                        <p:outputLabel value="#{item.sol3_buzaizaikolotno1}"/>
+                    </p:column>
+                    <p:column id="sol3_tyougouryou1" headerText="ｿﾞﾙ③_調合量1" styleClass="number">
+                        <p:outputLabel value="#{item.sol3_tyougouryou1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="sol3_buzaizaikolotno2" headerText="ｿﾞﾙ③_部材在庫No2" >
+                        <p:outputLabel value="#{item.sol3_buzaizaikolotno2}"/>
+                    </p:column>
+                    <p:column id="sol3_tyougouryou2" headerText="ｿﾞﾙ③_調合量2" styleClass="number">
+                        <p:outputLabel value="#{item.sol3_tyougouryou2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="sol4_zairyouhinmei" headerText="ｿﾞﾙ④_材料品名" >
+                        <p:outputLabel value="#{item.sol4_zairyouhinmei}"/>
+                    </p:column>
+                    <p:column id="sol4_tyougouryoukikaku" headerText="ｿﾞﾙ④_調合量規格" >
+                        <p:outputLabel value="#{item.sol4_tyougouryoukikaku}"/>
+                    </p:column>
+                    <p:column id="sol4_buzaizaikolotno1" headerText="ｿﾞﾙ④_部材在庫No1" >
+                        <p:outputLabel value="#{item.sol4_buzaizaikolotno1}"/>
+                    </p:column>
+                    <p:column id="sol4_tyougouryou1" headerText="ｿﾞﾙ④_調合量1" styleClass="number">
+                        <p:outputLabel value="#{item.sol4_tyougouryou1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="sol4_buzaizaikolotno2" headerText="ｿﾞﾙ④_部材在庫No2" >
+                        <p:outputLabel value="#{item.sol4_buzaizaikolotno2}"/>
+                    </p:column>
+                    <p:column id="sol4_tyougouryou2" headerText="ｿﾞﾙ④_調合量2" styleClass="number">
+                        <p:outputLabel value="#{item.sol4_tyougouryou2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="hyouryousyuuryounichiji" headerText="秤量終了日時" >
+                        <p:outputLabel value="#{item.hyouryousyuuryounichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kokeibunsokuteitantousya" headerText="固形分測定担当者" >
+                        <p:outputLabel value="#{item.kokeibunsokuteitantousya}"/>
+                    </p:column>
+                    <p:column id="bikou1" headerText="備考1" >
+                        <p:outputLabel value="#{item.bikou1}"/>
+                    </p:column>
+                    <p:column id="bikou2" headerText="備考2" >
+                        <p:outputLabel value="#{item.bikou2}"/>
+                    </p:column>
+                </p:dataTable>
+                <p:dataTable id="idDataTable022" var="item" style="font-size:0.8em;margin-top:20px; display: #{gXHDO202B005.b022DTdisplay}" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap"
+                             value="#{gXHDO202B005.b022ListData}" emptyMessage="" paginator="true" paginatorPosition="top" rows="#{gXHDO202B005.getPagenatorCount()}">
+                    <p:column id="lotno" headerText="WIPﾛｯﾄNo" >
+                        <p:outputLabel value="#{item.lotno}"/>
+                    </p:column>
+                    <p:column id="yuudentaislurryhinmei" headerText="誘電体ｽﾗﾘｰ品名" >
+                        <p:outputLabel value="#{item.yuudentaislurryhinmei}"/>
+                    </p:column>
+                    <p:column id="yuudentaislurrylotno" headerText="誘電体ｽﾗﾘｰLotNo" >
+                        <p:outputLabel value="#{item.yuudentaislurrylotno}"/>
+                    </p:column>
+                    <p:column id="lotkubun" headerText="ﾛｯﾄ区分" >
+                        <p:outputLabel value="#{item.lotkubun}"/>
+                    </p:column>
+                    <p:column id="genryoulotno" headerText="原料LotNo" >
+                        <p:outputLabel value="#{item.genryoulotno}"/>
+                    </p:column>
+                    <p:column id="genryoukigou" headerText="原料記号" >
+                        <p:outputLabel value="#{item.genryoukigou}"/>
+                    </p:column>
+                    <p:column id="goki" headerText="秤量号機" >
+                        <p:outputLabel value="#{item.goki}"/>
+                    </p:column>
+                    <p:column id="syugenryouhyouryoukaisinichiji" headerText="主原料秤量開始日時" >
+                        <p:outputLabel value="#{item.syugenryouhyouryoukaisinichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="syugenryou1_zairyouhinmei" headerText="主原料①_材料品名" >
+                        <p:outputLabel value="#{item.syugenryou1_zairyouhinmei}"/>
+                    </p:column>
+                    <p:column id="syugenryou1_tyougouryoukikaku" headerText="主原料①_調合量規格" >
+                        <p:outputLabel value="#{item.syugenryou1_tyougouryoukikaku}"/>
+                    </p:column>
+                    <p:column id="syugenryou1_buzaizaikolotno" headerText="主原料①_部材在庫No" >
+                        <p:outputLabel value="#{item.syugenryou1_buzaizaikolotno}"/>
+                    </p:column>
+                    <p:column id="syugenryou1_tyougouryou1" headerText="主原料①_調合量1" styleClass="number">
+                        <p:outputLabel value="#{item.syugenryou1_tyougouryou1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="syugenryou1_tyougouryou2" headerText="主原料①_調合量2" styleClass="number">
+                        <p:outputLabel value="#{item.syugenryou1_tyougouryou2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="syugenryou1_tyougouryou3" headerText="主原料①_調合量3" styleClass="number">
+                        <p:outputLabel value="#{item.syugenryou1_tyougouryou3}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="syugenryou1_tyougouryou4" headerText="主原料①_調合量4" styleClass="number">
+                        <p:outputLabel value="#{item.syugenryou1_tyougouryou4}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="syugenryou1_tyougouryou5" headerText="主原料①_調合量5" styleClass="number">
+                        <p:outputLabel value="#{item.syugenryou1_tyougouryou5}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="syugenryou1_tyougouryou6" headerText="主原料①_調合量6" styleClass="number">
+                        <p:outputLabel value="#{item.syugenryou1_tyougouryou6}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="syugenryou1_tyougouryou7" headerText="主原料①_調合量7" styleClass="number">
+                        <p:outputLabel value="#{item.syugenryou1_tyougouryou7}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="syugenryou2_zairyouhinmei" headerText="主原料②_材料品名" >
+                        <p:outputLabel value="#{item.syugenryou2_zairyouhinmei}"/>
+                    </p:column>
+                    <p:column id="syugenryou2_tyougouryoukikaku" headerText="主原料②_調合量規格" >
+                        <p:outputLabel value="#{item.syugenryou2_tyougouryoukikaku}"/>
+                    </p:column>
+                    <p:column id="syugenryou2_buzaizaikolotno" headerText="主原料②_部材在庫No" >
+                        <p:outputLabel value="#{item.syugenryou2_buzaizaikolotno}"/>
+                    </p:column>
+                    <p:column id="syugenryou2_tyougouryou1" headerText="主原料②_調合量1" styleClass="number">
+                        <p:outputLabel value="#{item.syugenryou2_tyougouryou1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="syugenryou2_tyougouryou2" headerText="主原料②_調合量2" styleClass="number">
+                        <p:outputLabel value="#{item.syugenryou2_tyougouryou2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="syugenryou2_tyougouryou3" headerText="主原料②_調合量3" styleClass="number">
+                        <p:outputLabel value="#{item.syugenryou2_tyougouryou3}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="syugenryou3_zairyouhinmei" headerText="主原料③_材料品名" >
+                        <p:outputLabel value="#{item.syugenryou3_zairyouhinmei}"/>
+                    </p:column>
+                    <p:column id="syugenryou3_tyougouryoukikaku" headerText="主原料③_調合量規格" >
+                        <p:outputLabel value="#{item.syugenryou3_tyougouryoukikaku}"/>
+                    </p:column>
+                    <p:column id="syugenryou3_buzaizaikolotno" headerText="主原料③_部材在庫No" >
+                        <p:outputLabel value="#{item.syugenryou3_buzaizaikolotno}"/>
+                    </p:column>
+                    <p:column id="syugenryou3_tyougouryou1" headerText="主原料③_調合量1" styleClass="number">
+                        <p:outputLabel value="#{item.syugenryou3_tyougouryou1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="syugenryou3_tyougouryou2" headerText="主原料③_調合量2" styleClass="number">
+                        <p:outputLabel value="#{item.syugenryou3_tyougouryou2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="syugenryou3_tyougouryou3" headerText="主原料③_調合量3" styleClass="number">
+                        <p:outputLabel value="#{item.syugenryou3_tyougouryou3}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="syugenryou4_zairyouhinmei" headerText="主原料④_材料品名" >
+                        <p:outputLabel value="#{item.syugenryou4_zairyouhinmei}"/>
+                    </p:column>
+                    <p:column id="syugenryou4_tyougouryoukikaku" headerText="主原料④_調合量規格" >
+                        <p:outputLabel value="#{item.syugenryou4_tyougouryoukikaku}"/>
+                    </p:column>
+                    <p:column id="syugenryou4_buzaizaikolotno" headerText="主原料④_部材在庫No" >
+                        <p:outputLabel value="#{item.syugenryou4_buzaizaikolotno}"/>
+                    </p:column>
+                    <p:column id="syugenryou4_tyougouryou1" headerText="主原料④_調合量1" styleClass="number">
+                        <p:outputLabel value="#{item.syugenryou4_tyougouryou1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="syugenryou4_tyougouryou2" headerText="主原料④_調合量2" styleClass="number">
+                        <p:outputLabel value="#{item.syugenryou4_tyougouryou2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="syugenryou5_zairyouhinmei" headerText="主原料⑤_材料品名" >
+                        <p:outputLabel value="#{item.syugenryou5_zairyouhinmei}"/>
+                    </p:column>
+                    <p:column id="syugenryou5_tyougouryoukikaku" headerText="主原料⑤_調合量規格" >
+                        <p:outputLabel value="#{item.syugenryou5_tyougouryoukikaku}"/>
+                    </p:column>
+                    <p:column id="syugenryou5_buzaizaikolotno" headerText="主原料⑤_部材在庫No" >
+                        <p:outputLabel value="#{item.syugenryou5_buzaizaikolotno}"/>
+                    </p:column>
+                    <p:column id="syugenryou5_tyougouryou1" headerText="主原料⑤_調合量1" styleClass="number">
+                        <p:outputLabel value="#{item.syugenryou5_tyougouryou1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="syugenryou5_tyougouryou2" headerText="主原料⑤_調合量2" styleClass="number">
+                        <p:outputLabel value="#{item.syugenryou5_tyougouryou2}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="syugenryou6_zairyouhinmei" headerText="主原料⑥_材料品名" >
+                        <p:outputLabel value="#{item.syugenryou6_zairyouhinmei}"/>
+                    </p:column>
+                    <p:column id="syugenryou6_tyougouryoukikaku" headerText="主原料⑥_調合量規格" >
+                        <p:outputLabel value="#{item.syugenryou6_tyougouryoukikaku}"/>
+                    </p:column>
+                    <p:column id="syugenryou6_buzaizaikolotno" headerText="主原料⑥_部材在庫No" >
+                        <p:outputLabel value="#{item.syugenryou6_buzaizaikolotno}"/>
+                    </p:column>
+                    <p:column id="syugenryou6_tyougouryou1" headerText="主原料⑥_調合量1" styleClass="number">
+                        <p:outputLabel value="#{item.syugenryou6_tyougouryou1}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tyougouryougoukei" headerText="調合量合計" styleClass="number">
+                        <p:outputLabel value="#{item.tyougouryougoukei}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="syugenryouhyouryousyuuryounichiji" headerText="主原料秤量終了日時" >
+                        <p:outputLabel value="#{item.syugenryouhyouryousyuuryounichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kokeibunsokuteitantousya" headerText="固形分測定担当者" >
+                        <p:outputLabel value="#{item.kokeibunsokuteitantousya}"/>
+                    </p:column>
+                    <p:column id="bikou1" headerText="備考1" >
+                        <p:outputLabel value="#{item.bikou1}"/>
+                    </p:column>
+                    <p:column id="bikou2" headerText="備考2" >
+                        <p:outputLabel value="#{item.bikou2}"/>
+                    </p:column>
+                </p:dataTable>
+                <p:dataTable id="idDataTable023" var="item" style="font-size:0.8em;margin-top:20px; display: #{gXHDO202B005.b023DTdisplay}" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap"
+                             value="#{gXHDO202B005.b023ListData}" emptyMessage="" paginator="true" paginatorPosition="top" rows="#{gXHDO202B005.getPagenatorCount()}">
+                    <p:column id="lotno" headerText="WIPﾛｯﾄNo" >
+                        <p:outputLabel value="#{item.lotno}"/>
+                    </p:column>
+                    <p:column id="yuudentaislurryhinmei" headerText="誘電体ｽﾗﾘｰ品名" >
+                        <p:outputLabel value="#{item.yuudentaislurryhinmei}"/>
+                    </p:column>
+                    <p:column id="yuudentaislurrylotno" headerText="誘電体ｽﾗﾘｰLotNo" >
+                        <p:outputLabel value="#{item.yuudentaislurrylotno}"/>
+                    </p:column>
+                    <p:column id="lotkubun" headerText="ﾛｯﾄ区分" >
+                        <p:outputLabel value="#{item.lotkubun}"/>
+                    </p:column>
+                    <p:column id="genryoulotno" headerText="原料LotNo" >
+                        <p:outputLabel value="#{item.genryoulotno}"/>
+                    </p:column>
+                    <p:column id="genryoukigou" headerText="原料記号" >
+                        <p:outputLabel value="#{item.genryoukigou}"/>
+                    </p:column>
+                    <p:column id="youzaisenjyou_kakuhanki" headerText="溶剤洗浄_撹拌機" >
+                        <p:outputLabel value="#{item.youzaisenjyou_kakuhanki}"/>
+                    </p:column>
+                    <p:column id="youzaisenjyou_siyoutank" headerText="溶剤洗浄_使用ﾀﾝｸ" >
+                        <p:outputLabel value="#{item.youzaisenjyou_siyoutank}"/>
+                    </p:column>
+                    <p:column id="youzairyou" headerText="溶剤量" >
+                        <p:outputLabel value="#{item.youzairyou}"/>
+                    </p:column>
+                    <p:column id="youzaitounyuu" headerText="溶剤投入">
+                        <p:outputLabel value="#{item.youzaitounyuu}"/>
+                    </p:column>
+                    <p:column id="syuziku" headerText="主軸" >
+                        <p:outputLabel value="#{item.syuziku}"/>
+                    </p:column>
+                    <p:column id="pump" headerText="ﾎﾟﾝﾌﾟ" >
+                        <p:outputLabel value="#{item.pump}"/>
+                    </p:column>
+                    <p:column id="senjyoujyouken_dispakaitensuu" headerText="洗浄条件_ﾃﾞｨｽﾊﾟ回転数" >
+                        <p:outputLabel value="#{item.senjyoujyouken_dispakaitensuu}"/>
+                    </p:column>
+                    <p:column id="separate" headerText="ｾﾊﾟﾚｰﾀ" >
+                        <p:outputLabel value="#{item.separate}"/>
+                    </p:column>
+                    <p:column id="agitator" headerText="ｱｼﾞﾃｰﾀ" >
+                        <p:outputLabel value="#{item.agitator}"/>
+                    </p:column>
+                    <p:column id="jidouunten" headerText="自動運転">
+                        <p:outputLabel value="#{item.jidouunten}"/>
+                    </p:column>
+                    <p:column id="tankABjyunkan" headerText="ﾀﾝｸAB循環">
+                        <p:outputLabel value="#{item.tankABjyunkan}"/>
+                    </p:column>
+                    <p:column id="passsuu" headerText="ﾊﾟｽ数" >
+                        <p:outputLabel value="#{item.passsuu}"/>
+                    </p:column>
+                    <p:column id="senjyoujikan" headerText="洗浄時間" >
+                        <p:outputLabel value="#{item.senjyoujikan}"/>
+                    </p:column>
+                    <p:column id="raptime" headerText="ﾗｯﾌﾟﾀｲﾑ" >
+                        <p:outputLabel value="#{item.raptime}"/>
+                    </p:column>
+                    <p:column id="premixing_kakuhanki" headerText="ﾌﾟﾚﾐｷ_撹拌機" >
+                        <p:outputLabel value="#{item.premixing_kakuhanki}"/>
+                    </p:column>
+                    <p:column id="premixing_siyoutank" headerText="ﾌﾟﾚﾐｷ_使用ﾀﾝｸ" >
+                        <p:outputLabel value="#{item.premixing_siyoutank}"/>
+                    </p:column>
+                    <p:column id="earthgripsetuzokukakunin" headerText="ｱｰｽｸﾞﾘｯﾌﾟ接続確認">
+                        <p:outputLabel value="#{item.earthgripsetuzokukakunin}"/>
+                    </p:column>
+                    <p:column id="premixing_dispakaitensuu" headerText="ﾌﾟﾚﾐｷ_ﾃﾞｨｽﾊﾟ回転数" >
+                        <p:outputLabel value="#{item.premixing_dispakaitensuu}"/>
+                    </p:column>
+                    <p:column id="tounyuukaisinichiji" headerText="投入開始日時" >
+                        <p:outputLabel value="#{item.tounyuukaisinichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tounyuu1" headerText="投入①" >
+                        <p:outputLabel value="#{item.tounyuu1}"/>
+                    </p:column>
+                    <p:column id="tounyuu2" headerText="投入②" >
+                        <p:outputLabel value="#{item.tounyuu2}"/>
+                    </p:column>
+                    <p:column id="kakuhanjikankikaku1" headerText="撹拌時間規格①" >
+                        <p:outputLabel value="#{item.kakuhanjikankikaku1}"/>
+                    </p:column>
+                    <p:column id="kakuhankaisinichiji1" headerText="撹拌開始日時①" >
+                        <p:outputLabel value="#{item.kakuhankaisinichiji1}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kakuhansyuuryounichiji1" headerText="撹拌終了日時①" >
+                        <p:outputLabel value="#{item.kakuhansyuuryounichiji1}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tounyuu3" headerText="投入③" >
+                        <p:outputLabel value="#{item.tounyuu3}"/>
+                    </p:column>
+                    <p:column id="kakuhanjikankikaku2" headerText="撹拌時間規格②" >
+                        <p:outputLabel value="#{item.kakuhanjikankikaku2}"/>
+                    </p:column>
+                    <p:column id="kakuhankaisinichiji2" headerText="撹拌開始日時②" >
+                        <p:outputLabel value="#{item.kakuhankaisinichiji2}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kakuhansyuuryounichiji2" headerText="撹拌終了日時②" >
+                        <p:outputLabel value="#{item.kakuhansyuuryounichiji2}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tounyuu4" headerText="投入④" >
+                        <p:outputLabel value="#{item.tounyuu4}"/>
+                    </p:column>
+                    <p:column id="kakuhanjikankikaku3" headerText="撹拌時間規格③" >
+                        <p:outputLabel value="#{item.kakuhanjikankikaku3}"/>
+                    </p:column>
+                    <p:column id="kakuhankaisinichiji3" headerText="撹拌開始日時③" >
+                        <p:outputLabel value="#{item.kakuhankaisinichiji3}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kakuhansyuuryounichiji3" headerText="撹拌終了日時③" >
+                        <p:outputLabel value="#{item.kakuhansyuuryounichiji3}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tounyuu5" headerText="投入⑤" >
+                        <p:outputLabel value="#{item.tounyuu5}"/>
+                    </p:column>
+                    <p:column id="kakuhanjikankikaku4" headerText="撹拌時間規格④" >
+                        <p:outputLabel value="#{item.kakuhanjikankikaku4}"/>
+                    </p:column>
+                    <p:column id="kakuhankaisinichiji4" headerText="撹拌開始日時④" >
+                        <p:outputLabel value="#{item.kakuhankaisinichiji4}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kakuhansyuuryounichiji4" headerText="撹拌終了日時④" >
+                        <p:outputLabel value="#{item.kakuhansyuuryounichiji4}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tounyuu6" headerText="投入⑥" >
+                        <p:outputLabel value="#{item.tounyuu6}"/>
+                    </p:column>
+                    <p:column id="kakuhanjikankikaku5" headerText="撹拌時間規格⑤" >
+                        <p:outputLabel value="#{item.kakuhanjikankikaku5}"/>
+                    </p:column>
+                    <p:column id="kakuhankaisinichiji5" headerText="撹拌開始日時⑤" >
+                        <p:outputLabel value="#{item.kakuhankaisinichiji5}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kakuhansyuuryounichiji5" headerText="撹拌終了日時⑤" >
+                        <p:outputLabel value="#{item.kakuhansyuuryounichiji5}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kaitensuuhenkou" headerText="回転数変更" >
+                        <p:outputLabel value="#{item.kaitensuuhenkou}"/>
+                    </p:column>
+                    <p:column id="tounyuu7" headerText="投入⑦" >
+                        <p:outputLabel value="#{item.tounyuu7}"/>
+                    </p:column>
+                    <p:column id="tounyuu8" headerText="投入⑧" >
+                        <p:outputLabel value="#{item.tounyuu8}"/>
+                    </p:column>
+                    <p:column id="tounyuu9" headerText="投入⑨" >
+                        <p:outputLabel value="#{item.tounyuu9}"/>
+                    </p:column>
+                    <p:column id="kakuhanjikankikaku6" headerText="撹拌時間規格⑥" >
+                        <p:outputLabel value="#{item.kakuhanjikankikaku6}"/>
+                    </p:column>
+                    <p:column id="kakuhankaisinichiji6" headerText="撹拌開始日時⑥" >
+                        <p:outputLabel value="#{item.kakuhankaisinichiji6}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kakuhansyuuryounichiji6" headerText="撹拌終了日時⑥" >
+                        <p:outputLabel value="#{item.kakuhansyuuryounichiji6}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tounyuu10" headerText="投入⑩" >
+                        <p:outputLabel value="#{item.tounyuu10}"/>
+                    </p:column>
+                    <p:column id="tounyuu11" headerText="投入⑪" >
+                        <p:outputLabel value="#{item.tounyuu11}"/>
+                    </p:column>
+                    <p:column id="tounyuu12" headerText="投入⑫" >
+                        <p:outputLabel value="#{item.tounyuu12}"/>
+                    </p:column>
+                    <p:column id="tounyuu13" headerText="投入⑬" >
+                        <p:outputLabel value="#{item.tounyuu13}"/>
+                    </p:column>
+                    <p:column id="tounyuu14" headerText="投入⑭" >
+                        <p:outputLabel value="#{item.tounyuu14}"/>
+                    </p:column>
+                    <p:column id="tounyuu15" headerText="投入⑮" >
+                        <p:outputLabel value="#{item.tounyuu15}"/>
+                    </p:column>
+                    <p:column id="tounyuu16" headerText="投入⑯" >
+                        <p:outputLabel value="#{item.tounyuu16}"/>
+                    </p:column>
+                    <p:column id="tounyuu17" headerText="投入⑰" >
+                        <p:outputLabel value="#{item.tounyuu17}"/>
+                    </p:column>
+                    <p:column id="tounyuu18" headerText="投入⑱" >
+                        <p:outputLabel value="#{item.tounyuu18}"/>
+                    </p:column>
+                    <p:column id="tounyuu19" headerText="投入⑲" >
+                        <p:outputLabel value="#{item.tounyuu19}"/>
+                    </p:column>
+                    <p:column id="tounyuusyuuryounichiji" headerText="投入終了日時" >
+                        <p:outputLabel value="#{item.tounyuusyuuryounichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kakuhanki" headerText="撹拌機" >
+                        <p:outputLabel value="#{item.kakuhanki}"/>
+                    </p:column>
+                    <p:column id="kaitensuu" headerText="回転数" >
+                        <p:outputLabel value="#{item.kaitensuu}"/>
+                    </p:column>
+                    <p:column id="kakuhanjikankikaku7" headerText="撹拌時間規格⑦" >
+                        <p:outputLabel value="#{item.kakuhanjikankikaku7}"/>
+                    </p:column>
+                    <p:column id="kakuhankaisinichiji7" headerText="撹拌開始日時⑦" >
+                        <p:outputLabel value="#{item.kakuhankaisinichiji7}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kaitentaihenosessyokunokakunin" headerText="回転体への接触の確認">
+                        <p:outputLabel value="#{item.kaitentaihenosessyokunokakunin}"/>
+                    </p:column>
+                    <p:column id="kakuhansyuuryounichiji7" headerText="撹拌終了日時⑦" >
+                        <p:outputLabel value="#{item.kakuhansyuuryounichiji7}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tantousya" headerText="担当者" >
+                        <p:outputLabel value="#{item.tantousya}"/>
+                    </p:column>
+                    <p:column id="bikou1" headerText="備考1" >
+                        <p:outputLabel value="#{item.bikou1}"/>
+                    </p:column>
+                    <p:column id="bikou2" headerText="備考2" >
+                        <p:outputLabel value="#{item.bikou2}"/>
+                    </p:column>
+                </p:dataTable>
+                <p:dataTable id="idDataTable024" var="item" style="font-size:0.8em;margin-top:20px; display: #{gXHDO202B005.b024DTdisplay}" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap"
+                             value="#{gXHDO202B005.b024ListData}" emptyMessage="" paginator="true" paginatorPosition="top" rows="#{gXHDO202B005.getPagenatorCount()}">
+                    <p:column id="lotno" headerText="WIPﾛｯﾄNo" >
+                        <p:outputLabel value="#{item.lotno}"/>
+                    </p:column>
+                    <p:column id="yuudentaihinmei" headerText="誘電体ｽﾗﾘｰ品名" >
+                        <p:outputLabel value="#{item.yuudentaihinmei}"/>
+                    </p:column>
+                    <p:column id="yuudentailotno" headerText="誘電体ｽﾗﾘｰLotNo" >
+                        <p:outputLabel value="#{item.yuudentailotno}"/>
+                    </p:column>
+                    <p:column id="lotkubun" headerText="ﾛｯﾄ区分" >
+                        <p:outputLabel value="#{item.lotkubun}"/>
+                    </p:column>
+                    <p:column id="genryoulotno" headerText="原料LotNo" >
+                        <p:outputLabel value="#{item.genryoulotno}"/>
+                    </p:column>
+                    <p:column id="genryoukigou" headerText="原料記号" >
+                        <p:outputLabel value="#{item.genryoukigou}"/>
+                    </p:column>
+                    <p:column id="funsaiki" headerText="粉砕機" >
+                        <p:outputLabel value="#{item.funsaiki}"/>
+                    </p:column>
+                    <p:column id="funsaikisenjyou1" headerText="粉砕機洗浄①" >
+                        <p:outputLabel value="#{item.funsaikisenjyou1}"/>
+                    </p:column>
+                    <p:column id="funsaikisenjyou2" headerText="粉砕機洗浄②" >
+                        <p:outputLabel value="#{item.funsaikisenjyou2}"/>
+                    </p:column>
+                    <p:column id="renzokuunten1" headerText="連続運転回数①" >
+                        <p:outputLabel value="#{item.renzokuunten1}"/>
+                    </p:column>
+                    <p:column id="renzokuunten2" headerText="連続運転回数②" >
+                        <p:outputLabel value="#{item.renzokuunten2}"/>
+                    </p:column>
+                    <p:column id="gyokusekijyuryou" headerText="玉石_重量" >
+                        <p:outputLabel value="#{item.gyokusekijyuryou}"/>
+                    </p:column>
+                    <p:column id="gyokusekilot" headerText="玉石_ﾛｯﾄ" >
+                        <p:outputLabel value="#{item.gyokusekilot}"/>
+                    </p:column>
+                    <p:column id="gyokusekimediakei" headerText="玉石_ﾒﾃﾞｨｱ径" >
+                        <p:outputLabel value="#{item.gyokusekimediakei}"/>
+                    </p:column>
+                    <p:column id="tounyuuryou" headerText="投入量" >
+                        <p:outputLabel value="#{item.tounyuuryou}"/>
+                    </p:column>
+                    <p:column id="zikanpass" headerText="時間/ﾊﾟｽ回数" >
+                        <p:outputLabel value="#{item.zikanpass}"/>
+                    </p:column>
+                    <p:column id="screen" headerText="ｽｸﾘｰﾝ" >
+                        <p:outputLabel value="#{item.screen}"/>
+                    </p:column>
+                    <p:column id="kaitensuudisp" headerText="回転数_ﾃﾞｨｽﾊﾟ" >
+                        <p:outputLabel value="#{item.kaitensuudisp}"/>
+                    </p:column>
+                    <p:column id="kaitensuusyujiku" headerText="回転数_主軸" >
+                        <p:outputLabel value="#{item.kaitensuusyujiku}"/>
+                    </p:column>
+                    <p:column id="pompsyutsuryoku" headerText="ﾎﾟﾝﾌﾟ出力" >
+                        <p:outputLabel value="#{item.pompsyutsuryoku}"/>
+                    </p:column>
+                    <p:column id="ryuuryou" headerText="流量" >
+                        <p:outputLabel value="#{item.ryuuryou}"/>
+                    </p:column>
+                    <p:column id="passkaisuu" headerText="ﾊﾟｽ回数" >
+                        <p:outputLabel value="#{item.passkaisuu}"/>
+                    </p:column>
+                    <p:column id="kaishinichiji" headerText="開始日時" >
+                        <p:outputLabel value="#{item.kaishinichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="syuuryounichiji" headerText="終了日時" >
+                        <p:outputLabel value="#{item.syuuryounichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                </p:dataTable>
+                <p:dataTable id="idDataTable025" var="item" style="font-size:0.8em;margin-top:20px; display: #{gXHDO202B005.b025DTdisplay}" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap"
+                             value="#{gXHDO202B005.b025ListData}" emptyMessage="" paginator="true" paginatorPosition="top" rows="#{gXHDO202B005.getPagenatorCount()}">
+                    <p:column id="lotno" headerText="WIPﾛｯﾄNo" >
+                        <p:outputLabel value="#{item.lotno}"/>
+                    </p:column>
+                    <p:column id="yuudentaislurryhinmei" headerText="誘電体ｽﾗﾘｰ品名" >
+                        <p:outputLabel value="#{item.yuudentaislurryhinmei}"/>
+                    </p:column>
+                    <p:column id="yuudentaislurrylotno" headerText="誘電体ｽﾗﾘｰLotNo" >
+                        <p:outputLabel value="#{item.yuudentaislurrylotno}"/>
+                    </p:column>
+                    <p:column id="lotkubun" headerText="ﾛｯﾄ区分" >
+                        <p:outputLabel value="#{item.lotkubun}"/>
+                    </p:column>
+                    <p:column id="genryoulotno" headerText="原料LotNo" >
+                        <p:outputLabel value="#{item.genryoulotno}"/>
+                    </p:column>
+                    <p:column id="genryoukigou" headerText="原料記号" >
+                        <p:outputLabel value="#{item.genryoukigou}"/>
+                    </p:column>
+                    <p:column id="kansouzaranosyurui" headerText="乾燥皿の種類" >
+                        <p:outputLabel value="#{item.kansouzaranosyurui}"/>
+                    </p:column>
+                    <p:column id="rutubono_monitor" headerText="ﾙﾂﾎﾞNo(ﾓﾆﾀｰ)" styleClass="number">
+                        <p:outputLabel value="#{item.rutubono_monitor}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="rutubono_seihin" headerText="ﾙﾂﾎﾞNo(製品)" styleClass="number">
+                        <p:outputLabel value="#{item.rutubono_seihin}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="slurryjyuuryou_monitor" headerText="ｽﾗﾘｰ重量(ﾓﾆﾀｰ)" styleClass="number">
+                        <p:outputLabel value="#{item.slurryjyuuryou_monitor}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="slurryjyuuryou_seihin" headerText="ｽﾗﾘｰ重量(製品)" styleClass="number">
+                        <p:outputLabel value="#{item.slurryjyuuryou_seihin}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kansouondo" headerText="乾燥温度" styleClass="number">
+                        <p:outputLabel value="#{item.kansouondo}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kansoujikankikaku" headerText="乾燥時間規格" styleClass="number">
+                        <p:outputLabel value="#{item.kansoujikankikaku}">
+                            <f:convertNumber pattern="##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kansoukaisinichij" headerText="乾燥開始日時" >
+                        <p:outputLabel value="#{item.kansoukaisinichij}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kansousyuuryounichiji" headerText="乾燥終了日時" >
+                        <p:outputLabel value="#{item.kansousyuuryounichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="dassirogouki" headerText="脱脂炉号機" >
+                        <p:outputLabel value="#{item.dassirogouki}"/>
+                    </p:column>
+                    <p:column id="dassiondo" headerText="脱脂温度" >
+                        <p:outputLabel value="#{item.dassiondo}"/>
+                    </p:column>
+                    <p:column id="dassijikankikaku" headerText="脱脂時間規格" >
+                        <p:outputLabel value="#{item.dassijikankikaku}"/>
+                    </p:column>
+                    <p:column id="dassikaisinichiji" headerText="脱脂開始日時" >
+                        <p:outputLabel value="#{item.dassikaisinichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="dassisyuuryounichiji" headerText="脱脂終了日時" >
+                        <p:outputLabel value="#{item.dassisyuuryounichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kansoutantousya" headerText="乾燥担当者" >
+                        <p:outputLabel value="#{item.kansoutantousya}"/>
+                    </p:column>
+                    <p:column id="maesyori" headerText="前処理" >
+                        <p:outputLabel value="#{item.maesyori}"/>
+                    </p:column>
+                    <p:column id="maesyoriondo" headerText="前処理温度" >
+                        <p:outputLabel value="#{item.maesyoriondo}"/>
+                    </p:column>
+                    <p:column id="maesyorijikan" headerText="前処理時間" >
+                        <p:outputLabel value="#{item.maesyorijikan}"/>
+                    </p:column>
+                    <p:column id="maesyorikaisinichiji" headerText="前処理開始日時" >
+                        <p:outputLabel value="#{item.maesyorikaisinichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="maesyorisyuuryounichiji" headerText="前処理終了日時" >
+                        <p:outputLabel value="#{item.maesyorisyuuryounichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="maesyoritantousya" headerText="前処理担当者" >
+                        <p:outputLabel value="#{item.maesyoritantousya}"/>
+                    </p:column>
+                    <p:column id="hihyoumensekisokuteikaisinichiji" headerText="比表面積測定開始日時" >
+                        <p:outputLabel value="#{item.hihyoumensekisokuteikaisinichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="hihyoumensekisokuteisyuuryounichiji" headerText="比表面積測定終了日時" >
+                        <p:outputLabel value="#{item.hihyoumensekisokuteisyuuryounichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="monitorjissokuti" headerText="ﾓﾆﾀｰ実測値" styleClass="number">
+                        <p:outputLabel value="#{item.monitorjissokuti}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="monitorhoseiti" headerText="ﾓﾆﾀｰ補正値" styleClass="number">
+                        <p:outputLabel value="#{item.monitorhoseiti}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="hihyoumensekikikaku" headerText="比表面積規格" >
+                        <p:outputLabel value="#{item.hihyoumensekikikaku}"/>
+                    </p:column>
+                    <p:column id="hihyoumensekineraiti" headerText="比表面積狙い値" >
+                        <p:outputLabel value="#{item.hihyoumensekineraiti}"/>
+                    </p:column>
+                    <p:column id="hihyoumensekisankouti" headerText="比表面積参考値" >
+                        <p:outputLabel value="#{item.hihyoumensekisankouti}"/>
+                    </p:column>
+                    <p:column id="hihyoumensekisokuteikekka1" headerText="比表面積測定結果①" styleClass="number">
+                        <p:outputLabel value="#{item.hihyoumensekisokuteikekka1}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="hihyoumensekisokuteikekka2" headerText="比表面積測定結果②" styleClass="number">
+                        <p:outputLabel value="#{item.hihyoumensekisokuteikekka2}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="hihyoumensekisokuteikekka3" headerText="比表面積測定結果③" styleClass="number">
+                        <p:outputLabel value="#{item.hihyoumensekisokuteikekka3}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="hihyoumensekisokuteikekka" headerText="比表面積測定結果" styleClass="number">
+                        <p:outputLabel value="#{item.hihyoumensekisokuteikekka}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ssahikikaku" headerText="SSA比規格" >
+                        <p:outputLabel value="#{item.ssahikikaku}"/>
+                    </p:column>
+                    <p:column id="ssahisankouti" headerText="SSA比参考値" >
+                        <p:outputLabel value="#{item.ssahisankouti}"/>
+                    </p:column>
+                    <p:column id="ssahi" headerText="SSA比" styleClass="number">
+                        <p:outputLabel value="#{item.ssahi}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="hihyoumensekisokuteitantousya" headerText="比表面積測定担当者" >
+                        <p:outputLabel value="#{item.hihyoumensekisokuteitantousya}"/>
+                    </p:column>
+                    <p:column id="bikou1" headerText="備考1" >
+                        <p:outputLabel value="#{item.bikou1}"/>
+                    </p:column>
+                    <p:column id="bikou2" headerText="備考2" >
+                        <p:outputLabel value="#{item.bikou2}"/>
+                    </p:column>
+                </p:dataTable>
+                <p:dataTable id="idDataTable026" var="item" style="font-size:0.8em;margin-top:20px; display: #{gXHDO202B005.b026DTdisplay}" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap"
+                             value="#{gXHDO202B005.b026ListData}" emptyMessage="" paginator="true" paginatorPosition="top" rows="#{gXHDO202B005.getPagenatorCount()}">
+                    <p:column id="lotno" headerText="WIPﾛｯﾄNo" >
+                        <p:outputLabel value="#{item.lotno}"/>
+                    </p:column>
+                    <p:column id="yuudentaislurryhinmei" headerText="誘電体ｽﾗﾘｰ品名" >
+                        <p:outputLabel value="#{item.yuudentaislurryhinmei}"/>
+                    </p:column>
+                    <p:column id="yuudentaislurrylotno" headerText="誘電体ｽﾗﾘｰLotNo" >
+                        <p:outputLabel value="#{item.yuudentaislurrylotno}"/>
+                    </p:column>
+                    <p:column id="lotkubun" headerText="ﾛｯﾄ区分" >
+                        <p:outputLabel value="#{item.lotkubun}"/>
+                    </p:column>
+                    <p:column id="genryoulotno" headerText="原料LotNo" >
+                        <p:outputLabel value="#{item.genryoulotno}"/>
+                    </p:column>
+                    <p:column id="genryoukigou" headerText="原料記号" >
+                        <p:outputLabel value="#{item.genryoukigou}"/>
+                    </p:column>
+                    <p:column id="fuutaijyuuryousokutei_sutenyouki1" headerText="風袋重量測定_ｽﾃﾝ容器1" styleClass="number">
+                        <p:outputLabel value="#{item.fuutaijyuuryousokutei_sutenyouki1}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="fuutaijyuuryousokutei_sutenyouki2" headerText="風袋重量測定_ｽﾃﾝ容器2" styleClass="number">
+                        <p:outputLabel value="#{item.fuutaijyuuryousokutei_sutenyouki2}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="fuutaijyuuryousokutei_sutenyouki3" headerText="風袋重量測定_ｽﾃﾝ容器3" styleClass="number">
+                        <p:outputLabel value="#{item.fuutaijyuuryousokutei_sutenyouki3}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="fuutaijyuuryousokutei_sutenyouki4" headerText="風袋重量測定_ｽﾃﾝ容器4" styleClass="number">
+                        <p:outputLabel value="#{item.fuutaijyuuryousokutei_sutenyouki4}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="fuutaijyuuryousokutei_sutenyouki5" headerText="風袋重量測定_ｽﾃﾝ容器5" styleClass="number">
+                        <p:outputLabel value="#{item.fuutaijyuuryousokutei_sutenyouki5}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="fuutaijyuuryousokutei_sutenyouki6" headerText="風袋重量測定_ｽﾃﾝ容器6" styleClass="number">
+                        <p:outputLabel value="#{item.fuutaijyuuryousokutei_sutenyouki6}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="fuutaijyuuryousokutei_siropori1" headerText="風袋重量測定_白ﾎﾟﾘ容器1" styleClass="number">
+                        <p:outputLabel value="#{item.fuutaijyuuryousokutei_siropori1}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="fuutaijyuuryousokutei_siropori2" headerText="風袋重量測定_白ﾎﾟﾘ容器2" styleClass="number">
+                        <p:outputLabel value="#{item.fuutaijyuuryousokutei_siropori2}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="fuutaijyuuryousokutei_siropori3" headerText="風袋重量測定_白ﾎﾟﾘ容器3" styleClass="number">
+                        <p:outputLabel value="#{item.fuutaijyuuryousokutei_siropori3}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="fuutaijyuuryousokutei_siropori4" headerText="風袋重量測定_白ﾎﾟﾘ容器4" styleClass="number">
+                        <p:outputLabel value="#{item.fuutaijyuuryousokutei_siropori4}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="fuutaijyuuryousokutei_siropori5" headerText="風袋重量測定_白ﾎﾟﾘ容器5" styleClass="number">
+                        <p:outputLabel value="#{item.fuutaijyuuryousokutei_siropori5}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="fuutaijyuuryousokutei_siropori6" headerText="風袋重量測定_白ﾎﾟﾘ容器6" styleClass="number">
+                        <p:outputLabel value="#{item.fuutaijyuuryousokutei_siropori6}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="fuutaijyuuryousokutei_siropori7" headerText="風袋重量測定_白ﾎﾟﾘ容器7" styleClass="number">
+                        <p:outputLabel value="#{item.fuutaijyuuryousokutei_siropori7}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="fuutaijyuuryousokutei_siropori8" headerText="風袋重量測定_白ﾎﾟﾘ容器8" styleClass="number">
+                        <p:outputLabel value="#{item.fuutaijyuuryousokutei_siropori8}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="fuutaijyuuryousokutei_siropori9" headerText="風袋重量測定_白ﾎﾟﾘ容器9" styleClass="number">
+                        <p:outputLabel value="#{item.fuutaijyuuryousokutei_siropori9}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="fuutaijyuuryousokutei_siropori10" headerText="風袋重量測定_白ﾎﾟﾘ容器10" styleClass="number">
+                        <p:outputLabel value="#{item.fuutaijyuuryousokutei_siropori10}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="fuutaijyuuryousokutei_siropori11" headerText="風袋重量測定_白ﾎﾟﾘ容器11" styleClass="number">
+                        <p:outputLabel value="#{item.fuutaijyuuryousokutei_siropori11}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="fuutaijyuuryousokutei_siropori12" headerText="風袋重量測定_白ﾎﾟﾘ容器12" styleClass="number">
+                        <p:outputLabel value="#{item.fuutaijyuuryousokutei_siropori12}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="fuutaijyuuryousokutei_tantousya" headerText="保管容器準備_担当者" >
+                        <p:outputLabel value="#{item.fuutaijyuuryousokutei_tantousya}"/>
+                    </p:column>
+                    <p:column id="filterrenketu" headerText="ﾌｨﾙﾀｰ連結" >
+                        <p:outputLabel value="#{item.filterrenketu}"/>
+                    </p:column>
+                    <p:column id="filtertorituke_itijifilterhinmei" headerText="ﾌｨﾙﾀｰ取り付け_1次ﾌｨﾙﾀｰ品名" >
+                        <p:outputLabel value="#{item.filtertorituke_itijifilterhinmei}"/>
+                    </p:column>
+                    <p:column id="filtertorituke_lotno1" headerText="ﾌｨﾙﾀｰ取り付け_LotNo1" >
+                        <p:outputLabel value="#{item.filtertorituke_lotno1}"/>
+                    </p:column>
+                    <p:column id="filtertorituke_toritukehonsuu1" headerText="ﾌｨﾙﾀｰ取り付け_取り付け本数1" styleClass="number">
+                        <p:outputLabel value="#{item.filtertorituke_toritukehonsuu1}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="filtertorituke_nijifilterhinmei" headerText="ﾌｨﾙﾀｰ取り付け_2次ﾌｨﾙﾀｰ品名" >
+                        <p:outputLabel value="#{item.filtertorituke_nijifilterhinmei}"/>
+                    </p:column>
+                    <p:column id="filtertorituke_lotno2" headerText="ﾌｨﾙﾀｰ取り付け_LotNo2" >
+                        <p:outputLabel value="#{item.filtertorituke_lotno2}"/>
+                    </p:column>
+                    <p:column id="filtertorituke_toritukehonsuu2" headerText="ﾌｨﾙﾀｰ取り付け_取り付け本数2" styleClass="number">
+                        <p:outputLabel value="#{item.filtertorituke_toritukehonsuu2}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="filtertorituke_sanjifilterhinmei" headerText="ﾌｨﾙﾀｰ取り付け_3次ﾌｨﾙﾀｰ品名" >
+                        <p:outputLabel value="#{item.filtertorituke_sanjifilterhinmei}"/>
+                    </p:column>
+                    <p:column id="filtertorituke_lotno3" headerText="ﾌｨﾙﾀｰ取り付け_LotNo3" >
+                        <p:outputLabel value="#{item.filtertorituke_lotno3}"/>
+                    </p:column>
+                    <p:column id="filtertorituke_toritukehonsuu3" headerText="ﾌｨﾙﾀｰ取り付け_取り付け本数3" styleClass="number">
+                        <p:outputLabel value="#{item.filtertorituke_toritukehonsuu3}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="filtertorituke_tantousya" headerText="ﾌｨﾙﾀｰ取り付け_担当者" >
+                        <p:outputLabel value="#{item.filtertorituke_tantousya}"/>
+                    </p:column>
+                    <p:column id="haisyutuyoukinoutibukuro" headerText="排出容器の内袋">
+                        <p:outputLabel value="#{item.haisyutuyoukinoutibukuro}"/>
+                    </p:column>
+                    <p:column id="filtersiyoukaisuu" headerText="ﾌｨﾙﾀｰ使用回数" >
+                        <p:outputLabel value="#{item.filtersiyoukaisuu}"/>
+                    </p:column>
+                    <p:column id="fptankno" headerText="F/PﾀﾝｸNo" >
+                        <p:outputLabel value="#{item.fptankno}"/>
+                    </p:column>
+                    <p:column id="senjyoukakunin" headerText="洗浄確認">
+                        <p:outputLabel value="#{item.senjyoukakunin}"/>
+                    </p:column>
+                    <p:column id="fpkaisinichiji" headerText="F/P開始日時" >
+                        <p:outputLabel value="#{item.fpkaisinichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="assouregulatorNo" headerText="圧送ﾚｷﾞｭﾚｰﾀｰNo" >
+                        <p:outputLabel value="#{item.assouregulatorNo}"/>
+                    </p:column>
+                    <p:column id="assouaturyoku" headerText="圧送圧力" styleClass="number">
+                        <p:outputLabel value="#{item.assouaturyoku}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="filterpasskaisi_tantousya" headerText="ﾌｨﾙﾀｰﾊﾟｽ開始_担当者" >
+                        <p:outputLabel value="#{item.filterpasskaisi_tantousya}"/>
+                    </p:column>
+                    <p:column id="filterkoukan1_Fpteisinichiji" headerText="ﾌｨﾙﾀｰ交換①_F/P停止日時" >
+                        <p:outputLabel value="#{item.filterkoukan1_Fpteisinichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="filterkoukan1_itijifilterhinmei" headerText="ﾌｨﾙﾀｰ交換①_1次ﾌｨﾙﾀｰ品名" >
+                        <p:outputLabel value="#{item.filterkoukan1_itijifilterhinmei}"/>
+                    </p:column>
+                    <p:column id="filterkoukan1_lotno1" headerText="ﾌｨﾙﾀｰ交換①_LotNo1" >
+                        <p:outputLabel value="#{item.filterkoukan1_lotno1}"/>
+                    </p:column>
+                    <p:column id="filterkoukan1_toritukehonsuu1" headerText="ﾌｨﾙﾀｰ交換①_取り付け本数1" styleClass="number">
+                        <p:outputLabel value="#{item.filterkoukan1_toritukehonsuu1}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="filterkoukan1_nijifilterhinmei" headerText="ﾌｨﾙﾀｰ交換①_2次ﾌｨﾙﾀｰ品名" >
+                        <p:outputLabel value="#{item.filterkoukan1_nijifilterhinmei}"/>
+                    </p:column>
+                    <p:column id="filterkoukan1_lotno2" headerText="ﾌｨﾙﾀｰ交換①_LotNo2" >
+                        <p:outputLabel value="#{item.filterkoukan1_lotno2}"/>
+                    </p:column>
+                    <p:column id="filterkoukan1_toritukehonsuu2" headerText="ﾌｨﾙﾀｰ交換①_取り付け本数2" styleClass="number">
+                        <p:outputLabel value="#{item.filterkoukan1_toritukehonsuu2}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="filterkoukan1_sanjifilterhinmei" headerText="ﾌｨﾙﾀｰ交換①_3次ﾌｨﾙﾀｰ品名" >
+                        <p:outputLabel value="#{item.filterkoukan1_sanjifilterhinmei}"/>
+                    </p:column>
+                    <p:column id="filterkoukan1_lotno3" headerText="ﾌｨﾙﾀｰ交換①_LotNo3" >
+                        <p:outputLabel value="#{item.filterkoukan1_lotno3}"/>
+                    </p:column>
+                    <p:column id="filterkoukan1_toritukehonsuu3" headerText="ﾌｨﾙﾀｰ交換①_取り付け本数3" styleClass="number">
+                        <p:outputLabel value="#{item.filterkoukan1_toritukehonsuu3}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="filterkoukan1_Fpsaikainichiji" headerText="ﾌｨﾙﾀｰ交換①_F/P再開日時" >
+                        <p:outputLabel value="#{item.filterkoukan1_Fpsaikainichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="filterkoukan1_tantousya" headerText="ﾌｨﾙﾀｰ交換①_担当者" >
+                        <p:outputLabel value="#{item.filterkoukan1_tantousya}"/>
+                    </p:column>
+                    <p:column id="fpsyuuryounichiji" headerText="F/P終了日時" >
+                        <p:outputLabel value="#{item.fpsyuuryounichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="fptotaljikan" headerText="F/Pﾄｰﾀﾙ時間" >
+                        <p:outputLabel value="#{item.fptotaljikan}"/>
+                    </p:column>
+                    <p:column id="itijifiltersousiyouhonsuu" headerText="1次ﾌｨﾙﾀｰ総使用本数" styleClass="number">
+                        <p:outputLabel value="#{item.itijifiltersousiyouhonsuu}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="nijifiltersousiyouhonsuu" headerText="2次ﾌｨﾙﾀｰ総使用本数" styleClass="number">
+                        <p:outputLabel value="#{item.nijifiltersousiyouhonsuu}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="sanjifiltersousiyouhonsuu" headerText="3次ﾌｨﾙﾀｰ総使用本数" styleClass="number">
+                        <p:outputLabel value="#{item.sanjifiltersousiyouhonsuu}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="filterpasssyuuryou_tantousya" headerText="ﾌｨﾙﾀｰﾊﾟｽ終了_担当者" >
+                        <p:outputLabel value="#{item.filterpasssyuuryou_tantousya}"/>
+                    </p:column>
+                    <p:column id="soujyuurousokutei1" headerText="総重量測定1" styleClass="number">
+                        <p:outputLabel value="#{item.soujyuurousokutei1}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="soujyuurousokutei2" headerText="総重量測定2" styleClass="number">
+                        <p:outputLabel value="#{item.soujyuurousokutei2}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="soujyuurousokutei3" headerText="総重量測定3" styleClass="number">
+                        <p:outputLabel value="#{item.soujyuurousokutei3}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="soujyuurousokutei4" headerText="総重量測定4" styleClass="number">
+                        <p:outputLabel value="#{item.soujyuurousokutei4}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="soujyuurousokutei5" headerText="総重量測定5" styleClass="number">
+                        <p:outputLabel value="#{item.soujyuurousokutei5}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="soujyuurousokutei6" headerText="総重量測定6" styleClass="number">
+                        <p:outputLabel value="#{item.soujyuurousokutei6}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="soujyuurousokutei7" headerText="総重量測定7" styleClass="number">
+                        <p:outputLabel value="#{item.soujyuurousokutei7}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="soujyuurousokutei8" headerText="総重量測定8" styleClass="number">
+                        <p:outputLabel value="#{item.soujyuurousokutei8}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="soujyuurousokutei9" headerText="総重量測定9" styleClass="number">
+                        <p:outputLabel value="#{item.soujyuurousokutei9}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="soujyuurousokutei10" headerText="総重量測定10" styleClass="number">
+                        <p:outputLabel value="#{item.soujyuurousokutei10}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="soujyuurousokutei11" headerText="総重量測定11" styleClass="number">
+                        <p:outputLabel value="#{item.soujyuurousokutei11}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="soujyuurousokutei12" headerText="総重量測定12" styleClass="number">
+                        <p:outputLabel value="#{item.soujyuurousokutei12}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="yuudentaislurryjyuurou1" headerText="誘電体ｽﾗﾘｰ重量1" styleClass="number">
+                        <p:outputLabel value="#{item.yuudentaislurryjyuurou1}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="yuudentaislurryjyuurou2" headerText="誘電体ｽﾗﾘｰ重量2" styleClass="number">
+                        <p:outputLabel value="#{item.yuudentaislurryjyuurou2}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="yuudentaislurryjyuurou3" headerText="誘電体ｽﾗﾘｰ重量3" styleClass="number">
+                        <p:outputLabel value="#{item.yuudentaislurryjyuurou3}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="yuudentaislurryjyuurou4" headerText="誘電体ｽﾗﾘｰ重量4" styleClass="number">
+                        <p:outputLabel value="#{item.yuudentaislurryjyuurou4}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="yuudentaislurryjyuurou5" headerText="誘電体ｽﾗﾘｰ重量5" styleClass="number">
+                        <p:outputLabel value="#{item.yuudentaislurryjyuurou5}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="yuudentaislurryjyuurou6" headerText="誘電体ｽﾗﾘｰ重量6" styleClass="number">
+                        <p:outputLabel value="#{item.yuudentaislurryjyuurou6}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="yuudentaislurryjyuurou7" headerText="誘電体ｽﾗﾘｰ重量7" styleClass="number">
+                        <p:outputLabel value="#{item.yuudentaislurryjyuurou7}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="yuudentaislurryjyuurou8" headerText="誘電体ｽﾗﾘｰ重量8" styleClass="number">
+                        <p:outputLabel value="#{item.yuudentaislurryjyuurou8}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="yuudentaislurryjyuurou9" headerText="誘電体ｽﾗﾘｰ重量9" styleClass="number">
+                        <p:outputLabel value="#{item.yuudentaislurryjyuurou9}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="yuudentaislurryjyuurou10" headerText="誘電体ｽﾗﾘｰ重量10" styleClass="number">
+                        <p:outputLabel value="#{item.yuudentaislurryjyuurou10}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="yuudentaislurryjyuurou11" headerText="誘電体ｽﾗﾘｰ重量11" styleClass="number">
+                        <p:outputLabel value="#{item.yuudentaislurryjyuurou11}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="yuudentaislurryjyuurou12" headerText="誘電体ｽﾗﾘｰ重量12" styleClass="number">
+                        <p:outputLabel value="#{item.yuudentaislurryjyuurou12}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="yuudentaislurryjyuurougoukei" headerText="誘電体ｽﾗﾘｰ重量合計" styleClass="number">
+                        <p:outputLabel value="#{item.yuudentaislurryjyuurougoukei}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tounyuuryou" headerText="投入量" >
+                        <p:outputLabel value="#{item.tounyuuryou}"/>
+                    </p:column>
+                    <p:column id="budomarikeisan" headerText="歩留まり計算" styleClass="number">
+                        <p:outputLabel value="#{item.budomarikeisan}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="yuudentaislurryyuukoukigen" headerText="誘電体ｽﾗﾘｰ有効期限" >
+                        <p:outputLabel value="#{item.yuudentaislurryyuukoukigen}"/>
+                    </p:column>
+                    <p:column id="funsaihantei" headerText="粉砕判定">
+                        <p:outputLabel value="#{item.funsaihantei}"/>
+                    </p:column>
+                    <p:column id="seihinjyuuryoukakunin_tantousya" headerText="製品重量確認_担当者" >
+                        <p:outputLabel value="#{item.seihinjyuuryoukakunin_tantousya}"/>
+                    </p:column>
+                    <p:column id="hozonyousamplekaisyu" headerText="保存用ｻﾝﾌﾟﾙ回収">
+                        <p:outputLabel value="#{item.hozonyousamplekaisyu}"/>
+                    </p:column>
+                    <p:column id="zunsekiyousamplekaisyu" headerText="分析用ｻﾝﾌﾟﾙ回収">
+                        <p:outputLabel value="#{item.zunsekiyousamplekaisyu}"/>
+                    </p:column>
+                    <p:column id="kansouzara" headerText="乾燥皿" >
+                        <p:outputLabel value="#{item.kansouzara}"/>
+                    </p:column>
+                    <p:column id="arumizarafuutaijyuuryou" headerText="ｱﾙﾐ皿風袋重量" styleClass="number">
+                        <p:outputLabel value="#{item.arumizarafuutaijyuuryou}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="slurrysamplejyuuryoukikaku" headerText="ｽﾗﾘｰｻﾝﾌﾟﾙ重量規格" >
+                        <p:outputLabel value="#{item.slurrysamplejyuuryoukikaku}"/>
+                    </p:column>
+                    <p:column id="kansoumaeslurryjyuuryou" headerText="乾燥前ｽﾗﾘｰ重量" styleClass="number">
+                        <p:outputLabel value="#{item.kansoumaeslurryjyuuryou}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kansouki" headerText="乾燥機" >
+                        <p:outputLabel value="#{item.kansouki}"/>
+                    </p:column>
+                    <p:column id="kansouondokikaku" headerText="乾燥温度規格" >
+                        <p:outputLabel value="#{item.kansouondokikaku}"/>
+                    </p:column>
+                    <p:column id="kansoujikankikaku" headerText="乾燥時間規格" >
+                        <p:outputLabel value="#{item.kansoujikankikaku}"/>
+                    </p:column>
+                    <p:column id="kansoukaisinichiji" headerText="乾燥開始日時" >
+                        <p:outputLabel value="#{item.kansoukaisinichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kansousyuuryounichiji" headerText="乾燥終了日時" >
+                        <p:outputLabel value="#{item.kansousyuuryounichiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kansoujikantotal" headerText="乾燥時間ﾄｰﾀﾙ" >
+                        <p:outputLabel value="#{item.kansoujikantotal}"/>
+                    </p:column>
+                    <p:column id="kansougosoujyuuryou" headerText="乾燥後総重量" styleClass="number">
+                        <p:outputLabel value="#{item.kansougosoujyuuryou}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kansougosyoumijyuuryou" headerText="乾燥後正味重量" styleClass="number">
+                        <p:outputLabel value="#{item.kansougosyoumijyuuryou}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kokeibunhiritu" headerText="固形分比率" styleClass="number">
+                        <p:outputLabel value="#{item.kokeibunhiritu}">
+                            <f:convertNumber pattern=""/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bikou1" headerText="備考1" >
+                        <p:outputLabel value="#{item.bikou1}"/>
+                    </p:column>
+                    <p:column id="bikou2" headerText="備考2" >
+                        <p:outputLabel value="#{item.bikou2}"/>
+                    </p:column>
+                </p:dataTable>
+            </div>
+        </h:form>
+    </h:body>
+</html>

@@ -1,0 +1,18 @@
+[
+    {"no":"1","id":"lotno","columnname":"WIPﾛｯﾄNo","type":"String","format":""},
+    {"no":"2","id":"binderyouekihinmei","columnname":"ﾊﾞｲﾝﾀﾞｰ溶液品名","type":"String","format":""},
+    {"no":"3","id":"binderyouekilotno","columnname":"ﾊﾞｲﾝﾀﾞｰ溶液LotNo","type":"String","format":""},
+    {"no":"4","id":"lotkubun","columnname":"ﾛｯﾄ区分","type":"String","format":""},
+    {"no":"5","id":"filterkoukannichiji","columnname":"ﾌｨﾙﾀｰ交換日時","type":"timestamp","format":"yyyy/mm/dd hh:mm:ss"},
+    {"no":"6","id":"filterhinmei","columnname":"ﾌｨﾙﾀｰ品名","type":"String","format":""},
+    {"no":"7","id":"fplotno","columnname":"LotNo","type":"String","format":""},
+    {"no":"8","id":"toritukehonsuu","columnname":"取り付け本数","type":"Integer","format":""},
+    {"no":"9","id":"fpjyunbi_tantousya","columnname":"F/P準備_担当者","type":"String","format":""},
+    {"no":"10","id":"fpkaisinichiji","columnname":"F/P開始日時","type":"timestamp","format":"yyyy/mm/dd hh:mm:ss"},
+    {"no":"11","id":"fpkaisi_tantousya","columnname":"F/P開始_担当者","type":"String","format":""},
+    {"no":"12","id":"fpsyuuryounichiji","columnname":"F/P終了日時","type":"timestamp","format":"yyyy/mm/dd hh:mm:ss"},
+    {"no":"13","id":"fpsyuuryou_tantousya","columnname":"F/P終了_担当者","type":"String","format":""},
+    {"no":"14","id":"fpjikan","columnname":"F/P時間","type":"Integer","format":"##0"},
+    {"no":"15","id":"bikou1","columnname":"備考1","type":"String","format":""},
+    {"no":"16","id":"bikou2","columnname":"備考2","type":"String","format":""}
+]

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Kyocera Communication Systems Co., Ltd All rights reserved.
+ * Copyright 2022 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.db.model;
 
@@ -22,9 +22,10 @@ import java.sql.Timestamp;
  * sr_glassslurryfunsai(ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕)のモデルクラスです。
  *
  * @author KCSS K.Jo
- * @since  2021/09/22
+ * @since 2021/09/22
  */
 public class SrGlassslurryfunsai {
+
     /**
      * 工場ｺｰﾄﾞ
      */
@@ -54,6 +55,11 @@ public class SrGlassslurryfunsai {
      * ﾛｯﾄ区分
      */
     private String lotkubun;
+
+    /**
+     * 秤量号機
+     */
+    private String goki;
 
     /**
      * 周速
@@ -108,7 +114,7 @@ public class SrGlassslurryfunsai {
     /**
      * 調合量
      */
-    private String tyougouryou;
+    private Integer tyougouryou;
 
     /**
      * 風袋重量
@@ -192,6 +198,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 工場ｺｰﾄﾞ
+     *
      * @return the kojyo
      */
     public String getKojyo() {
@@ -200,6 +207,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 工場ｺｰﾄﾞ
+     *
      * @param kojyo the kojyo to set
      */
     public void setKojyo(String kojyo) {
@@ -208,6 +216,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * ﾛｯﾄNo
+     *
      * @return the lotno
      */
     public String getLotno() {
@@ -216,6 +225,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * ﾛｯﾄNo
+     *
      * @param lotno the lotno to set
      */
     public void setLotno(String lotno) {
@@ -224,6 +234,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 枝番
+     *
      * @return the edaban
      */
     public String getEdaban() {
@@ -232,6 +243,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 枝番
+     *
      * @param edaban the edaban to set
      */
     public void setEdaban(String edaban) {
@@ -240,6 +252,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * ｶﾞﾗｽｽﾗﾘｰ品名
+     *
      * @return the glassslurryhinmei
      */
     public String getGlassslurryhinmei() {
@@ -248,6 +261,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * ｶﾞﾗｽｽﾗﾘｰ品名
+     *
      * @param glassslurryhinmei the glassslurryhinmei to set
      */
     public void setGlassslurryhinmei(String glassslurryhinmei) {
@@ -256,6 +270,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * ｶﾞﾗｽｽﾗﾘｰ品名LotNo
+     *
      * @return the glassslurrylotno
      */
     public String getGlassslurrylotno() {
@@ -264,6 +279,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * ｶﾞﾗｽｽﾗﾘｰ品名LotNo
+     *
      * @param glassslurrylotno the glassslurrylotno to set
      */
     public void setGlassslurrylotno(String glassslurrylotno) {
@@ -272,6 +288,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * ﾛｯﾄ区分
+     *
      * @return the lotkubun
      */
     public String getLotkubun() {
@@ -280,6 +297,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * ﾛｯﾄ区分
+     *
      * @param lotkubun the lotkubun to set
      */
     public void setLotkubun(String lotkubun) {
@@ -287,7 +305,26 @@ public class SrGlassslurryfunsai {
     }
 
     /**
+     * 秤量号機
+     *
+     * @return the goki
+     */
+    public String getGoki() {
+        return goki;
+    }
+
+    /**
+     * 秤量号機
+     *
+     * @param goki the goki to set
+     */
+    public void setGoki(String goki) {
+        this.goki = goki;
+    }
+
+    /**
      * 周速
+     *
      * @return the syuusoku
      */
     public String getSyuusoku() {
@@ -296,6 +333,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 周速
+     *
      * @param syuusoku the syuusoku to set
      */
     public void setSyuusoku(String syuusoku) {
@@ -304,6 +342,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 粉砕回転台号機
+     *
      * @return the kaitendaigouki
      */
     public Integer getKaitendaigouki() {
@@ -312,6 +351,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 粉砕回転台号機
+     *
      * @param kaitendaigouki the kaitendaigouki to set
      */
     public void setKaitendaigouki(Integer kaitendaigouki) {
@@ -320,6 +360,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 粉砕開始日時
+     *
      * @return the funsaikaisinichiji
      */
     public Timestamp getFunsaikaisinichiji() {
@@ -328,6 +369,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 粉砕開始日時
+     *
      * @param funsaikaisinichiji the funsaikaisinichiji to set
      */
     public void setFunsaikaisinichiji(Timestamp funsaikaisinichiji) {
@@ -336,6 +378,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 粉砕終了予定日時
+     *
      * @return the funsaiyoteisyuuryounichiji
      */
     public Timestamp getFunsaiyoteisyuuryounichiji() {
@@ -344,6 +387,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 粉砕終了予定日時
+     *
      * @param funsaiyoteisyuuryounichiji the funsaiyoteisyuuryounichiji to set
      */
     public void setFunsaiyoteisyuuryounichiji(Timestamp funsaiyoteisyuuryounichiji) {
@@ -352,6 +396,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 粉砕開始担当者
+     *
      * @return the kaisitantosya
      */
     public String getKaisitantosya() {
@@ -360,6 +405,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 粉砕開始担当者
+     *
      * @param kaisitantosya the kaisitantosya to set
      */
     public void setKaisitantosya(String kaisitantosya) {
@@ -368,6 +414,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 粉砕終了日時
+     *
      * @return the funsaisyuuryounichiji
      */
     public Timestamp getFunsaisyuuryounichiji() {
@@ -376,6 +423,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 粉砕終了日時
+     *
      * @param funsaisyuuryounichiji the funsaisyuuryounichiji to set
      */
     public void setFunsaisyuuryounichiji(Timestamp funsaisyuuryounichiji) {
@@ -384,6 +432,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 粉砕終了担当者
+     *
      * @return the syuryotantosya
      */
     public String getSyuryotantosya() {
@@ -392,6 +441,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 粉砕終了担当者
+     *
      * @param syuryotantosya the syuryotantosya to set
      */
     public void setSyuryotantosya(String syuryotantosya) {
@@ -400,6 +450,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 粉砕時間
+     *
      * @return the funsaijikan
      */
     public Integer getFunsaijikan() {
@@ -408,6 +459,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 粉砕時間
+     *
      * @param funsaijikan the funsaijikan to set
      */
     public void setFunsaijikan(Integer funsaijikan) {
@@ -416,6 +468,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 材料品名
+     *
      * @return the zairyohinmei
      */
     public String getZairyohinmei() {
@@ -424,6 +477,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 材料品名
+     *
      * @param zairyohinmei the zairyohinmei to set
      */
     public void setZairyohinmei(String zairyohinmei) {
@@ -432,6 +486,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 部材在庫No
+     *
      * @return the buzaizaikono
      */
     public String getBuzaizaikono() {
@@ -440,6 +495,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 部材在庫No
+     *
      * @param buzaizaikono the buzaizaikono to set
      */
     public void setBuzaizaikono(String buzaizaikono) {
@@ -448,22 +504,25 @@ public class SrGlassslurryfunsai {
 
     /**
      * 調合量
+     *
      * @return the tyougouryou
      */
-    public String getTyougouryou() {
+    public Integer getTyougouryou() {
         return tyougouryou;
     }
 
     /**
      * 調合量
+     *
      * @param tyougouryou the tyougouryou to set
      */
-    public void setTyougouryou(String tyougouryou) {
+    public void setTyougouryou(Integer tyougouryou) {
         this.tyougouryou = tyougouryou;
     }
 
     /**
      * 風袋重量
+     *
      * @return the fuutaijyuuryou
      */
     public Integer getFuutaijyuuryou() {
@@ -472,6 +531,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 風袋重量
+     *
      * @param fuutaijyuuryou the fuutaijyuuryou to set
      */
     public void setFuutaijyuuryou(Integer fuutaijyuuryou) {
@@ -480,6 +540,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 総重量
+     *
      * @return the soujyuuryou
      */
     public Integer getSoujyuuryou() {
@@ -488,6 +549,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 総重量
+     *
      * @param soujyuuryou the soujyuuryou to set
      */
     public void setSoujyuuryou(Integer soujyuuryou) {
@@ -496,6 +558,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 正味重量
+     *
      * @return the syoumijyuuryou
      */
     public Integer getSyoumijyuuryou() {
@@ -504,6 +567,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 正味重量
+     *
      * @param syoumijyuuryou the syoumijyuuryou to set
      */
     public void setSyoumijyuuryou(Integer syoumijyuuryou) {
@@ -512,6 +576,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 歩留まり
+     *
      * @return the budomari
      */
     public BigDecimal getBudomari() {
@@ -520,6 +585,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 歩留まり
+     *
      * @param budomari the budomari to set
      */
     public void setBudomari(BigDecimal budomari) {
@@ -528,6 +594,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 排出担当者
+     *
      * @return the haisyututantousya
      */
     public String getHaisyututantousya() {
@@ -536,6 +603,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 排出担当者
+     *
      * @param haisyututantousya the haisyututantousya to set
      */
     public void setHaisyututantousya(String haisyututantousya) {
@@ -544,6 +612,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 保管開始日時
+     *
      * @return the hokankaisinichiji
      */
     public Timestamp getHokankaisinichiji() {
@@ -552,6 +621,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 保管開始日時
+     *
      * @param hokankaisinichiji the hokankaisinichiji to set
      */
     public void setHokankaisinichiji(Timestamp hokankaisinichiji) {
@@ -560,6 +630,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 保管場所
+     *
      * @return the hokanbasyo
      */
     public String getHokanbasyo() {
@@ -568,6 +639,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 保管場所
+     *
      * @param hokanbasyo the hokanbasyo to set
      */
     public void setHokanbasyo(String hokanbasyo) {
@@ -576,6 +648,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 保管回転台号機
+     *
      * @return the hokankaitengouki
      */
     public String getHokankaitengouki() {
@@ -584,6 +657,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 保管回転台号機
+     *
      * @param hokankaitengouki the hokankaitengouki to set
      */
     public void setHokankaitengouki(String hokankaitengouki) {
@@ -592,6 +666,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 回転数
+     *
      * @return the kaitensuu
      */
     public String getKaitensuu() {
@@ -600,6 +675,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 回転数
+     *
      * @param kaitensuu the kaitensuu to set
      */
     public void setKaitensuu(String kaitensuu) {
@@ -608,6 +684,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 保管担当者
+     *
      * @return the hokantantosya
      */
     public String getHokantantosya() {
@@ -616,6 +693,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 保管担当者
+     *
      * @param hokantantosya the hokantantosya to set
      */
     public void setHokantantosya(String hokantantosya) {
@@ -624,6 +702,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 備考1
+     *
      * @return the bikou1
      */
     public String getBikou1() {
@@ -632,6 +711,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 備考1
+     *
      * @param bikou1 the bikou1 to set
      */
     public void setBikou1(String bikou1) {
@@ -640,6 +720,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 備考2
+     *
      * @return the bikou2
      */
     public String getBikou2() {
@@ -648,6 +729,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 備考2
+     *
      * @param bikou2 the bikou2 to set
      */
     public void setBikou2(String bikou2) {
@@ -656,6 +738,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 登録日時
+     *
      * @return the torokunichiji
      */
     public Timestamp getTorokunichiji() {
@@ -664,6 +747,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 登録日時
+     *
      * @param torokunichiji the torokunichiji to set
      */
     public void setTorokunichiji(Timestamp torokunichiji) {
@@ -672,6 +756,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 更新日時
+     *
      * @return the kosinnichiji
      */
     public Timestamp getKosinnichiji() {
@@ -680,6 +765,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 更新日時
+     *
      * @param kosinnichiji the kosinnichiji to set
      */
     public void setKosinnichiji(Timestamp kosinnichiji) {
@@ -688,6 +774,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * revision
+     *
      * @return the revision
      */
     public Integer getRevision() {
@@ -696,6 +783,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * revision
+     *
      * @param revision the revision to set
      */
     public void setRevision(Integer revision) {
@@ -704,6 +792,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 削除ﾌﾗｸﾞ
+     *
      * @return the deleteflag
      */
     public Integer getDeleteflag() {
@@ -712,6 +801,7 @@ public class SrGlassslurryfunsai {
 
     /**
      * 削除ﾌﾗｸﾞ
+     *
      * @param deleteflag the deleteflag to set
      */
     public void setDeleteflag(Integer deleteflag) {
