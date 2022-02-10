@@ -4,8 +4,11 @@
 package jp.co.kccs.xhd.pxhdo102;
 
 import java.io.Serializable;
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -34,6 +37,7 @@ import jp.co.kccs.xhd.util.SubFormUtil;
 import jp.co.kccs.xhd.util.ValidateUtil;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.BeanProcessor;
+import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.RowProcessor;
@@ -146,7 +150,12 @@ public class GXHDO102A implements Serializable {
      * 参照元ﾃﾞｰﾀ
      */
     private FXHDM01 sanshouMotoInfo = null;
-    
+
+    /**
+     * 参照元ﾃﾞｰﾀ
+     */
+    private FXHDM01 deleteMenuInfo = null;
+
     /**
      * コンストラクタ
      */
@@ -293,6 +302,12 @@ public class GXHDO102A implements Serializable {
             // 権限で絞り込んでいないメニュー情報の取得
             this.menuListGXHDO102Nofiltering = getMenuListNoAuthorityFiltering(queryRunnerDoc, listGamenID);
 
+            // 追加用のメニュー情報を取得
+            List<FXHDM01> addMenuList = this.menuListGXHDO102;
+            
+            // 追加用のメニュー情報を取得
+            List<FXHDM01> addMenuListNofiltering = this.menuListGXHDO102Nofiltering;
+            
             // メニューデータが無い場合はエラー
             if (menuListGXHDO102.isEmpty() || this.menuListGXHDO102Nofiltering.isEmpty()) {
                 setMenuTableRender(false);
@@ -305,11 +320,11 @@ public class GXHDO102A implements Serializable {
             List<String> messageListMain = new ArrayList<>();  // 権限絞り込みなしメニューの処理で使用するリスト(メイン)
 
             //画面ID(動的メニュー)追加
-            addRecurringMenu(this.menuListGXHDO102, queryRunnerDoc, strKojyo, strLotNo, strEdaban);
-            addRecurringMenu(this.menuListGXHDO102Nofiltering, queryRunnerDoc, strKojyo, strLotNo, strEdaban);
+            addRecurringMenu(this.menuListGXHDO102, addMenuList, queryRunnerDoc, strKojyo, strLotNo, strEdaban);
+            addRecurringMenu(this.menuListGXHDO102Nofiltering, addMenuListNofiltering, queryRunnerDoc, strKojyo, strLotNo, strEdaban);
 
             // 実績状態を表示(権限絞り込みありメニューのみ)
-            List<String[]> fxhdd11List = loadFxhdd11LotNoTaniInfoList(queryRunnerDoc, strGamenLotNo,listGamenID);
+            List<String[]> fxhdd11List = loadFxhdd11LotNoTaniInfoList(queryRunnerDoc, strGamenLotNo,listGamenID,shikakariData);
             setJissekiJotai(this.menuListGXHDO102, fxhdd11List);
             setJissekiJotai(this.menuListGXHDO102Nofiltering, fxhdd11List);
 
@@ -405,7 +420,7 @@ public class GXHDO102A implements Serializable {
             session.setAttribute("sanshouMotoLotNo", "");
 
             // 自身の枝番でない(親ﾛｯﾄの枝番)場合、前工程情報は引き渡さない
-            if (StringUtil.nullToBlank(getMapData(maekoteiInfo, "edaban")).equals(this.searchLotNo.substring(11, 14))) {
+            if (StringUtil.nullToBlank(getMapData(maekoteiInfo, "edaban")).equals(this.searchLotNo.substring(12, 15))) {
                 session.setAttribute("maekoteiInfo", maekoteiInfo);
             } else {
                 session.setAttribute("maekoteiInfo", null);
@@ -813,8 +828,13 @@ public class GXHDO102A implements Serializable {
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private List<String[]> loadFxhdd11LotNoTaniInfoList(QueryRunner queryRunnerDoc,String gamenLotNo, List<Object> listGamenID) throws SQLException {
+    private List<String[]> loadFxhdd11LotNoTaniInfoList(QueryRunner queryRunnerDoc,String gamenLotNo, List<Object> listGamenID,Map shikakariData) throws SQLException {
 
+        String kojyo = StringUtil.nullToBlank(getMapData(shikakariData, "kojyo"));
+        String lotno = StringUtil.nullToBlank(getMapData(shikakariData, "lotno"));
+        String oyalotEdaban = StringUtil.nullToBlank(getMapData(shikakariData, "oyalotedaban"));
+        String oyalot = kojyo + lotno + oyalotEdaban;
+        
         // 品質DB登録実績情報の取得
         String sql = " SELECT "
                 + "     QJ.gamen_id "
@@ -829,7 +849,8 @@ public class GXHDO102A implements Serializable {
                 + "      MAX(CONCAT( kojyo,lotno,edaban)) AS queryLotno "
                 + "      ,gamen_id AS queryGamenID "
                 + "     FROM fxhdd11 "
-                + "    WHERE CONCAT( kojyo,lotno,edaban) IN (?) ";
+                + "    WHERE ";
+                sql += DBUtil.getInConditionPreparedStatement("CONCAT( kojyo,lotno,edaban)", Arrays.asList(gamenLotNo, oyalot).size());
                 if (!listGamenID.isEmpty()) {
                     sql += " AND ";
                     sql += DBUtil.getInConditionPreparedStatement("gamen_id", listGamenID.size());
@@ -841,7 +862,7 @@ public class GXHDO102A implements Serializable {
                 + "  AND QJ.gamen_id = DD11.queryGamenID ";
 
         List<Object> params = new ArrayList<>();
-        params.add(gamenLotNo);
+        params.addAll(Arrays.asList(gamenLotNo, oyalot));
         params.addAll(listGamenID);
         
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -962,10 +983,9 @@ public class GXHDO102A implements Serializable {
         if (sikakariList != null) {
             sikakariObj = sikakariList.get(0);
             // 前工程WIPから取得した品名
-            shikakariData.put("hinmei", sikakariObj.getHinmei());
+            shikakariData.put("kojyo", sikakariObj.getKojyo());
+            shikakariData.put("lotno", sikakariObj.getLotNo());
             shikakariData.put("oyalotedaban", sikakariObj.getOyaLotEdaBan());
-            shikakariData.put("lotkubuncode", sikakariObj.getLotKubunCode());
-            shikakariData.put("lotno", sikakariObj.getConventionalLot());
         }
 
         return shikakariData;
@@ -982,7 +1002,7 @@ public class GXHDO102A implements Serializable {
      * @throws SQLException 例外エラー
      * @throws CloneNotSupportedException 例外エラー
      */
-    private void addRecurringMenu(List<FXHDM01> menuListGXHDO102, QueryRunner queryRunnerDoc, String kojyo, String lotno, String edaban) throws SQLException, CloneNotSupportedException {
+    private void addRecurringMenu(List<FXHDM01> menuListGXHDO102, List<FXHDM01> addMenuList, QueryRunner queryRunnerDoc, String kojyo, String lotno, String edaban) throws SQLException, CloneNotSupportedException {
 
         // 工程別のメニュー名を保持
         Map<String, String> mapMenuName = new HashMap<>();
@@ -990,7 +1010,7 @@ public class GXHDO102A implements Serializable {
             mapMenuName.put(fxhdm01.getFormId(), fxhdm01.getMenuName());
         }
 
-        List<Map<String, Object>> fxhdd08Info = loadFxhdd08InfoList(queryRunnerDoc, kojyo, lotno, edaban);
+        List<Map<String, Object>> fxhdd13Info = loadFxhdd13InfoList(queryRunnerDoc, kojyo, lotno, edaban);
 
         // 実績NoのMAX値を保持するMAP
         Map mapMaxJissekiNo = new HashMap();
@@ -1003,14 +1023,14 @@ public class GXHDO102A implements Serializable {
 
             // 画面制御情報をもとにメニュー追加
             FXHDM01 fxhdm01 = menuListGXHDO102.get(idx);
-            if (addInsertMenu(menuListGXHDO102, idx, fxhdd08Info, mapMaxJissekiNo)) {
+            if (addInsertMenu(menuListGXHDO102, idx, fxhdd13Info, mapMaxJissekiNo, addMenuList)) {
                 continue;
             }
 
             // その他メニューの実績No割り当て処理
             if (fxhdm01.getJissekiNo() == 0) {
                 // 番号の割り当て
-                fxhdm01.setJissekiNo(getJissekino(mapMaxJissekiNo, fxhdm01.getFormId(), fxhdd08Info));
+                fxhdm01.setJissekiNo(getJissekino(mapMaxJissekiNo, fxhdm01.getFormId(), fxhdd13Info));
                 continue;
             }
 
@@ -1029,13 +1049,13 @@ public class GXHDO102A implements Serializable {
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private List<Map<String, Object>> loadFxhdd08InfoList(QueryRunner queryRunnerDoc, String kojyo, String lotNo,
+    private List<Map<String, Object>> loadFxhdd13InfoList(QueryRunner queryRunnerDoc, String kojyo, String lotNo,
             String edaban) throws SQLException {
 
         // 品質DB登録実績情報の取得
         String sql = "SELECT gamen_id,jissekino,maekoutei_gamen_id"
                 + ",maekoutei_jissekino,deleteflag,koshin_date, 0 AS compflag "
-                + "FROM fxhdd08 "
+                + "FROM fxhdd13 "
                 + "WHERE kojyo = ? AND lotno = ? "
                 + "AND edaban = ? "
                 + "ORDER BY gamen_id, jissekino";
@@ -1054,12 +1074,12 @@ public class GXHDO102A implements Serializable {
      *
      * @param mapJissekiNo 実績Noマップ
      * @param gamenId 画面ID
-     * @param fxhdd08Info 画面制御情報
+     * @param fxhdd13Info 画面制御情報
      * @return 実績No
      */
-    private int getJissekino(Map mapJissekiNo, String gamenId, List<Map<String, Object>> fxhdd08Info) {
+    private int getJissekino(Map mapJissekiNo, String gamenId, List<Map<String, Object>> fxhdd13Info) {
         // 最大の実績Noを取得
-        int jissekiNo = getMaxJissekiNo(mapJissekiNo, gamenId, fxhdd08Info);
+        int jissekiNo = getMaxJissekiNo(mapJissekiNo, gamenId, fxhdd13Info);
 
         // 最大実績No更新
         if (!mapJissekiNo.containsKey(gamenId) || (int) mapJissekiNo.get(gamenId) < jissekiNo) {
@@ -1074,17 +1094,17 @@ public class GXHDO102A implements Serializable {
      *
      * @param mapJissekiNo 実績NoMap
      * @param formId 画面ID
-     * @param fxhdd08Info 画面制御情報
+     * @param fxhdd13Info 画面制御情報
      * @return 最大実績NO
      */
-    private int getMaxJissekiNo(Map mapJissekiNo, String formId, List<Map<String, Object>> fxhdd08Info) {
+    private int getMaxJissekiNo(Map mapJissekiNo, String formId, List<Map<String, Object>> fxhdd13Info) {
         int jissekiNo = 1;
         if (mapJissekiNo.containsKey(formId)) {
             jissekiNo = (int) mapJissekiNo.get(formId) + 1;
         }
 
         // 画面制御情報から実績Noのリストを取得
-        List<Object> jissekiNoList = fxhdd08Info.stream().filter(n -> StringUtil.nullToBlank(n.get("gamen_id")).equals(formId)).map(f -> f.get("jissekino")).collect(Collectors.toList());
+        List<Object> jissekiNoList = fxhdd13Info.stream().filter(n -> StringUtil.nullToBlank(n.get("gamen_id")).equals(formId)).map(f -> f.get("jissekino")).collect(Collectors.toList());
 
         // 画面制御情報に無い番号まで採番
         while (jissekiNoList.contains(jissekiNo)) {
@@ -1098,33 +1118,50 @@ public class GXHDO102A implements Serializable {
      * 画面制御情報をもとにしたメニュー追加
      *
      * @param menuListGXHDO102 メニューリスト
-     * @param fxhdd08InfoList 画面制御情報リスト
+     * @param fxhdd13InfoList 画面制御情報リスト
      * @param mapMaxJissekiNo 最大実績NoMap
      * @return true：追加あり、false:追加なし
      * @throws CloneNotSupportedException 例外エラー
      * @throws SQLException 例外エラー
      */
-    private boolean addInsertMenu(List<FXHDM01> menuListGXHDO102, int menuIdx, List<Map<String, Object>> fxhdd08InfoList,
-            Map mapMaxJissekiNo) throws CloneNotSupportedException, SQLException {
-
+    private boolean addInsertMenu(List<FXHDM01> menuListGXHDO102, int menuIdx, List<Map<String, Object>> fxhdd13InfoList,
+            Map mapMaxJissekiNo, List<FXHDM01> addMenuList) throws CloneNotSupportedException, SQLException {
+        
         // 対象のメニューを取得
         FXHDM01 fxhdm01 = menuListGXHDO102.get(menuIdx);
-        Map<String, Object> fxhdd08Info = fxhdd08InfoList.stream()
+        
+        Map<String, Object> fxhdd13Info = fxhdd13InfoList.stream()
                 .filter(n -> "0".equals(StringUtil.nullToBlank(n.get("deleteflag"))))
                 .filter(n -> "0".equals(StringUtil.nullToBlank(n.get("compflag"))))
                 .filter(n -> StringUtil.nullToBlank(n.get("maekoutei_gamen_id")).equals(fxhdm01.getFormId()))
                 .filter(n -> (int) n.get("maekoutei_jissekino") == fxhdm01.getJissekiNo()).findFirst().orElse(null);
 
-        if (fxhdd08Info == null) {
+        if (fxhdd13Info == null) {
             // 画面制御情報が無い場合はfalseをリターン
             return false;
         }
 
         // 処理済みとしてフラグを立てる
-        fxhdd08Info.put("compflag", 1);
+        fxhdd13Info.put("compflag", 1);
 
-        String gamenId = StringUtil.nullToBlank(fxhdd08Info.get("gamen_id"));
-        int jissekino = (int) fxhdd08Info.get("jissekino");
+        String gamenId = StringUtil.nullToBlank(fxhdd13Info.get("gamen_id"));
+        int jissekino = (int) fxhdd13Info.get("jissekino");
+
+        // 追加対象のメニューを取得
+        FXHDM01 targetMenu = addMenuList.stream().filter(n -> n.getFormId().equals(gamenId)).findFirst().orElse(null);
+        if (targetMenu == null) {
+            // 追加対象が無い場合はfalseをリターン
+            return false;
+        }
+
+        FXHDM01 addMenu = targetMenu.clone();
+        addMenu.setJissekiNo(jissekino);
+        addMenu.setDeleteBtnRender(true);
+        if (fxhdd13Info.get("koshin_date") != null) {
+            addMenu.setKoshinDateFxhdd08((Timestamp) fxhdd13Info.get("koshin_date"));
+        }
+        
+        menuListGXHDO102.add(menuIdx + 1, addMenu);
 
         // 最大の実績Noを保持
         if (!mapMaxJissekiNo.containsKey(gamenId) || (int) mapMaxJissekiNo.get(gamenId) < jissekino) {
@@ -1132,5 +1169,463 @@ public class GXHDO102A implements Serializable {
         }
 
         return true;
-    }    
+    }
+
+    /**
+     * メニュー追加ﾁｪｯｸ
+     *
+     * @param itemInfo メニュー情報
+     */
+    public void checkAddMenu(FXHDM01 itemInfo) {
+
+        FXHDM01 atoKoteiMenuInfo = null; // 後工程情報
+        boolean existKotei = false;
+        for (FXHDM01 fxhdm01 : this.menuListGXHDO102Nofiltering) {
+            if (existKotei) {
+                //後工程情報を保持
+                atoKoteiMenuInfo = fxhdm01;
+                break;
+            }
+
+            //該当情報が見つかった場合
+            if (fxhdm01.getFormId().equals(itemInfo.getFormId()) && fxhdm01.getJissekiNo() == itemInfo.getJissekiNo()) {
+                existKotei = true;
+            }
+        }
+
+        if (atoKoteiMenuInfo != null && ("0".equals(atoKoteiMenuInfo.getJotaiFlg()) || "1".equals(atoKoteiMenuInfo.getJotaiFlg()))) {
+            FacesMessage message
+                    = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000190"), null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return;
+        }
+
+        QueryRunner queryRunnerDoc = new QueryRunner(dataSourceDocServer);
+        String param = loadParamData(queryRunnerDoc, "common_user", "xhd_原材料_条件_追加画面ID");
+        if (StringUtil.isEmpty(param)) {
+            FacesMessage message
+                    = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000192"), null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return;
+        }
+
+        List<FXHDM01> selectMenuList = getSelectMenuList(queryRunnerDoc, Arrays.asList(param.split(",")));
+        if (selectMenuList.isEmpty()) {
+            FacesMessage message
+                    = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000031"), null);
+            FacesContext.getCurrentInstance().addMessage(null, message);
+            return;
+        }
+
+        List<String> menuList = new ArrayList<>();
+        for (FXHDM01 fxhdm01 : selectMenuList) {
+            menuList.add(fxhdm01.getFormTitle());
+        }
+
+        // サブ画面情報の受け渡し
+        GXHDO102C017 beanGXHDO102C017 = (GXHDO102C017) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO102C017);
+        beanGXHDO102C017.setMenuList(selectMenuList);
+        beanGXHDO102C017.setMenuListName(menuList);
+        beanGXHDO102C017.setInsPositionInfoMenu(itemInfo);
+        beanGXHDO102C017.setLotno(this.searchLotNo);
+        beanGXHDO102C017.setTantoushaCd(this.searchTantoshaCd);
+        beanGXHDO102C017.setAtoKoteiMenu(atoKoteiMenuInfo);
+
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.addCallbackParam("firstParam", "gxhdo102c017");
+    }
+
+    /**
+     * [ﾊﾟﾗﾒｰﾀﾏｽﾀ]から、データを取得
+     *
+     * @param queryRunnerDoc オブジェクト
+     * @param userName ユーザー名
+     * @param key Key
+     * @return 取得データ
+     */
+    private String loadParamData(QueryRunner queryRunnerDoc, String userName, String key) {
+        try {
+
+            // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+            String sql = "SELECT data "
+                    + " FROM fxhbm03 "
+                    + " WHERE user_name = ? AND key = ? ";
+
+            List<Object> params = new ArrayList<>();
+            params.add(userName);
+            params.add(key);
+            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+            Map data = queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
+            if (data != null && !data.isEmpty()) {
+                return StringUtil.nullToBlank(data.get("data"));
+            }
+
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+        }
+        return null;
+
+    }
+
+    /**
+     * メニューリスト取得
+     *
+     * @param queryRunnerDoc データオブジェクト
+     * @param listGamenID 画面IDリスト
+     * @return メニューリスト
+     * @throws SQLException 例外エラー
+     */
+    private List<FXHDM01> getSelectMenuList(QueryRunner queryRunnerDoc, List<String> listGamenID) {
+        try {
+            String sql = "SELECT gamen_id,gamen_title "
+                    + "FROM fxhdm01 WHERE  ";
+            sql += DBUtil.getInConditionPreparedStatement("gamen_id", listGamenID.size());
+
+            sql += " GROUP BY gamen_id,gamen_title ";
+            sql += " ORDER BY MIN(menu_no) ASC ";
+
+            Map<String, String> mapping = new HashMap<>();
+            mapping.put("gamen_id", "formId");
+            mapping.put("gamen_title", "formTitle");
+
+            BeanProcessor beanProcessor = new BeanProcessor(mapping);
+            RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+            ResultSetHandler<List<FXHDM01>> beanHandler = new BeanListHandler<>(FXHDM01.class, rowProcessor);
+
+            List<Object> params = new ArrayList<>();
+            params.addAll(listGamenID);
+
+            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+            return queryRunnerDoc.query(sql, beanHandler, params.toArray());
+
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+        }
+
+        return new ArrayList<>();
+    }
+
+    /**
+     * 削除ﾁｪｯｸ
+     *
+     * @param itemInfo メニュー情報
+     */
+    public void checkDeleteMenu(FXHDM01 itemInfo) {
+
+        try {
+
+            QueryRunner queryRunnerDoc = new QueryRunner(dataSourceDocServer);
+            String strKojyo = this.searchLotNo.substring(0, 3);
+            String strLotNo = this.searchLotNo.substring(3, 12);
+            String strEdaban = this.searchLotNo.substring(12, 15);
+            if (existJisseki(queryRunnerDoc, strKojyo, strLotNo, strEdaban, itemInfo.getFormId(), itemInfo.getJissekiNo())) {
+                this.warnMessage = MessageUtil.getMessage("XHD-000191", itemInfo.getMenuName());
+                this.deleteMenuInfo = itemInfo;
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.addCallbackParam("firstParam", "deleteConf");
+                return;
+            }
+
+            this.deleteMenuInfo = itemInfo;
+            // メニュー削除呼出
+            deleteMenu();
+
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("メニュー削除エラー", ex, LOGGER);
+        }
+
+    }
+
+    /**
+     * メニュー削除処理
+     */
+    public void deleteMenu() {
+        QueryRunner queryRunnerDoc = new QueryRunner(dataSourceDocServer);
+
+        Connection conDoc = null;
+
+        String strKojyo = this.searchLotNo.substring(0, 3);
+        String strLotNo = this.searchLotNo.substring(3, 12);
+        String strEdaban = this.searchLotNo.substring(12, 15);
+
+        try {
+            // トランザクション開始
+            conDoc = DBUtil.transactionStart(queryRunnerDoc.getDataSource().getConnection());
+
+            Timestamp systemTime = new Timestamp(System.currentTimeMillis());
+
+            Map<String, Object> delFxhdd13Info = loadFxhdd13Info(queryRunnerDoc, conDoc, strKojyo, strLotNo, strEdaban, this.deleteMenuInfo.getFormId(), this.deleteMenuInfo.getJissekiNo(), 0);
+            if (delFxhdd13Info == null || delFxhdd13Info.isEmpty() || this.deleteMenuInfo.getKoshinDateFxhdd08().before((Timestamp) delFxhdd13Info.get("koshin_date"))) {
+                FacesMessage message
+                        = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000194"), null);
+                FacesContext.getCurrentInstance().addMessage(null, message);
+
+                // ロールバックしてリターン
+                DBUtil.rollbackConnection(conDoc, LOGGER);
+                return;
+            }
+
+            int maxDeleteFlag = getMaxDeleteFlagFxhdd13(queryRunnerDoc, strKojyo, strLotNo, strEdaban, this.deleteMenuInfo.getFormId(), this.deleteMenuInfo.getJissekiNo()) + 1;
+            deleteFxhdd13(queryRunnerDoc, conDoc, strKojyo, strLotNo, strEdaban, StringUtil.nullToBlank(delFxhdd13Info.get("gamen_id")), (int) delFxhdd13Info.get("jissekino"), maxDeleteFlag, this.searchTantoshaCd, systemTime);
+
+            Map<String, Object> delFxhdd13InfoAto = loadFxhdd13InfoAtoKotei(queryRunnerDoc, conDoc, strKojyo, strLotNo, strEdaban, this.deleteMenuInfo.getFormId(), this.deleteMenuInfo.getJissekiNo(), 0);
+            if (delFxhdd13InfoAto != null && !delFxhdd13InfoAto.isEmpty()) {
+
+                updateFxhdd13AtoKotei(queryRunnerDoc, conDoc, strKojyo, strLotNo, strEdaban,
+                        StringUtil.nullToBlank(delFxhdd13Info.get("maekoutei_gamen_id")), (int) delFxhdd13Info.get("maekoutei_jissekino"),
+                        StringUtil.nullToBlank(delFxhdd13Info.get("gamen_id")), (int) delFxhdd13Info.get("jissekino"), this.searchTantoshaCd, systemTime);
+            }
+
+            DbUtils.commitAndCloseQuietly(conDoc);
+
+            // メニューの再検索
+            reSearchHinshitsuData(false);
+
+        } catch (SQLException e) {
+
+            DBUtil.rollbackConnection(conDoc, LOGGER);
+            ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
+
+        } catch (Exception e) {
+            DBUtil.rollbackConnection(conDoc, LOGGER);
+            ErrUtil.outputErrorLog("Exception発生", e, LOGGER);
+        }
+
+    }
+
+    /**
+     * [品質DB登録実績]から、実績の有無を取得
+     *
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param formId 画面ID(検索キー)
+     * @param jissekino 画面ID(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private boolean existJisseki(QueryRunner queryRunnerDoc, String kojyo, String lotNo,
+            String edaban, String formId, int jissekino) throws SQLException {
+
+        // 品質DB登録実績情報の取得
+        String sql = "SELECT jotai_flg "
+                + "FROM fxhdd11 "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND gamen_id = ? "
+                + "AND jissekino = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(formId);
+        params.add(jissekino);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        List<Map<String, Object>> list = queryRunnerDoc.query(sql, new MapListHandler(), params.toArray());
+        if (list != null && !list.isEmpty()) {
+            String jotai = StringUtil.nullToBlank(list.get(0).get("jotai_flg"));
+            if ("1".equals(jotai) || "0".equals(jotai)) {
+                // 実績あり
+                return true;
+            }
+        }
+
+        // 実績なし
+        return false;
+    }
+
+    /**
+     * [画面制御]から情報を取得
+     *
+     * @param queryRunnerDoc queryRunnerオブジェクト
+     * @param conDoc コネクション
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param formId 画面ID
+     * @param jissekino 実績No
+     * @param deleteflag 削除ﾌﾗｸﾞ
+     * @return 画面制御情報
+     * @throws SQLException 例外エラー
+     */
+    private Map<String, Object> loadFxhdd13Info(QueryRunner queryRunnerDoc, Connection conDoc, String kojyo, String lotNo,
+            String edaban, String formId, int jissekino, int deleteflag) throws SQLException {
+
+        // 品質DB登録実績情報の取得
+        String sql = "SELECT gamen_id, jissekino,maekoutei_gamen_id, maekoutei_jissekino, koshin_date "
+                + "FROM fxhdd13 "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? "
+                + "AND gamen_id = ?  AND jissekino = ? AND deleteflag = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(formId);
+        params.add(jissekino);
+        params.add(deleteflag);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerDoc.query(conDoc, sql, new MapHandler(), params.toArray());
+
+    }
+
+    /**
+     * [画面制御]から削除ﾌﾗｸﾞ(最大)を取得
+     *
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param formId 画面ID(検索キー)
+     * @param jissekino 実績No(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private int getMaxDeleteFlagFxhdd13(QueryRunner queryRunnerDoc, String kojyo, String lotNo,
+            String edaban, String formId, int jissekino) throws SQLException {
+
+        // 品質DB登録実績情報の取得
+        String sql = "SELECT MAX(deleteflag) AS deleteflag "
+                + "FROM fxhdd13 "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? "
+                + "AND gamen_id = ?  AND jissekino = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(formId);
+        params.add(jissekino);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        Map<String, Object> map = queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
+
+        int deleteflag = 0;
+        if (map != null && !map.isEmpty() && map.get("deleteflag") != null) {
+            deleteflag = (int) map.get("deleteflag");
+        }
+
+        return deleteflag;
+
+    }
+
+    /**
+     * 画面制御更新処理
+     *
+     * @param queryRunnerDoc QueryRunnerオブジェクト(DocmentServer)
+     * @param conDoc コネクション(DocmentServer)
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param newMaekouteiGamenId 画面ID
+     * @param newMaekouteiJissekino 実績No
+     * @param maekouteiGamenId 画面ID(前工程)
+     * @param maekouteiJissekino 実績No(前工程)
+     * @param tantoshaCd 担当者ｺｰﾄﾞ
+     * @param systemTime システム日付
+     * @throws SQLException 例外エラー
+     */
+    private void updateFxhdd13AtoKotei(QueryRunner queryRunnerDoc, Connection conDoc, String kojyo, String lotNo, String edaban,
+            String newMaekouteiGamenId, int newMaekouteiJissekino, String maekouteiGamenId, int maekouteiJissekino,
+            String tantoshaCd, Timestamp systemTime) throws SQLException {
+        String sql = "UPDATE fxhdd13 SET "
+                + "maekoutei_gamen_id = ?, maekoutei_jissekino = ?, "
+                + "koshin_id = ?, koshin_date = ? "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? "
+                + "  AND maekoutei_gamen_id = ? AND  maekoutei_jissekino = ? "
+                + "  AND deleteflag = 0 ";
+
+        List<Object> params = new ArrayList<>();
+        // 更新内容
+        params.add(newMaekouteiGamenId); //前工程画面ID(NEW)
+        params.add(newMaekouteiJissekino); //前工程実績No(NEW)
+        params.add(tantoshaCd); //更新者
+        params.add(systemTime); //更新日
+
+        // 検索条件
+        params.add(kojyo); //工場ｺｰﾄﾞ
+        params.add(lotNo); //ﾛｯﾄNo
+        params.add(edaban); //枝番
+        params.add(maekouteiGamenId); //前工程画面ID
+        params.add(maekouteiJissekino); //前工程実績No
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerDoc.update(conDoc, sql, params.toArray());
+    }
+
+    /**
+     * 画面制御更新処理
+     *
+     * @param queryRunnerDoc QueryRunnerオブジェクト(DocmentServer)
+     * @param conDoc コネクション(DocmentServer)
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param gamenId 画面ID
+     * @param jissekino 実績No
+     * @param maxDeleteflag 削除ﾌﾗｸﾞ最大値
+     * @param tantoshaCd 担当者ｺｰﾄﾞ
+     * @param systemTime システム日付
+     * @throws SQLException 例外エラー
+     */
+    private void deleteFxhdd13(QueryRunner queryRunnerDoc, Connection conDoc, String kojyo, String lotNo, String edaban,
+            String gamenId, int jissekino, int maxDeleteflag,
+            String tantoshaCd, Timestamp systemTime) throws SQLException {
+        String sql = "UPDATE fxhdd13 SET "
+                + "deleteflag = ?, "
+                + "koshin_id = ?, koshin_date = ? "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? "
+                + "  AND gamen_id = ? AND  jissekino = ? "
+                + "  AND deleteflag = 0 ";
+
+        List<Object> params = new ArrayList<>();
+        // 更新内容
+        params.add(maxDeleteflag); //削除ﾌﾗｸﾞ
+        params.add(tantoshaCd); //更新者
+        params.add(systemTime); //更新日
+
+        // 検索条件
+        params.add(kojyo); //工場ｺｰﾄﾞ
+        params.add(lotNo); //ﾛｯﾄNo
+        params.add(edaban); //枝番
+        params.add(gamenId); //画面ID
+        params.add(jissekino); //実績No
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerDoc.update(conDoc, sql, params.toArray());
+    }
+
+    /**
+     * [画面制御]から情報を取得
+     *
+     * @param queryRunnerDoc queryRunnerオブジェクト
+     * @param conDoc コネクション
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param formId 画面ID
+     * @param jissekino 実績No
+     * @param deleteflag 削除ﾌﾗｸﾞ
+     * @return 画面制御情報
+     * @throws SQLException 例外エラー
+     */
+    private Map<String, Object> loadFxhdd13InfoAtoKotei(QueryRunner queryRunnerDoc, Connection conDoc, String kojyo, String lotNo,
+            String edaban, String formId, int jissekino, int deleteflag) throws SQLException {
+
+        // 品質DB登録実績情報の取得
+        String sql = "SELECT koshin_date "
+                + "FROM fxhdd13 "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? "
+                + "AND maekoutei_gamen_id = ?  AND maekoutei_jissekino = ? AND deleteflag = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(formId);
+        params.add(jissekino);
+        params.add(deleteflag);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerDoc.query(conDoc, sql, new MapHandler(), params.toArray());
+
+    }
+
 }

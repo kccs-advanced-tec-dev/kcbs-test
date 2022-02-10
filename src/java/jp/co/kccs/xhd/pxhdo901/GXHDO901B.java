@@ -1924,11 +1924,11 @@ public class GXHDO901B implements Serializable {
                 GXHDO102C010 beanGXHDO102C010 = (GXHDO102C010) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO102C010);
                 GXHDO102C010Logic.setReturnData(beanGXHDO102C010.getGxhdO102c010Model(), this.itemList);
                 break;
-            // 誘電体ｽﾗﾘｰ作製・主原料秤量入力
-           case SubFormUtil.FORM_ID_GXHDO102C011:
-               GXHDO102C011 beanGXHDO102C011 = (GXHDO102C011) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO102C011);
-               GXHDO102C011Logic.setReturnData(beanGXHDO102C011.getGxhdO102c011Model(), this.itemList);
-               break;
+             // 誘電体ｽﾗﾘｰ作製・主原料秤量入力
+            case SubFormUtil.FORM_ID_GXHDO102C011:
+                GXHDO102C011 beanGXHDO102C011 = (GXHDO102C011) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO102C011);
+                GXHDO102C011Logic.setReturnData(beanGXHDO102C011.getGxhdO102c011Model(), this.itemList);
+                break;
             // ｽﾘｯﾌﾟ作製・ｽﾗﾘｰ固形分調整(ｽﾃﾝ容器)入力
             case SubFormUtil.FORM_ID_GXHDO102C013:
                 GXHDO102C013 beanGXHDO102C013 = (GXHDO102C013) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO102C013);
