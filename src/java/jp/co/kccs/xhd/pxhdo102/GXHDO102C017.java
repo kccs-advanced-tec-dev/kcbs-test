@@ -344,11 +344,6 @@ public class GXHDO102C017 implements Serializable {
                         selectMenuId, jissekino,
                         this.insPositionInfoMenu.getFormId(), this.insPositionInfoMenu.getJissekiNo(), this.tantoushaCd, systemTime);
 
-            }else{
-
-                // 挿入するデータに関連づける。
-                updateExistFxhdd13AtoKotei(queryRunnerDoc, conDoc, strKojyo, strLotNo, strEdaban,
-                        selectMenuId, jissekino,this.insPositionInfoMenu.getFormId(), this.insPositionInfoMenu.getJissekiNo(), this.tantoushaCd, systemTime);
             }
 
             // 指定位置に選択したメニューのデータを追加する。
