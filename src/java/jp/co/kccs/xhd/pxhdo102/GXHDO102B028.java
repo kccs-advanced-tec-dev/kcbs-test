@@ -913,7 +913,7 @@ public class GXHDO102B028 implements IFormLogic {
             return errorMsg;
         }
 
-        // F/P開始日時、F/P終了日時前後チェック
+        // F/P停止日時、F/P再開日時前後チェック
         itemKaisiDay = getItemRow(processData.getItemList(), GXHDO102B028Const.FPTEISI_DAY); // F/P停止日
         itemKaisiTime = getItemRow(processData.getItemList(), GXHDO102B028Const.FPTEISI_TIME); // F/P停止時間
         itemSyuuryouDay = getItemRow(processData.getItemList(), GXHDO102B028Const.FPSAIKAI_DAY); // F/P再開日
@@ -1973,7 +1973,7 @@ public class GXHDO102B028 implements IFormLogic {
     }
 
     /**
-     * 乾燥後正味重量計算ﾎﾞﾀﾝ押下時ﾁｪｯｸ処理
+     * 乾燥後正味重量、2回目乾燥後正味重量、3回目乾燥後正味重量計算ﾎﾞﾀﾝ押下時ﾁｪｯｸ処理
      *
      * @param processData 処理制御データ
      * @param kansougosoujyuuryouItemid 乾燥後総重量
@@ -1984,7 +1984,7 @@ public class GXHDO102B028 implements IFormLogic {
     public ErrorMessageInfo checkKansougosyoumijyuuryouKeisan(ProcessData processData, String kansougosoujyuuryouItemid, String fuutaijyuuryouItemid, String kansoumaeslurryjyuuryouItemid) {
         // 乾燥後総重量
         FXHDD01 kansougosoujyuuryou = getItemRow(processData.getItemList(), kansougosoujyuuryouItemid);
-        // 固形分測定_風袋重量
+        // 風袋重量
         FXHDD01 fuutaijyuuryou = getItemRow(processData.getItemList(), fuutaijyuuryouItemid);
         // 乾燥前ｽﾗﾘｰ重量
         FXHDD01 kansoumaeslurryjyuuryou = getItemRow(processData.getItemList(), kansoumaeslurryjyuuryouItemid);
@@ -1994,16 +1994,16 @@ public class GXHDO102B028 implements IFormLogic {
             List<FXHDD01> errFxhdd01List = Arrays.asList(kansougosoujyuuryou);
             return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, kansougosoujyuuryou.getLabel1());
         }
-        //「ｱﾙﾐ皿風袋重量」ﾁｪｯｸ
+        //「風袋重量」ﾁｪｯｸ
         if (fuutaijyuuryou != null && StringUtil.isEmpty(fuutaijyuuryou.getValue())) {
             List<FXHDD01> errFxhdd01List = Arrays.asList(fuutaijyuuryou);
             return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, fuutaijyuuryou.getLabel1());
         }
         if (kansougosoujyuuryou != null && fuutaijyuuryou != null) {
-            // [乾燥後総重量]<[ｱﾙﾐ皿風袋重量]場合
+            // [乾燥後総重量]<[風袋重量]場合
             BigDecimal kansougosoujyuuryouVal = new BigDecimal(kansougosoujyuuryou.getValue());
-            BigDecimal kkbskt_fuutaijyuuryouVal = new BigDecimal(fuutaijyuuryou.getValue());
-            if (kansougosoujyuuryouVal.compareTo(kkbskt_fuutaijyuuryouVal) < 0) {
+            BigDecimal fuutaijyuuryouVal = new BigDecimal(fuutaijyuuryou.getValue());
+            if (kansougosoujyuuryouVal.compareTo(fuutaijyuuryouVal) < 0) {
                 // ｴﾗｰ項目をﾘｽﾄに追加
                 List<FXHDD01> errFxhdd01List = Arrays.asList(kansougosoujyuuryou, fuutaijyuuryou);
                 return MessageUtil.getErrorMessageInfo("XHD-000023", true, true, errFxhdd01List, kansougosoujyuuryou.getLabel1(), fuutaijyuuryou.getLabel1());
@@ -2021,7 +2021,7 @@ public class GXHDO102B028 implements IFormLogic {
     }
 
     /**
-     * 乾燥後正味重量計算
+     * 乾燥後正味重量、2回目乾燥後正味重量、3回目乾燥後正味重量の計算処理
      *
      * @param processData 処理制御データ
      * @param kansougosoujyuuryouItemid 乾燥後総重量
@@ -2034,8 +2034,8 @@ public class GXHDO102B028 implements IFormLogic {
             String kokeibunhirituItemid, String kansoumaeslurryjyuuryouItemid) {
         // 乾燥後総重量
         FXHDD01 kansougosoujyuuryou = getItemRow(processData.getItemList(), kansougosoujyuuryouItemid);
-        // 固形分測定_風袋重量
-        FXHDD01 kkbskt_fuutaijyuuryou = getItemRow(processData.getItemList(), fuutaijyuuryouItemid);
+        // 風袋重量
+        FXHDD01 fuutaijyuuryou = getItemRow(processData.getItemList(), fuutaijyuuryouItemid);
         // 乾燥後正味重量
         FXHDD01 kansougosyoumijyuuryou = getItemRow(processData.getItemList(), kansougosyoumijyuuryouItemid);
         // 固形分比率
@@ -2043,10 +2043,10 @@ public class GXHDO102B028 implements IFormLogic {
         // 乾燥前ｽﾗﾘｰ重量
         FXHDD01 kansoumaeslurryjyuuryou = getItemRow(processData.getItemList(), kansoumaeslurryjyuuryouItemid);
         try {
-            if (kansougosoujyuuryou != null && kkbskt_fuutaijyuuryou != null && kansougosyoumijyuuryou != null) {
-                //「乾燥後正味重量」= 「乾燥後総重量」 - 「ｱﾙﾐ皿風袋重量」 を算出する。
+            if (kansougosoujyuuryou != null && fuutaijyuuryou != null && kansougosyoumijyuuryou != null) {
+                //「乾燥後正味重量」= 「乾燥後総重量」 - 「風袋重量」 を算出する。
                 BigDecimal itemKansougosoujyuuryouVal = new BigDecimal(kansougosoujyuuryou.getValue());
-                BigDecimal itemKkbsktfuutaijyuuryouVal = new BigDecimal(kkbskt_fuutaijyuuryou.getValue());
+                BigDecimal itemKkbsktfuutaijyuuryouVal = new BigDecimal(fuutaijyuuryou.getValue());
                 BigDecimal itemKansougosyoumijyuuryouVal = itemKansougosoujyuuryouVal.subtract(itemKkbsktfuutaijyuuryouVal);
                 //計算結果の設定
                 kansougosyoumijyuuryou.setValue(itemKansougosyoumijyuuryouVal.toPlainString());
@@ -2204,7 +2204,7 @@ public class GXHDO102B028 implements IFormLogic {
                     //計算結果の設定
                     solmixtyouseiryou.setValue(youzaityouseiryou2Val.toPlainString());
                 }
-                // 溶剤調整量 ÷ 2
+                // 溶剤①_調合量規格、溶剤①_調合量規格に調整量の計算結果後ろに「±0」を付けて設定する。
                 String youzaityouseiryou2KikakuChiStr = "【" + youzaityouseiryou2Val.toPlainString() + "±0" + "】";
                 // 溶剤1_調合量規格
                 if (youzai1Tyougouryoukikaku != null) {
@@ -2245,7 +2245,7 @@ public class GXHDO102B028 implements IFormLogic {
      *
      * @param processData 処理制御データ
      * @param soujyuuryouItemid 総重量
-     * @param fuutaijyuuryouItemid F/P準備_風袋重量
+     * @param fuutaijyuuryouItemid 風袋重量
      * @return エラーメッセージ情報
      */
     public ErrorMessageInfo checkSyoumijyuuryouKeisan(ProcessData processData, String soujyuuryouItemid, String fuutaijyuuryouItemid) {
@@ -2259,16 +2259,16 @@ public class GXHDO102B028 implements IFormLogic {
             List<FXHDD01> errFxhdd01List = Arrays.asList(soujyuuryou);
             return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, soujyuuryou.getLabel1());
         }
-        //「ｱﾙﾐ皿風袋重量」ﾁｪｯｸ
+        //「F/P準備_風袋重量」ﾁｪｯｸ
         if (fuutaijyuuryou != null && StringUtil.isEmpty(fuutaijyuuryou.getValue())) {
             List<FXHDD01> errFxhdd01List = Arrays.asList(fuutaijyuuryou);
             return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, fuutaijyuuryou.getLabel1());
         }
         if (soujyuuryou != null && fuutaijyuuryou != null) {
-            // [総重量]<[ｱﾙﾐ皿風袋重量]場合
+            // [総重量]<[F/P準備_風袋重量]場合
             BigDecimal kansougosoujyuuryouVal = new BigDecimal(soujyuuryou.getValue());
-            BigDecimal kkbskt_fuutaijyuuryouVal = new BigDecimal(fuutaijyuuryou.getValue());
-            if (kansougosoujyuuryouVal.compareTo(kkbskt_fuutaijyuuryouVal) < 0) {
+            BigDecimal fuutaijyuuryouVal = new BigDecimal(fuutaijyuuryou.getValue());
+            if (kansougosoujyuuryouVal.compareTo(fuutaijyuuryouVal) < 0) {
                 // ｴﾗｰ項目をﾘｽﾄに追加
                 List<FXHDD01> errFxhdd01List = Arrays.asList(soujyuuryou, fuutaijyuuryou);
                 return MessageUtil.getErrorMessageInfo("XHD-000023", true, true, errFxhdd01List, soujyuuryou.getLabel1(), fuutaijyuuryou.getLabel1());
@@ -2288,16 +2288,16 @@ public class GXHDO102B028 implements IFormLogic {
     private void calcSyoumijyuuryou(ProcessData processData, String soujyuuryouItemid, String fuutaijyuuryouItemid, String syoumijyuuryouItemid) {
         // 総重量
         FXHDD01 kansougosoujyuuryou = getItemRow(processData.getItemList(), soujyuuryouItemid);
-        // 固形分測定_風袋重量
-        FXHDD01 kkbskt_fuutaijyuuryou = getItemRow(processData.getItemList(), fuutaijyuuryouItemid);
+        // F/P準備_風袋重量
+        FXHDD01 FPjyunbi_fuutaijyuuryou = getItemRow(processData.getItemList(), fuutaijyuuryouItemid);
         // 正味重量
         FXHDD01 syoumijyuuryou = getItemRow(processData.getItemList(), syoumijyuuryouItemid);
         try {
-            if (kansougosoujyuuryou != null && kkbskt_fuutaijyuuryou != null && syoumijyuuryou != null) {
-                //「正味重量」= 「総重量」 - 「ｱﾙﾐ皿風袋重量」 を算出する。
+            if (kansougosoujyuuryou != null && FPjyunbi_fuutaijyuuryou != null && syoumijyuuryou != null) {
+                //「正味重量」= 「総重量」 - 「F/P準備_風袋重量」 を算出する。
                 BigDecimal itemKansougosoujyuuryouVal = new BigDecimal(kansougosoujyuuryou.getValue());
-                BigDecimal itemKkbsktfuutaijyuuryouVal = new BigDecimal(kkbskt_fuutaijyuuryou.getValue());
-                BigDecimal itemKansougosyoumijyuuryouVal = itemKansougosoujyuuryouVal.subtract(itemKkbsktfuutaijyuuryouVal);
+                BigDecimal itemFPjyunbi_fuutaijyuuryouVal = new BigDecimal(FPjyunbi_fuutaijyuuryou.getValue());
+                BigDecimal itemKansougosyoumijyuuryouVal = itemKansougosoujyuuryouVal.subtract(itemFPjyunbi_fuutaijyuuryouVal);
                 //計算結果の設定
                 syoumijyuuryou.setValue(itemKansougosyoumijyuuryouVal.toPlainString());
             }

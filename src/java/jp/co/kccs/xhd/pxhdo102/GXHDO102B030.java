@@ -4093,8 +4093,6 @@ public class GXHDO102B030 implements IFormLogic {
         GXHDO102C015Model gxhdO102c015Model = beanGXHDO102C015.getGxhdO102c015Model();
         // ｽﾘｯﾌﾟ作製・溶剤秤量・投入(ｽﾃﾝ容器)入力_サブ画面から更新値を取得
         ArrayList<Object> subGamenDataList = getSubGamenData(gxhdO102c015Model, zairyokubun);
-        // 調合量規格
-        FXHDD01 tyogouryoukikaku = (FXHDD01) subGamenDataList.get(0);
         // 調合残量
         FXHDD01 tyogouzanryou = (FXHDD01) subGamenDataList.get(1);
         // 部材①

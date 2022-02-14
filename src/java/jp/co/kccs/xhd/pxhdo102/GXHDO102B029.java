@@ -1012,7 +1012,7 @@ public class GXHDO102B029 implements IFormLogic {
             updateFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo9, edaban, JOTAI_FLG_SAKUJO, systemTime, paramJissekino);
 
             // ｽﾘｯﾌﾟ作製・溶剤秤量・投入(白ﾎﾟﾘ)_仮登録登録処理
-            int newDeleteflag = getNewDeleteflag(queryRunnerQcdb, kojyo, lotNo9, edaban, paramJissekino);
+            int newDeleteflag = getNewDeleteflag(queryRunnerQcdb, kojyo, lotNo9, edaban);
             insertDeleteDataTmpSrSlipYouzaihyouryouTounyuuSiropori(queryRunnerQcdb, conQcdb, newRev, newDeleteflag, kojyo, lotNo9, edaban, strSystime);
 
             // ｽﾘｯﾌﾟ作製・溶剤秤量・投入(白ﾎﾟﾘ)入力_ｻﾌﾞ画面仮登録登録処理
@@ -2373,11 +2373,10 @@ public class GXHDO102B029 implements IFormLogic {
      * @param kojyo 工場ｺｰﾄﾞ
      * @param lotNo ﾛｯﾄNo
      * @param edaban 枝番
-     * @param jissekino 実績No
      * @return 削除ﾌﾗｸﾞ最大値 + 1
      * @throws SQLException 例外エラー
      */
-    private int getNewDeleteflag(QueryRunner queryRunnerQcdb, String kojyo, String lotNo, String edaban, int jissekino) throws SQLException {
+    private int getNewDeleteflag(QueryRunner queryRunnerQcdb, String kojyo, String lotNo, String edaban) throws SQLException {
         String sql = "SELECT MAX(deleteflag) AS deleteflag "
                 + "FROM tmp_sr_slip_youzaihyouryou_tounyuu_siropori "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? ";

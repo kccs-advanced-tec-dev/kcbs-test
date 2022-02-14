@@ -1432,7 +1432,7 @@ public class GXHDO102B033 implements IFormLogic {
             List<FXHDD01> errFxhdd01List = Arrays.asList(kansougosoujyuuryou);
             return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, kansougosoujyuuryou.getLabel1());
         }
-        //「ｱﾙﾐ皿風袋重量」ﾁｪｯｸ
+        //「ﾙﾂﾎﾞ風袋重量」ﾁｪｯｸ
         if (rutubofuutaijyuuryou != null && StringUtil.isEmpty(rutubofuutaijyuuryou.getValue())) {
             List<FXHDD01> errFxhdd01List = Arrays.asList(rutubofuutaijyuuryou);
             return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, rutubofuutaijyuuryou.getLabel1());
@@ -1531,16 +1531,14 @@ public class GXHDO102B033 implements IFormLogic {
             Map srSlipBinderhyouryouTounyuuData = loadSrSlipBinderhyouryouTounyuu(queryRunnerQcdb, kojyo, lotNo9, edaban, rev);
             // (23)[ｽﾘｯﾌﾟ作製・溶剤秤量・投入(白ﾎﾟﾘ)]から、ﾃﾞｰﾀを取得
             Map srSlipYouzaihyouryouTounyuuSiroporiData = loadSrSlipYouzaihyouryouTounyuuSiropori(queryRunnerQcdb, kojyo, lotNo9, edaban, rev);
-            Map srSlipYouzaihyouryouTounyuuSutenyoukiData;
-            Map srSlipSlurrykokeibuntyouseiSutenyoukiData;
-            BigDecimal slipJyouryou;
+            BigDecimal slipJyuuryou;
             if (srSlipSlurrykokeibuntyouseiSiroporiData == null || srSlipSlurrykokeibuntyouseiSiroporiData.isEmpty()
                     || srSlipBinderhyouryouTounyuuData == null || srSlipBinderhyouryouTounyuuData.isEmpty()
                     || srSlipYouzaihyouryouTounyuuSiroporiData == null || srSlipYouzaihyouryouTounyuuSiroporiData.isEmpty()) {
                 // (19)[ｽﾘｯﾌﾟ作製・溶剤秤量・投入(ｽﾃﾝ容器)]から、ﾃﾞｰﾀを取得
-                srSlipYouzaihyouryouTounyuuSutenyoukiData = loadSrSlipYouzaihyouryouTounyuuSutenyouki(queryRunnerQcdb, kojyo, lotNo9, edaban, rev);
+                Map srSlipYouzaihyouryouTounyuuSutenyoukiData = loadSrSlipYouzaihyouryouTounyuuSutenyouki(queryRunnerQcdb, kojyo, lotNo9, edaban, rev);
                 // (22)[ｽﾘｯﾌﾟ作製・ｽﾗﾘｰ固形分調整(ｽﾃﾝ容器)]から、ﾃﾞｰﾀを取得
-                srSlipSlurrykokeibuntyouseiSutenyoukiData = loadSrSlipSlurrykokeibuntyouseiSutenyouki(queryRunnerQcdb, kojyo, lotNo9, edaban, rev);
+                Map srSlipSlurrykokeibuntyouseiSutenyoukiData = loadSrSlipSlurrykokeibuntyouseiSutenyouki(queryRunnerQcdb, kojyo, lotNo9, edaban, rev);
                 if (srSlipYouzaihyouryouTounyuuSutenyoukiData == null || srSlipYouzaihyouryouTounyuuSutenyoukiData.isEmpty()
                         || srSlipBinderhyouryouTounyuuData == null || srSlipBinderhyouryouTounyuuData.isEmpty()
                         || srSlipSlurrykokeibuntyouseiSutenyoukiData == null || srSlipSlurrykokeibuntyouseiSutenyoukiData.isEmpty()) {
@@ -1551,9 +1549,9 @@ public class GXHDO102B033 implements IFormLogic {
                         return processData;
                     }
                 }
-                slipJyouryou = calcSutenyoukiSlipJyouryou(srSlipYouzaihyouryouTounyuuSutenyoukiData, srSlipBinderhyouryouTounyuuData, srSlipSlurrykokeibuntyouseiSutenyoukiData);
+                slipJyuuryou = calcSutenyoukiSlipJyuuryou(srSlipYouzaihyouryouTounyuuSutenyoukiData, srSlipBinderhyouryouTounyuuData, srSlipSlurrykokeibuntyouseiSutenyoukiData);
             } else {
-                slipJyouryou = calcSiroporiSlipJyouryou(srSlipSlurrykokeibuntyouseiSiroporiData, srSlipYouzaihyouryouTounyuuSiroporiData, srSlipBinderhyouryouTounyuuData);
+                slipJyuuryou = calcSiroporiSlipJyuuryou(srSlipSlurrykokeibuntyouseiSiroporiData, srSlipYouzaihyouryouTounyuuSiroporiData, srSlipBinderhyouryouTounyuuData);
             }
             HashMap<String, String> resultMap = new HashMap<>();
             // ②「固形分目標値」の取得
@@ -1567,7 +1565,7 @@ public class GXHDO102B033 implements IFormLogic {
 
             BigDecimal kokeibunhirituBgValue = new BigDecimal(kokeibunhiritu.getValue());
             // 「溶剤調整量」:「ｽﾘｯﾌﾟ重量」 × 「固形分比率」 × 「固形分目標値」 - 「ｽﾘｯﾌﾟ重量」 を算出する。
-            BigDecimal youzaityouseiryouBgValue = slipJyouryou.multiply(kokeibunhirituBgValue).multiply(koukeibunnmokuhyochi).subtract(slipJyouryou);
+            BigDecimal youzaityouseiryouBgValue = slipJyuuryou.multiply(kokeibunhirituBgValue).multiply(koukeibunnmokuhyochi).subtract(slipJyuuryou).setScale(0, RoundingMode.HALF_UP);;
             // 溶剤調整量に計算結果を設定
             youzaityouseiryou.setValue(youzaityouseiryouBgValue.toPlainString());
 
@@ -1616,7 +1614,7 @@ public class GXHDO102B033 implements IFormLogic {
      * @param srSlipSlurrykokeibuntyouseiSutenyoukiData
      * (22)[ｽﾘｯﾌﾟ作製・ｽﾗﾘｰ固形分調整(ｽﾃﾝ容器)]から取得されるﾃﾞｰﾀ
      */
-    private BigDecimal calcSutenyoukiSlipJyouryou(Map srSlipYouzaihyouryouTounyuuSutenyoukiData, Map srSlipBinderhyouryouTounyuuData, Map srSlipSlurrykokeibuntyouseiSutenyoukiData) {
+    private BigDecimal calcSutenyoukiSlipJyuuryou(Map srSlipYouzaihyouryouTounyuuSutenyoukiData, Map srSlipBinderhyouryouTounyuuData, Map srSlipSlurrykokeibuntyouseiSutenyoukiData) {
         // 誘電体ｽﾗﾘｰ_調合量1
         BigDecimal yuudentaislurry_tyougouryou1 = new BigDecimal(String.valueOf(srSlipYouzaihyouryouTounyuuSutenyoukiData.get("yuudentaislurry_tyougouryou1")));
         // 誘電体ｽﾗﾘｰ_調合量2
@@ -1671,7 +1669,7 @@ public class GXHDO102B033 implements IFormLogic {
      * @param srSlipBinderhyouryouTounyuuData
      * (21)[ｽﾘｯﾌﾟ作製・ﾊﾞｲﾝﾀﾞｰ秤量・投入]から取得されるﾃﾞｰﾀ
      */
-    private BigDecimal calcSiroporiSlipJyouryou(Map srSlipSlurrykokeibuntyouseiSiroporiData, Map srSlipYouzaihyouryouTounyuuSiroporiData, Map srSlipBinderhyouryouTounyuuData) {
+    private BigDecimal calcSiroporiSlipJyuuryou(Map srSlipSlurrykokeibuntyouseiSiroporiData, Map srSlipYouzaihyouryouTounyuuSiroporiData, Map srSlipBinderhyouryouTounyuuData) {
         // ｽﾗﾘｰ合計重量
         BigDecimal slurrygoukeijyuuryou = new BigDecimal(String.valueOf(srSlipSlurrykokeibuntyouseiSiroporiData.get("slurrygoukeijyuuryou")));
 
@@ -1791,7 +1789,7 @@ public class GXHDO102B033 implements IFormLogic {
                 setDateTimeItem(itemYoteiDay, itemYoteiTime, dateTime);
             }
         } catch (NumberFormatException ex) {
-            ErrUtil.outputErrorLog("ParseException発生", ex, LOGGER);
+            ErrUtil.outputErrorLog("NumberFormatException発生", ex, LOGGER);
         }
     }
 
@@ -5020,7 +5018,7 @@ public class GXHDO102B033 implements IFormLogic {
         String syurui = "ｽﾘｯﾌﾟ作製";
         // [ﾊﾟﾗﾒｰﾀﾏｽﾀ]から、ﾃﾞｰﾀを取得
         Map fxhbm03Data = loadFxhbm03Data(queryRunnerDoc, "ｽﾘｯﾌﾟ作製_ｽﾘｯﾌﾟ固形分測定_表示制御");
-        // 画面非表示項目リスト: 秤量終了日、秤量終了時間、固形分測定担当者
+        // 画面非表示項目リスト
         List<String> notShowItemList = Arrays.asList(GXHDO102B033Const.YOUZAITYOUSEIRYOU, GXHDO102B033Const.TOLUENETYOUSEIRYOU, GXHDO102B033Const.SOLMIXTYOUSEIRYOU,
                 GXHDO102B033Const.YOUZAIKEIRYOU_DAY, GXHDO102B033Const.YOUZAIKEIRYOU_TIME, GXHDO102B033Const.YOUZAI1_ZAIRYOUHINMEI, GXHDO102B033Const.YOUZAI1_TYOUGOURYOUKIKAKU,
                 GXHDO102B033Const.YOUZAI1_BUZAIZAIKOLOTNO1, GXHDO102B033Const.YOUZAI1_TYOUGOURYOU1, GXHDO102B033Const.YOUZAI1_BUZAIZAIKOLOTNO2, GXHDO102B033Const.YOUZAI1_TYOUGOURYOU2,
