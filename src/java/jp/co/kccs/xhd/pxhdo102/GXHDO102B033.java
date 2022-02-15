@@ -1589,6 +1589,11 @@ public class GXHDO102B033 implements IFormLogic {
 
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog(youzaityouseiryou.getLabel1() + "計算にエラー発生", ex, LOGGER);
+        } catch (NullPointerException | NumberFormatException ex) {
+            // 数値変換できない場合はリターン
+            ErrUtil.outputErrorLog(youzaityouseiryou.getLabel1() +"計算に" + ex.getClass().getSimpleName() + "エラー発生", ex, LOGGER);
+            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            return processData;
         }
         return processData;
     }

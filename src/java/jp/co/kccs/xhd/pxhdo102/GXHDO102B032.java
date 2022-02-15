@@ -408,6 +408,9 @@ public class GXHDO102B032 implements IFormLogic {
             processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
             return processData;
         }
+        if (processData.getErrorMessageInfoList() != null && !processData.getErrorMessageInfoList().isEmpty()) {
+            return processData;
+        }
         processData.setMethod("");
         return processData;
     }
@@ -477,20 +480,20 @@ public class GXHDO102B032 implements IFormLogic {
         // [ｽﾘｯﾌﾟ作製・ｽﾗﾘｰ固形分調整(白ﾎﾟﾘ)]から、ﾃﾞｰﾀを取得
         Map slurrykokeibuntyouseiData = loadSlurrykokeibuntyousei(queryRunnerQcdb, kojyo, lotNo9, edaban, rev);
         slurrygoukeijyuuryouVal = StringUtil.nullToBlank(getMapData(slurrykokeibuntyouseiData, "slurrygoukeijyuuryou"));
-        if (slurrykokeibuntyouseiData == null || slurrykokeibuntyouseiData.isEmpty() || StringUtil.isEmpty(slurrygoukeijyuuryouVal)) {
+        if (slurrykokeibuntyouseiData == null || slurrykokeibuntyouseiData.isEmpty()) {
             // [ｽﾘｯﾌﾟ作製・溶剤秤量・投入(ｽﾃﾝ容器)]から、ﾃﾞｰﾀを取得
             Map tounyuusutenyoukiData = loadTounyuusutenyouki(queryRunnerQcdb, kojyo, lotNo9, edaban, rev);
             tyougouryou1Val = StringUtil.nullToBlank(getMapData(tounyuusutenyoukiData, "yuudentaislurry_tyougouryou1"));
             tyougouryou2Val = StringUtil.nullToBlank(getMapData(tounyuusutenyoukiData, "yuudentaislurry_tyougouryou2"));
-            if (tounyuusutenyoukiData == null || tounyuusutenyoukiData.isEmpty() || StringUtil.isEmpty(tyougouryou1Val) || StringUtil.isEmpty(tyougouryou2Val)) {
+            if (tounyuusutenyoukiData == null || tounyuusutenyoukiData.isEmpty()) {
                 // ｴﾗｰ項目をﾘｽﾄに追加
                 return MessageUtil.getErrorMessageInfo("XHD-000210", false, false, new ArrayList<>(), "ﾃﾞｰﾀ");
             }
             // ｽﾃﾝ容器の計算
-            calcSutenyouki(lotatarislurryjyuuryou, itemKikakuChi, tyougouryou1Val, tyougouryou2Val);
+            calcSutenyouki(processData, lotatarislurryjyuuryou, itemKikakuChi, tyougouryou1Val, tyougouryou2Val);
         } else {
             // 白ﾎﾟﾘの計算
-            calcSiropori(lotatarislurryjyuuryou, itemKikakuChi, slurrygoukeijyuuryouVal);
+            calcSiropori(processData, lotatarislurryjyuuryou, itemKikakuChi, slurrygoukeijyuuryouVal);
         }
 
         return null;
@@ -499,12 +502,13 @@ public class GXHDO102B032 implements IFormLogic {
     /**
      * 1ﾛｯﾄ当たりｽﾗﾘｰ重量-ｽﾃﾝ容器の計算
      *
+     * @param processData 処理制御データ
      * @param lotatarislurryjyuuryou 1ﾛｯﾄ当たりｽﾗﾘｰ重量
      * @param kikakuti 規格値
      * @param tyougouryou1Val 誘電体ｽﾗﾘｰ_調合量1
      * @param tyougouryou2Val 誘電体ｽﾗﾘｰ_調合量1
      */
-    private void calcSutenyouki(FXHDD01 lotatarislurryjyuuryou, BigDecimal kikakuti, String tyougouryou1Val, String tyougouryou2Val) {
+    private void calcSutenyouki(ProcessData processData, FXHDD01 lotatarislurryjyuuryou, BigDecimal kikakuti, String tyougouryou1Val, String tyougouryou2Val) {
         try {
             BigDecimal itemTyougouryou1Val = new BigDecimal(Integer.parseInt(tyougouryou1Val));
             BigDecimal itemTyougouryou2Val = new BigDecimal(Integer.parseInt(tyougouryou2Val));
@@ -516,18 +520,20 @@ public class GXHDO102B032 implements IFormLogic {
 
         } catch (NullPointerException | NumberFormatException ex) {
             // 数値変換できない場合はリターン
-            ErrUtil.outputErrorLog("1ﾛｯﾄ当たりｽﾗﾘｰ重量計算にエラー発生", ex, LOGGER);
+            ErrUtil.outputErrorLog("1ﾛｯﾄ当たりｽﾗﾘｰ重量計算に" + ex.getClass().getSimpleName() + "エラー発生", ex, LOGGER);
+            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
         }
     }
 
     /**
      * 1ﾛｯﾄ当たりｽﾗﾘｰ重量-白ﾎﾟﾘの計算
      *
+     * @param processData 処理制御データ
      * @param lotatarislurryjyuuryou 1ﾛｯﾄ当たりｽﾗﾘｰ重量
      * @param kikakuti 規格値
      * @param slurrygoukeijyuuryouVal ｽﾗﾘｰ合計重量
      */
-    private void calcSiropori(FXHDD01 lotatarislurryjyuuryou, BigDecimal kikakuti, String slurrygoukeijyuuryouVal) {
+    private void calcSiropori(ProcessData processData, FXHDD01 lotatarislurryjyuuryou, BigDecimal kikakuti, String slurrygoukeijyuuryouVal) {
         try {
             BigDecimal itemSlurrygoukeijyuuryouVal = new BigDecimal(Integer.parseInt(slurrygoukeijyuuryouVal));
             // 1ﾛｯﾄ当たりｽﾗﾘｰ重量 = ｽﾗﾘｰ合計重量 ÷ 取得の規格値(小数以下四捨五入)
@@ -537,7 +543,8 @@ public class GXHDO102B032 implements IFormLogic {
 
         } catch (NullPointerException | NumberFormatException ex) {
             // 数値変換できない場合はリターン
-            ErrUtil.outputErrorLog("1ﾛｯﾄ当たりｽﾗﾘｰ重量計算にエラー発生", ex, LOGGER);
+            ErrUtil.outputErrorLog("1ﾛｯﾄ当たりｽﾗﾘｰ重量計算に" + ex.getClass().getSimpleName() + "エラー発生", ex, LOGGER);
+            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
         }
     }
 
@@ -2832,12 +2839,19 @@ public class GXHDO102B032 implements IFormLogic {
         String sql = "SELECT yuudentaislurry_tyougouryou1, yuudentaislurry_tyougouryou2, toluenetyouseiryou,"
                 + " zunsanzai1_tyougouryou1, zunsanzai1_tyougouryou2, zunsanzai2_tyougouryou1, zunsanzai2_tyougouryou2"
                 + " FROM sr_slip_youzaihyouryou_tounyuu_sutenyouki"
-                + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
+                + " WHERE kojyo = ? AND lotno = ? AND edaban = ?";
+        // revisionが入っている場合、条件に追加
+        if (!StringUtil.isEmpty(rev)) {
+            sql += "AND revision = ? ";
+        }
         List<Object> params = new ArrayList<>();
         params.add(kojyo);
         params.add(lotNo);
         params.add(edaban);
-        params.add(rev);
+        // revisionが入っている場合、条件に追加
+        if (!StringUtil.isEmpty(rev)) {
+            params.add(rev);
+        }
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
     }
@@ -2856,12 +2870,19 @@ public class GXHDO102B032 implements IFormLogic {
     private Map loadSlurrykokeibuntyousei(QueryRunner queryRunnerQcdb, String kojyo, String lotNo, String edaban, String rev) throws SQLException {
         // ｽﾗﾘｰ合計重量、固形分調整量➁の取得
         String sql = "SELECT slurrygoukeijyuuryou, kokeibuntyouseiryou2 FROM sr_slip_slurrykokeibuntyousei_siropori"
-                + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
+                + " WHERE kojyo = ? AND lotno = ? AND edaban = ?";
+        // revisionが入っている場合、条件に追加
+        if (!StringUtil.isEmpty(rev)) {
+            sql += "AND revision = ? ";
+        }
         List<Object> params = new ArrayList<>();
         params.add(kojyo);
         params.add(lotNo);
         params.add(edaban);
-        params.add(rev);
+        // revisionが入っている場合、条件に追加
+        if (!StringUtil.isEmpty(rev)) {
+            params.add(rev);
+        }
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
     }
@@ -2880,12 +2901,19 @@ public class GXHDO102B032 implements IFormLogic {
     private Map loadBinderhyouryouTounyuu(QueryRunner queryRunnerQcdb, String kojyo, String lotNo, String edaban, String rev) throws SQLException {
         // ﾊﾞｲﾝﾀﾞｰ添加量規格の取得
         String sql = "SELECT bindertenkaryoukikaku FROM sr_slip_binderhyouryou_tounyuu"
-                + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
+                + " WHERE kojyo = ? AND lotno = ? AND edaban = ?";
+        // revisionが入っている場合、条件に追加
+        if (!StringUtil.isEmpty(rev)) {
+            sql += "AND revision = ? ";
+        }
         List<Object> params = new ArrayList<>();
         params.add(kojyo);
         params.add(lotNo);
         params.add(edaban);
-        params.add(rev);
+        // revisionが入っている場合、条件に追加
+        if (!StringUtil.isEmpty(rev)) {
+            params.add(rev);
+        }
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
     }
@@ -2904,12 +2932,19 @@ public class GXHDO102B032 implements IFormLogic {
     private Map loadSutenyouki(QueryRunner queryRunnerQcdb, String kojyo, String lotNo, String edaban, String rev) throws SQLException {
         // 溶剤調整量の取得
         String sql = "SELECT youzaityouseiryou FROM sr_slip_slurrykokeibuntyousei_sutenyouki"
-                + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
+                + " WHERE kojyo = ? AND lotno = ? AND edaban = ?";
+        // revisionが入っている場合、条件に追加
+        if (!StringUtil.isEmpty(rev)) {
+            sql += "AND revision = ? ";
+        }
         List<Object> params = new ArrayList<>();
         params.add(kojyo);
         params.add(lotNo);
         params.add(edaban);
-        params.add(rev);
+        // revisionが入っている場合、条件に追加
+        if (!StringUtil.isEmpty(rev)) {
+            params.add(rev);
+        }
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
     }
@@ -2929,12 +2964,18 @@ public class GXHDO102B032 implements IFormLogic {
         // 溶剤①_調合量1、溶剤①_調合量2、溶剤②_調合量1、溶剤②_調合量2、溶剤③_調合量1、溶剤③_調合量2の取得
         String sql = "SELECT youzai1_tyougouryou1, youzai1_tyougouryou2, youzai2_tyougouryou1, youzai2_tyougouryou2, youzai3_tyougouryou1, youzai3_tyougouryou2"
                 + " FROM sr_slip_youzaihyouryou_tounyuu_siropori"
-                + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
+                + " WHERE kojyo = ? AND lotno = ? AND edaban = ?";
+        if (!StringUtil.isEmpty(rev)) {
+            sql += "AND revision = ? ";
+        }
         List<Object> params = new ArrayList<>();
         params.add(kojyo);
         params.add(lotNo);
         params.add(edaban);
-        params.add(rev);
+        // revisionが入っている場合、条件に追加
+        if (!StringUtil.isEmpty(rev)) {
+            params.add(rev);
+        }
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
     }
