@@ -3,18 +3,25 @@
  */
 package jp.co.kccs.xhd.pxhdo102;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
+import javax.servlet.http.HttpSession;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.db.model.FXHDM05;
+import jp.co.kccs.xhd.db.model.SubSrSlipKouatsubunsan;
 import jp.co.kccs.xhd.model.GXHDO102B034Model;
-import static jp.co.kccs.xhd.pxhdo102.GXHDO102B024A.getFormBean;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.GXHDO901BEX;
 import jp.co.kccs.xhd.util.ErrUtil;
+import jp.co.kccs.xhd.util.MessageUtil;
 import jp.co.kccs.xhd.util.StringUtil;
 import jp.co.kccs.xhd.util.ValidateUtil;
 import org.apache.commons.dbutils.QueryRunner;
@@ -46,6 +53,16 @@ public class GXHDO102B034A extends GXHDO901BEX {
     private String mainDivStyle = "";
 
     /**
+     * 設定圧力規格値リスト
+     */
+    private List<String> setteiatuKikakuchiList;
+
+    /**
+     * 開始直後排気量規格値リスト
+     */
+    private List<String> haikiryouKikakuchiList;
+
+    /**
      * コンストラクタ
      */
     public GXHDO102B034A() {
@@ -68,6 +85,42 @@ public class GXHDO102B034A extends GXHDO901BEX {
      */
     public void setMainDivStyle(String mainDivStyle) {
         this.mainDivStyle = mainDivStyle;
+    }
+
+    /**
+     * 設定圧力規格値リスト
+     *
+     * @return the setteiatuKikakuchiList
+     */
+    public List<String> getSetteiatuKikakuchiList() {
+        return setteiatuKikakuchiList;
+    }
+
+    /**
+     * 設定圧力規格値リスト
+     *
+     * @param setteiatuKikakuchiList the setteiatuKikakuchiList to set
+     */
+    public void setSetteiatuKikakuchiList(List<String> setteiatuKikakuchiList) {
+        this.setteiatuKikakuchiList = setteiatuKikakuchiList;
+    }
+
+    /**
+     * 開始直後排気量規格値リスト
+     *
+     * @return the haikiryouKikakuchiList
+     */
+    public List<String> getHaikiryouKikakuchiList() {
+        return haikiryouKikakuchiList;
+    }
+
+    /**
+     * 開始直後排気量規格値リスト
+     *
+     * @param haikiryouKikakuchiList the haikiryouKikakuchiList to set
+     */
+    public void setHaikiryouKikakuchiList(List<String> haikiryouKikakuchiList) {
+        this.haikiryouKikakuchiList = haikiryouKikakuchiList;
     }
 //</editor-fold>  
 
@@ -94,6 +147,7 @@ public class GXHDO102B034A extends GXHDO901BEX {
      * @param buttonId ボタンID
      * @return エラーメッセージ
      */
+    @Override
     protected ErrorMessageInfo getCheckResult(String buttonId) {
         // リビジョンチェック
         ErrorMessageInfo checkRevErrorMessage = checkRevision(buttonId);
@@ -119,7 +173,7 @@ public class GXHDO102B034A extends GXHDO901BEX {
         }
         ErrorMessageInfo requireCheckErrorMessage = validateUtil.executeValidation(itemRowCheckList, itemsList, queryRunnerWip);
         if (requireCheckErrorMessage != null && !StringUtil.isEmpty(requireCheckErrorMessage.getErrorMessage())) {
-            if(requireCheckErrorMessage.getErrorMessage().contains("行目") ){
+            if (requireCheckErrorMessage.getErrorMessage().contains("行目")) {
                 // エラー項目の背景色を設定
                 requireCheckErrorMessage.setPageChangeItemIndex(-1);
                 int kaisuu = Integer.parseInt(requireCheckErrorMessage.getErrorMessage().substring(0, requireCheckErrorMessage.getErrorMessage().indexOf("行目"))) - 1;
@@ -265,6 +319,7 @@ public class GXHDO102B034A extends GXHDO901BEX {
      *
      * @param buttonId ボタンID
      */
+    @Override
     public void clearItemListBackColor(String buttonId) {
         // 背景色を戻さない特定の処理を除き背景色をデフォルトの背景色に戻す。
         if (this.noCheckButtonId == null || !this.noCheckButtonId.contains(buttonId)) {
@@ -303,5 +358,227 @@ public class GXHDO102B034A extends GXHDO901BEX {
             gxhdo102b034model.getBikou1().setBackColorInput(gxhdo102b034model.getBikou1().getBackColorInputDefault());
             gxhdo102b034model.getBikou2().setBackColorInput(gxhdo102b034model.getBikou2().getBackColorInputDefault());
         });
+    }
+
+    /**
+     * 前工程規格情報、前工程標準規格情報から規格値を取得して、項目データに設定処理
+     *
+     * @param itemDataList 項目データ
+     * @param initMessageList エラーリスト
+     */
+    @Override
+    public void setItemListKikakuChi(List<FXHDD01> itemDataList, List<String> initMessageList) {
+        if (itemDataList == null) {
+            return;
+        }
+        int pass = 0;
+        if (!itemDataList.isEmpty() && "GXHDO102B034B".equals(itemDataList.get(0).getGamenId())) {
+            QueryRunner queryRunnerDoc = new QueryRunner(this.dataSourceDocServer);
+            QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceQcdb);
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            HttpSession session = (HttpSession) externalContext.getSession(false);
+            String lotNo = (String) session.getAttribute("lotNo");
+            String tantoshaCd = (String) session.getAttribute("tantoshaCd");
+            int jissekino = (Integer) session.getAttribute("jissekino");
+            String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
+
+            GXHDO102B034 gxhdo102b034 = new GXHDO102B034();
+            // 前工程WIPから仕掛情報を取得処理
+            Map shikakariData;
+            try {
+                shikakariData = gxhdo102b034.loadShikakariDataFromWip(queryRunnerDoc, tantoshaCd, lotNo);
+                if (shikakariData != null && !shikakariData.isEmpty()) {
+                    HashMap<String, String> passMap = new HashMap<>();
+                    // 規格値(ﾊﾟｽ回数)取得
+                    gxhdo102b034.getPassValue(queryRunnerQcdb, shikakariData, lotNo, passMap);
+                    pass = Integer.parseInt(passMap.get("pass"));
+                }
+                String rev = "";
+                String jotaiFlg = "";
+                String kojyo = lotNo.substring(0, 3);
+                String lotNo9 = lotNo.substring(3, 12);
+                String edaban = lotNo.substring(12, 15);
+                // [原材料品質DB登録実績]から、ﾃﾞｰﾀを取得
+                Map fxhdd11RevInfo = gxhdo102b034.loadFxhdd11RevInfo(queryRunnerDoc, kojyo, lotNo9, edaban, jissekino, formId);
+                rev = StringUtil.nullToBlank(gxhdo102b034.getMapData(fxhdd11RevInfo, "rev"));
+                jotaiFlg = StringUtil.nullToBlank(gxhdo102b034.getMapData(fxhdd11RevInfo, "jotai_flg"));
+                if ("0".equals(jotaiFlg) || "1".equals(jotaiFlg)) {
+                    // ｽﾘｯﾌﾟ作製・高圧分散入力_サブ画面データ取得
+                    List<SubSrSlipKouatsubunsan> subSrSlipKouatsubunsanList = gxhdo102b034.getSubSrSlipKouatsubunsanData(queryRunnerQcdb, rev, jotaiFlg, kojyo, lotNo9, edaban, jissekino);
+                    if (subSrSlipKouatsubunsanList != null && subSrSlipKouatsubunsanList.size() > pass) {
+                        pass = subSrSlipKouatsubunsanList.size();
+                    }
+                }
+            } catch (SQLException ex) {
+                ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+            }
+        }
+
+        boolean isExist;
+
+        //(8)前工程標準規格情報より、情報がある場合
+        for (int i = 0; i <= itemDataList.size() - 1; i++) {
+            // 条件ﾃｰﾌﾞﾙ工程名が空の場合は規格値は設定しない
+            if (StringUtil.isEmpty(itemDataList.get(i).getJokenKoteiMei())) {
+                continue;
+            }
+            isExist = false;
+            if (!GXHDO102B034Const.SETTEIATSURYOKU.equals(itemDataList.get(i).getItemId()) && !GXHDO102B034Const.KAISHITYOKUGOHAIKIRYOU.equals(itemDataList.get(i).getItemId())) {
+                //(6)前工程規格情報より、情報がある場合
+                if (null != listDaMkJoken && !listDaMkJoken.isEmpty()) {
+                    for (int j = 0; j <= listDaMkJoken.size() - 1; j++) {
+                        if (StringUtil.nullToBlank(itemDataList.get(i).getJokenKoteiMei()).equals(StringUtil.nullToBlank(listDaMkJoken.get(j).getKouteimei()))
+                                && StringUtil.nullToBlank(itemDataList.get(i).getJokenKomokuMei()).equals(StringUtil.nullToBlank(listDaMkJoken.get(j).getKoumokumei()))
+                                && StringUtil.nullToBlank(itemDataList.get(i).getJokenKanriKomoku()).equals(StringUtil.nullToBlank(listDaMkJoken.get(j).getKanrikoumokumei()))) {
+
+                            // 規格値が空またはNULLだった場合
+                            if (StringUtil.isEmpty(listDaMkJoken.get(j).getKikakuti())) {
+                                itemDataList.get(i).setKikakuChi("【】");
+                                break;
+                            }
+                            itemDataList.get(i).setKikakuChi("【" + listDaMkJoken.get(j).getKikakuti() + "】");
+                            isExist = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!isExist) {
+                    //(8)前工程標準規格情報より、情報がある場合
+                    if (null != listDaMkhyojunjoken && !listDaMkhyojunjoken.isEmpty()) {
+                        for (int k = 0; k <= listDaMkhyojunjoken.size() - 1; k++) {
+                            if (StringUtil.nullToBlank(itemDataList.get(i).getJokenKoteiMei()).equals(StringUtil.nullToBlank(listDaMkhyojunjoken.get(k).getKouteimei()))
+                                    && StringUtil.nullToBlank(itemDataList.get(i).getJokenKomokuMei()).equals(StringUtil.nullToBlank(listDaMkhyojunjoken.get(k).getKoumokumei()))
+                                    && StringUtil.nullToBlank(itemDataList.get(i).getJokenKanriKomoku()).equals(StringUtil.nullToBlank(listDaMkhyojunjoken.get(k).getKanrikoumokumei()))) {
+
+                                // 規格値が空またはNULLだった場合
+                                if (StringUtil.isEmpty(listDaMkhyojunjoken.get(k).getKikakuti())) {
+                                    itemDataList.get(i).setKikakuChi("【】");
+                                    break;
+                                }
+
+                                itemDataList.get(i).setKikakuChi("【" + listDaMkhyojunjoken.get(k).getKikakuti() + "】");
+                                isExist = true;
+                                break;
+                            }
+                        }
+                    }
+                }
+
+                if (!isExist) {
+                    initMessageList.add(MessageUtil.getMessage("XHD-000019", "【" + itemDataList.get(i).getLabel1() + "】"));
+                }
+            } else {
+                if (pass > 0) {
+                    for (int m = 1; m <= pass; m++) {
+                        isExist = false;
+                        //(6)前工程規格情報より、情報がある場合
+                        if (null != listDaMkJoken && !listDaMkJoken.isEmpty()) {
+                            for (int j = 0; j <= listDaMkJoken.size() - 1; j++) {
+                                if (StringUtil.nullToBlank(itemDataList.get(i).getJokenKoteiMei()).equals(StringUtil.nullToBlank(listDaMkJoken.get(j).getKouteimei()))
+                                        && StringUtil.nullToBlank(itemDataList.get(i).getJokenKomokuMei()).equals(StringUtil.nullToBlank(listDaMkJoken.get(j).getKoumokumei()))
+                                        && (StringUtil.nullToBlank(itemDataList.get(i).getJokenKanriKomoku()) + m).equals(StringUtil.nullToBlank(listDaMkJoken.get(j).getKanrikoumokumei()))) {
+
+                                    // 規格値が空またはNULLだった場合
+                                    if (StringUtil.isEmpty(listDaMkJoken.get(j).getKikakuti())) {
+                                        addValueToKikakuchiList(itemDataList.get(i).getItemId(), "【】");
+                                        break;
+                                    }
+                                    addValueToKikakuchiList(itemDataList.get(i).getItemId(), "【" + listDaMkJoken.get(j).getKikakuti() + "】");
+                                    isExist = true;
+                                    break;
+                                }
+                            }
+                        }
+
+                        if (!isExist) {
+                            //(8)前工程標準規格情報より、情報がある場合
+                            if (null != listDaMkhyojunjoken && !listDaMkhyojunjoken.isEmpty()) {
+                                for (int k = 0; k <= listDaMkhyojunjoken.size() - 1; k++) {
+                                    if (StringUtil.nullToBlank(itemDataList.get(i).getJokenKoteiMei()).equals(StringUtil.nullToBlank(listDaMkhyojunjoken.get(k).getKouteimei()))
+                                            && StringUtil.nullToBlank(itemDataList.get(i).getJokenKomokuMei()).equals(StringUtil.nullToBlank(listDaMkhyojunjoken.get(k).getKoumokumei()))
+                                            && (StringUtil.nullToBlank(itemDataList.get(i).getJokenKanriKomoku()) + m).equals(StringUtil.nullToBlank(listDaMkhyojunjoken.get(k).getKanrikoumokumei()))) {
+
+                                        // 規格値が空またはNULLだった場合
+                                        if (StringUtil.isEmpty(listDaMkhyojunjoken.get(k).getKikakuti())) {
+                                            addValueToKikakuchiList(itemDataList.get(i).getItemId(), "【】");
+                                            break;
+                                        }
+
+                                        addValueToKikakuchiList(itemDataList.get(i).getItemId(), "【" + listDaMkhyojunjoken.get(k).getKikakuti() + "】");
+                                        isExist = true;
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+
+                        if (!isExist) {
+                            initMessageList.add(MessageUtil.getMessage("XHD-000019", "【" + m + "行目: " + itemDataList.get(i).getLabel1() + "】"));
+                        }
+                    }
+                }
+                setKikakuchiDisplayMaxLength(itemDataList.get(i));
+            }
+
+        }
+    }
+
+    /**
+     * 設定圧力、開始直後排気量列のサイズを設定
+     *
+     * @param itemId 項目ID
+     * @param 列のサイズ
+     */
+    private void setKikakuchiDisplayMaxLength(FXHDD01 item) {
+        List<String> beanList = null;
+        int dispalyMaxLength = 0;
+        int maxLengthFromList = 0;
+        // 設定圧力
+        if (GXHDO102B034Const.SETTEIATSURYOKU.equals(item.getItemId())) {
+            beanList = getSetteiatuKikakuchiList();
+            dispalyMaxLength = 4;
+        } else if (GXHDO102B034Const.KAISHITYOKUGOHAIKIRYOU.equals(item.getItemId())) {
+            beanList = getHaikiryouKikakuchiList();
+            dispalyMaxLength = 7;
+        }
+        if (beanList != null && !beanList.isEmpty()) {
+            maxLengthFromList = beanList.stream().mapToInt(o -> StringUtil.nullToBlank(o).length()).max().getAsInt();
+        }
+        dispalyMaxLength = dispalyMaxLength > maxLengthFromList ? dispalyMaxLength : maxLengthFromList;
+        item.setInputLength(String.valueOf(dispalyMaxLength));
+    }
+
+    /**
+     * 設定圧力規格値リスト、開始直後排気量規格値リストに値を追加
+     *
+     * @param itemId 項目ID
+     * @param kikakuchi 規格値
+     */
+    private void addValueToKikakuchiList(String itemId, String kikakuchi) {
+        // 設定圧力
+        if (GXHDO102B034Const.SETTEIATSURYOKU.equals(itemId)) {
+            if (getSetteiatuKikakuchiList() == null) {
+                setSetteiatuKikakuchiList(new ArrayList<>());
+            }
+            getSetteiatuKikakuchiList().add(kikakuchi);
+        } else if (GXHDO102B034Const.KAISHITYOKUGOHAIKIRYOU.equals(itemId)) {
+            if (getHaikiryouKikakuchiList() == null) {
+                setHaikiryouKikakuchiList(new ArrayList<>());
+            }
+            getHaikiryouKikakuchiList().add(kikakuchi);
+        }
+    }
+
+    /**
+     * 画面のBean情報を取得
+     *
+     * @param beanId フォームID
+     * @return サブ画面情報
+     */
+    public static Object getFormBean(String beanId) {
+        return FacesContext.getCurrentInstance().
+                getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                        getELContext(), null, beanId);
     }
 }

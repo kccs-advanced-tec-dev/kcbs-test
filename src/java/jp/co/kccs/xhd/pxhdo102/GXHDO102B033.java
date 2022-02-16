@@ -1531,7 +1531,7 @@ public class GXHDO102B033 implements IFormLogic {
             Map srSlipBinderhyouryouTounyuuData = loadSrSlipBinderhyouryouTounyuu(queryRunnerQcdb, kojyo, lotNo9, edaban, rev);
             // (23)[ｽﾘｯﾌﾟ作製・溶剤秤量・投入(白ﾎﾟﾘ)]から、ﾃﾞｰﾀを取得
             Map srSlipYouzaihyouryouTounyuuSiroporiData = loadSrSlipYouzaihyouryouTounyuuSiropori(queryRunnerQcdb, kojyo, lotNo9, edaban, rev);
-            BigDecimal slipJyuuryou;
+            BigDecimal slipJyuuryou = BigDecimal.ZERO;
             if (srSlipSlurrykokeibuntyouseiSiroporiData == null || srSlipSlurrykokeibuntyouseiSiroporiData.isEmpty()
                     || srSlipBinderhyouryouTounyuuData == null || srSlipBinderhyouryouTounyuuData.isEmpty()
                     || srSlipYouzaihyouryouTounyuuSiroporiData == null || srSlipYouzaihyouryouTounyuuSiroporiData.isEmpty()) {
@@ -1565,7 +1565,7 @@ public class GXHDO102B033 implements IFormLogic {
 
             BigDecimal kokeibunhirituBgValue = new BigDecimal(kokeibunhiritu.getValue());
             // 「溶剤調整量」:「ｽﾘｯﾌﾟ重量」 × 「固形分比率」 × 「固形分目標値」 - 「ｽﾘｯﾌﾟ重量」 を算出する。
-            BigDecimal youzaityouseiryouBgValue = slipJyuuryou.multiply(kokeibunhirituBgValue).multiply(koukeibunnmokuhyochi).subtract(slipJyuuryou).setScale(0, RoundingMode.HALF_UP);;
+            BigDecimal youzaityouseiryouBgValue = slipJyuuryou.multiply(kokeibunhirituBgValue).multiply(koukeibunnmokuhyochi).subtract(slipJyuuryou).setScale(0, RoundingMode.HALF_UP);
             // 溶剤調整量に計算結果を設定
             youzaityouseiryou.setValue(youzaityouseiryouBgValue.toPlainString());
 
@@ -1591,7 +1591,7 @@ public class GXHDO102B033 implements IFormLogic {
             ErrUtil.outputErrorLog(youzaityouseiryou.getLabel1() + "計算にエラー発生", ex, LOGGER);
         } catch (NullPointerException | NumberFormatException ex) {
             // 数値変換できない場合はリターン
-            ErrUtil.outputErrorLog(youzaityouseiryou.getLabel1() +"計算に" + ex.getClass().getSimpleName() + "エラー発生", ex, LOGGER);
+            ErrUtil.outputErrorLog(youzaityouseiryou.getLabel1() + "計算に" + ex.getClass().getSimpleName() + "エラー発生", ex, LOGGER);
             processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
             return processData;
         }

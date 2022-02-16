@@ -78,6 +78,9 @@
             div[id='form:tabMain:passDataTable'] span[class^='ui-inputnumber'] input{
                 text-align: right;
             }
+            thead[id='form:tabMain:passDataTable_head'] th, tbody[id='form:tabMain:passDataTable_data'] td{
+                word-wrap: break-word;
+            }
             @media(max-width:720px){
                 .ui-paginator .ui-paginator-pages{
                     display:inline-block;
@@ -205,13 +208,13 @@
                                                       inputStyle="font-size:#{item.haisyutsugawatankno.fontSizeInput}px;color:#{item.haisyutsugawatankno.fontColorInput};background:#{item.haisyutsugawatankno.backColorInput};vertical-align: middle;max-width:#{beanGXHDO102C034B.maxWidthInputCol}px;#{item.haisyutsugawatankno.customStyleInput}">
                                         </p:inputNumber>
                                     </p:column>
-                                    <p:column id="setteiatsuryoku"  headerText="#{beanGXHDO102B034B.setteiatsuryoku.getLabel1()}" style=" text-align: center;vertical-align: middle;width: 26em;" >
+                                    <p:column id="setteiatsuryoku"  headerText="#{beanGXHDO102B034B.setteiatsuryoku.getLabel1()}" style=" text-align: center;vertical-align: middle;width:${beanGXHDO102B034B.setteiatsuryoku.displayMaxLength}em;" >
                                         <div style="text-align:left;">
                                             <h:outputText id="setteiatsuryokukikakuChi" rendered="#{item.setteiatsuryoku.render1 || item.setteiatsuryoku.renderLinkButton}" value="#{item.setteiatsuryoku.kikakuChi}"
                                                           style="font-size:#{item.setteiatsuryoku.fontSize3}px;color:#{item.setteiatsuryoku.fontColor3};background:#{item.setteiatsuryoku.backColor3};vertical-align: middle;"/>
                                         </div>
                                     </p:column>
-                                    <p:column id="kaishityokugohaikiryou"  headerText="#{beanGXHDO102B034B.kaishityokugohaikiryou.getLabel1()}" style=" text-align: center;vertical-align: middle;width: 26em;" >
+                                    <p:column id="kaishityokugohaikiryou"  headerText="#{beanGXHDO102B034B.kaishityokugohaikiryou.getLabel1()}" style=" text-align: center;vertical-align: middle;width: ${beanGXHDO102B034B.kaishityokugohaikiryou.displayMaxLength}em;" >
                                         <div style="text-align:left;">
                                             <h:outputText id="kaishityokugohaikiryoukikakuChi" rendered="#{item.kaishityokugohaikiryou.render1 || item.kaishityokugohaikiryou.renderLinkButton}" value="#{item.kaishityokugohaikiryou.kikakuChi}"
                                                                style="font-size:#{item.kaishityokugohaikiryou.fontSize3}px;color:#{item.kaishityokugohaikiryou.fontColor3};background:#{item.kaishityokugohaikiryou.backColor3};vertical-align: middle;"/>

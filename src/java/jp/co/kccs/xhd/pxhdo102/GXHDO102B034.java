@@ -477,9 +477,11 @@ public class GXHDO102B034 implements IFormLogic {
             FXHDD01 jitsuatsuryokuItem = gxhdo102b034model.getJitsuatsuryoku();
             // 設定圧力
             FXHDD01 setteiatsuryokuItem = gxhdo102b034model.getSetteiatsuryoku();
-            jitsuatsuryokuItem.setKikakuChi(setteiatsuryokuItem.getKikakuChi());
-            jitsuatsuryokuItem.setStandardPattern(setteiatsuryokuItem.getStandardPattern());
-            itemList.add(jitsuatsuryokuItem);
+            if(!StringUtil.isEmpty(setteiatsuryokuItem.getKikakuChi())){
+                jitsuatsuryokuItem.setKikakuChi(setteiatsuryokuItem.getKikakuChi());
+                jitsuatsuryokuItem.setStandardPattern(setteiatsuryokuItem.getStandardPattern());
+                itemList.add(jitsuatsuryokuItem);
+            }
         }
         ErrorMessageInfo errorMessageInfo = ValidateUtil.checkInputKikakuchi(itemList, kikakuchiInputErrorInfoList);
 
@@ -498,7 +500,7 @@ public class GXHDO102B034 implements IFormLogic {
             });
         } else {
             String itemId = errorMessageInfo.getErrorItemInfoList().get(0).getItemId();
-            if(itemId.equals(jitsuatsuryoku.getItemId())){
+            if (itemId.equals(jitsuatsuryoku.getItemId())) {
                 errorMessageInfo.setPageChangeItemIndex(-1);
                 int pass = Integer.parseInt(errorMessageInfo.getErrorMessage().substring(0, errorMessageInfo.getErrorMessage().indexOf("行目"))) - 1;
                 GXHDO102B034Model gxhdo102b034model = listdata.get(pass);
@@ -1387,7 +1389,7 @@ public class GXHDO102B034 implements IFormLogic {
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private Map loadShikakariDataFromWip(QueryRunner queryRunnerDoc, String tantoshaCd, String lotNo) throws SQLException {
+    protected Map loadShikakariDataFromWip(QueryRunner queryRunnerDoc, String tantoshaCd, String lotNo) throws SQLException {
         List<SikakariJson> sikakariList = CommonUtil.getMwipResult(queryRunnerDoc, tantoshaCd, lotNo);
         SikakariJson sikakariObj;
         Map shikakariData = new HashMap();
@@ -1416,7 +1418,7 @@ public class GXHDO102B034 implements IFormLogic {
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private Map loadFxhdd11RevInfo(QueryRunner queryRunnerDoc, String kojyo, String lotNo,
+    protected Map loadFxhdd11RevInfo(QueryRunner queryRunnerDoc, String kojyo, String lotNo,
             String edaban, int jissekino, String formId) throws SQLException {
         // 品質DB登録実績データの取得
         String sql = "SELECT rev, jotai_flg "
@@ -1812,7 +1814,7 @@ public class GXHDO102B034 implements IFormLogic {
      * @param mapId ID
      * @return マップから取得した値
      */
-    private Object getMapData(Map map, String mapId) {
+    protected Object getMapData(Map map, String mapId) {
         if (map == null || map.isEmpty()) {
             return null;
         }
@@ -2588,10 +2590,17 @@ public class GXHDO102B034 implements IFormLogic {
         gxhdo102b034model.setSouekigawatankno(getItemRow(processData.getItemListEx(), GXHDO102B034Const.SOUEKIGAWATANKNO).clone());
         //排出側ﾀﾝｸNo.
         gxhdo102b034model.setHaisyutsugawatankno(getItemRow(processData.getItemListEx(), GXHDO102B034Const.HAISYUTSUGAWATANKNO).clone());
+
         //設定圧力
-        gxhdo102b034model.setSetteiatsuryoku(getItemRow(processData.getItemListEx(), GXHDO102B034Const.SETTEIATSURYOKU).clone());
+        FXHDD01 setteiatsuryokuFXHDD01 = getItemRow(processData.getItemListEx(), GXHDO102B034Const.SETTEIATSURYOKU).clone();
+        String setteiatsuryokuKikakuchi = getValueFromKikakuchiList(GXHDO102B034Const.SETTEIATSURYOKU, pass);
+        setteiatsuryokuFXHDD01.setKikakuChi(setteiatsuryokuKikakuchi);
+        gxhdo102b034model.setSetteiatsuryoku(setteiatsuryokuFXHDD01);
         //開始直後排気量
-        gxhdo102b034model.setKaishityokugohaikiryou(getItemRow(processData.getItemListEx(), GXHDO102B034Const.KAISHITYOKUGOHAIKIRYOU).clone());
+        FXHDD01 kaishityokugohaikiryouFXHDD01 = getItemRow(processData.getItemListEx(), GXHDO102B034Const.KAISHITYOKUGOHAIKIRYOU).clone();
+        String kaishityokugohaikiryouKikakuchi = getValueFromKikakuchiList(GXHDO102B034Const.KAISHITYOKUGOHAIKIRYOU, pass);
+        kaishityokugohaikiryouFXHDD01.setKikakuChi(kaishityokugohaikiryouKikakuchi);
+        gxhdo102b034model.setKaishityokugohaikiryou(kaishityokugohaikiryouFXHDD01);
         //高圧分散開始日
         gxhdo102b034model.setKouatsubunsankaishi_day(getItemRow(processData.getItemListEx(), GXHDO102B034Const.KOUATSUBUNSANKAISHI_DAY).clone());
         //高圧分散開始時間
@@ -2622,6 +2631,33 @@ public class GXHDO102B034 implements IFormLogic {
     }
 
     /**
+     * 設定圧力規格値リスト、開始直後排気量規格値リストから規格値を取得
+     *
+     * @param itemId 項目ID
+     * @param pass 回数
+     * @return 規格値
+     */
+    private String getValueFromKikakuchiList(String itemId, int pass) {
+        GXHDO102B034A bean = (GXHDO102B034A) getFormBean("gXHDO102B034A");
+        List<String> beanList = null;
+        // 設定圧力
+        if (GXHDO102B034Const.SETTEIATSURYOKU.equals(itemId)) {
+            beanList = bean.getSetteiatuKikakuchiList();
+
+        } else if (GXHDO102B034Const.KAISHITYOKUGOHAIKIRYOU.equals(itemId)) {
+            beanList = bean.getHaikiryouKikakuchiList();
+        }
+        if (beanList == null || beanList.isEmpty()) {
+            return "";
+        } else {
+            if (beanList.size() < pass || (beanList.size() >= pass && StringUtil.isEmpty(beanList.get(pass - 1)))) {
+                return "";
+            }
+            return beanList.get(pass - 1);
+        }
+    }
+
+    /**
      * ｽﾘｯﾌﾟ作製・高圧分散ｻﾌﾞ画面の入力項目の登録データ(仮登録時は仮登録データ)を取得
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
@@ -2634,7 +2670,7 @@ public class GXHDO102B034 implements IFormLogic {
      * @return ｽﾘｯﾌﾟ作製・高圧分散ｻﾌﾞ画面登録データ
      * @throws SQLException 例外エラー
      */
-    private List<SubSrSlipKouatsubunsan> getSubSrSlipKouatsubunsanData(QueryRunner queryRunnerQcdb,
+    protected List<SubSrSlipKouatsubunsan> getSubSrSlipKouatsubunsanData(QueryRunner queryRunnerQcdb,
             String rev, String jotaiFlg, String kojyo, String lotNo, String edaban, int jissekino) throws SQLException {
         if (JOTAI_FLG_TOROKUZUMI.equals(jotaiFlg)) {
             return loadSubSrSlipKouatsubunsan(queryRunnerQcdb, kojyo, lotNo, edaban, jissekino, rev);
@@ -3210,14 +3246,13 @@ public class GXHDO102B034 implements IFormLogic {
     /**
      * 規格値(ﾊﾟｽ回数)取得
      *
-     * @param processData 処理制御データ
      * @param queryRunnerQcdb QueryRunnerオブジェクト(Qcdb)
      * @param shikakariData 前工程WIPから仕掛情報
      * @param lotNo ﾛｯﾄNo
      * @param passMap ﾊﾟｽ回数マップ
      * @throws SQLException 例外エラー
      */
-    private void getPassValue(QueryRunner queryRunnerQcdb, Map shikakariData, String lotNo, HashMap<String, String> passMap) throws SQLException {
+    protected void getPassValue(QueryRunner queryRunnerQcdb, Map shikakariData, String lotNo, HashMap<String, String> passMap) throws SQLException {
         String kojyo = lotNo.substring(0, 3);
         String lotNo9 = lotNo.substring(3, 12);
         String edaban = lotNo.substring(12, 15);

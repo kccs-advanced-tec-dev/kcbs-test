@@ -645,7 +645,7 @@ public class GXHDO901B implements Serializable {
      * @param itemDataList 項目データ
      * @param initMessageList エラーリスト
      */
-    private void setItemListKikakuChi(List<FXHDD01> itemDataList, List<String> initMessageList) {
+    protected void setItemListKikakuChi(List<FXHDD01> itemDataList, List<String> initMessageList) {
         if (itemDataList == null) {
             return;
         }

@@ -4148,7 +4148,7 @@ public class GXHDO102B022 implements IFormLogic {
         String syurui = "誘電体ｽﾗﾘｰ作製";
         // [ﾊﾟﾗﾒｰﾀﾏｽﾀ]から、ﾃﾞｰﾀを取得
         Map fxhbm03Data = loadFxhbm03Data(queryRunnerDoc, "誘電体ｽﾗﾘｰ作製_主原料秤量_表示制御");
-        // 画面非表示項目リスト: 秤量終了日、秤量終了時間、固形分測定担当者
+        // 画面非表示項目リスト: 主原料①_調合量2、主原料①_調合量3、主原料①_調合量4、主原料①_調合量5、主原料①_調合量6、主原料①_調合量7、調合量合計
         List<String> notShowItemList = Arrays.asList(GXHDO102B022Const.SGR1_TYOUGOURYOU2, GXHDO102B022Const.SGR1_TYOUGOURYOU3, GXHDO102B022Const.SGR1_TYOUGOURYOU4,
                 GXHDO102B022Const.SGR1_TYOUGOURYOU5, GXHDO102B022Const.SGR1_TYOUGOURYOU6, GXHDO102B022Const.SGR1_TYOUGOURYOU7, GXHDO102B022Const.TYOUGOURYOUGOUKEI);
         if (fxhbm03Data == null) {
