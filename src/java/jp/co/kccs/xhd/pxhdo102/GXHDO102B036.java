@@ -582,10 +582,10 @@ public class GXHDO102B036 implements IFormLogic {
                 //計算結果の設定
                 itemSyoumijyuuryou.setValue(itemSyoumijyuuryouVal.toPlainString());
             }
-            BigDecimal itemSyoumijyuuryouVa1 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSyoumijyuuryou.getValue()); // 正味重量
+            BigDecimal itemSyoumijyuuryouVal = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSyoumijyuuryou.getValue()); // 正味重量
             // 「ｽﾘｯﾌﾟ重量合計」計算処理:「正味重量」の和を算出する。
             if (itemSlipjyuuryougoukei != null) {
-                itemSlipjyuuryougoukei.setValue(itemSyoumijyuuryouVa1.toPlainString());
+                itemSlipjyuuryougoukei.setValue(itemSyoumijyuuryouVal.toPlainString());
             }
         } catch (NullPointerException | NumberFormatException ex) {
             // 数値変換できない場合はリターン

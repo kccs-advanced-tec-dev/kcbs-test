@@ -733,16 +733,16 @@ public class GXHDO102B035 implements IFormLogic {
                 //計算結果の設定
                 itemSyoumijyuuryou.setValue(itemSyoumijyuuryouVal.toPlainString());
             }
-            BigDecimal itemSyoumijyuuryou1Va1 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSyoumijyuuryou1.getValue()); // 正味重量①
-            BigDecimal itemSyoumijyuuryou2Va1 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSyoumijyuuryou2.getValue()); // 正味重量②
-            BigDecimal itemSyoumijyuuryou3Va1 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSyoumijyuuryou3.getValue()); // 正味重量③
-            BigDecimal itemSyoumijyuuryou4Va1 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSyoumijyuuryou4.getValue()); // 正味重量④
-            BigDecimal itemSyoumijyuuryou5Va1 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSyoumijyuuryou5.getValue()); // 正味重量⑤
-            BigDecimal itemSyoumijyuuryou6Va1 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSyoumijyuuryou6.getValue()); // 正味重量⑥
+            BigDecimal itemSyoumijyuuryou1Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSyoumijyuuryou1.getValue()); // 正味重量①
+            BigDecimal itemSyoumijyuuryou2Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSyoumijyuuryou2.getValue()); // 正味重量②
+            BigDecimal itemSyoumijyuuryou3Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSyoumijyuuryou3.getValue()); // 正味重量③
+            BigDecimal itemSyoumijyuuryou4Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSyoumijyuuryou4.getValue()); // 正味重量④
+            BigDecimal itemSyoumijyuuryou5Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSyoumijyuuryou5.getValue()); // 正味重量⑤
+            BigDecimal itemSyoumijyuuryou6Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSyoumijyuuryou6.getValue()); // 正味重量⑥
             // 「ｽﾘｯﾌﾟ重量合計」計算処理:「正味重量①」 ～ 「正味重量⑥」 の和を算出する。
             if (itemSlipjyuuryougoukei != null) {
-                BigDecimal itemYuudentaislurryjyuurougoukeiVal = itemSyoumijyuuryou1Va1.add(itemSyoumijyuuryou2Va1).add(itemSyoumijyuuryou3Va1).add(
-                        itemSyoumijyuuryou4Va1).add(itemSyoumijyuuryou5Va1).add(itemSyoumijyuuryou6Va1);
+                BigDecimal itemYuudentaislurryjyuurougoukeiVal = itemSyoumijyuuryou1Val.add(itemSyoumijyuuryou2Val).add(itemSyoumijyuuryou3Val).add(
+                        itemSyoumijyuuryou4Val).add(itemSyoumijyuuryou5Val).add(itemSyoumijyuuryou6Val);
                 itemSlipjyuuryougoukei.setValue(itemYuudentaislurryjyuurougoukeiVal.toPlainString());
             }
         } catch (NullPointerException | NumberFormatException ex) {

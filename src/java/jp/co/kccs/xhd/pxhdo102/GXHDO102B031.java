@@ -1115,14 +1115,14 @@ public class GXHDO102B031 implements IFormLogic {
         try {
 
             FXHDD01 bindertenkaryougoukei = getItemRow(processData.getItemList(), GXHDO102B031Const.BINDERTENKARYOUGOUKEI); // ﾊﾞｲﾝﾀﾞｰ添加量合計
-            BigDecimal itemHyouryou1Va1 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemHyouryou1.getValue()); // 秤量①
-            BigDecimal itemHyouryou2Va1 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemHyouryou2.getValue()); // 秤量②
-            BigDecimal itemHyouryou3Va1 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemHyouryou3.getValue()); // 秤量③
-            BigDecimal itemHyouryou4Va1 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemHyouryou4.getValue()); // 秤量④
-            BigDecimal itemHyouryou5Va1 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemHyouryou5.getValue()); // 秤量⑤
-            BigDecimal itemHyouryou6Va1 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemHyouryou6.getValue()); // 秤量⑥
+            BigDecimal itemHyouryou1Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemHyouryou1.getValue()); // 秤量①
+            BigDecimal itemHyouryou2Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemHyouryou2.getValue()); // 秤量②
+            BigDecimal itemHyouryou3Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemHyouryou3.getValue()); // 秤量③
+            BigDecimal itemHyouryou4Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemHyouryou4.getValue()); // 秤量④
+            BigDecimal itemHyouryou5Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemHyouryou5.getValue()); // 秤量⑤
+            BigDecimal itemHyouryou6Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemHyouryou6.getValue()); // 秤量⑥
             // 「秤量①」 + 「秤量②」 + 「秤量③」 + 「秤量④」 + 「秤量⑤」 + 「秤量⑥」 を算出する。
-            BigDecimal bindertenkaryougoukeiVal = itemHyouryou1Va1.add(itemHyouryou2Va1).add(itemHyouryou3Va1).add(itemHyouryou4Va1).add(itemHyouryou5Va1).add(itemHyouryou6Va1);
+            BigDecimal bindertenkaryougoukeiVal = itemHyouryou1Val.add(itemHyouryou2Val).add(itemHyouryou3Val).add(itemHyouryou4Val).add(itemHyouryou5Val).add(itemHyouryou6Val);
             bindertenkaryougoukei.setValue(bindertenkaryougoukeiVal.toPlainString());
 
         } catch (NullPointerException | NumberFormatException ex) {

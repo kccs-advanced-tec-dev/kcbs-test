@@ -1089,14 +1089,14 @@ public class GXHDO102B027 implements IFormLogic {
         try {
 
             FXHDD01 slurrygoukeijyuuryou = getItemRow(processData.getItemList(), GXHDO102B027Const.SLURRYGOUKEIJYUURYOU); // ｽﾗﾘｰ合計重量
-            BigDecimal itemSlurryjyuuryou1Va1 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSlurryjyuuryou1.getValue()); // ｽﾗﾘｰ重量①
-            BigDecimal itemSlurryjyuuryou2Va1 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSlurryjyuuryou2.getValue()); // ｽﾗﾘｰ重量②
-            BigDecimal itemSlurryjyuuryou3Va1 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSlurryjyuuryou3.getValue()); // ｽﾗﾘｰ重量③
-            BigDecimal itemSlurryjyuuryou4Va1 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSlurryjyuuryou4.getValue()); // ｽﾗﾘｰ重量④
-            BigDecimal itemSlurryjyuuryou5Va1 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSlurryjyuuryou5.getValue()); // ｽﾗﾘｰ重量⑤
-            BigDecimal itemSlurryjyuuryou6Va1 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSlurryjyuuryou6.getValue()); // ｽﾗﾘｰ重量⑥
+            BigDecimal itemSlurryjyuuryou1Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSlurryjyuuryou1.getValue()); // ｽﾗﾘｰ重量①
+            BigDecimal itemSlurryjyuuryou2Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSlurryjyuuryou2.getValue()); // ｽﾗﾘｰ重量②
+            BigDecimal itemSlurryjyuuryou3Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSlurryjyuuryou3.getValue()); // ｽﾗﾘｰ重量③
+            BigDecimal itemSlurryjyuuryou4Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSlurryjyuuryou4.getValue()); // ｽﾗﾘｰ重量④
+            BigDecimal itemSlurryjyuuryou5Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSlurryjyuuryou5.getValue()); // ｽﾗﾘｰ重量⑤
+            BigDecimal itemSlurryjyuuryou6Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSlurryjyuuryou6.getValue()); // ｽﾗﾘｰ重量⑥
             // 「ｽﾗﾘｰ重量①」 + 「ｽﾗﾘｰ重量②」 + 「ｽﾗﾘｰ重量③」 + 「ｽﾗﾘｰ重量④」 + 「ｽﾗﾘｰ重量⑤」 + 「ｽﾗﾘｰ重量⑥」 を算出する。
-            BigDecimal slurrygoukeijyuuryouVal = itemSlurryjyuuryou1Va1.add(itemSlurryjyuuryou2Va1).add(itemSlurryjyuuryou3Va1).add(itemSlurryjyuuryou4Va1).add(itemSlurryjyuuryou5Va1).add(itemSlurryjyuuryou6Va1);
+            BigDecimal slurrygoukeijyuuryouVal = itemSlurryjyuuryou1Val.add(itemSlurryjyuuryou2Val).add(itemSlurryjyuuryou3Val).add(itemSlurryjyuuryou4Val).add(itemSlurryjyuuryou5Val).add(itemSlurryjyuuryou6Val);
             slurrygoukeijyuuryou.setValue(slurrygoukeijyuuryouVal.toPlainString());
 
         } catch (NullPointerException | NumberFormatException ex) {

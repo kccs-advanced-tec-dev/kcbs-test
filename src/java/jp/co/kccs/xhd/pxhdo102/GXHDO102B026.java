@@ -1572,24 +1572,24 @@ public class GXHDO102B026 implements IFormLogic {
                 }
             }
 
-            BigDecimal itemYuudentaislurryjyuurou1Va1 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemYuudentaislurryjyuurou1.getValue()); // 誘電体ｽﾗﾘｰ重量1
-            BigDecimal itemYuudentaislurryjyuurou1Va2 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemYuudentaislurryjyuurou2.getValue()); // 誘電体ｽﾗﾘｰ重量2
-            BigDecimal itemYuudentaislurryjyuurou1Va3 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemYuudentaislurryjyuurou3.getValue()); // 誘電体ｽﾗﾘｰ重量3
-            BigDecimal itemYuudentaislurryjyuurou1Va4 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemYuudentaislurryjyuurou4.getValue()); // 誘電体ｽﾗﾘｰ重量4
-            BigDecimal itemYuudentaislurryjyuurou1Va5 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemYuudentaislurryjyuurou5.getValue()); // 誘電体ｽﾗﾘｰ重量5
-            BigDecimal itemYuudentaislurryjyuurou1Va6 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemYuudentaislurryjyuurou6.getValue()); // 誘電体ｽﾗﾘｰ重量6
-            BigDecimal itemYuudentaislurryjyuurou1Va7 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemYuudentaislurryjyuurou7.getValue()); // 誘電体ｽﾗﾘｰ重量7
-            BigDecimal itemYuudentaislurryjyuurou1Va8 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemYuudentaislurryjyuurou8.getValue()); // 誘電体ｽﾗﾘｰ重量8
-            BigDecimal itemYuudentaislurryjyuurou1Va9 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemYuudentaislurryjyuurou9.getValue()); // 誘電体ｽﾗﾘｰ重量9
-            BigDecimal itemYuudentaislurryjyuurou1Va10 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemYuudentaislurryjyuurou10.getValue()); // 誘電体ｽﾗﾘｰ重量10
-            BigDecimal itemYuudentaislurryjyuurou1Va11 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemYuudentaislurryjyuurou11.getValue()); // 誘電体ｽﾗﾘｰ重量11
-            BigDecimal itemYuudentaislurryjyuurou1Va12 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemYuudentaislurryjyuurou12.getValue()); // 誘電体ｽﾗﾘｰ重量12
+            BigDecimal itemYuudentaislurryjyuurou1Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemYuudentaislurryjyuurou1.getValue()); // 誘電体ｽﾗﾘｰ重量1
+            BigDecimal itemYuudentaislurryjyuurou2Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemYuudentaislurryjyuurou2.getValue()); // 誘電体ｽﾗﾘｰ重量2
+            BigDecimal itemYuudentaislurryjyuurou3Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemYuudentaislurryjyuurou3.getValue()); // 誘電体ｽﾗﾘｰ重量3
+            BigDecimal itemYuudentaislurryjyuurou4Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemYuudentaislurryjyuurou4.getValue()); // 誘電体ｽﾗﾘｰ重量4
+            BigDecimal itemYuudentaislurryjyuurou5Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemYuudentaislurryjyuurou5.getValue()); // 誘電体ｽﾗﾘｰ重量5
+            BigDecimal itemYuudentaislurryjyuurou6Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemYuudentaislurryjyuurou6.getValue()); // 誘電体ｽﾗﾘｰ重量6
+            BigDecimal itemYuudentaislurryjyuurou7Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemYuudentaislurryjyuurou7.getValue()); // 誘電体ｽﾗﾘｰ重量7
+            BigDecimal itemYuudentaislurryjyuurou8Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemYuudentaislurryjyuurou8.getValue()); // 誘電体ｽﾗﾘｰ重量8
+            BigDecimal itemYuudentaislurryjyuurou9Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemYuudentaislurryjyuurou9.getValue()); // 誘電体ｽﾗﾘｰ重量9
+            BigDecimal itemYuudentaislurryjyuurou10Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemYuudentaislurryjyuurou10.getValue()); // 誘電体ｽﾗﾘｰ重量10
+            BigDecimal itemYuudentaislurryjyuurou11Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemYuudentaislurryjyuurou11.getValue()); // 誘電体ｽﾗﾘｰ重量11
+            BigDecimal itemYuudentaislurryjyuurou12Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemYuudentaislurryjyuurou12.getValue()); // 誘電体ｽﾗﾘｰ重量12
             // 「誘電体ｽﾗﾘｰ重量合計」計算処理:「誘電体ｽﾗﾘｰ重量1」 ～ 「誘電体ｽﾗﾘｰ重量12」 の和を算出する。
             if (itemYuudentaislurryjyuurougoukei != null) {
-                BigDecimal itemYuudentaislurryjyuurougoukeiVal = itemYuudentaislurryjyuurou1Va1.add(itemYuudentaislurryjyuurou1Va2).add(itemYuudentaislurryjyuurou1Va3).add(
-                        itemYuudentaislurryjyuurou1Va4).add(itemYuudentaislurryjyuurou1Va5).add(itemYuudentaislurryjyuurou1Va6).add(itemYuudentaislurryjyuurou1Va7).add(
-                        itemYuudentaislurryjyuurou1Va8).add(itemYuudentaislurryjyuurou1Va9).add(itemYuudentaislurryjyuurou1Va10).add(itemYuudentaislurryjyuurou1Va11).add(
-                        itemYuudentaislurryjyuurou1Va12);
+                BigDecimal itemYuudentaislurryjyuurougoukeiVal = itemYuudentaislurryjyuurou1Val.add(itemYuudentaislurryjyuurou2Val).add(itemYuudentaislurryjyuurou3Val).add(
+                        itemYuudentaislurryjyuurou4Val).add(itemYuudentaislurryjyuurou5Val).add(itemYuudentaislurryjyuurou6Val).add(itemYuudentaislurryjyuurou7Val).add(
+                        itemYuudentaislurryjyuurou8Val).add(itemYuudentaislurryjyuurou9Val).add(itemYuudentaislurryjyuurou10Val).add(itemYuudentaislurryjyuurou11Val).add(
+                        itemYuudentaislurryjyuurou12Val);
                 itemYuudentaislurryjyuurougoukei.setValue(itemYuudentaislurryjyuurougoukeiVal.toPlainString());
             }
         } catch (NullPointerException | NumberFormatException ex) {
@@ -1980,9 +1980,12 @@ public class GXHDO102B026 implements IFormLogic {
             processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
             return processData;
         }
-        processData.setMethod("");
         // 誘電体ｽﾗﾘｰ有効期限計算処理
         calcYuudentaislurryyuukoukigen(processData, sryuudentaifunsaiData);
+        if (processData.getErrorMessageInfoList() != null && !processData.getErrorMessageInfoList().isEmpty()) {
+            return processData;
+        }
+        processData.setMethod("");
         return processData;
     }
 
@@ -2037,7 +2040,8 @@ public class GXHDO102B026 implements IFormLogic {
             }
         } catch (NullPointerException | NumberFormatException ex) {
             // 数値変換できない場合はリターン
-            ErrUtil.outputErrorLog("誘電体ｽﾗﾘｰ有効期限計算にエラー発生", ex, LOGGER);
+            ErrUtil.outputErrorLog("誘電体ｽﾗﾘｰ有効期限計算に" + ex.getClass().getSimpleName() + "エラー発生", ex, LOGGER);
+            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
         }
     }
 

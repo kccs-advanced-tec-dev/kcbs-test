@@ -414,15 +414,13 @@ public class GXHDO102B034A extends GXHDO901BEX {
             }
         }
 
-        boolean isExist;
-
         //(8)前工程標準規格情報より、情報がある場合
         for (int i = 0; i <= itemDataList.size() - 1; i++) {
             // 条件ﾃｰﾌﾞﾙ工程名が空の場合は規格値は設定しない
             if (StringUtil.isEmpty(itemDataList.get(i).getJokenKoteiMei())) {
                 continue;
             }
-            isExist = false;
+            boolean isExist = false;
             if (!GXHDO102B034Const.SETTEIATSURYOKU.equals(itemDataList.get(i).getItemId()) && !GXHDO102B034Const.KAISHITYOKUGOHAIKIRYOU.equals(itemDataList.get(i).getItemId())) {
                 //(6)前工程規格情報より、情報がある場合
                 if (null != listDaMkJoken && !listDaMkJoken.isEmpty()) {
