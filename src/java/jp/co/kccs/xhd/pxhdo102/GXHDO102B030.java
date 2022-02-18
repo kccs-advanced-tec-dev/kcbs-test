@@ -1138,8 +1138,60 @@ public class GXHDO102B030 implements IFormLogic {
             processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
             return processData;
         }
-        processData.setMethod("");
-        calcYouzaityouseiryou(processData);
+        clearItemListBackColor(processData);
+        // 溶剤調整量
+        FXHDD01 youzaityouseiryou = getItemRow(processData.getItemList(), GXHDO102B030Const.YOUZAITYOUSEIRYOU);
+        try {
+            QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
+            QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
+            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+            HttpSession session = (HttpSession) externalContext.getSession(false);
+            String formId = StringUtil.nullToBlank(session.getAttribute("formId"));
+            String lotNo = (String) session.getAttribute("lotNo");
+            int paramJissekino = (Integer) session.getAttribute("jissekino");
+            String tantoshaCd = (String) session.getAttribute("tantoshaCd");
+            String kojyo = lotNo.substring(0, 3);
+            String lotNo9 = lotNo.substring(3, 12);
+            // 前工程WIPから仕掛情報を取得処理
+            Map shikakariData = loadShikakariDataFromWip(queryRunnerDoc, tantoshaCd, lotNo);
+            String oyalotEdaban = StringUtil.nullToBlank(getMapData(shikakariData, "oyalotedaban")); //親ﾛｯﾄ枝番
+            // [原材料品質DB登録実績]から、ﾃﾞｰﾀを取得
+            Map fxhdd11RevInfo = loadFxhdd11RevInfo(queryRunnerDoc, kojyo, lotNo9, oyalotEdaban, paramJissekino, formId);
+            String rev = StringUtil.nullToBlank(getMapData(fxhdd11RevInfo, "rev")); //親ﾛｯﾄ枝番
+            // (19)[ｽﾘｯﾌﾟ作製・ｽﾗﾘｰ固形分調整(ｽﾃﾝ容器)]から、ﾃﾞｰﾀを取得
+            Map srSlipSlurrykokeibuntyouseiSutenyoukiData = loadSrSlipSlurrykokeibuntyouseiSutenyouki(queryRunnerQcdb, kojyo, lotNo9, oyalotEdaban, rev);
+            // (20)[ｽﾘｯﾌﾟ作製・ﾊﾞｲﾝﾀﾞｰ秤量・投入]から、ﾃﾞｰﾀを取得
+            Map srSlipBinderhyouryouTounyuuData = loadSrSlipBinderhyouryouTounyuu(queryRunnerQcdb, kojyo, lotNo9, oyalotEdaban, rev);
+            if (srSlipSlurrykokeibuntyouseiSutenyoukiData == null || srSlipSlurrykokeibuntyouseiSutenyoukiData.isEmpty()
+                    || srSlipBinderhyouryouTounyuuData == null || srSlipBinderhyouryouTounyuuData.isEmpty()) {
+                // ｴﾗｰ項目をﾘｽﾄに追加
+                ErrorMessageInfo checkItemError = MessageUtil.getErrorMessageInfo("XHD-000210", true, true, null, "ﾃﾞｰﾀ");
+                if (checkItemError != null) {
+                    processData.setErrorMessageInfoList(Arrays.asList(checkItemError));
+                    return processData;
+                }
+            } else {
+                String kokeibunhiritu = StringUtil.nullToBlank(srSlipSlurrykokeibuntyouseiSutenyoukiData.get("kokeibunhiritu"));// 固形分比率
+                //「固形分比率」が0またはNULLだった場合
+                if (NumberUtil.isZeroOrEmpty(kokeibunhiritu)) {
+                    // ｴﾗｰ項目をﾘｽﾄに追加
+                    ErrorMessageInfo checkItemError = MessageUtil.getErrorMessageInfo("XHD-000210", true, true, null, "固形分比率");
+                    if (checkItemError != null) {
+                        processData.setErrorMessageInfoList(Arrays.asList(checkItemError));
+                        return processData;
+                    }
+                }
+            }
+            calcYouzaityouseiryou(processData, srSlipSlurrykokeibuntyouseiSutenyoukiData, srSlipBinderhyouryouTounyuuData);
+            processData.setMethod("");
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog(youzaityouseiryou.getLabel1() + "計算にエラー発生", ex, LOGGER);
+        } catch (NullPointerException | NumberFormatException ex) {
+            // 数値変換できない場合はリターン
+            ErrUtil.outputErrorLog(youzaityouseiryou.getLabel1() + "計算に" + ex.getClass().getSimpleName() + "エラー発生", ex, LOGGER);
+            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            return processData;
+        }
         return processData;
     }
 
@@ -1150,57 +1202,43 @@ public class GXHDO102B030 implements IFormLogic {
      * @return エラーメッセージ情報
      */
     public ErrorMessageInfo checkYouzaityouseiryouKeisan(ProcessData processData) {
-//        // ｽﾗﾘｰ重量
-//        FXHDD01 slurryjyuuryou = getItemRow(processData.getItemList(), GXHDO102B030Const.SLURRYJYUURYOU);
-//        // 固形分比率
-//        FXHDD01 kokeibunhiritu = getItemRow(processData.getItemList(), kokeibunhirituItemid);
-//        // 乾燥固形分
-//        FXHDD01 kansoukokeibun = getItemRow(processData.getItemList(), kansoukokeibunItemid);
-//        //「ｽﾗﾘｰ重量」ﾁｪｯｸ
-//        if (slurryjyuuryou != null && StringUtil.isEmpty(slurryjyuuryou.getValue())) {
-//            // ｴﾗｰ項目をﾘｽﾄに追加
-//            List<FXHDD01> errFxhdd01List = Arrays.asList(slurryjyuuryou);
-//            return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, slurryjyuuryou.getLabel1());
-//        }
-//        //「固形分比率」ﾁｪｯｸ
-//        if (kokeibunhiritu != null) {
-//            // 「固形分比率」ﾁｪｯｸ
-//            String itemKokeibunhirituVal = StringUtil.nullToBlank(kokeibunhiritu.getValue());
-//            if ("".equals(itemKokeibunhirituVal) || new BigDecimal(itemKokeibunhirituVal).compareTo(BigDecimal.ZERO) == 0) {
-//                // ｴﾗｰ項目をﾘｽﾄに追加
-//                List<FXHDD01> errFxhdd01List = Arrays.asList(kokeibunhiritu);
-//                return MessageUtil.getErrorMessageInfo("XHD-000181", true, true, errFxhdd01List, kokeibunhiritu.getLabel1());
-//            }
-//        }
-//        //「乾燥固形分」ﾁｪｯｸ
-//        if (kansoukokeibun != null) {
-//            // 「乾燥固形分」ﾁｪｯｸ
-//            BigDecimal itemKansoukokeibunVal = ValidateUtil.getItemKikakuChiCheckVal(kansoukokeibun); // 乾燥固形分の規格値
-//            if (itemKansoukokeibunVal == null || BigDecimal.ZERO.compareTo(itemKansoukokeibunVal) == 0) {
-//                kansoukokeibun.setBackColor3(ErrUtil.ERR_BACK_COLOR);
-//                // ｴﾗｰ項目をﾘｽﾄに追加
-//                List<FXHDD01> errFxhdd01List = Arrays.asList(kansoukokeibun);
-//                return MessageUtil.getErrorMessageInfo("XHD-000181", true, true, errFxhdd01List, kansoukokeibun.getLabel1());
-//            }
-//        }
-
+        // 誘電体ｽﾗﾘｰ_調合量1
+        FXHDD01 tyougouryou1 = getItemRow(processData.getItemList(), GXHDO102B030Const.YUUDENTAISLURRY_TYOUGOURYOU1);
+        // 誘電体ｽﾗﾘｰ_調合量2
+        FXHDD01 tyougouryou2 = getItemRow(processData.getItemList(), GXHDO102B030Const.YUUDENTAISLURRY_TYOUGOURYOU2);
+        //「誘電体ｽﾗﾘｰ_調合量1」「誘電体ｽﾗﾘｰ_調合量2」ﾁｪｯｸ
+        if (tyougouryou1 != null && tyougouryou2 != null && NumberUtil.isZeroOrEmpty(tyougouryou1.getValue())
+                && NumberUtil.isZeroOrEmpty(tyougouryou2.getValue())) {
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(tyougouryou1, tyougouryou2);
+            return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, "「誘電体ｽﾗﾘｰ_調合量1」「誘電体ｽﾗﾘｰ_調合量2」");
+        }
         return null;
+    }
+
+    /**
+     * 背景色をデフォルトの背景色に戻す
+     *
+     * @param buttonId ボタンID
+     */
+    private void clearItemListBackColor(ProcessData processData) {
+        processData.getItemList().forEach((fxhdd01) -> {
+            fxhdd01.setBackColor3(fxhdd01.getBackColorInputDefault());
+        });
     }
 
     /**
      * 溶剤調整量計算
      *
      * @param processData 処理制御データ
+     * @param srSlipSlurrykokeibuntyouseiSutenyoukiData ｽﾗﾘｰ固形分調整(ｽﾃﾝ容器)ﾃﾞｰﾀ
+     * @param srSlipBinderhyouryouTounyuuData ﾊﾞｲﾝﾀﾞｰ秤量・投入ﾃﾞｰﾀ
      */
-    private void calcYouzaityouseiryou(ProcessData processData) {
-//        // ｽﾗﾘｰ重量
-//        FXHDD01 slurryjyuuryou = getItemRow(processData.getItemList(), slurryjyuuryouItemid);
-//        // 固形分比率
-//        FXHDD01 kokeibunhiritu = getItemRow(processData.getItemList(), kokeibunhirituItemid);
-//        // 乾燥固形分
-//        FXHDD01 kansoukokeibun = getItemRow(processData.getItemList(), kansoukokeibunItemid);
-//        // 溶剤調整量
-//        FXHDD01 youzaityouseiryou = getItemRow(processData.getItemList(), youzaityouseiryouItemid);
+    private void calcYouzaityouseiryou(ProcessData processData, Map srSlipSlurrykokeibuntyouseiSutenyoukiData, Map srSlipBinderhyouryouTounyuuData) {
+        // 誘電体ｽﾗﾘｰ_調合量1
+        FXHDD01 tyougouryou1 = getItemRow(processData.getItemList(), GXHDO102B030Const.YUUDENTAISLURRY_TYOUGOURYOU1);
+        // 誘電体ｽﾗﾘｰ_調合量2
+        FXHDD01 tyougouryou2 = getItemRow(processData.getItemList(), GXHDO102B030Const.YUUDENTAISLURRY_TYOUGOURYOU2);
         // 溶剤調整量
         FXHDD01 youzaityouseiryou = getItemRow(processData.getItemList(), GXHDO102B030Const.YOUZAITYOUSEIRYOU);
         // 誘電体ｽﾗﾘｰ_調合量規格
@@ -1219,17 +1257,30 @@ public class GXHDO102B030 implements IFormLogic {
         FXHDD01 youzai2Tyougouryoukikaku = getItemRow(processData.getItemList(), GXHDO102B030Const.YOUZAI2_TYOUGOURYOUKIKAKU);
         try {
             if (youzaityouseiryou != null) {
-                //「溶剤調整量」= ｽﾗﾘｰ重量 ×固形分比率 ×乾燥固形分 -ｽﾗﾘｰ重量 を算出する。
-//                BigDecimal slurryjyuuryouVal = new BigDecimal(slurryjyuuryou.getValue());
-//                BigDecimal kokeibunhirituVal = new BigDecimal(kokeibunhiritu.getValue());
-//                BigDecimal kansoukokeibunVal = ValidateUtil.getItemKikakuChiCheckVal(kansoukokeibun); // 溶乾燥固形分の規格値
-//                BigDecimal youzaityouseiryouVal = slurryjyuuryouVal.multiply(kokeibunhirituVal).multiply(kansoukokeibunVal).subtract(slurryjyuuryouVal);
-                BigDecimal youzaityouseiryouVal = new BigDecimal(99);
-                // 計算結果の設定 TODO QA204
-                youzaityouseiryou.setValue(youzaityouseiryouVal.toPlainString());
+                BigDecimal tyougouryou1Val = BigDecimal.ZERO; //誘電体ｽﾗﾘｰ_調合量1
+                BigDecimal tyougouryou2Val = BigDecimal.ZERO; //誘電体ｽﾗﾘｰ_調合量2
+                // 誘電体ｽﾗﾘｰ_調合量1の取得値
+                if (tyougouryou1 != null && !NumberUtil.isZeroOrEmpty(tyougouryou1.getValue())) {
+                    tyougouryou1Val = new BigDecimal(tyougouryou1.getValue());
+                }
+                // 誘電体ｽﾗﾘｰ_調合量2の取得値
+                if (tyougouryou2 != null && !NumberUtil.isZeroOrEmpty(tyougouryou2.getValue())) {
+                    tyougouryou2Val = new BigDecimal(tyougouryou2.getValue());
+                }
+                // 「ｽﾗﾘｰ重量」 = 「誘電体ｽﾗﾘｰ_調合量1」＋「誘電体ｽﾗﾘｰ_調合量2」
+                BigDecimal slurryjyuuryou = tyougouryou1Val.add(tyougouryou2Val);
+                BigDecimal dassikokeibun = new BigDecimal(String.valueOf(srSlipSlurrykokeibuntyouseiSutenyoukiData.get("dassikokeibun")));// 脱脂固形分
+                BigDecimal slipyouzaityouseiryouVal = new BigDecimal(String.valueOf(srSlipSlurrykokeibuntyouseiSutenyoukiData.get("youzaityouseiryou")));// 溶剤調整量
+                BigDecimal kokeibunhiritu = new BigDecimal(String.valueOf(srSlipSlurrykokeibuntyouseiSutenyoukiData.get("kokeibunhiritu")));// 固形分比率
+                BigDecimal bindertenkaryougoukei = new BigDecimal(String.valueOf(srSlipBinderhyouryouTounyuuData.get("bindertenkaryougoukei")));// ﾊﾞｲﾝﾀﾞｰ添加量合計
+                //「溶剤調整量」= 「脱脂固形分」 × (「ｽﾗﾘｰ重量」 + 「溶剤調整量」) ÷ 「固形分比率」 - 「ｽﾗﾘｰ重量」 - 「ﾊﾞｲﾝﾀﾞｰ添加量合計」
+                BigDecimal youzaityouseiryouVal = dassikokeibun.multiply(slurryjyuuryou.add(slipyouzaityouseiryouVal))
+                        .divide(kokeibunhiritu, 2, RoundingMode.DOWN).subtract(slurryjyuuryou).subtract(bindertenkaryougoukei);
+                // 計算結果の設定
+                youzaityouseiryou.setValue(youzaityouseiryouVal.setScale(0, RoundingMode.HALF_UP).toPlainString());
                 // 溶剤調整量 ÷ 2
                 BigDecimal youzaityouseiryou2Val = youzaityouseiryouVal.divide(new BigDecimal(2), 0, RoundingMode.HALF_UP);
-                // 溶剤調整量 ÷ 2
+                // 誘電体ｽﾗﾘｰ_調合量規格、分散材1_調合量規格、分散材2_調合量規格、溶剤1_調合量規格、溶剤2_調合量規格に調合量の計算結果後ろに「±0」を付けて設定する。
                 String youzaityouseiryou2ValStr = "【" + youzaityouseiryou2Val.toPlainString() + "±0" + "】";
                 // 誘電体ｽﾗﾘｰ_調合量規格
                 if (yuudentaislurryTyougouryoukikaku != null) {
@@ -4013,8 +4064,7 @@ public class GXHDO102B030 implements IFormLogic {
      * @param edaban 枝番
      * @param zairyokubun 材料区分
      * @param systemTime システム日付(原材料品質DB登録実績に更新した値と同値)
-     * @param srSlipYouzaihyouryouTounyuuSutenyouki
-     * ｽﾘｯﾌﾟ作製・溶剤秤量・投入(ｽﾃﾝ容器)更新前データ
+     * @param srSlipYouzaihyouryouTounyuuSutenyouki ｽﾘｯﾌﾟ作製・溶剤秤量・投入(ｽﾃﾝ容器)更新前データ
      * @param processData 処理制御データ
      * @throws SQLException 例外エラー
      */
@@ -4470,5 +4520,79 @@ public class GXHDO102B030 implements IFormLogic {
             return 1;
         }
         return defaultValue;
+    }
+
+    /**
+     * (19)[ｽﾘｯﾌﾟ作製・ｽﾗﾘｰ固形分調整(ｽﾃﾝ容器)]から、ﾃﾞｰﾀを取得
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev revision(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadSrSlipSlurrykokeibuntyouseiSutenyouki(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev) throws SQLException {
+
+        String sql = "SELECT dassikokeibun, youzaityouseiryou, kokeibunhiritu"
+                + " FROM sr_slip_slurrykokeibuntyousei_sutenyouki "
+                + " WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
+
+        // revisionが入っている場合、条件に追加
+        if (!StringUtil.isEmpty(rev)) {
+            sql += "AND revision = ? ";
+        }
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+
+        // revisionが入っている場合、条件に追加
+        if (!StringUtil.isEmpty(rev)) {
+            params.add(rev);
+        }
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+
+    /**
+     * (20)[ｽﾘｯﾌﾟ作製・ﾊﾞｲﾝﾀﾞｰ秤量・投入]から、ﾃﾞｰﾀを取得
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev revision(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadSrSlipBinderhyouryouTounyuu(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+            String edaban, String rev) throws SQLException {
+
+        String sql = "SELECT bindertenkaryougoukei"
+                + " FROM sr_slip_binderhyouryou_tounyuu "
+                + " WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
+
+        // revisionが入っている場合、条件に追加
+        if (!StringUtil.isEmpty(rev)) {
+            sql += "AND revision = ? ";
+        }
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+
+        // revisionが入っている場合、条件に追加
+        if (!StringUtil.isEmpty(rev)) {
+            params.add(rev);
+        }
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
     }
 }

@@ -36,6 +36,7 @@ import jp.co.kccs.xhd.util.DBUtil;
 import jp.co.kccs.xhd.util.DateUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
+import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.StringUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import jp.co.kccs.xhd.util.ValidateUtil;
@@ -449,12 +450,12 @@ public class GXHDO102B037 implements IFormLogic {
             List<FXHDD01> errFxhdd01List = Arrays.asList(kansougosoujyuuryou);
             return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, kansougosoujyuuryou.getLabel1());
         }
-        //「ｱﾙﾐ皿風袋重量」ﾁｪｯｸ
+        //「ﾙﾂﾎﾞ風袋重量」ﾁｪｯｸ
         if (StringUtil.isEmpty(rutsubohuutaijyuuryou.getValue())) {
             List<FXHDD01> errFxhdd01List = Arrays.asList(rutsubohuutaijyuuryou);
             return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, rutsubohuutaijyuuryou.getLabel1());
         }
-        // 乾燥後総重量<ｱﾙﾐ皿風袋重量の場合
+        // 乾燥後総重量<ﾙﾂﾎﾞ風袋重量の場合
         BigDecimal kansougosoujyuuryouVal = new BigDecimal(kansougosoujyuuryou.getValue());
         BigDecimal rutsubohuutaijyuuryouVal = new BigDecimal(rutsubohuutaijyuuryou.getValue());
         if (kansougosoujyuuryouVal.compareTo(rutsubohuutaijyuuryouVal) == -1) {
@@ -531,7 +532,7 @@ public class GXHDO102B037 implements IFormLogic {
             return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, kansougosyoumijyuuryou.getLabel1());
         }
         //「乾燥前ｽﾘｯﾌﾟ重量」ﾁｪｯｸ
-        if (StringUtil.isEmpty(kansoumaeslipjyuuryou.getValue())) {
+        if (NumberUtil.isZeroOrEmpty(kansoumaeslipjyuuryou.getValue())) {
             List<FXHDD01> errFxhdd01List = Arrays.asList(kansoumaeslipjyuuryou);
             return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, kansoumaeslipjyuuryou.getLabel1());
         }
@@ -550,7 +551,7 @@ public class GXHDO102B037 implements IFormLogic {
         try {
             // 固形分比率
             FXHDD01 kokeibunhiritsu = getItemRow(processData.getItemList(), GXHDO102B037Const.KOKEIBUNHIRITSU);
-            //「固形分比率」= 「乾燥後正味重量」 ÷ 「乾燥前ｽﾘｯﾌﾟ重量」 * 100(小数点第四位を四捨五入) → 式を変換して先に100を乗算
+            //「固形分比率」= 「乾燥後正味重量」 ÷ 「乾燥前ｽﾘｯﾌﾟ重量」 * 100(小数点第三位を四捨五入) → 式を変換して先に100を乗算
             BigDecimal itemKansougosyoumijyuuryouVal = new BigDecimal(kansougosyoumijyuuryou.getValue());
             BigDecimal itemKansoumaeslipjyuuryouVal = new BigDecimal(kansoumaeslipjyuuryou.getValue());
             BigDecimal itemKokeibunhiritsuVal = itemKansougosyoumijyuuryouVal.multiply(BigDecimal.valueOf(100)).divide(itemKansoumaeslipjyuuryouVal, 2, RoundingMode.HALF_UP);
@@ -622,7 +623,7 @@ public class GXHDO102B037 implements IFormLogic {
         // [ｽﾘｯﾌﾟ作成・FP(ﾊﾞｹﾂ)]から、ﾃﾞｰﾀを取得
         Map fpBaketsuData = loadFpBaketsuData(queryRunnerQcdb, kojyo, lotNo9, edaban);
         slipjyuuryougoukeiVal = StringUtil.nullToBlank(getMapData(fpBaketsuData, "slipjyuuryougoukei"));
-        if (fpBaketsuData == null || fpBaketsuData.isEmpty() || StringUtil.isEmpty(slipjyuuryougoukeiVal)) {
+        if (StringUtil.isEmpty(slipjyuuryougoukeiVal)) {
             // [ｽﾘｯﾌﾟ作製・FP(成形ﾀﾝｸ)]から、ﾃﾞｰﾀを取得
             Map fpSeikeitankData = loadFpSeikeitankData(queryRunnerQcdb, kojyo, lotNo9, edaban);
             slipjyuuryougoukeiVal = StringUtil.nullToBlank(getMapData(fpSeikeitankData, "slipjyuuryougoukei"));
@@ -646,6 +647,11 @@ public class GXHDO102B037 implements IFormLogic {
             if (kokeibunsokuteData == null || kokeibunsokuteData.isEmpty() || StringUtil.isEmpty(youzaityouseiryouVal)) {
                 // ｴﾗｰ項目をﾘｽﾄに追加
                 return MessageUtil.getErrorMessageInfo("XHD-000037", false, false, new ArrayList<>(), youzaityouseiryou);
+            }
+            // ｽﾘｯﾌﾟ予定重量、溶剤調整量の両方が0だった場合、エラー
+            if (NumberUtil.isZero(slipyoteijyuuryouVal) && NumberUtil.isZero(youzaityouseiryouVal)) {
+                // ｴﾗｰ項目をﾘｽﾄに追加
+                return MessageUtil.getErrorMessageInfo("XHD-000210", false, false, new ArrayList<>(), "ｽﾘｯﾌﾟ予定重量、溶剤調整量");
             }
             calcSyuuritsu(processData, slipjyuuryougoukeiVal, slipyoteijyuuryouVal, youzaityouseiryouVal);
         }
@@ -724,7 +730,7 @@ public class GXHDO102B037 implements IFormLogic {
         String syurui = "ｽﾘｯﾌﾟ作製";
         String kikakuJoken = "規格情報";
         String binderkongousyuuryounichiji = "ﾊﾞｲﾝﾀﾞｰ混合終了時間";
-        String kikakutiChi;
+        String kikakutiChi = null;
         Map binderkongousyuuryounichijiData = new HashMap<>();
         // [ｽﾘｯﾌﾟ作製・ﾊﾞｲﾝﾀﾞｰ混合]から、ﾃﾞｰﾀを取得
         Map binderkongouData = loadBinderkongouData(queryRunnerQcdb, kojyo, lotNo9, edaban);
@@ -1183,7 +1189,7 @@ public class GXHDO102B037 implements IFormLogic {
         if (kikakuFxhdd01 == null) {
             return null;
         }
-        int diffHours;
+        int diffHours = 0;
         Date kaishijikan = null;
         Date syuuryoujikan = null;
         FXHDD01 itemFxhdd01Clone = null;
