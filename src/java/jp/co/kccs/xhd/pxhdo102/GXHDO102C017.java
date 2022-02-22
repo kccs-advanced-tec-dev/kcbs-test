@@ -8,7 +8,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.logging.Logger;
 import java.util.List;
 import java.util.Map;
@@ -369,6 +368,7 @@ public class GXHDO102C017 implements Serializable {
     }
 
     /**
+     * 最大実績Noのデータを取得
      *
      * @param queryRunnerDoc queryRunnerオブジェクト(DocServer)
      * @param conDoc コネクション
@@ -430,47 +430,6 @@ public class GXHDO102C017 implements Serializable {
         params.add(edaban); //枝番
         params.add(maekouteiGamenId); //前工程画面ID
         params.add(maekouteiJissekino); //前工程実績No
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        queryRunnerDoc.update(conDoc, sql, params.toArray());
-    }
-
-    /**
-     * 画面制御更新処理
-     *
-     * @param queryRunnerDoc QueryRunnerオブジェクト(DocmentServer)
-     * @param conDoc コネクション(DocmentServer)
-     * @param kojyo 工場ｺｰﾄﾞ
-     * @param lotNo ﾛｯﾄNo
-     * @param edaban 枝番
-     * @param newMaekouteiGamenId 画面ID
-     * @param newMaekouteiJissekino 実績No
-     * @param maekouteiGamenId 画面ID(前工程)
-     * @param maekouteiJissekino 実績No(前工程)
-     * @param tantoshaCd 担当者ｺｰﾄﾞ
-     * @param systemTime システム日付
-     * @throws SQLException 例外エラー
-     */
-    private void updateExistFxhdd13AtoKotei(QueryRunner queryRunnerDoc, Connection conDoc, String kojyo, String lotNo, String edaban,
-            String newMaekouteiGamenId, int newMaekouteiJissekino, String maekouteiGamenId, int maekouteiJissekino,
-            String tantoshaCd, Timestamp systemTime) throws SQLException {
-        String sql = "UPDATE fxhdd13 SET "
-                + "gamen_id = ?, koshin_id = ?, koshin_date = ? "
-                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? "
-                + "  AND gamen_id = ? "
-                + "  AND deleteflag = 0 ";
-
-        List<Object> params = new ArrayList<>();
-        // 更新内容
-        params.add(maekouteiGamenId); //工程画面ID(NEW)
-        params.add(tantoshaCd); //更新者
-        params.add(systemTime); //更新日
-
-        // 検索条件
-        params.add(kojyo); //工場ｺｰﾄﾞ
-        params.add(lotNo); //ﾛｯﾄNo
-        params.add(edaban); //枝番
-        params.add(newMaekouteiGamenId); //工程画面ID
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerDoc.update(conDoc, sql, params.toArray());

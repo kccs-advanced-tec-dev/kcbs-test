@@ -3273,7 +3273,7 @@ public class GXHDO202B006 implements Serializable {
     private void output(File file, OutputStream os) throws IOException {
         byte buffer[] = new byte[4096];
         try (FileInputStream fis = new FileInputStream(file)) {
-            int size;
+            int size = 0;
             while ((size = fis.read(buffer)) != -1) {
                 os.write(buffer, 0, size);
             }
