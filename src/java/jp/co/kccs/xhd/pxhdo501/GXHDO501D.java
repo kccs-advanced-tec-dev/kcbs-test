@@ -65,7 +65,7 @@ import org.primefaces.context.RequestContext;
  * ===============================================================================<br>
  */
 /**
- * GXHDO501DA(原材料規格ﾒﾝﾃﾅﾝｽ機能)
+ * GXHDO501D(原材料規格ﾒﾝﾃﾅﾝｽ機能)
  *
  * @author KCSS K.Jo
  * @since  2021/07/24
