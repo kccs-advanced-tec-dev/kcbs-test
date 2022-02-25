@@ -81,6 +81,9 @@
             thead[id='form:tabMain:passDataTable_head'] th, tbody[id='form:tabMain:passDataTable_data'] td{
                 word-wrap: break-word;
             }
+            div[id='form:tabMain:passDataTable'] table{
+                position: sticky;
+            }
             @media(max-width:720px){
                 .ui-paginator .ui-paginator-pages{
                     display:inline-block;
@@ -99,7 +102,7 @@
         <h:form id="form" style="" onkeypress="if (event.keyCode === 13) {
                     return false;
                 }">
-            <div id="mainDiv" style="#{gXHDO102B034A.mainDivStyle}overflow-x: hidden;">
+            <div id="mainDiv" style="#{gXHDO102B034A.mainDivStyle}">
                 <div id="mainForm" >
                     <div style="text-align:right">
                         <h:outputText style="font-size:#{gXHDO102B034A.titleInfo.fontSize}px; #{gXHDO102B034A.styleDisplayNone}" value="#{gXHDO102B034A.jotaiDisplay}"/>   
@@ -187,13 +190,13 @@
                             </div>
                         </p:tab>
                         <p:tab title="#{myMsg.pass}" titleStyle="font-size:0.9em;" id="tab2">   
-                            <div class="tab_div" style="overflow: auto;">
-                                <p:dataTable id="passDataTable" var="item" style="font-size:0.8em;border: 1px solid #aaaaaa;" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap" 
+                            <div class="tab_div">
+                                <p:dataTable id="passDataTable" var="item" style="font-size:0.8em;border: 1px solid #aaaaaa;width: 100%;" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap" 
                                              value="#{beanGXHDO102B034B.passlistdata}" emptyMessage="" >
                                     <p:column id="pass"  headerText="#{beanGXHDO102B034B.pass.getLabel1()}" style=" text-align: center;vertical-align: middle;width: 50px;" >
                                         <div style="text-align:right;">
                                             <h:outputText id="passlblValue" rendered="#{item.pass.renderOutputLabel}" value="#{item.pass.value}"
-                                                              style="font-size:#{item.pass.fontSizeInput}px;color:#{item.pass.fontColorInput};background:#{item.pass.backColorInput};vertical-align: middle;#{item.pass.customStyleInput}"/>
+                                                              style="font-size:#{item.pass.fontSizeInput}px;color:#{item.pass.fontColorInput};background:#{item.pass.backColor3};vertical-align: middle;#{item.pass.customStyleInput}"/>
                                         </div>
                                     </p:column>
                                     <p:column id="souekigawatankno"  headerText="#{beanGXHDO102B034B.souekigawatankno.getLabel1()}" style=" text-align: center;vertical-align: middle;width: 90px;"  >
