@@ -695,13 +695,15 @@ public class GXHDO102B035 implements IFormLogic {
             List<FXHDD01> errFxhdd01List = Arrays.asList(hutaijyuuryou);
             return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, hutaijyuuryou.getLabel1());
         }
-        // 総重量<風袋重量の場合
-        BigDecimal soujyuuryouVal = new BigDecimal(soujyuuryou.getValue());
-        BigDecimal hutaijyuuryouVal = new BigDecimal(hutaijyuuryou.getValue());
-        if (soujyuuryouVal.compareTo(hutaijyuuryouVal) == -1) {
-            // ｴﾗｰ項目をﾘｽﾄに追加
-            List<FXHDD01> errFxhdd01List = Arrays.asList(soujyuuryou, hutaijyuuryou);
-            return MessageUtil.getErrorMessageInfo("XHD-000023", true, true, errFxhdd01List, soujyuuryou.getLabel1(), hutaijyuuryou.getLabel1());
+        if (soujyuuryou != null && hutaijyuuryou != null) {
+            // 総重量<風袋重量の場合
+            BigDecimal soujyuuryouVal = new BigDecimal(soujyuuryou.getValue());
+            BigDecimal hutaijyuuryouVal = new BigDecimal(hutaijyuuryou.getValue());
+            if (soujyuuryouVal.compareTo(hutaijyuuryouVal) == -1) {
+                // ｴﾗｰ項目をﾘｽﾄに追加
+                List<FXHDD01> errFxhdd01List = Arrays.asList(soujyuuryou, hutaijyuuryou);
+                return MessageUtil.getErrorMessageInfo("XHD-000023", true, true, errFxhdd01List, soujyuuryou.getLabel1(), hutaijyuuryou.getLabel1());
+            }
         }
         return null;
     }

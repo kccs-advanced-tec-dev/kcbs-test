@@ -1565,10 +1565,9 @@ public class GXHDO102B033 implements IFormLogic {
 
             BigDecimal kokeibunhirituBgValue = new BigDecimal(kokeibunhiritu.getValue());
             // 「溶剤調整量」:「ｽﾘｯﾌﾟ重量」 × 「固形分比率」 × 「固形分目標値」 - 「ｽﾘｯﾌﾟ重量」 を算出する。
-            BigDecimal youzaityouseiryouBgValue = slipJyuuryou.multiply(kokeibunhirituBgValue).multiply(koukeibunnmokuhyochi).subtract(slipJyuuryou).setScale(0, RoundingMode.HALF_UP);
+            BigDecimal youzaityouseiryouBgValue = slipJyuuryou.multiply(kokeibunhirituBgValue).multiply(koukeibunnmokuhyochi).subtract(slipJyuuryou).setScale(2, RoundingMode.HALF_DOWN);
             // 溶剤調整量に計算結果を設定
-            youzaityouseiryou.setValue(youzaityouseiryouBgValue.toPlainString());
-
+            youzaityouseiryou.setValue(youzaityouseiryouBgValue.setScale(0, RoundingMode.HALF_UP).toPlainString());
             // ﾄﾙｴﾝ調整量
             FXHDD01 toluenetyouseiryou = getItemRow(processData.getItemList(), GXHDO102B033Const.TOLUENETYOUSEIRYOU);
             // ｿﾙﾐｯｸｽ調整量

@@ -756,7 +756,7 @@ public class GXHDO202B001 implements Serializable {
             if(null != cmbKotei)switch (cmbKotei) {
                 case "秤量":
                     //工程が「秤量」の場合、Ⅲ.画面表示仕様(2)を発行
-                    sql += "SELECT COUNT(*) AS CNT "
+                    sql += "SELECT COUNT(lotno) AS CNT "
                             + "  FROM sr_glasshyoryo "
                             + " WHERE (? IS NULL OR kojyo = ?) "
                             + "   AND (? IS NULL OR lotno = ?) "
@@ -768,7 +768,7 @@ public class GXHDO202B001 implements Serializable {
                     break;
                 case "SC粉砕":
                     //工程が「SC粉砕」の場合、Ⅲ.画面表示仕様(6)を発行
-                    sql += "SELECT COUNT(*) AS CNT "
+                    sql += "SELECT COUNT(lotno) AS CNT "
                             + "  FROM sr_glassscfunsai "
                             + " WHERE (? IS NULL OR kojyo = ?) "
                             + "   AND (? IS NULL OR lotno = ?) "
@@ -781,7 +781,7 @@ public class GXHDO202B001 implements Serializable {
                     break;
                 case "乾燥":
                     //工程が「乾燥」の場合、Ⅲ.画面表示仕様(8)を発行
-                    sql += "SELECT COUNT(*) AS CNT "
+                    sql += "SELECT COUNT(lotno) AS CNT "
                             + "  FROM sr_glasskanso "
                             + " WHERE (? IS NULL OR kojyo = ?) "
                             + "   AND (? IS NULL OR lotno = ?) "
@@ -794,7 +794,7 @@ public class GXHDO202B001 implements Serializable {
                     break;
                 case "測定":
                     //工程が「測定」の場合、Ⅲ.画面表示仕様(10)を発行
-                    sql += "SELECT COUNT(*) AS CNT "
+                    sql += "SELECT COUNT(lotno) AS CNT "
                             + "  FROM sr_glasssokutei "
                             + " WHERE (? IS NULL OR kojyo = ?) "
                             + "   AND (? IS NULL OR lotno = ?) "

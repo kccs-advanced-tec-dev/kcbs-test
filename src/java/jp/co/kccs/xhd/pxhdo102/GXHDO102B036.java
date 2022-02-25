@@ -551,12 +551,14 @@ public class GXHDO102B036 implements IFormLogic {
             return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, hutaijyuuryou.getLabel1());
         }
         // 総重量<風袋重量の場合
-        BigDecimal soujyuuryouVal = new BigDecimal(soujyuuryou.getValue());
-        BigDecimal hutaijyuuryouVal = new BigDecimal(hutaijyuuryou.getValue());
-        if (soujyuuryouVal.compareTo(hutaijyuuryouVal) == -1) {
-            // ｴﾗｰ項目をﾘｽﾄに追加
-            List<FXHDD01> errFxhdd01List = Arrays.asList(soujyuuryou, hutaijyuuryou);
-            return MessageUtil.getErrorMessageInfo("XHD-000023", true, true, errFxhdd01List, soujyuuryou.getLabel1(), hutaijyuuryou.getLabel1());
+        if (soujyuuryou != null && hutaijyuuryou != null) {
+            BigDecimal soujyuuryouVal = new BigDecimal(soujyuuryou.getValue());
+            BigDecimal hutaijyuuryouVal = new BigDecimal(hutaijyuuryou.getValue());
+            if (soujyuuryouVal.compareTo(hutaijyuuryouVal) == -1) {
+                // ｴﾗｰ項目をﾘｽﾄに追加
+                List<FXHDD01> errFxhdd01List = Arrays.asList(soujyuuryou, hutaijyuuryou);
+                return MessageUtil.getErrorMessageInfo("XHD-000023", true, true, errFxhdd01List, soujyuuryou.getLabel1(), hutaijyuuryou.getLabel1());
+            }
         }
         return null;
     }
@@ -574,15 +576,16 @@ public class GXHDO102B036 implements IFormLogic {
 
             FXHDD01 itemSyoumijyuuryou = getItemRow(processData.getItemList(), GXHDO102B036Const.SYOUMIJYUURYOU);// 正味重量
             FXHDD01 itemSlipjyuuryougoukei = getItemRow(processData.getItemList(), GXHDO102B036Const.SLIPJYUURYOUGOUKEI);// ｽﾘｯﾌﾟ重量合計
+            BigDecimal itemSyoumijyuuryouVal = BigDecimal.ZERO;
             if (soujyuryouItem != null && hutaijyuuryouItem != null && itemSyoumijyuuryou != null) {
                 //「正味重量」= 「総重量」 - 「風袋重量」 を算出する。
                 BigDecimal itemSoujyuryouVal = new BigDecimal(soujyuryouItem.getValue());
                 BigDecimal itemHutaijyuuryouVal = new BigDecimal(hutaijyuuryouItem.getValue());
-                BigDecimal itemSyoumijyuuryouVal = itemSoujyuryouVal.subtract(itemHutaijyuuryouVal);
+                itemSyoumijyuuryouVal = itemSoujyuryouVal.subtract(itemHutaijyuuryouVal);
                 //計算結果の設定
                 itemSyoumijyuuryou.setValue(itemSyoumijyuuryouVal.toPlainString());
             }
-            BigDecimal itemSyoumijyuuryouVal = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSyoumijyuuryou.getValue()); // 正味重量
+
             // 「ｽﾘｯﾌﾟ重量合計」計算処理:「正味重量」の和を算出する。
             if (itemSlipjyuuryougoukei != null) {
                 itemSlipjyuuryougoukei.setValue(itemSyoumijyuuryouVal.toPlainString());
