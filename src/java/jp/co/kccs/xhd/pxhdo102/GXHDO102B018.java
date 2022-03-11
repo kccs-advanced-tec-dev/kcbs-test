@@ -12,6 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -2577,6 +2578,11 @@ public class GXHDO102B018 implements IFormLogic {
         notShowItemList.forEach((notShowItem) -> {
             itemList.remove(getItemRow(itemList, notShowItem));
         });
+        itemList.sort(Comparator.comparing(FXHDD01::getItemNo));
+        for (int i = 0; i < itemList.size(); i++) {
+            FXHDD01 item = itemList.get(i);
+            item.setItemIndex(i + 1);
+        }
     }
 
     /**

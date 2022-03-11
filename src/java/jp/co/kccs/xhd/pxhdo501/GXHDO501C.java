@@ -497,9 +497,9 @@ public class GXHDO501C implements Serializable {
         lotNobgcolor = NORMAL_COLOR;  
         
         // LotNo
-        if (!StringUtil.isEmpty(getLotNo()) && (StringUtil.getLength(getLotNo()) != 11 && StringUtil.getLength(getLotNo()) != 14)) {
+        if (!StringUtil.isEmpty(getLotNo()) && StringUtil.getLength(getLotNo()) != 15) {
             FacesMessage message
-                    = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000064"), null);
+                    = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000004", "LotNo", "15"), null);
             FacesContext.getCurrentInstance().addMessage(null, message);
             lotNobgcolor = ERROR_COLOR;
             return;
@@ -682,8 +682,8 @@ public class GXHDO501C implements Serializable {
         String paramEdaban = null;
         if (!StringUtil.isEmpty(lotNo)) {
             paramKojo = StringUtils.substring(getLotNo(), 0, 3);
-            paramLotNo = StringUtils.substring(getLotNo(), 3, 11);
-            paramEdaban = StringUtil.blankToNull(StringUtils.substring(getLotNo(), 11, 14));
+            paramLotNo = StringUtils.substring(getLotNo(), 3, 12);
+            paramEdaban = StringUtil.blankToNull(StringUtils.substring(getLotNo(), 12, 15));
         }
 
         String paramHinmei = null;

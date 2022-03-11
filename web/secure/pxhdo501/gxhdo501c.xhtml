@@ -112,8 +112,8 @@
                                 <h:outputText id="lblLotNo" value="LotNo" style="width:100px;" />
                             </td>
                             <td>
-                                <p:inputText id="pLotNo" value="#{gXHDO501C.lotNo}" maxlength="14" style="margin-left:20px; height:26px;background-color:#{gXHDO501C.lotNobgcolor}">
-                                    <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO501C.checkByte('lotNo', 14)}" async="false" />
+                                <p:inputText id="pLotNo" value="#{gXHDO501C.lotNo}" maxlength="15" style="margin-left:20px; height:26px;background-color:#{gXHDO501C.lotNobgcolor}">
+                                    <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO501C.checkByte('lotNo', 15)}" async="false" />
                                 </p:inputText>
                             </td>
                         </tr>
