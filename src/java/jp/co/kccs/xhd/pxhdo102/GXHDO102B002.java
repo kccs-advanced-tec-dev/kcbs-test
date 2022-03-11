@@ -344,6 +344,10 @@ public class GXHDO102B002 implements IFormLogic {
                 this.setItemData(processData, GXHDO102B002Const.FUNSAI_SYUURYOUYOTEI_TIME, retFunsaiDateTime.substring(6, 10));
             } catch (ParseException ex) {
                 ErrUtil.outputErrorLog("ParseException発生", ex, LOGGER);
+            } catch (NumberFormatException ex) {
+                ErrUtil.outputErrorLog("NumberFormatException発生", ex, LOGGER);
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+                return processData;
             }
         }
         processData.setMethod("");

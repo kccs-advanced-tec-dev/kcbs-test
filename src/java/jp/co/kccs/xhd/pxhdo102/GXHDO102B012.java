@@ -1348,16 +1348,16 @@ public class GXHDO102B012 implements IFormLogic {
             // 「添加材ｽﾗﾘｰ重量」計算処理: 総重量-風袋重量
             itemTenkazaislurryjyuuryou.setValue(itemSoujyuurouVal.subtract(itemFuutaijyuuryouVal).toPlainString());
 
-            BigDecimal itemTenkazaislurryjyuuryou1Va1 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemTenkazaislurryjyuuryou1.getValue()); // 添加材ｽﾗﾘｰ重量①
-            BigDecimal itemTenkazaislurryjyuuryou1Va2 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemTenkazaislurryjyuuryou2.getValue()); // 添加材ｽﾗﾘｰ重量②
-            BigDecimal itemTenkazaislurryjyuuryou1Va3 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemTenkazaislurryjyuuryou3.getValue()); // 添加材ｽﾗﾘｰ重量③
-            BigDecimal itemTenkazaislurryjyuuryou1Va4 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemTenkazaislurryjyuuryou4.getValue()); // 添加材ｽﾗﾘｰ重量④
-            BigDecimal itemTenkazaislurryjyuuryou1Va5 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemTenkazaislurryjyuuryou5.getValue()); // 添加材ｽﾗﾘｰ重量⑤
-            BigDecimal itemTenkazaislurryjyuuryou1Va6 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemTenkazaislurryjyuuryou6.getValue()); // 添加材ｽﾗﾘｰ重量⑥
+            BigDecimal itemTenkazaislurryjyuuryou1Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemTenkazaislurryjyuuryou1.getValue()); // 添加材ｽﾗﾘｰ重量①
+            BigDecimal itemTenkazaislurryjyuuryou2Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemTenkazaislurryjyuuryou2.getValue()); // 添加材ｽﾗﾘｰ重量②
+            BigDecimal itemTenkazaislurryjyuuryou3Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemTenkazaislurryjyuuryou3.getValue()); // 添加材ｽﾗﾘｰ重量③
+            BigDecimal itemTenkazaislurryjyuuryou4Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemTenkazaislurryjyuuryou4.getValue()); // 添加材ｽﾗﾘｰ重量④
+            BigDecimal itemTenkazaislurryjyuuryou5Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemTenkazaislurryjyuuryou5.getValue()); // 添加材ｽﾗﾘｰ重量⑤
+            BigDecimal itemTenkazaislurryjyuuryou6Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemTenkazaislurryjyuuryou6.getValue()); // 添加材ｽﾗﾘｰ重量⑥
             // 「添加材ｽﾗﾘｰ重量合計」計算処理:添加材ｽﾗﾘｰ重量① + 添加材ｽﾗﾘｰ重量② + 添加材ｽﾗﾘｰ重量③ + 添加材ｽﾗﾘｰ重量④ + 添加材ｽﾗﾘｰ重量⑤ + 添加材ｽﾗﾘｰ重量⑥
             if (itemTenkazaislurryjyuuryougoukei != null) {
-                BigDecimal itemTenkazaislurryjyuuryougoukeiVal = itemTenkazaislurryjyuuryou1Va1.add(itemTenkazaislurryjyuuryou1Va2).add(itemTenkazaislurryjyuuryou1Va3).add(
-                        itemTenkazaislurryjyuuryou1Va4).add(itemTenkazaislurryjyuuryou1Va5).add(itemTenkazaislurryjyuuryou1Va6);
+                BigDecimal itemTenkazaislurryjyuuryougoukeiVal = itemTenkazaislurryjyuuryou1Val.add(itemTenkazaislurryjyuuryou2Val).add(itemTenkazaislurryjyuuryou3Val).add(
+                        itemTenkazaislurryjyuuryou4Val).add(itemTenkazaislurryjyuuryou5Val).add(itemTenkazaislurryjyuuryou6Val);
                 itemTenkazaislurryjyuuryougoukei.setValue(itemTenkazaislurryjyuuryougoukeiVal.toPlainString());
             }
 

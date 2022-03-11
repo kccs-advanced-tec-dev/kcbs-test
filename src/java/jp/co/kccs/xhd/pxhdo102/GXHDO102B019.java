@@ -427,7 +427,7 @@ public class GXHDO102B019 implements IFormLogic {
                 // ｴﾗｰ項目をﾘｽﾄに追加
                 List<FXHDD01> errFxhdd01List = Arrays.asList(itemSoujyuuryou2);
                 return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, itemSoujyuuryou2.getLabel1());
-                
+
             }
             // 「風袋重量②」ﾁｪｯｸ
             if (StringUtil.isEmpty(itemFuutaijyuuryou2.getValue()) && !StringUtil.isEmpty(itemSoujyuuryou2.getValue())) {
@@ -454,7 +454,7 @@ public class GXHDO102B019 implements IFormLogic {
                 // ｴﾗｰ項目をﾘｽﾄに追加
                 List<FXHDD01> errFxhdd01List = Arrays.asList(itemSoujyuuryou3);
                 return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, itemSoujyuuryou3.getLabel1());
-                
+
             }
             // 「風袋重量③」ﾁｪｯｸ
             if (StringUtil.isEmpty(itemFuutaijyuuryou3.getValue()) && !StringUtil.isEmpty(itemSoujyuuryou3.getValue())) {
@@ -493,22 +493,22 @@ public class GXHDO102B019 implements IFormLogic {
         try {
 
             FXHDD01 itemTenkazaislurryjyuuryou = getItemRow(processData.getItemList(), GXHDO102B019Const.TENKAZAISLURRYJYUURYOU); // 添加材ｽﾗﾘｰ重量
-            BigDecimal itemSoujyuuryou1Va1 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSoujyuuryou1.getValue()); // 総重量①
-            BigDecimal itemFuutaijyuuryou1Va1 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemFuutaijyuuryou1.getValue()); // 風袋重量①
-            BigDecimal itemTenkazaislurryjyuuryouVal;
+            BigDecimal itemSoujyuuryou1Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSoujyuuryou1.getValue()); // 総重量①
+            BigDecimal itemFuutaijyuuryou1Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemFuutaijyuuryou1.getValue()); // 風袋重量①
+            BigDecimal itemTenkazaislurryjyuuryouVal = BigDecimal.ZERO;
             if (itemSoujyuuryou2 != null && itemFuutaijyuuryou2 != null && itemSoujyuuryou3 != null && itemFuutaijyuuryou3 != null) {
-                BigDecimal itemSoujyuuryou2Va1 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSoujyuuryou2.getValue()); // 総重量②
-                BigDecimal itemFuutaijyuuryou2Va1 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemFuutaijyuuryou2.getValue()); // 風袋重量②
-                BigDecimal itemSoujyuuryou3Va1 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSoujyuuryou3.getValue()); // 総重量③
-                BigDecimal itemFuutaijyuuryou3Va1 = (BigDecimal) DBUtil.stringToBigDecimalObject(itemFuutaijyuuryou3.getValue()); // 風袋重量③
+                BigDecimal itemSoujyuuryou2Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSoujyuuryou2.getValue()); // 総重量②
+                BigDecimal itemFuutaijyuuryou2Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemFuutaijyuuryou2.getValue()); // 風袋重量②
+                BigDecimal itemSoujyuuryou3Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemSoujyuuryou3.getValue()); // 総重量③
+                BigDecimal itemFuutaijyuuryou3Val = (BigDecimal) DBUtil.stringToBigDecimalObject(itemFuutaijyuuryou3.getValue()); // 風袋重量③
 
                 // (「総重量①」-「風袋重量①」) + (「総重量②」-「風袋重量②」) + (「総重量③」-「風袋重量③」) = 「添加材ｽﾗﾘｰ重量」(小数以下四捨五入)
-                itemTenkazaislurryjyuuryouVal = ((itemSoujyuuryou1Va1.subtract(itemFuutaijyuuryou1Va1)).add(itemSoujyuuryou2Va1.subtract(itemFuutaijyuuryou2Va1))
-                        .add(itemSoujyuuryou3Va1.subtract(itemFuutaijyuuryou3Va1))).setScale(0, RoundingMode.HALF_UP);
+                itemTenkazaislurryjyuuryouVal = ((itemSoujyuuryou1Val.subtract(itemFuutaijyuuryou1Val)).add(itemSoujyuuryou2Val.subtract(itemFuutaijyuuryou2Val))
+                        .add(itemSoujyuuryou3Val.subtract(itemFuutaijyuuryou3Val))).setScale(0, RoundingMode.HALF_UP);
                 itemTenkazaislurryjyuuryou.setValue(itemTenkazaislurryjyuuryouVal.toPlainString());
             } else {
-                // (「総重量①」-「風袋重量①」) + (「総重量②」-「風袋重量②」) + (「総重量③」-「風袋重量③」) = 「添加材ｽﾗﾘｰ重量」(小数以下四捨五入)
-                itemTenkazaislurryjyuuryouVal = (itemSoujyuuryou1Va1.subtract(itemFuutaijyuuryou1Va1)).setScale(0, RoundingMode.HALF_UP);
+                //「総重量①」-「風袋重量①」 = 「添加材ｽﾗﾘｰ重量」(小数以下四捨五入)
+                itemTenkazaislurryjyuuryouVal = (itemSoujyuuryou1Val.subtract(itemFuutaijyuuryou1Val)).setScale(0, RoundingMode.HALF_UP);
                 itemTenkazaislurryjyuuryou.setValue(itemTenkazaislurryjyuuryouVal.toPlainString());
             }
 

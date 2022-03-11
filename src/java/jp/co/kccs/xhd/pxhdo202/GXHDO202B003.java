@@ -951,7 +951,7 @@ public class GXHDO202B003 implements Serializable {
             if(null != cmbKotei)switch (cmbKotei) {
                 case "ｶﾞﾗｽ":
                     // 工程が「ｶﾞﾗｽ」の場合、Ⅲ.画面表示仕様(3)を発行する。
-                    sql += "SELECT COUNT(*) AS CNT "
+                    sql += "SELECT COUNT(lotno) AS CNT "
                             + "  FROM sr_tenka_glass "
                             + " WHERE (? IS NULL OR kojyo = ?) "
                             + "   AND (? IS NULL OR lotno = ?) "
@@ -962,7 +962,7 @@ public class GXHDO202B003 implements Serializable {
                     break;
                 case "添加材調合":
                     // 工程が「添加材調合」の場合、Ⅲ.画面表示仕様(7)を発行する。
-                    sql += "SELECT COUNT(*) AS CNT "
+                    sql += "SELECT COUNT(lotno) AS CNT "
                             + "  FROM sr_tenka_tyogo "
                             + " WHERE (? IS NULL OR kojyo = ?) "
                             + "   AND (? IS NULL OR lotno = ?) "
@@ -973,7 +973,7 @@ public class GXHDO202B003 implements Serializable {
                     break;
                 case "溶剤調合":
                     // 工程が「溶剤調合」の場合、Ⅲ.画面表示仕様(9)を発行する。
-                    sql += "SELECT COUNT(*) AS CNT "
+                    sql += "SELECT COUNT(lotno) AS CNT "
                             + "  FROM sr_tenka_youzai "
                             + " WHERE (? IS NULL OR kojyo = ?) "
                             + "   AND (? IS NULL OR lotno = ?) "
@@ -984,7 +984,7 @@ public class GXHDO202B003 implements Serializable {
                     break;
                 case "予備混合(ﾌﾟﾚﾐｷｼﾝｸﾞ)":
                     // 工程が「予備混合(ﾌﾟﾚﾐｷｼﾝｸﾞ)」の場合、Ⅲ.画面表示仕様(11)を発行する。
-                    sql += "SELECT COUNT(*) AS CNT "
+                    sql += "SELECT COUNT(lotno) AS CNT "
                             + "  FROM sr_tenka_premixing "
                             + " WHERE (? IS NULL OR kojyo = ?) "
                             + "   AND (? IS NULL OR lotno = ?) "
@@ -995,7 +995,7 @@ public class GXHDO202B003 implements Serializable {
                     break;
                 case "粉砕":
                     // 工程が「粉砕」の場合、Ⅲ.画面表示仕様(13)を発行する。
-                    sql += "SELECT COUNT(*) AS CNT "
+                    sql += "SELECT COUNT(F.lotno) AS CNT "
                             + "  FROM sr_tenka_funsai F "
                             + " LEFT JOIN sub_sr_tenka_funsai SF "
                             + "        ON (F.kojyo = SF.kojyo) "
@@ -1010,7 +1010,7 @@ public class GXHDO202B003 implements Serializable {
                     break;
                 case "FP排出":
                     // 工程が「FP排出」の場合、Ⅲ.画面表示仕様(15)を発行する。
-                    sql += "SELECT COUNT(*) AS CNT "
+                    sql += "SELECT COUNT(lotno) AS CNT "
                             + "  FROM sr_tenka_fp "
                             + " WHERE (? IS NULL OR kojyo = ?) "
                             + "   AND (? IS NULL OR lotno = ?) "
@@ -1021,7 +1021,7 @@ public class GXHDO202B003 implements Serializable {
                     break;
                 case "BET":
                     // 工程が「BET」の場合、Ⅲ.画面表示仕様(17)を発行する。
-                    sql += "SELECT COUNT(*) AS CNT "
+                    sql += "SELECT COUNT(lotno) AS CNT "
                             + "  FROM sr_tenka_bet "
                             + " WHERE (? IS NULL OR kojyo = ?) "
                             + "   AND (? IS NULL OR lotno = ?) "

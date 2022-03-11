@@ -3,6 +3,8 @@
  */
 package jp.co.kccs.xhd.util;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.sql.Timestamp;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -232,6 +234,27 @@ public class DateUtil {
 
         // 差分日数を取得
         return (int) ((dateTimeTo - dateTimeFrom) / (1000 * 60 * 60 * 24));
+    }
+
+    /**
+     * 日付の差分日数取得処理
+     *
+     * @param dateFrom 開始日付
+     * @param dateTo 終了日付
+     * @param rm モード
+     * @return 差分日数
+     */
+    public static int diffDaysRoundingMode(Date dateFrom, Date dateTo, RoundingMode rm) {
+        // 日付の秒を切り捨てる
+        Date dayFrom = DateUtils.truncate(dateFrom, Calendar.MINUTE);
+        Date dayTo = DateUtils.truncate(dateTo, Calendar.MINUTE);
+
+        // 日付をBigDecimal値に変換
+        BigDecimal dateTimeFrom = new BigDecimal(dayFrom.getTime());
+        BigDecimal dateTimeTo = new BigDecimal(dayTo.getTime());
+
+        // 差分日数を取得
+        return dateTimeTo.subtract(dateTimeFrom).divide(new BigDecimal(1000 * 60 * 60 * 24), 0, rm).intValue();
     }
 
     /**

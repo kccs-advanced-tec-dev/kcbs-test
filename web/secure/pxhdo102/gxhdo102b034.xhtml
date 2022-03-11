@@ -1,0 +1,339 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="ja"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:t="http://myfaces.apache.org/tomahawk">
+    <h:head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Pragma" content="no-cache"/>
+        <meta http-equiv="Cache-Control" content="no-cache"/>
+        <meta http-equiv="Expires" content="0"/>
+        <title>#{myParam.application_id} #{gXHDO102B034A.titleInfo.formName}</title>
+        <link href="#{request.contextPath}/resources/css/growllarge.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/gxhco901a.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/errordialog.css" rel="stylesheet" type="text/css"/>
+        <h:outputScript library="primefaces" name="jquery/jquery.js" />
+        <script src="#{request.contextPath}/resources/js/locUpload.js"></script>
+        <script src="#{request.contextPath}/resources/js/growl.js"></script>
+        <script type="text/javascript">
+            //<![CDATA[
+            function logOut() {
+                window.#{adjustModels.external}.logOut();
+            }
+            $(document).ready(function () {
+                //upload to
+                g_locationUrl = '#{myParam.locationUrl}';
+                //MAC Address
+                g_macAddr = '#{sessionInfo.macAddr}';
+                //location
+                g_location = '#{myMsg.NotAvailable}';
+                g_prgname = 'gxhdo102b034.xhtml(#{gXHDO102B034A.formId})';
+
+                var interval_id = setInterval(getLocation, #{myParam.sendLocInterval});
+            });
+             var pointY;
+            function subFormOpen() {
+                pointY = $(window).scrollTop();
+                document.getElementById("mainForm").style.setProperty("display", "none");
+                document.getElementById("mainForm").style.setProperty("position", "fixed");
+                document.getElementById("mainForm").style.setProperty("width", #{adjustModels.menuWidth} + "px");
+                document.getElementById("mainForm").style.setProperty("Top", -(pointY) + 37 + "px");
+                document.getElementById("mainForm").style.removeProperty("display");
+            }
+            function subFormClose() {
+                document.getElementById("mainForm").style.setProperty("display", "none");
+                document.getElementById("mainForm").style.removeProperty("position");
+                document.getElementById("mainForm").style.removeProperty("width");
+                document.getElementById("mainForm").style.removeProperty("Top");
+                document.getElementById("mainForm").style.removeProperty("display");
+                $(window).scrollTop(pointY);
+            }
+            function cmdButtonOncomplete(args) {
+                if (undefined === args) {
+                } else if ('warning' === args.firstParam) {
+                    PF('cd').show();
+                } else if ('auth' === args.firstParam) {
+                    PF('W_dlg_userAuth').show();
+                } else if ('kikakuError' === args.firstParam) {
+                    PF('W_dlg_kikakuError').show();
+                } else if ('infoMessage' === args.firstParam) {
+                    PF('W_dlg_infoMessage').show();
+                } else if ('complete' === args.firstParam) {
+                    PF('W_dlg_compMessage').show();
+                } else if('errorListMessage'===args.firstParam){
+                    PF('W_dlg_errorListMessage').show();
+                } 
+            }
+            //]]>
+        </script>
+        <style>
+            .tab_div{
+                margin-left: -13px;
+                margin-right: -13px;
+            }
+            div[id='form:tabMain:passDataTable'] span[class^='ui-inputnumber'] input{
+                text-align: right;
+            }
+            thead[id='form:tabMain:passDataTable_head'] th, tbody[id='form:tabMain:passDataTable_data'] td{
+                word-wrap: break-word;
+            }
+            div[id='form:tabMain:passDataTable'] table{
+                position: sticky;
+            }
+            @media(max-width:720px){
+                .ui-paginator .ui-paginator-pages{
+                    display:inline-block;
+                }
+            }
+        </style>  
+    </h:head>
+    <h:body>
+        <f:metadata>
+            <f:viewAction action="#{gXHDO102B034A.init(adjustModels.menuWidth)}"/>
+        </f:metadata>
+        <div style="margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;">
+            <h:outputText style="background:#{gXHDO102B034A.titleInfo.bgColor};color: #{gXHDO102B034A.titleInfo.fontColor}; 
+                          font-size:#{gXHDO102B034A.titleInfo.fontSize}px;" value="#{gXHDO102B034A.titleInfo.formName}"/>
+        </div>
+        <h:form id="form" style="" onkeypress="if (event.keyCode === 13) {
+                    return false;
+                }">
+            <div id="mainDiv" style="#{gXHDO102B034A.mainDivStyle}">
+                <div id="mainForm" >
+                    <div style="text-align:right">
+                        <h:outputText style="font-size:#{gXHDO102B034A.titleInfo.fontSize}px; #{gXHDO102B034A.styleDisplayNone}" value="#{gXHDO102B034A.jotaiDisplay}"/>   
+                    </div>
+                    <p:commandButton id="returnBtnTop" style="margin-left:26px;margin-bottom:5px;margin-top:0px;"
+                                     value="#{myMsg.return}"  action="/secure/pxhdo102/gxhdo102a.xhtml?faces-redirect=true"
+                                     process="@this" update="@this">
+                        <f:param name="returnVal" value="return"/>
+                        <f:attribute name="returnVal" value="return"/>
+                    </p:commandButton>
+                    <p:growl id="growlMessage" showDetail="false" sticky="true" escape="false" />
+                    <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
+                        <f:facet name="message">
+                            <h:outputText value="#{gXHDO102B034A.processData.getWarnMessage()}" escape="false"/>
+                        </f:facet>
+                        <p:commandButton id="warnOk" value="OK" styleClass="ui-conf-commandbtn-def1"
+                                         actionListener="#{gXHDO102B034A.processWarnOk()}"
+                                         process="@form"
+                                         update="@form"
+                                         oncomplete="if('warning'!=args.firstParam){PF('cd').hide(); cmdButtonOncomplete(args);} else {PF('cd').show();}"/>
+                        <p:commandButton id="warnCancel" value="Cancel" class="ui-conf-commandbtn-cancel" onclick="PF('cd').hide();" type="button" />
+                    </p:confirmDialog>
+                    <br/>
+                    <p:panel id="headerPanel" style="margin-bottom:4px; #{gXHDO102B034A.styleDisplayNone}">
+                        <ui:repeat value="#{gXHDO102B034A.buttonListTop}" var="item" varStatus="stat">
+                            <p:commandButton id="buttonId" value="#{item.buttonName}" rendered="#{item.render}" disabled="#{!item.enabled}"
+                                             style="margin-left:4px;margin-bottom:2px;font-size:#{item.fontSize}px;color:#{item.fontColor};background:#{item.backColor};"
+                                             actionListener="#{gXHDO102B034A.btnClick(item.buttonId)}" process="@form" update="@form" async="false"
+                                             oncomplete="cmdButtonOncomplete(args);" />       
+                        </ui:repeat>
+                    </p:panel>
+                    <p:tabView id="tabMain" orientation="top" scrollable="true" class="tab_view" style="#{gXHDO102B034A.styleDisplayNone}" >
+                        <p:tab title="#{myMsg.kihonjyohou}" titleStyle="font-size:0.9em;" id="tab1" >
+                            <div class="tab_div">
+                                <p:dataList id="itemDataList" value="#{gXHDO102B034A.itemList}" var="item" type="none"  itemType="none" paginator="true" rows="#{gXHDO102B034A.hyojiKensu}" styleClass="repeated-form;ui-paginator">
+                                    <ui:fragment rendered="#{gXHDO102B034A.itemRendered}">
+                                        <p:panel id="itemPanel" style="background:#{item.backColor1}; min-height:48px;">
+                                            <p:selectBooleanCheckbox id="selectItem" rendered="#{item.renderTempItemCheckBox}" value="#{item.tempItemCheckBoxValue}" 
+                                                          style="margin-left:8px;vertical-align: middle;"/>
+                                            <p:commandLink id="cmdLink" rendered="#{item.renderLinkButton}" action="#{gXHDO102B034A.cmdLinkAction(item.linkButtonId)}" 
+                                                           process="@form" update="@form" async="false" oncomplete="cmdButtonOncomplete(args);"
+                                                           style="margin-left:8px;font-size:#{item.fontSize1}px;color:#{item.fontColor1};vertical-align: middle;">
+                                                    <h:outputText value="#{item.label1}" />
+                                            </p:commandLink>
+                                            <h:outputText id="label1" rendered="#{item.render1}" value="#{item.label1}"
+                                                          style="margin-left:8px;font-size:#{item.fontSize1}px;color:#{item.fontColor1};vertical-align: middle;"/>
+                                            <h:outputText id="kikakuChi" rendered="#{item.render1 || item.renderLinkButton}" value="#{item.kikakuChi}"
+                                                          style="margin-left:8px;font-size:#{item.fontSize3}px;color:#{item.fontColor3};background:#{item.backColor3};vertical-align: middle;"/>
+
+                                            <h:outputText id="lblValue" rendered="#{item.renderOutputLabel}" value="#{item.value}"
+                                                          style="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;#{item.customStyleInput}"/>
+
+                                            <p:inputText id="textValue" rendered="#{(item.renderInputText) and (!item.renderOutputLabel)}" value="#{item.value}" maxlength="#{item.displayMaxLength}"
+                                                          style="margin-left:8px;width:#{item.displayMaxLength}em; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO102B034A.maxWidthInputCol}px;#{item.customStyleInput}">
+                                                        <p:ajax event="blur" process="@this" update="@this" listener="#{item.checkByte()}"  async="false"/>
+                                            </p:inputText>
+                                            <p:calendar id="calendarDate" rendered="#{item.renderInputDate}" pattern="yyMMdd" value="#{item.value}" maxlength="#{item.displayMaxLength}" class="calendarDate"
+                                                        style="margin-left:8px; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO102B034A.maxWidthInputCol}px;#{item.customStyleInput}" />
+                                            <p:calendar id="calendarTime" rendered="#{item.renderInputTime}" value="#{item.value}" pattern="HHmm" timeOnly="true" class="calendarTime" 
+                                                        style="margin-left:8px; font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO102B034A.maxWidthInputCol}px;#{item.customStyleInput}" />
+
+                                            <p:inputNumber id="numberValue" rendered="#{item.renderInputNumber}" value="#{item.value}" thousandSeparator="" roundMethod="D"
+                                                           decimalPlaces="#{item.numberDecimalPlaces}" maxValue="#{item.numberMaxValue}" minValue="#{item.numberMinValue}" size="#{item.displayMaxLength}"
+                                                          inputStyle="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO102B034A.maxWidthInputCol}px;#{item.customStyleInput}">
+                                            </p:inputNumber>
+                                            <p:selectOneMenu id="comboBoxValue" rendered="#{item.renderInputSelect}" value="#{item.value}" styleClass="selectMenu"
+                                                          style="margin-left:8px;width:#{item.inputLength}em;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO102B034A.maxWidthInputCol}px;#{item.customStyleInput}">
+                                                <f:selectItems value="#{item.selectMenuItem}"/>
+                                            </p:selectOneMenu>
+                                            <p:selectOneMenu id="availableComboBoxValue" rendered="#{item.renderInputSelectAvailable}" value="#{item.value}" styleClass="selectMenu" editable="true" maxlength="#{item.displayMaxLength}"
+                                                          style="margin-left:8px;width:#{item.inputLength}em;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};background:#{item.backColorInput};vertical-align: middle;max-width:#{gXHDO102B034A.maxWidthInputCol}px;#{item.customStyleInput}">
+                                                <f:selectItems value="#{item.selectMenuItem}"/>
+                                            </p:selectOneMenu>
+                                            <p:selectOneRadio id="radioValue" rendered="#{item.renderInputRadio}" value="#{item.value}" styleClass="selectRadio"
+                                                          style="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};vertical-align: middle;background: #{item.backColorInput};#{item.customStyleInput}">
+                                                <f:selectItems value="#{item.selectMenuItem}"/>
+                                            </p:selectOneRadio>
+                                            <p:selectBooleanCheckbox id="checkValue" rendered="#{item.renderInputCheckBox}" value="#{item.value}" 
+                                                          style="margin-left:8px;font-size:#{item.fontSizeInput}px;color:#{item.fontColorInput};vertical-align: middle;background: #{item.backColorInput};#{item.customStyleInput}"/>
+                                            <h:outputText id="label2" rendered="#{item.render2}" value="#{item.label2}"
+                                                          style="margin-left:8px;font-size:#{item.fontSize2}px;color:#{item.fontColor2};background:#{item.backColor2};vertical-align: middle;"/>
+                                        </p:panel>
+                                    </ui:fragment>
+                                </p:dataList>
+                            </div>
+                        </p:tab>
+                        <p:tab title="#{myMsg.pass}" titleStyle="font-size:0.9em;" id="tab2">   
+                            <div class="tab_div">
+                                <p:dataTable id="passDataTable" var="item" style="font-size:0.8em;border: 1px solid #aaaaaa;width: 100%;" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap" 
+                                             value="#{beanGXHDO102B034B.passlistdata}" emptyMessage="" >
+                                    <p:column id="pass"  headerText="#{beanGXHDO102B034B.pass.getLabel1()}" style=" text-align: center;vertical-align: middle;width: 50px;" >
+                                        <div style="text-align:right;">
+                                            <h:outputText id="passlblValue" rendered="#{item.pass.renderOutputLabel}" value="#{item.pass.value}"
+                                                              style="font-size:#{item.pass.fontSizeInput}px;color:#{item.pass.fontColorInput};background:#{item.pass.backColor3};vertical-align: middle;#{item.pass.customStyleInput}"/>
+                                        </div>
+                                    </p:column>
+                                    <p:column id="souekigawatankno"  headerText="#{beanGXHDO102B034B.souekigawatankno.getLabel1()}" style=" text-align: center;vertical-align: middle;width: 90px;"  >
+                                        <p:inputNumber id="souekigawatanknonumberValue" rendered="#{item.souekigawatankno.renderInputNumber}" value="#{item.souekigawatankno.value}" thousandSeparator="" roundMethod="D"
+                                                       decimalPlaces="#{item.souekigawatankno.numberDecimalPlaces}" maxValue="#{item.souekigawatankno.numberMaxValue}" minValue="#{item.souekigawatankno.numberMinValue}" size="#{item.souekigawatankno.displayMaxLength}"
+                                                      inputStyle="font-size:#{item.souekigawatankno.fontSizeInput}px;color:#{item.souekigawatankno.fontColorInput};background:#{item.souekigawatankno.backColorInput};vertical-align: middle;max-width:#{beanGXHDO102C034B.maxWidthInputCol}px;#{item.souekigawatankno.customStyleInput}">
+                                        </p:inputNumber>
+                                    </p:column>     
+                                    <p:column id="haisyutsugawatankno"  headerText="#{beanGXHDO102B034B.haisyutsugawatankno.getLabel1()}" style=" text-align: center;vertical-align: middle;width: 90px;"  >
+                                        <p:inputNumber id="haisyutsugawatanknonumberValue" rendered="#{item.haisyutsugawatankno.renderInputNumber}" value="#{item.haisyutsugawatankno.value}" thousandSeparator="" roundMethod="D"
+                                                       decimalPlaces="#{item.haisyutsugawatankno.numberDecimalPlaces}" maxValue="#{item.haisyutsugawatankno.numberMaxValue}" minValue="#{item.haisyutsugawatankno.numberMinValue}" size="#{item.haisyutsugawatankno.displayMaxLength}"
+                                                      inputStyle="font-size:#{item.haisyutsugawatankno.fontSizeInput}px;color:#{item.haisyutsugawatankno.fontColorInput};background:#{item.haisyutsugawatankno.backColorInput};vertical-align: middle;max-width:#{beanGXHDO102C034B.maxWidthInputCol}px;#{item.haisyutsugawatankno.customStyleInput}">
+                                        </p:inputNumber>
+                                    </p:column>
+                                    <p:column id="setteiatsuryoku"  headerText="#{beanGXHDO102B034B.setteiatsuryoku.getLabel1()}" style=" text-align: center;vertical-align: middle;width:${beanGXHDO102B034B.setteiatsuryoku.displayMaxLength}em;" >
+                                        <div style="text-align:left;">
+                                            <h:outputText id="setteiatsuryokukikakuChi" rendered="#{item.setteiatsuryoku.render1 || item.setteiatsuryoku.renderLinkButton}" value="#{item.setteiatsuryoku.kikakuChi}"
+                                                          style="font-size:#{item.setteiatsuryoku.fontSize3}px;color:#{item.setteiatsuryoku.fontColor3};background:#{item.setteiatsuryoku.backColor3};vertical-align: middle;"/>
+                                        </div>
+                                    </p:column>
+                                    <p:column id="kaishityokugohaikiryou"  headerText="#{beanGXHDO102B034B.kaishityokugohaikiryou.getLabel1()}" style=" text-align: center;vertical-align: middle;width: ${beanGXHDO102B034B.kaishityokugohaikiryou.displayMaxLength}em;" >
+                                        <div style="text-align:left;">
+                                            <h:outputText id="kaishityokugohaikiryoukikakuChi" rendered="#{item.kaishityokugohaikiryou.render1 || item.kaishityokugohaikiryou.renderLinkButton}" value="#{item.kaishityokugohaikiryou.kikakuChi}"
+                                                               style="font-size:#{item.kaishityokugohaikiryou.fontSize3}px;color:#{item.kaishityokugohaikiryou.fontColor3};background:#{item.kaishityokugohaikiryou.backColor3};vertical-align: middle;"/>
+                                        </div>
+                                    </p:column>
+                                    <p:column id="kouatsubunsankaishi_day"  headerText="#{beanGXHDO102B034B.kouatsubunsankaishi_day.getLabel1()}" style=" text-align: center;vertical-align: middle;width: 110px;" >
+                                        <p:inputText id="kouatsubunsankaishi_daytextValue" rendered="#{(item.kouatsubunsankaishi_day.renderInputText) and (!item.kouatsubunsankaishi_day.renderOutputLabel)}" value="#{item.kouatsubunsankaishi_day.value}" maxlength="#{item.kouatsubunsankaishi_day.displayMaxLength}"
+                                                      style="width:#{item.kouatsubunsankaishi_day.displayMaxLength}em; font-size:#{item.kouatsubunsankaishi_day.fontSizeInput}px;color:#{item.kouatsubunsankaishi_day.fontColorInput};background:#{item.kouatsubunsankaishi_day.backColorInput};vertical-align: middle;max-width:#{gXHDO102B034A.maxWidthInputCol}px;#{item.kouatsubunsankaishi_day.customStyleInput}">
+                                                    <p:ajax event="blur" process="@this" update="@this" listener="#{item.kouatsubunsankaishi_day.checkByte()}"  async="false"/>
+                                        </p:inputText>
+                                    </p:column>
+                                    <p:column id="kouatsubunsankaishi_time"  headerText="#{beanGXHDO102B034B.kouatsubunsankaishi_time.getLabel1()}" style=" text-align: center;vertical-align: middle;width: 120px;" >
+                                        <p:inputText id="kouatsubunsankaishi_timetextValue" rendered="#{(item.kouatsubunsankaishi_time.renderInputText) and (!item.kouatsubunsankaishi_time.renderOutputLabel)}" value="#{item.kouatsubunsankaishi_time.value}" maxlength="#{item.kouatsubunsankaishi_time.displayMaxLength}"
+                                                      style="width:#{item.kouatsubunsankaishi_time.displayMaxLength}em; font-size:#{item.kouatsubunsankaishi_time.fontSizeInput}px;color:#{item.kouatsubunsankaishi_time.fontColorInput};background:#{item.kouatsubunsankaishi_time.backColorInput};vertical-align: middle;max-width:#{gXHDO102B034A.maxWidthInputCol}px;#{item.kouatsubunsankaishi_time.customStyleInput}">
+                                                    <p:ajax event="blur" process="@this" update="@this" listener="#{item.kouatsubunsankaishi_time.checkByte()}"  async="false"/>
+                                        </p:inputText>
+                                    </p:column>
+                                    <p:column id="haikikakunin"  headerText="#{beanGXHDO102B034B.haikikakunin.getLabel1()}" style=" text-align: center;vertical-align: middle;width: 60px;" >
+                                        <p:selectBooleanCheckbox id="checkValue" rendered="#{item.haikikakunin.renderInputCheckBox}" value="#{item.haikikakunin.value}" 
+                                                      style="font-size:#{item.haikikakunin.fontSizeInput}px;color:#{item.haikikakunin.fontColorInput};vertical-align: middle;background: #{item.haikikakunin.backColorInput};#{item.haikikakunin.customStyleInput}"/>   
+                                    </p:column>
+                                    <p:column id="jitsuatsuryoku"  headerText="#{beanGXHDO102B034B.jitsuatsuryoku.getLabel1()}" style=" text-align: center;vertical-align: middle;width: 100px;"  >
+                                        <p:inputNumber id="jitsuatsuryokunumberValue" rendered="#{item.jitsuatsuryoku.renderInputNumber}" value="#{item.jitsuatsuryoku.value}" thousandSeparator="" roundMethod="D"
+                                                       decimalPlaces="#{item.jitsuatsuryoku.numberDecimalPlaces}" maxValue="#{item.jitsuatsuryoku.numberMaxValue}" minValue="#{item.jitsuatsuryoku.numberMinValue}" size="#{item.jitsuatsuryoku.displayMaxLength}"
+                                                      inputStyle="font-size:#{item.jitsuatsuryoku.fontSizeInput}px;color:#{item.jitsuatsuryoku.fontColorInput};background:#{item.jitsuatsuryoku.backColorInput};vertical-align: middle;max-width:#{beanGXHDO102C034B.maxWidthInputCol}px;#{item.jitsuatsuryoku.customStyleInput}">
+                                        </p:inputNumber>
+                                    </p:column>
+                                    <p:column id="slipryuuryou"  headerText="#{beanGXHDO102B034B.slipryuuryou.getLabel1()}" style=" text-align: center;vertical-align: middle;width: 85px;"  >
+                                        <p:inputNumber id="slipryuuryounumberValue" rendered="#{item.slipryuuryou.renderInputNumber}" value="#{item.slipryuuryou.value}" thousandSeparator="" roundMethod="D"
+                                                       decimalPlaces="#{item.slipryuuryou.numberDecimalPlaces}" maxValue="#{item.slipryuuryou.numberMaxValue}" minValue="#{item.slipryuuryou.numberMinValue}" size="#{item.slipryuuryou.displayMaxLength}"
+                                                      inputStyle="font-size:#{item.slipryuuryou.fontSizeInput}px;color:#{item.slipryuuryou.fontColorInput};background:#{item.slipryuuryou.backColorInput};vertical-align: middle;max-width:#{beanGXHDO102C034B.maxWidthInputCol}px;#{item.slipryuuryou.customStyleInput}">
+                                        </p:inputNumber>
+                                    </p:column>
+                                    <p:column id="slipondoin"  headerText="#{beanGXHDO102B034B.slipondoin.getLabel1()}" style=" text-align: center;vertical-align: middle;width: 100px;"  >
+                                        <p:inputNumber id="slipondoinnumberValue" rendered="#{item.slipondoin.renderInputNumber}" value="#{item.slipondoin.value}" thousandSeparator="" roundMethod="D"
+                                                       decimalPlaces="#{item.slipondoin.numberDecimalPlaces}" maxValue="#{item.slipondoin.numberMaxValue}" minValue="#{item.slipondoin.numberMinValue}" size="#{item.slipondoin.displayMaxLength}"
+                                                      inputStyle="font-size:#{item.slipondoin.fontSizeInput}px;color:#{item.slipondoin.fontColorInput};background:#{item.slipondoin.backColorInput};vertical-align: middle;max-width:#{beanGXHDO102C034B.maxWidthInputCol}px;#{item.slipondoin.customStyleInput}">
+                                        </p:inputNumber>
+                                    </p:column>
+                                    <p:column id="slipondoout"  headerText="#{beanGXHDO102B034B.slipondoout.getLabel1()}" style=" text-align: center;vertical-align: middle;width: 110px;"  >
+                                        <p:inputNumber id="slipondooutnumberValue" rendered="#{item.slipondoout.renderInputNumber}" value="#{item.slipondoout.value}" thousandSeparator="" roundMethod="D"
+                                                       decimalPlaces="#{item.slipondoout.numberDecimalPlaces}" maxValue="#{item.slipondoout.numberMaxValue}" minValue="#{item.slipondoout.numberMinValue}" size="#{item.slipondoout.displayMaxLength}"
+                                                      inputStyle="font-size:#{item.slipondoout.fontSizeInput}px;color:#{item.slipondoout.fontColorInput};background:#{item.slipondoout.backColorInput};vertical-align: middle;max-width:#{beanGXHDO102C034B.maxWidthInputCol}px;#{item.slipondoout.customStyleInput}">
+                                        </p:inputNumber>
+                                    </p:column>
+                                    <p:column id="kouatsubunsankaishitantousya"  headerText="#{beanGXHDO102B034B.kouatsubunsankaishitantousya.getLabel1()}" style=" text-align: center;vertical-align: middle;width: 130px;" >
+                                        <p:inputText id="kouatsubunsankaishitantousyatextValue" rendered="#{(item.kouatsubunsankaishitantousya.renderInputText) and (!item.kouatsubunsankaishitantousya.renderOutputLabel)}" value="#{item.kouatsubunsankaishitantousya.value}" maxlength="#{item.kouatsubunsankaishitantousya.displayMaxLength}"
+                                                      style="width:#{item.kouatsubunsankaishitantousya.displayMaxLength}em; font-size:#{item.kouatsubunsankaishitantousya.fontSizeInput}px;color:#{item.kouatsubunsankaishitantousya.fontColorInput};background:#{item.kouatsubunsankaishitantousya.backColorInput};vertical-align: middle;max-width:#{gXHDO102B034A.maxWidthInputCol}px;#{item.kouatsubunsankaishitantousya.customStyleInput}">
+                                                    <p:ajax event="blur" process="@this" update="@this" listener="#{item.kouatsubunsankaishitantousya.checkByte()}"  async="false"/>
+                                        </p:inputText>
+                                    </p:column>
+                                    <p:column id="kouatsubunsansyuuryou_day"  headerText="#{beanGXHDO102B034B.kouatsubunsansyuuryou_day.getLabel1()}" style=" text-align: center;vertical-align: middle;width: 110px;" >
+                                        <p:inputText id="kouatsubunsansyuuryou_daytextValue" rendered="#{(item.kouatsubunsansyuuryou_day.renderInputText) and (!item.kouatsubunsansyuuryou_day.renderOutputLabel)}" value="#{item.kouatsubunsansyuuryou_day.value}" maxlength="#{item.kouatsubunsansyuuryou_day.displayMaxLength}"
+                                                      style="width:#{item.kouatsubunsansyuuryou_day.displayMaxLength}em; font-size:#{item.kouatsubunsansyuuryou_day.fontSizeInput}px;color:#{item.kouatsubunsansyuuryou_day.fontColorInput};background:#{item.kouatsubunsansyuuryou_day.backColorInput};vertical-align: middle;max-width:#{gXHDO102B034A.maxWidthInputCol}px;#{item.kouatsubunsansyuuryou_day.customStyleInput}">
+                                                    <p:ajax event="blur" process="@this" update="@this" listener="#{item.kouatsubunsansyuuryou_day.checkByte()}"  async="false"/>
+                                        </p:inputText>
+                                    </p:column>
+                                    <p:column id="kouatsubunsansyuuryou_time"  headerText="#{beanGXHDO102B034B.kouatsubunsansyuuryou_time.getLabel1()}" style=" text-align: center;vertical-align: middle;width: 115px;" >
+                                        <p:inputText id="kouatsubunsansyuuryou_timetextValue" rendered="#{(item.kouatsubunsansyuuryou_time.renderInputText) and (!item.kouatsubunsansyuuryou_time.renderOutputLabel)}" value="#{item.kouatsubunsansyuuryou_time.value}" maxlength="#{item.kouatsubunsansyuuryou_time.displayMaxLength}"
+                                                      style="width:#{item.kouatsubunsansyuuryou_time.displayMaxLength}em; font-size:#{item.kouatsubunsansyuuryou_time.fontSizeInput}px;color:#{item.kouatsubunsansyuuryou_time.fontColorInput};background:#{item.kouatsubunsansyuuryou_time.backColorInput};vertical-align: middle;max-width:#{gXHDO102B034A.maxWidthInputCol}px;#{item.kouatsubunsansyuuryou_time.customStyleInput}">
+                                                    <p:ajax event="blur" process="@this" update="@this" listener="#{item.kouatsubunsansyuuryou_time.checkByte()}"  async="false"/>
+                                        </p:inputText>
+                                    </p:column>
+                                   <p:column id="kouatsubunsanteishitantousya"  headerText="#{beanGXHDO102B034B.kouatsubunsanteishitantousya.getLabel1()}" style=" text-align: center;vertical-align: middle;width: 130px;" >
+                                        <p:inputText id="kouatsubunsanteishitantousyatextValue" rendered="#{(item.kouatsubunsanteishitantousya.renderInputText) and (!item.kouatsubunsanteishitantousya.renderOutputLabel)}" value="#{item.kouatsubunsanteishitantousya.value}" maxlength="#{item.kouatsubunsanteishitantousya.displayMaxLength}"
+                                                      style="width:#{item.kouatsubunsanteishitantousya.displayMaxLength}em; font-size:#{item.kouatsubunsanteishitantousya.fontSizeInput}px;color:#{item.kouatsubunsanteishitantousya.fontColorInput};background:#{item.kouatsubunsanteishitantousya.backColorInput};vertical-align: middle;max-width:#{gXHDO102B034A.maxWidthInputCol}px;#{item.kouatsubunsanteishitantousya.customStyleInput}">
+                                                    <p:ajax event="blur" process="@this" update="@this" listener="#{item.kouatsubunsanteishitantousya.checkByte()}"  async="false"/>
+                                        </p:inputText>
+                                    </p:column>
+                                           <p:column id="bikou1"  headerText="#{beanGXHDO102B034B.bikou1.getLabel1()}" style=" text-align: center;vertical-align: middle;width: 350px;" >
+                                        <p:inputText id="bikou1textValue" rendered="#{(item.bikou1.renderInputText) and (!item.bikou1.renderOutputLabel)}" value="#{item.bikou1.value}" maxlength="#{item.bikou1.displayMaxLength}"
+                                                      style="width:#{item.bikou1.displayMaxLength}em; font-size:#{item.bikou1.fontSizeInput}px;color:#{item.bikou1.fontColorInput};background:#{item.bikou1.backColorInput};vertical-align: middle;max-width:#{gXHDO102B034A.maxWidthInputCol}px;#{item.bikou1.customStyleInput}">
+                                                    <p:ajax event="blur" process="@this" update="@this" listener="#{item.bikou1.checkByte()}"  async="false"/>
+                                        </p:inputText>
+                                    </p:column>
+                                       <p:column id="bikou2"  headerText="#{beanGXHDO102B034B.bikou2.getLabel1()}" style=" text-align: center;vertical-align: middle;width:350px;" >
+                                        <p:inputText id="bikou2textValue" rendered="#{(item.bikou2.renderInputText) and (!item.bikou2.renderOutputLabel)}" value="#{item.bikou2.value}" maxlength="#{item.bikou2.displayMaxLength}"
+                                                      style="width:#{item.bikou2.displayMaxLength}em; font-size:#{item.bikou2.fontSizeInput}px;color:#{item.bikou2.fontColorInput};background:#{item.bikou2.backColorInput};vertical-align: middle;max-width:#{gXHDO102B034A.maxWidthInputCol}px;#{item.bikou2.customStyleInput}">
+                                                    <p:ajax event="blur" process="@this" update="@this" listener="#{item.bikou2.checkByte()}"  async="false"/>
+                                        </p:inputText>
+                                    </p:column>
+                                </p:dataTable>
+                            </div>
+                        </p:tab>
+                    </p:tabView>
+                    <p:panel id="bottomPanel" style="margin-top:4px; #{gXHDO102B034A.styleDisplayNone}">
+                        <ui:repeat value="#{gXHDO102B034A.buttonListBottom}" var="item" varStatus="stat">
+                            <p:commandButton id="buttonId" value="#{item.buttonName}" rendered="#{item.render}" disabled="#{!item.enabled}"
+                                             style="margin-left:4px;margin-bottom:2px;font-size:#{item.fontSize}px;color:#{item.fontColor};background:#{item.backColor};"
+                                             actionListener="#{gXHDO102B034A.btnClick(item.buttonId)}" process="@form" update="@form" async="false"
+                                             oncomplete="cmdButtonOncomplete(args);" />       
+                        </ui:repeat>
+                    </p:panel>
+                    <p:commandButton id="returnBtnBottom" style="margin-left:26px;margin-bottom:0px;margin-top:5px; #{gXHDO102B034A.styleDisplayNone}"
+                                     value="#{myMsg.return}"  action="/secure/pxhdo102/gxhdo102a.xhtml?faces-redirect=true"
+                                     process="@this" update="@this">
+                        <f:param name="returnVal" value="return"/>
+                        <f:attribute name="returnVal" value="return"/>
+                    </p:commandButton>
+                    
+                </div>
+                <div>
+                    <ui:include src="/secure/common/initMessage.xhtml"/>
+                    <t:aliasBean alias="#{gXHDO901Common}" value="#{gXHDO102B034A}">
+                        <ui:include src="/secure/common/kikakuError.xhtml"/>
+                    </t:aliasBean>
+                    <t:aliasBean alias="#{gXHDO901ACommon}" value="#{gXHDO102B034A}">
+                        <ui:include src="/secure/pxhdo901/gxhdo901b.xhtml"/>
+                    </t:aliasBean>
+                    <t:aliasBean alias="#{gXHDO101Common}" value="#{gXHDO102B034A}">
+                        <ui:include src="/secure/common/compMessage.xhtml"/>
+                    </t:aliasBean>
+                    <ui:include src="/secure/common/errorListMessage.xhtml"/>
+                </div>
+            </div>
+        </h:form>
+
+    </h:body>
+</html>

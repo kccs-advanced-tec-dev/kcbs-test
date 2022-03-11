@@ -35,6 +35,10 @@
                     PF('cd').show();
                 } else if('initMessage'===args.firstParam){
                     PF('W_dlg_initMessage').show();
+                } else if('gxhdo102c017'===args.firstParam){
+                    PF('W_dlg_gxhdo102c017').show();
+                } else if('deleteConf'===args.firstParam){
+                    PF('deleteCd').show();
                 }
             }
             var pointY;
@@ -101,6 +105,17 @@
                                  update="@this"
                                  oncomplete="PF('cd').hide();"/>
             </p:confirmDialog>
+            <p:confirmDialog id="deleteConfDialog" class="ui-confdialog" severity="alert" widgetVar="deleteCd">
+                <f:facet name="message">
+                    <h:outputText value="#{gXHDO102A.getWarnMessage()}" escape="false"/>
+                </f:facet>
+                <p:commandButton id="delOk" value="OK" styleClass="ui-conf-commandbtn-def1"
+                                 actionListener="#{gXHDO102A.deleteMenu()}"
+                                 process="@this"
+                                 update="menuTable growlMessage"
+                                 oncomplete="PF('deleteCd').hide();"/>
+                <p:commandButton id="delCancel" value="Cancel" class="ui-conf-commandbtn-cancel" onclick="PF('deleteCd').hide();" type="button" />
+            </p:confirmDialog>
             <div id="loadinggif">
                 <img src="#{request.contextPath}/resources/gif/gif-load.gif"/>
             </div>
@@ -151,6 +166,19 @@
                     </div>
                     <p:column id="mComment" width="50%" headerText="#{myMsg.status}"  style="font-size: 17px; ">
                         <p:outputLabel value="#{item.menuComment}" style="float:left;font-size: 17px;"/>
+                        <div style="text-align: right;">
+                            <p:commandButton class="button" rendered="#{item.deleteBtnRender}"  styleClass="ui-conf-commandbtn-def1" style="width: 74px; height: 32px; font-size: 17px; "
+                                         value="削除"
+                                         actionListener="#{gXHDO102A.checkDeleteMenu(item)}"
+                                         process="@this"
+                                         update="form:menuTable form:deleteConfDialog form:growlMessage"
+                                         onstart="PF('cd').hide();$('#loadinggif').show();"
+                                         oncomplete="$('#loadinggif').hide();cmdButtonOncomplete(args);"/>
+                            <p:commandLink value="画面追加" rendered="true" style="color:Indigo;font-size: 17px;"
+                                       actionListener="#{gXHDO102A.checkAddMenu(item)}" oncomplete="cmdButtonOncomplete(args);" 
+                                       update="@form">
+                        </p:commandLink>
+                        </div>
                     </p:column>
                 </p:dataTable>
             </div>
@@ -166,6 +194,7 @@
             </div>
             <div>
                 <ui:include src="/secure/common/initMessage.xhtml"/>
+                <ui:include src="/secure/pxhdo102/gxhdo102c017.xhtml"/>
             </div>
         </h:form>
         </div>

@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Kyocera Communication Systems Co., Ltd All rights reserved.
+ * Copyright 2022 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.pxhdo102;
 
@@ -23,11 +23,14 @@ import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
 import jp.co.kccs.xhd.common.CompMessage;
+import jp.co.kccs.xhd.common.ErrorListMessage;
 import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.db.model.SikakariJson;
 import jp.co.kccs.xhd.db.model.SrGlassslurryfunsai;
+import jp.co.kccs.xhd.db.model.SubSrGlassslurryfunsai;
+import jp.co.kccs.xhd.model.GXHDO102C003Model;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.IFormLogic;
 import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
@@ -49,6 +52,7 @@ import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.RowProcessor;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
+import org.primefaces.context.RequestContext;
 
 /**
  * ===============================================================================<br>
@@ -212,6 +216,10 @@ public class GXHDO102B006 implements IFormLogic {
             case GXHDO102B006Const.BTN_DELETE_BOTTOM:
                 method = "checkDataDelete";
                 break;
+            // 材料品名のﾘﾝｸから遷移したｻﾌﾞ画面Open用非表示ボタン
+            case GXHDO102B006Const.BTN_OPENC003SUBGAMEN1:
+                method = "openC003SubGamen1";
+                break;
             default:
                 method = "error";
                 break;
@@ -273,7 +281,7 @@ public class GXHDO102B006 implements IFormLogic {
             String tantoshaCd = (String) session.getAttribute("tantoshaCd");
             String kojyo = lotNo.substring(0, 3);
             String lotNo9 = lotNo.substring(3, 12);
-        
+
             // 前工程WIPから仕掛情報を取得処理
             Map shikakariData = loadShikakariDataFromWip(queryRunnerDoc, tantoshaCd, lotNo);
             if (shikakariData == null || shikakariData.isEmpty() || !shikakariData.containsKey("oyalotedaban")) {
@@ -302,9 +310,17 @@ public class GXHDO102B006 implements IFormLogic {
                 processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
                 return processData;
             }
+            // ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力_ｻﾌﾞ画面データ取得
+            List<SubSrGlassslurryfunsai> subSrGlassslurryfunsaiDataList = getSubSrGlassslurryfunsaiData(queryRunnerQcdb, "", jotaiFlg, kojyo, lotNo9, oyalotEdaban);
+            if (subSrGlassslurryfunsaiDataList.isEmpty()) {
+                processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo(MessageUtil.getMessage("XHD-000030"))));
+                return processData;
+            }
 
             // メイン画面データ設定
             setInputItemDataMainForm(processData, srGlassslurryfunsaiDataList.get(0));
+            // ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力_ｻﾌﾞ画面データ設定
+            setInputItemDataSubFormC003(processData, subSrGlassslurryfunsaiDataList);
 
             // 次呼出しメソッドをクリア
             processData.setMethod("");
@@ -335,7 +351,7 @@ public class GXHDO102B006 implements IFormLogic {
             FXHDD01 funsaijikan = getItemRow(processData.getItemList(), GXHDO102B006Const.FUNSAIJIKAN);
             String strFunsaijikan = funsaijikan.getValue();
 
-            if("".equals(strFunsaijikan) || strFunsaijikan == null){
+            if ("".equals(strFunsaijikan) || strFunsaijikan == null) {
                 strFunsaijikan = "0";
             }
 
@@ -377,8 +393,8 @@ public class GXHDO102B006 implements IFormLogic {
         //粉砕終了時間
         FXHDD01 itemTime = getItemRow(processData.getItemList(), GXHDO102B006Const.FUNSAISYUURYOU_TIME);
         if (StringUtil.isEmpty(itemDay.getValue()) && StringUtil.isEmpty(itemTime.getValue())) {
-            setDateTimeItem(itemDay, itemTime, new Date());         
-            
+            setDateTimeItem(itemDay, itemTime, new Date());
+
             //(粉砕終了日+粉砕終了時間)-(粉砕開始日+粉砕開始時間)(HH)
             // 粉砕開始日
             FXHDD01 itemFunsaikaisiDay = getItemRow(processData.getItemList(), GXHDO102B006Const.FUNSAIKAISI_DAY);
@@ -398,8 +414,8 @@ public class GXHDO102B006 implements IFormLogic {
                     Date dtFunsaikaisiDatetime = dateFormat.parse(strFunsaikaisiDatetime);
 
                     long dif = dtFunsaisyuuryouDatetime.getTime() - dtFunsaikaisiDatetime.getTime();
-                    long day = dif /(24*60*60*1000);
-                    BigDecimal divideVal = new BigDecimal((60*60*1000)-day*24);
+                    long day = dif / (24 * 60 * 60 * 1000);
+                    BigDecimal divideVal = new BigDecimal((60 * 60 * 1000) - day * 24);
 
                     BigDecimal funsaijikan = new BigDecimal(dif).divide(divideVal, 0, RoundingMode.HALF_UP);
 
@@ -430,7 +446,7 @@ public class GXHDO102B006 implements IFormLogic {
         processData.setMethod("");
         return processData;
     }
-    
+
     /**
      * 歩留まり計算処理
      *
@@ -466,30 +482,30 @@ public class GXHDO102B006 implements IFormLogic {
      * @return エラーメッセージ情報
      */
     private ErrorMessageInfo checkBudomariKeisan(FXHDD01 itemSoujyuuryou, FXHDD01 itemFuutaijyuuryou, FXHDD01 itemTyougouryou) {
-        
+
         //「総重量」ﾁｪｯｸ
         if (StringUtil.isEmpty(itemSoujyuuryou.getValue())) {
             // ｴﾗｰ項目をﾘｽﾄに追加
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemSoujyuuryou);
             return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, itemSoujyuuryou.getLabel1());
         }
-        
+
         //「風袋重量」ﾁｪｯｸ
         if (StringUtil.isEmpty(itemFuutaijyuuryou.getValue())) {
             // ｴﾗｰ項目をﾘｽﾄに追加
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemFuutaijyuuryou);
             return MessageUtil.getErrorMessageInfo("XHD-000037", true, true, errFxhdd01List, itemFuutaijyuuryou.getLabel1());
         }
-        
+
         // [総重量]<[風袋重量]場合
         Integer itemSoujyuuryouIntVal = Integer.parseInt(itemSoujyuuryou.getValue());
         Integer itemFuutaijyuuryouIntVal = Integer.parseInt(itemFuutaijyuuryou.getValue());
         if (itemSoujyuuryouIntVal < itemFuutaijyuuryouIntVal) {
             // ｴﾗｰ項目をﾘｽﾄに追加
-            List<FXHDD01> errFxhdd01List = Arrays.asList(itemSoujyuuryou,itemFuutaijyuuryou);
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemSoujyuuryou, itemFuutaijyuuryou);
             return MessageUtil.getErrorMessageInfo("XHD-000023", true, true, errFxhdd01List, itemSoujyuuryou.getLabel1(), itemFuutaijyuuryou.getLabel1());
         }
-        
+
         //「調合量」ﾁｪｯｸ
         String itemTyougouryouVal = itemTyougouryou.getValue();
         if (StringUtil.isEmpty(itemTyougouryouVal) || !NumberUtil.isIntegerNumeric(itemTyougouryouVal) || 0 == Integer.parseInt(itemTyougouryouVal)) {
@@ -516,10 +532,10 @@ public class GXHDO102B006 implements IFormLogic {
             BigDecimal itemSoujyuuryouVal = new BigDecimal(itemSoujyuuryou.getValue());                           // 総重量
             BigDecimal itemFuutaijyuuryouVal = new BigDecimal(itemFuutaijyuuryou.getValue());                     // 風袋重量
             BigDecimal itemTyougouryouVal = new BigDecimal(itemTyougouryou.getValue());                           // 調合量
-            
+
             // ②「正味重量」計算処理  1.「総重量」 - 「風袋重量」 を算出する。
             BigDecimal itemSyoumijyuuryouDecVal = itemSoujyuuryouVal.subtract(itemFuutaijyuuryouVal);
-            
+
             // ③「歩留まり」計算処理
             // 1.「正味重量」 ÷ 「調合量」 を算出する。
             // 2.1の計算結果に100をかける。
@@ -630,10 +646,14 @@ public class GXHDO102B006 implements IFormLogic {
 
                 // ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕_仮登録登録処理
                 insertTmpSrGlassslurryfunsai(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, strSystime, processData);
+                // ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力ｻﾌﾞ画面の仮登録処理
+                insertTmpSubSrGlassslurryfunsai(queryRunnerQcdb, conQcdb, newRev, 0, kojyo, lotNo9, edaban, strSystime);
             } else {
 
                 // ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕_仮登録更新処理
                 updateTmpSrGlassslurryfunsai(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo9, edaban, strSystime, processData);
+                // ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力ｻﾌﾞ画面の仮登録更新処理
+                updateTmpSubSrGlassslurryfunsai(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, strSystime);
             }
 
             // 規格情報でエラーが発生している場合、エラー内容を更新
@@ -757,7 +777,7 @@ public class GXHDO102B006 implements IFormLogic {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Timestamp systemTime = new Timestamp(System.currentTimeMillis());
             String strSystime = sdf.format(systemTime);
-            
+
             if (StringUtil.isEmpty(processData.getInitRev())) {
                 // 原材料品質DB登録実績登録処理
                 insertFxhdd11(queryRunnerDoc, conDoc, tantoshaCd, formId, newRev, kojyo, lotNo9, edaban, jissekiNo, JOTAI_FLG_TOROKUZUMI, systemTime);
@@ -781,10 +801,13 @@ public class GXHDO102B006 implements IFormLogic {
                 }
 
                 deleteTmpSrGlassslurryfunsai(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo9, edaban);
+                deleteTmpSubSrGlassslurryfunsai(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo9, edaban);
             }
 
             // ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕_登録処理
             insertSrGlassslurryfunsai(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, strSystime, processData, tmpSrGlassslurryfunsai);
+            // ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力ｻﾌﾞ画面の仮登録更新処理
+            insertSubSrGlassslurryfunsai(queryRunnerQcdb, conQcdb, newRev, kojyo, lotNo9, edaban, strSystime);
 
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
@@ -798,11 +821,7 @@ public class GXHDO102B006 implements IFormLogic {
             DbUtils.commitAndCloseQuietly(conQcdb);
 
             // 後続処理メソッド設定
-            processData.setMethod("");
-
-            // 完了メッセージとコールバックパラメータを設定
-            setCompMessage("登録しました。");
-            processData.setCollBackParam("complete");
+            processData.setMethod("doPMLA0212");
             return processData;
         } catch (SQLException e) {
             ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
@@ -819,6 +838,30 @@ public class GXHDO102B006 implements IFormLogic {
             }
         }
 
+        return processData;
+    }
+
+    /**
+     * 部材在庫の重量ﾃﾞｰﾀ連携
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData doPMLA0212(ProcessData processData) {
+        // セッションから情報を取得
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+        String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
+        // 部材在庫の重量ﾃﾞｰﾀ連携
+        String responseResult = doPMLA0212Save(processData, tantoshaCd);
+        if (!"ok".equals(responseResult)) {
+            return processData;
+        }
+        // 後続処理メソッド設定
+        processData.setMethod("");
+        // 完了メッセージとコールバックパラメータを設定
+        setCompMessage("登録しました。");
+        processData.setCollBackParam("complete");
         return processData;
     }
 
@@ -932,7 +975,8 @@ public class GXHDO102B006 implements IFormLogic {
 
             // ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕_更新処理
             updateSrGlassslurryfunsai(queryRunnerQcdb, conQcdb, rev, processData.getInitJotaiFlg(), newRev, kojyo, lotNo9, edaban, strSystime, processData);
-
+            // ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力ｻﾌﾞ画面の更新処理
+            updateSubSrGlassslurryfunsai(queryRunnerQcdb, conQcdb, rev, newRev, kojyo, lotNo9, edaban, strSystime);
             // 規格情報でエラーが発生している場合、エラー内容を更新
             KikakuError kikakuError = (KikakuError) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_KIKAKU_ERROR);
             if (kikakuError.getKikakuchiInputErrorInfoList() != null && !kikakuError.getKikakuchiInputErrorInfoList().isEmpty()) {
@@ -1048,8 +1092,14 @@ public class GXHDO102B006 implements IFormLogic {
             int newDeleteflag = getNewDeleteflag(queryRunnerQcdb, kojyo, lotNo9, edaban);
             insertDeleteDataTmpSrGlassslurryfunsai(queryRunnerQcdb, conQcdb, newRev, newDeleteflag, kojyo, lotNo9, edaban, strSystime);
 
+            // ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力_ｻﾌﾞ画面仮登録登録処理
+            insertDeleteDataTmpSubSrGlassslurryfunsai(queryRunnerQcdb, conQcdb, newRev, newDeleteflag, kojyo, lotNo9, edaban, strSystime);
+
             // ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕_削除処理
             deleteSrGlassslurryfunsai(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo9, edaban);
+
+            // ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力_ｻﾌﾞ画面削除処理
+            deleteSubSrGlassslurryfunsai(queryRunnerQcdb, conQcdb, rev, kojyo, lotNo9, edaban);
 
             DbUtils.commitAndCloseQuietly(conDoc);
             DbUtils.commitAndCloseQuietly(conQcdb);
@@ -1168,7 +1218,7 @@ public class GXHDO102B006 implements IFormLogic {
 
         // エラーメッセージリスト
         List<String> errorMessageList = processData.getInitMessageList();
-        
+
         // 設計情報の取得
         Map mkSekkeiData = this.loadMkSekkeiData(queryRunnerQcdb, queryRunnerWip, lotNo);
         if (mkSekkeiData == null || mkSekkeiData.isEmpty()) {
@@ -1195,24 +1245,7 @@ public class GXHDO102B006 implements IFormLogic {
         // 画面に取得した情報をセットする。(入力項目以外)
         setViewItemData(processData, shikakariData, lotNo);
         // 画面のラベル項目の値の背景色を取得できない場合、デフォルト値を設置
-        processData.getItemList().stream().map((item) -> {
-            if ((item.isRender1() || item.isRenderLinkButton()) && !"".equals(StringUtil.nullToBlank(item.getKikakuChi()))) {
-                if ("".equals(StringUtil.nullToBlank(item.getBackColor3()))) {
-                    item.setBackColor3("#EEEEEE");
-                }
-                if (0 == item.getFontSize3()) {
-                    item.setFontSize3(16);
-                }
-            }
-            return item;
-        }).filter((item) -> (item.isRenderOutputLabel() && !"".equals(StringUtil.nullToBlank(item.getValue())))).map((item) -> {
-            if ("".equals(StringUtil.nullToBlank(item.getBackColorInput()))) {
-                item.setBackColorInput("#EEEEEE");
-            }
-            return item;
-        }).filter((item) -> (0 == item.getFontSizeInput())).forEachOrdered((item) -> {
-            item.setFontSizeInput(16);
-        });
+        GXHDO102C003Logic.setItemStyle(processData.getItemList());
         processData.setInitMessageList(errorMessageList);
         return processData;
     }
@@ -1278,6 +1311,7 @@ public class GXHDO102B006 implements IFormLogic {
             String lotNo, String formId, int jissekino) throws SQLException {
 
         List<SrGlassslurryfunsai> srGlassslurryfunsaiList = new ArrayList<>();
+        List<SubSrGlassslurryfunsai> subSrGlassslurryfunsaiList = new ArrayList<>();
         String rev = "";
         String jotaiFlg = "";
         String kojyo = lotNo.substring(0, 3);
@@ -1301,6 +1335,8 @@ public class GXHDO102B006 implements IFormLogic {
                     this.setItemData(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
                 });
 
+                // ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力_ｻﾌﾞ画面データ設定
+                setInputItemDataSubFormC003(processData, null);
                 return true;
             }
 
@@ -1310,13 +1346,18 @@ public class GXHDO102B006 implements IFormLogic {
                 //該当データが取得できなかった場合は処理を繰り返す。
                 continue;
             }
-
+            // ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力_サブ画面データ取得
+            subSrGlassslurryfunsaiList = getSubSrGlassslurryfunsaiData(queryRunnerQcdb, rev, jotaiFlg, kojyo, lotNo9, edaban);
+            if (subSrGlassslurryfunsaiList.isEmpty()) {
+                //該当データが取得できなかった場合は処理を繰り返す。
+                continue;
+            }
             // データが全て取得出来た場合、ループを抜ける。
             break;
         }
 
         // 制限回数内にデータが取得できなかった場合
-        if (srGlassslurryfunsaiList.isEmpty()) {
+        if (srGlassslurryfunsaiList.isEmpty() || subSrGlassslurryfunsaiList.isEmpty()) {
             return false;
         }
 
@@ -1325,7 +1366,8 @@ public class GXHDO102B006 implements IFormLogic {
 
         // メイン画面データ設定
         setInputItemDataMainForm(processData, srGlassslurryfunsaiList.get(0));
-
+        // ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力_ｻﾌﾞ画面データ設定
+        setInputItemDataSubFormC003(processData, subSrGlassslurryfunsaiList);
         return true;
 
     }
@@ -1337,6 +1379,10 @@ public class GXHDO102B006 implements IFormLogic {
      * @param srGlassslurryfunsai ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕
      */
     private void setInputItemDataMainForm(ProcessData processData, SrGlassslurryfunsai srGlassslurryfunsai) {
+
+        // 秤量号機
+        this.setItemData(processData, GXHDO102B006Const.GOKI, getSrGlassslurryfunsaiItemData(GXHDO102B006Const.GOKI, srGlassslurryfunsai));
+
         // 粉砕回転台号機
         this.setItemData(processData, GXHDO102B006Const.KAITENDAIGOUKI, getSrGlassslurryfunsaiItemData(GXHDO102B006Const.KAITENDAIGOUKI, srGlassslurryfunsai));
 
@@ -1440,7 +1486,7 @@ public class GXHDO102B006 implements IFormLogic {
         List<SikakariJson> sikakariList = CommonUtil.getMwipResult(queryRunnerDoc, tantoshaCd, lotNo);
         SikakariJson sikakariObj = null;
         Map shikakariData = new HashMap();
-        if (sikakariList!= null) {
+        if (sikakariList != null) {
             sikakariObj = sikakariList.get(0);
             // 前工程WIPから取得した品名
             shikakariData.put("hinmei", sikakariObj.getHinmei());
@@ -1449,10 +1495,10 @@ public class GXHDO102B006 implements IFormLogic {
             shikakariData.put("lotkubun", sikakariObj.getLotkubun());
             shikakariData.put("lotno", sikakariObj.getConventionalLot());
         }
-        
+
         return shikakariData;
     }
-    
+
     /**
      * [原材料品質DB登録実績]から、ﾘﾋﾞｼﾞｮﾝ,状態ﾌﾗｸﾞを取得
      *
@@ -1568,7 +1614,7 @@ public class GXHDO102B006 implements IFormLogic {
             String edaban, String rev) throws SQLException {
 
         String sql = " SELECT "
-                + " kojyo,lotno,edaban,glassslurryhinmei,glassslurrylotno,lotkubun,syuusoku,kaitendaigouki,funsaikaisinichiji, "
+                + " kojyo,lotno,edaban,glassslurryhinmei,glassslurrylotno,lotkubun,goki,syuusoku,kaitendaigouki,funsaikaisinichiji, "
                 + " funsaiyoteisyuuryounichiji,kaisitantosya,funsaisyuuryounichiji,syuryotantosya,funsaijikan,zairyohinmei, "
                 + " buzaizaikono,tyougouryou,fuutaijyuuryou,soujyuuryou,syoumijyuuryou,budomari,haisyututantousya,hokankaisinichiji, "
                 + " hokanbasyo,hokankaitengouki,kaitensuu,hokantantosya,bikou1,bikou2,torokunichiji,kosinnichiji,revision "
@@ -1597,6 +1643,7 @@ public class GXHDO102B006 implements IFormLogic {
         mapping.put("glassslurryhinmei", "glassslurryhinmei");                     // ｶﾞﾗｽｽﾗﾘｰ品名
         mapping.put("glassslurrylotno", "glassslurrylotno");                       // ｶﾞﾗｽｽﾗﾘｰ品名LotNo
         mapping.put("lotkubun", "lotkubun");                                       // ﾛｯﾄ区分
+        mapping.put("goki", "goki");                                               // 秤量号機
         mapping.put("syuusoku", "syuusoku");                                       // 周速
         mapping.put("kaitendaigouki", "kaitendaigouki");                           // 粉砕回転台号機
         mapping.put("funsaikaisinichiji", "funsaikaisinichiji");                   // 粉砕開始日時
@@ -1647,7 +1694,7 @@ public class GXHDO102B006 implements IFormLogic {
             String edaban, String rev) throws SQLException {
 
         String sql = " SELECT "
-                + " kojyo,lotno,edaban,glassslurryhinmei,glassslurrylotno,lotkubun,syuusoku,kaitendaigouki,funsaikaisinichiji, "
+                + " kojyo,lotno,edaban,glassslurryhinmei,glassslurrylotno,lotkubun,goki,syuusoku,kaitendaigouki,funsaikaisinichiji, "
                 + " funsaiyoteisyuuryounichiji,kaisitantosya,funsaisyuuryounichiji,syuryotantosya,funsaijikan,zairyohinmei, "
                 + " buzaizaikono,tyougouryou,fuutaijyuuryou,soujyuuryou,syoumijyuuryou,budomari,haisyututantousya,hokankaisinichiji, "
                 + " hokanbasyo,hokankaitengouki,kaitensuu,hokantantosya,bikou1,bikou2,torokunichiji,kosinnichiji,revision,deleteflag "
@@ -1677,6 +1724,7 @@ public class GXHDO102B006 implements IFormLogic {
         mapping.put("glassslurryhinmei", "glassslurryhinmei");                     // ｶﾞﾗｽｽﾗﾘｰ品名
         mapping.put("glassslurrylotno", "glassslurrylotno");                       // ｶﾞﾗｽｽﾗﾘｰ品名LotNo
         mapping.put("lotkubun", "lotkubun");                                       // ﾛｯﾄ区分
+        mapping.put("goki", "goki");                                               // 秤量号機
         mapping.put("syuusoku", "syuusoku");                                       // 周速
         mapping.put("kaitendaigouki", "kaitendaigouki");                           // 粉砕回転台号機
         mapping.put("funsaikaisinichiji", "funsaikaisinichiji");                   // 粉砕開始日時
@@ -1902,12 +1950,12 @@ public class GXHDO102B006 implements IFormLogic {
             String kojyo, String lotNo, String edaban, String systemTime, ProcessData processData) throws SQLException {
 
         String sql = "INSERT INTO tmp_sr_glassslurryfunsai ( "
-                + " kojyo,lotno,edaban,glassslurryhinmei,glassslurrylotno,lotkubun,syuusoku,kaitendaigouki,funsaikaisinichiji, "
+                + " kojyo,lotno,edaban,glassslurryhinmei,glassslurrylotno,lotkubun,goki,syuusoku,kaitendaigouki,funsaikaisinichiji, "
                 + " funsaiyoteisyuuryounichiji,kaisitantosya,funsaisyuuryounichiji,syuryotantosya,funsaijikan,zairyohinmei, "
                 + " buzaizaikono,tyougouryou,fuutaijyuuryou,soujyuuryou,syoumijyuuryou,budomari,haisyututantousya,hokankaisinichiji, "
                 + " hokanbasyo,hokankaitengouki,kaitensuu,hokantantosya,bikou1,bikou2,torokunichiji,kosinnichiji,revision,deleteflag "
                 + " ) VALUES ( "
-                + " ? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?, ?) ";
+                + " ? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?, ?) ";
 
         List<Object> params = setUpdateParameterTmpSrGlassslurryfunsai(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, processData, null);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -1933,7 +1981,7 @@ public class GXHDO102B006 implements IFormLogic {
             String kojyo, String lotNo, String edaban, String systemTime, ProcessData processData) throws SQLException {
 
         String sql = "UPDATE tmp_sr_glassslurryfunsai SET "
-                + " glassslurryhinmei = ?,glassslurrylotno = ?,lotkubun = ?,syuusoku = ?,kaitendaigouki = ?,funsaikaisinichiji = ?,funsaiyoteisyuuryounichiji = ?, "
+                + " glassslurryhinmei = ?,glassslurrylotno = ?,lotkubun = ?,goki = ?,syuusoku = ?,kaitendaigouki = ?,funsaikaisinichiji = ?,funsaiyoteisyuuryounichiji = ?, "
                 + " kaisitantosya = ?,funsaisyuuryounichiji = ?,syuryotantosya = ?,funsaijikan = ?,zairyohinmei = ?,buzaizaikono = ?,tyougouryou = ?, "
                 + " fuutaijyuuryou = ?,soujyuuryou = ?,syoumijyuuryou = ?,budomari = ?,haisyututantousya = ?,hokankaisinichiji = ?,hokanbasyo = ?, "
                 + " hokankaitengouki = ?,kaitensuu = ?,hokantantosya = ?,bikou1 = ?,bikou2 = ?,kosinnichiji = ?,revision = ?,deleteflag = ? "
@@ -2019,10 +2067,11 @@ public class GXHDO102B006 implements IFormLogic {
             params.add(lotNo); //ﾛｯﾄNo
             params.add(edaban); //枝番
         }
-        
+
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.GLASSSLURRYHINMEI, srGlassslurryfunsai))); // ｶﾞﾗｽｽﾗﾘｰ品名
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.GLASSSLURRYLOTNO, srGlassslurryfunsai))); // ｶﾞﾗｽｽﾗﾘｰ品名LotNo
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.LOTKUBUN, srGlassslurryfunsai))); // ﾛｯﾄ区分
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.GOKI, srGlassslurryfunsai))); // 秤量号機
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemKikakuchi(pItemList, GXHDO102B006Const.SYUUSOKU, srGlassslurryfunsai))); // 周速
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.KAITENDAIGOUKI, srGlassslurryfunsai))); // 粉砕回転台号機
         params.add(DBUtil.stringToDateObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.FUNSAIKAISI_DAY, srGlassslurryfunsai),
@@ -2036,7 +2085,7 @@ public class GXHDO102B006 implements IFormLogic {
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.FUNSAIJIKAN, srGlassslurryfunsai))); // 粉砕時間
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemKikakuchi(pItemList, GXHDO102B006Const.ZAIRYOHINMEI, srGlassslurryfunsai))); // 材料品名
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.BUZAIZAIKONO, srGlassslurryfunsai))); // 部材在庫No
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.TYOUGOURYOU, srGlassslurryfunsai))); // 調合量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.TYOUGOURYOU, srGlassslurryfunsai))); // 調合量
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.FUUTAIJYUURYOU, srGlassslurryfunsai))); // 風袋重量
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.SOUJYUURYOU, srGlassslurryfunsai))); // 総重量
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO102B006Const.SYOUMIJYUURYOU, srGlassslurryfunsai))); // 正味重量
@@ -2081,12 +2130,12 @@ public class GXHDO102B006 implements IFormLogic {
             String kojyo, String lotNo, String edaban, String systemTime, ProcessData processData, SrGlassslurryfunsai tmpSrGlassslurryfunsai) throws SQLException {
 
         String sql = "INSERT INTO sr_glassslurryfunsai ( "
-                + " kojyo,lotno,edaban,glassslurryhinmei,glassslurrylotno,lotkubun,syuusoku,kaitendaigouki,funsaikaisinichiji, "
+                + " kojyo,lotno,edaban,glassslurryhinmei,glassslurrylotno,lotkubun,goki,syuusoku,kaitendaigouki,funsaikaisinichiji, "
                 + " funsaiyoteisyuuryounichiji,kaisitantosya,funsaisyuuryounichiji,syuryotantosya,funsaijikan,zairyohinmei, "
                 + " buzaizaikono,tyougouryou,fuutaijyuuryou,soujyuuryou,syoumijyuuryou,budomari,haisyututantousya,hokankaisinichiji, "
                 + " hokanbasyo,hokankaitengouki,kaitensuu,hokantantosya,bikou1,bikou2,torokunichiji,kosinnichiji,revision "
                 + " ) VALUES ( "
-                + " ? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?) ";
+                + " ? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,? ,?) ";
 
         List<Object> params = setUpdateParameterSrGlassslurryfunsai(true, newRev, kojyo, lotNo, edaban, systemTime, processData, tmpSrGlassslurryfunsai);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -2113,7 +2162,7 @@ public class GXHDO102B006 implements IFormLogic {
             String kojyo, String lotNo, String edaban, String systemTime, ProcessData processData) throws SQLException {
 
         String sql = "UPDATE sr_glassslurryfunsai SET "
-                + " glassslurryhinmei = ?,glassslurrylotno = ?,lotkubun = ?,syuusoku = ?,kaitendaigouki = ?,funsaikaisinichiji = ?,funsaiyoteisyuuryounichiji = ?, "
+                + " glassslurryhinmei = ?,glassslurrylotno = ?,lotkubun = ?,goki = ?,syuusoku = ?,kaitendaigouki = ?,funsaikaisinichiji = ?,funsaiyoteisyuuryounichiji = ?, "
                 + " kaisitantosya = ?,funsaisyuuryounichiji = ?,syuryotantosya = ?,funsaijikan = ?,zairyohinmei = ?,buzaizaikono = ?,tyougouryou = ?, "
                 + " fuutaijyuuryou = ?,soujyuuryou = ?,syoumijyuuryou = ?,budomari = ?,haisyututantousya = ?,hokankaisinichiji = ?,hokanbasyo = ?, "
                 + " hokankaitengouki = ?,kaitensuu = ?,hokantantosya = ?,bikou1 = ?,bikou2 = ?,kosinnichiji = ?,revision = ? "
@@ -2174,6 +2223,7 @@ public class GXHDO102B006 implements IFormLogic {
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B006Const.GLASSSLURRYHINMEI, srGlassslurryfunsai))); // ｶﾞﾗｽｽﾗﾘｰ品名
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B006Const.GLASSSLURRYLOTNO, srGlassslurryfunsai))); // ｶﾞﾗｽｽﾗﾘｰ品名LotNo
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B006Const.LOTKUBUN, srGlassslurryfunsai))); // ﾛｯﾄ区分
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B006Const.GOKI, srGlassslurryfunsai))); // 秤量号機
         params.add(DBUtil.stringToStringObject(getItemKikakuchi(pItemList, GXHDO102B006Const.SYUUSOKU, srGlassslurryfunsai))); // 周速
         params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO102B006Const.KAITENDAIGOUKI, srGlassslurryfunsai))); // 粉砕回転台号機
         params.add(DBUtil.stringToDateObject(getItemData(pItemList, GXHDO102B006Const.FUNSAIKAISI_DAY, srGlassslurryfunsai),
@@ -2187,7 +2237,7 @@ public class GXHDO102B006 implements IFormLogic {
         params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO102B006Const.FUNSAIJIKAN, srGlassslurryfunsai))); // 粉砕時間
         params.add(DBUtil.stringToStringObject(getItemKikakuchi(pItemList, GXHDO102B006Const.ZAIRYOHINMEI, srGlassslurryfunsai))); // 材料品名
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B006Const.BUZAIZAIKONO, srGlassslurryfunsai))); // 部材在庫No
-        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B006Const.TYOUGOURYOU, srGlassslurryfunsai))); // 調合量
+        params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO102B006Const.TYOUGOURYOU, srGlassslurryfunsai))); // 調合量
         params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO102B006Const.FUUTAIJYUURYOU, srGlassslurryfunsai))); // 風袋重量
         params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO102B006Const.SOUJYUURYOU, srGlassslurryfunsai))); // 総重量
         params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO102B006Const.SYOUMIJYUURYOU, srGlassslurryfunsai))); // 正味重量
@@ -2333,6 +2383,10 @@ public class GXHDO102B006 implements IFormLogic {
             case GXHDO102B006Const.LOTKUBUN:
                 return StringUtil.nullToBlank(srGlassslurryfunsai.getLotkubun());
 
+            // 秤量号機
+            case GXHDO102B006Const.GOKI:
+                return StringUtil.nullToBlank(srGlassslurryfunsai.getGoki());
+
             // 周速
             case GXHDO102B006Const.SYUUSOKU:
                 return StringUtil.nullToBlank(srGlassslurryfunsai.getSyuusoku());
@@ -2463,12 +2517,12 @@ public class GXHDO102B006 implements IFormLogic {
             String kojyo, String lotNo, String edaban, String systemTime) throws SQLException {
 
         String sql = " INSERT INTO tmp_sr_glassslurryfunsai ( "
-                + " kojyo,lotno,edaban,glassslurryhinmei,glassslurrylotno,lotkubun,syuusoku,kaitendaigouki,funsaikaisinichiji, "
+                + " kojyo,lotno,edaban,glassslurryhinmei,glassslurrylotno,lotkubun,goki,syuusoku,kaitendaigouki,funsaikaisinichiji, "
                 + " funsaiyoteisyuuryounichiji,kaisitantosya,funsaisyuuryounichiji,syuryotantosya,funsaijikan,zairyohinmei, "
                 + " buzaizaikono,tyougouryou,fuutaijyuuryou,soujyuuryou,syoumijyuuryou,budomari,haisyututantousya,hokankaisinichiji, "
                 + " hokanbasyo,hokankaitengouki,kaitensuu,hokantantosya,bikou1,bikou2,torokunichiji,kosinnichiji,revision,deleteflag "
                 + ") SELECT "
-                + " kojyo,lotno,edaban,glassslurryhinmei,glassslurrylotno,lotkubun,syuusoku,kaitendaigouki,funsaikaisinichiji, "
+                + " kojyo,lotno,edaban,glassslurryhinmei,glassslurrylotno,lotkubun,goki,syuusoku,kaitendaigouki,funsaikaisinichiji, "
                 + " funsaiyoteisyuuryounichiji,kaisitantosya,funsaisyuuryounichiji,syuryotantosya,funsaijikan,zairyohinmei, "
                 + " buzaizaikono,tyougouryou,fuutaijyuuryou,soujyuuryou,syoumijyuuryou,budomari,haisyututantousya,hokankaisinichiji, "
                 + " hokanbasyo,hokankaitengouki,kaitensuu,hokantantosya,bikou1,bikou2,?,?,?,? "
@@ -2511,5 +2565,732 @@ public class GXHDO102B006 implements IFormLogic {
     private void setCompMessage(String message) {
         CompMessage compMessage = (CompMessage) getFormBean("beanCompMessage");
         compMessage.setCompMessage(message);
+    }
+
+    /**
+     * ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力_ｻﾌﾞ画面データの規格値取得処理
+     *
+     * @param item 項目情報
+     * @return 項目値
+     */
+    private String getFXHDD01KikakuChi(FXHDD01 item) {
+        if (item == null) {
+            return "";
+        }
+        return StringUtil.nullToBlank(item.getKikakuChi()).replace("【", "").replace("】", "");
+    }
+
+    /**
+     * 材料品名のﾘﾝｸ押下時、 ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力サブ画面Open
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData openC003SubGamen1(ProcessData processData) {
+        List<String> returnItemIdList = Arrays.asList(GXHDO102B006Const.BUZAIZAIKONO, GXHDO102B006Const.TYOUGOURYOU);
+        return openC003SubGamen(processData, returnItemIdList);
+    }
+
+    /**
+     * ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力サブ画面Open
+     *
+     * @param processData 処理制御データ
+     * @param returnItemIdList サブ画面から戻ったときに値を設定必要項目リスト
+     * @return 処理制御データ
+     */
+    public ProcessData openC003SubGamen(ProcessData processData, List<String> returnItemIdList) {
+        try {
+            // 「秤量号機」
+            FXHDD01 itemGoki = getItemRow(processData.getItemList(), GXHDO102B006Const.GOKI);
+            // 「秤量号機」ﾁｪｯｸ処理
+            ErrorMessageInfo checkItemErrorInfo = checkGoki(itemGoki);
+            if (checkItemErrorInfo != null) {
+                processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
+                // エラーの場合はコールバック変数に"error0"をセット
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.addCallbackParam("firstParam", "error0");
+                return processData;
+            }
+            processData.setMethod("");
+            // コールバックパラメータにてサブ画面起動用の値を設定
+            processData.setCollBackParam("gxhdo102c003");
+
+            GXHDO102C003 beanGXHDO102C003 = (GXHDO102C003) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO102C003);
+            GXHDO102C003Model gxhdo102c003model = beanGXHDO102C003.getGxhdO102c003Model();
+            // 主画面からサブ画面に渡されたデータを設定
+            setSubGamenInitData(gxhdo102c003model, itemGoki, returnItemIdList);
+
+            beanGXHDO102C003.setGxhdO102c003ModelView(gxhdo102c003model.clone());
+        } catch (CloneNotSupportedException ex) {
+            ErrUtil.outputErrorLog("CloneNotSupportedException発生", ex, LOGGER);
+            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            return processData;
+        }
+
+        return processData;
+    }
+
+    /**
+     * 秤量号機の必須入力ﾁｪｯｸ処理
+     *
+     * @param itemGoki 秤量号機
+     * @return エラーメッセージ情報
+     */
+    private ErrorMessageInfo checkGoki(FXHDD01 itemGoki) {
+        // 「秤量号機」ﾁｪｯｸ
+        if (StringUtil.isEmpty(itemGoki.getValue())) {
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemGoki);
+            return MessageUtil.getErrorMessageInfo("XHD-000003", true, true, errFxhdd01List, itemGoki.getLabel1());
+        }
+
+        return null;
+    }
+
+    /**
+     * 主画面からサブ画面に渡されたデータを設定
+     *
+     * @param gxhdo102c003model モデルデータ
+     * @param itemGoki 秤量号機データ
+     * @param returnItemIdList サブ画面から戻るデータリスト
+     * @throws CloneNotSupportedException 例外エラー
+     */
+    private void setSubGamenInitData(GXHDO102C003Model gxhdo102c003model, FXHDD01 itemGoki, List<String> returnItemIdList) throws CloneNotSupportedException {
+        GXHDO102C003Model.SubGamenData c003subgamendata = gxhdo102c003model.getSubgamen1();
+        if (c003subgamendata == null) {
+            return;
+        }
+        c003subgamendata.setSubDataGoki(StringUtil.nullToBlank(itemGoki.getValue()));
+        // サブ画面から戻ったときに値を設定する項目を指定する。
+        c003subgamendata.setReturnItemIdBuzailotno(returnItemIdList.get(0)); // 部材在庫No.
+        c003subgamendata.setReturnItemIdTyougouryou(returnItemIdList.get(1)); // 調合量
+        gxhdo102c003model.setShowsubgamendata(c003subgamendata.clone());
+        // サブ画面の調合残量の計算
+        GXHDO102C003Logic.calcTyogouzanryou(gxhdo102c003model);
+    }
+
+    /**
+     * ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力_ｻﾌﾞ画面データ設定処理
+     *
+     * @param processData 処理制御データ
+     * @param subSrTenkaTyogoList ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力_ｻﾌﾞ画面データリスト
+     */
+    private void setInputItemDataSubFormC003(ProcessData processData, List<SubSrGlassslurryfunsai> subSrGlassslurryfunsaiList) {
+        // サブ画面の情報を取得
+        GXHDO102C003 beanGXHDO102C003 = (GXHDO102C003) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO102C003);
+
+        GXHDO102C003Model model;
+        if (subSrGlassslurryfunsaiList == null) {
+            // 登録データが無い場合、主画面の材料品名と調合量規格はｻﾌﾞ画面の初期値にセットする。
+            subSrGlassslurryfunsaiList = new ArrayList<>();
+            SubSrGlassslurryfunsai subgamen1 = new SubSrGlassslurryfunsai();
+
+            subgamen1.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemList(), GXHDO102B006Const.ZAIRYOHINMEI))); // 材料品名
+            subgamen1.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemList(), GXHDO102B006Const.TYOUGOURYOU))); // 調合量規格
+            subSrGlassslurryfunsaiList.add(subgamen1);
+            model = GXHDO102C003Logic.createGXHDO102C003Model(subSrGlassslurryfunsaiList);
+
+        } else {
+            // 登録データがあれば登録データをセットする。
+            model = GXHDO102C003Logic.createGXHDO102C003Model(subSrGlassslurryfunsaiList);
+        }
+        beanGXHDO102C003.setGxhdO102c003Model(model);
+    }
+
+    /**
+     * ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力_ｻﾌﾞ画面の入力項目の登録データ(仮登録時は仮登録データ)を取得
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param rev revision
+     * @param jotaiFlg 状態ﾌﾗｸﾞ
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo.
+     * @param edaban 枝番
+     * @return ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力_ｻﾌﾞ画面登録データ
+     * @throws SQLException 例外エラー
+     */
+    private List<SubSrGlassslurryfunsai> getSubSrGlassslurryfunsaiData(QueryRunner queryRunnerQcdb,
+            String rev, String jotaiFlg, String kojyo, String lotNo, String edaban) throws SQLException {
+        if (JOTAI_FLG_TOROKUZUMI.equals(jotaiFlg)) {
+            return loadSubSrGlassslurryfunsai(queryRunnerQcdb, kojyo, lotNo, edaban, rev);
+        } else {
+            return loadTmpSubSrGlassslurryfunsai(queryRunnerQcdb, kojyo, lotNo, edaban, rev);
+        }
+    }
+
+    /**
+     * [ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力_ｻﾌﾞ画面]から、ﾃﾞｰﾀを取得
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev revision(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private List<SubSrGlassslurryfunsai> loadSubSrGlassslurryfunsai(QueryRunner queryRunnerQcdb,
+            String kojyo, String lotNo, String edaban, String rev) throws SQLException {
+
+        String sql = "SELECT "
+                + "kojyo,lotno,edaban,tyogouryoukikaku,tyogouzanryou,zairyohinmei,"
+                + "buzailotno,buzaihinmei,tyougouryou1,tyougouryou2,tyougouryou3,tyougouryou4,"
+                + "tyougouryou5,tyougouryou6,torokunichiji,kosinnichiji,"
+                + "revision, '0' AS deleteflag "
+                + " FROM sub_sr_glassslurryfunsai "
+                + " WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
+
+        // revisionが入っている場合、条件に追加
+        if (!StringUtil.isEmpty(rev)) {
+            sql += "AND revision = ? ";
+        }
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+
+        // revisionが入っている場合、条件に追加
+        if (!StringUtil.isEmpty(rev)) {
+            params.add(rev);
+        }
+
+        Map<String, String> mapping = new HashMap<>();
+        mapping.put("kojyo", "kojyo");                           // 工場ｺｰﾄﾞ
+        mapping.put("lotno", "lotno");                           // ﾛｯﾄNo
+        mapping.put("edaban", "edaban");                         // 枝番
+        mapping.put("tyogouryoukikaku", "tyogouryoukikaku");     // 調合量規格
+        mapping.put("tyogouzanryou", "tyogouzanryou");           // 調合残量
+        mapping.put("zairyohinmei", "zairyohinmei");             // 材料品名
+        mapping.put("buzailotno", "buzailotno");                 // 部材在庫No
+        mapping.put("buzaihinmei", "buzaihinmei");               // 部材在庫品名
+        mapping.put("tyougouryou1", "tyougouryou1");             // 調合量1
+        mapping.put("tyougouryou2", "tyougouryou2");             // 調合量2
+        mapping.put("tyougouryou3", "tyougouryou3");             // 調合量3
+        mapping.put("tyougouryou4", "tyougouryou4");             // 調合量4
+        mapping.put("tyougouryou5", "tyougouryou5");             // 調合量5
+        mapping.put("tyougouryou6", "tyougouryou6");             // 調合量6
+        mapping.put("torokunichiji", "torokunichiji");           // 登録日時
+        mapping.put("kosinnichiji", "kosinnichiji");             // 更新日時
+        mapping.put("revision", "revision");                     // revision
+        mapping.put("deleteflag", "deleteflag");                 // 削除ﾌﾗｸﾞ
+
+        BeanProcessor beanProcessor = new BeanProcessor(mapping);
+        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+        ResultSetHandler<List<SubSrGlassslurryfunsai>> beanHandler = new BeanListHandler<>(SubSrGlassslurryfunsai.class, rowProcessor);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, beanHandler, params.toArray());
+    }
+
+    /**
+     * [ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力_ｻﾌﾞ画面_仮登録]から、ﾃﾞｰﾀを取得
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param rev revision(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private List<SubSrGlassslurryfunsai> loadTmpSubSrGlassslurryfunsai(QueryRunner queryRunnerQcdb,
+            String kojyo, String lotNo, String edaban, String rev) throws SQLException {
+
+        String sql = "SELECT "
+                + "kojyo,lotno,edaban,tyogouryoukikaku,tyogouzanryou,zairyohinmei,"
+                + "buzailotno,buzaihinmei,tyougouryou1,tyougouryou2,tyougouryou3,tyougouryou4,"
+                + "tyougouryou5,tyougouryou6,torokunichiji,kosinnichiji,"
+                + "revision, deleteflag "
+                + " FROM tmp_sub_sr_glassslurryfunsai "
+                + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND deleteflag = ? ";
+
+        // revisionが入っている場合、条件に追加
+        if (!StringUtil.isEmpty(rev)) {
+            sql += "AND revision = ? ";
+        }
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(0);
+
+        // revisionが入っている場合、条件に追加
+        if (!StringUtil.isEmpty(rev)) {
+            params.add(rev);
+        }
+
+        Map<String, String> mapping = new HashMap<>();
+        mapping.put("kojyo", "kojyo");                           // 工場ｺｰﾄﾞ
+        mapping.put("lotno", "lotno");                           // ﾛｯﾄNo
+        mapping.put("edaban", "edaban");                         // 枝番
+        mapping.put("tyogouryoukikaku", "tyogouryoukikaku");     // 調合量規格
+        mapping.put("tyogouzanryou", "tyogouzanryou");           // 調合残量
+        mapping.put("zairyohinmei", "zairyohinmei");             // 材料品名
+        mapping.put("buzailotno", "buzailotno");                 // 部材在庫No
+        mapping.put("buzaihinmei", "buzaihinmei");               // 部材在庫品名
+        mapping.put("tyougouryou1", "tyougouryou1");             // 調合量1
+        mapping.put("tyougouryou2", "tyougouryou2");             // 調合量2
+        mapping.put("tyougouryou3", "tyougouryou3");             // 調合量3
+        mapping.put("tyougouryou4", "tyougouryou4");             // 調合量4
+        mapping.put("tyougouryou5", "tyougouryou5");             // 調合量5
+        mapping.put("tyougouryou6", "tyougouryou6");             // 調合量6
+        mapping.put("torokunichiji", "torokunichiji");           // 登録日時
+        mapping.put("kosinnichiji", "kosinnichiji");             // 更新日時
+        mapping.put("revision", "revision");                     // revision
+        mapping.put("deleteflag", "deleteflag");                 // 削除ﾌﾗｸﾞ
+
+        BeanProcessor beanProcessor = new BeanProcessor(mapping);
+        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+        ResultSetHandler<List<SubSrGlassslurryfunsai>> beanHandler = new BeanListHandler<>(SubSrGlassslurryfunsai.class, rowProcessor);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, beanHandler, params.toArray());
+    }
+
+    /**
+     * ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力_サブ画面_仮登録(tmp_sub_sr_glassslurryfunsai)登録処理
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param newRev 新Revision
+     * @param deleteflag 削除ﾌﾗｸﾞ
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param systemTime システム日付(原材料品質DB登録実績に更新した値と同値)
+     * @throws SQLException 例外エラー
+     */
+    private void insertTmpSubSrGlassslurryfunsai(QueryRunner queryRunnerQcdb, Connection conQcdb,
+            BigDecimal newRev, int deleteflag, String kojyo, String lotNo, String edaban,
+            String systemTime) throws SQLException {
+
+        String sql = "INSERT INTO tmp_sub_sr_glassslurryfunsai ( "
+                + "kojyo,lotno,edaban,tyogouryoukikaku,tyogouzanryou,zairyohinmei,"
+                + "buzailotno,buzaihinmei,tyougouryou1,tyougouryou2,tyougouryou3,tyougouryou4,"
+                + "tyougouryou5,tyougouryou6,torokunichiji,kosinnichiji,"
+                + "revision, deleteflag "
+                + " ) VALUES ("
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? )";
+
+        List<Object> params = setUpdateParameterTmpSubSrGlassslurryfunsai(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+
+    /**
+     * ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力_仮登録(tmp_sub_sr_glassslurryfunsai)更新処理
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param rev revision
+     * @param newRev 新revision
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param systemTime システム日付(原材料品質DB登録実績に更新した値と同値)
+     * @throws SQLException 例外エラー
+     */
+    private void updateTmpSubSrGlassslurryfunsai(QueryRunner queryRunnerQcdb, Connection conQcdb,
+            BigDecimal rev, BigDecimal newRev, String kojyo, String lotNo,
+            String edaban, String systemTime) throws SQLException {
+
+        String sql = "UPDATE tmp_sub_sr_glassslurryfunsai SET "
+                + "tyogouryoukikaku = ?,tyogouzanryou = ?,zairyohinmei = ?,"
+                + "buzailotno = ?,buzaihinmei = ?,tyougouryou1 = ?,tyougouryou2 = ?,tyougouryou3 = ?,tyougouryou4 = ?,"
+                + "tyougouryou5 = ?,tyougouryou6 = ?,kosinnichiji = ?,revision = ?, deleteflag = ? "
+                + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
+
+        List<Object> params = setUpdateParameterTmpSubSrGlassslurryfunsai(false, newRev, 0, kojyo, lotNo, edaban, systemTime);
+
+        // 検索条件
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+
+    /**
+     * ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力_サブ画面仮登録(tmp_sub_sr_glassslurryfunsai)更新値パラメータ設定
+     *
+     * @param isInsert 登録判定(true:insert、false:update)
+     * @param newRev 新revision
+     * @param deleteflag 削除ﾌﾗｸﾞ
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param systemTime システム日付(原材料品質DB登録実績に更新した値と同値)
+     * @return 更新パラメータ
+     */
+    private List<Object> setUpdateParameterTmpSubSrGlassslurryfunsai(boolean isInsert, BigDecimal newRev,
+            int deleteflag, String kojyo, String lotNo, String edaban, String systemTime) {
+
+        List<Object> params = new ArrayList<>();
+
+        // 子画面情報を取得
+        GXHDO102C003 beanGXHDO102C003 = (GXHDO102C003) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO102C003);
+        GXHDO102C003Model gxhdO102c003Model = beanGXHDO102C003.getGxhdO102c003Model();
+
+        // ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力_サブ画面から更新値を取得
+        ArrayList<Object> subGamenDataList = getSubGamenData(gxhdO102c003Model);
+        // 調合量規格
+        FXHDD01 tyogouryoukikaku = (FXHDD01) subGamenDataList.get(0);
+        // 調合残量
+        FXHDD01 tyogouzanryou = (FXHDD01) subGamenDataList.get(1);
+        // 部材
+        List<FXHDD01> buzaitabDataList = (List<FXHDD01>) subGamenDataList.get(2);
+
+        if (isInsert) {
+            params.add(kojyo); // 工場ｺｰﾄﾞ
+            params.add(lotNo); // ﾛｯﾄNo
+            params.add(edaban); // 枝番
+        }
+
+        params.add(DBUtil.stringToStringObjectDefaultNull(tyogouryoukikaku.getValue())); // 調合量規格
+        params.add(DBUtil.stringToIntObjectDefaultNull(tyogouzanryou.getValue())); // 調合残量
+        params.add(DBUtil.stringToStringObjectDefaultNull(buzaitabDataList.get(0).getValue())); // 材料品名
+        params.add(DBUtil.stringToStringObjectDefaultNull(buzaitabDataList.get(1).getValue())); // 部材在庫No
+        params.add(DBUtil.stringToStringObjectDefaultNull(buzaitabDataList.get(2).getValue())); // 部材在庫品名
+        params.add(DBUtil.stringToIntObjectDefaultNull(buzaitabDataList.get(3).getValue())); // 調合量1
+        params.add(DBUtil.stringToIntObjectDefaultNull(buzaitabDataList.get(4).getValue())); // 調合量2
+        params.add(DBUtil.stringToIntObjectDefaultNull(buzaitabDataList.get(5).getValue())); // 調合量3
+        params.add(DBUtil.stringToIntObjectDefaultNull(buzaitabDataList.get(6).getValue())); // 調合量4
+        params.add(DBUtil.stringToIntObjectDefaultNull(buzaitabDataList.get(7).getValue())); // 調合量5
+        params.add(DBUtil.stringToIntObjectDefaultNull(buzaitabDataList.get(8).getValue())); // 調合量6
+
+        if (isInsert) {
+            params.add(systemTime); //登録日時
+            params.add(systemTime); //更新日時
+        } else {
+            params.add(systemTime); //更新日時
+        }
+        params.add(newRev); //revision
+        params.add(deleteflag); //削除ﾌﾗｸﾞ
+
+        return params;
+    }
+
+    /**
+     * ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力_サブ画面仮登録(tmp_sub_sr_glassslurryfunsai)削除処理
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param rev revision
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @throws SQLException 例外エラー
+     */
+    private void deleteTmpSubSrGlassslurryfunsai(QueryRunner queryRunnerQcdb, Connection conQcdb,
+            BigDecimal rev, String kojyo, String lotNo, String edaban) throws SQLException {
+
+        String sql = "DELETE FROM tmp_sub_sr_glassslurryfunsai "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ?";
+
+        //更新値設定
+        List<Object> params = new ArrayList<>();
+
+        //検索条件設定
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+
+    /**
+     * ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力_サブ画面(sub_sr_glassslurryfunsai)登録処理
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param newRev 新revision
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param systemTime システム日付(原材料品質DB登録実績に更新した値と同値)
+     * @throws SQLException 例外エラー
+     */
+    private void insertSubSrGlassslurryfunsai(QueryRunner queryRunnerQcdb, Connection conQcdb,
+            BigDecimal newRev, String kojyo, String lotNo, String edaban, String systemTime) throws SQLException {
+        String sql = "INSERT INTO sub_sr_glassslurryfunsai ( "
+                + "kojyo,lotno,edaban,tyogouryoukikaku,tyogouzanryou,zairyohinmei,"
+                + "buzailotno,buzaihinmei,tyougouryou1,tyougouryou2,tyougouryou3,tyougouryou4,"
+                + "tyougouryou5,tyougouryou6,torokunichiji,kosinnichiji,"
+                + "revision "
+                + " ) VALUES ("
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? )";
+
+        List<Object> params = setUpdateParameterSubSrGlassslurryfunsai(true, newRev, kojyo, lotNo, edaban, systemTime);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+
+    /**
+     * ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力_ｻﾌﾞ画面(sub_sr_glassslurryfunsai)更新処理
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param rev revision
+     * @param newRev 新revision
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param systemTime システム日付(原材料品質DB登録実績に更新した値と同値)
+     * @throws SQLException 例外エラー
+     */
+    private void updateSubSrGlassslurryfunsai(QueryRunner queryRunnerQcdb, Connection conQcdb,
+            BigDecimal rev, BigDecimal newRev, String kojyo, String lotNo, String edaban, String systemTime) throws SQLException {
+
+        String sql = "UPDATE sub_sr_glassslurryfunsai SET "
+                + "tyogouryoukikaku = ?,tyogouzanryou = ?,zairyohinmei = ?,"
+                + "buzailotno = ?,buzaihinmei = ?,tyougouryou1 = ?,tyougouryou2 = ?,tyougouryou3 = ?,tyougouryou4 = ?,"
+                + "tyougouryou5 = ?,tyougouryou6 = ?,kosinnichiji = ?,revision = ?"
+                + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
+
+        List<Object> params = setUpdateParameterSubSrGlassslurryfunsai(false, newRev, kojyo, lotNo, edaban, systemTime);
+
+        // 検索条件
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+
+    /**
+     * ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力_サブ画面から更新値を取得
+     *
+     * @param gxhdO102c003Model モデルデータ
+     * @return 更新値情報
+     */
+    private ArrayList<Object> getSubGamenData(GXHDO102C003Model gxhdO102c003Model) {
+        GXHDO102C003Model.SubGamenData c003subgamendata = gxhdO102c003Model.getSubgamen1();
+        ArrayList<Object> returnList = new ArrayList<>();
+        // 調合量規格
+        FXHDD01 tyogouryoukikaku = c003subgamendata.getSubDataTyogouryoukikaku();
+        // 調合残量
+        FXHDD01 tyogouzanryou = c003subgamendata.getSubDataTyogouzanryou();
+        // 部材
+        List<FXHDD01> buzaitabDataList = c003subgamendata.getSubDataBuzaitab();
+        returnList.add(tyogouryoukikaku);
+        returnList.add(tyogouzanryou);
+        returnList.add(buzaitabDataList);
+        return returnList;
+    }
+
+    /**
+     * ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力_サブ画面登録(tmp_sub_sr_glassslurryfunsai)更新値パラメータ設定
+     *
+     * @param isInsert 登録判定(true:insert、false:update)
+     * @param newRev 新revision
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param systemTime システム日付(原材料品質DB登録実績に更新した値と同値)
+     * @return 更新パラメータ
+     */
+    private List<Object> setUpdateParameterSubSrGlassslurryfunsai(boolean isInsert, BigDecimal newRev,
+            String kojyo, String lotNo, String edaban, String systemTime) {
+
+        List<Object> params = new ArrayList<>();
+
+        // 子画面情報を取得
+        GXHDO102C003 beanGXHDO102C003 = (GXHDO102C003) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO102C003);
+        GXHDO102C003Model gxhdO102c003Model = beanGXHDO102C003.getGxhdO102c003Model();
+        // ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力_サブ画面から更新値を取得
+        ArrayList<Object> subGamenDataList = getSubGamenData(gxhdO102c003Model);
+        // 調合量規格
+        FXHDD01 tyogouryoukikaku = (FXHDD01) subGamenDataList.get(0);
+        // 調合残量
+        FXHDD01 tyogouzanryou = (FXHDD01) subGamenDataList.get(1);
+        // 部材
+        List<FXHDD01> buzaitabDataList = (List<FXHDD01>) subGamenDataList.get(2);
+
+        if (isInsert) {
+            params.add(kojyo); // 工場ｺｰﾄﾞ
+            params.add(lotNo); // ﾛｯﾄNo
+            params.add(edaban); // 枝番
+        }
+
+        params.add(DBUtil.stringToStringObject(tyogouryoukikaku.getValue())); // 調合量規格
+        params.add(DBUtil.stringToIntObject(tyogouzanryou.getValue())); // 調合残量
+        params.add(DBUtil.stringToStringObject(buzaitabDataList.get(0).getValue())); // 材料品名
+        params.add(DBUtil.stringToStringObject(buzaitabDataList.get(1).getValue())); // 部材在庫No
+        params.add(DBUtil.stringToStringObject(buzaitabDataList.get(2).getValue())); // 部材在庫品名
+        params.add(DBUtil.stringToIntObjectDefaultNull(buzaitabDataList.get(3).getValue())); // 調合量1
+        params.add(DBUtil.stringToIntObjectDefaultNull(buzaitabDataList.get(4).getValue())); // 調合量2
+        params.add(DBUtil.stringToIntObjectDefaultNull(buzaitabDataList.get(5).getValue())); // 調合量3
+        params.add(DBUtil.stringToIntObjectDefaultNull(buzaitabDataList.get(6).getValue())); // 調合量4
+        params.add(DBUtil.stringToIntObjectDefaultNull(buzaitabDataList.get(7).getValue())); // 調合量5
+        params.add(DBUtil.stringToIntObjectDefaultNull(buzaitabDataList.get(8).getValue())); // 調合量6
+
+        if (isInsert) {
+            params.add(systemTime); //登録日時
+            params.add(systemTime); //更新日時
+        } else {
+            params.add(systemTime); //更新日時
+        }
+        params.add(newRev); //revision
+
+        return params;
+    }
+
+    /**
+     * ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力_サブ画面仮登録(tmp_sub_sr_glassslurryfunsai)登録処理(削除時)
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param newRev 新revision
+     * @param deleteflag 削除ﾌﾗｸﾞ
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @param systemTime システム日付(原材料品質DB登録実績に更新した値と同値)
+     * @throws SQLException 例外エラー
+     */
+    private void insertDeleteDataTmpSubSrGlassslurryfunsai(QueryRunner queryRunnerQcdb,
+            Connection conQcdb, BigDecimal newRev, int deleteflag, String kojyo,
+            String lotNo, String edaban, String systemTime) throws SQLException {
+        String sql = "INSERT INTO tmp_sub_sr_glassslurryfunsai( "
+                + "kojyo,lotno,edaban,tyogouryoukikaku,tyogouzanryou,zairyohinmei,"
+                + "buzailotno,buzaihinmei,tyougouryou1,tyougouryou2,tyougouryou3,tyougouryou4,"
+                + "tyougouryou5,tyougouryou6,torokunichiji,kosinnichiji,"
+                + "revision, deleteflag "
+                + ") SELECT "
+                + "kojyo,lotno,edaban,tyogouryoukikaku,tyogouzanryou,zairyohinmei,"
+                + "buzailotno,buzaihinmei,tyougouryou1,tyougouryou2,tyougouryou3,tyougouryou4,"
+                + "tyougouryou5,tyougouryou6,?,?,?,? "
+                + " FROM sub_sr_glassslurryfunsai "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
+
+        List<Object> params = new ArrayList<>();
+        // 更新値
+        params.add(systemTime); //登録日時
+        params.add(systemTime); //更新日時
+        params.add(newRev); //revision
+        params.add(deleteflag); //削除ﾌﾗｸﾞ
+
+        // 検索値
+        params.add(kojyo); //工場ｺｰﾄﾞ
+        params.add(lotNo); //ﾛｯﾄNo
+        params.add(edaban); //枝番
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+
+    /**
+     * ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕入力_サブ画面仮登録(sub_sr_glassslurryfunsai)削除処理
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param conQcdb コネクション
+     * @param rev revision
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo ﾛｯﾄNo
+     * @param edaban 枝番
+     * @throws SQLException 例外エラー
+     */
+    private void deleteSubSrGlassslurryfunsai(QueryRunner queryRunnerQcdb, Connection conQcdb,
+            BigDecimal rev, String kojyo, String lotNo, String edaban) throws SQLException {
+
+        String sql = "DELETE FROM sub_sr_glassslurryfunsai "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ?";
+
+        //更新値設定
+        List<Object> params = new ArrayList<>();
+
+        //検索条件設定
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(rev);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+
+    /**
+     * 部材在庫の重量ﾃﾞｰﾀ連携
+     *
+     * @param processData 処理制御データ
+     * @param tantoshaCd 更新者
+     * @return レスポンスデータ
+     */
+    private String doPMLA0212Save(ProcessData processData, String tantoshaCd) {
+        ArrayList<String> errorItemList = new ArrayList<>();
+        // 部材在庫Noに値が入っている場合、以下の内容を元にAPIを呼び出す
+        doCallPmla0212Api(processData, tantoshaCd, GXHDO102B006Const.BUZAIZAIKONO, GXHDO102B006Const.TYOUGOURYOU, errorItemList);
+
+        // 上記の処理でｴﾗｰが発生した場合、画面にエラーダイアログを出力する。
+        if (!errorItemList.isEmpty()) {
+            ErrorListMessage errorListMessageList = new ErrorListMessage();
+            errorListMessageList.setResultMessage(MessageUtil.getMessage("buzailotnoErrorList"));
+            errorListMessageList.setResultMessageList(errorItemList);
+            errorListMessageList.setTitleMessage(MessageUtil.getMessage("infoMsg"));
+            processData.setErrorListMessage(errorListMessageList);
+            return "error";
+        }
+        return "ok";
+    }
+
+    /**
+     * 部材在庫管理を参照【PMLA0212_部材在庫ﾃﾞｰﾀ更新】
+     *
+     * @param processData 処理制御データ
+     * @param tantoshaCd 更新者
+     * @param sizailotnoStr 部材在庫No
+     * @param tyougouryouStr 調合量
+     * @return レスポンスデータ
+     */
+    private void doCallPmla0212Api(ProcessData processData, String tantoshaCd, String sizailotnoStr, String tyougouryouStr, ArrayList<String> errorItemList) {
+        // 調合量
+        String tyougouryouValue = "";
+        // WIPﾛｯﾄNo
+        String wiplotnoValue = "";
+        // 部材在庫NoX_Yに値が入っている場合、以下の内容を元にAPIを呼び出す
+        FXHDD01 itemFxhdd01Sizailotno = getItemRow(processData.getItemList(), sizailotnoStr);
+        if (itemFxhdd01Sizailotno == null || StringUtil.isEmpty(itemFxhdd01Sizailotno.getValue())) {
+            return;
+        }
+        // 部材在庫No
+        String sizailotnoValue = StringUtil.nullToBlank(itemFxhdd01Sizailotno.getValue());
+
+        FXHDD01 itemFxhdd01Tyougouryou = getItemRow(processData.getItemList(), tyougouryouStr);
+        if (itemFxhdd01Tyougouryou != null) {
+            // 調合量
+            tyougouryouValue = StringUtil.nullToBlank(itemFxhdd01Tyougouryou.getValue());
+        }
+        FXHDD01 itemFxhdd01Wiplotno = getItemRow(processData.getItemList(), GXHDO102B006Const.WIPLOTNO);
+        if (itemFxhdd01Wiplotno != null) {
+            // WIPﾛｯﾄNo
+            wiplotnoValue = StringUtil.nullToBlank(itemFxhdd01Wiplotno.getValue());
+        }
+        ArrayList<String> paramsList = new ArrayList<>();
+        paramsList.add(sizailotnoValue);
+        paramsList.add(tantoshaCd);
+        paramsList.add("PXHDO102");
+        paramsList.add(tyougouryouValue);
+        paramsList.add(null);
+        paramsList.add(null);
+        paramsList.add(null);
+        paramsList.add(wiplotnoValue);
+
+        try {
+            QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
+            // 「/api/PMLA0212/doSave」APIを呼び出す
+            String responseResult = CommonUtil.doRequestPmla0212Save(queryRunnerDoc, paramsList);
+            if (!"ok".equals(responseResult)) {
+                errorItemList.add(itemFxhdd01Sizailotno.getLabel1());
+            }
+        } catch (Exception ex) {
+            ErrUtil.outputErrorLog(itemFxhdd01Sizailotno.getLabel1() + "の重量ﾃﾞｰﾀ連携処理エラー発生", ex, LOGGER);
+            errorItemList.add(itemFxhdd01Sizailotno.getLabel1());
+        }
     }
 }

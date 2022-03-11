@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Kyocera Communication Systems Co., Ltd All rights reserved.
+ * Copyright 2022 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.pxhdo102;
 
@@ -19,9 +19,10 @@ package jp.co.kccs.xhd.pxhdo102;
  * GXHDO102B006(ｶﾞﾗｽｽﾗﾘｰ作製・ﾎﾟｯﾄ粉砕)
  *
  * @author KCSS K.Jo
- * @since  2021/09/22
+ * @since 2021/09/22
  */
 public class GXHDO102B006Const {
+
     /**
      * WIPﾛｯﾄNo
      */
@@ -41,6 +42,11 @@ public class GXHDO102B006Const {
      * ﾛｯﾄ区分
      */
     public static final String LOTKUBUN = "sr_glassslurryfunsai_lotkubun";
+
+    /**
+     * 秤量号機
+     */
+    public static final String GOKI = "sr_glassslurryfunsai_goki";
 
     /**
      * 周速
@@ -181,6 +187,11 @@ public class GXHDO102B006Const {
      * 備考2
      */
     public static final String BIKOU2 = "sr_glassslurryfunsai_bikou2";
+
+    /**
+     * 材料品名のﾘﾝｸから遷移したｻﾌﾞ画面Open用非表示ボタン
+     */
+    public static final String BTN_OPENC003SUBGAMEN1 = "sr_glassslurryfunsai_openc003subgamen1";
 
     /**
      * 枝番ｺﾋﾟｰ(画面上ボタン)

@@ -25,9 +25,11 @@ import javax.faces.context.FacesContext;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import jp.co.kccs.xhd.db.ParameterEJB;
+import jp.co.kccs.xhd.db.model.FXHDM01;
 import jp.co.kccs.xhd.util.DBUtil;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.BeanProcessor;
@@ -35,6 +37,7 @@ import org.apache.commons.dbutils.QueryRunner;
 import org.apache.commons.dbutils.ResultSetHandler;
 import org.apache.commons.dbutils.RowProcessor;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
+import jp.co.kccs.xhd.GetModel;
 import jp.co.kccs.xhd.common.ResultMessage;
 import jp.co.kccs.xhd.db.Parameter;
 import jp.co.kccs.xhd.db.model.FXHDD01;
@@ -328,7 +331,47 @@ public class GXHDO501D implements Serializable {
         this.setSyurui(paramSyurui); //種類
         this.setPattern(paramPattern); //ﾊﾟﾀｰﾝ
         
+        List<String> userGrpList = (List<String>) session.getAttribute("login_user_group");
+
+        List<FXHDM01> menuListGXHDO101;
+        // user-agent
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+        String uAgent = request.getHeader("user-agent");
+        // model
+        GetModel getModel = new GetModel(uAgent);
+        String model = getModel.getModel();
+        // userAgentでPC or タブレットを判定
+        boolean isPC = false;
+        if (model.equals("ie11")) {
+            isPC = true;
+        }
+        
         try {
+            QueryRunner queryRunnerDoc = new QueryRunner(dataSourceDocServer);
+            menuListGXHDO101 = getMenuList(queryRunnerDoc, "GXHDO501D", userGrpList, isPC);
+
+            menuListGXHDO101.stream().map((fxhdm01) -> {
+                // 画面遷移パラメータをセッション変数に保持
+                session.setAttribute("formId", "GXHDO501D");
+                session.setAttribute("callerFormId", "GXHDO501D");
+                session.setAttribute("formTitle", fxhdm01.getFormTitle());
+                return fxhdm01;
+            }).map((fxhdm01) -> {
+                session.setAttribute("menuName", fxhdm01.getMenuName());
+                return fxhdm01;
+            }).map((fxhdm01) -> {
+                session.setAttribute("menuComment", fxhdm01.getMenuComment());
+                return fxhdm01;
+            }).map((fxhdm01) -> {
+                session.setAttribute("titleSetting", fxhdm01.getTitleSetting());
+                return fxhdm01;
+            }).map((fxhdm01) -> {
+                session.setAttribute("formClassName", fxhdm01.getFormClassName());
+                return fxhdm01;
+            }).forEachOrdered((fxhdm01) -> {
+                session.setAttribute("hyojiKensu", fxhdm01.getHyojiKensu());
+            });
+            
             // 初期表示する時、[前工程規格情報]から、最大登録日を取得して【排他制御用MAX(登録日)】に設置
             tourokunichijiInit = getDamkjokenTourokunichiji(paramSekkeino);
         } catch (SQLException ex) {
@@ -437,6 +480,63 @@ public class GXHDO501D implements Serializable {
         model.setHyojuntyekkupattern("");
         model.setAddFlg("1");
         listData.add(model);
+    }
+        
+    /**
+     * メニューリスト取得
+     *
+     * @param queryRunnerDoc データオブジェクト
+     * @param listGamenID 画面IDリスト
+     * @param userGrpList ユーザーグループリスト
+     * @param isPC PC判定
+     * @return メニューリスト
+     * @throws SQLException 例外エラー
+     */
+    private List<FXHDM01> getMenuList(QueryRunner queryRunnerDoc, String listGamenID, List<String> userGrpList, boolean isPC) throws SQLException {
+        List<FXHDM01> menuListData;
+        String sql = "SELECT gamen_id,gamen_title,title_setting,menu_no,menu_name,link_char,menu_parameter,menu_comment,gamen_classname,hyouji_kensu "
+                + "FROM fxhdm01 WHERE menu_group_id = 'qcdb_mksekkei' ";
+
+        if (!listGamenID.isEmpty()) {
+            sql += " AND ";
+            sql += "gamen_id = ? ";
+        }
+        sql += " AND " + DBUtil.getInConditionPreparedStatement("user_role", userGrpList.size());
+
+        if (!isPC) {
+            sql += " AND pc_flg = '0'";
+        }
+
+        sql += " ORDER BY menu_no ASC ";
+
+        Map<String, String> mapping = new HashMap<>();
+        mapping.put("gamen_id", "formId");
+        mapping.put("gamen_title", "formTitle");
+        mapping.put("title_setting", "titleSetting");
+        mapping.put("menu_no", "menuNo");
+        mapping.put("menu_name", "menuName");
+        mapping.put("link_char", "linkChar");
+        mapping.put("menu_parameter", "menuParam");
+        mapping.put("menu_comment", "menuComment");
+        mapping.put("gamen_classname", "formClassName");
+        mapping.put("hyouji_kensu", "hyojiKensu");
+
+        BeanProcessor beanProcessor = new BeanProcessor(mapping);
+        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+        ResultSetHandler<List<FXHDM01>> beanHandler = new BeanListHandler<>(FXHDM01.class, rowProcessor);
+
+        List<Object> params3 = new ArrayList<>();
+        params3.add(listGamenID);
+        params3.addAll(userGrpList);
+
+        if (listGamenID.isEmpty()) {
+            DBUtil.outputSQLLog(sql, userGrpList.toArray(), LOGGER);
+            menuListData = queryRunnerDoc.query(sql, beanHandler, userGrpList.toArray());
+        } else {
+            DBUtil.outputSQLLog(sql, params3.toArray(), LOGGER);
+            menuListData = queryRunnerDoc.query(sql, beanHandler, params3.toArray());
+        }        
+        return menuListData;
     }
     
     /**

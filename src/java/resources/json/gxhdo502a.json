@@ -1,0 +1,22 @@
+[
+    {"no":"1","id":"hinmei","columnname":"品名","type":"String","format":""},
+    {"no":"2","id":"lot","columnname":"ﾛｯﾄ","type":"String","format":""},
+    {"no":"3","id":"passkaisuu","columnname":"ﾊﾟｽ回数(PASS)","type":"Integer","format":""},
+    {"no":"4","id":"wiplotno","columnname":"WIPLotNo","type":"String","format":""},
+    {"no":"5","id":"sokuteikaisuu","columnname":"測定回数","type":"String","format":""},
+    {"no":"6","id":"no","columnname":"No","type":"Integer","format":""},
+    {"no":"7","id":"koutei","columnname":"工程","type":"String","format":""},
+    {"no":"8","id":"sokuteisya","columnname":"測定者","type":"String","format":""},
+    {"no":"9","id":"jyunsuiryou","columnname":"純水量","type":"String","format":""},
+    {"no":"10","id":"sampleryou","columnname":"ｻﾝﾌﾟﾙ量","type":"String","format":""},
+    {"no":"11","id":"maetyouonpajikan","columnname":"前超音波時間","type":"String","format":""},
+    {"no":"12","id":"sokuteigoki","columnname":"測定号機(号機)","type":"Integer","format":""},
+    {"no":"13","id":"toukaritukikaku","columnname":"透過率規格","type":"String","format":""},
+    {"no":"14","id":"d50ryuudokikaku","columnname":"D50粒度規格","type":"String","format":""},
+    {"no":"15","id":"d50neraiti","columnname":"D50狙い値","type":"String","format":""},
+    {"no":"16","id":"d50ryuudosokuteiti","columnname":"D50粒度測定値(μm)","type":"BigDecimal","format":"2,5"},
+    {"no":"17","id":"d90ryuudokikaku","columnname":"D90粒度規格","type":"String","format":""},
+    {"no":"18","id":"d90ryuudosokuteiti","columnname":"D90粒度測定値(μm)","type":"BigDecimal","format":"2,5"},
+    {"no":"19","id":"toukaritu","columnname":"透過率(%)","type":"BigDecimal","format":"3,2"},
+    {"no":"20","id":"bikou","columnname":"備考","type":"String","format":""}
+]
