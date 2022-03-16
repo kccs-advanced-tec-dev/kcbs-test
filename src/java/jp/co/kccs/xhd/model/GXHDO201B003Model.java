@@ -22,6 +22,11 @@ import java.sql.Timestamp;
  * 変更者        KCSS K.Jo<br>
  * 変更理由      項目追加・変更<br>
  * <br>
+ * 変更日        2022/03/09<br>
+ * 計画書No      MB2008-DK001<br>
+ * 変更者        KCSS K.Jo<br>
+ * 変更理由      項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -84,6 +89,10 @@ public class GXHDO201B003Model implements Serializable {
     private String seihanno = "";
     /** 製版枚数 */
     private Long seihanmaisuu = null;
+    /** 最大処理数 */
+    private Long saidaisyorisuu = null;
+    /** 累計処理数 */
+    private Long ruikeisyorisuu = null;
     /** ｽｷｰｼﾞNo */
     private String skeegeno = "";
     /** ｽｷｰｼﾞ枚数 */
@@ -526,6 +535,34 @@ public class GXHDO201B003Model implements Serializable {
 	public void setSeihanmaisuu(Long seihanmaisuu) {
 		this.seihanmaisuu = seihanmaisuu;
 	}
+
+        /**
+         * @return the saidaisyorisuu
+         */
+        public Long getSaidaisyorisuu() {
+            return saidaisyorisuu;
+        }
+
+        /**
+         * @param saidaisyorisuu セットする saidaisyorisuu
+         */
+        public void setSaidaisyorisuu(Long saidaisyorisuu) {
+            this.saidaisyorisuu = saidaisyorisuu;
+        }
+
+        /**
+         * @return the ruikeisyorisuu
+         */
+        public Long getRuikeisyorisuu() {
+            return ruikeisyorisuu;
+        }
+
+        /**
+         * @param ruikeisyorisuu セットする ruikeisyorisuu
+         */
+        public void setRuikeisyorisuu(Long ruikeisyorisuu) {
+            this.ruikeisyorisuu = ruikeisyorisuu;
+        }
 
 	/**
 	 * @return skeegeno
@@ -1072,7 +1109,5 @@ public class GXHDO201B003Model implements Serializable {
 	public void setInsatuhabaStart5(Long insatuhabaStart5) {
 		this.insatuhabaStart5 = insatuhabaStart5;
 	}
-
-
 
 }
