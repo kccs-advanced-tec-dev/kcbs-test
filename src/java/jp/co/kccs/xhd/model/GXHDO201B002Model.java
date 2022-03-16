@@ -17,6 +17,11 @@ import java.sql.Timestamp;
  * 変更者	KCCS D.Yanagida<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日       2022/03/02<br>
+ * 計画書No     MB2008-DK001<br>
+ * 変更者       KCSS K.Jo<br>
+ * 変更理由     項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -48,6 +53,10 @@ public class GXHDO201B002Model implements Serializable {
     private String seihanno = "";
     /** 製版枚数 */
     private Long seihanmaisuu = null;
+    /** 最大処理数 */
+    private Long saidaisyorisuu = null;
+    /** 累計処理数 */
+    private Long ruikeisyorisuu = null;
     /** ﾌﾟﾘﾝﾄ開始日時 */
     private Timestamp startdatetime = null;
     /** ﾌﾟﾘﾝﾄ終了日時 */
@@ -459,6 +468,38 @@ public class GXHDO201B002Model implements Serializable {
      */
     public void setSeihanmaisuu(Long seihanmaisuu) {
         this.seihanmaisuu = seihanmaisuu;
+    }
+
+    /**
+     * 最大処理数
+     * @return the saidaisyorisuu
+     */
+    public Long getSaidaisyorisuu() {
+        return saidaisyorisuu;
+    }
+
+    /**
+     * 最大処理数
+     * @param saidaisyorisuu the saidaisyorisuu to set
+     */
+    public void setSaidaisyorisuu(Long saidaisyorisuu) {
+        this.saidaisyorisuu = saidaisyorisuu;
+    }
+
+    /**
+     * 累計処理数
+     * @return the ruikeisyorisuu
+     */
+    public Long getRuikeisyorisuu() {
+        return ruikeisyorisuu;
+    }
+
+    /**
+     * 累計処理数
+     * @param ruikeisyorisuu the ruikeisyorisuu to set
+     */
+    public void setRuikeisyorisuu(Long ruikeisyorisuu) {
+        this.ruikeisyorisuu = ruikeisyorisuu;
     }
 
     /**

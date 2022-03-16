@@ -66,6 +66,11 @@ import org.primefaces.context.RequestContext;
  * 変更者       KCSS K.Jo<br>
  * 変更理由     項目追加・変更<br>
  * <br>
+ * 変更日       2022/03/02<br>
+ * 計画書No     MB2008-DK001<br>
+ * 変更者       KCSS K.Jo<br>
+ * 変更理由     項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -612,6 +617,8 @@ public class GXHDO201B002 implements Serializable {
                     + ", T1.pasteondo"
                     + ", T1.seihanno"
                     + ", T1.seihanmaisuu"
+                    + ", T1.saidaisyorisuu"
+                    + ", T1.ruikeisyorisuu"
                     + ", T1.startdatetime"
                     + ", T1.enddatetime"
                     + ", T1.skeegeno"
@@ -756,6 +763,8 @@ public class GXHDO201B002 implements Serializable {
             mapping.put("pasteondo", "pasteondo");
             mapping.put("seihanno", "seihanno");
             mapping.put("seihanmaisuu", "seihanmaisuu");
+            mapping.put("saidaisyorisuu", "saidaisyorisuu");
+            mapping.put("ruikeisyorisuu", "ruikeisyorisuu");            
             mapping.put("startdatetime", "startdatetime");
             mapping.put("enddatetime", "enddatetime");
             mapping.put("skeegeno", "skeegeno");

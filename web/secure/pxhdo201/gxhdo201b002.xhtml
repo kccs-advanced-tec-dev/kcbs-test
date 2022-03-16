@@ -217,6 +217,16 @@
                             <f:convertNumber pattern="##,###,##0"/>
                         </p:outputLabel>
                     </p:column>
+                    <p:column id="saidaisyorisuu" headerText="最大処理数" styleClass="number">
+                        <p:outputLabel value="#{item.saidaisyorisuu}">
+                            <f:convertNumber pattern="##,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ruikeisyorisuu" headerText="累計処理数" styleClass="number">
+                        <p:outputLabel value="#{item.ruikeisyorisuu}">
+                            <f:convertNumber pattern="##,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
                     <p:column id="startdatetime" headerText="印刷開始日時" >
                         <p:outputLabel value="#{item.startdatetime}">
                             <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
