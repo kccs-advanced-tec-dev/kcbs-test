@@ -76,6 +76,8 @@
                     PF('W_dlg_infoMessage').show();
                 } else if('complete'===args.firstParam){
                     PF('W_dlg_compMessage').show();
+                } else if ('errorListMessage' === args.firstParam) {
+                    PF('W_dlg_errorListMessage101').show();
                 }
             }
             function keyDownEnterSetNextControl(obj){
@@ -286,6 +288,7 @@
                     <ui:include src="/secure/common/kikakuError.xhtml"/>
                 </t:aliasBean>
                 <ui:include src="/secure/common/infoMessage.xhtml"/>
+                <ui:include src="/secure/common/errorListMessage101.xhtml"/>
             </div>
         </h:form>
         

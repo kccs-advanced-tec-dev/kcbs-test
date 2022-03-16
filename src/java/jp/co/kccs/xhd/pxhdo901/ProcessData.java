@@ -119,6 +119,10 @@ public class ProcessData {
      * DataSource(equipment)
      */
     private DataSource dataSourceEquipment;
+    /**
+     * DataSource(MLAServer)
+     */
+    private DataSource dataSourceMLAServer;
     
     /**
      * ユーザー認証有無
@@ -514,6 +518,24 @@ public class ProcessData {
      */
     public void setDataSourceEquipment(DataSource dataSourceEquipment) {
         this.dataSourceEquipment = dataSourceEquipment;
+    }
+    
+    /**
+     * DataSource(MLAServer)
+     *
+     * @return the dataSourceMLAServer
+     */
+    public DataSource getDataSourceMLAServer() {
+        return dataSourceMLAServer;
+    }
+
+    /**
+     * DataSource(MLAServer)
+     *
+     * @param dataSourceMLAServer the dataSourceMLAServer to set
+     */
+    public void setDataSourceMLAServer(DataSource dataSourceMLAServer) {
+        this.dataSourceMLAServer = dataSourceMLAServer;
     }
     
     /**

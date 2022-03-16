@@ -27,6 +27,8 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
+import jp.co.kccs.xhd.common.CompMessage;
+import jp.co.kccs.xhd.common.ErrorListMessage;
 import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.common.InfoMessage;
@@ -166,6 +168,11 @@ public class GXHDO901A implements Serializable {
      */
     @Resource(mappedName = "jdbc/equipment")
     protected transient DataSource dataSourceEquipment;
+    /**
+     * DataSource(MLAServer)
+     */
+    @Resource(mappedName = "jdbc/MLA")
+    private transient DataSource dataSourceMLAServer;
     /**
      * パラメータ操作(DB)
      */
@@ -661,6 +668,7 @@ public class GXHDO901A implements Serializable {
         data.setDataSourceSpskadoritu(this.dataSourceSpskadoritu);
         data.setDataSourceTtpkadoritu(this.dataSourceTtpkadoritu);
         data.setDataSourceEquipment(this.dataSourceEquipment);
+        data.setDataSourceMLAServer(this.dataSourceMLAServer);
         data.setDataSourceWip(this.dataSourceWip);
         data.setInitMessageList(initMessageList);
         data.setInitRev(this.initRev);
@@ -905,16 +913,10 @@ public class GXHDO901A implements Serializable {
         }
 
         boolean isCheck = false;
-        try {
-            FXHDD02 fxhdd02 = (FXHDD02)externalContext.getRequestMap().get("item");
-            if (null != fxhdd02) {
-        	String buttonName = fxhdd02.getButtonName();
-        	if ("登録".equals(buttonName) || "修正".equals(buttonName)) {
-                    isCheck = true;
-        	}
-            }
-        } catch (ClassCastException e) {
-            ErrUtil.outputErrorLog("ClassCastException発生", e, LOGGER);
+        FXHDD02 fxhdd02 = (FXHDD02)externalContext.getRequestMap().get("item");
+        String buttonName = fxhdd02.getButtonName();
+        if ("登録".equals(buttonName) || "修正".equals(buttonName)) {
+            isCheck = true;
         }
         if ("flow_temp_regist_Top".equals(buttonId) || "flow_temp_regist_Bottom".equals(buttonId)) {
             isCheck = true;
@@ -966,6 +968,7 @@ public class GXHDO901A implements Serializable {
         data.setDataSourceSpskadoritu(this.dataSourceSpskadoritu);
         data.setDataSourceTtpkadoritu(this.dataSourceTtpkadoritu);
         data.setDataSourceEquipment(this.dataSourceEquipment);
+        data.setDataSourceMLAServer(this.dataSourceMLAServer);
         data.setDataSourceWip(this.dataSourceWip);
         data.setInitRev(this.initRev);
         data.setInitJotaiFlg(this.initJotaiFlg);
@@ -1033,6 +1036,23 @@ public class GXHDO901A implements Serializable {
 
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.addCallbackParam("firstParam", "infoMessage");
+
+                return;
+            }
+
+            // エラーリストメッセージが設定されている場合、ダイアログを表示する
+            List<String> resultMessageList = this.processData.getErrorListMessage().getResultMessageList();
+            if ((resultMessageList != null && !resultMessageList.isEmpty()) || !StringUtil.isEmpty(this.processData.getErrorListMessage().getResultMessage())) {
+
+                // メッセージを画面に渡す
+                ErrorListMessage errorListMessageError = (ErrorListMessage) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_ERRORLIST_MESSAGE);
+
+                errorListMessageError.setResultMessageList(this.processData.getErrorListMessage().getResultMessageList());
+                errorListMessageError.setResultMessage(this.processData.getErrorListMessage().getResultMessage());
+                errorListMessageError.setTitleMessage(this.processData.getErrorListMessage().getTitleMessage());
+
+                RequestContext context = RequestContext.getCurrentInstance();
+                context.addCallbackParam("firstParam", "errorListMessage");
 
                 return;
             }
@@ -2067,5 +2087,14 @@ public class GXHDO901A implements Serializable {
             ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
         }
         return "";
+    }
+    
+    /**
+     * 完了メッセージ表示処理
+     */
+    public void showCompMessage() {
+        this.compMessage ="登録しました。";
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.addCallbackParam("firstParam", "complete");
     }
 }

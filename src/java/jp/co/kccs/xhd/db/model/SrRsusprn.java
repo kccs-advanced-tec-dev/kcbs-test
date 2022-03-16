@@ -16,6 +16,11 @@ import java.sql.Timestamp;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日       2022/03/09<br>
+ * 計画書No     MB2101-DK002<br>
+ * 変更者       KCSS WXF<br>
+ * 変更理由     仕様変更対応<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -125,6 +130,16 @@ public class SrRsusprn {
      * 製版枚数
      */
     private Long seihanmaisuu;
+
+    /**
+     * 最大処理数
+     */
+    private Integer saidaisyorisuu;
+
+    /**
+     * 累計処理数
+     */
+    private Integer ruikeisyorisuu;
 
     /**
      * ﾍﾟｰｽﾄﾛｯﾄNo
@@ -739,6 +754,42 @@ public class SrRsusprn {
      */
     public void setSeihanmaisuu(Long seihanmaisuu) {
         this.seihanmaisuu = seihanmaisuu;
+    }
+
+    /**
+     * 最大処理数
+     *
+     * @return the saidaisyorisuu
+     */
+    public Integer getSaidaisyorisuu() {
+        return saidaisyorisuu;
+    }
+
+    /**
+     * 最大処理数
+     *
+     * @param saidaisyorisuu the saidaisyorisuu to set
+     */
+    public void setSaidaisyorisuu(Integer saidaisyorisuu) {
+        this.saidaisyorisuu = saidaisyorisuu;
+    }
+
+    /**
+     * 累計処理数
+     *
+     * @return the ruikeisyorisuu
+     */
+    public Integer getRuikeisyorisuu() {
+        return ruikeisyorisuu;
+    }
+
+    /**
+     * 累計処理数
+     *
+     * @param ruikeisyorisuu the ruikeisyorisuu to set
+     */
+    public void setRuikeisyorisuu(Integer ruikeisyorisuu) {
+        this.ruikeisyorisuu = ruikeisyorisuu;
     }
 
     /**
