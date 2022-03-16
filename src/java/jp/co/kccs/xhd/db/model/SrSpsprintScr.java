@@ -87,6 +87,16 @@ public class SrSpsprintScr {
     private Long seihanmaisuu;
     
     /**
+     * 最大処理数
+     */
+    private Long saidaisyorisuu;
+    
+    /**
+     * 累計処理数
+     */
+    private Long ruikeisyorisuu;
+    
+    /**
      * ﾌﾟﾘﾝﾄ開始日時
      */
     private Timestamp startdatetime;
@@ -752,6 +762,38 @@ public class SrSpsprintScr {
      */
     public void setSeihanmaisuu(Long seihanmaisuu) {
         this.seihanmaisuu = seihanmaisuu;
+    }
+
+    /**
+     * 最大処理数
+     * @return the saidaisyorisuu
+     */
+    public Long getSaidaisyorisuu() {
+        return saidaisyorisuu;
+    }
+
+    /**
+     * 最大処理数
+     * @param saidaisyorisuu the saidaisyorisuu to set
+     */
+    public void setSaidaisyorisuu(Long saidaisyorisuu) {
+        this.saidaisyorisuu = saidaisyorisuu;
+    }
+
+    /**
+     * 累計処理数
+     * @return the ruikeisyorisuu
+     */
+    public Long getRuikeisyorisuu() {
+        return ruikeisyorisuu;
+    }
+
+    /**
+     * 累計処理数
+     * @param ruikeisyorisuu the ruikeisyorisuu to set
+     */
+    public void setRuikeisyorisuu(Long ruikeisyorisuu) {
+        this.ruikeisyorisuu = ruikeisyorisuu;
     }
 
     /**
