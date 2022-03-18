@@ -20,7 +20,7 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更理由	前工程WIPボタンを追加<br>
  * <br>
  * 変更日       2022/03/09<br>
- * 計画書No     MB2101-DK002<br>
+ * 計画書No     MB2202-D013<br>
  * 変更者       KCSS WXF<br>
  * 変更理由     仕様変更対応<br>
  * <br>

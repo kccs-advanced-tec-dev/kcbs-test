@@ -18,7 +18,7 @@ import java.sql.Timestamp;
  * 変更理由	新規作成<br>
  * <br>
  * 変更日       2022/03/02<br>
- * 計画書No     MB2008-DK001<br>
+ * 計画書No     MB2202-D013<br>
  * 変更者       KCSS K.Jo<br>
  * 変更理由     項目追加・変更<br>
  * <br>
