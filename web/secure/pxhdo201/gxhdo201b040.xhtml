@@ -233,6 +233,16 @@
                     <p:column id="atokouteisijinaiyou" headerText="後工程指示内容">
                         <p:outputLabel value="#{item.atokouteisijinaiyou}"/>
                     </p:column>
+                    <p:column id="saidaisyorisuu" headerText="最大処理数" styleClass="number">
+                        <p:outputLabel value="#{item.saidaisyorisuu}">
+                            <f:convertNumber pattern="##,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ruikeisyorisuu" headerText="累計処理数" styleClass="number">
+                        <p:outputLabel value="#{item.ruikeisyorisuu}">
+                            <f:convertNumber pattern="##,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
                     <p:column id="okuriryouhinsuu" headerText="送り良品数" styleClass="number">
                         <p:outputLabel value="#{item.okuriryouhinsuu}">
                             <f:convertNumber pattern="###,###,##0"/>

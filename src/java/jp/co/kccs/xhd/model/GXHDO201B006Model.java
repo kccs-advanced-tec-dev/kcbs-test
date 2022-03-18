@@ -21,6 +21,11 @@ import java.sql.Timestamp;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	項目追加・変更<br>
  * <br>
+ * 変更日        2022/03/10<br>
+ * 計画書No      MB2202-D013<br>
+ * 変更者        KCSS E.Ryu<br>
+ * 変更理由      項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -96,10 +101,16 @@ public class GXHDO201B006Model {
     private BigDecimal epasteondo = null;
     /** 電極製版名 */
     private String eseihanmei = "";
+    /** 部材在庫No_電極 */
+    private String buzaizaikonodenkyoku = "";
     /** 電極製版No */
     private String eseihanno = "";
     /** 電極製版枚数 */
     private Long eseimaisuu = null;
+    /** 最大処理数_電極 */
+    private Long saidaisyorisuudenkyoku = null;
+    /** 累計処理数_電極 */
+    private Long ruikeisyorisuudenkyoku = null;
     /** 電極ｸﾘｱﾗﾝｽ */
     private BigDecimal eclearance = null;
     /** 電極差圧 */
@@ -134,10 +145,16 @@ public class GXHDO201B006Model {
     private BigDecimal cpasteondo = null;
     /** 誘電体製版名 */
     private String cseihanmei = "";
+    /** 部材在庫No_誘電体 */
+    private String buzaizaikonoyuudentai = "";
     /** 誘電体製版No */
     private String cseihanno = "";
     /** 誘電体製版枚数 */
     private Long cseimaisuu = null;
+    /** 最大処理数_誘電体 */
+    private Long saidaisyorisuuyuudentai = null;
+    /** 累計処理数_誘電体 */
+    private Long ruikeisyorisuuyuudentai = null;
     /** 誘電体ｸﾘｱﾗﾝｽ */
     private BigDecimal cclearance = null;
     /** 誘電体差圧 */
@@ -997,6 +1014,22 @@ public class GXHDO201B006Model {
     }
 
     /**
+     * 部材在庫No_電極
+     * @return the buzaizaikonodenkyoku
+     */
+    public String getBuzaizaikonodenkyoku() {
+        return buzaizaikonodenkyoku;
+    }
+
+    /**
+     * 部材在庫No_電極
+     * @param buzaizaikonodenkyoku the buzaizaikonodenkyoku to set
+     */
+    public void setBuzaizaikonodenkyoku(String buzaizaikonodenkyoku) {
+        this.buzaizaikonodenkyoku = buzaizaikonodenkyoku;
+    }
+
+    /**
      * 電極製版No
      * @return the eseihanno
      */
@@ -1026,6 +1059,38 @@ public class GXHDO201B006Model {
      */
     public void setEseimaisuu(Long eseimaisuu) {
         this.eseimaisuu = eseimaisuu;
+    }
+
+    /**
+     * 最大処理数_電極
+     * @return the saidaisyorisuudenkyoku
+     */
+    public Long getSaidaisyorisuudenkyoku() {
+        return saidaisyorisuudenkyoku;
+    }
+
+    /**
+     * 最大処理数_電極
+     * @param saidaisyorisuudenkyoku the saidaisyorisuudenkyoku to set
+     */
+    public void setSaidaisyorisuudenkyoku(Long saidaisyorisuudenkyoku) {
+        this.saidaisyorisuudenkyoku = saidaisyorisuudenkyoku;
+    }
+
+    /**
+     * 累計処理数_電極
+     * @return the ruikeisyorisuudenkyoku
+     */
+    public Long getRuikeisyorisuudenkyoku() {
+        return ruikeisyorisuudenkyoku;
+    }
+
+    /**
+     * 累計処理数_電極
+     * @param ruikeisyorisuudenkyoku the ruikeisyorisuudenkyoku to set
+     */
+    public void setRuikeisyorisuudenkyoku(Long ruikeisyorisuudenkyoku) {
+        this.ruikeisyorisuudenkyoku = ruikeisyorisuudenkyoku;
     }
 
     /**
@@ -1301,6 +1366,22 @@ public class GXHDO201B006Model {
     }
 
     /**
+     * 部材在庫No_誘電体
+     * @return the buzaizaikonoyuudentai
+     */
+    public String getBuzaizaikonoyuudentai() {
+        return buzaizaikonoyuudentai;
+    }
+
+    /**
+     * 部材在庫No_誘電体
+     * @param buzaizaikonoyuudentai the buzaizaikonoyuudentai to set
+     */
+    public void setBuzaizaikonoyuudentai(String buzaizaikonoyuudentai) {
+        this.buzaizaikonoyuudentai = buzaizaikonoyuudentai;
+    }
+
+    /**
      * 誘電体製版No
      * @return the cseihanno
      */
@@ -1330,6 +1411,38 @@ public class GXHDO201B006Model {
      */
     public void setCseimaisuu(Long cseimaisuu) {
         this.cseimaisuu = cseimaisuu;
+    }
+
+    /**
+     * 最大処理数_誘電体
+     * @return the saidaisyorisuuyuudentai
+     */
+    public Long getSaidaisyorisuuyuudentai() {
+        return saidaisyorisuuyuudentai;
+    }
+
+    /**
+     * 最大処理数_誘電体
+     * @param saidaisyorisuuyuudentai the saidaisyorisuuyuudentai to set
+     */
+    public void setSaidaisyorisuuyuudentai(Long saidaisyorisuuyuudentai) {
+        this.saidaisyorisuuyuudentai = saidaisyorisuuyuudentai;
+    }
+
+    /**
+     * 累計処理数_誘電体
+     * @return the ruikeisyorisuuyuudentai
+     */
+    public Long getRuikeisyorisuuyuudentai() {
+        return ruikeisyorisuuyuudentai;
+    }
+
+    /**
+     * 累計処理数_誘電体
+     * @param ruikeisyorisuuyuudentai the ruikeisyorisuuyuudentai to set
+     */
+    public void setRuikeisyorisuuyuudentai(Long ruikeisyorisuuyuudentai) {
+        this.ruikeisyorisuuyuudentai = ruikeisyorisuuyuudentai;
     }
 
     /**

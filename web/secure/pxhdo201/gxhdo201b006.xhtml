@@ -324,12 +324,25 @@
                     <p:column id="eseihanmei" headerText="電極製版名" >
                         <p:outputLabel value="#{item.eseihanmei}"/>
                     </p:column>
+                    <p:column id="buzaizaikonodenkyoku" headerText="部材在庫No_電極" >
+                        <p:outputLabel value="#{item.buzaizaikonodenkyoku}"/>
+                    </p:column>
                     <p:column id="eseihanno" headerText="電極製版No" >
                         <p:outputLabel value="#{item.eseihanno}"/>
                     </p:column>
                     <p:column id="eseimaisuu" headerText="電極製版枚数" styleClass="number">
                         <p:outputLabel value="#{item.eseimaisuu}">
                             <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="saidaisyorisuudenkyoku" headerText="最大処理数_電極" styleClass="number">
+                        <p:outputLabel value="#{item.saidaisyorisuudenkyoku}">
+                            <f:convertNumber pattern="##,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ruikeisyorisuudenkyoku" headerText="累計処理数_電極" styleClass="number">
+                        <p:outputLabel value="#{item.ruikeisyorisuudenkyoku}">
+                            <f:convertNumber pattern="##,###,##0"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="eclearance" headerText="電極ｸﾘｱﾗﾝｽ" styleClass="number">
@@ -411,12 +424,25 @@
                     <p:column id="cseihanmei" headerText="誘電体製版名" >
                         <p:outputLabel value="#{item.cseihanmei}"/>
                     </p:column>
+                    <p:column id="buzaizaikonoyuudentai" headerText="部材在庫No_誘電体" >
+                        <p:outputLabel value="#{item.buzaizaikonoyuudentai}"/>
+                    </p:column>
                     <p:column id="cseihanno" headerText="誘電体製版No" >
                         <p:outputLabel value="#{item.cseihanno}"/>
                     </p:column>
                     <p:column id="cseimaisuu" headerText="誘電体製版枚数" styleClass="number">
                         <p:outputLabel value="#{item.cseimaisuu}">
                             <f:convertNumber pattern="###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="saidaisyorisuuyuudentai" headerText="最大処理数_誘電体" styleClass="number">
+                        <p:outputLabel value="#{item.saidaisyorisuuyuudentai}">
+                            <f:convertNumber pattern="##,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ruikeisyorisuuyuudentai" headerText="累計処理数_誘電体" styleClass="number">
+                        <p:outputLabel value="#{item.ruikeisyorisuuyuudentai}">
+                            <f:convertNumber pattern="##,###,##0"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="cclearance" headerText="誘電体ｸﾘｱﾗﾝｽ" styleClass="number">
