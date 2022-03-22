@@ -26,6 +26,11 @@ import java.sql.Timestamp;
  * 変更者	863 sujialiang<br>
  * 変更理由	項目追加・変更<br>
  * <br>
+ * 変更日       2022/03/10<br>
+ * 計画書No     MB2202-D013<br>
+ * 変更者       KCSS WXF<br>
+ * 変更理由     仕様変更対応<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -212,6 +217,11 @@ public class SrRhaps {
     private String eseihanmei;
 
     /**
+     * 部材在庫No_電極
+     */
+    private String buzaizaikonodenkyoku;
+
+    /**
      * 電極製版No
      */
     private String eseihanno;
@@ -220,6 +230,16 @@ public class SrRhaps {
      * 電極製版枚数
      */
     private Integer eseimaisuu;
+
+    /**
+     * 最大処理数_電極
+     */
+    private Integer saidaisyorisuudenkyoku;
+
+    /**
+     * 累計処理数_電極
+     */
+    private Integer ruikeisyorisuudenkyoku;
 
     /**
      * 電極ｸﾘｱﾗﾝｽ
@@ -307,6 +327,11 @@ public class SrRhaps {
     private String cseihanmei;
 
     /**
+     * 部材在庫No_誘電体
+     */
+    private String buzaizaikonoyuudentai;
+
+    /**
      * 誘電体製版No
      */
     private String cseihanno;
@@ -315,6 +340,16 @@ public class SrRhaps {
      * 誘電体製版枚数
      */
     private Integer cseimaisuu;
+
+    /**
+     * 最大処理数_誘電体
+     */
+    private Integer saidaisyorisuuyuudentai;
+
+    /**
+     * 累計処理数_誘電体
+     */
+    private Integer ruikeisyorisuuyuudentai;
 
     /**
      * 誘電体ｸﾘｱﾗﾝｽ
@@ -1577,6 +1612,22 @@ public class SrRhaps {
     }
 
     /**
+     * 部材在庫No_電極
+     * @return the buzaizaikonodenkyoku
+     */
+    public String getBuzaizaikonodenkyoku() {
+        return buzaizaikonodenkyoku;
+    }
+
+    /**
+     * 部材在庫No_電極
+     * @param buzaizaikonodenkyoku the buzaizaikonodenkyoku to set
+     */
+    public void setBuzaizaikonodenkyoku(String buzaizaikonodenkyoku) {
+        this.buzaizaikonodenkyoku = buzaizaikonodenkyoku;
+    }
+
+    /**
      * 電極製版No
      *
      * @return the eseihanno
@@ -1610,6 +1661,38 @@ public class SrRhaps {
      */
     public void setEseimaisuu(Integer eseimaisuu) {
         this.eseimaisuu = eseimaisuu;
+    }
+
+    /**
+     * 最大処理数_電極
+     * @return the saidaisyorisuudenkyoku
+     */
+    public Integer getSaidaisyorisuudenkyoku() {
+        return saidaisyorisuudenkyoku;
+    }
+
+    /**
+     * 最大処理数_電極
+     * @param saidaisyorisuudenkyoku the saidaisyorisuudenkyoku to set
+     */
+    public void setSaidaisyorisuudenkyoku(Integer saidaisyorisuudenkyoku) {
+        this.saidaisyorisuudenkyoku = saidaisyorisuudenkyoku;
+    }
+
+    /**
+     * 累計処理数_電極
+     * @return the ruikeisyorisuudenkyoku
+     */
+    public Integer getRuikeisyorisuudenkyoku() {
+        return ruikeisyorisuudenkyoku;
+    }
+
+    /**
+     * 累計処理数_電極
+     * @param ruikeisyorisuudenkyoku the ruikeisyorisuudenkyoku to set
+     */
+    public void setRuikeisyorisuudenkyoku(Integer ruikeisyorisuudenkyoku) {
+        this.ruikeisyorisuudenkyoku = ruikeisyorisuudenkyoku;
     }
 
     /**
@@ -1919,6 +2002,22 @@ public class SrRhaps {
     }
 
     /**
+     * 部材在庫No_誘電体
+     * @return the buzaizaikonoyuudentai
+     */
+    public String getBuzaizaikonoyuudentai() {
+        return buzaizaikonoyuudentai;
+    }
+
+    /**
+     * 部材在庫No_誘電体
+     * @param buzaizaikonoyuudentai the buzaizaikonoyuudentai to set
+     */
+    public void setBuzaizaikonoyuudentai(String buzaizaikonoyuudentai) {
+        this.buzaizaikonoyuudentai = buzaizaikonoyuudentai;
+    }
+
+    /**
      * 誘電体製版No
      *
      * @return the cseihanno
@@ -1952,6 +2051,38 @@ public class SrRhaps {
      */
     public void setCseimaisuu(Integer cseimaisuu) {
         this.cseimaisuu = cseimaisuu;
+    }
+
+    /**
+     * 最大処理数_誘電体
+     * @return the saidaisyorisuuyuudentai
+     */
+    public Integer getSaidaisyorisuuyuudentai() {
+        return saidaisyorisuuyuudentai;
+    }
+
+    /**
+     * 最大処理数_誘電体
+     * @param saidaisyorisuuyuudentai the saidaisyorisuuyuudentai to set
+     */
+    public void setSaidaisyorisuuyuudentai(Integer saidaisyorisuuyuudentai) {
+        this.saidaisyorisuuyuudentai = saidaisyorisuuyuudentai;
+    }
+
+    /**
+     * 累計処理数_誘電体
+     * @return the ruikeisyorisuuyuudentai
+     */
+    public Integer getRuikeisyorisuuyuudentai() {
+        return ruikeisyorisuuyuudentai;
+    }
+
+    /**
+     * 累計処理数_誘電体
+     * @param ruikeisyorisuuyuudentai the ruikeisyorisuuyuudentai to set
+     */
+    public void setRuikeisyorisuuyuudentai(Integer ruikeisyorisuuyuudentai) {
+        this.ruikeisyorisuuyuudentai = ruikeisyorisuuyuudentai;
     }
 
     /**
