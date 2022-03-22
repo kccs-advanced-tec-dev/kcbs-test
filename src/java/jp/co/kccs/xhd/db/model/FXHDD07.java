@@ -666,7 +666,86 @@ public class FXHDD07 {
      * 設定値cap3
      */
     private Integer setteicap3;
+
+    /**
+     * 耐電圧設定条件 ＩＲ① 判定値(低) 単位
+     */
+    private String irhantei1tani_low;
+
+    /**
+     * 耐電圧設定条件 ＩＲ② 判定値(低) 単位
+     */
+    private String irhantei2tani_low;
+
+    /**
+     * 耐電圧設定条件 ＩＲ③ 判定値(低) 単位
+     */
+    private String irhantei3tani_low;
+
+    /**
+     * 耐電圧設定条件 ＩＲ④ 判定値(低) 単位
+     */
+    private String irhantei4tani_low;
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑤ 判定値(低) 単位
+     */
+    private String irhantei5tani_low;
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑥ 判定値(低) 単位
+     */
+    private String irhantei6tani_low;
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑦ 判定値(低) 単位
+     */
+    private String irhantei7tani_low;
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑧ 判定値(低) 単位
+     */
+    private String irhantei8tani_low;
     
+    /**
+     * 設定値cap4
+     */
+    private Integer setteicap4;
+
+    /**
+     * 電極清掃・動作
+     */
+    private String denkyokuseisou;
+
+    /**
+     * 設定値BIN4low
+     */
+    private String setteiti4low;
+
+    /**
+     * 設定値BIN4up
+     */
+    private String setteiti4up;
+
+    /**
+     * BIN1 %区分(設定値)
+     */
+    private String bin1setteiti;
+
+    /**
+     * BIN2 %区分(設定値)
+     */
+    private String bin2setteiti;
+
+    /**
+     * BIN3 %区分(設定値)
+     */
+    private String bin3setteiti;
+
+    /**
+     * BIN4 %区分(設定値)
+     */
+    private String bin4setteiti;
     /**
      * 工場ｺｰﾄﾞ
      * @return the kojyo
@@ -2681,5 +2760,261 @@ public class FXHDD07 {
      */
     public void setSetteicap3(Integer setteicap3) {
         this.setteicap3 = setteicap3;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ① 判定値(低) 単位
+     * @return the irhantei1tani_low
+     */
+    public String getIrhantei1tani_low() {
+        return irhantei1tani_low;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ① 判定値(低) 単位
+     * @param irhantei1tani_low the irhantei1tani_low to set
+     */
+    public void setIrhantei1tani_low(String irhantei1tani_low) {
+        this.irhantei1tani_low = irhantei1tani_low;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ② 判定値(低) 単位
+     * @return the irhantei2tani_low
+     */
+    public String getIrhantei2tani_low() {
+        return irhantei2tani_low;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ② 判定値(低) 単位
+     * @param irhantei2tani_low the irhantei2tani_low to set
+     */
+    public void setIrhantei2tani_low(String irhantei2tani_low) {
+        this.irhantei2tani_low = irhantei2tani_low;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ③ 判定値(低) 単位
+     * @return the irhantei3tani_low
+     */
+    public String getIrhantei3tani_low() {
+        return irhantei3tani_low;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ③ 判定値(低) 単位
+     * @param irhantei3tani_low the irhantei3tani_low to set
+     */
+    public void setIrhantei3tani_low(String irhantei3tani_low) {
+        this.irhantei3tani_low = irhantei3tani_low;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ④ 判定値(低) 単位
+     * @return the irhantei4tani_low
+     */
+    public String getIrhantei4tani_low() {
+        return irhantei4tani_low;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ④ 判定値(低) 単位
+     * @param irhantei4tani_low the irhantei4tani_low to set
+     */
+    public void setIrhantei4tani_low(String irhantei4tani_low) {
+        this.irhantei4tani_low = irhantei4tani_low;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑤ 判定値(低) 単位
+     * @return the irhantei5tani_low
+     */
+    public String getIrhantei5tani_low() {
+        return irhantei5tani_low;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑤ 判定値(低) 単位
+     * @param irhantei5tani_low the irhantei5tani_low to set
+     */
+    public void setIrhantei5tani_low(String irhantei5tani_low) {
+        this.irhantei5tani_low = irhantei5tani_low;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑥ 判定値(低) 単位
+     * @return the irhantei6tani_low
+     */
+    public String getIrhantei6tani_low() {
+        return irhantei6tani_low;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑥ 判定値(低) 単位
+     * @param irhantei6tani_low the irhantei6tani_low to set
+     */
+    public void setIrhantei6tani_low(String irhantei6tani_low) {
+        this.irhantei6tani_low = irhantei6tani_low;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑦ 判定値(低) 単位
+     * @return the irhantei7tani_low
+     */
+    public String getIrhantei7tani_low() {
+        return irhantei7tani_low;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑦ 判定値(低) 単位
+     * @param irhantei7tani_low the irhantei7tani_low to set
+     */
+    public void setIrhantei7tani_low(String irhantei7tani_low) {
+        this.irhantei7tani_low = irhantei7tani_low;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑧ 判定値(低) 単位
+     * @return the irhantei8tani_low
+     */
+    public String getIrhantei8tani_low() {
+        return irhantei8tani_low;
+    }
+
+    /**
+     * 耐電圧設定条件 ＩＲ⑧ 判定値(低) 単位
+     * @param irhantei8tani_low the irhantei8tani_low to set
+     */
+    public void setIrhantei8tani_low(String irhantei8tani_low) {
+        this.irhantei8tani_low = irhantei8tani_low;
+    }
+
+    /**
+     * 設定値cap4
+     * @return the setteicap4
+     */
+    public Integer getSetteicap4() {
+        return setteicap4;
+    }
+
+    /**
+     * 設定値cap4
+     * @param setteicap4 the setteicap4 to set
+     */
+    public void setSetteicap4(Integer setteicap4) {
+        this.setteicap4 = setteicap4;
+    }
+
+    /**
+     * 電極清掃・動作
+     * @return the denkyokuseisou
+     */
+    public String getDenkyokuseisou() {
+        return denkyokuseisou;
+    }
+
+    /**
+     * 電極清掃・動作
+     * @param denkyokuseisou the denkyokuseisou to set
+     */
+    public void setDenkyokuseisou(String denkyokuseisou) {
+        this.denkyokuseisou = denkyokuseisou;
+    }
+
+    /**
+     * 設定値BIN4low
+     * @return the setteiti4low
+     */
+    public String getSetteiti4low() {
+        return setteiti4low;
+    }
+
+    /**
+     * 設定値BIN4low
+     * @param setteiti4low the setteiti4low to set
+     */
+    public void setSetteiti4low(String setteiti4low) {
+        this.setteiti4low = setteiti4low;
+    }
+
+    /**
+     * 設定値BIN4up
+     * @return the setteiti4up
+     */
+    public String getSetteiti4up() {
+        return setteiti4up;
+    }
+
+    /**
+     * 設定値BIN4up
+     * @param setteiti4up the setteiti4up to set
+     */
+    public void setSetteiti4up(String setteiti4up) {
+        this.setteiti4up = setteiti4up;
+    }
+
+    /**
+     * BIN1 %区分(設定値)
+     * @return the bin1setteiti
+     */
+    public String getBin1setteiti() {
+        return bin1setteiti;
+    }
+
+    /**
+     * BIN1 %区分(設定値)
+     * @param bin1setteiti the bin1setteiti to set
+     */
+    public void setBin1setteiti(String bin1setteiti) {
+        this.bin1setteiti = bin1setteiti;
+    }
+
+    /**
+     * BIN2 %区分(設定値)
+     * @return the bin2setteiti
+     */
+    public String getBin2setteiti() {
+        return bin2setteiti;
+    }
+
+    /**
+     * BIN2 %区分(設定値)
+     * @param bin2setteiti the bin2setteiti to set
+     */
+    public void setBin2setteiti(String bin2setteiti) {
+        this.bin2setteiti = bin2setteiti;
+    }
+
+    /**
+     * BIN3 %区分(設定値)
+     * @return the bin3setteiti
+     */
+    public String getBin3setteiti() {
+        return bin3setteiti;
+    }
+
+    /**
+     * BIN3 %区分(設定値)
+     * @param bin3setteiti the bin3setteiti to set
+     */
+    public void setBin3setteiti(String bin3setteiti) {
+        this.bin3setteiti = bin3setteiti;
+    }
+
+    /**
+     * BIN4 %区分(設定値)
+     * @return the bin4setteiti
+     */
+    public String getBin4setteiti() {
+        return bin4setteiti;
+    }
+
+    /**
+     * BIN4 %区分(設定値)
+     * @param bin4setteiti the bin4setteiti to set
+     */
+    public void setBin4setteiti(String bin4setteiti) {
+        this.bin4setteiti = bin4setteiti;
     }
 }

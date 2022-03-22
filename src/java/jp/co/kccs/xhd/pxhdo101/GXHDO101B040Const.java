@@ -62,6 +62,16 @@ public class GXHDO101B040Const {
      * 製品情報:後工程指示内容
      */
     public static final String SEIHIN_ATOKOUTEI_SHIJI_NAIYO = "sr_denkitokuseiesi_seihin_atokoutei_shiji_naiyo";
+    
+    /**
+     * 製品情報:最大処理数
+     */
+    public static final String SEIHIN_SAIDAI_SYORISUU= "sr_denkitokuseiesi_seihin_saidai_syorisuu";
+    
+    /**
+     * 製品情報:累計処理数
+     */
+    public static final String SEIHIN_RUIKEI_SYORISUU = "sr_denkitokuseiesi_seihin_ruikei_syorisuu";
 
     /**
      * 製品情報:送り良品数
@@ -1272,6 +1282,11 @@ public class GXHDO101B040Const {
      * 設備ﾃﾞｰﾀ取込(画面上ボタン)
      */
     public static final String BTN_SETSUBI_DATA_TORIKOMI_TOP = "sr_denkitokuseiesi_setsubi_data_torikomi_Top";
+    
+    /**
+     * 部材在庫情報(画面上ボタン)
+     */
+    public static final String BTN_BUZAI_ZAIKO_ZYOUHOU_TOP = "sr_denkitokuseiesi_buzai_zaiko_zyouhou_Top";
 
     /**
      * 仮登録(画面下ボタン)
@@ -1332,6 +1347,11 @@ public class GXHDO101B040Const {
      * 設備ﾃﾞｰﾀ取込(画面下ボタン)
      */
     public static final String BTN_SETSUBI_DATA_TORIKOMI_BOTTOM = "sr_denkitokuseiesi_setsubi_data_torikomi_Bottom";
+    
+    /**
+     * 部材在庫情報(画面下ボタン)
+     */
+    public static final String BTN_BUZAI_ZAIKO_ZYOUHOU_BOTTOM = "sr_denkitokuseiesi_buzai_zaiko_zyouhou_Bottom";
 
     /**
      * ユーザー認証パラメータ(修正)
@@ -1342,4 +1362,60 @@ public class GXHDO101B040Const {
      * ユーザー認証パラメータ(削除)
      */
     public static final String USER_AUTH_DELETE_PARAM = "sr_denkitokuseiesi_delete_button";
+    
+    /**
+     * 耐電圧設定条件:IR① 判定値(低) 単位
+     */
+    public static final String TAIDEN_HANTEICHI1TANI_LOW = "sr_denkitokuseiesi_taiden_hanteichi1tani_low";
+    
+    /**
+     * 耐電圧設定条件:IR② 判定値(低) 単位
+     */
+    public static final String TAIDEN_HANTEICHI2TANI_LOW = "sr_denkitokuseiesi_taiden_hanteichi2tani_low";
+
+    /**
+     * 耐電圧設定条件:IR③ 判定値(低) 単位
+     */
+    public static final String TAIDEN_HANTEICHI3TANI_LOW = "sr_denkitokuseiesi_taiden_hanteichi3tani_low";
+
+    /**
+     * 耐電圧設定条件:IR④ 判定値(低) 単位
+     */
+    public static final String TAIDEN_HANTEICHI4TANI_LOW = "sr_denkitokuseiesi_taiden_hanteichi4tani_low";
+
+    /**
+     * 耐電圧設定条件:IR⑤ 判定値(低) 単位
+     */
+    public static final String TAIDEN_HANTEICHI5TANI_LOW = "sr_denkitokuseiesi_taiden_hanteichi5tani_low";
+
+    /**
+     * 耐電圧設定条件:IR⑥ 判定値(低) 単位
+     */
+    public static final String TAIDEN_HANTEICHI6TANI_LOW = "sr_denkitokuseiesi_taiden_hanteichi6tani_low";
+
+    /**
+     * 耐電圧設定条件:IR⑦ 判定値(低) 単位
+     */
+    public static final String TAIDEN_HANTEICHI7TANI_LOW = "sr_denkitokuseiesi_taiden_hanteichi7tani_low";
+
+    /**
+     * 耐電圧設定条件:IR⑧ 判定値(低) 単位
+     */
+    public static final String TAIDEN_HANTEICHI8TANI_LOW = "sr_denkitokuseiesi_taiden_hanteichi8tani_low";
+ 
+    /**
+     * 特性 第1公差
+     */
+    public static final String KOSA1 = "sr_denkitokuseiesi_kosa1";
+
+    /**
+     * 特性 第2公差
+     */
+    public static final String KOSA2 = "sr_denkitokuseiesi_kosa2";
+
+    /**
+     * 特性 第3公差
+     */
+    public static final String KOSA3 = "sr_denkitokuseiesi_kosa3";
+
 }

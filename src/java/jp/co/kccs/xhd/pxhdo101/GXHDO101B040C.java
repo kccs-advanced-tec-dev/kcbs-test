@@ -234,6 +234,46 @@ public class GXHDO101B040C implements Serializable {
      * 耐電圧 充電時間8
      */
     private FXHDD01 judenTime8;
+
+    /**
+     * 耐電圧 判定値1(低) 単位
+     */
+    private FXHDD01 hanteichi1tani_low;
+
+    /**
+     * 耐電圧 判定値2(低) 単位
+     */
+    private FXHDD01 hanteichi2tani_low;
+
+    /**
+     * 耐電圧 判定値3(低) 単位
+     */
+    private FXHDD01 hanteichi3tani_low;
+
+    /**
+     * 耐電圧 判定値4(低) 単位
+     */
+    private FXHDD01 hanteichi4tani_low;
+
+    /**
+     * 耐電圧 判定値5(低) 単位
+     */
+    private FXHDD01 hanteichi5tani_low;
+
+    /**
+     * 耐電圧 判定値6(低) 単位
+     */
+    private FXHDD01 hanteichi6tani_low;
+
+    /**
+     * 耐電圧 判定値7(低) 単位
+     */
+    private FXHDD01 hanteichi7tani_low;
+
+    /**
+     * 耐電圧 判定値8(低) 単位
+     */
+    private FXHDD01 hanteichi8tani_low;
     
     /**
      * コンストラクタ
@@ -879,6 +919,134 @@ public class GXHDO101B040C implements Serializable {
      */
     public void setJudenTime8(FXHDD01 judenTime8) {
         this.judenTime8 = judenTime8;
+    }
+
+    /**
+     * 耐電圧 判定値1(低) 単位
+     * @return the hanteichi1tani_low
+     */
+    public FXHDD01 getHanteichi1tani_low() {
+        return hanteichi1tani_low;
+    }
+
+    /**
+     * 耐電圧 判定値1(低) 単位
+     * @param hanteichi1tani_low the hanteichi1tani_low to set
+     */
+    public void setHanteichi1tani_low(FXHDD01 hanteichi1tani_low) {
+        this.hanteichi1tani_low = hanteichi1tani_low;
+    }
+
+    /**
+     * 耐電圧 判定値2(低) 単位
+     * @return the hanteichi2tani_low
+     */
+    public FXHDD01 getHanteichi2tani_low() {
+        return hanteichi2tani_low;
+    }
+
+    /**
+     * 耐電圧 判定値2(低) 単位
+     * @param hanteichi2tani_low the hanteichi2tani_low to set
+     */
+    public void setHanteichi2tani_low(FXHDD01 hanteichi2tani_low) {
+        this.hanteichi2tani_low = hanteichi2tani_low;
+    }
+
+    /**
+     * 耐電圧 判定値3(低) 単位
+     * @return the hanteichi3tani_low
+     */
+    public FXHDD01 getHanteichi3tani_low() {
+        return hanteichi3tani_low;
+    }
+
+    /**
+     * 耐電圧 判定値3(低) 単位
+     * @param hanteichi3tani_low the hanteichi3tani_low to set
+     */
+    public void setHanteichi3tani_low(FXHDD01 hanteichi3tani_low) {
+        this.hanteichi3tani_low = hanteichi3tani_low;
+    }
+
+    /**
+     * 耐電圧 判定値4(低) 単位
+     * @return the hanteichi4tani_low
+     */
+    public FXHDD01 getHanteichi4tani_low() {
+        return hanteichi4tani_low;
+    }
+
+    /**
+     * 耐電圧 判定値4(低) 単位
+     * @param hanteichi4tani_low the hanteichi4tani_low to set
+     */
+    public void setHanteichi4tani_low(FXHDD01 hanteichi4tani_low) {
+        this.hanteichi4tani_low = hanteichi4tani_low;
+    }
+
+    /**
+     * 耐電圧 判定値5(低) 単位
+     * @return the hanteichi5tani_low
+     */
+    public FXHDD01 getHanteichi5tani_low() {
+        return hanteichi5tani_low;
+    }
+
+    /**
+     * 耐電圧 判定値5(低) 単位
+     * @param hanteichi5tani_low the hanteichi5tani_low to set
+     */
+    public void setHanteichi5tani_low(FXHDD01 hanteichi5tani_low) {
+        this.hanteichi5tani_low = hanteichi5tani_low;
+    }
+
+    /**
+     * 耐電圧 判定値6(低) 単位
+     * @return the hanteichi6tani_low
+     */
+    public FXHDD01 getHanteichi6tani_low() {
+        return hanteichi6tani_low;
+    }
+
+    /**
+     * 耐電圧 判定値6(低) 単位
+     * @param hanteichi6tani_low the hanteichi6tani_low to set
+     */
+    public void setHanteichi6tani_low(FXHDD01 hanteichi6tani_low) {
+        this.hanteichi6tani_low = hanteichi6tani_low;
+    }
+
+    /**
+     * 耐電圧 判定値7(低) 単位
+     * @return the hanteichi7tani_low
+     */
+    public FXHDD01 getHanteichi7tani_low() {
+        return hanteichi7tani_low;
+    }
+
+    /**
+     * 耐電圧 判定値7(低) 単位
+     * @param hanteichi7tani_low the hanteichi7tani_low to set
+     */
+    public void setHanteichi7tani_low(FXHDD01 hanteichi7tani_low) {
+        this.hanteichi7tani_low = hanteichi7tani_low;
+    }
+
+    /**
+     * 耐電圧 判定値8(低) 単位
+     * @return the hanteichi8tani_low
+     */
+    public FXHDD01 getHanteichi8tani_low() {
+        return hanteichi8tani_low;
+    }
+
+    /**
+     * 耐電圧 判定値8(低) 単位
+     * @param hanteichi8tani_low the hanteichi8tani_low to set
+     */
+    public void setHanteichi8tani_low(FXHDD01 hanteichi8tani_low) {
+        this.hanteichi8tani_low = hanteichi8tani_low;
     }
 
 
