@@ -3456,17 +3456,16 @@ public class GXHDO101B003 implements IFormLogic {
      */
     public ProcessData doBuzaizaikojyohoSyori(ProcessData processData) {
         FXHDD01 itemSeihanLotNo = getItemRow(processData.getItemList(), GXHDO101B003Const.SEIHAN_OR_HANDOU_NO); // 製版ﾛｯﾄNo
+        List<FXHDD01> errFxhdd01List = Arrays.asList(itemSeihanLotNo);
         // 「製版ﾛｯﾄNo」が入力されていない場合
         if (StringUtil.isEmpty(itemSeihanLotNo.getValue())) {
             // ｴﾗｰ項目をﾘｽﾄに追加
-            List<FXHDD01> errFxhdd01List = Arrays.asList(itemSeihanLotNo);
             processData.getErrorMessageInfoList().add(MessageUtil.getErrorMessageInfo("XHD-000003", true, true, errFxhdd01List, itemSeihanLotNo.getLabel1()));
             return processData;
         } else {
             // 「製版ﾛｯﾄNo」が入力されている場合
             if (StringUtil.getLength(itemSeihanLotNo.getValue()) != 9) {
                 // ｴﾗｰ項目をﾘｽﾄに追加
-                List<FXHDD01> errFxhdd01List = Arrays.asList(itemSeihanLotNo);
                 processData.getErrorMessageInfoList().add(MessageUtil.getErrorMessageInfo("XHD-000004", true, true, errFxhdd01List, itemSeihanLotNo.getLabel1(), "9"));
                 return processData;
             }
@@ -3475,7 +3474,7 @@ public class GXHDO101B003 implements IFormLogic {
         // 部材在庫ﾃﾞｰﾀ取得
         Map<String, Object> fmlad01Data = getFmlad01Data(queryRunnerMLA, itemSeihanLotNo.getValue());
         if (fmlad01Data == null || fmlad01Data.isEmpty()) {
-            processData.getErrorMessageInfoList().add(MessageUtil.getErrorMessageInfo("XHD-000219", true, true, null));
+            processData.getErrorMessageInfoList().add(MessageUtil.getErrorMessageInfo("XHD-000219", true, true, errFxhdd01List));
             return processData;
         }
         String siyoMaisu = StringUtil.nullToBlank(fmlad01Data.get("siyo_maisu")); // 使用枚数
