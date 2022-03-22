@@ -913,10 +913,16 @@ public class GXHDO901A implements Serializable {
         }
 
         boolean isCheck = false;
-        FXHDD02 fxhdd02 = (FXHDD02)externalContext.getRequestMap().get("item");
-        String buttonName = fxhdd02.getButtonName();
-        if ("登録".equals(buttonName) || "修正".equals(buttonName)) {
-            isCheck = true;
+        try {
+            FXHDD02 fxhdd02 = (FXHDD02) externalContext.getRequestMap().get("item");
+            if (null != fxhdd02) {
+                String buttonName = fxhdd02.getButtonName();
+                if ("登録".equals(buttonName) || "修正".equals(buttonName)) {
+                    isCheck = true;
+                }
+            }
+        } catch (ClassCastException e) {
+            ErrUtil.outputErrorLog("ClassCastException発生", e, LOGGER);
         }
         if ("flow_temp_regist_Top".equals(buttonId) || "flow_temp_regist_Bottom".equals(buttonId)) {
             isCheck = true;
@@ -2094,6 +2100,10 @@ public class GXHDO901A implements Serializable {
      */
     public void showCompMessage() {
         this.compMessage ="登録しました。";
+        CompMessage compMessageBean = (CompMessage) FacesContext.getCurrentInstance().
+                getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                        getELContext(), null, "beanCompMessage");
+        compMessageBean.setCompMessage("登録しました。");
         RequestContext context = RequestContext.getCurrentInstance();
         context.addCallbackParam("firstParam", "complete");
     }
