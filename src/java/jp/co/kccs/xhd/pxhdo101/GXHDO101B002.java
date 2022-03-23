@@ -4794,6 +4794,10 @@ public class GXHDO101B002 implements IFormLogic {
         //   ・ｴﾗ-ﾒｯｾｰｼﾞ:製版ﾛｯﾄNoを入力してください。
         FXHDD01 seihanLotNoItem = getItemRow(processData.getItemList(), GXHDO101B002Const.SEIHAN_OR_HANDOU_NO);
         List<FXHDD01> errFxhdd01List = new ArrayList<>();
+        if(seihanLotNoItem == null){
+            processData.setMethod("");
+            return processData;
+        }
         errFxhdd01List = Arrays.asList(seihanLotNoItem);
         if(StringUtil.isEmpty(StringUtil.trimAll(seihanLotNoItem.getValue()))){
             //エラー発生時
@@ -4834,10 +4838,18 @@ public class GXHDO101B002 implements IFormLogic {
             
             // 累計処理数
             FXHDD01 itemRuikeisyorisuu = getItemRow(processData.getItemList(), GXHDO101B002Const.RUIKEISYORISUU);
+            if(itemRuikeisyorisuu == null){
+                processData.setMethod("");
+                return processData;
+            }
             itemRuikeisyorisuu.setValue(siyoMaisu);
                         
             // 最大処理数
             FXHDD01 itemSaidaisyorisuu = getItemRow(processData.getItemList(), GXHDO101B002Const.SAIDAISYORISUU);
+            if(itemSaidaisyorisuu == null){
+                processData.setMethod("");
+                return processData;
+            }
             itemSaidaisyorisuu.setValue(saidaiSiyoMaisu);
         }
 

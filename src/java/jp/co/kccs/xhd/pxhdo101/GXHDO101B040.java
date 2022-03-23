@@ -4449,6 +4449,9 @@ public class GXHDO101B040 implements IFormLogic {
             FXHDD01 itemBuzaiNo = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_TEST_PLATE_KANRINO); //ﾃｽﾄﾌﾟﾚｰﾄ管理No
             FXHDD01 itemSaidai = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_SAIDAI_SYORISUU); //最大処理数
             FXHDD01 itemRuikei = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_RUIKEI_SYORISUU); //累計処理数
+            if(itemBuzaiNo == null || itemSaidai == null || itemRuikei == null){
+                return;
+            }
             Map<String, Object> fmlad01Data = getFmlad01Data(itemBuzaiNo.getValue(),processData);
             this.setIsFormError(false);
             if (!buzainoCheck(itemBuzaiNo, processData)) {

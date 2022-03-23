@@ -3456,6 +3456,10 @@ public class GXHDO101B003 implements IFormLogic {
      */
     public ProcessData doBuzaizaikojyohoSyori(ProcessData processData) {
         FXHDD01 itemSeihanLotNo = getItemRow(processData.getItemList(), GXHDO101B003Const.SEIHAN_OR_HANDOU_NO); // 製版ﾛｯﾄNo
+        if(itemSeihanLotNo == null){
+            processData.setMethod("");
+            return processData;
+        }
         List<FXHDD01> errFxhdd01List = Arrays.asList(itemSeihanLotNo);
         // 「製版ﾛｯﾄNo」が入力されていない場合
         if (StringUtil.isEmpty(itemSeihanLotNo.getValue())) {

@@ -1035,14 +1035,6 @@ public class GXHDO101B006 implements IFormLogic {
             // ﾛｯﾄNoの値
             lotnoValue = StringUtil.nullToBlank(itemFxhdd01Lotno.getValue());
         }
-        // 電極製版枚数
-        FXHDD01 itemDenkyokuSeihanMaisu = getItemRow(processData.getItemList(), GXHDO101B006Const.DENKYOKU_SEIHAN_MAISU);
-        String denkyokuSeihanMaisuValue = null;
-        if (itemDenkyokuSeihanMaisu != null) {
-            // 電極製版枚数の値
-            denkyokuSeihanMaisuValue = StringUtil.nullToBlank(itemDenkyokuSeihanMaisu.getValue());
-            
-        }
         ArrayList<String> paramsList = new ArrayList<>();
         paramsList.add(buzaizaikonoValue);
         paramsList.add(tantoshaCd);
@@ -5747,6 +5739,10 @@ public class GXHDO101B006 implements IFormLogic {
      */
     public ProcessData doBuzaizaikojyohoDenkyokuSyori(ProcessData processData) {
         FXHDD01 itemBuzaizaikonodenkyoku = getItemRow(processData.getItemList(), GXHDO101B006Const.BUZAIZAIKONODENKYOKU); // 部材在庫No_電極
+        if(itemBuzaizaikonodenkyoku == null){
+            processData.setMethod("");
+            return processData;
+        }
         // ｴﾗｰ項目をﾘｽﾄに追加
         List<FXHDD01> errFxhdd01List = Arrays.asList(itemBuzaizaikonodenkyoku);
         // 「部材在庫No_電極」が入力されていない場合
@@ -5789,6 +5785,10 @@ public class GXHDO101B006 implements IFormLogic {
      */
     public ProcessData doBuzaizaikojyohoYuudentaiSyori(ProcessData processData) {
         FXHDD01 itemBuzaizaikonoyuudentai = getItemRow(processData.getItemList(), GXHDO101B006Const.BUZAIZAIKONOYUUDENTAI); // 部材在庫No_誘電体
+        if(itemBuzaizaikonoyuudentai == null){
+            processData.setMethod("");
+            return processData;
+        }
         // ｴﾗｰ項目をﾘｽﾄに追加
         List<FXHDD01> errFxhdd01List = Arrays.asList(itemBuzaizaikonoyuudentai);
         // 「部材在庫No_誘電体」が入力されていない場合
