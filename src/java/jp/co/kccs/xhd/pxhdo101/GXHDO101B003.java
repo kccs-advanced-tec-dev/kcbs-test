@@ -780,20 +780,20 @@ public class GXHDO101B003 implements IFormLogic {
             return;
         }
         // 製版ﾛｯﾄNo
-        String seihanNoValue = StringUtil.nullToBlank(itemSeihanNo.getValue());
+        String seihanNoValue = StringUtil.blankToNull(itemSeihanNo.getValue());
         // ﾛｯﾄNo
         FXHDD01 itemFxhdd01Lotno = getItemRow(processData.getItemList(), GXHDO101B003Const.LOTNO);
         String lotnoValue = null;
         if (itemFxhdd01Lotno != null) {
             // ﾛｯﾄNoの値
-            lotnoValue = StringUtil.nullToBlank(itemFxhdd01Lotno.getValue());
+            lotnoValue = StringUtil.blankToNull(itemFxhdd01Lotno.getValue());
         }
         // 製版使用枚数
         FXHDD01 itemSeihanShiyouMaisuu = getItemRow(processData.getItemList(), GXHDO101B003Const.SEIHAN_OR_HANDOU_SHIYOU_MAISUU);
         String seihanShiyouMaisuuValue = null;
         if (itemSeihanShiyouMaisuu != null) {
             // 製版使用枚数の値
-            seihanShiyouMaisuuValue = StringUtil.nullToBlank(itemSeihanShiyouMaisuu.getValue());
+            seihanShiyouMaisuuValue = StringUtil.blankToNull(itemSeihanShiyouMaisuu.getValue());
             
         }
         ArrayList<String> paramsList = new ArrayList<>();
@@ -811,11 +811,11 @@ public class GXHDO101B003 implements IFormLogic {
             // 「/api/PMLA0212/doSave」APIを呼び出す
             String responseResult = CommonUtil.doRequestPmla0212Save(queryRunnerDoc, paramsList);
             if (!"ok".equals(responseResult)) {
-                errorItemList.add(itemSeihanNo.getLabel1());
+                errorItemList.add(seihanNoValue);
             }
         } catch (Exception ex) {
             ErrUtil.outputErrorLog(itemSeihanNo.getLabel1() + "のﾃﾞｰﾀ連携処理エラー発生", ex, LOGGER);
-            errorItemList.add(itemSeihanNo.getLabel1());
+            errorItemList.add(seihanNoValue);
         }
     }
 
@@ -3485,14 +3485,38 @@ public class GXHDO101B003 implements IFormLogic {
         String saidaiSiyoMaisu = StringUtil.nullToBlank(fmlad01Data.get("saidai_siyo_maisu")); // 最大使用枚数
         FXHDD01 itemRuikeisyorisuu = getItemRow(processData.getItemList(), GXHDO101B003Const.RUIKEISYORISUU); // 累計処理数
         FXHDD01 itemSaidaisyorisuu = getItemRow(processData.getItemList(), GXHDO101B003Const.SAIDAISYORISUU); // 最大処理数
-        if (itemRuikeisyorisuu != null) {
-            itemRuikeisyorisuu.setValue(siyoMaisu);
-        }
-        if (itemSaidaisyorisuu != null) {
-            itemSaidaisyorisuu.setValue(saidaiSiyoMaisu);
-        }
+        setItemIntValue(itemRuikeisyorisuu, siyoMaisu);
+        setItemIntValue(itemSaidaisyorisuu, saidaiSiyoMaisu);
         processData.setMethod("");
         return processData;
+    }
+
+    /**
+     * 小数点以下を切り捨てして整数で対象項目に値をセットする
+     *
+     * @param itemData 項目
+     * @param value 値
+     */
+    private void setItemIntValue(FXHDD01 itemData, String value) {
+        if (itemData == null) {
+            return;
+        }
+        
+        if (!StringUtil.isEmpty(value)) {
+            BigDecimal bigDecimalVal = null;
+            // 小数部以下は切り捨て
+            try {
+                bigDecimalVal = new BigDecimal(value);
+                bigDecimalVal = bigDecimalVal.setScale(0, RoundingMode.DOWN);
+                // 値をセット
+                itemData.setValue(bigDecimalVal.toPlainString());
+            } catch (NumberFormatException e) {
+                // 処理なし
+            }
+        } else {
+            // 値をセット
+            itemData.setValue("");
+        }
     }
     
     /**

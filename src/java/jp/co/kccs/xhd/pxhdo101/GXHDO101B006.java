@@ -995,7 +995,6 @@ public class GXHDO101B006 implements IFormLogic {
         // 上記の処理でｴﾗｰが発生した場合、画面にエラーダイアログを出力する。
         if (!errorItemList.isEmpty()) {
             ErrorListMessage errorListMessageList = new ErrorListMessage();
-            errorListMessageList.setResultMessage(MessageUtil.getMessage("buzailotnoErrorList"));
             errorListMessageList.setResultMessageList(errorItemList);
             errorListMessageList.setTitleMessage(MessageUtil.getMessage("infoMsg"));
             processData.setErrorListMessage(errorListMessageList);
@@ -1022,18 +1021,20 @@ public class GXHDO101B006 implements IFormLogic {
             return;
         }
         // 部材在庫Noの値
-        String buzaizaikonoValue = StringUtil.nullToBlank(itemFxhdd01Buzaizaikono.getValue());
+        String buzaizaikonoValue = StringUtil.blankToNull(itemFxhdd01Buzaizaikono.getValue());
         // 使用枚数
         FXHDD01 itemFxhdd01Siyoumaisuu = getItemRow(processData.getItemList(), siyoumaisuuStr);
-        // 使用枚数の値
-        String siyoumaisuuValue = StringUtil.nullToBlank(itemFxhdd01Siyoumaisuu.getValue());
-        
+        String siyoumaisuuValue = null;
+        if (itemFxhdd01Siyoumaisuu != null) {
+            // 使用枚数の値
+            siyoumaisuuValue = StringUtil.blankToNull(itemFxhdd01Siyoumaisuu.getValue());
+        }
         // ﾛｯﾄNo
         FXHDD01 itemFxhdd01Lotno = getItemRow(processData.getItemList(), GXHDO101B006Const.LOTNO);
         String lotnoValue = null;
         if (itemFxhdd01Lotno != null) {
             // ﾛｯﾄNoの値
-            lotnoValue = StringUtil.nullToBlank(itemFxhdd01Lotno.getValue());
+            lotnoValue = StringUtil.blankToNull(itemFxhdd01Lotno.getValue());
         }
         ArrayList<String> paramsList = new ArrayList<>();
         paramsList.add(buzaizaikonoValue);
@@ -1050,11 +1051,19 @@ public class GXHDO101B006 implements IFormLogic {
             // 「/api/PMLA0212/doSave」APIを呼び出す
             String responseResult = CommonUtil.doRequestPmla0212Save(queryRunnerDoc, paramsList);
             if (!"ok".equals(responseResult)) {
-                errorItemList.add(itemFxhdd01Buzaizaikono.getLabel1());
+                if (!errorItemList.isEmpty()) {
+                    errorItemList.add("　");
+                }
+                errorItemList.add(MessageUtil.getMessage("buzailotnoErrorMsg", itemFxhdd01Buzaizaikono.getLabel1()));
+                errorItemList.add("　" + buzaizaikonoValue);
             }
         } catch (Exception ex) {
             ErrUtil.outputErrorLog(itemFxhdd01Buzaizaikono.getLabel1() + "のﾃﾞｰﾀ連携処理エラー発生", ex, LOGGER);
-            errorItemList.add(itemFxhdd01Buzaizaikono.getLabel1());
+            if (!errorItemList.isEmpty()) {
+                errorItemList.add("　");
+            }
+            errorItemList.add(MessageUtil.getMessage("buzailotnoErrorMsg", itemFxhdd01Buzaizaikono.getLabel1()));
+            errorItemList.add("　" + buzaizaikonoValue);
         }
     }
 
@@ -5767,14 +5776,38 @@ public class GXHDO101B006 implements IFormLogic {
         String saidaiSiyoMaisu = StringUtil.nullToBlank(fmlad01Data.get("saidai_siyo_maisu")); // 最大使用枚数
         FXHDD01 itemRuikeisyorisuudenkyoku = getItemRow(processData.getItemList(), GXHDO101B006Const.RUIKEISYORISUUDENKYOKU); // 累計処理数_電極
         FXHDD01 itemSaidaisyorisuudenkyoku = getItemRow(processData.getItemList(), GXHDO101B006Const.SAIDAISYORISUUDENKYOKU); // 最大処理数_電極
-        if (itemRuikeisyorisuudenkyoku != null) {
-            itemRuikeisyorisuudenkyoku.setValue(siyoMaisu);
-        }
-        if (itemSaidaisyorisuudenkyoku != null) {
-            itemSaidaisyorisuudenkyoku.setValue(saidaiSiyoMaisu);
-        }
+        setItemIntValue(itemRuikeisyorisuudenkyoku, siyoMaisu);
+        setItemIntValue(itemSaidaisyorisuudenkyoku, saidaiSiyoMaisu);
         processData.setMethod("");
         return processData;
+    }
+
+    /**
+     * 小数点以下を切り捨てして整数で対象項目に値をセットする
+     *
+     * @param itemData 項目
+     * @param value 値
+     */
+    private void setItemIntValue(FXHDD01 itemData, String value) {
+        if (itemData == null) {
+            return;
+        }
+        
+        if (!StringUtil.isEmpty(value)) {
+            BigDecimal bigDecimalVal = null;
+            // 小数部以下は切り捨て
+            try {
+                bigDecimalVal = new BigDecimal(value);
+                bigDecimalVal = bigDecimalVal.setScale(0, RoundingMode.DOWN);
+                // 値をセット
+                itemData.setValue(bigDecimalVal.toPlainString());
+            } catch (NumberFormatException e) {
+                // 処理なし
+            }
+        } else {
+            // 値をセット
+            itemData.setValue("");
+        }
     }
 
     /**
@@ -5813,12 +5846,8 @@ public class GXHDO101B006 implements IFormLogic {
         String saidaiSiyoMaisu = StringUtil.nullToBlank(fmlad01Data.get("saidai_siyo_maisu")); // 最大使用枚数
         FXHDD01 itemRuikeisyorisuuyuudentai = getItemRow(processData.getItemList(), GXHDO101B006Const.RUIKEISYORISUUYUUDENTAI); // 累計処理数_誘電体
         FXHDD01 itemSaidaisyorisuuyuudentai = getItemRow(processData.getItemList(), GXHDO101B006Const.SAIDAISYORISUUYUUDENTAI); // 最大処理数_誘電体
-        if (itemRuikeisyorisuuyuudentai != null) {
-            itemRuikeisyorisuuyuudentai.setValue(siyoMaisu);
-        }
-        if (itemSaidaisyorisuuyuudentai != null) {
-            itemSaidaisyorisuuyuudentai.setValue(saidaiSiyoMaisu);
-        }
+        setItemIntValue(itemRuikeisyorisuuyuudentai, siyoMaisu);
+        setItemIntValue(itemSaidaisyorisuuyuudentai, saidaiSiyoMaisu);
         processData.setMethod("");
         return processData;
     }

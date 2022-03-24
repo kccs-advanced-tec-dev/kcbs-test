@@ -4401,20 +4401,47 @@ public class GXHDO101B041 implements IFormLogic {
             String saidai_siyo_kosu = StringUtil.nullToBlank(fmlad01Data.get("saidai_siyo_kosu"));
 
             //セット
-            itemRuikei.setValue(siyo_kosu);
-            itemSaidai.setValue(saidai_siyo_kosu);
+            setItemIntValue(itemRuikei, siyo_kosu);
+            setItemIntValue(itemSaidai, saidai_siyo_kosu);
 
         } catch (NullPointerException | NumberFormatException ex) {
             // 数値変換できない場合はリターン
         }
     }
-    
+
+    /**
+     * 小数点以下を切り捨てして整数で対象項目に値をセットする
+     *
+     * @param itemData 項目
+     * @param value 値
+     */
+    private void setItemIntValue(FXHDD01 itemData, String value) {
+        if (itemData == null) {
+            return;
+        }
+        
+        if (!StringUtil.isEmpty(value)) {
+            BigDecimal bigDecimalVal = null;
+            // 小数部以下は切り捨て
+            try {
+                bigDecimalVal = new BigDecimal(value);
+                bigDecimalVal = bigDecimalVal.setScale(0, RoundingMode.DOWN);
+                // 値をセット
+                itemData.setValue(bigDecimalVal.toPlainString());
+            } catch (NumberFormatException e) {
+                // 処理なし
+            }
+        } else {
+            // 値をセット
+            itemData.setValue("");
+        }
+    }
     
     /**
      * 【部材在庫No】チェック処理
      *
-     * @param itemBuzaino 部材在庫No項目
-     * @param subTabNo タブインデックス
+     * @param itemBuzai 部材在庫No
+     * @param processData 処理制御データ
      * @return 正常:true、異常:fasle
      */
     private boolean buzainoCheck(FXHDD01 itemBuzai, ProcessData processData) {
@@ -4466,7 +4493,7 @@ public class GXHDO101B041 implements IFormLogic {
     private Map<String, Object> getFmlad01Data(String zaikono,ProcessData processData) {
         try {
             QueryRunner queryRunnerMLAServer = new QueryRunner(processData.getDataSourceMLAServer());
-            String sql = "SELECT cast(siyo_kosu as INT),cast(saidai_siyo_kosu as INT) "
+            String sql = "SELECT siyo_kosu,saidai_siyo_kosu "
                     + " FROM fmlad01 "
                     + " WHERE zaiko_no = ? ";
 
@@ -7379,33 +7406,31 @@ public class GXHDO101B041 implements IFormLogic {
      */
     private void doCallPmla0212Api(ProcessData processData, String tantoshaCd, String kanrinoStr, String ryouhinsuuStr, ArrayList<String> errorItemList) {
         // 良品数
-        String ryohinsuuValue = "";
+        String ryohinsuuValue = null;
         // ﾛｯﾄNo
-        String lotnoValue = "";
+        String lotnoValue = null;
         // ﾃｽﾄﾌﾟﾚｰﾄ管理Noに値が入っている場合、以下の内容を元にAPIを呼び出す
         FXHDD01 itemFxhdd01Kanrino = getItemRow(processData.getItemList(), kanrinoStr);
         if (itemFxhdd01Kanrino == null || StringUtil.isEmpty(itemFxhdd01Kanrino.getValue())) {
             return;
         }
         // ﾃｽﾄﾌﾟﾚｰﾄ管理No
-        String kanrilotnoValue = StringUtil.nullToBlank(itemFxhdd01Kanrino.getValue());
+        String kanrilotnoValue = StringUtil.blankToNull(itemFxhdd01Kanrino.getValue());
 
         FXHDD01 itemFxhdd01Ryouhinsuu = getItemRow(processData.getItemList(), ryouhinsuuStr);
         if (itemFxhdd01Ryouhinsuu != null) {
             // 良品数
-            ryohinsuuValue = StringUtil.nullToBlank(itemFxhdd01Ryouhinsuu.getValue());
-        }else{
-            ryohinsuuValue="0";
+            ryohinsuuValue = StringUtil.blankToNull(itemFxhdd01Ryouhinsuu.getValue());
         }
         FXHDD01 itemFxhdd01Lotno = getItemRow(processData.getItemList(), GXHDO101B041Const.SEIHIN_LOTNO);
         if (itemFxhdd01Lotno != null) {
             // ﾛｯﾄNo
-            lotnoValue = StringUtil.nullToBlank(itemFxhdd01Lotno.getValue());
+            lotnoValue = StringUtil.blankToNull(itemFxhdd01Lotno.getValue());
         }
         ArrayList<String> paramsList = new ArrayList<>();
         paramsList.add(kanrilotnoValue);
         paramsList.add(tantoshaCd);
-        paramsList.add("PXHDO101");
+        paramsList.add("GXHDO101B041");
         paramsList.add(null);
         paramsList.add(null);
         paramsList.add(null);
@@ -7417,11 +7442,11 @@ public class GXHDO101B041 implements IFormLogic {
             // 「/api/PMLA0212/doSave」APIを呼び出す
             String responseResult = CommonUtil.doRequestPmla0212Save(queryRunnerDoc, paramsList);
             if (!"ok".equals(responseResult)) {
-                errorItemList.add(itemFxhdd01Kanrino.getLabel1());
+                errorItemList.add(kanrilotnoValue);
             }
         } catch (Exception ex) {
             ErrUtil.outputErrorLog(itemFxhdd01Kanrino.getLabel1() + "の重量ﾃﾞｰﾀ連携処理エラー発生", ex, LOGGER);
-            errorItemList.add(itemFxhdd01Kanrino.getLabel1());
+            errorItemList.add(kanrilotnoValue);
         }
     }
 
