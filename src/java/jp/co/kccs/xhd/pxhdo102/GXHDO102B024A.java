@@ -655,7 +655,7 @@ public class GXHDO102B024A extends GXHDO901BEX {
 
         this.setMainDefaultStyle("width:" + mainWidth + "px;margin-left:auto;margin-right:auto;");
         this.setMainAutoStyle("width:auto;" + "min-width:" + mainWidth + "px;");
-        this.setMainDivStyle(this.getMainDefaultStyle());
+        this.setMainDivStyle(this.getMainAutoStyle());
     }
 
     /**

@@ -128,7 +128,9 @@
                                 <h:outputText id="lblTantosha" value="担当者ｺｰﾄﾞ" style="margin-top: 40px;font-size:18px;"/>
                             </td>
                             <td>
-                                <h:inputText id="tantoshaCd" value="#{gXHDO102A.tantoshaCd}" class="txt" maxlength="6" style="border-style: groove; font-size: 22px; width: 140px; margin-left: 40px;"/>
+                                <h:inputText id="tantoshaCd" value="#{gXHDO102A.tantoshaCd}" class="txt" maxlength="6" style="border-style: groove; font-size: 22px; width: 140px; margin-left: 40px;">
+                                    <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO102A.convertToUpperCase()}"  async="false"/>
+                                </h:inputText>
                             </td>
                         </tr>
                         <tr>
