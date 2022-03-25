@@ -7,7 +7,11 @@
               dynamic="false" closable="true" closeOnEscape="false" resizable="false"  class="error-dialog-title" 
               onShow="subFormOpen();"
               onHide="subFormClose();">
-
+        <style>
+            [id='form:errorListMessage101Form'] .ui-datatable .ui-datatable-odd {
+                background: 0;
+            }
+        </style>
         <h:form id="errorListMessage101Form">
                 <p:outputLabel value="#{beanErrorListMessage.resultMessage}" style="font-size: 18px; color: red;"  />
                 <p:dataTable id="table" var="msg" value="#{beanErrorListMessage.resultMessageList}"

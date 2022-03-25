@@ -444,27 +444,11 @@ public class GXHDO101B040 implements IFormLogic {
             return processData;
         }
         
-        if(isSaidaisyorisuu(processData)){
-            SaidaisyorisuuCheck(processData);
-            // 後続処理メソッド設定
-            processData.setMethod("doResist");
-            return processData;
-        }else{
-            // 後続処理メソッド設定
-            processData.setMethod("doResist");
-            return processData;
-        }
+        // 累計処理数ﾁｪｯｸ処理を行う。
+        isSaidaisyorisuu(processData);
 
-    }
-    
-    /**
-     * 最大処理数ﾁｪｯｸ
-     *
-     * @param processData 処理データ
-     * @return 処理データ
-     */
-    public ProcessData SaidaisyorisuuCheck(ProcessData processData) {
-        processData.setWarnMessage("最大処理数を超えています。登録しますか？");
+        // 後続処理メソッド設定
+        processData.setMethod("doResist");
         return processData;
     }
 
@@ -611,6 +595,9 @@ public class GXHDO101B040 implements IFormLogic {
             processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
             return processData;
         }
+        
+        // 累計処理数ﾁｪｯｸ処理を行う。
+        isSaidaisyorisuu(processData);
 
         // 後続処理メソッド設定
         processData.setMethod("doCorrectKakunin");
@@ -7177,47 +7164,45 @@ public class GXHDO101B040 implements IFormLogic {
     }
     
     /**
-     * 最大処理数
+     * 累計処理数ﾁｪｯｸ処理を行う。
      *
      * @param processData 処理制御データ
-     * @return レスポンスデータ
+     * @return 処理制御データ
      */
-    private boolean isSaidaisyorisuu(ProcessData processData) {
+    private ProcessData isSaidaisyorisuu(ProcessData processData) {
         String ryohinsuu = "";
         String saidaisyorisuu = "";
         String ruikeisyorisuu = "";
-        int ryohinsuuValue = 0;
-        int saidaisyorisuuValue = 0;
-        int ruikeisyorisuuValue = 0;
-        
+        BigDecimal ryohinsuuValue = BigDecimal.ZERO;
+        BigDecimal saidaisyorisuuValue = BigDecimal.ZERO;
+        BigDecimal ruikeisyorisuuValue = BigDecimal.ZERO;
+
         FXHDD01 itemFxhdd01ryohinsuu = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_OKURI_RYOHINSU);
         if (itemFxhdd01ryohinsuu != null) {
             ryohinsuu = StringUtil.nullToBlank(itemFxhdd01ryohinsuu.getValue());
             if (!StringUtil.isEmpty(ryohinsuu)) {
-                ryohinsuuValue=Integer.parseInt(ryohinsuu);
+                ryohinsuuValue = new BigDecimal(ryohinsuu);
             }
         }
         FXHDD01 itemFxhdd01saidaisyorisuu = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_SAIDAI_SYORISUU);
         if (itemFxhdd01saidaisyorisuu != null) {
             saidaisyorisuu = StringUtil.nullToBlank(itemFxhdd01saidaisyorisuu.getValue());
             if (!StringUtil.isEmpty(saidaisyorisuu)) {
-                saidaisyorisuuValue=Integer.parseInt(saidaisyorisuu);
+                saidaisyorisuuValue = new BigDecimal(saidaisyorisuu);
             }
         }
         FXHDD01 itemFxhdd01ruikeisyorisuu = getItemRow(processData.getItemList(), GXHDO101B040Const.SEIHIN_RUIKEI_SYORISUU);
         if (itemFxhdd01ruikeisyorisuu != null) {
             ruikeisyorisuu = StringUtil.nullToBlank(itemFxhdd01ruikeisyorisuu.getValue());
             if (!StringUtil.isEmpty(ruikeisyorisuu)) {
-                ruikeisyorisuuValue=Integer.parseInt(ruikeisyorisuu);
+                ruikeisyorisuuValue = new BigDecimal(ruikeisyorisuu);
             }
         }
-        
-        if(ruikeisyorisuuValue+ryohinsuuValue>saidaisyorisuuValue){
-            return true;
-        }else{
-            return false;
-        }
 
+        if (ruikeisyorisuuValue.add(ryohinsuuValue).compareTo(saidaisyorisuuValue) > 0) {
+            processData.setWarnMessage(MessageUtil.getMessage("XHD-000230"));
+        }
+        return processData;
     }
 
     /**
