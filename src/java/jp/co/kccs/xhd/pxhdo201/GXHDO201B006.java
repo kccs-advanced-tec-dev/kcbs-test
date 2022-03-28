@@ -66,6 +66,11 @@ import org.primefaces.context.RequestContext;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	項目追加・変更<br>
  * <br>
+ * 変更日        2022/03/10<br>
+ * 計画書No      MB2202-D013<br>
+ * 変更者        KCSS E.Ryu<br>
+ * 変更理由      項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -641,8 +646,11 @@ public class GXHDO201B006 implements Serializable {
                     + ", T1.EPASTENENDO"
                     + ", T1.EPASTEONDO"
                     + ", T1.ESEIHANMEI"
+                    + ", T1.buzaizaikonodenkyoku"
                     + ", T1.ESEIHANNO"
                     + ", T1.ESEIMAISUU"
+                    + ", T1.saidaisyorisuudenkyoku"
+                    + ", T1.ruikeisyorisuudenkyoku"
                     + ", T1.ECLEARANCE"
                     + ", T1.ESAATU"
                     + ", T1.ESKEEGENO"
@@ -660,8 +668,11 @@ public class GXHDO201B006 implements Serializable {
                     + ", T1.CPASTENENDO"
                     + ", T1.CPASTEONDO"
                     + ", T1.CSEIHANMEI"
+                    + ", T1.buzaizaikonoyuudentai"
                     + ", T1.CSEIHANNO"
                     + ", T1.CSEIMAISUU"
+                    + ", T1.saidaisyorisuuyuudentai"
+                    + ", T1.ruikeisyorisuuyuudentai"
                     + ", T1.CCLEARANCE"
                     + ", T1.CSAATU"
                     + ", T1.CSKEEGENO"
@@ -879,8 +890,11 @@ public class GXHDO201B006 implements Serializable {
             mapping.put("EPASTENENDO", "epastenendo");
             mapping.put("EPASTEONDO", "epasteondo");
             mapping.put("ESEIHANMEI", "eseihanmei");
+            mapping.put("buzaizaikonodenkyoku", "buzaizaikonodenkyoku");
             mapping.put("ESEIHANNO", "eseihanno");
             mapping.put("ESEIMAISUU", "eseimaisuu");
+            mapping.put("saidaisyorisuudenkyoku", "saidaisyorisuudenkyoku");
+            mapping.put("ruikeisyorisuudenkyoku", "ruikeisyorisuudenkyoku");
             mapping.put("ECLEARANCE", "eclearance");
             mapping.put("ESAATU", "esaatu");
             mapping.put("ESKEEGENO", "eskeegeno");
@@ -898,8 +912,11 @@ public class GXHDO201B006 implements Serializable {
             mapping.put("CPASTENENDO", "cpastenendo");
             mapping.put("CPASTEONDO", "cpasteondo");
             mapping.put("CSEIHANMEI", "cseihanmei");
+            mapping.put("buzaizaikonoyuudentai", "buzaizaikonoyuudentai");
             mapping.put("CSEIHANNO", "cseihanno");
             mapping.put("CSEIMAISUU", "cseimaisuu");
+            mapping.put("saidaisyorisuuyuudentai", "saidaisyorisuuyuudentai");
+            mapping.put("ruikeisyorisuuyuudentai", "ruikeisyorisuuyuudentai");
             mapping.put("CCLEARANCE", "cclearance");
             mapping.put("CSAATU", "csaatu");
             mapping.put("CSKEEGENO", "cskeegeno");

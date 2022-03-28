@@ -67,6 +67,12 @@ import org.primefaces.context.RequestContext;
  * 計画書No	MB2106-DS017<br>
  * 変更者	kcss.gc<br>
  * 変更理由	履歴情報画面サブ画面追加<br>
+ * <br>
+ * 変更日	2022/03/16<br>
+ * 計画書No	MB2202-D013<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	項目変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -673,6 +679,8 @@ public class GXHDO201B040 implements Serializable {
                     + ", lotkubuncode "
                     + ", siteikousa "
                     + ", atokouteisijinaiyou "
+                    + ", saidaisyorisuu "
+                    + ", ruikeisyorisuu "
                     + ", okuriryouhinsuu "
                     + ", ukeiretannijyuryo "
                     + ", ukeiresoujyuryou "
@@ -958,6 +966,8 @@ public class GXHDO201B040 implements Serializable {
             mapping.put("lotkubuncode", "lotkubuncode");// ﾛｯﾄ区分
             mapping.put("siteikousa", "siteikousa");// 指定公差
             mapping.put("atokouteisijinaiyou", "atokouteisijinaiyou");// 後工程指示内容
+            mapping.put("saidaisyorisuu", "saidaisyorisuu");// 最大処理数
+            mapping.put("ruikeisyorisuu", "ruikeisyorisuu");// 累計処理数
             mapping.put("okuriryouhinsuu", "okuriryouhinsuu");// 送り良品数
             mapping.put("ukeiretannijyuryo", "ukeiretannijyuryo");// 受入れ単位重量
             mapping.put("ukeiresoujyuryou", "ukeiresoujyuryou");// 受入れ総重量

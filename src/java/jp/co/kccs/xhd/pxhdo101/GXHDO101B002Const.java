@@ -18,6 +18,11 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	863 zhangjy<br>
  * 変更理由	前工程WIPボタンを追加<br>
  * <br>
+ * 変更日       2022/03/03<br>
+ * 計画書No     MB2202-D013<br>
+ * 変更者       KCSS K.Jo<br>
+ * 変更理由     仕様変更対応<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -189,6 +194,14 @@ public class GXHDO101B002Const {
      */
     public static final String SEIHAN_OR_HANDOU_SHIYOU_MAISUU = "insatsu_sps_screen_seihan_or_handou_shiyou_maisuu";
     /**
+     * 累計処理数
+     */
+    public static final String RUIKEISYORISUU = "insatsu_sps_screen_ruikeisyorisuu";
+    /**
+     * 最大処理数
+     */
+    public static final String SAIDAISYORISUU = "insatsu_sps_screen_saidaisyorisuu";
+    /**
      * ｽｷｰｼﾞNo / 圧胴No．
      */
     public static final String SQUEEGEE_OR_ATSUDOU_NO = "insatsu_sps_screen_squeegee_or_atsudou_no";
@@ -355,7 +368,11 @@ public class GXHDO101B002Const {
      * 前工程WIP(画面下)
      */
     public static final String BTN_WIP_IMPORT_BOTTOM = "insatsu_sps_screen_wip_import_Bottom";
-    
+
+    /**
+     * 部材在庫情報(画面下)
+     */
+    public static final String BTN_BUZAIZAIKOJOUHOU_BOTTOM = "insatsu_sps_screen_buzaizaikojouhou_Bottom";
     
     /**
      * 仮登録(画面上)
@@ -411,6 +428,11 @@ public class GXHDO101B002Const {
      * 前工程WIP(画面上)
      */
     public static final String BTN_WIP_IMPORT_TOP = "insatsu_sps_screen_wip_import_Top";
+    
+    /**
+     * 部材在庫情報(画面上)
+     */
+    public static final String BTN_BUZAIZAIKOJOUHOU_TOP = "insatsu_sps_screen_buzaizaikojouhou_Top";
     
     /**
      * ユーザー認証パラメータ

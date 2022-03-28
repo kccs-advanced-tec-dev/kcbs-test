@@ -22,6 +22,11 @@ import java.sql.Timestamp;
  * 変更者	863 sujialiang<br>
  * 変更理由	項目変更<br>
  * <br>
+ * 変更日	2022/03/16<br>
+ * 計画書No	MB2202-D013<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	項目変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -71,6 +76,16 @@ public class GXHDO201B040Model implements Serializable{
      * 後工程指示内容
      */
     private String atokouteisijinaiyou = "";
+
+    /**
+     * 最大処理数
+     */
+    private Integer saidaisyorisuu = null;
+
+    /**
+     * 累計処理数
+     */
+    private Integer ruikeisyorisuu = null;
 
     /**
      * 送り良品数
@@ -1473,6 +1488,38 @@ public class GXHDO201B040Model implements Serializable{
      */
     public void setAtokouteisijinaiyou(String atokouteisijinaiyou) {
         this.atokouteisijinaiyou = atokouteisijinaiyou;
+    }
+
+    /**
+     * 最大処理数
+     * @return the saidaisyorisuu
+     */
+    public Integer getSaidaisyorisuu() {
+        return saidaisyorisuu;
+    }
+
+    /**
+     * 最大処理数
+     * @param saidaisyorisuu the saidaisyorisuu to set
+     */
+    public void setSaidaisyorisuu(Integer saidaisyorisuu) {
+        this.saidaisyorisuu = saidaisyorisuu;
+    }
+
+    /**
+     * 累計処理数
+     * @return the ruikeisyorisuu
+     */
+    public Integer getRuikeisyorisuu() {
+        return ruikeisyorisuu;
+    }
+
+    /**
+     * 累計処理数
+     * @param ruikeisyorisuu the ruikeisyorisuu to set
+     */
+    public void setRuikeisyorisuu(Integer ruikeisyorisuu) {
+        this.ruikeisyorisuu = ruikeisyorisuu;
     }
 
     /**

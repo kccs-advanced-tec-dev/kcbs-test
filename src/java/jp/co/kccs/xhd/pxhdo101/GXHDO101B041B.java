@@ -104,7 +104,17 @@ public class GXHDO101B041B implements Serializable {
      * RDC2 判定値
      */
     private FXHDD01 rdc2hanteichi;
-    
+
+    /**
+     * 耐電圧 判定値1 単位
+     */
+    private FXHDD01 hanteichi1tani_low;
+
+    /**
+     * 耐電圧 判定値2 単位
+     */
+    private FXHDD01 hanteichi2tani_low;
+        
     /**
      * コンストラクタ
      */
@@ -333,5 +343,37 @@ public class GXHDO101B041B implements Serializable {
      */
     public void setRdc2hanteichi(FXHDD01 rdc2hanteichi) {
         this.rdc2hanteichi = rdc2hanteichi;
+    }
+
+    /**
+     * 耐電圧 判定値1 単位
+     * @return the hanteichi1tani_low
+     */
+    public FXHDD01 getHanteichi1tani_low() {
+        return hanteichi1tani_low;
+    }
+
+    /**
+     * 耐電圧 判定値1 単位
+     * @param hanteichi1tani_low the hanteichi1tani_low to set
+     */
+    public void setHanteichi1tani_low(FXHDD01 hanteichi1tani_low) {
+        this.hanteichi1tani_low = hanteichi1tani_low;
+    }
+
+    /**
+     * 耐電圧 判定値2 単位
+     * @return the hanteichi2tani_low
+     */
+    public FXHDD01 getHanteichi2tani_low() {
+        return hanteichi2tani_low;
+    }
+
+    /**
+     * 耐電圧 判定値2 単位
+     * @param hanteichi2tani_low the hanteichi2tani_low to set
+     */
+    public void setHanteichi2tani_low(FXHDD01 hanteichi2tani_low) {
+        this.hanteichi2tani_low = hanteichi2tani_low;
     }
 }

@@ -28,6 +28,11 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	863 zhangjy<br>
  * 変更理由	前工程WIPボタンを追加<br>
  * <br>
+ * 変更日       2022/03/10<br>
+ * 計画書No     MB2202-D013<br>
+ * 変更者       KCSS WXF<br>
+ * 変更理由     仕様変更対応<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -389,6 +394,11 @@ public class GXHDO101B006Const {
     public static final String TAPE_HANSOU_MOKUSHI_KAKUNIN = "sr_rhaps_tape_hansou_mokushi_kakunin";
 
     /**
+     * 部材在庫No_電極
+     */
+    public static final String BUZAIZAIKONODENKYOKU = "sr_rhaps_buzaizaikonodenkyoku";
+
+    /**
      * 電極製版No
      */
     public static final String DENKYOKU_SEIHAN_NO = "sr_rhaps_denkyoku_seihan_no";
@@ -397,6 +407,16 @@ public class GXHDO101B006Const {
      * 電極製版枚数
      */
     public static final String DENKYOKU_SEIHAN_MAISU = "sr_rhaps_denkyoku_seihan_maisu";
+
+    /**
+     * 累計処理数_電極
+     */
+    public static final String RUIKEISYORISUUDENKYOKU = "sr_rhaps_ruikeisyorisuudenkyoku";
+
+    /**
+     * 最大処理数_電極
+     */
+    public static final String SAIDAISYORISUUDENKYOKU = "sr_rhaps_saidaisyorisuudenkyoku";
 
     /**
      * 電極スキージNo
@@ -494,6 +514,11 @@ public class GXHDO101B006Const {
     public static final String YUUDENTAI_SEIHAN_MAISU = "sr_rhaps_yuudentai_seihan_maisu";
 
     /**
+     * 部材在庫No_誘電体
+     */
+    public static final String BUZAIZAIKONOYUUDENTAI = "sr_rhaps_buzaizaikonoyuudentai";
+
+    /**
      * 誘電体スキージNo
      */
     public static final String YUUDENTAI_SQUEEGEE_NO = "sr_rhaps_yuudentai_squeegee_no";
@@ -502,6 +527,16 @@ public class GXHDO101B006Const {
      * 誘電体スキージ枚数
      */
     public static final String YUUDENTAI_SQUEEGEE_MAISU = "sr_rhaps_yuudentai_squeegee_maisu";
+
+    /**
+     * 累計処理数_誘電体
+     */
+    public static final String RUIKEISYORISUUYUUDENTAI = "sr_rhaps_ruikeisyorisuuyuudentai";
+
+    /**
+     * 最大処理数_誘電体
+     */
+    public static final String SAIDAISYORISUUYUUDENTAI = "sr_rhaps_saidaisyorisuuyuudentai";
 
     /**
      * 誘電体テーブルクリアランス
@@ -779,6 +814,16 @@ public class GXHDO101B006Const {
     public static final String BTN_WIP_IMPORT_TOP = "sr_rhaps_wip_import_Top";
 
     /**
+     * 部材在庫情報(電極)(画面上)
+     */
+    public static final String BTN_BUZAIZAIKOJYOHODENKYOKU_TOP = "sr_rhaps_buzaizaikojyohodenkyoku_Top";
+
+    /**
+     * 部材在庫情報(誘電体)(画面上)
+     */
+    public static final String BTN_BUZAIZAIKOJYOHOYUUDENTAI_TOP = "sr_rhaps_buzaizaikojyohoyuudentai_Top";
+
+    /**
      * 電極膜厚(画面下ボタン)
      */
     public static final String BTN_DENKYOKU_MAKUATSU_BOTTOM = "sr_rhaps_denkyoku_makuatsu_Bottom";
@@ -842,6 +887,16 @@ public class GXHDO101B006Const {
      * 前工程WIP(画面下)
      */
     public static final String BTN_WIP_IMPORT_BOTTOM = "sr_rhaps_wip_import_Bottom";
+
+    /**
+     * 部材在庫情報(電極)(画面下)
+     */
+    public static final String BTN_BUZAIZAIKOJYOHODENKYOKU_BOTTOM = "sr_rhaps_buzaizaikojyohodenkyoku_Bottom";
+
+    /**
+     * 部材在庫情報(誘電体)(画面下)
+     */
+    public static final String BTN_BUZAIZAIKOJYOHOYUUDENTAI_BOTTOM = "sr_rhaps_buzaizaikojyohoyuudentai_Bottom";
 
     /**
      * ユーザー認証パラメータ(修正)

@@ -66,6 +66,11 @@ import org.primefaces.context.RequestContext;
  * 変更者        KCSS K.Jo<br>
  * 変更理由      項目追加・変更<br>
  * <br>
+ * 変更日        2022/03/09<br>
+ * 計画書No      MB2202-D013<br>
+ * 変更者        KCSS K.Jo<br>
+ * 変更理由      項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -651,6 +656,8 @@ public class GXHDO201B003 implements Serializable {
                     + ", T1.pattern"
                     + ", T1.SEIHANNO"
                     + ", T1.SEIHANMAISUU"
+                    + ", T1.saidaisyorisuu"
+                    + ", T1.ruikeisyorisuu"
                     + ", T1.SKEEGENO"
                     + ", T1.SKEEGEMAISUU"
                     + ", T1.SKEEGESPEED"
@@ -736,6 +743,8 @@ public class GXHDO201B003 implements Serializable {
             mapping.put("pattern", "pattern");                            // 電極製版仕様
             mapping.put("SEIHANNO", "seihanno");                          // 製版No
             mapping.put("SEIHANMAISUU", "seihanmaisuu");                  // 製版枚数(枚)
+            mapping.put("saidaisyorisuu", "saidaisyorisuu");              // 最大処理数
+            mapping.put("ruikeisyorisuu", "ruikeisyorisuu");              // 累計処理数
             mapping.put("SKEEGENO", "skeegeno");                          // ｽｷｰｼﾞNo
             mapping.put("SKEEGEMAISUU", "skeegemaisuu");                  // ｽｷｰｼﾞ枚数(枚)
             mapping.put("SKEEGESPEED", "skeegespeed");                    // ｽｷｰｼﾞｽﾋﾟｰﾄﾞ

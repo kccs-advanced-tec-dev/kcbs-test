@@ -80,6 +80,16 @@ public class SrDenkitokuseiesi {
      * 後工程指示内容
      */
     private String atokouteisijinaiyou;
+    
+    /**
+     * 最大処理数
+     */
+    private Integer saidaisyorisuu;
+    
+    /**
+     * 累計処理数
+     */
+    private Integer ruikeisyorisuu;
 
     /**
      * 送り良品数
@@ -824,7 +834,7 @@ public class SrDenkitokuseiesi {
     /**
      * BIN4 袋ﾁｪｯｸ
      */
-    private String bin4fukurocheck;
+    private Integer bin4fukurocheck;
 
     /**
      * BIN5 %区分(設定値)
@@ -1372,6 +1382,46 @@ public class SrDenkitokuseiesi {
     private Integer douhinsyu;
 
     /**
+     * 耐電圧設定条件 IR① 判定値(低) 単位
+     */
+    private String irhanteiti1tanilow;
+
+    /**
+     * 耐電圧設定条件 IR② 判定値(低) 単位
+     */
+    private String irhanteiti2tanilow;
+
+    /**
+     * 耐電圧設定条件 IR③ 判定値(低) 単位
+     */
+    private String irhanteiti3tanilow;
+
+    /**
+     * 耐電圧設定条件 IR④ 判定値(低) 単位
+     */
+    private String irhanteiti4tanilow;
+
+    /**
+     * 耐電圧設定条件 IR⑤ 判定値(低) 単位
+     */
+    private String irhanteiti5tanilow;
+
+    /**
+     * 耐電圧設定条件 IR⑥ 判定値(低) 単位
+     */
+    private String irhanteiti6tanilow;
+
+    /**
+     * 耐電圧設定条件 IR⑦ 判定値(低) 単位
+     */
+    private String irhanteiti7tanilow;
+
+    /**
+     * 耐電圧設定条件 IR⑧ 判定値(低) 単位
+     */
+    private String irhanteiti8tanilow;
+
+    /**
      * 削除ﾌﾗｸﾞ
      */
     private Integer deleteflag;
@@ -1550,6 +1600,38 @@ public class SrDenkitokuseiesi {
      */
     public void setOkuriryouhinsuu(Integer okuriryouhinsuu) {
         this.okuriryouhinsuu = okuriryouhinsuu;
+    }
+    
+    /**
+     * 累計処理数
+     * @return the ruikeisyorisuu
+     */
+    public Integer getRuikeisyorisuu() {
+        return ruikeisyorisuu;
+    }
+
+    /**
+     * 累計処理数
+     * @param ruikeisyorisuu the ruikeisyorisuu to set
+     */
+    public void setRuikeisyorisuu(Integer ruikeisyorisuu) {
+        this.ruikeisyorisuu = ruikeisyorisuu;
+    }
+    
+    /**
+     * 最大処理数
+     * @return the saidaisyorisuu
+     */
+    public Integer getSaidaisyorisuu() {
+        return saidaisyorisuu;
+    }
+
+    /**
+     * 最大処理数
+     * @param saidaisyorisuu the saidaisyorisuu to set
+     */
+    public void setSaidaisyorisuu(Integer saidaisyorisuu) {
+        this.saidaisyorisuu = saidaisyorisuu;
     }
 
     /**
@@ -3908,7 +3990,7 @@ public class SrDenkitokuseiesi {
      * BIN4 袋ﾁｪｯｸ
      * @return the bin4fukurocheck
      */
-    public String getBin4fukurocheck() {
+    public Integer getBin4fukurocheck() {
         return bin4fukurocheck;
     }
 
@@ -3916,7 +3998,7 @@ public class SrDenkitokuseiesi {
      * BIN4 袋ﾁｪｯｸ
      * @param bin4fukurocheck the bin4fukurocheck to set
      */
-    public void setBin4fukurocheck(String bin4fukurocheck) {
+    public void setBin4fukurocheck(Integer bin4fukurocheck) {
         this.bin4fukurocheck = bin4fukurocheck;
     }
 
@@ -5662,6 +5744,134 @@ public class SrDenkitokuseiesi {
      */
     public void setDouhinsyu(Integer douhinsyu) {
         this.douhinsyu = douhinsyu;
+    }
+
+    /**
+     * 耐電圧設定条件 IR① 判定値(低) 単位
+     * @return the irhanteiti1tanilow
+     */
+    public String getIrhanteiti1tanilow() {
+        return irhanteiti1tanilow;
+    }
+
+    /**
+     * 耐電圧設定条件 IR① 判定値(低) 単位
+     * @param irhanteiti1tanilow the irhanteiti1tanilow to set
+     */
+    public void setIrhanteiti1tanilow(String irhanteiti1tanilow) {
+        this.irhanteiti1tanilow = irhanteiti1tanilow;
+    }
+
+    /**
+     * 耐電圧設定条件 IR② 判定値(低) 単位
+     * @return the irhanteiti2tanilow
+     */
+    public String getIrhanteiti2tanilow() {
+        return irhanteiti2tanilow;
+    }
+
+    /**
+     * 耐電圧設定条件 IR② 判定値(低) 単位
+     * @param irhanteiti2tanilow the irhanteiti2tanilow to set
+     */
+    public void setIrhanteiti2tanilow(String irhanteiti2tanilow) {
+        this.irhanteiti2tanilow = irhanteiti2tanilow;
+    }
+
+    /**
+     * 耐電圧設定条件 IR③ 判定値(低) 単位
+     * @return the irhanteiti3tanilow
+     */
+    public String getIrhanteiti3tanilow() {
+        return irhanteiti3tanilow;
+    }
+
+    /**
+     * 耐電圧設定条件 IR③ 判定値(低) 単位
+     * @param irhanteiti3tanilow the irhanteiti3tanilow to set
+     */
+    public void setIrhanteiti3tanilow(String irhanteiti3tanilow) {
+        this.irhanteiti3tanilow = irhanteiti3tanilow;
+    }
+
+    /**
+     * 耐電圧設定条件 IR④ 判定値(低) 単位
+     * @return the irhanteiti4tanilow
+     */
+    public String getIrhanteiti4tanilow() {
+        return irhanteiti4tanilow;
+    }
+
+    /**
+     * 耐電圧設定条件 IR④ 判定値(低) 単位
+     * @param irhanteiti4tanilow the irhanteiti4tanilow to set
+     */
+    public void setIrhanteiti4tanilow(String irhanteiti4tanilow) {
+        this.irhanteiti4tanilow = irhanteiti4tanilow;
+    }
+
+    /**
+     * 耐電圧設定条件 IR⑤ 判定値(低) 単位
+     * @return the irhanteiti5tanilow
+     */
+    public String getIrhanteiti5tanilow() {
+        return irhanteiti5tanilow;
+    }
+
+    /**
+     * 耐電圧設定条件 IR⑤ 判定値(低) 単位
+     * @param irhanteiti5tanilow the irhanteiti5tanilow to set
+     */
+    public void setIrhanteiti5tanilow(String irhanteiti5tanilow) {
+        this.irhanteiti5tanilow = irhanteiti5tanilow;
+    }
+
+    /**
+     * 耐電圧設定条件 IR⑥ 判定値(低) 単位
+     * @return the irhanteiti6tanilow
+     */
+    public String getIrhanteiti6tanilow() {
+        return irhanteiti6tanilow;
+    }
+
+    /**
+     * 耐電圧設定条件 IR⑥ 判定値(低) 単位
+     * @param irhanteiti6tanilow the irhanteiti6tanilow to set
+     */
+    public void setIrhanteiti6tanilow(String irhanteiti6tanilow) {
+        this.irhanteiti6tanilow = irhanteiti6tanilow;
+    }
+
+    /**
+     * 耐電圧設定条件 IR⑦ 判定値(低) 単位
+     * @return the irhanteiti7tanilow
+     */
+    public String getIrhanteiti7tanilow() {
+        return irhanteiti7tanilow;
+    }
+
+    /**
+     * 耐電圧設定条件 IR⑦ 判定値(低) 単位
+     * @param irhanteiti7tanilow the irhanteiti7tanilow to set
+     */
+    public void setIrhanteiti7tanilow(String irhanteiti7tanilow) {
+        this.irhanteiti7tanilow = irhanteiti7tanilow;
+    }
+
+    /**
+     * 耐電圧設定条件 IR⑧ 判定値(低) 単位
+     * @return the irhanteiti8tanilow
+     */
+    public String getIrhanteiti8tanilow() {
+        return irhanteiti8tanilow;
+    }
+
+    /**
+     * 耐電圧設定条件 IR⑧ 判定値(低) 単位
+     * @param irhanteiti8tanilow the irhanteiti8tanilow to set
+     */
+    public void setIrhanteiti8tanilow(String irhanteiti8tanilow) {
+        this.irhanteiti8tanilow = irhanteiti8tanilow;
     }
 
     /**

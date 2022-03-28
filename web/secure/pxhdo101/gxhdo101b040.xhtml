@@ -65,6 +65,8 @@
                     PF('W_dlg_infoMessage').show();
                 } else if ('complete' === args.firstParam) {
                     PF('W_dlg_compMessage').show();
+                } else if ('errorListMessage' === args.firstParam) {
+                    PF('W_dlg_errorListMessage101').show();
                 }
             }
 
@@ -3088,6 +3090,7 @@
                     <t:aliasBean alias="#{gXHDO101Common}" value="#{gXHDO101B040A}">
                         <ui:include src="/secure/common/compMessage.xhtml"/>
                     </t:aliasBean>
+                    <ui:include src="/secure/common/errorListMessage101.xhtml"/>
                 </div>
             </div>
         </h:form>

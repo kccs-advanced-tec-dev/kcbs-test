@@ -19,6 +19,11 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	863 zhangjy<br>
  * 変更理由	前工程WIPボタンを追加<br>
  * <br>
+ * 変更日       2022/03/09<br>
+ * 計画書No     MB2202-D013<br>
+ * 変更者       KCSS WXF<br>
+ * 変更理由     仕様変更対応<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -193,6 +198,16 @@ public class GXHDO101B003Const {
      * 製版使用枚数/版胴使用枚数
      */
     public static final String SEIHAN_OR_HANDOU_SHIYOU_MAISUU = "insatsu_rsus_seihan_or_handou_shiyou_maisuu";
+
+    /**
+     * 累計処理数
+     */
+    public static final String RUIKEISYORISUU = "insatsu_rsus_ruikeisyorisuu";
+
+    /**
+     * 最大処理数
+     */
+    public static final String SAIDAISYORISUU = "insatsu_rsus_saidaisyorisuu";
 
     /**
      * ｽｷｰｼﾞNo / 圧胴No．
@@ -373,6 +388,11 @@ public class GXHDO101B003Const {
      * 前工程WIP(画面下)
      */
     public static final String BTN_WIP_IMPORT_BOTTOM = "insatsu_rsus_wip_import_Bottom";
+    
+    /**
+     * 部材在庫情報(画面下)
+     */
+    public static final String BTN_BUZAIZAIKOJYOHO_BOTTOM = "insatsu_rsus_buzaizaikojyoho_Bottom";
 
     /**
      * 膜厚(画面上)
@@ -423,7 +443,12 @@ public class GXHDO101B003Const {
      * 削除(画面上)
      */
     public static final String BTN_DELETE_TOP = "insatsu_rsus_delete_Top";
-    
+
+    /**
+     * 部材在庫情報(画面上)
+     */
+    public static final String BTN_BUZAIZAIKOJYOHO_TOP = "insatsu_rsus_buzaizaikojyoho_Top";
+
     /**
      * 前工程WIP(画面上)
      */
