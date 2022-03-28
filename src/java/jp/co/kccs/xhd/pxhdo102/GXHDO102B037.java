@@ -670,12 +670,12 @@ public class GXHDO102B037 implements IFormLogic {
         try {
             // 収率(%)
             FXHDD01 syuuritsu = getItemRow(processData.getItemList(), GXHDO102B037Const.SYUURITSU);
-            //「収率(%)」= ｽﾘｯﾌﾟ重量合計 ÷ (ｽﾘｯﾌﾟ予定重量 + 溶剤調整量)
+            //「収率(%)」= ｽﾘｯﾌﾟ重量合計 ÷ (ｽﾘｯﾌﾟ予定重量 + 溶剤調整量)　× 100
             BigDecimal itemSlipjyuuryougoukeiVal = new BigDecimal(Integer.parseInt(slipjyuuryougoukeiVal));
             BigDecimal itemSlipyoteijyuuryouVal = new BigDecimal(Integer.parseInt(slipyoteijyuuryouVal));
             BigDecimal itemYouzaityouseiryouVal = new BigDecimal(Integer.parseInt(youzaityouseiryouVal));
 
-            BigDecimal itemKokeibunhiritsuVal = itemSlipjyuuryougoukeiVal.divide(itemSlipyoteijyuuryouVal.add(itemYouzaityouseiryouVal), 2, RoundingMode.HALF_UP);
+            BigDecimal itemKokeibunhiritsuVal = itemSlipjyuuryougoukeiVal.multiply(BigDecimal.valueOf(100)).divide(itemSlipyoteijyuuryouVal.add(itemYouzaityouseiryouVal), 2, RoundingMode.HALF_UP);
             // 計算結果の設定
             syuuritsu.setValue(itemKokeibunhiritsuVal.toPlainString());
         } catch (NullPointerException | NumberFormatException ex) {

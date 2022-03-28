@@ -59,10 +59,10 @@ public class GXHDO202B010Model implements Serializable {
     private String desupakaitensuu = "";
 
     /** 投入① */
-    private Integer tounyu1 = null;
+    private String tounyu1 = "";
 
     /** 投入② */
-    private Integer tounyu2 = null;
+    private String tounyu2 = "";
 
     /** 途中撹拌時間 */
     private String totyukakuhanjikan = "";
@@ -74,13 +74,13 @@ public class GXHDO202B010Model implements Serializable {
     private Timestamp totyukakuhansyuryonichiji = null;
 
     /** 投入③ */
-    private Integer tonyu3 = null;
+    private String tonyu3 = "";
 
     /** 投入④ */
-    private Integer tonyu4 = null;
+    private String tonyu4 = "";
 
     /** 投入⑤ */
-    private Integer tonyu5 = null;
+    private String tonyu5 = "";
 
     /** 撹拌時間 */
     private String kakuhanjikan = "";
@@ -92,7 +92,7 @@ public class GXHDO202B010Model implements Serializable {
     private Timestamp kakuhansyuryonichiji = null;
 
     /** 回転体の接触確認 */
-    private Integer kaitentai = null;
+    private String kaitentai = "";
 
     /** 担当者 */
     private String tantousya = "";
@@ -286,7 +286,7 @@ public class GXHDO202B010Model implements Serializable {
      * 投入①
      * @return the tounyu1
      */
-    public Integer getTounyu1() {
+    public String getTounyu1() {
         return tounyu1;
     }
 
@@ -294,7 +294,7 @@ public class GXHDO202B010Model implements Serializable {
      * 投入①
      * @param tounyu1 the tounyu1 to set
      */
-    public void setTounyu1(Integer tounyu1) {
+    public void setTounyu1(String tounyu1) {
         this.tounyu1 = tounyu1;
     }
 
@@ -302,7 +302,7 @@ public class GXHDO202B010Model implements Serializable {
      * 投入②
      * @return the tounyu2
      */
-    public Integer getTounyu2() {
+    public String getTounyu2() {
         return tounyu2;
     }
 
@@ -310,7 +310,7 @@ public class GXHDO202B010Model implements Serializable {
      * 投入②
      * @param tounyu2 the tounyu2 to set
      */
-    public void setTounyu2(Integer tounyu2) {
+    public void setTounyu2(String tounyu2) {
         this.tounyu2 = tounyu2;
     }
 
@@ -366,7 +366,7 @@ public class GXHDO202B010Model implements Serializable {
      * 投入③
      * @return the tonyu3
      */
-    public Integer getTonyu3() {
+    public String getTonyu3() {
         return tonyu3;
     }
 
@@ -374,7 +374,7 @@ public class GXHDO202B010Model implements Serializable {
      * 投入③
      * @param tonyu3 the tonyu3 to set
      */
-    public void setTonyu3(Integer tonyu3) {
+    public void setTonyu3(String tonyu3) {
         this.tonyu3 = tonyu3;
     }
 
@@ -382,7 +382,7 @@ public class GXHDO202B010Model implements Serializable {
      * 投入④
      * @return the tonyu4
      */
-    public Integer getTonyu4() {
+    public String getTonyu4() {
         return tonyu4;
     }
 
@@ -390,7 +390,7 @@ public class GXHDO202B010Model implements Serializable {
      * 投入④
      * @param tonyu4 the tonyu4 to set
      */
-    public void setTonyu4(Integer tonyu4) {
+    public void setTonyu4(String tonyu4) {
         this.tonyu4 = tonyu4;
     }
 
@@ -398,7 +398,7 @@ public class GXHDO202B010Model implements Serializable {
      * 投入⑤
      * @return the tonyu5
      */
-    public Integer getTonyu5() {
+    public String getTonyu5() {
         return tonyu5;
     }
 
@@ -406,7 +406,7 @@ public class GXHDO202B010Model implements Serializable {
      * 投入⑤
      * @param tonyu5 the tonyu5 to set
      */
-    public void setTonyu5(Integer tonyu5) {
+    public void setTonyu5(String tonyu5) {
         this.tonyu5 = tonyu5;
     }
 
@@ -462,7 +462,7 @@ public class GXHDO202B010Model implements Serializable {
      * 回転体の接触確認
      * @return the kaitentai
      */
-    public Integer getKaitentai() {
+    public String getKaitentai() {
         return kaitentai;
     }
 
@@ -470,7 +470,7 @@ public class GXHDO202B010Model implements Serializable {
      * 回転体の接触確認
      * @param kaitentai the kaitentai to set
      */
-    public void setKaitentai(Integer kaitentai) {
+    public void setKaitentai(String kaitentai) {
         this.kaitentai = kaitentai;
     }
 

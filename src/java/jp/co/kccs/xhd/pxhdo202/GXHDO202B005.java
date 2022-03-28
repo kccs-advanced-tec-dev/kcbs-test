@@ -2305,7 +2305,7 @@ public class GXHDO202B005 implements Serializable {
                             + ", tounyuuryou"
                             + ", budomarikeisan"
                             + ", yuudentaislurryyuukoukigen"
-                            + ", (CASE WHEN funsaihantei = 1 THEN 'ﾁｪｯｸ' ELSE '未ﾁｪｯｸ' END) AS funsaihantei"
+                            + ", (CASE WHEN funsaihantei = 0 THEN '不合格' WHEN funsaihantei = 1 THEN '合格' ELSE '' END) AS funsaihantei "
                             + ", seihinjyuuryoukakunin_tantousya"
                             + ", (CASE WHEN hozonyousamplekaisyu = 1 THEN 'ﾁｪｯｸ' ELSE '未ﾁｪｯｸ' END) AS hozonyousamplekaisyu"
                             + ", (CASE WHEN zunsekiyousamplekaisyu = 1 THEN 'ﾁｪｯｸ' ELSE '未ﾁｪｯｸ' END) AS zunsekiyousamplekaisyu"

@@ -46,13 +46,13 @@ public class GXHDO202B034Model implements Serializable {
     private String kouatsubunsangouki = "";
 
     /** 排出容器内袋確認 */
-    private Integer haisyutsuyoukiuchibukuro = null;
+    private String haisyutsuyoukiuchibukuro = "";
 
     /** 排出容器洗浄確認 */
-    private Integer haisyutsuyoukisenjyou = null;
+    private String haisyutsuyoukisenjyou = "";
 
     /** 設備内洗浄確認 */
-    private Integer setsubinaisenjyou = null;
+    private String setsubinaisenjyou = "";
 
     /** ﾉｽﾞﾙ径 */
     private String nozzlekei = "";
@@ -70,7 +70,7 @@ public class GXHDO202B034Model implements Serializable {
     private String kouatsubunsankaisuu = "";
 
     /** ﾀﾝｸにｱｰｽｸﾞﾘｯﾌﾟ接続 */
-    private Integer tankearthgripsetsuzoku = null;
+    private String tankearthgripsetsuzoku = "";
 
     /** 備考1 */
     private String bikou1 = "";
@@ -194,7 +194,7 @@ public class GXHDO202B034Model implements Serializable {
      * 排出容器内袋確認
      * @return the haisyutsuyoukiuchibukuro
      */
-    public Integer getHaisyutsuyoukiuchibukuro() {
+    public String getHaisyutsuyoukiuchibukuro() {
         return haisyutsuyoukiuchibukuro;
     }
 
@@ -202,7 +202,7 @@ public class GXHDO202B034Model implements Serializable {
      * 排出容器内袋確認
      * @param haisyutsuyoukiuchibukuro the haisyutsuyoukiuchibukuro to set
      */
-    public void setHaisyutsuyoukiuchibukuro(Integer haisyutsuyoukiuchibukuro) {
+    public void setHaisyutsuyoukiuchibukuro(String haisyutsuyoukiuchibukuro) {
         this.haisyutsuyoukiuchibukuro = haisyutsuyoukiuchibukuro;
     }
 
@@ -210,7 +210,7 @@ public class GXHDO202B034Model implements Serializable {
      * 排出容器洗浄確認
      * @return the haisyutsuyoukisenjyou
      */
-    public Integer getHaisyutsuyoukisenjyou() {
+    public String getHaisyutsuyoukisenjyou() {
         return haisyutsuyoukisenjyou;
     }
 
@@ -218,7 +218,7 @@ public class GXHDO202B034Model implements Serializable {
      * 排出容器洗浄確認
      * @param haisyutsuyoukisenjyou the haisyutsuyoukisenjyou to set
      */
-    public void setHaisyutsuyoukisenjyou(Integer haisyutsuyoukisenjyou) {
+    public void setHaisyutsuyoukisenjyou(String haisyutsuyoukisenjyou) {
         this.haisyutsuyoukisenjyou = haisyutsuyoukisenjyou;
     }
 
@@ -226,7 +226,7 @@ public class GXHDO202B034Model implements Serializable {
      * 設備内洗浄確認
      * @return the setsubinaisenjyou
      */
-    public Integer getSetsubinaisenjyou() {
+    public String getSetsubinaisenjyou() {
         return setsubinaisenjyou;
     }
 
@@ -234,7 +234,7 @@ public class GXHDO202B034Model implements Serializable {
      * 設備内洗浄確認
      * @param setsubinaisenjyou the setsubinaisenjyou to set
      */
-    public void setSetsubinaisenjyou(Integer setsubinaisenjyou) {
+    public void setSetsubinaisenjyou(String setsubinaisenjyou) {
         this.setsubinaisenjyou = setsubinaisenjyou;
     }
 
@@ -322,7 +322,7 @@ public class GXHDO202B034Model implements Serializable {
      * ﾀﾝｸにｱｰｽｸﾞﾘｯﾌﾟ接続
      * @return the tankearthgripsetsuzoku
      */
-    public Integer getTankearthgripsetsuzoku() {
+    public String getTankearthgripsetsuzoku() {
         return tankearthgripsetsuzoku;
     }
 
@@ -330,7 +330,7 @@ public class GXHDO202B034Model implements Serializable {
      * ﾀﾝｸにｱｰｽｸﾞﾘｯﾌﾟ接続
      * @param tankearthgripsetsuzoku the tankearthgripsetsuzoku to set
      */
-    public void setTankearthgripsetsuzoku(Integer tankearthgripsetsuzoku) {
+    public void setTankearthgripsetsuzoku(String tankearthgripsetsuzoku) {
         this.tankearthgripsetsuzoku = tankearthgripsetsuzoku;
     }
 

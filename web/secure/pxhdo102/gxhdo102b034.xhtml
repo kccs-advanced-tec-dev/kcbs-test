@@ -68,6 +68,11 @@
                     PF('W_dlg_errorListMessage').show();
                 } 
             }
+
+            function tabChange(args) {
+                document.getElementById("mainDiv").setAttribute("style", args.firstParam);
+                document.getElementById("titleInfoDiv").setAttribute("style", args.firstParam);
+            }
             //]]>
         </script>
         <style>
@@ -82,6 +87,7 @@
                 word-wrap: break-word;
             }
             div[id='form:tabMain:passDataTable'] table{
+                position: -webkit-sticky;
                 position: sticky;
             }
             @media(max-width:720px){
@@ -95,7 +101,7 @@
         <f:metadata>
             <f:viewAction action="#{gXHDO102B034A.init(adjustModels.menuWidth)}"/>
         </f:metadata>
-        <div style="margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;">
+        <div id="titleInfoDiv" style="#{gXHDO102B034A.mainDivStyle}">
             <h:outputText style="background:#{gXHDO102B034A.titleInfo.bgColor};color: #{gXHDO102B034A.titleInfo.fontColor}; 
                           font-size:#{gXHDO102B034A.titleInfo.fontSize}px;" value="#{gXHDO102B034A.titleInfo.formName}"/>
         </div>
@@ -135,6 +141,7 @@
                         </ui:repeat>
                     </p:panel>
                     <p:tabView id="tabMain" orientation="top" scrollable="true" class="tab_view" style="#{gXHDO102B034A.styleDisplayNone}" >
+                        <p:ajax event="tabChange" listener="#{gXHDO102B034A.onTabChange}" async="false" oncomplete="tabChange(args);"  />
                         <p:tab title="#{myMsg.kihonjyohou}" titleStyle="font-size:0.9em;" id="tab1" >
                             <div class="tab_div">
                                 <p:dataList id="itemDataList" value="#{gXHDO102B034A.itemList}" var="item" type="none"  itemType="none" paginator="true" rows="#{gXHDO102B034A.hyojiKensu}" styleClass="repeated-form;ui-paginator">

@@ -96,7 +96,7 @@
         <f:metadata>
             <f:viewAction action="#{gXHDO102B024A.init(adjustModels.menuWidth)}"/>
         </f:metadata>
-        <div style="margin-left:auto;margin-right:auto;width:#{adjustModels.menuWidth}px;">
+        <div id="titleInfoDiv" style="#{gXHDO102B034A.mainDivStyle}">
             <h:outputText style="background:#{gXHDO102B024A.titleInfo.bgColor};color: #{gXHDO102B024A.titleInfo.fontColor}; 
                           font-size:#{gXHDO102B024A.titleInfo.fontSize}px;" value="#{gXHDO102B024A.titleInfo.formName}"/>
         </div>
@@ -144,15 +144,15 @@
                     </p:panel>
                     <p:panel id="yuudentaifunsaiTable" style="border-radius: 0; border-top-style: hidden;#{gXHDO102B024A.styleDisplayNone};display: #{gXHDO102B024A.displayStyle};">
                         <div class="tab_div" style="overflow: auto;">
-                            <p:panelGrid style="" class="yuudentaifunsaiTable">
+                            <p:panelGrid style="width:80%;" class="yuudentaifunsaiTable">
                                 <p:row style="height: 50px;white-space:nowrap;">
-                                    <p:column colspan="1">
+                                    <p:column colspan="1" style="width:150px;">
                                         <div style="text-align:left;">
                                             <h:outputText rendered="#{gXHDO102B024A.wiplotno.render1}" value="#{gXHDO102B024A.wiplotno.label1}"
                                                           style="font-size:#{gXHDO102B024A.wiplotno.fontSize1}px;color:#{gXHDO102B024A.wiplotno.fontColor1};vertical-align: middle;"/>
                                         </div>
                                     </p:column>
-                                    <p:column colspan="2">
+                                    <p:column colspan="2" style="width:480px;">
                                         <div style="text-align:left;">
                                             <h:outputText id="wiplotno"  value="#{gXHDO102B024A.wiplotno.value}"
                                                           style="font-size:#{gXHDO102B024A.wiplotno.fontSizeInput}px;color:#{gXHDO102B024A.wiplotno.fontColorInput};
@@ -256,21 +256,21 @@
                                     </p:column>
                                 </p:row>
                                 <p:row style="height: 50px;white-space:nowrap;">
-                                    <p:column colspan="2">
+                                    <p:column colspan="2" style="width:300px;">
                                         <h:outputText rendered="#{gXHDO102B024A.funsaiki.render1}" value="#{gXHDO102B024A.funsaiki.label1}"
                                                       style="font-size:#{gXHDO102B024A.funsaiki.fontSize1}px;color:#{gXHDO102B024A.funsaiki.fontColor1};vertical-align: middle;"/>
                                     </p:column>
-                                    <p:column >
+                                    <p:column style="width:330px;">
                                         <h:outputText id="funsaiki_kikakuChi" rendered="#{gXHDO102B024A.funsaiki.render1 || gXHDO102B024A.funsaiki.renderLinkButton}"
                                                       value="#{gXHDO102B024A.funsaiki.kikakuChi}"
                                                       style="font-size:#{gXHDO102B024A.funsaiki.fontSize3}px;color:#{gXHDO102B024A.funsaiki.fontColor3};
                                                       background:#{gXHDO102B024A.funsaiki.backColor3};vertical-align: middle;"/>
                                     </p:column>
-                                    <p:column colspan="2">
+                                    <p:column colspan="2" style="width:300px;">
                                         <h:outputText rendered="#{gXHDO102B024A.tounyuuryou.render1}" value="#{gXHDO102B024A.tounyuuryou.label1}"
                                                       style="font-size:#{gXHDO102B024A.tounyuuryou.fontSize1}px;color:#{gXHDO102B024A.tounyuuryou.fontColor1};vertical-align: middle;"/>
                                     </p:column>
-                                    <p:column>
+                                    <p:column style="width:330px;">
                                         <h:outputText id="tounyuuryou_kikakuChi" rendered="#{gXHDO102B024A.tounyuuryou.render1 || gXHDO102B024A.tounyuuryou.renderLinkButton}"
                                                       value="#{gXHDO102B024A.tounyuuryou.kikakuChi}"
                                                       style="font-size:#{gXHDO102B024A.tounyuuryou.fontSize3}px;color:#{gXHDO102B024A.tounyuuryou.fontColor3};
@@ -278,21 +278,21 @@
                                     </p:column>
                                 </p:row>
                                 <p:row style="height: 50px;white-space:nowrap;" >
-                                    <p:column rowspan="2" >
+                                    <p:column rowspan="2" style="width:150px;">
                                         <h:outputText rendered="#{gXHDO102B024A.funsaikisenjyou1.render1}" value="#{fn:replace(gXHDO102B024A.funsaikisenjyou1.label1,'①', '')}"
                                                       style="font-size:#{gXHDO102B024A.funsaikisenjyou1.fontSize1}px;color:#{gXHDO102B024A.funsaikisenjyou1.fontColor1};vertical-align: middle;"/>
                                     </p:column>
-                                    <p:column colspan="2">
+                                    <p:column colspan="2" style="width:480px;">
                                         <h:outputText id="funsaikisenjyou1_kikakuChi" rendered="#{gXHDO102B024A.funsaikisenjyou1.render1 || gXHDO102B024A.funsaikisenjyou1.renderLinkButton}"
                                                       value="#{gXHDO102B024A.funsaikisenjyou1.kikakuChi}"
                                                       style="font-size:#{gXHDO102B024A.funsaikisenjyou1.fontSize3}px;color:#{gXHDO102B024A.funsaikisenjyou1.fontColor3};
                                                       background:#{gXHDO102B024A.funsaikisenjyou1.backColor3};vertical-align: middle;"/>
                                     </p:column>
-                                    <p:column colspan="2">
+                                    <p:column colspan="2" style="width:300px;">
                                         <h:outputText rendered="#{gXHDO102B024A.zikanpass.render1}" value="#{gXHDO102B024A.zikanpass.label1}"
                                                       style="font-size:#{gXHDO102B024A.zikanpass.fontSize1}px;color:#{gXHDO102B024A.zikanpass.fontColor1};vertical-align: middle;"/>
                                     </p:column>
-                                    <p:column>
+                                    <p:column style="width:330px;">
                                         <h:outputText id="zikanpass_kikakuChi" rendered="#{gXHDO102B024A.zikanpass.render1 || gXHDO102B024A.zikanpass.renderLinkButton}"
                                                       value="#{gXHDO102B024A.zikanpass.kikakuChi}"
                                                       style="font-size:#{gXHDO102B024A.zikanpass.fontSize3}px;color:#{gXHDO102B024A.zikanpass.fontColor3};
@@ -300,17 +300,17 @@
                                     </p:column>
                                 </p:row>
                                 <p:row style="height: 50px;white-space:nowrap;" >
-                                    <p:column colspan="2">
+                                    <p:column colspan="2" style="width:450px;">
                                         <h:outputText id="funsaikisenjyou2_kikakuChi" rendered="#{gXHDO102B024A.funsaikisenjyou2.render1 || gXHDO102B024A.funsaikisenjyou2.renderLinkButton}"
                                                       value="#{gXHDO102B024A.funsaikisenjyou2.kikakuChi}"
                                                       style="font-size:#{gXHDO102B024A.funsaikisenjyou2.fontSize3}px;color:#{gXHDO102B024A.funsaikisenjyou2.fontColor3};
                                                       background:#{gXHDO102B024A.funsaikisenjyou2.backColor3};vertical-align: middle;"/>
                                     </p:column>
-                                    <p:column colspan="2">
+                                    <p:column colspan="2" style="width:300px;">
                                         <h:outputText rendered="#{gXHDO102B024A.screen.render1}" value="#{gXHDO102B024A.screen.label1}"
                                                       style="font-size:#{gXHDO102B024A.screen.fontSize1}px;color:#{gXHDO102B024A.screen.fontColor1};vertical-align: middle;"/>
                                     </p:column>
-                                    <p:column>
+                                    <p:column style="width:330px;">
                                         <h:outputText id="screen_kikakuChi" rendered="#{gXHDO102B024A.screen.render1 || gXHDO102B024A.screen.renderLinkButton}"
                                                       value="#{gXHDO102B024A.screen.kikakuChi}"
                                                       style="font-size:#{gXHDO102B024A.screen.fontSize3}px;color:#{gXHDO102B024A.screen.fontColor3};
@@ -318,26 +318,26 @@
                                     </p:column>
                                 </p:row>
                                 <p:row style="height: 50px;white-space:nowrap;" >
-                                    <p:column rowspan="2" colspan="2">
+                                    <p:column rowspan="2" colspan="2" style="width:300px;">
                                         <h:outputText rendered="#{gXHDO102B024A.renzokuunten1.render1}" value="#{fn:replace(gXHDO102B024A.renzokuunten1.label1,'①', '')}"
                                                       style="font-size:#{gXHDO102B024A.renzokuunten1.fontSize1}px;color:#{gXHDO102B024A.renzokuunten1.fontColor1};vertical-align: middle;"/>
                                     </p:column>
-                                    <p:column >
+                                    <p:column style="width:330px;">
                                         <h:outputText id="renzokuunten1_kikakuChi" rendered="#{gXHDO102B024A.renzokuunten1.render1 || gXHDO102B024A.renzokuunten1.renderLinkButton}"
                                                       value="#{gXHDO102B024A.renzokuunten1.kikakuChi}"
                                                       style="font-size:#{gXHDO102B024A.renzokuunten1.fontSize3}px;color:#{gXHDO102B024A.renzokuunten1.fontColor3};
                                                       background:#{gXHDO102B024A.renzokuunten1.backColor3};vertical-align: middle;"/>
                                     </p:column>
-                                    <p:column rowspan="2" >
+                                    <p:column rowspan="2" style="width:150px;">
                                         <h:outputText rendered="#{gXHDO102B024A.kaitensuudisp.render1}" value="#{myMsg.kaitensuu}"
                                                       style="font-size:#{gXHDO102B024A.kaitensuudisp.fontSize1}px;color:#{gXHDO102B024A.kaitensuudisp.fontColor1};vertical-align: middle;"/>
                                     </p:column>
-                                    <p:column >
+                                    <p:column style="width:150px;">
                                         <c:set var="kaitensuu" value="#{myMsg.kaitensuu}_"/>
                                         <h:outputText rendered="#{gXHDO102B024A.kaitensuudisp.render1}" value="#{fn:replace(gXHDO102B024A.kaitensuudisp.label1,kaitensuu, '')}"
                                                       style="font-size:#{gXHDO102B024A.kaitensuudisp.fontSize1}px;color:#{gXHDO102B024A.kaitensuudisp.fontColor1};vertical-align: middle;"/>
                                     </p:column>
-                                    <p:column>
+                                    <p:column style="width:330px;">
                                         <h:outputText id="kaitensuudisp_kikakuChi" rendered="#{gXHDO102B024A.kaitensuudisp.render1 || gXHDO102B024A.kaitensuudisp.renderLinkButton}"
                                                       value="#{gXHDO102B024A.kaitensuudisp.kikakuChi}"
                                                       style="font-size:#{gXHDO102B024A.kaitensuudisp.fontSize3}px;color:#{gXHDO102B024A.kaitensuudisp.fontColor3};
@@ -345,18 +345,18 @@
                                     </p:column>
                                 </p:row>
                                 <p:row style="height: 50px;white-space:nowrap;" >
-                                    <p:column >
+                                    <p:column style="width:330px;">
                                         <h:outputText id="renzokuunten2_kikakuChi" rendered="#{gXHDO102B024A.renzokuunten2.render1 || gXHDO102B024A.renzokuunten2.renderLinkButton}"
                                                       value="#{gXHDO102B024A.renzokuunten2.kikakuChi}"
                                                       style="font-size:#{gXHDO102B024A.renzokuunten2.fontSize3}px;color:#{gXHDO102B024A.renzokuunten2.fontColor3};
                                                       background:#{gXHDO102B024A.renzokuunten2.backColor3};vertical-align: middle;"/>
                                     </p:column>
-                                    <p:column >
+                                    <p:column style="width:150px;">
                                         <c:set var="kaitensuu" value="#{myMsg.kaitensuu}_"/>
                                         <h:outputText rendered="#{gXHDO102B024A.kaitensuusyujiku.render1}" value="#{fn:replace(gXHDO102B024A.kaitensuusyujiku.label1,kaitensuu, '')}"
                                                       style="font-size:#{gXHDO102B024A.kaitensuusyujiku.fontSize1}px;color:#{gXHDO102B024A.kaitensuusyujiku.fontColor1};vertical-align: middle;"/>
                                     </p:column>
-                                    <p:column>
+                                    <p:column style="width:330px;">
                                         <h:outputText id="kaitensuusyujiku_kikakuChi" rendered="#{gXHDO102B024A.kaitensuusyujiku.render1 || gXHDO102B024A.kaitensuusyujiku.renderLinkButton}"
                                                       value="#{gXHDO102B024A.kaitensuusyujiku.kikakuChi}"
                                                       style="font-size:#{gXHDO102B024A.kaitensuusyujiku.fontSize3}px;color:#{gXHDO102B024A.kaitensuusyujiku.fontColor3};
@@ -364,26 +364,26 @@
                                     </p:column>
                                 </p:row>
                                 <p:row style="height: 50px;white-space:nowrap;" >
-                                    <p:column rowspan="3">
+                                    <p:column rowspan="3" style="width:150px;">
                                         <h:outputText rendered="#{gXHDO102B024A.gyokusekijyuryou.render1}" value="#{myMsg.gyokuseki}"
                                                       style="font-size:#{gXHDO102B024A.gyokusekijyuryou.fontSize1}px;color:#{gXHDO102B024A.gyokusekijyuryou.fontColor1};vertical-align: middle;"/>
                                     </p:column>
-                                    <p:column >
+                                    <p:column style="width:150px;">
                                         <c:set var="gyokuseki" value="#{myMsg.gyokuseki}_"/>
                                         <h:outputText rendered="#{gXHDO102B024A.gyokusekijyuryou.render1}" value="#{fn:replace(gXHDO102B024A.gyokusekijyuryou.label1,gyokuseki, '')}"
                                                       style="font-size:#{gXHDO102B024A.gyokusekijyuryou.fontSize1}px;color:#{gXHDO102B024A.gyokusekijyuryou.fontColor1};vertical-align: middle;"/>
                                     </p:column>
-                                    <p:column >
+                                    <p:column style="width:330px;">
                                         <h:outputText id="gyokusekijyuryou_kikakuChi" rendered="#{gXHDO102B024A.gyokusekijyuryou.render1 || gXHDO102B024A.gyokusekijyuryou.renderLinkButton}"
                                                       value="#{gXHDO102B024A.gyokusekijyuryou.kikakuChi}"
                                                       style="font-size:#{gXHDO102B024A.gyokusekijyuryou.fontSize3}px;color:#{gXHDO102B024A.gyokusekijyuryou.fontColor3};
                                                       background:#{gXHDO102B024A.gyokusekijyuryou.backColor3};vertical-align: middle;"/>
                                     </p:column>
-                                    <p:column colspan="2">
+                                    <p:column colspan="2" style="width:300px;">
                                         <h:outputText rendered="#{gXHDO102B024A.pompsyutsuryoku.render1}" value="#{gXHDO102B024A.pompsyutsuryoku.label1}"
                                                       style="font-size:#{gXHDO102B024A.pompsyutsuryoku.fontSize1}px;color:#{gXHDO102B024A.pompsyutsuryoku.fontColor1};vertical-align: middle;"/>
                                     </p:column>
-                                    <p:column>
+                                    <p:column style="width:330px;">
                                         <h:outputText id="pompsyutsuryoku_kikakuChi" rendered="#{gXHDO102B024A.pompsyutsuryoku.render1 || gXHDO102B024A.pompsyutsuryoku.renderLinkButton}"
                                                       value="#{gXHDO102B024A.pompsyutsuryoku.kikakuChi}"
                                                       style="font-size:#{gXHDO102B024A.pompsyutsuryoku.fontSize3}px;color:#{gXHDO102B024A.pompsyutsuryoku.fontColor3};

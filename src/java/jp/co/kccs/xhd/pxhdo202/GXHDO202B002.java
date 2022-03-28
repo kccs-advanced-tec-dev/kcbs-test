@@ -1079,6 +1079,7 @@ public class GXHDO202B002 implements Serializable {
                             + ", glassslurryhinmei"
                             + ", glassslurrylotno"
                             + ", lotkubun"
+                            + ", goki"
                             + ", syuusoku"
                             + ", kaitendaigouki"
                             + ", funsaikaisinichiji"
@@ -1120,6 +1121,7 @@ public class GXHDO202B002 implements Serializable {
                     mapping.put("glassslurryhinmei", "glassslurryhinmei");                     // ｶﾞﾗｽｽﾗﾘｰ品名
                     mapping.put("glassslurrylotno", "glassslurrylotno");                       // ｶﾞﾗｽｽﾗﾘｰ品名LotNo
                     mapping.put("lotkubun", "lotkubun");                                       // ﾛｯﾄ区分
+                    mapping.put("goki", "goki");                                               // 秤量号機
                     mapping.put("syuusoku", "syuusoku");                                       // 周速
                     mapping.put("kaitendaigouki", "kaitendaigouki");                           // 粉砕回転台号機
                     mapping.put("funsaikaisinichiji", "funsaikaisinichiji");                   // 粉砕開始日時
