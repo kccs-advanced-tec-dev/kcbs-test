@@ -45,7 +45,7 @@ public class GXHDO202B035Model implements Serializable {
     private String genryoukigou = "";
 
     /** 排出容器の内袋 */
-    private Integer haisyutsuyouki = null;
+    private String haisyutsuyouki = "";
 
     /** 風袋重量① */
     private Integer hutaijyuuryou1 = null;
@@ -111,7 +111,7 @@ public class GXHDO202B035Model implements Serializable {
     private String filterpasskaishitantousya = "";
 
     /** 保存用ｻﾝﾌﾟﾙ回収 */
-    private Integer hozonyousamplekaisyuu = null;
+    private String hozonyousamplekaisyuu = "";
 
     /** ﾌｨﾙﾀｰ交換①_F/P停止日時 */
     private Timestamp filterkoukan1fpteishinichiji = null;
@@ -303,7 +303,7 @@ public class GXHDO202B035Model implements Serializable {
      * 排出容器の内袋
      * @return the haisyutsuyouki
      */
-    public Integer getHaisyutsuyouki() {
+    public String getHaisyutsuyouki() {
         return haisyutsuyouki;
     }
 
@@ -311,7 +311,7 @@ public class GXHDO202B035Model implements Serializable {
      * 排出容器の内袋
      * @param haisyutsuyouki the haisyutsuyouki to set
      */
-    public void setHaisyutsuyouki(Integer haisyutsuyouki) {
+    public void setHaisyutsuyouki(String haisyutsuyouki) {
         this.haisyutsuyouki = haisyutsuyouki;
     }
 
@@ -655,7 +655,7 @@ public class GXHDO202B035Model implements Serializable {
      * 保存用ｻﾝﾌﾟﾙ回収
      * @return the hozonyousamplekaisyuu
      */
-    public Integer getHozonyousamplekaisyuu() {
+    public String getHozonyousamplekaisyuu() {
         return hozonyousamplekaisyuu;
     }
 
@@ -663,7 +663,7 @@ public class GXHDO202B035Model implements Serializable {
      * 保存用ｻﾝﾌﾟﾙ回収
      * @param hozonyousamplekaisyuu the hozonyousamplekaisyuu to set
      */
-    public void setHozonyousamplekaisyuu(Integer hozonyousamplekaisyuu) {
+    public void setHozonyousamplekaisyuu(String hozonyousamplekaisyuu) {
         this.hozonyousamplekaisyuu = hozonyousamplekaisyuu;
     }
 

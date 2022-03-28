@@ -1628,4 +1628,11 @@ public class GXHDO102A implements Serializable {
 
     }
 
+    /**
+     * 小文字を大文字に変換します。
+     */
+    public void convertToUpperCase() {
+        // 小文字を大文字に変換
+        setTantoshaCd(getTantoshaCd().toUpperCase());
+    }
 }

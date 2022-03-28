@@ -931,6 +931,9 @@
                     <p:column id="lotkubun" headerText="ﾛｯﾄ区分" >
                         <p:outputLabel value="#{item.lotkubun}"/>
                     </p:column>
+                    <p:column id="goki" headerText="秤量号機" >
+                        <p:outputLabel value="#{item.goki}"/>
+                    </p:column>
                     <p:column id="syuusoku" headerText="周速" >
                         <p:outputLabel value="#{item.syuusoku}"/>
                     </p:column>
@@ -971,9 +974,11 @@
                     <p:column id="buzaizaikono" headerText="部材在庫No" >
                         <p:outputLabel value="#{item.buzaizaikono}"/>
                     </p:column>
-                    <p:column id="tyougouryou" headerText="調合量" >
-                        <p:outputLabel value="#{item.tyougouryou}"/>
-                    </p:column>##0
+                    <p:column id="tyougouryou" headerText="調合量" styleClass="number">
+                        <p:outputLabel value="#{item.tyougouryou}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
                     <p:column id="fuutaijyuuryou" headerText="風袋重量" styleClass="number">
                         <p:outputLabel value="#{item.fuutaijyuuryou}">
                             <f:convertNumber pattern="#,##0"/>

@@ -38,6 +38,9 @@ public class GXHDO202B006Model implements Serializable {
     /** ﾛｯﾄ区分 */
     private String lotkubun = "";
 
+    /** 秤量号機 */
+    private String goki = "";
+
     /** 周速 */
     private String syuusoku = "";
 
@@ -69,7 +72,7 @@ public class GXHDO202B006Model implements Serializable {
     private String buzaizaikono = "";
 
     /** 調合量 */
-    private String tyougouryou = "";
+    private Integer tyougouryou = null;
 
     /** 風袋重量 */
     private Integer fuutaijyuuryou = null;
@@ -169,6 +172,22 @@ public class GXHDO202B006Model implements Serializable {
      */
     public void setLotkubun(String lotkubun) {
         this.lotkubun = lotkubun;
+    }
+
+    /**
+     * 秤量号機
+     * @return the goki
+     */
+    public String getGoki() {
+        return goki;
+    }
+
+    /**
+     * 秤量号機
+     * @param goki the goki to set
+     */
+    public void setGoki(String goki) {
+        this.goki = goki;
     }
 
     /**
@@ -335,7 +354,7 @@ public class GXHDO202B006Model implements Serializable {
      * 調合量
      * @return the tyougouryou
      */
-    public String getTyougouryou() {
+    public Integer getTyougouryou() {
         return tyougouryou;
     }
 
@@ -343,7 +362,7 @@ public class GXHDO202B006Model implements Serializable {
      * 調合量
      * @param tyougouryou the tyougouryou to set
      */
-    public void setTyougouryou(String tyougouryou) {
+    public void setTyougouryou(Integer tyougouryou) {
         this.tyougouryou = tyougouryou;
     }
 

@@ -919,7 +919,7 @@ public class GXHDO202B001 implements Serializable {
                             + ", junkanshuhasuu "
                             + ", funsaijikan "
                             + ", kadoujikan "
-                            + ", si_ruekikakunin "
+                            + ", (CASE WHEN si_ruekikakunin = 0 THEN 'NG' WHEN si_ruekikakunin = 1 THEN 'OK' ELSE '' END) AS si_ruekikakunin "
                             + ", funsaikaisinichiji "
                             + ", kaisitantosya "
                             + ", funsaisyuuryouyoteinichiji "

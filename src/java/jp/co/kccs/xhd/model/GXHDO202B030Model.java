@@ -4,7 +4,6 @@
 package jp.co.kccs.xhd.model;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
@@ -69,22 +68,22 @@ public class GXHDO202B030Model implements Serializable {
     private String tantousya = "";
 
     /** 誘電体ｽﾗﾘｰ投入① */
-    private Integer yuudentaislurrytounyuu1 = null;
+    private String yuudentaislurrytounyuu1 = "";
 
     /** 誘電体ｽﾗﾘｰ投入② */
-    private Integer yuudentaislurrytounyuu2 = null;
+    private String yuudentaislurrytounyuu2 = "";
 
     /** 誘電体ｽﾗﾘｰ投入③ */
-    private Integer yuudentaislurrytounyuu3 = null;
+    private String yuudentaislurrytounyuu3 = "";
 
     /** 誘電体ｽﾗﾘｰ投入④ */
-    private Integer yuudentaislurrytounyuu4 = null;
+    private String yuudentaislurrytounyuu4 = "";
 
     /** 誘電体ｽﾗﾘｰ投入⑤ */
-    private Integer yuudentaislurrytounyuu5 = null;
+    private String yuudentaislurrytounyuu5 = "";
 
     /** 誘電体ｽﾗﾘｰ投入⑥ */
-    private Integer yuudentaislurrytounyuu6 = null;
+    private String yuudentaislurrytounyuu6 = "";
 
     /** 誘電体ｽﾗﾘｰ投入担当者 */
     private String yuudentaislurrytounyuutantousya = "";
@@ -201,31 +200,31 @@ public class GXHDO202B030Model implements Serializable {
     private Integer kongoutankno = null;
 
     /** ﾀﾝｸ内洗浄確認 */
-    private Integer tanknaisenjyoukakunin = null;
+    private String tanknaisenjyoukakunin = "";
 
     /** ﾀﾝｸ内内袋確認 */
-    private Integer tanknaiutibukurokakunin = null;
+    private String tanknaiutibukurokakunin = "";
 
     /** 撹拌羽根洗浄確認 */
-    private Integer kakuhanhanesenjyoukakunin = null;
+    private String kakuhanhanesenjyoukakunin = "";
 
     /** 撹拌軸洗浄確認 */
-    private Integer kakuhanjikusenjyoukakunin = null;
+    private String kakuhanjikusenjyoukakunin = "";
 
     /** 転流板の高さ */
     private String tenryuubannotakasa = "";
 
     /** ﾀﾝｸにｱｰｽｸﾞﾘｯﾌﾟ接続 */
-    private Integer tankniearthgripsetuzoku = null;
+    private String tankniearthgripsetuzoku = "";
 
     /** 分散材溶剤投入 */
-    private Integer zunsanzaiyouzaitounyuu = null;
+    private String zunsanzaiyouzaitounyuu = "";
 
     /** 溶剤投入① */
-    private Integer youzaitounyuu1 = null;
+    private String youzaitounyuu1 = "";
 
     /** 溶剤投入② */
-    private Integer youzaitounyuu2 = null;
+    private String youzaitounyuu2 = "";
 
     /** 溶剤投入担当者 */
     private String youzaitounyuutantousya = "";
@@ -464,7 +463,7 @@ public class GXHDO202B030Model implements Serializable {
      * 誘電体ｽﾗﾘｰ投入①
      * @return the yuudentaislurrytounyuu1
      */
-    public Integer getYuudentaislurrytounyuu1() {
+    public String getYuudentaislurrytounyuu1() {
         return yuudentaislurrytounyuu1;
     }
 
@@ -472,7 +471,7 @@ public class GXHDO202B030Model implements Serializable {
      * 誘電体ｽﾗﾘｰ投入①
      * @param yuudentaislurrytounyuu1 the yuudentaislurrytounyuu1 to set
      */
-    public void setYuudentaislurrytounyuu1(Integer yuudentaislurrytounyuu1) {
+    public void setYuudentaislurrytounyuu1(String yuudentaislurrytounyuu1) {
         this.yuudentaislurrytounyuu1 = yuudentaislurrytounyuu1;
     }
 
@@ -480,7 +479,7 @@ public class GXHDO202B030Model implements Serializable {
      * 誘電体ｽﾗﾘｰ投入②
      * @return the yuudentaislurrytounyuu2
      */
-    public Integer getYuudentaislurrytounyuu2() {
+    public String getYuudentaislurrytounyuu2() {
         return yuudentaislurrytounyuu2;
     }
 
@@ -488,7 +487,7 @@ public class GXHDO202B030Model implements Serializable {
      * 誘電体ｽﾗﾘｰ投入②
      * @param yuudentaislurrytounyuu2 the yuudentaislurrytounyuu2 to set
      */
-    public void setYuudentaislurrytounyuu2(Integer yuudentaislurrytounyuu2) {
+    public void setYuudentaislurrytounyuu2(String yuudentaislurrytounyuu2) {
         this.yuudentaislurrytounyuu2 = yuudentaislurrytounyuu2;
     }
 
@@ -496,7 +495,7 @@ public class GXHDO202B030Model implements Serializable {
      * 誘電体ｽﾗﾘｰ投入③
      * @return the yuudentaislurrytounyuu3
      */
-    public Integer getYuudentaislurrytounyuu3() {
+    public String getYuudentaislurrytounyuu3() {
         return yuudentaislurrytounyuu3;
     }
 
@@ -504,7 +503,7 @@ public class GXHDO202B030Model implements Serializable {
      * 誘電体ｽﾗﾘｰ投入③
      * @param yuudentaislurrytounyuu3 the yuudentaislurrytounyuu3 to set
      */
-    public void setYuudentaislurrytounyuu3(Integer yuudentaislurrytounyuu3) {
+    public void setYuudentaislurrytounyuu3(String yuudentaislurrytounyuu3) {
         this.yuudentaislurrytounyuu3 = yuudentaislurrytounyuu3;
     }
 
@@ -512,7 +511,7 @@ public class GXHDO202B030Model implements Serializable {
      * 誘電体ｽﾗﾘｰ投入④
      * @return the yuudentaislurrytounyuu4
      */
-    public Integer getYuudentaislurrytounyuu4() {
+    public String getYuudentaislurrytounyuu4() {
         return yuudentaislurrytounyuu4;
     }
 
@@ -520,7 +519,7 @@ public class GXHDO202B030Model implements Serializable {
      * 誘電体ｽﾗﾘｰ投入④
      * @param yuudentaislurrytounyuu4 the yuudentaislurrytounyuu4 to set
      */
-    public void setYuudentaislurrytounyuu4(Integer yuudentaislurrytounyuu4) {
+    public void setYuudentaislurrytounyuu4(String yuudentaislurrytounyuu4) {
         this.yuudentaislurrytounyuu4 = yuudentaislurrytounyuu4;
     }
 
@@ -528,7 +527,7 @@ public class GXHDO202B030Model implements Serializable {
      * 誘電体ｽﾗﾘｰ投入⑤
      * @return the yuudentaislurrytounyuu5
      */
-    public Integer getYuudentaislurrytounyuu5() {
+    public String getYuudentaislurrytounyuu5() {
         return yuudentaislurrytounyuu5;
     }
 
@@ -536,7 +535,7 @@ public class GXHDO202B030Model implements Serializable {
      * 誘電体ｽﾗﾘｰ投入⑤
      * @param yuudentaislurrytounyuu5 the yuudentaislurrytounyuu5 to set
      */
-    public void setYuudentaislurrytounyuu5(Integer yuudentaislurrytounyuu5) {
+    public void setYuudentaislurrytounyuu5(String yuudentaislurrytounyuu5) {
         this.yuudentaislurrytounyuu5 = yuudentaislurrytounyuu5;
     }
 
@@ -544,7 +543,7 @@ public class GXHDO202B030Model implements Serializable {
      * 誘電体ｽﾗﾘｰ投入⑥
      * @return the yuudentaislurrytounyuu6
      */
-    public Integer getYuudentaislurrytounyuu6() {
+    public String getYuudentaislurrytounyuu6() {
         return yuudentaislurrytounyuu6;
     }
 
@@ -552,7 +551,7 @@ public class GXHDO202B030Model implements Serializable {
      * 誘電体ｽﾗﾘｰ投入⑥
      * @param yuudentaislurrytounyuu6 the yuudentaislurrytounyuu6 to set
      */
-    public void setYuudentaislurrytounyuu6(Integer yuudentaislurrytounyuu6) {
+    public void setYuudentaislurrytounyuu6(String yuudentaislurrytounyuu6) {
         this.yuudentaislurrytounyuu6 = yuudentaislurrytounyuu6;
     }
 
@@ -1168,7 +1167,7 @@ public class GXHDO202B030Model implements Serializable {
      * ﾀﾝｸ内洗浄確認
      * @return the tanknaisenjyoukakunin
      */
-    public Integer getTanknaisenjyoukakunin() {
+    public String getTanknaisenjyoukakunin() {
         return tanknaisenjyoukakunin;
     }
 
@@ -1176,7 +1175,7 @@ public class GXHDO202B030Model implements Serializable {
      * ﾀﾝｸ内洗浄確認
      * @param tanknaisenjyoukakunin the tanknaisenjyoukakunin to set
      */
-    public void setTanknaisenjyoukakunin(Integer tanknaisenjyoukakunin) {
+    public void setTanknaisenjyoukakunin(String tanknaisenjyoukakunin) {
         this.tanknaisenjyoukakunin = tanknaisenjyoukakunin;
     }
 
@@ -1184,7 +1183,7 @@ public class GXHDO202B030Model implements Serializable {
      * ﾀﾝｸ内内袋確認
      * @return the tanknaiutibukurokakunin
      */
-    public Integer getTanknaiutibukurokakunin() {
+    public String getTanknaiutibukurokakunin() {
         return tanknaiutibukurokakunin;
     }
 
@@ -1192,7 +1191,7 @@ public class GXHDO202B030Model implements Serializable {
      * ﾀﾝｸ内内袋確認
      * @param tanknaiutibukurokakunin the tanknaiutibukurokakunin to set
      */
-    public void setTanknaiutibukurokakunin(Integer tanknaiutibukurokakunin) {
+    public void setTanknaiutibukurokakunin(String tanknaiutibukurokakunin) {
         this.tanknaiutibukurokakunin = tanknaiutibukurokakunin;
     }
 
@@ -1200,7 +1199,7 @@ public class GXHDO202B030Model implements Serializable {
      * 撹拌羽根洗浄確認
      * @return the kakuhanhanesenjyoukakunin
      */
-    public Integer getKakuhanhanesenjyoukakunin() {
+    public String getKakuhanhanesenjyoukakunin() {
         return kakuhanhanesenjyoukakunin;
     }
 
@@ -1208,7 +1207,7 @@ public class GXHDO202B030Model implements Serializable {
      * 撹拌羽根洗浄確認
      * @param kakuhanhanesenjyoukakunin the kakuhanhanesenjyoukakunin to set
      */
-    public void setKakuhanhanesenjyoukakunin(Integer kakuhanhanesenjyoukakunin) {
+    public void setKakuhanhanesenjyoukakunin(String kakuhanhanesenjyoukakunin) {
         this.kakuhanhanesenjyoukakunin = kakuhanhanesenjyoukakunin;
     }
 
@@ -1216,7 +1215,7 @@ public class GXHDO202B030Model implements Serializable {
      * 撹拌軸洗浄確認
      * @return the kakuhanjikusenjyoukakunin
      */
-    public Integer getKakuhanjikusenjyoukakunin() {
+    public String getKakuhanjikusenjyoukakunin() {
         return kakuhanjikusenjyoukakunin;
     }
 
@@ -1224,7 +1223,7 @@ public class GXHDO202B030Model implements Serializable {
      * 撹拌軸洗浄確認
      * @param kakuhanjikusenjyoukakunin the kakuhanjikusenjyoukakunin to set
      */
-    public void setKakuhanjikusenjyoukakunin(Integer kakuhanjikusenjyoukakunin) {
+    public void setKakuhanjikusenjyoukakunin(String kakuhanjikusenjyoukakunin) {
         this.kakuhanjikusenjyoukakunin = kakuhanjikusenjyoukakunin;
     }
 
@@ -1248,7 +1247,7 @@ public class GXHDO202B030Model implements Serializable {
      * ﾀﾝｸにｱｰｽｸﾞﾘｯﾌﾟ接続
      * @return the tankniearthgripsetuzoku
      */
-    public Integer getTankniearthgripsetuzoku() {
+    public String getTankniearthgripsetuzoku() {
         return tankniearthgripsetuzoku;
     }
 
@@ -1256,7 +1255,7 @@ public class GXHDO202B030Model implements Serializable {
      * ﾀﾝｸにｱｰｽｸﾞﾘｯﾌﾟ接続
      * @param tankniearthgripsetuzoku the tankniearthgripsetuzoku to set
      */
-    public void setTankniearthgripsetuzoku(Integer tankniearthgripsetuzoku) {
+    public void setTankniearthgripsetuzoku(String tankniearthgripsetuzoku) {
         this.tankniearthgripsetuzoku = tankniearthgripsetuzoku;
     }
 
@@ -1264,7 +1263,7 @@ public class GXHDO202B030Model implements Serializable {
      * 分散材溶剤投入
      * @return the zunsanzaiyouzaitounyuu
      */
-    public Integer getZunsanzaiyouzaitounyuu() {
+    public String getZunsanzaiyouzaitounyuu() {
         return zunsanzaiyouzaitounyuu;
     }
 
@@ -1272,7 +1271,7 @@ public class GXHDO202B030Model implements Serializable {
      * 分散材溶剤投入
      * @param zunsanzaiyouzaitounyuu the zunsanzaiyouzaitounyuu to set
      */
-    public void setZunsanzaiyouzaitounyuu(Integer zunsanzaiyouzaitounyuu) {
+    public void setZunsanzaiyouzaitounyuu(String zunsanzaiyouzaitounyuu) {
         this.zunsanzaiyouzaitounyuu = zunsanzaiyouzaitounyuu;
     }
 
@@ -1280,7 +1279,7 @@ public class GXHDO202B030Model implements Serializable {
      * 溶剤投入①
      * @return the youzaitounyuu1
      */
-    public Integer getYouzaitounyuu1() {
+    public String getYouzaitounyuu1() {
         return youzaitounyuu1;
     }
 
@@ -1288,7 +1287,7 @@ public class GXHDO202B030Model implements Serializable {
      * 溶剤投入①
      * @param youzaitounyuu1 the youzaitounyuu1 to set
      */
-    public void setYouzaitounyuu1(Integer youzaitounyuu1) {
+    public void setYouzaitounyuu1(String youzaitounyuu1) {
         this.youzaitounyuu1 = youzaitounyuu1;
     }
 
@@ -1296,7 +1295,7 @@ public class GXHDO202B030Model implements Serializable {
      * 溶剤投入②
      * @return the youzaitounyuu2
      */
-    public Integer getYouzaitounyuu2() {
+    public String getYouzaitounyuu2() {
         return youzaitounyuu2;
     }
 
@@ -1304,7 +1303,7 @@ public class GXHDO202B030Model implements Serializable {
      * 溶剤投入②
      * @param youzaitounyuu2 the youzaitounyuu2 to set
      */
-    public void setYouzaitounyuu2(Integer youzaitounyuu2) {
+    public void setYouzaitounyuu2(String youzaitounyuu2) {
         this.youzaitounyuu2 = youzaitounyuu2;
     }
 

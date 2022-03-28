@@ -25,6 +25,8 @@ import jp.co.kccs.xhd.util.MessageUtil;
 import jp.co.kccs.xhd.util.StringUtil;
 import jp.co.kccs.xhd.util.ValidateUtil;
 import org.apache.commons.dbutils.QueryRunner;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.TabChangeEvent;
 
 /**
  * ===============================================================================<br>
@@ -139,6 +141,22 @@ public class GXHDO102B034A extends GXHDO901BEX {
         this.mainDefaultStyle = "width:" + mainWidth + "px;margin-left:auto;margin-right:auto;";
         this.mainAutoStyle = "width:auto;" + "min-width:" + mainWidth + "px;";
         this.mainDivStyle = this.mainDefaultStyle;
+    }
+
+    /**
+     * タブ変更時処理
+     * @param event 
+     */
+    public void onTabChange(TabChangeEvent event) {
+        // 選択したタブよりごとにスタイルを切り替える。
+        if ("tab2".equals(event.getTab().getId())) {
+            this.mainDivStyle = this.mainAutoStyle;
+        } else {
+            this.mainDivStyle = this.mainDefaultStyle;
+        }
+
+        RequestContext context = RequestContext.getCurrentInstance();
+        context.addCallbackParam("firstParam", this.mainDivStyle);
     }
 
     /**

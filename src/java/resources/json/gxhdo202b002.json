@@ -10,7 +10,7 @@
     {"no":"9","id":"junkanshuhasuu","columnname":"循環周波数","type":"String","format":""},
     {"no":"10","id":"funsaijikan","columnname":"粉砕時間","type":"String","format":""},
     {"no":"11","id":"kadoujikan","columnname":"累計稼働時間","type":"BigDecimal","format":"3,1"},
-    {"no":"12","id":"si_ruekikakunin","columnname":"ｼｰﾙ液量確認","type":"Integer","format":"1,0"},
+    {"no":"12","id":"si_ruekikakunin","columnname":"ｼｰﾙ液量確認","type":"String","format":""},
     {"no":"13","id":"funsaikaisinichiji","columnname":"粉砕開始時刻","type":"timestamp","format":"yyyy/mm/dd hh:mm:ss"},
     {"no":"14","id":"kaisitantosya","columnname":"粉砕開始担当者","type":"String","format":""},
     {"no":"15","id":"funsaisyuuryouyoteinichiji","columnname":"粉砕終了予定時刻","type":"timestamp","format":"yyyy/mm/dd hh:mm:ss"},

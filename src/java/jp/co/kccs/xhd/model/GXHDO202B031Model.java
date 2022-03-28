@@ -57,7 +57,7 @@ public class GXHDO202B031Model implements Serializable {
     private Timestamp binderkeiryounichiji = null;
 
     /** ﾊﾞｲﾝﾀﾞｰ品名 */
-    private Integer binderhinmei = null;
+    private String binderhinmei = "";
 
     /** ﾊﾞｲﾝﾀﾞｰLotNo */
     private Integer binderlotno = null;
@@ -72,7 +72,7 @@ public class GXHDO202B031Model implements Serializable {
     private String bindertenkaryoukikaku = "";
 
     /** ﾎｯﾊﾟｰ使用 */
-    private Integer hoppersiyou = null;
+    private String hoppersiyou = "";
 
     /** 投入開始日時 */
     private Timestamp tounyuukaisinichiji = null;
@@ -84,37 +84,37 @@ public class GXHDO202B031Model implements Serializable {
     private Integer hyouryou1 = null;
 
     /** 投入確認① */
-    private Integer tounyuukakunin1 = null;
+    private String tounyuukakunin1 = "";
 
     /** 秤量② */
     private Integer hyouryou2 = null;
 
     /** 投入確認② */
-    private Integer tounyuukakunin2 = null;
+    private String tounyuukakunin2 = "";
 
     /** 秤量③ */
     private Integer hyouryou3 = null;
 
     /** 投入確認③ */
-    private Integer tounyuukakunin3 = null;
+    private String tounyuukakunin3 = "";
 
     /** 秤量④ */
     private Integer hyouryou4 = null;
 
     /** 投入確認④ */
-    private Integer tounyuukakunin4 = null;
+    private String tounyuukakunin4 = "";
 
     /** 秤量⑤ */
     private Integer hyouryou5 = null;
 
     /** 投入確認⑤ */
-    private Integer tounyuukakunin5 = null;
+    private String tounyuukakunin5 = "";
 
     /** 秤量⑥ */
     private Integer hyouryou6 = null;
 
     /** 投入確認⑥ */
-    private Integer tounyuukakunin6 = null;
+    private String tounyuukakunin6 = "";
 
     /** 投入終了日時 */
     private Timestamp tounyuusyuuryounichiji = null;
@@ -295,7 +295,7 @@ public class GXHDO202B031Model implements Serializable {
      * ﾊﾞｲﾝﾀﾞｰ品名
      * @return the binderhinmei
      */
-    public Integer getBinderhinmei() {
+    public String getBinderhinmei() {
         return binderhinmei;
     }
 
@@ -303,7 +303,7 @@ public class GXHDO202B031Model implements Serializable {
      * ﾊﾞｲﾝﾀﾞｰ品名
      * @param binderhinmei the binderhinmei to set
      */
-    public void setBinderhinmei(Integer binderhinmei) {
+    public void setBinderhinmei(String binderhinmei) {
         this.binderhinmei = binderhinmei;
     }
 
@@ -375,7 +375,7 @@ public class GXHDO202B031Model implements Serializable {
      * ﾎｯﾊﾟｰ使用
      * @return the hoppersiyou
      */
-    public Integer getHoppersiyou() {
+    public String getHoppersiyou() {
         return hoppersiyou;
     }
 
@@ -383,7 +383,7 @@ public class GXHDO202B031Model implements Serializable {
      * ﾎｯﾊﾟｰ使用
      * @param hoppersiyou the hoppersiyou to set
      */
-    public void setHoppersiyou(Integer hoppersiyou) {
+    public void setHoppersiyou(String hoppersiyou) {
         this.hoppersiyou = hoppersiyou;
     }
 
@@ -439,7 +439,7 @@ public class GXHDO202B031Model implements Serializable {
      * 投入確認①
      * @return the tounyuukakunin1
      */
-    public Integer getTounyuukakunin1() {
+    public String getTounyuukakunin1() {
         return tounyuukakunin1;
     }
 
@@ -447,7 +447,7 @@ public class GXHDO202B031Model implements Serializable {
      * 投入確認①
      * @param tounyuukakunin1 the tounyuukakunin1 to set
      */
-    public void setTounyuukakunin1(Integer tounyuukakunin1) {
+    public void setTounyuukakunin1(String tounyuukakunin1) {
         this.tounyuukakunin1 = tounyuukakunin1;
     }
 
@@ -471,7 +471,7 @@ public class GXHDO202B031Model implements Serializable {
      * 投入確認②
      * @return the tounyuukakunin2
      */
-    public Integer getTounyuukakunin2() {
+    public String getTounyuukakunin2() {
         return tounyuukakunin2;
     }
 
@@ -479,7 +479,7 @@ public class GXHDO202B031Model implements Serializable {
      * 投入確認②
      * @param tounyuukakunin2 the tounyuukakunin2 to set
      */
-    public void setTounyuukakunin2(Integer tounyuukakunin2) {
+    public void setTounyuukakunin2(String tounyuukakunin2) {
         this.tounyuukakunin2 = tounyuukakunin2;
     }
 
@@ -503,7 +503,7 @@ public class GXHDO202B031Model implements Serializable {
      * 投入確認③
      * @return the tounyuukakunin3
      */
-    public Integer getTounyuukakunin3() {
+    public String getTounyuukakunin3() {
         return tounyuukakunin3;
     }
 
@@ -511,7 +511,7 @@ public class GXHDO202B031Model implements Serializable {
      * 投入確認③
      * @param tounyuukakunin3 the tounyuukakunin3 to set
      */
-    public void setTounyuukakunin3(Integer tounyuukakunin3) {
+    public void setTounyuukakunin3(String tounyuukakunin3) {
         this.tounyuukakunin3 = tounyuukakunin3;
     }
 
@@ -535,7 +535,7 @@ public class GXHDO202B031Model implements Serializable {
      * 投入確認④
      * @return the tounyuukakunin4
      */
-    public Integer getTounyuukakunin4() {
+    public String getTounyuukakunin4() {
         return tounyuukakunin4;
     }
 
@@ -543,7 +543,7 @@ public class GXHDO202B031Model implements Serializable {
      * 投入確認④
      * @param tounyuukakunin4 the tounyuukakunin4 to set
      */
-    public void setTounyuukakunin4(Integer tounyuukakunin4) {
+    public void setTounyuukakunin4(String tounyuukakunin4) {
         this.tounyuukakunin4 = tounyuukakunin4;
     }
 
@@ -567,7 +567,7 @@ public class GXHDO202B031Model implements Serializable {
      * 投入確認⑤
      * @return the tounyuukakunin5
      */
-    public Integer getTounyuukakunin5() {
+    public String getTounyuukakunin5() {
         return tounyuukakunin5;
     }
 
@@ -575,7 +575,7 @@ public class GXHDO202B031Model implements Serializable {
      * 投入確認⑤
      * @param tounyuukakunin5 the tounyuukakunin5 to set
      */
-    public void setTounyuukakunin5(Integer tounyuukakunin5) {
+    public void setTounyuukakunin5(String tounyuukakunin5) {
         this.tounyuukakunin5 = tounyuukakunin5;
     }
 
@@ -599,7 +599,7 @@ public class GXHDO202B031Model implements Serializable {
      * 投入確認⑥
      * @return the tounyuukakunin6
      */
-    public Integer getTounyuukakunin6() {
+    public String getTounyuukakunin6() {
         return tounyuukakunin6;
     }
 
@@ -607,7 +607,7 @@ public class GXHDO202B031Model implements Serializable {
      * 投入確認⑥
      * @param tounyuukakunin6 the tounyuukakunin6 to set
      */
-    public void setTounyuukakunin6(Integer tounyuukakunin6) {
+    public void setTounyuukakunin6(String tounyuukakunin6) {
         this.tounyuukakunin6 = tounyuukakunin6;
     }
 

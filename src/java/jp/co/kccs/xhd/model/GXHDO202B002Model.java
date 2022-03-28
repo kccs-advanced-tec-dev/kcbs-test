@@ -60,7 +60,7 @@ public class GXHDO202B002Model implements Serializable {
     private BigDecimal kadoujikan = null;
     
     /** ｼｰﾙ液量確認 */
-    private Integer si_ruekikakunin = null;
+    private String si_ruekikakunin = "";
     
     /** 粉砕開始日時 */
     private Timestamp funsaikaisinichiji = null;
@@ -275,7 +275,7 @@ public class GXHDO202B002Model implements Serializable {
      * ｼｰﾙ液量確認
      * @return the si_ruekikakunin
      */
-    public Integer getSi_ruekikakunin() {
+    public String getSi_ruekikakunin() {
         return si_ruekikakunin;
     }
 
@@ -283,7 +283,7 @@ public class GXHDO202B002Model implements Serializable {
      * ｼｰﾙ液量確認
      * @param si_ruekikakunin the si_ruekikakunin to set
      */
-    public void setSi_ruekikakunin(Integer si_ruekikakunin) {
+    public void setSi_ruekikakunin(String si_ruekikakunin) {
         this.si_ruekikakunin = si_ruekikakunin;
     }
 

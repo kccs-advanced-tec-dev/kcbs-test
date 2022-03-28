@@ -363,10 +363,10 @@ public class GXHDO202B028Model implements Serializable {
     private Integer fpjyunbi_toritukehonsuu2 = null;
 
     /** 圧送ﾀﾝｸの洗浄 */
-    private Integer assoutanknosenjyou = null;
+    private String assoutanknosenjyou = "";
 
     /** 排出容器の内袋 */
-    private Integer haisyutuyoukinoutibukuro = null;
+    private String haisyutuyoukinoutibukuro = "";
 
     /** F/PﾀﾝｸNo */
     private Integer fptankno = null;
@@ -2227,7 +2227,7 @@ public class GXHDO202B028Model implements Serializable {
      * 圧送ﾀﾝｸの洗浄
      * @return the assoutanknosenjyou
      */
-    public Integer getAssoutanknosenjyou() {
+    public String getAssoutanknosenjyou() {
         return assoutanknosenjyou;
     }
 
@@ -2235,7 +2235,7 @@ public class GXHDO202B028Model implements Serializable {
      * 圧送ﾀﾝｸの洗浄
      * @param assoutanknosenjyou the assoutanknosenjyou to set
      */
-    public void setAssoutanknosenjyou(Integer assoutanknosenjyou) {
+    public void setAssoutanknosenjyou(String assoutanknosenjyou) {
         this.assoutanknosenjyou = assoutanknosenjyou;
     }
 
@@ -2243,7 +2243,7 @@ public class GXHDO202B028Model implements Serializable {
      * 排出容器の内袋
      * @return the haisyutuyoukinoutibukuro
      */
-    public Integer getHaisyutuyoukinoutibukuro() {
+    public String getHaisyutuyoukinoutibukuro() {
         return haisyutuyoukinoutibukuro;
     }
 
@@ -2251,7 +2251,7 @@ public class GXHDO202B028Model implements Serializable {
      * 排出容器の内袋
      * @param haisyutuyoukinoutibukuro the haisyutuyoukinoutibukuro to set
      */
-    public void setHaisyutuyoukinoutibukuro(Integer haisyutuyoukinoutibukuro) {
+    public void setHaisyutuyoukinoutibukuro(String haisyutuyoukinoutibukuro) {
         this.haisyutuyoukinoutibukuro = haisyutuyoukinoutibukuro;
     }
 
