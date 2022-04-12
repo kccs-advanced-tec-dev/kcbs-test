@@ -193,11 +193,6 @@ public class GXHDO102B027Const {
     public static final String BTN_EDABAN_COPY_TOP = "sr_ss_siropori_edaban_copy_Top";
 
     /**
-     * 粉砕終了日時(画面上ボタン)
-     */
-    public static final String BTN_FUNSAISYUURYOUNICHIJI_TOP = "sr_ss_siropori_funsaisyuuryounichiji_Top";
-
-    /**
      * ﾊﾞｲﾝﾀﾞｰ混合日時(画面上ボタン)
      */
     public static final String BTN_BINDERKONGOUNICHIJI_TOP = "sr_ss_siropori_binderkongounichiji_Top";
@@ -236,11 +231,6 @@ public class GXHDO102B027Const {
      * 枝番ｺﾋﾟｰ(画面下ボタン)
      */
     public static final String BTN_EDABAN_COPY_BOTTOM = "sr_ss_siropori_edaban_copy_Bottom";
-
-    /**
-     * 粉砕終了日時(画面下ボタン)
-     */
-    public static final String BTN_FUNSAISYUURYOUNICHIJI_BOTTOM = "sr_ss_siropori_funsaisyuuryounichiji_Bottom";
 
     /**
      * ﾊﾞｲﾝﾀﾞｰ混合日時(画面下ボタン)
