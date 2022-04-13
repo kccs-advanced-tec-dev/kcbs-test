@@ -444,7 +444,7 @@ public class GXHDO501A implements Serializable {
         }
         String paramTxtTantousya = StringUtil.nullToBlank(getTxtTantousya());
         //担当者ﾃﾞｰﾀ存在チェック
-        if (!"".equals(paramTxtTantousya) && selectTxtTantousyaData() == 0) {
+        if (!"".equals(paramTxtTantousya) && selectTxtTantousyaData() == false) {
             FacesMessage message
                     = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000011", "担当者"), null);
             FacesContext.getCurrentInstance().addMessage(null, message);
@@ -1643,33 +1643,33 @@ public class GXHDO501A implements Serializable {
     }
 
     /**
-     * 担当者データ件数取得
+     * 担当者ﾏｽﾀ存在判定
      *
-     * @return 検索結果件数
+     * @return 検索結果
      */
-    public Long selectTxtTantousyaData() {
-
-        long count;
+    public boolean selectTxtTantousyaData() {
+        boolean result = false;
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceDocServer);
             // パラメータ設定
             String paramTxtTantousya = StringUtil.nullToBlank(getTxtTantousya());
             List<Object> params = new ArrayList<>();
-            String sql = " SELECT COUNT(tantousya) AS COUNT "
-                    + " FROM TANTOMAS "
-                    + " WHERE ( TANTOUSYACODE = ? ) "
-                    + " AND ZAISEKI = '1' ";
+            String sql = "SELECT tantousyacode "
+                    + " FROM tantomas WHERE tantousyacode = ? and zaiseki = '1' ";
 
             params.addAll(Arrays.asList(paramTxtTantousya));
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-            Map result = queryRunner.query(sql, new MapHandler(), params.toArray());
-            count = (long) result.get("COUNT");
+            Map tantomas = queryRunner.query(sql, new MapHandler(), params.toArray());
 
+            if (null == tantomas || tantomas.isEmpty()) {
+                return result;
+            }      
+            result = true;
         } catch (SQLException ex) {
-            count = 0;
+            result = false;
             ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
         }
-        return count;
+        return result;
     }
 
     /**
