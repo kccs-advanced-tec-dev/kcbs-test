@@ -1160,10 +1160,7 @@ public class GXHDO102B030 implements IFormLogic {
             String rev = StringUtil.nullToBlank(getMapData(fxhdd11RevInfo, "rev")); //親ﾛｯﾄ枝番
             // (19)[ｽﾘｯﾌﾟ作製・ｽﾗﾘｰ固形分調整(ｽﾃﾝ容器)]から、ﾃﾞｰﾀを取得
             Map srSlipSlurrykokeibuntyouseiSutenyoukiData = loadSrSlipSlurrykokeibuntyouseiSutenyouki(queryRunnerQcdb, kojyo, lotNo9, oyalotEdaban, rev);
-            // (20)[ｽﾘｯﾌﾟ作製・ﾊﾞｲﾝﾀﾞｰ秤量・投入]から、ﾃﾞｰﾀを取得
-            Map srSlipBinderhyouryouTounyuuData = loadSrSlipBinderhyouryouTounyuu(queryRunnerQcdb, kojyo, lotNo9, oyalotEdaban, rev);
-            if (srSlipSlurrykokeibuntyouseiSutenyoukiData == null || srSlipSlurrykokeibuntyouseiSutenyoukiData.isEmpty()
-                    || srSlipBinderhyouryouTounyuuData == null || srSlipBinderhyouryouTounyuuData.isEmpty()) {
+            if (srSlipSlurrykokeibuntyouseiSutenyoukiData == null || srSlipSlurrykokeibuntyouseiSutenyoukiData.isEmpty()) {
                 // ｴﾗｰ項目をﾘｽﾄに追加
                 ErrorMessageInfo checkItemError = MessageUtil.getErrorMessageInfo("XHD-000210", true, true, null, "ﾃﾞｰﾀ");
                 if (checkItemError != null) {
@@ -1182,7 +1179,23 @@ public class GXHDO102B030 implements IFormLogic {
                     }
                 }
             }
-            calcYouzaityouseiryou(processData, srSlipSlurrykokeibuntyouseiSutenyoukiData, srSlipBinderhyouryouTounyuuData);
+
+            HashMap<String, String> kikakuMap = new HashMap<>();
+            int kikakuti = 0;
+            // 規格値取得
+            getKikakuValue(queryRunnerQcdb, shikakariData, lotNo, kikakuMap);
+            if (!StringUtil.isEmpty(StringUtil.nullToBlank(kikakuMap.get("errorMessage")))) {
+                // ｴﾗｰ項目をﾘｽﾄに追加
+                ErrorMessageInfo checkItemError = MessageUtil.getErrorMessageInfo("XHD-000028", true, false, null, "規格情報");
+                if (checkItemError != null) {
+                    processData.setErrorMessageInfoList(Arrays.asList(checkItemError));
+                    return processData;
+                }
+            }else{
+                kikakuti = Integer.parseInt(kikakuMap.get("kikakuti"));
+            }
+
+            calcYouzaityouseiryou(processData, srSlipSlurrykokeibuntyouseiSutenyoukiData, kikakuti);
             processData.setMethod("");
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog(youzaityouseiryou.getLabel1() + "計算にエラー発生", ex, LOGGER);
@@ -1193,6 +1206,133 @@ public class GXHDO102B030 implements IFormLogic {
             return processData;
         }
         return processData;
+    }
+
+    /**
+     * 規格値取得
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト(Qcdb)
+     * @param shikakariData 前工程WIPから仕掛情報
+     * @param lotNo ﾛｯﾄNo
+     * @param kikakutiMap 規格値マップ
+     * @throws SQLException 例外エラー
+     */
+    protected void getKikakuValue(QueryRunner queryRunnerQcdb, Map shikakariData, String lotNo, HashMap<String, String> kikakutiMap) throws SQLException {
+        String kojyo = lotNo.substring(0, 3);
+        String lotNo9 = lotNo.substring(3, 12);
+        String edaban = lotNo.substring(12, 15);
+        String syurui = "ｽﾘｯﾌﾟ作製";
+        kikakutiMap.put("errorMessage", "");
+        kikakutiMap.put("kikakuti", "0");
+        // [前工程設計]から、ﾃﾞｰﾀを取得
+        Map daMkSekKeiData = loadDaMkSekKeiData(queryRunnerQcdb, kojyo, lotNo9, edaban, syurui);
+        if (daMkSekKeiData == null || daMkSekKeiData.isEmpty()) {
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            kikakutiMap.put("errorMessage", "error");
+            return;
+        }
+
+        // 設計No
+        String sekkeiNo = StringUtil.nullToBlank(getMapData(daMkSekKeiData, "sekkeiNo"));
+        // ﾊﾟﾀｰﾝ
+        String pattern = StringUtil.nullToBlank(getMapData(daMkSekKeiData, "pattern"));
+        String kikakuti;
+        // [前工程規格情報]から、ﾃﾞｰﾀを取得
+        Map daMkJokenData = loadDaMkJokenData(queryRunnerQcdb, sekkeiNo);
+        if (daMkJokenData == null || daMkJokenData.isEmpty()) {
+            // [前工程標準規格情報]から、ﾃﾞｰﾀを取得
+            Map daMkhYoJunJokenData = loadDaMkhYoJunJokenData(queryRunnerQcdb, (String) shikakariData.get("hinmei"), pattern);
+            if (daMkhYoJunJokenData == null || daMkhYoJunJokenData.isEmpty()) {
+                // ｴﾗｰ項目をﾘｽﾄに追加
+                kikakutiMap.put("errorMessage", "error");
+                return;
+            }
+            // 前工程規格情報の規格値
+            kikakuti = StringUtil.nullToBlank(getMapData(daMkhYoJunJokenData, "kikakuti"));
+            if (!NumberUtil.isIntegerNumeric(kikakuti)) {
+                // ｴﾗｰ項目をﾘｽﾄに追加
+                kikakutiMap.put("errorMessage", "error");
+                return;
+            }
+        } else {
+            // 前工程規格情報の規格値
+            kikakuti = StringUtil.nullToBlank(getMapData(daMkJokenData, "kikakuti"));
+            if (!NumberUtil.isIntegerNumeric(kikakuti)) {
+                // ｴﾗｰ項目をﾘｽﾄに追加
+                kikakutiMap.put("errorMessage", "error");
+                return;
+            }
+        }
+        kikakutiMap.put("kikakuti", kikakuti);
+    }
+
+    /**
+     * [前工程設計]から、ﾃﾞｰﾀを取得
+     *
+     * @param queryRunnerQcdb オブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo LotNo
+     * @param edaban 枝番
+     * @param syurui 種類
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadDaMkSekKeiData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo, String edaban, String syurui) throws SQLException {
+        // 前工程設計データの取得
+        String sql = "SELECT sekkeino, pattern FROM da_mksekkei"
+                + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND syurui = ? ";
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(syurui);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+
+    /**
+     * [前工程規格情報]から、ﾃﾞｰﾀを取得
+     *
+     * @param queryRunnerQcdb オブジェクト
+     * @param sekkeiNo 設計No
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadDaMkJokenData(QueryRunner queryRunnerQcdb, String sekkeiNo) throws SQLException {
+        // 前工程規格情報データの取得
+        String sql = "SELECT kikakuti FROM da_mkjoken"
+                + " WHERE sekkeino = ? AND kouteimei = ? AND koumokumei = ? AND kanrikoumokumei = ? ";
+        List<Object> params = new ArrayList<>();
+        params.add(sekkeiNo);
+        params.add("ｽﾘｯﾌﾟ作製");
+        params.add("ﾊﾞｲﾝﾀﾞｰ秤量・投入");
+        params.add("ﾊﾞｲﾝﾀﾞｰ添加量規格");
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+
+    /**
+     * [前工程標準規格情報]から、ﾃﾞｰﾀを取得
+     *
+     * @param queryRunnerQcdb オブジェクト
+     * @param hinmei 品名
+     * @param pattern ﾊﾟﾀｰﾝ
+     * @param syurui 種類
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadDaMkhYoJunJokenData(QueryRunner queryRunnerQcdb, String hinmei, String pattern) throws SQLException {
+        // 前工程標準規格情報データの取得
+        String sql = "SELECT kikakuti FROM da_mkhyojunjoken"
+                + " WHERE hinmei = ? AND pattern = ? AND kouteimei = ?  AND koumokumei = ? AND kanrikoumokumei = ?";
+        List<Object> params = new ArrayList<>();
+        params.add(hinmei);
+        params.add(pattern);
+        params.add("ｽﾘｯﾌﾟ作製");
+        params.add("ﾊﾞｲﾝﾀﾞｰ秤量・投入");
+        params.add("ﾊﾞｲﾝﾀﾞｰ添加量規格");
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
     }
 
     /**
@@ -1234,7 +1374,7 @@ public class GXHDO102B030 implements IFormLogic {
      * @param srSlipSlurrykokeibuntyouseiSutenyoukiData ｽﾗﾘｰ固形分調整(ｽﾃﾝ容器)ﾃﾞｰﾀ
      * @param srSlipBinderhyouryouTounyuuData ﾊﾞｲﾝﾀﾞｰ秤量・投入ﾃﾞｰﾀ
      */
-    private void calcYouzaityouseiryou(ProcessData processData, Map srSlipSlurrykokeibuntyouseiSutenyoukiData, Map srSlipBinderhyouryouTounyuuData) {
+    private void calcYouzaityouseiryou(ProcessData processData, Map srSlipSlurrykokeibuntyouseiSutenyoukiData, int kikakuti) {
         // 誘電体ｽﾗﾘｰ_調合量1
         FXHDD01 tyougouryou1 = getItemRow(processData.getItemList(), GXHDO102B030Const.YUUDENTAISLURRY_TYOUGOURYOU1);
         // 誘電体ｽﾗﾘｰ_調合量2
@@ -1272,10 +1412,10 @@ public class GXHDO102B030 implements IFormLogic {
                 BigDecimal dassikokeibun = new BigDecimal(String.valueOf(srSlipSlurrykokeibuntyouseiSutenyoukiData.get("dassikokeibun")));// 脱脂固形分
                 BigDecimal slipyouzaityouseiryouVal = new BigDecimal(String.valueOf(srSlipSlurrykokeibuntyouseiSutenyoukiData.get("youzaityouseiryou")));// 溶剤調整量
                 BigDecimal kokeibunhiritu = new BigDecimal(String.valueOf(srSlipSlurrykokeibuntyouseiSutenyoukiData.get("kokeibunhiritu")));// 固形分比率
-                BigDecimal bindertenkaryougoukei = new BigDecimal(String.valueOf(srSlipBinderhyouryouTounyuuData.get("bindertenkaryougoukei")));// ﾊﾞｲﾝﾀﾞｰ添加量合計
-                //「溶剤調整量」= 「脱脂固形分」 × (「ｽﾗﾘｰ重量」 + 「溶剤調整量」) ÷ 「固形分比率」 - 「ｽﾗﾘｰ重量」 - 「ﾊﾞｲﾝﾀﾞｰ添加量合計」
+                BigDecimal bindertenkaryoukikaku = new BigDecimal(kikakuti);// ﾊﾞｲﾝﾀﾞｰ添加量規格
+                //「溶剤調整量」= 「脱脂固形分」 × (「ｽﾗﾘｰ重量」 + 「溶剤調整量」) ÷ 「固形分比率」 - 「ｽﾗﾘｰ重量」 - 「ﾊﾞｲﾝﾀﾞｰ添加量規格」
                 BigDecimal youzaityouseiryouVal = dassikokeibun.multiply(slurryjyuuryou.add(slipyouzaityouseiryouVal))
-                        .divide(kokeibunhiritu, 2, RoundingMode.DOWN).subtract(slurryjyuuryou).subtract(bindertenkaryougoukei);
+                        .divide(kokeibunhiritu, 2, RoundingMode.DOWN).subtract(slurryjyuuryou).subtract(bindertenkaryoukikaku);
                 // 計算結果の設定
                 youzaityouseiryou.setValue(youzaityouseiryouVal.setScale(0, RoundingMode.HALF_UP).toPlainString());
                 // 溶剤調整量 ÷ 2
