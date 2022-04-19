@@ -340,7 +340,7 @@ public class GXHDO501B implements Serializable {
         // 規格ラジオボタン設定
         rKikaku="標準規格";
         // 種類コンボボックス設定
-        cmbSyuruiData = new String[]{"ｶﾞﾗｽ作製","ｶﾞﾗｽｽﾗﾘｰ作製","添加剤ｽﾗﾘｰ作製","誘電体ｽﾗﾘｰ作製","ﾊﾞｲﾝﾀﾞｰ溶液作製","ｽﾘｯﾌﾟ作製"};
+        cmbSyuruiData = new String[]{"ｶﾞﾗｽ作製","ｶﾞﾗｽｽﾗﾘｰ作製","添加材ｽﾗﾘｰ作製","誘電体ｽﾗﾘｰ作製","ﾊﾞｲﾝﾀﾞｰ溶液作製","ｽﾘｯﾌﾟ作製"};
      
         listCountMax = session.getAttribute("menuParam") != null ? Integer.parseInt(session.getAttribute("menuParam").toString()) : -1;
         listCountWarn = session.getAttribute("hyojiKensu") != null ? Integer.parseInt(session.getAttribute("hyojiKensu").toString()) : -1;

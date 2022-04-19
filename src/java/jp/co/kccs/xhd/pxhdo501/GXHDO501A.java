@@ -107,6 +107,12 @@ public class GXHDO501A implements Serializable {
      */
     @Resource(mappedName = "jdbc/DocumentServer")
     private transient DataSource dataSourceDocServer;
+    
+    /**
+     * DataSource
+     */
+    @Resource(mappedName = "jdbc/wip")
+    private transient DataSource dataSourceWip;
 
     /**
      * DataSource(QCDB)
@@ -444,7 +450,7 @@ public class GXHDO501A implements Serializable {
         }
         String paramTxtTantousya = StringUtil.nullToBlank(getTxtTantousya());
         //担当者ﾃﾞｰﾀ存在チェック
-        if (!"".equals(paramTxtTantousya) && selectTxtTantousyaData() == 0) {
+        if (!"".equals(paramTxtTantousya) && selectTxtTantousyaData() == false) {
             FacesMessage message
                     = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000011", "担当者"), null);
             FacesContext.getCurrentInstance().addMessage(null, message);
@@ -764,8 +770,8 @@ public class GXHDO501A implements Serializable {
                 lot_syurui = "GLASS";
                 break;
             // ｶﾞﾗｽｽﾗｰ作製の場合：GLASSSLURRY
-            case "ｶﾞﾗｽｽﾗｰ作製":
-                lot_syurui = "GLASSSLURRY";
+            case "ｶﾞﾗｽｽﾗﾘｰ作製":
+                lot_syurui = "GSLURRY";
                 break;
             // 添加材ｽﾗﾘｰ作製の場合：ADDITIVE
             case "添加材ｽﾗﾘｰ作製":
@@ -796,13 +802,49 @@ public class GXHDO501A implements Serializable {
             paramObj.put("kokeibuncode", "");
             paramObj.put("saisei_kaisuu", "");
             JSONObject skrecObj = new JSONObject();
-            skrecObj.put("HasseiSuu", gxhdo501aModel.getJyuuryou()); // [重量](F9ｾﾙ)
-            skrecObj.put("KoteiCode", gxhdo501aModel.getKouteimei()); // [工程](D9ｾﾙ)
-            skrecObj.put("LotKubunCode", gxhdo501aModel.getLotkubunn()); // [ﾛｯﾄ区分](G9ｾﾙ)
-            skrecObj.put("OwnerCode", gxhdo501aModel.getOwner()); // [ｵｰﾅｰ](H9ｾﾙ)
-            skrecObj.put("ConventionalLot", hinmeisaibanStr.substring(hinmeiStr.length())); // [品名](E9ｾﾙ) ※連番の部分
+            skrecObj.put("HasseiSuu", Double.parseDouble(gxhdo501aModel.getJyuuryou()));
+            skrecObj.put("KCPNO", "");
+            skrecObj.put("TCode", "");
+            skrecObj.put("Tokuisaki", "");
+            skrecObj.put("Seiden", "");
+            skrecObj.put("KiboNouki", "1980-01-01T00:00:00");
+            skrecObj.put("KaitoNouki", "1980-01-01T00:00:00");
+            skrecObj.put("KoteiCode", gxhdo501aModel.getKouteimei());
+            skrecObj.put("ChokkouFlag", "1");
+            skrecObj.put("YusenCode", "");
+            skrecObj.put("LotKubunCode", gxhdo501aModel.getLotkubunn());
+            skrecObj.put("OwnerCode", gxhdo501aModel.getOwner());
+            skrecObj.put("KojunCode", "");
+            skrecObj.put("KojunNo", 0);
+            skrecObj.put("ShukkaLot", "");
+            skrecObj.put("Bikou1", "");
+            skrecObj.put("Bikou2", "");
+            skrecObj.put("Bikou3", "");
+            skrecObj.put("Bikou4", "");
+            skrecObj.put("Bikou5", "");
+            skrecObj.put("Bikou6", "");
+            skrecObj.put("Bikou7", "");
+            skrecObj.put("Bikou8", "");
+            skrecObj.put("Bikou9", "");
+            skrecObj.put("Bikou10", "");
+            skrecObj.put("Hinmei", "NA");
+            skrecObj.put("VendorLot", "");
+            skrecObj.put("KonyuTanka", 0);
+            skrecObj.put("ZaikoKubun", "");
+            skrecObj.put("LotKigo", "AA");
+            skrecObj.put("ChumonNo", "");
+            skrecObj.put("MakiboNo", "");
+            skrecObj.put("ConventionalLot", hinmeisaibanStr.substring(hinmeiStr.length()));
+            skrecObj.put("SuuRyoUnit", "KG");
+            skrecObj.put("RollNo", 0);
+            skrecObj.put("SlurryKanseiNichiji", "1980-01-01T00:00:00");
             paramObj.put("skrec", skrecObj);
             paramList.add(paramObj.toString());
+            
+            
+
+            
+            
         }
 
         return paramList;
@@ -1647,29 +1689,29 @@ public class GXHDO501A implements Serializable {
      *
      * @return 検索結果件数
      */
-    public Long selectTxtTantousyaData() {
-
-        long count;
+    public boolean selectTxtTantousyaData() {
+        boolean result = false;
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceDocServer);
             // パラメータ設定
             String paramTxtTantousya = StringUtil.nullToBlank(getTxtTantousya());
             List<Object> params = new ArrayList<>();
-            String sql = " SELECT COUNT(tantousya) AS COUNT "
-                    + " FROM TANTOMAS "
-                    + " WHERE ( TANTOUSYACODE = ? ) "
-                    + " AND ZAISEKI = '1' ";
+            String sql = "SELECT tantousyacode "
+                    + " FROM tantomas WHERE tantousyacode = ? and zaiseki = '1' ";
 
             params.addAll(Arrays.asList(paramTxtTantousya));
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-            Map result = queryRunner.query(sql, new MapHandler(), params.toArray());
-            count = (long) result.get("COUNT");
+            Map tantomas = queryRunner.query(sql, new MapHandler(), params.toArray());
 
+            if (null == tantomas || tantomas.isEmpty()) {
+                return result;
+            }      
+            result = true;
         } catch (SQLException ex) {
-            count = 0;
+            result = false;
             ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
         }
-        return count;
+        return result;
     }
 
     /**
