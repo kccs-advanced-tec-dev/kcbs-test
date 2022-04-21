@@ -596,16 +596,8 @@ public class GXHDO501A implements Serializable {
             // 毎行のチェック処理
             String rtnStep = checkRowData(gxhdo501aModel, resultMap);
             if ("L".equals(rtnStep)) {
-                int rowDataCount = resultMap.get("rowDataCount");
-                if (rowDataCount == 0) {
-                    gxhdo501aModel.setResulta("NG");
-                    gxhdo501aModel.setResultb("取込件数が0件です。");
-                    // NG数+1
-                    resultMap.put("ngCount", resultMap.get("ngCount") + 1);
-                } else {
                     // M.結果欄の入力
                     gxhdo501aModel.setResulta("OK");
-                }
             }
         });
 
@@ -646,8 +638,9 @@ public class GXHDO501A implements Serializable {
             }
             // S.登録件数ﾁｪｯｸ
             int kikakuCount = resultMap.get("kikakuCount");
+            int sekkeiCount = resultMap.get("sekkeiCount");
             resultMessageList.clear();
-            if (kikakuCount == 0) {
+            if (kikakuCount == 0 && sekkeiCount == 0) {
                 resultMessageList.add(MessageUtil.getMessage("XHD-000214", "登録件数"));
             } else {
                 resultMessageList.add("設計ﾃﾞｰﾀを" + resultMap.get("sekkeiCount") + "件登録しました。");
@@ -715,12 +708,38 @@ public class GXHDO501A implements Serializable {
             }
             String lotNo = StringUtil.nullToBlank(gxhdo501aModel.getLotno());
             List<DaMkhyojunjoken> rowDataList = gxhdo501aModel.getRowdata();
-            for (DaMkhyojunjoken data : rowDataList) {
-                // 規格値
-                dkikakuti = StringUtil.nullToBlank(data.getKikakuti());
-                if ("-".equals(dkikakuti)) {
-                    continue;
-                }
+            if(!rowDataList.isEmpty()){
+                for (DaMkhyojunjoken data : rowDataList) {
+                    // 規格値
+                    dkikakuti = StringUtil.nullToBlank(data.getKikakuti());
+                    if ("-".equals(dkikakuti)) {
+                        continue;
+                    }
+                    // ｸ.[製造LotNo]を製造LotNo(変数)と比較する。
+                    if (!lotNoP.equals(lotNo)) {
+                        lotNoP = lotNo;
+                        // (A).異なる場合
+                        if (maxSekkeino >= Integer.MAX_VALUE) {
+                            resultMessageList.clear();
+                            resultMessageList.add(MessageUtil.getMessage("XHD-000211", "設計No"));
+                            stepFlg = "U";
+                            break;
+                        }
+                        maxSekkeino++;
+                        // (ｲ).設計ﾃﾞｰﾀにﾃﾞｰﾀ登録を行う
+                        sekkeiCount++;
+                        insertDaMksekkei(conQcdb, queryRunnerQcdb, fvsyurui, maxSekkeino, gxhdo501aModel);
+                        // (ｳ).規格情報にﾃﾞｰﾀ登録を行う
+                        insertDaMkjoken(conQcdb, queryRunnerQcdb, maxSekkeino, data);
+                        kikakuCount++;
+                    } else {
+                        // (ｱ).規格情報にﾃﾞｰﾀ登録を行う
+                        insertDaMkjoken(conQcdb, queryRunnerQcdb, maxSekkeino, data);
+                        kikakuCount++;
+                    }
+                }              
+            } else {
+                //規格情報がない場合、設計情報のみ登録する
                 // ｸ.[製造LotNo]を製造LotNo(変数)と比較する。
                 if (!lotNoP.equals(lotNo)) {
                     lotNoP = lotNo;
@@ -735,13 +754,6 @@ public class GXHDO501A implements Serializable {
                     // (ｲ).設計ﾃﾞｰﾀにﾃﾞｰﾀ登録を行う
                     sekkeiCount++;
                     insertDaMksekkei(conQcdb, queryRunnerQcdb, fvsyurui, maxSekkeino, gxhdo501aModel);
-                    // (ｳ).規格情報にﾃﾞｰﾀ登録を行う
-                    insertDaMkjoken(conQcdb, queryRunnerQcdb, maxSekkeino, data);
-                    kikakuCount++;
-                } else {
-                    // (ｱ).規格情報にﾃﾞｰﾀ登録を行う
-                    insertDaMkjoken(conQcdb, queryRunnerQcdb, maxSekkeino, data);
-                    kikakuCount++;
                 }
             }
             if ("U".equals(stepFlg)) {
