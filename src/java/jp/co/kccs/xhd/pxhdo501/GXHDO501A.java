@@ -107,6 +107,12 @@ public class GXHDO501A implements Serializable {
      */
     @Resource(mappedName = "jdbc/DocumentServer")
     private transient DataSource dataSourceDocServer;
+    
+    /**
+     * DataSource
+     */
+    @Resource(mappedName = "jdbc/wip")
+    private transient DataSource dataSourceWip;
 
     /**
      * DataSource(QCDB)
@@ -590,16 +596,8 @@ public class GXHDO501A implements Serializable {
             // 毎行のチェック処理
             String rtnStep = checkRowData(gxhdo501aModel, resultMap);
             if ("L".equals(rtnStep)) {
-                int rowDataCount = resultMap.get("rowDataCount");
-                if (rowDataCount == 0) {
-                    gxhdo501aModel.setResulta("NG");
-                    gxhdo501aModel.setResultb("取込件数が0件です。");
-                    // NG数+1
-                    resultMap.put("ngCount", resultMap.get("ngCount") + 1);
-                } else {
                     // M.結果欄の入力
                     gxhdo501aModel.setResulta("OK");
-                }
             }
         });
 
@@ -640,8 +638,9 @@ public class GXHDO501A implements Serializable {
             }
             // S.登録件数ﾁｪｯｸ
             int kikakuCount = resultMap.get("kikakuCount");
+            int sekkeiCount = resultMap.get("sekkeiCount");
             resultMessageList.clear();
-            if (kikakuCount == 0) {
+            if (kikakuCount == 0 && sekkeiCount == 0) {
                 resultMessageList.add(MessageUtil.getMessage("XHD-000214", "登録件数"));
             } else {
                 resultMessageList.add("設計ﾃﾞｰﾀを" + resultMap.get("sekkeiCount") + "件登録しました。");
@@ -709,12 +708,38 @@ public class GXHDO501A implements Serializable {
             }
             String lotNo = StringUtil.nullToBlank(gxhdo501aModel.getLotno());
             List<DaMkhyojunjoken> rowDataList = gxhdo501aModel.getRowdata();
-            for (DaMkhyojunjoken data : rowDataList) {
-                // 規格値
-                dkikakuti = StringUtil.nullToBlank(data.getKikakuti());
-                if ("-".equals(dkikakuti)) {
-                    continue;
-                }
+            if(!rowDataList.isEmpty()){
+                for (DaMkhyojunjoken data : rowDataList) {
+                    // 規格値
+                    dkikakuti = StringUtil.nullToBlank(data.getKikakuti());
+                    if ("-".equals(dkikakuti)) {
+                        continue;
+                    }
+                    // ｸ.[製造LotNo]を製造LotNo(変数)と比較する。
+                    if (!lotNoP.equals(lotNo)) {
+                        lotNoP = lotNo;
+                        // (A).異なる場合
+                        if (maxSekkeino >= Integer.MAX_VALUE) {
+                            resultMessageList.clear();
+                            resultMessageList.add(MessageUtil.getMessage("XHD-000211", "設計No"));
+                            stepFlg = "U";
+                            break;
+                        }
+                        maxSekkeino++;
+                        // (ｲ).設計ﾃﾞｰﾀにﾃﾞｰﾀ登録を行う
+                        sekkeiCount++;
+                        insertDaMksekkei(conQcdb, queryRunnerQcdb, fvsyurui, maxSekkeino, gxhdo501aModel);
+                        // (ｳ).規格情報にﾃﾞｰﾀ登録を行う
+                        insertDaMkjoken(conQcdb, queryRunnerQcdb, maxSekkeino, data);
+                        kikakuCount++;
+                    } else {
+                        // (ｱ).規格情報にﾃﾞｰﾀ登録を行う
+                        insertDaMkjoken(conQcdb, queryRunnerQcdb, maxSekkeino, data);
+                        kikakuCount++;
+                    }
+                }              
+            } else {
+                //規格情報がない場合、設計情報のみ登録する
                 // ｸ.[製造LotNo]を製造LotNo(変数)と比較する。
                 if (!lotNoP.equals(lotNo)) {
                     lotNoP = lotNo;
@@ -729,13 +754,6 @@ public class GXHDO501A implements Serializable {
                     // (ｲ).設計ﾃﾞｰﾀにﾃﾞｰﾀ登録を行う
                     sekkeiCount++;
                     insertDaMksekkei(conQcdb, queryRunnerQcdb, fvsyurui, maxSekkeino, gxhdo501aModel);
-                    // (ｳ).規格情報にﾃﾞｰﾀ登録を行う
-                    insertDaMkjoken(conQcdb, queryRunnerQcdb, maxSekkeino, data);
-                    kikakuCount++;
-                } else {
-                    // (ｱ).規格情報にﾃﾞｰﾀ登録を行う
-                    insertDaMkjoken(conQcdb, queryRunnerQcdb, maxSekkeino, data);
-                    kikakuCount++;
                 }
             }
             if ("U".equals(stepFlg)) {
@@ -764,8 +782,8 @@ public class GXHDO501A implements Serializable {
                 lot_syurui = "GLASS";
                 break;
             // ｶﾞﾗｽｽﾗｰ作製の場合：GLASSSLURRY
-            case "ｶﾞﾗｽｽﾗｰ作製":
-                lot_syurui = "GLASSSLURRY";
+            case "ｶﾞﾗｽｽﾗﾘｰ作製":
+                lot_syurui = "GSLURRY";
                 break;
             // 添加材ｽﾗﾘｰ作製の場合：ADDITIVE
             case "添加材ｽﾗﾘｰ作製":
@@ -796,13 +814,49 @@ public class GXHDO501A implements Serializable {
             paramObj.put("kokeibuncode", "");
             paramObj.put("saisei_kaisuu", "");
             JSONObject skrecObj = new JSONObject();
-            skrecObj.put("HasseiSuu", gxhdo501aModel.getJyuuryou()); // [重量](F9ｾﾙ)
-            skrecObj.put("KoteiCode", gxhdo501aModel.getKouteimei()); // [工程](D9ｾﾙ)
-            skrecObj.put("LotKubunCode", gxhdo501aModel.getLotkubunn()); // [ﾛｯﾄ区分](G9ｾﾙ)
-            skrecObj.put("OwnerCode", gxhdo501aModel.getOwner()); // [ｵｰﾅｰ](H9ｾﾙ)
-            skrecObj.put("ConventionalLot", hinmeisaibanStr.substring(hinmeiStr.length())); // [品名](E9ｾﾙ) ※連番の部分
+            skrecObj.put("HasseiSuu", Double.parseDouble(gxhdo501aModel.getJyuuryou()));
+            skrecObj.put("KCPNO", "");
+            skrecObj.put("TCode", "");
+            skrecObj.put("Tokuisaki", "");
+            skrecObj.put("Seiden", "");
+            skrecObj.put("KiboNouki", "1980-01-01T00:00:00");
+            skrecObj.put("KaitoNouki", "1980-01-01T00:00:00");
+            skrecObj.put("KoteiCode", gxhdo501aModel.getKouteimei());
+            skrecObj.put("ChokkouFlag", "1");
+            skrecObj.put("YusenCode", "");
+            skrecObj.put("LotKubunCode", gxhdo501aModel.getLotkubunn());
+            skrecObj.put("OwnerCode", gxhdo501aModel.getOwner());
+            skrecObj.put("KojunCode", "");
+            skrecObj.put("KojunNo", 0);
+            skrecObj.put("ShukkaLot", "");
+            skrecObj.put("Bikou1", "");
+            skrecObj.put("Bikou2", "");
+            skrecObj.put("Bikou3", "");
+            skrecObj.put("Bikou4", "");
+            skrecObj.put("Bikou5", "");
+            skrecObj.put("Bikou6", "");
+            skrecObj.put("Bikou7", "");
+            skrecObj.put("Bikou8", "");
+            skrecObj.put("Bikou9", "");
+            skrecObj.put("Bikou10", "");
+            skrecObj.put("Hinmei", "NA");
+            skrecObj.put("VendorLot", "");
+            skrecObj.put("KonyuTanka", 0);
+            skrecObj.put("ZaikoKubun", "");
+            skrecObj.put("LotKigo", "AA");
+            skrecObj.put("ChumonNo", "");
+            skrecObj.put("MakiboNo", "");
+            skrecObj.put("ConventionalLot", hinmeisaibanStr.substring(hinmeiStr.length()));
+            skrecObj.put("SuuRyoUnit", "KG");
+            skrecObj.put("RollNo", 0);
+            skrecObj.put("SlurryKanseiNichiji", "1980-01-01T00:00:00");
             paramObj.put("skrec", skrecObj);
             paramList.add(paramObj.toString());
+            
+            
+
+            
+            
         }
 
         return paramList;

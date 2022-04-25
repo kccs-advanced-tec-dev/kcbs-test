@@ -56,6 +56,11 @@ public class SrTenkaFp {
     private String lotkubun;
 
     /**
+     * 投入量
+     */
+    private String tounyuuryou;
+
+    /**
      * 最終パス回数
      */
     private Integer saisyuupasskaisuu;
@@ -439,6 +444,22 @@ public class SrTenkaFp {
      */
     public void setLotkubun(String lotkubun) {
         this.lotkubun = lotkubun;
+    }
+
+    /**
+     * 投入量
+     * @return the tounyuuryou
+     */
+    public String getTounyuuryou() {
+        return tounyuuryou;
+    }
+
+    /**
+     * 投入量
+     * @param tounyuuryou the tounyuuryou to set
+     */
+    public void setTounyuuryou(String tounyuuryou) {
+        this.tounyuuryou = tounyuuryou;
     }
 
     /**

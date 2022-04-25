@@ -2527,7 +2527,7 @@ public class GXHDO102B012 implements IFormLogic {
             String kojyo, String lotNo, String edaban, String systemTime, ProcessData processData) throws SQLException {
 
         String sql = "INSERT INTO tmp_sr_tenka_fp ( "
-                + "kojyo,lotno,edaban,tenkazaislurryhinmei,tenkazaislurrylotno,lotkubun,saisyuupasskaisuu,hozonyousamplekaisyuu,"
+                + "kojyo,lotno,edaban,tenkazaislurryhinmei,tenkazaislurrylotno,lotkubun,tounyuuryou,saisyuupasskaisuu,hozonyousamplekaisyuu,"
                 + "fuutaijyuuryou1,fuutaijyuuryou2,fuutaijyuuryou3,fuutaijyuuryou4,fuutaijyuuryou5,fuutaijyuuryou6,FPjyunbi_tantousya,"
                 + "FPjyunbi_filterrenketu,FPjyunbi_filterhinmei1,FPjyunbi_lotno1,FPjyunbi_toritukehonsuu1,FPjyunbi_filterhinmei2,"
                 + "FPjyunbi_lotno2,FPjyunbi_toritukehonsuu2,haisyutuyoukinoutibukuro,filterkaisuu,FPtankno,senjyoukakunin,FPkaisinichiji,"
@@ -2538,7 +2538,7 @@ public class GXHDO102B012 implements IFormLogic {
                 + "tenkazaislurryjyuuryou4,tenkazaislurryjyuuryou5,tenkazaislurryjyuuryou6,tenkazaislurryjyuuryougoukei,budomari,"
                 + "tenkazaislurryyuukoukigen,funsaihantei,tantousya,torokunichiji,kosinnichiji,revision,deleteflag "
                 + ") VALUES ("
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterTmpSrTenkaFp(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, processData, null);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -2565,7 +2565,7 @@ public class GXHDO102B012 implements IFormLogic {
             String kojyo, String lotNo, String edaban, String systemTime, ProcessData processData) throws SQLException {
 
         String sql = "UPDATE tmp_sr_tenka_fp SET "
-                + "tenkazaislurryhinmei = ?,tenkazaislurrylotno = ?,lotkubun = ?,saisyuupasskaisuu = ?,hozonyousamplekaisyuu = ?,fuutaijyuuryou1 = ?,"
+                + "tenkazaislurryhinmei = ?,tenkazaislurrylotno = ?,lotkubun = ?,tounyuuryou = ?,saisyuupasskaisuu = ?,hozonyousamplekaisyuu = ?,fuutaijyuuryou1 = ?,"
                 + "fuutaijyuuryou2 = ?,fuutaijyuuryou3 = ?,fuutaijyuuryou4 = ?,fuutaijyuuryou5 = ?,fuutaijyuuryou6 = ?,FPjyunbi_tantousya = ?,"
                 + "FPjyunbi_filterrenketu = ?,FPjyunbi_filterhinmei1 = ?,FPjyunbi_lotno1 = ?,FPjyunbi_toritukehonsuu1 = ?,FPjyunbi_filterhinmei2 = ?,"
                 + "FPjyunbi_lotno2 = ?,FPjyunbi_toritukehonsuu2 = ?,haisyutuyoukinoutibukuro = ?,filterkaisuu = ?,FPtankno = ?,senjyoukakunin = ?,"
@@ -2664,6 +2664,7 @@ public class GXHDO102B012 implements IFormLogic {
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B012Const.TENKAZAISLURRYHINMEI, srTenkaFp))); // 添加材ｽﾗﾘｰ品名
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B012Const.TENKAZAISLURRYLOTNO, srTenkaFp))); // 添加材ｽﾗﾘｰLotNo
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemList, GXHDO102B012Const.LOTKUBUN, srTenkaFp))); // ﾛｯﾄ区分
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemKikakuchi(pItemList, GXHDO102B012Const.TOUNYUURYOU, srTenkaFp))); // 投入量
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO102B012Const.SAISYUUPASSKAISUU, srTenkaFp))); // 最終パス回数
         params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO102B012Const.HOZONYOUSAMPLEKAISYUU, srTenkaFp), null)); // 保存用ｻﾝﾌﾟﾙ回収
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO102B012Const.FUUTAIJYUURYOU1, srTenkaFp))); // 風袋重量①
@@ -2753,7 +2754,7 @@ public class GXHDO102B012 implements IFormLogic {
             String kojyo, String lotNo, String edaban, String systemTime, ProcessData processData, SrTenkaFp tmpSrTenkaFp) throws SQLException {
 
         String sql = "INSERT INTO sr_tenka_fp ( "
-                + "kojyo,lotno,edaban,tenkazaislurryhinmei,tenkazaislurrylotno,lotkubun,saisyuupasskaisuu,hozonyousamplekaisyuu,"
+                + "kojyo,lotno,edaban,tenkazaislurryhinmei,tenkazaislurrylotno,lotkubun,tounyuuryou,saisyuupasskaisuu,hozonyousamplekaisyuu,"
                 + "fuutaijyuuryou1,fuutaijyuuryou2,fuutaijyuuryou3,fuutaijyuuryou4,fuutaijyuuryou5,fuutaijyuuryou6,FPjyunbi_tantousya,"
                 + "FPjyunbi_filterrenketu,FPjyunbi_filterhinmei1,FPjyunbi_lotno1,FPjyunbi_toritukehonsuu1,FPjyunbi_filterhinmei2,"
                 + "FPjyunbi_lotno2,FPjyunbi_toritukehonsuu2,haisyutuyoukinoutibukuro,filterkaisuu,FPtankno,senjyoukakunin,FPkaisinichiji,"
@@ -2764,7 +2765,7 @@ public class GXHDO102B012 implements IFormLogic {
                 + "tenkazaislurryjyuuryou4,tenkazaislurryjyuuryou5,tenkazaislurryjyuuryou6,tenkazaislurryjyuuryougoukei,budomari,"
                 + "tenkazaislurryyuukoukigen,funsaihantei,tantousya,torokunichiji,kosinnichiji,revision "
                 + ") VALUES ("
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterSrTenkaFp(true, newRev, kojyo, lotNo, edaban, systemTime, processData, tmpSrTenkaFp);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -2791,7 +2792,7 @@ public class GXHDO102B012 implements IFormLogic {
     private void updateSrTenkaFp(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, String jotaiFlg, BigDecimal newRev,
             String kojyo, String lotNo, String edaban, String systemTime, ProcessData processData) throws SQLException {
         String sql = "UPDATE sr_tenka_fp SET "
-                + "tenkazaislurryhinmei = ?,tenkazaislurrylotno = ?,lotkubun = ?,saisyuupasskaisuu = ?,hozonyousamplekaisyuu = ?,fuutaijyuuryou1 = ?,"
+                + "tenkazaislurryhinmei = ?,tenkazaislurrylotno = ?,lotkubun = ?,tounyuuryou = ?,saisyuupasskaisuu = ?,hozonyousamplekaisyuu = ?,fuutaijyuuryou1 = ?,"
                 + "fuutaijyuuryou2 = ?,fuutaijyuuryou3 = ?,fuutaijyuuryou4 = ?,fuutaijyuuryou5 = ?,fuutaijyuuryou6 = ?,FPjyunbi_tantousya = ?,"
                 + "FPjyunbi_filterrenketu = ?,FPjyunbi_filterhinmei1 = ?,FPjyunbi_lotno1 = ?,FPjyunbi_toritukehonsuu1 = ?,FPjyunbi_filterhinmei2 = ?,"
                 + "FPjyunbi_lotno2 = ?,FPjyunbi_toritukehonsuu2 = ?,haisyutuyoukinoutibukuro = ?,filterkaisuu = ?,FPtankno = ?,senjyoukakunin = ?,"
@@ -2859,6 +2860,7 @@ public class GXHDO102B012 implements IFormLogic {
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B012Const.TENKAZAISLURRYHINMEI, srTenkaFp))); // 添加材ｽﾗﾘｰ品名
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B012Const.TENKAZAISLURRYLOTNO, srTenkaFp))); // 添加材ｽﾗﾘｰLotNo
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO102B012Const.LOTKUBUN, srTenkaFp))); // ﾛｯﾄ区分
+        params.add(DBUtil.stringToStringObject(getItemKikakuchi(pItemList, GXHDO102B012Const.TOUNYUURYOU, srTenkaFp))); // 投入量
         params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO102B012Const.SAISYUUPASSKAISUU, srTenkaFp))); // 最終パス回数
         params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO102B012Const.HOZONYOUSAMPLEKAISYUU, srTenkaFp), 9)); // 保存用ｻﾝﾌﾟﾙ回収
         params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO102B012Const.FUUTAIJYUURYOU1, srTenkaFp))); // 風袋重量①
@@ -3052,6 +3054,10 @@ public class GXHDO102B012 implements IFormLogic {
             // ﾛｯﾄ区分
             case GXHDO102B012Const.LOTKUBUN:
                 return StringUtil.nullToBlank(srTenkaFp.getLotkubun());
+
+            // 投入量
+            case GXHDO102B012Const.TOUNYUURYOU:
+                return StringUtil.nullToBlank(srTenkaFp.getTounyuuryou());
 
             // 最終パス回数
             case GXHDO102B012Const.SAISYUUPASSKAISUU:
@@ -3307,7 +3313,7 @@ public class GXHDO102B012 implements IFormLogic {
             String kojyo, String lotNo, String edaban, String systemTime) throws SQLException {
 
         String sql = "INSERT INTO tmp_sr_tenka_fp ("
-                + "kojyo,lotno,edaban,tenkazaislurryhinmei,tenkazaislurrylotno,lotkubun,saisyuupasskaisuu,hozonyousamplekaisyuu,"
+                + "kojyo,lotno,edaban,tenkazaislurryhinmei,tenkazaislurrylotno,lotkubun,tounyuuryou,saisyuupasskaisuu,hozonyousamplekaisyuu,"
                 + "fuutaijyuuryou1,fuutaijyuuryou2,fuutaijyuuryou3,fuutaijyuuryou4,fuutaijyuuryou5,fuutaijyuuryou6,FPjyunbi_tantousya,"
                 + "FPjyunbi_filterrenketu,FPjyunbi_filterhinmei1,FPjyunbi_lotno1,FPjyunbi_toritukehonsuu1,FPjyunbi_filterhinmei2,"
                 + "FPjyunbi_lotno2,FPjyunbi_toritukehonsuu2,haisyutuyoukinoutibukuro,filterkaisuu,FPtankno,senjyoukakunin,FPkaisinichiji,"
@@ -3318,7 +3324,7 @@ public class GXHDO102B012 implements IFormLogic {
                 + "tenkazaislurryjyuuryou4,tenkazaislurryjyuuryou5,tenkazaislurryjyuuryou6,tenkazaislurryjyuuryougoukei,budomari,"
                 + "tenkazaislurryyuukoukigen,funsaihantei,tantousya,torokunichiji,kosinnichiji,revision,deleteflag "
                 + ") SELECT "
-                + "kojyo,lotno,edaban,tenkazaislurryhinmei,tenkazaislurrylotno,lotkubun,saisyuupasskaisuu,hozonyousamplekaisyuu,"
+                + "kojyo,lotno,edaban,tenkazaislurryhinmei,tenkazaislurrylotno,lotkubun,tounyuuryou,saisyuupasskaisuu,hozonyousamplekaisyuu,"
                 + "fuutaijyuuryou1,fuutaijyuuryou2,fuutaijyuuryou3,fuutaijyuuryou4,fuutaijyuuryou5,fuutaijyuuryou6,FPjyunbi_tantousya,"
                 + "FPjyunbi_filterrenketu,FPjyunbi_filterhinmei1,FPjyunbi_lotno1,FPjyunbi_toritukehonsuu1,FPjyunbi_filterhinmei2,"
                 + "FPjyunbi_lotno2,FPjyunbi_toritukehonsuu2,haisyutuyoukinoutibukuro,filterkaisuu,FPtankno,senjyoukakunin,FPkaisinichiji,"

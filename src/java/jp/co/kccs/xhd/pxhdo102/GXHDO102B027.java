@@ -120,10 +120,8 @@ public class GXHDO102B027 implements IFormLogic {
 
             //処理時にエラーの背景色を戻さない機能として登録
             processData.setNoCheckButtonId(Arrays.asList(GXHDO102B027Const.BTN_EDABAN_COPY_TOP,
-                    GXHDO102B027Const.BTN_FUNSAISYUURYOUNICHIJI_TOP,
                     GXHDO102B027Const.BTN_BINDERKONGOUNICHIJI_TOP,
                     GXHDO102B027Const.BTN_EDABAN_COPY_BOTTOM,
-                    GXHDO102B027Const.BTN_FUNSAISYUURYOUNICHIJI_BOTTOM,
                     GXHDO102B027Const.BTN_BINDERKONGOUNICHIJI_BOTTOM
             ));
 
@@ -193,11 +191,6 @@ public class GXHDO102B027 implements IFormLogic {
             case GXHDO102B027Const.BTN_DELETE_TOP:
             case GXHDO102B027Const.BTN_DELETE_BOTTOM:
                 method = "checkDataDelete";
-                break;
-            // 粉砕終了日時
-            case GXHDO102B027Const.BTN_FUNSAISYUURYOUNICHIJI_TOP:
-            case GXHDO102B027Const.BTN_FUNSAISYUURYOUNICHIJI_BOTTOM:
-                method = "setFunsaisyuuryouDateTime";
                 break;
             // ﾊﾞｲﾝﾀﾞｰ混合日時
             case GXHDO102B027Const.BTN_BINDERKONGOUNICHIJI_TOP:
@@ -899,100 +892,72 @@ public class GXHDO102B027 implements IFormLogic {
     }
 
     /**
-     * 粉砕終了日時設定処理
-     *
-     * @param processData 処理制御データ
-     * @return 処理制御データ
-     */
-    public ProcessData setFunsaisyuuryouDateTime(ProcessData processData) {
-        FXHDD01 itemFunsaisyuuryouDay = getItemRow(processData.getItemList(), GXHDO102B027Const.FUNSAISYUURYOU_DAY);// 粉砕終了日
-        FXHDD01 itemFunsaisyuuryouTime = getItemRow(processData.getItemList(), GXHDO102B027Const.FUNSAISYUURYOU_TIME);// 粉砕終了時間
-        FXHDD01 itemBinderkongouDay = getItemRow(processData.getItemList(), GXHDO102B027Const.BINDERKONGOU_DAY); // ﾊﾞｲﾝﾀﾞｰ混合日
-        FXHDD01 itemBinderkongouTime = getItemRow(processData.getItemList(), GXHDO102B027Const.BINDERKONGOU_TIME); // ﾊﾞｲﾝﾀﾞｰ混合時間
-        if (itemBinderkongouDay == null || itemBinderkongouTime == null || itemFunsaisyuuryouDay == null || itemFunsaisyuuryouTime == null) {
-            processData.setMethod("");
-            return processData;
-        }
-        if (StringUtil.isEmpty(itemFunsaisyuuryouDay.getValue()) && StringUtil.isEmpty(itemFunsaisyuuryouTime.getValue())) {
-            setDateTimeItem(itemFunsaisyuuryouDay, itemFunsaisyuuryouTime, new Date());
-            // ｽﾗﾘｰ経過日数計算処理
-            setSlurrykeikanisuu(processData, itemFunsaisyuuryouDay, itemFunsaisyuuryouTime, itemBinderkongouDay, itemBinderkongouTime);
-        }
-        processData.setMethod("");
-        return processData;
-    }
-
-    /**
-     * 「ｽﾗﾘｰ経過日数」計算処理
-     *
-     * @param processData 処理制御データ
-     * @param itemFunsaisyuuryouDay 粉砕終了日
-     * @param itemFunsaisyuuryouTime 粉砕終了時間
-     * @param itemBinderkongounDay ﾊﾞｲﾝﾀﾞｰ混合日
-     * @param itemBinderkongounTime ﾊﾞｲﾝﾀﾞｰ混合時間
-     * @return 処理制御データ
-     */
-    private ProcessData setSlurrykeikanisuu(ProcessData processData, FXHDD01 itemFunsaisyuuryouDay, FXHDD01 itemFunsaisyuuryouTime, FXHDD01 itemBinderkongouDay, FXHDD01 itemBinderkongouTime) {
-
-        FXHDD01 itemSlurrykeikanisuu = getItemRow(processData.getItemList(), GXHDO102B027Const.SLURRYKEIKANISUU); // ｽﾗﾘｰ経過日数
-        Date funsaisyuuryouDate = null;
-        Date binderkongouDate = null;
-        if (itemSlurrykeikanisuu == null) {
-            processData.setMethod("");
-            return processData;
-        }
-        // Dateオブジェクト変換
-        if (DateUtil.isValidYYMMDD(itemFunsaisyuuryouDay.getValue()) && DateUtil.isValidHHMM(itemFunsaisyuuryouTime.getValue())) {
-            funsaisyuuryouDate = getDateTimeItem(processData, GXHDO102B027Const.FUNSAISYUURYOU_DAY, GXHDO102B027Const.FUNSAISYUURYOU_TIME); // 粉砕終了日時
-        }
-        if (DateUtil.isValidYYMMDD(itemBinderkongouDay.getValue()) && DateUtil.isValidHHMM(itemBinderkongouTime.getValue())) {
-            binderkongouDate = getDateTimeItem(processData, GXHDO102B027Const.BINDERKONGOU_DAY, GXHDO102B027Const.BINDERKONGOU_TIME); //  ﾊﾞｲﾝﾀﾞｰ混合日時
-        }
-        if (funsaisyuuryouDate != null || binderkongouDate != null) {
-
-            // 日付の差分日数取得処理
-            int diffDays = DateUtil.diffDaysRoundingMode(funsaisyuuryouDate, binderkongouDate, RoundingMode.CEILING);
-            // 計算結果の設定
-            itemSlurrykeikanisuu.setValue(BigDecimal.valueOf(diffDays).toPlainString());
-        }
-        processData.setMethod("");
-        return processData;
-    }
-
-    /**
-     * 日付文字列⇒Dateオブジェクト変換
-     *
-     * @param itemDay 項目日付(日)
-     * @param itemTime 項目日付(時間)
-     * @return 変換後のデータ
-     */
-    private Date getDateTimeItem(ProcessData processData, String dayItemId, String timeItemId) {
-        FXHDD01 itemDay = getItemRow(processData.getItemList(), dayItemId); // 項目日付(日)
-        FXHDD01 itemTime = getItemRow(processData.getItemList(), timeItemId); // 項目日付(時間)
-        if (itemDay == null || itemTime == null) {
-            return null;
-        }
-        // Dateオブジェクト変換
-        Date dateVal = DateUtil.convertStringToDate(itemDay.getValue(), itemTime.getValue()); // 変換後のデータ
-        return dateVal;
-    }
-
-    /**
      * ﾊﾞｲﾝﾀﾞｰ混合日時設定処理
      *
      * @param processData 処理制御データ
      * @return 処理制御データ
      */
     public ProcessData setBinderkongouDateTime(ProcessData processData) {
-        FXHDD01 itemDay = getItemRow(processData.getItemList(), GXHDO102B027Const.BINDERKONGOU_DAY);
-        FXHDD01 itemTime = getItemRow(processData.getItemList(), GXHDO102B027Const.BINDERKONGOU_TIME);
-        if (StringUtil.isEmpty(itemDay.getValue()) && StringUtil.isEmpty(itemTime.getValue())) {
-            setDateTimeItem(itemDay, itemTime, new Date());
+        Date syuuryounichijiVal = null;
+        Date binderkongounichijiVal = null;  
+        
+        FXHDD01 binderkongouDay = getItemRow(processData.getItemList(), GXHDO102B027Const.BINDERKONGOU_DAY);
+        FXHDD01 binderkongouTime = getItemRow(processData.getItemList(), GXHDO102B027Const.BINDERKONGOU_TIME);
+        FXHDD01 slurrykeikanisuu = getItemRow(processData.getItemList(), GXHDO102B027Const.SLURRYKEIKANISUU);
+        if (binderkongouDay == null || binderkongouTime == null || slurrykeikanisuu == null) {
+            processData.setMethod("");
+            return processData;
+        }
+        if (StringUtil.isEmpty(binderkongouDay.getValue()) && StringUtil.isEmpty(binderkongouTime.getValue())) {
+            // ﾊﾞｲﾝﾀﾞｰ混合日時
+            setDateTimeItem(binderkongouDay, binderkongouTime, new Date());
+        }
+
+        binderkongounichijiVal =  DateUtil.convertStringToDate(binderkongouDay.getValue(), binderkongouTime.getValue());
+        
+        FXHDD01 funsaisyuuryouDay = getItemRow(processData.getItemList(), GXHDO102B027Const.FUNSAISYUURYOU_DAY);
+        FXHDD01 funsaisyuuryouTime = getItemRow(processData.getItemList(), GXHDO102B027Const.FUNSAISYUURYOU_TIME);
+        if (funsaisyuuryouDay == null || funsaisyuuryouTime == null) {
+            processData.setMethod("");
+            return processData;
+        }
+        if (!StringUtil.isEmpty(funsaisyuuryouDay.getValue()) && !StringUtil.isEmpty(funsaisyuuryouTime.getValue())) {
+            // 粉砕終了日時        
+            syuuryounichijiVal = DateUtil.convertStringToDate(funsaisyuuryouDay.getValue(), funsaisyuuryouTime.getValue());           
+
+            if (binderkongounichijiVal != null && syuuryounichijiVal != null) {
+                // 日付の差分日数取得処理
+                int diffDays = DateUtil.diffDaysRoundingMode(syuuryounichijiVal,binderkongounichijiVal, RoundingMode.CEILING);
+                // ｽﾗﾘｰ経過日数の設定
+                slurrykeikanisuu.setValue(BigDecimal.valueOf(diffDays).toPlainString());
+            }
         }
         processData.setMethod("");
         return processData;
     }
 
+    /**
+     * 画面表示仕様(14)を発行する。
+     *
+     * @param queryRunnerQcdb オブジェクト
+     * @param kojyo 工場ｺｰﾄﾞ
+     * @param lotNo LotNo
+     * @param edaban 枝番
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    public static Map getSyuuryounichiji(QueryRunner queryRunnerQcdb, String kojyo, String lotNo, String edaban) throws SQLException {
+        // データの取得
+        String sql = "SELECT syuuryounichiji FROM sr_yuudentai_funsai"
+                + " WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
+    }
+    
     /**
      * ｽﾗﾘｰ合計重量計算処理
      *
@@ -1199,14 +1164,12 @@ public class GXHDO102B027 implements IFormLogic {
         switch (jotaiFlg) {
             case JOTAI_FLG_TOROKUZUMI:
                 activeIdList.addAll(Arrays.asList(GXHDO102B027Const.BTN_EDABAN_COPY_TOP,
-                        GXHDO102B027Const.BTN_FUNSAISYUURYOUNICHIJI_TOP,
                         GXHDO102B027Const.BTN_BINDERKONGOUNICHIJI_TOP,
                         GXHDO102B027Const.BTN_SLURRYGOUKEIJYUURYOU_TOP,
                         GXHDO102B027Const.BTN_KOKEIBUNTYOUSEIRYOU_TOP,
                         GXHDO102B027Const.BTN_UPDATE_TOP,
                         GXHDO102B027Const.BTN_DELETE_TOP,
                         GXHDO102B027Const.BTN_EDABAN_COPY_BOTTOM,
-                        GXHDO102B027Const.BTN_FUNSAISYUURYOUNICHIJI_BOTTOM,
                         GXHDO102B027Const.BTN_BINDERKONGOUNICHIJI_BOTTOM,
                         GXHDO102B027Const.BTN_SLURRYGOUKEIJYUURYOU_BOTTOM,
                         GXHDO102B027Const.BTN_KOKEIBUNTYOUSEIRYOU_BOTTOM,
@@ -1222,14 +1185,12 @@ public class GXHDO102B027 implements IFormLogic {
                 break;
             default:
                 activeIdList.addAll(Arrays.asList(GXHDO102B027Const.BTN_EDABAN_COPY_TOP,
-                        GXHDO102B027Const.BTN_FUNSAISYUURYOUNICHIJI_TOP,
                         GXHDO102B027Const.BTN_BINDERKONGOUNICHIJI_TOP,
                         GXHDO102B027Const.BTN_SLURRYGOUKEIJYUURYOU_TOP,
                         GXHDO102B027Const.BTN_KOKEIBUNTYOUSEIRYOU_TOP,
                         GXHDO102B027Const.BTN_KARI_TOUROKU_TOP,
                         GXHDO102B027Const.BTN_INSERT_TOP,
                         GXHDO102B027Const.BTN_EDABAN_COPY_BOTTOM,
-                        GXHDO102B027Const.BTN_FUNSAISYUURYOUNICHIJI_BOTTOM,
                         GXHDO102B027Const.BTN_BINDERKONGOUNICHIJI_BOTTOM,
                         GXHDO102B027Const.BTN_SLURRYGOUKEIJYUURYOU_BOTTOM,
                         GXHDO102B027Const.BTN_KOKEIBUNTYOUSEIRYOU_BOTTOM,
@@ -1290,14 +1251,30 @@ public class GXHDO102B027 implements IFormLogic {
         if (shikakariData == null || shikakariData.isEmpty()) {
             errorMessageList.add(MessageUtil.getMessage("XHD-000029"));
         }
+        
+        String syuuryouDate = "";
+        String syuuryouTime = "";
+        String kojyo = lotNo.substring(0, 3); //工場ｺｰﾄﾞ
+        String lotNo9 = lotNo.substring(3, 12); //ﾛｯﾄNo
+        String edaban = lotNo.substring(12, 15); //枝番
+        Map shuryonichijiData = getSyuuryounichiji(queryRunnerQcdb, kojyo, lotNo9, edaban);
+        
+        if (shuryonichijiData != null && !shuryonichijiData.isEmpty()) {
+            if (!StringUtil.isEmpty(StringUtil.nullToBlank(getMapData(shuryonichijiData, "syuuryounichiji")))) {
+                // 終了日時
+                syuuryouDate = DateUtil.formattedTimestamp((Timestamp) getMapData(shuryonichijiData, "syuuryounichiji"), "yyMMdd");
+                syuuryouTime = DateUtil.formattedTimestamp((Timestamp) getMapData(shuryonichijiData, "syuuryounichiji"), "HHmm");
+            }
+        }
 
         // 入力項目の情報を画面にセットする。
-        if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId, paramJissekino)) {
+        if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId, paramJissekino, syuuryouDate, syuuryouTime)) {
             // エラー発生時は処理を中断
             processData.setFatalError(true);
             processData.setInitMessageList(Arrays.asList(MessageUtil.getMessage("XHD-000038")));
             return processData;
         }
+        
         // 画面に取得した情報をセットする。(入力項目以外)
         setViewItemData(processData, shikakariData, lotNo);
         // 画面のラベル項目の値の背景色を取得できない場合、デフォルト値を設置
@@ -1384,7 +1361,7 @@ public class GXHDO102B027 implements IFormLogic {
      * @throws SQLException 例外エラー
      */
     private boolean setInputItemData(ProcessData processData, QueryRunner queryRunnerDoc, QueryRunner queryRunnerQcdb,
-            String lotNo, String formId, int jissekino) throws SQLException {
+            String lotNo, String formId, int jissekino, String syuuryouDate, String syuuryouTime) throws SQLException {
 
         List<SrSlipSlurrykokeibuntyouseiSiropori> srSlipSlurrykokeibuntyouseiSiroporiList = new ArrayList<>();
         String rev = "";
@@ -1408,6 +1385,11 @@ public class GXHDO102B027 implements IFormLogic {
                 processData.getItemList().forEach((fxhdd001) -> {
                     this.setItemData(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
                 });
+                
+                // 粉砕終了日
+                this.setItemData(processData, GXHDO102B027Const.FUNSAISYUURYOU_DAY, syuuryouDate);
+                // 粉砕終了時間
+                this.setItemData(processData, GXHDO102B027Const.FUNSAISYUURYOU_TIME, syuuryouTime);
 
                 return true;
             }

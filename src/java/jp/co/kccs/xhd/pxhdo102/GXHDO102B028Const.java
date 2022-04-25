@@ -824,11 +824,6 @@ public class GXHDO102B028Const {
     public static final String BTN_EDABAN_COPY_TOP = "sr_slip_skkbts_styk_edaban_copy_Top";
 
     /**
-     * 粉砕終了日時
-     */
-    public static final String BTN_FUNSAISYUURYOU_TOP = "sr_slip_skkbts_styk_funsaisyuuryou_Top";
-
-    /**
      * ﾊﾞｲﾝﾀﾞｰ混合日時
      */
     public static final String BTN_BINDERKONGOU_TOP = "sr_slip_skkbts_styk_binderkongou_Top";
@@ -982,11 +977,6 @@ public class GXHDO102B028Const {
      * 枝番ｺﾋﾟｰ
      */
     public static final String BTN_EDABAN_COPY_BOTTOM = "sr_slip_skkbts_styk_edaban_copy_Bottom";
-
-    /**
-     * 粉砕終了日時
-     */
-    public static final String BTN_FUNSAISYUURYOU_BOTTOM = "sr_slip_skkbts_styk_funsaisyuuryou_Bottom";
 
     /**
      * ﾊﾞｲﾝﾀﾞｰ混合日時

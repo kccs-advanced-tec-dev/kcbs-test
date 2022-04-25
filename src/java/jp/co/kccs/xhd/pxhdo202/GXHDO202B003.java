@@ -1714,6 +1714,7 @@ public class GXHDO202B003 implements Serializable {
                             + ", tenkazaislurryhinmei"
                             + ", tenkazaislurrylotno"
                             + ", lotkubun"
+                            + ", tounyuuryou"
                             + ", saisyuupasskaisuu"
                             + ", (CASE WHEN hozonyousamplekaisyuu = 1 THEN 'ﾁｪｯｸ' ELSE '未ﾁｪｯｸ' END) AS hozonyousamplekaisyuu "
                             + ", fuutaijyuuryou1"
@@ -1784,6 +1785,7 @@ public class GXHDO202B003 implements Serializable {
                     mapping.put("tenkazaislurryhinmei", "tenkazaislurryhinmei");                  // 添加材ｽﾗﾘｰ品名
                     mapping.put("tenkazaislurrylotno", "tenkazaislurrylotno");                    // 添加材ｽﾗﾘｰLotNo
                     mapping.put("lotkubun", "lotkubun");                                          // ﾛｯﾄ区分
+                    mapping.put("tounyuuryou", "tounyuuryou");                                    // 投入量
                     mapping.put("saisyuupasskaisuu", "saisyuupasskaisuu");                        // 最終パス回数
                     mapping.put("hozonyousamplekaisyuu", "hozonyousamplekaisyuu");                // 保存用ｻﾝﾌﾟﾙ回収
                     mapping.put("fuutaijyuuryou1", "fuutaijyuuryou1");                            // 風袋重量①
