@@ -1225,7 +1225,7 @@ public class GXHDO102B030 implements IFormLogic {
         kikakutiMap.put("errorMessage", "");
         kikakutiMap.put("kikakuti", "0");
         // [前工程設計]から、ﾃﾞｰﾀを取得
-        Map daMkSekKeiData = loadDaMkSekKeiData(queryRunnerQcdb, kojyo, lotNo9, edaban, syurui);
+        Map daMkSekKeiData = loadDaMkSekkeiData(queryRunnerQcdb, kojyo, lotNo9, edaban, syurui);
         if (daMkSekKeiData == null || daMkSekKeiData.isEmpty()) {
             // ｴﾗｰ項目をﾘｽﾄに追加
             kikakutiMap.put("errorMessage", "error");
@@ -1277,7 +1277,7 @@ public class GXHDO102B030 implements IFormLogic {
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private Map loadDaMkSekKeiData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo, String edaban, String syurui) throws SQLException {
+    private Map loadDaMkSekkeiData(QueryRunner queryRunnerQcdb, String kojyo, String lotNo, String edaban, String syurui) throws SQLException {
         // 前工程設計データの取得
         String sql = "SELECT sekkeino, pattern FROM da_mksekkei"
                 + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND syurui = ? ";
@@ -1412,7 +1412,7 @@ public class GXHDO102B030 implements IFormLogic {
                 BigDecimal dassikokeibun = new BigDecimal(String.valueOf(srSlipSlurrykokeibuntyouseiSutenyoukiData.get("dassikokeibun")));// 脱脂固形分
                 BigDecimal slipyouzaityouseiryouVal = new BigDecimal(String.valueOf(srSlipSlurrykokeibuntyouseiSutenyoukiData.get("youzaityouseiryou")));// 溶剤調整量
                 BigDecimal kokeibunhiritu = new BigDecimal(String.valueOf(srSlipSlurrykokeibuntyouseiSutenyoukiData.get("kokeibunhiritu")));// 固形分比率
-                BigDecimal bindertenkaryoukikaku = new BigDecimal(kikakuti);// ﾊﾞｲﾝﾀﾞｰ添加量規格
+                BigDecimal bindertenkaryoukikaku = BigDecimal.valueOf(kikakuti);// ﾊﾞｲﾝﾀﾞｰ添加量規格
                 //「溶剤調整量」= 「脱脂固形分」 × (「ｽﾗﾘｰ重量」 + 「溶剤調整量」) ÷ 「固形分比率」 - 「ｽﾗﾘｰ重量」 - 「ﾊﾞｲﾝﾀﾞｰ添加量規格」
                 BigDecimal youzaityouseiryouVal = dassikokeibun.multiply(slurryjyuuryou.add(slipyouzaityouseiryouVal))
                         .divide(kokeibunhiritu, 2, RoundingMode.DOWN).subtract(slurryjyuuryou).subtract(bindertenkaryoukikaku);
