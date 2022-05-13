@@ -46,6 +46,10 @@ public class SubSrGlasshyoryo {
      */
     private String tyogouryoukikaku;
     /**
+     * 調合量規格情報ﾊﾟﾀｰﾝ
+     */
+    private String standardpattern;
+    /**
      * 調合残量
      */
     private Integer tyogouzanryou;
@@ -212,6 +216,22 @@ public class SubSrGlasshyoryo {
      */
     public void setTyogouryoukikaku(String tyogouryoukikaku) {
         this.tyogouryoukikaku = tyogouryoukikaku;
+    }
+
+    /**
+     * 調合量規格情報ﾊﾟﾀｰﾝ
+     * @return the standardpattern
+     */
+    public String getStandardpattern() {
+        return standardpattern;
+    }
+
+    /**
+     * 調合量規格情報ﾊﾟﾀｰﾝ
+     * @param standardpattern the standardpattern to set
+     */
+    public void setStandardpattern(String standardpattern) {
+        this.standardpattern = standardpattern;
     }
 
     /**
