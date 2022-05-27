@@ -15,6 +15,11 @@ import java.sql.Timestamp;
  * 変更者	KCSS wxf<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2022/05/16<br>
+ * 計画書No	MB2101-DK002<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	材料品名ﾘﾝｸ押下時、調合量規格チェックの追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -49,6 +54,11 @@ public class SubSrGlassslurryhyoryo {
      * 調合量規格
      */
     private String tyogouryoukikaku;
+    /**
+     * 調合量規格情報ﾊﾟﾀｰﾝ
+     */ 
+    private String standardpattern;
+    /**
     /**
      * 調合残量
      */
@@ -232,6 +242,22 @@ public class SubSrGlassslurryhyoryo {
      */
     public void setTyogouryoukikaku(String tyogouryoukikaku) {
         this.tyogouryoukikaku = tyogouryoukikaku;
+    }
+
+    /**
+     * 調合量規格情報ﾊﾟﾀｰﾝ
+     * @return the standardpattern
+     */ 
+    public String getStandardpattern() {
+	return standardpattern;
+    }
+ 
+    /**
+     * 調合量規格情報ﾊﾟﾀｰﾝ
+     * @param standardpattern the standardpattern to set
+     */ 
+    public void setStandardpattern(String standardpattern) {
+	this.standardpattern = standardpattern;
     }
 
     /**

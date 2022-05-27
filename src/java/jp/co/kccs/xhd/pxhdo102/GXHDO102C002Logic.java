@@ -25,6 +25,11 @@ import jp.co.kccs.xhd.util.ValidateUtil;
  * 変更者	KCSS wxf<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2022/05/16<br>
+ * 計画書No	MB2101-DK002<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	材料品名ﾘﾝｸ押下時、調合量規格チェックの追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -174,9 +179,9 @@ public class GXHDO102C002Logic implements Serializable {
         ArrayList<FXHDD01> subDataHeaderList = new ArrayList<>();
         int index = 0;
         // 【材料品名1】ﾘﾝｸ押下時、サブ画面の調合規格
-        subDataHeaderList.add(setLabelInitInfo(true, MessageUtil.getMessage("tyogouryoukikaku"), true, StringUtil.nullToBlank(subSrGlasshyoryoData.getTyogouryoukikaku()), index));
+        subDataHeaderList.add(setLabelInitInfo(true, MessageUtil.getMessage("tyogouryoukikaku"), true, StringUtil.nullToBlank(subSrGlasshyoryoData.getTyogouryoukikaku()), StringUtil.nullToBlank(subSrGlasshyoryoData.getStandardpattern()), index));
         // 【材料品名1】ﾘﾝｸ押下時、サブ画面の調合残量 TODO
-        subDataHeaderList.add(setLabelInitInfo(true, MessageUtil.getMessage("tyogouzanryou"), true, StringUtil.nullToBlank(subSrGlasshyoryoData.getTyogouzanryou()), index));
+        subDataHeaderList.add(setLabelInitInfo(true, MessageUtil.getMessage("tyogouzanryou"), true, StringUtil.nullToBlank(subSrGlasshyoryoData.getTyogouzanryou()), StringUtil.nullToBlank(subSrGlasshyoryoData.getStandardpattern()), index));
         return subDataHeaderList;
     }
 
@@ -191,11 +196,11 @@ public class GXHDO102C002Logic implements Serializable {
         // サブ画面の部材①タブデータリスト
         ArrayList<FXHDD01> subDataBuzaitab1 = new ArrayList<>();
         // サブ画面の部材①タブの材料品名
-        subDataBuzaitab1.add(setLabelInitInfo(true, MessageUtil.getMessage("zairyohinmei"), true, StringUtil.nullToBlank(subSrGlasshyoryoData.getZairyohinmei()), index));
+        subDataBuzaitab1.add(setLabelInitInfo(true, MessageUtil.getMessage("zairyohinmei"), true, StringUtil.nullToBlank(subSrGlasshyoryoData.getZairyohinmei()), StringUtil.nullToBlank(subSrGlasshyoryoData.getStandardpattern()), index));
         // サブ画面の部材①タブの部材在庫No1
         subDataBuzaitab1.add(setInputTextInitInfo(MessageUtil.getMessage("buzailotno") + "1", true, StringUtil.nullToBlank(subSrGlasshyoryoData.getBuzailotno1()), "9", "", index));
         // サブ画面の部材①タブの部材在庫品名1
-        subDataBuzaitab1.add(setLabelInitInfo(true, MessageUtil.getMessage("buzaihinmei") + "1", true, StringUtil.nullToBlank(subSrGlasshyoryoData.getBuzaihinmei1()), index));
+        subDataBuzaitab1.add(setLabelInitInfo(true, MessageUtil.getMessage("buzaihinmei") + "1", true, StringUtil.nullToBlank(subSrGlasshyoryoData.getBuzaihinmei1()), StringUtil.nullToBlank(subSrGlasshyoryoData.getStandardpattern()), index));
         index += 1;
         // サブ画面の部材①タブの調合量1_1
         subDataBuzaitab1.add(setInputNumberInitInfo(true, MessageUtil.getMessage("tyogouryou"), true, StringUtil.nullToBlank(subSrGlasshyoryoData.getTyougouryou1_1()), "5", "", true, "g", index));
@@ -228,11 +233,11 @@ public class GXHDO102C002Logic implements Serializable {
         // サブ画面の部材②タブデータリスト
         ArrayList<FXHDD01> subDataBuzaitab2 = new ArrayList<>();
         // サブ画面の部材②タブの材料品名
-        subDataBuzaitab2.add(setLabelInitInfo(true, MessageUtil.getMessage("zairyohinmei"), true, StringUtil.nullToBlank(subSrGlasshyoryoData.getZairyohinmei()), index));
+        subDataBuzaitab2.add(setLabelInitInfo(true, MessageUtil.getMessage("zairyohinmei"), true, StringUtil.nullToBlank(subSrGlasshyoryoData.getZairyohinmei()), StringUtil.nullToBlank(subSrGlasshyoryoData.getStandardpattern()), index));
         // サブ画面の部材②タブの部材在庫No1
         subDataBuzaitab2.add(setInputTextInitInfo(MessageUtil.getMessage("buzailotno") + "2", true, StringUtil.nullToBlank(subSrGlasshyoryoData.getBuzailotno2()), "9", "", index));
         // サブ画面の部材②タブの部材在庫品名1
-        subDataBuzaitab2.add(setLabelInitInfo(true, MessageUtil.getMessage("buzaihinmei") + "2", true, StringUtil.nullToBlank(subSrGlasshyoryoData.getBuzaihinmei2()), index));
+        subDataBuzaitab2.add(setLabelInitInfo(true, MessageUtil.getMessage("buzaihinmei") + "2", true, StringUtil.nullToBlank(subSrGlasshyoryoData.getBuzaihinmei2()), StringUtil.nullToBlank(subSrGlasshyoryoData.getStandardpattern()), index));
         index += 1;
         // サブ画面の部材②タブの調合量2_1
         subDataBuzaitab2.add(setInputNumberInitInfo(true, MessageUtil.getMessage("tyogouryou"), true, StringUtil.nullToBlank(subSrGlasshyoryoData.getTyougouryou2_1()), "5", "", true, "g", index));
@@ -264,7 +269,7 @@ public class GXHDO102C002Logic implements Serializable {
      * @param index 項目ｲﾝﾃﾞｯｸｽ
      * @return 項目データ
      */
-    private static FXHDD01 setLabelInitInfo(boolean render1, String label1, boolean renderOutputLabel, String value, int index) {
+    private static FXHDD01 setLabelInitInfo(boolean render1, String label1, boolean renderOutputLabel, String value, String standardPattern, int index) {
         FXHDD01 item = new FXHDD01();
         item.setRender1(render1);
         item.setLabel1(label1);
@@ -272,6 +277,7 @@ public class GXHDO102C002Logic implements Serializable {
         item.setRenderInputText(false);
         item.setRenderInputNumber(false);
         item.setValue(value);
+        item.setStandardPattern(standardPattern);
         item.setItemIndex(index);
         item.setBackColor1("#FFFFFF");
         return item;

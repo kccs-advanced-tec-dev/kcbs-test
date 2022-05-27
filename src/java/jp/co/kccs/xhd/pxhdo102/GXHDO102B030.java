@@ -63,6 +63,11 @@ import org.primefaces.context.RequestContext;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2022/05/16<br>
+ * 計画書No	MB2101-DK002<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	材料品名ﾘﾝｸ押下時、調合量規格チェックの追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -3645,6 +3650,14 @@ public class GXHDO102B030 implements IFormLogic {
                 context.addCallbackParam("firstParam", "error0");
                 return processData;
             }
+            // 「調合量規格」
+            FXHDD01 itemTyogouryoukikaku = getItemRow(processData.getItemList(), tyougouryoukikakuItemId);
+            // 「調合量規格」ﾁｪｯｸ処理
+            ErrorMessageInfo checkItemTyogouryoukikaku1ErrorInfo = checkTyogouryoukikaku(itemTyogouryoukikaku);
+            if (checkItemTyogouryoukikaku1ErrorInfo != null) {
+                processData.setErrorMessageInfoList(Arrays.asList(checkItemTyogouryoukikaku1ErrorInfo));
+                return processData;
+            }
             processData.setMethod("");
             // コールバックパラメータにてサブ画面起動用の値を設定
             processData.setCollBackParam("gxhdo102c015");
@@ -3662,6 +3675,33 @@ public class GXHDO102B030 implements IFormLogic {
         }
 
         return processData;
+    }
+
+    /**
+     * 【材料品名】ﾘﾝｸ押下時、サブ画面Open時ﾁｪｯｸ処理
+     *
+     * @param itemTyogouryoukikaku 調合量規格
+     * @return エラーメッセージ情報
+     */ 
+    private ErrorMessageInfo checkTyogouryoukikaku(FXHDD01 itemTyogouryoukikaku) {
+        boolean checkResult = false;
+        // 「調合量規格」ﾁｪｯｸ
+        if(StringUtil.isEmpty(itemTyogouryoukikaku.getKikakuChi())){
+            //「調合量規格1」の規格値が取得できない場合
+            checkResult = true;          
+        }else{
+            if (StringUtil.isEmpty(itemTyogouryoukikaku.getKikakuChi().replace("【", "").replace("】", ""))) {
+                //「調合量規格1」の規格値が取得できて、値がない場合
+                checkResult = true;
+            }
+        }
+        if(checkResult){
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemTyogouryoukikaku);
+            return MessageUtil.getErrorMessageInfo("XHD-000019", true, true, errFxhdd01List, itemTyogouryoukikaku.getLabel1());
+        }
+
+        return null;
     }
 
     /**
@@ -3749,14 +3789,19 @@ public class GXHDO102B030 implements IFormLogic {
 
             subgamen1.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemList(), GXHDO102B030Const.YUUDENTAISLURRY_ZAIRYOUHINMEI))); // 誘電体ｽﾗﾘｰ_材料品名
             subgamen1.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemList(), GXHDO102B030Const.YUUDENTAISLURRY_TYOUGOURYOUKIKAKU))); // 誘電体ｽﾗﾘｰ_調合量規格
+            subgamen1.setStandardpattern(getItemRow(processData.getItemList(), GXHDO102B030Const.YUUDENTAISLURRY_TYOUGOURYOUKIKAKU).getStandardPattern()); // 誘電体ｽﾗﾘｰ_調合量規格情報ﾊﾟﾀｰﾝ
             subgamen2.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemList(), GXHDO102B030Const.ZUNSANZAI1_ZAIRYOUHINMEI))); // 分散材1_材料品名
             subgamen2.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemList(), GXHDO102B030Const.ZUNSANZAI1_TYOUGOURYOUKIKAKU))); // 分散材1_調合量規格
+            subgamen2.setStandardpattern(getItemRow(processData.getItemList(), GXHDO102B030Const.ZUNSANZAI1_TYOUGOURYOUKIKAKU).getStandardPattern()); // 分散材1_調合量規格情報ﾊﾟﾀｰﾝ
             subgamen3.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemList(), GXHDO102B030Const.ZUNSANZAI2_ZAIRYOUHINMEI))); // 分散材2_材料品名
             subgamen3.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemList(), GXHDO102B030Const.ZUNSANZAI2_TYOUGOURYOUKIKAKU))); // 分散材2_調合量規格
+            subgamen3.setStandardpattern(getItemRow(processData.getItemList(), GXHDO102B030Const.ZUNSANZAI2_TYOUGOURYOUKIKAKU).getStandardPattern()); // 分散材2_調合量規格情報ﾊﾟﾀｰﾝ
             subgamen4.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemList(), GXHDO102B030Const.YOUZAI1_ZAIRYOUHINMEI))); // 溶剤1_材料品名
             subgamen4.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemList(), GXHDO102B030Const.YOUZAI1_TYOUGOURYOUKIKAKU))); // 溶剤1_調合量規格
+            subgamen4.setStandardpattern(getItemRow(processData.getItemList(), GXHDO102B030Const.YOUZAI1_TYOUGOURYOUKIKAKU).getStandardPattern()); // 溶剤1_調合量規格情報ﾊﾟﾀｰﾝ
             subgamen5.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemList(), GXHDO102B030Const.YOUZAI2_ZAIRYOUHINMEI))); // 溶剤2_材料品名
             subgamen5.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemList(), GXHDO102B030Const.YOUZAI2_TYOUGOURYOUKIKAKU))); // 溶剤2_調合量規格
+            subgamen5.setStandardpattern(getItemRow(processData.getItemList(), GXHDO102B030Const.YOUZAI2_TYOUGOURYOUKIKAKU).getStandardPattern()); // 溶剤2_調合量規格情報ﾊﾟﾀｰﾝ
             subSrSlipYouzaihyouryouTounyuuSutenyoukiList.add(subgamen1);
             subSrSlipYouzaihyouryouTounyuuSutenyoukiList.add(subgamen2);
             subSrSlipYouzaihyouryouTounyuuSutenyoukiList.add(subgamen3);
