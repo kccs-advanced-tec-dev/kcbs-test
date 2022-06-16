@@ -245,6 +245,11 @@
                     <p:column id="bladegaikan" headerText="ﾌﾞﾚｰﾄﾞ外観" >
                         <p:outputLabel value="#{item.bladegaikan}"/>
                     </p:column>
+                    <p:column id="bladeinsatsutyou" headerText="ﾌﾞﾚｰﾄﾞ印刷長" styleClass="number">
+                        <p:outputLabel value="#{item.bladeinsatsutyou}">
+                            <f:convertNumber pattern="#,##0"/>
+                        </p:outputLabel>
+                    </p:column>
                     <p:column id="bladeatu" headerText="ﾌﾞﾚｰﾄﾞ圧力(Mpa)" styleClass="number">
                         <p:outputLabel value="#{item.bladeatu}">
                             <f:convertNumber pattern="#,##0.000"/>
@@ -424,6 +429,49 @@
                     </p:column>
                     <p:column id="bikou2" headerText="備考2" >
                         <p:outputLabel value="#{item.bikou2}"/>
+                    </p:column>
+                    <p:column id="zureryoukijunchix" headerText="ｽﾞﾚ量基準値X" styleClass="number">
+                        <p:outputLabel value="#{item.zureryoukijunchix}">
+                            <f:convertNumber pattern="#0.000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="zureryoukijunchiy" headerText="ｽﾞﾚ量基準値Y" styleClass="number">
+                        <p:outputLabel value="#{item.zureryoukijunchiy}">
+                            <f:convertNumber pattern="#0.000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="awaseseidodakou" headerText="合わせ精度 蛇行" styleClass="number">
+                        <p:outputLabel value="#{item.awaseseidodakou}">
+                            <f:convertNumber pattern="#0.000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="awaseseidonagare" headerText="合わせ精度 流れ" styleClass="number">
+                        <p:outputLabel value="#{item.awaseseidonagare}">
+                            <f:convertNumber pattern="#0.000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="senkoulotno" headerText="先行ﾛｯﾄNo" >
+                        <p:outputLabel value="#{item.senkoulotno}"/>
+                    </p:column>
+                    <p:column id="tapetsukaikiri" headerText="ﾃｰﾌﾟ使い切り" >
+                        <p:outputLabel value="#{item.tapetsukaikiri}"/>
+                    </p:column>
+                    <p:column id="jilothe" headerText="次ﾛｯﾄへ" >
+                        <p:outputLabel value="#{item.jilothe}"/>
+                    </p:column>
+                    <p:column id="seikeinagasa" headerText="成形長さ" styleClass="number">
+                        <p:outputLabel value="#{item.seikeinagasa}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bikou3" headerText="備考3" >
+                        <p:outputLabel value="#{item.bikou3}"/>
+                    </p:column>
+                    <p:column id="bikou4" headerText="備考4" >
+                        <p:outputLabel value="#{item.bikou4}"/>
+                    </p:column>
+                    <p:column id="bikou5" headerText="備考5" >
+                        <p:outputLabel value="#{item.bikou5}"/>
                     </p:column>
                     <p:column id="makuatsuStart1" headerText="膜厚ｽﾀｰﾄ1" styleClass="number">
                         <p:outputLabel value="#{item.makuatsuStart1}">

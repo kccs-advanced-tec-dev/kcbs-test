@@ -466,11 +466,57 @@
                     <p:column id="genryoukigou" headerText="原料記号" >
                         <p:outputLabel value="#{item.genryoukigou}"/>
                     </p:column>
+                    <p:column id="bladeinsatsutyo" headerText="ﾌﾞﾚｰﾄﾞ印刷長" styleClass="number">
+                        <p:outputLabel value="#{item.bladeinsatsutyo}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="seisourollerbu" headerText="清掃 ローラ部" >
+                        <p:outputLabel value="#{item.seisourollerbu}"/>
+                    </p:column>
+                    <p:column id="seisouinsatsusyuhen" headerText="清掃 印刷周辺" >
+                        <p:outputLabel value="#{item.seisouinsatsusyuhen}"/>
+                    </p:column>
+                    <p:column id="seisoukansouronai" headerText="清掃 乾燥炉内" >
+                        <p:outputLabel value="#{item.seisoukansouronai}"/>
+                    </p:column>
+                    <p:column id="sanmicronmfiltertekiyou" headerText="3μｍフィルター 適用" >
+                        <p:outputLabel value="#{item.sanmicronmfiltertekiyou}"/>
+                    </p:column>
+                    <p:column id="sanmicronmfilterkoukan" headerText="3μｍフィルター 交換" >
+                        <p:outputLabel value="#{item.sanmicronmfilterkoukan}"/>
+                    </p:column>
+                    <p:column id="inkpanstopperlockkakunin" headerText="インクパンストッパーロック確認" >
+                        <p:outputLabel value="#{item.inkpanstopperlockkakunin}"/>
+                    </p:column>
+                    <p:column id="senkoulotno" headerText="先行ﾛｯﾄNo" >
+                        <p:outputLabel value="#{item.senkoulotno}"/>
+                    </p:column>
+                    <p:column id="tapetsukaikiri" headerText="ﾃｰﾌﾟ使い切り" >
+                        <p:outputLabel value="#{item.tapetsukaikiri}"/>
+                    </p:column>
+                    <p:column id="jilothe" headerText="次ﾛｯﾄへ" >
+                        <p:outputLabel value="#{item.jilothe}"/>
+                    </p:column>
+                    <p:column id="seikeinagasa" headerText="成形長さ" styleClass="number">
+                        <p:outputLabel value="#{item.seikeinagasa}">
+                            <f:convertNumber pattern="##,##0"/>
+                        </p:outputLabel>
+                    </p:column>
                     <p:column id="bikou1" headerText="備考1" >
                         <p:outputLabel value="#{item.bikou1}"/>
                     </p:column>
                     <p:column id="bikou2" headerText="備考2" >
                         <p:outputLabel value="#{item.bikou2}"/>
+                    </p:column>
+                    <p:column id="bikou3" headerText="備考3" >
+                        <p:outputLabel value="#{item.bikou3}"/>
+                    </p:column>
+                    <p:column id="bikou4" headerText="備考4" >
+                        <p:outputLabel value="#{item.bikou4}"/>
+                    </p:column>
+                    <p:column id="bikou5" headerText="備考5" >
+                        <p:outputLabel value="#{item.bikou5}"/>
                     </p:column>
                     <p:column id="makuatsuStart1" headerText="膜厚ｽﾀｰﾄ1" styleClass="number">
                         <p:outputLabel value="#{item.makuatsuStart1}">

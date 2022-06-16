@@ -18,6 +18,11 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	863 zhangjy<br>
  * 変更理由	前工程WIPボタンを追加<br>
  * <br>
+ * 変更日	2022/06/02<br>
+ * 計画書No	MB2205-D010<br>
+ * 変更者	KCSS wxf<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -259,6 +264,11 @@ public class GXHDO101B001Const {
     public static final String BLADE_GAIKAN = "insatsu_sps_gra_blade_gaikan";
 
     /**
+     * ﾌﾞﾚｰﾄﾞ印刷長
+     */
+    public static final String BLADEINSATSUTYO = "insatsu_sps_gra_bladeinsatsutyo";
+
+    /**
      * 印刷開始日
      */
     public static final String INSATSU_KAISHI_DAY = "insatsu_sps_gra_insatsu_kaishi_day";
@@ -369,6 +379,56 @@ public class GXHDO101B001Const {
     public static final String INSATSU_MAISUU = "insatsu_sps_gra_insatsu_maisuu";
 
     /**
+     * 清掃 ローラ部
+     */
+    public static final String SEISOUROLLERBU = "insatsu_sps_gra_seisourollerbu";
+
+    /**
+     * 清掃 印刷周辺
+     */
+    public static final String SEISOUINSATSUSYUHEN = "insatsu_sps_gra_seisouinsatsusyuhen";
+
+    /**
+     * 清掃 乾燥炉内
+     */
+    public static final String SEISOUKANSOURONAI = "insatsu_sps_gra_seisoukansouronai";
+
+    /**
+     * 3μｍフィルター 適用
+     */
+    public static final String SANMICRONMFILTERTEKIYOU = "insatsu_sps_gra_sanmicronmfiltertekiyou";
+
+    /**
+     * 3μｍフィルター 交換
+     */
+    public static final String SANMICRONMFILTERKOUKAN = "insatsu_sps_gra_sanmicronmfilterkoukan";
+
+    /**
+     * インクパンストッパーロック確認
+     */
+    public static final String INKPANSTOPPERLOCKKAKUNIN = "insatsu_sps_gra_inkpanstopperlockkakunin";
+
+    /**
+     * 先行ﾛｯﾄNo
+     */
+    public static final String SENKOULOTNO = "insatsu_sps_gra_senkoulotno";
+
+    /**
+     * ﾃｰﾌﾟ使い切り
+     */
+    public static final String TAPETSUKAIKIRI = "insatsu_sps_gra_tapetsukaikiri";
+
+    /**
+     * 次ﾛｯﾄへ
+     */
+    public static final String JILOTHE = "insatsu_sps_gra_jilothe";
+
+    /**
+     * 成形長さ
+     */
+    public static final String SEIKEINAGASA = "insatsu_sps_gra_seikeinagasa";
+    
+    /**
      * 備考1
      */
     public static final String BIKOU1 = "insatsu_sps_gra_bikou1";
@@ -377,6 +437,21 @@ public class GXHDO101B001Const {
      * 備考2
      */
     public static final String BIKOU2 = "insatsu_sps_gra_bikou2";
+
+    /**
+     * 備考3
+     */
+    public static final String BIKOU3 = "insatsu_sps_gra_bikou3";
+
+    /**
+     * 備考4
+     */
+    public static final String BIKOU4 = "insatsu_sps_gra_bikou4";
+
+    /**
+     * 備考5
+     */
+    public static final String BIKOU5 = "insatsu_sps_gra_bikou5";
 
     /**
      * 仮登録(画面下)
@@ -432,7 +507,11 @@ public class GXHDO101B001Const {
      * 前工程WIP(画面下)
      */
     public static final String BTN_WIP_IMPORT_BOTTOM = "insatsu_sps_gra_wip_import_Bottom";
-    
+
+    /**
+     * 設備ﾃﾞｰﾀ連携(画面下)
+     */
+    public static final String BTN_DATACOOPERATION_BOTTOM = "insatsu_sps_gra_dataCooperation_Bottom";
     
 
     /**
@@ -489,6 +568,11 @@ public class GXHDO101B001Const {
      * 前工程WIP(画面上)
      */
     public static final String BTN_WIP_IMPORT_TOP = "insatsu_sps_gra_wip_import_Top";
+
+    /**
+     * 設備ﾃﾞｰﾀ連携(画面上)
+     */
+    public static final String BTN_DATACOOPERATION_TOP = "insatsu_sps_gra_dataCooperation_Top";
     
     /**
      * ユーザー認証パラメータ(修正)

@@ -17,6 +17,11 @@ import java.sql.Timestamp;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2022/06/02<br>
+ * 計画書No	MB2205-D010<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	画面表示項目を追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -140,6 +145,30 @@ public class GXHDO201B023Model implements Serializable {
     private BigDecimal tensioneoku = null;
     /** 原料記号 */
     private String genryoukigou = "";
+    /** ﾌﾞﾚｰﾄﾞ印刷長 */
+    private Long bladeinsatsutyou = null;
+    /** ｽﾞﾚ量基準値X */
+    private BigDecimal zureryoukijunchix = null;
+    /** ｽﾞﾚ量基準値Y */
+    private BigDecimal zureryoukijunchiy = null;
+    /** 合わせ精度 蛇行 */
+    private BigDecimal awaseseidodakou = null;
+    /** 合わせ精度 流れ */
+    private BigDecimal awaseseidonagare = null;
+    /** 先行ﾛｯﾄNo */
+    private String senkoulotno = "";
+    /** ﾃｰﾌﾟ使い切り */
+    private String tapetsukaikiri = "";
+    /** 次ﾛｯﾄへ */
+    private String jilothe = "";
+    /** 成形長さ */
+    private Long seikeinagasa = null;
+    /** 備考3 */
+    private String bikou3 = "";
+    /** 備考4 */
+    private String bikou4 = "";
+    /** 備考5 */
+    private String bikou5 = "";
     /** 備考1 */
     private String bikou1 = "";
     /** 備考2 */
@@ -1131,6 +1160,198 @@ public class GXHDO201B023Model implements Serializable {
      */
     public void setGenryoukigou(String genryoukigou) {
         this.genryoukigou = genryoukigou;
+    }
+
+    /**
+     * ﾌﾞﾚｰﾄﾞ印刷長
+     * @return the bladeinsatsutyou
+     */
+    public Long getBladeinsatsutyou() {
+        return bladeinsatsutyou;
+    }
+
+    /**
+     * ﾌﾞﾚｰﾄﾞ印刷長
+     * @param bladeinsatsutyou the bladeinsatsutyou to set
+     */
+    public void setBladeinsatsutyou(Long bladeinsatsutyou) {
+        this.bladeinsatsutyou = bladeinsatsutyou;
+    }
+
+    /**
+     * ｽﾞﾚ量基準値X
+     * @return the zureryoukijunchix
+     */
+    public BigDecimal getZureryoukijunchix() {
+        return zureryoukijunchix;
+    }
+
+    /**
+     * ｽﾞﾚ量基準値X
+     * @param zureryoukijunchix the zureryoukijunchix to set
+     */
+    public void setZureryoukijunchix(BigDecimal zureryoukijunchix) {
+        this.zureryoukijunchix = zureryoukijunchix;
+    }
+
+    /**
+     * ｽﾞﾚ量基準値Y
+     * @return the zureryoukijunchiy
+     */
+    public BigDecimal getZureryoukijunchiy() {
+        return zureryoukijunchiy;
+    }
+
+    /**
+     * ｽﾞﾚ量基準値Y
+     * @param zureryoukijunchiy the zureryoukijunchiy to set
+     */
+    public void setZureryoukijunchiy(BigDecimal zureryoukijunchiy) {
+        this.zureryoukijunchiy = zureryoukijunchiy;
+    }
+
+    /**
+     * 合わせ精度 蛇行
+     * @return the awaseseidodakou
+     */
+    public BigDecimal getAwaseseidodakou() {
+        return awaseseidodakou;
+    }
+
+    /**
+     * 合わせ精度 蛇行
+     * @param awaseseidodakou the awaseseidodakou to set
+     */
+    public void setAwaseseidodakou(BigDecimal awaseseidodakou) {
+        this.awaseseidodakou = awaseseidodakou;
+    }
+
+    /**
+     * 合わせ精度 流れ
+     * @return the awaseseidonagare
+     */
+    public BigDecimal getAwaseseidonagare() {
+        return awaseseidonagare;
+    }
+
+    /**
+     * 合わせ精度 流れ
+     * @param awaseseidonagare the awaseseidonagare to set
+     */
+    public void setAwaseseidonagare(BigDecimal awaseseidonagare) {
+        this.awaseseidonagare = awaseseidonagare;
+    }
+
+    /**
+     * 先行ﾛｯﾄNo
+     * @return the senkoulotno
+     */
+    public String getSenkoulotno() {
+        return senkoulotno;
+    }
+
+    /**
+     * 先行ﾛｯﾄNo
+     * @param senkoulotno the senkoulotno to set
+     */
+    public void setSenkoulotno(String senkoulotno) {
+        this.senkoulotno = senkoulotno;
+    }
+
+    /**
+     * ﾃｰﾌﾟ使い切り
+     * @return the tapetsukaikiri
+     */
+    public String getTapetsukaikiri() {
+        return tapetsukaikiri;
+    }
+
+    /**
+     * ﾃｰﾌﾟ使い切り
+     * @param tapetsukaikiri the tapetsukaikiri to set
+     */
+    public void setTapetsukaikiri(String tapetsukaikiri) {
+        this.tapetsukaikiri = tapetsukaikiri;
+    }
+
+    /**
+     * 次ﾛｯﾄへ
+     * @return the jilothe
+     */
+    public String getJilothe() {
+        return jilothe;
+    }
+
+    /**
+     * 次ﾛｯﾄへ
+     * @param jilothe the jilothe to set
+     */
+    public void setJilothe(String jilothe) {
+        this.jilothe = jilothe;
+    }
+
+    /**
+     * 成形長さ
+     * @return the seikeinagasa
+     */
+    public Long getSeikeinagasa() {
+        return seikeinagasa;
+    }
+
+    /**
+     * 成形長さ
+     * @param seikeinagasa the seikeinagasa to set
+     */
+    public void setSeikeinagasa(Long seikeinagasa) {
+        this.seikeinagasa = seikeinagasa;
+    }
+
+    /**
+     * 備考3
+     * @return the bikou3
+     */
+    public String getBikou3() {
+        return bikou3;
+    }
+
+    /**
+     * 備考3
+     * @param bikou3 the bikou3 to set
+     */
+    public void setBikou3(String bikou3) {
+        this.bikou3 = bikou3;
+    }
+
+    /**
+     * 備考4
+     * @return the bikou4
+     */
+    public String getBikou4() {
+        return bikou4;
+    }
+
+    /**
+     * 備考4
+     * @param bikou4 the bikou4 to set
+     */
+    public void setBikou4(String bikou4) {
+        this.bikou4 = bikou4;
+    }
+
+    /**
+     * 備考5
+     * @return the bikou5
+     */
+    public String getBikou5() {
+        return bikou5;
+    }
+
+    /**
+     * 備考5
+     * @param bikou5 the bikou5 to set
+     */
+    public void setBikou5(String bikou5) {
+        this.bikou5 = bikou5;
     }
 
     /**

@@ -18,6 +18,11 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	863 zhangjy<br>
  * 変更理由	前工程WIPボタンを追加<br>
  * <br>
+ * 変更日	2022/06/02<br>
+ * 計画書No	MB2205-D010<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	画面表示項目を追加、設備ﾃﾞｰﾀ連携ﾎﾞﾀﾝを追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -364,6 +369,66 @@ public class GXHDO101B023Const {
     public static final String BIKOU2 = "sr_dpprint_bikou2";
 
     /**
+     * ﾌﾞﾚｰﾄﾞ印刷長
+     */
+    public static final String BLADEINSATSUTYOU = "sr_dpprint_bladeinsatsutyou";
+
+    /**
+     * ｽﾞﾚ量基準値X
+     */
+    public static final String ZURERYOUKIJUNCHIX = "sr_dpprint_zureryoukijunchix";
+
+    /**
+     * ｽﾞﾚ量基準値Y
+     */
+    public static final String ZURERYOUKIJUNCHIY = "sr_dpprint_zureryoukijunchiy";
+
+    /**
+     * 合わせ精度 蛇行
+     */
+    public static final String AWASESEIDODAKOU = "sr_dpprint_awaseseidodakou";
+
+    /**
+     * 合わせ精度 流れ
+     */
+    public static final String AWASESEIDONAGARE = "sr_dpprint_awaseseidonagare";
+
+    /**
+     * 先行ﾛｯﾄNo
+     */
+    public static final String SENKOULOTNO = "sr_dpprint_senkoulotno";
+
+    /**
+     * ﾃｰﾌﾟ使い切り
+     */
+    public static final String TAPETSUKAIKIRI = "sr_dpprint_tapetsukaikiri";
+
+    /**
+     * 次ﾛｯﾄへ
+     */
+    public static final String JILOTHE = "sr_dpprint_jilothe";
+
+    /**
+     * 成形長さ
+     */
+    public static final String SEIKEINAGASA = "sr_dpprint_seikeinagasa";
+
+    /**
+     * 備考3
+     */
+    public static final String BIKOU3 = "sr_dpprint_bikou3";
+
+    /**
+     * 備考4
+     */
+    public static final String BIKOU4 = "sr_dpprint_bikou4";
+
+    /**
+     * 備考5
+     */
+    public static final String BIKOU5 = "sr_dpprint_bikou5";
+
+    /**
      * 膜厚(画面上ボタン)
      */
     public static final String BTN_MAKUATSU_TOP = "sr_dpprint_makuatsu_Top";
@@ -412,6 +477,11 @@ public class GXHDO101B023Const {
      * 終了日時(画面上ボタン)
      */
     public static final String BTN_ENDDATETIME_TOP = "sr_dpprint_enddatetime_Top";
+
+    /**
+     * 設備ﾃﾞｰﾀ連携(画面上ボタン)
+     */
+    public static final String BTN_SETSUBI_DATA_RENKEI_TOP = "sr_dpprint_setsubi_data_renkei_Top";
     
     /**
      * 前工程WIP(画面上)
@@ -467,6 +537,11 @@ public class GXHDO101B023Const {
      * 終了日時(画面下ボタン)
      */
     public static final String BTN_ENDDATETIME_BOTTOM = "sr_dpprint_enddatetime_Bottom";
+
+    /**
+     * 設備ﾃﾞｰﾀ連携(画面下ボタン)
+     */
+    public static final String BTN_SETSUBI_DATA_RENKEI_BOTTOM = "sr_dpprint_setsubi_data_renkei_Bottom";
     
     /**
      * 前工程WIP(画面下)

@@ -66,6 +66,11 @@ import org.primefaces.context.RequestContext;
  * 変更者        KCSS K.Jo<br>
  * 変更理由      項目追加・変更<br>
  * <br>
+ * 変更日	2022/06/02<br>
+ * 計画書No	MB2205-D010<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	画面表示項目を追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 
@@ -658,6 +663,18 @@ public class GXHDO201B023 implements Serializable {
                     + ", T1.TensionEtemae"
                     + ", T1.TensionEoku"
                     + ", T1.genryoukigou"
+                    + ", T1.bladeinsatsutyou"
+                    + ", T1.zureryoukijunchix"
+                    + ", T1.zureryoukijunchiy"
+                    + ", T1.awaseseidodakou"
+                    + ", T1.awaseseidonagare"
+                    + ", CONCAT(T1.skojyo , T1.slotno , T1.sedaban) senkoulotno"
+                    + ", (CASE WHEN T1.tapetsukaikiri = 1 THEN 'ﾁｪｯｸ' ELSE '未ﾁｪｯｸ' END) AS tapetsukaikiri "
+                    + ", (CASE WHEN T1.jilothe = 1 THEN 'ﾁｪｯｸ' ELSE '未ﾁｪｯｸ' END) AS jilothe "
+                    + ", T1.seikeinagasa"
+                    + ", T1.bikou3"
+                    + ", T1.bikou4"
+                    + ", T1.bikou5"
                     + ", T1.bikou1"
                     + ", T1.bikou2"
                     + ", T1.torokunichiji"
@@ -777,6 +794,18 @@ public class GXHDO201B023 implements Serializable {
             mapping.put("TensionEtemae", "tensionetemae");
             mapping.put("TensionEoku", "tensioneoku");
             mapping.put("genryoukigou", "genryoukigou");
+            mapping.put("bladeinsatsutyou", "bladeinsatsutyou");
+            mapping.put("zureryoukijunchix", "zureryoukijunchix");
+            mapping.put("zureryoukijunchiy", "zureryoukijunchiy");
+            mapping.put("awaseseidodakou", "awaseseidodakou");
+            mapping.put("awaseseidonagare", "awaseseidonagare");
+            mapping.put("senkoulotno", "senkoulotno");
+            mapping.put("tapetsukaikiri", "tapetsukaikiri");
+            mapping.put("jilothe", "jilothe");
+            mapping.put("seikeinagasa", "seikeinagasa");
+            mapping.put("bikou3", "bikou3");
+            mapping.put("bikou4", "bikou4");
+            mapping.put("bikou5", "bikou5");
             mapping.put("bikou1", "bikou1");
             mapping.put("bikou2", "bikou2");
             mapping.put("makuatsu_start1", "makuatsuStart1");
