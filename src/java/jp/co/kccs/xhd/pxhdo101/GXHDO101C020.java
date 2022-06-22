@@ -24,6 +24,7 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.sql.DataSource;
+import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.model.GXHDO101C020Model;
 import jp.co.kccs.xhd.pxhdo901.GXHDO901A;
 import jp.co.kccs.xhd.util.DBUtil;
@@ -66,7 +67,6 @@ public class GXHDO101C020 implements Serializable {
      */
     @Resource(mappedName = "jdbc/DocumentServer")
     private transient DataSource dataSourceDocServer;
-    
     /**
      * フォームエラー判定
      */
@@ -473,6 +473,11 @@ public class GXHDO101C020 implements Serializable {
                     break;
                 case GXHDO101C020Model.PASTE_LOT_1:
                 case GXHDO101C020Model.PASTE_LOT_2:
+                case GXHDO101C020Model.PASTE_LOT_3:
+                case GXHDO101C020Model.PASTE_LOT_4:
+                case GXHDO101C020Model.PASTE_LOT_5:
+                case GXHDO101C020Model.YUDENTAI_PASTE_1:
+                case GXHDO101C020Model.YUDENTAI_PASTE_2:
                     if (!"P".equals(category)) {
                         setError(genryouLotData, true, "XHD-000201", "");
                         return false;
@@ -561,7 +566,7 @@ public class GXHDO101C020 implements Serializable {
         return MessageUtil.getMessage("XHD-000205", "");
     }
 
-    /**
+        /**
      * 上端子警告メッセージ 
      * 
      * @return uwaTWarnMessage the uwaTWarnMessage

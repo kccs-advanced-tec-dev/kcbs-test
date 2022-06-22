@@ -36,10 +36,20 @@ public class GXHDO101C020Model implements Cloneable {
     public static final String PASTE_LOT_1 = "ﾍﾟｰｽﾄﾛｯﾄ①";
     /** 種類名:ﾍﾟｰｽﾄﾛｯﾄ② */
     public static final String PASTE_LOT_2 = "ﾍﾟｰｽﾄﾛｯﾄ②";
+    /** 種類名:ﾍﾟｰｽﾄﾛｯﾄ③ */
+    public static final String PASTE_LOT_3 = "ﾍﾟｰｽﾄﾛｯﾄ③";
+    /** 種類名:ﾍﾟｰｽﾄﾛｯﾄ④ */
+    public static final String PASTE_LOT_4 = "ﾍﾟｰｽﾄﾛｯﾄ④";
+    /** 種類名:ﾍﾟｰｽﾄﾛｯﾄ⑤ */
+    public static final String PASTE_LOT_5 = "ﾍﾟｰｽﾄﾛｯﾄ⑤";
     /** 種類名:上端子 */
     public static final String UWA_TANSHI = "上端子";
     /** 種類名:下端子 */
     public static final String SHITA_TANSHI = "下端子";
+    /** 種類名:誘電体ﾍﾟｰｽﾄ① */
+    public static final String YUDENTAI_PASTE_1 = "誘電体ﾍﾟｰｽﾄ①";
+    /** 種類名:誘電体ﾍﾟｰｽﾄ② */
+    public static final String YUDENTAI_PASTE_2 = "誘電体ﾍﾟｰｽﾄ②";
 
     /**
      * クローン実装
@@ -157,6 +167,21 @@ public class GXHDO101C020Model implements Cloneable {
      * (ﾃｰﾌﾟﾛｯﾄ①)hinmeiの設定項目ID
      */
     private String returnItemId_TapeLot1_Tapelength;
+
+    /**
+     * (誘電体①)hinmeiの設定項目ID
+     */
+    private String returnItemId_Yudentai1_Conventionallot;
+
+    /**
+     * (誘電体②)hinmeiの設定項目ID
+     */
+    private String returnItemId_Yudentai1_Hinmei;
+
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ①)thickness_um
+     */
+    private String returnItemId_TapeLot1_thickness_um;
 
     
     /**
@@ -502,6 +527,54 @@ public class GXHDO101C020Model implements Cloneable {
      */
     public void setReturnItemId_TapeLot1_Tapelength(String returnItemId_TapeLot1_Tapelength) {
         this.returnItemId_TapeLot1_Tapelength = returnItemId_TapeLot1_Tapelength;
+    }
+
+    /**
+     * (誘電体①)hinmeiの設定項目ID
+     * @return the returnItemId_Yudentai1_Conventionallot
+     */
+    public String getReturnItemId_Yudentai1_Conventionallot() {
+        return returnItemId_Yudentai1_Conventionallot;
+    }
+
+    /**
+     * (誘電体①)hinmeiの設定項目ID
+     * @param returnItemId_Yudentai1_Conventionallot the returnItemId_Yudentai1_Conventionallot to set
+     */
+    public void setReturnItemId_Yudentai1_Conventionallot(String returnItemId_Yudentai1_Conventionallot) {
+        this.returnItemId_Yudentai1_Conventionallot = returnItemId_Yudentai1_Conventionallot;
+    }
+
+    /**
+     * (誘電体②)hinmeiの設定項目ID
+     * @return the returnItemId_Yudentai1_Hinmei
+     */
+    public String getReturnItemId_Yudentai1_Hinmei() {
+        return returnItemId_Yudentai1_Hinmei;
+    }
+
+    /**
+     * (誘電体②)hinmeiの設定項目ID
+     * @param returnItemId_Yudentai1_Hinmei the returnItemId_Yudentai1_Hinmei to set
+     */
+    public void setReturnItemId_Yudentai1_Hinmei(String returnItemId_Yudentai1_Hinmei) {
+        this.returnItemId_Yudentai1_Hinmei = returnItemId_Yudentai1_Hinmei;
+    }
+
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ①)thickness_um
+     * @return the returnItemId_TapeLot1_thickness_um
+     */
+    public String getReturnItemId_TapeLot1_thickness_um() {
+        return returnItemId_TapeLot1_thickness_um;
+    }
+
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ①)thickness_um
+     * @param returnItemId_TapeLot1_thickness_um the returnItemId_TapeLot1_thickness_um to set
+     */
+    public void setReturnItemId_TapeLot1_thickness_um(String returnItemId_TapeLot1_thickness_um) {
+        this.returnItemId_TapeLot1_thickness_um = returnItemId_TapeLot1_thickness_um;
     }
     
     /**

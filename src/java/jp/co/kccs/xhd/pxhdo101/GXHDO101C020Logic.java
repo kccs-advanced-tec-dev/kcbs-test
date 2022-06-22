@@ -7,8 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+import javax.annotation.Resource;
+import javax.sql.DataSource;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.model.GXHDO101C020Model;
+import jp.co.kccs.xhd.util.ErrUtil;
+import jp.co.kccs.xhd.util.MessageUtil;
 import jp.co.kccs.xhd.util.StringUtil;
 import org.primefaces.context.RequestContext;
 
@@ -36,7 +40,13 @@ public class GXHDO101C020Logic {
 
     private static GXHDO101C020Model model;
     private static List<FXHDD01> item_List;
-    
+
+    /**
+     * DataSource(qcdb)
+     */
+    @Resource(mappedName = "jdbc/qcdb")
+    private transient DataSource dataSourceQcdb;
+
     /**
      * 前工程WIP取込画面のモデルデータを作成する
      * @param initData 前工程WIP取込画面初期値
@@ -88,6 +98,11 @@ public class GXHDO101C020Logic {
                         || (GXHDO101C020Model.TAPE_LOT_3.equals(typeName) && "電極ﾃｰﾌﾟ".equals(mkubun) && "3".equals(mkubunno))
                         || (GXHDO101C020Model.PASTE_LOT_1.equals(typeName) && "内部電極ﾍﾟｰｽﾄ".equals(mkubun) && "1".equals(mkubunno))
                         || (GXHDO101C020Model.PASTE_LOT_2.equals(typeName) && "内部電極ﾍﾟｰｽﾄ".equals(mkubun) && "2".equals(mkubunno))
+                        || (GXHDO101C020Model.PASTE_LOT_3.equals(typeName) && "内部電極ﾍﾟｰｽﾄ".equals(mkubun) && "3".equals(mkubunno))
+                        || (GXHDO101C020Model.PASTE_LOT_4.equals(typeName) && "内部電極ﾍﾟｰｽﾄ".equals(mkubun) && "4".equals(mkubunno))
+                        || (GXHDO101C020Model.PASTE_LOT_5.equals(typeName) && "内部電極ﾍﾟｰｽﾄ".equals(mkubun) && "5".equals(mkubunno))
+                        || (GXHDO101C020Model.YUDENTAI_PASTE_1.equals(typeName) && "誘電体ﾍﾟｰｽﾄ".equals(mkubun) && "1".equals(mkubunno))
+                        || (GXHDO101C020Model.YUDENTAI_PASTE_2.equals(typeName) && "誘電体ﾍﾟｰｽﾄ".equals(mkubun) && "2".equals(mkubunno))
                         || (GXHDO101C020Model.UWA_TANSHI.equals(typeName) && "上端子ﾃｰﾌﾟ".equals(mkubun) && "1".equals(mkubunno))
                         || (GXHDO101C020Model.SHITA_TANSHI.equals(typeName) && "下端子ﾃｰﾌﾟ".equals(mkubun) && "1".equals(mkubunno))) {
                     value = mkojyo + mlotno + medaban;
@@ -233,6 +248,7 @@ public class GXHDO101C020Logic {
         FXHDD01 itemTapeLot1Lotkigo = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot1_Lotkigo());
         FXHDD01 itemTapeLot1Rollno = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot1_Rollno());
         FXHDD01 itemTapeLot1Length = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot1_Tapelength());
+        FXHDD01 itemTapeLot1Tapeatu = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot1_thickness_um());
         
         // ﾃｰﾌﾟﾛｯﾄ②の戻り項目
         FXHDD01 itemTapeLot2Rollno = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot2_Rollno());
@@ -259,6 +275,11 @@ public class GXHDO101C020Logic {
         
         // petname
         FXHDD01 itemPetname = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_Petname());
+
+        // 下端子の戻り項目
+        FXHDD01 itemYudentai1Conventionallot = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_Yudentai1_Conventionallot());
+        FXHDD01 itemYudentai1Hinmei = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_Yudentai1_Hinmei());
+
         
         Map<String, Map<String, String>> resultMaps = gXHDO101C020Model.getResultMap();
         
@@ -279,6 +300,7 @@ public class GXHDO101C020Logic {
                     setItemValue(itemTapeLot1Rollno, resultMap.get("rollno"));
                     setItemValue(itemPetname, resultMap.get("petname"));
                     setItemValue(itemTapeLot1Length, resultMap.get("tapelength_m"));
+                    setItemValue(itemTapeLot1Tapeatu, resultMap.get("thickness_um"));
                     break;
                 case GXHDO101C020Model.TAPE_LOT_2:
                     setItemValue(itemTapeLot2Rollno, resultMap.get("rollno"));
@@ -288,11 +310,11 @@ public class GXHDO101C020Logic {
                     break;
                 case GXHDO101C020Model.PASTE_LOT_1:
                     setItemValue(itemPasteLot1Hinmei, resultMap.get("hinmei"));
-                    setItemValue(itemPasteLot1Conventionallot, resultMap.get("conventionallot"));
+                    setItemValue(itemPasteLot1Conventionallot, resultMap.get("conventionallot") + resultMap.get("lotkigo"));
                     setItemValue(itemPasteLot1kokeibunpct, resultMap.get("kokeibun_pct"));
                     break;
                 case GXHDO101C020Model.PASTE_LOT_2:
-                    setItemValue(itemPasteLot2Conventionallot, resultMap.get("conventionallot"));
+                    setItemValue(itemPasteLot2Conventionallot, resultMap.get("conventionallot") + resultMap.get("lotkigo"));
                     setItemValue(itemPasteLot2Kokeibunpct, resultMap.get("kokeibun_pct"));
                     break;
                 case GXHDO101C020Model.UWA_TANSHI:
@@ -302,6 +324,10 @@ public class GXHDO101C020Logic {
                 case GXHDO101C020Model.SHITA_TANSHI:
                     setItemValue(itemShitatanshiConventionallot, resultMap.get("conventionallot"));
                     setItemValue(itemShitatanshiRollno, resultMap.get("rollno"));
+                    break;
+                case GXHDO101C020Model.YUDENTAI_PASTE_1:
+                    setItemValue(itemYudentai1Conventionallot, resultMap.get("conventionallot"));
+                    setItemValue(itemYudentai1Hinmei, resultMap.get("hinmei"));
                     break;
             }
         }
@@ -375,11 +401,11 @@ public class GXHDO101C020Logic {
                     }
                 }
             } else {
-            // 元画面の電極ﾃｰﾌﾟの原料部分とﾃｰﾌﾟﾛｯﾄ①のhinmeiが一致していること
-            if (GXHDO101C020Model.TAPE_LOT_1.equals(typeName) && !splitVal[1].equals(StringUtil.nullToBlank(resultMap.get("hinmei")))) {
-                return false;
+                // 元画面の電極ﾃｰﾌﾟの原料部分とﾃｰﾌﾟﾛｯﾄ①のhinmeiが一致していること
+                if (GXHDO101C020Model.TAPE_LOT_1.equals(typeName) && !splitVal[1].equals(StringUtil.nullToBlank(resultMap.get("hinmei")))) {
+                    return false;
+                }
             }
-        }
             
         }
         return true;
@@ -426,14 +452,37 @@ public class GXHDO101C020Logic {
         String[] itemName = null;
         switch (gamenID) {
             case "GXHDO101B001":
-            case "GXHDO101B002":
-            case "GXHDO101B023":
-                itemName = new String[5];
+                itemName = new String[8];
                 itemName[0] = GXHDO101C020Model.TAPE_LOT_1;
                 itemName[1] = GXHDO101C020Model.TAPE_LOT_2;
                 itemName[2] = GXHDO101C020Model.TAPE_LOT_3;
                 itemName[3] = GXHDO101C020Model.PASTE_LOT_1;
                 itemName[4] = GXHDO101C020Model.PASTE_LOT_2;
+                itemName[5] = GXHDO101C020Model.PASTE_LOT_3;
+                itemName[6] = GXHDO101C020Model.PASTE_LOT_4;
+                itemName[7] = GXHDO101C020Model.PASTE_LOT_5;
+                break;
+            case "GXHDO101B002":
+                itemName = new String[8];
+                itemName[0] = GXHDO101C020Model.TAPE_LOT_1;
+                itemName[1] = GXHDO101C020Model.TAPE_LOT_2;
+                itemName[2] = GXHDO101C020Model.TAPE_LOT_3;
+                itemName[3] = GXHDO101C020Model.PASTE_LOT_1;
+                itemName[4] = GXHDO101C020Model.PASTE_LOT_2;
+                itemName[5] = GXHDO101C020Model.PASTE_LOT_3;
+                itemName[6] = GXHDO101C020Model.PASTE_LOT_4;
+                itemName[7] = GXHDO101C020Model.PASTE_LOT_5;
+                break;
+            case "GXHDO101B023":
+                itemName = new String[8];
+                itemName[0] = GXHDO101C020Model.TAPE_LOT_1;
+                itemName[1] = GXHDO101C020Model.TAPE_LOT_2;
+                itemName[2] = GXHDO101C020Model.TAPE_LOT_3;
+                itemName[3] = GXHDO101C020Model.PASTE_LOT_1;
+                itemName[4] = GXHDO101C020Model.PASTE_LOT_2;
+                itemName[5] = GXHDO101C020Model.PASTE_LOT_3;
+                itemName[6] = GXHDO101C020Model.PASTE_LOT_4;
+                itemName[7] = GXHDO101C020Model.PASTE_LOT_5;
                 break;
             case "GXHDO101B003":
                 itemName = new String[3];
@@ -444,15 +493,19 @@ public class GXHDO101C020Logic {
             case "GXHDO101B004":
             case "GXHDO101B005":
                 itemName = new String[2];
-                itemName[1] = GXHDO101C020Model.UWA_TANSHI;
-                itemName[2] = GXHDO101C020Model.SHITA_TANSHI;
+                itemName[0] = GXHDO101C020Model.UWA_TANSHI;
+                itemName[1] = GXHDO101C020Model.SHITA_TANSHI;
                 break;
             case "GXHDO101B006":
-                itemName = new String[4];
+                itemName = new String[8];
                 itemName[0] = GXHDO101C020Model.TAPE_LOT_1;
-                itemName[1] = GXHDO101C020Model.PASTE_LOT_1;
-                itemName[2] = GXHDO101C020Model.UWA_TANSHI;
-                itemName[3] = GXHDO101C020Model.SHITA_TANSHI;
+                itemName[1] = GXHDO101C020Model.TAPE_LOT_2;
+                itemName[2] = GXHDO101C020Model.PASTE_LOT_1;
+                itemName[3] = GXHDO101C020Model.PASTE_LOT_2;
+                itemName[4] = GXHDO101C020Model.YUDENTAI_PASTE_1;
+                itemName[5] = GXHDO101C020Model.YUDENTAI_PASTE_2;
+                itemName[6] = GXHDO101C020Model.UWA_TANSHI;
+                itemName[7] = GXHDO101C020Model.SHITA_TANSHI;
                 break;
             case "GXHDO101B045":
                 itemName = new String[2];
@@ -494,7 +547,7 @@ public class GXHDO101C020Logic {
             return true;
         }
         String shitaValue = itemShitaTape.getValue();
-        String[] splitShitaVal = shitaValue.split(" ", 3);
+        String[] splitShitaVal = shitaValue.split("  ", 3);
         if (splitShitaVal.length < 3) {
             return true;
         }
@@ -507,7 +560,7 @@ public class GXHDO101C020Logic {
             return true;
         }
         String uwaValue = itemUwaTape.getValue();
-        String[] splitUwaVal = uwaValue.split(" ", 3);
+        String[] splitUwaVal = uwaValue.split("  ", 3);
         if (splitUwaVal.length < 3) {
             return true;
         }
@@ -528,12 +581,12 @@ public class GXHDO101C020Logic {
             if ("GXHDO101B005".equals(itemShitaTape.getGamenId())) {
                 if (GXHDO101C020Model.UWA_TANSHI.equals(typeName) && tanshi.equals("T")) {
                     if (!splitUwaVal[0].equals(StringUtil.nullToBlank(resultMap.get("hinmei"))) ||
-                            !splitUwaAVal[2].equals(StringUtil.nullToBlank(resultMap.get("thickness_um")))) {
+                            !splitUwaAVal[0].equals(StringUtil.nullToBlank(resultMap.get("thickness_um")))) {
                         return false;                        
                     }
                 } else if (GXHDO101C020Model.SHITA_TANSHI.equals(typeName) && tanshi.equals("B")) {
                     if (!splitShitaVal[0].equals(StringUtil.nullToBlank(resultMap.get("hinmei"))) ||
-                            !splitShitaAVal[2].equals(StringUtil.nullToBlank(resultMap.get("thickness_um")))) {
+                            !splitShitaAVal[0].equals(StringUtil.nullToBlank(resultMap.get("thickness_um")))) {
                         return false;                        
                     }
                 }
@@ -541,6 +594,68 @@ public class GXHDO101C020Logic {
             
         }
         return true;
+    }
+    
+    /**
+     * 印刷SPS/ｸﾞﾗﾋﾞｱ必須ﾁｪｯｸ
+     * 
+     * @param gXHDO101C020Model 各工程の必須ﾁｪｯｸ
+     * @return List<String> ｴﾗｰﾒｯｾｰｼﾞ
+     */
+    public static List<String> checkLotSps(GXHDO101C020Model gXHDO101C020Model) {
+        
+        List<String> errorList = new ArrayList<>();
+        List<GXHDO101C020Model.GenryouLotData> genryouLotDataList = gXHDO101C020Model.getGenryouLotDataList();
+        for (GXHDO101C020Model.GenryouLotData genryouLotData : genryouLotDataList) {
+            String typeName = genryouLotData.getTypeName();
+            String value = genryouLotData.getValue();
+            if (GXHDO101C020Model.TAPE_LOT_1.equals(typeName)) {
+                if ("".equals(value)) {
+                    genryouLotData.setTextBackColor(ErrUtil.ERR_BACK_COLOR);
+                    errorList.add(MessageUtil.getMessage("XHD-000037", "前工程WIP" ));
+                    return errorList;
+                }
+            } else if (GXHDO101C020Model.PASTE_LOT_1.equals(typeName)) {
+                if ("".equals(value)) {
+                    genryouLotData.setTextBackColor(ErrUtil.ERR_BACK_COLOR);
+                    errorList.add(MessageUtil.getMessage("XHD-000037", "前工程WIP"));
+                    return errorList;
+                }
+            }            
+        }
+        
+        return errorList;
+    }
+
+    /**
+     * 積層SPS必須ﾁｪｯｸ
+     * 
+     * @param gXHDO101C020Model 各工程の必須ﾁｪｯｸ
+     * @return List<String> ｴﾗｰﾒｯｾｰｼﾞ
+     */
+    public static List<String> checkLotSekiSps(GXHDO101C020Model gXHDO101C020Model) {
+        
+        List<String> errorList = new ArrayList<>();
+        List<GXHDO101C020Model.GenryouLotData> genryouLotDataList = gXHDO101C020Model.getGenryouLotDataList();
+        for (GXHDO101C020Model.GenryouLotData genryouLotData : genryouLotDataList) {
+            String typeName = genryouLotData.getTypeName();
+            String value = genryouLotData.getValue();
+            if (GXHDO101C020Model.UWA_TANSHI.equals(typeName)) {
+                if ("".equals(value)) {
+                    genryouLotData.setTextBackColor(ErrUtil.ERR_BACK_COLOR);
+                    errorList.add(MessageUtil.getMessage("XHD-000037", "前工程WIP" ));
+                    return errorList;
+                }
+            } else if (GXHDO101C020Model.SHITA_TANSHI.equals(typeName)) {
+                if ("".equals(value)) {
+                    genryouLotData.setTextBackColor(ErrUtil.ERR_BACK_COLOR);
+                    errorList.add(MessageUtil.getMessage("XHD-000037", "前工程WIP"));
+                    return errorList;
+                }
+            }            
+        }
+        
+        return errorList;
     }
 
 }
