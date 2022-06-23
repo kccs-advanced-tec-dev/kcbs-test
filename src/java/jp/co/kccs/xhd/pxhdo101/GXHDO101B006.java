@@ -85,6 +85,11 @@ import org.apache.commons.dbutils.handlers.MapListHandler;
  * 変更者       KCSS WXF<br>
  * 変更理由     仕様変更対応<br>
  * <br>
+ * 変更日	2022/06/14<br>
+ * 計画書No	MB2205-D010<br>
+ * 変更者	KCSS wxf<br>
+ * 変更理由	項目追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -1936,14 +1941,44 @@ public class GXHDO101B006 implements IFormLogic {
         this.setItemData(processData, GXHDO101B006Const.DENKYOKU_TAPE_SLIP_KIGOU, getSrRhapsItemData(GXHDO101B006Const.DENKYOKU_TAPE_SLIP_KIGOU, srRhapsData));
         //電極テープロールNo 1本目
         this.setItemData(processData, GXHDO101B006Const.DENKYOKU_TAPE_ROLL_NO1, getSrRhapsItemData(GXHDO101B006Const.DENKYOKU_TAPE_ROLL_NO1, srRhapsData));
+        //電極ﾃｰﾌﾟﾛｰﾙNo 1本目開始
+        this.setItemData(processData, GXHDO101B006Const.ETAPEROLLNO1KAISHI, getSrRhapsItemData(GXHDO101B006Const.ETAPEROLLNO1KAISHI, srRhapsData));
+        //電極ﾃｰﾌﾟﾛｰﾙNo 1本目終了
+        this.setItemData(processData, GXHDO101B006Const.ETAPEROLLNO1SYURYOU, getSrRhapsItemData(GXHDO101B006Const.ETAPEROLLNO1SYURYOU, srRhapsData));
+        //電極ﾃｰﾌﾟﾛｰﾙNo 1本目印刷
+        this.setItemData(processData, GXHDO101B006Const.ETAPEROLLNO1INSATSU, getSrRhapsItemData(GXHDO101B006Const.ETAPEROLLNO1INSATSU, srRhapsData));
         //電極テープロールNo 2本目
         this.setItemData(processData, GXHDO101B006Const.DENKYOKU_TAPE_ROLL_NO2, getSrRhapsItemData(GXHDO101B006Const.DENKYOKU_TAPE_ROLL_NO2, srRhapsData));
+        //電極ﾃｰﾌﾟﾛｰﾙNo 2本目開始
+        this.setItemData(processData, GXHDO101B006Const.ETAPEROLLNO2KAISHI, getSrRhapsItemData(GXHDO101B006Const.ETAPEROLLNO2KAISHI, srRhapsData));
+        //電極ﾃｰﾌﾟﾛｰﾙNo 2本目終了
+        this.setItemData(processData, GXHDO101B006Const.ETAPEROLLNO2SYURYOU, getSrRhapsItemData(GXHDO101B006Const.ETAPEROLLNO2SYURYOU, srRhapsData));
+        //電極ﾃｰﾌﾟﾛｰﾙNo 2本目印刷
+        this.setItemData(processData, GXHDO101B006Const.ETAPEROLLNO2INSATSU, getSrRhapsItemData(GXHDO101B006Const.ETAPEROLLNO2INSATSU, srRhapsData));
         //電極テープロールNo 3本目
         this.setItemData(processData, GXHDO101B006Const.DENKYOKU_TAPE_ROLL_NO3, getSrRhapsItemData(GXHDO101B006Const.DENKYOKU_TAPE_ROLL_NO3, srRhapsData));
+        //電極ﾃｰﾌﾟﾛｰﾙNo 3本目開始
+        this.setItemData(processData, GXHDO101B006Const.ETAPEROLLNO3KAISHI, getSrRhapsItemData(GXHDO101B006Const.ETAPEROLLNO3KAISHI, srRhapsData));
+        //電極ﾃｰﾌﾟﾛｰﾙNo 3本目終了
+        this.setItemData(processData, GXHDO101B006Const.ETAPEROLLNO3SYURYOU, getSrRhapsItemData(GXHDO101B006Const.ETAPEROLLNO3SYURYOU, srRhapsData));
+        //電極ﾃｰﾌﾟﾛｰﾙNo 3本目印刷
+        this.setItemData(processData, GXHDO101B006Const.ETAPEROLLNO3INSATSU, getSrRhapsItemData(GXHDO101B006Const.ETAPEROLLNO3INSATSU, srRhapsData));
         //電極テープロールNo 4本目
         this.setItemData(processData, GXHDO101B006Const.DENKYOKU_TAPE_ROLL_NO4, getSrRhapsItemData(GXHDO101B006Const.DENKYOKU_TAPE_ROLL_NO4, srRhapsData));
+        //電極ﾃｰﾌﾟﾛｰﾙNo 4本目開始
+        this.setItemData(processData, GXHDO101B006Const.ETAPEROLLNO4KAISHI, getSrRhapsItemData(GXHDO101B006Const.ETAPEROLLNO4KAISHI, srRhapsData));
+        //電極ﾃｰﾌﾟﾛｰﾙNo 4本目終了
+        this.setItemData(processData, GXHDO101B006Const.ETAPEROLLNO4SYURYOU, getSrRhapsItemData(GXHDO101B006Const.ETAPEROLLNO4SYURYOU, srRhapsData));
+        //電極ﾃｰﾌﾟﾛｰﾙNo 4本目印刷
+        this.setItemData(processData, GXHDO101B006Const.ETAPEROLLNO4INSATSU, getSrRhapsItemData(GXHDO101B006Const.ETAPEROLLNO4INSATSU, srRhapsData));
         //電極テープロールNo 5本目
         this.setItemData(processData, GXHDO101B006Const.DENKYOKU_TAPE_ROLL_NO5, getSrRhapsItemData(GXHDO101B006Const.DENKYOKU_TAPE_ROLL_NO5, srRhapsData));
+        //電極ﾃｰﾌﾟﾛｰﾙNo 5本目開始
+        this.setItemData(processData, GXHDO101B006Const.ETAPEROLLNO5KAISHI, getSrRhapsItemData(GXHDO101B006Const.ETAPEROLLNO5KAISHI, srRhapsData));
+        //電極ﾃｰﾌﾟﾛｰﾙNo 5本目終了
+        this.setItemData(processData, GXHDO101B006Const.ETAPEROLLNO5SYURYOU, getSrRhapsItemData(GXHDO101B006Const.ETAPEROLLNO5SYURYOU, srRhapsData));
+        //電極ﾃｰﾌﾟﾛｰﾙNo 5本目印刷
+        this.setItemData(processData, GXHDO101B006Const.ETAPEROLLNO5INSATSU, getSrRhapsItemData(GXHDO101B006Const.ETAPEROLLNO5INSATSU, srRhapsData));
         //電極テープ原料lot
         this.setItemData(processData, GXHDO101B006Const.DENKYOKU_TAPE_GENRYO_LOT, getSrRhapsItemData(GXHDO101B006Const.DENKYOKU_TAPE_GENRYO_LOT, srRhapsData));
         //上端子テープロットNo
@@ -2154,10 +2189,18 @@ public class GXHDO101B006 implements IFormLogic {
         this.setItemData(processData, GXHDO101B006Const.C_SEIHAN_SETSHA, getSrRhapsItemData(GXHDO101B006Const.C_SEIHAN_SETSHA, srRhapsData));
         //段差測定者
         this.setItemData(processData, GXHDO101B006Const.DANSA_SOKUTEISHA, getSrRhapsItemData(GXHDO101B006Const.DANSA_SOKUTEISHA, srRhapsData));
+        //成形長さ
+        this.setItemData(processData, GXHDO101B006Const.SEIKEINAGASA, getSrRhapsItemData(GXHDO101B006Const.SEIKEINAGASA, srRhapsData));
         //備考1
         this.setItemData(processData, GXHDO101B006Const.BIKOU1, getSrRhapsItemData(GXHDO101B006Const.BIKOU1, srRhapsData));
         //備考2
         this.setItemData(processData, GXHDO101B006Const.BIKOU2, getSrRhapsItemData(GXHDO101B006Const.BIKOU2, srRhapsData));
+        //備考3
+        this.setItemData(processData, GXHDO101B006Const.BIKOU3, getSrRhapsItemData(GXHDO101B006Const.BIKOU3, srRhapsData));
+        //備考4
+        this.setItemData(processData, GXHDO101B006Const.BIKOU4, getSrRhapsItemData(GXHDO101B006Const.BIKOU4, srRhapsData));
+        //備考5
+        this.setItemData(processData, GXHDO101B006Const.BIKOU5, getSrRhapsItemData(GXHDO101B006Const.BIKOU5, srRhapsData));
         //印刷積層開始確認者
         this.setItemData(processData, GXHDO101B006Const.INSATSU_SEKISOU_KAISHI_KAKUNINSHA, getSrRhapsItemData(GXHDO101B006Const.INSATSU_SEKISOU_KAISHI_KAKUNINSHA, srRhapsData));
         //ﾀｰｹﾞｯﾄ有無
@@ -2618,7 +2661,10 @@ public class GXHDO101B006 implements IFormLogic {
         String sql = "SELECT "
                 + "KOJYO,LOTNO,EDABAN,KCPNO,KAISINICHIJI,SYURYONICHIJI,TTAPESYURUI,TTAPELOTNO,TTapeSlipKigo,TTapeRollNo1,TTapeRollNo2,"
                 + "TTapeRollNo3,TTapeRollNo4,TTapeRollNo5,TGENRYOKIGO,STSIYO,ESEKISOSIYO,ETAPESYURUI,ETAPEGLOT,ETAPELOT,ETapeSlipKigo,"
-                + "ETapeRollNo1,ETapeRollNo2,ETapeRollNo3,ETapeRollNo4,ETapeRollNo5,SPTUDENJIKAN,SKAATURYOKU,SKHEADNO,SUSSKAISUU,"
+                + "ETapeRollNo1,ETapeRollNo1kaishi,ETapeRollNo1syuryou,ETapeRollNo1insatsu,ETapeRollNo2,ETapeRollNo2kaishi,"
+                + "ETapeRollNo2syuryou,ETapeRollNo2insatsu,ETapeRollNo3,ETapeRollNo3kaishi,ETapeRollNo3syuryou,ETapeRollNo3insatsu,"
+                + "ETapeRollNo4,ETapeRollNo4kaishi,ETapeRollNo4syuryou,ETapeRollNo4insatsu,ETapeRollNo5,ETapeRollNo5kaishi,"
+                + "ETapeRollNo5syuryou,ETapeRollNo5insatsu,SPTUDENJIKAN,SKAATURYOKU,SKHEADNO,SUSSKAISUU,"
                 + "ECPASTEMEI,EPASTELOTNO,EPASTENENDO,EPASTEONDO,ESEIHANMEI,buzaizaikonodenkyoku,ESEIHANNO,ESEIMAISUU,"
                 + "saidaisyorisuudenkyoku,ruikeisyorisuudenkyoku,ECLEARANCE,ESAATU,ESKEEGENO,ESKMAISUU,"
                 + "ESKSPEED,ESCCLEARANCE,ESKKMJIKAN,ELDSTART,ESEIMENSEKI,EMAKUATU,ESLIDERYO,EKANSOONDO,EKANSOJIKAN,CPASTELOTNO,"
@@ -2634,7 +2680,7 @@ public class GXHDO101B006 implements IFormLogic {
                 + "NIJIMISOKUTEIPTN,PRNSAMPLEGAIKAN,PRNICHIYOHAKUNAGASA,CTABLECLEARANCE,CMAKUATSUSETTEI,CSKSPEED,CNEPPUFURYOU,KABURIRYOU,"
                 + "SGAIKAN,NIJIMISOKUTEISEKISOUGO,SEKISOUHINGAIKAN,SEKISOUZURE,UWAJSSKIRIKAEICHI,SHITAKKSKIRIKAEICHI,TINKSYURYUI,TINKLOT,"
                 + "TGAIKAN,STARTTANTOU,ENDTANTOU,TENDDAY,TENDTANTOU,SYORISETSUU,RYOUHINSETSUU,HEADKOUKANTANTOU,SEKISOUJOUKENTANTOU,ESEIHANSETTANTOU,"
-                + "CSEIHANSETTANTOU,DANSASOKUTEITANTOU,revision,'0' AS deleteflag,startkakunin,TUMU,SITATTAPELOTNO,SITATTapeSlipKigo,"
+                + "CSEIHANSETTANTOU,DANSASOKUTEITANTOU,seikeinagasa,bikou3,bikou4,bikou5,revision,'0' AS deleteflag,startkakunin,TUMU,SITATTAPELOTNO,SITATTapeSlipKigo,"
                 + "SITATTapeRollNo1,SITATTapeRollNo2,SITATTapeRollNo3,SITATTapeRollNo4,SITATTapeRollNo5 "
                 + "FROM sr_rhaps "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
@@ -2676,10 +2722,25 @@ public class GXHDO101B006 implements IFormLogic {
         mapping.put("ETAPELOT", "etapelot"); //電極ﾃｰﾌﾟﾛｯﾄ
         mapping.put("ETapeSlipKigo", "eTapeSlipKigo"); //電極ﾃｰﾌﾟｽﾘｯﾌﾟ記号
         mapping.put("ETapeRollNo1", "eTapeRollNo1"); //電極ﾃｰﾌﾟﾛｰﾙNo1
+        mapping.put("ETapeRollNo1kaishi", "eTapeRollNo1kaishi"); //電極ﾃｰﾌﾟﾛｰﾙNo 1本目開始
+        mapping.put("ETapeRollNo1syuryou", "eTapeRollNo1syuryou"); //電極ﾃｰﾌﾟﾛｰﾙNo 1本目終了
+        mapping.put("ETapeRollNo1insatsu", "eTapeRollNo1insatsu"); //電極ﾃｰﾌﾟﾛｰﾙNo 1本目印刷
         mapping.put("ETapeRollNo2", "eTapeRollNo2"); //電極ﾃｰﾌﾟﾛｰﾙNo2
+        mapping.put("ETapeRollNo2kaishi", "eTapeRollNo2kaishi"); //電極ﾃｰﾌﾟﾛｰﾙNo 2本目開始
+        mapping.put("ETapeRollNo2syuryou", "eTapeRollNo2syuryou"); //電極ﾃｰﾌﾟﾛｰﾙNo 2本目終了
+        mapping.put("ETapeRollNo2insatsu", "eTapeRollNo2insatsu"); //電極ﾃｰﾌﾟﾛｰﾙNo 2本目印刷
         mapping.put("ETapeRollNo3", "eTapeRollNo3"); //電極ﾃｰﾌﾟﾛｰﾙNo3
+        mapping.put("ETapeRollNo3kaishi", "eTapeRollNo3kaishi"); //電極ﾃｰﾌﾟﾛｰﾙNo 3本目開始
+        mapping.put("ETapeRollNo3syuryou", "eTapeRollNo3syuryou"); //電極ﾃｰﾌﾟﾛｰﾙNo 3本目終了
+        mapping.put("ETapeRollNo3insatsu", "eTapeRollNo3insatsu"); //電極ﾃｰﾌﾟﾛｰﾙNo 3本目印刷
         mapping.put("ETapeRollNo4", "eTapeRollNo4"); //電極ﾃｰﾌﾟﾛｰﾙNo4
+        mapping.put("ETapeRollNo4kaishi", "eTapeRollNo4kaishi"); //電極ﾃｰﾌﾟﾛｰﾙNo 4本目開始
+        mapping.put("ETapeRollNo4syuryou", "eTapeRollNo4syuryou"); //電極ﾃｰﾌﾟﾛｰﾙNo 4本目終了
+        mapping.put("ETapeRollNo4insatsu", "eTapeRollNo4insatsu"); //電極ﾃｰﾌﾟﾛｰﾙNo 4本目印刷
         mapping.put("ETapeRollNo5", "eTapeRollNo5"); //電極ﾃｰﾌﾟﾛｰﾙNo5
+        mapping.put("ETapeRollNo5kaishi", "eTapeRollNo5kaishi"); //電極ﾃｰﾌﾟﾛｰﾙNo 5本目開始
+        mapping.put("ETapeRollNo5syuryou", "eTapeRollNo5syuryou"); //電極ﾃｰﾌﾟﾛｰﾙNo 5本目終了
+        mapping.put("ETapeRollNo5insatsu", "eTapeRollNo5insatsu"); //電極ﾃｰﾌﾟﾛｰﾙNo 5本目印刷
         mapping.put("SPTUDENJIKAN", "sptudenjikan"); //積層ﾌﾟﾚｽ通電時間
         mapping.put("SKAATURYOKU", "skaaturyoku"); //積層加圧力
         mapping.put("SKHEADNO", "skheadno"); //瞬時加熱ﾍｯﾄﾞNo
@@ -2831,6 +2892,10 @@ public class GXHDO101B006 implements IFormLogic {
         mapping.put("ESEIHANSETTANTOU", "eseihansettantou"); //E製版ｾｯﾄ者
         mapping.put("CSEIHANSETTANTOU", "cseihansettantou"); //C製版ｾｯﾄ者
         mapping.put("DANSASOKUTEITANTOU", "dansasokuteitantou"); //段差測定者
+        mapping.put("seikeinagasa", "seikeinagasa"); //成形長さ
+        mapping.put("bikou3", "bikou3"); //備考3
+        mapping.put("bikou4", "bikou4"); //備考4
+        mapping.put("bikou5", "bikou5"); //備考5
         mapping.put("revision", "revision"); //revision
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
         mapping.put("startkakunin", "startkakunin"); //印刷積層開始確認者
@@ -2965,7 +3030,10 @@ public class GXHDO101B006 implements IFormLogic {
         String sql = "SELECT "
                 + "KOJYO,LOTNO,EDABAN,KCPNO,KAISINICHIJI,SYURYONICHIJI,TTAPESYURUI,TTAPELOTNO,TTapeSlipKigo,TTapeRollNo1,TTapeRollNo2,"
                 + "TTapeRollNo3,TTapeRollNo4,TTapeRollNo5,TGENRYOKIGO,STSIYO,ESEKISOSIYO,ETAPESYURUI,ETAPEGLOT,ETAPELOT,ETapeSlipKigo,"
-                + "ETapeRollNo1,ETapeRollNo2,ETapeRollNo3,ETapeRollNo4,ETapeRollNo5,SPTUDENJIKAN,SKAATURYOKU,SKHEADNO,SUSSKAISUU,"
+                + "ETapeRollNo1,ETapeRollNo1kaishi,ETapeRollNo1syuryou,ETapeRollNo1insatsu,ETapeRollNo2,ETapeRollNo2kaishi,"
+                + "ETapeRollNo2syuryou,ETapeRollNo2insatsu,ETapeRollNo3,ETapeRollNo3kaishi,ETapeRollNo3syuryou,ETapeRollNo3insatsu,"
+                + "ETapeRollNo4,ETapeRollNo4kaishi,ETapeRollNo4syuryou,ETapeRollNo4insatsu,ETapeRollNo5,ETapeRollNo5kaishi,"
+                + "ETapeRollNo5syuryou,ETapeRollNo5insatsu,SPTUDENJIKAN,SKAATURYOKU,SKHEADNO,SUSSKAISUU,"
                 + "ECPASTEMEI,EPASTELOTNO,EPASTENENDO,EPASTEONDO,ESEIHANMEI,buzaizaikonodenkyoku,ESEIHANNO,ESEIMAISUU,"
                 + "saidaisyorisuudenkyoku,ruikeisyorisuudenkyoku,ECLEARANCE,ESAATU,ESKEEGENO,ESKMAISUU,"
                 + "ESKSPEED,ESCCLEARANCE,ESKKMJIKAN,ELDSTART,ESEIMENSEKI,EMAKUATU,ESLIDERYO,EKANSOONDO,EKANSOJIKAN,CPASTELOTNO,"
@@ -2981,7 +3049,7 @@ public class GXHDO101B006 implements IFormLogic {
                 + "NIJIMISOKUTEIPTN,PRNSAMPLEGAIKAN,PRNICHIYOHAKUNAGASA,CTABLECLEARANCE,CMAKUATSUSETTEI,CSKSPEED,CNEPPUFURYOU,KABURIRYOU,"
                 + "SGAIKAN,NIJIMISOKUTEISEKISOUGO,SEKISOUHINGAIKAN,SEKISOUZURE,UWAJSSKIRIKAEICHI,SHITAKKSKIRIKAEICHI,TINKSYURYUI,TINKLOT,"
                 + "TGAIKAN,STARTTANTOU,ENDTANTOU,TENDDAY,TENDTANTOU,SYORISETSUU,RYOUHINSETSUU,HEADKOUKANTANTOU,SEKISOUJOUKENTANTOU,ESEIHANSETTANTOU,"
-                + "CSEIHANSETTANTOU,DANSASOKUTEITANTOU,revision,deleteflag,startkakunin,TUMU,SITATTAPELOTNO,SITATTapeSlipKigo,"
+                + "CSEIHANSETTANTOU,DANSASOKUTEITANTOU,seikeinagasa,bikou3,bikou4,bikou5,revision,deleteflag,startkakunin,TUMU,SITATTAPELOTNO,SITATTapeSlipKigo,"
                 + "SITATTapeRollNo1,SITATTapeRollNo2,SITATTapeRollNo3,SITATTapeRollNo4,SITATTapeRollNo5 "
                 + "FROM tmp_sr_rhaps "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND deleteflag = ? ";
@@ -3024,10 +3092,25 @@ public class GXHDO101B006 implements IFormLogic {
         mapping.put("ETAPELOT", "etapelot"); //電極ﾃｰﾌﾟﾛｯﾄ
         mapping.put("ETapeSlipKigo", "eTapeSlipKigo"); //電極ﾃｰﾌﾟｽﾘｯﾌﾟ記号
         mapping.put("ETapeRollNo1", "eTapeRollNo1"); //電極ﾃｰﾌﾟﾛｰﾙNo1
+        mapping.put("ETapeRollNo1kaishi", "eTapeRollNo1kaishi"); //電極ﾃｰﾌﾟﾛｰﾙNo 1本目開始
+        mapping.put("ETapeRollNo1syuryou", "eTapeRollNo1syuryou"); //電極ﾃｰﾌﾟﾛｰﾙNo 1本目終了
+        mapping.put("ETapeRollNo1insatsu", "eTapeRollNo1insatsu"); //電極ﾃｰﾌﾟﾛｰﾙNo 1本目印刷
         mapping.put("ETapeRollNo2", "eTapeRollNo2"); //電極ﾃｰﾌﾟﾛｰﾙNo2
+        mapping.put("ETapeRollNo2kaishi", "eTapeRollNo2kaishi"); //電極ﾃｰﾌﾟﾛｰﾙNo 2本目開始
+        mapping.put("ETapeRollNo2syuryou", "eTapeRollNo2syuryou"); //電極ﾃｰﾌﾟﾛｰﾙNo 2本目終了
+        mapping.put("ETapeRollNo2insatsu", "eTapeRollNo2insatsu"); //電極ﾃｰﾌﾟﾛｰﾙNo 2本目印刷
         mapping.put("ETapeRollNo3", "eTapeRollNo3"); //電極ﾃｰﾌﾟﾛｰﾙNo3
+        mapping.put("ETapeRollNo3kaishi", "eTapeRollNo3kaishi"); //電極ﾃｰﾌﾟﾛｰﾙNo 3本目開始
+        mapping.put("ETapeRollNo3syuryou", "eTapeRollNo3syuryou"); //電極ﾃｰﾌﾟﾛｰﾙNo 3本目終了
+        mapping.put("ETapeRollNo3insatsu", "eTapeRollNo3insatsu"); //電極ﾃｰﾌﾟﾛｰﾙNo 3本目印刷
         mapping.put("ETapeRollNo4", "eTapeRollNo4"); //電極ﾃｰﾌﾟﾛｰﾙNo4
+        mapping.put("ETapeRollNo4kaishi", "eTapeRollNo4kaishi"); //電極ﾃｰﾌﾟﾛｰﾙNo 4本目開始
+        mapping.put("ETapeRollNo4syuryou", "eTapeRollNo4syuryou"); //電極ﾃｰﾌﾟﾛｰﾙNo 4本目終了
+        mapping.put("ETapeRollNo4insatsu", "eTapeRollNo4insatsu"); //電極ﾃｰﾌﾟﾛｰﾙNo 4本目印刷
         mapping.put("ETapeRollNo5", "eTapeRollNo5"); //電極ﾃｰﾌﾟﾛｰﾙNo5
+        mapping.put("ETapeRollNo5kaishi", "eTapeRollNo5kaishi"); //電極ﾃｰﾌﾟﾛｰﾙNo 5本目開始
+        mapping.put("ETapeRollNo5syuryou", "eTapeRollNo5syuryou"); //電極ﾃｰﾌﾟﾛｰﾙNo 5本目終了
+        mapping.put("ETapeRollNo5insatsu", "eTapeRollNo5insatsu"); //電極ﾃｰﾌﾟﾛｰﾙNo 5本目印刷
         mapping.put("SPTUDENJIKAN", "sptudenjikan"); //積層ﾌﾟﾚｽ通電時間
         mapping.put("SKAATURYOKU", "skaaturyoku"); //積層加圧力
         mapping.put("SKHEADNO", "skheadno"); //瞬時加熱ﾍｯﾄﾞNo
@@ -3179,6 +3262,10 @@ public class GXHDO101B006 implements IFormLogic {
         mapping.put("ESEIHANSETTANTOU", "eseihansettantou"); //E製版ｾｯﾄ者
         mapping.put("CSEIHANSETTANTOU", "cseihansettantou"); //C製版ｾｯﾄ者
         mapping.put("DANSASOKUTEITANTOU", "dansasokuteitantou"); //段差測定者
+        mapping.put("seikeinagasa", "seikeinagasa"); //成形長さ
+        mapping.put("bikou3", "bikou3"); //備考3
+        mapping.put("bikou4", "bikou4"); //備考4
+        mapping.put("bikou5", "bikou5"); //備考5
         mapping.put("revision", "revision"); //revision
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
         mapping.put("startkakunin", "startkakunin"); //印刷積層開始確認者
@@ -3609,7 +3696,10 @@ public class GXHDO101B006 implements IFormLogic {
         String sql = "INSERT INTO tmp_sr_rhaps ("
                 + "KOJYO,LOTNO,EDABAN,KCPNO,KAISINICHIJI,SYURYONICHIJI,TTAPESYURUI,TTAPELOTNO,TTapeSlipKigo,TTapeRollNo1,TTapeRollNo2,"
                 + "TTapeRollNo3,TTapeRollNo4,TTapeRollNo5,TGENRYOKIGO,STSIYO,ESEKISOSIYO,ETAPESYURUI,ETAPEGLOT,ETAPELOT,ETapeSlipKigo,"
-                + "ETapeRollNo1,ETapeRollNo2,ETapeRollNo3,ETapeRollNo4,ETapeRollNo5,SPTUDENJIKAN,SKAATURYOKU,SKHEADNO,SUSSKAISUU,"
+                + "ETapeRollNo1,ETapeRollNo1kaishi,ETapeRollNo1syuryou,ETapeRollNo1insatsu,ETapeRollNo2,ETapeRollNo2kaishi,"
+                + "ETapeRollNo2syuryou,ETapeRollNo2insatsu,ETapeRollNo3,ETapeRollNo3kaishi,ETapeRollNo3syuryou,ETapeRollNo3insatsu,"
+                + "ETapeRollNo4,ETapeRollNo4kaishi,ETapeRollNo4syuryou,ETapeRollNo4insatsu,ETapeRollNo5,ETapeRollNo5kaishi,"
+                + "ETapeRollNo5syuryou,ETapeRollNo5insatsu,SPTUDENJIKAN,SKAATURYOKU,SKHEADNO,SUSSKAISUU,"
                 + "ECPASTEMEI,EPASTELOTNO,EPASTENENDO,EPASTEONDO,ESEIHANMEI,buzaizaikonodenkyoku,ESEIHANNO,ESEIMAISUU,"
                 + "saidaisyorisuudenkyoku,ruikeisyorisuudenkyoku,ECLEARANCE,ESAATU,ESKEEGENO,ESKMAISUU,"
                 + "ESKSPEED,ESCCLEARANCE,ESKKMJIKAN,ELDSTART,ESEIMENSEKI,EMAKUATU,ESLIDERYO,EKANSOONDO,EKANSOJIKAN,CPASTELOTNO,"
@@ -3625,12 +3715,13 @@ public class GXHDO101B006 implements IFormLogic {
                 + "NIJIMISOKUTEIPTN,PRNSAMPLEGAIKAN,PRNICHIYOHAKUNAGASA,CTABLECLEARANCE,CMAKUATSUSETTEI,CSKSPEED,CNEPPUFURYOU,KABURIRYOU,"
                 + "SGAIKAN,NIJIMISOKUTEISEKISOUGO,SEKISOUHINGAIKAN,SEKISOUZURE,UWAJSSKIRIKAEICHI,SHITAKKSKIRIKAEICHI,TINKSYURYUI,TINKLOT,"
                 + "TGAIKAN,STARTTANTOU,ENDTANTOU,TENDDAY,TENDTANTOU,SYORISETSUU,RYOUHINSETSUU,HEADKOUKANTANTOU,SEKISOUJOUKENTANTOU,ESEIHANSETTANTOU,"
-                + "CSEIHANSETTANTOU,DANSASOKUTEITANTOU,revision,deleteflag,startkakunin,TUMU,SITATTAPELOTNO,SITATTapeSlipKigo,"
+                + "CSEIHANSETTANTOU,DANSASOKUTEITANTOU,seikeinagasa,bikou3,bikou4,bikou5,revision,deleteflag,startkakunin,TUMU,SITATTAPELOTNO,SITATTapeSlipKigo,"
                 + "SITATTapeRollNo1,SITATTapeRollNo2,SITATTapeRollNo3,SITATTapeRollNo4,SITATTapeRollNo5"
                 + ") VALUES ("
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
                 + ") ";
 
         List<Object> params = setUpdateParameterTmpSrRhaps(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null);
@@ -3659,7 +3750,9 @@ public class GXHDO101B006 implements IFormLogic {
         String sql = "UPDATE tmp_sr_rhaps SET "
                 + "KCPNO = ?,KAISINICHIJI = ?,SYURYONICHIJI = ?,TTAPELOTNO = ?,TTapeSlipKigo = ?,TTapeRollNo1 = ?,"
                 + "TTapeRollNo2 = ?,TTapeRollNo3 = ?,TTapeRollNo4 = ?,TTapeRollNo5 = ?,ETAPESYURUI = ?,ETAPEGLOT = ?,"
-                + "ETAPELOT = ?,ETapeSlipKigo = ?,ETapeRollNo1 = ?,ETapeRollNo2 = ?,ETapeRollNo3 = ?,ETapeRollNo4 = ?,ETapeRollNo5 = ?,SPTUDENJIKAN = ?,"
+                + "ETAPELOT = ?,ETapeSlipKigo = ?,ETapeRollNo1 = ?,ETapeRollNo1kaishi = ?,ETapeRollNo1syuryou = ?,ETapeRollNo1insatsu = ?,ETapeRollNo2 = ?,ETapeRollNo2kaishi = ?,"
+                + "ETapeRollNo2syuryou = ?,ETapeRollNo2insatsu = ?,ETapeRollNo3 = ?,ETapeRollNo3kaishi = ?,ETapeRollNo3syuryou = ?,ETapeRollNo3insatsu = ?,ETapeRollNo4 = ?,"
+                + "ETapeRollNo4kaishi = ?,ETapeRollNo4syuryou = ?,ETapeRollNo4insatsu = ?,ETapeRollNo5 = ?,ETapeRollNo5kaishi = ?,ETapeRollNo5syuryou = ?,ETapeRollNo5insatsu = ?,SPTUDENJIKAN = ?,"
                 + "SKAATURYOKU = ?,SKHEADNO = ?,SUSSKAISUU = ?,ECPASTEMEI = ?,EPASTELOTNO = ?,EPASTENENDO = ?,EPASTEONDO = ?,ESEIHANMEI = ?,buzaizaikonodenkyoku = ?,ESEIHANNO = ?,"
                 + "ESEIMAISUU = ?,saidaisyorisuudenkyoku = ?,ruikeisyorisuudenkyoku = ?,ECLEARANCE = ?,ESAATU = ?,ESKEEGENO = ?,ESKMAISUU = ?,ESKSPEED = ?,ESCCLEARANCE = ?,ESKKMJIKAN = ?,ELDSTART = ?,"
                 + "EKANSOONDO = ?,CPASTELOTNO = ?,CPASTENENDO = ?,CPASTEONDO = ?,CSEIHANMEI = ?,buzaizaikonoyuudentai = ?,CSEIHANNO = ?,CSEIMAISUU = ?,saidaisyorisuuyuudentai = ?,ruikeisyorisuuyuudentai = ?,CSAATU = ?,"
@@ -3670,7 +3763,7 @@ public class GXHDO101B006 implements IFormLogic {
                 + "PRNSAMPLEGAIKAN = ?,PRNICHIYOHAKUNAGASA = ?,CTABLECLEARANCE = ?,CMAKUATSUSETTEI = ?,CSKSPEED = ?,CNEPPUFURYOU = ?,KABURIRYOU = ?,SGAIKAN = ?,"
                 + "NIJIMISOKUTEISEKISOUGO = ?,SEKISOUHINGAIKAN = ?,SEKISOUZURE = ?,UWAJSSKIRIKAEICHI = ?,SHITAKKSKIRIKAEICHI = ?,TINKSYURYUI = ?,TINKLOT = ?,"
                 + "TGAIKAN = ?,STARTTANTOU = ?,ENDTANTOU = ?,TENDDAY = ?,TENDTANTOU = ?,SYORISETSUU = ?,RYOUHINSETSUU = ?,HEADKOUKANTANTOU = ?,SEKISOUJOUKENTANTOU = ?,"
-                + "ESEIHANSETTANTOU = ?,CSEIHANSETTANTOU = ?,DANSASOKUTEITANTOU = ?,revision = ?,deleteflag = ?,startkakunin = ?,TUMU = ?,SITATTAPELOTNO = ?,SITATTapeSlipKigo = ?,"
+                + "ESEIHANSETTANTOU = ?,CSEIHANSETTANTOU = ?,DANSASOKUTEITANTOU = ?,seikeinagasa = ?,bikou3 = ?,bikou4 = ?,bikou5 = ?,revision = ?,deleteflag = ?,startkakunin = ?,TUMU = ?,SITATTAPELOTNO = ?,SITATTapeSlipKigo = ?,"
                 + "SITATTapeRollNo1 = ?,SITATTapeRollNo2 = ?,SITATTapeRollNo3 = ?,SITATTapeRollNo4 = ?,SITATTapeRollNo5 = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
@@ -3773,10 +3866,25 @@ public class GXHDO101B006 implements IFormLogic {
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.DENKYOKU_TAPE_LOT, srRhapsData)));  //電極ﾃｰﾌﾟﾛｯﾄ
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.DENKYOKU_TAPE_SLIP_KIGOU, srRhapsData)));  //電極ﾃｰﾌﾟｽﾘｯﾌﾟ記号
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.DENKYOKU_TAPE_ROLL_NO1, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo1
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO1KAISHI, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 1本目 開始
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO1SYURYOU, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 1本目 終了
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO1INSATSU, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 1本目 印刷
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.DENKYOKU_TAPE_ROLL_NO2, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo2
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO2KAISHI, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 2本目 開始
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO2SYURYOU, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 2本目 終了
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO2INSATSU, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 2本目 印刷
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.DENKYOKU_TAPE_ROLL_NO3, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo3
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO3KAISHI, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 3本目 開始
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO3SYURYOU, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 3本目 終了
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO3INSATSU, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 3本目 印刷
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.DENKYOKU_TAPE_ROLL_NO4, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo4
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO4KAISHI, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 4本目 開始
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO4SYURYOU, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 4本目 終了
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO4INSATSU, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 4本目 印刷
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.DENKYOKU_TAPE_ROLL_NO5, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo5
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO5KAISHI, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 5本目 開始
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO5SYURYOU, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 5本目 終了
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO5INSATSU, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 5本目 印刷
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.SEKISOU_PRESS_TSUUDEN_TIME, srRhapsData)));  //積層ﾌﾟﾚｽ通電時間
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.SEKISOU_KAATSU_RYOKU, srRhapsData)));  //積層加圧力
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.SHUNJI_KANETSU_HEAD_NO, srRhapsData)));  //瞬時加熱ﾍｯﾄﾞNo
@@ -3951,6 +4059,10 @@ public class GXHDO101B006 implements IFormLogic {
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.E_SEIHAN_SETSHA, srRhapsData)));  //E製版ｾｯﾄ者
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.C_SEIHAN_SETSHA, srRhapsData)));  //C製版ｾｯﾄ者
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.DANSA_SOKUTEISHA, srRhapsData)));  //段差測定者
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.SEIKEINAGASA, srRhapsData)));  //成形長さ
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.BIKOU3, srRhapsData)));  //備考3
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.BIKOU4, srRhapsData)));  //備考4
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.BIKOU5, srRhapsData)));  //備考5
         params.add(newRev); //revision
         params.add(deleteflag); //削除ﾌﾗｸﾞ
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B006Const.INSATSU_SEKISOU_KAISHI_KAKUNINSHA, srRhapsData)));  //印刷積層開始確認者
@@ -4176,7 +4288,10 @@ public class GXHDO101B006 implements IFormLogic {
         String sql = "INSERT INTO sr_rhaps ("
                 + "KOJYO,LOTNO,EDABAN,KCPNO,KAISINICHIJI,SYURYONICHIJI,TTAPESYURUI,TTAPELOTNO,TTapeSlipKigo,TTapeRollNo1,TTapeRollNo2,"
                 + "TTapeRollNo3,TTapeRollNo4,TTapeRollNo5,TGENRYOKIGO,STSIYO,ESEKISOSIYO,ETAPESYURUI,ETAPEGLOT,ETAPELOT,ETapeSlipKigo,"
-                + "ETapeRollNo1,ETapeRollNo2,ETapeRollNo3,ETapeRollNo4,ETapeRollNo5,SPTUDENJIKAN,SKAATURYOKU,SKHEADNO,SUSSKAISUU,"
+                + "ETapeRollNo1,ETapeRollNo1kaishi,ETapeRollNo1syuryou,ETapeRollNo1insatsu,ETapeRollNo2,ETapeRollNo2kaishi,"
+                + "ETapeRollNo2syuryou,ETapeRollNo2insatsu,ETapeRollNo3,ETapeRollNo3kaishi,ETapeRollNo3syuryou,ETapeRollNo3insatsu,"
+                + "ETapeRollNo4,ETapeRollNo4kaishi,ETapeRollNo4syuryou,ETapeRollNo4insatsu,ETapeRollNo5,ETapeRollNo5kaishi,"
+                + "ETapeRollNo5syuryou,ETapeRollNo5insatsu,SPTUDENJIKAN,SKAATURYOKU,SKHEADNO,SUSSKAISUU,"
                 + "ECPASTEMEI,EPASTELOTNO,EPASTENENDO,EPASTEONDO,ESEIHANMEI,buzaizaikonodenkyoku,ESEIHANNO,ESEIMAISUU,saidaisyorisuudenkyoku,"
                 + "ruikeisyorisuudenkyoku,ECLEARANCE,ESAATU,ESKEEGENO,ESKMAISUU,"
                 + "ESKSPEED,ESCCLEARANCE,ESKKMJIKAN,ELDSTART,ESEIMENSEKI,EMAKUATU,ESLIDERYO,EKANSOONDO,EKANSOJIKAN,CPASTELOTNO,"
@@ -4192,12 +4307,13 @@ public class GXHDO101B006 implements IFormLogic {
                 + "NIJIMISOKUTEIPTN,PRNSAMPLEGAIKAN,PRNICHIYOHAKUNAGASA,CTABLECLEARANCE,CMAKUATSUSETTEI,CSKSPEED,CNEPPUFURYOU,KABURIRYOU,"
                 + "SGAIKAN,NIJIMISOKUTEISEKISOUGO,SEKISOUHINGAIKAN,SEKISOUZURE,UWAJSSKIRIKAEICHI,SHITAKKSKIRIKAEICHI,TINKSYURYUI,TINKLOT,"
                 + "TGAIKAN,STARTTANTOU,ENDTANTOU,TENDDAY,TENDTANTOU,SYORISETSUU,RYOUHINSETSUU,HEADKOUKANTANTOU,SEKISOUJOUKENTANTOU,ESEIHANSETTANTOU,"
-                + "CSEIHANSETTANTOU,DANSASOKUTEITANTOU,revision,startkakunin,TUMU,SITATTAPELOTNO,SITATTapeSlipKigo,"
+                + "CSEIHANSETTANTOU,DANSASOKUTEITANTOU,seikeinagasa,bikou3,bikou4,bikou5,revision,startkakunin,TUMU,SITATTAPELOTNO,SITATTapeSlipKigo,"
                 + "SITATTapeRollNo1,SITATTapeRollNo2,SITATTapeRollNo3,SITATTapeRollNo4,SITATTapeRollNo5"
                 + ") VALUES ("
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
                 + ") ";
 
         List<Object> params = setUpdateParameterSrRhaps(true, newRev, kojyo, lotNo, edaban, systemTime, itemList, tmpSrRhaps);
@@ -4225,7 +4341,9 @@ public class GXHDO101B006 implements IFormLogic {
         String sql = "UPDATE sr_rhaps SET "
                 + "KCPNO = ?,KAISINICHIJI = ?,SYURYONICHIJI = ?,TTAPELOTNO = ?,TTapeSlipKigo = ?,TTapeRollNo1 = ?,"
                 + "TTapeRollNo2 = ?,TTapeRollNo3 = ?,TTapeRollNo4 = ?,TTapeRollNo5 = ?,ETAPESYURUI = ?,ETAPEGLOT = ?,"
-                + "ETAPELOT = ?,ETapeSlipKigo = ?,ETapeRollNo1 = ?,ETapeRollNo2 = ?,ETapeRollNo3 = ?,ETapeRollNo4 = ?,ETapeRollNo5 = ?,SPTUDENJIKAN = ?,"
+                + "ETAPELOT = ?,ETapeSlipKigo = ?,ETapeRollNo1 = ?,ETapeRollNo1kaishi = ?,ETapeRollNo1syuryou = ?,ETapeRollNo1insatsu = ?,ETapeRollNo2 = ?,ETapeRollNo2kaishi = ?,"
+                + "ETapeRollNo2syuryou = ?,ETapeRollNo2insatsu = ?,ETapeRollNo3 = ?,ETapeRollNo3kaishi = ?,ETapeRollNo3syuryou = ?,ETapeRollNo3insatsu = ?,ETapeRollNo4 = ?,"
+                + "ETapeRollNo4kaishi = ?,ETapeRollNo4syuryou = ?,ETapeRollNo4insatsu = ?,ETapeRollNo5 = ?,ETapeRollNo5kaishi = ?,ETapeRollNo5syuryou = ?,ETapeRollNo5insatsu = ?,SPTUDENJIKAN = ?,"
                 + "SKAATURYOKU = ?,SKHEADNO = ?,SUSSKAISUU = ?,ECPASTEMEI = ?,EPASTELOTNO = ?,EPASTENENDO = ?,EPASTEONDO = ?,ESEIHANMEI = ?,buzaizaikonodenkyoku = ?,ESEIHANNO = ?,"
                 + "ESEIMAISUU = ?,saidaisyorisuudenkyoku = ?,ruikeisyorisuudenkyoku = ?,ECLEARANCE = ?,ESAATU = ?,ESKEEGENO = ?,ESKMAISUU = ?,ESKSPEED = ?,ESCCLEARANCE = ?,ESKKMJIKAN = ?,ELDSTART = ?,"
                 + "EKANSOONDO = ?,CPASTELOTNO = ?,CPASTENENDO = ?,CPASTEONDO = ?,CSEIHANMEI = ?,buzaizaikonoyuudentai = ?,CSEIHANNO = ?,CSEIMAISUU = ?,saidaisyorisuuyuudentai = ?,ruikeisyorisuuyuudentai = ?,CSAATU = ?,"
@@ -4236,7 +4354,7 @@ public class GXHDO101B006 implements IFormLogic {
                 + "PRNSAMPLEGAIKAN = ?,PRNICHIYOHAKUNAGASA = ?,CTABLECLEARANCE = ?,CMAKUATSUSETTEI = ?,CSKSPEED = ?,CNEPPUFURYOU = ?,KABURIRYOU = ?,SGAIKAN = ?,"
                 + "NIJIMISOKUTEISEKISOUGO = ?,SEKISOUHINGAIKAN = ?,SEKISOUZURE = ?,UWAJSSKIRIKAEICHI = ?,SHITAKKSKIRIKAEICHI = ?,TINKSYURYUI = ?,TINKLOT = ?,"
                 + "TGAIKAN = ?,STARTTANTOU = ?,ENDTANTOU = ?,TENDDAY = ?,TENDTANTOU = ?,SYORISETSUU = ?,RYOUHINSETSUU = ?,HEADKOUKANTANTOU = ?,SEKISOUJOUKENTANTOU = ?,"
-                + "ESEIHANSETTANTOU = ?,CSEIHANSETTANTOU = ?,DANSASOKUTEITANTOU = ?,revision = ?,startkakunin = ?,TUMU = ?,SITATTAPELOTNO = ?,SITATTapeSlipKigo = ?,"
+                + "ESEIHANSETTANTOU = ?,CSEIHANSETTANTOU = ?,DANSASOKUTEITANTOU = ?,seikeinagasa = ?,bikou3 = ?,bikou4 = ?,bikou5 = ?,revision = ?,startkakunin = ?,TUMU = ?,SITATTAPELOTNO = ?,SITATTapeSlipKigo = ?,"
                 + "SITATTapeRollNo1 = ?,SITATTapeRollNo2 = ?,SITATTapeRollNo3 = ?,SITATTapeRollNo4 = ?,SITATTapeRollNo5 = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ?";
 
@@ -4309,10 +4427,25 @@ public class GXHDO101B006 implements IFormLogic {
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B006Const.DENKYOKU_TAPE_LOT, srRhapsData)));  //電極ﾃｰﾌﾟﾛｯﾄ
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B006Const.DENKYOKU_TAPE_SLIP_KIGOU, srRhapsData)));  //電極ﾃｰﾌﾟｽﾘｯﾌﾟ記号
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B006Const.DENKYOKU_TAPE_ROLL_NO1, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo1
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO1KAISHI, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 1本目 開始
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO1SYURYOU, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 1本目 終了
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO1INSATSU, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 1本目 印刷
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B006Const.DENKYOKU_TAPE_ROLL_NO2, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo2
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO2KAISHI, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 2本目 開始
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO2SYURYOU, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 2本目 終了
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO2INSATSU, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 2本目 印刷
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B006Const.DENKYOKU_TAPE_ROLL_NO3, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo3
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO3KAISHI, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 3本目 開始
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO3SYURYOU, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 3本目 終了
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO3INSATSU, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 3本目 印刷
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B006Const.DENKYOKU_TAPE_ROLL_NO4, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo4
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO4KAISHI, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 4本目 開始
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO4SYURYOU, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 4本目 終了
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO4INSATSU, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 4本目 印刷
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B006Const.DENKYOKU_TAPE_ROLL_NO5, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo5
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO5KAISHI, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 5本目 開始
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO5SYURYOU, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 5本目 終了
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B006Const.ETAPEROLLNO5INSATSU, srRhapsData)));  //電極ﾃｰﾌﾟﾛｰﾙNo 5本目 印刷
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B006Const.SEKISOU_PRESS_TSUUDEN_TIME, srRhapsData)));  //積層ﾌﾟﾚｽ通電時間
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B006Const.SEKISOU_KAATSU_RYOKU, srRhapsData)));  //積層加圧力
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B006Const.SHUNJI_KANETSU_HEAD_NO, srRhapsData)));  //瞬時加熱ﾍｯﾄﾞNo
@@ -4487,6 +4620,10 @@ public class GXHDO101B006 implements IFormLogic {
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B006Const.E_SEIHAN_SETSHA, srRhapsData)));  //E製版ｾｯﾄ者
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B006Const.C_SEIHAN_SETSHA, srRhapsData)));  //C製版ｾｯﾄ者
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B006Const.DANSA_SOKUTEISHA, srRhapsData)));  //段差測定者
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B006Const.SEIKEINAGASA, srRhapsData)));  //成形長さ
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B006Const.BIKOU3, srRhapsData)));  //備考3
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B006Const.BIKOU4, srRhapsData)));  //備考4
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B006Const.BIKOU5, srRhapsData)));  //備考5
         params.add(newRev); //revision
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B006Const.INSATSU_SEKISOU_KAISHI_KAKUNINSHA, srRhapsData)));  //印刷積層開始確認者
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B006Const.TARGET_UMU, srRhapsData)));  //ﾀｰｹﾞｯﾄ有無
@@ -4869,18 +5006,63 @@ public class GXHDO101B006 implements IFormLogic {
             //電極テープロールNo 1本目
             case GXHDO101B006Const.DENKYOKU_TAPE_ROLL_NO1:
                 return StringUtil.nullToBlank(srRhapsData.geteTapeRollNo1());
+            //電極ﾃｰﾌﾟﾛｰﾙNo 1本目 開始
+            case GXHDO101B006Const.ETAPEROLLNO1KAISHI:
+                return StringUtil.nullToBlank(srRhapsData.geteTapeRollNo1kaishi());
+            //電極ﾃｰﾌﾟﾛｰﾙNo 1本目 終了
+            case GXHDO101B006Const.ETAPEROLLNO1SYURYOU:
+                return StringUtil.nullToBlank(srRhapsData.geteTapeRollNo1syuryou());
+            //電極ﾃｰﾌﾟﾛｰﾙNo 1本目 印刷
+            case GXHDO101B006Const.ETAPEROLLNO1INSATSU:
+                return StringUtil.nullToBlank(srRhapsData.geteTapeRollNo1insatsu());
             //電極テープロールNo 2本目
             case GXHDO101B006Const.DENKYOKU_TAPE_ROLL_NO2:
                 return StringUtil.nullToBlank(srRhapsData.geteTapeRollNo2());
+            //電極ﾃｰﾌﾟﾛｰﾙNo 2本目 開始
+            case GXHDO101B006Const.ETAPEROLLNO2KAISHI:
+                return StringUtil.nullToBlank(srRhapsData.geteTapeRollNo2kaishi());
+            //電極ﾃｰﾌﾟﾛｰﾙNo 2本目 終了
+            case GXHDO101B006Const.ETAPEROLLNO2SYURYOU:
+                return StringUtil.nullToBlank(srRhapsData.geteTapeRollNo2syuryou());
+            //電極ﾃｰﾌﾟﾛｰﾙNo 2本目 印刷
+            case GXHDO101B006Const.ETAPEROLLNO2INSATSU:
+                return StringUtil.nullToBlank(srRhapsData.geteTapeRollNo2insatsu());
             //電極テープロールNo 3本目
             case GXHDO101B006Const.DENKYOKU_TAPE_ROLL_NO3:
                 return StringUtil.nullToBlank(srRhapsData.geteTapeRollNo3());
+            //電極ﾃｰﾌﾟﾛｰﾙNo 3本目 開始
+            case GXHDO101B006Const.ETAPEROLLNO3KAISHI:
+                return StringUtil.nullToBlank(srRhapsData.geteTapeRollNo3kaishi());
+            //電極ﾃｰﾌﾟﾛｰﾙNo 3本目 終了
+            case GXHDO101B006Const.ETAPEROLLNO3SYURYOU:
+                return StringUtil.nullToBlank(srRhapsData.geteTapeRollNo3syuryou());
+            //電極ﾃｰﾌﾟﾛｰﾙNo 3本目 印刷
+            case GXHDO101B006Const.ETAPEROLLNO3INSATSU:
+                return StringUtil.nullToBlank(srRhapsData.geteTapeRollNo3insatsu());
             //電極テープロールNo 4本目
             case GXHDO101B006Const.DENKYOKU_TAPE_ROLL_NO4:
                 return StringUtil.nullToBlank(srRhapsData.geteTapeRollNo4());
+            //電極ﾃｰﾌﾟﾛｰﾙNo 4本目 開始
+            case GXHDO101B006Const.ETAPEROLLNO4KAISHI:
+                return StringUtil.nullToBlank(srRhapsData.geteTapeRollNo4kaishi());
+            //電極ﾃｰﾌﾟﾛｰﾙNo 4本目 終了
+            case GXHDO101B006Const.ETAPEROLLNO4SYURYOU:
+                return StringUtil.nullToBlank(srRhapsData.geteTapeRollNo4syuryou());
+            //電極ﾃｰﾌﾟﾛｰﾙNo 4本目 印刷
+            case GXHDO101B006Const.ETAPEROLLNO4INSATSU:
+                return StringUtil.nullToBlank(srRhapsData.geteTapeRollNo4insatsu());
             //電極テープロールNo 5本目
             case GXHDO101B006Const.DENKYOKU_TAPE_ROLL_NO5:
                 return StringUtil.nullToBlank(srRhapsData.geteTapeRollNo5());
+            //電極ﾃｰﾌﾟﾛｰﾙNo 5本目 開始
+            case GXHDO101B006Const.ETAPEROLLNO5KAISHI:
+                return StringUtil.nullToBlank(srRhapsData.geteTapeRollNo5kaishi());
+            //電極ﾃｰﾌﾟﾛｰﾙNo 5本目 終了
+            case GXHDO101B006Const.ETAPEROLLNO5SYURYOU:
+                return StringUtil.nullToBlank(srRhapsData.geteTapeRollNo5syuryou());
+            //電極ﾃｰﾌﾟﾛｰﾙNo 5本目 印刷
+            case GXHDO101B006Const.ETAPEROLLNO5INSATSU:
+                return StringUtil.nullToBlank(srRhapsData.geteTapeRollNo5insatsu());
             //電極テープ原料lot
             case GXHDO101B006Const.DENKYOKU_TAPE_GENRYO_LOT:
                 return StringUtil.nullToBlank(srRhapsData.getEtapeglot());
@@ -5202,12 +5384,24 @@ public class GXHDO101B006 implements IFormLogic {
             //段差測定者
             case GXHDO101B006Const.DANSA_SOKUTEISHA:
                 return StringUtil.nullToBlank(srRhapsData.getDansasokuteitantou());
+            //成形長さ
+            case GXHDO101B006Const.SEIKEINAGASA:
+                return StringUtil.nullToBlank(srRhapsData.getSeikeinagasa());
             //備考1
             case GXHDO101B006Const.BIKOU1:
                 return StringUtil.nullToBlank(srRhapsData.getBiko1());
             //備考2
             case GXHDO101B006Const.BIKOU2:
                 return StringUtil.nullToBlank(srRhapsData.getBiko2());
+            //備考3
+            case GXHDO101B006Const.BIKOU3:
+                return StringUtil.nullToBlank(srRhapsData.getBikou3());
+            //備考4
+            case GXHDO101B006Const.BIKOU4:
+                return StringUtil.nullToBlank(srRhapsData.getBikou4());
+            //備考5
+            case GXHDO101B006Const.BIKOU5:
+                return StringUtil.nullToBlank(srRhapsData.getBikou5());
             //印刷積層開始確認者
             case GXHDO101B006Const.INSATSU_SEKISOU_KAISHI_KAKUNINSHA:
                 return StringUtil.nullToBlank(srRhapsData.getStartkakunin());
@@ -5239,7 +5433,10 @@ public class GXHDO101B006 implements IFormLogic {
         String sql = "INSERT INTO tmp_sr_rhaps ("
                 + "KOJYO,LOTNO,EDABAN,KCPNO,KAISINICHIJI,SYURYONICHIJI,TTAPESYURUI,TTAPELOTNO,TTapeSlipKigo,TTapeRollNo1,TTapeRollNo2,"
                 + "TTapeRollNo3,TTapeRollNo4,TTapeRollNo5,TGENRYOKIGO,STSIYO,ESEKISOSIYO,ETAPESYURUI,ETAPEGLOT,ETAPELOT,ETapeSlipKigo,"
-                + "ETapeRollNo1,ETapeRollNo2,ETapeRollNo3,ETapeRollNo4,ETapeRollNo5,SPTUDENJIKAN,SKAATURYOKU,SKHEADNO,SUSSKAISUU,"
+                + "ETapeRollNo1,ETapeRollNo1kaishi,ETapeRollNo1syuryou,ETapeRollNo1insatsu,ETapeRollNo2,ETapeRollNo2kaishi,"
+                + "ETapeRollNo2syuryou,ETapeRollNo2insatsu,ETapeRollNo3,ETapeRollNo3kaishi,ETapeRollNo3syuryou,ETapeRollNo3insatsu,"
+                + "ETapeRollNo4,ETapeRollNo4kaishi,ETapeRollNo4syuryou,ETapeRollNo4insatsu,ETapeRollNo5,ETapeRollNo5kaishi,"
+                + "ETapeRollNo5syuryou,ETapeRollNo5insatsu,SPTUDENJIKAN,SKAATURYOKU,SKHEADNO,SUSSKAISUU,"
                 + "ECPASTEMEI,EPASTELOTNO,EPASTENENDO,EPASTEONDO,ESEIHANMEI,buzaizaikonodenkyoku,ESEIHANNO,ESEIMAISUU,"
                 + "saidaisyorisuudenkyoku,ruikeisyorisuudenkyoku,ECLEARANCE,ESAATU,ESKEEGENO,ESKMAISUU,"
                 + "ESKSPEED,ESCCLEARANCE,ESKKMJIKAN,ELDSTART,ESEIMENSEKI,EMAKUATU,ESLIDERYO,EKANSOONDO,EKANSOJIKAN,CPASTELOTNO,"
@@ -5255,12 +5452,15 @@ public class GXHDO101B006 implements IFormLogic {
                 + "NIJIMISOKUTEIPTN,PRNSAMPLEGAIKAN,PRNICHIYOHAKUNAGASA,CTABLECLEARANCE,CMAKUATSUSETTEI,CSKSPEED,CNEPPUFURYOU,KABURIRYOU,"
                 + "SGAIKAN,NIJIMISOKUTEISEKISOUGO,SEKISOUHINGAIKAN,SEKISOUZURE,UWAJSSKIRIKAEICHI,SHITAKKSKIRIKAEICHI,TINKSYURYUI,TINKLOT,"
                 + "TGAIKAN,STARTTANTOU,ENDTANTOU,TENDDAY,TENDTANTOU,SYORISETSUU,RYOUHINSETSUU,HEADKOUKANTANTOU,SEKISOUJOUKENTANTOU,ESEIHANSETTANTOU,"
-                + "CSEIHANSETTANTOU,DANSASOKUTEITANTOU,revision,deleteflag,startkakunin,TUMU,SITATTAPELOTNO,SITATTapeSlipKigo,"
+                + "CSEIHANSETTANTOU,DANSASOKUTEITANTOU,seikeinagasa,bikou3,bikou4,bikou5,revision,deleteflag,startkakunin,TUMU,SITATTAPELOTNO,SITATTapeSlipKigo,"
                 + "SITATTapeRollNo1,SITATTapeRollNo2,SITATTapeRollNo3,SITATTapeRollNo4,SITATTapeRollNo5"
                 + ") SELECT "
                 + "KOJYO,LOTNO,EDABAN,KCPNO,KAISINICHIJI,SYURYONICHIJI,TTAPESYURUI,TTAPELOTNO,TTapeSlipKigo,TTapeRollNo1,TTapeRollNo2,"
                 + "TTapeRollNo3,TTapeRollNo4,TTapeRollNo5,TGENRYOKIGO,STSIYO,ESEKISOSIYO,ETAPESYURUI,ETAPEGLOT,ETAPELOT,ETapeSlipKigo,"
-                + "ETapeRollNo1,ETapeRollNo2,ETapeRollNo3,ETapeRollNo4,ETapeRollNo5,SPTUDENJIKAN,SKAATURYOKU,SKHEADNO,SUSSKAISUU,"
+                + "ETapeRollNo1,ETapeRollNo1kaishi,ETapeRollNo1syuryou,ETapeRollNo1insatsu,ETapeRollNo2,ETapeRollNo2kaishi,"
+                + "ETapeRollNo2syuryou,ETapeRollNo2insatsu,ETapeRollNo3,ETapeRollNo3kaishi,ETapeRollNo3syuryou,ETapeRollNo3insatsu,"
+                + "ETapeRollNo4,ETapeRollNo4kaishi,ETapeRollNo4syuryou,ETapeRollNo4insatsu,ETapeRollNo5,ETapeRollNo5kaishi,"
+                + "ETapeRollNo5syuryou,ETapeRollNo5insatsu,SPTUDENJIKAN,SKAATURYOKU,SKHEADNO,SUSSKAISUU,"
                 + "ECPASTEMEI,EPASTELOTNO,EPASTENENDO,EPASTEONDO,ESEIHANMEI,buzaizaikonodenkyoku,ESEIHANNO,ESEIMAISUU,"
                 + "saidaisyorisuudenkyoku,ruikeisyorisuudenkyoku,ECLEARANCE,ESAATU,ESKEEGENO,ESKMAISUU,"
                 + "ESKSPEED,ESCCLEARANCE,ESKKMJIKAN,ELDSTART,ESEIMENSEKI,EMAKUATU,ESLIDERYO,EKANSOONDO,EKANSOJIKAN,CPASTELOTNO,"
@@ -5276,7 +5476,7 @@ public class GXHDO101B006 implements IFormLogic {
                 + "NIJIMISOKUTEIPTN,PRNSAMPLEGAIKAN,PRNICHIYOHAKUNAGASA,CTABLECLEARANCE,CMAKUATSUSETTEI,CSKSPEED,CNEPPUFURYOU,KABURIRYOU,"
                 + "SGAIKAN,NIJIMISOKUTEISEKISOUGO,SEKISOUHINGAIKAN,SEKISOUZURE,UWAJSSKIRIKAEICHI,SHITAKKSKIRIKAEICHI,TINKSYURYUI,TINKLOT,"
                 + "TGAIKAN,STARTTANTOU,ENDTANTOU,TENDDAY,TENDTANTOU,SYORISETSUU,RYOUHINSETSUU,HEADKOUKANTANTOU,SEKISOUJOUKENTANTOU,ESEIHANSETTANTOU,"
-                + "CSEIHANSETTANTOU,DANSASOKUTEITANTOU,?,?,startkakunin,TUMU,SITATTAPELOTNO,SITATTapeSlipKigo,"
+                + "CSEIHANSETTANTOU,DANSASOKUTEITANTOU,seikeinagasa,bikou3,bikou4,bikou5,?,?,startkakunin,TUMU,SITATTAPELOTNO,SITATTapeSlipKigo,"
                 + "SITATTapeRollNo1,SITATTapeRollNo2,SITATTapeRollNo3,SITATTapeRollNo4,SITATTapeRollNo5 "
                 + "FROM sr_rhaps "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
@@ -5693,6 +5893,7 @@ public class GXHDO101B006 implements IFormLogic {
         model.setReturnItemId_TapeLot1_Hinmei(GXHDO101B006Const.DENKYOKU_TAPE);
         model.setReturnItemId_PasteLot1_Hinmei(GXHDO101B006Const.DENKYOKU_PASTE);
         model.setReturnItemId_TapeLot1_Conventionallot(GXHDO101B006Const.DENKYOKU_TAPE_LOT);
+        model.setReturnItemId_TapeLot1_Tapelength(GXHDO101B006Const.SEIKEINAGASA);
         model.setReturnItemId_PasteLot1_Conventionallot(GXHDO101B006Const.DENKYOKU_PASTE_LOT_NO);
         model.setReturnItemId_Uwatanshi_Conventionallot(GXHDO101B006Const.TANSHI_TAPE_LOT_NO);
         model.setReturnItemId_Shitatanshi_Conventionallot(GXHDO101B006Const.SITA_TANSHI_TAPE_LOT_NO);

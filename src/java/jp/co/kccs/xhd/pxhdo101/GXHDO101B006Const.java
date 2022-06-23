@@ -33,6 +33,11 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者       KCSS WXF<br>
  * 変更理由     仕様変更対応<br>
  * <br>
+ * 変更日	2022/06/14<br>
+ * 計画書No	MB2205-D010<br>
+ * 変更者	KCSS wxf<br>
+ * 変更理由	項目追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -139,6 +144,21 @@ public class GXHDO101B006Const {
     public static final String BIKOU2 = "sr_rhaps_bikou2";
 
     /**
+     * 備考3
+     */
+    public static final String BIKOU3 = "sr_rhaps_bikou3";
+
+    /**
+     * 備考4
+     */
+    public static final String BIKOU4 = "sr_rhaps_bikou4";
+
+    /**
+     * 備考5
+     */
+    public static final String BIKOU5 = "sr_rhaps_bikou5";
+
+    /**
      * 加圧時間
      */
     public static final String KAATSU_TIME = "sr_rhaps_kaatsu_time";
@@ -189,9 +209,39 @@ public class GXHDO101B006Const {
     public static final String DENKYOKU_TAPE_ROLL_NO1 = "sr_rhaps_denkyoku_tape_roll_no1";
 
     /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 1本目 開始
+     */
+    public static final String ETAPEROLLNO1KAISHI = "sr_rhaps_eTapeRollNo1kaishi";
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 1本目 終了
+     */
+    public static final String ETAPEROLLNO1SYURYOU = "sr_rhaps_eTapeRollNo1syuryou";
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 1本目 印刷
+     */
+    public static final String ETAPEROLLNO1INSATSU = "sr_rhaps_eTapeRollNo1insatsu";
+
+    /**
      * 電極テープロールNo 2本目
      */
     public static final String DENKYOKU_TAPE_ROLL_NO2 = "sr_rhaps_denkyoku_tape_roll_no2";
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 2本目 開始
+     */
+    public static final String ETAPEROLLNO2KAISHI = "sr_rhaps_eTapeRollNo2kaishi";
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 2本目 終了
+     */
+    public static final String ETAPEROLLNO2SYURYOU = "sr_rhaps_eTapeRollNo2syuryou";
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 2本目 印刷
+     */
+    public static final String ETAPEROLLNO2INSATSU = "sr_rhaps_eTapeRollNo2insatsu";
 
     /**
      * 電極テープロールNo 3本目
@@ -199,14 +249,59 @@ public class GXHDO101B006Const {
     public static final String DENKYOKU_TAPE_ROLL_NO3 = "sr_rhaps_denkyoku_tape_roll_no3";
 
     /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 3本目 開始
+     */
+    public static final String ETAPEROLLNO3KAISHI = "sr_rhaps_eTapeRollNo3kaishi";
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 3本目 終了
+     */
+    public static final String ETAPEROLLNO3SYURYOU = "sr_rhaps_eTapeRollNo3syuryou";
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 3本目 印刷
+     */
+    public static final String ETAPEROLLNO3INSATSU = "sr_rhaps_eTapeRollNo3insatsu";
+
+    /**
      * 電極テープロールNo 4本目
      */
     public static final String DENKYOKU_TAPE_ROLL_NO4 = "sr_rhaps_denkyoku_tape_roll_no4";
 
     /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 4本目 開始
+     */
+    public static final String ETAPEROLLNO4KAISHI = "sr_rhaps_eTapeRollNo4kaishi";
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 4本目 終了
+     */
+    public static final String ETAPEROLLNO4SYURYOU = "sr_rhaps_eTapeRollNo4syuryou";
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 4本目 印刷
+     */
+    public static final String ETAPEROLLNO4INSATSU = "sr_rhaps_eTapeRollNo4insatsu";
+
+    /**
      * 電極テープロールNo 5本目
      */
     public static final String DENKYOKU_TAPE_ROLL_NO5 = "sr_rhaps_denkyoku_tape_roll_no5";
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 5本目 開始
+     */
+    public static final String ETAPEROLLNO5KAISHI = "sr_rhaps_eTapeRollNo5kaishi";
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 5本目 終了
+     */
+    public static final String ETAPEROLLNO5SYURYOU = "sr_rhaps_eTapeRollNo5syuryou";
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 5本目 印刷
+     */
+    public static final String ETAPEROLLNO5INSATSU = "sr_rhaps_eTapeRollNo5insatsu";
 
     /**
      * 電極テープ原料lot
@@ -747,6 +842,11 @@ public class GXHDO101B006Const {
      * ﾀｰｹﾞｯﾄ有無
      */
     public static final String TARGET_UMU = "sr_rhaps_target_umu";
+
+    /**
+     * 成形長さ
+     */
+    public static final String SEIKEINAGASA = "sr_rhaps_seikeinagasa";
 
     /**
      * 電極膜厚(画面上ボタン)

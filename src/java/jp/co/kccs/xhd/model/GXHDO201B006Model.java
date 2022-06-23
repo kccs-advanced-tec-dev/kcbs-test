@@ -75,14 +75,44 @@ public class GXHDO201B006Model {
     private String etapeslipkigo = "";
     /** 電極ﾃｰﾌﾟﾛｰﾙNo 1本目 */
     private String etaperollno1 = "";
+    /** 電極ﾃｰﾌﾟﾛｰﾙNo 1本目 開始 */
+    private Long etaperollno1kaishi = null;
+    /** 電極ﾃｰﾌﾟﾛｰﾙNo 1本目 終了 */
+    private Long etaperollno1syuryou = null;
+    /** 電極ﾃｰﾌﾟﾛｰﾙNo 1本目 印刷 */
+    private Long etaperollno1insatsu = null;
     /** 電極ﾃｰﾌﾟﾛｰﾙNo 2本目 */
     private String etaperollno2 = "";
+    /** 電極ﾃｰﾌﾟﾛｰﾙNo 2本目 開始 */
+    private Long etaperollno2kaishi = null;
+    /** 電極ﾃｰﾌﾟﾛｰﾙNo 2本目 終了 */
+    private Long etaperollno2syuryou = null;
+    /** 電極ﾃｰﾌﾟﾛｰﾙNo 2本目 印刷 */
+    private Long etaperollno2insatsu = null;
     /** 電極ﾃｰﾌﾟﾛｰﾙNo 3本目 */
     private String etaperollno3 = "";
+    /** 電極ﾃｰﾌﾟﾛｰﾙNo 3本目 開始 */
+    private Long etaperollno3kaishi = null;
+    /** 電極ﾃｰﾌﾟﾛｰﾙNo 3本目 終了 */
+    private Long etaperollno3syuryou = null;
+    /** 電極ﾃｰﾌﾟﾛｰﾙNo 3本目 印刷 */
+    private Long etaperollno3insatsu = null;
     /** 電極ﾃｰﾌﾟﾛｰﾙNo 4本目 */
     private String etaperollno4 = "";
+    /** 電極ﾃｰﾌﾟﾛｰﾙNo 4本目 開始 */
+    private Long etaperollno4kaishi = null;
+    /** 電極ﾃｰﾌﾟﾛｰﾙNo 4本目 終了 */
+    private Long etaperollno4syuryou = null;
+    /** 電極ﾃｰﾌﾟﾛｰﾙNo 4本目 印刷 */
+    private Long etaperollno4insatsu = null;
     /** 電極ﾃｰﾌﾟﾛｰﾙNo 5本目 */
     private String etaperollno5 = "";
+    /** 電極ﾃｰﾌﾟﾛｰﾙNo 5本目 開始 */
+    private Long etaperollno5kaishi = null;
+    /** 電極ﾃｰﾌﾟﾛｰﾙNo 5本目 終了 */
+    private Long etaperollno5syuryou = null;
+    /** 電極ﾃｰﾌﾟﾛｰﾙNo 5本目 印刷 */
+    private Long etaperollno5insatsu = null;
     /** 積層ﾌﾟﾚｽ通電時間(瞬時加熱) */
     private BigDecimal sptudenjikan = null;
     /** 積層加圧力 */
@@ -287,10 +317,18 @@ public class GXHDO201B006Model {
     private Long lstmsy1 = null;
     /** 最終層右下Y2 */
     private Long lstmsy2 = null;
+    /** 成形長さ */
+    private Long seikeinagasa = null;
     /** 備考1 */
     private String biko1 = "";
     /** 備考2 */
     private String biko2 = "";
+    /** 備考3 */
+    private String bikou3 = "";
+    /** 備考4 */
+    private String bikou4 = "";
+    /** 備考5 */
+    private String bikou5 = "";
     /** 号機 */
     private String goki = "";
     /** 特別端子枚数上 */
@@ -806,6 +844,54 @@ public class GXHDO201B006Model {
     }
 
     /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 1本目 開始
+     * @return the etaperollno1kaishi
+     */
+    public Long getEtaperollno1kaishi() {
+        return etaperollno1kaishi;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 1本目 開始
+     * @param etaperollno1kaishi the etaperollno1kaishi to set
+     */
+    public void setEtaperollno1kaishi(Long etaperollno1kaishi) {
+        this.etaperollno1kaishi = etaperollno1kaishi;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 1本目 終了
+     * @return the etaperollno1syuryou
+     */
+    public Long getEtaperollno1syuryou() {
+        return etaperollno1syuryou;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 1本目 終了
+     * @param etaperollno1syuryou the etaperollno1syuryou to set
+     */
+    public void setEtaperollno1syuryou(Long etaperollno1syuryou) {
+        this.etaperollno1syuryou = etaperollno1syuryou;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 1本目 印刷
+     * @return the etaperollno1insatsu
+     */
+    public Long getEtaperollno1insatsu() {
+        return etaperollno1insatsu;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 1本目 印刷
+     * @param etaperollno1insatsu the etaperollno1insatsu to set
+     */
+    public void setEtaperollno1insatsu(Long etaperollno1insatsu) {
+        this.etaperollno1insatsu = etaperollno1insatsu;
+    }
+
+    /**
      * 電極ﾃｰﾌﾟﾛｰﾙNo 2本目
      * @return the etaperollno2
      */
@@ -819,6 +905,54 @@ public class GXHDO201B006Model {
      */
     public void setEtaperollno2(String etaperollno2) {
         this.etaperollno2 = etaperollno2;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 2本目 開始
+     * @return the etaperollno2kaishi
+     */
+    public Long getEtaperollno2kaishi() {
+        return etaperollno2kaishi;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 2本目 開始
+     * @param etaperollno2kaishi the etaperollno2kaishi to set
+     */
+    public void setEtaperollno2kaishi(Long etaperollno2kaishi) {
+        this.etaperollno2kaishi = etaperollno2kaishi;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 2本目 終了
+     * @return the etaperollno2syuryou
+     */
+    public Long getEtaperollno2syuryou() {
+        return etaperollno2syuryou;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 2本目 終了
+     * @param etaperollno2syuryou the etaperollno2syuryou to set
+     */
+    public void setEtaperollno2syuryou(Long etaperollno2syuryou) {
+        this.etaperollno2syuryou = etaperollno2syuryou;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 2本目 印刷
+     * @return the etaperollno2insatsu
+     */
+    public Long getEtaperollno2insatsu() {
+        return etaperollno2insatsu;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 2本目 印刷
+     * @param etaperollno2insatsu the etaperollno2insatsu to set
+     */
+    public void setEtaperollno2insatsu(Long etaperollno2insatsu) {
+        this.etaperollno2insatsu = etaperollno2insatsu;
     }
 
     /**
@@ -838,6 +972,54 @@ public class GXHDO201B006Model {
     }
 
     /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 3本目 開始
+     * @return the etaperollno3kaishi
+     */
+    public Long getEtaperollno3kaishi() {
+        return etaperollno3kaishi;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 3本目 開始
+     * @param etaperollno3kaishi the etaperollno3kaishi to set
+     */
+    public void setEtaperollno3kaishi(Long etaperollno3kaishi) {
+        this.etaperollno3kaishi = etaperollno3kaishi;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 3本目 終了
+     * @return the etaperollno3syuryou
+     */
+    public Long getEtaperollno3syuryou() {
+        return etaperollno3syuryou;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 3本目 終了
+     * @param etaperollno3syuryou the etaperollno3syuryou to set
+     */
+    public void setEtaperollno3syuryou(Long etaperollno3syuryou) {
+        this.etaperollno3syuryou = etaperollno3syuryou;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 3本目 印刷
+     * @return the etaperollno3insatsu
+     */
+    public Long getEtaperollno3insatsu() {
+        return etaperollno3insatsu;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 3本目 印刷
+     * @param etaperollno3insatsu the etaperollno3insatsu to set
+     */
+    public void setEtaperollno3insatsu(Long etaperollno3insatsu) {
+        this.etaperollno3insatsu = etaperollno3insatsu;
+    }
+
+    /**
      * 電極ﾃｰﾌﾟﾛｰﾙNo 4本目
      * @return the etaperollno4
      */
@@ -854,6 +1036,54 @@ public class GXHDO201B006Model {
     }
 
     /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 4本目 開始
+     * @return the etaperollno4kaishi
+     */
+    public Long getEtaperollno4kaishi() {
+        return etaperollno4kaishi;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 4本目 開始
+     * @param etaperollno4kaishi the etaperollno4kaishi to set
+     */
+    public void setEtaperollno4kaishi(Long etaperollno4kaishi) {
+        this.etaperollno4kaishi = etaperollno4kaishi;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 4本目 終了
+     * @return the etaperollno4syuryou
+     */
+    public Long getEtaperollno4syuryou() {
+        return etaperollno4syuryou;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 4本目 終了
+     * @param etaperollno4syuryou the etaperollno4syuryou to set
+     */
+    public void setEtaperollno4syuryou(Long etaperollno4syuryou) {
+        this.etaperollno4syuryou = etaperollno4syuryou;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 4本目 印刷
+     * @return the etaperollno4insatsu
+     */
+    public Long getEtaperollno4insatsu() {
+        return etaperollno4insatsu;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 4本目 印刷
+     * @param etaperollno4insatsu the etaperollno4insatsu to set
+     */
+    public void setEtaperollno4insatsu(Long etaperollno4insatsu) {
+        this.etaperollno4insatsu = etaperollno4insatsu;
+    }
+
+    /**
      * 電極ﾃｰﾌﾟﾛｰﾙNo 5本目
      * @return the etaperollno5
      */
@@ -867,6 +1097,54 @@ public class GXHDO201B006Model {
      */
     public void setEtaperollno5(String etaperollno5) {
         this.etaperollno5 = etaperollno5;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 5本目 開始
+     * @return the etaperollno5kaishi
+     */
+    public Long getEtaperollno5kaishi() {
+        return etaperollno5kaishi;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 5本目 開始
+     * @param etaperollno5kaishi the etaperollno5kaishi to set
+     */
+    public void setEtaperollno5kaishi(Long etaperollno5kaishi) {
+        this.etaperollno5kaishi = etaperollno5kaishi;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 5本目 終了
+     * @return the etaperollno5syuryou
+     */
+    public Long getEtaperollno5syuryou() {
+        return etaperollno5syuryou;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 5本目 終了
+     * @param etaperollno5syuryou the etaperollno5syuryou to set
+     */
+    public void setEtaperollno5syuryou(Long etaperollno5syuryou) {
+        this.etaperollno5syuryou = etaperollno5syuryou;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 5本目 印刷
+     * @return the etaperollno5insatsu
+     */
+    public Long getEtaperollno5insatsu() {
+        return etaperollno5insatsu;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 5本目 印刷
+     * @param etaperollno5insatsu the etaperollno5insatsu to set
+     */
+    public void setEtaperollno5insatsu(Long etaperollno5insatsu) {
+        this.etaperollno5insatsu = etaperollno5insatsu;
     }
 
     /**
@@ -2502,6 +2780,22 @@ public class GXHDO201B006Model {
     }
 
     /**
+     * 成形長さ
+     * @return the seikeinagasa
+     */
+    public Long getSeikeinagasa() {
+        return seikeinagasa;
+    }
+
+    /**
+     * 成形長さ
+     * @param seikeinagasa the seikeinagasa to set
+     */
+    public void setSeikeinagasa(Long seikeinagasa) {
+        this.seikeinagasa = seikeinagasa;
+    }
+
+    /**
      * 備考1
      * @return the biko1
      */
@@ -2531,6 +2825,54 @@ public class GXHDO201B006Model {
      */
     public void setBiko2(String biko2) {
         this.biko2 = biko2;
+    }
+
+    /**
+     * 備考3
+     * @return the bikou3
+     */
+    public String getBikou3() {
+        return bikou3;
+    }
+
+    /**
+     * 備考3
+     * @param bikou3 the bikou3 to set
+     */
+    public void setBikou3(String bikou3) {
+        this.bikou3 = bikou3;
+    }
+
+    /**
+     * 備考4
+     * @return the bikou4
+     */
+    public String getBikou4() {
+        return bikou4;
+    }
+
+    /**
+     * 備考4
+     * @param bikou4 the bikou4 to set
+     */
+    public void setBikou4(String bikou4) {
+        this.bikou4 = bikou4;
+    }
+
+    /**
+     * 備考5
+     * @return the bikou5
+     */
+    public String getBikou5() {
+        return bikou5;
+    }
+
+    /**
+     * 備考5
+     * @param bikou5 the bikou5 to set
+     */
+    public void setBikou5(String bikou5) {
+        this.bikou5 = bikou5;
     }
 
     /**
@@ -4084,5 +4426,4 @@ public class GXHDO201B006Model {
     public void setSitattaperollno5(Long sitattaperollno5) {
         this.sitattaperollno5 = sitattaperollno5;
     }   
-    
 }

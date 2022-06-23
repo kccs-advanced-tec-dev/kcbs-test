@@ -31,6 +31,11 @@ import java.sql.Timestamp;
  * 変更者       KCSS WXF<br>
  * 変更理由     仕様変更対応<br>
  * <br>
+ * 変更日	2022/06/14<br>
+ * 計画書No	MB2205-D010<br>
+ * 変更者	KCSS wxf<br>
+ * 変更理由	項目追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -152,9 +157,39 @@ public class SrRhaps {
     private String eTapeRollNo1;
 
     /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 1本目 開始
+     */
+    private Integer eTapeRollNo1kaishi;
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 1本目 終了
+     */
+    private Integer eTapeRollNo1syuryou;
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 1本目 印刷
+     */
+    private Integer eTapeRollNo1insatsu;
+
+    /**
      * 電極ﾃｰﾌﾟﾛｰﾙNo2
      */
     private String eTapeRollNo2;
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 2本目 開始
+     */
+    private Integer eTapeRollNo2kaishi;
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 2本目 終了
+     */
+    private Integer eTapeRollNo2syuryou;
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 2本目 印刷
+     */
+    private Integer eTapeRollNo2insatsu;
 
     /**
      * 電極ﾃｰﾌﾟﾛｰﾙNo3
@@ -162,14 +197,59 @@ public class SrRhaps {
     private String eTapeRollNo3;
 
     /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 3本目 開始
+     */
+    private Integer eTapeRollNo3kaishi;
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 3本目 終了
+     */
+    private Integer eTapeRollNo3syuryou;
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 3本目 印刷
+     */
+    private Integer eTapeRollNo3insatsu;
+
+    /**
      * 電極ﾃｰﾌﾟﾛｰﾙNo4
      */
     private String eTapeRollNo4;
 
     /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 4本目 開始
+     */
+    private Integer eTapeRollNo4kaishi;
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 4本目 終了
+     */
+    private Integer eTapeRollNo4syuryou;
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 4本目 印刷
+     */
+    private Integer eTapeRollNo4insatsu;
+
+    /**
      * 電極ﾃｰﾌﾟﾛｰﾙNo5
      */
     private String eTapeRollNo5;
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 5本目 開始
+     */
+    private Integer eTapeRollNo5kaishi;
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 5本目 終了
+     */
+    private Integer eTapeRollNo5syuryou;
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 5本目 印刷
+     */
+    private Integer eTapeRollNo5insatsu;
 
     /**
      * 積層ﾌﾟﾚｽ通電時間
@@ -692,6 +772,21 @@ public class SrRhaps {
     private String biko2;
 
     /**
+     * 備考3
+     */
+    private String bikou3;
+   
+    /**
+     * 備考4
+     */
+    private String bikou4;
+   
+    /**
+     * 備考5
+     */
+    private String bikou5;
+
+    /**
      * 登録日時
      */
     private Timestamp torokunichiji;
@@ -925,6 +1020,12 @@ public class SrRhaps {
      * 段差測定者
      */
     private String dansasokuteitantou;
+
+    /**
+     * 成形長さ
+     */
+    private Integer seikeinagasa;
+    
 
     /**
      * revision
@@ -1378,6 +1479,54 @@ public class SrRhaps {
     }
 
     /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 1本目 開始
+     * @return the eTapeRollNo1kaishi
+     */
+    public Integer geteTapeRollNo1kaishi() {
+        return eTapeRollNo1kaishi;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 1本目 開始
+     * @param eTapeRollNo1kaishi the eTapeRollNo1kaishi to set
+     */
+    public void seteTapeRollNo1kaishi(Integer eTapeRollNo1kaishi) {
+        this.eTapeRollNo1kaishi = eTapeRollNo1kaishi;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 1本目 終了
+     * @return the eTapeRollNo1syuryou
+     */
+    public Integer geteTapeRollNo1syuryou() {
+        return eTapeRollNo1syuryou;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 1本目 終了
+     * @param eTapeRollNo1syuryou the eTapeRollNo1syuryou to set
+     */
+    public void seteTapeRollNo1syuryou(Integer eTapeRollNo1syuryou) {
+        this.eTapeRollNo1syuryou = eTapeRollNo1syuryou;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 1本目 印刷
+     * @return the eTapeRollNo1insatsu
+     */
+    public Integer geteTapeRollNo1insatsu() {
+        return eTapeRollNo1insatsu;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 1本目 印刷
+     * @param eTapeRollNo1insatsu the eTapeRollNo1insatsu to set
+     */
+    public void seteTapeRollNo1insatsu(Integer eTapeRollNo1insatsu) {
+        this.eTapeRollNo1insatsu = eTapeRollNo1insatsu;
+    }
+
+    /**
      * 電極ﾃｰﾌﾟﾛｰﾙNo2
      *
      * @return the eTapeRollNo2
@@ -1393,6 +1542,54 @@ public class SrRhaps {
      */
     public void seteTapeRollNo2(String eTapeRollNo2) {
         this.eTapeRollNo2 = eTapeRollNo2;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 2本目 開始
+     * @return the eTapeRollNo2kaishi
+     */
+    public Integer geteTapeRollNo2kaishi() {
+        return eTapeRollNo2kaishi;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 2本目 開始
+     * @param eTapeRollNo2kaishi the eTapeRollNo2kaishi to set
+     */
+    public void seteTapeRollNo2kaishi(Integer eTapeRollNo2kaishi) {
+        this.eTapeRollNo2kaishi = eTapeRollNo2kaishi;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 2本目 終了
+     * @return the eTapeRollNo2syuryou
+     */
+    public Integer geteTapeRollNo2syuryou() {
+        return eTapeRollNo2syuryou;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 2本目 終了
+     * @param eTapeRollNo2syuryou the eTapeRollNo2syuryou to set
+     */
+    public void seteTapeRollNo2syuryou(Integer eTapeRollNo2syuryou) {
+        this.eTapeRollNo2syuryou = eTapeRollNo2syuryou;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 2本目 印刷
+     * @return the eTapeRollNo2insatsu
+     */
+    public Integer geteTapeRollNo2insatsu() {
+        return eTapeRollNo2insatsu;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 2本目 印刷
+     * @param eTapeRollNo2insatsu the eTapeRollNo2insatsu to set
+     */
+    public void seteTapeRollNo2insatsu(Integer eTapeRollNo2insatsu) {
+        this.eTapeRollNo2insatsu = eTapeRollNo2insatsu;
     }
 
     /**
@@ -1414,6 +1611,54 @@ public class SrRhaps {
     }
 
     /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 3本目 開始
+     * @return the eTapeRollNo3kaishi
+     */
+    public Integer geteTapeRollNo3kaishi() {
+        return eTapeRollNo3kaishi;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 3本目 開始
+     * @param eTapeRollNo3kaishi the eTapeRollNo3kaishi to set
+     */
+    public void seteTapeRollNo3kaishi(Integer eTapeRollNo3kaishi) {
+        this.eTapeRollNo3kaishi = eTapeRollNo3kaishi;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 3本目 終了
+     * @return the eTapeRollNo3syuryou
+     */
+    public Integer geteTapeRollNo3syuryou() {
+        return eTapeRollNo3syuryou;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 3本目 終了
+     * @param eTapeRollNo3syuryou the eTapeRollNo3syuryou to set
+     */
+    public void seteTapeRollNo3syuryou(Integer eTapeRollNo3syuryou) {
+        this.eTapeRollNo3syuryou = eTapeRollNo3syuryou;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 3本目 印刷
+     * @return the eTapeRollNo3insatsu
+     */
+    public Integer geteTapeRollNo3insatsu() {
+        return eTapeRollNo3insatsu;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 3本目 印刷
+     * @param eTapeRollNo3insatsu the eTapeRollNo3insatsu to set
+     */
+    public void seteTapeRollNo3insatsu(Integer eTapeRollNo3insatsu) {
+        this.eTapeRollNo3insatsu = eTapeRollNo3insatsu;
+    }
+
+    /**
      * 電極ﾃｰﾌﾟﾛｰﾙNo4
      *
      * @return the eTapeRollNo4
@@ -1432,6 +1677,54 @@ public class SrRhaps {
     }
 
     /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 4本目 開始
+     * @return the eTapeRollNo4kaishi
+     */
+    public Integer geteTapeRollNo4kaishi() {
+        return eTapeRollNo4kaishi;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 4本目 開始
+     * @param eTapeRollNo4kaishi the eTapeRollNo4kaishi to set
+     */
+    public void seteTapeRollNo4kaishi(Integer eTapeRollNo4kaishi) {
+        this.eTapeRollNo4kaishi = eTapeRollNo4kaishi;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 4本目 終了
+     * @return the eTapeRollNo4syuryou
+     */
+    public Integer geteTapeRollNo4syuryou() {
+        return eTapeRollNo4syuryou;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 4本目 終了
+     * @param eTapeRollNo4syuryou the eTapeRollNo4syuryou to set
+     */
+    public void seteTapeRollNo4syuryou(Integer eTapeRollNo4syuryou) {
+        this.eTapeRollNo4syuryou = eTapeRollNo4syuryou;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 4本目 印刷
+     * @return the eTapeRollNo4insatsu
+     */
+    public Integer geteTapeRollNo4insatsu() {
+        return eTapeRollNo4insatsu;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 4本目 印刷
+     * @param eTapeRollNo4insatsu the eTapeRollNo4insatsu to set
+     */
+    public void seteTapeRollNo4insatsu(Integer eTapeRollNo4insatsu) {
+        this.eTapeRollNo4insatsu = eTapeRollNo4insatsu;
+    }
+
+    /**
      * 電極ﾃｰﾌﾟﾛｰﾙNo5
      *
      * @return the eTapeRollNo5
@@ -1447,6 +1740,54 @@ public class SrRhaps {
      */
     public void seteTapeRollNo5(String eTapeRollNo5) {
         this.eTapeRollNo5 = eTapeRollNo5;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 5本目 開始
+     * @return the eTapeRollNo5kaishi
+     */
+    public Integer geteTapeRollNo5kaishi() {
+        return eTapeRollNo5kaishi;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 5本目 開始
+     * @param eTapeRollNo5kaishi the eTapeRollNo5kaishi to set
+     */
+    public void seteTapeRollNo5kaishi(Integer eTapeRollNo5kaishi) {
+        this.eTapeRollNo5kaishi = eTapeRollNo5kaishi;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 5本目 終了
+     * @return the eTapeRollNo5syuryou
+     */
+    public Integer geteTapeRollNo5syuryou() {
+        return eTapeRollNo5syuryou;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 5本目 終了
+     * @param eTapeRollNo5syuryou the eTapeRollNo5syuryou to set
+     */
+    public void seteTapeRollNo5syuryou(Integer eTapeRollNo5syuryou) {
+        this.eTapeRollNo5syuryou = eTapeRollNo5syuryou;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 5本目 印刷
+     * @return the eTapeRollNo5insatsu
+     */
+    public Integer geteTapeRollNo5insatsu() {
+        return eTapeRollNo5insatsu;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟﾛｰﾙNo 5本目 印刷
+     * @param eTapeRollNo5insatsu the eTapeRollNo5insatsu to set
+     */
+    public void seteTapeRollNo5insatsu(Integer eTapeRollNo5insatsu) {
+        this.eTapeRollNo5insatsu = eTapeRollNo5insatsu;
     }
 
     /**
@@ -3310,6 +3651,54 @@ public class SrRhaps {
     }
 
     /**
+     * 備考3
+     * @return the bikou3
+     */
+    public String getBikou3() {
+        return bikou3;
+    }
+
+    /**
+     * 備考3
+     * @param bikou3 the bikou3 to set
+     */
+    public void setBikou3(String bikou3) {
+        this.bikou3 = bikou3;
+    }
+
+    /**
+     * 備考4
+     * @return the bikou4
+     */
+    public String getBikou4() {
+        return bikou4;
+    }
+
+    /**
+     * 備考4
+     * @param bikou4 the bikou4 to set
+     */
+    public void setBikou4(String bikou4) {
+        this.bikou4 = bikou4;
+    }
+
+    /**
+     * 備考5
+     * @return the bikou5
+     */
+    public String getBikou5() {
+        return bikou5;
+    }
+
+    /**
+     * 備考5
+     * @param bikou5 the bikou5 to set
+     */
+    public void setBikou5(String bikou5) {
+        this.bikou5 = bikou5;
+    }
+
+    /**
      * 登録日時
      *
      * @return the torokunichiji
@@ -4153,6 +4542,22 @@ public class SrRhaps {
      */
     public void setDansasokuteitantou(String dansasokuteitantou) {
         this.dansasokuteitantou = dansasokuteitantou;
+    }
+
+    /**
+     * 成形長さ
+     * @return the seikeinagasa
+     */
+    public Integer getSeikeinagasa() {
+        return seikeinagasa;
+    }
+
+    /**
+     * 成形長さ
+     * @param seikeinagasa the seikeinagasa to set
+     */
+    public void setSeikeinagasa(Integer seikeinagasa) {
+        this.seikeinagasa = seikeinagasa;
     }
 
     /**
