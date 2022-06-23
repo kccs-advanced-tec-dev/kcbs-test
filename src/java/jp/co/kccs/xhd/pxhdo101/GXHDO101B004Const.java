@@ -24,6 +24,11 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	863 zhangjy<br>
  * 変更理由	前工程WIPボタンを追加<br>
  * <br>
+ * 変更日	2022/06/09<br>
+ * 計画書No	MB2205-D010<br>
+ * 変更者	KCSS wxf<br>
+ * 変更理由	項目追加・変更・削除<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -224,27 +229,27 @@ public class GXHDO101B004Const {
     public static final String CPRESS_KAISUU = "sr_spssekisou_cpress_kaisuu";
 
     /**
-     * 最終加圧力
+     * 最終積層加圧力
      */
     public static final String LAST_KAATURYOKU = "sr_spssekisou_saishuu_kaatsu_ryoku";
 
     /**
-     * 最終加圧時間
+     * 最終積層加圧時間
      */
     public static final String LAST_KAATUJIKAN = "sr_spssekisou_saishuu_kaatsu_time";
     
     /**
-     * 空打ち
+     * 積層終了後空打圧力
      */
-    public static final String KARAUTI = "sr_spssekisou_karauti";
+    public static final String SEKISOUSYURYOUGOKARADAASTURYOKU = "sr_spssekisou_sekisousyuryougokaradaasturyoku";
     
     /**
-     * 空打ち[秒]
+     * 積層終了後空打時間[秒]
      */
     public static final String KARAUTIBYOU = "sr_spssekisou_karautibyou";
     
     /**
-     * 空打ち[回]
+     * 積層終了後空打回数[回]
      */
     public static final String KARAUTIKAI = "sr_spssekisou_karautikai";
 
@@ -342,6 +347,21 @@ public class GXHDO101B004Const {
      * 備考2
      */
     public static final String BIKOU2 = "sr_spssekisou_bikou2";
+
+    /**
+     * 備考3
+     */
+    public static final String BIKOU3 = "sr_spssekisou_bikou3";
+
+    /**
+     * 備考4
+     */
+    public static final String BIKOU4 = "sr_spssekisou_bikou4";
+
+    /**
+     * 備考5
+     */
+    public static final String BIKOU5 = "sr_spssekisou_bikou5";
     
     /**
      * 仮登録(画面上)
@@ -394,6 +414,16 @@ public class GXHDO101B004Const {
     public static final String BTN_WIP_IMPORT_TOP = "sr_spssekisou_wip_import_Top";
     
     /**
+     * ｽﾞﾚ量(画面上)
+     */
+    public static final String BTN_ZURERYOU_TOP = "sr_spssekisou_zureryou_Top";
+    
+    /**
+     * 設備ﾃﾞｰﾀ連携(画面上)
+     */
+    public static final String BTN_DATACOOPERATION_TOP = "sr_spssekisou_dataCooperation_Top";
+    
+    /**
      * 仮登録(画面下)
      */
     public static final String BTN_KARI_TOUROKU_BOTTOM = "sr_spssekisou_kari_touroku_Bottom";
@@ -443,6 +473,16 @@ public class GXHDO101B004Const {
      */
     public static final String BTN_WIP_IMPORT_BOTTOM = "sr_spssekisou_wip_import_Bottom";
     
+    /**
+     * ｽﾞﾚ量(画面下)
+     */
+    public static final String BTN_ZURERYOU_BOTTOM = "sr_spssekisou_zureryou_Bottom";
+    
+    /**
+     * 設備ﾃﾞｰﾀ連携(画面下)
+     */
+    public static final String BTN_DATACOOPERATION_BOTTOM = "sr_spssekisou_dataCooperation_Bottom";
+
     /**
      * ユーザー認証パラメータ(修正)
      */

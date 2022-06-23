@@ -82,15 +82,15 @@ public class GXHDO201B004Model {
     private BigDecimal cPressKaatuJikan = null;
     /** 中間ﾌﾟﾚｽ間隔総数 */
     private Long cPressKankakuSosuu = null;
-    /** 最終加圧力 */
+    /** 最終積層加圧力 */
     private BigDecimal lastKaaturyoku = null;
-    /** 最終加圧時間 */
+    /** 最終積層加圧時間 */
     private BigDecimal lastKaatuJikan = null;
-    /** 空打ち */
-    private String karauti = "";
-    /** 空打ち[秒] */
+    /** 積層終了後空打圧力 */
+    private BigDecimal sekisousyuryougokaradaasturyoku = null;
+    /** 積層終了後空打時間[秒] */
     private Integer karautibyou = null;
-    /** 空打ち[回] */
+    /** 積層終了後空打回数[回] */
     private Integer karautikai = null;
     /** 4分割担当者ｺｰﾄﾞ */
     private String fourSplitTantou = "";
@@ -762,7 +762,7 @@ public class GXHDO201B004Model {
     }
 
     /**
-     * 最終加圧力
+     * 最終積層加圧力
      * @return the lastKaaturyoku
      */
     public BigDecimal getLastKaaturyoku() {
@@ -770,7 +770,7 @@ public class GXHDO201B004Model {
     }
 
     /**
-     * 最終加圧力
+     * 最終積層加圧力
      * @param lastKaaturyoku the lastKaaturyoku to set
      */
     public void setLastKaaturyoku(BigDecimal lastKaaturyoku) {
@@ -778,7 +778,7 @@ public class GXHDO201B004Model {
     }
 
     /**
-     * 最終加圧時間
+     * 最終積層加圧時間
      * @return the lastKaatuJikan
      */
     public BigDecimal getLastKaatuJikan() {
@@ -786,7 +786,7 @@ public class GXHDO201B004Model {
     }
 
     /**
-     * 最終加圧時間
+     * 最終積層加圧時間
      * @param lastKaatuJikan the lastKaatuJikan to set
      */
     public void setLastKaatuJikan(BigDecimal lastKaatuJikan) {
@@ -794,23 +794,23 @@ public class GXHDO201B004Model {
     }
     
     /**
-     * 空打ち
-     * @return the karauti
+     * 積層終了後空打圧力
+     * @return the sekisousyuryougokaradaasturyoku
      */
-    public String getKarauti() {
-        return karauti;
+    public BigDecimal getSekisousyuryougokaradaasturyoku() {
+        return sekisousyuryougokaradaasturyoku;
     }
 
     /**
-     * 空打ち
-     * @param karauti the karauti to set
+     * 積層終了後空打圧力
+     * @param sekisousyuryougokaradaasturyoku the sekisousyuryougokaradaasturyoku to set
      */
-    public void setKarauti(String karauti) {
-        this.karauti = karauti;
+    public void setSekisousyuryougokaradaasturyoku(BigDecimal sekisousyuryougokaradaasturyoku) {
+        this.sekisousyuryougokaradaasturyoku = sekisousyuryougokaradaasturyoku;
     }
 
     /**
-     * 空打ち[秒]
+     * 積層終了後空打時間[秒]
      * @return the karautibyou
      */
     public Integer getKarautibyou() {
@@ -818,7 +818,7 @@ public class GXHDO201B004Model {
     }
 
     /**
-     * 空打ち[秒]
+     * 積層終了後空打時間[秒]
      * @param karautibyou the karautibyou to set
      */
     public void setKarautibyou(Integer karautibyou) {
@@ -826,7 +826,7 @@ public class GXHDO201B004Model {
     }
 
     /**
-     * 空打ち[回]
+     * 積層終了後空打回数[回]
      * @return the karautikai
      */
     public Integer getKarautikai() {
@@ -834,7 +834,7 @@ public class GXHDO201B004Model {
     }
 
     /**
-     * 空打ち[回]
+     * 積層終了後空打回数[回]
      * @param karautikai the karautikai to set
      */
     public void setKarautikai(Integer karautikai) {

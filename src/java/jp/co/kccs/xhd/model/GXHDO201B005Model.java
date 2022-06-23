@@ -174,6 +174,16 @@ public class GXHDO201B005Model {
     private String elotno = "";
     /** 積層圧力 */
     private BigDecimal sekiatsu = null;
+    /** ﾃｰﾌﾟ使い切り */
+    private String tapetsukaikiri = "";
+    /** 次ﾛｯﾄへ */
+    private String jilothe = "";
+    /** 備考3 */
+    private String bikou3 = "";
+    /** 備考4 */
+    private String bikou4 = "";
+    /** 備考5 */
+    private String bikou5 = "";
 
     /**
      * ﾛｯﾄNo.
@@ -1279,4 +1289,83 @@ public class GXHDO201B005Model {
         this.sekiatsu = sekiatsu;
     }
 
+    /**
+     * ﾃｰﾌﾟ使い切り
+     * @return the tapetsukaikiri
+     */
+    public String getTapetsukaikiri() {
+        return tapetsukaikiri;
+    }
+
+    /**
+     * ﾃｰﾌﾟ使い切り
+     * @param tapetsukaikiri the tapetsukaikiri to set
+     */
+    public void setTapetsukaikiri(String tapetsukaikiri) {
+        this.tapetsukaikiri = tapetsukaikiri;
+    }
+
+    /**
+     * 次ﾛｯﾄへ
+     * @return the jilothe
+     */
+    public String getJilothe() {
+        return jilothe;
+    }
+
+    /**
+     * 次ﾛｯﾄへ
+     * @param jilothe the jilothe to set
+     */
+    public void setJilothe(String jilothe) {
+        this.jilothe = jilothe;
+    }
+
+    /**
+     * 備考3
+     * @return the bikou3
+     */
+    public String getBikou3() {
+        return bikou3;
+    }
+
+    /**
+     * 備考3
+     * @param bikou3 the bikou3 to set
+     */
+    public void setBikou3(String bikou3) {
+        this.bikou3 = bikou3;
+    }
+
+    /**
+     * 備考4
+     * @return the bikou4
+     */
+    public String getBikou4() {
+        return bikou4;
+    }
+
+    /**
+     * 備考4
+     * @param bikou4 the bikou4 to set
+     */
+    public void setBikou4(String bikou4) {
+        this.bikou4 = bikou4;
+    }
+
+    /**
+     * 備考5
+     * @return the bikou5
+     */
+    public String getBikou5() {
+        return bikou5;
+    }
+
+    /**
+     * 備考5
+     * @param bikou5 the bikou5 to set
+     */
+    public void setBikou5(String bikou5) {
+        this.bikou5 = bikou5;
+    }
 }

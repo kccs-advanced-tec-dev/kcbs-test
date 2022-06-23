@@ -24,6 +24,11 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	863 zhangjy<br>
  * 変更理由	前工程WIPボタンを追加<br>
  * <br>
+ * 変更日	2022/06/17<br>
+ * 計画書No	MB2205-D010<br>
+ * 変更者	KCSS wxf<br>
+ * 変更理由	項目追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -305,6 +310,16 @@ public class GXHDO101B005Const {
     public static final String SENKOU_LOT_NO = "sr_rsussek_senkou_lot_no";
 
     /**
+     * ﾃｰﾌﾟ使い切り
+     */
+    public static final String TAPETSUKAIKIRI = "sr_rsussek_tapetsukaikiri";
+
+    /**
+     * 次ﾛｯﾄへ
+     */
+    public static final String JILOTHE = "sr_rsussek_jilothe";
+
+    /**
      * 備考1
      */
     public static final String BIKOU1 = "sr_rsussek_bikou1";
@@ -313,6 +328,21 @@ public class GXHDO101B005Const {
      * 備考2
      */
     public static final String BIKOU2 = "sr_rsussek_bikou2";
+
+    /**
+     * 備考3
+     */
+    public static final String BIKOU3 = "sr_rsussek_bikou3";
+
+    /**
+     * 備考4
+     */
+    public static final String BIKOU4 = "sr_rsussek_bikou4";
+
+    /**
+     * 備考5
+     */
+    public static final String BIKOU5 = "sr_rsussek_bikou5";
 
     /**
      * 電極製版ﾛｯﾄNo
