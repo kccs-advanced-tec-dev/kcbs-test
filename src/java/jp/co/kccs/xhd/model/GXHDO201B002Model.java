@@ -22,6 +22,11 @@ import java.sql.Timestamp;
  * 変更者       KCSS K.Jo<br>
  * 変更理由     項目追加・変更<br>
  * <br>
+ * 変更日	2022/06/10<br>
+ * 計画書No	MB2205-D010<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	画面表示項目を追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -87,10 +92,24 @@ public class GXHDO201B002Model implements Serializable {
     private Long mld = null;
     /** ｸﾘｱﾗﾝｽ設定値 */
     private BigDecimal clearrance = null;
+    /** 先行ﾛｯﾄNo */
+    private String senkoulotno = "";
+    /** ﾃｰﾌﾟ使い切り */
+    private String tapetsukaikiri = "";
+    /** 次ﾛｯﾄへ */
+    private String jilothe = "";
+    /** 成形長さ */
+    private Long seikeinagasa = null;
     /** 備考1 */
     private String bikou1 = "";
     /** 備考2 */
     private String bikou2 = "";
+    /** 備考3 */
+    private String bikou3 = "";
+    /** 備考4 */
+    private String bikou4 = "";
+    /** 備考5 */
+    private String bikou5 = "";
     /** 膜厚1 */
     private BigDecimal makuatu1 = null;
     /** 膜厚2 */
@@ -125,12 +144,6 @@ public class GXHDO201B002Model implements Serializable {
     private BigDecimal pasteondo4 = null;
     /** ﾍﾟｰｽﾄ温度5 */
     private BigDecimal pasteondo5 = null;
-    /** 備考3 */
-    private String bikou3 = "";
-    /** 備考4 */
-    private String bikou4 = "";
-    /** 備考5 */
-    private String bikou5 = "";
     /** 乾燥温度2 */
     private BigDecimal kansouondo2 = null;
     /** 乾燥温度3 */
@@ -743,6 +756,70 @@ public class GXHDO201B002Model implements Serializable {
     }
 
     /**
+     * 先行ﾛｯﾄNo
+     * @return the senkoulotno
+     */
+    public String getSenkoulotno() {
+        return senkoulotno;
+    }
+
+    /**
+     * 先行ﾛｯﾄNo
+     * @param senkoulotno the senkoulotno to set
+     */
+    public void setSenkoulotno(String senkoulotno) {
+        this.senkoulotno = senkoulotno;
+    }
+
+    /**
+     * ﾃｰﾌﾟ使い切り
+     * @return the tapetsukaikiri
+     */
+    public String getTapetsukaikiri() {
+        return tapetsukaikiri;
+    }
+
+    /**
+     * ﾃｰﾌﾟ使い切り
+     * @param tapetsukaikiri the tapetsukaikiri to set
+     */
+    public void setTapetsukaikiri(String tapetsukaikiri) {
+        this.tapetsukaikiri = tapetsukaikiri;
+    }
+
+    /**
+     * 次ﾛｯﾄへ
+     * @return the jilothe
+     */
+    public String getJilothe() {
+        return jilothe;
+    }
+
+    /**
+     * 次ﾛｯﾄへ
+     * @param jilothe the jilothe to set
+     */
+    public void setJilothe(String jilothe) {
+        this.jilothe = jilothe;
+    }
+
+    /**
+     * 成形長さ
+     * @return the seikeinagasa
+     */
+    public Long getSeikeinagasa() {
+        return seikeinagasa;
+    }
+
+    /**
+     * 成形長さ
+     * @param seikeinagasa the seikeinagasa to set
+     */
+    public void setSeikeinagasa(Long seikeinagasa) {
+        this.seikeinagasa = seikeinagasa;
+    }
+
+    /**
      * 備考1
      * @return the bikou1
      */
@@ -772,6 +849,54 @@ public class GXHDO201B002Model implements Serializable {
      */
     public void setBikou2(String bikou2) {
         this.bikou2 = bikou2;
+    }
+
+    /**
+     * 備考3
+     * @return the bikou3
+     */
+    public String getBikou3() {
+        return bikou3;
+    }
+
+    /**
+     * 備考3
+     * @param bikou3 the bikou3 to set
+     */
+    public void setBikou3(String bikou3) {
+        this.bikou3 = bikou3;
+    }
+
+    /**
+     * 備考4
+     * @return the bikou4
+     */
+    public String getBikou4() {
+        return bikou4;
+    }
+
+    /**
+     * 備考4
+     * @param bikou4 the bikou4 to set
+     */
+    public void setBikou4(String bikou4) {
+        this.bikou4 = bikou4;
+    }
+
+    /**
+     * 備考5
+     * @return the bikou5
+     */
+    public String getBikou5() {
+        return bikou5;
+    }
+
+    /**
+     * 備考5
+     * @param bikou5 the bikou5 to set
+     */
+    public void setBikou5(String bikou5) {
+        this.bikou5 = bikou5;
     }
 
     /**
@@ -1044,54 +1169,6 @@ public class GXHDO201B002Model implements Serializable {
      */
     public void setPasteondo5(BigDecimal pasteondo5) {
         this.pasteondo5 = pasteondo5;
-    }
-
-    /**
-     * 備考3
-     * @return the bikou3
-     */
-    public String getBikou3() {
-        return bikou3;
-    }
-
-    /**
-     * 備考3
-     * @param bikou3 the bikou3 to set
-     */
-    public void setBikou3(String bikou3) {
-        this.bikou3 = bikou3;
-    }
-
-    /**
-     * 備考4
-     * @return the bikou4
-     */
-    public String getBikou4() {
-        return bikou4;
-    }
-
-    /**
-     * 備考4
-     * @param bikou4 the bikou4 to set
-     */
-    public void setBikou4(String bikou4) {
-        this.bikou4 = bikou4;
-    }
-
-    /**
-     * 備考5
-     * @return the bikou5
-     */
-    public String getBikou5() {
-        return bikou5;
-    }
-
-    /**
-     * 備考5
-     * @param bikou5 the bikou5 to set
-     */
-    public void setBikou5(String bikou5) {
-        this.bikou5 = bikou5;
     }
 
     /**
