@@ -250,6 +250,31 @@ public class NumberUtil {
         }
         return min;
     }
+
+    /**
+     * リストで受け取った値の最大値
+     *
+     * @param calcDataList 計算データリスト
+     * @return 最大値
+     */
+    public static BigDecimal getMax(List<String> calcDataList) {
+        BigDecimal max = null;
+        BigDecimal value;
+        for (String strValue : calcDataList) {
+            try {
+                value = new BigDecimal(strValue);
+            } catch (NumberFormatException e) {
+                value = BigDecimal.ZERO;
+            }
+
+            //MAX
+            if (max == null || max.compareTo(value) < 0) {
+                max = value;
+            }
+
+        }
+        return max;
+    }
     
     /**
      * リストで受け取った値の平均値

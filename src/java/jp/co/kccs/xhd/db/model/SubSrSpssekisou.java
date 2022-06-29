@@ -441,6 +441,46 @@ public class SubSrSpssekisou {
     private String bikou40;
 
     /**
+     * ｽﾞﾚ値1
+     */
+    private Integer zurechi1;
+
+    /**
+     * ｽﾞﾚ値2
+     */
+    private Integer zurechi2;
+
+    /**
+     * ｽﾞﾚ値3
+     */
+    private Integer zurechi3;
+
+    /**
+     * ｽﾞﾚ値4
+     */
+    private Integer zurechi4;
+
+    /**
+     * ｽﾞﾚ値5
+     */
+    private Integer zurechi5;
+
+    /**
+     * ｽﾞﾚ値6
+     */
+    private Integer zurechi6;
+
+    /**
+     * ｽﾞﾚ値7
+     */
+    private Integer zurechi7;
+
+    /**
+     * ｽﾞﾚ値8
+     */
+    private Integer zurechi8;
+
+    /**
      * 登録日時
      */
     private Timestamp torokunichiji;
@@ -1623,6 +1663,134 @@ public class SubSrSpssekisou {
     }
 
     /**
+     * ｽﾞﾚ値1
+     * @return the zurechi1
+     */
+    public Integer getZurechi1() {
+        return zurechi1;
+    }
+
+    /**
+     * ｽﾞﾚ値1
+     * @param zurechi1 the zurechi1 to set
+     */
+    public void setZurechi1(Integer zurechi1) {
+        this.zurechi1 = zurechi1;
+    }
+
+    /**
+     * ｽﾞﾚ値2
+     * @return the zurechi2
+     */
+    public Integer getZurechi2() {
+        return zurechi2;
+    }
+
+    /**
+     * ｽﾞﾚ値2
+     * @param zurechi2 the zurechi2 to set
+     */
+    public void setZurechi2(Integer zurechi2) {
+        this.zurechi2 = zurechi2;
+    }
+
+    /**
+     * ｽﾞﾚ値3
+     * @return the zurechi3
+     */
+    public Integer getZurechi3() {
+        return zurechi3;
+    }
+
+    /**
+     * ｽﾞﾚ値3
+     * @param zurechi3 the zurechi3 to set
+     */
+    public void setZurechi3(Integer zurechi3) {
+        this.zurechi3 = zurechi3;
+    }
+
+    /**
+     * ｽﾞﾚ値4
+     * @return the zurechi4
+     */
+    public Integer getZurechi4() {
+        return zurechi4;
+    }
+
+    /**
+     * ｽﾞﾚ値4
+     * @param zurechi4 the zurechi4 to set
+     */
+    public void setZurechi4(Integer zurechi4) {
+        this.zurechi4 = zurechi4;
+    }
+
+    /**
+     * ｽﾞﾚ値5
+     * @return the zurechi5
+     */
+    public Integer getZurechi5() {
+        return zurechi5;
+    }
+
+    /**
+     * ｽﾞﾚ値5
+     * @param zurechi5 the zurechi5 to set
+     */
+    public void setZurechi5(Integer zurechi5) {
+        this.zurechi5 = zurechi5;
+    }
+
+    /**
+     * ｽﾞﾚ値6
+     * @return the zurechi6
+     */
+    public Integer getZurechi6() {
+        return zurechi6;
+    }
+
+    /**
+     * ｽﾞﾚ値6
+     * @param zurechi6 the zurechi6 to set
+     */
+    public void setZurechi6(Integer zurechi6) {
+        this.zurechi6 = zurechi6;
+    }
+
+    /**
+     * ｽﾞﾚ値7
+     * @return the zurechi7
+     */
+    public Integer getZurechi7() {
+        return zurechi7;
+    }
+
+    /**
+     * ｽﾞﾚ値7
+     * @param zurechi7 the zurechi7 to set
+     */
+    public void setZurechi7(Integer zurechi7) {
+        this.zurechi7 = zurechi7;
+    }
+
+    /**
+     * ｽﾞﾚ値8
+     * @return the zurechi8
+     */
+    public Integer getZurechi8() {
+        return zurechi8;
+    }
+
+    /**
+     * ｽﾞﾚ値8
+     * @param zurechi8 the zurechi8 to set
+     */
+    public void setZurechi8(Integer zurechi8) {
+        this.zurechi8 = zurechi8;
+    }
+
+    /**
      * @return torokunichiji
      */
     public Timestamp getTorokunichiji() {
@@ -1677,5 +1845,4 @@ public class SubSrSpssekisou {
     public void setDeleteflag(Integer deleteflag) {
         this.deleteflag = deleteflag;
     }
-
 }
