@@ -28,6 +28,7 @@ import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.db.model.SikakariJson;
 import jp.co.kccs.xhd.db.model.SrTenkaFunsai;
 import jp.co.kccs.xhd.db.model.SubSrTenkaFunsaiHyoryo;
+import jp.co.kccs.xhd.jaxrs.TCPClient;
 import jp.co.kccs.xhd.model.GXHDO102C006Model;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.IFormLogic;
@@ -67,6 +68,11 @@ import org.primefaces.context.RequestContext;
  * 計画書No	MB2101-DK002<br>
  * 変更者	KCSS K.Jo<br>
  * 変更理由	材料品名ﾘﾝｸ押下時、調合量規格チェックの追加<br>
+ * <br>
+ * 変更日	2022/06/22<br>
+ * 計画書No	MB2205-D010<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	PLC書き込みの追加<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -625,6 +631,10 @@ public class GXHDO102B011 implements IFormLogic {
             // 状態ﾌﾗｸﾞ、revisionを設定する。
             processData.setInitJotaiFlg(JOTAI_FLG_KARI_TOROKU);
             processData.setInitRev(newRev.toPlainString());
+            
+            // PLCコマンド送信を実行
+            sendPlcCommand(processData,queryRunnerDoc);
+            
             return processData;
         } catch (SQLException e) {
             ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
@@ -641,6 +651,81 @@ public class GXHDO102B011 implements IFormLogic {
         }
 
         return processData;
+    }
+
+    /**
+     * PLCコマンド送信
+     *
+     * @param processData 処理制御データ
+     * @param queryRunnerDoc
+     * @throws java.sql.SQLException
+     */
+    public void sendPlcCommand(ProcessData processData, QueryRunner queryRunnerDoc) throws SQLException  {
+
+        String serviceIP = "";
+        int servicePort;
+        String device = "";
+        //画面.【粉砕号機】の規格値
+        FXHDD01 funsaigouki = getItemRow(processData.getItemList(), GXHDO102B011Const.FUNSAIGOUKI);
+        String funsaigoukiKikakuchi = funsaigouki.getKikakuChi().replace("【", "").replace("】", "");
+
+        // [ﾊﾟﾗﾒｰﾀﾏｽﾀ]から、ﾃﾞｰﾀを取得
+        Map fxhbm03Data = loadFxhbm03DataForPLC(queryRunnerDoc, funsaigoukiKikakuchi);
+
+        if (fxhbm03Data != null) {
+            for (int i = 0; i < 3; i++) {
+                // ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ
+                String data = StringUtil.nullToBlank(getMapData(fxhbm03Data, "data"));
+                String[] dataSplitList = data.split(",");
+                //データ例：10.23.44.27,DM1100,8501
+                //項目①：IPアドレス
+                //項目②：書込DM
+                //項目③：ポート番号
+                if(dataSplitList.length == 3){
+                    serviceIP = dataSplitList[0];
+                    device = dataSplitList[1];
+                    servicePort = Integer.parseInt(dataSplitList[2]);
+                    //上記の条件でPLCに画面「WIPﾛｯﾄNo」の書き込みを行う。
+                    //ｱ.書き込みに成功した場合、⑤の処理を行う。
+                    //ｲ.書き込みに失敗した場合、3回までリトライ処理を行う。
+                    // WIPﾛｯﾄNo
+                    FXHDD01 wipLotNo = getItemRow(processData.getItemList(), GXHDO102B011Const.WIPLOTNO);
+                    String wipLotNoValue = wipLotNo.getValue();
+
+                    TCPClient client = new TCPClient();
+                    String sendCommand = "WRS " + device + ".H" + " 8 ";
+                    String receiveMsg = client.executeCommand(serviceIP, servicePort, sendCommand, wipLotNoValue);
+
+                    if (!"".equals(receiveMsg)) {
+                        ErrUtil.outputErrorLog("PLCコマンド送信処理結果:" + receiveMsg, null, LOGGER);
+                        //ｱ.書き込みに成功した場合、⑤の処理を行う。
+                        //ｲ.書き込みに失敗した場合、3回までリトライ処理を行う。
+                        if("OK".equals(receiveMsg.toUpperCase())){
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * [ﾊﾟﾗﾒｰﾀﾏｽﾀ]から、ﾃﾞｰﾀを取得
+     *
+     * @param queryRunnerDoc オブジェクト
+     * @param key キー
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadFxhbm03DataForPLC(QueryRunner queryRunnerDoc, String key) throws SQLException {
+        // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+        String sql = "SELECT data "
+                + " FROM fxhbm03 "
+                + " WHERE user_name = 'common_user' AND key = ? ";
+        List<Object> params = new ArrayList<>();
+        params.add(key);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
     }
 
     /**
