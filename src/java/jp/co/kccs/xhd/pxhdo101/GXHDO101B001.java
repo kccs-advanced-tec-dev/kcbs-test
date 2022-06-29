@@ -1274,7 +1274,7 @@ public class GXHDO101B001 implements IFormLogic {
         }
 
         // 入力項目の情報を画面にセットする。
-        if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId)) {
+        if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId, sekkeiData)) {
             // エラー発生時は処理を中断
             processData.setFatalError(true);
             processData.setInitMessageList(Arrays.asList(MessageUtil.getMessage("XHD-000038")));
@@ -1356,9 +1356,6 @@ public class GXHDO101B001 implements IFormLogic {
         // 電極製版名
         this.setItemData(processData, GXHDO101B001Const.DENKYOKU_SEIHAN_MEI, StringUtil.nullToBlank(sekkeiData.get("PATTERN")));
 
-        // 版胴名
-        this.setItemData(processData, GXHDO101B001Const.SEIHAN_OR_HANDOU_MEI, StringUtil.nullToBlank(sekkeiData.get("PATTERN")));
-
     }
 
     /**
@@ -1369,11 +1366,12 @@ public class GXHDO101B001 implements IFormLogic {
      * @param queryRunnerQcdb QueryRunnerオブジェクト(Qcdb)
      * @param lotNo ﾛｯﾄNo
      * @param formId 画面ID
+     * @param sekkeiData 設計データ
      * @return 設定結果(失敗時false)
      * @throws SQLException 例外エラー
      */
     private boolean setInputItemData(ProcessData processData, QueryRunner queryRunnerDoc, QueryRunner queryRunnerQcdb,
-            String lotNo, String formId) throws SQLException {
+            String lotNo, String formId, Map sekkeiData) throws SQLException {
 
         List<SrSpsprintGra> srSpsprintGraDataList = new ArrayList<>();
         List<SubSrSpsprintGra> subSrSpsprintGraDataList = new ArrayList<>();
@@ -1409,7 +1407,12 @@ public class GXHDO101B001 implements IFormLogic {
                 
                 // メイン画面にデータを設定する(デフォルト値)
                 for (FXHDD01 fxhdd001 : processData.getItemList()) {
-                    this.setItemData(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
+                    if(GXHDO101B001Const.SEIHAN_OR_HANDOU_MEI.equals(fxhdd001.getItemId())){
+                        // 版胴名
+                        this.setItemData(processData, GXHDO101B001Const.SEIHAN_OR_HANDOU_MEI, StringUtil.nullToBlank(sekkeiData.get("PATTERN")));
+                    } else {
+                        this.setItemData(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
+                    }
                 }
 
                 // サブ画面データ設定
@@ -1455,7 +1458,7 @@ public class GXHDO101B001 implements IFormLogic {
         processData.setInitJotaiFlg(jotaiFlg);
         
         // メイン画面データ設定
-        setInputItemDataMainForm(processData, srSpsprintGraDataList.get(0));
+        setInputItemDataMainForm(processData, srSpsprintGraDataList.get(0), sekkeiData);
 
         // 膜厚入力画面データ設定
         setInputItemDataSubFormC001(subSrSpsprintGraDataList.get(0), kojyo, lotNo8, edaban);
@@ -1478,8 +1481,10 @@ public class GXHDO101B001 implements IFormLogic {
      *
      * @param processData 処理制御データ
      * @param srSpsprintGraData 印刷SPSｸﾞﾗﾋﾞｱデータ
+     * @param sekkeiData 設計データ
+     * @param sanshouMotoLotDataFlg 元データ設定フラグ
      */
-    private void setInputItemDataMainForm(ProcessData processData, SrSpsprintGra srSpsprintGraData) {
+    private void setInputItemDataMainForm(ProcessData processData, SrSpsprintGra srSpsprintGraData, Map sekkeiData, String ... sanshouMotoLotDataFlg) {
         // ｽﾘｯﾌﾟﾛｯﾄNo
         this.setItemData(processData, GXHDO101B001Const.SLIP_LOTNO, getSrSpsprintGraItemData(GXHDO101B001Const.SLIP_LOTNO, srSpsprintGraData));
         // ﾛｰﾙNo1
@@ -1538,8 +1543,13 @@ public class GXHDO101B001 implements IFormLogic {
         this.setItemData(processData, GXHDO101B001Const.ATSUDOU_ATSURYOKU, getSrSpsprintGraItemData(GXHDO101B001Const.ATSUDOU_ATSURYOKU, srSpsprintGraData));
         // ブレード圧力
         this.setItemData(processData, GXHDO101B001Const.BLADE_ATSURYOKU, getSrSpsprintGraItemData(GXHDO101B001Const.BLADE_ATSURYOKU, srSpsprintGraData));
-        // 製版名 / 版胴名
-        this.setItemData(processData, GXHDO101B001Const.SEIHAN_OR_HANDOU_MEI, getSrSpsprintGraItemData(GXHDO101B001Const.SEIHAN_OR_HANDOU_MEI, srSpsprintGraData));
+        if(sanshouMotoLotDataFlg != null && sanshouMotoLotDataFlg.length > 0 && "1".equals(sanshouMotoLotDataFlg[0])){
+            // 製版名 / 版胴名
+            this.setItemData(processData, GXHDO101B001Const.SEIHAN_OR_HANDOU_MEI, getSrSpsprintGraItemData(GXHDO101B001Const.SEIHAN_OR_HANDOU_MEI, srSpsprintGraData));
+        } else {
+            // 版胴名
+            this.setItemData(processData, GXHDO101B001Const.SEIHAN_OR_HANDOU_MEI, StringUtil.nullToBlank(sekkeiData.get("PATTERN")));
+        }
         // 製版No / 版胴No
         this.setItemData(processData, GXHDO101B001Const.SEIHAN_OR_HANDOU_NO, getSrSpsprintGraItemData(GXHDO101B001Const.SEIHAN_OR_HANDOU_NO, srSpsprintGraData));
         // 製版使用枚数/版胴使用枚数
@@ -2590,8 +2600,10 @@ public class GXHDO101B001 implements IFormLogic {
                 return processData;
             }
 
+            // 設計情報の取得
+            Map sekkeiData = this.loadSekkeiData(queryRunnerQcdb, queryRunnerWip, lotNo);
             // メイン画面データ設定
-            setInputItemDataMainForm(processData, srSpsprintGraDataList.get(0));
+            setInputItemDataMainForm(processData, srSpsprintGraDataList.get(0), sekkeiData);
 
             // 膜厚入力画面データ設定
             // ※工場ｺｰﾄﾞ、ﾛｯﾄNo、枝番は親ではなく自身の値を渡す。
@@ -4236,7 +4248,7 @@ public class GXHDO101B001 implements IFormLogic {
         }
 
         // メイン画面データ設定
-        setInputItemDataMainForm(processData, srSpsprintGraDataList.get(0));
+        setInputItemDataMainForm(processData, srSpsprintGraDataList.get(0), null, "1");
 
         // 膜厚入力画面データ設定
         setInputItemDataSubFormC001(subSrSpsprintGraDataList.get(0), sakiKojyo, sakilotNo8, sakiEdaban);
