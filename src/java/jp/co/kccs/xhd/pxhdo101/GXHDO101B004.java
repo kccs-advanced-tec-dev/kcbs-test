@@ -29,6 +29,7 @@ import jp.co.kccs.xhd.db.model.SrSpssekisou;
 import jp.co.kccs.xhd.db.model.SubSrSpssekisou;
 import jp.co.kccs.xhd.model.GXHDO101C006Model;
 import jp.co.kccs.xhd.model.GXHDO101C020Model;
+import jp.co.kccs.xhd.model.GXHDO101C023Model;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.GXHDO901A;
 import jp.co.kccs.xhd.pxhdo901.IFormLogic;
@@ -365,7 +366,13 @@ public class GXHDO101B004 implements IFormLogic {
                 data.setSetsuuTextBackColor("");
                 data.setBikouTextBackColor("");
             }
-
+            
+            // ｽﾞﾚ値サブ画面背景色クリア
+            GXHDO101C023 beanGXHDO101C023 = (GXHDO101C023) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C023);
+            for (GXHDO101C023Model.ZurechiData data : beanGXHDO101C023.getGxhdO101c023Model().getZurechiInputDataList()) {
+                data.setZurechiTextBackColor("");
+            }
+            
             // 状態ﾌﾗｸﾞ、revisionを設定する。
             processData.setInitJotaiFlg(JOTAI_FLG_KARI_TOROKU);
             processData.setInitRev(newRev.toPlainString());
@@ -1170,6 +1177,11 @@ public class GXHDO101B004 implements IFormLogic {
             case GXHDO101B004Const.BTN_WIP_IMPORT_BOTTOM:
                 method = "openWipImport";
                 break;
+            // ｽﾞﾚ値サブ画面
+            case GXHDO101B004Const.BTN_ZURERYOU_TOP:
+            case GXHDO101B004Const.BTN_ZURERYOU_BOTTOM:
+                method = "openZureryou";
+                break;
             // 設備ﾃﾞｰﾀ連携
             case GXHDO101B004Const.BTN_DATACOOPERATION_TOP:
             case GXHDO101B004Const.BTN_DATACOOPERATION_BOTTOM:
@@ -1425,6 +1437,9 @@ public class GXHDO101B004 implements IFormLogic {
                 // 前工程WIP取込画面データ設定
                 setInputItemDataSubFormC020(queryRunnerQcdb, kojyo, lotNo8, edaban, jotaiFlg);
 
+                // ｽﾞﾚ値入力画面データ設定
+                setInputItemDataSubFormC023(null);
+
                 return true;
             }
 
@@ -1462,6 +1477,9 @@ public class GXHDO101B004 implements IFormLogic {
         
         // 前工程WIP取込画面データ設定
         setInputItemDataSubFormC020(queryRunnerQcdb, kojyo, lotNo8, edaban, jotaiFlg);
+
+        // ｽﾞﾚ値入力画面データ設定
+        setInputItemDataSubFormC023(subSrSpssekisouDataList.get(0));
 
         return true;
 
@@ -2148,7 +2166,8 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + ",bikou9,bikou10,bikou11,bikou12,bikou13,bikou14,bikou15,bikou16,bikou17"
                 + ",bikou18,bikou19,bikou20,bikou21,bikou22,bikou23,bikou24,bikou25,bikou26"
                 + ",bikou27,bikou28,bikou29,bikou30,bikou31,bikou32,bikou33,bikou34,bikou35"
-                + ",bikou36,bikou37,bikou38,bikou39,bikou40,torokunichiji,kosinnichiji"
+                + ",bikou36,bikou37,bikou38,bikou39,bikou40,zurechi1,zurechi2,zurechi3,zurechi4"
+                + ",zurechi5,zurechi6,zurechi7,zurechi8,torokunichiji,kosinnichiji"
                 + ",revision,'0' AS deleteflag "
                 + "FROM sub_sr_spssekisou "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
@@ -2249,6 +2268,14 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         mapping.put("bikou38", "bikou38"); // 備考38
         mapping.put("bikou39", "bikou39"); // 備考39
         mapping.put("bikou40", "bikou40"); // 備考40
+        mapping.put("zurechi1", "zurechi1"); // ｽﾞﾚ値1
+        mapping.put("zurechi2", "zurechi2"); // ｽﾞﾚ値2
+        mapping.put("zurechi3", "zurechi3"); // ｽﾞﾚ値3
+        mapping.put("zurechi4", "zurechi4"); // ｽﾞﾚ値4
+        mapping.put("zurechi5", "zurechi5"); // ｽﾞﾚ値5
+        mapping.put("zurechi6", "zurechi6"); // ｽﾞﾚ値6
+        mapping.put("zurechi7", "zurechi7"); // ｽﾞﾚ値7
+        mapping.put("zurechi8", "zurechi8"); // ｽﾞﾚ値8
         mapping.put("torokunichiji", "torokunichiji"); // 登録日時
         mapping.put("kosinnichiji", "kosinnichiji"); // 更新日時
         mapping.put("revision", "revision"); // revision
@@ -2426,7 +2453,8 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + ",bikou9,bikou10,bikou11,bikou12,bikou13,bikou14,bikou15,bikou16,bikou17"
                 + ",bikou18,bikou19,bikou20,bikou21,bikou22,bikou23,bikou24,bikou25,bikou26"
                 + ",bikou27,bikou28,bikou29,bikou30,bikou31,bikou32,bikou33,bikou34,bikou35"
-                + ",bikou36,bikou37,bikou38,bikou39,bikou40,torokunichiji,kosinnichiji"
+                + ",bikou36,bikou37,bikou38,bikou39,bikou40,zurechi1,zurechi2,zurechi3,zurechi4"
+                + ",zurechi5,zurechi6,zurechi7,zurechi8,torokunichiji,kosinnichiji"
                 + ",revision,deleteflag "
                 + "FROM tmp_sub_sr_spssekisou "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND deleteflag = ? ";
@@ -2529,6 +2557,14 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         mapping.put("bikou38", "bikou38"); // 備考38
         mapping.put("bikou39", "bikou39"); // 備考39
         mapping.put("bikou40", "bikou40"); // 備考40
+        mapping.put("zurechi1", "zurechi1"); // ｽﾞﾚ値1
+        mapping.put("zurechi2", "zurechi2"); // ｽﾞﾚ値2
+        mapping.put("zurechi3", "zurechi3"); // ｽﾞﾚ値3
+        mapping.put("zurechi4", "zurechi4"); // ｽﾞﾚ値4
+        mapping.put("zurechi5", "zurechi5"); // ｽﾞﾚ値5
+        mapping.put("zurechi6", "zurechi6"); // ｽﾞﾚ値6
+        mapping.put("zurechi7", "zurechi7"); // ｽﾞﾚ値7
+        mapping.put("zurechi8", "zurechi8"); // ｽﾞﾚ値8
         mapping.put("torokunichiji", "torokunichiji"); // 登録日時
         mapping.put("kosinnichiji", "kosinnichiji"); // 更新日時
         mapping.put("revision", "revision"); // revision
@@ -2639,6 +2675,9 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
             // 前工程WIP取込画面データ設定
             // ※下記メソッド内で親データの検索実行と値設定を実施
             setInputItemDataSubFormC020(queryRunnerQcdb, kojyo, lotNo8, oyalotEdaban, jotaiFlg);
+
+            // ｽﾞﾚ値入力画面データ設定
+            setInputItemDataSubFormC023(subSrSpssekisouDataList.get(0));
 
             // 次呼出しメソッドをクリア
             processData.setMethod("");
@@ -3109,10 +3148,11 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + ",setsuu36,setsuu37,setsuu38,setsuu39,setsuu40,bikou1,bikou2,bikou3,bikou4,bikou5,bikou6,bikou7,bikou8,bikou9"
                 + ",bikou10,bikou11,bikou12,bikou13,bikou14,bikou15,bikou16,bikou17,bikou18,bikou19,bikou20,bikou21,bikou22,bikou23"
                 + ",bikou24,bikou25,bikou26,bikou27,bikou28,bikou29,bikou30,bikou31,bikou32,bikou33,bikou34,bikou35,bikou36,bikou37"
-                + ",bikou38,bikou39,bikou40,torokunichiji,kosinnichiji,revision,deleteflag"
+                + ",bikou38,bikou39,bikou40,zurechi1,zurechi2,zurechi3,zurechi4,zurechi5,zurechi6,zurechi7,zurechi8,torokunichiji,"
+                + "kosinnichiji,revision,deleteflag"
                 + ") VALUES ("
                 + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
-                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";     
+                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";     
 
         List<Object> params = setUpdateParameterTmpSubSrSpssekisou(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -3144,7 +3184,8 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + ",bikou4 = ?,bikou5 = ?,bikou6 = ?,bikou7 = ?,bikou8 = ?,bikou9 = ?,bikou10 = ?,bikou11 = ?,bikou12 = ?,bikou13 = ?"
                 + ",bikou14 = ?,bikou15 = ?,bikou16 = ?,bikou17 = ?,bikou18 = ?,bikou19 = ?,bikou20 = ?,bikou21 = ?,bikou22 = ?,bikou23 = ?"
                 + ",bikou24 = ?,bikou25 = ?,bikou26 = ?,bikou27 = ?,bikou28 = ?,bikou29 = ?,bikou30 = ?,bikou31 = ?,bikou32 = ?,bikou33 = ?"
-                + ",bikou34 = ?,bikou35 = ?,bikou36 = ?,bikou37 = ?,bikou38 = ?,bikou39 = ?,bikou40 = ?,kosinnichiji = ? ,revision = ? "
+                + ",bikou34 = ?,bikou35 = ?,bikou36 = ?,bikou37 = ?,bikou38 = ?,bikou39 = ?,bikou40 = ?,zurechi1 = ?,zurechi2 = ?,zurechi3 = ?"
+                + ",zurechi4 = ?,zurechi5 = ?,zurechi6 = ?,zurechi7 = ?,zurechi8 = ?,kosinnichiji = ? ,revision = ? "
                 + ",deleteflag = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ?";
 
@@ -3205,6 +3246,8 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         // 子画面情報を取得
         GXHDO101C006 beanGXHDO101C006 = (GXHDO101C006) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C006);
         List<GXHDO101C006Model.HakuriInputData> hakuriInputDataList = beanGXHDO101C006.getGxhdO101c006Model().getHakuriInputDataList();
+        GXHDO101C023 beanGXHDO101C023 = (GXHDO101C023) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C023);
+        List<GXHDO101C023Model.ZurechiData> zurechiInputDataList = beanGXHDO101C023.getGxhdO101c023Model().getZurechiInputDataList();
 
         if (isInsert) {
             params.add(kojyo); //工場ｺｰﾄﾞ
@@ -3291,6 +3334,14 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(37).getBikouVal())); // 備考38
         params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(38).getBikouVal())); // 備考39
         params.add(DBUtil.stringToStringObject(hakuriInputDataList.get(39).getBikouVal())); // 備考40
+        params.add(DBUtil.stringToIntObjectDefaultNull(zurechiInputDataList.get(0).getZurechiVal())); // ｽﾞﾚ値1
+        params.add(DBUtil.stringToIntObjectDefaultNull(zurechiInputDataList.get(1).getZurechiVal())); // ｽﾞﾚ値2
+        params.add(DBUtil.stringToIntObjectDefaultNull(zurechiInputDataList.get(2).getZurechiVal())); // ｽﾞﾚ値3
+        params.add(DBUtil.stringToIntObjectDefaultNull(zurechiInputDataList.get(3).getZurechiVal())); // ｽﾞﾚ値4
+        params.add(DBUtil.stringToIntObjectDefaultNull(zurechiInputDataList.get(4).getZurechiVal())); // ｽﾞﾚ値5
+        params.add(DBUtil.stringToIntObjectDefaultNull(zurechiInputDataList.get(5).getZurechiVal())); // ｽﾞﾚ値6
+        params.add(DBUtil.stringToIntObjectDefaultNull(zurechiInputDataList.get(6).getZurechiVal())); // ｽﾞﾚ値7
+        params.add(DBUtil.stringToIntObjectDefaultNull(zurechiInputDataList.get(7).getZurechiVal())); // ｽﾞﾚ値8
 
         if (isInsert) {
             params.add(systemTime); //登録日時
@@ -3570,11 +3621,11 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + ",setsuu33,setsuu34,setsuu35,setsuu36,setsuu37,setsuu38,setsuu39,setsuu40,bikou1,bikou2,bikou3,bikou4"
                 + ",bikou5,bikou6,bikou7,bikou8,bikou9,bikou10,bikou11,bikou12,bikou13,bikou14,bikou15,bikou16,bikou17"
                 + ",bikou18,bikou19,bikou20,bikou21,bikou22,bikou23,bikou24,bikou25,bikou26,bikou27,bikou28,bikou29"
-                + ",bikou30,bikou31,bikou32,bikou33,bikou34,bikou35,bikou36,bikou37,bikou38,bikou39,bikou40,torokunichiji"
-                + ",kosinnichiji,revision"
+                + ",bikou30,bikou31,bikou32,bikou33,bikou34,bikou35,bikou36,bikou37,bikou38,bikou39,bikou40,zurechi1"
+                + ",zurechi2,zurechi3,zurechi4,zurechi5,zurechi6,zurechi7,zurechi8,torokunichiji,kosinnichiji,revision"
                 + ") VALUES ("
-                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? "
-                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? "
+                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         List<Object> params = setUpdateParameterSubSrSpssekisou(true, newRev, kojyo, lotNo, edaban, systemTime);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -3606,7 +3657,8 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + "bikou10 = ?,bikou11 = ?,bikou12 = ?,bikou13 = ?,bikou14 = ?,bikou15 = ?,bikou16 = ?,bikou17 = ?,"
                 + "bikou18 = ?,bikou19 = ?,bikou20 = ?,bikou21 = ?,bikou22 = ?,bikou23 = ?,bikou24 = ?,bikou25 = ?,"
                 + "bikou26 = ?,bikou27 = ?,bikou28 = ?,bikou29 = ?,bikou30 = ?,bikou31 = ?,bikou32 = ?,bikou33 = ?,"
-                + "bikou34 = ?,bikou35 = ?,bikou36 = ?,bikou37 = ?,bikou38 = ?,bikou39 = ?,bikou40 = ?,"
+                + "bikou34 = ?,bikou35 = ?,bikou36 = ?,bikou37 = ?,bikou38 = ?,bikou39 = ?,bikou40 = ?,zurechi1 = ?,"
+                + "zurechi2 = ?,zurechi3 = ?,zurechi4 = ?,zurechi5 = ?,zurechi6 = ?,zurechi7 = ?,zurechi8 = ?,"
                 + "kosinnichiji = ?,revision = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ?";
 
@@ -3641,6 +3693,8 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         // 子画面情報を取得
         GXHDO101C006 beanGXHDO101C006 = (GXHDO101C006) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C006);
         List<GXHDO101C006Model.HakuriInputData> makuatsuDataList = beanGXHDO101C006.getGxhdO101c006Model().getHakuriInputDataList();
+        GXHDO101C023 beanGXHDO101C023 = (GXHDO101C023) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C023);
+        List<GXHDO101C023Model.ZurechiData> zurechiInputDataList = beanGXHDO101C023.getGxhdO101c023Model().getZurechiInputDataList();
 
         if (isInsert) {
             params.add(kojyo); //工場ｺｰﾄﾞ
@@ -3728,6 +3782,14 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         params.add(DBUtil.stringToStringObject(makuatsuDataList.get(37).getBikouVal())); // 備考38
         params.add(DBUtil.stringToStringObject(makuatsuDataList.get(38).getBikouVal())); // 備考39
         params.add(DBUtil.stringToStringObject(makuatsuDataList.get(39).getBikouVal())); // 備考40
+        params.add(DBUtil.stringToIntObject(zurechiInputDataList.get(0).getZurechiVal())); // ｽﾞﾚ値1
+        params.add(DBUtil.stringToIntObject(zurechiInputDataList.get(1).getZurechiVal())); // ｽﾞﾚ値2
+        params.add(DBUtil.stringToIntObject(zurechiInputDataList.get(2).getZurechiVal())); // ｽﾞﾚ値3
+        params.add(DBUtil.stringToIntObject(zurechiInputDataList.get(3).getZurechiVal())); // ｽﾞﾚ値4
+        params.add(DBUtil.stringToIntObject(zurechiInputDataList.get(4).getZurechiVal())); // ｽﾞﾚ値5
+        params.add(DBUtil.stringToIntObject(zurechiInputDataList.get(5).getZurechiVal())); // ｽﾞﾚ値6
+        params.add(DBUtil.stringToIntObject(zurechiInputDataList.get(6).getZurechiVal())); // ｽﾞﾚ値7
+        params.add(DBUtil.stringToIntObject(zurechiInputDataList.get(7).getZurechiVal())); // ｽﾞﾚ値8
 
         if (isInsert) {
             params.add(systemTime); //登録日時
@@ -4131,7 +4193,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + ",setsuu36,setsuu37,setsuu38,setsuu39,setsuu40,bikou1,bikou2,bikou3,bikou4,bikou5,bikou6,bikou7,bikou8,bikou9"
                 + ",bikou10,bikou11,bikou12,bikou13,bikou14,bikou15,bikou16,bikou17,bikou18,bikou19,bikou20,bikou21,bikou22,bikou23"
                 + ",bikou24,bikou25,bikou26,bikou27,bikou28,bikou29,bikou30,bikou31,bikou32,bikou33,bikou34,bikou35,bikou36,bikou37"
-                + ",bikou38,bikou39,bikou40,torokunichiji,kosinnichiji,revision,deleteflag"
+                + ",bikou38,bikou39,bikou40,zurechi1,zurechi2,zurechi3,zurechi4,zurechi5,zurechi6,zurechi7,zurechi8,torokunichiji,kosinnichiji,revision,deleteflag"
                 + ") SELECT "
                 + "kojyo,lotno,edaban,setsuu1,setsuu2,setsuu3,setsuu4,setsuu5,setsuu6,setsuu7,setsuu8,setsuu9,setsuu10,setsuu11"
                 + ",setsuu12,setsuu13,setsuu14,setsuu15,setsuu16,setsuu17,setsuu18,setsuu19,setsuu20,setsuu21,setsuu22,setsuu23"
@@ -4139,7 +4201,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + ",setsuu36,setsuu37,setsuu38,setsuu39,setsuu40,bikou1,bikou2,bikou3,bikou4,bikou5,bikou6,bikou7,bikou8,bikou9"
                 + ",bikou10,bikou11,bikou12,bikou13,bikou14,bikou15,bikou16,bikou17,bikou18,bikou19,bikou20,bikou21,bikou22,bikou23"
                 + ",bikou24,bikou25,bikou26,bikou27,bikou28,bikou29,bikou30,bikou31,bikou32,bikou33,bikou34,bikou35,bikou36,bikou37"
-                + ",bikou38,bikou39,bikou40"
+                + ",bikou38,bikou39,bikou40,zurechi1,zurechi2,zurechi3,zurechi4,zurechi5,zurechi6,zurechi7,zurechi8"
                 + ",?,?,?,? "
                 + "FROM sub_sr_spssekisou "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
@@ -5114,5 +5176,65 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, new MapListHandler(), params.toArray());
+    }
+
+    /**
+     * ｽﾞﾚ量(サブ画面Open)
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData openZureryou(ProcessData processData) {
+        try {
+            // コールバックパラメータにてサブ画面起動用の値を設定
+            processData.setCollBackParam("gxhdo101c023");
+            processData.setMethod("");
+
+            // 印刷幅の現在の値をサブ画面の表示用の値に設定
+            GXHDO101C023 beanGXHDO101C023 = (GXHDO101C023) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C023);
+            beanGXHDO101C023.setGxhdO101c023ModelView(beanGXHDO101C023.getGxhdO101c023Model().clone());
+
+            return processData;
+        } catch (CloneNotSupportedException ex) {
+            ErrUtil.outputErrorLog("CloneNotSupportedException発生", ex, LOGGER);
+            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            return processData;
+        }
+    }
+    
+
+    /**
+     * ｽﾞﾚ値入力画面データ設定処理
+     *
+     * @param subSrSpssekisouData 積層・SPS_ｻﾌﾞ画面データ
+     */
+    private void setInputItemDataSubFormC023(SubSrSpssekisou subSrSpssekisouData) {
+
+        // ｽﾞﾚ値入力画面初期表示データ設定
+        GXHDO101C023 beanGXHDO101C023 = (GXHDO101C023) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C023);
+        //データの設定
+        String[] subInputItemValues;
+        GXHDO101C023Model model;
+        if (subSrSpssekisouData == null) {
+            subInputItemValues = new String[]{"", "", "", "", "", "", "", ""}; //ｽﾞﾚ値1～8
+            model = GXHDO101C023Logic.createGXHDO101C023Model(subInputItemValues);
+        } else {
+            //ｽﾞﾚ値1～8
+            subInputItemValues = new String[]{
+                StringUtil.nullToBlank(subSrSpssekisouData.getZurechi1()),
+                StringUtil.nullToBlank(subSrSpssekisouData.getZurechi2()),
+                StringUtil.nullToBlank(subSrSpssekisouData.getZurechi3()),
+                StringUtil.nullToBlank(subSrSpssekisouData.getZurechi4()),
+                StringUtil.nullToBlank(subSrSpssekisouData.getZurechi5()),
+                StringUtil.nullToBlank(subSrSpssekisouData.getZurechi6()),
+                StringUtil.nullToBlank(subSrSpssekisouData.getZurechi7()),
+                StringUtil.nullToBlank(subSrSpssekisouData.getZurechi8())
+            };
+            model = GXHDO101C023Logic.createGXHDO101C023Model(subInputItemValues);
+        }
+
+        // サブ画面から戻ったときに値を設定する項目を指定する。
+        model.setReturnItemIdZurechi(GXHDO101B004Const.ZURETI);
+        beanGXHDO101C023.setGxhdO101c023Model(model);
     }
 }
