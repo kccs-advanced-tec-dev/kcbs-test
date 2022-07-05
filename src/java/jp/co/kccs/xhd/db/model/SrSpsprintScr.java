@@ -16,6 +16,11 @@ import java.sql.Timestamp;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2022/06/10<br>
+ * 計画書No	MB2205-D010<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	画面表示項目を追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -170,6 +175,26 @@ public class SrSpsprintScr {
      * ｸﾘｱﾗﾝｽ設定値
      */
     private BigDecimal clearrance;
+
+    /**
+     * 先行ﾛｯﾄNo
+     */
+    private String senkoulotno;
+
+    /**
+     * ﾃｰﾌﾟ使い切り
+     */
+    private Integer tapetsukaikiri;
+
+    /**
+     * 次ﾛｯﾄへ
+     */
+    private Integer jilothe;
+
+    /**
+     * 成形長さ
+     */
+    private Integer seikeinagasa;
     
     /**
      * 備考1
@@ -1034,6 +1059,70 @@ public class SrSpsprintScr {
      */
     public void setClearrance(BigDecimal clearrance) {
         this.clearrance = clearrance;
+    }
+
+    /**
+     * 先行ﾛｯﾄNo
+     * @return the senkoulotno
+     */
+    public String getSenkoulotno() {
+        return senkoulotno;
+    }
+
+    /**
+     * 先行ﾛｯﾄNo
+     * @param senkoulotno the senkoulotno to set
+     */
+    public void setSenkoulotno(String senkoulotno) {
+        this.senkoulotno = senkoulotno;
+    }
+
+    /**
+     * ﾃｰﾌﾟ使い切り
+     * @return the tapetsukaikiri
+     */
+    public Integer getTapetsukaikiri() {
+        return tapetsukaikiri;
+    }
+
+    /**
+     * ﾃｰﾌﾟ使い切り
+     * @param tapetsukaikiri the tapetsukaikiri to set
+     */
+    public void setTapetsukaikiri(Integer tapetsukaikiri) {
+        this.tapetsukaikiri = tapetsukaikiri;
+    }
+
+    /**
+     * 次ﾛｯﾄへ
+     * @return the jilothe
+     */
+    public Integer getJilothe() {
+        return jilothe;
+    }
+
+    /**
+     * 次ﾛｯﾄへ
+     * @param jilothe the jilothe to set
+     */
+    public void setJilothe(Integer jilothe) {
+        this.jilothe = jilothe;
+    }
+
+    /**
+     * 成形長さ
+     * @return the seikeinagasa
+     */
+    public Integer getSeikeinagasa() {
+        return seikeinagasa;
+    }
+
+    /**
+     * 成形長さ
+     * @param seikeinagasa the seikeinagasa to set
+     */
+    public void setSeikeinagasa(Integer seikeinagasa) {
+        this.seikeinagasa = seikeinagasa;
     }
 
     /**

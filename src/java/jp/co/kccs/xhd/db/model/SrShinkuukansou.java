@@ -81,6 +81,21 @@ public class SrShinkuukansou {
     private String gouki;
 
     /**
+     * 号機2
+     */
+    private String gouki2;
+
+    /**
+     * 号機3
+     */
+    private String gouki3;
+
+    /**
+     * 号機4
+     */
+    private String gouki4;
+
+    /**
      * 設定温度
      */
     private String setteiondo;
@@ -337,6 +352,54 @@ public class SrShinkuukansou {
      */
     public void setGouki(String gouki) {
         this.gouki = gouki;
+    }
+
+    /**
+     * 号機2
+     * @return the gouki2
+     */
+    public String getGouki2() {
+        return gouki2;
+    }
+
+    /**
+     * 号機2
+     * @param gouki2 the gouki2 to set
+     */
+    public void setGouki2(String gouki2) {
+        this.gouki2 = gouki2;
+    }
+
+    /**
+     * 号機3
+     * @return the gouki3
+     */
+    public String getGouki3() {
+        return gouki3;
+    }
+
+    /**
+     * 号機3
+     * @param gouki3 the gouki3 to set
+     */
+    public void setGouki3(String gouki3) {
+        this.gouki3 = gouki3;
+    }
+
+    /**
+     * 号機4
+     * @return the gouki4
+     */
+    public String getGouki4() {
+        return gouki4;
+    }
+
+    /**
+     * 号機4
+     * @param gouki4 the gouki4 to set
+     */
+    public void setGouki4(String gouki4) {
+        this.gouki4 = gouki4;
     }
 
     /**

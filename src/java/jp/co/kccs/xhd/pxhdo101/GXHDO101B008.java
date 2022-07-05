@@ -44,6 +44,7 @@ import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
 import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import org.apache.commons.dbutils.DbUtils;
+import org.apache.commons.dbutils.handlers.MapListHandler;
 
 /**
  * ===============================================================================<br>
@@ -127,7 +128,9 @@ public class GXHDO101B008 implements IFormLogic {
                     GXHDO101B008Const.BTN_DELETE_TOP,
                     GXHDO101B008Const.BTN_DELETE_BOTTOM,
                     GXHDO101B008Const.BTN_UPDATE_TOP,
-                    GXHDO101B008Const.BTN_UPDATE_BOTTOM));
+                    GXHDO101B008Const.BTN_UPDATE_BOTTOM,
+                    GXHDO101B008Const.BTN_DATACOOPERATION_TOP,
+                    GXHDO101B008Const.BTN_DATACOOPERATION_BOTTOM));
 
             // エラーが発生していない場合
             if (processData.getErrorMessageInfoList().isEmpty()) {
@@ -831,6 +834,11 @@ public class GXHDO101B008 implements IFormLogic {
             case GXHDO101B008Const.BTN_ENDDATETIME_TOP:
             case GXHDO101B008Const.BTN_ENDDATETIME_BOTTOM:
                 method = "setEndDateTime";
+                break;
+            // 設備ﾃﾞｰﾀ連携
+            case GXHDO101B008Const.BTN_DATACOOPERATION_TOP:
+            case GXHDO101B008Const.BTN_DATACOOPERATION_BOTTOM:
+                method = "doDataCooperationSyori";
                 break;
             default:
                 method = "error";
@@ -2447,5 +2455,252 @@ public class GXHDO101B008 implements IFormLogic {
             return 1;
         }
         return defaultValue;
+    }
+
+    /**
+     * 【設備ﾃﾞｰﾀ連携】ﾎﾞﾀﾝ押下時設定処理
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData doDataCooperationSyori(ProcessData processData) {
+        QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
+        // セッションから情報を取得
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+        String lotNo = (String) session.getAttribute("lotNo");
+        try {
+            // (23)[tmp_ps_kanri]から、ﾃﾞｰﾀの取得
+            List<Map<String, Object>> tmpSrGraprintKanriDataList = loadTmpPsKanriData(queryRunnerQcdb, lotNo, null);
+            if (tmpSrGraprintKanriDataList == null || tmpSrGraprintKanriDataList.isEmpty()) {
+                // ｴﾗｰ項目をﾘｽﾄに追加
+                ErrorMessageInfo checkItemError = MessageUtil.getErrorMessageInfo("XHD-000210", true, true, null, "設備ﾃﾞｰﾀ");
+                if (checkItemError != null) {
+                    processData.setErrorMessageInfoList(Arrays.asList(checkItemError));
+                    return processData;
+                }
+            }
+            ErrorMessageInfo checkItemError = checkDataCooperation(processData, queryRunnerQcdb, lotNo, 1);
+            if (checkItemError != null) {
+                processData.setErrorMessageInfoList(Arrays.asList(checkItemError));
+                return processData;
+            }
+            doDataCooperation(processData, queryRunnerQcdb, lotNo, 1);
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+        }
+        
+        processData.setMethod("");
+        return processData;
+    }
+    
+    /**
+     * 設備ﾃﾞｰﾀ連携チェック処理
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param datasyurui データ種類(検索キー)
+     * @return ｴﾗｰﾒｯｾｰｼﾞ情報
+     * @throws SQLException 例外エラー
+     */
+    private ErrorMessageInfo checkDataCooperation(ProcessData processData, QueryRunner queryRunnerQcdb, String lotNo, Integer datasyurui) throws SQLException {
+        ErrorMessageInfo checkItemError = null;
+        // 検索条件:ﾃﾞｰﾀの種類==datasyurui で、Ⅲ.画面表示仕様(21)を発行する。
+        List<Map<String, Object>> tmpSrGraprintKanriDataList = loadTmpPsKanriData(queryRunnerQcdb, lotNo, String.valueOf(datasyurui));
+        if (tmpSrGraprintKanriDataList != null && !tmpSrGraprintKanriDataList.isEmpty()) {
+            // 取得したﾃﾞｰﾀで実績Noが高い管理Noで、Ⅲ.画面表示仕様(22)を発行する。
+            Map<String, Object> tmpSrGraprintKanriData = tmpSrGraprintKanriDataList.get(0);
+            List<Map<String, Object>> tmpSrGraprintDataList = loadTmpPsData(queryRunnerQcdb, (Long) tmpSrGraprintKanriData.get("kanrino"));
+            if (tmpSrGraprintDataList != null && !tmpSrGraprintDataList.isEmpty()) {
+                // Ⅵ.画面項目制御・出力仕様.G3)入力項目部.【設備ﾃﾞｰﾀ連携】ﾎﾞﾀﾝ押下時.開始時 の該当項目へ取得ﾃﾞｰﾀを上書きする。
+                List<String> numberItemList;
+                if (datasyurui == 1 || datasyurui == 2) {
+                    // 開始時(ﾃﾞｰﾀ種類1or2)
+                    numberItemList = Arrays.asList(GXHDO101B008Const.YONETSU_TIME1, GXHDO101B008Const.YONETSU_TIME2, GXHDO101B008Const.YONETSU_TIME3,
+                            GXHDO101B008Const.ONDO, GXHDO101B008Const.MAX_ATURYOKU_1_JI, GXHDO101B008Const.JIKAN_1_JI, GXHDO101B008Const.MAX_ATURYOKU_2_JI,
+                            GXHDO101B008Const.JIKAN_2_JI, GXHDO101B008Const.SHORI_SETSU);
+                    checkItemError = checkDataCooperationItemData(processData, numberItemList, tmpSrGraprintDataList);
+                    if (checkItemError == null) {
+                        checkItemError = checkDataCooperation(processData, queryRunnerQcdb, lotNo, 3);
+                        if (checkItemError != null) {
+                            return checkItemError;
+                        }
+                    } else {
+                        return checkItemError;
+                    }
+                } else if (datasyurui == 3 || datasyurui == 4) {
+                    // 終了時(ﾃﾞｰﾀ種類3or4)
+                    numberItemList = new ArrayList<>();
+                    checkItemError = checkDataCooperationItemData(processData, numberItemList, tmpSrGraprintDataList);
+                }
+            } else {
+                if (datasyurui == 1 || datasyurui == 2) {
+                    checkItemError = checkDataCooperation(processData, queryRunnerQcdb, lotNo, 3);
+                    if (checkItemError != null) {
+                        return checkItemError;
+                    }
+                }
+            }
+        } else {
+            datasyurui++;
+            if (datasyurui <= 4) {
+                checkItemError = checkDataCooperation(processData, queryRunnerQcdb, lotNo, datasyurui);
+                if (checkItemError != null) {
+                    return checkItemError;
+                }
+            }
+        }
+        return checkItemError;
+    }
+
+    /**
+     * 【設備ﾃﾞｰﾀ連携】ﾎﾞﾀﾝ押下時、該当項目(数値表示)で取得時に、取得した値が文字列であった場合チェック処理
+     *
+     * @param processData 処理制御データ
+     * @param numberItemList 数値項目リスト
+     * @param tmpSrGraprintDataList 取得ﾃﾞｰﾀ
+     * @return ｴﾗｰﾒｯｾｰｼﾞ情報
+     */
+    private ErrorMessageInfo checkDataCooperationItemData(ProcessData processData, List<String> numberItemList, List<Map<String, Object>> tmpSrGraprintDataList) {
+        for(String itemId : numberItemList){
+            FXHDD01 itemData = processData.getItemList().stream().filter(n -> itemId.equals(n.getItemId())).findFirst().orElse(null);
+            if (itemData != null) {
+                Map<String, Object> tmpSrGraprintData = tmpSrGraprintDataList.stream().filter(e -> itemId.equals(e.get("item_id"))).findFirst().orElse(null);
+                if (tmpSrGraprintData != null && !tmpSrGraprintData.isEmpty()) {
+                    String ataiValue = StringUtil.nullToBlank(tmpSrGraprintData.get("atai"));
+                    if(!StringUtil.isEmpty(ataiValue)){
+                        try {
+                           BigDecimal bigDecimalVal = new BigDecimal(ataiValue);
+                        } catch (NumberFormatException e) {
+                            // 該当項目(数値表示)で取得時に、取得した値が文字列であった場合
+                            // ｴﾗｰ項目をﾘｽﾄに追加
+                            List<FXHDD01> errFxhdd01List = Arrays.asList(itemData);
+                            ErrorMessageInfo checkItemError = MessageUtil.getErrorMessageInfo("XHD-000087", true, true, errFxhdd01List);
+                            return checkItemError;
+                        }
+                    }
+                }
+            } 
+        }
+        return null;
+    }
+
+    /**
+     * 設備ﾃﾞｰﾀ連携処理
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param datasyurui データ種類(検索キー)
+     * @throws SQLException 例外エラー
+     */
+    private void doDataCooperation(ProcessData processData, QueryRunner queryRunnerQcdb, String lotNo, Integer datasyurui) throws SQLException {
+        // 検索条件:ﾃﾞｰﾀの種類==datasyurui で、Ⅲ.画面表示仕様(21)を発行する。
+        List<Map<String, Object>> tmpSrGraprintKanriDataList = loadTmpPsKanriData(queryRunnerQcdb, lotNo, String.valueOf(datasyurui));
+        if (tmpSrGraprintKanriDataList != null && !tmpSrGraprintKanriDataList.isEmpty()) {
+            // 取得したﾃﾞｰﾀで実績Noが高い管理Noで、Ⅲ.画面表示仕様(22)を発行する。
+            Map<String, Object> tmpSrGraprintKanriData = tmpSrGraprintKanriDataList.get(0);
+            List<Map<String, Object>> tmpSrGraprintDataList = loadTmpPsData(queryRunnerQcdb, (Long) tmpSrGraprintKanriData.get("kanrino"));
+            if (tmpSrGraprintDataList != null && !tmpSrGraprintDataList.isEmpty()) {
+                // Ⅵ.画面項目制御・出力仕様.G3)入力項目部.【設備ﾃﾞｰﾀ連携】ﾎﾞﾀﾝ押下時.開始時 の該当項目へ取得ﾃﾞｰﾀを上書きする。
+                List<String> setValueItemList;
+                if (datasyurui == 1 || datasyurui == 2) {
+                    // 開始時(ﾃﾞｰﾀ種類1or2)
+                    setValueItemList = Arrays.asList(GXHDO101B008Const.SINKU_DAKKI_GOKI, GXHDO101B008Const.SEISUIATSU_PRESS_GOKI, GXHDO101B008Const.YONETSU_TIME1,
+                            GXHDO101B008Const.YONETSU_TIME2, GXHDO101B008Const.YONETSU_TIME3, GXHDO101B008Const.ONDO, GXHDO101B008Const.MAX_ATURYOKU_1_JI,
+                            GXHDO101B008Const.JIKAN_1_JI, GXHDO101B008Const.MAX_ATURYOKU_2_JI, GXHDO101B008Const.JIKAN_2_JI, GXHDO101B008Const.KAISHI_DAY,
+                            GXHDO101B008Const.KAISHI_TIME, GXHDO101B008Const.SHORI_SETSU);
+                    setDataCooperationItemData(processData, setValueItemList, tmpSrGraprintDataList);
+                    doDataCooperation(processData, queryRunnerQcdb, lotNo, 3);
+                } else if (datasyurui == 3 || datasyurui == 4) {
+                    // 終了時(ﾃﾞｰﾀ種類3or4)
+                    setValueItemList = Arrays.asList(GXHDO101B008Const.SHURYOU_DAY, GXHDO101B008Const.SHURYOU_TIME);
+                    setDataCooperationItemData(processData, setValueItemList, tmpSrGraprintDataList);
+                }
+            } else {
+                if (datasyurui == 1 || datasyurui == 2) {
+                    doDataCooperation(processData, queryRunnerQcdb, lotNo, 3);
+                }
+            }
+        } else {
+            datasyurui++;
+            if (datasyurui <= 4) {
+                doDataCooperation(processData, queryRunnerQcdb, lotNo, datasyurui);
+            }
+        }
+    }
+
+    /**
+     * 【設備ﾃﾞｰﾀ連携】ﾎﾞﾀﾝ押下時.開始時 の該当項目へ取得ﾃﾞｰﾀを上書きする
+     *
+     * @param processData 処理制御データ
+     * @param setValueItemList 項目リスト
+     * @param tmpSrGraprintDataList 取得ﾃﾞｰﾀ
+     */
+    private void setDataCooperationItemData(ProcessData processData, List<String> setValueItemList, List<Map<String, Object>> tmpSrGraprintDataList) {
+        setValueItemList.forEach(itemId -> {
+            FXHDD01 itemData = processData.getItemList().stream().filter(n -> itemId.equals(n.getItemId())).findFirst().orElse(null);
+            if (itemData != null) {
+                Map<String, Object> tmpSrGraprintData = tmpSrGraprintDataList.stream().filter(e -> itemId.equals(e.get("item_id"))).findFirst().orElse(null);
+                if (tmpSrGraprintData != null && !tmpSrGraprintData.isEmpty()) {
+                    itemData.setValue(StringUtil.nullToBlank(tmpSrGraprintData.get("atai")));
+                }
+            }
+        });
+    }
+    
+    /**
+     * (21)[tmp_ps_kanri]から、ﾃﾞｰﾀの取得
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param datasyurui データ種類(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private List<Map<String, Object>> loadTmpPsKanriData(QueryRunner queryRunnerQcdb, String lotNo, String datasyurui) throws SQLException {
+        String kojyo = lotNo.substring(0, 3);
+        String lotno = lotNo.substring(3, 11);
+        String edaban = lotNo.substring(11, 14);
+
+        // [tmp_ps_kanri]から、ﾃﾞｰﾀの取得
+        String sql = "SELECT kanrino, kojyo, lotno, edaban, datasyurui, jissekino, torokunichiji"
+                + " FROM tmp_ps_kanri "
+                + " WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
+        if (!StringUtil.isEmpty(datasyurui)) {
+            sql += " AND datasyurui = ? ";
+        }
+        sql += " order by jissekino desc";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotno);
+        params.add(edaban);
+        if (!StringUtil.isEmpty(datasyurui)) {
+            params.add(datasyurui);
+        }
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapListHandler(), params.toArray());
+    }
+
+    /**
+     * (22)[tmp_ps]から、ﾃﾞｰﾀの取得
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kanrino 管理No(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private List<Map<String, Object>> loadTmpPsData(QueryRunner queryRunnerQcdb, Long kanrino) throws SQLException {
+        // [tmp_ps]から、ﾃﾞｰﾀの取得
+        String sql = "SELECT kanrino, item_id, atai"
+                + " FROM tmp_ps WHERE kanrino = ?";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kanrino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapListHandler(), params.toArray());
     }
 }

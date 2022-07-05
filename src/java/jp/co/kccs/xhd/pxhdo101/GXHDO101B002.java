@@ -53,6 +53,7 @@ import org.apache.commons.dbutils.RowProcessor;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * ===============================================================================<br>
@@ -83,6 +84,11 @@ import org.apache.commons.dbutils.handlers.MapListHandler;
  * 計画書No     MB2202-D013<br>
  * 変更者       KCSS K.Jo<br>
  * 変更理由     仕様変更対応<br>
+ * <br>
+ * 変更日	2022/06/10<br>
+ * 計画書No	MB2205-D010<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	画面表示項目を追加<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -1629,10 +1635,24 @@ public class GXHDO101B002 implements IFormLogic {
         this.setItemData(processData, GXHDO101B002Const.INSATSU_ENDJI_TANTOUSHA, getSrSpsprintScrItemData(GXHDO101B002Const.INSATSU_ENDJI_TANTOUSHA, srSpsprintScrData));
         // 印刷枚数
         this.setItemData(processData, GXHDO101B002Const.INSATSU_MAISUU, getSrSpsprintScrItemData(GXHDO101B002Const.INSATSU_MAISUU, srSpsprintScrData));
+        // 先行ﾛｯﾄNo
+        this.setItemData(processData, GXHDO101B002Const.SENKOULOTNO, getSrSpsprintScrItemData(GXHDO101B002Const.SENKOULOTNO, srSpsprintScrData));
+        // ﾃｰﾌﾟ使い切り
+        this.setItemData(processData, GXHDO101B002Const.TAPETSUKAIKIRI, getSrSpsprintScrItemData(GXHDO101B002Const.TAPETSUKAIKIRI, srSpsprintScrData));
+        // 次ﾛｯﾄへ
+        this.setItemData(processData, GXHDO101B002Const.JILOTHE, getSrSpsprintScrItemData(GXHDO101B002Const.JILOTHE, srSpsprintScrData));
+        // 成形長さ
+        this.setItemData(processData, GXHDO101B002Const.SEIKEINAGASA, getSrSpsprintScrItemData(GXHDO101B002Const.SEIKEINAGASA, srSpsprintScrData));
         //備考1
         this.setItemData(processData, GXHDO101B002Const.BIKOU1, getSrSpsprintScrItemData(GXHDO101B002Const.BIKOU1, srSpsprintScrData));
         //備考2
         this.setItemData(processData, GXHDO101B002Const.BIKOU2, getSrSpsprintScrItemData(GXHDO101B002Const.BIKOU2, srSpsprintScrData));
+        // 備考3
+        this.setItemData(processData, GXHDO101B002Const.BIKOU3, getSrSpsprintScrItemData(GXHDO101B002Const.BIKOU3, srSpsprintScrData));
+        // 備考4
+        this.setItemData(processData, GXHDO101B002Const.BIKOU4, getSrSpsprintScrItemData(GXHDO101B002Const.BIKOU4, srSpsprintScrData));
+        // 備考5
+        this.setItemData(processData, GXHDO101B002Const.BIKOU5, getSrSpsprintScrItemData(GXHDO101B002Const.BIKOU5, srSpsprintScrData));
 
     }
 
@@ -2044,9 +2064,9 @@ public class GXHDO101B002 implements IFormLogic {
 
         String sql = "SELECT kojyo,lotno,edaban,tapesyurui,tapelotno,TapeSlipKigo,genryoukigou,pastelotno,pastenendo,pasteondo,"
                 + "seihanno,seihanmaisuu,saidaisyorisuu,ruikeisyorisuu,startdatetime,enddatetime,skeegeno,skeegemaisuu,gouki,tantousya,kakuninsya,kansouondo,"
-                + "prnprofile,kansoutime,saatu,skeegespeed,skeegeangle,mld,clearrance,bikou1,bikou2,makuatu1,makuatu2,makuatu3,"
+                + "prnprofile,kansoutime,saatu,skeegespeed,skeegeangle,mld,clearrance,CONCAT(skojyo , slotno , sedaban) senkoulotno,tapetsukaikiri,jilothe,seikeinagasa,bikou1,bikou2,bikou3,bikou4,bikou5,makuatu1,makuatu2,makuatu3,"
                 + "makuatu4,makuatu5,pastelotno2,pastelotno3,pastelotno4,pastelotno5,pastenendo2,pastenendo3,pastenendo4,"
-                + "pastenendo5,pasteondo2,pasteondo3,pasteondo4,pasteondo5,bikou3,bikou4,bikou5,kansouondo2,kansouondo3,kansouondo4,"
+                + "pastenendo5,pasteondo2,pasteondo3,pasteondo4,pasteondo5,kansouondo2,kansouondo3,kansouondo4,"
                 + "kansouondo5,skeegemaisuu2,taperollno1,taperollno2,taperollno3,taperollno4,taperollno5,pastehinmei,seihanmei,"
                 + "makuatuave_start,makuatumax_start,makuatumin_start,start_ptn_dist_x,start_ptn_dist_y,tanto_setting,makuatuave_end,"
                 + "makuatumax_end,makuatumin_end,end_ptn_dist_x,end_ptn_dist_y,tanto_end,kcpno,sijiondo,sijiondo2,sijiondo3,sijiondo4,"
@@ -2101,8 +2121,15 @@ public class GXHDO101B002 implements IFormLogic {
         mapping.put("skeegeangle", "skeegeangle"); //ｽｷｰｼﾞ角度
         mapping.put("mld", "mld"); //ﾒﾀﾙﾚｲﾀﾞｳﾝ値
         mapping.put("clearrance", "clearrance"); //ｸﾘｱﾗﾝｽ設定値
+        mapping.put("senkoulotno", "senkoulotno"); // 先行ﾛｯﾄNo
+        mapping.put("tapetsukaikiri", "tapetsukaikiri"); // ﾃｰﾌﾟ使い切り
+        mapping.put("jilothe", "jilothe"); // 次ﾛｯﾄへ
+        mapping.put("seikeinagasa", "seikeinagasa"); // 成形長さ
         mapping.put("bikou1", "bikou1"); //備考1
         mapping.put("bikou2", "bikou2"); //備考2
+        mapping.put("bikou3", "bikou3"); //備考3
+        mapping.put("bikou4", "bikou4"); //備考4
+        mapping.put("bikou5", "bikou5"); //備考5
         mapping.put("makuatu1", "makuatu1"); //膜厚1
         mapping.put("makuatu2", "makuatu2"); //膜厚2
         mapping.put("makuatu3", "makuatu3"); //膜厚3
@@ -2120,9 +2147,6 @@ public class GXHDO101B002 implements IFormLogic {
         mapping.put("pasteondo3", "pasteondo3"); //ﾍﾟｰｽﾄ温度3
         mapping.put("pasteondo4", "pasteondo4"); //ﾍﾟｰｽﾄ温度4
         mapping.put("pasteondo5", "pasteondo5"); //ﾍﾟｰｽﾄ温度5
-        mapping.put("bikou3", "bikou3"); //備考3
-        mapping.put("bikou4", "bikou4"); //備考4
-        mapping.put("bikou5", "bikou5"); //備考5
         mapping.put("kansouondo2", "kansouondo2"); //乾燥温度2
         mapping.put("kansouondo3", "kansouondo3"); //乾燥温度3
         mapping.put("kansouondo4", "kansouondo4"); //乾燥温度4
@@ -2303,9 +2327,9 @@ public class GXHDO101B002 implements IFormLogic {
             String edaban, String rev) throws SQLException {
         String sql = "SELECT kojyo,lotno,edaban,tapesyurui,tapelotno,TapeSlipKigo,genryoukigou,pastelotno,pastenendo,pasteondo,"
                 + "seihanno,seihanmaisuu,saidaisyorisuu,ruikeisyorisuu,startdatetime,enddatetime,skeegeno,skeegemaisuu,gouki,tantousya,kakuninsya,kansouondo,"
-                + "prnprofile,kansoutime,saatu,skeegespeed,skeegeangle,mld,clearrance,bikou1,bikou2,makuatu1,makuatu2,makuatu3,"
+                + "prnprofile,kansoutime,saatu,skeegespeed,skeegeangle,mld,clearrance,CONCAT(skojyo , slotno , sedaban) senkoulotno,tapetsukaikiri,jilothe,seikeinagasa,bikou1,bikou2,bikou3,bikou4,bikou5,makuatu1,makuatu2,makuatu3,"
                 + "makuatu4,makuatu5,pastelotno2,pastelotno3,pastelotno4,pastelotno5,pastenendo2,pastenendo3,pastenendo4,"
-                + "pastenendo5,pasteondo2,pasteondo3,pasteondo4,pasteondo5,bikou3,bikou4,bikou5,kansouondo2,kansouondo3,kansouondo4,"
+                + "pastenendo5,pasteondo2,pasteondo3,pasteondo4,pasteondo5,kansouondo2,kansouondo3,kansouondo4,"
                 + "kansouondo5,skeegemaisuu2,taperollno1,taperollno2,taperollno3,taperollno4,taperollno5,pastehinmei,seihanmei,"
                 + "makuatuave_start,makuatumax_start,makuatumin_start,start_ptn_dist_x,start_ptn_dist_y,tanto_setting,makuatuave_end,"
                 + "makuatumax_end,makuatumin_end,end_ptn_dist_x,end_ptn_dist_y,tanto_end,kcpno,sijiondo,sijiondo2,sijiondo3,sijiondo4,"
@@ -2361,8 +2385,15 @@ public class GXHDO101B002 implements IFormLogic {
         mapping.put("skeegeangle", "skeegeangle"); //ｽｷｰｼﾞ角度
         mapping.put("mld", "mld"); //ﾒﾀﾙﾚｲﾀﾞｳﾝ値
         mapping.put("clearrance", "clearrance"); //ｸﾘｱﾗﾝｽ設定値
+        mapping.put("senkoulotno", "senkoulotno"); // 先行ﾛｯﾄNo
+        mapping.put("tapetsukaikiri", "tapetsukaikiri"); // ﾃｰﾌﾟ使い切り
+        mapping.put("jilothe", "jilothe"); // 次ﾛｯﾄへ
+        mapping.put("seikeinagasa", "seikeinagasa"); // 成形長さ
         mapping.put("bikou1", "bikou1"); //備考1
         mapping.put("bikou2", "bikou2"); //備考2
+        mapping.put("bikou3", "bikou3"); //備考3
+        mapping.put("bikou4", "bikou4"); //備考4
+        mapping.put("bikou5", "bikou5"); //備考5
         mapping.put("makuatu1", "makuatu1"); //膜厚1
         mapping.put("makuatu2", "makuatu2"); //膜厚2
         mapping.put("makuatu3", "makuatu3"); //膜厚3
@@ -2380,9 +2411,6 @@ public class GXHDO101B002 implements IFormLogic {
         mapping.put("pasteondo3", "pasteondo3"); //ﾍﾟｰｽﾄ温度3
         mapping.put("pasteondo4", "pasteondo4"); //ﾍﾟｰｽﾄ温度4
         mapping.put("pasteondo5", "pasteondo5"); //ﾍﾟｰｽﾄ温度5
-        mapping.put("bikou3", "bikou3"); //備考3
-        mapping.put("bikou4", "bikou4"); //備考4
-        mapping.put("bikou5", "bikou5"); //備考5
         mapping.put("kansouondo2", "kansouondo2"); //乾燥温度2
         mapping.put("kansouondo3", "kansouondo3"); //乾燥温度3
         mapping.put("kansouondo4", "kansouondo4"); //乾燥温度4
@@ -2837,9 +2865,9 @@ public class GXHDO101B002 implements IFormLogic {
         String sql = "INSERT INTO tmp_sr_spsprint_scr ("
                 + "kojyo,lotno,edaban,tapesyurui,tapelotno,TapeSlipKigo,genryoukigou,pastelotno,pastenendo,pasteondo,"
                 + "seihanno,seihanmaisuu,saidaisyorisuu,ruikeisyorisuu,startdatetime,enddatetime,skeegeno,skeegemaisuu,gouki,tantousya,kakuninsya,"
-                + "kansouondo,prnprofile,kansoutime,saatu,skeegespeed,skeegeangle,mld,clearrance,bikou1,bikou2,makuatu1,"
+                + "kansouondo,prnprofile,kansoutime,saatu,skeegespeed,skeegeangle,mld,clearrance,skojyo,slotno,sedaban,tapetsukaikiri,jilothe,seikeinagasa,bikou1,bikou2,bikou3,bikou4,bikou5,makuatu1,"
                 + "makuatu2,makuatu3,makuatu4,makuatu5,pastelotno2,pastelotno3,pastelotno4,pastelotno5,pastenendo2,"
-                + "pastenendo3,pastenendo4,pastenendo5,pasteondo2,pasteondo3,pasteondo4,pasteondo5,bikou3,bikou4,bikou5,"
+                + "pastenendo3,pastenendo4,pastenendo5,pasteondo2,pasteondo3,pasteondo4,pasteondo5,"
                 + "kansouondo2,kansouondo3,kansouondo4,kansouondo5,skeegemaisuu2,taperollno1,taperollno2,taperollno3,"
                 + "taperollno4,taperollno5,pastehinmei,seihanmei,makuatuave_start,makuatumax_start,makuatumin_start,"
                 + "start_ptn_dist_x,start_ptn_dist_y,tanto_setting,makuatuave_end,makuatumax_end,makuatumin_end,"
@@ -2849,7 +2877,7 @@ public class GXHDO101B002 implements IFormLogic {
                 + "pkokeibun1,pkokeibun2,petfilmsyurui,makuatucv_start,nijimikasure_start,makuatucv_end,nijimikasure_end,"
                 + "printmaisuu,table_clearrance,scraperspeed,skeegegaikan,torokunichiji,kosinnichiji,revision,deleteflag"
                 + ") VALUES ("
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterTmpSrSpsprintScr(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null);
@@ -2877,7 +2905,7 @@ public class GXHDO101B002 implements IFormLogic {
         String sql = "UPDATE tmp_sr_spsprint_scr SET "
                 + "tapelotno=?,genryoukigou=?,pastelotno=?,pastenendo=?,pasteondo=?,seihanno=?,"
                 + "seihanmaisuu=?,saidaisyorisuu=?,ruikeisyorisuu=?,startdatetime=?,enddatetime=?,skeegeno=?,skeegemaisuu=?,gouki=?,kakuninsya=?,kansouondo=?,saatu=?,"
-                + "skeegespeed=?,skeegeangle=?,bikou1=?,bikou2=?,pastelotno2=?,pastenendo2=?,pasteondo2=?,kansouondo2=?,"
+                + "skeegespeed=?,skeegeangle=?,skojyo=?,slotno=?,sedaban=?,tapetsukaikiri=?,jilothe=?,seikeinagasa=?,bikou1=?,bikou2=?,bikou3=?,bikou4=?,bikou5=?,pastelotno2=?,pastenendo2=?,pasteondo2=?,kansouondo2=?,"
                 + "kansouondo3=?,kansouondo4=?,kansouondo5=?,taperollno1=?,taperollno2=?,taperollno3=?,seihanmei=?,makuatuave_start=?,"
                 + "makuatumax_start=?,makuatumin_start=?,start_ptn_dist_x=?,start_ptn_dist_y=?,tanto_setting=?,makuatuave_end=?,"
                 + "makuatumax_end=?,makuatumin_end=?,end_ptn_dist_x=?,end_ptn_dist_y=?,tanto_end=?,kcpno=?,pkokeibun1=?,pkokeibun2=?,"
@@ -2956,6 +2984,18 @@ public class GXHDO101B002 implements IFormLogic {
             params.add(edaban); //枝番
             params.add(null); //ﾃｰﾌﾟ種類
         }
+        
+        // 先行ﾛｯﾄNo
+        String senkoulotno = getItemData(itemList, GXHDO101B002Const.SENKOULOTNO, srSpsprintScrData);
+        String skKojyo = ""; //先行工場ｺｰﾄﾞ
+        String skLotNo = ""; // 先行ﾛｯﾄNo
+        String skEdaban = ""; // 先行枝番
+        if (!StringUtil.isEmpty(senkoulotno)) {
+            skKojyo = StringUtils.substring(senkoulotno, 0, 3);
+            skLotNo = StringUtils.substring(senkoulotno, 3, 11);
+            skEdaban = StringUtil.blankToNull(StringUtils.substring(senkoulotno, 11, 14));
+        }
+        
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B002Const.SLIP_LOTNO, srSpsprintScrData))); //ﾃｰﾌﾟｽﾘｯﾌﾟﾛｯﾄNo
         if (isInsert) {
             params.add(null); //ﾃｰﾌﾟｽﾘｯﾌﾟ記号
@@ -2993,8 +3033,17 @@ public class GXHDO101B002 implements IFormLogic {
             params.add(null); //ﾒﾀﾙﾚｲﾀﾞｳﾝ値
             params.add(null); //ｸﾘｱﾗﾝｽ設定値
         }
+        params.add(DBUtil.stringToStringObjectDefaultNull(skKojyo)); // 先行工場ｺｰﾄﾞ
+        params.add(DBUtil.stringToStringObjectDefaultNull(skLotNo)); // 先行ﾛｯﾄNo
+        params.add(DBUtil.stringToStringObjectDefaultNull(skEdaban)); // 先行枝番
+        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B002Const.TAPETSUKAIKIRI, srSpsprintScrData),null)); // ﾃｰﾌﾟ使い切り
+        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B002Const.JILOTHE, srSpsprintScrData),null)); // 次ﾛｯﾄへ
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B002Const.SEIKEINAGASA, srSpsprintScrData))); // 成形長さ
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B002Const.BIKOU1, srSpsprintScrData))); //備考1
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B002Const.BIKOU2, srSpsprintScrData))); //備考2
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B002Const.BIKOU3, srSpsprintScrData))); //備考3
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B002Const.BIKOU4, srSpsprintScrData))); //備考4
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B002Const.BIKOU5, srSpsprintScrData))); //備考5
         if (isInsert) {
             params.add(null); //膜厚1
             params.add(null); //膜厚2
@@ -3019,9 +3068,6 @@ public class GXHDO101B002 implements IFormLogic {
             params.add(null); //ﾍﾟｰｽﾄ温度3
             params.add(null); //ﾍﾟｰｽﾄ温度4
             params.add(null); //ﾍﾟｰｽﾄ温度5
-            params.add(null); //備考3
-            params.add(null); //備考4
-            params.add(null); //備考5
         }
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B002Const.KANSOU_ONDO_HYOUJICHI2, srSpsprintScrData))); //乾燥温度2
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B002Const.KANSOU_ONDO_HYOUJICHI3, srSpsprintScrData))); //乾燥温度3
@@ -3326,9 +3372,9 @@ public class GXHDO101B002 implements IFormLogic {
         String sql = "INSERT INTO sr_spsprint ("
                 + "kojyo,lotno,edaban,tapesyurui,tapelotno,TapeSlipKigo,genryoukigou,pastelotno,pastenendo,pasteondo,"
                 + "seihanno,seihanmaisuu,saidaisyorisuu,ruikeisyorisuu,startdatetime,enddatetime,skeegeno,skeegemaisuu,gouki,tantousya,kakuninsya,"
-                + "kansouondo,prnprofile,kansoutime,saatu,skeegespeed,skeegeangle,mld,clearrance,bikou1,bikou2,makuatu1,"
+                + "kansouondo,prnprofile,kansoutime,saatu,skeegespeed,skeegeangle,mld,clearrance,skojyo,slotno,sedaban,tapetsukaikiri,jilothe,seikeinagasa,bikou1,bikou2,bikou3,bikou4,bikou5,makuatu1,"
                 + "makuatu2,makuatu3,makuatu4,makuatu5,pastelotno2,pastelotno3,pastelotno4,pastelotno5,pastenendo2,"
-                + "pastenendo3,pastenendo4,pastenendo5,pasteondo2,pasteondo3,pasteondo4,pasteondo5,bikou3,bikou4,bikou5,"
+                + "pastenendo3,pastenendo4,pastenendo5,pasteondo2,pasteondo3,pasteondo4,pasteondo5,"
                 + "kansouondo2,kansouondo3,kansouondo4,kansouondo5,skeegemaisuu2,taperollno1,taperollno2,taperollno3,"
                 + "taperollno4,taperollno5,pastehinmei,seihanmei,makuatuave_start,makuatumax_start,makuatumin_start,"
                 + "start_ptn_dist_x,start_ptn_dist_y,tanto_setting,makuatuave_end,makuatumax_end,makuatumin_end,"
@@ -3338,7 +3384,7 @@ public class GXHDO101B002 implements IFormLogic {
                 + "pkokeibun1,pkokeibun2,petfilmsyurui,makuatucv_start,nijimikasure_start,makuatucv_end,nijimikasure_end,"
                 + "printmaisuu,table_clearrance,scraperspeed,skeegegaikan,torokunichiji,kosinnichiji,revision"
                 + ") VALUES ("
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterSrSpsprintScr(true, newRev, kojyo, lotNo, edaban, systemTime, itemList, tmpSrSpsprintScr);
@@ -3366,7 +3412,7 @@ public class GXHDO101B002 implements IFormLogic {
         String sql = "UPDATE sr_spsprint SET "
                 + "tapelotno=?,genryoukigou=?,pastelotno=?,pastenendo=?,pasteondo=?,seihanno=?,"
                 + "seihanmaisuu=?,saidaisyorisuu=?,ruikeisyorisuu=?,startdatetime=?,enddatetime=?,skeegeno=?,skeegemaisuu=?,gouki=?,kakuninsya=?,kansouondo=?,saatu=?,"
-                + "skeegespeed=?,skeegeangle=?,bikou1=?,bikou2=?,pastelotno2=?,pastenendo2=?,pasteondo2=?,kansouondo2=?,"
+                + "skeegespeed=?,skeegeangle=?,skojyo=?,slotno=?,sedaban=?,tapetsukaikiri=?,jilothe=?,seikeinagasa=?,bikou1=?,bikou2=?,bikou3=?,bikou4=?,bikou5=?,pastelotno2=?,pastenendo2=?,pasteondo2=?,kansouondo2=?,"
                 + "kansouondo3=?,kansouondo4=?,kansouondo5=?,taperollno1=?,taperollno2=?,taperollno3=?,seihanmei=?,makuatuave_start=?,"
                 + "makuatumax_start=?,makuatumin_start=?,start_ptn_dist_x=?,start_ptn_dist_y=?,tanto_setting=?,makuatuave_end=?,"
                 + "makuatumax_end=?,makuatumin_end=?,end_ptn_dist_x=?,end_ptn_dist_y=?,tanto_end=?,kcpno=?,pkokeibun1=?,pkokeibun2=?,"
@@ -3416,6 +3462,17 @@ public class GXHDO101B002 implements IFormLogic {
             params.add(edaban); //枝番
             params.add(""); //ﾃｰﾌﾟ種類
         }
+        
+        // 先行ﾛｯﾄNo
+        String senkoulotno = getItemData(itemList, GXHDO101B002Const.SENKOULOTNO, srSpsprintScrData);
+        String skKojyo = ""; //先行工場ｺｰﾄﾞ
+        String skLotNo = ""; // 先行ﾛｯﾄNo
+        String skEdaban = ""; // 先行枝番
+        if (!StringUtil.isEmpty(senkoulotno)) {
+            skKojyo = StringUtils.substring(senkoulotno, 0, 3);
+            skLotNo = StringUtils.substring(senkoulotno, 3, 11);
+            skEdaban = StringUtil.blankToNull(StringUtils.substring(senkoulotno, 11, 14));
+        }
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B002Const.SLIP_LOTNO, srSpsprintScrData))); //ﾃｰﾌﾟｽﾘｯﾌﾟﾛｯﾄNo
         if (isInsert) {
             params.add(""); //ﾃｰﾌﾟｽﾘｯﾌﾟ記号
@@ -3453,8 +3510,17 @@ public class GXHDO101B002 implements IFormLogic {
             params.add(0); //ﾒﾀﾙﾚｲﾀﾞｳﾝ値
             params.add(0); //ｸﾘｱﾗﾝｽ設定値
         }
+        params.add(DBUtil.stringToStringObject(skKojyo)); //先行工場ｺｰﾄﾞ
+        params.add(DBUtil.stringToStringObject(skLotNo)); //先行ﾛｯﾄNo
+        params.add(DBUtil.stringToStringObject(skEdaban)); //先行枝番
+        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B002Const.TAPETSUKAIKIRI, srSpsprintScrData),9)); //ﾃｰﾌﾟ使い切り
+        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B002Const.JILOTHE, srSpsprintScrData),9)); //次ﾛｯﾄへ
+        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B002Const.SEIKEINAGASA, srSpsprintScrData))); // 成形長さ
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B002Const.BIKOU1, srSpsprintScrData))); //備考1
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B002Const.BIKOU2, srSpsprintScrData))); //備考2
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B002Const.BIKOU3, srSpsprintScrData))); //備考3
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B002Const.BIKOU4, srSpsprintScrData))); //備考4
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B002Const.BIKOU5, srSpsprintScrData))); //備考5
         if (isInsert) {
             params.add(0); //膜厚1
             params.add(0); //膜厚2
@@ -3479,9 +3545,6 @@ public class GXHDO101B002 implements IFormLogic {
             params.add(0); //ﾍﾟｰｽﾄ温度3
             params.add(0); //ﾍﾟｰｽﾄ温度4
             params.add(0); //ﾍﾟｰｽﾄ温度5
-            params.add(""); //備考3
-            params.add(""); //備考4
-            params.add(""); //備考5
         }
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B002Const.KANSOU_ONDO_HYOUJICHI2, srSpsprintScrData))); //乾燥温度2
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B002Const.KANSOU_ONDO_HYOUJICHI3, srSpsprintScrData))); //乾燥温度3
@@ -4096,12 +4159,33 @@ public class GXHDO101B002 implements IFormLogic {
             // 印刷枚数
             case GXHDO101B002Const.INSATSU_MAISUU:
                 return StringUtil.nullToBlank(srSpsprintScrData.getPrintmaisuu());
+            // 先行ﾛｯﾄNo
+            case GXHDO101B002Const.SENKOULOTNO:
+                return StringUtil.nullToBlank(srSpsprintScrData.getSenkoulotno());
+            // ﾃｰﾌﾟ使い切り
+            case GXHDO101B002Const.TAPETSUKAIKIRI:
+                return getCheckBoxCheckValue(StringUtil.nullToBlank(srSpsprintScrData.getTapetsukaikiri()));
+            // 次ﾛｯﾄへ
+            case GXHDO101B002Const.JILOTHE:
+                return getCheckBoxCheckValue(StringUtil.nullToBlank(srSpsprintScrData.getJilothe()));
+            // 成形長さ
+            case GXHDO101B002Const.SEIKEINAGASA:
+                return StringUtil.nullToBlank(srSpsprintScrData.getSeikeinagasa());
             //備考1
             case GXHDO101B002Const.BIKOU1:
                 return StringUtil.nullToBlank(srSpsprintScrData.getBikou1());
             //備考2
             case GXHDO101B002Const.BIKOU2:
                 return StringUtil.nullToBlank(srSpsprintScrData.getBikou2());
+            // 備考3
+            case GXHDO101B002Const.BIKOU3:
+                return StringUtil.nullToBlank(srSpsprintScrData.getBikou3());
+            // 備考4
+            case GXHDO101B002Const.BIKOU4:
+                return StringUtil.nullToBlank(srSpsprintScrData.getBikou4());
+            // 備考5
+            case GXHDO101B002Const.BIKOU5:
+                return StringUtil.nullToBlank(srSpsprintScrData.getBikou5());
 
             default:
                 return null;
@@ -4126,9 +4210,9 @@ public class GXHDO101B002 implements IFormLogic {
         String sql = "INSERT INTO tmp_sr_spsprint_scr ("
                 + "kojyo,lotno,edaban,tapesyurui,tapelotno,TapeSlipKigo,genryoukigou,pastelotno,pastenendo,pasteondo,"
                 + "seihanno,seihanmaisuu,saidaisyorisuu,ruikeisyorisuu,startdatetime,enddatetime,skeegeno,skeegemaisuu,gouki,tantousya,kakuninsya,"
-                + "kansouondo,prnprofile,kansoutime,saatu,skeegespeed,skeegeangle,mld,clearrance,bikou1,bikou2,makuatu1,"
+                + "kansouondo,prnprofile,kansoutime,saatu,skeegespeed,skeegeangle,mld,clearrance,skojyo,slotno,sedaban,tapetsukaikiri,jilothe,seikeinagasa,bikou1,bikou2,bikou3,bikou4,bikou5,makuatu1,"
                 + "makuatu2,makuatu3,makuatu4,makuatu5,pastelotno2,pastelotno3,pastelotno4,pastelotno5,pastenendo2,"
-                + "pastenendo3,pastenendo4,pastenendo5,pasteondo2,pasteondo3,pasteondo4,pasteondo5,bikou3,bikou4,bikou5,"
+                + "pastenendo3,pastenendo4,pastenendo5,pasteondo2,pasteondo3,pasteondo4,pasteondo5,"
                 + "kansouondo2,kansouondo3,kansouondo4,kansouondo5,skeegemaisuu2,taperollno1,taperollno2,taperollno3,"
                 + "taperollno4,taperollno5,pastehinmei,seihanmei,makuatuave_start,makuatumax_start,makuatumin_start,"
                 + "start_ptn_dist_x,start_ptn_dist_y,tanto_setting,makuatuave_end,makuatumax_end,makuatumin_end,"
@@ -4140,9 +4224,9 @@ public class GXHDO101B002 implements IFormLogic {
                 + ") SELECT "
                 + "kojyo,lotno,edaban,tapesyurui,tapelotno,TapeSlipKigo,genryoukigou,pastelotno,pastenendo,pasteondo,"
                 + "seihanno,seihanmaisuu,saidaisyorisuu,ruikeisyorisuu,startdatetime,enddatetime,skeegeno,skeegemaisuu,gouki,tantousya,kakuninsya,"
-                + "kansouondo,prnprofile,kansoutime,saatu,skeegespeed,skeegeangle,mld,clearrance,bikou1,bikou2,makuatu1,"
+                + "kansouondo,prnprofile,kansoutime,saatu,skeegespeed,skeegeangle,mld,clearrance,skojyo,slotno,sedaban,tapetsukaikiri,jilothe,seikeinagasa,bikou1,bikou2,bikou3,bikou4,bikou5,makuatu1,"
                 + "makuatu2,makuatu3,makuatu4,makuatu5,pastelotno2,pastelotno3,pastelotno4,pastelotno5,pastenendo2,"
-                + "pastenendo3,pastenendo4,pastenendo5,pasteondo2,pasteondo3,pasteondo4,pasteondo5,bikou3,bikou4,bikou5,"
+                + "pastenendo3,pastenendo4,pastenendo5,pasteondo2,pasteondo3,pasteondo4,pasteondo5,"
                 + "kansouondo2,kansouondo3,kansouondo4,kansouondo5,skeegemaisuu2,taperollno1,taperollno2,taperollno3,"
                 + "taperollno4,taperollno5,pastehinmei,seihanmei,makuatuave_start,makuatumax_start,makuatumin_start,"
                 + "start_ptn_dist_x,start_ptn_dist_y,tanto_setting,makuatuave_end,makuatumax_end,makuatumin_end,"
@@ -4331,6 +4415,7 @@ public class GXHDO101B002 implements IFormLogic {
         model.setReturnItemId_TapeLot1_Conventionallot(GXHDO101B002Const.SLIP_LOTNO);
         model.setReturnItemId_TapeLot1_Lotkigo(GXHDO101B002Const.GENRYO_KIGOU);
         model.setReturnItemId_TapeLot1_Rollno(GXHDO101B002Const.ROLL_NO1);
+        model.setReturnItemId_TapeLot1_Tapelength(GXHDO101B002Const.SEIKEINAGASA);
         model.setReturnItemId_TapeLot2_Rollno(GXHDO101B002Const.ROLL_NO2);
         model.setReturnItemId_TapeLot3_Rollno(GXHDO101B002Const.ROLL_NO3);
         model.setReturnItemId_PasteLot1_Hinmei(GXHDO101B002Const.DENKYOKU_PASTE);
@@ -4898,6 +4983,33 @@ public class GXHDO101B002 implements IFormLogic {
             ErrUtil.outputErrorLog("実行エラー", ex, LOGGER);
         }
         return null;
+    }
+
+    /**
+     * チェックボックス値(チェックボックス内のValue値)取得
+     *
+     * @param dbValue コンボボックス(DB内)Value値
+     * @return コンボボックステキスト値
+     */
+    private String getCheckBoxCheckValue(String dbValue) {
+        if ("1".equals(dbValue)) {
+            return "true";
+        }
+        return null;
+    }
+
+    /**
+     * チェックボックス値(DB内のValue値)取得
+     *
+     * @param checkBoxValue コンボボックスValue値
+     * @param defaultValue チェックがついていない場合のデフォルト値
+     * @return コンボボックステキスト値
+     */
+    private Integer getCheckBoxDbValue(String checkBoxValue, Integer defaultValue) {
+        if ("true".equals(StringUtil.nullToBlank(checkBoxValue).toLowerCase())) {
+            return 1;
+        }
+        return defaultValue;
     }
     
 }

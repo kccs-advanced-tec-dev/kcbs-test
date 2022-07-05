@@ -61,6 +61,11 @@ import org.apache.commons.dbutils.handlers.MapListHandler;
  * 変更者	KCSS wxf<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2022/05/16<br>
+ * 計画書No	MB2101-DK002<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	材料品名ﾘﾝｸ押下時、調合量規格チェックの追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -2527,6 +2532,14 @@ public class GXHDO102B001 implements IFormLogic {
                 processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
                 return processData;
             }
+            // 「調合量規格1」
+            FXHDD01 itemTyogouryoukikaku1 = getItemRow(processData.getItemList(), GXHDO102B001Const.TYOGOURYOUKIKAKU1);
+            // 「調合量規格1」ﾁｪｯｸ処理
+            ErrorMessageInfo checkItemTyogouryoukikaku1ErrorInfo = checkTyogouryoukikaku(itemTyogouryoukikaku1);
+            if (checkItemTyogouryoukikaku1ErrorInfo != null) {
+                processData.setErrorMessageInfoList(Arrays.asList(checkItemTyogouryoukikaku1ErrorInfo));
+                return processData;
+            }
             processData.setMethod("");
             // コールバックパラメータにてサブ画面起動用の値を設定
             processData.setCollBackParam("gxhdo102c001");
@@ -2568,6 +2581,14 @@ public class GXHDO102B001 implements IFormLogic {
             ErrorMessageInfo checkItemErrorInfo = checkGoki(itemGoki);
             if (checkItemErrorInfo != null) {
                 processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
+                return processData;
+            }
+            // 「調合量規格2」
+            FXHDD01 itemTyogouryoukikaku2 = getItemRow(processData.getItemList(), GXHDO102B001Const.TYOGOURYOUKIKAKU2);
+            // 「調合量規格2」ﾁｪｯｸ処理
+            ErrorMessageInfo checkItemTyogouryoukikaku2ErrorInfo = checkTyogouryoukikaku(itemTyogouryoukikaku2);
+            if (checkItemTyogouryoukikaku2ErrorInfo != null) {
+                processData.setErrorMessageInfoList(Arrays.asList(checkItemTyogouryoukikaku2ErrorInfo));
                 return processData;
             }
             processData.setMethod("");
@@ -2614,6 +2635,33 @@ public class GXHDO102B001 implements IFormLogic {
     }
     
     /**
+     * 【材料品名1】あるいは【材料品名2】ﾘﾝｸ押下時、サブ画面Open時ﾁｪｯｸ処理
+     *
+     * @param itemTyogouryoukikaku 調合量規格
+     * @return エラーメッセージ情報
+     */
+    private ErrorMessageInfo checkTyogouryoukikaku(FXHDD01 itemTyogouryoukikaku) {
+        boolean checkResult = false;
+        // 「調合量規格」ﾁｪｯｸ
+        if(StringUtil.isEmpty(itemTyogouryoukikaku.getKikakuChi())){
+            //「調合量規格1」の規格値が取得できない場合
+            checkResult = true;           
+        }else{
+            if (StringUtil.isEmpty(itemTyogouryoukikaku.getKikakuChi().replace("【", "").replace("】", ""))) {
+                //「調合量規格1」の規格値が取得できて、値がない場合
+                checkResult = true;
+            }
+        }
+        if(checkResult){
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemTyogouryoukikaku);
+            return MessageUtil.getErrorMessageInfo("XHD-000019", true, true, errFxhdd01List, itemTyogouryoukikaku.getLabel1());            
+        }
+
+        return null;
+    }
+    
+    /**
      * ｶﾞﾗｽ作製・秤量入力_ｻﾌﾞ画面データ設定処理
      *
      * @param processData 処理制御データ
@@ -2631,8 +2679,10 @@ public class GXHDO102B001 implements IFormLogic {
             SubSrGlasshyoryo sub2SrGlasshyoryo = new SubSrGlasshyoryo();
             sub1SrGlasshyoryo.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemList(), GXHDO102B001Const.ZAIRYOHINMEI1))); // 材料品名1
             sub1SrGlasshyoryo.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemList(), GXHDO102B001Const.TYOGOURYOUKIKAKU1))); // 調合量規格1
+            sub1SrGlasshyoryo.setStandardpattern(getItemRow(processData.getItemList(), GXHDO102B001Const.TYOGOURYOUKIKAKU1).getStandardPattern());// 調合量規格情報ﾊﾟﾀｰﾝ
             sub2SrGlasshyoryo.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemList(), GXHDO102B001Const.ZAIRYOHINMEI2))); // 材料品名2
             sub2SrGlasshyoryo.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemList(), GXHDO102B001Const.TYOGOURYOUKIKAKU2))); // 調合量規格2
+            sub2SrGlasshyoryo.setStandardpattern(getItemRow(processData.getItemList(), GXHDO102B001Const.TYOGOURYOUKIKAKU1).getStandardPattern());// 調合量規格情報ﾊﾟﾀｰﾝ
             subSrGlasshyoryoList.add(sub1SrGlasshyoryo);
             subSrGlasshyoryoList.add(sub2SrGlasshyoryo);
             model = GXHDO102C001Logic.createGXHDO102C001Model(subSrGlasshyoryoList);

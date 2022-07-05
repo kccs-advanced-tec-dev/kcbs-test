@@ -76,6 +76,11 @@ import org.apache.commons.dbutils.handlers.MapListHandler;
  * 変更者	863 zhangjy<br>
  * 変更理由	前工程WIPボタンロジックを追加<br>
  * <br>
+ * 変更日	2022/06/17<br>
+ * 計画書No	MB2205-D010<br>
+ * 変更者	KCSS wxf<br>
+ * 変更理由	項目追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -1575,7 +1580,16 @@ public class GXHDO101B005 implements IFormLogic {
         this.setItemData(processData, GXHDO101B005Const.KAKUNINSYA, getSrRsussekItemData(GXHDO101B005Const.KAKUNINSYA, srSrRsussekData));
         // 積層圧力
         this.setItemData(processData, GXHDO101B005Const.SEKISOATURYOKU, getSrRsussekItemData(GXHDO101B005Const.SEKISOATURYOKU, srSrRsussekData));
-
+        // ﾃｰﾌﾟ使い切り
+        this.setItemData(processData, GXHDO101B005Const.TAPETSUKAIKIRI, getSrRsussekItemData(GXHDO101B005Const.TAPETSUKAIKIRI, srSrRsussekData));
+        // 次ﾛｯﾄへ
+        this.setItemData(processData, GXHDO101B005Const.JILOTHE, getSrRsussekItemData(GXHDO101B005Const.JILOTHE, srSrRsussekData));
+        // 備考3
+        this.setItemData(processData, GXHDO101B005Const.BIKOU3, getSrRsussekItemData(GXHDO101B005Const.BIKOU3, srSrRsussekData));
+        // 備考4
+        this.setItemData(processData, GXHDO101B005Const.BIKOU4, getSrRsussekItemData(GXHDO101B005Const.BIKOU4, srSrRsussekData));
+        // 備考5
+        this.setItemData(processData, GXHDO101B005Const.BIKOU5, getSrRsussekItemData(GXHDO101B005Const.BIKOU5, srSrRsussekData));
     }
 
     /**
@@ -2049,7 +2063,8 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + ",emaisuu,sekisouslideryo,lastlayerslideryo,renzokusekisoumaisuu,bsouhoseiryou,yjikuhoseiryou"
                 + ",syurui2,atumi2,maisuu2,ShitaTanshiKAISINICHIJI,ShitaTanshiSYURYONICHIJI,ShitaTanshiTANTOSYA,"
                 + "ShitaTanshiKAKUNINSYA,ShitaTanshiBIKO,UwaTanshiKAISINICHIJI,UwaTanshiSYURYONICHIJI,UwaTanshiTANTOSYA,"
-                + "UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,revision,'0' AS deleteflag, sekiatsu "
+                + "UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,revision,'0' AS deleteflag, sekiatsu,"
+                + "tapetsukaikiri,jilothe,bikou3,bikou4,bikou5 "
                 + "FROM sr_rsussek "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
         // revisionが入っている場合、条件に追加
@@ -2163,6 +2178,11 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         mapping.put("revision", "revision"); //revision
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
         mapping.put("sekiatsu", "sekiatsu"); //削除ﾌﾗｸﾞ
+        mapping.put("tapetsukaikiri", "tapetsukaikiri"); //ﾃｰﾌﾟ使い切り
+        mapping.put("jilothe", "jilothe"); //次ﾛｯﾄへ
+        mapping.put("bikou3", "bikou3"); //備考3
+        mapping.put("bikou4", "bikou4"); //備考4
+        mapping.put("bikou5", "bikou5"); //備考5
 
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
@@ -2334,7 +2354,8 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + ",emaisuu,sekisouslideryo,lastlayerslideryo,renzokusekisoumaisuu,bsouhoseiryou,yjikuhoseiryou"
                 + ",syurui2,atumi2,maisuu2,ShitaTanshiKAISINICHIJI,ShitaTanshiSYURYONICHIJI,ShitaTanshiTANTOSYA,"
                 + "ShitaTanshiKAKUNINSYA,ShitaTanshiBIKO,UwaTanshiKAISINICHIJI,UwaTanshiSYURYONICHIJI,UwaTanshiTANTOSYA,"
-                + "UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,revision,deleteflag,sekiatsu "
+                + "UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,revision,deleteflag,sekiatsu,"
+                + "tapetsukaikiri,jilothe,bikou3,bikou4,bikou5 "
                 + "  FROM tmp_sr_rsussek "
                 + " WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND deleteflag = ? ";
         // revisionが入っている場合、条件に追加
@@ -2449,6 +2470,11 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         mapping.put("revision", "revision"); //revision
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
         mapping.put("sekiatsu", "sekiatsu"); //削除ﾌﾗｸﾞ
+        mapping.put("tapetsukaikiri", "tapetsukaikiri"); //ﾃｰﾌﾟ使い切り
+        mapping.put("jilothe", "jilothe"); //次ﾛｯﾄへ
+        mapping.put("bikou3", "bikou3"); //備考3
+        mapping.put("bikou4", "bikou4"); //備考4
+        mapping.put("bikou5", "bikou5"); //備考5
 
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
@@ -2903,9 +2929,10 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + ",patern,torikosuu,etape,lretu,wretu,lsun,wsun,epaste,genryou,eatumi,sousuu,emaisuu,sekisouslideryo,lastlayerslideryo"
                 + ",renzokusekisoumaisuu,bsouhoseiryou,yjikuhoseiryou,syurui2,atumi2,maisuu2,ShitaTanshiKAISINICHIJI,ShitaTanshiSYURYONICHIJI,"
                 + "ShitaTanshiTANTOSYA,ShitaTanshiKAKUNINSYA,ShitaTanshiBIKO,UwaTanshiKAISINICHIJI,UwaTanshiSYURYONICHIJI,UwaTanshiTANTOSYA,"
-                + "UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,revision,deleteflag,sekiatsu"
+                + "UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,revision,deleteflag,sekiatsu,"
+                + "tapetsukaikiri,jilothe,bikou3,bikou4,bikou5 "
                 + ") VALUES ("
-                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? "
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? "
                 + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterTmpSrRsussek(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null);
@@ -2941,7 +2968,8 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + "patern = ?,torikosuu = ?,etape = ?,lretu = ?,wretu = ?,lsun = ?,wsun = ?,epaste = ?,genryou = ?,eatumi = ?,sousuu = ?,emaisuu = ?,sekisouslideryo = ?,"
                 + "lastlayerslideryo = ?,renzokusekisoumaisuu = ?,yjikuhoseiryou = ?,syurui2 = ?,atumi2 = ?,maisuu2 = ?,ShitaTanshiKAISINICHIJI = ?,ShitaTanshiSYURYONICHIJI = ?,"
                 + "ShitaTanshiTANTOSYA = ?,ShitaTanshiKAKUNINSYA = ?,ShitaTanshiBIKO = ?,UwaTanshiKAISINICHIJI = ?,UwaTanshiSYURYONICHIJI = ?,UwaTanshiTANTOSYA = ?,"
-                + "UwaTanshiKAKUNINSYA = ?,UwaTanshiBIKO = ?,HeadNo = ?,SUSitamaisu = ?,lastlayerTANTOSYA = ?,lastlayerBIKO = ?,elotno = ?,revision = ?,deleteflag = ?,sekiatsu = ? "
+                + "UwaTanshiKAKUNINSYA = ?,UwaTanshiBIKO = ?,HeadNo = ?,SUSitamaisu = ?,lastlayerTANTOSYA = ?,lastlayerBIKO = ?,elotno = ?,revision = ?,deleteflag = ?,sekiatsu = ?,"
+                + "tapetsukaikiri = ?,jilothe = ?,bikou3 = ?,bikou4 = ?,bikou5 = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
         // 更新前の値を取得
@@ -3245,6 +3273,11 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         params.add(newRev); //revision
         params.add(deleteflag); //削除ﾌﾗｸﾞ
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.SEKISOATURYOKU, srRsussekData)));//積層圧力
+        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B005Const.TAPETSUKAIKIRI, srRsussekData), null)); // ﾃｰﾌﾟ使い切り
+        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B005Const.JILOTHE, srRsussekData), null)); // 次ﾛｯﾄへ
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.BIKOU3, srRsussekData))); // 備考3
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.BIKOU4, srRsussekData))); // 備考4
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.BIKOU5, srRsussekData))); // 備考5
 
         return params;
     }
@@ -3493,9 +3526,10 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + ",patern,torikosuu,etape,lretu,wretu,lsun,wsun,epaste,genryou,eatumi,sousuu,emaisuu,sekisouslideryo,lastlayerslideryo"
                 + ",renzokusekisoumaisuu,bsouhoseiryou,yjikuhoseiryou,syurui2,atumi2,maisuu2,ShitaTanshiKAISINICHIJI,ShitaTanshiSYURYONICHIJI,"
                 + "ShitaTanshiTANTOSYA,ShitaTanshiKAKUNINSYA,ShitaTanshiBIKO,UwaTanshiKAISINICHIJI,UwaTanshiSYURYONICHIJI,UwaTanshiTANTOSYA,"
-                + "UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,revision,sekiatsu"
+                + "UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,revision,sekiatsu,"
+                + "tapetsukaikiri,jilothe,bikou3,bikou4,bikou5"
                 + ") VALUES ("
-                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? "
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,? "
                 + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
         
         List<Object> params = setUpdateParameterSrRsussek(true, newRev, kojyo, lotNo, edaban, systemTime, itemList, tmpSrRsussek);
@@ -3532,7 +3566,8 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + "lastlayerslideryo = ?,renzokusekisoumaisuu = ?,yjikuhoseiryou = ?,syurui2 = ?,atumi2 = ?,maisuu2 = ?,ShitaTanshiKAISINICHIJI = ?,"
                 + "ShitaTanshiSYURYONICHIJI = ?,ShitaTanshiTANTOSYA = ?,ShitaTanshiKAKUNINSYA = ?,ShitaTanshiBIKO = ?,UwaTanshiKAISINICHIJI = ?,"
                 + "UwaTanshiSYURYONICHIJI = ?,UwaTanshiTANTOSYA = ?,UwaTanshiKAKUNINSYA = ?,UwaTanshiBIKO = ?,HeadNo = ?,SUSitamaisu = ?,"
-                + "lastlayerTANTOSYA = ?,lastlayerBIKO = ?,elotno = ?,revision = ?,sekiatsu = ? "
+                + "lastlayerTANTOSYA = ?,lastlayerBIKO = ?,elotno = ?,revision = ?,sekiatsu = ?, "
+                + "tapetsukaikiri = ?,jilothe = ?,bikou3 = ?,bikou4 = ?,bikou5 = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
         // 更新前の値を取得
@@ -3805,6 +3840,11 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B005Const.ELOTNO, srRsussekData))); //電極製版ﾛｯﾄNo
         params.add(newRev); //revision
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B005Const.SEKISOATURYOKU, srRsussekData)));//積層圧力
+        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B005Const.TAPETSUKAIKIRI, srRsussekData), 9)); // ﾃｰﾌﾟ使い切り
+        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B005Const.JILOTHE, srRsussekData), 9)); // 次ﾛｯﾄへ
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.BIKOU3, srRsussekData))); // 備考3
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.BIKOU4, srRsussekData))); // 備考4
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B005Const.BIKOU5, srRsussekData))); // 備考5
 
         return params;
     }
@@ -4416,6 +4456,22 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 return StringUtil.nullToBlank(srRsussekData.getOwnercode());
             case GXHDO101B005Const.SEKISOATURYOKU:
                 return StringUtil.nullToBlank(srRsussekData.getSekiatsu());
+            // ﾃｰﾌﾟ使い切り
+            case GXHDO101B005Const.TAPETSUKAIKIRI:
+                return getCheckBoxCheckValue(StringUtil.nullToBlank(srRsussekData.getTapetsukaikiri()));
+            // 次ﾛｯﾄへ
+            case GXHDO101B005Const.JILOTHE:
+                return getCheckBoxCheckValue(StringUtil.nullToBlank(srRsussekData.getJilothe()));
+            // 備考3
+            case GXHDO101B005Const.BIKOU3:
+                return StringUtil.nullToBlank(srRsussekData.getBikou3());
+            // 備考4
+            case GXHDO101B005Const.BIKOU4:
+                return StringUtil.nullToBlank(srRsussekData.getBikou4());
+            // 備考5
+            case GXHDO101B005Const.BIKOU5:
+                return StringUtil.nullToBlank(srRsussekData.getBikou5());
+                
             default:
                 return null;
 
@@ -4447,7 +4503,8 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + ",setsuu,tokuisaki,lotkubuncode,ownercode,syurui3,atumi3,maisuu3,patern,torikosuu,etape,lretu,wretu,lsun,wsun,epaste,genryou,eatumi,sousuu"
                 + ",emaisuu,sekisouslideryo,lastlayerslideryo,renzokusekisoumaisuu,bsouhoseiryou,yjikuhoseiryou"
                 + ",syurui2,atumi2,maisuu2,ShitaTanshiKAISINICHIJI,ShitaTanshiSYURYONICHIJI,ShitaTanshiTANTOSYA,ShitaTanshiKAKUNINSYA,ShitaTanshiBIKO,UwaTanshiKAISINICHIJI"
-                + ",UwaTanshiSYURYONICHIJI,UwaTanshiTANTOSYA,UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,revision,deleteflag,sekiatsu "
+                + ",UwaTanshiSYURYONICHIJI,UwaTanshiTANTOSYA,UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,revision,deleteflag,sekiatsu,"
+                + "tapetsukaikiri,jilothe,bikou3,bikou4,bikou5 "
                 + ") SELECT "
                 + " KOJYO,LOTNO,EDABAN,KCPNO,TNTAPESYURUI,TNTAPENO,TNTAPEGENRYO,KAISINICHIJI,SYURYONICHIJI,GOKI,JITUATURYOKU,SEKISOZURE2"
                 + ",TANTOSYA,KAKUNINSYA,INSATUROLLNO,HAPPOSHEETNO,SKJIKAN,TAKUTO,BIKO1,?,?,SKOJYO,SLOTNO,SEDABAN,tapelotno,taperollno1"
@@ -4457,7 +4514,8 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
                 + ",setsuu,tokuisaki,lotkubuncode,ownercode,syurui3,atumi3,maisuu3,patern,torikosuu,etape,lretu,wretu,lsun,wsun,epaste,genryou,eatumi,sousuu"
                 + ",emaisuu,sekisouslideryo,lastlayerslideryo,renzokusekisoumaisuu,bsouhoseiryou,yjikuhoseiryou"
                 + ",syurui2,atumi2,maisuu2,ShitaTanshiKAISINICHIJI,ShitaTanshiSYURYONICHIJI,ShitaTanshiTANTOSYA,ShitaTanshiKAKUNINSYA,ShitaTanshiBIKO,UwaTanshiKAISINICHIJI"
-                + ",UwaTanshiSYURYONICHIJI,UwaTanshiTANTOSYA,UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,?,?,sekiatsu "
+                + ",UwaTanshiSYURYONICHIJI,UwaTanshiTANTOSYA,UwaTanshiKAKUNINSYA,UwaTanshiBIKO,HeadNo,SUSitamaisu,lastlayerTANTOSYA,lastlayerBIKO,elotno,?,?,sekiatsu,"
+                + "tapetsukaikiri,jilothe,bikou3,bikou4,bikou5 "
                 + " FROM sr_rsussek "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
 
@@ -5097,4 +5155,30 @@ private void setInputItemDataSubFormC006(SubSrRsussek subSrRsussekData) {
         return StringUtil.blankToNull(kikakuchi);
     }
 
+    /**
+     * チェックボックス値(チェックボックス内のValue値)取得
+     *
+     * @param dbValue コンボボックス(DB内)Value値
+     * @return コンボボックステキスト値
+     */
+    private String getCheckBoxCheckValue(String dbValue) {
+        if ("1".equals(dbValue)) {
+            return "true";
+        }
+        return "false";
+    }
+
+    /**
+     * チェックボックス値(DB内のValue値)取得
+     *
+     * @param checkBoxValue コンボボックスValue値
+     * @param defaultValue チェックがついていない場合のデフォルト値
+     * @return コンボボックステキスト値
+     */
+    private Integer getCheckBoxDbValue(String checkBoxValue, Integer defaultValue) {
+        if ("true".equals(StringUtil.nullToBlank(checkBoxValue).toLowerCase())) {
+            return 1;
+        }
+        return defaultValue;
+    }
 }

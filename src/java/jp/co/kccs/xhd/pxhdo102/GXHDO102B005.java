@@ -62,6 +62,11 @@ import org.primefaces.context.RequestContext;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2022/05/16<br>
+ * 計画書No	MB2101-DK002<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	材料品名ﾘﾝｸ押下時、調合量規格チェックの追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -5512,7 +5517,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto1subgamen1(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO1_SIZAILOTNO1_1, GXHDO102B005Const.POTTO1_TYOUGOURYOU1_1, 
                 GXHDO102B005Const.POTTO1_SIZAILOTNO1_2, GXHDO102B005Const.POTTO1_TYOUGOURYOU1_2);
-        return openC002pottosubgamen(processData, 1, 1, returnItemIdList);
+        return openC002pottosubgamen(processData, 1, 1, returnItemIdList, GXHDO102B005Const.POTTO1_TYOGOURYOUKIKAKU1);
     }
 
     /**
@@ -5524,7 +5529,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto1subgamen2(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO1_SIZAILOTNO2_1, GXHDO102B005Const.POTTO1_TYOUGOURYOU2_1, 
                 GXHDO102B005Const.POTTO1_SIZAILOTNO2_2, GXHDO102B005Const.POTTO1_TYOUGOURYOU2_2);
-        return openC002pottosubgamen(processData, 1, 2, returnItemIdList);
+        return openC002pottosubgamen(processData, 1, 2, returnItemIdList, GXHDO102B005Const.POTTO1_TYOGOURYOUKIKAKU2);
     }
 
     /**
@@ -5536,7 +5541,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto1subgamen3(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO1_SIZAILOTNO3_1, GXHDO102B005Const.POTTO1_TYOUGOURYOU3_1, 
                 GXHDO102B005Const.POTTO1_SIZAILOTNO3_2, GXHDO102B005Const.POTTO1_TYOUGOURYOU3_2);
-        return openC002pottosubgamen(processData, 1, 3, returnItemIdList);
+        return openC002pottosubgamen(processData, 1, 3, returnItemIdList, GXHDO102B005Const.POTTO1_TYOGOURYOUKIKAKU3);
     }
 
     /**
@@ -5548,7 +5553,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto1subgamen4(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO1_SIZAILOTNO4_1, GXHDO102B005Const.POTTO1_TYOUGOURYOU4_1, 
                 GXHDO102B005Const.POTTO1_SIZAILOTNO4_2, GXHDO102B005Const.POTTO1_TYOUGOURYOU4_2);
-        return openC002pottosubgamen(processData, 1, 4, returnItemIdList);
+        return openC002pottosubgamen(processData, 1, 4, returnItemIdList, GXHDO102B005Const.POTTO1_TYOGOURYOUKIKAKU4);
     }
 
     /**
@@ -5560,7 +5565,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto2subgamen1(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO2_SIZAILOTNO1_1, GXHDO102B005Const.POTTO2_TYOUGOURYOU1_1, 
                 GXHDO102B005Const.POTTO2_SIZAILOTNO1_2, GXHDO102B005Const.POTTO2_TYOUGOURYOU1_2);
-        return openC002pottosubgamen(processData, 2, 1, returnItemIdList);
+        return openC002pottosubgamen(processData, 2, 1, returnItemIdList, GXHDO102B005Const.POTTO2_TYOGOURYOUKIKAKU1);
     }
 
     /**
@@ -5572,7 +5577,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto2subgamen2(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO2_SIZAILOTNO2_1, GXHDO102B005Const.POTTO2_TYOUGOURYOU2_1, 
                 GXHDO102B005Const.POTTO2_SIZAILOTNO2_2, GXHDO102B005Const.POTTO2_TYOUGOURYOU2_2);
-        return openC002pottosubgamen(processData, 2, 2, returnItemIdList);
+        return openC002pottosubgamen(processData, 2, 2, returnItemIdList, GXHDO102B005Const.POTTO2_TYOGOURYOUKIKAKU2);
     }
 
     /**
@@ -5584,7 +5589,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto2subgamen3(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO2_SIZAILOTNO3_1, GXHDO102B005Const.POTTO2_TYOUGOURYOU3_1, 
                 GXHDO102B005Const.POTTO2_SIZAILOTNO3_2, GXHDO102B005Const.POTTO2_TYOUGOURYOU3_2);
-        return openC002pottosubgamen(processData, 2, 3, returnItemIdList);
+        return openC002pottosubgamen(processData, 2, 3, returnItemIdList, GXHDO102B005Const.POTTO2_TYOGOURYOUKIKAKU3);
     }
 
     /**
@@ -5596,7 +5601,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto2subgamen4(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO2_SIZAILOTNO4_1, GXHDO102B005Const.POTTO2_TYOUGOURYOU4_1, 
                 GXHDO102B005Const.POTTO2_SIZAILOTNO4_2, GXHDO102B005Const.POTTO2_TYOUGOURYOU4_2);
-        return openC002pottosubgamen(processData, 2, 4, returnItemIdList);
+        return openC002pottosubgamen(processData, 2, 4, returnItemIdList, GXHDO102B005Const.POTTO2_TYOGOURYOUKIKAKU4);
     }
 
     /**
@@ -5608,7 +5613,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto3subgamen1(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO3_SIZAILOTNO1_1, GXHDO102B005Const.POTTO3_TYOUGOURYOU1_1, 
                 GXHDO102B005Const.POTTO3_SIZAILOTNO1_2, GXHDO102B005Const.POTTO3_TYOUGOURYOU1_2);
-        return openC002pottosubgamen(processData, 3, 1, returnItemIdList);
+        return openC002pottosubgamen(processData, 3, 1, returnItemIdList, GXHDO102B005Const.POTTO3_TYOGOURYOUKIKAKU1);
     }
 
     /**
@@ -5620,7 +5625,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto3subgamen2(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO3_SIZAILOTNO2_1, GXHDO102B005Const.POTTO3_TYOUGOURYOU2_1, 
                 GXHDO102B005Const.POTTO3_SIZAILOTNO2_2, GXHDO102B005Const.POTTO3_TYOUGOURYOU2_2);
-        return openC002pottosubgamen(processData, 3, 2, returnItemIdList);
+        return openC002pottosubgamen(processData, 3, 2, returnItemIdList, GXHDO102B005Const.POTTO3_TYOGOURYOUKIKAKU2);
     }
 
     /**
@@ -5632,7 +5637,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto3subgamen3(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO3_SIZAILOTNO3_1, GXHDO102B005Const.POTTO3_TYOUGOURYOU3_1, 
                 GXHDO102B005Const.POTTO3_SIZAILOTNO3_2, GXHDO102B005Const.POTTO3_TYOUGOURYOU3_2);
-        return openC002pottosubgamen(processData, 3, 3, returnItemIdList);
+        return openC002pottosubgamen(processData, 3, 3, returnItemIdList, GXHDO102B005Const.POTTO3_TYOGOURYOUKIKAKU3);
     }
 
     /**
@@ -5644,7 +5649,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto3subgamen4(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO3_SIZAILOTNO4_1, GXHDO102B005Const.POTTO3_TYOUGOURYOU4_1, 
                 GXHDO102B005Const.POTTO3_SIZAILOTNO4_2, GXHDO102B005Const.POTTO3_TYOUGOURYOU4_2);
-        return openC002pottosubgamen(processData, 3, 4, returnItemIdList);
+        return openC002pottosubgamen(processData, 3, 4, returnItemIdList, GXHDO102B005Const.POTTO3_TYOGOURYOUKIKAKU4);
     }
 
     /**
@@ -5656,7 +5661,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto4subgamen1(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO4_SIZAILOTNO1_1, GXHDO102B005Const.POTTO4_TYOUGOURYOU1_1, 
                 GXHDO102B005Const.POTTO4_SIZAILOTNO1_2, GXHDO102B005Const.POTTO4_TYOUGOURYOU1_2);
-        return openC002pottosubgamen(processData, 4, 1, returnItemIdList);
+        return openC002pottosubgamen(processData, 4, 1, returnItemIdList, GXHDO102B005Const.POTTO4_TYOGOURYOUKIKAKU1);
     }
 
     /**
@@ -5668,7 +5673,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto4subgamen2(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO4_SIZAILOTNO2_1, GXHDO102B005Const.POTTO4_TYOUGOURYOU2_1, 
                 GXHDO102B005Const.POTTO4_SIZAILOTNO2_2, GXHDO102B005Const.POTTO4_TYOUGOURYOU2_2);
-        return openC002pottosubgamen(processData, 4, 2, returnItemIdList);
+        return openC002pottosubgamen(processData, 4, 2, returnItemIdList, GXHDO102B005Const.POTTO4_TYOGOURYOUKIKAKU2);
     }
 
     /**
@@ -5680,7 +5685,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto4subgamen3(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO4_SIZAILOTNO3_1, GXHDO102B005Const.POTTO4_TYOUGOURYOU3_1, 
                 GXHDO102B005Const.POTTO4_SIZAILOTNO3_2, GXHDO102B005Const.POTTO4_TYOUGOURYOU3_2);
-        return openC002pottosubgamen(processData, 4, 3, returnItemIdList);
+        return openC002pottosubgamen(processData, 4, 3, returnItemIdList, GXHDO102B005Const.POTTO4_TYOGOURYOUKIKAKU3);
     }
 
     /**
@@ -5692,7 +5697,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto4subgamen4(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO4_SIZAILOTNO4_1, GXHDO102B005Const.POTTO4_TYOUGOURYOU4_1, 
                 GXHDO102B005Const.POTTO4_SIZAILOTNO4_2, GXHDO102B005Const.POTTO4_TYOUGOURYOU4_2);
-        return openC002pottosubgamen(processData, 4, 4, returnItemIdList);
+        return openC002pottosubgamen(processData, 4, 4, returnItemIdList, GXHDO102B005Const.POTTO4_TYOGOURYOUKIKAKU4);
     }
 
     /**
@@ -5704,7 +5709,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto5subgamen1(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO5_SIZAILOTNO1_1, GXHDO102B005Const.POTTO5_TYOUGOURYOU1_1, 
                 GXHDO102B005Const.POTTO5_SIZAILOTNO1_2, GXHDO102B005Const.POTTO5_TYOUGOURYOU1_2);
-        return openC002pottosubgamen(processData, 5, 1, returnItemIdList);
+        return openC002pottosubgamen(processData, 5, 1, returnItemIdList, GXHDO102B005Const.POTTO5_TYOGOURYOUKIKAKU1);
     }
 
     /**
@@ -5716,7 +5721,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto5subgamen2(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO5_SIZAILOTNO2_1, GXHDO102B005Const.POTTO5_TYOUGOURYOU2_1, 
                 GXHDO102B005Const.POTTO5_SIZAILOTNO2_2, GXHDO102B005Const.POTTO5_TYOUGOURYOU2_2);
-        return openC002pottosubgamen(processData, 5, 2, returnItemIdList);
+        return openC002pottosubgamen(processData, 5, 2, returnItemIdList, GXHDO102B005Const.POTTO5_TYOGOURYOUKIKAKU2);
     }
 
     /**
@@ -5728,7 +5733,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto5subgamen3(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO5_SIZAILOTNO3_1, GXHDO102B005Const.POTTO5_TYOUGOURYOU3_1, 
                 GXHDO102B005Const.POTTO5_SIZAILOTNO3_2, GXHDO102B005Const.POTTO5_TYOUGOURYOU3_2);
-        return openC002pottosubgamen(processData, 5, 3, returnItemIdList);
+        return openC002pottosubgamen(processData, 5, 3, returnItemIdList, GXHDO102B005Const.POTTO5_TYOGOURYOUKIKAKU3);
     }
 
     /**
@@ -5740,7 +5745,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto5subgamen4(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO5_SIZAILOTNO4_1, GXHDO102B005Const.POTTO5_TYOUGOURYOU4_1, 
                 GXHDO102B005Const.POTTO5_SIZAILOTNO4_2, GXHDO102B005Const.POTTO5_TYOUGOURYOU4_2);
-        return openC002pottosubgamen(processData, 5, 4, returnItemIdList);
+        return openC002pottosubgamen(processData, 5, 4, returnItemIdList, GXHDO102B005Const.POTTO5_TYOGOURYOUKIKAKU4);
     }
 
     /**
@@ -5752,7 +5757,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto6subgamen1(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO6_SIZAILOTNO1_1, GXHDO102B005Const.POTTO6_TYOUGOURYOU1_1, 
                 GXHDO102B005Const.POTTO6_SIZAILOTNO1_2, GXHDO102B005Const.POTTO6_TYOUGOURYOU1_2);
-        return openC002pottosubgamen(processData, 6, 1, returnItemIdList);
+        return openC002pottosubgamen(processData, 6, 1, returnItemIdList, GXHDO102B005Const.POTTO6_TYOGOURYOUKIKAKU1);
     }
 
     /**
@@ -5764,7 +5769,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto6subgamen2(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO6_SIZAILOTNO2_1, GXHDO102B005Const.POTTO6_TYOUGOURYOU2_1, 
                 GXHDO102B005Const.POTTO6_SIZAILOTNO2_2, GXHDO102B005Const.POTTO6_TYOUGOURYOU2_2);
-        return openC002pottosubgamen(processData, 6, 2, returnItemIdList);
+        return openC002pottosubgamen(processData, 6, 2, returnItemIdList, GXHDO102B005Const.POTTO6_TYOGOURYOUKIKAKU2);
     }
 
     /**
@@ -5776,7 +5781,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto6subgamen3(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO6_SIZAILOTNO3_1, GXHDO102B005Const.POTTO6_TYOUGOURYOU3_1, 
                 GXHDO102B005Const.POTTO6_SIZAILOTNO3_2, GXHDO102B005Const.POTTO6_TYOUGOURYOU3_2);
-        return openC002pottosubgamen(processData, 6, 3, returnItemIdList);
+        return openC002pottosubgamen(processData, 6, 3, returnItemIdList, GXHDO102B005Const.POTTO6_TYOGOURYOUKIKAKU3);
     }
 
     /**
@@ -5788,7 +5793,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto6subgamen4(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO6_SIZAILOTNO4_1, GXHDO102B005Const.POTTO6_TYOUGOURYOU4_1, 
                 GXHDO102B005Const.POTTO6_SIZAILOTNO4_2, GXHDO102B005Const.POTTO6_TYOUGOURYOU4_2);
-        return openC002pottosubgamen(processData, 6, 4, returnItemIdList);
+        return openC002pottosubgamen(processData, 6, 4, returnItemIdList, GXHDO102B005Const.POTTO6_TYOGOURYOUKIKAKU4);
     }
 
     /**
@@ -5800,7 +5805,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto7subgamen1(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO7_SIZAILOTNO1_1, GXHDO102B005Const.POTTO7_TYOUGOURYOU1_1, 
                 GXHDO102B005Const.POTTO7_SIZAILOTNO1_2, GXHDO102B005Const.POTTO7_TYOUGOURYOU1_2);
-        return openC002pottosubgamen(processData, 7, 1, returnItemIdList);
+        return openC002pottosubgamen(processData, 7, 1, returnItemIdList, GXHDO102B005Const.POTTO7_TYOGOURYOUKIKAKU1);
     }
 
     /**
@@ -5812,7 +5817,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto7subgamen2(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO7_SIZAILOTNO2_1, GXHDO102B005Const.POTTO7_TYOUGOURYOU2_1, 
                 GXHDO102B005Const.POTTO7_SIZAILOTNO2_2, GXHDO102B005Const.POTTO7_TYOUGOURYOU2_2);
-        return openC002pottosubgamen(processData, 7, 2, returnItemIdList);
+        return openC002pottosubgamen(processData, 7, 2, returnItemIdList, GXHDO102B005Const.POTTO7_TYOGOURYOUKIKAKU2);
     }
 
     /**
@@ -5824,7 +5829,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto7subgamen3(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO7_SIZAILOTNO3_1, GXHDO102B005Const.POTTO7_TYOUGOURYOU3_1, 
                 GXHDO102B005Const.POTTO7_SIZAILOTNO3_2, GXHDO102B005Const.POTTO7_TYOUGOURYOU3_2);
-        return openC002pottosubgamen(processData, 7, 3, returnItemIdList);
+        return openC002pottosubgamen(processData, 7, 3, returnItemIdList, GXHDO102B005Const.POTTO7_TYOGOURYOUKIKAKU3);
     }
 
     /**
@@ -5836,7 +5841,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto7subgamen4(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO7_SIZAILOTNO4_1, GXHDO102B005Const.POTTO7_TYOUGOURYOU4_1, 
                 GXHDO102B005Const.POTTO7_SIZAILOTNO4_2, GXHDO102B005Const.POTTO7_TYOUGOURYOU4_2);
-        return openC002pottosubgamen(processData, 7, 4, returnItemIdList);
+        return openC002pottosubgamen(processData, 7, 4, returnItemIdList, GXHDO102B005Const.POTTO7_TYOGOURYOUKIKAKU4);
     }
 
     /**
@@ -5848,7 +5853,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto8subgamen1(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO8_SIZAILOTNO1_1, GXHDO102B005Const.POTTO8_TYOUGOURYOU1_1, 
                 GXHDO102B005Const.POTTO8_SIZAILOTNO1_2, GXHDO102B005Const.POTTO8_TYOUGOURYOU1_2);
-        return openC002pottosubgamen(processData, 8, 1, returnItemIdList);
+        return openC002pottosubgamen(processData, 8, 1, returnItemIdList, GXHDO102B005Const.POTTO8_TYOGOURYOUKIKAKU1);
     }
 
     /**
@@ -5860,7 +5865,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto8subgamen2(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO8_SIZAILOTNO2_1, GXHDO102B005Const.POTTO8_TYOUGOURYOU2_1, 
                 GXHDO102B005Const.POTTO8_SIZAILOTNO2_2, GXHDO102B005Const.POTTO8_TYOUGOURYOU2_2);
-        return openC002pottosubgamen(processData, 8, 2, returnItemIdList);
+        return openC002pottosubgamen(processData, 8, 2, returnItemIdList, GXHDO102B005Const.POTTO8_TYOGOURYOUKIKAKU2);
     }
 
     /**
@@ -5872,7 +5877,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto8subgamen3(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO8_SIZAILOTNO3_1, GXHDO102B005Const.POTTO8_TYOUGOURYOU3_1, 
                 GXHDO102B005Const.POTTO8_SIZAILOTNO3_2, GXHDO102B005Const.POTTO8_TYOUGOURYOU3_2);
-        return openC002pottosubgamen(processData, 8, 3, returnItemIdList);
+        return openC002pottosubgamen(processData, 8, 3, returnItemIdList, GXHDO102B005Const.POTTO8_TYOGOURYOUKIKAKU3);
     }
 
     /**
@@ -5884,7 +5889,7 @@ public class GXHDO102B005 implements IFormLogic {
     public ProcessData openC002potto8subgamen4(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B005Const.POTTO8_SIZAILOTNO4_1, GXHDO102B005Const.POTTO8_TYOUGOURYOU4_1, 
                 GXHDO102B005Const.POTTO8_SIZAILOTNO4_2, GXHDO102B005Const.POTTO8_TYOUGOURYOU4_2);
-        return openC002pottosubgamen(processData, 8, 4, returnItemIdList);
+        return openC002pottosubgamen(processData, 8, 4, returnItemIdList, GXHDO102B005Const.POTTO8_TYOGOURYOUKIKAKU4);
     }
 
     /**
@@ -5894,9 +5899,10 @@ public class GXHDO102B005 implements IFormLogic {
      * @param pot ﾎﾟｯﾄ
      * @param zairyokubun 材料区分
      * @param returnItemIdList サブ画面から戻ったときに値を設定必要項目リスト
+     * @param itemTyogouryoukikakuId 調合量規格
      * @return 処理制御データ
      */
-    public ProcessData openC002pottosubgamen(ProcessData processData, int pot, int zairyokubun, List<String> returnItemIdList) {
+    public ProcessData openC002pottosubgamen(ProcessData processData, int pot, int zairyokubun, List<String> returnItemIdList, String itemTyogouryoukikakuId) {
         try {
             // 「秤量号機」
             FXHDD01 itemGoki = getItemRow(processData.getItemList(), GXHDO102B005Const.SEIHIN_GOKI);
@@ -5907,6 +5913,14 @@ public class GXHDO102B005 implements IFormLogic {
                 // エラーの場合はコールバック変数に"error0"をセット
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.addCallbackParam("firstParam", "error0");
+                return processData;
+            }
+            // 「調合量規格1」
+            FXHDD01 itemTyogouryoukikaku = getItemRow(processData.getItemListEx(), itemTyogouryoukikakuId);
+            // 「調合量規格1」ﾁｪｯｸ処理
+            ErrorMessageInfo checkItemTyogouryoukikaku1ErrorInfo = checkTyogouryoukikaku(itemTyogouryoukikaku);
+            if (checkItemTyogouryoukikaku1ErrorInfo != null) {
+                processData.setErrorMessageInfoList(Arrays.asList(checkItemTyogouryoukikaku1ErrorInfo));
                 return processData;
             }
             processData.setMethod("");
@@ -5926,6 +5940,33 @@ public class GXHDO102B005 implements IFormLogic {
         }
 
         return processData;
+    }
+
+    /**
+     * 【材料品名】ﾘﾝｸ押下時、サブ画面Open時ﾁｪｯｸ処理
+     *
+     * @param itemTyogouryoukikaku 調合量規格
+     * @return エラーメッセージ情報
+     */
+    private ErrorMessageInfo checkTyogouryoukikaku(FXHDD01 itemTyogouryoukikaku) {
+        boolean checkResult = false;
+        // 「調合量規格」ﾁｪｯｸ
+        if(StringUtil.isEmpty(itemTyogouryoukikaku.getKikakuChi())){
+            //「調合量規格」の規格値が取得できない場合
+            checkResult = true;           
+        }else{
+            if (StringUtil.isEmpty(itemTyogouryoukikaku.getKikakuChi().replace("【", "").replace("】", ""))) {
+                //「調合量規格」の規格値が取得できて、値がない場合
+                checkResult = true;
+            }
+        }
+        if(checkResult){
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemTyogouryoukikaku);
+            return MessageUtil.getErrorMessageInfo("XHD-000019", true, true, errFxhdd01List, itemTyogouryoukikaku.getLabel1());            
+        }
+
+        return null;
     }
 
     /**
@@ -6022,75 +6063,107 @@ public class GXHDO102B005 implements IFormLogic {
 
             potto1subgamen1.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO1_ZAIRYOHINMEI1))); // ﾎﾟｯﾄ1の材料品名1
             potto1subgamen1.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO1_TYOGOURYOUKIKAKU1))); // ﾎﾟｯﾄ1の調合量規格1
+            potto1subgamen1.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO1_TYOGOURYOUKIKAKU1).getStandardPattern());// ﾎﾟｯﾄ1の調合量規格1の規格情報ﾊﾟﾀｰﾝ
             potto1subgamen2.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO1_ZAIRYOHINMEI2))); // ﾎﾟｯﾄ1の材料品名2
             potto1subgamen2.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO1_TYOGOURYOUKIKAKU2))); // ﾎﾟｯﾄ1の調合量規格2
+            potto1subgamen2.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO1_TYOGOURYOUKIKAKU2).getStandardPattern());// ﾎﾟｯﾄ1の調合量規格2の規格情報ﾊﾟﾀｰﾝ
             potto1subgamen3.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO1_ZAIRYOHINMEI3))); // ﾎﾟｯﾄ1の材料品名3
             potto1subgamen3.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO1_TYOGOURYOUKIKAKU3))); // ﾎﾟｯﾄ1の調合量規格3
+            potto1subgamen3.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO1_TYOGOURYOUKIKAKU3).getStandardPattern());// ﾎﾟｯﾄ1の調合量規格3の規格情報ﾊﾟﾀｰﾝ
             potto1subgamen4.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO1_ZAIRYOHINMEI4))); // ﾎﾟｯﾄ1の材料品名4
             potto1subgamen4.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO1_TYOGOURYOUKIKAKU4))); // ﾎﾟｯﾄ1の調合量規格4
+            potto1subgamen4.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO1_TYOGOURYOUKIKAKU4).getStandardPattern());// ﾎﾟｯﾄ1の調合量規格4の規格情報ﾊﾟﾀｰﾝ
 
             potto2subgamen1.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO2_ZAIRYOHINMEI1))); // ﾎﾟｯﾄ2の材料品名1
             potto2subgamen1.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO2_TYOGOURYOUKIKAKU1))); // ﾎﾟｯﾄ2の調合量規格1
+            potto2subgamen1.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO2_TYOGOURYOUKIKAKU1).getStandardPattern());// ﾎﾟｯﾄ2の調合量規格1の規格情報ﾊﾟﾀｰﾝ
             potto2subgamen2.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO2_ZAIRYOHINMEI2))); // ﾎﾟｯﾄ2の材料品名2
             potto2subgamen2.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO2_TYOGOURYOUKIKAKU2))); // ﾎﾟｯﾄ2の調合量規格2
+            potto2subgamen2.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO2_TYOGOURYOUKIKAKU2).getStandardPattern());// ﾎﾟｯﾄ2の調合量規格2の規格情報ﾊﾟﾀｰﾝ
             potto2subgamen3.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO2_ZAIRYOHINMEI3))); // ﾎﾟｯﾄ2の材料品名3
             potto2subgamen3.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO2_TYOGOURYOUKIKAKU3))); // ﾎﾟｯﾄ2の調合量規格3
+            potto2subgamen3.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO2_TYOGOURYOUKIKAKU3).getStandardPattern());// ﾎﾟｯﾄ2の調合量規格3の規格情報ﾊﾟﾀｰﾝ
             potto2subgamen4.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO2_ZAIRYOHINMEI4))); // ﾎﾟｯﾄ2の材料品名4
             potto2subgamen4.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO2_TYOGOURYOUKIKAKU4))); // ﾎﾟｯﾄ2の調合量規格4
+            potto2subgamen4.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO2_TYOGOURYOUKIKAKU4).getStandardPattern());// ﾎﾟｯﾄ2の調合量規格4の規格情報ﾊﾟﾀｰﾝ
 
             potto3subgamen1.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO3_ZAIRYOHINMEI1))); // ﾎﾟｯﾄ3の材料品名1
             potto3subgamen1.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO3_TYOGOURYOUKIKAKU1))); // ﾎﾟｯﾄ3の調合量規格1
+            potto3subgamen1.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO3_TYOGOURYOUKIKAKU1).getStandardPattern());// ﾎﾟｯﾄ3の調合量規格1の規格情報ﾊﾟﾀｰﾝ
             potto3subgamen2.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO3_ZAIRYOHINMEI2))); // ﾎﾟｯﾄ3の材料品名2
             potto3subgamen2.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO3_TYOGOURYOUKIKAKU2))); // ﾎﾟｯﾄ3の調合量規格2
+            potto3subgamen2.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO3_TYOGOURYOUKIKAKU2).getStandardPattern());// ﾎﾟｯﾄ3の調合量規格2の規格情報ﾊﾟﾀｰﾝ
             potto3subgamen3.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO3_ZAIRYOHINMEI3))); // ﾎﾟｯﾄ3の材料品名3
             potto3subgamen3.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO3_TYOGOURYOUKIKAKU3))); // ﾎﾟｯﾄ3の調合量規格3
+            potto3subgamen3.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO3_TYOGOURYOUKIKAKU3).getStandardPattern());// ﾎﾟｯﾄ3の調合量規格3の規格情報ﾊﾟﾀｰﾝ
             potto3subgamen4.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO3_ZAIRYOHINMEI4))); // ﾎﾟｯﾄ3の材料品名4
             potto3subgamen4.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO3_TYOGOURYOUKIKAKU4))); // ﾎﾟｯﾄ3の調合量規格4
+            potto3subgamen4.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO3_TYOGOURYOUKIKAKU4).getStandardPattern());// ﾎﾟｯﾄ3の調合量規格4の規格情報ﾊﾟﾀｰﾝ
 
             potto4subgamen1.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO4_ZAIRYOHINMEI1))); // ﾎﾟｯﾄ4の材料品名1
             potto4subgamen1.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO4_TYOGOURYOUKIKAKU1))); // ﾎﾟｯﾄ4の調合量規格1
+            potto4subgamen1.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO4_TYOGOURYOUKIKAKU1).getStandardPattern());// ﾎﾟｯﾄ4の調合量規格1の規格情報ﾊﾟﾀｰﾝ
             potto4subgamen2.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO4_ZAIRYOHINMEI2))); // ﾎﾟｯﾄ4の材料品名2
             potto4subgamen2.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO4_TYOGOURYOUKIKAKU2))); // ﾎﾟｯﾄ4の調合量規格2
+            potto4subgamen2.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO4_TYOGOURYOUKIKAKU2).getStandardPattern());// ﾎﾟｯﾄ4の調合量規格2の規格情報ﾊﾟﾀｰﾝ
             potto4subgamen3.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO4_ZAIRYOHINMEI3))); // ﾎﾟｯﾄ4の材料品名3
             potto4subgamen3.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO4_TYOGOURYOUKIKAKU3))); // ﾎﾟｯﾄ4の調合量規格3
+            potto4subgamen3.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO4_TYOGOURYOUKIKAKU3).getStandardPattern());// ﾎﾟｯﾄ4の調合量規格3の規格情報ﾊﾟﾀｰﾝ
             potto4subgamen4.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO4_ZAIRYOHINMEI4))); // ﾎﾟｯﾄ4の材料品名4
             potto4subgamen4.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO4_TYOGOURYOUKIKAKU4))); // ﾎﾟｯﾄ4の調合量規格4
+            potto4subgamen4.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO4_TYOGOURYOUKIKAKU4).getStandardPattern());// ﾎﾟｯﾄ4の調合量規格4の規格情報ﾊﾟﾀｰﾝ
 
             potto5subgamen1.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO5_ZAIRYOHINMEI1))); // ﾎﾟｯﾄ5の材料品名1
             potto5subgamen1.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO5_TYOGOURYOUKIKAKU1))); // ﾎﾟｯﾄ5の調合量規格1
+            potto5subgamen1.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO5_TYOGOURYOUKIKAKU1).getStandardPattern());// ﾎﾟｯﾄ5の調合量規格1の規格情報ﾊﾟﾀｰﾝ
             potto5subgamen2.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO5_ZAIRYOHINMEI2))); // ﾎﾟｯﾄ5の材料品名2
             potto5subgamen2.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO5_TYOGOURYOUKIKAKU2))); // ﾎﾟｯﾄ5の調合量規格2
+            potto5subgamen2.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO5_TYOGOURYOUKIKAKU2).getStandardPattern());// ﾎﾟｯﾄ5の調合量規格2の規格情報ﾊﾟﾀｰﾝ
             potto5subgamen3.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO5_ZAIRYOHINMEI3))); // ﾎﾟｯﾄ5の材料品名3
             potto5subgamen3.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO5_TYOGOURYOUKIKAKU3))); // ﾎﾟｯﾄ5の調合量規格3
+            potto5subgamen3.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO5_TYOGOURYOUKIKAKU3).getStandardPattern());// ﾎﾟｯﾄ5の調合量規格3の規格情報ﾊﾟﾀｰﾝ
             potto5subgamen4.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO5_ZAIRYOHINMEI4))); // ﾎﾟｯﾄ5の材料品名4
             potto5subgamen4.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO5_TYOGOURYOUKIKAKU4))); // ﾎﾟｯﾄ5の調合量規格4
+            potto5subgamen4.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO5_TYOGOURYOUKIKAKU4).getStandardPattern());// ﾎﾟｯﾄ5の調合量規格4の規格情報ﾊﾟﾀｰﾝ
 
             potto6subgamen1.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO6_ZAIRYOHINMEI1))); // ﾎﾟｯﾄ6の材料品名1
             potto6subgamen1.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO6_TYOGOURYOUKIKAKU1))); // ﾎﾟｯﾄ6の調合量規格1
+            potto6subgamen1.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO6_TYOGOURYOUKIKAKU1).getStandardPattern());// ﾎﾟｯﾄ6の調合量規格1の規格情報ﾊﾟﾀｰﾝ
             potto6subgamen2.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO6_ZAIRYOHINMEI2))); // ﾎﾟｯﾄ6の材料品名2
             potto6subgamen2.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO6_TYOGOURYOUKIKAKU2))); // ﾎﾟｯﾄ6の調合量規格2
+            potto6subgamen2.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO6_TYOGOURYOUKIKAKU2).getStandardPattern());// ﾎﾟｯﾄ6の調合量規格2の規格情報ﾊﾟﾀｰﾝ
             potto6subgamen3.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO6_ZAIRYOHINMEI3))); // ﾎﾟｯﾄ6の材料品名3
             potto6subgamen3.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO6_TYOGOURYOUKIKAKU3))); // ﾎﾟｯﾄ6の調合量規格3
+            potto6subgamen3.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO6_TYOGOURYOUKIKAKU3).getStandardPattern());// ﾎﾟｯﾄ6の調合量規格3の規格情報ﾊﾟﾀｰﾝ
             potto6subgamen4.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO6_ZAIRYOHINMEI4))); // ﾎﾟｯﾄ6の材料品名4
             potto6subgamen4.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO6_TYOGOURYOUKIKAKU4))); // ﾎﾟｯﾄ6の調合量規格4
+            potto6subgamen4.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO6_TYOGOURYOUKIKAKU4).getStandardPattern());// ﾎﾟｯﾄ6の調合量規格4の規格情報ﾊﾟﾀｰﾝ
 
             potto7subgamen1.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO7_ZAIRYOHINMEI1))); // ﾎﾟｯﾄ7の材料品名1
             potto7subgamen1.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO7_TYOGOURYOUKIKAKU1))); // ﾎﾟｯﾄ7の調合量規格1
+            potto7subgamen1.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO7_TYOGOURYOUKIKAKU1).getStandardPattern());// ﾎﾟｯﾄ7の調合量規格1の規格情報ﾊﾟﾀｰﾝ
             potto7subgamen2.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO7_ZAIRYOHINMEI2))); // ﾎﾟｯﾄ7の材料品名2
             potto7subgamen2.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO7_TYOGOURYOUKIKAKU2))); // ﾎﾟｯﾄ7の調合量規格2
+            potto7subgamen2.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO7_TYOGOURYOUKIKAKU2).getStandardPattern());// ﾎﾟｯﾄ7の調合量規格2の規格情報ﾊﾟﾀｰﾝ
             potto7subgamen3.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO7_ZAIRYOHINMEI3))); // ﾎﾟｯﾄ7の材料品名3
             potto7subgamen3.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO7_TYOGOURYOUKIKAKU3))); // ﾎﾟｯﾄ7の調合量規格3
+            potto7subgamen3.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO7_TYOGOURYOUKIKAKU3).getStandardPattern());// ﾎﾟｯﾄ7の調合量規格3の規格情報ﾊﾟﾀｰﾝ
             potto7subgamen4.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO7_ZAIRYOHINMEI4))); // ﾎﾟｯﾄ7の材料品名4
             potto7subgamen4.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO7_TYOGOURYOUKIKAKU4))); // ﾎﾟｯﾄ7の調合量規格4
+            potto7subgamen4.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO7_TYOGOURYOUKIKAKU4).getStandardPattern());// ﾎﾟｯﾄ7の調合量規格4の規格情報ﾊﾟﾀｰﾝ
 
             potto8subgamen1.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO8_ZAIRYOHINMEI1))); // ﾎﾟｯﾄ8の材料品名1
             potto8subgamen1.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO8_TYOGOURYOUKIKAKU1))); // ﾎﾟｯﾄ8の調合量規格1
+            potto8subgamen1.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO8_TYOGOURYOUKIKAKU1).getStandardPattern());// ﾎﾟｯﾄ8の調合量規格1の規格情報ﾊﾟﾀｰﾝ
             potto8subgamen2.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO8_ZAIRYOHINMEI2))); // ﾎﾟｯﾄ8の材料品名2
             potto8subgamen2.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO8_TYOGOURYOUKIKAKU2))); // ﾎﾟｯﾄ8の調合量規格2
+            potto8subgamen2.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO8_TYOGOURYOUKIKAKU2).getStandardPattern());// ﾎﾟｯﾄ8の調合量規格2の規格情報ﾊﾟﾀｰﾝ
             potto8subgamen3.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO8_ZAIRYOHINMEI3))); // ﾎﾟｯﾄ8の材料品名3
             potto8subgamen3.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO8_TYOGOURYOUKIKAKU3))); // ﾎﾟｯﾄ8の調合量規格3
+            potto8subgamen3.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO8_TYOGOURYOUKIKAKU3).getStandardPattern());// ﾎﾟｯﾄ8の調合量規格3の規格情報ﾊﾟﾀｰﾝ
             potto8subgamen4.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO8_ZAIRYOHINMEI4))); // ﾎﾟｯﾄ8の材料品名4
             potto8subgamen4.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO8_TYOGOURYOUKIKAKU4))); // ﾎﾟｯﾄ8の調合量規格4
+            potto8subgamen4.setStandardpattern(getItemRow(processData.getItemListEx(), GXHDO102B005Const.POTTO8_TYOGOURYOUKIKAKU4).getStandardPattern());// ﾎﾟｯﾄ8の調合量規格4の規格情報ﾊﾟﾀｰﾝ
             subSrGlassslurryhyoryoList.add(potto1subgamen1);
             subSrGlassslurryhyoryoList.add(potto1subgamen2);
             subSrGlassslurryhyoryoList.add(potto1subgamen3);

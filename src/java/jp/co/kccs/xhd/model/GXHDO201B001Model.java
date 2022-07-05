@@ -22,6 +22,11 @@ import java.sql.Timestamp;
  * 変更者        KCSS K.Jo<br>
  * 変更理由      項目追加・変更<br>
  * <br>
+ * 変更日	2022/06/02<br>
+ * 計画書No	MB2205-D010<br>
+ * 変更者	KCSS wxf<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -163,10 +168,38 @@ public class GXHDO201B001Model implements Serializable {
     private Long abzureHeikinEnd = null;
     /** 原料記号 */
     private String genryoukigou = "";
+    /** ﾌﾞﾚｰﾄﾞ印刷長 */
+    private Long bladeinsatsutyo = null;
+    /** 清掃 ローラ部 */
+    private String seisourollerbu = "";
+    /** 清掃 印刷周辺 */
+    private String seisouinsatsusyuhen = "";
+    /** 清掃 乾燥炉内 */
+    private String seisoukansouronai = "";
+    /** 3μｍフィルター 適用 */
+    private String sanmicronmfiltertekiyou = "";
+    /** 3μｍフィルター 交換 */
+    private String sanmicronmfilterkoukan = "";
+    /** インクパンストッパーロック確認 */
+    private String inkpanstopperlockkakunin = "";
+    /** 先行ﾛｯﾄNo */
+    private String senkoulotno = "";
+    /** ﾃｰﾌﾟ使い切り */
+    private String tapetsukaikiri = "";
+    /** 次ﾛｯﾄへ */
+    private String jilothe = "";
+    /** 成形長さ */
+    private Long seikeinagasa = null;
     /** 備考1 */
     private String bikou1 = "";
     /** 備考2 */
     private String bikou2 = "";
+    /** 備考3 */
+    private String bikou3 = "";
+    /** 備考4 */
+    private String bikou4 = "";
+    /** 備考5 */
+    private String bikou5 = "";
     /** 膜厚ｽﾀｰﾄ1 */
     private BigDecimal makuatsuStart1 = null;
     /** 膜厚ｽﾀｰﾄ2 */
@@ -1301,6 +1334,182 @@ public class GXHDO201B001Model implements Serializable {
     }
 
     /**
+     * ﾌﾞﾚｰﾄﾞ印刷長
+     * @return the bladeinsatsutyo
+     */
+    public Long getBladeinsatsutyo() {
+        return bladeinsatsutyo;
+    }
+
+    /**
+     * ﾌﾞﾚｰﾄﾞ印刷長
+     * @param bladeinsatsutyo the bladeinsatsutyo to set
+     */
+    public void setBladeinsatsutyo(Long bladeinsatsutyo) {
+        this.bladeinsatsutyo = bladeinsatsutyo;
+    }
+
+    /**
+     * 清掃 ローラ部
+     * @return the seisourollerbu
+     */
+    public String getSeisourollerbu() {
+        return seisourollerbu;
+    }
+
+    /**
+     * 清掃 ローラ部
+     * @param seisourollerbu the seisourollerbu to set
+     */
+    public void setSeisourollerbu(String seisourollerbu) {
+        this.seisourollerbu = seisourollerbu;
+    }
+
+    /**
+     * 清掃 印刷周辺
+     * @return the seisouinsatsusyuhen
+     */
+    public String getSeisouinsatsusyuhen() {
+        return seisouinsatsusyuhen;
+    }
+
+    /**
+     * 清掃 印刷周辺
+     * @param seisouinsatsusyuhen the seisouinsatsusyuhen to set
+     */
+    public void setSeisouinsatsusyuhen(String seisouinsatsusyuhen) {
+        this.seisouinsatsusyuhen = seisouinsatsusyuhen;
+    }
+
+    /**
+     * 清掃 乾燥炉内
+     * @return the seisoukansouronai
+     */
+    public String getSeisoukansouronai() {
+        return seisoukansouronai;
+    }
+
+    /**
+     * 清掃 乾燥炉内
+     * @param seisoukansouronai the seisoukansouronai to set
+     */
+    public void setSeisoukansouronai(String seisoukansouronai) {
+        this.seisoukansouronai = seisoukansouronai;
+    }
+
+    /**
+     * 3μｍフィルター 適用
+     * @return the sanmicronmfiltertekiyou
+     */
+    public String getSanmicronmfiltertekiyou() {
+        return sanmicronmfiltertekiyou;
+    }
+
+    /**
+     * 3μｍフィルター 適用
+     * @param sanmicronmfiltertekiyou the sanmicronmfiltertekiyou to set
+     */
+    public void setSanmicronmfiltertekiyou(String sanmicronmfiltertekiyou) {
+        this.sanmicronmfiltertekiyou = sanmicronmfiltertekiyou;
+    }
+
+    /**
+     * 3μｍフィルター 交換
+     * @return the sanmicronmfilterkoukan
+     */
+    public String getSanmicronmfilterkoukan() {
+        return sanmicronmfilterkoukan;
+    }
+
+    /**
+     * 3μｍフィルター 交換
+     * @param sanmicronmfilterkoukan the sanmicronmfilterkoukan to set
+     */
+    public void setSanmicronmfilterkoukan(String sanmicronmfilterkoukan) {
+        this.sanmicronmfilterkoukan = sanmicronmfilterkoukan;
+    }
+
+    /**
+     * インクパンストッパーロック確認
+     * @return the inkpanstopperlockkakunin
+     */
+    public String getInkpanstopperlockkakunin() {
+        return inkpanstopperlockkakunin;
+    }
+
+    /**
+     * インクパンストッパーロック確認
+     * @param inkpanstopperlockkakunin the inkpanstopperlockkakunin to set
+     */
+    public void setInkpanstopperlockkakunin(String inkpanstopperlockkakunin) {
+        this.inkpanstopperlockkakunin = inkpanstopperlockkakunin;
+    }
+
+    /**
+     * 先行ﾛｯﾄNo
+     * @return the senkoulotno
+     */
+    public String getSenkoulotno() {
+        return senkoulotno;
+    }
+
+    /**
+     * 先行ﾛｯﾄNo
+     * @param senkoulotno the senkoulotno to set
+     */
+    public void setSenkoulotno(String senkoulotno) {
+        this.senkoulotno = senkoulotno;
+    }
+
+    /**
+     * ﾃｰﾌﾟ使い切り
+     * @return the tapetsukaikiri
+     */
+    public String getTapetsukaikiri() {
+        return tapetsukaikiri;
+    }
+
+    /**
+     * ﾃｰﾌﾟ使い切り
+     * @param tapetsukaikiri the tapetsukaikiri to set
+     */
+    public void setTapetsukaikiri(String tapetsukaikiri) {
+        this.tapetsukaikiri = tapetsukaikiri;
+    }
+
+    /**
+     * 次ﾛｯﾄへ
+     * @return the jilothe
+     */
+    public String getJilothe() {
+        return jilothe;
+    }
+
+    /**
+     * 次ﾛｯﾄへ
+     * @param jilothe the jilothe to set
+     */
+    public void setJilothe(String jilothe) {
+        this.jilothe = jilothe;
+    }
+
+    /**
+     * 成形長さ
+     * @return the seikeinagasa
+     */
+    public Long getSeikeinagasa() {
+        return seikeinagasa;
+    }
+
+    /**
+     * 成形長さ
+     * @param seikeinagasa the seikeinagasa to set
+     */
+    public void setSeikeinagasa(Long seikeinagasa) {
+        this.seikeinagasa = seikeinagasa;
+    }
+
+    /**
      * 備考1
      * @return the bikou1
      */
@@ -1330,6 +1539,54 @@ public class GXHDO201B001Model implements Serializable {
      */
     public void setBikou2(String bikou2) {
         this.bikou2 = bikou2;
+    }
+
+    /**
+     * 備考3
+     * @return the bikou3
+     */
+    public String getBikou3() {
+        return bikou3;
+    }
+
+    /**
+     * 備考3
+     * @param bikou3 the bikou3 to set
+     */
+    public void setBikou3(String bikou3) {
+        this.bikou3 = bikou3;
+    }
+
+    /**
+     * 備考4
+     * @return the bikou4
+     */
+    public String getBikou4() {
+        return bikou4;
+    }
+
+    /**
+     * 備考4
+     * @param bikou4 the bikou4 to set
+     */
+    public void setBikou4(String bikou4) {
+        this.bikou4 = bikou4;
+    }
+
+    /**
+     * 備考5
+     * @return the bikou5
+     */
+    public String getBikou5() {
+        return bikou5;
+    }
+
+    /**
+     * 備考5
+     * @param bikou5 the bikou5 to set
+     */
+    public void setBikou5(String bikou5) {
+        this.bikou5 = bikou5;
     }
 
     /**
@@ -1939,4 +2196,6 @@ public class GXHDO201B001Model implements Serializable {
     public void setEndPtnDistY5(Long endPtnDistY5) {
         this.endPtnDistY5 = endPtnDistY5;
     }
+
+   
 }

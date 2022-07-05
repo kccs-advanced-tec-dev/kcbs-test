@@ -50,6 +50,7 @@ import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.NumberUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import org.apache.commons.dbutils.DbUtils;
+import org.apache.commons.dbutils.handlers.MapListHandler;
 
 /**
  * ===============================================================================<br>
@@ -133,10 +134,13 @@ public class GXHDO101B043 implements IFormLogic {
                     GXHDO101B043Const.BTN_INSERT_TOP,
                     GXHDO101B043Const.BTN_DELETE_TOP,
                     GXHDO101B043Const.BTN_UPDATE_TOP,
+                    GXHDO101B043Const.BTN_DATACOOPERATION_TOP,
                     GXHDO101B043Const.BTN_KARI_TOUROKU_BOTTOM,
                     GXHDO101B043Const.BTN_INSERT_BOTTOM,
                     GXHDO101B043Const.BTN_DELETE_BOTTOM,
-                    GXHDO101B043Const.BTN_UPDATE_BOTTOM));
+                    GXHDO101B043Const.BTN_UPDATE_BOTTOM,
+                    GXHDO101B043Const.BTN_DATACOOPERATION_BOTTOM
+                    ));
 
             // エラーが発生していない場合
             if (processData.getErrorMessageInfoList().isEmpty()) {
@@ -887,6 +891,11 @@ public class GXHDO101B043 implements IFormLogic {
             case GXHDO101B043Const.BTN_UKEIRESOJURYO_SAYANO_BOTTOM:
                 method = "openSayaNo";
                 break;
+            // 設備ﾃﾞｰﾀ連携
+            case GXHDO101B043Const.BTN_DATACOOPERATION_TOP:
+            case GXHDO101B043Const.BTN_DATACOOPERATION_BOTTOM:
+                method = "doDataCooperationSyori";
+                break;
             default:
                 method = "error";
                 break;
@@ -968,10 +977,14 @@ public class GXHDO101B043 implements IFormLogic {
 
             // 実績情報の取得
             List<Jisseki> jissekiData = loadJissekiData(queryRunnerWip, lotNo, fxhbm03DataArr);
-            if (jissekiData != null && jissekiData.size() > 0) {
-                int dbShorisu = jissekiData.get(0).getSyorisuu(); //処理数
-                if (dbShorisu > 0) {
-                    suuryo = String.valueOf(dbShorisu);
+            if(jissekiData != null && jissekiData.size() > 0){
+                int dbJisseki = jissekiData.get(0).getJissekino(); //処理数
+                // 生産情報の取得
+                Map seisanData = loadSeisanData(queryRunnerWip, dbJisseki);
+                if (seisanData == null || seisanData.isEmpty()) {
+                    suuryo = "0";
+                } else {
+                    suuryo = String.valueOf(seisanData.get("ryohinsuu"));
                 }
             }
         }
@@ -1157,8 +1170,14 @@ public class GXHDO101B043 implements IFormLogic {
         this.setItemData(processData, GXHDO101B043Const.KAISUU, getSrShinkuukansouItemData(GXHDO101B043Const.KAISUU, srShinkuukansouData));
         //種類
         this.setItemData(processData, GXHDO101B043Const.SYURUI, getSrShinkuukansouItemData(GXHDO101B043Const.SYURUI, srShinkuukansouData));
-        // 号機
+        // 号機①
         this.setItemData(processData, GXHDO101B043Const.GOUKI, getSrShinkuukansouItemData(GXHDO101B043Const.GOUKI, srShinkuukansouData));
+        // 号機②
+        this.setItemData(processData, GXHDO101B043Const.GOUKI2, getSrShinkuukansouItemData(GXHDO101B043Const.GOUKI2, srShinkuukansouData));
+        // 号機③
+        this.setItemData(processData, GXHDO101B043Const.GOUKI3, getSrShinkuukansouItemData(GXHDO101B043Const.GOUKI3, srShinkuukansouData));
+        // 号機④
+        this.setItemData(processData, GXHDO101B043Const.GOUKI4, getSrShinkuukansouItemData(GXHDO101B043Const.GOUKI4, srShinkuukansouData));
         //設定温度(℃)
         this.setItemData(processData, GXHDO101B043Const.SETTEIONDO, getSrShinkuukansouItemData(GXHDO101B043Const.SETTEIONDO, srShinkuukansouData));
         //設定時間(分)
@@ -1296,7 +1315,7 @@ public class GXHDO101B043 implements IFormLogic {
         List<String> dataList = new ArrayList<>(Arrays.asList(data));
 
         // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
-        String sql = "SELECT syorisuu "
+        String sql = "SELECT jissekino,syorisuu "
                 + "FROM jisseki "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND ";
 
@@ -1305,6 +1324,7 @@ public class GXHDO101B043 implements IFormLogic {
         sql += " ORDER BY syoribi DESC, syorijikoku DESC";
 
         Map mapping = new HashMap<>();
+        mapping.put("jissekino", "jissekino");
         mapping.put("syorisuu", "syorisuu");
 
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
@@ -1485,7 +1505,7 @@ public class GXHDO101B043 implements IFormLogic {
         String sql = "SELECT "
                 + " kojyo,lotno,edaban,lotpre,kcpno,syoribi,kaishijikan,syuuryoujikan,sagyosya,koutei,gouki,setteiondo,setteijikan,"
                 + " kaisuu,suuryo,bikou1,bikou2,bikou3,tokuisaki,lotkubuncode,ownercode,ukeiretannijyuryo,ukeiresoujyuryou,syurui,"
-                + " startkakunin,syuryonichiji,endtantou,kensabasyo,torokunichiji,kosinnichiji,revision,'0' AS deleteflag "
+                + " startkakunin,syuryonichiji,endtantou,kensabasyo,torokunichiji,kosinnichiji,revision,'0' AS deleteflag,gouki2,gouki3,gouki4 "
                 + "FROM sr_shinkuukansou "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND kaisuu = ? ";
 
@@ -1517,6 +1537,9 @@ public class GXHDO101B043 implements IFormLogic {
         mapping.put("sagyosya", "sagyosya"); //開始担当者
         mapping.put("koutei", "koutei"); //工程
         mapping.put("gouki", "gouki"); //号機
+        mapping.put("gouki2", "gouki2"); //号機
+        mapping.put("gouki3", "gouki3"); //号機
+        mapping.put("gouki4", "gouki4"); //号機
         mapping.put("setteiondo", "setteiondo"); //設定温度
         mapping.put("setteijikan", "setteijikan"); //設定時間
         mapping.put("kaisuu", "kaisuu"); //回数
@@ -1565,7 +1588,7 @@ public class GXHDO101B043 implements IFormLogic {
         String sql = "SELECT "
                 + " kojyo,lotno,edaban,lotpre,kcpno,syoribi,kaishijikan,syuuryoujikan,sagyosya,koutei,gouki,setteiondo,setteijikan,"
                 + " kaisuu,suuryo,bikou1,bikou2,bikou3,tokuisaki,lotkubuncode,ownercode,ukeiretannijyuryo,ukeiresoujyuryou,syurui,"
-                + " startkakunin,syuryonichiji,endtantou,kensabasyo,torokunichiji,kosinnichiji,revision,deleteflag "
+                + " startkakunin,syuryonichiji,endtantou,kensabasyo,torokunichiji,kosinnichiji,revision,deleteflag,gouki2,gouki3,gouki4 "
                 + "FROM tmp_sr_shinkuukansou "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND kaisuu = ? AND deleteflag = ? ";
 
@@ -1598,6 +1621,9 @@ public class GXHDO101B043 implements IFormLogic {
         mapping.put("sagyosya", "sagyosya"); //開始担当者
         mapping.put("koutei", "koutei"); //工程
         mapping.put("gouki", "gouki"); //号機
+        mapping.put("gouki2", "gouki2"); //号機2
+        mapping.put("gouki3", "gouki3"); //号機3
+        mapping.put("gouki4", "gouki4"); //号機4
         mapping.put("setteiondo", "setteiondo"); //設定温度
         mapping.put("setteijikan", "setteijikan"); //設定時間
         mapping.put("kaisuu", "kaisuu"); //回数
@@ -1902,11 +1928,11 @@ public class GXHDO101B043 implements IFormLogic {
             String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList, ProcessData processData) throws SQLException {
 
         String sql = "INSERT INTO tmp_sr_shinkuukansou ("
-                + " kojyo,lotno,edaban,lotpre,kcpno,syoribi,kaishijikan,syuuryoujikan,sagyosya,koutei,gouki,setteiondo,setteijikan,"
+                + " kojyo,lotno,edaban,lotpre,kcpno,syoribi,kaishijikan,syuuryoujikan,sagyosya,koutei,gouki,gouki2,gouki3,gouki4,setteiondo,setteijikan,"
                 + " kaisuu,suuryo,bikou1,bikou2,bikou3,tokuisaki,lotkubuncode,ownercode,ukeiretannijyuryo,ukeiresoujyuryou,syurui,"
                 + " startkakunin,syuryonichiji,endtantou,kensabasyo,torokunichiji,kosinnichiji,revision,deleteflag "
                 + ") VALUES ("
-                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterTmpSrShinkuukansou(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null, processData);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -1933,7 +1959,7 @@ public class GXHDO101B043 implements IFormLogic {
             String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, List<FXHDD01> itemList, ProcessData processData) throws SQLException {
 
         String sql = "UPDATE tmp_sr_shinkuukansou SET "
-                + " lotpre = ?,kcpno = ?,syoribi = ?,sagyosya = ?,koutei = ?,gouki = ?,setteiondo = ?,setteijikan = ?,kaisuu = ?,suuryo = ?, "
+                + " lotpre = ?,kcpno = ?,syoribi = ?,sagyosya = ?,koutei = ?,gouki = ?,gouki2 = ?,gouki3 = ?,gouki4 = ?,setteiondo = ?,setteijikan = ?,kaisuu = ?,suuryo = ?, "
                 + " bikou1 = ?,bikou2 = ?,tokuisaki = ?,lotkubuncode = ?,ownercode = ?,ukeiretannijyuryo = ?,ukeiresoujyuryou = ?,syurui = ?,"
                 + " startkakunin = ?,syuryonichiji = ?,endtantou = ?,kensabasyo = ?,kosinnichiji = ?,revision = ?,deleteflag = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ? ";
@@ -2025,6 +2051,9 @@ public class GXHDO101B043 implements IFormLogic {
         params.add(""); //工程
 
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B043Const.GOUKI, srShinkuukansouData))); // 号機
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B043Const.GOUKI2, srShinkuukansouData))); // 号機2
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B043Const.GOUKI3, srShinkuukansouData))); // 号機3
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B043Const.GOUKI4, srShinkuukansouData))); // 号機4
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B043Const.SETTEIONDO, srShinkuukansouData))); // 設定温度
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B043Const.SETTEIJIKAN, srShinkuukansouData))); // 設定時間
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B043Const.KAISUU, srShinkuukansouData))); // 回数
@@ -2079,11 +2108,11 @@ public class GXHDO101B043 implements IFormLogic {
             String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, List<FXHDD01> itemList, SrShinkuukansou tmpSrShinkuukansou, ProcessData processData) throws SQLException {
 
         String sql = "INSERT INTO sr_shinkuukansou ("
-                + " kojyo,lotno,edaban,lotpre,kcpno,syoribi,kaishijikan,syuuryoujikan,sagyosya,koutei,gouki,setteiondo,setteijikan,"
+                + " kojyo,lotno,edaban,lotpre,kcpno,syoribi,kaishijikan,syuuryoujikan,sagyosya,koutei,gouki,gouki2,gouki3,gouki4,setteiondo,setteijikan,"
                 + " kaisuu,suuryo,bikou1,bikou2,bikou3,tokuisaki,lotkubuncode,ownercode,ukeiretannijyuryo,ukeiresoujyuryou,syurui,"
                 + " startkakunin,syuryonichiji,endtantou,kensabasyo,torokunichiji,kosinnichiji,revision "
                 + ") VALUES ("
-                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterSrShinkuukansou(true, newRev, kojyo, lotNo, edaban, jissekino, systemTime, itemList, tmpSrShinkuukansou, processData);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -2110,7 +2139,7 @@ public class GXHDO101B043 implements IFormLogic {
     private void updateSrShinkuukansou(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, String jotaiFlg, BigDecimal newRev,
             String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, List<FXHDD01> itemList, ProcessData processData) throws SQLException {
         String sql = "UPDATE sr_shinkuukansou SET "
-                + " lotpre = ?,kcpno = ?,syoribi = ?,sagyosya = ?,gouki = ?,setteiondo = ?,setteijikan = ?,kaisuu = ?,suuryo = ?, "
+                + " lotpre = ?,kcpno = ?,syoribi = ?,sagyosya = ?,gouki = ?,gouki2 = ?,gouki3 = ?,gouki4 = ?,setteiondo = ?,setteijikan = ?,kaisuu = ?,suuryo = ?, "
                 + " bikou1 = ?,bikou2 = ?,tokuisaki = ?,lotkubuncode = ?,ownercode = ?,ukeiretannijyuryo = ?,ukeiresoujyuryou = ?,syurui = ?,"
                 + " startkakunin = ?,syuryonichiji = ?,endtantou = ?,kensabasyo = ?,kosinnichiji = ?,revision = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ? ";
@@ -2174,6 +2203,9 @@ public class GXHDO101B043 implements IFormLogic {
         }
 
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B043Const.GOUKI, srShinkuukansouData))); // 号機
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B043Const.GOUKI2, srShinkuukansouData))); // 号機2
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B043Const.GOUKI3, srShinkuukansouData))); // 号機3
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B043Const.GOUKI4, srShinkuukansouData))); // 号機4
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B043Const.SETTEIONDO, srShinkuukansouData))); // 設定温度
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B043Const.SETTEIJIKAN, srShinkuukansouData))); // 設定時間
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B043Const.KAISUU, srShinkuukansouData))); // 回数
@@ -2383,6 +2415,15 @@ public class GXHDO101B043 implements IFormLogic {
             //号機
             case GXHDO101B043Const.GOUKI:
                 return StringUtil.nullToBlank(srShinkuukansouData.getGouki());
+            //号機2
+            case GXHDO101B043Const.GOUKI2:
+                return StringUtil.nullToBlank(srShinkuukansouData.getGouki2());
+            //号機3
+            case GXHDO101B043Const.GOUKI3:
+                return StringUtil.nullToBlank(srShinkuukansouData.getGouki3());
+            //号機4
+            case GXHDO101B043Const.GOUKI4:
+                return StringUtil.nullToBlank(srShinkuukansouData.getGouki4());
             //設定温度(℃)
             case GXHDO101B043Const.SETTEIONDO:
                 return StringUtil.nullToBlank(srShinkuukansouData.getSetteiondo());
@@ -2442,11 +2483,11 @@ public class GXHDO101B043 implements IFormLogic {
             String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime) throws SQLException {
 
         String sql = "INSERT INTO tmp_sr_shinkuukansou ("
-                + " kojyo,lotno,edaban,lotpre,kcpno,syoribi,kaishijikan,syuuryoujikan,sagyosya,koutei,gouki,setteiondo,setteijikan,"
+                + " kojyo,lotno,edaban,lotpre,kcpno,syoribi,kaishijikan,syuuryoujikan,sagyosya,koutei,gouki,gouki2,gouki3,gouki4,setteiondo,setteijikan,"
                 + " kaisuu,suuryo,bikou1,bikou2,bikou3,tokuisaki,lotkubuncode,ownercode,ukeiretannijyuryo,ukeiresoujyuryou,syurui,"
                 + " startkakunin,syuryonichiji,endtantou,kensabasyo,torokunichiji,kosinnichiji,revision,deleteflag"
                 + ") SELECT "
-                + " kojyo,lotno,edaban,lotpre,kcpno,syoribi,kaishijikan,syuuryoujikan,sagyosya,koutei,gouki,setteiondo,setteijikan,"
+                + " kojyo,lotno,edaban,lotpre,kcpno,syoribi,kaishijikan,syuuryoujikan,sagyosya,koutei,gouki,gouki2,gouki3,gouki4,setteiondo,setteijikan,"
                 + " kaisuu,suuryo,bikou1,bikou2,bikou3,tokuisaki,lotkubuncode,ownercode,ukeiretannijyuryo,ukeiresoujyuryou,syurui,"
                 + " startkakunin,syuryonichiji,endtantou,kensabasyo,? ,? ,? ,?"
                 + " FROM sr_shinkuukansou "
@@ -2573,20 +2614,20 @@ public class GXHDO101B043 implements IFormLogic {
         String[] gouki4ItemValues;
         String[] gouki4CheckBoxValues;
         if (subSrShinkuukansou == null) {
-            gouki1ItemValues = new String[]{"", "", "", "", "", "", "", "", "", ""};
-            gouki1CheckBoxValues = new String[]{"", "", "", "", "", "", "", "", "", ""};
+            gouki1ItemValues = new String[]{"", "", "", "", "", "", "", "", "", "","", "", "", "", "", "", "", "", "", ""};
+            gouki1CheckBoxValues = new String[]{"", "", "", "", "", "", "", "", "", "","", "", "", "", "", "", "", "", "", ""};
             initGouki1DataList.add(gouki1ItemValues);
             initGouki1DataList.add(gouki1CheckBoxValues);
-            gouki2ItemValues = new String[]{"", "", "", "", "", "", "", "", "", ""};
-            gouki2CheckBoxValues = new String[]{"", "", "", "", "", "", "", "", "", ""};
+            gouki2ItemValues = new String[]{"", "", "", "", "", "", "", "", "", "","", "", "", "", "", "", "", "", "", ""};
+            gouki2CheckBoxValues = new String[]{"", "", "", "", "", "", "", "", "", "","", "", "", "", "", "", "", "", "", ""};
             initGouki2DataList.add(gouki2ItemValues);
             initGouki2DataList.add(gouki2CheckBoxValues);
-            gouki3ItemValues = new String[]{"", "", "", "", "", "", "", "", "", ""};
-            gouki3CheckBoxValues = new String[]{"", "", "", "", "", "", "", "", "", ""};
+            gouki3ItemValues = new String[]{"", "", "", "", "", "", "", "", "", "","", "", "", "", "", "", "", "", "", ""};
+            gouki3CheckBoxValues = new String[]{"", "", "", "", "", "", "", "", "", "","", "", "", "", "", "", "", "", "", ""};
             initGouki3DataList.add(gouki3ItemValues);
             initGouki3DataList.add(gouki3CheckBoxValues);
-            gouki4ItemValues = new String[]{"", "", "", "", "", "", "", "", "", ""};
-            gouki4CheckBoxValues = new String[]{"", "", "", "", "", "", "", "", "", ""};
+            gouki4ItemValues = new String[]{"", "", "", "", "", "", "", "", "", "","", "", "", "", "", "", "", "", "", ""};
+            gouki4CheckBoxValues = new String[]{"", "", "", "", "", "", "", "", "", "","", "", "", "", "", "", "", "", "", ""};
             initGouki4DataList.add(gouki4ItemValues);
             initGouki4DataList.add(gouki4CheckBoxValues);
         } else {
@@ -2601,7 +2642,17 @@ public class GXHDO101B043 implements IFormLogic {
                 StringUtil.nullToBlank(subSrShinkuukansou.getGouki1saya7()),
                 StringUtil.nullToBlank(subSrShinkuukansou.getGouki1saya8()),
                 StringUtil.nullToBlank(subSrShinkuukansou.getGouki1saya9()),
-                StringUtil.nullToBlank(subSrShinkuukansou.getGouki1saya10())
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki1saya10()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki1saya11()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki1saya12()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki1saya13()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki1saya14()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki1saya15()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki1saya16()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki1saya17()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki1saya18()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki1saya19()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki1saya20())
             };
             gouki1CheckBoxValues = new String[]{
                 getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki1check1())),
@@ -2613,7 +2664,17 @@ public class GXHDO101B043 implements IFormLogic {
                 getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki1check7())),
                 getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki1check8())),
                 getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki1check9())),
-                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki1check10()))
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki1check10())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki1check11())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki1check12())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki1check13())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki1check14())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki1check15())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki1check16())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki1check17())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki1check18())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki1check19())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki1check20()))
             };
             initGouki1DataList.add(gouki1ItemValues);
             initGouki1DataList.add(gouki1CheckBoxValues);
@@ -2629,7 +2690,17 @@ public class GXHDO101B043 implements IFormLogic {
                 StringUtil.nullToBlank(subSrShinkuukansou.getGouki2saya7()),
                 StringUtil.nullToBlank(subSrShinkuukansou.getGouki2saya8()),
                 StringUtil.nullToBlank(subSrShinkuukansou.getGouki2saya9()),
-                StringUtil.nullToBlank(subSrShinkuukansou.getGouki2saya10())
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki2saya10()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki2saya11()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki2saya12()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki2saya13()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki2saya14()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki2saya15()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki2saya16()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki2saya17()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki2saya18()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki2saya19()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki2saya20())
             };
             gouki2CheckBoxValues = new String[]{
                 getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki2check1())),
@@ -2641,7 +2712,17 @@ public class GXHDO101B043 implements IFormLogic {
                 getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki2check7())),
                 getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki2check8())),
                 getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki2check9())),
-                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki2check10()))
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki2check10())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki2check11())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki2check12())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki2check13())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki2check14())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki2check15())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki2check16())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki2check17())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki2check18())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki2check19())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki2check20()))
             };
             initGouki2DataList.add(gouki2ItemValues);
             initGouki2DataList.add(gouki2CheckBoxValues);
@@ -2657,7 +2738,17 @@ public class GXHDO101B043 implements IFormLogic {
                 StringUtil.nullToBlank(subSrShinkuukansou.getGouki3saya7()),
                 StringUtil.nullToBlank(subSrShinkuukansou.getGouki3saya8()),
                 StringUtil.nullToBlank(subSrShinkuukansou.getGouki3saya9()),
-                StringUtil.nullToBlank(subSrShinkuukansou.getGouki3saya10())
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki3saya10()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki3saya11()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki3saya12()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki3saya13()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki3saya14()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki3saya15()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki3saya16()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki3saya17()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki3saya18()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki3saya19()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki3saya20())
             };
             gouki3CheckBoxValues = new String[]{
                 getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki3check1())),
@@ -2669,7 +2760,17 @@ public class GXHDO101B043 implements IFormLogic {
                 getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki3check7())),
                 getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki3check8())),
                 getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki3check9())),
-                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki3check10()))
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki3check10())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki3check11())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki3check12())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki3check13())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki3check14())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki3check15())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki3check16())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki3check17())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki3check18())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki3check19())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki3check20()))
             };
             initGouki3DataList.add(gouki3ItemValues);
             initGouki3DataList.add(gouki3CheckBoxValues);
@@ -2685,7 +2786,17 @@ public class GXHDO101B043 implements IFormLogic {
                 StringUtil.nullToBlank(subSrShinkuukansou.getGouki4saya7()),
                 StringUtil.nullToBlank(subSrShinkuukansou.getGouki4saya8()),
                 StringUtil.nullToBlank(subSrShinkuukansou.getGouki4saya9()),
-                StringUtil.nullToBlank(subSrShinkuukansou.getGouki4saya10())
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki4saya10()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki4saya11()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki4saya12()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki4saya13()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki4saya14()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki4saya15()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki4saya16()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki4saya17()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki4saya18()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki4saya19()),
+                StringUtil.nullToBlank(subSrShinkuukansou.getGouki4saya20())
             };
             gouki4CheckBoxValues = new String[]{
                 getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki4check1())),
@@ -2697,7 +2808,17 @@ public class GXHDO101B043 implements IFormLogic {
                 getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki4check7())),
                 getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki4check8())),
                 getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki4check9())),
-                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki4check10()))
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki4check10())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki4check11())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki4check12())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki4check13())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki4check14())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki4check15())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki4check16())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki4check17())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki4check18())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki4check19())),
+                getCheckBoxCheckValue(StringUtil.nullToBlank(subSrShinkuukansou.getGouki4check20()))
             };
             initGouki4DataList.add(gouki4ItemValues);
             initGouki4DataList.add(gouki4CheckBoxValues);
@@ -2745,23 +2866,38 @@ public class GXHDO101B043 implements IFormLogic {
     private List<SubSrShinkuukansou> loadSubSrShinkuukansou(QueryRunner queryRunnerQcdb, 
             String kojyo, String lotNo, String edaban, int jissekino, String rev) throws SQLException {
         
-        String sql = "SELECT kojyo, lotno, edaban, kaisuu, gouki1saya1, gouki1saya2, "
-                + "gouki1saya3, gouki1saya4, gouki1saya5, gouki1saya6, gouki1saya7, "
-                + "gouki1saya8, gouki1saya9, gouki1saya10, gouki1check1, gouki1check2, "
-                + "gouki1check3, gouki1check4, gouki1check5, gouki1check6, gouki1check7, "
-                + "gouki1check8, gouki1check9, gouki1check10, gouki2saya1, gouki2saya2, "
-                + "gouki2saya3, gouki2saya4, gouki2saya5, gouki2saya6, gouki2saya7, "
-                + "gouki2saya8, gouki2saya9, gouki2saya10, gouki2check1, gouki2check2, "
-                + "gouki2check3, gouki2check4, gouki2check5, gouki2check6, gouki2check7, "
-                + "gouki2check8, gouki2check9, gouki2check10, gouki3saya1, gouki3saya2, "
-                + "gouki3saya3, gouki3saya4, gouki3saya5, gouki3saya6, gouki3saya7, "
-                + "gouki3saya8, gouki3saya9, gouki3saya10, gouki3check1, gouki3check2, "
+        String sql = "SELECT kojyo, lotno, edaban, kaisuu, gouki1saya1, gouki1saya2, gouki1saya3, "
+                + "gouki1saya4, gouki1saya5, gouki1saya6, gouki1saya7, gouki1saya8, gouki1saya9, "
+                + "gouki1saya10, gouki1saya11, gouki1saya12, gouki1saya13, gouki1saya14, "                
+                + "gouki1saya15, gouki1saya16, gouki1saya17, gouki1saya18, gouki1saya19, "                
+                + "gouki1saya20, gouki1check1, gouki1check2, gouki1check3, gouki1check4, "
+                + "gouki1check5, gouki1check6, gouki1check7, gouki1check8, gouki1check9, "
+                + "gouki1check10, gouki1check11, gouki1check12, gouki1check13, gouki1check14, "
+                + "gouki1check15, gouki1check16, gouki1check17, gouki1check18, gouki1check19, "
+                + "gouki1check20, gouki2saya1, gouki2saya2, gouki2saya3, gouki2saya4, gouki2saya5, "
+                + "gouki2saya6, gouki2saya7, gouki2saya8, gouki2saya9, gouki2saya10, gouki2saya11, "
+                + "gouki2saya12, gouki2saya13, gouki2saya14, gouki2saya15, gouki2saya16, gouki2saya17, "
+                + "gouki2saya18, gouki2saya19, gouki2saya20, gouki2check1, "
+                + "gouki2check2, gouki2check3, gouki2check4, gouki2check5, gouki2check6, "
+                + "gouki2check7, gouki2check8, gouki2check9, gouki2check10, gouki2check11, "
+                + "gouki2check12, gouki2check13, gouki2check14, gouki2check15, gouki2check16, "
+                + "gouki2check17, gouki2check18, gouki2check19, gouki2check20, gouki3saya1, "
+                + "gouki3saya2, gouki3saya3, gouki3saya4, gouki3saya5, gouki3saya6, gouki3saya7, "
+                + "gouki3saya8, gouki3saya9, gouki3saya10, gouki3saya11, gouki3saya12, "
+                + "gouki3saya13, gouki3saya14, gouki3saya15, gouki3saya16, gouki3saya17, "
+                + "gouki3saya18, gouki3saya19, gouki3saya20, gouki3check1, gouki3check2, "
                 + "gouki3check3, gouki3check4, gouki3check5, gouki3check6, gouki3check7, "
-                + "gouki3check8, gouki3check9, gouki3check10, gouki4saya1, gouki4saya2, "
-                + "gouki4saya3, gouki4saya4, gouki4saya5, gouki4saya6, gouki4saya7, "
-                + "gouki4saya8, gouki4saya9, gouki4saya10, gouki4check1, gouki4check2, "
-                + "gouki4check3, gouki4check4, gouki4check5, gouki4check6, gouki4check7, "
-                + "gouki4check8, gouki4check9, gouki4check10, torokunichiji, kosinnichiji, revision, '0' AS deleteflag "
+                + "gouki3check8, gouki3check9, gouki3check10, gouki3check11, gouki3check12, "
+                + "gouki3check13, gouki3check14, gouki3check15, gouki3check16, gouki3check17, "
+                + "gouki3check18, gouki3check19, gouki3check20, gouki4saya1, gouki4saya2, "
+                + "gouki4saya3, gouki4saya4, gouki4saya5, gouki4saya6, gouki4saya7, gouki4saya8, "
+                + "gouki4saya9, gouki4saya10, gouki4saya11, gouki4saya12, gouki4saya13, "
+                + "gouki4saya14, gouki4saya15, gouki4saya16, gouki4saya17, gouki4saya18, "
+                + "gouki4saya19, gouki4saya20, gouki4check1, gouki4check2, gouki4check3, "
+                + "gouki4check4, gouki4check5, gouki4check6, gouki4check7, gouki4check8, "
+                + "gouki4check9, gouki4check10, gouki4check11, gouki4check12, "
+                + "gouki4check13, gouki4check14, gouki4check15, gouki4check16, gouki4check17, "
+                + "gouki4check18, gouki4check19, gouki4check20, torokunichiji, kosinnichiji, revision, '0' AS deleteflag "
                 + "FROM sub_sr_shinkuukansou "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? ";
 
@@ -2796,6 +2932,16 @@ public class GXHDO101B043 implements IFormLogic {
         mapping.put("gouki1saya8", "gouki1saya8"); // 号機①ｻﾔNo8
         mapping.put("gouki1saya9", "gouki1saya9"); // 号機①ｻﾔNo9
         mapping.put("gouki1saya10", "gouki1saya10"); // 号機①ｻﾔNo10
+        mapping.put("gouki1saya11", "gouki1saya11"); // 号機①ｻﾔNo11
+        mapping.put("gouki1saya12", "gouki1saya12"); // 号機①ｻﾔNo12
+        mapping.put("gouki1saya13", "gouki1saya13"); // 号機①ｻﾔNo13
+        mapping.put("gouki1saya14", "gouki1saya14"); // 号機①ｻﾔNo14
+        mapping.put("gouki1saya15", "gouki1saya15"); // 号機①ｻﾔNo15
+        mapping.put("gouki1saya16", "gouki1saya16"); // 号機①ｻﾔNo16
+        mapping.put("gouki1saya17", "gouki1saya17"); // 号機①ｻﾔNo17
+        mapping.put("gouki1saya18", "gouki1saya18"); // 号機①ｻﾔNo18
+        mapping.put("gouki1saya19", "gouki1saya19"); // 号機①ｻﾔNo19
+        mapping.put("gouki1saya20", "gouki1saya20"); // 号機①ｻﾔNo20
         mapping.put("gouki1check1", "gouki1check1"); // 号機①ﾁｪｯｸ1
         mapping.put("gouki1check2", "gouki1check2"); // 号機①ﾁｪｯｸ2
         mapping.put("gouki1check3", "gouki1check3"); // 号機①ﾁｪｯｸ3
@@ -2806,6 +2952,16 @@ public class GXHDO101B043 implements IFormLogic {
         mapping.put("gouki1check8", "gouki1check8"); // 号機①ﾁｪｯｸ8
         mapping.put("gouki1check9", "gouki1check9"); // 号機①ﾁｪｯｸ9
         mapping.put("gouki1check10", "gouki1check10"); // 号機①ﾁｪｯｸ10
+        mapping.put("gouki1check11", "gouki1check11"); // 号機①ﾁｪｯｸ11
+        mapping.put("gouki1check12", "gouki1check12"); // 号機①ﾁｪｯｸ12
+        mapping.put("gouki1check13", "gouki1check13"); // 号機①ﾁｪｯｸ13
+        mapping.put("gouki1check14", "gouki1check14"); // 号機①ﾁｪｯｸ14
+        mapping.put("gouki1check15", "gouki1check15"); // 号機①ﾁｪｯｸ15
+        mapping.put("gouki1check16", "gouki1check16"); // 号機①ﾁｪｯｸ16
+        mapping.put("gouki1check17", "gouki1check17"); // 号機①ﾁｪｯｸ17
+        mapping.put("gouki1check18", "gouki1check18"); // 号機①ﾁｪｯｸ18
+        mapping.put("gouki1check19", "gouki1check19"); // 号機①ﾁｪｯｸ19
+        mapping.put("gouki1check20", "gouki1check20"); // 号機①ﾁｪｯｸ20
         mapping.put("gouki2saya1", "gouki2saya1"); // 号機②ｻﾔNo1
         mapping.put("gouki2saya2", "gouki2saya2"); // 号機②ｻﾔNo2
         mapping.put("gouki2saya3", "gouki2saya3"); // 号機②ｻﾔNo3
@@ -2816,6 +2972,16 @@ public class GXHDO101B043 implements IFormLogic {
         mapping.put("gouki2saya8", "gouki2saya8"); // 号機②ｻﾔNo8
         mapping.put("gouki2saya9", "gouki2saya9"); // 号機②ｻﾔNo9
         mapping.put("gouki2saya10", "gouki2saya10"); // 号機②ｻﾔNo10
+        mapping.put("gouki2saya11", "gouki2saya11"); // 号機②ｻﾔNo11
+        mapping.put("gouki2saya12", "gouki2saya12"); // 号機②ｻﾔNo12
+        mapping.put("gouki2saya13", "gouki2saya13"); // 号機②ｻﾔNo13
+        mapping.put("gouki2saya14", "gouki2saya14"); // 号機②ｻﾔNo14
+        mapping.put("gouki2saya15", "gouki2saya15"); // 号機②ｻﾔNo15
+        mapping.put("gouki2saya16", "gouki2saya16"); // 号機②ｻﾔNo16
+        mapping.put("gouki2saya17", "gouki2saya17"); // 号機②ｻﾔNo17
+        mapping.put("gouki2saya18", "gouki2saya18"); // 号機②ｻﾔNo18
+        mapping.put("gouki2saya19", "gouki2saya19"); // 号機②ｻﾔNo19
+        mapping.put("gouki2saya20", "gouki2saya20"); // 号機②ｻﾔNo20
         mapping.put("gouki2check1", "gouki2check1"); // 号機②ﾁｪｯｸ1
         mapping.put("gouki2check2", "gouki2check2"); // 号機②ﾁｪｯｸ2
         mapping.put("gouki2check3", "gouki2check3"); // 号機②ﾁｪｯｸ3
@@ -2826,6 +2992,16 @@ public class GXHDO101B043 implements IFormLogic {
         mapping.put("gouki2check8", "gouki2check8"); // 号機②ﾁｪｯｸ8
         mapping.put("gouki2check9", "gouki2check9"); // 号機②ﾁｪｯｸ9
         mapping.put("gouki2check10", "gouki2check10"); // 号機②ﾁｪｯｸ10
+        mapping.put("gouki2check11", "gouki2check11"); // 号機②ﾁｪｯｸ11
+        mapping.put("gouki2check12", "gouki2check12"); // 号機②ﾁｪｯｸ12
+        mapping.put("gouki2check13", "gouki2check13"); // 号機②ﾁｪｯｸ13
+        mapping.put("gouki2check14", "gouki2check14"); // 号機②ﾁｪｯｸ14
+        mapping.put("gouki2check15", "gouki2check15"); // 号機②ﾁｪｯｸ15
+        mapping.put("gouki2check16", "gouki2check16"); // 号機②ﾁｪｯｸ16
+        mapping.put("gouki2check17", "gouki2check17"); // 号機②ﾁｪｯｸ17
+        mapping.put("gouki2check18", "gouki2check18"); // 号機②ﾁｪｯｸ18
+        mapping.put("gouki2check19", "gouki2check19"); // 号機②ﾁｪｯｸ19
+        mapping.put("gouki2check20", "gouki2check20"); // 号機②ﾁｪｯｸ20
         mapping.put("gouki3saya1", "gouki3saya1"); // 号機③ｻﾔNo1
         mapping.put("gouki3saya2", "gouki3saya2"); // 号機③ｻﾔNo2
         mapping.put("gouki3saya3", "gouki3saya3"); // 号機③ｻﾔNo3
@@ -2836,6 +3012,16 @@ public class GXHDO101B043 implements IFormLogic {
         mapping.put("gouki3saya8", "gouki3saya8"); // 号機③ｻﾔNo8
         mapping.put("gouki3saya9", "gouki3saya9"); // 号機③ｻﾔNo9
         mapping.put("gouki3saya10", "gouki3saya10"); // 号機③ｻﾔNo10
+        mapping.put("gouki3saya11", "gouki3saya11"); // 号機③ｻﾔNo11
+        mapping.put("gouki3saya12", "gouki3saya12"); // 号機③ｻﾔNo12
+        mapping.put("gouki3saya13", "gouki3saya13"); // 号機③ｻﾔNo13
+        mapping.put("gouki3saya14", "gouki3saya14"); // 号機③ｻﾔNo14
+        mapping.put("gouki3saya15", "gouki3saya15"); // 号機③ｻﾔNo15
+        mapping.put("gouki3saya16", "gouki3saya16"); // 号機③ｻﾔNo16
+        mapping.put("gouki3saya17", "gouki3saya17"); // 号機③ｻﾔNo17
+        mapping.put("gouki3saya18", "gouki3saya18"); // 号機③ｻﾔNo18
+        mapping.put("gouki3saya19", "gouki3saya19"); // 号機③ｻﾔNo19
+        mapping.put("gouki3saya20", "gouki3saya20"); // 号機③ｻﾔNo20
         mapping.put("gouki3check1", "gouki3check1"); // 号機③ﾁｪｯｸ1
         mapping.put("gouki3check2", "gouki3check2"); // 号機③ﾁｪｯｸ2
         mapping.put("gouki3check3", "gouki3check3"); // 号機③ﾁｪｯｸ3
@@ -2846,6 +3032,16 @@ public class GXHDO101B043 implements IFormLogic {
         mapping.put("gouki3check8", "gouki3check8"); // 号機③ﾁｪｯｸ8
         mapping.put("gouki3check9", "gouki3check9"); // 号機③ﾁｪｯｸ9
         mapping.put("gouki3check10", "gouki3check10"); // 号機③ﾁｪｯｸ10
+        mapping.put("gouki3check11", "gouki3check11"); // 号機③ﾁｪｯｸ11
+        mapping.put("gouki3check12", "gouki3check12"); // 号機③ﾁｪｯｸ12
+        mapping.put("gouki3check13", "gouki3check13"); // 号機③ﾁｪｯｸ13
+        mapping.put("gouki3check14", "gouki3check14"); // 号機③ﾁｪｯｸ14
+        mapping.put("gouki3check15", "gouki3check15"); // 号機③ﾁｪｯｸ15
+        mapping.put("gouki3check16", "gouki3check16"); // 号機③ﾁｪｯｸ16
+        mapping.put("gouki3check17", "gouki3check17"); // 号機③ﾁｪｯｸ17
+        mapping.put("gouki3check18", "gouki3check18"); // 号機③ﾁｪｯｸ18
+        mapping.put("gouki3check19", "gouki3check19"); // 号機③ﾁｪｯｸ19
+        mapping.put("gouki3check20", "gouki3check20"); // 号機③ﾁｪｯｸ20
         mapping.put("gouki4saya1", "gouki4saya1"); // 号機④ｻﾔNo1
         mapping.put("gouki4saya2", "gouki4saya2"); // 号機④ｻﾔNo2
         mapping.put("gouki4saya3", "gouki4saya3"); // 号機④ｻﾔNo3
@@ -2856,6 +3052,16 @@ public class GXHDO101B043 implements IFormLogic {
         mapping.put("gouki4saya8", "gouki4saya8"); // 号機④ｻﾔNo8
         mapping.put("gouki4saya9", "gouki4saya9"); // 号機④ｻﾔNo9
         mapping.put("gouki4saya10", "gouki4saya10"); // 号機④ｻﾔNo10
+        mapping.put("gouki4saya11", "gouki4saya11"); // 号機④ｻﾔNo11
+        mapping.put("gouki4saya12", "gouki4saya12"); // 号機④ｻﾔNo12
+        mapping.put("gouki4saya13", "gouki4saya13"); // 号機④ｻﾔNo13
+        mapping.put("gouki4saya14", "gouki4saya14"); // 号機④ｻﾔNo14
+        mapping.put("gouki4saya15", "gouki4saya15"); // 号機④ｻﾔNo15
+        mapping.put("gouki4saya16", "gouki4saya16"); // 号機④ｻﾔNo16
+        mapping.put("gouki4saya17", "gouki4saya17"); // 号機④ｻﾔNo17
+        mapping.put("gouki4saya18", "gouki4saya18"); // 号機④ｻﾔNo18
+        mapping.put("gouki4saya19", "gouki4saya19"); // 号機④ｻﾔNo19
+        mapping.put("gouki4saya20", "gouki4saya20"); // 号機④ｻﾔNo20
         mapping.put("gouki4check1", "gouki4check1"); // 号機④ﾁｪｯｸ1
         mapping.put("gouki4check2", "gouki4check2"); // 号機④ﾁｪｯｸ2
         mapping.put("gouki4check3", "gouki4check3"); // 号機④ﾁｪｯｸ3
@@ -2866,6 +3072,16 @@ public class GXHDO101B043 implements IFormLogic {
         mapping.put("gouki4check8", "gouki4check8"); // 号機④ﾁｪｯｸ8
         mapping.put("gouki4check9", "gouki4check9"); // 号機④ﾁｪｯｸ9
         mapping.put("gouki4check10", "gouki4check10"); // 号機④ﾁｪｯｸ10
+        mapping.put("gouki4check11", "gouki4check11"); // 号機④ﾁｪｯｸ11
+        mapping.put("gouki4check12", "gouki4check12"); // 号機④ﾁｪｯｸ12
+        mapping.put("gouki4check13", "gouki4check13"); // 号機④ﾁｪｯｸ13
+        mapping.put("gouki4check14", "gouki4check14"); // 号機④ﾁｪｯｸ14
+        mapping.put("gouki4check15", "gouki4check15"); // 号機④ﾁｪｯｸ15
+        mapping.put("gouki4check16", "gouki4check16"); // 号機④ﾁｪｯｸ16
+        mapping.put("gouki4check17", "gouki4check17"); // 号機④ﾁｪｯｸ17
+        mapping.put("gouki4check18", "gouki4check18"); // 号機④ﾁｪｯｸ18
+        mapping.put("gouki4check19", "gouki4check19"); // 号機④ﾁｪｯｸ19
+        mapping.put("gouki4check20", "gouki4check20"); // 号機④ﾁｪｯｸ20
         mapping.put("torokunichiji", "torokunichiji"); // 登録日時
         mapping.put("kosinnichiji", "kosinnichiji"); // 更新日時
         mapping.put("revision", "revision"); // revision
@@ -2894,23 +3110,38 @@ public class GXHDO101B043 implements IFormLogic {
     private List<SubSrShinkuukansou> loadTmpSubSrShinkuukansou(QueryRunner queryRunnerQcdb, 
             String kojyo, String lotNo, String edaban, int jissekino, String rev) throws SQLException {
         
-        String sql = "SELECT kojyo, lotno, edaban, kaisuu, gouki1saya1, gouki1saya2, "
-                + "gouki1saya3, gouki1saya4, gouki1saya5, gouki1saya6, gouki1saya7, "
-                + "gouki1saya8, gouki1saya9, gouki1saya10, gouki1check1, gouki1check2, "
-                + "gouki1check3, gouki1check4, gouki1check5, gouki1check6, gouki1check7, "
-                + "gouki1check8, gouki1check9, gouki1check10, gouki2saya1, gouki2saya2, "
-                + "gouki2saya3, gouki2saya4, gouki2saya5, gouki2saya6, gouki2saya7, "
-                + "gouki2saya8, gouki2saya9, gouki2saya10, gouki2check1, gouki2check2, "
-                + "gouki2check3, gouki2check4, gouki2check5, gouki2check6, gouki2check7, "
-                + "gouki2check8, gouki2check9, gouki2check10, gouki3saya1, gouki3saya2, "
-                + "gouki3saya3, gouki3saya4, gouki3saya5, gouki3saya6, gouki3saya7, "
-                + "gouki3saya8, gouki3saya9, gouki3saya10, gouki3check1, gouki3check2, "
+        String sql = "SELECT kojyo, lotno, edaban, kaisuu, gouki1saya1, gouki1saya2, gouki1saya3, "
+                + "gouki1saya4, gouki1saya5, gouki1saya6, gouki1saya7, gouki1saya8, gouki1saya9, "
+                + "gouki1saya10, gouki1saya11, gouki1saya12, gouki1saya13, gouki1saya14, "                
+                + "gouki1saya15, gouki1saya16, gouki1saya17, gouki1saya18, gouki1saya19, "                
+                + "gouki1saya20, gouki1check1, gouki1check2, gouki1check3, gouki1check4, "
+                + "gouki1check5, gouki1check6, gouki1check7, gouki1check8, gouki1check9, "
+                + "gouki1check10, gouki1check11, gouki1check12, gouki1check13, gouki1check14, "
+                + "gouki1check15, gouki1check16, gouki1check17, gouki1check18, gouki1check19, "
+                + "gouki1check20, gouki2saya1, gouki2saya2, gouki2saya3, gouki2saya4, gouki2saya5, "
+                + "gouki2saya6, gouki2saya7, gouki2saya8, gouki2saya9, gouki2saya10, gouki2saya11, "
+                + "gouki2saya12, gouki2saya13, gouki2saya14, gouki2saya15, gouki2saya16, gouki2saya17, "
+                + "gouki2saya18, gouki2saya19, gouki2saya20, gouki2check1, "
+                + "gouki2check2, gouki2check3, gouki2check4, gouki2check5, gouki2check6, "
+                + "gouki2check7, gouki2check8, gouki2check9, gouki2check10, gouki2check11, "
+                + "gouki2check12, gouki2check13, gouki2check14, gouki2check15, gouki2check16, "
+                + "gouki2check17, gouki2check18, gouki2check19, gouki2check20, gouki3saya1, "
+                + "gouki3saya2, gouki3saya3, gouki3saya4, gouki3saya5, gouki3saya6, gouki3saya7, "
+                + "gouki3saya8, gouki3saya9, gouki3saya10, gouki3saya11, gouki3saya12, "
+                + "gouki3saya13, gouki3saya14, gouki3saya15, gouki3saya16, gouki3saya17, "
+                + "gouki3saya18, gouki3saya19, gouki3saya20, gouki3check1, gouki3check2, "
                 + "gouki3check3, gouki3check4, gouki3check5, gouki3check6, gouki3check7, "
-                + "gouki3check8, gouki3check9, gouki3check10, gouki4saya1, gouki4saya2, "
-                + "gouki4saya3, gouki4saya4, gouki4saya5, gouki4saya6, gouki4saya7, "
-                + "gouki4saya8, gouki4saya9, gouki4saya10, gouki4check1, gouki4check2, "
-                + "gouki4check3, gouki4check4, gouki4check5, gouki4check6, gouki4check7, "
-                + "gouki4check8, gouki4check9, gouki4check10, torokunichiji, kosinnichiji, revision, deleteflag "
+                + "gouki3check8, gouki3check9, gouki3check10, gouki3check11, gouki3check12, "
+                + "gouki3check13, gouki3check14, gouki3check15, gouki3check16, gouki3check17, "
+                + "gouki3check18, gouki3check19, gouki3check20, gouki4saya1, gouki4saya2, "
+                + "gouki4saya3, gouki4saya4, gouki4saya5, gouki4saya6, gouki4saya7, gouki4saya8, "
+                + "gouki4saya9, gouki4saya10, gouki4saya11, gouki4saya12, gouki4saya13, "
+                + "gouki4saya14, gouki4saya15, gouki4saya16, gouki4saya17, gouki4saya18, "
+                + "gouki4saya19, gouki4saya20, gouki4check1, gouki4check2, gouki4check3, "
+                + "gouki4check4, gouki4check5, gouki4check6, gouki4check7, gouki4check8, "
+                + "gouki4check9, gouki4check10, gouki4check11, gouki4check12, "
+                + "gouki4check13, gouki4check14, gouki4check15, gouki4check16, gouki4check17, "
+                + "gouki4check18, gouki4check19, gouki4check20, torokunichiji, kosinnichiji, revision, deleteflag "
                 + "FROM tmp_sub_sr_shinkuukansou "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND deleteflag = ? ";
 
@@ -2946,6 +3177,16 @@ public class GXHDO101B043 implements IFormLogic {
         mapping.put("gouki1saya8", "gouki1saya8"); // 号機①ｻﾔNo8
         mapping.put("gouki1saya9", "gouki1saya9"); // 号機①ｻﾔNo9
         mapping.put("gouki1saya10", "gouki1saya10"); // 号機①ｻﾔNo10
+        mapping.put("gouki1saya11", "gouki1saya11"); // 号機①ｻﾔNo11
+        mapping.put("gouki1saya12", "gouki1saya12"); // 号機①ｻﾔNo12
+        mapping.put("gouki1saya13", "gouki1saya13"); // 号機①ｻﾔNo13
+        mapping.put("gouki1saya14", "gouki1saya14"); // 号機①ｻﾔNo14
+        mapping.put("gouki1saya15", "gouki1saya15"); // 号機①ｻﾔNo15
+        mapping.put("gouki1saya16", "gouki1saya16"); // 号機①ｻﾔNo16
+        mapping.put("gouki1saya17", "gouki1saya17"); // 号機①ｻﾔNo17
+        mapping.put("gouki1saya18", "gouki1saya18"); // 号機①ｻﾔNo18
+        mapping.put("gouki1saya19", "gouki1saya19"); // 号機①ｻﾔNo19
+        mapping.put("gouki1saya20", "gouki1saya20"); // 号機①ｻﾔNo20
         mapping.put("gouki1check1", "gouki1check1"); // 号機①ﾁｪｯｸ1
         mapping.put("gouki1check2", "gouki1check2"); // 号機①ﾁｪｯｸ2
         mapping.put("gouki1check3", "gouki1check3"); // 号機①ﾁｪｯｸ3
@@ -2956,6 +3197,16 @@ public class GXHDO101B043 implements IFormLogic {
         mapping.put("gouki1check8", "gouki1check8"); // 号機①ﾁｪｯｸ8
         mapping.put("gouki1check9", "gouki1check9"); // 号機①ﾁｪｯｸ9
         mapping.put("gouki1check10", "gouki1check10"); // 号機①ﾁｪｯｸ10
+        mapping.put("gouki1check11", "gouki1check11"); // 号機①ﾁｪｯｸ11
+        mapping.put("gouki1check12", "gouki1check12"); // 号機①ﾁｪｯｸ12
+        mapping.put("gouki1check13", "gouki1check13"); // 号機①ﾁｪｯｸ13
+        mapping.put("gouki1check14", "gouki1check14"); // 号機①ﾁｪｯｸ14
+        mapping.put("gouki1check15", "gouki1check15"); // 号機①ﾁｪｯｸ15
+        mapping.put("gouki1check16", "gouki1check16"); // 号機①ﾁｪｯｸ16
+        mapping.put("gouki1check17", "gouki1check17"); // 号機①ﾁｪｯｸ17
+        mapping.put("gouki1check18", "gouki1check18"); // 号機①ﾁｪｯｸ18
+        mapping.put("gouki1check19", "gouki1check19"); // 号機①ﾁｪｯｸ19
+        mapping.put("gouki1check20", "gouki1check20"); // 号機①ﾁｪｯｸ20
         mapping.put("gouki2saya1", "gouki2saya1"); // 号機②ｻﾔNo1
         mapping.put("gouki2saya2", "gouki2saya2"); // 号機②ｻﾔNo2
         mapping.put("gouki2saya3", "gouki2saya3"); // 号機②ｻﾔNo3
@@ -2966,6 +3217,16 @@ public class GXHDO101B043 implements IFormLogic {
         mapping.put("gouki2saya8", "gouki2saya8"); // 号機②ｻﾔNo8
         mapping.put("gouki2saya9", "gouki2saya9"); // 号機②ｻﾔNo9
         mapping.put("gouki2saya10", "gouki2saya10"); // 号機②ｻﾔNo10
+        mapping.put("gouki2saya11", "gouki2saya11"); // 号機②ｻﾔNo11
+        mapping.put("gouki2saya12", "gouki2saya12"); // 号機②ｻﾔNo12
+        mapping.put("gouki2saya13", "gouki2saya13"); // 号機②ｻﾔNo13
+        mapping.put("gouki2saya14", "gouki2saya14"); // 号機②ｻﾔNo14
+        mapping.put("gouki2saya15", "gouki2saya15"); // 号機②ｻﾔNo15
+        mapping.put("gouki2saya16", "gouki2saya16"); // 号機②ｻﾔNo16
+        mapping.put("gouki2saya17", "gouki2saya17"); // 号機②ｻﾔNo17
+        mapping.put("gouki2saya18", "gouki2saya18"); // 号機②ｻﾔNo18
+        mapping.put("gouki2saya19", "gouki2saya19"); // 号機②ｻﾔNo19
+        mapping.put("gouki2saya20", "gouki2saya20"); // 号機②ｻﾔNo20
         mapping.put("gouki2check1", "gouki2check1"); // 号機②ﾁｪｯｸ1
         mapping.put("gouki2check2", "gouki2check2"); // 号機②ﾁｪｯｸ2
         mapping.put("gouki2check3", "gouki2check3"); // 号機②ﾁｪｯｸ3
@@ -2976,6 +3237,16 @@ public class GXHDO101B043 implements IFormLogic {
         mapping.put("gouki2check8", "gouki2check8"); // 号機②ﾁｪｯｸ8
         mapping.put("gouki2check9", "gouki2check9"); // 号機②ﾁｪｯｸ9
         mapping.put("gouki2check10", "gouki2check10"); // 号機②ﾁｪｯｸ10
+        mapping.put("gouki2check11", "gouki2check11"); // 号機②ﾁｪｯｸ11
+        mapping.put("gouki2check12", "gouki2check12"); // 号機②ﾁｪｯｸ12
+        mapping.put("gouki2check13", "gouki2check13"); // 号機②ﾁｪｯｸ13
+        mapping.put("gouki2check14", "gouki2check14"); // 号機②ﾁｪｯｸ14
+        mapping.put("gouki2check15", "gouki2check15"); // 号機②ﾁｪｯｸ15
+        mapping.put("gouki2check16", "gouki2check16"); // 号機②ﾁｪｯｸ16
+        mapping.put("gouki2check17", "gouki2check17"); // 号機②ﾁｪｯｸ17
+        mapping.put("gouki2check18", "gouki2check18"); // 号機②ﾁｪｯｸ18
+        mapping.put("gouki2check19", "gouki2check19"); // 号機②ﾁｪｯｸ19
+        mapping.put("gouki2check20", "gouki2check20"); // 号機②ﾁｪｯｸ20
         mapping.put("gouki3saya1", "gouki3saya1"); // 号機③ｻﾔNo1
         mapping.put("gouki3saya2", "gouki3saya2"); // 号機③ｻﾔNo2
         mapping.put("gouki3saya3", "gouki3saya3"); // 号機③ｻﾔNo3
@@ -2986,6 +3257,16 @@ public class GXHDO101B043 implements IFormLogic {
         mapping.put("gouki3saya8", "gouki3saya8"); // 号機③ｻﾔNo8
         mapping.put("gouki3saya9", "gouki3saya9"); // 号機③ｻﾔNo9
         mapping.put("gouki3saya10", "gouki3saya10"); // 号機③ｻﾔNo10
+        mapping.put("gouki3saya11", "gouki3saya11"); // 号機③ｻﾔNo11
+        mapping.put("gouki3saya12", "gouki3saya12"); // 号機③ｻﾔNo12
+        mapping.put("gouki3saya13", "gouki3saya13"); // 号機③ｻﾔNo13
+        mapping.put("gouki3saya14", "gouki3saya14"); // 号機③ｻﾔNo14
+        mapping.put("gouki3saya15", "gouki3saya15"); // 号機③ｻﾔNo15
+        mapping.put("gouki3saya16", "gouki3saya16"); // 号機③ｻﾔNo16
+        mapping.put("gouki3saya17", "gouki3saya17"); // 号機③ｻﾔNo17
+        mapping.put("gouki3saya18", "gouki3saya18"); // 号機③ｻﾔNo18
+        mapping.put("gouki3saya19", "gouki3saya19"); // 号機③ｻﾔNo19
+        mapping.put("gouki3saya20", "gouki3saya20"); // 号機③ｻﾔNo20
         mapping.put("gouki3check1", "gouki3check1"); // 号機③ﾁｪｯｸ1
         mapping.put("gouki3check2", "gouki3check2"); // 号機③ﾁｪｯｸ2
         mapping.put("gouki3check3", "gouki3check3"); // 号機③ﾁｪｯｸ3
@@ -2996,6 +3277,16 @@ public class GXHDO101B043 implements IFormLogic {
         mapping.put("gouki3check8", "gouki3check8"); // 号機③ﾁｪｯｸ8
         mapping.put("gouki3check9", "gouki3check9"); // 号機③ﾁｪｯｸ9
         mapping.put("gouki3check10", "gouki3check10"); // 号機③ﾁｪｯｸ10
+        mapping.put("gouki3check11", "gouki3check11"); // 号機③ﾁｪｯｸ11
+        mapping.put("gouki3check12", "gouki3check12"); // 号機③ﾁｪｯｸ12
+        mapping.put("gouki3check13", "gouki3check13"); // 号機③ﾁｪｯｸ13
+        mapping.put("gouki3check14", "gouki3check14"); // 号機③ﾁｪｯｸ14
+        mapping.put("gouki3check15", "gouki3check15"); // 号機③ﾁｪｯｸ15
+        mapping.put("gouki3check16", "gouki3check16"); // 号機③ﾁｪｯｸ16
+        mapping.put("gouki3check17", "gouki3check17"); // 号機③ﾁｪｯｸ17
+        mapping.put("gouki3check18", "gouki3check18"); // 号機③ﾁｪｯｸ18
+        mapping.put("gouki3check19", "gouki3check19"); // 号機③ﾁｪｯｸ19
+        mapping.put("gouki3check20", "gouki3check20"); // 号機③ﾁｪｯｸ20
         mapping.put("gouki4saya1", "gouki4saya1"); // 号機④ｻﾔNo1
         mapping.put("gouki4saya2", "gouki4saya2"); // 号機④ｻﾔNo2
         mapping.put("gouki4saya3", "gouki4saya3"); // 号機④ｻﾔNo3
@@ -3006,6 +3297,16 @@ public class GXHDO101B043 implements IFormLogic {
         mapping.put("gouki4saya8", "gouki4saya8"); // 号機④ｻﾔNo8
         mapping.put("gouki4saya9", "gouki4saya9"); // 号機④ｻﾔNo9
         mapping.put("gouki4saya10", "gouki4saya10"); // 号機④ｻﾔNo10
+        mapping.put("gouki4saya11", "gouki4saya11"); // 号機④ｻﾔNo11
+        mapping.put("gouki4saya12", "gouki4saya12"); // 号機④ｻﾔNo12
+        mapping.put("gouki4saya13", "gouki4saya13"); // 号機④ｻﾔNo13
+        mapping.put("gouki4saya14", "gouki4saya14"); // 号機④ｻﾔNo14
+        mapping.put("gouki4saya15", "gouki4saya15"); // 号機④ｻﾔNo15
+        mapping.put("gouki4saya16", "gouki4saya16"); // 号機④ｻﾔNo16
+        mapping.put("gouki4saya17", "gouki4saya17"); // 号機④ｻﾔNo17
+        mapping.put("gouki4saya18", "gouki4saya18"); // 号機④ｻﾔNo18
+        mapping.put("gouki4saya19", "gouki4saya19"); // 号機④ｻﾔNo19
+        mapping.put("gouki4saya20", "gouki4saya20"); // 号機④ｻﾔNo20
         mapping.put("gouki4check1", "gouki4check1"); // 号機④ﾁｪｯｸ1
         mapping.put("gouki4check2", "gouki4check2"); // 号機④ﾁｪｯｸ2
         mapping.put("gouki4check3", "gouki4check3"); // 号機④ﾁｪｯｸ3
@@ -3016,6 +3317,16 @@ public class GXHDO101B043 implements IFormLogic {
         mapping.put("gouki4check8", "gouki4check8"); // 号機④ﾁｪｯｸ8
         mapping.put("gouki4check9", "gouki4check9"); // 号機④ﾁｪｯｸ9
         mapping.put("gouki4check10", "gouki4check10"); // 号機④ﾁｪｯｸ10
+        mapping.put("gouki4check11", "gouki4check11"); // 号機④ﾁｪｯｸ11
+        mapping.put("gouki4check12", "gouki4check12"); // 号機④ﾁｪｯｸ12
+        mapping.put("gouki4check13", "gouki4check13"); // 号機④ﾁｪｯｸ13
+        mapping.put("gouki4check14", "gouki4check14"); // 号機④ﾁｪｯｸ14
+        mapping.put("gouki4check15", "gouki4check15"); // 号機④ﾁｪｯｸ15
+        mapping.put("gouki4check16", "gouki4check16"); // 号機④ﾁｪｯｸ16
+        mapping.put("gouki4check17", "gouki4check17"); // 号機④ﾁｪｯｸ17
+        mapping.put("gouki4check18", "gouki4check18"); // 号機④ﾁｪｯｸ18
+        mapping.put("gouki4check19", "gouki4check19"); // 号機④ﾁｪｯｸ19
+        mapping.put("gouki4check20", "gouki4check20"); // 号機④ﾁｪｯｸ20
         mapping.put("torokunichiji", "torokunichiji"); // 登録日時
         mapping.put("kosinnichiji", "kosinnichiji"); // 更新日時
         mapping.put("revision", "revision"); // revision
@@ -3050,25 +3361,44 @@ public class GXHDO101B043 implements IFormLogic {
         String sql = "INSERT INTO tmp_sub_sr_shinkuukansou ("
                 + "kojyo, lotno, edaban, kaisuu, gouki1saya1, gouki1saya2, gouki1saya3, "
                 + "gouki1saya4, gouki1saya5, gouki1saya6, gouki1saya7, gouki1saya8, gouki1saya9, "
-                + "gouki1saya10, gouki1check1, gouki1check2, gouki1check3, gouki1check4, "
+                + "gouki1saya10, gouki1saya11, gouki1saya12, gouki1saya13, gouki1saya14, "                
+                + "gouki1saya15, gouki1saya16, gouki1saya17, gouki1saya18, gouki1saya19, "                
+                + "gouki1saya20, gouki1check1, gouki1check2, gouki1check3, gouki1check4, "
                 + "gouki1check5, gouki1check6, gouki1check7, gouki1check8, gouki1check9, "
-                + "gouki1check10, gouki2saya1, gouki2saya2, gouki2saya3, gouki2saya4, gouki2saya5, "
-                + "gouki2saya6, gouki2saya7, gouki2saya8, gouki2saya9, gouki2saya10, gouki2check1, "
+                + "gouki1check10, gouki1check11, gouki1check12, gouki1check13, gouki1check14, "
+                + "gouki1check15, gouki1check16, gouki1check17, gouki1check18, gouki1check19, "
+                + "gouki1check20, gouki2saya1, gouki2saya2, gouki2saya3, gouki2saya4, gouki2saya5, "
+                + "gouki2saya6, gouki2saya7, gouki2saya8, gouki2saya9, gouki2saya10, gouki2saya11, "
+                + "gouki2saya12, gouki2saya13, gouki2saya14, gouki2saya15, gouki2saya16, gouki2saya17, "
+                + "gouki2saya18, gouki2saya19, gouki2saya20, gouki2check1, "
                 + "gouki2check2, gouki2check3, gouki2check4, gouki2check5, gouki2check6, "
-                + "gouki2check7, gouki2check8, gouki2check9, gouki2check10, gouki3saya1, "
+                + "gouki2check7, gouki2check8, gouki2check9, gouki2check10, gouki2check11, "
+                + "gouki2check12, gouki2check13, gouki2check14, gouki2check15, gouki2check16, "
+                + "gouki2check17, gouki2check18, gouki2check19, gouki2check20, gouki3saya1, "
                 + "gouki3saya2, gouki3saya3, gouki3saya4, gouki3saya5, gouki3saya6, gouki3saya7, "
-                + "gouki3saya8, gouki3saya9, gouki3saya10, gouki3check1, gouki3check2, "
+                + "gouki3saya8, gouki3saya9, gouki3saya10, gouki3saya11, gouki3saya12, "
+                + "gouki3saya13, gouki3saya14, gouki3saya15, gouki3saya16, gouki3saya17, "
+                + "gouki3saya18, gouki3saya19, gouki3saya20, gouki3check1, gouki3check2, "
                 + "gouki3check3, gouki3check4, gouki3check5, gouki3check6, gouki3check7, "
-                + "gouki3check8, gouki3check9, gouki3check10, gouki4saya1, gouki4saya2, "
+                + "gouki3check8, gouki3check9, gouki3check10, gouki3check11, gouki3check12, "
+                + "gouki3check13, gouki3check14, gouki3check15, gouki3check16, gouki3check17, "
+                + "gouki3check18, gouki3check19, gouki3check20, gouki4saya1, gouki4saya2, "
                 + "gouki4saya3, gouki4saya4, gouki4saya5, gouki4saya6, gouki4saya7, gouki4saya8, "
-                + "gouki4saya9, gouki4saya10, gouki4check1, gouki4check2, gouki4check3, "
+                + "gouki4saya9, gouki4saya10, gouki4saya11, gouki4saya12, gouki4saya13, "
+                + "gouki4saya14, gouki4saya15, gouki4saya16, gouki4saya17, gouki4saya18, "
+                + "gouki4saya19, gouki4saya20, gouki4check1, gouki4check2, gouki4check3, "
                 + "gouki4check4, gouki4check5, gouki4check6, gouki4check7, gouki4check8, "
-                + "gouki4check9, gouki4check10, torokunichiji, kosinnichiji, revision, deleteflag"
+                + "gouki4check9, gouki4check10, gouki4check11, gouki4check12, "
+                + "gouki4check13, gouki4check14, gouki4check15, gouki4check16, gouki4check17, gouki4check18, "
+                + "gouki4check19, gouki4check20, torokunichiji, kosinnichiji, revision, deleteflag"
                 + ") VALUES ("
                 + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
                 + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
                 + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
-                + "?, ?, ?, ?, ?, ?, ?)";
+                + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+                + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+                + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+                + "?, ?, ?, ?, ?, ?)";
 
         List<Object> params = setUpdateParameterTmpSubSrSrShinkuukansou(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -3096,20 +3426,36 @@ public class GXHDO101B043 implements IFormLogic {
         String sql = "UPDATE tmp_sub_sr_shinkuukansou SET "
                 + "gouki1saya1 = ?, gouki1saya2 = ?, gouki1saya3 = ?, gouki1saya4 = ?, gouki1saya5 = ?, "
                 + "gouki1saya6 = ?, gouki1saya7 = ?, gouki1saya8 = ?, gouki1saya9 = ?, gouki1saya10 = ?, "
+                + "gouki1saya11 = ?, gouki1saya12 = ?, gouki1saya13 = ?, gouki1saya14 = ?, gouki1saya15 = ?, "
+                + "gouki1saya16 = ?, gouki1saya17 = ?, gouki1saya18 = ?, gouki1saya19 = ?, gouki1saya20 = ?, "
                 + "gouki1check1 = ?, gouki1check2 = ?, gouki1check3 = ?, gouki1check4 = ?, gouki1check5 = ?, "
                 + "gouki1check6 = ?, gouki1check7 = ?, gouki1check8 = ?, gouki1check9 = ?, gouki1check10 = ?, "
+                + "gouki1check11 = ?, gouki1check12 = ?, gouki1check13 = ?, gouki1check14 = ?, gouki1check15 = ?, "
+                + "gouki1check16 = ?, gouki1check17 = ?, gouki1check18 = ?, gouki1check19 = ?, gouki1check20 = ?, "
                 + "gouki2saya1 = ?, gouki2saya2 = ?, gouki2saya3 = ?, gouki2saya4 = ?, gouki2saya5 = ?, "
                 + "gouki2saya6 = ?, gouki2saya7 = ?, gouki2saya8 = ?, gouki2saya9 = ?, gouki2saya10 = ?, "
+                + "gouki2saya11 = ?, gouki2saya12 = ?, gouki2saya13 = ?, gouki2saya14 = ?, gouki2saya15 = ?, "
+                + "gouki2saya16 = ?, gouki2saya17 = ?, gouki2saya18 = ?, gouki2saya19 = ?, gouki2saya20 = ?, "
                 + "gouki2check1 = ?, gouki2check2 = ?, gouki2check3 = ?, gouki2check4 = ?, gouki2check5 = ?, "
                 + "gouki2check6 = ?, gouki2check7 = ?, gouki2check8 = ?, gouki2check9 = ?, gouki2check10 = ?, "
+                + "gouki2check11 = ?, gouki2check12 = ?, gouki2check13 = ?, gouki2check14 = ?, gouki2check15 = ?, "
+                + "gouki2check16 = ?, gouki2check17 = ?, gouki2check18 = ?, gouki2check19 = ?, gouki2check20 = ?, "
                 + "gouki3saya1 = ?, gouki3saya2 = ?, gouki3saya3 = ?, gouki3saya4 = ?, gouki3saya5 = ?, "
                 + "gouki3saya6 = ?, gouki3saya7 = ?, gouki3saya8 = ?, gouki3saya9 = ?, gouki3saya10 = ?, "
+                + "gouki3saya11 = ?, gouki3saya12 = ?, gouki3saya13 = ?, gouki3saya14 = ?, gouki3saya15 = ?, "
+                + "gouki3saya16 = ?, gouki3saya17 = ?, gouki3saya18 = ?, gouki3saya19 = ?, gouki3saya20 = ?, "
                 + "gouki3check1 = ?, gouki3check2 = ?, gouki3check3 = ?, gouki3check4 = ?, gouki3check5 = ?, "
                 + "gouki3check6 = ?, gouki3check7 = ?, gouki3check8 = ?, gouki3check9 = ?, gouki3check10 = ?, "
+                + "gouki3check11 = ?, gouki3check12 = ?, gouki3check13 = ?, gouki3check14 = ?, gouki3check15 = ?, "
+                + "gouki3check16 = ?, gouki3check17 = ?, gouki3check18 = ?, gouki3check19 = ?, gouki3check20 = ?, "
                 + "gouki4saya1 = ?, gouki4saya2 = ?, gouki4saya3 = ?, gouki4saya4 = ?, gouki4saya5 = ?, "
                 + "gouki4saya6 = ?, gouki4saya7 = ?, gouki4saya8 = ?, gouki4saya9 = ?, gouki4saya10 = ?, "
+                + "gouki4saya11 = ?, gouki4saya12 = ?, gouki4saya13 = ?, gouki4saya14 = ?, gouki4saya15 = ?, "
+                + "gouki4saya16 = ?, gouki4saya17 = ?, gouki4saya18 = ?, gouki4saya19 = ?, gouki4saya20 = ?, "
                 + "gouki4check1 = ?, gouki4check2 = ?, gouki4check3 = ?, gouki4check4 = ?, gouki4check5 = ?, "
                 + "gouki4check6 = ?, gouki4check7 = ?, gouki4check8 = ?, gouki4check9 = ?, gouki4check10 = ?, "
+                + "gouki4check11 = ?, gouki4check12 = ?, gouki4check13 = ?, gouki4check14 = ?, gouki4check15 = ?, "
+                + "gouki4check16 = ?, gouki4check17 = ?, gouki4check18 = ?, gouki4check19 = ?, gouki4check20 = ?, "
                 + "kosinnichiji = ?, revision = ?, deleteflag = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ? ";
         
@@ -3158,16 +3504,26 @@ public class GXHDO101B043 implements IFormLogic {
             params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B043Const.KAISUU, null))); // 回数
         }
         
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki1DataList.get(0).getItemValue())); //号機①ｻﾔNo1
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki1DataList.get(1).getItemValue())); //号機①ｻﾔNo2
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki1DataList.get(2).getItemValue())); //号機①ｻﾔNo3
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki1DataList.get(3).getItemValue())); //号機①ｻﾔNo4
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki1DataList.get(4).getItemValue())); //号機①ｻﾔNo5
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki1DataList.get(5).getItemValue())); //号機①ｻﾔNo6
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki1DataList.get(6).getItemValue())); //号機①ｻﾔNo7
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki1DataList.get(7).getItemValue())); //号機①ｻﾔNo8
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki1DataList.get(8).getItemValue())); //号機①ｻﾔNo9
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki1DataList.get(9).getItemValue())); //号機①ｻﾔNo10
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki1DataList.get(0).getItemValue())); //号機①ｻﾔNo1
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki1DataList.get(1).getItemValue())); //号機①ｻﾔNo2
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki1DataList.get(2).getItemValue())); //号機①ｻﾔNo3
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki1DataList.get(3).getItemValue())); //号機①ｻﾔNo4
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki1DataList.get(4).getItemValue())); //号機①ｻﾔNo5
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki1DataList.get(5).getItemValue())); //号機①ｻﾔNo6
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki1DataList.get(6).getItemValue())); //号機①ｻﾔNo7
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki1DataList.get(7).getItemValue())); //号機①ｻﾔNo8
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki1DataList.get(8).getItemValue())); //号機①ｻﾔNo9
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki1DataList.get(9).getItemValue())); //号機①ｻﾔNo10
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki1DataList.get(10).getItemValue())); //号機①ｻﾔNo11
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki1DataList.get(11).getItemValue())); //号機①ｻﾔNo12
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki1DataList.get(12).getItemValue())); //号機①ｻﾔNo13
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki1DataList.get(13).getItemValue())); //号機①ｻﾔNo14
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki1DataList.get(14).getItemValue())); //号機①ｻﾔNo15
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki1DataList.get(15).getItemValue())); //号機①ｻﾔNo16
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki1DataList.get(16).getItemValue())); //号機①ｻﾔNo17
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki1DataList.get(17).getItemValue())); //号機①ｻﾔNo18
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki1DataList.get(18).getItemValue())); //号機①ｻﾔNo19
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki1DataList.get(19).getItemValue())); //号機①ｻﾔNo20
         params.add(getCheckBoxDbValue(gouki1DataList.get(0).getCheckBoxValue(), null)); //号機①ﾁｪｯｸ1
         params.add(getCheckBoxDbValue(gouki1DataList.get(1).getCheckBoxValue(), null)); //号機①ﾁｪｯｸ2
         params.add(getCheckBoxDbValue(gouki1DataList.get(2).getCheckBoxValue(), null)); //号機①ﾁｪｯｸ3
@@ -3178,17 +3534,38 @@ public class GXHDO101B043 implements IFormLogic {
         params.add(getCheckBoxDbValue(gouki1DataList.get(7).getCheckBoxValue(), null)); //号機①ﾁｪｯｸ8
         params.add(getCheckBoxDbValue(gouki1DataList.get(8).getCheckBoxValue(), null)); //号機①ﾁｪｯｸ9
         params.add(getCheckBoxDbValue(gouki1DataList.get(9).getCheckBoxValue(), null)); //号機①ﾁｪｯｸ10
+        params.add(getCheckBoxDbValue(gouki1DataList.get(10).getCheckBoxValue(), null)); //号機①ﾁｪｯｸ11
+        params.add(getCheckBoxDbValue(gouki1DataList.get(11).getCheckBoxValue(), null)); //号機①ﾁｪｯｸ12
+        params.add(getCheckBoxDbValue(gouki1DataList.get(12).getCheckBoxValue(), null)); //号機①ﾁｪｯｸ13
+        params.add(getCheckBoxDbValue(gouki1DataList.get(13).getCheckBoxValue(), null)); //号機①ﾁｪｯｸ14
+        params.add(getCheckBoxDbValue(gouki1DataList.get(14).getCheckBoxValue(), null)); //号機①ﾁｪｯｸ15
+        params.add(getCheckBoxDbValue(gouki1DataList.get(15).getCheckBoxValue(), null)); //号機①ﾁｪｯｸ16
+        params.add(getCheckBoxDbValue(gouki1DataList.get(16).getCheckBoxValue(), null)); //号機①ﾁｪｯｸ17
+        params.add(getCheckBoxDbValue(gouki1DataList.get(17).getCheckBoxValue(), null)); //号機①ﾁｪｯｸ18
+        params.add(getCheckBoxDbValue(gouki1DataList.get(18).getCheckBoxValue(), null)); //号機①ﾁｪｯｸ19
+        params.add(getCheckBoxDbValue(gouki1DataList.get(19).getCheckBoxValue(), null)); //号機①ﾁｪｯｸ20
         
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki2DataList.get(0).getItemValue())); //号機②ｻﾔNo1
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki2DataList.get(1).getItemValue())); //号機②ｻﾔNo2
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki2DataList.get(2).getItemValue())); //号機②ｻﾔNo3
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki2DataList.get(3).getItemValue())); //号機②ｻﾔNo4
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki2DataList.get(4).getItemValue())); //号機②ｻﾔNo5
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki2DataList.get(5).getItemValue())); //号機②ｻﾔNo6
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki2DataList.get(6).getItemValue())); //号機②ｻﾔNo7
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki2DataList.get(7).getItemValue())); //号機②ｻﾔNo8
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki2DataList.get(8).getItemValue())); //号機②ｻﾔNo9
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki2DataList.get(9).getItemValue())); //号機②ｻﾔNo10
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki2DataList.get(0).getItemValue())); //号機②ｻﾔNo1
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki2DataList.get(1).getItemValue())); //号機②ｻﾔNo2
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki2DataList.get(2).getItemValue())); //号機②ｻﾔNo3
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki2DataList.get(3).getItemValue())); //号機②ｻﾔNo4
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki2DataList.get(4).getItemValue())); //号機②ｻﾔNo5
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki2DataList.get(5).getItemValue())); //号機②ｻﾔNo6
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki2DataList.get(6).getItemValue())); //号機②ｻﾔNo7
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki2DataList.get(7).getItemValue())); //号機②ｻﾔNo8
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki2DataList.get(8).getItemValue())); //号機②ｻﾔNo9
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki2DataList.get(9).getItemValue())); //号機②ｻﾔNo10
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki2DataList.get(10).getItemValue())); //号機②ｻﾔNo11
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki2DataList.get(11).getItemValue())); //号機②ｻﾔNo12
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki2DataList.get(12).getItemValue())); //号機②ｻﾔNo13
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki2DataList.get(13).getItemValue())); //号機②ｻﾔNo14
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki2DataList.get(14).getItemValue())); //号機②ｻﾔNo15
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki2DataList.get(15).getItemValue())); //号機②ｻﾔNo16
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki2DataList.get(16).getItemValue())); //号機②ｻﾔNo17
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki2DataList.get(17).getItemValue())); //号機②ｻﾔNo18
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki2DataList.get(18).getItemValue())); //号機②ｻﾔNo19
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki2DataList.get(19).getItemValue())); //号機②ｻﾔNo20
+        
         params.add(getCheckBoxDbValue(gouki2DataList.get(0).getCheckBoxValue(), null)); //号機②ﾁｪｯｸ1
         params.add(getCheckBoxDbValue(gouki2DataList.get(1).getCheckBoxValue(), null)); //号機②ﾁｪｯｸ2
         params.add(getCheckBoxDbValue(gouki2DataList.get(2).getCheckBoxValue(), null)); //号機②ﾁｪｯｸ3
@@ -3199,17 +3576,38 @@ public class GXHDO101B043 implements IFormLogic {
         params.add(getCheckBoxDbValue(gouki2DataList.get(7).getCheckBoxValue(), null)); //号機②ﾁｪｯｸ8
         params.add(getCheckBoxDbValue(gouki2DataList.get(8).getCheckBoxValue(), null)); //号機②ﾁｪｯｸ9
         params.add(getCheckBoxDbValue(gouki2DataList.get(9).getCheckBoxValue(), null)); //号機②ﾁｪｯｸ10
+        params.add(getCheckBoxDbValue(gouki2DataList.get(10).getCheckBoxValue(), null)); //号機②ﾁｪｯｸ11
+        params.add(getCheckBoxDbValue(gouki2DataList.get(11).getCheckBoxValue(), null)); //号機②ﾁｪｯｸ12
+        params.add(getCheckBoxDbValue(gouki2DataList.get(12).getCheckBoxValue(), null)); //号機②ﾁｪｯｸ13
+        params.add(getCheckBoxDbValue(gouki2DataList.get(13).getCheckBoxValue(), null)); //号機②ﾁｪｯｸ14
+        params.add(getCheckBoxDbValue(gouki2DataList.get(14).getCheckBoxValue(), null)); //号機②ﾁｪｯｸ15
+        params.add(getCheckBoxDbValue(gouki2DataList.get(15).getCheckBoxValue(), null)); //号機②ﾁｪｯｸ16
+        params.add(getCheckBoxDbValue(gouki2DataList.get(16).getCheckBoxValue(), null)); //号機②ﾁｪｯｸ17
+        params.add(getCheckBoxDbValue(gouki2DataList.get(17).getCheckBoxValue(), null)); //号機②ﾁｪｯｸ18
+        params.add(getCheckBoxDbValue(gouki2DataList.get(18).getCheckBoxValue(), null)); //号機②ﾁｪｯｸ19
+        params.add(getCheckBoxDbValue(gouki2DataList.get(19).getCheckBoxValue(), null)); //号機②ﾁｪｯｸ20
 
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki3DataList.get(0).getItemValue())); //号機③ｻﾔNo1
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki3DataList.get(1).getItemValue())); //号機③ｻﾔNo2
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki3DataList.get(2).getItemValue())); //号機③ｻﾔNo3
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki3DataList.get(3).getItemValue())); //号機③ｻﾔNo4
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki3DataList.get(4).getItemValue())); //号機③ｻﾔNo5
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki3DataList.get(5).getItemValue())); //号機③ｻﾔNo6
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki3DataList.get(6).getItemValue())); //号機③ｻﾔNo7
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki3DataList.get(7).getItemValue())); //号機③ｻﾔNo8
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki3DataList.get(8).getItemValue())); //号機③ｻﾔNo9
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki3DataList.get(9).getItemValue())); //号機③ｻﾔNo10
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki3DataList.get(0).getItemValue())); //号機③ｻﾔNo1
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki3DataList.get(1).getItemValue())); //号機③ｻﾔNo2
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki3DataList.get(2).getItemValue())); //号機③ｻﾔNo3
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki3DataList.get(3).getItemValue())); //号機③ｻﾔNo4
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki3DataList.get(4).getItemValue())); //号機③ｻﾔNo5
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki3DataList.get(5).getItemValue())); //号機③ｻﾔNo6
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki3DataList.get(6).getItemValue())); //号機③ｻﾔNo7
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki3DataList.get(7).getItemValue())); //号機③ｻﾔNo8
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki3DataList.get(8).getItemValue())); //号機③ｻﾔNo9
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki3DataList.get(9).getItemValue())); //号機③ｻﾔNo10
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki3DataList.get(10).getItemValue())); //号機③ｻﾔNo11
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki3DataList.get(11).getItemValue())); //号機③ｻﾔNo12
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki3DataList.get(12).getItemValue())); //号機③ｻﾔNo13
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki3DataList.get(13).getItemValue())); //号機③ｻﾔNo14
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki3DataList.get(14).getItemValue())); //号機③ｻﾔNo15
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki3DataList.get(15).getItemValue())); //号機③ｻﾔNo16
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki3DataList.get(16).getItemValue())); //号機③ｻﾔNo17
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki3DataList.get(17).getItemValue())); //号機③ｻﾔNo18
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki3DataList.get(18).getItemValue())); //号機③ｻﾔNo19
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki3DataList.get(19).getItemValue())); //号機③ｻﾔNo20
+
         params.add(getCheckBoxDbValue(gouki3DataList.get(0).getCheckBoxValue(), null)); //号機③ﾁｪｯｸ1
         params.add(getCheckBoxDbValue(gouki3DataList.get(1).getCheckBoxValue(), null)); //号機③ﾁｪｯｸ2
         params.add(getCheckBoxDbValue(gouki3DataList.get(2).getCheckBoxValue(), null)); //号機③ﾁｪｯｸ3
@@ -3220,17 +3618,37 @@ public class GXHDO101B043 implements IFormLogic {
         params.add(getCheckBoxDbValue(gouki3DataList.get(7).getCheckBoxValue(), null)); //号機③ﾁｪｯｸ8
         params.add(getCheckBoxDbValue(gouki3DataList.get(8).getCheckBoxValue(), null)); //号機③ﾁｪｯｸ9
         params.add(getCheckBoxDbValue(gouki3DataList.get(9).getCheckBoxValue(), null)); //号機③ﾁｪｯｸ10
+        params.add(getCheckBoxDbValue(gouki3DataList.get(10).getCheckBoxValue(), null)); //号機③ﾁｪｯｸ11
+        params.add(getCheckBoxDbValue(gouki3DataList.get(11).getCheckBoxValue(), null)); //号機③ﾁｪｯｸ12
+        params.add(getCheckBoxDbValue(gouki3DataList.get(12).getCheckBoxValue(), null)); //号機③ﾁｪｯｸ13
+        params.add(getCheckBoxDbValue(gouki3DataList.get(13).getCheckBoxValue(), null)); //号機③ﾁｪｯｸ14
+        params.add(getCheckBoxDbValue(gouki3DataList.get(14).getCheckBoxValue(), null)); //号機③ﾁｪｯｸ15
+        params.add(getCheckBoxDbValue(gouki3DataList.get(15).getCheckBoxValue(), null)); //号機③ﾁｪｯｸ16
+        params.add(getCheckBoxDbValue(gouki3DataList.get(16).getCheckBoxValue(), null)); //号機③ﾁｪｯｸ17
+        params.add(getCheckBoxDbValue(gouki3DataList.get(17).getCheckBoxValue(), null)); //号機③ﾁｪｯｸ18
+        params.add(getCheckBoxDbValue(gouki3DataList.get(18).getCheckBoxValue(), null)); //号機③ﾁｪｯｸ19
+        params.add(getCheckBoxDbValue(gouki3DataList.get(19).getCheckBoxValue(), null)); //号機③ﾁｪｯｸ20
 
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki4DataList.get(0).getItemValue())); //号機④ｻﾔNo1
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki4DataList.get(1).getItemValue())); //号機④ｻﾔNo2
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki4DataList.get(2).getItemValue())); //号機④ｻﾔNo3
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki4DataList.get(3).getItemValue())); //号機④ｻﾔNo4
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki4DataList.get(4).getItemValue())); //号機④ｻﾔNo5
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki4DataList.get(5).getItemValue())); //号機④ｻﾔNo6
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki4DataList.get(6).getItemValue())); //号機④ｻﾔNo7
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki4DataList.get(7).getItemValue())); //号機④ｻﾔNo8
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki4DataList.get(8).getItemValue())); //号機④ｻﾔNo9
-        params.add(DBUtil.stringToIntObjectDefaultNull(gouki4DataList.get(9).getItemValue())); //号機④ｻﾔNo10
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki4DataList.get(0).getItemValue())); //号機④ｻﾔNo1
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki4DataList.get(1).getItemValue())); //号機④ｻﾔNo2
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki4DataList.get(2).getItemValue())); //号機④ｻﾔNo3
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki4DataList.get(3).getItemValue())); //号機④ｻﾔNo4
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki4DataList.get(4).getItemValue())); //号機④ｻﾔNo5
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki4DataList.get(5).getItemValue())); //号機④ｻﾔNo6
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki4DataList.get(6).getItemValue())); //号機④ｻﾔNo7
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki4DataList.get(7).getItemValue())); //号機④ｻﾔNo8
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki4DataList.get(8).getItemValue())); //号機④ｻﾔNo9
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki4DataList.get(9).getItemValue())); //号機④ｻﾔNo10
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki4DataList.get(10).getItemValue())); //号機④ｻﾔNo11
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki4DataList.get(11).getItemValue())); //号機④ｻﾔNo12
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki4DataList.get(12).getItemValue())); //号機④ｻﾔNo13
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki4DataList.get(13).getItemValue())); //号機④ｻﾔNo14
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki4DataList.get(14).getItemValue())); //号機④ｻﾔNo15
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki4DataList.get(15).getItemValue())); //号機④ｻﾔNo16
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki4DataList.get(16).getItemValue())); //号機④ｻﾔNo17
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki4DataList.get(17).getItemValue())); //号機④ｻﾔNo18
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki4DataList.get(18).getItemValue())); //号機④ｻﾔNo19
+        params.add(DBUtil.stringToStringObjectDefaultNull(gouki4DataList.get(19).getItemValue())); //号機④ｻﾔNo20
         params.add(getCheckBoxDbValue(gouki4DataList.get(0).getCheckBoxValue(), null)); //号機④ﾁｪｯｸ1
         params.add(getCheckBoxDbValue(gouki4DataList.get(1).getCheckBoxValue(), null)); //号機④ﾁｪｯｸ2
         params.add(getCheckBoxDbValue(gouki4DataList.get(2).getCheckBoxValue(), null)); //号機④ﾁｪｯｸ3
@@ -3241,6 +3659,16 @@ public class GXHDO101B043 implements IFormLogic {
         params.add(getCheckBoxDbValue(gouki4DataList.get(7).getCheckBoxValue(), null)); //号機④ﾁｪｯｸ8
         params.add(getCheckBoxDbValue(gouki4DataList.get(8).getCheckBoxValue(), null)); //号機④ﾁｪｯｸ9
         params.add(getCheckBoxDbValue(gouki4DataList.get(9).getCheckBoxValue(), null)); //号機④ﾁｪｯｸ10
+        params.add(getCheckBoxDbValue(gouki4DataList.get(10).getCheckBoxValue(), null)); //号機④ﾁｪｯｸ11
+        params.add(getCheckBoxDbValue(gouki4DataList.get(11).getCheckBoxValue(), null)); //号機④ﾁｪｯｸ12
+        params.add(getCheckBoxDbValue(gouki4DataList.get(12).getCheckBoxValue(), null)); //号機④ﾁｪｯｸ13
+        params.add(getCheckBoxDbValue(gouki4DataList.get(13).getCheckBoxValue(), null)); //号機④ﾁｪｯｸ14
+        params.add(getCheckBoxDbValue(gouki4DataList.get(14).getCheckBoxValue(), null)); //号機④ﾁｪｯｸ15
+        params.add(getCheckBoxDbValue(gouki4DataList.get(15).getCheckBoxValue(), null)); //号機④ﾁｪｯｸ16
+        params.add(getCheckBoxDbValue(gouki4DataList.get(16).getCheckBoxValue(), null)); //号機④ﾁｪｯｸ17
+        params.add(getCheckBoxDbValue(gouki4DataList.get(17).getCheckBoxValue(), null)); //号機④ﾁｪｯｸ18
+        params.add(getCheckBoxDbValue(gouki4DataList.get(18).getCheckBoxValue(), null)); //号機④ﾁｪｯｸ19
+        params.add(getCheckBoxDbValue(gouki4DataList.get(19).getCheckBoxValue(), null)); //号機④ﾁｪｯｸ20
         
         if (isInsert) {
             params.add(systemTime); //登録日時
@@ -3332,25 +3760,44 @@ public class GXHDO101B043 implements IFormLogic {
         String sql = "INSERT INTO sub_sr_shinkuukansou ("
                 + "kojyo, lotno, edaban, kaisuu, gouki1saya1, gouki1saya2, gouki1saya3, "
                 + "gouki1saya4, gouki1saya5, gouki1saya6, gouki1saya7, gouki1saya8, gouki1saya9, "
-                + "gouki1saya10, gouki1check1, gouki1check2, gouki1check3, gouki1check4, "
+                + "gouki1saya10, gouki1saya11, gouki1saya12, gouki1saya13, gouki1saya14, "                
+                + "gouki1saya15, gouki1saya16, gouki1saya17, gouki1saya18, gouki1saya19, "                
+                + "gouki1saya20, gouki1check1, gouki1check2, gouki1check3, gouki1check4, "
                 + "gouki1check5, gouki1check6, gouki1check7, gouki1check8, gouki1check9, "
-                + "gouki1check10, gouki2saya1, gouki2saya2, gouki2saya3, gouki2saya4, gouki2saya5, "
-                + "gouki2saya6, gouki2saya7, gouki2saya8, gouki2saya9, gouki2saya10, gouki2check1, "
+                + "gouki1check10, gouki1check11, gouki1check12, gouki1check13, gouki1check14, "
+                + "gouki1check15, gouki1check16, gouki1check17, gouki1check18, gouki1check19, "
+                + "gouki1check20, gouki2saya1, gouki2saya2, gouki2saya3, gouki2saya4, gouki2saya5, "
+                + "gouki2saya6, gouki2saya7, gouki2saya8, gouki2saya9, gouki2saya10, gouki2saya11, "
+                + "gouki2saya12, gouki2saya13, gouki2saya14, gouki2saya15, gouki2saya16, gouki2saya17, "
+                + "gouki2saya18, gouki2saya19, gouki2saya20, gouki2check1, "
                 + "gouki2check2, gouki2check3, gouki2check4, gouki2check5, gouki2check6, "
-                + "gouki2check7, gouki2check8, gouki2check9, gouki2check10, gouki3saya1, "
+                + "gouki2check7, gouki2check8, gouki2check9, gouki2check10, gouki2check11, "
+                + "gouki2check12, gouki2check13, gouki2check14, gouki2check15, gouki2check16, "
+                + "gouki2check17, gouki2check18, gouki2check19, gouki2check20, gouki3saya1, "
                 + "gouki3saya2, gouki3saya3, gouki3saya4, gouki3saya5, gouki3saya6, gouki3saya7, "
-                + "gouki3saya8, gouki3saya9, gouki3saya10, gouki3check1, gouki3check2, "
+                + "gouki3saya8, gouki3saya9, gouki3saya10, gouki3saya11, gouki3saya12, "
+                + "gouki3saya13, gouki3saya14, gouki3saya15, gouki3saya16, gouki3saya17, "
+                + "gouki3saya18, gouki3saya19, gouki3saya20, gouki3check1, gouki3check2, "
                 + "gouki3check3, gouki3check4, gouki3check5, gouki3check6, gouki3check7, "
-                + "gouki3check8, gouki3check9, gouki3check10, gouki4saya1, gouki4saya2, "
+                + "gouki3check8, gouki3check9, gouki3check10, gouki3check11, gouki3check12, "
+                + "gouki3check13, gouki3check14, gouki3check15, gouki3check16, gouki3check17, "
+                + "gouki3check18, gouki3check19, gouki3check20, gouki4saya1, gouki4saya2, "
                 + "gouki4saya3, gouki4saya4, gouki4saya5, gouki4saya6, gouki4saya7, gouki4saya8, "
-                + "gouki4saya9, gouki4saya10, gouki4check1, gouki4check2, gouki4check3, "
+                + "gouki4saya9, gouki4saya10, gouki4saya11, gouki4saya12, gouki4saya13, "
+                + "gouki4saya14, gouki4saya15, gouki4saya16, gouki4saya17, gouki4saya18, "
+                + "gouki4saya19, gouki4saya20, gouki4check1, gouki4check2, gouki4check3, "
                 + "gouki4check4, gouki4check5, gouki4check6, gouki4check7, gouki4check8, "
-                + "gouki4check9, gouki4check10, torokunichiji, kosinnichiji, revision"
+                + "gouki4check9, gouki4check10, gouki4check11, gouki4check12, "
+                + "gouki4check13, gouki4check14, gouki4check15, gouki4check16, gouki4check17, "
+                + "gouki4check18, gouki4check19, gouki4check20, torokunichiji, kosinnichiji, revision"
                 + ") VALUES ("
                 + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
                 + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
                 + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
-                + "?, ?, ?, ?, ?, ?)";
+                + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+                + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+                + "?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, "
+                + "?, ?, ?, ?, ?)";
 
         List<Object> params = setUpdateParameterSubSrSrShinkuukansou(true, newRev, kojyo, lotNo, edaban, systemTime, itemList);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -3378,20 +3825,36 @@ public class GXHDO101B043 implements IFormLogic {
         String sql = "UPDATE sub_sr_shinkuukansou SET "
                 + "gouki1saya1 = ?, gouki1saya2 = ?, gouki1saya3 = ?, gouki1saya4 = ?, gouki1saya5 = ?, "
                 + "gouki1saya6 = ?, gouki1saya7 = ?, gouki1saya8 = ?, gouki1saya9 = ?, gouki1saya10 = ?, "
+                + "gouki1saya11 = ?, gouki1saya12 = ?, gouki1saya13 = ?, gouki1saya14 = ?, gouki1saya15 = ?, "
+                + "gouki1saya16 = ?, gouki1saya17 = ?, gouki1saya18 = ?, gouki1saya19 = ?, gouki1saya20 = ?, "
                 + "gouki1check1 = ?, gouki1check2 = ?, gouki1check3 = ?, gouki1check4 = ?, gouki1check5 = ?, "
                 + "gouki1check6 = ?, gouki1check7 = ?, gouki1check8 = ?, gouki1check9 = ?, gouki1check10 = ?, "
+                + "gouki1check11 = ?, gouki1check12 = ?, gouki1check13 = ?, gouki1check14 = ?, gouki1check15 = ?, "
+                + "gouki1check16 = ?, gouki1check17 = ?, gouki1check18 = ?, gouki1check19 = ?, gouki1check20 = ?, "
                 + "gouki2saya1 = ?, gouki2saya2 = ?, gouki2saya3 = ?, gouki2saya4 = ?, gouki2saya5 = ?, "
                 + "gouki2saya6 = ?, gouki2saya7 = ?, gouki2saya8 = ?, gouki2saya9 = ?, gouki2saya10 = ?, "
+                + "gouki2saya11 = ?, gouki2saya12 = ?, gouki2saya13 = ?, gouki2saya14 = ?, gouki2saya15 = ?, "
+                + "gouki2saya16 = ?, gouki2saya17 = ?, gouki2saya18 = ?, gouki2saya19 = ?, gouki2saya20 = ?, "
                 + "gouki2check1 = ?, gouki2check2 = ?, gouki2check3 = ?, gouki2check4 = ?, gouki2check5 = ?, "
                 + "gouki2check6 = ?, gouki2check7 = ?, gouki2check8 = ?, gouki2check9 = ?, gouki2check10 = ?, "
+                + "gouki2check11 = ?, gouki2check12 = ?, gouki2check13 = ?, gouki2check14 = ?, gouki2check15 = ?, "
+                + "gouki2check16 = ?, gouki2check17 = ?, gouki2check18 = ?, gouki2check19 = ?, gouki2check20 = ?, "
                 + "gouki3saya1 = ?, gouki3saya2 = ?, gouki3saya3 = ?, gouki3saya4 = ?, gouki3saya5 = ?, "
                 + "gouki3saya6 = ?, gouki3saya7 = ?, gouki3saya8 = ?, gouki3saya9 = ?, gouki3saya10 = ?, "
+                + "gouki3saya11 = ?, gouki3saya12 = ?, gouki3saya13 = ?, gouki3saya14 = ?, gouki3saya15 = ?, "
+                + "gouki3saya16 = ?, gouki3saya17 = ?, gouki3saya18 = ?, gouki3saya19 = ?, gouki3saya20 = ?, "
                 + "gouki3check1 = ?, gouki3check2 = ?, gouki3check3 = ?, gouki3check4 = ?, gouki3check5 = ?, "
                 + "gouki3check6 = ?, gouki3check7 = ?, gouki3check8 = ?, gouki3check9 = ?, gouki3check10 = ?, "
+                + "gouki3check11 = ?, gouki3check12 = ?, gouki3check13 = ?, gouki3check14 = ?, gouki3check15 = ?, "
+                + "gouki3check16 = ?, gouki3check17 = ?, gouki3check18 = ?, gouki3check19 = ?, gouki3check20 = ?, "
                 + "gouki4saya1 = ?, gouki4saya2 = ?, gouki4saya3 = ?, gouki4saya4 = ?, gouki4saya5 = ?, "
                 + "gouki4saya6 = ?, gouki4saya7 = ?, gouki4saya8 = ?, gouki4saya9 = ?, gouki4saya10 = ?, "
+                + "gouki4saya11 = ?, gouki4saya12 = ?, gouki4saya13 = ?, gouki4saya14 = ?, gouki4saya15 = ?, "
+                + "gouki4saya16 = ?, gouki4saya17 = ?, gouki4saya18 = ?, gouki4saya19 = ?, gouki4saya20 = ?, "
                 + "gouki4check1 = ?, gouki4check2 = ?, gouki4check3 = ?, gouki4check4 = ?, gouki4check5 = ?, "
                 + "gouki4check6 = ?, gouki4check7 = ?, gouki4check8 = ?, gouki4check9 = ?, gouki4check10 = ?, "
+                + "gouki4check11 = ?, gouki4check12 = ?, gouki4check13 = ?, gouki4check14 = ?, gouki4check15 = ?, "
+                + "gouki4check16 = ?, gouki4check17 = ?, gouki4check18 = ?, gouki4check19 = ?, gouki4check20 = ?, "
                 + "kosinnichiji = ?, revision = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ? ";
         
@@ -3439,16 +3902,26 @@ public class GXHDO101B043 implements IFormLogic {
             params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B043Const.KAISUU, null))); // 回数
         }
         
-        params.add(DBUtil.stringToIntObject(gouki1DataList.get(0).getItemValue())); //号機①ｻﾔNo1
-        params.add(DBUtil.stringToIntObject(gouki1DataList.get(1).getItemValue())); //号機①ｻﾔNo2
-        params.add(DBUtil.stringToIntObject(gouki1DataList.get(2).getItemValue())); //号機①ｻﾔNo3
-        params.add(DBUtil.stringToIntObject(gouki1DataList.get(3).getItemValue())); //号機①ｻﾔNo4
-        params.add(DBUtil.stringToIntObject(gouki1DataList.get(4).getItemValue())); //号機①ｻﾔNo5
-        params.add(DBUtil.stringToIntObject(gouki1DataList.get(5).getItemValue())); //号機①ｻﾔNo6
-        params.add(DBUtil.stringToIntObject(gouki1DataList.get(6).getItemValue())); //号機①ｻﾔNo7
-        params.add(DBUtil.stringToIntObject(gouki1DataList.get(7).getItemValue())); //号機①ｻﾔNo8
-        params.add(DBUtil.stringToIntObject(gouki1DataList.get(8).getItemValue())); //号機①ｻﾔNo9
-        params.add(DBUtil.stringToIntObject(gouki1DataList.get(9).getItemValue())); //号機①ｻﾔNo10
+        params.add(DBUtil.stringToStringObject(gouki1DataList.get(0).getItemValue())); //号機①ｻﾔNo1
+        params.add(DBUtil.stringToStringObject(gouki1DataList.get(1).getItemValue())); //号機①ｻﾔNo2
+        params.add(DBUtil.stringToStringObject(gouki1DataList.get(2).getItemValue())); //号機①ｻﾔNo3
+        params.add(DBUtil.stringToStringObject(gouki1DataList.get(3).getItemValue())); //号機①ｻﾔNo4
+        params.add(DBUtil.stringToStringObject(gouki1DataList.get(4).getItemValue())); //号機①ｻﾔNo5
+        params.add(DBUtil.stringToStringObject(gouki1DataList.get(5).getItemValue())); //号機①ｻﾔNo6
+        params.add(DBUtil.stringToStringObject(gouki1DataList.get(6).getItemValue())); //号機①ｻﾔNo7
+        params.add(DBUtil.stringToStringObject(gouki1DataList.get(7).getItemValue())); //号機①ｻﾔNo8
+        params.add(DBUtil.stringToStringObject(gouki1DataList.get(8).getItemValue())); //号機①ｻﾔNo9
+        params.add(DBUtil.stringToStringObject(gouki1DataList.get(9).getItemValue())); //号機①ｻﾔNo10
+        params.add(DBUtil.stringToStringObject(gouki1DataList.get(10).getItemValue())); //号機①ｻﾔNo11
+        params.add(DBUtil.stringToStringObject(gouki1DataList.get(11).getItemValue())); //号機①ｻﾔNo12
+        params.add(DBUtil.stringToStringObject(gouki1DataList.get(12).getItemValue())); //号機①ｻﾔNo13
+        params.add(DBUtil.stringToStringObject(gouki1DataList.get(13).getItemValue())); //号機①ｻﾔNo14
+        params.add(DBUtil.stringToStringObject(gouki1DataList.get(14).getItemValue())); //号機①ｻﾔNo15
+        params.add(DBUtil.stringToStringObject(gouki1DataList.get(15).getItemValue())); //号機①ｻﾔNo16
+        params.add(DBUtil.stringToStringObject(gouki1DataList.get(16).getItemValue())); //号機①ｻﾔNo17
+        params.add(DBUtil.stringToStringObject(gouki1DataList.get(17).getItemValue())); //号機①ｻﾔNo18
+        params.add(DBUtil.stringToStringObject(gouki1DataList.get(18).getItemValue())); //号機①ｻﾔNo19
+        params.add(DBUtil.stringToStringObject(gouki1DataList.get(19).getItemValue())); //号機①ｻﾔNo20
         params.add(getCheckBoxDbValue(gouki1DataList.get(0).getCheckBoxValue(), 0)); //号機①ﾁｪｯｸ1
         params.add(getCheckBoxDbValue(gouki1DataList.get(1).getCheckBoxValue(), 0)); //号機①ﾁｪｯｸ2
         params.add(getCheckBoxDbValue(gouki1DataList.get(2).getCheckBoxValue(), 0)); //号機①ﾁｪｯｸ3
@@ -3459,17 +3932,37 @@ public class GXHDO101B043 implements IFormLogic {
         params.add(getCheckBoxDbValue(gouki1DataList.get(7).getCheckBoxValue(), 0)); //号機①ﾁｪｯｸ8
         params.add(getCheckBoxDbValue(gouki1DataList.get(8).getCheckBoxValue(), 0)); //号機①ﾁｪｯｸ9
         params.add(getCheckBoxDbValue(gouki1DataList.get(9).getCheckBoxValue(), 0)); //号機①ﾁｪｯｸ10
+        params.add(getCheckBoxDbValue(gouki1DataList.get(10).getCheckBoxValue(), 0)); //号機①ﾁｪｯｸ11
+        params.add(getCheckBoxDbValue(gouki1DataList.get(11).getCheckBoxValue(), 0)); //号機①ﾁｪｯｸ12
+        params.add(getCheckBoxDbValue(gouki1DataList.get(12).getCheckBoxValue(), 0)); //号機①ﾁｪｯｸ13
+        params.add(getCheckBoxDbValue(gouki1DataList.get(13).getCheckBoxValue(), 0)); //号機①ﾁｪｯｸ14
+        params.add(getCheckBoxDbValue(gouki1DataList.get(14).getCheckBoxValue(), 0)); //号機①ﾁｪｯｸ15
+        params.add(getCheckBoxDbValue(gouki1DataList.get(15).getCheckBoxValue(), 0)); //号機①ﾁｪｯｸ16
+        params.add(getCheckBoxDbValue(gouki1DataList.get(16).getCheckBoxValue(), 0)); //号機①ﾁｪｯｸ17
+        params.add(getCheckBoxDbValue(gouki1DataList.get(17).getCheckBoxValue(), 0)); //号機①ﾁｪｯｸ18
+        params.add(getCheckBoxDbValue(gouki1DataList.get(18).getCheckBoxValue(), 0)); //号機①ﾁｪｯｸ19
+        params.add(getCheckBoxDbValue(gouki1DataList.get(19).getCheckBoxValue(), 0)); //号機①ﾁｪｯｸ20
         
-        params.add(DBUtil.stringToIntObject(gouki2DataList.get(0).getItemValue())); //号機②ｻﾔNo1
-        params.add(DBUtil.stringToIntObject(gouki2DataList.get(1).getItemValue())); //号機②ｻﾔNo2
-        params.add(DBUtil.stringToIntObject(gouki2DataList.get(2).getItemValue())); //号機②ｻﾔNo3
-        params.add(DBUtil.stringToIntObject(gouki2DataList.get(3).getItemValue())); //号機②ｻﾔNo4
-        params.add(DBUtil.stringToIntObject(gouki2DataList.get(4).getItemValue())); //号機②ｻﾔNo5
-        params.add(DBUtil.stringToIntObject(gouki2DataList.get(5).getItemValue())); //号機②ｻﾔNo6
-        params.add(DBUtil.stringToIntObject(gouki2DataList.get(6).getItemValue())); //号機②ｻﾔNo7
-        params.add(DBUtil.stringToIntObject(gouki2DataList.get(7).getItemValue())); //号機②ｻﾔNo8
-        params.add(DBUtil.stringToIntObject(gouki2DataList.get(8).getItemValue())); //号機②ｻﾔNo9
-        params.add(DBUtil.stringToIntObject(gouki2DataList.get(9).getItemValue())); //号機②ｻﾔNo10
+        params.add(DBUtil.stringToStringObject(gouki2DataList.get(0).getItemValue())); //号機②ｻﾔNo1
+        params.add(DBUtil.stringToStringObject(gouki2DataList.get(1).getItemValue())); //号機②ｻﾔNo2
+        params.add(DBUtil.stringToStringObject(gouki2DataList.get(2).getItemValue())); //号機②ｻﾔNo3
+        params.add(DBUtil.stringToStringObject(gouki2DataList.get(3).getItemValue())); //号機②ｻﾔNo4
+        params.add(DBUtil.stringToStringObject(gouki2DataList.get(4).getItemValue())); //号機②ｻﾔNo5
+        params.add(DBUtil.stringToStringObject(gouki2DataList.get(5).getItemValue())); //号機②ｻﾔNo6
+        params.add(DBUtil.stringToStringObject(gouki2DataList.get(6).getItemValue())); //号機②ｻﾔNo7
+        params.add(DBUtil.stringToStringObject(gouki2DataList.get(7).getItemValue())); //号機②ｻﾔNo8
+        params.add(DBUtil.stringToStringObject(gouki2DataList.get(8).getItemValue())); //号機②ｻﾔNo9
+        params.add(DBUtil.stringToStringObject(gouki2DataList.get(9).getItemValue())); //号機②ｻﾔNo10
+        params.add(DBUtil.stringToStringObject(gouki2DataList.get(10).getItemValue())); //号機②ｻﾔNo11
+        params.add(DBUtil.stringToStringObject(gouki2DataList.get(11).getItemValue())); //号機②ｻﾔNo12
+        params.add(DBUtil.stringToStringObject(gouki2DataList.get(12).getItemValue())); //号機②ｻﾔNo13
+        params.add(DBUtil.stringToStringObject(gouki2DataList.get(13).getItemValue())); //号機②ｻﾔNo14
+        params.add(DBUtil.stringToStringObject(gouki2DataList.get(14).getItemValue())); //号機②ｻﾔNo15
+        params.add(DBUtil.stringToStringObject(gouki2DataList.get(15).getItemValue())); //号機②ｻﾔNo16
+        params.add(DBUtil.stringToStringObject(gouki2DataList.get(16).getItemValue())); //号機②ｻﾔNo17
+        params.add(DBUtil.stringToStringObject(gouki2DataList.get(17).getItemValue())); //号機②ｻﾔNo18
+        params.add(DBUtil.stringToStringObject(gouki2DataList.get(18).getItemValue())); //号機②ｻﾔNo19
+        params.add(DBUtil.stringToStringObject(gouki2DataList.get(19).getItemValue())); //号機②ｻﾔNo20
         params.add(getCheckBoxDbValue(gouki2DataList.get(0).getCheckBoxValue(), 0)); //号機②ﾁｪｯｸ1
         params.add(getCheckBoxDbValue(gouki2DataList.get(1).getCheckBoxValue(), 0)); //号機②ﾁｪｯｸ2
         params.add(getCheckBoxDbValue(gouki2DataList.get(2).getCheckBoxValue(), 0)); //号機②ﾁｪｯｸ3
@@ -3480,17 +3973,37 @@ public class GXHDO101B043 implements IFormLogic {
         params.add(getCheckBoxDbValue(gouki2DataList.get(7).getCheckBoxValue(), 0)); //号機②ﾁｪｯｸ8
         params.add(getCheckBoxDbValue(gouki2DataList.get(8).getCheckBoxValue(), 0)); //号機②ﾁｪｯｸ9
         params.add(getCheckBoxDbValue(gouki2DataList.get(9).getCheckBoxValue(), 0)); //号機②ﾁｪｯｸ10
+        params.add(getCheckBoxDbValue(gouki2DataList.get(10).getCheckBoxValue(), 0)); //号機②ﾁｪｯｸ11
+        params.add(getCheckBoxDbValue(gouki2DataList.get(11).getCheckBoxValue(), 0)); //号機②ﾁｪｯｸ12
+        params.add(getCheckBoxDbValue(gouki2DataList.get(12).getCheckBoxValue(), 0)); //号機②ﾁｪｯｸ13
+        params.add(getCheckBoxDbValue(gouki2DataList.get(13).getCheckBoxValue(), 0)); //号機②ﾁｪｯｸ14
+        params.add(getCheckBoxDbValue(gouki2DataList.get(14).getCheckBoxValue(), 0)); //号機②ﾁｪｯｸ15
+        params.add(getCheckBoxDbValue(gouki2DataList.get(15).getCheckBoxValue(), 0)); //号機②ﾁｪｯｸ16
+        params.add(getCheckBoxDbValue(gouki2DataList.get(16).getCheckBoxValue(), 0)); //号機②ﾁｪｯｸ17
+        params.add(getCheckBoxDbValue(gouki2DataList.get(17).getCheckBoxValue(), 0)); //号機②ﾁｪｯｸ18
+        params.add(getCheckBoxDbValue(gouki2DataList.get(18).getCheckBoxValue(), 0)); //号機②ﾁｪｯｸ19
+        params.add(getCheckBoxDbValue(gouki2DataList.get(19).getCheckBoxValue(), 0)); //号機②ﾁｪｯｸ20
 
-        params.add(DBUtil.stringToIntObject(gouki3DataList.get(0).getItemValue())); //号機③ｻﾔNo1
-        params.add(DBUtil.stringToIntObject(gouki3DataList.get(1).getItemValue())); //号機③ｻﾔNo2
-        params.add(DBUtil.stringToIntObject(gouki3DataList.get(2).getItemValue())); //号機③ｻﾔNo3
-        params.add(DBUtil.stringToIntObject(gouki3DataList.get(3).getItemValue())); //号機③ｻﾔNo4
-        params.add(DBUtil.stringToIntObject(gouki3DataList.get(4).getItemValue())); //号機③ｻﾔNo5
-        params.add(DBUtil.stringToIntObject(gouki3DataList.get(5).getItemValue())); //号機③ｻﾔNo6
-        params.add(DBUtil.stringToIntObject(gouki3DataList.get(6).getItemValue())); //号機③ｻﾔNo7
-        params.add(DBUtil.stringToIntObject(gouki3DataList.get(7).getItemValue())); //号機③ｻﾔNo8
-        params.add(DBUtil.stringToIntObject(gouki3DataList.get(8).getItemValue())); //号機③ｻﾔNo9
-        params.add(DBUtil.stringToIntObject(gouki3DataList.get(9).getItemValue())); //号機③ｻﾔNo10
+        params.add(DBUtil.stringToStringObject(gouki3DataList.get(0).getItemValue())); //号機③ｻﾔNo1
+        params.add(DBUtil.stringToStringObject(gouki3DataList.get(1).getItemValue())); //号機③ｻﾔNo2
+        params.add(DBUtil.stringToStringObject(gouki3DataList.get(2).getItemValue())); //号機③ｻﾔNo3
+        params.add(DBUtil.stringToStringObject(gouki3DataList.get(3).getItemValue())); //号機③ｻﾔNo4
+        params.add(DBUtil.stringToStringObject(gouki3DataList.get(4).getItemValue())); //号機③ｻﾔNo5
+        params.add(DBUtil.stringToStringObject(gouki3DataList.get(5).getItemValue())); //号機③ｻﾔNo6
+        params.add(DBUtil.stringToStringObject(gouki3DataList.get(6).getItemValue())); //号機③ｻﾔNo7
+        params.add(DBUtil.stringToStringObject(gouki3DataList.get(7).getItemValue())); //号機③ｻﾔNo8
+        params.add(DBUtil.stringToStringObject(gouki3DataList.get(8).getItemValue())); //号機③ｻﾔNo9
+        params.add(DBUtil.stringToStringObject(gouki3DataList.get(9).getItemValue())); //号機③ｻﾔNo10
+        params.add(DBUtil.stringToStringObject(gouki3DataList.get(10).getItemValue())); //号機③ｻﾔNo11
+        params.add(DBUtil.stringToStringObject(gouki3DataList.get(11).getItemValue())); //号機③ｻﾔNo12
+        params.add(DBUtil.stringToStringObject(gouki3DataList.get(12).getItemValue())); //号機③ｻﾔNo13
+        params.add(DBUtil.stringToStringObject(gouki3DataList.get(13).getItemValue())); //号機③ｻﾔNo14
+        params.add(DBUtil.stringToStringObject(gouki3DataList.get(14).getItemValue())); //号機③ｻﾔNo15
+        params.add(DBUtil.stringToStringObject(gouki3DataList.get(15).getItemValue())); //号機③ｻﾔNo16
+        params.add(DBUtil.stringToStringObject(gouki3DataList.get(16).getItemValue())); //号機③ｻﾔNo17
+        params.add(DBUtil.stringToStringObject(gouki3DataList.get(17).getItemValue())); //号機③ｻﾔNo18
+        params.add(DBUtil.stringToStringObject(gouki3DataList.get(18).getItemValue())); //号機③ｻﾔNo19
+        params.add(DBUtil.stringToStringObject(gouki3DataList.get(19).getItemValue())); //号機③ｻﾔNo20
         params.add(getCheckBoxDbValue(gouki3DataList.get(0).getCheckBoxValue(), 0)); //号機③ﾁｪｯｸ1
         params.add(getCheckBoxDbValue(gouki3DataList.get(1).getCheckBoxValue(), 0)); //号機③ﾁｪｯｸ2
         params.add(getCheckBoxDbValue(gouki3DataList.get(2).getCheckBoxValue(), 0)); //号機③ﾁｪｯｸ3
@@ -3501,17 +4014,37 @@ public class GXHDO101B043 implements IFormLogic {
         params.add(getCheckBoxDbValue(gouki3DataList.get(7).getCheckBoxValue(), 0)); //号機③ﾁｪｯｸ8
         params.add(getCheckBoxDbValue(gouki3DataList.get(8).getCheckBoxValue(), 0)); //号機③ﾁｪｯｸ9
         params.add(getCheckBoxDbValue(gouki3DataList.get(9).getCheckBoxValue(), 0)); //号機③ﾁｪｯｸ10
+        params.add(getCheckBoxDbValue(gouki3DataList.get(10).getCheckBoxValue(), 0)); //号機③ﾁｪｯｸ11
+        params.add(getCheckBoxDbValue(gouki3DataList.get(11).getCheckBoxValue(), 0)); //号機③ﾁｪｯｸ12
+        params.add(getCheckBoxDbValue(gouki3DataList.get(12).getCheckBoxValue(), 0)); //号機③ﾁｪｯｸ13
+        params.add(getCheckBoxDbValue(gouki3DataList.get(13).getCheckBoxValue(), 0)); //号機③ﾁｪｯｸ14
+        params.add(getCheckBoxDbValue(gouki3DataList.get(14).getCheckBoxValue(), 0)); //号機③ﾁｪｯｸ15
+        params.add(getCheckBoxDbValue(gouki3DataList.get(15).getCheckBoxValue(), 0)); //号機③ﾁｪｯｸ16
+        params.add(getCheckBoxDbValue(gouki3DataList.get(16).getCheckBoxValue(), 0)); //号機③ﾁｪｯｸ17
+        params.add(getCheckBoxDbValue(gouki3DataList.get(17).getCheckBoxValue(), 0)); //号機③ﾁｪｯｸ18
+        params.add(getCheckBoxDbValue(gouki3DataList.get(18).getCheckBoxValue(), 0)); //号機③ﾁｪｯｸ19
+        params.add(getCheckBoxDbValue(gouki3DataList.get(19).getCheckBoxValue(), 0)); //号機③ﾁｪｯｸ20
 
-        params.add(DBUtil.stringToIntObject(gouki4DataList.get(0).getItemValue())); //号機④ｻﾔNo1
-        params.add(DBUtil.stringToIntObject(gouki4DataList.get(1).getItemValue())); //号機④ｻﾔNo2
-        params.add(DBUtil.stringToIntObject(gouki4DataList.get(2).getItemValue())); //号機④ｻﾔNo3
-        params.add(DBUtil.stringToIntObject(gouki4DataList.get(3).getItemValue())); //号機④ｻﾔNo4
-        params.add(DBUtil.stringToIntObject(gouki4DataList.get(4).getItemValue())); //号機④ｻﾔNo5
-        params.add(DBUtil.stringToIntObject(gouki4DataList.get(5).getItemValue())); //号機④ｻﾔNo6
-        params.add(DBUtil.stringToIntObject(gouki4DataList.get(6).getItemValue())); //号機④ｻﾔNo7
-        params.add(DBUtil.stringToIntObject(gouki4DataList.get(7).getItemValue())); //号機④ｻﾔNo8
-        params.add(DBUtil.stringToIntObject(gouki4DataList.get(8).getItemValue())); //号機④ｻﾔNo9
-        params.add(DBUtil.stringToIntObject(gouki4DataList.get(9).getItemValue())); //号機④ｻﾔNo10
+        params.add(DBUtil.stringToStringObject(gouki4DataList.get(0).getItemValue())); //号機④ｻﾔNo1
+        params.add(DBUtil.stringToStringObject(gouki4DataList.get(1).getItemValue())); //号機④ｻﾔNo2
+        params.add(DBUtil.stringToStringObject(gouki4DataList.get(2).getItemValue())); //号機④ｻﾔNo3
+        params.add(DBUtil.stringToStringObject(gouki4DataList.get(3).getItemValue())); //号機④ｻﾔNo4
+        params.add(DBUtil.stringToStringObject(gouki4DataList.get(4).getItemValue())); //号機④ｻﾔNo5
+        params.add(DBUtil.stringToStringObject(gouki4DataList.get(5).getItemValue())); //号機④ｻﾔNo6
+        params.add(DBUtil.stringToStringObject(gouki4DataList.get(6).getItemValue())); //号機④ｻﾔNo7
+        params.add(DBUtil.stringToStringObject(gouki4DataList.get(7).getItemValue())); //号機④ｻﾔNo8
+        params.add(DBUtil.stringToStringObject(gouki4DataList.get(8).getItemValue())); //号機④ｻﾔNo9
+        params.add(DBUtil.stringToStringObject(gouki4DataList.get(9).getItemValue())); //号機④ｻﾔNo10
+        params.add(DBUtil.stringToStringObject(gouki4DataList.get(10).getItemValue())); //号機④ｻﾔNo11
+        params.add(DBUtil.stringToStringObject(gouki4DataList.get(11).getItemValue())); //号機④ｻﾔNo12
+        params.add(DBUtil.stringToStringObject(gouki4DataList.get(12).getItemValue())); //号機④ｻﾔNo13
+        params.add(DBUtil.stringToStringObject(gouki4DataList.get(13).getItemValue())); //号機④ｻﾔNo14
+        params.add(DBUtil.stringToStringObject(gouki4DataList.get(14).getItemValue())); //号機④ｻﾔNo15
+        params.add(DBUtil.stringToStringObject(gouki4DataList.get(15).getItemValue())); //号機④ｻﾔNo16
+        params.add(DBUtil.stringToStringObject(gouki4DataList.get(16).getItemValue())); //号機④ｻﾔNo17
+        params.add(DBUtil.stringToStringObject(gouki4DataList.get(17).getItemValue())); //号機④ｻﾔNo18
+        params.add(DBUtil.stringToStringObject(gouki4DataList.get(18).getItemValue())); //号機④ｻﾔNo19
+        params.add(DBUtil.stringToStringObject(gouki4DataList.get(19).getItemValue())); //号機④ｻﾔNo20
         params.add(getCheckBoxDbValue(gouki4DataList.get(0).getCheckBoxValue(), 0)); //号機④ﾁｪｯｸ1
         params.add(getCheckBoxDbValue(gouki4DataList.get(1).getCheckBoxValue(), 0)); //号機④ﾁｪｯｸ2
         params.add(getCheckBoxDbValue(gouki4DataList.get(2).getCheckBoxValue(), 0)); //号機④ﾁｪｯｸ3
@@ -3522,6 +4055,16 @@ public class GXHDO101B043 implements IFormLogic {
         params.add(getCheckBoxDbValue(gouki4DataList.get(7).getCheckBoxValue(), 0)); //号機④ﾁｪｯｸ8
         params.add(getCheckBoxDbValue(gouki4DataList.get(8).getCheckBoxValue(), 0)); //号機④ﾁｪｯｸ9
         params.add(getCheckBoxDbValue(gouki4DataList.get(9).getCheckBoxValue(), 0)); //号機④ﾁｪｯｸ10
+        params.add(getCheckBoxDbValue(gouki4DataList.get(10).getCheckBoxValue(), 0)); //号機④ﾁｪｯｸ11
+        params.add(getCheckBoxDbValue(gouki4DataList.get(11).getCheckBoxValue(), 0)); //号機④ﾁｪｯｸ12
+        params.add(getCheckBoxDbValue(gouki4DataList.get(12).getCheckBoxValue(), 0)); //号機④ﾁｪｯｸ13
+        params.add(getCheckBoxDbValue(gouki4DataList.get(13).getCheckBoxValue(), 0)); //号機④ﾁｪｯｸ14
+        params.add(getCheckBoxDbValue(gouki4DataList.get(14).getCheckBoxValue(), 0)); //号機④ﾁｪｯｸ15
+        params.add(getCheckBoxDbValue(gouki4DataList.get(15).getCheckBoxValue(), 0)); //号機④ﾁｪｯｸ16
+        params.add(getCheckBoxDbValue(gouki4DataList.get(16).getCheckBoxValue(), 0)); //号機④ﾁｪｯｸ17
+        params.add(getCheckBoxDbValue(gouki4DataList.get(17).getCheckBoxValue(), 0)); //号機④ﾁｪｯｸ18
+        params.add(getCheckBoxDbValue(gouki4DataList.get(18).getCheckBoxValue(), 0)); //号機④ﾁｪｯｸ19
+        params.add(getCheckBoxDbValue(gouki4DataList.get(19).getCheckBoxValue(), 0)); //号機④ﾁｪｯｸ20
         
         if (isInsert) {
             params.add(systemTime); //登録日時
@@ -3555,38 +4098,70 @@ public class GXHDO101B043 implements IFormLogic {
         String sql = "INSERT INTO tmp_sub_sr_shinkuukansou( kojyo, lotno, edaban, kaisuu, "
                 + "gouki1saya1, gouki1saya2, gouki1saya3, gouki1saya4, gouki1saya5, "
                 + "gouki1saya6, gouki1saya7, gouki1saya8, gouki1saya9, gouki1saya10, "
+                + "gouki1saya11, gouki1saya12, gouki1saya13, gouki1saya14, gouki1saya15, "
+                + "gouki1saya16, gouki1saya17, gouki1saya18, gouki1saya19, gouki1saya20, "
                 + "gouki1check1, gouki1check2, gouki1check3, gouki1check4, gouki1check5, "
                 + "gouki1check6, gouki1check7, gouki1check8, gouki1check9, gouki1check10, "
+                + "gouki1check11, gouki1check12, gouki1check13, gouki1check14, gouki1check15, "
+                + "gouki1check16, gouki1check17, gouki1check18, gouki1check19, gouki1check20, "
                 + "gouki2saya1, gouki2saya2, gouki2saya3, gouki2saya4, gouki2saya5, "
                 + "gouki2saya6, gouki2saya7, gouki2saya8, gouki2saya9, gouki2saya10, "
+                + "gouki2saya11, gouki2saya12, gouki2saya13, gouki2saya14, gouki2saya15, "
+                + "gouki2saya16, gouki2saya17, gouki2saya18, gouki2saya19, gouki2saya20, "
                 + "gouki2check1, gouki2check2, gouki2check3, gouki2check4, gouki2check5, "
                 + "gouki2check6, gouki2check7, gouki2check8, gouki2check9, gouki2check10, "
+                + "gouki2check11, gouki2check12, gouki2check13, gouki2check14, gouki2check15, "
+                + "gouki2check16, gouki2check17, gouki2check18, gouki2check19, gouki2check20, "
                 + "gouki3saya1, gouki3saya2, gouki3saya3, gouki3saya4, gouki3saya5, "
                 + "gouki3saya6, gouki3saya7, gouki3saya8, gouki3saya9, gouki3saya10, "
+                + "gouki3saya11, gouki3saya12, gouki3saya13, gouki3saya14, gouki3saya15, "
+                + "gouki3saya16, gouki3saya17, gouki3saya18, gouki3saya19, gouki3saya20, "
                 + "gouki3check1, gouki3check2, gouki3check3, gouki3check4, gouki3check5, "
                 + "gouki3check6, gouki3check7, gouki3check8, gouki3check9, gouki3check10, "
+                + "gouki3check11, gouki3check12, gouki3check13, gouki3check14, gouki3check15, "
+                + "gouki3check16, gouki3check17, gouki3check18, gouki3check19, gouki3check20, "
                 + "gouki4saya1, gouki4saya2, gouki4saya3, gouki4saya4, gouki4saya5, "
                 + "gouki4saya6, gouki4saya7, gouki4saya8, gouki4saya9, gouki4saya10, "
+                + "gouki4saya11, gouki4saya12, gouki4saya13, gouki4saya14, gouki4saya15, "
+                + "gouki4saya16, gouki4saya17, gouki4saya18, gouki4saya19, gouki4saya20, "
                 + "gouki4check1, gouki4check2, gouki4check3, gouki4check4, gouki4check5, "
                 + "gouki4check6, gouki4check7, gouki4check8, gouki4check9, gouki4check10, "
+                + "gouki4check11, gouki4check12, gouki4check13, gouki4check14, gouki4check15, "
+                + "gouki4check16, gouki4check17, gouki4check18, gouki4check19, gouki4check20, "
                 + "torokunichiji, kosinnichiji, revision, deleteflag"
                 + ") SELECT kojyo, lotno, edaban, kaisuu, "
                 + "gouki1saya1, gouki1saya2, gouki1saya3, gouki1saya4, gouki1saya5, "
                 + "gouki1saya6, gouki1saya7, gouki1saya8, gouki1saya9, gouki1saya10, "
+                + "gouki1saya11, gouki1saya12, gouki1saya13, gouki1saya14, gouki1saya15, "
+                + "gouki1saya16, gouki1saya17, gouki1saya18, gouki1saya19, gouki1saya20, "
                 + "gouki1check1, gouki1check2, gouki1check3, gouki1check4, gouki1check5, "
                 + "gouki1check6, gouki1check7, gouki1check8, gouki1check9, gouki1check10, "
+                + "gouki1check11, gouki1check12, gouki1check13, gouki1check14, gouki1check15, "
+                + "gouki1check16, gouki1check17, gouki1check18, gouki1check19, gouki1check20, "
                 + "gouki2saya1, gouki2saya2, gouki2saya3, gouki2saya4, gouki2saya5, "
                 + "gouki2saya6, gouki2saya7, gouki2saya8, gouki2saya9, gouki2saya10, "
+                + "gouki2saya11, gouki2saya12, gouki2saya13, gouki2saya14, gouki2saya15, "
+                + "gouki2saya16, gouki2saya17, gouki2saya18, gouki2saya19, gouki2saya20, "
                 + "gouki2check1, gouki2check2, gouki2check3, gouki2check4, gouki2check5, "
                 + "gouki2check6, gouki2check7, gouki2check8, gouki2check9, gouki2check10, "
+                + "gouki2check11, gouki2check12, gouki2check13, gouki2check14, gouki2check15, "
+                + "gouki2check16, gouki2check17, gouki2check18, gouki2check19, gouki2check20, "
                 + "gouki3saya1, gouki3saya2, gouki3saya3, gouki3saya4, gouki3saya5, "
                 + "gouki3saya6, gouki3saya7, gouki3saya8, gouki3saya9, gouki3saya10, "
+                + "gouki3saya11, gouki3saya12, gouki3saya13, gouki3saya14, gouki3saya15, "
+                + "gouki3saya16, gouki3saya17, gouki3saya18, gouki3saya19, gouki3saya20, "
                 + "gouki3check1, gouki3check2, gouki3check3, gouki3check4, gouki3check5, "
                 + "gouki3check6, gouki3check7, gouki3check8, gouki3check9, gouki3check10, "
+                + "gouki3check11, gouki3check12, gouki3check13, gouki3check14, gouki3check15, "
+                + "gouki3check16, gouki3check17, gouki3check18, gouki3check19, gouki3check20, "
                 + "gouki4saya1, gouki4saya2, gouki4saya3, gouki4saya4, gouki4saya5, "
                 + "gouki4saya6, gouki4saya7, gouki4saya8, gouki4saya9, gouki4saya10, "
+                + "gouki4saya11, gouki4saya12, gouki4saya13, gouki4saya14, gouki4saya15, "
+                + "gouki4saya16, gouki4saya17, gouki4saya18, gouki4saya19, gouki4saya20, "
                 + "gouki4check1, gouki4check2, gouki4check3, gouki4check4, gouki4check5, "
                 + "gouki4check6, gouki4check7, gouki4check8, gouki4check9, gouki4check10, "
+                + "gouki4check11, gouki4check12, gouki4check13, gouki4check14, gouki4check15, "
+                + "gouki4check16, gouki4check17, gouki4check18, gouki4check19, gouki4check20, "
                 + "?, ?, ?, ? FROM sub_sr_shinkuukansou "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ?";
 
@@ -3636,5 +4211,256 @@ public class GXHDO101B043 implements IFormLogic {
         params.add(rev);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerQcdb.update(conQcdb, sql, params.toArray());
+    }
+
+    /**
+     * [生産]から、ﾃﾞｰﾀを取得
+     * @param queryRunnerWip オブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param date ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ(検索キー)
+     * @return 取得データ
+     * @throws SQLException 
+     */
+    private Map loadSeisanData(QueryRunner queryRunnerWip, int jissekino) throws SQLException {
+                 
+        // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+        String sql = "SELECT ryohinsuu "
+                + "FROM seisan "
+                + "WHERE jissekino = ?";
+                
+        List<Object> params = new ArrayList<>();
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerWip.query(sql, new MapHandler(), params.toArray());
+    }
+
+    /**
+     * 【設備ﾃﾞｰﾀ連携】ﾎﾞﾀﾝ押下時設定処理
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData doDataCooperationSyori(ProcessData processData) {
+        QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
+        // セッションから情報を取得
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+        String lotNo = (String) session.getAttribute("lotNo");
+        try {
+            // (23)[tmp_netsusyori_kanri]から、ﾃﾞｰﾀの取得
+            List<Map<String, Object>> tmpSrGraprintKanriDataList = loadTmpNetsusyoriKanriData(queryRunnerQcdb, lotNo, null);
+            if (tmpSrGraprintKanriDataList == null || tmpSrGraprintKanriDataList.isEmpty()) {
+                // ｴﾗｰ項目をﾘｽﾄに追加
+                ErrorMessageInfo checkItemError = MessageUtil.getErrorMessageInfo("XHD-000210", true, true, null, "設備ﾃﾞｰﾀ");
+                if (checkItemError != null) {
+                    processData.setErrorMessageInfoList(Arrays.asList(checkItemError));
+                    return processData;
+                }
+            }
+            HashMap<String, String> itemIdConvertMap = new HashMap<>();
+            itemIdConvertMap.put(GXHDO101B043Const.SYURUI, "netsusyori_syurui"); // 種類
+            itemIdConvertMap.put(GXHDO101B043Const.GOUKI, "netsusyori_gouki1"); // 号機
+            itemIdConvertMap.put(GXHDO101B043Const.GOUKI2, "netsusyori_gouki2"); // 号機②
+            itemIdConvertMap.put(GXHDO101B043Const.GOUKI3, "netsusyori_gouki3"); // 号機③
+            itemIdConvertMap.put(GXHDO101B043Const.GOUKI4, "netsusyori_gouki4"); // 号機④
+            itemIdConvertMap.put(GXHDO101B043Const.SETTEIONDO, "netsusyori_settei_ondo"); // 設定温度
+            itemIdConvertMap.put(GXHDO101B043Const.SETTEIJIKAN, "netsusyori_settei_jikan"); // 設定時間
+            itemIdConvertMap.put(GXHDO101B043Const.KAISHI_DAY, "netsusyori_kaisibi"); // 開始日
+            itemIdConvertMap.put(GXHDO101B043Const.KAISHI_TIME, "netsusyori_kaisi_jikan"); // 開始時間
+            itemIdConvertMap.put(GXHDO101B043Const.SAGYOSYA, "netsusyori_kaisi_tantousya"); // 開始担当者
+            itemIdConvertMap.put(GXHDO101B043Const.STARTKAKUNIN, "netsusyori_kaisi_kakuninsya"); // 開始確認者
+            itemIdConvertMap.put(GXHDO101B043Const.SHURYOU_DAY, "netsusyori_syuuryoubi"); // 終了日
+            itemIdConvertMap.put(GXHDO101B043Const.SHURYOU_TIME, "netsusyori_syuuryou_jikan"); // 終了時間
+            itemIdConvertMap.put(GXHDO101B043Const.ENDTANTOU, "netsusyori_syuuryou_tantousya"); // 終了担当者
+            ErrorMessageInfo checkItemError = checkDataCooperation(processData, queryRunnerQcdb, lotNo, 3, itemIdConvertMap);
+            if (checkItemError != null) {
+                processData.setErrorMessageInfoList(Arrays.asList(checkItemError));
+                return processData;
+            }
+            doDataCooperation(processData, queryRunnerQcdb, lotNo, 3, itemIdConvertMap);
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+        }
+        
+        processData.setMethod("");
+        return processData;
+    }
+    
+    /**
+     * 設備ﾃﾞｰﾀ連携チェック処理
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param datasyurui データ種類(検索キー)
+     * @param itemIdConvertMap ﾌｫｰﾑﾊﾟﾗﾒｰﾀ(item_id)とtmp_netsusyori(item_id)の対比表
+     * @return ｴﾗｰﾒｯｾｰｼﾞ情報
+     * @throws SQLException 例外エラー
+     */
+    private ErrorMessageInfo checkDataCooperation(ProcessData processData, QueryRunner queryRunnerQcdb, String lotNo, Integer datasyurui, 
+            HashMap<String, String> itemIdConvertMap) throws SQLException {
+        ErrorMessageInfo checkItemError = null;
+        // 検索条件:ﾃﾞｰﾀの種類==3 で、Ⅲ.画面表示仕様(18)を発行する。
+        List<Map<String, Object>> tmpSrGraprintKanriDataList = loadTmpNetsusyoriKanriData(queryRunnerQcdb, lotNo, String.valueOf(datasyurui));
+        if (tmpSrGraprintKanriDataList != null && !tmpSrGraprintKanriDataList.isEmpty()) {
+            // 取得したﾃﾞｰﾀで実績Noが高い管理Noで、Ⅲ.画面表示仕様(19)を発行する。
+            Map<String, Object> tmpSrGraprintKanriData = tmpSrGraprintKanriDataList.get(0);
+            List<Map<String, Object>> tmpSrGraprintDataList = loadTmpNetsusyoriData(queryRunnerQcdb, (Long) tmpSrGraprintKanriData.get("kanrino"));
+            if (tmpSrGraprintDataList != null && !tmpSrGraprintDataList.isEmpty()) {
+                // Ⅵ.画面項目制御・出力仕様.G3)入力項目部.【設備ﾃﾞｰﾀ連携】ﾎﾞﾀﾝ押下時.開始時 の該当項目へ取得ﾃﾞｰﾀを上書きする。
+                    // 終了時(ﾃﾞｰﾀ種類3)
+                List<String> numberItemList = Arrays.asList(GXHDO101B043Const.SETTEIONDO, GXHDO101B043Const.SETTEIJIKAN);
+                checkItemError = checkDataCooperationItemData(processData, numberItemList, tmpSrGraprintDataList, itemIdConvertMap);
+            }
+        }
+        return checkItemError;
+    }
+
+    /**
+     * 【設備ﾃﾞｰﾀ連携】ﾎﾞﾀﾝ押下時、該当項目(数値表示)で取得時に、取得した値が文字列であった場合チェック処理
+     *
+     * @param processData 処理制御データ
+     * @param numberItemList 数値項目リスト
+     * @param tmpSrGraprintDataList 取得ﾃﾞｰﾀ
+     * @param itemIdConvertMap ﾌｫｰﾑﾊﾟﾗﾒｰﾀ(item_id)とtmp_netsusyori(item_id)の対比表
+     * @return ｴﾗｰﾒｯｾｰｼﾞ情報
+     */
+    private ErrorMessageInfo checkDataCooperationItemData(ProcessData processData, List<String> numberItemList, List<Map<String, Object>> tmpSrGraprintDataList,
+            HashMap<String, String> itemIdConvertMap) {
+        for(String itemId : numberItemList){
+            FXHDD01 itemData = processData.getItemList().stream().filter(n -> itemId.equals(n.getItemId())).findFirst().orElse(null);
+            String[] tmpSrGraprintItemId = {itemId};
+            if (itemData != null) {
+                if (itemIdConvertMap.containsKey(itemId)) {
+                    tmpSrGraprintItemId[0] = itemIdConvertMap.get(itemId);
+                }
+                Map<String, Object> tmpSrGraprintData = tmpSrGraprintDataList.stream().filter(e -> tmpSrGraprintItemId[0].equals(e.get("item_id"))).findFirst().orElse(null);
+                if (tmpSrGraprintData != null && !tmpSrGraprintData.isEmpty()) {
+                    String ataiValue = StringUtil.nullToBlank(tmpSrGraprintData.get("atai"));
+                    if(!StringUtil.isEmpty(ataiValue)){
+                        try {
+                           BigDecimal bigDecimalVal = new BigDecimal(ataiValue);
+                        } catch (NumberFormatException e) {
+                            // 該当項目(数値表示)で取得時に、取得した値が文字列であった場合
+                            // ｴﾗｰ項目をﾘｽﾄに追加
+                            List<FXHDD01> errFxhdd01List = Arrays.asList(itemData);
+                            ErrorMessageInfo checkItemError = MessageUtil.getErrorMessageInfo("XHD-000087", true, true, errFxhdd01List);
+                            return checkItemError;
+                        }
+                    }
+                }
+            } 
+        }
+        return null;
+    }
+
+    /**
+     * 設備ﾃﾞｰﾀ連携処理
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param datasyurui データ種類(検索キー)
+     * @param itemIdConvertMap ﾌｫｰﾑﾊﾟﾗﾒｰﾀ(item_id)とtmp_netsusyori(item_id)の対比表
+     * @throws SQLException 例外エラー
+     */
+    private void doDataCooperation(ProcessData processData, QueryRunner queryRunnerQcdb, String lotNo, Integer datasyurui, 
+            HashMap<String, String> itemIdConvertMap) throws SQLException {
+        // 検索条件:ﾃﾞｰﾀの種類==datasyurui で、Ⅲ.画面表示仕様(18)を発行する。
+        List<Map<String, Object>> tmpSrGraprintKanriDataList = loadTmpNetsusyoriKanriData(queryRunnerQcdb, lotNo, String.valueOf(datasyurui));
+        if (tmpSrGraprintKanriDataList != null && !tmpSrGraprintKanriDataList.isEmpty()) {
+            // 取得したﾃﾞｰﾀで実績Noが高い管理Noで、Ⅲ.画面表示仕様(19)を発行する。
+            Map<String, Object> tmpSrGraprintKanriData = tmpSrGraprintKanriDataList.get(0);
+            List<Map<String, Object>> tmpSrGraprintDataList = loadTmpNetsusyoriData(queryRunnerQcdb, (Long) tmpSrGraprintKanriData.get("kanrino"));
+            if (tmpSrGraprintDataList != null && !tmpSrGraprintDataList.isEmpty()) {
+                // Ⅵ.画面項目制御・出力仕様.G3)入力項目部.【設備ﾃﾞｰﾀ連携】ﾎﾞﾀﾝ押下時.開始時 の該当項目へ取得ﾃﾞｰﾀを上書きする。
+                // 終了時(ﾃﾞｰﾀ種類3)
+                List<String> setValueItemList = Arrays.asList(GXHDO101B043Const.SYURUI, GXHDO101B043Const.GOUKI, GXHDO101B043Const.GOUKI2,
+                        GXHDO101B043Const.GOUKI3, GXHDO101B043Const.GOUKI4, GXHDO101B043Const.SETTEIONDO, GXHDO101B043Const.SETTEIJIKAN,
+                        GXHDO101B043Const.KAISHI_DAY, GXHDO101B043Const.KAISHI_TIME, GXHDO101B043Const.SAGYOSYA, GXHDO101B043Const.STARTKAKUNIN,
+                        GXHDO101B043Const.SHURYOU_DAY, GXHDO101B043Const.SHURYOU_TIME, GXHDO101B043Const.ENDTANTOU);
+                setDataCooperationItemData(processData, setValueItemList, tmpSrGraprintDataList, itemIdConvertMap);
+            }
+        }
+    }
+
+    /**
+     * 【設備ﾃﾞｰﾀ連携】ﾎﾞﾀﾝ押下時.開始時 の該当項目へ取得ﾃﾞｰﾀを上書きする
+     *
+     * @param processData 処理制御データ
+     * @param setValueItemList 項目リスト
+     * @param tmpSrGraprintDataList 取得ﾃﾞｰﾀ
+     * @param itemIdConvertMap ﾌｫｰﾑﾊﾟﾗﾒｰﾀ(item_id)とtmp_netsusyori(item_id)の対比表
+     */
+    private void setDataCooperationItemData(ProcessData processData, List<String> setValueItemList, List<Map<String, Object>> tmpSrGraprintDataList,
+            HashMap<String, String> itemIdConvertMap) {
+        setValueItemList.forEach(itemId -> {
+            FXHDD01 itemData = processData.getItemList().stream().filter(n -> itemId.equals(n.getItemId())).findFirst().orElse(null);
+            String[] tmpSrGraprintItemId = {itemId};
+            if (itemData != null) {
+                if (itemIdConvertMap.containsKey(itemId)) {
+                    tmpSrGraprintItemId[0] = itemIdConvertMap.get(itemId);
+                }
+                Map<String, Object> tmpSrGraprintData = tmpSrGraprintDataList.stream().filter(e -> tmpSrGraprintItemId[0].equals(e.get("item_id"))).findFirst().orElse(null);
+                if (tmpSrGraprintData != null && !tmpSrGraprintData.isEmpty()) {
+                    itemData.setValue(StringUtil.nullToBlank(tmpSrGraprintData.get("atai")));
+                }
+            }
+        });
+    }
+    
+    /**
+     * [tmp_netsusyori_kanri]から、ﾃﾞｰﾀの取得
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param datasyurui データ種類(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private List<Map<String, Object>> loadTmpNetsusyoriKanriData(QueryRunner queryRunnerQcdb, String lotNo, String datasyurui) throws SQLException {
+        String kojyo = lotNo.substring(0, 3);
+        String lotno = lotNo.substring(3, 11);
+        String edaban = lotNo.substring(11, 14);
+
+        // [tmp_netsusyori_kanri]から、ﾃﾞｰﾀの取得
+        String sql = "SELECT kanrino, kojyo, lotno, edaban, datasyurui, jissekino, torokunichiji"
+                + " FROM tmp_netsusyori_kanri "
+                + " WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
+        if (!StringUtil.isEmpty(datasyurui)) {
+            sql += " AND datasyurui = ? ";
+        }
+        sql += " order by jissekino desc";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotno);
+        params.add(edaban);
+        if (!StringUtil.isEmpty(datasyurui)) {
+            params.add(datasyurui);
+        }
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapListHandler(), params.toArray());
+    }
+
+    /**
+     * [tmp_netsusyori]から、ﾃﾞｰﾀの取得
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param kanrino 管理No(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private List<Map<String, Object>> loadTmpNetsusyoriData(QueryRunner queryRunnerQcdb, Long kanrino) throws SQLException {
+        // [tmp_netsusyori]から、ﾃﾞｰﾀの取得
+        String sql = "SELECT kanrino, item_id, atai"
+                + " FROM tmp_netsusyori WHERE kanrino = ?";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kanrino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapListHandler(), params.toArray());
     }
 }

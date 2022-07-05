@@ -682,11 +682,17 @@ public class GXHDO201B003 implements Serializable {
                     + ", T1.KAISINICHIJI"
                     + ", T1.TANTOSYA"
                     + ", T1.kakuninsya"
+                    + ", CONCAT(T1.skojyo , T1.slotno , T1.sedaban) senkoulotno"
+                    + ", (CASE WHEN T1.tapetsukaikiri = 1 THEN 'ﾁｪｯｸ' ELSE '未ﾁｪｯｸ' END) AS tapetsukaikiri "
+                    + ", (CASE WHEN T1.jilothe = 1 THEN 'ﾁｪｯｸ' ELSE '未ﾁｪｯｸ' END) AS jilothe "
                     + ", T1.SYURYONICHIJI"
                     + ", (CASE WHEN T1.nijimikasure_end = 0 THEN 'NG' WHEN T1.nijimikasure_end = 1 THEN 'OK' ELSE NULL END) AS nijimikasure_end"
                     + ", T1.tanto_end"
                     + ", T1.BIKO1"
                     + ", T1.BIKO2"
+                    + ", T1.bikou3"
+                    + ", T1.bikou4"
+                    + ", T1.bikou5"
                     + ", T2.makuatsu_start1"
                     + ", T2.makuatsu_start2"
                     + ", T2.makuatsu_start3"
@@ -769,6 +775,12 @@ public class GXHDO201B003 implements Serializable {
             mapping.put("KAISINICHIJI", "kaisinichiji");                  // 開始日時
             mapping.put("TANTOSYA", "tantosya");                          // 印刷ｽﾀｰﾄ担当者
             mapping.put("kakuninsya", "kakuninsya");                      // 印刷ｽﾀｰﾄ確認者
+            mapping.put("senkoulotno", "senkoulotno");                    // 先行ﾛｯﾄNo
+            mapping.put("tapetsukaikiri", "tapetsukaikiri");              // ﾃｰﾌﾟ使い切り
+            mapping.put("jilothe", "jilothe");                            // 次ﾛｯﾄへ
+            mapping.put("bikou3", "bikou3");                              // 備考3
+            mapping.put("bikou4", "bikou4");                              // 備考4
+            mapping.put("bikou5", "bikou5");                              // 備考5
             mapping.put("SYURYONICHIJI", "syuryonichiji");                // 終了日時
             mapping.put("nijimikasure_end", "nijimikasureEnd");           // 終了時ﾆｼﾞﾐ・ｶｽﾚ確認
             mapping.put("tanto_end", "tantoEnd");                         // 印刷ｴﾝﾄﾞ時担当者

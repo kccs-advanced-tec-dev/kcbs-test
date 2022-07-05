@@ -23,6 +23,11 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者       KCSS K.Jo<br>
  * 変更理由     仕様変更対応<br>
  * <br>
+ * 変更日	2022/06/10<br>
+ * 計画書No	MB2205-D010<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	画面表示項目を追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -301,6 +306,26 @@ public class GXHDO101B002Const {
      * 印刷枚数
      */
     public static final String INSATSU_MAISUU = "insatsu_sps_screen_insatsu_maisuu";
+
+    /**
+     * 先行ﾛｯﾄNo
+     */
+    public static final String SENKOULOTNO = "insatsu_sps_screen_senkoulotno";
+
+    /**
+     * ﾃｰﾌﾟ使い切り
+     */
+    public static final String TAPETSUKAIKIRI = "insatsu_sps_screen_tapetsukaikiri";
+
+    /**
+     * 次ﾛｯﾄへ
+     */
+    public static final String JILOTHE = "insatsu_sps_screen_jilothe";
+
+    /**
+     * 成形長さ
+     */
+    public static final String SEIKEINAGASA = "insatsu_sps_screen_seikeinagasa";
     
     /**
      * 備考1
@@ -311,6 +336,21 @@ public class GXHDO101B002Const {
      * 備考2
      */
     public static final String BIKOU2 = "insatsu_sps_screen_bikou2";
+
+    /**
+     * 備考3
+     */
+    public static final String BIKOU3 = "insatsu_sps_screen_bikou3";
+
+    /**
+     * 備考4
+     */
+    public static final String BIKOU4 = "insatsu_sps_screen_bikou4";
+
+    /**
+     * 備考5
+     */
+    public static final String BIKOU5 = "insatsu_sps_screen_bikou5";
 
     
     

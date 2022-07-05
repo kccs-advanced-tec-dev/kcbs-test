@@ -16,6 +16,11 @@ import java.sql.Timestamp;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2022/06/02<br>
+ * 計画書No	MB2205-D010<br>
+ * 変更者	KCSS wxf<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -137,6 +142,11 @@ public class SrSpsprintGra {
     private BigDecimal bladeATu;
     
     /**
+     * ﾌﾞﾚｰﾄﾞ印刷長
+     */
+    private Integer bladeinsatsutyo;
+    
+    /**
      * 圧胴No
      */
     private String atudoNo;
@@ -200,6 +210,86 @@ public class SrSpsprintGra {
      * 印刷スタート時確認者
      */
     private String kakuninsya;
+    
+    /**
+     * 清掃 ローラ部
+     */
+    private Integer seisourollerbu;
+    
+    /**
+     * 清掃 印刷周辺
+     */
+    private Integer seisouinsatsusyuhen;
+    
+    /**
+     * 清掃 乾燥炉内
+     */
+    private Integer seisoukansouronai;
+    
+    /**
+     * 3μｍフィルター 適用
+     */
+    private Integer sanmicronmfiltertekiyou;
+    
+    /**
+     * 3μｍフィルター 交換
+     */
+    private Integer sanmicronmfilterkoukan;
+    
+    /**
+     * インクパンストッパーロック確認
+     */
+    private Integer inkpanstopperlockkakunin;
+    
+    /**
+     * 先行工場ｺｰﾄﾞ
+     */
+    private String skojyo;
+    
+    /**
+     * 先行ﾛｯﾄNo
+     */
+    private String slotno;
+    
+    /**
+     * 先行枝番
+     */
+    private String sedaban;
+    
+    /**
+     * 先行ﾛｯﾄNo
+     */
+    private String senkoulotno;
+    
+    /**
+     * ﾃｰﾌﾟ使い切り
+     */
+    private Integer tapetsukaikiri;
+    
+    /**
+     * 次ﾛｯﾄへ
+     */
+    private Integer jilothe;
+    
+    /**
+     * 成形長さ
+     */
+    private Integer seikeinagasa;  
+    
+    /**
+     * 備考3
+     */
+    private String bikou3;
+    
+    /**
+     * 備考4
+     */
+    private String bikou4;
+    
+    /**
+     * 備考5
+     */
+    private String bikou5;
     
     /**
      * ｽﾀｰﾄ時膜厚AVE
@@ -793,6 +883,22 @@ public class SrSpsprintGra {
     }
 
     /**
+     * ﾌﾞﾚｰﾄﾞ印刷長
+     * @return the bladeinsatsutyo
+     */
+    public Integer getBladeinsatsutyo() {
+        return bladeinsatsutyo;
+    }
+
+    /**
+     * ﾌﾞﾚｰﾄﾞ印刷長
+     * @param bladeinsatsutyo the bladeinsatsutyo to set
+     */
+    public void setBladeinsatsutyo(Integer bladeinsatsutyo) {
+        this.bladeinsatsutyo = bladeinsatsutyo;
+    }
+
+    /**
      * 圧胴No
      *
      * @return the atudoNo
@@ -1023,7 +1129,263 @@ public class SrSpsprintGra {
     public void setKakuninsya(String kakuninsya) {
         this.kakuninsya = kakuninsya;
     }
-    
+
+    /**
+     * 清掃 ローラ部
+     * @return the seisourollerbu
+     */
+    public Integer getSeisourollerbu() {
+        return seisourollerbu;
+    }
+
+    /**
+     * 清掃 ローラ部
+     * @param seisourollerbu the seisourollerbu to set
+     */
+    public void setSeisourollerbu(Integer seisourollerbu) {
+        this.seisourollerbu = seisourollerbu;
+    }
+
+    /**
+     * 清掃 印刷周辺
+     * @return the seisouinsatsusyuhen
+     */
+    public Integer getSeisouinsatsusyuhen() {
+        return seisouinsatsusyuhen;
+    }
+
+    /**
+     * 清掃 印刷周辺
+     * @param seisouinsatsusyuhen the seisouinsatsusyuhen to set
+     */
+    public void setSeisouinsatsusyuhen(Integer seisouinsatsusyuhen) {
+        this.seisouinsatsusyuhen = seisouinsatsusyuhen;
+    }
+
+    /**
+     * 清掃 乾燥炉内
+     * @return the seisoukansouronai
+     */
+    public Integer getSeisoukansouronai() {
+        return seisoukansouronai;
+    }
+
+    /**
+     * 清掃 乾燥炉内
+     * @param seisoukansouronai the seisoukansouronai to set
+     */
+    public void setSeisoukansouronai(Integer seisoukansouronai) {
+        this.seisoukansouronai = seisoukansouronai;
+    }
+
+    /**
+     * 3μｍフィルター 適用
+     * @return the sanmicronmfiltertekiyou
+     */
+    public Integer getSanmicronmfiltertekiyou() {
+        return sanmicronmfiltertekiyou;
+    }
+
+    /**
+     * 3μｍフィルター 適用
+     * @param sanmicronmfiltertekiyou the sanmicronmfiltertekiyou to set
+     */
+    public void setSanmicronmfiltertekiyou(Integer sanmicronmfiltertekiyou) {
+        this.sanmicronmfiltertekiyou = sanmicronmfiltertekiyou;
+    }
+
+    /**
+     * 3μｍフィルター 交換
+     * @return the sanmicronmfilterkoukan
+     */
+    public Integer getSanmicronmfilterkoukan() {
+        return sanmicronmfilterkoukan;
+    }
+
+    /**
+     * 3μｍフィルター 交換
+     * @param sanmicronmfilterkoukan the sanmicronmfilterkoukan to set
+     */
+    public void setSanmicronmfilterkoukan(Integer sanmicronmfilterkoukan) {
+        this.sanmicronmfilterkoukan = sanmicronmfilterkoukan;
+    }
+
+    /**
+     * インクパンストッパーロック確認
+     * @return the inkpanstopperlockkakunin
+     */
+    public Integer getInkpanstopperlockkakunin() {
+        return inkpanstopperlockkakunin;
+    }
+
+    /**
+     * インクパンストッパーロック確認
+     * @param inkpanstopperlockkakunin the inkpanstopperlockkakunin to set
+     */
+    public void setInkpanstopperlockkakunin(Integer inkpanstopperlockkakunin) {
+        this.inkpanstopperlockkakunin = inkpanstopperlockkakunin;
+    }
+
+    /**
+     * 先行工場ｺｰﾄﾞ
+     * @return the skojyo
+     */
+    public String getSkojyo() {
+        return skojyo;
+    }
+
+    /**
+     * 先行工場ｺｰﾄﾞ
+     * @param skojyo the skojyo to set
+     */
+    public void setSkojyo(String skojyo) {
+        this.skojyo = skojyo;
+    }
+
+    /**
+     * 先行ﾛｯﾄNo
+     * @return the slotno
+     */
+    public String getSlotno() {
+        return slotno;
+    }
+
+    /**
+     * 先行ﾛｯﾄNo
+     * @param slotno the slotno to set
+     */
+    public void setSlotno(String slotno) {
+        this.slotno = slotno;
+    }
+
+    /**
+     * 先行枝番
+     * @return the sedaban
+     */
+    public String getSedaban() {
+        return sedaban;
+    }
+
+    /**
+     * 先行枝番
+     * @param sedaban the sedaban to set
+     */
+    public void setSedaban(String sedaban) {
+        this.sedaban = sedaban;
+    }
+
+    /**
+     * 先行ﾛｯﾄNo
+     * @return the senkoulotno
+     */
+    public String getSenkoulotno() {
+        return senkoulotno;
+    }
+
+    /**
+     * 先行ﾛｯﾄNo
+     * @param senkoulotno the senkoulotno to set
+     */
+    public void setSenkoulotno(String senkoulotno) {
+        this.senkoulotno = senkoulotno;
+    }
+
+    /**
+     * ﾃｰﾌﾟ使い切り
+     * @return the tapetsukaikiri
+     */
+    public Integer getTapetsukaikiri() {
+        return tapetsukaikiri;
+    }
+
+    /**
+     * ﾃｰﾌﾟ使い切り
+     * @param tapetsukaikiri the tapetsukaikiri to set
+     */
+    public void setTapetsukaikiri(Integer tapetsukaikiri) {
+        this.tapetsukaikiri = tapetsukaikiri;
+    }
+
+    /**
+     * 次ﾛｯﾄへ
+     * @return the jilothe
+     */
+    public Integer getJilothe() {
+        return jilothe;
+    }
+
+    /**
+     * 次ﾛｯﾄへ
+     * @param jilothe the jilothe to set
+     */
+    public void setJilothe(Integer jilothe) {
+        this.jilothe = jilothe;
+    }
+
+    /**
+     * 成形長さ
+     * @return the seikeinagasa
+     */
+    public Integer getSeikeinagasa() {
+        return seikeinagasa;
+    }
+
+    /**
+     * 成形長さ
+     * @param seikeinagasa the seikeinagasa to set
+     */
+    public void setSeikeinagasa(Integer seikeinagasa) {
+        this.seikeinagasa = seikeinagasa;
+    }
+
+    /**
+     * 備考3
+     * @return the bikou3
+     */
+    public String getBikou3() {
+        return bikou3;
+    }
+
+    /**
+     * 備考3
+     * @param bikou3 the bikou3 to set
+     */
+    public void setBikou3(String bikou3) {
+        this.bikou3 = bikou3;
+    }
+
+    /**
+     * 備考4
+     * @return the bikou4
+     */
+    public String getBikou4() {
+        return bikou4;
+    }
+
+    /**
+     * 備考4
+     * @param bikou4 the bikou4 to set
+     */
+    public void setBikou4(String bikou4) {
+        this.bikou4 = bikou4;
+    }
+
+    /**
+     * 備考5
+     * @return the bikou5
+     */
+    public String getBikou5() {
+        return bikou5;
+    }
+
+    /**
+     * 備考5
+     * @param bikou5 the bikou5 to set
+     */
+    public void setBikou5(String bikou5) {
+        this.bikou5 = bikou5;
+    }
+
     /**
      * ｽﾀｰﾄ時膜厚AVE
      *

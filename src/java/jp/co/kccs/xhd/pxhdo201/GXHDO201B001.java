@@ -66,6 +66,11 @@ import org.primefaces.context.RequestContext;
  * 変更者        KCSS K.Jo<br>
  * 変更理由      項目追加・変更<br>
  * <br>
+ * 変更日	2022/06/02<br>
+ * 計画書No	MB2205-D010<br>
+ * 変更者	KCSS wxf<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 
@@ -667,8 +672,22 @@ public class GXHDO201B001 implements Serializable {
                     + ", T1.printzure3_suriowari_end"
                     + ", T1.abzure_heikin_end"
                     + ", T1.genryoukigou"
+                    + ", T1.bladeinsatsutyo"
+                    + ", (CASE WHEN T1.seisourollerbu = 1 THEN 'ﾁｪｯｸ' ELSE '未ﾁｪｯｸ' END) AS seisourollerbu"
+                    + ", (CASE WHEN T1.seisouinsatsusyuhen = 1 THEN 'ﾁｪｯｸ' ELSE '未ﾁｪｯｸ' END) AS seisouinsatsusyuhen"
+                    + ", (CASE WHEN T1.seisoukansouronai = 1 THEN 'ﾁｪｯｸ' ELSE '未ﾁｪｯｸ' END) AS seisoukansouronai"
+                    + ", (CASE WHEN T1.3micronmfiltertekiyou = 1 THEN 'ﾁｪｯｸ' ELSE '未ﾁｪｯｸ' END) AS sanmicronmfiltertekiyou"
+                    + ", (CASE WHEN T1.3micronmfilterkoukan = 1 THEN 'ﾁｪｯｸ' ELSE '未ﾁｪｯｸ' END) AS sanmicronmfilterkoukan"
+                    + ", (CASE WHEN T1.inkpanstopperlockkakunin = 1 THEN 'ﾁｪｯｸ' ELSE '未ﾁｪｯｸ' END) AS inkpanstopperlockkakunin"
+                    + ", Concat(IFNULL(T1.skojyo, ''),IFNULL(T1.slotno, ''),IFNULL(T1.sedaban, '')) AS senkoulotno"
+                    + ", (CASE WHEN T1.tapetsukaikiri = 1 THEN 'ﾁｪｯｸ' ELSE '未ﾁｪｯｸ' END) AS tapetsukaikiri"
+                    + ", (CASE WHEN T1.jilothe = 1 THEN 'ﾁｪｯｸ' ELSE '未ﾁｪｯｸ' END) AS jilothe"
+                    + ", T1.seikeinagasa"
                     + ", T1.bikou1"
                     + ", T1.bikou2"
+                    + ", T1.bikou3"
+                    + ", T1.bikou4"
+                    + ", T1.bikou5"
                     + ", T1.torokunichiji"
                     + ", T1.kosinnichiji"
                     + ", T1.revision"
@@ -795,8 +814,22 @@ public class GXHDO201B001 implements Serializable {
             mapping.put("printzure3_suriowari_end", "printzure3SuriowariEnd");
             mapping.put("abzure_heikin_end", "abzureHeikinEnd");
             mapping.put("genryoukigou", "genryoukigou");
+            mapping.put("bladeinsatsutyo", "bladeinsatsutyo");
+            mapping.put("seisourollerbu", "seisourollerbu");
+            mapping.put("seisouinsatsusyuhen", "seisouinsatsusyuhen");
+            mapping.put("seisoukansouronai", "seisoukansouronai");
+            mapping.put("3micronmfiltertekiyou", "3micronmfiltertekiyou");
+            mapping.put("3micronmfilterkoukan", "3micronmfilterkoukan");
+            mapping.put("inkpanstopperlockkakunin", "inkpanstopperlockkakunin");
+            mapping.put("senkoulotno", "senkoulotno");
+            mapping.put("tapetsukaikiri", "tapetsukaikiri");
+            mapping.put("jilothe", "jilothe");
+            mapping.put("seikeinagasa", "seikeinagasa");
             mapping.put("bikou1", "bikou1");
             mapping.put("bikou2", "bikou2");
+            mapping.put("bikou3", "bikou3");
+            mapping.put("bikou4", "bikou4");
+            mapping.put("bikou5", "bikou5");
             mapping.put("makuatsu_start1", "makuatsuStart1");
             mapping.put("makuatsu_start2", "makuatsuStart2");
             mapping.put("makuatsu_start3", "makuatsuStart3");

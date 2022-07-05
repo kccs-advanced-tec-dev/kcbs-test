@@ -28,6 +28,7 @@ import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.db.model.SikakariJson;
 import jp.co.kccs.xhd.db.model.SrTenkaFunsai;
 import jp.co.kccs.xhd.db.model.SubSrTenkaFunsaiHyoryo;
+import jp.co.kccs.xhd.jaxrs.TCPClient;
 import jp.co.kccs.xhd.model.GXHDO102C006Model;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.IFormLogic;
@@ -62,6 +63,16 @@ import org.primefaces.context.RequestContext;
  * 計画書No	MB2101-DK002<br>
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
+ * <br>
+ * 変更日	2022/05/16<br>
+ * 計画書No	MB2101-DK002<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	材料品名ﾘﾝｸ押下時、調合量規格チェックの追加<br>
+ * <br>
+ * 変更日	2022/06/22<br>
+ * 計画書No	MB2205-D010<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	PLC書き込みの追加<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -620,6 +631,10 @@ public class GXHDO102B011 implements IFormLogic {
             // 状態ﾌﾗｸﾞ、revisionを設定する。
             processData.setInitJotaiFlg(JOTAI_FLG_KARI_TOROKU);
             processData.setInitRev(newRev.toPlainString());
+            
+            // PLCコマンド送信を実行
+            sendPlcCommand(processData,queryRunnerDoc);
+            
             return processData;
         } catch (SQLException e) {
             ErrUtil.outputErrorLog("SQLException発生", e, LOGGER);
@@ -636,6 +651,81 @@ public class GXHDO102B011 implements IFormLogic {
         }
 
         return processData;
+    }
+
+    /**
+     * PLCコマンド送信
+     *
+     * @param processData 処理制御データ
+     * @param queryRunnerDoc
+     * @throws java.sql.SQLException
+     */
+    public void sendPlcCommand(ProcessData processData, QueryRunner queryRunnerDoc) throws SQLException  {
+
+        String serviceIP = "";
+        int servicePort;
+        String device = "";
+        //画面.【粉砕号機】の規格値
+        FXHDD01 funsaigouki = getItemRow(processData.getItemList(), GXHDO102B011Const.FUNSAIGOUKI);
+        String funsaigoukiKikakuchi = funsaigouki.getKikakuChi().replace("【", "").replace("】", "");
+
+        // [ﾊﾟﾗﾒｰﾀﾏｽﾀ]から、ﾃﾞｰﾀを取得
+        Map fxhbm03Data = loadFxhbm03DataForPLC(queryRunnerDoc, funsaigoukiKikakuchi);
+
+        if (fxhbm03Data != null) {
+            for (int i = 0; i < 3; i++) {
+                // ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ
+                String data = StringUtil.nullToBlank(getMapData(fxhbm03Data, "data"));
+                String[] dataSplitList = data.split(",");
+                //データ例：10.23.44.27,DM1100,8501
+                //項目①：IPアドレス
+                //項目②：書込DM
+                //項目③：ポート番号
+                if(dataSplitList.length == 3){
+                    serviceIP = dataSplitList[0];
+                    device = dataSplitList[1];
+                    servicePort = Integer.parseInt(dataSplitList[2]);
+                    //上記の条件でPLCに画面「WIPﾛｯﾄNo」の書き込みを行う。
+                    //ｱ.書き込みに成功した場合、⑤の処理を行う。
+                    //ｲ.書き込みに失敗した場合、3回までリトライ処理を行う。
+                    // WIPﾛｯﾄNo
+                    FXHDD01 wipLotNo = getItemRow(processData.getItemList(), GXHDO102B011Const.WIPLOTNO);
+                    String wipLotNoValue = wipLotNo.getValue();
+
+                    TCPClient client = new TCPClient();
+                    String sendCommand = "WRS " + device + ".H" + " 8 ";
+                    String receiveMsg = client.executeCommand(serviceIP, servicePort, sendCommand, wipLotNoValue);
+
+                    if (!"".equals(receiveMsg)) {
+                        ErrUtil.outputErrorLog("PLCコマンド送信処理結果:" + receiveMsg, null, LOGGER);
+                        //ｱ.書き込みに成功した場合、⑤の処理を行う。
+                        //ｲ.書き込みに失敗した場合、3回までリトライ処理を行う。
+                        if("OK".equals(receiveMsg.toUpperCase())){
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * [ﾊﾟﾗﾒｰﾀﾏｽﾀ]から、ﾃﾞｰﾀを取得
+     *
+     * @param queryRunnerDoc オブジェクト
+     * @param key キー
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadFxhbm03DataForPLC(QueryRunner queryRunnerDoc, String key) throws SQLException {
+        // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+        String sql = "SELECT data "
+                + " FROM fxhbm03 "
+                + " WHERE user_name = 'common_user' AND key = ? ";
+        List<Object> params = new ArrayList<>();
+        params.add(key);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
     }
 
     /**
@@ -4068,7 +4158,7 @@ public class GXHDO102B011 implements IFormLogic {
     public ProcessData openC006SubGamen1(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B011Const.YOUZAI1_BUZAIZAIKOLOTNO1, GXHDO102B011Const.YOUZAI1_TYOUGOURYOU1,
                 GXHDO102B011Const.YOUZAI1_BUZAIZAIKOLOTNO2, GXHDO102B011Const.YOUZAI1_TYOUGOURYOU2);
-        return openC006SubGamen(processData, 1, returnItemIdList);
+        return openC006SubGamen(processData, 1, returnItemIdList, GXHDO102B011Const.YOUZAI1_TYOUGOURYOUKIKAKU);
     }
 
     /**
@@ -4080,7 +4170,7 @@ public class GXHDO102B011 implements IFormLogic {
     public ProcessData openC006SubGamen2(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B011Const.YOUZAI2_BUZAIZAIKOLOTNO1, GXHDO102B011Const.YOUZAI2_TYOUGOURYOU1,
                 GXHDO102B011Const.YOUZAI2_BUZAIZAIKOLOTNO2, GXHDO102B011Const.YOUZAI2_TYOUGOURYOU2);
-        return openC006SubGamen(processData, 2, returnItemIdList);
+        return openC006SubGamen(processData, 2, returnItemIdList, GXHDO102B011Const.YOUZAI2_TYOUGOURYOUKIKAKU);
     }
 
     /**
@@ -4089,9 +4179,10 @@ public class GXHDO102B011 implements IFormLogic {
      * @param processData 処理制御データ
      * @param zairyokubun 材料区分
      * @param returnItemIdList サブ画面から戻ったときに値を設定必要項目リスト
+     * @param itemTyougouryoukikaku 調合量規格
      * @return 処理制御データ
      */
-    public ProcessData openC006SubGamen(ProcessData processData, int zairyokubun, List<String> returnItemIdList) {
+    public ProcessData openC006SubGamen(ProcessData processData, int zairyokubun, List<String> returnItemIdList,String itemTyougouryoukikaku) {
         try {
             // 「秤量号機」
             FXHDD01 itemGoki = getItemRow(processData.getItemList(), GXHDO102B011Const.HYOURYOUGOUKI);
@@ -4102,6 +4193,14 @@ public class GXHDO102B011 implements IFormLogic {
                 // エラーの場合はコールバック変数に"error0"をセット
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.addCallbackParam("firstParam", "error0");
+                return processData;
+            }
+            // 「調合量規格」
+            FXHDD01 itemTyogouryoukikaku = getItemRow(processData.getItemList(), itemTyougouryoukikaku);
+            // 「調合量規格」ﾁｪｯｸ処理
+            ErrorMessageInfo checkItemTyogouryoukikaku1ErrorInfo = checkTyogouryoukikaku(itemTyogouryoukikaku);
+            if (checkItemTyogouryoukikaku1ErrorInfo != null) {
+                processData.setErrorMessageInfoList(Arrays.asList(checkItemTyogouryoukikaku1ErrorInfo));
                 return processData;
             }
             processData.setMethod("");
@@ -4121,6 +4220,33 @@ public class GXHDO102B011 implements IFormLogic {
         }
 
         return processData;
+    }
+
+    /**
+     * 【材料品名】ﾘﾝｸ押下時、サブ画面Open時ﾁｪｯｸ処理
+     *
+     * @param itemTyogouryoukikaku 調合量規格
+     * @return エラーメッセージ情報
+     */ 
+    private ErrorMessageInfo checkTyogouryoukikaku(FXHDD01 itemTyogouryoukikaku) {
+        boolean checkResult = false;
+        // 「調合量規格」ﾁｪｯｸ
+        if(StringUtil.isEmpty(itemTyogouryoukikaku.getKikakuChi())){
+            //「調合量規格1」の規格値が取得できない場合
+            checkResult = true;          
+        }else{
+            if (StringUtil.isEmpty(itemTyogouryoukikaku.getKikakuChi().replace("【", "").replace("】", ""))) {
+                //「調合量規格1」の規格値が取得できて、値がない場合
+                checkResult = true;
+            }
+        }
+        if(checkResult){
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemTyogouryoukikaku);
+            return MessageUtil.getErrorMessageInfo("XHD-000019", true, true, errFxhdd01List, itemTyogouryoukikaku.getLabel1());
+        }
+
+        return null;
     }
 
     /**
@@ -4185,8 +4311,10 @@ public class GXHDO102B011 implements IFormLogic {
 
             subgamen1.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemList(), GXHDO102B011Const.YOUZAI1_ZAIRYOUHINMEI))); // 溶剤1_材料品名
             subgamen1.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemList(), GXHDO102B011Const.YOUZAI1_TYOUGOURYOUKIKAKU))); // 溶剤1_調合量規格
+            subgamen1.setStandardpattern(getItemRow(processData.getItemList(), GXHDO102B011Const.YOUZAI1_TYOUGOURYOUKIKAKU).getStandardPattern()); // 溶剤1_調合量規格情報ﾊﾟﾀｰﾝ
             subgamen2.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemList(), GXHDO102B011Const.YOUZAI2_ZAIRYOUHINMEI))); // 溶剤2_材料品名
             subgamen2.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemList(), GXHDO102B011Const.YOUZAI2_TYOUGOURYOUKIKAKU))); // 溶剤2_調合量規格
+            subgamen2.setStandardpattern(getItemRow(processData.getItemList(), GXHDO102B011Const.YOUZAI2_TYOUGOURYOUKIKAKU).getStandardPattern()); // 溶剤2_調合量規格情報ﾊﾟﾀｰﾝ
             subSrTenkaFunsaiHyoryoList.add(subgamen1);
             subSrTenkaFunsaiHyoryoList.add(subgamen2);
             model = GXHDO102C006Logic.createGXHDO102C006Model(subSrTenkaFunsaiHyoryoList);

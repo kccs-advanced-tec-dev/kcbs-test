@@ -62,6 +62,11 @@ import org.primefaces.context.RequestContext;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2022/05/16<br>
+ * 計画書No	MB2101-DK002<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	材料品名ﾘﾝｸ押下時、調合量規格チェックの追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -2820,7 +2825,7 @@ public class GXHDO102B029 implements IFormLogic {
     public ProcessData openC014SubGamen1(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B029Const.YOUZAI1_BUZAIZAIKOLOTNO1, GXHDO102B029Const.YOUZAI1_TYOUGOURYOU1,
                 GXHDO102B029Const.YOUZAI1_BUZAIZAIKOLOTNO2, GXHDO102B029Const.YOUZAI1_TYOUGOURYOU2);
-        return openC014SubGamen(processData, 1, returnItemIdList);
+        return openC014SubGamen(processData, 1, returnItemIdList, GXHDO102B029Const.YOUZAI1_TYOUGOURYOUKIKAKU);
     }
 
     /**
@@ -2832,7 +2837,7 @@ public class GXHDO102B029 implements IFormLogic {
     public ProcessData openC014SubGamen2(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B029Const.YOUZAI2_BUZAIZAIKOLOTNO1, GXHDO102B029Const.YOUZAI2_TYOUGOURYOU1,
                 GXHDO102B029Const.YOUZAI2_BUZAIZAIKOLOTNO2, GXHDO102B029Const.YOUZAI2_TYOUGOURYOU2);
-        return openC014SubGamen(processData, 2, returnItemIdList);
+        return openC014SubGamen(processData, 2, returnItemIdList, GXHDO102B029Const.YOUZAI2_TYOUGOURYOUKIKAKU);
     }
 
     /**
@@ -2844,7 +2849,7 @@ public class GXHDO102B029 implements IFormLogic {
     public ProcessData openC014SubGamen3(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B029Const.YOUZAI3_BUZAIZAIKOLOTNO1, GXHDO102B029Const.YOUZAI3_TYOUGOURYOU1,
                 GXHDO102B029Const.YOUZAI3_BUZAIZAIKOLOTNO2, GXHDO102B029Const.YOUZAI3_TYOUGOURYOU2);
-        return openC014SubGamen(processData, 3, returnItemIdList);
+        return openC014SubGamen(processData, 3, returnItemIdList, GXHDO102B029Const.YOUZAI3_TYOUGOURYOUKIKAKU);
     }
 
     /**
@@ -2856,7 +2861,7 @@ public class GXHDO102B029 implements IFormLogic {
     public ProcessData openC014SubGamen4(ProcessData processData) {
         List<String> returnItemIdList = Arrays.asList(GXHDO102B029Const.YOUZAI4_BUZAIZAIKOLOTNO1, GXHDO102B029Const.YOUZAI4_TYOUGOURYOU1,
                 GXHDO102B029Const.YOUZAI4_BUZAIZAIKOLOTNO2, GXHDO102B029Const.YOUZAI4_TYOUGOURYOU2);
-        return openC014SubGamen(processData, 4, returnItemIdList);
+        return openC014SubGamen(processData, 4, returnItemIdList, GXHDO102B029Const.YOUZAI4_TYOUGOURYOUKIKAKU);
     }
 
     /**
@@ -2865,9 +2870,10 @@ public class GXHDO102B029 implements IFormLogic {
      * @param processData 処理制御データ
      * @param zairyokubun 材料区分
      * @param returnItemIdList サブ画面から戻ったときに値を設定必要項目リスト
+     * @param itemTyougouryoukikaku 調合量規格
      * @return 処理制御データ
      */
-    public ProcessData openC014SubGamen(ProcessData processData, int zairyokubun, List<String> returnItemIdList) {
+    public ProcessData openC014SubGamen(ProcessData processData, int zairyokubun, List<String> returnItemIdList,String itemTyougouryoukikaku) {
         try {
             // 「秤量号機」
             FXHDD01 itemGoki = getItemRow(processData.getItemList(), GXHDO102B029Const.GOKI);
@@ -2878,6 +2884,14 @@ public class GXHDO102B029 implements IFormLogic {
                 // エラーの場合はコールバック変数に"error0"をセット
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.addCallbackParam("firstParam", "error0");
+                return processData;
+            }
+            // 「調合量規格」
+            FXHDD01 itemTyogouryoukikaku = getItemRow(processData.getItemList(), itemTyougouryoukikaku);
+            // 「調合量規格」ﾁｪｯｸ処理
+            ErrorMessageInfo checkItemTyogouryoukikaku1ErrorInfo = checkTyogouryoukikaku(itemTyogouryoukikaku);
+            if (checkItemTyogouryoukikaku1ErrorInfo != null) {
+                processData.setErrorMessageInfoList(Arrays.asList(checkItemTyogouryoukikaku1ErrorInfo));
                 return processData;
             }
             processData.setMethod("");
@@ -2897,6 +2911,33 @@ public class GXHDO102B029 implements IFormLogic {
         }
 
         return processData;
+    }
+
+    /**
+     * 【材料品名】ﾘﾝｸ押下時、サブ画面Open時ﾁｪｯｸ処理
+     *
+     * @param itemTyogouryoukikaku 調合量規格
+     * @return エラーメッセージ情報
+     */ 
+    private ErrorMessageInfo checkTyogouryoukikaku(FXHDD01 itemTyogouryoukikaku) {
+        boolean checkResult = false;
+        // 「調合量規格」ﾁｪｯｸ
+        if(StringUtil.isEmpty(itemTyogouryoukikaku.getKikakuChi())){
+            //「調合量規格1」の規格値が取得できない場合
+            checkResult = true;          
+        }else{
+            if (StringUtil.isEmpty(itemTyogouryoukikaku.getKikakuChi().replace("【", "").replace("】", ""))) {
+                //「調合量規格1」の規格値が取得できて、値がない場合
+                checkResult = true;
+            }
+        }
+        if(checkResult){
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemTyogouryoukikaku);
+            return MessageUtil.getErrorMessageInfo("XHD-000019", true, true, errFxhdd01List, itemTyogouryoukikaku.getLabel1());
+        }
+
+        return null;
     }
 
     /**
@@ -2964,12 +3005,16 @@ public class GXHDO102B029 implements IFormLogic {
 
             subgamen1.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemList(), GXHDO102B029Const.YOUZAI1_ZAIRYOUHINMEI))); // 溶剤1_材料品名
             subgamen1.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemList(), GXHDO102B029Const.YOUZAI1_TYOUGOURYOUKIKAKU))); // 溶剤1_調合量規格
+            subgamen1.setStandardpattern(getItemRow(processData.getItemList(), GXHDO102B029Const.YOUZAI1_TYOUGOURYOUKIKAKU).getStandardPattern()); // 溶剤1_調合量規格情報ﾊﾟﾀｰﾝ
             subgamen2.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemList(), GXHDO102B029Const.YOUZAI2_ZAIRYOUHINMEI))); // 溶剤2_材料品名
             subgamen2.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemList(), GXHDO102B029Const.YOUZAI2_TYOUGOURYOUKIKAKU))); // 溶剤2_調合量規格
+            subgamen2.setStandardpattern(getItemRow(processData.getItemList(), GXHDO102B029Const.YOUZAI2_TYOUGOURYOUKIKAKU).getStandardPattern()); // 溶剤2_調合量規格情報ﾊﾟﾀｰﾝ
             subgamen3.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemList(), GXHDO102B029Const.YOUZAI3_ZAIRYOUHINMEI))); // 溶剤3_材料品名
             subgamen3.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemList(), GXHDO102B029Const.YOUZAI3_TYOUGOURYOUKIKAKU))); // 溶剤3_調合量規格
+            subgamen3.setStandardpattern(getItemRow(processData.getItemList(), GXHDO102B029Const.YOUZAI3_TYOUGOURYOUKIKAKU).getStandardPattern()); // 溶剤3_調合量規格情報ﾊﾟﾀｰﾝ
             subgamen4.setZairyohinmei(getFXHDD01KikakuChi(getItemRow(processData.getItemList(), GXHDO102B029Const.YOUZAI4_ZAIRYOUHINMEI))); // 溶剤4_材料品名
             subgamen4.setTyogouryoukikaku(getFXHDD01KikakuChi(getItemRow(processData.getItemList(), GXHDO102B029Const.YOUZAI4_TYOUGOURYOUKIKAKU))); // 溶剤4_調合量規格
+            subgamen4.setStandardpattern(getItemRow(processData.getItemList(), GXHDO102B029Const.YOUZAI4_TYOUGOURYOUKIKAKU).getStandardPattern()); // 溶剤4_調合量規格情報ﾊﾟﾀｰﾝ
             subSrSlipYouzaihyouryouTounyuuSiroporiList.add(subgamen1);
             subSrSlipYouzaihyouryouTounyuuSiroporiList.add(subgamen2);
             subSrSlipYouzaihyouryouTounyuuSiroporiList.add(subgamen3);

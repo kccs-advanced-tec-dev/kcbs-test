@@ -71,6 +71,11 @@ import org.primefaces.context.RequestContext;
  * 変更者       KCSS K.Jo<br>
  * 変更理由     項目追加・変更<br>
  * <br>
+ * 変更日	2022/06/10<br>
+ * 計画書No	MB2205-D010<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	画面表示項目を追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -634,8 +639,15 @@ public class GXHDO201B002 implements Serializable {
                     + ", T1.skeegeangle"
                     + ", T1.mld"
                     + ", T1.clearrance"
+                    + ", CONCAT(T1.skojyo , T1.slotno , T1.sedaban) senkoulotno"
+                    + ", (CASE WHEN T1.tapetsukaikiri = 1 THEN 'ﾁｪｯｸ' ELSE '未ﾁｪｯｸ' END) AS tapetsukaikiri "
+                    + ", (CASE WHEN T1.jilothe = 1 THEN 'ﾁｪｯｸ' ELSE '未ﾁｪｯｸ' END) AS jilothe "
+                    + ", T1.seikeinagasa"
                     + ", T1.bikou1"
                     + ", T1.bikou2"
+                    + ", T1.bikou3"
+                    + ", T1.bikou4"
+                    + ", T1.bikou5"
                     + ", T1.makuatu1"
                     + ", T1.makuatu2"
                     + ", T1.makuatu3"
@@ -653,9 +665,6 @@ public class GXHDO201B002 implements Serializable {
                     + ", T1.pasteondo3"
                     + ", T1.pasteondo4"
                     + ", T1.pasteondo5"
-                    + ", T1.bikou3"
-                    + ", T1.bikou4"
-                    + ", T1.bikou5"
                     + ", T1.kansouondo2"
                     + ", T1.kansouondo3"
                     + ", T1.kansouondo4"
@@ -780,8 +789,15 @@ public class GXHDO201B002 implements Serializable {
             mapping.put("skeegeangle", "skeegeangle");
             mapping.put("mld", "mld");
             mapping.put("clearrance", "clearrance");
+            mapping.put("senkoulotno", "senkoulotno");
+            mapping.put("tapetsukaikiri", "tapetsukaikiri");
+            mapping.put("jilothe", "jilothe");
+            mapping.put("seikeinagasa", "seikeinagasa");
             mapping.put("bikou1", "bikou1");
             mapping.put("bikou2", "bikou2");
+            mapping.put("bikou3", "bikou3");
+            mapping.put("bikou4", "bikou4");
+            mapping.put("bikou5", "bikou5");
             mapping.put("makuatu1", "makuatu1");
             mapping.put("makuatu2", "makuatu2");
             mapping.put("makuatu3", "makuatu3");
@@ -799,9 +815,6 @@ public class GXHDO201B002 implements Serializable {
             mapping.put("pasteondo3", "pasteondo3");
             mapping.put("pasteondo4", "pasteondo4");
             mapping.put("pasteondo5", "pasteondo5");
-            mapping.put("bikou3", "bikou3");
-            mapping.put("bikou4", "bikou4");
-            mapping.put("bikou5", "bikou5");
             mapping.put("kansouondo2", "kansouondo2");
             mapping.put("kansouondo3", "kansouondo3");
             mapping.put("kansouondo4", "kansouondo4");

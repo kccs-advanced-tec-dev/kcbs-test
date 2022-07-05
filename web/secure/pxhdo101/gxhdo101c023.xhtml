@@ -1,0 +1,75 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:c="http://java.sun.com/jsp/jstl/core"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+        <style>
+            [id='form:gxhdo101c023Form:zurechiTable_head'] tr{display : none;}
+            [id='form:gxhdo101c023Form:panel'] {padding: 0;border: 0 !important;}
+            [id='form:gxhdo101c023Form:panel_content'] {padding: 0 !important;}
+            [id='form:dlg_gxhdo101c023'] [class='ui-datatable-scrollable-body'] {overflow: inherit !important;}
+            [id='form:dlg_gxhdo101c023'] [class='ui-dialog-content ui-widget-content'] {margin-top: 6px;}
+            [id='form:gxhdo101c023Form:panel'] {margin-bottom: 10px;}
+        </style>
+    <p:dialog header="ｽﾞﾚ量" id="dlg_gxhdo101c023" widgetVar="W_dlg_gxhdo101c023"
+              width="470" modal="true" height="340"
+              dynamic="false" closable="true" closeOnEscape="false" 
+              onShow="subFormOpen();  setInputModeForTableColumn('numeric','form:gxhdo101c023Form:zurechiTable','zurechiVal');setTimeout(setFocus, 100, 'form:gxhdo101c023Form:zurechiTable:0:zurechiVal_input');"
+              onHide="subFormClose(); document.getElementById('form:gxhdo101c023Form:cancelBtn').click();" position="center top">
+        <h:form id="gxhdo101c023Form" style="width:100%;">
+            <p:panel style="" id="panel">
+                <p:dataTable id="zurechiTable" var="item" rowIndexVar="rowIndex" value="#{beanGXHDO101C023.gxhdO101c023ModelView.zurechiInputDataList}"
+                            scrollable="true" style="font-size: 14px; width:360px" emptyMessage="" >
+                    <p:columnGroup type="header" >
+                        <p:row style="text-align: center;">
+                            <p:column style="width: 250px;vertical-align: middle;">
+                            </p:column>
+                            <p:column style="width: 20px;vertical-align: middle;">
+                            </p:column>
+                            <p:column style="width: 100px;vertical-align: middle;">
+                            </p:column>
+                        </p:row>
+                    </p:columnGroup>
+                    <c:set var="rowIndexVale" value="${rowIndex == 0}"/>
+                    <p:column id="zurechiImage" width="300px" rowspan="9" rendered="#{rowIndexVale}">
+                        <div id="zurechiImage" style="text-align:left;">
+                            <img src="#{request.contextPath}/resources/image/ｽﾞﾚ量.png" style="width: 100%;"/>
+                        </div>
+                    </p:column>
+                    <p:column id="zurechiIndexName" width="20px" >
+                        <div style="text-align:left;">
+                            <p:outputLabel value="#{item.zurechiIndexName}" />
+                        </div>
+                    </p:column>
+                    <p:column id="zurechiItem" width="100px" >
+                        <div style="text-align:right;">
+                            <p:inputNumber id="zurechiVal" value="#{item.zurechiVal}" rendered="#{item.zurechiTextRendered}" onkeydown="keyDownEnterSetNextControl(this)" 
+                                           tabindex="#{item.zurechiTabIndex}" thousandSeparator="" decimalPlaces="0" maxValue="999999999" minValue="-999999999"  
+                                           size="8"  inputStyle="text-align:right; background: #{item.zurechiTextBackColor}"/>
+                        </div>
+                    </p:column>
+                </p:dataTable>
+            </p:panel>
+            <p:commandButton value="OK" id="okBtn"
+                             style="position:relative;left:75px;top:5px;width:110px;height:35px;"
+                             actionListener="#{gXHDO901A.returnSubForm('GXHDO101C023',beanGXHDO101C023.isFormError)}"
+                             async="false"
+                             process="@this" 
+                             update="form:itemDataList" >   
+                <p:ajax event="click"
+                                async="false"
+                                listener="#{beanGXHDO101C023.doOk()}"
+                                process="gxhdo101c023Form" 
+                                update="gxhdo101c023Form form:growlMessage"
+                                oncomplete="if('error'!=args.firstParam){PF('W_dlg_gxhdo101c023').hide();}"/>
+            </p:commandButton>
+            <p:commandButton value="Cancel" id="cancelBtn"
+                             style="position:relative;left:105px;top:5px;width:110px;height:35px;"
+                             process="@this" 
+                             update="form:growlMessage"
+                             oncomplete="PF('W_dlg_gxhdo101c023').hide();"/>   
+           
+        </h:form>
+    </p:dialog>
+</ui:composition>

@@ -71,6 +71,11 @@ import org.primefaces.context.RequestContext;
  * 変更者        KCSS E.Ryu<br>
  * 変更理由      項目追加・変更<br>
  * <br>
+ * 変更日	2022/06/14<br>
+ * 計画書No	MB2205-D010<br>
+ * 変更者	KCSS wxf<br>
+ * 変更理由	項目追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -633,10 +638,25 @@ public class GXHDO201B006 implements Serializable {
                     + ", T1.ETAPELOT"
                     + ", T1.ETapeSlipKigo"
                     + ", T1.ETapeRollNo1"
+                    + ", T1.ETapeRollNo1kaishi"
+                    + ", T1.ETapeRollNo1syuryou"
+                    + ", T1.ETapeRollNo1insatsu"
                     + ", T1.ETapeRollNo2"
+                    + ", T1.ETapeRollNo2kaishi"
+                    + ", T1.ETapeRollNo2syuryou"
+                    + ", T1.ETapeRollNo2insatsu"
                     + ", T1.ETapeRollNo3"
+                    + ", T1.ETapeRollNo3kaishi"
+                    + ", T1.ETapeRollNo3syuryou"
+                    + ", T1.ETapeRollNo3insatsu"
                     + ", T1.ETapeRollNo4"
+                    + ", T1.ETapeRollNo4kaishi"
+                    + ", T1.ETapeRollNo4syuryou"
+                    + ", T1.ETapeRollNo4insatsu"
                     + ", T1.ETapeRollNo5"
+                    + ", T1.ETapeRollNo5kaishi"
+                    + ", T1.ETapeRollNo5syuryou"
+                    + ", T1.ETapeRollNo5insatsu"
                     + ", T1.SPTUDENJIKAN"
                     + ", T1.SKAATURYOKU"
                     + ", T1.SKHEADNO"
@@ -739,8 +759,12 @@ public class GXHDO201B006 implements Serializable {
                     + ", T1.LSTMSX2"
                     + ", T1.LSTMSY1"
                     + ", T1.LSTMSY2"
+                    + ", T1.seikeinagasa"
                     + ", T1.BIKO1"
                     + ", T1.BIKO2"
+                    + ", T1.bikou3"
+                    + ", T1.bikou4"
+                    + ", T1.bikou5"
                     + ", T1.GOKI"
                     + ", T1.TTANSISUUU"
                     + ", T1.TTANSISUUS"
@@ -877,10 +901,25 @@ public class GXHDO201B006 implements Serializable {
             mapping.put("ETAPELOT", "etapelot");
             mapping.put("ETapeSlipKigo", "etapeslipkigo");
             mapping.put("ETapeRollNo1", "etaperollno1");
+            mapping.put("ETapeRollNo1kaishi", "etaperollno1kaishi");
+            mapping.put("ETapeRollNo1syuryou", "etaperollno1syuryou");
+            mapping.put("ETapeRollNo1insatsu", "etaperollno1insatsu");
             mapping.put("ETapeRollNo2", "etaperollno2");
+            mapping.put("ETapeRollNo2kaishi", "etaperollno2kaishi");
+            mapping.put("ETapeRollNo2syuryou", "etaperollno2syuryou");
+            mapping.put("ETapeRollNo2insatsu", "etaperollno2insatsu");
             mapping.put("ETapeRollNo3", "etaperollno3");
+            mapping.put("ETapeRollNo3kaishi", "etaperollno3kaishi");
+            mapping.put("ETapeRollNo3syuryou", "etaperollno3syuryou");
+            mapping.put("ETapeRollNo3insatsu", "etaperollno3insatsu");
             mapping.put("ETapeRollNo4", "etaperollno4");
+            mapping.put("ETapeRollNo4kaishi", "etaperollno4kaishi");
+            mapping.put("ETapeRollNo4syuryou", "etaperollno4syuryou");
+            mapping.put("ETapeRollNo4insatsu", "etaperollno4insatsu");
             mapping.put("ETapeRollNo5", "etaperollno5");
+            mapping.put("ETapeRollNo5kaishi", "etaperollno5kaishi");
+            mapping.put("ETapeRollNo5syuryou", "etaperollno5syuryou");
+            mapping.put("ETapeRollNo5insatsu", "etaperollno5insatsu");
             mapping.put("SPTUDENJIKAN", "sptudenjikan");
             mapping.put("SKAATURYOKU", "skaaturyoku");
             mapping.put("SKHEADNO", "skheadno");
@@ -983,8 +1022,12 @@ public class GXHDO201B006 implements Serializable {
             mapping.put("LSTMSX2", "lstmsx2");
             mapping.put("LSTMSY1", "lstmsy1");
             mapping.put("LSTMSY2", "lstmsy2");
+            mapping.put("seikeinagasa", "seikeinagasa");
             mapping.put("BIKO1", "biko1");
             mapping.put("BIKO2", "biko2");
+            mapping.put("bikou3", "bikou3");
+            mapping.put("bikou4", "bikou4");
+            mapping.put("bikou5", "bikou5");
             mapping.put("GOKI", "goki");
             mapping.put("TTANSISUUU", "ttansisuuu");
             mapping.put("TTANSISUUS", "ttansisuus");

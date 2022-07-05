@@ -66,6 +66,11 @@ import org.primefaces.context.RequestContext;
  * 変更者        KCSS K.Jo<br>
  * 変更理由      項目追加・変更<br>
  * <br>
+ * 変更日	2022/06/09<br>
+ * 計画書No	MB2205-D010<br>
+ * 変更者	KCSS wxf<br>
+ * 変更理由	項目追加・変更・削除<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -672,7 +677,7 @@ public class GXHDO201B004 implements Serializable {
                     + ", T1.StartTantosyacode"
                     + ", T1.EndTantousyacode"
                     + ", (CASE WHEN T1.TanshiTapeSyurui = 0 THEN 'NG' WHEN T1.TanshiTapeSyurui = 1 THEN 'OK' ELSE NULL END) AS TanshiTapeSyurui"
-                    + ", T1.karauti"
+                    + ", T1.sekisousyuryougokaradaasturyoku"
                     + ", T1.karautibyou"
                     + ", T1.karautikai"
                     + ", T1.zureti"
@@ -848,7 +853,7 @@ public class GXHDO201B004 implements Serializable {
             mapping.put("StartTantosyacode", "startTantosyacode");
             mapping.put("EndTantousyacode", "endTantousyacode");
             mapping.put("TanshiTapeSyurui", "tanshiTapeSyurui");
-            mapping.put("karauti", "karauti");
+            mapping.put("sekisousyuryougokaradaasturyoku", "sekisousyuryougokaradaasturyoku");
             mapping.put("karautibyou", "karautibyou");
             mapping.put("karautikai", "karautikai");
             mapping.put("zureti", "zureti");

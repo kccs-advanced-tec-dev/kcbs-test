@@ -288,25 +288,27 @@
                             <f:convertNumber pattern="#,###,###,##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="lastKaaturyoku" headerText="最終加圧力" styleClass="number">
+                    <p:column id="lastKaaturyoku" headerText="最終積層加圧力" styleClass="number">
                         <p:outputLabel value="#{item.lastKaaturyoku}">
                             <f:convertNumber pattern="#,###,###,##0.0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="lastKaatuJikan" headerText="最終加圧時間" styleClass="number">
+                    <p:column id="lastKaatuJikan" headerText="最終積層加圧時間" styleClass="number">
                         <p:outputLabel value="#{item.lastKaatuJikan}">
                             <f:convertNumber pattern="#,###,###,##0.0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="karauti" headerText="空打ち" >
-                        <p:outputLabel value="#{item.karauti}"/>
+                    <p:column id="sekisousyuryougokaradaasturyoku" headerText="積層終了後空打圧力" styleClass="number">
+                        <p:outputLabel value="#{item.sekisousyuryougokaradaasturyoku}">
+                            <f:convertNumber pattern="#0.0"/>
+                        </p:outputLabel>
                     </p:column>
-                    <p:column id="karautibyou" headerText="空打ち[秒]" styleClass="number">
+                    <p:column id="karautibyou" headerText="積層終了後空打時間[秒]" styleClass="number">
                         <p:outputLabel value="#{item.karautibyou}">
                             <f:convertNumber pattern="#,###,###,##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="karautikai" headerText="空打ち[回]" styleClass="number">
+                    <p:column id="karautikai" headerText="積層終了後空打回数[回]" styleClass="number">
                         <p:outputLabel value="#{item.karautikai}">
                             <f:convertNumber pattern="#,###,###,##0"/>
                         </p:outputLabel>

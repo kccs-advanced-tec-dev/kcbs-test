@@ -4,9 +4,11 @@
 package jp.co.kccs.xhd.pxhdo102;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -18,6 +20,8 @@ import javax.faces.context.FacesContext;
 import javax.sql.DataSource;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.model.GXHDO102C001Model;
+import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
+import jp.co.kccs.xhd.pxhdo901.KikakuchiInputErrorInfo;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
 import jp.co.kccs.xhd.util.NumberUtil;
@@ -25,6 +29,7 @@ import jp.co.kccs.xhd.util.StringUtil;
 import org.apache.commons.dbutils.QueryRunner;
 import org.primefaces.context.RequestContext;
 import jp.co.kccs.xhd.util.DBUtil;
+import jp.co.kccs.xhd.util.ValidateUtil;
 import org.apache.commons.dbutils.handlers.MapHandler;
 
 /**
@@ -36,6 +41,11 @@ import org.apache.commons.dbutils.handlers.MapHandler;
  * 計画書No	MB2101-DK002<br>
  * 変更者	KCSS wxf<br>
  * 変更理由	新規作成<br>
+ * <br>
+ * 変更日	2022/05/16<br>
+ * 計画書No	MB2101-DK002<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	材料品名ﾘﾝｸ押下時、調合量規格チェックの追加<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -155,6 +165,14 @@ public class GXHDO102C001 implements Serializable {
                 setErrorTabIndex(2);
                 return false;
             }
+
+            // 調合量の合計と調合規格の規格チェック
+            //【材料品名1】ﾘﾝｸ押下時、サブ画面の調合規格データ
+            FXHDD01 subDataTyogouryoukikaku = this.getGxhdO102c001ModelView().getSub1DataTyogouryoukikaku();
+            if(!checkTyogouryouKikaku(subDataBuzaitab1List, subDataBuzaitab2List, subDataTyogouryoukikaku)){
+                return false;                
+            }
+            
         } else if (this.getGxhdO102c001ModelView().isSub2DataRendered()) {
             // 【材料品名1】ﾘﾝｸ押下時、サブ画面の部材①タブデータリスト
             List<FXHDD01> subDataBuzaitab1List = this.getGxhdO102c001ModelView().getSub2DataBuzaitab1();
@@ -181,8 +199,15 @@ public class GXHDO102C001 implements Serializable {
                 setErrorTabIndex(2);
                 return false;
             }
+            
+            // 調合量の合計と調合規格の規格チェック
+            //【材料品名2】ﾘﾝｸ押下時、サブ画面の調合規格データ
+            FXHDD01 subDataTyogouryoukikaku = this.getGxhdO102c001ModelView().getSub2DataTyogouryoukikaku();
+            if(!checkTyogouryouKikaku(subDataBuzaitab1List, subDataBuzaitab2List, subDataTyogouryoukikaku)){
+                return false;                
+            }
         }
-
+        
         return true;
     }
 
@@ -195,6 +220,109 @@ public class GXHDO102C001 implements Serializable {
         GXHDO102C001Logic.calcTyogouzanryou(this.getGxhdO102c001ModelView());
     }
 
+    /**
+     * 調合量規格チェック処理
+     *
+     * @param subDataBuzaitabList タブにの調合量データリスト
+     * @return 正常:true、異常:fasle
+     */
+    private boolean checkTyogouryouKikaku(List<FXHDD01> subDataBuzaitab1List, List<FXHDD01> subDataBuzaitab2List,FXHDD01 subDataTyogouryoukikaku) {
+
+        String tyogouryou1Tab1 = subDataBuzaitab1List.get(3).getValue();
+        String tyogouryou2Tab1 = subDataBuzaitab1List.get(4).getValue();
+        String tyogouryou3Tab1 = subDataBuzaitab1List.get(5).getValue();
+        String tyogouryou4Tab1 = subDataBuzaitab1List.get(6).getValue();
+        String tyogouryou5Tab1 = subDataBuzaitab1List.get(7).getValue();
+        String tyogouryou6Tab1 = subDataBuzaitab1List.get(8).getValue();
+
+        String tyogouryou1Tab2 = subDataBuzaitab2List.get(3).getValue();
+        String tyogouryou2Tab2 = subDataBuzaitab2List.get(4).getValue();
+        String tyogouryou3Tab2 = subDataBuzaitab2List.get(5).getValue();
+        String tyogouryou4Tab2 = subDataBuzaitab2List.get(6).getValue();
+        String tyogouryou5Tab2 = subDataBuzaitab2List.get(7).getValue();
+        String tyogouryou6Tab2 = subDataBuzaitab2List.get(8).getValue();
+
+        BigDecimal totalValue = BigDecimal.ZERO;
+
+        if(!StringUtil.isEmpty(tyogouryou1Tab1)){
+            totalValue = totalValue.add(new BigDecimal(tyogouryou1Tab1));                
+        }
+
+        if(!StringUtil.isEmpty(tyogouryou2Tab1)){
+            totalValue = totalValue.add(new BigDecimal(tyogouryou2Tab1));                
+        }
+
+        if(!StringUtil.isEmpty(tyogouryou3Tab1)){
+            totalValue = totalValue.add(new BigDecimal(tyogouryou3Tab1));                
+        }
+
+        if(!StringUtil.isEmpty(tyogouryou4Tab1)){
+            totalValue = totalValue.add(new BigDecimal(tyogouryou4Tab1));                
+        }
+
+        if(!StringUtil.isEmpty(tyogouryou5Tab1)){
+            totalValue = totalValue.add(new BigDecimal(tyogouryou5Tab1));                
+        }
+
+        if(!StringUtil.isEmpty(tyogouryou6Tab1)){
+            totalValue = totalValue.add(new BigDecimal(tyogouryou6Tab1));                
+        }
+
+        if(!StringUtil.isEmpty(tyogouryou1Tab2)){
+            totalValue = totalValue.add(new BigDecimal(tyogouryou1Tab2));                
+        }
+
+        if(!StringUtil.isEmpty(tyogouryou2Tab2)){
+            totalValue = totalValue.add(new BigDecimal(tyogouryou2Tab2));                
+        }
+
+        if(!StringUtil.isEmpty(tyogouryou3Tab2)){
+            totalValue = totalValue.add(new BigDecimal(tyogouryou3Tab2));                
+        }
+
+        if(!StringUtil.isEmpty(tyogouryou4Tab2)){
+            totalValue = totalValue.add(new BigDecimal(tyogouryou4Tab2));                
+        }
+
+        if(!StringUtil.isEmpty(tyogouryou5Tab2)){
+            totalValue = totalValue.add(new BigDecimal(tyogouryou5Tab2));                
+        }
+
+        if(!StringUtil.isEmpty(tyogouryou6Tab2)){
+            totalValue = totalValue.add(new BigDecimal(tyogouryou6Tab2));                
+        }
+
+        try {
+            FXHDD01 tyogouryoukikakuCheck = subDataTyogouryoukikaku.clone();
+            String kikakuValue = subDataTyogouryoukikaku.getValue();
+            tyogouryoukikakuCheck.setKikakuChi(kikakuValue);
+            tyogouryoukikakuCheck.setValue(totalValue.toString());
+            tyogouryoukikakuCheck.setStandardPattern(subDataTyogouryoukikaku.getStandardPattern());
+            
+            List<FXHDD01> itemCheckObj = new ArrayList<>();
+            itemCheckObj.add(tyogouryoukikakuCheck);
+            List<KikakuchiInputErrorInfo> kikakuchiInputErrorInfoList = new ArrayList<>();
+            ErrorMessageInfo errorMessageInfo = ValidateUtil.checkInputKikakuchi(itemCheckObj, kikakuchiInputErrorInfoList);
+
+            // 規格値エラーがある場合は規格値エラーをセット
+            if (!kikakuchiInputErrorInfoList.isEmpty()) {
+                setError(subDataTyogouryoukikaku, "XHD-000011","調合量");
+                return false;
+            }
+
+            // 規格チェック内で想定外のエラーが発生した場合、エラーを出して中断
+            if (errorMessageInfo != null) {
+                if (!StringUtil.isEmpty(errorMessageInfo.getErrorMessage())) {
+                    setError(subDataTyogouryoukikaku, "XHD-000011","調合量");
+                    return false;
+                }
+            }
+        } catch (CloneNotSupportedException ex) {
+            ErrUtil.outputErrorLog("CloneNotSupportedException発生", ex, LOGGER);
+        }
+        return true;            
+    }
+    
     /**
      * 調合量リストのチェック処理
      *

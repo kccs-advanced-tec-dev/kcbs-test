@@ -149,7 +149,10 @@ public class SubFormUtil {
      * ﾃｰﾋﾟﾝｸﾞ号機選択画面
      */
     public static final String FORM_ID_GXHDO101C022 = "GXHDO101C022";
-    
+    /**
+     * ｽﾞﾚ量サブ画面
+     */
+    public static final String FORM_ID_GXHDO101C023 = "GXHDO101C023";
     /**
      * 初期表示メッセージ
      */
@@ -387,7 +390,14 @@ public class SubFormUtil {
                         getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
                                 getELContext(), null, "beanGXHDO101C022");
                 break;
-                
+
+            // ｽﾞﾚ量
+            case "GXHDO101C023":
+                returnBean = FacesContext.getCurrentInstance().
+                        getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
+                                getELContext(), null, "beanGXHDO101C023");
+                break;
+
             // 初期表示メッセージ
             case "InitMessage":
                 returnBean = FacesContext.getCurrentInstance().

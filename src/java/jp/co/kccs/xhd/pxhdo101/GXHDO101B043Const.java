@@ -88,6 +88,21 @@ public class GXHDO101B043Const {
     public static final String GOUKI = "sr_shinkuukansou_gouki";
 
     /**
+     * 号機②
+     */
+    public static final String GOUKI2 = "sr_shinkuukansou_gouki2";
+
+    /**
+     * 号機③
+     */
+    public static final String GOUKI3 = "sr_shinkuukansou_gouki3";
+
+    /**
+     * 号機④
+     */
+    public static final String GOUKI4 = "sr_shinkuukansou_gouki4";
+
+    /**
      * 設定温度
      */
     public static final String SETTEIONDO = "sr_shinkuukansou_setteiondo";
@@ -193,6 +208,11 @@ public class GXHDO101B043Const {
     public static final String BTN_UKEIRESOJURYO_SAYANO_TOP = "sr_shinkuukansou_sayano_Top";
 
     /**
+     * 設備ﾃﾞｰﾀ連携(画面上)
+     */
+    public static final String BTN_DATACOOPERATION_TOP = "sr_shinkuukansou_dataCooperation_Top";
+
+    /**
      * 仮登録(画面下)
      */
     public static final String BTN_KARI_TOUROKU_BOTTOM = "sr_shinkuukansou_kari_touroku_Bottom";
@@ -236,6 +256,11 @@ public class GXHDO101B043Const {
      * サヤNo(画面下)
      */
     public static final String BTN_UKEIRESOJURYO_SAYANO_BOTTOM = "sr_shinkuukansou_sayano_Bottom";
+
+    /**
+     * 設備ﾃﾞｰﾀ連携(画面下)
+     */
+    public static final String BTN_DATACOOPERATION_BOTTOM = "sr_shinkuukansou_dataCooperation_Bottom";
 
     /**
      * ユーザー認証パラメータ(修正)

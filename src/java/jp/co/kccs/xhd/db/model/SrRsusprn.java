@@ -21,6 +21,11 @@ import java.sql.Timestamp;
  * 変更者       KCSS WXF<br>
  * 変更理由     仕様変更対応<br>
  * <br>
+ * 変更日	2022/06/14<br>
+ * 計画書No	MB2205-D010<br>
+ * 変更者	KCSS K.Jo<br>
+ * 変更理由	画面表示項目を追加<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -385,6 +390,36 @@ public class SrRsusprn {
      * 印刷ｽﾀｰﾄ確認者
      */
     private String kakuninsya;
+
+    /**
+     * 先行ﾛｯﾄNo
+     */
+    private String senkoulotno;
+
+    /**
+     * ﾃｰﾌﾟ使い切り
+     */
+    private Integer tapetsukaikiri;
+
+    /**
+     * 次ﾛｯﾄへ
+     */
+    private Integer jilothe;
+    
+    /**
+     * 備考3
+     */
+    private String bikou3;
+    
+    /**
+     * 備考4
+     */
+    private String bikou4;
+    
+    /**
+     * 備考5
+     */
+    private String bikou5;
     
     /**
      * revision
@@ -1709,5 +1744,101 @@ public class SrRsusprn {
     public void setKakuninsya(String kakuninsya) {
         this.kakuninsya = kakuninsya;
     }    
+
+    /**
+     * 先行ﾛｯﾄNo
+     * @return the senkoulotno
+     */
+    public String getSenkoulotno() {
+        return senkoulotno;
+    }
+
+    /**
+     * 先行ﾛｯﾄNo
+     * @param senkoulotno the senkoulotno to set
+     */
+    public void setSenkoulotno(String senkoulotno) {
+        this.senkoulotno = senkoulotno;
+    }
+
+    /**
+     * ﾃｰﾌﾟ使い切り
+     * @return the tapetsukaikiri
+     */
+    public Integer getTapetsukaikiri() {
+        return tapetsukaikiri;
+    }
+
+    /**
+     * ﾃｰﾌﾟ使い切り
+     * @param tapetsukaikiri the tapetsukaikiri to set
+     */
+    public void setTapetsukaikiri(Integer tapetsukaikiri) {
+        this.tapetsukaikiri = tapetsukaikiri;
+    }
+
+    /**
+     * 次ﾛｯﾄへ
+     * @return the jilothe
+     */
+    public Integer getJilothe() {
+        return jilothe;
+    }
+
+    /**
+     * 次ﾛｯﾄへ
+     * @param jilothe the jilothe to set
+     */
+    public void setJilothe(Integer jilothe) {
+        this.jilothe = jilothe;
+    }
+
+    /**
+     * 備考3
+     * @return the bikou3
+     */
+    public String getBikou3() {
+        return bikou3;
+    }
+
+    /**
+     * 備考3
+     * @param bikou3 the bikou3 to set
+     */
+    public void setBikou3(String bikou3) {
+        this.bikou3 = bikou3;
+    }
+
+    /**
+     * 備考4
+     * @return the bikou4
+     */
+    public String getBikou4() {
+        return bikou4;
+    }
+
+    /**
+     * 備考4
+     * @param bikou4 the bikou4 to set
+     */
+    public void setBikou4(String bikou4) {
+        this.bikou4 = bikou4;
+    }
+
+    /**
+     * 備考5
+     * @return the bikou5
+     */
+    public String getBikou5() {
+        return bikou5;
+    }
+
+    /**
+     * 備考5
+     * @param bikou5 the bikou5 to set
+     */
+    public void setBikou5(String bikou5) {
+        this.bikou5 = bikou5;
+    }
 
 }

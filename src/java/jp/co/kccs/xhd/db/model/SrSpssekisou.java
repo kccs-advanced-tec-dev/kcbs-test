@@ -16,6 +16,11 @@ import java.sql.Timestamp;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2022/06/09<br>
+ * 計画書No	MB2205-D010<br>
+ * 変更者	KCSS wxf<br>
+ * 変更理由	項目追加・変更・削除<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -167,12 +172,12 @@ public class SrSpssekisou {
     private Integer cpressKankakuSosuu;
 
     /**
-     * 最終加圧力
+     * 最終積層加圧力
      */
     private BigDecimal lastKaaturyoku;
 
     /**
-     * 最終加圧時間
+     * 最終積層加圧時間
      */
     private BigDecimal lastKaatuJikan;
 
@@ -382,17 +387,17 @@ public class SrSpssekisou {
     private Timestamp kosinnichiji;
 
     /**
-     * 空打ち
+     * 積層終了後空打圧力
      */
-    private String karauti;
+    private BigDecimal sekisousyuryougokaradaasturyoku;
     
     /**
-     * 空打ち秒
+     * 積層終了後空打時間[秒]
      */
     private Integer karautibyou;
     
     /**
-     * 空打ち回
+     * 積層終了後空打回数[回]
      */
     private Integer karautikai;
     
@@ -865,7 +870,7 @@ public class SrSpssekisou {
     }
 
     /**
-     * 最終加圧力
+     * 最終積層加圧力
      * @return lastKaaturyoku
      */
     public BigDecimal getLastKaaturyoku() {
@@ -873,7 +878,7 @@ public class SrSpssekisou {
     }
 
     /**
-     * 最終加圧力
+     * 最終積層加圧力
      * @param lastKaaturyoku セットする lastKaaturyoku
      */
     public void setLastKaaturyoku(BigDecimal lastKaaturyoku) {
@@ -881,7 +886,7 @@ public class SrSpssekisou {
     }
 
     /**
-     * 最終加圧時間
+     * 最終積層加圧時間
      * @return lastKaatuJikan
      */
     public BigDecimal getLastKaatuJikan() {
@@ -889,7 +894,7 @@ public class SrSpssekisou {
     }
 
     /**
-     * 最終加圧時間
+     * 最終積層加圧時間
      * @param lastKaatuJikan セットする lastKaatuJikan
      */
     public void setLastKaatuJikan(BigDecimal lastKaatuJikan) {
@@ -1553,23 +1558,23 @@ public class SrSpssekisou {
     }
     
     /**
-     * 空打ち
-     * @return karauti
+     * 積層終了後空打圧力
+     * @return sekisousyuryougokaradaasturyoku
      */
-    public String getKarauti() {
-        return karauti;
+    public BigDecimal getSekisousyuryougokaradaasturyoku() {
+        return sekisousyuryougokaradaasturyoku;
     }
 
     /**
-     * 空打ち
-     * @param karauti セットする karauti
+     * 積層終了後空打圧力
+     * @param sekisousyuryougokaradaasturyoku セットする sekisousyuryougokaradaasturyoku
      */
-    public void setKarauti(String karauti) {
-        this.karauti = karauti;
+    public void setSekisousyuryougokaradaasturyoku(BigDecimal sekisousyuryougokaradaasturyoku) {
+        this.sekisousyuryougokaradaasturyoku = sekisousyuryougokaradaasturyoku;
     }
 
     /**
-     * 空打ち秒
+     * 積層終了後空打時間[秒]
      * @return karautibyou
      */
     public Integer getKarautibyou() {
@@ -1577,7 +1582,7 @@ public class SrSpssekisou {
     }
 
     /**
-     * 空打ち秒
+     * 積層終了後空打時間[秒]
      * @param karautibyou セットする karautibyou
      */
     public void setKarautibyou(Integer karautibyou) {
@@ -1585,7 +1590,7 @@ public class SrSpssekisou {
     }
 
     /**
-     * 空打ち回
+     * 積層終了後空打回数[回]
      * @return karautikai
      */
     public Integer getKarautikai() {
@@ -1593,7 +1598,7 @@ public class SrSpssekisou {
     }
 
     /**
-     * 空打ち回
+     * 積層終了後空打回数[回]
      * @param karautikai セットする karautikai
      */
     public void setKarautikai(Integer karautikai) {
