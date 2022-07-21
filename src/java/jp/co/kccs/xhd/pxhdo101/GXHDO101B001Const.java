@@ -266,7 +266,7 @@ public class GXHDO101B001Const {
     /**
      * ﾌﾞﾚｰﾄﾞ印刷長
      */
-    public static final String BLADEINSATSUTYO = "insatsu_sps_gra_bladeinsatsutyo";
+    public static final String BLADEINSATSUTYO = "insatsu_sps_gra_blade_insatsutyo";
 
     /**
      * 印刷開始日
