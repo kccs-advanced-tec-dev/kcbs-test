@@ -24,6 +24,7 @@ import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.db.model.Jisseki;
+import jp.co.kccs.xhd.db.model.Seisan;
 import jp.co.kccs.xhd.db.model.SrTapingSagyo;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.GXHDO901A;
@@ -274,6 +275,23 @@ public class GXHDO101B048 implements IFormLogic {
         if (errorMessageInfo != null) {
             processData.setErrorMessageInfoList(Arrays.asList(errorMessageInfo));
             return processData;
+        }
+        
+        for (int i = 0; i <= processData.getItemList().size() - 1; i++) {
+            if (processData.getItemList().get(i).getLabel1().equals("号機")){
+                // 号機の場合の規格値が設定されているかつ入力値がある場合
+                if (!StringUtil.isEmpty(processData.getItemList().get(i).getKikakuChi()) && !StringUtil.isEmpty(processData.getItemList().get(i).getValue())){
+                    // 項目データを取得
+                    String strKikakuchi = StringUtil.nullToBlank(processData.getItemList().get(i).getKikakuChi()).replace("【", "");
+                    strKikakuchi = strKikakuchi.replace("】", "");
+                    if (!strKikakuchi.equals(processData.getItemList().get(i).getValue())) {
+                        // 規格値と入力値が正しくない場合エラー
+                        errorMessageInfo = MessageUtil.getErrorMessageInfo("XHD-000032", true, true, Arrays.asList(processData.getItemList().get(i)), processData.getItemList().get(i).getLabel1());
+                        processData.setErrorMessageInfoList(Arrays.asList(errorMessageInfo));
+                        return processData;
+                    }
+                }
+            }
         }
 
         // 規格値エラーがある場合は規格値エラーをセット(警告表示)
@@ -567,6 +585,20 @@ public class GXHDO101B048 implements IFormLogic {
             return MessageUtil.getErrorMessageInfo("", msgCheckR001Barashi, true, true, errFxhdd01List);
         }
 
+        for (int i = 0; i <= processData.getItemList().size() - 1; i++) {
+            if (processData.getItemList().get(i).getLabel1().equals("号機")){
+                // 号機の場合の規格値が設定されているかつ入力値がある場合
+                if (!StringUtil.isEmpty(processData.getItemList().get(i).getKikakuChi()) && !StringUtil.isEmpty(processData.getItemList().get(i).getValue())){
+                    // 項目データを取得
+                    String strKikakuchi = StringUtil.nullToBlank(processData.getItemList().get(i).getKikakuChi()).replace("【", "");
+                    strKikakuchi = strKikakuchi.replace("】", "");
+                    if (!strKikakuchi.equals(processData.getItemList().get(i).getValue())) {
+                        // 規格値と入力値が正しくない場合エラー
+                        return MessageUtil.getErrorMessageInfo("XHD-000032", true, true, Arrays.asList(processData.getItemList().get(i)), processData.getItemList().get(i).getLabel1());
+                    }
+                }
+            }
+        }
         return null;
     }
 
@@ -737,6 +769,23 @@ public class GXHDO101B048 implements IFormLogic {
         // 規格値エラーがある場合は規格値エラーをセット(警告表示)
         if (!kikakuchiInputErrorInfoList.isEmpty()) {
             processData.setKikakuchiInputErrorInfoList(kikakuchiInputErrorInfoList);
+        }
+        
+        for (int i = 0; i <= processData.getItemList().size() - 1; i++) {
+            if (processData.getItemList().get(i).getLabel1().equals("号機")){
+                // 号機の場合の規格値が設定されているかつ入力値がある場合
+                if (!StringUtil.isEmpty(processData.getItemList().get(i).getKikakuChi()) && !StringUtil.isEmpty(processData.getItemList().get(i).getValue())){
+                    // 項目データを取得
+                    String strKikakuchi = StringUtil.nullToBlank(processData.getItemList().get(i).getKikakuChi()).replace("【", "");
+                    strKikakuchi = strKikakuchi.replace("】", "");
+                    if (!strKikakuchi.equals(processData.getItemList().get(i).getValue())) {
+                        // 規格値と入力値が正しくない場合エラー
+                        ErrorMessageInfo errorMessage = MessageUtil.getErrorMessageInfo("XHD-000032", true, true, Arrays.asList(processData.getItemList().get(i)), processData.getItemList().get(i).getLabel1());
+                        processData.setErrorMessageInfoList(Arrays.asList(errorMessage));
+                        return processData;
+                    }
+                }
+            }
         }
 
         // 警告メッセージの設定
@@ -1313,7 +1362,7 @@ public class GXHDO101B048 implements IFormLogic {
         }
 
         // 入力項目の情報を画面にセットする。
-        if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, jissekino, bango, tanijuryo, okuriRyohinsu)) {
+        if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, queryRunnerWip, lotNo, jissekino, bango, tanijuryo, okuriRyohinsu, shikakariData)) {
             // エラー発生時は処理を中断
             processData.setFatalError(true);
             processData.setInitMessageList(Arrays.asList(MessageUtil.getMessage("XHD-000038")));
@@ -1381,7 +1430,8 @@ public class GXHDO101B048 implements IFormLogic {
      * @throws SQLException 例外エラー
      */
     private boolean setInputItemData(ProcessData processData, QueryRunner queryRunnerDoc, QueryRunner queryRunnerQcdb,
-            String lotNo, int jissekino, int bango, String tanijuryo, String okuriRyohinsu) throws SQLException {
+            QueryRunner queryRunnerWip, String lotNo, int jissekino, int bango, String tanijuryo, String okuriRyohinsu,
+            Map shikakariData) throws SQLException {
 
         List<SrTapingSagyo> srTapingSagyoDataList = new ArrayList<>();
         String rev = "";
@@ -1389,61 +1439,139 @@ public class GXHDO101B048 implements IFormLogic {
         String kojyo = lotNo.substring(0, 3);
         String lotNo8 = lotNo.substring(3, 11);
         String edaban = lotNo.substring(11, 14);
+        // 規格値が設定できているかの判定用フラグ
+        boolean isDataGetflg = false;
+        String initMessage = "";
+        
+        for (int i = 0; i <= processData.getItemList().size() - 1; i++) {
 
-        for (int i = 0; i < 5; i++) {
+            // 対象の表示label1が「号機」の場合に規格値を取得する処理を実行
+            if (processData.getItemList().get(i).getLabel1().equals("号機")){
+                
+                // 号機の規格値が設定されていない場合のｴﾗｰﾒｯｾｰｼﾞを設定
+                initMessage = MessageUtil.getMessage("XHD-000019", "【" + processData.getItemList().get(i).getLabel1() + "】");
+                
+                // ﾊﾟﾗﾒｰﾀﾏｽﾀからﾊﾟﾗﾒｰﾀﾃﾞｰﾀを取得
+                String param = loadParamData(queryRunnerDoc, "common_user", "xhd_taping_sagyo_maekoteicode");
+                
+                // ﾊﾟﾗﾒｰﾀﾏｽﾀが空では無い場合
+                if (!StringUtil.isEmpty(param)) {
+                       
+                    // 取得したﾊﾟﾗﾒｰﾀﾃﾞｰﾀを「,」で分割し工程コードとして配列に格納
+                    String spParam[] = param.split(",");
+
+                    // 仕掛情報の取得(TP号機用処理)
+                    Map tpShikakariData = loadTpGokiShikakariData(queryRunnerWip, lotNo, shikakariData.get("oyalotedaban").toString());
+                    if (tpShikakariData == null || tpShikakariData.isEmpty()) {
+                        // 仕掛ﾃﾞｰﾀが取得できなかった場合に処理を抜ける
+                        break;
+                    }
+                    
+                    // 仕掛情報(TP号機用処理)のレコード分ループ
+                    for (int j = 0; j < tpShikakariData.size(); j++) {
+                        
+                        // 実績ﾃﾞｰﾀ(TP号機処理)を取得
+                        List<Jisseki> jissekiData = loadTpJissekiData(queryRunnerWip, lotNo, spParam);
+                        
+                        // 実績ﾃﾞｰﾀ(TP号機処理)が取得できた場合
+                        if (jissekiData != null && 0 < jissekiData.size()) {
+                            
+                            // 生産実績ﾃﾞｰﾀ取得
+                            List<Seisan> seisanData = loadSeisanData(queryRunnerWip, jissekiData.get(0).getJissekino());
+                            
+                            // 生産実績ﾃﾞｰﾀが取得出来た場合
+                            if (seisanData != null && seisanData.size() > 0) {
+                                
+                                // 号機コードを号機の規格値としてｾｯﾄ
+                                processData.getItemList().get(i).setKikakuChi("【" + seisanData.get(0).getGoukicode() + "】");
+                                
+                                // 号機の規格値が設定できた情報をｾｯﾄ
+                                isDataGetflg = true;
+                                break;
+                            } else {
+                                // 生産実績ﾃﾞｰﾀが取得出来なかった場合
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                } else {
+                    // ﾊﾟﾗﾒｰﾀﾃﾞｰﾀが取得できなかった場合に処理を抜ける
+                    break;
+                }
+    
+            }
+        }
+        
+        // 共通処理側で設定されている初期表示時ｴﾗｰﾒｯｾｰｼﾞﾘｽﾄがあるか
+        if( processData.getInitMessageList()!= null && 0 < processData.getInitMessageList().size()) {
+            // ｴﾗｰﾒｯｾｰｼﾞﾘｽﾄがあった場合、エラーリスト数分ループ
+            for (String message : processData.getInitMessageList()) {
+                // ｴﾗｰﾒｯｾｰｼﾞが号機の規格値が設定されていない場合のｴﾗｰﾒｯｾｰｼﾞかつ
+                // 号機の規格値が設定されていた場合
+                if (message.equals(initMessage) && isDataGetflg){
+                    // 号機の規格値が設定されていない場合のｴﾗｰﾒｯｾｰｼﾞを削除
+                    processData.getInitMessageList().remove(processData.getInitMessageList().indexOf(initMessage));
+                }
+            }
+        }
+ 
+        if (!isDataGetflg){
+            for (int i = 0; i < 5; i++) {
             // ﾃｰﾋﾟﾝｸﾞ号機選択Revision情報取得
-            Map fxhdd12RevInfo = loadFxhdd12RevInfo(queryRunnerDoc, kojyo, lotNo8, edaban, jissekino, bango);
-            rev = StringUtil.nullToBlank(getMapData(fxhdd12RevInfo, "rev"));
-            jotaiFlg = StringUtil.nullToBlank(getMapData(fxhdd12RevInfo, "jotai_flg"));
+                Map fxhdd12RevInfo = loadFxhdd12RevInfo(queryRunnerDoc, kojyo, lotNo8, edaban, jissekino, bango);
+                rev = StringUtil.nullToBlank(getMapData(fxhdd12RevInfo, "rev"));
+                jotaiFlg = StringUtil.nullToBlank(getMapData(fxhdd12RevInfo, "jotai_flg"));
 
-            // revisionが空のまたはjotaiFlgが"0"でも"1"でもない場合、新規としてデフォルト値を設定してリターンする。
-            if (StringUtil.isEmpty(rev) || !(JOTAI_FLG_KARI_TOROKU.equals(jotaiFlg) || JOTAI_FLG_TOROKUZUMI.equals(jotaiFlg))) {
-                processData.setInitRev(rev);
-                processData.setInitJotaiFlg(jotaiFlg);
+                // revisionが空のまたはjotaiFlgが"0"でも"1"でもない場合、新規としてデフォルト値を設定してリターンする。
+                if (StringUtil.isEmpty(rev) || !(JOTAI_FLG_KARI_TOROKU.equals(jotaiFlg) || JOTAI_FLG_TOROKUZUMI.equals(jotaiFlg))) {
+                    processData.setInitRev(rev);
+                    processData.setInitJotaiFlg(jotaiFlg);
 
-                // メイン画面にデータを設定する(デフォルト値)
-                for (FXHDD01 fxhdd001 : processData.getItemList()) {
-                    this.setItemData(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
+                    // メイン画面にデータを設定する(デフォルト値)
+                    for (FXHDD01 fxhdd001 : processData.getItemList()) {
+                        this.setItemData(processData, fxhdd001.getItemId(), fxhdd001.getInputDefault());
+                    }
+
+                    setItemData(processData, GXHDO101B048Const.KENSA_KAISUU, String.valueOf(jissekino));
+
+                    //受入総重量計算処理
+                    FXHDD01 itemUkeireSojuryo = getItemRow(processData.getItemList(), GXHDO101B048Const.UKEIRE_SOUJURYO);
+                    FXHDD01 itemOkuriRyohinsu = getItemRow(processData.getItemList(), GXHDO101B048Const.OKURI_RYOHINSU);
+                    FXHDD01 itemUkeireTanijuryo = getItemRow(processData.getItemList(), GXHDO101B048Const.UKEIRE_TANNIJURYO);
+                    itemOkuriRyohinsu.setValue(okuriRyohinsu);//送り良品数
+                    itemUkeireTanijuryo.setValue(NumberUtil.getTruncatData(tanijuryo, itemUkeireTanijuryo.getInputLength(), itemUkeireTanijuryo.getInputLengthDec()));//受入単位重量
+                    if (checkUkeireSojuryo(itemUkeireSojuryo, itemOkuriRyohinsu, itemUkeireTanijuryo)) {
+                        // ﾁｪｯｸに問題なければ値をセット
+                        calcUkeireSojuryo(itemUkeireSojuryo, itemOkuriRyohinsu, itemUkeireTanijuryo);
+                    }
+
+                    return true;
                 }
 
-                setItemData(processData, GXHDO101B048Const.KENSA_KAISUU, String.valueOf(jissekino));
-
-                //受入総重量計算処理
-                FXHDD01 itemUkeireSojuryo = getItemRow(processData.getItemList(), GXHDO101B048Const.UKEIRE_SOUJURYO);
-                FXHDD01 itemOkuriRyohinsu = getItemRow(processData.getItemList(), GXHDO101B048Const.OKURI_RYOHINSU);
-                FXHDD01 itemUkeireTanijuryo = getItemRow(processData.getItemList(), GXHDO101B048Const.UKEIRE_TANNIJURYO);
-                itemOkuriRyohinsu.setValue(okuriRyohinsu);//送り良品数
-                itemUkeireTanijuryo.setValue(NumberUtil.getTruncatData(tanijuryo, itemUkeireTanijuryo.getInputLength(), itemUkeireTanijuryo.getInputLengthDec()));//受入単位重量
-                if (checkUkeireSojuryo(itemUkeireSojuryo, itemOkuriRyohinsu, itemUkeireTanijuryo)) {
-                    // ﾁｪｯｸに問題なければ値をセット
-                    calcUkeireSojuryo(itemUkeireSojuryo, itemOkuriRyohinsu, itemUkeireTanijuryo);
+                // テーピング作業データ取得
+                srTapingSagyoDataList = getSrTapingSagyoData(queryRunnerQcdb, rev, jotaiFlg, kojyo, lotNo8, edaban, jissekino, bango);
+                if (srTapingSagyoDataList.isEmpty()) {
+                    //該当データが取得できなかった場合は処理を繰り返す。
+                    continue;
                 }
 
-                return true;
+                // データが全て取得出来た場合、ループを抜ける。
+                break;
             }
 
-            // テーピング作業データ取得
-            srTapingSagyoDataList = getSrTapingSagyoData(queryRunnerQcdb, rev, jotaiFlg, kojyo, lotNo8, edaban, jissekino, bango);
+            // 制限回数内にデータが取得できなかった場合
             if (srTapingSagyoDataList.isEmpty()) {
-                //該当データが取得できなかった場合は処理を繰り返す。
-                continue;
+                return false;
             }
 
-            // データが全て取得出来た場合、ループを抜ける。
-            break;
+            processData.setInitRev(rev);
+            processData.setInitJotaiFlg(jotaiFlg);
+
+            // メイン画面データ設定
+            setInputItemDataMainForm(processData, srTapingSagyoDataList.get(0));
         }
-
-        // 制限回数内にデータが取得できなかった場合
-        if (srTapingSagyoDataList.isEmpty()) {
-            return false;
-        }
-
-        processData.setInitRev(rev);
-        processData.setInitJotaiFlg(jotaiFlg);
-
-        // メイン画面データ設定
-        setInputItemDataMainForm(processData, srTapingSagyoDataList.get(0));
-
+        
         return true;
 
     }
@@ -2273,7 +2401,7 @@ public class GXHDO101B048 implements IFormLogic {
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, beanHandler, params.toArray());
     }
-
+    
     /**
      * 枝番コピー確認メッセージ表示
      *
@@ -4110,5 +4238,101 @@ public class GXHDO101B048 implements IFormLogic {
         }
         
         return StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B048Const.GOKI, srTapingSagyo));
+    }
+    
+    /**
+     * 仕掛データ検索
+     *
+     * @param queryRunnerWip QueryRunnerオブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadTpGokiShikakariData(QueryRunner queryRunnerWip, String lotNo, String kouteiCode) throws SQLException {
+        String lotNo1 = lotNo.substring(0, 3);
+        String lotNo2 = lotNo.substring(3, 11);
+
+        // 仕掛情報データの取得
+        String sql = "SELECT kojyo, lotno, edaban"
+                + " FROM sikakari WHERE kojyo = ? AND lotno = ? AND oyalotedaban = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(lotNo1);
+        params.add(lotNo2);
+        params.add(kouteiCode);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerWip.query(sql, new MapHandler(), params.toArray());
+    }
+    
+    /**
+     * [実績]から、ﾃﾞｰﾀを取得
+     *
+     * @param queryRunnerWip オブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param date ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ(検索キー)
+     * @return 取得データ
+     * @throws SQLException
+     */
+    private List<Jisseki> loadTpJissekiData(QueryRunner queryRunnerWip, String lotNo, String[] data) throws SQLException {
+
+        String lotNo1 = lotNo.substring(0, 3);
+        String lotNo2 = lotNo.substring(3, 11);
+        String lotNo3 = lotNo.substring(11, 14);
+
+        List<String> dataList = new ArrayList<>(Arrays.asList(data));
+
+        // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+        String sql = "SELECT jissekino "
+                + "FROM jisseki "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND ";
+
+        sql += DBUtil.getInConditionPreparedStatement("koteicode", dataList.size());
+
+        sql += " ORDER BY syoribi DESC, syorijikoku DESC";
+
+        Map mapping = new HashMap<>();
+        mapping.put("jissekino", "jissekino");
+
+        BeanProcessor beanProcessor = new BeanProcessor(mapping);
+        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+        ResultSetHandler<List<Jisseki>> beanHandler = new BeanListHandler<>(Jisseki.class, rowProcessor);
+
+        List<Object> params = new ArrayList<>();
+        params.add(lotNo1);
+        params.add(lotNo2);
+        params.add(lotNo3);
+        params.addAll(dataList);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerWip.query(sql, beanHandler, params.toArray());
+    }
+    
+    /**
+     * [生産実績]から、ﾃﾞｰﾀを取得
+     * @param queryRunnerWip オブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param date ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ(検索キー)
+     * @return 取得データ
+     * @throws SQLException 
+     */
+     private List<Seisan> loadSeisanData(QueryRunner queryRunnerWip, int jissekiNo) throws SQLException {
+        // 生産実績データの取得
+        String sql = "SELECT goukicode "
+                + "FROM seisan "
+                + "WHERE jissekino = ? ";
+
+        Map mapping = new HashMap<>();
+        mapping.put("goukicode", "goukicode");
+        
+        BeanProcessor beanProcessor = new BeanProcessor(mapping);
+        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+        ResultSetHandler<List<Seisan>> beanHandler = new BeanListHandler<>(Seisan.class, rowProcessor);
+
+        List<Object> params = new ArrayList<>();
+        params.add(jissekiNo);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerWip.query(sql, beanHandler, params.toArray());
     }
 }
