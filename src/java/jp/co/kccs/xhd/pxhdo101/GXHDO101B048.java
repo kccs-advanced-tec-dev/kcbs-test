@@ -1512,6 +1512,7 @@ public class GXHDO101B048 implements IFormLogic {
                 if (message.equals(initMessage) && isDataGetflg){
                     // 号機の規格値が設定されていない場合のｴﾗｰﾒｯｾｰｼﾞを削除
                     processData.getInitMessageList().remove(processData.getInitMessageList().indexOf(initMessage));
+                    break;
                 }
             }
         }
