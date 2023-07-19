@@ -1439,13 +1439,10 @@ public class GXHDO101B048 implements IFormLogic {
         String kojyo = lotNo.substring(0, 3);
         String lotNo8 = lotNo.substring(3, 11);
         String edaban = lotNo.substring(11, 14);
+        // 規格値が設定できているかの判定用フラグ
         boolean isDataGetflg = false;
         
         for (int i = 0; i <= processData.getItemList().size() - 1; i++) {
-            // 規格値が取得出来たら処理終了
-            if (isDataGetflg) {
-                break;
-            }
             
             // 対象の表示label1が「号機」の場合に規格値を取得する処理を実行
             if (processData.getItemList().get(i).getLabel1().equals("号機")){
@@ -1457,14 +1454,14 @@ public class GXHDO101B048 implements IFormLogic {
                     // 取得したﾊﾟﾗﾒｰﾀﾃﾞｰﾀを「,」で分割し工程コードとして配列に格納
                     String spParam[] = param.split(",");
 
-                    // 実績情報の取得(TP号機用処理)
+                    // 仕掛情報の取得(TP号機用処理)
                     Map tpShikakariData = loadTpGokiShikakariData(queryRunnerWip, lotNo, shikakariData.get("oyalotedaban").toString());
                     if (tpShikakariData == null || tpShikakariData.isEmpty()) {
                         // 仕掛ﾃﾞｰﾀが取得できなかった場合に処理を抜ける
                         break;
                     }
                     
-                    // 実績情報(TP号機用処理)のレコード分ループ
+                    // 仕掛情報(TP号機用処理)のレコード分ループ
                     for (int j = 0; j < tpShikakariData.size(); j++) {
                         // 実績ﾃﾞｰﾀ(TP号機処理)を取得
                         List<Jisseki> jissekiData = loadTpJissekiData(queryRunnerWip, lotNo, spParam);
@@ -1479,9 +1476,12 @@ public class GXHDO101B048 implements IFormLogic {
                                 // 号機の規格値が設定できた情報をｾｯﾄ
                                 isDataGetflg = true;
                                 break;
+                            } else {
+                                break;
                             }
                         }
                     }
+                    break;
                 } else {
                     // ﾊﾟﾗﾒｰﾀﾃﾞｰﾀが取得できなかった場合に処理を抜ける
                     break;
