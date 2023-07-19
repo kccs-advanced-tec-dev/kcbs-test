@@ -1441,13 +1441,19 @@ public class GXHDO101B048 implements IFormLogic {
         String edaban = lotNo.substring(11, 14);
         // 規格値が設定できているかの判定用フラグ
         boolean isDataGetflg = false;
+        String initMessage = "";
         
         for (int i = 0; i <= processData.getItemList().size() - 1; i++) {
-            
+
             // 対象の表示label1が「号機」の場合に規格値を取得する処理を実行
             if (processData.getItemList().get(i).getLabel1().equals("号機")){
+                
+                // 号機の規格値が設定されていない場合のｴﾗｰﾒｯｾｰｼﾞを設定
+                initMessage = MessageUtil.getMessage("XHD-000019", "【" + processData.getItemList().get(i).getLabel1() + "】");
+                
                 // ﾊﾟﾗﾒｰﾀﾏｽﾀからﾊﾟﾗﾒｰﾀﾃﾞｰﾀを取得
                 String param = loadParamData(queryRunnerDoc, "common_user", "xhd_taping_sagyo_maekoteicode");
+                
                 // ﾊﾟﾗﾒｰﾀﾏｽﾀが空では無い場合
                 if (!StringUtil.isEmpty(param)) {
                        
@@ -1463,20 +1469,27 @@ public class GXHDO101B048 implements IFormLogic {
                     
                     // 仕掛情報(TP号機用処理)のレコード分ループ
                     for (int j = 0; j < tpShikakariData.size(); j++) {
+                        
                         // 実績ﾃﾞｰﾀ(TP号機処理)を取得
                         List<Jisseki> jissekiData = loadTpJissekiData(queryRunnerWip, lotNo, spParam);
+                        
                         // 実績ﾃﾞｰﾀ(TP号機処理)が取得できた場合
                         if (jissekiData != null && 0 < jissekiData.size()) {
+                            
                             // 生産実績ﾃﾞｰﾀ取得
                             List<Seisan> seisanData = loadSeisanData(queryRunnerWip, jissekiData.get(0).getJissekino());
+                            
                             // 生産実績ﾃﾞｰﾀが取得出来た場合
                             if (seisanData != null && seisanData.size() > 0) {
+                                
                                 // 号機コードを号機の規格値としてｾｯﾄ
                                 processData.getItemList().get(i).setKikakuChi("【" + seisanData.get(0).getGoukicode() + "】");
+                                
                                 // 号機の規格値が設定できた情報をｾｯﾄ
                                 isDataGetflg = true;
                                 break;
                             } else {
+                                // 生産実績ﾃﾞｰﾀが取得出来なかった場合
                                 break;
                             }
                         }
@@ -1487,6 +1500,19 @@ public class GXHDO101B048 implements IFormLogic {
                     break;
                 }
     
+            }
+        }
+        
+        // 共通処理側で設定されている初期表示時ｴﾗｰﾒｯｾｰｼﾞﾘｽﾄがあるか
+        if( processData.getInitMessageList()!= null && 0 < processData.getInitMessageList().size()) {
+            // ｴﾗｰﾒｯｾｰｼﾞﾘｽﾄがあった場合、エラーリスト数分ループ
+            for (String message : processData.getInitMessageList()) {
+                // ｴﾗｰﾒｯｾｰｼﾞが号機の規格値が設定されていない場合のｴﾗｰﾒｯｾｰｼﾞかつ
+                // 号機の規格値が設定されていた場合
+                if (message.equals(initMessage) && isDataGetflg){
+                    // 号機の規格値が設定されていない場合のｴﾗｰﾒｯｾｰｼﾞを削除
+                    processData.getInitMessageList().remove(processData.getInitMessageList().indexOf(initMessage));
+                }
             }
         }
  
