@@ -194,7 +194,7 @@ public class SrCutcheck {
     /**
      * 粉まぶし
      */
-    private Integer konamabushi;
+    private String konamabushi;
 
     /**
      * 処理個数
@@ -835,7 +835,7 @@ public class SrCutcheck {
      *
      * @return the konamabushi
      */
-    public Integer getKonamabushi() {
+    public String getKonamabushi() {
         return konamabushi;
     }
 
@@ -844,7 +844,7 @@ public class SrCutcheck {
      *
      * @param konamabushi the konamabushi to set
      */
-    public void setKonamabushi(Integer konamabushi) {
+    public void setKonamabushi(String konamabushi) {
         this.konamabushi = konamabushi;
     }
 

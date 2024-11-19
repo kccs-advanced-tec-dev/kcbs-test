@@ -163,6 +163,16 @@ public class GXHDO201B038Model implements Serializable {
     private String biko3 = "";
 
     /**
+     * 備考4
+     */
+    private String biko4 = "";
+
+    /**
+     * 備考5
+     */
+    private String biko5 = "";
+
+    /**
      * 回数
      */
     private Integer jissekino = null;
@@ -527,6 +537,11 @@ public class GXHDO201B038Model implements Serializable {
      * Sn膜厚20
      */
     private BigDecimal makuatsusn20 = null;
+
+    /**
+     * 熱処理担当者
+     */
+    private String soujyuryoutantousya = "";
 
     /**
      * ﾛｯﾄNo
@@ -2470,6 +2485,54 @@ public class GXHDO201B038Model implements Serializable {
      */
     public void setMakuatsusn20(BigDecimal makuatsusn20) {
         this.makuatsusn20 = makuatsusn20;
+    }
+
+    /**
+     * 熱処理担当者
+     * @return the soujyuryoutantousya
+     */
+    public String getSoujyuryoutantousya() {
+        return soujyuryoutantousya;
+    }
+
+    /**
+     * 熱処理担当者
+     * @param soujyuryoutantousya the soujyuryoutantousya to set
+     */
+    public void setSoujyuryoutantousya(String soujyuryoutantousya) {
+        this.soujyuryoutantousya = soujyuryoutantousya;
+    }
+
+    /**
+     * 備考4
+     * @return the biko4
+     */
+    public String getBiko4() {
+        return biko4;
+    }
+
+    /**
+     * 備考4
+     * @param biko4 the biko4 to set
+     */
+    public void setBiko4(String biko4) {
+        this.biko4 = biko4;
+    }
+
+    /**
+     * 備考5
+     * @return the biko5
+     */
+    public String getBiko5() {
+        return biko5;
+    }
+
+    /**
+     * 備考5
+     * @param biko5 the biko5 to set
+     */
+    public void setBiko5(String biko5) {
+        this.biko5 = biko5;
     }
 
 }

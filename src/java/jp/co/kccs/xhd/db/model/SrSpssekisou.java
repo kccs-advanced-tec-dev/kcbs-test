@@ -410,7 +410,43 @@ public class SrSpssekisou {
      * 外観確認5
      */
     private String gaikanKakunin5;
-
+    
+    
+    /**
+     * 先行ﾛｯﾄNo
+     */
+    private String senkoulotno;
+    
+    /**
+     * ﾃｰﾌﾟ使い切り
+     */
+    private Integer tapetsukaikiri;
+    
+    /**
+     * 次ﾛｯﾄへ
+     */
+    private Integer jilothe;
+    
+    /**
+     * 固着ｼｰﾄTEST
+     */
+    private Integer ksheettest;
+    
+    /**
+     * 固着ｼｰﾄﾛｯﾄNoﾞ
+     */
+    private String klotno;
+    
+    /**
+     * 固着ｼｰﾄTESTﾁｪｯｸ
+     */
+    private Integer ksheettestcheck;
+    
+    /**
+     * 固着ｼｰﾄﾛｯﾄNoﾁｪｯｸ
+     */
+    private Integer klotnocheck;
+    
     /**
      * revision
      */
@@ -1635,6 +1671,117 @@ public class SrSpssekisou {
      */
     public void setGaikanKakunin5(String gaikanKakunin5) {
         this.gaikanKakunin5 = gaikanKakunin5;
+    }
+    
+    /**
+     * 先行ﾛｯﾄNo
+     * @return the senkoulotno
+     */
+    public String getSenkoulotno() {
+        return senkoulotno;
+    }
+
+    /**
+     * 先行ﾛｯﾄNo
+     * @param senkoulotno the senkoulotno to set
+     */
+    public void setSenkoulotno(String senkoulotno) {
+        this.senkoulotno = senkoulotno;
+    }
+    
+    
+    /**
+     * ﾃｰﾌﾟ使い切り
+     * @return the tapetsukaikiri
+     */
+    public Integer getTapetsukaikiri() {
+        return tapetsukaikiri;
+    }
+
+    /**
+     * ﾃｰﾌﾟ使い切り
+     * @param tapetsukaikiri the tapetsukaikiri to set
+     */
+    public void setTapetsukaikiri(Integer tapetsukaikiri) {
+        this.tapetsukaikiri = tapetsukaikiri;
+    }
+
+    /**
+     * 次ﾛｯﾄへ
+     * @return the jilothe
+     */
+    public Integer getJilothe() {
+        return jilothe;
+    }
+
+    /**
+     * 次ﾛｯﾄへ
+     * @param jilothe the jilothe to set
+     */
+    public void setJilothe(Integer jilothe) {
+        this.jilothe = jilothe;
+    }
+    
+     /**
+     * 固着ｼｰﾄTEST
+     * @return the ksheettest
+     */
+    public Integer getKsheettest() {
+        return ksheettest;
+    }
+
+    /**
+     * 固着ｼｰﾄTEST
+     * @param ksheettest the ksheettest to set
+     */
+    public void setKsheettest(Integer ksheettest) {
+        this.ksheettest = ksheettest;
+    }
+    
+
+    /**
+     * @return the klotno
+     */
+    public String getKlotno() {
+        return klotno;
+    }
+
+    /**
+     * @param klotno the klotno to set
+     */
+    public void setKlotno(String klotno) {
+        this.klotno = klotno;
+    }
+    
+     /**
+     * 固着ｼｰﾄTESTﾁｪｯｸ
+     * @return the ksheettestcheck
+     */
+    public Integer getKsheettestcheck() {
+        return ksheettestcheck;
+    }
+
+    /**
+     * 固着ｼｰﾄTESTﾁｪｯｸ
+     * @param ksheettestcheck the ksheettest to set
+     */
+    public void setKsheettestcheck(Integer ksheettestcheck) {
+        this.ksheettestcheck = ksheettestcheck;
+    }
+    
+
+    /**
+     * @return the klotnocheck
+     */
+    public Integer getKlotnocheck() {
+        return klotnocheck;
+    }
+
+    /**
+     * @param klotnocheck the klotno to set
+     */
+    public void setKlotnocheck(Integer klotnocheck) {
+        this.klotnocheck = klotnocheck;
     }
 
     /**

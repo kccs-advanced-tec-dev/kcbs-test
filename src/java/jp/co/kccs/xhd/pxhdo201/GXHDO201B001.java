@@ -135,6 +135,8 @@ public class GXHDO201B001 implements Serializable {
     private String gouki = "";
     /** 検索条件：KCPNo */
     private String kcpNo = "";
+    /** 検索条件：版胴名 */
+    private String hando = "";
     
     /**
      * コンストラクタ
@@ -345,6 +347,22 @@ public class GXHDO201B001 implements Serializable {
 //</editor-fold>
 
     /**
+     * 検索条件：版胴名
+     * @return the hando
+     */
+    public String getHando() {
+        return hando;
+    }
+
+    /**
+     * 検索条件：版胴名
+     * @param hando the hando to set
+     */
+    public void setHando(String hando) {
+        this.hando = hando;
+    }
+
+    /**
      * ページング用の件数を返却
      * @return 1ページあたりの表示件数
      */
@@ -414,6 +432,7 @@ public class GXHDO201B001 implements Serializable {
         endTimeT = "";
         gouki = "";
         kcpNo = "";
+        setHando("");
         
         listData = new ArrayList<>();
     }
@@ -583,7 +602,8 @@ public class GXHDO201B001 implements Serializable {
                     + "AND   (? IS NULL OR enddatetime >= ?) " 
                     + "AND   (? IS NULL OR enddatetime <= ?) " 
                     + "AND   (? IS NULL OR gouki = ?) " 
-                    + "AND   (? IS NULL OR kcpno LIKE ? ESCAPE '\\\\') ";
+                    + "AND   (? IS NULL OR kcpno LIKE ? ESCAPE '\\\\') "
+                    + "AND   (? IS NULL OR handoumei LIKE ? ESCAPE '\\\\') ";
             
             // パラメータ設定
             List<Object> params = createSearchParam();
@@ -635,6 +655,10 @@ public class GXHDO201B001 implements Serializable {
                     + ", T1.kansouondo2"
                     + ", T1.kansouondo3"
                     + ", T1.kansouondo4"
+                    + ", T1.kansouondoshita"
+                    + ", T1.kansouondoshita2"
+                    + ", T1.kansouondoshita3"
+                    + ", T1.kansouondoshita4"
                     + ", T1.kansouondo5"
                     + ", T1.hansouspeed"
                     + ", T1.startdatetime"
@@ -741,6 +765,7 @@ public class GXHDO201B001 implements Serializable {
                     + "AND   (? IS NULL OR T1.enddatetime <= ?) " 
                     + "AND   (? IS NULL OR T1.gouki = ?) " 
                     + "AND   (? IS NULL OR T1.kcpno LIKE ? ESCAPE '\\\\') "
+                    + "AND   (? IS NULL OR T1.handoumei LIKE ? ESCAPE '\\\\') "
                     + "ORDER BY T1.startdatetime ";
             
             // パラメータ設定
@@ -777,6 +802,10 @@ public class GXHDO201B001 implements Serializable {
             mapping.put("kansouondo2", "kansouondo2");
             mapping.put("kansouondo3", "kansouondo3");
             mapping.put("kansouondo4", "kansouondo4");
+            mapping.put("kansouondoshita", "kansouondoshita");
+            mapping.put("kansouondoshita2", "kansouondoshita2");
+            mapping.put("kansouondoshita3", "kansouondoshita3");
+            mapping.put("kansouondoshita4", "kansouondoshita4");
             mapping.put("kansouondo5", "kansouondo5");
             mapping.put("hansouspeed", "hansouspeed");
             mapping.put("startdatetime", "startdatetime");
@@ -1003,6 +1032,11 @@ public class GXHDO201B001 implements Serializable {
         if (!StringUtil.isEmpty(kcpNo)) {
             paramKcpno = "%" + DBUtil.escapeString(kcpNo) + "%";
         }
+        String paramHando = null;
+        if (!StringUtil.isEmpty(hando)) {
+            paramHando = DBUtil.escapeString(getHando()) + "%";
+        }
+
         
         List<Object> params = new ArrayList<>();
         params.addAll(Arrays.asList(paramKojo, paramKojo));
@@ -1014,6 +1048,7 @@ public class GXHDO201B001 implements Serializable {
         params.addAll(Arrays.asList(paramEndDateT, paramEndDateT));
         params.addAll(Arrays.asList(paramGouki, paramGouki));
         params.addAll(Arrays.asList(paramKcpno, paramKcpno));
+        params.addAll(Arrays.asList(paramHando, paramHando));
 
         return params;
     }

@@ -5,6 +5,7 @@ package jp.co.kccs.xhd.pxhdo101;
 
 import java.io.Serializable;
 import java.lang.reflect.Array;
+import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.db.model.SrKoteifuryo;
+import jp.co.kccs.xhd.db.model.SrKoteifuryoHantei;
 import jp.co.kccs.xhd.db.model.SrKoteifuryoKekka;
 import jp.co.kccs.xhd.db.model.SrKoteifuryoSiji;
 import jp.co.kccs.xhd.model.GXHDO101D001Model;
@@ -71,6 +73,12 @@ public class GXHDO101D001 implements Serializable {
     private transient DataSource dataSourceXHD;
 
     /**
+     * DataSource(wip)
+     */
+    @Resource(mappedName = "jdbc/wip")
+    private transient DataSource dataSourceWIP;
+
+    /**
      * B･Cﾗﾝｸ連絡書一覧画面からの引数: 登録No配列のIndex
      */
     private String torokuNoIndex;
@@ -104,9 +112,19 @@ public class GXHDO101D001 implements Serializable {
      * 担当者ｺｰﾄﾞ(検索値)
      */
     private String searchTantoshaCd;
+    
+    /**
+     * tmp_data
+     */
+    private String tmp_data;
+    
+    /**
+     * tmp_hanteidata
+     */
+    private String tmp_hanteidata;
 
     /**
-     * 品質確認連絡書も出る
+     * 品質確認連絡書モデル
      */
     private GXHDO101D001Model gxhdo101d001Model;
 
@@ -197,7 +215,8 @@ public class GXHDO101D001 implements Serializable {
         createKoteifuryosijiTable();
         // 工程不良結果テーブル作成
         createKoteifuryokekkaTable();
-
+        // 工程不良判定テーブル作成
+        createKoteifuryohanteiTable();
     }
 
     /**
@@ -255,6 +274,8 @@ public class GXHDO101D001 implements Serializable {
      */
     private void createKoteifuryoTable() {
         QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
+        QueryRunner queryRunnerWip = new QueryRunner(dataSourceWIP);
+        
         try {
             // 工程不良テーブルを取得する
             List<SrKoteifuryo> listSrKoteifuryo = getSrKoteifuryoList(queryRunnerQcdb, this.torokuNoArray[Integer.parseInt(torokuNoIndex)]);
@@ -290,19 +311,79 @@ public class GXHDO101D001 implements Serializable {
             model.setSikasuuryo(rowKoteifuryo.getSikasuuryo()); // KF.仕掛数
             model.setOwnercode(rowKoteifuryo.getOwnercode()); // KF.OWNERｺｰﾄﾞ
             model.setLotkubuncode(rowKoteifuryo.getLotkubuncode()); // KF.Lot区分
-            model.setLotno(rowKoteifuryo.getLotno()); // KF.製造LotNo
+            model.setLotno(rowKoteifuryo.getKojyo() + rowKoteifuryo.getLotno() + rowKoteifuryo.getEdaban()); // KF.製造LotNo
             model.setGoukicode(rowKoteifuryo.getGoukicode()); // KF.号機ｺｰﾄﾞ
 
             model.setFuryocode1(rowKoteifuryo.getFuryocode1()); // KF.不良ｺｰﾄﾞ1
+            if (rowKoteifuryo.getFuryocode1() != null && !rowKoteifuryo.getFuryocode1().isEmpty()) {                
+                Map furyoMasData = loadFuryomas(queryRunnerWip, rowKoteifuryo.getFuryocode1());
+                if (furyoMasData != null && !furyoMasData.isEmpty()) {
+                   model.setFuryocodemei1(StringUtil.nullToBlank(furyoMasData.get("furyo")));
+                }
+            }           
             model.setFuryocode2(rowKoteifuryo.getFuryocode2()); // KF.不良ｺｰﾄﾞ2
+            if (rowKoteifuryo.getFuryocode2() != null && !rowKoteifuryo.getFuryocode2().isEmpty()) {                
+                Map furyoMasData = loadFuryomas(queryRunnerWip, rowKoteifuryo.getFuryocode2());
+                if (furyoMasData != null && !furyoMasData.isEmpty()) {
+                   model.setFuryocodemei2(StringUtil.nullToBlank(furyoMasData.get("furyo")));
+                }
+            }           
             model.setFuryocode3(rowKoteifuryo.getFuryocode3()); // KF.不良ｺｰﾄﾞ3
+            if (rowKoteifuryo.getFuryocode3() != null && !rowKoteifuryo.getFuryocode3().isEmpty()) {                
+                Map furyoMasData = loadFuryomas(queryRunnerWip, rowKoteifuryo.getFuryocode3());
+                if (furyoMasData != null && !furyoMasData.isEmpty()) {
+                   model.setFuryocodemei3(StringUtil.nullToBlank(furyoMasData.get("furyo")));
+                }
+            }           
             model.setFuryocode4(rowKoteifuryo.getFuryocode4()); // KF.不良ｺｰﾄﾞ4
+            if (rowKoteifuryo.getFuryocode4() != null && !rowKoteifuryo.getFuryocode4().isEmpty()) {                
+                Map furyoMasData = loadFuryomas(queryRunnerWip, rowKoteifuryo.getFuryocode4());
+                if (furyoMasData != null && !furyoMasData.isEmpty()) {
+                   model.setFuryocodemei4(StringUtil.nullToBlank(furyoMasData.get("furyo")));
+                }
+            }           
             model.setFuryocode5(rowKoteifuryo.getFuryocode5()); // KF.不良ｺｰﾄﾞ5
+            if (rowKoteifuryo.getFuryocode5() != null && !rowKoteifuryo.getFuryocode5().isEmpty()) {                
+                Map furyoMasData = loadFuryomas(queryRunnerWip, rowKoteifuryo.getFuryocode5());
+                if (furyoMasData != null && !furyoMasData.isEmpty()) {
+                   model.setFuryocodemei5(StringUtil.nullToBlank(furyoMasData.get("furyo")));
+                }
+            }           
             model.setFuryocode6(rowKoteifuryo.getFuryocode6()); // KF.不良ｺｰﾄﾞ6
+            if (rowKoteifuryo.getFuryocode6() != null && !rowKoteifuryo.getFuryocode6().isEmpty()) {                
+                Map furyoMasData = loadFuryomas(queryRunnerWip, rowKoteifuryo.getFuryocode6());
+                if (furyoMasData != null && !furyoMasData.isEmpty()) {
+                   model.setFuryocodemei6(StringUtil.nullToBlank(furyoMasData.get("furyo")));
+                }
+            }           
             model.setFuryocode7(rowKoteifuryo.getFuryocode7()); // KF.不良ｺｰﾄﾞ7
+            if (rowKoteifuryo.getFuryocode7() != null && !rowKoteifuryo.getFuryocode7().isEmpty()) {                
+                Map furyoMasData = loadFuryomas(queryRunnerWip, rowKoteifuryo.getFuryocode7());
+                if (furyoMasData != null && !furyoMasData.isEmpty()) {
+                   model.setFuryocodemei7(StringUtil.nullToBlank(furyoMasData.get("furyo")));
+                }
+            }           
             model.setFuryocode8(rowKoteifuryo.getFuryocode8()); // KF.不良ｺｰﾄﾞ8
+            if (rowKoteifuryo.getFuryocode8() != null && !rowKoteifuryo.getFuryocode8().isEmpty()) {                
+                Map furyoMasData = loadFuryomas(queryRunnerWip, rowKoteifuryo.getFuryocode8());
+                if (furyoMasData != null && !furyoMasData.isEmpty()) {
+                   model.setFuryocodemei8(StringUtil.nullToBlank(furyoMasData.get("furyo")));
+                }
+            }           
             model.setFuryocode9(rowKoteifuryo.getFuryocode9()); // KF.不良ｺｰﾄﾞ9
+            if (rowKoteifuryo.getFuryocode9() != null && !rowKoteifuryo.getFuryocode9().isEmpty()) {                
+                Map furyoMasData = loadFuryomas(queryRunnerWip, rowKoteifuryo.getFuryocode9());
+                if (furyoMasData != null && !furyoMasData.isEmpty()) {
+                   model.setFuryocodemei9(StringUtil.nullToBlank(furyoMasData.get("furyo")));
+                }
+            }           
             model.setFuryocode10(rowKoteifuryo.getFuryocode10()); // KF.不良ｺｰﾄﾞ10
+            if (rowKoteifuryo.getFuryocode10() != null && !rowKoteifuryo.getFuryocode10().isEmpty()) {                
+                Map furyoMasData = loadFuryomas(queryRunnerWip, rowKoteifuryo.getFuryocode10());
+                if (furyoMasData != null && !furyoMasData.isEmpty()) {
+                   model.setFuryocodemei10(StringUtil.nullToBlank(furyoMasData.get("furyo")));
+                }
+            }           
 
             model.setFuryomeisai1(rowKoteifuryo.getFuryomeisai1()); // KF.不良名1
             model.setFuryomeisai2(rowKoteifuryo.getFuryomeisai2()); // KF.不良名2
@@ -349,7 +430,61 @@ public class GXHDO101D001 implements Serializable {
             model.setZaikono10(rowKoteifuryo.getZaikono10()); // KF.在庫No10
 
             model.setQakakuninsya(rowKoteifuryo.getQakakuninsya()); // KF.確認者
+            if (rowKoteifuryo.getQakakuninsya() != null && !rowKoteifuryo.getQakakuninsya().isEmpty()) {                
+                Map tantoMasData = loadTantomas(queryRunnerWip, rowKoteifuryo.getQakakuninsya());
+                if (tantoMasData != null && !tantoMasData.isEmpty()) {
+                   model.setQakakuninsyamei(StringUtil.nullToBlank(tantoMasData.get("tantousya")));
+                }
+            }
             model.setQakakuninnichiji(rowKoteifuryo.getQakakuninnichiji()); // KF.日付
+            
+            // 担当者名の取得
+            model.setHakkosya(rowKoteifuryo.getHakkosya());
+            if (rowKoteifuryo.getHakkosya() != null && !rowKoteifuryo.getHakkosya().isEmpty()) {                
+                Map tantoMasData = loadTantomas(queryRunnerWip, rowKoteifuryo.getHakkosya());
+                if (tantoMasData != null && !tantoMasData.isEmpty()) {
+                   model.setHakkosyamei(StringUtil.nullToBlank(tantoMasData.get("tantousya")));
+                }
+            }
+            // 工程名の取得
+            if (rowKoteifuryo.getHakkenkotei() != null && !rowKoteifuryo.getHakkenkotei().isEmpty()) {
+                Map koteiMasData = loadKoteimas(queryRunnerWip, rowKoteifuryo.getHakkenkotei());
+                if (koteiMasData != null && !koteiMasData.isEmpty()) {
+                   model.setHakkenkoteimei(StringUtil.nullToBlank(koteiMasData.get("kotei")));
+                }
+            }
+            // 確認者名の取得
+            model.setJikiqckakuninsya(rowKoteifuryo.getJikiqckakuninsya()); // KF.確認者
+            if (rowKoteifuryo.getJikiqckakuninsya() != null && !rowKoteifuryo.getJikiqckakuninsya().isEmpty()) {                
+                Map tantoMasData = loadTantomas(queryRunnerWip, rowKoteifuryo.getJikiqckakuninsya());
+                if (tantoMasData != null && !tantoMasData.isEmpty()) {
+                   model.setJikiqckakuninsyamei(StringUtil.nullToBlank(tantoMasData.get("tantousya")));
+                }
+            }
+
+            model.setJikiqckakuninnichiji(rowKoteifuryo.getJikiqckakuninnichiji()); // KF.日付
+            
+            model.setTmp_data(rowKoteifuryo.getTmp_data()); // tmp_data
+            model.setTmp_hanteidata(rowKoteifuryo.getTmp_hanteidata()); // tmp_hanteidata
+            
+            this.tmp_data = model.getTmp_data();
+            this.tmp_hanteidata = model.getTmp_hanteidata();
+            
+            if (this.tmp_data != null && !this.tmp_data.isEmpty()){
+                if(this.tmp_data.equals("T")){
+                    model.setTmp_data_hyoji("仮登録");
+                }else{
+                    model.setTmp_data_hyoji("");
+                }
+            }
+            if (this.tmp_hanteidata != null && !this.tmp_hanteidata.isEmpty()){
+                if(this.tmp_hanteidata.equals("T")){
+                    model.setTmp_hanteidata_hyoji("仮登録");
+                }else{
+                    model.setTmp_hanteidata_hyoji("");
+                }
+            }
+            
 
             // 取得結果を保存
             setGxhdo101d001Model(model);
@@ -372,6 +507,7 @@ public class GXHDO101D001 implements Serializable {
     private void createKoteifuryosijiTable() {
         try {
             QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
+            QueryRunner queryRunnerWip = new QueryRunner(dataSourceWIP);
             // (3)[工程不良指示]から取得した実績Noの最大値
             this.maxJissekiNoKS = findMaxJissekiNoFromKoteifuryoSiji(this.currentTorokuNoValue);
             // (4)[工程不良指示]から、初期表示する情報を取得
@@ -389,6 +525,23 @@ public class GXHDO101D001 implements Serializable {
                 item.setSijibi(row.getSijibi());
                 item.setSyochikotei(row.getSyochikotei());
                 item.setSijinaiyo(row.getSijinaiyo());
+                
+                // 担当者名の取得
+                if (row.getSijisyacode() != null && !row.getSijisyacode().isEmpty()) {                
+                    Map tantoMasData = loadTantomas(queryRunnerWip, row.getSijisyacode());
+                    if (tantoMasData != null && !tantoMasData.isEmpty()) {
+                       item.setSijisyacodemei(StringUtil.nullToBlank(tantoMasData.get("tantousya")));
+                    }
+                }
+                // 工程名の取得
+                if (row.getSyochikotei() != null && !row.getSyochikotei().isEmpty()) {
+                    Map koteiMasData = loadKoteimas(queryRunnerWip, row.getSyochikotei());
+                    if (koteiMasData != null && !koteiMasData.isEmpty()) {
+                       item.setSyochikoteimei(StringUtil.nullToBlank(koteiMasData.get("kotei")));
+                    }
+                }
+
+                
                 sijiList.add(item);
             }
 
@@ -408,10 +561,19 @@ public class GXHDO101D001 implements Serializable {
     public void createKoteifuryokekkaTable() {
         try {
             QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
-            // (5)[工程不良結果]から取得した実績Noの最大値
-            setMaxJissekiNoKK(getMaxJissekiNoFromSrKoteifuryoKekka(queryRunnerQcdb, this.currentTorokuNoValue));
-            // (6)[工程不良結果]から、初期表示する情報を取得
-            List<SrKoteifuryoKekka> koteifuryokekkaList = loadSrKoteifuryoKekka(queryRunnerQcdb, this.currentTorokuNoValue, this.maxJissekiNoKK);
+            QueryRunner queryRunnerWip = new QueryRunner(dataSourceWIP);
+            List<SrKoteifuryoKekka> koteifuryokekkaList;
+            if(this.tmp_data.equals("T")){
+                // (5)[tmp_工程不良結果]から取得した実績Noの最大値
+                setMaxJissekiNoKK(getMaxJissekiNoFromTmpSrKoteifuryoKekka(queryRunnerQcdb, this.currentTorokuNoValue));
+                // (6)[tmp_工程不良結果]から、初期表示する情報を取得
+                koteifuryokekkaList = loadTmpSrKoteifuryoKekka(queryRunnerQcdb, this.currentTorokuNoValue, this.maxJissekiNoKK);
+            }else{
+                // (5)[工程不良結果]から取得した実績Noの最大値
+                setMaxJissekiNoKK(getMaxJissekiNoFromSrKoteifuryoKekka(queryRunnerQcdb, this.currentTorokuNoValue));
+                // (6)[工程不良結果]から、初期表示する情報を取得
+                koteifuryokekkaList = loadSrKoteifuryoKekka(queryRunnerQcdb, this.currentTorokuNoValue, this.maxJissekiNoKK);
+            }
 
             // 取得したテーブル情報を画面表示モデルに設定する
             GXHDO101D001Model model = getGxhdo101d001Model();
@@ -425,11 +587,70 @@ public class GXHDO101D001 implements Serializable {
                 item.setSyotibi(row.getSyotibi());
                 item.setSyotinaiyo(row.getSyotinaiyo());
                 item.setHantei(row.getHantei());
+                // 担当者名の取得
+                if (row.getSyotisyacode() != null && !row.getSyotisyacode().isEmpty()) {                
+                    Map tantoMasData = loadTantomas(queryRunnerWip, row.getSyotisyacode());
+                    if (tantoMasData != null && !tantoMasData.isEmpty()) {
+                       item.setSyotisyacodemei(StringUtil.nullToBlank(tantoMasData.get("tantousya")));
+                    }
+                }
                 kekkaList.add(item);
             }
 
             // 画面表示モデルにセット
             model.setKekkaList(kekkaList);
+
+        } catch (SQLException ex) {
+            Logger.getLogger(GXHDO101D001.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    /**
+     * 初期表示
+     * <br>
+     * ③工程不良結果から取得する項目 画面表示仕様()～()を発行する。
+     */
+    public void createKoteifuryohanteiTable() {
+        try {
+            QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
+            QueryRunner queryRunnerWip = new QueryRunner(dataSourceWIP);
+            List<SrKoteifuryoHantei> koteifuryohanteiList;
+            if(this.tmp_hanteidata.equals("T")){
+                // (5)[工程不良結果]から取得した実績Noの最大値
+                setMaxJissekiNoKK(getMaxJissekiNoFromTmpSrKoteifuryoHantei(queryRunnerQcdb, this.currentTorokuNoValue));
+                // (6)[工程不良結果]から、初期表示する情報を取得
+                koteifuryohanteiList = loadTmpSrKoteifuryoHantei(queryRunnerQcdb, this.currentTorokuNoValue, this.maxJissekiNoKK);
+            }else{
+                // (5)[工程不良結果]から取得した実績Noの最大値
+                setMaxJissekiNoKK(getMaxJissekiNoFromSrKoteifuryoHantei(queryRunnerQcdb, this.currentTorokuNoValue));
+                // (6)[工程不良結果]から、初期表示する情報を取得
+                koteifuryohanteiList = loadSrKoteifuryoHantei(queryRunnerQcdb, this.currentTorokuNoValue, this.maxJissekiNoKK);
+            }
+
+            // 取得したテーブル情報を画面表示モデルに設定する
+            GXHDO101D001Model model = getGxhdo101d001Model();
+
+            // 必要な値を設定する
+            List<GXHDO101D001Model.KoteifuryoHantei> hanteiList = new ArrayList<>();
+            for (SrKoteifuryoHantei row : koteifuryohanteiList) {
+                GXHDO101D001Model.KoteifuryoHantei item = (new GXHDO101D001Model()).new KoteifuryoHantei();
+                item.setFuryono(row.getFuryono());
+                item.setHanteisyacode(row.getHanteisyacode());
+                item.setHanteibi(row.getHanteibi());
+                item.setComment(row.getComment());
+                item.setHantei(row.getHantei());
+                // 担当者名の取得
+                if (row.getHanteisyacode() != null && !row.getHanteisyacode().isEmpty()) {                
+                    Map tantoMasData = loadTantomas(queryRunnerWip, row.getHanteisyacode());
+                    if (tantoMasData != null && !tantoMasData.isEmpty()) {
+                       item.setHanteisyacodemei(StringUtil.nullToBlank(tantoMasData.get("tantousya")));
+                    }
+                }
+                hanteiList.add(item);
+            }
+
+            // 画面表示モデルにセット
+            model.setHanteiList(hanteiList);
 
         } catch (SQLException ex) {
             Logger.getLogger(GXHDO101D001.class.getName()).log(Level.SEVERE, null, ex);
@@ -554,6 +775,32 @@ public class GXHDO101D001 implements Serializable {
 
         return maxJissekiNo;
     }
+    
+    /**
+     * tmp_工程不良と紐づく工程不良結果から実績Noの最大値を取得
+     *
+     * @param queryRunnerXHD
+     * @param torokuNo 登録No
+     * @return maxJissekiNo 工程不良結果の実績No最大値
+     * @throws SQLException
+     */
+    private String getMaxJissekiNoFromTmpSrKoteifuryoKekka(QueryRunner queryRunnerXHD, String torokuNo) throws SQLException {
+        String maxJissekiNo = "";
+        String sql = "SELECT MAX(jissekino) AS jissekino "
+                + "FROM tmp_sr_koteifuryo_kekka "
+                + "WHERE torokuno = ? ";
+        List<Object> params = new ArrayList<>();
+        params.add(torokuNo);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        Map map = queryRunnerXHD.query(sql, new MapHandler(), params.toArray());
+        if (map != null && !map.isEmpty()) {
+            maxJissekiNo = String.valueOf(map.get("jissekino"));
+        }
+
+        return maxJissekiNo;
+    }
+    
 
     /**
      * [工程不良結果]テーブルから初期表示する情報を取得
@@ -582,7 +829,138 @@ public class GXHDO101D001 implements Serializable {
         return queryRunnerXHD.query(sql, beanHandler, params.toArray());
 
     }
+    
+    /**
+     * [tmp_工程不良結果]テーブルから初期表示する情報を取得
+     *
+     * @param queryRunnerXHD
+     * @param torokuNo 登録No
+     * @param maxJissekiNo 工程不良結果の実績No最大値
+     * @return
+     * @throws SQLException
+     */
+    private List<SrKoteifuryoKekka> loadTmpSrKoteifuryoKekka(QueryRunner queryRunnerXHD, String torokuNo, String maxJissekiNo) throws SQLException {
+        String sql = "SELECT * "
+                + "FROM tmp_sr_koteifuryo_kekka "
+                + "WHERE torokuno = ? AND jissekino = ? "
+                + "ORDER BY sijino ";
+        List<Object> params = new ArrayList<>();
+        params.add(torokuNo);
+        params.add(maxJissekiNo);
 
+        Map<String, String> mapping = new HashMap<>();
+        mapping.put("torokuno", "torokuno");
+        BeanProcessor beanProcessor = new BeanProcessor(mapping);
+        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+        ResultSetHandler<List<SrKoteifuryoKekka>> beanHandler = new BeanListHandler<>(SrKoteifuryoKekka.class, rowProcessor);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerXHD.query(sql, beanHandler, params.toArray());
+
+    }
+    /**
+     * 工程不良と紐づく工程不良判定から実績Noの最大値を取得
+     *
+     * @param queryRunnerXHD
+     * @param torokuNo 登録No
+     * @return maxJissekiNo 工程不良判定の実績No最大値
+     * @throws SQLException
+     */
+    private String getMaxJissekiNoFromSrKoteifuryoHantei(QueryRunner queryRunnerXHD, String torokuNo) throws SQLException {
+        String maxJissekiNo = "";
+        String sql = "SELECT MAX(jissekino) AS jissekino "
+                + "FROM sr_koteifuryo_hantei "
+                + "WHERE torokuno = ? ";
+        List<Object> params = new ArrayList<>();
+        params.add(torokuNo);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        Map map = queryRunnerXHD.query(sql, new MapHandler(), params.toArray());
+        if (map != null && !map.isEmpty()) {
+            maxJissekiNo = String.valueOf(map.get("jissekino"));
+        }
+
+        return maxJissekiNo;
+    }
+    
+    /**
+     * 工程不良と紐づくtmp_工程不良判定から実績Noの最大値を取得
+     *
+     * @param queryRunnerXHD
+     * @param torokuNo 登録No
+     * @return maxJissekiNo 工程不良判定の実績No最大値
+     * @throws SQLException
+     */
+    private String getMaxJissekiNoFromTmpSrKoteifuryoHantei(QueryRunner queryRunnerXHD, String torokuNo) throws SQLException {
+        String maxJissekiNo = "";
+        String sql = "SELECT MAX(jissekino) AS jissekino "
+                + "FROM tmp_sr_koteifuryo_hantei "
+                + "WHERE torokuno = ? ";
+        List<Object> params = new ArrayList<>();
+        params.add(torokuNo);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        Map map = queryRunnerXHD.query(sql, new MapHandler(), params.toArray());
+        if (map != null && !map.isEmpty()) {
+            maxJissekiNo = String.valueOf(map.get("jissekino"));
+        }
+
+        return maxJissekiNo;
+    }
+
+    /**
+     * [工程不良判定]テーブルから初期表示する情報を取得
+     *
+     * @param queryRunnerXHD
+     * @param torokuNo 登録No
+     * @param maxJissekiNo 工程不良判定の実績No最大値
+     * @return
+     * @throws SQLException
+     */
+    private List<SrKoteifuryoHantei> loadSrKoteifuryoHantei(QueryRunner queryRunnerXHD, String torokuNo, String maxJissekiNo) throws SQLException {
+        String sql = "SELECT * "
+                + "FROM sr_koteifuryo_hantei "
+                + "WHERE torokuno = ? AND jissekino = ? "
+                + "ORDER BY sijino ";
+        List<Object> params = new ArrayList<>();
+        params.add(torokuNo);
+        params.add(maxJissekiNo);
+
+        Map<String, String> mapping = new HashMap<>();
+        mapping.put("torokuno", "torokuno");
+        BeanProcessor beanProcessor = new BeanProcessor(mapping);
+        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+        ResultSetHandler<List<SrKoteifuryoHantei>> beanHandler = new BeanListHandler<>(SrKoteifuryoHantei.class, rowProcessor);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerXHD.query(sql, beanHandler, params.toArray());
+
+    }
+    /**
+     * [tmp_工程不良判定]テーブルから初期表示する情報を取得
+     *
+     * @param queryRunnerXHD
+     * @param torokuNo 登録No
+     * @param maxJissekiNo 工程不良判定の実績No最大値
+     * @return
+     * @throws SQLException
+     */
+    private List<SrKoteifuryoHantei> loadTmpSrKoteifuryoHantei(QueryRunner queryRunnerXHD, String torokuNo, String maxJissekiNo) throws SQLException {
+        String sql = "SELECT * "
+                + "FROM tmp_sr_koteifuryo_hantei "
+                + "WHERE torokuno = ? AND jissekino = ? "
+                + "ORDER BY sijino ";
+        List<Object> params = new ArrayList<>();
+        params.add(torokuNo);
+        params.add(maxJissekiNo);
+
+        Map<String, String> mapping = new HashMap<>();
+        mapping.put("torokuno", "torokuno");
+        BeanProcessor beanProcessor = new BeanProcessor(mapping);
+        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+        ResultSetHandler<List<SrKoteifuryoHantei>> beanHandler = new BeanListHandler<>(SrKoteifuryoHantei.class, rowProcessor);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerXHD.query(sql, beanHandler, params.toArray());
+
+    }
     /**
      * 「入力画面へ戻る」押下時
      *
@@ -685,7 +1063,70 @@ public class GXHDO101D001 implements Serializable {
         // ②画面を初期化し、再度初期表示処理を実施する。
         return "/secure/pxhdo101/gxhdo101d001.xhtml?faces-redirect=true";
     }
+    
+    /**
+     * [担当者ﾏｽﾀ]から、担当者名を取得
+     *
+     * @param queryRunnerWip QueryRunnerオブジェクト
+     * @param tantosya 担当者ｺｰﾄﾞ(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadTantomas(QueryRunner queryRunnerWip, String tantosya) throws SQLException {
 
+        // オーナーデータの取得
+        String sql = "SELECT tantousya "
+                + "FROM tantomas "
+                + "WHERE tantousyacode = ?";
+
+        List<Object> params = new ArrayList<>();
+        params.add(tantosya);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerWip.query(sql, new MapHandler(), params.toArray());
+    }
+    /**
+     * [工程ﾏｽﾀ]から、工程名を取得
+     *
+     * @param queryRunnerWip QueryRunnerオブジェクト
+     * @param kotei 工程ｺｰﾄﾞ(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadKoteimas(QueryRunner queryRunnerWip, String kotei) throws SQLException {
+
+        // オーナーデータの取得
+        String sql = "SELECT kotei "
+                + "FROM koteimas "
+                + "WHERE koteicode = ?";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kotei);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerWip.query(sql, new MapHandler(), params.toArray());
+    }
+    /**
+     * [不良ﾏｽﾀ]から、工程名を取得
+     *
+     * @param queryRunnerWip QueryRunnerオブジェクト
+     * @param furyo 不良ｺｰﾄﾞ(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadFuryomas(QueryRunner queryRunnerWip, String furyo) throws SQLException {
+
+        // オーナーデータの取得
+        String sql = "SELECT furyo "
+                + "FROM furyomas "
+                + "WHERE furyocode = ?";
+
+        List<Object> params = new ArrayList<>();
+        params.add(furyo);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerWip.query(sql, new MapHandler(), params.toArray());
+    }
     /**
      * @return the searchLotNo
      */
@@ -853,4 +1294,5 @@ public class GXHDO101D001 implements Serializable {
     public void setMessageListGXHDO101D001(List<String> messageListGXHDO101D001) {
         this.messageListGXHDO101D001 = messageListGXHDO101D001;
     }
+
 }

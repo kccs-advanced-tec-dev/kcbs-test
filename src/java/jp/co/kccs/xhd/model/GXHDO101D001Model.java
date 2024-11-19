@@ -27,6 +27,50 @@ import java.util.List;
 public class GXHDO101D001Model implements Serializable {
 
     /**
+     * @return the jikiqckakuninsya
+     */
+    public String getJikiqckakuninsya() {
+        return jikiqckakuninsya;
+    }
+
+    /**
+     * @param jikiqckakuninsya the jikiqckakuninsya to set
+     */
+    public void setJikiqckakuninsya(String jikiqckakuninsya) {
+        this.jikiqckakuninsya = jikiqckakuninsya;
+    }
+
+    /**
+     * 磁器QC確認者
+     * @return the jikiqckakuninsyamei
+     */
+    public String getJikiqckakuninsyamei() {
+        return jikiqckakuninsyamei;
+    }
+
+    /**
+     * 磁器QC確認者
+     * @param jikiqckakuninsyamei the jikiqckakuninsyamei to set
+     */
+    public void setJikiqckakuninsyamei(String jikiqckakuninsyamei) {
+        this.jikiqckakuninsyamei = jikiqckakuninsyamei;
+    }
+
+    /**
+     * @return the jikiqckakuninnichiji
+     */
+    public java.sql.Date getJikiqckakuninnichiji() {
+        return jikiqckakuninnichiji;
+    }
+
+    /**
+     * @param jikiqckakuninnichiji the jikiqckakuninnichiji to set
+     */
+    public void setJikiqckakuninnichiji(java.sql.Date jikiqckakuninnichiji) {
+        this.jikiqckakuninnichiji = jikiqckakuninnichiji;
+    }
+    
+    /**
      * @return the rank
      */
     public String getRank() {
@@ -55,6 +99,38 @@ public class GXHDO101D001Model implements Serializable {
     }
 
     /**
+     * 担当者
+     * @return the hakkosya
+     */
+    public String getHakkosya() {
+        return hakkosya;
+    }
+
+    /**
+     * 担当者
+     * @param hakkosya the hakkosya to set
+     */
+    public void setHakkosya(String hakkosya) {
+        this.hakkosya = hakkosya;
+    }
+
+    /**
+     * 担当者名
+     * @return the hakkosyamei
+     */
+    public String getHakkosyamei() {
+        return hakkosyamei;
+    }
+
+    /**
+     * 担当者名
+     * @param hakkosyamei the hakkosyamei to set
+     */
+    public void setHakkosyamei(String hakkosyamei) {
+        this.hakkosyamei = hakkosyamei;
+    }
+
+    /**
      * @return the tokuisaki
      */
     public String getTokuisaki() {
@@ -80,6 +156,22 @@ public class GXHDO101D001Model implements Serializable {
      */
     public void setHakkenkotei(String hakkenkotei) {
         this.hakkenkotei = hakkenkotei;
+    }
+
+    /**
+     * 発見工程名称
+     * @return the hakkenkoteimei
+     */
+    public String getHakkenkoteimei() {
+        return hakkenkoteimei;
+    }
+
+    /**
+     * 発見工程名称
+     * @param hakkenkoteimei the hakkenkoteimei to set
+     */
+    public void setHakkenkoteimei(String hakkenkoteimei) {
+        this.hakkenkoteimei = hakkenkoteimei;
     }
 
     /**
@@ -195,6 +287,22 @@ public class GXHDO101D001Model implements Serializable {
     }
 
     /**
+     * 不良ｺｰﾄﾞ名1
+     * @return the furyocodemei1
+     */
+    public String getFuryocodemei1() {
+        return furyocodemei1;
+    }
+
+    /**
+     * 不良ｺｰﾄﾞ名1
+     * @param furyocodemei1 the furyocodemei1 to set
+     */
+    public void setFuryocodemei1(String furyocodemei1) {
+        this.furyocodemei1 = furyocodemei1;
+    }
+
+    /**
      * @return the furyomeisai1
      */
     public String getFuryomeisai1() {
@@ -248,6 +356,22 @@ public class GXHDO101D001Model implements Serializable {
      */
     public void setFuryocode2(String furyocode2) {
         this.furyocode2 = furyocode2;
+    }
+
+    /**
+     * 不良ｺｰﾄﾞ名2
+     * @return the furyocodemei2
+     */
+    public String getFuryocodemei2() {
+        return furyocodemei2;
+    }
+
+    /**
+     * 不良ｺｰﾄﾞ名2
+     * @param furyocodemei2 the furyocodemei2 to set
+     */
+    public void setFuryocodemei2(String furyocodemei2) {
+        this.furyocodemei2 = furyocodemei2;
     }
 
     /**
@@ -349,6 +473,22 @@ public class GXHDO101D001Model implements Serializable {
     }
 
     /**
+     * 不良ｺｰﾄﾞ名3
+     * @return the furyocodemei3
+     */
+    public String getFuryocodemei3() {
+        return furyocodemei3;
+    }
+
+    /**
+     * 不良ｺｰﾄﾞ名3
+     * @param furyocodemei3 the furyocodemei3 to set
+     */
+    public void setFuryocodemei3(String furyocodemei3) {
+        this.furyocodemei3 = furyocodemei3;
+    }
+
+    /**
      * @return the furyocode4
      */
     public String getFuryocode4() {
@@ -360,6 +500,22 @@ public class GXHDO101D001Model implements Serializable {
      */
     public void setFuryocode4(String furyocode4) {
         this.furyocode4 = furyocode4;
+    }
+
+    /**
+     * 不良ｺｰﾄﾞ名4
+     * @return the furyocodemei4
+     */
+    public String getFuryocodemei4() {
+        return furyocodemei4;
+    }
+
+    /**
+     * 不良ｺｰﾄﾞ名4
+     * @param furyocodemei4 the furyocodemei4 to set
+     */
+    public void setFuryocodemei4(String furyocodemei4) {
+        this.furyocodemei4 = furyocodemei4;
     }
 
     /**
@@ -419,6 +575,22 @@ public class GXHDO101D001Model implements Serializable {
     }
 
     /**
+     * 不良ｺｰﾄﾞ名5
+     * @return the furyocodemei5
+     */
+    public String getFuryocodemei5() {
+        return furyocodemei5;
+    }
+
+    /**
+     * 不良ｺｰﾄﾞ名5
+     * @param furyocodemei5 the furyocodemei5 to set
+     */
+    public void setFuryocodemei5(String furyocodemei5) {
+        this.furyocodemei5 = furyocodemei5;
+    }
+
+    /**
      * @return the furyomeisai5
      */
     public String getFuryomeisai5() {
@@ -472,6 +644,22 @@ public class GXHDO101D001Model implements Serializable {
      */
     public void setFuryocode6(String furyocode6) {
         this.furyocode6 = furyocode6;
+    }
+
+    /**
+     * 不良ｺｰﾄﾞ名6
+     * @return the furyocodemei6
+     */
+    public String getFuryocodemei6() {
+        return furyocodemei6;
+    }
+
+    /**
+     * 不良ｺｰﾄﾞ名6
+     * @param furyocodemei6 the furyocodemei6 to set
+     */
+    public void setFuryocodemei6(String furyocodemei6) {
+        this.furyocodemei6 = furyocodemei6;
     }
 
     /**
@@ -531,6 +719,22 @@ public class GXHDO101D001Model implements Serializable {
     }
 
     /**
+     * 不良ｺｰﾄﾞ名7
+     * @return the furyocodemei7
+     */
+    public String getFuryocodemei7() {
+        return furyocodemei7;
+    }
+
+    /**
+     * 不良ｺｰﾄﾞ名7
+     * @param furyocodemei7 the furyocodemei7 to set
+     */
+    public void setFuryocodemei7(String furyocodemei7) {
+        this.furyocodemei7 = furyocodemei7;
+    }
+
+    /**
      * @return the furyomeisai7
      */
     public String getFuryomeisai7() {
@@ -587,6 +791,22 @@ public class GXHDO101D001Model implements Serializable {
     }
 
     /**
+     * 不良ｺｰﾄﾞ名8
+     * @return the furyocodemei8
+     */
+    public String getFuryocodemei8() {
+        return furyocodemei8;
+    }
+
+    /**
+     * 不良ｺｰﾄﾞ名8
+     * @param furyocodemei8 the furyocodemei8 to set
+     */
+    public void setFuryocodemei8(String furyocodemei8) {
+        this.furyocodemei8 = furyocodemei8;
+    }
+
+    /**
      * @return the furyomeisai8
      */
     public String getFuryomeisai8() {
@@ -640,6 +860,22 @@ public class GXHDO101D001Model implements Serializable {
      */
     public void setFuryocode9(String furyocode9) {
         this.furyocode9 = furyocode9;
+    }
+
+    /**
+     * 不良ｺｰﾄﾞ名9
+     * @return the furyocodemei9
+     */
+    public String getFuryocodemei9() {
+        return furyocodemei9;
+    }
+
+    /**
+     * 不良ｺｰﾄﾞ名9
+     * @param furyocodemei9 the furyocodemei9 to set
+     */
+    public void setFuryocodemei9(String furyocodemei9) {
+        this.furyocodemei9 = furyocodemei9;
     }
 
     /**
@@ -710,6 +946,22 @@ public class GXHDO101D001Model implements Serializable {
      */
     public void setFuryomeisai10(String furyomeisai10) {
         this.furyomeisai10 = furyomeisai10;
+    }
+
+    /**
+     * 不良ｺｰﾄﾞ名10
+     * @return the furyocodemei10
+     */
+    public String getFuryocodemei10() {
+        return furyocodemei10;
+    }
+
+    /**
+     * 不良ｺｰﾄﾞ名10
+     * @param furyocodemei10 the furyocodemei10 to set
+     */
+    public void setFuryocodemei10(String furyocodemei10) {
+        this.furyocodemei10 = furyocodemei10;
     }
 
     /**
@@ -895,6 +1147,86 @@ public class GXHDO101D001Model implements Serializable {
     }
 
     /**
+     * 確認者名
+     * @return the qakakuninsyamei
+     */
+    public String getQakakuninsyamei() {
+        return qakakuninsyamei;
+    }
+
+    /**
+     * 確認者名
+     * @param qakakuninsyamei the qakakuninsyamei to set
+     */
+    public void setQakakuninsyamei(String qakakuninsyamei) {
+        this.qakakuninsyamei = qakakuninsyamei;
+    }
+    
+    /**
+     * tmp_data
+     * @return the tmp_data
+     */
+    public String getTmp_data() {
+        return tmp_data;
+    }
+
+    /**
+     * tmp_data
+     * @param tmp_data the tmp_data to set
+     */
+    public void setTmp_data(String tmp_data) {
+        this.tmp_data = tmp_data;
+    }
+    
+    /**
+     * tmp_hanteidata
+     * @return the tmp_hanteidata
+     */
+    public String getTmp_hanteidata() {
+        return tmp_hanteidata;
+    }
+
+    /**
+     * tmp_hanteidata
+     * @param tmp_hanteidata the tmp_hanteidata to set
+     */
+    public void setTmp_hanteidata(String tmp_hanteidata) {
+        this.tmp_hanteidata = tmp_hanteidata;
+    }
+    
+    /**
+     * tmp_data_hyoji
+     * @return the tmp_data_hyoji
+     */
+    public String getTmp_data_hyoji() {
+        return tmp_data_hyoji;
+    }
+
+    /**
+     * tmp_data_hyoji
+     * @param tmp_data_hyoji the tmp_data_hyoji to set
+     */
+    public void setTmp_data_hyoji(String tmp_data_hyoji) {
+        this.tmp_data_hyoji = tmp_data_hyoji;
+    }
+    
+    /**
+     * tmp_hanteidata_hyoji
+     * @return the tmp_hanteidata_hyoji
+     */
+    public String getTmp_hanteidata_hyoji() {
+        return tmp_hanteidata_hyoji;
+    }
+
+    /**
+     * tmp_hanteidata_hyoji
+     * @param tmp_hanteidata_hyoji the tmp_hanteidata_hyoji to set
+     */
+    public void setTmp_hanteidata_hyoji(String tmp_hanteidata_hyoji) {
+        this.tmp_hanteidata_hyoji = tmp_hanteidata_hyoji;
+    }
+
+    /**
      * @return the qakakuninnichiji
      */
     public java.sql.Date getQakakuninnichiji() {
@@ -935,6 +1267,19 @@ public class GXHDO101D001Model implements Serializable {
     public void setKekkaList(List<KoteifuryoKekka> kekkaList) {
         this.kekkaList = kekkaList;
     }
+    /**
+     * @return the hanteiList
+     */
+    public List<KoteifuryoHantei> getHanteiList() {
+        return hanteiList;
+    }
+
+    /**
+     * @param hanteiList the hanteiList to set
+     */
+    public void setHanteiList(List<KoteifuryoHantei> hanteiList) {
+        this.hanteiList = hanteiList;
+    }
 
     /**
      * ﾗﾝｸ
@@ -947,6 +1292,16 @@ public class GXHDO101D001Model implements Serializable {
     private java.sql.Date hakkobi;
 
     /**
+     * 担当者
+     */
+    private String hakkosya;
+
+    /**
+     * 担当者名
+     */
+    private String hakkosyamei;
+
+    /**
      * 得意先
      */
     private String tokuisaki;
@@ -955,6 +1310,11 @@ public class GXHDO101D001Model implements Serializable {
      * 発見工程ID
      */
     private String hakkenkotei;
+
+    /**
+     * 発見工程名称
+     */
+    private String hakkenkoteimei;
 
     /**
      * 登録No
@@ -997,6 +1357,11 @@ public class GXHDO101D001Model implements Serializable {
     private String furyocode1;
 
     /**
+     * 不良ｺｰﾄﾞ名1
+     */
+    private String furyocodemei1;
+
+    /**
      * 不良名1
      */
     private String furyomeisai1;
@@ -1015,6 +1380,11 @@ public class GXHDO101D001Model implements Serializable {
      * 不良ｺｰﾄﾞ2
      */
     private String furyocode2;
+
+    /**
+     * 不良ｺｰﾄﾞ名2
+     */
+    private String furyocodemei2;
 
     /**
      * 不良名2
@@ -1037,6 +1407,11 @@ public class GXHDO101D001Model implements Serializable {
     private String furyocode3;
 
     /**
+     * 不良ｺｰﾄﾞ名3
+     */
+    private String furyocodemei3;
+
+    /**
      * 不良名3
      */
     private String furyomeisai3;
@@ -1055,6 +1430,11 @@ public class GXHDO101D001Model implements Serializable {
      * 不良ｺｰﾄﾞ4
      */
     private String furyocode4;
+
+    /**
+     * 不良ｺｰﾄﾞ名4
+     */
+    private String furyocodemei4;
 
     /**
      * 不良名4
@@ -1077,6 +1457,11 @@ public class GXHDO101D001Model implements Serializable {
     private String furyocode5;
 
     /**
+     * 不良ｺｰﾄﾞ名5
+     */
+    private String furyocodemei5;
+
+    /**
      * 不良名5
      */
     private String furyomeisai5;
@@ -1095,6 +1480,11 @@ public class GXHDO101D001Model implements Serializable {
      * 不良ｺｰﾄﾞ6
      */
     private String furyocode6;
+
+    /**
+     * 不良ｺｰﾄﾞ名6
+     */
+    private String furyocodemei6;
 
     /**
      * 不良名6
@@ -1117,6 +1507,11 @@ public class GXHDO101D001Model implements Serializable {
     private String furyocode7;
 
     /**
+     * 不良ｺｰﾄﾞ名7
+     */
+    private String furyocodemei7;
+
+    /**
      * 不良名7
      */
     private String furyomeisai7;
@@ -1135,6 +1530,11 @@ public class GXHDO101D001Model implements Serializable {
      * 不良ｺｰﾄﾞ8
      */
     private String furyocode8;
+
+    /**
+     * 不良ｺｰﾄﾞ名8
+     */
+    private String furyocodemei8;
 
     /**
      * 不良名8
@@ -1157,6 +1557,11 @@ public class GXHDO101D001Model implements Serializable {
     private String furyocode9;
 
     /**
+     * 不良ｺｰﾄﾞ名9
+     */
+    private String furyocodemei9;
+
+    /**
      * 不良名9
      */
     private String furyomeisai9;
@@ -1175,6 +1580,11 @@ public class GXHDO101D001Model implements Serializable {
      * 不良ｺｰﾄﾞ10
      */
     private String furyocode10;
+
+    /**
+     * 不良ｺｰﾄﾞ名10
+     */
+    private String furyocodemei10;
 
     /**
      * 不良名10
@@ -1241,11 +1651,31 @@ public class GXHDO101D001Model implements Serializable {
      */
     private String zaikono10;
 
+    
     /**
-     * 確認者
+     * 磁器QC確認者
+     */
+    private String jikiqckakuninsya;
+
+    /**
+     * 磁器QC確認者
+     */
+    private String jikiqckakuninsyamei;
+    
+    /**
+     * 磁器QC確認日時
+     */
+    private java.sql.Date jikiqckakuninnichiji;
+
+    /**
+     * 確認者名
      */
     private String qakakuninsya;
 
+    /**
+     * 確認者名
+     */
+    private String qakakuninsyamei;
     /**
      * 日付
      */
@@ -1255,6 +1685,26 @@ public class GXHDO101D001Model implements Serializable {
      * 不良内容表示判定
      */
     private Boolean[] furyoDisp = new Boolean[10];
+    
+     /**
+     * tmp_data
+     */
+    private String tmp_data;
+    
+     /**
+     * tmp_hanteidata
+     */
+    private String tmp_hanteidata;
+    
+     /**
+     * tmp_data_hyoji
+     */
+    private String tmp_data_hyoji;
+    
+     /**
+     * tmp_hanteidata_hyoji
+     */
+    private String tmp_hanteidata_hyoji;
 
     /**
      * 不良内容表示判定設定
@@ -1310,7 +1760,10 @@ public class GXHDO101D001Model implements Serializable {
      * 工程不良結果一覧
      */
     private List<KoteifuryoKekka> kekkaList;
-
+    /**
+     * 工程不良判定一覧
+     */
+    private List<KoteifuryoHantei> hanteiList;
     /**
      * 工程不良指示一覧1行分
      */
@@ -1345,6 +1798,22 @@ public class GXHDO101D001Model implements Serializable {
         }
 
         /**
+         * 工程不良指示.指示者名
+         * @return the sijisyacodemei
+         */
+        public String getSijisyacodemei() {
+            return sijisyacodemei;
+        }
+
+        /**
+         * 工程不良指示.指示者名
+         * @param sijisyacodemei the sijisyacodemei to set
+         */
+        public void setSijisyacodemei(String sijisyacodemei) {
+            this.sijisyacodemei = sijisyacodemei;
+        }
+
+        /**
          * @return the sijibi
          */
         public java.sql.Date getSijibi() {
@@ -1373,6 +1842,22 @@ public class GXHDO101D001Model implements Serializable {
         }
 
         /**
+         * 工程不良指示.処置工程名
+         * @return the syochikoteimei
+         */
+        public String getSyochikoteimei() {
+            return syochikoteimei;
+        }
+
+        /**
+         * 工程不良指示.処置工程名
+         * @param syochikoteimei the syochikoteimei to set
+         */
+        public void setSyochikoteimei(String syochikoteimei) {
+            this.syochikoteimei = syochikoteimei;
+        }
+
+        /**
          * @return the sijinaiyo
          */
         public String getSijinaiyo() {
@@ -1397,6 +1882,11 @@ public class GXHDO101D001Model implements Serializable {
         private String sijisyacode;
 
         /**
+         * 工程不良指示.指示者名
+         */
+        private String sijisyacodemei;
+
+        /**
          * 工程不良指示.指示日
          */
         private java.sql.Date sijibi;
@@ -1405,6 +1895,10 @@ public class GXHDO101D001Model implements Serializable {
          * 工程不良指示.処置工程ｺｰﾄﾞ
          */
         private String syochikotei;
+        /**
+         * 工程不良指示.処置工程名
+         */
+        private String syochikoteimei;
 
         /**
          * 工程不良指示.指示内容
@@ -1444,6 +1938,22 @@ public class GXHDO101D001Model implements Serializable {
          */
         public void setSyotisyacode(String syotisyacode) {
             this.syotisyacode = syotisyacode;
+        }
+
+        /**
+         * 工程不良結果.処置者名
+         * @return the syotisyacodemei
+         */
+        public String getSyotisyacodemei() {
+            return syotisyacodemei;
+        }
+
+        /**
+         * 工程不良結果.処置者名
+         * @param syotisyacodemei the syotisyacodemei to set
+         */
+        public void setSyotisyacodemei(String syotisyacodemei) {
+            this.syotisyacodemei = syotisyacodemei;
         }
 
         /**
@@ -1499,6 +2009,11 @@ public class GXHDO101D001Model implements Serializable {
         private String syotisyacode;
 
         /**
+         * 工程不良結果.処置者名
+         */
+        private String syotisyacodemei;
+
+        /**
          * 工程不良結果.処置日
          */
         private java.sql.Date syotibi;
@@ -1514,5 +2029,128 @@ public class GXHDO101D001Model implements Serializable {
         private String hantei;
 
     }
+    /**
+     * 工程不良判定一覧1行分
+     */
+    public class KoteifuryoHantei {
 
+        /**
+         * @return the hantei
+         */
+        public String getHantei() {
+            return hantei;
+        }
+
+        /**
+         * @param hantei the hantei to set
+         */
+        public void setHantei(String hantei) {
+            this.hantei = hantei;
+        }
+
+        /**
+         * @return the hanteisyacode
+         */
+        public String getHanteisyacode() {
+            return hanteisyacode;
+        }
+
+        /**
+         * @param hanteisyacode the hanteisyacode to set
+         */
+        public void setHanteisyacode(String hanteisyacode) {
+            this.hanteisyacode = hanteisyacode;
+        }
+
+        /**
+         * 工程不良結果.判定者名
+         * @return the hanteisyacodemei
+         */
+        public String getHanteisyacodemei() {
+            return hanteisyacodemei;
+        }
+
+        /**
+         * 工程不良結果.判定者名
+         * @param hanteisyacodemei the hanteisyacodemei to set
+         */
+        public void setHanteisyacodemei(String hanteisyacodemei) {
+            this.hanteisyacodemei = hanteisyacodemei;
+        }
+
+        /**
+         * @return the hanteibi
+         */
+        public java.sql.Date getHanteibi() {
+            return hanteibi;
+        }
+
+        /**
+         * @param hanteibi the hanteibi to set
+         */
+        public void setHanteibi(java.sql.Date hanteibi) {
+            this.hanteibi = hanteibi;
+        }
+
+        /**
+         * @return the comment
+         */
+        public String getComment() {
+            return comment;
+        }
+
+        /**
+         * @param comment the comment to set
+         */
+        public void setComment(String comment) {
+            this.comment = comment;
+        }
+
+        /**
+         * @return the furyono
+         */
+        public String getFuryono() {
+            return furyono;
+        }
+
+        /**
+         * @param furyono the furyono to set
+         */
+        public void setFuryono(String furyono) {
+            this.furyono = furyono;
+        }
+
+        
+        /**
+         * 工程不良結果.不良No
+         */
+        private String furyono;
+
+        /**
+         * 工程不良結果.判定者ｺｰﾄﾞ
+         */
+        private String hanteisyacode;
+
+        /**
+         * 工程不良結果.判定者名
+         */
+        private String hanteisyacodemei;
+
+        /**
+         * 工程不良結果.判定日
+         */
+        private java.sql.Date hanteibi;
+
+        /**
+         * 工程不良結果.ｺﾒﾝﾄ
+         */
+        private String comment;
+        
+        /**
+         * 工程不良結果.判定
+         */
+        private String hantei;
+
+
+    }
 }

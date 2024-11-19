@@ -820,6 +820,8 @@ public class GXHDO201B049 implements Serializable {
                     + ", T13.jcrackkosuu AS tpng2jcrackkosuu3 "
                     + ", T13.mekkinasikosuu AS tpng2mekkinasikosuu3 "
                     + ", T13.mekkiukikosuu AS tpng2mekkiukikosuu3 "
+                    + ", T1.reelgaikan AS reelgaikan "
+                    + ", T1.reelbikou AS reelbikou "
                     + "  FROM sr_taping_check T1 "
                     + "  LEFT JOIN sr_tpng1 T8 "
                     + "  ON T8.kojyo = T1.kojyo "
@@ -1012,6 +1014,8 @@ public class GXHDO201B049 implements Serializable {
             mapping.put("tpng2biko1_3", "tpng2biko1_3");//TPNG2:備考1(3回目)
             mapping.put("tpng2biko2_3", "tpng2biko2_3");//TPNG2:備考2(3回目)
             mapping.put("tpng2hantei3", "tpng2hantei3");//TPNG2:判定(3回目)
+            mapping.put("reelgaikan", "reelgaikan");//ﾘｰﾙ外観
+            mapping.put("reelbikou", "reelbikou");//ﾘｰﾙ外観備考
                                
             BeanProcessor beanProcessor = new BeanProcessor(mapping);
             RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);

@@ -1056,12 +1056,12 @@ public class GXHDO101B014 implements IFormLogic {
                     }
                 }
 
-                FXHDD01 itemMaxOndo = this.getItemRow(processData.getItemList(), itemIdInfo.getMaxOndo());
-                setKikakuChiToValue(itemMaxOndo);
-                FXHDD01 itemKeepTime = this.getItemRow(processData.getItemList(), itemIdInfo.getKeepTime());
-                setKikakuChiToValue(itemKeepTime);
-                FXHDD01 itemTotalTime = this.getItemRow(processData.getItemList(), itemIdInfo.getTotalTime());
-                setKikakuChiToValue(itemTotalTime);
+//                FXHDD01 itemMaxOndo = this.getItemRow(processData.getItemList(), itemIdInfo.getMaxOndo());
+//                setKikakuChiToValue(itemMaxOndo);
+//                FXHDD01 itemKeepTime = this.getItemRow(processData.getItemList(), itemIdInfo.getKeepTime());
+//                setKikakuChiToValue(itemKeepTime);
+//                FXHDD01 itemTotalTime = this.getItemRow(processData.getItemList(), itemIdInfo.getTotalTime());
+//                setKikakuChiToValue(itemTotalTime);
                 return true;
             }
 

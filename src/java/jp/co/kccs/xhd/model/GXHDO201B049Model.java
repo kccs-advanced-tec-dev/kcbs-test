@@ -4,6 +4,7 @@
 package jp.co.kccs.xhd.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.sql.Timestamp;
 
 /**
@@ -64,7 +65,7 @@ public class GXHDO201B049Model implements Serializable{
     /**
      * 良品TPﾘｰﾙ巻数①
      */
-    private Integer ryouhintopreelmaki1 = null;
+    private BigDecimal ryouhintopreelmaki1 = null;
 
     /**
      * 良品TPﾘｰﾙ本数①
@@ -74,7 +75,7 @@ public class GXHDO201B049Model implements Serializable{
     /**
      * 良品TPﾘｰﾙ巻数②
      */
-    private Integer ryouhintopreelmaki2 = null;
+    private BigDecimal ryouhintopreelmaki2 = null;
 
     /**
      * 良品TPﾘｰﾙ本数②
@@ -671,7 +672,15 @@ public class GXHDO201B049Model implements Serializable{
      */
     private String tpng2hantei3 = "";
 
+    /**
+     * ﾘｰﾙ外観
+     */
+    private String reelgaikan = "";
     
+    /**
+     * ﾘｰﾙ外観備考
+     */
+    private String reelbikou = "";
 
 
     /**
@@ -774,7 +783,7 @@ public class GXHDO201B049Model implements Serializable{
      * 良品TPﾘｰﾙ巻数①
      * @return the ryouhintopreelmaki1
      */
-    public Integer getRyouhintopreelmaki1() {
+    public BigDecimal getRyouhintopreelmaki1() {
         return ryouhintopreelmaki1;
     }
 
@@ -782,7 +791,7 @@ public class GXHDO201B049Model implements Serializable{
      * 良品TPﾘｰﾙ巻数①
      * @param ryouhintopreelmaki1 the ryouhintopreelmaki1 to set
      */
-    public void setRyouhintopreelmaki1(Integer ryouhintopreelmaki1) {
+    public void setRyouhintopreelmaki1(BigDecimal ryouhintopreelmaki1) {
         this.ryouhintopreelmaki1 = ryouhintopreelmaki1;
     }
 
@@ -806,7 +815,7 @@ public class GXHDO201B049Model implements Serializable{
      * 良品TPﾘｰﾙ巻数②
      * @return the ryouhintopreelmaki2
      */
-    public Integer getRyouhintopreelmaki2() {
+    public BigDecimal getRyouhintopreelmaki2() {
         return ryouhintopreelmaki2;
     }
 
@@ -814,7 +823,7 @@ public class GXHDO201B049Model implements Serializable{
      * 良品TPﾘｰﾙ巻数②
      * @param ryouhintopreelmaki2 the ryouhintopreelmaki2 to set
      */
-    public void setRyouhintopreelmaki2(Integer ryouhintopreelmaki2) {
+    public void setRyouhintopreelmaki2(BigDecimal ryouhintopreelmaki2) {
         this.ryouhintopreelmaki2 = ryouhintopreelmaki2;
     }
 
@@ -2720,6 +2729,38 @@ public class GXHDO201B049Model implements Serializable{
      */
     public void setTpng2mekkiukikosuu3(Integer tpng2mekkiukikosuu3) {
         this.tpng2mekkiukikosuu3 = tpng2mekkiukikosuu3;
+    }
+
+    /**
+     * ﾘｰﾙ外観
+     * @return the reelgaikan
+     */
+    public String getReelgaikan() {
+        return reelgaikan;
+    }
+
+    /**
+     * ﾘｰﾙ外観
+     * @param reelgaikan the reelgaikan to set
+     */
+    public void setReelgaikan(String reelgaikan) {
+        this.reelgaikan = reelgaikan;
+    }
+
+    /**
+     * ﾘｰﾙ外観備考
+     * @return the reelbikou
+     */
+    public String getReelbikou() {
+        return reelbikou;
+    }
+
+    /**
+     * ﾘｰﾙ外観備考
+     * @param reelbikou the reelbikou to set
+     */
+    public void setReelbikou(String reelbikou) {
+        this.reelbikou = reelbikou;
     }
    
 

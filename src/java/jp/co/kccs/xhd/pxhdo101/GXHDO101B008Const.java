@@ -255,11 +255,6 @@ public class GXHDO101B008Const {
     public static final String BTN_DELETE_TOP = "sr_press_delete_Top";
 
     /**
-     * 設備ﾃﾞｰﾀ連携(画面上)
-     */
-    public static final String BTN_DATACOOPERATION_TOP = "sr_press_dataCooperation_Top";
-
-    /**
      * 枝番ｺﾋﾟｰ(画面下ボタン)
      */
     public static final String BTN_COPY_EDABAN_BOTTOM = "sr_press_copy_edaban_Bottom";
@@ -295,10 +290,13 @@ public class GXHDO101B008Const {
     public static final String BTN_DELETE_BOTTOM = "sr_press_delete_Bottom";
 
     /**
+     * 設備ﾃﾞｰﾀ連携(画面上)
+     */
+    public static final String BTN_DATACOOPERATION_TOP = "sr_press_dataCooperation_Top";
+    /**
      * 設備ﾃﾞｰﾀ連携(画面下)
      */
     public static final String BTN_DATACOOPERATION_BOTTOM = "sr_press_dataCooperation_Bottom";
-
     /**
      * ユーザー認証パラメータ(修正)
      */

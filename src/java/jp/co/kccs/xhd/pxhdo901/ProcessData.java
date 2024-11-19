@@ -123,6 +123,10 @@ public class ProcessData {
      * DataSource(MLAServer)
      */
     private DataSource dataSourceMLAServer;
+    /**
+     * DataSource(GaikankadorituServer)
+     */
+    private DataSource dataSourceGaikankadoritu;
     
     /**
      * ユーザー認証有無
@@ -536,6 +540,24 @@ public class ProcessData {
      */
     public void setDataSourceMLAServer(DataSource dataSourceMLAServer) {
         this.dataSourceMLAServer = dataSourceMLAServer;
+    }
+    
+    /**
+     * DataSource(Gaikankadoritu)
+     *
+     * @return the dataSourceGaikankadoritu
+     */
+    public DataSource getDataSourceGaikankadoritu() {
+        return dataSourceGaikankadoritu;
+    }
+
+    /**
+     * DataSource(Gaikankadoritu)
+     *
+     * @param dataSourceGaikankadoritu the dataSourceGaikankadoritu to set
+     */
+    public void setDataSourceGaikankadoritu(DataSource dataSourceGaikankadoritu) {
+        this.dataSourceGaikankadoritu = dataSourceGaikankadoritu;
     }
     
     /**

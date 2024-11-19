@@ -99,6 +99,11 @@ public class GXHDO101B023Const {
     public static final String GENRYO_KIGOU = "sr_dpprint_genryo_kigou";
 
     /**
+     * ﾃｰﾌﾟ厚み
+     */
+    public static final String TAPE_ATSU = "sr_dpprint_tape_atsu";
+
+    /**
      * 電極ﾍﾟｰｽﾄ
      */
     public static final String DENKYOKU_PASTE = "sr_dpprint_denkyoku_paste";
@@ -162,6 +167,26 @@ public class GXHDO101B023Const {
      * 乾燥温度表示値4
      */
     public static final String KANSOU_ONDO_HYOUJICHI4 = "sr_dpprint_kansou_ondo_hyoujichi4";
+
+    /**
+     * 乾燥温度下側表示値1
+     */
+    public static final String KANSOU_ONDO_SHITA_HYOUJICHI1 = "sr_dpprint_kansou_ondo_shita_hyoujichi1";
+
+    /**
+     * 乾燥温度下側表示値2
+     */
+    public static final String KANSOU_ONDO_SHITA_HYOUJICHI2 = "sr_dpprint_kansou_ondo_shita_hyoujichi2";
+
+    /**
+     * 乾燥温度下側表示値3
+     */
+    public static final String KANSOU_ONDO_SHITA_HYOUJICHI3 = "sr_dpprint_kansou_ondo_shita_hyoujichi3";
+
+    /**
+     * 乾燥温度下側表示値4
+     */
+    public static final String KANSOU_ONDO_SHITA_HYOUJICHI4 = "sr_dpprint_kansou_ondo_shita_hyoujichi4";
 
     /**
      * 乾燥温度表示値5
@@ -412,6 +437,11 @@ public class GXHDO101B023Const {
      * 成形長さ
      */
     public static final String SEIKEINAGASA = "sr_dpprint_seikeinagasa";
+
+    /**
+     * 印刷長さ
+     */
+    public static final String PRINTLENGTH = "sr_dpprint_printlength";
 
     /**
      * 備考3

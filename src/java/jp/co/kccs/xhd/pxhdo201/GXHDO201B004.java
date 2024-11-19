@@ -676,6 +676,13 @@ public class GXHDO201B004 implements Serializable {
                     + ", T1.RyouhinSetsuu"
                     + ", T1.StartTantosyacode"
                     + ", T1.EndTantousyacode"
+                    + ", CONCAT(T1.skojyo , T1.slotno , T1.sedaban) slotno"
+                    + ", (CASE WHEN T1.tapetsukaikiri = 1 THEN 'ﾁｪｯｸ' ELSE '未ﾁｪｯｸ' END) AS tapetsukaikiri "
+                    + ", (CASE WHEN T1.jilothe = 1 THEN 'ﾁｪｯｸ' ELSE '未ﾁｪｯｸ' END) AS jilothe "
+                    + ", (CASE WHEN T1.ksheettest = 1 THEN 'ﾁｪｯｸ' ELSE '未ﾁｪｯｸ' END) AS ksheettest "
+                    + ", (CASE WHEN T1.ksheettestcheck = 1 THEN 'ﾁｪｯｸ' ELSE '未ﾁｪｯｸ' END) AS ksheettestcheck "
+                    + ", T1.klotno"
+                    + ", (CASE WHEN T1.klotnocheck = 1 THEN 'ﾁｪｯｸ' ELSE '未ﾁｪｯｸ' END) AS klotnocheck "
                     + ", (CASE WHEN T1.TanshiTapeSyurui = 0 THEN 'NG' WHEN T1.TanshiTapeSyurui = 1 THEN 'OK' ELSE NULL END) AS TanshiTapeSyurui"
                     + ", T1.sekisousyuryougokaradaasturyoku"
                     + ", T1.karautibyou"
@@ -858,6 +865,13 @@ public class GXHDO201B004 implements Serializable {
             mapping.put("karautikai", "karautikai");
             mapping.put("zureti", "zureti");
             mapping.put("GaikanKakunin5", "gaikanKakunin5");
+            mapping.put("senkoulotno", "senkoulotno");                    
+            mapping.put("tapetsukaikiri", "tapetsukaikiri");              
+            mapping.put("jilothe", "jilothe");
+            mapping.put("ksheettest", "ksheettest");
+            mapping.put("ksheettestcheck", "ksheettestcheck"); 
+            mapping.put("klotno", "klotno");
+            mapping.put("klotnocheck", "klotnocheck");
             mapping.put("setsuu1", "setsuu1");
             mapping.put("setsuu2", "setsuu2");
             mapping.put("setsuu3", "setsuu3");

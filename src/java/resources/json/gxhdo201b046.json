@@ -51,6 +51,7 @@
     {"no":"50","id":"kensasyuuryouninteisya","columnname":"検査終了認定者","type":"String","format":""},
     {"no":"51","id":"qagaikannukitorikensa","columnname":"QA外観抜き取り検査","type":"String","format":""},
     {"no":"52","id":"bikou1","columnname":"備考1","type":"String","format":""},
-    {"no":"53","id":"bikou2","columnname":"備考2","type":"String","format":""}
+    {"no":"53","id":"bikou2","columnname":"備考2","type":"String","format":""},
+    {"no":"54","id":"jokyo","columnname":"状況","type":"String","format":""}
 
 ]

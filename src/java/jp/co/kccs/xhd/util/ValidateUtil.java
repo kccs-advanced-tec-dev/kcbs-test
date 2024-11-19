@@ -1438,25 +1438,25 @@ public class ValidateUtil {
         strKikakuchi = strKikakuchi.replace("】", "");
 
         // 比較値取得
-        BigDecimal equalValue = numberExtraction(strKikakuchi);
-        if (equalValue == null) {
-            // 規格値不正
-            return KIKAKU_CHECK_CD_SETTING_ERR;
-        }
+//        BigDecimal equalValue = numberExtraction(strKikakuchi);
+//        if (equalValue == null) {
+//            // 規格値不正
+//            return KIKAKU_CHECK_CD_SETTING_ERR;
+//        }
         if (checkValFlg != null && checkValFlg.length > 0 && "0".equals(checkValFlg[0])) {
             return KIKAKU_CHECK_CD_NORMAL;
         }
         // 入力値取得
-        BigDecimal inputValue;
+        String inputValue;
         try {
-            inputValue = new BigDecimal(fxhdd01.getValue());
+            inputValue = fxhdd01.getValue();
         } catch (NumberFormatException e) {
             // 規格チェックエラー
             return KIKAKU_CHECK_CD_ERR;
         }
 
         // 比較値外か判定
-        if (inputValue.compareTo(equalValue) != 0) {
+        if (inputValue.compareTo(strKikakuchi) != 0) {
             // 規格チェックエラー
             return KIKAKU_CHECK_CD_ERR;
         }

@@ -24,6 +24,7 @@ import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.db.model.Jisseki;
+import jp.co.kccs.xhd.db.model.SrCutcheck;
 import jp.co.kccs.xhd.db.model.SrSayadume;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.GXHDO901A;
@@ -899,7 +900,7 @@ public class GXHDO101B013 implements IFormLogic {
         }
         String lotkubuncode = StringUtil.nullToBlank(getMapData(shikakariData, "lotkubuncode")); //ﾛｯﾄ区分ｺｰﾄﾞ
         String ownercode = StringUtil.nullToBlank(getMapData(shikakariData, "ownercode"));// ｵｰﾅｰｺｰﾄﾞ
-        String tanijuryo = StringUtil.nullToBlank(getMapData(shikakariData, "tanijuryo")); // 単位重量
+        //String tanijuryo = StringUtil.nullToBlank(getMapData(shikakariData, "tanijuryo")); // 単位重量
 
         // ﾛｯﾄ区分ﾏｽﾀ情報の取得
         Map lotKbnMasData = loadLotKbnMas(queryRunnerWip, lotkubuncode);
@@ -927,11 +928,22 @@ public class GXHDO101B013 implements IFormLogic {
             // 実績情報の取得
             List<Jisseki> jissekiData = loadJissekiData(queryRunnerWip, lotNo, fxhbm03DataArr);
             if(jissekiData != null && jissekiData.size() > 0){
-                int dbShorisu = jissekiData.get(0).getSyorisuu(); //処理数               
-                if(dbShorisu > 0){
-                    syorisuu = String.valueOf(dbShorisu);
+                int dbJisseki = jissekiData.get(0).getJissekino(); //処理数
+                // 生産情報の取得
+                Map seisanData = loadSeisanData(queryRunnerWip, dbJisseki);
+                if (seisanData == null || seisanData.isEmpty()) {
+                    syorisuu = "0";
+                } else {
+                    syorisuu = String.valueOf(seisanData.get("ryohinsuu"));
                 }
             }
+        }
+        
+        // 生品質検査の単位重量を取得する
+        Map srcutcheckData = loadSrcutcheckData(queryRunnerQcdb, lotNo);
+        String tanijuryo = "";
+        if (srcutcheckData != null && srcutcheckData.size() > 0) {
+            tanijuryo = StringUtil.nullToBlank(srcutcheckData.get("Tanijyuryo"));
         }
 
         // 入力項目の情報を画面にセットする。
@@ -1061,9 +1073,9 @@ public class GXHDO101B013 implements IFormLogic {
                 }
                 
                 // 処理数
- 				this.setItemData(processData, GXHDO101B013Const.SHORISU, syorisuu);
+                this.setItemData(processData, GXHDO101B013Const.SHORISU, syorisuu);
                 // 単位重量
- 				this.setItemData(processData, GXHDO101B013Const.UKEIRETANNIJYURYO, tanijuryo);
+                this.setItemData(processData, GXHDO101B013Const.UKEIRETANNIJYURYO, tanijuryo);
                 return true;
             }
 
@@ -2415,8 +2427,7 @@ public class GXHDO101B013 implements IFormLogic {
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
         }
-        return null;
-                
+        return null;                
     }
     
     /**
@@ -2437,7 +2448,7 @@ public class GXHDO101B013 implements IFormLogic {
         List<String> dataList= new ArrayList<>(Arrays.asList(data));
         
         // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
-        String sql = "SELECT syorisuu "
+        String sql = "SELECT syorisuu, jissekino "
                 + "FROM jisseki "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND ";
         
@@ -2447,6 +2458,7 @@ public class GXHDO101B013 implements IFormLogic {
         
         Map mapping = new HashMap<>();
         mapping.put("syorisuu", "syorisuu");
+        mapping.put("jissekino", "jissekino");
         
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
@@ -2512,5 +2524,55 @@ public class GXHDO101B013 implements IFormLogic {
         } catch (NullPointerException | NumberFormatException ex) {
             //処理なし
         }
+    }
+    
+    /**
+     * [生産]から、ﾃﾞｰﾀを取得
+     * @param queryRunnerWip オブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param date ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ(検索キー)
+     * @return 取得データ
+     * @throws SQLException 
+     */
+    private Map loadSeisanData(QueryRunner queryRunnerWip, int jissekino) throws SQLException {
+                 
+        // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+        String sql = "SELECT ryohinsuu "
+                + "FROM seisan "
+                + "WHERE jissekino = ?";
+                
+        List<Object> params = new ArrayList<>();
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerWip.query(sql, new MapHandler(), params.toArray());
+    }
+
+    /**
+     * [生品質検査]から、ﾃﾞｰﾀを取得
+     * @param queryRunnerQcdb オブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param date ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ(検索キー)
+     * @return 取得データ
+     * @throws SQLException 
+     */
+    private Map loadSrcutcheckData(QueryRunner queryRunnerQcdb, String lotNo) throws SQLException {
+
+        String lotNo1 = lotNo.substring(0, 3);
+        String lotNo2 = lotNo.substring(3, 11);
+        String lotNo3 = lotNo.substring(11, 14);
+
+        // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+        String sql = "SELECT Tanijyuryo "
+                + "FROM sr_cutcheck "
+                + "WHERE kojyo = ? and lotno = ? and edaban = ?";
+                
+        List<Object> params = new ArrayList<>();
+        params.add(lotNo1);
+        params.add(lotNo2);
+        params.add(lotNo3);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
     }
 }

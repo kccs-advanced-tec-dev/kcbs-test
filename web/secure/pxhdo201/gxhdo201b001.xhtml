@@ -153,6 +153,16 @@
                             </p:inputText>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblHando" value="版胴名" style="width:100px;"/>
+                        </td>
+                        <td colspan="3">
+                            <p:inputText id="pHnado" value="#{gXHDO201B001.hando}" maxlength="30" style="margin-left:20px; height:26px; width:396px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B001.checkByte('hando', 30)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
                 </table>
             </p:panel>
             <p:panel id="buttonpanel" style="border:none;margin-top:-10px;">
@@ -273,23 +283,43 @@
                     <p:column id="gouki" headerText="印刷号機" >
                         <p:outputLabel value="#{item.gouki}"/>
                     </p:column>
-                    <p:column id="kansouondo" headerText="乾燥温度表示値1(℃)" styleClass="number">
+                    <p:column id="kansouondo" headerText="乾燥温度上側表示値1(℃)" styleClass="number">
                         <p:outputLabel value="#{item.kansouondo}">
                             <f:convertNumber pattern="#,##0.0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="kansouondo2" headerText="乾燥温度表示値2(℃)" styleClass="number">
+                    <p:column id="kansouondo2" headerText="乾燥温度上側表示値2(℃)" styleClass="number">
                         <p:outputLabel value="#{item.kansouondo2}">
                             <f:convertNumber pattern="#,##0.0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="kansouondo3" headerText="乾燥温度表示値3(℃)" styleClass="number">
+                    <p:column id="kansouondo3" headerText="乾燥温度上側表示値3(℃)" styleClass="number">
                         <p:outputLabel value="#{item.kansouondo3}">
                             <f:convertNumber pattern="#,##0.0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="kansouondo4" headerText="乾燥温度表示値4(℃)" styleClass="number">
+                    <p:column id="kansouondo4" headerText="乾燥温度上側表示値4(℃)" styleClass="number">
                         <p:outputLabel value="#{item.kansouondo4}">
+                            <f:convertNumber pattern="#,##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kansouondoshita" headerText="乾燥温度下側表示値1(℃)" styleClass="number">
+                        <p:outputLabel value="#{item.kansouondoshita}">
+                            <f:convertNumber pattern="#,##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kansouondoshita2" headerText="乾燥温度下側表示値2(℃)" styleClass="number">
+                        <p:outputLabel value="#{item.kansouondoshita2}">
+                            <f:convertNumber pattern="#,##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kansouondoshita3" headerText="乾燥温度下側表示値3(℃)" styleClass="number">
+                        <p:outputLabel value="#{item.kansouondoshita3}">
+                            <f:convertNumber pattern="#,##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kansouondoshita4" headerText="乾燥温度下側表示値4(℃)" styleClass="number">
+                        <p:outputLabel value="#{item.kansouondoshita4}">
                             <f:convertNumber pattern="#,##0.0"/>
                         </p:outputLabel>
                     </p:column>

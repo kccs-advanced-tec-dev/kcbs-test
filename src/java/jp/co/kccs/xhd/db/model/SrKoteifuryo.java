@@ -25,6 +25,7 @@ import java.sql.Timestamp;
  */
 public class SrKoteifuryo {
 
+
     /**
      * 登録No
      */
@@ -289,7 +290,18 @@ public class SrKoteifuryo {
      */
     private String goukicode;
     private String tmp_data;
+    private String tmp_hanteidata;
     private String tokuisaki;
+    
+    /**
+     * 磁器QC確認者
+     */
+    private String jikiqckakuninsya;
+    
+    /**
+     * 磁器QC確認日時
+     */
+    private java.sql.Date jikiqckakuninnichiji;    
 
     /**
      * @return the torokuno
@@ -1326,6 +1338,20 @@ public class SrKoteifuryo {
     public void setTmp_data(String tmp_data) {
         this.tmp_data = tmp_data;
     }
+    
+    /**
+     * @return the tmp_hanteidata
+     */
+    public String getTmp_hanteidata() {
+        return tmp_hanteidata;
+    }
+
+    /**
+     * @param tmp_hanteidata the tmp_hanteidata to set
+     */
+    public void setTmp_hanteidata(String tmp_hanteidata) {
+        this.tmp_hanteidata = tmp_hanteidata;
+    }
 
     /**
      * @return the tokuisaki
@@ -1340,4 +1366,33 @@ public class SrKoteifuryo {
     public void setTokuisaki(String tokuisaki) {
         this.tokuisaki = tokuisaki;
     }
+    
+    /**
+     * @return the jikiqckakuninsya
+     */
+    public String getJikiqckakuninsya() {
+        return jikiqckakuninsya;
+    }
+
+    /**
+     * @param jikiqckakuninsya the jikiqckakuninsya to set
+     */
+    public void setJikiqckakuninsya(String jikiqckakuninsya) {
+        this.jikiqckakuninsya = jikiqckakuninsya;
+    }
+
+    /**
+     * @return the jikiqckakuninnichiji
+     */
+    public java.sql.Date getJikiqckakuninnichiji() {
+        return jikiqckakuninnichiji;
+    }
+
+    /**
+     * @param jikiqckakuninnichiji the jikiqckakuninnichiji to set
+     */
+    public void setJikiqckakuninnichiji(java.sql.Date jikiqckakuninnichiji) {
+        this.jikiqckakuninnichiji = jikiqckakuninnichiji;
+    }
+    
 }

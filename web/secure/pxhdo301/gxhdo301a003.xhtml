@@ -155,8 +155,14 @@
                     <p:column style="width: 110px;">
                         <h:outputText value="積層号機" style="text-align: left;" />
                     </p:column>
-                    <p:column colspan="3">
+                    <p:column>
                         <p:outputLabel id="goki" value="#{gXHDO301A.data.goki}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                    </p:column>
+                    <p:column style="width: 110px;">
+                        <h:outputText value="固着ｼｰﾄ" style="text-align: left;" />
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel id="kochakusite" value="#{gXHDO301A.data.kochakusite}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
                     </p:column>
                 </p:row>
                 <p:row>
@@ -185,6 +191,42 @@
                     </p:column>
                     <p:column colspan="3">
                         <p:outputLabel id="kosuu" value="#{gXHDO301A.data.kosuu}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column style="width: 110px;">
+                        <h:outputText value="客先" style="text-align: left;" />
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel id="tokuisaki" value="#{gXHDO301A.data.tokuisaki}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                    </p:column>
+                    <p:column style="width: 110px;">
+                        <h:outputText value="指定公差" style="text-align: left;" />
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel id="siteikosa" value="#{gXHDO301A.data.kousa}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column style="width: 110px;">
+                        <h:outputText value="電極積層上ﾊﾟﾝﾁ温度" style="text-align: left;" />
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel id="uePanchi" value="#{gXHDO301A.data.uePanchi}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                    </p:column>
+                    <p:column style="width: 110px;">
+                        <h:outputText value="電極積層下ﾊﾟﾝﾁ温度" style="text-align: left;" />
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel id="sitaPanchi" value="#{gXHDO301A.data.sitaPanchi}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column style="width: 110px;">
+                        <h:outputText value="下端子ﾌﾞｸ抜き有無" style="text-align: left;" />
+                    </p:column>
+                    <p:column>
+                        <p:outputLabel id="shitatanshiBukunuki" value="#{gXHDO301A.data.shitatanshiBukunuki}" style="color:Indigo;font-size: 17px;"></p:outputLabel>
                     </p:column>
                 </p:row>
             </p:panelGrid>

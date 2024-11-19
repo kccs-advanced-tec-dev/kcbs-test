@@ -165,7 +165,17 @@
                             </p:inputText>
                         </td>
                     </tr>
-                </table>
+                     <tr>
+                        <td>
+                            <h:outputText id="lblGoki" value="号機" style="width:100px;"/>
+                        </td>
+                        <td colspan="3">
+                            <p:inputText id="pGoki" value="#{gXHDO201B046.goki}" maxlength="4" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B046.checkByte('goki', 4)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+               </table>
             </p:panel>
             <p:panel id="buttonpanel" style="border:none;margin-top:-10px;#{gXHDO201B046.displayStyle}">
                 <p:commandButton id="btnSearch" style="width:100px;height:25px;font-size:0.7em;margin-left:0px;text-align:center;"
@@ -414,6 +424,9 @@
                     </p:column>
                     <p:column id="bikou2" headerText="備考2">
                         <p:outputLabel value="#{item.bikou2}"/>
+                    </p:column>
+                    <p:column id="jokyo" headerText="状況">
+                        <p:outputLabel value="#{item.jokyo}"/>
                     </p:column>
 
                 </p:dataTable>

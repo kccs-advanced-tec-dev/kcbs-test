@@ -337,7 +337,41 @@ public class GXHDO101B004Const {
      * 画処NG_AVE
      */
     public static final String GNG_KAISUUAVE = "sr_spssekisou_gasho_ng_ave";
+    /**
+     * 先行ロットNo
+     */
+    public static final String SENKOU_LOT_NO = "sr_spssekisou_senkou_lot_no";
 
+    /**
+     * ﾃｰﾌﾟ使い切り
+     */
+    public static final String TAPETSUKAIKIRI = "sr_spssekisou_tapetsukaikiri";
+
+    /**
+     * 次ﾛｯﾄへ
+     */
+    public static final String JILOTHE = "sr_spssekisou_jilothe";
+    
+    /**
+     * 固着ｼｰﾄTEST
+     */
+    public static final String KSHEET_TEST = "sr_spssekisou_ksheet_test";
+    
+    /**
+     * 固着ｼｰﾄLotNo
+     */
+    public static final String KSHEET_LOT_NO = "sr_spssekisou_ksheet_lot_no";
+    
+    /**
+     * 固着ｼｰﾄTESTﾁｪｯｸ
+     */
+    public static final String KSHEET_TEST_CHECK = "sr_spssekisou_ksheet_test_check";
+    
+    /**
+     * 固着ｼｰﾄLotNoﾁｪｯｸ
+     */
+    public static final String KSHEET_LOT_NO_CHECK = "sr_spssekisou_ksheet_lot_no_check";
+    
     /**
      * 備考1
      */

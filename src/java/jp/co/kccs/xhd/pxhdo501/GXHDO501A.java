@@ -176,7 +176,7 @@ public class GXHDO501A implements Serializable {
     /**
      * 格納できる値の上限
      */
-    private static final int MAX_VALUE_99999 = 99999;
+    private static final int MAX_VALUE_99999 = 9999;
     /**
      * 取込ファイル名称 *
      */
@@ -458,7 +458,7 @@ public class GXHDO501A implements Serializable {
             return;
         }
 
-        // 種類
+        // 種類                
         String fvsyurui = getCellValue(sheet.getRow(1), 1);
         // 種類チェック
         if (!inputSyuruiCheck(fvsyurui, "種類")) {
@@ -628,7 +628,7 @@ public class GXHDO501A implements Serializable {
             // P.前工程WIPへの引数作成
             ArrayList<String> paramList = getMwiptonyuParamList(loadLotDataList, fvsyurui);
             // Q.[製造LotNo]を作成:API[前工程WIP]を呼び出す
-            doLotnoSakusei(conDoc, queryRunnerDoc, paramList, loadLotDataList);
+            doLotnoSakusei1(conDoc, queryRunnerDoc, paramList, loadLotDataList);
             // R.ﾛｯﾄ規格情報登録処理
             stepFlg = doLotKikakuInfoTorokuSyori(resultMap, resultMessageList, fvsyurui, conQcdb, queryRunnerQcdb, loadLotDataList);
             if ("U".equals(stepFlg)) {
@@ -984,6 +984,32 @@ public class GXHDO501A implements Serializable {
             }
         }
     }
+    
+     /**
+     * [製造LotNo]を作成
+     *
+     * @param conDoc コネクション
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param paramList リクエストパラメータデータ
+     * @param loadLotDataList 取込データ
+     */
+    private void doLotnoSakusei1(Connection conDoc, QueryRunner queryRunnerDoc, ArrayList<String> paramList, List<GXHDO501AModel> loadLotDataList) throws SQLException, IOException {
+        for (int i = 0; i < loadLotDataList.size(); i++) {
+            GXHDO501AModel gxhdo501aModel = loadLotDataList.get(i);
+            String jsonParamStr = paramList.get(i);
+            boolean ritoraiFlag = false;
+            for (int j = 1; j <= 3; j++) {
+                ritoraiFlag = doMwiptonyu(queryRunnerDoc, jsonParamStr, gxhdo501aModel);
+                if (!ritoraiFlag) {
+                    break;
+                }
+            }
+            if (ritoraiFlag) {
+                gxhdo501aModel.setResulta("NG");
+                gxhdo501aModel.setResultb("品名ロット重複エラー");
+            }
+        }
+    }
 
     /**
      * O.品名採番
@@ -997,7 +1023,7 @@ public class GXHDO501A implements Serializable {
         // 取込データが品名採番の処理を繰り返す。
         for (GXHDO501AModel gxhdo501aModel : loadLotDataList) {
             // O.品名採番
-            doHinnmeiSaibann(conDoc, queryRunnerDoc, gxhdo501aModel, hinmeiSaibannoMap);
+            doHinnmeiSaibann1(conDoc, queryRunnerDoc, gxhdo501aModel, hinmeiSaibannoMap);
         }
     }
 
@@ -1051,7 +1077,7 @@ public class GXHDO501A implements Serializable {
 
         saibanno++;
         gxhdo501aModel.setHinmei(hinmei);
-        hinmei = hinmei + String.format("%05d", saibanno);
+        hinmei = hinmei + String.format("%04d", saibanno);
         // (ｴ).(ｳ)で採番した[品名]でExcelの[品名]を更新する
         gxhdo501aModel.setHinmeisaiban(hinmei);
         // (ｵ).採番マスタにﾃﾞｰﾀ登録を行う
@@ -1059,6 +1085,29 @@ public class GXHDO501A implements Serializable {
             insertfxhdm10(conDoc, queryRunnerDoc, saibanno, gxhdo501aModel);
         } else {
             updatefxhdm10(conDoc, queryRunnerDoc, saibanno, gxhdo501aModel);
+        }
+    }
+    
+    /**
+     * O.品名採番
+     *
+     * @param conDoc コネクション
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param loadLotData 取込データ
+     * @param hinmeiSaibannoMap 採番した品名データ情報
+     */
+    private void doHinnmeiSaibann1(Connection conDoc, QueryRunner queryRunnerDoc, GXHDO501AModel gxhdo501aModel, HashMap<String, Integer> hinmeiSaibannoMap) throws SQLException, IOException {
+        int saibanno;
+        int hasRecordFlg;
+        String strhinmei = StringUtil.nullToBlank(gxhdo501aModel.getHinmei());
+        String[] hinmeilist = strhinmei.split("-");
+        if (hinmeilist.length == 2){
+            String hinmei = hinmeilist[0];
+            gxhdo501aModel.setHinmei(hinmei);
+            hinmei = hinmei + String.format(hinmeilist[1]);
+            // (ｴ).(ｳ)で採番した[品名]でExcelの[品名]を更新する
+            gxhdo501aModel.setHinmeisaiban(hinmei);
+            // (ｵ).採番マスタにﾃﾞｰﾀ登録を行う
         }
     }
 
@@ -1228,10 +1277,18 @@ public class GXHDO501A implements Serializable {
             return rtnStep;
         }
         // E.[品名]ﾁｪｯｸ処理
-        String hinmei = StringUtil.nullToBlank(gxhdo501aModel.getHinmei());
+        String strhinmei = StringUtil.nullToBlank(gxhdo501aModel.getHinmei());
+        String[] hinmeilist = strhinmei.split("-");
+        String hinmei = hinmeilist[0];
         // ﾁｪｯｸ処理
         if (check003And006(gxhdo501aModel, hinmei, "品名", 8, resultMap)) {
             rtnStep = "C";
+            return rtnStep;
+        }
+        if (hinmeilist.length != 2){
+            resultMap.put("ngCount", resultMap.get("ngCount") + 1);
+            gxhdo501aModel.setResulta("NG");
+            gxhdo501aModel.setResultb("品名のﾌｫｰﾏｯﾄが正しくありません。");
             return rtnStep;
         }
 
@@ -1704,7 +1761,7 @@ public class GXHDO501A implements Serializable {
     public boolean selectTxtTantousyaData() {
         boolean result = false;
         try {
-            QueryRunner queryRunner = new QueryRunner(dataSourceDocServer);
+            QueryRunner queryRunner = new QueryRunner(dataSourceWip);
             // パラメータ設定
             String paramTxtTantousya = StringUtil.nullToBlank(getTxtTantousya());
             List<Object> params = new ArrayList<>();

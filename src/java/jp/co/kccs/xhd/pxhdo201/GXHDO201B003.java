@@ -66,11 +66,6 @@ import org.primefaces.context.RequestContext;
  * 変更者        KCSS K.Jo<br>
  * 変更理由      項目追加・変更<br>
  * <br>
- * 変更日        2022/03/09<br>
- * 計画書No      MB2202-D013<br>
- * 変更者        KCSS K.Jo<br>
- * 変更理由      項目追加・変更<br>
- * <br>
  * ===============================================================================<br>
  */
 /**
@@ -656,8 +651,6 @@ public class GXHDO201B003 implements Serializable {
                     + ", T1.pattern"
                     + ", T1.SEIHANNO"
                     + ", T1.SEIHANMAISUU"
-                    + ", T1.saidaisyorisuu"
-                    + ", T1.ruikeisyorisuu"
                     + ", T1.SKEEGENO"
                     + ", T1.SKEEGEMAISUU"
                     + ", T1.SKEEGESPEED"
@@ -682,17 +675,11 @@ public class GXHDO201B003 implements Serializable {
                     + ", T1.KAISINICHIJI"
                     + ", T1.TANTOSYA"
                     + ", T1.kakuninsya"
-                    + ", CONCAT(T1.skojyo , T1.slotno , T1.sedaban) senkoulotno"
-                    + ", (CASE WHEN T1.tapetsukaikiri = 1 THEN 'ﾁｪｯｸ' ELSE '未ﾁｪｯｸ' END) AS tapetsukaikiri "
-                    + ", (CASE WHEN T1.jilothe = 1 THEN 'ﾁｪｯｸ' ELSE '未ﾁｪｯｸ' END) AS jilothe "
                     + ", T1.SYURYONICHIJI"
                     + ", (CASE WHEN T1.nijimikasure_end = 0 THEN 'NG' WHEN T1.nijimikasure_end = 1 THEN 'OK' ELSE NULL END) AS nijimikasure_end"
                     + ", T1.tanto_end"
                     + ", T1.BIKO1"
                     + ", T1.BIKO2"
-                    + ", T1.bikou3"
-                    + ", T1.bikou4"
-                    + ", T1.bikou5"
                     + ", T2.makuatsu_start1"
                     + ", T2.makuatsu_start2"
                     + ", T2.makuatsu_start3"
@@ -749,8 +736,6 @@ public class GXHDO201B003 implements Serializable {
             mapping.put("pattern", "pattern");                            // 電極製版仕様
             mapping.put("SEIHANNO", "seihanno");                          // 製版No
             mapping.put("SEIHANMAISUU", "seihanmaisuu");                  // 製版枚数(枚)
-            mapping.put("saidaisyorisuu", "saidaisyorisuu");              // 最大処理数
-            mapping.put("ruikeisyorisuu", "ruikeisyorisuu");              // 累計処理数
             mapping.put("SKEEGENO", "skeegeno");                          // ｽｷｰｼﾞNo
             mapping.put("SKEEGEMAISUU", "skeegemaisuu");                  // ｽｷｰｼﾞ枚数(枚)
             mapping.put("SKEEGESPEED", "skeegespeed");                    // ｽｷｰｼﾞｽﾋﾟｰﾄﾞ
@@ -775,12 +760,6 @@ public class GXHDO201B003 implements Serializable {
             mapping.put("KAISINICHIJI", "kaisinichiji");                  // 開始日時
             mapping.put("TANTOSYA", "tantosya");                          // 印刷ｽﾀｰﾄ担当者
             mapping.put("kakuninsya", "kakuninsya");                      // 印刷ｽﾀｰﾄ確認者
-            mapping.put("senkoulotno", "senkoulotno");                    // 先行ﾛｯﾄNo
-            mapping.put("tapetsukaikiri", "tapetsukaikiri");              // ﾃｰﾌﾟ使い切り
-            mapping.put("jilothe", "jilothe");                            // 次ﾛｯﾄへ
-            mapping.put("bikou3", "bikou3");                              // 備考3
-            mapping.put("bikou4", "bikou4");                              // 備考4
-            mapping.put("bikou5", "bikou5");                              // 備考5
             mapping.put("SYURYONICHIJI", "syuryonichiji");                // 終了日時
             mapping.put("nijimikasure_end", "nijimikasureEnd");           // 終了時ﾆｼﾞﾐ・ｶｽﾚ確認
             mapping.put("tanto_end", "tantoEnd");                         // 印刷ｴﾝﾄﾞ時担当者

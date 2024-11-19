@@ -83,8 +83,18 @@ public class GXHDO301AModel implements Serializable {
     private String torikosuu = "";
     /** 個数 */
     private String kosuu = "";
-    /** 個数 */
+    /** 号機 */
     private String goki = "";
+    /** 印刷号機 */
+    private String printGoki = "";
+    /** 膜厚Ave */
+    private String makuatsuAve = "";
+    /** 電極積層上ﾊﾟﾝﾁ温度 */
+    private String uePanchi = "";
+    /** 電極積層下ﾊﾟﾝﾁ温度 */
+    private String sitaPanchi = "";
+    /** 下端子ﾌﾞｸ抜き */
+    private String shitatanshiBukunuki = "";
         
     /**
      * @return the lotno
@@ -492,6 +502,86 @@ public class GXHDO301AModel implements Serializable {
      */
     public void setGoki(String goki) {
         this.goki = goki;
+    }
+
+    /**
+     * 印刷号機
+     * @return the printGoki
+     */
+    public String getPrintGoki() {
+        return printGoki;
+    }
+
+    /**
+     * 印刷号機
+     * @param printGoki the printGoki to set
+     */
+    public void setPrintGoki(String printGoki) {
+        this.printGoki = printGoki;
+    }
+
+    /**
+     * 膜厚Ave
+     * @return the makuatsuAve
+     */
+    public String getMakuatsuAve() {
+        return makuatsuAve;
+    }
+
+    /**
+     * 膜厚Ave
+     * @param makuatsuAve the makuatsuAve to set
+     */
+    public void setMakuatsuAve(String makuatsuAve) {
+        this.makuatsuAve = makuatsuAve;
+    }
+
+    /**
+     * 電極積層上ﾊﾟﾝﾁ温度
+     * @return the uePanchi
+     */
+    public String getUePanchi() {
+        return uePanchi;
+    }
+
+    /**
+     * 電極積層上ﾊﾟﾝﾁ温度
+     * @param uePanchi the uePanchi to set
+     */
+    public void setUePanchi(String uePanchi) {
+        this.uePanchi = uePanchi;
+    }
+
+    /**
+     * 電極積層下ﾊﾟﾝﾁ温度
+     * @return the sitaPanchi
+     */
+    public String getSitaPanchi() {
+        return sitaPanchi;
+    }
+
+    /**
+     * 電極積層下ﾊﾟﾝﾁ温度
+     * @param sitaPanchi the sitaPanchi to set
+     */
+    public void setSitaPanchi(String sitaPanchi) {
+        this.sitaPanchi = sitaPanchi;
+    }
+    
+    /**
+     * 下端子ﾌﾞｸ抜き
+     * @return the shitatanshiBukunuki
+     */
+    public String getShitatanshiBukunuki() {
+        return shitatanshiBukunuki;
+    }
+
+    /**
+     * 下端子ﾌﾞｸ抜き
+     * @param sitaPanchi the sitaPanchi to set
+     */
+    public void setShitatanshiBukunuki(String shitatanshiBukunuki) {
+        this.shitatanshiBukunuki = shitatanshiBukunuki;
     }
     
  

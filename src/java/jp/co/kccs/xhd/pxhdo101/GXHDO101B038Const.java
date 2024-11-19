@@ -241,6 +241,11 @@ public class GXHDO101B038Const {
      * 検査総重量
      */
     public static final String KENSA_SOUJYURYOU = "sr_mekki_kensa_soujyuryou";
+
+    /**
+     * 総重量担当者
+     */
+    public static final String SOUJYURYOU_TANTOUSYA = "sr_mekki_soujyuryou_tantousya";
     
     /**
      * 良品数
@@ -331,6 +336,21 @@ public class GXHDO101B038Const {
      * 備考2
      */
     public static final String BIKO2 = "sr_mekki_biko2";
+
+    /**
+     * 備考3
+     */
+    public static final String BIKO3 = "sr_mekki_biko3";
+
+    /**
+     * 備考4
+     */
+    public static final String BIKO4 = "sr_mekki_biko4";
+
+    /**
+     * 備考5
+     */
+    public static final String BIKO5 = "sr_mekki_biko5";
 
     /**
      * 仮登録(画面上)

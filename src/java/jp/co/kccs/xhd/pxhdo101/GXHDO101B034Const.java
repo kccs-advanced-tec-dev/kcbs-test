@@ -193,6 +193,11 @@ public class GXHDO101B034Const {
     public static final String BIKO2 = "sr_gdsenjou_biko2";
 
     /**
+     * 外観担当者
+     */
+    public static final String GAIKANTANOU = "sr_gdsenjou_gaikantantou";
+
+    /**
      * 仮登録(画面上)
      */
     public static final String BTN_KARI_TOUROKU_TOP = "sr_gdsenjou_kari_touroku_Top";

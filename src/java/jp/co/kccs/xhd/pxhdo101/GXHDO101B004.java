@@ -52,6 +52,7 @@ import jp.co.kccs.xhd.util.CommonUtil;
 import jp.co.kccs.xhd.util.SubFormUtil;
 import org.apache.commons.dbutils.DbUtils;
 import org.apache.commons.dbutils.handlers.MapListHandler;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * ===============================================================================<br>
@@ -477,7 +478,7 @@ public class GXHDO101B004 implements IFormLogic {
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemKaishiDay, itemKaishiTime, itemShuryouDay, itemShuryouTime);
             return MessageUtil.getErrorMessageInfo("", msgCheckR001, true, true, errFxhdd01List);
         }
-
+        
         return null;
     }
 
@@ -1594,6 +1595,20 @@ public class GXHDO101B004 implements IFormLogic {
         this.setItemData(processData, GXHDO101B004Const.BIKOU4, getSrSpssekisouItemData(GXHDO101B004Const.BIKOU4, srSpssekisouData));
         //備考5
         this.setItemData(processData, GXHDO101B004Const.BIKOU5, getSrSpssekisouItemData(GXHDO101B004Const.BIKOU5, srSpssekisouData));
+        // 先行ﾛｯﾄNo
+        this.setItemData(processData, GXHDO101B004Const.SENKOU_LOT_NO, getSrSpssekisouItemData(GXHDO101B004Const.SENKOU_LOT_NO, srSpssekisouData));
+        // ﾃｰﾌﾟ使い切り
+        this.setItemData(processData, GXHDO101B004Const.TAPETSUKAIKIRI, getSrSpssekisouItemData(GXHDO101B004Const.TAPETSUKAIKIRI, srSpssekisouData));
+        // 次ﾛｯﾄへ
+        this.setItemData(processData, GXHDO101B004Const.JILOTHE, getSrSpssekisouItemData(GXHDO101B004Const.JILOTHE, srSpssekisouData));
+        // 固着ｼｰﾄTEST
+        this.setItemData(processData, GXHDO101B004Const.KSHEET_TEST, getSrSpssekisouItemData(GXHDO101B004Const.KSHEET_TEST, srSpssekisouData));
+        // 固着ｼｰﾄLotNo
+        this.setItemData(processData, GXHDO101B004Const.KSHEET_LOT_NO, getSrSpssekisouItemData(GXHDO101B004Const.KSHEET_LOT_NO, srSpssekisouData));
+        // 固着ｼｰﾄTESTﾁｪｯｸ
+        this.setItemData(processData, GXHDO101B004Const.KSHEET_TEST_CHECK, getSrSpssekisouItemData(GXHDO101B004Const.KSHEET_TEST_CHECK, srSpssekisouData));
+        // 固着ｼｰﾄLotNoﾁｪｯｸ
+        this.setItemData(processData, GXHDO101B004Const.KSHEET_LOT_NO_CHECK, getSrSpssekisouItemData(GXHDO101B004Const.KSHEET_LOT_NO_CHECK, srSpssekisouData));
 
     }
 
@@ -2032,7 +2047,8 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + ",UwaTanshi,GaikanKakunin1,GaikanKakunin2,GaikanKakunin3,GaikanKakunin4"
                 + ",SyoriSetsuu,RyouhinSetsuu,StartTantosyacode,EndTantousyacode"
                 + ",TanshiTapeSyurui,torokunichiji,kosinnichiji,sekisousyuryougokaradaasturyoku,karautibyou"
-                + ",karautikai,zureti,GaikanKakunin5,revision,'0' AS deleteflag "
+                + ",karautikai,zureti,GaikanKakunin5,CONCAT(skojyo , slotno , sedaban) senkoulotno,tapetsukaikiri,jilothe,ksheettest,klotno,ksheettestcheck,klotnocheck"
+                + ",revision,'0' AS deleteflag "
                 + "FROM sr_spssekisou "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
         // revisionが入っている場合、条件に追加
@@ -2132,6 +2148,13 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         mapping.put("karautikai", "karautikai"); // 積層終了後空打回数[回]
         mapping.put("zureti", "zureti"); // ｽﾞﾚ値
         mapping.put("GaikanKakunin5", "gaikanKakunin5"); // 外観確認5
+        mapping.put("senkoulotno", "senkoulotno"); 
+        mapping.put("tapetsukaikiri", "tapetsukaikiri"); // ﾃｰﾌﾟ使い切り
+        mapping.put("jilothe", "jilothe"); // 次ﾛｯﾄへ
+        mapping.put("ksheettest", "ksheettest"); // 固着ｼｰﾄTEST
+        mapping.put("klotno", "klotno"); // 固着ｼｰﾄlotno
+        mapping.put("ksheettestcheck", "ksheettestcheck"); // 固着ｼｰﾄTESTﾁｪｯｸ
+        mapping.put("klotnocheck", "klotnocheck"); // 固着ｼｰﾄlotnoﾁｪｯｸ
         mapping.put("revision", "revision"); // revision
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
 
@@ -2318,7 +2341,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + ",UwaTanshi,GaikanKakunin1,GaikanKakunin2,GaikanKakunin3,GaikanKakunin4"
                 + ",SyoriSetsuu,RyouhinSetsuu,StartTantosyacode,EndTantousyacode"
                 + ",TanshiTapeSyurui,torokunichiji,kosinnichiji,sekisousyuryougokaradaasturyoku,karautibyou"
-                + ",karautikai,zureti,GaikanKakunin5,revision,deleteflag "
+                + ",karautikai,zureti,GaikanKakunin5,CONCAT(skojyo , slotno , sedaban) senkoulotno,tapetsukaikiri,jilothe,ksheettest,klotno,ksheettestcheck,klotnocheck,revision,deleteflag "
                 + "FROM tmp_sr_spssekisou "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND deleteflag = ? ";
         // revisionが入っている場合、条件に追加
@@ -2419,6 +2442,13 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         mapping.put("karautikai", "karautikai"); // 積層終了後空打回数[回]
         mapping.put("zureti", "zureti"); // ｽﾞﾚ値
         mapping.put("gaikanKakunin5", "GaikanKakunin5"); // 外観確認5
+        mapping.put("senkoulotno", "senkoulotno"); 
+        mapping.put("tapetsukaikiri", "tapetsukaikiri"); // ﾃｰﾌﾟ使い切り
+        mapping.put("jilothe", "jilothe"); // 次ﾛｯﾄへ
+        mapping.put("ksheettest", "ksheettest"); // 固着ｼｰﾄTEST
+        mapping.put("klotno", "klotno"); // 固着ｼｰﾄlotno
+        mapping.put("ksheettestcheck", "ksheettestcheck"); // 固着ｼｰﾄTESTﾁｪｯｸ
+        mapping.put("klotnocheck", "klotnocheck"); // 固着ｼｰﾄlotnoﾁｪｯｸ
         mapping.put("revision", "revision"); // revision
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
 
@@ -2905,11 +2935,12 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + ",genryoukigou,petfilmsyurui,Kotyakugouki,Kotyakusheet,ShitaTanshigouki,UwaTanshigouki,ShitaTanshiBukunuki,ShitaTanshi,HakuriKyuin"
                 + ",HakuriClearrance,HakuriCutSpeed,ShitaPanchiOndo,UwaPanchiOndo,KaatuJikan,KaatuAturyoku,UwaTanshi,GaikanKakunin1,GaikanKakunin2,GaikanKakunin3"
                 + ",GaikanKakunin4,SyoriSetsuu,RyouhinSetsuu,StartTantosyacode,EndTantousyacode,TanshiTapeSyurui,torokunichiji"
-                + ",kosinnichiji,sekisousyuryougokaradaasturyoku,karautibyou,karautikai,zureti,GaikanKakunin5,revision,deleteflag"
+                + ",kosinnichiji,sekisousyuryougokaradaasturyoku,karautibyou,karautikai,zureti,GaikanKakunin5"
+                + ",skojyo,slotno,sedaban,tapetsukaikiri,jilothe,ksheettest,klotno,ksheettestcheck,klotnocheck,revision,deleteflag"
                 + ") VALUES ("
                 + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
                 + " ,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
-                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterTmpSrSpssekisou(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -2944,7 +2975,9 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + "Kotyakusheet = ?,ShitaTanshigouki = ?,UwaTanshigouki = ?,ShitaTanshiBukunuki = ?,ShitaTanshi = ?,HakuriKyuin = ?,"
                 + "HakuriClearrance = ?,HakuriCutSpeed = ?,ShitaPanchiOndo = ?,UwaPanchiOndo = ?,KaatuJikan = ?,KaatuAturyoku = ?,UwaTanshi = ?,"
                 + "SyoriSetsuu = ?,RyouhinSetsuu = ?,StartTantosyacode = ?,EndTantousyacode = ?,TanshiTapeSyurui = ?,kosinnichiji = ?,"
-                + "sekisousyuryougokaradaasturyoku = ?,karautibyou = ?,karautikai = ?,zureti = ?,GaikanKakunin5 = ?,revision = ?,deleteflag = ? "
+                + "sekisousyuryougokaradaasturyoku = ?,karautibyou = ?,karautikai = ?,zureti = ?,GaikanKakunin5 = ?,"
+                + "skojyo = ?,slotno = ?,sedaban = ?,tapetsukaikiri = ?,jilothe = ?,ksheettest = ?,klotno = ?,ksheettestcheck = ?,klotnocheck = ?,"
+                + "revision = ?,deleteflag = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
         // 更新前の値を取得
@@ -3119,10 +3152,31 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.KARAUTIKAI, srSpssekisouData))); //積層終了後空打回数[回]
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.ZURETI, srSpssekisouData))); //ｽﾞﾚ値
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.GAIKAN_KAKUNIN5, srSpssekisouData))); //外観確認5
-        params.add(newRev); //revision
-        params.add(deleteflag); //削除ﾌﾗｸﾞ
+
+        // 先行ﾛｯﾄNo
+        String senkoulotno = getItemData(itemList, GXHDO101B004Const.SENKOU_LOT_NO, srSpssekisouData);
+        String skKojyo = ""; //先行工場ｺｰﾄﾞ
+        String skLotNo = ""; // 先行ﾛｯﾄNo
+        String skEdaban = ""; // 先行枝番
+        if (!StringUtil.isEmpty(senkoulotno)) {
+            skKojyo = StringUtils.substring(senkoulotno, 0, 3);
+            skLotNo = StringUtils.substring(senkoulotno, 3, 11);
+            skEdaban = StringUtil.blankToNull(StringUtils.substring(senkoulotno, 11, 14));
+        }
         
 
+        params.add(DBUtil.stringToStringObjectDefaultNull(skKojyo)); // 先行工場ｺｰﾄﾞ
+        params.add(DBUtil.stringToStringObjectDefaultNull(skLotNo)); // 先行ﾛｯﾄNo
+        params.add(DBUtil.stringToStringObjectDefaultNull(skEdaban)); // 先行枝番
+        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B004Const.TAPETSUKAIKIRI, srSpssekisouData),null)); // ﾃｰﾌﾟ使い切り
+        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B004Const.JILOTHE, srSpssekisouData),null)); // 次ﾛｯﾄへ
+        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B004Const.KSHEET_TEST, srSpssekisouData),null)); // 次ﾛｯﾄへ
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B004Const.KSHEET_LOT_NO, srSpssekisouData))); // 固着ｼｰﾄ
+        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B004Const.KSHEET_TEST_CHECK, srSpssekisouData),null)); // 固着ｼｰﾄTESTﾁｪｯｸ
+        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B004Const.KSHEET_LOT_NO_CHECK, srSpssekisouData),null)); // 固着ｼｰﾄﾁｪｯｸ
+        
+        params.add(newRev); //revision
+        params.add(deleteflag); //削除ﾌﾗｸﾞ
         return params;
     }
 
@@ -3382,11 +3436,12 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + ",petfilmsyurui,Kotyakugouki,Kotyakusheet,ShitaTanshigouki,UwaTanshigouki,ShitaTanshiBukunuki,ShitaTanshi"
                 + ",HakuriKyuin,HakuriClearrance,HakuriCutSpeed,ShitaPanchiOndo,UwaPanchiOndo,KaatuJikan,KaatuAturyoku,UwaTanshi"
                 + ",GaikanKakunin1,GaikanKakunin2,GaikanKakunin3,GaikanKakunin4,SyoriSetsuu,RyouhinSetsuu,StartTantosyacode"
-                + ",EndTantousyacode,TanshiTapeSyurui,torokunichiji,kosinnichiji,sekisousyuryougokaradaasturyoku,karautibyou,karautikai,zureti,GaikanKakunin5,revision"
+                + ",EndTantousyacode,TanshiTapeSyurui,torokunichiji,kosinnichiji,sekisousyuryougokaradaasturyoku,karautibyou,karautikai,zureti,GaikanKakunin5,"
+                + "skojyo,slotno,sedaban,tapetsukaikiri,jilothe,ksheettest,klotno,ksheettestcheck,klotnocheck,revision"
                 + ") VALUES ("
                 + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
                 + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
-                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
         
         List<Object> params = setUpdateParameterSrSpssekisou(true, newRev, kojyo, lotNo, edaban, systemTime, itemList, tmpSrSpssekisou);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -3419,7 +3474,8 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + "taperollno3 = ?,genryoukigou = ?,petfilmsyurui = ?,Kotyakusheet = ?,ShitaTanshigouki = ?,UwaTanshigouki = ?,"
                 + "ShitaTanshiBukunuki = ?,ShitaTanshi = ?,HakuriKyuin = ?,HakuriClearrance = ?,HakuriCutSpeed = ?,ShitaPanchiOndo = ?,UwaPanchiOndo = ?,"
                 + "KaatuJikan = ?,KaatuAturyoku = ?,UwaTanshi = ?,SyoriSetsuu = ?,RyouhinSetsuu = ?,StartTantosyacode = ?,EndTantousyacode = ?,TanshiTapeSyurui = ?,"
-                + "kosinnichiji = ?,sekisousyuryougokaradaasturyoku = ?,karautibyou = ?,karautikai = ?,zureti = ?,GaikanKakunin5 = ?,revision = ? "
+                + "kosinnichiji = ?,sekisousyuryougokaradaasturyoku = ?,karautibyou = ?,karautikai = ?,zureti = ?,GaikanKakunin5 = ?,"
+                + "skojyo = ?,slotno = ?,sedaban = ?,tapetsukaikiri = ?,jilothe = ?,ksheettest = ?,klotno = ?,ksheettestcheck = ?,klotnocheck = ?,revision = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ?";
 
         // 更新前の値を取得
@@ -3566,8 +3622,29 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.KARAUTIKAI, srSpssekisouData)));//積層終了後空打回数[回]
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B004Const.ZURETI, srSpssekisouData)));//ｽﾞﾚ値
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.GAIKAN_KAKUNIN5, srSpssekisouData)));//外観確認5
+        // 先行ﾛｯﾄNo
+        String senkoulotno = getItemData(itemList, GXHDO101B004Const.SENKOU_LOT_NO, srSpssekisouData);
+        String skKojyo = ""; //先行工場ｺｰﾄﾞ
+        String skLotNo = ""; // 先行ﾛｯﾄNo
+        String skEdaban = ""; // 先行枝番
+        if (!StringUtil.isEmpty(senkoulotno)) {
+            skKojyo = StringUtils.substring(senkoulotno, 0, 3);
+            skLotNo = StringUtils.substring(senkoulotno, 3, 11);
+            skEdaban = StringUtil.blankToNull(StringUtils.substring(senkoulotno, 11, 14));
+        }
+        
+       
+        params.add(DBUtil.stringToStringObjectDefaultNull(skKojyo)); // 先行工場ｺｰﾄﾞ
+        params.add(DBUtil.stringToStringObjectDefaultNull(skLotNo)); // 先行ﾛｯﾄNo
+        params.add(DBUtil.stringToStringObjectDefaultNull(skEdaban)); // 先行枝番
+        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B004Const.TAPETSUKAIKIRI, srSpssekisouData),null)); // ﾃｰﾌﾟ使い切り
+        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B004Const.JILOTHE, srSpssekisouData),null)); // 次ﾛｯﾄへ
+        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B004Const.KSHEET_TEST, srSpssekisouData),null)); // 固着ｼｰﾄTEST
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B004Const.KSHEET_LOT_NO, srSpssekisouData)));//固着ｼｰﾄﾛｯﾄNo
+        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B004Const.KSHEET_TEST_CHECK, srSpssekisouData),null)); // 固着ｼｰﾄTESTﾁｪｯｸ
+        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B004Const.KSHEET_LOT_NO_CHECK, srSpssekisouData),null)); // 固着ｼｰﾄﾁｪｯｸ
+        
         params.add(newRev); //revision
-
         return params;
     }
 
@@ -4107,6 +4184,29 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
             //KCPNo
             case GXHDO101B004Const.KCPNO:
                 return StringUtil.nullToBlank(srSpssekisouData.getKcpno());
+            // 先行ﾛｯﾄNo
+            case GXHDO101B004Const.SENKOU_LOT_NO:
+                return StringUtil.nullToBlank(srSpssekisouData.getSenkoulotno());
+            // ﾃｰﾌﾟ使い切り
+            case GXHDO101B004Const.TAPETSUKAIKIRI:
+                return getCheckBoxCheckValue(StringUtil.nullToBlank(srSpssekisouData.getTapetsukaikiri()));
+            // 次ﾛｯﾄへ
+            case GXHDO101B004Const.JILOTHE:
+                return getCheckBoxCheckValue(StringUtil.nullToBlank(srSpssekisouData.getJilothe()));
+            // 固着ｼｰﾄTEST
+            case GXHDO101B004Const.KSHEET_TEST:
+                return getCheckBoxCheckValue(StringUtil.nullToBlank(srSpssekisouData.getKsheettest()));
+            // 固着ｼｰﾄﾛｯﾄNo
+            case GXHDO101B004Const.KSHEET_LOT_NO:
+                return StringUtil.nullToBlank(srSpssekisouData.getKlotno());
+            // 固着ｼｰﾄTESTﾁｪｯｸ
+            case GXHDO101B004Const.KSHEET_TEST_CHECK:
+                return getCheckBoxCheckValue(StringUtil.nullToBlank(srSpssekisouData.getKsheettestcheck()));
+            // 固着ｼｰﾄﾛｯﾄNoﾁｪｯｸ
+            case GXHDO101B004Const.KSHEET_LOT_NO_CHECK:
+                return getCheckBoxCheckValue(StringUtil.nullToBlank(srSpssekisouData.getKlotnocheck()));
+                
+               
 
             default:
                 return null;
@@ -4140,7 +4240,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + ",ShitaTanshiBukunuki,ShitaTanshi,HakuriKyuin,HakuriClearrance,HakuriCutSpeed,ShitaPanchiOndo,UwaPanchiOndo"
                 + ",KaatuJikan,KaatuAturyoku,UwaTanshi,GaikanKakunin1,GaikanKakunin2,GaikanKakunin3,GaikanKakunin4,SyoriSetsuu"
                 + ",RyouhinSetsuu,StartTantosyacode,EndTantousyacode,TanshiTapeSyurui,torokunichiji"
-                + ",kosinnichiji,sekisousyuryougokaradaasturyoku,karautibyou,karautikai,zureti,GaikanKakunin5,revision,deleteflag"
+                + ",kosinnichiji,sekisousyuryougokaradaasturyoku,karautibyou,karautikai,zureti,GaikanKakunin5,skojyo,slotno,sedaban,tapetsukaikiri,jilothe,ksheettest,klotno,ksheettestcheck,klotnocheck,revision,deleteflag"
                 + ") SELECT "
                 + "kojyo,lotno,edaban,tntapesyurui,tntapeno,tntapegenryou,gouki,startdatetime,enddatetime,sekisouzure"
                 + ",tantousya,kakuninsya,sekisouzure2,bikou1,bikou2,bikou3,bikou4,bikou5,KCPNO,GoukiCode,TpLot,HakuriSpeed"
@@ -4151,7 +4251,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                 + ",ShitaTanshiBukunuki,ShitaTanshi,HakuriKyuin,HakuriClearrance,HakuriCutSpeed,ShitaPanchiOndo,UwaPanchiOndo"
                 + ",KaatuJikan,KaatuAturyoku,UwaTanshi,GaikanKakunin1,GaikanKakunin2,GaikanKakunin3,GaikanKakunin4,SyoriSetsuu"
                 + ",RyouhinSetsuu,StartTantosyacode,EndTantousyacode,TanshiTapeSyurui"
-                + ",?,?,sekisousyuryougokaradaasturyoku,karautibyou,karautikai,zureti,GaikanKakunin5,?,? "
+                + ",?,?,sekisousyuryougokaradaasturyoku,karautibyou,karautikai,zureti,GaikanKakunin5,skojyo,slotno,sedaban,tapetsukaikiri,jilothe,ksheettest,klotno,ksheettestcheck,klotnocheck,?,? "
                 + "FROM sr_spssekisou "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
 
@@ -4911,7 +5011,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         HttpSession session = (HttpSession) externalContext.getSession(false);
         String lotNo = (String) session.getAttribute("lotNo");
         try {
-            // (23)[tmp_spssekisou_kanri]から、ﾃﾞｰﾀの取得
+            // (23)[tmp_sr_sekiso_kanri]から、ﾃﾞｰﾀの取得
             List<Map<String, Object>> tmpSrGraprintKanriDataList = loadTmpSpssekisouKanriData(queryRunnerQcdb, lotNo, null);
             if (tmpSrGraprintKanriDataList == null || tmpSrGraprintKanriDataList.isEmpty()) {
                 // ｴﾗｰ項目をﾘｽﾄに追加
@@ -4952,10 +5052,10 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
     private ErrorMessageInfo checkDataCooperation(ProcessData processData, QueryRunner queryRunnerQcdb, String lotNo, Integer datasyurui, 
             HashMap<String, String> itemIdConvertMap) throws SQLException {
         ErrorMessageInfo checkItemError = null;
-        // 検索条件:ﾃﾞｰﾀの種類==datasyurui で、[tmp_spssekisou_kanri]から、ﾃﾞｰﾀを取得する。
+        // 検索条件:ﾃﾞｰﾀの種類==datasyurui で、[tmp_sr_sekiso_kanri]から、ﾃﾞｰﾀを取得する。
         List<Map<String, Object>> tmpSrGraprintKanriDataList = loadTmpSpssekisouKanriData(queryRunnerQcdb, lotNo, String.valueOf(datasyurui));
         if (tmpSrGraprintKanriDataList != null && !tmpSrGraprintKanriDataList.isEmpty()) {
-            // 取得したﾃﾞｰﾀで実績Noが高い管理Noで、[tmp_spssekisou]から、ﾃﾞｰﾀを取得する。
+            // 取得したﾃﾞｰﾀで実績Noが高い管理Noで、[tmp_sr_sekiso]から、ﾃﾞｰﾀを取得する。
             Map<String, Object> tmpSrGraprintKanriData = tmpSrGraprintKanriDataList.get(0);
             List<Map<String, Object>> tmpSrGraprintDataList = loadTmpSpssekisouData(queryRunnerQcdb, (Long) tmpSrGraprintKanriData.get("kanrino"));
             if (tmpSrGraprintDataList != null && !tmpSrGraprintDataList.isEmpty()) {
@@ -5056,10 +5156,10 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
      */
     private void doDataCooperation(ProcessData processData, QueryRunner queryRunnerQcdb, String lotNo, Integer datasyurui, 
             HashMap<String, String> itemIdConvertMap) throws SQLException {
-        // 検索条件:ﾃﾞｰﾀの種類==datasyurui で、[tmp_spssekisou_kanri]から、ﾃﾞｰﾀを取得する。
+        // 検索条件:ﾃﾞｰﾀの種類==datasyurui で、[tmp_sr_sekiso_kanri]から、ﾃﾞｰﾀを取得する。
         List<Map<String, Object>> tmpSrGraprintKanriDataList = loadTmpSpssekisouKanriData(queryRunnerQcdb, lotNo, String.valueOf(datasyurui));
         if (tmpSrGraprintKanriDataList != null && !tmpSrGraprintKanriDataList.isEmpty()) {
-            // 取得したﾃﾞｰﾀで実績Noが高い管理Noで、[tmp_spssekisou]から、ﾃﾞｰﾀを取得する。
+            // 取得したﾃﾞｰﾀで実績Noが高い管理Noで、[tmp_sr_sekiso]から、ﾃﾞｰﾀを取得する。
             Map<String, Object> tmpSrGraprintKanriData = tmpSrGraprintKanriDataList.get(0);
             List<Map<String, Object>> tmpSrGraprintDataList = loadTmpSpssekisouData(queryRunnerQcdb, (Long) tmpSrGraprintKanriData.get("kanrino"));
             if (tmpSrGraprintDataList != null && !tmpSrGraprintDataList.isEmpty()) {
@@ -5075,6 +5175,20 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
                             GXHDO101B004Const.SEKISOUSYURYOUGOKARADAASTURYOKU, GXHDO101B004Const.KARAUTIBYOU, GXHDO101B004Const.KARAUTIKAI, 
                             GXHDO101B004Const.KAISHI_DAY, GXHDO101B004Const.KAISHI_TIME);
                     setDataCooperationItemData(processData, setValueItemList, tmpSrGraprintDataList, itemIdConvertMap);
+                    if (datasyurui == 2) {
+                        // 開始時(ﾃﾞｰﾀ種類2)
+                        List<Map<String, Object>> tmpSrGraprintKanriDataList2 = loadTmpSpssekisouKanriData2(queryRunnerQcdb, lotNo, String.valueOf(2));
+                        if (tmpSrGraprintKanriDataList2 != null && !tmpSrGraprintKanriDataList2.isEmpty()) {
+                            // 取得したﾃﾞｰﾀで実績Noが高い管理Noで、[tmp_sr_sekiso]から、ﾃﾞｰﾀを取得する。
+                            Map<String, Object> tmpSrGraprintKanriData2 = tmpSrGraprintKanriDataList2.get(0);
+                            List<Map<String, Object>> tmpSrGraprintDataList2 = loadTmpSpssekisouData(queryRunnerQcdb, (Long) tmpSrGraprintKanriData2.get("kanrino"));
+                            if (tmpSrGraprintDataList2 != null && !tmpSrGraprintDataList2.isEmpty()) {
+                                List<String> setValueItemList2;
+                                setValueItemList2 = Arrays.asList(GXHDO101B004Const.KAISHI_DAY, GXHDO101B004Const.KAISHI_TIME);
+                                setDataCooperationItemData(processData, setValueItemList2, tmpSrGraprintDataList2, itemIdConvertMap);
+                            }
+                        }   
+                    }
                     doDataCooperation(processData, queryRunnerQcdb, lotNo, 3, itemIdConvertMap);
                 } else if (datasyurui == 3 || datasyurui == 4) {
                     // 終了時(ﾃﾞｰﾀ種類3or4)
@@ -5125,7 +5239,7 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
     }
     
     /**
-     * [tmp_spssekisou_kanri]から、ﾃﾞｰﾀの取得
+     * [tmp_sr_sekiso_kanri]から、ﾃﾞｰﾀの取得
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param lotNo ﾛｯﾄNo(検索キー)
@@ -5138,9 +5252,9 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         String lotno = lotNo.substring(3, 11);
         String edaban = lotNo.substring(11, 14);
 
-        // [tmp_spssekisou_kanri]から、ﾃﾞｰﾀの取得
+        // [tmp_sr_sekiso_kanri]から、ﾃﾞｰﾀの取得
         String sql = "SELECT kanrino, kojyo, lotno, edaban, datasyurui, jissekino, torokunichiji"
-                + " FROM tmp_spssekisou_kanri WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
+                + " FROM tmp_sr_sekiso_kanri WHERE kojyo = ? AND lotno = ? AND edaban = ? AND (lot_flg < 9 OR lot_flg is NULL)";
         if (!StringUtil.isEmpty(datasyurui)) {
             sql += "AND datasyurui = ? ";
         }
@@ -5158,8 +5272,42 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         return queryRunnerQcdb.query(sql, new MapListHandler(), params.toArray());
     }
 
+        /**
+     * [tmp_sr_sekiso_kanri]から、ﾃﾞｰﾀの取得
+     *
+     * @param queryRunnerQcdb QueryRunnerオブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param datasyurui データ種類(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private List<Map<String, Object>> loadTmpSpssekisouKanriData2(QueryRunner queryRunnerQcdb, String lotNo, String datasyurui) throws SQLException {
+        String kojyo = lotNo.substring(0, 3);
+        String lotno = lotNo.substring(3, 11);
+        String edaban = lotNo.substring(11, 14);
+
+        // [tmp_sr_sekiso_kanri]から、ﾃﾞｰﾀの取得
+        String sql = "SELECT kanrino, kojyo, lotno, edaban, datasyurui, jissekino, torokunichiji, lot_flg"
+                + " FROM tmp_sr_sekiso_kanri WHERE kojyo = ? AND lotno = ? AND edaban = ? AND (lot_flg < 9 OR lot_flg is NULL)";
+        if (!StringUtil.isEmpty(datasyurui)) {
+            sql += "AND datasyurui = ? ";
+        }
+        sql += " order by lot_flg desc, jissekino asc";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotno);
+        params.add(edaban);
+        if (!StringUtil.isEmpty(datasyurui)) {
+            params.add(datasyurui);
+        }
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapListHandler(), params.toArray());
+    }
+
     /**
-     * [tmp_spssekisou]から、ﾃﾞｰﾀの取得
+     * [tmp_sr_sekiso]から、ﾃﾞｰﾀの取得
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param kanrino 管理No(検索キー)
@@ -5167,9 +5315,9 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
      * @throws SQLException 例外エラー
      */
     private List<Map<String, Object>> loadTmpSpssekisouData(QueryRunner queryRunnerQcdb, Long kanrino) throws SQLException {
-        // [tmp_spssekisou]から、ﾃﾞｰﾀの取得
+        // [tmp_sr_sekiso]から、ﾃﾞｰﾀの取得
         String sql = "SELECT kanrino, item_id, atai"
-                + " FROM tmp_spssekisou WHERE kanrino = ?";
+                + " FROM tmp_sr_sekiso WHERE kanrino = ?";
 
         List<Object> params = new ArrayList<>();
         params.add(kanrino);
@@ -5236,5 +5384,33 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         // サブ画面から戻ったときに値を設定する項目を指定する。
         model.setReturnItemIdZurechi(GXHDO101B004Const.ZURETI);
         beanGXHDO101C023.setGxhdO101c023Model(model);
+    }
+    
+     /**
+     * チェックボックス値(DB内のValue値)取得
+     *
+     * @param checkBoxValue コンボボックスValue値
+     * @param defaultValue チェックがついていない場合のデフォルト値
+     * @return コンボボックステキスト値
+     */
+    private Integer getCheckBoxDbValue(String checkBoxValue, Integer defaultValue) {
+        if ("true".equals(StringUtil.nullToBlank(checkBoxValue).toLowerCase())) {
+            return 1;
+        }
+        return defaultValue;
+    }
+    
+    
+    /**
+     * チェックボックス値(チェックボックス内のValue値)取得
+     *
+     * @param dbValue コンボボックス(DB内)Value値
+     * @return コンボボックステキスト値
+     */
+    private String getCheckBoxCheckValue(String dbValue) {
+        if ("1".equals(dbValue)) {
+            return "true";
+        }
+        return null;
     }
 }

@@ -24,11 +24,6 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	863 zhangjy<br>
  * 変更理由	前工程WIPボタンを追加<br>
  * <br>
- * 変更日	2022/06/17<br>
- * 計画書No	MB2205-D010<br>
- * 変更者	KCSS wxf<br>
- * 変更理由	項目追加<br>
- * <br>
  * ===============================================================================<br>
  */
 /**
@@ -143,6 +138,11 @@ public class GXHDO101B005Const {
      * 固着シート
      */
     public static final String KOTYAKU_SHEET = "sr_rsussek_kotyaku_sheet";
+
+    /**
+     * 固着シートLotNo
+     */
+    public static final String KOTYAKU_SHEET_LOTNO = "sr_rsussek_kotyaku_sheet_lotno";
 
     /**
      * 下端子号機
@@ -310,16 +310,6 @@ public class GXHDO101B005Const {
     public static final String SENKOU_LOT_NO = "sr_rsussek_senkou_lot_no";
 
     /**
-     * ﾃｰﾌﾟ使い切り
-     */
-    public static final String TAPETSUKAIKIRI = "sr_rsussek_tapetsukaikiri";
-
-    /**
-     * 次ﾛｯﾄへ
-     */
-    public static final String JILOTHE = "sr_rsussek_jilothe";
-
-    /**
      * 備考1
      */
     public static final String BIKOU1 = "sr_rsussek_bikou1";
@@ -330,24 +320,14 @@ public class GXHDO101B005Const {
     public static final String BIKOU2 = "sr_rsussek_bikou2";
 
     /**
-     * 備考3
-     */
-    public static final String BIKOU3 = "sr_rsussek_bikou3";
-
-    /**
-     * 備考4
-     */
-    public static final String BIKOU4 = "sr_rsussek_bikou4";
-
-    /**
-     * 備考5
-     */
-    public static final String BIKOU5 = "sr_rsussek_bikou5";
-
-    /**
      * 電極製版ﾛｯﾄNo
      */
     public static final String ELOTNO = "sr_rsussek_elotno";
+
+    /**
+     * 最上層
+     */
+    public static final String LASTLAYER = "sr_rsussek_lastlayer";
 
     /**
      * 最上層担当者
@@ -518,6 +498,16 @@ public class GXHDO101B005Const {
      * 前工程WIP(画面上)
      */
     public static final String BTN_WIP_IMPORT_TOP = "sr_rsussek_wip_import_Top";
+    
+    /**
+     * 設備ﾃﾞｰﾀ連携(画面上)
+     */
+    public static final String BTN_DATACOOPERATION_TOP = "sr_rsussek_dataCooperation_TOP";
+    
+    /**
+     * 設備ﾃﾞｰﾀ連携(画面下)
+     */
+    public static final String BTN_DATACOOPERATION_BOTTOM = "sr_rsussek_dataCooperation_Bottom";   
     
     /**
      * ユーザー認証パラメータ(修正)

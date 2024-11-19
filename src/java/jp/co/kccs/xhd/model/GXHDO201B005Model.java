@@ -90,6 +90,8 @@ public class GXHDO201B005Model {
     private String kotyakugouki = "";
     /** 固着ｼｰﾄ */
     private String kotyakusheet = "";
+    /** 固着ｼｰﾄLot */
+    private String kotyakusheetLot = "";
     /** 下端子号機 */
     private String shitaTanshigouki = "";
     /** 上端子号機 */
@@ -174,16 +176,8 @@ public class GXHDO201B005Model {
     private String elotno = "";
     /** 積層圧力 */
     private BigDecimal sekiatsu = null;
-    /** ﾃｰﾌﾟ使い切り */
-    private String tapetsukaikiri = "";
-    /** 次ﾛｯﾄへ */
-    private String jilothe = "";
-    /** 備考3 */
-    private String bikou3 = "";
-    /** 備考4 */
-    private String bikou4 = "";
-    /** 備考5 */
-    private String bikou5 = "";
+    /** 積層圧力 */
+    private String lastlayer = "";
 
     /**
      * ﾛｯﾄNo.
@@ -1290,82 +1284,35 @@ public class GXHDO201B005Model {
     }
 
     /**
-     * ﾃｰﾌﾟ使い切り
-     * @return the tapetsukaikiri
+     * 積層圧力
+     * @return the lastlayer
      */
-    public String getTapetsukaikiri() {
-        return tapetsukaikiri;
+    public String getLastlayer() {
+        return lastlayer;
     }
 
     /**
-     * ﾃｰﾌﾟ使い切り
-     * @param tapetsukaikiri the tapetsukaikiri to set
+     * 積層圧力
+     * @param lastlayer the lastlayer to set
      */
-    public void setTapetsukaikiri(String tapetsukaikiri) {
-        this.tapetsukaikiri = tapetsukaikiri;
+    public void setLastlayer(String lastlayer) {
+        this.lastlayer = lastlayer;
     }
 
     /**
-     * 次ﾛｯﾄへ
-     * @return the jilothe
+     * 固着ｼｰﾄLot
+     * @return the kotyakusheetLot
      */
-    public String getJilothe() {
-        return jilothe;
+    public String getKotyakusheetLot() {
+        return kotyakusheetLot;
     }
 
     /**
-     * 次ﾛｯﾄへ
-     * @param jilothe the jilothe to set
+     * 固着ｼｰﾄLot
+     * @param kotyakusheetLot the kotyakusheetLot to set
      */
-    public void setJilothe(String jilothe) {
-        this.jilothe = jilothe;
+    public void setKotyakusheetLot(String kotyakusheetLot) {
+        this.kotyakusheetLot = kotyakusheetLot;
     }
 
-    /**
-     * 備考3
-     * @return the bikou3
-     */
-    public String getBikou3() {
-        return bikou3;
-    }
-
-    /**
-     * 備考3
-     * @param bikou3 the bikou3 to set
-     */
-    public void setBikou3(String bikou3) {
-        this.bikou3 = bikou3;
-    }
-
-    /**
-     * 備考4
-     * @return the bikou4
-     */
-    public String getBikou4() {
-        return bikou4;
-    }
-
-    /**
-     * 備考4
-     * @param bikou4 the bikou4 to set
-     */
-    public void setBikou4(String bikou4) {
-        this.bikou4 = bikou4;
-    }
-
-    /**
-     * 備考5
-     * @return the bikou5
-     */
-    public String getBikou5() {
-        return bikou5;
-    }
-
-    /**
-     * 備考5
-     * @param bikou5 the bikou5 to set
-     */
-    public void setBikou5(String bikou5) {
-        this.bikou5 = bikou5;
-    }
 }

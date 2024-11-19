@@ -19,6 +19,25 @@
         <script src="#{request.contextPath}/resources/bootstrap/js/bootstrap.min.js" />
         <h:outputScript library="primefaces" name="jquery/jquery.js" />
         <script src="#{request.contextPath}/resources/js/growl.js"></script>
+        <script type="text/javascript">
+            //<![CDATA[
+            var pointY;
+            function subFormOpen() {
+                pointY = $(window).scrollTop();
+                document.getElementById("mainForm").style.setProperty("display", "none");
+                document.getElementById("mainForm").style.setProperty("position", "fixed");
+                document.getElementById("mainForm").style.setProperty("Top", -(pointY) + 54 + "px");
+                document.getElementById("mainForm").style.removeProperty("display");
+            }
+            function subFormClose() {
+                document.getElementById("mainForm").style.setProperty("display", "none");
+                document.getElementById("mainForm").style.removeProperty("position");
+                document.getElementById("mainForm").style.removeProperty("Top");
+                document.getElementById("mainForm").style.removeProperty("display");
+                $(window).scrollTop(pointY);
+            }
+            //]]>
+        </script>
     </h:head>
     <h:body style="padding-top:30px;">
         <f:metadata>
@@ -40,7 +59,8 @@
             </span>
         </nav>
         <br/>
-        <h:form id="mainform" onkeypress="if (event.keyCode === 13) { return false; }">
+        <h:form id="form" onkeypress="if (event.keyCode === 13) { return false; }">
+            <div id="mainForm" style="width: 100%;">
             <p:growl id="growlMessage" showDetail="false" sticky="true"  escape="false"/>
             <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
                 <f:facet name="message">
@@ -57,7 +77,7 @@
             <div id="loadinggif">
                 <img src="#{request.contextPath}/resources/gif/gif-load.gif"/>
             </div>
-            <p:panel id="searchpanel" style="border:none;font-size:0.8em; ">
+            <p:panel id="searchpanel" style="border:none;font-size:0.8em;#{gXHDO201B010.displayStyle} ">
                 <table>
                     <tr>
                         <td>
@@ -175,7 +195,7 @@
                     </tr>
                 </table>
             </p:panel>
-            <p:panel id="buttonpanel" style="border:none;margin-top:-10px;">
+            <p:panel id="buttonpanel" style="border:none;margin-top:-10px;#{gXHDO201B010.displayStyle} ">
                 <p:commandButton id="btnSearch" style="width:100px;height:25px;font-size:0.7em;margin-left:0px;text-align:center;"
                                 value="検索" 
                                 actionListener="#{gXHDO201B010.checkInputAndSearch()}"
@@ -195,7 +215,7 @@
                                 process="@this"
                                 ajax="false"/>
             </p:panel>
-            <div style="margin-top:-15px;">
+            <div style="margin-top:-15px;#{gXHDO201B010.displayStyle}">
                 <p:dataTable id="idDataTable" var="item" style="font-size:0.8em;margin-top:20px;" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap"
                              value="#{gXHDO201B010.listData}" emptyMessage="" paginator="true" paginatorPosition="top" rows="#{gXHDO201B010.getPagenatorCount()}">
                     <p:column id="lotno" headerText="ﾛｯﾄNo." >
@@ -471,6 +491,11 @@
                     </p:column>
                 </p:dataTable>
             </div>
+            </div>
+            <div>
+                <ui:include src="/secure/common/initMessage.xhtml"/>
+            </div>
+
         </h:form>
     </h:body>
 </html>

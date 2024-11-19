@@ -124,6 +124,21 @@ public class GXHDO211CModel implements Serializable {
      * 品種
      */
     private String hinsyu  = "";
+    
+    /**
+     * ｵｰﾅｰｺｰﾄﾞ
+     */
+    private String ownercode  = "";
+
+    /**
+     * 担当者
+     */
+    private String tantou  = "";
+
+    /**
+     * 電極ﾃｰﾌﾟ
+     */
+    private String eatape  = "";
 
 
     /**
@@ -548,6 +563,54 @@ public class GXHDO211CModel implements Serializable {
      */
     public void setHinsyu(String hinsyu) {
         this.hinsyu = hinsyu;
+    }
+
+    /**
+     * ｵｰﾅｰｺｰﾄﾞ
+     * @return the ownercode
+     */
+    public String getOwnercode() {
+        return ownercode;
+    }
+
+    /**
+     * ｵｰﾅｰｺｰﾄﾞ
+     * @param ownercode the ownercode to set
+     */
+    public void setOwnercode(String ownercode) {
+        this.ownercode = ownercode;
+    }
+
+    /**
+     * 担当者
+     * @return the tantou
+     */
+    public String getTantou() {
+        return tantou;
+    }
+
+    /**
+     * 担当者
+     * @param tantou the tantou to set
+     */
+    public void setTantou(String tantou) {
+        this.tantou = tantou;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟ
+     * @return the eatape
+     */
+    public String getEatape() {
+        return eatape;
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟ
+     * @param eatape the eatape to set
+     */
+    public void setEatape(String eatape) {
+        this.eatape = eatape;
     }
 
 }

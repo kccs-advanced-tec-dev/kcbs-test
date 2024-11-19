@@ -14,6 +14,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import javax.annotation.Resource;
@@ -384,9 +385,9 @@ public class GXHDO101A implements Serializable {
 
             // ﾛｯﾄNo仕掛存在ﾁｪｯｸ
             QueryRunner queryRunnerWip = new QueryRunner(dataSourceWip);
-
-            Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);
-            if (shikakariData == null || shikakariData.isEmpty()) {
+            
+            Map shikakariData = loadShikakariData(queryRunnerWip, lotNo);     
+                if (shikakariData == null || shikakariData.isEmpty()) {
                 setMenuTableRender(false);
                 setErrorMessage(MessageUtil.getMessage("XHD-000039"));
                 FacesMessage message = new FacesMessage(FacesMessage.SEVERITY_ERROR, getErrorMessage(), null);
@@ -946,6 +947,7 @@ public class GXHDO101A implements Serializable {
 
             // 工程不良テーブルから登録Noを取得する
             List<SrKoteifuryo> listSrKoteifuryo = getSrKoteifuryoList(queryRunnerQcdb, strKojyo, strLotNo, strEdaban);
+        
             // 親ﾛｯﾄ枝番の取得
             String oyalotedaban = getOyaLotEdaban(queryRunnerWip, strKojyo, strLotNo, strEdaban);
             while (!oyalotedaban.isEmpty() && !oyalotedaban.equals("000")) {
@@ -4257,7 +4259,7 @@ public class GXHDO101A implements Serializable {
      * @throws SQLException
      */
     private List<SrKoteifuryo> getSrKoteifuryoList(QueryRunner queryRunnerXHD, String kojyo, String lotNo, String edaban) throws SQLException {
-        String sql = "SELECT torokuno "
+        String sql = "SELECT torokuno,hakkenkotei "
                 + "FROM sr_koteifuryo "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? "
                 + "ORDER BY torokuno ";
@@ -4268,6 +4270,7 @@ public class GXHDO101A implements Serializable {
 
         Map<String, String> mapping = new HashMap<>();
         mapping.put("torokuno", "torokuno");
+		mapping.put("hakkenkotei", "hakkenkotei");
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
         ResultSetHandler<List<SrKoteifuryo>> beanHandler = new BeanListHandler<>(SrKoteifuryo.class, rowProcessor);

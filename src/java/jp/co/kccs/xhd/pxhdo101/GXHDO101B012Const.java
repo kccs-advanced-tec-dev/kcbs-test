@@ -229,6 +229,21 @@ public class GXHDO101B012Const {
     public static final String BIKOU2 = "sr_cutcheck_bikou2";
 
     /**
+     * 備考3
+     */
+    public static final String BIKOU3 = "sr_cutcheck_bikou3";
+
+    /**
+     * 備考4
+     */
+    public static final String BIKOU4 = "sr_cutcheck_bikou4";
+
+    /**
+     * 備考5
+     */
+    public static final String BIKOU5 = "sr_cutcheck_bikou5";
+
+    /**
      * 枝番ｺﾋﾟｰ(画面上ボタン)
      */
     public static final String BTN_COPY_EDABAN_TOP = "sr_cutcheck_copy_edaban_Top";

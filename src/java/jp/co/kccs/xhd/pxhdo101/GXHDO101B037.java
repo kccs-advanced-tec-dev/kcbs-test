@@ -981,19 +981,19 @@ public class GXHDO101B037 implements IFormLogic {
                 }
                 
                 // 単位重量の設定
-                if (!StringUtil.isEmpty(tanijyuryo)) {
-                    FXHDD01 itemTanijyuryo = getItemRow(processData.getItemList(), GXHDO101B037Const.TANIJURYO);
-                    int scale = 0;
-                    try {
-                        scale = Integer.parseInt(itemTanijyuryo.getInputLengthDec());
-                    } catch (NumberFormatException e) {
-                        //処理なし  
-                    }
-                    BigDecimal decTanijuryo = new BigDecimal(tanijyuryo);
-
-                    // 単位重量(現在の桁数に丸めて設定)
-                    itemTanijyuryo.setValue(decTanijuryo.setScale(scale, RoundingMode.DOWN).toPlainString());
-                }
+//                if (!StringUtil.isEmpty(tanijyuryo)) {
+//                    FXHDD01 itemTanijyuryo = getItemRow(processData.getItemList(), GXHDO101B037Const.TANIJURYO);
+//                    int scale = 0;
+//                    try {
+//                        scale = Integer.parseInt(itemTanijyuryo.getInputLengthDec());
+//                    } catch (NumberFormatException e) {
+//                        //処理なし  
+//                    }
+//                    BigDecimal decTanijuryo = new BigDecimal(tanijyuryo);
+//
+//                    // 単位重量(現在の桁数に丸めて設定)
+//                    itemTanijyuryo.setValue(decTanijuryo.setScale(scale, RoundingMode.DOWN).toPlainString());
+//                }
                 return true;
             }
 
@@ -1162,7 +1162,7 @@ public class GXHDO101B037 implements IFormLogic {
         List<String> dataList = new ArrayList<>(Arrays.asList(data));
 
         // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
-        String sql = "SELECT syorisuu, syoribi, syorijikoku, tantousyacode "
+        String sql = "SELECT jissekino, syorisuu, syoribi, syorijikoku, tantousyacode "
                 + "FROM jisseki "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND ";
 
@@ -1171,6 +1171,7 @@ public class GXHDO101B037 implements IFormLogic {
         sql += " ORDER BY syoribi DESC, syorijikoku DESC";
 
         Map mapping = new HashMap<>();
+        mapping.put("jissekino", "jissekino");
         mapping.put("syorisuu", "syorisuu");
         mapping.put("syoribi", "syoribi");
         mapping.put("syorijikoku", "syorijikoku");
@@ -2422,7 +2423,13 @@ public class GXHDO101B037 implements IFormLogic {
 
         // 実績情報の設定
         if (jissekiData != null && 0 < jissekiData.size()) {
-            setItemData(processData, GXHDO101B037Const.OKURIRYOHINSUU, String.valueOf(jissekiData.get(0).getSyorisuu()));
+            // 生産情報の取得
+            Map seisanData = loadSeisanData(queryRunnerWip, jissekiData.get(0).getJissekino());
+            if (seisanData == null || seisanData.isEmpty()) {
+                setItemData(processData, GXHDO101B037Const.OKURIRYOHINSUU, "0");
+            } else {
+                setItemData(processData, GXHDO101B037Const.OKURIRYOHINSUU, String.valueOf(seisanData.get("ryohinsuu")));
+            }
             setItemData(processData, GXHDO101B037Const.KEISUU_DAY, DateUtil.getDisplayDate(jissekiData.get(0).getSyoribi(), "yyMMdd"));
             setItemData(processData, GXHDO101B037Const.KEISUU_TIME, DateUtil.getDisplayTime(jissekiData.get(0).getSyorijikoku(), "HHmm"));
             setItemData(processData, GXHDO101B037Const.TANTOUSYA, jissekiData.get(0).getTantousyacode());
@@ -2442,10 +2449,69 @@ public class GXHDO101B037 implements IFormLogic {
             itemTanijyuryo.setValue(tanijyuryo.setScale(scale, RoundingMode.DOWN).toPlainString());
         }
 
-        // 後続処理メソッド設定
-        processData.setMethod("");
+        // 総重量計算
+        doCalcSoujuryou(processData);
 
+        // 後続処理メソッド設定(歩留まり計算)
+        processData.setMethod("doCalculatBudomari");
+        
         return processData;
     }
-    
+     /**
+     * [実績]から、ﾃﾞｰﾀを取得
+     * @param queryRunnerWip オブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param date ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ(検索キー)
+     * @return 取得データ
+     * @throws SQLException 
+     */
+    private Map loadSeisanData(QueryRunner queryRunnerWip, int jissekino) throws SQLException {
+                 
+        // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+        String sql = "SELECT ryohinsuu "
+                + "FROM seisan "
+                + "WHERE jissekino = ?";
+                
+        List<Object> params = new ArrayList<>();
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerWip.query(sql, new MapHandler(), params.toArray());
+    }   
+    /**
+     * 総重量計算処理(実処理)
+     *
+     * @param processData 処理制御データ
+     */
+    public void doCalcSoujuryou(ProcessData processData) {
+
+        processData.setMethod("");
+
+        try {
+
+            // 総重量
+            FXHDD01 itemSojuryo = getItemRow(processData.getItemList(), GXHDO101B037Const.SOJURYO);
+
+            String ryohinkosu = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B037Const.OKURIRYOHINSUU, null)); // 良品個数
+            String tanijuryo = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B037Const.TANIJURYO, null)); // 単位重量
+
+            // 良品個数を数値変換
+            BigDecimal decRyohinkosu = new BigDecimal(ryohinkosu);
+            // 単位重量を数値変換
+            BigDecimal decTanijuryo = new BigDecimal(tanijuryo);
+
+            // 1つ以上の項目の入力値が0以下だった場合、当処理を終了する
+            if (decRyohinkosu.signum() > 0 && decTanijuryo.signum() > 0) {
+
+                // 総重量の計算を行う(小数点第三位を四捨五入する)
+                BigDecimal decSojuryo = decRyohinkosu.multiply(decTanijuryo).divide(BigDecimal.valueOf(100), 2, RoundingMode.DOWN);
+
+                // 算出結果を総重量に設定
+                itemSojuryo.setValue(decSojuryo.toPlainString());
+            }
+
+        } catch (NumberFormatException e) {
+            // 処理なし
+        }
+    }
 }

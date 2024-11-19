@@ -183,6 +183,16 @@
                             </p:inputText>
                         </td>
                     </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblGoki" value="号機" style="width:100px;"/>
+                        </td>
+                        <td colspan="3">
+                            <p:inputText id="pGoki" value="#{gXHDO201B043.goki}" maxlength="4" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B043.checkByte('goki', 4)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
                 </table>
             </p:panel>
             <p:panel id="buttonpanel" style="border:none;margin-top:-10px;#{gXHDO201B043.displayStyle}">

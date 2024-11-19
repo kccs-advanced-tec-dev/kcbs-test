@@ -354,6 +354,21 @@ public class GXHDO101B046Const {
     public static final String BTN_UKEIRESOJURYO_KEISAN_TOP = "sr_gaikankensa_ukeiresojuryo_keisan_Top";
 
     /**
+     * 設備ﾃﾞｰﾀ連携1回目(画面上ボタン)
+     */
+    public static final String BTN_SETSUBI_DATA_RENKEI1_TOP = "sr_gaikankensa_setsubi_data_renkei1_Top";
+    
+    /**
+     * 設備ﾃﾞｰﾀ連携2回目(画面上ボタン)
+     */
+    public static final String BTN_SETSUBI_DATA_RENKEI2_TOP = "sr_gaikankensa_setsubi_data_renkei2_Top";
+    
+    /**
+     * 設備ﾃﾞｰﾀ連携3回目(画面上ボタン)
+     */
+    public static final String BTN_SETSUBI_DATA_RENKEI3_TOP = "sr_gaikankensa_setsubi_data_renkei3_Top";
+
+    /**
      * 枝番ｺﾋﾟｰ(画面下ボタン)
      */
     public static final String BTN_COPY_EDABAN_BOTTOM = "sr_gaikankensa_copy_edaban_Bottom";
@@ -407,8 +422,22 @@ public class GXHDO101B046Const {
      * 受入れ総重量計算(画面下ボタン)
      */
     public static final String BTN_UKEIRESOJURYO_KEISAN_BOTTOM = "sr_gaikankensa_ukeiresojuryo_keisan_Bottom";
-
-
+    
+    /**
+     * 設備ﾃﾞｰﾀ連携1回目(画面下ボタン)
+     */
+    public static final String BTN_SETSUBI_DATA_RENKEI1_BOTTOM = "sr_gaikankensa_setsubi_data_renkei1_Bottom";
+    
+    /**
+     * 設備ﾃﾞｰﾀ連携2回目(画面下ボタン)
+     */
+    public static final String BTN_SETSUBI_DATA_RENKEI2_BOTTOM = "sr_gaikankensa_setsubi_data_renkei2_Bottom";
+    
+    /**
+     * 設備ﾃﾞｰﾀ連携3回目(画面下ボタン)
+     */
+    public static final String BTN_SETSUBI_DATA_RENKEI3_BOTTOM = "sr_gaikankensa_setsubi_data_renkei3_Bottom";
+    
     /**
      * ユーザー認証パラメータ(修正)
      */
@@ -418,4 +447,29 @@ public class GXHDO101B046Const {
      * ユーザー認証パラメータ(削除)
      */
     public static final String USER_AUTH_DELETE_PARAM = "sr_gaikankensa_delete_button";
+
+    /**
+     * 状況
+     */
+    public static final String JOKYO = "sr_gaikankensa_jokyo";
+
+    /**
+     * 公差1
+     */
+    public static final String KOSA1 = "sr_gaikankensa_kosa1";
+
+    /**
+     * 公差2
+     */
+    public static final String KOSA2 = "sr_gaikankensa_kosa2";
+
+    /**
+     * 公差3
+     */
+    public static final String KOSA3 = "sr_gaikankensa_kosa3";
+
+    /**
+     * 公差4
+     */
+    public static final String KOSA4 = "sr_gaikankensa_kosa4";
 }

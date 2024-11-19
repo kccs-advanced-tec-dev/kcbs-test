@@ -681,6 +681,7 @@ public class GXHDO201B005 implements Serializable {
                     + ", T1.petfilmsyurui"
                     + ", T1.Kotyakugouki"
                     + ", T1.Kotyakusheet"
+                    + ", T1.KotyakusheetLot"
                     + ", T1.ShitaTanshigouki"
                     + ", T1.UwaTanshigouki"
                     + ", (CASE WHEN T1.ShitaTanshiBukunuki = 1 THEN '実施' WHEN T1.ShitaTanshiBukunuki = 0 THEN '未実施' ELSE NULL END) AS ShitaTanshiBukunuki"
@@ -738,11 +739,8 @@ public class GXHDO201B005 implements Serializable {
                     + ", T1.lastlayerTANTOSYA"
                     + ", T1.lastlayerBIKO"
                     + ", T1.elotno"
-                    + ", (CASE WHEN T1.tapetsukaikiri = 1 THEN 'ﾁｪｯｸ' ELSE '未ﾁｪｯｸ' END) AS tapetsukaikiri"
-                    + ", (CASE WHEN T1.jilothe = 1 THEN 'ﾁｪｯｸ' ELSE '未ﾁｪｯｸ' END) AS jilothe"
-                    + ", T1.bikou3"
-                    + ", T1.bikou4"
-                    + ", T1.bikou5"
+                    + ", T1.sekiatsu"
+                    + ", T1.lastlayer"
                     + " FROM sr_rsussek T1 "
                     + "WHERE (? IS NULL OR T1.KOJYO = ?) "
                     + "AND   (? IS NULL OR T1.LOTNO = ?) "
@@ -786,6 +784,7 @@ public class GXHDO201B005 implements Serializable {
             mapping.put("petfilmsyurui", "petfilmsyurui");
             mapping.put("Kotyakugouki", "kotyakugouki");
             mapping.put("Kotyakusheet", "kotyakusheet");
+            mapping.put("KotyakusheetLot", "kotyakusheetLot");
             mapping.put("ShitaTanshigouki", "shitaTanshigouki");
             mapping.put("UwaTanshigouki", "uwaTanshigouki");
             mapping.put("ShitaTanshi", "shitaTanshi");
@@ -831,11 +830,8 @@ public class GXHDO201B005 implements Serializable {
             mapping.put("lastlayerTANTOSYA", "lastlayertantosya");//最上層担当者
             mapping.put("lastlayerBIKO", "lastlayerbiko");//最上層備考
             mapping.put("elotno", "elotno");//電極製版ﾛｯﾄNo
-            mapping.put("tapetsukaikiri", "tapetsukaikiri");//ﾃｰﾌﾟ使い切り
-            mapping.put("jilothe", "jilothe");//次ﾛｯﾄへ
-            mapping.put("bikou3", "bikou3");//備考3
-            mapping.put("bikou4", "bikou4");//備考4
-            mapping.put("bikou5", "bikou5");//備考5
+            mapping.put("sekiatsu", "sekiatsu");//電極製版ﾛｯﾄNo
+            mapping.put("lastlayer", "lastlayer");//最上層
 
             BeanProcessor beanProcessor = new BeanProcessor(mapping);
             RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);

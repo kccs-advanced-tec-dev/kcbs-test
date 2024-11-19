@@ -1212,6 +1212,8 @@ public class GXHDO101B034 implements IFormLogic {
         this.setItemData(processData, GXHDO101B034Const.BIKO1, getSrBarrel2ItemData(GXHDO101B034Const.BIKO1, srBarrel2Data));
         // 備考2
         this.setItemData(processData, GXHDO101B034Const.BIKO2, getSrBarrel2ItemData(GXHDO101B034Const.BIKO2, srBarrel2Data));
+        // 外観担当者
+        this.setItemData(processData, GXHDO101B034Const.GAIKANTANOU, getSrBarrel2ItemData(GXHDO101B034Const.GAIKANTANOU, srBarrel2Data));
  
     }
 
@@ -1524,7 +1526,7 @@ public class GXHDO101B034 implements IFormLogic {
                 + "tanmenpastefusokucheck,tanmenbulotnashicheck,tanmendipnashicheck,tanmencrackcheck,tanmenhagarecheck,"
                 + "tanmendenkyokurosyutsucheck,hantei,patternno,bikou1,bikou2,bikou3,jissekino,tourokunichiji,koushinnichiji,"
                 + "lotkubuncode,ownercode,gouki2,gouki3,gouki4,juryou,chargeroyu,StartKakuninsyacode,EndTantosyacode,"
-                + "kansoStartKakuninsyacode,kansoEndTantosyacode,furuisenbetu, revision, '0' AS deleteflag "
+                + "kansoStartKakuninsyacode,kansoEndTantosyacode,furuisenbetu, revision, '0' AS deleteflag, gaikantantousya "
                 + "FROM sr_barrel2 "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND kaisuu = ? ";
         
@@ -1599,6 +1601,7 @@ public class GXHDO101B034 implements IFormLogic {
         mapping.put("furuisenbetu", "furuisenbetu");                                      //乾燥ﾌﾙｲ選別
         mapping.put("revision", "revision");                                              //revision
         mapping.put("deleteflag", "deleteflag");                                          //削除ﾌﾗｸﾞ
+        mapping.put("gaikantantousya", "gaikantantousya");                                //外観担当者
 
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
@@ -1631,7 +1634,7 @@ public class GXHDO101B034 implements IFormLogic {
                 + "tanmenpastefusokucheck,tanmenbulotnashicheck,tanmendipnashicheck,tanmencrackcheck,tanmenhagarecheck,"
                 + "tanmendenkyokurosyutsucheck,hantei,patternno,bikou1,bikou2,bikou3,jissekino,tourokunichiji,koushinnichiji,"
                 + "lotkubuncode,ownercode,gouki2,gouki3,gouki4,juryou,chargeroyu,StartKakuninsyacode,EndTantosyacode,"
-                + "kansoStartKakuninsyacode,kansoEndTantosyacode,furuisenbetu, revision, deleteflag "
+                + "kansoStartKakuninsyacode,kansoEndTantosyacode,furuisenbetu, revision, deleteflag,gaikantantousya "
                 + "FROM tmp_sr_barrel2 "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND kaisuu = ? AND deleteflag = ? ";
         
@@ -1707,6 +1710,7 @@ public class GXHDO101B034 implements IFormLogic {
         mapping.put("furuisenbetu", "furuisenbetu");                                      //乾燥ﾌﾙｲ選別
         mapping.put("revision", "revision");                                              //revision
         mapping.put("deleteflag", "deleteflag");                                          //削除ﾌﾗｸﾞ
+        mapping.put("gaikantantousya", "gaikantantousya");                                //外観担当者
 
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
@@ -1984,9 +1988,9 @@ public class GXHDO101B034 implements IFormLogic {
                 + " kojyo,lotno,edaban,kaisuu,kcpno,kyakusaki,lotkubuncode,ownercode,lotpre,suuryou,juryou,potkaitengouki,gouki2,gouki3,gouki4,potkaitenjikan,"
                 + "chargeroyu,potsuu,potkaitenkaishinichiji,potkaitentantousya,StartKakuninsyacode,potkaitensyuuryounichiji,EndTantosyacode,kansougouki,"
                 + "kansoukaishinichiji,kansoutantousya,kansoStartKakuninsyacode,kansousyuuryounichiji,kansoEndTantosyacode,furuisenbetu,hantei,bikou1,"
-                + "bikou2,tourokunichiji,koushinnichiji,revision, deleteflag "
+                + "bikou2,tourokunichiji,koushinnichiji,revision, deleteflag,gaikantantousya "
                 + ") VALUES ("
-                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterTmpSrBarrel2(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, itemList, null, jissekino, processData);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -2017,7 +2021,7 @@ public class GXHDO101B034 implements IFormLogic {
                 + " kcpno = ?,kyakusaki = ?,lotkubuncode = ?,ownercode = ?,lotpre = ?,suuryou = ?,juryou = ?,potkaitengouki = ?,gouki2 = ?,gouki3 = ?,gouki4 = ?,"
                 + "potkaitenjikan = ?,chargeroyu = ?,potsuu = ?,potkaitenkaishinichiji = ?,potkaitentantousya = ?,StartKakuninsyacode = ?,potkaitensyuuryounichiji = ?,"
                 + "EndTantosyacode = ?,kansougouki = ?,kansoukaishinichiji = ?,kansoutantousya = ?,kansoStartKakuninsyacode = ?,kansousyuuryounichiji = ?,"
-                + "kansoEndTantosyacode = ?,furuisenbetu = ?,hantei = ?,bikou1 = ?,bikou2 = ?,koushinnichiji = ?,revision = ?, deleteflag = ? "
+                + "kansoEndTantosyacode = ?,furuisenbetu = ?,hantei = ?,bikou1 = ?,bikou2 = ?,koushinnichiji = ?,revision = ?, deleteflag = ?, gaikantantousya = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ? ";
 
         // 更新前の値を取得
@@ -2168,6 +2172,7 @@ public class GXHDO101B034 implements IFormLogic {
 
         params.add(newRev);     //revision
         params.add(deleteflag); //削除ﾌﾗｸﾞ
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B034Const.GAIKANTANOU, srBarrel2Data))); // 外観担当者
         
         return params;
     }
@@ -2194,9 +2199,9 @@ public class GXHDO101B034 implements IFormLogic {
         String sql = "INSERT INTO sr_barrel2 ("
                 + " kojyo,lotno,edaban,kaisuu,kcpno,kyakusaki,lotkubuncode,ownercode,lotpre,suuryou,juryou,potkaitengouki,gouki2,gouki3,gouki4,potkaitenjikan,chargeroyu,potsuu,"
                 + "potkaitenkaishinichiji,potkaitentantousya,StartKakuninsyacode,potkaitensyuuryounichiji,EndTantosyacode,kansougouki,kansoukaishinichiji,kansoutantousya,"
-                + "kansoStartKakuninsyacode,kansousyuuryounichiji,kansoEndTantosyacode,furuisenbetu,hantei,bikou1,bikou2,tourokunichiji,koushinnichiji,revision "
+                + "kansoStartKakuninsyacode,kansousyuuryounichiji,kansoEndTantosyacode,furuisenbetu,hantei,bikou1,bikou2,tourokunichiji,koushinnichiji,revision,gaikantantousya "
                 + ") VALUES ("
-                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + " ?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterSrBarrel2(true, newRev, kojyo, lotNo, edaban, jissekino, systemTime, itemList, srBarrel2, processData);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -2226,7 +2231,7 @@ public class GXHDO101B034 implements IFormLogic {
                 + " kcpno = ?,kyakusaki = ?,lotkubuncode = ?,ownercode = ?,lotpre = ?,suuryou = ?,juryou = ?,potkaitengouki = ?,gouki2 = ?,gouki3 = ?,gouki4 = ?,"
                 + "potkaitenjikan = ?,chargeroyu = ?,potsuu = ?,potkaitenkaishinichiji = ?,potkaitentantousya = ?,StartKakuninsyacode = ?,potkaitensyuuryounichiji = ?,"
                 + "EndTantosyacode = ?,kansougouki = ?,kansoukaishinichiji = ?,kansoutantousya = ?,kansoStartKakuninsyacode = ?,kansousyuuryounichiji = ?,"
-                + "kansoEndTantosyacode = ?,furuisenbetu = ?,hantei = ?,bikou1 = ?,bikou2 = ?,koushinnichiji = ?,revision = ? "
+                + "kansoEndTantosyacode = ?,furuisenbetu = ?,hantei = ?,bikou1 = ?,bikou2 = ?,koushinnichiji = ?,revision = ?, gaikantantousya = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ? ";
 
         // 更新前の値を取得
@@ -2345,6 +2350,7 @@ public class GXHDO101B034 implements IFormLogic {
         }
 
         params.add(newRev); //revision
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B034Const.GAIKANTANOU, srBarrel2Data))); // 外観担当者
         
         return params;
     }
@@ -2627,6 +2633,9 @@ public class GXHDO101B034 implements IFormLogic {
             // 備考2
             case GXHDO101B034Const.BIKO2:
                 return StringUtil.nullToBlank(srBarrel2Data.getBikou2());
+            // 外観担当者
+            case GXHDO101B034Const.GAIKANTANOU:
+                return StringUtil.nullToBlank(srBarrel2Data.getGaikantantousya());
             default:
                 return null;            
         }
@@ -2656,7 +2665,7 @@ public class GXHDO101B034 implements IFormLogic {
                 + "kansoutantousya,sample,tanmenpinholecheck,tanmenpastefusokucheck,tanmenbulotnashicheck,tanmendipnashicheck,tanmencrackcheck,"
                 + "tanmenhagarecheck,tanmendenkyokurosyutsucheck,hantei,patternno,bikou1,bikou2,bikou3,jissekino,tourokunichiji,koushinnichiji,"
                 + "lotkubuncode,ownercode,gouki2,gouki3,gouki4,juryou,chargeroyu,StartKakuninsyacode,EndTantosyacode,kansoStartKakuninsyacode,"
-                + "kansoEndTantosyacode,furuisenbetu, revision, deleteflag "
+                + "kansoEndTantosyacode,furuisenbetu, revision, deleteflag,gaikantantousya "
                 + ") SELECT "
                 + " kojyo,lotno,edaban,kaisuu,lotpre,kcpno,suuryou,kyakusaki,potsuu,pottounyuujikan,potkaitentantousya,potkaitengouki,"
                 + "potkaitenjikan,potkaitenkaishinichiji,potkaitensyuuryounichiji,methanolkoukanjikan,methanolkoukantantousya,"
@@ -2664,7 +2673,7 @@ public class GXHDO101B034 implements IFormLogic {
                 + "kansoutantousya,sample,tanmenpinholecheck,tanmenpastefusokucheck,tanmenbulotnashicheck,tanmendipnashicheck,tanmencrackcheck,"
                 + "tanmenhagarecheck,tanmendenkyokurosyutsucheck,hantei,patternno,bikou1,bikou2,bikou3,jissekino,?,?,"
                 + "lotkubuncode,ownercode,gouki2,gouki3,gouki4,juryou,chargeroyu,StartKakuninsyacode,EndTantosyacode,kansoStartKakuninsyacode,"
-                + "kansoEndTantosyacode,furuisenbetu, ?, ? "
+                + "kansoEndTantosyacode,furuisenbetu, ?, ?,gaikantantousya "
                 + " FROM sr_barrel2 "
                 + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? ";
 

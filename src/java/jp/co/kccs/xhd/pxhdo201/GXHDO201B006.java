@@ -120,6 +120,8 @@ public class GXHDO201B006 implements Serializable {
     private String katashiki = "";
     /** 検索条件：容量 */
     private String yoryo = "";
+    /** 検索条件：号機 */
+    private String goki = "";
     /** 検索条件：印刷開始日(FROM) */
     private String startDateF = "";
     /** 検索条件：印刷開始日(TO) */
@@ -230,6 +232,22 @@ public class GXHDO201B006 implements Serializable {
      */
     public void setYoryo(String yoryo) {
         this.yoryo = yoryo;
+    }
+
+    /**
+     * 検索条件：号機
+     * @return the goki
+     */
+    public String getGoki() {
+        return goki;
+    }
+
+    /**
+     * 検索条件：号機
+     * @param goki the goki to set
+     */
+    public void setGoki(String goki) {
+        this.goki = goki;
     }
 
     /**
@@ -424,6 +442,7 @@ public class GXHDO201B006 implements Serializable {
         kcpNo = "";
         katashiki = "";
         yoryo = "";
+        goki = "";
         startDateF = "";
         startDateT = "";
         startTimeF = "";
@@ -464,6 +483,10 @@ public class GXHDO201B006 implements Serializable {
         }
         // 容量
         if (existError(validateUtil.checkC101(getYoryo(), "容量", 4))) {
+            return;
+        }
+        // 号機
+        if (existError(validateUtil.checkC101(getGoki(), "号機", 4))) {
             return;
         }
         // 開始日(FROM)
@@ -584,6 +607,7 @@ public class GXHDO201B006 implements Serializable {
                     + "AND   (? IS NULL OR KCPNO LIKE ? ESCAPE '\\\\') "
                     + "AND   (? IS NULL OR SUBSTR(KCPNO, 6, 2) = ?) "
                     + "AND   (? IS NULL OR SUBSTR(KCPNO, 10, 4) = ?) "
+                    + "AND   (? IS NULL OR GOKI = ?) "
                     + "AND   (? IS NULL OR KAISINICHIJI >= ?) "
                     + "AND   (? IS NULL OR KAISINICHIJI <= ?) "
                     + "AND   (? IS NULL OR SYURYONICHIJI >= ?) "
@@ -863,6 +887,7 @@ public class GXHDO201B006 implements Serializable {
                     + "AND   (? IS NULL OR T1.KCPNO LIKE ? ESCAPE '\\\\') "
                     + "AND   (? IS NULL OR SUBSTR(T1.KCPNO, 6, 2) = ?) "
                     + "AND   (? IS NULL OR SUBSTR(T1.KCPNO, 10, 4) = ?) "
+                    + "AND   (? IS NULL OR T1.GOKI = ?) "
                     + "AND   (? IS NULL OR T1.KAISINICHIJI >= ?) "
                     + "AND   (? IS NULL OR T1.KAISINICHIJI <= ?) "
                     + "AND   (? IS NULL OR T1.SYURYONICHIJI >= ?) "
@@ -1238,6 +1263,7 @@ public class GXHDO201B006 implements Serializable {
         }
         String paramKatashiki = StringUtil.blankToNull(getKatashiki());
         String paramYoryo = StringUtil.blankToNull(getYoryo());
+        String paramGoki = StringUtil.blankToNull(getGoki());
         Date paramStartDateF = null;
         if (!StringUtil.isEmpty(startDateF)) {
             paramStartDateF = DateUtil.convertStringToDate(getStartDateF(), StringUtil.isEmpty(getStartTimeF()) ? "0000" : getStartTimeF());
@@ -1262,6 +1288,7 @@ public class GXHDO201B006 implements Serializable {
         params.addAll(Arrays.asList(paramKcpno, paramKcpno));
         params.addAll(Arrays.asList(paramKatashiki, paramKatashiki));
         params.addAll(Arrays.asList(paramYoryo, paramYoryo));
+        params.addAll(Arrays.asList(paramGoki, paramGoki));
         params.addAll(Arrays.asList(paramStartDateF, paramStartDateF));
         params.addAll(Arrays.asList(paramStartDateT, paramStartDateT));
         params.addAll(Arrays.asList(paramEndDateF, paramEndDateF));

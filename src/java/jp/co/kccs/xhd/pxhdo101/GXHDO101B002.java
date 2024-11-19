@@ -728,7 +728,11 @@ public class GXHDO101B002 implements IFormLogic {
             DbUtils.commitAndCloseQuietly(conQcdb);
 
             // 後続処理メソッド設定
-            processData.setMethod("doPMLA0212");
+            processData.setMethod("");
+
+            // 完了メッセージとコールバックパラメータを設定
+            processData.setCompMessage("登録しました。");
+            processData.setCollBackParam("complete");
 
             return processData;
         } catch (SQLException e) {
@@ -4356,7 +4360,7 @@ public class GXHDO101B002 implements IFormLogic {
         setInputItemDataSubFormC003(subSrSpsprintScrDataList.get(0));
         
         // 前工程WIP取込画面データ設定
-        setInputItemDataSubFormC020(queryRunnerQcdb, sakiKojyo, sakilotNo8, sakiEdaban, "");
+        setInputItemDataSubFormC020(queryRunnerQcdb, motoKojyo, motoLotNo8, motoEdaban, JOTAI_FLG_TOROKUZUMI);
         return true;
     }
 
@@ -4827,6 +4831,9 @@ public class GXHDO101B002 implements IFormLogic {
                 break;
             case GXHDO101C020Model.PASTE_LOT_1:
             case GXHDO101C020Model.PASTE_LOT_2:
+            case GXHDO101C020Model.PASTE_LOT_3:
+            case GXHDO101C020Model.PASTE_LOT_4:
+            case GXHDO101C020Model.PASTE_LOT_5:
                 mkubun = "内部電極ﾍﾟｰｽﾄ";
                 break;
             case GXHDO101C020Model.UWA_TANSHI:
@@ -4859,7 +4866,14 @@ public class GXHDO101B002 implements IFormLogic {
                 mkubunno = "2";
                 break;
             case GXHDO101C020Model.TAPE_LOT_3:
+            case GXHDO101C020Model.PASTE_LOT_3:
                 mkubunno = "3";
+                break;
+            case GXHDO101C020Model.PASTE_LOT_4:
+                mkubunno = "4";
+                break;
+            case GXHDO101C020Model.PASTE_LOT_5:
+                mkubunno = "5";
                 break;
         }
         return mkubunno;

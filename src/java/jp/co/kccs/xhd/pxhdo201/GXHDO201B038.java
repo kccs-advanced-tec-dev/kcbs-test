@@ -142,6 +142,8 @@ public class GXHDO201B038 implements Serializable {
      * 検索条件：ﾒｯｷ開始時刻(TO)
      */
     private String gouki = "";
+    /** 検索条件：KCPNo */
+    private String kcpNo = "";
 
     /**
      * コンストラクタ
@@ -285,6 +287,22 @@ public class GXHDO201B038 implements Serializable {
         this.gouki = gouki;
     }
 
+    /**
+     * 検索条件：KCPNo
+     * @return the kcpNo
+     */
+    public String getKcpNo() {
+        return kcpNo;
+    }
+
+    /**
+     * 検索条件：KCPNo
+     * @param kcpNo the kcpNo to set
+     */
+    public void setKcpNo(String kcpNo) {
+        this.kcpNo = kcpNo;
+    }
+
 
 //</editor-fold>
     /**
@@ -354,6 +372,7 @@ public class GXHDO201B038 implements Serializable {
         startMekkiTimeF = "";
         startMekkiTimeT = "";
         gouki = "";
+        kcpNo = "";
 
         listData = new ArrayList<>();
     }
@@ -375,6 +394,10 @@ public class GXHDO201B038 implements Serializable {
         if (!StringUtil.isEmpty(getLotNo()) && existError(validateUtil.checkValueE001(getLotNo()))) {
             return;
         }
+        // KCPNO
+        if (existError(validateUtil.checkC103(getKcpNo(), "KCPNO", 25))) {
+            return;
+        } 
         // ﾒｯｷ開始日(FROM)
         if (existError(validateUtil.checkC101(getStartMekkiDateF(), "ﾒｯｷ開始日(from)", 6))
                 || existError(validateUtil.checkC201ForDate(getStartMekkiDateF(), "ﾒｯｷ開始日(from)"))
@@ -486,7 +509,8 @@ public class GXHDO201B038 implements Serializable {
                     + "AND   (? IS NULL OR EDABAN = ?) "
                     + "AND   (? IS NULL OR mekkikaishinichiji >= ?) "
                     + "AND   (? IS NULL OR mekkikaishinichiji <= ?) "
-                    + "AND   (? IS NULL OR gouki = ?) ";
+                    + "AND   (? IS NULL OR gouki = ?) "
+                    + "AND   (? IS NULL OR kcpno LIKE ? ESCAPE '\\\\') ";
 
             // パラメータ設定
             List<Object> params = createSearchParam();
@@ -763,6 +787,8 @@ public class GXHDO201B038 implements Serializable {
                     + "  , bikou1 "
                     + "  , bikou2 "
                     + "  , bikou3 "
+                    + "  , bikou4 "
+                    + "  , bikou5 "
                     + "  , jissekino "
                     + "  , domemeisai "
                     + "  , tyoseimaeph1 "
@@ -803,6 +829,7 @@ public class GXHDO201B038 implements Serializable {
                     + "  , makuatsukakunin "
                     + "  , testhin "
                     + "  , tsunpouave "
+                    + "  , soujyuryoutantousya "
                     + "FROM sr_mekki "
                     + "WHERE (? IS NULL OR kojyo = ?) "
                     + "AND   (? IS NULL OR lotno = ?) "
@@ -810,6 +837,7 @@ public class GXHDO201B038 implements Serializable {
                     + "AND   (? IS NULL OR mekkikaishinichiji >= ?) "
                     + "AND   (? IS NULL OR mekkikaishinichiji <= ?) "
                     + "AND   (? IS NULL OR gouki = ?) "
+                    + "AND   (? IS NULL OR kcpno LIKE ? ESCAPE '\\\\') "
                     + "ORDER BY "
                     + "  kojyo "
                     + "  , lotno "
@@ -847,6 +875,8 @@ public class GXHDO201B038 implements Serializable {
             mapping.put("bikou1", "biko1"); // 備考1
             mapping.put("bikou2", "biko2"); // 備考2
             mapping.put("bikou3", "biko3"); // 備考3
+            mapping.put("bikou4", "biko4"); // 備考3
+            mapping.put("bikou5", "biko5"); // 備考3
             mapping.put("jissekino", "jissekino"); // 回数
             mapping.put("domemeisai", "domemeisai"); // 使用ﾄﾞｰﾑ明細
             mapping.put("tyoseimaeph1", "tyoseimaeph1"); // 1回目調整前PH値
@@ -888,6 +918,7 @@ public class GXHDO201B038 implements Serializable {
             mapping.put("testhin", "testhin"); // ﾃｽﾄ品
             mapping.put("tsunpouave", "tsunpouave"); // T寸法AVE(mm)
             mapping.put("mekkisyurui", "mekkisyurui"); // ﾒｯｷ種類
+            mapping.put("soujyuryoutantousya", "soujyuryoutantousya"); // 総重量担当者
 //            mapping.put("makuatsuni01", "makuatsuni01"); // Ni膜厚01
 //            mapping.put("makuatsuni02", "makuatsuni02"); // Ni膜厚02
 //            mapping.put("makuatsuni03", "makuatsuni03"); // Ni膜厚03
@@ -1177,6 +1208,10 @@ public class GXHDO201B038 implements Serializable {
             paramLotNo = StringUtils.substring(getLotNo(), 3, 11);
             paramEdaban = StringUtil.blankToNull(StringUtils.substring(getLotNo(), 11, 14));
         }
+        String paramKcpno = null;
+        if (!StringUtil.isEmpty(kcpNo)) {
+            paramKcpno = "%" + DBUtil.escapeString(getKcpNo()) + "%";
+        }
         Date paramStartDateF = null;
         if (!StringUtil.isEmpty(startMekkiDateF)) {
             paramStartDateF = DateUtil.convertStringToDate(getStartMekkiDateF(), StringUtil.isEmpty(getStartMekkiTimeF()) ? "0000" : getStartMekkiTimeF());
@@ -1194,6 +1229,7 @@ public class GXHDO201B038 implements Serializable {
         params.addAll(Arrays.asList(paramStartDateF, paramStartDateF));
         params.addAll(Arrays.asList(paramStartDateT, paramStartDateT));
         params.addAll(Arrays.asList(paramGouki, paramGouki));
+        params.addAll(Arrays.asList(paramKcpno, paramKcpno));
 
         return params;
     }

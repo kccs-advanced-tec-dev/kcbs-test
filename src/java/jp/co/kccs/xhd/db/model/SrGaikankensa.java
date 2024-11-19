@@ -322,6 +322,11 @@ public class SrGaikankensa {
     private Integer deleteflag;
 
     /**
+     * 状況
+     */
+    private String jokyo;
+
+    /**
      * 工場ｺｰﾄﾞ
      *
      * @return the kojyo
@@ -1379,6 +1384,22 @@ public class SrGaikankensa {
      */
     public void setDeleteflag(Integer deleteflag) {
         this.deleteflag = deleteflag;
+    }
+
+    /**
+     * 状況
+     * @return the jokyo
+     */
+    public String getJokyo() {
+        return jokyo;
+    }
+
+    /**
+     * 状況
+     * @param jokyo the jokyo to set
+     */
+    public void setJokyo(String jokyo) {
+        this.jokyo = jokyo;
     }
 
 }

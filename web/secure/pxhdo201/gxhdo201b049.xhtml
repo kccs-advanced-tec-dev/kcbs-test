@@ -218,7 +218,7 @@
                     </p:column>
                     <p:column id="ryouhintopreelmaki1" headerText="良品TPﾘｰﾙ巻数①" styleClass="number">
                         <p:outputLabel value="#{item.ryouhintopreelmaki1}">
-                            <f:convertNumber pattern="##0"/>
+                            <f:convertNumber pattern="##0.00"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="ryouhintopreelhonsu1" headerText="良品TPﾘｰﾙ本数①" styleClass="number">
@@ -228,7 +228,7 @@
                     </p:column>
                     <p:column id="ryouhintopreelmaki2" headerText="良品TPﾘｰﾙ巻数②" styleClass="number">
                         <p:outputLabel value="#{item.ryouhintopreelmaki2}">
-                            <f:convertNumber pattern="##0"/>
+                            <f:convertNumber pattern="##0.00"/>
                         </p:outputLabel>
                     </p:column>
                     <p:column id="ryouhintopreelhonsu2" headerText="良品TPﾘｰﾙ本数②" styleClass="number">
@@ -320,6 +320,12 @@
                     </p:column>
                     <p:column id="gaikansaikensa" headerText="外観再検査">
                         <p:outputLabel value="#{item.gaikansaikensa}"/>
+                    </p:column>
+                    <p:column id="reelgaikan" headerText="ﾘｰﾙ外観">
+                        <p:outputLabel value="#{item.reelgaikan}"/>
+                    </p:column>
+                    <p:column id="reelbikou" headerText="ﾘｰﾙ外観備考">
+                        <p:outputLabel value="#{item.reelbikou}"/>
                     </p:column>
                     <p:column id="bikou1" headerText="備考1">
                         <p:outputLabel value="#{item.bikou1}"/>
