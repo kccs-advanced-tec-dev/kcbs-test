@@ -1083,6 +1083,61 @@ public class SrRhaps {
     private Integer sitattaperollno5;
 
     /**
+     * テープNG送り長　1本目
+     */
+    private Integer tapeng1;
+
+    /**
+     * 成形長さ2
+     */
+    private Integer seikeinagasa2;
+
+    /**
+     * テープNG送り長　2本目
+     */
+    private Integer tapeng2;
+
+    /**
+     * 成形長さ3
+     */
+    private Integer seikeinagasa3;
+
+    /**
+     * テープNG送り長　3本目
+     */
+    private Integer tapeng3;
+
+    /**
+     * 成形長さ4
+     */
+    private Integer seikeinagasa4;
+
+    /**
+     * テープNG送り長　4本目
+     */
+    private Integer tapeng4;
+
+    /**
+     * 成形長さ5
+     */
+    private Integer seikeinagasa5;
+
+    /**
+     * テープNG送り長　5本目
+     */
+    private Integer tapeng5;
+
+    /**
+     * 上端子号機No
+     */
+    private String uwagouki;
+
+    /**
+     * 下端子号機No
+     */
+    private String shitagouki;
+
+    /**
      * 工場ｺｰﾄﾞ
      *
      * @return the kojyo
@@ -4738,6 +4793,182 @@ public class SrRhaps {
      */
     public void setSitattaperollno5(Integer sitattaperollno5) {
         this.sitattaperollno5 = sitattaperollno5;
+    }
+
+    /**
+     * テープNG送り長　1本目
+     * @return the tapeng1
+     */
+    public Integer getTapeng1() {
+        return tapeng1;
+    }
+
+    /**
+     * テープNG送り長　1本目
+     * @param tapeng1 the tapeng1 to set
+     */
+    public void setTapeng1(Integer tapeng1) {
+        this.tapeng1 = tapeng1;
+    }
+
+    /**
+     * 成形長さ2
+     * @return the seikeinagasa2
+     */
+    public Integer getSeikeinagasa2() {
+        return seikeinagasa2;
+    }
+
+    /**
+     * 成形長さ2
+     * @param seikeinagasa2 the seikeinagasa2 to set
+     */
+    public void setSeikeinagasa2(Integer seikeinagasa2) {
+        this.seikeinagasa2 = seikeinagasa2;
+    }
+
+    /**
+     * テープNG送り長　2本目
+     * @return the tapeng2
+     */
+    public Integer getTapeng2() {
+        return tapeng2;
+    }
+
+    /**
+     * テープNG送り長　2本目
+     * @param tapeng2 the tapeng2 to set
+     */
+    public void setTapeng2(Integer tapeng2) {
+        this.tapeng2 = tapeng2;
+    }
+
+    /**
+     * 成形長さ3
+     * @return the seikeinagasa3
+     */
+    public Integer getSeikeinagasa3() {
+        return seikeinagasa3;
+    }
+
+    /**
+     * 成形長さ3
+     * @param seikeinagasa3 the seikeinagasa3 to set
+     */
+    public void setSeikeinagasa3(Integer seikeinagasa3) {
+        this.seikeinagasa3 = seikeinagasa3;
+    }
+
+    /**
+     * テープNG送り長　3本目
+     * @return the tapeng3
+     */
+    public Integer getTapeng3() {
+        return tapeng3;
+    }
+
+    /**
+     * テープNG送り長　3本目
+     * @param tapeng3 the tapeng3 to set
+     */
+    public void setTapeng3(Integer tapeng3) {
+        this.tapeng3 = tapeng3;
+    }
+
+    /**
+     * 成形長さ4
+     * @return the seikeinagasa4
+     */
+    public Integer getSeikeinagasa4() {
+        return seikeinagasa4;
+    }
+
+    /**
+     * 成形長さ4
+     * @param seikeinagasa4 the seikeinagasa4 to set
+     */
+    public void setSeikeinagasa4(Integer seikeinagasa4) {
+        this.seikeinagasa4 = seikeinagasa4;
+    }
+
+    /**
+     * テープNG送り長　4本目
+     * @return the tapeng4
+     */
+    public Integer getTapeng4() {
+        return tapeng4;
+    }
+
+    /**
+     * テープNG送り長　4本目
+     * @param tapeng4 the tapeng4 to set
+     */
+    public void setTapeng4(Integer tapeng4) {
+        this.tapeng4 = tapeng4;
+    }
+
+    /**
+     * 成形長さ5
+     * @return the seikeinagasa5
+     */
+    public Integer getSeikeinagasa5() {
+        return seikeinagasa5;
+    }
+
+    /**
+     * 成形長さ5
+     * @param seikeinagasa5 the seikeinagasa5 to set
+     */
+    public void setSeikeinagasa5(Integer seikeinagasa5) {
+        this.seikeinagasa5 = seikeinagasa5;
+    }
+
+    /**
+     * テープNG送り長　5本目
+     * @return the tapeng5
+     */
+    public Integer getTapeng5() {
+        return tapeng5;
+    }
+
+    /**
+     * テープNG送り長　5本目
+     * @param tapeng5 the tapeng5 to set
+     */
+    public void setTapeng5(Integer tapeng5) {
+        this.tapeng5 = tapeng5;
+    }
+
+    /**
+     * 上端子号機No
+     * @return the uwagouki
+     */
+    public String getUwagouki() {
+        return uwagouki;
+    }
+
+    /**
+     * 上端子号機No
+     * @param uwagouki the uwagouki to set
+     */
+    public void setUwagouki(String uwagouki) {
+        this.uwagouki = uwagouki;
+    }
+
+    /**
+     * 下端子号機No
+     * @return the shitagouki
+     */
+    public String getShitagouki() {
+        return shitagouki;
+    }
+
+    /**
+     * 下端子号機No
+     * @param shitagouki the shitagouki to set
+     */
+    public void setShitagouki(String shitagouki) {
+        this.shitagouki = shitagouki;
     }
 
 }

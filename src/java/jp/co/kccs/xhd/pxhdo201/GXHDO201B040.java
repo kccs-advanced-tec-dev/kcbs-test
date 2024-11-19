@@ -63,16 +63,6 @@ import org.primefaces.context.RequestContext;
  * 変更者	863 K.Zhang<br>
  * 変更理由	新規作成<br>
  * <br>
- * 変更日	2021/07/09<br>
- * 計画書No	MB2106-DS017<br>
- * 変更者	kcss.gc<br>
- * 変更理由	履歴情報画面サブ画面追加<br>
- * <br>
- * 変更日	2022/03/16<br>
- * 計画書No	MB2202-D013<br>
- * 変更者	KCSS K.Jo<br>
- * 変更理由	項目変更<br>
- * <br>
  * ===============================================================================<br>
  */
 /**
@@ -137,6 +127,8 @@ public class GXHDO201B040 implements Serializable {
     private String senbetuEndTimeF = "";
     /** 検索条件：終了時刻(TO) */
     private String senbetuEndTimeT = "";
+    /** 検索条件：号機 */
+    private String goki = "";
     //表示可能ﾃﾞｰﾀ
     private String possibleData[];
     
@@ -351,6 +343,22 @@ public class GXHDO201B040 implements Serializable {
     public void setSenbetuEndTimeT(String senbetuEndTimeT) {
         this.senbetuEndTimeT = senbetuEndTimeT;
     }
+
+    /**
+     * 検索条件：号機
+     * @return the goki
+     */
+    public String getGoki() {
+        return goki;
+    }
+
+    /**
+     * 検索条件：号機
+     * @param goki the goki to set
+     */
+    public void setGoki(String goki) {
+        this.goki = goki;
+    }
     
     /**
      * メインデータの件数を保持
@@ -487,6 +495,7 @@ public class GXHDO201B040 implements Serializable {
         senbetuEndDateT = "";
         senbetuEndTimeF = "";
         senbetuEndTimeT = "";
+        setGoki("");
         
         listData = new ArrayList<>();
     }
@@ -573,6 +582,10 @@ public class GXHDO201B040 implements Serializable {
         if (!StringUtil.isEmpty(senbetuEndTimeT) && existError(validateUtil.checkC001(getSenbetuEndDateT(), "選別終了日(to)"))) {
             return;
         }       
+        // 号機
+        if (existError(validateUtil.checkC103(getGoki(), "号機", 4))) {
+            return;
+        } 
         
         if (possibleData == null) {
             return;
@@ -633,7 +646,8 @@ public class GXHDO201B040 implements Serializable {
                     + "WHERE (? IS NULL OR KOJYO = ?) "
                     + "AND   (? IS NULL OR LOTNO = ?) "
                     + "AND   (? IS NULL OR EDABAN = ?) "
-                    + "AND   (? IS NULL OR KCPNO LIKE ? ESCAPE '\\\\') ";
+                    + "AND   (? IS NULL OR KCPNO LIKE ? ESCAPE '\\\\') "
+                    + "AND   (? IS NULL OR kensagouki LIKE ? ESCAPE '\\\\') ";
 
             for (String data : kensaBasyoDataList) {
                 if (!StringUtil.isEmpty(data) && !"ALL".equals(data)) {
@@ -679,8 +693,6 @@ public class GXHDO201B040 implements Serializable {
                     + ", lotkubuncode "
                     + ", siteikousa "
                     + ", atokouteisijinaiyou "
-                    + ", saidaisyorisuu "
-                    + ", ruikeisyorisuu "
                     + ", okuriryouhinsuu "
                     + ", ukeiretannijyuryo "
                     + ", ukeiresoujyuryou "
@@ -903,44 +915,12 @@ public class GXHDO201B040 implements Serializable {
                     + ", binkakuninsya "
                     + ", saiken "
                     + ", setubikubun "
-                    + ", irhanteiti1low "
-                    + ", irhanteiti1tani "
-                    + ", irhanteiti2low "
-                    + ", irhanteiti2tani "
-                    + ", irhanteiti3low "
-                    + ", irhanteiti3tani "
-                    + ", irhanteiti4low "
-                    + ", irhanteiti4tani "
-                    + ", irhanteiti5low "
-                    + ", irhanteiti5tani "
-                    + ", irhanteiti6low "
-                    + ", irhanteiti6tani "
-                    + ", irhanteiti7low "
-                    + ", irhanteiti7tani "
-                    + ", irhanteiti8low "
-                    + ", irhanteiti8tani "
-                    + ", bin1countersuu2 "
-                    + ", bin1countersuu3 "
-                    + ", bin2countersuu2 "
-                    + ", bin2countersuu3 "
-                    + ", bin3countersuu2 "
-                    + ", bin3countersuu3 "
-                    + ", bin4countersuu2 "
-                    + ", bin4countersuu3 "
-                    + ", bin5countersuu2 "
-                    + ", bin5countersuu3 "
-                    + ", bin6countersuu2 "
-                    + ", bin6countersuu3 "
-                    + ", bin7countersuu2 "
-                    + ", bin7countersuu3 "
-                    + ", bin8countersuu2 "
-                    + ", bin8countersuu3 "
-                    + ", douhinsyu "
                     + "  FROM sr_denkitokuseiesi "
                     + " WHERE (? IS NULL OR KOJYO = ?) "
                     + " AND   (? IS NULL OR LOTNO = ?) "
                     + " AND   (? IS NULL OR EDABAN = ?) "
-                    + " AND   (? IS NULL OR KCPNO LIKE ? ESCAPE '\\\\') ";
+                    + " AND   (? IS NULL OR KCPNO LIKE ? ESCAPE '\\\\') "
+                    + " AND   (? IS NULL OR kensagouki LIKE ? ESCAPE '\\\\') ";
             for (String data : kensaBasyoDataList) {
                 if (!StringUtil.isEmpty(data) && !"ALL".equals(data)) {
                     sql += " AND ";
@@ -966,8 +946,6 @@ public class GXHDO201B040 implements Serializable {
             mapping.put("lotkubuncode", "lotkubuncode");// ﾛｯﾄ区分
             mapping.put("siteikousa", "siteikousa");// 指定公差
             mapping.put("atokouteisijinaiyou", "atokouteisijinaiyou");// 後工程指示内容
-            mapping.put("saidaisyorisuu", "saidaisyorisuu");// 最大処理数
-            mapping.put("ruikeisyorisuu", "ruikeisyorisuu");// 累計処理数
             mapping.put("okuriryouhinsuu", "okuriryouhinsuu");// 送り良品数
             mapping.put("ukeiretannijyuryo", "ukeiretannijyuryo");// 受入れ単位重量
             mapping.put("ukeiresoujyuryou", "ukeiresoujyuryou");// 受入れ総重量
@@ -1190,40 +1168,7 @@ public class GXHDO201B040 implements Serializable {
             mapping.put("binkakuninsya", "binkakuninsya");// BIN確認者
             mapping.put("saiken", "saiken");// 電気特性再検
             mapping.put("setubikubun", "setubikubun");// 設備区分
-            mapping.put("irhanteiti1low", "irhanteiti1low");// 耐電圧設定条件 IR① 判定値(低)
-            mapping.put("irhanteiti1tani", "irhanteiti1tani");// 耐電圧設定条件 IR① 判定値 単位
-            mapping.put("irhanteiti2low", "irhanteiti2low");// 耐電圧設定条件 IR② 判定値(低)
-            mapping.put("irhanteiti2tani", "irhanteiti2tani");// 耐電圧設定条件 IR② 判定値 単位
-            mapping.put("irhanteiti3low", "irhanteiti3low");// 耐電圧設定条件 IR③ 判定値(低)
-            mapping.put("irhanteiti3tani", "irhanteiti3tani");// 耐電圧設定条件 IR③ 判定値 単位
-            mapping.put("irhanteiti4low", "irhanteiti4low");// 耐電圧設定条件 IR④ 判定値(低)
-            mapping.put("irhanteiti4tani", "irhanteiti4tani");// 耐電圧設定条件 IR④ 判定値 単位
-            mapping.put("irhanteiti5low", "irhanteiti5low");// 耐電圧設定条件 IR⑤ 判定値(低)
-            mapping.put("irhanteiti5tani", "irhanteiti5tani");// 耐電圧設定条件 IR⑤ 判定値 単位
-            mapping.put("irhanteiti6low", "irhanteiti6low");// 耐電圧設定条件 IR⑥ 判定値(低)
-            mapping.put("irhanteiti6tani", "irhanteiti6tani");// 耐電圧設定条件 IR⑥ 判定値 単位
-            mapping.put("irhanteiti7low", "irhanteiti7low");// 耐電圧設定条件 IR⑦ 判定値(低)
-            mapping.put("irhanteiti7tani", "irhanteiti7tani");// 耐電圧設定条件 IR⑦ 判定値 単位
-            mapping.put("irhanteiti8low", "irhanteiti8low");// 耐電圧設定条件 IR⑧ 判定値(低)
-            mapping.put("irhanteiti8tani", "irhanteiti8tani");// 耐電圧設定条件 IR⑧ 判定値 単位
-            mapping.put("bin1countersuu2", "bin1countersuu2");// BIN1 ｶｳﾝﾀｰ数2
-            mapping.put("bin1countersuu3", "bin1countersuu3");// BIN1 ｶｳﾝﾀｰ数3
-            mapping.put("bin2countersuu2", "bin2countersuu2");// BIN2 ｶｳﾝﾀｰ数2
-            mapping.put("bin2countersuu3", "bin2countersuu3");// BIN2 ｶｳﾝﾀｰ数3
-            mapping.put("bin3countersuu2", "bin3countersuu2");// BIN3 ｶｳﾝﾀｰ数2
-            mapping.put("bin3countersuu3", "bin3countersuu3");// BIN3 ｶｳﾝﾀｰ数3
-            mapping.put("bin4countersuu2", "bin4countersuu2");// BIN4 ｶｳﾝﾀｰ数2
-            mapping.put("bin4countersuu3", "bin4countersuu3");// BIN4 ｶｳﾝﾀｰ数3
-            mapping.put("bin5countersuu2", "bin5countersuu2");// BIN5 ｶｳﾝﾀｰ数2
-            mapping.put("bin5countersuu3", "bin5countersuu3");// BIN5 ｶｳﾝﾀｰ数3
-            mapping.put("bin6countersuu2", "bin6countersuu2");// BIN6 ｶｳﾝﾀｰ数2
-            mapping.put("bin6countersuu3", "bin6countersuu3");// BIN6 ｶｳﾝﾀｰ数3
-            mapping.put("bin7countersuu2", "bin7countersuu2");// BIN7 ｶｳﾝﾀｰ数2
-            mapping.put("bin7countersuu3", "bin7countersuu3");// BIN7 ｶｳﾝﾀｰ数3
-            mapping.put("bin8countersuu2", "bin8countersuu2");// BIN8 ｶｳﾝﾀｰ数2
-            mapping.put("bin8countersuu3", "bin8countersuu3");// BIN8 ｶｳﾝﾀｰ数3
-            mapping.put("douhinsyu", "douhinsyu");// 同品種
-            
+
             BeanProcessor beanProcessor = new BeanProcessor(mapping);
             RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
             ResultSetHandler<List<GXHDO201B040Model>> beanHandler = 
@@ -1343,6 +1288,10 @@ public class GXHDO201B040 implements Serializable {
         if (!StringUtil.isEmpty(kcpNo)) {
             paramKcpno = "%" + DBUtil.escapeString(getKcpNo()) + "%";
         }
+        String paramGoki = null;
+        if (!StringUtil.isEmpty(goki)) {
+            paramGoki = DBUtil.escapeString(getGoki()) + "%";
+        }
         Date paramSenbetuStartDateF = null;
         if (!StringUtil.isEmpty(senbetuStartDateF)) {
             paramSenbetuStartDateF = DateUtil.convertStringToDate(getSenbetuStartDateF(), StringUtil.isEmpty(getSenbetuStartTimeF()) ? "0000" : getSenbetuStartTimeF());
@@ -1365,6 +1314,7 @@ public class GXHDO201B040 implements Serializable {
         params.addAll(Arrays.asList(paramLotNo, paramLotNo));
         params.addAll(Arrays.asList(paramEdaban, paramEdaban));
         params.addAll(Arrays.asList(paramKcpno, paramKcpno));
+        params.addAll(Arrays.asList(paramGoki, paramGoki));
         for (String data : kensaBasyoDataList) {
             if (!StringUtil.isEmpty(data) && !"ALL".equals(data)) {
                 params.addAll(kensaBasyoDataList);
@@ -1458,27 +1408,5 @@ public class GXHDO201B040 implements Serializable {
             return null;
         }
         return map.get(mapId);
-    }
-    
-    /**
-     * サブ画面を呼び出し
-     *
-     * @param lotNo マップ
-     */ 
-    public void getGXHDOB040A(String lotNo){
-            // 照会画面【GXHDO201B040A】へ遷移する。
-            GXHDO201B040A beanGXHDO201B040A = (GXHDO201B040A) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO201B040A);
-            beanGXHDO201B040A.setLotno(lotNo);
-            if(beanGXHDO201B040A.selectListDataCount()<=0){
-                List<String> messageListMain = new ArrayList<>();
-                messageListMain.add(MessageUtil.getMessage("XHD-000172"));
-                InitMessage beanInitMessage = (InitMessage) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_INIT_MESSAGE);
-                beanInitMessage.setInitMessageList(messageListMain);
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.addCallbackParam("firstParam", "initMessage");
-            }else{
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.addCallbackParam("firstParam", "gxhdo201b040a");
-             }
     }
 }

@@ -30,6 +30,8 @@ import java.sql.Timestamp;
  * @since 2019/04/08
  */
 public class GXHDO201B004Model {
+
+   
     /** ﾛｯﾄNo. */
     private String lotno = "";
     /** KCPNO */
@@ -184,6 +186,20 @@ public class GXHDO201B004Model {
     private String endTantousyacode = "";
     /** 端子ﾃｰﾌﾟ種類確認 */
     private String tanshiTapeSyurui = "";
+    /** 先行ﾛｯﾄNo */
+    private String slotno = "";
+    /** ﾃｰﾌﾟ使い切り */
+    private String tapetsukaikiri = "";
+    /** 次ﾛｯﾄへ */
+    private String jilothe = "";
+    /** 固着ｼｰﾄTEST */
+    private String ksheettest = "";
+    /** 固着ｼｰﾄTESTﾁｪｯｸ */
+    private String ksheettestcheck = "";
+    /** 固着ｼｰﾄlotno */
+    private String klotno = "";
+    /** 固着ｼｰﾄlotnoﾁｪｯｸ */
+    private String klotnocheck = "";
     /** ｾｯﾄ数1 */
     private Long setsuu1 = null;
     /** ｾｯﾄ数2 */
@@ -1576,7 +1592,102 @@ public class GXHDO201B004Model {
     public void setTanshiTapeSyurui(String tanshiTapeSyurui) {
         this.tanshiTapeSyurui = tanshiTapeSyurui;
     }
+    /**
+     * @return the slotno
+     */
+    public String getSlotno() {
+        return slotno;
+    }
 
+    /**
+     * @param slotno the slotno to set
+     */
+    public void setSlotno(String slotno) {
+        this.slotno = slotno;
+    }
+
+    /**
+     * @return the tapetsukaikiri
+     */
+    public String getTapetsukaikiri() {
+        return tapetsukaikiri;
+    }
+
+    /**
+     * @param tapetsukaikiri the tapetsukaikiri to set
+     */
+    public void setTapetsukaikiri(String tapetsukaikiri) {
+        this.tapetsukaikiri = tapetsukaikiri;
+    }
+
+    /**
+     * @return the jilothe
+     */
+    public String getJilothe() {
+        return jilothe;
+    }
+
+    /**
+     * @param jilothe the jilothe to set
+     */
+    public void setJilothe(String jilothe) {
+        this.jilothe = jilothe;
+    }
+
+    /**
+     * @return the ksheettest
+     */
+    public String getKsheettest() {
+        return ksheettest;
+    }
+
+    /**
+     * @param ksheettest the ksheettest to set
+     */
+    public void setKsheettest(String ksheettest) {
+        this.ksheettest = ksheettest;
+    }
+    /**
+     * @return the ksheettestcheck
+     */
+    public String getKsheettestcheck() {
+        return ksheettestcheck;
+    }
+
+    /**
+     * @param ksheettestcheck the ksheettestcheck to set
+     */
+    public void setKsheettestcheck(String ksheettestcheck) {
+        this.ksheettestcheck = ksheettestcheck;
+    }
+
+    /**
+     * @return the klotno
+     */
+    public String getKlotno() {
+        return klotno;
+    }
+
+    /**
+     * @param klotno the klotno to set
+     */
+    public void setKlotno(String klotno) {
+        this.klotno = klotno;
+    }
+    /**
+     * @return the klotnocheck
+     */
+    public String getKlotnocheck() {
+        return klotnocheck;
+    }
+
+    /**
+     * @param klotnocheck the klotnocheck to set
+     */
+    public void setKlotnocheck(String klotnocheck) {
+        this.klotnocheck = klotnocheck;
+    }
+    
     /**
      * ｾｯﾄ数1
      * @return the setsuu1

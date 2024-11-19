@@ -340,9 +340,9 @@ public class GXHDO101B050 implements IFormLogic {
 
         // 粉まぶし
         FXHDD01 itemKonaMabushi = getItemRow(processData.getItemList(), GXHDO101B050Const.KONAMABUSHI);
-        if ("未選択".equals(itemKonaMabushi.getValue())) {
-            return MessageUtil.getErrorMessageInfo("XHD-000032", true, true, Arrays.asList(itemKonaMabushi), itemKonaMabushi.getLabel1());
-        }
+        //if ("未選択".equals(itemKonaMabushi.getValue())) {
+        //    return MessageUtil.getErrorMessageInfo("XHD-000032", true, true, Arrays.asList(itemKonaMabushi), itemKonaMabushi.getLabel1());
+        //}
         
         ValidateUtil validateUtil = new ValidateUtil();
         

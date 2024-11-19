@@ -62,17 +62,6 @@ public class GXHDO101B042Const {
      * 製品情報:後工程指示内容
      */
     public static final String SEIHIN_ATOKOUTEI_SHIJI_NAIYO = "sr_denkitokuseiesi_seihin_atokoutei_shiji_naiyo_42";
-    
-    /**
-     * 製品情報:最大処理数
-     */
-    public static final String SEIHIN_SAIDAI_SYORISUU= "sr_denkitokuseiesi_seihin_saidai_syorisuu_42";
-    
-    /**
-     * 製品情報:累計処理数
-     */
-    public static final String SEIHIN_RUIKEI_SYORISUU = "sr_denkitokuseiesi_seihin_ruikei_syorisuu_42";
-
 
     /**
      * 製品情報:送り良品数
@@ -1170,12 +1159,6 @@ public class GXHDO101B042Const {
     public static final String BTN_SETSUBI_DATA_TORIKOMI_TOP = "sr_denkitokuseiesi_setsubi_data_torikomi_42_Top";
     
     /**
-     * 部材在庫情報(画面上ボタン)
-     */
-    public static final String BTN_BUZAI_ZAIKO_ZYOUHOU_TOP = "sr_denkitokuseiesi_buzai_zaiko_zyouhou_42_Top";
-
-    
-    /**
      * 仮登録(画面下ボタン)
      */
     public static final String BTN_KARI_TOUROKU_BOTTOM = "sr_denkitokuseiesi_kari_touroku_42_Bottom";
@@ -1234,12 +1217,6 @@ public class GXHDO101B042Const {
      * 設備ﾃﾞｰﾀ取込(画面下ボタン)
      */
     public static final String BTN_SETSUBI_DATA_TORIKOMI_BOTTOM = "sr_denkitokuseiesi_setsubi_data_torikomi_42_Bottom";
-    
-    /**
-     * 部材在庫情報(画面下ボタン)
-     */
-    public static final String BTN_BUZAI_ZAIKO_ZYOUHOU_BOTTOM = "sr_denkitokuseiesi_buzai_zaiko_zyouhou_42_Bottom";
-
 
     /**
      * ユーザー認証パラメータ(修正)

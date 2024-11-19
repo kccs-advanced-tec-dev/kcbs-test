@@ -88,6 +88,25 @@ public class GXHDO101C021Model implements Cloneable {
         public void setTorokuNo(String torokuNo) {
             this.torokuNo = torokuNo;
         }
+        
+        /**
+         * 工程ｺｰﾄﾞ
+         */
+        private String hakkenKotei;
+
+        /**
+         * @return the hakkenKotei
+         */
+        public String getHakkenKotei() {
+            return hakkenKotei;
+        }
+
+        /**
+         * @param hakkenKotei the hakkenKotei to set
+         */
+        public void setHakkenKotei(String hakkenKotei) {
+            this.hakkenKotei = hakkenKotei;
+        }
     }
 
 }

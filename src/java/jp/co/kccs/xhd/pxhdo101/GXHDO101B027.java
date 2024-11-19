@@ -3456,17 +3456,24 @@ public class GXHDO101B027 implements IFormLogic {
             //「製品重量」
             String juryou = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B027Const.JURYOU, null));
 
+            //「処理数」
+            String syorisuu = StringUtil.nullToBlank(getItemData(processData.getItemList(), GXHDO101B027Const.SYORISUU, null));
+            // 処理数を数値変換
+            BigDecimal decSyorisuu = new BigDecimal(syorisuu);
+            
             //3.「ｻﾔ/SUS板ﾁｬｰｼﾞ量」の規格値
             FXHDD01 itemSaysusacharge = getItemRow(processData.getItemList(), GXHDO101B027Const.SAYSUSACHARGE);
             String valSaysusacharge = itemSaysusacharge.getKikakuChi().replace("【", "");
             valSaysusacharge = valSaysusacharge.replace("】", "");
             String saysusachargeData[] = valSaysusacharge.split("±");            
             String maruSaysusacharge = getStringToDecValue(StringUtil.nullToBlank(saysusachargeData[0]));
+            String maruSaysusachargerange = getStringToDecValue(StringUtil.nullToBlank(saysusachargeData[1]));
 
             // 製品重量を数値変換
             BigDecimal decJuryou = new BigDecimal(juryou);
             //「ｻﾔ/SUS板ﾁｬｰｼﾞ量」の規格値(〇部分)を数値変換
             BigDecimal decMaruSaysusacharge = new BigDecimal(maruSaysusacharge);
+            BigDecimal decMaruSaysusachargerange = new BigDecimal(maruSaysusachargerange);
 
             // C.規格値(〇部分)が0(数値変換後0になるものも含む)の場合
             // 以降の処理を実行せず、「ｻﾔ重量(g/枚)」に0を設定する。
@@ -3479,17 +3486,20 @@ public class GXHDO101B027 implements IFormLogic {
             
             //1.「製品重量」 ÷ 「ｻﾔ/SUS板ﾁｬｰｼﾞ量」の規格値(〇部分) を算出する。
             //2.1の計算結果の小数点第三位を四捨五入する。
-            BigDecimal decShoriRes = decJuryou.divide(decMaruSaysusacharge,2,BigDecimal.ROUND_HALF_UP);
+            BigDecimal decShoriRes = decMaruSaysusacharge.multiply(decJuryou).divide(decSyorisuu, 2, BigDecimal.ROUND_HALF_UP);
 
             // 算出結果をｻﾔ重量(g/枚)に設定
             itemSayajyuuryou.setValue(decShoriRes.toPlainString());
 
             // 算出結果をｻﾔ重量範囲(g)MINに設定
-            itemSjyuuryourangemin.setValue((decShoriRes.multiply(new BigDecimal("0.9")).setScale(2, RoundingMode.DOWN).toPlainString()));
-
+            BigDecimal decMaruSaysusachargemin=decMaruSaysusacharge.subtract(decMaruSaysusachargerange);
+            BigDecimal decShoriResmin=decMaruSaysusachargemin.multiply(decJuryou).divide(decSyorisuu, 2, BigDecimal.ROUND_HALF_UP);
+            itemSjyuuryourangemin.setValue(decShoriResmin.toPlainString());
             // 算出結果をｻﾔ重量範囲(g)MAXに設定
-            itemSjyuuryourangemax.setValue((decShoriRes.multiply(new BigDecimal("1.1")).setScale(2, RoundingMode.UP).toPlainString()));
-
+            BigDecimal decMaruSaysusachargemax=decMaruSaysusacharge.add(decMaruSaysusachargerange);
+            BigDecimal decShoriResmax=decMaruSaysusachargemax.multiply(decJuryou).divide(decSyorisuu, 2, BigDecimal.ROUND_HALF_UP);
+            itemSjyuuryourangemax.setValue(decShoriResmax.toPlainString());
+            
         } catch (NumberFormatException e) {
             //数値型変換失敗時はそのままリターン
         }

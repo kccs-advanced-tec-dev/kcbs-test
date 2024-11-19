@@ -71,6 +71,16 @@
                     </tr>
                     <tr>
                         <td>
+                            <h:outputText id="lblKcpNo" value="KCPNO" style="width:100px;"/>
+                        </td>
+                        <td colspan="3">
+                            <p:inputText id="pKcpNo" value="#{gXHDO201B038.kcpNo}" maxlength="25" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B038.checkByte('kcpNo', 25)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
                             <h:outputText id="lblStartMekkiDate" value="ﾒｯｷ開始日" style="width:100px;"/>
                         </td>
                         <td>
@@ -248,6 +258,12 @@
                     <p:column id="biko3" headerText="備考3">
                         <p:outputLabel value="#{item.biko3}"/>
                     </p:column>
+                    <p:column id="biko4" headerText="備考4">
+                        <p:outputLabel value="#{item.biko4}"/>
+                    </p:column>
+                    <p:column id="biko5" headerText="備考5">
+                        <p:outputLabel value="#{item.biko5}"/>
+                    </p:column>
                     <p:column id="jissekino" headerText="回数" styleClass="number">
                         <p:outputLabel value="#{item.jissekino}">
                             <f:convertNumber pattern="###,###,##0"/>
@@ -379,6 +395,9 @@
                         <p:outputLabel value="#{item.kensasoujyuryou}">
                             <f:convertNumber pattern="###,##0.00"/>
                         </p:outputLabel>
+                    </p:column>
+                    <p:column id="soujyuryoutantousya" headerText="総重量測定者">
+                        <p:outputLabel value="#{item.soujyuryoutantousya}"/>
                     </p:column>
                     <p:column id="netusyorijyouken" headerText="熱処理条件">
                         <p:outputLabel value="#{item.netusyorijyouken}"/>

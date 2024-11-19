@@ -155,5 +155,9 @@
     {"no":"154","id":"hbikou37","columnname":"備考37","type":"String","format":""},
     {"no":"155","id":"hbikou38","columnname":"備考38","type":"String","format":""},
     {"no":"156","id":"hbikou39","columnname":"備考39","type":"String","format":""},
-    {"no":"157","id":"hbikou40","columnname":"備考40","type":"String","format":""}
+    {"no":"157","id":"hbikou40","columnname":"備考40","type":"String","format":""},
+    {"no":"158","id":"ksheettest","columnname":"固着ｼｰﾄTEST","type":"String","format":""},
+    {"no":"159","id":"klotno","columnname":"固着ｼｰﾄﾛｯﾄNo","type":"String","format":""},
+    {"no":"160","id":"ksheettestcheck","columnname":"固着ｼｰﾄTESTﾁｪｯｸ","type":"String","format":""},
+    {"no":"161","id":"klotnocheck","columnname":"固着ｼｰﾄﾛｯﾄNoﾁｪｯｸ","type":"String","format":""}
 ]

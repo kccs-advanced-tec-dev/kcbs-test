@@ -294,16 +294,6 @@
                             <f:convertNumber pattern="##,###,##0"/>
                         </p:outputLabel>
                     </p:column>
-                    <p:column id="saidaisyorisuu" headerText="最大処理数" styleClass="number">
-                        <p:outputLabel value="#{item.saidaisyorisuu}">
-                            <f:convertNumber pattern="##,###,##0"/>
-                        </p:outputLabel>
-                    </p:column>
-                    <p:column id="ruikeisyorisuu" headerText="累計処理数" styleClass="number">
-                        <p:outputLabel value="#{item.ruikeisyorisuu}">
-                            <f:convertNumber pattern="##,###,##0"/>
-                        </p:outputLabel>
-                    </p:column>
                     <p:column id="skeegeno" headerText="ｽｷｰｼﾞNo" >
                         <p:outputLabel value="#{item.skeegeno}"/>
                     </p:column>
@@ -427,29 +417,11 @@
                     <p:column id="tantoEnd" headerText="印刷ｴﾝﾄﾞ担当者" >
                         <p:outputLabel value="#{item.tantoEnd}"/>
                     </p:column>
-                    <p:column id="senkoulotno" headerText="先行ﾛｯﾄNo" >
-                        <p:outputLabel value="#{item.senkoulotno}"/>
-                    </p:column>
-                    <p:column id="tapetsukaikiri" headerText="ﾃｰﾌﾟ使い切り" >
-                        <p:outputLabel value="#{item.tapetsukaikiri}"/>
-                    </p:column>
-                    <p:column id="jilothe" headerText="次ﾛｯﾄへ" >
-                        <p:outputLabel value="#{item.jilothe}"/>
-                    </p:column>
                     <p:column id="biko1" headerText="備考1" >
                         <p:outputLabel value="#{item.biko1}"/>
                     </p:column>
                     <p:column id="biko2" headerText="備考2" >
                         <p:outputLabel value="#{item.biko2}"/>
-                    </p:column>
-                    <p:column id="bikou3" headerText="備考3" >
-                        <p:outputLabel value="#{item.bikou3}"/>
-                    </p:column>
-                    <p:column id="bikou4" headerText="備考4" >
-                        <p:outputLabel value="#{item.bikou4}"/>
-                    </p:column>
-                    <p:column id="bikou5" headerText="備考5" >
-                        <p:outputLabel value="#{item.bikou5}"/>
                     </p:column>
                     <p:column id="makuatsuStart1" headerText="膜厚ｽﾀｰﾄ1" styleClass="number">
                         <p:outputLabel value="#{item.makuatsuStart1}">

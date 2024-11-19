@@ -88,6 +88,21 @@ public class GXHDO102B011A implements Serializable {
      * ﾐﾙ周波数
      */
     private FXHDD01 millsyuuhasuu;
+    
+    /**
+     * スクリーン
+     */
+    private FXHDD01 screen;
+    
+    /**
+     * メディア径
+     */
+    private FXHDD01 mediakei;
+    
+    /**
+     * 玉石重量
+     */
+    private FXHDD01 tamaisijuryo;
 
     /**
      * 周速
@@ -123,6 +138,11 @@ public class GXHDO102B011A implements Serializable {
      * ﾊﾟｽ回数
      */
     private FXHDD01 passkaisuu_sf1;
+    
+    /**
+     * ﾊﾟｽ回数
+     */
+    private FXHDD01 passkaisuu_sf1_input;
 
     /**
      * 開始日
@@ -173,6 +193,16 @@ public class GXHDO102B011A implements Serializable {
      * 流量
      */
     private FXHDD01 ryuuryou_sf1;
+    
+    /**
+     * 粉砕担当者
+     */
+    private FXHDD01 funsaitantousya_sf1;
+    
+    /**
+     * 粉砕確認者
+     */
+    private FXHDD01 funsaikakuninsya_sf1;
 
     /**
      * 備考1
@@ -223,6 +253,11 @@ public class GXHDO102B011A implements Serializable {
      * ﾊﾟｽ回数
      */
     private FXHDD01 passkaisuu_sf2;
+    
+    /**
+     * ﾊﾟｽ回数
+     */
+    private FXHDD01 passkaisuu_sf2_input;
 
     /**
      * 開始日
@@ -600,6 +635,54 @@ public class GXHDO102B011A implements Serializable {
     public void setMillsyuuhasuu(FXHDD01 millsyuuhasuu) {
         this.millsyuuhasuu = millsyuuhasuu;
     }
+    
+    /**
+     * スクリーン
+     * @return the screen
+     */
+    public FXHDD01 getScreen() {
+        return screen;
+    }
+
+    /**
+     * スクリーン
+     * @param screen the screen to set
+     */
+    public void setScreen(FXHDD01 screen) {
+        this.screen = screen;
+    }
+    
+    /**
+     * メディア径
+     * @return the mediakei
+     */
+    public FXHDD01 getMediakei() {
+        return mediakei;
+    }
+
+    /**
+     * メディア径
+     * @param mediakei the mediakei to set
+     */
+    public void setMediakei(FXHDD01 mediakei) {
+        this.mediakei = mediakei;
+    }
+    
+    /**
+     * 玉石重量
+     * @return the tamaisijuryo
+     */
+    public FXHDD01 getTamaisijuryo() {
+        return tamaisijuryo;
+    }
+
+    /**
+     * 玉石重量
+     * @param tamaisijuryo the tamaisijuryo to set
+     */
+    public void setTamaisijuryo(FXHDD01 tamaisijuryo) {
+        this.tamaisijuryo = tamaisijuryo;
+    }
 
     /**
      * 周速
@@ -711,6 +794,22 @@ public class GXHDO102B011A implements Serializable {
      */
     public void setPasskaisuu_sf1(FXHDD01 passkaisuu_sf1) {
         this.passkaisuu_sf1 = passkaisuu_sf1;
+    }
+    
+    /**
+     * ﾊﾟｽ回数
+     * @return the passkaisuu_sf1
+     */
+    public FXHDD01 getPasskaisuu_sf1_input() {
+        return passkaisuu_sf1_input;
+    }
+
+    /**
+     * ﾊﾟｽ回数
+     * @param passkaisuu_sf1_input the passkaisuu_sf1 to set
+     */
+    public void setPasskaisuu_sf1_input(FXHDD01 passkaisuu_sf1_input) {
+        this.passkaisuu_sf1_input = passkaisuu_sf1_input;
     }
 
     /**
@@ -872,6 +971,39 @@ public class GXHDO102B011A implements Serializable {
     public void setRyuuryou_sf1(FXHDD01 ryuuryou_sf1) {
         this.ryuuryou_sf1 = ryuuryou_sf1;
     }
+    
+    /**
+     * 粉砕担当者
+     * @return the funsaitantousya_sf1
+     */
+    public FXHDD01 getFunsaitantousya_sf1() {
+        return funsaitantousya_sf1;
+    }
+
+    /**
+     * 粉砕担当者
+     * @param funsaitantousya_sf1 the funsaitantousya_sf1 to set
+     */
+    public void setFunsaitantousya_sf1(FXHDD01 funsaitantousya_sf1) {
+        this.funsaitantousya_sf1 = funsaitantousya_sf1;
+    }
+    
+        
+    /**
+     * 粉砕確認者
+     * @return the funsaikakuninsya_sf1
+     */
+    public FXHDD01 getFunsaikakuninsya_sf1() {
+        return funsaikakuninsya_sf1;
+    }
+
+    /**
+     * 粉砕確認者
+     * @param funsaikakuninsya_sf1 the funsaikakuninsya_sf1 to set
+     */
+    public void setFunsaikakuninsya_sf1(FXHDD01 funsaikakuninsya_sf1) {
+        this.funsaikakuninsya_sf1 = funsaikakuninsya_sf1;
+    }
 
     /**
      * 備考1
@@ -1031,6 +1163,22 @@ public class GXHDO102B011A implements Serializable {
      */
     public void setPasskaisuu_sf2(FXHDD01 passkaisuu_sf2) {
         this.passkaisuu_sf2 = passkaisuu_sf2;
+    }
+    
+    /**
+     * ﾊﾟｽ回数
+     * @return the passkaisuu_sf2_input
+     */
+    public FXHDD01 getPasskaisuu_sf2_input() {
+        return passkaisuu_sf2_input;
+    }
+
+    /**
+     * ﾊﾟｽ回数
+     * @param passkaisuu_sf2_input the passkaisuu_sf2 to set
+     */
+    public void setPasskaisuu_sf2_input(FXHDD01 passkaisuu_sf2_input) {
+        this.passkaisuu_sf2_input = passkaisuu_sf2_input;
     }
 
     /**

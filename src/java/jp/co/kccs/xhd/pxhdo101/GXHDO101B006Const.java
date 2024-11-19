@@ -849,6 +849,61 @@ public class GXHDO101B006Const {
     public static final String SEIKEINAGASA = "sr_rhaps_seikeinagasa";
 
     /**
+     * テープNG送り長　1本目
+     */
+    public static final String TAPE_NG1 = "sr_rhaps_eTapeRoll_tape1_ng_okurityou";
+
+    /**
+     * 成形長さ　2本目
+     */
+    public static final String SEIKEINAGASA2 = "sr_rhaps_seikeinagasa2";
+
+    /**
+     * テープNG送り長　2本目
+     */
+    public static final String TAPE_NG2 = "sr_rhaps_eTapeRoll_tape2_ng_okurityou";
+
+    /**
+     * 成形長さ　3本目
+     */
+    public static final String SEIKEINAGASA3 = "sr_rhaps_seikeinagasa3";
+
+    /**
+     * テープNG送り長　3本目
+     */
+    public static final String TAPE_NG3 = "sr_rhaps_eTapeRoll_tape3_ng_okurityou";
+
+    /**
+     * 成形長さ　4本目
+     */
+    public static final String SEIKEINAGASA4 = "sr_rhaps_seikeinagasa4";
+
+    /**
+     * テープNG送り長　4本目
+     */
+    public static final String TAPE_NG4 = "sr_rhaps_eTapeRoll_tape4_ng_okurityou";
+
+    /**
+     * 成形長さ　5本目
+     */
+    public static final String SEIKEINAGASA5 = "sr_rhaps_seikeinagasa5";
+
+    /**
+     * テープNG送り長　5本目
+     */
+    public static final String TAPE_NG5 = "sr_rhaps_eTapeRoll_tape5_ng_okurityou";
+
+    /**
+     * 上端子号機No
+     */
+    public static final String UWAGOKI = "sr_rhaps_ue_tanshi_gouki";
+
+    /**
+     * 下端子号機No
+     */
+    public static final String SHITAGOKI = "sr_rhaps_sita_tanshi_gouki";
+
+    /**
      * 電極膜厚(画面上ボタン)
      */
     public static final String BTN_DENKYOKU_MAKUATSU_TOP = "sr_rhaps_denkyoku_makuatsu_Top";
@@ -997,6 +1052,16 @@ public class GXHDO101B006Const {
      * 部材在庫情報(誘電体)(画面下)
      */
     public static final String BTN_BUZAIZAIKOJYOHOYUUDENTAI_BOTTOM = "sr_rhaps_buzaizaikojyohoyuudentai_Bottom";
+
+    /**
+     * 設備ﾃﾞｰﾀ連携(画面上)
+     */
+    public static final String BTN_DATACOOPERATION_TOP = "sr_rhaps_dataCooperation_Top";
+
+    /**
+     * 設備ﾃﾞｰﾀ連携(画面下)
+     */
+    public static final String BTN_DATACOOPERATION_BOTTOM = "sr_rhaps_dataCooperation_Bottom";
 
     /**
      * ユーザー認証パラメータ(修正)

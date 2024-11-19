@@ -114,6 +114,16 @@ public class GXHDO101C020Model implements Cloneable {
     private String returnItemId_TapeLot2_Rollno;
     
     /**
+     * (ﾃｰﾌﾟﾛｯﾄ②)tapelengthの設定項目ID
+     */
+    private String returnItemId_TapeLot2_Tapelength;
+    
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ③)tapelengthの設定項目ID
+     */
+    private String returnItemId_TapeLot3_Tapelength;
+    
+    /**
      * (ﾃｰﾌﾟﾛｯﾄ③)rollnoの設定項目ID
      */
     private String returnItemId_TapeLot3_Rollno;
@@ -582,6 +592,38 @@ public class GXHDO101C020Model implements Cloneable {
      */
     public GXHDO101C020Model() {
 
+    }
+
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ②)tapelengthの設定項目ID
+     * @return the returnItemId_TapeLot2_Tapelength
+     */
+    public String getReturnItemId_TapeLot2_Tapelength() {
+        return returnItemId_TapeLot2_Tapelength;
+    }
+
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ②)tapelengthの設定項目ID
+     * @param returnItemId_TapeLot2_Tapelength the returnItemId_TapeLot2_Tapelength to set
+     */
+    public void setReturnItemId_TapeLot2_Tapelength(String returnItemId_TapeLot2_Tapelength) {
+        this.returnItemId_TapeLot2_Tapelength = returnItemId_TapeLot2_Tapelength;
+    }
+
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ③)tapelengthの設定項目ID
+     * @return the returnItemId_TapeLot3_Tapelength
+     */
+    public String getReturnItemId_TapeLot3_Tapelength() {
+        return returnItemId_TapeLot3_Tapelength;
+    }
+
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ③)tapelengthの設定項目ID
+     * @param returnItemId_TapeLot3_Tapelength the returnItemId_TapeLot3_Tapelength to set
+     */
+    public void setReturnItemId_TapeLot3_Tapelength(String returnItemId_TapeLot3_Tapelength) {
+        this.returnItemId_TapeLot3_Tapelength = returnItemId_TapeLot3_Tapelength;
     }
     
     /**

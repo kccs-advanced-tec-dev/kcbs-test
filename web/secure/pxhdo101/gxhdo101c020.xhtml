@@ -35,7 +35,8 @@
                                      process="@this" 
                                      update="form:itemDataList"
                                      oncomplete="if('warning'!=args.param1){PF('cd1').hide();} else {PF('cd1').show();}
-                                        if('warning'!=args.param2){PF('cd2').hide(); PF('W_dlg_gxhdo101c020').hide();} else {PF('cd2').show();}"/>
+                                        if('warning'!=args.param2){PF('cd2').hide(); PF('W_dlg_gxhdo101c020').hide();} else {PF('cd2').show();}"
+                                        />
                     <p:commandButton value="Cancel" class="ui-conf-commandbtn-cancel" onclick="PF('cd1').hide();" type="button" />
                 </p:confirmDialog>
                 <p:confirmDialog class="ui-confdialog" severity="alert" widgetVar="cd2" global="true">
@@ -47,7 +48,7 @@
                                      async="false"
                                      process="@this" 
                                      update="form:itemDataList"
-                                     oncomplete="if('warning'!=args.param2){PF('cd2').hide();;PF('W_dlg_gxhdo101c020').hide();} else {PF('cd2').show();}"/>
+                                     oncomplete="if('warning'!=args.param2){PF('cd2').hide(); PF('W_dlg_gxhdo101c020').hide();} else {PF('cd2').show();}"/>
                     <p:commandButton value="Cancel" class="ui-conf-commandbtn-cancel" onclick="PF('cd2').hide();" type="button" />
                 </p:confirmDialog>
                 <p:confirmDialog class="ui-confdialog" severity="alert" widgetVar="cd3" global="true">
@@ -59,7 +60,8 @@
                                      async="false"
                                      process="@this" 
                                      update="form:itemDataList"
-                                     oncomplete="if('warning'!=args.param3){PF('cd3').hide();;PF('W_dlg_gxhdo101c020').hide();} else {PF('cd2').show();}"/>
+                                     oncomplete="if('warning'!=args.param3){PF('cd3').hide()} else {PF('cd3').show();}
+                                        if('warning'!=args.param4){PF('cd4').hide(); PF('W_dlg_gxhdo101c020').hide();} else {PF('cd4').show();}"/>
                     <p:commandButton value="Cancel" class="ui-conf-commandbtn-cancel" onclick="PF('cd3').hide();" type="button" />
                 </p:confirmDialog>
                 <p:confirmDialog class="ui-confdialog" severity="alert" widgetVar="cd4" global="true">
@@ -71,7 +73,7 @@
                                      async="false"
                                      process="@this" 
                                      update="form:itemDataList"
-                                     oncomplete="if('warning'!=args.param4){PF('cd4').hide();;PF('W_dlg_gxhdo101c020').hide();} else {PF('cd2').show();}"/>
+                                     oncomplete="if('warning'!=args.param4){PF('cd4').hide();PF('W_dlg_gxhdo101c020').hide();} else {PF('cd2').show();}"/>
                     <p:commandButton value="Cancel" class="ui-conf-commandbtn-cancel" onclick="PF('cd4').hide();" type="button" />
                 </p:confirmDialog>
             </p:panel>
@@ -81,7 +83,8 @@
                              async="false"
                              process="@this" 
                              update="form:itemDataList"
-                             oncomplete="if(document.getElementById('form:gxhdo101c020Form:isError').value=='error'){return;};if('error'==args.firstParam){alert(1);return;};if('warning'!=args.param1){PF('cd1').hide();} else {PF('cd1').show();return;};
+                             oncomplete="if(document.getElementById('form:gxhdo101c020Form:isError').value=='error'){return;};if('error'==args.firstParam){alert(1);return;};
+                                if('warning'!=args.param1){PF('cd1').hide();} else {PF('cd1').show();return;};
                                 if('warning'!=args.param2){PF('cd2').hide();} else {PF('cd2').show();return;};
                                 if('warning'!=args.param3){PF('cd3').hide();} else {PF('cd3').show();return;};
                                 if('warning'!=args.param4){PF('cd4').hide();} else {PF('cd4').show();return;};

@@ -179,6 +179,26 @@ public class GXHDO101B001Const {
     public static final String KANSOU_ONDO_HYOUJICHI4 = "insatsu_sps_gra_kansou_ondo_hyoujichi4";
 
     /**
+     * 乾燥温度下側表示値1
+     */
+    public static final String KANSOU_ONDO_SHITA_HYOUJICHI1 = "insatsu_sps_gra_kansou_shita_ondo_hyoujichi1";
+
+    /**
+     * 乾燥温度下側表示値2
+     */
+    public static final String KANSOU_ONDO_SHITA_HYOUJICHI2 = "insatsu_sps_gra_kansou_shita_ondo_hyoujichi2";
+
+    /**
+     * 乾燥温度下側表示値3
+     */
+    public static final String KANSOU_ONDO_SHITA_HYOUJICHI3 = "insatsu_sps_gra_kansou_shita_ondo_hyoujichi3";
+
+    /**
+     * 乾燥温度下側表示値4
+     */
+    public static final String KANSOU_ONDO_SHITA_HYOUJICHI4 = "insatsu_sps_gra_kansou_shita_ondo_hyoujichi4";
+
+    /**
      * 乾燥温度表示値5
      */
     public static final String KANSOU_ONDO_HYOUJICHI5 = "insatsu_sps_gra_kansou_ondo_hyoujichi5";
@@ -452,6 +472,11 @@ public class GXHDO101B001Const {
      * 備考5
      */
     public static final String BIKOU5 = "insatsu_sps_gra_bikou5";
+
+    /**
+     * 印刷長さ
+     */
+    public static final String PRINTLENGTH = "insatsu_sps_gra_printlength";
 
     /**
      * 仮登録(画面下)

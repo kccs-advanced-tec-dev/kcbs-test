@@ -33,6 +33,7 @@ import javax.sql.DataSource;
 import jp.co.kccs.xhd.SelectParam;
 import jp.co.kccs.xhd.common.ColumnInfoParser;
 import jp.co.kccs.xhd.common.ColumnInformation;
+import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.excel.ExcelExporter;
 import jp.co.kccs.xhd.model.GXHDO201B012Model;
 import jp.co.kccs.xhd.util.DBUtil;
@@ -40,6 +41,7 @@ import jp.co.kccs.xhd.util.DateUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
 import jp.co.kccs.xhd.util.StringUtil;
+import jp.co.kccs.xhd.util.SubFormUtil;
 import jp.co.kccs.xhd.util.ValidateUtil;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.BeanProcessor;
@@ -79,7 +81,13 @@ public class GXHDO201B012 implements Serializable {
      */
     @Resource(mappedName = "jdbc/qcdb")
     private transient DataSource dataSourceQcdb;
-    
+
+    /**
+     * DataSource(DocumentServer)
+     */
+    @Resource(mappedName = "jdbc/DocumentServer")
+    private transient DataSource dataSourceDocServer;
+
     /** パラメータマスタ操作 */
     @Inject
     private SelectParam selectParam;
@@ -137,7 +145,14 @@ public class GXHDO201B012 implements Serializable {
     private String barashiEndTimeF = "";
     /** 検索条件：ばらし終了時刻(TO) */
     private String barashiEndTimeT = "";
-    
+    //表示可能ﾃﾞｰﾀ
+    private String possibleData[];
+
+    /**
+     * メインデータの件数を保持
+     */
+    private String displayStyle = "";
+
     /**
      * コンストラクタ
      */
@@ -511,6 +526,7 @@ public class GXHDO201B012 implements Serializable {
         HttpSession session = (HttpSession) externalContext.getSession(false);
         
         String login_user_name = (String) session.getAttribute("login_user_name");
+        List<String> userGrpList = (List<String>)session.getAttribute("login_user_group"); 
 
         if (null == login_user_name || "".equals(login_user_name)) {
             // セッションタイムアウト時はセッション情報を破棄してエラー画面に遷移
@@ -528,11 +544,51 @@ public class GXHDO201B012 implements Serializable {
 
         listCountMax = session.getAttribute("menuParam") != null ? Integer.parseInt(session.getAttribute("menuParam").toString()) : -1;
         listCountWarn = session.getAttribute("hyojiKensu") != null ? Integer.parseInt(session.getAttribute("hyojiKensu").toString()) : -1;
-        
+        // ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ情報の取得
+        String strfxhbm03List7 = "";
+        //■表示可能ﾃﾞｰﾀ取得処理
+        //①Ⅲ.画面表示仕様(7)を発行する。
+        Map fxhbm03Data7 = loadFxhbm03Data(userGrpList);
+        //  1.取得できなかった場合、ｴﾗｰ。以降の処理は実行しない。
+        if (fxhbm03Data7 == null || fxhbm03Data7.isEmpty()) {
+            // ・ｴﾗｰｺｰﾄﾞ:XHD-000172
+            // ・ｴﾗ-ﾒｯｾｰｼﾞ:電気特性履歴_表示可能ﾃﾞｰﾀﾊﾟﾗﾒｰﾀ取得ｴﾗｰ。ｼｽﾃﾑに連絡してください。
+            // メッセージを画面に渡す
+            settingError();
+            return;
+        } else {
+            for (Object data : fxhbm03Data7.values()) {
+                //取得したﾃﾞｰﾀが ALL の場合
+                if ("ALL".equals(fxhbm03Data7.get(data))) {
+                    strfxhbm03List7 = StringUtil.nullToBlank(getMapData(fxhbm03Data7, "data"));
+                    possibleData = strfxhbm03List7.split(",");
+                    //取得したﾃﾞｰﾀが NULL の場合、ｴﾗｰ。以降の処理は実行しない。
+                } else if (data == null || "".equals(data)) {
+                    //・ｴﾗｰｺｰﾄﾞ:XHD-000172
+                    //・ｴﾗ-ﾒｯｾｰｼﾞ:ｶｯﾄ履歴_表示可能ﾃﾞｰﾀﾊﾟﾗﾒｰﾀ取得ｴﾗｰ。ｼｽﾃﾑに連絡してください。
+                    settingError();
+                    return;
+                } else {
+                    //取得したﾃﾞｰﾀが ALL以外の場合
+                    strfxhbm03List7 = StringUtil.nullToBlank(getMapData(fxhbm03Data7, "data"));
+                    possibleData = strfxhbm03List7.split(",");
+                }
+            }
+        }
         // 画面クリア
         clear();
     }
-    
+    /**
+     * 設定エラー
+     */
+    private void settingError() {
+        List<String> messageList = new ArrayList<>();
+        messageList.add(MessageUtil.getMessage("XHD-000087"));
+        displayStyle = "display:none;";
+        InitMessage beanInitMessage = (InitMessage) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_INIT_MESSAGE);
+        beanInitMessage.setInitMessageList(messageList);
+        RequestContext.getCurrentInstance().execute("PF('W_dlg_initMessage').show();");
+    }
     /**
      * Excel保存ボタン非活性制御
      * @return 一覧データが表示しない場合true
@@ -771,7 +827,9 @@ public class GXHDO201B012 implements Serializable {
      */
     public long selectListDataCount() {
         long count = 0;
-        
+        //検査場所データリスト
+        List<String> kensaBasyoDataList = new ArrayList<>(Arrays.asList(possibleData));
+        boolean sqlflg = true;
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
             String sql = "SELECT COUNT(LOTNO) AS CNT "
@@ -790,7 +848,20 @@ public class GXHDO201B012 implements Serializable {
                     + "AND   (? IS NULL OR BARASHISTARTNICHIJI <= ?) "
                     + "AND   (? IS NULL OR BARASHIENDNICHIJI >= ?) "
                     + "AND   (? IS NULL OR BARASHIENDNICHIJI <= ?) ";
-            
+            for (String data : kensaBasyoDataList) {
+                if (!StringUtil.isEmpty(data) && !"ALL".equals(data)) {
+                    if (sqlflg) {
+                        sql += " AND ( ";
+                        sqlflg = false;
+                    } else {
+                        sql += " OR ";
+                    }
+                    sql += " tantousya like ? ";
+                }
+            }
+            if (!sqlflg) {
+                sql += " ) ";
+            }
             // パラメータ設定
             List<Object> params = createSearchParam();
             
@@ -812,6 +883,9 @@ public class GXHDO201B012 implements Serializable {
      */
     public void selectListData() {
         try {
+        //検査場所データリスト
+        List<String> kensaBasyoDataList = new ArrayList<>(Arrays.asList(possibleData));
+        boolean sqlflg = true;
             QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
             String sql = "SELECT CONCAT(IFNULL(KOJYO, ''), IFNULL(LOTNO, ''), IFNULL(EDABAN, '')) AS LOTNO "
                     + ", KCPNO "
@@ -845,7 +919,7 @@ public class GXHDO201B012 implements Serializable {
                     + ", batashistarttantousya "
                     + ", barashiendnichiji "
                     + ", barashiendtantousya "
-                    + ", (CASE WHEN konamabushi = 0 THEN 'なし' WHEN konamabushi = 1 THEN 'あり' ELSE NULL END) AS konamabushi "
+                    + ", (CASE WHEN konamabushi = '0' THEN 'なし' WHEN konamabushi = '1' THEN 'あり' WHEN konamabushi = '2' THEN '新粉あり' ELSE konamabushi END) AS konamabushi "
                     + ", syorisetsuu "
                     + ", RyouhinSetsuu "
                     + ", budomari "
@@ -863,8 +937,22 @@ public class GXHDO201B012 implements Serializable {
                     + "AND   (? IS NULL OR BARASHISTARTNICHIJI >= ?) "
                     + "AND   (? IS NULL OR BARASHISTARTNICHIJI <= ?) "
                     + "AND   (? IS NULL OR BARASHIENDNICHIJI >= ?) "
-                    + "AND   (? IS NULL OR BARASHIENDNICHIJI <= ?) "
-                    + "ORDER BY STARTDATETIME ";
+                    + "AND   (? IS NULL OR BARASHIENDNICHIJI <= ?) ";
+            for (String data : kensaBasyoDataList) {
+                if (!StringUtil.isEmpty(data) && !"ALL".equals(data)) {
+                    if (sqlflg) {
+                        sql += " AND ( ";
+                        sqlflg = false;
+                    } else {
+                        sql += " OR ";
+                    }
+                    sql += " tantousya like ? ";
+                }
+            }
+            if (!sqlflg) {
+                sql += " ) ";
+            }
+            sql += "ORDER BY STARTDATETIME ";
             
             // パラメータ設定
             List<Object> params = createSearchParam();
@@ -1013,6 +1101,7 @@ public class GXHDO201B012 implements Serializable {
      */
     private List<Object> createSearchParam() {
         // パラメータ設定
+        List<String> kensaBasyoDataList= new ArrayList<>(Arrays.asList(possibleData));
         String paramKojo = null;
         String paramLotNo = null;
         String paramEdaban = null;
@@ -1076,6 +1165,14 @@ public class GXHDO201B012 implements Serializable {
         params.addAll(Arrays.asList(paramBarashiStartDateT, paramBarashiStartDateT));
         params.addAll(Arrays.asList(paramBarashiEndDateF, paramBarashiEndDateF));
         params.addAll(Arrays.asList(paramBarashiEndDateT, paramBarashiEndDateT));
+        String paramTanto = null;
+        for (String data : kensaBasyoDataList) {
+            if (!StringUtil.isEmpty(data) && !"ALL".equals(data)) {
+                paramTanto = "__" + DBUtil.escapeString(data) + "%";
+                params.addAll(Arrays.asList(paramTanto));
+            }
+        }
+
 
         return params;
     }
@@ -1122,5 +1219,58 @@ public class GXHDO201B012 implements Serializable {
                 os.write(buffer, 0, size);
             }
         }
+    }
+    /**
+     * [ﾊﾟﾗﾒｰﾀﾏｽﾀ]から、ﾃﾞｰﾀを取得
+     *
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @return 取得データ
+     */
+    private Map loadFxhbm03Data(List<String> userGrpList) {
+        try {
+            QueryRunner queryRunner = new QueryRunner(dataSourceDocServer);
+            // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+            String sql = "SELECT data "
+                    + " FROM fxhbm03 WHERE ";
+            sql = sql + DBUtil.getInConditionPreparedStatement("user_name", userGrpList.size());
+            sql = sql + " AND key = 'ｶｯﾄ履歴_表示可能ﾃﾞｰﾀ'";
+
+            DBUtil.outputSQLLog(sql, userGrpList.toArray(), LOGGER);
+            return queryRunner.query(sql, new MapHandler(), userGrpList.toArray());
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+        }
+        return null;
+    }
+    
+    /**
+     * Mapから値を取得する(マップがNULLまたは空の場合はNULLを返却)
+     *
+     * @param map マップ
+     * @param mapId ID
+     * @return マップから取得した値
+     */
+    private Object getMapData(Map map, String mapId) {
+        if (map == null || map.isEmpty()) {
+            return null;
+        }
+        return map.get(mapId);
+    }
+    /**
+     * メインデータの件数を保持
+     *
+     * @return the displayStyle
+     */
+    public String getDisplayStyle() {
+        return displayStyle;
+    }
+
+    /**
+     * メインデータの件数を保持
+     *
+     * @param displayStyle the displayStyle to set
+     */
+    public void setDisplayStyle(String displayStyle) {
+        this.displayStyle = displayStyle;
     }
 }

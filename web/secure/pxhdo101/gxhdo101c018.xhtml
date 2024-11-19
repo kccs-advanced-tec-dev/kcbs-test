@@ -4,7 +4,7 @@
                 xmlns:f="http://xmlns.jcp.org/jsf/core"
                 xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <p:dialog header="ｻﾔNo" id="dlg_gxhdo101c018" widgetVar="W_dlg_gxhdo101c018"
-              width="480" modal="true"  
+              width="480" modal="true" height="480"
               dynamic="true" closable="true" closeOnEscape="false" 
               onShow="subFormOpen();"
               onHide="subFormClose(); document.getElementById('form:gxhdo101c018Form:cancelBtn').click();" position="center top">
@@ -30,7 +30,7 @@
                             </p:column>
                             <p:column id="tab1ItemVal" width="50%">
                                 <div style="text-align:left;">
-                                    <p:inputNumber decimalPlaces="0" maxValue="99" minValue="-99"  value="#{item.itemValue}" id="val" size="10" rendered="true" onkeydown="keyDownEnterSetNextControl(this)" tabindex="#{item.tabIndex}" inputStyle="text-align:right; background: #{item.textBackColor};"/>
+                                    <p:inputText value="#{item.itemValue}" id="val" size="10" maxlength="10" rendered="true" onkeydown="keyDownEnterSetNextControl(this)" tabindex="#{item.tabIndex}" style="text-align:left; background: #{item.textBackColor};"/>
                                 </div>
                             </p:column>
                             <p:column id="tab1CheckBoxVal" width="20%">
@@ -51,7 +51,7 @@
                             </p:column>
                             <p:column id="tab2ItemVal" width="50%">
                                 <div style="text-align:left;">
-                                    <p:inputNumber decimalPlaces="0" maxValue="99" minValue="-99"  value="#{item.itemValue}" id="val" size="10" rendered="true" onkeydown="keyDownEnterSetNextControl(this)" tabindex="#{item.tabIndex}" inputStyle="text-align:right; background: #{item.textBackColor};"/>
+                                    <p:inputText value="#{item.itemValue}" id="val" size="10" maxlength="10" rendered="true" onkeydown="keyDownEnterSetNextControl(this)" tabindex="#{item.tabIndex}" style="text-align:left; background: #{item.textBackColor};"/>
                                 </div>
                             </p:column>
                             <p:column id="tab2CheckBoxVal" width="20%">
@@ -72,7 +72,7 @@
                             </p:column>
                             <p:column id="tab3ItemVal" width="50%">
                                 <div style="text-align:left;">
-                                    <p:inputNumber decimalPlaces="0" maxValue="99" minValue="-99"  value="#{item.itemValue}" id="val" size="10" rendered="true" onkeydown="keyDownEnterSetNextControl(this)" tabindex="#{item.tabIndex}" inputStyle="text-align:right; background: #{item.textBackColor};"/>
+                                    <p:inputText value="#{item.itemValue}" id="val" size="10" maxlength="10" rendered="true" onkeydown="keyDownEnterSetNextControl(this)" tabindex="#{item.tabIndex}" style="text-align:left; background: #{item.textBackColor};"/>
                                 </div>
                             </p:column>
                             <p:column id="tab3CheckBoxVal" width="20%">
@@ -93,7 +93,7 @@
                             </p:column>
                             <p:column id="tab4ItemVal" width="50%">
                                 <div style="text-align:left;">
-                                    <p:inputNumber decimalPlaces="0" maxValue="99" minValue="-99"  value="#{item.itemValue}" id="val" size="10" rendered="true" onkeydown="keyDownEnterSetNextControl(this)" tabindex="#{item.tabIndex}" inputStyle="text-align:right; background: #{item.textBackColor};"/>
+                                    <p:inputText value="#{item.itemValue}" id="val" size="10" maxlength="10" rendered="true" onkeydown="keyDownEnterSetNextControl(this)" tabindex="#{item.tabIndex}" style="text-align:left; background: #{item.textBackColor};"/>
                                 </div>
                             </p:column>
                             <p:column id="tab4CheckBoxVal" width="20%">

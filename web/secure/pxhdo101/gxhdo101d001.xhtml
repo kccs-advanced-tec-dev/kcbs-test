@@ -24,6 +24,12 @@
             display: flex;
             flex-wrap: nowrap;
         }
+        .float-left {
+            float: left;
+        }
+        .clear {
+            clear:both;
+         }
         </style>
     </h:head>
 
@@ -103,6 +109,9 @@
                             <h:outputText id="hakkenkotei" value="#{beanGXHDO101D001.gxhdo101d001Model.hakkenkotei}" />
                         </div>
                     </div>
+                        <div align="center">
+                            <h:outputText id="hakkenkoteimei" value="#{beanGXHDO101D001.gxhdo101d001Model.hakkenkoteimei}" />
+                        </div>
                 </td>
             </tr>
         </tbody>
@@ -175,8 +184,8 @@
                 <td width="7%">号機ｺｰﾄﾞ</td>
                 <td width="7%" bgcolor="powderblue"><h:outputText id="goukicode" value="#{beanGXHDO101D001.gxhdo101d001Model.goukicode}" /></td>
                 <td width="7%">担当</td>
-                <td width="7%" bgcolor="powderblue"><h:outputText id="tantoshaCd" value="#{beanGXHDO101D001.searchTantoshaCd}" /></td>
-                <td width="22%"></td>
+                <td width="7%" bgcolor="powderblue"><h:outputText id="tantoshaCd" value="#{beanGXHDO101D001.gxhdo101d001Model.hakkosya}" /></td>
+                <td width="22%"><h:outputText id="tantoshamei" value="#{beanGXHDO101D001.gxhdo101d001Model.hakkosyamei}" /></td>
             </tr>
         </tbody>
     </table>
@@ -199,7 +208,7 @@
                     <td style="text-align:center">1</td>
                     <td bgcolor="powderblue"><h:outputText id="furyocode1" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode1}" /></td>
                     <td>
-                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui1}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui1}"></input>
+                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocodemei1}"></input>
                     </td>
                     <td bgcolor="powderblue"><h:outputText id="furyoritiu1" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu1}" /></td>
                     <td bgcolor="powderblue" style="text-align:left">
@@ -214,7 +223,7 @@
                     <td style="text-align:center">2</td>
                     <td bgcolor="powderblue"><h:outputText id="furyocode2" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode2}" /></td>
                     <td>
-                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui2}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui2}"></input>
+                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocodemei2}"></input>
                     </td>
                     <td bgcolor="powderblue"><h:outputText id="furyoritiu2" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu2}" /></td>
                     <td bgcolor="powderblue" style="text-align:left">
@@ -229,7 +238,7 @@
                     <td style="text-align:center">3</td>
                     <td bgcolor="powderblue"><h:outputText id="furyocode3" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode3}" /></td>
                     <td>
-                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui3}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui3}"></input>
+                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocodemei3}"></input>
                     </td>
                     <td bgcolor="powderblue"><h:outputText id="furyoritiu3" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu3}" /></td>
                     <td bgcolor="powderblue" style="text-align:left">
@@ -244,7 +253,7 @@
                     <td style="text-align:center">4</td>
                     <td bgcolor="powderblue"><h:outputText id="furyocode4" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode4}" /></td>
                     <td>
-                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui4}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui4}"></input>
+                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocodemei4}"></input>
                     </td>
                     <td bgcolor="powderblue"><h:outputText id="furyoritiu4" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu4}" /></td>
                     <td bgcolor="powderblue" style="text-align:left">
@@ -259,7 +268,7 @@
                     <td style="text-align:center">5</td>
                     <td bgcolor="powderblue"><h:outputText id="furyocode5" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode5}" /></td>
                     <td>
-                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui5}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui5}"></input>
+                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocodemei5}"></input>
                     </td>
                     <td bgcolor="powderblue"><h:outputText id="furyoritiu5" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu5}" /></td>
                     <td bgcolor="powderblue" style="text-align:left">
@@ -274,7 +283,7 @@
                     <td style="text-align:center">6</td>
                     <td bgcolor="powderblue"><h:outputText id="furyocode6" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode6}" /></td>
                     <td>
-                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui6}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui6}"></input>
+                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocodemei6}"></input>
                     </td>
                     <td bgcolor="powderblue"><h:outputText id="furyoritiu6" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu6}" /></td>
                     <td bgcolor="powderblue" style="text-align:left">
@@ -289,7 +298,7 @@
                     <td style="text-align:center">7</td>
                     <td bgcolor="powderblue"><h:outputText id="furyocode7" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode7}" /></td>
                     <td>
-                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui7}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui7}"></input>
+                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocodemei7}"></input>
                     </td>
                     <td bgcolor="powderblue"><h:outputText id="furyoritiu7" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu7}" /></td>
                     <td bgcolor="powderblue" style="text-align:left">
@@ -304,7 +313,7 @@
                     <td style="text-align:center">8</td>
                     <td bgcolor="powderblue"><h:outputText id="furyocode8" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode8}" /></td>
                     <td>
-                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui8}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui8}"></input>
+                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocodemei8}"></input>
                     </td>
                     <td bgcolor="powderblue"><h:outputText id="furyoritiu8" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu8}" /></td>
                     <td bgcolor="powderblue" style="text-align:left">
@@ -319,7 +328,7 @@
                     <td style="text-align:center">9</td>
                     <td bgcolor="powderblue"><h:outputText id="furyocode9" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode9}" /></td>
                     <td>
-                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui9}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui9}"></input>
+                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocodemei9}"></input>
                     </td>
                     <td bgcolor="powderblue"><h:outputText id="furyoritiu9" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu9}" /></td>
                     <td bgcolor="powderblue" style="text-align:left">
@@ -333,7 +342,7 @@
                     <td style="text-align:center">10</td>
                     <td bgcolor="powderblue"><h:outputText id="furyocode10" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocode10}" /></td>
                     <td>
-                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui10}" title="#{beanGXHDO101D001.gxhdo101d001Model.furyobunrui10}"></input>
+                        <input type="text" readonly="true" style="border:none; width:99%; text-align:left;font-size:16px;" value="#{beanGXHDO101D001.gxhdo101d001Model.furyocodemei10}"></input>
                     </td>
                     <td bgcolor="powderblue"><h:outputText id="furyoritiu10" value="#{beanGXHDO101D001.gxhdo101d001Model.furyoritiu10}" /></td>
                     <td bgcolor="powderblue" style="text-align:left">
@@ -357,10 +366,10 @@
         <tbody>    
             <tr>
                 <td width="7%">不良No</td>
-                <td width="14%" colspan="2">指示者</td>
+                <td width="17%" colspan="2">指示者</td>
                 <td width="7%">指示日</td>
                 <td width="14%" colspan="2">処置工程</td>
-                <td width="58%">指示内容</td>            
+                <td width="55%">指示内容</td>            
             </tr>
             <c:forEach var="itemSiji" items="#{beanGXHDO101D001.gxhdo101d001Model.sijiList}">
                 <tr>
@@ -370,7 +379,9 @@
                     <td width="7%" bgcolor="powderblue">
                         <h:outputText id="sijisyacode" value="#{itemSiji.sijisyacode}" />
                     </td>
-                    <td width="7%"></td>
+                    <td width="10%">
+                        <h:outputText id="sijisyacode" value="#{itemSiji.sijisyacodemei}" />
+                    </td>
                     <td>
                         <h:outputText id="sijibi" value="#{itemSiji.sijibi}" >
                             <f:convertDateTime pattern="M/d" timeZone="JST"/>
@@ -379,7 +390,9 @@
                     <td width="7%" bgcolor="powderblue">
                         <h:outputText id="syochikotei" value="#{itemSiji.syochikotei}" />
                     </td>              
-                    <td width="7%"></td>
+                    <td width="7%">
+                        <h:outputText id="syochikotei" value="#{itemSiji.syochikoteimei}" />
+                    </td>
                     <td style="text-align:left" bgcolor="powderblue">
                         <input type="text" readonly="true" style="border:none; width:100%; text-align:left; font-size:16px; background-color:powderblue;" value="#{itemSiji.sijinaiyo}" title="#{itemSiji.sijinaiyo}"></input>
                     </td>
@@ -393,7 +406,7 @@
     <table width="1000" border="1" style="border: 1px solid black; border-collapse: collapse; text-align:left">
         <tbody>
             <tr>
-                <td>【処置結果】</td>
+                <td>【処置結果】<h:outputText id="tmp_data_hyoji"  style="color:red;" value="#{beanGXHDO101D001.gxhdo101d001Model.tmp_data_hyoji}" /></td>
             </tr>
         </tbody>
     </table>
@@ -401,9 +414,9 @@
         <tbody> 
             <tr>
                 <td width="7%">不良No</td>
-                <td width="14%" colspan="2">担当者</td>
+                <td width="17%" colspan="2">担当者</td>
                 <td width="7%">日付</td>
-                <td width="65%">処置結果</td>
+                <td width="60%">処置結果</td>
                 <td width="7%">判定</td>            
             </tr>
             <c:forEach var="itemKekka" items="#{beanGXHDO101D001.gxhdo101d001Model.kekkaList}">
@@ -414,7 +427,9 @@
                     <td width="7%" bgcolor="powderblue">
                         <h:outputText id="syotisyacode" value="#{itemKekka.syotisyacode}" />
                     </td>
-                    <td width="7%"></td>
+                    <td width="10%">
+                        <h:outputText id="syotisyacode" value="#{itemKekka.syotisyacodemei}" />
+                    </td>
                     <td>
                         <h:outputText id="syotibi" value="#{itemKekka.syotibi}" >
                             <f:convertDateTime pattern="M/d" timeZone="JST"/>
@@ -432,36 +447,126 @@
         </tbody>
 
     </table>
+    
+    
+    <!-- 【判定行】 --> 
+    <table width="1000" border="1" style="border: 1px solid black; border-collapse: collapse; text-align:left;">
+        <tbody>
+            <tr>
+                <td width="1000">【判定】<h:outputText id="tmp_hanteidata_hyoji" style="color:red;" value="#{beanGXHDO101D001.gxhdo101d001Model.tmp_hanteidata_hyoji}" /></td>
+            </tr>
+        </tbody>
+    </table>
 
-    <!-- 【処置確認行】 --> 
-    <table width="1000" border="1" style="border: 1px solid black; border-collapse: collapse; text-align:left">
+    <table width="1000" border="1" style="border: 1px solid black; border-collapse: collapse; text-align:center;">
+        <tbody> 
+            
+             <tr>
+                <td width="7%">不良No</td>
+                <td width="17" colspan="2">担当者</td>
+                <td width="7%">日付</td>
+                <td width="7%">判定</td>
+                <td width="52%">コメント</td>            
+            </tr>
+            <c:forEach var="itemHantei" items="#{beanGXHDO101D001.gxhdo101d001Model.hanteiList}">
+                <tr>
+                    <td bgcolor="powderblue">
+                        <h:outputText id="hanteiFfuryono" value="#{itemHantei.furyono}" />
+                    </td>                
+                    <td width="7%" bgcolor="powderblue">
+                        <h:outputText id="hanteisyacode" value="#{itemHantei.hanteisyacode}" />
+                    </td>
+                    <td width="10%">
+                        <h:outputText id="hanteisyacode" value="#{itemHantei.hanteisyacodemei}" />
+                    </td>
+                    <td>
+                        <h:outputText id="hanteibi" value="#{itemHantei.hanteibi}" >
+                            <f:convertDateTime pattern="M/d" timeZone="JST"/>
+                        </h:outputText>
+                    </td>               
+                    <td style="text-align:left" bgcolor="powderblue">
+                        <input type="text" readonly="true" style="border:none; width:100%; text-align:left; font-size:16px; background-color:powderblue;" value="#{itemHantei.hantei}" title="#{itemHantei.hantei}"></input>
+                    </td>
+                    <td style="text-align:left" bgcolor="powderblue">
+                        <input type="text" readonly="true" style="border:none; width:100%; text-align:left; font-size:16px; background-color:powderblue;" value="#{itemHantei.comment}" title="#{itemHantei.comment}"></input>
+                    </td>
+                </tr>
+            </c:forEach>
+
+
+
+        </tbody>
+    </table>
+    
+    
+    <div style="overflow: hidden; width: 1000px;">
+
+    <!-- 【磁器QC確認行】 --> 
+    
+    <table width="500" border="1" style="border: 1px black; border-collapse: collapse; text-align:left;border-spacing:0;float: left">
 
         <tbody>
 
             <tr>
-                <td width="1000">【処置確認】</td>
+                <td width="500">【磁器QC確認】</td>
             </tr>
         </tbody>
     </table>
 
-    <table width="1000" border="1" style="border: 1px solid black; border-collapse: collapse; text-align:center">
+     
+    <!-- 【品証確認行】 --> 
+    
+    <table width="500" border="1" style="border: 1px black; border-collapse: collapse; text-align:left;border-spacing:0;float: right">
+
+        <tbody>
+
+            <tr>
+                <td width="500">【品証確認】</td>
+            </tr>
+        </tbody>
+    </table>
+    <div class="clear"></div>
+    <!-- 【磁器QC確認行】 --> 
+            
+    <table width="500" border="1" style="border: 1px black; border-collapse: collapse; text-align:center;border-spacing:0;float: left;">
         <tbody>    
 
             <tr>
-                <td width="10%">確認者</td>
-                <td width="10%"><h:outputText id="qakakuninsya" value="#{beanGXHDO101D001.gxhdo101d001Model.qakakuninsya}" /></td>
-                <td width="10%"></td>
-                <td width="10%">日付</td>
-                <td width="10%">
+                <td width="20%">確認者</td>
+                <td width="20%"><h:outputText id="jikiqckakuninsya" value="#{beanGXHDO101D001.gxhdo101d001Model.jikiqckakuninsya}" /></td>
+                <td width="20%"><h:outputText id="jikiqckakuninsyamei" value="#{beanGXHDO101D001.gxhdo101d001Model.jikiqckakuninsyamei}" /></td>
+                <td width="20%">日付</td>
+                <td width="20%">
+                    <h:outputText id="jikiqckakuninnichiji" value="#{beanGXHDO101D001.gxhdo101d001Model.jikiqckakuninnichiji}">
+                        <f:convertDateTime pattern="M/d" timeZone="JST"/>
+                    </h:outputText>  
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    
+    <!-- 【品証確認行】 --> 
+
+    <table width="500" border="1" style="border: 1px black; border-collapse: collapse; text-align:center;border-spacing:0;float: right">
+        <tbody>    
+
+            <tr>
+                <td width="20%">確認者</td>
+                <td width="20%"><h:outputText id="qakakuninsya" value="#{beanGXHDO101D001.gxhdo101d001Model.qakakuninsya}" /></td>
+                <td width="20%"><h:outputText id="qakakuninsyamei" value="#{beanGXHDO101D001.gxhdo101d001Model.qakakuninsyamei}" /></td>
+                <td width="20%">日付</td>
+                <td width="20%">
                     <h:outputText id="qakakuninnichiji" value="#{beanGXHDO101D001.gxhdo101d001Model.qakakuninnichiji}">
                         <f:convertDateTime pattern="M/d" timeZone="JST"/>
                     </h:outputText>      
                 </td>
-                <td width="50%"></td>
             </tr>
 
         </tbody>
     </table>
+    <div class="clear"></div>
+    </div>
 
     </h:body>
 

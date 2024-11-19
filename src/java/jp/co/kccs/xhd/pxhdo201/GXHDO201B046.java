@@ -127,6 +127,8 @@ public class GXHDO201B046 implements Serializable {
     private String kensaEndTimeF = "";
     /** 検索条件：検査終了時刻(TO) */
     private String kensaEndTimeT = "";
+    /** 検索条件：号機 */
+    private String goki = "";
     //表示可能ﾃﾞｰﾀ
     private String possibleData[];
     
@@ -341,6 +343,22 @@ public class GXHDO201B046 implements Serializable {
     public void setKensaEndTimeT(String kensaEndTimeT) {
         this.kensaEndTimeT = kensaEndTimeT;
     }
+
+    /**
+     * 検索条件：号機
+     * @return the goki
+     */
+    public String getGoki() {
+        return goki;
+    }
+
+    /**
+     * 検索条件：号機
+     * @param goki the goki to set
+     */
+    public void setGoki(String goki) {
+        this.goki = goki;
+    }
     
     /**
      * メインデータの件数を保持
@@ -472,6 +490,7 @@ public class GXHDO201B046 implements Serializable {
         kensaEndDateT = "";
         kensaEndTimeF = "";
         kensaEndTimeT = "";
+        goki = "";
         
         listData = new ArrayList<>();
     }
@@ -558,6 +577,10 @@ public class GXHDO201B046 implements Serializable {
         if (!StringUtil.isEmpty(kensaEndTimeT) && existError(validateUtil.checkC001(getKensaEndDateT(), "検査終了日(to)"))) {
             return;
         }       
+        // 号機
+        if (existError(validateUtil.checkC101(getGoki(), "号機", 4))) {
+            return;
+        }
         
         if (possibleData == null) {
             return;
@@ -634,7 +657,8 @@ public class GXHDO201B046 implements Serializable {
             sql += " AND   (? IS NULL OR kensakaishinichiji >= ?) "
                     + " AND   (? IS NULL OR kensakaishinichiji <= ?) "
                     + " AND   (? IS NULL OR kensasyuuryounichiji >= ?) "
-                    + " AND   (? IS NULL OR kensasyuuryounichiji <= ?) ";
+                    + " AND   (? IS NULL OR kensasyuuryounichiji <= ?) "
+                    + " AND   (? IS NULL OR kensagouki = ?) ";
 
             // パラメータ設定
             List<Object> params = createSearchParam();
@@ -713,6 +737,7 @@ public class GXHDO201B046 implements Serializable {
                     + ", QAgaikannukitorikensa "
                     + ", bikou1 "
                     + ", bikou2 "
+                    + ", jokyo "
                     + "  FROM sr_gaikankensa "
                     + " WHERE (? IS NULL OR kojyo = ?) "
                     + " AND   (? IS NULL OR lotno = ?) "
@@ -732,6 +757,7 @@ public class GXHDO201B046 implements Serializable {
                     + " AND   (? IS NULL OR kensakaishinichiji <= ?) "
                     + " AND   (? IS NULL OR kensasyuuryounichiji >= ?) "
                     + " AND   (? IS NULL OR kensasyuuryounichiji <= ?) "
+                    + " AND   (? IS NULL OR kensagouki = ?) "
                     + " ORDER BY kensakaishinichiji ";
             
             // パラメータ設定
@@ -792,6 +818,7 @@ public class GXHDO201B046 implements Serializable {
             mapping.put("QAgaikannukitorikensa", "qagaikannukitorikensa");//QA外観抜き取り検査 
             mapping.put("bikou1", "bikou1");//備考1
             mapping.put("bikou2", "bikou2");//備考2
+            mapping.put("jokyo", "jokyo");//備考2
 
                                
             BeanProcessor beanProcessor = new BeanProcessor(mapping);
@@ -928,6 +955,10 @@ public class GXHDO201B046 implements Serializable {
         if (!StringUtil.isEmpty(kensaEndDateT)) {
             paramKensaEndDateT = DateUtil.convertStringToDate(getKensaEndDateT(), StringUtil.isEmpty(getKensaEndTimeT()) ? "2359" : getKensaEndTimeT());
         }
+        String paramGoki = null;
+        if (!StringUtil.isEmpty(goki)) {
+            paramGoki = goki;
+        }
 
         List<Object> params = new ArrayList<>();
         params.addAll(Arrays.asList(paramKojo, paramKojo));
@@ -947,6 +978,7 @@ public class GXHDO201B046 implements Serializable {
         params.addAll(Arrays.asList(paramKensaStartDateT, paramKensaStartDateT));
         params.addAll(Arrays.asList(paramKensaEndDateF, paramKensaEndDateF));
         params.addAll(Arrays.asList(paramKensaEndDateT, paramKensaEndDateT));
+        params.addAll(Arrays.asList(paramGoki, paramGoki));
 
 
         return params;

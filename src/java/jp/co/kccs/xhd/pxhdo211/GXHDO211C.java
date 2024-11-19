@@ -1071,6 +1071,7 @@ public class GXHDO211C implements Serializable {
         sbSql.append("       ,S.koteicode as koteicode ");
         sbSql.append("       ,S.ukeirebi as ukeirebi ");
         sbSql.append("       ,S.suuryo as kosuValue ");
+        sbSql.append("       ,S.ownercode as ownercode ");
         sbSql.append("       ,SE.goukicode as gouki ");
 
         if ("1".equals(this.db_connect_mode)) {
@@ -1380,7 +1381,7 @@ public class GXHDO211C implements Serializable {
         // 指定されたロットNoでda_sekkeiを検索する
         List<Object> params = new ArrayList<>();
         StringBuilder sbSql = new StringBuilder();
-        sbSql.append(" SELECT KOJYO,LOTNO,EDABAN,SEKKEINO");
+        sbSql.append(" SELECT KOJYO,LOTNO,EDABAN,SEKKEINO,GENRYOU,ETAPE");
         sbSql.append("   FROM da_sekkei");
         sbSql.append("  WHERE (");
         boolean notFirst = false;
@@ -2164,7 +2165,12 @@ public class GXHDO211C implements Serializable {
             if (model.getKcpno().matches(TOKUSHU_HIN_KCPNO1) || model.getKcpno().matches(TOKUSHU_HIN_KCPNO2)) {
                 model.setHinsyu("V8");
             }
+            
+            // 電極ﾃｰﾌﾟ
+            model.setEatape(StringUtil.nullToBlank(sekkeiMap.get("GENRYOU")) + "　" + StringUtil.nullToBlank(sekkeiMap.get("ETAPE")));
 
+            // ｵｰﾅｰｺｰﾄﾞ
+            model.setOwnercode(lotno);
             resultData.add(model);
         }
 

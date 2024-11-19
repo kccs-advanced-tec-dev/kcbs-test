@@ -82,6 +82,21 @@ public class GXHDO102B011Const {
      * ﾐﾙ周波数
      */
     public static final String MILLSYUUHASUU = "sr_tenka_funsai_millsyuuhasuu";
+    
+    /**
+     * スクリーン
+     */
+    public static final String SCREEN = "sr_tenka_funsai_screen";
+    
+    /**
+     * メディア径
+     */
+    public static final String MEDIAKEI = "sr_tenka_funsai_mediakei";
+    
+    /**
+     * 玉石種類
+     */
+    public static final String TAMAISIJURYO = "sr_tenka_funsai_tamaisijuryo";
 
     /**
      * 周速
@@ -117,6 +132,11 @@ public class GXHDO102B011Const {
      * ﾊﾟｽ回数
      */
     public static final String PASSKAISUU_SF1 = "sr_tenka_funsai_passkaisuu_sf1";
+    
+    /**
+     * ﾊﾟｽ回数
+     */
+    public static final String PASSKAISUU_SF1_INPUT = "sr_tenka_funsai_passkaisuu_sf1_input";
 
     /**
      * 開始日
@@ -167,6 +187,16 @@ public class GXHDO102B011Const {
      * 流量
      */
     public static final String RYUURYOU_SF1 = "sr_tenka_funsai_ryuuryou_sf1";
+    
+    /**
+     * 粉砕担当者
+     */
+    public static final String FUNSAITANTOUSYA_SF1 = "sr_tenka_funsai_ftantousya_sf1";
+    
+    /**
+     * 粉砕確認者
+     */
+    public static final String FUNSAIKAKUNINSYA_SF1 = "sr_tenka_funsai_fkakuninsya_sf1";
 
     /**
      * 備考1
@@ -217,6 +247,11 @@ public class GXHDO102B011Const {
      * ﾊﾟｽ回数
      */
     public static final String PASSKAISUU_SF2 = "sr_tenka_funsai_passkaisuu_sf2";
+    
+    /**
+     * ﾊﾟｽ回数
+     */
+    public static final String PASSKAISUU_SF2_INPUT = "sr_tenka_funsai_passkaisuu_sf2_input";
 
     /**
      * 開始日

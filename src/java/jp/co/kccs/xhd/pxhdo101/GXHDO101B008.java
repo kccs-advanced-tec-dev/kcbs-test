@@ -2456,7 +2456,6 @@ public class GXHDO101B008 implements IFormLogic {
         }
         return defaultValue;
     }
-
     /**
      * 【設備ﾃﾞｰﾀ連携】ﾎﾞﾀﾝ押下時設定処理
      *
@@ -2470,9 +2469,9 @@ public class GXHDO101B008 implements IFormLogic {
         HttpSession session = (HttpSession) externalContext.getSession(false);
         String lotNo = (String) session.getAttribute("lotNo");
         try {
-            // (23)[tmp_ps_kanri]から、ﾃﾞｰﾀの取得
-            List<Map<String, Object>> tmpSrGraprintKanriDataList = loadTmpPsKanriData(queryRunnerQcdb, lotNo, null);
-            if (tmpSrGraprintKanriDataList == null || tmpSrGraprintKanriDataList.isEmpty()) {
+            // (23)[tmp_sr_ps_kanri]から、ﾃﾞｰﾀの取得
+            List<Map<String, Object>> tmpSrPsKanriDataList = loadTmpPsKanriData(queryRunnerQcdb, lotNo, null);
+            if (tmpSrPsKanriDataList == null || tmpSrPsKanriDataList.isEmpty()) {
                 // ｴﾗｰ項目をﾘｽﾄに追加
                 ErrorMessageInfo checkItemError = MessageUtil.getErrorMessageInfo("XHD-000210", true, true, null, "設備ﾃﾞｰﾀ");
                 if (checkItemError != null) {
@@ -2480,12 +2479,15 @@ public class GXHDO101B008 implements IFormLogic {
                     return processData;
                 }
             }
-            ErrorMessageInfo checkItemError = checkDataCooperation(processData, queryRunnerQcdb, lotNo, 1);
+            HashMap<String, String> itemIdConvertMap = new HashMap<>();
+            itemIdConvertMap.put(GXHDO101B008Const.KAISHI_DAY, "sr_press_start_day");
+            itemIdConvertMap.put(GXHDO101B008Const.KAISHI_TIME, "sr_press_start_time");
+            ErrorMessageInfo checkItemError = checkDataCooperation(processData, queryRunnerQcdb, lotNo, 1, itemIdConvertMap);
             if (checkItemError != null) {
                 processData.setErrorMessageInfoList(Arrays.asList(checkItemError));
                 return processData;
             }
-            doDataCooperation(processData, queryRunnerQcdb, lotNo, 1);
+            doDataCooperation(processData, queryRunnerQcdb, lotNo, 1, itemIdConvertMap);
         } catch (SQLException ex) {
             ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
             processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
@@ -2501,42 +2503,61 @@ public class GXHDO101B008 implements IFormLogic {
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @param datasyurui データ種類(検索キー)
+     * @param itemIdConvertMap ﾌｫｰﾑﾊﾟﾗﾒｰﾀ(item_id)とtmp_sr_graprint(item_id)の対比表
      * @return ｴﾗｰﾒｯｾｰｼﾞ情報
      * @throws SQLException 例外エラー
      */
-    private ErrorMessageInfo checkDataCooperation(ProcessData processData, QueryRunner queryRunnerQcdb, String lotNo, Integer datasyurui) throws SQLException {
+    private ErrorMessageInfo checkDataCooperation(ProcessData processData, QueryRunner queryRunnerQcdb, String lotNo, Integer datasyurui, 
+            HashMap<String, String> itemIdConvertMap) throws SQLException {
         ErrorMessageInfo checkItemError = null;
         // 検索条件:ﾃﾞｰﾀの種類==datasyurui で、Ⅲ.画面表示仕様(21)を発行する。
-        List<Map<String, Object>> tmpSrGraprintKanriDataList = loadTmpPsKanriData(queryRunnerQcdb, lotNo, String.valueOf(datasyurui));
-        if (tmpSrGraprintKanriDataList != null && !tmpSrGraprintKanriDataList.isEmpty()) {
+        List<Map<String, Object>> tmpSrPsKanriDataList = loadTmpPsKanriData(queryRunnerQcdb, lotNo, String.valueOf(datasyurui));
+        if (tmpSrPsKanriDataList != null && !tmpSrPsKanriDataList.isEmpty()) {
             // 取得したﾃﾞｰﾀで実績Noが高い管理Noで、Ⅲ.画面表示仕様(22)を発行する。
-            Map<String, Object> tmpSrGraprintKanriData = tmpSrGraprintKanriDataList.get(0);
-            List<Map<String, Object>> tmpSrGraprintDataList = loadTmpPsData(queryRunnerQcdb, (Long) tmpSrGraprintKanriData.get("kanrino"));
-            if (tmpSrGraprintDataList != null && !tmpSrGraprintDataList.isEmpty()) {
+            Map<String, Object> tmpSrPsKanriData = tmpSrPsKanriDataList.get(0);
+            List<Map<String, Object>> tmpSrPsDataList = loadTmpPsData(queryRunnerQcdb, (Long) tmpSrPsKanriData.get("kanrino"));
+            if (tmpSrPsDataList != null && !tmpSrPsDataList.isEmpty()) {
                 // Ⅵ.画面項目制御・出力仕様.G3)入力項目部.【設備ﾃﾞｰﾀ連携】ﾎﾞﾀﾝ押下時.開始時 の該当項目へ取得ﾃﾞｰﾀを上書きする。
                 List<String> numberItemList;
-                if (datasyurui == 1 || datasyurui == 2) {
-                    // 開始時(ﾃﾞｰﾀ種類1or2)
-                    numberItemList = Arrays.asList(GXHDO101B008Const.YONETSU_TIME1, GXHDO101B008Const.YONETSU_TIME2, GXHDO101B008Const.YONETSU_TIME3,
-                            GXHDO101B008Const.ONDO, GXHDO101B008Const.MAX_ATURYOKU_1_JI, GXHDO101B008Const.JIKAN_1_JI, GXHDO101B008Const.MAX_ATURYOKU_2_JI,
-                            GXHDO101B008Const.JIKAN_2_JI, GXHDO101B008Const.SHORI_SETSU);
-                    checkItemError = checkDataCooperationItemData(processData, numberItemList, tmpSrGraprintDataList);
+                if (datasyurui == 1) {
+                    // 開始時(ﾃﾞｰﾀ種類1)
+                    numberItemList = Arrays.asList(GXHDO101B008Const.KAISHI_DAY, GXHDO101B008Const.KAISHI_TIME);
+                    checkItemError = checkDataCooperationItemData(processData, numberItemList, tmpSrPsDataList, itemIdConvertMap);
                     if (checkItemError == null) {
-                        checkItemError = checkDataCooperation(processData, queryRunnerQcdb, lotNo, 3);
+                        checkItemError = checkDataCooperation(processData, queryRunnerQcdb, lotNo, 2, itemIdConvertMap);
                         if (checkItemError != null) {
                             return checkItemError;
                         }
                     } else {
                         return checkItemError;
                     }
-                } else if (datasyurui == 3 || datasyurui == 4) {
-                    // 終了時(ﾃﾞｰﾀ種類3or4)
-                    numberItemList = new ArrayList<>();
-                    checkItemError = checkDataCooperationItemData(processData, numberItemList, tmpSrGraprintDataList);
+                } else if (datasyurui == 2) {
+                    // 開始時(ﾃﾞｰﾀ種類2)
+                    numberItemList = Arrays.asList(GXHDO101B008Const.YONETSU_TIME1, GXHDO101B008Const.YONETSU_TIME2, GXHDO101B008Const.YONETSU_TIME3, 
+                            GXHDO101B008Const.ONDO, GXHDO101B008Const.MAX_ATURYOKU_1_JI, GXHDO101B008Const.MAX_ATURYOKU_2_JI, 
+                            GXHDO101B008Const.JIKAN_1_JI, GXHDO101B008Const.JIKAN_2_JI);
+                    checkItemError = checkDataCooperationItemData(processData, numberItemList, tmpSrPsDataList, itemIdConvertMap);
+                    if (checkItemError == null) {
+                        checkItemError = checkDataCooperation(processData, queryRunnerQcdb, lotNo, 4, itemIdConvertMap);
+                        if (checkItemError != null) {
+                            return checkItemError;
+                        }
+                    } else {
+                        return checkItemError;
+                    }
+                } else if (datasyurui == 4) {
+                    // 終了時(ﾃﾞｰﾀ種類4)
+                    numberItemList = Arrays.asList(GXHDO101B008Const.SHURYOU_DAY, GXHDO101B008Const.SHURYOU_TIME);
+                    checkItemError = checkDataCooperationItemData(processData, numberItemList, tmpSrPsDataList, itemIdConvertMap);
                 }
             } else {
-                if (datasyurui == 1 || datasyurui == 2) {
-                    checkItemError = checkDataCooperation(processData, queryRunnerQcdb, lotNo, 3);
+                if (datasyurui == 1) {
+                    checkItemError = checkDataCooperation(processData, queryRunnerQcdb, lotNo, 2, itemIdConvertMap);
+                    if (checkItemError != null) {
+                        return checkItemError;
+                    }
+                } else if (datasyurui == 2) {
+                    checkItemError = checkDataCooperation(processData, queryRunnerQcdb, lotNo, 4, itemIdConvertMap);
                     if (checkItemError != null) {
                         return checkItemError;
                     }
@@ -2545,7 +2566,7 @@ public class GXHDO101B008 implements IFormLogic {
         } else {
             datasyurui++;
             if (datasyurui <= 4) {
-                checkItemError = checkDataCooperation(processData, queryRunnerQcdb, lotNo, datasyurui);
+                checkItemError = checkDataCooperation(processData, queryRunnerQcdb, lotNo, datasyurui, itemIdConvertMap);
                 if (checkItemError != null) {
                     return checkItemError;
                 }
@@ -2560,15 +2581,21 @@ public class GXHDO101B008 implements IFormLogic {
      * @param processData 処理制御データ
      * @param numberItemList 数値項目リスト
      * @param tmpSrGraprintDataList 取得ﾃﾞｰﾀ
+     * @param itemIdConvertMap ﾌｫｰﾑﾊﾟﾗﾒｰﾀ(item_id)とtmp_sr_ps(item_id)の対比表
      * @return ｴﾗｰﾒｯｾｰｼﾞ情報
      */
-    private ErrorMessageInfo checkDataCooperationItemData(ProcessData processData, List<String> numberItemList, List<Map<String, Object>> tmpSrGraprintDataList) {
+    private ErrorMessageInfo checkDataCooperationItemData(ProcessData processData, List<String> numberItemList, List<Map<String, Object>> tmpSrPsDataList,
+            HashMap<String, String> itemIdConvertMap) {
         for(String itemId : numberItemList){
             FXHDD01 itemData = processData.getItemList().stream().filter(n -> itemId.equals(n.getItemId())).findFirst().orElse(null);
+            String[] tmpSrPsItemId = {itemId};
             if (itemData != null) {
-                Map<String, Object> tmpSrGraprintData = tmpSrGraprintDataList.stream().filter(e -> itemId.equals(e.get("item_id"))).findFirst().orElse(null);
-                if (tmpSrGraprintData != null && !tmpSrGraprintData.isEmpty()) {
-                    String ataiValue = StringUtil.nullToBlank(tmpSrGraprintData.get("atai"));
+                if (itemIdConvertMap.containsKey(itemId)) {
+                    tmpSrPsItemId[0] = itemIdConvertMap.get(itemId);
+                }
+                Map<String, Object> tmpSrPsData = tmpSrPsDataList.stream().filter(e -> tmpSrPsItemId[0].equals(e.get("item_id"))).findFirst().orElse(null);
+                if (tmpSrPsData != null && !tmpSrPsData.isEmpty()) {
+                    String ataiValue = StringUtil.nullToBlank(tmpSrPsData.get("atai"));
                     if(!StringUtil.isEmpty(ataiValue)){
                         try {
                            BigDecimal bigDecimalVal = new BigDecimal(ataiValue);
@@ -2592,40 +2619,49 @@ public class GXHDO101B008 implements IFormLogic {
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param lotNo ﾛｯﾄNo(検索キー)
      * @param datasyurui データ種類(検索キー)
+     * @param itemIdConvertMap ﾌｫｰﾑﾊﾟﾗﾒｰﾀ(item_id)とtmp_sr_graprint(item_id)の対比表
      * @throws SQLException 例外エラー
      */
-    private void doDataCooperation(ProcessData processData, QueryRunner queryRunnerQcdb, String lotNo, Integer datasyurui) throws SQLException {
+    private void doDataCooperation(ProcessData processData, QueryRunner queryRunnerQcdb, String lotNo, Integer datasyurui, 
+            HashMap<String, String> itemIdConvertMap) throws SQLException {
         // 検索条件:ﾃﾞｰﾀの種類==datasyurui で、Ⅲ.画面表示仕様(21)を発行する。
-        List<Map<String, Object>> tmpSrGraprintKanriDataList = loadTmpPsKanriData(queryRunnerQcdb, lotNo, String.valueOf(datasyurui));
-        if (tmpSrGraprintKanriDataList != null && !tmpSrGraprintKanriDataList.isEmpty()) {
+        List<Map<String, Object>> tmpSrPsKanriDataList = loadTmpPsKanriData(queryRunnerQcdb, lotNo, String.valueOf(datasyurui));
+        if (tmpSrPsKanriDataList != null && !tmpSrPsKanriDataList.isEmpty()) {
             // 取得したﾃﾞｰﾀで実績Noが高い管理Noで、Ⅲ.画面表示仕様(22)を発行する。
-            Map<String, Object> tmpSrGraprintKanriData = tmpSrGraprintKanriDataList.get(0);
+            Map<String, Object> tmpSrGraprintKanriData = tmpSrPsKanriDataList.get(0);
             List<Map<String, Object>> tmpSrGraprintDataList = loadTmpPsData(queryRunnerQcdb, (Long) tmpSrGraprintKanriData.get("kanrino"));
             if (tmpSrGraprintDataList != null && !tmpSrGraprintDataList.isEmpty()) {
                 // Ⅵ.画面項目制御・出力仕様.G3)入力項目部.【設備ﾃﾞｰﾀ連携】ﾎﾞﾀﾝ押下時.開始時 の該当項目へ取得ﾃﾞｰﾀを上書きする。
                 List<String> setValueItemList;
-                if (datasyurui == 1 || datasyurui == 2) {
-                    // 開始時(ﾃﾞｰﾀ種類1or2)
-                    setValueItemList = Arrays.asList(GXHDO101B008Const.SINKU_DAKKI_GOKI, GXHDO101B008Const.SEISUIATSU_PRESS_GOKI, GXHDO101B008Const.YONETSU_TIME1,
-                            GXHDO101B008Const.YONETSU_TIME2, GXHDO101B008Const.YONETSU_TIME3, GXHDO101B008Const.ONDO, GXHDO101B008Const.MAX_ATURYOKU_1_JI,
-                            GXHDO101B008Const.JIKAN_1_JI, GXHDO101B008Const.MAX_ATURYOKU_2_JI, GXHDO101B008Const.JIKAN_2_JI, GXHDO101B008Const.KAISHI_DAY,
-                            GXHDO101B008Const.KAISHI_TIME, GXHDO101B008Const.SHORI_SETSU);
-                    setDataCooperationItemData(processData, setValueItemList, tmpSrGraprintDataList);
-                    doDataCooperation(processData, queryRunnerQcdb, lotNo, 3);
-                } else if (datasyurui == 3 || datasyurui == 4) {
-                    // 終了時(ﾃﾞｰﾀ種類3or4)
+                if (datasyurui == 1) {
+                    // 開始時(ﾃﾞｰﾀ種類1)
+                    setValueItemList = Arrays.asList(GXHDO101B008Const.SINKU_DAKKI_GOKI, GXHDO101B008Const.KAISHI_DAY, GXHDO101B008Const.KAISHI_TIME);
+                    setDataCooperationItemData(processData, setValueItemList, tmpSrGraprintDataList, itemIdConvertMap);
+                    doDataCooperation(processData, queryRunnerQcdb, lotNo, 2, itemIdConvertMap);
+                } else if (datasyurui == 2) {
+                    // 開始時(ﾃﾞｰﾀ種類2)
+                    setValueItemList = Arrays.asList(GXHDO101B008Const.YONETSU_TIME1, GXHDO101B008Const.YONETSU_TIME2, GXHDO101B008Const.YONETSU_TIME3, 
+                            GXHDO101B008Const.ONDO, GXHDO101B008Const.MAX_ATURYOKU_1_JI, GXHDO101B008Const.MAX_ATURYOKU_2_JI, 
+                            GXHDO101B008Const.JIKAN_1_JI, GXHDO101B008Const.JIKAN_2_JI, GXHDO101B008Const.SEISUIATSU_PRESS_GOKI,
+                            GXHDO101B008Const.CERAPEEL_BLAST, GXHDO101B008Const.SUS_BAN, GXHDO101B008Const.KASHOZAI2, GXHDO101B008Const.PRESS_KAISU);
+                    setDataCooperationItemData(processData, setValueItemList, tmpSrGraprintDataList, itemIdConvertMap);
+                    doDataCooperation(processData, queryRunnerQcdb, lotNo, 4, itemIdConvertMap);
+                } else if (datasyurui == 4) {
+                    // 終了時(ﾃﾞｰﾀ種類4)
                     setValueItemList = Arrays.asList(GXHDO101B008Const.SHURYOU_DAY, GXHDO101B008Const.SHURYOU_TIME);
-                    setDataCooperationItemData(processData, setValueItemList, tmpSrGraprintDataList);
+                    setDataCooperationItemData(processData, setValueItemList, tmpSrGraprintDataList, itemIdConvertMap);
                 }
             } else {
-                if (datasyurui == 1 || datasyurui == 2) {
-                    doDataCooperation(processData, queryRunnerQcdb, lotNo, 3);
+                if (datasyurui == 1) {
+                    doDataCooperation(processData, queryRunnerQcdb, lotNo, 2, itemIdConvertMap);
+                } else if (datasyurui == 2) {
+                    doDataCooperation(processData, queryRunnerQcdb, lotNo, 4, itemIdConvertMap);
                 }
             }
         } else {
             datasyurui++;
             if (datasyurui <= 4) {
-                doDataCooperation(processData, queryRunnerQcdb, lotNo, datasyurui);
+                doDataCooperation(processData, queryRunnerQcdb, lotNo, datasyurui, itemIdConvertMap);
             }
         }
     }
@@ -2636,21 +2672,37 @@ public class GXHDO101B008 implements IFormLogic {
      * @param processData 処理制御データ
      * @param setValueItemList 項目リスト
      * @param tmpSrGraprintDataList 取得ﾃﾞｰﾀ
+     * @param itemIdConvertMap ﾌｫｰﾑﾊﾟﾗﾒｰﾀ(item_id)tmp_sr_ps(item_id)の対比表
      */
-    private void setDataCooperationItemData(ProcessData processData, List<String> setValueItemList, List<Map<String, Object>> tmpSrGraprintDataList) {
+    private void setDataCooperationItemData(ProcessData processData, List<String> setValueItemList, List<Map<String, Object>> tmpSrPsDataList,
+            HashMap<String, String> itemIdConvertMap) {
         setValueItemList.forEach(itemId -> {
             FXHDD01 itemData = processData.getItemList().stream().filter(n -> itemId.equals(n.getItemId())).findFirst().orElse(null);
+            String[] tmpSrPsItemId = {itemId};
             if (itemData != null) {
-                Map<String, Object> tmpSrGraprintData = tmpSrGraprintDataList.stream().filter(e -> itemId.equals(e.get("item_id"))).findFirst().orElse(null);
-                if (tmpSrGraprintData != null && !tmpSrGraprintData.isEmpty()) {
-                    itemData.setValue(StringUtil.nullToBlank(tmpSrGraprintData.get("atai")));
+                if (itemId.equals(GXHDO101B008Const.CERAPEEL_BLAST)) {
+                    itemData.setValue("PETｼｰﾄ");
+                } else if (itemId.equals(GXHDO101B008Const.SUS_BAN)) {
+                    itemData.setValue("あり");
+                } else if (itemId.equals(GXHDO101B008Const.KASHOZAI2)) {
+                    itemData.setValue("あり");
+                } else if (itemId.equals(GXHDO101B008Const.PRESS_KAISU)) {
+                    itemData.setValue("1");
+                } else {
+                    if (itemIdConvertMap.containsKey(itemId)) {
+                        tmpSrPsItemId[0] = itemIdConvertMap.get(itemId);
+                    }
+                    Map<String, Object> tmpSrPsData = tmpSrPsDataList.stream().filter(e -> tmpSrPsItemId[0].equals(e.get("item_id"))).findFirst().orElse(null);
+                    if (tmpSrPsData != null && !tmpSrPsData.isEmpty()) {
+                        itemData.setValue(StringUtil.nullToBlank(tmpSrPsData.get("atai")));
+                    }
                 }
             }
         });
     }
     
     /**
-     * (21)[tmp_ps_kanri]から、ﾃﾞｰﾀの取得
+     * (21)[tmp_sr_ps_kanri]から、ﾃﾞｰﾀの取得
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param lotNo ﾛｯﾄNo(検索キー)
@@ -2663,12 +2715,11 @@ public class GXHDO101B008 implements IFormLogic {
         String lotno = lotNo.substring(3, 11);
         String edaban = lotNo.substring(11, 14);
 
-        // [tmp_ps_kanri]から、ﾃﾞｰﾀの取得
+        // [tmp_sr_ps_kanri]から、ﾃﾞｰﾀの取得
         String sql = "SELECT kanrino, kojyo, lotno, edaban, datasyurui, jissekino, torokunichiji"
-                + " FROM tmp_ps_kanri "
-                + " WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
+                + " FROM tmp_sr_ps_kanri WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
         if (!StringUtil.isEmpty(datasyurui)) {
-            sql += " AND datasyurui = ? ";
+            sql += "AND datasyurui = ? ";
         }
         sql += " order by jissekino desc";
 
@@ -2685,7 +2736,7 @@ public class GXHDO101B008 implements IFormLogic {
     }
 
     /**
-     * (22)[tmp_ps]から、ﾃﾞｰﾀの取得
+     * (22)[tmp_sr_ps]から、ﾃﾞｰﾀの取得
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param kanrino 管理No(検索キー)
@@ -2693,9 +2744,9 @@ public class GXHDO101B008 implements IFormLogic {
      * @throws SQLException 例外エラー
      */
     private List<Map<String, Object>> loadTmpPsData(QueryRunner queryRunnerQcdb, Long kanrino) throws SQLException {
-        // [tmp_ps]から、ﾃﾞｰﾀの取得
+        // [tmp_sr_graprint]から、ﾃﾞｰﾀの取得
         String sql = "SELECT kanrino, item_id, atai"
-                + " FROM tmp_ps WHERE kanrino = ?";
+                + " FROM tmp_sr_ps WHERE kanrino = ?";
 
         List<Object> params = new ArrayList<>();
         params.add(kanrino);
@@ -2703,4 +2754,5 @@ public class GXHDO101B008 implements IFormLogic {
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, new MapListHandler(), params.toArray());
     }
+
 }

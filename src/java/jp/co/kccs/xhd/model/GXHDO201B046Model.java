@@ -292,6 +292,11 @@ public class GXHDO201B046Model implements Serializable{
      */
     private String bikou2 = "";
 
+    /**
+     * 備考2
+     */
+    private String jokyo = "";
+
 
     /**
      * ﾛｯﾄNo
@@ -1139,6 +1144,22 @@ public class GXHDO201B046Model implements Serializable{
      */
     public void setBikou2(String bikou2) {
         this.bikou2 = bikou2;
+    }
+
+    /**
+     * 備考2
+     * @return the jokyo
+     */
+    public String getJokyo() {
+        return jokyo;
+    }
+
+    /**
+     * 備考2
+     * @param jokyo the jokyo to set
+     */
+    public void setJokyo(String jokyo) {
+        this.jokyo = jokyo;
     }
 
 

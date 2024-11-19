@@ -65,8 +65,6 @@
                     PF('W_dlg_infoMessage').show();
                 } else if ('complete' === args.firstParam) {
                     PF('W_dlg_compMessage').show();
-                } else if ('errorListMessage' === args.firstParam) {
-                    PF('W_dlg_errorListMessage101').show();
                 }
             }
 
@@ -222,6 +220,12 @@
                                                            inputStyle="font-size:#{beanGXHDO101C041B.hanteichi1low.fontSizeInput}px;
                                                            color:#{beanGXHDO101C041B.hanteichi1low.fontColorInput}; background:#{beanGXHDO101C041B.hanteichi1low.backColorInput};#{beanGXHDO101C041B.hanteichi1low.customStyleInput}">
                                             </p:inputNumber>
+                                            <p:inputText id="hanteichi1taniT1_low" styleClass="taidenatsu_table_text"
+                                                         rendered="#{beanGXHDO101C041B.hanteichi1tani_low.renderInputText}" value="#{beanGXHDO101C041B.hanteichi1tani_low.value}" 
+                                                         maxlength="#{beanGXHDO101C041B.hanteichi1tani_low.displayMaxLength}" 
+                                                         style="width:#{beanGXHDO101C041B.hanteichi1tani_low.displayMaxLength}em; font-size:#{beanGXHDO101C041B.hanteichi1tani_low.fontSizeInput}px;
+                                                         color:#{beanGXHDO101C041B.hanteichi1tani_low.fontColorInput};background:#{beanGXHDO101C041B.hanteichi1tani_low.backColorInput};#{beanGXHDO101C041B.hanteichi1tani.customStyleInput}">
+                                            </p:inputText>
                                             <h:outputText value="～" style="font-size:16px;vertical-align:middle;margin-right:3px"/>
                                             <p:inputText id="hanteichi1T1" styleClass="taidenatsu_table_text"
                                                          rendered="#{beanGXHDO101C041B.hanteichi1.renderInputText}" value="#{beanGXHDO101C041B.hanteichi1.value}" 
@@ -302,6 +306,12 @@
                                                            inputStyle="font-size:#{beanGXHDO101C041B.hanteichi2low.fontSizeInput}px;
                                                            color:#{beanGXHDO101C041B.hanteichi2low.fontColorInput}; background:#{beanGXHDO101C041B.hanteichi2low.backColorInput};#{beanGXHDO101C041B.hanteichi2low.customStyleInput}">
                                             </p:inputNumber>
+                                            <p:inputText id="hanteichi2taniT1_low" styleClass="taidenatsu_table_text"
+                                                         rendered="#{beanGXHDO101C041B.hanteichi2tani_low.renderInputText}" value="#{beanGXHDO101C041B.hanteichi2tani_low.value}" 
+                                                         maxlength="#{beanGXHDO101C041B.hanteichi2tani_low.displayMaxLength}" 
+                                                         style="width:#{beanGXHDO101C041B.hanteichi2tani_low.displayMaxLength}em; font-size:#{beanGXHDO101C041B.hanteichi2tani_low.fontSizeInput}px;
+                                                         color:#{beanGXHDO101C041B.hanteichi2tani_low.fontColorInput};background:#{beanGXHDO101C041B.hanteichi2tani_low.backColorInput};#{beanGXHDO101C041B.hanteichi1tani.customStyleInput}">
+                                            </p:inputText>
                                             <h:outputText value="～" style="font-size:16px;vertical-align:middle;margin-right:3px"/>
                                             <p:inputText id="hanteichi2T2" styleClass="taidenatsu_table_text"
                                                          rendered="#{beanGXHDO101C041B.hanteichi2.renderInputText}" value="#{beanGXHDO101C041B.hanteichi2.value}" 
@@ -2878,7 +2888,6 @@
                     <t:aliasBean alias="#{gXHDO101Common}" value="#{gXHDO101B041A}">
                         <ui:include src="/secure/common/compMessage.xhtml"/>
                     </t:aliasBean>
-                    <ui:include src="/secure/common/errorListMessage101.xhtml"/>
                 </div>
             </div>
         </h:form>

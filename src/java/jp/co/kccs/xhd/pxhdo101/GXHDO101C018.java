@@ -117,13 +117,13 @@ public class GXHDO101C018 implements Serializable {
      */
     public void doOk() {
         this.isFormError = false;
-        if (!checkOK()) {
-            this.isFormError = true;
-            // エラーの場合はコールバック変数に"error"をセット
-            RequestContext context = RequestContext.getCurrentInstance();
-            context.addCallbackParam("firstParam", "error");
-            return;
-        }
+//        if (!checkOK()) {
+//            this.isFormError = true;
+//            // エラーの場合はコールバック変数に"error"をセット
+//            RequestContext context = RequestContext.getCurrentInstance();
+//            context.addCallbackParam("firstParam", "error");
+//            return;
+//        }
 
         this.gxhdO101c018Model = this.gxhdO101c018ModelView;
     }

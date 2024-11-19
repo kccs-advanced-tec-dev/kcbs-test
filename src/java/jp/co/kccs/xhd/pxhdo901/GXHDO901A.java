@@ -27,8 +27,6 @@ import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
-import jp.co.kccs.xhd.common.CompMessage;
-import jp.co.kccs.xhd.common.ErrorListMessage;
 import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.common.InfoMessage;
@@ -119,11 +117,6 @@ import org.primefaces.context.RequestContext;
  * 変更者	863 zhangjy<br>
  * 変更理由	FXHDD01の入力項目型[9]の追加対応<br>
  * <br>
- * 変更日	2020/11/13<br>
- * 計画書No	MB2008-DK001<br>
- * 変更者	863 zhangjy<br>
- * 変更理由	フロー用仮登録項目チェックボックス、ボタンの追加対応<br>
- * <br>
  * ===============================================================================<br>
  */
 /**
@@ -175,6 +168,11 @@ public class GXHDO901A implements Serializable {
      */
     @Resource(mappedName = "jdbc/MLA")
     private transient DataSource dataSourceMLAServer;
+    /**
+     * DataSource(Gaikankadoritu)
+     */
+    @Resource(mappedName = "jdbc/gaikankadoritu")
+    private transient DataSource dataSourceGaikankadoritu;
     /**
      * パラメータ操作(DB)
      */
@@ -656,7 +654,6 @@ public class GXHDO901A implements Serializable {
                 break;
             }
         }
-        setTempCheckBoxItem(lotNo, formId);
 
         // 処理データ生成
         ProcessData data = new ProcessData();
@@ -671,6 +668,7 @@ public class GXHDO901A implements Serializable {
         data.setDataSourceTtpkadoritu(this.dataSourceTtpkadoritu);
         data.setDataSourceEquipment(this.dataSourceEquipment);
         data.setDataSourceMLAServer(this.dataSourceMLAServer);
+        data.setDataSourceGaikankadoritu(this.dataSourceGaikankadoritu);
         data.setDataSourceWip(this.dataSourceWip);
         data.setInitMessageList(initMessageList);
         data.setInitRev(this.initRev);
@@ -681,8 +679,6 @@ public class GXHDO901A implements Serializable {
 
         // 処理開始
         this.processMain();
-        
-        setTempRegistButton();
     }
 
     /**
@@ -899,37 +895,12 @@ public class GXHDO901A implements Serializable {
             return;
         }
 
-        boolean isCheckMethod = true;
-        boolean isFlowButtonClik = false;
-        if ("flow_temp_regist_Top".equals(buttonId) || "flow_temp_regist_Bottom".equals(buttonId)) {
-            isCheckMethod = false;
-            isFlowButtonClik = true;
-        }
-        
         // ボタンに対応した処理メソッド名を取得
         String method = formLogic.convertButtonIdToMethod(buttonId);
-        if ("error".equals(method) && isCheckMethod) {
+        if ("error".equals(method)) {
             FacesMessage message
                     = new FacesMessage(FacesMessage.SEVERITY_ERROR, "処理が登録されていません", null);
             facesContext.addMessage(null, message);
-        }
-
-        boolean isCheck = false;
-        try {
-            FXHDD02 fxhdd02 = (FXHDD02) externalContext.getRequestMap().get("item");
-            if (null != fxhdd02) {
-                String buttonName = fxhdd02.getButtonName();
-                if ("登録".equals(buttonName) || "修正".equals(buttonName)) {
-                    isCheck = true;
-                }
-            }
-        } catch (ClassCastException e) {
-            ErrUtil.outputErrorLog("ClassCastException発生", e, LOGGER);
-        }
-        if ("flow_temp_regist_Top".equals(buttonId) || "flow_temp_regist_Bottom".equals(buttonId)) {
-            isCheck = true;
-            buttonId = getTempRegistButtonId();
-            method = formLogic.convertButtonIdToMethod(buttonId);
         }
 
         // 背景色を元に戻す
@@ -960,10 +931,6 @@ public class GXHDO901A implements Serializable {
             return;
         }
 
-        if (isCheck && !checkFlowTempItemCheckBox()) {
-            return;
-        }
-
         // 処理データ生成
         ProcessData data = new ProcessData();
         data.setFormClassName(formClassName);
@@ -977,6 +944,7 @@ public class GXHDO901A implements Serializable {
         data.setDataSourceTtpkadoritu(this.dataSourceTtpkadoritu);
         data.setDataSourceEquipment(this.dataSourceEquipment);
         data.setDataSourceMLAServer(this.dataSourceMLAServer);
+        data.setDataSourceGaikankadoritu(this.dataSourceGaikankadoritu);
         data.setDataSourceWip(this.dataSourceWip);
         data.setInitRev(this.initRev);
         data.setInitJotaiFlg(this.initJotaiFlg);
@@ -984,13 +952,8 @@ public class GXHDO901A implements Serializable {
 
         this.processData = data;
 
-        if (isFlowButtonClik) {
-            session.setAttribute("isFlowButtonClik", isFlowButtonClik);
-        }
-        
         // 処理開始
         this.processMain();
-        session.removeAttribute("isFlowButtonClik");
     }
 
     /**
@@ -1044,23 +1007,6 @@ public class GXHDO901A implements Serializable {
 
                 RequestContext context = RequestContext.getCurrentInstance();
                 context.addCallbackParam("firstParam", "infoMessage");
-
-                return;
-            }
-
-            // エラーリストメッセージが設定されている場合、ダイアログを表示する
-            List<String> resultMessageList = this.processData.getErrorListMessage().getResultMessageList();
-            if ((resultMessageList != null && !resultMessageList.isEmpty()) || !StringUtil.isEmpty(this.processData.getErrorListMessage().getResultMessage())) {
-
-                // メッセージを画面に渡す
-                ErrorListMessage errorListMessageError = (ErrorListMessage) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_ERRORLIST_MESSAGE);
-
-                errorListMessageError.setResultMessageList(this.processData.getErrorListMessage().getResultMessageList());
-                errorListMessageError.setResultMessage(this.processData.getErrorListMessage().getResultMessage());
-                errorListMessageError.setTitleMessage(this.processData.getErrorListMessage().getTitleMessage());
-
-                RequestContext context = RequestContext.getCurrentInstance();
-                context.addCallbackParam("firstParam", "errorListMessage");
 
                 return;
             }
@@ -1214,13 +1160,7 @@ public class GXHDO901A implements Serializable {
     private String getJotaiDisplayValue(String jotaiFlg) {
         switch (jotaiFlg) {
             case "0":
-                String tempRegistName = "仮登録";
-                Map tempRegistNameMap = getTempRegistName();
-                if (tempRegistNameMap != null && !tempRegistNameMap.isEmpty() 
-                        && !"".equals(StringUtil.nullToBlank(tempRegistNameMap.get("tmp_name")))) {
-                    tempRegistName = StringUtil.nullToBlank(tempRegistNameMap.get("tmp_name"));
-                }
-                return "現在「" + tempRegistName + "」です";
+                return "現在「仮登録」です";
             case "1":
                 return "現在「登録済」です";
             default:
@@ -1876,242 +1816,5 @@ public class GXHDO901A implements Serializable {
             default:
                 break;
         }
-    }
-
-    /**
-     * 状態が仮登録時、仮登録名を取得。
-     * 
-     * @return 仮登録名
-     */
-    private Map getTempRegistName() {
-        try {
-            ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-            HttpSession session = (HttpSession) externalContext.getSession(false);
-            String lotNo = StringUtil.nullToBlank(session.getAttribute("lotNo"));
-            
-            Map fxhdd03Map = loadFxhdd03TmpKbnInfo(lotNo, getFormId());
-            if (fxhdd03Map == null || fxhdd03Map.isEmpty()) {
-                return null;
-            }
-            if ("".equals(StringUtil.nullToBlank(fxhdd03Map.get("tmp_kbn")))) {
-                return null;
-            }
-            
-            int tmp_kbn = Integer.valueOf(StringUtil.nullToBlank(fxhdd03Map.get("tmp_kbn")));
-            
-            QueryRunner queryRunner = new QueryRunner(dataSourceDocServer);
-            String sql = "SELECT tmp_name FROM fxhdm08 WHERE gamen_id = ? AND tmp_kbn = ?";
-
-            List<Object> params = new ArrayList<>();
-            params.add(getFormId());
-            params.add(tmp_kbn);
-
-            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-            return queryRunner.query(sql, new MapHandler(), params.toArray());
-
-        } catch (SQLException ex) {
-            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-        }
-        return new HashMap();
-    }
-
-    /**
-     * [品質DB登録実績]から、仮登録区分,状態フラグを取得
-     * 
-     * @param lotNo ロットNo
-     * @param formId 画面ID
-     * @return 
-     */
-    private Map loadFxhdd03TmpKbnInfo(String lotNo, String formId) {
-        
-        QueryRunner queryRunnerDoc = new QueryRunner(this.dataSourceDocServer);
-        String kojyo = lotNo.substring(0, 3); //工場ｺｰﾄﾞ
-        String lotNo8 = lotNo.substring(3, 11); //ﾛｯﾄNo(8桁)
-        String edaban = lotNo.substring(11, 14); //枝番
-        try {
-            // 品質DB登録実績の取得
-            String sql = "SELECT tmp_kbn, jotai_flg "
-                    + "FROM fxhdd03 "
-                    + "WHERE kojyo = ? AND lotno = ? "
-                    + "AND edaban = ? AND gamen_id = ? ";
-
-            List<Object> params = new ArrayList<>();
-            params.add(kojyo);
-            params.add(lotNo8);
-            params.add(edaban);
-            params.add(formId);
-
-            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-            return queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
-        } catch (SQLException ex) {
-            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-            return new HashMap();
-        }
-    }
-
-    /**
-     * フロー用仮登録項目のチェックボックスを作成
-     * 
-     * @param lotNo ロットNo
-     * @param formId 画面ID
-     */
-    private void setTempCheckBoxItem(String lotNo, String formId) {
-        // [品質DB登録実績]から、仮登録区分,状態フラグを取得
-        Map fxhdd03TmpKbnInfo = loadFxhdd03TmpKbnInfo(lotNo, formId);
-        
-        if (fxhdd03TmpKbnInfo != null && !fxhdd03TmpKbnInfo.isEmpty()) {
-            
-            String jotai_flg = StringUtil.nullToBlank(fxhdd03TmpKbnInfo.get("jotai_flg"));
-            if (!"1".equals(jotai_flg)) {
-                int tmp_kbn = 0;
-                
-                if ("0".equals(jotai_flg)) {
-                    if ("".equals(StringUtil.nullToBlank(fxhdd03TmpKbnInfo.get("tmp_kbn")))) {
-                        return;
-                    }
-                    tmp_kbn = Integer.valueOf(StringUtil.nullToBlank(fxhdd03TmpKbnInfo.get("tmp_kbn")));
-                }
-                
-                // ﾌﾛｰ項目ﾏｽﾀからﾁｪｯｸﾎﾞｯｸｽに関する情報を取得する
-                List<Map<String, Object>> checkboxItemList = loadFxhdm09(formId, tmp_kbn);
-                // 取得できない場合、何も処理を行わない。
-                if (checkboxItemList == null || checkboxItemList.isEmpty()) {
-                    return;
-                }
-                
-                for (Map<String, Object> checkboxItem : checkboxItemList) {
-                    String item_id = StringUtil.nullToBlank(checkboxItem.get("item_id"));
-                    List<FXHDD01> selectData
-                        = this.itemList.stream().filter(n -> item_id.equals(n.getItemId())).collect(Collectors.toList());
-                    if (null != selectData && 0 < selectData.size()) {
-                        FXHDD01 item = selectData.get(0);
-                        // フロー用仮登録項目のチェックボックスを表示
-                        item.setRenderTempItemCheckBox(true);
-                    }
-                }
-            }
-        }
-    }
-
-    /**
-     * ﾌﾛｰ項目ﾏｽﾀからﾁｪｯｸﾎﾞｯｸｽに関する情報を取得する
-     * 
-     * @param formId 画面ID
-     * @param tmp_kbn 仮登録区分
-     * @return ﾁｪｯｸﾎﾞｯｸｽ項目ID
-     */
-    private List<Map<String, Object>> loadFxhdm09(String formId, int tmp_kbn) {
-        QueryRunner queryRunnerDoc = new QueryRunner(this.dataSourceDocServer);
-        try {
-            // フロー項目マスタの取得
-            String sql = "SELECT item_id "
-                    + "FROM fxhdm09 "
-                    + "WHERE gamen_id = ? AND tmp_kbn = ? ";
-
-            List<Object> params = new ArrayList<>();
-            params.add(formId);
-            params.add(tmp_kbn);
-
-            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-            return queryRunnerDoc.query(sql, new MapListHandler(), params.toArray());
-        } catch (SQLException ex) {
-            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-            return new ArrayList<>();
-        }
-    }
-
-    /**
-     * フロー用仮登録ボタンを作成
-     */
-    private void setTempRegistButton() {
-        
-        Map tempRegistNameMap = getTempRegistName();
-        // フロー用仮登録名を取得できない場合、何も処理を行わない。
-        if (tempRegistNameMap == null || tempRegistNameMap.isEmpty() 
-                || "".equals(StringUtil.nullToBlank(tempRegistNameMap.get("tmp_name")))) {
-            return;
-        }
-        
-        boolean isEnabled = true;
-        // 状態が"登録済"場合、フロー用仮登録ボタンをdisabledとする
-        if ("1".equals(initJotaiFlg)) {
-            isEnabled = false;
-        }
-        String tempRegistName = StringUtil.nullToBlank(tempRegistNameMap.get("tmp_name"));
-        
-        // 画面上部ボタン
-        FXHDD02 fxhdd02Top = new FXHDD02();
-        fxhdd02Top.setButtonId("flow_temp_regist_Top");
-        fxhdd02Top.setButtonName(tempRegistName);
-        fxhdd02Top.setFontColor("black");
-        fxhdd02Top.setEnabled(isEnabled);
-        fxhdd02Top.setFontSize(17);
-        fxhdd02Top.setRender(true);
-        this.buttonListTop.add(fxhdd02Top);
-        
-        // 画面下部ボタン
-        FXHDD02 fxhdd02Bottom = new FXHDD02();
-        fxhdd02Bottom.setButtonId("flow_temp_regist_Bottom");
-        fxhdd02Bottom.setButtonName(tempRegistName);
-        fxhdd02Bottom.setFontColor("black");
-        fxhdd02Bottom.setEnabled(isEnabled);
-        fxhdd02Bottom.setFontSize(17);
-        fxhdd02Bottom.setRender(true);
-        this.buttonListBottom.add(fxhdd02Bottom);
-    }
-
-    /**
-     * フロー用仮登録ボタン押下時のチェック処理
-     * 
-     * @return チェック処理結果
-     */
-    private boolean checkFlowTempItemCheckBox() {
-        for (FXHDD01 fxhdd01 : itemList) {
-            if (fxhdd01.isRenderTempItemCheckBox() && !"true".equals(StringUtil.nullToBlank(fxhdd01.getTempItemCheckBoxValue()).toLowerCase())) {
-                FacesMessage message
-                    = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000199", fxhdd01.getLabel1()), null);
-                FacesContext.getCurrentInstance().addMessage(null, message);
-                return false;
-            }
-        }
-        return true;
-    }
-
-    /**
-     * フロー用仮登録ボタン押下時、仮登録処理ができるように仮登録ボタンのIDを取得
-     * 
-     * @return 仮登録ボタンのID
-     */
-    private String getTempRegistButtonId() {
-        try {
-            QueryRunner queryRunner = new QueryRunner(dataSourceDocServer);
-            String sql = "SELECT button_id FROM fxhdd02 WHERE gamen_id = ? AND button_name ='仮登録'";
-
-            List<Object> params = new ArrayList<>();
-            params.add(getFormId());
-
-            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-            Map<String, Object> result = queryRunner.query(sql, new MapHandler(), params.toArray());
-            if (result != null && !result.isEmpty()) {
-                return StringUtil.nullToBlank(result.get("button_id"));
-            }
-
-        } catch (SQLException ex) {
-            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
-        }
-        return "";
-    }
-    
-    /**
-     * 完了メッセージ表示処理
-     */
-    public void showCompMessage() {
-        this.compMessage ="登録しました。";
-        CompMessage compMessageBean = (CompMessage) FacesContext.getCurrentInstance().
-                getELContext().getELResolver().getValue(FacesContext.getCurrentInstance().
-                        getELContext(), null, "beanCompMessage");
-        compMessageBean.setCompMessage("登録しました。");
-        RequestContext context = RequestContext.getCurrentInstance();
-        context.addCallbackParam("firstParam", "complete");
     }
 }

@@ -52,6 +52,7 @@ public class GXHDO101C021Logic {
         for (SrKoteifuryo data : dbResultList) {
             GXHDO101C021Model.TorokuNoData initTorokuNoData = GXHDO101C021Model.new TorokuNoData();
             initTorokuNoData.setTorokuNo(data.getTorokuno());
+            initTorokuNoData.setHakkenKotei(data.getTorokuno() + "(" + data.getHakkenkotei() + ")");
             initTorokuNoDataList.add(initTorokuNoData);
         }
         return initTorokuNoDataList;

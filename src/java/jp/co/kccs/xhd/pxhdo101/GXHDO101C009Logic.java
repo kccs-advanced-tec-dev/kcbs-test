@@ -154,10 +154,10 @@ public class GXHDO101C009Logic {
 
         if (dataList.size() == 9) {
             // 全て値が設定されていた場合のみ算出値をセットする
-            setItemValue(itemAve, NumberUtil.getAve(dataList));
+            setItemValue(itemAve, NumberUtil.getMax(dataList));
         } else if (dataList5.size() == 5) {
             // 1～5値が設定されていた場合のみ算出値をセットする
-            setItemValue(itemAve, NumberUtil.getAve(dataList5));
+            setItemValue(itemAve, NumberUtil.getMax(dataList5));
         } else {
             setItemValue(itemAve, null);
         }

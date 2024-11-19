@@ -340,6 +340,17 @@ public class GXHDO101B022 implements IFormLogic {
             List<FXHDD01> errFxhdd01List = Arrays.asList(itemGouhihantei);
             return MessageUtil.getErrorMessageInfo("XHD-000003", true, true, errFxhdd01List, itemGouhihantei.getLabel1());
         }
+        // 後工程指示2、後工程指示3
+        FXHDD01 itemShiji2 = getItemRow(processData.getItemList(), GXHDO101B022Const.SIJINAIYOU2);
+        FXHDD01 itemShiji3 = getItemRow(processData.getItemList(), GXHDO101B022Const.SIJINAIYOU3);
+        if (("".equals(itemShiji2.getValue()) || itemShiji2.getValue() == null) 
+                && ("".equals(itemShiji3.getValue()) || itemShiji3.getValue() == null)) {
+            // ｴﾗｰ項目をﾘｽﾄに追加
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemShiji2,itemShiji3);
+            return MessageUtil.getErrorMessageInfo("XHD-000003", true, true, errFxhdd01List, itemShiji2.getLabel1() + "もしくは" + itemShiji3.getLabel1());
+        }
+        
+        
         return null;
     }
     
@@ -854,6 +865,45 @@ public class GXHDO101B022 implements IFormLogic {
         String lotkubuncode = StringUtil.nullToBlank(getMapData(shikakariData, "lotkubuncode")); //ﾛｯﾄ区分ｺｰﾄﾞ
         String ownercode = StringUtil.nullToBlank(getMapData(shikakariData, "ownercode"));// ｵｰﾅｰｺｰﾄﾞ
         String tanijuryo = StringUtil.nullToBlank(getMapData(shikakariData, "tanijuryo")); // 単位重量
+        // 後工程指示の内容を取得
+        String bikou3 = StringUtil.nullToBlank(shikakariData.get("bikou3")).trim();
+        String bikou2 = StringUtil.nullToBlank(shikakariData.get("bikou2")).trim();
+        String atokoutei1 = "";
+        String atokoutei2 = "";
+        String atokoutei3 = "";
+        String atokotei1color = "";
+        switch (bikou3) {
+            case "EO-000-00":
+                atokoutei1 = "";
+                atokoutei2 = "無欠点ＯＫ";
+                break;
+            case "EO-000-01":
+                atokoutei1 = "完成品寸法確認";
+                atokoutei2 = "無欠点ＯＫ";
+                atokotei1color = "#ebff6f";
+                break;
+            case "PO-000-00":
+                atokoutei1 = "";
+                atokoutei2 = "後工程外観";
+                break;
+            case "PO-000-01":
+                atokoutei1 = "完成品寸法確認";
+                atokoutei2 = "後工程外観";
+                atokotei1color = "#ebff6f";
+                break;
+            case "PO-111-00":
+                atokoutei1 = "";
+                atokoutei2 = "外観指示";
+                break;
+            case "PO-111-01":
+                atokoutei1 = "完成品寸法確認";
+                atokoutei2 = "外観指示";
+                atokotei1color = "#ebff6f";
+                break;
+            case "MV":
+                atokoutei3 = "MV";
+                break;
+        }
         
         // ﾛｯﾄ区分ﾏｽﾀ情報の取得
         Map lotKbnMasData = loadLotKbnMas(queryRunnerWip, lotkubuncode);
@@ -912,7 +962,7 @@ public class GXHDO101B022 implements IFormLogic {
         }
 
         // 入力項目の情報を画面にセットする。
-        if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId, paramJissekino, shorisuu, tanijuryo, tantoshaCd, kotei)) {
+        if (!setInputItemData(processData, queryRunnerDoc, queryRunnerQcdb, lotNo, formId, paramJissekino, shorisuu, tanijuryo, tantoshaCd, kotei, atokoutei1, atokoutei2, atokoutei3, atokotei1color, bikou2)) {
             // エラー発生時は処理を中断
             processData.setFatalError(true);
             processData.setInitMessageList(Arrays.asList(MessageUtil.getMessage("XHD-000038")));
@@ -920,7 +970,7 @@ public class GXHDO101B022 implements IFormLogic {
         }
 
         // 画面に取得した情報をセットする。(入力項目以外)
-        setViewItemData(processData, sekkeiData, lotKbnMasData, ownerMasData, shikakariData, lotNo);
+        setViewItemData(processData, sekkeiData, lotKbnMasData, ownerMasData, shikakariData, lotNo, bikou2);
 
         processData.setInitMessageList(errorMessageList);
         return processData;
@@ -938,7 +988,7 @@ public class GXHDO101B022 implements IFormLogic {
      * @param shikakariData 仕掛データ
      * @param lotNo ﾛｯﾄNo
      */
-    private void setViewItemData(ProcessData processData, Map sekkeiData, Map lotKbnMasData, Map ownerMasData, Map shikakariData, String lotNo) {
+    private void setViewItemData(ProcessData processData, Map sekkeiData, Map lotKbnMasData, Map ownerMasData, Map shikakariData, String lotNo, String biko2) {
         
         // ロットNo
         this.setItemData(processData, GXHDO101B022Const.LOTNO, lotNo);
@@ -965,6 +1015,23 @@ public class GXHDO101B022 implements IFormLogic {
             this.setItemData(processData, GXHDO101B022Const.OWNER, ownercode + ":" + owner);
         }
 
+        // 指示内容2の色を変更
+        FXHDD01 itemShiji2 = getItemRow(processData.getItemList(), GXHDO101B022Const.SIJINAIYOU2);
+        if ("無欠点ＯＫ".equals(itemShiji2.getValue())) {
+            itemShiji2.setBackColor1("blue");
+            itemShiji2.setFontColor1("white");
+        }
+        if ("後工程外観".equals(itemShiji2.getValue())) {
+            itemShiji2.setBackColor1("pink");
+            itemShiji2.setFontColor1("black");
+        }
+        if ("外観指示".equals(itemShiji2.getValue())) {
+            itemShiji2.setBackColor1("orange");
+            itemShiji2.setFontColor1("black");
+        }
+        // 後工程指示6
+        this.setItemData(processData, GXHDO101B022Const.SIJINAIYOU6, biko2);
+
     }
 
     /**
@@ -980,7 +1047,7 @@ public class GXHDO101B022 implements IFormLogic {
      * @throws SQLException 例外エラー
      */
     private boolean setInputItemData(ProcessData processData, QueryRunner queryRunnerDoc, QueryRunner queryRunnerQcdb,
-            String lotNo, String formId, int jissekino, String suuryou, String tanijuryo, String tantoshaCd, String kotei) throws SQLException {
+            String lotNo, String formId, int jissekino, String suuryou, String tanijuryo, String tantoshaCd, String kotei, String atokoutei1, String atokoutei2, String atokoutei3, String atokotei1color, String atokoutei6) throws SQLException {
 
         List<SrJikiqc> srJikiqcDataList = new ArrayList<>();
         String rev = "";
@@ -1032,6 +1099,29 @@ public class GXHDO101B022 implements IFormLogic {
                 this.setItemData(processData, GXHDO101B022Const.CHECKTANTOUSYACODE, tantoshaCd);
                 // MV
                 this.setItemData(processData, GXHDO101B022Const.MV, kotei);
+                // 後工程指示1
+                this.setItemData(processData, GXHDO101B022Const.SIJINAIYOU1, atokoutei1);
+                FXHDD01 itemShiji1 = getItemRow(processData.getItemList(), GXHDO101B022Const.SIJINAIYOU1);
+                if (!atokotei1color.isEmpty()) {
+                    itemShiji1.setBackColor1(atokotei1color);
+                }
+
+                // 後工程指示2
+                this.setItemData(processData, GXHDO101B022Const.SIJINAIYOU2, atokoutei2);
+                // 後工程指示3
+                this.setItemData(processData, GXHDO101B022Const.SIJINAIYOU3, atokoutei3);
+                // 後工程指示6
+                this.setItemData(processData, GXHDO101B022Const.SIJINAIYOU6, atokoutei6);
+                // 合否判定
+                if (atokoutei6.equals("CAP")) {
+                    this.setItemData(processData, GXHDO101B022Const.GOUHIHANTEI, "未判定");
+                }
+                FXHDD01 itemGohi = getItemRow(processData.getItemList(), GXHDO101B022Const.GOUHIHANTEI);
+                if (atokoutei3.equals("MV")) {
+                    itemGohi.setBackColor1("black");
+                    itemGohi.setFontColor1("white");
+
+                }
 
                 return true;
             }
@@ -1091,6 +1181,7 @@ public class GXHDO101B022 implements IFormLogic {
         this.setItemData(processData, GXHDO101B022Const.UKEIRESOUJYURYOU, getSrJikiqcItemData(GXHDO101B022Const.UKEIRESOUJYURYOU, srJikiqcData));        
         // MV
         this.setItemData(processData, GXHDO101B022Const.MV, getSrJikiqcItemData(GXHDO101B022Const.MV, srJikiqcData));        
+ 
     }
 
     /**
@@ -1200,7 +1291,7 @@ public class GXHDO101B022 implements IFormLogic {
         String lotNo3 = lotNo.substring(11, 14);
 
         // 仕掛情報データの取得
-        String sql = "SELECT kcpno, oyalotedaban, tokuisaki, lotkubuncode, ownercode, tanijuryo "
+        String sql = "SELECT kcpno, oyalotedaban, tokuisaki, lotkubuncode, ownercode, tanijuryo, bikou3, bikou2 "
                 + " FROM sikakari WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
 
         List<Object> params = new ArrayList<>();

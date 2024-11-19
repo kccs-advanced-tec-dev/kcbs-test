@@ -592,6 +592,16 @@ public class GXHDO211B implements Serializable {
      * 【仕掛情報】数量
      */
     private String sikakariSuryo;
+    
+    /**
+     * 【仕掛情報】客先
+     */
+    private String sikakariKyakusaki;
+    
+    /**
+     * 【仕掛情報】ｵｰﾅｰｺｰﾄﾞ
+     */
+    private String sikakariOwnerCode;
 
     /**
      * 入力エリア使用可否(ReadOnly)
@@ -2406,6 +2416,38 @@ public class GXHDO211B implements Serializable {
     }
 
     /**
+     * 【仕掛情報】客先
+     * @return the sikakariKyakusaki
+     */
+    public String getSikakariKyakusaki() {
+        return sikakariKyakusaki;
+    }
+
+    /**
+     * 【仕掛情報】客先
+     * @param sikakariKyakusaki the sikakariKyakusaki to set
+     */
+    public void setSikakariKyakusaki(String sikakariKyakusaki) {
+        this.sikakariKyakusaki = sikakariKyakusaki;
+    }
+
+    /**
+     * 【仕掛情報】ｵｰﾅｰｺｰﾄﾞ
+     * @return the sikakariOwnerCode
+     */
+    public String getSikakariOwnerCode() {
+        return sikakariOwnerCode;
+    }
+
+    /**
+     * 【仕掛情報】ｵｰﾅｰｺｰﾄﾞ
+     * @param sikakariOwnerCode the sikakariOwnerCode to set
+     */
+    public void setSikakariOwnerCode(String sikakariOwnerCode) {
+        this.sikakariOwnerCode = sikakariOwnerCode;
+    }
+
+    /**
      * 入力エリア使用可否(ReadOnly)
      *
      * @return the inputAreaReadOnly
@@ -2601,11 +2643,17 @@ public class GXHDO211B implements Serializable {
             if ("9".equals(permitCode)) {
                 return;
             }
-
+            String ownercode = StringUtil.nullToBlank(sikakariData.get("ownercode"));
             // 工程マスタデータ取得
             Map koteimasData = loadKoteimas(queryRunnerWip, koteicode);
             if (koteimasData == null || koteimasData.isEmpty()) {
                 // 工程情報が取得できない場合エラー
+                addErrorMessage(MessageUtil.getMessage("XHD-000097", "ｴﾗｰ内容ｺｰﾄﾞ:EXHD-000001"));
+            }
+            // ｵｰﾅｰﾏｽﾀ取得
+            Map ownermasData = loadOwnermas(queryRunnerWip, ownercode);
+            if (ownermasData == null || ownermasData.isEmpty()) {
+                // ｵｰﾅｰ情報が取得できない場合エラー
                 addErrorMessage(MessageUtil.getMessage("XHD-000097", "ｴﾗｰ内容ｺｰﾄﾞ:EXHD-000001"));
             }
 
@@ -2645,7 +2693,7 @@ public class GXHDO211B implements Serializable {
             }
 
             // 仕掛情報、条件情報エリア表示
-            setJouhoAreaData(sikakariData, koteimasData, kikakuchiOndo, kikakuchiSuisoNoudo);
+            setJouhoAreaData(sikakariData, koteimasData, kikakuchiOndo, kikakuchiSuisoNoudo, ownermasData);
 
             // 入力エリア設定処理
             setInputAreaData(fxhdd06List);
@@ -2846,6 +2894,10 @@ public class GXHDO211B implements Serializable {
         this.sikakariKotei = "";
         // 仕掛情報(数量)
         this.sikakariSuryo = "";
+        // 仕掛情報(客先)
+        this.sikakariKyakusaki = "";
+        // 仕掛情報(ｵｰﾅｰｺｰﾄﾞ)
+        this.sikakariOwnerCode = "";
         // 入力エリア使用不可
         this.inputAreaReadOnly = true;
         // 入力エリア使用不可
@@ -2963,7 +3015,7 @@ public class GXHDO211B implements Serializable {
         String lotNo3 = lotNo.substring(11, 14);
 
         // 仕掛情報データの取得
-        String sql = "SELECT kcpno, koteicode, suuryo, opencloseflag"
+        String sql = "SELECT kcpno, tokuisaki, koteicode, suuryo, opencloseflag, ownercode"
                 + " FROM sikakari WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
 
         List<Object> params = new ArrayList<>();
@@ -2994,7 +3046,26 @@ public class GXHDO211B implements Serializable {
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerWip.query(sql, new MapHandler(), params.toArray());
     }
+    /**
+     * ｵｰﾅｰコードマスタデータ検索
+     *
+     * @param queryRunnerWip QueryRunnerオブジェクト
+     * @param koteiCode 工程コード(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadOwnermas(QueryRunner queryRunnerWip, String OwnerCode) throws SQLException {
+        // オーナーデータの取得
+        String sql = "SELECT \"owner\" AS ownername "
+                + "FROM ownermas "
+                + "WHERE ownercode = ?";
 
+        List<Object> params = new ArrayList<>();
+        params.add(OwnerCode);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerWip.query(sql, new MapHandler(), params.toArray());
+    }
     /**
      * パラメータマスタデータ検索
      *
@@ -3399,7 +3470,7 @@ public class GXHDO211B implements Serializable {
      * @param kikakuchiOndo 規格値(温度)
      * @param kikakuchiSuisoNoudo 規格値(水素濃度)
      */
-    private void setJouhoAreaData(Map sikakariData, Map koteimasData, String kikakuchiOndo, String kikakuchiSuisoNoudo) {
+    private void setJouhoAreaData(Map sikakariData, Map koteimasData, String kikakuchiOndo, String kikakuchiSuisoNoudo, Map ownermasData) {
         this.sikakariKcpno = StringUtil.nullToBlank(sikakariData.get("kcpno"));
 
         String kotei = StringUtil.nullToBlank(getMapData(koteimasData, "kotei"));
@@ -3415,6 +3486,12 @@ public class GXHDO211B implements Serializable {
         }
         this.jokenOndo = kikakuchiOndo;
         this.jokenSuisoNoudo = kikakuchiSuisoNoudo;
+        this.sikakariKyakusaki = StringUtil.nullToBlank(sikakariData.get("tokuisaki"));
+        
+        String owner = StringUtil.nullToBlank(getMapData(ownermasData, "owner"));
+       
+        
+        this.sikakariOwnerCode = StringUtil.nullToBlank(sikakariData.get("ownercode") + ":" + owner );
     }
 
     /**

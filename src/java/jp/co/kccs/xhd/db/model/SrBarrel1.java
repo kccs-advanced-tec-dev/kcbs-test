@@ -21,11 +21,6 @@ import java.sql.Timestamp;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	項目追加<br>
  * <br>
- * 変更日	2021/09/15<br>
- * 計画書No	MB2108-DK001<br>
- * 変更者	SRC T.Takenouchi<br>
- * 変更理由	項目追加<br>
- * <br>
  * ===============================================================================<br>
  */
 /**
@@ -76,24 +71,29 @@ public class SrBarrel1 {
     private String bjyokensetteimode;
 
     /**
-     * ﾊﾞﾚﾙ条件周速度(研磨機回転数①)
+     * ﾊﾞﾚﾙ条件周速度
      */
     private BigDecimal bjyokensyusokudo;
 
     /**
-     * ﾊﾞﾚﾙ号機(研磨号機)
+     * ﾊﾞﾚﾙ号機
      */
     private String bgoki;
 
     /**
-     * ﾊﾞﾚﾙ時間(研磨時間①)
+     * ﾊﾞﾚﾙ時間
      */
-    private Integer bjikan;
+    private String bjikan;
 
     /**
      * ﾎﾟｯﾄ数
      */
     private Integer potsuu;
+
+    /**
+     * ﾎﾟｯﾄﾁｪｯｸ
+     */
+    private String potcheck;
 
     /**
      * ﾁｯﾌﾟ破片確認
@@ -191,6 +191,21 @@ public class SrBarrel1 {
     private String biko2;
 
     /**
+     * 備考3
+     */
+    private String biko3;
+
+    /**
+     * 備考4
+     */
+    private String biko4;
+
+    /**
+     * 備考5
+     */
+    private String biko5;
+
+    /**
      * 登録日時
      */
     private Timestamp torokunichiji;
@@ -254,83 +269,7 @@ public class SrBarrel1 {
      * 削除ﾌﾗｸﾞ
      */
     private Integer deleteflag;
-    
-    /**
-     * ﾎﾟｯﾄ種類
-     */
-    private String potsyurui;
 
-    /**
-     * ﾁｬｰｼﾞ量
-     */
-    private Integer charge;
-
-    /**
-     * 研磨時間②
-     */
-    private Integer bjikan2;
-
-    /**
-     * 研磨機回転数②
-     */
-    private Integer bkaiten2;
-
-    /**
-     * 研磨時間③
-     */
-    private Integer bjikan3;
-
-    /**
-     * 研磨機回転数③
-     */
-    private Integer bkaiten3;
-
-    /**
-     * 研磨時間④
-     */
-    private Integer bjikan4;
-
-    /**
-     * 研磨機回転数④
-     */
-    private Integer bkaiten4;
-
-    /**
-     * 研磨時間⑤
-     */
-    private Integer bjikan5;
-
-    /**
-     * 研磨機回転数⑤
-     */
-    private Integer bkaiten5;
-
-    /**
-     * 研磨時間⑥
-     */
-    private Integer bjikan6;
-
-    /**
-     * 研磨機回転数⑥
-     */
-    private Integer bkaiten6;
-
-    /**
-     * 研磨時間合計
-     */
-    private Integer bjikantotal;
-
-    /**
-     * 研磨材量②
-     */
-    private Integer kenmazairyo2;
-
-    /**
-     * 研磨材種類②
-     */
-    private String kenmazaisyurui2;
-
-//<editor-fold defaultstate="collapsed" desc="#Getter・Setter">
     /**
      * @return kojyo
      */
@@ -474,14 +413,14 @@ public class SrBarrel1 {
     /**
      * @return bjikan
      */
-    public Integer getBjikan() {
+    public String getBjikan() {
         return bjikan;
     }
 
     /**
      * @param bjikan セットする bjikan
      */
-    public void setBjikan(Integer bjikan) {
+    public void setBjikan(String bjikan) {
         this.bjikan = bjikan;
     }
 
@@ -497,6 +436,22 @@ public class SrBarrel1 {
      */
     public void setPotsuu(Integer potsuu) {
         this.potsuu = potsuu;
+    }
+
+    /**
+     * ﾎﾟｯﾄﾁｪｯｸ
+     * @return the potcheck
+     */
+    public String getPotcheck() {
+        return potcheck;
+    }
+
+    /**
+     * ﾎﾟｯﾄﾁｪｯｸ
+     * @param potcheck the potcheck to set
+     */
+    public void setPotcheck(String potcheck) {
+        this.potcheck = potcheck;
     }
 
     /**
@@ -766,6 +721,54 @@ public class SrBarrel1 {
     }
 
     /**
+     * 備考3
+     * @return the biko3
+     */
+    public String getBiko3() {
+        return biko3;
+    }
+
+    /**
+     * 備考3
+     * @param biko3 the biko3 to set
+     */
+    public void setBiko3(String biko3) {
+        this.biko3 = biko3;
+    }
+
+    /**
+     * 備考4
+     * @return the biko4
+     */
+    public String getBiko4() {
+        return biko4;
+    }
+
+    /**
+     * 備考4
+     * @param biko4 the biko4 to set
+     */
+    public void setBiko4(String biko4) {
+        this.biko4 = biko4;
+    }
+
+    /**
+     * 備考5
+     * @return the biko5
+     */
+    public String getBiko5() {
+        return biko5;
+    }
+
+    /**
+     * 備考5
+     * @param biko5 the biko5 to set
+     */
+    public void setBiko5(String biko5) {
+        this.biko5 = biko5;
+    }
+
+    /**
      * @return torokunichiji
      */
     public Timestamp getTorokunichiji() {
@@ -941,261 +944,4 @@ public class SrBarrel1 {
         this.deleteflag = deleteflag;
     }
 
-    /**
-     * ﾎﾟｯﾄ種類
-     *
-     * @return the potsyurui
-     */
-    public String getPotsyurui() {
-        return potsyurui;
-    }
-    /**
-     * ﾎﾟｯﾄ種類
-     *
-     * @param potsyurui the potsyurui to set
-     */
-    public void setPotsyurui(String potsyurui) {
-        this.potsyurui = potsyurui;
-    }
-
-    /**
-     * ﾁｬｰｼﾞ量
-     *
-     * @return the charge
-     */
-    public Integer getCharge() {
-        return charge;
-    }
-    /**
-     * ﾁｬｰｼﾞ量
-     *
-     * @param charge the chargeryou to set
-     */
-    public void setCharge(Integer charge) {
-        this.charge = charge;
-    }
-
-    /**
-     * 研磨時間②
-     *
-     * @return the bjikan2
-     */
-    public Integer getBjikan2() {
-        return bjikan2;
-    }
-    /**
-     * 研磨時間②
-     *
-     * @param bjikan2 the bjikan2 to set
-     */
-    public void setBjikan2(Integer bjikan2) {
-        this.bjikan2 = bjikan2;
-    }
-
-    /**
-     * 研磨機回転数②
-     *
-     * @return the bkaiten2
-     */
-    public Integer getBkaiten2() {
-        return bkaiten2;
-    }
-    /**
-     * 研磨機回転数②
-     *
-     * @param bkaiten2 the bkaiten2 to set
-     */
-    public void setBkaiten2(Integer bkaiten2) {
-        this.bkaiten2 = bkaiten2;
-    }
-
-    /**
-     * 研磨時間③
-     *
-     * @return the bjikan3
-     */
-    public Integer getBjikan3() {
-        return bjikan3;
-    }
-    /**
-     * 研磨時間③
-     *
-     * @param bjikan3 the bjikan3 to set
-     */
-    public void setBjikan3(Integer bjikan3) {
-        this.bjikan3 = bjikan3;
-    }
-
-    /**
-     * 研磨機回転数③
-     *
-     * @return the bkaiten3
-     */
-    public Integer getBkaiten3() {
-        return bkaiten3;
-    }
-    /**
-     * 研磨機回転数③
-     *
-     * @param bkaiten3 the bkaiten3 to set
-     */
-    public void setBkaiten3(Integer bkaiten3) {
-        this.bkaiten3 = bkaiten3;
-    }
-
-    /**
-     * 研磨時間④
-     *
-     * @return the bjikan4
-     */
-    public Integer getBjikan4() {
-        return bjikan4;
-    }
-    /**
-     * 研磨時間④
-     *
-     * @param bjikan4 the bjikan4 to set
-     */
-    public void setBjikan4(Integer bjikan4) {
-        this.bjikan4 = bjikan4;
-    }
-
-    /**
-     * 研磨機回転数④
-     *
-     * @return the bkaiten4
-     */
-    public Integer getBkaiten4() {
-        return bkaiten4;
-    }
-    /**
-     * 研磨機回転数④
-     *
-     * @param bkaiten4 the bkaiten4 to set
-     */
-    public void setBkaiten4(Integer bkaiten4) {
-        this.bkaiten4 = bkaiten4;
-    }
-
-    /**
-     * 研磨時間⑤
-     *
-     * @return the bjikan5
-     */
-    public Integer getBjikan5() {
-        return bjikan5;
-    }
-    /**
-     * 研磨時間⑤
-     *
-     * @param bjikan5 the bjikan5 to set
-     */
-    public void setBjikan5(Integer bjikan5) {
-        this.bjikan5 = bjikan5;
-    }
-
-    /**
-     * 研磨機回転数⑤
-     *
-     * @return the bkaiten5
-     */
-    public Integer getBkaiten5() {
-        return bkaiten5;
-    }
-    /**
-     * 研磨機回転数⑤
-     *
-     * @param bkaiten5 the bkaiten5 to set
-     */
-    public void setBkaiten5(Integer bkaiten5) {
-        this.bkaiten5 = bkaiten5;
-    }
-
-    /**
-     * 研磨時間⑥
-     *
-     * @return the bjikan6
-     */
-    public Integer getBjikan6() {
-        return bjikan6;
-    }
-    /**
-     * 研磨時間⑥
-     *
-     * @param bjikan6 the bjikan6 to set
-     */
-    public void setBjikan6(Integer bjikan6) {
-        this.bjikan6 = bjikan6;
-    }
-
-    /**
-     * 研磨機回転数⑥
-     *
-     * @return the bkaiten6
-     */
-    public Integer getBkaiten6() {
-        return bkaiten6;
-    }
-    /**
-     * 研磨機回転数⑥
-     *
-     * @param bkaiten6 the bjyokensyusokudo6 to set
-     */
-    public void setBkaiten6(Integer bkaiten6) {
-        this.bkaiten6 = bkaiten6;
-    }
-
-    /**
-     * 研磨時間合計
-     *
-     * @return the bjikansum
-     */
-    public Integer getBjikantotal() {
-        return bjikantotal;
-    }
-    /**
-     * 研磨時間合計
-     *
-     * @param bjikantotal the bjikantotal to set
-     */
-    public void setBjikantotal(Integer bjikantotal) {
-        this.bjikantotal = bjikantotal;
-    }
-
-    /**
-     * 研磨材量②
-     *
-     * @return the kenmazairyo2
-     */
-    public Integer getKenmazairyo2() {
-        return kenmazairyo2;
-    }
-    /**
-     * 研磨材量②
-     *
-     * @param kenmazairyo2 the kenmazairyo2 to set
-     */
-    public void setKenmazairyo2(Integer kenmazairyo2) {
-        this.kenmazairyo2 = kenmazairyo2;
-    }
-
-    /**
-     * 研磨材種類②
-     *
-     * @return the kenmazaisyurui2
-     */
-    public String getKenmazaisyurui2() {
-        return kenmazaisyurui2;
-    }
-    /**
-     * 研磨材種類②
-     *
-     * @param kenmazaisyurui2 the kenmazaisyurui2 to set
-     */
-    public void setKenmazaisyurui2(String kenmazaisyurui2) {
-        this.kenmazaisyurui2 = kenmazaisyurui2;
-    }
-
-//</editor-fold>
-    
 }

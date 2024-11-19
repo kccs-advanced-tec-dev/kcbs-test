@@ -65,8 +65,6 @@
                     PF('W_dlg_infoMessage').show();
                 } else if ('complete' === args.firstParam) {
                     PF('W_dlg_compMessage').show();
-                } else if ('errorListMessage' === args.firstParam) {
-                    PF('W_dlg_errorListMessage101').show();
                 }
             }
 
@@ -392,6 +390,12 @@
                                                            inputStyle="font-size:#{beanGXHDO101C040C.hanteichi1low.fontSizeInput}px;
                                                            color:#{beanGXHDO101C040C.hanteichi1low.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi1low.backColorInput};#{beanGXHDO101C040C.hanteichi1low.customStyleInput}">
                                             </p:inputNumber>
+                                            <p:inputText id="taidenatsuHanteichitaniT1_low" styleClass="taidenatsu_table_text"
+                                                         rendered="#{beanGXHDO101C040C.hanteichi1tani_low.renderInputText}" value="#{beanGXHDO101C040C.hanteichi1tani_low.value}" 
+                                                         maxlength="#{beanGXHDO101C040C.hanteichi1tani_low.displayMaxLength}" 
+                                                         style="width:#{beanGXHDO101C040C.hanteichi1tani_low.displayMaxLength}em; font-size:#{beanGXHDO101C040C.hanteichi1tani_low.fontSizeInput}px;
+                                                         color:#{beanGXHDO101C040C.hanteichi1tani_low.fontColorInput};background:#{beanGXHDO101C040C.hanteichi1tani_low.backColorInput};#{beanGXHDO101C040C.hanteichi1tani_low.customStyleInput}">
+                                            </p:inputText>
                                             <h:outputText value="～" style="font-size:16px;vertical-align:middle;margin-right:3px"/>
                                             <p:inputText id="taidenatsuHanteichiT1" styleClass="taidenatsu_table_text"
                                                          rendered="#{beanGXHDO101C040C.hanteichi1.renderInputText}" value="#{beanGXHDO101C040C.hanteichi1.value}" 
@@ -472,7 +476,12 @@
                                                            inputStyle="font-size:#{beanGXHDO101C040C.hanteichi2low.fontSizeInput}px;
                                                            color:#{beanGXHDO101C040C.hanteichi2low.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi2low.backColorInput};#{beanGXHDO101C040C.hanteichi2low.customStyleInput}">
                                             </p:inputNumber>
-                                            <h:outputText value="～" style="font-size:16px;vertical-align:middle;margin-right:3px"/>
+                                            <p:inputText id="taidenatsuHanteichitaniT2_low" styleClass="taidenatsu_table_text"
+                                                         rendered="#{beanGXHDO101C040C.hanteichi2tani_low.renderInputText}" value="#{beanGXHDO101C040C.hanteichi2tani_low.value}" 
+                                                         maxlength="#{beanGXHDO101C040C.hanteichi2tani_low.displayMaxLength}" 
+                                                         style="width:#{beanGXHDO101C040C.hanteichi2tani_low.displayMaxLength}em; font-size:#{beanGXHDO101C040C.hanteichi2tani_low.fontSizeInput}px;
+                                                         color:#{beanGXHDO101C040C.hanteichi2tani_low.fontColorInput};background:#{beanGXHDO101C040C.hanteichi2tani_low.backColorInput};#{beanGXHDO101C040C.hanteichi2tani_low.customStyleInput}">
+                                            </p:inputText>                                            <h:outputText value="～" style="font-size:16px;vertical-align:middle;margin-right:3px"/>
                                             <p:inputText id="taidenatsuHanteichiT2" styleClass="taidenatsu_table_text"
                                                          rendered="#{beanGXHDO101C040C.hanteichi2.renderInputText}" value="#{beanGXHDO101C040C.hanteichi2.value}" 
                                                          maxlength="#{beanGXHDO101C040C.hanteichi2.displayMaxLength}" 
@@ -551,6 +560,12 @@
                                                            inputStyle="font-size:#{beanGXHDO101C040C.hanteichi3low.fontSizeInput}px;
                                                            color:#{beanGXHDO101C040C.hanteichi3low.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi3low.backColorInput};#{beanGXHDO101C040C.hanteichi3low.customStyleInput}">
                                             </p:inputNumber>
+                                            <p:inputText id="taidenatsuHanteichitaniT3_low" styleClass="taidenatsu_table_text"
+                                                         rendered="#{beanGXHDO101C040C.hanteichi3tani_low.renderInputText}" value="#{beanGXHDO101C040C.hanteichi3tani_low.value}" 
+                                                         maxlength="#{beanGXHDO101C040C.hanteichi3tani_low.displayMaxLength}" 
+                                                         style="width:#{beanGXHDO101C040C.hanteichi3tani_low.displayMaxLength}em; font-size:#{beanGXHDO101C040C.hanteichi3tani_low.fontSizeInput}px;
+                                                         color:#{beanGXHDO101C040C.hanteichi3tani_low.fontColorInput};background:#{beanGXHDO101C040C.hanteichi3tani_low.backColorInput};#{beanGXHDO101C040C.hanteichi3tani_low.customStyleInput}">
+                                            </p:inputText>
                                             <h:outputText value="～" style="font-size:16px;vertical-align:middle;margin-right:3px"/>
                                             <p:inputText id="taidenatsuHanteichiT3" styleClass="taidenatsu_table_text"
                                                          rendered="#{beanGXHDO101C040C.hanteichi3.renderInputText}" value="#{beanGXHDO101C040C.hanteichi3.value}" 
@@ -630,6 +645,12 @@
                                                            inputStyle="font-size:#{beanGXHDO101C040C.hanteichi4low.fontSizeInput}px;
                                                            color:#{beanGXHDO101C040C.hanteichi4low.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi4low.backColorInput};#{beanGXHDO101C040C.hanteichi4low.customStyleInput}">
                                             </p:inputNumber>
+                                            <p:inputText id="taidenatsuHanteichitaniT4_low" styleClass="taidenatsu_table_text"
+                                                         rendered="#{beanGXHDO101C040C.hanteichi4tani_low.renderInputText}" value="#{beanGXHDO101C040C.hanteichi4tani_low.value}" 
+                                                         maxlength="#{beanGXHDO101C040C.hanteichi4tani_low.displayMaxLength}" 
+                                                         style="width:#{beanGXHDO101C040C.hanteichi4tani_low.displayMaxLength}em; font-size:#{beanGXHDO101C040C.hanteichi4tani_low.fontSizeInput}px;
+                                                         color:#{beanGXHDO101C040C.hanteichi4tani_low.fontColorInput};background:#{beanGXHDO101C040C.hanteichi4tani_low.backColorInput};#{beanGXHDO101C040C.hanteichi4tani_low.customStyleInput}">
+                                            </p:inputText>
                                             <h:outputText value="～" style="font-size:16px;vertical-align:middle;margin-right:3px"/>
                                             <p:inputText id="taidenatsuHanteichiT4" styleClass="taidenatsu_table_text"
                                                          rendered="#{beanGXHDO101C040C.hanteichi4.renderInputText}" value="#{beanGXHDO101C040C.hanteichi4.value}" 
@@ -709,6 +730,12 @@
                                                            inputStyle="font-size:#{beanGXHDO101C040C.hanteichi5low.fontSizeInput}px;
                                                            color:#{beanGXHDO101C040C.hanteichi5low.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi5low.backColorInput};#{beanGXHDO101C040C.hanteichi5low.customStyleInput}">
                                             </p:inputNumber>
+                                            <p:inputText id="taidenatsuHanteichitaniT5_low" styleClass="taidenatsu_table_text"
+                                                         rendered="#{beanGXHDO101C040C.hanteichi5tani_low.renderInputText}" value="#{beanGXHDO101C040C.hanteichi5tani_low.value}" 
+                                                         maxlength="#{beanGXHDO101C040C.hanteichi5tani_low.displayMaxLength}" 
+                                                         style="width:#{beanGXHDO101C040C.hanteichi5tani_low.displayMaxLength}em; font-size:#{beanGXHDO101C040C.hanteichi5tani_low.fontSizeInput}px;
+                                                         color:#{beanGXHDO101C040C.hanteichi5tani_low.fontColorInput};background:#{beanGXHDO101C040C.hanteichi5tani_low.backColorInput};#{beanGXHDO101C040C.hanteichi5tani_low.customStyleInput}">
+                                            </p:inputText>
                                             <h:outputText value="～" style="font-size:16px;vertical-align:middle;margin-right:3px"/>
                                             <p:inputText id="taidenatsuHanteichiT5" styleClass="taidenatsu_table_text"
                                                          rendered="#{beanGXHDO101C040C.hanteichi5.renderInputText}" value="#{beanGXHDO101C040C.hanteichi5.value}" 
@@ -788,6 +815,12 @@
                                                            inputStyle="font-size:#{beanGXHDO101C040C.hanteichi6low.fontSizeInput}px;
                                                            color:#{beanGXHDO101C040C.hanteichi6low.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi6low.backColorInput};#{beanGXHDO101C040C.hanteichi6low.customStyleInput}">
                                             </p:inputNumber>
+                                            <p:inputText id="taidenatsuHanteichitaniT6_low" styleClass="taidenatsu_table_text"
+                                                         rendered="#{beanGXHDO101C040C.hanteichi6tani_low.renderInputText}" value="#{beanGXHDO101C040C.hanteichi6tani_low.value}" 
+                                                         maxlength="#{beanGXHDO101C040C.hanteichi6tani_low.displayMaxLength}" 
+                                                         style="width:#{beanGXHDO101C040C.hanteichi6tani_low.displayMaxLength}em; font-size:#{beanGXHDO101C040C.hanteichi6tani_low.fontSizeInput}px;
+                                                         color:#{beanGXHDO101C040C.hanteichi6tani_low.fontColorInput};background:#{beanGXHDO101C040C.hanteichi6tani_low.backColorInput};#{beanGXHDO101C040C.hanteichi6tani_low.customStyleInput}">
+                                            </p:inputText>
                                             <h:outputText value="～" style="font-size:16px;vertical-align:middle;margin-right:3px"/>
                                             <p:inputText id="taidenatsuHanteichiT6" styleClass="taidenatsu_table_text"
                                                          rendered="#{beanGXHDO101C040C.hanteichi6.renderInputText}" value="#{beanGXHDO101C040C.hanteichi6.value}" 
@@ -867,6 +900,12 @@
                                                            inputStyle="font-size:#{beanGXHDO101C040C.hanteichi7low.fontSizeInput}px;
                                                            color:#{beanGXHDO101C040C.hanteichi7low.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi7low.backColorInput};#{beanGXHDO101C040C.hanteichi7low.customStyleInput}">
                                             </p:inputNumber>
+                                            <p:inputText id="taidenatsuHanteichitaniT7_low" styleClass="taidenatsu_table_text"
+                                                         rendered="#{beanGXHDO101C040C.hanteichi7tani_low.renderInputText}" value="#{beanGXHDO101C040C.hanteichi7tani_low.value}" 
+                                                         maxlength="#{beanGXHDO101C040C.hanteichi7tani_low.displayMaxLength}" 
+                                                         style="width:#{beanGXHDO101C040C.hanteichi7tani_low.displayMaxLength}em; font-size:#{beanGXHDO101C040C.hanteichi7tani_low.fontSizeInput}px;
+                                                         color:#{beanGXHDO101C040C.hanteichi7tani_low.fontColorInput};background:#{beanGXHDO101C040C.hanteichi7tani_low.backColorInput};#{beanGXHDO101C040C.hanteichi7tani_low.customStyleInput}">
+                                            </p:inputText>
                                             <h:outputText value="～" style="font-size:16px;vertical-align:middle;margin-right:3px"/>
                                             <p:inputText id="taidenatsuHanteichiT7" styleClass="taidenatsu_table_text"
                                                          rendered="#{beanGXHDO101C040C.hanteichi7.renderInputText}" value="#{beanGXHDO101C040C.hanteichi7.value}" 
@@ -946,6 +985,12 @@
                                                            inputStyle="font-size:#{beanGXHDO101C040C.hanteichi8low.fontSizeInput}px;
                                                            color:#{beanGXHDO101C040C.hanteichi8low.fontColorInput}; background:#{beanGXHDO101C040C.hanteichi8low.backColorInput};#{beanGXHDO101C040C.hanteichi8low.customStyleInput}">
                                             </p:inputNumber>
+                                            <p:inputText id="taidenatsuHanteichitaniT8_low" styleClass="taidenatsu_table_text"
+                                                         rendered="#{beanGXHDO101C040C.hanteichi8tani_low.renderInputText}" value="#{beanGXHDO101C040C.hanteichi8tani_low.value}" 
+                                                         maxlength="#{beanGXHDO101C040C.hanteichi8tani_low.displayMaxLength}" 
+                                                         style="width:#{beanGXHDO101C040C.hanteichi8tani_low.displayMaxLength}em; font-size:#{beanGXHDO101C040C.hanteichi8tani_low.fontSizeInput}px;
+                                                         color:#{beanGXHDO101C040C.hanteichi8tani_low.fontColorInput};background:#{beanGXHDO101C040C.hanteichi8tani_low.backColorInput};#{beanGXHDO101C040C.hanteichi8tani_low.customStyleInput}">
+                                            </p:inputText>
                                             <h:outputText value="～" style="font-size:16px;vertical-align:middle;margin-right:3px"/>
                                             <p:inputText id="taidenatsuHanteichiT8" styleClass="taidenatsu_table_text"
                                                          rendered="#{beanGXHDO101C040C.hanteichi8.renderInputText}" value="#{beanGXHDO101C040C.hanteichi8.value}" 
@@ -3090,7 +3135,6 @@
                     <t:aliasBean alias="#{gXHDO101Common}" value="#{gXHDO101B040A}">
                         <ui:include src="/secure/common/compMessage.xhtml"/>
                     </t:aliasBean>
-                    <ui:include src="/secure/common/errorListMessage101.xhtml"/>
                 </div>
             </div>
         </h:form>

@@ -182,6 +182,26 @@ public class SrDpprint {
     private BigDecimal kansouondo4;
 
     /**
+     * 乾燥温度下側
+     */
+    private BigDecimal kansouondoshita;
+
+    /**
+     * 乾燥温度下側2
+     */
+    private BigDecimal kansouondoshita2;
+
+    /**
+     * 乾燥温度下側3
+     */
+    private BigDecimal kansouondoshita3;
+
+    /**
+     * 乾燥温度下側4
+     */
+    private BigDecimal kansouondoshita4;
+
+    /**
      * 乾燥温度5
      */
     private BigDecimal kansouondo5;
@@ -415,6 +435,16 @@ public class SrDpprint {
      * 備考5
      */
     private String bikou5;
+
+    /**
+     * テープ厚み
+     */
+    private BigDecimal tapeatu;
+
+    /**
+     * 成形長さ
+     */
+    private Integer printlength;
 
     /**
      * 工場ｺｰﾄﾞ
@@ -954,6 +984,70 @@ public class SrDpprint {
      */
     public void setKansouondo4(BigDecimal kansouondo4) {
         this.kansouondo4 = kansouondo4;
+    }
+
+    /**
+     * 乾燥温度下側
+     * @return the kansouondoshita
+     */
+    public BigDecimal getKansouondoshita() {
+        return kansouondoshita;
+    }
+
+    /**
+     * 乾燥温度下側
+     * @param kansouondoshita the kansouondoshita to set
+     */
+    public void setKansouondoshita(BigDecimal kansouondoshita) {
+        this.kansouondoshita = kansouondoshita;
+    }
+
+    /**
+     * 乾燥温度下側2
+     * @return the kansouondoshita2
+     */
+    public BigDecimal getKansouondoshita2() {
+        return kansouondoshita2;
+    }
+
+    /**
+     * 乾燥温度下側2
+     * @param kansouondoshita2 the kansouondoshita2 to set
+     */
+    public void setKansouondoshita2(BigDecimal kansouondoshita2) {
+        this.kansouondoshita2 = kansouondoshita2;
+    }
+
+    /**
+     * 乾燥温度下側3
+     * @return the kansouondoshita3
+     */
+    public BigDecimal getKansouondoshita3() {
+        return kansouondoshita3;
+    }
+
+    /**
+     * 乾燥温度下側3
+     * @param kansouondoshita3 the kansouondoshita3 to set
+     */
+    public void setKansouondoshita3(BigDecimal kansouondoshita3) {
+        this.kansouondoshita3 = kansouondoshita3;
+    }
+
+    /**
+     * 乾燥温度下側4
+     * @return the kansouondoshita4
+     */
+    public BigDecimal getKansouondoshita4() {
+        return kansouondoshita4;
+    }
+
+    /**
+     * 乾燥温度下側4
+     * @param kansouondoshita4 the kansouondoshita4 to set
+     */
+    public void setKansouondoshita4(BigDecimal kansouondoshita4) {
+        this.kansouondoshita4 = kansouondoshita4;
     }
 
     /**
@@ -1776,6 +1870,37 @@ public class SrDpprint {
      */
     public void setBikou5(String bikou5) {
         this.bikou5 = bikou5;
+    }
+    /**
+     * テープ厚み
+     * @return the tapeatu
+     */
+    public BigDecimal getTapeatu() {
+        return tapeatu;
+    }
+
+    /**
+     * テープ厚み
+     * @param tapeatu the tapeatu to set
+     */
+    public void setTapeatu(BigDecimal tapeatu) {
+        this.tapeatu = tapeatu;
+    }
+
+    /**
+     * 成形長さ
+     * @return the printlength
+     */
+    public Integer getPrintlength() {
+        return printlength;
+    }
+
+    /**
+     * 成形長さ
+     * @param printlength the printlength to set
+     */
+    public void setPrintlength(Integer printlength) {
+        this.printlength = printlength;
     }
 
 }

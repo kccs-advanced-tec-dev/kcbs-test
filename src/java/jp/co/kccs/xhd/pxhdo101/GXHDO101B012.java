@@ -1171,6 +1171,12 @@ public class GXHDO101B012 implements IFormLogic {
         this.setItemData(processData, GXHDO101B012Const.BIKOU1, getSrCutcheckItemData(GXHDO101B012Const.BIKOU1, srCutcheckData));
         //備考2
         this.setItemData(processData, GXHDO101B012Const.BIKOU2, getSrCutcheckItemData(GXHDO101B012Const.BIKOU2, srCutcheckData));
+        //備考3
+        this.setItemData(processData, GXHDO101B012Const.BIKOU3, getSrCutcheckItemData(GXHDO101B012Const.BIKOU3, srCutcheckData));
+        //備考4
+        this.setItemData(processData, GXHDO101B012Const.BIKOU4, getSrCutcheckItemData(GXHDO101B012Const.BIKOU4, srCutcheckData));
+        //備考5
+        this.setItemData(processData, GXHDO101B012Const.BIKOU5, getSrCutcheckItemData(GXHDO101B012Const.BIKOU5, srCutcheckData));
 
     }
 
@@ -1856,7 +1862,7 @@ public class GXHDO101B012 implements IFormLogic {
 
         String sql = "UPDATE tmp_sr_cutcheck SET "
                 + "startdatetime = ?,enddatetime = ?,tantousya = ?,Atumi01 = ?,Atumi02 = ?,Atumi03 = ?,Atumi04 = ?,Atumi05 = ?,Atumi06 = ?,Atumi07 = ?,"
-                + "Atumi08 = ?,Atumi09 = ?,Atumi10 = ?,bikou1 = ?,bikou2 = ?,Soujyuryo = ?,Tanijyuryo = ?,gaikankensatantousya = ?,barasshi = ?,joken = ?,"
+                + "Atumi08 = ?,Atumi09 = ?,Atumi10 = ?,bikou1 = ?,bikou2 = ?,bikou3 = ?,bikou4 = ?,bikou5 = ?,Soujyuryo = ?,Tanijyuryo = ?,gaikankensatantousya = ?,barasshi = ?,joken = ?,"
                 + "barashistartnichiji = ?,batashistarttantousya = ?,barashiendnichiji = ?,barashiendtantousya = ?,konamabushi = ?,syorisetsuu = ?,"
                 + "ryouhinsetsuu = ?,budomari = ?,kosinnichiji = ?,revision = ?,deleteflag = ?,KCPNO = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
@@ -1958,11 +1964,9 @@ public class GXHDO101B012 implements IFormLogic {
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B012Const.NAMA_T_SUN10, srCutcheckData)));  //厚み10
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B012Const.BIKOU1, srCutcheckData)));  //備考1
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B012Const.BIKOU2, srCutcheckData)));  //備考2
-        if (isInsert) {
-            params.add(null); //備考3
-            params.add(null); //備考4
-            params.add(null); //備考5
-        }
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B012Const.BIKOU3, srCutcheckData)));  //備考3
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B012Const.BIKOU4, srCutcheckData)));  //備考4
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B012Const.BIKOU5, srCutcheckData)));  //備考5
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B012Const.SOJURYO, srCutcheckData)));  //総重量
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B012Const.TANIJURYO, srCutcheckData)));  //単位重量
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B012Const.GAIKANKENSA_SHURYOU_TANTOUSHA, srCutcheckData)));  //外観検査終了担当者
@@ -1976,7 +1980,8 @@ public class GXHDO101B012 implements IFormLogic {
                 getItemData(itemList, GXHDO101B012Const.BARASHI_SHURYOU_DAY, srCutcheckData),
                 getItemData(itemList, GXHDO101B012Const.BARASHI_SHURYOU_TIME, srCutcheckData))); //ばらし終了日時
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B012Const.BARASHI_SHURYOU_TANTOUSHA, srCutcheckData)));  //ばらし終了担当者
-        params.add(getComboAriNashiValue(getItemData(itemList, GXHDO101B012Const.KONAMABUSHI, srCutcheckData), null));  //粉まぶし
+//        params.add(getComboAriNashiValue(getItemData(itemList, GXHDO101B012Const.KONAMABUSHI, srCutcheckData), null));  //粉まぶし
+        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B012Const.KONAMABUSHI, srCutcheckData)));  //粉まぶし
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B012Const.SHORIKOSU, srCutcheckData)));  //処理個数
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B012Const.RYOHINKOSU, srCutcheckData)));  //良品個数
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B012Const.BUDOMARI, srCutcheckData)));  //歩留まり
@@ -2041,7 +2046,7 @@ public class GXHDO101B012 implements IFormLogic {
             String kojyo, String lotNo, String edaban, Timestamp systemTime, List<FXHDD01> itemList) throws SQLException {
         String sql = "UPDATE sr_cutcheck SET "
                 + "startdatetime = ?,enddatetime = ?,tantousya = ?,Atumi01 = ?,Atumi02 = ?,Atumi03 = ?,Atumi04 = ?,Atumi05 = ?,Atumi06 = ?,Atumi07 = ?,"
-                + "Atumi08 = ?,Atumi09 = ?,Atumi10 = ?,bikou1 = ?,bikou2 = ?,Soujyuryo = ?,Tanijyuryo = ?,gaikankensatantousya = ?,barasshi = ?,joken = ?,"
+                + "Atumi08 = ?,Atumi09 = ?,Atumi10 = ?,bikou1 = ?,bikou2 = ?,bikou3 = ?,bikou4 = ?,bikou5 = ?,Soujyuryo = ?,Tanijyuryo = ?,gaikankensatantousya = ?,barasshi = ?,joken = ?,"
                 + "barashistartnichiji = ?,batashistarttantousya = ?,barashiendnichiji = ?,barashiendtantousya = ?,konamabushi = ?,syorisetsuu = ?,"
                 + "ryouhinsetsuu = ?,budomari = ?,kosinnichiji = ?,revision = ?,KCPNO = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
@@ -2113,11 +2118,9 @@ public class GXHDO101B012 implements IFormLogic {
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B012Const.NAMA_T_SUN10, srCutcheckData)));  //厚み10
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B012Const.BIKOU1, srCutcheckData)));  //備考1
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B012Const.BIKOU2, srCutcheckData)));  //備考2
-        if (isInsert) {
-            params.add(""); //備考3
-            params.add(""); //備考4
-            params.add(""); //備考5
-        }
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B012Const.BIKOU3, srCutcheckData)));  //備考3
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B012Const.BIKOU4, srCutcheckData)));  //備考4
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B012Const.BIKOU5, srCutcheckData)));  //備考5
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B012Const.SOJURYO, srCutcheckData)));  //総重量
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B012Const.TANIJURYO, srCutcheckData)));  //単位重量
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B012Const.GAIKANKENSA_SHURYOU_TANTOUSHA, srCutcheckData)));  //外観検査終了担当者
@@ -2131,7 +2134,8 @@ public class GXHDO101B012 implements IFormLogic {
                 getItemData(itemList, GXHDO101B012Const.BARASHI_SHURYOU_DAY, srCutcheckData),
                 getItemData(itemList, GXHDO101B012Const.BARASHI_SHURYOU_TIME, srCutcheckData))); //ばらし終了日時
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B012Const.BARASHI_SHURYOU_TANTOUSHA, srCutcheckData)));  //ばらし終了担当者
-        params.add(getComboAriNashiValue(getItemData(itemList, GXHDO101B012Const.KONAMABUSHI, srCutcheckData), 9));  //粉まぶし
+//        params.add(getComboAriNashiValue(getItemData(itemList, GXHDO101B012Const.KONAMABUSHI, srCutcheckData), 9));  //粉まぶし
+        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B012Const.KONAMABUSHI, srCutcheckData)));  //粉まぶし
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B012Const.SHORIKOSU, srCutcheckData)));  //処理個数
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B012Const.RYOHINKOSU, srCutcheckData)));  //良品個数
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B012Const.BUDOMARI, srCutcheckData)));  //歩留まり
@@ -2509,7 +2513,7 @@ public class GXHDO101B012 implements IFormLogic {
                 return StringUtil.nullToBlank(srCutcheckData.getSoujyuryo());
             //粉まぶし
             case GXHDO101B012Const.KONAMABUSHI:
-                return getComboAriNashiText(StringUtil.nullToBlank(srCutcheckData.getKonamabushi()));
+                return StringUtil.nullToBlank(srCutcheckData.getKonamabushi());
             //生T寸 1
             case GXHDO101B012Const.NAMA_T_SUN1:
                 return StringUtil.nullToBlank(srCutcheckData.getAtumi01());
@@ -2555,6 +2559,15 @@ public class GXHDO101B012 implements IFormLogic {
             //備考2
             case GXHDO101B012Const.BIKOU2:
                 return StringUtil.nullToBlank(srCutcheckData.getBikou2());
+            //備考3
+            case GXHDO101B012Const.BIKOU3:
+                return StringUtil.nullToBlank(srCutcheckData.getBikou3());
+            //備考4
+            case GXHDO101B012Const.BIKOU4:
+                return StringUtil.nullToBlank(srCutcheckData.getBikou4());
+            //備考5
+            case GXHDO101B012Const.BIKOU5:
+                return StringUtil.nullToBlank(srCutcheckData.getBikou5());
             //KCPNO
             case GXHDO101B012Const.KCPNO:
                 return StringUtil.nullToBlank(srCutcheckData.getKcpno());
@@ -2622,6 +2635,8 @@ public class GXHDO101B012 implements IFormLogic {
                 return 0;
             case "あり":
                 return 1;
+            case "新粉あり":
+                return 2;
             default:
                 return defaultValue;
         }
@@ -2639,6 +2654,8 @@ public class GXHDO101B012 implements IFormLogic {
                 return "なし";
             case "1":
                 return "あり";
+            case "2":
+                return "新粉あり";
             default:
                 return "";
         }

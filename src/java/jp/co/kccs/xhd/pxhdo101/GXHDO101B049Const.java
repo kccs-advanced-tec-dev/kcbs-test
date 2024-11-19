@@ -159,6 +159,14 @@ public class GXHDO101B049Const {
      * 備考2
      */
     public static final String BIKOU2 = "sr_taping_check_bikou2";
+    /**
+     * リール外観判定
+     */
+    public static final String REEL_GAIKAN = "sr_taping_check_reel_gaikan";
+    /**
+     * リール外観備考
+     */
+    public static final String REEL_BIKOU = "sr_taping_check_reel_gaikan_bikou";
 
     /**
      * 枝番ｺﾋﾟｰ(画面上ボタン)

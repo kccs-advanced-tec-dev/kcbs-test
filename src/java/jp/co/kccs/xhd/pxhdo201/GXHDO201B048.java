@@ -165,6 +165,10 @@ public class GXHDO201B048 implements Serializable {
      * 検索条件：終了時刻(TO)
      */
     private String endTimeT = "";
+    /**
+     * 検索条件：号機
+     */
+    private String goki = "";
 
     /**
      * 検査場所リスト:表示可能ﾃﾞｰﾀ
@@ -554,6 +558,7 @@ public class GXHDO201B048 implements Serializable {
         endTimeF = "";
         endTimeT = "";
         kensabasyo = "";
+        goki = "";
 
         listData = new ArrayList<>();
     }
@@ -666,6 +671,10 @@ public class GXHDO201B048 implements Serializable {
         if (!StringUtil.isEmpty(endTimeT) && existError(validateUtil.checkC001(getEndDateT(), "終了日(to)"))) {
             return;
         }
+        // 号機
+        if (existError(validateUtil.checkC103(getGoki(), "号機", 4))) {
+            return;
+        }
 
         if (kensabasyoData == null) {
             return;
@@ -731,7 +740,8 @@ public class GXHDO201B048 implements Serializable {
                     + "AND   (? IS NULL OR kaisinichiji >= ?) "
                     + "AND   (? IS NULL OR kaisinichiji <= ?) "
                     + "AND   (? IS NULL OR shuryonichiji >= ?) "
-                    + "AND   (? IS NULL OR shuryonichiji <= ?) ";
+                    + "AND   (? IS NULL OR shuryonichiji <= ?) "
+                    + "AND   (? IS NULL OR gouki = ?) ";
 
             if (!StringUtil.isEmpty(kensabasyo) && !"ALL".equals(kensabasyo)) {
                 kensaBasyoDataList = new ArrayList<>();
@@ -890,7 +900,8 @@ public class GXHDO201B048 implements Serializable {
                     + "AND   (? IS NULL OR kaisinichiji >= ?) "
                     + "AND   (? IS NULL OR kaisinichiji <= ?) "
                     + "AND   (? IS NULL OR shuryonichiji >= ?) "
-                    + "AND   (? IS NULL OR shuryonichiji <= ?) ";
+                    + "AND   (? IS NULL OR shuryonichiji <= ?) "
+                    + "AND   (? IS NULL OR gouki = ?) ";
 
             if (!StringUtil.isEmpty(kensabasyo) && !"ALL".equals(kensabasyo)) {
                 kensaBasyoDataList = new ArrayList<>();
@@ -1156,6 +1167,7 @@ public class GXHDO201B048 implements Serializable {
         if (!StringUtil.isEmpty(endDateT)) {
             paramEndDateT = DateUtil.convertStringToDate(getEndDateT(), StringUtil.isEmpty(getEndTimeT()) ? "2359" : getEndTimeT());
         }
+        String paramGoki = StringUtil.blankToNull(getGoki());
 
         List<Object> params = new ArrayList<>();
         params.addAll(Arrays.asList(paramKojo, paramKojo));
@@ -1166,6 +1178,7 @@ public class GXHDO201B048 implements Serializable {
         params.addAll(Arrays.asList(paramStartDateT, paramStartDateT));
         params.addAll(Arrays.asList(paramEndDateF, paramEndDateF));
         params.addAll(Arrays.asList(paramEndDateT, paramEndDateT));
+        params.addAll(Arrays.asList(paramGoki, paramGoki));
 
         if (!StringUtil.isEmpty(kensabasyo) && !"ALL".equals(kensabasyo)) {
             kensaBasyoDataList = new ArrayList<>();
@@ -1269,5 +1282,21 @@ public class GXHDO201B048 implements Serializable {
             return null;
         }
         return map.get(mapId);
+    }
+
+    /**
+     * 検索条件：号機
+     * @return the goki
+     */
+    public String getGoki() {
+        return goki;
+    }
+
+    /**
+     * 検索条件：号機
+     * @param goki the goki to set
+     */
+    public void setGoki(String goki) {
+        this.goki = goki;
     }
 }

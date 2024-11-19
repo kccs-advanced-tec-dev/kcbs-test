@@ -64,6 +64,10 @@ public class FXHDD02 {
      * 有効・無効
      */
     private boolean enabled = true;
+    /**
+     * 仮登録区分
+     */
+    private String tmpKbn;
 
     /**
      * ボタンID
@@ -225,5 +229,21 @@ public class FXHDD02 {
      */
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    /**
+     * 仮登録区分
+     * @return the tmpKbn
+     */
+    public String getTmpKbn() {
+        return tmpKbn;
+    }
+
+    /**
+     * 仮登録区分
+     * @param tmpKbn the tmpKbn to set
+     */
+    public void setTmpKbn(String tmpKbn) {
+        this.tmpKbn = tmpKbn;
     }
 }

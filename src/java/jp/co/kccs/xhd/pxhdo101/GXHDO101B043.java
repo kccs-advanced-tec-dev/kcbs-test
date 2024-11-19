@@ -4248,7 +4248,7 @@ public class GXHDO101B043 implements IFormLogic {
         HttpSession session = (HttpSession) externalContext.getSession(false);
         String lotNo = (String) session.getAttribute("lotNo");
         try {
-            // (23)[tmp_netsusyori_kanri]から、ﾃﾞｰﾀの取得
+            // (23)[tmp_sr_netsusyori_kanri]から、ﾃﾞｰﾀの取得
             List<Map<String, Object>> tmpSrGraprintKanriDataList = loadTmpNetsusyoriKanriData(queryRunnerQcdb, lotNo, null);
             if (tmpSrGraprintKanriDataList == null || tmpSrGraprintKanriDataList.isEmpty()) {
                 // ｴﾗｰ項目をﾘｽﾄに追加
@@ -4380,6 +4380,7 @@ public class GXHDO101B043 implements IFormLogic {
                         GXHDO101B043Const.KAISHI_DAY, GXHDO101B043Const.KAISHI_TIME, GXHDO101B043Const.SAGYOSYA, GXHDO101B043Const.STARTKAKUNIN,
                         GXHDO101B043Const.SHURYOU_DAY, GXHDO101B043Const.SHURYOU_TIME, GXHDO101B043Const.ENDTANTOU);
                 setDataCooperationItemData(processData, setValueItemList, tmpSrGraprintDataList, itemIdConvertMap);
+                setDataCooperationSubItemData(tmpSrGraprintDataList);
             }
         }
     }
@@ -4410,7 +4411,7 @@ public class GXHDO101B043 implements IFormLogic {
     }
     
     /**
-     * [tmp_netsusyori_kanri]から、ﾃﾞｰﾀの取得
+     * [tmp_sr_netsusyori_kanri]から、ﾃﾞｰﾀの取得
      *
      * @param queryRunnerQcdb QueryRunnerオブジェクト
      * @param lotNo ﾛｯﾄNo(検索キー)
@@ -4423,9 +4424,9 @@ public class GXHDO101B043 implements IFormLogic {
         String lotno = lotNo.substring(3, 11);
         String edaban = lotNo.substring(11, 14);
 
-        // [tmp_netsusyori_kanri]から、ﾃﾞｰﾀの取得
+        // [tmp_sr_netsusyori_kanri]から、ﾃﾞｰﾀの取得
         String sql = "SELECT kanrino, kojyo, lotno, edaban, datasyurui, jissekino, torokunichiji"
-                + " FROM tmp_netsusyori_kanri "
+                + " FROM tmp_sr_netsusyori_kanri "
                 + " WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
         if (!StringUtil.isEmpty(datasyurui)) {
             sql += " AND datasyurui = ? ";
@@ -4455,12 +4456,431 @@ public class GXHDO101B043 implements IFormLogic {
     private List<Map<String, Object>> loadTmpNetsusyoriData(QueryRunner queryRunnerQcdb, Long kanrino) throws SQLException {
         // [tmp_netsusyori]から、ﾃﾞｰﾀの取得
         String sql = "SELECT kanrino, item_id, atai"
-                + " FROM tmp_netsusyori WHERE kanrino = ?";
+                + " FROM tmp_sr_netsusyori WHERE kanrino = ?";
 
         List<Object> params = new ArrayList<>();
         params.add(kanrino);
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, new MapListHandler(), params.toArray());
+    }
+
+    /**
+     * 【設備ﾃﾞｰﾀ連携】ﾎﾞﾀﾝ押下時、ｻﾌﾞ画面の内容を上書きする。
+     *
+     * @param processData 処理制御データ
+     * @param setValueItemList 項目リスト
+     * @param tmpSrGraprintDataList 取得ﾃﾞｰﾀ
+     * @param itemIdConvertMap ﾌｫｰﾑﾊﾟﾗﾒｰﾀ(item_id)とtmp_netsusyori(item_id)の対比表
+     */
+    private void setDataCooperationSubItemData(List<Map<String, Object>> tmpSrGraprintDataList) {
+
+        GXHDO101C018 beanGXHDO101C018 = (GXHDO101C018) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_GXHDO101C018);
+        List<GXHDO101C018Model.GoukiData> gouki1DataList = beanGXHDO101C018.getGxhdO101c018Model().getGouki1DataList();
+        List<GXHDO101C018Model.GoukiData> gouki2DataList = beanGXHDO101C018.getGxhdO101c018Model().getGouki2DataList();
+        List<GXHDO101C018Model.GoukiData> gouki3DataList = beanGXHDO101C018.getGxhdO101c018Model().getGouki3DataList();
+        List<GXHDO101C018Model.GoukiData> gouki4DataList = beanGXHDO101C018.getGxhdO101c018Model().getGouki4DataList();        
+
+        Map<String, Object> sayadata;
+        // 号機1ｻﾔNo1
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki1_saya1".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki1DataList.get(0).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機1ｻﾔNo2
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki1_saya2".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki1DataList.get(1).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機1ｻﾔNo3
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki1_saya3".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki1DataList.get(2).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }    
+        // 号機1ｻﾔNo4
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki1_saya4".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki1DataList.get(3).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }    
+        // 号機1ｻﾔNo5
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki1_saya5".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki1DataList.get(4).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機1ｻﾔNo6
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki1_saya6".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki1DataList.get(5).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機1ｻﾔNo7
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki1_saya7".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki1DataList.get(6).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機1ｻﾔN8
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki1_saya8".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki1DataList.get(7).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機1ｻﾔN9
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki1_saya9".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki1DataList.get(8).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機1ｻﾔN10
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki1_saya10".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki1DataList.get(9).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機1ｻﾔNo11
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki1_saya11".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki1DataList.get(10).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }        
+        // 号機1ｻﾔNo12
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki1_saya12".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki1DataList.get(11).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機1ｻﾔNo13
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki1_saya13".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki1DataList.get(12).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }    
+        // 号機1ｻﾔNo14
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki1_saya14".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki1DataList.get(13).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }    
+        // 号機1ｻﾔNo15
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki1_saya15".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki1DataList.get(14).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機1ｻﾔNo16
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki1_saya16".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki1DataList.get(15).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機1ｻﾔNo17
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki1_saya17".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki1DataList.get(16).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機1ｻﾔN18
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki1_saya18".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki1DataList.get(17).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機1ｻﾔN19
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki1_saya19".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki1DataList.get(18).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機1ｻﾔN20
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki1_saya20".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki1DataList.get(19).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機2ｻﾔNo1
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki2_saya1".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki2DataList.get(0).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機2ｻﾔNo2
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki2_saya2".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki2DataList.get(1).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機2ｻﾔNo3
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki2_saya3".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki2DataList.get(2).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }    
+        // 号機2ｻﾔNo4
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki2_saya4".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki2DataList.get(3).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }    
+        // 号機2ｻﾔNo5
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki2_saya5".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki2DataList.get(4).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機2ｻﾔNo6
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki2_saya6".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki2DataList.get(5).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機2ｻﾔNo7
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki2_saya7".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki2DataList.get(6).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機2ｻﾔN8
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki2_saya8".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki2DataList.get(7).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機2ｻﾔN9
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki2_saya9".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki2DataList.get(8).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機2ｻﾔN10
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki2_saya10".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki2DataList.get(9).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機2ｻﾔNo11
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki2_saya11".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki2DataList.get(10).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }        
+        // 号機2ｻﾔNo12
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki2_saya12".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki2DataList.get(11).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機2ｻﾔNo13
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki2_saya13".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki2DataList.get(12).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }    
+        // 号機2ｻﾔNo14
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki2_saya14".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki2DataList.get(13).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }    
+        // 号機2ｻﾔNo15
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki2_saya15".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki2DataList.get(14).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機2ｻﾔNo16
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki2_saya16".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki2DataList.get(15).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機2ｻﾔNo17
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki2_saya17".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki2DataList.get(16).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機2ｻﾔN18
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki2_saya18".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki2DataList.get(17).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機2ｻﾔN19
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki2_saya19".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki2DataList.get(18).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機2ｻﾔN20
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki2_saya20".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki2DataList.get(19).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機3ｻﾔNo1
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki3_saya1".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki3DataList.get(0).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機3ｻﾔNo2
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki3_saya2".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki3DataList.get(1).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機3ｻﾔNo3
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki3_saya3".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki3DataList.get(2).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }    
+        // 号機3ｻﾔNo4
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki3_saya4".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki3DataList.get(3).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }    
+        // 号機3ｻﾔNo5
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki3_saya5".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki3DataList.get(4).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機3ｻﾔNo6
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki3_saya6".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki3DataList.get(5).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機3ｻﾔNo7
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki3_saya7".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki3DataList.get(6).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機3ｻﾔN8
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki3_saya8".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki3DataList.get(7).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機3ｻﾔN9
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki3_saya9".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki3DataList.get(8).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機3ｻﾔN10
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki3_saya10".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki3DataList.get(9).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機3ｻﾔNo11
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki3_saya11".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki3DataList.get(10).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }        
+        // 号機3ｻﾔNo12
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki3_saya12".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki3DataList.get(11).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機3ｻﾔNo13
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki3_saya13".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki3DataList.get(12).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }    
+        // 号機3ｻﾔNo14
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki3_saya14".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki3DataList.get(13).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }    
+        // 号機3ｻﾔNo15
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki3_saya15".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki3DataList.get(14).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機3ｻﾔNo16
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki3_saya16".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki3DataList.get(15).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機3ｻﾔNo17
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki3_saya17".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki3DataList.get(16).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機3ｻﾔN18
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki3_saya18".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki3DataList.get(17).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機3ｻﾔN19
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki3_saya19".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki3DataList.get(18).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機3ｻﾔN20
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki3_saya20".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki3DataList.get(19).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機4ｻﾔNo1
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki4_saya1".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki4DataList.get(0).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機4ｻﾔNo2
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki4_saya2".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki4DataList.get(1).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機4ｻﾔNo3
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki4_saya3".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki4DataList.get(2).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }    
+        // 号機4ｻﾔNo4
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki4_saya4".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki4DataList.get(3).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }    
+        // 号機4ｻﾔNo5
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki4_saya5".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki4DataList.get(4).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機4ｻﾔNo6
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki4_saya6".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki4DataList.get(5).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機4ｻﾔNo7
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki4_saya7".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki4DataList.get(6).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機4ｻﾔN8
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki4_saya8".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki4DataList.get(7).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機4ｻﾔN9
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki4_saya9".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki4DataList.get(8).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機4ｻﾔN10
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki4_saya10".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki4DataList.get(9).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機4ｻﾔNo11
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki4_saya11".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki4DataList.get(10).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }        
+        // 号機4ｻﾔNo12
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki4_saya12".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki4DataList.get(11).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機4ｻﾔNo13
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki4_saya13".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki4DataList.get(12).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }    
+        // 号機4ｻﾔNo14
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki4_saya14".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki4DataList.get(13).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }    
+        // 号機4ｻﾔNo15
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki4_saya15".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki4DataList.get(14).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機4ｻﾔNo16
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki4_saya16".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki4DataList.get(15).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機4ｻﾔNo17
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki4_saya17".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki4DataList.get(16).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機4ｻﾔN18
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki4_saya18".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki4DataList.get(17).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機4ｻﾔN19
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki4_saya19".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki4DataList.get(18).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
+        // 号機4ｻﾔN20
+        sayadata = tmpSrGraprintDataList.stream().filter(e -> "netsusyori_gouki4_saya20".equals(e.get("item_id"))).findFirst().orElse(null);
+        if (sayadata != null) {
+            gouki4DataList.get(19).setItemValue(StringUtil.nullToBlank(sayadata.get("atai")));
+        }
     }
 }

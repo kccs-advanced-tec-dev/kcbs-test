@@ -252,9 +252,10 @@ public class GXHDO101C020Logic {
         
         // ﾃｰﾌﾟﾛｯﾄ②の戻り項目
         FXHDD01 itemTapeLot2Rollno = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot2_Rollno());
-        
+        FXHDD01 itemTapeLot2Length = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot2_Tapelength());        
         // ﾃｰﾌﾟﾛｯﾄ③の戻り項目
         FXHDD01 itemTapeLot3Rollno = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot3_Rollno());
+        FXHDD01 itemTapeLot3Length = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot3_Tapelength());        
         
         // ﾍﾟｰｽﾄﾛｯﾄ①の戻り項目
         FXHDD01 itemPasteLot1Hinmei = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_PasteLot1_Hinmei());
@@ -304,9 +305,11 @@ public class GXHDO101C020Logic {
                     break;
                 case GXHDO101C020Model.TAPE_LOT_2:
                     setItemValue(itemTapeLot2Rollno, resultMap.get("rollno"));
+                    setItemValue(itemTapeLot2Length, resultMap.get("tapelength_m"));
                     break;
                 case GXHDO101C020Model.TAPE_LOT_3:
                     setItemValue(itemTapeLot3Rollno, resultMap.get("rollno"));
+                    setItemValue(itemTapeLot3Length, resultMap.get("tapelength_m"));
                     break;
                 case GXHDO101C020Model.PASTE_LOT_1:
                     setItemValue(itemPasteLot1Hinmei, resultMap.get("hinmei"));

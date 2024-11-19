@@ -33,6 +33,7 @@ import javax.sql.DataSource;
 import jp.co.kccs.xhd.SelectParam;
 import jp.co.kccs.xhd.common.ColumnInfoParser;
 import jp.co.kccs.xhd.common.ColumnInformation;
+import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.excel.ExcelExporter;
 import jp.co.kccs.xhd.model.GXHDO201B010Model;
 import jp.co.kccs.xhd.util.DBUtil;
@@ -40,6 +41,7 @@ import jp.co.kccs.xhd.util.DateUtil;
 import jp.co.kccs.xhd.util.ErrUtil;
 import jp.co.kccs.xhd.util.MessageUtil;
 import jp.co.kccs.xhd.util.StringUtil;
+import jp.co.kccs.xhd.util.SubFormUtil;
 import jp.co.kccs.xhd.util.ValidateUtil;
 import org.apache.commons.dbutils.BasicRowProcessor;
 import org.apache.commons.dbutils.BeanProcessor;
@@ -85,6 +87,12 @@ public class GXHDO201B010 implements Serializable {
      */
     @Resource(mappedName = "jdbc/qcdb")
     private transient DataSource dataSourceQcdb;
+
+    /**
+     * DataSource(DocumentServer)
+     */
+    @Resource(mappedName = "jdbc/DocumentServer")
+    private transient DataSource dataSourceDocServer;
     
     /**
      * DataSource(WIP)
@@ -103,7 +111,10 @@ public class GXHDO201B010 implements Serializable {
     private int listCountMax = -1;
     /** 一覧表示警告件数 */
     private int listCountWarn = -1;
-    
+    /**
+     * メインデータの件数を保持
+     */
+    private String displayStyle = "";
     /** 警告メッセージ */
     private String warnMessage = "";
     /** 1ページ当たりの表示件数 */
@@ -135,7 +146,10 @@ public class GXHDO201B010 implements Serializable {
     private String endTimeT = "";
     /** 検索条件：号機 */
     private String goki = "";
-    
+    //検査場所リスト:表示可能ﾃﾞｰﾀ
+    private String kensabasyoData[];    
+    /** 検索条件：検査場所 */
+    private String kensaBasyo = "";
     /**
      * コンストラクタ
      */
@@ -397,6 +411,7 @@ public class GXHDO201B010 implements Serializable {
         HttpSession session = (HttpSession) externalContext.getSession(false);
         
         String login_user_name = (String) session.getAttribute("login_user_name");
+        List<String> userGrpList = (List<String>)session.getAttribute("login_user_group"); 
 
         if (null == login_user_name || "".equals(login_user_name)) {
             // セッションタイムアウト時はセッション情報を破棄してエラー画面に遷移
@@ -414,7 +429,33 @@ public class GXHDO201B010 implements Serializable {
 
         listCountMax = session.getAttribute("menuParam") != null ? Integer.parseInt(session.getAttribute("menuParam").toString()) : -1;
         listCountWarn = session.getAttribute("hyojiKensu") != null ? Integer.parseInt(session.getAttribute("hyojiKensu").toString()) : -1;
-        
+        // ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ情報の取得
+        String strfxhbm03List7 = "";
+        //■表示可能ﾃﾞｰﾀ取得処理
+        //①Ⅲ.画面表示仕様(7)を発行する。
+        Map fxhbm03Data7 = loadFxhbm03Data(userGrpList);
+        //  1.取得できなかった場合、ｴﾗｰ。以降の処理は実行しない。
+        if (fxhbm03Data7 == null || fxhbm03Data7.isEmpty()) {
+            // ・ｴﾗｰｺｰﾄﾞ:XHD-000183
+            // ・ｴﾗ-ﾒｯｾｰｼﾞ:ﾃｰﾋﾟﾝｸﾞﾁｪｯｸ履歴_表示可能ﾃﾞｰﾀﾊﾟﾗﾒｰﾀ取得ｴﾗｰ。ｼｽﾃﾑに連絡してください。
+            // メッセージを画面に渡す
+            settingError();
+            return;
+        } else {
+            //取得したﾃﾞｰﾀが NULL の場合、ｴﾗｰ。以降の処理は実行しない。
+            if (getMapData(fxhbm03Data7, "data") == null || "".equals(getMapData(fxhbm03Data7, "data"))) {
+                //・ｴﾗｰｺｰﾄﾞ:XHD-000183
+                //・ｴﾗ-ﾒｯｾｰｼﾞ:ﾃｰﾋﾟﾝｸﾞﾁｪｯｸ履歴_表示可能ﾃﾞｰﾀﾊﾟﾗﾒｰﾀ取得ｴﾗｰ。ｼｽﾃﾑに連絡してください。
+                settingError();
+                return;
+            } else {
+                //取得したﾃﾞｰﾀが ALL以外の場合
+                strfxhbm03List7 = StringUtil.nullToBlank(getMapData(fxhbm03Data7, "data"));
+                kensabasyoData = strfxhbm03List7.split(",");
+            }
+
+        }
+
         // 画面クリア
         clear();
     }
@@ -448,6 +489,7 @@ public class GXHDO201B010 implements Serializable {
         endTimeF = "";
         endTimeT = "";
         goki = "";
+        kensaBasyo = "";
         
         listData = new ArrayList<>();
     }
@@ -563,6 +605,9 @@ public class GXHDO201B010 implements Serializable {
             }
         }
         
+        if (kensabasyoData == null) {
+            return;
+        }
         // 一覧表示件数を取得
         long count = selectListDataCount();
         
@@ -609,7 +654,8 @@ public class GXHDO201B010 implements Serializable {
      */
     public long selectListDataCount() {
         long count = 0;
-        
+        //検査場所データリスト
+        List<String> kensaBasyoDataList = null;
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
             String sql = "SELECT COUNT(LOTNO) AS CNT "
@@ -624,7 +670,25 @@ public class GXHDO201B010 implements Serializable {
                     + "AND   (? IS NULL OR KAISINICHIJI <= ?) "
                     + "AND   (? IS NULL OR SYURYONICHIJI >= ?) "
                     + "AND   (? IS NULL OR SYURYONICHIJI <= ?) "
-                    + "AND   (? IS NULL OR GOKI = ?)";
+                    + "AND   (? IS NULL OR GOKI = ?) ";
+            if (!StringUtil.isEmpty(kensaBasyo) && !"ALL".equals(kensaBasyo)) {
+                kensaBasyoDataList = new ArrayList<>();
+                kensaBasyoDataList.add(kensaBasyo);
+            } else {
+                boolean jyokenAdd = false;
+                for (String data : kensabasyoData) {
+                    if (!StringUtil.isEmpty(data) && !"ALL".equals(data)) {
+                        jyokenAdd = true;
+                    }
+                }
+                if (jyokenAdd) {
+                    kensaBasyoDataList = new ArrayList<>(Arrays.asList(kensabasyoData));
+                }
+            }
+            if (kensaBasyoDataList != null && !kensaBasyoDataList.isEmpty()) {
+                sql += " AND ";
+                sql += DBUtil.getInConditionPreparedStatement("sagyoubasyo", kensaBasyoDataList.size());
+            }
             
             // パラメータ設定
             List<Object> params = createSearchParam();
@@ -646,6 +710,8 @@ public class GXHDO201B010 implements Serializable {
      * 一覧表示データ検索
      */
     public void selectListData() {
+        //検査場所データリスト
+        List<String> kensaBasyoDataList = null;
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
             String sql = "SELECT CONCAT(IFNULL(KOJYO, ''), IFNULL(LOTNO, ''), IFNULL(EDABAN, '')) AS LOTNO"
@@ -722,8 +788,26 @@ public class GXHDO201B010 implements Serializable {
                     + "AND   (? IS NULL OR KAISINICHIJI <= ?) "
                     + "AND   (? IS NULL OR SYURYONICHIJI >= ?) "
                     + "AND   (? IS NULL OR SYURYONICHIJI <= ?) "
-                    + "AND   (? IS NULL OR GOKI = ?) "
-                    + "ORDER BY KAISINICHIJI";
+                    + "AND   (? IS NULL OR GOKI = ?) ";
+            if (!StringUtil.isEmpty(kensaBasyo) && !"ALL".equals(kensaBasyo)) {
+                kensaBasyoDataList = new ArrayList<>();
+                kensaBasyoDataList.add(kensaBasyo);
+            } else {
+                boolean jyokenAdd = false;
+                for (String data : kensabasyoData) {
+                    if (!StringUtil.isEmpty(data) && !"ALL".equals(data)) {
+                        jyokenAdd = true;
+                    }
+                }
+                if (jyokenAdd) {
+                    kensaBasyoDataList = new ArrayList<>(Arrays.asList(kensabasyoData));
+                }
+            }
+            if (kensaBasyoDataList != null && !kensaBasyoDataList.isEmpty()) {
+                sql += " AND ";
+                sql += DBUtil.getInConditionPreparedStatement("sagyoubasyo", kensaBasyoDataList.size());
+            }
+            sql += "ORDER BY KAISINICHIJI";
             
             // パラメータ設定
             List<Object> params = createSearchParam();
@@ -899,6 +983,8 @@ public class GXHDO201B010 implements Serializable {
      */
     private List<Object> createSearchParam() {
         // パラメータ設定
+        //検査場所データリスト
+        List<String> kensaBasyoDataList= null;
         String paramKojo = null;
         String paramLotNo = null;
         String paramEdaban = null;
@@ -943,6 +1029,23 @@ public class GXHDO201B010 implements Serializable {
         params.addAll(Arrays.asList(paramEndDateF, paramEndDateF));
         params.addAll(Arrays.asList(paramEndDateT, paramEndDateT));
         params.addAll(Arrays.asList(paramGoki, paramGoki));
+        if (!StringUtil.isEmpty(kensaBasyo) && !"ALL".equals(kensaBasyo)) {
+            kensaBasyoDataList = new ArrayList<>();
+            kensaBasyoDataList.add(kensaBasyo);
+        } else {
+            boolean jyokenAdd = false;
+            for (String data : kensabasyoData) {
+                if (!StringUtil.isEmpty(data) && !"ALL".equals(data)) {
+                    jyokenAdd = true;
+                }
+            }
+            if (jyokenAdd) {
+                kensaBasyoDataList = new ArrayList<>(Arrays.asList(kensabasyoData));
+            }
+        }
+        if (kensaBasyoDataList !=null && !kensaBasyoDataList.isEmpty()) {
+            params.addAll(kensaBasyoDataList);
+        }
 
         return params;
     }
@@ -990,4 +1093,70 @@ public class GXHDO201B010 implements Serializable {
             }
         }
     }
+
+    /**
+     * [ﾊﾟﾗﾒｰﾀﾏｽﾀ]から、ﾃﾞｰﾀを取得
+     *
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @return 取得データ
+     */
+    private Map loadFxhbm03Data(List<String> userGrpList) {
+        try {
+            QueryRunner queryRunner = new QueryRunner(dataSourceDocServer);
+            // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+            String sql = "SELECT data "
+                    + " FROM fxhbm03 WHERE ";
+            sql = sql + DBUtil.getInConditionPreparedStatement("user_name", userGrpList.size());
+            sql = sql + " AND key = '押切ｶｯﾄ履歴_表示可能ﾃﾞｰﾀ'";
+
+            DBUtil.outputSQLLog(sql, userGrpList.toArray(), LOGGER);
+            return queryRunner.query(sql, new MapHandler(), userGrpList.toArray());
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+        }
+        return null;
+    }
+    
+    /**
+     * Mapから値を取得する(マップがNULLまたは空の場合はNULLを返却)
+     *
+     * @param map マップ
+     * @param mapId ID
+     * @return マップから取得した値
+     */
+    private Object getMapData(Map map, String mapId) {
+        if (map == null || map.isEmpty()) {
+            return null;
+        }
+        return map.get(mapId);
+    }
+    /**
+     * 設定エラー
+     */
+    private void settingError() {
+        List<String> messageList = new ArrayList<>();
+        messageList.add(MessageUtil.getMessage("XHD-000087"));
+        displayStyle = "display:none;";
+        InitMessage beanInitMessage = (InitMessage) SubFormUtil.getSubFormBean(SubFormUtil.FORM_ID_INIT_MESSAGE);
+        beanInitMessage.setInitMessageList(messageList);
+        RequestContext.getCurrentInstance().execute("PF('W_dlg_initMessage').show();");
+    }
+    /**
+     * メインデータの件数を保持
+     *
+     * @return the displayStyle
+     */
+    public String getDisplayStyle() {
+        return displayStyle;
+    }
+
+    /**
+     * メインデータの件数を保持
+     *
+     * @param displayStyle the displayStyle to set
+     */
+    public void setDisplayStyle(String displayStyle) {
+        this.displayStyle = displayStyle;
+    }
+
 }

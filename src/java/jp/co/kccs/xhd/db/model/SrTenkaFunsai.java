@@ -94,6 +94,22 @@ public class SrTenkaFunsai {
      * ﾐﾙ周波数
      */
     private Integer millsyuuhasuu;
+    
+    /**
+     * スクリーン
+     */
+    private Integer screen;
+    
+    /**
+     * メディア径
+     */
+    private Integer mediakei;
+    
+    /**
+     * 玉石重量
+     */
+    private Integer tamaisijuryo;
+   
 
     /**
      * 周速
@@ -129,6 +145,11 @@ public class SrTenkaFunsai {
      * ﾊﾟｽ回数
      */
     private Integer passkaisuu_sf1;
+    
+    /**
+     * ﾊﾟｽ回数
+     */
+    private Integer passkaisuuinput_sf1;
 
     /**
      * 開始日時
@@ -143,17 +164,17 @@ public class SrTenkaFunsai {
     /**
      * 負荷電流値
      */
-    private Integer fukadenryuuti_sf1;
+    private BigDecimal fukadenryuuti_sf1;
 
     /**
      * 製品温度
      */
-    private Integer seihinondo_sf1;
+    private BigDecimal seihinondo_sf1;
 
     /**
      * ｼｰﾙ温度
      */
-    private Integer stickerondo_sf1;
+    private BigDecimal stickerondo_sf1;
 
     /**
      * ﾎﾟﾝﾌﾟ目盛
@@ -169,6 +190,16 @@ public class SrTenkaFunsai {
      * 流量
      */
     private BigDecimal ryuuryou_sf1;
+    
+    /**
+     * 粉砕担当者
+     */
+    private String funsaitantousya_sf1;
+    
+    /**
+     * 粉砕確認者
+     */
+    private String funsaikakuninsya_sf1;
 
     /**
      * 備考1
@@ -214,6 +245,11 @@ public class SrTenkaFunsai {
      * ﾊﾟｽ回数
      */
     private Integer passkaisuu_sf2;
+    
+    /**
+     * ﾊﾟｽ回数
+     */
+    private Integer passkaisuuinput_sf2;
 
     /**
      * 開始日時
@@ -228,17 +264,17 @@ public class SrTenkaFunsai {
     /**
      * 負荷電流値
      */
-    private Integer fukadenryuuti_sf2;
+    private BigDecimal fukadenryuuti_sf2;
 
     /**
      * 製品温度
      */
-    private Integer seihinondo_sf2;
+    private BigDecimal seihinondo_sf2;
 
     /**
      * ｼｰﾙ温度
      */
-    private Integer stickerondo_sf2;
+    private BigDecimal stickerondo_sf2;
 
     /**
      * ﾎﾟﾝﾌﾟ目盛
@@ -618,6 +654,55 @@ public class SrTenkaFunsai {
     public void setMillsyuuhasuu(Integer millsyuuhasuu) {
         this.millsyuuhasuu = millsyuuhasuu;
     }
+    
+    /**
+     * スクリーン
+     * @return the screen
+     */
+    public Integer getScreen() {
+        return screen;
+    }
+
+    /**
+     * スクリーン
+     * @param screen the screen to set
+     */
+    public void setScreen(Integer screen) {
+        this.screen = screen;
+    }
+    
+    /**
+     * メディア径
+     * @return the mediakei
+     */
+    public Integer getMediakei() {
+        return mediakei;
+    }
+
+    /**
+     * メディア径
+     * @param mediakei the mediakei to set
+     */
+    public void setMediakei(Integer mediakei) {
+        this.mediakei = mediakei;
+    }
+    
+    /**
+     * 玉石重量
+     * @return the tamaisijuryo
+     */
+    public Integer getTamaisijuryo() {
+        return tamaisijuryo;
+    }
+
+    /**
+     * 玉石重量
+     * @param tamaisijuryo the tamaisijuryo to set
+     */
+    public void setTamaisijuryo(Integer tamaisijuryo) {
+        this.tamaisijuryo = tamaisijuryo;
+    }
+    
 
     /**
      * 周速
@@ -730,6 +815,23 @@ public class SrTenkaFunsai {
     public void setPasskaisuu_sf1(Integer passkaisuu_sf1) {
         this.passkaisuu_sf1 = passkaisuu_sf1;
     }
+    
+    /**
+     * ﾊﾟｽ回数
+     * @return the passkaisuuinput_sf1
+     */
+    public Integer getPasskaisuuinput_sf1() {
+        return passkaisuuinput_sf1;
+    }
+
+    /**
+     * ﾊﾟｽ回数
+     * @param passkaisuuinput_sf1 the passkaisuuinput_sf1 to set
+     */
+    public void setPasskaisuuinput_sf1(Integer passkaisuuinput_sf1) {
+        this.passkaisuuinput_sf1 = passkaisuuinput_sf1;
+    }
+
 
     /**
      * 開始日時
@@ -767,7 +869,7 @@ public class SrTenkaFunsai {
      * 負荷電流値
      * @return the fukadenryuuti_sf1
      */
-    public Integer getFukadenryuuti_sf1() {
+    public BigDecimal getFukadenryuuti_sf1() {
         return fukadenryuuti_sf1;
     }
 
@@ -775,7 +877,7 @@ public class SrTenkaFunsai {
      * 負荷電流値
      * @param fukadenryuuti_sf1 the fukadenryuuti_sf1 to set
      */
-    public void setFukadenryuuti_sf1(Integer fukadenryuuti_sf1) {
+    public void setFukadenryuuti_sf1(BigDecimal fukadenryuuti_sf1) {
         this.fukadenryuuti_sf1 = fukadenryuuti_sf1;
     }
 
@@ -783,7 +885,7 @@ public class SrTenkaFunsai {
      * 製品温度
      * @return the seihinondo_sf1
      */
-    public Integer getSeihinondo_sf1() {
+    public BigDecimal getSeihinondo_sf1() {
         return seihinondo_sf1;
     }
 
@@ -791,7 +893,7 @@ public class SrTenkaFunsai {
      * 製品温度
      * @param seihinondo_sf1 the seihinondo_sf1 to set
      */
-    public void setSeihinondo_sf1(Integer seihinondo_sf1) {
+    public void setSeihinondo_sf1(BigDecimal seihinondo_sf1) {
         this.seihinondo_sf1 = seihinondo_sf1;
     }
 
@@ -799,7 +901,7 @@ public class SrTenkaFunsai {
      * ｼｰﾙ温度
      * @return the stickerondo_sf1
      */
-    public Integer getStickerondo_sf1() {
+    public BigDecimal getStickerondo_sf1() {
         return stickerondo_sf1;
     }
 
@@ -807,7 +909,7 @@ public class SrTenkaFunsai {
      * ｼｰﾙ温度
      * @param stickerondo_sf1 the stickerondo_sf1 to set
      */
-    public void setStickerondo_sf1(Integer stickerondo_sf1) {
+    public void setStickerondo_sf1(BigDecimal stickerondo_sf1) {
         this.stickerondo_sf1 = stickerondo_sf1;
     }
 
@@ -857,6 +959,38 @@ public class SrTenkaFunsai {
      */
     public void setRyuuryou_sf1(BigDecimal ryuuryou_sf1) {
         this.ryuuryou_sf1 = ryuuryou_sf1;
+    }
+    
+    /**
+     * 粉砕担当者
+     * @return the funsaitantousya_sf1
+     */
+    public String getFunsaitantousya_sf1() {
+        return funsaitantousya_sf1;
+    }
+
+    /**
+     * 粉砕担当者
+     * @param funsaitantousya_sf1 the funsaitantousya_sf1 to set
+     */
+    public void setFunsaitantousya_sf1(String funsaitantousya_sf1) {
+        this.funsaitantousya_sf1 = funsaitantousya_sf1;
+    }
+    
+    /**
+     * 粉砕確認者
+     * @return the funsaikakuninsya_sf1
+     */
+    public String getFunsaikakuninsya_sf1() {
+        return funsaikakuninsya_sf1;
+    }
+
+    /**
+     * 粉砕確認者
+     * @param funsaikakuninsya_sf1 the funsaikakuninsya_sf1 to set
+     */
+    public void setFunsaikakuninsya_sf1(String funsaikakuninsya_sf1) {
+        this.funsaikakuninsya_sf1 = funsaikakuninsya_sf1;
     }
 
     /**
@@ -1002,6 +1136,22 @@ public class SrTenkaFunsai {
     public void setPasskaisuu_sf2(Integer passkaisuu_sf2) {
         this.passkaisuu_sf2 = passkaisuu_sf2;
     }
+    
+    /**
+     * ﾊﾟｽ回数
+     * @return the passkaisuuinput_sf2
+     */
+    public Integer getPasskaisuuinput_sf2() {
+        return passkaisuuinput_sf2;
+    }
+
+    /**
+     * ﾊﾟｽ回数
+     * @param passkaisuuinput_sf2 the passkaisuuinput_sf2 to set
+     */
+    public void setPasskaisuuinput_sf2(Integer passkaisuuinput_sf2) {
+        this.passkaisuuinput_sf2 = passkaisuuinput_sf2;
+    }
 
     /**
      * 開始日時
@@ -1039,7 +1189,7 @@ public class SrTenkaFunsai {
      * 負荷電流値
      * @return the fukadenryuuti_sf2
      */
-    public Integer getFukadenryuuti_sf2() {
+    public BigDecimal getFukadenryuuti_sf2() {
         return fukadenryuuti_sf2;
     }
 
@@ -1047,7 +1197,7 @@ public class SrTenkaFunsai {
      * 負荷電流値
      * @param fukadenryuuti_sf2 the fukadenryuuti_sf2 to set
      */
-    public void setFukadenryuuti_sf2(Integer fukadenryuuti_sf2) {
+    public void setFukadenryuuti_sf2(BigDecimal fukadenryuuti_sf2) {
         this.fukadenryuuti_sf2 = fukadenryuuti_sf2;
     }
 
@@ -1055,7 +1205,7 @@ public class SrTenkaFunsai {
      * 製品温度
      * @return the seihinondo_sf2
      */
-    public Integer getSeihinondo_sf2() {
+    public BigDecimal getSeihinondo_sf2() {
         return seihinondo_sf2;
     }
 
@@ -1063,7 +1213,7 @@ public class SrTenkaFunsai {
      * 製品温度
      * @param seihinondo_sf2 the seihinondo_sf2 to set
      */
-    public void setSeihinondo_sf2(Integer seihinondo_sf2) {
+    public void setSeihinondo_sf2(BigDecimal seihinondo_sf2) {
         this.seihinondo_sf2 = seihinondo_sf2;
     }
 
@@ -1071,7 +1221,7 @@ public class SrTenkaFunsai {
      * ｼｰﾙ温度
      * @return the stickerondo_sf2
      */
-    public Integer getStickerondo_sf2() {
+    public BigDecimal getStickerondo_sf2() {
         return stickerondo_sf2;
     }
 
@@ -1079,7 +1229,7 @@ public class SrTenkaFunsai {
      * ｼｰﾙ温度
      * @param stickerondo_sf2 the stickerondo_sf2 to set
      */
-    public void setStickerondo_sf2(Integer stickerondo_sf2) {
+    public void setStickerondo_sf2(BigDecimal stickerondo_sf2) {
         this.stickerondo_sf2 = stickerondo_sf2;
     }
 

@@ -21,7 +21,6 @@ import java.util.stream.Collectors;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpSession;
-import jp.co.kccs.xhd.common.ErrorListMessage;
 import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.db.model.FXHDD01;
@@ -53,7 +52,6 @@ import org.apache.commons.dbutils.RowProcessor;
 import org.apache.commons.dbutils.handlers.BeanListHandler;
 import org.apache.commons.dbutils.handlers.MapHandler;
 import org.apache.commons.dbutils.handlers.MapListHandler;
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * ===============================================================================<br>
@@ -84,21 +82,6 @@ import org.apache.commons.lang3.StringUtils;
  * 計画書No	MB2008-DK001<br>
  * 変更者	863 zhangjy<br>
  * 変更理由	前工程WIPボタンロジックを追加<br>
- * <br>
- * 変更日	2020/11/20<br>
- * 計画書No	MB2008-DK001<br>
- * 変更者	863 zhangjy<br>
- * 変更理由	フロー用仮登録の関連処理を追加<br>
- * <br>
- * 変更日       2022/03/09<br>
- * 計画書No     MB2202-D013<br>
- * 変更者       KCSS WXF<br>
- * 変更理由     仕様変更対応<br>
- * <br>
- * 変更日	2022/06/14<br>
- * 計画書No	MB2205-D010<br>
- * 変更者	KCSS K.Jo<br>
- * 変更理由	画面表示項目を追加<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -702,7 +685,11 @@ public class GXHDO101B003 implements IFormLogic {
             DbUtils.commitAndCloseQuietly(conQcdb);
 
             // 後続処理メソッド設定
-            processData.setMethod("doPMLA0212");
+            processData.setMethod("");
+
+            // 完了メッセージとコールバックパラメータを設定
+            processData.setCompMessage("登録しました。");
+            processData.setCollBackParam("complete");
 
             return processData;
         } catch (SQLException e) {
@@ -721,108 +708,6 @@ public class GXHDO101B003 implements IFormLogic {
         }
 
         return processData;
-    }
-    
-    /**
-     * 部材在庫の重量ﾃﾞｰﾀ連携
-     *
-     * @param processData 処理制御データ
-     * @return 処理制御データ
-     */
-    public ProcessData doPMLA0212(ProcessData processData) {
-        // セッションから情報を取得
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        HttpSession session = (HttpSession) externalContext.getSession(false);
-        String tantoshaCd = StringUtil.nullToBlank(session.getAttribute("tantoshaCd"));
-        // 部材在庫の重量ﾃﾞｰﾀ連携
-        String responseResult = doPMLA0212Save(processData, tantoshaCd);
-        if (!"ok".equals(responseResult)) {
-            return processData;
-        }
-        // 後続処理メソッド設定
-        processData.setMethod("");
-        // 完了メッセージとコールバックパラメータを設定
-        processData.setCompMessage("登録しました。");
-        processData.setCollBackParam("complete");
-        return processData;
-    }
-
-    /**
-     * 部材在庫の重量ﾃﾞｰﾀ連携
-     *
-     * @param processData 処理制御データ
-     * @param tantoshaCd 更新者
-     * @return レスポンスデータ
-     */
-    private String doPMLA0212Save(ProcessData processData, String tantoshaCd) {
-        ArrayList<String> errorItemList = new ArrayList<>();
-        // 製版ﾛｯﾄNoに値が入っている場合、以下の内容を元にAPIを呼び出す
-        doCallPmla0212Api(processData, tantoshaCd, errorItemList);
-        // 上記の処理でｴﾗｰが発生した場合、画面にエラーダイアログを出力する。
-        if (!errorItemList.isEmpty()) {
-            ErrorListMessage errorListMessageList = new ErrorListMessage();
-            errorListMessageList.setResultMessage(MessageUtil.getMessage("buzailotnoErrorList"));
-            errorListMessageList.setResultMessageList(errorItemList);
-            errorListMessageList.setTitleMessage(MessageUtil.getMessage("infoMsg"));
-            processData.setErrorListMessage(errorListMessageList);
-            return "error";
-        }
-        return "ok";
-    }
-
-    /**
-     * 部材在庫管理を参照【PMLA0212_部材在庫ﾃﾞｰﾀ更新】
-     *
-     * @param processData 処理制御データ
-     * @param tantoshaCd 更新者
-     * @param errorItemList エラー情報
-     * @return レスポンスデータ
-     */
-    private void doCallPmla0212Api(ProcessData processData, String tantoshaCd, ArrayList<String> errorItemList) {
-
-        // 製版ﾛｯﾄNoに値が入っている場合、以下の内容を元にAPIを呼び出す
-        FXHDD01 itemSeihanNo = getItemRow(processData.getItemList(), GXHDO101B003Const.SEIHAN_OR_HANDOU_NO);
-        if (itemSeihanNo == null || StringUtil.isEmpty(itemSeihanNo.getValue())) {
-            return;
-        }
-        // 製版ﾛｯﾄNo
-        String seihanNoValue = StringUtil.blankToNull(itemSeihanNo.getValue());
-        // ﾛｯﾄNo
-        FXHDD01 itemFxhdd01Lotno = getItemRow(processData.getItemList(), GXHDO101B003Const.LOTNO);
-        String lotnoValue = null;
-        if (itemFxhdd01Lotno != null) {
-            // ﾛｯﾄNoの値
-            lotnoValue = StringUtil.blankToNull(itemFxhdd01Lotno.getValue());
-        }
-        // 製版使用枚数
-        FXHDD01 itemSeihanShiyouMaisuu = getItemRow(processData.getItemList(), GXHDO101B003Const.SEIHAN_OR_HANDOU_SHIYOU_MAISUU);
-        String seihanShiyouMaisuuValue = null;
-        if (itemSeihanShiyouMaisuu != null) {
-            // 製版使用枚数の値
-            seihanShiyouMaisuuValue = StringUtil.blankToNull(itemSeihanShiyouMaisuu.getValue());
-            
-        }
-        ArrayList<String> paramsList = new ArrayList<>();
-        paramsList.add(seihanNoValue);
-        paramsList.add(tantoshaCd);
-        paramsList.add("GXHDO101B003");
-        paramsList.add(null);
-        paramsList.add(null);
-        paramsList.add(seihanShiyouMaisuuValue);
-        paramsList.add(null);
-        paramsList.add(lotnoValue);
-
-        try {
-            QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
-            // 「/api/PMLA0212/doSave」APIを呼び出す
-            String responseResult = CommonUtil.doRequestPmla0212Save(queryRunnerDoc, paramsList);
-            if (!"ok".equals(responseResult)) {
-                errorItemList.add(seihanNoValue);
-            }
-        } catch (Exception ex) {
-            ErrUtil.outputErrorLog(itemSeihanNo.getLabel1() + "のﾃﾞｰﾀ連携処理エラー発生", ex, LOGGER);
-            errorItemList.add(seihanNoValue);
-        }
     }
 
     /**
@@ -1122,15 +1007,13 @@ public class GXHDO101B003 implements IFormLogic {
                         GXHDO101B003Const.BTN_UPDATE_BUTTOM,
                         GXHDO101B003Const.BTN_STARTDATETIME_BUTTOM,
                         GXHDO101B003Const.BTN_ENDDATETIME_BUTTOM,
-                        GXHDO101B003Const.BTN_BUZAIZAIKOJYOHO_BOTTOM,
                         GXHDO101B003Const.BTN_COPY_EDABAN_TOP,
                         GXHDO101B003Const.BTN_MAKUATSU_SUB_GAMEN_TOP,
                         GXHDO101B003Const.BTN_INSATSUHABA_SUB_GAMEN_TOP,
                         GXHDO101B003Const.BTN_DELETE_TOP,
                         GXHDO101B003Const.BTN_UPDATE_TOP,
                         GXHDO101B003Const.BTN_STARTDATETIME_TOP,
-                        GXHDO101B003Const.BTN_ENDDATETIME_TOP,
-                        GXHDO101B003Const.BTN_BUZAIZAIKOJYOHO_TOP
+                        GXHDO101B003Const.BTN_ENDDATETIME_TOP
                 ));
                 inactiveIdList.addAll(Arrays.asList(GXHDO101B003Const.BTN_KARI_TOUROKU_BUTTOM,
                         GXHDO101B003Const.BTN_INSERT_BUTTOM,
@@ -1146,15 +1029,13 @@ public class GXHDO101B003 implements IFormLogic {
                         GXHDO101B003Const.BTN_INSERT_BUTTOM,
                         GXHDO101B003Const.BTN_STARTDATETIME_BUTTOM,
                         GXHDO101B003Const.BTN_ENDDATETIME_BUTTOM,
-                        GXHDO101B003Const.BTN_BUZAIZAIKOJYOHO_BOTTOM,
                         GXHDO101B003Const.BTN_KARI_TOUROKU_TOP,
                         GXHDO101B003Const.BTN_COPY_EDABAN_TOP,
                         GXHDO101B003Const.BTN_MAKUATSU_SUB_GAMEN_TOP,
                         GXHDO101B003Const.BTN_INSATSUHABA_SUB_GAMEN_TOP,
                         GXHDO101B003Const.BTN_INSERT_TOP,
                         GXHDO101B003Const.BTN_STARTDATETIME_TOP,
-                        GXHDO101B003Const.BTN_ENDDATETIME_TOP,
-                        GXHDO101B003Const.BTN_BUZAIZAIKOJYOHO_TOP
+                        GXHDO101B003Const.BTN_ENDDATETIME_TOP
                 ));
 
                 inactiveIdList.addAll(Arrays.asList(GXHDO101B003Const.BTN_DELETE_BUTTOM,
@@ -1231,11 +1112,6 @@ public class GXHDO101B003 implements IFormLogic {
             case GXHDO101B003Const.BTN_WIP_IMPORT_TOP:
             case GXHDO101B003Const.BTN_WIP_IMPORT_BOTTOM:
                 method = "openWipImport";
-                break;
-            // 部材在庫情報
-            case GXHDO101B003Const.BTN_BUZAIZAIKOJYOHO_TOP:
-            case GXHDO101B003Const.BTN_BUZAIZAIKOJYOHO_BOTTOM:
-                method = "doBuzaizaikojyohoSyori";
                 break;
             default:
                 method = "error";
@@ -1548,10 +1424,6 @@ public class GXHDO101B003 implements IFormLogic {
         this.setItemData(processData, GXHDO101B003Const.SEIHAN_OR_HANDOU_NO, getSrRsusprnItemData(GXHDO101B003Const.SEIHAN_OR_HANDOU_NO, srRsusprnData));
         // 製版使用枚数
         this.setItemData(processData, GXHDO101B003Const.SEIHAN_OR_HANDOU_SHIYOU_MAISUU, getSrRsusprnItemData(GXHDO101B003Const.SEIHAN_OR_HANDOU_SHIYOU_MAISUU, srRsusprnData));
-        // 最大処理数
-        this.setItemData(processData, GXHDO101B003Const.SAIDAISYORISUU, getSrRsusprnItemData(GXHDO101B003Const.SAIDAISYORISUU, srRsusprnData));
-        // 累計処理数
-        this.setItemData(processData, GXHDO101B003Const.RUIKEISYORISUU, getSrRsusprnItemData(GXHDO101B003Const.RUIKEISYORISUU, srRsusprnData));
         // ｽｷｰｼﾞNo
         this.setItemData(processData, GXHDO101B003Const.SQUEEGEE_OR_ATSUDOU_NO, getSrRsusprnItemData(GXHDO101B003Const.SQUEEGEE_OR_ATSUDOU_NO, srRsusprnData));
         // 印刷開始日
@@ -1606,18 +1478,6 @@ public class GXHDO101B003 implements IFormLogic {
         this.setItemData(processData, GXHDO101B003Const.STARTITIKAKUNIN, getSrRsusprnItemData(GXHDO101B003Const.STARTITIKAKUNIN, srRsusprnData));
         //印刷ｽﾀｰﾄ確認者
         this.setItemData(processData, GXHDO101B003Const.INSATSU_STARTJI_KAKUNINSYA, getSrRsusprnItemData(GXHDO101B003Const.INSATSU_STARTJI_KAKUNINSYA, srRsusprnData));
-        // 先行ﾛｯﾄNo
-        this.setItemData(processData, GXHDO101B003Const.SENKOULOTNO, getSrRsusprnItemData(GXHDO101B003Const.SENKOULOTNO, srRsusprnData));
-        // ﾃｰﾌﾟ使い切り
-        this.setItemData(processData, GXHDO101B003Const.TAPETSUKAIKIRI, getSrRsusprnItemData(GXHDO101B003Const.TAPETSUKAIKIRI, srRsusprnData));
-        // 次ﾛｯﾄへ
-        this.setItemData(processData, GXHDO101B003Const.JILOTHE, getSrRsusprnItemData(GXHDO101B003Const.JILOTHE, srRsusprnData));
-        // 備考3
-        this.setItemData(processData, GXHDO101B003Const.BIKOU3, getSrRsusprnItemData(GXHDO101B003Const.BIKOU3, srRsusprnData));
-        // 備考4
-        this.setItemData(processData, GXHDO101B003Const.BIKOU4, getSrRsusprnItemData(GXHDO101B003Const.BIKOU4, srRsusprnData));
-        // 備考5
-        this.setItemData(processData, GXHDO101B003Const.BIKOU5, getSrRsusprnItemData(GXHDO101B003Const.BIKOU5, srRsusprnData));
         
     }
 
@@ -1950,13 +1810,13 @@ public class GXHDO101B003 implements IFormLogic {
 
         String sql = "SELECT KOJYO,LOTNO,EDABAN,KCPNO,TAPESYURUI,TAPELOTNO,TapeSlipKigo,GENRYOKIGO,KAISINICHIJI,"
                 + "SYURYONICHIJI,GOKI,SKEEGENO,SKEEGEMAISUU,SKEEGESPEED,KANSOONDO,CLEARANCE,SAATU,MAKUATU1,"
-                + "SEIHANNO,SEIHANMAISUU,saidaisyorisuu,ruikeisyorisuu,PASTELOTNO,PASTENENDO,PASTEONDO,INSATUROLLNO,INSATUROLLNO2,INSATUROLLNO3,"
+                + "SEIHANNO,SEIHANMAISUU,PASTELOTNO,PASTENENDO,PASTEONDO,INSATUROLLNO,INSATUROLLNO2,INSATUROLLNO3,"
                 + "INSATUROLLNO4,INSATUROLLNO5,INSATUHABASAVE,INSATUHABAEAVE,MLD,BIKO1,BIKO2,TOROKUNICHIJI,KOSINNICHIJI,TANTOSYA,pkokeibun1,"
                 + "pastelotno2,pastenendo2,pasteondo2,pkokeibun2,petfilmsyurui,kansoondo2,kansoondo3,kansoondo4,"
                 + "kansoondo5,seihanmei,makuatsu_ave_start,makuatsu_max_start,makuatsu_min_start,makuatucv_start,"
                 + "nijimikasure_start,nijimikasure_end,tanto_end,printmaisuu,kansouroatsu,printhaba,table_clearrance,"
                 + "tokuisaki,lotkubuncode,ownercode,seikeinagasa,genryou,eatumi,epaste,pattern,scraperspeed,startitikakunin,"
-                + "kakuninsya,CONCAT(skojyo , slotno , sedaban) senkoulotno,tapetsukaikiri,jilothe,bikou3,bikou4,bikou5,revision,0 AS deleteflag "
+                + "kakuninsya,revision,0 AS deleteflag "
                 + "FROM sr_rsusprn "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
         // revisionが入っている場合、条件に追加
@@ -1995,8 +1855,6 @@ public class GXHDO101B003 implements IFormLogic {
         mapping.put("MAKUATU1", "makuatu1"); //膜厚1
         mapping.put("SEIHANNO", "seihanno"); //製版No
         mapping.put("SEIHANMAISUU", "seihanmaisuu"); //製版枚数
-        mapping.put("saidaisyorisuu", "saidaisyorisuu"); //最大処理数
-        mapping.put("ruikeisyorisuu", "ruikeisyorisuu"); //累計処理数
         mapping.put("PASTELOTNO", "pastelotno"); //ﾍﾟｰｽﾄﾛｯﾄNo
         mapping.put("PASTENENDO", "pastenendo"); //ﾍﾟｰｽﾄ粘度
         mapping.put("PASTEONDO", "pasteondo"); //ﾍﾟｰｽﾄ温度
@@ -2046,12 +1904,6 @@ public class GXHDO101B003 implements IFormLogic {
         mapping.put("scraperspeed", "scraperspeed"); //ｽｸﾚｯﾊﾟｰ速度
         mapping.put("startitikakunin", "startitikakunin"); //印刷位置確認
         mapping.put("kakuninsya", "kakuninsya"); //印刷ｽﾀｰﾄ確認者
-        mapping.put("senkoulotno", "senkoulotno"); // 先行ﾛｯﾄNo
-        mapping.put("tapetsukaikiri", "tapetsukaikiri"); // ﾃｰﾌﾟ使い切り
-        mapping.put("jilothe", "jilothe"); // 次ﾛｯﾄへ
-        mapping.put("bikou3", "bikou3"); //備考3
-        mapping.put("bikou4", "bikou4"); //備考4
-        mapping.put("bikou5", "bikou5"); //備考5
         mapping.put("revision", "revision"); //revision
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
 
@@ -2137,13 +1989,13 @@ public class GXHDO101B003 implements IFormLogic {
             String edaban, String rev) throws SQLException {
         String sql = "SELECT KOJYO,LOTNO,EDABAN,KCPNO,TAPESYURUI,TAPELOTNO,TapeSlipKigo,GENRYOKIGO,KAISINICHIJI,"
                 + "SYURYONICHIJI,GOKI,SKEEGENO,SKEEGEMAISUU,SKEEGESPEED,KANSOONDO,CLEARANCE,SAATU,MAKUATU1,"
-                + "SEIHANNO,SEIHANMAISUU,saidaisyorisuu,ruikeisyorisuu,PASTELOTNO,PASTENENDO,PASTEONDO,INSATUROLLNO,INSATUROLLNO2,INSATUROLLNO3,"
+                + "SEIHANNO,SEIHANMAISUU,PASTELOTNO,PASTENENDO,PASTEONDO,INSATUROLLNO,INSATUROLLNO2,INSATUROLLNO3,"
                 + "INSATUROLLNO4,INSATUROLLNO5,INSATUHABASAVE,INSATUHABAEAVE,MLD,BIKO1,BIKO2,TOROKUNICHIJI,KOSINNICHIJI,TANTOSYA,pkokeibun1,"
                 + "pastelotno2,pastenendo2,pasteondo2,pkokeibun2,petfilmsyurui,kansoondo2,kansoondo3,kansoondo4,"
                 + "kansoondo5,seihanmei,makuatsu_ave_start,makuatsu_max_start,makuatsu_min_start,makuatucv_start,"
                 + "nijimikasure_start,nijimikasure_end,tanto_end,printmaisuu,kansouroatsu,printhaba,table_clearrance,"
                 + "tokuisaki,lotkubuncode,ownercode,seikeinagasa,genryou,eatumi,epaste,pattern,scraperspeed,startitikakunin,"
-                + "kakuninsya,CONCAT(skojyo , slotno , sedaban) senkoulotno,tapetsukaikiri,jilothe,bikou3,bikou4,bikou5,revision,deleteflag "
+                + "kakuninsya,revision,deleteflag "
                 + "FROM tmp_sr_rsusprn "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? AND deleteflag = ? ";
         // revisionが入っている場合、条件に追加
@@ -2183,8 +2035,6 @@ public class GXHDO101B003 implements IFormLogic {
         mapping.put("MAKUATU1", "makuatu1"); //膜厚1
         mapping.put("SEIHANNO", "seihanno"); //製版No
         mapping.put("SEIHANMAISUU", "seihanmaisuu"); //製版枚数
-        mapping.put("saidaisyorisuu", "saidaisyorisuu"); //最大処理数
-        mapping.put("ruikeisyorisuu", "ruikeisyorisuu"); //累計処理数
         mapping.put("PASTELOTNO", "pastelotno"); //ﾍﾟｰｽﾄﾛｯﾄNo
         mapping.put("PASTENENDO", "pastenendo"); //ﾍﾟｰｽﾄ粘度
         mapping.put("PASTEONDO", "pasteondo"); //ﾍﾟｰｽﾄ温度
@@ -2234,12 +2084,6 @@ public class GXHDO101B003 implements IFormLogic {
         mapping.put("scraperspeed", "scraperspeed"); //ｽｸﾚｯﾊﾟｰ速度
         mapping.put("startitikakunin", "startitikakunin"); //印刷位置確認
         mapping.put("kakuninsya", "kakuninsya"); //印刷ｽﾀｰﾄ確認者
-        mapping.put("senkoulotno", "senkoulotno"); // 先行ﾛｯﾄNo
-        mapping.put("tapetsukaikiri", "tapetsukaikiri"); // ﾃｰﾌﾟ使い切り
-        mapping.put("jilothe", "jilothe"); // 次ﾛｯﾄへ
-        mapping.put("bikou3", "bikou3"); //備考3
-        mapping.put("bikou4", "bikou4"); //備考4
-        mapping.put("bikou5", "bikou5"); //備考5
         mapping.put("revision", "revision"); //revision
         mapping.put("deleteflag", "deleteflag"); //削除ﾌﾗｸﾞ
 
@@ -2512,9 +2356,9 @@ public class GXHDO101B003 implements IFormLogic {
             String kojyo, String lotNo, String edaban, int jissekino, String jotaiFlg, Timestamp systemTime) throws SQLException {
         String sql = "INSERT INTO fxhdd03 ("
                 + "torokusha,toroku_date,koshinsha,koshin_date,gamen_id,rev,kojyo,lotno,"
-                + "edaban,jissekino,jotai_flg,tsuika_kotei_flg,tmp_kbn"
+                + "edaban,jissekino,jotai_flg,tsuika_kotei_flg"
                 + ") VALUES ("
-                + "?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?) ";
+                + "?, ?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ";
 
         List<Object> params = new ArrayList<>();
         params.add(tantoshaCd); //登録者
@@ -2529,11 +2373,6 @@ public class GXHDO101B003 implements IFormLogic {
         params.add(jissekino); //実績No
         params.add(jotaiFlg); //状態ﾌﾗｸﾞ
         params.add("0"); //追加工程ﾌﾗｸﾞ
-        if (JOTAI_FLG_KARI_TOROKU.equals(jotaiFlg)) {
-            params.add(null); //仮登録区分
-        } else {
-            params.add(99); //仮登録区分
-        }
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         queryRunnerDoc.update(conDoc, sql, params.toArray());
@@ -2556,24 +2395,12 @@ public class GXHDO101B003 implements IFormLogic {
     private void updateFxhdd03(QueryRunner queryRunnerDoc, Connection conDoc, String tantoshaCd, String formId, BigDecimal rev,
             String kojyo, String lotNo, String edaban, String jotaiFlg, Timestamp systemTime) throws SQLException {
 
-        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-        HttpSession session = (HttpSession) externalContext.getSession(false);
-        boolean isFlowButtonClik = Boolean.parseBoolean(StringUtil.nullToBlank(session.getAttribute("isFlowButtonClik")));
-        
         String sql = "UPDATE fxhdd03 SET "
                 + "koshinsha = ?, koshin_date = ?,"
                 + "rev = ?, jotai_flg = ? "
                 + "WHERE gamen_id = ? AND kojyo = ? "
                 + "  AND lotno = ? AND edaban = ? "
                 + "  AND jissekino = 1  ";
-        if (!JOTAI_FLG_KARI_TOROKU.equals(jotaiFlg) || isFlowButtonClik) {
-            sql = "UPDATE fxhdd03 SET "
-                + "koshinsha = ?, koshin_date = ?,"
-                + "rev = ?, jotai_flg = ?, tmp_kbn = ? " 
-                + "WHERE gamen_id = ? AND kojyo = ? "
-                + "  AND lotno = ? AND edaban = ? "
-                + "  AND jissekino = 1  ";
-        }
 
         List<Object> params = new ArrayList<>();
         // 更新内容
@@ -2581,15 +2408,6 @@ public class GXHDO101B003 implements IFormLogic {
         params.add(systemTime); //更新日
         params.add(rev); //revision
         params.add(jotaiFlg); //状態ﾌﾗｸﾞ
-        if (JOTAI_FLG_TOROKUZUMI.equals(jotaiFlg)) {
-            params.add(99); //仮登録区分
-        } else if (JOTAI_FLG_SAKUJO.equals(jotaiFlg)) {
-            params.add(0); //仮登録区分
-        } else {
-            if (isFlowButtonClik) {
-                params.add(getTmpKbn(queryRunnerDoc)); //仮登録区分
-            }
-        }
 
         // 検索条件
         params.add(formId); //画面ID
@@ -2619,16 +2437,15 @@ public class GXHDO101B003 implements IFormLogic {
             String kojyo, String lotNo, String edaban, Timestamp systemTime, ProcessData processData) throws SQLException {
         String sql = "INSERT INTO tmp_sr_rsusprn ("
                 + "KOJYO,LOTNO,EDABAN,KCPNO,TAPESYURUI,TAPELOTNO,TapeSlipKigo,GENRYOKIGO,KAISINICHIJI,SYURYONICHIJI,GOKI,SKEEGENO,"
-                + "SKEEGEMAISUU,SKEEGESPEED,KANSOONDO,CLEARANCE,SAATU,MAKUATU1,SEIHANNO,SEIHANMAISUU,saidaisyorisuu,ruikeisyorisuu,PASTELOTNO,PASTENENDO,PASTEONDO,"
+                + "SKEEGEMAISUU,SKEEGESPEED,KANSOONDO,CLEARANCE,SAATU,MAKUATU1,SEIHANNO,SEIHANMAISUU,PASTELOTNO,PASTENENDO,PASTEONDO,"
                 + "INSATUROLLNO,INSATUROLLNO2,INSATUROLLNO3,INSATUROLLNO4,INSATUROLLNO5,INSATUHABASAVE,INSATUHABAEAVE,MLD,BIKO1,BIKO2,TOROKUNICHIJI,KOSINNICHIJI,"
                 + "TANTOSYA,pkokeibun1,pastelotno2,pastenendo2,pasteondo2,pkokeibun2,petfilmsyurui,kansoondo2,kansoondo3,kansoondo4,"
                 + "kansoondo5,seihanmei,makuatsu_ave_start,makuatsu_max_start,makuatsu_min_start,makuatucv_start,nijimikasure_start,"
                 + "nijimikasure_end,tanto_end,printmaisuu,kansouroatsu,printhaba,table_clearrance,tokuisaki,lotkubuncode,ownercode,"
-                + "seikeinagasa,genryou,eatumi,epaste,pattern,scraperspeed,startitikakunin,kakuninsya,skojyo,slotno,sedaban,tapetsukaikiri,"
-                + "jilothe,bikou3,bikou4,bikou5,revision,deleteflag "
+                + "seikeinagasa,genryou,eatumi,epaste,pattern,scraperspeed,startitikakunin,kakuninsya,revision,deleteflag "
                 + ") VALUES ("
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
-                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+                + ",?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         List<Object> params = setUpdateParameterTmpSrRsusprn(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, processData, null);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -2654,14 +2471,13 @@ public class GXHDO101B003 implements IFormLogic {
             String kojyo, String lotNo, String edaban, Timestamp systemTime, ProcessData processData) throws SQLException {
         String sql = "UPDATE tmp_sr_rsusprn SET "
                 + "KCPNO = ?,TAPELOTNO = ?,GENRYOKIGO = ?,KAISINICHIJI = ?,SYURYONICHIJI = ?,"
-                + "GOKI = ?,SKEEGENO = ?,SKEEGEMAISUU = ?,SKEEGESPEED = ?,KANSOONDO = ?,SAATU = ?,SEIHANNO = ?,SEIHANMAISUU = ?,saidaisyorisuu = ?,ruikeisyorisuu = ?,PASTELOTNO = ?,PASTENENDO = ?,PASTEONDO = ?,"
+                + "GOKI = ?,SKEEGENO = ?,SKEEGEMAISUU = ?,SKEEGESPEED = ?,KANSOONDO = ?,SAATU = ?,SEIHANNO = ?,SEIHANMAISUU = ?,PASTELOTNO = ?,PASTENENDO = ?,PASTEONDO = ?,"
                 + "INSATUROLLNO = ?,INSATUROLLNO2 = ?,INSATUROLLNO3 = ?,MLD = ?,BIKO1 = ?,BIKO2 = ?,KOSINNICHIJI = ?,TANTOSYA = ?,pkokeibun1 = ?,"
                 + "pastelotno2 = ?,pastenendo2 = ?,pasteondo2 = ?,pkokeibun2 = ?,petfilmsyurui = ?,kansoondo2 = ?,kansoondo3 = ?,"
                 + "kansoondo4 = ?,kansoondo5 = ?,seihanmei = ?,makuatsu_ave_start = ?,makuatsu_max_start = ?,makuatsu_min_start = ?,"
                 + "makuatucv_start = ?,nijimikasure_start = ?,nijimikasure_end = ?,tanto_end = ?,printmaisuu = ?,kansouroatsu = ?,"
                 + "printhaba = ?,table_clearrance = ?,tokuisaki = ?,lotkubuncode = ?,ownercode = ?,seikeinagasa = ?,genryou = ?,"
-                + "eatumi = ?,epaste = ?,pattern = ?,scraperspeed = ?,startitikakunin = ?,kakuninsya = ?,skojyo = ?,slotno = ?,"
-                + "sedaban = ?,tapetsukaikiri = ?,jilothe = ?,bikou3 = ?,bikou4 = ?,bikou5 = ?,revision = ?,deleteflag = ? "
+                + "eatumi = ?,epaste = ?,pattern = ?,scraperspeed = ?,startitikakunin = ?,kakuninsya = ?,revision = ?,deleteflag = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ? ";
 
         // 更新前の値を取得
@@ -2738,17 +2554,6 @@ public class GXHDO101B003 implements IFormLogic {
             params.add(lotNo); //ﾛｯﾄNo
             params.add(edaban); //枝番
         }
-        
-        // 先行ﾛｯﾄNo
-        String senkoulotno = getItemData(itemList, GXHDO101B003Const.SENKOULOTNO, srRsusprnData);
-        String skKojyo = ""; //先行工場ｺｰﾄﾞ
-        String skLotNo = ""; // 先行ﾛｯﾄNo
-        String skEdaban = ""; // 先行枝番
-        if (!StringUtil.isEmpty(senkoulotno)) {
-            skKojyo = StringUtils.substring(senkoulotno, 0, 3);
-            skLotNo = StringUtils.substring(senkoulotno, 3, 11);
-            skEdaban = StringUtil.blankToNull(StringUtils.substring(senkoulotno, 11, 14));
-        }
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B003Const.KCPNO, srRsusprnData))); //KCPNo
         if (isInsert) {
             params.add(null); //ﾃｰﾌﾟ種類
@@ -2779,8 +2584,6 @@ public class GXHDO101B003 implements IFormLogic {
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B003Const.SEIHAN_OR_HANDOU_NO, srRsusprnData))); //製版No
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B003Const.SEIHAN_OR_HANDOU_SHIYOU_MAISUU, srRsusprnData))); //製版枚数
 
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B003Const.SAIDAISYORISUU, srRsusprnData))); //最大処理数
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B003Const.RUIKEISYORISUU, srRsusprnData))); //累計処理数
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B003Const.PASTE_LOT_NO1, srRsusprnData))); //ﾍﾟｰｽﾄﾛｯﾄNo1
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B003Const.PASTE_NENDO1, srRsusprnData))); //ﾍﾟｰｽﾄ粘度1
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(itemList, GXHDO101B003Const.PASTE_ONDO1, srRsusprnData))); //ﾍﾟｰｽﾄ温度1
@@ -2860,14 +2663,6 @@ public class GXHDO101B003 implements IFormLogic {
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B003Const.SCRAPER_SPEED, srRsusprnData))); //ｽｸﾚｯﾊﾟｰ速度
         params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(itemList, GXHDO101B003Const.STARTITIKAKUNIN, srRsusprnData))); //印刷位置確認
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B003Const.INSATSU_STARTJI_KAKUNINSYA, srRsusprnData))); //印刷ｽﾀｰﾄ確認者
-        params.add(DBUtil.stringToStringObjectDefaultNull(skKojyo)); // 先行工場ｺｰﾄﾞ
-        params.add(DBUtil.stringToStringObjectDefaultNull(skLotNo)); // 先行ﾛｯﾄNo
-        params.add(DBUtil.stringToStringObjectDefaultNull(skEdaban)); // 先行枝番
-        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B003Const.TAPETSUKAIKIRI, srRsusprnData),null)); // ﾃｰﾌﾟ使い切り
-        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B003Const.JILOTHE, srRsusprnData),null)); // 次ﾛｯﾄへ
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B003Const.BIKOU3, srRsusprnData))); //備考3
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B003Const.BIKOU4, srRsusprnData))); //備考4
-        params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(itemList, GXHDO101B003Const.BIKOU5, srRsusprnData))); //備考5
         
         params.add(newRev); //revision
         params.add(deleteflag); //削除ﾌﾗｸﾞ
@@ -3030,15 +2825,15 @@ public class GXHDO101B003 implements IFormLogic {
             String kojyo, String lotNo, String edaban, Timestamp systemTime, ProcessData processData, SrRsusprn tmpSrRsusprn) throws SQLException {
         String sql = "INSERT INTO sr_rsusprn ("
                 + "KOJYO,LOTNO,EDABAN,KCPNO,TAPESYURUI,TAPELOTNO,TapeSlipKigo,GENRYOKIGO,KAISINICHIJI,SYURYONICHIJI,GOKI,SKEEGENO,"
-                + "SKEEGEMAISUU,SKEEGESPEED,KANSOONDO,CLEARANCE,SAATU,MAKUATU1,SEIHANNO,SEIHANMAISUU,saidaisyorisuu,ruikeisyorisuu,PASTELOTNO,PASTENENDO,PASTEONDO,"
+                + "SKEEGEMAISUU,SKEEGESPEED,KANSOONDO,CLEARANCE,SAATU,MAKUATU1,SEIHANNO,SEIHANMAISUU,PASTELOTNO,PASTENENDO,PASTEONDO,"
                 + "INSATUROLLNO,INSATUROLLNO2,INSATUROLLNO3,INSATUROLLNO4,INSATUROLLNO5,INSATUHABASAVE,INSATUHABAEAVE,MLD,BIKO1,BIKO2,"
                 + "TOROKUNICHIJI,KOSINNICHIJI,TANTOSYA,pkokeibun1,pastelotno2,pastenendo2,pasteondo2,pkokeibun2,petfilmsyurui,kansoondo2,kansoondo3,kansoondo4,"
                 + "kansoondo5,seihanmei,makuatsu_ave_start,makuatsu_max_start,makuatsu_min_start,makuatucv_start,nijimikasure_start,"
                 + "nijimikasure_end,tanto_end,printmaisuu,kansouroatsu,printhaba,table_clearrance,tokuisaki,lotkubuncode,ownercode,seikeinagasa,genryou,eatumi,"
-                + "epaste,pattern,scraperspeed,startitikakunin,kakuninsya,skojyo,slotno,sedaban,tapetsukaikiri,jilothe,bikou3,bikou4,bikou5,revision"
+                + "epaste,pattern,scraperspeed,startitikakunin,kakuninsya,revision"
                 + ") VALUES ("
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)";
 
         List<Object> params = setUpdateParameterSrRsusprn(true, newRev, kojyo, lotNo, edaban, systemTime, processData, tmpSrRsusprn);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -3064,14 +2859,13 @@ public class GXHDO101B003 implements IFormLogic {
             String kojyo, String lotNo, String edaban, Timestamp systemTime, ProcessData processData) throws SQLException {
         String sql = "UPDATE sr_rsusprn SET "
                 + "KCPNO = ?,TAPELOTNO = ?,GENRYOKIGO = ?,KAISINICHIJI = ?,SYURYONICHIJI = ?,"
-                + "GOKI = ?,SKEEGENO = ?,SKEEGEMAISUU = ?, SKEEGESPEED = ?, KANSOONDO = ?, SAATU = ?, SEIHANNO = ?,SEIHANMAISUU = ?,saidaisyorisuu = ?,ruikeisyorisuu = ?,PASTELOTNO = ?,PASTENENDO = ?,PASTEONDO = ?,"
+                + "GOKI = ?,SKEEGENO = ?,SKEEGEMAISUU = ?, SKEEGESPEED = ?, KANSOONDO = ?, SAATU = ?, SEIHANNO = ?,SEIHANMAISUU = ?,PASTELOTNO = ?,PASTENENDO = ?,PASTEONDO = ?,"
                 + "INSATUROLLNO = ?,INSATUROLLNO2 = ?,INSATUROLLNO3 = ?,MLD = ?,BIKO1 = ?,BIKO2 = ?,KOSINNICHIJI = ?,TANTOSYA = ?,pkokeibun1 = ?,"
                 + "pastelotno2 = ?,pastenendo2 = ?,pasteondo2 = ?,pkokeibun2 = ?,petfilmsyurui = ?,kansoondo2 = ?,kansoondo3 = ?,"
                 + "kansoondo4 = ?,kansoondo5 = ?,seihanmei = ?,makuatsu_ave_start = ?,makuatsu_max_start = ?,makuatsu_min_start = ?,"
                 + "makuatucv_start = ?,nijimikasure_start = ?,nijimikasure_end = ?,tanto_end = ?,printmaisuu = ?,kansouroatsu = ?,"
                 + "printhaba = ?,table_clearrance = ?,tokuisaki = ?,lotkubuncode = ?,ownercode = ?,seikeinagasa = ?,genryou = ?,"
-                + "eatumi = ?,epaste = ?,pattern = ?,scraperspeed = ?,startitikakunin = ?,kakuninsya = ?,skojyo = ?,slotno = ?,"
-                + "sedaban = ?,tapetsukaikiri = ?,jilothe = ?,bikou3 = ?,bikou4 = ?,bikou5 = ?,revision = ? "
+                + "eatumi = ?,epaste = ?,pattern = ?,scraperspeed = ?,startitikakunin = ?,kakuninsya = ?,revision = ? "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND revision = ?";
               
         // 更新前の値を取得
@@ -3117,16 +2911,6 @@ public class GXHDO101B003 implements IFormLogic {
             params.add(lotNo); //ﾛｯﾄNo
             params.add(edaban); //枝番
         }
-        // 先行ﾛｯﾄNo
-        String senkoulotno = getItemData(itemList, GXHDO101B003Const.SENKOULOTNO, srRsusprnData);
-        String skKojyo = ""; //先行工場ｺｰﾄﾞ
-        String skLotNo = ""; // 先行ﾛｯﾄNo
-        String skEdaban = ""; // 先行枝番
-        if (!StringUtil.isEmpty(senkoulotno)) {
-            skKojyo = StringUtils.substring(senkoulotno, 0, 3);
-            skLotNo = StringUtils.substring(senkoulotno, 3, 11);
-            skEdaban = StringUtil.blankToNull(StringUtils.substring(senkoulotno, 11, 14));
-        }
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B003Const.KCPNO, srRsusprnData))); //KCPNo
         if (isInsert) {
             params.add(""); //ﾃｰﾌﾟ種類
@@ -3157,8 +2941,6 @@ public class GXHDO101B003 implements IFormLogic {
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B003Const.SEIHAN_OR_HANDOU_NO, srRsusprnData))); //製版No
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B003Const.SEIHAN_OR_HANDOU_SHIYOU_MAISUU, srRsusprnData))); //製版枚数
 
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B003Const.SAIDAISYORISUU, srRsusprnData))); //最大処理数
-        params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B003Const.RUIKEISYORISUU, srRsusprnData))); //累計処理数
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B003Const.PASTE_LOT_NO1, srRsusprnData))); //ﾍﾟｰｽﾄﾛｯﾄNo1
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B003Const.PASTE_NENDO1, srRsusprnData))); //ﾍﾟｰｽﾄ粘度1
         params.add(DBUtil.stringToBigDecimalObject(getItemData(itemList, GXHDO101B003Const.PASTE_ONDO1, srRsusprnData))); //ﾍﾟｰｽﾄ温度1
@@ -3237,14 +3019,6 @@ public class GXHDO101B003 implements IFormLogic {
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B003Const.SCRAPER_SPEED, srRsusprnData))); //ｽｸﾚｯﾊﾟｰ速度
         params.add(DBUtil.stringToIntObject(getItemData(itemList, GXHDO101B003Const.STARTITIKAKUNIN, srRsusprnData))); //印刷位置確認
         params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B003Const.INSATSU_STARTJI_KAKUNINSYA, srRsusprnData))); //印刷ｽﾀｰﾄ確認者
-        params.add(DBUtil.stringToStringObject(skKojyo)); //先行工場ｺｰﾄﾞ
-        params.add(DBUtil.stringToStringObject(skLotNo)); //先行ﾛｯﾄNo
-        params.add(DBUtil.stringToStringObject(skEdaban)); //先行枝番
-        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B003Const.TAPETSUKAIKIRI, srRsusprnData),9)); //ﾃｰﾌﾟ使い切り
-        params.add(getCheckBoxDbValue(getItemData(itemList, GXHDO101B003Const.JILOTHE, srRsusprnData),9)); //次ﾛｯﾄへ
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B003Const.BIKOU3, srRsusprnData))); //備考3
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B003Const.BIKOU4, srRsusprnData))); //備考4
-        params.add(DBUtil.stringToStringObject(getItemData(itemList, GXHDO101B003Const.BIKOU5, srRsusprnData))); //備考5
         
         params.add(newRev); //revision
         return params;
@@ -3519,101 +3293,6 @@ public class GXHDO101B003 implements IFormLogic {
     }
 
     /**
-     * 【部材在庫情報】ﾎﾞﾀﾝ押下時処理
-     *
-     * @param processData 処理制御データ
-     * @return 処理制御データ
-     */
-    public ProcessData doBuzaizaikojyohoSyori(ProcessData processData) {
-        FXHDD01 itemSeihanLotNo = getItemRow(processData.getItemList(), GXHDO101B003Const.SEIHAN_OR_HANDOU_NO); // 製版ﾛｯﾄNo
-        if(itemSeihanLotNo == null){
-            processData.setMethod("");
-            return processData;
-        }
-        List<FXHDD01> errFxhdd01List = Arrays.asList(itemSeihanLotNo);
-        // 「製版ﾛｯﾄNo」が入力されていない場合
-        if (StringUtil.isEmpty(itemSeihanLotNo.getValue())) {
-            // ｴﾗｰ項目をﾘｽﾄに追加
-            processData.getErrorMessageInfoList().add(MessageUtil.getErrorMessageInfo("XHD-000003", true, true, errFxhdd01List, itemSeihanLotNo.getLabel1()));
-            return processData;
-        } else {
-            // 「製版ﾛｯﾄNo」が入力されている場合
-            if (StringUtil.getLength(itemSeihanLotNo.getValue()) != 9) {
-                // ｴﾗｰ項目をﾘｽﾄに追加
-                processData.getErrorMessageInfoList().add(MessageUtil.getErrorMessageInfo("XHD-000004", true, true, errFxhdd01List, itemSeihanLotNo.getLabel1(), "9"));
-                return processData;
-            }
-        }
-        QueryRunner queryRunnerMLA = new QueryRunner(processData.getDataSourceMLAServer());
-        // 部材在庫ﾃﾞｰﾀ取得
-        Map<String, Object> fmlad01Data = getFmlad01Data(queryRunnerMLA, itemSeihanLotNo.getValue());
-        if (fmlad01Data == null || fmlad01Data.isEmpty()) {
-            processData.getErrorMessageInfoList().add(MessageUtil.getErrorMessageInfo("XHD-000219", true, true, errFxhdd01List));
-            return processData;
-        }
-        String siyoMaisu = StringUtil.nullToBlank(fmlad01Data.get("siyo_maisu")); // 使用枚数
-        String saidaiSiyoMaisu = StringUtil.nullToBlank(fmlad01Data.get("saidai_siyo_maisu")); // 最大使用枚数
-        FXHDD01 itemRuikeisyorisuu = getItemRow(processData.getItemList(), GXHDO101B003Const.RUIKEISYORISUU); // 累計処理数
-        FXHDD01 itemSaidaisyorisuu = getItemRow(processData.getItemList(), GXHDO101B003Const.SAIDAISYORISUU); // 最大処理数
-        setItemIntValue(itemRuikeisyorisuu, siyoMaisu);
-        setItemIntValue(itemSaidaisyorisuu, saidaiSiyoMaisu);
-        processData.setMethod("");
-        return processData;
-    }
-
-    /**
-     * 小数点以下を切り捨てして整数で対象項目に値をセットする
-     *
-     * @param itemData 項目
-     * @param value 値
-     */
-    private void setItemIntValue(FXHDD01 itemData, String value) {
-        if (itemData == null) {
-            return;
-        }
-        
-        if (!StringUtil.isEmpty(value)) {
-            BigDecimal bigDecimalVal = null;
-            // 小数部以下は切り捨て
-            try {
-                bigDecimalVal = new BigDecimal(value);
-                bigDecimalVal = bigDecimalVal.setScale(0, RoundingMode.DOWN);
-                // 値をセット
-                itemData.setValue(bigDecimalVal.toPlainString());
-            } catch (NumberFormatException e) {
-                // 処理なし
-            }
-        } else {
-            // 値をセット
-            itemData.setValue("");
-        }
-    }
-    
-    /**
-     * 部材在庫ﾃﾞｰﾀの取得
-     *
-     * @param queryRunnerMLA QueryRunnerオブジェクト
-     * @param zaikono 在庫No
-     * @return 部材在庫ﾃﾞｰﾀ情報取得
-     */
-    private Map<String, Object> getFmlad01Data(QueryRunner queryRunnerMLA, String zaikono) {
-        try {
-            String sql = "SELECT siyo_maisu, saidai_siyo_maisu"
-                    + " FROM fmlad01 "
-                    + " WHERE zaiko_no = ? ";
-
-            List<Object> params = new ArrayList<>();
-            params.add(zaikono);
-
-            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-            return queryRunnerMLA.query(sql, new MapHandler(), params.toArray());
-        } catch (SQLException ex) {
-            ErrUtil.outputErrorLog("実行エラー", ex, LOGGER);
-        }
-        return null;
-    }
-
-    /**
      * 項目IDに該当するDBの値を取得する。
      *
      * @param itemId 項目ID
@@ -3688,12 +3367,6 @@ public class GXHDO101B003 implements IFormLogic {
             // 製版使用枚数
             case GXHDO101B003Const.SEIHAN_OR_HANDOU_SHIYOU_MAISUU:
                 return StringUtil.nullToBlank(srRsusprnData.getSeihanmaisuu());
-            // 最大処理数
-            case GXHDO101B003Const.SAIDAISYORISUU:
-                return StringUtil.nullToBlank(srRsusprnData.getSaidaisyorisuu());
-            // 累計処理数
-            case GXHDO101B003Const.RUIKEISYORISUU:
-                return StringUtil.nullToBlank(srRsusprnData.getRuikeisyorisuu());
             // ｽｷｰｼﾞNo
             case GXHDO101B003Const.SQUEEGEE_OR_ATSUDOU_NO:
                 return StringUtil.nullToBlank(srRsusprnData.getSkeegeno());
@@ -3795,24 +3468,6 @@ public class GXHDO101B003 implements IFormLogic {
             //電極製版仕様
             case GXHDO101B003Const.DENKYOKU_SEIHAN_SHIYOU:
                 return StringUtil.nullToBlank(srRsusprnData.getPattern());
-            // 先行ﾛｯﾄNo
-            case GXHDO101B003Const.SENKOULOTNO:
-                return StringUtil.nullToBlank(srRsusprnData.getSenkoulotno());
-            // ﾃｰﾌﾟ使い切り
-            case GXHDO101B003Const.TAPETSUKAIKIRI:
-                return getCheckBoxCheckValue(StringUtil.nullToBlank(srRsusprnData.getTapetsukaikiri()));
-            // 次ﾛｯﾄへ
-            case GXHDO101B003Const.JILOTHE:
-                return getCheckBoxCheckValue(StringUtil.nullToBlank(srRsusprnData.getJilothe()));
-            // 備考3
-            case GXHDO101B003Const.BIKOU3:
-                return StringUtil.nullToBlank(srRsusprnData.getBikou3());
-            // 備考4
-            case GXHDO101B003Const.BIKOU4:
-                return StringUtil.nullToBlank(srRsusprnData.getBikou4());
-            // 備考5
-            case GXHDO101B003Const.BIKOU5:
-                return StringUtil.nullToBlank(srRsusprnData.getBikou5());
             
             default:
                 return null;
@@ -3837,20 +3492,20 @@ public class GXHDO101B003 implements IFormLogic {
             String kojyo, String lotNo, String edaban, Timestamp systemTime) throws SQLException {
         String sql = "INSERT INTO tmp_sr_rsusprn ("
                 + "KOJYO,LOTNO,EDABAN,KCPNO,TAPESYURUI,TAPELOTNO,TapeSlipKigo,GENRYOKIGO,KAISINICHIJI,SYURYONICHIJI,GOKI,SKEEGENO,"
-                + "SKEEGEMAISUU,SKEEGESPEED,KANSOONDO,CLEARANCE,SAATU,MAKUATU1,SEIHANNO,SEIHANMAISUU,saidaisyorisuu,ruikeisyorisuu,PASTELOTNO,PASTENENDO,PASTEONDO,"
+                + "SKEEGEMAISUU,SKEEGESPEED,KANSOONDO,CLEARANCE,SAATU,MAKUATU1,SEIHANNO,SEIHANMAISUU,PASTELOTNO,PASTENENDO,PASTEONDO,"
                 + "INSATUROLLNO,INSATUROLLNO2,INSATUROLLNO3,INSATUROLLNO4,INSATUROLLNO5,INSATUHABASAVE,INSATUHABAEAVE,MLD,BIKO1,BIKO2,"
                 + "TOROKUNICHIJI,KOSINNICHIJI,TANTOSYA,pkokeibun1,pastelotno2,pastenendo2,pasteondo2,pkokeibun2,petfilmsyurui,kansoondo2,kansoondo3,kansoondo4,"
                 + "kansoondo5,seihanmei,makuatsu_ave_start,makuatsu_max_start,makuatsu_min_start,makuatucv_start,nijimikasure_start,"
                 + "nijimikasure_end,tanto_end,printmaisuu,kansouroatsu,printhaba,table_clearrance,tokuisaki,lotkubuncode,ownercode,"
-                + "seikeinagasa,genryou,eatumi,epaste,pattern,scraperspeed,startitikakunin,kakuninsya,skojyo,slotno,sedaban,tapetsukaikiri,jilothe,bikou3,bikou4,bikou5,revision,deleteflag"
+                + "seikeinagasa,genryou,eatumi,epaste,pattern,scraperspeed,startitikakunin,kakuninsya,revision,deleteflag"
                 + ") SELECT "
                 + "KOJYO,LOTNO,EDABAN,KCPNO,TAPESYURUI,TAPELOTNO,TapeSlipKigo,GENRYOKIGO,KAISINICHIJI,SYURYONICHIJI,GOKI,SKEEGENO,"
-                + "SKEEGEMAISUU,SKEEGESPEED,KANSOONDO,CLEARANCE,SAATU,MAKUATU1,SEIHANNO,SEIHANMAISUU,saidaisyorisuu,ruikeisyorisuu,PASTELOTNO,PASTENENDO,PASTEONDO,"
+                + "SKEEGEMAISUU,SKEEGESPEED,KANSOONDO,CLEARANCE,SAATU,MAKUATU1,SEIHANNO,SEIHANMAISUU,PASTELOTNO,PASTENENDO,PASTEONDO,"
                 + "INSATUROLLNO,INSATUROLLNO2,INSATUROLLNO3,INSATUROLLNO4,INSATUROLLNO5,INSATUHABASAVE,INSATUHABAEAVE,MLD,BIKO1,BIKO2,"
                 + "?,?,TANTOSYA,pkokeibun1,pastelotno2,pastenendo2,pasteondo2,pkokeibun2,petfilmsyurui,kansoondo2,kansoondo3,kansoondo4,"
                 + "kansoondo5,seihanmei,makuatsu_ave_start,makuatsu_max_start,makuatsu_min_start,makuatucv_start,nijimikasure_start,"
                 + "nijimikasure_end,tanto_end,printmaisuu,kansouroatsu,printhaba,table_clearrance,tokuisaki,lotkubuncode,ownercode,"
-                + "seikeinagasa,genryou,eatumi,epaste,pattern,scraperspeed,startitikakunin,kakuninsya,skojyo,slotno,sedaban,tapetsukaikiri,jilothe,bikou3,bikou4,bikou5,?,? "
+                + "seikeinagasa,genryou,eatumi,epaste,pattern,scraperspeed,startitikakunin,kakuninsya,?,? "
                 + "FROM sr_rsusprn "
                 + "WHERE KOJYO = ? AND LOTNO = ? AND EDABAN = ? ";
 
@@ -4031,7 +3686,6 @@ public class GXHDO101B003 implements IFormLogic {
         model.setReturnItemId_TapeLot1_Conventionallot(GXHDO101B003Const.SLIP_LOTNO);
         model.setReturnItemId_TapeLot1_Lotkigo(GXHDO101B003Const.GENRYO_KIGOU);
         model.setReturnItemId_TapeLot1_Rollno(GXHDO101B003Const.ROLL_NO1);
-        model.setReturnItemId_TapeLot1_Tapelength(GXHDO101B003Const.SEIKEINAGASA);
         model.setReturnItemId_PasteLot1_Hinmei(GXHDO101B003Const.DENKYOKU_PASTE);
         model.setReturnItemId_PasteLot1_Conventionallot(GXHDO101B003Const.PASTE_LOT_NO1);
         model.setReturnItemId_PasteLot1_Kokeibunpct(GXHDO101B003Const.PASTE_KOKEIBUN1);
@@ -4477,47 +4131,5 @@ public class GXHDO101B003 implements IFormLogic {
                 break;
         }
         return mkubunno;
-    }
-
-    private int getTmpKbn(QueryRunner queryRunnerDoc) throws SQLException {
-        int tmpKbn = 0;
-        String sql = "SELECT tmp_kbn FROM fxhdm08 WHERE gamen_id = ?";
-        
-        List<Object> params = new ArrayList<>();
-        params.add("GXHDO101B003");
-        
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        Map<String, Object> result = queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
-        if (result != null && !result.isEmpty()) {
-            tmpKbn = Integer.valueOf(StringUtil.nullToBlank(result.get("tmp_kbn")));
-        }
-        return tmpKbn;
-    }
-
-    /**
-     * チェックボックス値(チェックボックス内のValue値)取得
-     *
-     * @param dbValue コンボボックス(DB内)Value値
-     * @return コンボボックステキスト値
-     */
-    private String getCheckBoxCheckValue(String dbValue) {
-        if ("1".equals(dbValue)) {
-            return "true";
-        }
-        return null;
-    }
-
-    /**
-     * チェックボックス値(DB内のValue値)取得
-     *
-     * @param checkBoxValue コンボボックスValue値
-     * @param defaultValue チェックがついていない場合のデフォルト値
-     * @return コンボボックステキスト値
-     */
-    private Integer getCheckBoxDbValue(String checkBoxValue, Integer defaultValue) {
-        if ("true".equals(StringUtil.nullToBlank(checkBoxValue).toLowerCase())) {
-            return 1;
-        }
-        return defaultValue;
     }
 }

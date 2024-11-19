@@ -16,11 +16,6 @@ import java.sql.Timestamp;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	新規作成<br>
  * <br>
- * 変更日	2021/10/08<br>
- * 計画書No	MB2109-DK002<br>
- * 変更者	SRC T.Ushiyama<br>
- * 変更理由	出荷履歴表対応<br>
- * <br>
  * ===============================================================================<br>
  */
 /**
@@ -109,7 +104,7 @@ public class SrTapingSagyo {
     /**
      * 確保ﾘｰﾙ巻数①
      */
-    private Integer kakuhoreelmaki1;
+    private BigDecimal kakuhoreelmaki1;
 
     /**
      * 確保ﾘｰﾙ本数①
@@ -119,7 +114,7 @@ public class SrTapingSagyo {
     /**
      * 確保ﾘｰﾙ巻数②
      */
-    private Integer kakuhoreelmaki2;
+    private BigDecimal kakuhoreelmaki2;
 
     /**
      * 確保ﾘｰﾙ本数②
@@ -359,7 +354,7 @@ public class SrTapingSagyo {
     /**
      * 良品TPﾘｰﾙ巻数①
      */
-    private Integer ryouhintopreelmaki1;
+    private BigDecimal ryouhintopreelmaki1;
 
     /**
      * 良品TPﾘｰﾙ本数①
@@ -369,7 +364,7 @@ public class SrTapingSagyo {
     /**
      * 良品TPﾘｰﾙ巻数②
      */
-    private Integer ryouhintopreelmaki2;
+    private BigDecimal ryouhintopreelmaki2;
 
     /**
      * 良品TPﾘｰﾙ本数②
@@ -560,11 +555,12 @@ public class SrTapingSagyo {
      * 削除ﾌﾗｸﾞ
      */
     private Integer deleteflag;
-
+    
     /**
      * 番号
      */
     private Integer bango;
+
 
     /**
      * 工場ｺｰﾄﾞ
@@ -839,7 +835,7 @@ public class SrTapingSagyo {
      *
      * @return the kakuhoreelmaki1
      */
-    public Integer getKakuhoreelmaki1() {
+    public BigDecimal getKakuhoreelmaki1() {
         return kakuhoreelmaki1;
     }
 
@@ -848,7 +844,7 @@ public class SrTapingSagyo {
      *
      * @param kakuhoreelmaki1 the kakuhoreelmaki1 to set
      */
-    public void setKakuhoreelmaki1(Integer kakuhoreelmaki1) {
+    public void setKakuhoreelmaki1(BigDecimal kakuhoreelmaki1) {
         this.kakuhoreelmaki1 = kakuhoreelmaki1;
     }
 
@@ -875,7 +871,7 @@ public class SrTapingSagyo {
      *
      * @return the kakuhoreelmaki2
      */
-    public Integer getKakuhoreelmaki2() {
+    public BigDecimal getKakuhoreelmaki2() {
         return kakuhoreelmaki2;
     }
 
@@ -884,7 +880,7 @@ public class SrTapingSagyo {
      *
      * @param kakuhoreelmaki2 the kakuhoreelmaki2 to set
      */
-    public void setKakuhoreelmaki2(Integer kakuhoreelmaki2) {
+    public void setKakuhoreelmaki2(BigDecimal kakuhoreelmaki2) {
         this.kakuhoreelmaki2 = kakuhoreelmaki2;
     }
 
@@ -1739,7 +1735,7 @@ public class SrTapingSagyo {
      *
      * @return the ryouhintopreelmaki1
      */
-    public Integer getRyouhintopreelmaki1() {
+    public BigDecimal getRyouhintopreelmaki1() {
         return ryouhintopreelmaki1;
     }
 
@@ -1748,7 +1744,7 @@ public class SrTapingSagyo {
      *
      * @param ryouhintopreelmaki1 the ryouhintopreelmaki1 to set
      */
-    public void setRyouhintopreelmaki1(Integer ryouhintopreelmaki1) {
+    public void setRyouhintopreelmaki1(BigDecimal ryouhintopreelmaki1) {
         this.ryouhintopreelmaki1 = ryouhintopreelmaki1;
     }
 
@@ -1775,7 +1771,7 @@ public class SrTapingSagyo {
      *
      * @return the ryouhintopreelmaki2
      */
-    public Integer getRyouhintopreelmaki2() {
+    public BigDecimal getRyouhintopreelmaki2() {
         return ryouhintopreelmaki2;
     }
 
@@ -1784,7 +1780,7 @@ public class SrTapingSagyo {
      *
      * @param ryouhintopreelmaki2 the ryouhintopreelmaki2 to set
      */
-    public void setRyouhintopreelmaki2(Integer ryouhintopreelmaki2) {
+    public void setRyouhintopreelmaki2(BigDecimal ryouhintopreelmaki2) {
         this.ryouhintopreelmaki2 = ryouhintopreelmaki2;
     }
 
@@ -2471,7 +2467,7 @@ public class SrTapingSagyo {
     public void setDeleteflag(Integer deleteflag) {
         this.deleteflag = deleteflag;
     }
-
+    
     /**
      * 番号
      *

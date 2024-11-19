@@ -287,6 +287,10 @@ public class GXHDO102A implements Serializable {
                 HashMap m = (HashMap) i.next();
                 listGamenID.add(m.get("gamen_id").toString());
             }
+            
+            String strSekkeiNo;
+            strSekkeiNo = StringUtil.nullToBlank(processResult.get("sekkeino"));
+            listGamenID = checkMenuList(queryRunnerXHD,listGamenID, strSyurui, strSekkeiNo);
 
             if (sqlsearchResult.isEmpty()) {
                 setMenuTableRender(false);
@@ -1634,5 +1638,58 @@ public class GXHDO102A implements Serializable {
     public void convertToUpperCase() {
         // 小文字を大文字に変換
         setTantoshaCd(getTantoshaCd().toUpperCase());
+    }
+    
+    /**
+     * ﾒﾆｭｰ表示制御
+     * @param queryRunnerQcdb QueryRunnerオブジェクト(MySQL)
+     * @param listGamenID 画面IDリスト
+     * @param datasyurui ﾃﾞｰﾀ種類
+     * @param sekkeino 設計No
+     */
+    public List<Object> checkMenuList(QueryRunner queryRunnerQcdb, List<Object> listGamenID,String datasyurui,String sekkeino) throws SQLException  {
+        
+        if(datasyurui.equals("添加材ｽﾗﾘｰ作製")){
+            String data = "添加材ｽﾗﾘｰ作製,ｶﾞﾗｽ,ﾒﾆｭｰ表示制御";
+            String[] dataSplitList = data.split(",");
+            // [前工程規格情報]から、ﾃﾞｰﾀを取得
+            Map daMkJokenData = loadDaMkJokenData(queryRunnerQcdb, sekkeino, dataSplitList);
+            if (daMkJokenData == null || daMkJokenData.isEmpty()) {
+                return listGamenID;
+            } else {
+                // 前工程規格情報の規格値
+                String kikakuti = StringUtil.nullToBlank(getMapData(daMkJokenData, "kikakuti"));
+                if (!"1".equals(kikakuti)) {
+                    listGamenID.remove(listGamenID.indexOf("GXHDO102B007"));
+                    return listGamenID;
+                }
+            }
+        }
+       return listGamenID;
+    }
+    
+    /**
+     * [前工程規格情報]から、ﾃﾞｰﾀを取得
+     *
+     * @param queryRunnerQcdb オブジェクト
+     * @param sekkeiNo 設計No
+     * @param data ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadDaMkJokenData(QueryRunner queryRunnerQcdb, String sekkeiNo, String[] data) throws SQLException {
+        if (data == null || data.length < 3) {
+            return null;
+        }
+        // 前工程規格情報データの取得
+        String sql = "SELECT kikakuti FROM da_mkjoken"
+                + " WHERE sekkeino = ? AND kouteimei = ? AND koumokumei = ? AND kanrikoumokumei = ? ";
+        List<Object> params = new ArrayList<>();
+        params.add(sekkeiNo);
+        params.add(data[0]);
+        params.add(data[1]);
+        params.add(data[2]);
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
     }
 }

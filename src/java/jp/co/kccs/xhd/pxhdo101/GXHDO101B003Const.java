@@ -19,16 +19,6 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	863 zhangjy<br>
  * 変更理由	前工程WIPボタンを追加<br>
  * <br>
- * 変更日       2022/03/09<br>
- * 計画書No     MB2202-D013<br>
- * 変更者       KCSS WXF<br>
- * 変更理由     仕様変更対応<br>
- * <br>
- * 変更日	2022/06/14<br>
- * 計画書No	MB2205-D010<br>
- * 変更者	KCSS K.Jo<br>
- * 変更理由	画面表示項目を追加<br>
- * <br>
  * ===============================================================================<br>
  */
 /**
@@ -205,16 +195,6 @@ public class GXHDO101B003Const {
     public static final String SEIHAN_OR_HANDOU_SHIYOU_MAISUU = "insatsu_rsus_seihan_or_handou_shiyou_maisuu";
 
     /**
-     * 累計処理数
-     */
-    public static final String RUIKEISYORISUU = "insatsu_rsus_ruikeisyorisuu";
-
-    /**
-     * 最大処理数
-     */
-    public static final String SAIDAISYORISUU = "insatsu_rsus_saidaisyorisuu";
-
-    /**
      * ｽｷｰｼﾞNo / 圧胴No．
      */
     public static final String SQUEEGEE_OR_ATSUDOU_NO = "insatsu_rsus_squeegee_or_atsudou_no";
@@ -330,21 +310,6 @@ public class GXHDO101B003Const {
     public static final String INSATSU_STARTJI_KAKUNINSYA = "insatsu_rsus_insatsu_startji_kakuninsya";
 
     /**
-     * 先行ﾛｯﾄNo
-     */
-    public static final String SENKOULOTNO = "insatsu_rsus_senkoulotno";
-
-    /**
-     * ﾃｰﾌﾟ使い切り
-     */
-    public static final String TAPETSUKAIKIRI = "insatsu_rsus_tapetsukaikiri";
-
-    /**
-     * 次ﾛｯﾄへ
-     */
-    public static final String JILOTHE = "insatsu_rsus_jilothe";
-
-    /**
      * 備考1
      */
     public static final String BIKOU1 = "insatsu_rsus_bikou1";
@@ -353,21 +318,6 @@ public class GXHDO101B003Const {
      * 備考2
      */
     public static final String BIKOU2 = "insatsu_rsus_bikou2";
-
-    /**
-     * 備考3
-     */
-    public static final String BIKOU3 = "insatsu_rsus_bikou3";
-
-    /**
-     * 備考4
-     */
-    public static final String BIKOU4 = "insatsu_rsus_bikou4";
-
-    /**
-     * 備考5
-     */
-    public static final String BIKOU5 = "insatsu_rsus_bikou5";
 
     /**
      * 膜厚(画面下)
@@ -423,11 +373,6 @@ public class GXHDO101B003Const {
      * 前工程WIP(画面下)
      */
     public static final String BTN_WIP_IMPORT_BOTTOM = "insatsu_rsus_wip_import_Bottom";
-    
-    /**
-     * 部材在庫情報(画面下)
-     */
-    public static final String BTN_BUZAIZAIKOJYOHO_BOTTOM = "insatsu_rsus_buzaizaikojyoho_Bottom";
 
     /**
      * 膜厚(画面上)
@@ -478,12 +423,7 @@ public class GXHDO101B003Const {
      * 削除(画面上)
      */
     public static final String BTN_DELETE_TOP = "insatsu_rsus_delete_Top";
-
-    /**
-     * 部材在庫情報(画面上)
-     */
-    public static final String BTN_BUZAIZAIKOJYOHO_TOP = "insatsu_rsus_buzaizaikojyoho_Top";
-
+    
     /**
      * 前工程WIP(画面上)
      */

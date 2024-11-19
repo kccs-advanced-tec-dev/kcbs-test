@@ -221,6 +221,11 @@ public class SrGdnijibarrel {
      */
     private Integer deleteflag;
 
+    /**
+     * 外観担当者
+     */
+    private String gaikantantousya;
+
     public String getKojyo() {
         return kojyo;
     }
@@ -523,6 +528,22 @@ public class SrGdnijibarrel {
 
     public void setGaikan(String gaikan) {
         this.gaikan = gaikan;
+    }
+
+    /**
+     * 外観担当者
+     * @return the gaikantantousya
+     */
+    public String getGaikantantousya() {
+        return gaikantantousya;
+    }
+
+    /**
+     * 外観担当者
+     * @param gaikantantousya the gaikantantousya to set
+     */
+    public void setGaikantantousya(String gaikantantousya) {
+        this.gaikantantousya = gaikantantousya;
     }
 
 }

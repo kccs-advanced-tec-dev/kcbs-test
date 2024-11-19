@@ -156,7 +156,7 @@
                             <td>
                                 <!-- p:remoteCommand【GXHDO101D001】から「一覧へ戻る」押下時の再表示用 -->
                                 <p:remoteCommand oncomplete="if(#{gXHDO101A.flgReOpenGXHDOC021}){#{gXHDO101A.setFlgReOpenGXHDOC021(false)};PF('W_dlg_gxhdo101c021').show();} " autoRun="true"/>
-                                <p:commandButton id="rankBCRenrakuBtn" class="button" rendered="#{gXHDO101A.rankBCRenrakuBtnRender}"  styleClass="ui-conf-commandbtn-def1" style="margin-top: 3px; width: 94px; height: 32px; font-size: 10px; "
+                                <p:commandButton id="rankBCRenrakuBtn" class="button" rendered="#{gXHDO101A.rankBCRenrakuBtnRender}"  styleClass="ui-conf-commandbtn-def1" style="margin-top: 3px; width: 94px; height: 32px; font-size: 10px; color: red; font-weight: bold"
                                                  value="B･Cﾗﾝｸ連絡書"
                                                  actionListener="#{gXHDO101A.doRankBCRenraku()}"
                                                  process="@this"

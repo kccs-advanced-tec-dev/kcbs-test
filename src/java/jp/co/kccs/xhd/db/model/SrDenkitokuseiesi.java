@@ -80,16 +80,6 @@ public class SrDenkitokuseiesi {
      * 後工程指示内容
      */
     private String atokouteisijinaiyou;
-    
-    /**
-     * 最大処理数
-     */
-    private Integer saidaisyorisuu;
-    
-    /**
-     * 累計処理数
-     */
-    private Integer ruikeisyorisuu;
 
     /**
      * 送り良品数
@@ -1600,38 +1590,6 @@ public class SrDenkitokuseiesi {
      */
     public void setOkuriryouhinsuu(Integer okuriryouhinsuu) {
         this.okuriryouhinsuu = okuriryouhinsuu;
-    }
-    
-    /**
-     * 累計処理数
-     * @return the ruikeisyorisuu
-     */
-    public Integer getRuikeisyorisuu() {
-        return ruikeisyorisuu;
-    }
-
-    /**
-     * 累計処理数
-     * @param ruikeisyorisuu the ruikeisyorisuu to set
-     */
-    public void setRuikeisyorisuu(Integer ruikeisyorisuu) {
-        this.ruikeisyorisuu = ruikeisyorisuu;
-    }
-    
-    /**
-     * 最大処理数
-     * @return the saidaisyorisuu
-     */
-    public Integer getSaidaisyorisuu() {
-        return saidaisyorisuu;
-    }
-
-    /**
-     * 最大処理数
-     * @param saidaisyorisuu the saidaisyorisuu to set
-     */
-    public void setSaidaisyorisuu(Integer saidaisyorisuu) {
-        this.saidaisyorisuu = saidaisyorisuu;
     }
 
     /**

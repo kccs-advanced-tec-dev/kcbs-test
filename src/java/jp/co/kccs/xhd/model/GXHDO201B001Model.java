@@ -94,6 +94,14 @@ public class GXHDO201B001Model implements Serializable {
     private BigDecimal kansouondo3 = null;
     /** 乾燥温度4 */
     private BigDecimal kansouondo4 = null;
+    /** 乾燥温度下側 */
+    private BigDecimal kansouondoshita = null;
+    /** 乾燥温度下側2 */
+    private BigDecimal kansouondoshita2 = null;
+    /** 乾燥温度下側3 */
+    private BigDecimal kansouondoshita3 = null;
+    /** 乾燥温度下側4 */
+    private BigDecimal kansouondoshita4 = null;
     /** 乾燥温度5 */
     private BigDecimal kansouondo5 = null;
     /** 搬送速度 */
@@ -739,6 +747,70 @@ public class GXHDO201B001Model implements Serializable {
      */
     public void setKansouondo4(BigDecimal kansouondo4) {
         this.kansouondo4 = kansouondo4;
+    }
+
+    /**
+     * 乾燥温度下側
+     * @return the kansouondoshita
+     */
+    public BigDecimal getKansouondoshita() {
+        return kansouondoshita;
+    }
+
+    /**
+     * 乾燥温度下側
+     * @param kansouondoshita the kansouondoshita to set
+     */
+    public void setKansouondoshita(BigDecimal kansouondoshita) {
+        this.kansouondoshita = kansouondoshita;
+    }
+
+    /**
+     * 乾燥温度下側2
+     * @return the kansouondoshita2
+     */
+    public BigDecimal getKansouondoshita2() {
+        return kansouondoshita2;
+    }
+
+    /**
+     * 乾燥温度下側2
+     * @param kansouondoshita2 the kansouondoshita2 to set
+     */
+    public void setKansouondoshita2(BigDecimal kansouondoshita2) {
+        this.kansouondoshita2 = kansouondoshita2;
+    }
+
+    /**
+     * 乾燥温度下側3
+     * @return the kansouondoshita3
+     */
+    public BigDecimal getKansouondoshita3() {
+        return kansouondoshita3;
+    }
+
+    /**
+     * 乾燥温度下側3
+     * @param kansouondoshita3 the kansouondoshita3 to set
+     */
+    public void setKansouondoshita3(BigDecimal kansouondoshita3) {
+        this.kansouondoshita3 = kansouondoshita3;
+    }
+
+    /**
+     * 乾燥温度下側4
+     * @return the kansouondoshita4
+     */
+    public BigDecimal getKansouondoshita4() {
+        return kansouondoshita4;
+    }
+
+    /**
+     * 乾燥温度下側4
+     * @param kansouondoshita4 the kansouondoshita4 to set
+     */
+    public void setKansouondoshita4(BigDecimal kansouondoshita4) {
+        this.kansouondoshita4 = kansouondoshita4;
     }
 
     /**

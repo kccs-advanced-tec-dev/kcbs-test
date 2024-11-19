@@ -497,6 +497,27 @@
                     <p:column id="tanshiTapeSyurui" headerText="端子ﾃｰﾌﾟ種類確認" >
                         <p:outputLabel value="#{item.tanshiTapeSyurui}"/>
                     </p:column>
+                    <p:column id="slotno" headerText="先行ﾛｯﾄNo" >
+                        <p:outputLabel value="#{item.slotno}"/>
+                    </p:column>
+                    <p:column id="tapetsukaikiri" headerText="ﾃｰﾌﾟ使い切り" >
+                        <p:outputLabel value="#{item.tapetsukaikiri}"/>
+                    </p:column>
+                    <p:column id="jilothe" headerText="次ﾛｯﾄへ" >
+                        <p:outputLabel value="#{item.jilothe}"/>
+                    </p:column>
+                    <p:column id="ksheettest" headerText="固着ｼｰﾄTEST" >
+                        <p:outputLabel value="#{item.ksheettest}"/>
+                    </p:column>
+					<p:column id="ksheettestcheck" headerText="固着ｼｰﾄTESTﾁｪｯｸ">
+						<p:outputLabel value="#{item.ksheettestcheck}"/>
+					</p:column>
+                    <p:column id="klotno" headerText="固着ｼｰﾄﾛｯﾄNo" >
+                        <p:outputLabel value="#{item.klotno}"/>
+                    </p:column>
+                    <p:column id="klotnocheck" headerText="固着ｼｰﾄﾛｯﾄNoﾁｪｯｸ" >
+                        <p:outputLabel value="#{item.klotnocheck}"/>
+                    </p:column>
                     <p:column id="setsuu1" headerText="ｾｯﾄ数1" styleClass="number">
                         <p:outputLabel value="#{item.setsuu1}">
                             <f:convertNumber pattern="#,###,###,##0"/>

@@ -729,6 +729,14 @@ public class GXHDO102B008 implements IFormLogic {
             return MessageUtil.getErrorMessageInfo("", msgCheckR001, true, true, errFxhdd01List);
         }
 
+		// 担当者、確認者チェック
+        FXHDD01 itemTantousya = getItemRow(processData.getItemList(), GXHDO102B008Const.TANTOUSYA); // 担当者
+        FXHDD01 itemKakuninsya = getItemRow(processData.getItemList(), GXHDO102B008Const.KAKUNINSYA); // 確認者
+        if (itemTantousya.getValue().equals(itemKakuninsya.getValue())){
+            List<FXHDD01> errFxhdd01List = Arrays.asList(itemTantousya, itemKakuninsya);
+            return MessageUtil.getErrorMessageInfo("", MessageUtil.getMessage("XHD-000231"), true, true, errFxhdd01List);
+        }
+        
         return null;
     }
 
@@ -1322,7 +1330,16 @@ public class GXHDO102B008 implements IFormLogic {
         // WIPﾛｯﾄNo
         this.setItemData(processData, GXHDO102B008Const.WIPLOTNO, lotNo);
         // 添加材ｽﾗﾘｰ品名
-        this.setItemData(processData, GXHDO102B008Const.TENKAZAISLURRYHINMEI, StringUtil.nullToBlank(getMapData(shikakariData, "hinmei")));
+        String kcpno = StringUtil.nullToBlank(getMapData(shikakariData, "kcpno")).substring(5,13);
+        String hinmei;
+        if((kcpno.substring(kcpno.length() - 1)).equals("9")){
+            hinmei = kcpno.substring(0,kcpno.length() - countHinmei(kcpno,"9"));
+        }else if((kcpno.substring(kcpno.length() - 1)).equals("0")){
+            hinmei = kcpno.substring(0,kcpno.length() - countHinmei(kcpno,"0"));
+        }else{
+            hinmei = kcpno;
+        }
+        this.setItemData(processData, GXHDO102B008Const.TENKAZAISLURRYHINMEI, hinmei);
         // 添加材ｽﾗﾘｰLotNo
         this.setItemData(processData, GXHDO102B008Const.TENKAZAISLURRYLOTNO, StringUtil.nullToBlank(getMapData(shikakariData, "lotno")));
         // ﾛｯﾄ区分
@@ -1603,6 +1620,7 @@ public class GXHDO102B008 implements IFormLogic {
             sikakariObj = sikakariList.get(0);
             // 前工程WIPから取得した品名
             shikakariData.put("hinmei", sikakariObj.getHinmei());
+            shikakariData.put("kcpno", sikakariObj.getKCPNO());
             shikakariData.put("oyalotedaban", sikakariObj.getOyaLotEdaBan());
             shikakariData.put("lotkubuncode", sikakariObj.getLotKubunCode());
             shikakariData.put("lotkubun", sikakariObj.getLotkubun());
@@ -4273,5 +4291,25 @@ public class GXHDO102B008 implements IFormLogic {
             ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
         }
         return null;
+    }
+        
+    /**
+     * kcpnoから品名(6～13桁)取得
+     * 8桁に満たない場合は0で埋められている。
+     * ただし、品名の末尾が0の場合は9で埋められている。
+     *
+     * @param hinmei 品名
+     * @param num 最終文字
+     */
+    private int countHinmei(String hinmei,String num ){
+        int count=0;
+        for(int i = 1; i < hinmei.length(); i++){
+            if (StringUtil.nullToBlank(hinmei.charAt(hinmei.length() - i)).equals(num)){
+                count++;
+            }else{
+                break;
+            }
+        }
+        return count;
     }
 }
