@@ -127,7 +127,8 @@ public class GXHDO101A implements Serializable {
     private static final String FORM_ID_GAIKAN_KENSA = "GXHDO101B046";
     private static final String FORM_ID_TP_SAGYO = "GXHDO101B048";
     private static final String FORM_ID_TP_CHECK = "GXHDO101B049";
-    private static final String[] ADD_FORM_IDS = new String[]{"GXHDO101B019", "GXHDO101B020", "GXHDO101B021", "GXHDO101B022", "GXHDO101B026", "GXHDO101B029", "GXHDO101B030", "GXHDO101B038", "GXHDO101B040", "GXHDO101B041", "GXHDO101B042", "GXHDO101B043", "GXHDO101B046", "GXHDO101B047", "GXHDO101B048", "GXHDO101B049"};
+    private static final String FORM_ID_DENKITOKUSEI_TWA = "GXHDO101B053";
+    private static final String[] ADD_FORM_IDS = new String[]{"GXHDO101B019", "GXHDO101B020", "GXHDO101B021", "GXHDO101B022", "GXHDO101B026", "GXHDO101B029", "GXHDO101B030", "GXHDO101B038", "GXHDO101B040", "GXHDO101B041", "GXHDO101B042", "GXHDO101B043", "GXHDO101B046", "GXHDO101B047", "GXHDO101B048", "GXHDO101B049", "GXHDO101B053"};
 
     /**
      * DataSource(wip)
@@ -524,6 +525,7 @@ public class GXHDO101A implements Serializable {
             mapFxhdd03Info.put(FORM_ID_DENKITOKUSEI_3TANSHI_4TANSHI, loadFxhdd03InfoList(queryRunnerDoc, strKojyo, strLotNo, strEdaban, FORM_ID_DENKITOKUSEI_3TANSHI_4TANSHI));
             mapFxhdd03Info.put(FORM_ID_DENKITOKUSEI_IPPANHIN, loadFxhdd03InfoList(queryRunnerDoc, strKojyo, strLotNo, strEdaban, FORM_ID_DENKITOKUSEI_IPPANHIN));
             mapFxhdd03Info.put(FORM_ID_DENKITOKUSEI_NETSUSHORI, loadFxhdd03InfoList(queryRunnerDoc, strKojyo, strLotNo, strEdaban, FORM_ID_DENKITOKUSEI_NETSUSHORI));
+            mapFxhdd03Info.put(FORM_ID_DENKITOKUSEI_TWA, loadFxhdd03InfoList(queryRunnerDoc, strKojyo, strLotNo, strEdaban, FORM_ID_DENKITOKUSEI_TWA));
             mapFxhdd03Info.put(FORM_ID_GAIKAN_KENSA, loadFxhdd03InfoList(queryRunnerDoc, strKojyo, strLotNo, strEdaban, FORM_ID_GAIKAN_KENSA));
             mapFxhdd03Info.put(FORM_ID_TP_CHECK, loadFxhdd03InfoList(queryRunnerDoc, strKojyo, strLotNo, strEdaban, FORM_ID_TP_CHECK));
 
@@ -3097,7 +3099,7 @@ public class GXHDO101A implements Serializable {
      */
     private void setDenkitokuseiSessionData(String formId, HttpSession session) throws SQLException {
 
-        if (!FORM_ID_DENKITOKUSEI_ESI.equals(formId) && !FORM_ID_DENKITOKUSEI_3TANSHI_4TANSHI.equals(formId) && !FORM_ID_DENKITOKUSEI_IPPANHIN.equals(formId)) {
+        if (!FORM_ID_DENKITOKUSEI_ESI.equals(formId) && !FORM_ID_DENKITOKUSEI_3TANSHI_4TANSHI.equals(formId) && !FORM_ID_DENKITOKUSEI_IPPANHIN.equals(formId) && !FORM_ID_DENKITOKUSEI_TWA.equals(formId)) {
             // 電気特性の画面ID以外は処理なし
             return;
         }
