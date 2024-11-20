@@ -114,7 +114,7 @@
                         <ui:repeat value="#{gXHDO101B053A.buttonListTop}" var="item" varStatus="stat">
                             <p:commandButton id="buttonId" value="#{item.buttonName}" rendered="#{item.render}" disabled="#{!item.enabled}"
                                              style="margin-left:4px;margin-bottom:2px;font-size:#{item.fontSize}px;color:#{item.fontColor};background:#{item.backColor};"
-                                             actionListener="#{gXHDO101B053A.btnClick(item.buttonId,null,false)}" process="@form" update="@form" async="false"
+                                             actionListener="#{gXHDO101B053A.btnClick(item.buttonId)}" process="@form" update="@form" async="false"
                                              oncomplete="cmdButtonOncomplete(args);" />       
                         </ui:repeat>
                     </p:panel>
@@ -172,11 +172,6 @@
                                         <p:column style="border-right-style: hidden; width: 50px;">
                                             <br>
                                             </br>
-                                            <h:outputText value="" style="margin-left: 18px;" />
-                                        </p:column>
-                                        <p:column style="border-right-style: hidden; width: 50px;">
-                                            <br>
-                                            </br>
                                             <h:outputText value="IR" style="margin-left: 18px;" />
                                         </p:column>
                                         <p:column style="border-right-style: hidden; ">
@@ -224,11 +219,6 @@
                                         </p:column>
                                     </p:row>
                                     <p:row class="taidenatsu_table_tr">
-                                        <p:column style="border-right-style: hidden; ">
-                                            <h:selectOneRadio value="#{selectOneRadioBean.verticalRadio}" layout="pageDirection">
-                                                <f:selectItem itemValue="1" itemLabel="" />
-                                            </h:selectOneRadio>
-                                        </p:column>
                                         <p:column style="border-right-style: hidden; ">
                                             <h:outputText value="IR1" styleClass="taidenatsu_table_rowheader_label" />
                                         </p:column>
@@ -345,11 +335,6 @@
                                     </p:row>
                                     <p:row class="taidenatsu_table_tr">
                                         <p:column style="border-right-style: hidden; ">
-                                            <h:selectOneRadio value="#{selectOneRadioBean.verticalRadio}" layout="pageDirection">
-                                                <f:selectItem itemValue="1" itemLabel="" />
-                                            </h:selectOneRadio>
-                                        </p:column>
-                                        <p:column style="border-right-style: hidden; ">
                                             <h:outputText value="IR2" styleClass="taidenatsu_table_rowheader_label" />
                                         </p:column>
                                         <p:column style="border-right-style: hidden; ">
@@ -464,11 +449,6 @@
                                         </p:column>
                                     </p:row>
                                     <p:row class="taidenatsu_table_tr">
-                                        <p:column style="border-right-style: hidden; ">
-                                            <h:selectOneRadio value="#{selectOneRadioBean.verticalRadio}" layout="pageDirection">
-                                                <f:selectItem itemValue="1" itemLabel="" />
-                                            </h:selectOneRadio>
-                                        </p:column>
                                         <p:column style="border-right-style: hidden; ">
                                             <h:outputText value="IR3" styleClass="taidenatsu_table_rowheader_label" />
                                         </p:column>
@@ -585,11 +565,6 @@
                                     </p:row>
                                     <p:row class="taidenatsu_table_tr">
                                         <p:column style="border-right-style: hidden; ">
-                                            <h:selectOneRadio value="#{selectOneRadioBean.verticalRadio}" layout="pageDirection">
-                                                <f:selectItem itemValue="1" itemLabel="" />
-                                            </h:selectOneRadio>
-                                        </p:column>
-                                        <p:column style="border-right-style: hidden; ">
                                             <h:outputText value="IR4" styleClass="taidenatsu_table_rowheader_label" />
                                         </p:column>
                                         <p:column style="border-right-style: hidden; ">
@@ -704,11 +679,6 @@
                                         </p:column>
                                     </p:row>
                                     <p:row class="taidenatsu_table_tr">
-                                        <p:column style="border-right-style: hidden; ">
-                                            <h:selectOneRadio value="#{selectOneRadioBean.verticalRadio}" layout="pageDirection">
-                                                <f:selectItem itemValue="1" itemLabel="" />
-                                            </h:selectOneRadio>
-                                        </p:column>
                                         <p:column style="border-right-style: hidden; ">
                                             <h:outputText value="IR5" styleClass="taidenatsu_table_rowheader_label" />
                                         </p:column>
@@ -825,11 +795,6 @@
                                     </p:row>
                                     <p:row class="taidenatsu_table_tr">
                                         <p:column style="border-right-style: hidden; ">
-                                            <h:selectOneRadio value="#{selectOneRadioBean.verticalRadio}" layout="pageDirection">
-                                                <f:selectItem itemValue="1" itemLabel="" />
-                                            </h:selectOneRadio>
-                                        </p:column>
-                                        <p:column style="border-right-style: hidden; ">
                                             <h:outputText value="IR6" styleClass="taidenatsu_table_rowheader_label" />
                                         </p:column>
                                         <p:column style="border-right-style: hidden; ">
@@ -945,11 +910,6 @@
                                     </p:row>
                                     <p:row class="taidenatsu_table_tr">
                                         <p:column style="border-right-style: hidden; ">
-                                            <h:selectOneRadio value="#{selectOneRadioBean.verticalRadio}" layout="pageDirection">
-                                                <f:selectItem itemValue="1" itemLabel="" />
-                                            </h:selectOneRadio>
-                                        </p:column>
-                                        <p:column style="border-right-style: hidden; ">
                                             <h:outputText value="IR7" styleClass="taidenatsu_table_rowheader_label" />
                                         </p:column>
                                         <p:column style="border-right-style: hidden; ">
@@ -1064,11 +1024,6 @@
                                         </p:column>
                                     </p:row>
                                     <p:row class="taidenatsu_table_tr">
-                                        <p:column style="border-right-style: hidden; ">
-                                            <h:selectOneRadio value="#{selectOneRadioBean.verticalRadio}" layout="pageDirection">
-                                                <f:selectItem itemValue="1" itemLabel="" />
-                                            </h:selectOneRadio>
-                                        </p:column>
                                         <p:column style="border-right-style: hidden; ">
                                             <h:outputText value="IR8" styleClass="taidenatsu_table_rowheader_label" />
                                         </p:column>
@@ -3463,7 +3418,7 @@
                         <ui:repeat value="#{gXHDO101B053A.buttonListBottom}" var="item" varStatus="stat">
                             <p:commandButton id="buttonId" value="#{item.buttonName}" rendered="#{item.render}" disabled="#{!item.enabled}"
                                              style="margin-left:4px;margin-bottom:2px;font-size:#{item.fontSize}px;color:#{item.fontColor};background:#{item.backColor};"
-                                             actionListener="#{gXHDO101B053A.btnClick(item.buttonId,null,false)}" process="@form" update="@form" async="false"
+                                             actionListener="#{gXHDO101B053A.btnClick(item.buttonId)}" process="@form" update="@form" async="false"
                                              oncomplete="cmdButtonOncomplete(args);" />       
                         </ui:repeat>
                     </p:panel>
