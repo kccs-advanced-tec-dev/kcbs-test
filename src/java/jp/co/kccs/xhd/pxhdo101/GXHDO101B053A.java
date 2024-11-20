@@ -14,23 +14,18 @@ import org.primefaces.event.TabChangeEvent;
  * <br>
  * システム名	品質DB(コンデンサ)<br>
  * <br>
- * 変更日	2019/12/28<br>
- * 計画書No	K1811-DS001<br>
- * 変更者	863 F.Zhang<br>
+ * 変更日	2024/10/15<br>
+ * 計画書No	MB2408-D009<br>
+ * 変更者	A.Hayashi<br>
  * 変更理由	新規作成<br>
- * <br>
- * 変更日	2020/10/20<br>
- * 計画書No	MB2008-DK001<br>
- * 変更者	863 sujialiang<br>
- * 変更理由	項目追加・変更<br>
  * <br>
  * ===============================================================================<br>
  */
 /**
  * GXHDO101B053A(電気特性・製品情報)
  *
- * @author 863 F.Zhang
- * @since 2019/12/28
+ * @author KCCS Aruba Hayashi
+ * @since 2024/10/15
  */
 @Named
 @ViewScoped

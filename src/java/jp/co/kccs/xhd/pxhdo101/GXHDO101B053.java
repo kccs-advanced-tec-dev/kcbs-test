@@ -55,7 +55,7 @@ import org.primefaces.context.RequestContext;
 /**
  * ===============================================================================<br>
  * <br>
- * システム名	品質情報管理システム<br>
+ * システム名	品質DB(コンデンサ)<br>
  * <br>
  * 変更日	2024/10/15<br>
  * 計画書No	MB2408-D009<br>
@@ -67,8 +67,8 @@ import org.primefaces.context.RequestContext;
 /**
  * GXHD101B053(電気特性・TWA)
  *
- * @author 863 F.Zhang
- * @since 2019/12/30
+ * @author KCCS Aruba Hayashi
+ * @since 2024/10/15
  */
 public class GXHDO101B053 implements IFormLogic {
 
@@ -1130,9 +1130,9 @@ public class GXHDO101B053 implements IFormLogic {
              
             // 実績情報の取得
             List<Jisseki> jissekiData = loadJissekiData(queryRunnerWip, lotNo, fxhbm03DataArr);
-            if(jissekiData != null && jissekiData.size() > 0){
+            if(jissekiData != null && 0 < jissekiData.size()){
                 int dbShorisu = jissekiData.get(0).getSyorisuu(); //処理数               
-                if(dbShorisu > 0){
+                if(0 < dbShorisu){
                     syorisuu = String.valueOf(dbShorisu);                
                 }
             }
@@ -7636,7 +7636,7 @@ public class GXHDO101B053 implements IFormLogic {
     private void setSetsubiData(ProcessData processData, FXHDD07 fxhdd07) {
         
         //製品情報
-        setItemData(processData, GXHDO101B053Const.SEIHIN_KENSA_BASHO, getKensaBasho(fxhdd07.getKensabasyo())); //検査場所
+        setItemData(processData, GXHDO101B053Const.SEIHIN_KENSA_BASHO, KensaBashoToRename(fxhdd07.getKensabasyo())); //検査場所
         setItemData(processData, GXHDO101B053Const.SEIHIN_SENBETSU_KAISHI_DAY, StringUtil.nullToBlank(DateUtil.formattedTimestamp(fxhdd07.getSenbetukaisinitijitwa(), "yyMMdd"))); //選別開始日
         setItemData(processData, GXHDO101B053Const.SEIHIN_SENBETSU_KAISHI_TIME, StringUtil.nullToBlank(DateUtil.formattedTimestamp(fxhdd07.getSenbetukaisinitijitwa(), "HHmm"))); //選別開始時間
         setItemData(processData, GXHDO101B053Const.SEIHIN_SENBETSU_SHURYO_DAY, StringUtil.nullToBlank(DateUtil.formattedTimestamp(fxhdd07.getSenbetusyuryounitijitwa(), "yyMMdd"))); //選別終了日
@@ -7902,7 +7902,7 @@ public class GXHDO101B053 implements IFormLogic {
      * @param kensaBasho 検査場所
      * @return kensaBashoName 検査場所名
      */
-    public String getKensaBasho(String kensaBasho){
+    public String KensaBashoToRename(String kensaBasho){
         
         // 検査場所がnullの場合は空文字を設定
         if(kensaBasho == null){
@@ -8190,7 +8190,7 @@ public class GXHDO101B053 implements IFormLogic {
             }
         }
 
-        if (ruikeisyorisuuValue.add(ryohinsuuValue).compareTo(saidaisyorisuuValue) > 0) {
+        if (0 < ruikeisyorisuuValue.add(ryohinsuuValue).compareTo(saidaisyorisuuValue)) {
             processData.setWarnMessage(MessageUtil.getMessage("XHD-000230"));
         }
         return processData;
