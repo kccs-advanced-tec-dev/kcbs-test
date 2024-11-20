@@ -1769,8 +1769,6 @@ public class SrDenkitokuseiesi {
      * IR⑧ 測定範囲エンド 単位
      */
     private String ir8sokuteihaniendtani;
-    
-    //=============================================================================
 
     /**
      * 工場ｺｰﾄﾞ
@@ -6235,8 +6233,6 @@ public class SrDenkitokuseiesi {
     public void setDeleteflag(Integer deleteflag) {
         this.deleteflag = deleteflag;
     }
-    
-   //=============================================================================
     
     /**
      * 原点復帰動作

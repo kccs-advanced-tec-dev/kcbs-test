@@ -589,19 +589,6 @@ public class GXHDO101B053B implements Serializable {
      * 耐電圧 良品範囲下限 単位8
      */
     private FXHDD01 ryohinHaniLowTani8;    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-  
 
     /**
      * コンストラクタ
