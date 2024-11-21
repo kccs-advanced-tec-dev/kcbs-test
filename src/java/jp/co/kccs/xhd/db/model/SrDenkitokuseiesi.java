@@ -80,7 +80,18 @@ public class SrDenkitokuseiesi {
      * 後工程指示内容
      */
     private String atokouteisijinaiyou;
-
+    
+    /**
+     * 最大処理数
+     */
+    private Integer saidaisyorisuu;
+    
+    /**
+     * 累計処理数
+     */
+    private Integer ruikeisyorisuu;
+    
+    
     /**
      * 送り良品数
      */
@@ -1415,6 +1426,349 @@ public class SrDenkitokuseiesi {
      * 削除ﾌﾗｸﾞ
      */
     private Integer deleteflag;
+    
+    //=============================================================================
+    
+    /**
+     * 原点復帰動作
+     */
+    private String gentenhukkidousa;
+    
+    /**
+     * 測定機1,2動作確認
+     */
+    private String sokuteiki12dousakakunin;
+    
+    /**
+     * 測定ピン(フロント)外観
+     */
+    private String sokuteipinfront;
+    
+    /**
+     * 測定ピン(リア)外観
+     */
+    private String sokuteipinrear;
+    
+    /**
+     * IR① 電流中心値スタート
+     */
+    private BigDecimal ir1denryustart;
+    
+    /**
+     * IR① 電流中心値スタート 単位
+     */
+    private String ir1denryustarttani;
+    
+    /**
+     * IR① 電流中心値エンド
+     */
+    private BigDecimal ir1denryuend;
+    
+    /**
+     * IR① 電流中心値エンド 単位
+     */
+    private String ir1denryuendtani;
+    
+    /**
+     * IR① 測定範囲スタート
+     */
+    private BigDecimal ir1sokuteihanistart;
+    
+    /**
+     * IR① 測定範囲スタート 単位
+     */
+    private String ir1sokuteihanistarttani;
+    
+    /**
+     * IR① 測定範囲エンド
+     */
+    private BigDecimal ir1sokuteihaniend;
+    
+    /**
+     * IR① 測定範囲エンド 単位
+     */
+    private String ir1sokuteihaniendtani;
+    
+    /**
+     * IR② 電流中心値スタート
+     */
+    private BigDecimal ir2denryustart;
+    
+    /**
+     * IR② 電流中心値スタート 単位
+     */
+    private String ir2denryustarttani;
+    
+    /**
+     * IR② 電流中心値エンド
+     */
+    private BigDecimal ir2denryuend;
+    
+    /**
+     * IR② 電流中心値エンド 単位
+     */
+    private String ir2denryuendtani;
+    
+    /**
+     * IR② 測定範囲スタート
+     */
+    private BigDecimal ir2sokuteihanistart;
+    
+    /**
+     * IR② 測定範囲スタート 単位
+     */
+    private String ir2sokuteihanistarttani;
+    
+    /**
+     * IR② 測定範囲エンド
+     */
+    private BigDecimal ir2sokuteihaniend;
+    
+    /**
+     * IR② 測定範囲エンド 単位
+     */
+    private String ir2sokuteihaniendtani;
+    
+    /**
+     * IR③ 電流中心値スタート
+     */
+    private BigDecimal ir3denryustart;
+    
+    /**
+     * IR③ 電流中心値スタート 単位
+     */
+    private String ir3denryustarttani;
+    
+    /**
+     * IR③ 電流中心値エンド
+     */
+    private BigDecimal ir3denryuend;
+    
+    /**
+     * IR③ 電流中心値エンド 単位
+     */
+    private String ir3denryuendtani;
+    
+    /**
+     * IR③ 測定範囲スタート
+     */
+    private BigDecimal ir3sokuteihanistart;
+    
+    /**
+     * IR③ 測定範囲スタート 単位
+     */
+    private String ir3sokuteihanistarttani;
+    
+    /**
+     * IR③ 測定範囲エンド
+     */
+    private BigDecimal ir3sokuteihaniend;
+    
+    /**
+     * IR③ 測定範囲エンド 単位
+     */
+    private String ir3sokuteihaniendtani;
+    
+    
+    /**
+     * IR④ 電流中心値スタート
+     */
+    private BigDecimal ir4denryustart;
+    
+    /**
+     * IR④ 電流中心値スタート 単位
+     */
+    private String ir4denryustarttani;
+    
+    /**
+     * IR④ 電流中心値エンド
+     */
+    private BigDecimal ir4denryuend;
+    
+    /**
+     * IR④ 電流中心値エンド 単位
+     */
+    private String ir4denryuendtani;
+    
+    /**
+     * IR④ 測定範囲スタート
+     */
+    private BigDecimal ir4sokuteihanistart;
+    
+    /**
+     * IR④ 測定範囲スタート 単位
+     */
+    private String ir4sokuteihanistarttani;
+    
+    /**
+     * IR④ 測定範囲エンド
+     */
+    private BigDecimal ir4sokuteihaniend;
+    
+    /**
+     * IR④ 測定範囲エンド 単位
+     */
+    private String ir4sokuteihaniendtani;
+    
+    /**
+     * IR⑤ 電流中心値スタート
+     */
+    private BigDecimal ir5denryustart;
+    
+    /**
+     * IR⑤ 電流中心値スタート 単位
+     */
+    private String ir5denryustarttani;
+    
+    /**
+     * IR⑤ 電流中心値エンド
+     */
+    private BigDecimal ir5denryuend;
+    
+    /**
+     * IR⑤ 電流中心値エンド 単位
+     */
+    private String ir5denryuendtani;
+    
+    /**
+     * IR⑤ 測定範囲スタート
+     */
+    private BigDecimal ir5sokuteihanistart;
+    
+    /**
+     * IR⑤ 測定範囲スタート 単位
+     */
+    private String ir5sokuteihanistarttani;
+    
+    /**
+     * IR⑤ 測定範囲エンド
+     */
+    private BigDecimal ir5sokuteihaniend;
+    
+    /**
+     * IR⑤ 測定範囲エンド 単位
+     */
+    private String ir5sokuteihaniendtani;
+    
+    /**
+     * IR⑥ 電流中心値スタート
+     */
+    private BigDecimal ir6denryustart;
+    
+    /**
+     * IR⑥ 電流中心値スタート 単位
+     */
+    private String ir6denryustarttani;
+    
+    /**
+     * IR⑥ 電流中心値エンド
+     */
+    private BigDecimal ir6denryuend;
+    
+    /**
+     * IR⑥ 電流中心値エンド 単位
+     */
+    private String ir6denryuendtani;
+    
+    /**
+     * IR⑥ 測定範囲スタート
+     */
+    private BigDecimal ir6sokuteihanistart;
+    
+    /**
+     * IR⑥ 測定範囲スタート 単位
+     */
+    private String ir6sokuteihanistarttani;
+    
+    /**
+     * IR⑥ 測定範囲エンド
+     */
+    private BigDecimal ir6sokuteihaniend;
+    
+    /**
+     * IR⑥ 測定範囲エンド 単位
+     */
+    private String ir6sokuteihaniendtani;
+    
+    /**
+     * IR⑦ 電流中心値スタート
+     */
+    private BigDecimal ir7denryustart;
+    
+    /**
+     * IR⑦ 電流中心値スタート 単位
+     */
+    private String ir7denryustarttani;
+    
+    /**
+     * IR⑦ 電流中心値エンド
+     */
+    private BigDecimal ir7denryuend;
+    
+    /**
+     * IR⑦ 電流中心値エンド 単位
+     */
+    private String ir7denryuendtani;
+    
+    /**
+     * IR⑦ 測定範囲スタート
+     */
+    private BigDecimal ir7sokuteihanistart;
+    
+    /**
+     * IR⑦ 測定範囲スタート 単位
+     */
+    private String ir7sokuteihanistarttani;
+    
+    /**
+     * IR⑦ 測定範囲エンド
+     */
+    private BigDecimal ir7sokuteihaniend;
+    
+    /**
+     * IR⑦ 測定範囲エンド 単位
+     */
+    private String ir7sokuteihaniendtani;
+    
+        /**
+     * IR⑧ 電流中心値スタート
+     */
+    private BigDecimal ir8denryustart;
+    
+    /**
+     * IR⑧ 電流中心値スタート 単位
+     */
+    private String ir8denryustarttani;
+    
+    /**
+     * IR⑧ 電流中心値エンド
+     */
+    private BigDecimal ir8denryuend;
+    
+    /**
+     * IR⑧ 電流中心値エンド 単位
+     */
+    private String ir8denryuendtani;
+    
+    /**
+     * IR⑧ 測定範囲スタート
+     */
+    private BigDecimal ir8sokuteihanistart;
+    
+    /**
+     * IR⑧ 測定範囲スタート 単位
+     */
+    private String ir8sokuteihanistarttani;
+    
+    /**
+     * IR⑧ 測定範囲エンド
+     */
+    private BigDecimal ir8sokuteihaniend;
+    
+    /**
+     * IR⑧ 測定範囲エンド 単位
+     */
+    private String ir8sokuteihaniendtani;
 
     /**
      * 工場ｺｰﾄﾞ
@@ -1591,7 +1945,39 @@ public class SrDenkitokuseiesi {
     public void setOkuriryouhinsuu(Integer okuriryouhinsuu) {
         this.okuriryouhinsuu = okuriryouhinsuu;
     }
+    
+    /**
+     * 累計処理数
+     * @return the ruikeisyorisuu
+     */
+    public Integer getRuikeisyorisuu() {
+        return ruikeisyorisuu;
+    }
 
+    /**
+     * 累計処理数
+     * @param ruikeisyorisuu the ruikeisyorisuu to set
+     */
+    public void setRuikeisyorisuu(Integer ruikeisyorisuu) {
+        this.ruikeisyorisuu = ruikeisyorisuu;
+    }
+    
+    /**
+     * 最大処理数
+     * @return the saidaisyorisuu
+     */
+    public Integer getSaidaisyorisuu() {
+        return saidaisyorisuu;
+    }
+
+    /**
+     * 最大処理数
+     * @param saidaisyorisuu the saidaisyorisuu to set
+     */
+    public void setSaidaisyorisuu(Integer saidaisyorisuu) {
+        this.saidaisyorisuu = saidaisyorisuu;
+    }
+    
     /**
      * 受入れ単位重量
      * @return the ukeiretannijyuryo
@@ -5847,5 +6233,1095 @@ public class SrDenkitokuseiesi {
     public void setDeleteflag(Integer deleteflag) {
         this.deleteflag = deleteflag;
     }
+    
+    /**
+     * 原点復帰動作
+     * @return the gentenhukkidousa
+     */
+    public String getGentenhukkidousa() {
+        return gentenhukkidousa;
+    }
+    
+    /**
+     * 原点復帰動作
+     * @param gentenhukkidousa the gentenhukkidousa to set
+     */
+    public void setGentenhukkidousa(String gentenhukkidousa) {
+        this.gentenhukkidousa = gentenhukkidousa;
+    }
+    
+    /**
+     * 測定機1,2動作確認
+     * @return the sokuteiki12dousakakunin
+     */
+    public String getSokuteiki12dousakakunin() {
+        return sokuteiki12dousakakunin;
+    }
+    
+    /**
+     * 測定機1,2動作確認
+     * @param sokuteiki12dousakakunin the sokuteiki12dousakakunin to set
+     */
+    public void setSokuteiki12dousakakunin(String sokuteiki12dousakakunin) {
+        this.sokuteiki12dousakakunin = sokuteiki12dousakakunin;
+    }
+    
+    /**
+     * 測定ピン(フロント)外観
+     * @return the sokuteipinfront
+     */
+    public String getSokuteipinfront() {
+        return sokuteipinfront;
+    }
+    
+    /**
+     * 測定ピン(フロント)外観
+     * @param sokuteipinfront the sokuteipinfront to set
+     */
+    public void setSokuteipinfront(String sokuteipinfront) {
+        this.sokuteipinfront = sokuteipinfront;
+    }
+    
+    /**
+     * 測定ピン(リア)外観
+     * @return the sokuteipinrear
+     */
+    public String getSokuteipinrear() {
+        return sokuteipinrear;
+    }
+    
+    /**
+     * 測定ピン(リア)外観
+     * @param sokuteipinrear the sokuteipinrear to set
+     */
+    public void setSokuteipinrear(String sokuteipinrear) {
+        this.sokuteipinrear = sokuteipinrear;
+    }
+    
+    /**
+     * IR① 電流中心値スタート
+     * @return ir1denryustart
+     */
+    public BigDecimal getIr1denryustart() {
+        return ir1denryustart;
+    }
+
+    /**
+     * IR① 電流中心値スタート
+     * @param ir1denryustart 
+     */
+    public void setIr1denryustart(BigDecimal ir1denryustart) {
+        this.ir1denryustart = ir1denryustart;
+    }
+    
+    /**
+     * IR① 電流中心値スタート 単位
+     * @return ir1denryustarttani
+     */
+    public String getIr1denryustarttani() {
+        return ir1denryustarttani;
+    }
+
+    /**
+     * IR① 電流中心値スタート 単位
+     * @param ir1denryustarttani 
+     */
+    public void setIr1denryustarttani(String ir1denryustarttani) {
+        this.ir1denryustarttani = ir1denryustarttani;
+    }
+    
+    /**
+     * IR① 電流中心値エンド
+     * @return ir1denryuend
+     */
+    public BigDecimal getIr1denryuend() {
+        return ir1denryuend;
+    }
+
+    /**
+     * IR① 電流中心値エンド
+     * @param ir1denryuend 
+     */
+    public void setIr1denryuend(BigDecimal ir1denryuend) {
+        this.ir1denryuend = ir1denryuend;
+    }
+    
+    /**
+     * IR① 電流中心値エンド 単位
+     * @return ir1denryuendtani
+     */
+    public String getIr1denryuendtani() {
+        return ir1denryuendtani;
+    }
+
+    /**
+     * IR① 電流中心値エンド 単位
+     * @param ir1denryuendtani 
+     */
+    public void setIr1denryuendtani(String ir1denryuendtani) {
+        this.ir1denryuendtani = ir1denryuendtani;
+    }
+    
+    /**
+     * IR① 測定範囲スタート
+     * @return ir1sokuteihanistart
+     */
+    public BigDecimal getIr1sokuteihanistart() {
+        return ir1sokuteihanistart;
+    }
+
+    /**
+     * IR① 測定範囲スタート
+     * @param ir1sokuteihanistart 
+     */
+    public void setIr1sokuteihanistart(BigDecimal ir1sokuteihanistart) {
+        this.ir1sokuteihanistart = ir1sokuteihanistart;
+    }
+    
+    /**
+     * IR① 測定範囲スタート 単位
+     * @return ir1sokuteihanistarttani
+     */
+    public String getIr1sokuteihanistarttani() {
+        return ir1sokuteihanistarttani;
+    }
+
+    /**
+     * IR① 測定範囲スタート 単位
+     * @param ir1sokuteihanistarttani 
+     */
+    public void setIr1sokuteihanistarttani(String ir1sokuteihanistarttani) {
+        this.ir1sokuteihanistarttani = ir1sokuteihanistarttani;
+    }
+    
+    /**
+     * IR① 測定範囲エンド
+     * @return ir1sokuteihaniend
+     */
+    public BigDecimal getIr1sokuteihaniend() {
+        return ir1sokuteihaniend;
+    }
+
+    /**
+     * IR① 測定範囲エンド
+     * @param ir1sokuteihaniend 
+     */
+    public void setIr1sokuteihaniend(BigDecimal ir1sokuteihaniend) {
+        this.ir1sokuteihaniend = ir1sokuteihaniend;
+    }
+    
+    /**
+     * IR① 測定範囲エンド 単位
+     * @return ir1sokuteihaniendtani
+     */
+    public String getIr1sokuteihaniendtani() {
+        return ir1sokuteihaniendtani;
+    }
+
+    /**
+     * IR① 測定範囲エンド 単位
+     * @param ir1sokuteihaniendtani 
+     */
+    public void setIr1sokuteihaniendtani(String ir1sokuteihaniendtani) {
+        this.ir1sokuteihaniendtani = ir1sokuteihaniendtani;
+    }
+    
+    /**
+     * IR② 電流中心値スタート
+     * @return ir2denryustart
+     */
+    public BigDecimal getIr2denryustart() {
+        return ir2denryustart;
+    }
+
+    /**
+     * IR② 電流中心値スタート
+     * @param ir2denryustart 
+     */
+    public void setIr2denryustart(BigDecimal ir2denryustart) {
+        this.ir2denryustart = ir2denryustart;
+    }
+    
+    /**
+     * IR② 電流中心値スタート 単位
+     * @return ir2denryustarttani
+     */
+    public String getIr2denryustarttani() {
+        return ir2denryustarttani;
+    }
+
+    /**
+     * IR② 電流中心値スタート 単位
+     * @param ir2denryustarttani 
+     */
+    public void setIr2denryustarttani(String ir2denryustarttani) {
+        this.ir2denryustarttani = ir2denryustarttani;
+    }
+    
+    /**
+     * IR② 電流中心値エンド
+     * @return ir2denryuend
+     */
+    public BigDecimal getIr2denryuend() {
+        return ir2denryuend;
+    }
+
+    /**
+     * IR② 電流中心値エンド
+     * @param ir2denryuend 
+     */
+    public void setIr2denryuend(BigDecimal ir2denryuend) {
+        this.ir2denryuend = ir2denryuend;
+    }
+    
+    /**
+     * IR② 電流中心値エンド 単位
+     * @return ir2denryuendtani
+     */
+    public String getIr2denryuendtani() {
+        return ir2denryuendtani;
+    }
+
+    /**
+     * IR② 電流中心値エンド 単位
+     * @param ir2denryuendtani 
+     */
+    public void setIr2denryuendtani(String ir2denryuendtani) {
+        this.ir2denryuendtani = ir2denryuendtani;
+    }
+    
+    /**
+     * IR② 測定範囲スタート
+     * @return ir2sokuteihanistart
+     */
+    public BigDecimal getIr2sokuteihanistart() {
+        return ir2sokuteihanistart;
+    }
+
+    /**
+     * IR② 測定範囲スタート
+     * @param ir2sokuteihanistart 
+     */
+    public void setIr2sokuteihanistart(BigDecimal ir2sokuteihanistart) {
+        this.ir2sokuteihanistart = ir2sokuteihanistart;
+    }
+    
+    /**
+     * IR② 測定範囲スタート 単位
+     * @return ir2sokuteihanistarttani
+     */
+    public String getIr2sokuteihanistarttani() {
+        return ir2sokuteihanistarttani;
+    }
+
+    /**
+     * IR② 測定範囲スタート 単位
+     * @param ir2sokuteihanistarttani 
+     */
+    public void setIr2sokuteihanistarttani(String ir2sokuteihanistarttani) {
+        this.ir2sokuteihanistarttani = ir2sokuteihanistarttani;
+    }
+    
+    /**
+     * IR② 測定範囲エンド
+     * @return ir2sokuteihaniend
+     */
+    public BigDecimal getIr2sokuteihaniend() {
+        return ir2sokuteihaniend;
+    }
+
+    /**
+     * IR② 測定範囲エンド
+     * @param ir2sokuteihaniend 
+     */
+    public void setIr2sokuteihaniend(BigDecimal ir2sokuteihaniend) {
+        this.ir2sokuteihaniend = ir2sokuteihaniend;
+    }
+    
+    /**
+     * IR② 測定範囲エンド 単位
+     * @return ir2sokuteihaniendtani
+     */
+    public String getIr2sokuteihaniendtani() {
+        return ir2sokuteihaniendtani;
+    }
+
+    /**
+     * IR② 測定範囲エンド 単位
+     * @param ir2sokuteihaniendtani 
+     */
+    public void setIr2sokuteihaniendtani(String ir2sokuteihaniendtani) {
+        this.ir2sokuteihaniendtani = ir2sokuteihaniendtani;
+    }
+    
+    /**
+     * IR③ 電流中心値スタート
+     * @return ir3denryustart
+     */
+    public BigDecimal getIr3denryustart() {
+        return ir3denryustart;
+    }
+
+    /**
+     * IR③ 電流中心値スタート
+     * @param ir3denryustart 
+     */
+    public void setIr3denryustart(BigDecimal ir3denryustart) {
+        this.ir3denryustart = ir3denryustart;
+    }
+    
+    /**
+     * IR③ 電流中心値スタート 単位
+     * @return ir3denryustarttani
+     */
+    public String getIr3denryustarttani() {
+        return ir3denryustarttani;
+    }
+
+    /**
+     * IR③ 電流中心値スタート 単位
+     * @param ir3denryustarttani 
+     */
+    public void setIr3denryustarttani(String ir3denryustarttani) {
+        this.ir3denryustarttani = ir3denryustarttani;
+    }
+    
+    /**
+     * IR③ 電流中心値エンド
+     * @return ir3denryuend
+     */
+    public BigDecimal getIr3denryuend() {
+        return ir3denryuend;
+    }
+
+    /**
+     * IR③ 電流中心値エンド
+     * @param ir3denryuend 
+     */
+    public void setIr3denryuend(BigDecimal ir3denryuend) {
+        this.ir3denryuend = ir3denryuend;
+    }
+    
+    /**
+     * IR③ 電流中心値エンド 単位
+     * @return ir3denryuendtani
+     */
+    public String getIr3denryuendtani() {
+        return ir3denryuendtani;
+    }
+
+    /**
+     * IR③ 電流中心値エンド 単位
+     * @param ir3denryuendtani 
+     */
+    public void setIr3denryuendtani(String ir3denryuendtani) {
+        this.ir3denryuendtani = ir3denryuendtani;
+    }
+    
+    /**
+     * IR③ 測定範囲スタート
+     * @return ir3sokuteihanistart
+     */
+    public BigDecimal getIr3sokuteihanistart() {
+        return ir3sokuteihanistart;
+    }
+
+    /**
+     * IR③ 測定範囲スタート
+     * @param ir3sokuteihanistart 
+     */
+    public void setIr3sokuteihanistart(BigDecimal ir3sokuteihanistart) {
+        this.ir3sokuteihanistart = ir3sokuteihanistart;
+    }
+    
+    /**
+     * IR③ 測定範囲スタート 単位
+     * @return ir3sokuteihanistarttani
+     */
+    public String getIr3sokuteihanistarttani() {
+        return ir3sokuteihanistarttani;
+    }
+
+    /**
+     * IR③ 測定範囲スタート 単位
+     * @param ir3sokuteihanistarttani 
+     */
+    public void setIr3sokuteihanistarttani(String ir3sokuteihanistarttani) {
+        this.ir3sokuteihanistarttani = ir3sokuteihanistarttani;
+    }
+    
+    /**
+     * IR③ 測定範囲エンド
+     * @return ir3sokuteihaniend
+     */
+    public BigDecimal getIr3sokuteihaniend() {
+        return ir3sokuteihaniend;
+    }
+
+    /**
+     * IR③ 測定範囲エンド
+     * @param ir3sokuteihaniend 
+     */
+    public void setIr3sokuteihaniend(BigDecimal ir3sokuteihaniend) {
+        this.ir3sokuteihaniend = ir3sokuteihaniend;
+    }
+    
+    /**
+     * IR③ 測定範囲エンド 単位
+     * @return ir3sokuteihaniendtani
+     */
+    public String getIr3sokuteihaniendtani() {
+        return ir3sokuteihaniendtani;
+    }
+
+    /**
+     * IR③ 測定範囲エンド 単位
+     * @param ir3sokuteihaniendtani 
+     */
+    public void setIr3sokuteihaniendtani(String ir3sokuteihaniendtani) {
+        this.ir3sokuteihaniendtani = ir3sokuteihaniendtani;
+    }
+    
+    /**
+     * IR④ 電流中心値スタート
+     * @return ir4denryustart
+     */
+    public BigDecimal getIr4denryustart() {
+        return ir4denryustart;
+    }
+
+    /**
+     * IR④ 電流中心値スタート
+     * @param ir4denryustart 
+     */
+    public void setIr4denryustart(BigDecimal ir4denryustart) {
+        this.ir4denryustart = ir4denryustart;
+    }
+    
+    /**
+     * IR④ 電流中心値スタート 単位
+     * @return ir4denryustarttani
+     */
+    public String getIr4denryustarttani() {
+        return ir4denryustarttani;
+    }
+
+    /**
+     * IR④ 電流中心値スタート 単位
+     * @param ir4denryustarttani 
+     */
+    public void setIr4denryustarttani(String ir4denryustarttani) {
+        this.ir4denryustarttani = ir4denryustarttani;
+    }
+    
+    /**
+     * IR④ 電流中心値エンド
+     * @return ir4denryuend
+     */
+    public BigDecimal getIr4denryuend() {
+        return ir4denryuend;
+    }
+
+    /**
+     * IR④ 電流中心値エンド
+     * @param ir4denryuend 
+     */
+    public void setIr4denryuend(BigDecimal ir4denryuend) {
+        this.ir4denryuend = ir4denryuend;
+    }
+    
+    /**
+     * IR④ 電流中心値エンド 単位
+     * @return ir4denryuendtani
+     */
+    public String getIr4denryuendtani() {
+        return ir4denryuendtani;
+    }
+
+    /**
+     * IR④ 電流中心値エンド 単位
+     * @param ir4denryuendtani 
+     */
+    public void setIr4denryuendtani(String ir4denryuendtani) {
+        this.ir4denryuendtani = ir4denryuendtani;
+    }
+    
+    /**
+     * IR④ 測定範囲スタート
+     * @return ir4sokuteihanistart
+     */
+    public BigDecimal getIr4sokuteihanistart() {
+        return ir4sokuteihanistart;
+    }
+
+    /**
+     * IR④ 測定範囲スタート
+     * @param ir4sokuteihanistart 
+     */
+    public void setIr4sokuteihanistart(BigDecimal ir4sokuteihanistart) {
+        this.ir4sokuteihanistart = ir4sokuteihanistart;
+    }
+    
+    /**
+     * IR④ 測定範囲スタート 単位
+     * @return ir4sokuteihanistarttani
+     */
+    public String getIr4sokuteihanistarttani() {
+        return ir4sokuteihanistarttani;
+    }
+
+    /**
+     * IR④ 測定範囲スタート 単位
+     * @param ir4sokuteihanistarttani 
+     */
+    public void setIr4sokuteihanistarttani(String ir4sokuteihanistarttani) {
+        this.ir4sokuteihanistarttani = ir4sokuteihanistarttani;
+    }
+    
+    /**
+     * IR④ 測定範囲エンド
+     * @return ir4sokuteihaniend
+     */
+    public BigDecimal getIr4sokuteihaniend() {
+        return ir4sokuteihaniend;
+    }
+
+    /**
+     * IR④ 測定範囲エンド
+     * @param ir4sokuteihaniend 
+     */
+    public void setIr4sokuteihaniend(BigDecimal ir4sokuteihaniend) {
+        this.ir4sokuteihaniend = ir4sokuteihaniend;
+    }
+    
+    /**
+     * IR④ 測定範囲エンド 単位
+     * @return ir4sokuteihaniendtani
+     */
+    public String getIr4sokuteihaniendtani() {
+        return ir4sokuteihaniendtani;
+    }
+
+    /**
+     * IR④ 測定範囲エンド 単位
+     * @param ir4sokuteihaniendtani 
+     */
+    public void setIr4sokuteihaniendtani(String ir4sokuteihaniendtani) {
+        this.ir4sokuteihaniendtani = ir4sokuteihaniendtani;
+    }
+    
+        /**
+     * IR⑤ 電流中心値スタート
+     * @return ir5denryustart
+     */
+    public BigDecimal getIr5denryustart() {
+        return ir5denryustart;
+    }
+
+    /**
+     * IR⑤ 電流中心値スタート
+     * @param ir5denryustart 
+     */
+    public void setIr5denryustart(BigDecimal ir5denryustart) {
+        this.ir5denryustart = ir5denryustart;
+    }
+    
+    /**
+     * IR⑤ 電流中心値スタート 単位
+     * @return ir5denryustarttani
+     */
+    public String getIr5denryustarttani() {
+        return ir5denryustarttani;
+    }
+
+    /**
+     * IR⑤ 電流中心値スタート 単位
+     * @param ir5denryustarttani 
+     */
+    public void setIr5denryustarttani(String ir5denryustarttani) {
+        this.ir5denryustarttani = ir5denryustarttani;
+    }
+    
+    /**
+     * IR⑤ 電流中心値エンド
+     * @return ir5denryuend
+     */
+    public BigDecimal getIr5denryuend() {
+        return ir5denryuend;
+    }
+
+    /**
+     * IR⑤ 電流中心値エンド
+     * @param ir5denryuend 
+     */
+    public void setIr5denryuend(BigDecimal ir5denryuend) {
+        this.ir5denryuend = ir5denryuend;
+    }
+    
+    /**
+     * IR⑤ 電流中心値エンド 単位
+     * @return ir5denryuendtani
+     */
+    public String getIr5denryuendtani() {
+        return ir5denryuendtani;
+    }
+
+    /**
+     * IR⑤ 電流中心値エンド 単位
+     * @param ir5denryuendtani 
+     */
+    public void setIr5denryuendtani(String ir5denryuendtani) {
+        this.ir5denryuendtani = ir5denryuendtani;
+    }
+    
+    /**
+     * IR⑤ 測定範囲スタート
+     * @return ir5sokuteihanistart
+     */
+    public BigDecimal getIr5sokuteihanistart() {
+        return ir5sokuteihanistart;
+    }
+
+    /**
+     * IR⑤ 測定範囲スタート
+     * @param ir5sokuteihanistart 
+     */
+    public void setIr5sokuteihanistart(BigDecimal ir5sokuteihanistart) {
+        this.ir5sokuteihanistart = ir5sokuteihanistart;
+    }
+    
+    /**
+     * IR⑤ 測定範囲スタート 単位
+     * @return ir5sokuteihanistarttani
+     */
+    public String getIr5sokuteihanistarttani() {
+        return ir5sokuteihanistarttani;
+    }
+
+    /**
+     * IR⑤ 測定範囲スタート 単位
+     * @param ir5sokuteihanistarttani 
+     */
+    public void setIr5sokuteihanistarttani(String ir5sokuteihanistarttani) {
+        this.ir5sokuteihanistarttani = ir5sokuteihanistarttani;
+    }
+    
+    /**
+     * IR⑤ 測定範囲エンド
+     * @return ir5sokuteihaniend
+     */
+    public BigDecimal getIr5sokuteihaniend() {
+        return ir5sokuteihaniend;
+    }
+
+    /**
+     * IR⑤ 測定範囲エンド
+     * @param ir5sokuteihaniend 
+     */
+    public void setIr5sokuteihaniend(BigDecimal ir5sokuteihaniend) {
+        this.ir5sokuteihaniend = ir5sokuteihaniend;
+    }
+    
+    /**
+     * IR⑤ 測定範囲エンド 単位
+     * @return ir5sokuteihaniendtani
+     */
+    public String getIr5sokuteihaniendtani() {
+        return ir5sokuteihaniendtani;
+    }
+
+    /**
+     * IR⑤ 測定範囲エンド 単位
+     * @param ir5sokuteihaniendtani 
+     */
+    public void setIr5sokuteihaniendtani(String ir5sokuteihaniendtani) {
+        this.ir5sokuteihaniendtani = ir5sokuteihaniendtani;
+    }
+    
+    /**
+     * IR⑥ 電流中心値スタート
+     * @return ir6denryustart
+     */
+    public BigDecimal getIr6denryustart() {
+        return ir6denryustart;
+    }
+
+    /**
+     * IR⑥ 電流中心値スタート
+     * @param ir6denryustart 
+     */
+    public void setIr6denryustart(BigDecimal ir6denryustart) {
+        this.ir6denryustart = ir6denryustart;
+    }
+    
+    /**
+     * IR⑥ 電流中心値スタート 単位
+     * @return ir6denryustarttani
+     */
+    public String getIr6denryustarttani() {
+        return ir6denryustarttani;
+    }
+
+    /**
+     * IR⑥ 電流中心値スタート 単位
+     * @param ir6denryustarttani 
+     */
+    public void setIr6denryustarttani(String ir6denryustarttani) {
+        this.ir6denryustarttani = ir6denryustarttani;
+    }
+    
+    /**
+     * IR⑥ 電流中心値エンド
+     * @return ir6denryuend
+     */
+    public BigDecimal getIr6denryuend() {
+        return ir6denryuend;
+    }
+
+    /**
+     * IR⑥ 電流中心値エンド
+     * @param ir6denryuend 
+     */
+    public void setIr6denryuend(BigDecimal ir6denryuend) {
+        this.ir6denryuend = ir6denryuend;
+    }
+    
+    /**
+     * IR⑥ 電流中心値エンド 単位
+     * @return ir6denryuendtani
+     */
+    public String getIr6denryuendtani() {
+        return ir6denryuendtani;
+    }
+
+    /**
+     * IR⑥ 電流中心値エンド 単位
+     * @param ir6denryuendtani 
+     */
+    public void setIr6denryuendtani(String ir6denryuendtani) {
+        this.ir6denryuendtani = ir6denryuendtani;
+    }
+    
+    /**
+     * IR⑥ 測定範囲スタート
+     * @return ir6sokuteihanistart
+     */
+    public BigDecimal getIr6sokuteihanistart() {
+        return ir6sokuteihanistart;
+    }
+
+    /**
+     * IR⑥ 測定範囲スタート
+     * @param ir6sokuteihanistart 
+     */
+    public void setIr6sokuteihanistart(BigDecimal ir6sokuteihanistart) {
+        this.ir6sokuteihanistart = ir6sokuteihanistart;
+    }
+    
+    /**
+     * IR⑥ 測定範囲スタート 単位
+     * @return ir6sokuteihanistarttani
+     */
+    public String getIr6sokuteihanistarttani() {
+        return ir6sokuteihanistarttani;
+    }
+
+    /**
+     * IR⑥ 測定範囲スタート 単位
+     * @param ir6sokuteihanistarttani 
+     */
+    public void setIr6sokuteihanistarttani(String ir6sokuteihanistarttani) {
+        this.ir6sokuteihanistarttani = ir6sokuteihanistarttani;
+    }
+    
+    /**
+     * IR⑥ 測定範囲エンド
+     * @return ir6sokuteihaniend
+     */
+    public BigDecimal getIr6sokuteihaniend() {
+        return ir6sokuteihaniend;
+    }
+
+    /**
+     * IR⑥ 測定範囲エンド
+     * @param ir6sokuteihaniend 
+     */
+    public void setIr6sokuteihaniend(BigDecimal ir6sokuteihaniend) {
+        this.ir6sokuteihaniend = ir6sokuteihaniend;
+    }
+    
+    /**
+     * IR⑥ 測定範囲エンド 単位
+     * @return ir6sokuteihaniendtani
+     */
+    public String getIr6sokuteihaniendtani() {
+        return ir6sokuteihaniendtani;
+    }
+
+    /**
+     * IR⑥ 測定範囲エンド 単位
+     * @param ir6sokuteihaniendtani 
+     */
+    public void setIr6sokuteihaniendtani(String ir6sokuteihaniendtani) {
+        this.ir6sokuteihaniendtani = ir6sokuteihaniendtani;
+    }
+    
+    /**
+     * IR⑦ 電流中心値スタート
+     * @return ir7denryustart
+     */
+    public BigDecimal getIr7denryustart() {
+        return ir7denryustart;
+    }
+
+    /**
+     * IR⑦ 電流中心値スタート
+     * @param ir7denryustart 
+     */
+    public void setIr7denryustart(BigDecimal ir7denryustart) {
+        this.ir7denryustart = ir7denryustart;
+    }
+    
+    /**
+     * IR⑦ 電流中心値スタート 単位
+     * @return ir7denryustarttani
+     */
+    public String getIr7denryustarttani() {
+        return ir7denryustarttani;
+    }
+
+    /**
+     * IR⑦ 電流中心値スタート 単位
+     * @param ir7denryustarttani 
+     */
+    public void setIr7denryustarttani(String ir7denryustarttani) {
+        this.ir7denryustarttani = ir7denryustarttani;
+    }
+    
+    /**
+     * IR⑦ 電流中心値エンド
+     * @return ir7denryuend
+     */
+    public BigDecimal getIr7denryuend() {
+        return ir7denryuend;
+    }
+
+    /**
+     * IR⑦ 電流中心値エンド
+     * @param ir7denryuend 
+     */
+    public void setIr7denryuend(BigDecimal ir7denryuend) {
+        this.ir7denryuend = ir7denryuend;
+    }
+    
+    /**
+     * IR⑦ 電流中心値エンド 単位
+     * @return ir7denryuendtani
+     */
+    public String getIr7denryuendtani() {
+        return ir7denryuendtani;
+    }
+
+    /**
+     * IR⑦ 電流中心値エンド 単位
+     * @param ir7denryuendtani 
+     */
+    public void setIr7denryuendtani(String ir7denryuendtani) {
+        this.ir7denryuendtani = ir7denryuendtani;
+    }
+    
+    /**
+     * IR⑦ 測定範囲スタート
+     * @return ir7sokuteihanistart
+     */
+    public BigDecimal getIr7sokuteihanistart() {
+        return ir7sokuteihanistart;
+    }
+
+    /**
+     * IR⑦ 測定範囲スタート
+     * @param ir7sokuteihanistart 
+     */
+    public void setIr7sokuteihanistart(BigDecimal ir7sokuteihanistart) {
+        this.ir7sokuteihanistart = ir7sokuteihanistart;
+    }
+    
+    /**
+     * IR⑦ 測定範囲スタート 単位
+     * @return ir7sokuteihanistarttani
+     */
+    public String getIr7sokuteihanistarttani() {
+        return ir7sokuteihanistarttani;
+    }
+
+    /**
+     * IR⑦ 測定範囲スタート 単位
+     * @param ir7sokuteihanistarttani 
+     */
+    public void setIr7sokuteihanistarttani(String ir7sokuteihanistarttani) {
+        this.ir7sokuteihanistarttani = ir7sokuteihanistarttani;
+    }
+    
+    /**
+     * IR⑦ 測定範囲エンド
+     * @return ir7sokuteihaniend
+     */
+    public BigDecimal getIr7sokuteihaniend() {
+        return ir7sokuteihaniend;
+    }
+
+    /**
+     * IR⑦ 測定範囲エンド
+     * @param ir7sokuteihaniend 
+     */
+    public void setIr7sokuteihaniend(BigDecimal ir7sokuteihaniend) {
+        this.ir7sokuteihaniend = ir7sokuteihaniend;
+    }
+    
+    /**
+     * IR⑦ 測定範囲エンド 単位
+     * @return ir7sokuteihaniendtani
+     */
+    public String getIr7sokuteihaniendtani() {
+        return ir7sokuteihaniendtani;
+    }
+
+    /**
+     * IR⑦ 測定範囲エンド 単位
+     * @param ir7sokuteihaniendtani 
+     */
+    public void setIr7sokuteihaniendtani(String ir7sokuteihaniendtani) {
+        this.ir7sokuteihaniendtani = ir7sokuteihaniendtani;
+    }
+    
+    /**
+     * IR⑧ 電流中心値スタート
+     * @return ir8denryustart
+     */
+    public BigDecimal getIr8denryustart() {
+        return ir8denryustart;
+    }
+
+    /**
+     * IR⑧ 電流中心値スタート
+     * @param ir8denryustart 
+     */
+    public void setIr8denryustart(BigDecimal ir8denryustart) {
+        this.ir8denryustart = ir8denryustart;
+    }
+    
+    /**
+     * IR⑧ 電流中心値スタート 単位
+     * @return ir8denryustarttani
+     */
+    public String getIr8denryustarttani() {
+        return ir8denryustarttani;
+    }
+
+    /**
+     * IR⑧ 電流中心値スタート 単位
+     * @param ir8denryustarttani 
+     */
+    public void setIr8denryustarttani(String ir8denryustarttani) {
+        this.ir8denryustarttani = ir8denryustarttani;
+    }
+    
+    /**
+     * IR⑧ 電流中心値エンド
+     * @return ir8denryuend
+     */
+    public BigDecimal getIr8denryuend() {
+        return ir8denryuend;
+    }
+
+    /**
+     * IR⑧ 電流中心値エンド
+     * @param ir8denryuend 
+     */
+    public void setIr8denryuend(BigDecimal ir8denryuend) {
+        this.ir8denryuend = ir8denryuend;
+    }
+    
+    /**
+     * IR⑧ 電流中心値エンド 単位
+     * @return ir8denryuendtani
+     */
+    public String getIr8denryuendtani() {
+        return ir8denryuendtani;
+    }
+
+    /**
+     * IR⑧ 電流中心値エンド 単位
+     * @param ir8denryuendtani 
+     */
+    public void setIr8denryuendtani(String ir8denryuendtani) {
+        this.ir8denryuendtani = ir8denryuendtani;
+    }
+    
+    /**
+     * IR⑧ 測定範囲スタート
+     * @return ir8sokuteihanistart
+     */
+    public BigDecimal getIr8sokuteihanistart() {
+        return ir8sokuteihanistart;
+    }
+
+    /**
+     * IR⑧ 測定範囲スタート
+     * @param ir8sokuteihanistart 
+     */
+    public void setIr8sokuteihanistart(BigDecimal ir8sokuteihanistart) {
+        this.ir8sokuteihanistart = ir8sokuteihanistart;
+    }
+    
+    /**
+     * IR⑧ 測定範囲スタート 単位
+     * @return ir8sokuteihanistarttani
+     */
+    public String getIr8sokuteihanistarttani() {
+        return ir8sokuteihanistarttani;
+    }
+
+    /**
+     * IR⑧ 測定範囲スタート 単位
+     * @param ir8sokuteihanistarttani 
+     */
+    public void setIr8sokuteihanistarttani(String ir8sokuteihanistarttani) {
+        this.ir8sokuteihanistarttani = ir8sokuteihanistarttani;
+    }
+    
+    /**
+     * IR⑧ 測定範囲エンド
+     * @return ir8sokuteihaniend
+     */
+    public BigDecimal getIr8sokuteihaniend() {
+        return ir8sokuteihaniend;
+    }
+
+    /**
+     * IR⑧ 測定範囲エンド
+     * @param ir8sokuteihaniend 
+     */
+    public void setIr8sokuteihaniend(BigDecimal ir8sokuteihaniend) {
+        this.ir8sokuteihaniend = ir8sokuteihaniend;
+    }
+    
+    /**
+     * IR⑧ 測定範囲エンド 単位
+     * @return ir8sokuteihaniendtani
+     */
+    public String getIr8sokuteihaniendtani() {
+        return ir8sokuteihaniendtani;
+    }
+
+    /**
+     * IR⑧ 測定範囲エンド 単位
+     * @param ir8sokuteihaniendtani 
+     */
+    public void setIr8sokuteihaniendtani(String ir8sokuteihaniendtani) {
+        this.ir8sokuteihaniendtani = ir8sokuteihaniendtani;
+    }
+    
+    //=============================================================================
 
 }

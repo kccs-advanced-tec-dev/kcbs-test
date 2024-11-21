@@ -1,0 +1,367 @@
+.repeated-form .ui-datalist-content.ui-widget-content {
+    border: none;
+}
+.ui-inputfield, .ui-widget-content .ui-inputfield {
+    background: inherit;
+    color: inherit;
+}
+@media(max-width:720px){
+    .ui-paginator .ui-paginator-pages{
+        display:inline-block;
+    }
+}
+.tab_div{
+    margin-left: -13px;
+    margin-right: -13px;
+}
+.tab4_div{
+    margin-left: -13px;
+    margin-right: -13px;
+    margin-bottom: -10px;
+}
+.precharge_table_header_tr {
+    height: 20px;
+    font-size:16px;
+}
+.precharge_table_tr {
+    height: 50px;
+    white-space:nowrap;
+}
+.precharge_table_label {
+    font-size:14px;
+}
+.precharge_table_rowheader_label {
+    font-size:16px;
+    margin-left: 18px; 
+}
+.precharge_table_number_text {
+    margin-right: 3px;
+}
+.precharge_table_text {
+    margin-right: 3px;
+}
+
+.taidenatsu_table_header_tr {
+    height: 20px;
+    font-size:16px;
+}
+.taidenatsu_table_tr {
+    height: 50px;
+    white-space:nowrap;
+}
+.taidenatsu_table_label {
+    font-size:14px;
+    vertical-align: bottom;
+}
+.taidenatsu_table_rowheader_label {
+    font-size:16px;
+    margin-left: 18px; 
+}
+.taidenatsu_table_number_text {
+    margin-right: 3px;
+}
+.taidenatsu_table_text {
+    margin-right: 3px;
+}
+.denatsudrop_table_header_tr {
+    height: 20px;
+    font-size:16px;
+}
+.denatsudrop_table_tr {
+    height: 50px;
+    white-space:nowrap;
+}
+.denatsudrop_table_label {
+    font-size:14px;
+    vertical-align: bottom;
+}
+.denatsudrop_table_rowheader_label {
+    font-size:16px;
+    margin-left: 18px; 
+}
+.denatsudrop_table_number_text {
+    margin-right: 3px;
+}
+.denatsudrop_table_text {
+    margin-right: 3px;
+}
+.background-diagonal-line {
+    background-image: linear-gradient(to bottom right,transparent, transparent 49%,black 49%, black 51%,transparent 51%, transparent);
+}
+/* sticky table */
+.sticky_table_wrapper {
+    overflow: scroll;
+    width: calc(100vw - 1rem);
+    height: 75vh;
+}
+
+.sticky_table thead th {
+    /* 縦スクロール時に固定する */
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    /* tbody内のセルより手前に表示する */
+    z-index: 1;
+    background-color: lightgrey;
+}
+.sticky_table thead th:first-child {
+    /* 行内の他のセルより手前に表示する */
+    z-index: 2;
+}
+.sticky_table th:first-child {
+    /* 横スクロール時に固定する */
+    position: -webkit-sticky;
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background-color: lightgrey;
+    font-size: 15px;
+}
+/* ％区分 td */
+.percent_kbn_td {
+    text-align: left; 
+    vertical-align: middle;
+}
+/* ％区分 input_text */
+.percent_kbn_input_text {
+}
+/* ％区分 input_number */
+.percent_kbn_input_number {
+}
+/* 設定区分 td */
+.settei_kbn_td {
+    text-align: left; 
+    vertical-align: middle;
+}
+/* 設定区分 input_text */
+.settei_kbn_input_text {
+}
+/* 設定区分 input_number */
+.settei_kbn_input_number {
+}
+/* ①計量後数量 td */
+.keiryo_ato_suryo_td {
+    text-align: left; 
+    vertical-align: middle;
+}
+/* ①計量後数量 input_number */
+.keiryo_ato_suryo_input_number {
+}
+
+/* ①計量後数量 input_text */
+.keiryo_ato_suryo_input_text {
+}
+/* カウンター数 td */
+.counter_su_td {
+    text-align: left; 
+    vertical-align: middle;
+}
+/* カウンター数 input_number */
+.counter_su_input_number {
+}
+.counter_su_input_text {
+}
+/* 誤差率 td */
+.gosa_ritsu_td {
+    text-align: left; 
+    vertical-align: middle;
+}
+/* 誤差率 input_number */
+.gosa_ritsu_input_number {
+}
+/* 誤差率 input_text */
+.gosa_ritsu_input_text {
+}
+/* マシン不良率(%) td */
+.machine_furyoritsu_td {
+    text-align: left; 
+    vertical-align: middle;
+}
+/* マシン不良率(%) input_number */
+.machine_furyoritsu_input_number {
+}
+/* マシン不良率(%) input_text */
+.machine_furyoritsu_input_text {
+}
+
+/* 取出者 td */
+.toridashisha_td {
+    text-align: left; 
+    vertical-align: middle;
+}
+/* 取出者 input_text */
+.toridashisha_input_text {
+}
+/* 取出者 input_number */
+.toridashisha_input_number {
+}
+/* タイトル output_text */
+.title_output_text {
+    text-align: center;
+}
+/* 抜き取り結果 td */
+.nukitori_kekka_td {
+    text-align: left; 
+    vertical-align: middle;
+    white-space:nowrap;
+}
+/* 抜き取り結果 input_number */
+.nukitori_kekka_input_number {
+}
+/* 抜き取り結果 input_text */
+.nukitori_kekka_input_text {
+}
+/* 真の不良率(%) td */
+.shin_furyoritsu_td {
+    text-align: left; 
+    vertical-align: middle;
+}
+/* 真の不良率(%) input_number */
+.shin_furyoritsu_input_number {
+}
+/* 真の不良率(%) input_text */
+.shin_furyoritsu_input_text {
+}
+/* 新不良判定者 td */
+.shin_furyo_keisansha_td {
+    text-align: left; 
+    vertical-align: middle;
+}
+/* 新不良判定者 input_text */
+.shin_furyo_keisansha_input_text {
+}
+/* 新不良判定者 input_number */
+.shin_furyo_keisansha_input_number {
+}
+/* 入力者 td */
+.nyuryokusha_td {
+    text-align: left; 
+    vertical-align: middle;
+}
+/* 入力者 input_text */
+.nyuryokusha_input_text {
+}
+/* 入力者 input_number */
+.nyuryokusha_input_number {
+}
+/* 結果チェック td */
+.kekka_check_td {
+    text-align: left; 
+    vertical-align: middle;
+}
+/* 結果チェック input_text */
+.kekka_check_text {
+}
+/* 結果チェック input_number */
+.kekka_check_number {
+}
+/* 袋チェック td */
+.fukuro_check_td {
+    text-align: left; 
+    vertical-align: middle;
+}
+/*袋チェック input_text */
+.fukuro_check_input_text {
+}
+/* 袋チェック input_number */
+.fukuro_check_input_number {
+}
+/* 公差 th */
+.kosa_th {
+    text-align: left;
+    background-color: lightgrey!important;
+}
+/* 公差 input_text */
+.kosa_input_text {
+}
+/* 公差 input_number */
+.kosa_input_number {
+}
+/* 重量 td */
+.juryo_td {
+    text-align: left;
+}
+/* 重量 input_text */
+.juryo_input_text {
+}
+/* 重量 input_number */
+.juryo_input_number {
+}
+/* 個数 td */
+.kosu_td {
+    text-align: left;
+}
+/* 個数 input_text */
+.kosu_input_text {
+}
+/* 個数 input_number */
+.kosu_input_number {
+}
+/* カウンター総数 td */
+.counter_sosu_td {
+    text-align: left;
+}
+/* カウンター総数 input_text */
+.counter_sosu_input_text {
+}
+/* カウンター総数 input_number */
+.counter_sosu_input_number {
+}
+/* 良品重量 td */
+.ryohin_juryo_td {
+    text-align: left;
+}
+/* 良品重量 input_text */
+.ryohin_juryo_input_text {
+}
+/* 良品重量 input_number */
+.ryohin_juryo_input_number {
+}
+/* 良品個数 td */
+.ryohin_kosu_td {
+    text-align: left;
+}
+/* 良品個数 input_text */
+.ryohin_kosu_input_text {
+}
+/* 良品個数 input_number */
+.ryohin_kosu_input_number {
+}
+/* 歩留まり td */
+.budomari_td {
+    text-align: left;
+}
+/* 歩留まり input_text */
+.budomari_input_text {
+}
+/* 歩留まり input_number */
+.budomari_input_number {
+}
+
+/* 確認者 td */
+.kakuninsha_td {
+    text-align: left; 
+    vertical-align: middle;
+}
+/* 確認者 input_text */
+.kakuninsha_input_text {
+}
+/* 確認者 input_number */
+.kakuninsha_input_number {
+}
+.handa_sample_td{
+    vertical-align: top; 
+    text-align: left;
+}
+/* 半田サンプル input_text */
+.handa_sample_text {
+}
+/* 半田サンプル input_number */
+.handa_sample_number {
+}
+/* 信頼性サンプル input_text */
+.shiraisei_sample_text {
+}
+/* 信頼性サンプル input_number */
+.shiraisei_sample_number {
+}
