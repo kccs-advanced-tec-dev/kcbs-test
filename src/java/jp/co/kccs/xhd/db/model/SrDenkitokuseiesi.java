@@ -1427,8 +1427,6 @@ public class SrDenkitokuseiesi {
      */
     private Integer deleteflag;
     
-    //=============================================================================
-    
     /**
      * 原点復帰動作
      */
@@ -7321,7 +7319,5 @@ public class SrDenkitokuseiesi {
     public void setIr8sokuteihaniendtani(String ir8sokuteihaniendtani) {
         this.ir8sokuteihaniendtani = ir8sokuteihaniendtani;
     }
-    
-    //=============================================================================
 
 }
