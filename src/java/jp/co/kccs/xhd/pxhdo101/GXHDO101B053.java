@@ -4577,10 +4577,10 @@ public class GXHDO101B053 implements IFormLogic {
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOWTANI7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 良品範囲下限 単位(耐電圧設定条件 IR⑦ 判定値(低) 単位)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOWTANI8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 良品範囲下限 単位(耐電圧設定条件 IR⑧ 判定値(低) 単位)
         
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SEIHIN_GENTEN_FUKKI_DOUSA, srDenkitokuseiesi))); // 製品情報:原点復帰動作
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SEIHIN_SOKUTEI_1_2_DOUSA_KAKUNIN, srDenkitokuseiesi))); // 製品情報:測定機1,2動作確認
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SEIHIN_INDEX_SOKUTEIPIN_FRONT_GAIKAN, srDenkitokuseiesi))); // 製品情報:測定ピン(フロント)外観
-        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SEIHIN_INDEX_SOKUTEIPIN_REAR_GAIKAN, srDenkitokuseiesi))); // 製品情報:測定ピン(リア)外観
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_GENTEN_FUKKI_DOUSA, srDenkitokuseiesi))); // 製品情報:原点復帰動作
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_SOKUTEI_1_2_DOUSA_KAKUNIN, srDenkitokuseiesi))); // 製品情報:測定機1,2動作確認
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_INDEX_SOKUTEIPIN_FRONT_GAIKAN, srDenkitokuseiesi))); // 製品情報:測定ピン(フロント)外観
+        params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_INDEX_SOKUTEIPIN_REAR_GAIKAN, srDenkitokuseiesi))); // 製品情報:測定ピン(リア)外観
         
         params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 電流中心値スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 電流中心値スタート 単位
