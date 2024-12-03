@@ -3855,16 +3855,16 @@ public class GXHDO101B053 implements IFormLogic {
         params.add(DBUtil.stringToStringObject(StringUtil.nullToBlank(processData.getHiddenDataMap().get("lotkubuncode")))); // ﾛｯﾄ区分
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_SHITEI_KOUSA, srDenkitokuseiesi))); //指定公差
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_ATOKOUTEI_SHIJI_NAIYO, srDenkitokuseiesi))); //後工程指示内容
-        params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_OKURI_RYOHINSU, srDenkitokuseiesi))); //送り良品数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_UKEIRE_TANNIJURYO, srDenkitokuseiesi))); //受入れ単位重量
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_UKEIRE_SOUJURYO, srDenkitokuseiesi))); //受入れ総重量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO101B053Const.SEIHIN_OKURI_RYOHINSU, srDenkitokuseiesi))); //送り良品数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B053Const.SEIHIN_UKEIRE_TANNIJURYO, srDenkitokuseiesi))); //受入れ単位重量
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B053Const.SEIHIN_UKEIRE_SOUJURYO, srDenkitokuseiesi))); //受入れ総重量
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_KENSA_BASHO, srDenkitokuseiesi))); //検査場所
         params.add(DBUtil.stringToDateObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_SENBETSU_KAISHI_DAY, srDenkitokuseiesi),
                 getItemData(pItemList, GXHDO101B053Const.SEIHIN_SENBETSU_KAISHI_TIME, srDenkitokuseiesi))); //選別開始日時
         params.add(DBUtil.stringToDateObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_SENBETSU_SHURYO_DAY, srDenkitokuseiesi),
                 getItemData(pItemList, GXHDO101B053Const.SEIHIN_SENBETSU_SHURYO_TIME, srDenkitokuseiesi))); //選別終了日時
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_KENSA_GOKI, srDenkitokuseiesi))); //検査号機
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_MAIN_AIR_ATSU, srDenkitokuseiesi))); //メインエアー圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B053Const.SEIHIN_MAIN_AIR_ATSU, srDenkitokuseiesi))); //メインエアー圧
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_INDEX_TABLE_MOKUSHI, srDenkitokuseiesi))); //インデックステーブル目視(ﾃｽﾄﾌﾟﾚｰﾄ 形状･清掃)
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_INDEX_TABLE_ICHI_KAKUNIN_ANA_ICHI, srDenkitokuseiesi))); //インデックステーブル位置確認(穴位置)(ﾃｽﾄﾌﾟﾚｰﾄ位置確認(穴位置))
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_BIN_BOX_SEISOU_CHECK, srDenkitokuseiesi))); //BINﾎﾞｯｸｽ内の清掃ﾁｪｯｸ
@@ -3873,146 +3873,146 @@ public class GXHDO101B053 implements IFormLogic {
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_SHITEI_KOUSA_BUDOMARI1, srDenkitokuseiesi))); //指定公差歩留まり1
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_SHITEI_KOUSA_BUDOMARI2, srDenkitokuseiesi))); //指定公差歩留まり2
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_INDEX_KANRI_NO, srDenkitokuseiesi))); //インデックステーブル管理No.(ﾃｽﾄﾌﾟﾚｰﾄ管理No)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_TAN_DELTA, srDenkitokuseiesi))); //Tanδ
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B053Const.SEIHIN_TAN_DELTA, srDenkitokuseiesi))); //Tanδ
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_SOKUTEI_SHUHASU, srDenkitokuseiesi))); //測定周波数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_SOKUTEI_DENATSU, srDenkitokuseiesi))); //測定電圧
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_HOSEIYOU_CHIP_YORYO, srDenkitokuseiesi))); //補正用ﾁｯﾌﾟ容量
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_HOSEIYOU_CHIP_TAN_DELTA, srDenkitokuseiesi))); //補正用ﾁｯﾌﾟTanδ
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_HOSEIMAE, srDenkitokuseiesi))); //補正前
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_HOSEIATO, srDenkitokuseiesi))); //補正後
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_HOSEIRITSU, srDenkitokuseiesi))); //補正率
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B053Const.SEIHIN_SOKUTEI_DENATSU, srDenkitokuseiesi))); //測定電圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B053Const.SEIHIN_HOSEIYOU_CHIP_YORYO, srDenkitokuseiesi))); //補正用ﾁｯﾌﾟ容量
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B053Const.SEIHIN_HOSEIYOU_CHIP_TAN_DELTA, srDenkitokuseiesi))); //補正用ﾁｯﾌﾟTanδ
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B053Const.SEIHIN_HOSEIMAE, srDenkitokuseiesi))); //補正前
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B053Const.SEIHIN_HOSEIATO, srDenkitokuseiesi))); //補正後
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B053Const.SEIHIN_HOSEIRITSU, srDenkitokuseiesi))); //補正率
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_BUNRUI_KAKUNIN, srDenkitokuseiesi))); //分類確認
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_GAIKAN_KAKUNIN, srDenkitokuseiesi))); //外観確認
         params.add(DBUtil.stringToDateObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_NETSUSYORI_DAY, srDenkitokuseiesi),
                 getItemData(pItemList, GXHDO101B053Const.SEIHIN_NETSUSYORI_TIME, srDenkitokuseiesi))); //熱処理日時
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_AGING_TIME, srDenkitokuseiesi))); //ｴｰｼﾞﾝｸﾞ時間
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B053Const.SEIHIN_AGING_TIME, srDenkitokuseiesi))); //ｴｰｼﾞﾝｸﾞ時間
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_SHONINSHA, srDenkitokuseiesi))); //承認者
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_FURIMUKESHA, srDenkitokuseiesi))); //振向者
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_BIKOU1, srDenkitokuseiesi))); //備考1
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_BIKOU2, srDenkitokuseiesi))); //備考2
         
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 電圧
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI1, srDenkitokuseiesi))); //耐電圧設定条件:IR① 良品範囲上限(耐電圧設定条件 IR① 判定値)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 時間(耐電圧設定条件 IR① 充電時間)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 電圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI1, srDenkitokuseiesi))); //耐電圧設定条件:IR① 良品範囲上限(耐電圧設定条件 IR① 判定値)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 時間(耐電圧設定条件 IR① 充電時間)
         
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 電圧
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI2, srDenkitokuseiesi))); //耐電圧設定条件:IR② 良品範囲上限(耐電圧設定条件 IR② 判定値)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME2, srDenkitokuseiesi))); //耐電圧設定条件:IR② 時間(耐電圧設定条件 IR② 充電時間)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 電圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI2, srDenkitokuseiesi))); //耐電圧設定条件:IR② 良品範囲上限(耐電圧設定条件 IR② 判定値)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME2, srDenkitokuseiesi))); //耐電圧設定条件:IR② 時間(耐電圧設定条件 IR② 充電時間)
         
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 電圧
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 良品範囲上限(耐電圧設定条件 IR③ 判定値)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 時間(耐電圧設定条件 IR③ 充電時間)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 電圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 良品範囲上限(耐電圧設定条件 IR③ 判定値)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 時間(耐電圧設定条件 IR③ 充電時間)
         
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 電圧
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 良品範囲上限(耐電圧設定条件 IR④ 判定値)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 時間(耐電圧設定条件 IR④ 充電時間)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 電圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 良品範囲上限(耐電圧設定条件 IR④ 判定値)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 時間(耐電圧設定条件 IR④ 充電時間)
         
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 電圧
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 良品範囲上限(耐電圧設定条件 IR⑤ 判定値)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 時間(耐電圧設定条件 IR⑤ 充電時間)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 電圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 良品範囲上限(耐電圧設定条件 IR⑤ 判定値)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 時間(耐電圧設定条件 IR⑤ 充電時間)
         
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 電圧
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 良品範囲上限(耐電圧設定条件 IR⑥ 判定値)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 時間(耐電圧設定条件 IR⑥ 充電時間)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 電圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 良品範囲上限(耐電圧設定条件 IR⑥ 判定値)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 時間(耐電圧設定条件 IR⑥ 充電時間)
         
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 電圧
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 良品範囲上限(耐電圧設定条件 IR⑦ 判定値)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 時間(耐電圧設定条件 IR⑦ 充電時間)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 電圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 良品範囲上限(耐電圧設定条件 IR⑦ 判定値)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 時間(耐電圧設定条件 IR⑦ 充電時間)
         
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 電圧
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 良品範囲上限(耐電圧設定条件 IR⑧ 判定値)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 時間(耐電圧設定条件 IR⑧ 充電時間)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 電圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 良品範囲上限(耐電圧設定条件 IR⑧ 判定値)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 時間(耐電圧設定条件 IR⑧ 充電時間)
 
 
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_PERCENT_KBN, srDenkitokuseiesi))); //BIN1 %区分(設定値)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_SENBETSU_KBN, srDenkitokuseiesi))); //BIN1 選別区分
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN1 計量後数量
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_COUNTER_SU, srDenkitokuseiesi))); //BIN1 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_GOSARITSU, srDenkitokuseiesi))); //BIN1 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN1 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN1 抜き取り結果(子数)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN1 抜き取り結果(母数) 
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN1 真の不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN1 計量後数量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_COUNTER_SU, srDenkitokuseiesi))); //BIN1 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_GOSARITSU, srDenkitokuseiesi))); //BIN1 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN1 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN1 抜き取り結果(子数)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN1 抜き取り結果(母数) 
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN1 真の不良率(%)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_KEKKA_CHECK, srDenkitokuseiesi))); //BIN1 結果ﾁｪｯｸ
 
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_PERCENT_KBN, srDenkitokuseiesi))); //BIN2 %区分(設定値)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_SENBETSU_KBN, srDenkitokuseiesi))); //BIN2 選別区分
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN2 計量後数量
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_COUNTER_SU, srDenkitokuseiesi))); //BIN2 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_GOSARITSU, srDenkitokuseiesi))); //BIN2 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN2 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN2 抜き取り結果(子数)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN2 抜き取り結果(母数) 
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN2 真の不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN2 計量後数量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_COUNTER_SU, srDenkitokuseiesi))); //BIN2 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_GOSARITSU, srDenkitokuseiesi))); //BIN2 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN2 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN2 抜き取り結果(子数)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN2 抜き取り結果(母数) 
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN2 真の不良率(%)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_KEKKA_CHECK, srDenkitokuseiesi))); //BIN2 結果ﾁｪｯｸ
         
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_PERCENT_KBN, srDenkitokuseiesi))); //BIN3 %区分(設定値)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_SENBETSU_KBN, srDenkitokuseiesi))); //BIN3 選別区分
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN3 計量後数量
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_COUNTER_SU, srDenkitokuseiesi))); //BIN3 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_GOSARITSU, srDenkitokuseiesi))); //BIN3 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN3 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN3 抜き取り結果(子数)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN3 抜き取り結果(母数) 
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN3 真の不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN3 計量後数量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_COUNTER_SU, srDenkitokuseiesi))); //BIN3 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_GOSARITSU, srDenkitokuseiesi))); //BIN3 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN3 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN3 抜き取り結果(子数)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN3 抜き取り結果(母数) 
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN3 真の不良率(%)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_KEKKA_CHECK, srDenkitokuseiesi))); //BIN3 結果ﾁｪｯｸ
 
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_PERCENT_KBN, srDenkitokuseiesi))); //BIN4 %区分(設定値)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_SENBETSU_KBN, srDenkitokuseiesi))); //BIN4 選別区分
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN4 計量後数量
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_COUNTER_SU, srDenkitokuseiesi))); //BIN4 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_GOSARITSU, srDenkitokuseiesi))); //BIN4 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN4 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN4 抜き取り結果(子数)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN4 抜き取り結果(母数) 
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN4 真の不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN4 計量後数量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_COUNTER_SU, srDenkitokuseiesi))); //BIN4 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_GOSARITSU, srDenkitokuseiesi))); //BIN4 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN4 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN4 抜き取り結果(子数)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN4 抜き取り結果(母数) 
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN4 真の不良率(%)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_KEKKA_CHECK, srDenkitokuseiesi))); //BIN4 結果ﾁｪｯｸ
 
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_PERCENT_KBN, srDenkitokuseiesi))); //BIN5 %区分(設定値)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_SENBETSU_KBN, srDenkitokuseiesi))); //BIN5 選別区分
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN5 計量後数量
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_COUNTER_SU, srDenkitokuseiesi))); //BIN5 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_GOSARITSU, srDenkitokuseiesi))); //BIN5 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN5 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN5 抜き取り結果(子数)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN5 抜き取り結果(母数) 
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN5 真の不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN5 計量後数量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_COUNTER_SU, srDenkitokuseiesi))); //BIN5 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_GOSARITSU, srDenkitokuseiesi))); //BIN5 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN5 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN5 抜き取り結果(子数)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN5 抜き取り結果(母数) 
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN5 真の不良率(%)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_KEKKA_CHECK, srDenkitokuseiesi))); //BIN5 結果ﾁｪｯｸ
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_FUKURO_CHECK, srDenkitokuseiesi))); //BIN5 袋ﾁｪｯｸ
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_FUKURO_CHECK, srDenkitokuseiesi))); //BIN5 袋ﾁｪｯｸ
         
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_PERCENT_KBN, srDenkitokuseiesi))); //BIN6 %区分(設定値)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_SENBETSU_KBN, srDenkitokuseiesi))); //BIN6 選別区分
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN6 計量後数量
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_COUNTER_SU, srDenkitokuseiesi))); //BIN6 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_GOSARITSU, srDenkitokuseiesi))); //BIN6 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN6 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN6 抜き取り結果(子数)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN6 抜き取り結果(母数) 
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN6 真の不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN6 計量後数量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_COUNTER_SU, srDenkitokuseiesi))); //BIN6 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_GOSARITSU, srDenkitokuseiesi))); //BIN6 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN6 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN6 抜き取り結果(子数)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN6 抜き取り結果(母数) 
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN6 真の不良率(%)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_KEKKA_CHECK, srDenkitokuseiesi))); //BIN6 結果ﾁｪｯｸ
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_FUKURO_CHECK, srDenkitokuseiesi))); //BIN6 袋ﾁｪｯｸ
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_FUKURO_CHECK, srDenkitokuseiesi))); //BIN6 袋ﾁｪｯｸ
         
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_PERCENT_KBN, srDenkitokuseiesi))); //BIN7 %区分(設定値)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_SENBETSU_KBN, srDenkitokuseiesi))); //BIN7 選別区分
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN7 計量後数量
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_COUNTER_SU, srDenkitokuseiesi))); //BIN7 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_GOSARITSU, srDenkitokuseiesi))); //BIN7 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN7 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_FUKURO_CHECK, srDenkitokuseiesi))); //BIN7 袋ﾁｪｯｸ
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN7 計量後数量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_COUNTER_SU, srDenkitokuseiesi))); //BIN7 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_GOSARITSU, srDenkitokuseiesi))); //BIN7 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN7 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_FUKURO_CHECK, srDenkitokuseiesi))); //BIN7 袋ﾁｪｯｸ
         
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_PERCENT_KBN, srDenkitokuseiesi))); //BIN8 %区分(設定値)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_SENBETSU_KBN, srDenkitokuseiesi))); //BIN8 選別区分
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN8 計量後数量
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_COUNTER_SU, srDenkitokuseiesi))); //BIN8 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_GOSARITSU, srDenkitokuseiesi))); //BIN8 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN8 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_FUKURO_CHECK, srDenkitokuseiesi))); //BIN8 袋ﾁｪｯｸ
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN8 計量後数量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_COUNTER_SU, srDenkitokuseiesi))); //BIN8 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_GOSARITSU, srDenkitokuseiesi))); //BIN8 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN8 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_FUKURO_CHECK, srDenkitokuseiesi))); //BIN8 袋ﾁｪｯｸ
         
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN9_K_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN9 強制排出 計量後数量
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN9_K_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN9 強制排出 ﾏｼﾝ不良率
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN9_K_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN9 強制排出 計量後数量
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN9_K_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN9 強制排出 ﾏｼﾝ不良率
         
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_RAKKA_KEIRYOGO_SURYO, srDenkitokuseiesi))); //落下 計量後数量 
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_RAKKA_MACHINE_FURYORITSU, srDenkitokuseiesi))); //落下 ﾏｼﾝ不良率
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_RAKKA_KEIRYOGO_SURYO, srDenkitokuseiesi))); //落下 計量後数量 
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_RAKKA_MACHINE_FURYORITSU, srDenkitokuseiesi))); //落下 ﾏｼﾝ不良率
         
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_HANDA_SAMPLE, srDenkitokuseiesi))); //半田ｻﾝﾌﾟﾙ
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_SHINRAISEI_SAMPLE, srDenkitokuseiesi))); //信頼性ｻﾝﾌﾟﾙ
@@ -4021,25 +4021,25 @@ public class GXHDO101B053 implements IFormLogic {
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_TORIDASHISHA, srDenkitokuseiesi))); //取出者
         
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_KOUSA1, srDenkitokuseiesi))); //公差①
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_JURYO1, srDenkitokuseiesi))); //重量①
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_KOSU1, srDenkitokuseiesi))); //個数①
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_JURYO1, srDenkitokuseiesi))); //重量①
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_KOSU1, srDenkitokuseiesi))); //個数①
         
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_KOUSA2, srDenkitokuseiesi))); //公差②
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_JURYO2, srDenkitokuseiesi))); //重量②
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_KOSU2, srDenkitokuseiesi))); //個数②
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_JURYO2, srDenkitokuseiesi))); //重量②
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_KOSU2, srDenkitokuseiesi))); //個数②
         
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_KOUSA3, srDenkitokuseiesi))); //公差③
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_JURYO3, srDenkitokuseiesi))); //重量③
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_KOSU3, srDenkitokuseiesi))); //個数③
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_JURYO3, srDenkitokuseiesi))); //重量③
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_KOSU3, srDenkitokuseiesi))); //個数③
         
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_KOUSA4, srDenkitokuseiesi))); //公差④
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_JURYO4, srDenkitokuseiesi))); //重量④
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_KOSU4, srDenkitokuseiesi))); //個数④
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_JURYO4, srDenkitokuseiesi))); //重量④
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_KOSU4, srDenkitokuseiesi))); //個数④
         
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_COUNTER_SOSU, srDenkitokuseiesi))); //ｶｳﾝﾀｰ総数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_RYOUHIN_JURYO, srDenkitokuseiesi))); //良品重量
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_RYOUHIN_KOSU, srDenkitokuseiesi))); //良品個数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BUDOMARI, srDenkitokuseiesi))); //歩留まり
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_COUNTER_SOSU, srDenkitokuseiesi))); //ｶｳﾝﾀｰ総数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_RYOUHIN_JURYO, srDenkitokuseiesi))); //良品重量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_RYOUHIN_KOSU, srDenkitokuseiesi))); //良品個数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BUDOMARI, srDenkitokuseiesi))); //歩留まり
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_KAKUNINSHA, srDenkitokuseiesi))); //BIN確認者
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_DENKITOKUSEI_SAIKEN, srDenkitokuseiesi))); //電気特性再検
         params.add(formId); //設備区分
@@ -4049,39 +4049,39 @@ public class GXHDO101B053 implements IFormLogic {
         params.add(systemTime); //更新日時
         params.add(newRev); //revision
         params.add(deleteflag); //削除ﾌﾗｸﾞ
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW1, srDenkitokuseiesi))); //耐電圧設定条件:IR① 良品範囲下限(耐電圧設定条件 IR① 判定値(低))
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW1, srDenkitokuseiesi))); //耐電圧設定条件:IR① 良品範囲下限(耐電圧設定条件 IR① 判定値(低))
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANITANI1, srDenkitokuseiesi))); //耐電圧設定条件:IR① 良品範囲上限 単位(耐電圧設定条件 IR① 判定値 単位)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW2, srDenkitokuseiesi))); //耐電圧設定条件:IR② 良品範囲下限(耐電圧設定条件 IR② 判定値(低))
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW2, srDenkitokuseiesi))); //耐電圧設定条件:IR② 良品範囲下限(耐電圧設定条件 IR② 判定値(低))
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANITANI2, srDenkitokuseiesi))); //耐電圧設定条件:IR② 良品範囲上限 単位(耐電圧設定条件 IR② 判定値 単位)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW3, srDenkitokuseiesi))); //耐電圧設定条件:IR③ 良品範囲下限(耐電圧設定条件 IR③ 判定値(低))
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW3, srDenkitokuseiesi))); //耐電圧設定条件:IR③ 良品範囲下限(耐電圧設定条件 IR③ 判定値(低))
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANITANI3, srDenkitokuseiesi))); //耐電圧設定条件:IR③ 良品範囲上限 単位(耐電圧設定条件 IR③ 判定値 単位)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW4, srDenkitokuseiesi))); //耐電圧設定条件:IR④ 良品範囲下限(耐電圧設定条件 IR④ 判定値(低))
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW4, srDenkitokuseiesi))); //耐電圧設定条件:IR④ 良品範囲下限(耐電圧設定条件 IR④ 判定値(低))
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANITANI4, srDenkitokuseiesi))); //耐電圧設定条件:IR④ 良品範囲上限 単位(耐電圧設定条件 IR④ 判定値 単位)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW5, srDenkitokuseiesi))); //耐電圧設定条件:IR⑤ 良品範囲下限(耐電圧設定条件 IR⑤ 判定値(低))
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW5, srDenkitokuseiesi))); //耐電圧設定条件:IR⑤ 良品範囲下限(耐電圧設定条件 IR⑤ 判定値(低))
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANITANI5, srDenkitokuseiesi))); //耐電圧設定条件:IR⑤ 良品範囲上限 単位(耐電圧設定条件 IR⑤ 判定値 単位)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW6, srDenkitokuseiesi))); //耐電圧設定条件:IR⑥ 良品範囲下限(耐電圧設定条件 IR⑥ 判定値(低))
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW6, srDenkitokuseiesi))); //耐電圧設定条件:IR⑥ 良品範囲下限(耐電圧設定条件 IR⑥ 判定値(低))
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANITANI6, srDenkitokuseiesi))); //耐電圧設定条件:IR⑥ 良品範囲上限 単位(耐電圧設定条件 IR⑥ 判定値 単位)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW7, srDenkitokuseiesi))); //耐電圧設定条件:IR⑦ 良品範囲下限(耐電圧設定条件 IR⑦ 判定値(低))
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW7, srDenkitokuseiesi))); //耐電圧設定条件:IR⑦ 良品範囲下限(耐電圧設定条件 IR⑦ 判定値(低))
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANITANI7, srDenkitokuseiesi))); //耐電圧設定条件:IR⑦ 良品範囲上限 単位(耐電圧設定条件 IR⑦ 判定値 単位)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW8, srDenkitokuseiesi))); //耐電圧設定条件:IR⑧ 良品範囲下限(耐電圧設定条件 IR⑧ 判定値(低))
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW8, srDenkitokuseiesi))); //耐電圧設定条件:IR⑧ 良品範囲下限(耐電圧設定条件 IR⑧ 判定値(低))
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANITANI8, srDenkitokuseiesi))); //耐電圧設定条件:IR⑧ 良品範囲上限 単位(耐電圧設定条件 IR⑧ 判定値 単位)
         if (isInsert) {
             params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B053Const.SEIHIN_DOUHINSYU, srDenkitokuseiesi), 0)); //同品種
         }
 
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_FUKURO_CHECK, srDenkitokuseiesi))); //BIN1 袋ﾁｪｯｸ
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_FUKURO_CHECK, srDenkitokuseiesi))); //BIN2 袋ﾁｪｯｸ
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_FUKURO_CHECK, srDenkitokuseiesi))); //BIN3 袋ﾁｪｯｸ
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_FUKURO_CHECK, srDenkitokuseiesi))); //BIN4 袋ﾁｪｯｸ
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_FUKURO_CHECK, srDenkitokuseiesi))); //BIN1 袋ﾁｪｯｸ
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_FUKURO_CHECK, srDenkitokuseiesi))); //BIN2 袋ﾁｪｯｸ
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_FUKURO_CHECK, srDenkitokuseiesi))); //BIN3 袋ﾁｪｯｸ
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_FUKURO_CHECK, srDenkitokuseiesi))); //BIN4 袋ﾁｪｯｸ
         
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN7 抜き取り結果(子数)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN7 抜き取り結果(母数) 
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN7 真の不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN7 抜き取り結果(子数)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN7 抜き取り結果(母数) 
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN7 真の不良率(%)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_KEKKA_CHECK, srDenkitokuseiesi))); //BIN7 結果ﾁｪｯｸ
         
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN8 抜き取り結果(子数)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN8 抜き取り結果(母数) 
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN8 真の不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN8 抜き取り結果(子数)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN8 抜き取り結果(母数) 
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN8 真の不良率(%)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_KEKKA_CHECK, srDenkitokuseiesi))); //BIN8 結果ﾁｪｯｸ
 
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_SAT_SAMPLE, srDenkitokuseiesi))); //SATｻﾝﾌﾟﾙ
@@ -4101,76 +4101,76 @@ public class GXHDO101B053 implements IFormLogic {
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_INDEX_SOKUTEIPIN_FRONT_GAIKAN, srDenkitokuseiesi))); // 製品情報:測定ピン(フロント)外観
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_INDEX_SOKUTEIPIN_REAR_GAIKAN, srDenkitokuseiesi))); // 製品情報:測定ピン(リア)外観
         
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 電流中心値スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 電流中心値スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 電流中心値スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 電流中心値エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 電流中心値エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_ENDTANI1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 電流中心値エンド 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 測定範囲スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 測定範囲スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_STARTTANI1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 測定範囲スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 測定範囲エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 測定範囲エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_ENDTANI1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 測定範囲エンド 単位
 
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START2, srDenkitokuseiesi))); // 耐電圧設定条件:IR② 電流中心値スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START2, srDenkitokuseiesi))); // 耐電圧設定条件:IR② 電流中心値スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI2, srDenkitokuseiesi))); // 耐電圧設定条件:IR② 電流中心値スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END2, srDenkitokuseiesi))); // 耐電圧設定条件:IR② 電流中心値エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END2, srDenkitokuseiesi))); // 耐電圧設定条件:IR② 電流中心値エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_ENDTANI2, srDenkitokuseiesi))); // 耐電圧設定条件:IR② 電流中心値エンド 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START2, srDenkitokuseiesi))); // 耐電圧設定条件:IR② 測定範囲スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START2, srDenkitokuseiesi))); // 耐電圧設定条件:IR② 測定範囲スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_STARTTANI2, srDenkitokuseiesi))); // 耐電圧設定条件:IR② 測定範囲スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END2, srDenkitokuseiesi))); // 耐電圧設定条件:IR② 測定範囲エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END2, srDenkitokuseiesi))); // 耐電圧設定条件:IR② 測定範囲エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_ENDTANI2, srDenkitokuseiesi))); // 耐電圧設定条件:IR② 測定範囲エンド 単位
         
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START3, srDenkitokuseiesi))); // 耐電圧設定条件:IR③ 電流中心値スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START3, srDenkitokuseiesi))); // 耐電圧設定条件:IR③ 電流中心値スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI3, srDenkitokuseiesi))); // 耐電圧設定条件:IR③ 電流中心値スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END3, srDenkitokuseiesi))); // 耐電圧設定条件:IR③ 電流中心値エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END3, srDenkitokuseiesi))); // 耐電圧設定条件:IR③ 電流中心値エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_ENDTANI3, srDenkitokuseiesi))); // 耐電圧設定条件:IR③ 電流中心値エンド 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START3, srDenkitokuseiesi))); // 耐電圧設定条件:IR③ 測定範囲スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START3, srDenkitokuseiesi))); // 耐電圧設定条件:IR③ 測定範囲スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_STARTTANI3, srDenkitokuseiesi))); // 耐電圧設定条件:IR③ 測定範囲スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END3, srDenkitokuseiesi))); // 耐電圧設定条件:IR③ 測定範囲エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END3, srDenkitokuseiesi))); // 耐電圧設定条件:IR③ 測定範囲エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_ENDTANI3, srDenkitokuseiesi))); // 耐電圧設定条件:IR③ 測定範囲エンド 単位
         
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START4, srDenkitokuseiesi))); // 耐電圧設定条件:IR④ 電流中心値スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START4, srDenkitokuseiesi))); // 耐電圧設定条件:IR④ 電流中心値スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI4, srDenkitokuseiesi))); // 耐電圧設定条件:IR④ 電流中心値スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END4, srDenkitokuseiesi))); // 耐電圧設定条件:IR④ 電流中心値エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END4, srDenkitokuseiesi))); // 耐電圧設定条件:IR④ 電流中心値エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_ENDTANI4, srDenkitokuseiesi))); // 耐電圧設定条件:IR④ 電流中心値エンド 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START4, srDenkitokuseiesi))); // 耐電圧設定条件:IR④ 測定範囲スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START4, srDenkitokuseiesi))); // 耐電圧設定条件:IR④ 測定範囲スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_STARTTANI4, srDenkitokuseiesi))); // 耐電圧設定条件:IR④ 測定範囲スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END4, srDenkitokuseiesi))); // 耐電圧設定条件:IR④ 測定範囲エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END4, srDenkitokuseiesi))); // 耐電圧設定条件:IR④ 測定範囲エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_ENDTANI4, srDenkitokuseiesi))); // 耐電圧設定条件:IR④ 測定範囲エンド 単位
        
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START5, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑤ 電流中心値スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START5, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑤ 電流中心値スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI5, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑤ 電流中心値スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END5, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑤ 電流中心値エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END5, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑤ 電流中心値エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_ENDTANI5, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑤ 電流中心値エンド 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START5, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑤ 測定範囲スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START5, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑤ 測定範囲スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_STARTTANI5, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑤ 測定範囲スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END5, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑤ 測定範囲エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END5, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑤ 測定範囲エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_ENDTANI5, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑤ 測定範囲エンド 単位
         
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START6, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑥ 電流中心値スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START6, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑥ 電流中心値スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI6, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑥ 電流中心値スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END6, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑥ 電流中心値エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END6, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑥ 電流中心値エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_ENDTANI6, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑥ 電流中心値エンド 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START6, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑥ 測定範囲スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START6, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑥ 測定範囲スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_STARTTANI6, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑥ 測定範囲スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END6, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑥ 測定範囲エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END6, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑥ 測定範囲エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_ENDTANI6, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑥ 測定範囲エンド 単位
         
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 電流中心値スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 電流中心値スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 電流中心値スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 電流中心値エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 電流中心値エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_ENDTANI7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 電流中心値エンド 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 測定範囲スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 測定範囲スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_STARTTANI7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 測定範囲スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 測定範囲エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 測定範囲エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_ENDTANI7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 測定範囲エンド 単位
         
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 電流中心値スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 電流中心値スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 電流中心値スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 電流中心値エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 電流中心値エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_ENDTANI8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 電流中心値エンド 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 測定範囲スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 測定範囲スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_STARTTANI8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 測定範囲スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 測定範囲エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 測定範囲エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_ENDTANI8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 測定範囲エンド 単位
         
         return params;
@@ -4335,16 +4335,16 @@ public class GXHDO101B053 implements IFormLogic {
         params.add(DBUtil.stringToStringObject(StringUtil.nullToBlank(processData.getHiddenDataMap().get("lotkubuncode")))); // ﾛｯﾄ区分
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_SHITEI_KOUSA, srDenkitokuseiesi))); //指定公差
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_ATOKOUTEI_SHIJI_NAIYO, srDenkitokuseiesi))); //後工程指示内容
-        params.add(DBUtil.stringToIntObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_OKURI_RYOHINSU, srDenkitokuseiesi))); //送り良品数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_UKEIRE_TANNIJURYO, srDenkitokuseiesi))); //受入れ単位重量
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_UKEIRE_SOUJURYO, srDenkitokuseiesi))); //受入れ総重量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemList, GXHDO101B053Const.SEIHIN_OKURI_RYOHINSU, srDenkitokuseiesi))); //送り良品数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B053Const.SEIHIN_UKEIRE_TANNIJURYO, srDenkitokuseiesi))); //受入れ単位重量
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B053Const.SEIHIN_UKEIRE_SOUJURYO, srDenkitokuseiesi))); //受入れ総重量
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_KENSA_BASHO, srDenkitokuseiesi))); //検査場所
         params.add(DBUtil.stringToDateObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_SENBETSU_KAISHI_DAY, srDenkitokuseiesi),
                 getItemData(pItemList, GXHDO101B053Const.SEIHIN_SENBETSU_KAISHI_TIME, srDenkitokuseiesi))); //選別開始日時
         params.add(DBUtil.stringToDateObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_SENBETSU_SHURYO_DAY, srDenkitokuseiesi),
                 getItemData(pItemList, GXHDO101B053Const.SEIHIN_SENBETSU_SHURYO_TIME, srDenkitokuseiesi))); //選別終了日時
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_KENSA_GOKI, srDenkitokuseiesi))); //検査号機
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_MAIN_AIR_ATSU, srDenkitokuseiesi))); //メインエアー圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B053Const.SEIHIN_MAIN_AIR_ATSU, srDenkitokuseiesi))); //メインエアー圧
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_INDEX_TABLE_MOKUSHI, srDenkitokuseiesi))); //インデックステーブル目視(ﾃｽﾄﾌﾟﾚｰﾄ 形状･清掃)
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_INDEX_TABLE_ICHI_KAKUNIN_ANA_ICHI, srDenkitokuseiesi))); //インデックステーブル位置確認(穴位置)(ﾃｽﾄﾌﾟﾚｰﾄ位置確認(穴位置))
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_BIN_BOX_SEISOU_CHECK, srDenkitokuseiesi))); //BINﾎﾞｯｸｽ内の清掃ﾁｪｯｸ
@@ -4353,146 +4353,146 @@ public class GXHDO101B053 implements IFormLogic {
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_SHITEI_KOUSA_BUDOMARI1, srDenkitokuseiesi))); //指定公差歩留まり1
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_SHITEI_KOUSA_BUDOMARI2, srDenkitokuseiesi))); //指定公差歩留まり2
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_INDEX_KANRI_NO, srDenkitokuseiesi))); //インデックステーブル管理No.(ﾃｽﾄﾌﾟﾚｰﾄ管理No)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_TAN_DELTA, srDenkitokuseiesi))); //Tanδ
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B053Const.SEIHIN_TAN_DELTA, srDenkitokuseiesi))); //Tanδ
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_SOKUTEI_SHUHASU, srDenkitokuseiesi))); //測定周波数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_SOKUTEI_DENATSU, srDenkitokuseiesi))); //測定電圧
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_HOSEIYOU_CHIP_YORYO, srDenkitokuseiesi))); //補正用ﾁｯﾌﾟ容量
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_HOSEIYOU_CHIP_TAN_DELTA, srDenkitokuseiesi))); //補正用ﾁｯﾌﾟTanδ
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_HOSEIMAE, srDenkitokuseiesi))); //補正前
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_HOSEIATO, srDenkitokuseiesi))); //補正後
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_HOSEIRITSU, srDenkitokuseiesi))); //補正率
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B053Const.SEIHIN_SOKUTEI_DENATSU, srDenkitokuseiesi))); //測定電圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B053Const.SEIHIN_HOSEIYOU_CHIP_YORYO, srDenkitokuseiesi))); //補正用ﾁｯﾌﾟ容量
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B053Const.SEIHIN_HOSEIYOU_CHIP_TAN_DELTA, srDenkitokuseiesi))); //補正用ﾁｯﾌﾟTanδ
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B053Const.SEIHIN_HOSEIMAE, srDenkitokuseiesi))); //補正前
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B053Const.SEIHIN_HOSEIATO, srDenkitokuseiesi))); //補正後
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B053Const.SEIHIN_HOSEIRITSU, srDenkitokuseiesi))); //補正率
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_BUNRUI_KAKUNIN, srDenkitokuseiesi))); //分類確認
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_GAIKAN_KAKUNIN, srDenkitokuseiesi))); //外観確認
         params.add(DBUtil.stringToDateObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_NETSUSYORI_DAY, srDenkitokuseiesi),
                 getItemData(pItemList, GXHDO101B053Const.SEIHIN_NETSUSYORI_TIME, srDenkitokuseiesi))); //熱処理日時
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_AGING_TIME, srDenkitokuseiesi))); //ｴｰｼﾞﾝｸﾞ時間
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemList, GXHDO101B053Const.SEIHIN_AGING_TIME, srDenkitokuseiesi))); //ｴｰｼﾞﾝｸﾞ時間
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_SHONINSHA, srDenkitokuseiesi))); //承認者
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_FURIMUKESHA, srDenkitokuseiesi))); //振向者
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_BIKOU1, srDenkitokuseiesi))); //備考1
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_BIKOU2, srDenkitokuseiesi))); //備考2
         
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 電圧
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI1, srDenkitokuseiesi))); //耐電圧設定条件:IR① 良品範囲上限(耐電圧設定条件 IR① 判定値)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 時間(耐電圧設定条件 IR① 充電時間)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 電圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI1, srDenkitokuseiesi))); //耐電圧設定条件:IR① 良品範囲上限(耐電圧設定条件 IR① 判定値)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 時間(耐電圧設定条件 IR① 充電時間)
         
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 電圧
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI2, srDenkitokuseiesi))); //耐電圧設定条件:IR② 良品範囲上限(耐電圧設定条件 IR② 判定値)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME2, srDenkitokuseiesi))); //耐電圧設定条件:IR② 時間(耐電圧設定条件 IR② 充電時間)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 電圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI2, srDenkitokuseiesi))); //耐電圧設定条件:IR② 良品範囲上限(耐電圧設定条件 IR② 判定値)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME2, srDenkitokuseiesi))); //耐電圧設定条件:IR② 時間(耐電圧設定条件 IR② 充電時間)
         
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 電圧
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 良品範囲上限(耐電圧設定条件 IR③ 判定値)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 時間(耐電圧設定条件 IR③ 充電時間)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 電圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 良品範囲上限(耐電圧設定条件 IR③ 判定値)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 時間(耐電圧設定条件 IR③ 充電時間)
         
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 電圧
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 良品範囲上限(耐電圧設定条件 IR④ 判定値)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 時間(耐電圧設定条件 IR④ 充電時間)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 電圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 良品範囲上限(耐電圧設定条件 IR④ 判定値)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 時間(耐電圧設定条件 IR④ 充電時間)
         
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 電圧
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 良品範囲上限(耐電圧設定条件 IR⑤ 判定値)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 時間(耐電圧設定条件 IR⑤ 充電時間)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 電圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 良品範囲上限(耐電圧設定条件 IR⑤ 判定値)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 時間(耐電圧設定条件 IR⑤ 充電時間)
         
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 電圧
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 良品範囲上限(耐電圧設定条件 IR⑥ 判定値)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 時間(耐電圧設定条件 IR⑥ 充電時間)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 電圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 良品範囲上限(耐電圧設定条件 IR⑥ 判定値)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 時間(耐電圧設定条件 IR⑥ 充電時間)
         
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 電圧
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 良品範囲上限(耐電圧設定条件 IR⑦ 判定値)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 時間(耐電圧設定条件 IR⑦ 充電時間)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 電圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 良品範囲上限(耐電圧設定条件 IR⑦ 判定値)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 時間(耐電圧設定条件 IR⑦ 充電時間)
         
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 電圧
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 良品範囲上限(耐電圧設定条件 IR⑧ 判定値)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 時間(耐電圧設定条件 IR⑧ 充電時間)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 電圧
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 良品範囲上限(耐電圧設定条件 IR⑧ 判定値)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 時間(耐電圧設定条件 IR⑧ 充電時間)
 
 
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_PERCENT_KBN, srDenkitokuseiesi))); //BIN1 %区分(設定値)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_SENBETSU_KBN, srDenkitokuseiesi))); //BIN1 選別区分
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN1 計量後数量
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_COUNTER_SU, srDenkitokuseiesi))); //BIN1 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_GOSARITSU, srDenkitokuseiesi))); //BIN1 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN1 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN1 抜き取り結果(子数)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN1 抜き取り結果(母数) 
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN1 真の不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN1 計量後数量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_COUNTER_SU, srDenkitokuseiesi))); //BIN1 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_GOSARITSU, srDenkitokuseiesi))); //BIN1 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN1 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN1 抜き取り結果(子数)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN1 抜き取り結果(母数) 
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN1 真の不良率(%)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_KEKKA_CHECK, srDenkitokuseiesi))); //BIN1 結果ﾁｪｯｸ
 
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_PERCENT_KBN, srDenkitokuseiesi))); //BIN2 %区分(設定値)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_SENBETSU_KBN, srDenkitokuseiesi))); //BIN2 選別区分
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN2 計量後数量
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_COUNTER_SU, srDenkitokuseiesi))); //BIN2 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_GOSARITSU, srDenkitokuseiesi))); //BIN2 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN2 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN2 抜き取り結果(子数)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN2 抜き取り結果(母数) 
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN2 真の不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN2 計量後数量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_COUNTER_SU, srDenkitokuseiesi))); //BIN2 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_GOSARITSU, srDenkitokuseiesi))); //BIN2 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN2 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN2 抜き取り結果(子数)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN2 抜き取り結果(母数) 
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN2 真の不良率(%)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_KEKKA_CHECK, srDenkitokuseiesi))); //BIN2 結果ﾁｪｯｸ
         
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_PERCENT_KBN, srDenkitokuseiesi))); //BIN3 %区分(設定値)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_SENBETSU_KBN, srDenkitokuseiesi))); //BIN3 選別区分
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN3 計量後数量
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_COUNTER_SU, srDenkitokuseiesi))); //BIN3 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_GOSARITSU, srDenkitokuseiesi))); //BIN3 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN3 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN3 抜き取り結果(子数)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN3 抜き取り結果(母数) 
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN3 真の不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN3 計量後数量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_COUNTER_SU, srDenkitokuseiesi))); //BIN3 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_GOSARITSU, srDenkitokuseiesi))); //BIN3 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN3 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN3 抜き取り結果(子数)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN3 抜き取り結果(母数) 
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN3 真の不良率(%)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_KEKKA_CHECK, srDenkitokuseiesi))); //BIN3 結果ﾁｪｯｸ
 
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_PERCENT_KBN, srDenkitokuseiesi))); //BIN4 %区分(設定値)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_SENBETSU_KBN, srDenkitokuseiesi))); //BIN4 選別区分
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN4 計量後数量
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_COUNTER_SU, srDenkitokuseiesi))); //BIN4 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_GOSARITSU, srDenkitokuseiesi))); //BIN4 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN4 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN4 抜き取り結果(子数)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN4 抜き取り結果(母数) 
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN4 真の不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN4 計量後数量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_COUNTER_SU, srDenkitokuseiesi))); //BIN4 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_GOSARITSU, srDenkitokuseiesi))); //BIN4 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN4 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN4 抜き取り結果(子数)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN4 抜き取り結果(母数) 
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN4 真の不良率(%)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_KEKKA_CHECK, srDenkitokuseiesi))); //BIN4 結果ﾁｪｯｸ
 
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_PERCENT_KBN, srDenkitokuseiesi))); //BIN5 %区分(設定値)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_SENBETSU_KBN, srDenkitokuseiesi))); //BIN5 選別区分
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN5 計量後数量
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_COUNTER_SU, srDenkitokuseiesi))); //BIN5 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_GOSARITSU, srDenkitokuseiesi))); //BIN5 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN5 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN5 抜き取り結果(子数)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN5 抜き取り結果(母数) 
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN5 真の不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN5 計量後数量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_COUNTER_SU, srDenkitokuseiesi))); //BIN5 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_GOSARITSU, srDenkitokuseiesi))); //BIN5 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN5 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN5 抜き取り結果(子数)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN5 抜き取り結果(母数) 
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN5 真の不良率(%)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_KEKKA_CHECK, srDenkitokuseiesi))); //BIN5 結果ﾁｪｯｸ
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_FUKURO_CHECK, srDenkitokuseiesi))); //BIN5 袋ﾁｪｯｸ
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN5_FUKURO_CHECK, srDenkitokuseiesi))); //BIN5 袋ﾁｪｯｸ
         
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_PERCENT_KBN, srDenkitokuseiesi))); //BIN6 %区分(設定値)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_SENBETSU_KBN, srDenkitokuseiesi))); //BIN6 選別区分
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN6 計量後数量
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_COUNTER_SU, srDenkitokuseiesi))); //BIN6 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_GOSARITSU, srDenkitokuseiesi))); //BIN6 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN6 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN6 抜き取り結果(子数)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN6 抜き取り結果(母数) 
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN6 真の不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN6 計量後数量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_COUNTER_SU, srDenkitokuseiesi))); //BIN6 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_GOSARITSU, srDenkitokuseiesi))); //BIN6 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN6 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN6 抜き取り結果(子数)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN6 抜き取り結果(母数) 
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN6 真の不良率(%)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_KEKKA_CHECK, srDenkitokuseiesi))); //BIN6 結果ﾁｪｯｸ
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_FUKURO_CHECK, srDenkitokuseiesi))); //BIN6 袋ﾁｪｯｸ
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN6_FUKURO_CHECK, srDenkitokuseiesi))); //BIN6 袋ﾁｪｯｸ
         
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_PERCENT_KBN, srDenkitokuseiesi))); //BIN7 %区分(設定値)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_SENBETSU_KBN, srDenkitokuseiesi))); //BIN7 選別区分
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN7 計量後数量
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_COUNTER_SU, srDenkitokuseiesi))); //BIN7 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_GOSARITSU, srDenkitokuseiesi))); //BIN7 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN7 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_FUKURO_CHECK, srDenkitokuseiesi))); //BIN7 袋ﾁｪｯｸ
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN7 計量後数量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_COUNTER_SU, srDenkitokuseiesi))); //BIN7 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_GOSARITSU, srDenkitokuseiesi))); //BIN7 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN7 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_FUKURO_CHECK, srDenkitokuseiesi))); //BIN7 袋ﾁｪｯｸ
         
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_PERCENT_KBN, srDenkitokuseiesi))); //BIN8 %区分(設定値)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_SENBETSU_KBN, srDenkitokuseiesi))); //BIN8 選別区分
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN8 計量後数量
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_COUNTER_SU, srDenkitokuseiesi))); //BIN8 ｶｳﾝﾀｰ数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_GOSARITSU, srDenkitokuseiesi))); //BIN8 誤差率(%)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN8 ﾏｼﾝ不良率(%)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_FUKURO_CHECK, srDenkitokuseiesi))); //BIN8 袋ﾁｪｯｸ
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN8 計量後数量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_COUNTER_SU, srDenkitokuseiesi))); //BIN8 ｶｳﾝﾀｰ数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_GOSARITSU, srDenkitokuseiesi))); //BIN8 誤差率(%)
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN8 ﾏｼﾝ不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_FUKURO_CHECK, srDenkitokuseiesi))); //BIN8 袋ﾁｪｯｸ
         
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN9_K_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN9 強制排出 計量後数量
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN9_K_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN9 強制排出 ﾏｼﾝ不良率
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN9_K_KEIRYOGO_SURYO, srDenkitokuseiesi))); //BIN9 強制排出 計量後数量
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN9_K_MACHINE_FURYORITSU, srDenkitokuseiesi))); //BIN9 強制排出 ﾏｼﾝ不良率
         
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_RAKKA_KEIRYOGO_SURYO, srDenkitokuseiesi))); //落下 計量後数量 
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_RAKKA_MACHINE_FURYORITSU, srDenkitokuseiesi))); //落下 ﾏｼﾝ不良率
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_RAKKA_KEIRYOGO_SURYO, srDenkitokuseiesi))); //落下 計量後数量 
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_RAKKA_MACHINE_FURYORITSU, srDenkitokuseiesi))); //落下 ﾏｼﾝ不良率
         
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_HANDA_SAMPLE, srDenkitokuseiesi))); //半田ｻﾝﾌﾟﾙ
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_SHINRAISEI_SAMPLE, srDenkitokuseiesi))); //信頼性ｻﾝﾌﾟﾙ
@@ -4501,25 +4501,25 @@ public class GXHDO101B053 implements IFormLogic {
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_TORIDASHISHA, srDenkitokuseiesi))); //取出者
         
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_KOUSA1, srDenkitokuseiesi))); //公差①
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_JURYO1, srDenkitokuseiesi))); //重量①
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_KOSU1, srDenkitokuseiesi))); //個数①
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_JURYO1, srDenkitokuseiesi))); //重量①
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_KOSU1, srDenkitokuseiesi))); //個数①
         
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_KOUSA2, srDenkitokuseiesi))); //公差②
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_JURYO2, srDenkitokuseiesi))); //重量②
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_KOSU2, srDenkitokuseiesi))); //個数②
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_JURYO2, srDenkitokuseiesi))); //重量②
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_KOSU2, srDenkitokuseiesi))); //個数②
         
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_KOUSA3, srDenkitokuseiesi))); //公差③
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_JURYO3, srDenkitokuseiesi))); //重量③
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_KOSU3, srDenkitokuseiesi))); //個数③
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_JURYO3, srDenkitokuseiesi))); //重量③
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_KOSU3, srDenkitokuseiesi))); //個数③
         
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_KOUSA4, srDenkitokuseiesi))); //公差④
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_JURYO4, srDenkitokuseiesi))); //重量④
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_KOSU4, srDenkitokuseiesi))); //個数④
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_JURYO4, srDenkitokuseiesi))); //重量④
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_KOSU4, srDenkitokuseiesi))); //個数④
         
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_COUNTER_SOSU, srDenkitokuseiesi))); //ｶｳﾝﾀｰ総数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_RYOUHIN_JURYO, srDenkitokuseiesi))); //良品重量
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_RYOUHIN_KOSU, srDenkitokuseiesi))); //良品個数
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BUDOMARI, srDenkitokuseiesi))); //歩留まり
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_COUNTER_SOSU, srDenkitokuseiesi))); //ｶｳﾝﾀｰ総数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_RYOUHIN_JURYO, srDenkitokuseiesi))); //良品重量
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_RYOUHIN_KOSU, srDenkitokuseiesi))); //良品個数
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BUDOMARI, srDenkitokuseiesi))); //歩留まり
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_KAKUNINSHA, srDenkitokuseiesi))); //BIN確認者
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_DENKITOKUSEI_SAIKEN, srDenkitokuseiesi))); //電気特性再検
         params.add(formId); //設備区分
@@ -4530,39 +4530,39 @@ public class GXHDO101B053 implements IFormLogic {
             params.add(systemTime); //更新日時
         }
         params.add(newRev); //revision
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW1, srDenkitokuseiesi))); //耐電圧設定条件:IR① 良品範囲下限(耐電圧設定条件 IR① 判定値(低))
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW1, srDenkitokuseiesi))); //耐電圧設定条件:IR① 良品範囲下限(耐電圧設定条件 IR① 判定値(低))
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANITANI1, srDenkitokuseiesi))); //耐電圧設定条件:IR① 良品範囲上限 単位(耐電圧設定条件 IR① 判定値 単位)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW2, srDenkitokuseiesi))); //耐電圧設定条件:IR② 良品範囲下限(耐電圧設定条件 IR② 判定値(低))
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW2, srDenkitokuseiesi))); //耐電圧設定条件:IR② 良品範囲下限(耐電圧設定条件 IR② 判定値(低))
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANITANI2, srDenkitokuseiesi))); //耐電圧設定条件:IR② 良品範囲上限 単位(耐電圧設定条件 IR② 判定値 単位)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW3, srDenkitokuseiesi))); //耐電圧設定条件:IR③ 良品範囲下限(耐電圧設定条件 IR③ 判定値(低))
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW3, srDenkitokuseiesi))); //耐電圧設定条件:IR③ 良品範囲下限(耐電圧設定条件 IR③ 判定値(低))
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANITANI3, srDenkitokuseiesi))); //耐電圧設定条件:IR③ 良品範囲上限 単位(耐電圧設定条件 IR③ 判定値 単位)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW4, srDenkitokuseiesi))); //耐電圧設定条件:IR④ 良品範囲下限(耐電圧設定条件 IR④ 判定値(低))
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW4, srDenkitokuseiesi))); //耐電圧設定条件:IR④ 良品範囲下限(耐電圧設定条件 IR④ 判定値(低))
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANITANI4, srDenkitokuseiesi))); //耐電圧設定条件:IR④ 良品範囲上限 単位(耐電圧設定条件 IR④ 判定値 単位)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW5, srDenkitokuseiesi))); //耐電圧設定条件:IR⑤ 良品範囲下限(耐電圧設定条件 IR⑤ 判定値(低))
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW5, srDenkitokuseiesi))); //耐電圧設定条件:IR⑤ 良品範囲下限(耐電圧設定条件 IR⑤ 判定値(低))
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANITANI5, srDenkitokuseiesi))); //耐電圧設定条件:IR⑤ 良品範囲上限 単位(耐電圧設定条件 IR⑤ 判定値 単位)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW6, srDenkitokuseiesi))); //耐電圧設定条件:IR⑥ 良品範囲下限(耐電圧設定条件 IR⑥ 判定値(低))
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW6, srDenkitokuseiesi))); //耐電圧設定条件:IR⑥ 良品範囲下限(耐電圧設定条件 IR⑥ 判定値(低))
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANITANI6, srDenkitokuseiesi))); //耐電圧設定条件:IR⑥ 良品範囲上限 単位(耐電圧設定条件 IR⑥ 判定値 単位)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW7, srDenkitokuseiesi))); //耐電圧設定条件:IR⑦ 良品範囲下限(耐電圧設定条件 IR⑦ 判定値(低))
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW7, srDenkitokuseiesi))); //耐電圧設定条件:IR⑦ 良品範囲下限(耐電圧設定条件 IR⑦ 判定値(低))
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANITANI7, srDenkitokuseiesi))); //耐電圧設定条件:IR⑦ 良品範囲上限 単位(耐電圧設定条件 IR⑦ 判定値 単位)
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW8, srDenkitokuseiesi))); //耐電圧設定条件:IR⑧ 良品範囲下限(耐電圧設定条件 IR⑧ 判定値(低))
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW8, srDenkitokuseiesi))); //耐電圧設定条件:IR⑧ 良品範囲下限(耐電圧設定条件 IR⑧ 判定値(低))
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANITANI8, srDenkitokuseiesi))); //耐電圧設定条件:IR⑧ 良品範囲上限 単位(耐電圧設定条件 IR⑧ 判定値 単位)
         if (isInsert) {
             params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B053Const.SEIHIN_DOUHINSYU, srDenkitokuseiesi), 0)); //同品種
         }
 
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_FUKURO_CHECK, srDenkitokuseiesi))); //BIN1 袋ﾁｪｯｸ
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_FUKURO_CHECK, srDenkitokuseiesi))); //BIN2 袋ﾁｪｯｸ
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_FUKURO_CHECK, srDenkitokuseiesi))); //BIN3 袋ﾁｪｯｸ
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_FUKURO_CHECK, srDenkitokuseiesi))); //BIN4 袋ﾁｪｯｸ
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_FUKURO_CHECK, srDenkitokuseiesi))); //BIN1 袋ﾁｪｯｸ
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN2_FUKURO_CHECK, srDenkitokuseiesi))); //BIN2 袋ﾁｪｯｸ
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN3_FUKURO_CHECK, srDenkitokuseiesi))); //BIN3 袋ﾁｪｯｸ
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN4_FUKURO_CHECK, srDenkitokuseiesi))); //BIN4 袋ﾁｪｯｸ
         
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN7 抜き取り結果(子数)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN7 抜き取り結果(母数) 
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN7 真の不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN7 抜き取り結果(子数)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN7 抜き取り結果(母数) 
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN7 真の不良率(%)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN7_KEKKA_CHECK, srDenkitokuseiesi))); //BIN7 結果ﾁｪｯｸ
         
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN8 抜き取り結果(子数)
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN8 抜き取り結果(母数) 
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN8 真の不良率(%)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_NUKITORIKEKKA_S, srDenkitokuseiesi))); //BIN8 抜き取り結果(子数)
+        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_NUKITORIKEKKA_T, srDenkitokuseiesi))); //BIN8 抜き取り結果(母数) 
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_SHIN_FURYORITSU, srDenkitokuseiesi))); //BIN8 真の不良率(%)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN8_KEKKA_CHECK, srDenkitokuseiesi))); //BIN8 結果ﾁｪｯｸ
 
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_SAT_SAMPLE, srDenkitokuseiesi))); //SATｻﾝﾌﾟﾙ
@@ -4582,76 +4582,76 @@ public class GXHDO101B053 implements IFormLogic {
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_INDEX_SOKUTEIPIN_FRONT_GAIKAN, srDenkitokuseiesi))); // 製品情報:測定ピン(フロント)外観
         params.add(DBUtil.stringToStringObject(getItemData(pItemList, GXHDO101B053Const.SEIHIN_INDEX_SOKUTEIPIN_REAR_GAIKAN, srDenkitokuseiesi))); // 製品情報:測定ピン(リア)外観
         
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 電流中心値スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 電流中心値スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 電流中心値スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 電流中心値エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 電流中心値エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_ENDTANI1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 電流中心値エンド 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 測定範囲スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 測定範囲スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_STARTTANI1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 測定範囲スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 測定範囲エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 測定範囲エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_ENDTANI1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 測定範囲エンド 単位
 
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START2, srDenkitokuseiesi))); // 耐電圧設定条件:IR② 電流中心値スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START2, srDenkitokuseiesi))); // 耐電圧設定条件:IR② 電流中心値スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI2, srDenkitokuseiesi))); // 耐電圧設定条件:IR② 電流中心値スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END2, srDenkitokuseiesi))); // 耐電圧設定条件:IR② 電流中心値エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END2, srDenkitokuseiesi))); // 耐電圧設定条件:IR② 電流中心値エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_ENDTANI2, srDenkitokuseiesi))); // 耐電圧設定条件:IR② 電流中心値エンド 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START2, srDenkitokuseiesi))); // 耐電圧設定条件:IR② 測定範囲スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START2, srDenkitokuseiesi))); // 耐電圧設定条件:IR② 測定範囲スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_STARTTANI2, srDenkitokuseiesi))); // 耐電圧設定条件:IR② 測定範囲スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END2, srDenkitokuseiesi))); // 耐電圧設定条件:IR② 測定範囲エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END2, srDenkitokuseiesi))); // 耐電圧設定条件:IR② 測定範囲エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_ENDTANI2, srDenkitokuseiesi))); // 耐電圧設定条件:IR② 測定範囲エンド 単位
         
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START3, srDenkitokuseiesi))); // 耐電圧設定条件:IR③ 電流中心値スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START3, srDenkitokuseiesi))); // 耐電圧設定条件:IR③ 電流中心値スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI3, srDenkitokuseiesi))); // 耐電圧設定条件:IR③ 電流中心値スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END3, srDenkitokuseiesi))); // 耐電圧設定条件:IR③ 電流中心値エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END3, srDenkitokuseiesi))); // 耐電圧設定条件:IR③ 電流中心値エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_ENDTANI3, srDenkitokuseiesi))); // 耐電圧設定条件:IR③ 電流中心値エンド 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START3, srDenkitokuseiesi))); // 耐電圧設定条件:IR③ 測定範囲スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START3, srDenkitokuseiesi))); // 耐電圧設定条件:IR③ 測定範囲スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_STARTTANI3, srDenkitokuseiesi))); // 耐電圧設定条件:IR③ 測定範囲スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END3, srDenkitokuseiesi))); // 耐電圧設定条件:IR③ 測定範囲エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END3, srDenkitokuseiesi))); // 耐電圧設定条件:IR③ 測定範囲エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_ENDTANI3, srDenkitokuseiesi))); // 耐電圧設定条件:IR③ 測定範囲エンド 単位
         
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START4, srDenkitokuseiesi))); // 耐電圧設定条件:IR④ 電流中心値スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START4, srDenkitokuseiesi))); // 耐電圧設定条件:IR④ 電流中心値スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI4, srDenkitokuseiesi))); // 耐電圧設定条件:IR④ 電流中心値スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END4, srDenkitokuseiesi))); // 耐電圧設定条件:IR④ 電流中心値エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END4, srDenkitokuseiesi))); // 耐電圧設定条件:IR④ 電流中心値エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_ENDTANI4, srDenkitokuseiesi))); // 耐電圧設定条件:IR④ 電流中心値エンド 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START4, srDenkitokuseiesi))); // 耐電圧設定条件:IR④ 測定範囲スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START4, srDenkitokuseiesi))); // 耐電圧設定条件:IR④ 測定範囲スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_STARTTANI4, srDenkitokuseiesi))); // 耐電圧設定条件:IR④ 測定範囲スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END4, srDenkitokuseiesi))); // 耐電圧設定条件:IR④ 測定範囲エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END4, srDenkitokuseiesi))); // 耐電圧設定条件:IR④ 測定範囲エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_ENDTANI4, srDenkitokuseiesi))); // 耐電圧設定条件:IR④ 測定範囲エンド 単位
        
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START5, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑤ 電流中心値スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START5, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑤ 電流中心値スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI5, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑤ 電流中心値スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END5, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑤ 電流中心値エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END5, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑤ 電流中心値エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_ENDTANI5, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑤ 電流中心値エンド 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START5, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑤ 測定範囲スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START5, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑤ 測定範囲スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_STARTTANI5, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑤ 測定範囲スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END5, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑤ 測定範囲エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END5, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑤ 測定範囲エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_ENDTANI5, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑤ 測定範囲エンド 単位
         
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START6, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑥ 電流中心値スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START6, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑥ 電流中心値スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI6, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑥ 電流中心値スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END6, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑥ 電流中心値エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END6, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑥ 電流中心値エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_ENDTANI6, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑥ 電流中心値エンド 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START6, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑥ 測定範囲スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START6, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑥ 測定範囲スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_STARTTANI6, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑥ 測定範囲スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END6, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑥ 測定範囲エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END6, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑥ 測定範囲エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_ENDTANI6, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑥ 測定範囲エンド 単位
         
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 電流中心値スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 電流中心値スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 電流中心値スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 電流中心値エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 電流中心値エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_ENDTANI7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 電流中心値エンド 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 測定範囲スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 測定範囲スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_STARTTANI7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 測定範囲スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 測定範囲エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 測定範囲エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_ENDTANI7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 測定範囲エンド 単位
         
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 電流中心値スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_START8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 電流中心値スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 電流中心値スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 電流中心値エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_END8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 電流中心値エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENRYU_ENDTANI8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 電流中心値エンド 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 測定範囲スタート
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_START8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 測定範囲スタート
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_STARTTANI8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 測定範囲スタート 単位
-        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 測定範囲エンド
+        params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 測定範囲エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_ENDTANI8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 測定範囲エンド 単位
         
         return params;
