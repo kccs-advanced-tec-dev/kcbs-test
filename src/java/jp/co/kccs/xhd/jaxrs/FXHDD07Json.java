@@ -19,6 +19,11 @@ package jp.co.kccs.xhd.jaxrs;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	項目追加対応<br>
  * <br>
+ * 変更日	2024/12/06<br>
+ * 計画書No	MB2408-D009<br>
+ * 変更者	SYSNAVI H.Kamo<br>
+ * 変更理由	電気特性・新設備（TWA）対応<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -165,7 +170,104 @@ public class FXHDD07Json {
     private String bin2setteiti;
     private String bin3setteiti;
     private String bin4setteiti;
-
+    private String gentenhukkidousa;
+    private String sokuteiki12dousakakunin;
+    private String sokuteipinfront;
+    private String sokuteipinrear;
+    private String ir1denryustart;
+    private String ir1denryustarttani;
+    private String ir1denryuend;
+    private String ir1denryuendtani;
+    private String ir1sokuteihanistart;
+    private String ir1sokuteihanistarttani;
+    private String ir1sokuteihaniend;
+    private String ir1sokuteihaniendtani;
+    private String ir2denryustart;
+    private String ir2denryustarttani;
+    private String ir2denryuend;
+    private String ir2denryuendtani;
+    private String ir2sokuteihanistart;
+    private String ir2sokuteihanistarttani;
+    private String ir2sokuteihaniend;
+    private String ir2sokuteihaniendtani;
+    private String ir3denryustart;
+    private String ir3denryustarttani;
+    private String ir3denryuend;
+    private String ir3denryuendtani;
+    private String ir3sokuteihanistart;
+    private String ir3sokuteihanistarttani;
+    private String ir3sokuteihaniend;
+    private String ir3sokuteihaniendtani;
+    private String ir4denryustart;
+    private String ir4denryustarttani;
+    private String ir4denryuend;
+    private String ir4denryuendtani;
+    private String ir4sokuteihanistart;
+    private String ir4sokuteihanistarttani;
+    private String ir4sokuteihaniend;
+    private String ir4sokuteihaniendtani;
+    private String ir5denryustart;
+    private String ir5denryustarttani;
+    private String ir5denryuend;
+    private String ir5denryuendtani;
+    private String ir5sokuteihanistart;
+    private String ir5sokuteihanistarttani;
+    private String ir5sokuteihaniend;
+    private String ir5sokuteihaniendtani;
+    private String ir6denryustart;
+    private String ir6denryustarttani;
+    private String ir6denryuend;
+    private String ir6denryuendtani;
+    private String ir6sokuteihanistart;
+    private String ir6sokuteihanistarttani;
+    private String ir6sokuteihaniend;
+    private String ir6sokuteihaniendtani;
+    private String ir7denryustart;
+    private String ir7denryustarttani;
+    private String ir7denryuend;
+    private String ir7denryuendtani;
+    private String ir7sokuteihanistart;
+    private String ir7sokuteihanistarttani;
+    private String ir7sokuteihaniend;
+    private String ir7sokuteihaniendtani;
+    private String ir8denryustart;
+    private String ir8denryustarttani;
+    private String ir8denryuend;
+    private String ir8denryuendtani;
+    private String ir8sokuteihanistart;
+    private String ir8sokuteihanistarttani;
+    private String ir8sokuteihaniend;
+    private String ir8sokuteihaniendtani;
+    private String senbetukaisinitijitwa;
+    private String senbetusyuryounitijitwa;
+    private String satsample;
+    private String binboxseisoucheck;
+    private String bin1setteititwa;
+    private String bin2setteititwa;
+    private String bin3setteititwa;
+    private String bin4setteititwa;
+    private String bin5setteititwa;
+    private String bin6setteititwa;
+    private String bin7setteititwa;
+    private String bin8setteititwa;
+    private String hoseiyoutippuyoryou;
+    private String hoseiyoutipputan;
+    private String ir1jikan;
+    private String ir1jikantani;
+    private String ir2jikan;
+    private String ir2jikantani;
+    private String ir3jikan;
+    private String ir3jikantani;
+    private String ir4jikan;
+    private String ir4jikantani;
+    private String ir5jikan;
+    private String ir5jikantani;
+    private String ir6jikan;
+    private String ir6jikantani;
+    private String ir7jikan;
+    private String ir7jikantani;
+    private String ir8jikan;
+    private String ir8jikantani;
 
     /**
      * @return the maker
@@ -2125,5 +2227,1377 @@ public class FXHDD07Json {
      */
     public void setBin4setteiti(String bin4setteiti) {
         this.bin4setteiti = bin4setteiti;
+    }
+
+    /**
+     * @return the gentenhukkidousa
+     */
+    public String getGentenhukkidousa() {
+        return gentenhukkidousa;
+    }
+
+    /**
+     * @param gentenhukkidousa the gentenhukkidousa to set
+     */
+    public void setGentenhukkidousa(String gentenhukkidousa) {
+        this.gentenhukkidousa = gentenhukkidousa;
+    }
+
+    /**
+     * @return the sokuteiki12dousakakunin
+     */
+    public String getSokuteiki12dousakakunin() {
+        return sokuteiki12dousakakunin;
+    }
+
+    /**
+     * @param sokuteiki12dousakakunin the sokuteiki12dousakakunin to set
+     */
+    public void setSokuteiki12dousakakunin(String sokuteiki12dousakakunin) {
+        this.sokuteiki12dousakakunin = sokuteiki12dousakakunin;
+    }
+
+    /**
+     * @return the sokuteipinfront
+     */
+    public String getSokuteipinfront() {
+        return sokuteipinfront;
+    }
+
+    /**
+     * @param sokuteipinfront the sokuteipinfront to set
+     */
+    public void setSokuteipinfront(String sokuteipinfront) {
+        this.sokuteipinfront = sokuteipinfront;
+    }
+
+    /**
+     * @return the sokuteipinrear
+     */
+    public String getSokuteipinrear() {
+        return sokuteipinrear;
+    }
+
+    /**
+     * @param sokuteipinrear the sokuteipinrear to set
+     */
+    public void setSokuteipinrear(String sokuteipinrear) {
+        this.sokuteipinrear = sokuteipinrear;
+    }
+
+    /**
+     * @return the ir1denryustart
+     */
+    public String getIr1denryustart() {
+        return ir1denryustart;
+    }
+
+    /**
+     * @param ir1denryustart the ir1denryustart to set
+     */
+    public void setIr1denryustart(String ir1denryustart) {
+        this.ir1denryustart = ir1denryustart;
+    }
+
+    /**
+     * @return the ir1denryustarttani
+     */
+    public String getIr1denryustarttani() {
+        return ir1denryustarttani;
+    }
+
+    /**
+     * @param ir1denryustarttani the ir1denryustarttani to set
+     */
+    public void setIr1denryustarttani(String ir1denryustarttani) {
+        this.ir1denryustarttani = ir1denryustarttani;
+    }
+
+    /**
+     * @return the ir1denryuend
+     */
+    public String getIr1denryuend() {
+        return ir1denryuend;
+    }
+
+    /**
+     * @param ir1denryuend the ir1denryuend to set
+     */
+    public void setIr1denryuend(String ir1denryuend) {
+        this.ir1denryuend = ir1denryuend;
+    }
+
+    /**
+     * @return the ir1denryuendtani
+     */
+    public String getIr1denryuendtani() {
+        return ir1denryuendtani;
+    }
+
+    /**
+     * @param ir1denryuendtani the ir1denryuendtani to set
+     */
+    public void setIr1denryuendtani(String ir1denryuendtani) {
+        this.ir1denryuendtani = ir1denryuendtani;
+    }
+
+    /**
+     * @return the ir1sokuteihanistart
+     */
+    public String getIr1sokuteihanistart() {
+        return ir1sokuteihanistart;
+    }
+
+    /**
+     * @param ir1sokuteihanistart the ir1sokuteihanistart to set
+     */
+    public void setIr1sokuteihanistart(String ir1sokuteihanistart) {
+        this.ir1sokuteihanistart = ir1sokuteihanistart;
+    }
+
+    /**
+     * @return the ir1sokuteihanistarttani
+     */
+    public String getIr1sokuteihanistarttani() {
+        return ir1sokuteihanistarttani;
+    }
+
+    /**
+     * @param ir1sokuteihanistarttani the ir1sokuteihanistarttani to set
+     */
+    public void setIr1sokuteihanistarttani(String ir1sokuteihanistarttani) {
+        this.ir1sokuteihanistarttani = ir1sokuteihanistarttani;
+    }
+
+    /**
+     * @return the ir1sokuteihaniend
+     */
+    public String getIr1sokuteihaniend() {
+        return ir1sokuteihaniend;
+    }
+
+    /**
+     * @param ir1sokuteihaniend the ir1sokuteihaniend to set
+     */
+    public void setIr1sokuteihaniend(String ir1sokuteihaniend) {
+        this.ir1sokuteihaniend = ir1sokuteihaniend;
+    }
+
+    /**
+     * @return the ir1sokuteihaniendtani
+     */
+    public String getIr1sokuteihaniendtani() {
+        return ir1sokuteihaniendtani;
+    }
+
+    /**
+     * @param ir1sokuteihaniendtani the ir1sokuteihaniendtani to set
+     */
+    public void setIr1sokuteihaniendtani(String ir1sokuteihaniendtani) {
+        this.ir1sokuteihaniendtani = ir1sokuteihaniendtani;
+    }
+
+    /**
+     * @return the ir2denryustart
+     */
+    public String getIr2denryustart() {
+        return ir2denryustart;
+    }
+
+    /**
+     * @param ir2denryustart the ir2denryustart to set
+     */
+    public void setIr2denryustart(String ir2denryustart) {
+        this.ir2denryustart = ir2denryustart;
+    }
+
+    /**
+     * @return the ir2denryustarttani
+     */
+    public String getIr2denryustarttani() {
+        return ir2denryustarttani;
+    }
+
+    /**
+     * @param ir2denryustarttani the ir2denryustarttani to set
+     */
+    public void setIr2denryustarttani(String ir2denryustarttani) {
+        this.ir2denryustarttani = ir2denryustarttani;
+    }
+
+    /**
+     * @return the ir2denryuend
+     */
+    public String getIr2denryuend() {
+        return ir2denryuend;
+    }
+
+    /**
+     * @param ir2denryuend the ir2denryuend to set
+     */
+    public void setIr2denryuend(String ir2denryuend) {
+        this.ir2denryuend = ir2denryuend;
+    }
+
+    /**
+     * @return the ir2denryuendtani
+     */
+    public String getIr2denryuendtani() {
+        return ir2denryuendtani;
+    }
+
+    /**
+     * @param ir2denryuendtani the ir2denryuendtani to set
+     */
+    public void setIr2denryuendtani(String ir2denryuendtani) {
+        this.ir2denryuendtani = ir2denryuendtani;
+    }
+
+    /**
+     * @return the ir2sokuteihanistart
+     */
+    public String getIr2sokuteihanistart() {
+        return ir2sokuteihanistart;
+    }
+
+    /**
+     * @param ir2sokuteihanistart the ir2sokuteihanistart to set
+     */
+    public void setIr2sokuteihanistart(String ir2sokuteihanistart) {
+        this.ir2sokuteihanistart = ir2sokuteihanistart;
+    }
+
+    /**
+     * @return the ir2sokuteihanistarttani
+     */
+    public String getIr2sokuteihanistarttani() {
+        return ir2sokuteihanistarttani;
+    }
+
+    /**
+     * @param ir2sokuteihanistarttani the ir2sokuteihanistarttani to set
+     */
+    public void setIr2sokuteihanistarttani(String ir2sokuteihanistarttani) {
+        this.ir2sokuteihanistarttani = ir2sokuteihanistarttani;
+    }
+
+    /**
+     * @return the ir2sokuteihaniend
+     */
+    public String getIr2sokuteihaniend() {
+        return ir2sokuteihaniend;
+    }
+
+    /**
+     * @param ir2sokuteihaniend the ir2sokuteihaniend to set
+     */
+    public void setIr2sokuteihaniend(String ir2sokuteihaniend) {
+        this.ir2sokuteihaniend = ir2sokuteihaniend;
+    }
+
+    /**
+     * @return the ir2sokuteihaniendtani
+     */
+    public String getIr2sokuteihaniendtani() {
+        return ir2sokuteihaniendtani;
+    }
+
+    /**
+     * @param ir2sokuteihaniendtani the ir2sokuteihaniendtani to set
+     */
+    public void setIr2sokuteihaniendtani(String ir2sokuteihaniendtani) {
+        this.ir2sokuteihaniendtani = ir2sokuteihaniendtani;
+    }
+
+    /**
+     * @return the ir3denryustart
+     */
+    public String getIr3denryustart() {
+        return ir3denryustart;
+    }
+
+    /**
+     * @param ir3denryustart the ir3denryustart to set
+     */
+    public void setIr3denryustart(String ir3denryustart) {
+        this.ir3denryustart = ir3denryustart;
+    }
+
+    /**
+     * @return the ir3denryustarttani
+     */
+    public String getIr3denryustarttani() {
+        return ir3denryustarttani;
+    }
+
+    /**
+     * @param ir3denryustarttani the ir3denryustarttani to set
+     */
+    public void setIr3denryustarttani(String ir3denryustarttani) {
+        this.ir3denryustarttani = ir3denryustarttani;
+    }
+
+    /**
+     * @return the ir3denryuend
+     */
+    public String getIr3denryuend() {
+        return ir3denryuend;
+    }
+
+    /**
+     * @param ir3denryuend the ir3denryuend to set
+     */
+    public void setIr3denryuend(String ir3denryuend) {
+        this.ir3denryuend = ir3denryuend;
+    }
+
+    /**
+     * @return the ir3denryuendtani
+     */
+    public String getIr3denryuendtani() {
+        return ir3denryuendtani;
+    }
+
+    /**
+     * @param ir3denryuendtani the ir3denryuendtani to set
+     */
+    public void setIr3denryuendtani(String ir3denryuendtani) {
+        this.ir3denryuendtani = ir3denryuendtani;
+    }
+
+    /**
+     * @return the ir3sokuteihanistart
+     */
+    public String getIr3sokuteihanistart() {
+        return ir3sokuteihanistart;
+    }
+
+    /**
+     * @param ir3sokuteihanistart the ir3sokuteihanistart to set
+     */
+    public void setIr3sokuteihanistart(String ir3sokuteihanistart) {
+        this.ir3sokuteihanistart = ir3sokuteihanistart;
+    }
+
+    /**
+     * @return the ir3sokuteihanistarttani
+     */
+    public String getIr3sokuteihanistarttani() {
+        return ir3sokuteihanistarttani;
+    }
+
+    /**
+     * @param ir3sokuteihanistarttani the ir3sokuteihanistarttani to set
+     */
+    public void setIr3sokuteihanistarttani(String ir3sokuteihanistarttani) {
+        this.ir3sokuteihanistarttani = ir3sokuteihanistarttani;
+    }
+
+    /**
+     * @return the ir3sokuteihaniend
+     */
+    public String getIr3sokuteihaniend() {
+        return ir3sokuteihaniend;
+    }
+
+    /**
+     * @param ir3sokuteihaniend the ir3sokuteihaniend to set
+     */
+    public void setIr3sokuteihaniend(String ir3sokuteihaniend) {
+        this.ir3sokuteihaniend = ir3sokuteihaniend;
+    }
+
+    /**
+     * @return the ir3sokuteihaniendtani
+     */
+    public String getIr3sokuteihaniendtani() {
+        return ir3sokuteihaniendtani;
+    }
+
+    /**
+     * @param ir3sokuteihaniendtani the ir3sokuteihaniendtani to set
+     */
+    public void setIr3sokuteihaniendtani(String ir3sokuteihaniendtani) {
+        this.ir3sokuteihaniendtani = ir3sokuteihaniendtani;
+    }
+
+    /**
+     * @return the ir4denryustart
+     */
+    public String getIr4denryustart() {
+        return ir4denryustart;
+    }
+
+    /**
+     * @param ir4denryustart the ir4denryustart to set
+     */
+    public void setIr4denryustart(String ir4denryustart) {
+        this.ir4denryustart = ir4denryustart;
+    }
+
+    /**
+     * @return the ir4denryustarttani
+     */
+    public String getIr4denryustarttani() {
+        return ir4denryustarttani;
+    }
+
+    /**
+     * @param ir4denryustarttani the ir4denryustarttani to set
+     */
+    public void setIr4denryustarttani(String ir4denryustarttani) {
+        this.ir4denryustarttani = ir4denryustarttani;
+    }
+
+    /**
+     * @return the ir4denryuend
+     */
+    public String getIr4denryuend() {
+        return ir4denryuend;
+    }
+
+    /**
+     * @param ir4denryuend the ir4denryuend to set
+     */
+    public void setIr4denryuend(String ir4denryuend) {
+        this.ir4denryuend = ir4denryuend;
+    }
+
+    /**
+     * @return the ir4denryuendtani
+     */
+    public String getIr4denryuendtani() {
+        return ir4denryuendtani;
+    }
+
+    /**
+     * @param ir4denryuendtani the ir4denryuendtani to set
+     */
+    public void setIr4denryuendtani(String ir4denryuendtani) {
+        this.ir4denryuendtani = ir4denryuendtani;
+    }
+
+    /**
+     * @return the ir4sokuteihanistart
+     */
+    public String getIr4sokuteihanistart() {
+        return ir4sokuteihanistart;
+    }
+
+    /**
+     * @param ir4sokuteihanistart the ir4sokuteihanistart to set
+     */
+    public void setIr4sokuteihanistart(String ir4sokuteihanistart) {
+        this.ir4sokuteihanistart = ir4sokuteihanistart;
+    }
+
+    /**
+     * @return the ir4sokuteihanistarttani
+     */
+    public String getIr4sokuteihanistarttani() {
+        return ir4sokuteihanistarttani;
+    }
+
+    /**
+     * @param ir4sokuteihanistarttani the ir4sokuteihanistarttani to set
+     */
+    public void setIr4sokuteihanistarttani(String ir4sokuteihanistarttani) {
+        this.ir4sokuteihanistarttani = ir4sokuteihanistarttani;
+    }
+
+    /**
+     * @return the ir4sokuteihaniend
+     */
+    public String getIr4sokuteihaniend() {
+        return ir4sokuteihaniend;
+    }
+
+    /**
+     * @param ir4sokuteihaniend the ir4sokuteihaniend to set
+     */
+    public void setIr4sokuteihaniend(String ir4sokuteihaniend) {
+        this.ir4sokuteihaniend = ir4sokuteihaniend;
+    }
+
+    /**
+     * @return the ir4sokuteihaniendtani
+     */
+    public String getIr4sokuteihaniendtani() {
+        return ir4sokuteihaniendtani;
+    }
+
+    /**
+     * @param ir4sokuteihaniendtani the ir4sokuteihaniendtani to set
+     */
+    public void setIr4sokuteihaniendtani(String ir4sokuteihaniendtani) {
+        this.ir4sokuteihaniendtani = ir4sokuteihaniendtani;
+    }
+
+    /**
+     * @return the ir5denryustart
+     */
+    public String getIr5denryustart() {
+        return ir5denryustart;
+    }
+
+    /**
+     * @param ir5denryustart the ir5denryustart to set
+     */
+    public void setIr5denryustart(String ir5denryustart) {
+        this.ir5denryustart = ir5denryustart;
+    }
+
+    /**
+     * @return the ir5denryustarttani
+     */
+    public String getIr5denryustarttani() {
+        return ir5denryustarttani;
+    }
+
+    /**
+     * @param ir5denryustarttani the ir5denryustarttani to set
+     */
+    public void setIr5denryustarttani(String ir5denryustarttani) {
+        this.ir5denryustarttani = ir5denryustarttani;
+    }
+
+    /**
+     * @return the ir5denryuend
+     */
+    public String getIr5denryuend() {
+        return ir5denryuend;
+    }
+
+    /**
+     * @param ir5denryuend the ir5denryuend to set
+     */
+    public void setIr5denryuend(String ir5denryuend) {
+        this.ir5denryuend = ir5denryuend;
+    }
+
+    /**
+     * @return the ir5denryuendtani
+     */
+    public String getIr5denryuendtani() {
+        return ir5denryuendtani;
+    }
+
+    /**
+     * @param ir5denryuendtani the ir5denryuendtani to set
+     */
+    public void setIr5denryuendtani(String ir5denryuendtani) {
+        this.ir5denryuendtani = ir5denryuendtani;
+    }
+
+    /**
+     * @return the ir5sokuteihanistart
+     */
+    public String getIr5sokuteihanistart() {
+        return ir5sokuteihanistart;
+    }
+
+    /**
+     * @param ir5sokuteihanistart the ir5sokuteihanistart to set
+     */
+    public void setIr5sokuteihanistart(String ir5sokuteihanistart) {
+        this.ir5sokuteihanistart = ir5sokuteihanistart;
+    }
+
+    /**
+     * @return the ir5sokuteihanistarttani
+     */
+    public String getIr5sokuteihanistarttani() {
+        return ir5sokuteihanistarttani;
+    }
+
+    /**
+     * @param ir5sokuteihanistarttani the ir5sokuteihanistarttani to set
+     */
+    public void setIr5sokuteihanistarttani(String ir5sokuteihanistarttani) {
+        this.ir5sokuteihanistarttani = ir5sokuteihanistarttani;
+    }
+
+    /**
+     * @return the ir5sokuteihaniend
+     */
+    public String getIr5sokuteihaniend() {
+        return ir5sokuteihaniend;
+    }
+
+    /**
+     * @param ir5sokuteihaniend the ir5sokuteihaniend to set
+     */
+    public void setIr5sokuteihaniend(String ir5sokuteihaniend) {
+        this.ir5sokuteihaniend = ir5sokuteihaniend;
+    }
+
+    /**
+     * @return the ir5sokuteihaniendtani
+     */
+    public String getIr5sokuteihaniendtani() {
+        return ir5sokuteihaniendtani;
+    }
+
+    /**
+     * @param ir5sokuteihaniendtani the ir5sokuteihaniendtani to set
+     */
+    public void setIr5sokuteihaniendtani(String ir5sokuteihaniendtani) {
+        this.ir5sokuteihaniendtani = ir5sokuteihaniendtani;
+    }
+
+    /**
+     * @return the ir6denryustart
+     */
+    public String getIr6denryustart() {
+        return ir6denryustart;
+    }
+
+    /**
+     * @param ir6denryustart the ir6denryustart to set
+     */
+    public void setIr6denryustart(String ir6denryustart) {
+        this.ir6denryustart = ir6denryustart;
+    }
+
+    /**
+     * @return the ir6denryustarttani
+     */
+    public String getIr6denryustarttani() {
+        return ir6denryustarttani;
+    }
+
+    /**
+     * @param ir6denryustarttani the ir6denryustarttani to set
+     */
+    public void setIr6denryustarttani(String ir6denryustarttani) {
+        this.ir6denryustarttani = ir6denryustarttani;
+    }
+
+    /**
+     * @return the ir6denryuend
+     */
+    public String getIr6denryuend() {
+        return ir6denryuend;
+    }
+
+    /**
+     * @param ir6denryuend the ir6denryuend to set
+     */
+    public void setIr6denryuend(String ir6denryuend) {
+        this.ir6denryuend = ir6denryuend;
+    }
+
+    /**
+     * @return the ir6denryuendtani
+     */
+    public String getIr6denryuendtani() {
+        return ir6denryuendtani;
+    }
+
+    /**
+     * @param ir6denryuendtani the ir6denryuendtani to set
+     */
+    public void setIr6denryuendtani(String ir6denryuendtani) {
+        this.ir6denryuendtani = ir6denryuendtani;
+    }
+
+    /**
+     * @return the ir6sokuteihanistart
+     */
+    public String getIr6sokuteihanistart() {
+        return ir6sokuteihanistart;
+    }
+
+    /**
+     * @param ir6sokuteihanistart the ir6sokuteihanistart to set
+     */
+    public void setIr6sokuteihanistart(String ir6sokuteihanistart) {
+        this.ir6sokuteihanistart = ir6sokuteihanistart;
+    }
+
+    /**
+     * @return the ir6sokuteihanistarttani
+     */
+    public String getIr6sokuteihanistarttani() {
+        return ir6sokuteihanistarttani;
+    }
+
+    /**
+     * @param ir6sokuteihanistarttani the ir6sokuteihanistarttani to set
+     */
+    public void setIr6sokuteihanistarttani(String ir6sokuteihanistarttani) {
+        this.ir6sokuteihanistarttani = ir6sokuteihanistarttani;
+    }
+
+    /**
+     * @return the ir6sokuteihaniend
+     */
+    public String getIr6sokuteihaniend() {
+        return ir6sokuteihaniend;
+    }
+
+    /**
+     * @param ir6sokuteihaniend the ir6sokuteihaniend to set
+     */
+    public void setIr6sokuteihaniend(String ir6sokuteihaniend) {
+        this.ir6sokuteihaniend = ir6sokuteihaniend;
+    }
+
+    /**
+     * @return the ir6sokuteihaniendtani
+     */
+    public String getIr6sokuteihaniendtani() {
+        return ir6sokuteihaniendtani;
+    }
+
+    /**
+     * @param ir6sokuteihaniendtani the ir6sokuteihaniendtani to set
+     */
+    public void setIr6sokuteihaniendtani(String ir6sokuteihaniendtani) {
+        this.ir6sokuteihaniendtani = ir6sokuteihaniendtani;
+    }
+
+    /**
+     * @return the ir7denryustart
+     */
+    public String getIr7denryustart() {
+        return ir7denryustart;
+    }
+
+    /**
+     * @param ir7denryustart the ir7denryustart to set
+     */
+    public void setIr7denryustart(String ir7denryustart) {
+        this.ir7denryustart = ir7denryustart;
+    }
+
+    /**
+     * @return the ir7denryustarttani
+     */
+    public String getIr7denryustarttani() {
+        return ir7denryustarttani;
+    }
+
+    /**
+     * @param ir7denryustarttani the ir7denryustarttani to set
+     */
+    public void setIr7denryustarttani(String ir7denryustarttani) {
+        this.ir7denryustarttani = ir7denryustarttani;
+    }
+
+    /**
+     * @return the ir7denryuend
+     */
+    public String getIr7denryuend() {
+        return ir7denryuend;
+    }
+
+    /**
+     * @param ir7denryuend the ir7denryuend to set
+     */
+    public void setIr7denryuend(String ir7denryuend) {
+        this.ir7denryuend = ir7denryuend;
+    }
+
+    /**
+     * @return the ir7denryuendtani
+     */
+    public String getIr7denryuendtani() {
+        return ir7denryuendtani;
+    }
+
+    /**
+     * @param ir7denryuendtani the ir7denryuendtani to set
+     */
+    public void setIr7denryuendtani(String ir7denryuendtani) {
+        this.ir7denryuendtani = ir7denryuendtani;
+    }
+
+    /**
+     * @return the ir7sokuteihanistart
+     */
+    public String getIr7sokuteihanistart() {
+        return ir7sokuteihanistart;
+    }
+
+    /**
+     * @param ir7sokuteihanistart the ir7sokuteihanistart to set
+     */
+    public void setIr7sokuteihanistart(String ir7sokuteihanistart) {
+        this.ir7sokuteihanistart = ir7sokuteihanistart;
+    }
+
+    /**
+     * @return the ir7sokuteihanistarttani
+     */
+    public String getIr7sokuteihanistarttani() {
+        return ir7sokuteihanistarttani;
+    }
+
+    /**
+     * @param ir7sokuteihanistarttani the ir7sokuteihanistarttani to set
+     */
+    public void setIr7sokuteihanistarttani(String ir7sokuteihanistarttani) {
+        this.ir7sokuteihanistarttani = ir7sokuteihanistarttani;
+    }
+
+    /**
+     * @return the ir7sokuteihaniend
+     */
+    public String getIr7sokuteihaniend() {
+        return ir7sokuteihaniend;
+    }
+
+    /**
+     * @param ir7sokuteihaniend the ir7sokuteihaniend to set
+     */
+    public void setIr7sokuteihaniend(String ir7sokuteihaniend) {
+        this.ir7sokuteihaniend = ir7sokuteihaniend;
+    }
+
+    /**
+     * @return the ir7sokuteihaniendtani
+     */
+    public String getIr7sokuteihaniendtani() {
+        return ir7sokuteihaniendtani;
+    }
+
+    /**
+     * @param ir7sokuteihaniendtani the ir7sokuteihaniendtani to set
+     */
+    public void setIr7sokuteihaniendtani(String ir7sokuteihaniendtani) {
+        this.ir7sokuteihaniendtani = ir7sokuteihaniendtani;
+    }
+
+    /**
+     * @return the ir8denryustart
+     */
+    public String getIr8denryustart() {
+        return ir8denryustart;
+    }
+
+    /**
+     * @param ir8denryustart the ir8denryustart to set
+     */
+    public void setIr8denryustart(String ir8denryustart) {
+        this.ir8denryustart = ir8denryustart;
+    }
+
+    /**
+     * @return the ir8denryustarttani
+     */
+    public String getIr8denryustarttani() {
+        return ir8denryustarttani;
+    }
+
+    /**
+     * @param ir8denryustarttani the ir8denryustarttani to set
+     */
+    public void setIr8denryustarttani(String ir8denryustarttani) {
+        this.ir8denryustarttani = ir8denryustarttani;
+    }
+
+    /**
+     * @return the ir8denryuend
+     */
+    public String getIr8denryuend() {
+        return ir8denryuend;
+    }
+
+    /**
+     * @param ir8denryuend the ir8denryuend to set
+     */
+    public void setIr8denryuend(String ir8denryuend) {
+        this.ir8denryuend = ir8denryuend;
+    }
+
+    /**
+     * @return the ir8denryuendtani
+     */
+    public String getIr8denryuendtani() {
+        return ir8denryuendtani;
+    }
+
+    /**
+     * @param ir8denryuendtani the ir8denryuendtani to set
+     */
+    public void setIr8denryuendtani(String ir8denryuendtani) {
+        this.ir8denryuendtani = ir8denryuendtani;
+    }
+
+    /**
+     * @return the ir8sokuteihanistart
+     */
+    public String getIr8sokuteihanistart() {
+        return ir8sokuteihanistart;
+    }
+
+    /**
+     * @param ir8sokuteihanistart the ir8sokuteihanistart to set
+     */
+    public void setIr8sokuteihanistart(String ir8sokuteihanistart) {
+        this.ir8sokuteihanistart = ir8sokuteihanistart;
+    }
+
+    /**
+     * @return the ir8sokuteihanistarttani
+     */
+    public String getIr8sokuteihanistarttani() {
+        return ir8sokuteihanistarttani;
+    }
+
+    /**
+     * @param ir8sokuteihanistarttani the ir8sokuteihanistarttani to set
+     */
+    public void setIr8sokuteihanistarttani(String ir8sokuteihanistarttani) {
+        this.ir8sokuteihanistarttani = ir8sokuteihanistarttani;
+    }
+
+    /**
+     * @return the ir8sokuteihaniend
+     */
+    public String getIr8sokuteihaniend() {
+        return ir8sokuteihaniend;
+    }
+
+    /**
+     * @param ir8sokuteihaniend the ir8sokuteihaniend to set
+     */
+    public void setIr8sokuteihaniend(String ir8sokuteihaniend) {
+        this.ir8sokuteihaniend = ir8sokuteihaniend;
+    }
+
+    /**
+     * @return the ir8sokuteihaniendtani
+     */
+    public String getIr8sokuteihaniendtani() {
+        return ir8sokuteihaniendtani;
+    }
+
+    /**
+     * @param ir8sokuteihaniendtani the ir8sokuteihaniendtani to set
+     */
+    public void setIr8sokuteihaniendtani(String ir8sokuteihaniendtani) {
+        this.ir8sokuteihaniendtani = ir8sokuteihaniendtani;
+    }
+
+    /**
+     * @return the senbetukaisinitijitwa
+     */
+    public String getSenbetukaisinitijitwa() {
+        return senbetukaisinitijitwa;
+    }
+
+    /**
+     * @param senbetukaisinitijitwa the senbetukaisinitijitwa to set
+     */
+    public void setSenbetukaisinitijitwa(String senbetukaisinitijitwa) {
+        this.senbetukaisinitijitwa = senbetukaisinitijitwa;
+    }
+
+    /**
+     * @return the senbetusyuryounitijitwa
+     */
+    public String getSenbetusyuryounitijitwa() {
+        return senbetusyuryounitijitwa;
+    }
+
+    /**
+     * @param senbetusyuryounitijitwa the senbetusyuryounitijitwa to set
+     */
+    public void setSenbetusyuryounitijitwa(String senbetusyuryounitijitwa) {
+        this.senbetusyuryounitijitwa = senbetusyuryounitijitwa;
+    }
+
+    /**
+     * @return the satsample
+     */
+    public String getSatsample() {
+        return satsample;
+    }
+
+    /**
+     * @param satsample the satsample to set
+     */
+    public void setSatsample(String satsample) {
+        this.satsample = satsample;
+    }
+
+    /**
+     * @return the binboxseisoucheck
+     */
+    public String getBinboxseisoucheck() {
+        return binboxseisoucheck;
+    }
+
+    /**
+     * @param binboxseisoucheck the binboxseisoucheck to set
+     */
+    public void setBinboxseisoucheck(String binboxseisoucheck) {
+        this.binboxseisoucheck = binboxseisoucheck;
+    }
+
+    /**
+     * @return the bin1setteititwa
+     */
+    public String getBin1setteititwa() {
+        return bin1setteititwa;
+    }
+
+    /**
+     * @param bin1setteititwa the bin1setteititwa to set
+     */
+    public void setBin1setteititwa(String bin1setteititwa) {
+        this.bin1setteititwa = bin1setteititwa;
+    }
+
+    /**
+     * @return the bin2setteititwa
+     */
+    public String getBin2setteititwa() {
+        return bin2setteititwa;
+    }
+
+    /**
+     * @param bin2setteititwa the bin2setteititwa to set
+     */
+    public void setBin2setteititwa(String bin2setteititwa) {
+        this.bin2setteititwa = bin2setteititwa;
+    }
+
+    /**
+     * @return the bin3setteititwa
+     */
+    public String getBin3setteititwa() {
+        return bin3setteititwa;
+    }
+
+    /**
+     * @param bin3setteititwa the bin3setteititwa to set
+     */
+    public void setBin3setteititwa(String bin3setteititwa) {
+        this.bin3setteititwa = bin3setteititwa;
+    }
+
+    /**
+     * @return the bin4setteititwa
+     */
+    public String getBin4setteititwa() {
+        return bin4setteititwa;
+    }
+
+    /**
+     * @param bin4setteititwa the bin4setteititwa to set
+     */
+    public void setBin4setteititwa(String bin4setteititwa) {
+        this.bin4setteititwa = bin4setteititwa;
+    }
+
+    /**
+     * @return the bin5setteititwa
+     */
+    public String getBin5setteititwa() {
+        return bin5setteititwa;
+    }
+
+    /**
+     * @param bin5setteititwa the bin5setteititwa to set
+     */
+    public void setBin5setteititwa(String bin5setteititwa) {
+        this.bin5setteititwa = bin5setteititwa;
+    }
+
+    /**
+     * @return the bin6setteititwa
+     */
+    public String getBin6setteititwa() {
+        return bin6setteititwa;
+    }
+
+    /**
+     * @param bin6setteititwa the bin6setteititwa to set
+     */
+    public void setBin6setteititwa(String bin6setteititwa) {
+        this.bin6setteititwa = bin6setteititwa;
+    }
+
+    /**
+     * @return the bin7setteititwa
+     */
+    public String getBin7setteititwa() {
+        return bin7setteititwa;
+    }
+
+    /**
+     * @param bin7setteititwa the bin7setteititwa to set
+     */
+    public void setBin7setteititwa(String bin7setteititwa) {
+        this.bin7setteititwa = bin7setteititwa;
+    }
+
+    /**
+     * @return the bin8setteititwa
+     */
+    public String getBin8setteititwa() {
+        return bin8setteititwa;
+    }
+
+    /**
+     * @param bin8setteititwa the bin8setteititwa to set
+     */
+    public void setBin8setteititwa(String bin8setteititwa) {
+        this.bin8setteititwa = bin8setteititwa;
+    }
+
+    /**
+     * @return the hoseiyoutippuyoryou
+     */
+    public String getHoseiyoutippuyoryou() {
+        return hoseiyoutippuyoryou;
+    }
+
+    /**
+     * @param hoseiyoutippuyoryou the hoseiyoutippuyoryou to set
+     */
+    public void setHoseiyoutippuyoryou(String hoseiyoutippuyoryou) {
+        this.hoseiyoutippuyoryou = hoseiyoutippuyoryou;
+    }
+
+    /**
+     * @return the hoseiyoutipputan
+     */
+    public String getHoseiyoutipputan() {
+        return hoseiyoutipputan;
+    }
+
+    /**
+     * @param hoseiyoutipputan the hoseiyoutipputan to set
+     */
+    public void setHoseiyoutipputan(String hoseiyoutipputan) {
+        this.hoseiyoutipputan = hoseiyoutipputan;
+    }
+
+    /**
+     * @return the ir1jikan
+     */
+    public String getIr1jikan() {
+        return ir1jikan;
+    }
+
+    /**
+     * @param ir1jikan the ir1jikan to set
+     */
+    public void setIr1jikan(String ir1jikan) {
+        this.ir1jikan = ir1jikan;
+    }
+
+    /**
+     * @return the ir1jikantani
+     */
+    public String getIr1jikantani() {
+        return ir1jikantani;
+    }
+
+    /**
+     * @param ir1jikantani the ir1jikantani to set
+     */
+    public void setIr1jikantani(String ir1jikantani) {
+        this.ir1jikantani = ir1jikantani;
+    }
+
+    /**
+     * @return the ir2jikan
+     */
+    public String getIr2jikan() {
+        return ir2jikan;
+    }
+
+    /**
+     * @param ir2jikan the ir2jikan to set
+     */
+    public void setIr2jikan(String ir2jikan) {
+        this.ir2jikan = ir2jikan;
+    }
+
+    /**
+     * @return the ir2jikantani
+     */
+    public String getIr2jikantani() {
+        return ir2jikantani;
+    }
+
+    /**
+     * @param ir2jikantani the ir2jikantani to set
+     */
+    public void setIr2jikantani(String ir2jikantani) {
+        this.ir2jikantani = ir2jikantani;
+    }
+
+    /**
+     * @return the ir3jikan
+     */
+    public String getIr3jikan() {
+        return ir3jikan;
+    }
+
+    /**
+     * @param ir3jikan the ir3jikan to set
+     */
+    public void setIr3jikan(String ir3jikan) {
+        this.ir3jikan = ir3jikan;
+    }
+
+    /**
+     * @return the ir3jikantani
+     */
+    public String getIr3jikantani() {
+        return ir3jikantani;
+    }
+
+    /**
+     * @param ir3jikantani the ir3jikantani to set
+     */
+    public void setIr3jikantani(String ir3jikantani) {
+        this.ir3jikantani = ir3jikantani;
+    }
+
+    /**
+     * @return the ir4jikan
+     */
+    public String getIr4jikan() {
+        return ir4jikan;
+    }
+
+    /**
+     * @param ir4jikan the ir4jikan to set
+     */
+    public void setIr4jikan(String ir4jikan) {
+        this.ir4jikan = ir4jikan;
+    }
+
+    /**
+     * @return the ir4jikantani
+     */
+    public String getIr4jikantani() {
+        return ir4jikantani;
+    }
+
+    /**
+     * @param ir4jikantani the ir4jikantani to set
+     */
+    public void setIr4jikantani(String ir4jikantani) {
+        this.ir4jikantani = ir4jikantani;
+    }
+
+    /**
+     * @return the ir5jikan
+     */
+    public String getIr5jikan() {
+        return ir5jikan;
+    }
+
+    /**
+     * @param ir5jikan the ir5jikan to set
+     */
+    public void setIr5jikan(String ir5jikan) {
+        this.ir5jikan = ir5jikan;
+    }
+
+    /**
+     * @return the ir5jikantani
+     */
+    public String getIr5jikantani() {
+        return ir5jikantani;
+    }
+
+    /**
+     * @param ir5jikantani the ir5jikantani to set
+     */
+    public void setIr5jikantani(String ir5jikantani) {
+        this.ir5jikantani = ir5jikantani;
+    }
+
+    /**
+     * @return the ir6jikan
+     */
+    public String getIr6jikan() {
+        return ir6jikan;
+    }
+
+    /**
+     * @param ir6jikan the ir6jikan to set
+     */
+    public void setIr6jikan(String ir6jikan) {
+        this.ir6jikan = ir6jikan;
+    }
+
+    /**
+     * @return the ir6jikantani
+     */
+    public String getIr6jikantani() {
+        return ir6jikantani;
+    }
+
+    /**
+     * @param ir6jikantani the ir6jikantani to set
+     */
+    public void setIr6jikantani(String ir6jikantani) {
+        this.ir6jikantani = ir6jikantani;
+    }
+
+    /**
+     * @return the ir7jikan
+     */
+    public String getIr7jikan() {
+        return ir7jikan;
+    }
+
+    /**
+     * @param ir7jikan the ir7jikan to set
+     */
+    public void setIr7jikan(String ir7jikan) {
+        this.ir7jikan = ir7jikan;
+    }
+
+    /**
+     * @return the ir7jikantani
+     */
+    public String getIr7jikantani() {
+        return ir7jikantani;
+    }
+
+    /**
+     * @param ir7jikantani the ir7jikantani to set
+     */
+    public void setIr7jikantani(String ir7jikantani) {
+        this.ir7jikantani = ir7jikantani;
+    }
+
+    /**
+     * @return the ir8jikan
+     */
+    public String getIr8jikan() {
+        return ir8jikan;
+    }
+
+    /**
+     * @param ir8jikan the ir8jikan to set
+     */
+    public void setIr8jikan(String ir8jikan) {
+        this.ir8jikan = ir8jikan;
+    }
+
+    /**
+     * @return the ir8jikantani
+     */
+    public String getIr8jikantani() {
+        return ir8jikantani;
+    }
+
+    /**
+     * @param ir8jikantani the ir8jikantani to set
+     */
+    public void setIr8jikantani(String ir8jikantani) {
+        this.ir8jikantani = ir8jikantani;
     }
 }
