@@ -1098,6 +1098,146 @@ public class FXHDD07 {
     private Timestamp senbetusyuryounitijitwa;
     
     /**
+     * SATｻﾝﾌﾟﾙ
+     */
+    private String satsample;
+    
+    /**
+     * BINBOX内清掃チェック
+     */
+    private String binboxseisoucheck;
+    
+    /**
+     * BIN1 %区分(設定値)TWA
+     */
+    private String bin1setteititwa;
+    
+    /**
+     * BIN2 %区分(設定値)TWA
+     */
+    private String bin2setteititwa;
+    
+    /**
+     * BIN3 %区分(設定値)TWA
+     */
+    private String bin3setteititwa;
+    
+    /**
+     * BIN4 %区分(設定値)TWA
+     */
+    private String bin4setteititwa;
+    
+    /**
+     * BIN5 %区分(設定値)TWA
+     */
+    private String bin5setteititwa;
+    
+    /**
+     * BIN6 %区分(設定値)TWA
+     */
+    private String bin6setteititwa;
+    
+    /**
+     * BIN7 %区分(設定値)TWA
+     */
+    private String bin7setteititwa;
+    
+    /**
+     * BIN8 %区分(設定値)TWA
+     */
+    private String bin8setteititwa;
+    
+    /**
+     * 補正用ﾁｯﾌﾟ容量
+     */
+    private BigDecimal hoseiyoutippuyoryou;
+    
+    /**
+     * 補正用ﾁｯﾌﾟTanδ
+     */
+    private BigDecimal hoseiyoutipputan;
+    
+    /**
+     * IR① 時間
+     */
+    private BigDecimal ir1jikan;
+    
+    /**
+     * IR① 時間 単位
+     */
+    private String ir1jikantani;
+    
+    /**
+     * IR② 時間
+     */
+    private BigDecimal ir2jikan;
+    
+    /**
+     * IR② 時間 単位
+     */
+    private String ir2jikantani;
+    
+    /**
+     * IR③ 時間
+     */
+    private BigDecimal ir3jikan;
+    
+    /**
+     * IR③ 時間 単位
+     */
+    private String ir3jikantani;
+    
+    /**
+     * IR④ 時間
+     */
+    private BigDecimal ir4jikan;
+    
+    /**
+     * IR④ 時間 単位
+     */
+    private String ir4jikantani;
+    
+    /**
+     * IR⑤ 時間
+     */
+    private BigDecimal ir5jikan;
+    
+    /**
+     * IR⑤ 時間 単位
+     */
+    private String ir5jikantani;
+    
+    /**
+     * IR⑥ 時間
+     */
+    private BigDecimal ir6jikan;
+    
+    /**
+     * IR⑥ 時間 単位
+     */
+    private String ir6jikantani;
+    
+    /**
+     * IR⑦ 時間
+     */
+    private BigDecimal ir7jikan;
+    
+    /**
+     * IR⑦ 時間 単位
+     */
+    private String ir7jikantani;
+    
+    /**
+     * IR⑧ 時間
+     */
+    private BigDecimal ir8jikan;
+    
+    /**
+     * IR⑧ 時間 単位
+     */
+    private String ir8jikantani;
+    
+    /**
      * 工場ｺｰﾄﾞ
      * @return the kojyo
      */
@@ -4487,5 +4627,453 @@ public class FXHDD07 {
      */
     public void setSenbetusyuryounitijitwa(Timestamp senbetusyuryounitijitwa) {
         this.senbetusyuryounitijitwa = senbetusyuryounitijitwa;
+    }
+    
+    /**
+     * SATｻﾝﾌﾟﾙ
+     * @param satsample the satsample to set
+     */
+    public void setSatsample(String satsample) {
+        this.satsample = satsample;
+    }
+    
+    /**
+     * SATｻﾝﾌﾟﾙ
+     * @return the satsample
+     */
+    public String getSatsample() {
+        return satsample;
+    }
+    
+    /**
+     * BINBOX内清掃チェック
+     * @param binboxseisoucheck the binboxseisoucheck to set
+     */
+    public void setBinboxseisoucheck(String binboxseisoucheck) {
+        this.binboxseisoucheck = binboxseisoucheck;
+    }
+    
+    /**
+     * BINBOX内清掃チェック
+     * @return the binboxseisoucheck
+     */
+    public String getBinboxseisoucheck() {
+        return binboxseisoucheck;
+    }
+    
+    /**
+     * BIN1 %区分(設定値)TWA
+     * @param bin1setteititwa the bin1setteititwa to set
+     */
+    public void setBin1setteititwa(String bin1setteititwa) {
+        this.bin1setteititwa = bin1setteititwa;
+    }
+    
+    /**
+     * BIN1 %区分(設定値)TWA
+     * @return the bin1setteititwa
+     */
+    public String getBin1setteititwa() {
+        return bin1setteititwa;
+    }
+    
+    /**
+     * BIN2 %区分(設定値)TWA
+     * @param bin2setteititwa the bin2setteititwa to set
+     */
+    public void setBin2setteititwa(String bin2setteititwa) {
+        this.bin2setteititwa = bin2setteititwa;
+    }
+    
+    /**
+     * BIN2 %区分(設定値)TWA
+     * @return the bin2setteititwa
+     */
+    public String getBin2setteititwa() {
+        return bin2setteititwa;
+    }
+    
+    /**
+     * BIN3 %区分(設定値)TWA
+     * @param bin3setteititwa the bin3setteititwa to set
+     */
+    public void setBin3setteititwa(String bin3setteititwa) {
+        this.bin3setteititwa = bin3setteititwa;
+    }
+    
+    /**
+     * BIN3 %区分(設定値)TWA
+     * @return the bin3setteititwa
+     */
+    public String getBin3setteititwa() {
+        return bin3setteititwa;
+    }
+    
+    /**
+     * BIN4 %区分(設定値)TWA
+     * @param bin4setteititwa the bin4setteititwa to set
+     */
+    public void setBin4setteititwa(String bin4setteititwa) {
+        this.bin4setteititwa = bin4setteititwa;
+    }
+    
+    /**
+     * BIN4 %区分(設定値)TWA
+     * @return the bin4setteititwa
+     */
+    public String getBin4setteititwa() {
+        return bin4setteititwa;
+    }
+    
+    /**
+     * BIN5 %区分(設定値)TWA
+     * @param bin5setteititwa the bin5setteititwa to set
+     */
+    public void setBin5setteititwa(String bin5setteititwa) {
+        this.bin5setteititwa = bin5setteititwa;
+    }
+    
+    /**
+     * BIN5 %区分(設定値)TWA
+     * @return the bin5setteititwa
+     */
+    public String getBin5setteititwa() {
+        return bin5setteititwa;
+    }
+    
+    /**
+     * BIN6 %区分(設定値)TWA
+     * @param bin6setteititwa the bin6setteititwa to set
+     */
+    public void setBin6setteititwa(String bin6setteititwa) {
+        this.bin6setteititwa = bin6setteititwa;
+    }
+    
+    /**
+     * BIN6 %区分(設定値)TWA
+     * @return the bin6setteititwa
+     */
+    public String getBin6setteititwa() {
+        return bin6setteititwa;
+    }
+    
+    /**
+     * BIN7 %区分(設定値)TWA
+     * @param bin7setteititwa the bin7setteititwa to set
+     */
+    public void setBin7setteititwa(String bin7setteititwa) {
+        this.bin7setteititwa = bin7setteititwa;
+    }
+    
+    /**
+     * BIN7 %区分(設定値)TWA
+     * @return the bin7setteititwa
+     */
+    public String getBin7setteititwa() {
+        return bin7setteititwa;
+    }
+    
+    /**
+     * BIN8 %区分(設定値)TWA
+     * @param bin8setteititwa the bin8setteititwa to set
+     */
+    public void setBin8setteititwa(String bin8setteititwa) {
+        this.bin8setteititwa = bin8setteititwa;
+    }
+    
+    /**
+     * BIN8 %区分(設定値)TWA
+     * @return the bin8setteititwa
+     */
+    public String getBin8setteititwa() {
+        return bin8setteititwa;
+    }
+    
+    /**
+     * 補正用ﾁｯﾌﾟ容量
+     * @return the hoseiyoutippuyoryou
+     */
+    public BigDecimal getHoseiyoutippuyoryou() {
+        return hoseiyoutippuyoryou;
+    }
+    
+    /**
+     * 補正用ﾁｯﾌﾟ容量
+     * @param hoseiyoutippuyoryou the hoseiyoutippuyoryou to set
+     */
+    public void setHoseiyoutippuyoryou(BigDecimal hoseiyoutippuyoryou) {
+        this.hoseiyoutippuyoryou = hoseiyoutippuyoryou;
+    }
+    
+    /**
+     * 補正用ﾁｯﾌﾟTanδ
+     * @return the hoseiyoutipputan
+     */
+    public BigDecimal getHoseiyoutipputan() {
+        return hoseiyoutipputan;
+    }
+    
+    /**
+     * 補正用ﾁｯﾌﾟTanδ
+     * @param hoseiyoutipputan the hoseiyoutipputan to set
+     */
+    public void setHoseiyoutipputan(BigDecimal hoseiyoutipputan) {
+        this.hoseiyoutipputan = hoseiyoutipputan;
+    }
+    
+    /**
+     * IR① 時間
+     * @return the ir1jikan
+     */
+    public BigDecimal getIr1jikan() {
+        return ir1jikan;
+    }
+    
+    /**
+     * IR① 時間
+     * @param ir1jikan the ir1jikan to set
+     */
+    public void setIr1jikan(BigDecimal ir1jikan) {
+        this.ir1jikan = ir1jikan;
+    }
+    
+    /**
+     * IR① 時間 単位
+     * @return the ir1jikantani
+     */
+    public String getIr1jikantani() {
+        return ir1jikantani;
+    }
+    
+    /**
+     * IR① 時間 単位
+     * @param ir1jikantani the ir1jikantani to set
+     */
+    public void setIr1jikantani(String ir1jikantani) {
+        this.ir1jikantani = ir1jikantani;
+    }
+    
+    /**
+     * IR② 時間
+     * @return the ir2jikan
+     */
+    public BigDecimal getIr2jikan() {
+        return ir2jikan;
+    }
+    
+    /**
+     * IR② 時間
+     * @param ir2jikan the ir2jikan to set
+     */
+    public void setIr2jikan(BigDecimal ir2jikan) {
+        this.ir2jikan = ir2jikan;
+    }
+    
+    /**
+     * IR② 時間 単位
+     * @return the ir2jikantani
+     */
+    public String getIr2jikantani() {
+        return ir2jikantani;
+    }
+    
+    /**
+     * IR② 時間 単位
+     * @param ir2jikantani the ir2jikantani to set
+     */
+    public void setIr2jikantani(String ir2jikantani) {
+        this.ir2jikantani = ir2jikantani;
+    }
+    
+    /**
+     * IR③ 時間
+     * @return the ir3jikan
+     */
+    public BigDecimal getIr3jikan() {
+        return ir3jikan;
+    }
+    
+    /**
+     * IR③ 時間
+     * @param ir3jikan the ir3jikan to set
+     */
+    public void setIr3jikan(BigDecimal ir3jikan) {
+        this.ir3jikan = ir3jikan;
+    }
+    
+    /**
+     * IR③ 時間 単位
+     * @return the ir3jikantani
+     */
+    public String getIr3jikantani() {
+        return ir3jikantani;
+    }
+    
+    /**
+     * IR③ 時間 単位
+     * @param ir3jikantani the ir3jikantani to set
+     */
+    public void setIr3jikantani(String ir3jikantani) {
+        this.ir3jikantani = ir3jikantani;
+    }
+    
+    /**
+     * IR④ 時間
+     * @return the ir4jikan
+     */
+    public BigDecimal getIr4jikan() {
+        return ir4jikan;
+    }
+    
+    /**
+     * IR④ 時間
+     * @param ir4jikan the ir4jikan to set
+     */
+    public void setIr4jikan(BigDecimal ir4jikan) {
+        this.ir4jikan = ir4jikan;
+    }
+    
+    /**
+     * IR④ 時間 単位
+     * @return the ir4jikantani
+     */
+    public String getIr4jikantani() {
+        return ir4jikantani;
+    }
+    
+    /**
+     * IR④ 時間 単位
+     * @param ir4jikantani the ir4jikantani to set
+     */
+    public void setIr4jikantani(String ir4jikantani) {
+        this.ir4jikantani = ir4jikantani;
+    }
+    
+    /**
+     * IR⑤ 時間
+     * @return the ir5jikan
+     */
+    public BigDecimal getIr5jikan() {
+        return ir5jikan;
+    }
+    
+    /**
+     * IR⑤ 時間
+     * @param ir5jikan the ir5jikan to set
+     */
+    public void setIr5jikan(BigDecimal ir5jikan) {
+        this.ir5jikan = ir5jikan;
+    }
+    
+    /**
+     * IR⑤ 時間 単位
+     * @return the ir5jikantani
+     */
+    public String getIr5jikantani() {
+        return ir5jikantani;
+    }
+    
+    /**
+     * IR⑤ 時間 単位
+     * @param ir5jikantani the ir5jikantani to set
+     */
+    public void setIr5jikantani(String ir5jikantani) {
+        this.ir5jikantani = ir5jikantani;
+    }
+    
+    /**
+     * IR⑥ 時間
+     * @return the ir6jikan
+     */
+    public BigDecimal getIr6jikan() {
+        return ir6jikan;
+    }
+    
+    /**
+     * IR⑥ 時間
+     * @param ir6jikan the ir6jikan to set
+     */
+    public void setIr6jikan(BigDecimal ir6jikan) {
+        this.ir6jikan = ir6jikan;
+    }
+    
+    /**
+     * IR⑥ 時間 単位
+     * @return the ir6jikantani
+     */
+    public String getIr6jikantani() {
+        return ir6jikantani;
+    }
+    
+    /**
+     * IR⑥ 時間 単位
+     * @param ir6jikantani the ir6jikantani to set
+     */
+    public void setIr6jikantani(String ir6jikantani) {
+        this.ir6jikantani = ir6jikantani;
+    }
+    
+    /**
+     * IR⑦ 時間
+     * @return the ir7jikan
+     */
+    public BigDecimal getIr7jikan() {
+        return ir7jikan;
+    }
+    
+    /**
+     * IR⑦ 時間
+     * @param ir7jikan the ir7jikan to set
+     */
+    public void setIr7jikan(BigDecimal ir7jikan) {
+        this.ir7jikan = ir7jikan;
+    }
+    
+    /**
+     * IR⑦ 時間 単位
+     * @return the ir7jikantani
+     */
+    public String getIr7jikantani() {
+        return ir7jikantani;
+    }
+    
+    /**
+     * IR⑦ 時間 単位
+     * @param ir7jikantani the ir7jikantani to set
+     */
+    public void setIr7jikantani(String ir7jikantani) {
+        this.ir7jikantani = ir7jikantani;
+    }
+    
+    /**
+     * IR⑧ 時間
+     * @return the ir8jikan
+     */
+    public BigDecimal getIr8jikan() {
+        return ir8jikan;
+    }
+    
+    /**
+     * IR⑧ 時間
+     * @param ir8jikan the ir8jikan to set
+     */
+    public void setIr8jikan(BigDecimal ir8jikan) {
+        this.ir8jikan = ir8jikan;
+    }
+    
+    /**
+     * IR⑧ 時間 単位
+     * @return the ir8jikantani
+     */
+    public String getIr8jikantani() {
+        return ir8jikantani;
+    }
+    
+    /**
+     * IR⑧ 時間 単位
+     * @param ir8jikantani the ir8jikantani to set
+     */
+    public void setIr8jikantani(String ir8jikantani) {
+        this.ir8jikantani = ir8jikantani;
     }
 }
