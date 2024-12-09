@@ -646,7 +646,7 @@ public class PublicResource {
                 + "bin1countersuu,bin2countersuu,bin3countersuu,bin4countersuu,bin5countersuu,bin6countersuu,bin7countersuu,bin8countersuu,"
                 + "toroku_date,deleteflag,bin1senbetsukbn,bin2senbetsukbn,bin3senbetsukbn,bin4senbetsukbn,bin5senbetsukbn,bin6senbetsukbn,"
                 + "bin7senbetsukbn,bin8senbetsukbn,testplatekanrino,handasample,sinraiseisample,kensabasyo,testplatekeijo,testplatekakunin,"
-                + "bunruikakunin,gaikankakunin,irhantei2tani,irhantei1tani,irhantei3tani,irhantei4tani,irhantei5tani,irhantei6tani,irhantei7tani,"
+                + "bunruikakunin,gaikankakunin,irhantei1tani,irhantei2tani,irhantei3tani,irhantei4tani,irhantei5tani,irhantei6tani,irhantei7tani,"
                 + "irhantei8tani,irhantei1tani_low,irhantei2tani_low,irhantei3tani_low,irhantei4tani_low,irhantei5tani_low,irhantei6tani_low,"
                 + "irhantei7tani_low,irhantei8tani_low,gentenhukkidousa,sokuteiki12dousakakunin,sokuteipinfront,sokuteipinrear,"
                 + "ir1denryustart,ir1denryustarttani,ir1denryuend,ir1denryuendtani,ir1sokuteihanistart,ir1sokuteihanistarttani,ir1sokuteihaniend,ir1sokuteihaniendtani,"
