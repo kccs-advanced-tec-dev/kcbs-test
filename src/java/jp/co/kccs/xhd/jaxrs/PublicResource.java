@@ -723,7 +723,7 @@ public class PublicResource {
                         getFormatData(param.getBin6senbetsukbn(), "20", "", "String"),
                         getFormatData(param.getBin7senbetsukbn(), "20", "", "String"),
                         getFormatData(param.getBin8senbetsukbn(), "20", "", "String"),
-                        getFormatData(getTrimString(param.getTestplatekanrino(), excNumPattern), "20", "", "String"),
+                        getFormatData(param.getTestplatekanrino(), "20", "", "String"),
                         getFormatData(getTrimString(param.getHandasample(), excNumPattern), "10", "", "String"),
                         getFormatData(getTrimString(param.getSinraiseisample(), excNumPattern), "10", "", "String"),
                         getFormatData(param.getKensabasyo(), "10", "", "String"),
