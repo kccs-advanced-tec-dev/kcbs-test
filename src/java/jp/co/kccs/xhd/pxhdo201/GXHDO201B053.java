@@ -670,12 +670,20 @@ public class GXHDO201B053 implements Serializable {
                     + "AND   (? IS NULL OR LOTNO = ?) "
                     + "AND   (? IS NULL OR EDABAN = ?) "
                     + "AND   (? IS NULL OR KCPNO LIKE ? ESCAPE '\\\\') "
-                    + "AND   (? IS NULL OR kensagouki LIKE ? ESCAPE '\\\\') "
-                    + "AND   (? IS NULL OR SENBETUKAISINITIJI >= ?) "
-                    + "AND   (? IS NULL OR SENBETUKAISINITIJI <= ?) "
-                    + "AND   (? IS NULL OR SENBETUSYURYOUNITIJI >= ?) "
-                    + "AND   (? IS NULL OR SENBETUSYURYOUNITIJI <= ?) "
-                    + "AND   (? IS NULL OR SETUBIKUBUN = ?)";
+                    + "AND   (? IS NULL OR kensagouki LIKE ? ESCAPE '\\\\') ";
+
+            for (String data : kensaBasyoDataList) {
+                if (!StringUtil.isEmpty(data) && !"ALL".equals(data)) {
+                    sql += " AND ";
+                    sql += DBUtil.getInConditionPreparedStatement("kensabasyo", kensaBasyoDataList.size());
+                }
+            }
+
+            sql += " AND   (? IS NULL OR SENBETUKAISINITIJI >= ?) "
+                    + " AND   (? IS NULL OR SENBETUKAISINITIJI <= ?) "
+                    + " AND   (? IS NULL OR SENBETUSYURYOUNITIJI >= ?) "
+                    + " AND   (? IS NULL OR SENBETUSYURYOUNITIJI <= ?) "
+                    + " AND   (? IS NULL OR setubikubun = ?) ";
 
             // パラメータ設定
             List<Object> params = createSearchParam();
@@ -699,6 +707,8 @@ public class GXHDO201B053 implements Serializable {
     public void selectListData() {
         try {
             QueryRunner queryRunner = new QueryRunner(dataSourceQcdb);
+            //検査場所データリスト
+            List<String> kensaBasyoDataList = new ArrayList<>(Arrays.asList(possibleData));  
             String sql = "SELECT CONCAT(IFNULL(KOJYO, ''), IFNULL(LOTNO, ''), IFNULL(EDABAN, '')) AS LOTNO"
                     + ", kaisuu "
                     + ", kcpno "
@@ -984,16 +994,22 @@ public class GXHDO201B053 implements Serializable {
                     + ", setubikubun "
                     + "  FROM sr_denkitokuseiesi "
                     + " WHERE (? IS NULL OR KOJYO = ?) "
-                    + "AND   (? IS NULL OR LOTNO = ?) "
-                    + "AND   (? IS NULL OR EDABAN = ?) "
-                    + "AND   (? IS NULL OR KCPNO LIKE ? ESCAPE '\\\\') "
-                    + "AND   (? IS NULL OR kensagouki = ?) "
-                    + "AND   (? IS NULL OR SENBETUKAISINITIJI >= ?) "
-                    + "AND   (? IS NULL OR SENBETUKAISINITIJI <= ?) "
-                    + "AND   (? IS NULL OR SENBETUSYURYOUNITIJI >= ?) "
-                    + "AND   (? IS NULL OR SENBETUSYURYOUNITIJI <= ?) "
-                    + "AND   (? IS NULL OR SETUBIKUBUN = ?)"
-                    + " ORDER BY SENBETUKAISINITIJI ";            
+                    + " AND   (? IS NULL OR LOTNO = ?) "
+                    + " AND   (? IS NULL OR EDABAN = ?) "
+                    + " AND   (? IS NULL OR KCPNO LIKE ? ESCAPE '\\\\') "
+                    + " AND   (? IS NULL OR kensagouki LIKE ? ESCAPE '\\\\') ";
+            for (String data : kensaBasyoDataList) {
+                if (!StringUtil.isEmpty(data) && !"ALL".equals(data)) {
+                    sql += " AND ";
+                    sql += DBUtil.getInConditionPreparedStatement("kensabasyo", kensaBasyoDataList.size());
+                }
+            }
+            sql += " AND   (? IS NULL OR SENBETUKAISINITIJI >= ?) "
+                    + " AND   (? IS NULL OR SENBETUKAISINITIJI <= ?) "
+                    + " AND   (? IS NULL OR SENBETUSYURYOUNITIJI >= ?) "
+                    + " AND   (? IS NULL OR SENBETUSYURYOUNITIJI <= ?) "
+                    + " AND   (? IS NULL OR setubikubun = ?) "
+                    + " ORDER BY SENBETUKAISINITIJI ";              
             
             // パラメータ設定
             List<Object> params = createSearchParam();
@@ -1389,6 +1405,8 @@ public class GXHDO201B053 implements Serializable {
      */
     private List<Object> createSearchParam() {
         // パラメータ設定
+        //検査場所データリスト
+        List<String> kensaBasyoDataList= new ArrayList<>(Arrays.asList(possibleData));
         String paramKojo = null;
         String paramLotNo = null;
         String paramEdaban = null;
@@ -1431,6 +1449,11 @@ public class GXHDO201B053 implements Serializable {
         params.addAll(Arrays.asList(paramEdaban, paramEdaban));
         params.addAll(Arrays.asList(paramKcpno, paramKcpno));
         params.addAll(Arrays.asList(paramGoki, paramGoki));
+                for (String data : kensaBasyoDataList) {
+            if (!StringUtil.isEmpty(data) && !"ALL".equals(data)) {
+                params.addAll(kensaBasyoDataList);
+            }
+        }
         params.addAll(Arrays.asList(paramSenbetuStartDateF, paramSenbetuStartDateF));
         params.addAll(Arrays.asList(paramSenbetuStartDateT, paramSenbetuStartDateT));
         params.addAll(Arrays.asList(paramSenbetuEndDateF, paramSenbetuEndDateF));
