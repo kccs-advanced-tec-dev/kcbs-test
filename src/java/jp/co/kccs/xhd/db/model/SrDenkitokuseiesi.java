@@ -1767,6 +1767,86 @@ public class SrDenkitokuseiesi {
      * IR⑧ 測定範囲エンド 単位
      */
     private String ir8sokuteihaniendtani;
+    
+    /**
+     * IR① 時間 
+     */
+    private BigDecimal ir1jikan;
+    
+    /**
+     * IR① 時間 単位
+     */
+    private String ir1jikantani;
+    
+    /**
+     * IR② 時間 
+     */
+    private BigDecimal ir2jikan;
+    
+    /**
+     * IR② 時間 単位
+     */
+    private String ir2jikantani;
+    
+     /**
+     * IR③ 時間 
+     */
+    private BigDecimal ir3jikan;
+    
+    /**
+     * IR③ 時間 単位
+     */
+    private String ir3jikantani;
+    
+    /**
+     * IR④ 時間 
+     */
+    private BigDecimal ir4jikan;
+    
+    /**
+     * IR④ 時間 単位
+     */
+    private String ir4jikantani;
+    
+     /**
+     * IR⑤ 時間 
+     */
+    private BigDecimal ir5jikan;
+    
+    /**
+     * IR⑤ 時間 単位
+     */
+    private String ir5jikantani;
+    
+    /**
+     * IR⑥ 時間 
+     */
+    private BigDecimal ir6jikan;
+    
+    /**
+     * IR⑥ 時間 単位
+     */
+    private String ir6jikantani;
+    
+     /**
+     * IR⑦ 時間 
+     */
+    private BigDecimal ir7jikan;
+    
+    /**
+     * IR⑦ 時間 単位
+     */
+    private String ir7jikantani;
+    
+    /**
+     * IR⑧ 時間 
+     */
+    private BigDecimal ir8jikan;
+    
+    /**
+     * IR⑧ 時間 単位
+     */
+    private String ir8jikantani;
 
     /**
      * 工場ｺｰﾄﾞ
@@ -7319,5 +7399,259 @@ public class SrDenkitokuseiesi {
     public void setIr8sokuteihaniendtani(String ir8sokuteihaniendtani) {
         this.ir8sokuteihaniendtani = ir8sokuteihaniendtani;
     }
+    
+        /**
+     * IR① 時間
+     * @return ir1jikan
+     */
+    public BigDecimal getIr1jikan() {
+        return ir1jikan;
+    }
 
+    /**
+     * IR① 時間
+     * @param ir1jikan
+     */
+    public void setIr1jikan(BigDecimal ir1jikan) {
+        this.ir1jikan = ir1jikan;
+    }
+    
+    /**
+     * IR① 時間 単位
+     * @return ir1jikantani
+     */
+    public String getIr1jikantani() {
+        return ir1jikantani;
+    }
+
+    /**
+     * IR① 時間 単位
+     * @param ir1jikantani
+     */
+    public void setIr1jikantani(String ir1jikantani) {
+        this.ir1jikantani = ir1jikantani;
+    }
+    
+    /**
+     * IR② 時間
+     * @return ir2jikan
+     */
+    public BigDecimal getIr2jikan() {
+        return ir2jikan;
+    }
+
+    /**
+     * IR② 時間
+     * @param ir2jikan
+     */
+    public void setIr2jikan(BigDecimal ir2jikan) {
+        this.ir2jikan = ir2jikan;
+    }
+    
+    /**
+     * IR② 時間 単位
+     * @return ir2jikantani
+     */
+    public String getIr2jikantani() {
+        return ir2jikantani;
+    }
+
+    /**
+     * IR② 時間 単位
+     * @param ir2jikantani
+     */
+    public void setIr2jikantani(String ir2jikantani) {
+        this.ir2jikantani = ir2jikantani;
+    }
+    
+    /**
+     * IR③ 時間
+     * @return ir3jikan
+     */
+    public BigDecimal getIr3jikan() {
+        return ir3jikan;
+    }
+
+    /**
+     * IR③ 時間
+     * @param ir3jikan
+     */
+    public void setIr3jikan(BigDecimal ir3jikan) {
+        this.ir3jikan = ir3jikan;
+    }
+    /**
+     * IR③ 時間 単位
+     * @return ir3jikantani
+     */
+    public String getIr3jikantani() {
+        return ir3jikantani;
+    }
+
+    /**
+     * IR③ 時間 単位
+     * @param ir3jikantani
+     */
+    public void setIr3jikantani(String ir3jikantani) {
+        this.ir3jikantani = ir3jikantani;
+    }
+    
+    /**
+     * IR④ 時間
+     * @return ir4jikan
+     */
+    public BigDecimal getIr4jikan() {
+        return ir4jikan;
+    }
+
+    /**
+     * IR④ 時間
+     * @param ir4jikan
+     */
+    public void setIr4jikan(BigDecimal ir4jikan) {
+        this.ir4jikan = ir4jikan;
+    }
+    
+    /**
+     * IR④ 時間 単位
+     * @return ir4jikantani
+     */
+    public String getIr4jikantani() {
+        return ir4jikantani;
+    }
+
+    /**
+     * IR④ 時間 単位
+     * @param ir4jikantani
+     */
+    public void setIr4jikantani(String ir4jikantani) {
+        this.ir4jikantani = ir4jikantani;
+    }
+    
+    /**
+     * IR⑤ 時間
+     * @return ir5jikan
+     */
+    public BigDecimal getIr5jikan() {
+        return ir5jikan;
+    }
+
+    /**
+     * IR⑤ 時間
+     * @param ir5jikan
+     */
+    public void setIr5jikan(BigDecimal ir5jikan) {
+        this.ir5jikan = ir5jikan;
+    }
+    
+    /**
+     * IR⑤ 時間 単位
+     * @return ir5jikantani
+     */
+    public String getIr5jikantani() {
+        return ir5jikantani;
+    }
+
+    /**
+     * IR⑤ 時間 単位
+     * @param ir5jikantani
+     */
+    public void setIr5jikantani(String ir5jikantani) {
+        this.ir5jikantani = ir5jikantani;
+    }
+    
+    /**
+     * IR⑥ 時間
+     * @return ir6jikan
+     */
+    public BigDecimal getIr6jikan() {
+        return ir6jikan;
+    }
+
+    /**
+     * IR⑥ 時間
+     * @param ir6jikan
+     */
+    public void setIr6jikan(BigDecimal ir6jikan) {
+        this.ir6jikan = ir6jikan;
+    }
+    
+    /**
+     * IR⑥ 時間 単位
+     * @return ir6jikantani
+     */
+    public String getIr6jikantani() {
+        return ir6jikantani;
+    }
+
+    /**
+     * IR⑥ 時間 単位
+     * @param ir6jikantani
+     */
+    public void setIr6jikantani(String ir6jikantani) {
+        this.ir6jikantani = ir6jikantani;
+    }
+    
+    /**
+     * IR⑦ 時間
+     * @return ir7jikan
+     */
+    public BigDecimal getIr7jikan() {
+        return ir7jikan;
+    }
+
+    /**
+     * IR⑦ 時間
+     * @param ir7jikan
+     */
+    public void setIr7jikan(BigDecimal ir7jikan) {
+        this.ir7jikan = ir7jikan;
+    }
+    
+    /**
+     * IR⑦ 時間 単位
+     * @return ir7jikantani
+     */
+    public String getIr7jikantani() {
+        return ir7jikantani;
+    }
+
+    /**
+     * IR⑦ 時間 単位
+     * @param ir7jikantani
+     */
+    public void setIr7jikantani(String ir7jikantani) {
+        this.ir7jikantani = ir7jikantani;
+    }
+    
+    /**
+     * IR⑧ 時間
+     * @return ir8jikan
+     */
+    public BigDecimal getIr8jikan() {
+        return ir8jikan;
+    }
+
+    /**
+     * IR⑧ 時間
+     * @param ir8jikan
+     */
+    public void setIr8jikan(BigDecimal ir8jikan) {
+        this.ir8jikan = ir8jikan;
+    }
+    
+    /**
+     * IR⑧ 時間 単位
+     * @return ir8jikantani
+     */
+    public String getIr8jikantani() {
+        return ir8jikantani;
+    }
+
+    /**
+     * IR⑧ 時間 単位
+     * @param ir8jikantani
+     */
+    public void setIr8jikantani(String ir8jikantani) {
+        this.ir8jikantani = ir8jikantani;
+    }
 }

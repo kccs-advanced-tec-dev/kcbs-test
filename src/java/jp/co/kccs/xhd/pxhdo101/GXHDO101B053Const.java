@@ -292,6 +292,11 @@ public class GXHDO101B053Const {
      * 耐電圧設定条件:IR① 時間
      */
     public static final String TAIDEN_TIME1 = "sr_denkitokuseiesi_ir_time1_53";
+    
+    /**
+     * 耐電圧設定条件:IR① 時間 単位
+     */
+    public static final String TAIDEN_TIMETANI1 = "sr_denkitokuseiesi_ir_timetani1_53";
 
     /**
      * 耐電圧設定条件:IR① 電流中心値スタート
@@ -362,6 +367,11 @@ public class GXHDO101B053Const {
      * 耐電圧設定条件:IR② 時間
      */
     public static final String TAIDEN_TIME2 = "sr_denkitokuseiesi_ir_time2_53";
+    
+    /**
+     * 耐電圧設定条件:IR② 時間 単位
+     */
+    public static final String TAIDEN_TIMETANI2 = "sr_denkitokuseiesi_ir_timetani2_53";
 
     /**
      * 耐電圧設定条件:IR② 電流中心値スタート
@@ -432,6 +442,11 @@ public class GXHDO101B053Const {
      * 耐電圧設定条件:IR③ 時間
      */
     public static final String TAIDEN_TIME3 = "sr_denkitokuseiesi_ir_time3_53";
+    
+    /**
+     * 耐電圧設定条件:IR③ 時間 単位
+     */
+    public static final String TAIDEN_TIMETANI3 = "sr_denkitokuseiesi_ir_timetani3_53";
 
     /**
      * 耐電圧設定条件:IR③ 電流中心値スタート
@@ -502,6 +517,11 @@ public class GXHDO101B053Const {
      * 耐電圧設定条件:IR④ 時間
      */
     public static final String TAIDEN_TIME4 = "sr_denkitokuseiesi_ir_time4_53";
+    
+    /**
+     * 耐電圧設定条件:IR④ 時間 単位
+     */
+    public static final String TAIDEN_TIMETANI4 = "sr_denkitokuseiesi_ir_timetani4_53";
 
     /**
      * 耐電圧設定条件:IR④ 電流中心値スタート
@@ -572,6 +592,11 @@ public class GXHDO101B053Const {
      * 耐電圧設定条件:IR⑤ 時間
      */
     public static final String TAIDEN_TIME5 = "sr_denkitokuseiesi_ir_time5_53";
+    
+    /**
+     * 耐電圧設定条件:IR⑤ 時間 単位
+     */
+    public static final String TAIDEN_TIMETANI5 = "sr_denkitokuseiesi_ir_timetani5_53";
 
     /**
      * 耐電圧設定条件:IR⑤ 電流中心値スタート
@@ -642,6 +667,11 @@ public class GXHDO101B053Const {
      * 耐電圧設定条件:IR⑥ 時間
      */
     public static final String TAIDEN_TIME6 = "sr_denkitokuseiesi_ir_time6_53";
+    
+    /**
+     * 耐電圧設定条件:IR⑥ 時間 単位
+     */
+    public static final String TAIDEN_TIMETANI6 = "sr_denkitokuseiesi_ir_timetani6_53";
 
     /**
      * 耐電圧設定条件:IR⑥ 電流中心値スタート
@@ -712,6 +742,11 @@ public class GXHDO101B053Const {
      * 耐電圧設定条件:IR⑦ 時間
      */
     public static final String TAIDEN_TIME7 = "sr_denkitokuseiesi_ir_time7_53";
+    
+    /**
+     * 耐電圧設定条件:IR⑦ 時間 単位
+     */
+    public static final String TAIDEN_TIMETANI7 = "sr_denkitokuseiesi_ir_timetani7_53";
 
     /**
      * 耐電圧設定条件:IR⑦ 電流中心値スタート
@@ -782,6 +817,11 @@ public class GXHDO101B053Const {
      * 耐電圧設定条件:IR⑧ 時間
      */
     public static final String TAIDEN_TIME8 = "sr_denkitokuseiesi_ir_time8_53";
+    
+    /**
+     * 耐電圧設定条件:IR⑧ 時間 単位
+     */
+    public static final String TAIDEN_TIMETANI8 = "sr_denkitokuseiesi_ir_timetani8_53";
 
     /**
      * 耐電圧設定条件:IR⑧ 電流中心値スタート
@@ -1654,7 +1694,4 @@ public class GXHDO101B053Const {
      * 特性第3公差
      */
     public static final String KOSA3 = "sr_denkitokuseiesi_seihin_tokuseidai3_kousa_53";
-
-
-
 }

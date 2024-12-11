@@ -34,6 +34,11 @@ public class GXHDO101B053B implements Serializable {
      * 耐電圧 電圧1
      */
     private FXHDD01 denatsu1;
+    
+    /**
+     * 耐電圧 時間 単位1
+     */
+    private FXHDD01 timeTani1;
 
     /**
      * 耐電圧 時間1
@@ -109,6 +114,11 @@ public class GXHDO101B053B implements Serializable {
      * 耐電圧 時間2
      */
     private FXHDD01 time2;
+    
+    /**
+     * 耐電圧 時間 単位2
+     */
+    private FXHDD01 timeTani2;
 
     /**
      * 耐電圧 電流中心値スタート2
@@ -179,6 +189,11 @@ public class GXHDO101B053B implements Serializable {
      * 耐電圧 時間3
      */
     private FXHDD01 time3;
+    
+    /**
+     * 耐電圧 時間 単位3
+     */
+    private FXHDD01 timeTani3;
 
     /**
      * 耐電圧 電流中心値スタート3
@@ -249,6 +264,11 @@ public class GXHDO101B053B implements Serializable {
      * 耐電圧 時間4
      */
     private FXHDD01 time4;
+    
+    /**
+     * 耐電圧 時間 単位4
+     */
+    private FXHDD01 timeTani4;
 
     /**
      * 耐電圧 電流中心値スタート4
@@ -319,6 +339,11 @@ public class GXHDO101B053B implements Serializable {
      * 耐電圧 時間5
      */
     private FXHDD01 time5;
+    
+    /**
+     * 耐電圧 時間 単位5
+     */
+    private FXHDD01 timeTani5;
 
     /**
      * 耐電圧 電流中心値スタート5
@@ -389,6 +414,11 @@ public class GXHDO101B053B implements Serializable {
      * 耐電圧 時間6
      */
     private FXHDD01 time6;
+    
+    /**
+     * 耐電圧 時間 単位6
+     */
+    private FXHDD01 timeTani6;
 
     /**
      * 耐電圧 電流中心値スタート6
@@ -459,6 +489,11 @@ public class GXHDO101B053B implements Serializable {
      * 耐電圧 時間7
      */
     private FXHDD01 time7;
+    
+    /**
+     * 耐電圧 時間 単位7
+     */
+    private FXHDD01 timeTani7;
 
     /**
      * 耐電圧 電流中心値スタート7
@@ -529,6 +564,11 @@ public class GXHDO101B053B implements Serializable {
      * 耐電圧 時間8
      */
     private FXHDD01 time8;
+    
+    /**
+     * 耐電圧 時間 単位8
+     */
+    private FXHDD01 timeTani8;
 
     /**
      * 耐電圧 電流中心値スタート8
@@ -630,6 +670,24 @@ public class GXHDO101B053B implements Serializable {
      */
     public void setTime1(FXHDD01 time1) {
         this.time1 = time1;
+    }
+    
+    /**
+     * 耐電圧 時間 単位1
+     *
+     * @return the timeTani1
+     */
+    public FXHDD01 gettimeTani1() {
+        return timeTani1;
+    }
+
+    /**
+     * 耐電圧 時間 単位1
+     *
+     * @param timeTani1
+     */
+    public void setTimeTani1(FXHDD01 timeTani1) {
+        this.timeTani1 = timeTani1;
     }
 
     /**
@@ -883,6 +941,24 @@ public class GXHDO101B053B implements Serializable {
     public void setTime2(FXHDD01 time2) {
         this.time2 = time2;
     }
+    
+    /**
+     * 耐電圧 時間 単位2
+     *
+     * @return the timeTani2
+     */
+    public FXHDD01 gettimeTani2() {
+        return timeTani2;
+    }
+
+    /**
+     * 耐電圧 時間 単位2
+     *
+     * @param timeTani2
+     */
+    public void setTimeTani2(FXHDD01 timeTani2) {
+        this.timeTani2 = timeTani2;
+    }
 
     /**
      * 耐電圧 電流中心値スタート2
@@ -1134,6 +1210,24 @@ public class GXHDO101B053B implements Serializable {
      */
     public void setTime3(FXHDD01 time3) {
         this.time3 = time3;
+    }
+    
+    /**
+     * 耐電圧 時間 単位3
+     *
+     * @return the timeTani3
+     */
+    public FXHDD01 gettimeTani3() {
+        return timeTani3;
+    }
+
+    /**
+     * 耐電圧 時間 単位3
+     *
+     * @param timeTani3
+     */
+    public void setTimeTani3(FXHDD01 timeTani3) {
+        this.timeTani3 = timeTani3;
     }
 
     /**
@@ -1387,6 +1481,23 @@ public class GXHDO101B053B implements Serializable {
     public void setTime4(FXHDD01 time4) {
         this.time4 = time4;
     }
+    /**
+     * 耐電圧 時間 単位4
+     *
+     * @return the timeTani4
+     */
+    public FXHDD01 gettimeTani4() {
+        return timeTani4;
+    }
+
+    /**
+     * 耐電圧 時間 単位4
+     *
+     * @param timeTani4
+     */
+    public void setTimeTani4(FXHDD01 timeTani4) {
+        this.timeTani4 = timeTani4;
+    }
 
     /**
      * 耐電圧 電流中心値スタート4
@@ -1638,6 +1749,24 @@ public class GXHDO101B053B implements Serializable {
      */
     public void setTime5(FXHDD01 time5) {
         this.time5 = time5;
+    }
+    
+    /**
+     * 耐電圧 時間 単位5
+     *
+     * @return the timeTani5
+     */
+    public FXHDD01 gettimeTani5() {
+        return timeTani5;
+    }
+
+    /**
+     * 耐電圧 時間 単位5
+     *
+     * @param timeTani5
+     */
+    public void setTimeTani5(FXHDD01 timeTani5) {
+        this.timeTani5 = timeTani5;
     }
 
     /**
@@ -1891,6 +2020,24 @@ public class GXHDO101B053B implements Serializable {
     public void setTime6(FXHDD01 time6) {
         this.time6 = time6;
     }
+    
+    /**
+     * 耐電圧 時間 単位6
+     *
+     * @return the timeTani6
+     */
+    public FXHDD01 gettimeTani6() {
+        return timeTani6;
+    }
+
+    /**
+     * 耐電圧 時間 単位6
+     *
+     * @param timeTani6
+     */
+    public void setTimeTani6(FXHDD01 timeTani6) {
+        this.timeTani6 = timeTani6;
+    }
 
     /**
      * 耐電圧 電流中心値スタート6
@@ -2143,6 +2290,24 @@ public class GXHDO101B053B implements Serializable {
     public void setTime7(FXHDD01 time7) {
         this.time7 = time7;
     }
+    
+    /**
+     * 耐電圧 時間 単位7
+     *
+     * @return the timeTani7
+     */
+    public FXHDD01 gettimeTani7() {
+        return timeTani7;
+    }
+
+    /**
+     * 耐電圧 時間 単位7
+     *
+     * @param timeTani7
+     */
+    public void setTimeTani7(FXHDD01 timeTani7) {
+        this.timeTani7 = timeTani7;
+    }
 
     /**
      * 耐電圧 電流中心値スタート7
@@ -2394,6 +2559,24 @@ public class GXHDO101B053B implements Serializable {
      */
     public void setTime8(FXHDD01 time8) {
         this.time8 = time8;
+    }
+    
+    /**
+     * 耐電圧 時間 単位8
+     *
+     * @return the timeTani8
+     */
+    public FXHDD01 gettimeTani8() {
+        return timeTani8;
+    }
+
+    /**
+     * 耐電圧 時間 単位8
+     *
+     * @param timeTani8
+     */
+    public void setTimeTani8(FXHDD01 timeTani8) {
+        this.timeTani8 = timeTani8;
     }
 
     /**
