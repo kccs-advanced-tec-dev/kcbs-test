@@ -443,7 +443,7 @@ public class GXHDO201B053 implements Serializable {
         listCountMax = session.getAttribute("menuParam") != null ? new BigDecimal(Integer.parseInt(session.getAttribute("menuParam").toString())) : new BigDecimal(-1);
         listCountWarn = session.getAttribute("hyojiKensu") != null ? new BigDecimal(Integer.parseInt(session.getAttribute("hyojiKensu").toString())) : new BigDecimal(-1);
         
-                // ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ情報の取得
+        // ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ情報の取得
         String strfxhbm03List7 = "";
         //■表示可能ﾃﾞｰﾀ取得処理
         //①Ⅲ.画面表示仕様(7)を発行する。
