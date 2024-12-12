@@ -7691,7 +7691,8 @@ public class GXHDO101B053 implements IFormLogic {
 
         //耐電圧設定条件						
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENATSU1, StringUtil.nullToBlank(fxhdd07.getIrdenatu1())); //耐電圧設定条件 IR① 電圧
-        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME1, StringUtil.nullToBlank(fxhdd07.getIr1jikan())); //耐電圧設定条件 IR① 時間(IR① 時間)
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME1, StringUtil.nullToBlank(fxhdd07.getIr1jikan())); //耐電圧設定条件 IR① 時間
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIMETANI1, StringUtil.nullToBlank(fxhdd07.getIr1jikantani())); //耐電圧設定条件 IR① 時間 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_START1, StringUtil.nullToBlank(fxhdd07.getIr1denryustart())); //耐電圧設定条件 IR① 電流中心値スタート
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI1, StringUtil.nullToBlank(fxhdd07.getIr1denryustarttani())); //耐電圧設定条件 IR① 電流中心値スタート 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_END1, StringUtil.nullToBlank(fxhdd07.getIr1denryuend())); //耐電圧設定条件 IR① 電流中心値エンド
@@ -7706,7 +7707,8 @@ public class GXHDO101B053 implements IFormLogic {
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_RYOUHINHANILOWTANI1, StringUtil.nullToBlank(fxhdd07.getIrhantei1tani_low())); //耐電圧設定条件 IR① 良品範囲下限 単位(耐電圧設定条件 IR① 判定値(低) 単位)
         
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENATSU2, StringUtil.nullToBlank(fxhdd07.getIrdenatu2())); //耐電圧設定条件 IR② 電圧
-        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME2, StringUtil.nullToBlank(fxhdd07.getIr2jikan())); //耐電圧設定条件 IR② 時間(IR② 時間)
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME2, StringUtil.nullToBlank(fxhdd07.getIr2jikan())); //耐電圧設定条件 IR② 時間
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIMETANI2, StringUtil.nullToBlank(fxhdd07.getIr2jikantani())); //耐電圧設定条件 IR② 時間 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_START2, StringUtil.nullToBlank(fxhdd07.getIr2denryustart())); //耐電圧設定条件 IR② 電流中心値スタート
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI2, StringUtil.nullToBlank(fxhdd07.getIr2denryustarttani())); //耐電圧設定条件 IR② 電流中心値スタート 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_END2, StringUtil.nullToBlank(fxhdd07.getIr2denryuend())); //耐電圧設定条件 IR② 電流中心値エンド
@@ -7721,7 +7723,8 @@ public class GXHDO101B053 implements IFormLogic {
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_RYOUHINHANILOWTANI2, StringUtil.nullToBlank(fxhdd07.getIrhantei2tani_low())); //耐電圧設定条件 IR② 良品範囲下限 単位(耐電圧設定条件 IR② 判定値(低) 単位)
         
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENATSU3, StringUtil.nullToBlank(fxhdd07.getIrdenatu3())); //耐電圧設定条件 IR③ 電圧
-        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME3, StringUtil.nullToBlank(fxhdd07.getIr3jikan())); //耐電圧設定条件 IR③ 時間(IR③ 時間)
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME3, StringUtil.nullToBlank(fxhdd07.getIr3jikan())); //耐電圧設定条件 IR③ 時間
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIMETANI3, StringUtil.nullToBlank(fxhdd07.getIr3jikantani())); //耐電圧設定条件 IR③ 時間 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_START3, StringUtil.nullToBlank(fxhdd07.getIr3denryustart())); //耐電圧設定条件 IR③ 電流中心値スタート
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI3, StringUtil.nullToBlank(fxhdd07.getIr3denryustarttani())); //耐電圧設定条件 IR③ 電流中心値スタート 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_END3, StringUtil.nullToBlank(fxhdd07.getIr3denryuend())); //耐電圧設定条件 IR③ 電流中心値エンド
@@ -7736,7 +7739,8 @@ public class GXHDO101B053 implements IFormLogic {
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_RYOUHINHANILOWTANI3, StringUtil.nullToBlank(fxhdd07.getIrhantei3tani_low())); //耐電圧設定条件 IR③ 良品範囲下限 単位(耐電圧設定条件 IR③ 判定値(低) 単位)
         
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENATSU4, StringUtil.nullToBlank(fxhdd07.getIrdenatu4())); //耐電圧設定条件 IR④ 電圧
-        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME4, StringUtil.nullToBlank(fxhdd07.getIr4jikan())); //耐電圧設定条件 IR④ 時間(IR④ 時間)
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME4, StringUtil.nullToBlank(fxhdd07.getIr4jikan())); //耐電圧設定条件 IR④ 時間
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIMETANI4, StringUtil.nullToBlank(fxhdd07.getIr4jikantani())); //耐電圧設定条件 IR④ 時間 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_START4, StringUtil.nullToBlank(fxhdd07.getIr4denryustart())); //耐電圧設定条件 IR④ 電流中心値スタート
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI4, StringUtil.nullToBlank(fxhdd07.getIr4denryustarttani())); //耐電圧設定条件 IR④ 電流中心値スタート 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_END4, StringUtil.nullToBlank(fxhdd07.getIr4denryuend())); //耐電圧設定条件 IR④ 電流中心値エンド
@@ -7751,7 +7755,8 @@ public class GXHDO101B053 implements IFormLogic {
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_RYOUHINHANILOWTANI4, StringUtil.nullToBlank(fxhdd07.getIrhantei4tani_low())); //耐電圧設定条件 IR④ 良品範囲下限 単位(耐電圧設定条件 IR④ 判定値(低) 単位)
         
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENATSU5, StringUtil.nullToBlank(fxhdd07.getIrdenatu5())); //耐電圧設定条件 IR⑤ 電圧
-        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME5, StringUtil.nullToBlank(fxhdd07.getIr5jikan())); //耐電圧設定条件 IR⑤ 時間(IR⑤ 時間)
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME5, StringUtil.nullToBlank(fxhdd07.getIr5jikan())); //耐電圧設定条件 IR⑤ 時間
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIMETANI5, StringUtil.nullToBlank(fxhdd07.getIr5jikantani())); //耐電圧設定条件 IR⑤ 時間 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_START5, StringUtil.nullToBlank(fxhdd07.getIr5denryustart())); //耐電圧設定条件 IR⑤ 電流中心値スタート
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI5, StringUtil.nullToBlank(fxhdd07.getIr5denryustarttani())); //耐電圧設定条件 IR⑤ 電流中心値スタート 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_END5, StringUtil.nullToBlank(fxhdd07.getIr5denryuend())); //耐電圧設定条件 IR⑤ 電流中心値エンド
@@ -7766,7 +7771,8 @@ public class GXHDO101B053 implements IFormLogic {
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_RYOUHINHANILOWTANI5, StringUtil.nullToBlank(fxhdd07.getIrhantei5tani_low())); //耐電圧設定条件 IR⑤ 良品範囲下限 単位(耐電圧設定条件 IR⑤ 判定値(低) 単位)
         
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENATSU6, StringUtil.nullToBlank(fxhdd07.getIrdenatu6())); //耐電圧設定条件 IR⑥ 電圧
-        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME6, StringUtil.nullToBlank(fxhdd07.getIr6jikan())); //耐電圧設定条件 IR⑥ 時間(IR⑥ 時間)
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME6, StringUtil.nullToBlank(fxhdd07.getIr6jikan())); //耐電圧設定条件 IR⑥ 時間
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIMETANI6, StringUtil.nullToBlank(fxhdd07.getIr6jikantani())); //耐電圧設定条件 IR⑥ 時間 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_START6, StringUtil.nullToBlank(fxhdd07.getIr6denryustart())); //耐電圧設定条件 IR⑥ 電流中心値スタート
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI6, StringUtil.nullToBlank(fxhdd07.getIr6denryustarttani())); //耐電圧設定条件 IR⑥ 電流中心値スタート 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_END6, StringUtil.nullToBlank(fxhdd07.getIr6denryuend())); //耐電圧設定条件 IR⑥ 電流中心値エンド
@@ -7781,7 +7787,8 @@ public class GXHDO101B053 implements IFormLogic {
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_RYOUHINHANILOWTANI6, StringUtil.nullToBlank(fxhdd07.getIrhantei6tani_low())); //耐電圧設定条件 IR⑥ 良品範囲下限 単位(耐電圧設定条件 IR⑥ 判定値(低) 単位)
         
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENATSU7, StringUtil.nullToBlank(fxhdd07.getIrdenatu7())); //耐電圧設定条件 IR⑦ 電圧
-        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME7, StringUtil.nullToBlank(fxhdd07.getIr7jikan())); //耐電圧設定条件 IR⑦ 時間(IR⑦ 時間)
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME7, StringUtil.nullToBlank(fxhdd07.getIr7jikan())); //耐電圧設定条件 IR⑦ 時間
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIMETANI2, StringUtil.nullToBlank(fxhdd07.getIr7jikantani())); //耐電圧設定条件 IR⑦ 時間 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_START7, StringUtil.nullToBlank(fxhdd07.getIr7denryustart())); //耐電圧設定条件 IR⑦ 電流中心値スタート
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI7, StringUtil.nullToBlank(fxhdd07.getIr7denryustarttani())); //耐電圧設定条件 IR⑦ 電流中心値スタート 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_END7, StringUtil.nullToBlank(fxhdd07.getIr7denryuend())); //耐電圧設定条件 IR⑦ 電流中心値エンド
@@ -7796,7 +7803,8 @@ public class GXHDO101B053 implements IFormLogic {
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_RYOUHINHANILOWTANI7, StringUtil.nullToBlank(fxhdd07.getIrhantei7tani_low())); //耐電圧設定条件 IR⑦ 良品範囲下限 単位(耐電圧設定条件 IR⑦ 判定値(低) 単位)
         
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENATSU8, StringUtil.nullToBlank(fxhdd07.getIrdenatu8())); //耐電圧設定条件 IR⑧ 電圧
-        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME8, StringUtil.nullToBlank(fxhdd07.getIr8jikan())); //耐電圧設定条件 IR⑧ 時間(IR⑧ 時間)
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME8, StringUtil.nullToBlank(fxhdd07.getIr8jikan())); //耐電圧設定条件 IR⑧ 時間
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIMETANI8, StringUtil.nullToBlank(fxhdd07.getIr8jikantani())); //耐電圧設定条件 IR⑧ 時間 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_START8, StringUtil.nullToBlank(fxhdd07.getIr8denryustart())); //耐電圧設定条件 IR⑧ 電流中心値スタート
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI8, StringUtil.nullToBlank(fxhdd07.getIr8denryustarttani())); //耐電圧設定条件 IR⑧ 電流中心値スタート 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_END8, StringUtil.nullToBlank(fxhdd07.getIr8denryuend())); //耐電圧設定条件 IR⑧ 電流中心値エンド
