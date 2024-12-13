@@ -431,9 +431,6 @@ public class GXHDO101B053 implements IFormLogic {
             processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
             return processData;
         }
-        
-        // 累計処理数ﾁｪｯｸ処理を行う。
-        isSaidaisyorisuu(processData);
 
         // 後続処理メソッド設定
         processData.setMethod("doResist");
@@ -559,9 +556,6 @@ public class GXHDO101B053 implements IFormLogic {
             processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
             return processData;
         }
-        
-        // 累計処理数ﾁｪｯｸ処理を行う。
-        isSaidaisyorisuu(processData);
 
         // 後続処理メソッド設定
         processData.setMethod("doCorrectKakunin");
@@ -3661,8 +3655,8 @@ public class GXHDO101B053 implements IFormLogic {
                 + "kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,ownercode,lotkubuncode,siteikousa,atokouteisijinaiyou,okuriryouhinsuu,ukeiretannijyuryo,ukeiresoujyuryou,kensabasyo,senbetukaisinitiji,"
                 + "senbetusyuryounitiji,kensagouki,bunruiairatu,testplatekeijo,testplatekakunin,binboxseisoucheck,setsya,kakuninsya,siteikousabudomari1,siteikousabudomari2,testplatekanrino,tan,sokuteisyuhasuu,"
                 + "sokuteidenatu,hoseiyoutippuyoryou,hoseiyoutipputan,hoseimae,hoseigo,hoseiritu,bunruikakunin,gaikankakunin,netsusyorinitiji,agingjikan,syoninsha,furimukesya,bikou1,bikou2,irdenatu1,irhanteiti1,"
-                + "irjudenjikan1,irdenatu2,irhanteiti2,irjudenjikan2,irdenatu3,irhanteiti3,irjudenjikan3,irdenatu4,irhanteiti4,irjudenjikan4,irdenatu5,irhanteiti5,irjudenjikan5,irdenatu6,irhanteiti6,irjudenjikan6,"
-                + "irdenatu7,irhanteiti7,irjudenjikan7,irdenatu8,irhanteiti8,irjudenjikan8,bin1setteiti,bin1senbetukubun,bin1keiryougosuryou,bin1countersuu,bin1gosaritu,bin1masinfuryouritu,bin1nukitorikekka,"
+                + "irdenatu2,irhanteiti2,irdenatu3,irhanteiti3,irdenatu4,irhanteiti4,irdenatu5,irhanteiti5,irdenatu6,irhanteiti6,"
+                + "irdenatu7,irhanteiti7,irdenatu8,irhanteiti8,bin1setteiti,bin1senbetukubun,bin1keiryougosuryou,bin1countersuu,bin1gosaritu,bin1masinfuryouritu,bin1nukitorikekka,"
                 + "bin1nukitorikekkabosuu,bin1sinnofuryouritu,bin1kekkacheck,bin2setteiti,bin2senbetukubun,bin2keiryougosuryou,bin2countersuu,bin2gosaritu,bin2masinfuryouritu,bin2nukitorikekka,bin2nukitorikekkabosuu,"
                 + "bin2sinnofuryouritu,bin2kekkacheck,bin3setteiti,bin3senbetukubun,bin3keiryougosuryou,bin3countersuu,bin3gosaritu,bin3masinfuryouritu,bin3nukitorikekka,bin3nukitorikekkabosuu,bin3sinnofuryouritu,"
                 + "bin3kekkacheck,bin4setteiti,bin4senbetukubun,bin4keiryougosuryou,bin4countersuu,bin4gosaritu,bin4masinfuryouritu,bin4nukitorikekka,bin4nukitorikekkabosuu,bin4sinnofuryouritu,bin4kekkacheck,bin5setteiti,"
@@ -3670,7 +3664,7 @@ public class GXHDO101B053 implements IFormLogic {
                 + "bin6senbetukubun,bin6keiryougosuryou,bin6countersuu,bin6gosaritu,bin6masinfuryouritu,bin6nukitorikekka,bin6nukitorikekkabosuu,bin6sinnofuryouritu,bin6kekkacheck,bin6fukurocheck,bin7setteiti,"
                 + "bin7senbetukubun,bin7keiryougosuryou,bin7countersuu,bin7gosaritu,bin7masinfuryouritu,bin7fukurocheck,bin8setteiti,bin8senbetukubun,bin8keiryougosuryou,bin8countersuu,bin8gosaritu,bin8masinfuryouritu,"
                 + "bin8fukurocheck,bin9keiryougosuryou,bin9masinfuryouritu,rakkakeiryougosuryou,rakkamasinfuryouritu,handasample,sinraiseisample,sinfuryouhanteisya,hanteinyuuryokusya,toridasisya,kousa1,juryou1,kosuu1,"
-                + "kousa2,juryou2,kosuu2,kousa3,juryou3,kosuu3,kousa4,juryou4,kosuu4,countersousuu,ryohinjuryou,ryohinkosuu,budomari,binkakuninsya,saiken,setubikubun,torokunichiji,kosinnichiji,revision,deleteflag,"
+                + "kousa2,juryou2,kosuu2,kousa3,juryou3,kosuu3,kousa4,juryou4,kosuu4,countersousuu,ryohinjuryou,ryohinkosuu,budomari,binkakuninsya,setubikubun,torokunichiji,kosinnichiji,revision,deleteflag,"
                 + "irhanteiti1low,irhanteiti1tani,irhanteiti2low,irhanteiti2tani,irhanteiti3low,irhanteiti3tani,irhanteiti4low,irhanteiti4tani,irhanteiti5low,irhanteiti5tani,irhanteiti6low,irhanteiti6tani,irhanteiti7low,"
                 + "irhanteiti7tani,irhanteiti8low,irhanteiti8tani,douhinsyu,bin1fukurocheck,bin2fukurocheck,bin3fukurocheck,bin4fukurocheck,bin7nukitorikekka,bin7nukitorikekkabosuu,bin7sinnofuryouritu,bin7kekkacheck,"
                 + "bin8nukitorikekka,bin8nukitorikekkabosuu,bin8sinnofuryouritu,bin8kekkacheck,satsample,siteikousabudomari3,irhanteiti1tanilow,irhanteiti2tanilow,irhanteiti3tanilow,irhanteiti4tanilow,irhanteiti5tanilow,"
@@ -3680,12 +3674,13 @@ public class GXHDO101B053 implements IFormLogic {
                 + "ir4denryustart,ir4denryustarttani,ir4denryuend,ir4denryuendtani,ir4sokuteihanistart,ir4sokuteihanistarttani,ir4sokuteihaniend,ir4sokuteihaniendtani,ir5denryustart,ir5denryustarttani,ir5denryuend,"
                 + "ir5denryuendtani,ir5sokuteihanistart,ir5sokuteihanistarttani,ir5sokuteihaniend,ir5sokuteihaniendtani,ir6denryustart,ir6denryustarttani,ir6denryuend,ir6denryuendtani,ir6sokuteihanistart,"
                 + "ir6sokuteihanistarttani,ir6sokuteihaniend,ir6sokuteihaniendtani,ir7denryustart,ir7denryustarttani,ir7denryuend,ir7denryuendtani,ir7sokuteihanistart,ir7sokuteihanistarttani,ir7sokuteihaniend,"
-                + "ir7sokuteihaniendtani,ir8denryustart,ir8denryustarttani,ir8denryuend,ir8denryuendtani,ir8sokuteihanistart,ir8sokuteihanistarttani,ir8sokuteihaniend,ir8sokuteihaniendtani "
+                + "ir7sokuteihaniendtani,ir8denryustart,ir8denryustarttani,ir8denryuend,ir8denryuendtani,ir8sokuteihanistart,ir8sokuteihanistarttani,ir8sokuteihaniend,ir8sokuteihaniendtani,"
+                + "ir1jikan,ir1jikantani,ir2jikan,ir2jikantani,ir3jikan,ir3jikantani,ir4jikan,ir4jikantani,ir5jikan,ir5jikantani,ir6jikan,ir6jikantani,ir7jikan,ir7jikantani,ir8jikan,ir8jikantani "
                 + ") VALUES ("
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterTmpSrDenkitokuseiesi(true, newRev, deleteflag, kojyo, lotNo, edaban, systemTime, processData, null, jissekino, formId);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -3731,7 +3726,7 @@ public class GXHDO101B053 implements IFormLogic {
                 + "juryou2 = ? ,kosuu2 = ? ,kousa3 = ? ,juryou3 = ? ,kosuu3 = ? ,kousa4 = ? ,juryou4 = ? ,kosuu4 = ? ,countersousuu = ? ,ryohinjuryou = ? ,ryohinkosuu = ? ,budomari = ? ,binkakuninsya = ? ,saiken = ? ,"
                 + "setubikubun = ? ,kosinnichiji = ? ,revision = ? ,deleteflag = ? ,irhanteiti1low = ? ,irhanteiti1tani = ? ,irhanteiti2low = ? ,irhanteiti2tani = ? ,irhanteiti3low = ? ,irhanteiti3tani = ? ,"
                 + "irhanteiti4low = ? ,irhanteiti4tani = ? ,irhanteiti5low = ? ,irhanteiti5tani = ? ,irhanteiti6low = ? ,irhanteiti6tani = ? ,irhanteiti7low = ? ,irhanteiti7tani = ? ,irhanteiti8low = ? ,irhanteiti8tani = ? ,"
-                + "bin1fukurocheck = ? ,bin2fukurocheck = ? ,bin3fukurocheck = ? ,bin4fukurocheck = ? ,bin7nukitorikekka = ? ,bin7nukitorikekkabosuu = ? ,bin7sinnofuryouritu = ? ,bin7kekkacheck = ? ,bin8nukitorikekka = ? ,"
+                + "douhinsyu = ? , bin1fukurocheck = ? ,bin2fukurocheck = ? ,bin3fukurocheck = ? ,bin4fukurocheck = ? ,bin7nukitorikekka = ? ,bin7nukitorikekkabosuu = ? ,bin7sinnofuryouritu = ? ,bin7kekkacheck = ? ,bin8nukitorikekka = ? ,"
                 + "bin8nukitorikekkabosuu = ? ,bin8sinnofuryouritu = ? ,bin8kekkacheck = ? ,satsample = ? ,siteikousabudomari3 = ? ,irhanteiti1tanilow = ? ,irhanteiti2tanilow = ? ,irhanteiti3tanilow = ? ,irhanteiti4tanilow = ? ,"
                 + "irhanteiti5tanilow = ? ,irhanteiti6tanilow = ? ,irhanteiti7tanilow = ? ,irhanteiti8tanilow = ? ,gentenhukkidousa = ? ,sokuteiki12dousakakunin = ? ,sokuteipinfront = ? ,sokuteipinrear = ? ,ir1denryustart = ? ,"
                 + "ir1denryustarttani = ? ,ir1denryuend = ? ,ir1denryuendtani = ? ,ir1sokuteihanistart = ? ,ir1sokuteihanistarttani = ? ,ir1sokuteihaniend = ? ,ir1sokuteihaniendtani = ? ,ir2denryustart = ? ,ir2denryustarttani = ? ,"
@@ -3869,36 +3864,27 @@ public class GXHDO101B053 implements IFormLogic {
         
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 電圧
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI1, srDenkitokuseiesi))); //耐電圧設定条件:IR① 良品範囲上限(耐電圧設定条件 IR① 判定値)
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 時間(耐電圧設定条件 IR① 充電時間)
         
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 電圧
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI2, srDenkitokuseiesi))); //耐電圧設定条件:IR② 良品範囲上限(耐電圧設定条件 IR② 判定値)
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME2, srDenkitokuseiesi))); //耐電圧設定条件:IR② 時間(耐電圧設定条件 IR② 充電時間)
         
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 電圧
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 良品範囲上限(耐電圧設定条件 IR③ 判定値)
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 時間(耐電圧設定条件 IR③ 充電時間)
         
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 電圧
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 良品範囲上限(耐電圧設定条件 IR④ 判定値)
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 時間(耐電圧設定条件 IR④ 充電時間)
         
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 電圧
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 良品範囲上限(耐電圧設定条件 IR⑤ 判定値)
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 時間(耐電圧設定条件 IR⑤ 充電時間)
         
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 電圧
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 良品範囲上限(耐電圧設定条件 IR⑥ 判定値)
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 時間(耐電圧設定条件 IR⑥ 充電時間)
         
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 電圧
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 良品範囲上限(耐電圧設定条件 IR⑦ 判定値)
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 時間(耐電圧設定条件 IR⑦ 充電時間)
         
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 電圧
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 良品範囲上限(耐電圧設定条件 IR⑧ 判定値)
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 時間(耐電圧設定条件 IR⑧ 充電時間)
-
 
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_PERCENT_KBN, srDenkitokuseiesi))); //BIN1 %区分(設定値)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_SENBETSU_KBN, srDenkitokuseiesi))); //BIN1 選別区分
@@ -4149,6 +4135,23 @@ public class GXHDO101B053 implements IFormLogic {
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 測定範囲エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_ENDTANI8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 測定範囲エンド 単位
         
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 時間
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIMETANI1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 時間 単位
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME2, srDenkitokuseiesi))); // 耐電圧設定条件:IR② 時間
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIMETANI2, srDenkitokuseiesi))); // 耐電圧設定条件:IR② 時間 単位
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME3, srDenkitokuseiesi))); // 耐電圧設定条件:IR③ 時間
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIMETANI3, srDenkitokuseiesi))); // 耐電圧設定条件:IR③ 時間 単位
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME4, srDenkitokuseiesi))); // 耐電圧設定条件:IR④ 時間
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIMETANI4, srDenkitokuseiesi))); // 耐電圧設定条件:IR④ 時間 単位
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME5, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑤ 時間
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIMETANI5, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑤ 時間 単位
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME6, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑥ 時間
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIMETANI6, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑥ 時間 単位
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 時間
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIMETANI7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 時間 単位
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 時間
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIMETANI8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 時間 単位
+        
         return params;
     }
 
@@ -4174,8 +4177,8 @@ public class GXHDO101B053 implements IFormLogic {
                 + "kojyo, lotno, edaban, kaisuu, kcpno, tokuisaki, ownercode, lotkubuncode, siteikousa, atokouteisijinaiyou, okuriryouhinsuu, ukeiretannijyuryo, ukeiresoujyuryou, kensabasyo, senbetukaisinitiji, "
                 + "senbetusyuryounitiji, kensagouki, bunruiairatu, testplatekeijo, testplatekakunin, binboxseisoucheck, setsya, kakuninsya, siteikousabudomari1, siteikousabudomari2, testplatekanrino, tan, "
                 + "sokuteisyuhasuu, sokuteidenatu, hoseiyoutippuyoryou, hoseiyoutipputan, hoseimae, hoseigo, hoseiritu, bunruikakunin, gaikankakunin, netsusyorinitiji, agingjikan, syoninsha, furimukesya, bikou1, bikou2, "
-                + "irdenatu1, irhanteiti1, irjudenjikan1, irdenatu2, irhanteiti2, irjudenjikan2, irdenatu3, irhanteiti3, irjudenjikan3, irdenatu4, irhanteiti4, irjudenjikan4, irdenatu5, irhanteiti5, irjudenjikan5, irdenatu6, "
-                + "irhanteiti6, irjudenjikan6, irdenatu7, irhanteiti7, irjudenjikan7, irdenatu8, irhanteiti8, irjudenjikan8, bin1setteiti, bin1senbetukubun, bin1keiryougosuryou, bin1countersuu, bin1gosaritu, bin1masinfuryouritu, "
+                + "irdenatu1, irhanteiti1, irdenatu2, irhanteiti2, irdenatu3, irhanteiti3, irdenatu4, irhanteiti4, irdenatu5, irhanteiti5, irdenatu6, "
+                + "irhanteiti6, irdenatu7, irhanteiti7, irdenatu8, irhanteiti8, bin1setteiti, bin1senbetukubun, bin1keiryougosuryou, bin1countersuu, bin1gosaritu, bin1masinfuryouritu, "
                 + "bin1nukitorikekka, bin1nukitorikekkabosuu, bin1sinnofuryouritu, bin1kekkacheck, bin2setteiti, bin2senbetukubun, bin2keiryougosuryou, bin2countersuu, bin2gosaritu, bin2masinfuryouritu, bin2nukitorikekka, "
                 + "bin2nukitorikekkabosuu, bin2sinnofuryouritu, bin2kekkacheck, bin3setteiti, bin3senbetukubun, bin3keiryougosuryou, bin3countersuu, bin3gosaritu, bin3masinfuryouritu, bin3nukitorikekka, bin3nukitorikekkabosuu, "
                 + "bin3sinnofuryouritu, bin3kekkacheck, bin4setteiti, bin4senbetukubun, bin4keiryougosuryou, bin4countersuu, bin4gosaritu, bin4masinfuryouritu, bin4nukitorikekka, bin4nukitorikekkabosuu, bin4sinnofuryouritu, "
@@ -4183,7 +4186,7 @@ public class GXHDO101B053 implements IFormLogic {
                 + "bin5fukurocheck, bin6setteiti, bin6senbetukubun, bin6keiryougosuryou, bin6countersuu, bin6gosaritu, bin6masinfuryouritu, bin6nukitorikekka, bin6nukitorikekkabosuu, bin6sinnofuryouritu, bin6kekkacheck, "
                 + "bin6fukurocheck, bin7setteiti, bin7senbetukubun, bin7keiryougosuryou, bin7countersuu, bin7gosaritu, bin7masinfuryouritu, bin7fukurocheck, bin8setteiti, bin8senbetukubun, bin8keiryougosuryou, bin8countersuu, "
                 + "bin8gosaritu, bin8masinfuryouritu, bin8fukurocheck, bin9keiryougosuryou, bin9masinfuryouritu, rakkakeiryougosuryou, rakkamasinfuryouritu, handasample, sinraiseisample, sinfuryouhanteisya, hanteinyuuryokusya, "
-                + "toridasisya, kousa1, juryou1, kosuu1, kousa2, juryou2, kosuu2, kousa3, juryou3, kosuu3, kousa4, juryou4, kosuu4, countersousuu, ryohinjuryou, ryohinkosuu, budomari, binkakuninsya, saiken, setubikubun, "
+                + "toridasisya, kousa1, juryou1, kosuu1, kousa2, juryou2, kosuu2, kousa3, juryou3, kosuu3, kousa4, juryou4, kosuu4, countersousuu, ryohinjuryou, ryohinkosuu, budomari, binkakuninsya, setubikubun, "
                 + "torokunichiji, kosinnichiji, revision, irhanteiti1low, irhanteiti1tani, irhanteiti2low, irhanteiti2tani, irhanteiti3low, irhanteiti3tani, irhanteiti4low, irhanteiti4tani, irhanteiti5low, irhanteiti5tani, "
                 + "irhanteiti6low, irhanteiti6tani, irhanteiti7low, irhanteiti7tani, irhanteiti8low, irhanteiti8tani, douhinsyu, bin1fukurocheck, bin2fukurocheck, bin3fukurocheck, bin4fukurocheck, bin7nukitorikekka, "
                 + "bin7nukitorikekkabosuu, bin7sinnofuryouritu, bin7kekkacheck, bin8nukitorikekka, bin8nukitorikekkabosuu, bin8sinnofuryouritu, bin8kekkacheck, satsample, siteikousabudomari3, irhanteiti1tanilow, "
@@ -4194,13 +4197,13 @@ public class GXHDO101B053 implements IFormLogic {
                 + "ir4sokuteihaniendtani, ir5denryustart, ir5denryustarttani, ir5denryuend, ir5denryuendtani, ir5sokuteihanistart, ir5sokuteihanistarttani, ir5sokuteihaniend, ir5sokuteihaniendtani, ir6denryustart, "
                 + "ir6denryustarttani, ir6denryuend, ir6denryuendtani, ir6sokuteihanistart, ir6sokuteihanistarttani, ir6sokuteihaniend, ir6sokuteihaniendtani, ir7denryustart, ir7denryustarttani, ir7denryuend, ir7denryuendtani, "
                 + "ir7sokuteihanistart, ir7sokuteihanistarttani, ir7sokuteihaniend, ir7sokuteihaniendtani, ir8denryustart, ir8denryustarttani, ir8denryuend, ir8denryuendtani, ir8sokuteihanistart, ir8sokuteihanistarttani, "
-                + "ir8sokuteihaniend, ir8sokuteihaniendtani "
+                + "ir8sokuteihaniend, ir8sokuteihaniendtani,ir1jikan,ir1jikantani,ir2jikan,ir2jikantani,ir3jikan,ir3jikantani,ir4jikan,ir4jikantani,ir5jikan,ir5jikantani,ir6jikan,ir6jikantani,ir7jikan,ir7jikantani,ir8jikan,ir8jikantani "
                 + ") VALUES ("
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?) ";
 
         List<Object> params = setUpdateParameterSrDenkitokuseiesi(true, newRev, kojyo, lotNo, edaban, jissekino, systemTime, processData, tmpSrDenkitokuseiesi, formId);
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
@@ -4244,7 +4247,7 @@ public class GXHDO101B053 implements IFormLogic {
                 + "rakkamasinfuryouritu = ?,handasample = ?,sinraiseisample = ?,sinfuryouhanteisya = ?,hanteinyuuryokusya = ?,toridasisya = ?,kousa1 = ?,juryou1 = ?,kosuu1 = ?,kousa2 = ?,juryou2 = ?,kosuu2 = ?,"
                 + "kousa3 = ?,juryou3 = ?,kosuu3 = ?,kousa4 = ?,juryou4 = ?,kosuu4 = ?,countersousuu = ?,ryohinjuryou = ?,ryohinkosuu = ?,budomari = ?,binkakuninsya = ?,saiken = ?,setubikubun = ?,kosinnichiji = ?,"
                 + "revision = ?,irhanteiti1low = ?,irhanteiti1tani = ?,irhanteiti2low = ?,irhanteiti2tani = ?,irhanteiti3low = ?,irhanteiti3tani = ?,irhanteiti4low = ?,irhanteiti4tani = ?,irhanteiti5low = ?,irhanteiti5tani = ?,"
-                + "irhanteiti6low = ?,irhanteiti6tani = ?,irhanteiti7low = ?,irhanteiti7tani = ?,irhanteiti8low = ?,irhanteiti8tani = ?,bin1fukurocheck = ?,bin2fukurocheck = ?,bin3fukurocheck = ?,bin4fukurocheck = ?,"
+                + "irhanteiti6low = ?,irhanteiti6tani = ?,irhanteiti7low = ?,irhanteiti7tani = ?,irhanteiti8low = ?,irhanteiti8tani = ?,douhinsyu = ?,bin1fukurocheck = ?,bin2fukurocheck = ?,bin3fukurocheck = ?,bin4fukurocheck = ?,"
                 + "bin7nukitorikekka = ?,bin7nukitorikekkabosuu = ?,bin7sinnofuryouritu = ?,bin7kekkacheck = ?,bin8nukitorikekka = ?,bin8nukitorikekkabosuu = ?,bin8sinnofuryouritu = ?,bin8kekkacheck = ?,satsample = ?,"
                 + "siteikousabudomari3 = ?,irhanteiti1tanilow = ?,irhanteiti2tanilow = ?,irhanteiti3tanilow = ?,irhanteiti4tanilow = ?,irhanteiti5tanilow = ?,irhanteiti6tanilow = ?,irhanteiti7tanilow = ?,irhanteiti8tanilow = ?,"
                 + "gentenhukkidousa = ?,sokuteiki12dousakakunin = ?,sokuteipinfront = ?,sokuteipinrear = ?,ir1denryustart = ?,ir1denryustarttani = ?,ir1denryuend = ?,ir1denryuendtani = ?,ir1sokuteihanistart = ?,"
@@ -4349,36 +4352,27 @@ public class GXHDO101B053 implements IFormLogic {
         
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 電圧
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI1, srDenkitokuseiesi))); //耐電圧設定条件:IR① 良品範囲上限(耐電圧設定条件 IR① 判定値)
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME1, srDenkitokuseiesi))); //耐電圧設定条件 IR① 時間(耐電圧設定条件 IR① 充電時間)
         
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU2, srDenkitokuseiesi))); //耐電圧設定条件 IR② 電圧
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI2, srDenkitokuseiesi))); //耐電圧設定条件:IR② 良品範囲上限(耐電圧設定条件 IR② 判定値)
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME2, srDenkitokuseiesi))); //耐電圧設定条件:IR② 時間(耐電圧設定条件 IR② 充電時間)
         
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 電圧
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 良品範囲上限(耐電圧設定条件 IR③ 判定値)
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME3, srDenkitokuseiesi))); //耐電圧設定条件 IR③ 時間(耐電圧設定条件 IR③ 充電時間)
         
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 電圧
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 良品範囲上限(耐電圧設定条件 IR④ 判定値)
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME4, srDenkitokuseiesi))); //耐電圧設定条件 IR④ 時間(耐電圧設定条件 IR④ 充電時間)
         
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 電圧
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 良品範囲上限(耐電圧設定条件 IR⑤ 判定値)
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME5, srDenkitokuseiesi))); //耐電圧設定条件 IR⑤ 時間(耐電圧設定条件 IR⑤ 充電時間)
         
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 電圧
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 良品範囲上限(耐電圧設定条件 IR⑥ 判定値)
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME6, srDenkitokuseiesi))); //耐電圧設定条件 IR⑥ 時間(耐電圧設定条件 IR⑥ 充電時間)
         
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 電圧
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 良品範囲上限(耐電圧設定条件 IR⑦ 判定値)
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME7, srDenkitokuseiesi))); //耐電圧設定条件 IR⑦ 時間(耐電圧設定条件 IR⑦ 充電時間)
         
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_DENATSU8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 電圧
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_RYOUHINHANI8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 良品範囲上限(耐電圧設定条件 IR⑧ 判定値)
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME8, srDenkitokuseiesi))); //耐電圧設定条件 IR⑧ 時間(耐電圧設定条件 IR⑧ 充電時間)
-
 
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_PERCENT_KBN, srDenkitokuseiesi))); //BIN1 %区分(設定値)
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.SET_BIN1_SENBETSU_KBN, srDenkitokuseiesi))); //BIN1 選別区分
@@ -4629,6 +4623,23 @@ public class GXHDO101B053 implements IFormLogic {
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_STARTTANI8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 測定範囲スタート 単位
         params.add(DBUtil.stringToBigDecimalObjectDefaultNull(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_END8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 測定範囲エンド
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_SOKUTEIHANTEI_ENDTANI8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 測定範囲エンド 単位
+        
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 時間
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIMETANI1, srDenkitokuseiesi))); // 耐電圧設定条件:IR① 時間 単位
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME2, srDenkitokuseiesi))); // 耐電圧設定条件:IR② 時間
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIMETANI2, srDenkitokuseiesi))); // 耐電圧設定条件:IR② 時間 単位
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME3, srDenkitokuseiesi))); // 耐電圧設定条件:IR③ 時間
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIMETANI3, srDenkitokuseiesi))); // 耐電圧設定条件:IR③ 時間 単位
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME4, srDenkitokuseiesi))); // 耐電圧設定条件:IR④ 時間
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIMETANI4, srDenkitokuseiesi))); // 耐電圧設定条件:IR④ 時間 単位
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME5, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑤ 時間
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIMETANI5, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑤ 時間 単位
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME6, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑥ 時間
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIMETANI6, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑥ 時間 単位
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 時間
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIMETANI7, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑦ 時間 単位
+        params.add(DBUtil.stringToBigDecimalObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIME8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 時間
+        params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B053Const.TAIDEN_TIMETANI8, srDenkitokuseiesi))); // 耐電圧設定条件:IR⑧ 時間 単位
         
         return params;
     }
@@ -6434,8 +6445,8 @@ public class GXHDO101B053 implements IFormLogic {
                 + "kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,ownercode,lotkubuncode,siteikousa,atokouteisijinaiyou,okuriryouhinsuu,ukeiretannijyuryo,ukeiresoujyuryou,kensabasyo,senbetukaisinitiji,"
                 + "senbetusyuryounitiji,kensagouki,bunruiairatu,testplatekeijo,testplatekakunin,binboxseisoucheck,setsya,kakuninsya,siteikousabudomari1,siteikousabudomari2,testplatekanrino,tan,sokuteisyuhasuu,"
                 + "sokuteidenatu,hoseiyoutippuyoryou,hoseiyoutipputan,hoseimae,hoseigo,hoseiritu,bunruikakunin,gaikankakunin,netsusyorinitiji,agingjikan,syoninsha,furimukesya,bikou1,bikou2,irdenatu1,irhanteiti1,"
-                + "irjudenjikan1,irdenatu2,irhanteiti2,irjudenjikan2,irdenatu3,irhanteiti3,irjudenjikan3,irdenatu4,irhanteiti4,irjudenjikan4,irdenatu5,irhanteiti5,irjudenjikan5,irdenatu6,irhanteiti6,irjudenjikan6,"
-                + "irdenatu7,irhanteiti7,irjudenjikan7,irdenatu8,irhanteiti8,irjudenjikan8,bin1setteiti,bin1senbetukubun,bin1keiryougosuryou,bin1countersuu,bin1gosaritu,bin1masinfuryouritu,bin1nukitorikekka,"
+                + "irdenatu2,irhanteiti2,irdenatu3,irhanteiti3,irdenatu4,irhanteiti4,irdenatu5,irhanteiti5,irdenatu6,irhanteiti6,"
+                + "irdenatu7,irhanteiti7,irdenatu8,irhanteiti8,bin1setteiti,bin1senbetukubun,bin1keiryougosuryou,bin1countersuu,bin1gosaritu,bin1masinfuryouritu,bin1nukitorikekka,"
                 + "bin1nukitorikekkabosuu,bin1sinnofuryouritu,bin1kekkacheck,bin2setteiti,bin2senbetukubun,bin2keiryougosuryou,bin2countersuu,bin2gosaritu,bin2masinfuryouritu,bin2nukitorikekka,bin2nukitorikekkabosuu,"
                 + "bin2sinnofuryouritu,bin2kekkacheck,bin3setteiti,bin3senbetukubun,bin3keiryougosuryou,bin3countersuu,bin3gosaritu,bin3masinfuryouritu,bin3nukitorikekka,bin3nukitorikekkabosuu,bin3sinnofuryouritu,"
                 + "bin3kekkacheck,bin4setteiti,bin4senbetukubun,bin4keiryougosuryou,bin4countersuu,bin4gosaritu,bin4masinfuryouritu,bin4nukitorikekka,bin4nukitorikekkabosuu,bin4sinnofuryouritu,bin4kekkacheck,bin5setteiti,"
@@ -6443,7 +6454,7 @@ public class GXHDO101B053 implements IFormLogic {
                 + "bin6senbetukubun,bin6keiryougosuryou,bin6countersuu,bin6gosaritu,bin6masinfuryouritu,bin6nukitorikekka,bin6nukitorikekkabosuu,bin6sinnofuryouritu,bin6kekkacheck,bin6fukurocheck,bin7setteiti,"
                 + "bin7senbetukubun,bin7keiryougosuryou,bin7countersuu,bin7gosaritu,bin7masinfuryouritu,bin7fukurocheck,bin8setteiti,bin8senbetukubun,bin8keiryougosuryou,bin8countersuu,bin8gosaritu,bin8masinfuryouritu,"
                 + "bin8fukurocheck,bin9keiryougosuryou,bin9masinfuryouritu,rakkakeiryougosuryou,rakkamasinfuryouritu,handasample,sinraiseisample,sinfuryouhanteisya,hanteinyuuryokusya,toridasisya,kousa1,juryou1,kosuu1,"
-                + "kousa2,juryou2,kosuu2,kousa3,juryou3,kosuu3,kousa4,juryou4,kosuu4,countersousuu,ryohinjuryou,ryohinkosuu,budomari,binkakuninsya,saiken,setubikubun,torokunichiji,kosinnichiji,revision,deleteflag,"
+                + "kousa2,juryou2,kosuu2,kousa3,juryou3,kosuu3,kousa4,juryou4,kosuu4,countersousuu,ryohinjuryou,ryohinkosuu,budomari,binkakuninsya,setubikubun,torokunichiji,kosinnichiji,revision,deleteflag,"
                 + "irhanteiti1low,irhanteiti1tani,irhanteiti2low,irhanteiti2tani,irhanteiti3low,irhanteiti3tani,irhanteiti4low,irhanteiti4tani,irhanteiti5low,irhanteiti5tani,irhanteiti6low,irhanteiti6tani,irhanteiti7low,"
                 + "irhanteiti7tani,irhanteiti8low,irhanteiti8tani,douhinsyu,bin1fukurocheck,bin2fukurocheck,bin3fukurocheck,bin4fukurocheck,bin7nukitorikekka,bin7nukitorikekkabosuu,bin7sinnofuryouritu,bin7kekkacheck,"
                 + "bin8nukitorikekka,bin8nukitorikekkabosuu,bin8sinnofuryouritu,bin8kekkacheck,satsample,siteikousabudomari3,irhanteiti1tanilow,irhanteiti2tanilow,irhanteiti3tanilow,irhanteiti4tanilow,irhanteiti5tanilow,"
@@ -6453,13 +6464,14 @@ public class GXHDO101B053 implements IFormLogic {
                 + "ir4denryustart,ir4denryustarttani,ir4denryuend,ir4denryuendtani,ir4sokuteihanistart,ir4sokuteihanistarttani,ir4sokuteihaniend,ir4sokuteihaniendtani,ir5denryustart,ir5denryustarttani,ir5denryuend,"
                 + "ir5denryuendtani,ir5sokuteihanistart,ir5sokuteihanistarttani,ir5sokuteihaniend,ir5sokuteihaniendtani,ir6denryustart,ir6denryustarttani,ir6denryuend,ir6denryuendtani,ir6sokuteihanistart,"
                 + "ir6sokuteihanistarttani,ir6sokuteihaniend,ir6sokuteihaniendtani,ir7denryustart,ir7denryustarttani,ir7denryuend,ir7denryuendtani,ir7sokuteihanistart,ir7sokuteihanistarttani,ir7sokuteihaniend,"
-                + "ir7sokuteihaniendtani,ir8denryustart,ir8denryustarttani,ir8denryuend,ir8denryuendtani,ir8sokuteihanistart,ir8sokuteihanistarttani,ir8sokuteihaniend,ir8sokuteihaniendtani "
+                + "ir7sokuteihaniendtani,ir8denryustart,ir8denryustarttani,ir8denryuend,ir8denryuendtani,ir8sokuteihanistart,ir8sokuteihanistarttani,ir8sokuteihaniend,ir8sokuteihaniendtani,"
+                + "ir1jikan,ir1jikantani,ir2jikan,ir2jikantani,ir3jikan,ir3jikantani,ir4jikan,ir4jikantani,ir5jikan,ir5jikantani,ir6jikan,ir6jikantani,ir7jikan,ir7jikantani,ir8jikan,ir8jikantani "
                 + ") SELECT "
                 + "kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,ownercode,lotkubuncode,siteikousa,atokouteisijinaiyou,okuriryouhinsuu,ukeiretannijyuryo,ukeiresoujyuryou,kensabasyo,senbetukaisinitiji,"
                 + "senbetusyuryounitiji,kensagouki,bunruiairatu,testplatekeijo,testplatekakunin,binboxseisoucheck,setsya,kakuninsya,siteikousabudomari1,siteikousabudomari2,testplatekanrino,tan,"
                 + "sokuteisyuhasuu,sokuteidenatu,hoseiyoutippuyoryou,hoseiyoutipputan,hoseimae,hoseigo,hoseiritu,bunruikakunin,gaikankakunin,netsusyorinitiji,agingjikan,syoninsha,furimukesya,"
-                + "bikou1,bikou2,irdenatu1,irhanteiti1,irjudenjikan1,irdenatu2,irhanteiti2,irjudenjikan2,irdenatu3,irhanteiti3,irjudenjikan3,irdenatu4,irhanteiti4,irjudenjikan4,irdenatu5,irhanteiti5,irjudenjikan5,"
-                + "irdenatu6,irhanteiti6,irjudenjikan6,irdenatu7,irhanteiti7,irjudenjikan7,irdenatu8,irhanteiti8,irjudenjikan8,bin1setteiti,bin1senbetukubun,bin1keiryougosuryou,bin1countersuu,bin1gosaritu,"
+                + "bikou1,bikou2,irdenatu1,irhanteiti1,irdenatu2,irhanteiti2,irdenatu3,irhanteiti3,irdenatu4,irhanteiti4,irdenatu5,irhanteiti5,"
+                + "irdenatu6,irhanteiti6,irdenatu7,irhanteiti7,irdenatu8,irhanteiti8,bin1setteiti,bin1senbetukubun,bin1keiryougosuryou,bin1countersuu,bin1gosaritu,"
                 + "bin1masinfuryouritu,bin1nukitorikekka,bin1nukitorikekkabosuu,bin1sinnofuryouritu,bin1kekkacheck,bin2setteiti,bin2senbetukubun,bin2keiryougosuryou,bin2countersuu,bin2gosaritu,bin2masinfuryouritu,"
                 + "bin2nukitorikekka,bin2nukitorikekkabosuu,bin2sinnofuryouritu,bin2kekkacheck,bin3setteiti,bin3senbetukubun,bin3keiryougosuryou,bin3countersuu,bin3gosaritu,bin3masinfuryouritu,bin3nukitorikekka,"
                 + "bin3nukitorikekkabosuu,bin3sinnofuryouritu,bin3kekkacheck,bin4setteiti,bin4senbetukubun,bin4keiryougosuryou,bin4countersuu,bin4gosaritu,bin4masinfuryouritu,bin4nukitorikekka,bin4nukitorikekkabosuu,"
@@ -6467,7 +6479,7 @@ public class GXHDO101B053 implements IFormLogic {
                 + "bin5kekkacheck,bin5fukurocheck,bin6setteiti,bin6senbetukubun,bin6keiryougosuryou,bin6countersuu,bin6gosaritu,bin6masinfuryouritu,bin6nukitorikekka,bin6nukitorikekkabosuu,bin6sinnofuryouritu,"
                 + "bin6kekkacheck,bin6fukurocheck,bin7setteiti,bin7senbetukubun,bin7keiryougosuryou,bin7countersuu,bin7gosaritu,bin7masinfuryouritu,bin7fukurocheck,bin8setteiti,bin8senbetukubun,bin8keiryougosuryou,"
                 + "bin8countersuu,bin8gosaritu,bin8masinfuryouritu,bin8fukurocheck,bin9keiryougosuryou,bin9masinfuryouritu,rakkakeiryougosuryou,rakkamasinfuryouritu,handasample,sinraiseisample,sinfuryouhanteisya,"
-                + "hanteinyuuryokusya,toridasisya,kousa1,juryou1,kosuu1,kousa2,juryou2,kosuu2,kousa3,juryou3,kosuu3,kousa4,juryou4,kosuu4,countersousuu,ryohinjuryou,ryohinkosuu,budomari,binkakuninsya,saiken,setubikubun,?,?,?,?,"
+                + "hanteinyuuryokusya,toridasisya,kousa1,juryou1,kosuu1,kousa2,juryou2,kosuu2,kousa3,juryou3,kosuu3,kousa4,juryou4,kosuu4,countersousuu,ryohinjuryou,ryohinkosuu,budomari,binkakuninsya,setubikubun,?,?,?,?,"
                 + "irhanteiti1low,irhanteiti1tani,irhanteiti2low,irhanteiti2tani,irhanteiti3low,irhanteiti3tani,irhanteiti4low,irhanteiti4tani,irhanteiti5low,irhanteiti5tani,irhanteiti6low,irhanteiti6tani,irhanteiti7low,"
                 + "irhanteiti7tani,irhanteiti8low,irhanteiti8tani,douhinsyu,bin1fukurocheck,bin2fukurocheck,bin3fukurocheck,bin4fukurocheck,bin7nukitorikekka,bin7nukitorikekkabosuu,bin7sinnofuryouritu,bin7kekkacheck,bin8nukitorikekka,"
                 + "bin8nukitorikekkabosuu,bin8sinnofuryouritu,bin8kekkacheck,satsample,siteikousabudomari3,irhanteiti1tanilow,irhanteiti2tanilow,irhanteiti3tanilow,irhanteiti4tanilow,irhanteiti5tanilow,irhanteiti6tanilow,"
@@ -6476,7 +6488,8 @@ public class GXHDO101B053 implements IFormLogic {
                 + "ir3denryustarttani,ir3denryuend,ir3denryuendtani,ir3sokuteihanistart,ir3sokuteihanistarttani,ir3sokuteihaniend,ir3sokuteihaniendtani,ir4denryustart,ir4denryustarttani,ir4denryuend,ir4denryuendtani,ir4sokuteihanistart,"
                 + "ir4sokuteihanistarttani,ir4sokuteihaniend,ir4sokuteihaniendtani,ir5denryustart,ir5denryustarttani,ir5denryuend,ir5denryuendtani,ir5sokuteihanistart,ir5sokuteihanistarttani,ir5sokuteihaniend,ir5sokuteihaniendtani,"
                 + "ir6denryustart,ir6denryustarttani,ir6denryuend,ir6denryuendtani,ir6sokuteihanistart,ir6sokuteihanistarttani,ir6sokuteihaniend,ir6sokuteihaniendtani,ir7denryustart,ir7denryustarttani,ir7denryuend,ir7denryuendtani,"
-                + "ir7sokuteihanistart,ir7sokuteihanistarttani,ir7sokuteihaniend,ir7sokuteihaniendtani,ir8denryustart,ir8denryustarttani,ir8denryuend,ir8denryuendtani,ir8sokuteihanistart,ir8sokuteihanistarttani,ir8sokuteihaniend,ir8sokuteihaniendtani"
+                + "ir7sokuteihanistart,ir7sokuteihanistarttani,ir7sokuteihaniend,ir7sokuteihaniendtani,ir8denryustart,ir8denryustarttani,ir8denryuend,ir8denryuendtani,ir8sokuteihanistart,ir8sokuteihanistarttani,ir8sokuteihaniend,ir8sokuteihaniendtani,"
+                + "ir1jikan,ir1jikantani,ir2jikan,ir2jikantani,ir3jikan,ir3jikantani,ir4jikan,ir4jikantani,ir5jikan,ir5jikantani,ir6jikan,ir6jikantani,ir7jikan,ir7jikantani,ir8jikan,ir8jikantani "
                 + " FROM sr_denkitokuseiesi "
                 + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? ";
 
@@ -6737,6 +6750,16 @@ public class GXHDO101B053 implements IFormLogic {
         bean.setRyohinHaniTani8(getItemRow(processData.getItemListEx(), GXHDO101B053Const.TAIDEN_RYOUHINHANITANI8));
         bean.setRyohinHaniLow8(getItemRow(processData.getItemListEx(), GXHDO101B053Const.TAIDEN_RYOUHINHANILOW8));
         bean.setRyohinHaniLowTani8(getItemRow(processData.getItemListEx(), GXHDO101B053Const.TAIDEN_RYOUHINHANILOWTANI8));
+        
+        bean.setTimeTani1(getItemRow(processData.getItemListEx(), GXHDO101B053Const.TAIDEN_TIMETANI1));
+        bean.setTimeTani2(getItemRow(processData.getItemListEx(), GXHDO101B053Const.TAIDEN_TIMETANI2));
+        bean.setTimeTani3(getItemRow(processData.getItemListEx(), GXHDO101B053Const.TAIDEN_TIMETANI3));
+        bean.setTimeTani4(getItemRow(processData.getItemListEx(), GXHDO101B053Const.TAIDEN_TIMETANI4));
+        bean.setTimeTani5(getItemRow(processData.getItemListEx(), GXHDO101B053Const.TAIDEN_TIMETANI5));
+        bean.setTimeTani6(getItemRow(processData.getItemListEx(), GXHDO101B053Const.TAIDEN_TIMETANI6));
+        bean.setTimeTani7(getItemRow(processData.getItemListEx(), GXHDO101B053Const.TAIDEN_TIMETANI7));
+        bean.setTimeTani8(getItemRow(processData.getItemListEx(), GXHDO101B053Const.TAIDEN_TIMETANI8));
+        
     }
 
 /**
@@ -7662,7 +7685,8 @@ public class GXHDO101B053 implements IFormLogic {
 
         //耐電圧設定条件						
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENATSU1, StringUtil.nullToBlank(fxhdd07.getIrdenatu1())); //耐電圧設定条件 IR① 電圧
-        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME1, StringUtil.nullToBlank(fxhdd07.getIr1jikan())); //耐電圧設定条件 IR① 時間(IR① 時間)
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME1, StringUtil.nullToBlank(fxhdd07.getIr1jikan())); //耐電圧設定条件 IR① 時間
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIMETANI1, StringUtil.nullToBlank(fxhdd07.getIr1jikantani())); //耐電圧設定条件 IR① 時間 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_START1, StringUtil.nullToBlank(fxhdd07.getIr1denryustart())); //耐電圧設定条件 IR① 電流中心値スタート
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI1, StringUtil.nullToBlank(fxhdd07.getIr1denryustarttani())); //耐電圧設定条件 IR① 電流中心値スタート 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_END1, StringUtil.nullToBlank(fxhdd07.getIr1denryuend())); //耐電圧設定条件 IR① 電流中心値エンド
@@ -7677,7 +7701,8 @@ public class GXHDO101B053 implements IFormLogic {
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_RYOUHINHANILOWTANI1, StringUtil.nullToBlank(fxhdd07.getIrhantei1tani_low())); //耐電圧設定条件 IR① 良品範囲下限 単位(耐電圧設定条件 IR① 判定値(低) 単位)
         
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENATSU2, StringUtil.nullToBlank(fxhdd07.getIrdenatu2())); //耐電圧設定条件 IR② 電圧
-        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME2, StringUtil.nullToBlank(fxhdd07.getIr2jikan())); //耐電圧設定条件 IR② 時間(IR② 時間)
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME2, StringUtil.nullToBlank(fxhdd07.getIr2jikan())); //耐電圧設定条件 IR② 時間
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIMETANI2, StringUtil.nullToBlank(fxhdd07.getIr2jikantani())); //耐電圧設定条件 IR② 時間 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_START2, StringUtil.nullToBlank(fxhdd07.getIr2denryustart())); //耐電圧設定条件 IR② 電流中心値スタート
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI2, StringUtil.nullToBlank(fxhdd07.getIr2denryustarttani())); //耐電圧設定条件 IR② 電流中心値スタート 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_END2, StringUtil.nullToBlank(fxhdd07.getIr2denryuend())); //耐電圧設定条件 IR② 電流中心値エンド
@@ -7692,7 +7717,8 @@ public class GXHDO101B053 implements IFormLogic {
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_RYOUHINHANILOWTANI2, StringUtil.nullToBlank(fxhdd07.getIrhantei2tani_low())); //耐電圧設定条件 IR② 良品範囲下限 単位(耐電圧設定条件 IR② 判定値(低) 単位)
         
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENATSU3, StringUtil.nullToBlank(fxhdd07.getIrdenatu3())); //耐電圧設定条件 IR③ 電圧
-        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME3, StringUtil.nullToBlank(fxhdd07.getIr3jikan())); //耐電圧設定条件 IR③ 時間(IR③ 時間)
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME3, StringUtil.nullToBlank(fxhdd07.getIr3jikan())); //耐電圧設定条件 IR③ 時間
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIMETANI3, StringUtil.nullToBlank(fxhdd07.getIr3jikantani())); //耐電圧設定条件 IR③ 時間 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_START3, StringUtil.nullToBlank(fxhdd07.getIr3denryustart())); //耐電圧設定条件 IR③ 電流中心値スタート
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI3, StringUtil.nullToBlank(fxhdd07.getIr3denryustarttani())); //耐電圧設定条件 IR③ 電流中心値スタート 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_END3, StringUtil.nullToBlank(fxhdd07.getIr3denryuend())); //耐電圧設定条件 IR③ 電流中心値エンド
@@ -7707,7 +7733,8 @@ public class GXHDO101B053 implements IFormLogic {
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_RYOUHINHANILOWTANI3, StringUtil.nullToBlank(fxhdd07.getIrhantei3tani_low())); //耐電圧設定条件 IR③ 良品範囲下限 単位(耐電圧設定条件 IR③ 判定値(低) 単位)
         
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENATSU4, StringUtil.nullToBlank(fxhdd07.getIrdenatu4())); //耐電圧設定条件 IR④ 電圧
-        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME4, StringUtil.nullToBlank(fxhdd07.getIr4jikan())); //耐電圧設定条件 IR④ 時間(IR④ 時間)
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME4, StringUtil.nullToBlank(fxhdd07.getIr4jikan())); //耐電圧設定条件 IR④ 時間
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIMETANI4, StringUtil.nullToBlank(fxhdd07.getIr4jikantani())); //耐電圧設定条件 IR④ 時間 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_START4, StringUtil.nullToBlank(fxhdd07.getIr4denryustart())); //耐電圧設定条件 IR④ 電流中心値スタート
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI4, StringUtil.nullToBlank(fxhdd07.getIr4denryustarttani())); //耐電圧設定条件 IR④ 電流中心値スタート 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_END4, StringUtil.nullToBlank(fxhdd07.getIr4denryuend())); //耐電圧設定条件 IR④ 電流中心値エンド
@@ -7722,7 +7749,8 @@ public class GXHDO101B053 implements IFormLogic {
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_RYOUHINHANILOWTANI4, StringUtil.nullToBlank(fxhdd07.getIrhantei4tani_low())); //耐電圧設定条件 IR④ 良品範囲下限 単位(耐電圧設定条件 IR④ 判定値(低) 単位)
         
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENATSU5, StringUtil.nullToBlank(fxhdd07.getIrdenatu5())); //耐電圧設定条件 IR⑤ 電圧
-        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME5, StringUtil.nullToBlank(fxhdd07.getIr5jikan())); //耐電圧設定条件 IR⑤ 時間(IR⑤ 時間)
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME5, StringUtil.nullToBlank(fxhdd07.getIr5jikan())); //耐電圧設定条件 IR⑤ 時間
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIMETANI5, StringUtil.nullToBlank(fxhdd07.getIr5jikantani())); //耐電圧設定条件 IR⑤ 時間 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_START5, StringUtil.nullToBlank(fxhdd07.getIr5denryustart())); //耐電圧設定条件 IR⑤ 電流中心値スタート
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI5, StringUtil.nullToBlank(fxhdd07.getIr5denryustarttani())); //耐電圧設定条件 IR⑤ 電流中心値スタート 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_END5, StringUtil.nullToBlank(fxhdd07.getIr5denryuend())); //耐電圧設定条件 IR⑤ 電流中心値エンド
@@ -7737,7 +7765,8 @@ public class GXHDO101B053 implements IFormLogic {
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_RYOUHINHANILOWTANI5, StringUtil.nullToBlank(fxhdd07.getIrhantei5tani_low())); //耐電圧設定条件 IR⑤ 良品範囲下限 単位(耐電圧設定条件 IR⑤ 判定値(低) 単位)
         
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENATSU6, StringUtil.nullToBlank(fxhdd07.getIrdenatu6())); //耐電圧設定条件 IR⑥ 電圧
-        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME6, StringUtil.nullToBlank(fxhdd07.getIr6jikan())); //耐電圧設定条件 IR⑥ 時間(IR⑥ 時間)
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME6, StringUtil.nullToBlank(fxhdd07.getIr6jikan())); //耐電圧設定条件 IR⑥ 時間
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIMETANI6, StringUtil.nullToBlank(fxhdd07.getIr6jikantani())); //耐電圧設定条件 IR⑥ 時間 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_START6, StringUtil.nullToBlank(fxhdd07.getIr6denryustart())); //耐電圧設定条件 IR⑥ 電流中心値スタート
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI6, StringUtil.nullToBlank(fxhdd07.getIr6denryustarttani())); //耐電圧設定条件 IR⑥ 電流中心値スタート 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_END6, StringUtil.nullToBlank(fxhdd07.getIr6denryuend())); //耐電圧設定条件 IR⑥ 電流中心値エンド
@@ -7752,7 +7781,8 @@ public class GXHDO101B053 implements IFormLogic {
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_RYOUHINHANILOWTANI6, StringUtil.nullToBlank(fxhdd07.getIrhantei6tani_low())); //耐電圧設定条件 IR⑥ 良品範囲下限 単位(耐電圧設定条件 IR⑥ 判定値(低) 単位)
         
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENATSU7, StringUtil.nullToBlank(fxhdd07.getIrdenatu7())); //耐電圧設定条件 IR⑦ 電圧
-        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME7, StringUtil.nullToBlank(fxhdd07.getIr7jikan())); //耐電圧設定条件 IR⑦ 時間(IR⑦ 時間)
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME7, StringUtil.nullToBlank(fxhdd07.getIr7jikan())); //耐電圧設定条件 IR⑦ 時間
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIMETANI2, StringUtil.nullToBlank(fxhdd07.getIr7jikantani())); //耐電圧設定条件 IR⑦ 時間 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_START7, StringUtil.nullToBlank(fxhdd07.getIr7denryustart())); //耐電圧設定条件 IR⑦ 電流中心値スタート
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI7, StringUtil.nullToBlank(fxhdd07.getIr7denryustarttani())); //耐電圧設定条件 IR⑦ 電流中心値スタート 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_END7, StringUtil.nullToBlank(fxhdd07.getIr7denryuend())); //耐電圧設定条件 IR⑦ 電流中心値エンド
@@ -7767,7 +7797,8 @@ public class GXHDO101B053 implements IFormLogic {
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_RYOUHINHANILOWTANI7, StringUtil.nullToBlank(fxhdd07.getIrhantei7tani_low())); //耐電圧設定条件 IR⑦ 良品範囲下限 単位(耐電圧設定条件 IR⑦ 判定値(低) 単位)
         
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENATSU8, StringUtil.nullToBlank(fxhdd07.getIrdenatu8())); //耐電圧設定条件 IR⑧ 電圧
-        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME8, StringUtil.nullToBlank(fxhdd07.getIr8jikan())); //耐電圧設定条件 IR⑧ 時間(IR⑧ 時間)
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIME8, StringUtil.nullToBlank(fxhdd07.getIr8jikan())); //耐電圧設定条件 IR⑧ 時間
+        setItemDataEx(processData, GXHDO101B053Const.TAIDEN_TIMETANI8, StringUtil.nullToBlank(fxhdd07.getIr8jikantani())); //耐電圧設定条件 IR⑧ 時間 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_START8, StringUtil.nullToBlank(fxhdd07.getIr8denryustart())); //耐電圧設定条件 IR⑧ 電流中心値スタート
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_STARTTANI8, StringUtil.nullToBlank(fxhdd07.getIr8denryustarttani())); //耐電圧設定条件 IR⑧ 電流中心値スタート 単位
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENRYU_END8, StringUtil.nullToBlank(fxhdd07.getIr8denryuend())); //耐電圧設定条件 IR⑧ 電流中心値エンド
@@ -8123,48 +8154,5 @@ public class GXHDO101B053 implements IFormLogic {
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
-    }
-    
-    /**
-     * 最大処理数
-     *
-     * @param processData 処理制御データ
-     * @return 処理制御データ
-     */
-    private ProcessData isSaidaisyorisuu(ProcessData processData) {
-        String ryohinsuu = "";
-        String saidaisyorisuu = "";
-        String ruikeisyorisuu = "";
-        BigDecimal ryohinsuuValue = BigDecimal.ZERO;
-        BigDecimal saidaisyorisuuValue = BigDecimal.ZERO;
-        BigDecimal ruikeisyorisuuValue = BigDecimal.ZERO;
-
-        FXHDD01 itemFxhdd01ryohinsuu = getItemRow(processData.getItemList(), GXHDO101B053Const.SEIHIN_OKURI_RYOHINSU);
-        if (itemFxhdd01ryohinsuu != null) {
-            ryohinsuu = StringUtil.nullToBlank(itemFxhdd01ryohinsuu.getValue());
-            if (!StringUtil.isEmpty(ryohinsuu)) {
-                ryohinsuuValue = new BigDecimal(ryohinsuu);
-            }
-        }
-        FXHDD01 itemFxhdd01saidaisyorisuu = getItemRow(processData.getItemList(), GXHDO101B053Const.SEIHIN_SAIDAI_SYORISUU);
-        if (itemFxhdd01saidaisyorisuu != null) {
-            saidaisyorisuu = StringUtil.nullToBlank(itemFxhdd01saidaisyorisuu.getValue());
-            if (!StringUtil.isEmpty(saidaisyorisuu)) {
-                saidaisyorisuuValue = new BigDecimal(saidaisyorisuu);
-            }
-        }
-        FXHDD01 itemFxhdd01ruikeisyorisuu = getItemRow(processData.getItemList(), GXHDO101B053Const.SEIHIN_RUIKEI_SYORISUU);
-        if (itemFxhdd01ruikeisyorisuu != null) {
-            ruikeisyorisuu = StringUtil.nullToBlank(itemFxhdd01ruikeisyorisuu.getValue());
-            if (!StringUtil.isEmpty(ruikeisyorisuu)) {
-                ruikeisyorisuuValue = new BigDecimal(ruikeisyorisuu);
-            }
-        }
-
-        if (0 < ruikeisyorisuuValue.add(ryohinsuuValue).compareTo(saidaisyorisuuValue)) {
-            processData.setWarnMessage(MessageUtil.getMessage("XHD-000230"));
-        }
-        return processData;
-
     }
 }
