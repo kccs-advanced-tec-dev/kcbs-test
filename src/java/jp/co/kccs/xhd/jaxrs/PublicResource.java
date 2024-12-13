@@ -62,6 +62,11 @@ import org.apache.commons.lang3.math.NumberUtils;
  * 変更者	SYSNAVI K.Hisanaga<br>
  * 変更理由	設備データ取込項目追加対応<br>
  * <br>
+ * 変更日	2024/12/06<br>
+ * 計画書No	MB2408-D009<br>
+ * 変更者	SYSNAVI H.Kamo<br>
+ * 変更理由	電気特性・新設備（TWA）対応<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -366,6 +371,11 @@ public class PublicResource {
             DBUtil.outputSQLLog(sqlUpd, paramsUpd.toArray(), LOGGER);
             queryRunner.update(con, sqlUpd, paramsUpd.toArray());
 
+            // TWAの場合、細部が異なるため登録処理を分岐
+            if ("TWA".equals(param.getMaker())) {
+                return insertFxhdd07Twa(param, registDate, con, queryRunner);
+            }
+
             // データ登録
             String sqlIns = "INSERT INTO FXHDD07 ("
                     + "kojyo,lotno,edaban,gouki,bunruiairatu,cdcontactatu,ircontactatu,tan,sokuteisyuhasuu,sokuteidenatu,pcdenatu1,pcjudenjikan1,pcdenatu2,"
@@ -617,7 +627,235 @@ public class PublicResource {
             return Response.serverError().build();
         }
     }
-    
+
+    /**
+     * TWA 取込データ登録処理
+     * @param param 設備データ
+     * @param registDate 登録日
+     * @param con 接続情報
+     * @param queryRunner QueryRunner
+     * @return レスポンス
+     * @throws SQLException 例外
+     */
+    private Response insertFxhdd07Twa(FXHDD07Json param, Timestamp registDate, Connection con, QueryRunner queryRunner) throws SQLException {
+        // データ登録
+        String sqlIns = "INSERT INTO FXHDD07 ("
+                + "kojyo,lotno,edaban,gouki,tan,sokuteisyuhasuu,sokuteidenatu,irdenatu1,irhanteiti1_low,irhanteiti1,irdenatu2,irhanteiti2_low,"
+                + "irhanteiti2,irdenatu3,irhanteiti3_low,irhanteiti3,irdenatu4,irhanteiti4_low,irhanteiti4,irdenatu5,irhanteiti5_low,irhanteiti5,"
+                + "irdenatu6,irhanteiti6_low,irhanteiti6,irdenatu7,irhanteiti7_low,irhanteiti7,irdenatu8,irhanteiti8_low,irhanteiti8,"
+                + "bin1countersuu,bin2countersuu,bin3countersuu,bin4countersuu,bin5countersuu,bin6countersuu,bin7countersuu,bin8countersuu,"
+                + "toroku_date,deleteflag,bin1senbetsukbn,bin2senbetsukbn,bin3senbetsukbn,bin4senbetsukbn,bin5senbetsukbn,bin6senbetsukbn,"
+                + "bin7senbetsukbn,bin8senbetsukbn,testplatekanrino,handasample,sinraiseisample,kensabasyo,testplatekeijo,testplatekakunin,"
+                + "bunruikakunin,gaikankakunin,irhantei1tani,irhantei2tani,irhantei3tani,irhantei4tani,irhantei5tani,irhantei6tani,irhantei7tani,"
+                + "irhantei8tani,irhantei1tani_low,irhantei2tani_low,irhantei3tani_low,irhantei4tani_low,irhantei5tani_low,irhantei6tani_low,"
+                + "irhantei7tani_low,irhantei8tani_low,gentenhukkidousa,sokuteiki12dousakakunin,sokuteipinfront,sokuteipinrear,"
+                + "ir1denryustart,ir1denryustarttani,ir1denryuend,ir1denryuendtani,ir1sokuteihanistart,ir1sokuteihanistarttani,ir1sokuteihaniend,ir1sokuteihaniendtani,"
+                + "ir2denryustart,ir2denryustarttani,ir2denryuend,ir2denryuendtani,ir2sokuteihanistart,ir2sokuteihanistarttani,ir2sokuteihaniend,ir2sokuteihaniendtani,"
+                + "ir3denryustart,ir3denryustarttani,ir3denryuend,ir3denryuendtani,ir3sokuteihanistart,ir3sokuteihanistarttani,ir3sokuteihaniend,ir3sokuteihaniendtani,"
+                + "ir4denryustart,ir4denryustarttani,ir4denryuend,ir4denryuendtani,ir4sokuteihanistart,ir4sokuteihanistarttani,ir4sokuteihaniend,ir4sokuteihaniendtani,"
+                + "ir5denryustart,ir5denryustarttani,ir5denryuend,ir5denryuendtani,ir5sokuteihanistart,ir5sokuteihanistarttani,ir5sokuteihaniend,ir5sokuteihaniendtani,"
+                + "ir6denryustart,ir6denryustarttani,ir6denryuend,ir6denryuendtani,ir6sokuteihanistart,ir6sokuteihanistarttani,ir6sokuteihaniend,ir6sokuteihaniendtani,"
+                + "ir7denryustart,ir7denryustarttani,ir7denryuend,ir7denryuendtani,ir7sokuteihanistart,ir7sokuteihanistarttani,ir7sokuteihaniend,ir7sokuteihaniendtani,"
+                + "ir8denryustart,ir8denryustarttani,ir8denryuend,ir8denryuendtani,ir8sokuteihanistart,ir8sokuteihanistarttani,ir8sokuteihaniend,ir8sokuteihaniendtani,"
+                + "senbetukaisinitijitwa,senbetusyuryounitijitwa,satsample,binboxseisoucheck,bin1setteititwa,bin2setteititwa,bin3setteititwa,"
+                + "bin4setteititwa,bin5setteititwa,bin6setteititwa,bin7setteititwa,bin8setteititwa,hoseiyoutippuyoryou,hoseiyoutipputan,ir1jikan,"
+                + "ir1jikantani,ir2jikan,ir2jikantani,ir3jikan,ir3jikantani,ir4jikan,ir4jikantani,ir5jikan,ir5jikantani,ir6jikan,ir6jikantani,ir7jikan,"
+                + "ir7jikantani,ir8jikan,ir8jikantani"
+                + ") VALUES ("
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+                + ")";
+
+        String numPattern = "[\\d.+-]";
+        String excNumPattern = "[^\\d.-]";
+        String irDenatuPattern = "[+V]";
+        String irJikanUnit = "ms";
+
+        List<Object> paramIns
+                = new ArrayList<>(Arrays.asList(
+                        getFormatData(param.getKojyo(), "3", "", "String"),
+                        getFormatData(param.getLotno(), "8", "", "String"),
+                        getFormatData(param.getEdaban(), "3", "", "String"),
+                        getFormatData(param.getGouki(), "4", "", "String"),
+                        getFormatData(getTrimString(param.getTan(), excNumPattern), "3", "2", "BigDecimal"),
+                        getFormatData(getTrimString(param.getSokuteisyuhasuu(), excNumPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getSokuteidenatu(), excNumPattern), "1", "1", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIrdenatu1(), irDenatuPattern), "4", "1", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIrhanteiti1_low(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIrhanteiti1(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIrdenatu2(), irDenatuPattern), "4", "1", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIrhanteiti2_low(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIrhanteiti2(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIrdenatu3(), irDenatuPattern), "4", "1", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIrhanteiti3_low(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIrhanteiti3(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIrdenatu4(), irDenatuPattern), "4", "1", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIrhanteiti4_low(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIrhanteiti4(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIrdenatu5(), irDenatuPattern), "4", "1", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIrhanteiti5_low(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIrhanteiti5(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIrdenatu6(), irDenatuPattern), "4", "1", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIrhanteiti6_low(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIrhanteiti6(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIrdenatu7(), irDenatuPattern), "4", "1", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIrhanteiti7_low(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIrhanteiti7(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIrdenatu8(), irDenatuPattern), "4", "1", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIrhanteiti8_low(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIrhanteiti8(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(param.getBin1countersuu(), "8", "", "Integer"),
+                        getFormatData(param.getBin2countersuu(), "8", "", "Integer"),
+                        getFormatData(param.getBin3countersuu(), "8", "", "Integer"),
+                        getFormatData(param.getBin4countersuu(), "8", "", "Integer"),
+                        getFormatData(param.getBin5countersuu(), "8", "", "Integer"),
+                        getFormatData(param.getBin6countersuu(), "8", "", "Integer"),
+                        getFormatData(param.getBin7countersuu(), "8", "", "Integer"),
+                        getFormatData(param.getBin8countersuu(), "8", "", "Integer"),
+                        registDate,
+                        0,
+                        getFormatData(param.getBin1senbetsukbn(), "20", "", "String"),
+                        getFormatData(param.getBin2senbetsukbn(), "20", "", "String"),
+                        getFormatData(param.getBin3senbetsukbn(), "20", "", "String"),
+                        getFormatData(param.getBin4senbetsukbn(), "20", "", "String"),
+                        getFormatData(param.getBin5senbetsukbn(), "20", "", "String"),
+                        getFormatData(param.getBin6senbetsukbn(), "20", "", "String"),
+                        getFormatData(param.getBin7senbetsukbn(), "20", "", "String"),
+                        getFormatData(param.getBin8senbetsukbn(), "20", "", "String"),
+                        getFormatData(param.getTestplatekanrino(), "20", "", "String"),
+                        getFormatData(getTrimString(param.getHandasample(), excNumPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getSinraiseisample(), excNumPattern), "10", "", "String"),
+                        getFormatData(param.getKensabasyo(), "10", "", "String"),
+                        getFormatData(param.getTestplatekeijo(), "10", "", "String"),
+                        getFormatData(param.getTestplatekakunin(), "10", "", "String"),
+                        getFormatData(param.getBunruikakunin(), "10", "", "String"),
+                        getFormatData(param.getGaikankakunin(), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIrhantei1tani(), numPattern), "20", "", "String"),
+                        getFormatData(getTrimString(param.getIrhantei2tani(), numPattern), "20", "", "String"),
+                        getFormatData(getTrimString(param.getIrhantei3tani(), numPattern), "20", "", "String"),
+                        getFormatData(getTrimString(param.getIrhantei4tani(), numPattern), "20", "", "String"),
+                        getFormatData(getTrimString(param.getIrhantei5tani(), numPattern), "20", "", "String"),
+                        getFormatData(getTrimString(param.getIrhantei6tani(), numPattern), "20", "", "String"),
+                        getFormatData(getTrimString(param.getIrhantei7tani(), numPattern), "20", "", "String"),
+                        getFormatData(getTrimString(param.getIrhantei8tani(), numPattern), "20", "", "String"),
+                        getFormatData(getTrimString(param.getIrhantei1tani_low(), numPattern), "20", "", "String"),
+                        getFormatData(getTrimString(param.getIrhantei2tani_low(), numPattern), "20", "", "String"),
+                        getFormatData(getTrimString(param.getIrhantei3tani_low(), numPattern), "20", "", "String"),
+                        getFormatData(getTrimString(param.getIrhantei4tani_low(), numPattern), "20", "", "String"),
+                        getFormatData(getTrimString(param.getIrhantei5tani_low(), numPattern), "20", "", "String"),
+                        getFormatData(getTrimString(param.getIrhantei6tani_low(), numPattern), "20", "", "String"),
+                        getFormatData(getTrimString(param.getIrhantei7tani_low(), numPattern), "20", "", "String"),
+                        getFormatData(getTrimString(param.getIrhantei8tani_low(), numPattern), "20", "", "String"),
+                        getFormatData(param.getGentenhukkidousa(), "10", "", "String"),
+                        getFormatData(param.getSokuteiki12dousakakunin(), "10", "", "String"),
+                        getFormatData(param.getSokuteipinfront(), "10", "", "String"),
+                        getFormatData(param.getSokuteipinrear(), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr1denryustart(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr1denryustarttani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr1denryuend(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr1denryuendtani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr1sokuteihanistart(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr1sokuteihanistarttani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr1sokuteihaniend(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr1sokuteihaniendtani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr2denryustart(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr2denryustarttani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr2denryuend(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr2denryuendtani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr2sokuteihanistart(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr2sokuteihanistarttani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr2sokuteihaniend(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr2sokuteihaniendtani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr3denryustart(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr3denryustarttani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr3denryuend(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr3denryuendtani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr3sokuteihanistart(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr3sokuteihanistarttani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr3sokuteihaniend(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr3sokuteihaniendtani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr4denryustart(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr4denryustarttani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr4denryuend(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr4denryuendtani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr4sokuteihanistart(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr4sokuteihanistarttani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr4sokuteihaniend(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr4sokuteihaniendtani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr5denryustart(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr5denryustarttani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr5denryuend(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr5denryuendtani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr5sokuteihanistart(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr5sokuteihanistarttani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr5sokuteihaniend(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr5sokuteihaniendtani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr6denryustart(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr6denryustarttani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr6denryuend(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr6denryuendtani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr6sokuteihanistart(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr6sokuteihanistarttani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr6sokuteihaniend(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr6sokuteihaniendtani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr7denryustart(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr7denryustarttani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr7denryuend(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr7denryuendtani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr7sokuteihanistart(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr7sokuteihanistarttani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr7sokuteihaniend(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr7sokuteihaniendtani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr8denryustart(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr8denryustarttani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr8denryuend(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr8denryuendtani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr8sokuteihanistart(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr8sokuteihanistarttani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr8sokuteihaniend(), excNumPattern), "4", "10", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr8sokuteihaniendtani(), numPattern), "10", "", "String"),
+                        getFormatData(param.getSenbetukaisinitijitwa(), "", "", "DateSlash"),
+                        getFormatData(param.getSenbetusyuryounitijitwa(), "", "", "DateSlash"),
+                        getFormatData(getTrimString(param.getSatsample(), excNumPattern), "10", "", "String"),
+                        getFormatData(param.getBinboxseisoucheck(), "10", "", "String"),
+                        getFormatData(param.getBin1setteititwa(), "20", "", "String"),
+                        getFormatData(param.getBin2setteititwa(), "20", "", "String"),
+                        getFormatData(param.getBin3setteititwa(), "20", "", "String"),
+                        getFormatData(param.getBin4setteititwa(), "20", "", "String"),
+                        getFormatData(param.getBin5setteititwa(), "20", "", "String"),
+                        getFormatData(param.getBin6setteititwa(), "20", "", "String"),
+                        getFormatData(param.getBin7setteititwa(), "20", "", "String"),
+                        getFormatData(param.getBin8setteititwa(), "20", "", "String"),
+                        getFormatData(getTrimString(param.getHoseiyoutippuyoryou(), excNumPattern), "4", "5", "BigDecimal"),
+                        getFormatData(getTrimString(param.getHoseiyoutipputan(), excNumPattern), "4", "5", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr1jikan(), irJikanUnit), "5", "5", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr1jikantani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr2jikan(), irJikanUnit), "5", "5", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr2jikantani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr3jikan(), irJikanUnit), "5", "5", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr3jikantani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr4jikan(), irJikanUnit), "5", "5", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr4jikantani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr5jikan(), irJikanUnit), "5", "5", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr5jikantani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr6jikan(), irJikanUnit), "5", "5", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr6jikantani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr7jikan(), irJikanUnit), "5", "5", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr7jikantani(), numPattern), "10", "", "String"),
+                        getFormatData(getTrimString(param.getIr8jikan(), irJikanUnit), "5", "5", "BigDecimal"),
+                        getFormatData(getTrimString(param.getIr8jikantani(), numPattern), "10", "", "String")
+                ));
+
+        DBUtil.outputSQLLog(sqlIns, paramIns.toArray(), LOGGER);
+        queryRunner.update(con, sqlIns, paramIns.toArray());
+
+        // commit
+        DbUtils.commitAndCloseQuietly(con);
+
+        return Response.ok().build();
+    }
+
     /**
      * 設定値を取得
      * @param value 値
@@ -679,7 +917,10 @@ public class PublicResource {
                 return new BigDecimal(getNumberData(value, length, decLength)[0]);
                 
             case "Date":
-                return stringToDateObject(value);
+                return stringToDateObject(value, "yyyy-MM-dd HH:mm");
+
+            case "DateSlash":
+                return stringToDateObject(value, "yyyy/MM/dd HH:mm"); 
 
             default:
                 return StringUtil.left(StringUtil.trimAll(value), Integer.parseInt(length));
@@ -704,10 +945,11 @@ public class PublicResource {
      * 日付文字列⇒Dateオブジェクト変換<br>
      *
      * @param dateValue 年月日時分
+     * @param dateFormat 日付フォーマット
      * @return 変換後のデータ
      */
-    public static Timestamp stringToDateObject(String dateValue) {
-        DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+    public static Timestamp stringToDateObject(String dateValue, String dateFormat) {
+        DateFormat format = new SimpleDateFormat(dateFormat);
         Date resultDate = null;
         try {
             if(dateValue != null){
