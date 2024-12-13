@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Kyocera Communication Systems Co., Ltd All rights reserved.
+ * Copyright 2024 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.model;
 
@@ -12,15 +12,10 @@ import java.sql.Timestamp;
  * <br>
  * システム名	品質情報管理システム<br>
  * <br>
- * 変更日	2019/12/28<br>
- * 計画書No	K1811-DS001<br>
- * 変更者	863 K.Zhang<br>
+ * 変更日	2024/12/09<br>
+ * 計画書No	MB2408-D009<br>
+ * 変更者	KCCS A.Hayashi<br>
  * 変更理由	新規作成<br>
- * <br>
- * 変更日	2020/10/09<br>
- * 計画書No	MB2004-DS015<br>
- * 変更者	863 sujialiang<br>
- * 変更理由	項目変更<br>
  * <br>
  * ===============================================================================<br>
  */

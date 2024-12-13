@@ -1,5 +1,5 @@
 /*
- * Copyright 2019 Kyocera Communication Systems Co., Ltd All rights reserved.
+ * Copyright 2024 Kyocera Communication Systems Co., Ltd All rights reserved.
  */
 package jp.co.kccs.xhd.pxhdo201;
 
@@ -1355,10 +1355,10 @@ public class GXHDO201B053 implements Serializable {
             List<ColumnInformation> list = (new ColumnInfoParser()).parseColumnJson(file);
 
             // 物理ファイルを生成
-            excel = ExcelExporter.outputExcel(listData, list, myParam.getString("download_temp"), "電気特性");
+            excel = ExcelExporter.outputExcel(listData, list, myParam.getString("download_temp"), "電気特性・TWA");
 
             // ダウンロードファイル名
-            String downloadFileName = "電気特性_" + ((new SimpleDateFormat("yyyyMMddHHmmss")).format(new Date())) + ".xlsx";
+            String downloadFileName = "電気特性・TWA_" + ((new SimpleDateFormat("yyyyMMddHHmmss")).format(new Date())) + ".xlsx";
             
             // outputstreamにファイルを転送
             ec.responseReset();
