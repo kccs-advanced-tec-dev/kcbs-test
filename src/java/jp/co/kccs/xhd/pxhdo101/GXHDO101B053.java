@@ -431,9 +431,6 @@ public class GXHDO101B053 implements IFormLogic {
             processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
             return processData;
         }
-        
-        // 累計処理数ﾁｪｯｸ処理を行う。
-        isSaidaisyorisuu(processData);
 
         // 後続処理メソッド設定
         processData.setMethod("doResist");
@@ -559,9 +556,6 @@ public class GXHDO101B053 implements IFormLogic {
             processData.setErrorMessageInfoList(Arrays.asList(checkItemErrorInfo));
             return processData;
         }
-        
-        // 累計処理数ﾁｪｯｸ処理を行う。
-        isSaidaisyorisuu(processData);
 
         // 後続処理メソッド設定
         processData.setMethod("doCorrectKakunin");
@@ -3732,7 +3726,7 @@ public class GXHDO101B053 implements IFormLogic {
                 + "juryou2 = ? ,kosuu2 = ? ,kousa3 = ? ,juryou3 = ? ,kosuu3 = ? ,kousa4 = ? ,juryou4 = ? ,kosuu4 = ? ,countersousuu = ? ,ryohinjuryou = ? ,ryohinkosuu = ? ,budomari = ? ,binkakuninsya = ? ,saiken = ? ,"
                 + "setubikubun = ? ,kosinnichiji = ? ,revision = ? ,deleteflag = ? ,irhanteiti1low = ? ,irhanteiti1tani = ? ,irhanteiti2low = ? ,irhanteiti2tani = ? ,irhanteiti3low = ? ,irhanteiti3tani = ? ,"
                 + "irhanteiti4low = ? ,irhanteiti4tani = ? ,irhanteiti5low = ? ,irhanteiti5tani = ? ,irhanteiti6low = ? ,irhanteiti6tani = ? ,irhanteiti7low = ? ,irhanteiti7tani = ? ,irhanteiti8low = ? ,irhanteiti8tani = ? ,"
-                + "bin1fukurocheck = ? ,bin2fukurocheck = ? ,bin3fukurocheck = ? ,bin4fukurocheck = ? ,bin7nukitorikekka = ? ,bin7nukitorikekkabosuu = ? ,bin7sinnofuryouritu = ? ,bin7kekkacheck = ? ,bin8nukitorikekka = ? ,"
+                + "douhinsyu = ? , bin1fukurocheck = ? ,bin2fukurocheck = ? ,bin3fukurocheck = ? ,bin4fukurocheck = ? ,bin7nukitorikekka = ? ,bin7nukitorikekkabosuu = ? ,bin7sinnofuryouritu = ? ,bin7kekkacheck = ? ,bin8nukitorikekka = ? ,"
                 + "bin8nukitorikekkabosuu = ? ,bin8sinnofuryouritu = ? ,bin8kekkacheck = ? ,satsample = ? ,siteikousabudomari3 = ? ,irhanteiti1tanilow = ? ,irhanteiti2tanilow = ? ,irhanteiti3tanilow = ? ,irhanteiti4tanilow = ? ,"
                 + "irhanteiti5tanilow = ? ,irhanteiti6tanilow = ? ,irhanteiti7tanilow = ? ,irhanteiti8tanilow = ? ,gentenhukkidousa = ? ,sokuteiki12dousakakunin = ? ,sokuteipinfront = ? ,sokuteipinrear = ? ,ir1denryustart = ? ,"
                 + "ir1denryustarttani = ? ,ir1denryuend = ? ,ir1denryuendtani = ? ,ir1sokuteihanistart = ? ,ir1sokuteihanistarttani = ? ,ir1sokuteihaniend = ? ,ir1sokuteihaniendtani = ? ,ir2denryustart = ? ,ir2denryustarttani = ? ,"
@@ -4253,7 +4247,7 @@ public class GXHDO101B053 implements IFormLogic {
                 + "rakkamasinfuryouritu = ?,handasample = ?,sinraiseisample = ?,sinfuryouhanteisya = ?,hanteinyuuryokusya = ?,toridasisya = ?,kousa1 = ?,juryou1 = ?,kosuu1 = ?,kousa2 = ?,juryou2 = ?,kosuu2 = ?,"
                 + "kousa3 = ?,juryou3 = ?,kosuu3 = ?,kousa4 = ?,juryou4 = ?,kosuu4 = ?,countersousuu = ?,ryohinjuryou = ?,ryohinkosuu = ?,budomari = ?,binkakuninsya = ?,saiken = ?,setubikubun = ?,kosinnichiji = ?,"
                 + "revision = ?,irhanteiti1low = ?,irhanteiti1tani = ?,irhanteiti2low = ?,irhanteiti2tani = ?,irhanteiti3low = ?,irhanteiti3tani = ?,irhanteiti4low = ?,irhanteiti4tani = ?,irhanteiti5low = ?,irhanteiti5tani = ?,"
-                + "irhanteiti6low = ?,irhanteiti6tani = ?,irhanteiti7low = ?,irhanteiti7tani = ?,irhanteiti8low = ?,irhanteiti8tani = ?,bin1fukurocheck = ?,bin2fukurocheck = ?,bin3fukurocheck = ?,bin4fukurocheck = ?,"
+                + "irhanteiti6low = ?,irhanteiti6tani = ?,irhanteiti7low = ?,irhanteiti7tani = ?,irhanteiti8low = ?,irhanteiti8tani = ?,douhinsyu = ?,bin1fukurocheck = ?,bin2fukurocheck = ?,bin3fukurocheck = ?,bin4fukurocheck = ?,"
                 + "bin7nukitorikekka = ?,bin7nukitorikekkabosuu = ?,bin7sinnofuryouritu = ?,bin7kekkacheck = ?,bin8nukitorikekka = ?,bin8nukitorikekkabosuu = ?,bin8sinnofuryouritu = ?,bin8kekkacheck = ?,satsample = ?,"
                 + "siteikousabudomari3 = ?,irhanteiti1tanilow = ?,irhanteiti2tanilow = ?,irhanteiti3tanilow = ?,irhanteiti4tanilow = ?,irhanteiti5tanilow = ?,irhanteiti6tanilow = ?,irhanteiti7tanilow = ?,irhanteiti8tanilow = ?,"
                 + "gentenhukkidousa = ?,sokuteiki12dousakakunin = ?,sokuteipinfront = ?,sokuteipinrear = ?,ir1denryustart = ?,ir1denryustarttani = ?,ir1denryuend = ?,ir1denryuendtani = ?,ir1sokuteihanistart = ?,"
@@ -8160,48 +8154,5 @@ public class GXHDO101B053 implements IFormLogic {
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, new MapHandler(), params.toArray());
-    }
-    
-    /**
-     * 最大処理数
-     *
-     * @param processData 処理制御データ
-     * @return 処理制御データ
-     */
-    private ProcessData isSaidaisyorisuu(ProcessData processData) {
-        String ryohinsuu = "";
-        String saidaisyorisuu = "";
-        String ruikeisyorisuu = "";
-        BigDecimal ryohinsuuValue = BigDecimal.ZERO;
-        BigDecimal saidaisyorisuuValue = BigDecimal.ZERO;
-        BigDecimal ruikeisyorisuuValue = BigDecimal.ZERO;
-
-        FXHDD01 itemFxhdd01ryohinsuu = getItemRow(processData.getItemList(), GXHDO101B053Const.SEIHIN_OKURI_RYOHINSU);
-        if (itemFxhdd01ryohinsuu != null) {
-            ryohinsuu = StringUtil.nullToBlank(itemFxhdd01ryohinsuu.getValue());
-            if (!StringUtil.isEmpty(ryohinsuu)) {
-                ryohinsuuValue = new BigDecimal(ryohinsuu);
-            }
-        }
-        FXHDD01 itemFxhdd01saidaisyorisuu = getItemRow(processData.getItemList(), GXHDO101B053Const.SEIHIN_SAIDAI_SYORISUU);
-        if (itemFxhdd01saidaisyorisuu != null) {
-            saidaisyorisuu = StringUtil.nullToBlank(itemFxhdd01saidaisyorisuu.getValue());
-            if (!StringUtil.isEmpty(saidaisyorisuu)) {
-                saidaisyorisuuValue = new BigDecimal(saidaisyorisuu);
-            }
-        }
-        FXHDD01 itemFxhdd01ruikeisyorisuu = getItemRow(processData.getItemList(), GXHDO101B053Const.SEIHIN_RUIKEI_SYORISUU);
-        if (itemFxhdd01ruikeisyorisuu != null) {
-            ruikeisyorisuu = StringUtil.nullToBlank(itemFxhdd01ruikeisyorisuu.getValue());
-            if (!StringUtil.isEmpty(ruikeisyorisuu)) {
-                ruikeisyorisuuValue = new BigDecimal(ruikeisyorisuu);
-            }
-        }
-
-        if (0 < ruikeisyorisuuValue.add(ryohinsuuValue).compareTo(saidaisyorisuuValue)) {
-            processData.setWarnMessage(MessageUtil.getMessage("XHD-000230"));
-        }
-        return processData;
-
     }
 }
