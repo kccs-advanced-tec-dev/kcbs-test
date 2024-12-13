@@ -7026,8 +7026,8 @@ public class GXHDO101B053 implements IFormLogic {
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN1_COUNTER_SU, "・BIN1 ｶｳﾝﾀｰ数");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN1_GOSARITSU, "・BIN1 誤差率(%)");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN1_MACHINE_FURYORITSU, "・BIN1 ﾏｼﾝ不良率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN1_NUKITORIKEKKA_S, "・BIN1 抜き取り結果");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN1_NUKITORIKEKKA_T, "・BIN1 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN1_NUKITORIKEKKA_S, "・BIN1 抜き取り結果(指数)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN1_NUKITORIKEKKA_T, "・BIN1 抜き取り結果(母数)");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN1_SHIN_FURYORITSU, "・BIN1 真の不良率(%)");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN1_KEKKA_CHECK, "・BIN1 結果ﾁｪｯｸ");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN1_FUKURO_CHECK, "・BIN1 袋ﾁｪｯｸ");
@@ -7037,8 +7037,8 @@ public class GXHDO101B053 implements IFormLogic {
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN2_COUNTER_SU, "・BIN2 ｶｳﾝﾀｰ数");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN2_GOSARITSU, "・BIN2 誤差率(%)");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN2_MACHINE_FURYORITSU, "・BIN2 ﾏｼﾝ不良率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN2_NUKITORIKEKKA_S, "・BIN2 抜き取り結果");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN2_NUKITORIKEKKA_T, "・BIN2 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN2_NUKITORIKEKKA_S, "・BIN2 抜き取り結果(指数)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN2_NUKITORIKEKKA_T, "・BIN2 抜き取り結果(母数)");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN2_SHIN_FURYORITSU, "・BIN2 真の不良率(%)");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN2_KEKKA_CHECK, "・BIN2 結果ﾁｪｯｸ");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN2_FUKURO_CHECK, "・BIN2 袋ﾁｪｯｸ");
@@ -7048,8 +7048,8 @@ public class GXHDO101B053 implements IFormLogic {
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN3_COUNTER_SU, "・BIN3 ｶｳﾝﾀｰ数");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN3_GOSARITSU, "・BIN3 誤差率(%)");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN3_MACHINE_FURYORITSU, "・BIN3 ﾏｼﾝ不良率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN3_NUKITORIKEKKA_S, "・BIN3 抜き取り結果");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN3_NUKITORIKEKKA_T, "・BIN3 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN3_NUKITORIKEKKA_S, "・BIN3 抜き取り結果(指数)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN3_NUKITORIKEKKA_T, "・BIN3 抜き取り結果(母数)");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN3_SHIN_FURYORITSU, "・BIN3 真の不良率(%)");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN3_KEKKA_CHECK, "・BIN3 結果ﾁｪｯｸ");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN3_FUKURO_CHECK, "・BIN3 袋ﾁｪｯｸ");
@@ -7059,8 +7059,8 @@ public class GXHDO101B053 implements IFormLogic {
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN4_COUNTER_SU, "・BIN4 ｶｳﾝﾀｰ数");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN4_GOSARITSU, "・BIN4 誤差率(%)");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN4_MACHINE_FURYORITSU, "・BIN4 ﾏｼﾝ不良率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN4_NUKITORIKEKKA_S, "・BIN4 抜き取り結果");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN4_NUKITORIKEKKA_T, "・BIN4 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN4_NUKITORIKEKKA_S, "・BIN4 抜き取り結果(指数)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN4_NUKITORIKEKKA_T, "・BIN4 抜き取り結果(母数)");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN4_SHIN_FURYORITSU, "・BIN4 真の不良率(%)");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN4_KEKKA_CHECK, "・BIN4 結果ﾁｪｯｸ");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN4_FUKURO_CHECK, "・BIN4 袋ﾁｪｯｸ");
@@ -7070,8 +7070,8 @@ public class GXHDO101B053 implements IFormLogic {
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN5_COUNTER_SU, "・BIN5 ｶｳﾝﾀｰ数");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN5_GOSARITSU, "・BIN5 誤差率(%)");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN5_MACHINE_FURYORITSU, "・BIN5 ﾏｼﾝ不良率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN5_NUKITORIKEKKA_S, "・BIN5 抜き取り結果");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN5_NUKITORIKEKKA_T, "・BIN5 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN5_NUKITORIKEKKA_S, "・BIN5 抜き取り結果(指数)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN5_NUKITORIKEKKA_T, "・BIN5 抜き取り結果(母数)");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN5_SHIN_FURYORITSU, "・BIN5 真の不良率(%)");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN5_KEKKA_CHECK, "・BIN5 結果ﾁｪｯｸ");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN5_FUKURO_CHECK, "・BIN5 袋ﾁｪｯｸ");
@@ -7081,8 +7081,8 @@ public class GXHDO101B053 implements IFormLogic {
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN6_COUNTER_SU, "・BIN6 ｶｳﾝﾀｰ数");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN6_GOSARITSU, "・BIN6 誤差率(%)");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN6_MACHINE_FURYORITSU, "・BIN6 ﾏｼﾝ不良率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN6_NUKITORIKEKKA_S, "・BIN6 抜き取り結果");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN6_NUKITORIKEKKA_T, "・BIN6 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN6_NUKITORIKEKKA_S, "・BIN6 抜き取り結果(指数)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN6_NUKITORIKEKKA_T, "・BIN6 抜き取り結果(母数)");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN6_SHIN_FURYORITSU, "・BIN6 真の不良率(%)");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN6_KEKKA_CHECK, "・BIN6 結果ﾁｪｯｸ");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN6_FUKURO_CHECK, "・BIN6 袋ﾁｪｯｸ");
@@ -7092,8 +7092,8 @@ public class GXHDO101B053 implements IFormLogic {
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN7_COUNTER_SU, "・BIN7 ｶｳﾝﾀｰ数");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN7_GOSARITSU, "・BIN7 誤差率(%)");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN7_MACHINE_FURYORITSU, "・BIN7 ﾏｼﾝ不良率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN7_NUKITORIKEKKA_S, "・BIN7 抜き取り結果");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN7_NUKITORIKEKKA_T, "・BIN7 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN7_NUKITORIKEKKA_S, "・BIN7 抜き取り結果(指数)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN7_NUKITORIKEKKA_T, "・BIN7 抜き取り結果(母数)");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN7_SHIN_FURYORITSU, "・BIN7 真の不良率(%)");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN7_KEKKA_CHECK, "・BIN7 結果ﾁｪｯｸ");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN7_FUKURO_CHECK, "・BIN7 袋ﾁｪｯｸ");
@@ -7103,8 +7103,8 @@ public class GXHDO101B053 implements IFormLogic {
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN8_COUNTER_SU, "・BIN8 ｶｳﾝﾀｰ数");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN8_GOSARITSU, "・BIN8 誤差率(%)");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN8_MACHINE_FURYORITSU, "・BIN8 ﾏｼﾝ不良率(%)");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN8_NUKITORIKEKKA_S, "・BIN8 抜き取り結果");
-        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN8_NUKITORIKEKKA_T, "・BIN8 抜き取り結果");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN8_NUKITORIKEKKA_S, "・BIN8 抜き取り結果(指数)");
+        checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN8_NUKITORIKEKKA_T, "・BIN8 抜き取り結果(母数)");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN8_SHIN_FURYORITSU, "・BIN8 真の不良率(%)");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN8_KEKKA_CHECK, "・BIN8 結果ﾁｪｯｸ");
         checkExistItem(errorItemNameList, processData.getItemListEx(), GXHDO101B053Const.SET_BIN8_FUKURO_CHECK, "・BIN8 袋ﾁｪｯｸ");
