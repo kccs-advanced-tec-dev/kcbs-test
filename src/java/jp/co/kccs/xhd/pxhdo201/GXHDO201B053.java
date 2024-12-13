@@ -98,12 +98,9 @@ public class GXHDO201B053 implements Serializable {
     private List<GXHDO201B053Model> listData = null;
     
     /** 一覧表示最大件数 */
-    private BigDecimal listCountMax = new BigDecimal(-1);
+    private int listCountMax = -1;
     /** 一覧表示警告件数 */
-    private BigDecimal listCountWarn = new BigDecimal(-1);
-    
-    /** 一覧表示警告件数 */
-    private BigDecimal decimal_Zero = new BigDecimal(0);
+    private int listCountWarn = -1;
     
     /** 警告メッセージ */
     private String warnMessage = "";
@@ -440,9 +437,9 @@ public class GXHDO201B053 implements Serializable {
             listDisplayPageCount = Integer.parseInt(selectParam.getValue("GXHDO201B053_display_page_count", session));
         }
 
-        listCountMax = session.getAttribute("menuParam") != null ? new BigDecimal(Integer.parseInt(session.getAttribute("menuParam").toString())) : new BigDecimal(-1);
-        listCountWarn = session.getAttribute("hyojiKensu") != null ? new BigDecimal(Integer.parseInt(session.getAttribute("hyojiKensu").toString())) : new BigDecimal(-1);
-        
+        listCountMax = session.getAttribute("menuParam") != null ? Integer.parseInt(session.getAttribute("menuParam").toString()) : -1;
+        listCountWarn = session.getAttribute("hyojiKensu") != null ? Integer.parseInt(session.getAttribute("hyojiKensu").toString()) : -1; 
+       
         // ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ情報の取得
         String strfxhbm03List7 = "";
         //■表示可能ﾃﾞｰﾀ取得処理
@@ -614,9 +611,9 @@ public class GXHDO201B053 implements Serializable {
         }
         
         // 一覧表示件数を取得
-        BigDecimal count = selectListDataCount();
+        long count = selectListDataCount();
         
-        if (count.compareTo(decimal_Zero) == 0) {
+        if (count == 0) {
             // 検索結果が0件の場合エラー終了
             FacesMessage message = 
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000031"), null);
@@ -624,7 +621,7 @@ public class GXHDO201B053 implements Serializable {
             return;
         }
         
-        if (listCountMax.compareTo(decimal_Zero) > 0 && count.compareTo(listCountMax) > 0 ) {
+        if (listCountMax > 0 && count > listCountMax) {
             // 検索結果が上限件数以上の場合エラー終了
             FacesMessage message = 
                     new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000046", listCountMax), null);
@@ -632,7 +629,7 @@ public class GXHDO201B053 implements Serializable {
             return;
         } 
         
-        if (listCountWarn.compareTo(decimal_Zero) > 0  && count.compareTo(listCountWarn) > 0) {
+        if (listCountWarn > 0 && count > listCountWarn) {
             // 検索結果が警告件数以上の場合、警告ダイアログを表示する
             RequestContext context = RequestContext.getCurrentInstance();
             context.addCallbackParam("param1", "warning");
@@ -657,8 +654,8 @@ public class GXHDO201B053 implements Serializable {
      * 一覧表示データ件数取得
      * @return 検索結果件数
      */
-    public BigDecimal selectListDataCount() {
-        BigDecimal count = new BigDecimal(0);
+    public long selectListDataCount() {
+        long count =0;
         //検査場所データリスト
         List<String> kensaBasyoDataList = new ArrayList<>(Arrays.asList(possibleData));
         
@@ -690,10 +687,10 @@ public class GXHDO201B053 implements Serializable {
 
             DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
             Map result = queryRunner.query(sql, new MapHandler(), params.toArray());
-            count = new BigDecimal(result.get("CNT").toString());
+            count = (long) result.get("CNT");
 
         } catch (SQLException ex) {
-            count =  new BigDecimal(0);
+            count = 0;
             listData = new ArrayList<>();
             ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
         }
