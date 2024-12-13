@@ -3731,22 +3731,22 @@ public class GXHDO101B042 implements IFormLogic {
             params.add(null); //耐電圧設定条件 IR⑧ 判定値(低)
             params.add(null); //耐電圧設定条件 IR⑧ 判定値 単位
         }
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN1_COUNTER_SU2, srDenkitokuseiesi))); //BIN1 ｶｳﾝﾀｰ数2
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN1_COUNTER_SU3, srDenkitokuseiesi))); //BIN1 ｶｳﾝﾀｰ数3
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN2_COUNTER_SU2, srDenkitokuseiesi))); //BIN2 ｶｳﾝﾀｰ数2
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN2_COUNTER_SU3, srDenkitokuseiesi))); //BIN2 ｶｳﾝﾀｰ数3
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN3_COUNTER_SU2, srDenkitokuseiesi))); //BIN3 ｶｳﾝﾀｰ数2
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN3_COUNTER_SU3, srDenkitokuseiesi))); //BIN3 ｶｳﾝﾀｰ数3
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN4_COUNTER_SU2, srDenkitokuseiesi))); //BIN4 ｶｳﾝﾀｰ数2
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN4_COUNTER_SU3, srDenkitokuseiesi))); //BIN4 ｶｳﾝﾀｰ数3
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN5_COUNTER_SU2, srDenkitokuseiesi))); //BIN5 ｶｳﾝﾀｰ数2
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN5_COUNTER_SU3, srDenkitokuseiesi))); //BIN5 ｶｳﾝﾀｰ数3
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN6_COUNTER_SU2, srDenkitokuseiesi))); //BIN6 ｶｳﾝﾀｰ数2
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN6_COUNTER_SU3, srDenkitokuseiesi))); //BIN6 ｶｳﾝﾀｰ数3
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN7_COUNTER_SU2, srDenkitokuseiesi))); //BIN7 ｶｳﾝﾀｰ数2
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN7_COUNTER_SU3, srDenkitokuseiesi))); //BIN7 ｶｳﾝﾀｰ数3
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN8_COUNTER_SU2, srDenkitokuseiesi))); //BIN8 ｶｳﾝﾀｰ数2
-        params.add(DBUtil.stringToIntObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN8_COUNTER_SU3, srDenkitokuseiesi))); //BIN8 ｶｳﾝﾀｰ数3
+        params.add(DBUtil.stringToIntObject("0")); //BIN1 ｶｳﾝﾀｰ数2
+        params.add(DBUtil.stringToIntObject("0")); //BIN1 ｶｳﾝﾀｰ数3
+        params.add(DBUtil.stringToIntObject("0")); //BIN2 ｶｳﾝﾀｰ数2
+        params.add(DBUtil.stringToIntObject("0")); //BIN2 ｶｳﾝﾀｰ数3
+        params.add(DBUtil.stringToIntObject("0")); //BIN3 ｶｳﾝﾀｰ数2
+        params.add(DBUtil.stringToIntObject("0")); //BIN3 ｶｳﾝﾀｰ数3
+        params.add(DBUtil.stringToIntObject("0")); //BIN4 ｶｳﾝﾀｰ数2
+        params.add(DBUtil.stringToIntObject("0")); //BIN4 ｶｳﾝﾀｰ数3
+        params.add(DBUtil.stringToIntObject("0")); //BIN5 ｶｳﾝﾀｰ数2
+        params.add(DBUtil.stringToIntObject("0")); //BIN5 ｶｳﾝﾀｰ数3
+        params.add(DBUtil.stringToIntObject("0")); //BIN6 ｶｳﾝﾀｰ数2
+        params.add(DBUtil.stringToIntObject("0")); //BIN6 ｶｳﾝﾀｰ数3
+        params.add(DBUtil.stringToIntObject("0")); //BIN7 ｶｳﾝﾀｰ数2
+        params.add(DBUtil.stringToIntObject("0")); //BIN7 ｶｳﾝﾀｰ数3
+        params.add(DBUtil.stringToIntObject("0")); //BIN8 ｶｳﾝﾀｰ数2
+        params.add(DBUtil.stringToIntObject("0")); //BIN8 ｶｳﾝﾀｰ数3
         params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B042Const.SEIHIN_DOUHINSYU, srDenkitokuseiesi), null)); //同品種
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.TAIDEN_HANTEICHI1TANI_LOW, srDenkitokuseiesi)));
         params.add(DBUtil.stringToStringObjectDefaultNull(getItemData(pItemListEx, GXHDO101B042Const.TAIDEN_HANTEICHI2TANI_LOW, srDenkitokuseiesi)));
@@ -4174,22 +4174,22 @@ public class GXHDO101B042 implements IFormLogic {
             params.add(0); //耐電圧設定条件 IR⑧ 判定値(低)
             params.add(""); //耐電圧設定条件 IR⑧ 判定値 単位
         }
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN1_COUNTER_SU2, srDenkitokuseiesi))); //BIN1 ｶｳﾝﾀｰ数2
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN1_COUNTER_SU3, srDenkitokuseiesi))); //BIN1 ｶｳﾝﾀｰ数3
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN2_COUNTER_SU2, srDenkitokuseiesi))); //BIN2 ｶｳﾝﾀｰ数2
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN2_COUNTER_SU3, srDenkitokuseiesi))); //BIN2 ｶｳﾝﾀｰ数3
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN3_COUNTER_SU2, srDenkitokuseiesi))); //BIN3 ｶｳﾝﾀｰ数2
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN3_COUNTER_SU3, srDenkitokuseiesi))); //BIN3 ｶｳﾝﾀｰ数3
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN4_COUNTER_SU2, srDenkitokuseiesi))); //BIN4 ｶｳﾝﾀｰ数2
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN4_COUNTER_SU3, srDenkitokuseiesi))); //BIN4 ｶｳﾝﾀｰ数3
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN5_COUNTER_SU2, srDenkitokuseiesi))); //BIN5 ｶｳﾝﾀｰ数2
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN5_COUNTER_SU3, srDenkitokuseiesi))); //BIN5 ｶｳﾝﾀｰ数3
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN6_COUNTER_SU2, srDenkitokuseiesi))); //BIN6 ｶｳﾝﾀｰ数2
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN6_COUNTER_SU3, srDenkitokuseiesi))); //BIN6 ｶｳﾝﾀｰ数3
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN7_COUNTER_SU2, srDenkitokuseiesi))); //BIN7 ｶｳﾝﾀｰ数2
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN7_COUNTER_SU3, srDenkitokuseiesi))); //BIN7 ｶｳﾝﾀｰ数3
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN8_COUNTER_SU2, srDenkitokuseiesi))); //BIN8 ｶｳﾝﾀｰ数2
-        params.add(DBUtil.stringToIntObject(getItemData(pItemListEx, GXHDO101B042Const.SET_BIN8_COUNTER_SU3, srDenkitokuseiesi))); //BIN8 ｶｳﾝﾀｰ数3
+        params.add(DBUtil.stringToIntObject("0")); //BIN1 ｶｳﾝﾀｰ数2
+        params.add(DBUtil.stringToIntObject("0")); //BIN1 ｶｳﾝﾀｰ数3
+        params.add(DBUtil.stringToIntObject("0")); //BIN2 ｶｳﾝﾀｰ数2
+        params.add(DBUtil.stringToIntObject("0")); //BIN2 ｶｳﾝﾀｰ数3
+        params.add(DBUtil.stringToIntObject("0")); //BIN3 ｶｳﾝﾀｰ数2
+        params.add(DBUtil.stringToIntObject("0")); //BIN3 ｶｳﾝﾀｰ数3
+        params.add(DBUtil.stringToIntObject("0")); //BIN4 ｶｳﾝﾀｰ数2
+        params.add(DBUtil.stringToIntObject("0")); //BIN4 ｶｳﾝﾀｰ数3
+        params.add(DBUtil.stringToIntObject("0")); //BIN5 ｶｳﾝﾀｰ数2
+        params.add(DBUtil.stringToIntObject("0")); //BIN5 ｶｳﾝﾀｰ数3
+        params.add(DBUtil.stringToIntObject("0")); //BIN6 ｶｳﾝﾀｰ数2
+        params.add(DBUtil.stringToIntObject("0")); //BIN6 ｶｳﾝﾀｰ数3
+        params.add(DBUtil.stringToIntObject("0")); //BIN7 ｶｳﾝﾀｰ数2
+        params.add(DBUtil.stringToIntObject("0")); //BIN7 ｶｳﾝﾀｰ数3
+        params.add(DBUtil.stringToIntObject("0")); //BIN8 ｶｳﾝﾀｰ数2
+        params.add(DBUtil.stringToIntObject("0")); //BIN8 ｶｳﾝﾀｰ数3
         params.add(getCheckBoxDbValue(getItemData(pItemList, GXHDO101B042Const.SEIHIN_DOUHINSYU, srDenkitokuseiesi), 0)); //同品種
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.TAIDEN_HANTEICHI1TANI_LOW, srDenkitokuseiesi)));
         params.add(DBUtil.stringToStringObject(getItemData(pItemListEx, GXHDO101B042Const.TAIDEN_HANTEICHI2TANI_LOW, srDenkitokuseiesi)));
