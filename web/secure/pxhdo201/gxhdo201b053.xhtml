@@ -1,0 +1,1380 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:pe="http://primefaces.org/ui/extensions">
+    <h:head>
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
+        <meta http-equiv="Pragma" content="no-cache"/>
+        <meta http-equiv="Cache-Control" content="no-cache"/>
+        <meta http-equiv="Expires" content="0"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <link href="#{request.contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/growl.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/loading.css" rel="stylesheet" type="text/css"/>
+        <link href="#{request.contextPath}/resources/css/gxhdo201common.css" rel="stylesheet" type="text/css"/>
+        <script src="#{request.contextPath}/resources/bootstrap/js/bootstrap.min.js" />
+        <h:outputScript library="primefaces" name="jquery/jquery.js" />
+        <script src="#{request.contextPath}/resources/js/growl.js"></script>
+        <script type="text/javascript">
+            //<![CDATA[
+            var pointY;
+            function subFormOpen() {
+                pointY = $(window).scrollTop();
+                document.getElementById("mainForm").style.setProperty("display", "none");
+                document.getElementById("mainForm").style.setProperty("position", "fixed");
+                document.getElementById("mainForm").style.setProperty("Top", -(pointY) + 54 + "px");
+                document.getElementById("mainForm").style.removeProperty("display");
+            }
+            function subFormClose() {
+                document.getElementById("mainForm").style.setProperty("display", "none");
+                document.getElementById("mainForm").style.removeProperty("position");
+                document.getElementById("mainForm").style.removeProperty("Top");
+                document.getElementById("mainForm").style.removeProperty("display");
+                $(window).scrollTop(pointY);
+            }
+            //]]>
+        </script>
+    </h:head>
+    <h:body style="padding-top:30px;">
+        <f:metadata>
+            <f:viewAction action="#{gXHDO201B053.init()}"/>
+        </f:metadata>
+        <nav class="navbar  navbar-expand fixed-top navbar-dark" style="background-color:#0E6A89;height: 50px;z-index: 999;">
+            <span class="navbar-brand mb-0" style="font-size:18px;font-weight:bold;">#{myMsg.GXHDO201B053_GamenTitle}</span>
+            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#Navber" aria-controls="Navber" aria-expanded="false" aria-label="ナビゲーションの切替">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <span class="navbar-text ml-auto">
+                <div class="collapse navbar-collapse" id="Navber">
+                  <ul class="navbar-nav mr-auto">
+                    <li class="nav-item">
+                        <h:link class="nav-link" outcome="/secure/pxhdo201/gxhdo201a.xhtml?faces-redirect=true" value="戻る"/>
+                    </li>
+                  </ul>
+                </div>
+            </span>
+        </nav>
+        <br/>
+        <h:form id="form" onkeypress="if (event.keyCode === 13) {
+                    return false;
+                }">
+            <div id="mainForm" style="width: 100%;">
+            <p:growl id="growlMessage" showDetail="false" sticky="true"  escape="false"/>
+            <p:confirmDialog id="confDialog" class="ui-confdialog" severity="alert" widgetVar="cd">
+                <f:facet name="message">
+                    <h:outputText value="#{gXHDO201B053.getWarnMessage()}" escape="false"/>
+                </f:facet>
+                <p:commandButton id="warnOk" value="OK" styleClass="ui-conf-commandbtn-def1" style="width:100px;margin-left:50px;"
+                                 actionListener="#{gXHDO201B053.processWarnOk()}"
+                                 process="@this searchpanel"
+                                 update="@form growlMessage idDataTable btnExcel"
+                                 onstart="PF('cd').hide();$('#loadinggif').show();"
+                                 oncomplete="$('#loadinggif').hide();"/>
+                <p:commandButton id="warnCancel" value="Cancel" class="ui-conf-commandbtn-cancel" style="width:100px;" onclick="PF('cd').hide();" type="button" />
+            </p:confirmDialog>
+            <div id="loadinggif">
+                <img src="#{request.contextPath}/resources/gif/gif-load.gif"/>
+            </div>
+            <p:panel id="searchpanel" style="border:none;font-size:0.8em;#{gXHDO201B053.displayStyle}">
+                <table>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblLotNo" value="ﾛｯﾄNo" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pLotNo" value="#{gXHDO201B053.lotNo}" maxlength="14" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B053.checkByte('lotNo', 14)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblKcpNo" value="KCPNO" style="width:100px;"/>
+                        </td>
+                        <td colspan="3">
+                            <p:inputText id="pKcpNo" value="#{gXHDO201B053.kcpNo}" maxlength="25" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B053.checkByte('kcpNo', 25)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblSenbetuStartDate" value="選別開始日" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pSenbetuStartDateF" value="#{gXHDO201B053.senbetuStartDateF}" maxlength="6" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B053.checkByte('senbetuStartDateF', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pSenbetuStartDateT" value="#{gXHDO201B053.senbetuStartDateT}" maxlength="6" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B053.checkByte('senbetuStartDateT', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblSenbetuStartTime" value="選別開始時刻" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pSenbetuStartTimeF" value="#{gXHDO201B053.senbetuStartTimeF}" maxlength="4" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B053.checkByte('senbetuStartTimeF', 4)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pSenbetuStartTimeT" value="#{gXHDO201B053.senbetuStartTimeT}" maxlength="4" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B053.checkByte('senbetuStartTimeT', 4)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblSenbetuEndDate" value="選別終了日" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pSenbetuEndDateF" value="#{gXHDO201B053.senbetuEndDateF}" maxlength="6" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B053.checkByte('senbetuEndDateF', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pSenbetuEndDateT" value="#{gXHDO201B053.senbetuEndDateT}" maxlength="6" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B053.checkByte('senbetuEndDateT', 6)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblSenbetuEndTime" value="選別終了時刻" style="width:100px;"/>
+                        </td>
+                        <td>
+                            <p:inputText id="pSenbetuEndTimeF" value="#{gXHDO201B053.senbetuEndTimeF}" maxlength="4" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B053.checkByte('senbetuEndTimeF', 4)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                        <td>～</td>
+                        <td>
+                            <p:inputText id="pSenbetuEndTimeT" value="#{gXHDO201B053.senbetuEndTimeT}" maxlength="4" style="height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B053.checkByte('senbetuEndTimeT', 4)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <h:outputText id="lblGoki" value="号機" style="width:100px;"/>
+                        </td>
+                        <td colspan="3">
+                            <p:inputText id="pGoki" value="#{gXHDO201B053.goki}" maxlength="4" style="margin-left:20px; height:26px;">
+                                <p:ajax event="blur" process="@this" update="@this" listener="#{gXHDO201B053.checkByte('goki', 4)}"  async="false"/>
+                            </p:inputText>
+                        </td>
+                    </tr>
+                </table>
+            </p:panel>
+            <p:panel id="buttonpanel" style="border:none;margin-top:-10px;#{gXHDO201B053.displayStyle}">
+                <p:commandButton id="btnSearch" style="width:100px;height:25px;font-size:0.7em;margin-left:0px;text-align:center;"
+                                value="検索" 
+                                actionListener="#{gXHDO201B053.checkInputAndSearch()}"
+                                process="@this searchpanel"
+                                update="growlMessage idDataTable btnExcel confDialog"
+                                onstart="$('#loadinggif').show();"
+                                oncomplete="$('#loadinggif').hide();if('warning'!=args.param1){PF('cd').hide();} else {PF('cd').show();}"/>
+                <p:commandButton id="bthClear" style="width:100px;height:25px;font-size:0.7em;margin-left:10px;text-align:center;" 
+                                value="クリア" 
+                                action="#{gXHDO201B053.clear()}"
+                                process="@this"
+                                update="searchpanel idDataTable btnExcel"/>
+                <p:commandButton id="btnExcel" style="width:100px;height:25px;font-size:0.7em;margin-left:10px;text-align:center;"
+                                disabled="#{gXHDO201B053.excelButtonDisable}"
+                                value="Excel保存"
+                                actionListener="#{gXHDO201B053.downloadExcel()}"
+                                process="@this"
+                                ajax="false"/>
+            </p:panel>
+            <div style="margin-top:-15px;#{gXHDO201B053.displayStyle}">
+                <p:dataTable id="idDataTable" var="item" style="font-size:0.8em;margin-top:20px;" styleClass="table table-condensed table-striped table-hover header-fixed text-nowrap"
+                             value="#{gXHDO201B053.listData}" emptyMessage="" paginator="true" paginatorPosition="top" rows="#{gXHDO201B053.getPagenatorCount()}">
+                    <p:column id="lotno" headerText="ﾛｯﾄNo">
+                        <p:outputLabel value="#{item.lotno}"/>
+                    </p:column>
+                    <p:column id="kaisuu" headerText="回数" styleClass="number">
+                        <p:outputLabel value="#{item.kaisuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kcpno" headerText="KCPNO">
+                        <p:outputLabel value="#{item.kcpno}"/>
+                    </p:column>
+                    <p:column id="tokuisaki" headerText="客先">
+                        <p:outputLabel value="#{item.tokuisaki}"/>
+                    </p:column>
+                    <p:column id="ownercode" headerText="ｵｰﾅｰ">
+                        <p:outputLabel value="#{item.ownercode}"/>
+                    </p:column>
+                    <p:column id="lotkubuncode" headerText="ﾛｯﾄ区分">
+                        <p:outputLabel value="#{item.lotkubuncode}"/>
+                    </p:column>
+                    <p:column id="siteikousa" headerText="指定公差">
+                        <p:outputLabel value="#{item.siteikousa}"/>
+                    </p:column>
+                    <p:column id="atokouteisijinaiyou" headerText="後工程指示内容">
+                        <p:outputLabel value="#{item.atokouteisijinaiyou}"/>
+                    </p:column>
+                    <p:column id="okuriryouhinsuu" headerText="送り良品数" styleClass="number">
+                        <p:outputLabel value="#{item.okuriryouhinsuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ukeiretannijyuryo" headerText="受入れ単位重量" styleClass="number">
+                        <p:outputLabel value="#{item.ukeiretannijyuryo}">
+                            <f:convertNumber pattern="#0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ukeiresoujyuryou" headerText="受入れ総重量" styleClass="number">
+                        <p:outputLabel value="#{item.ukeiresoujyuryou}">
+                            <f:convertNumber pattern="###,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kensabasyo" headerText="検査場所">
+                        <p:outputLabel value="#{item.kensabasyo}"/>
+                    </p:column>
+                    <p:column id="senbetukaisinitiji" headerText="選別開始日時">
+                        <p:outputLabel value="#{item.senbetukaisinitiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="senbetusyuryounitiji" headerText="選別終了日時">
+                        <p:outputLabel value="#{item.senbetusyuryounitiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="siteikousabudomari1" headerText="特性第1公差">
+                        <p:outputLabel value="#{item.siteikousabudomari1}"/>
+                    </p:column>
+                    <p:column id="siteikousabudomari2" headerText="特性第2公差">
+                        <p:outputLabel value="#{item.siteikousabudomari2}"/>
+                    </p:column>
+                    <p:column id="siteikousabudomari3" headerText="特性第3公差">
+                        <p:outputLabel value="#{item.siteikousabudomari3}"/>
+                    </p:column>
+                    <p:column id="kensagouki" headerText="検査号機">
+                        <p:outputLabel value="#{item.kensagouki}"/>
+                    </p:column>
+                    <p:column id="testplatekanrino" headerText="インデックステーブル管理No.">
+                        <p:outputLabel value="#{item.testplatekanrino}"/>
+                    </p:column>
+                    <p:column id="testplatekeijo" headerText="インデックステーブル目視">
+                        <p:outputLabel value="#{item.testplatekeijo}"/>
+                    </p:column>
+                    <p:column id="bunruiairatu" headerText="メインエアー圧" styleClass="number">
+                        <p:outputLabel value="#{item.bunruiairatu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="testplatekakunin" headerText="インデックステーブル位置確認(穴位置)">
+                        <p:outputLabel value="#{item.testplatekakunin}"/>
+                    </p:column>
+                    <p:column id="gentenhukkidousa" headerText="原点復帰動作">
+                        <p:outputLabel value="#{item.gentenhukkidousa}"/>
+                    </p:column>
+                    <p:column id="sokuteiki12dousakakunin" headerText="測定機1,2動作確認">
+                        <p:outputLabel value="#{item.sokuteiki12dousakakunin}"/>
+                    </p:column>
+                    <p:column id="sokuteipinfront" headerText="測定ピン(フロント)外観">
+                        <p:outputLabel value="#{item.sokuteipinfront}"/>
+                    </p:column>
+                    <p:column id="sokuteipinrear" headerText="測定ピン(リア)外観">
+                        <p:outputLabel value="#{item.sokuteipinrear}"/>
+                    </p:column>
+                    <p:column id="sokuteisyuhasuu" headerText="測定周波数">
+                        <p:outputLabel value="#{item.sokuteisyuhasuu}"/>
+                    </p:column>
+                    <p:column id="sokuteidenatu" headerText="測定電圧" styleClass="number">
+                        <p:outputLabel value="#{item.sokuteidenatu}">
+                            <f:convertNumber pattern="0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="douhinsyu" headerText="同品種" styleClass="number">
+                        <p:outputLabel value="#{item.douhinsyu}"/>
+                    </p:column>
+                    <p:column id="hoseiyoutippuyoryou" headerText="補正用ﾁｯﾌﾟ容量" styleClass="number">
+                        <p:outputLabel value="#{item.hoseiyoutippuyoryou}">
+                            <f:convertNumber pattern="#,##0.00000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="hoseiyoutipputan" headerText="補正用ﾁｯﾌﾟTanδ" styleClass="number">
+                        <p:outputLabel value="#{item.hoseiyoutipputan}">
+                            <f:convertNumber pattern="#,##0.00000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="hoseimae" headerText="補正前" styleClass="number">
+                        <p:outputLabel value="#{item.hoseimae}">
+                            <f:convertNumber pattern="#,##0.00000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="hoseigo" headerText="補正後" styleClass="number">
+                        <p:outputLabel value="#{item.hoseigo}">
+                            <f:convertNumber pattern="#,##0.00000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="hoseiritu" headerText="補正率" styleClass="number">
+                        <p:outputLabel value="#{item.hoseiritu}">
+                            <f:convertNumber pattern="##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="tan" headerText="Tanδ" styleClass="number">
+                        <p:outputLabel value="#{item.tan}">
+                            <f:convertNumber pattern="##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="binboxseisoucheck" headerText="BINﾎﾞｯｸｽ内の清掃ﾁｪｯｸ">
+                        <p:outputLabel value="#{item.binboxseisoucheck}"/>
+                    </p:column>
+                    <p:column id="bunruikakunin" headerText="分類確認">
+                        <p:outputLabel value="#{item.bunruikakunin}"/>
+                    </p:column>
+                    <p:column id="gaikankakunin" headerText="外観確認">
+                        <p:outputLabel value="#{item.gaikankakunin}"/>
+                    </p:column>
+                    <p:column id="netsusyorinitiji" headerText="熱処理日時">
+                        <p:outputLabel value="#{item.netsusyorinitiji}">
+                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm:ss" timeZone="JST"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="agingjikan" headerText="ｴｰｼﾞﾝｸﾞ時間" styleClass="number">
+                        <p:outputLabel value="#{item.agingjikan}">
+                            <f:convertNumber pattern="##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="setsya" headerText="ｾｯﾄ者">
+                        <p:outputLabel value="#{item.setsya}"/>
+                    </p:column>
+                    <p:column id="kakuninsya" headerText="確認者">
+                        <p:outputLabel value="#{item.kakuninsya}"/>
+                    </p:column>
+                    <p:column id="syoninsha" headerText="承認者">
+                        <p:outputLabel value="#{item.syoninsha}"/>
+                    </p:column>
+                    <p:column id="furimukesya" headerText="振向者">
+                        <p:outputLabel value="#{item.furimukesya}"/>
+                    </p:column>
+                    <p:column id="bikou1" headerText="備考1">
+                        <p:outputLabel value="#{item.bikou1}"/>
+                    </p:column>
+                    <p:column id="bikou2" headerText="備考2">
+                        <p:outputLabel value="#{item.bikou2}"/>
+                    </p:column>
+                    <p:column id="irdenatu1" headerText="IR① 電圧" styleClass="number">
+                        <p:outputLabel value="#{item.irdenatu1}">
+                            <f:convertNumber pattern="#,##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir1jikan" headerText="IR① 時間" styleClass="number">
+                        <p:outputLabel value="#{item.ir1jikan}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir1jikantani" headerText="IR① 時間 単位">
+                        <p:outputLabel value="#{item.ir1jikantani}"/>
+                    </p:column>
+                    <p:column id="ir1denryustart" headerText="IR① 電流中心値スタート" styleClass="number">
+                        <p:outputLabel value="#{item.ir1denryustart}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir1denryustarttani" headerText="IR① 電流中心値スタート 単位">
+                        <p:outputLabel value="#{item.ir1denryustarttani}"/>
+                    </p:column>
+                    <p:column id="ir1denryuend" headerText="IR① 電流中心値エンド" styleClass="number">
+                        <p:outputLabel value="#{item.ir1denryuend}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir1denryuendtani" headerText="IR① 電流中心値エンド 単位">
+                        <p:outputLabel value="#{item.ir1denryuendtani}"/>
+                    </p:column>
+                    <p:column id="ir1sokuteihanistart" headerText="IR① 測定範囲スタート" styleClass="number">
+                        <p:outputLabel value="#{item.ir1sokuteihanistart}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir1sokuteihanistarttani" headerText="IR① 測定範囲スタート 単位">
+                        <p:outputLabel value="#{item.ir1sokuteihanistarttani}"/>
+                    </p:column>
+                    <p:column id="ir1sokuteihaniend" headerText="IR① 測定範囲エンド" styleClass="number">
+                        <p:outputLabel value="#{item.ir1sokuteihaniend}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir1sokuteihaniendtani" headerText="IR① 測定範囲エンド 単位">
+                        <p:outputLabel value="#{item.ir1sokuteihaniendtani}"/>
+                    </p:column>
+                    <p:column id="irhanteiti1" headerText="IR① 良品範囲上限" styleClass="number">
+                        <p:outputLabel value="#{item.irhanteiti1}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="irhanteiti1tani" headerText="IR① 良品範囲上限 単位">
+                        <p:outputLabel value="#{item.irhanteiti1tani}"/>
+                    </p:column>
+                    <p:column id="irhanteiti1low" headerText="IR① 良品範囲下限" styleClass="number">
+                        <p:outputLabel value="#{item.irhanteiti1low}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="irhanteiti1tanilow" headerText="IR① 良品範囲下限 単位">
+                        <p:outputLabel value="#{item.irhanteiti1tanilow}"/>
+                    </p:column>
+                    <p:column id="irdenatu2" headerText="IR② 電圧" styleClass="number">
+                        <p:outputLabel value="#{item.irdenatu2}">
+                            <f:convertNumber pattern="#,##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir2jikan" headerText="IR② 時間" styleClass="number">
+                        <p:outputLabel value="#{item.ir2jikan}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir2jikantani" headerText="IR② 時間 単位">
+                        <p:outputLabel value="#{item.ir2jikantani}"/>
+                    </p:column>
+                    <p:column id="ir2denryustart" headerText="IR② 電流中心値スタート" styleClass="number">
+                        <p:outputLabel value="#{item.ir2denryustart}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir2denryustarttani" headerText="IR② 電流中心値スタート 単位">
+                        <p:outputLabel value="#{item.ir2denryustarttani}"/>
+                    </p:column>
+                    <p:column id="ir2denryuend" headerText="IR② 電流中心値エンド" styleClass="number">
+                        <p:outputLabel value="#{item.ir2denryuend}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir2denryuendtani" headerText="IR② 電流中心値エンド 単位">
+                        <p:outputLabel value="#{item.ir2denryuendtani}"/>
+                    </p:column>
+                    <p:column id="ir2sokuteihanistart" headerText="IR② 測定範囲スタート" styleClass="number">
+                        <p:outputLabel value="#{item.ir2sokuteihanistart}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir2sokuteihanistarttani" headerText="IR② 測定範囲スタート 単位">
+                        <p:outputLabel value="#{item.ir2sokuteihanistarttani}"/>
+                    </p:column>
+                    <p:column id="ir2sokuteihaniend" headerText="IR② 測定範囲エンド" styleClass="number">
+                        <p:outputLabel value="#{item.ir2sokuteihaniend}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir2sokuteihaniendtani" headerText="IR② 測定範囲エンド 単位">
+                        <p:outputLabel value="#{item.ir2sokuteihaniendtani}"/>
+                    </p:column>
+                    <p:column id="irhanteiti2" headerText="IR② 良品範囲上限" styleClass="number">
+                        <p:outputLabel value="#{item.irhanteiti2}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="irhanteiti2tani" headerText="IR② 良品範囲上限 単位">
+                        <p:outputLabel value="#{item.irhanteiti2tani}"/>
+                    </p:column>
+                    <p:column id="irhanteiti2low" headerText="IR② 良品範囲下限" styleClass="number">
+                        <p:outputLabel value="#{item.irhanteiti2low}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="irhanteiti2tanilow" headerText="IR② 良品範囲下限 単位">
+                        <p:outputLabel value="#{item.irhanteiti2tanilow}"/>
+                    </p:column>
+                    <p:column id="irdenatu3" headerText="IR③ 電圧" styleClass="number">
+                        <p:outputLabel value="#{item.irdenatu3}">
+                            <f:convertNumber pattern="#,##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir3jikan" headerText="IR③ 時間" styleClass="number">
+                        <p:outputLabel value="#{item.ir3jikan}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir3jikantani" headerText="IR③ 時間 単位">
+                        <p:outputLabel value="#{item.ir3jikantani}"/>
+                    </p:column>
+                    <p:column id="ir3denryustart" headerText="IR③ 電流中心値スタート" styleClass="number">
+                        <p:outputLabel value="#{item.ir3denryustart}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir3denryustarttani" headerText="IR③ 電流中心値スタート 単位">
+                        <p:outputLabel value="#{item.ir3denryustarttani}"/>
+                    </p:column>
+                    <p:column id="ir3denryuend" headerText="IR③ 電流中心値エンド" styleClass="number">
+                        <p:outputLabel value="#{item.ir3denryuend}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir3denryuendtani" headerText="IR③ 電流中心値エンド 単位">
+                        <p:outputLabel value="#{item.ir3denryuendtani}"/>
+                    </p:column>
+                    <p:column id="ir3sokuteihanistart" headerText="IR③ 測定範囲スタート" styleClass="number">
+                        <p:outputLabel value="#{item.ir3sokuteihanistart}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir3sokuteihanistarttani" headerText="IR③ 測定範囲スタート 単位">
+                        <p:outputLabel value="#{item.ir3sokuteihanistarttani}"/>
+                    </p:column>
+                    <p:column id="ir3sokuteihaniend" headerText="IR③ 測定範囲エンド" styleClass="number">
+                        <p:outputLabel value="#{item.ir3sokuteihaniend}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir3sokuteihaniendtani" headerText="IR③ 測定範囲エンド 単位">
+                        <p:outputLabel value="#{item.ir3sokuteihaniendtani}"/>
+                    </p:column>
+                    <p:column id="irhanteiti3" headerText="IR③ 良品範囲上限" styleClass="number">
+                        <p:outputLabel value="#{item.irhanteiti3}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="irhanteiti3tani" headerText="IR③ 良品範囲上限 単位">
+                        <p:outputLabel value="#{item.irhanteiti3tani}"/>
+                    </p:column>
+                    <p:column id="irhanteiti3low" headerText="IR③ 良品範囲下限" styleClass="number">
+                        <p:outputLabel value="#{item.irhanteiti3low}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="irhanteiti3tanilow" headerText="IR③ 良品範囲下限 単位">
+                        <p:outputLabel value="#{item.irhanteiti3tanilow}"/>
+                    </p:column>
+                    <p:column id="irdenatu4" headerText="IR④ 電圧" styleClass="number">
+                        <p:outputLabel value="#{item.irdenatu4}">
+                            <f:convertNumber pattern="#,##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir4jikan" headerText="IR④ 時間" styleClass="number">
+                        <p:outputLabel value="#{item.ir4jikan}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir4jikantani" headerText="IR④ 時間 単位">
+                        <p:outputLabel value="#{item.ir4jikantani}"/>
+                    </p:column>
+                    <p:column id="ir4denryustart" headerText="IR④ 電流中心値スタート" styleClass="number">
+                        <p:outputLabel value="#{item.ir4denryustart}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir4denryustarttani" headerText="IR④ 電流中心値スタート 単位">
+                        <p:outputLabel value="#{item.ir4denryustarttani}"/>
+                    </p:column>
+                    <p:column id="ir4denryuend" headerText="IR④ 電流中心値エンド" styleClass="number">
+                        <p:outputLabel value="#{item.ir4denryuend}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir4denryuendtani" headerText="IR④ 電流中心値エンド 単位">
+                        <p:outputLabel value="#{item.ir4denryuendtani}"/>
+                    </p:column>
+                    <p:column id="ir4sokuteihanistart" headerText="IR④ 測定範囲スタート" styleClass="number">
+                        <p:outputLabel value="#{item.ir4sokuteihanistart}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir4sokuteihanistarttani" headerText="IR④ 測定範囲スタート 単位">
+                        <p:outputLabel value="#{item.ir4sokuteihanistarttani}"/>
+                    </p:column>
+                    <p:column id="ir4sokuteihaniend" headerText="IR④ 測定範囲エンド" styleClass="number">
+                        <p:outputLabel value="#{item.ir4sokuteihaniend}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir4sokuteihaniendtani" headerText="IR④ 測定範囲エンド 単位">
+                        <p:outputLabel value="#{item.ir4sokuteihaniendtani}"/>
+                    </p:column>
+                    <p:column id="irhanteiti4" headerText="IR④ 良品範囲上限" styleClass="number">
+                        <p:outputLabel value="#{item.irhanteiti4}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="irhanteiti4tani" headerText="IR④ 良品範囲上限 単位">
+                        <p:outputLabel value="#{item.irhanteiti4tani}"/>
+                    </p:column>
+                    <p:column id="irhanteiti4low" headerText="IR④ 良品範囲下限" styleClass="number">
+                        <p:outputLabel value="#{item.irhanteiti4low}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="irhanteiti4tanilow" headerText="IR④ 良品範囲下限 単位">
+                        <p:outputLabel value="#{item.irhanteiti4tanilow}"/>
+                    </p:column>
+                    <p:column id="irdenatu5" headerText="IR⑤ 電圧" styleClass="number">
+                        <p:outputLabel value="#{item.irdenatu5}">
+                            <f:convertNumber pattern="#,##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir5jikan" headerText="IR⑤ 時間" styleClass="number">
+                        <p:outputLabel value="#{item.ir5jikan}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir5jikantani" headerText="IR⑤ 時間 単位">
+                        <p:outputLabel value="#{item.ir5jikantani}"/>
+                    </p:column>
+                    <p:column id="ir5denryustart" headerText="IR⑤ 電流中心値スタート" styleClass="number">
+                        <p:outputLabel value="#{item.ir5denryustart}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir5denryustarttani" headerText="IR⑤ 電流中心値スタート 単位">
+                        <p:outputLabel value="#{item.ir5denryustarttani}"/>
+                    </p:column>
+                    <p:column id="ir5denryuend" headerText="IR⑤ 電流中心値エンド" styleClass="number">
+                        <p:outputLabel value="#{item.ir5denryuend}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir5denryuendtani" headerText="IR⑤ 電流中心値エンド 単位">
+                        <p:outputLabel value="#{item.ir5denryuendtani}"/>
+                    </p:column>
+                    <p:column id="ir5sokuteihanistart" headerText="IR⑤ 測定範囲スタート" styleClass="number">
+                        <p:outputLabel value="#{item.ir5sokuteihanistart}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir5sokuteihanistarttani" headerText="IR⑤ 測定範囲スタート 単位">
+                        <p:outputLabel value="#{item.ir5sokuteihanistarttani}"/>
+                    </p:column>
+                    <p:column id="ir5sokuteihaniend" headerText="IR⑤ 測定範囲エンド" styleClass="number">
+                        <p:outputLabel value="#{item.ir5sokuteihaniend}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir5sokuteihaniendtani" headerText="IR⑤ 測定範囲エンド 単位">
+                        <p:outputLabel value="#{item.ir5sokuteihaniendtani}"/>
+                    </p:column>
+                    <p:column id="irhanteiti5" headerText="IR⑤ 良品範囲上限" styleClass="number">
+                        <p:outputLabel value="#{item.irhanteiti5}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="irhanteiti5tani" headerText="IR⑤ 良品範囲上限 単位">
+                        <p:outputLabel value="#{item.irhanteiti5tani}"/>
+                    </p:column>
+                    <p:column id="irhanteiti5low" headerText="IR⑤ 良品範囲下限" styleClass="number">
+                        <p:outputLabel value="#{item.irhanteiti5low}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="irhanteiti5tanilow" headerText="IR⑤ 良品範囲下限 単位">
+                        <p:outputLabel value="#{item.irhanteiti5tanilow}"/>
+                    </p:column>
+                    <p:column id="irdenatu6" headerText="IR⑥ 電圧" styleClass="number">
+                        <p:outputLabel value="#{item.irdenatu6}">
+                            <f:convertNumber pattern="#,##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir6jikan" headerText="IR⑥ 時間" styleClass="number">
+                        <p:outputLabel value="#{item.ir6jikan}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir6jikantani" headerText="IR⑥ 時間 単位">
+                        <p:outputLabel value="#{item.ir6jikantani}"/>
+                    </p:column>
+                    <p:column id="ir6denryustart" headerText="IR⑥ 電流中心値スタート" styleClass="number">
+                        <p:outputLabel value="#{item.ir6denryustart}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir6denryustarttani" headerText="IR⑥ 電流中心値スタート 単位">
+                        <p:outputLabel value="#{item.ir6denryustarttani}"/>
+                    </p:column>
+                    <p:column id="ir6denryuend" headerText="IR⑥ 電流中心値エンド" styleClass="number">
+                        <p:outputLabel value="#{item.ir6denryuend}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir6denryuendtani" headerText="IR⑥ 電流中心値エンド 単位">
+                        <p:outputLabel value="#{item.ir6denryuendtani}"/>
+                    </p:column>
+                    <p:column id="ir6sokuteihanistart" headerText="IR⑥ 測定範囲スタート" styleClass="number">
+                        <p:outputLabel value="#{item.ir6sokuteihanistart}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir6sokuteihanistarttani" headerText="IR⑥ 測定範囲スタート 単位">
+                        <p:outputLabel value="#{item.ir6sokuteihanistarttani}"/>
+                    </p:column>
+                    <p:column id="ir6sokuteihaniend" headerText="IR⑥ 測定範囲エンド" styleClass="number">
+                        <p:outputLabel value="#{item.ir6sokuteihaniend}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir6sokuteihaniendtani" headerText="IR⑥ 測定範囲エンド 単位">
+                        <p:outputLabel value="#{item.ir6sokuteihaniendtani}"/>
+                    </p:column>
+                    <p:column id="irhanteiti6" headerText="IR⑥ 良品範囲上限" styleClass="number">
+                        <p:outputLabel value="#{item.irhanteiti6}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="irhanteiti6tani" headerText="IR⑥ 良品範囲上限 単位">
+                        <p:outputLabel value="#{item.irhanteiti6tani}"/>
+                    </p:column>
+                    <p:column id="irhanteiti6low" headerText="IR⑥ 良品範囲下限" styleClass="number">
+                        <p:outputLabel value="#{item.irhanteiti6low}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="irhanteiti6tanilow" headerText="IR⑥ 良品範囲下限 単位">
+                        <p:outputLabel value="#{item.irhanteiti6tanilow}"/>
+                    </p:column>
+                    <p:column id="irdenatu7" headerText="IR⑦ 電圧" styleClass="number">
+                        <p:outputLabel value="#{item.irdenatu7}">
+                            <f:convertNumber pattern="#,##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir7jikan" headerText="IR⑦ 時間" styleClass="number">
+                        <p:outputLabel value="#{item.ir7jikan}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir7jikantani" headerText="IR⑦ 時間 単位">
+                        <p:outputLabel value="#{item.ir7jikantani}"/>
+                    </p:column>
+                    <p:column id="ir7denryustart" headerText="IR⑦ 電流中心値スタート" styleClass="number">
+                        <p:outputLabel value="#{item.ir7denryustart}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir7denryustarttani" headerText="IR⑦ 電流中心値スタート 単位">
+                        <p:outputLabel value="#{item.ir7denryustarttani}"/>
+                    </p:column>
+                    <p:column id="ir7denryuend" headerText="IR⑦ 電流中心値エンド" styleClass="number">
+                        <p:outputLabel value="#{item.ir7denryuend}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir7denryuendtani" headerText="IR⑦ 電流中心値エンド 単位">
+                        <p:outputLabel value="#{item.ir7denryuendtani}"/>
+                    </p:column>
+                    <p:column id="ir7sokuteihanistart" headerText="IR⑦ 測定範囲スタート" styleClass="number">
+                        <p:outputLabel value="#{item.ir7sokuteihanistart}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir7sokuteihanistarttani" headerText="IR⑦ 測定範囲スタート 単位">
+                        <p:outputLabel value="#{item.ir7sokuteihanistarttani}"/>
+                    </p:column>
+                    <p:column id="ir7sokuteihaniend" headerText="IR⑦ 測定範囲エンド" styleClass="number">
+                        <p:outputLabel value="#{item.ir7sokuteihaniend}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir7sokuteihaniendtani" headerText="IR⑦ 測定範囲エンド 単位">
+                        <p:outputLabel value="#{item.ir7sokuteihaniendtani}"/>
+                    </p:column>
+                    <p:column id="irhanteiti7" headerText="IR⑦ 良品範囲上限" styleClass="number">
+                        <p:outputLabel value="#{item.irhanteiti7}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="irhanteiti7tani" headerText="IR⑦ 良品範囲上限 単位">
+                        <p:outputLabel value="#{item.irhanteiti7tani}"/>
+                    </p:column>
+                    <p:column id="irhanteiti7low" headerText="IR⑦ 良品範囲下限" styleClass="number">
+                        <p:outputLabel value="#{item.irhanteiti7low}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="irhanteiti7tanilow" headerText="IR⑦ 良品範囲下限 単位">
+                        <p:outputLabel value="#{item.irhanteiti7tanilow}"/>
+                    </p:column>
+                    <p:column id="irdenatu8" headerText="IR⑧ 電圧" styleClass="number">
+                        <p:outputLabel value="#{item.irdenatu8}">
+                            <f:convertNumber pattern="#,##0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir8jikan" headerText="IR⑧ 時間" styleClass="number">
+                        <p:outputLabel value="#{item.ir8jikan}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir8jikantani" headerText="IR⑧ 時間 単位">
+                        <p:outputLabel value="#{item.ir8jikantani}"/>
+                    </p:column>
+                    <p:column id="ir8denryustart" headerText="IR⑧ 電流中心値スタート" styleClass="number">
+                        <p:outputLabel value="#{item.ir8denryustart}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir8denryustarttani" headerText="IR⑧ 電流中心値スタート 単位">
+                        <p:outputLabel value="#{item.ir8denryustarttani}"/>
+                    </p:column>
+                    <p:column id="ir8denryuend" headerText="IR⑧ 電流中心値エンド" styleClass="number">
+                        <p:outputLabel value="#{item.ir8denryuend}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir8denryuendtani" headerText="IR⑧ 電流中心値エンド 単位">
+                        <p:outputLabel value="#{item.ir8denryuendtani}"/>
+                    </p:column>
+                    <p:column id="ir8sokuteihanistart" headerText="IR⑧ 測定範囲スタート" styleClass="number">
+                        <p:outputLabel value="#{item.ir8sokuteihanistart}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir8sokuteihanistarttani" headerText="IR⑧ 測定範囲スタート 単位">
+                        <p:outputLabel value="#{item.ir8sokuteihanistarttani}"/>
+                    </p:column>
+                    <p:column id="ir8sokuteihaniend" headerText="IR⑧ 測定範囲エンド" styleClass="number">
+                        <p:outputLabel value="#{item.ir8sokuteihaniend}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ir8sokuteihaniendtani" headerText="IR⑧ 測定範囲エンド 単位">
+                        <p:outputLabel value="#{item.ir8sokuteihaniendtani}"/>
+                    </p:column>
+                    <p:column id="irhanteiti8" headerText="IR⑧ 良品範囲上限" styleClass="number">
+                        <p:outputLabel value="#{item.irhanteiti8}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="irhanteiti8tani" headerText="IR⑧ 良品範囲上限 単位">
+                        <p:outputLabel value="#{item.irhanteiti8tani}"/>
+                    </p:column>
+                    <p:column id="irhanteiti8low" headerText="IR⑧ 良品範囲下限" styleClass="number">
+                        <p:outputLabel value="#{item.irhanteiti8low}">
+                            <f:convertNumber pattern="#0.000000000000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="irhanteiti8tanilow" headerText="IR⑧ 良品範囲下限 単位">
+                        <p:outputLabel value="#{item.irhanteiti8tanilow}"/>
+                    </p:column>
+                    <p:column id="bin1setteiti" headerText="BIN1 %区分(設定値)">
+                        <p:outputLabel value="#{item.bin1setteiti}"/>
+                    </p:column>
+                    <p:column id="bin1senbetukubun" headerText="BIN1 選別区分">
+                        <p:outputLabel value="#{item.bin1senbetukubun}"/>
+                    </p:column>
+                    <p:column id="bin1keiryougosuryou" headerText="BIN1 計量後数量" styleClass="number">
+                        <p:outputLabel value="#{item.bin1keiryougosuryou}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin1countersuu" headerText="BIN1 ｶｳﾝﾀｰ数" styleClass="number">
+                        <p:outputLabel value="#{item.bin1countersuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin1gosaritu" headerText="BIN1 誤差率(%)" styleClass="number">
+                        <p:outputLabel value="#{item.bin1gosaritu}">
+                            <f:convertNumber pattern="###0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin1masinfuryouritu" headerText="BIN1 ﾏｼﾝ不良率(%)" styleClass="number">
+                        <p:outputLabel value="#{item.bin1masinfuryouritu}">
+                            <f:convertNumber pattern="##0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin1nukitorikekkabosuu" headerText="BIN1 抜き取り結果(子数)" styleClass="number">
+                        <p:outputLabel value="#{item.bin1nukitorikekkabosuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin1nukitorikekka" headerText="BIN1 抜き取り結果(母数)" styleClass="number">
+                        <p:outputLabel value="#{item.bin1nukitorikekka}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin1sinnofuryouritu" headerText="BIN1 真の不良率(%)" styleClass="number">
+                        <p:outputLabel value="#{item.bin1sinnofuryouritu}">
+                            <f:convertNumber pattern="##0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin1kekkacheck" headerText="BIN1 結果ﾁｪｯｸ">
+                        <p:outputLabel value="#{item.bin1kekkacheck}"/>
+                    </p:column>
+                    <p:column id="bin1fukurocheck" headerText="BIN1 袋ﾁｪｯｸ" styleClass="number">
+                        <p:outputLabel value="#{item.bin1fukurocheck}">
+                        <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin2setteiti" headerText="BIN2 %区分(設定値)">
+                        <p:outputLabel value="#{item.bin2setteiti}"/>
+                    </p:column>
+                    <p:column id="bin2senbetukubun" headerText="BIN2 選別区分">
+                        <p:outputLabel value="#{item.bin2senbetukubun}"/>
+                    </p:column>
+                    <p:column id="bin2keiryougosuryou" headerText="BIN2 計量後数量" styleClass="number">
+                        <p:outputLabel value="#{item.bin2keiryougosuryou}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin2countersuu" headerText="BIN2 ｶｳﾝﾀｰ数" styleClass="number">
+                        <p:outputLabel value="#{item.bin2countersuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin2gosaritu" headerText="BIN2 誤差率(%)" styleClass="number">
+                        <p:outputLabel value="#{item.bin2gosaritu}">
+                            <f:convertNumber pattern="###0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin2masinfuryouritu" headerText="BIN2 ﾏｼﾝ不良率(%)" styleClass="number">
+                        <p:outputLabel value="#{item.bin2masinfuryouritu}">
+                            <f:convertNumber pattern="##0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin2nukitorikekkabosuu" headerText="BIN2 抜き取り結果(子数)" styleClass="number">
+                        <p:outputLabel value="#{item.bin2nukitorikekkabosuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin2nukitorikekka" headerText="BIN2 抜き取り結果(母数)" styleClass="number">
+                        <p:outputLabel value="#{item.bin2nukitorikekka}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin2sinnofuryouritu" headerText="BIN2 真の不良率(%)" styleClass="number">
+                        <p:outputLabel value="#{item.bin2sinnofuryouritu}">
+                            <f:convertNumber pattern="##0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin2kekkacheck" headerText="BIN2 結果ﾁｪｯｸ">
+                        <p:outputLabel value="#{item.bin2kekkacheck}"/>
+                    </p:column>
+                    <p:column id="bin2fukurocheck" headerText="BIN2 袋ﾁｪｯｸ" styleClass="number">
+                        <p:outputLabel value="#{item.bin2fukurocheck}">
+                        <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin3setteiti" headerText="BIN3 %区分(設定値)">
+                        <p:outputLabel value="#{item.bin3setteiti}"/>
+                    </p:column>
+                    <p:column id="bin3senbetukubun" headerText="BIN3 選別区分">
+                        <p:outputLabel value="#{item.bin3senbetukubun}"/>
+                    </p:column>
+                    <p:column id="bin3keiryougosuryou" headerText="BIN3 計量後数量" styleClass="number">
+                        <p:outputLabel value="#{item.bin3keiryougosuryou}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin3countersuu" headerText="BIN3 ｶｳﾝﾀｰ数" styleClass="number">
+                        <p:outputLabel value="#{item.bin3countersuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin3gosaritu" headerText="BIN3 誤差率(%)" styleClass="number">
+                        <p:outputLabel value="#{item.bin3gosaritu}">
+                            <f:convertNumber pattern="###0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin3masinfuryouritu" headerText="BIN3 ﾏｼﾝ不良率(%)" styleClass="number">
+                        <p:outputLabel value="#{item.bin3masinfuryouritu}">
+                            <f:convertNumber pattern="##0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin3nukitorikekkabosuu" headerText="BIN3 抜き取り結果(子数)" styleClass="number">
+                        <p:outputLabel value="#{item.bin3nukitorikekkabosuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin3nukitorikekka" headerText="BIN3 抜き取り結果(母数)" styleClass="number">
+                        <p:outputLabel value="#{item.bin3nukitorikekka}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin3sinnofuryouritu" headerText="BIN3 真の不良率(%)" styleClass="number">
+                        <p:outputLabel value="#{item.bin3sinnofuryouritu}">
+                            <f:convertNumber pattern="##0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin3kekkacheck" headerText="BIN3 結果ﾁｪｯｸ">
+                        <p:outputLabel value="#{item.bin3kekkacheck}"/>
+                    </p:column>
+                    <p:column id="bin3fukurocheck" headerText="BIN3 袋ﾁｪｯｸ" styleClass="number">
+                        <p:outputLabel value="#{item.bin3fukurocheck}">
+                        <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin4setteiti" headerText="BIN4 %区分(設定値)">
+                        <p:outputLabel value="#{item.bin4setteiti}"/>
+                    </p:column>
+                    <p:column id="bin4senbetukubun" headerText="BIN4 選別区分">
+                        <p:outputLabel value="#{item.bin4senbetukubun}"/>
+                    </p:column>
+                    <p:column id="bin4keiryougosuryou" headerText="BIN4 計量後数量" styleClass="number">
+                        <p:outputLabel value="#{item.bin4keiryougosuryou}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin4countersuu" headerText="BIN4 ｶｳﾝﾀｰ数" styleClass="number">
+                        <p:outputLabel value="#{item.bin4countersuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin4gosaritu" headerText="BIN4 誤差率(%)" styleClass="number">
+                        <p:outputLabel value="#{item.bin4gosaritu}">
+                            <f:convertNumber pattern="###0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin4masinfuryouritu" headerText="BIN4 ﾏｼﾝ不良率(%)" styleClass="number">
+                        <p:outputLabel value="#{item.bin4masinfuryouritu}">
+                            <f:convertNumber pattern="##0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin4nukitorikekkabosuu" headerText="BIN4 抜き取り結果(子数)" styleClass="number">
+                        <p:outputLabel value="#{item.bin4nukitorikekkabosuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin4nukitorikekka" headerText="BIN4 抜き取り結果(母数)" styleClass="number">
+                        <p:outputLabel value="#{item.bin4nukitorikekka}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin4sinnofuryouritu" headerText="BIN4 真の不良率(%)" styleClass="number">
+                        <p:outputLabel value="#{item.bin4sinnofuryouritu}">
+                            <f:convertNumber pattern="##0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin4kekkacheck" headerText="BIN4 結果ﾁｪｯｸ">
+                        <p:outputLabel value="#{item.bin4kekkacheck}"/>
+                    </p:column>
+                    <p:column id="bin4fukurocheck" headerText="BIN4 袋ﾁｪｯｸ" styleClass="number">
+                        <p:outputLabel value="#{item.bin4fukurocheck}">
+                        <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin5setteiti" headerText="BIN5 %区分(設定値)">
+                        <p:outputLabel value="#{item.bin5setteiti}"/>
+                    </p:column>
+                    <p:column id="bin5senbetukubun" headerText="BIN5 選別区分">
+                        <p:outputLabel value="#{item.bin5senbetukubun}"/>
+                    </p:column>
+                    <p:column id="bin5keiryougosuryou" headerText="BIN5 計量後数量" styleClass="number">
+                        <p:outputLabel value="#{item.bin5keiryougosuryou}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin5countersuu" headerText="BIN5 ｶｳﾝﾀｰ数" styleClass="number">
+                        <p:outputLabel value="#{item.bin5countersuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin5gosaritu" headerText="BIN5 誤差率(%)" styleClass="number">
+                        <p:outputLabel value="#{item.bin5gosaritu}">
+                            <f:convertNumber pattern="###0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin5masinfuryouritu" headerText="BIN5 ﾏｼﾝ不良率(%)" styleClass="number">
+                        <p:outputLabel value="#{item.bin5masinfuryouritu}">
+                            <f:convertNumber pattern="##0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin5nukitorikekkabosuu" headerText="BIN5 抜き取り結果(子数)" styleClass="number">
+                        <p:outputLabel value="#{item.bin5nukitorikekkabosuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin5nukitorikekka" headerText="BIN5 抜き取り結果(母数)" styleClass="number">
+                        <p:outputLabel value="#{item.bin5nukitorikekka}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin5sinnofuryouritu" headerText="BIN5 真の不良率(%)" styleClass="number">
+                        <p:outputLabel value="#{item.bin5sinnofuryouritu}">
+                            <f:convertNumber pattern="##0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin5kekkacheck" headerText="BIN5 結果ﾁｪｯｸ">
+                        <p:outputLabel value="#{item.bin5kekkacheck}"/>
+                    </p:column>
+                    <p:column id="bin5fukurocheck" headerText="BIN5 袋ﾁｪｯｸ" styleClass="number">
+                        <p:outputLabel value="#{item.bin5fukurocheck}">
+                        <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin6setteiti" headerText="BIN6 %区分(設定値)">
+                        <p:outputLabel value="#{item.bin6setteiti}"/>
+                    </p:column>
+                    <p:column id="bin6senbetukubun" headerText="BIN6 選別区分">
+                        <p:outputLabel value="#{item.bin6senbetukubun}"/>
+                    </p:column>
+                    <p:column id="bin6keiryougosuryou" headerText="BIN6 計量後数量" styleClass="number">
+                        <p:outputLabel value="#{item.bin6keiryougosuryou}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin6countersuu" headerText="BIN6 ｶｳﾝﾀｰ数" styleClass="number">
+                        <p:outputLabel value="#{item.bin6countersuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin6gosaritu" headerText="BIN6 誤差率(%)" styleClass="number">
+                        <p:outputLabel value="#{item.bin6gosaritu}">
+                            <f:convertNumber pattern="###0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin6masinfuryouritu" headerText="BIN6 ﾏｼﾝ不良率(%)" styleClass="number">
+                        <p:outputLabel value="#{item.bin6masinfuryouritu}">
+                            <f:convertNumber pattern="##0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin6nukitorikekkabosuu" headerText="BIN6 抜き取り結果(子数)" styleClass="number">
+                        <p:outputLabel value="#{item.bin6nukitorikekkabosuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin6nukitorikekka" headerText="BIN6 抜き取り結果(母数)" styleClass="number">
+                        <p:outputLabel value="#{item.bin6nukitorikekka}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin6sinnofuryouritu" headerText="BIN6 真の不良率(%)" styleClass="number">
+                        <p:outputLabel value="#{item.bin6sinnofuryouritu}">
+                            <f:convertNumber pattern="##0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin6kekkacheck" headerText="BIN6 結果ﾁｪｯｸ">
+                        <p:outputLabel value="#{item.bin6kekkacheck}"/>
+                    </p:column>
+                    <p:column id="bin6fukurocheck" headerText="BIN6 袋ﾁｪｯｸ" styleClass="number">
+                        <p:outputLabel value="#{item.bin6fukurocheck}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin7setteiti" headerText="BIN7 %区分(設定値)">
+                        <p:outputLabel value="#{item.bin7setteiti}"/>
+                    </p:column>
+                    <p:column id="bin7senbetukubun" headerText="BIN7 選別区分">
+                        <p:outputLabel value="#{item.bin7senbetukubun}"/>
+                    </p:column>
+                    <p:column id="bin7keiryougosuryou" headerText="BIN7 計量後数量" styleClass="number">
+                        <p:outputLabel value="#{item.bin7keiryougosuryou}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin7countersuu" headerText="BIN7 ｶｳﾝﾀｰ数" styleClass="number">
+                        <p:outputLabel value="#{item.bin7countersuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin7gosaritu" headerText="BIN7 誤差率(%)" styleClass="number">
+                        <p:outputLabel value="#{item.bin7gosaritu}">
+                            <f:convertNumber pattern="###0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin7masinfuryouritu" headerText="BIN7 ﾏｼﾝ不良率(%)" styleClass="number">
+                        <p:outputLabel value="#{item.bin7masinfuryouritu}">
+                            <f:convertNumber pattern="##0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin7nukitorikekkabosuu" headerText="BIN7 抜き取り結果(子数)" styleClass="number">
+                        <p:outputLabel value="#{item.bin7nukitorikekkabosuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin7nukitorikekka" headerText="BIN7 抜き取り結果(母数)" styleClass="number">
+                        <p:outputLabel value="#{item.bin7nukitorikekka}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin7sinnofuryouritu" headerText="BIN7 真の不良率(%)" styleClass="number">
+                        <p:outputLabel value="#{item.bin7sinnofuryouritu}">
+                            <f:convertNumber pattern="##0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin7kekkacheck" headerText="BIN7 結果ﾁｪｯｸ">
+                        <p:outputLabel value="#{item.bin7kekkacheck}"/>
+                    </p:column>
+                    <p:column id="bin7fukurocheck" headerText="BIN7 袋ﾁｪｯｸ" styleClass="number">
+                        <p:outputLabel value="#{item.bin7fukurocheck}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin8setteiti" headerText="BIN8 %区分(設定値)">
+                        <p:outputLabel value="#{item.bin8setteiti}"/>
+                    </p:column>
+                    <p:column id="bin8senbetukubun" headerText="BIN8 選別区分">
+                        <p:outputLabel value="#{item.bin8senbetukubun}"/>
+                    </p:column>
+                    <p:column id="bin8keiryougosuryou" headerText="BIN8 計量後数量" styleClass="number">
+                        <p:outputLabel value="#{item.bin8keiryougosuryou}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin8countersuu" headerText="BIN8 ｶｳﾝﾀｰ数" styleClass="number">
+                        <p:outputLabel value="#{item.bin8countersuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin8gosaritu" headerText="BIN8 誤差率(%)" styleClass="number">
+                        <p:outputLabel value="#{item.bin8gosaritu}">
+                            <f:convertNumber pattern="###0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin8masinfuryouritu" headerText="BIN8 ﾏｼﾝ不良率(%)" styleClass="number">
+                        <p:outputLabel value="#{item.bin8masinfuryouritu}">
+                            <f:convertNumber pattern="##0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin8nukitorikekkabosuu" headerText="BIN8 抜き取り結果(子数)" styleClass="number">
+                        <p:outputLabel value="#{item.bin8nukitorikekkabosuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin8nukitorikekka" headerText="BIN8 抜き取り結果(母数)" styleClass="number">
+                        <p:outputLabel value="#{item.bin8nukitorikekka}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin8sinnofuryouritu" headerText="BIN8 真の不良率(%)" styleClass="number">
+                        <p:outputLabel value="#{item.bin8sinnofuryouritu}">
+                            <f:convertNumber pattern="##0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin8kekkacheck" headerText="BIN8 結果ﾁｪｯｸ">
+                        <p:outputLabel value="#{item.bin8kekkacheck}"/>
+                    </p:column>
+                    <p:column id="bin8fukurocheck" headerText="BIN8 袋ﾁｪｯｸ" styleClass="number">
+                        <p:outputLabel value="#{item.bin8fukurocheck}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin9keiryougosuryou" headerText="BIN9 強制排出 計量後数量" styleClass="number">
+                        <p:outputLabel value="#{item.bin9keiryougosuryou}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="bin9masinfuryouritu" headerText="BIN9 強制排出 ﾏｼﾝ不良率" styleClass="number">
+                        <p:outputLabel value="#{item.bin9masinfuryouritu}">
+                            <f:convertNumber pattern="##0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="rakkakeiryougosuryou" headerText="落下 計量後数量" styleClass="number">
+                        <p:outputLabel value="#{item.rakkakeiryougosuryou}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="rakkamasinfuryouritu" headerText="落下 ﾏｼﾝ不良率" styleClass="number">
+                        <p:outputLabel value="#{item.rakkamasinfuryouritu}">
+                            <f:convertNumber pattern="##0.0000"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="handasample" headerText="半田ｻﾝﾌﾟﾙ">
+                        <p:outputLabel value="#{item.handasample}"/>
+                    </p:column>
+                    <p:column id="sinraiseisample" headerText="信頼性ｻﾝﾌﾟﾙ">
+                        <p:outputLabel value="#{item.sinraiseisample}"/>
+                    </p:column>
+                    <p:column id="satsample" headerText="SATｻﾝﾌﾟﾙ">
+                        <p:outputLabel value="#{item.satsample}"/>
+                    </p:column>
+                    <p:column id="sinfuryouhanteisya" headerText="真不良判定者">
+                        <p:outputLabel value="#{item.sinfuryouhanteisya}"/>
+                    </p:column>
+                    <p:column id="hanteinyuuryokusya" headerText="判定入力者">
+                        <p:outputLabel value="#{item.hanteinyuuryokusya}"/>
+                    </p:column>
+                    <p:column id="toridasisya" headerText="取出者">
+                        <p:outputLabel value="#{item.toridasisya}"/>
+                    </p:column>
+                    <p:column id="kousa1" headerText="公差①">
+                        <p:outputLabel value="#{item.kousa1}"/>
+                    </p:column>
+                    <p:column id="juryou1" headerText="重量①" styleClass="number">
+                        <p:outputLabel value="#{item.juryou1}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kosuu1" headerText="個数①" styleClass="number">
+                        <p:outputLabel value="#{item.kosuu1}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kousa2" headerText="公差②">
+                        <p:outputLabel value="#{item.kousa2}"/>
+                    </p:column>
+                    <p:column id="juryou2" headerText="重量②" styleClass="number">
+                        <p:outputLabel value="#{item.juryou2}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kosuu2" headerText="個数②" styleClass="number">
+                        <p:outputLabel value="#{item.kosuu2}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kousa3" headerText="公差③">
+                        <p:outputLabel value="#{item.kousa3}"/>
+                    </p:column>
+                    <p:column id="juryou3" headerText="重量③" styleClass="number">
+                        <p:outputLabel value="#{item.juryou3}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kosuu3" headerText="個数③" styleClass="number">
+                        <p:outputLabel value="#{item.kosuu3}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kousa4" headerText="公差④">
+                        <p:outputLabel value="#{item.kousa4}"/>
+                    </p:column>
+                    <p:column id="juryou4" headerText="重量④" styleClass="number">
+                        <p:outputLabel value="#{item.juryou4}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="kosuu4" headerText="個数④" styleClass="number">
+                        <p:outputLabel value="#{item.kosuu4}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="countersousuu" headerText="計量総数" styleClass="number">
+                        <p:outputLabel value="#{item.countersousuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ryohinjuryou" headerText="良品重量" styleClass="number">
+                        <p:outputLabel value="#{item.ryohinjuryou}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="ryohinkosuu" headerText="良品個数" styleClass="number">
+                        <p:outputLabel value="#{item.ryohinkosuu}">
+                            <f:convertNumber pattern="###,###,##0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="budomari" headerText="歩留まり" styleClass="number">
+                        <p:outputLabel value="#{item.budomari}">
+                            <f:convertNumber pattern="##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="binkakuninsya" headerText="BIN確認者">
+                        <p:outputLabel value="#{item.binkakuninsya}"/>
+                    </p:column>
+                    <p:column id="saiken" headerText="電気特性再検">
+                        <p:outputLabel value="#{item.saiken}"/>
+                    </p:column>
+                    <p:column id="setubikubun" headerText="設備区分">
+                        <p:outputLabel value="#{item.setubikubun}"/>
+                    </p:column>
+                </p:dataTable>
+            </div>            
+            </div>
+            <div>
+                <ui:include src="/secure/common/initMessage.xhtml"/>
+            </div>
+        </h:form>
+    </h:body>
+</html>
