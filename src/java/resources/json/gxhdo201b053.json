@@ -37,7 +37,7 @@
     {"no":"36","id":"binboxseisoucheck","columnname":"BINﾎﾞｯｸｽ内の清掃ﾁｪｯｸ","type":"String","format":""},
     {"no":"37","id":"bunruikakunin","columnname":"分類確認","type":"String","format":""},
     {"no":"38","id":"gaikankakunin","columnname":"外観確認","type":"String","format":""},
-    {"no":"39","id":"netsusyorinitiji","columnname":"熱処理日時","type":"timestamp","format":""},
+    {"no":"39","id":"netsusyorinitiji","columnname":"熱処理日時","type":"timestamp","format":"yyyy/MM/dd HH:mm:ss"},
     {"no":"40","id":"agingjikan","columnname":"ｴｰｼﾞﾝｸﾞ時間","type":"BigDecimal","format":"5,2"},
     {"no":"41","id":"setsya","columnname":"ｾｯﾄ者","type":"String","format":""},
     {"no":"42","id":"kakuninsya","columnname":"確認者","type":"String","format":""},
