@@ -5986,11 +5986,11 @@ public class GXHDO101B053 implements IFormLogic {
 
             //設定条件及び処理結果:BIN1 抜き取り結果
             case GXHDO101B053Const.SET_BIN1_NUKITORIKEKKA_S:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin1nukitorikekkabosuu());
+                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin1nukitorikekka());
 
             //設定条件及び処理結果:BIN1 抜き取り結果
             case GXHDO101B053Const.SET_BIN1_NUKITORIKEKKA_T:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin1nukitorikekka());
+                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin1nukitorikekkabosuu());
 
             //設定条件及び処理結果:BIN1 真の不良率(%)
             case GXHDO101B053Const.SET_BIN1_SHIN_FURYORITSU:
@@ -6038,11 +6038,11 @@ public class GXHDO101B053 implements IFormLogic {
 
             //設定条件及び処理結果:BIN2 抜き取り結果
             case GXHDO101B053Const.SET_BIN2_NUKITORIKEKKA_S:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin2nukitorikekkabosuu());
+                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin2nukitorikekka());
 
             //設定条件及び処理結果:BIN2 抜き取り結果
             case GXHDO101B053Const.SET_BIN2_NUKITORIKEKKA_T:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin2nukitorikekka());
+                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin2nukitorikekkabosuu());
 
             //設定条件及び処理結果:BIN2 真の不良率(%)
             case GXHDO101B053Const.SET_BIN2_SHIN_FURYORITSU:
@@ -6090,11 +6090,11 @@ public class GXHDO101B053 implements IFormLogic {
 
             //設定条件及び処理結果:BIN3 抜き取り結果
             case GXHDO101B053Const.SET_BIN3_NUKITORIKEKKA_S:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin3nukitorikekkabosuu());
+                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin3nukitorikekka());
 
             //設定条件及び処理結果:BIN3 抜き取り結果
             case GXHDO101B053Const.SET_BIN3_NUKITORIKEKKA_T:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin3nukitorikekka());
+                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin3nukitorikekkabosuu());
 
             //設定条件及び処理結果:BIN3 真の不良率(%)
             case GXHDO101B053Const.SET_BIN3_SHIN_FURYORITSU:
@@ -6142,11 +6142,11 @@ public class GXHDO101B053 implements IFormLogic {
 
             //設定条件及び処理結果:BIN4 抜き取り結果
             case GXHDO101B053Const.SET_BIN4_NUKITORIKEKKA_S:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin4nukitorikekkabosuu());
+                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin4nukitorikekka());
 
             //設定条件及び処理結果:BIN4 抜き取り結果
             case GXHDO101B053Const.SET_BIN4_NUKITORIKEKKA_T:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin4nukitorikekka());
+                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin4nukitorikekkabosuu());
 
             //設定条件及び処理結果:BIN4 真の不良率(%)
             case GXHDO101B053Const.SET_BIN4_SHIN_FURYORITSU:
@@ -6194,11 +6194,11 @@ public class GXHDO101B053 implements IFormLogic {
 
             //設定条件及び処理結果:BIN5 抜き取り結果
             case GXHDO101B053Const.SET_BIN5_NUKITORIKEKKA_S:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin5nukitorikekkabosuu());
+                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin5nukitorikekka());
 
             //設定条件及び処理結果:BIN5 抜き取り結果
             case GXHDO101B053Const.SET_BIN5_NUKITORIKEKKA_T:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin5nukitorikekka());
+                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin5nukitorikekkabosuu());
 
             //設定条件及び処理結果:BIN5 真の不良率(%)
             case GXHDO101B053Const.SET_BIN5_SHIN_FURYORITSU:
@@ -6246,11 +6246,11 @@ public class GXHDO101B053 implements IFormLogic {
 
             //設定条件及び処理結果:BIN6 抜き取り結果
             case GXHDO101B053Const.SET_BIN6_NUKITORIKEKKA_S:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin6nukitorikekkabosuu());
+                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin6nukitorikekka());
 
             //設定条件及び処理結果:BIN6 抜き取り結果
             case GXHDO101B053Const.SET_BIN6_NUKITORIKEKKA_T:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin6nukitorikekka());
+                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin6nukitorikekkabosuu());
 
             //設定条件及び処理結果:BIN6 真の不良率(%)
             case GXHDO101B053Const.SET_BIN6_SHIN_FURYORITSU:
@@ -6298,11 +6298,11 @@ public class GXHDO101B053 implements IFormLogic {
 
             //設定条件及び処理結果:BIN7 抜き取り結果
             case GXHDO101B053Const.SET_BIN7_NUKITORIKEKKA_S:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin7nukitorikekkabosuu());
+                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin7nukitorikekka());
 
             //設定条件及び処理結果:BIN7 抜き取り結果
             case GXHDO101B053Const.SET_BIN7_NUKITORIKEKKA_T:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin7nukitorikekka());
+                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin7nukitorikekkabosuu());
 
             //設定条件及び処理結果:BIN7 真の不良率(%)
             case GXHDO101B053Const.SET_BIN7_SHIN_FURYORITSU:
@@ -6350,11 +6350,11 @@ public class GXHDO101B053 implements IFormLogic {
 
             //設定条件及び処理結果:BIN8 抜き取り結果
             case GXHDO101B053Const.SET_BIN8_NUKITORIKEKKA_S:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin8nukitorikekkabosuu());
+                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin8nukitorikekka());
 
             //設定条件及び処理結果:BIN8 抜き取り結果
             case GXHDO101B053Const.SET_BIN8_NUKITORIKEKKA_T:
-                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin8nukitorikekka());
+                return StringUtil.nullToBlank(srDenkitokuseiesi.getBin8nukitorikekkabosuu());
 
             //設定条件及び処理結果:BIN8 真の不良率(%)
             case GXHDO101B053Const.SET_BIN8_SHIN_FURYORITSU:
