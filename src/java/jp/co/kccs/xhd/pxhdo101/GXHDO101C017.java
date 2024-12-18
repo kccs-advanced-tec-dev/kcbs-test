@@ -58,7 +58,7 @@ public class GXHDO101C017 implements Serializable {
 
     private static final Logger LOGGER = Logger.getLogger(GXHDO101C017.class.getName());
 
-    private static final List<String> FORM_ID_DENKITOKUSEI = Arrays.asList("GXHDO101B040", "GXHDO101B041", "GXHDO101B042");
+    private static final List<String> FORM_ID_DENKITOKUSEI = Arrays.asList("GXHDO101B040", "GXHDO101B041", "GXHDO101B042", "GXHDO101B053");
 
     /**
      * DataSource(DocumentServer)

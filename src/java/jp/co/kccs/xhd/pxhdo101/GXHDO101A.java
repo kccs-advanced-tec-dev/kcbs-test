@@ -488,7 +488,7 @@ public class GXHDO101A implements Serializable {
             // 該当のメニューIDが存在するか確認する。
             boolean insertUseFlg = existFormIds(this.menuListGXHDO101,
                     new String[]{FORM_ID_DENKITOKUSEI_ESI, FORM_ID_DENKITOKUSEI_3TANSHI_4TANSHI, FORM_ID_DENKITOKUSEI_IPPANHIN,
-                        FORM_ID_DENKITOKUSEI_NETSUSHORI, FORM_ID_GAIKAN_KENSA, FORM_ID_TP_SAGYO, FORM_ID_TP_CHECK});
+                        FORM_ID_DENKITOKUSEI_NETSUSHORI,FORM_ID_DENKITOKUSEI_TWA, FORM_ID_GAIKAN_KENSA, FORM_ID_TP_SAGYO, FORM_ID_TP_CHECK});
 
             //画面追加リンク表示/非表示の設定
             if (insertUseFlg && userGrpList.contains("画面制御_利用ﾕｰｻﾞｰ")) {
