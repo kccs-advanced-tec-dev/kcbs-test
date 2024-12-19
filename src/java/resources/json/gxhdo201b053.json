@@ -1,5 +1,5 @@
 [
-    {"no":"1","id":"lotno","columnname":"ﾛｯﾄNo.","type":"String","format":""},
+    {"no":"1","id":"lotno","columnname":"ﾛｯﾄNo","type":"String","format":""},
     {"no":"2","id":"kaisuu","columnname":"回数","type":"Integer","format":"9,0"},
     {"no":"3","id":"kcpno","columnname":"KCPNO","type":"String","format":""},
     {"no":"4","id":"tokuisaki","columnname":"客先","type":"String","format":""},
