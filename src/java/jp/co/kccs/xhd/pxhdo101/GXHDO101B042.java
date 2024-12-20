@@ -6655,8 +6655,39 @@ public class GXHDO101B042 implements IFormLogic {
             setItemDataEx(processData, GXHDO101B042Const.SET_SHINRAISEI_SAMPLE, StringUtil.nullToBlank(fxhdd07.getSinraiseisample())); //信頼性ｻﾝﾌﾟﾙ
         }
         
-        // BINX ｶｳﾝﾀｰ数をセットする
-        setBinXCounter(processData, fxhdd07);
+        if (fxhdd07.getBin1countersuu() != null && !"".equals(fxhdd07.getBin1countersuu().toString())) {
+            setItemDataEx(processData, GXHDO101B042Const.SET_BIN1_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin1countersuu())); //BIN1 ｶｳﾝﾀｰ数
+        }
+        
+        if (fxhdd07.getBin2countersuu() != null && !"".equals(fxhdd07.getBin2countersuu().toString())) {
+            setItemDataEx(processData, GXHDO101B042Const.SET_BIN2_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin2countersuu())); //BIN2 ｶｳﾝﾀｰ数
+        }
+        
+        if (fxhdd07.getBin3countersuu() != null && !"".equals(fxhdd07.getBin3countersuu().toString())) {
+            setItemDataEx(processData, GXHDO101B042Const.SET_BIN3_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin3countersuu())); //BIN3 ｶｳﾝﾀｰ数
+        }
+        
+        if (fxhdd07.getBin4countersuu() != null && !"".equals(fxhdd07.getBin4countersuu().toString())) {
+            setItemDataEx(processData, GXHDO101B042Const.SET_BIN4_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin4countersuu())); //BIN4 ｶｳﾝﾀｰ数
+        }
+        
+        if (fxhdd07.getBin5countersuu() != null && !"".equals(fxhdd07.getBin5countersuu().toString())) {
+            setItemDataEx(processData, GXHDO101B042Const.SET_BIN5_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin5countersuu())); //BIN5 ｶｳﾝﾀｰ数
+        }
+        
+        if (fxhdd07.getBin6countersuu() != null && !"".equals(fxhdd07.getBin6countersuu().toString())) {
+            setItemDataEx(processData, GXHDO101B042Const.SET_BIN6_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin6countersuu())); //BIN6 ｶｳﾝﾀｰ数
+        }
+        
+        if (fxhdd07.getBin7countersuu() != null && !"".equals(fxhdd07.getBin7countersuu().toString())) {
+            setItemDataEx(processData, GXHDO101B042Const.SET_BIN7_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin7countersuu())); //BIN7 ｶｳﾝﾀｰ数
+        }
+        
+        if (fxhdd07.getBin8countersuu() != null && !"".equals(fxhdd07.getBin8countersuu().toString())) {
+            setItemDataEx(processData, GXHDO101B042Const.SET_BIN8_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin8countersuu())); //BIN8 ｶｳﾝﾀｰ数
+        }
+        
+
         // BINX %区分(設定値)をセットする
         setBinXPercentKbn(processData, fxhdd07);
     }
@@ -6758,78 +6789,6 @@ public class GXHDO101B042 implements IFormLogic {
         } catch (NullPointerException | NumberFormatException ex) {
             //処理なし
         }
-    }
-
-    /**
-     * ｶｳﾝﾀｰ数をセットする
-     * 
-     * @param processData 処理制御データ
-     * @param fxhdd07 電気特性設備データ
-     */
-    private void setBinXCounter(ProcessData processData, FXHDD07 fxhdd07) {
-        for (int i = 1; i <= 8; i++) {
-            String binXsenbetsukbn = getBinXsenbetsukbn(i, fxhdd07);
-            String[] splitBinXsenbetsukbn = binXsenbetsukbn.split("/");
-            if (splitBinXsenbetsukbn.length == 1) {
-                if (StringUtil.isEmpty(splitBinXsenbetsukbn[0])) {
-                    continue;
-                }
-                Integer counter = getBinXCountor(i, fxhdd07);
-                setItemDataEx(processData, getBinXCounterItemName(i, 1), StringUtil.nullToBlank(counter)); //BINX ｶｳﾝﾀｰ数
-            } else {
-                int j = 1;
-                for (String senbetsukbn : splitBinXsenbetsukbn) {
-                    if (j > 3) {
-                        break;
-                    }
-                    if (StringUtil.isEmpty(senbetsukbn)) {
-                        j++;
-                        continue;
-                    }
-                    Integer counter = getCounter(senbetsukbn, fxhdd07);
-                    if (counter == null || counter == 0) {
-                        setItemDataEx(processData, getBinXCounterItemName(i, 1), StringUtil.nullToBlank(getBinXCountor(i, fxhdd07))); //BINX ｶｳﾝﾀｰ数N
-                        setItemDataEx(processData, getBinXCounterItemName(i, 2), ""); //BINX ｶｳﾝﾀｰ数N
-                        setItemDataEx(processData, getBinXCounterItemName(i, 3), ""); //BINX ｶｳﾝﾀｰ数N
-                        break;
-                    }
-
-                    setItemDataEx(processData, getBinXCounterItemName(i, j), StringUtil.nullToBlank(counter)); //BINX ｶｳﾝﾀｰ数N
-                    j++;
-                }
-            }
-        }
-    }
-
-    /**
-     * BINX選択区分により、BINXｶｳﾝﾀｰ数を取得する
-     * 
-     * @param binXsenbetsukbn BINX選択区分
-     * @param fxhdd07 電気特性設備データ
-     * @return BINXｶｳﾝﾀｰ数
-     */
-    private Integer getCounter(String binXsenbetsukbn, FXHDD07 fxhdd07) {
-        switch (binXsenbetsukbn) {
-            case "TTNG1":
-                return fxhdd07.getTtng1();
-            case "TTNG2":
-                return fxhdd07.getTtng2();
-            case "MC":
-                return fxhdd07.getMc();
-            case "RI":
-                return fxhdd07.getRi();
-            case "DNG":
-                return fxhdd07.getDng();
-            case "RNG":
-                return fxhdd07.getRng();
-            case "DROPNG":
-                return fxhdd07.getDropng();
-            case "DROPNG1":
-                return fxhdd07.getDropng1();
-            case "DROPNG2":
-                return fxhdd07.getDropng2();
-        }
-        return null;
     }
 
     /**
