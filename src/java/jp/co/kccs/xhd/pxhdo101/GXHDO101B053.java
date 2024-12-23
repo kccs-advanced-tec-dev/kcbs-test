@@ -7716,11 +7716,11 @@ public class GXHDO101B053 implements IFormLogic {
         setItemData(processData, GXHDO101B053Const.SEIHIN_SENBETSU_SHURYO_TIME, StringUtil.nullToBlank(DateUtil.formattedTimestamp(fxhdd07.getSenbetusyuryounitijitwa(), "HHmm"))); //選別終了時間
         setItemData(processData, GXHDO101B053Const.SEIHIN_KENSA_GOKI, StringUtil.nullToBlank(fxhdd07.getGouki())); //検査号機
         
-        if (fxhdd07.getTestplatekanrino() != null && !"".equals(fxhdd07.getTestplatekanrino())) {
+        if (!StringUtil.isEmpty(fxhdd07.getTestplatekanrino())) {
             setItemData(processData, GXHDO101B053Const.SEIHIN_INDEX_KANRI_NO, StringUtil.nullToBlank(fxhdd07.getTestplatekanrino())); //インデックステーブル管理No.(ﾃｽﾄﾌﾟﾚｰﾄ管理No)
         }
         
-        if (fxhdd07.getTestplatekanrino() != null && !"".equals(fxhdd07.getTestplatekanrino())) {
+        if (!StringUtil.isEmpty(fxhdd07.getTestplatekanrino())) {
             setItemData(processData, GXHDO101B053Const.SEIHIN_INDEX_TABLE_MOKUSHI, StringUtil.nullToBlank(fxhdd07.getTestplatekeijo())); //インデックステーブル目視(ﾃｽﾄﾌﾟﾚｰﾄ　形状・清掃)
         }
         setItemData(processData, GXHDO101B053Const.SEIHIN_INDEX_TABLE_ICHI_KAKUNIN_ANA_ICHI, StringUtil.nullToBlank(fxhdd07.getTestplatekakunin())); //インデックステーブル位置確認(穴位置)(ﾃｽﾄﾌﾟﾚｰﾄ位置確認(穴位置))
@@ -7735,10 +7735,10 @@ public class GXHDO101B053 implements IFormLogic {
         setItemData(processData, GXHDO101B053Const.SEIHIN_TAN_DELTA, StringUtil.nullToBlank(fxhdd07.getTan())); //Tanδ
         setItemData(processData, GXHDO101B053Const.SEIHIN_BIN_BOX_SEISOU_CHECK, StringUtil.nullToBlank(fxhdd07.getBinboxseisoucheck())); //BINﾎﾞｯｸｽ内の清掃ﾁｪｯｸ
 
-        if (fxhdd07.getBunruikakunin() != null && !"".equals(fxhdd07.getBunruikakunin())) {
+        if (!StringUtil.isEmpty(fxhdd07.getBunruikakunin())) {
             setItemData(processData, GXHDO101B053Const.SEIHIN_BUNRUI_KAKUNIN, StringUtil.nullToBlank(fxhdd07.getBunruikakunin())); //分類確認
         }
-        if (fxhdd07.getGaikankakunin() != null && !"".equals(fxhdd07.getGaikankakunin())) {
+        if (!StringUtil.isEmpty(fxhdd07.getGaikankakunin())) {
             setItemData(processData, GXHDO101B053Const.SEIHIN_GAIKAN_KAKUNIN, StringUtil.nullToBlank(fxhdd07.getGaikankakunin())); //外観確認  
         }
 
@@ -7872,111 +7872,111 @@ public class GXHDO101B053 implements IFormLogic {
         setItemDataEx(processData, GXHDO101B053Const.TAIDEN_RYOUHINHANILOWTANI8, StringUtil.nullToBlank(fxhdd07.getIrhantei8tani_low())); //耐電圧設定条件 IR⑧ 良品範囲下限 単位(耐電圧設定条件 IR⑧ 判定値(低) 単位)
         
         //設定条件及び処理結果
-        if (fxhdd07.getBin1senbetsukbn() != null && !"".equals(fxhdd07.getBin1senbetsukbn())) {
+        if (!StringUtil.isEmpty(fxhdd07.getBin1senbetsukbn())) {
             setItemDataEx(processData, GXHDO101B053Const.SET_BIN1_SENBETSU_KBN, StringUtil.nullToBlank(fxhdd07.getBin1senbetsukbn())); //BIN1 選別区分
         }
         
-        if (fxhdd07.getBin1countersuu() != null && !"".equals(fxhdd07.getBin1countersuu().toString())) {
+        if (!StringUtil.isEmpty(fxhdd07.getBin1countersuu().toString())) {
             setItemDataEx(processData, GXHDO101B053Const.SET_BIN1_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin1countersuu())); //BIN1 ｶｳﾝﾀｰ数
         }
         
-        if (fxhdd07.getBin1setteititwa() != null && !"".equals(fxhdd07.getBin1setteititwa())) {
+        if (!StringUtil.isEmpty(fxhdd07.getBin1setteititwa())) {
             setItemDataEx(processData, GXHDO101B053Const.SET_BIN1_PERCENT_KBN, StringUtil.nullToBlank(fxhdd07.getBin1setteititwa())); //BIN1 %区分(設定値)
         }
         
-        if (fxhdd07.getBin2senbetsukbn() != null && !"".equals(fxhdd07.getBin2senbetsukbn())) {
+        if (!StringUtil.isEmpty(fxhdd07.getBin2senbetsukbn())) {
             setItemDataEx(processData, GXHDO101B053Const.SET_BIN2_SENBETSU_KBN, StringUtil.nullToBlank(fxhdd07.getBin2senbetsukbn())); //BIN2 選別区分
         }
         
-        if (fxhdd07.getBin2countersuu() != null && !"".equals(fxhdd07.getBin2countersuu().toString())) {
+        if (!StringUtil.isEmpty(fxhdd07.getBin2countersuu().toString())) {
             setItemDataEx(processData, GXHDO101B053Const.SET_BIN2_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin2countersuu())); //BIN2 ｶｳﾝﾀｰ数
         }
         
-        if (fxhdd07.getBin2setteititwa() != null && !"".equals(fxhdd07.getBin2setteititwa())) {
+        if (!StringUtil.isEmpty(fxhdd07.getBin2setteititwa())) {
             setItemDataEx(processData, GXHDO101B053Const.SET_BIN2_PERCENT_KBN, StringUtil.nullToBlank(fxhdd07.getBin2setteititwa())); //BIN2 %区分(設定値)
         }
         
-        if (fxhdd07.getBin3senbetsukbn() != null && !"".equals(fxhdd07.getBin3senbetsukbn())) {
+        if (!StringUtil.isEmpty(fxhdd07.getBin3senbetsukbn())) {
             setItemDataEx(processData, GXHDO101B053Const.SET_BIN3_SENBETSU_KBN, StringUtil.nullToBlank(fxhdd07.getBin3senbetsukbn())); //BIN3 選別区分
         }
         
-        if (fxhdd07.getBin3countersuu() != null && !"".equals(fxhdd07.getBin3countersuu().toString())) {
+        if (!StringUtil.isEmpty(fxhdd07.getBin3countersuu().toString())) {
             setItemDataEx(processData, GXHDO101B053Const.SET_BIN3_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin3countersuu())); //BIN3 ｶｳﾝﾀｰ数
         }
         
-        if (fxhdd07.getBin3setteititwa() != null && !"".equals(fxhdd07.getBin3setteititwa())) {
+        if (!StringUtil.isEmpty(fxhdd07.getBin3setteititwa())) {
             setItemDataEx(processData, GXHDO101B053Const.SET_BIN3_PERCENT_KBN, StringUtil.nullToBlank(fxhdd07.getBin3setteititwa())); //BIN3 %区分(設定値)
         }
         
-        if (fxhdd07.getBin4senbetsukbn() != null && !"".equals(fxhdd07.getBin4senbetsukbn())) {
+        if (!StringUtil.isEmpty(fxhdd07.getBin4senbetsukbn())) {
             setItemDataEx(processData, GXHDO101B053Const.SET_BIN4_SENBETSU_KBN, StringUtil.nullToBlank(fxhdd07.getBin4senbetsukbn())); //BIN4 選別区分
         }
         
-        if (fxhdd07.getBin4countersuu() != null && !"".equals(fxhdd07.getBin4countersuu().toString())) {
+        if (!StringUtil.isEmpty(fxhdd07.getBin4countersuu().toString())) {
             setItemDataEx(processData, GXHDO101B053Const.SET_BIN4_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin4countersuu())); //BIN4 ｶｳﾝﾀｰ数
         }
         
-        if (fxhdd07.getBin4setteititwa() != null && !"".equals(fxhdd07.getBin4setteititwa())) {
+        if (!StringUtil.isEmpty(fxhdd07.getBin4setteititwa())) {
             setItemDataEx(processData, GXHDO101B053Const.SET_BIN4_PERCENT_KBN, StringUtil.nullToBlank(fxhdd07.getBin4setteititwa())); //BIN4 %区分(設定値)
         }
         
-        if (fxhdd07.getBin5senbetsukbn() != null && !"".equals(fxhdd07.getBin5senbetsukbn())) {
+        if (!StringUtil.isEmpty(fxhdd07.getBin5senbetsukbn())) {
             setItemDataEx(processData, GXHDO101B053Const.SET_BIN5_SENBETSU_KBN, StringUtil.nullToBlank(fxhdd07.getBin5senbetsukbn())); //BIN5 選別区分
         }
         
-        if (fxhdd07.getBin5countersuu() != null && !"".equals(fxhdd07.getBin5countersuu().toString())) {
+        if (!StringUtil.isEmpty(fxhdd07.getBin5countersuu().toString())) {
             setItemDataEx(processData, GXHDO101B053Const.SET_BIN5_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin5countersuu())); //BIN5 ｶｳﾝﾀｰ数
         }
         
-        if (fxhdd07.getBin5setteititwa() != null && !"".equals(fxhdd07.getBin5setteititwa())) {
+        if (!StringUtil.isEmpty(fxhdd07.getBin5setteititwa())) {
             setItemDataEx(processData, GXHDO101B053Const.SET_BIN5_PERCENT_KBN, StringUtil.nullToBlank(fxhdd07.getBin5setteititwa())); //BIN5 %区分(設定値)
         }
         
-        if (fxhdd07.getBin6senbetsukbn() != null && !"".equals(fxhdd07.getBin6senbetsukbn())) {
+        if (!StringUtil.isEmpty(fxhdd07.getBin6senbetsukbn())) {
             setItemDataEx(processData, GXHDO101B053Const.SET_BIN6_SENBETSU_KBN, StringUtil.nullToBlank(fxhdd07.getBin6senbetsukbn())); //BIN6 選別区分
         }
         
-        if (fxhdd07.getBin6countersuu() != null && !"".equals(fxhdd07.getBin6countersuu().toString())) {
+        if (!StringUtil.isEmpty(fxhdd07.getBin6countersuu().toString())) {
             setItemDataEx(processData, GXHDO101B053Const.SET_BIN6_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin6countersuu())); //BIN6 ｶｳﾝﾀｰ数
         }
         
-        if (fxhdd07.getBin6setteititwa() != null && !"".equals(fxhdd07.getBin6setteititwa())) {
+        if (!StringUtil.isEmpty(fxhdd07.getBin6setteititwa())) {
             setItemDataEx(processData, GXHDO101B053Const.SET_BIN6_PERCENT_KBN, StringUtil.nullToBlank(fxhdd07.getBin6setteititwa())); //BIN6 %区分(設定値)
         }
         
-        if (fxhdd07.getBin7senbetsukbn() != null && !"".equals(fxhdd07.getBin7senbetsukbn())) {
+        if (!StringUtil.isEmpty(fxhdd07.getBin7senbetsukbn())) {
             setItemDataEx(processData, GXHDO101B053Const.SET_BIN7_SENBETSU_KBN, StringUtil.nullToBlank(fxhdd07.getBin7senbetsukbn())); //BIN7 選別区分
         }
         
-        if (fxhdd07.getBin7countersuu() != null && !"".equals(fxhdd07.getBin7countersuu().toString())) {
+        if (!StringUtil.isEmpty(fxhdd07.getBin7countersuu().toString())) {
             setItemDataEx(processData, GXHDO101B053Const.SET_BIN7_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin7countersuu())); //BIN7 ｶｳﾝﾀｰ数
         }
         
-        if (fxhdd07.getBin7setteititwa() != null && !"".equals(fxhdd07.getBin7setteititwa())) {
+        if (!StringUtil.isEmpty(fxhdd07.getBin7setteititwa())) {
             setItemDataEx(processData, GXHDO101B053Const.SET_BIN7_PERCENT_KBN, StringUtil.nullToBlank(fxhdd07.getBin7setteititwa())); //BIN7 %区分(設定値)
         }
         
-        if (fxhdd07.getBin8senbetsukbn() != null && !"".equals(fxhdd07.getBin8senbetsukbn())) {
+        if (!StringUtil.isEmpty(fxhdd07.getBin8senbetsukbn())) {
             setItemDataEx(processData, GXHDO101B053Const.SET_BIN8_SENBETSU_KBN, StringUtil.nullToBlank(fxhdd07.getBin8senbetsukbn())); //BIN8 選別区分
         }
         
-        if (fxhdd07.getBin8countersuu() != null && !"".equals(fxhdd07.getBin8countersuu().toString())) {
+        if (!StringUtil.isEmpty(fxhdd07.getBin8countersuu().toString())) {
             setItemDataEx(processData, GXHDO101B053Const.SET_BIN8_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin8countersuu())); //BIN8 ｶｳﾝﾀｰ数
         }
         
-        if (fxhdd07.getBin8setteititwa() != null && !"".equals(fxhdd07.getBin8setteititwa())) {
+        if (!StringUtil.isEmpty(fxhdd07.getBin8setteititwa())) {
             setItemDataEx(processData, GXHDO101B053Const.SET_BIN8_PERCENT_KBN, StringUtil.nullToBlank(fxhdd07.getBin8setteititwa())); //BIN8 %区分(設定値)
         }
         
-        if (fxhdd07.getHandasample() != null && !"".equals(fxhdd07.getHandasample())) {
+        if (!StringUtil.isEmpty(fxhdd07.getHandasample())) {
             setItemDataEx(processData, GXHDO101B053Const.SET_HANDA_SAMPLE, StringUtil.nullToBlank(fxhdd07.getHandasample())); //半田ｻﾝﾌﾟﾙ
         }
         
-        if (fxhdd07.getSinraiseisample() != null && !"".equals(fxhdd07.getSinraiseisample())) {
+        if (!StringUtil.isEmpty(fxhdd07.getSinraiseisample())) {
             setItemDataEx(processData, GXHDO101B053Const.SET_SHINRAISEI_SAMPLE, StringUtil.nullToBlank(fxhdd07.getSinraiseisample())); //信頼性ｻﾝﾌﾟﾙ
         }
         
-        if (fxhdd07.getSatsample()!= null && !"".equals(fxhdd07.getSatsample())) {
+        if (!StringUtil.isEmpty(fxhdd07.getSatsample())) {
             setItemDataEx(processData, GXHDO101B053Const.SET_SAT_SAMPLE, StringUtil.nullToBlank(fxhdd07.getSatsample())); //SATｻﾝﾌﾟﾙ
         }
     }
