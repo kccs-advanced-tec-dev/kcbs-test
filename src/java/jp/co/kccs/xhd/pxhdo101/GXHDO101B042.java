@@ -6655,35 +6655,35 @@ public class GXHDO101B042 implements IFormLogic {
             setItemDataEx(processData, GXHDO101B042Const.SET_SHINRAISEI_SAMPLE, StringUtil.nullToBlank(fxhdd07.getSinraiseisample())); //信頼性ｻﾝﾌﾟﾙ
         }
         
-        if (fxhdd07.getBin1countersuu() != null && !"".equals(fxhdd07.getBin1countersuu().toString())) {
+        if (StringUtil.isEmpty(fxhdd07.getBin1countersuu().toString())) {
             setItemDataEx(processData, GXHDO101B042Const.SET_BIN1_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin1countersuu())); //BIN1 ｶｳﾝﾀｰ数
         }
         
-        if (fxhdd07.getBin2countersuu() != null && !"".equals(fxhdd07.getBin2countersuu().toString())) {
+        if (StringUtil.isEmpty(fxhdd07.getBin2countersuu().toString())) {
             setItemDataEx(processData, GXHDO101B042Const.SET_BIN2_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin2countersuu())); //BIN2 ｶｳﾝﾀｰ数
         }
         
-        if (fxhdd07.getBin3countersuu() != null && !"".equals(fxhdd07.getBin3countersuu().toString())) {
+        if (StringUtil.isEmpty(fxhdd07.getBin3countersuu().toString())) {
             setItemDataEx(processData, GXHDO101B042Const.SET_BIN3_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin3countersuu())); //BIN3 ｶｳﾝﾀｰ数
         }
         
-        if (fxhdd07.getBin4countersuu() != null && !"".equals(fxhdd07.getBin4countersuu().toString())) {
+        if (StringUtil.isEmpty(fxhdd07.getBin4countersuu().toString())) {
             setItemDataEx(processData, GXHDO101B042Const.SET_BIN4_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin4countersuu())); //BIN4 ｶｳﾝﾀｰ数
         }
         
-        if (fxhdd07.getBin5countersuu() != null && !"".equals(fxhdd07.getBin5countersuu().toString())) {
+        if (StringUtil.isEmpty(fxhdd07.getBin5countersuu().toString())) {
             setItemDataEx(processData, GXHDO101B042Const.SET_BIN5_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin5countersuu())); //BIN5 ｶｳﾝﾀｰ数
         }
         
-        if (fxhdd07.getBin6countersuu() != null && !"".equals(fxhdd07.getBin6countersuu().toString())) {
+        if (StringUtil.isEmpty(fxhdd07.getBin6countersuu().toString())) {
             setItemDataEx(processData, GXHDO101B042Const.SET_BIN6_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin6countersuu())); //BIN6 ｶｳﾝﾀｰ数
         }
         
-        if (fxhdd07.getBin7countersuu() != null && !"".equals(fxhdd07.getBin7countersuu().toString())) {
+        if (StringUtil.isEmpty(fxhdd07.getBin7countersuu().toString())) {
             setItemDataEx(processData, GXHDO101B042Const.SET_BIN7_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin7countersuu())); //BIN7 ｶｳﾝﾀｰ数
         }
         
-        if (fxhdd07.getBin8countersuu() != null && !"".equals(fxhdd07.getBin8countersuu().toString())) {
+        if (StringUtil.isEmpty(fxhdd07.getBin8countersuu().toString())) {
             setItemDataEx(processData, GXHDO101B042Const.SET_BIN8_COUNTER_SU, StringUtil.nullToBlank(fxhdd07.getBin8countersuu())); //BIN8 ｶｳﾝﾀｰ数
         }
         
