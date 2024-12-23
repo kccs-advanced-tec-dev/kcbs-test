@@ -11,7 +11,7 @@ on: 			# on以下でワークフローを実行するトリガーとなるイベ
     paths: 		# （省略可、任意に変更可）
       - "**.java"
 
-jobs:			# jobs以下ACEを実行するjobを作成します。
+jobs:			# jobs以下ACEを実行するjobを作成します。  
   report_job: 		# jobの名前（任意に変更可）
     uses: kccs-advanced-tec-dev/ace-github-workflow/.github/workflows/ace.yml@v0 # ACEの呼び出し（変更不可）
     with:
@@ -27,3 +27,4 @@ jobs:			# jobs以下ACEを実行するjobを作成します。
         -e utils test/*.cs
         -i *.java *.cs
         --check-dekita-mode V3
+        timeout-minutes :15
