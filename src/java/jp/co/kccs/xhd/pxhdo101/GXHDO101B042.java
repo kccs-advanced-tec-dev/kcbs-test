@@ -6382,13 +6382,14 @@ public class GXHDO101B042 implements IFormLogic {
                 + "setteiti3low,setteiti3up,ttng1,ttng2,mc,ri,dng,rng,dropng,dropng1,dropng2,lotkbn,setteicap1,"
                 + "setteicap2,setteicap3,irhantei1tani_low,irhantei2tani_low,irhantei3tani_low,irhantei4tani_low,irhantei5tani_low,irhantei6tani_low,irhantei7tani_low,irhantei8tani_low,denkyokuseisou,setteicap4,setteiti4low,setteiti4up "
                 + "FROM fxhdd07 "
-                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND deleteflag = ? ";
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND (setubikubun <> ? OR setubikubun IS NULL) "
+                + "ORDER BY deleteflag ";
 
         List<Object> params = new ArrayList<>();
         params.add(lotNo.substring(0, 3));
         params.add(lotNo.substring(3, 11));
         params.add(lotNo.substring(11, 14));
-        params.add(0);
+        params.add("TWA");
 
         Map<String, String> mapping = new HashMap<>();
         mapping.put("kojyo", "kojyo"); //工場ｺｰﾄﾞ

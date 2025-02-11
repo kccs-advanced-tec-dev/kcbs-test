@@ -112,16 +112,6 @@ public class GXHDO101D001 implements Serializable {
      * 担当者ｺｰﾄﾞ(検索値)
      */
     private String searchTantoshaCd;
-    
-    /**
-     * tmp_data
-     */
-    private String tmp_data;
-    
-    /**
-     * tmp_hanteidata
-     */
-    private String tmp_hanteidata;
 
     /**
      * 品質確認連絡書モデル
@@ -463,28 +453,6 @@ public class GXHDO101D001 implements Serializable {
             }
 
             model.setJikiqckakuninnichiji(rowKoteifuryo.getJikiqckakuninnichiji()); // KF.日付
-            
-            model.setTmp_data(rowKoteifuryo.getTmp_data()); // tmp_data
-            model.setTmp_hanteidata(rowKoteifuryo.getTmp_hanteidata()); // tmp_hanteidata
-            
-            this.tmp_data = model.getTmp_data();
-            this.tmp_hanteidata = model.getTmp_hanteidata();
-            
-            if (this.tmp_data != null && !this.tmp_data.isEmpty()){
-                if(this.tmp_data.equals("T")){
-                    model.setTmp_data_hyoji("仮登録");
-                }else{
-                    model.setTmp_data_hyoji("");
-                }
-            }
-            if (this.tmp_hanteidata != null && !this.tmp_hanteidata.isEmpty()){
-                if(this.tmp_hanteidata.equals("T")){
-                    model.setTmp_hanteidata_hyoji("仮登録");
-                }else{
-                    model.setTmp_hanteidata_hyoji("");
-                }
-            }
-            
 
             // 取得結果を保存
             setGxhdo101d001Model(model);
@@ -562,18 +530,10 @@ public class GXHDO101D001 implements Serializable {
         try {
             QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
             QueryRunner queryRunnerWip = new QueryRunner(dataSourceWIP);
-            List<SrKoteifuryoKekka> koteifuryokekkaList;
-            if(this.tmp_data.equals("T")){
-                // (5)[tmp_工程不良結果]から取得した実績Noの最大値
-                setMaxJissekiNoKK(getMaxJissekiNoFromTmpSrKoteifuryoKekka(queryRunnerQcdb, this.currentTorokuNoValue));
-                // (6)[tmp_工程不良結果]から、初期表示する情報を取得
-                koteifuryokekkaList = loadTmpSrKoteifuryoKekka(queryRunnerQcdb, this.currentTorokuNoValue, this.maxJissekiNoKK);
-            }else{
-                // (5)[工程不良結果]から取得した実績Noの最大値
-                setMaxJissekiNoKK(getMaxJissekiNoFromSrKoteifuryoKekka(queryRunnerQcdb, this.currentTorokuNoValue));
-                // (6)[工程不良結果]から、初期表示する情報を取得
-                koteifuryokekkaList = loadSrKoteifuryoKekka(queryRunnerQcdb, this.currentTorokuNoValue, this.maxJissekiNoKK);
-            }
+            // (5)[工程不良結果]から取得した実績Noの最大値
+            setMaxJissekiNoKK(getMaxJissekiNoFromSrKoteifuryoKekka(queryRunnerQcdb, this.currentTorokuNoValue));
+            // (6)[工程不良結果]から、初期表示する情報を取得
+            List<SrKoteifuryoKekka> koteifuryokekkaList = loadSrKoteifuryoKekka(queryRunnerQcdb, this.currentTorokuNoValue, this.maxJissekiNoKK);
 
             // 取得したテーブル情報を画面表示モデルに設定する
             GXHDO101D001Model model = getGxhdo101d001Model();
@@ -614,18 +574,10 @@ public class GXHDO101D001 implements Serializable {
         try {
             QueryRunner queryRunnerQcdb = new QueryRunner(dataSourceXHD);
             QueryRunner queryRunnerWip = new QueryRunner(dataSourceWIP);
-            List<SrKoteifuryoHantei> koteifuryohanteiList;
-            if(this.tmp_hanteidata.equals("T")){
-                // (5)[工程不良結果]から取得した実績Noの最大値
-                setMaxJissekiNoKK(getMaxJissekiNoFromTmpSrKoteifuryoHantei(queryRunnerQcdb, this.currentTorokuNoValue));
-                // (6)[工程不良結果]から、初期表示する情報を取得
-                koteifuryohanteiList = loadTmpSrKoteifuryoHantei(queryRunnerQcdb, this.currentTorokuNoValue, this.maxJissekiNoKK);
-            }else{
-                // (5)[工程不良結果]から取得した実績Noの最大値
-                setMaxJissekiNoKK(getMaxJissekiNoFromSrKoteifuryoHantei(queryRunnerQcdb, this.currentTorokuNoValue));
-                // (6)[工程不良結果]から、初期表示する情報を取得
-                koteifuryohanteiList = loadSrKoteifuryoHantei(queryRunnerQcdb, this.currentTorokuNoValue, this.maxJissekiNoKK);
-            }
+            // (5)[工程不良結果]から取得した実績Noの最大値
+            setMaxJissekiNoKK(getMaxJissekiNoFromSrKoteifuryoHantei(queryRunnerQcdb, this.currentTorokuNoValue));
+            // (6)[工程不良結果]から、初期表示する情報を取得
+            List<SrKoteifuryoHantei> koteifuryohanteiList = loadSrKoteifuryoHantei(queryRunnerQcdb, this.currentTorokuNoValue, this.maxJissekiNoKK);
 
             // 取得したテーブル情報を画面表示モデルに設定する
             GXHDO101D001Model model = getGxhdo101d001Model();
@@ -775,32 +727,6 @@ public class GXHDO101D001 implements Serializable {
 
         return maxJissekiNo;
     }
-    
-    /**
-     * tmp_工程不良と紐づく工程不良結果から実績Noの最大値を取得
-     *
-     * @param queryRunnerXHD
-     * @param torokuNo 登録No
-     * @return maxJissekiNo 工程不良結果の実績No最大値
-     * @throws SQLException
-     */
-    private String getMaxJissekiNoFromTmpSrKoteifuryoKekka(QueryRunner queryRunnerXHD, String torokuNo) throws SQLException {
-        String maxJissekiNo = "";
-        String sql = "SELECT MAX(jissekino) AS jissekino "
-                + "FROM tmp_sr_koteifuryo_kekka "
-                + "WHERE torokuno = ? ";
-        List<Object> params = new ArrayList<>();
-        params.add(torokuNo);
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        Map map = queryRunnerXHD.query(sql, new MapHandler(), params.toArray());
-        if (map != null && !map.isEmpty()) {
-            maxJissekiNo = String.valueOf(map.get("jissekino"));
-        }
-
-        return maxJissekiNo;
-    }
-    
 
     /**
      * [工程不良結果]テーブルから初期表示する情報を取得
@@ -814,34 +740,6 @@ public class GXHDO101D001 implements Serializable {
     private List<SrKoteifuryoKekka> loadSrKoteifuryoKekka(QueryRunner queryRunnerXHD, String torokuNo, String maxJissekiNo) throws SQLException {
         String sql = "SELECT * "
                 + "FROM sr_koteifuryo_kekka "
-                + "WHERE torokuno = ? AND jissekino = ? "
-                + "ORDER BY sijino ";
-        List<Object> params = new ArrayList<>();
-        params.add(torokuNo);
-        params.add(maxJissekiNo);
-
-        Map<String, String> mapping = new HashMap<>();
-        mapping.put("torokuno", "torokuno");
-        BeanProcessor beanProcessor = new BeanProcessor(mapping);
-        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
-        ResultSetHandler<List<SrKoteifuryoKekka>> beanHandler = new BeanListHandler<>(SrKoteifuryoKekka.class, rowProcessor);
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerXHD.query(sql, beanHandler, params.toArray());
-
-    }
-    
-    /**
-     * [tmp_工程不良結果]テーブルから初期表示する情報を取得
-     *
-     * @param queryRunnerXHD
-     * @param torokuNo 登録No
-     * @param maxJissekiNo 工程不良結果の実績No最大値
-     * @return
-     * @throws SQLException
-     */
-    private List<SrKoteifuryoKekka> loadTmpSrKoteifuryoKekka(QueryRunner queryRunnerXHD, String torokuNo, String maxJissekiNo) throws SQLException {
-        String sql = "SELECT * "
-                + "FROM tmp_sr_koteifuryo_kekka "
                 + "WHERE torokuno = ? AND jissekino = ? "
                 + "ORDER BY sijino ";
         List<Object> params = new ArrayList<>();
@@ -881,31 +779,6 @@ public class GXHDO101D001 implements Serializable {
 
         return maxJissekiNo;
     }
-    
-    /**
-     * 工程不良と紐づくtmp_工程不良判定から実績Noの最大値を取得
-     *
-     * @param queryRunnerXHD
-     * @param torokuNo 登録No
-     * @return maxJissekiNo 工程不良判定の実績No最大値
-     * @throws SQLException
-     */
-    private String getMaxJissekiNoFromTmpSrKoteifuryoHantei(QueryRunner queryRunnerXHD, String torokuNo) throws SQLException {
-        String maxJissekiNo = "";
-        String sql = "SELECT MAX(jissekino) AS jissekino "
-                + "FROM tmp_sr_koteifuryo_hantei "
-                + "WHERE torokuno = ? ";
-        List<Object> params = new ArrayList<>();
-        params.add(torokuNo);
-
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        Map map = queryRunnerXHD.query(sql, new MapHandler(), params.toArray());
-        if (map != null && !map.isEmpty()) {
-            maxJissekiNo = String.valueOf(map.get("jissekino"));
-        }
-
-        return maxJissekiNo;
-    }
 
     /**
      * [工程不良判定]テーブルから初期表示する情報を取得
@@ -919,33 +792,6 @@ public class GXHDO101D001 implements Serializable {
     private List<SrKoteifuryoHantei> loadSrKoteifuryoHantei(QueryRunner queryRunnerXHD, String torokuNo, String maxJissekiNo) throws SQLException {
         String sql = "SELECT * "
                 + "FROM sr_koteifuryo_hantei "
-                + "WHERE torokuno = ? AND jissekino = ? "
-                + "ORDER BY sijino ";
-        List<Object> params = new ArrayList<>();
-        params.add(torokuNo);
-        params.add(maxJissekiNo);
-
-        Map<String, String> mapping = new HashMap<>();
-        mapping.put("torokuno", "torokuno");
-        BeanProcessor beanProcessor = new BeanProcessor(mapping);
-        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
-        ResultSetHandler<List<SrKoteifuryoHantei>> beanHandler = new BeanListHandler<>(SrKoteifuryoHantei.class, rowProcessor);
-        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
-        return queryRunnerXHD.query(sql, beanHandler, params.toArray());
-
-    }
-    /**
-     * [tmp_工程不良判定]テーブルから初期表示する情報を取得
-     *
-     * @param queryRunnerXHD
-     * @param torokuNo 登録No
-     * @param maxJissekiNo 工程不良判定の実績No最大値
-     * @return
-     * @throws SQLException
-     */
-    private List<SrKoteifuryoHantei> loadTmpSrKoteifuryoHantei(QueryRunner queryRunnerXHD, String torokuNo, String maxJissekiNo) throws SQLException {
-        String sql = "SELECT * "
-                + "FROM tmp_sr_koteifuryo_hantei "
                 + "WHERE torokuno = ? AND jissekino = ? "
                 + "ORDER BY sijino ";
         List<Object> params = new ArrayList<>();

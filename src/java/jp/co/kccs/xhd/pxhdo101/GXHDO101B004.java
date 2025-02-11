@@ -5287,12 +5287,12 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
         String edaban = lotNo.substring(11, 14);
 
         // [tmp_sr_sekiso_kanri]から、ﾃﾞｰﾀの取得
-        String sql = "SELECT kanrino, kojyo, lotno, edaban, datasyurui, jissekino, torokunichiji, lot_flg"
+        String sql = "SELECT kanrino, kojyo, lotno, edaban, datasyurui, jissekino, torokunichiji"
                 + " FROM tmp_sr_sekiso_kanri WHERE kojyo = ? AND lotno = ? AND edaban = ? AND (lot_flg < 9 OR lot_flg is NULL)";
         if (!StringUtil.isEmpty(datasyurui)) {
             sql += "AND datasyurui = ? ";
         }
-        sql += " order by lot_flg desc, jissekino asc";
+        sql += " order by jissekino asc";
 
         List<Object> params = new ArrayList<>();
         params.add(kojyo);

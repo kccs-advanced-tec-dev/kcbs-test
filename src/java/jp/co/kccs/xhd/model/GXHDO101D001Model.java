@@ -1161,70 +1161,6 @@ public class GXHDO101D001Model implements Serializable {
     public void setQakakuninsyamei(String qakakuninsyamei) {
         this.qakakuninsyamei = qakakuninsyamei;
     }
-    
-    /**
-     * tmp_data
-     * @return the tmp_data
-     */
-    public String getTmp_data() {
-        return tmp_data;
-    }
-
-    /**
-     * tmp_data
-     * @param tmp_data the tmp_data to set
-     */
-    public void setTmp_data(String tmp_data) {
-        this.tmp_data = tmp_data;
-    }
-    
-    /**
-     * tmp_hanteidata
-     * @return the tmp_hanteidata
-     */
-    public String getTmp_hanteidata() {
-        return tmp_hanteidata;
-    }
-
-    /**
-     * tmp_hanteidata
-     * @param tmp_hanteidata the tmp_hanteidata to set
-     */
-    public void setTmp_hanteidata(String tmp_hanteidata) {
-        this.tmp_hanteidata = tmp_hanteidata;
-    }
-    
-    /**
-     * tmp_data_hyoji
-     * @return the tmp_data_hyoji
-     */
-    public String getTmp_data_hyoji() {
-        return tmp_data_hyoji;
-    }
-
-    /**
-     * tmp_data_hyoji
-     * @param tmp_data_hyoji the tmp_data_hyoji to set
-     */
-    public void setTmp_data_hyoji(String tmp_data_hyoji) {
-        this.tmp_data_hyoji = tmp_data_hyoji;
-    }
-    
-    /**
-     * tmp_hanteidata_hyoji
-     * @return the tmp_hanteidata_hyoji
-     */
-    public String getTmp_hanteidata_hyoji() {
-        return tmp_hanteidata_hyoji;
-    }
-
-    /**
-     * tmp_hanteidata_hyoji
-     * @param tmp_hanteidata_hyoji the tmp_hanteidata_hyoji to set
-     */
-    public void setTmp_hanteidata_hyoji(String tmp_hanteidata_hyoji) {
-        this.tmp_hanteidata_hyoji = tmp_hanteidata_hyoji;
-    }
 
     /**
      * @return the qakakuninnichiji
@@ -1685,26 +1621,6 @@ public class GXHDO101D001Model implements Serializable {
      * 不良内容表示判定
      */
     private Boolean[] furyoDisp = new Boolean[10];
-    
-     /**
-     * tmp_data
-     */
-    private String tmp_data;
-    
-     /**
-     * tmp_hanteidata
-     */
-    private String tmp_hanteidata;
-    
-     /**
-     * tmp_data_hyoji
-     */
-    private String tmp_data_hyoji;
-    
-     /**
-     * tmp_hanteidata_hyoji
-     */
-    private String tmp_hanteidata_hyoji;
 
     /**
      * 不良内容表示判定設定

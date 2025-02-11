@@ -660,17 +660,18 @@ public class PublicResource {
                 + "senbetukaisinitijitwa,senbetusyuryounitijitwa,satsample,binboxseisoucheck,bin1setteititwa,bin2setteititwa,bin3setteititwa,"
                 + "bin4setteititwa,bin5setteititwa,bin6setteititwa,bin7setteititwa,bin8setteititwa,hoseiyoutippuyoryou,hoseiyoutipputan,ir1jikan,"
                 + "ir1jikantani,ir2jikan,ir2jikantani,ir3jikan,ir3jikantani,ir4jikan,ir4jikantani,ir5jikan,ir5jikantani,ir6jikan,ir6jikantani,ir7jikan,"
-                + "ir7jikantani,ir8jikan,ir8jikantani"
+                + "ir7jikantani,ir8jikan,ir8jikantani,setubikubun"
                 + ") VALUES ("
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
                 + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,"
-                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
+                + "?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?"
                 + ")";
 
         String numPattern = "[\\d.+-]";
         String excNumPattern = "[^\\d.-]";
         String irDenatuPattern = "[+V]";
         String irJikanUnit = "ms";
+        String setubikubun="TWA";
 
         List<Object> paramIns
                 = new ArrayList<>(Arrays.asList(
@@ -844,7 +845,8 @@ public class PublicResource {
                         getFormatData(getTrimString(param.getIr7jikan(), irJikanUnit), "5", "5", "BigDecimal"),
                         getFormatData(getTrimString(param.getIr7jikantani(), numPattern), "10", "", "String"),
                         getFormatData(getTrimString(param.getIr8jikan(), irJikanUnit), "5", "5", "BigDecimal"),
-                        getFormatData(getTrimString(param.getIr8jikantani(), numPattern), "10", "", "String")
+                        getFormatData(getTrimString(param.getIr8jikantani(), numPattern), "10", "", "String"),
+                        setubikubun
                 ));
 
         DBUtil.outputSQLLog(sqlIns, paramIns.toArray(), LOGGER);

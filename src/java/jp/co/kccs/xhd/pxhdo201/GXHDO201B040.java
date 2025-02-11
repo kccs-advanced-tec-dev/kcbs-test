@@ -659,7 +659,8 @@ public class GXHDO201B040 implements Serializable {
             sql += " AND   (? IS NULL OR SENBETUKAISINITIJI >= ?) "
                     + " AND   (? IS NULL OR SENBETUKAISINITIJI <= ?) "
                     + " AND   (? IS NULL OR SENBETUSYURYOUNITIJI >= ?) "
-                    + " AND   (? IS NULL OR SENBETUSYURYOUNITIJI <= ?) ";
+                    + " AND   (? IS NULL OR SENBETUSYURYOUNITIJI <= ?) "
+                    + " AND   (? IS NULL OR setubikubun <> ?) ";
 
             // パラメータ設定
             List<Object> params = createSearchParam();
@@ -931,6 +932,7 @@ public class GXHDO201B040 implements Serializable {
                     + " AND   (? IS NULL OR SENBETUKAISINITIJI <= ?) "
                     + " AND   (? IS NULL OR SENBETUSYURYOUNITIJI >= ?) "
                     + " AND   (? IS NULL OR SENBETUSYURYOUNITIJI <= ?) "
+                    + " AND   (? IS NULL OR setubikubun <> ?) "
                     + " ORDER BY SENBETUKAISINITIJI ";            
             
             // パラメータ設定
@@ -1308,6 +1310,8 @@ public class GXHDO201B040 implements Serializable {
         if (!StringUtil.isEmpty(senbetuEndDateT)) {
             paramSenbetuEndDateT = DateUtil.convertStringToDate(getSenbetuEndDateT(), StringUtil.isEmpty(getSenbetuEndTimeT()) ? "2359" : getSenbetuEndTimeT());
         }
+        
+        String paramSetubiKubun = "GXHDO101B053";
 
         List<Object> params = new ArrayList<>();
         params.addAll(Arrays.asList(paramKojo, paramKojo));
@@ -1324,6 +1328,7 @@ public class GXHDO201B040 implements Serializable {
         params.addAll(Arrays.asList(paramSenbetuStartDateT, paramSenbetuStartDateT));
         params.addAll(Arrays.asList(paramSenbetuEndDateF, paramSenbetuEndDateF));
         params.addAll(Arrays.asList(paramSenbetuEndDateT, paramSenbetuEndDateT));
+        params.addAll(Arrays.asList(paramSetubiKubun, paramSetubiKubun));
 
 
         return params;

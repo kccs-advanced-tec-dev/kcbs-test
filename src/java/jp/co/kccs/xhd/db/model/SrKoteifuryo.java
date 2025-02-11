@@ -290,7 +290,6 @@ public class SrKoteifuryo {
      */
     private String goukicode;
     private String tmp_data;
-    private String tmp_hanteidata;
     private String tokuisaki;
     
     /**
@@ -301,7 +300,7 @@ public class SrKoteifuryo {
     /**
      * 磁器QC確認日時
      */
-    private java.sql.Date jikiqckakuninnichiji;    
+    private java.sql.Date jikiqckakuninnichiji;
 
     /**
      * @return the torokuno
@@ -1337,20 +1336,6 @@ public class SrKoteifuryo {
      */
     public void setTmp_data(String tmp_data) {
         this.tmp_data = tmp_data;
-    }
-    
-    /**
-     * @return the tmp_hanteidata
-     */
-    public String getTmp_hanteidata() {
-        return tmp_hanteidata;
-    }
-
-    /**
-     * @param tmp_hanteidata the tmp_hanteidata to set
-     */
-    public void setTmp_hanteidata(String tmp_hanteidata) {
-        this.tmp_hanteidata = tmp_hanteidata;
     }
 
     /**

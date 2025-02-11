@@ -268,6 +268,11 @@ public class GXHDO101B001 implements IFormLogic {
 
         // 規格チェック
         List<KikakuchiInputErrorInfo> kikakuchiInputErrorInfoList = new ArrayList<>();
+        for (FXHDD01 item : processData.getItemList()) {
+            if("【実測値記入】".equals(item.getKikakuChi())){
+                item.setStandardPattern("");
+            }
+        }
         ErrorMessageInfo errorMessageInfo = ValidateUtil.checkInputKikakuchi(processData.getItemList(), kikakuchiInputErrorInfoList);
 
         // 規格チェック内で想定外のエラーが発生した場合、エラーを出して中断
@@ -336,6 +341,13 @@ public class GXHDO101B001 implements IFormLogic {
         if (!"".equals(itemPasteLotNo2.getValue()) && (itemPasteLotNo2.getValue() != null) && (itemPasteNendo2.getValue() != null) && 
                 (itemPasteOndo2.getValue() != null) && (itemPasteKokeibun2.getValue() != null)) {
              errFlag = false;
+        }
+        
+        if (("".equals(itemPasteLotNo2.getValue()) || (itemPasteLotNo2.getValue() == null)) &&  (itemPasteNendo2.getValue() != null) && 
+                (itemPasteOndo2.getValue() != null) && (itemPasteKokeibun2.getValue() != null)) {
+            if((itemPasteNendo2.getValue().equals("0")) && (itemPasteOndo2.getValue().equals("0") ) && (itemPasteKokeibun2.getValue().equals("0") )){
+                errFlag = false;
+            }
         }
         
         if (errFlag) {
@@ -554,6 +566,11 @@ public class GXHDO101B001 implements IFormLogic {
 
         // 規格チェック
         List<KikakuchiInputErrorInfo> kikakuchiInputErrorInfoList = new ArrayList<>();
+        for (FXHDD01 item : processData.getItemList()) {
+            if("【実測値記入】".equals(item.getKikakuChi())){
+                item.setStandardPattern("");
+            }
+        }
         ErrorMessageInfo errorMessageInfo = ValidateUtil.checkInputKikakuchi(processData.getItemList(), kikakuchiInputErrorInfoList);
 
         // 規格チェック内で想定外のエラーが発生した場合、エラーを出して中断
@@ -624,6 +641,13 @@ public class GXHDO101B001 implements IFormLogic {
         if (!"".equals(itemPasteLotNo2.getValue()) && (itemPasteLotNo2.getValue() != null) && (itemPasteNendo2.getValue() != null) && 
                 (itemPasteOndo2.getValue() != null) && (itemPasteKokeibun2.getValue() != null)) {
              errFlag = false;
+        }
+        
+        if (("".equals(itemPasteLotNo2.getValue()) || (itemPasteLotNo2.getValue() == null)) &&  (itemPasteNendo2.getValue() != null) && 
+                (itemPasteOndo2.getValue() != null) && (itemPasteKokeibun2.getValue() != null)) {
+            if((itemPasteNendo2.getValue().equals("0")) && (itemPasteOndo2.getValue().equals("0") ) && (itemPasteKokeibun2.getValue().equals("0") )){
+                errFlag = false;
+            }
         }
         
         if (errFlag) {
@@ -869,6 +893,11 @@ public class GXHDO101B001 implements IFormLogic {
 
         // 規格チェック
         List<KikakuchiInputErrorInfo> kikakuchiInputErrorInfoList = new ArrayList<>();
+        for (FXHDD01 item : processData.getItemList()) {
+            if("【実測値記入】".equals(item.getKikakuChi())){
+                item.setStandardPattern("");
+            }
+        }
         ErrorMessageInfo errorMessageInfo = ValidateUtil.checkInputKikakuchi(processData.getItemList(), kikakuchiInputErrorInfoList);
 
         // 規格チェック内で想定外のエラーが発生した場合、エラーを出して中断

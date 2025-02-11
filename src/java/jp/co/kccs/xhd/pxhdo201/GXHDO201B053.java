@@ -988,7 +988,7 @@ public class GXHDO201B053 implements Serializable {
                     + ", binkakuninsya "
                     + ", saiken "
                     + ", setubikubun "
-                    + "  FROM sr_denkitokuseiesi "
+                    + "  FROM sr_denkitokuseitwa "
                     + " WHERE (? IS NULL OR KOJYO = ?) "
                     + " AND   (? IS NULL OR LOTNO = ?) "
                     + " AND   (? IS NULL OR EDABAN = ?) "

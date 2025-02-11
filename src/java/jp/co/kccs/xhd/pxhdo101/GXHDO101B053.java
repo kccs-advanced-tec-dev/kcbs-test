@@ -28,7 +28,7 @@ import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.db.model.FXHDD01;
 import jp.co.kccs.xhd.db.model.FXHDD07;
 import jp.co.kccs.xhd.db.model.Jisseki;
-import jp.co.kccs.xhd.db.model.SrDenkitokuseiesi;
+import jp.co.kccs.xhd.db.model.SrDenkitokuseitwa;
 import jp.co.kccs.xhd.pxhdo901.ErrorMessageInfo;
 import jp.co.kccs.xhd.pxhdo901.IFormLogic;
 import jp.co.kccs.xhd.pxhdo901.ProcessData;
@@ -502,11 +502,11 @@ public class GXHDO101B053 implements IFormLogic {
             }
 
             // 仮登録状態の場合、仮登録のデータを削除する。
-            SrDenkitokuseiesi tmpSrDenkitokuseiesi = null;
+            SrDenkitokuseitwa tmpSrDenkitokuseiesi = null;
             if (JOTAI_FLG_KARI_TOROKU.equals(processData.getInitJotaiFlg())) {
 
                 // 更新前の値を取得
-                List<SrDenkitokuseiesi> srMksinkuukansouList = getSrDenkitokuseiesiData(queryRunnerQcdb, rev.toPlainString(), processData.getInitJotaiFlg(), kojyo, lotNo8, edaban, paramJissekino);
+                List<SrDenkitokuseitwa> srMksinkuukansouList = getSrDenkitokuseiesiData(queryRunnerQcdb, rev.toPlainString(), processData.getInitJotaiFlg(), kojyo, lotNo8, edaban, paramJissekino);
                 if (!srMksinkuukansouList.isEmpty()) {
                     tmpSrDenkitokuseiesi = srMksinkuukansouList.get(0);
                 }
@@ -1365,7 +1365,7 @@ public class GXHDO101B053 implements IFormLogic {
     private boolean setInputItemData(ProcessData processData, QueryRunner queryRunnerDoc, QueryRunner queryRunnerQcdb,
             String lotNo, String formId, int jissekino, String syorisuu, String tanijuryo) throws SQLException {
 
-        List<SrDenkitokuseiesi> srDenkitokuseiesiList = new ArrayList<>();
+        List<SrDenkitokuseitwa> srDenkitokuseiesiList = new ArrayList<>();
         String rev = "";
         String jotaiFlg = "";
         String kojyo = lotNo.substring(0, 3);
@@ -1458,7 +1458,7 @@ public class GXHDO101B053 implements IFormLogic {
      * @param processData 処理制御データ
      * @param srDenkitokuseiesi 電気特性データ
      */
-    private void setInputItemData(ProcessData processData, SrDenkitokuseiesi srDenkitokuseiesi) {
+    private void setInputItemData(ProcessData processData, SrDenkitokuseitwa srDenkitokuseiesi) {
         //製品情報
         setInputItemDataFormA(processData, srDenkitokuseiesi);
         //耐電圧設定条件
@@ -1473,7 +1473,7 @@ public class GXHDO101B053 implements IFormLogic {
      * @param processData 処理制御データ
      * @param srDenkitokuseiesi 電気特性データ
      */
-    private void setInputItemDataFormA(ProcessData processData, SrDenkitokuseiesi srDenkitokuseiesi) {
+    private void setInputItemDataFormA(ProcessData processData, SrDenkitokuseitwa srDenkitokuseiesi) {
 
         // 製品情報:送り良品数
         this.setItemData(processData, GXHDO101B053Const.SEIHIN_OKURI_RYOHINSU, getSrDenkitokuseiesiItemData(GXHDO101B053Const.SEIHIN_OKURI_RYOHINSU, srDenkitokuseiesi));
@@ -1597,7 +1597,7 @@ public class GXHDO101B053 implements IFormLogic {
      * @param processData 処理制御データ
      * @param srDenkitokuseiesi 電気特性データ
      */
-    private void setInputItemDataFormB(ProcessData processData, SrDenkitokuseiesi srDenkitokuseiesi) {
+    private void setInputItemDataFormB(ProcessData processData, SrDenkitokuseitwa srDenkitokuseiesi) {
 
         // 耐電圧設定条件:IR① 電圧
         this.setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENATSU1, getSrDenkitokuseiesiItemData(GXHDO101B053Const.TAIDEN_DENATSU1, srDenkitokuseiesi));
@@ -1642,7 +1642,7 @@ public class GXHDO101B053 implements IFormLogic {
         this.setItemDataEx(processData, GXHDO101B053Const.TAIDEN_RYOUHINHANILOW1, getSrDenkitokuseiesiItemData(GXHDO101B053Const.TAIDEN_RYOUHINHANILOW1, srDenkitokuseiesi));
 
         // 耐電圧設定条件:IR① 良品範囲下限 単位
-        this.setItemDataEx(processData, GXHDO101B053Const.TAIDEN_RYOUHINHANILOWTANI1, getSrDenkitokuseiesiItemData(GXHDO101B053Const.TAIDEN_RYOUHINHANITANI1, srDenkitokuseiesi));        
+        this.setItemDataEx(processData, GXHDO101B053Const.TAIDEN_RYOUHINHANILOWTANI1, getSrDenkitokuseiesiItemData(GXHDO101B053Const.TAIDEN_RYOUHINHANILOWTANI1, srDenkitokuseiesi));        
         
         // 耐電圧設定条件:IR② 電圧
         this.setItemDataEx(processData, GXHDO101B053Const.TAIDEN_DENATSU2, getSrDenkitokuseiesiItemData(GXHDO101B053Const.TAIDEN_DENATSU2, srDenkitokuseiesi));
@@ -1966,7 +1966,7 @@ public class GXHDO101B053 implements IFormLogic {
      * @param processData 処理制御データ
      * @param srDenkitokuseiesi 電気特性データ
      */
-    private void setInputItemDataFormC(ProcessData processData, SrDenkitokuseiesi srDenkitokuseiesi) {
+    private void setInputItemDataFormC(ProcessData processData, SrDenkitokuseitwa srDenkitokuseiesi) {
 
         // 設定条件及び処理結果:BIN1 %区分(設定値)
         this.setItemDataEx(processData, GXHDO101B053Const.SET_BIN1_PERCENT_KBN, getSrDenkitokuseiesiItemData(GXHDO101B053Const.SET_BIN1_PERCENT_KBN, srDenkitokuseiesi));
@@ -2375,10 +2375,10 @@ public class GXHDO101B053 implements IFormLogic {
      * @return 電気特性登録データ
      * @throws SQLException 例外エラー
      */
-    private List<SrDenkitokuseiesi> getSrDenkitokuseiesiData(QueryRunner queryRunnerQcdb, String rev, String jotaiFlg,
+    private List<SrDenkitokuseitwa> getSrDenkitokuseiesiData(QueryRunner queryRunnerQcdb, String rev, String jotaiFlg,
             String kojyo, String lotNo, String edaban, int jissekino) throws SQLException {
         
-        List<SrDenkitokuseiesi> srDenkitokuseiesiJissekiList = new ArrayList<>();
+        List<SrDenkitokuseitwa> srDenkitokuseiesiJissekiList = new ArrayList<>();
 
         if (JOTAI_FLG_TOROKUZUMI.equals(jotaiFlg)) {
             srDenkitokuseiesiJissekiList = loadSrDenkitokuseiesi(queryRunnerQcdb, kojyo, lotNo, edaban, jissekino, rev);
@@ -2668,7 +2668,7 @@ public class GXHDO101B053 implements IFormLogic {
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private List<SrDenkitokuseiesi> loadSrDenkitokuseiesi(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    private List<SrDenkitokuseitwa> loadSrDenkitokuseiesi(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, int jissekino, String rev) throws SQLException {
 
         String sql = "SELECT "
@@ -2704,7 +2704,7 @@ public class GXHDO101B053 implements IFormLogic {
                 + "ir6sokuteihanistarttani,ir6sokuteihaniend,ir6sokuteihaniendtani,ir7denryustart,ir7denryustarttani,ir7denryuend,ir7denryuendtani,ir7sokuteihanistart,ir7sokuteihanistarttani,"
                 + "ir7sokuteihaniend,ir7sokuteihaniendtani,ir8denryustart,ir8denryustarttani,ir8denryuend,ir8denryuendtani,ir8sokuteihanistart,ir8sokuteihanistarttani,ir8sokuteihaniend,ir8sokuteihaniendtani,"
                 + "ir1jikan,ir1jikantani,ir2jikan,ir2jikantani,ir3jikan,ir3jikantani,ir4jikan,ir4jikantani,ir5jikan,ir5jikantani,ir6jikan,ir6jikantani,ir7jikan,ir7jikantani,ir8jikan,ir8jikantani "
-                + "FROM sr_denkitokuseiesi "
+                + "FROM sr_denkitokuseitwa "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? ";
 
         // revisionが入っている場合、条件に追加
@@ -3070,7 +3070,7 @@ public class GXHDO101B053 implements IFormLogic {
 
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
-        ResultSetHandler<List<SrDenkitokuseiesi>> beanHandler = new BeanListHandler<>(SrDenkitokuseiesi.class, rowProcessor);
+        ResultSetHandler<List<SrDenkitokuseitwa>> beanHandler = new BeanListHandler<>(SrDenkitokuseitwa.class, rowProcessor);
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, beanHandler, params.toArray());
@@ -3088,7 +3088,7 @@ public class GXHDO101B053 implements IFormLogic {
      * @return 取得データ
      * @throws SQLException 例外エラー
      */
-    private List<SrDenkitokuseiesi> loadTmpSrDenkitokuseiesi(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
+    private List<SrDenkitokuseitwa> loadTmpSrDenkitokuseiesi(QueryRunner queryRunnerQcdb, String kojyo, String lotNo,
             String edaban, int jissekino, String rev) throws SQLException {
 
         String sql = "SELECT "
@@ -3124,7 +3124,7 @@ public class GXHDO101B053 implements IFormLogic {
                 + "ir7denryustart,ir7denryustarttani,ir7denryuend,ir7denryuendtani,ir7sokuteihanistart,ir7sokuteihanistarttani,ir7sokuteihaniend,ir7sokuteihaniendtani,ir8denryustart,ir8denryustarttani,"
                 + "ir8denryuend,ir8denryuendtani,ir8sokuteihanistart,ir8sokuteihanistarttani,ir8sokuteihaniend,ir8sokuteihaniendtani,"
                 + "ir1jikan,ir1jikantani,ir2jikan,ir2jikantani,ir3jikan,ir3jikantani,ir4jikan,ir4jikantani,ir5jikan,ir5jikantani,ir6jikan,ir6jikantani,ir7jikan,ir7jikantani,ir8jikan,ir8jikantani "
-                + "FROM tmp_sr_denkitokuseiesi "
+                + "FROM tmp_sr_denkitokuseitwa "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND deleteflag = ? ";
 
         // revisionが入っている場合、条件に追加
@@ -3493,7 +3493,7 @@ public class GXHDO101B053 implements IFormLogic {
         
         BeanProcessor beanProcessor = new BeanProcessor(mapping);
         RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
-        ResultSetHandler<List<SrDenkitokuseiesi>> beanHandler = new BeanListHandler<>(SrDenkitokuseiesi.class, rowProcessor);
+        ResultSetHandler<List<SrDenkitokuseitwa>> beanHandler = new BeanListHandler<>(SrDenkitokuseitwa.class, rowProcessor);
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, beanHandler, params.toArray());
@@ -3552,7 +3552,7 @@ public class GXHDO101B053 implements IFormLogic {
      * @param srDenkitokuseiesi 電気特性データ
      * @return 入力値
      */
-    private String getItemData(List<FXHDD01> listData, String itemId, SrDenkitokuseiesi srDenkitokuseiesi) {
+    private String getItemData(List<FXHDD01> listData, String itemId, SrDenkitokuseitwa srDenkitokuseiesi) {
         List<FXHDD01> selectData
                 = listData.stream().filter(n -> itemId.equals(n.getItemId())).collect(Collectors.toList());
         if (null != selectData && 0 < selectData.size()) {
@@ -3680,7 +3680,7 @@ public class GXHDO101B053 implements IFormLogic {
     private void insertTmpSrDenkitokuseiesi(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev, int deleteflag,
             String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, ProcessData processData, String formId) throws SQLException {
 
-        String sql = "INSERT INTO tmp_sr_denkitokuseiesi ("
+        String sql = "INSERT INTO tmp_sr_denkitokuseitwa ("
                 + "kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,ownercode,lotkubuncode,siteikousa,atokouteisijinaiyou,okuriryouhinsuu,ukeiretannijyuryo,ukeiresoujyuryou,kensabasyo,senbetukaisinitiji,"
                 + "senbetusyuryounitiji,kensagouki,bunruiairatu,testplatekeijo,testplatekakunin,binboxseisoucheck,setsya,kakuninsya,siteikousabudomari1,siteikousabudomari2,testplatekanrino,tan,sokuteisyuhasuu,"
                 + "sokuteidenatu,hoseiyoutippuyoryou,hoseiyoutipputan,hoseimae,hoseigo,hoseiritu,bunruikakunin,gaikankakunin,netsusyorinitiji,agingjikan,syoninsha,furimukesya,bikou1,bikou2,irdenatu1,irhanteiti1,"
@@ -3735,7 +3735,7 @@ public class GXHDO101B053 implements IFormLogic {
     private void updateTmpSrDenkitokuseiesi(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, String jotaiFlg, BigDecimal newRev,
             String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, ProcessData processData, String formId) throws SQLException {
 
-        String sql = "UPDATE tmp_sr_denkitokuseiesi SET "
+        String sql = "UPDATE tmp_sr_denkitokuseitwa SET "
                 + "kcpno = ? ,tokuisaki = ? ,ownercode = ? ,lotkubuncode = ? ,siteikousa = ? ,atokouteisijinaiyou = ? ,okuriryouhinsuu = ? ,ukeiretannijyuryo = ? ,"
                 + "ukeiresoujyuryou = ? ,kensabasyo = ? ,senbetukaisinitiji = ? ,senbetusyuryounitiji = ? ,kensagouki = ? ,bunruiairatu = ? ,testplatekeijo = ? ,testplatekakunin = ? ,binboxseisoucheck = ? ,"
                 + "setsya = ? ,kakuninsya = ? ,siteikousabudomari1 = ? ,siteikousabudomari2 = ? ,testplatekanrino = ? ,tan = ? ,sokuteisyuhasuu = ? ,sokuteidenatu = ? ,hoseiyoutippuyoryou = ? ,hoseiyoutipputan = ? ,"
@@ -3770,8 +3770,8 @@ public class GXHDO101B053 implements IFormLogic {
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ? ";
 
         // 更新前の値を取得
-        List<SrDenkitokuseiesi> srSrDenkitokuseiesiList = getSrDenkitokuseiesiData(queryRunnerQcdb, rev.toPlainString(), jotaiFlg, kojyo, lotNo, edaban, jissekino);
-        SrDenkitokuseiesi srMksinkuukansou = null;
+        List<SrDenkitokuseitwa> srSrDenkitokuseiesiList = getSrDenkitokuseiesiData(queryRunnerQcdb, rev.toPlainString(), jotaiFlg, kojyo, lotNo, edaban, jissekino);
+        SrDenkitokuseitwa srMksinkuukansou = null;
         if (!srSrDenkitokuseiesiList.isEmpty()) {
             srMksinkuukansou = srSrDenkitokuseiesiList.get(0);
         }
@@ -3804,7 +3804,7 @@ public class GXHDO101B053 implements IFormLogic {
     private void deleteTmpSrDenkitokuseiesi(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev,
             String kojyo, String lotNo, String edaban, int jissekino) throws SQLException {
 
-        String sql = "DELETE FROM tmp_sr_denkitokuseiesi "
+        String sql = "DELETE FROM tmp_sr_denkitokuseitwa "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ?";
 
         //更新値設定
@@ -3837,7 +3837,7 @@ public class GXHDO101B053 implements IFormLogic {
      * @return 更新パラメータ
      */
     private List<Object> setUpdateParameterTmpSrDenkitokuseiesi(boolean isInsert, BigDecimal newRev, int deleteflag, String kojyo,
-            String lotNo, String edaban, Timestamp systemTime, ProcessData processData, SrDenkitokuseiesi srDenkitokuseiesi, int jissekino, String formId) {
+            String lotNo, String edaban, Timestamp systemTime, ProcessData processData, SrDenkitokuseitwa srDenkitokuseiesi, int jissekino, String formId) {
 
         List<FXHDD01> pItemList = processData.getItemList();
         List<FXHDD01> pItemListEx = processData.getItemListEx();
@@ -4198,9 +4198,9 @@ public class GXHDO101B053 implements IFormLogic {
      * @throws SQLException 例外エラー
      */
     private void insertSrDenkitokuseiesi(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev,
-            String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, ProcessData processData, SrDenkitokuseiesi tmpSrDenkitokuseiesi, String formId) throws SQLException {
+            String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, ProcessData processData, SrDenkitokuseitwa tmpSrDenkitokuseiesi, String formId) throws SQLException {
 
-        String sql = "INSERT INTO sr_denkitokuseiesi ("
+        String sql = "INSERT INTO sr_denkitokuseitwa ("
                 + "kojyo, lotno, edaban, kaisuu, kcpno, tokuisaki, ownercode, lotkubuncode, siteikousa, atokouteisijinaiyou, okuriryouhinsuu, ukeiretannijyuryo, ukeiresoujyuryou, kensabasyo, senbetukaisinitiji, "
                 + "senbetusyuryounitiji, kensagouki, bunruiairatu, testplatekeijo, testplatekakunin, binboxseisoucheck, setsya, kakuninsya, siteikousabudomari1, siteikousabudomari2, testplatekanrino, tan, "
                 + "sokuteisyuhasuu, sokuteidenatu, hoseiyoutippuyoryou, hoseiyoutipputan, hoseimae, hoseigo, hoseiritu, bunruikakunin, gaikankakunin, netsusyorinitiji, agingjikan, syoninsha, furimukesya, bikou1, bikou2, "
@@ -4256,7 +4256,7 @@ public class GXHDO101B053 implements IFormLogic {
      */
     private void updateSrDenkitokuseiesi(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev, String jotaiFlg, BigDecimal newRev,
             String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime, ProcessData processData, String formId) throws SQLException {
-        String sql = "UPDATE sr_denkitokuseiesi SET "
+        String sql = "UPDATE sr_denkitokuseitwa SET "
                 + "kcpno = ?,tokuisaki = ?,ownercode = ?,lotkubuncode = ?,siteikousa = ?,atokouteisijinaiyou = ?,okuriryouhinsuu = ?,ukeiretannijyuryo = ?,ukeiresoujyuryou = ?,kensabasyo = ?,senbetukaisinitiji = ?,"
                 + "senbetusyuryounitiji = ?,kensagouki = ?,bunruiairatu = ?,testplatekeijo = ?,testplatekakunin = ?,binboxseisoucheck = ?,setsya = ?,kakuninsya = ?,siteikousabudomari1 = ?,siteikousabudomari2 = ?,"
                 + "testplatekanrino = ?,tan = ?,sokuteisyuhasuu = ?,sokuteidenatu = ?,hoseiyoutippuyoryou = ?,hoseiyoutipputan = ?,hoseimae = ?,hoseigo = ?,hoseiritu = ?,bunruikakunin = ?,gaikankakunin = ?,netsusyorinitiji = ?,"
@@ -4289,8 +4289,8 @@ public class GXHDO101B053 implements IFormLogic {
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ? ";
 
         // 更新前の値を取得
-        List<SrDenkitokuseiesi> srMksinkuukansouList = getSrDenkitokuseiesiData(queryRunnerQcdb, rev.toPlainString(), jotaiFlg, kojyo, lotNo, edaban, jissekino);
-        SrDenkitokuseiesi srMksinkuukansou = null;
+        List<SrDenkitokuseitwa> srMksinkuukansouList = getSrDenkitokuseiesiData(queryRunnerQcdb, rev.toPlainString(), jotaiFlg, kojyo, lotNo, edaban, jissekino);
+        SrDenkitokuseitwa srMksinkuukansou = null;
         if (!srMksinkuukansouList.isEmpty()) {
             srMksinkuukansou = srMksinkuukansouList.get(0);
         }
@@ -4323,7 +4323,7 @@ public class GXHDO101B053 implements IFormLogic {
      * @return 更新パラメータ
      */
     private List<Object> setUpdateParameterSrDenkitokuseiesi(boolean isInsert, BigDecimal newRev, String kojyo, String lotNo, String edaban,
-            int jissekino, Timestamp systemTime, ProcessData processData, SrDenkitokuseiesi srDenkitokuseiesi, String formId) {
+            int jissekino, Timestamp systemTime, ProcessData processData, SrDenkitokuseitwa srDenkitokuseiesi, String formId) {
 
         List<FXHDD01> pItemList = processData.getItemList();
         List<FXHDD01> pItemListEx = processData.getItemListEx();
@@ -4684,7 +4684,7 @@ public class GXHDO101B053 implements IFormLogic {
     private void deleteSrDenkitokuseiesi(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal rev,
             String kojyo, String lotNo, String edaban, int jissekino) throws SQLException {
 
-        String sql = "DELETE FROM sr_denkitokuseiesi "
+        String sql = "DELETE FROM sr_denkitokuseitwa "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? AND revision = ?";
 
         //更新値設定
@@ -4713,7 +4713,7 @@ public class GXHDO101B053 implements IFormLogic {
      */
     private int getNewDeleteflag(QueryRunner queryRunnerQcdb, String kojyo, String lotNo, String edaban, int jissekino) throws SQLException {
         String sql = "SELECT MAX(deleteflag) AS deleteflag "
-                + "FROM tmp_sr_denkitokuseiesi "
+                + "FROM tmp_sr_denkitokuseitwa "
                 + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? ";
         List<Object> params = new ArrayList<>();
         params.add(kojyo);
@@ -5277,7 +5277,7 @@ public class GXHDO101B053 implements IFormLogic {
      * @param srDenkitokuseiesi 電気特性データ
      * @return DB値
      */
-    private String getSrDenkitokuseiesiItemData(String itemId, SrDenkitokuseiesi srDenkitokuseiesi) {
+    private String getSrDenkitokuseiesiItemData(String itemId, SrDenkitokuseitwa srDenkitokuseiesi) {
         switch (itemId) {
             //製品情報:KCPNO
             case GXHDO101B053Const.SEIHIN_KCPNO:
@@ -6498,7 +6498,7 @@ public class GXHDO101B053 implements IFormLogic {
     private void insertDeleteDataTmpSrDenkitokuseiesi(QueryRunner queryRunnerQcdb, Connection conQcdb, BigDecimal newRev, int deleteflag,
             String kojyo, String lotNo, String edaban, int jissekino, Timestamp systemTime) throws SQLException {
 
-        String sql = "INSERT INTO tmp_sr_denkitokuseiesi ("
+        String sql = "INSERT INTO tmp_sr_denkitokuseitwa ("
                 + "kojyo,lotno,edaban,kaisuu,kcpno,tokuisaki,ownercode,lotkubuncode,siteikousa,atokouteisijinaiyou,okuriryouhinsuu,ukeiretannijyuryo,ukeiresoujyuryou,kensabasyo,senbetukaisinitiji,"
                 + "senbetusyuryounitiji,kensagouki,bunruiairatu,testplatekeijo,testplatekakunin,binboxseisoucheck,setsya,kakuninsya,siteikousabudomari1,siteikousabudomari2,testplatekanrino,tan,sokuteisyuhasuu,"
                 + "sokuteidenatu,hoseiyoutippuyoryou,hoseiyoutipputan,hoseimae,hoseigo,hoseiritu,bunruikakunin,gaikankakunin,netsusyorinitiji,agingjikan,syoninsha,furimukesya,bikou1,bikou2,irdenatu1,irhanteiti1,"
@@ -6547,7 +6547,7 @@ public class GXHDO101B053 implements IFormLogic {
                 + "ir6denryustart,ir6denryustarttani,ir6denryuend,ir6denryuendtani,ir6sokuteihanistart,ir6sokuteihanistarttani,ir6sokuteihaniend,ir6sokuteihaniendtani,ir7denryustart,ir7denryustarttani,ir7denryuend,ir7denryuendtani,"
                 + "ir7sokuteihanistart,ir7sokuteihanistarttani,ir7sokuteihaniend,ir7sokuteihaniendtani,ir8denryustart,ir8denryustarttani,ir8denryuend,ir8denryuendtani,ir8sokuteihanistart,ir8sokuteihanistarttani,ir8sokuteihaniend,ir8sokuteihaniendtani,"
                 + "ir1jikan,ir1jikantani,ir2jikan,ir2jikantani,ir3jikan,ir3jikantani,ir4jikan,ir4jikantani,ir5jikan,ir5jikantani,ir6jikan,ir6jikantani,ir7jikan,ir7jikantani,ir8jikan,ir8jikantani "
-                + " FROM sr_denkitokuseiesi "
+                + " FROM sr_denkitokuseitwa "
                 + " WHERE kojyo = ? AND lotno = ? AND edaban = ? AND kaisuu = ? ";
 
         List<Object> params = new ArrayList<>();
@@ -7446,13 +7446,14 @@ public class GXHDO101B053 implements IFormLogic {
                 + "ir1jikan,ir1jikantani,ir2jikan,ir2jikantani,ir3jikan,ir3jikantani,ir4jikan,ir4jikantani,ir5jikan,ir5jikantani,ir6jikan,ir6jikantani,ir7jikan,ir7jikantani,"
                 + "ir8jikan,ir8jikantani "
                 + "FROM fxhdd07 "
-                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND deleteflag = ? ";
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND setubikubun = ? "
+                + "ORDER BY deleteflag ";
 
         List<Object> params = new ArrayList<>();
         params.add(lotNo.substring(0, 3));
         params.add(lotNo.substring(3, 11));
         params.add(lotNo.substring(11, 14));
-        params.add(0);
+        params.add("TWA");
 
         Map<String, String> mapping = new HashMap<>();
         mapping.put("kojyo", "kojyo"); //工場ｺｰﾄﾞ
