@@ -15,6 +15,9 @@ jobs:  # jobs以下で実行するジョブを作成します
   build:
     runs-on: windows
     timeout-minutes: 20
+    steps: 
+      - name: Checkout code  # コードのチェックアウト
+        uses: actions/checkout@v2  # GitHubからリポジトリをチェックアウト
   
   report_job:  # jobの名前（任意に変更可）
     uses: kccs-advanced-tec-dev/ace-github-workflow/.github/workflows/ace.yml@v0  # ACEの呼び出し（変更不可）
