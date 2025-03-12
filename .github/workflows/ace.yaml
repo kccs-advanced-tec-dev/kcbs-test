@@ -13,7 +13,7 @@ on: 			# on以下でワークフローを実行するトリガーとなるイベ
 
 jobs:			# jobs以下ACEを実行するjobを作成します。
   build:
-    runs-on: [windows]
+    runs-on: []
     timeout-minutes: 20
   
   report_job: 		# jobの名前（任意に変更可）
