@@ -3,6 +3,7 @@
  */
 package jp.co.kccs.xhd.pxhdo101;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,6 +26,11 @@ import org.primefaces.context.RequestContext;
  * 計画書No	MB2008-DK001<br>
  * 変更者	863 zhangjy<br>
  * 変更理由	新規作成<br>
+ * <br>
+ * 変更日	2025/03/12<br>
+ * 計画書No	MB2501-D004<br>
+ * 変更者	KCSS A.Hayashi<br>
+ * 変更理由	項目追加・変更<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -138,7 +144,7 @@ public class GXHDO101C020Logic {
         model = gXHDO101C020Model;
         item_List = itemList;
         
-        setReturnDataChild(gXHDO101C020Model, itemList, true, true, true, true);
+        setReturnDataChild(gXHDO101C020Model, itemList, true, true, true, true, true, true, true);
     }
     
     /**
@@ -184,28 +190,49 @@ public class GXHDO101C020Logic {
      * 電極ﾍﾟｰｽﾄﾁｪｯｸ警告メッセージokボタン押下後の処理
      */
     public static void notCheckTapeSameHinmei() {
-        setReturnDataChild(model, item_List, false, true, true, true);
+        setReturnDataChild(model, item_List, false, true, true, true, true, true, true);
     }
     
     /**
      * 電極ﾃｰﾌﾟﾁｪｯｸ警告メッセージokボタン押下後の処理
      */
     public static void notCheckPasteSameHinmei() {
-        setReturnDataChild(model, item_List, false, false, true, true);
+        setReturnDataChild(model, item_List, false, false, true, true, true, true, true);
     }
 
     /**
      * 上端子ﾁｪｯｸ警告メッセージokボタン押下後の処理
      */
     public static void notCheckUwaTanshiSameHinmei() {
-        setReturnDataChild(model, item_List, false, false, false, true);
+        setReturnDataChild(model, item_List, false, false, false, true, true, true, true);
     }
 
     /**
      * 下端子ﾃｰﾌﾟﾁｪｯｸ警告メッセージokボタン押下後の処理
      */
     public static void notCheckShitaTanshiSameHinmei() {
-        setReturnDataChild(model, item_List, false, false, false, false);
+        setReturnDataChild(model, item_List, false, false, false, false, false, true, true);
+    }
+    
+    /**
+     * 品名Lotﾁｪｯｸ警告メッセージokボタン押下後の処理
+     */
+    public static void notCheckHinmeiLotSameHinmei() {
+        setReturnDataChild(model, item_List, false, false, false, false, false, true, true);
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟ厚み・PETﾌｨﾙﾑ種類のﾁｪｯｸ警告メッセージokボタン押下後の処理
+     */
+    public static void notCheckTapeAtumi_PetfilmSameHinmei() {
+        setReturnDataChild(model, item_List, false, false, false, false, false, false, true);
+    }
+
+    /**
+     * 電極ﾍﾟｰｽﾄ固形分のﾁｪｯｸ警告メッセージokボタン押下後の処理
+     */
+    public static void notCheckSPasteKokeiSameHinmei() {
+        setReturnDataChild(model, item_List, false, false, false, false, false, false, false);
     }
 
     /**
@@ -216,7 +243,8 @@ public class GXHDO101C020Logic {
      * @param isCheckTape 電極ﾃｰﾌﾟﾁｪｯｸか
      * @param isCheckPaste 電極ﾍﾟｰｽﾄﾁｪｯｸか
      */
-    private static void setReturnDataChild(GXHDO101C020Model gXHDO101C020Model, List<FXHDD01> itemList, boolean isCheckTape, boolean isCheckPaste, boolean isCheckUwaT, boolean isCheckShitaT) {
+    private static void setReturnDataChild(GXHDO101C020Model gXHDO101C020Model, List<FXHDD01> itemList, boolean isCheckTape, boolean isCheckPaste, boolean isCheckUwaT, boolean isCheckShitaT, boolean isCheckSlurryLot
+                                            , boolean isCheckTapeAtumiPetFilme, boolean isCheckPasteKokei) {
         
         if (isCheckTape && !checkTapeSameHinmei(gXHDO101C020Model, itemList)) {
             // エラーの場合はコールバック変数に"warning"をセット
@@ -242,6 +270,26 @@ public class GXHDO101C020Logic {
             context.addCallbackParam("param4", "warning");
             return;
         }
+        if(isCheckSlurryLot && !checkSlurryLotSameHinmei(gXHDO101C020Model, itemList)){
+            // エラーの場合はコールバック変数に"warning"をセット
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.addCallbackParam("param5", "warning");
+            return;
+        }
+        if(isCheckTapeAtumiPetFilme && !checkTapeAtumiPetFilmeSameHinmei(gXHDO101C020Model, itemList)){
+            // エラーの場合はコールバック変数に"warning"をセット
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.addCallbackParam("param6", "warning");
+            return;
+        }
+
+        if(isCheckPasteKokei && !checkPasteKokeiSameHinmei(gXHDO101C020Model, itemList)){
+            // エラーの場合はコールバック変数に"warning"をセット
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.addCallbackParam("param7", "warning");
+            return;
+        }
+        
         // ﾃｰﾌﾟﾛｯﾄ①の戻り項目
         FXHDD01 itemTapeLot1Hinmei = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot1_Hinmei());
         FXHDD01 itemTapeLot1Conventionallot = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot1_Conventionallot());
@@ -249,13 +297,20 @@ public class GXHDO101C020Logic {
         FXHDD01 itemTapeLot1Rollno = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot1_Rollno());
         FXHDD01 itemTapeLot1Length = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot1_Tapelength());
         FXHDD01 itemTapeLot1Tapeatu = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot1_thickness_um());
+        FXHDD01 itemTapeLot1AtumiNo1 = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot1_AtumiNo1());
+        FXHDD01 itemTapeLot1PetFilmNo1 = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot1_PetFilmNo1());
         
         // ﾃｰﾌﾟﾛｯﾄ②の戻り項目
         FXHDD01 itemTapeLot2Rollno = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot2_Rollno());
-        FXHDD01 itemTapeLot2Length = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot2_Tapelength());        
+        FXHDD01 itemTapeLot2Length = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot2_Tapelength());    
+        FXHDD01 itemTapeLot2AtumiNo2 = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot2_AtumiNo2());
+        FXHDD01 itemTapeLot2PetFilmNo2 = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot2_PetFilmNo2());
+
         // ﾃｰﾌﾟﾛｯﾄ③の戻り項目
         FXHDD01 itemTapeLot3Rollno = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot3_Rollno());
         FXHDD01 itemTapeLot3Length = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot3_Tapelength());        
+        FXHDD01 itemTapeLot3AtumiNo3 = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot3_AtumiNo3());
+        FXHDD01 itemTapeLot3PetFilmNo3 = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot3_PetFilmNo3());
         
         // ﾍﾟｰｽﾄﾛｯﾄ①の戻り項目
         FXHDD01 itemPasteLot1Hinmei = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_PasteLot1_Hinmei());
@@ -265,6 +320,18 @@ public class GXHDO101C020Logic {
         // ﾍﾟｰｽﾄﾛｯﾄ②の戻り項目
         FXHDD01 itemPasteLot2Conventionallot = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_PasteLot2_Conventionallot());
         FXHDD01 itemPasteLot2Kokeibunpct = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_PasteLot2_Kokeibunpct());
+        
+        // ﾍﾟｰｽﾄﾛｯﾄ③の戻り項目
+        FXHDD01 itemPasteLot3Conventionallot = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_PasteLot3_Conventionallot());
+        FXHDD01 itemPasteLot3Kokeibunpct = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_PasteLot3_Kokeibunpct());
+        
+        // ﾍﾟｰｽﾄﾛｯﾄ④の戻り項目
+        FXHDD01 itemPasteLot4Conventionallot = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_PasteLot4_Conventionallot());
+        FXHDD01 itemPasteLot4Kokeibunpct = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_PasteLot4_Kokeibunpct());
+        
+        // ﾍﾟｰｽﾄﾛｯﾄ⑤の戻り項目
+        FXHDD01 itemPasteLot5Conventionallot = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_PasteLot5_Conventionallot());
+        FXHDD01 itemPasteLot5Kokeibunpct = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_PasteLot5_Kokeibunpct());
         
         // 上端子の戻り項目
         FXHDD01 itemUwatanshiConventionallot = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_Uwatanshi_Conventionallot());
@@ -280,8 +347,9 @@ public class GXHDO101C020Logic {
         // 下端子の戻り項目
         FXHDD01 itemYudentai1Conventionallot = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_Yudentai1_Conventionallot());
         FXHDD01 itemYudentai1Hinmei = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_Yudentai1_Hinmei());
-
         
+        FXHDD01 itemRow = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_TapeLot1_Hinmei());
+
         Map<String, Map<String, String>> resultMaps = gXHDO101C020Model.getResultMap();
         
         for (GXHDO101C020Model.GenryouLotData genryouLotData : gXHDO101C020Model.getGenryouLotDataList()) {
@@ -292,8 +360,8 @@ public class GXHDO101C020Logic {
                 continue;
             }
             
+
             switch(typeName) {
-                
                 case GXHDO101C020Model.TAPE_LOT_1:
                     //setItemTapeLot1Hinmei(itemTapeLot1Hinmei, resultMap.get("hinmei"));
                     setItemValue(itemTapeLot1Conventionallot, resultMap.get("conventionallot"));
@@ -302,14 +370,26 @@ public class GXHDO101C020Logic {
                     setItemValue(itemPetname, resultMap.get("petname"));
                     setItemValue(itemTapeLot1Length, resultMap.get("tapelength_m"));
                     setItemValue(itemTapeLot1Tapeatu, resultMap.get("thickness_um"));
+                    if ("GXHDO101B001".equals(itemRow.getGamenId()) || "GXHDO101B023".equals(itemRow.getGamenId())) {
+                        setItemValue(itemTapeLot1AtumiNo1, resultMap.get("thickness_um"));
+                        setItemValue(itemTapeLot1PetFilmNo1, resultMap.get("petname"));
+                    }
                     break;
                 case GXHDO101C020Model.TAPE_LOT_2:
                     setItemValue(itemTapeLot2Rollno, resultMap.get("rollno"));
                     setItemValue(itemTapeLot2Length, resultMap.get("tapelength_m"));
+                    if ("GXHDO101B001".equals(itemRow.getGamenId()) || "GXHDO101B023".equals(itemRow.getGamenId())) {
+                        setItemValue(itemTapeLot2AtumiNo2, resultMap.get("thickness_um"));
+                        setItemValue(itemTapeLot2PetFilmNo2, resultMap.get("petname"));
+                    }
                     break;
                 case GXHDO101C020Model.TAPE_LOT_3:
                     setItemValue(itemTapeLot3Rollno, resultMap.get("rollno"));
                     setItemValue(itemTapeLot3Length, resultMap.get("tapelength_m"));
+                    if ("GXHDO101B001".equals(itemRow.getGamenId()) || "GXHDO101B023".equals(itemRow.getGamenId())) {
+                        setItemValue(itemTapeLot3AtumiNo3, resultMap.get("thickness_um"));
+                        setItemValue(itemTapeLot3PetFilmNo3, resultMap.get("petname"));
+                    }
                     break;
                 case GXHDO101C020Model.PASTE_LOT_1:
                     setItemValue(itemPasteLot1Hinmei, resultMap.get("hinmei"));
@@ -319,6 +399,24 @@ public class GXHDO101C020Logic {
                 case GXHDO101C020Model.PASTE_LOT_2:
                     setItemValue(itemPasteLot2Conventionallot, resultMap.get("conventionallot") + resultMap.get("lotkigo"));
                     setItemValue(itemPasteLot2Kokeibunpct, resultMap.get("kokeibun_pct"));
+                    break;
+                case GXHDO101C020Model.PASTE_LOT_3:
+                    setItemValue(itemPasteLot3Conventionallot, resultMap.get("conventionallot") + resultMap.get("lotkigo"));
+                    if ("GXHDO101B001".equals(itemRow.getGamenId()) || "GXHDO101B023".equals(itemRow.getGamenId())) {
+                        setItemValue(itemPasteLot3Kokeibunpct, resultMap.get("kokeibun_pct"));
+                    }
+                    break;
+                case GXHDO101C020Model.PASTE_LOT_4:
+                    setItemValue(itemPasteLot4Conventionallot, resultMap.get("conventionallot") + resultMap.get("lotkigo"));
+                    if ("GXHDO101B001".equals(itemRow.getGamenId()) || "GXHDO101B023".equals(itemRow.getGamenId())) {
+                        setItemValue(itemPasteLot4Kokeibunpct, resultMap.get("kokeibun_pct"));
+                    }
+                    break;
+                case GXHDO101C020Model.PASTE_LOT_5:
+                    setItemValue(itemPasteLot5Conventionallot, resultMap.get("conventionallot") + resultMap.get("lotkigo"));
+                    if ("GXHDO101B001".equals(itemRow.getGamenId()) || "GXHDO101B023".equals(itemRow.getGamenId())) {
+                        setItemValue(itemPasteLot5Kokeibunpct, resultMap.get("kokeibun_pct"));
+                    }
                     break;
                 case GXHDO101C020Model.UWA_TANSHI:
                     setItemValue(itemUwatanshiConventionallot, resultMap.get("conventionallot"));
@@ -332,8 +430,11 @@ public class GXHDO101C020Logic {
                     setItemValue(itemYudentai1Conventionallot, resultMap.get("conventionallot"));
                     setItemValue(itemYudentai1Hinmei, resultMap.get("hinmei"));
                     break;
-            }
+            }    
         }
+            // エラーの場合はコールバック変数に"warning"をセット
+            RequestContext context = RequestContext.getCurrentInstance();
+            context.addCallbackParam("param8", "info");
     }
 
     /**
@@ -350,10 +451,14 @@ public class GXHDO101C020Logic {
             return true;
         }
         String mValue = StringUtil.nullToBlank(itemRow.getValue());
-        String[] splitVal = mValue.split("  ", 2);
-        if (splitVal.length < 2) {
-            return true;
+        String[] splitVal = null;
+        if (!("GXHDO101B001".equals(itemRow.getGamenId()) || "GXHDO101B023".equals(itemRow.getGamenId()))) {
+            splitVal = mValue.split("  ", 2);
+            if (splitVal.length < 2) {
+                return true;
+            }
         }
+
         String[] splitEaVal = null;
         String[] splitSekiVal = null;
         String[] splitSpVal = null;
@@ -391,25 +496,31 @@ public class GXHDO101C020Logic {
             if (resultMap == null) {
                 continue;
             }
-
-            // 印刷RSUSの場合のﾁｪｯｸ
-            if ("GXHDO101B003".equals(itemRow.getGamenId())) {
-                if (GXHDO101C020Model.TAPE_LOT_1.equals(typeName)) {
-                    if (!splitEaVal[0].equals(StringUtil.nullToBlank(resultMap.get("hinmei"))) ||
-                            !splitEaVal[2].equals(StringUtil.nullToBlank(resultMap.get("lotkigo"))) ||
-                            !splitSpVal[0].equals(StringUtil.nullToBlank(resultMap.get("conventionallot"))) ||
-                            !splitSpVal[1].equals(StringUtil.nullToBlank(resultMap.get("rollno"))) ||
-                            !splitSekiVal[0].equals(StringUtil.nullToBlank(resultMap.get("thickness_um")))) {
-                        return false;                        
-                    }
-                }
-            } else {
+            
+            if ("GXHDO101B001".equals(itemRow.getGamenId()) || "GXHDO101B023".equals(itemRow.getGamenId())) {
                 // 元画面の電極ﾃｰﾌﾟの原料部分とﾃｰﾌﾟﾛｯﾄ①のhinmeiが一致していること
-                if (GXHDO101C020Model.TAPE_LOT_1.equals(typeName) && !splitVal[1].equals(StringUtil.nullToBlank(resultMap.get("hinmei")))) {
+                if (GXHDO101C020Model.TAPE_LOT_1.equals(typeName) && !mValue.equals(StringUtil.nullToBlank(resultMap.get("hinmei")))) {
                     return false;
                 }
+            } else {
+                // 印刷RSUSの場合のﾁｪｯｸ
+                if ("GXHDO101B003".equals(itemRow.getGamenId())) {
+                    if (GXHDO101C020Model.TAPE_LOT_1.equals(typeName)) {
+                        if (!splitEaVal[0].equals(StringUtil.nullToBlank(resultMap.get("hinmei"))) ||
+                                !splitEaVal[2].equals(StringUtil.nullToBlank(resultMap.get("lotkigo"))) ||
+                                !splitSpVal[0].equals(StringUtil.nullToBlank(resultMap.get("conventionallot"))) ||
+                                !splitSpVal[1].equals(StringUtil.nullToBlank(resultMap.get("rollno"))) ||
+                                !splitSekiVal[0].equals(StringUtil.nullToBlank(resultMap.get("thickness_um")))) {
+                            return false;                        
+                        }
+                    }
+                } else {
+                    // 元画面の電極ﾃｰﾌﾟの原料部分とﾃｰﾌﾟﾛｯﾄ①のhinmeiが一致していること
+                    if (GXHDO101C020Model.TAPE_LOT_1.equals(typeName) && !splitVal[1].equals(StringUtil.nullToBlank(resultMap.get("hinmei")))) {
+                        return false;
+                    }
+                }
             }
-            
         }
         return true;
     }
@@ -428,20 +539,336 @@ public class GXHDO101C020Logic {
             return true;
         }
         String mKikakuChi = StringUtil.nullToBlank(itemRow.getKikakuChi());
-        List<GXHDO101C020Model.GenryouLotData> genryouLotDataList = gXHDO101C020Model.getGenryouLotDataList();
-        for (GXHDO101C020Model.GenryouLotData genryouLotData : genryouLotDataList) {
-            String typeName = genryouLotData.getTypeName();
-            String value = genryouLotData.getValue();
-            Map<String, String> resultMap = resultMaps.get(value);
-            if (resultMap == null) {
-                continue;
+        if ("GXHDO101B001".equals(itemRow.getGamenId()) || "GXHDO101B023".equals(itemRow.getGamenId())) {
+            FXHDD01 denkyokuPasteSekkeiitemRow = getItemRow(itemList, gXHDO101C020Model.getMoto_Denkyoku_Paste_Sekkei());
+            String kikakuChi = StringUtil.nullToBlank(denkyokuPasteSekkeiitemRow.getValue());
+            String[] kikakuChis = kikakuChi.split("/");
+            List<GXHDO101C020Model.GenryouLotData> genryouLotDataList = gXHDO101C020Model.getGenryouLotDataList();
+            List<Boolean> errList = new ArrayList<>();
+            for (GXHDO101C020Model.GenryouLotData genryouLotData : genryouLotDataList) {
+                String typeName = genryouLotData.getTypeName();
+                String value = genryouLotData.getValue();
+                Map<String, String> resultMap = resultMaps.get(value);
+                if (resultMap == null) {
+                    continue;
+                }
+                for(String kikakuchi : kikakuChis){
+                    boolean checkErrFlg = false;
+                    String divisionKikakuChi = kikakuchi.replace("【", "").replace("】", "");
+                    // 元画面の電極ﾍﾟｰｽﾄの規格値とﾍﾟｰｽﾄﾛｯﾄ①のhinmeiが一致していること
+                    if (GXHDO101C020Model.PASTE_LOT_1.equals(typeName)) {
+                        if (!divisionKikakuChi.equals(StringUtil.nullToBlank(resultMap.get("hinmei")))){
+                             checkErrFlg = true;
+                        }
+                        errList.add(checkErrFlg);
+                    }
+                }
             }
-            mKikakuChi = mKikakuChi.replace("【", "").replace("】", "");
-            // 元画面の電極ﾍﾟｰｽﾄの規格値とﾍﾟｰｽﾄﾛｯﾄ①のhinmeiが一致していること
-            if (GXHDO101C020Model.PASTE_LOT_1.equals(typeName) && !mKikakuChi.equals(StringUtil.nullToBlank(resultMap.get("hinmei")))) {
+            
+            if (errList.isEmpty()){
+                    return true;
+            }
+            
+            // ｴﾗｰﾌﾗｸﾞが1つfalseの場合どれかが一致しているため警告表示しない
+            for (boolean errFlg : errList){
+                if (!errFlg){
+                    return true;
+                }
+            }
+            return false;
+        } else {
+            List<GXHDO101C020Model.GenryouLotData> genryouLotDataList = gXHDO101C020Model.getGenryouLotDataList();
+            for (GXHDO101C020Model.GenryouLotData genryouLotData : genryouLotDataList) {
+                String typeName = genryouLotData.getTypeName();
+                String value = genryouLotData.getValue();
+                Map<String, String> resultMap = resultMaps.get(value);
+                if (resultMap == null) {
+                    continue;
+                }
+                mKikakuChi = mKikakuChi.replace("【", "").replace("】", "");
+                // 元画面の電極ﾍﾟｰｽﾄの規格値とﾍﾟｰｽﾄﾛｯﾄ①のhinmeiが一致していること
+                if (GXHDO101C020Model.PASTE_LOT_1.equals(typeName) && !mKikakuChi.equals(StringUtil.nullToBlank(resultMap.get("hinmei")))) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
+     * 元画面のｽﾗﾘｰﾛｯﾄとﾃｰﾌﾟﾛｯﾄ①のconventionallotが一致しているかチェック
+     * 
+     * @param gXHDO101C020Model 前工程WIP取込サブ画面用ﾓﾃﾞﾙ
+     * @param itemList 項目リスト
+     * @return 
+     */
+    private static boolean checkSlurryLotSameHinmei(GXHDO101C020Model gXHDO101C020Model, List<FXHDD01> itemList) {
+        Map<String, Map<String, String>> resultMaps = gXHDO101C020Model.getResultMap();
+        FXHDD01 itemRow = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_PasteLot1_Hinmei());
+        if (itemRow == null) {
+            return true;
+        }
+        if ("GXHDO101B001".equals(itemRow.getGamenId()) || "GXHDO101B023".equals(itemRow.getGamenId())){
+            FXHDD01 itemSlurry = new FXHDD01();
+            if("GXHDO101B001".equals(itemRow.getGamenId())){
+                itemSlurry = getItemRow(itemList, "insatsu_sps_gra_slurry_lot");
+                if (itemSlurry == null) {
+                    return true;
+                }
+            }else{
+                itemSlurry = getItemRow(itemList, "sr_dpprint_slurry_lot");
+                if (itemSlurry == null) {
+                    return true;
+                }
+            }
+            String slurryValue = itemSlurry.getValue();
+            if (slurryValue.equals("指定無")) {
+                return true;
+            }
+            List<GXHDO101C020Model.GenryouLotData> genryouLotDataList = gXHDO101C020Model.getGenryouLotDataList();
+            for (GXHDO101C020Model.GenryouLotData genryouLotData : genryouLotDataList) {
+                String typeName = genryouLotData.getTypeName();
+                String value = genryouLotData.getValue();
+                String conventionallot = "";
+                Map<String, String> resultMap = resultMaps.get(value);
+                if (resultMap == null) {
+                    continue;
+                }
+                
+                // conventionallotを取得
+                if (GXHDO101C020Model.TAPE_LOT_1.equals(typeName)) {
+                    conventionallot = StringUtil.nullToBlank(resultMap.get("conventionallot"));
+                }
+
+                // 数字以外を削除する
+                String conventionallotNumbers = conventionallot.replaceAll("[^0-9]", "");
+
+                // 元画面の電極ﾍﾟｰｽﾄの規格値とﾍﾟｰｽﾄﾛｯﾄ①のhinmeiが一致していること
+                if (GXHDO101C020Model.TAPE_LOT_1.equals(typeName) && !slurryValue.equals(conventionallotNumbers)) {
+                    return false;
+                }
+            }
+        }
+
+        return true;
+    }
+    
+    /**
+     * 電極ﾃｰﾌﾟ厚み・PETﾌｨﾙﾑ種類のﾁｪｯｸ
+     * 
+     * @param gXHDO101C020Model 前工程WIP取込サブ画面用ﾓﾃﾞﾙ
+     * @param itemList 項目リスト
+     * @return 
+     */
+    private static boolean checkTapeAtumiPetFilmeSameHinmei(GXHDO101C020Model gXHDO101C020Model, List<FXHDD01> itemList) {
+        Map<String, Map<String, String>> resultMaps = gXHDO101C020Model.getResultMap();
+        FXHDD01 itemRow = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_PasteLot1_Hinmei());
+        if (itemRow == null) {
+            return true;
+        }
+        
+        List<String> thickness_umList = new ArrayList<>();
+        List<String> petnameList =  new ArrayList<>();;
+        if ("GXHDO101B001".equals(itemRow.getGamenId())||"GXHDO101B023".equals(itemRow.getGamenId())) {
+            FXHDD01 insatsuSpsGraAtsumiPet1 = new FXHDD01();
+            FXHDD01 insatsuSpsGraAtsumiPet2 = new FXHDD01();
+            if ("GXHDO101B001".equals(itemRow.getGamenId())){
+                insatsuSpsGraAtsumiPet1 = getItemRow(itemList, "insatsu_sps_gra_atsumi_pet1");
+                insatsuSpsGraAtsumiPet2 = getItemRow(itemList, "insatsu_sps_gra_atsumi_pet2");
+
+            } else {
+                insatsuSpsGraAtsumiPet1 = getItemRow(itemList, "sr_dpprint_atsumi_pet1");
+                insatsuSpsGraAtsumiPet2 = getItemRow(itemList, "sr_dpprint_atsumi_pet2");
+            }
+            
+            if (insatsuSpsGraAtsumiPet1 == null && insatsuSpsGraAtsumiPet2 == null) {
+                return true;
+            }
+
+            // 元画面の厚み/PET種類①の値を取得
+            String insatsuSpsGraAtsumiPet1Value = insatsuSpsGraAtsumiPet1.getValue();
+            String[] insatsuSpsGraAtsumiPet1Values = insatsuSpsGraAtsumiPet1Value.split("/");
+            
+            // 元画面の厚み/PET種類②の値を取得
+            String insatsuSpsGraAtsumiPet2Value = insatsuSpsGraAtsumiPet2.getValue();
+
+            List<GXHDO101C020Model.GenryouLotData> genryouLotDataList = gXHDO101C020Model.getGenryouLotDataList();
+            for (GXHDO101C020Model.GenryouLotData genryouLotData : genryouLotDataList) {
+                String typeName = genryouLotData.getTypeName();
+                String value = genryouLotData.getValue();
+
+                Map<String, String> resultMap = resultMaps.get(value);
+                if (resultMap == null) {
+                    continue;
+                }
+                
+                // conventionallotを取得
+                if (GXHDO101C020Model.TAPE_LOT_1.equals(typeName)||GXHDO101C020Model.TAPE_LOT_2.equals(typeName)||GXHDO101C020Model.TAPE_LOT_3.equals(typeName)) {
+                    thickness_umList.add(StringUtil.nullToBlank(resultMap.get("thickness_um")));
+                    petnameList.add(StringUtil.nullToBlank(resultMap.get("petname")));
+                }
+            }
+            
+            List<Boolean> errList = new ArrayList<>();
+            boolean checkErrFlg = false;
+            
+            if (!StringUtil.isEmpty(insatsuSpsGraAtsumiPet2Value)){
+
+                String[] insatsuSpsGraAtsumiPet2Values = insatsuSpsGraAtsumiPet2Value.split("/");
+                
+                for(int i = 0; i < thickness_umList.size();i++){
+                    // 元画面.厚み/PET種類ﾘｽﾄ①と一致している場合にｴﾗｰﾌﾗｸﾞをOFF
+                    if(insatsuSpsGraAtsumiPet1Values[0].replace("μｍ", "").equals(thickness_umList.get(i))){
+                        if(!insatsuSpsGraAtsumiPet1Values[1].equals(petnameList.get(i))){
+                            // PET種類リストが一致していない場合
+                            checkErrFlg = true;
+                        } else {
+                            checkErrFlg = false;
+                        }
+                    } else {
+                        // 厚みが一致していない場合
+                        checkErrFlg = true;
+                    }
+                    if(checkErrFlg){
+                        // 全てﾁｪｯｸする時に厚み/PET種類ﾘｽﾄ①と一定している場合は実行しない
+                        // 元画面.厚み/PET種類ﾘｽﾄ②と一致している場合にｴﾗｰﾌﾗｸﾞをOFF
+                        if(insatsuSpsGraAtsumiPet2Values[0].replace("μｍ", "").equals(thickness_umList.get(i))){
+                            if(!insatsuSpsGraAtsumiPet2Values[1].equals(petnameList.get(i))){
+                                // 厚みが一致していない場合
+                                checkErrFlg = true;
+                            } else {
+                                // 厚みが一致していない場合
+                                checkErrFlg = false;
+                            }
+                        } else {
+                            checkErrFlg = true;
+                        }
+                    }
+                    errList.add(checkErrFlg);
+                }
+            } else {
+                for(int i = 0; i < thickness_umList.size();i++){
+                    // 元画面.厚み/PET種類ﾘｽﾄ①と一致している場合にｴﾗｰﾌﾗｸﾞをOFF
+                    if(insatsuSpsGraAtsumiPet1Values[0].replace("μｍ", "").equals(thickness_umList.get(i))){
+                        if(!insatsuSpsGraAtsumiPet1Values[1].equals(petnameList.get(i))){
+                            // PET種類リストが一致していない場合
+                            checkErrFlg = true;
+                        } else {
+                            checkErrFlg = false;
+                        }
+                    } else {
+                        // 厚みが一致していない場合
+                        checkErrFlg = true;
+                    }
+                    errList.add(checkErrFlg);
+                }
+            }
+            // ｴﾗｰﾌﾗｸﾞが1つでもtrueの場合どれかが一致していないため警告表示
+            if (!errList.stream().noneMatch((errFlg) -> (errFlg))) {
                 return false;
             }
         }
+
+        return true;
+    }
+    
+    /**
+     * 電極ﾍﾟｰｽﾄ固形分のﾁｪｯｸ
+     * 
+     * @param gXHDO101C020Model 前工程WIP取込サブ画面用ﾓﾃﾞﾙ
+     * @param itemList 項目リスト
+     * @return 
+     */
+    private static boolean checkPasteKokeiSameHinmei(GXHDO101C020Model gXHDO101C020Model, List<FXHDD01> itemList) {
+        Map<String, Map<String, String>> resultMaps = gXHDO101C020Model.getResultMap();
+        FXHDD01 itemRow = getItemRow(itemList, gXHDO101C020Model.getReturnItemId_PasteLot1_Hinmei());
+        if (itemRow == null) {
+            return true;
+        }
+        if ("GXHDO101B001".equals(itemRow.getGamenId()) || "GXHDO101B023".equals(itemRow.getGamenId())) {
+            FXHDD01 itemPasteKokeibun = new FXHDD01();
+            
+            itemPasteKokeibun = getItemRow(itemList, gXHDO101C020Model.getMoto_PasteKokeibun());
+            if (StringUtil.isEmpty(itemPasteKokeibun.getValue())) {
+                return true;
+            }
+            
+            
+            // 元画面のﾍﾟｰｽﾄ固形分の値を取得
+            String pasteKokeibunValue = itemPasteKokeibun.getValue();
+            
+            // %を削除
+            pasteKokeibunValue = pasteKokeibunValue.replace("%", "");
+            
+            BigDecimal pasteKokeibunValueInt = BigDecimal.ZERO;
+            BigDecimal adjustmentValue = BigDecimal.ZERO;
+            BigDecimal pasteKokeibunValueMin = BigDecimal.ZERO;
+            BigDecimal pasteKokeibunValueMax = BigDecimal.ZERO;
+            
+            if(pasteKokeibunValue.contains("±")){
+                // ±で分割
+                String[] pasteKokeibunValues = pasteKokeibunValue.split("±");
+                
+                // 1つ目の値を基準値とする
+                pasteKokeibunValueInt = new BigDecimal(pasteKokeibunValues[0]);
+            
+                // 2つ目の値を調整値とする
+                adjustmentValue = new BigDecimal(pasteKokeibunValues[1]);
+            
+                // 最小値を設定
+                pasteKokeibunValueMin = pasteKokeibunValueInt.subtract(adjustmentValue);
+                // 最大値を設定
+                pasteKokeibunValueMax = pasteKokeibunValueInt.add(adjustmentValue);
+            }else{
+                // 最小値を設定
+                pasteKokeibunValueMin = new BigDecimal(pasteKokeibunValue);
+                // 最大値を設定
+                pasteKokeibunValueMax = new BigDecimal(pasteKokeibunValue);
+            }
+
+            List<GXHDO101C020Model.GenryouLotData> genryouLotDataList = gXHDO101C020Model.getGenryouLotDataList();
+            List<String> kokeibunPctList = new ArrayList<>();
+            List<Boolean> errList = new ArrayList<>();
+            for (GXHDO101C020Model.GenryouLotData genryouLotData : genryouLotDataList) {
+                String typeName = genryouLotData.getTypeName();
+                String value = genryouLotData.getValue();
+                Map<String, String> resultMap = resultMaps.get(value);
+                if (resultMap == null) {
+                    continue;
+                }
+                
+                // ﾍﾟｰｽﾄﾛｯﾄ①～⑤のkokeibun_pctを取得
+                if (GXHDO101C020Model.PASTE_LOT_1.equals(typeName)
+                        || GXHDO101C020Model.PASTE_LOT_2.equals(typeName)
+                        || GXHDO101C020Model.PASTE_LOT_3.equals(typeName)
+                        || GXHDO101C020Model.PASTE_LOT_4.equals(typeName)
+                        || GXHDO101C020Model.PASTE_LOT_5.equals(typeName)) {
+                    kokeibunPctList.add(StringUtil.nullToBlank(resultMap.get("kokeibun_pct")));
+                }
+            }
+            
+            for (String kokeibunPct : kokeibunPctList) {
+
+                // 元画面のﾍﾟｰｽﾄ固形分の範囲内に1つでもない場合警告表示
+                if (new BigDecimal(kokeibunPct).compareTo(pasteKokeibunValueMin) == -1 || pasteKokeibunValueMax.compareTo(new BigDecimal(kokeibunPct)) == -1){
+                    errList.add(true);
+                }
+            }
+            
+            if(errList.isEmpty()){
+                return true;
+            }
+            
+            // ｴﾗｰﾌﾗｸﾞが1つでもtrueの場合どれかが一致していないため警告表示
+            for( boolean errFlg : errList){
+                if(errFlg){
+                    return false;
+                }
+            }
+            
+        }
+
         return true;
     }
 

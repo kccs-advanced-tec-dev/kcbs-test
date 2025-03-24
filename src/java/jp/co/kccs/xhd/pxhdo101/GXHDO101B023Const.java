@@ -23,6 +23,11 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	画面表示項目を追加、設備ﾃﾞｰﾀ連携ﾎﾞﾀﾝを追加<br>
  * <br>
+ * 変更日	2025/03/12<br>
+ * 計画書No	MB2501-D004<br>
+ * 変更者	KCSS A.Hayashi<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -72,6 +77,21 @@ public class GXHDO101B023Const {
      * 積層数
      */
     public static final String SEKISOU_SU = "sr_dpprint_sekisou_su";
+    
+    /**
+     * 厚み/PET種類①
+     */
+    public static final String ATSUMI_PET1 = "sr_dpprint_atsumi_pet1";
+    
+    /**
+     * 厚み/PET種類②
+     */
+    public static final String ATSUMI_PET2 = "sr_dpprint_atsumi_pet2";
+    
+    /**
+     * ｽﾗﾘｰﾛｯﾄ
+     */
+    public static final String SLURRY_LOT = "sr_dpprint_slurry_lot";
 
     /**
      * ｽﾘｯﾌﾟﾛｯﾄNo
@@ -92,16 +112,51 @@ public class GXHDO101B023Const {
      * ﾛｰﾙNo3
      */
     public static final String ROLL_NO3 = "sr_dpprint_roll_no3";
+    
+    /**
+     * 厚みNo1
+     */
+    public static final String ATSUMI_NO1 = "sr_dpprint_atsumi_no1";
+    
+    /**
+     * 厚みNo2
+     */
+    public static final String ATSUMI_NO2 = "sr_dpprint_atsumi_no2";
+    
+    /**
+     * 厚みNo3
+     */
+    public static final String ATSUMI_NO3 = "sr_dpprint_atsumi_no3";
+    
+    /**
+     * PETﾌｨﾙﾑ種類No1
+     */
+    public static final String PET_FILM_NO1 = "sr_dpprint_pet_film_no1";
+    
+     /**
+     * PETﾌｨﾙﾑ種類No2
+     */
+    public static final String PET_FILM_NO2 = "sr_dpprint_pet_film_no2";
+    
+    /**
+     * PETﾌｨﾙﾑ種類No3
+     */
+    public static final String PET_FILM_NO3 = "sr_dpprint_pet_film_no3";
 
     /**
      * 原料記号
      */
     public static final String GENRYO_KIGOU = "sr_dpprint_genryo_kigou";
-
+    
     /**
-     * ﾃｰﾌﾟ厚み
+     * 電極ﾍﾟｰｽﾄ(設計)
      */
-    public static final String TAPE_ATSU = "sr_dpprint_tape_atsu";
+    public static final String DENKYOKU_PASTE_SEKKEI = "sr_dpprint_denkyoku_paste_sekkei";
+    
+    /**
+     * ﾍﾟｰｽﾄ固形分
+     */
+    public static final String PASTE_KOKEI_BUN = "sr_dpprint__paste_kokei_bun";
 
     /**
      * 電極ﾍﾟｰｽﾄ
@@ -132,16 +187,86 @@ public class GXHDO101B023Const {
      * 内部電極ﾍﾟｰｽﾄﾛｯﾄNo2
      */
     public static final String PASTE_LOT_NO2 = "sr_dpprint_paste_lot_no2";
+    
+    /**
+     * 内部電極ﾍﾟｰｽﾄ粘度2
+     */
+    public static final String PASTE_NENDO2 = "sr_dpprint_paste_nendo2";
+
+    /**
+     * 内部電極ﾍﾟｰｽﾄ温度2
+     */
+    public static final String PASTE_ONDO2 = "sr_dpprint_paste_ondo2";
+
+    /**
+     * 内部電極ﾍﾟｰｽﾄ固形分2
+     */
+    public static final String PASTE_KOKEIBUN2 = "sr_dpprint_paste_kokeibun2";
+    
+    /**
+     * 内部電極ﾍﾟｰｽﾄﾛｯﾄNo3
+     */
+    public static final String PASTE_LOT_NO3 = "sr_dpprint_paste_lot_no3";
+    
+    /**
+     * 内部電極ﾍﾟｰｽﾄ粘度3
+     */
+    public static final String PASTE_NENDO3 = "sr_dpprint_paste_nendo3";
+
+    /**
+     * 内部電極ﾍﾟｰｽﾄ温度3
+     */
+    public static final String PASTE_ONDO3 = "sr_dpprint_paste_ondo3";
+
+    /**
+     * 内部電極ﾍﾟｰｽﾄ固形分3
+     */
+    public static final String PASTE_KOKEIBUN3 = "sr_dpprint_paste_kokeibun3";
+    
+    /**
+     * 内部電極ﾍﾟｰｽﾄﾛｯﾄNo4
+     */
+    public static final String PASTE_LOT_NO4 = "sr_dpprint_paste_lot_no4";
+    
+    /**
+     * 内部電極ﾍﾟｰｽﾄ粘度4
+     */
+    public static final String PASTE_NENDO4 = "sr_dpprint_paste_nendo4";
+
+    /**
+     * 内部電極ﾍﾟｰｽﾄ温度4
+     */
+    public static final String PASTE_ONDO4 = "sr_dpprint_paste_ondo4";
+
+    /**
+     * 内部電極ﾍﾟｰｽﾄ固形分4
+     */
+    public static final String PASTE_KOKEIBUN4 = "sr_dpprint_paste_kokeibun4";
+    
+    /**
+     * 内部電極ﾍﾟｰｽﾄﾛｯﾄNo5
+     */
+    public static final String PASTE_LOT_NO5 = "sr_dpprint_paste_lot_no5";
+    
+    /**
+     * 内部電極ﾍﾟｰｽﾄ粘度5
+     */
+    public static final String PASTE_NENDO5 = "sr_dpprint_paste_nendo5";
+
+    /**
+     * 内部電極ﾍﾟｰｽﾄ温度5
+     */
+    public static final String PASTE_ONDO5 = "sr_dpprint_paste_ondo5";
+
+    /**
+     * 内部電極ﾍﾟｰｽﾄ固形分5
+     */
+    public static final String PASTE_KOKEIBUN5 = "sr_dpprint_paste_kokeibun5";
 
     /**
      * 電極製版名
      */
     public static final String DENKYOKU_SEIHAN_MEI = "sr_dpprint_denkyoku_seihan_mei ";
-
-    /**
-     * PETﾌｨﾙﾑ種類
-     */
-    public static final String PET_FILM_SHURUI = "sr_dpprint_pet_film_shurui";
 
     /**
      * 印刷号機
@@ -187,11 +312,6 @@ public class GXHDO101B023Const {
      * 乾燥温度下側表示値4
      */
     public static final String KANSOU_ONDO_SHITA_HYOUJICHI4 = "sr_dpprint_kansou_ondo_shita_hyoujichi4";
-
-    /**
-     * 乾燥温度表示値5
-     */
-    public static final String KANSOU_ONDO_HYOUJICHI5 = "sr_dpprint_kansou_ondo_hyoujichi5";
 
     /**
      * 搬送速度
@@ -437,11 +557,21 @@ public class GXHDO101B023Const {
      * 成形長さ
      */
     public static final String SEIKEINAGASA = "sr_dpprint_seikeinagasa";
+    
+    /**
+     * 歩留まり
+     */
+    public static final String BUDOMARI = "sr_dpprint_budomari";
 
     /**
      * 印刷長さ
      */
     public static final String PRINTLENGTH = "sr_dpprint_printlength";
+    
+    /**
+     * 印刷ｾｯﾄ数
+     */
+    public static final String PRINT_SETSU = "sr_dpprint_print_setsu";
 
     /**
      * 備考3

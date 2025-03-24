@@ -71,6 +71,11 @@ import org.primefaces.context.RequestContext;
  * 変更者	KCSS K.Jo<br>
  * 変更理由	画面表示項目を追加<br>
  * <br>
+ * 変更日	2025/03/12<br>
+ * 計画書No	MB2501-D004<br>
+ * 変更者	KCSS A.Hayashi<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 
@@ -619,11 +624,32 @@ public class GXHDO201B023 implements Serializable {
                     + ", T1.taperollno1"
                     + ", T1.taperollno2"
                     + ", T1.taperollno3"
+                    + ", T1.atsumi1"
+                    + ", T1.atsumi2"
+                    + ", T1.atsumi3"
+                    + ", T1.petfilmsyurui2"
+                    + ", T1.petfilmsyurui3"
+                    + ", T1.pastehinmei"
                     + ", T1.pastelotno"
                     + ", T1.pastenendo"
                     + ", T1.pasteondo"
                     + ", T1.pkokeibun1"
                     + ", T1.pastelotno2"
+                    + ", T1.pastenendo2"
+                    + ", T1.pasteondo2"
+                    + ", T1.pkokeibun2"
+                    + ", T1.pastelotno3"
+                    + ", T1.pastenendo3"
+                    + ", T1.pasteondo3"
+                    + ", T1.pkokeibun3"
+                    + ", T1.pastelotno4"
+                    + ", T1.pastenendo4"
+                    + ", T1.pasteondo4"
+                    + ", T1.pkokeibun4"
+                    + ", T1.pastelotno5"
+                    + ", T1.pastenendo5"
+                    + ", T1.pasteondo5"
+                    + ", T1.pkokeibun5"
                     + ", T1.handoumei"
                     + ", T1.handouno"
                     + ", T1.handoumaisuu"
@@ -756,11 +782,32 @@ public class GXHDO201B023 implements Serializable {
             mapping.put("taperollno1", "taperollno1");
             mapping.put("taperollno2", "taperollno2");
             mapping.put("taperollno3", "taperollno3");
+            mapping.put("atsumi1", "atsumi1");
+            mapping.put("atsumi2", "atsumi2");
+            mapping.put("atsumi3", "atsumi3");
+            mapping.put("petfilmsyurui2", "petfilmsyurui2");
+            mapping.put("petfilmsyurui3", "petfilmsyurui3");
+            mapping.put("pastehinmei", "pastehinmei");
             mapping.put("pastelotno", "pastelotno");
             mapping.put("pastenendo", "pastenendo");
             mapping.put("pasteondo", "pasteondo");
             mapping.put("pkokeibun1", "pkokeibun1");
             mapping.put("pastelotno2", "pastelotno2");
+            mapping.put("pastenendo2", "pastenendo2");
+            mapping.put("pasteondo2", "pasteondo2");
+            mapping.put("pkokeibun2", "pkokeibun2");
+            mapping.put("pastelotno3", "pastelotno3");
+            mapping.put("pastenendo3", "pastenendo3");
+            mapping.put("pasteondo3", "pasteondo3");
+            mapping.put("pkokeibun3", "pkokeibun3");
+            mapping.put("pastelotno4", "pastelotno4");
+            mapping.put("pastenendo4", "pastenendo4");
+            mapping.put("pasteondo4", "pasteondo4");
+            mapping.put("pkokeibun4", "pkokeibun4");
+            mapping.put("pastelotno5", "pastelotno5");
+            mapping.put("pastenendo5", "pastenendo5");
+            mapping.put("pasteondo5", "pasteondo5");
+            mapping.put("pkokeibun5", "pkokeibun5");
             mapping.put("handoumei", "handoumei");
             mapping.put("handouno", "handouno");
             mapping.put("handoumaisuu", "handoumaisuu");

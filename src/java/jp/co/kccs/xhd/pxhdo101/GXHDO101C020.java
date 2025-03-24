@@ -48,6 +48,11 @@ import org.primefaces.json.JSONObject;
  * 変更者	863 zhangjy<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2025/03/12<br>
+ * 計画書No	MB2501-D004<br>
+ * 変更者	KCSS A.Hayashi<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -583,7 +588,43 @@ public class GXHDO101C020 implements Serializable {
     public String getShitaTWarnMessage() {
         return MessageUtil.getMessage("XHD-000207", "");
     }
+    
+    /**
+     * 品名Lotﾁｪｯｸ警告メッセージ 
+     * 
+     * @return shitaTWarnMessage the shitaTWarnMessage
+     */
+    public String getHinmeiLotWarnMessage() {
+        return MessageUtil.getMessage("XHD-000233", "");
+    }
+    
+    /**
+     * 電極ﾃｰﾌﾟ厚み・PETﾌｨﾙﾑ種類のﾁｪｯｸ警告メッセージ 
+     * 
+     * @return shitaTWarnMessage the shitaTWarnMessage
+     */
+    public String getTapeAtumi_PetfilmWarnMessage() {
+        return MessageUtil.getMessage("XHD-000234", "");
+    }
 
+    /**
+     * 電極ﾍﾟｰｽﾄ固形分のﾁｪｯｸ警告メッセージ 
+     * 
+     * @return shitaTWarnMessage the shitaTWarnMessage
+     */
+    public String getPasteKokeiWarnMessage() {
+        return MessageUtil.getMessage("XHD-000235", "");
+    }
+    
+    /**
+     * 取込完了時のメッセージ 
+     * 
+     * @return shitaTWarnMessage the shitaTWarnMessage
+     */
+    public String getTorikomiInfoMessage() {
+        return "取込完了";
+    }
+    
     /**
      * 電極ﾍﾟｰｽﾄﾁｪｯｸ警告メッセージokボタン押下後の処理
      */
@@ -610,5 +651,25 @@ public class GXHDO101C020 implements Serializable {
      */
     public void checkShitaTanshiSameHinmeiOK() {
         GXHDO101C020Logic.notCheckShitaTanshiSameHinmei();
+    }
+    /**
+     * 品名Lotﾁｪｯｸ警告メッセージokボタン押下後の処理
+     */
+    public void checkHinmeiLotOK() {
+        GXHDO101C020Logic.notCheckHinmeiLotSameHinmei();
+    }
+
+    /**
+     * 電極ﾃｰﾌﾟ厚み・PETﾌｨﾙﾑ種類のﾁｪｯｸ警告メッセージokボタン押下後の処理
+     */
+    public void checkTapeAtumi_PetfilmSameHinmeiOK() {
+        GXHDO101C020Logic.notCheckTapeAtumi_PetfilmSameHinmei();
+    }
+
+    /**
+     * 電極ﾍﾟｰｽﾄ固形分のﾁｪｯｸ警告メッセージokボタン押下後の処理
+     */
+    public void checkPasteKokeiSameHinmeiOK() {
+        GXHDO101C020Logic.notCheckSPasteKokeiSameHinmei();
     }
 }

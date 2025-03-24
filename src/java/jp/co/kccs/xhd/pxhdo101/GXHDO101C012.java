@@ -41,6 +41,16 @@ import org.primefaces.context.RequestContext;
  * 変更者	KCSS D.Yanagida<br>
  * 変更理由	ロット混合対応<br>
  * <br>
+ * 変更日	2025/02/17<br>
+ * 計画書No	MB2501-D004<br>
+ * 変更者	KCSS H.Aruba<br>
+ * 変更理由	【MLCC】印刷・積層　要望対応<br>
+ * <br>
+ * 変更日	2025/03/12<br>
+ * 計画書No	MB2501-D004<br>
+ * 変更者	KCSS A.Hayashi<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -116,6 +126,21 @@ public class GXHDO101C012 implements Serializable {
      * フォームエラー判定
      */
     private boolean isFormError;
+    
+    /**
+     * 回数ｺﾝﾎﾞﾎﾞｯｸｽ設定値
+     */
+    private List<String> kaisuList;
+    
+    /**
+     * 回数の表示非表示
+     */
+    private String kaisuDisplay;
+    
+    /**
+     * 選択されている回数
+     */
+    private String selectKaisu;
     
     /**
      * コンストラクタ
@@ -268,6 +293,59 @@ public class GXHDO101C012 implements Serializable {
     }
     
     /**
+     * 回数ｺﾝﾎﾞﾎﾞｯｸｽﾘｽﾄ
+     *
+kaisuList     */
+    public void setKaisuMap(List<String> kaisuList) {
+        this.kaisuList = kaisuList;
+    }
+    
+    /**
+     * 回数ｺﾝﾎﾞﾎﾞｯｸｽﾘｽﾄ
+     * 
+     * @return the kaisuMap
+     */
+    public List<String> getKaisuList() {
+        return this.kaisuList;
+    }
+    
+    /**
+     * 回数disabled
+     *
+     * @param kaisuDisplay the kaisuDisable to set
+     */
+    public void setKaisuDisplay(String kaisuDisplay) {
+        this.kaisuDisplay = kaisuDisplay;
+    }
+    
+    /**
+     * 回数disabled
+     * 
+     * @return the kaisuDisable
+     */
+    public String getKaisuDisplay() {
+        return this.kaisuDisplay;
+    }
+    
+    /**
+     * 選択された回数
+     * 
+     * @param selectKaisu the selectKaisu to set
+     */
+    public void setSelectKaisu(String selectKaisu) {
+        this.selectKaisu = selectKaisu;
+    }
+    
+    /**
+     * 選択された回数
+     * 
+     * @return the selectKaisu
+     */
+    public String getSelectKaisu() {
+        return this.selectKaisu;
+    }
+    
+    /**
      * OKボタン押下時のチェック処理を行う。
      */
     public void doOk() {
@@ -416,32 +494,133 @@ public class GXHDO101C012 implements Serializable {
             }
             //②ﾃﾞｰﾀﾁｪｯｸ
             // ﾃﾞｰﾀを引き渡す際に、参照先のﾃﾞｰﾀが登録(仮登録も含む)されていないことを確認する。
-            // 1.Ⅲ.画面表示仕様(2)を発行する。
-            Map fxhdd03JissekinoInfo = loadFxhdd03JissekinoInfo(queryRunnerDoc, strSakiKojyo, strSakiLotNo, strSakiEdaban, sanshouGamenID);
-            if(fxhdd03JissekinoInfo != null){
-                //  A.取得できなかった場合
-                //   以降の処理を続行する。
-                //  B.取得できた場合、登録済(仮登録も含む)であるか確認を行う。
-                //   ｱ.状態ﾌﾗｸﾞ == '0' の場合
-                //    ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。 
-                //      ・ｴﾗｰｺｰﾄﾞ:XHD-000161 
-                //      ・ｴﾗｰﾒｯｾｰｼﾞ:参照先のﾛｯﾄ({0})が未登録ではありません。 
-                //      0には、【印刷工程画面ID】をもとにした、ﾒﾆｭｰ名(ﾌｫｰﾑﾊﾟﾗﾒｰﾀ)を設定。 
-                //   ｲ.状態ﾌﾗｸﾞ == '1' の場合
-                //    ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。
-                //      ・ｴﾗｰｺｰﾄﾞ:XHD-000161 
-                //      ・ｴﾗｰﾒｯｾｰｼﾞ:参照先のﾛｯﾄ({0})が未登録ではありません。 
-                //      0には、【印刷工程画面ID】をもとにした、ﾒﾆｭｰ名(ﾌｫｰﾑﾊﾟﾗﾒｰﾀ)を設定。 
-                //   ｳ.上記以外の場合
-                //    以降の処理を実行する。 
-                String jotaiFlg = StringUtil.nullToBlank(getMapData(fxhdd03JissekinoInfo, "jotai_flg"));
-                if("0".equals(jotaiFlg) || "1".equals(jotaiFlg)){
+
+            // ■DP画面の場合
+            // 1.G1).回数が選択されているかﾁｪｯｸを行う
+            // 	A.選択されている場合
+            //      以降の処理を続行する。
+            // 	B.選択されていない場合
+            //      ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する
+            //          ・ｴﾗｰｺｰﾄﾞ:XHD-000133
+            // 		・ｴﾗｰﾒｯｾｰｼﾞ:DP2回数が指定されていません。
+            if ("GXHDO101B023".equals(sanshouGamenID)) {
+                if(StringUtil.nullToBlank(selectKaisu).isEmpty()){
                     FacesContext facesContext = FacesContext.getCurrentInstance();
                     FacesMessage message
-                            = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000161",sanshouMotoInfo.getMenuName()), null);
+                            = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000133"), null);
+                    facesContext.addMessage(null, message);
+                    return false;
+                }
+                
+                // 先頭の1文字を取得
+                int kaisu = Integer.parseInt(String.valueOf(selectKaisu.charAt(0)));
+                
+                //参照元のﾃﾞｰﾀ
+                String strMotoKojyo = "";
+                String strMotoLotNo = "";
+                String strMotoEdaban = "";
+                        
+                if(!"".equals(sanshouMotoLotNo) && sanshouMotoLotNo != null){
+                    strMotoKojyo = this.sanshouMotoLotNo.substring(0, 3);
+                    strMotoLotNo = this.sanshouMotoLotNo.substring(3, 11);
+                    strMotoEdaban = this.sanshouMotoLotNo.substring(11, 14);
+                }     
+                
+                // 2.G1).回数を数字に変換し、Ⅲ.画面表示仕様(4)を発行する。
+                Map fxhdd03JissekinoDpinfoMoto = loadFxhdd03JissekinoDPInfo(queryRunnerDoc, strMotoKojyo, strMotoLotNo, strMotoEdaban, sanshouGamenID,kaisu);
+                    if(fxhdd03JissekinoDpinfoMoto != null ){
+                    //if(fxhdd03JissekinoDpinfoMoto != null || fxhdd03JissekinoDpinfoMoto.isEmpty()){
+                    // A.取得できなかった場合
+                    // 	以降の処理を続行する。
+                    // B.取得できた場合、登録済であるか確認を行う。
+                    //  ｱ.状態ﾌﾗｸﾞ == '1' 以外の場合
+                    //      ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。
+                    //          ・ｴﾗｰｺｰﾄﾞ:XHD-000160
+                    //          ・ｴﾗｰﾒｯｾｰｼﾞ:参照元のﾛｯﾄ({0})が登録済ではありません。
+                    //            0には、【印刷工程画面ID】をもとにした、ﾒﾆｭｰ名(ﾌｫｰﾑﾊﾟﾗﾒｰﾀ)を設定。
+                    //  ｲ.上記以外の場合
+                    //      以降の処理を実行する。
+                    String motoJotaiFlg = StringUtil.nullToBlank(getMapData(fxhdd03JissekinoDpinfoMoto, "jotai_flg"));
+                    if(!"1".equals(motoJotaiFlg)){
+                        FacesContext facesContext = FacesContext.getCurrentInstance();
+                        FacesMessage message
+                                = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000160","印刷(DP2)"), null);
+                        facesContext.addMessage(null, message);
+                        setSanshousakiTextBackColor(ErrUtil.ERR_BACK_COLOR);
+                        return false;
+                    }
+                } else {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    FacesMessage message
+                            = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000161","印刷(DP2)"), null);
+                    facesContext.addMessage(null, message);
+                    setSanshousakiTextBackColor(ErrUtil.ERR_BACK_COLOR);
+                    return false;   
+                }
+                // 2.G1).回数を数字に変換し、Ⅲ.画面表示仕様(5)を発行する。
+                Map fxhdd03JissekinoDpinfoSaki = loadFxhdd03JissekinoDPInfo(queryRunnerDoc, strSakiKojyo, strSakiLotNo, strSakiEdaban, sanshouGamenID,kaisu);
+                if(fxhdd03JissekinoDpinfoSaki == null){
+                //if(fxhdd03JissekinoDpinfoSaki != null){
+                    // A.取得できなかった場合
+                    // 	以降の処理を続行する。
+                    // B.取得できた場合、登録済であるか確認を行う。
+                    //  ｱ.状態ﾌﾗｸﾞ == '0' の場合
+                    //      ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。
+                    //          ・ｴﾗｰｺｰﾄﾞ:XHD-000161
+                    //          ・ｴﾗｰﾒｯｾｰｼﾞ:参照元のﾛｯﾄ({0})が登録済ではありません。
+                    //            0には、【印刷工程画面ID】をもとにした、ﾒﾆｭｰ名(ﾌｫｰﾑﾊﾟﾗﾒｰﾀ)を設定。
+                    //  ｲ.状態ﾌﾗｸﾞ == '1' の場合
+                    //      ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。
+                    //          ・ｴﾗｰｺｰﾄﾞ:XHD-000161
+                    //          ・ｴﾗｰﾒｯｾｰｼﾞ:参照先のﾛｯﾄ({0})が未登録ではありません。
+                    //            0には、【印刷工程画面ID】をもとにした、ﾒﾆｭｰ名(ﾌｫｰﾑﾊﾟﾗﾒｰﾀ)を設定。
+                    //  ｳ.上記以外の場合
+                    //      以降の処理を実行する。
+                    String sakiJotaiFlg = StringUtil.nullToBlank(getMapData(fxhdd03JissekinoDpinfoSaki, "jotai_flg"));
+                    if("0".equals(sakiJotaiFlg) || "1".equals(sakiJotaiFlg)){
+                        FacesContext facesContext = FacesContext.getCurrentInstance();
+                        FacesMessage message
+                                = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000161","印刷(DP2)"), null);
+                        facesContext.addMessage(null, message);
+                        setSanshousakiTextBackColor(ErrUtil.ERR_BACK_COLOR);
+                        return false;
+                    }
+                } else {
+                    FacesContext facesContext = FacesContext.getCurrentInstance();
+                    FacesMessage message
+                            = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000161","印刷(DP2)"), null);
                     facesContext.addMessage(null, message);
                     setSanshousakiTextBackColor(ErrUtil.ERR_BACK_COLOR);
                     return false;
+                }
+            } else {
+            // 1.Ⅲ.画面表示仕様(2)を発行する。
+                Map fxhdd03JissekinoInfo = loadFxhdd03JissekinoInfo(queryRunnerDoc, strSakiKojyo, strSakiLotNo, strSakiEdaban, sanshouGamenID);
+                if(fxhdd03JissekinoInfo != null){
+                    //  A.取得できなかった場合
+                    //   以降の処理を続行する。
+                    //  B.取得できた場合、登録済(仮登録も含む)であるか確認を行う。
+                    //   ｱ.状態ﾌﾗｸﾞ == '0' の場合
+                    //    ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。 
+                    //      ・ｴﾗｰｺｰﾄﾞ:XHD-000161 
+                    //      ・ｴﾗｰﾒｯｾｰｼﾞ:参照先のﾛｯﾄ({0})が未登録ではありません。 
+                    //      0には、【印刷工程画面ID】をもとにした、ﾒﾆｭｰ名(ﾌｫｰﾑﾊﾟﾗﾒｰﾀ)を設定。 
+                    //   ｲ.状態ﾌﾗｸﾞ == '1' の場合
+                    //    ｴﾗｰﾒｯｾｰｼﾞを表示し、処理を中断する。
+                    //      ・ｴﾗｰｺｰﾄﾞ:XHD-000161 
+                    //      ・ｴﾗｰﾒｯｾｰｼﾞ:参照先のﾛｯﾄ({0})が未登録ではありません。 
+                    //      0には、【印刷工程画面ID】をもとにした、ﾒﾆｭｰ名(ﾌｫｰﾑﾊﾟﾗﾒｰﾀ)を設定。 
+                    //   ｳ.上記以外の場合
+                    //    以降の処理を実行する。 
+                    String jotaiFlg = StringUtil.nullToBlank(getMapData(fxhdd03JissekinoInfo, "jotai_flg"));
+                    if("0".equals(jotaiFlg) || "1".equals(jotaiFlg)){
+                        FacesContext facesContext = FacesContext.getCurrentInstance();
+                        FacesMessage message
+                                = new FacesMessage(FacesMessage.SEVERITY_ERROR, MessageUtil.getMessage("XHD-000161","印刷(DP2)"), null);
+                        facesContext.addMessage(null, message);
+                        setSanshousakiTextBackColor(ErrUtil.ERR_BACK_COLOR);
+                        return false;
+                    }
                 }
             }
 
@@ -503,4 +682,34 @@ public class GXHDO101C012 implements Serializable {
         return queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
     }
 
+    /**
+     * (4)[品質DB登録実績]から、ﾃﾞｰﾀを取得(印刷工程入力ﾃﾞｰﾀ取得)
+     *
+     * @param kojyo 工場ｺｰﾄﾞ(検索キー)
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param edaban 枝番(検索キー)
+     * @param formId 画面ID(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadFxhdd03JissekinoDPInfo(QueryRunner queryRunnerDoc, String kojyo, String lotNo,
+            String edaban, String formId, int selectKaisu) throws SQLException {
+
+        // 品質DB登録実績情報の取得
+        String sql = "SELECT jissekino,rev, jotai_flg "
+                + "FROM fxhdd03 "
+                + "WHERE kojyo = ? AND lotno = ? "
+                + "AND edaban = ? AND gamen_id = ? "
+                + "AND jissekino = ?";
+
+        List<Object> params = new ArrayList<>();
+        params.add(kojyo);
+        params.add(lotNo);
+        params.add(edaban);
+        params.add(formId);
+        params.add(selectKaisu);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
+    }
 }

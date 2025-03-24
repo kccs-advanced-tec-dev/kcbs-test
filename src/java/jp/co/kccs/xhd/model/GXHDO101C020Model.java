@@ -17,6 +17,11 @@ import java.util.Map;
  * 変更者	863 zhangjy<br>
  * 変更理由	新規作成<br>
  * <br>
+ * 変更日	2025/03/12<br>
+ * 計画書No	MB2501-D004<br>
+ * 変更者	KCSS A.Hayashi<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -50,7 +55,7 @@ public class GXHDO101C020Model implements Cloneable {
     public static final String YUDENTAI_PASTE_1 = "誘電体ﾍﾟｰｽﾄ①";
     /** 種類名:誘電体ﾍﾟｰｽﾄ② */
     public static final String YUDENTAI_PASTE_2 = "誘電体ﾍﾟｰｽﾄ②";
-
+    
     /**
      * クローン実装
      *
@@ -192,12 +197,81 @@ public class GXHDO101C020Model implements Cloneable {
      * (ﾃｰﾌﾟﾛｯﾄ①)thickness_um
      */
     private String returnItemId_TapeLot1_thickness_um;
-
-    
+        
     /**
      * petnameの設定項目ID
      */
     private String returnItemId_Petname;
+    
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ①)厚みNo1
+     */
+    private String returnItemId_TapeLot1_atumiNo1;
+    
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ②)厚みNo2
+     */
+    private String returnItemId_TapeLot2_atumiNo2;
+    
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ③)厚みNo3
+     */
+    private String returnItemId_TapeLot3_atumiNo3;
+    
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ①)PETﾌｨﾙﾑ種類No1の設定項目ID
+     */
+    private String returnItemId_TapeLot1_PetFilmNo1;
+    
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ②)PETﾌｨﾙﾑ種類No2の設定項目ID
+     */
+    private String returnItemId_TapeLot2_PetFilmNo2;
+    
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ③)PETﾌｨﾙﾑ種類No3の設定項目ID
+     */
+    private String returnItemId_TapeLot3_PetFilmNo3;
+    
+   /**
+     * (ﾍﾟｰｽﾄﾛｯﾄ③)conventionallotの設定項目ID(内部電極ﾍﾟｰｽﾄﾛｯﾄNo3)
+     */
+    private String returnItemId_PasteLot3_Conventionallot;
+    
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ③)kokeibun_pctの設定項目ID(内部電極ﾍﾟｰｽﾄ固形分3)
+     */
+    private String returnItemId_PasteLot3_Kokeibunpct;
+    
+   /**
+     * (ﾍﾟｰｽﾄﾛｯﾄ④)conventionallotの設定項目ID(内部電極ﾍﾟｰｽﾄﾛｯﾄNo4)
+     */
+    private String returnItemId_PasteLot4_Conventionallot;
+    
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ④)kokeibun_pctの設定項目ID(内部電極ﾍﾟｰｽﾄ固形分4)
+     */
+    private String returnItemId_PasteLot4_Kokeibunpct;
+    
+   /**
+     * (ﾍﾟｰｽﾄﾛｯﾄ⑤)conventionallotの設定項目ID(内部電極ﾍﾟｰｽﾄﾛｯﾄNo5)
+     */
+    private String returnItemId_PasteLot5_Conventionallot;
+
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ⑤)kokeibun_pctの設定項目ID(内部電極ﾍﾟｰｽﾄ固形分5)
+     */
+    private String returnItemId_PasteLot5_Kokeibunpct;
+    
+    /**
+     * 元画面のﾍﾟｰｽﾄ固形分の設定項目ID
+     */
+    private String moto_PasteKokeibun;
+    
+    /**
+     * 元画面の電極ﾍﾟｰｽﾄ(設計)の設定項目ID
+     */
+    private String moto_Denkyoku_Paste_Sekkei;
 
     /**
      * 原料ロットデータリスト
@@ -625,6 +699,253 @@ public class GXHDO101C020Model implements Cloneable {
     public void setReturnItemId_TapeLot3_Tapelength(String returnItemId_TapeLot3_Tapelength) {
         this.returnItemId_TapeLot3_Tapelength = returnItemId_TapeLot3_Tapelength;
     }
+    
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ①)厚みNo1
+     * @return the returnItemId_TapeLot1_thickness_um
+     */
+    public String getReturnItemId_TapeLot1_AtumiNo1() {
+        return returnItemId_TapeLot1_atumiNo1;
+    }
+
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ①)厚みNo1
+     * @param returnItemId_TapeLot1_atumiNo1 the returnItemId_TapeLot1_atumiNo1 to set
+     */
+    public void setReturnItemId_TapeLot1_AtumiNo1(String returnItemId_TapeLot1_atumiNo1) {
+        this.returnItemId_TapeLot1_atumiNo1 = returnItemId_TapeLot1_atumiNo1;
+    }
+    
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ②)厚みNo2
+     * @return the returnItemId_TapeLot1_thickness_um
+     */
+    public String getReturnItemId_TapeLot2_AtumiNo2() {
+        return returnItemId_TapeLot2_atumiNo2;
+    }
+
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ②)厚みNo2
+     * @param returnItemId_TapeLot2_atumiNo2 the returnItemId_TapeLot2_atumiNo2 to set
+     */
+    public void setReturnItemId_TapeLot2_AtumiNo2(String returnItemId_TapeLot2_atumiNo2) {
+        this.returnItemId_TapeLot2_atumiNo2 = returnItemId_TapeLot2_atumiNo2;
+    }
+    
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ③)厚みNo3
+     * @return the returnItemId_TapeLot1_thickness_um
+     */
+    public String getReturnItemId_TapeLot3_AtumiNo3() {
+        return returnItemId_TapeLot3_atumiNo3;
+    }
+
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ③)厚みNo3
+     * @param returnItemId_TapeLot3_atumiNo3 the returnItemId_TapeLot3_atumiNo3 to set
+     */
+    public void setReturnItemId_TapeLot3_AtumiNo3(String returnItemId_TapeLot3_atumiNo3) {
+        this.returnItemId_TapeLot3_atumiNo3 = returnItemId_TapeLot3_atumiNo3;
+    }
+    
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ①)PETﾌｨﾙﾑ種類No1の設定項目ID
+     * 
+     * @return the returnItemId_TapeLot1_PetFilmNo1
+     */
+    public String getReturnItemId_TapeLot1_PetFilmNo1() {
+        return returnItemId_TapeLot1_PetFilmNo1;
+    }
+
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ①)PETﾌｨﾙﾑ種類No1の設定項目ID
+     * 
+     * @param returnItemId_TapeLot1_PetFilmNo1 the returnItemId_TapeLot1_PetFilmNo1 to set
+     */
+    public void setReturnItemId_TapeLot1_PetFilmNo1(String returnItemId_TapeLot1_PetFilmNo1) {
+        this.returnItemId_TapeLot1_PetFilmNo1 = returnItemId_TapeLot1_PetFilmNo1;
+    }
+    
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ②)PETﾌｨﾙﾑ種類No2の設定項目ID
+     * 
+     * @return the returnItemId_PetFilmNo2
+     */
+    public String getReturnItemId_TapeLot2_PetFilmNo2() {
+        return returnItemId_TapeLot2_PetFilmNo2;
+    }
+
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ②)PETﾌｨﾙﾑ種類No2の設定項目ID
+     * 
+     * @param returnItemId_TapeLot2_PetFilmNo2 the returnItemId_TapeLot2_PetFilmNo2 to set
+     */
+    public void setReturnItemId_TapeLot2_PetFilmNo2(String returnItemId_TapeLot2_PetFilmNo2) {
+        this.returnItemId_TapeLot2_PetFilmNo2 = returnItemId_TapeLot2_PetFilmNo2;
+    }
+    
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ③)PETﾌｨﾙﾑ種類No3の設定項目ID
+     * 
+     * @return the returnItemId_TapeLot3_PetFilmNo3
+     */
+    public String getReturnItemId_TapeLot3_PetFilmNo3() {
+        return returnItemId_TapeLot3_PetFilmNo3;
+    }
+
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ③)PETﾌｨﾙﾑ種類No3の設定項目ID
+     * 
+     * @param returnItemId_TapeLot3_PetFilmNo3 the returnItemId_TapeLot3_PetFilmNo3 to set
+     */
+    public void setReturnItemId_TapeLot3_PetFilmNo3(String returnItemId_TapeLot3_PetFilmNo3) {
+        this.returnItemId_TapeLot3_PetFilmNo3 = returnItemId_TapeLot3_PetFilmNo3;
+    }
+    
+    /**
+     * (ﾍﾟｰｽﾄﾛｯﾄ③)conventionallotの設定項目ID(内部電極ﾍﾟｰｽﾄﾛｯﾄNo3)
+     * 
+     * @return the returnItemId_PasteLot3_Conventionallot
+     */
+    public String getReturnItemId_PasteLot3_Conventionallot() {
+        return returnItemId_PasteLot3_Conventionallot;
+    }
+
+    /**
+     * (ﾍﾟｰｽﾄﾛｯﾄ③)conventionallotの設定項目ID(内部電極ﾍﾟｰｽﾄﾛｯﾄNo3)
+     * 
+     * @param returnItemId_PasteLot3_Conventionallot the returnItemId_PasteLot3_Conventionallot to set
+     */
+    public void setReturnItemId_PasteLot3_Conventionallot(String returnItemId_PasteLot3_Conventionallot) {
+        this.returnItemId_PasteLot3_Conventionallot = returnItemId_PasteLot3_Conventionallot;
+    }
+    
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ③)kokeibun_pctの設定項目ID(内部電極ﾍﾟｰｽﾄ固形分3)
+     * 
+     * @return the returnItemId_PasteLot3_Kokeibunpct
+     */
+    public String getReturnItemId_PasteLot3_Kokeibunpct() {
+        return returnItemId_PasteLot3_Kokeibunpct;
+    }
+
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ③)kokeibun_pctの設定項目ID
+     * 
+     * @param returnItemId_PasteLot3_Kokeibunpct the returnItemId_PasteLot3_Kokeibunpct to set
+     */
+    public void setReturnItemId_PasteLot3_Kokeibunpct(String returnItemId_PasteLot3_Kokeibunpct) {
+        this.returnItemId_PasteLot3_Kokeibunpct = returnItemId_PasteLot3_Kokeibunpct;
+    }
+    
+    /**
+     * (ﾍﾟｰｽﾄﾛｯﾄ④)conventionallotの設定項目ID(内部電極ﾍﾟｰｽﾄﾛｯﾄNo4)
+     * 
+     * @return the returnItemId_PasteLot4_Conventionallot
+     */
+    public String getReturnItemId_PasteLot4_Conventionallot() {
+        return returnItemId_PasteLot4_Conventionallot;
+    }
+
+    /**
+     * (ﾍﾟｰｽﾄﾛｯﾄ④)conventionallotの設定項目ID(内部電極ﾍﾟｰｽﾄﾛｯﾄNo4)
+     * 
+     * @param returnItemId_PasteLot4_Conventionallot the returnItemId_PasteLot4_Conventionallot to set
+     */
+    public void setReturnItemId_PasteLot4_Conventionallot(String returnItemId_PasteLot4_Conventionallot) {
+        this.returnItemId_PasteLot4_Conventionallot = returnItemId_PasteLot4_Conventionallot;
+    }
+    
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ④)kokeibun_pctの設定項目ID(内部電極ﾍﾟｰｽﾄ固形分4)
+     * 
+     * @return the returnItemId_PasteLot4_Kokeibunpct
+     */
+    public String getReturnItemId_PasteLot4_Kokeibunpct() {
+        return returnItemId_PasteLot4_Kokeibunpct;
+    }
+
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ④)kokeibun_pctの設定項目ID
+     * 
+     * @param returnItemId_PasteLot4_Kokeibunpct the returnItemId_PasteLot4_Kokeibunpct to set
+     */
+    public void setReturnItemId_PasteLot4_Kokeibunpct(String returnItemId_PasteLot4_Kokeibunpct) {
+        this.returnItemId_PasteLot4_Kokeibunpct = returnItemId_PasteLot4_Kokeibunpct;
+    }
+    
+    /**
+     * (ﾍﾟｰｽﾄﾛｯﾄ⑤)conventionallotの設定項目ID(内部電極ﾍﾟｰｽﾄﾛｯﾄNo5)
+     * 
+     * @return the returnItemId_PasteLot5_Conventionallot
+     */
+    public String getReturnItemId_PasteLot5_Conventionallot() {
+        return returnItemId_PasteLot5_Conventionallot;
+    }
+
+    /**
+     * (ﾍﾟｰｽﾄﾛｯﾄ⑤)conventionallotの設定項目ID(内部電極ﾍﾟｰｽﾄﾛｯﾄNo5)
+     * 
+     * @param returnItemId_PasteLot5_Conventionallot the returnItemId_PasteLot5_Conventionallot to set
+     */
+    public void setReturnItemId_PasteLot5_Conventionallot(String returnItemId_PasteLot5_Conventionallot) {
+        this.returnItemId_PasteLot5_Conventionallot = returnItemId_PasteLot5_Conventionallot;
+    }
+    
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ⑤)kokeibun_pctの設定項目ID(内部電極ﾍﾟｰｽﾄ固形分4)
+     * 
+     * @return the returnItemId_PasteLot5_Kokeibunpct
+     */
+    public String getReturnItemId_PasteLot5_Kokeibunpct() {
+        return returnItemId_PasteLot5_Kokeibunpct;
+    }
+
+    /**
+     * (ﾃｰﾌﾟﾛｯﾄ⑤)kokeibun_pctの設定項目ID
+     * 
+     * @param returnItemId_PasteLot5_Kokeibunpct the returnItemId_PasteLot5_Kokeibunpct to set
+     */
+    public void setReturnItemId_PasteLot5_Kokeibunpct(String returnItemId_PasteLot5_Kokeibunpct) {
+        this.returnItemId_PasteLot5_Kokeibunpct = returnItemId_PasteLot5_Kokeibunpct;
+    }
+    
+    /**
+     * 元画面のﾍﾟｰｽﾄ固形分の設定項目ID
+     * 
+     * @return the moto_PasteKokeibun
+     */
+    public String getMoto_PasteKokeibun() {
+        return moto_PasteKokeibun;
+    }
+
+    /**
+     * 元画面のﾍﾟｰｽﾄ固形分の設定項目ID
+     * 
+     * @param moto_PasteKokeibun the moto_PasteKokeibun to set
+     */
+    public void setMoto_PasteKokeibun(String moto_PasteKokeibun) {
+        this.moto_PasteKokeibun = moto_PasteKokeibun;
+    }
+
+    /**
+     * 元画面の電極ﾍﾟｰｽﾄ(設計)の設定項目ID
+     * 
+     * @return the moto_Denkyoku_Paste_Sekkei
+     */
+    public String getMoto_Denkyoku_Paste_Sekkei() {
+        return moto_Denkyoku_Paste_Sekkei;
+    }
+
+    /**
+     * 元画面のﾍﾟｰｽﾄ固形分の設定項目ID
+     * 
+     * @param moto_Denkyoku_Paste_Sekkei the moto_Denkyoku_Paste_Sekkei to set
+     */
+    public void setMoto_Denkyoku_Paste_Sekkei(String moto_Denkyoku_Paste_Sekkei) {
+        this.moto_Denkyoku_Paste_Sekkei = moto_Denkyoku_Paste_Sekkei;
+    }
+    
     
     /**
      * 原料ロットデータ

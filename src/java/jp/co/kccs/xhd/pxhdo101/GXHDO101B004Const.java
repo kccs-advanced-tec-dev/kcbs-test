@@ -29,6 +29,11 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	KCSS wxf<br>
  * 変更理由	項目追加・変更・削除<br>
  * <br>
+ * 変更日	2025/03/12<br>
+ * 計画書No	MB2501-D004<br>
+ * 変更者	KCSS A.Hayashi<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -458,6 +463,11 @@ public class GXHDO101B004Const {
     public static final String BTN_DATACOOPERATION_TOP = "sr_spssekisou_dataCooperation_Top";
     
     /**
+     * ｾｯﾄ数取得(画面上)
+     */
+    public static final String BTN_SET_COUNT_TOP = "sr_spssekisou_set_count_Top";
+    
+    /**
      * 仮登録(画面下)
      */
     public static final String BTN_KARI_TOUROKU_BOTTOM = "sr_spssekisou_kari_touroku_Bottom";
@@ -516,6 +526,11 @@ public class GXHDO101B004Const {
      * 設備ﾃﾞｰﾀ連携(画面下)
      */
     public static final String BTN_DATACOOPERATION_BOTTOM = "sr_spssekisou_dataCooperation_Bottom";
+    
+   /**
+     * ｾｯﾄ数取得(画面下)
+     */
+    public static final String BTN_SET_COUNT_BOTTOM = "sr_spssekisou_set_count_Bottom";
 
     /**
      * ユーザー認証パラメータ(修正)

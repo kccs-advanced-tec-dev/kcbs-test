@@ -23,6 +23,11 @@ package jp.co.kccs.xhd.pxhdo101;
  * 変更者	KCSS wxf<br>
  * 変更理由	項目追加・変更<br>
  * <br>
+ * 変更日	2025/03/12<br>
+ * 計画書No	MB2501-D004<br>
+ * 変更者	KCSS A.Hayashi<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -74,6 +79,21 @@ public class GXHDO101B001Const {
     public static final String SEKISOU_SU = "insatsu_sps_gra_sekisou_su";
 
     /**
+     * 厚み/PET種類①
+     */
+    public static final String ATSUMI_PET1 = "insatsu_sps_gra_atsumi_pet1";
+    
+    /**
+     * 厚み/PET種類②
+     */
+    public static final String ATSUMI_PET2 = "insatsu_sps_gra_atsumi_pet2";
+    
+    /**
+     * ｽﾗﾘｰﾛｯﾄ
+     */
+    public static final String SLURRY_LOT = "insatsu_sps_gra_slurry_lot";
+
+    /**
      * ｽﾘｯﾌﾟﾛｯﾄNo
      */
     public static final String SLIP_LOTNO = "insatsu_sps_gra_slip_lotno";
@@ -94,9 +114,49 @@ public class GXHDO101B001Const {
     public static final String ROLL_NO3 = "insatsu_sps_gra_roll_no3";
 
     /**
+     * 厚みNo1
+     */
+    public static final String ATSUMI_NO1 = "insatsu_sps_gra_atsumi_no1";
+    
+    /**
+     * 厚みNo2
+     */
+    public static final String ATSUMI_NO2 = "insatsu_sps_gra_atsumi_no2";
+    
+    /**
+     * 厚みNo3
+     */
+    public static final String ATSUMI_NO3 = "insatsu_sps_gra_atsumi_no3";
+    
+    /**
+     * PETﾌｨﾙﾑ種類No1
+     */
+    public static final String PET_FILM_NO1 = "insatsu_sps_gra_pet_film_no1";
+    
+     /**
+     * PETﾌｨﾙﾑ種類No2
+     */
+    public static final String PET_FILM_NO2 = "insatsu_sps_gra_pet_film_no2";
+    
+    /**
+     * PETﾌｨﾙﾑ種類No3
+     */
+    public static final String PET_FILM_NO3 = "insatsu_sps_gra_pet_film_no3";
+
+    /**
      * 原料記号
      */
     public static final String GENRYO_KIGOU = "insatsu_sps_gra_genryo_kigou";
+    
+    /**
+     * 電極ﾍﾟｰｽﾄ(設計)
+     */
+    public static final String DENKYOKU_PASTE_SEKKEI = "insatsu_sps_gra_denkyoku_paste_sekkei";
+    
+    /**
+     * ﾍﾟｰｽﾄ固形分
+     */
+    public static final String PASTE_KOKEI_BUN = "insatsu_sps_gra_paste_kokei_bun";
 
     /**
      * 電極ペースト
@@ -142,6 +202,66 @@ public class GXHDO101B001Const {
      * ﾍﾟｰｽﾄ固形分2
      */
     public static final String PASTE_KOKEIBUN2 = "insatsu_sps_gra_paste_kokeibun2";
+    
+    /**
+     * 内部電極ﾍﾟｰｽﾄﾛｯﾄNo3
+     */
+    public static final String PASTE_LOT_NO3 = "insatsu_sps_gra_paste_lot_no3";
+    
+    /**
+     * 内部電極ﾍﾟｰｽﾄ粘度3
+     */
+    public static final String PASTE_NENDO3 = "insatsu_sps_gra_paste_nendo3";
+
+    /**
+     * 内部電極ﾍﾟｰｽﾄ温度3
+     */
+    public static final String PASTE_ONDO3 = "insatsu_sps_gra_paste_ondo3";
+
+    /**
+     * 内部電極ﾍﾟｰｽﾄ固形分3
+     */
+    public static final String PASTE_KOKEIBUN3 = "insatsu_sps_gra_paste_kokeibun3";
+    
+    /**
+     * 内部電極ﾍﾟｰｽﾄﾛｯﾄNo4
+     */
+    public static final String PASTE_LOT_NO4 = "insatsu_sps_gra_paste_lot_no4";
+    
+    /**
+     * 内部電極ﾍﾟｰｽﾄ粘度4
+     */
+    public static final String PASTE_NENDO4 = "insatsu_sps_gra_paste_nendo4";
+
+    /**
+     * 内部電極ﾍﾟｰｽﾄ温度4
+     */
+    public static final String PASTE_ONDO4 = "insatsu_sps_gra_paste_ondo4";
+
+    /**
+     * 内部電極ﾍﾟｰｽﾄ固形分4
+     */
+    public static final String PASTE_KOKEIBUN4 = "insatsu_sps_gra_paste_kokeibun4";
+    
+    /**
+     * 内部電極ﾍﾟｰｽﾄﾛｯﾄNo5
+     */
+    public static final String PASTE_LOT_NO5 = "insatsu_sps_gra_paste_lot_no5";
+    
+    /**
+     * 内部電極ﾍﾟｰｽﾄ粘度5
+     */
+    public static final String PASTE_NENDO5 = "insatsu_sps_gra_paste_nendo5";
+
+    /**
+     * 内部電極ﾍﾟｰｽﾄ温度5
+     */
+    public static final String PASTE_ONDO5 = "insatsu_sps_gra_paste_ondo5";
+
+    /**
+     * 内部電極ﾍﾟｰｽﾄ固形分5
+     */
+    public static final String PASTE_KOKEIBUN5 = "insatsu_sps_gra_paste_kokeibun5";
 
     /**
      * 電極製版名
@@ -197,11 +317,6 @@ public class GXHDO101B001Const {
      * 乾燥温度下側表示値4
      */
     public static final String KANSOU_ONDO_SHITA_HYOUJICHI4 = "insatsu_sps_gra_kansou_shita_ondo_hyoujichi4";
-
-    /**
-     * 乾燥温度表示値5
-     */
-    public static final String KANSOU_ONDO_HYOUJICHI5 = "insatsu_sps_gra_kansou_ondo_hyoujichi5";
 
     /**
      * 搬送速度
@@ -397,7 +512,7 @@ public class GXHDO101B001Const {
      * 印刷枚数
      */
     public static final String INSATSU_MAISUU = "insatsu_sps_gra_insatsu_maisuu";
-
+    
     /**
      * 清掃 ローラ部
      */
@@ -449,6 +564,11 @@ public class GXHDO101B001Const {
     public static final String SEIKEINAGASA = "insatsu_sps_gra_seikeinagasa";
     
     /**
+     * 歩留まり
+     */
+    public static final String BUDOMARI = "insatsu_sps_gra_budomari";
+    
+    /**
      * 備考1
      */
     public static final String BIKOU1 = "insatsu_sps_gra_bikou1";
@@ -477,6 +597,11 @@ public class GXHDO101B001Const {
      * 印刷長さ
      */
     public static final String PRINTLENGTH = "insatsu_sps_gra_printlength";
+    
+    /**
+     * 印刷ｾｯﾄ数
+     */
+    public static final String PRINT_SETSU = "insatsu_sps_gra_print_setsu";
 
     /**
      * 仮登録(画面下)

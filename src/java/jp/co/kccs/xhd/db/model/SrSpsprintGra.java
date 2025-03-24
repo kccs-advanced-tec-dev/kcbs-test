@@ -21,6 +21,11 @@ import java.sql.Timestamp;
  * 変更者	KCSS wxf<br>
  * 変更理由	項目追加・変更<br>
  * <br>
+ * 変更日	2025/03/12<br>
+ * 計画書No	MB2501-D004<br>
+ * 変更者	KCSS A.Hayashi<br>
+ * 変更理由	項目追加・変更<br>
+ * <br>
  * ===============================================================================<br>
  */
 /**
@@ -57,6 +62,21 @@ public class SrSpsprintGra {
     private String petfilmsyurui;
     
     /**
+     * PETﾌｨﾙﾑ種類2
+     */
+    private String petfilmsyurui2;
+    
+    /**
+     * PETﾌｨﾙﾑ種類3
+     */
+    private String petfilmsyurui3;
+    
+    /**
+     * 電極ﾍﾟｰｽﾄ
+     */
+    private String pastehinmei;
+    
+    /**
      * ﾃｰﾌﾟﾛｰﾙNo1
      */
     private String taperollno1;
@@ -70,6 +90,21 @@ public class SrSpsprintGra {
      * ﾃｰﾌﾟﾛｰﾙNo3
      */
     private String taperollno3;
+    
+    /**
+     * 厚みNo1
+     */
+    private BigDecimal atsumi1;
+    
+    /**
+     * 厚みNo2
+     */
+    private BigDecimal atsumi2;
+    
+    /**
+     * 厚みNo3
+     */
+    private BigDecimal atsumi3;
     
     /**
      * ﾍﾟｰｽﾄﾛｯﾄNo1
@@ -110,6 +145,66 @@ public class SrSpsprintGra {
      * ﾍﾟｰｽﾄ固形分2
      */
     private BigDecimal pkokeibun2;
+    
+    /**
+     * ﾍﾟｰｽﾄﾛｯﾄNo3
+     */
+    private String pastelotno3;
+    
+    /**
+     * ﾍﾟｰｽﾄ粘度3
+     */
+    private BigDecimal pastenendo3;
+    
+    /**
+     * ﾍﾟｰｽﾄ温度3
+     */
+    private BigDecimal pasteondo3;
+    
+    /**
+     * ﾍﾟｰｽﾄ固形分3
+     */
+    private BigDecimal pkokeibun3;
+    
+    /**
+     * ﾍﾟｰｽﾄﾛｯﾄNo4
+     */
+    private String pastelotno4;
+    
+    /**
+     * ﾍﾟｰｽﾄ粘度4
+     */
+    private BigDecimal pastenendo4;
+    
+    /**
+     * ﾍﾟｰｽﾄ温度4
+     */
+    private BigDecimal pasteondo4;
+    
+    /**
+     * ﾍﾟｰｽﾄ固形分4
+     */
+    private BigDecimal pkokeibun4;
+
+    /**
+     * ﾍﾟｰｽﾄﾛｯﾄNo5
+     */
+    private String pastelotno5;
+    
+    /**
+     * ﾍﾟｰｽﾄ粘度5
+     */
+    private BigDecimal pastenendo5;
+    
+    /**
+     * ﾍﾟｰｽﾄ温度5
+     */
+    private BigDecimal pasteondo5;
+    
+    /**
+     * ﾍﾟｰｽﾄ固形分5
+     */
+    private BigDecimal pkokeibun5;
     
     /**
      * 版胴名
@@ -510,6 +605,16 @@ public class SrSpsprintGra {
      * 印刷長さ
      */
     private Integer printlength;
+    
+    /**
+     * 印刷ｾｯﾄ数
+     */
+    private Integer insatusetsuu;
+    
+    /**
+     * 歩留まり
+     */
+    private BigDecimal budomari;
 
     /**
      * 工場ｺｰﾄﾞ
@@ -600,6 +705,60 @@ public class SrSpsprintGra {
     public void setPetfilmsyurui(String petfilmsyurui) {
         this.petfilmsyurui = petfilmsyurui;
     }
+    
+    /**
+     * PETﾌｨﾙﾑ種類2
+     *
+     * @return the petfilmsyurui2
+     */
+    public String getPetfilmsyurui2() {
+        return petfilmsyurui2;
+    }
+
+    /**
+     * PETﾌｨﾙﾑ種類
+     *
+     * @param petfilmsyurui2 the petfilmsyurui2 to set
+     */
+    public void setPetfilmsyurui2(String petfilmsyurui2) {
+        this.petfilmsyurui2 = petfilmsyurui2;
+    }
+    
+    /**
+     * PETﾌｨﾙﾑ種類3
+     *
+     * @return the petfilmsyurui3
+     */
+    public String getPetfilmsyurui3() {
+        return petfilmsyurui3;
+    }
+
+    /**
+     * PETﾌｨﾙﾑ種類
+     *
+     * @param petfilmsyurui3 the petfilmsyurui3 to set
+     */
+    public void setPetfilmsyurui3(String petfilmsyurui3) {
+        this.petfilmsyurui3 = petfilmsyurui3;
+    }
+    
+    /**
+     * 電極ﾍﾟｰｽﾄ
+     *
+     * @return the pastehinmei
+     */
+    public String getPastehinmei() {
+        return pastehinmei;
+    }
+
+    /**
+     * 電極ﾍﾟｰｽﾄ
+     *
+     * @param pastehinmei the pastehinmei to set
+     */
+    public void setPastehinmei(String pastehinmei) {
+        this.pastehinmei = pastehinmei;
+    }
 
     /**
      * ﾃｰﾌﾟﾛｰﾙNo1
@@ -653,6 +812,60 @@ public class SrSpsprintGra {
      */
     public void setTaperollno3(String taperollno3) {
         this.taperollno3 = taperollno3;
+    }
+    
+    /**
+     * 厚みNo1
+     *
+     * @return the atsumi1
+     */
+    public BigDecimal getAtsumi1() {
+        return atsumi1;
+    }
+
+    /**
+     * 厚みNo1
+     *
+     * @param atsumi1 the atsumi1 to set
+     */
+    public void setAtsumi1(BigDecimal atsumi1) {
+        this.atsumi1 = atsumi1;
+    }
+    
+    /**
+     * 厚みNo2
+     *
+     * @return the atsumi2
+     */
+    public BigDecimal getAtsumi2() {
+        return atsumi2;
+    }
+
+    /**
+     * 厚みNo2
+     *
+     * @param atsumi2 the atsumi2 to set
+     */
+    public void setAtsumi2(BigDecimal atsumi2) {
+        this.atsumi2 = atsumi2;
+    }
+    
+    /**
+     * 厚みNo3
+     *
+     * @return the atsumi3
+     */
+    public BigDecimal getAtsumi3() {
+        return atsumi3;
+    }
+
+    /**
+     * 厚みNo3
+     *
+     * @param atsumi3 the atsumi3 to set
+     */
+    public void setAtsumi3(BigDecimal atsumi3) {
+        this.atsumi3 = atsumi3;
     }
 
     /**
@@ -797,6 +1010,222 @@ public class SrSpsprintGra {
      */
     public void setPkokeibun2(BigDecimal pkokeibun2) {
         this.pkokeibun2 = pkokeibun2;
+    }
+    
+    /**
+     * ﾍﾟｰｽﾄﾛｯﾄNo3
+     *
+     * @return the pastelotno3
+     */
+    public String getPastelotno3() {
+        return pastelotno3;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄﾛｯﾄNo3
+     *
+     * @param pastelotno3 the pastelotno3 to set
+     */
+    public void setPastelotno3(String pastelotno3) {
+        this.pastelotno3 = pastelotno3;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ粘度3
+     *
+     * @return the pastenendo3
+     */
+    public BigDecimal getPastenendo3() {
+        return pastenendo3;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ粘度3
+     *
+     * @param pastenendo3 the pastenendo3 to set
+     */
+    public void setPastenendo3(BigDecimal pastenendo3) {
+        this.pastenendo3 = pastenendo3;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ温度3
+     *
+     * @return the pasteondo3
+     */
+    public BigDecimal getPasteondo3() {
+        return pasteondo3;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ温度3
+     *
+     * @param pasteondo3 the pasteondo3 to set
+     */
+    public void setPasteondo3(BigDecimal pasteondo3) {
+        this.pasteondo3 = pasteondo3;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ固形分3
+     *
+     * @return the pkokeibun3
+     */
+    public BigDecimal getPkokeibun3() {
+        return pkokeibun3;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ固形分3
+     *
+     * @param pkokeibun3 the pkokeibun3 to set
+     */
+    public void setPkokeibun3(BigDecimal pkokeibun3) {
+        this.pkokeibun3 = pkokeibun3;
+    }
+    
+/**
+     * ﾍﾟｰｽﾄﾛｯﾄNo4
+     *
+     * @return the pastelotno4
+     */
+    public String getPastelotno4() {
+        return pastelotno4;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄﾛｯﾄNo4
+     *
+     * @param pastelotno4 the pastelotno4 to set
+     */
+    public void setPastelotno4(String pastelotno4) {
+        this.pastelotno4 = pastelotno4;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ粘度4
+     *
+     * @return the pastenendo4
+     */
+    public BigDecimal getPastenendo4() {
+        return pastenendo4;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ粘度4
+     *
+     * @param pastenendo4 the pastenendo4 to set
+     */
+    public void setPastenendo4(BigDecimal pastenendo4) {
+        this.pastenendo4 = pastenendo4;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ温度4
+     *
+     * @return the pasteondo4
+     */
+    public BigDecimal getPasteondo4() {
+        return pasteondo4;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ温度4
+     *
+     * @param pasteondo4 the pasteondo4 to set
+     */
+    public void setPasteondo4(BigDecimal pasteondo4) {
+        this.pasteondo4 = pasteondo4;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ固形分4
+     *
+     * @return the pkokeibun4
+     */
+    public BigDecimal getPkokeibun4() {
+        return pkokeibun4;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ固形分4
+     *
+     * @param pkokeibun4 the pkokeibun4 to set
+     */
+    public void setPkokeibun4(BigDecimal pkokeibun4) {
+        this.pkokeibun4 = pkokeibun4;
+    }
+    
+/**
+     * ﾍﾟｰｽﾄﾛｯﾄNo5
+     *
+     * @return the pastelotno5
+     */
+    public String getPastelotno5() {
+        return pastelotno5;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄﾛｯﾄNo5
+     *
+     * @param pastelotno5 the pastelotno5 to set
+     */
+    public void setPastelotno5(String pastelotno5) {
+        this.pastelotno5 = pastelotno5;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ粘度5
+     *
+     * @return the pastenendo5
+     */
+    public BigDecimal getPastenendo5() {
+        return pastenendo5;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ粘度5
+     *
+     * @param pastenendo5 the pastenendo5 to set
+     */
+    public void setPastenendo5(BigDecimal pastenendo5) {
+        this.pastenendo5 = pastenendo5;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ温度5
+     *
+     * @return the pasteondo5
+     */
+    public BigDecimal getPasteondo5() {
+        return pasteondo5;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ温度5
+     *
+     * @param pasteondo5 the pasteondo5 to set
+     */
+    public void setPasteondo5(BigDecimal pasteondo5) {
+        this.pasteondo5 = pasteondo5;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ固形分5
+     *
+     * @return the pkokeibun5
+     */
+    public BigDecimal getPkokeibun5() {
+        return pkokeibun5;
+    }
+
+    /**
+     * ﾍﾟｰｽﾄ固形分5
+     *
+     * @param pkokeibun5 the pkokeibun5 to set
+     */
+    public void setPkokeibun5(BigDecimal pkokeibun5) {
+        this.pkokeibun5 = pkokeibun5;
     }
 
     /**
@@ -2191,5 +2620,39 @@ public class SrSpsprintGra {
      */
     public void setPrintlength(Integer printlength) {
         this.printlength = printlength;
+    }
+    
+    /**
+     * 印刷長さ
+     * @return the insatusetsuu
+     */
+    public Integer getInsatusetsuu() {
+        return insatusetsuu;
+    }
+
+    /**
+     * 印刷長さ
+     * @param insatusetsuu the insatusetsuu to set
+     */
+    public void setInsatusetsuu(Integer insatusetsuu) {
+        this.insatusetsuu = insatusetsuu;
+    }
+    
+    /**
+     * 歩留まり
+     *
+     * @return the budomari
+     */
+    public BigDecimal getBudomari() {
+        return budomari;
+    }
+
+    /**
+     * 歩留まり
+     *
+     * @param budomari the budomari to set
+     */
+    public void setBudomari(BigDecimal budomari) {
+        this.budomari = budomari;
     }
 }

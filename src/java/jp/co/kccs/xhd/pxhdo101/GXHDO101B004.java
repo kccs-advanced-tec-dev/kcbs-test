@@ -25,6 +25,7 @@ import javax.servlet.http.HttpSession;
 import jp.co.kccs.xhd.common.InitMessage;
 import jp.co.kccs.xhd.common.KikakuError;
 import jp.co.kccs.xhd.db.model.FXHDD01;
+import jp.co.kccs.xhd.db.model.Jisseki;
 import jp.co.kccs.xhd.db.model.SrSpssekisou;
 import jp.co.kccs.xhd.db.model.SubSrSpssekisou;
 import jp.co.kccs.xhd.model.GXHDO101C006Model;
@@ -83,6 +84,11 @@ import org.apache.commons.lang3.StringUtils;
  * 計画書No	MB2205-D010<br>
  * 変更者	KCSS wxf<br>
  * 変更理由	項目追加・変更・削除<br>
+ * <br>
+ * 変更日	2025/03/12<br>
+ * 計画書No	MB2501-D004<br>
+ * 変更者	KCSS A.Hayashi<br>
+ * 変更理由	項目追加・変更<br>
  * <br>
  * ===============================================================================<br>
  */
@@ -1187,6 +1193,11 @@ public class GXHDO101B004 implements IFormLogic {
             case GXHDO101B004Const.BTN_DATACOOPERATION_TOP:
             case GXHDO101B004Const.BTN_DATACOOPERATION_BOTTOM:
                 method = "doDataCooperationSyori";
+                break;
+            // ｾｯﾄ数取得
+            case GXHDO101B004Const.BTN_SET_COUNT_TOP:
+            case GXHDO101B004Const.BTN_SET_COUNT_BOTTOM:
+                method = "doSetCountSyori";
                 break;
             default:
                 method = "error";
@@ -5109,6 +5120,134 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
     }
     
     /**
+     * 【ｾｯﾄ数取得】ﾎﾞﾀﾝ押下時設定処理
+     *
+     * @param processData 処理制御データ
+     * @return 処理制御データ
+     */
+    public ProcessData doSetCountSyori(ProcessData processData) {
+        QueryRunner queryRunnerQcdb = new QueryRunner(processData.getDataSourceQcdb());
+        QueryRunner queryRunnerWip = new QueryRunner(processData.getDataSourceWip());
+        QueryRunner queryRunnerDoc = new QueryRunner(processData.getDataSourceDocServer());
+        // セッションから情報を取得
+        ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
+        HttpSession session = (HttpSession) externalContext.getSession(false);
+        String lotNo = (String) session.getAttribute("lotNo");
+        try {
+            // ■処理ｾｯﾄ数
+            // (29)[仕掛]から、取個数を取得
+            Map shikakariData = loadShikakariTorikosuuData(queryRunnerWip, lotNo);
+            String torikosuu = StringUtil.nullToBlank(getMapData(shikakariData, "torikosuu"));
+            
+            // A.取得出来なかった場合
+            // 何もしない(処理ｾｯﾄ数==null,良品ｾｯﾄ数==null)
+            if (shikakariData == null || shikakariData.isEmpty()) {
+                processData.setMethod("");
+                return processData;
+            }
+
+            // (26)[ﾊﾟﾗﾒｰﾀﾏｽﾀ]から、ﾃﾞｰﾀを取得
+            String syoriParam = loadParamData(queryRunnerDoc, "common_user", "積層_処理ｾｯﾄ_工程ｺｰﾄﾞ");
+            
+            // A.取得出来なかった場合
+            // 何もしない(処理ｾｯﾄ数==null,良品ｾｯﾄ数==null)
+            if (syoriParam == null || syoriParam.isEmpty()) {
+                processData.setMethod("");
+                return processData;
+            }
+            
+            // ﾊﾟﾗﾒｰﾀﾃﾞｰﾀを「,」(ｶﾝﾏ)でSPLITを行い、切り分けたﾃﾞｰﾀを工程ｺｰﾄﾞとする。
+            String[] syoriKouteiCodes = syoriParam.split(",");
+            
+            // (27)[実績]から、実績No、処理数を取得
+            List<Jisseki> syorijissekiData = loadJissekiData(queryRunnerWip, lotNo, syoriKouteiCodes);
+            
+            // A.取得出来なかった場合
+            // 何もしない(処理ｾｯﾄ数==null,良品ｾｯﾄ数==null)
+            if (syorijissekiData == null || syorijissekiData.isEmpty()) {
+                processData.setMethod("");
+                return processData;
+            }
+            
+            // 取得したﾚｺｰﾄﾞのうち、先頭のﾚｺｰﾄﾞのみを使用し、以下の処理を実行する
+            BigDecimal syoriSsu = new BigDecimal(syorijissekiData.get(0).getSyorisuu());
+            
+            // α.取得した値が0より小さい場合
+            // 何もしない(処理ｾｯﾄ数==null,良品ｾｯﾄ数==null)
+            if (0 <= BigDecimal.ZERO.compareTo(syoriSsu)  || syoriSsu == null) {
+                processData.setMethod("");
+                return processData;
+            }
+            
+            // β.α以外の場合
+            // 処理ｾｯﾄ数 = 処理数 ÷ 2.で取得した取個数
+            // と計算し、「処理ｾｯﾄ数」として、以降の処理へ進む。
+            BigDecimal syoriSetSu = syoriSsu.divide(new BigDecimal(torikosuu), 0, RoundingMode.DOWN);
+            
+            // ■良品ｾｯﾄ数
+            // (30)[ﾊﾟﾗﾒｰﾀﾏｽﾀ]から、ﾃﾞｰﾀを取得
+            String ryohinParam = loadParamData(queryRunnerDoc, "common_user", "積層_良品ｾｯﾄ_工程ｺｰﾄﾞ");
+            
+            // A.取得出来なかった場合
+            // 何もしない(処理ｾｯﾄ数==null,良品ｾｯﾄ数==null)
+            if (ryohinParam == null || ryohinParam.isEmpty()) {
+                processData.setMethod("");
+                return processData;
+            }
+            
+            // ﾊﾟﾗﾒｰﾀﾃﾞｰﾀを「,」(ｶﾝﾏ)でSPLITを行い、切り分けたﾃﾞｰﾀを工程ｺｰﾄﾞとする。
+            String[] ryouhinKouteiCodes = ryohinParam.split(",");
+            
+            // (27)[実績]から、実績No、処理数を取得
+            List<Jisseki> ryohinjissekiData = loadJissekiData(queryRunnerWip, lotNo, ryouhinKouteiCodes);
+            // A.取得出来なかった場合
+            // 何もしない(処理ｾｯﾄ数==null,良品ｾｯﾄ数==null)
+            if (ryohinjissekiData == null|| ryohinjissekiData.isEmpty()) {
+                processData.setMethod("");
+                return processData;
+            }
+            
+            // 6.Ⅲ.画面表示仕様(28)を発行する。
+            Map seisanData = loadSeisanData(queryRunnerWip, ryohinjissekiData.get(0).getJissekino());
+            if (seisanData == null) {
+                processData.setMethod("");
+                return processData;
+            }
+            
+            // 取得したﾚｺｰﾄﾞのうち、先頭のﾚｺｰﾄﾞのみを使用し、以下の処理を実行する
+            BigDecimal ryohinsSu = new BigDecimal(String.valueOf(seisanData.get("ryohinsuu")));
+            
+            // α.取得した値が0より小さい場合
+            // 何もしない(処理ｾｯﾄ数==null,良品ｾｯﾄ数==null)
+            if (0 <= BigDecimal.ZERO.compareTo(ryohinsSu) || ryohinsSu == null) {
+                processData.setMethod("");
+                return processData;
+            }
+            
+            // β.α以外の場合
+            // 処理ｾｯﾄ数 = 処理数 ÷ 2.で取得した取個数
+            // と計算し、「処理ｾｯﾄ数」として、以降の処理へ進む。
+
+            BigDecimal ryohinSetSu = ryohinsSu.divide(new BigDecimal(torikosuu), 0, RoundingMode.DOWN);
+
+            // 処理ｾｯﾄ数を設定
+            setItemData(processData,GXHDO101B004Const.SYORI_SETSUU, String.valueOf(syoriSetSu));
+            
+            // 良品ｾｯﾄ数を設定
+            setItemData(processData,GXHDO101B004Const.RYOUHIN_SETSUU, String.valueOf(ryohinSetSu));
+
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+            processData.setErrorMessageInfoList(Arrays.asList(new ErrorMessageInfo("実行時エラー")));
+            processData.setMethod("");
+            return processData;
+        }
+        
+        processData.setMethod("");
+        return processData;
+    }
+    
+    /**
      * 【設備ﾃﾞｰﾀ連携】ﾎﾞﾀﾝ押下時、該当項目(数値表示)で取得時に、取得した値が文字列であった場合チェック処理
      *
      * @param processData 処理制御データ
@@ -5324,6 +5463,130 @@ private void setInputItemDataSubFormC006(SubSrSpssekisou subSrSpssekisouData) {
 
         DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
         return queryRunnerQcdb.query(sql, new MapListHandler(), params.toArray());
+    }
+    
+    /**
+     * (29)[仕掛]から、取個数を取得
+     *
+     * @param queryRunnerDoc QueryRunnerオブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @return 取得データ
+     * @throws SQLException 例外エラー
+     */
+    private Map loadShikakariTorikosuuData(QueryRunner queryRunnerDoc, String lotNo) throws SQLException {
+        String lotNo1 = lotNo.substring(0, 3);
+        String lotNo2 = lotNo.substring(3, 11);
+        String lotNo3 = lotNo.substring(11, 14);
+
+        // 仕掛情報データの取得
+        String sql = "SELECT torikosuu"
+                + " FROM sikakari WHERE kojyo = ? AND lotno = ? AND edaban = ? ";
+
+        List<Object> params = new ArrayList<>();
+        params.add(lotNo1);
+        params.add(lotNo2);
+        params.add(lotNo3);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
+    }
+    
+    /**
+     * [ﾊﾟﾗﾒｰﾀﾏｽﾀ]から、データを取得
+     *
+     * @param queryRunnerDoc オブジェクト
+     * @param userName ユーザー名
+     * @param key Key
+     * @return 取得データ
+     */
+    private String loadParamData(QueryRunner queryRunnerDoc, String userName, String key) {
+        try {
+
+            // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+            String sql = "SELECT data "
+                    + " FROM fxhbm03 "
+                    + " WHERE user_name = ? AND key = ? ";
+
+            List<Object> params = new ArrayList<>();
+            params.add(userName);
+            params.add(key);
+            DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+            Map data = queryRunnerDoc.query(sql, new MapHandler(), params.toArray());
+            if (data != null && !data.isEmpty()) {
+                return StringUtil.nullToBlank(data.get("data"));
+            }
+
+        } catch (SQLException ex) {
+            ErrUtil.outputErrorLog("SQLException発生", ex, LOGGER);
+        }
+        return null;
+
+    }
+    
+    /**
+     *(27)[実績]から、実績No、処理数を取得
+     * @param queryRunnerWip オブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param date ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ(検索キー)
+     * @return 取得データ
+     * @throws SQLException 
+     */
+    private List<Jisseki> loadJissekiData(QueryRunner queryRunnerWip, String lotNo, String[] data) throws SQLException {
+         
+
+        String lotNo1 = lotNo.substring(0, 3);
+        String lotNo2 = lotNo.substring(3, 11);
+        String lotNo3 = lotNo.substring(11, 14);
+        
+        List<String> dataList= new ArrayList<>(Arrays.asList(data));
+        
+        // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+        String sql = "SELECT syorisuu, jissekino "
+                + "FROM jisseki "
+                + "WHERE kojyo = ? AND lotno = ? AND edaban = ? AND ";
+        
+        sql += DBUtil.getInConditionPreparedStatement("koteicode", dataList.size());
+        
+        sql += " ORDER BY syoribi DESC, syorijikoku DESC";
+        
+        Map mapping = new HashMap<>();
+        mapping.put("syorisuu", "syorisuu");
+        mapping.put("jissekino", "jissekino");
+        
+        BeanProcessor beanProcessor = new BeanProcessor(mapping);
+        RowProcessor rowProcessor = new BasicRowProcessor(beanProcessor);
+        ResultSetHandler<List<Jisseki>> beanHandler = new BeanListHandler<>(Jisseki.class, rowProcessor);
+
+        List<Object> params = new ArrayList<>();
+        params.add(lotNo1);
+        params.add(lotNo2);
+        params.add(lotNo3);                
+        params.addAll(dataList);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerWip.query(sql, beanHandler, params.toArray());
+    }
+    
+    /**
+     * (28)[生産]から、良品数を取得
+     * @param queryRunnerWip オブジェクト
+     * @param lotNo ﾛｯﾄNo(検索キー)
+     * @param date ﾊﾟﾗﾒｰﾀﾃﾞｰﾀ(検索キー)
+     * @return 取得データ
+     * @throws SQLException 
+     */
+    private Map loadSeisanData(QueryRunner queryRunnerWip, int jissekino) throws SQLException {
+                 
+        // ﾊﾟﾗﾒｰﾀﾏｽﾀデータの取得
+        String sql = "SELECT ryohinsuu "
+                + "FROM seisan "
+                + "WHERE jissekino = ?";
+                
+        List<Object> params = new ArrayList<>();
+        params.add(jissekino);
+
+        DBUtil.outputSQLLog(sql, params.toArray(), LOGGER);
+        return queryRunnerWip.query(sql, new MapHandler(), params.toArray());
     }
 
     /**

@@ -35,8 +35,13 @@
                                      process="@this" 
                                      update="form:itemDataList"
                                      oncomplete="if('warning'!=args.param1){PF('cd1').hide();} else {PF('cd1').show();}
-                                        if('warning'!=args.param2){PF('cd2').hide(); PF('W_dlg_gxhdo101c020').hide();} else {PF('cd2').show();}"
-                                        />
+                                        if('warning'!=args.param2){PF('cd2').hide();} else {PF('cd2').show();}
+                                        if('warning'!=args.param3){PF('cd3').hide();} else {PF('cd3').show();}
+                                        if('warning'!=args.param4){PF('cd4').hide();} else {PF('cd4').show();}
+                                        if('warning'!=args.param5){PF('cd5').hide();} else {PF('cd5').show();}
+                                        if('warning'!=args.param6){PF('cd6').hide();} else {PF('cd6').show();}
+                                        if('warning'!=args.param7){PF('cd7').hide();} else {PF('cd7').show();}
+                                        if('info'==args.param8){PF('W_dlg_gxhdo101c020').hide(); PF('cd8').show();}"                                        />
                     <p:commandButton value="Cancel" class="ui-conf-commandbtn-cancel" onclick="PF('cd1').hide();" type="button" />
                 </p:confirmDialog>
                 <p:confirmDialog class="ui-confdialog" severity="alert" widgetVar="cd2" global="true">
@@ -48,7 +53,13 @@
                                      async="false"
                                      process="@this" 
                                      update="form:itemDataList"
-                                     oncomplete="if('warning'!=args.param2){PF('cd2').hide(); PF('W_dlg_gxhdo101c020').hide();} else {PF('cd2').show();}"/>
+                                     oncomplete="if('warning'!=args.param2){PF('cd2').hide();} else {PF('cd2').show();}
+                                                 if('warning'!=args.param3){PF('cd3').hide();} else {PF('cd3').show();}
+                                                 if('warning'!=args.param4){PF('cd4').hide();} else {PF('cd4').show();}
+                                                 if('warning'!=args.param5){PF('cd5').hide();} else {PF('cd5').show();}
+                                                 if('warning'!=args.param6){PF('cd6').hide();} else {PF('cd6').show();}
+                                                 if('warning'!=args.param7){PF('cd7').hide();} else {PF('cd7').show();}
+                                                 if('info'==args.param8){PF('W_dlg_gxhdo101c020').hide(); PF('cd8').show();}"/>
                     <p:commandButton value="Cancel" class="ui-conf-commandbtn-cancel" onclick="PF('cd2').hide();" type="button" />
                 </p:confirmDialog>
                 <p:confirmDialog class="ui-confdialog" severity="alert" widgetVar="cd3" global="true">
@@ -61,7 +72,8 @@
                                      process="@this" 
                                      update="form:itemDataList"
                                      oncomplete="if('warning'!=args.param3){PF('cd3').hide()} else {PF('cd3').show();}
-                                        if('warning'!=args.param4){PF('cd4').hide(); PF('W_dlg_gxhdo101c020').hide();} else {PF('cd4').show();}"/>
+                                        if('warning'!=args.param4){PF('cd4').hide();} else {PF('cd4').show();}
+                                        if('info'==args.param8){PF('W_dlg_gxhdo101c020').hide(); PF('cd8').show();}"/>
                     <p:commandButton value="Cancel" class="ui-conf-commandbtn-cancel" onclick="PF('cd3').hide();" type="button" />
                 </p:confirmDialog>
                 <p:confirmDialog class="ui-confdialog" severity="alert" widgetVar="cd4" global="true">
@@ -73,8 +85,60 @@
                                      async="false"
                                      process="@this" 
                                      update="form:itemDataList"
-                                     oncomplete="if('warning'!=args.param4){PF('cd4').hide();PF('W_dlg_gxhdo101c020').hide();} else {PF('cd2').show();}"/>
+                                     oncomplete="if('warning'!=args.param4){PF('cd4').hide()} else {PF('cd2').show();}
+                                     if('info'==args.param8){PF('W_dlg_gxhdo101c020').hide(); PF('cd8').show();}"/>
                     <p:commandButton value="Cancel" class="ui-conf-commandbtn-cancel" onclick="PF('cd4').hide();" type="button" />
+                </p:confirmDialog>
+                <p:confirmDialog class="ui-confdialog" severity="alert" widgetVar="cd5" global="true">
+                    <f:facet name="message">
+                        <h:outputText value="#{beanGXHDO101C020.getHinmeiLotWarnMessage()}" escape="false"/>
+                    </f:facet>
+                    <p:commandButton value="OK" styleClass="ui-conf-commandbtn-def1"
+                                     actionListener="#{beanGXHDO101C020.checkHinmeiLotOK()}"
+                                     async="false"
+                                     process="@this" 
+                                     update="form:itemDataList"
+                                     oncomplete="if('warning'!=args.param5){PF('cd5').hide();} else {PF('cd5').show();}
+                                                 if('warning'!=args.param6){PF('cd6').hide();} else {PF('cd6').show();}
+                                                 if('warning'!=args.param7){PF('cd7').hide();} else {PF('cd7').show();}
+                                                 if('info'==args.param8){PF('W_dlg_gxhdo101c020').hide(); PF('cd8').show();}"/>
+                    <p:commandButton value="Cancel" class="ui-conf-commandbtn-cancel" onclick="PF('cd5').hide();" type="button" />
+                </p:confirmDialog>
+                <p:confirmDialog class="ui-confdialog" severity="alert" widgetVar="cd6" global="true">
+                    <f:facet name="message">
+                        <h:outputText value="#{beanGXHDO101C020.getTapeAtumi_PetfilmWarnMessage()}" escape="false"/>
+                    </f:facet>
+                    <p:commandButton value="OK" styleClass="ui-conf-commandbtn-def1"
+                                     actionListener="#{beanGXHDO101C020.checkTapeAtumi_PetfilmSameHinmeiOK()}"
+                                     async="false"
+                                     process="@this" 
+                                     update="form:itemDataList"
+                                     oncomplete="if('warning'!=args.param6){PF('cd6').hide()} else {PF('cd6').show();}
+                                     if('warning'!=args.param7){PF('cd7').hide();} else {PF('cd7').show();}
+                                     if('info'==args.param8){PF('W_dlg_gxhdo101c020').hide(); PF('cd8').show();}"/>
+                    <p:commandButton value="Cancel" class="ui-conf-commandbtn-cancel" onclick="PF('cd6').hide();" type="button" />
+                </p:confirmDialog>
+                <p:confirmDialog class="ui-confdialog" severity="alert" widgetVar="cd7" global="true">
+                    <f:facet name="message">
+                        <h:outputText value="#{beanGXHDO101C020.getPasteKokeiWarnMessage()}" escape="false"/>
+                    </f:facet>
+                    <p:commandButton value="OK" styleClass="ui-conf-commandbtn-def1"
+                                     actionListener="#{beanGXHDO101C020.checkPasteKokeiSameHinmeiOK()}"
+                                     async="false"
+                                     process="@this" 
+                                     update="form:itemDataList"
+                                     oncomplete="if('warning'!=args.param7){PF('cd7').hide();} else {PF('cd7').show();}
+                                                 if('info'==args.param8){PF('W_dlg_gxhdo101c020').hide(); PF('cd8').show();}"/>
+                    <p:commandButton value="Cancel" class="ui-conf-commandbtn-cancel" onclick="PF('cd7').hide();" type="button" />
+                </p:confirmDialog>
+                <p:confirmDialog class="ui-confdialog" severity="alert" widgetVar="cd8" global="true">
+                    <f:facet name="message">
+                        <h:outputText value="#{beanGXHDO101C020.getTorikomiInfoMessage()}" escape="false"/>
+                    </f:facet>
+                    <p:commandButton value="OK" styleClass="ui-conf-commandbtn-def1"
+                                     async="false"
+                                     process="@this" 
+                                     onclick="{PF('cd8').hide();PF('W_dlg_gxhdo101c020').hide();}" />
                 </p:confirmDialog>
             </p:panel>
             <p:commandButton value="前工程WIP取込" id="genryouLotDataImportBtn"
@@ -88,6 +152,10 @@
                                 if('warning'!=args.param2){PF('cd2').hide();} else {PF('cd2').show();return;};
                                 if('warning'!=args.param3){PF('cd3').hide();} else {PF('cd3').show();return;};
                                 if('warning'!=args.param4){PF('cd4').hide();} else {PF('cd4').show();return;};
+                                if('warning'!=args.param5){PF('cd5').hide();} else {PF('cd5').show();return;};
+                                if('warning'!=args.param6){PF('cd6').hide();} else {PF('cd6').show();return;};
+                                if('warning'!=args.param7){PF('cd7').hide();} else {PF('cd7').show();return;};
+                                if('info'!=args.param8){PF('cd8').hide();} else {PF('cd8').show();return;};
                                 if('error'!=args.firstParam){PF('W_dlg_gxhdo101c020').hide();};">
                 <p:ajax event="click"
                                 async="false"

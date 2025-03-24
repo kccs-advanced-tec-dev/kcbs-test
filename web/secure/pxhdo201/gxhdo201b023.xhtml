@@ -205,9 +205,6 @@
                     <p:column id="tapelotno" headerText="ｽﾘｯﾌﾟﾛｯﾄNo" >
                         <p:outputLabel value="#{item.tapelotno}"/>
                     </p:column>
-                    <p:column id="petfilmsyurui" headerText="PETﾌｨﾙﾑ種類" >
-                        <p:outputLabel value="#{item.petfilmsyurui}"/>
-                    </p:column>
                     <p:column id="taperollno1" headerText="ﾛｰﾙNo1" >
                         <p:outputLabel value="#{item.taperollno1}"/>
                     </p:column>
@@ -217,10 +214,26 @@
                     <p:column id="taperollno3" headerText="ﾛｰﾙNo3" >
                         <p:outputLabel value="#{item.taperollno3}"/>
                     </p:column>
-                    <p:column id="tapeatu" headerText="ﾃｰﾌﾟ厚み" styleClass="number" >
-                        <p:outputLabel value="#{item.tapeatu}">
-                            <f:convertNumber pattern="#0.00"/>
-                        </p:outputLabel>
+                    <p:column id="atsumi1" headerText="厚みNo1" >
+                        <p:outputLabel value="#{item.atsumi1}"/>
+                    </p:column>
+                    <p:column id="atsumi2" headerText="厚みNo2" >
+                        <p:outputLabel value="#{item.atsumi2}"/>
+                    </p:column>
+                    <p:column id="atsumi3" headerText="厚みNo3" >
+                        <p:outputLabel value="#{item.atsumi3}"/>
+                    </p:column>
+                    <p:column id="petfilmsyurui" headerText="PETﾌｨﾙﾑ種類1" >
+                        <p:outputLabel value="#{item.petfilmsyurui}"/>
+                    </p:column>
+                    <p:column id="petfilmsyurui2" headerText="PETﾌｨﾙﾑ種類2" >
+                        <p:outputLabel value="#{item.petfilmsyurui2}"/>
+                    </p:column>
+                    <p:column id="petfilmsyurui3" headerText="PETﾌｨﾙﾑ種類3" >
+                        <p:outputLabel value="#{item.petfilmsyurui3}"/>
+                    </p:column>
+                    <p:column id="pastehinmei" headerText="電極ﾍﾟｰｽﾄ" >
+                        <p:outputLabel value="#{item.pastehinmei}"/>
                     </p:column>
                     <p:column id="pastelotno" headerText="内部電極ﾍﾟｰｽﾄﾛｯﾄNo1" >
                         <p:outputLabel value="#{item.pastelotno}"/>
@@ -242,6 +255,75 @@
                     </p:column>
                     <p:column id="pastelotno2" headerText="内部電極ﾍﾟｰｽﾄﾛｯﾄNo2" >
                         <p:outputLabel value="#{item.pastelotno2}"/>
+                    </p:column>
+                    <p:column id="pastenendo2" headerText="内部電極ﾍﾟｰｽﾄ粘度2(P)" styleClass="number">
+                        <p:outputLabel value="#{item.pastenendo2}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="pasteondo2" headerText="内部電極ﾍﾟｰｽﾄ温度2(℃)" styleClass="number">
+                        <p:outputLabel value="#{item.pasteondo2}">
+                            <f:convertNumber pattern="#0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="pkokeibun2" headerText="内部電極ﾍﾟｰｽﾄ固形分2(%)" styleClass="number">
+                        <p:outputLabel value="#{item.pkokeibun2}">
+                            <f:convertNumber pattern="#0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="pastelotno3" headerText="内部電極ﾍﾟｰｽﾄﾛｯﾄNo3" >
+                        <p:outputLabel value="#{item.pastelotno3}"/>
+                    </p:column>
+                    <p:column id="pastenendo3" headerText="内部電極ﾍﾟｰｽﾄ粘度3(P)" styleClass="number">
+                        <p:outputLabel value="#{item.pastenendo3}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="pasteondo3" headerText="内部電極ﾍﾟｰｽﾄ温度3(℃)" styleClass="number">
+                        <p:outputLabel value="#{item.pasteondo3}">
+                            <f:convertNumber pattern="#0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="pkokeibun3" headerText="内部電極ﾍﾟｰｽﾄ固形分3(%)" styleClass="number">
+                        <p:outputLabel value="#{item.pkokeibun3}">
+                            <f:convertNumber pattern="#0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="pastelotno4" headerText="内部電極ﾍﾟｰｽﾄﾛｯﾄNo4" >
+                        <p:outputLabel value="#{item.pastelotno4}"/>
+                    </p:column>
+                    <p:column id="pastenendo4" headerText="内部電極ﾍﾟｰｽﾄ粘度4(P)" styleClass="number">
+                        <p:outputLabel value="#{item.pastenendo4}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="pasteondo4" headerText="内部電極ﾍﾟｰｽﾄ温度4(℃)" styleClass="number">
+                        <p:outputLabel value="#{item.pasteondo4}">
+                            <f:convertNumber pattern="#0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="pkokeibun4" headerText="内部電極ﾍﾟｰｽﾄ固形分4(%)" styleClass="number">
+                        <p:outputLabel value="#{item.pkokeibun4}">
+                            <f:convertNumber pattern="#0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="pastelotno5" headerText="内部電極ﾍﾟｰｽﾄﾛｯﾄNo5" >
+                        <p:outputLabel value="#{item.pastelotno5}"/>
+                    </p:column>
+                    <p:column id="pastenendo5" headerText="内部電極ﾍﾟｰｽﾄ粘度5(P)" styleClass="number">
+                        <p:outputLabel value="#{item.pastenendo5}">
+                            <f:convertNumber pattern="#,##0.00"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="pasteondo5" headerText="内部電極ﾍﾟｰｽﾄ温度5(℃)" styleClass="number">
+                        <p:outputLabel value="#{item.pasteondo5}">
+                            <f:convertNumber pattern="#0.0"/>
+                        </p:outputLabel>
+                    </p:column>
+                    <p:column id="pkokeibun5" headerText="内部電極ﾍﾟｰｽﾄ固形分5(%)" styleClass="number">
+                        <p:outputLabel value="#{item.pkokeibun5}">
+                            <f:convertNumber pattern="#0.00"/>
+                        </p:outputLabel>
                     </p:column>
                     <p:column id="handoumei" headerText="版胴名" >
                         <p:outputLabel value="#{item.handoumei}"/>
