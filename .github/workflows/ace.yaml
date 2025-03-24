@@ -13,9 +13,10 @@ on: 			# on以下でワークフローを実行するトリガーとなるイベ
 
 jobs:			# jobs以下ACEを実行するjobを作成します。  
   report_job: 		# jobの名前（任意に変更可）
-    uses: kccs-advanced-tec-dev/ace-github-workflow/.github/workflows/ace.yml@v0 # ACEの呼び出し（変更不可）
+    uses: kccs-advanced-tec-dev/ace-github-workflow/.github/workflows/ace.yml@vTEST # ACEの呼び出し（変更不可）
     with:
       # Slack通知の設定
+      test_ace_core_version: performance-test
       slack_notify_enable: false		# slack通知の利用有無（省略可、任意に変更可、規定値：false）
       # ACEオプション (ACE core 実行時の引数として与えられます)
       # 詳細はACE利用方法を参照 https://sites.google.com/kccs.co.jp/dic-ace/ace-wiki/ace%E5%88%A9%E7%94%A8%E6%96%B9%E6%B3%95#h.18fwwh151u7l
