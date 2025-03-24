@@ -26,6 +26,5 @@ jobs:			# jobs以下ACEを実行するjobを作成します。
         --maintainability-index 20
         --loc 500
         -e utils test/*.cs
-        -i *.java *.cs
         --check-dekita-mode V3
         timeout-minutes :15
